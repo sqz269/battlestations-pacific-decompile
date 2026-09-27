@@ -994,6 +994,96 @@ static void queue_plane_squadron_wing_007f4580(GameSceneContentsHost::Impl& owne
     owner.log.implemented("PlaneSquadron::spawn_planes", "007f4580");
 }
 
+// Packet cc9_scene_path_landscape. Whether this process's VFS finds `name` by
+// the same search the other scene reads use. A census of 00882AC0's inputs, not
+// a native step: 00882AC0 hands the names to the terrain and model loaders.
+static bool scene_vfs_resolves(GameSceneContentsHost::Impl& owner, const std::string& name) {
+    auto* manager = owner.vfs.ready() ? &owner.vfs.context() : nullptr;
+    if (manager == nullptr) return false;
+    std::string resolved = name;
+    return resolve_existing_resource_00bdf4c0_fragment(*manager,
+        owner.vfs.search_registrations(), resolved);
+}
+
+// 004EA650 (Path) and 004F1460 (Landscape), with what PlaceInWorld 00928860
+// does through slot 130h, then the InitAll passes that fill the class's own
+// fields (pass B 007B38D0 for a Path, pass A 00883BB0 for a Landscape). The
+// native runs the passes at 0046EB4B, after the whole scene file is read; this
+// process fills them at creation because nothing reads them in between.
+// LABELLED SUBSTITUTION: the frame is the record's composed world frame with
+// no hierarchy parent, the convention the unit creators in this file already
+// use (creation.local_frame = world_frame), where the native passes the
+// authored localframe (0046D592) and its hierarchy parent (0046D585).
+static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
+    GameSceneEntityRecord& record, const ScenePropertyBlock& bag, GameSceneClassTally& tally) {
+    const bool is_path = record.class_id == kScenePathClassId;
+    SceneWorldObject object;
+    object.class_id = record.class_id;
+    object.name = record.name;
+    object.scene_id = record.scene_id;
+    object.parent_scene_id = record.parent_scene_id;
+    object.vtable = is_path ? 0x00ce6290u : 0x00cea090u;         // 0047B660 / 004F1272
+    object.object_size = is_path ? 0x210u : 0x430u;              // 004EA66x / 004F147B
+    object.network_id = 0;                                       // 006AF40F XOR AX,AX
+    object.class_list_offset = is_path ? 0x36cu : 0x348u;        // 0048721C / 004F140C
+    std::memcpy(object.world, record.world, sizeof(object.world));
+    if (is_path) {
+        // 007B38F4 finds `Party` and 007B38FC stores its +0Ch at entity+54h; the
+        // record's resolved party is the same enum value. The point count is
+        // the partial projection of 007B34F0 retain_path_points already made.
+        object.party = record.party;
+        object.path_points = record.path_points_local.size();
+        object.path_points_valid = record.path_points_retained;
+    } else {
+        object.file_path = scene_deck_text(bag, "FilePath");      // 00883C5E -> +3C4h
+        object.model_path = scene_deck_text(bag, "ModelPath");    // 00883C7B -> +424h
+        object.shallow_water_block = scene_deck_sub_block(bag, "ShallowWater") != nullptr
+            || bag.find("ShallowWater") != nullptr;               // 00883E1D
+        // 00882AC0 with ECX = the Landscape and the FilePath string (00883DD3).
+        object.heightmap_name = "terrain/" + object.file_path + "_heightmap.tdt";
+        object.colormap_name = "terrain/" + object.file_path + "_colormap.dds";
+        object.model_name = "models/terrain/" + object.file_path + ".mmod";
+        object.heightmap_resolved = scene_vfs_resolves(owner, object.heightmap_name);
+        object.colormap_resolved = scene_vfs_resolves(owner, object.colormap_name);
+        object.model_resolved = scene_vfs_resolves(owner, object.model_name);
+        // What the terrain load builds and this process does not: the terrain
+        // object +3D0h (00ADD290), the model resource and instance +41Ch/+420h,
+        // the render node +3CCh, the part instance +418h (spatial attach
+        // 00710B6D) and the shallow-water decal +42Ch. Pass A itself then
+        // attaches the collision node +1E4h to the spatial index as a static
+        // root (0098BA10 at 00884078); the two attaches are how an island
+        // reaches the segment queries.
+        owner.log.unimplemented("Landscape::load_terrain", "00882ac0");
+        owner.log.unimplemented("Landscape::attach_terrain_vcall_9c", "00883bb0");
+    }
+    const std::size_t index = scene_world_class_lists().objects().size();
+    scene_world_class_lists().append(object);
+    ++tally.objects;
+    if (tally.creator_state.empty() || tally.creator_state.compare(0, 6, "record") == 0) {
+        char state[96];
+        std::snprintf(state, sizeof(state), "concrete %08x (scene object, not a unit)",
+            is_path ? 0x004ea650u : 0x004f1460u);
+        tally.creator_state = state;
+    }
+    if (is_path) {
+        owner.log.notef("scene world object: class=47 name=%s id=%zu parent=%zu "
+            "list=world+36Ch index=%zu party=%d points=%zu valid=%d (004ea650, 00487210)",
+            object.name.c_str(), object.scene_id, object.parent_scene_id, index,
+            object.party, object.path_points, object.path_points_valid ? 1 : 0);
+        owner.log.implemented("SceneContents::create_path", "004ea650");
+    } else {
+        owner.log.notef("scene world object: class=44 name=%s id=%zu list=world+348h "
+            "index=%zu FilePath=\"%s\" ModelPath=\"%s\" ShallowWater=%d heightmap=%s:%d "
+            "colormap=%s:%d model=%s:%d (004f1460, 004f1400)", object.name.c_str(),
+            object.scene_id, index, object.file_path.c_str(), object.model_path.c_str(),
+            object.shallow_water_block ? 1 : 0, object.heightmap_name.c_str(),
+            object.heightmap_resolved ? 1 : 0, object.colormap_name.c_str(),
+            object.colormap_resolved ? 1 : 0, object.model_name.c_str(),
+            object.model_resolved ? 1 : 0);
+        owner.log.implemented("SceneContents::create_landscape", "004f1460");
+    }
+}
+
 void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     const float world_frame[16], SceneFilePass pass) {
     GameSceneContentsHost::Impl& owner = owner_;
@@ -1313,6 +1403,18 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     }
     ++tally.generated;
     ++owner.summary.generated;
+
+    // Packet cc9_scene_path_landscape. `created` stays false: create_units makes
+    // a unit of every created record, and the markers pass (00925F20 pass A's
+    // `thisTable` attach) keys on generated && !created, which is still true
+    // of these two classes in the image.
+    if (kScenePathLandscapeCreatorsBound
+        && (klass->class_id == kScenePathClassId
+            || klass->class_id == kSceneLandscapeClassId)) {
+        create_scene_world_object(owner, record, bag, tally);
+        owner.entities.push_back(record);
+        return;
+    }
 
     const SceneUnitCreatorRow* unit = find_scene_unit_creator(klass->class_id);
     if (unit == nullptr) {
@@ -2101,6 +2203,31 @@ ScenePathRegistry& scene_path_registry() noexcept {
     return registry;
 }
 
+void SceneWorldClassLists::clear() noexcept { objects_.clear(); }
+
+// 00484540 appends at the tail, so a walk from the head (+4h of the list) sees
+// the objects in creation order.
+void SceneWorldClassLists::append(SceneWorldObject object) {
+    objects_.push_back(std::move(object));
+}
+
+const std::vector<SceneWorldObject>& SceneWorldClassLists::objects() const noexcept {
+    return objects_;
+}
+
+std::vector<std::size_t> SceneWorldClassLists::list(int class_id) const {
+    std::vector<std::size_t> out;
+    for (std::size_t i = 0; i < objects_.size(); ++i) {
+        if (objects_[i].class_id == class_id) out.push_back(i);
+    }
+    return out;
+}
+
+SceneWorldClassLists& scene_world_class_lists() noexcept {
+    static SceneWorldClassLists lists;
+    return lists;
+}
+
 const GameSceneContentsSummary& GameSceneContentsHost::summary() const noexcept {
     return impl_->summary;
 }
@@ -2138,6 +2265,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     scene_spawn_pool().clear();
     // Same reason again: the authored Path entities belong to this scene.
     scene_path_registry().clear();
+    scene_world_class_lists().clear();
     // Same reason as the pool above: the squadron table belongs to the scene
     // being loaded, and a second mission must not inherit the first one's wings.
     bsp::plane_squadron_registry().clear();
@@ -2181,6 +2309,55 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             static_cast<unsigned>(row.class_id), row.seen, row.generated, row.rejected,
             row.created, row.registration_bodies,
             row.creator_state.empty() ? "" : row.creator_state.c_str());
+    }
+    // Packet cc9_scene_path_landscape: the creator census, printed in both
+    // switch states so a pair differs only in what the switch changes.
+    {
+        std::size_t path_seen = 0, path_generated = 0, path_rejected = 0, path_objects = 0;
+        std::size_t land_seen = 0, land_generated = 0, land_rejected = 0, land_objects = 0;
+        for (const GameSceneClassTally& row : impl.summary.classes) {
+            if (row.class_id == kScenePathClassId) {
+                path_seen += row.seen; path_generated += row.generated;
+                path_rejected += row.rejected; path_objects += row.objects;
+            } else if (row.class_id == kSceneLandscapeClassId) {
+                land_seen += row.seen; land_generated += row.generated;
+                land_rejected += row.rejected; land_objects += row.objects;
+            }
+        }
+        const SceneWorldClassLists& lists = scene_world_class_lists();
+        const std::vector<std::size_t> list47 = lists.list(kScenePathClassId);
+        const std::vector<std::size_t> list44 = lists.list(kSceneLandscapeClassId);
+        // 00424D00's walk of world+370h against the record walk the avoid-zone
+        // rebuild makes: the AvoidZone-named paths, in order.
+        std::vector<std::string> by_list;
+        for (std::size_t i : list47) {
+            if (lists.objects()[i].name.compare(0, 9, "AvoidZone") == 0) {
+                by_list.push_back(lists.objects()[i].name);
+            }
+        }
+        std::vector<std::string> by_records;
+        for (const GameSceneEntityRecord& entity : impl.entities) {
+            if (entity.class_id == kScenePathClassId && entity.generated
+                && entity.name.compare(0, 9, "AvoidZone") == 0) {
+                by_records.push_back(entity.name);
+            }
+        }
+        std::size_t heightmaps = 0, colormaps = 0, models = 0;
+        for (std::size_t i : list44) {
+            heightmaps += lists.objects()[i].heightmap_resolved ? 1u : 0u;
+            colormaps += lists.objects()[i].colormap_resolved ? 1u : 0u;
+            models += lists.objects()[i].model_resolved ? 1u : 0u;
+        }
+        impl.log.notef("summary scene path/landscape creators bound=%d path seen=%zu "
+            "generated=%zu rejected=%zu created=%zu landscape seen=%zu generated=%zu "
+            "rejected=%zu created=%zu list47=%zu list44=%zu avoid_zone_paths=%zu "
+            "list_order_matches_records=%d terrain heightmaps=%zu/%zu colormaps=%zu/%zu "
+            "models=%zu/%zu (packet cc9_scene_path_landscape, 004ea650 / 004f1460)",
+            kScenePathLandscapeCreatorsBound ? 1 : 0, path_seen, path_generated,
+            path_rejected, path_objects, land_seen, land_generated, land_rejected,
+            land_objects, list47.size(), list44.size(), by_list.size(),
+            (kScenePathLandscapeCreatorsBound && by_list == by_records) ? 1 : 0,
+            heightmaps, list44.size(), colormaps, list44.size(), models, list44.size());
     }
     // The wings 007F4580 spawned, flushed after the census loops so the scene
     // tallies stay a count of scene rows: a member plane is not a scene entity,
