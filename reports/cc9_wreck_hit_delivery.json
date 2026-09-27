@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_wreck_hit_delivery",
+  "doc": "docs/PROJECTILE_IMPACT.md",
+  "calls": [
+    {"address": "00923A70", "native": "007BBCF0", "function": "009239A0", "note": "vtable[ECh] delivery after the +5Eh/+5Fh test"},
+    {"address": "0082642E", "native": "00C47F60", "function": "00825F20", "note": "hull shapes lose flag 8 past 60 s of sinkTime"}
+  ],
+  "coverage": [
+    {"routine": "009239A0", "coverage": "gate 009239A6..009239B4 re-read; rest as in the doc's table"}
+  ],
+  "substitutions": [
+    {"what": "the hittable window start (sinkTime zero at 0082507E)", "is": "the gunnery host's death time row.sunk_seconds", "where": "apply_hit in src/game_hosts_gunnery.cpp"}
+  ],
+  "corrections": [],
+  "switches": [{"name": "kWreckHitDeliveryBound", "committed": "OFF", "file": "src/game_hosts_gunnery.cpp"}],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

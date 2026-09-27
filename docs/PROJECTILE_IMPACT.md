@@ -477,3 +477,64 @@ The sub-type at descriptor `+8h` is set by the class constructors, not by Lua: 1
 - **Was:** scope note only, not an error: 0077CE60 was listed in this packet's brief as part of the handler
   **Is:** 0077CE60 is not called by 00826F10 at all; it is step 7 of the dispatcher 009239A0, which runs after the handler returns
   **Evidence:** python tools/bsp.py callees 00826f10 lists 23 callees and 0077CE60 is not among them
+
+## Hits on a wreck (packet `cc9_wreck_hit_delivery`, `kWreckHitDeliveryBound`, committed OFF)
+
+2026-09-27, worker cc9-units3, on main c4d0a915a. Ghidra was read only. The open question from
+docs/UNIT_MESSAGE_ARMS.md ("90h, bound"): does the image deliver hits to a wreck's `00826F10` at
+all? The host's `apply_hit` returns at once for a dead victim.
+
+### The image delivers them (V)
+
+- **The dispatcher tests two bytes only.** The hit dispatcher `009239A0` (the table above)
+  refuses an entity only on `+5Eh` or `+5Fh`:
+  `009239A6 CMP byte ptr [ESI+5Eh],0 / JNZ 00923AE1` and
+  `009239B0 CMP byte ptr [ESI+5Fh],0 / JNZ 00923AE1`.
+  - A wreck carries `+5Dh` and `+60h` from `00926390` (docs/UNIT_DEATH_MESSAGE_AND_SINK.md), and
+    neither is tested.
+  - `+5Fh` is set only by Kill (`00926D90`): the KillDepth kill, or the kamikaze path.
+- **A normal ship keeps its collision.** The death receiver's collision reset `0092BD30` runs
+  only for a kamikaze class: `00814574..0081458F` return at `008145A6` when `KamikazeDamage` and
+  `KamikazeBlastDamage` are both 0.
+- **The hittable window ends at 60 s.** A normal wreck's hull shapes leave the collision index
+  only when `00825F20` clears their flag 8 (`00C47F60`, `008263E2..0082645A`) 60.0 s after
+  `sinkTime` starts (`00CE3D68`), or 20.0 s for kind 0Eh (`00CE3930`). Flag 8 is the broadphase
+  registration that `00C50470` sets (docs/DYN_BODY_CREATION.md).
+
+So for up to 60 s after death, a round that meets a wreck reaches `007BBCF0` and the ship's
+`00826F10`. There, `00879070`'s dead test refuses the damage, but four steps still run:
+- the flooding message (R7b);
+- the fire roll (R7c);
+- the component-failure roll (R8);
+- the 90h leak (R10 / R11c), which a wreck's leak manager accepts (`0074F090`'s gate passes
+  on `+5Dh`).
+
+### The binding
+
+- **The switch.** `kWreckHitDeliveryBound` in `src/game_hosts_gunnery.cpp`, committed OFF. ON,
+  `apply_hit` passes a dead victim on when it is a ship (`IsKindOf(6)`) and the hit comes
+  within 60 s of its death, or 20 s for kind 0Eh. OFF, it returns as before.
+- **Both builds count** the hits reaching `apply_hit` with a dead victim, the ones delivered and
+  the ones past the window: `summary mission gunnery wreck hits`.
+- **SUBSTITUTION, labelled:** the window starts at the host's death time (`row.sunk_seconds`)
+  rather than at the wreck handler's `sinkTime` zero (`0082507E`). The row-15 flush reaches that
+  zero in the same fixed step.
+- **Not bound:** the host's own segment query already includes a wreck until its KillDepth
+  unlink. It does not model the 60 s index removal, which is why the window test sits in
+  `apply_hit`.
+
+### Predictions (written before the runs)
+
+Same tree, the switch only, both variables set, against current main. `kLiveHullLeakBound` is ON
+and Repair is 0, so of the leak path only a wreck's sends apply.
+
+| row | USN02 9200/9000 | USN04 4700/4500 |
+| --- | --- | --- |
+| `reaching` (both builds) | 20..150 | 0..5 (no ship dies; dead aircraft are not ships) |
+| `delivered` (ON) | 60..90 % of `reaching` | 0 |
+| hit records, hull hits | up by about `delivered` | identical |
+| live hull leak `applied_wreck` | 0 -> about `delivered` × 1.5 (R10 plus R11c) | 0 |
+| wreck descent (first +5Dh to −200 m) | a wreck hit n times sinks faster by n × 0.7 % of its inflow: 0..−5 s | - |
+| deaths | identical ± 1 (a wreck is already dead; neighbours move only through wreck timing) | identical |
+| kills | ± 1 | 0 |
+| pair_diff exit | 3 (hit records move) | 1 or 0 |
