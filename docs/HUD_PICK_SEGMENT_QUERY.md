@@ -1249,6 +1249,7 @@ to 339.
 | cc9-hud2 `ic2_on`, `ld_on`, `ob_off`, `ob_on`, `aq_off`, `aq_on`, and this tree's `cq_off`, `cq_on`, `cq_on2` | frame 82, clock 0.05 | one set in all nine logs (six binaries) |
 | this tree, five 500/300 runs of one diagnostic build (`cam_a` to `cam_e`) | frame 82 | identical, including hex dumps of every key's start, blend, state, evaluated point and parent pose |
 | this tree, three runs with `kLoadTimeInitAllBound` flipped off locally (`cam_f` to `cam_h`) | frame 82 | identical |
+| this tree, two full USN01 3200/3000 runs of one binary at 961dd9645 (`cam_x`, `cam_y`, streams ON, `BSP_DEATH_TABLE=1`) | frame 82 | all 39 pose lines identical; `pair_diff` exit 0 |
 
 **What the old noise was.**
 - At frame 81 the first publish came before the fixed-step latch.
@@ -1281,6 +1282,12 @@ to 339.
   `step_mission_camera` call's `seconds`, running flag and clock. That is the diagnostic used
   here: a block after `publish_mission_camera` in `step_movie_camera`, and one before it in
   `step_mission_camera`. Diff two runs of one binary.
+
+**The FMOD call count** (`sound startup before window: ... fmod_calls=`, 130 against 132 in
+`kk_off`/`kk_off2`) is a second noise source, and it is already known. It counts the FMOD polls made
+before the window exists, which depends on wall-clock time. `tools/pair_diff.py` masks it
+(`prewindow-fmod-calls`). It reads 131 in all eight runs of this tree that were checked. It is
+startup-only and feeds nothing in the mission.
 
 **For pairs:** USN01's intro pose lines are no longer known noise at this base. A moved intro pose
 line in a same-tree pair now belongs to the change. `tools/pair_diff.py` never masked them.
