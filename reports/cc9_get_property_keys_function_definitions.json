@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "006e2ac0",
+    "end_address": "006e2bfe"
+   },
+   "result": {
+    "success": true,
+    "start_address": "006e2ac0",
+    "end_address": "006e2bfd",
+    "bytes_disassembled": 318,
+    "message": "Successfully disassembled 318 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "006e2ac0",
+    "disassemble_first": false,
+    "name": "BSP_Projectile_GetPropertyOwner"
+   },
+   "result": {
+    "success": true,
+    "address": "006e2ac0",
+    "function_name": "BSP_Projectile_GetPropertyOwner",
+    "entry_point": "006e2ac0",
+    "body_size": 318,
+    "message": "Function created successfully at 006e2ac0",
+    "warnings": [
+     "Function name 'BSP_Projectile_GetPropertyOwner' \u2014 main part 'Projectile_GetPropertyOwner' is not PascalCase. Expected: ProjectileGetpropertyowner",
+     "Function name 'BSP_Projectile_GetPropertyOwner' \u2014 main part 'Projectile_GetPropertyOwner' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Projectile_GetPropertyOwner' does not start with a recognized verb. First word 'Projectile_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "006e2ac0",
+   "end": "006e2bfe",
+   "name": "BSP_Projectile_GetPropertyOwner",
+   "after": "Function: BSP_Projectile_GetPropertyOwner at 006e2ac0\nSignature: undefined BSP_Projectile_GetPropertyOwner(void)\nEntry: 006e2ac0\nBody: 006e2ac0 - 006e2bfd"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
