@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_session_pump_records_read",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 13",
+  "switch": "none (docs only; both records stay)",
+  "calls": [
+    {"address": "004E3F0F", "native": "00992A50", "function": "004E3AA0", "kind": "call", "host": "none: the XLive system object 00F8A2FC is created at OnInit in every mode"},
+    {"address": "007784F6", "native": "00A42A50", "function": "00778450", "kind": "virtual", "host": "GameFixedStepHost::pump_session_00778450, record Session::global_object_step_00f8a2fc (vtable 00D24878 slot 5Ch)"},
+    {"address": "00778542", "native": "0076C600", "function": "00778450", "kind": "call", "host": "GameFixedStepHost::pump_session_00778450, record Session::drain_loopback_queue_0076c600"}
+  ],
+  "routines": [
+    {"address": "00A42A50", "coverage": "complete (no Ghidra function)"},
+    {"address": "00A43650", "coverage": "partial: 00A436A2..00A436C5"},
+    {"address": "00A435E0", "coverage": "partial: 00A435E0..00A4360D"},
+    {"address": "00992A50", "coverage": "complete"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [
+    {"start": "00A42A50", "end_inclusive": "00A42A97", "note": "XLive system vtable 00D24878 slot 5Ch, the per-step countdown; RET 4 at 00A42A95, INT3 padding from 00A42A98"}
+  ],
+  "names": [
+    {"address": "00A42A50", "name": "XLiveSystem_StepCountdown"},
+    {"address": "00A43650", "name": "XLiveSystem_ArmCountdown"},
+    {"address": "00A435E0", "name": "XLiveSystem_OnCountdownExpired"}
+  ],
+  "verdict": "no switch: the 00F8A2FC step reaches no gameplay state in single player; the loopback drain has single-player content but the host has no queue (a per-poster contract)",
+  "pairs": {}
+}
