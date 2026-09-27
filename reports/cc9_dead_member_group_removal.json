@@ -1,0 +1,35 @@
+{
+  "packet": "cc9_dead_member_group_removal",
+  "doc": "docs/SHIP_AI_FORMATION.md, A dead member leaves its group",
+  "calls": [
+    {
+      "address": "0077D236",
+      "native": "0077C980",
+      "function": "0077D1A0",
+      "note": "leave message 77h at destroy"
+    },
+    {
+      "address": "0077C9FB",
+      "native": "0075B430",
+      "function": "0077C980",
+      "note": "message kind 77h"
+    },
+    {
+      "address": "0070D0D7",
+      "native": "00815E20",
+      "function": "0070D0C0",
+      "note": "new leader inherits the wake"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kDeadMemberLeavesGroupBound",
+      "state": "not written",
+      "pair": "blocked: src/game_hosts_units.cpp leased to cc9-terrain2 until 2026-09-28T04:47"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [],
+  "failed_predictions": []
+}
