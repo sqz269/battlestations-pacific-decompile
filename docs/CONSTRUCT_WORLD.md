@@ -1412,3 +1412,73 @@ the dedup keeps the list at one node per entity whichever side pushes first.
 **Predictions to carry** (USN04 4700/4500, USN02 9200/9000): pushes per creation route equal to
 the instances each route constructs, `self_table_entities` unchanged (86 / 34), InitAll rows
 unchanged in count, identical gameplay.
+
+## 24. The KillDepth kill and the world-list unlink (packet `cc9_sunk_ship_kill_depth`, `kSunkShipKillDepthBound`, committed OFF)
+
+2026-09-27, worker cc9-units2, on main 10b1b7043. Ghidra was read only. This is the units-host
+contract of section 21 (steps 3 and 4, and the unlink).
+
+### What the image does (V)
+
+| step | site | what |
+| --- | --- | --- |
+| sinkTime | `008263C1` `CMP [EDI-2B3h],0` (EDI = unit+310h, so unit+5Dh); `008263CE`..`008263DC` | `sinkTime` +828h (`[EDI+518h]`) += dt |
+| shapes | `008263E2`..`0082645A` | past 60.0 s (double `00CE3D68`), or 20.0 s for kind 0Eh (`00CE3930`), each hull shape loses flag 8 (`00C47F60`) |
+| the hull ends | `00826467`..`008265F6` | half = (float)(`[unit+538h]`+A0h × 0.5, double `00D7A280`); the ends are y (unit+100h) ± (float)(forward.y (unit+F0h) × half) |
+| the test | `008265FA`, `0082660F` | `00424C40` `BSP_GameSettings_GetSingleton`, +3F4h. FCOMIP then JBE, so each end must be strictly below KillDepth |
+| the kill | `00826628` | `00926D90` Kill(1): +5Fh, Destroy when +60h is clear, the kill list `00F899B4`. Then `0092BD30` on the controller (`00826633`) and `RET 4` (`00826642`): the rest of the tick does not run |
+| the drain | next row 15, `009274A1`..`0092751F` | `009263C0` (skipped when +5Eh is set), then `vt[80h]` |
+| on killed | ship `vt[80h]` = `00951FB0` for all five ship vtables (`00CF9130`, `00CFB7B8`, `00CFC450`, `00CFA7F8`, `00D016B0`) | +4A4h = 0, `00779AF0` tail-jumps to `00928C80`; at `00928F1C`..`00928F2C`, when unit+30h is set, `vt[134h]` |
+| the unlink | `vt[134h]`: Battleship `006E0060`, Cruiser `006FB510`, Destroyer `006FE670`, Cargo `006EB460`, Mothership `00758FE0` | each calls `006DFFC0` (lists 5 and 6, heads parent+58h and +64h), which calls `006D3620` (lists 1, 2 and 4 via `00928570`, parent+28h, +34h, +4Ch), then erases from its class list (Battleship +B8h = 13, Cruiser +94h = 10, Destroyer +70h = 7, Cargo +A0h = 11, Mothership +88h = 9). Each erase (`004837D0`) takes the first node whose payload is the unit. This mirrors the +130h registrar's lists exactly |
+
+**Correction to section 21, step 7.** The world-list unlink is not at the free. It is at the
+on-killed dispatch of the next row 15 (`00928F2C`), three expiry passes before the free. The
+free (`00903610`) only destroys the object. `vt[134h]` has no direct caller
+(`tools/callsite_census.py 006e0060`: only the vtable entry `00CF91E4`). The one call through
+`[reg+134h]` on an entity is `00928F24` (`scan-bytes '?? 34 01 00 00'`, page of 567 rows; the
+other `MOV reg,[reg+134h]` hits are not entity code).
+
+### The binding
+
+- **In the ship motion path** (`motion_step_00825f20`, before `ship_motion_step_00825f20`),
+  for a ship with +5Dh set: sinkTime, the flag-8 record past 60 s, the hull-end test, and at a
+  pass the kill (+5Fh, +60h when clear). The tick then ends, as at `00826642`.
+- **SUBSTITUTION, labelled:** the host's row-15 kill list cannot take a host entity
+  (`copy_pending_lists_00926fa0` throws in `src/game_hosts_ready.cpp`). So the removal
+  `009263C0` and the on-killed unlink `00928F24` are applied at the kill, one row 15 early.
+- **SUBSTITUTION, labelled:** KillDepth is the constant −200.0, this installation's
+  `scripts/datatables/shipglobals.lua` line 377 (2024-07-13), because GameSettings+3F4h is not
+  loaded into this host (its reader `0083EA71` belongs to the Lua host's settings load).
+- **The unlink** erases the first node of the unit in every world list, which for a ship is the
+  six lists its registrar joined.
+- **Then:** the mission frame's `00903670` (bound ON in section 21) finds +5Eh set and marks +6Ch;
+  the expiry `00903610` releases it three passes later. `src/game_hosts_ready.cpp` now stores −1
+  in the released slot's counter. The image takes the entity out of the chain, while the host's
+  chain is the slot order. Without the −1 the resumed walk would meet the same slot again past 3
+  and release it forever.
+- **A census in both builds:** every wreck's first +5Dh time, its lowest hull end, its last y,
+  and the summary `sunk ship kill depth`.
+
+### Predictions (written before the runs)
+
+The host's wreck has no descent model. The sink `008110F0` is a record (22 UNIMPLEMENTED calls
+on USN02 in `local\MT_ON_USN02.log` of worktree cc9-plane-release), no flooding (the leak
+manager +10D4h) is bound, and the hydrodynamics `009329C0` keeps every element's buoyancy
+(`submerged_steps` = `element_steps`). So:
+
+| row | USN02 9200/9000 | E2 = USN04 9200/9000 |
+| --- | --- | --- |
+| `wrecks` (census, both builds) | 20, the ships the row-15 flush marks, first +5Dh at their death times | 0 (every death is an aircraft) |
+| lowest hull end | above −50 m on every wreck, both builds | - |
+| when each wreck passes −200 m | **never** within the 450 s run | - |
+| `kills`, `unlinked_nodes` | 0, 0 | 0, 0 |
+| list 6 at the end | unchanged (32) | unchanged |
+| ship AI neighbour count mean (`traffic setback ... mean_count`) | unchanged | unchanged |
+| setback and station-keeping rows | identical | identical |
+| deaths, death rows, hit records, failure time | identical (failure 39.65 s) | identical |
+| pair_diff exit | 1 (the `bound` field and the `ShipMotion::sunk_hull_shape_flag8` record, which ON reaches after 60 s of sinkTime on each wreck) | 1 |
+
+**If a wreck does pass −200 m** the prediction fails at its first row. Each such wreck then
+leaves list 6 at the step it passes (list 6 falls by one per kill, with 6 unlinked nodes each),
+the neighbour count's mean falls by about one per kill for the steps after it, and the
+setback rows move. Deaths and the failure time stay identical, because a wreck is already dead.

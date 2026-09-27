@@ -1312,6 +1312,16 @@ struct GameUnitSlot {
     std::uint8_t scene_destroyed_005e{0};
     std::uint8_t scene_removed_005f{0};
     std::uint8_t scene_pending_destroy_0060{0};
+    // Packet cc9_sunk_ship_kill_depth: sinkTime unit+828h (advanced through
+    // [EDI+518h], EDI = unit+310h, at 008263CE..008263DC) and the census of a
+    // wreck's hull ends against KillDepth (008265EC..00826622).
+    float sink_time_828{0.0f};
+    bool wreck_seen{false};
+    float wreck_first_t{-1.0f};
+    float wreck_min_end_y{0.0f};
+    float wreck_last_y{0.0f};
+    float kill_depth_at{-1.0f};
+    std::size_t world_nodes_unlinked{0};
     bool scene_flags_available{false}; // process provenance, not a native byte
     bsp::UnitClassBlock class_block{};
 
@@ -1675,6 +1685,31 @@ struct GameUnitsHost::Impl {
         ++list.count;
         ++summary.world_list_pushes;
         done("UnitList::push_back", 0x00484540u);
+    }
+
+    // Packet cc9_sunk_ship_kill_depth. The ship's vt[134h] (Battleship 006E0060,
+    // Cruiser 006FB510, Destroyer 006FE670, Cargo 006EB460, Mothership
+    // 00758FE0), called at 00928F2C from the on-killed base 00928C80 when
+    // unit+30h is set. Each walks its lists 1, 2, 4 (006D3620 via 00928570),
+    // 5, 6 (006DFFC0) and its class list, and erases (004837D0) the first node
+    // whose payload is the unit: the mirror of the +130h registrar. The host
+    // erases the first such node of every list, which is the same set.
+    void world_lists_unlink_unit_00928f24(GameUnitSlot& unit) {
+        for (GameUnitWorldList& list : world_lists.entries) {
+            for (GameUnitWorldNode* node = list.head; node != nullptr; node = node->next) {
+                if (node->unit != &unit) continue;
+                if (node->previous != nullptr) node->previous->next = node->next;
+                else list.head = node->next;
+                if (node->next != nullptr) node->next->previous = node->previous;
+                else list.tail = node->previous;
+                --list.count;
+                delete node;
+                ++unit.world_nodes_unlinked;
+                ++world_nodes_unlinked;
+                break;
+            }
+        }
+        done("UnitList::erase_004837d0", 0x004837d0u);
     }
 
     //009288F1 dispatches the actual leaf+130h registrar after placement.
@@ -3519,6 +3554,25 @@ struct GameUnitsHost::Impl {
     // sample OFF on both sides: Mav1 and Mav4 drop once instead of four times,
     // the same two torpedoes spawn, gameplay identical.
     static constexpr bool kRackRoundsPerRackBound = true;
+    // Packet cc9_sunk_ship_kill_depth, docs/CONSTRUCT_WORLD.md section 24: while
+    // +5Dh is set, 00825F20 advances sinkTime +828h by dt (008263C1..008263DC)
+    // and, once both hull ends y +/- forward.y * 0.5 * class+A0h lie below
+    // GameSettings+3F4h (KillDepth), calls Kill 00926D90(1) at 00826628 and
+    // returns (00826642). The kill list's drain then removes the entity
+    // (009263C0) and calls vt[80h] 00951FB0 -> 00928C80, whose 00928F24 calls
+    // vt[134h], the ship's world-list deregistration (the mirror of the +130h
+    // registrar). ON: all of that, the removal and the unlink applied at the
+    // kill (SUBSTITUTION, labelled: the host's row-15 kill list cannot take a
+    // host entity). OFF: nothing; the census of hull ends prints in both builds.
+    static constexpr bool kSunkShipKillDepthBound = false;
+    // SUBSTITUTION, labelled: GameSettings+3F4h is not loaded into this host
+    // (the reader 0083EA71 is in the Lua host's settings load, not bound).
+    // This installation's scripts/datatables/shipglobals.lua line 377
+    // (2024-07-13): VizbeomlesDolgok.KillDepth = -200.0.
+    static constexpr float kKillDepthSubstitute = -200.0f;
+    unsigned long long kill_depth_tests = 0;
+    std::size_t kill_depth_kills = 0;
+    unsigned long long world_nodes_unlinked = 0;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
     unsigned long long segment_probes_blocked = 0;
@@ -16580,6 +16634,80 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // of the controller above, which is what milestone 2l's own correction
         // from docs/SHIP_AI_STATES.md says. When no controller is attached the
         // step does not run at all rather than running on the wrong schedule.
+        // Packet cc9_sunk_ship_kill_depth: 008263C1 CMP [EDI-2B3h] (unit+5Dh).
+        if (slot.state->simulate != 0) {
+            // 00826467..0082647D, 008264D8..008264DF, 00826531..0082653B,
+            // 008265EC..008265F6: half = (float)(class+A0h * 0.5 [00D7A280]);
+            // the two ends are y +/- (float)(forward.y (unit+F0h) * half).
+            const float half = static_cast<float>(
+                static_cast<double>(slot.motion_class.hull_length) * 0.5);
+            const float along = slot.motion.pose_row2[1] * half;
+            const float end_a = slot.motion.position[1] + along;   // [ESP+14h]
+            const float end_b = slot.motion.position[1] - along;   // [ESP+10h]
+            const float lower = end_a < end_b ? end_a : end_b;
+            if (!slot.wreck_seen) {
+                slot.wreck_seen = true;
+                slot.wreck_first_t = host.summary.simulated_seconds;
+                slot.wreck_min_end_y = lower;
+            } else if (lower < slot.wreck_min_end_y) {
+                slot.wreck_min_end_y = lower;
+            }
+            slot.wreck_last_y = slot.motion.position[1];
+            if constexpr (Impl::kSunkShipKillDepthBound) {
+                // 008263CE..008263DC: sinkTime += dt.
+                slot.sink_time_828 += step_seconds;
+                // 008263E2..0082645A: past 60.0 s (00CE3D68), or 20.0 s for
+                // kind 0Eh, the hull shapes lose flag 8 (00C47F60). No host
+                // collision shape carries that flag.
+                if (slot.sink_time_828 > 60.0f)
+                    host.record("ShipMotion::sunk_hull_shape_flag8", 0x00826410u);
+                ++host.kill_depth_tests;
+                // 008265FA / 0082660F: 00424C40()+3F4h, compared with FCOMIP
+                // and JBE, so both ends must lie strictly below it.
+                const float kill_depth = Impl::kKillDepthSubstitute;
+                if (kill_depth > end_a && kill_depth > end_b &&
+                    slot.scene_removed_005f == 0) {
+                    // 00826628 Kill 00926D90(1): +5Fh, and Destroy (vt[70h])
+                    // when +60h is clear.
+                    slot.scene_removed_005f = 1;
+                    if (slot.scene_pending_destroy_0060 == 0) {
+                        slot.scene_pending_destroy_0060 = 1;
+                        host.record("Entity::destroy_at_kill_00926e05", 0x00926e05u);
+                    }
+                    // SUBSTITUTION, labelled: the kill list 00F899B4 and its
+                    // row-15 drain 009274A1..0092751F are applied here. The
+                    // removal 009263C0 (skipped when +5Eh is already set):
+                    bsp::SceneNodeFlags flags;
+                    if (unit_scene_node_flags(index, flags) && !flags.destroyed) {
+                        bsp::scene_node_remove_009263c0(flags);
+                        slot.state->active = flags.active;
+                        slot.state->simulate = flags.torn_down;
+                        slot.scene_destroyed_005e = flags.destroyed;
+                        slot.scene_removed_005f = flags.removed;
+                        slot.row.active = flags.active;
+                        // 0092751F vt[80h] 00951FB0 -> 00779AF0 -> 00928C80:
+                        // +4A4h = 0 and the Lua self release are records;
+                        // 00928F1C..00928F2C vt[134h], the list unlink.
+                        host.record("Entity::on_killed_lua_self_00928c80", 0x00928c80u);
+                        host.world_lists_unlink_unit_00928f24(slot);
+                    }
+                    slot.kill_depth_at = host.summary.simulated_seconds;
+                    ++host.kill_depth_kills;
+                    host.log.notef("sunk ship kill depth: unit=%s t=%.2f sinkTime=%.2f "
+                        "ends=(%.2f %.2f) KillDepth=%.1f unlinked_nodes=%zu (00826628, "
+                        "packet cc9_sunk_ship_kill_depth)", slot.row.name.c_str(),
+                        static_cast<double>(host.summary.simulated_seconds),
+                        static_cast<double>(slot.sink_time_828),
+                        static_cast<double>(end_a), static_cast<double>(end_b),
+                        static_cast<double>(kill_depth), slot.world_nodes_unlinked);
+                    host.done("ShipMotion::kill_depth_00826628", 0x00826628u);
+                    // 00826633 0092BD30 on the controller, then 00826642 RET 4:
+                    // the rest of this tick's motion does not run.
+                    host.record("UnitController::clear_hull_shape_fields", 0x0092bd30u);
+                    continue;
+                }
+            }
+        }
         UnitRudderBinding rudder(host, slot);
         ShipMotionBinding motion(host, slot, rudder);
         const float before[3] = {slot.motion.position[0], slot.motion.position[1],
@@ -18005,6 +18133,29 @@ void GameUnitsHost::report() {
     host.log.notef("world registration owner audit: unavailable=%llu nodes=%zu invalid_lists=%zu ships=%u planes=%u",
         host.summary.world_registration_unavailable, nodes, invalid_lists,
         host.world_lists.entries[6].count, host.world_lists.entries[15].count);
+    {
+        // Packet cc9_sunk_ship_kill_depth: every wreck the ship motion saw with
+        // +5Dh set, its lower hull end and its last y.
+        std::size_t wrecks = 0;
+        double below_min = 0.0;
+        for (const auto& slot : host.slots) {
+            if (!slot->wreck_seen) continue;
+            ++wrecks;
+            if (wrecks == 1 || slot->wreck_min_end_y < below_min) below_min = slot->wreck_min_end_y;
+            host.log.notef("  wreck %-16s first_5Dh_t=%.2f min_end_y=%.2f last_y=%.2f "
+                "killed_at=%.2f unlinked_nodes=%zu", slot->row.name.c_str(),
+                static_cast<double>(slot->wreck_first_t),
+                static_cast<double>(slot->wreck_min_end_y),
+                static_cast<double>(slot->wreck_last_y),
+                static_cast<double>(slot->kill_depth_at), slot->world_nodes_unlinked);
+        }
+        host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
+            "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "
+            "packet cc9_sunk_ship_kill_depth)", Impl::kSunkShipKillDepthBound ? 1 : 0,
+            wrecks, below_min, host.kill_depth_tests, host.kill_depth_kills,
+            host.world_nodes_unlinked, host.world_lists.entries[6].count,
+            static_cast<double>(Impl::kKillDepthSubstitute));
+    }
     host.log.notef("summary mission hydrodynamics calls=%llu element_steps=%llu "
         "submerged_steps=%llu add_force=%llu add_torque=%llu gravity_y=%.1f "
         "elements_per_hull=%d (009329c0 from 00937440 at 00937622, its last call)",

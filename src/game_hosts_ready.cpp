@@ -347,6 +347,13 @@ public:
         // entity of this mission reaches the release value, so it is recorded.
         log_.unimplemented("WorldExpiry::destroy_entity", "0090364e");
         ++released;
+        // Packet cc9_sunk_ship_kill_depth. In the image the entity leaves the
+        // chain here, and the walk resumes from the anchor or the head. The
+        // host's chain is the slot order and keeps the slot, so without this the
+        // resumed walk would meet it again with a counter past 3 and release it
+        // forever. -1 is 00903625's skip, and 00903670's `+6Ch != 0` test.
+        const std::size_t index = index_of(entity);
+        if (index < counters_.size()) counters_[index] = -1;
     }
 
     std::size_t visited() const noexcept { return visited_; }
