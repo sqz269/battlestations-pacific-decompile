@@ -23,6 +23,9 @@
 #include "bsp/simulation_gate.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/vfs_mounts.hpp"
+#include "bsp/gun_fire_points.hpp"
+#include "bsp/memory_stream.hpp"
+#include "bsp/structured_reader.hpp"
 
 extern "C" {
 #include "lauxlib.h"
@@ -32,6 +35,7 @@ extern "C" {
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <map>
@@ -1005,6 +1009,97 @@ static bool scene_vfs_resolves(GameSceneContentsHost::Impl& owner, const std::st
         owner.vfs.search_registrations(), resolved);
 }
 
+// Packet cc9_landscape_terrain. The rounding points of the x87 code are kept by
+// storing through float at each FSTP the listing shows.
+static float terrain_f32(double value) noexcept { return static_cast<float>(value); }
+
+// __stricmp (00ADDC91 NODE, 00ADFEB0 U16) and 00425850 (TRNV2) compare tags
+// without regard to case.
+static bool terrain_tag_is(const bsp::StructuredNode& node, const char* name) noexcept {
+    const std::string& tag = node.tag();
+    const std::size_t length = std::strlen(name);
+    if (tag.size() != length) return false;
+    for (std::size_t i = 0; i != length; ++i) {
+        if (std::tolower(static_cast<unsigned char>(tag[i]))
+            != std::tolower(static_cast<unsigned char>(name[i]))) return false;
+    }
+    return true;
+}
+
+// 00ADDA60, the `.tdt` parse, over the bytes 0109CEEC vt+4 opened. The root's
+// two dwords size the tile grid (00ADDC17 / 00ADDC26 -> 00ADADC0); each `NODE`
+// child carries its tile x and z (two dwords) and 00ADFEB0 reads its `U16`
+// chunk into a 33x33 block (00ADFD70 -> 00ADC6C0). `F32` and `U8` chunks are
+// skipped here: none of this installation's island files was seen to carry
+// one, and a file that did is reported, not approximated. The origin is
+// 00ADDB60..00ADDBFB for a `TRNV2` root.
+static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda60(
+    const std::string& bytes, float box_min_x, float box_min_z, std::string& error) {
+    auto stream = std::make_shared<bsp::MemoryStream>(
+        bsp::memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+    bsp::StructuredReader reader(stream);
+    auto root = reader.read_root_00bea700();
+    if (!root) { error = "no structured root"; return nullptr; }
+    auto field = std::make_shared<SceneTerrainHeightField>();
+    field->root = root->tag();
+    std::uint32_t wide = 0, deep = 0;
+    if (!root->read_u32(wide) || !root->read_u32(deep)) {
+        error = "root lacks the grid dwords"; return nullptr;
+    }
+    field->tiles_wide = static_cast<int>(wide);
+    field->tiles_deep = static_cast<int>(deep);
+    field->block_index.assign(static_cast<std::size_t>(wide) * deep, -1);
+    field->box_min_x = box_min_x;
+    field->box_min_z = box_min_z;
+    if (terrain_tag_is(*root, "TRNV2")) {
+        // FLD +68h / FDIV 300 (float) / FSUB 1.0 (double) / FSTP float, floor
+        // (00BF85B0) to float, FMUL 300 / FSTP +80h; the same for +70h -> +84h.
+        const float tile = 300.0f;
+        const float ux = terrain_f32(static_cast<double>(box_min_x) / tile - 1.0);
+        const float uz = terrain_f32(static_cast<double>(box_min_z) / tile - 1.0);
+        field->origin_x = terrain_f32(static_cast<double>(terrain_f32(std::floor(ux))) * tile);
+        field->origin_z = terrain_f32(static_cast<double>(terrain_f32(std::floor(uz))) * tile);
+    }
+    while (root->has_remaining_00715bf0()) {
+        auto node = root->read_child_00bea680();
+        if (!node) { error = "bad root child"; return nullptr; }
+        if (!terrain_tag_is(*node, "NODE")) {
+            if (!node->skip_00be9c40() || !node->close()) { error = "bad skip"; return nullptr; }
+            continue;
+        }
+        std::uint32_t tx = 0, tz = 0;
+        if (!node->read_u32(tx) || !node->read_u32(tz)) { error = "NODE lacks x/z"; return nullptr; }
+        // 00ADDCEE stores the tile at +40h[+38h * z + x] with no bound test;
+        // an out-of-grid tile is an error here rather than a stray write.
+        if (tx >= wide || tz >= deep) { error = "NODE outside the grid"; return nullptr; }
+        while (node->has_remaining_00715bf0()) {
+            auto chunk = node->read_child_00bea680();
+            if (!chunk) { error = "bad NODE child"; return nullptr; }
+            if (terrain_tag_is(*chunk, "U16")) {
+                SceneTerrainBlock block;
+                float scale = 0.0f;
+                if (!chunk->read_float(block.offset) || !chunk->read_float(scale)) {
+                    error = "U16 lacks its floats"; return nullptr;
+                }
+                block.inv_scale = terrain_f32(1.0 / static_cast<double>(scale));  // +34h
+                for (std::uint16_t& sample : block.samples) {
+                    if (!chunk->read_bytes(&sample, 2)) { error = "short U16"; return nullptr; }
+                }
+                field->block_index[static_cast<std::size_t>(wide) * tz + tx]
+                    = static_cast<int>(field->blocks.size());
+                field->blocks.push_back(block);
+            } else if (terrain_tag_is(*chunk, "F32") || terrain_tag_is(*chunk, "U8")) {
+                error = "unsupported " + chunk->tag() + " chunk"; return nullptr;
+            } else if (!chunk->skip_00be9c40()) {
+                error = "bad chunk skip"; return nullptr;
+            }
+            if (!chunk->close()) { error = "bad chunk close"; return nullptr; }
+        }
+        if (!node->close()) { error = "bad NODE close"; return nullptr; }
+    }
+    return field;
+}
+
 // 004EA650 (Path) and 004F1460 (Landscape), with what PlaceInWorld 00928860
 // does through slot 130h, then the InitAll passes that fill the class's own
 // fields (pass B 007B38D0 for a Path, pass A 00883BB0 for a Landscape). The
@@ -1055,6 +1150,58 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
         // reaches the segment queries.
         owner.log.unimplemented("Landscape::load_terrain", "00882ac0");
         owner.log.unimplemented("Landscape::attach_terrain_vcall_9c", "00883bb0");
+        if (kSceneLandscapeTerrainBound) {
+            // Packet cc9_landscape_terrain: the +3D0h height field, at the
+            // pass-A point. LABELLED SUBSTITUTION for +68h / +70h: 00ADE500
+            // takes them from 00ADA420's box over the terrain node's tree, which
+            // holds the island model; this uses the model's own BoundingBox
+            // (read_mmod_bounding_box), whose minimum puts m07_a's authored
+            // objects on the sampled ground (docs/SCENE_CONTENTS_HOSTS.md 6).
+            std::string model_bytes;
+            std::array<float, 6> box{};
+            const bool have_box = owner.read_vfs_file(object.model_name, model_bytes)
+                && bsp::read_mmod_bounding_box(
+                    std::vector<std::uint8_t>(model_bytes.begin(), model_bytes.end()), box);
+            std::string tdt;
+            std::string error;
+            std::shared_ptr<SceneTerrainHeightField> field;
+            if (!have_box) {
+                error = "no model BoundingBox";
+            } else if (!owner.read_vfs_file(object.heightmap_name, tdt)) {
+                error = "heightmap not readable";
+            } else {
+                field = load_terrain_height_field_00adda60(tdt, box[0], box[2], error);
+            }
+            if (field) {
+                // 00ADE820 hands the terrain node the Landscape's +74h frame; a
+                // top-level Landscape's local frame is its world frame.
+                field->node_x = object.world[12];
+                field->node_y = object.world[13];
+                field->node_z = object.world[14];
+                float lo = 1e30f, hi = -1e30f;
+                for (const SceneTerrainBlock& block : field->blocks) {
+                    for (std::uint16_t s : block.samples) {
+                        if (s == 0xffffu) continue;
+                        const float h = terrain_f32(s * static_cast<double>(block.inv_scale)
+                            + block.offset);
+                        lo = std::min(lo, h);
+                        hi = std::max(hi, h);
+                    }
+                }
+                owner.log.notef("scene terrain loaded: landscape=%s root=%s tiles=%dx%d "
+                    "blocks=%zu box_min=(%.4f,%.4f) origin=(%.1f,%.1f) node=(%.1f,%.1f,%.1f) "
+                    "height=[%.3f,%.3f] (00adda60)", object.name.c_str(), field->root.c_str(),
+                    field->tiles_wide, field->tiles_deep, field->blocks.size(),
+                    field->box_min_x, field->box_min_z, field->origin_x, field->origin_z,
+                    field->node_x, field->node_y, field->node_z, lo, hi);
+                owner.log.implemented("Landscape::load_height_field", "00adda60");
+                object.terrain = std::move(field);
+            } else {
+                owner.log.notef("scene terrain refused: landscape=%s heightmap=%s: %s",
+                    object.name.c_str(), object.heightmap_name.c_str(), error.c_str());
+                owner.log.unimplemented("Landscape::load_height_field", "00adda60");
+            }
+        }
     }
     const std::size_t index = scene_world_class_lists().objects().size();
     scene_world_class_lists().append(object);
@@ -2228,6 +2375,190 @@ SceneWorldClassLists& scene_world_class_lists() noexcept {
     return lists;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_landscape_terrain: the terrain slots and the four world queries.
+
+namespace {
+constexpr float kTerrainNoGround = -1000.0f;   // [00D7A240] float, [00CE6658] double
+constexpr float kTerrainCellSize = 9.375f;     // +1Ch, [00D0E658]
+constexpr int kTerrainTileShift = 5;           // [00D5D65C]
+constexpr int kTerrainTileCells = 32;          // [00D5D658]
+}  // namespace
+
+// 00ADB3A0 (slot 20h), with slot 10h/14h (00ADAC50: tiles * 32 + 1, 0 when the
+// grid is empty), slot 44h 00ADA890 (tile = index >> 5, local = index - tile*32,
+// the last tile's column 32 for the index one past it) and the block's slot 8h
+// 00ADC5F0. The node y is added to a block's answer, hole included (00ADB43E);
+// a missing tile or an index outside the grid answers -1000.0 bare.
+float SceneTerrainHeightField::cell_height_00adb3a0(int i, int j) const noexcept {
+    const int wide = tiles_wide != 0 ? tiles_wide * kTerrainTileCells + 1 : 0;
+    const int deep = tiles_deep != 0 ? tiles_deep * kTerrainTileCells + 1 : 0;
+    if (i < 0 || i >= wide || j < 0 || j >= deep) return kTerrainNoGround;
+    int tx = i >> kTerrainTileShift, lx = i - (tx << kTerrainTileShift);
+    int tz = j >> kTerrainTileShift, lz = j - (tz << kTerrainTileShift);
+    if (tx >= tiles_wide) { tx -= 1; lx = kTerrainTileCells; }
+    if (tz >= tiles_deep) { tz -= 1; lz = kTerrainTileCells; }
+    const int index = block_index[static_cast<std::size_t>(tiles_wide) * tz + tx];
+    if (index < 0) return kTerrainNoGround;
+    const SceneTerrainBlock& block = blocks[static_cast<std::size_t>(index)];
+    const std::uint16_t s = block.samples[static_cast<std::size_t>(33 * lz + lx)];
+    const float value = s == 0xffffu ? kTerrainNoGround
+        : terrain_f32(s * static_cast<double>(block.inv_scale) + block.offset);
+    return terrain_f32(static_cast<double>(node_y) + value);
+}
+
+// 00ADA900 then 00ADB480. Grid coordinates are (world - node - origin) times
+// float(1 / 9.375) (00ADA906..00ADA968); the indices are CVTTSS2SI truncations
+// and every lerp is stored through float.
+float SceneTerrainHeightField::height_00ada900(float x, float z) const noexcept {
+    const float inv = terrain_f32(1.0 / kTerrainCellSize);
+    const float u = terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv);
+    const float v = terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv);
+    const int i = static_cast<int>(u);
+    const int j = static_cast<int>(v);
+    const float fu = terrain_f32(static_cast<double>(u) - i);
+    const float h11 = cell_height_00adb3a0(i + 1, j + 1);
+    const float h01 = cell_height_00adb3a0(i, j + 1);
+    const float h10 = cell_height_00adb3a0(i + 1, j);
+    const float h00 = cell_height_00adb3a0(i, j);
+    const float a = terrain_f32(h00 + static_cast<double>(fu) * (static_cast<double>(h10) - h00));
+    const float b = terrain_f32(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
+    const float fv = terrain_f32(static_cast<double>(v) - j);
+    return terrain_f32(a + static_cast<double>(fv) * (static_cast<double>(b) - a));
+}
+
+// 00ADABA0 then 00ADAA40: three samples of the truncated cell, points
+// (float(i), h, float(j)) with the cell size ADDED to the grid index for the
+// two neighbours (00ADAA7E, 00ADAADB), edges d1 = P(i+1,j) - P(i,j) and
+// d2 = P(i,j+1) - P(i,j), 004F9B30 cross(d2, d1), 00419440 length and a scale
+// by float(1 / length), or by 0 when the length is not positive.
+void SceneTerrainHeightField::normal_00adaba0(float x, float z, float out[3]) const noexcept {
+    const float inv = terrain_f32(1.0 / kTerrainCellSize);
+    const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv));
+    const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv));
+    const float fi = static_cast<float>(i);
+    const float fj = static_cast<float>(j);
+    const float h00 = cell_height_00adb3a0(i, j);
+    const float h10 = cell_height_00adb3a0(i + 1, j);
+    const float h01 = cell_height_00adb3a0(i, j + 1);
+    const float p1x = terrain_f32(static_cast<double>(fi) + kTerrainCellSize);
+    const float p2z = terrain_f32(static_cast<double>(fj) + kTerrainCellSize);
+    const float d1[3] = {terrain_f32(static_cast<double>(p1x) - fi),
+        terrain_f32(static_cast<double>(h10) - h00), 0.0f};
+    const float d2[3] = {0.0f, terrain_f32(static_cast<double>(h01) - h00),
+        terrain_f32(static_cast<double>(p2z) - fj)};
+    const float c[3] = {
+        terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]),
+        terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]),
+        terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0])};
+    const float xx = terrain_f32(static_cast<double>(c[0]) * c[0]);
+    const float yy = terrain_f32(static_cast<double>(c[1]) * c[1]);
+    const float zz = terrain_f32(static_cast<double>(c[2]) * c[2]);
+    const float sum = terrain_f32(static_cast<double>(xx) + yy + zz);
+    const float length = terrain_f32(std::sqrt(static_cast<double>(sum)));
+    const float scale = length > 0.0f ? terrain_f32(1.0 / length) : 0.0f;
+    for (int k = 0; k < 3; ++k) out[k] = terrain_f32(static_cast<double>(c[k]) * scale);
+}
+
+SceneTerrainQueryCensus& scene_terrain_query_census() noexcept {
+    static SceneTerrainQueryCensus census;
+    return census;
+}
+
+namespace {
+// The walk 00903860, 009038F0 and 009039D0 share: every node of list 44h
+// (head world+34Ch, next +4h), keep the strictly greater height, seeded with
+// -1000.0. A Landscape whose height field did not load is skipped: the native
+// always has +3D0h.
+float terrain_list_walk(const float point[3], int& winner) noexcept {
+    float best = kTerrainNoGround;
+    winner = -1;
+    const SceneWorldClassLists& lists = scene_world_class_lists();
+    for (std::size_t index : lists.list(kSceneLandscapeClassId)) {
+        const SceneWorldObject& object = lists.objects()[index];
+        if (!object.terrain) continue;
+        const float h = object.terrain->height_00ada900(point[0], point[2]);
+        if (h > best) {
+            best = h;
+            winner = static_cast<int>(index);
+        }
+    }
+    return best;
+}
+}  // namespace
+
+// 00903860: *out seeded -1000.0 (00903876), the list walk, then AL = (*out !=
+// -1000.0) by FUCOMIP against the double at 00CE6658 (009038C2..009038E0).
+bool world_ground_height_00903860(const float point[3], float& out) noexcept {
+    SceneTerrainQueryCensus& census = scene_terrain_query_census();
+    ++census.height_calls;
+    int winner = -1;
+    out = terrain_list_walk(point, winner);
+    const bool hit = out != kTerrainNoGround;
+    ++(hit ? census.height_hits : census.height_fallbacks);
+    return hit;
+}
+
+// 009038F0: the same walk; when the best is not -1000.0 the winner's slot 38h
+// writes the normal to argument 2 (0090397D..009039B1) and AL = 1, else AL = 0
+// and the normal is left untouched.
+bool world_ground_normal_009038f0(const float point[3], float normal[3]) noexcept {
+    SceneTerrainQueryCensus& census = scene_terrain_query_census();
+    ++census.normal_calls;
+    int winner = -1;
+    const float best = terrain_list_walk(point, winner);
+    if (best == kTerrainNoGround || winner < 0) return false;
+    scene_world_class_lists().objects()[static_cast<std::size_t>(winner)].terrain
+        ->normal_00adaba0(point[0], point[2], normal);
+    ++census.normal_hits;
+    return true;
+}
+
+// 009039D0: the same walk; EBP, the winning Landscape, or 0 (009039E1).
+int world_landscape_at_009039d0(const float point[3]) noexcept {
+    SceneTerrainQueryCensus& census = scene_terrain_query_census();
+    ++census.landscape_calls;
+    int winner = -1;
+    terrain_list_walk(point, winner);
+    if (winner >= 0) ++census.landscape_hits;
+    return winner;
+}
+
+// 00903BC0: blocked when the ground under `from` is above from.y (00903BD8 then
+// JBE at 00903BE8), when the ground under `to` is above to.y (00903C08, JA at
+// 00903C18), or when any list-44h terrain's slot 3Ch reports the segment.
+bool world_segment_blocked_00903bc0(const float from[3], const float to[3]) noexcept {
+    SceneTerrainQueryCensus& census = scene_terrain_query_census();
+    ++census.segment_calls;
+    int winner = -1;
+    if (terrain_list_walk(from, winner) > from[1] || terrain_list_walk(to, winner) > to[1]) {
+        ++census.segment_endpoint_blocks;
+        return true;
+    }
+    // LABELLED STAND-IN for slot 3Ch (see the header).
+    const double dx = static_cast<double>(to[0]) - from[0];
+    const double dy = static_cast<double>(to[1]) - from[1];
+    const double dz = static_cast<double>(to[2]) - from[2];
+    const double length = std::sqrt(dx * dx + dy * dy + dz * dz);
+    const int steps = std::max(1, static_cast<int>(std::ceil(length / (kTerrainCellSize * 0.5))));
+    const SceneWorldClassLists& lists = scene_world_class_lists();
+    for (std::size_t index : lists.list(kSceneLandscapeClassId)) {
+        const SceneWorldObject& object = lists.objects()[index];
+        if (!object.terrain) continue;
+        for (int k = 1; k < steps; ++k) {
+            const double t = static_cast<double>(k) / steps;
+            const float px = terrain_f32(from[0] + dx * t);
+            const float py = terrain_f32(from[1] + dy * t);
+            const float pz = terrain_f32(from[2] + dz * t);
+            if (object.terrain->height_00ada900(px, pz) > py) {
+                ++census.segment_sweep_blocks;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 const GameSceneContentsSummary& GameSceneContentsHost::summary() const noexcept {
     return impl_->summary;
 }
@@ -2358,6 +2689,52 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             land_objects, list47.size(), list44.size(), by_list.size(),
             (kScenePathLandscapeCreatorsBound && by_list == by_records) ? 1 : 0,
             heightmaps, list44.size(), colormaps, list44.size(), models, list44.size());
+    }
+    // Packet cc9_landscape_terrain: a load-time self-check of the four queries
+    // against the authored objects on each island (the scene editor snaps them
+    // to the ground), then the census. Printed in both switch states.
+    {
+        scene_terrain_query_census() = SceneTerrainQueryCensus{};
+        const SceneWorldClassLists& lists = scene_world_class_lists();
+        std::size_t loaded = 0, blocks = 0, children = 0, within = 0;
+        for (std::size_t index : lists.list(kSceneLandscapeClassId)) {
+            const SceneWorldObject& land = lists.objects()[index];
+            if (!land.terrain) continue;
+            ++loaded;
+            blocks += land.terrain->blocks.size();
+            std::size_t mine = 0, close = 0, same_landscape = 0;
+            double worst = 0.0;
+            for (const GameSceneEntityRecord& entity : impl.entities) {
+                if (entity.parent_scene_id != land.scene_id || !entity.generated) continue;
+                if (entity.class_id == kScenePathClassId
+                    || entity.class_id == kSceneLandscapeClassId) continue;
+                const float point[3] = {entity.world[12], entity.world[13], entity.world[14]};
+                float ground = 0.0f;
+                float normal[3] = {0.0f, 0.0f, 0.0f};
+                world_ground_height_00903860(point, ground);
+                world_ground_normal_009038f0(point, normal);
+                if (world_landscape_at_009039d0(point) == static_cast<int>(index)) ++same_landscape;
+                ++mine;
+                const double diff = std::fabs(static_cast<double>(ground) - point[1]);
+                if (diff < 0.01) ++close;
+                worst = std::max(worst, diff);
+            }
+            children += mine;
+            within += close;
+            impl.log.notef("scene terrain self-check: landscape=%s objects=%zu on_ground_1cm=%zu "
+                "worst=%.3f landscape_at_self=%zu (00903860 / 009038f0 / 009039d0)",
+                land.name.c_str(), mine, close, worst, same_landscape);
+        }
+        const SceneTerrainQueryCensus& census = scene_terrain_query_census();
+        impl.log.notef("summary scene terrain bound=%d landscapes=%zu loaded=%zu blocks=%zu "
+            "self_check objects=%zu on_ground_1cm=%zu height calls=%llu hits=%llu fallbacks=%llu "
+            "normal calls=%llu hits=%llu landscape_at calls=%llu hits=%llu segment calls=%llu "
+            "(packet cc9_landscape_terrain; the 30 consumer sites are unbound)",
+            kSceneLandscapeTerrainBound ? 1 : 0, lists.list(kSceneLandscapeClassId).size(),
+            loaded, blocks, children, within, census.height_calls, census.height_hits,
+            census.height_fallbacks, census.normal_calls, census.normal_hits,
+            census.landscape_calls, census.landscape_hits, census.segment_calls);
+        scene_terrain_query_census() = SceneTerrainQueryCensus{};
     }
     // The wings 007F4580 spawned, flushed after the census loops so the scene
     // tallies stay a count of scene rows: a member plane is not a scene entity,

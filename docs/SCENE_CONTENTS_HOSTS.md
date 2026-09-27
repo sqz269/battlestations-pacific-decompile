@@ -6,7 +6,9 @@ Addresses: 004d0ee0 004c17d0 004248a0 004239e0 00424680 00424730 00423960 00423a
 00b66270 008f41a0 008f2260 008f3370 008f5a00 008d9cf0
 004ea650 004f1460 0047b660 004f11c0 006af3d0 00928860 00487210 00487230 004f1400
 004f1420 004f1390 00883bb0 00882ac0 00880000 00880cd0 0087f9a0 00903860 009038f0
-009039d0 00903bc0
+009039d0 00903bc0 00add290 00adda60 00adb3a0 00ada900 00adb480 00adaba0
+00adaa40 00ada890 00adac50 00adac70 00adc5f0 00adc6c0 00adfd70 00adfeb0 00adadc0 00ada240
+00ade820 00ade500 00ada420
 
 The four steps `004D4DF0 BSP_Game_LoadSceneContents` delegates to and that
 `docs/MISSION_SCENE_CONTENTS.md` records only as unimplemented host methods.
@@ -520,7 +522,7 @@ Ledger names added (hypotheses): `004F1460 BSP_SceneDatabase_CreateLandscape`,
 `00487230 BSP_Path_UnregisterFromWorldLists`, `004F1390 BSP_Landscape_GetCollisionNode`,
 `00883BB0 BSP_Landscape_InitAttachTerrain`, `00882AC0 BSP_Landscape_LoadTerrain`,
 `00880000 BSP_Landscape_TickTerrain`, `00880CD0 BSP_Landscape_Teardown`,
-`009038F0 BSP_World_GroundHeightAndNormalAt`, `009039D0 BSP_World_LandscapeAt` and
+`009038F0 BSP_World_GroundNormalAt` (renamed in section 6; it writes no height), `009039D0 BSP_World_LandscapeAt` and
 `006AF3D0 BSP_EntityNetworkId_FromNameStub`.
 
 Bodies with no Ghidra function (`ghidra proto --brief` answers `?`), all Landscape vtable slots:
@@ -617,6 +619,248 @@ and 6, 6, 8 and 8 points. The census reads `path seen=4 created=4 list47=4 avoid
 **Verdict: ON.** Both pairs are identity on every death, hit-record and shot row, and the census is
 exact. The objects now exist for the consumers listed under the contracts above. No consumer reads
 them yet, so no measured row moves.
+
+## 6. The Landscape terrain and the four ground queries (packet `cc9_landscape_terrain`, 2026-09-27)
+
+Section 5 left the terrain as a VFS census. This section reads the height field and the four world
+queries over list 44h, and binds them in this host under `kSceneLandscapeTerrainBound`
+(`include/bsp/game_hosts_scene_contents.hpp`). The binding is read-only analysis of the image plus
+host code; no consumer file is edited.
+
+### Where the height field comes from
+
+- **Both arms of 00882AC0 reach the `.tdt` parser 00ADDA60.** 00882EE6..00882EFD test
+  `[0109CEECh]` vtable+8h on a name.
+  - The false arm calls 00ADDA60 directly at 00883A7D.
+  - The true arm loads the `.mmod` (+41Ch, +420h) and calls 00ADE820 at 00883058, with the
+    terrain in ECX, the model instance, the map extents and `&landscape+74h`.
+  - 00ADE820 builds the terrain node +2Ch (`Terrain Visibility Group`) and hands it the
+    Landscape's +74h frame through vt+38h. It then calls 00ADE500 on `terrain/<F>` plus a
+    14-character suffix, the length of `_heightmap.tdt`.
+  - 00ADE500 fills the box at +68h through 00ADA420, the AABB walk over the node tree that holds
+    the model, and calls 00ADDA60.
+- **The terrain object** is 00ADD290 (vtable 00D5D350) on `[game+19ECh]`. Its base 00AE9870 sets:
+  - `+14h` = 1e10 [00CE4970];
+  - `+18h` = 300.0 [00CE3AE8], the tile size;
+  - `+1Ch` = 9.375 [00D0E658], the cell size (32 x 9.375 = 300).
+
+**The `.tdt` format** (00ADDA60 with the recovered structured reader; checked against the bytes
+of `models/terrain/islands/m07_a_heightmap.tdt`, 166,296 bytes):
+
+| level | tag | payload | reader |
+| --- | --- | --- | --- |
+| root | `TRNV2` | two dwords: tiles wide (11), tiles deep (12) | 00ADDC17, 00ADDC26 -> 00ADADC0 (00ADDC45) grid `+38h x +3Ch`, pointers at `+40h` |
+| child | `NODE` | two dwords: tile x, tile z; then chunks | `NODE` by `__stricmp` at 00ADDC91; x and z at 00ADDCA6 / 00ADDCB1; the tile from `[00F8C218]` vt+4h (00ADDCE2) stored at `+40h[+38h*z + x]` with no bound test (00ADDCE9..00ADDCEE); 00ADFEB0 at 00ADDCF8 |
+| chunk | `U16` | float offset, float scale, 33x33 u16 samples, row-major by z | 00ADFEB0 -> 00ADFD70 (`00ADC420(21h, 21h)`, block vtable 00D5D314) -> 00ADC6C0 (+2Ch offset, +30h scale, +34h = 1/scale) |
+| chunk | `F32`, `U8` | other sample forms | 00ADF960 / 00ADFD70 arms; not present in this installation's two island files as read |
+
+m07_a has 75 of the 132 tiles.
+
+**The origin.** For a `TRNV2` root, 00ADDB60..00ADDBFB compute:
+- `+80h` = floor(`+68h` / 300 - 1.0) * 300;
+- `+84h` the same from `+70h`;
+- any other root gets 0 for both.
+
+`+68h` and `+70h` are the box minimum 00ADA420 accumulates.
+- **LABELLED SUBSTITUTION:** the host takes them from the island model's own `BoundingBox`.
+- **The m07_a check.** Its box is (-599.68, -119.41, -711.07)..(2359.79, 90.60, 2248.41).
+  - The origin is (-900, -1200), and 11 x 12 tiles of 300 m then span exactly the box's x and z.
+  - The box's y range is the file's first float and the top sample.
+- **The runtime check** is the self-check below: an authored object on the island sits on the
+  sampled ground.
+
+### The terrain slots
+
+- **Sample**, block slot 8h 00ADC5F0 (**no Ghidra function**, 00ADC5F0..00ADC637): FFFFh answers
+  -1000.0 [00D7A240]; otherwise the answer is float(s * inv_scale + offset). m07_a spans
+  -119.41..90.60 m.
+- **Cell**, slot 20h 00ADB3A0 (**no Ghidra function**, 00ADB3A0..00ADB475). It answers -1000.0 in
+  three cases:
+  - i or j is negative;
+  - i or j is at or beyond slot 10h / 14h, which is tiles * 32 + 1 (00ADAC50..00ADAC64 and
+    00ADAC70..00ADAC84, both **no Ghidra function**);
+  - the tile is missing (00ADB40F).
+
+  Otherwise slot 44h 00ADA890 (**no Ghidra function**, 00ADA890..00ADA8FF) splits the index:
+  - tile = index >> 5 [00D5D65C = 5] and local = index - tile * 32;
+  - an index one past the last tile takes that tile's column 32 [00D5D658 = 32].
+
+  Neither global has a literal-address writer (`a3`/`89 ..` scans empty, `a1 58 d6 d5 00`
+  found). The node y (+124h) is added to the block's answer, a hole's -1000 included.
+- **Height**, slot 28h 00ADA900.
+  - u = float((x - node x - `+80h`) * float(1/9.375)), and the same for v from z (x87 subtract
+    chain, one store).
+  - Slot 48h 00ADB480 then samples:
+    - i = trunc(u) and j = trunc(v) (`CVTTSS2SI`);
+    - a = h(i,j) + fu*(h(i+1,j) - h(i,j)) and b = h(i,j+1) + fu*(h(i+1,j+1) - h(i,j+1)), each
+      stored to float;
+    - fu = u - i and fv = v - j are floats;
+    - the answer is a + fv*(b - a).
+- **Normal**, slot 38h 00ADABA0.
+  - Truncation only: the x index is a cast and the z index goes through `_ftol` 00BF7420.
+  - Slot 30h 00ADAA40 takes P0 = (i, h(i,j), j), P1 = (i + 9.375, h(i+1,j), j) and
+    P2 = (i, h(i,j+1), j + 9.375). The cell size is added to the grid index itself (00ADAA7E,
+    00ADAADB).
+  - It forms 004F9B30 cross(P2 - P0, P1 - P0) = (-9.375 dh10, 87.890625, -9.375 dh01).
+  - 00419440 gives the length, and the result is scaled by float(1/length), or by 0 when the
+    length is not positive.
+- **Segment**, slot 3Ch 00ADA240.
+  - Both endpoints go into node-local space through the full inverse world matrix, rotation
+    included.
+  - If |dx| and |dz| are under 0.001 [00D7A23C], it takes the vertical case 00AECC40.
+  - Otherwise it subtracts the origin and walks the quadtree 00AEA2B0 -> 00AE9D80, built by
+    00AEA900 / 00AEA820 at the end of 00ADDA60.
+  - **Not reconstructed.**
+
+The height and normal subtract only the node's translation, so they sample an island unrotated.
+The segment test transforms fully. Two of USN01's four Landscapes are rotated (`Landscape 04` by
+about 180 degrees, `Landscape 05` by about 90), which the self-check below measures.
+
+### The four queries (list 44h at world+34Ch)
+
+| query | body | walk | answer |
+| --- | --- | --- | --- |
+| ground height | 00903860, `RET 8` (point, out) | `*out` = -1000.0 (00903876); per node the terrain height, kept when strictly greater | AL = (`*out` != -1000.0 double [00CE6658]), 009038C2..009038E0; `*out` stays -1000.0 over no terrain |
+| ground normal | 009038F0, `RET 8` (point, normal out) | the same walk, remembering the winner | best != -1000: winner's slot 38h into arg 2, AL = 1 (009039AF); else AL = 0, normal untouched. **It writes no height**: the section 5 name `BSP_World_GroundHeightAndNormalAt` is corrected to `BSP_World_GroundNormalAt` |
+| landscape at | 009039D0, `RET 4` (point) | the same walk | the winning Landscape, or 0 (EBP zeroed at 009039E1) |
+| segment | 00903BC0, `RET 8` (from, to) | 00903860 at `from`, blocked when it is above from.y (00903BE8 `JBE`); at `to`, blocked when above to.y (00903C18 `JA`); then every node's slot 3Ch | AL = 1 on the first block, else 0 |
+
+**So the no-terrain answer is -1000.0.** It is written at 00903876 from the float at 00D7A240,
+and 009038C2 tests it against the double at 00CE6658. `src/game_hosts_units.cpp`'s
+`ground_height_00903860() { return 0.0f; }` is therefore not the no-terrain answer. Over open sea
+the native answers -1000 with AL = 0; over an island it answers the sampled height.
+
+### The binding
+
+- **The load.** `kScenePathLandscapeCreatorsBound` is ON (section 5). With
+  `kSceneLandscapeTerrainBound`, `create_scene_world_object` loads each Landscape's height field
+  at the pass-A point:
+  - the model box from `read_mmod_bounding_box`;
+  - the `.tdt` through the recovered structured reader;
+  - the node translation from the object's frame.
+- **The queries.** `world_ground_height_00903860`, `world_ground_normal_009038f0`,
+  `world_landscape_at_009039d0` and `world_segment_blocked_00903bc0` answer over
+  `scene_world_class_lists()`. The first three and the segment's two endpoint tests are the
+  native's.
+- **LABELLED STAND-IN.** The per-terrain sweep of 00903BC0 marches the segment in half-cell steps
+  against the height, instead of slot 3Ch's quadtree walk.
+- **Rounding.** Every x87 store is kept as a float store. Where the native keeps an 80-bit
+  intermediate, this uses a double: the sample `s*inv + offset`, the grid-coordinate subtraction
+  chain and the length's sum.
+- **The self-check.** At the end of the load, every generated object whose authored parent is a
+  Landscape is queried at its world position with all three point queries. The line
+  `scene terrain self-check` reports how many sit within 1 cm of the ground and whether 009039D0
+  names their own Landscape. `summary scene terrain` carries the census, and the census is then
+  reset.
+- **OFF** loads nothing and the census is zero.
+
+### Contracts for the consumers (not edited here)
+
+Rel32 census of the four bodies: 00903860 has 30 sites, 009038F0 one, 009039D0 one and 00903BC0
+four. The containing routine and the host file that names it:
+
+| owner file | sites | routine |
+| --- | --- | --- |
+| `src/game_hosts_units.cpp` (cc9-plane-release) | 0099FA2C, 009A0624, 009A0E56 (height); 009A15C1, 009A172E (segment) | 0099F1C0 `BSP_PilotBot_AvoidTerrain`; the host's `segment_blocked_00903bc0` record and `avoid_surface_height` |
+| `src/game_hosts_units.cpp`, `src/torpedo_aim_tick.cpp` | 009D16D1, 009D2265 (height) | torpedo aim tick; `ground_height_00903860() { return 0.0f; }` |
+| `src/game_hosts_units.cpp`, `src/torpedo_approach_update.cpp` | 009D39D3 (segment) | 009D3420 torpedo approach |
+| `src/airfield_taxi.cpp` | 006CF8FD (height) | 006CF730 `BSP_AirOpsSite_PoseQueuedPlane` |
+| `src/fixed_step_callbacks.cpp` | 007AC175 (height), 007AC244 (normal) | 007AC000 |
+| `src/unit_message_arms.cpp` | 00821165 (height) | 008206F0 |
+| `src/mission_lua_host.cpp` | 0089494E; 00894DD1, 00894E3F, 00894EA9 (height) | 00894820, 00894C00 |
+| `include/bsp/lua_spawn_new.hpp`, `include/bsp/lua_binding_spawn.hpp` | 00941E22, 00942965 (height) | 00941D30, 009426D0 |
+| no host reference | 00430991, 00434F8D, 00487C64, 0049BB07, 00790555, 00795B62, 0079B57A, 007AB27C, 007AB435, 007ABCD9, 0092D086, 0092D0F6, 0092D15E, 009412E6 (height); 004B2131 (landscape at); 007C3E00 (segment) | 00430970, 00487A70, 0049B1F0, 00790540, 00795650, 0079A3B0, 007AB230, 007ABB30, 0092D000, 00941D30 region, 004B2030, 007C3CB0; 00434F8D, 007AB435 and 009412E6 lie in no Ghidra function |
+| this host | 00903BD8, 00903C08 | 00903BC0 itself |
+
+**The contract each consumer binds.**
+- **Height.** Call `world_ground_height_00903860(point, out)` in place of its stand-in. It gets
+  the island's height, or -1000.0 with `false` over sea.
+- **Segment.** A segment test calls `world_segment_blocked_00903bc0`.
+- **The gunnery segment query 0098ADD0** is a different body. It walks the spatial index, which the
+  terrain node joins at 00884078 (section 5). Terrain there needs slot 3Ch's quadtree, not these
+  queries.
+- **The avoid-zone layer sample 0041BC20** reads the `.nav` layers, not this height field.
+
+### Predictions, written before the runs
+
+One tree, both switches of section 5 ON. The pair flips only `kSceneLandscapeTerrainBound`. Streams
+and the death table are on, and the commands are as in section 5.
+
+**USN01 3200/3000.**
+- **OFF:** `summary scene terrain bound=0 landscapes=4 loaded=0 blocks=0 self_check objects=0`,
+  and all counts 0.
+- **ON, loaded=4:**
+  - `Landscape 03`: root `TRNV2`, tiles 11x12, 75 blocks, box_min (-599.68, -711.07), origin
+    (-900, -1200), node (3000, 0, -4000), height [-119.41, 90.60].
+  - `Landscape 04..06` (`DLC_L_03_S`): box_min (-2900, -2950), so origin (-3300, -3300). Tiles
+    and blocks are unknown before the run: that file is not loose.
+- **Self-check, Landscape 03.** Most of its authored buildings, forts and parked aircraft are
+  within 1 cm of the ground. The Python prototype of this sampler matched 30 of the 39 objects it
+  listed to within 0.001 m. The misses are expected:
+  - landing points at sea, within 0.6 m;
+  - `Coastal Gun 01`, off by 66 m;
+  - the airfield's `Multi Hangar 1`, a nested child.
+
+  Prediction: `on_ground_1cm` at least 30, and `landscape_at_self` equal to its object count less
+  the sea points.
+- **Self-check, 04..06.** `Landscape 06` is unrotated: most of its objects on the ground.
+  `Landscape 04` (about 180 degrees) and `Landscape 05` (about 90 degrees) are rotated, and height
+  ignores rotation, so few of their objects should be within 1 cm. **Uncertain:** it would mean
+  the native ground query does not match a rotated island's geometry, which the run will show.
+- **Consumers:** zero calls after the load; no consumer is bound.
+- **Outcome:** identity on every death, hit-record and shot row: 7 / 150 / 583, torpedo drops 0.
+  Every native row is identical except `Landscape::load_height_field` 00ADDA60 (4, ON), and every
+  summary line except `summary scene terrain`.
+
+**USN04 4700/4500** (four Paths, no Landscape).
+- **Census:** `landscapes=0 loaded=0` on both sides.
+- **Outcome:** identity on every row, 41 / 743 / 5603.
+
+### The pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `3f5b154b8`, which is main `365b1b967` plus
+  this packet), built twice with only `kSceneLandscapeTerrainBound` flipped:
+  - `local\lt_off`, SHA-256 prefix `68F5491766B2`;
+  - `local\lt_on`, SHA-256 prefix `EEECEEE00EDE`.
+- **Logs.** `local\lt_{off,on}_{usn01,usn04}.log`. Each shows the 1600x900 override and its own
+  module directory in this tree, and each exited 0.
+
+**USN01 3200/3000: identity on every measured row.**
+- **Outcome.** Both sides: 7 deaths, 150 hit records, 583 shots and `damage=2690.0`. All 23
+  death rows and every summary line are identical, except `summary scene terrain`.
+- **Native table.** The one differing row is `Landscape::load_height_field` 00ADDA60 (4 calls,
+  ON only).
+- **Loaded, ON:**
+  - `Landscape 03`: `TRNV2`, 11x12 tiles, 75 blocks, box_min (-599.68, -711.07), origin
+    (-900, -1200), node (3000, 0, -4000), height [-119.413, 90.548].
+  - `Landscape 04..06`: `TRNV2`, 19x22 tiles, 234 blocks each, box_min (-2900, -2950), origin
+    (-3300, -3300), height [-110.003, 209.148]. Their nodes are (-2000, 0, 3000),
+    (-7000, 0, 4000) and (-6500, 0, -2000).
+- **Self-check.** On `Landscape 03`, 41 of its 51 authored objects are within 1 cm of the
+  sampled ground. The worst is 66.34 m, `Coastal Gun 01`, as the prototype found. 009039D0 names
+  `Landscape 03` for all 51.
+- **Census.** Height, normal and landscape-at are each 51 calls, 51 hits and 0 fallbacks. Segment
+  calls are 0. No consumer calls any query after the load.
+
+**Failed or vacuous predictions:**
+- **Landscapes 04..06 author no child objects**, so the rotation question has no evidence on this
+  mission (`objects=0` for all three). It stays open: does the native ground query sample a
+  rotated island unrotated? 00ADA900 subtracts only the node translation, and the only way the
+  answer differs from the island's geometry is a rotated Landscape with something standing on it.
+- **`landscape_at_self` is 51, not "less the sea points".** The landing points lie inside the
+  island's tile grid over shallow water, where the height field answers a sea-floor height rather
+  than -1000.
+- **The top of m07_a is 90.548, not 90.60.** The box's maximum is the model's; the height field's
+  highest sample is 5 cm lower.
+
+**USN04 4700/4500: identity on every row.**
+- Both sides: 41 deaths, 743 hit records and 5,603 shots.
+- The native table is identical: 0 rows differ.
+- The census is `landscapes=0 loaded=0` on both sides.
+
+**Verdict: ON.** Both pairs are identity on every death, hit-record and shot row, and the height
+field reproduces the authored ground to 1 cm on the island that has objects. The queries now
+answer for the consumers listed under the contracts above.
 
 ## Ledger names recorded
 
