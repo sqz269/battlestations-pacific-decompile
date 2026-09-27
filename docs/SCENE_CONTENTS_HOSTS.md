@@ -862,6 +862,67 @@ and the death table are on, and the commands are as in section 5.
 field reproduces the authored ground to 1 cm on the island that has objects. The queries now
 answer for the consumers listed under the contracts above.
 
+### Rotation: the ground query samples a rotated island unrotated (packet `cc9_landscape_rotation_read`)
+
+**The listing.** No step between the world point and the grid applies the Landscape's rotation.
+- 00903860 passes the caller's world x (`[EDI]`) and z (`[EDI+8h]`) straight to each terrain's
+  slot 28h (0090387D..0090389E). 009038F0 and 009039D0 do the same (00903920..0090393F and
+  009039F3..00903A10).
+- Slot 28h 00ADA900 subtracts only the terrain node's world **translation**:
+  - `+120h` x at 00ADA926 and `+128h` z at 00ADA950;
+  - these are row 3 of the node's world matrix at `+F0h`, whose frame 00ADE820 took from the
+    Landscape's `+74h`;
+  - then `+80h` / `+84h`, and the scale by float(1/9.375).
+- The slot-38h normal does the same. The rotation rows (`+F0h..+11Ch`) are never read.
+
+So **the terrain grid sits axis-aligned at the entity's origin.** A Landscape's rotation reaches
+two other places:
+- the segment test, where slot 3Ch 00ADA240 goes through the node's full inverse world matrix;
+- the avoid zones, where 0041CCD0 builds them with the parent Landscape's matrix.
+
+It never reaches the height, the normal or the landscape pick.
+
+**Ground truth in this installation.** `usn_1_marshall.scn` authors no object on Landscapes 04
+and 05. Each authors the same five `AvoidZoneG` paths as `Landscape 06`: layers 1, 11, 3, 46 and
+86, parents 93, 99 and 105. The zone points are in island-local space (the path frame composed
+with each `Pos`), and the zones follow the seabed.
+
+The probe `local/rot_probe.py` (in this worktree) samples each point two ways:
+- **locally**: the height field at the island-local (x, z);
+- **the image's way**: at R·local, which is what (world - translation) is.
+
+It uses this installation's `terrain/islands/dlc_l_03_s_heightmap.tdt` (19x22 tiles, 234 blocks,
+origin (-3300, -3300)):
+
+| Landscape | rotation | layer 1 (144 points), local | layer 1, image's mapping | layer 11 (116 points), local | layer 11, image's mapping |
+| --- | --- | --- | --- | --- | --- |
+| 03 (m07_a, 84 / 21 points) | none | -56.1..-3.1 | identical | -106.2..-22.0 | identical |
+| 04 | about 180 degrees | -76.0..-2.4 | -110.0..**+83.9** | -110.0..-41.2 | -110.0..**+159.0** |
+| 05 | about 90 degrees, slight tilt | -76.0..-2.4 | 27 holes, -110.0..**+146.1** | -110.0..-41.2 | 16 holes, **-458.5**..+152.5 |
+| 06 | none | -76.0..-2.4 | identical | -110.0..-41.2 | identical |
+
+- **Local sampling** puts every zone layer on a consistent seabed contour on all four islands,
+  and never on land.
+- **The image's mapping** agrees exactly on the two unrotated islands. On the rotated two it
+  scatters: zone points land up to 159 m up the island's slopes and in holes. On 05 one point
+  crosses a hole-adjacent cell for -458.5.
+
+The zones do rotate with the island (0041CCD0), so the image's own ground height disagrees with
+its own avoid zones on Landscapes 04 and 05.
+
+**Answer.** 00903860 does not apply the Landscape's rotation: the grid is axis-aligned at the
+entity's origin. On USN01's two rotated islands the image's ground height is therefore not the
+island's geometry. The host reproduces this as it stands: `height_00ada900` subtracts the
+translation only.
+
+**Not checked:** whether the renderer rotates the island model. The terrain node receives the
+Landscape's full `+74h` frame through vt+38h at 00ADE820, which suggests it does. That would make
+the rotated islands visibly disagree with their own ground height.
+
+**Later ground truth.** If a consumer is bound (section 7), a unit that ends up standing on, or
+a probe that crosses, Landscapes 04 or 05 is the evidence. The zone contours above are already
+one.
+
 ## 7. The ground-query consumers (packet `cc9_ground_height_consumers_1`, 2026-09-27)
 
 **No consumer of the four queries sits in a free file, so this packet binds nothing.** The rest of
