@@ -64,6 +64,13 @@ comes from the squadron's own record (`docs/PLANE_SQUADRON.md`) and is the move-
 
 ## This installation's layer on the measured missions
 
+All 13 `.nav` files under `universe/Scenes/missions/USN/` are one file: 172,939 bytes, md5
+prefix `ec09b4bbff20` (eleven dated 2024-07-13, `usn_ormoc.nav` and `usn_sibuyan.nav` dated
+2024-10-29 with the same bytes). So Marshall (USN01, `usn_1_marshall.nav`) samples this same
+generic layer, not its atolls. The squadron+34Ch choice was re-checked against `0041DF40` for
+the Mavis and the Devastators (packet cc9_mavis_rack_drops, docs/RELEASE_ISSUE_STAGE.md): all
+three call sites of `007F1D90` query (1.5, true), so every squadron holds layer index 3.
+
 `usn_19_coralus.nav` (USN04) and `usn_2_java.nav` (USN02) are the same file (md5 prefix
 `ec09b4bbff20`, 172939 bytes, 2024-07-13). The tan(70°) layer: n = 240, cell 100 m,
 scale 2.0022; 40.96 % of cells are nonzero, and the maximum byte is 200 (400.4 m). A coarse map,
