@@ -1,25 +1,116 @@
 {
   "packet": "cc9_run_extra_fixed_step",
   "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 11",
-  "switch": "kRunExtraFixedStepBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "switch": "kRunExtraFixedStepBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 7b6f70b25, set ON by the verdict",
   "calls": [
-    {"address": "00945311", "native": "00874D00", "function": "00944FD0", "kind": "call", "host": "GameMissionLuaHost::run_generate_object_00944fd0 -> GameFixedStepHost::run_extra_fixed_step_00874d00(true)"},
-    {"address": "00874D0F", "native": "00888230", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::drain_queued_lua_calls_00888230"},
-    {"address": "00874D22", "native": "00929460", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::run_due_entity_think_00929460 (CL = 0 only)"},
-    {"address": "00874D68", "native": "00778450", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::pump_session_00778450"},
-    {"address": "00874D6D", "native": "0077EC20", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::apply_pending_entity_creates_0077ec20"},
-    {"address": "00874D72", "native": "00874C90", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::flush_pending_tick_registrations_00874c90"},
-    {"address": "00874D79", "native": "00925F20", "function": "00874D00", "kind": "call", "host": "GameEntityInitAllRunner::run_sentity_init_all_00925f20"},
-    {"address": "00874DAF", "native": "0076FFC0", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::flush_outbound_session_0076ffc0"},
-    {"address": "00874DB9", "native": "00926700", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::drain_deferred_entity_events_00926700 (CL = 0 only)"},
-    {"address": "00874DBE", "native": "009273A0", "function": "00874D00", "kind": "call", "host": "GameFixedStepHost::flush_pending_entity_queues_009273a0 (CL = 0 only)"}
+    {
+      "address": "00945311",
+      "native": "00874D00",
+      "function": "00944FD0",
+      "kind": "call",
+      "host": "GameMissionLuaHost::run_generate_object_00944fd0 -> GameFixedStepHost::run_extra_fixed_step_00874d00(true)"
+    },
+    {
+      "address": "00874D0F",
+      "native": "00888230",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::drain_queued_lua_calls_00888230"
+    },
+    {
+      "address": "00874D22",
+      "native": "00929460",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::run_due_entity_think_00929460 (CL = 0 only)"
+    },
+    {
+      "address": "00874D68",
+      "native": "00778450",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::pump_session_00778450"
+    },
+    {
+      "address": "00874D6D",
+      "native": "0077EC20",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::apply_pending_entity_creates_0077ec20"
+    },
+    {
+      "address": "00874D72",
+      "native": "00874C90",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::flush_pending_tick_registrations_00874c90"
+    },
+    {
+      "address": "00874D79",
+      "native": "00925F20",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameEntityInitAllRunner::run_sentity_init_all_00925f20"
+    },
+    {
+      "address": "00874DAF",
+      "native": "0076FFC0",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::flush_outbound_session_0076ffc0"
+    },
+    {
+      "address": "00874DB9",
+      "native": "00926700",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::drain_deferred_entity_events_00926700 (CL = 0 only)"
+    },
+    {
+      "address": "00874DBE",
+      "native": "009273A0",
+      "function": "00874D00",
+      "kind": "call",
+      "host": "GameFixedStepHost::flush_pending_entity_queues_009273a0 (CL = 0 only)"
+    }
   ],
   "routines": [
-    {"address": "00874D00", "coverage": "complete (00874D00..00874DD7)"}
+    {
+      "address": "00874D00",
+      "coverage": "complete (00874D00..00874DD7)"
+    }
   ],
   "corrections": [],
   "no_ghidra_function": [],
   "names": [],
-  "verdict": "pending",
-  "pairs": {}
+  "verdict": "ON: USN04 identical (exit 0); USN02 only the 00874d00 row (+4) and seven rows +4 each; gameplay identical; the fan-out count sub-prediction (+28) was wrong (+20)",
+  "pairs": {
+    "binaries": "local/bin/rx_off, local/bin/rx_on (one tree, 7b6f70b25, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "pair_diff_exit": 0
+    },
+    "usn02_9200_9000": {
+      "run_extra_fixed_step": [
+        0,
+        4
+      ],
+      "fanout_sites": [
+        144000,
+        144020
+      ],
+      "deaths": [
+        20,
+        20
+      ],
+      "hit_records": [
+        329,
+        329
+      ],
+      "pair_diff_exit": 1
+    }
+  },
+  "failed_predictions": [
+    "fan-out count +28 predicted, +20 measured (five of the rows are fan-out sites)"
+  ]
 }

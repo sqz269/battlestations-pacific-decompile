@@ -735,3 +735,30 @@ under the world gate.
 - **If the gate is closed** at a call, only the drain row gains that call. That would mean a call
   came before the first fixed step.
 - **If any gameplay row moves,** the switch stays OFF.
+
+### 11.4 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\rx_off` (the committed OFF, 7b6f70b25) and
+  `local\bin\rx_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\rx_*` in this tree.
+- **USN04 4700/4500.** `pair_diff` exits 0: identical apart from noise.
+- **USN02 9200/9000.** `pair_diff` exits 1, and every gameplay and per-entity row is identical
+  (20 deaths, 329 hit records, 20 death rows, 32 unit rows). The clock offset is +0.00 s.
+  - `Game::run_extra_fixed_step` 00874d00 is added, concrete with 4 calls.
+  - The drain, `pump_session`, both `Session::` records, `apply_pending_entity_creates`,
+    `flush_tick_registrations` and `flush_outbound_session` go from 9,000 to 9,004 calls.
+  - InitAll is unchanged.
+  - Summary lines:
+    - `fixed step body: fanout_sites 144000 -> 144020, concrete 126000 -> 126024`;
+    - `fixed step subsystems: lua_calls 9000/0 -> 9004/0`, where the second field, the queued
+      calls actually run, stays 0.
+  - ON only: four `RunExtraFixedStep ... CL=1, world gate open` notes.
+  - The pretranslate row is noise.
+
+**One sub-prediction failed:** the fan-out count. I predicted +28 (4 × 7). It rose by 20
+(4 × 5), because only five of the rows count as fan-out sites: InitAll is called directly
+through the runner, and the two `Session::` rows are records inside the pump. The rows
+themselves moved exactly as predicted.
+
+**Verdict: ON.**

@@ -136,8 +136,8 @@ inline constexpr bool kLoadTimeInitAllBound = true;
 // the outbound flush 0076FFC0 (00874DAF); with CL = 0 only, 00926700,
 // 009273A0 and the tail jump to 00903610. True: the GenerateObject route runs
 // the whole body through the fixed-step host's own row methods. False: the
-// route runs the InitAll row alone.
-inline constexpr bool kRunExtraFixedStepBound = false;
+// route runs the InitAll row alone. ON by the verdict (section 11.4).
+inline constexpr bool kRunExtraFixedStepBound = true;
 
 // The fixed-step host's 00874D00, for the Lua routes that call it.
 class GameExtraFixedStepRunner {
