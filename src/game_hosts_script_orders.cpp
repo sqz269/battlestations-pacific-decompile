@@ -29,6 +29,8 @@
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
+#include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
+#include <algorithm>
 
 extern "C" {
 #include "lua.h"
@@ -136,6 +138,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // eleven other shipped scripts. Handled only with
     // kSubmarineDepthLevelBound.
     {"GetSubmarineDepthLevel", 0x00894100u},
+    // Packet cc9_recon_level_table: 06_crucial_cargo.lua:530 every second in
+    // phase 1. Handled only with kReconLevelTableBound.
+    {"ForceRecon", 0x008aadf0u},
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
@@ -387,6 +392,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
         return kSubmarineDepthLevelBound;
     }
+    if (std::strcmp(binding->name, "ForceRecon") == 0) return kReconLevelTableBound;
     if (std::strcmp(binding->name, "DisablePhysics") == 0) return kDisablePhysicsBound;
     if (std::strcmp(binding->name, "AddMatrixInterpolator") == 0) {
         return kAddMatrixInterpolatorBound;
@@ -1928,6 +1934,9 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     state_ = state;
     machine_state_ = state;
     argument_count_ = argument_count;
+    // Packet cc9_recon_level_table: bring the unit tables' `reconlevel` up to
+    // the last recon pass before the native reads anything.
+    if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
 
     GameScriptOrderRow row;
     row.binding = binding->name;
@@ -2054,6 +2063,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.notef("  ExplodeToParts: %s (0088E1B0 -> 00935C70, queued)",
                 units_.unit_row(index) != nullptr ? units_.unit_row(index)->name.c_str() : "?");
         }
+    } else if (std::strcmp(binding->name, "ForceRecon") == 0) {
+        // 008AADF0: no argument read; 00807A50, then the result count. The
+        // pass it forces publishes its level changes into `reconlevel` at
+        // once (the image writes them inside the pass).
+        ++force_recon_calls_;
+        GameGunneryHost* gunnery = units_.gunnery();
+        if (gunnery != nullptr) gunnery->force_recon_refresh_00807a50();
+        sync_recon_level_tables_0077b0c0();
+        results = 0;
     } else if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
         // 00894100: argument 0 through 00888AA0 with no kind check, EDI =
         // unit+1268h (0089421E). If +1281h, +5Dh or 008522C0 is set, the class
@@ -3115,9 +3133,96 @@ void GameScriptOrdersHost::observe_mission_end() {
         mission_end_.fail_text.c_str(), mission_end_.fail_entity.c_str());
 }
 
+void GameScriptOrdersHost::sync_recon_level_tables_0077b0c0() {
+    // Packet cc9_recon_level_table. Two image steps, applied at a sync point:
+    //  1. 0077FAD0 at 0077FD9C..0077FDF1: unless the holder at +C0h has kind 3
+    //     (a host unit has none), `thisTable[id].reconlevel = {}` through
+    //     00927B40 and 00B67580.
+    //  2. 00805AF0 at 00805B98..00805BD8: when a record's effective level
+    //     (+8h when the force byte +10h is set, else +4h) differs from the one
+    //     it had, [+2Ch]->slot0(party [+30h], old, new), which is 0077B0C0:
+    //     unless [00E188A8]+1FE4h is 2, `reconlevel[party] = new` through
+    //     00B67800 and 00B665D0 (two lua_pushnumber, lua_settable).
+    // A record starts at level 0, so a party that never saw the unit has no
+    // entry. An own unit is refreshed by 008065B0 with +1 each pass and so
+    // reads 2 from the first pass (own records carry 2 in the triples).
+    if (!kReconLevelTableBound) return;
+    lua_State* const L = state_ != nullptr ? state_ : machine_state_;
+    if (L == nullptr) return;
+    const GameGunneryHost* gunnery = units_.gunnery();
+    if (gunnery == nullptr) return;
+    const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
+    const std::size_t count = units_.count();
+    if (recon_table_made_.size() == count && recon_sync_generation_ == pass.passes) return;
+    ++recon_syncs_;
+    recon_sync_generation_ = pass.passes;
+    if (recon_table_made_.size() < count) recon_table_made_.resize(count, false);
+    const int top = lua_gettop(L);
+    lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(L, -1)) {
+        lua_settop(L, top);
+        return;
+    }
+    const int self = lua_gettop(L);
+    std::vector<int> sides;
+    for (std::size_t u = 0; u < count; ++u) {
+        const int s = units_.unit_side_0054(u);
+        if (!pass.side_covered(s)) continue;
+        if (std::find(sides.begin(), sides.end(), s) == sides.end()) sides.push_back(s);
+    }
+    for (std::size_t u = 0; u < count; ++u) {
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+            static_cast<int>(u + 1));
+        lua_getfield(L, self, key);
+        if (!lua_istable(L, -1)) {
+            lua_settop(L, self);
+            continue;
+        }
+        const int unit_table = lua_gettop(L);
+        if (!recon_table_made_[u]) {
+            lua_getfield(L, unit_table, "reconlevel");
+            const bool have = lua_istable(L, -1);
+            lua_settop(L, unit_table);
+            if (!have) {
+                lua_createtable(L, 0, 0);
+                lua_setfield(L, unit_table, "reconlevel");
+                ++recon_tables_created_;
+            }
+            recon_table_made_[u] = true;
+        }
+        const bool dead = gunnery->unit_dead(u);
+        const int own_side = units_.unit_side_0054(u);
+        for (const int s : sides) {
+            int level = 0;
+            if (s == own_side) {
+                level = dead ? 0 : 2;
+            } else {
+                const bsp::ReconDetectionLevel lv = pass.level(s, u);
+                level = lv == bsp::ReconDetectionLevel::identified ? 2
+                    : lv == bsp::ReconDetectionLevel::blip ? 1 : 0;
+            }
+            int& published = recon_levels_published_[std::make_pair(u, s)];
+            if (published == level) continue;
+            published = level;
+            lua_getfield(L, unit_table, "reconlevel");
+            if (lua_istable(L, -1)) {
+                lua_pushnumber(L, static_cast<lua_Number>(s));
+                lua_pushnumber(L, static_cast<lua_Number>(level));
+                lua_settable(L, -3);
+                ++recon_level_writes_;
+            }
+            lua_settop(L, unit_table);
+        }
+        lua_settop(L, self);
+    }
+    lua_settop(L, top);
+}
+
 void GameScriptOrdersHost::run_script_think_pass(float step) {
     state_ = machine_state_;
     argument_count_ = 0;
+    if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
     mission_clock_ += step;
     std::vector<bsp::EntityThinkFields> fields;
     fields.reserve(script_entities_.size());
@@ -3267,6 +3372,10 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script recon level table bound=%d syncs=%llu tables=%llu "
+        "writes=%llu force_recon=%llu (0077FAD0 / 0077B0C0 / 008AADF0, packet "
+        "cc9_recon_level_table)", kReconLevelTableBound ? 1 : 0, recon_syncs_,
+        recon_tables_created_, recon_level_writes_, force_recon_calls_);
     log_.notef("summary mission script submarine depth level bound=%d calls=%llu "
         "forced=%llu last=%d (00894100, packet cc9_submarine_depth_level)",
         kSubmarineDepthLevelBound ? 1 : 0, depth_level_calls_, depth_level_forced_,

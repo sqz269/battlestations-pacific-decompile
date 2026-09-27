@@ -181,6 +181,20 @@ inline constexpr bool kUnitHealthFractionBound = true;
 // USN02 and USN04 identical (docs/SUBMARINE_MODEL.md section 11).
 inline constexpr bool kSubmarineDepthLevelBound = true;
 
+// Packet cc9_recon_level_table (docs/RECON_SENSOR_PASS_BINDING.md, "The
+// reconlevel table"). True: every unit's Lua table gets `reconlevel = {}`
+// (0077FAD0 at 0077FD9C..0077FDF1), and each change of a unit's published
+// detection level for a party writes `reconlevel[party] = level`, 0/1/2
+// (00805BA9..00805BD8 calling the +1E4h sub-object's slot 0, 0077B0C0,
+// which stores through 00B67800 / 00B665D0). The Lua native ForceRecon
+// (008AADF0) runs 00807A50. LABELLED: the tables are made and the changes
+// written when the host next syncs (a native call or a think pass after a
+// recon pass), not inside the pass; forced levels (SetForcedReconLevel) are
+// not modelled; 0077B0C0's other stores (+2F8h, +2FCh, +300h) and its
+// 00980E50 notify are not modelled. False: no table, ForceRecon stays an
+// unimplemented record.
+inline constexpr bool kReconLevelTableBound = false;
+
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo
 // (008A7200) fires the unit's torpedo guns through 00730160, all of them or
@@ -618,6 +632,15 @@ private:
     int shot_down_last_{0};
     unsigned long long put_to_calls_{0};
     // Packet cc9_submarine_depth_level.
+    // Packet cc9_recon_level_table.
+    void sync_recon_level_tables_0077b0c0();
+    std::map<std::pair<std::size_t, int>, int> recon_levels_published_;
+    std::vector<bool> recon_table_made_;
+    unsigned long long recon_sync_generation_{~0ull};
+    unsigned long long recon_tables_created_{0};
+    unsigned long long recon_level_writes_{0};
+    unsigned long long recon_syncs_{0};
+    unsigned long long force_recon_calls_{0};
     unsigned long long depth_level_calls_{0};
     unsigned long long depth_level_forced_{0};
     int depth_level_last_{-1};
