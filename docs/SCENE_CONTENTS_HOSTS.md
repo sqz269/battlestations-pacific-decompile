@@ -1685,18 +1685,41 @@ It also closed two items by reading and one by bisect:
 
 ### Open items, in order
 
-1. **The vertical case 00AECC40's sub-walk 00AECA60** (00AECA60..00AECC3D), a scoping read only.
-   - **What it does.** It clips the from/to pair, in tile units, to the grid [0, +38h] x [0, +3Ch]
-     through 00AEBD20. It returns 0 when both points lie on the far x edge or the far z edge
-     (double equality with the tile counts).
-   - **What it calls.** It sets up 00AEB770 (on the terrain), the iterator 00AEADE0 and 00AEB890
-     (sqrt 00BF7030), then ends in **00AEC7C0** (00AEC7C0..00AECA4B, a further walk not yet read).
-     00AEBD20 calls 00AEBA00 and 00AEBB90. Every body ends where Ghidra says.
-   - **The inputs.** 00AECC40 hands it only the `to` point scaled to tile units (1/300 after the
-     origin), and a point it writes back. It also calls the terrain's vt+48h (unread) when the two
-     points are equal in tile units.
-   - **Cost and value.** About seven bodies. USN01 takes this case 3 times, with 0 hits. The host
-     answers it with the half-cell march (labelled in 10.3).
+1. **The vertical case 00AECC40's sub-walk 00AECA60** (packet `cc9_terrain_vertical_subwalk`,
+   read, not bound; the half-cell march still answers it, labelled in 10.3). USN01 takes this case
+   3 times, with 0 hits. What was read:
+   - **00AECC40.**
+     - Returns 0 when both world points are above the terrain's `+14h` (1e10).
+     - Scales both local points to tile units (origin off, times 1/`+18h`).
+     - When they are float-equal, it answers vt+48h(x, z) and a hit only for a height strictly
+       between the two y values. That hit is written in tile units, not transformed back.
+     - Otherwise it calls 00AECA60 and transforms the result back.
+   - **00AECA60** (ECX = terrain; EDX and the stack hold the two points in tile units, then out).
+     - **Clip.** 00AEBD20 clips the pair to [0, `+38h`] × [0, `+3Ch`]: 00AEBA00 (lower) and
+       00AEBB90 (upper) per axis 0 and 2. A clip moves the endpoint outside the bound along the
+       segment, is skipped when |delta| < 1e-8 [00CF7FE8], and returns 0 when both endpoints are
+       outside.
+     - **Edge exits.** It returns 0 when both x equal the tile count exactly, or both z do (double
+       compares).
+     - **Walker set-up.** 00AEB770 fills a context {terrain, tiles wide, tiles deep, node world y
+       `+124h`}. 00AEADE0 copies 54h bytes into the walker. The clipped pair goes to walker
+       +54h..+68h. 00AEB890 sets the 2-D segment (+6Ch/+70h to +74h/+78h), y0/y1 (+7Ch/+80h) and
+       the slope (y1 − y0)/sqrt(…) (+84h).
+   - **00AEC7C0, the walk** (00AEC7C0..00AECA4B; its decompile leaves ECX-held locals
+     uninitialised, so it needs the listing).
+     - Returns 0 for a degenerate 2-D segment.
+     - Calls 00AEB430. When y0 < -1000 (00CE6658), it answers (x0, -1000, z0) as a hit.
+     - Otherwise it takes one of two arms:
+       - when a span ≤ 0.001 [00CF3F30] or 00AEB680 is false: 00AEC660 on the whole segment;
+       - otherwise: 00AEAB30, then a loop of 00AEB6D0 (next cell), 00AEC3F0 (the cell test) and
+         00AEC700 (the last piece).
+     - The hit comes from walker +48h..+50h.
+   - **Bodies still to read** (all defined in Ghidra, the ends checked for the first six):
+     00AEB430 (00AEB430..00AEB616), 00AEB680, 00AEC660, 00AEAB30, 00AEB6D0, 00AEC3F0
+     (00AEC3F0..00AEC62E), 00AEC700, and the terrain's vt+48h.
+   - **Predictions for the binding, carried over:** on USN01 the 3 vertical calls keep 0 hits, the
+     pick land hits stay 22, and gameplay is identical. USN04 and USN02 stay identical, with no
+     Landscape.
 2. **A measuring mission for the island rotation.** usn_13_truk, yamato or shogo_four author
    rotated Landscapes (10.2). A pick, line-of-fire or, once bound, pilot trace against one of
    them would measure the image's segment/height disagreement in the host.
@@ -1705,6 +1728,15 @@ It also closed two items by reading and one by bisect:
 4. **From SENTITY_INIT_ATTACH_ORDER.md 19.1:** the host issues authored commands before the load
    walk, and the image issues them after it, at 0046AAB0. This is labelled, and no measured row
    depends on it yet.
+
+5. **Bit-exact x87 rounding** of the slot 3Ch walk (10.3) is not verified. x87 register chains
+   are evaluated in double, and float stores are kept.
+6. **cc9-units3's queue** (RELEASE_ISSUE_STAGE.md "Handoff: cc9-units3's queue") is closed apart
+   from the items above:
+   - the load-time hooks, the name match and the load wing ids are ON;
+   - the SpawnNew bag is closed by a read;
+   - the USN02 552 -> 579 flag is closed by bisect;
+   - the quadtree walk is ON.
 
 ### State left by this worker
 
