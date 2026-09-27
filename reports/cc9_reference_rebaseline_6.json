@@ -1,0 +1,199 @@
+{
+  "packet": "cc9_reference_rebaseline_6",
+  "doc": "docs/GAME_EXECUTABLE.md, Mission reference baselines, 2026-09-28 f (main 2dd253a5a)",
+  "tree": "2dd253a5a",
+  "predictions_commit": "f1c709c75",
+  "binary": {
+    "path": "local/rb6/build/win32/Release/bsp_game.exe",
+    "sha256_prefix": "82430C094A64",
+    "export": "tools/pair_export.py --commit 2dd253a5a, no flip"
+  },
+  "run_parameters": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, --press-start-frame 30, idle player, present interval immediate, one run at a time through tools/run_game.ps1",
+  "predictions": {
+    "USN04": {
+      "deaths": 44,
+      "hit_records": 789,
+      "hull": 292,
+      "shots": 6321,
+      "damage": 11985.6,
+      "first_hit": "93.00 s",
+      "source": "local/dm_on_usn04.log"
+    },
+    "USN02": {
+      "deaths": 19,
+      "hit_records": 566,
+      "hull": 217,
+      "shots": 850,
+      "damage": 36102.3,
+      "mission_end": "failed at 39.65 s",
+      "source": "local/dm_on_usn02.log"
+    },
+    "USN01": {
+      "deaths": 7,
+      "hit_records": 150,
+      "hull": 85,
+      "shots": 561,
+      "damage": 2690.0,
+      "source": "local/dm_on_usn01.log"
+    },
+    "E2": {
+      "deaths": "50..58",
+      "hit_records": "860..930",
+      "phase": "1 only"
+    },
+    "smoke": "JM06, JM08, USN13, BSM01 at 3200/3000: final COM release, StageScript script loads, script_calls > 0; BSM01 PutTo 8/8, no sinking natives"
+  },
+  "rows": [
+    {
+      "mission": "USN04",
+      "frames": "4700/4500",
+      "damage": 11985.6,
+      "deaths": 44,
+      "hit_records": 789,
+      "hull": 292,
+      "shots": 6321,
+      "first_hit": "93.00 s",
+      "releases": "3 of 16 / 4 of 19",
+      "water_contacts": 16,
+      "controlled": "Lexington 3433.14 m",
+      "mission_end": "none",
+      "unimplemented": 557,
+      "log": "local/rb6_usn04.log"
+    },
+    {
+      "mission": "USN01",
+      "frames": "3200/3000",
+      "damage": 2690.0,
+      "deaths": 7,
+      "hit_records": 150,
+      "hull": 85,
+      "shots": 561,
+      "first_hit": "53.75 s",
+      "releases": "3 of 5 / 0 of 2",
+      "water_contacts": 3,
+      "controlled": "Northampton 0.00",
+      "mission_end": "none",
+      "unimplemented": 523,
+      "log": "local/rb6_usn01.log"
+    },
+    {
+      "mission": "E2",
+      "frames": "9200/9000",
+      "damage": 13339.4,
+      "deaths": 51,
+      "hit_records": 854,
+      "hull": 307,
+      "shots": 7202,
+      "first_hit": "93.00 s",
+      "releases": "3 of 16 / 4 of 19",
+      "water_contacts": 19,
+      "controlled": "Lexington 5760.25 m",
+      "mission_end": "none; phase 1 only",
+      "unimplemented": 559,
+      "log": "local/rb6_e2.log"
+    },
+    {
+      "mission": "USN02",
+      "frames": "9200/9000",
+      "damage": 36102.3,
+      "deaths": 19,
+      "hit_records": 566,
+      "hull": 217,
+      "shots": 850,
+      "first_hit": "35.65 s",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "Houston 2758.36 m",
+      "mission_end": "failed at 39.65 s",
+      "unimplemented": 538,
+      "log": "local/rb6_usn02.log"
+    },
+    {
+      "mission": "JM06",
+      "frames": "3200/3000",
+      "damage": 12144.3,
+      "deaths": 5,
+      "hit_records": 424,
+      "hull": 341,
+      "shots": 668,
+      "first_hit": "54.30 s",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "Fletcher-class 08 1233.69 m",
+      "mission_end": "none",
+      "unimplemented": 530,
+      "log": "local/rb6_jm06.log"
+    },
+    {
+      "mission": "JM08",
+      "frames": "3200/3000",
+      "damage": 1499.4,
+      "deaths": 2,
+      "hit_records": 127,
+      "hull": 96,
+      "shots": 1351,
+      "first_hit": "5.80 s",
+      "releases": "-",
+      "water_contacts": 1,
+      "controlled": "Auilick 2723.89 m",
+      "mission_end": "none",
+      "unimplemented": 492,
+      "log": "local/rb6_jm08.log"
+    },
+    {
+      "mission": "USN13",
+      "frames": "3200/3000",
+      "damage": 3529.6,
+      "deaths": 34,
+      "hit_records": 204,
+      "hull": 103,
+      "shots": 2551,
+      "first_hit": "72.30 s",
+      "releases": "0 of 60",
+      "water_contacts": 670,
+      "controlled": "Enterprise 1861.07 m",
+      "mission_end": "none",
+      "unimplemented": 550,
+      "log": "local/rb6_usn13.log"
+    },
+    {
+      "mission": "BSM01",
+      "frames": "3200/3000",
+      "damage": 0.0,
+      "deaths": 0,
+      "hit_records": 0,
+      "hull": 0,
+      "shots": 0,
+      "first_hit": "-",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "HenryPT 0.00",
+      "mission_end": "none",
+      "unimplemented": null,
+      "log": "local/rb6_bsm01.log"
+    }
+  ],
+  "flags": [
+    "new: E2 902 -> 854 only partly paired",
+    "new: USN02 664 -> 640 bracketed to merge e4dbf38b2",
+    "new: USN13 670 plane water contacts in 3000 frames (smoke row)",
+    "carried: USN02 torpedo stock on top of the throttle cut",
+    "carried: what enabled kSetSelectedUnitBound between fc14864c9 and the throttle-cut base",
+    "carried: E2 594 -> 595 before c",
+    "carried: E2 ends in phase 1 under lockstep",
+    "carried: the Marshall .nav is the generic layer"
+  ],
+  "verdicts": {
+    "USN04": "held: pair_diff exit 1 vs local/dm_on_usn04.log",
+    "USN02": "held: pair_diff exit 1 vs local/dm_on_usn02.log",
+    "USN01": "held: pair_diff exit 1 vs local/dm_on_usn01.log and vs e",
+    "E2": "FAILED band: deaths 51 in 50..58, hit records 854 below 860..930",
+    "smoke": "held: all four load their StageScript scripts with script_calls > 0; BSM01 PutTo 8/8, no Effect/ExplodeToParts, HenryPT stock 0"
+  },
+  "attribution_vs_e": {
+    "USN04": "41/812 -> 44/789: query gate bytes ON (fb44fcf1d, gb pair); every other landing identical",
+    "USN01": "identical to e",
+    "E2": "51/902 -> 51/854: not paired on E2; first 4500 frames moved -23 at the gate bytes, rest unpaired",
+    "USN02": "20/664 -> 19/566: merge e4dbf38b2 landings bracketed (20/640), gate bytes (21/652), health slot 6f274fe5f (20/611, phase 2 no longer reached), dead-member leave b22d37cf6 (19/566)"
+  }
+}

@@ -10861,3 +10861,168 @@ runs. The logs are `local\FL_*.log` in worktree cc9-units3, and all pass the fou
     e4dbf38b2, after the wreck-hit delivery and Repair landings, so the two results are on
     different bases. The step was real on its own base. Which later landing removes its effect on
     hits was not measured.
+
+## Mission reference baselines, 2026-09-28 f (main 2dd253a5a)
+
+Packet `cc9_reference_rebaseline_6`, worker cc9-ships2. **It replaces the 2026-09-27 e rows above**
+once the runs below are recorded.
+
+**Run parameters:**
+- One binary: `local\rb6\build\win32\Release\bsp_game.exe` in worktree cc9-ships2. It is a clean
+  `tools/pair_export.py` export of main `2dd253a5a` with no flip, so every switch is in its landed
+  state.
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep `--mission-frame-seconds 0.05`, no
+  frame jitter, idle player, present interval immediate, one run at a time through
+  `tools/run_game.ps1`, each `--press-start-frame 30 --menu-select <mission>`.
+- The four reference rows: USN04 4700/4500, E2 = USN04 9200/9000, USN01 3200/3000, USN02
+  9200/9000.
+- **New smoke-level rows** at 3200/3000: JM06, JM08, USN13, BSM01. Their scripts now load
+  (`kSceneStageScriptBound`, FillPathPoints and the BSM01 think natives). Each row is recorded,
+  not attributed.
+
+### Predictions, committed before the runs
+
+They are taken from the latest pair logs on main (worktree cc9-ships2, the dead-member pair,
+`bb533d526` + `kDeadMemberLeavesGroupBound`, landed as `b22d37cf6`). Main has moved by cc9-hud3's
+and the 00A11B80 read's landings since, none paired on these missions here.
+
+- **USN04 4500**, from `local\dm_on_usn04.log`:
+  - 44 deaths, 789 hit records (292 hull), 6321 shots, 11985.6 damage, first hit 93.00 s;
+  - 3 of 16 / 4 of 19 releases, 16 water contacts, Lexington 3433.14 m, no mission end;
+  - `pair_diff` exits 0 or 1 against it.
+- **USN02 9000**, from `local\dm_on_usn02.log`:
+  - 19 deaths, 566 hit records (217 hull), 850 shots, 36102.3 damage, first hit 35.65 s;
+  - Houston 2758.36 m, failure at 39.65 s (Exeter at 35.80 s), phase 2 not reached;
+  - `pair_diff` exits 0 or 1 against it.
+- **USN01 3000**, from `local\dm_on_usn01.log`: 7 deaths, 150 hit records (85 hull), 561 shots,
+  2690.0 damage, first hit 53.75 s, Northampton 0.00. The same as e.
+- **E2 9000: no log since e** (51 / 902).
+  - Its first 4500 frames are USN04's, which moved 41 / 812 -> 44 / 789 since e.
+  - Band: deaths 50..58, hit records 860..930, phase 1 only (the lockstep Blackout, known).
+- **Smoke rows** (no earlier row), 3200/3000:
+  - each reaches its final COM release;
+  - each loads the script its header's `StageScript` names:
+    - JM06: `COTP-IJN\\PRCPIJN\\JM06`;
+    - JM08: `COTP-IJN\\PRCPIJN\\PRCPJM08`;
+    - USN13: `USN\\usn_13_truk`;
+    - BSM01: `BSM\\bsm_01_stationed_at_pearl`;
+  - each has `script_calls` above 0.
+  - **BSM01 also:** the think registers with no failure; `PutTo calls=8 placed=8`; no Effect or
+    ExplodeToParts row (its battleships read full health); `ShipSetTorpedoStock(HenryPT, 0)`
+    applied.
+
+### The runs
+
+**These rows are the current reference for the four missions and the first rows for the four
+smoke missions.**
+- The binary is `local\rb6\build\win32\Release\bsp_game.exe` (SHA-256 prefix `82430C094A64`), a
+  no-flip export of main `2dd253a5a`. The predictions were committed at `f1c709c75`.
+- The logs are `local\rb6_{usn04,usn01,e2,usn02,jm06,jm08,usn13,bsm01}.log` in worktree
+  cc9-ships2, 2026-09-27.
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb6\` and the final COM release.
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11985.6 | 44 | 789 (292) | 6321 | 93.00 s | 3 of 16 / 4 of 19 | 16 | Lexington 3433.14 m | none | 557 | `local\rb6_usn04.log` |
+| USN01 | 3000 | 2690.0 | 7 | 150 (85) | 561 | 53.75 s | 3 of 5 / 0 of 2 | 3 | Northampton 0.00 | none | 523 | `local\rb6_usn01.log` |
+| USN04 (E2) | 9000 | 13339.4 | 51 | 854 (307) | 7202 | 93.00 s | 3 of 16 / 4 of 19 | 19 | Lexington 5760.25 m | none; phase 1 only (known) | 559 | `local\rb6_e2.log` |
+| USN02 | 9000 | 36102.3 | 19 | 566 (217) | 850 | 35.65 s | - | 0 | Houston 2758.36 m | **failed at 39.65 s** ("Game Over"; Exeter sunk 35.80 s by Tokitsukaze); phase 2 not reached | 538 | `local\rb6_usn02.log` |
+| JM06 (smoke) | 3000 | 12144.3 | 5 | 424 (341) | 668 | 54.30 s | - | 0 | Fletcher-class 08 1233.69 m | none | 530 | `local\rb6_jm06.log` |
+| JM08 (smoke) | 3000 | 1499.4 | 2 | 127 (96) | 1351 | 5.80 s | - | 1 | Auilick 2723.89 m | none | 492 | `local\rb6_jm08.log` |
+| USN13 (smoke) | 3000 | 3529.6 | 34 | 204 (103) | 2551 | 72.30 s | 0 of 60 / - | **670** | Enterprise 1861.07 m | none | 550 | `local\rb6_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | 0 | HenryPT 0.00 | none | - | `local\rb6_bsm01.log` |
+
+**The smoke rows' scripts** (the `StageScript` name each header gives, with script calls on frame 5,
+think registrations and failures):
+
+| mission | script | calls | thinks | failures |
+| --- | --- | --- | --- | --- |
+| JM06 | `COTP-IJN\\PRCPIJN\\JM06` | 157 | 4 | 0 |
+| JM08 | `COTP-IJN\\PRCPIJN\\PRCPJM08` | 130 | 512 | 0 |
+| USN13 | `USN\\usn_13_truk` | 615 | 35 | 0 |
+| BSM01 | `BSM\\bsm_01_stationed_at_pearl` | 303 | 3 | 0 |
+
+BSM01 also shows `put to calls=8 placed=8`, no Effect or ExplodeToParts row, and
+`HenryPT ShipSetTorpedoStock(0) loaded=4 spare 8 -> 0 unloaded=4`.
+
+### Predictions against the runs
+
+- **USN04, USN02 and USN01 held exactly.** `tools/pair_diff.py` exits 1 (gameplay identical)
+  against `local\dm_on_usn04.log`, `dm_on_usn02.log` and `dm_on_usn01.log`.
+- **E2 failed its band:** 51 deaths (50..58) held, but 854 hit records fell below 860..930. See the
+  E2 flag below.
+- **Every smoke row held:** each loads its header's script with calls above 0 and reaches the final
+  COM release, and BSM01 matches its four specifics.
+
+### USN02's death table (19)
+
+Exeter 35.80 (Tokitsukaze); Yamakaze 49.65 (Houston); Kortenaer 68.30 (Samidare); Minegumo 98.45
+(Houston); Electra 108.60 (Yudachi); Kawakaze 112.00 (Perth); Samidare 161.66 (Houston); John3
+172.46 (Amatsukaze); Yudachi 172.56 (Houston); DeRuyter 177.36 (Murasame); Haguro 183.41
+(Houston); Murasame 190.56 (Houston); Java 192.81 (Harusame); Harusame 216.31 (Houston); Jintsu
+236.31 (Houston); Encounter 278.56 (Asagumo); Yukikaze 306.80 (Witte); Amatsukaze 327.64
+(Jupiter); Asagumo 437.32 (John2).
+- Against e: Houston, Perth and Witte no longer die; Minegumo and Asagumo now do. 16 rows changed.
+
+### The natives against e
+
+`pair_diff` of each e log (`local\rb5_*.log`, worktree cc9-units3) against f:
+
+| mission | rows e -> f | added | removed | unimplemented e -> f |
+| --- | --- | --- | --- | --- |
+| USN04 | 1634 -> 1650 | 18 | 2 | 561 -> 557 |
+| E2 | 1636 -> 1652 | 18 | 2 | 563 -> 559 |
+| USN01 | 1484 -> 1500 | 17 | 1 | 520 -> 523 |
+| USN02 | 1561 -> 1580 | 32 | 13 | 542 -> 538 |
+
+### Against the 2026-09-27 e section, and what moved each row
+
+Each step uses the landing's same-tree pair logs (worktree cc9-ships2 unless named).
+
+**USN04 (4500).** 41 / 812 / 6341 shots / Lexington 3497.48 became **44 / 789 / 6321 / 3433.14**:
+
+| step | deaths | hit records (hull) | shots | Lexington | by | doc |
+| --- | --- | --- | --- | --- | --- | --- |
+| e | 41 | 812 (307) | 6341 | 3497.48 | - | - |
+| torpedo standoff (identical on USN04) | 41 | 812 | 6341 | 3497.48 | f260d936e | SENTITY_INIT_PASSES 9, `tsd_*` |
+| query gate bytes ON | 44 | 789 (292) | 6321 | 3433.14 | fb44fcf1d | SENTITY_INIT_PASSES 10, `gb_{off,on}_usn04` |
+| supply tick, ShipSetTorpedoStock, FillPathPoints, BSM01 think natives, health slot, dead-member leave, stage script (each identical on USN04) | 44 | 789 | 6321 | 3433.14 | - | the respective sections; `st_`, `sst_`, `fpp_`, `bt_`, `hp_`, `dm_`, `ss_` pairs |
+| every landing after `db46dce40` (terrain switches, mover keys, cc9-hud3's continuation, the 00A11B80 read) = this section | 44 | 789 | 6321 | 3433.14 | - | exit 1 against `dm_on_usn04` |
+
+**USN01 (3000).** Identical to e: exit 1 against `rb5_usn01.log`, the same 7 death rows.
+
+**E2 (9000).** 51 / 902 / 7339 shots became **51 / 854 / 7202**:
+
+| step | deaths | hit records | by | doc |
+| --- | --- | --- | --- | --- |
+| e | 51 | 902 | - | - |
+| every landing since e = this section, **not paired on E2** | 51 | 854 | - | **flag**: its first 4500 frames are USN04's, which moved -23 hit records at the gate bytes; the other -25 is unpaired |
+
+**USN02 (9000).** 20 / 664 / 1163 shots became **19 / 566 / 850**. The failure is still at 39.65 s,
+and phase 2 is no longer reached:
+
+| step | deaths | hit records | shots | by | doc |
+| --- | --- | --- | --- | --- | --- |
+| e | 20 | 664 | 1163 | - | - |
+| the landings of merge `e4dbf38b2` (the torpedo standoff among them), **bracketed** | 20 | 640 | 1119 | f260d936e + others | cc9-units3's e-flags base; `tsd_*` paired the standoff on an older base (22 / 579 -> 21 / 656) |
+| query gate bytes ON | 21 | 652 | 1095 | fb44fcf1d | `gb_{off,on}_usn02` |
+| supply tick, ShipSetTorpedoStock, FillPathPoints, BSM01 think natives (each identical) | 21 | 652 | 1095 | 63b117689, 8cfc41d37, e292d38af, 989066718 | `st_`, `sst_`, `fpp_`, `bt_` pairs |
+| GetHpPercentage's health slot ON (phase 1 no longer ends at its first check) | 20 | 611 | 865 | 6f274fe5f | LUA_BINDING_MISSION, `hp_{off,on}_usn02` |
+| controlled-unit observer ON (identical on this base: Houston no longer dies, so no release) | 20 | 611 | 865 | 1e2dc76ae | CONTROLLED_UNIT; `dm_off_usn02` equals `hp_on_usn02` |
+| dead-member group leave ON | 19 | 566 | 850 | b22d37cf6 | SHIP_AI_FORMATION, `dm_{off,on}_usn02` |
+| stage script, terrain switches, mover keys, cc9-hud3's continuation, the 00A11B80 read (each identical) = this section | 19 | 566 | 850 | - | exit 1 against `dm_on_usn02` |
+
+**Flags:**
+- **New:**
+  - **E2 902 -> 854**: only the gate bytes' USN04 share is paired; the rest is unpaired on E2.
+  - **USN02 664 -> 640**: bracketed to merge `e4dbf38b2`, not paired on the e base.
+  - **USN13's 670 plane water contacts** in 3000 frames: a smoke row with no earlier reference, but
+    far above any other mission. Worth a look before USN13 is used for measurement.
+- **Carried from e:**
+  - USN02, the torpedo stock on top of the throttle cut: open (the mover was not it).
+  - What enabled `kSetSelectedUnitBound`'s effect between `fc14864c9` and the throttle-cut base:
+    not isolated.
+  - E2 594 -> 595 (before c): not isolated.
+  - E2 ends in phase 1 under lockstep (known).
+  - The Marshall `.nav` is the generic layer.
