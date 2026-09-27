@@ -1311,3 +1311,38 @@ SetParty on any other entity stays the unimplemented record it was.
   - the marker mirror in `src/game_hosts_lua.cpp` still writes Party only; Race reaches markers
     through the pass-A write instead, on a file this packet could not lease;
   - SetParty on a non-script entity (`vtable[2Ch]` for units) is still a record.
+
+## 18. The marker Race mirror: already carried (packet `cc9_marker_race_mirror`, read only, no switch)
+
+2026-09-27, worker cc9-units3, on main 9d7e418eb. The item came from two handoffs:
+docs/UNIT_WEAPON_DEVICES.md, cc9-ships's item 5, and section 8.4 above, "the marker mirror should
+write Race itself (authored, else -1)".
+
+**It is closed by section 17.**
+- **The value.** 17.1 corrected 8.4: a marker's `Race` is its bag value, authored or `properties
+  Common`'s Neutral 0, from 00927050's kind-1 arm (`+58h` at 0092709C). It is not "authored, else
+  -1". Every kind-1 bag carries the key.
+- **The write.** Under `kSceneRaceAndScriptIdentityBound` (ON), the marker seeds take their
+  record's race, and the Lua host writes `thisTable[key].Race` for every `race >= 0`. The
+  reference e logs show it:
+  - `races_fed=30` on USN02 (28 units and 2 markers);
+  - `races_fed=24` on USN04 (19 units and 5 markers);
+  - `local\rb5_usn02.log` / `rb5_usn04.log`, worktree cc9-units3.
+- **What differs from the image, and why it is left.**
+  - **When.** The host writes the marker's Race at the load attach, or at pass A of the load-time
+    InitAll (`write_party_race_fields`). The image writes it at pass C (00928100, 0092814B).
+    Both run before the mission's first Think, and no script reads it in between.
+  - **The −1 case.** 00928100 writes `+58h` even when it is the base's −1 (00925CE0), which
+    happens only for an entity with no kind-1 descriptor. `mirror_identity_00928100` in
+    `src/game_hosts_lua.cpp` skips Race, so such an entity would read nil, not −1. No scene
+    marker lacks a kind-1 bag. The script entities, the one −1 case, are written by section 17's
+    script-entity identity.
+- **Readers.** No mission Lua of this installation reads an entity's `.Race`:
+  - the only `.Race` read is chg_2_java.lua 442..443 on a local `template` table;
+  - `luaGetNmiRace` (commandhelpers.lua 16772) reads `Mission.Party`;
+  - the `["Race"] = ...` rows are spawn parameter tables (17.4).
+
+**Prediction for any binding of the −1 write: identity on every mission,** with no census line
+moving. No switch is added, and `src/game_hosts_lua.cpp` (cc9-hud2's lease) is not edited. A
+one-line edit writing `Race = -1` in `mirror_identity_00928100` when no race is carried remains
+available if a scene ever authors a marker outside `Common`.
