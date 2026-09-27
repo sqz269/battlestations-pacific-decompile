@@ -366,6 +366,13 @@ public:
     // sibling offsets; this reader serves all of them.
     float read_vehicle_class_number(int index, const char* key, float fallback);
 
+    // `VehicleClass[index][key][nested_key]` as a number; `fallback` when any
+    // level is absent or the leaf is not a number. Packet cc9_buoyancy_elements
+    // reads `Hull.WaterLineRatio` (descriptor+71Ch, stored at 00832D9A) with it,
+    // the float twin of read_vehicle_class_integer's nested form.
+    float read_vehicle_class_nested_number(int index, const char* key,
+        const char* nested_key, float fallback);
+
     // `Bullets[index][key]` from the live Lua state - the bullet class table that
     // Scripts/datatables/autoload/bulletclasses.lua publishes. Used for the
     // fields the flattened per-platform BSPGun table does not carry, notably

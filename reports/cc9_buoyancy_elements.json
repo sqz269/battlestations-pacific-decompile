@@ -1,0 +1,63 @@
+{
+  "packet": "cc9_buoyancy_elements",
+  "doc": "docs/CONSTRUCT_WORLD.md",
+  "calls": [
+    {
+      "address": "0082FEBA",
+      "native": "00718000",
+      "function": "0082FE30",
+      "note": "node lookup \"deckline\", kind 0, in the class model [descriptor+50h]"
+    },
+    {
+      "address": "0082FECA",
+      "native": "00718000",
+      "function": "0082FE30",
+      "note": "node lookup \"bottomline\", kind 0"
+    },
+    {
+      "address": "0082FEE3",
+      "native": "0082D040",
+      "function": "0082FE30",
+      "note": "the element list producer, 2 x Hull.Segments records at class+52Ch"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "0082FE30",
+      "coverage": "partial: only 0082FEA9..0082FEE8 is bound; 0082FE30..0082FEA8 and 0082FEE8..00831801 are not"
+    },
+    {
+      "routine": "0082D040",
+      "coverage": "partial as in docs/SHIP_BUOYANCY_ELEMENTS.md: the unread part-AABB 0082D067..0082D192 and the vector lifetime are not projected"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "00718000 returning null for a model without the node (the original dereferences it)",
+      "is": "the host refuses and keeps the stand-in list, counted as a fallback",
+      "where": "class_buoyancy_list_0082fe30 in src/game_hosts_units.cpp"
+    },
+    {
+      "what": "the element list while the switch is OFF",
+      "is": "the eight stand-in elements (reachable OFF)",
+      "where": "create_units, src/game_hosts_units.cpp"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "the ~97 s descent and capacity = Mass / 3 of docs/CONSTRUCT_WORLD.md section 25",
+      "is": "with the image's list the capacity is Mass x r / (1 - r), r = Hull.WaterLineRatio",
+      "evidence": "00937DBB..00937F74 over 0082D040's records, where waterline - keel = (deck - keel)(1 - r) at every station"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kShipBuoyancyElementsBound",
+      "committed": "OFF",
+      "file": "src/game_hosts_units.cpp"
+    }
+  ],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

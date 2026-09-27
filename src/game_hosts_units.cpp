@@ -65,6 +65,8 @@
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ship_hydro_forces.hpp"
+#include "bsp/ship_buoyancy_elements.hpp"
+#include "bsp/gun_fire_points.hpp"
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -1723,6 +1725,87 @@ struct GameUnitsHost::Impl {
             }
         }
         done("UnitList::erase_004837d0", 0x004837d0u);
+    }
+
+    // Packet cc9_buoyancy_elements. The class's element list as 0082FE30 builds
+    // it once per class after the Lua load: 00718000 finds the Aux point sets
+    // "deckline" (00D09A0C, at 0082FEBA) and "bottomline" (00D09A00, at
+    // 0082FECA), kind 0, in the class model descriptor+50h (the row's `Mesh`),
+    // and 0082D040 (called at 0082FEE3 with Hull.WaterLineRatio +71Ch) emits
+    // two records per Hull.Segments station. The original dereferences a null
+    // node record; the host refuses instead and the caller keeps the stand-in.
+    struct ClassBuoyancyList {
+        bool ok{false};
+        std::string reason;
+        std::string mesh;
+        float ratio{0.0f};
+        int segments{0};
+        std::vector<bsp::ShipBuoyancyElement> elements;
+    };
+    struct BuoyancyProfileHost final : bsp::ShipBuoyancyElementHost {
+        const std::vector<bsp::GunFirePointItem>* items{nullptr};
+        bool find_model_profile_points(const char* node_name, int kind,
+            std::vector<bsp::OceanVec3>& out) override {
+            const bsp::GunFirePointItem* item = bsp::find_named_point_group_00718870(
+                *items, node_name, static_cast<std::uint32_t>(kind));
+            if (item == nullptr) return false;
+            out.clear();
+            for (const auto& p : item->points) out.push_back(bsp::OceanVec3{p[0], p[1], p[2]});
+            return true;
+        }
+    };
+    const ClassBuoyancyList& class_buoyancy_list_0082fe30(const GameUnitSlot& s) {
+        const int type_id = s.row.type_id;
+        auto found = class_buoyancy_lists.find(type_id);
+        if (found != class_buoyancy_lists.end()) return found->second;
+        ClassBuoyancyList& entry = class_buoyancy_lists[type_id];
+        entry.mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+        entry.ratio = lua.read_vehicle_class_nested_number(type_id, "Hull", "WaterLineRatio",
+            0.0f);
+        entry.segments = lua.read_vehicle_class_integer(type_id, "Hull", "Segments", 0);
+        std::vector<std::uint8_t> bytes;
+        std::vector<bsp::GunFirePointItem> items;
+        std::string error;
+        if (entry.mesh.empty()) {
+            entry.reason = "no Mesh string";
+        } else if (!lua.read_resource_file(entry.mesh, bytes)) {
+            entry.reason = "model did not open";
+        } else if (!bsp::read_mmod_aux_point_items_0071b3e0(bytes, items, error)
+                   && items.empty()) {
+            entry.reason = "model Aux read failed: " + error;
+        } else {
+            BuoyancyProfileHost profile;
+            profile.items = &items;
+            bsp::ShipBuoyancyHullInputs hull{};
+            hull.length = s.motion_class.hull_length;   // descriptor+A0h
+            hull.width = s.class_width_00a4;            // descriptor+A4h
+            hull.mass = s.motion_class.hull_mass;       // descriptor+B0h
+            hull.hull_water_line_ratio = entry.ratio;   // descriptor+71Ch
+            hull.hull_segments = entry.segments;        // descriptor+720h
+            if (!bsp::ship_buoyancy_build_from_model_0082fea9(profile, hull, entry.elements)) {
+                entry.reason = "model lacks deckline or bottomline";
+            } else if (entry.elements.empty()) {
+                entry.reason = "Hull.Segments not positive";
+            } else {
+                entry.ok = true;
+                entry.reason = "image list";
+            }
+        }
+        float draught = 0.0f;  // 008936A0 luaMW_GetDraught: max(+14h)
+        float coef_draught = 0.0f;
+        for (const bsp::ShipBuoyancyElement& e : entry.elements) {
+            draught = std::max(draught, e.unread_14);
+            coef_draught += e.coefficient * e.unread_14;
+        }
+        log.notef("buoyancy elements class=%d \"%s\" mesh=%s ratio=%.4f segments=%d "
+            "status=%s records=%zu max_draught=%.3f sum_coef_draught=%.1f (10*Mass=%.1f) "
+            "(0082D040 at 0082FEE3, packet cc9_buoyancy_elements, used=%d)",
+            type_id, s.row.name.c_str(), entry.mesh.c_str(), static_cast<double>(entry.ratio),
+            entry.segments, entry.reason.c_str(), entry.elements.size(),
+            static_cast<double>(draught), static_cast<double>(coef_draught),
+            static_cast<double>(s.motion_class.hull_mass * 10.0f),
+            kShipBuoyancyElementsBound && entry.ok ? 1 : 0);
+        return entry;
     }
 
     // Packet cc9_ship_sink_descent. controller+84h (00937DBB..00937F74) and the
@@ -3739,6 +3822,22 @@ struct GameUnitsHost::Impl {
     // (2024-07-13): 0.02 and 0.2.
     static constexpr float kMaxLeakPercentSubstitute = 0.02f;
     static constexpr float kEnnyiVizEsKeszPercentSubstitute = 0.2f;
+    // Packet cc9_buoyancy_elements, docs/CONSTRUCT_WORLD.md section 28. ON: the
+    // hull's element list at class+52Ch is the image's own, built by 0082D040
+    // (called at 0082FEE3 from the ship class's model-binding virtual 0082FE30)
+    // from the class Mesh's "deckline" / "bottomline" Aux point sets, Length,
+    // Width, Mass, Hull.WaterLineRatio (+71Ch) and Hull.Segments (+720h):
+    // 2 x Segments records. Everything that walks the list follows it: the
+    // hydrodynamics 009329C0 on every live hull and the reserve buoyancy
+    // controller+84h (00937DBB..00937F74) the leak manager's capacity derives
+    // from. OFF: the eight-element stand-in (still reachable, and still the
+    // fallback ON for a class whose model lacks either node or whose Segments
+    // is not positive; those are counted as `fallbacks`).
+    static constexpr bool kShipBuoyancyElementsBound = false;
+    std::map<int, ClassBuoyancyList> class_buoyancy_lists;
+    unsigned long long buoyancy_lists_image = 0;
+    unsigned long long buoyancy_lists_stand_in = 0;
+    unsigned long long buoyancy_lists_fallbacks = 0;
     unsigned long long leak_models_built = 0;
     unsigned long long leak_redistributions = 0;
     unsigned long long kill_depth_tests = 0;
@@ -5628,8 +5727,9 @@ public:
             owner_.logged_hydro = true;
             owner_.log.notef("hydrodynamics 009329c0 runs from 00937440's last call at "
                 "00937622, over %d buoyancy elements of \"%s\" and physics material %d. "
-                "The element list at class+52Ch is a STAND-IN: no function in the "
-                "exported set writes class+528h..+534h, so the list is built from the "
+                "When packet cc9_buoyancy_elements is bound and the class model has "
+                "its deckline and bottomline, the list is the image's (0082D040); "
+                "otherwise it is a STAND-IN built from the "
                 "class row's own Length %.1f, Height %.1f and Mass %.1f the way "
                 "bsp_ship_motion_probe.exe --hydro builds it, and the buoyancy is solved "
                 "so the hull displaces its own weight at its draft. The world's gravity "
@@ -7335,11 +7435,29 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // exactly its own weight against the world gravity of 10. A class row
         // that carries no Length or Height produces no list at all, and the
         // hydrodynamic step is then skipped rather than run on invented data.
+        // Packet cc9_buoyancy_elements: the image's own list (0082D040 through
+        // 0082FE30's window 0082FEA9..0082FEE8), built once per class and read
+        // in both builds so the census can compare it; used only ON.
+        const Impl::ClassBuoyancyList* image_list = nullptr;
         if (slot->motion_dispatch.runs_ship_base()) {
+            image_list = &host.class_buoyancy_list_0082fe30(*slot);
+        }
+        bool used_image_list = false;
+        if constexpr (Impl::kShipBuoyancyElementsBound) {
+            if (image_list != nullptr && image_list->ok) {
+                slot->buoyancy_elements = image_list->elements;
+                used_image_list = true;
+                ++host.buoyancy_lists_image;
+            } else if (image_list != nullptr) {
+                ++host.buoyancy_lists_fallbacks;
+            }
+        }
+        if (slot->motion_dispatch.runs_ship_base() && !used_image_list) {
             const float length = slot->motion_class.hull_length;
             const float height = slot->motion_class.hull_height;
             const float mass = slot->motion_class.hull_mass;
             if (length > 0.0f && height > 0.0f && mass > 0.0f) {
+                ++host.buoyancy_lists_stand_in;
                 const float draft = height * 0.5f;
                 // ship_hydro_buoyancy_00932e44 at depth == draft, with the
                 // surface mix of 0.5 the 00CE3800 float supplies.
@@ -18481,7 +18599,7 @@ void GameUnitsHost::report() {
             // Packet cc9_ship_sink_descent: the leak manager of the wreck.
             host.log.notef("  wreck %-16s leaks bound=%d built=%d redistributed=%d "
                 "reserve_84=%.1f capacity=%.2f rate_cap=%.4f rate_34=%.4f water=%.2f "
-                "first_water_t=%.2f mass=%.1f", slot->row.name.c_str(),
+                "first_water_t=%.2f mass=%.1f elements=%zu", slot->row.name.c_str(),
                 Impl::kShipSinkDescentBound ? 1 : 0, slot->leak_ready ? 1 : 0,
                 slot->leak_redistributed ? 1 : 0,
                 static_cast<double>(slot->controller_reserve_84),
@@ -18490,7 +18608,8 @@ void GameUnitsHost::report() {
                 static_cast<double>(slot->leak_rate_34),
                 static_cast<double>(slot->leak_water_mass_10fc),
                 static_cast<double>(slot->leak_first_water_t),
-                static_cast<double>(slot->motion_class.hull_mass));
+                static_cast<double>(slot->motion_class.hull_mass),
+                slot->buoyancy_elements.size());
         }
         host.log.notef("summary squadron pass hooks pass_a=%llu pass_c=%llu (no-op entries, "
             "packet cc9_squadron_pass_hooks)", host.squadron_pass_a_hook_calls,
@@ -18522,6 +18641,17 @@ void GameUnitsHost::report() {
         host.summary.hydro_submerged_steps, host.summary.hydro_force_flushes,
         host.summary.hydro_torque_flushes,
         static_cast<double>(host.physics_world.gravity.y), kBuoyancyElementCount);
+    {
+        std::size_t classes_ok = 0;
+        for (const auto& [type_id, entry] : host.class_buoyancy_lists) {
+            if (entry.ok) ++classes_ok;
+        }
+        host.log.notef("summary ship buoyancy elements bound=%d classes=%zu classes_image=%zu "
+            "hulls_image=%llu hulls_stand_in=%llu fallbacks=%llu (0082D040 at 0082FEE3, packet "
+            "cc9_buoyancy_elements)", Impl::kShipBuoyancyElementsBound ? 1 : 0,
+            host.class_buoyancy_lists.size(), classes_ok, host.buoyancy_lists_image,
+            host.buoyancy_lists_stand_in, host.buoyancy_lists_fallbacks);
+    }
     std::size_t generic_units = 0;
     std::size_t generic_input_one = 0;
     for (const auto& slot : host.slots) {
