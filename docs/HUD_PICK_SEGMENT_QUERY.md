@@ -455,3 +455,194 @@ binding packet.
   `HudMovieCamera_AddPositionChecked`, 007A42C0 `HudMovieCamera_AddPosition`, 0079A3B0
   `HudMovieCamera_Update`, 00798130 `MovieCameraTrack_Evaluate`, 00797DA0
   `MovieCameraTrack_SetTime` and 005CDC50 `HudScreen38_ClearCameraMover`.
+
+## 8.6 The new movie camera, part 2: the keyframe read, and why the pick never casts from it (packet `cc9_movie_camera_mover_bind`, read)
+
+Worker cc9-movie-camera, 2026-09-27, base main 83ece7303. Ghidra was read only, from the listings
+(the pseudocode drops the `__thiscall` receivers and the x87 stack). No binding is in this commit;
+the scope question in "The premise" below went to the lead.
+
+### The premise: what the image's pick casts from on USN01 (V)
+
+Section 7.1 said USN01's `luaIn` "issues orders only". **It does not.** Line 669 of this
+installation's `usn_1_marshall.lua` calls `SetSelectedUnit(Mission.BmdGroup[1])`, and
+`BmdGroup[1]` is `Northampton` (line 275).
+- 008AB260 `SetSelectedUnit` calls 00647300 `BSP_InGameHudRoot_SetSpectatedUnit`. When 00645060
+  accepts the unit, that calls 00645600 `SetControlledUnit` and then 00647040. 00647040 pushes
+  interface 20h with the unit's `+140h` payload through 004CC460.
+- A ship classifies to 25h `INTF_CAPTAIN`, whose arm installs the ShipCaptain mover (0064DA40,
+  section 7). The host models that mover already.
+- This host leaves `SetSelectedUnit` UNIMPLEMENTED (2 calls on USN01, the first at t = 20.1 s,
+  log line `blackout callback luaIn ran`).
+
+**The pick screen is not running during the movie.** The first `MovCamNew_AddPosition` engages
+the movie interface: 005CD240 calls 005CD1A0, which pushes 2Ch `kMovieCameraNewInterface`. 2Ch's
+level-1 set is `{37h}` alone (0068ADC9, `kSetMovieCameraNew`), so screen 29h, the pick, exits.
+So on USN01 the image casts:
+
+| mission time | interface | pick ray from |
+| --- | --- | --- |
+| 0 .. 4.1 s | 2Eh airfield | the Operator node's identity pose (section 7.1) |
+| 4.1 .. 20.1 s | 2Ch movie | no cast: 29h is not in the set |
+| from 20.1 s | 25h captain | the ShipCaptain mover on Northampton |
+
+The movie camera's pose is never the pick's source on USN01, because `SetSelectedUnit` is the
+missing binding. Two more consequences apply to any movie binding:
+- **005CD1A0 reseeds RNG streams 1 and 0** with 12345 and 54321 (`kMovieInterfaceRandomSeeds`).
+  It does so once per screen instance, at the first movie of the mission.
+- **USN04 and USN02 run in-game movies too**, with 6 and 8 `MovCamNew_AddPosition` calls in
+  init-passes' logs. In the image the movie mover replaces the ShipCaptain until the script's
+  `SetSelectedUnit` and `ForceSelectUnit` bring it back (`usn_19_coralus.lua` 1031..1032). A mover
+  binding without that return path would leave the movie's last pose installed for the rest of
+  the run.
+
+**005CDC50 never runs on this path.** Slot `+18h` is a screen's enter virtual
+(`docs/FRONTEND_STATE_MACHINE.md`, 0068D981). Screen 38h is the only member of 2Dh
+`INTF_ENGINEMOVIECAMERA`'s set (0068ADEA). So the null mover is installed only when the engine
+movie starts, never by `MovCamNew`.
+
+### Keyframes: parse, insert, pair (V)
+
+**Keyframe defaults.** 00799B00 constructs the 104h keyframe with these values:
+
+| field | default | constant |
+| --- | --- | --- |
+| `+28h` camera | 1 | |
+| `+26h` wanderer | 1 | |
+| `+27h` | 1 | |
+| `+2Ch` transform | 1 | |
+| `+C0h` | -1.0 | 00D7A260 |
+| `+C4h` zoom | 1.0 | 00D7A24C |
+| `+C8h` | 1.0 | 00D7A24C |
+| `+CCh` smoothtime | 1.0 | 00D7A24C |
+| `+D0h` | 1.0 | 00D7A24C |
+| `+D4h` nonlinear blend | 0.5 | 00CE3800 |
+| `+DAh` pair id | -1 | |
+| `+F8h` state | 0 | |
+
+**007A0EB0 parse** (`__thiscall(keyframe, camera)`):
+- **Inherited values.** If the keyframe's track (`camera+480h` list for target, `+504h` for camera)
+  is non-empty, it copies `+CCh`, `+C4h`, `+26h`, `+2Ch` and `+28h` from the track's **last**
+  keyframe. Otherwise `+26h` = 1 for camera and 0 for target, `+2Ch` = 1 and `+C4h` = 1.0.
+- **`transformtype`.** The values map `keepnone`/`keepy`/`keepz`/`keepall` to `+2Ch` 0/1/2/3.
+  The `_thennone` forms also set `+30h`.
+- **`position`.**
+  - `parent` is an entity table (00888C40) or `parentID`. 00799D70 stores it at `+1Ch` with an
+    observer. A dead entity (`+5Eh`) gives null, and a kind-18h squadron gives its `+3D0h`.
+  - `+24h` = parent attached.
+  - `pos` is `{x,y,z}` by name (0079C040 and 0078FD70) or `{1,2,3}`, into `+34h..+3Ch`. `polar`,
+    `upvector` (`+58h..`), `relativetotarget` (`+E8h`), `modifier`, `deckpos` and
+    `terrainavoid` (`+D9h`) are not used by USN01.
+  - Without an attached parent, the parent's world position `+FCh..+104h` is added to `pos`.
+- **Other keys.**
+  - `starttime` `+F0h`, `blendtime` `+F4h`.
+  - `nonlinearblend` clamped to [0,1] (or `1 - linearblend`) `+D4h`.
+  - `zoom` `+C4h`, `smoothtime` `+CCh`, `flyalt` `+DCh`, `maxcamspeed` `+E0h`.
+  - `finishscript` and `event` (not used by USN01).
+
+**007A2CD0 insert** (`__thiscall(camera, keyframe)`, RET 4). A camera keyframe goes into track
+`+498h` through 007A0770, and 00798080 on `+414h` pairs it. A target keyframe does the reverse.
+007A0770 (`__thiscall(track, keyframe)`):
+- It sets `+F8h` = 0 and adds the camera clock `+3B0h` to the start time.
+- With 0 keyframes in the track, start and blend are forced to 0.
+- With 2 or more, a start time equal to the last keyframe's gets `+ 0.001`: the qword 00D7A318
+  loaded `FADD double`, rounded to float, then clamped at 0.
+- It appends at the end.
+
+00798080 gives a keyframe with pair id < 0 and the first keyframe of the other track that has
+pair id < 0 and the same start time a shared id from `camera+3C0h`.
+
+**USN01's first movie**, all at clock 0:
+
+| track | keyframe | start | blend |
+| --- | --- | --- | --- |
+| camera | 1 | 0 | 0 |
+| camera | 4 | 0 | 7 |
+| camera | 5 | 7 | 0 |
+| camera | 8 | 7.001 | 7 |
+| target | 2 | 0 | 0 |
+| target | 3 | 0 | 0 |
+| target | 6 | 7 | 0 |
+| target | 7 | 7.001 | 0 |
+
+The camera keyframes inherit wanderer 1. The target keyframes have 0.
+
+### The track (V)
+
+Track layout (84h bytes at `camera+414h` look-at and `+498h` camera):
+- `+4h..+Ch` result position, `+10h..+18h` result up;
+- `+5Ch` matrix-override flag, `+60h` zoom, `+64h` flyalt flag;
+- `+68h` list (head `+6Ch`, size `+70h`), `+74h` the camera, `+78h` the smoothing half-window;
+- `+7Ch`/`+80h` the last active keyframe and its index.
+
+**00797DA0 SetTime(t)** (RET 4) rewinds only: every keyframe with `+F8h != 0` and start > t goes
+back to state 0, and its modifier's `+2Ch` runs. It stores no time.
+
+**007911E0 step** (`__thiscall(keyframe, track)` -> bool, RET 4):
+- **Inactive.** State 0 with start > clock returns false.
+- **Begin.** Otherwise state 0 calls 00791020 begin. Begin sets state 1, `+4h` = track and
+  `+40h..` = `+34h..`, and `+64h..` = `+58h..`. It sets `+D0h` = `+CCh`. When `+C0h > 0`, it sets
+  `+C4h` = `camera+410h / +C0h * +C4h`. It copies `+C8h` = `+C4h` and, with `+D8h`, re-seeds from
+  the camera's current pose.
+- **Every step.** `+C8h` = `+C4h`.
+- **End of blend.** In state 1 with clock >= start + blend, the step runs `finishscript` (unless
+  the camera `+390h` is set) and sets state 2. A finished keyframe stays active.
+
+**00795C10 weight(track, dt)** (RET 8) -> float:
+- ts = clock + dt. Start > ts gives 0.
+- Otherwise it begins the keyframe if needed and evaluates the position through 00795650.
+- With e = ts - start: e >= blend gives 1.0. Otherwise x = e / blend and the weight is
+  `(1 - nl) * x + nl * f(x)`, with nl = `+D4h`. Values of nl over 1 apply f again, but the parse
+  clamps nl to 1.
+- **0078FCF0 `f`** (RET 4) is a quadratic ease-in-out: 0 below 0 and 1 above 1, `2x^2` below
+  0.5, else `1 - 2(1-x)^2`. Each product is rounded to float.
+
+**00795650 keyframe position** (`__fastcall(keyframe)`):
+- **No parent, or a modifier.** Without a parent (`+24h` clear) or with a modifier (`+25h`),
+  `+4Ch..` = `+40h..` and `+70h..` = `+64h..`.
+- **Wanderer (`+26h`).** On a parent of kind 8 the flag clears. On kind 6, a ship, it records
+  `yoff = pos.y - [[entity+538h]+A8h] * 0.5` (00D7A280 double). On kind 0Fh it takes an offset
+  from 0078FCC0.
+- **World matrix.** The parent's world matrix `+CCh..+108h` (refreshed through
+  `BSP_EntityPose_RefreshWorld` when `+C8h` is clear) is copied. On kind 20h it is replaced by the
+  `+3CCh`/`+3C8h` sub-object's `+F0h`.
+- **keepall (`+2Ch` = 3).** `+4Ch..` = `+40h..` transformed as a point, and `+70h..` = `+64h..`
+  rotated (translation row zeroed).
+- **keepnone and keepy.** keepnone (0) and keepy (1) go through 004142A0 and 0085DAD0.
+- **Adjustments.** On the kind-6 or kind-0Fh wanderer paths the offset is subtracted:
+  `+4Ch..` -= (0, yoff, 0). `terrainavoid` then lifts y to at least ground + 00D7A210.
+
+**00798130 evaluate** (`__thiscall(track)`, 00798130..00798C0F):
+1. **Window.** s = min(`+78h`, clock). One pass over the list skips state-3 keyframes. It records
+   each active keyframe in `+7Ch`/`+80h` and shrinks s to `(clock - start) * 0.99` for the first
+   active keyframe and for every cut (`+27h` with blend <= 0). It shrinks s to
+   `max((start - clock) * 0.99, 0)` for an upcoming cut or the last keyframe, and stops at the
+   first upcoming cut. 0.99 is the qword 00CED5D0. s is 0 when the active keyframe is the last one.
+2. **Samples.** There are n = 5 samples when s > 0.001 (00D7A23C), else 1. The jump table
+   00798C10 puts them at dt = -s, -s/2, 0, s/2, s, or dt = 0 when n = 1.
+3. **Blend.** For each keyframe not in state 3 and each sample, w = weight(track, dt):
+   - w <= 0 skips it.
+   - w >= 1, or the sample's first contribution, **replaces** the accumulated pose, up, zoom
+     (`+C8h`) and window (`+D0h`). With `+BCh` it also copies the keyframe matrix `+7Ch` to
+     `track+1Ch` and sets `+5Ch`.
+   - Otherwise it **lerps**, `acc = kf * w + acc * (1 - w)`. With `+DCh` (flyalt) the height
+     gets a lift through 00414C60 and 00419010.
+4. **Average.** With n = 5, four passes of pairwise averaging give weights 1, 4, 6, 4, 1 over 16.
+   The up vector is renormalized each pass (00BF7030 sqrt, 0 below length 0).
+5. **Output.** `+4h..` pose, `+10h..` up, `+60h` zoom and `+78h` = the blended `+D0h`, so the
+   window follows the active keyframe's smoothtime. With n = 5, `+5Ch` = 0.
+
+**So the camera holds its last keyframe after the clock passes it.** A finished keyframe keeps
+weight 1 and is never retired by this path. The hold is exact once the 1-second window no longer
+reaches back past the last cut.
+
+### Coverage
+
+| routine | coverage |
+| --- | --- |
+| 007A0EB0 parse | complete for the keys USN01 uses; `modifier`, `deckpos`, `event` arms read to their allocations only |
+| 007A2CD0, 007A0770, 00798080, 00797DA0 | complete |
+| 007911E0, 00791020, 00795C10, 0078FCF0 | complete, except the modifier virtuals, which USN01 does not use |
+| 00795650 | complete for keepall and the kind-6 wanderer; keepnone/keepy (004142A0, 0085DAD0) and the kind-0Fh offset 0078FCC0 are unread |
+| 00798130 | complete, except the flyalt lift 007986C0..007987B4 (00414C60, 00419010), which is unread |
+| 0079A3B0 update, 007A0860 seed, 0078FAF0 smoothing, 0079D020 constructor | unread in this commit |
