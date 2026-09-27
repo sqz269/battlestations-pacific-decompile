@@ -161,6 +161,10 @@ GameMissionLuaHost* host_from_upvalue(lua_State* state) {
 // time, so it carries the host pointer and the row index as upvalues. The
 // global is still a plain C closure under a plain name, which is the only part
 // of the registration contract that is recovered.
+// Packet cc9_wing_construction_lua: the Lua half acts only with the units half.
+constexpr bool kWingConstructionLuaActive =
+    kWingConstructionLuaBound && kWingConstructionInPassABound;
+
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
 // reads but the host does not model are listed in `unsupported_keys` when
@@ -2988,6 +2992,8 @@ public:
         }
         host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
         if (!node.squadron || host_.script_orders_ == nullptr) return;
+        // Packet cc9_wing_construction_lua: the list size before 007F4580.
+        const std::size_t pending_before = host_.pending_entities_.size();
         if constexpr (kSquadronPassHooksCalled) {
             // Packet cc9_squadron_pass_hooks_calls: 007F4580, where the image
             // constructs the wing; the append below stands in for it until the
@@ -2998,6 +3004,22 @@ public:
                 host_.log_.implemented("SEntity::InitAll pass A squadron_construct_wing hook",
                     "007f4580");
             }
+        }
+        if constexpr (kWingConstructionLuaActive) {
+            // Every node the hook's constructions pushed (00928760 CALL
+            // 00926BE0 per plane) is this squadron's wing: 007F4B49 stores the
+            // leader in the plane's +9D4h, and the append below set the same
+            // three fields. The walk reaches them in this pass A because it
+            // re-reads the list's size.
+            for (std::size_t i = pending_before; i < host_.pending_entities_.size(); ++i) {
+                GameMissionLuaHost::PendingEntity& plane = host_.pending_entities_[i];
+                if (plane.squadron || plane.entity_id == node.entity_id) continue;
+                plane.wing_member = true;
+                plane.squadron_id = node.entity_id;
+                plane.class_index = node.class_index;
+                ++host_.summary_.init_all_wing_marked;
+            }
+            return;   // the wing append below is retired
         }
         // 007F4580 constructs each plane of the wing, and each construction
         // reaches 00928760 CALL 00926BE0: the planes join the tail now, after
@@ -3367,9 +3389,11 @@ void GameMissionLuaHost::push_pending_squadron_00926be0(int entity_id,
     if constexpr (kPendingListDedupBound) {
         // Packet cc9_pending_list_dedup. Never while a walk holds node
         // pointers: pushes come from the routes, outside 00925F20.
-        const std::size_t units_end
-            = script_orders_ != nullptr ? script_orders_->units().count() : units_before;
-        if (!init_active_00f899a5_) {
+        // Packet cc9_wing_construction_lua: with the wing built in pass A the
+        // squadron records no wing range and the deferral below has nothing to drop.
+        const std::size_t units_end = kWingConstructionLuaActive ? units_before
+            : (script_orders_ != nullptr ? script_orders_->units().count() : units_before);
+        if (!kWingConstructionLuaActive && !init_active_00f899a5_) {
             // The wing's planes belong at the tail, after the squadron's pass A
             // (007F4580 constructs and pushes them there). A plain node another
             // pusher queued for one of them is dropped; pass A re-appends it.
@@ -3407,7 +3431,8 @@ void GameMissionLuaHost::push_pending_squadron_00926be0(int entity_id,
     node.class_index = class_index;
     node.squadron = true;
     node.units_before = units_before;
-    node.units_end = script_orders_ != nullptr ? script_orders_->units().count() : units_before;
+    node.units_end = kWingConstructionLuaActive ? units_before
+        : (script_orders_ != nullptr ? script_orders_->units().count() : units_before);
     pending_entities_.push_back(std::move(node));
     ++summary_.init_all_pushes;
 }
@@ -4432,9 +4457,10 @@ void GameMissionLuaHost::report_mission_script_state() {
     // for a second call site in a file this packet does not own.
     report_spawn_queue();
     log_.notef("summary SEntity::InitAll 00925f20 bound=%d calls=%llu nonempty=%llu "
-        "entities=%llu wing_appended=%llu pushes=%llu still_pending=%zu",
+        "entities=%llu wing_appended=%llu wing_marked=%llu pushes=%llu still_pending=%zu",
         kSEntityInitAllBound ? 1 : 0, summary_.init_all_calls, summary_.init_all_nonempty,
         summary_.init_all_entities, summary_.init_all_wing_appended,
+        summary_.init_all_wing_marked,
         summary_.init_all_pushes, pending_entities_.size());
     log_.notef("summary SEntity::InitAll thisTable steps bound=%d class_bound=%llu "
         "squadron_ids=%llu think_names=0",
