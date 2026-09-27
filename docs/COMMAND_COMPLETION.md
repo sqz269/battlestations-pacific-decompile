@@ -65,7 +65,7 @@ so the next frame begins the command from scratch. Nothing else in the routine w
 | --- | --- | --- | --- |
 | `009BCB0E` | `009BCA50` | `moveonpath` `00E08F80` | 1 |
 | `009C312E` | `009C3100` | `moveto` `00E08F68` | **0** |
-| `009CFB47` | `009CFA80` | `moveto` `00E08F68` | **0** |
+| `009CFB47` | `009CFA80`, the **takeoff** task's altitude floor, completing a `moveto` command (called only from `009CFD70`, slot +64h of vtable `00D21228`, whose string `takeoff` follows at `00D21290`; packet cc9_units_contracts) | `moveto` `00E08F68` | **0** |
 | `009E5997` | `BSP_ShipAi_MoveToPosStateStep` | `moveto` | 1 |
 | `009E5C70` | `BSP_ShipAi_MoveOnPathStateStep` | `moveonpath` | 1 |
 | `009E88C1` | `BSP_ShipAi_AttackMoveStateStep` | `attackmove` `00E08F78` | 1 |

@@ -70,6 +70,8 @@
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
+#include "bsp/ship_ai_rudder_hop.hpp"
+#include "bsp/unit_group_slot_swap.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
@@ -958,6 +960,8 @@ struct GameUnitSlot {
     int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
     int rack_rounds_authored{0};       // packet cc9_dive_bomb_carried_rounds
     float plane_height_rate_9b8{0.0f}; // unit+9B8h, packet cc9_units_contracts
+    float hull_heading_1050{0.0f};     // unit+1050h, written at 00826C56
+    float occupant_timer_1158{0.0f};   // unit+1158h, 0 from 00823C30
     int db_bomb_requests_logged{0};    // diagnostic line cap
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
@@ -1909,6 +1913,97 @@ struct GameUnitsHost::Impl {
         const int i = slot.db_skill_row_14;
         if (!kSkillLevelBound || i < 0 || i > 5) return kPilotDiveBombRows[1];
         return kPilotDiveBombRows[i];
+    }
+
+    // Packet cc9_ship_motion_tail. ShipGlobals.Formacio.UpdateInterval (0083F0AD
+    // stores it at settings+430h); 10.0 in this installation's shipglobals.lua.
+    float formacio_update_interval_430() {
+        if (formacio_update_interval < 0.0f) {
+            const char chunk[] =
+                "local g = type(ShipGlobals) == 'table' and ShipGlobals.Formacio or nil\n"
+                "if type(g) ~= 'table' then return -1 end\n"
+                "return tonumber(g.UpdateInterval) or -1\n";
+            const int top = lua.lua_gettop();
+            float value = 0.0f;
+            if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                    "bsp_formacio_interval") == 0 &&
+                lua.lua_pcall(0, 1, 0) == 0) {
+                const std::string text = lua.lua_tolstring_at_top();
+                if (!text.empty()) value = static_cast<float>(std::atof(text.c_str()));
+            }
+            lua.lua_settop(top);
+            formacio_update_interval = value > 0.0f ? value : 0.0f;
+            log.notef("ship motion tail: Formacio.UpdateInterval = %.3f (settings+430h)",
+                static_cast<double>(formacio_update_interval));
+        }
+        return formacio_update_interval;
+    }
+    // 0070DB60 BSP_UnitGroup_SwapSlotsByDistance. A record until packet
+    // cc9_ship_motion_tail's part 8b binds the reconstruction.
+    void run_formation_slot_swap_0070db60(std::int32_t group) {
+        if constexpr (!kFormationSlotSwapBound) {
+            record("UnitGroup::swap_slots_by_distance_0070db60", 0x0070db60u);
+            return;
+        } else {
+            if (group < 0 || static_cast<std::size_t>(group) >= formation_groups.size()) return;
+            const std::size_t g = static_cast<std::size_t>(group);
+            if (!slot_swap_membership_logged) {
+                slot_swap_membership_logged = true;
+                for (std::size_t k = 0; k < formation_groups.size(); ++k) {
+                    std::string names;
+                    for (const auto& m : formation_groups[k].members) {
+                        if (m.entity == 0 || m.entity > slots.size()) continue;
+                        if (!names.empty()) names += ",";
+                        names += slots[m.entity - 1]->row.name;
+                    }
+                    log.notef("formation group %zu: leader=%s type=%d column=%d members=[%s]", k,
+                        formation_groups[k].leader < slots.size()
+                            ? slots[formation_groups[k].leader]->row.name.c_str() : "-",
+                        formation_groups[k].type_04fc, formation_groups[k].column, names.c_str());
+                }
+            }
+            if (slot_swap_runs_by_group.size() < formation_groups.size()) {
+                slot_swap_runs_by_group.resize(formation_groups.size(), 0);
+                slot_swaps_by_group.resize(formation_groups.size(), 0);
+                slot_swap_gated_by_group.resize(formation_groups.size(), 0);
+            }
+            FormationGroup& fg = formation_groups[g];
+            struct Host final : bsp::UnitGroupSlotSwapHost {
+                Host(Impl& o, std::size_t leader) : owner(o), leader_(leader) {}
+                std::uint32_t member_class_0538(std::uint32_t entity) override {
+                    if (entity == 0 || entity > owner.slots.size()) return 0;
+                    return static_cast<std::uint32_t>(owner.slots[entity - 1]->row.type_id);
+                }
+                bool decompose_against_leader_00811180(std::uint32_t entity, float& across,
+                                                       float& along) override {
+                    if (entity == 0 || entity > owner.slots.size() ||
+                        leader_ >= owner.slots.size()) return false;
+                    const float* p = owner.slots[entity - 1]->world.data() + 12;  // +0FCh
+                    const float world[3] = {p[0], p[1], p[2]};
+                    const bsp::ShipAiWakeDecomposition d =
+                        bsp::ship_ai_wake_decompose_00811180(owner.slots[leader_]->wake, world);
+                    across = d.across;
+                    along = d.along;
+                    return d.valid;
+                }
+                Impl& owner;
+                std::size_t leader_;
+            } host_(*this, fg.leader);
+            const std::uint32_t controlled =
+                controlled_bound ? static_cast<std::uint32_t>(controlled_index + 1) : 0u;
+            const bsp::UnitGroupSlotSwapResult r = bsp::unit_group_swap_slots_by_distance_0070db60(
+                fg.members, fg.column, fg.type_04fc, controlled, host_);
+            ++slot_swap_runs_by_group[g];
+            slot_swaps_by_group[g] += static_cast<unsigned long long>(r.swaps);
+            if (r.gated) slot_swap_gated_by_group[g] = 1;
+            slot_swap_pairs += static_cast<unsigned long long>(r.pairs_compared);
+            slot_swap_pairs_invalid += static_cast<unsigned long long>(r.pairs_skipped_invalid);
+            done("UnitGroup::swap_slots_by_distance_0070db60", 0x0070db60u);
+            if (r.swaps > 0) {
+                log.notef("formation slot swap: group=%zu swaps=%d t=%.2f", g, r.swaps,
+                    static_cast<double>(summary.simulated_seconds));
+            }
+        }
     }
 
     // Packet cc9_units_contracts. The count of the class's Damage.Sections, the
@@ -3373,6 +3468,26 @@ struct GameUnitsHost::Impl {
     // ON since the USN04 4500 / USN02 pairs: gameplay identical, list 24 = 21
     // squadrons on USN04, unit+9B8h stored with no reader.
     static constexpr bool kUnitsContractsBound = true;
+    // Packet cc9_ship_motion_tail, docs/SHIP_POST_MOTION.md section 8a: the tail
+    // 00826C34..00826D69 of 00825F20 (ship_motion_tail_00826c34) replaces the
+    // host's wake-append block. It stores unit+1050h, feeds the wake the image's
+    // yaw rate 00811890(unit, [unit+984h]) (the ORDERED rudder, ring+14Ch)
+    // instead of the provisional steering rate, and runs the leader's
+    // unit+1158h timer (Formacio.UpdateInterval) whose expiry calls 0070DB60,
+    // a record until kFormationSlotSwapBound. OFF: the old wake block.
+    // ON since the USN02 / USN04 9000 pairs: every moved row inside its band.
+    static constexpr bool kShipMotionTailBound = true;
+    unsigned long long tail_slot_swap_calls = 0;
+    unsigned long long tail_expiry_calls = 0;
+    float formacio_update_interval = -1.0f;   // -1 until read
+    // Packet cc9_ship_motion_tail part 8b: 0070DB60 on the group the expired
+    // leader timer names. OFF: a record.
+    static constexpr bool kFormationSlotSwapBound = false;
+    std::vector<unsigned long long> slot_swap_runs_by_group;
+    std::vector<unsigned long long> slot_swaps_by_group;
+    std::vector<unsigned char> slot_swap_gated_by_group;
+    unsigned long long slot_swap_pairs = 0, slot_swap_pairs_invalid = 0;
+    bool slot_swap_membership_logged = false;
     unsigned long long h9b8_writes = 0;
     double h9b8_min = 0.0, h9b8_max = 0.0;
     std::vector<unsigned char> squadron_list24_pushed;
@@ -5031,6 +5146,67 @@ private:
 // ---------------------------------------------------------------------------
 // bsp::ShipMotionHost, one method per call site of 00825f20's motion path
 // ---------------------------------------------------------------------------
+
+// Packet cc9_ship_motion_tail: the host side of 00826C34..00826D69.
+class ShipMotionTailBinding final : public bsp::ShipMotionTailHost {
+public:
+    ShipMotionTailBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot,
+                          UnitRudderBinding& rudder, std::size_t index,
+                          float forward_speed)
+        : owner_(owner), slot_(slot), rudder_(rudder), index_(index),
+          forward_speed_(forward_speed) {}
+    // 00826C5C, 0092E5B0(controller, 0): everything is under controller+60h,
+    // whose only writer is the network state message 0092F2E0; no mission run
+    // here receives one, so the gate is closed (docs/SHIP_POST_MOTION.md s4).
+    void controller_0092e5b0(int) override {
+        owner_.done("UnitController::network_correction_0092e5b0", 0x0092e5b0u);
+    }
+    // 00826C75, 00811890(unit, [unit+984h]). The unit's forward speed is the
+    // post-step one, which is what 00811890 reads when the tail runs.
+    float yaw_rate_from_rudder_00811890(float ordered_rudder) override {
+        rudder_.forward_speed = forward_speed_;
+        owner_.done("UnitRudder::yaw_rate_00811890", 0x00826c75u);
+        return bsp::unit_yaw_rate_00811890(ordered_rudder, rudder_);
+    }
+    // 00826C7A..00826CC5: the host's pose cache is always current.
+    void refresh_world_matrix() override {}
+    // 00826CDB, vtable[50h] = 006DFD60: FLD [unit+1050h], as the tail wrote it.
+    float unit_heading_vtable50() override { return slot_.hull_heading_1050; }
+    void append_wake_sample_00810190(const bsp::OceanVec3& position, float heading,
+                                     float yaw_rate) override {
+        const float p[3] = {position.x, position.y, position.z};
+        bsp::ship_ai_wake_append_00810190(slot_.wake, p, heading, yaw_rate);
+        owner_.done("UnitWake::append_sample", 0x00810190u);
+    }
+    // 00778890: [unit+284h] set and its +14h pointing back at this unit.
+    bool occupant_owns_unit_00778890() override {
+        const std::int32_t g = slot_.formation_group;
+        if (g < 0 || static_cast<std::size_t>(g) >= owner_.formation_groups.size()) return false;
+        return owner_.formation_groups[static_cast<std::size_t>(g)].leader == index_;
+    }
+    // 00826D21..00826D26: settings+430h, Formacio.UpdateInterval.
+    float occupant_timer_refill_00424c40_430() override {
+        return owner_.formacio_update_interval_430();
+    }
+    // 00826D3E, 0070DB60([unit+284h]).
+    void occupant_tick_0070db60() override {
+        ++owner_.tail_slot_swap_calls;
+        owner_.run_formation_slot_swap_0070db60(slot_.formation_group);
+    }
+    // 00826D5A, 0077A650(unit). The constructor stores 0 at unit+308h
+    // (0077EFFE) and no host path sends message 51h, so it is not reached.
+    void field_308_crossed_0077a650() override {
+        ++owner_.tail_expiry_calls;
+        owner_.record("UnitInstance::expire_at_scheduled_time_0077a650", 0x0077a650u);
+    }
+
+private:
+    GameUnitsHost::Impl& owner_;
+    GameUnitSlot& slot_;
+    UnitRudderBinding& rudder_;
+    std::size_t index_;
+    float forward_speed_;
+};
 
 class ShipMotionBinding final : public bsp::ShipMotionHost {
 public:
@@ -16310,7 +16486,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // steering rate after the slew limiter, the nearest value it holds. The
         // trail's GEOMETRY does not depend on it - only 0070D290's `out[4]`,
         // which 009DF2D0 uses for a follower's speed blend, ever reads it back.
-        {
+        if constexpr (Impl::kShipMotionTailBound) {
+            // Packet cc9_ship_motion_tail: 00826C34..00826D69 whole.
+            bsp::ShipMotionTailInputs tin;
+            tin.forward_x = slot.motion.pose_row2[0];              // unit+0ECh
+            tin.forward_z = slot.motion.pose_row2[2];              // unit+0F4h
+            tin.ordered_rudder = slot.ring.current_param_b;       // unit+984h
+            tin.world_position = bsp::OceanVec3{slot.motion.position[0],
+                slot.motion.position[1], slot.motion.position[2]};
+            tin.occupant_timer = slot.occupant_timer_1158;
+            tin.dt = step_seconds;
+            tin.field_308 = 0.0f;           // 0077EFFE stores 0; no 51h message here
+            tin.field_308_sentinel = 0.0f;  // 00D7A218
+            ShipMotionTailBinding tail(host, slot, rudder, index, motion.forward_speed());
+            const bsp::ShipMotionTailStep t = bsp::ship_motion_tail_00826c34(tin, tail);
+            slot.hull_heading_1050 = t.hull_heading;
+            if (t.occupant_timer_ran) slot.occupant_timer_1158 = t.occupant_timer_left;
+            host.done("ShipMotion::tail", 0x00826c34u);
+        } else {
             const float wake_heading = static_cast<float>(
                 std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                            static_cast<double>(slot.motion.pose_row2[2])));
@@ -18526,6 +18719,26 @@ void GameUnitsHost::report() {
                             host.squadron_list24_pushes, n6, multi,
                             host.h9b8_writes, host.h9b8_min, host.h9b8_max);
                         static_cast<void>(ships);
+                    }
+                    {
+                        // Packet cc9_ship_motion_tail: the tail's census, both builds.
+                        std::string per;
+                        for (std::size_t k = 0; k < host.slot_swap_runs_by_group.size(); ++k) {
+                            char b[80];
+                            std::snprintf(b, sizeof(b), "%s%zu:runs=%llu,swaps=%llu%s",
+                                per.empty() ? "" : " ", k, host.slot_swap_runs_by_group[k],
+                                host.slot_swaps_by_group[k],
+                                host.slot_swap_gated_by_group[k] ? ",gated" : "");
+                            per += b;
+                        }
+                        host.log.notef("summary mission ship motion tail: bound=%d swap_bound=%d "
+                            "slot_swap_calls=%llu expiry_calls=%llu pairs=%llu invalid=%llu "
+                            "groups=%zu [%s]",
+                            GameUnitsHost::Impl::kShipMotionTailBound ? 1 : 0,
+                            GameUnitsHost::Impl::kFormationSlotSwapBound ? 1 : 0,
+                            host.tail_slot_swap_calls, host.tail_expiry_calls,
+                            host.slot_swap_pairs, host.slot_swap_pairs_invalid,
+                            host.formation_groups.size(), per.c_str());
                     }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;

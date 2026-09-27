@@ -208,3 +208,119 @@ USN02 9200/9000 and E2 = USN04 9200/9000, streams and the death table on, one tr
   `piVar4[0x19]`) must be checked against the listing.
 - **`unit+308h`'s constructor value** is set before the window read.
 - **Class flag `+D0h`** has no reader in the host besides this gate, and its producer was not read.
+
+## 12. Packet cc9_ship_motion_tail, part 8a (`kShipMotionTailBound`, committed OFF)
+
+2026-09-26, worker cc9-plane-release.
+
+**Two facts settled before binding:**
+- **unit+308h is 0.** The constructor stores it from a cleared XMM0 (`0077EFE4` `XORPS XMM0,XMM0`,
+  then `0077EFFE` `MOVSS [ESI+308h],XMM0`). No host path sends message 51h, so the tail's
+  `!= 0.0f` test at `00826D43` never calls `0077A650` here. Section 11's open question is closed.
+- **unit+1158h starts at 0.** `00823C30` in `BSP_UnitInstance_SEntityInit` stores it from a
+  cleared XMM0, and a disp32 scan of `58 11 00 00` finds no other writer outside the tail. So a
+  group leader's first tail tick expires the timer at once and calls `0070DB60`. The timer is
+  then refilled to 10.0 − dt and fires every 10 s.
+
+**The binding.** `ShipMotionTailBinding` sits beside `ShipMotionBinding`, and the call site
+replaces the wake block (the old block is the OFF arm).
+- **Rudder input.** The ordered rudder is `slot.ring.current_param_b`, ring+14Ch, which is
+  unit+984h (`docs/MOTION_DIFFERENTIAL.md`). It is also what `motion.to_turn` copies each step.
+  `00811890` gets the unit's post-step forward speed.
+- **Heading.** unit+1050h is stored (`hull_heading_1050`) and read back for the wake.
+- **The network correction** `0092E5B0` is done, with its gate closed.
+- **The leader test** `00778890` is `formation_groups[unit+284h].leader == unit`.
+- **The refill** is `ShipGlobals.Formacio.UpdateInterval`, read once from Lua.
+- **Records.** `0070DB60` stays a record until 8b. `0077A650` is a record too, with a counter.
+- **A mislabel, not changed here.** `step11_inputs()` labels `slot.row.rudder` as +984h, but that
+  field is the smoothed rudder; +984h is the ring's ordered value. It has other consumers.
+
+### Predictions (written before the runs)
+
+The pairs are `local\mt_off` against `local\mt_on`, from the same tree with the switch only,
+streams on and the death table on.
+
+| row | USN04 9200/9000 (E2) | USN02 9200/9000 |
+| --- | --- | --- |
+| `ShipMotion::tail` | absent -> concrete at the ship motion-tick count (about 162,000) | about 285,540 |
+| `UnitWake::append_sample` | the same count on both sides | same |
+| `ship motion tail: Formacio.UpdateInterval` | 10.000 | 10.000 |
+| `UnitGroup::swap_slots_by_distance_0070db60` (a record) | 0 -> about 46 per living group leader (1 + 450 s / 10 s), at most 92 for the 2 groups | at most 138 for the 3 groups |
+| `UnitInstance::expire_at_scheduled_time_0077a650` | absent | absent |
+| followers' speed blend and station keeping | they move: the wake's yaw rate changes from the steering rate to the ordered rudder's curve value | they move |
+| deaths, hit records | aircraft deaths 45..57, hit records 780..900, no ship sinks | deaths 18..26, hit records 380..500, the failure between 30 and 60 s |
+| rows identical | the plane-only rows until a moved ship changes a plane's world | every row before the first follower speed read |
+
+### 8a, the pairs measured
+
+The logs are `local\MT_OFF_USN02.log` / `MT_ON_USN02.log` and `MT_OFF_USN04.log` /
+`MT_ON_USN04.log` in worktree cc9-plane-release, from `a2ea7fe6e` with the switch only, streams
+and death table on. All four show the 1600x900 line, a module directory in that tree and the
+final COM release.
+
+| row | USN02 9000 OFF -> ON | USN04 9000 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `ShipMotion::tail` | absent -> concrete 285,540 | absent -> concrete 162,000 | the motion-tick count | held |
+| `UnitWake::append_sample` | 285,540 on both | 162,000 on both | unchanged | held |
+| `Formacio.UpdateInterval` | 10.000 | 10.000 | 10.000 | held |
+| `0070DB60` record calls | 46 | 46 | at most 138 / 92 | held. One group leader lives the whole run in each mission (1 + 450 s / 10 s = 46) |
+| `0077A650` | absent | absent | absent | held |
+| the mission end | failed at 39.65 s on both | none on both | 30..60 s / - | held |
+| deaths | 22 -> 22. The first four are identical to 51.65 s; the first moved is Kortenaer at 70.25 -> 70.30 s; one victim changes (Amatsukaze survives, Jupiter dies at 283.40 s) | 51 -> 52. The first moved is D3A #1.1\|.-3 at 93.70 -> 93.65 s; the extra victim is the Lexington CAP's `sqn01\|.-2`; no ship sinks on either side | 18..26 / 45..57 | held |
+| hit records | 439 -> 411 | 843 -> 875 | 380..500 / 780..900 | held |
+| other rows | follower paths move from the first follower speed read, so most later ship and gunnery lines move | same | they move | held |
+
+**Verdict: `kShipMotionTailBound` ON.** The wake now carries the image's yaw rate, from the
+ordered rudder through `00811890`. The followers' speed blend reads it, and every moved row stays
+inside its band.
+
+## 13. Part 8b: 0070DB60 reconstructed from the listing (`kFormationSlotSwapBound`, committed OFF)
+
+`src/unit_group_slot_swap.cpp` / `include/bsp/unit_group_slot_swap.hpp`. It was read from the
+Ghidra listing, x87 included. Section 11's two open points are settled:
+- **The pair order is every i < j.** The outer loop runs i from 0 (`[ESP+2Ch]` holds i + 1 and
+  the test at `0070E37D` is `ESI = ECX − 1 < count`) and skips an empty member (`0070DBC7`). The
+  inner loop runs j from i + 1 (`0070DBAB` / `0070E355`) and skips an empty member (`0070DBF8`)
+  or a different class descriptor `+538h` (`0070DC06`). Member i is re-read on every inner step
+  (`0070DBFE`), so a swap made for (i, j) is seen by (i, j + 1).
+- **The pattern columns.** `[ESP+14h]` and `[ESP+20h]` are dword indices 13·i and 13·j (34h
+  bytes = 13 dwords), so `[EBX + (column + 13k)·4 + 28h]` is member k's `+10h` (across) and
+  `+38h` is its `+20h` (along), both at the group's column `+500h` (`0070E15B`-`0070E18D`).
+- **The positions.** They come from `00811180` on the leader `[group+14h]` for each member's
+  `+0FCh` (`0070E066`, `0070E156`). The second out-parameter is across and the third is along
+  (`include/bsp/ship_ai_formation.hpp`).
+- **The test.** Four distances are computed:
+  - `d_ii` `[ESP+40h]`, i against its own slot;
+  - `d_ij` `[ESP+24h]`, i against j's slot;
+  - `d_ji` `[ESP+44h]`, j against i's slot;
+  - `d_jj` `[ESP+3Ch]`, j against its own slot.
+
+  Each difference is a stored float. The squared sum is a stored float, and above the double
+  1e−10 at `[00CE3820]` it goes through `00BF7030` (sqrt), else it is 0. Then
+  `0070E2FD`-`0070E321` compare the stored floats `kept = d_jj + d_ii` and
+  `swapped = d_ji + d_ij`, and `JBE` skips the swap unless `kept > swapped`.
+- **The swap** (`0070E323`-`0070E33E`) trades the entity dwords and the `+30h` dwords (a float,
+  moved as `FLD`/`MOVSS`). The pattern columns stay with the slots, and `[group+14h]` (the
+  leader) is not touched.
+- **The gates.** The group type `+4FCh` == 18h (`0070DB69`), and any member's entity equal to
+  `[00E188D8]` (`0070DB90`). The second gate also matches an empty member when no unit is
+  controlled.
+- **Host divergence (labelled).** When `00811180` has no leg to measure along, the image reads
+  stale stack slots. The host skips that pair and counts it as `invalid`.
+
+**The binding.** `run_formation_slot_swap_0070db60` calls it on `formation_groups[unit+284h]`,
+with the class `row.type_id` and the member's world position `unit+0FCh`. It logs the group
+membership once, and a summary line gives the runs, swaps and gate per group.
+
+### Predictions (written before the runs)
+
+The pairs are `local\ss_off` against `local\ss_on`, from `8a` ON, with the switch only, streams
+and death table on.
+
+| row | USN04 9200/9000 (E2) | USN02 9200/9000 |
+| --- | --- | --- |
+| `0070DB60` | record 46 -> concrete 46 | same |
+| per-group runs and swaps | the group holding the controlled unit (the Lexington's, if it is the one the timer runs) `gated`, 0 swaps; a group without it swaps 0..20 times, most at the first run (t = 0) | the DeRuyter group `gated`; another group 0..20 swaps |
+| follower stations | move after the first swap, if any | same |
+| deaths, hit records | 45..57 aircraft deaths, 780..900 hit records, no ship sinks | 18..26 deaths, 380..500 hit records, the failure between 30 and 60 s |
+| identical | everything, if the only group whose timer runs is gated | same |
