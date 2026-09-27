@@ -10555,3 +10555,26 @@ fails on Houston or Exeter), but DeRuyter is no longer torpedoed first:
 - The director pair on its own base gave 22 deaths; on this base the same switch gives 21. The
   two landings interact, which is why only the export pair on the current base attributes the
   step.
+
+### The USN01 torpedo-drop flag: a boundary pair at the Val rack route (packet `cc9_usn01_drop_flag_pair`)
+
+The flag carried from c: USN01's torpedo drops went 8 -> 2 between `1eaedc668` and `e3aba0f36`,
+unpaired. The candidate is the Val rack route, 5c25befbe ("Turn the Val's rack route ON"). It is
+the only plane-release landing in that window that touches the racks. Against its first parent
+`a1de87bda`, it changes only the switch `kReleaseIssueStageValsBound` in `src/game_hosts_units.cpp`
+(and its doc and report).
+
+**Method.** One `tools/pair_export.py` export directory: the parent built whole, run, then synced
+forward to the landing and rebuilt. USN01 3200/3000 with streams and the death table on, the
+reference parameters.
+
+**Predictions, before the runs:**
+- **The parent** reads 8 torpedo drops: the `1eaedc668` control's value, with the rack rows of the
+  surplus drops.
+- **The landing** reads 2 torpedo drops, with the racks reporting `drops=4` for Mav1 and Mav4,
+  the value both 2-drop runs showed.
+- Deaths (7), hit records (141), shots (447) and the death table are identical between the two.
+  The drift pairs showed that the drops land on nothing that moves those rows.
+- If both hold, the 8 -> 2 step belongs to the Val rack route. The rack route sends a kind-2Ah
+  drop through the rack stage, and the Mavis' surplus drop requests are among those. If the
+  parent also reads 2, the flag stays open, and the step lies elsewhere in the window.
