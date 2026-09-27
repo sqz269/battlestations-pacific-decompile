@@ -3863,7 +3863,9 @@ struct GameUnitsHost::Impl {
     // message (008221A7: amount = (float)(uint32)n * 10.0). OFF: it counts
     // the call and does nothing. The sender is the gunnery host's R10 / R11c
     // (0082755F, and the inline build at 00827663..), a follow-up there.
-    static constexpr bool kLiveHullLeakBound = false;
+    // ON since the USN02 / USN04 pairs (27cc522b2): identical; every live
+    // warship hit is refused by the Repair gate.
+    static constexpr bool kLiveHullLeakBound = true;
     // SUBSTITUTION, labelled: GameSettings +40Ch VizbeomlesDolgok.DologSzorzo
     // is this installation's scripts/datatables/shipglobals.lua line 388
     // (2024-07-13): 2. The loader default is 4.0 (0083EEBE).

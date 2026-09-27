@@ -2,28 +2,122 @@
   "packet": "cc9_live_hull_leak",
   "doc": "docs/UNIT_MESSAGE_ARMS.md",
   "calls": [
-    {"address": "0082755F", "native": "0080FF80", "function": "00826F10", "note": "R10 builds the 90h message (n, point)"},
-    {"address": "00827576", "native": "0077C2A0", "function": "00826F10", "note": "routes it (msg, 7, 0)"},
-    {"address": "0074F47A", "native": "0074F090", "function": "0074F440", "note": "the leak add with the world point"},
-    {"address": "0074F4AE", "native": "00BFA910", "function": "0074F490", "note": "ln(sqrt(DologSzorzo)); divided by ln 2 (0074F4C5) and stored to 00E1AECC at 0074F4EA"}
+    {
+      "address": "0082755F",
+      "native": "0080FF80",
+      "function": "00826F10",
+      "note": "R10 builds the 90h message (n, point)"
+    },
+    {
+      "address": "00827576",
+      "native": "0077C2A0",
+      "function": "00826F10",
+      "note": "routes it (msg, 7, 0)"
+    },
+    {
+      "address": "0074F47A",
+      "native": "0074F090",
+      "function": "0074F440",
+      "note": "the leak add with the world point"
+    },
+    {
+      "address": "0074F4AE",
+      "native": "00BFA910",
+      "function": "0074F490",
+      "note": "ln(sqrt(DologSzorzo)); divided by ln 2 (0074F4C5) and stored to 00E1AECC at 0074F4EA"
+    }
   ],
   "coverage": [
-    {"routine": "0074F090", "coverage": "complete"},
-    {"routine": "0074F440", "coverage": "complete"},
-    {"routine": "0080FF80", "coverage": "complete"},
-    {"routine": "00826F10", "coverage": "R10 read; R11c's inline 90h build not re-read (docs/SHIP_HIT_RECORD.md)"}
+    {
+      "routine": "0074F090",
+      "coverage": "complete"
+    },
+    {
+      "routine": "0074F440",
+      "coverage": "complete"
+    },
+    {
+      "routine": "0080FF80",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00826F10",
+      "coverage": "R10 read; R11c's inline 90h build not re-read (docs/SHIP_HIT_RECORD.md)"
+    }
   ],
   "substitutions": [
-    {"what": "GameSettings +40Ch DologSzorzo", "is": "2.0, shipglobals.lua line 388", "where": "kDologSzorzoSubstitute"},
-    {"what": "class Repair byte (class+D0h) in the live gate", "is": "0 for every class (not loaded by the host)", "where": "add_leak_0074f440"},
-    {"what": "the hull-frame round trip of the point (sender 00414E10, receiver pose+CCh)", "is": "the world point passed through", "where": "add_leak_0074f440"},
-    {"what": "health in the leak tick's live cap", "is": "1.0, unchanged from packet cc9_ship_sink_descent", "where": "leak_tick_0074f930"}
+    {
+      "what": "GameSettings +40Ch DologSzorzo",
+      "is": "2.0, shipglobals.lua line 388",
+      "where": "kDologSzorzoSubstitute"
+    },
+    {
+      "what": "class Repair byte (class+D0h) in the live gate",
+      "is": "0 for every class (not loaded by the host)",
+      "where": "add_leak_0074f440"
+    },
+    {
+      "what": "the hull-frame round trip of the point (sender 00414E10, receiver pose+CCh)",
+      "is": "the world point passed through",
+      "where": "add_leak_0074f440"
+    },
+    {
+      "what": "health in the leak tick's live cap",
+      "is": "1.0, unchanged from packet cc9_ship_sink_descent",
+      "where": "leak_tick_0074f930"
+    }
   ],
   "corrections": [
-    {"was": "R10 is a hull impact effect (docs/SHIP_HIT_RECORD.md)", "is": "R10's 90h is MT_SHIP_LEAK: it adds leak rate through 0074F090", "evidence": "0080FF80 pushes 90h; 008221A7 -> 0074F440 -> 0074F090 writes leak+18h[i] and +2Ch"}
+    {
+      "was": "R10 is a hull impact effect (docs/SHIP_HIT_RECORD.md)",
+      "is": "R10's 90h is MT_SHIP_LEAK: it adds leak rate through 0074F090",
+      "evidence": "0080FF80 pushes 90h; 008221A7 -> 0074F440 -> 0074F090 writes leak+18h[i] and +2Ch"
+    }
   ],
-  "switches": [{"name": "kLiveHullLeakBound", "committed": "OFF", "file": "src/game_hosts_units.cpp"}],
-  "failed_predictions": [],
+  "switches": [
+    {
+      "name": "kLiveHullLeakBound",
+      "committed": "OFF, flipped ON after the pairs",
+      "file": "src/game_hosts_units.cpp"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "USN02 calls",
+      "predicted": "250..400",
+      "measured": "664",
+      "cause": "R10 and R11c both send; hits with part entries send more than once"
+    }
+  ],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "pairs": {
+    "USN02_9200": {
+      "exit": 1,
+      "calls": 664,
+      "gated_live": 664,
+      "deaths": [
+        22,
+        22
+      ],
+      "hit_records": [
+        579,
+        579
+      ]
+    },
+    "USN04_4700": {
+      "exit": 1,
+      "calls": 269,
+      "gated_live": 5,
+      "no_model": 264,
+      "deaths": [
+        41,
+        41
+      ],
+      "hit_records": [
+        808,
+        808
+      ]
+    }
+  }
 }

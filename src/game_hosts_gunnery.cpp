@@ -6142,8 +6142,18 @@ public:
         return true;
     }
     void push_damage_direction(const float[3]) override {}
-    void route_hull_impact_effect(int, const float[3]) override {}
-    void route_part_impact_effect(int, const float[3]) override {}
+    // R10 (0082749C..0082757B, 0080FF80 at 0082755F) and R11c (00827663..,
+    // the inline 90h build): message 90h MT_SHIP_LEAK, whose receiver is the
+    // units host's add_leak_0074f440 (packet cc9_live_hull_leak). The count is
+    // msg+1Ch; the point is the hit's world point (hit+08h).
+    void route_hull_impact_effect(int count, const float point[3]) override {
+        owner_.units.add_leak_0074f440(victim_, static_cast<std::uint32_t>(count), point);
+        owner_.done("ShipHit::leak_message_90h_0082755f", 0x0082755fu);
+    }
+    void route_part_impact_effect(int count, const float point[3]) override {
+        owner_.units.add_leak_0074f440(victim_, static_cast<std::uint32_t>(count), point);
+        owner_.done("ShipHit::leak_message_90h_r11c", 0x00827663u);
+    }
 
     // One AddDamage, the `0.0 < damage` test at 008778C6 / 00877A2E and the
     // 00879070 -> 00877B90 write both passes share.

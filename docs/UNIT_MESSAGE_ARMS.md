@@ -333,7 +333,7 @@ provenance - but their triggers are unresolved.
   **Is:** the kind is a byte immediate inside the dedicated constructor 007619B0, and the producer is FUN_008132C0's "EngineJam" branch
   **Evidence:** 007619C8 C6 40 10 6C MOV byte ptr [EAX+10h],6Ch; 00813519 PUSH 0CF6124h ("EngineJam"), 00813530 CALL 007619B0, 00813546 CALL 0077C2A0 with (unit, msg, 7, 0); the sibling kinds are PUSH 6Ah at 008133D5 and PUSH 6Bh at 008134C4 in the same function
 
-## 90h, bound: the live-hull leak (packet `cc9_live_hull_leak`, `kLiveHullLeakBound`, committed OFF)
+## 90h, bound: the live-hull leak (packet `cc9_live_hull_leak`, `kLiveHullLeakBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units3, on main 5b551235c. Ghidra was read only. This packet binds the
 receiver half of the contract in docs/CONSTRUCT_WORLD.md section 25 ("Contract for the gunnery
@@ -460,3 +460,35 @@ On a wreck the handler's redistribution makes `D` about `2 × cap = 0.04 × capa
 | hit records | ± 3 % | identical |
 | the idle Lexington | - | unchanged: its class has no Repair, so the live gate refuses every hit. **It does not sink from this binding** |
 | pair_diff exit | 1 if no wreck's timing crosses a scan, else 3 | 1 (the native row and the summary only) |
+
+### The pairs, measured
+
+One tree, `27cc522b2`: the gunnery sends wired, the switch OFF. The OFF build is the tree's own
+`build\`; the ON build is `tools/pair_export.py --flip kLiveHullLeakBound=true --out
+local\bu_on`. Both variables were set. The logs are `local\LK_{OFF,ON}_{USN02,USN04}.log` in
+worktree cc9-units3. All four show the fit line, the immediate present interval, a module
+directory in this tree and the final COM release.
+
+| row | USN02 OFF | USN02 ON | USN04 OFF | USN04 ON | prediction | verdict |
+| --- | --- | --- | --- | --- | --- | --- |
+| `calls` | 664 | 664 | 269 | 269 | 250..400 on each | **failed** on USN02 (664), held on USN04 |
+| `gated_live` / `no_model` | - | 664 / 0 | - | 5 / 264 | mostly gated | held |
+| `applied` / `applied_wreck` | - | 0 / 0 | - | 0 / 0 | wrecks 0..40 on USN02; 0 on USN04 | held at 0 (see below) |
+| wreck descent | - | identical | - | - | 0..−2 s | held (0) |
+| deaths, hit records | 22, 579 | identical | 41, 808 | identical | ± 1, ± 3 %; identical | held |
+| the idle Lexington | - | - | - | identical | does not sink | held |
+| native table | - | `LeakManager::add_leak_0074f440` UNIMPLEMENTED -> concrete | - | the same, calls 269 -> 5 | - | - |
+| pair_diff exit | - | 1 | - | 1 | 1 or 3; 1 | held |
+
+- **Why no wreck took a leak.** The gunnery host's `apply_hit` returns at once for a dead
+  victim (`if (target.dead) return;`), so no hit reaches a wreck in this host. Whether the image
+  delivers hits to a wreck's 00826F10 was not read. That is the open question behind the zero.
+- **The calls band.** It assumed one send per hull hit. R10 and R11c both send, so a hit with part
+  entries sends more than once: 664 sends against 290 hull hits on USN02.
+- **`no_model` on USN04.** 264 calls are to victims without a leak model, that is, without a hull
+  element list. These are most likely aircraft victims routed through the same binding, not read
+  further.
+
+**Verdict: ON.** The 90h receiver runs as the image's: every live warship hit is refused by
+0074F090's gate. The Repair substitution (0 for every class) and the host's dead-victim return
+leave nothing to flood on these two missions today.
