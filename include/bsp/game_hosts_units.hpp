@@ -80,6 +80,18 @@ namespace bsp::game {
 // on 30.6's pairs.
 inline constexpr bool kWingConstructionInPassABound = true;
 
+// Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
+// leaves its group"). True: a destroyed ship leaves its formation group as the
+// image's destroy 0077D1A0 -> 0077C980 message 77h -> 0077FE80 -> 0077BD70(null)
+// makes it: a successor from 0070D8D0, 0070D0C0 SetLeader with 00815E20's wake
+// hand-over, and 0070E4C0 DetachMember's compaction. LABELLED: applied at the
+// row-15 flush that delivers the destroy (the image routes 77h to the next
+// session pump); the director notice vtable[114h]->vtable[5Ch] (unread), the
+// new leader's +FA0h/+FA8h offsets and the observer unregister are recorded
+// only; 0070DA00's ceiling has no stored copy here, the host reduces members on
+// demand. False: a dead ship stays in its group, as before.
+inline constexpr bool kDeadMemberLeavesGroupBound = false;
+
 class GameHostLog;
 class GameMissionLuaHost;
 class GameObserverRuntime;
@@ -623,6 +635,9 @@ public:
     // two dampings), run by the row-15 flush at vt[7Ch]. False when the switch is
     // off, the identity is not a unit, or its leak model was never built.
     bool ship_wreck_sink_00824fe5(const void* identity);
+    // Packet cc9_dead_member_group_removal: 0077BD70(unit, null) on a destroyed
+    // unit, once. No effect for a unit in no group.
+    void leave_group_on_destroy_0077bd70(std::size_t index);
     // Packet cc9_live_hull_leak (docs/UNIT_MESSAGE_ARMS.md, "90h, bound"): the
     // 90h message's receiver 008221A7 -> 0074F440 -> 0074F090 on the unit's
     // leak manager. `count` is msg+1Ch, the sender's trunc(clamp(damage / 10,
