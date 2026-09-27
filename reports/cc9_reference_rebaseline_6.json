@@ -195,5 +195,21 @@
     "USN01": "identical to e",
     "E2": "51/902 -> 51/854: not paired on E2; first 4500 frames moved -23 at the gate bytes, rest unpaired",
     "USN02": "20/664 -> 19/566: merge e4dbf38b2 landings bracketed (20/640), gate bytes (21/652), health slot 6f274fe5f (20/611, phase 2 no longer reached), dead-member leave b22d37cf6 (19/566)"
+  },
+  "e2_gate_bytes_pair": {
+    "purpose": "close reference f's E2 flag: how much of E2 902 -> 854 (e -> f) is the query gate bytes",
+    "base": "main cd35f79de (source differs from 2dd253a5a only by a4a9e30c4, 3639ac707, 48cae6eb9 and hud3; each paired identical on USN04)",
+    "off_side": "build/ of this tree = main, kShipAiQueryGateBytesBound ON as landed",
+    "on_side": "tools/pair_export.py --commit cd35f79de --flip kShipAiQueryGateBytesBound=false -> local/e2gb",
+    "run": "USN04 --frames 9200 --mission-frames 9000, streams + death table, lockstep 0.05, idle",
+    "predictions": {
+      "main_side": "identical to reference f's E2 row: 51 deaths, 854 hit records (307 hull), 7202 shots, Lexington 5760.25",
+      "flip_off_first_4500_frames": "the death rows before 225.00 s match e's USN04 (rb5_usn04 = gb_off_usn04): 41 deaths by 4500 frames, not f's 44",
+      "flip_off_totals": "hit records 877..902 (at least the USN04 analogue's +23 back), deaths 49..52",
+      "attribution_rule": "flip-off E2 = 902 exactly -> the whole drop is the gate bytes; 877..901 -> gate bytes plus a remainder from the later landings; below 877 -> the USN04 analogue does not carry to E2",
+      "rows_that_move": "Lexington's distance and the ship death rows of the first half; plane releases 3 of 16 / 4 of 19 unchanged (gate bytes is ship AI)"
+    },
+    "predictions_commit": "pending",
+    "result": "pending"
   }
 }
