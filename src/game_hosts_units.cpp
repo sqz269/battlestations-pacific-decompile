@@ -3370,7 +3370,9 @@ struct GameUnitsHost::Impl {
     // unreferenced 007B9620, the state-message arms 007C2B6B / 007D18CE and the
     // alternate pose 007DA24F); (2) 007F10B0's push of a squadron into world
     // list 24 (+138h), the squadron's +130h registrar. OFF: neither.
-    static constexpr bool kUnitsContractsBound = false;
+    // ON since the USN04 4500 / USN02 pairs: gameplay identical, list 24 = 21
+    // squadrons on USN04, unit+9B8h stored with no reader.
+    static constexpr bool kUnitsContractsBound = true;
     unsigned long long h9b8_writes = 0;
     double h9b8_min = 0.0, h9b8_max = 0.0;
     std::vector<unsigned char> squadron_list24_pushed;

@@ -1,0 +1,117 @@
+{
+  "packet": "cc9_units_contracts",
+  "doc": "docs/AVOID_ZONE_REGISTRY.md",
+  "calls": [
+    {
+      "address": "007CE92A",
+      "native": "0041BC20",
+      "function": "007CE040",
+      "note": "unit+9B8h's second sample on squadron+34Ch"
+    },
+    {
+      "address": "009CFAD0",
+      "native": "0041BC20",
+      "function": "009CFA80",
+      "note": "the takeoff task's altitude floor on squadron+350h; not bound (no takeoff task in the host)"
+    },
+    {
+      "address": "007F10B3",
+      "native": "00928560",
+      "function": "007F10B0",
+      "note": "list 1"
+    },
+    {
+      "address": "007F10BF",
+      "native": "00484540",
+      "function": "007F10B0",
+      "note": "list 2 ([+30h]+30h)"
+    },
+    {
+      "address": "007F10CE",
+      "native": "00484540",
+      "function": "007F10B0",
+      "note": "list 24 ([+30h]+138h)"
+    },
+    {
+      "address": "0087BD4F",
+      "native": "0087B460",
+      "function": "0087BCC0",
+      "note": "part table resized to the class's section count"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "007F10B0",
+      "coverage": "partial: the list-24 push; lists 1 and 2 are the fused member slot's own"
+    },
+    {
+      "routine": "007CE040",
+      "coverage": "partial: both 0041BC20 samples (007CE8FF, 007CE92A) now bound"
+    },
+    {
+      "routine": "009CFA80",
+      "coverage": "read, not bound"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "list-24 node",
+      "is": "the member slot the host fuses with the squadron (squadron_unit, else the first member)",
+      "evidence": "the host has no squadron entity"
+    },
+    {
+      "what": "list-24 push time",
+      "is": "the first units step after the record has a unit",
+      "evidence": "at most one frame after creation"
+    },
+    {
+      "what": "unit_part_descriptor_count",
+      "is": "the class row's Damage.Sections entry count",
+      "evidence": "0087BD20-0087BD4F sizes the table to the descriptor +18h vector; 0087CE00/0087CE48 fill that vector per section"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "009CFAD0 is the move-to's +350h sample (docs/AVOID_ZONE_REGISTRY.md; docs/COMMAND_COMPLETION.md row 009CFB47 moveto)",
+      "is": "009CFA80 is the takeoff task's (vtable 00D21228, string `takeoff` after it); it issues and completes the moveto command",
+      "evidence": "the only caller 009CFD8B in 009CFD70, slot +64h of 00D21228"
+    }
+  ],
+  "switches": [
+    {
+      "name": "GameUnitsHost::Impl::kUnitsContractsBound",
+      "state": "ON",
+      "pair": "local/UC3_OFF_4500.log vs local/UC3_ON_4500.log, local/UC3_OFF_USN02.log vs local/UC3_ON_USN02.log"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "with_parts>1 in the first two pairs",
+      "predicted": "the ships' true count",
+      "measured": "0",
+      "why": "the Lua chunk overflowed its 256-byte buffer and never compiled; fixed in b8eac497e"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009CFD70",
+      "end_inclusive": "009CFDC3",
+      "evidence": "takeoff task tick, vtable 00D21228 slot +64h; RET 4 at 009CFDC1; INT3 from 009CFDC4 and at 009CFD6A-009CFD6F; its call 009CFD8B -> 009CFA80 is the only reference to 009CFA80"
+    }
+  ],
+  "ledger_names_added": [
+    {
+      "address": "009CFD70",
+      "name": "BSP_TakeoffTask_Tick"
+    },
+    {
+      "address": "009CFA80",
+      "name": "BSP_TakeoffTask_UpdateAltitudeFloor"
+    }
+  ],
+  "entries_added": [
+    "GameUnitsHost::unit_part_descriptor_count(std::size_t) const",
+    "GameUnitsHost::squadron_list_24_leader(std::size_t) const",
+    "world_list_size(24) / world_list_entry(24, i) now answer"
+  ]
+}
