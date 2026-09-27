@@ -313,3 +313,78 @@ clock offset is zero.
 
 **Verdict: ON.** Both gates now read the image's byte. The rows behind them are named records,
 waiting for parts 7 and 8.
+
+## 11. Part 3: ScanProximity 00977990 (`kScanProximityBound`, committed OFF)
+
+Packet `cc9_construct_world_p3`. Ghidra was read only.
+
+**The routine** (V, 00977990..00977B8x):
+1. **The ship walk.** It walks list 6 from its head (`009779A2 MOV EAX,[ECX+64h]`). A ship
+   qualifies when these hold:
+   - `+5Ch` is set, and `+5Dh`, `+60h` and `+5Eh` are clear;
+   - the part-descriptor vector at `+348h..+34Ch` (`kUnitPartTableOffset` = 344h, the vector
+     object) holds more than one entry.
+2. **The squadron walk.** For each qualifying ship it walks list 24 (`00977A25 MOV
+   EBP,[ECX+13Ch]`). It looks for a live squadron that meets all of these:
+   - its side (`+54h`) differs from the ship's;
+   - `00803CE0(ship side, squadron)` returns 1;
+   - its leader `[squadron+3D0h]` is within `4.0e6` squared (`00D09FE8`, a double), which is
+     2000 m. The pose is refreshed first when `+C8h` is clear.
+3. **The record.** `00977B04 ADD ECX,184h; CALL 00975D00` fetches the ship's record from the
+   manager's `std::map<entity, record>`. A missing record is inserted with the defaults
+   -1.0e10 (`00CE4ADC`) and a null effect. The torpedo effect 00977820 uses the same map and
+   record, at field `+0h`. The scan uses `+4h`, a deadline, and `+8h`, an effect.
+4. **A hit.** `0096C070(record, ship)` creates a point effect from the definition at
+   `manager+194h`, parented to the ship's scene node `+4A4h`. The deadline becomes
+   clock + 2.0 (`00D7A308`).
+5. **A miss.** When the deadline has passed and the effect is live, `00867B10` stops it,
+   `effect+9 = 1`, and it is released.
+
+**00803CE0** (V) takes the side in ECX and the unit in EDX:
+- The level is `[unit+1E8h+side*34h]`: its `+8h` field when `+10h` is set, else its `+4h`.
+- A level below 2 returns 3.
+- Otherwise the side matters. Observer side 2 returns 0 for a neutral unit and 2 for any other.
+  Any other observer side returns 0 for its own side, 2 for a neutral unit, and 1 for an enemy.
+- So 1 means "an enemy, identified". The host answers the level from
+  `ReconSensorPassState::level(side, unit) == identified`, through the gunnery host.
+
+**Who is warned.** Nobody in the manager's sense. The output is a point effect on each
+qualifying ship, whoever controls it. It raises no radio message, has no controlled-unit guard
+and has no gameplay reader. The effect definition at `manager+194h` is loaded by 00980380
+`BSP_WarningManager_LoadEventTable`.
+
+**The binding** (`src/game_hosts_mission_frame.cpp`, which is free):
+- **The walk.** It covers list 6 from the units host's registry (`world_list_size/entry(6)`),
+  the four bytes through `unit_alive_and_visible`, the side through `unit_side_0054`, and the
+  positions through `unit_position_00fc`.
+- **The record map.** `proximity_records` holds `+4h` and `+8h` of the 00975D00 record. The
+  torpedo path keeps its own map for `+0h`, so the two stay apart.
+- **The relation.** `relation_00803ce0` is as above.
+- **Rows and summary.** The effect start and stop are named records:
+  `WarningManager::proximity_effect_0096c070` and `proximity_effect_stop_00867b10`. A summary
+  line reports `proximity scan bound scans ships records hits expiries`.
+- **Stand-ins:**
+  - **The part test** answers true for every list-6 entity. The kinds that register id 6 are
+    Destroyer, Cruiser, LandingShip, Cargo, BattleShip, Submarine, TorpedoBoat and MotherShip
+    (`docs/UNIT_WORLD_REGISTRATION.md`); each is a ship class. Whether each model carries more
+    than one part descriptor was not checked against the data.
+  - **List 24** is an empty list, because no host registrar fills it.
+
+**Contract for cc9-plane-release (`src/game_hosts_units.cpp`, `include/bsp/game_hosts_units.hpp`).**
+Two entries would retire both stand-ins:
+- `std::size_t unit_part_descriptor_count(std::size_t index) const`: `(unit+34Ch - unit+348h) >> 2`,
+  the part table 0087BD4F/0087BDBC fill;
+- the squadron registrar 007F10B0's push into id 24 (`ADD ECX,138h`), so that
+  `world_list_size/entry(24)` answers.
+
+**Predictions** (written before the pairs; the same tree, switch only, both variables set):
+
+| row | USN04 4700/4500 OFF -> ON | USN02 9200/9000 OFF -> ON |
+| --- | --- | --- |
+| `WarningManager::scan_proximity` | UNIMPLEMENTED 55 -> concrete 55 | 111 -> concrete 111 |
+| `summary mission proximity scan` ships | 0 -> between 1 and 55 x 18 (the live list-6 ships per scan) | 0 -> between 1 and 111 x 32 |
+| records created | 0 -> the distinct live ships, at most 18 | 0 -> at most 32 |
+| hits, expiries, the two effect rows | 0, absent | 0, absent |
+| every other native row, per-entity rows, death rows, gunnery and summary lines | identical, zero clock offset | identical |
+
+The ignored counters are `ship avoidance search refills` and `pretranslate`.
