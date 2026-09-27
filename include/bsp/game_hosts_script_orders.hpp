@@ -193,7 +193,10 @@ inline constexpr bool kSubmarineDepthLevelBound = true;
 // not modelled; 0077B0C0's other stores (+2F8h, +2FCh, +300h) and its
 // 00980E50 notify are not modelled. False: no table, ForceRecon stays an
 // unimplemented record.
-inline constexpr bool kReconLevelTableBound = false;
+// ON by the pairs at 72c01329b: LOMP06's six :531 failures went to 0 and the
+// once-a-second ForceRecon moved gameplay (Narwhal survives); USN02 and USN04
+// identical (docs/RECON_SENSOR_PASS_BINDING.md).
+inline constexpr bool kReconLevelTableBound = true;
 
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo

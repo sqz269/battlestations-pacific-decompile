@@ -303,3 +303,39 @@ same as `bsp::ReconDetectionLevel`, and the party key is `unit+54h`. The scripts
 `ent.reconlevel = GetProperty(ent, "reconlevel")`. The host's GetProperty (`0088BF80`, in
 game_hosts_lua) does not serve `reconlevel`, so that line overwrites the table with nil. The image's
 reader `00779BB0` walks the three records (`00779B28`). That needs its own packet in the Lua host.
+
+### The pairs, and the flip
+
+The switch was committed OFF at `72c01329b` and paired against the flipped export in `local\rlt_on`.
+The logs are `local\rlt_{off,on}_{lomp06,usn02,usn04}.log` in worktree cc9-ships2, with streams and
+the death table on, lockstep 0.05 and an idle player.
+
+| mission | pair_diff | on-side summary |
+| --- | --- | --- |
+| LOMP06 1200/1000 | exit 3 | syncs 33, tables 198, writes 971, ForceRecon 21 |
+| USN02 9200/9000 | exit 1 | syncs 151, tables 28, writes 104 |
+| USN04 4700/4500 | exit 1 | syncs 87, tables 81, writes 381 |
+
+**LOMP06:**
+- **The six `:531` failures went to 0.** The stage loop now re-arms every second.
+- **Exactly one `NavigatorAttackMove`** is made (Yugiri), after an `IsInFormation` that has no host.
+- **Narwhal now survives.** On the OFF side Mikuma sinks her at 46.60 s (first hit 43.10 s, 10 hit
+  records, 16 shots). On the ON side nothing hits her, and the only shots are Yugiri's 6.
+- **The move comes from the recon cadence, not from Yugiri.** The 21 forced passes raise the triple
+  builds from 18 to 33. Each forced pass accumulates only the gap since the previous pass, about
+  1 s instead of 3 s, after the per-pass reset.
+  - The sensor pass publishes blip 8229 and identified 3787, against 115 and 6079 on the OFF side.
+  - Blips go to the `unknown` triple: the enemy mean falls from 57.0 to 19.1, and the unknown mean
+    rises from 6.4 to 249.4.
+  - So every Japanese gun drops its targets.
+- **This is the host pass's reconstruction of the image rule.** dt is the measured gap
+  (`008073C1`..`008073D6`) and `00805BE0` resets the values. It is flagged: check that `00805BE0`
+  zeroes `+0Ch` on a forced pass before LOMP06 becomes a reference row.
+
+**USN02 and USN04 are identical**, as predicted. The switch is ON.
+
+**The next Lua-host gap.** `luaGetReconLevel` (`commandhelpers.lua:1821`) does
+`ent.reconlevel = GetProperty(ent, "reconlevel")`. The host's GetProperty (`0088BF80`, in
+`src/game_hosts_lua.cpp`) does not serve that key, so the call replaces the table with nil and the
+next line indexes nil. The image's reader is `00779BB0`, which walks the three detection records
+(`00779B28`). The next packet reached through a ReconCheck or `luaGetReconLevel` will need it.
