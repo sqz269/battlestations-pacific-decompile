@@ -208,3 +208,45 @@ USN02 9200/9000 and E2 = USN04 9200/9000, streams and the death table on, one tr
   `piVar4[0x19]`) must be checked against the listing.
 - **`unit+308h`'s constructor value** is set before the window read.
 - **Class flag `+D0h`** has no reader in the host besides this gate, and its producer was not read.
+
+## 12. Packet cc9_ship_motion_tail, part 8a (`kShipMotionTailBound`, committed OFF)
+
+2026-09-26, worker cc9-plane-release.
+
+**Two facts settled before binding:**
+- **unit+308h is 0.** The constructor stores it from a cleared XMM0 (`0077EFE4` `XORPS XMM0,XMM0`,
+  then `0077EFFE` `MOVSS [ESI+308h],XMM0`). No host path sends message 51h, so the tail's
+  `!= 0.0f` test at `00826D43` never calls `0077A650` here. Section 11's open question is closed.
+- **unit+1158h starts at 0.** `00823C30` in `BSP_UnitInstance_SEntityInit` stores it from a
+  cleared XMM0, and a disp32 scan of `58 11 00 00` finds no other writer outside the tail. So a
+  group leader's first tail tick expires the timer at once and calls `0070DB60`. The timer is
+  then refilled to 10.0 − dt and fires every 10 s.
+
+**The binding.** `ShipMotionTailBinding` sits beside `ShipMotionBinding`, and the call site
+replaces the wake block (the old block is the OFF arm).
+- **Rudder input.** The ordered rudder is `slot.ring.current_param_b`, ring+14Ch, which is
+  unit+984h (`docs/MOTION_DIFFERENTIAL.md`). It is also what `motion.to_turn` copies each step.
+  `00811890` gets the unit's post-step forward speed.
+- **Heading.** unit+1050h is stored (`hull_heading_1050`) and read back for the wake.
+- **The network correction** `0092E5B0` is done, with its gate closed.
+- **The leader test** `00778890` is `formation_groups[unit+284h].leader == unit`.
+- **The refill** is `ShipGlobals.Formacio.UpdateInterval`, read once from Lua.
+- **Records.** `0070DB60` stays a record until 8b. `0077A650` is a record too, with a counter.
+- **A mislabel, not changed here.** `step11_inputs()` labels `slot.row.rudder` as +984h, but that
+  field is the smoothed rudder; +984h is the ring's ordered value. It has other consumers.
+
+### Predictions (written before the runs)
+
+The pairs are `local\mt_off` against `local\mt_on`, from the same tree with the switch only,
+streams on and the death table on.
+
+| row | USN04 9200/9000 (E2) | USN02 9200/9000 |
+| --- | --- | --- |
+| `ShipMotion::tail` | absent -> concrete at the ship motion-tick count (about 162,000) | about 285,540 |
+| `UnitWake::append_sample` | the same count on both sides | same |
+| `ship motion tail: Formacio.UpdateInterval` | 10.000 | 10.000 |
+| `UnitGroup::swap_slots_by_distance_0070db60` (a record) | 0 -> about 46 per living group leader (1 + 450 s / 10 s), at most 92 for the 2 groups | at most 138 for the 3 groups |
+| `UnitInstance::expire_at_scheduled_time_0077a650` | absent | absent |
+| followers' speed blend and station keeping | they move: the wake's yaw rate changes from the steering rate to the ordered rudder's curve value | they move |
+| deaths, hit records | aircraft deaths 45..57, hit records 780..900, no ship sinks | deaths 18..26, hit records 380..500, the failure between 30 and 60 s |
+| rows identical | the plane-only rows until a moved ship changes a plane's world | every row before the first follower speed read |
