@@ -10159,3 +10159,33 @@ exited 0.
 are 2 fewer: 10 Allied ships sink OFF, against 12 ON. The astern latch returns as predicted
 (884 lines), but on this tree it costs the Japanese, not the Allies. The older pair's 14 -> 11
 ran on a base whose OFF side already differed from b.
+
+**Reference c predates the torpedo rack drop.** The rack drop (e76314e91) landed after
+reference c: the attribution control showed USN01's torpedo drops going from 2 to 8. A reference d
+will follow once the in-flight landings settle.
+
+**Two more flag pairs** (packet `cc9_reference_flag_pairs_2`). The method is the same: one export,
+`local\ap_src`, synced to main `e3aba0f36` by rewriting only the files that differ. The flips are
+made in the export only.
+
+Predictions, committed before the runs:
+- **(a) USN01 3200/3000, `kReconAggregatesBound` (src/game_hosts_gunnery.cpp) OFF against ON.**
+  - OFF: the `recon aggregates` line reads 0 group records (ON has 293, all planes).
+  - Window refusals return to 385 (754 ON), and `gunnery contacts` admit_plane to about 3922
+    (7466 ON).
+  - Deaths (7), hit records (141), damage (2690.0), shots and the death table are identical.
+  - If that holds, the USN01 refusal flag is closed.
+- **(b) E2 = USN04 9200/9000, `kShipAiSnapshotBound` OFF against ON.**
+  - **USN02 as the guide.** On USN02 the latch is the mechanism: 884 `dir=astern` lines OFF.
+  - **Coral Sea.** The older E2 pair (`docs/SHIP_AI_TAILS.md` section 5) saw no astern line on
+    either side and no ship's fate change. Its movement came from +3A5h's per-step clear:
+    station keeping 17938 against 46798, and path picks moving the other way.
+  - **Prediction:** `dir=astern` stays 0 on both sides, and no ship sinks on either side.
+    Station keeping falls OFF and path picks rise.
+  - Only aircraft rows move: deaths within +/- 4 of 51, and hit records within +/- 40 of 836.
+  - **What this pair can settle.** The 594 -> 595 residue arose on the pre-move-to base. On
+    today's tree the move-to chain and circle steer shape the whole air battle. So this pair can
+    show whether the switch moves E2 hit records at all, but not whether it is the one-record
+    residue. That flag is resolved only if OFF is **identical** to ON: then the snapshot does not
+    touch E2's hit records, and the residue belongs elsewhere. If OFF moves many rows, the
+    residue stays flagged as not isolable on the current base.
