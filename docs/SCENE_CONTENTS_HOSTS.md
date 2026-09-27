@@ -970,6 +970,82 @@ Both hunks need `#include "bsp/game_hosts_scene_contents.hpp"` for the queries.
   not exercised. The expected movement is in sector choice and in the approach geometry, not in
   the drop count.
 
+## 8. The Landscape in the spatial index (packet `cc9_landscape_spatial_attach`, read, 2026-09-27)
+
+This is the read-only part of the packet. The binding waits for `src/game_hosts_gunnery.cpp`,
+leased to cc9-world-init for `cc9_loss_warning` when this was written.
+
+### How an island enters the segment query
+
+1. **The shape.** Landscape pass A 00883BB0 appends the segment-trace sub-object `+344h`
+   (vtable 00CEA050) to the collision node `+1E4h`'s shape array (00883F88..00883FA1: slot
+   `[+1E4h + [+2DCh]*4 + D0h]`, count `node+F8h`). 00883FAE sets `+230h` = the Landscape.
+2. **The bounds.** 0098A920 `BSP_SpatialNode_SetLocalBounds` at 00884066 takes the terrain's
+   vt+0Ch box less the pose translation.
+3. **The attach.** 0098BA10 at 00884078 is called with index `0042E630()`, node `+1E4h`,
+   parent 0, matrix `+384h` and static 1.
+   - With no parent it takes steps 4..8 of `docs/SPATIAL_INDEX.md`'s attach.
+   - An island's box spans far more than 2x2 cells, so step 8 puts the node in the **loose array**
+     `index->loose[looseCount++]`. That array is what 0098ADD0 walks after the grid rectangle.
+4. **The trace.** 0098AC20 calls each shape's vtable[0], here 0087FF80
+   `BSP_CollisionShape_TraceSegment_Subobject`:
+   - it loads `[shape+8Ch]`, which is Landscape `+3D0h`, the terrain (0087FF86), and returns 0
+     when it is null;
+   - it calls terrain vt+3Ch (from, to, &hit) at 0087FFA4: 00ADA240, the node-local quadtree
+     walk of section 6 that is not reconstructed;
+   - on AL != 0 it writes the hit point to record `+8h`, `+Ch`, `+10h`;
+   - it sets the record's entity to `shape - 344h` = the **Landscape** (00470370 at 0087FFD9);
+   - it stores record `+30h` = 0Ah (shape kind) and `+34h` = -1 (hull segment), and returns 1.
+5. **What the hit means.** The Landscape is class 44h. `docs/PROJECTILE_IMPACT.md` maps a hit
+   entity answering vt[5Ch](44h) to impact mode 3, the terrain effect slot (0084BC99).
+
+So a land hit is a terrain height-field hit, not a collision-mesh hit. The `.mmod` parts at
+`+418h` attach separately (00710B6D) and are not read here.
+
+### The binding plan (for when the file is free)
+
+`SegmentBinding` (`src/game_hosts_gunnery.cpp`, about line 5104) answers `loose_entity_count`
+with the unit count and one shape per unit.
+
+**The hunk, under one switch committed OFF:**
+- `loose_entity_count` = units + `scene_world_class_lists().list(0x44)`, where a Landscape
+  object has a loaded height field.
+- **Entity handles.** Units keep 1..N; the Landscapes follow.
+- **Per Landscape entry:**
+  - `entity_owner` is itself;
+  - `entity_is_kind` answers the native's class set (44h, 1, 0);
+  - `entity_bounds` is the height field's world box (origin, tiles x 300 m, the sample range);
+  - `shape_count` is 1.
+- `shape_trace_segment` for a Landscape calls a new scene-host query, the section 6 segment test
+  with a hit point. It returns the first point where the march goes below the height, the
+  labelled stand-in for 00ADA240. It fills the record: point, entity, kind 0Ah, segment -1.
+- `query_segment_units_impl` reports a land hit apart from a unit hit (`hit_unit` stays 0 and a
+  land flag is set), so the three callers can be read against the image before they change.
+- **The trace counters stay as they are.** `shell_mesh_hits` and `narrowphase_box_0085cdb0` are
+  restored around the query, as today.
+
+**What the consumers do with a land hit is read when the hunk lands, not here:**
+- the pick 009043A0's hit kinds;
+- the gun seat's aim at 00957DA0;
+- the line-of-fire refusal.
+
+### Predictions for that pair (switch only, streams on)
+
+**USN04 4700/4500** (`usn_19_coralus.scn`).
+- It authors no Landscape: its four class-47h rows are the non-zone `CarrierPath1..4`.
+- So no island joins the index, and every ray answers as today.
+- Identity on every row: 41 deaths, 743 hit records, 5,603 shots.
+
+**USN01 3200/3000.**
+- **Rays reach land.** Four islands join the index. The player controls `Airfield2` on
+  `Landscape 03`, so the idle pick and seat rays start on or above that island.
+- **The pick and seat queries** gain land hits.
+- **Fort line-of-fire rays** leave from the island's surface. Any gunnery segment test that
+  starts at a fort on land can be refused by the ground under or near it.
+- **Direction:** land hits > 0; shots equal or down; hit records and deaths equal or down.
+- **Band:** unknown until the per-consumer counters exist. On the current base these are 583
+  shots, 150 hit records and 7 deaths.
+
 ## Ledger names recorded
 
 | Address | Name |

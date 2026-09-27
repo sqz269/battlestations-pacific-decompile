@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_landscape_spatial_attach",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md",
+  "state": "read-only part committed; the SegmentBinding hunk waits for src/game_hosts_gunnery.cpp (leased to cc9-world-init)",
+  "calls": [
+    {"address": "00884066", "native": "0098A920", "function": "00883BB0", "note": "the node's bounds from the terrain box"},
+    {"address": "00884078", "native": "0098BA10", "function": "00883BB0", "note": "static root attach, loose array"},
+    {"address": "0087FFA4", "native": "00D5D350+vtable3C", "function": "0087FF80", "note": "terrain segment walk 00ADA240"},
+    {"address": "0087FFD9", "native": "00470370", "function": "0087FF80", "note": "record entity = shape - 344h, the Landscape"}
+  ],
+  "coverage": [
+    {"routine": "0087FF80", "coverage": "complete"},
+    {"routine": "00883BB0", "coverage": "partial, as section 5; 00883F88-008840A0 reread here"}
+  ],
+  "substitutions": [],
+  "corrections": [],
+  "switches": [],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
