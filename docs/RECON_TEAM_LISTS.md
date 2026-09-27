@@ -225,3 +225,15 @@ host answers plane-base for them. Whether a class-18h record then survives `0086
 its `IsKindOf(0Fh)` answer, and that is the units host's class table, not this file. No host
 change.
 
+### USN01 pair on main e3aba0f36 (packet `cc9_reference_flag_pairs_2`)
+
+`kReconAggregatesBound` was set false in a `git archive` export of main `e3aba0f36`
+(`local\ap_src`, worktree cc9-gunnery2). The run was USN01 3200/3000 with streams on, logs
+`local\fp2_{ctl,ra_off}_usn01.log`.
+- **Without the aggregates:** 0 group records (293 plane groups with them). The fire-window
+  refusals are 385 (754 with them), and the `gunnery contacts` line admits 3922 planes (7466).
+  Candidates are 152 (291), and the recon triple means are lower.
+- Deaths, hit records, damage, shots and the death table are identical. So the plane group
+  records reach the AA scan as extra candidates, which the fire window then refuses.
+- This closes reference c's USN01 refusal flag (`docs/GAME_EXECUTABLE.md`, reference c).
+- The first OFF run crashed once, at 121.40 s. The repeat was clean (see the reference c section).

@@ -10189,3 +10189,25 @@ Predictions, committed before the runs:
     residue. That flag is resolved only if OFF is **identical** to ON: then the snapshot does not
     touch E2's hit records, and the residue belongs elsewhere. If OFF moves many rows, the
     residue stays flagged as not isolable on the current base.
+
+**The two flag pairs, measured.**
+- **Builds:** control `local\fp2_ctl` (SHA-256 prefix `21257B8020DA`); treatments
+  `local\fp2_ra_off` (`5E71C4F8D111`) and `local\fp2_sn_off` (`6E5281215D91`). All three come from
+  the export synced to `e3aba0f36`.
+- **Logs:** `local\fp2_{ctl,ra_off}_usn01.log` and `local\fp2_{ctl,sn_off}_usn04.log`.
+- **The control against c.**
+  - USN01 differs from c only in `bomb_drops refusals=6`, `dead_releases_refused` 2 -> 0, and the
+    new `world active_byte` line.
+  - E2 moved with the Val rack route (5c25befbe, packet `cc9_release_issue_stage_vals`): 51
+    deaths, 843 hit records (282 hull), 13329.2 damage, 6714 shots.
+
+| pair | lines moved | verdict |
+| --- | --- | --- |
+| USN01, `kReconAggregatesBound` ON -> OFF | group records 293 -> 0; window refusals 754 -> **385**; `gunnery contacts` admit_plane 7466 -> **3922** and dead 348 -> 156; candidates 291 -> 152 and rejected 8138 -> 5789; the recon triple means return to b's; list counts 7/26 -> 7/21 | **held, every row as predicted.** Deaths, hit records, damage, shots and the death table are identical. **The USN01 refusal flag is closed:** the recon aggregates (7edcb4c78). |
+| E2, `kShipAiSnapshotBound` ON -> OFF | hit records 843 -> 824 (hull 282 -> 292); shots 6714 -> 7554; station keeping 37308 -> 32189; path picks 123354 -> 128355; phase 1 completes at fixed step 4501 (225.05 s) instead of 4621; `dir=astern` 0 both ways; no ship sinks either way | **held** (astern 0, no sinking, station keeping down and path picks up OFF; deaths 51 both ways, hit records inside +/- 40). The switch moves E2 hit records by 19 on today's base. **The 594 -> 595 residue therefore cannot be isolated on this base, and it stays flagged as not isolable.** |
+
+**One transient crash.** The first `fp2_ra_off` USN01 run died with 0xC0000005 after mission frame
+2428 (121.40 s). Its log is kept as `local\fp2_ra_off_usn01_crash1.log`. The same binary ran
+3000 frames cleanly on the repeat, and that repeat is the OFF side above. Two other workers' runs
+were live in the launcher's other slots at the time. The crash is **not reproduced and not
+explained**, and it was reported to the integrator.

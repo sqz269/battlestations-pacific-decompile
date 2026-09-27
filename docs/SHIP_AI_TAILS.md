@@ -654,3 +654,79 @@ USN02 9200/9000 and E2 = USN04 9200/9000.
   - steps of 0 on USN02;
   - a ship-AI row moving with steps = 0;
   - a sinking on E2.
+
+### 13.4 The pairs and the verdict
+
+One tree (main `e3aba0f36` plus `e75f14ee5`), `local\nc_off` against `local\nc_on` (SHA-256
+prefixes `9703049CFBE7` / `4314C92FC2B0`). Streams and the death table on. Logs:
+`local\nc_{off,on}_{usn02,usn04}.log`. Every log shows the 1600x900 override and its own module
+directory, and every run exited 0. OFF equals reference c on USN02, and equals the day's E2 control
+(`local\fp2_ctl_usn04.log`) on E2.
+
+| line | USN02 OFF | USN02 ON | E2 OFF | E2 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `neighbour_list_count` calls | 41,037 (record) | 78,340 | 22,926 (record) | 24,375 |
+| mean / max count | - | 31.99 / 32 | - | 18.00 / 18 |
+| scans / steps | 41,783 / 0 | 41,783 / 44,884 | 22,926 / 0 | 22,538 / 2,262 |
+| arm tail stops / arrival latches | 307 / 57 | 8,372 / 1,659 | 74 / 11 | 538 / 80 |
+| station keeping / path picks | 20,778 / 145,972 | 20,228 / 146,531 | 37,308 / 123,354 | 37,733 / 122,929 |
+| `dir=astern` lines | 0 | 0 | 0 | 0 |
+| deaths / hit records (hull) | 22 / 440 (222) | 22 / 439 (223) | 51 / 843 (282) | 51 / 843 (282) |
+| damage / shots | 59209.2 / 789 | 58822.3 / 752 | 13329.2 / 6714 | 13329.2 / 6714 |
+| mission end | failed 39.65 s | failed 39.65 s | none (phase 1 from 231.05 s) | same |
+
+**Per-entity tables.** The clock offset is zero: one tree, the same frames, and the same first
+hit.
+- **USN02.** The same 22 ships sink. The table is identical row for row up to Yudachi at
+  330.24 s. After that the order and credits shift:
+  - Encounter sinks at 354.69 s, killed by Haguro, instead of at 374.43 s by Jintsu;
+  - Jintsu is credited to Jupiter instead of Encounter;
+  - Harusame, Haguro and the rest move by up to 12 s.
+- **E2.** Every `death row` and `plane death mode` line is identical, and the Lexington's path
+  length is unchanged (5721.98 m). Only the ship-AI rows, the wakes (appends 31540 -> 31609) and
+  two gunnery aim steps moved.
+
+**Per ship.** Each ship whose gate opened prints its own `ship ai traffic setback unit=` line.
+- On USN02 the Allied column leaders step most: Kortenaer takes 13,299 steps with a setback of up
+  to 1292.5, Java 8,860 and Electra 7,923. John2 and Witte never step.
+- On E2 the cruisers and destroyers step 192..403 times each, with setbacks up to 879.6. The
+  Lexington scans 806 times and never steps.
+
+**Predictions against the results.**
+- **Held:**
+  - the five records turned concrete;
+  - E2's count is 18 on every read;
+  - steps > 0 on both missions, with USN02 above 1 per 100 scans (107 per 100) and E2 far fewer
+    per scan (10 per 100);
+  - stops and arrival latches rose on both;
+  - `dir=astern` stayed 0;
+  - no sinking on E2, and every gameplay band held (USN02 22 / 439, failing at 39.65 s; E2
+    51 / 843).
+- **Missed:** USN02's `mean_count` is 31.99, not 32. The premise was wrong, not the binding: four
+  Japanese ships (Nachi, Sazanami, Naka and Ushio) register in list 6 after the first world frame,
+  so the early reads count 28. `max_count` is 32.
+- **No sunk-ship effect is visible before 330 s**, where the first divergence appears. The
+  wreck substitution (13.1) could matter only after the sinkings, and it is not separated from
+  the live traffic here.
+
+**Verdict: ON.** The five hooks answer what 009EEB80..009EEC52 read, and the walk now steps back
+from other ships' circles. No gameplay band was broken. `kShipAiNeighbourCountBound` is set true.
+Ranking 3 row 19 (`ShipAiArmTail::neighbour_list_count`) is closed, and so is row 20
+(`entity_hull_radius`).
+
+### 12a. The E2 snapshot pair on main e3aba0f36 (packet `cc9_reference_flag_pairs_2`)
+
+The same export method, run on E2 = USN04 9200/9000, logs `local\fp2_{ctl,sn_off}_usn04.log`.
+
+| line | ON (control) | OFF |
+| --- | ---: | ---: |
+| deaths / hit records (hull) | 51 / 843 (282) | 51 / 824 (292) |
+| shots / dive-bomb releases | 6714 / 3 of 19 | 7554 / 4 of 19 |
+| station keeping / path picks | 37308 / 123354 | 32189 / 128355 |
+| `dir=astern` lines | 0 | 0 |
+| phase 1 completes | 231.05 s (step 4621) | 225.05 s (step 4501) |
+
+- No ship sinks on either side.
+- As in section 5, Coral Sea moves through +3A5h's per-step clear, not the astern latch: station
+  keeping and path picks trade places.
+- The aircraft rows move: hit records -19 and shots +840.
