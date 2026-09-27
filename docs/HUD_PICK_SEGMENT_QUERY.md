@@ -812,3 +812,18 @@ what the reseed reorders. It is one USN04 4700/4500 pair.
 - The clock offset stays 0, because the step sequence is unchanged.
 - The switch is judged on the streams-ON pairs. The default pair is recorded as the reorder
   it causes.
+
+**Switch 2, pairs and verdict.** The same tree at 9637882a8, switch only, binaries `local\bin\rs_off`
+and `local\bin\rs_on`.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000, streams ON | exit 1 | gameplay, death rows and unit table identical; the native rows move as predicted (00BD2FD0 record 2 -> 1, 005CD1B0 concrete 1); `stream1_reseeds 0 -> 1` |
+| USN04 4700/4500, streams ON | exit 1 | the same: identical, and only the predicted rows |
+| USN04 4700/4500, **default path** (streams unset; not a reference protocol) | exit 3 | deaths 40 / 40; hit records 754 / 747; hull hits 259 / 290; damage 11236.0 / 11015.0; shots 6355 / 5607; first hit 93.70 s / 92.70 s; torpedo-task releases 8 / 5 of 16; torpedo drops 2 / 1; plane water contacts 18 / 14; all 40 death rows changed in time or killer; clock offset 0 |
+
+- **Failed band:** default-path shots fell 11.8%, outside the predicted ±10%. Every other band held.
+- **Verdict: ON** (`kMovieReseedBound = true`), judged on the streams-ON pairs, which are identical.
+- **Warning for reference rows.** Any reference run on the default path (streams unset) now draws
+  from 12345 from the first movie on. Default-path rows taken before this commit are not
+  comparable with rows taken after it.
