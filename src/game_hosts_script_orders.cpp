@@ -8,6 +8,7 @@
 
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"  // kFixedSimulationStepSeconds / Float
@@ -75,6 +76,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"JoinFormation", 0x00899d10u},
     {"SetSkillLevel", 0x00895250u},
     {"RepairEnable", 0x008ad330u},
+    // Packet cc9_ship_torpedo_mask_read: usn_2_java.lua 349/354 and 701/706
+    // re-enable the Japanese destroyers' torpedo director after pass B cleared
+    // it. Handled only with kShipDirectorEnablesBound.
+    {"TorpedoEnable", 0x0089c8f0u},
     {"SetRoleAvailable", 0x008ab850u},
     // Packet cc_lua_binding_audit: the delayed-call scheduler and the four state
     // queries usn_2_java's objective checker reads. src/lua_binding_mission.cpp
@@ -256,6 +261,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     // A switch that is off leaves its native an unimplemented record, not a
     // concrete binding that does nothing.
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
+    if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
         std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         return bsp::kMissionTurnAndStanceBound;
@@ -1756,6 +1762,22 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_join_formation(*this);
     } else if (std::strcmp(binding->name, "SetSkillLevel") == 0) {
         results = bsp::lua_binding_set_skill_level(*this);
+    } else if (std::strcmp(binding->name, "TorpedoEnable") == 0) {
+        // 0089C8F0: the unit's weapon director (vtable[114h]) gates the send;
+        // 0071E0D0 builds session message 5Ah with sub-kind 5 and the flag,
+        // and 0071C1E0 stores the flag at director+222h (0071C25B). A plane's
+        // vtable[114h] is 0047F180 (null), so a plane is the image's no-op.
+        // SUBSTITUTION: stored at the call, not delivered through 0077C2A0.
+        const bool enabled = argument_boolean(1);
+        const bool plane = row.unit_index < units_.count() &&
+            units_.unit_is_kind_of(row.unit_index, 0x0f);
+        if (subject != nullptr && !plane && !row.unit.empty()) {
+            const bool changed = scene_director_enables_set_torpedo(row.unit, enabled);
+            ++(enabled ? scene_director_torpedo_writes().lua_enables
+                       : scene_director_torpedo_writes().lua_disables);
+            log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
+                "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
+        }
     } else if (std::strcmp(binding->name, "RepairEnable") == 0) {
         bsp::RepairEnableArm arm = bsp::RepairEnableArm::kLocalFieldWrite;
         results = bsp::lua_binding_repair_enable(*this, arm);
