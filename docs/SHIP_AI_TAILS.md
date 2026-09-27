@@ -553,3 +553,24 @@ All seven rows are already concrete on main in `wt_on_e2.log` and `wt_on_usn02.l
 - `hold_before_snapshot` does not appear in either log. Its path is not taken.
 - **Still UNIMPLEMENTED among `ShipAi` rows:** the two vtable mirrors `ShipAi::drive_heading_vtable50`
   and `ShipAi::unit_weapon_director` (`00CFC3D0+vtable50` and `+vtable114`).
+
+## 12. The snapshot pair on current main (packet `cc9_reference_attribution_pairs`)
+
+`kShipAiSnapshotBound` was set false in a `git archive` export of main `1eaedc668`
+(`local\ap_src`, worktree cc9-gunnery2). The run was USN02 9200/9000 with streams and the death
+table on, logs `local\ap_{ctl,sn_off}_usn02.log`.
+
+| line | ON (control, = reference c) | OFF |
+| --- | --- | --- |
+| deaths / hit records (hull) / damage / shots | 22 / 440 (222) / 59209.2 / 789 | 20 / 487 (247) / 53671.0 / 863 |
+| first hit / mission end | 30.25 s / failed 39.65 s | 27.75 s / failed 39.65 s |
+| Allied / IJN sunk | 12 / 10 | 10 / 10 |
+| `dir=astern` trace lines | 0 | 884 |
+| `ShipAi::drive_astern_heading` | absent | 8497 calls |
+| station keeping | 20778 | 16424 |
+
+- The OFF side equals the 2026-09-26 b reference (main `7c421ba25`, before this switch landed) on
+  every gameplay line, and its death table equals b's row for row.
+- So the switch accounts for the whole b -> c USN02 step.
+- As in section 5, the astern latch is the mechanism. On this tree the Allied side loses 2
+  **fewer** ships OFF, not more, against section 5's 14 -> 11 on an older base.

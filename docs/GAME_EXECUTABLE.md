@@ -10116,3 +10116,46 @@ phase 1:
      - If OFF moves toward b but does not reach it, the residue stays flagged with its rows.
      - If OFF lands far from both, the step has another cause as well, which stays flagged.
    - I expect a partial match: the older pair's OFF side was 22 deaths failing at 44.60 s, not b's.
+
+**The pairs, measured.** The control is `local\ap_ctl` (SHA-256 prefix `EB13841A6AFF`). The
+treatments are `local\ap_rc_off`, `ap_fp_on` and `ap_sn_off`. Logs are
+`local\ap_{ctl,rc_off,fp_on}_usn01.log` and `local\ap_{ctl,sn_off}_usn02.log` in worktree
+cc9-gunnery2. Every log shows the 1600x900 override and its own module directory, and every run
+exited 0.
+- **Control against reference c.**
+  - USN02 is identical on every summary and death line.
+  - USN01 differs only in torpedo drops, 2 -> 8 (`torpedo_drop`, swims and closest approach).
+    That is the torpedo rack drop (e76314e91), which landed after c. Deaths, hit records, shots,
+    refusals and the death table are those of c.
+
+| pair | switch | lines moved | verdict |
+| --- | --- | --- | --- |
+| USN01, recon unit-list sources ON -> OFF | `kReconUnitListSourcesBound` | only `world unit lists counts=7/26` -> `14/62` | **held.** The switch explains the unit-list row and nothing else. |
+| USN01, placement teleport OFF -> true | `kPlaneFormationPlacementEnabled` (export only) | the aim line: shots 447 -> 457, fire messages 4121 -> 4207; both ScoutDauntless death rows, now byte-equal to b's (the wingman at 130.50 s, alt 655) | **held.** The teleport explains the shots and the wingman's death time. |
+| USN02, ship-AI snapshot ON -> OFF | `kShipAiSnapshotBound` | OFF gives 20 deaths, 487 (247) hit records, 53671.0 damage, 863 shots, first hit 27.75 s and DeRuyter 2459.13 m, failing at 39.65 s. Its death table equals b's row for row. `dir=astern` lines 0 -> 884; `ShipAi::drive_astern_heading` 8497 calls OFF; station keeping 20778 -> 16424 | **held: the snapshot explains the whole 20 / 487 -> 22 / 440 step.** Against b's log, OFF differs only in the recon call sites' list, minimap and HUD lines and in the summary lines of later landings. |
+
+**The flags, closed and left.**
+- **USN02 20 / 487 -> 22 / 440: closed.** The cause is `kShipAiSnapshotBound` (1ff05f399). The
+  older pair (`docs/SHIP_AI_TAILS.md` section 5) ran on a different base; this pair ran on current
+  main.
+- **USN01 shots 457 -> 447 and the wingman's 130.50 -> 129.50 s: closed.** The cause is the
+  placement teleport OFF (88cc4de81).
+- **USN01 unit lists 14/62 -> 7/26: closed.** The cause is the recon call sites (710efc679),
+  with no gameplay effect.
+- **USN01 window refusals 385 -> 754: still flagged.** Neither pair moves it: it is 754 on all
+  three USN01 builds. It comes with other moves against b:
+  - `gunnery contacts` admit_plane rises from 3922 to 7466, and dead from 156 to 348;
+  - candidates rise from 152 to 291, and rejections from 5796 to 8145;
+  - the recon triple means rise;
+  - the `recon aggregates` line is new, with 293 group records, all planes;
+  - `dead_releases_refused` falls from 2 to 0.
+  The likely cause is the recon squadron aggregates (7edcb4c78, `docs/RECON_TEAM_LISTS.md`),
+  paired on USN04 and USN02 only. **Not paired on USN01.**
+- **E2 594 -> 595 hit records: still flagged.** It was not in this packet. The snapshot is the
+  only landing in that window known to move E2 (`docs/SHIP_AI_TAILS.md` section 5), and an E2
+  snapshot pair on current main would test it.
+
+**A failed prediction.** Without the snapshot, I predicted at least 2 more Allied sinkings. There
+are 2 fewer: 10 Allied ships sink OFF, against 12 ON. The astern latch returns as predicted
+(884 lines), but on this tree it costs the Japanese, not the Allies. The older pair's 14 -> 11
+ran on a base whose OFF side already differed from b.

@@ -168,3 +168,13 @@ within 4000.
 004C3D61, 004C3EB4, 00526E01, 00526FF1 and 005C1610. Every test between each triple and each
 consumer is the image's own (section 2). No gameplay line moves in either mission.
 `kReconUnitListSourcesBound` is set true.
+
+## 6. USN01 pair on main 1eaedc668 (packet `cc9_reference_attribution_pairs`)
+
+The switch was flipped false in a `git archive` export of main `1eaedc668` (`local\ap_src`,
+worktree cc9-gunnery2). Runs were USN01 3200/3000 with streams on, logs
+`local\ap_{ctl,rc_off}_usn01.log`.
+- The only moved line is `summary world unit lists counts=7/26` ON, against `14/62` OFF.
+- Every gameplay line, the death table included, is identical.
+- This closes reference c's USN01 unit-list flag (`docs/GAME_EXECUTABLE.md`, reference c,
+  "Attribution pairs"). The shot and refusal moves there are not this switch.

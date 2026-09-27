@@ -143,3 +143,16 @@ supersedes one bullet: "`kPlaneFormationPlacementEnabled` stays ON".
   126-133 m. The teleport is not what separates them in this host. Which gate keeps it from the
   Vals, or makes it a no-op for them, has not been traced.
 - **Questions 1 and 2** above are not answered by this pair.
+
+### 6b. USN01 pair on main 1eaedc668 (packet `cc9_reference_attribution_pairs`)
+
+`kPlaneFormationPlacementEnabled` was set true **in a `git archive` export of main `1eaedc668`
+only** (`local\ap_src`, worktree cc9-gunnery2). This file's owner tree was not touched. Runs were
+USN01 3200/3000 with streams on, logs `local\ap_{ctl,fp_on}_usn01.log`.
+- **With the teleport**, shots are 457 (447 without) and fire messages 4207 (4121).
+- **Both ScoutDauntless death rows** equal the 2026-09-26 b reference's byte for byte. The
+  wingman `ScoutDauntless|.-2` dies at 130.50 s (alt 655) with the teleport, and at 129.50 s
+  (alt 679) without it. The leader dies at 124.25 s either way.
+- **Unchanged:** deaths 7, hit records 141, damage 2690.0, and window refusals 754.
+- This attributes reference c's USN01 shot and scout-death moves to the teleport going OFF
+  (`docs/GAME_EXECUTABLE.md`, reference c, "Attribution pairs").
