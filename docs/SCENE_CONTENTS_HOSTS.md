@@ -2834,3 +2834,74 @@ is section 19.4's read 1, re-measured.
    not printed.
 
 Nothing was bound in this packet.
+
+## 25. The torpedo approach leader's speed (packet `cc9_torpedo_approach_leader_speed`, read, log line added)
+
+Worker cc9-plane2, 2026-09-27, on main 39fc36f96. Ghidra was read only. Run `local\LS_USN13.log`
+(worktree cc9-plane2), USN13 3200/3000; it is gameplay-identical to 23.6's ON run (pair_diff 1,
+log lines only).
+
+### 25.1 The leader is not in the follow state
+
+- **Section 24's leader `bruh #1.12` flies the torpedo task's moveto** (state 0x544) for 1101
+  thinks, then the attack run (0x6B4) for 167. Only the wingmen are in follow (0x580).
+- **Its speed is 009C1850's**, bound as `kMovetoSpeedBlendBound` (docs/PLANE_FOLLOW_LAW.md 16.2):
+  `009BECD0(squadron+3A0h, 007C47F0(), sep)` = L + (M - L) x max(k, W), where:
+  - M is TravelSpeed x NewTravelSpeedMul and L is LevelFlight x StallSpd;
+  - k = interp(WingmenWaitDist1 -> 0, WingmenWaitDist2 -> 0.5, sep);
+  - W is 007EF2C0's minimum over the members' 009BE3E0 values.
+
+### 25.2 The measured command, term by term
+
+- **The command is constant.** The new `plane formation seats` line logs the leader's plan+2B4h at
+  63.19 m/s from tick 400 to 3200, with a measured speed of 63.06..63.44 m/s. The throttle of
+  0.81..0.98 in section 24 is the speed controller holding that command. At tick 3600 the attack
+  run commands 88.89.
+- **k = 0.5.** sep stays above WingmenWaitDist2 through the approach, so k sits at its cap.
+- **W = 0, from seat 3.**
+  - Seats 1 and 2 latch (+85h) and answer 1.0: 009BE3E0 returns 1 at once when +85h is set.
+  - Seat 3 answers 0. The image's 009BE3E0 takes unit - state+30h, and state+30h is 007F23A0's
+    station: 009BFDC4 LEA EBP,[ESI+30h] is its output argument. For seat 3, that vector points
+    along the leader's heading, so the angle is below DontWaitForHdgDiff and the first term is 0.
+    It is also beyond NearbyDist, so the second term is 0.
+- **So the leader flies the midpoint L + (M - L)/2.** Every term is read and matches the host.
+
+### 25.3 Why seat 3 is ahead: the stacked spawn
+
+- **Every seat's station is now logged.** The new line gives, for `bruh #1.12`:
+  - seat 1, index 1, local (-100, 0, -100);
+  - seat 2, index 2, local (100, 0, -100);
+  - seat 3, index 3, local (-200, 0, -200).
+- **At tick 0 each member spawns on its leader** (docs/SQUADRON_SPAWN_SEATS.md 6), so it starts
+  ahead of its station by the station's own offset: 141.4 / 139.5 / 280.9 m.
+- **Seats 1 and 2 latch.** They reach their stations (6..18 m by tick 400) and hold there.
+- **Seat 3 never falls back.** It is 155.8 m from its station at tick 400, then 178.7 m, and
+  411.9 m by tick 3200.
+- **The loop, all from bound image code:**
+  - with the station astern, its fly-to speed is the catch-up end of 009BEE30's ramp
+    (docs/PLANE_FOLLOW_LAW.md 5.4);
+  - being ahead, it answers W = 0 to the leader, which holds the leader at the midpoint speed;
+  - seat 3 stays faster than the leader and the gap grows.
+
+### 25.4 Verdict
+
+- **Nothing to bind.** 009C1850, 009BECD0, 009BE3E0 (including its +85h early return and the
+  unit - station vector), 007EF2C0 and 009BEE30 are all read and match. The 63 m/s is the image's
+  command for a squadron whose seat 3 starts ahead of its station.
+- **Not verified.** Whether the image's own spawn leaves seat 3 ahead by the full 281 m. That
+  depends on 007F4580's member seats, which docs/SQUADRON_SPAWN_SEATS.md reads as stacked.
+- **Added:** the `plane formation seats` log line (src/game_hosts_units.cpp, beside
+  `plane formation geometry`). It prints every seat's index, local offset and distance, plus the
+  leader's plan+2B4h and speed. It is gameplay-neutral.
+
+### 25.5 Section 21 item 2, where a cheap scenario exists
+
+None does, so nothing was run:
+- **Branch A (the flying-boat water probe, 12)** needs a live Mavis in mode 6 on the water. No
+  idle reference run gives one: USN01 logs `water probe probes=0`.
+- **The three BSM01 natives** (`DisablePhysics`, `AddMatrixInterpolator`, `ExplodeToParts`) need
+  a script that calls them. No reference run reaches a call.
+- **The tile and cell steppers of 14** need a trace that crosses a grid line in the vertical case.
+  Section 21 item 2 records that no reference run was found to do so.
+
+Each needs a built scenario, which the lead ruled out for this pass.

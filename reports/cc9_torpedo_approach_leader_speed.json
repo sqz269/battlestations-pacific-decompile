@@ -1,0 +1,18 @@
+{
+ "packet": "cc9_torpedo_approach_leader_speed",
+ "worker": "cc9-plane2",
+ "kind": "read; one gameplay-neutral log line added",
+ "doc": "docs/SCENE_CONTENTS_HOSTS.md section 25",
+ "finding": "The USN13 torpedo leader is in the moveto state; its 63.19 m/s is 009C1850 -> 009BECD0 at the midpoint (k capped at 0.5, wingmen value 0 because seat 3, station (-200,0,-200), starts 281 m ahead of it on the stacked spawn and never latches). 009BE3E0 (unit - state+30h, +85h early return), 007EF2C0 and 009BEE30 match the image.",
+ "steps": [
+  {"address": "009bfdcc", "native": "007f23a0", "function": "009bfd70", "what": "state+30h is the station (output argument)"}
+ ],
+ "reads": ["009c1850", "009becd0", "009be3e0", "007ef2c0", "009bfd70"],
+ "substitutions": [],
+ "names_added": {},
+ "no_ghidra_function": [],
+ "verdict": [
+  {"row": "USN13 gameplay with the log line", "off": "FP_ON (27 / 527)", "on": "LS (27 / 527)", "predicted": "identical", "verdict": "holds (pair_diff 1, log only)"}
+ ],
+ "item_2": "no cheap scenario: branch A needs a live Mavis on the water (USN01 probes=0), BSM01 natives and the vertical grid steppers need built scenarios"
+}
