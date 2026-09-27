@@ -1,0 +1,60 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a42a50",
+    "end_address": "00a42a98"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a42a50",
+    "end_address": "00a42a97",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a42a50",
+    "disassemble_first": false,
+    "name": "XLiveSystem_StepCountdown"
+   },
+   "result": {
+    "success": true,
+    "address": "00a42a50",
+    "function_name": "XLiveSystem_StepCountdown",
+    "entry_point": "00a42a50",
+    "body_size": 72,
+    "message": "Function created successfully at 00a42a50",
+    "warnings": [
+     "Function name 'XLiveSystem_StepCountdown' \u2014 main part 'XLiveSystem_StepCountdown' is not PascalCase. Expected: XlivesystemStepcountdown",
+     "Function name 'XLiveSystem_StepCountdown' \u2014 main part 'XLiveSystem_StepCountdown' contains underscores. Use PascalCase after the module prefix."
+    ]
+   }
+  },
+  {
+   "defined": "00a42a50",
+   "end": "00a42a98",
+   "name": "XLiveSystem_StepCountdown",
+   "after": "Function: XLiveSystem_StepCountdown at 00a42a50\nSignature: undefined XLiveSystem_StepCountdown(void)\nEntry: 00a42a50\nBody: 00a42a50 - 00a42a97"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
