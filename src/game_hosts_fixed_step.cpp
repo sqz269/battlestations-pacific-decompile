@@ -39,6 +39,30 @@ namespace {
 // ships 1.0f and nothing in the reconstructed startup writes it.
 constexpr float kDynamicsDampingScale = 1.0f;
 
+// Packet cc9_construct_world_p7 (docs/CONSTRUCT_WORLD.md section 13). True:
+// four of the five rows behind the world gate run their single-player arms.
+// session+F4h is game+1FE4h (docs/SESSION_MESSAGE_DISPATCH.md), 0 here.
+//  * 00778450, the session pump: the countdown at session+278h is armed to
+//    -1.0 by the session constructor (0076EE67, [00D7A260]) and only
+//    BSP_Session_SetMode's 0076FE47 arm writes 2.0, so the expiry branch is
+//    not taken; then [00F8A2FC]->vtable[5Ch](step) (007784F6) and, with
+//    +F4h clear, 0076C600 (00778542) drain the loopback queue at session+24Ch.
+//    Both calls are named records: the 00F8A2FC object is not built here, and
+//    the only loopback messages this host posts (kind 8Fh pass-side) are
+//    delivered by the ship-AI host at the start of its controller step
+//    (src/game_hosts_ship_ai.cpp, kShipPassSideMessageBound).
+//  * 0077EC20: the deferred-create list 00F871A4 (count 00F871A8) is filled only
+//    by 0076C600's entity-create arm (00780670); no host path posts one, so the
+//    count is 0 and 0077EC2A returns.
+//  * 00874C90: the pending tick-registration list (head 00E0B6D8, sentinel
+//    00E0B704) is filled only by 00875890, which no host path runs; the empty
+//    arm 00874CDE..00874CFE resets the list headers.
+//  * 0076FFC0: every call sits under +F4h != 0 (0076FFC3); with it clear the
+//    routine only saves and restores 00F876A1.
+// 00925F20 SEntity_InitAll stays the record (section 13 plan). False: the
+// four are records, as before.
+constexpr bool kGatedFanoutBodiesBound = false;
+
 const char* owner_name(bsp::FixedStepFanoutOwner owner) {
     switch (owner) {
     case bsp::FixedStepFanoutOwner::kPhysics: return "physics";
@@ -292,19 +316,43 @@ void GameFixedStepHost::run_due_entity_think_00929460(float step) {
 }
 
 void GameFixedStepHost::pump_session_00778450(float step) {
-    static_cast<void>(step);
     ++summary_.fanout_calls;
-    record("FixedStepFanout::pump_session", 0x00875e91u);
+    if constexpr (kGatedFanoutBodiesBound) {
+        // 00778462: session+278h > 0.0 is false (armed -1.0 at 0076EE67).
+        if (session_countdown_278_ > 0.0f) {
+            session_countdown_278_ -= step;
+            if (session_countdown_278_ <= 0.0f) session_countdown_278_ = -1.0f;
+        }
+        // 007784DF..007784F6: [00F8A2FC]->vtable[5Ch](step).
+        log_.unimplemented("Session::global_object_step_00f8a2fc", "007784f6");
+        // 007784F8 +F4h == 0: 00778542 CALL 0076C600, the loopback drain.
+        log_.unimplemented("Session::drain_loopback_queue_0076c600", "00778542");
+        done("FixedStepFanout::pump_session", 0x00875e91u);
+    } else {
+        static_cast<void>(step);
+        record("FixedStepFanout::pump_session", 0x00875e91u);
+    }
 }
 
 void GameFixedStepHost::apply_pending_entity_creates_0077ec20() {
     ++summary_.fanout_calls;
-    record("FixedStepFanout::apply_pending_entity_creates", 0x00875e96u);
+    if constexpr (kGatedFanoutBodiesBound) {
+        // 0077EC23 CMP [00F871A8],0 / JE 0077EDE5: no deferred create exists.
+        done("FixedStepFanout::apply_pending_entity_creates", 0x00875e96u);
+    } else {
+        record("FixedStepFanout::apply_pending_entity_creates", 0x00875e96u);
+    }
 }
 
 void GameFixedStepHost::flush_pending_tick_registrations_00874c90() {
     ++summary_.fanout_calls;
-    record("FixedStepFanout::flush_tick_registrations", 0x00875e9bu);
+    if constexpr (kGatedFanoutBodiesBound) {
+        // 00874C95 head == sentinel 00E0B704 / JE 00874CDE: nothing to splice;
+        // the tail resets the empty list's headers.
+        done("FixedStepFanout::flush_tick_registrations", 0x00875e9bu);
+    } else {
+        record("FixedStepFanout::flush_tick_registrations", 0x00875e9bu);
+    }
 }
 
 void GameFixedStepHost::init_pending_entities_00925f20(bool flag) {
@@ -317,7 +365,12 @@ void GameFixedStepHost::flush_outbound_session_0076ffc0(float step, std::int32_t
     static_cast<void>(step);
     static_cast<void>(mode);
     ++summary_.fanout_calls;
-    record("FixedStepFanout::flush_outbound_session", 0x00875ebfu);
+    if constexpr (kGatedFanoutBodiesBound) {
+        // 0076FFC3 CMP [ESI+F4h],0 / 0076FFCA JE: a single-player session sends nothing.
+        done("FixedStepFanout::flush_outbound_session", 0x00875ebfu);
+    } else {
+        record("FixedStepFanout::flush_outbound_session", 0x00875ebfu);
+    }
 }
 
 void GameFixedStepHost::flush_pending_entity_queues_009273a0() {

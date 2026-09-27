@@ -128,6 +128,8 @@ private:
     GameStepSubsystemsHost* subsystems_{nullptr};
     GameNativeGameRuntime* native_game_{nullptr};
     GameFixedStepSummary summary_{};
+    // session+278h (game+2168h), 00778450's countdown; -1.0 from 0076EE67.
+    float session_countdown_278_{-1.0f};
     bool first_step_reported_{false};
     bool groups_reported_{false};
 };
