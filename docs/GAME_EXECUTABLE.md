@@ -9860,8 +9860,8 @@ the failure at 39.65 s. Flagged:
 
 ## Mission reference baselines, 2026-09-26 c (main 015b4bf71)
 
-Packet `cc9_reference_rebaseline_3`. It replaces the 2026-09-26 b rows above once its runs are
-recorded below.
+Packet `cc9_reference_rebaseline_3`. **It replaces the 2026-09-26 b rows above.** The runs are
+under "The runs" below.
 
 **Run parameters:**
 - one binary, `local\rb3` (SHA-256 prefix `A55996C5A72D`), built in worktree cc9-gunnery2 at
@@ -9927,3 +9927,143 @@ landing was identical there.
   USN02).
 - **Would contradict the chain:** any gameplay row on USN04, E2 or USN02 differing from these
   values. Every landing after those logs was identical on its pairs.
+
+### The runs
+
+**These rows are the current reference for all four missions.** Logs `local\rb3_{usn04,e2,usn01,usn02}.log`
+in worktree cc9-gunnery2, dated 2026-09-26 16:57, 17:09, 17:11 and 17:28.
+- Every log shows `window resolution override fit: 2560x1440 -> 1600x900 (monitor 1920x1080,
+  index kept 24)` and `module directory ...\local\rb3\`.
+- Every run exited 0 with all its mission steps.
+
+| mission | frames | damage | deaths (side) | deaths by category | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11393.0 | 41 (41 IJN) | 0: 11, 1: 13, 6: 17 | 727 (266) | 5567 | 93.00 s | 5 of 16 / 3 of 19 | 15 | Lexington 3454.40 m | none | 542 | `local\rb3_usn04.log` |
+| USN01 | 3000 | 2690.0 | 7 (5 IJN, 2 US) | IJN 1: 5; US 1: 2 | 141 (90) | 447 | 53.70 s | 4 of 5 / 0 of 2 | 3 | Airfield2 0.00 | none | 457 | `local\rb3_usn01.log` |
+| USN04 (E2) | 9000 | 13329.3 | 51 (51 IJN) | 0: 11, 1: 16, 6: 24 | 836 (282) | 6486 | 93.00 s | 5 of 16 / 3 of 19 | 19 | Lexington 5731.91 m | none; **phase 1 only** | 544 | `local\rb3_e2.log` |
+| USN02 | 9000 | 59209.2 | 22 (12 Allied, 10 IJN) | 2: 3, 3: 5, 6: 6, 7: 8 | 440 (222) | 789 | 30.25 s | - | 0 | DeRuyter 2930.61 m | **failed at 39.65 s** ("Game Over", entity Encounter) | 510 | `local\rb3_usn02.log` |
+
+| mission | fires / floods / part hits | flood / fire damage, repaired | damage-control deaths | failures started (explosions, jams) | blast element entries | segments destroyed | ranging records, mean offset | spread launches | fire-window refusals |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 0 / 1 / 1 | 1000 / 0, 440 | 0 | 0 | 4 | 0 | 158, no ship aim | 0 | 14416 |
+| USN01 | 0 / 0 / 0 | 0 / 0, 0 | 0 | 0 | 0 | 0 | 5, no ship aim | 0 | 754 |
+| E2 | 0 / 1 / 1 | 1000 / 0, 1565 | 0 | 0 | 4 | 0 | 172, no ship aim | 0 | 16320 |
+| USN02 | 19 / 222 / 220 | 13907 / 3525, 4471 | 6 | 19 (11, 5) | 1157 | 16 | 37, 25.6 m over 66779 aim steps | 224 | 0 |
+
+**E2 ends in phase 1.**
+- Phase 1 completes at **231.05 s**. That is the Think pass after fixed step 4621, the first
+  `Blackout(true, "luaMoveToPh2")`. The pass follows the death of A6M Zero #6.2 at 230.71 s.
+- The Think pass re-issues the blackout every 3 s, 73 times up to 450 s, and the callback never
+  runs. So `luaMoveToPh2` and the whole of phase 2 never happen under lockstep.
+- The cause is in `docs/MISSION_BLACKOUT.md`, "A re-issued blackout never calls back": every
+  escort is dead before BomberWave reaches 5, so the trigger condition stays true.
+- Tying the completion to Zero #6.2 comes from timing alone. The script's fighter list was not read
+  from the log.
+- USN04 4500 ends at 225 s, before any completion, and stays in phase 1 on every build.
+
+### USN02 deaths
+
+| victim | side | time | killer | category | blast | range |
+| --- | --- | --- | --- | --- | --- | --- |
+| DeRuyter | Allied | 30.25 s | Jintsu | 7 | 1 | 2421 |
+| Java | Allied | 32.40 s | Haguro | 7 | 1 | 2471 |
+| Exeter | Allied | 35.95 s | Tokitsukaze | 7 | 1 | 3189 |
+| Yamakaze | IJN | 51.65 s | Houston | 3 | 1 | 2110 |
+| Kortenaer | Allied | 70.25 s | Haguro | 3 | 0 | 1432 |
+| Houston | Allied | 74.55 s | Nachi | 7 | 1 | 4074 |
+| Electra | Allied | 110.25 s | Haguro | 3 | 1 | 1443 |
+| Kawakaze | IJN | 111.05 s | Perth | 3 | 0 | 1629 |
+| Alden | Allied | 149.65 s | Asagumo | 7 | 1 | 2363 |
+| John1 | Allied | 159.41 s | Minegumo | 7 | 1 | 2455 |
+| Asagumo | IJN | 255.81 s | John2 | 2 | 1 | 1199 |
+| John2 | Allied | 257.06 s | Asagumo | 7 | 1 | 1190 |
+| Perth | Allied | 281.25 s | Tokitsukaze | 7 | 1 | 3729 |
+| Samidare | IJN | 319.15 s | Encounter | 6 | 1 | 1445 |
+| Yudachi | IJN | 330.24 s | Encounter | 6 | 1 | 1391 |
+| Amatsukaze | IJN | 355.24 s | Witte | 6 | 1 | 1674 |
+| Harusame | IJN | 359.69 s | Encounter | 6 | 1 | 1409 |
+| Jintsu | IJN | 369.73 s | Encounter | 6 | 0 | 1251 |
+| Encounter | Allied | 374.43 s | Jintsu | 2 | 1 | 1248 |
+| Murasame | IJN | 377.03 s | John3 | 2 | 1 | 955 |
+| John3 | Allied | 383.08 s | Haguro | 3 | 0 | 1031 |
+| Haguro | IJN | 393.28 s | Witte | 6 | 0 | 1536 |
+
+### Predictions against the runs
+
+- **USN04, E2 and USN02:** every predicted value held.
+  - E2 and USN02 are identical to `seg_on_e2.log` and `seg_on_usn02.log` on every summary line
+    and every `death row` and `plane death mode` line.
+  - USN04 matches `bs_on_usn04.log` on every column of both tables.
+  - The only native-table differences are the records of the device-walk and bot-scheduler
+    landings: `Plane::device_busy_1fc` is gone, the four `BotScheduler::*` records are new, and
+    so are the `MissionScoring` rows.
+- **USN01 moved, and the move is unpaired** (see below).
+- **Unimplemented rows** were all inside the +/- 5 band: 542, 544, 510 and 457 against 544, 545,
+  506 and 464.
+
+### Against the 2026-09-26 b section, and what moved each row
+
+**USN04 (4500).** 30 / 520 / 6971.7 / 4324 shots became **41 / 727 / 11393.0 / 5567**:
+
+| step | deaths | hit records | by | doc |
+| --- | --- | --- | --- | --- |
+| b section | 30 | 520 | - | - |
+| recon aggregates, recon call sites, ray pick (each pair identical) | 30 | 520 | - | `docs/RECON_TEAM_LISTS.md`, `docs/RECON_CALL_SITES.md` section 5, `docs/HUD_PICK_SEGMENT_QUERY.md` section 6 |
+| the four move-to switches ON (all-on pair, built from 6037768c6) | 36 | 708 | 2770e1ecb | `docs/PILOT_MOVETO_TASK.md`, "The all-on pair, measured" (708 is the circle-steer pair's OFF side) |
+| circle steer ON | 43 | 751 | beb281dd9 | `docs/PILOT_MOVETO_TASK.md`, "The pairs, measured" |
+| placement teleport OFF | 41 | 727 | 88cc4de81 (pair 83416b435) | `docs/PILOT_MOVETO_TASK.md`, "The pair, measured"; `docs/SQUADRON_SPAWN_SEATS.md` section 6a |
+| warning manager, scaled delta, device walk, bot scheduler (each identical) = this section | 41 | 727 | - | `docs/WARNING_MANAGER.md` section 7, `docs/SCALED_DELTA_WRITE.md` section 4, `docs/PLANE_DEVICE_WALK.md`, `docs/BOT_SCHEDULER_WRITERS.md` section 4 |
+
+The dive-bomb releases (2 to 3 of 19), the water contacts (13 to 15), the first hit (93.10 to
+93.00 s), the Lexington's path and the window refusals (3443 to 14416) moved with the same three
+aircraft landings.
+- The blast entries fell from 17 to 4, and floods rose from 0 to 1 (1000 flood damage).
+- No pair in the chain isolates the blast-entry and flood moves. They are **flagged** as
+  following the changed air battle, and not attributed to one landing.
+
+**E2 (9000).** 35 / 594 / 7845.7 / 5405 became **51 / 836 / 13329.3 / 6486**, and the run now ends in
+phase 1:
+
+| step | deaths | hit records | by | doc |
+| --- | --- | --- | --- | --- |
+| b section | 35 | 594 | - | - |
+| the all-on pair's OFF side (snapshot, recon, ray pick, corridor ON) | 35 | 595 | - | `docs/SHIP_AI_TAILS.md` section 6 (35 / 595 both ways) |
+| the four move-to switches ON | 43 | 796 | 2770e1ecb | `docs/PILOT_MOVETO_TASK.md`, "The all-on pair, measured" |
+| circle steer ON: **phase 1 only from here** | 51 | 841 | beb281dd9 | `docs/PILOT_MOVETO_TASK.md`, "The pairs, measured"; `docs/MISSION_BLACKOUT.md` |
+| placement teleport OFF | 51 | 836 | 88cc4de81 (pair 83416b435) | `docs/PILOT_MOVETO_TASK.md`, "The pair, measured" |
+| whole 009DE5B0, closed gate, warning timer, device walk, bot scheduler, seat segment query (each identical) = this section | 51 | 836 | - | `docs/SHIP_AI_TAILS.md` sections 7-9, `docs/PLANE_DEVICE_WALK.md`, `docs/BOT_SCHEDULER_WRITERS.md`, `docs/PLAYER_GUN_SEAT.md` section 6.4 |
+
+**Flagged on E2:**
+- **594 -> 595 hit records** before the all-on pair. No pair on the chain shows it.
+- The ship-AI snapshot's own E2 pair (`docs/SHIP_AI_TAILS.md` section 5: 37 -> 39 deaths) ran on
+  a base whose OFF side was 37, not 35. Its effect on this chain is therefore not measured.
+
+**USN02 (9000).** 20 / 487 / 53671.0 / 863 became **22 / 440 / 59209.2 / 789**. The failure is still at 39.65 s.
+
+| step | deaths | hit records | by | doc |
+| --- | --- | --- | --- | --- |
+| b section; recon aggregates pair (identical) | 20 | 487 | - | `docs/RECON_TEAM_LISTS.md` |
+| turn-clearance pair's OFF side | 22 | 440 | **not paired** | - |
+| clearance, whole 009DE5B0, ray pick, warning manager, scaled delta, warning timer, seat segment query (each identical) = this section | 22 | 440 | - | `docs/SHIP_AI_TAILS.md` sections 6, 7 and 9, `docs/HUD_PICK_SEGMENT_QUERY.md`, `docs/WARNING_MANAGER.md`, `docs/SCALED_DELTA_WRITE.md`, `docs/PLAYER_GUN_SEAT.md` |
+
+**Flagged on USN02:**
+- **The whole step 20 / 487 -> 22 / 440** falls between the recon-aggregates tree and the
+  turn-clearance tree. It was already noted, and not isolated, in `docs/SHIP_AI_TAILS.md`
+  section 6.
+- The only landing in that window whose pair moved USN02 is the ship-AI snapshot
+  (`kShipAiSnapshotBound`, 1ff05f399). But that pair's OFF side was 22 deaths failing at 44.60 s,
+  so it does not fit this chain either. **A 9000-frame pair of 1ff05f399 on the b tree would
+  settle it.**
+- The death table changed from Java first (27.75 s) to DeRuyter first (30.25 s), which is why the
+  first hit moved to 30.25 s. Exeter still sinks at 35.95 s, and the failure is unchanged.
+
+**USN01 (3000): flagged, no pair.**
+- Deaths, hit records and damage are unchanged (7 / 141 / 2690.0).
+- These moved: shots 457 -> 447; window refusals 385 -> 754; unimplemented rows 464 -> 457; the
+  second US ScoutDauntless died at 129.50 s instead of 130.50 s.
+- The world unit list counts went from 14/62 to 7/26, and the attack runs' first heading error
+  from 0.368 to 0.217 rad.
+- USN01 runs no move-to task (`moveto task: tasks=0`). The unit-list change is the visible
+  signature of the recon call-sites landing (710efc679, `docs/RECON_CALL_SITES.md`, paired on
+  USN04 and USN02 only). The placement teleport OFF is the other candidate.
+- Neither was paired on USN01.
