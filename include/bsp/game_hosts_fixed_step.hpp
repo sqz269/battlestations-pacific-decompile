@@ -41,8 +41,10 @@ class GameNativeGameRuntime;
 // (their per-class bodies are done piecemeal at creation by other hosts); the
 // start branch and pass D are exact for single player. False: each route
 // attaches at creation (attach_created_entity_00928a00 and
-// attach_wing_member_tables), and row 12 is the named record.
-inline constexpr bool kSEntityInitAllBound = false;
+// attach_wing_member_tables), and row 12 is the named record. ON by the
+// verdict: USN04, E2 and USN02 pairs moved only the predicted rows
+// (docs/CONSTRUCT_WORLD.md section 17).
+inline constexpr bool kSEntityInitAllBound = true;
 
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.

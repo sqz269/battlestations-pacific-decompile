@@ -813,3 +813,42 @@ append in pass A is replaced by the planes' own construction-time pushes.
   Gameplay identical.
 - **If any gameplay line moves, this binding changed something it should not have, and the
   switch stays OFF.**
+
+### Part 9 pairs and verdict
+
+**The first USN04 pair failed one prediction, and this packet caused it.** It ran at 8aeb67bad,
+`local\bin\ia_off` against `ia_on`. Pass A appended 56 wing planes instead of 40, which gave
+`self_table_entities` 102 instead of 86 and `wing_member_tables` 56 instead of 40. The squadron
+append took every unit from the squadron's first unit up to the unit count at pass A. SpawnNew's
+InitAll runs after the whole member loop, so for member 1 that range also held member 2 and its
+wing: 8 groups, each with an extra leader and one wing plane. Nothing else moved. Deaths, hits
+and releases were identical, and the only other moved line was the ignored refills counter.
+70b4afc41 records each squadron's own end when it is pushed. The pairs below are from that tree.
+
+**The pairs.** One tree, 70b4afc41: `local\bin\ib_off` against `local\bin\ib_on`, differing
+only by the switch. `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were set for every run.
+All six logs show the fit line, the final COM release, and a module directory inside this tree.
+
+| row | USN04 OFF | USN04 ON | E2 OFF | E2 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| native table rows | 1,568 | 1,576 | 1,570 | 1,578 | 1,469 | 1,477 |
+| row 12, `init_pending_entities` | UNIMPLEMENTED 4,500 | concrete 4,500 | UNIMPLEMENTED 9,000 | concrete 9,000 | UNIMPLEMENTED 9,000 | concrete 9,000 |
+| InitAll calls / with work / entities | 0 | 4,512 / 12 / 60 | 0 | 9,012 / 12 / 60 | 0 | 9,008 / 4 / 4 |
+| wing planes appended / pushes | 0 | 40 / 20 | 0 | 40 / 20 | 0 | 0 / 4 |
+| fixed-step concrete / records | 58,500 / 9,000 | 63,000 / 4,500 | 117,000 / 18,000 | 126,000 / 9,000 | 117,000 / 18,000 | 126,000 / 9,000 |
+| `self_table_entities`, `wing_member_tables` | 86, 40 | identical | 86, 40 | identical | 34, - | identical |
+| deaths, hit records | 41, 743 | identical | 51, 843 | identical | 22, 439 | identical |
+| dive-bomb / torpedo releases | 3 / 5 | identical | 3 / 5 | identical | - | - |
+
+- **The eight new rows** are InitAll and seven per-pass rows. Each per-pass row counts one call
+  per entity; the loading-progress row counts three.
+- **The masked whole-log diff** (heap pointers and thread ids masked) leaves only:
+  - the rows and summaries above;
+  - the per-call `INIT,ENUM` notes;
+  - the ignored refills counter;
+  - in E2, the sound-startup line `fmod_calls` 131 against 132. It is logged before the window
+    exists, long before the first InitAll call, so it is not this switch.
+- **Every prediction held** on this tree. The one failure, on the first tree, is recorded above.
+
+**Verdict: ON.** `kSEntityInitAllBound` is set true. Passes B, C and E stay named records, and
+their per-class bodies are the successor's.
