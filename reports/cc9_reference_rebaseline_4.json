@@ -1,0 +1,35 @@
+{
+  "packet": "cc9_reference_rebaseline_4",
+  "doc": "docs/GAME_EXECUTABLE.md, Mission reference baselines, 2026-09-27 d (main df7f875c7)",
+  "tree": "df7f875c7",
+  "predictions_commit": "218c13e56",
+  "binary": {"path": "local/rb4/build/win32/Release/bsp_game.exe", "sha256_prefix": "6B37A53F94F1", "export": "tools/pair_export.py --commit df7f875c7, no flip"},
+  "run_parameters": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, --press-start-frame 30, idle player, one run at a time through tools/run_game.ps1",
+  "rows": [
+    {"mission": "USN04", "frames": "4700/4500", "deaths": 43, "hit_records": 788, "hull": 331, "damage": 11917.1, "shots": 5075, "first_hit": "93.00 s", "releases": "4 of 16 / 1 of 19", "mission_end": "none", "unimplemented": 545, "log": "local/rb4_usn04.log"},
+    {"mission": "USN01", "frames": "3200/3000", "deaths": 7, "hit_records": 150, "hull": 85, "damage": 2690.0, "shots": 583, "first_hit": "53.75 s", "releases": "3 of 5 / 0 of 2", "mission_end": "none", "unimplemented": 461, "log": "local/rb4_usn01.log"},
+    {"mission": "E2", "frames": "9200/9000", "deaths": 52, "hit_records": 875, "hull": 345, "damage": 13618.3, "shots": 6092, "first_hit": "93.00 s", "releases": "4 of 16 / 1 of 19", "mission_end": "none, phase 1 only (first blackout after fixed step 4441)", "unimplemented": 545, "log": "local/rb4_e2.log"},
+    {"mission": "USN02", "frames": "9200/9000", "deaths": 21, "hit_records": 566, "hull": 287, "damage": 53359.4, "shots": 1067, "first_hit": "35.80 s", "mission_end": "failed at 39.65 s", "unimplemented": 518, "log": "local/rb4_usn02.log"}
+  ],
+  "prediction_checks": [
+    {"mission": "USN04", "against": "cc9-init-passes local/lt_on_usn04.log", "pair_diff_exit": 1, "held": true},
+    {"mission": "E2", "against": "cc9-ships local/tm_on_e2.log", "pair_diff_exit": 1, "held": true},
+    {"mission": "USN01", "against": "cc9-units2 local/MR_ON_USN01.log", "pair_diff_exit": 1, "held": true},
+    {"mission": "USN02", "against": "band: deaths 19..25, hit records 450..700, gyro launches 180..240, failure 39.65 s", "held": true}
+  ],
+  "export_pairs": [
+    {"flip": "kShipDirectorEnablesBound=false", "binary": "local/rb4_wd F7BADDF97267", "mission": "USN02", "log": "local/rb4_wd_usn02.log", "result": "identical to cc9-units2 SD_ON_USN02.log (exit 1, 21/354); against the reference exit 3, 21/354 -> 21/566"},
+    {"flip": "kShipMotionTailBound=false", "binary": "local/rb4_mt F55F5012CE1D", "mission": "USN04 4500", "log": "local/rb4_mt_usn04.log", "result": "41/743, 5603 shots, 5 of 16 / 3 of 19; against the reference exit 3, 41/743 -> 43/788"}
+  ],
+  "corrections": [
+    {"was": "E2 moved with the Val rack route (5c25befbe) to 843 hit records (c's flag-pair note)", "is": "the torpedo rack drop (e76314e91) moved E2 836 -> 843; the Val route pair was identical", "evidence": "docs/RELEASE_ISSUE_STAGE.md, 'The pair, measured' and the Vals pair"}
+  ],
+  "open_flags": [
+    "E2 594 -> 595 hit records (before c) not isolated",
+    "E2 ends in phase 1 under lockstep (Blackout re-issued 76 times, docs/MISSION_BLACKOUT.md)",
+    "USN01 torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36, unpaired",
+    "the Marshall .nav is the generic layer",
+    "USN02 sink timing belongs to the buoyancy stand-in (docs/CONSTRUCT_WORLD.md section 25)"
+  ],
+  "failed_predictions": []
+}
