@@ -1,0 +1,34 @@
+{
+  "packet": "cc9_terrain_segment_quadtree",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, section 10",
+  "calls": [
+    {"address": "00ADA2EE", "native": "00AECC40", "function": "00ADA240", "note": "vertical case, EDX = world from, stack world to and out"},
+    {"address": "00ADA353", "native": "00AEA2B0", "function": "00ADA240", "note": "ray walk, origin-relative local endpoints"},
+    {"address": "00AEA4D6", "native": "00AE9D80", "function": "00AEA2B0", "note": "root node 0"},
+    {"address": "00AEA0E3", "native": "00AE9D80", "function": "00AE9D80", "note": "child arm 0"},
+    {"address": "00AEA1CC", "native": "00AE9A00", "function": "00AE9D80", "note": "next child"},
+    {"address": "00AEA033", "native": "00AE9BD0", "function": "00AE9D80", "note": "leaf"},
+    {"address": "00ADF54A", "native": "00ADEB80", "function": "00ADF1B0", "note": "cell line-quad test"},
+    {"address": "00ADEC6A", "native": "004F9B30", "function": "00ADEB80", "note": "m = pb x pq"},
+    {"address": "00ADED4C", "native": "00ADEB40", "function": "00ADEB80", "note": "scalar triple"}
+  ],
+  "switches": [
+    {
+      "name": "kTerrainSegmentQuadtreeBound",
+      "state": "ON",
+      "pair": "local/QT_OFF_{USN01,USN04,USN02}.log (build of d35cf3545, local/bin/qt_off) against local/QT_ON_*.log (pair_export of d35cf3545, SHA-256 5DCD50B222BC). USN01 exit 1: pick 5357/22 unchanged, line_of_fire 141/0, projectile 17981/0, slot3c walks 5564/22 vertical 3/0 leaves 33 cells 1026, self-check Landscape 03 51/51 on the local surface (worst 0.071 m); USN04 and USN02 exit 1 on the bound fields only. Gameplay identical on all three."
+    }
+  ],
+  "boundary_repairs": [
+    {"function": "00AE9D80", "extent": "00AE9D80..00AEA292 code, 00AEA293 NOP, jump table 00AEA294..00AEA2AF", "applied_by": "lead, f424d4880"}
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "vertical case 00AECC40 answered by the half-cell march (00AECA60 and terrain vt+48h unread)",
+    "LandscapeSegmentHit.fraction is the hit's projection on from->to; 00ADA240 answers a point only",
+    "x87 register chains evaluated in double, float stores kept; not bit-verified"
+  ],
+  "failed_predictions": [],
+  "scene_census": "18 rotated Landscape rows in 9 of 223 scenes (763 rows); usn_1_marshall Landscape 04 (-180) and 05 (91.5, tilt 0.02); usn_2_java and usn_19_coralus author no Landscape"
+}

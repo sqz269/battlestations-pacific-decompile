@@ -1623,3 +1623,43 @@ Worker cc9-init2, 2026-09-27, on main f424d4880. Ghidra was read only. The lead 
     line-of-fire and projectile traces hit nothing either way.
 - **USN04 4700/4500 and USN02 9200/9000.** No Landscape: the census reads `walks=0/0 vertical=0/0`.
   Only the new `bound` field differs, so `pair_diff` exits 1 with gameplay identical.
+
+### 10.5 Pairs and verdict
+
+- **The runs.** The OFF binary is `local\bin\qt_off` (a build of d35cf3545). The ON binary is
+  `pair_export` of d35cf3545 with the switch flipped (SHA-256 5DCD50B222BC). Both variables were
+  set, lockstep 0.05, idle player. Logs: `local\QT_{OFF,ON}_{USN01,USN04,USN02}.log` in worktree
+  cc9-init2.
+
+| row | USN01 OFF | USN01 ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| slot 3Ch self-check, Landscape 03 | - | 51 hits, 51 on the local surface, worst 0.071 m | all on the surface | held |
+| self-check, Landscapes 04..06 | - | 0 hits | - | no authored object on them to trace |
+| pick land hits | 5357/22 | 5357/22 | 18..26 | held (unchanged) |
+| line-of-fire, projectile land hits | 141/0, 17981/0 | 141/0, 17981/0 | 0 | held |
+| slot 3Ch walks / vertical | 0 / 0 | 5564/22, 3/0 | vertical small | held |
+| leaves / cells tested | 0 / 0 | 33 / 1026 | - | - |
+| ground-height census, `impacts_land` | unchanged | unchanged | unchanged | held |
+| deaths, death rows, plane death modes, unit table | 7, 7, 7, 28 | identical | identical | held |
+| `pair_diff` | | exit 1 | exit 1 | held |
+| USN04 / USN02 `pair_diff` | | exit 1 / exit 1, only the `bound` fields | identity | held |
+
+- **The pick rays.** 5564 slot 3Ch calls from 5357 pick traces over the four entries, and 22 land
+  hits, the same count the march found. The cell test ran on 1026 cells in 33 leaves, so the
+  y-pruning discards almost every node.
+- **The rotated islands are not measured by these runs.** USN01's Landscapes 04 and 05 own no
+  authored object for the self-check, and no pick ray that hit land is attributed per Landscape.
+  00903BC0 has no bound consumer yet (`segment calls=0`), so its per-Landscape path is also
+  unexercised.
+
+**Verdict: ON.** Every prediction held, and no gameplay row moved on any of the three missions.
+
+### 10.6 Open
+
+- **00AECC40's sub-walk 00AECA60** (callees 00AEBD20, 00AEB770, 00AEADE0, 00AEB890, 00AEBA00,
+  00AEBB90, 00ADAC30/40) and the terrain's vt+48h. The vertical case is still the march: 3 calls
+  on USN01.
+- **Bit-exact x87 rounding** of the walk: not verified.
+- **A measuring mission for the rotation.** usn_13_truk, yamato or shogo_four have rotated
+  Landscapes. A pick or line-of-fire hit on one of them would compare the host with the image
+  there.
