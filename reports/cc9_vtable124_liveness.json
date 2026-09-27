@@ -1,0 +1,69 @@
+{
+  "packet": "cc9_vtable124_liveness",
+  "worker": "cc9-hud3",
+  "base": "21b62fc38",
+  "switch": "kUnitVtable124MapBound",
+  "state": "ON",
+  "doc": "docs/CONTROLLED_UNIT.md, The unit vtable[124h] map",
+  "map": {
+    "006D1EF0": "classes 05, 06-0E, 0F-17, 19, 35, 45, 46: the four bytes",
+    "006F5920": "MCommandBuilding 1C: false when +790h and class +70h == 58h, else the four bytes (single player: the four bytes)",
+    "00745A50": "MLandFort 1B: false",
+    "007EE670": "PlaneSquadronGen 18: false when +361h or +3B0h, else the four bytes of the slot-0 plane +3D0h",
+    "00927800": "02, 04, 1E, guns 20-28, LandConvoy 1A: false"
+  },
+  "no_ghidra_function": [
+    {
+      "start": "006F5920",
+      "end_inclusive": "006F5958",
+      "abi": "__thiscall(unit), RET, answer in EAX",
+      "note": "MCommandBuilding +124h"
+    },
+    {
+      "start": "00745A50",
+      "end_inclusive": "00745A52",
+      "abi": "__thiscall, RET, XOR AL,AL",
+      "note": "MLandFort +124h"
+    },
+    {
+      "start": "007EE670",
+      "end_inclusive": "007EE6AF",
+      "abi": "__thiscall(squadron), RET, answer in AL/EAX",
+      "note": "PlaneSquadronGen +124h"
+    },
+    {
+      "start": "00927800",
+      "end_inclusive": "00927802",
+      "abi": "__thiscall, RET, XOR AL,AL",
+      "note": "class-02 base +124h"
+    }
+  ],
+  "substitutions": [
+    "PlaneSquadronGen +361h (set by 007F31A0 when the leader leaves the map) is not modelled and reads clear."
+  ],
+  "observations": [
+    "The host's squadron slot carries its leader's class (ScoutDauntless 12h), so SetSelectedUnit(Mission.ScoutBomba) in luaPh2MovieEnd is rejected at IsKindOf(0Fh); the image's PlaneSquadronGen (18h) would be accepted."
+  ],
+  "names_added": [],
+  "pairs": [
+    {
+      "mission": "USN01 3200/3000",
+      "pair_diff": 1,
+      "result": "gameplay and tables identical; +8Ch builds identical; ScoutDauntless vt124 0->1, still rejected at IsKindOf(0Fh)"
+    },
+    {
+      "mission": "USN04 4700/4500",
+      "pair_diff": 1,
+      "result": "gameplay and tables identical"
+    },
+    {
+      "mission": "USN02 9200/9000",
+      "pair_diff": 1,
+      "result": "gameplay and tables identical"
+    }
+  ],
+  "off_commit": "c30b838cd",
+  "failed_predictions": [
+    "USN04 and USN02: no record row to remove (no non-ship unit asked); the table only gains the concrete row."
+  ]
+}

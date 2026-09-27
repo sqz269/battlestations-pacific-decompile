@@ -209,6 +209,13 @@ struct GameHudHost::Impl {
     void step_movie_camera(float seconds);
     void reseed_stream(int stream, std::uint32_t seed, std::uint32_t site);
     bsp::UnitSelectableInputs selectable_inputs_00645060(std::size_t unit);
+    // Packet cc9_vtable124_liveness: unit->vtable[124h]() by class.
+    bool unit_vtable_124(std::size_t unit, std::uint32_t site);
+    // The units the class map answers true for and the ship-only rule does not,
+    // each counted once, with the site that first asked.
+    std::vector<std::pair<std::size_t, std::uint32_t>> vtable124_map_only;
+    unsigned long long vtable124_asks{0};
+    unsigned long long vtable124_map_only_asks{0};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -1469,14 +1476,8 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     in.is_kind_2a = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedA);
     in.is_kind_46 = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedB);
     in.is_kind_45 = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedC);
-    // 00645110 vtable[124h]: read for the ship vtable only (006D1EF0, the same
-    // four bytes). Any other class is a record answering false.
-    if (units->unit_is_kind_of(unit, 6)) {
-        in.vtable_124_allows = alive;
-    } else {
-        record("SetSelectedUnit::unit_vtable_124", 0x00645110u);
-        in.vtable_124_allows = false;
-    }
+    // 00645110 vtable[124h]() (packet cc9_vtable124_liveness).
+    in.vtable_124_allows = unit_vtable_124(unit, 0x00645110u);
     // 00645121 00927C50(unit, 0): any role word 9 or 0.
     for (int role = 0; role < bsp::kUnitRoleTableEntries; ++role) {
         std::int32_t word = 0;
@@ -1490,6 +1491,60 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     in.spectate_allowed = false;
     in.team_is_local = false;
     return in;
+}
+
+// unit->vtable[124h]() by class (include/bsp/game_hosts_hud.hpp,
+// kUnitVtable124MapBound). The four bytes are 0043F080's, which the units
+// host answers as unit_alive_and_visible.
+bool GameHudHost::Impl::unit_vtable_124(std::size_t unit, std::uint32_t site) {
+    ++vtable124_asks;
+    const bool alive = units->unit_alive_and_visible(unit);
+    // The rule before this packet: the ship vtable only.
+    const bool ship_rule = units->unit_is_kind_of(unit, 6) && alive;
+    bool map = false;
+    if (units->unit_is_kind_of(unit, 0x1c)) {
+        // 006F5920 MCommandBuilding: +790h is clear in single player (its one
+        // setter 006F292D needs effective game mode 2 or 3, and 004BCA50
+        // reports 8), so the +70h == 58h arm is not reached: the four bytes.
+        map = alive;
+    } else if (units->unit_is_kind_of(unit, 0x1b)) {
+        map = false;                                   // 00745A50 MLandFort
+    } else if (units->unit_is_kind_of(unit, 5)) {
+        map = alive;                                   // 006D1EF0
+    } else if (units->unit_is_kind_of(unit, 0x18)) {
+        // 007EE670 PlaneSquadronGen. +3B0h is only ever cleared (007F2DD3,
+        // 007EFB69), so it reads 0. SUBSTITUTION (labelled): +361h, set by
+        // 007F31A0 when the leader leaves the map with survivors, is not
+        // modelled by this host and reads clear. Then the four bytes of the
+        // slot-0 plane +3D0h (007EE685), false when there is none.
+        const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == unit) { squadron = &r; break; }
+        }
+        const std::size_t leader = squadron != nullptr ? squadron->flight_leader()
+                                                       : bsp::kPlaneSquadronNoUnit;
+        map = leader != bsp::kPlaneSquadronNoUnit && leader < units->count()
+            && units->unit_alive_and_visible(leader);
+    } else {
+        map = false;                                   // 00927800, the class-02 base
+    }
+    if (map && !ship_rule) {
+        ++vtable124_map_only_asks;
+        bool seen = false;
+        for (const auto& entry : vtable124_map_only) {
+            if (entry.first == unit) { seen = true; break; }
+        }
+        if (!seen) vtable124_map_only.emplace_back(unit, site);
+    }
+    if constexpr (kUnitVtable124MapBound) {
+        done("Unit::vtable_124", site);
+        return map;
+    } else {
+        if (!units->unit_is_kind_of(unit, 6)) {
+            record("SetSelectedUnit::unit_vtable_124", 0x00645110u);
+        }
+        return ship_rule;
+    }
 }
 
 namespace {
@@ -1515,8 +1570,8 @@ public:
     bool candidate_is_selectable() override { return selectable_; }
     bool candidate_is_kind_1() override { return owner_.units->unit_is_kind_of(candidate_, 1); }
     bool candidate_vtable_124() override {
-        return owner_.units->unit_is_kind_of(candidate_, 6)
-            && owner_.units->unit_alive_and_visible(candidate_);
+        // 0064565F (packet cc9_vtable124_liveness).
+        return owner_.unit_vtable_124(candidate_, 0x0064565fu);
     }
     void unregister_observer() override {
         if constexpr (kControlledUnitObserverBound) {
@@ -2029,6 +2084,17 @@ void GameHudHost::Impl::run_root_lists(bool force) {
         root_lists.cursor.secondary ? 1 : 0,
         root_lists.cursor.index == 0xffffu ? -1 : static_cast<int>(root_lists.cursor.index),
         at_row != nullptr ? at_row->name.c_str() : "none", before.c_str(), after.c_str());
+    // Packet cc9_vtable124_liveness: the +8Ch members in order, with class ids.
+    std::string members;
+    for (const std::uint32_t id : root_lists.primary_8c) {
+        const GameUnitRow* row = id != 0 && id <= units->count() ? units->unit_row(id - 1) : nullptr;
+        char cls[16];
+        std::snprintf(cls, sizeof(cls), "/%02X", id != 0 ? units->unit_class_id(id - 1) & 0xff : 0);
+        if (!members.empty()) members += ' ';
+        members += row != nullptr ? row->name : std::string("?");
+        members += cls;
+    }
+    log.notef("  +8Ch members: %s", members.empty() ? "(none)" : members.c_str());
 }
 
 void GameHudHost::enter_hud_root_screen_006488d0() {
@@ -3541,6 +3607,23 @@ void GameHudHost::report() {
         "008AB260 / 00647300): bound=%d calls=%llu accepted=%llu pushes_20h=%llu",
         kSetSelectedUnitBound ? 1 : 0, impl.select_calls, impl.select_accepted,
         impl.select_pushes);
+    {
+        std::string only;
+        for (const auto& entry : impl.vtable124_map_only) {
+            const GameUnitRow* row = impl.units != nullptr ? impl.units->unit_row(entry.first) : nullptr;
+            char tail[48];
+            std::snprintf(tail, sizeof(tail), "/%02X@%08X",
+                impl.units != nullptr ? impl.units->unit_class_id(entry.first) & 0xff : 0,
+                static_cast<unsigned>(entry.second));
+            if (!only.empty()) only += ' ';
+            only += row != nullptr ? row->name : std::string("?");
+            only += tail;
+        }
+        impl.log.notef("summary mission hud unit vtable124 map (packet cc9_vtable124_liveness, "
+            "00645110 / 0064565F): bound=%d asks=%llu map_only_asks=%llu map_only_units=%zu: %s",
+            kUnitVtable124MapBound ? 1 : 0, impl.vtable124_asks, impl.vtable124_map_only_asks,
+            impl.vtable124_map_only.size(), only.empty() ? "(none)" : only.c_str());
+    }
     impl.log.notef("summary mission hud movie interface (packet cc9_movie_interface_and_reseed, "
         "005CD240 / 005CD1A0): bound=%d calls=%llu engages=%llu pushes_2ch=%llu reseed_bound=%d "
         "stream1_reseeds=%llu",

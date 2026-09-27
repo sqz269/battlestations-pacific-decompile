@@ -243,6 +243,26 @@ inline constexpr bool kForceSelectUnitBound = true;
 // runs the observer's slot +4h 00644A20: root+1Ch = 0, 004C0890(null) and the
 // cursor (+C2h, +C4h) = (0, -1).
 inline constexpr bool kControlledUnitObserverBound = true;  // ON: lead ruling, 0070DB60 slot swap (docs/CONTROLLED_UNIT.md)
+
+// Packet cc9_vtable124_liveness (docs/CONTROLLED_UNIT.md, "The unit
+// vtable[124h] map"), committed OFF with predictions. 00645110 and 0064565F
+// call unit->vtable[124h](). The implementation by class, read from the 23
+// vtables that hold 006D1EF0 and the other unit vtables (class ids per
+// docs/ENTITY_CLASS_IDS.md):
+//  - 006D1EF0, the four bytes (+5Ch set, +5Dh/+60h/+5Eh clear): class 05 and
+//    every descendant except 1Bh/1Ch (ships 06h-0Eh, planes 0Fh-17h, 19h,
+//    35h, 45h, 46h);
+//  - 006F5920, MCommandBuilding 1Ch: false when +790h is set and the class
+//    +70h is 58h, else the four bytes; +790h is set only in effective game
+//    modes 2 and 3 (006F292D), so in single player it is the four bytes;
+//  - 00745A50, MLandFort 1Bh: false;
+//  - 007EE670, PlaneSquadronGen 18h: false when +361h or +3B0h is set, else
+//    the four bytes of the slot-0 plane +3D0h (false when there is none);
+//  - 00927800, the class-02 base (04h, the guns 1Eh-28h, LandConvoy 1Ah):
+//    false.
+// While true the HUD answers vtable[124h] by that map. While false it answers
+// the four bytes for ships (IsKindOf(6)) and false for every other class.
+inline constexpr bool kUnitVtable124MapBound = true;  // ON by the identity pairs (docs/CONTROLLED_UNIT.md, "The unit vtable[124h] map")
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 
