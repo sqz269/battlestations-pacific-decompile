@@ -341,7 +341,7 @@ The only moved rows belong to the one dead Val whose two-round glide became one.
 ## Mavis rack drops (packet cc9_mavis_rack_drops)
 
 2026-09-27, worker cc9-units2. Switch `kRackRoundsPerRackBound`, committed OFF with the
-predictions below.
+predictions below, ON since the pairs.
 
 **The symptom.** In the layer-OFF USN01 runs of `docs/GAME_EXECUTABLE.md` (reference c,
 `local\ud_az_off_usn01.log` in worktree cc9-gunnery2) Mav1 reports `issues=1`, `fired=1`,
@@ -418,6 +418,34 @@ false (not committed) to reach the Mavis drops.
 | cleanup of unit+C25h | identical | identical | Mav1, Mav4: 3 fixed steps earlier ON (busy clears after one drop) |
 | releases, deaths, death rows, hit records | identical | identical | identical; band ± 5 hit records if the earlier C25h cleanup moves a Mavis |
 | pair_diff exit | 1 | 1 | 1 (3 only if the band is used) |
+
+### The pairs, measured
+
+Logs in worktree cc9-units2: `local\MR_OFF_USN01.log` / `MR_ON_USN01.log`,
+`local\MR_OFF_USN04.log` / `MR_ON_USN04.log` (binaries of `b33ddee5d`, switch only) and
+`local\MRL_OFF_USN01.log` / `MRL_ON_USN01.log` (the same, with `kAvoidZoneLayerSampleBound`
+false on both sides, not committed). All six show the 1600x900 fit line, the immediate present
+interval, a module directory in this tree and the final COM release. `tools/pair_diff.py` exits 1
+on all three: gameplay, death rows, plane death modes and the unit table identical.
+
+| row | USN01 3200/3000 | USN04 4700/4500 | USN01, layer OFF both sides | prediction | verdict |
+| --- | --- | --- | --- | --- | --- |
+| `rack rounds:` line | only `bound=0` -> `1`; `per_rack` empty on all five | only `bound`; Kate #4.1\|.-4 `[0] active=0` ON | Mav1, Mav4 `[0,1,1,1] active=0` ON | as written | held |
+| rack line `drops` | 0 both | identical | Mav1, Mav4: 4 -> 1, `ammo` 0 -> 3 | 4 -> 1 | held |
+| torpedo drops | 0 / 0 | 1 / 1 | 2 / 2 | unchanged | held |
+| deaths, hit records, releases | 7, 150, 3 of 5 both | 43, 788, 4 of 16 both | 7, 141, 4 of 5 both | identical | held |
+| natives | no change | no change | rack tick 8 -> 2, `can_fire` 10 -> 4, repeat time 8 -> 2; `Rack::drop_dispersion_006e4f91` (6 calls) gone | not predicted | see below |
+| `drops_unspawned` OFF | 0 | 0 | **0, not 3** | 3 per Mavis | **failed** |
+| cleanup of unit+C25h | identical | identical | `walks=1 busy=0` both sides; the step of the cleanup is not printed | 3 steps earlier ON | not measured |
+
+**The failed prediction.** OFF, the three surplus drops of each Mavis did not reach the torpedo
+arm. The first drop's `release_ordnance_drop` clears kind 2Bh from the ordnance mask, so the next
+tick's `drop_is_bomb` test finds 2Ah alone and routes the drop to `run_rack_bomb_drop_006e4d50`.
+That is the six `mission gunnery bomb_drops` refusals OFF (`refusals 6 -> 0`) and the six
+dispersion records. So OFF a Mavis was also "dropping bombs" it does not carry; ON it does not.
+
+**Verdict: `kRackRoundsPerRackBound` ON.** One issue is one rack's drop, as in `007C0D90` and
+`006E56F0`. Nothing that reaches gameplay moved on any pair. The surplus drops were host bookkeeping.
 
 ## Handoff: the rest of cc9-plane-release's queue (2026-09-27)
 

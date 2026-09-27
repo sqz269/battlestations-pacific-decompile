@@ -3515,7 +3515,10 @@ struct GameUnitsHost::Impl {
     // the issue fires the first rack with rounds left, so one issue is one drop
     // for a rack of one round. OFF: the single racks' rounds are one pool, and one
     // issue drops until the pool is empty (an H6K Mavis' four racks: four drops).
-    static constexpr bool kRackRoundsPerRackBound = false;
+    // ON since the USN01 / USN04 pairs (identical) and a USN01 pair with the layer
+    // sample OFF on both sides: Mav1 and Mav4 drop once instead of four times,
+    // the same two torpedoes spawn, gameplay identical.
+    static constexpr bool kRackRoundsPerRackBound = true;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
     unsigned long long segment_probes_blocked = 0;
