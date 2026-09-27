@@ -26,13 +26,16 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <deque>
 #include <map>
+#include <set>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/air_operations.hpp"
+#include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_lua_host.hpp"
@@ -264,6 +267,14 @@ struct GameMissionLuaSummary {
     unsigned long long spawn_new_requeued{0};    // 009478B0 pushes
     unsigned long long spawn_new_units{0};       // entities appended at +CCh
     unsigned long long wing_member_tables{0};    // cc9_mission_end, 00928A00 per wing plane
+    // Packet cc9_sentity_init_all: 00925F20 calls, the ones that found work,
+    // the nodes the walks visited, the wing nodes squadron attaches appended,
+    // and the 00926BE0 pushes.
+    unsigned long long init_all_calls{0};
+    unsigned long long init_all_nonempty{0};
+    unsigned long long init_all_entities{0};
+    unsigned long long init_all_wing_appended{0};
+    unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
@@ -278,7 +289,8 @@ struct GameMissionLuaSummary {
 // and that table is this host's.
 class GameMissionLuaHost final : public bsp::MissionLuaHostServices,
                                  public bsp::AirOpsSquadronFactory,
-                                 public bsp::SpawnQueueDrain {
+                                 public bsp::SpawnQueueDrain,
+                                 public GameEntityInitAllRunner {
 public:
     GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs);
     ~GameMissionLuaHost() override;
@@ -666,6 +678,21 @@ public:
         int class_index);
     bool attach_created_entity_00928a00(int entity_id, const std::string& name,
         int class_index);
+
+    // --- Packet cc9_sentity_init_all: the pending list 00F899D0 --------------
+    // 00926BE0, the push_back the base constructor makes at 00928760 for every
+    // entity. `units_before` marks a plane squadron: its pass A (007F4580)
+    // constructs the wing, whose planes join the tail of the list then. This
+    // process has already made the wing units when the squadron is pushed, so
+    // they are appended from [units_before, count) at that point instead.
+    void push_pending_entity_00926be0(int entity_id, const std::string& name,
+        int class_index);
+    void push_pending_squadron_00926be0(int entity_id, const std::string& name,
+        int class_index, std::size_t units_before);
+    // GameEntityInitAllRunner: 00925F20 over that list (bsp/lua_binding_mission_2.hpp).
+    void run_sentity_init_all_00925f20(bool flag, std::uint32_t call_site) override;
+    // True once a pass A of this process gave the entity its `thisTable` slot.
+    bool init_all_attached(int entity_id) const;
     void note_created_script(std::string name);
     void note_binding_subject(std::size_t row, int entity_id);
     // A failed named call is replayed once with errfunc 0 purely to recover the
@@ -738,6 +765,21 @@ private:
     // slot is keyed by. This is the executable's stand-in for 00925a90.
     std::map<std::string, int> scene_entity_ids_;
     GameScriptOrdersHost* script_orders_{nullptr};
+    // Packet cc9_sentity_init_all. A node of 00F899D0: the entity and what pass
+    // A hands 00928A00. A deque, because pass A appends while the walk holds
+    // pointers to earlier nodes.
+    struct PendingEntity {
+        int entity_id{0};
+        std::string name;
+        int class_index{-1};
+        bool squadron{false};
+        bool wing_member{false};
+        std::size_t units_before{0};
+    };
+    friend class GameMissionLuaInitAllBinding;
+    std::deque<PendingEntity> pending_entities_;  // 00F899D0, count 00F899D4
+    std::set<int> init_all_attached_;
+    bool init_active_00f899a5_{false};
     bool error_replay_{false};
     bool avoid_all_ship_collision_{};
     bool avoid_all_ship_collision_loaded_{};

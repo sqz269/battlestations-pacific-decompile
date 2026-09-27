@@ -97,11 +97,18 @@ float sentity_init_progress_fraction(std::int32_t step,
 struct SEntityInitAllHost {
     virtual ~SEntityInitAllHost() = default;
 
-    // [00F899D4] at 00925F3B, and the list walk from [00F899D0]. The walk is
-    // given as a snapshot because every pass restarts from the sentinel and the
-    // native re-reads the head each time; no pass observed here adds a node.
+    // [00F899D4] at 00925F3B and again at 00926067, and the list walk from
+    // [00F899D0]. CORRECTED, packet cc9_sentity_init_all: the walk is NOT a
+    // snapshot. Every pass reloads the sentinel (00925FC6, 009260A2, 00926138,
+    // 00926252, 009262D2) and steps with `MOV ESI,[ESI]` (00926060 ...), so a
+    // node appended to the tail while a pass runs is visited by that same pass.
+    // That happens: the squadron's slot 39, 007F4580, constructs its planes, and
+    // every construction reaches 00928760 CALL 00926BE0, the push_back onto this
+    // list. So a pass is an index walk that re-reads the length each step; the
+    // list only grows at the tail during a walk.
     virtual std::int32_t pending_count_00f899d4() = 0;
-    virtual std::vector<void*> pending_entities_00f899d0() = 0;
+    virtual std::size_t pending_size_00f899d0() = 0;
+    virtual void* pending_at_00f899d0(std::size_t index) = 0;
 
     // 00925FFB / 009260D3 / 0092616D / 0092629C, the name accessor at vtable
     // +10h. Its result is discarded at all four sites; the call is kept because
@@ -147,8 +154,9 @@ struct SEntityInitAllHost {
 
     // 00926082 / 0092623B, and the 00926089 log line.
     virtual void set_init_active_flag_00f899a5(bool value) = 0;
-    virtual void log_enum_count_004b8490(std::int32_t pending_count,
-        std::int32_t denominator) = 0;
+    // 00926067..00926089: the count re-read after pass A, formatted with
+    // "INIT,ENUM:%d" (three arguments, 00926095 ADD ESP,0xC).
+    virtual void log_enum_count_004b8490(std::int32_t pending_count) = 0;
 
     // 00926335..00926365: the list is spliced to empty, the nodes freed and the
     // count zeroed, before the tail.

@@ -1,6 +1,6 @@
 # The world object behind construct_world 004DE610: layout, fillers, readers and a binding plan
 
-Addresses: 004DE610, 004CB030, 00481640, 00875E69; read only 009037F0, 009258F0, 00928860,
+Addresses: 004DE610, 004CB030, 00481640, 00875E69, 00925F20, 00926BE0, 007C9770, 007F4BA0; read only 009037F0, 009258F0, 00928860,
 00903670, 00903610, 00904C67, 00487270, 00977990, 009EEB80, 009E66EB, 0041B4E0, 00417B10,
 0041BC20, 009043A0, 0042E630, 00959450.
 
@@ -445,6 +445,10 @@ reach gameplay.
 
 ### 00925F20 `SEntity_InitAll`: read and plan (not bound)
 
+**Superseded in part by section 17** (packet `cc9_sentity_init_all`): the air-ops launches are
+attached synchronously at 0089E613, USN02 does call GenerateObject, and the pass bodies are read
+there.
+
 **What it does** (`__fastcall void(char)`, body 00925F20..0092638A). It is guarded by the count
 `00F899D4` and walks the circular pending-entity list at `00F899D0` (node next `+0h`, prev `+4h`,
 entity `+8h`):
@@ -691,3 +695,121 @@ before this commit:**
 - the 0047F130 getter's extent;
 - list 28 and list 71 fillers;
 - the other `+4ACh` readers' routines (section 9 table), none reached by the host.
+
+## 17. Part 9: 00925F20 `SEntity_InitAll` bound (`kSEntityInitAllBound`, committed OFF)
+
+Packet `cc9_sentity_init_all`, worker cc9-world-init, 2026-09-27, base main b7fc4773d. Ghidra was
+read only. The switch is `kSEntityInitAllBound` in `include/bsp/game_hosts_fixed_step.hpp`.
+
+### What the passes do, per class (V)
+
+The slot bodies were read from the PE's vtables. The slot-5Ch column is the pass D gate.
+
+| class (vtable) | A `+9Ch` | B `+A0h` | C `+A4h` | `+5Ch`(2) |
+| --- | --- | --- | --- | --- |
+| Battleship, Cruiser, Destroyer, Cargo (`00CF90B0`, `00CFB738`, `00CFC3D0`, `00CFA778`) | 00810F60 | 00822C20 `UnitInstance_SEntityInit` | 0081F980 `ShipUnit_BindSectionPoints` | true |
+| Mothership (`00D01630`) | 00810F60 | 007593D0: 00822C20, then the air-ops deck load (docs/AIROPS_LOAD_FROM_SCENE.md) | 00758210: 0081F980, then `+11A8h = 1` | true |
+| plane squadron (`00D087C0`) | 007F4580: attach, then it constructs the wing | 007F1FE0 `PlaneSquadron_BeginOrderSpeed` | 007F4BA0 (no Ghidra function): a property-bag reader over the kind-1 holder | true |
+| Fighter, DiveBomber, TorpedoBomber, SmallRecon (`00D06920`, `00D19D28`, `00D1A000`, `00D0BA80`) | 007CDF20 | 007D5D20 `Plane_ReadPropertyBag` | 007C9770 (no Ghidra function), see below | true |
+| Airfield (`00CF8C08`) | 006D0C80 | 006D3C10 runway reader | 006D5220 hangar and marker reader | true |
+
+- **Plane pass C, 007C9770..007C985F.** It calls 0095E5B0, 00951F80, 007C95A0 and 007BC550. When
+  `plane+900h` is 0 or 1 it disables the plane (00922F80 with 0). When `plane+9D4h` is set, it
+  writes `thisTable[plane].SquadronID` = that object's `+174h` id (string `SquadronID` at
+  00D05B80, 00927B40 then 00B67460). It ends with 007C5AC0(-1.0f, from 00D7A260). No script of
+  USN04 or USN02 in this installation reads `SquadronID`. Three other mission scripts do.
+- **The start branch** needs holder kind 2 at `+4h`. Scene creation stores the kind-1
+  property-bag holder (00922E20, vtable 00D03D94). The kind-2 objects are session messages of
+  vtable 00D03754. Only two routines install that vtable with kind 2: 007673B0, from
+  00768530 `SessionMessage_CreateFromBitStream`, and 00774DC0, from 00774E30. 00774E30 runs only
+  with session mode `+F4h` 1 or 2 (00774E4B..00774E59). **The branch cannot fire in single
+  player.**
+- **Pass D.** Slot 5Ch is an is-kind-of test: 006DFE90, 007DDA80 and 007EFB00 all accept 2. The
+  body 0077F090 returns at 0077F0A4 unless `[00E188A8]` is set and its `+1FE4h` is 1. It is 0 in
+  single player: this process's `LobbySettings` line says `game+1FE4h = 0`. **Pass D does nothing here.**
+- **The enable/disable virtuals** 0077D500 and 0077D580 (slots 68h and 6Ch, shared by every class
+  above) build a type-52h entity message with the byte 1 or 0 and post it through 0077C7B0.
+- **Pass E** destroys the kind-1 holder too. After InitAll, `entity+C0h` is null for every class,
+  so the scene property bag is gone once the passes have read it.
+
+### Corrections to section 13 and the walker
+
+| was | is | evidence |
+| --- | --- | --- |
+| the four USN04 air-ops launches are attached "at the next row 12, at most one step later" | all four launches start inside the `LaunchSquadron` call, and 0089E3C0 calls InitAll right after 006CC690, at 0089E611 `XOR CL,CL` / 0089E613 `CALL 00925F20`. Only a launch the deck tick 006CDC70 starts waits for row 12. | listing; `tw_off_usn04.log`: `LaunchSquadron ... (started)` four times |
+| "USN02: no GenerateObject" | USN02 calls GenerateObject 4 times (Nachi, Sazanami, Naka, Ushio, all DestroyerGen) | `tw_off_usn02.log` native table and lines 9182..9243 |
+| `sentity_init_all_00925f20` walks a snapshot, "no pass observed here adds a node" | every pass reloads the sentinel and follows `[ESI]`, so nodes appended during a pass are walked by it. The squadron's pass A (007F4580) constructs planes, and the base constructor pushes each one (00928760 `CALL 00926BE0`, the locked push_back). | 00925FC6, 00926060; 00928630's tail |
+| passes B and C use the denominator and step of pass A | 00926067 re-reads the count. 0092607A/0092607E then set the step to the new count and the denominator to three times it. | the three pushes before those stores |
+| the fixed-step row "only catches mid-step creations (air-ops launches ...)" | in this process no route leaves a node for row 12 on these missions. Row 12 would catch a deck-tick launch, and any unit the units host makes without a route (contract below). | this section |
+
+### The binding
+
+- **The pending list** is the Lua host's `pending_entities_`, the counterpart of 00F899D0. Pass A
+  is the Lua host's `thisTable` attach, so the list lives with it. `push_pending_entity_00926be0`
+  is the 00926BE0 push.
+- **Squadrons.** `push_pending_squadron_00926be0` marks a plane squadron. Its pass A appends the
+  wing units to the tail, as 007F4580's plane constructions do in the image. This process has made
+  those units already, in create_units.
+- **The routes** (all under the switch):
+
+| route | native site | host site |
+| --- | --- | --- |
+| GenerateObject | 0046DBE8 inside 0046D930, then 00874D79 from 00945311 (list already empty) | `run_generate_object_00944fd0` in `src/game_hosts_lua.cpp` |
+| SpawnNew | 0094879A, once after 009483D0's member loop | `fulfil_spawn_request_009483d0` |
+| LaunchSquadron | 0089E613 | `run_launch_squadron_0089e3c0` |
+| air-ops squadron creation | none (006C5050 only pushes) | `create_squadron` pushes; no attach |
+| fixed-step row 12 | 00875EA2 | `GameFixedStepHost::init_pending_entities_00925f20` |
+
+- **The pass bodies:**
+  - Pass A calls `attach_created_entity_00928a00`, unchanged.
+  - Passes B and C are named records: `SEntity::InitAll pass B init_slot_a0` (00926110) and
+    `pass C init_slot_a4` (009261A1). Parts of them already run at creation in files this packet
+    does not own. create_units runs 00822C20's StartSpeed arm and the wake-ring fill. The gunnery
+    host runs 0081F980's section binding. The scene-contents host runs the carrier deck load.
+  - Pass E is the named record `pass E release_spawn_holder` (00926317).
+  - The start branch and pass D are exact for single player and are logged as implemented.
+  - The loading-bar call 0057C1A0 is a record.
+- **OFF** keeps today's creation-time attach on every route.
+- **How the bound order differs from today:**
+  - **SpawnNew.** A group's member squadrons are all attached before any wing plane. Today each
+    squadron is followed by its own wing.
+  - **Air-ops launches** are attached at the end of the `LaunchSquadron` call rather than inside
+    006C5050. There is no Lua between the two points.
+  - **A launch the deck tick starts** (a queued one) is attached at the next row 12. The host
+    runs the deck tick 006CDC70 from the mission frame's script timers, outside the fixed step
+    (`src/game_hosts_mission_frame.cpp`, `run_script_timers`). So that attach can come one frame
+    later than in the image, where the tick runs inside the step. Neither mission queues a launch.
+  - **GenerateObject** of a `PlaneSquadronGen` would now attach its wing too. Today it does not.
+    Neither mission does this.
+  - **Load time** is unchanged. The scene read's four InitAll calls (0046EB4B, 0046EB88, 0046EBC6
+    and 0046ED0F) stay with the mission frame's `attach_scene_entities_00928a00`.
+
+**Contract for the units host (cc9-plane-release, `src/game_hosts_units.cpp`):** create_units
+should call `push_pending_entity_00926be0` once for each instance it constructs, which is the
+00928760 push. When that lands, the pushes in the Lua routes are deleted, and the squadron's wing
+append in pass A is replaced by the planes' own construction-time pushes.
+
+### Predictions for `kSEntityInitAllBound` (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500.**
+  - InitAll runs 4,512 times: 4,500 at row 12, 8 at SpawnNew and 4 at LaunchSquadron.
+  - 12 calls find work. They walk 60 entities: 20 pushed squadrons plus 40 appended wing planes.
+  - Every row-12 call finds an empty list.
+  - The row `FixedStepFanout::init_pending_entities` goes from UNIMPLEMENTED 4,500 to concrete
+    4,500, so the fixed-step summary moves 4,500 from records to concrete.
+  - New rows:
+    - pass A attach, 60 calls;
+    - pass B, pass C and pass E records, 60 each;
+    - the start branch and pass D, 60 each;
+    - loading progress, 180.
+  - Unchanged: `self_table_entities=86` and `wing_member_tables=40`.
+  - **Gameplay identical.** That covers deaths, the per-entity death table, gunnery hit records
+    and releases. Every script callback sees the same tables at the same point. The only order
+    change is attach order inside a SpawnNew group, and no USN04 script iterates `thisTable`.
+- **E2 = USN04 9200/9000.** Row 12 runs 9,000 times, and the other counts are the same as the
+  USN04 pair. Gameplay identical.
+- **USN02 9200/9000.** InitAll runs 9,008 times: 9,000 at row 12, and 4 GenerateObject calls with
+  two sites each. 4 calls find work, over 4 entities with no wing. `self_table_entities=34`.
+  Gameplay identical.
+- **If any gameplay line moves, this binding changed something it should not have, and the
+  switch stays OFF.**

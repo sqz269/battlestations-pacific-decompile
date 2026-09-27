@@ -59,7 +59,8 @@ constexpr float kDynamicsDampingScale = 1.0f;
 //    arm 00874CDE..00874CFE resets the list headers.
 //  * 0076FFC0: every call sits under +F4h != 0 (0076FFC3); with it clear the
 //    routine only saves and restores 00F876A1.
-// 00925F20 SEntity_InitAll stays the record (section 13 plan). False: the
+// 00925F20 SEntity_InitAll is bound by kSEntityInitAllBound (packet
+// cc9_sentity_init_all, bsp/game_hosts_fixed_step.hpp), not by this switch. False: the
 // four are records, as before. ON by the verdict: USN04 and USN02 pairs moved
 // only the predicted rows (docs/CONSTRUCT_WORLD.md section 14).
 constexpr bool kGatedFanoutBodiesBound = true;
@@ -246,6 +247,10 @@ void GameFixedStepHost::attach_native_game(GameNativeGameRuntime* game) noexcept
     native_game_=game;
 }
 
+void GameFixedStepHost::attach_entity_init(GameEntityInitAllRunner* runner) noexcept {
+    entity_init_ = runner;
+}
+
 void GameFixedStepHost::apply_dynamics_buoyancy_004462d0(float step) {
     static_cast<void>(step);
     ++summary_.fanout_calls;
@@ -357,8 +362,18 @@ void GameFixedStepHost::flush_pending_tick_registrations_00874c90() {
 }
 
 void GameFixedStepHost::init_pending_entities_00925f20(bool flag) {
-    static_cast<void>(flag);
     ++summary_.fanout_calls;
+    if constexpr (kSEntityInitAllBound) {
+        if (entity_init_ != nullptr) {
+            // 00875EA0 XOR CL,CL / 00875EA2 CALL 00925F20. The list holds only
+            // entities made inside this step by a route with no synchronous
+            // InitAll of its own; an empty list returns at 00925F49.
+            entity_init_->run_sentity_init_all_00925f20(flag, 0x00875ea2u);
+            done("FixedStepFanout::init_pending_entities", 0x00875ea2u);
+            return;
+        }
+    }
+    static_cast<void>(flag);
     record("FixedStepFanout::init_pending_entities", 0x00875ea2u);
 }
 
