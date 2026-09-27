@@ -304,6 +304,21 @@ inline constexpr bool kTorpedoStockBound = true;
 // harness never loads one.
 inline constexpr bool kTorpedoSupplyTickBound = true;
 
+// Packet cc9_ship_set_torpedo_stock (docs/UNIT_WEAPON_DEVICES.md,
+// "ShipSetTorpedoStock, wired"). True: the Lua native ShipSetTorpedoStock
+// (0089EEE0) runs 0081F8B0 on the unit's torpedo state. That means the pass C
+// set first when the unit has not had it yet, then the unload loop or the
+// spare, then 0072D520(gun, barrel, 1) on every pinned barrel of its torpedo
+// guns. LABELLED SUBSTITUTION: the script host queues the call and the gunnery
+// host applies it at the start of its next fixed step (the image calls
+// 0081F8B0 inside the native). False: the native stays an unimplemented record.
+inline constexpr bool kShipSetTorpedoStockBound = false;
+
+// The queue between the script host's ShipSetTorpedoStock and the gunnery host.
+// `unit_index` is the units host's index. Process-wide, drained by
+// GameGunneryHost::fixed_step.
+void queue_ship_set_torpedo_stock_0089eee0(std::size_t unit_index, std::int32_t stock);
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),

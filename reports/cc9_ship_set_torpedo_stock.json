@@ -1,0 +1,39 @@
+{
+  "packet": "cc9_ship_set_torpedo_stock",
+  "doc": "docs/UNIT_WEAPON_DEVICES.md, ShipSetTorpedoStock, wired",
+  "calls": [
+    {
+      "address": "0089EFDF",
+      "native": "00888AA0",
+      "function": "0089EEE0",
+      "note": "entity from argument 0"
+    },
+    {
+      "address": "0089F010",
+      "native": "00B66290",
+      "function": "0089EEE0",
+      "note": "argument 1 as an integer"
+    },
+    {
+      "address": "0089F018",
+      "native": "0081F8B0",
+      "function": "0089EEE0",
+      "note": "set torpedo stock"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kShipSetTorpedoStockBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "queued by the script host, applied at the gunnery host's next fixed step",
+    "re-arm uses the scalar ReloadTime without 0072D520's 00BD2F10 draw",
+    "pass C set run first when the unit has not had it"
+  ],
+  "failed_predictions": []
+}
