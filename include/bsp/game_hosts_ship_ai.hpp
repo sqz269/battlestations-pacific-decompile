@@ -178,6 +178,11 @@ struct GameShipAiRow {
     unsigned long long arm_tails{0};         // bodies
     unsigned long long arm_tail_latched{0};  // left blk+35Ch non-zero
     unsigned long long arm_tail_stops{0};    // took the 009EEFD3 stop request
+    // Packet cc9_ship_ai_neighbour_count: 009EEB2A..009EEEEC, the traffic
+    // setback walk over world list 6.
+    unsigned long long traffic_scans{0};     // walks the four-way gate opened
+    unsigned long long traffic_steps{0};     // 009EED62 set-back steps taken
+    float traffic_setback_max{0.0f};         // the largest setback of a tail
     unsigned long long arrival_latches{0};   // 009EF034 set blk+2FEh
     int latched_direction_35c{0};            // blk+35Ch after the last tail
     unsigned long long approach_frames{0};   // 009F1BC0 bodies
@@ -416,6 +421,13 @@ struct GameShipAiSummary {
     unsigned long long arm_tail_latched{0};
     unsigned long long arm_tail_stops{0};
     unsigned long long arrival_latches{0};
+    // Packet cc9_ship_ai_neighbour_count.
+    unsigned long long traffic_count_reads{0};   // 009EEB8B reads
+    unsigned long long traffic_count_sum{0};     // their values, summed
+    std::size_t traffic_count_max{0};
+    unsigned long long traffic_kind_passes{0};   // entities past 009EEBCC and 009EEBDA
+    unsigned long long traffic_scans{0};
+    unsigned long long traffic_steps{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};

@@ -213,6 +213,14 @@ inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 // step, so a per-step write between replans lasts one step. False: both are
 // records and such writes persist.
 inline constexpr bool kShipAiSnapshotBound = true;
+// Packet cc9_ship_ai_neighbour_count, docs/SHIP_AI_TAILS.md section 13. True:
+// the traffic setback walk of 009EEAAB reads world list 6 ([[00E188A8]+19CCh]
+// +60h, 009EEB8B) through 009DBBC0, tests vtable+5Ch(6) (009EEBC8), skips the
+// brain's own unit [blk+3FCh] (009EEBD2), and takes [entity+9C8h] (009EEBE0)
+// and 00427EB0's +FCh position (009EEC41) from the units host. SUBSTITUTION:
+// the host's list 6 never drops a unit, so a sunk ship stays in it. False: the
+// count is 0 and the walk never steps (the milestone 2r stand-in).
+inline constexpr bool kShipAiNeighbourCountBound = false;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h
@@ -1553,6 +1561,7 @@ struct GameShipAiHost::Impl {
         log.unimplemented(method, text);
     }
     void record_slot(const char* method, const char* text) { log.unimplemented(method, text); }
+    void done_slot(const char* method, const char* text) { log.implemented(method, text); }
     // Milestone 2o, chain slot 16: 009F4DA0's tail call at 009F50C6 into
     // 009F3F80, and 009F3F80's own tail, which is the hop into the unit's
     // order ring. Defined below the host bindings it builds.
@@ -5488,34 +5497,90 @@ public:
         return out;
     }
     int neighbour_list_count_009eeb8b() override {
-        // [[00E188A8]+19CCh]+60h. construct_world 004DE610 is a load record, so
-        // there is no world entity list to walk, the same boundary the obstacle
-        // sector scan and the world-bounds box hit.
-        owner_.record("ShipAiArmTail::neighbour_list_count", 0x009eeb8bu);
-        return 0;
+        // [[00E188A8]+19CCh]+60h, world list 6 (ships). OFF: the milestone 2r
+        // stand-in, a count of 0.
+        if (!kShipAiNeighbourCountBound) {
+            owner_.record("ShipAiArmTail::neighbour_list_count", 0x009eeb8bu);
+            return 0;
+        }
+        owner_.done("ShipAiArmTail::neighbour_list_count", 0x009eeb8bu);
+        const std::size_t count = owner_.units.world_list_size(6);
+        ++owner_.summary.traffic_count_reads;
+        owner_.summary.traffic_count_sum += count;
+        owner_.summary.traffic_count_max = std::max(owner_.summary.traffic_count_max, count);
+        return static_cast<int>(count);
     }
-    bsp::ShipAiArmTailEntity list_element_009dbbc0(int) override {
-        owner_.record("ShipAiArmTail::list_element", 0x009dbbc0u);
-        return nullptr;
+    bsp::ShipAiArmTailEntity list_element_009dbbc0(int index) override {
+        if (!kShipAiNeighbourCountBound) {
+            owner_.record("ShipAiArmTail::list_element", 0x009dbbc0u);
+            return nullptr;
+        }
+        // 009DBBC0 on list+60h: {count, head}; index < 0 or >= count gives 0,
+        // otherwise the node reached by `index` next links, its value.
+        owner_.done("ShipAiArmTail::list_element", 0x009dbbc0u);
+        if (index < 0 || static_cast<std::size_t>(index) >= owner_.units.world_list_size(6)) {
+            return nullptr;
+        }
+        const void* node = owner_.units.world_list_head(6);
+        for (int step = 0; node != nullptr && step < index; ++step) {
+            node = GameUnitsHost::world_list_node_next(node);
+        }
+        return node != nullptr ? GameUnitsHost::world_list_node_unit(node) : nullptr;
     }
-    bool entity_is_kind_009eebc8(bsp::ShipAiArmTailEntity, int) override {
-        owner_.record_slot("ShipAiArmTail::entity_is_kind", "00cfc3d0+vtable5c");
-        return false;
+    bool entity_is_kind_009eebc8(bsp::ShipAiArmTailEntity entity, int kind) override {
+        if (!kShipAiNeighbourCountBound) {
+            owner_.record_slot("ShipAiArmTail::entity_is_kind", "00cfc3d0+vtable5c");
+            return false;
+        }
+        owner_.done_slot("ShipAiArmTail::entity_is_kind", "00cfc3d0+vtable5c");
+        const std::size_t index = unit_index_of(entity);
+        return index != kNoUnit && owner_.units.unit_is_kind_of(index, kind);
     }
     bsp::ShipAiArmTailEntity own_unit_009eebd2() override {
         owner_.done("ShipAiArmTail::own_unit", 0x009eebd2u);
+        if (kShipAiNeighbourCountBound) {
+            // [blk+3FCh]: the same identity the list nodes carry.
+            return owner_.units.unit_identity(index_);
+        }
         return reinterpret_cast<bsp::ShipAiArmTailEntity>(
             static_cast<std::uintptr_t>(index_) + 1u);
     }
-    float entity_hull_radius_009eebe0(bsp::ShipAiArmTailEntity) override {
-        owner_.record("ShipAiArmTail::entity_hull_radius", 0x009eebe0u);
-        return 0.0f;
+    float entity_hull_radius_009eebe0(bsp::ShipAiArmTailEntity entity) override {
+        if (!kShipAiNeighbourCountBound) {
+            owner_.record("ShipAiArmTail::entity_hull_radius", 0x009eebe0u);
+            return 0.0f;
+        }
+        // FLD [entity+9C8h] (009EEBE0), the value 0081106E / 0081FA4D produce.
+        owner_.done("ShipAiArmTail::entity_hull_radius", 0x009eebe0u);
+        const std::size_t index = unit_index_of(entity);
+        return index != kNoUnit ? owner_.units.unit_hull_length_09c8(index) : 0.0f;
     }
     bsp::ShipAiNavPose entity_position_00427eb0_009eec41(
-        bsp::ShipAiArmTailEntity) override {
-        owner_.record("ShipAiArmTail::entity_position", 0x00427eb0u);
-        return bsp::ShipAiNavPose{};
+        bsp::ShipAiArmTailEntity entity) override {
+        if (!kShipAiNeighbourCountBound) {
+            owner_.record("ShipAiArmTail::entity_position", 0x00427eb0u);
+            return bsp::ShipAiNavPose{};
+        }
+        // 00427EB0: &entity+FCh after the pose refresh 00414DB0, which this host
+        // never needs (the pose cache is always valid). x is +FCh, z is +104h.
+        owner_.done("ShipAiArmTail::entity_position", 0x00427eb0u);
+        bsp::ShipAiNavPose out{};
+        const std::size_t index = unit_index_of(entity);
+        if (index == kNoUnit) return out;
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index, x, y, z);
+        out.x = x;
+        out.z = z;
+        return out;
     }
+    std::size_t unit_index_of(bsp::ShipAiArmTailEntity entity) const {
+        const std::size_t count = owner_.units.count();
+        for (std::size_t i = 0; i < count; ++i) {
+            if (owner_.units.unit_identity(i) == entity) return i;
+        }
+        return kNoUnit;
+    }
+    static constexpr std::size_t kNoUnit = static_cast<std::size_t>(-1);
     float unit_heading_vtable_0050_009ef0d6() override {
         owner_.done("ShipAiArmTail::unit_heading", 0x009ef0d6u);
         return owner_.units.unit_heading_radians(index_);
@@ -6748,6 +6813,13 @@ public:
             nav_pose, goal_is_destination, seconds, tail_host);
         owner_.done("ShipAi::navigation_arm_tail", 0x009eeaabu);
         ctl_.arm_tail_ran = true;
+        if (tail.setback.scanned) {
+            ++row_.traffic_scans;
+            ++owner_.summary.traffic_scans;
+        }
+        row_.traffic_steps += tail.setback.steps;
+        owner_.summary.traffic_steps += tail.setback.steps;
+        row_.traffic_setback_max = std::max(row_.traffic_setback_max, tail.setback.distance);
         ++row_.arm_tails;
         ++owner_.summary.arm_tails;
         row_.throttle_limit_344 = tail.throttle_ceiling;
@@ -8235,6 +8307,21 @@ void GameShipAiHost::report() {
         "arrival_latches=%llu",
         host.summary.arm_tails, host.summary.arm_tail_latched, host.summary.arm_tail_stops,
         host.summary.arrival_latches);
+    host.log.notef("summary mission ship ai traffic setback count_reads=%llu mean_count=%.2f "
+        "max_count=%zu scans=%llu steps=%llu bound=%d (009EEB8B list 6, packet "
+        "cc9_ship_ai_neighbour_count)",
+        host.summary.traffic_count_reads,
+        host.summary.traffic_count_reads
+            ? static_cast<double>(host.summary.traffic_count_sum) / host.summary.traffic_count_reads
+            : 0.0,
+        host.summary.traffic_count_max, host.summary.traffic_scans, host.summary.traffic_steps,
+        kShipAiNeighbourCountBound ? 1 : 0);
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.traffic_scans == 0) continue;
+        host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",
+            row.unit.c_str(), row.traffic_scans, row.traffic_steps,
+            static_cast<double>(row.traffic_setback_max));
+    }
     host.log.notef("summary mission ship ai goal vector prepasses=%llu refreshes=%llu "
         "nonzero_goals=%zu brain_targets=%zu path_plan_refreshes=%llu path_picks=%llu "
         "path_publishes=%llu station_keeping=%llu sector_refreshes=%llu middle_runs=%llu "
