@@ -27,5 +27,32 @@
       "prediction": "OFF: dir=astern >= 100 lines, >= 2 more Allied sinkings; b row 20/487/53671.0 at 39.65 s would close the flag; partial match expected"
     }
   ],
-  "results": "pending"
+  "results": {
+    "control_vs_c": "USN02 identical; USN01 differs only in torpedo drops 2 -> 8 (rack drop e76314e91, landed after c)",
+    "recon_unit_lists_USN01": {
+      "moved": "world unit lists 7/26 -> 14/62 only",
+      "verdict": "held; closes the unit-list flag"
+    },
+    "placement_USN01": {
+      "moved": "shots 447 -> 457, fire messages 4121 -> 4207, ScoutDauntless|.-2 death 129.50 -> 130.50 s (both death rows byte-equal to b)",
+      "verdict": "held; closes the shot and scout flags"
+    },
+    "snapshot_USN02": {
+      "off": "20 / 487 (247) / 53671.0 / 863 shots, failed 39.65 s, death table equal to b; dir=astern 884; drive_astern_heading 8497",
+      "verdict": "held; closes the 20/487 -> 22/440 flag"
+    }
+  },
+  "binaries": {
+    "control": "local/ap_ctl EB13841A6AFF",
+    "rc_off": "local/ap_rc_off 037667941D48",
+    "fp_on": "local/ap_fp_on 5FB7A9295A84",
+    "sn_off": "local/ap_sn_off 343AF7817969"
+  },
+  "flags_left": [
+    "USN01 window refusals 385 -> 754: 754 on all three builds; likely recon aggregates 7edcb4c78 (admit_plane 3922 -> 7466, recon aggregates line new), not paired on USN01",
+    "E2 594 -> 595 hit records: not in this packet; an E2 snapshot pair on current main would test it"
+  ],
+  "failed_predictions": [
+    "snapshot OFF sinks 2 fewer Allied ships (10 vs 12), not at least 2 more"
+  ]
 }
