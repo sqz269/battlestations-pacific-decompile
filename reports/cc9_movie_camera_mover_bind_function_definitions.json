@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0064a4c0",
+    "end_address": "0064a4e2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0064a4c0",
+    "end_address": "0064a4e1",
+    "bytes_disassembled": 34,
+    "message": "Successfully disassembled 34 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0064a4c0",
+    "disassemble_first": false,
+    "name": "HudShipViewScreen_OnObservedDestroyed"
+   },
+   "result": {
+    "success": true,
+    "address": "0064a4c0",
+    "function_name": "HudShipViewScreen_OnObservedDestroyed",
+    "entry_point": "0064a4c0",
+    "body_size": 34,
+    "message": "Function created successfully at 0064a4c0",
+    "warnings": [
+     "Function name 'HudShipViewScreen_OnObservedDestroyed' \u2014 main part 'HudShipViewScreen_OnObservedDestroyed' is not PascalCase. Expected: HudshipviewscreenOnobserveddestroyed",
+     "Function name 'HudShipViewScreen_OnObservedDestroyed' \u2014 main part 'HudShipViewScreen_OnObservedDestroyed' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'HudShipViewScreen_OnObservedDestroyed' does not start with a recognized verb. First word 'Hud' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0064a4c0",
+   "end": "0064a4e2",
+   "name": "HudShipViewScreen_OnObservedDestroyed",
+   "after": "Function: HudShipViewScreen_OnObservedDestroyed at 0064a4c0\nSignature: undefined HudShipViewScreen_OnObservedDestroyed(void)\nEntry: 0064a4c0\nBody: 0064a4c0 - 0064a4e1"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
