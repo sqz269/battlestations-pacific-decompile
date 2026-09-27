@@ -78,6 +78,22 @@ inline constexpr bool kSEntityInitThisTableStepsBound = true;
 // USN04 and USN02 pairs moved only the row's status and the pass E summary line.
 inline constexpr bool kSEntityInitPassEReleaseBound = true;
 
+// Packet cc9_init_identity_gaps (docs/SENTITY_INIT_ATTACH_ORDER.md section 8).
+// The scene read's InitAll calls (0046EB4B, 0046EB88, 0046EBC6, 0046ED0F) run
+// passes B and C over the load-time instances too; this process attaches them
+// in the mission frame's attach_scene_entities_00928a00 instead. True: after
+// that attach loop (pass A over all), each scene unit gets 009292B0's
+// `ClassID`, `Name` and `Class` (its pass B reaches 009292B0, section 1.1),
+// and each marker of a class whose pass C is the default 009295B0 (NavPoint
+// 41h, MovieCamPos 42h, MovieCamLookat 43h, Path 47h, CameraPath 4Ah,
+// SimpleEffect 5Bh, PeriodicEffect 5Ch) gets 00928100's `Party` (+54h: the
+// authored Party, else 00925E1D's 2), `Name` (vt+10h when +154h, the name
+// length, is not 0) and `Type` (00E0CD80[+C4h], +C4h = the class id). The
+// attach then seeds units without its `Class` stand-in. `Race` (+58h) is not
+// written: the scene record does not carry an authored Race (contract,
+// section 8). False: today's load attach.
+inline constexpr bool kSceneLoadThisTableIdentityBound = false;
+
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
 class GameEntityInitAllRunner {

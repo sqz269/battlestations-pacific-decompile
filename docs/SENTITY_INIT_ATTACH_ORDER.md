@@ -1,6 +1,6 @@
 # InitAll order: the `thisTable` steps of passes B and C (packet `cc9_init_attach_order`)
 
-Addresses: 009292B0, 00955420, 007F1FE0, 007C9770, 009295B0, 00928100, 009238A0.
+Addresses: 009292B0, 00955420, 007F1FE0, 007C9770, 009295B0, 00928100, 009238A0, 00926317, 00925CE0, 00928630.
 
 Worker cc9-init-passes, 2026-09-27, base main 0942b3cd9. Ghidra was read only. This follows
 `docs/SENTITY_INIT_PASSES.md` section 2 (the order difference) and `docs/CONSTRUCT_WORLD.md`
@@ -304,3 +304,114 @@ Every read of an authored field outside the scene reader, with when it runs:
 | other lines (masked multiset) | - | 0 / 0 | - | 0 / 0 |
 
 **Every prediction held. Verdict: ON.**
+
+## 8. The load-time identity gaps (packet `cc9_init_identity_gaps`, `kSceneLoadThisTableIdentityBound`)
+
+Worker cc9-init-passes, 2026-09-27, base main 1aed3c039. Ghidra was read only.
+
+### 8.1 What the image writes at load (V)
+
+- **Where the passes run.** The scene read's InitAll calls (0046EB4B, 0046EB88, 0046EBC6 and
+  0046ED0F) run passes A, B and C over the load-time instances. This process attaches those
+  instances in the mission frame, through `attach_scene_entities_00928a00`, outside the walk.
+- **Units.** Each unit class's pass B reaches 009292B0 (section 1.1), which writes `ClassID`,
+  `Name` and `Class`. The host wrote only the `Class` stand-in.
+- **Markers of the seven default-pass-C classes** take 009295B0's 00928100 arm (section 1.3).
+  It writes four fields into `thisTable[key]`:
+  - `Race` = `+58h` and `Party` = `+54h`, both numbers (006B8260). The base 00925CE0 stores
+    `+54h` = 2 (00925E1D) and `+58h` = -1 (00925E24). Pass A's 00927050 then copies an authored
+    `Party` or `Race` from the kind-1 bag over them (`docs/ENTITY_LIFECYCLE_TAILS.md` section 2).
+  - `Name` = vt+10h. It is written only when `+154h` is not 0. For Path (vtable 00CE6290), vt+10h
+    is 0042E950, which returns the string pointer at `+158h`, so `+154h`/`+158h` is the name's
+    length and data, and a named entity gets `Name`.
+  - `Type` = `00E0CD80[+C4h]` (006B8360). The base 00928630 stores `+C4h` = 1 (009286C1). Each
+    class constructor then stores its scene class id:
+
+| class | id | constructor store | `Type` string |
+| --- | --- | --- | --- |
+| NavPoint | 41h | 004E59AD | `NAVPOINT` (00D18E68) |
+| MovieCamPos | 42h | 004E5A0D | `MOVIECAMPOS` (00D18E5C) |
+| MovieCamLookat | 43h | 004E5A6D | `MOVIECAMLOOKAT` (00D18E4C) |
+| Path | 47h | 0047B6C8 | `GAMEPATH` (00D18E1C) |
+| CameraPath | 4Ah | 004E58B8 | `CAMERAPATH` (00D18DFC) |
+| SimpleEffect | 5Bh | 004E7F31 | `SIMPLEEFF` (00D18CD8) |
+| PeriodicEffect | 5Ch | 004E800E | `PERIODEFF` (00D18CCC) |
+
+  The other identity rows (LandingPoint 1Dh, SpawnPoint 4Dh, PlaneSquadronGen, LandConvoy) have
+  their own pass C, so they get no 00928100.
+
+### 8.2 The binding
+
+The switch is `kSceneLoadThisTableIdentityBound` in `include/bsp/game_hosts_fixed_step.hpp`,
+committed OFF.
+
+- **The mission frame** (`src/game_hosts_mission_frame.cpp`) hands each marker's scene class id
+  and its record's authored `Party` to the Lua host.
+- **After the attach loop** (pass A over every instance), the Lua host does two things:
+  - **Pass B:** for every unit, it calls `bind_lua_class_009292b0` with the row's class and name.
+    The native row is `SceneLoad::pass B bind_lua_class` (009292b0).
+  - **Pass C:** for every marker of the seven classes, it calls `mirror_identity_00928100`. This
+    writes `Party` (the authored value, else 2), `Name` (when not empty) and `Type`. The native
+    row is `SceneLoad::pass C mirror_identity` (00928100).
+- **The attach** then writes no `Class` stand-in for units.
+- **`Race` is not written.** The scene record does not carry an authored `Race`, so the value is
+  unknown here. See the contract below.
+- **Summary line:** `summary SceneLoad thisTable identity bound=<0|1> class_bound=N mirrored=N`.
+
+### 8.3 Script readers in this installation
+
+`local\cc9-init-passes-luaread.py` takes every helper function transitively called from the
+mission script and lists each read of `.Name`, `.Type`, `.Race`, `.ClassID` or `.SquadronID`.
+Its call graph is an over-approximation: it also follows `usage:` lines inside comments. Every
+hit was then checked for a real call.
+
+- **`luaRemoveByName`**, `commandhelpers.lua:1797`, compares `value.Name == name`. Its only
+  callers are the `luaClearCheck*` family (5088..5397). Nothing in the global scripts,
+  `usn_19_coralus.lua` or `usn_2_java.lua` calls that family; the hits were the `usage:` lines.
+  **Not reached.** (Had it been reached, `nil == nil` on unnamed tables would remove the first
+  entry of the table, so `Name` would matter there.)
+- **`luaObj_AddUnit`**, `commandhelpers.lua:5830`, is called at `usn_2_java.lua:859` and `:871`.
+  It reads `target.Name` only to guard a log line under `RELEASE_LOGOFF`, and the targets there
+  are positions (`GetPosition(point)`, `FillPathPoints`), not entity slots. **No effect.**
+- **`luaMessageHandler`**, 3526..4498, reads `unit.Name` only in its cheat and debug branches.
+  It is called from `usn_19_coralus.lua:476, 1346, 2278` and `usn_2_java.lua:460`. **The
+  branches are not reached without a cheat message.**
+- **Not called by either mission:** `luaSurrender` (6203, 6213), `luaGenerateObjects` (6795),
+  `luaStartConvoy` (12393..12403) and `luaWriteCamState` (12971, reached only from a cheat branch
+  at 4399).
+- **The mission scripts themselves** read none of these fields of an entity table. Their `.Name`
+  reads are `this.Name` (the mission's) and `Class.Name`.
+- **Prediction: identity.**
+
+### 8.4 Contracts
+
+- **cc9-ships, `src/game_hosts_scene_contents.cpp`, `GameSceneEntityRecord`:** carry the
+  authored `Race` beside `Party`, as 00927050's kind-1 arm reads it into `+58h`. With it, the
+  marker mirror writes `Race` (authored, else -1), and 00928F50's `Race` for units can be written
+  too. It is not written today.
+- **The script-orders owner (`src/game_hosts_script_orders.cpp`, now in cc9-ships's lease):**
+  CreateScript's script entity is class 3 (`+C4h` = 3, stored after the vtable writes at 00898874..00898888 per the 00898750 ledger entry). The image pushes it on the
+  pending list through 00928630, so the next InitAll's pass C runs 00928100 on its slot. That
+  writes `Race` -1, `Party` 2, `Type` `SCRIPTENTITY` (00D19034), and `Name` if it is named;
+  whether it is named is **contract: unread**. The host's script-entity slot
+  (`push_self_table_slot_008989f6`, 2286) writes none of them.
+- **Landscape (00CEA090)** uses 009295B0 too, but it has no identity row, so no `thisTable` key
+  is known for it. 00928100 writes nothing without `+178h`. Whether a Landscape has a key is
+  **unread**.
+
+### 8.5 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `class_bound` 0 -> 21 (the 21 load-time units) and `mirrored` 0 -> 5 (four Paths and the
+    NavPoint `IJNRetreat`).
+  - Two new native rows: `SceneLoad::pass B bind_lua_class` with 21 calls, and
+    `SceneLoad::pass C mirror_identity` with 5.
+  - The `thisTable: 26 per-entity slot(s) ... 21 of them with ... Class` line is unchanged.
+  - The runtime-walk rows of sections 6 and 7 are unchanged.
+  - Gameplay identical, with the death rows and the unit table.
+- **USN02 9200/9000:**
+  - `class_bound` 0 -> 28 and `mirrored` 0 -> 2 (the NavPoints `DRGoTo` and `EscapePoint`).
+  - The same two rows, with 28 and 2 calls.
+  - Gameplay identical, and the Game Over at 39.65 s on both sides.
+- **If a gameplay row moves,** a script reached one of these fields. The switch stays OFF, and
+  the reader is traced.

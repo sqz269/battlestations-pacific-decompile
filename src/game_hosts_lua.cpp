@@ -2924,6 +2924,39 @@ private:
     GameMissionLuaHost& host_;
 };
 
+// Packet cc9_init_identity_gaps. 00928100 (docs/SENTITY_INIT_ATTACH_ORDER.md
+// sections 1.3 and 8): thisTable[key] gets `Race` = +58h and `Party` = +54h
+// (both numbers through 006B8260), `Name` = vt+10h when +154h is not 0, and
+// `Type` = 00E0CD80[+C4h] (006B8360). `Race` is not written here: the record
+// carries no authored Race (contract, section 8).
+bool GameMissionLuaHost::mirror_identity_00928100(int entity_id, int party,
+    const std::string& name, const char* type_name) {
+    if (state_ == nullptr || entity_id <= 0) return false;
+    const int base = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+    lua_getfield(state_, -1, key);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        return false;
+    }
+    ::lua_pushnumber(state_, static_cast<lua_Number>(party));
+    lua_setfield(state_, -2, "Party");
+    if (!name.empty()) {
+        ::lua_pushstring(state_, name.c_str());
+        lua_setfield(state_, -2, "Name");
+    }
+    ::lua_pushstring(state_, type_name);
+    lua_setfield(state_, -2, "Type");
+    ::lua_settop(state_, base);
+    return true;
+}
+
 // Packet cc9_init_attach_order. 009292B0 (docs/NATIVE_UNIT_CLASS_LUA.md): the
 // entity's own `thisTable` slot through 00927B40, then `ClassID` through
 // 00B67460 (an integer), `Name` through 00B66790, and `Class` through 00B675D0
@@ -3642,6 +3675,31 @@ bool GameMissionLuaHost::call_entry_point(const std::string& name, bool threadsa
     return run.dispatched && run.pcall_status == 0;
 }
 
+namespace {
+// Packet cc9_init_identity_gaps. 00925E1D MOV dword ptr [ESI+54h],2: the base
+// entity's Party before any authored value (PARTY_NEUTRAL in this
+// installation's luamw_init.lua).
+constexpr int kEntityDefaultParty00925e1d = 2;
+
+// The `Type` 00928100 writes, 00E0CD80[+C4h], for the classes whose slot +A4h is
+// 009295B0 (section 1.3). +C4h is the scene class id each constructor stores:
+// 004E59AD 41h, 004E5A0D 42h, 004E5A6D 43h, 0047B6C8 47h, 004E58B8 4Ah,
+// 004E7F31 5Bh, 004E800E 5Ch. Strings read from the image at 00D18CCC..00D18E68.
+// nullptr: the class has its own pass C (or no default one was found).
+const char* default_pass_c_type_name(int class_id) noexcept {
+    switch (class_id) {
+    case 0x41: return "NAVPOINT";        // 00D18E68
+    case 0x42: return "MOVIECAMPOS";     // 00D18E5C
+    case 0x43: return "MOVIECAMLOOKAT";  // 00D18E4C
+    case 0x47: return "GAMEPATH";        // 00D18E1C
+    case 0x4A: return "CAMERAPATH";      // 00D18DFC
+    case 0x5B: return "SIMPLEEFF";       // 00D18CD8
+    case 0x5C: return "PERIODEFF";       // 00D18CCC
+    default: return nullptr;
+    }
+}
+}  // namespace
+
 std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     const std::vector<SceneEntity>& entities) {
     if (state_ == nullptr || entities.empty()) return 0;
@@ -3684,7 +3742,7 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         // `Class`, the field a per-kind setter adds through 00b675d0. It is the
         // installed `VehicleClass` row the autoload folder already loaded, not
         // a table this file builds: the slot is assigned the global's own row.
-        if (entity.class_index >= 0) {
+        if (!kSceneLoadThisTableIdentityBound && entity.class_index >= 0) {
             lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
             if (lua_istable(state_, -1)) {
                 lua_rawgeti(state_, -1, entity.class_index);
@@ -3720,6 +3778,33 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
     summary_.self_table_entities = made;
+    if constexpr (kSceneLoadThisTableIdentityBound) {
+        // Packet cc9_init_identity_gaps. The scene read's InitAll: pass A over
+        // every instance (the loop above), then pass B, then pass C.
+        for (const SceneEntity& entity : entities) {
+            if (entity.class_index < 0) continue;
+            // Pass B of every unit class reaches 009292B0 (00822CDB, 007D5DAC,
+            // 007F218E, 006D3C2D; section 1.1).
+            if (bind_lua_class_009292b0(entity.id, entity.class_index, entity.name)) {
+                ++summary_.load_class_bound;
+                ++classes;
+            }
+            log_.implemented("SceneLoad::pass B bind_lua_class", "009292b0");
+        }
+        for (const SceneEntity& entity : entities) {
+            if (entity.class_index >= 0 || entity.marker_class_id < 0) continue;
+            const char* const type_name = default_pass_c_type_name(entity.marker_class_id);
+            if (type_name == nullptr) continue;  // the class has its own pass C
+            // 009295B0 with no kind-3 holder: 009297E4 CALL 00928100. +54h is
+            // the authored Party (00927050, kind 1) or 00925E1D's 2.
+            const int party = entity.marker_authored_party >= 0
+                ? entity.marker_authored_party : kEntityDefaultParty00925e1d;
+            if (mirror_identity_00928100(entity.id, party, entity.name, type_name)) {
+                ++summary_.load_identity_mirrored;
+            }
+            log_.implemented("SceneLoad::pass C mirror_identity", "00928100");
+        }
+    }
     // Was `unimplemented`, which the header defines as "the caller receives a
     // neutral value". That is not what happens here: the loop above builds the
     // slot and all four of its fields, `00928A00` is `coverage: complete` in
@@ -3968,6 +4053,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.init_all_squadron_ids);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
+    log_.notef("summary SceneLoad thisTable identity bound=%d class_bound=%llu mirrored=%llu",
+        kSceneLoadThisTableIdentityBound ? 1 : 0, summary_.load_class_bound,
+        summary_.load_identity_mirrored);
     if (state_ == nullptr) return;
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "Mission");
