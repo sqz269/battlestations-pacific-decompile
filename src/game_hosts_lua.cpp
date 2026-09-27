@@ -2707,7 +2707,7 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
 }
 
 bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
-    const std::string& name, int class_index) {
+    const std::string& name, int class_index, bool seed_class) {
     if (state_ == nullptr || entity_id <= 0) return false;
     lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
     if (lua_isnil(state_, -1)) {
@@ -2727,7 +2727,9 @@ bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
     lua_pushlightuserdata(state_,
         reinterpret_cast<void*>(static_cast<std::uintptr_t>(entity_id)));
     lua_setfield(state_, -2, "Ptr");
-    if (class_index >= 0) {
+    // `Class` is 009292B0's third field, not 00928A00's: a stand-in written here
+    // unless the InitAll walk's pass B writes it (kSEntityInitThisTableStepsBound).
+    if (seed_class && class_index >= 0) {
         lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
         if (lua_istable(state_, -1)) {
             lua_rawgeti(state_, -1, class_index);
@@ -2796,7 +2798,7 @@ public:
         GameMissionLuaHost::PendingEntity& node = at(entity);
         ++host_.summary_.init_all_entities;
         if (host_.attach_created_entity_00928a00(node.entity_id, node.name,
-                node.class_index)) {
+                node.class_index, !kSEntityInitThisTableStepsBound)) {
             host_.init_all_attached_.insert(node.entity_id);
             if (node.wing_member) ++host_.summary_.wing_member_tables;
         }
@@ -2820,15 +2822,44 @@ public:
             plane.name = row->name;
             plane.class_index = class_index;
             plane.wing_member = true;
+            plane.squadron_id = leader;  // 007F4B49 MOV [EBX+9D4h],ESI
             host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
             ++host_.summary_.init_all_wing_appended;
         }
     }
-    void entity_init_second_vcall_a0(void*) override {
+    void entity_init_second_vcall_a0(void* entity) override {
         host_.log_.unimplemented("SEntity::InitAll pass B init_slot_a0", "00926110");
+        if constexpr (kSEntityInitThisTableStepsBound) {
+            // Packet cc9_init_attach_order. Every class this process pushes
+            // reaches 009292B0 in its pass B: the squadron 007F1FE0 at 007F218E
+            // (the kind-1 arm 007F2101, which every single-player holder
+            // takes), ships and carriers through 00822C20 -> 00955420, planes
+            // through 007D5D20 -> 00955420 (both at 00955498). ClassID is the
+            // squadron's first plane's descriptor +70h at 007F2181, the
+            // entity's own at 00955420; both are the node's VehicleClass row.
+            const GameMissionLuaHost::PendingEntity& node = at(entity);
+            if (host_.bind_lua_class_009292b0(node.entity_id, node.class_index, node.name)) {
+                ++host_.summary_.init_all_class_bound;
+            }
+            host_.log_.implemented("SEntity::InitAll pass B bind_lua_class", "009292b0");
+        }
     }
-    void entity_init_third_vcall_a4(void*) override {
+    void entity_init_third_vcall_a4(void* entity) override {
         host_.log_.unimplemented("SEntity::InitAll pass C init_slot_a4", "009261a1");
+        if constexpr (kSEntityInitThisTableStepsBound) {
+            // Packet cc9_init_attach_order. 007C9770: when plane+9D4h is set,
+            // thisTable[plane].SquadronID = that squadron's +174h id. Only
+            // wing planes are separate plane nodes here; the squadron's node
+            // stands for the squadron and its leader plane at once, and the
+            // image's squadron table carries no SquadronID, so it gets none.
+            const GameMissionLuaHost::PendingEntity& node = at(entity);
+            if (node.wing_member && node.squadron_id > 0) {
+                if (host_.set_plane_squadron_id_007c97e3(node.entity_id, node.squadron_id)) {
+                    ++host_.summary_.init_all_squadron_ids;
+                }
+                host_.log_.implemented("SEntity::InitAll pass C plane squadron_id", "007c97e3");
+            }
+        }
     }
     bool entity_descriptor_kind_is_initial_state(void*) override {
         // 009261AD: the holder's +4h against 2. Kind 1 here, see above.
@@ -2881,6 +2912,64 @@ private:
     }
     GameMissionLuaHost& host_;
 };
+
+// Packet cc9_init_attach_order. 009292B0 (docs/NATIVE_UNIT_CLASS_LUA.md): the
+// entity's own `thisTable` slot through 00927B40, then `ClassID` through
+// 00B67460 (an integer), `Name` through 00B66790, and `Class` through 00B675D0
+// from VehicleClass[ClassID] (00B67980 globals, 00B67800, 00B67720). The row is
+// assigned whatever it is, nil included, as 00B675D0 would.
+bool GameMissionLuaHost::bind_lua_class_009292b0(int entity_id, int class_index,
+    const std::string& name) {
+    if (state_ == nullptr || entity_id <= 0 || class_index < 0) return false;
+    const int base = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+    lua_getfield(state_, -1, key);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        return false;
+    }
+    lua_pushinteger(state_, class_index);
+    lua_setfield(state_, -2, "ClassID");
+    ::lua_pushstring(state_, name.c_str());
+    lua_setfield(state_, -2, "Name");
+    lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (lua_istable(state_, -1)) {
+        lua_rawgeti(state_, -1, class_index);
+        lua_setfield(state_, -3, "Class");
+    }
+    ::lua_settop(state_, base);
+    return true;
+}
+
+// Packet cc9_init_attach_order. 007C97C6..007C9805: 00927B40 gives the plane's
+// slot, and 00B67460 stores the u16 at squadron+174h under "SquadronID"
+// (00D05B80).
+bool GameMissionLuaHost::set_plane_squadron_id_007c97e3(int plane_id, int squadron_id) {
+    if (state_ == nullptr || plane_id <= 0) return false;
+    const int base = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, plane_id);
+    lua_getfield(state_, -1, key);
+    if (!lua_istable(state_, -1)) {
+        ::lua_settop(state_, base);
+        return false;
+    }
+    lua_pushinteger(state_, squadron_id);
+    lua_setfield(state_, -2, "SquadronID");
+    ::lua_settop(state_, base);
+    return true;
+}
 
 void GameMissionLuaHost::push_pending_entity_00926be0(int entity_id,
     const std::string& name, int class_index) {
@@ -3862,6 +3951,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         kSEntityInitAllBound ? 1 : 0, summary_.init_all_calls, summary_.init_all_nonempty,
         summary_.init_all_entities, summary_.init_all_wing_appended,
         summary_.init_all_pushes, pending_entities_.size());
+    log_.notef("summary SEntity::InitAll thisTable steps bound=%d class_bound=%llu "
+        "squadron_ids=%llu think_names=0",
+        kSEntityInitThisTableStepsBound ? 1 : 0, summary_.init_all_class_bound,
+        summary_.init_all_squadron_ids);
     if (state_ == nullptr) return;
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "Mission");

@@ -1,0 +1,191 @@
+{
+  "packet": "cc9_init_attach_order",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md",
+  "switch": "kSEntityInitThisTableStepsBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 19c9c6998, set ON by the verdict",
+  "calls": [
+    {
+      "address": "007F218E",
+      "native": "009292B0",
+      "function": "007F1FE0",
+      "kind": "call",
+      "host": "GameMissionLuaInitAllBinding::entity_init_second_vcall_a0 -> GameMissionLuaHost::bind_lua_class_009292b0 (squadron nodes)"
+    },
+    {
+      "address": "00955498",
+      "native": "009292B0",
+      "function": "00955420",
+      "kind": "call",
+      "host": "GameMissionLuaInitAllBinding::entity_init_second_vcall_a0 -> GameMissionLuaHost::bind_lua_class_009292b0 (ship and plane nodes)"
+    },
+    {
+      "address": "00822CDB",
+      "native": "00955420",
+      "function": "00822C20",
+      "kind": "call",
+      "host": "reached through pass B for ships and carriers; only its 009292B0 call is bound here"
+    },
+    {
+      "address": "007D5DAC",
+      "native": "00955420",
+      "function": "007D5D20",
+      "kind": "call",
+      "host": "reached through pass B for planes; only its 009292B0 call is bound here"
+    },
+    {
+      "address": "007C97E3",
+      "native": "00927B40",
+      "function": "007C9770",
+      "kind": "call",
+      "host": "GameMissionLuaHost::set_plane_squadron_id_007c97e3 (the plane's thisTable slot)"
+    },
+    {
+      "address": "007C9805",
+      "native": "00B67460",
+      "function": "007C9770",
+      "kind": "call",
+      "host": "GameMissionLuaHost::set_plane_squadron_id_007c97e3 (SquadronID store)"
+    },
+    {
+      "address": "00929687",
+      "native": "0088A330",
+      "function": "009295B0",
+      "kind": "call",
+      "host": "not bound: the kind-3 (saved-game) arm; no node this process pushes uses 009295B0"
+    },
+    {
+      "address": "009297E4",
+      "native": "00928100",
+      "function": "009295B0",
+      "kind": "call",
+      "host": "not bound: the default-pass-C classes (Path, Landscape, script entities) are not in the InitAll walk here"
+    },
+    {
+      "address": "009295F8",
+      "native": "009238A0",
+      "function": "009295B0",
+      "kind": "call",
+      "host": "not bound (kind-3 arm)"
+    }
+  ],
+  "routines": [
+    {
+      "address": "009292B0",
+      "coverage": "complete (existing reconstruction src/native_unit_class_lua.cpp); host projection writes ClassID, Name, Class"
+    },
+    {
+      "address": "007F1FE0",
+      "coverage": "partial: 007F1FE0..007F21A3 (kind gate and the 009292B0 call's arguments); 007F21A3..end unread here"
+    },
+    {
+      "address": "007C9770",
+      "coverage": "complete read; bound: the SquadronID store only"
+    },
+    {
+      "address": "009295B0",
+      "coverage": "partial: the kind gate, the kind-3 arm's reads, the else call 009297E4; kind-3 arm stores beyond +1DCh/+1E0h unread"
+    },
+    {
+      "address": "00928100",
+      "coverage": "complete read; not bound"
+    },
+    {
+      "address": "009238A0",
+      "coverage": "complete read; not bound"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/SENTITY_INIT_PASSES.md, ships pass B row 00822CDB: 00955420 scene bindings are host, at creation",
+      "is": "the scene handle part is; its 009292B0 call (00955498) has no host writer: no game host writes ClassID or Name, and the attach writes Class alone as a stand-in",
+      "evidence": "grep of src for ClassID/Name setfield; call_009292b0 has no implementation outside the reconstruction's own binding interface"
+    },
+    {
+      "was": "docs/SENTITY_INIT_PASSES.md 3 Path and Landscape rows: 009295B0 reads the entity's Lua data and sets its think script name",
+      "is": "only under a kind-3 holder (009295E2), whose data is globals._savedata._entities (009238A0); a fresh entity takes 009297E4 CALL 00928100, which mirrors Race, Party, Name and Type into thisTable",
+      "evidence": "009295D2..009295E6 listing; 009238A0 body; holder vtable 00D03D94 stores at 00922DE9, 00922E29, 00922E59, 00779556, 0077ECDB, none kind 3"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names": [
+    {
+      "address": "009295B0",
+      "name": "SEntity_DefaultInitSlotA4"
+    },
+    {
+      "address": "00928100",
+      "name": "SEntity_MirrorIdentityToThisTable"
+    },
+    {
+      "address": "009238A0",
+      "name": "SEntity_GetSavedEntityLuaData"
+    }
+  ],
+  "verdict": "ON: all three pairs moved only the predicted rows (2 native rows and the steps summary line); gameplay, death rows, plane death modes and unit tables identical",
+  "pairs": {
+    "binaries": "local/bin/ao_off, local/bin/ao_on (one tree, 19c9c6998, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "off": "local/ao_off_usn04.log",
+      "on": "local/ao_on_usn04.log",
+      "class_bound": [
+        0,
+        60
+      ],
+      "squadron_ids": [
+        0,
+        40
+      ],
+      "deaths": [
+        43,
+        43
+      ],
+      "hit_records": [
+        788,
+        788
+      ],
+      "pair_diff_exit": 1
+    },
+    "e2_usn04_9200_9000": {
+      "off": "local/ao_off_e2.log",
+      "on": "local/ao_on_e2.log",
+      "class_bound": [
+        0,
+        60
+      ],
+      "squadron_ids": [
+        0,
+        40
+      ],
+      "deaths": [
+        52,
+        52
+      ],
+      "hit_records": [
+        875,
+        875
+      ],
+      "pair_diff_exit": 1
+    },
+    "usn02_9200_9000": {
+      "off": "local/ao_off_usn02.log",
+      "on": "local/ao_on_usn02.log",
+      "class_bound": [
+        0,
+        4
+      ],
+      "squadron_ids": [
+        0,
+        0
+      ],
+      "deaths": [
+        20,
+        20
+      ],
+      "hit_records": [
+        329,
+        329
+      ],
+      "pair_diff_exit": 1
+    }
+  }
+}
