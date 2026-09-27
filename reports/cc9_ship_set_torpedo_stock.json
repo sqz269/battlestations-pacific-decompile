@@ -25,7 +25,7 @@
     {
       "name": "kShipSetTorpedoStockBound",
       "state": "OFF",
-      "pair": "pending"
+      "pair": "local/sst_{off,on}_{usn02,usn04}.log: both exit 1, calls=0; ON 3900D0CA9B61. Unexercised: BSM01 luaInit fails at line 1857 (FillPathPoints 0089A190 unimplemented), LOMP06 chunk errors"
     }
   ],
   "no_ghidra_function": [],
@@ -35,5 +35,12 @@
     "re-arm uses the scalar ReloadTime without 0072D520's 00BD2F10 draw",
     "pass C set run first when the unit has not had it"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "BSM01 reaches luaStartMission",
+      "predicted": "yes",
+      "measured": "no",
+      "why": "luaInit fails at bsm_01 line 1857: FillPathPoints 0089A190 answers nil in this host"
+    }
+  ]
 }

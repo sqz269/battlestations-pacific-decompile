@@ -688,3 +688,36 @@ Worker cc9-ships2, on main `5eab91a79`. Ghidra was read-only. The switch is in
 | BSM01 (proposed measuring pair, 9200/9000 frames, the reference settings) | the run reaches `luaStartMission`: one `ShipSetTorpedoStock: HenryPT stock=0` line, then `torpedo stock: HenryPT MaxTorpedoStock=12 loaded=L spare=12-L` (the pass C set) and `ShipSetTorpedoStock(0) loaded=L spare 12-L -> 0 unloaded=L rearmed=0`, with L the Elco's tube count |
 | BSM01 HenryPT torpedo launches | 0 on ON |
 | BSM01 `pair_diff` | 1, gameplay identical, provided HenryPT launches nothing on OFF. Pearl Harbor's attackers are aircraft, and the torpedo preference row ranks no plane class. Otherwise 3, carried by HenryPT's launches alone |
+
+### The pairs, measured, and the verdict
+
+- OFF is this tree's `build\` at `fe7b7d2a0`; ON is `pair_export --flip
+  kShipSetTorpedoStockBound=true` of the same commit (SHA-256 `3900D0CA9B61`).
+- Both sides ran with the streams and the death table on.
+- Every log was checked for its milestone line, its module directory and its final COM release
+  line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 `pair_diff` | - | 1, gameplay identical; `calls=0` on both sides | 1, `calls=0` | holds |
+| USN04 `pair_diff` | - | 1, gameplay identical; `calls=0` on both sides | 1, `calls=0` | holds |
+| BSM01 reaches `luaStartMission` | no | not run | yes | **failed** |
+
+**BSM01 cannot measure the binding in this harness yet.**
+- The OFF smoke run (`local\sst_off_bsm01.log`) is sound: milestone line, module directory, final
+  COM release, no crash record.
+- Its `luaInit` fails at bsm_01_stationed_at_pearl.lua:1857: "attempt to index local pathTbl
+  (a nil value)".
+- `pathTbl` is `FillPathPoints(path)` (line 1833). FillPathPoints, 0089A190, is unimplemented
+  here and answers nil.
+- So `SetThink(this, "lua_Think")` is never reached and `luaStartMission` never runs.
+
+**LOMP06, the other init-time caller,** fails earlier. A 1200-frame smoke run
+(`local\sst_smoke_lomp06.log`) logs `chunk error in luaStageInit`, so its script never loads and
+`luaInitLOMP06` (06_crucial_cargo.lua:110, `ShipSetTorpedoStock(Narwhal, ...)`) never runs.
+
+**Verdict: `kShipSetTorpedoStockBound` stays OFF.**
+- Both identity pairs hold, but no run executes the native, so nothing measures the binding. It
+  is build-tested only.
+- Measuring it needs FillPathPoints (0089A190) bound first, so that BSM01 reaches line 1790. That
+  is a separate packet.
