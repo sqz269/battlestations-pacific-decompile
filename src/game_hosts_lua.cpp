@@ -22,6 +22,8 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_gunnery.hpp"  // packet cc9_get_property_class_readers
+#include "bsp/recon_sensor_pass.hpp"   // packet cc9_get_property_class_readers
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/hud_movie_camera.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -3704,7 +3706,99 @@ void push_air_ops_slot_entry(lua_State* state, const bsp::AirOpsSlot& slot) {
         ::lua_setfield(state, -2, "squadron");
     }
 }
+
+// The classes whose reader is 00927AD0 alone (docs/MISSION_LUA_GETPROPERTY.md
+// 9.2): Path 47h, CameraPath 4Ah, NavPoint 41h, MovieCamPos 42h,
+// MovieCamLookat 43h, LandingPoint 1Dh, Landscape 44h. They answer
+// `unitcommand` but not `reconlevel`.
+bool get_property_class_is_base_only(int class_id) noexcept {
+    switch (class_id) {
+    case 0x47: case 0x4A: case 0x41: case 0x42: case 0x43: case 0x1D: case 0x44:
+        return true;
+    default:
+        return false;
+    }
+}
 } // namespace
+
+// Packet cc9_get_property_class_readers. Returns the pushed count (0 or 1)
+// when `key` is one of the two class-chain keys the host binds, or -1 when it
+// is not, so the caller falls through to the deck keys and the empty arm.
+int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const char* key) {
+    const bool wants_unitcommand = get_property_key_is(key, "unitcommand");
+    const bool wants_reconlevel = get_property_key_is(key, "reconlevel");
+    if (!wants_unitcommand && !wants_reconlevel) return -1;
+    if (wants_unitcommand) ++summary_.get_property_unitcommand_asked;
+    if (wants_reconlevel) ++summary_.get_property_reconlevel_asked;
+    if (!kGetPropertyClassReadersBound) return -1;
+    // 00888AA0 resolves argument 0; the host's entity id is the units-host
+    // index plus one (kMissionLuaEntityKeyFormat). SUBSTITUTION: an entity with
+    // no units-host slot (a path, a nav point, a camera) is answered with
+    // nothing, where the image would still run 00927AD0 on it.
+    const GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) return 0;
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+
+    if (wants_unitcommand) {
+        // 00927AD0: director = vtable[114h](); none -> push nothing (00927B03).
+        // SUBSTITUTION: every units-host slot has a director (the commands
+        // host holds one per slot), so the no-director arm is never taken.
+        // 0071BE40 (00927B07) -> the current command; a command pushes its
+        // vtable[4]() name through 00B66710 (00927B1E), none pushes
+        // "nocommand" (00D1926C, 00927B2B).
+        const std::uint32_t command = units->director_current_command_0071be40(index);
+        if (command == 0u) {
+            ++summary_.get_property_unitcommand_nocommand;
+            ::lua_pushstring(state, "nocommand");
+            return 1;
+        }
+        const char* name = units->command_name_of(command);
+        if (name == nullptr || name[0] == '\0') {
+            // A command object the host's class table does not name. The image
+            // would push that object's own name; the host has none to push, so
+            // the script sees nil, as it did before this binding.
+            ++summary_.get_property_unitcommand_unnamed;
+            return 0;
+        }
+        ++summary_.get_property_unitcommand_named;
+        ::lua_pushstring(state, name);
+        return 1;
+    }
+
+    // 00779BB0: only classes past 00927AD0 reach the `reconlevel` test.
+    if (get_property_class_is_base_only(units->unit_class_id(index))) return 0;
+    const GameGunneryHost* gunnery = units->gunnery();
+    if (gunnery == nullptr) return 0;
+    const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
+    // 00779C03 opens a new table as the frame's result, and 00779C12..00779C33
+    // stores `table[party] = level` for party 0, 1 and 2 through 00B665D0 (a
+    // number key and a number value) from the records at unit+1E8h, stride
+    // 34h: +8h when the force byte +10h is set, else +4h. Every party is
+    // written, 0 included.
+    // SUBSTITUTION: the levels come from the host's recon pass the way
+    // sync_recon_level_tables_0077b0c0 takes them: the unit's own side reads
+    // 2 (0 once dead), a covered side its pass level, an uncovered side 0.
+    // Forced levels (SetForcedReconLevel) are not modelled.
+    const int own_side = units->unit_side_0054(index);
+    const bool dead = gunnery->unit_dead(index);
+    ::lua_createtable(state, 0, 3);
+    for (int party = 0; party < 3; ++party) {
+        int level = 0;
+        if (party == own_side) {
+            level = dead ? 0 : 2;
+        } else if (pass.side_covered(party)) {
+            const bsp::ReconDetectionLevel detected = pass.level(party, index);
+            level = detected == bsp::ReconDetectionLevel::identified ? 2
+                : detected == bsp::ReconDetectionLevel::blip ? 1 : 0;
+        }
+        ::lua_pushnumber(state, static_cast<lua_Number>(party));
+        ::lua_pushnumber(state, static_cast<lua_Number>(level));
+        ::lua_settable(state, -3);
+    }
+    ++summary_.get_property_reconlevel_tables;
+    return 1;
+}
 
 int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument_count) {
     ++summary_.get_property_calls;
@@ -3732,6 +3826,19 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
     // 006C6630) and 00CF8D40 for the airfield (006D0E60). It answers exactly
     // four keys and pushes nothing for any other, which leaves the caller with
     // nil. docs/MISSION_LUA_GETPROPERTY.md.
+    // Packet cc9_get_property_class_readers: 00927AD0 and 00779BB0 run before
+    // any class reader, so their two keys are tested first.
+    const int class_pushed = run_get_property_class_readers(state, key);
+    if (class_pushed > 0) {
+        ++summary_.get_property_served;
+        log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
+        return class_pushed;
+    }
+    if (class_pushed == 0) {
+        ++summary_.get_property_unserved;
+        return 0;
+    }
+
     const bool wants_slots = get_property_key_is(key, "slots");
     const bool wants_num_slots = get_property_key_is(key, "numSlots");
     const bool wants_stock = get_property_key_is(key, "stock") || get_property_key_is(key, "planes");
@@ -4751,6 +4858,12 @@ void GameMissionLuaHost::report_mission_script_state() {
         "slots_rows=%llu decks=%zu", summary_.get_property_calls, summary_.get_property_served,
         summary_.get_property_unserved, summary_.get_property_slots_rows,
         bsp::air_ops_decks().size());
+    log_.notef("summary mission getproperty class readers bound=%d unitcommand=%llu named=%llu "
+        "nocommand=%llu unnamed=%llu reconlevel=%llu tables=%llu (00927AD0 / 00779BB0, packet "
+        "cc9_get_property_class_readers)", kGetPropertyClassReadersBound ? 1 : 0,
+        summary_.get_property_unitcommand_asked, summary_.get_property_unitcommand_named,
+        summary_.get_property_unitcommand_nocommand, summary_.get_property_unitcommand_unnamed,
+        summary_.get_property_reconlevel_asked, summary_.get_property_reconlevel_tables);
     log_.notef("summary mission airops gates: ready_calls=%llu ready_true=%llu "
         "launch_calls=%llu started=%llu queued=%llu (00895d20, 0089e3c0)",
         summary_.air_ops_ready_calls, summary_.air_ops_ready_true,

@@ -438,3 +438,38 @@ Each is a descriptive hypothesis, not a recovered symbol.
   `00B665D0` (set number key) are named here from their use at these sites, not from their bodies.
 - **`007B9400`** is the fourth ordnance test in `007EDAD0` (kind 4). It was not read, and a rocket
   test is only a guess.
+
+### 9.11 The binding (packet `cc9_get_property_class_readers`)
+
+`kGetPropertyClassReadersBound`, in `include/bsp/game_hosts_lua.hpp`, is committed OFF.
+
+- `GameMissionLuaHost::run_get_property_class_readers` runs before the deck keys, because
+  `00927AD0` and `00779BB0` run before any class reader.
+- It answers `unitcommand` and `reconlevel` for a units-host slot. The slot is the entity's `ID`
+  minus one.
+- **`unitcommand`:**
+  - it takes `GameUnitsHost::director_current_command_0071be40`;
+  - no command pushes `nocommand`;
+  - a named command pushes `command_name_of`'s name;
+  - a command the host's class table does not name pushes nothing and is counted `unnamed`.
+- **`reconlevel`:**
+  - only a class past `00927AD0` reaches it (not 47h, 4Ah, 41h, 42h, 43h, 1Dh or 44h);
+  - it pushes a new table with number keys 0, 1 and 2 from the gunnery host's recon pass;
+  - the rule is the one `sync_recon_level_tables_0077b0c0` uses.
+- **A new summary line**, `summary mission getproperty class readers`, counts both keys whether
+  the switch is on or off. It also counts what each bound reader pushed.
+
+**Changed from 9.6.**
+- **`ammoType` and `state` are not bound.** The units host keeps an ordnance mask per slot
+  (`unit_ordnance`), but the squadron's member walk and 007EDAD0's kind order are not exposed
+  to the Lua host.
+- **`TorpedoStock` is not bound.** The gunnery host exposes no spare-stock or loaded-tube reader.
+  Its files are leased to cc9-ships2 for another packet.
+- No measured mission reaches any of the three (9.5). They stay unserved, as `TargetIsHome`,
+  `owner` and the LandConvoy keys do.
+
+**Labelled substitutions:**
+- An entity with no units-host slot gets no value. The image would still run `00927AD0` on it.
+- Every units-host slot is taken to have a director.
+- `reconlevel`'s levels come from the host's recon pass rather than from the records at
+  `unit+1E8h`. Forced levels are not modelled. The own side reads 2 even before the first pass.

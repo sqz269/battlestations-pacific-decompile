@@ -114,6 +114,17 @@ inline constexpr bool kGeneratedWingPartyBound = true;  // ON: identity pairs (s
 
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
+// Packet cc9_get_property_class_readers (docs/MISSION_LUA_GETPROPERTY.md 9.6).
+// 0088BF80 calls the entity's reader at vtable+138h, and the readers chain by
+// class: 00927AD0 answers `unitcommand` for every entity, 00779BB0 adds
+// `reconlevel` for every unit. True: GetProperty answers those two keys for a
+// units-host slot. `unitcommand` pushes the director's current command name
+// (0071BE40, then the command's vtable+4) or `nocommand`; `reconlevel` pushes a
+// new table with number keys 0..2 from the recon pass. The class keys the
+// host cannot source (ammoType, state, TargetIsHome, TorpedoStock, owner, the
+// LandConvoy keys) stay unserved. False: both keys return no value, as before.
+inline constexpr bool kGetPropertyClassReadersBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -304,6 +315,14 @@ struct GameMissionLuaSummary {
     unsigned long long get_property_served{0};
     unsigned long long get_property_unserved{0};
     unsigned long long get_property_slots_rows{0};
+    // Packet cc9_get_property_class_readers: the two class-chain keys, counted
+    // whatever the switch (asked), and what the bound readers pushed.
+    unsigned long long get_property_unitcommand_asked{0};
+    unsigned long long get_property_unitcommand_named{0};
+    unsigned long long get_property_unitcommand_nocommand{0};
+    unsigned long long get_property_unitcommand_unnamed{0};
+    unsigned long long get_property_reconlevel_asked{0};
+    unsigned long long get_property_reconlevel_tables{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -752,6 +771,10 @@ public:
     // it pushes nothing of its own and returns that reader's result count.
     // docs/MISSION_LUA_GETPROPERTY.md.
     int run_get_property_0088bf80(lua_State* state, int argument_count);
+    // 00927AD0 `unitcommand` and 00779BB0 `reconlevel` under
+    // kGetPropertyClassReadersBound: pushed count, or -1 when the key is
+    // neither or the switch is off. docs/MISSION_LUA_GETPROPERTY.md 9.6.
+    int run_get_property_class_readers(lua_State* state, const char* key);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
