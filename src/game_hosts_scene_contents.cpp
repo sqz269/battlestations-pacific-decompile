@@ -3227,6 +3227,7 @@ bool world_segment_blocked_00903bc0(const float from[3], const float to[3]) noex
         const std::size_t count = landscape_segment_entry_count();
         for (std::size_t entry = 0; entry < count; ++entry) {
             LandscapeSegmentHit hit;
+            ++census.segment_sweep_entries;
             if (landscape_entry_segment_hit(entry, from, to, hit)) {
                 ++census.segment_sweep_blocks;
                 return true;

@@ -1275,6 +1275,14 @@ struct GameUnitSlot {
     int tr_water_ticks{0};
     float tr_min_margin{1.0e9f};
     float tr_toggle_3f0{0.0f};
+    // Packet cc9_terrain_segment_consumers: pilot+3F0h, branch A's side byte, and
+    // its census (00903BC0 calls, blocked first probes, fan exits by side).
+    bool tr_side_3f0{false};
+    int tr_water_probes{0};
+    int tr_water_blocked{0};
+    int tr_water_fan_pos{0};
+    int tr_water_fan_neg{0};
+    int tr_water_fan_exhausted{0};
     int ga_detect_ticks{0};
     int ga_flagged_ticks{0};
     int ga_repairs{0};
@@ -3771,6 +3779,15 @@ struct GameUnitsHost::Impl {
     // surface as the ground.
     // ON since the USN01 / USN04 pairs: identical gameplay (0 blocked probes both sides).
     static constexpr bool kGroundHeightHunksBound = true;
+    // Packet cc9_terrain_segment_consumers, docs/SCENE_CONTENTS_HOSTS.md section 12:
+    // 0099F1C0's branch A (009A1420..009A17A1), a live plane on the water (unit+900h
+    // == 6): the alternating +-30 degree heading probe through 00903BC0 at y = 0.1
+    // and, when it is blocked, the 15-degree fan 3,-3,4,-4..12,-12,13, the band
+    // 0099B790 on pilot+4h and the throttle pilot+25Ch. OFF: branch A returns before
+    // probing (the earlier labelled substitution).
+    // ON since the USN01 / USN04 / USN02 pairs: identical, and branch A made 0
+    // probes on all three (no live plane in mode 6), so it is bound but unexercised.
+    static constexpr bool kAvoidTerrainWaterProbeBound = true;
     // Packet cc9_mavis_rack_drops, docs/RELEASE_ISSUE_STAGE.md section "Mavis rack
     // drops": 007C0D90 fires ONE rack per issue (007C0E17 vtable[1F0h] = 006E3550
     // on the first IsKindOf(25h) child holding 2Ah and not busy, then returns for
@@ -4449,6 +4466,7 @@ struct GameUnitsHost::Impl {
     void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
     bool friendly_in_line_007b96d0(GameUnitSlot& u, float dt);
     void terrain_avoidance_0099f1c0(GameUnitSlot& u, float dt);
+    void terrain_avoidance_water_009a1420(GameUnitSlot& u);
     float avoid_surface_height(float x, float z);
     static bool avoid_in_dive(const GameUnitSlot& u);
 
@@ -6368,6 +6386,111 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
     ++u.tr_bands;
 }
 
+// 009A1420..009A17A1 (0099F1C0's branch A, inside the body 0099F1C0-009A17CB),
+// reached when (unit+72Ch)->vtable[38h] is false and unit+900h == 6: a live plane
+// on the water. Packet cc9_terrain_segment_consumers, docs/SCENE_CONTENTS_HOSTS.md
+// section 12. Evidence: disk listing 009A1420..009A17CA and the export's
+// pseudocode (0099f1c0/decompiled.c lines 300-400).
+// - Length L = 00419010(0, T+2F4h TakeOffMaxLength, 007C4810, T+2F8h
+//   TakeOffMinLength, unit->vtable[38h]); 007C4810 (thiscall on pilot+2F8h, the
+//   class) = T+28Ch * cls+184h. 007C4810 returns with a plain RET, so its two
+//   stack floats are 00419010's arguments 4 and 5 (009A1454..009A147F).
+// - p = (unit+FCh, 0.1 [00D7A2F0], unit+104h). pilot+3F0h picks the side and
+//   flips: clear -> set, angle -30 deg [00CEC728]; set -> clear, +30 deg
+//   [00CEC724]. q = p + L * 007BA2E0(00438AA0(vtable[50h], angle)), q.y = 0.1.
+// - 00903BC0(p, q) clear: return (009A15C8). Blocked: pilot+3F0h = !pilot+3F0h,
+//   then the fan idx = 3,-3,4,-4,..,12,-12,13 at idx/12.0*pi [00CE42D0]
+//   [00CE3D28] off vtable[50h], length L, y offset L*0.0 [00D7A258]. The first
+//   clear idx >= 0 inserts (-1.1 [00D06BB0], 0.9 [00CE3860]); a clear negative
+//   idx or an exhausted fan inserts (-0.9 [00CED6C8], 1.1 [00CE6448]), both into
+//   pilot+4h (set 0). Then pilot+25Ch = 00419010(1, 1, 8 [00CE3918], -1
+//   [00D7A260], 007D99C0 forward speed).
+// SUBSTITUTIONS, labelled: unit->vtable[38h] is the live velocity length (as in
+// the free-flight path), vtable[50h] is the host's plane_heading_c6c, and the
+// position is the host world row, with no 00414DB0 refresh.
+void GameUnitsHost::Impl::terrain_avoidance_water_009a1420(GameUnitSlot& u) {
+    if (!lua.plane_globals_loaded()) return;
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    float v_world[3];
+    avoid_velocity(u, v_world);
+    const float speed = avoid_len(v_world);                          // vtable[38h], labelled
+    const float m28c = bsp::tuning_min_control_multiplier_007e41df(
+        g.dynamics_spd_multipliers_control_range_min,
+        g.dynamics_spd_multipliers_control_range_max,
+        g.dynamics_spd_multipliers_stall_range_max,
+        g.dynamics_spd_multipliers_level_flight);
+    const float m = bsp::plane_min_control_speed_007c4810(m28c, u.plane_stall_spd);
+    const float len = avoid_interp(0.0f, g.dynamics_water_take_off_max_length, m,
+                                   g.dynamics_water_take_off_min_length, speed);  // 009A147F
+    const float* pos = u.world.data() + 12;                          // unit+FCh..104h
+    const float from[3] = {pos[0], 0.1f, pos[2]};                    // [00D7A2F0]
+    const float heading = u.plane_heading_c6c;                       // vtable[50h], labelled
+    float side_angle;
+    if (u.tr_side_3f0) {                                             // 009A14DC
+        side_angle = 0.5235988f;                                     // [00CEC724]
+        u.tr_side_3f0 = false;
+    } else {
+        side_angle = -0.5235988f;                                    // [00CEC728]
+        u.tr_side_3f0 = true;
+    }
+    // 007BA2E0: a = pi/2 - h (double, stored float), + 2 pi when negative;
+    // (cos a, 0, sin a), each stored float. The loop inlines the same steps.
+    auto direction = [](float h, float& dx, float& dz) {
+        float a = static_cast<float>(1.5707963705062866 - static_cast<double>(h));   // [00CE3830]
+        if (0.0f > a) a = static_cast<float>(static_cast<double>(a) + 6.2831854820251465);  // [00CE3828]
+        dx = static_cast<float>(std::cos(static_cast<double>(a)));
+        dz = static_cast<float>(std::sin(static_cast<double>(a)));
+    };
+    float dx = 0.0f, dz = 0.0f;
+    direction(bsp::wrapped_angle_add_00438aa0(heading, side_angle), dx, dz);   // 009A150C, 009A1524
+    float to[3] = {static_cast<float>(len * dx) + from[0], 0.1f,
+                   static_cast<float>(len * dz) + from[2]};
+    ++u.tr_water_probes;
+    if (!world_segment_blocked_00903bc0(from, to)) return;           // 009A15C1, JE 009A17A1
+    ++u.tr_water_blocked;
+    u.tr_side_3f0 = !u.tr_side_3f0;                                  // 009A15CE..009A15DE
+    const float y_offset = static_cast<float>(len * 0.0);            // [00D7A258] double 0.0
+    int up = 3, down = -3, pass = 0;
+    bool positive_exit = false;
+    for (;;) {                                                       // 009A160D
+        int idx;
+        if (pass > 1) {
+            ++up;
+            --down;
+            pass = 0;
+            idx = up;
+        } else {
+            idx = pass == 0 ? up : down;
+        }
+        const float off = static_cast<float>(static_cast<double>(idx) / 12.0 * 3.1415927410125732);
+        direction(bsp::wrapped_angle_add_00438aa0(heading, off), dx, dz);   // 009A1657..009A1699
+        to[0] = static_cast<float>(len * dx) + from[0];
+        to[1] = y_offset + from[1];
+        to[2] = static_cast<float>(len * dz) + from[2];
+        ++u.tr_water_probes;
+        if (!world_segment_blocked_00903bc0(from, to)) {             // 009A172E, JE 009A17A9
+            positive_exit = 1 - 2 * pass > 0;                        // 009A17A9..009A17B5
+            if (positive_exit) ++u.tr_water_fan_pos; else ++u.tr_water_fan_neg;
+            break;
+        }
+        ++pass;
+        if (!(down >= -12)) {                                        // 009A173A JGE
+            ++u.tr_water_fan_exhausted;
+            break;
+        }
+    }
+    if (positive_exit) {
+        ga_insert_0099b790(u, 0, -1.1f, 0.9f);                       // [00D06BB0] [00CE3860]
+    } else {
+        ga_insert_0099b790(u, 0, -0.9f, 1.1f);                       // [00CED6C8] [00CE6448]
+    }
+    ++u.tr_bands;
+    const float* fr = u.world.data() + 8;                            // forward row
+    const float fwd_speed = v_world[0] * fr[0] + v_world[1] * fr[1] + v_world[2] * fr[2];   // 007D99C0
+    u.av_throttle_25c = avoid_interp(1.0f, 1.0f, 8.0f, -1.0f, fwd_speed);   // 009A1796, 009A179B
+    ++u.tr_throttle_sets;
+}
+
 // 0099F1C0 (body 0099F1C0-009A17CB), __thiscall(pilot), for one plane per think.
 void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt*/) {
     if (u.plane_control_mode_900 != 7) {
@@ -6377,6 +6500,9 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         // ends are clear, and branch A returns at its first test (009A14xx),
         // before any band or +25Ch write. SUBSTITUTION, labelled.
         ++u.tr_water_ticks;
+        if constexpr (kAvoidTerrainWaterProbeBound) {
+            terrain_avoidance_water_009a1420(u);
+        }
         return;
     }
     // 0099F1F3-0099F20D: the squadron (unit+9D4h) and its avoid-zone layer
@@ -19913,6 +20039,26 @@ void GameUnitsHost::report() {
                         host.log.notef("summary mission ground queries: torpedo approach "
                             "segment probes 009D39D3=%llu blocked=%llu",
                             host.segment_probes, host.segment_probes_blocked);
+                        {
+                            // Packet cc9_terrain_segment_consumers: every 00903BC0
+                            // call over the run, and branch A's probes.
+                            const SceneTerrainQueryCensus& qc = scene_terrain_query_census();
+                            long long wp = 0, wb = 0, wpos = 0, wneg = 0, wex = 0;
+                            for (const auto& sl : host.slots) {
+                                wp += sl->tr_water_probes; wb += sl->tr_water_blocked;
+                                wpos += sl->tr_water_fan_pos; wneg += sl->tr_water_fan_neg;
+                                wex += sl->tr_water_fan_exhausted;
+                            }
+                            host.log.notef("summary mission world segment 00903BC0 calls=%llu "
+                                "endpoint_blocks=%llu sweep_entries=%llu sweep_blocks=%llu | "
+                                "water probe bound=%d probes=%lld blocked=%lld fan_pos=%lld "
+                                "fan_neg=%lld fan_exhausted=%lld (009A1420, packet "
+                                "cc9_terrain_segment_consumers)",
+                                qc.segment_calls, qc.segment_endpoint_blocks,
+                                qc.segment_sweep_entries, qc.segment_sweep_blocks,
+                                GameUnitsHost::Impl::kAvoidTerrainWaterProbeBound ? 1 : 0,
+                                wp, wb, wpos, wneg, wex);
+                        }
                     }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;

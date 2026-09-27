@@ -1745,3 +1745,107 @@ It also closed two items by reading and one by bisect:
   - `pe.py` reads dwords from the image on disk;
   - `landscapes.py` is the rotated-Landscape census;
   - `bis.ps1` is the first-parent bisect runner.
+
+## 12. The consumers of 00903BC0 (packet `cc9_terrain_segment_consumers`, `kAvoidTerrainWaterProbeBound`)
+
+Worker cc9-terrain2, 2026-09-27, on main 2b026d35b. Ghidra was read only.
+
+### 12.1 The three image callers
+
+`bsp.py callers 00903BC0` lists three, and the xrefs agree.
+
+| caller | site | what it does with the answer | host today |
+| --- | --- | --- | --- |
+| 009D3420 torpedo approach | 009D39D3 | a blocked sector ray inside 400 m unmarks the sector (009D39E0) | **bound** (`kGroundHeightHunksBound`, ON): every probe runs the endpoint tests and then every Landscape's slot 3Ch |
+| 0099F1C0 AvoidTerrain, branch A | 009A15C1, 009A172E | a live plane on the water (unit+900h == 6) probes +-30 degrees ahead; blocked, it turns and brakes (12.2) | **unbound**: the labelled early return |
+| 007C3CB0 | 007C3E00 | a timer at unit+964h; when it runs out for a plane below 8 m ([00CE3918]) or on the water, it takes the translation of world+1ED4h's vt+114h matrix and tests the VERTICAL segment (x, 20 [00CE3930], z) to (x, 0, z). Clear: it re-arms the timer from 00BD2F10 and spawns the class's point effect +538h+218h at (x, 0, z). It reads as a water spray under a low plane, suppressed over land | **no host caller**: its only caller is 0060AC1A in 00609BD0, the player-plane GUI update; cosmetic, and an idle player flies no plane. Its segment would take slot 3Ch's vertical case (item 3 of section 11) |
+
+**The handoff's premise was wrong.** It read `segment calls=0` from the `summary scene terrain`
+line, but that line prints at load, before play (line 1098 of `QT_ON_USN01.log`). During play the
+torpedo approach calls 00903BC0 1152 times on USN01 (`summary mission ground queries`). The endpoint
+tests clear over the sea, so each probe asks all four Landscapes. That is 4608 of the 5564 slot 3Ch
+walks in the gunnery `landscape attach` line; the other 956 are picks. None hit. The new mission-end
+line `summary mission world segment 00903BC0` counts this directly (`sweep_entries`).
+
+### 12.2 Branch A, from the image (009A1420..009A17A1)
+
+Branch A sits inside 0099F1C0 (body 0099F1C0..009A17CB). 0099F1E7 jumps to it when
+(unit+72Ch)->vt+38h is false, and 009A142D leaves unless unit+900h == 6. The caller 009A17D0
+already admits only mode 7 or mode 6, and only a live AI plane (+5Dh clear).
+
+- **Length.** L = 00419010(0, T+2F4h TakeOffMaxLength 250, m, T+2F8h TakeOffMinLength 140, speed).
+  - m = 007C4810 on pilot+2F8h (the class): T+28Ch * cls+184h, the minimum control speed.
+  - speed = unit->vt+38h.
+  - 007C4810 ends in a plain `RET`, so the two floats pushed for it at 009A1454..009A1461 stay on
+    the stack as 00419010's fourth and fifth arguments.
+- **First probe.** p = (unit+FCh, 0.1 [00D7A2F0], unit+104h).
+  - pilot+3F0h picks the side and flips each tick: clear gives -30 degrees [00CEC728] and sets it;
+    set gives +30 degrees [00CEC724] and clears it.
+  - q = p + L * 007BA2E0(00438AA0(vt+50h heading, side)), with q.y = 0.1. 007BA2E0 is
+    (cos a, 0, sin a) for a = pi/2 - h, plus 2 pi when negative.
+  - Clear: return (009A15C8). No band and no throttle write.
+- **Blocked.** pilot+3F0h is flipped back (009A15DE). Then a fan of up to 22 probes, each of
+  length L at y 0.1 (the y offset is L * 0.0 [00D7A258]):
+  - offsets idx/12 * pi from the heading, idx = 3, -3, 4, -4, ..., 12, -12, 13 (009A160D..009A173D);
+  - the first clear probe with idx > 0 inserts (-1.1, 0.9) into pilot+4h through 0099B790; a clear
+    negative idx, or a fan with no clear probe, inserts (-0.9, 1.1). 0099B790 widens -1.1 to -5
+    and 1.1 to 5.
+  - pilot+25Ch = 00419010(1, 1, 8 [00CE3918], -1 [00D7A260], 007D99C0 forward speed): full
+    reverse throttle at 8 m/s and above.
+
+### 12.3 The binding (`kAvoidTerrainWaterProbeBound`, committed OFF)
+
+- `terrain_avoidance_water_009a1420` in `src/game_hosts_units.cpp` implements 12.2 and asks
+  `world_segment_blocked_00903bc0`.
+- **SUBSTITUTIONS, labelled:** unit->vt+38h is the live velocity length, as in the free-flight path;
+  vt+50h is the host's `plane_heading_c6c`; the position is the host's world row, without the
+  00414DB0 refresh.
+- **Census.** A new mission-end line in both builds:
+  `summary mission world segment 00903BC0 calls endpoint_blocks sweep_entries sweep_blocks | water
+  probe bound probes blocked fan_pos fan_neg fan_exhausted`.
+
+### 12.4 Predictions (written before the pairs; both variables set, lockstep 0.05, idle player)
+
+Branch A needs a live AI plane in mode 6. On every reference log of section 10.5 the
+`terrain avoidance` line reads `water_ticks=0`. The three USN01 water contacts are Mavis flying
+boats that were already dead (`dead=1`), which the caller 009A17F8 rejects.
+
+- **USN01 3200/3000.**
+  - `water probe probes=0` on both sides, so no plane pulls up, turns or crashes through it.
+  - `calls` equals the torpedo approach's `segment probes 009D39D3` on the line above, with
+    `endpoint_blocks=0`, `sweep_entries` = 4 x calls and `sweep_blocks=0`, on both sides.
+  - Deaths 7, hit records 150, shots 561 and pick land hits 22 do not move.
+  - `pair_diff` exit 1: only the `bound` field differs.
+- **USN04 4700/4500 and USN02 9200/9000** have no Landscape: `sweep_entries=0`, `probes=0`,
+  `pair_diff` exit 1.
+
+### 12.5 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\wp_off`, a build of 3f15c9c8b. ON is `pair_export` of 3f15c9c8b
+  with the switch flipped (SHA-256 E263CD8C502F). Both variables were set, lockstep 0.05, idle
+  player. Logs: `local\WP_{OFF,ON}_{USN01,USN04,USN02}.log` in worktree cc9-terrain2.
+
+| row | USN01 OFF | USN01 ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| water probe probes / blocked | 0 / 0 | 0 / 0 | 0 | held |
+| 00903BC0 calls, endpoint blocks | 1152, 0 | 1152, 0 | calls = torpedo probes (1152), 0 | held |
+| sweep entries / blocks | 4608 / 0 | 4608 / 0 | 4 x calls / 0 | held |
+| deaths, hit records, shots | 7, 150, 561 | 7, 150, 561 | unchanged | held |
+| pick land hits | 5357/22 | 5357/22 | unchanged | held |
+| death rows, plane death modes, unit table | 7, 7, 28 | identical | identical | held |
+| `pair_diff` | | exit 1, only `bound` 0 -> 1 | exit 1 | held |
+| USN04: calls / entries / probes | 7128 / 0 / 0 | 7128 / 0 / 0 | entries 0, probes 0 | held |
+| USN04 deaths, hits, shots; `pair_diff` | 44, 789, 6321 | identical; exit 1 | exit 1 | held |
+| USN02: calls / entries / probes | 0 / 0 / 0 | 0 / 0 / 0 | entries 0, probes 0 | held |
+| USN02 deaths, hits, shots; `pair_diff` | 21, 652, 1095 | identical; exit 1 | exit 1 | held |
+
+**Verdict: ON.** Every prediction held. No plane pulls up, turns or crashes through 00903BC0 on the
+reference missions: the only bound consumer that runs is the torpedo approach, and none of its
+probes is blocked. Branch A is bound but unexercised; a mission with a live flying boat on the
+water near land would be its first measurement.
+
+### 12.6 Open
+
+- **00609BD0's Ghidra body is truncated** at 0060ABCC. The code runs on to the `RET 4` at
+  0060C5A9 (INT3 from 0060C5AC), and it holds 007C3CB0's only call (0060AC1A). The lead redefines it.
+- **007C3CB0** stays unbound: its caller, the player-plane GUI update, has no host counterpart.
