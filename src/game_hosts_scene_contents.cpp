@@ -2658,7 +2658,8 @@ constexpr bool kLandscapeScaledTransposeInverseBound = true;
 // slot 3Ch's vertical case 00AECC40 answers through its equal-point test (vt+48h
 // in tile units) and the sub-walk 00AECA60 (tiles 00AEC7C0, cells 00AEC120).
 // OFF: the half-cell march (the labelled stand-in of 10.3).
-constexpr bool kTerrainVerticalSubwalkBound = false;
+// ON since the USN13 / USN01 / USN04 / USN02 pairs (section 14.7).
+constexpr bool kTerrainVerticalSubwalkBound = true;
 
 bool frame_inverse_point_00b63b30(const float m[16], const float p[3], double out[3]) noexcept {
     bsp::CameraMatrix frame{};
@@ -4049,6 +4050,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             // its hit is checked against this Landscape's own local surface.
             std::size_t slant_hits = 0, slant_on_surface = 0;
             double slant_worst = 0.0;
+            // Packet cc9_terrain_vertical_subwalk: a near-vertical trace (0.0009 m
+            // of run in x, inside 00ADA240's 0.001 vertical test but not equal in
+            // tile units) takes 00AECA60's walk; its hit is checked against the
+            // object's ground height.
+            std::size_t near_hits = 0, near_on_ground = 0;
+            double near_worst = 0.0;
             std::size_t entry_of_land = static_cast<std::size_t>(-1);
             {
                 const std::size_t entries = landscape_segment_entry_count();
@@ -4082,6 +4089,19 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
                         }
                     }
                 }
+                if constexpr (kTerrainVerticalSubwalkBound) {
+                    if (entry_of_land != static_cast<std::size_t>(-1)) {
+                        const float top[3] = {point[0], point[1] + 50.0f, point[2]};
+                        const float bottom[3] = {point[0] + 0.0009f, point[1] - 50.0f, point[2]};
+                        LandscapeSegmentHit near_hit;
+                        if (landscape_entry_segment_hit(entry_of_land, top, bottom, near_hit)) {
+                            ++near_hits;
+                            const double err = std::fabs(static_cast<double>(near_hit.point[1]) - ground);
+                            if (err < 0.25) ++near_on_ground;
+                            near_worst = std::max(near_worst, err);
+                        }
+                    }
+                }
                 if constexpr (kTerrainSegmentQuadtreeBound) {
                     if (entry_of_land != static_cast<std::size_t>(-1)) {
                         const float top[3] = {point[0] - 20.0f, point[1] + 50.0f, point[2] - 15.0f};
@@ -4108,6 +4128,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
                 "worst=%.3f landscape_at_self=%zu segment_probe_hits=%zu segment_probe_on_ground=%zu "
                 "(00903860 / 009038f0 / 009039d0 / 0087ff80)",
                 land.name.c_str(), mine, close, worst, same_landscape, probe_hits, probe_close);
+            if constexpr (kTerrainVerticalSubwalkBound) {
+                impl.log.notef("scene terrain vertical self-check: landscape=%s near_vertical_hits=%zu "
+                    "on_ground_25cm=%zu worst=%.3f (00AECC40 -> 00AECA60, packet "
+                    "cc9_terrain_vertical_subwalk)", land.name.c_str(), near_hits, near_on_ground,
+                    near_worst);
+            }
             if constexpr (kTerrainSegmentQuadtreeBound) {
                 impl.log.notef("scene terrain slot 3Ch self-check: landscape=%s slant_hits=%zu "
                     "on_local_surface_25cm=%zu worst=%.3f (00ADA240 -> 00AEA2B0, packet "

@@ -2114,3 +2114,49 @@ a defined Ghidra function whose listing ends where Ghidra says (RET, then INT3),
 - **USN13 3200/3000.** In play `vertical=4/0` stays 4/0. The load probe hits (204 objects over 12
   Landscapes) fall the same way; the rotation census does not move; gameplay identical.
 - **USN04 4700/4500 and USN02 9200/9000.** No Landscape: exit 1, only the `vsub bound` field.
+
+### 14.7 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\vs_off`, a build of bc4d68859. ON is `pair_export` of bc4d68859
+  with the switch flipped (SHA-256 7300491D9226). Both variables were set, lockstep 0.05, idle
+  player. Logs: `local\VS_{OFF,ON}_{USN13,USN01,USN04,USN02}.log` in worktree cc9-terrain2.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN01 load `vertical` hits | 51/51 | 51/0 (equal 51, walks 51) | 51/0..5 | held |
+| USN01 Landscape 03 `segment_probe_hits` | 51 | 0 | 0..5 | held |
+| USN01 in play `vertical` | 3/0 | 3/0 (equal 3, walks 3) | 3/0 | held |
+| USN01 picks, slanted self-check, rotation census | 5357/22, 51, - | identical | identical | held |
+| USN01 gameplay, death rows, unit table; `pair_diff` | 7 deaths, 150 hits | identical; exit 1 | exit 1 | held |
+| USN13 load `vertical` hits; probe hits on 03/06/08/Shipyard | 204/204; 50/116/3/35 | 204/0; all 0 | fall to 0..few | held |
+| USN13 in play `vertical` | 4/0 | 4/0 | 4/0 | held |
+| USN13 gameplay (34 deaths, 204 hits), native table; `pair_diff` | | identical; exit 1 | exit 1 | held |
+| USN04, USN02 `pair_diff` | | exit 1, only `vsub bound` | exit 1 | held |
+
+- **The walk measured.** Every vertical trace in these runs has float-equal ends in tile units, so
+  none reached a tile (`tiles=0`). A near-vertical load check was added under the switch: 0.0009 m
+  of run in x, inside the 0.001 vertical test but no longer equal in tile units. An ON build of the
+  flip commit ran USN01 and USN13 (`local\VS_ON2_*.log`):
+
+  | Landscape | near-vertical hits | within 25 cm of the ground | worst |
+  | --- | --- | --- | --- |
+  | USN01 03 | 51 of 51 | 51 | 0.000 m |
+  | USN13 03 / 06 / 08 | 50 / 116 / 3 | all | 0.001 m |
+  | USN13 Shipyard | 35 of 35 | 32 | 37.6 m (the same objects are off the ground by authoring, `worst=36.6`) |
+
+  Each of those walks tests one tile (`tiles` = 51 and 204). A vertical-case segment is shorter
+  than 0.001 / 300 tile units, so the tile and cell stepping loops (00AEB6D0 and its three steps)
+  are reachable only in principle. They are reconstructed but unexercised.
+- **Noise seen.** The two ON runs of USN13 (the flip-commit build against the pair's ON export)
+  differ in `ShipAiClearance::category_enabled_009ec770` (6999 -> 7026) and
+  `avoidance_enabled_0080e160` (1108 -> 1109) calls. They came with the known noise rows
+  `static_zone_blocks`/`clearance` and `sector_scan` (absent -> present), and gameplay is identical.
+  The only difference between the two builds is a load-time diagnostic, so these two rows are
+  recorded as candidates for the noise list, not attributed.
+
+**Verdict: ON.** Every prediction held, gameplay is identical on all four missions, and the walk
+lands on the ground where it runs.
+
+**What it means for callers.** An exactly vertical slot 3Ch trace misses in the image unless the
+tile-unit vt+48h sample happens to fall between its y values. 007C3CB0's spray test (12.1) is such
+a trace, so in the image its land suppression would almost never fire.

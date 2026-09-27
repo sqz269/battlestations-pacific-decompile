@@ -1,0 +1,180 @@
+{
+  "packet": "cc9_terrain_vertical_subwalk",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, section 14",
+  "calls": [
+    {
+      "address": "00AECE61",
+      "native": "00AECA60",
+      "function": "00AECC40",
+      "note": "sub-walk, tile units"
+    },
+    {
+      "address": "00AECDC6",
+      "native": "00ADB480",
+      "function": "00AECC40",
+      "note": "vt+48h with tile units (quirk)"
+    },
+    {
+      "address": "00AECAED",
+      "native": "00AEBD20",
+      "function": "00AECA60",
+      "note": "clip to the grid"
+    },
+    {
+      "address": "00AECB9E",
+      "native": "00AEB770",
+      "function": "00AECA60",
+      "note": "walker context"
+    },
+    {
+      "address": "00AECBAF",
+      "native": "00AEADE0",
+      "function": "00AECA60",
+      "note": "54h copy"
+    },
+    {
+      "address": "00AECC12",
+      "native": "00AEB890",
+      "function": "00AECA60",
+      "note": "2-D segment and slope"
+    },
+    {
+      "address": "00AECC23",
+      "native": "00AEC7C0",
+      "function": "00AECA60",
+      "note": "tile walk"
+    },
+    {
+      "address": "00AEC823",
+      "native": "00AEB430",
+      "function": "00AEC7C0",
+      "note": "iterator"
+    },
+    {
+      "address": "00AEC8D8",
+      "native": "00AEB680",
+      "function": "00AEC7C0",
+      "note": "crosses"
+    },
+    {
+      "address": "00AEC8E9",
+      "native": "00AEAB30",
+      "function": "00AEC7C0",
+      "note": "snap"
+    },
+    {
+      "address": "00AEC95E",
+      "native": "00AEB6D0",
+      "function": "00AEC7C0",
+      "note": "step"
+    },
+    {
+      "address": "00AEC999",
+      "native": "00AEC3F0",
+      "function": "00AEC7C0",
+      "note": "tile test"
+    },
+    {
+      "address": "00AEC9E4",
+      "native": "00AEC700",
+      "function": "00AEC7C0",
+      "note": "last piece"
+    },
+    {
+      "address": "00AECA03",
+      "native": "00AEC660",
+      "function": "00AEC7C0",
+      "note": "whole"
+    },
+    {
+      "address": "00AEC544",
+      "native": "00AEBD20",
+      "function": "00AEC3F0",
+      "note": "clip to cells, AL ignored"
+    },
+    {
+      "address": "00AEC572",
+      "native": "00AEAE70",
+      "function": "00AEC3F0",
+      "note": "48h copy"
+    },
+    {
+      "address": "00AEC5D5",
+      "native": "00AEB7E0",
+      "function": "00AEC3F0",
+      "note": "slope"
+    },
+    {
+      "address": "00AEC5E3",
+      "native": "00AEC120",
+      "function": "00AEC3F0",
+      "note": "cell walk"
+    },
+    {
+      "address": "00AEC1D4",
+      "native": "00AEBDE0",
+      "function": "00AEC120",
+      "note": "ground at start"
+    },
+    {
+      "address": "00AEC32C",
+      "native": "00AEC090",
+      "function": "00AEC120",
+      "note": "edge piece"
+    },
+    {
+      "address": "00AEC374",
+      "native": "00AEC050",
+      "function": "00AEC120",
+      "note": "last piece"
+    },
+    {
+      "address": "00AEC390",
+      "native": "00AEBFF0",
+      "function": "00AEC120",
+      "note": "whole"
+    },
+    {
+      "address": "00AEC108",
+      "native": "00AEAFA0",
+      "function": "00AEC090",
+      "note": "edge lerp"
+    },
+    {
+      "address": "00AEC112",
+      "native": "00AEB940",
+      "function": "00AEC090",
+      "note": "crossing"
+    },
+    {
+      "address": "00AEB978",
+      "native": "00AEAAA0",
+      "function": "00AEB940",
+      "note": "t"
+    },
+    {
+      "address": "00AEB9D5",
+      "native": "005803E0",
+      "function": "00AEB940",
+      "note": "lerp of the ground points"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kTerrainVerticalSubwalkBound",
+      "state": "ON",
+      "pair": "local/VS_OFF_{USN13,USN01,USN04,USN02}.log (build of bc4d68859, local/bin/vs_off) against local/VS_ON_*.log (pair_export of bc4d68859, SHA-256 7300491D9226), worktree cc9-terrain2; all exit 1, gameplay identical; near-vertical check in local/VS_ON2_{USN01,USN13}.log"
+    }
+  ],
+  "substitutions": [
+    "a tile index outside the grid reads as missing (the image reads the table unchecked)",
+    "00419260's zero-length answer taken as 0",
+    "x87 chains evaluated in double, not bit-verified",
+    "fraction is the world-space projection of the answer"
+  ],
+  "unexercised": [
+    "00AEB6D0 and its steps 00AEB0B0 / 00AEB1F0 / 00AEB310 and the crossing loops: a vertical-case segment is shorter than one line spacing"
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}
