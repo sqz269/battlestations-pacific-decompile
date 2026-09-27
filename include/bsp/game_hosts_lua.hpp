@@ -278,6 +278,8 @@ struct GameMissionLuaSummary {
     // SquadronID stores that found a slot.
     unsigned long long init_all_class_bound{0};
     unsigned long long init_all_squadron_ids{0};
+    // Packet cc9_init_pass_e_property_bag: pass E releases taken as exact.
+    unsigned long long init_all_holders_released{0};
     unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};

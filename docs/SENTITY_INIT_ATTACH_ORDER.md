@@ -214,3 +214,93 @@ switch does not cause it: the OFF run shows the same end. The world-init worker'
 70b4afc41 recorded 22 deaths and 439 hits, so the control has moved since that tree.
 
 **Verdict: ON.** `kSEntityInitThisTableStepsBound` is set true.
+
+## 7. Pass E and the property bag (packet `cc9_init_pass_e_property_bag`, `kSEntityInitPassEReleaseBound`)
+
+Worker cc9-init-passes, 2026-09-27, base main 0c86989b7. Ghidra was read only.
+
+### 7.1 What pass E frees (V)
+
+- **The release.** 009262FE..00926319 load the holder at `entity+C0h`. When it is not null,
+  they call its slot 0 with 1 (00926315 `PUSH 1`, 00926317 `CALL EAX`) and store 0 at `+C0h`.
+- **The holder class.** The scene holder's vtable is 00D03D94. Its slot 0 is 00779570, the scalar deleting destructor, which calls 00922E50.
+  For kind 1 the destructor frees the bag at `+8h` through the bag's own slot 0.
+- **The bag is a clone.** 00922E20, the kind-1 constructor, stores at `+8h` the result of
+  00922E2D `CALL 008F41F0`, the bag clone that `docs/SENTITY_INIT_PASSES.md` also names at
+  00955420 (`clone_bag_008f41f0`). So pass E frees the entity's own copy. The authored bag in the
+  scene database stays: that is `sceneDb+18h`'s named-object map, which 0046D930 instantiates
+  from again on each GenerateObject call.
+
+### 7.2 The host's copies of authored values, and every later reader
+
+The host keeps no bag object on an entity. The scene reader copies authored keys into
+`GameSceneEntityRecord` fields (`include/bsp/game_hosts_scene_contents.hpp` lines 52..104).
+Records live in three places:
+
+| holder | image counterpart | lifetime |
+| --- | --- | --- |
+| `GameSceneContentsHost::entities()` | the scene read's own objects | whole run |
+| `scene_spawn_pool()` entries | the scene database's named-object map (`sceneDb+18h`) | whole run |
+| the creator's record copy (`GenerateObject`'s local `record`, `script_orders` `copy` and `batch`) | the entity's cloned bag at `+C0h` | ends with the creator call |
+
+Every read of an authored field outside the scene reader, with when it runs:
+
+| reader (file:line) | field | when | image has it where by then |
+| --- | --- | --- | --- |
+| `src/game_hosts_units.cpp:6500..6512` (SceneStartSpeed binding) | `StartSpeed`, `ShipYardLaunch` | inside `create_units`, the creator | pass B 00822C20 reads the bag before pass E |
+| `src/game_hosts_units.cpp:6690` | `Command`, `CommandTarget` into the unit row | `create_units` | the scene read queues both strings through 00469610 into the scene database's list at `database+14Ch` (`include/bsp/scene_deferred_refs.hpp`), not the entity's bag; later reads use the unit row |
+| `src/game_hosts_script_orders.cpp:565..567` | `WingCount` of a held-back squadron | the SpawnNew or GenerateObject call, before the entity exists | the scene database's bag (still alive); the entity's pass A 007F4747 reads it before pass E, and later readers use the resolved `+3C8h` (`src/game_hosts_ai.cpp:2431`, `owner->wing_count`) |
+| `src/game_hosts_lua.cpp:2197` | the held-back carrier's deck | GenerateObject, the creator | 006CADD0, in the carrier's pass B, copies it into the air-ops block |
+| `src/game_hosts_lua.cpp:2096..2112` | `spawned` and `entity_id` only | any later GenerateObject | host bookkeeping, not an authored key |
+| `src/game_avoid_zone_runtime.cpp:153..184` | Path `Point%02i.Pos` | load (`load_avoid_zone_geometry`, `src/game_hosts_mission_frame.cpp:1781`) | the Path entity's pass B 007B38D0 copies the points (`docs/SENTITY_INIT_PASSES.md`, Path row) |
+| `src/game_hosts_mission_frame.cpp:1967` (`collect_scene_markers`) | name, class, frame | load | object headers, not bag keys |
+| `src/game_hosts_scene_contents.cpp:2840..2993` | `impl.entities` | inside `run_load_scene_contents_004d4df0` only | load |
+
+- **The result.** No host read takes an authored value from an entity's copy after that entity's
+  InitAll. The one copy that would count is the creator's temporary record, and no reader holds
+  it past the creator call. The long-lived records are the scene-database side, which the image
+  keeps too.
+- **No reader breaks.** The drop needs no contract to another owner.
+- **The method, and its limit.** The field names of `GameSceneEntityRecord` were grepped across
+  `src`. A reader that takes the record's fields under another name, through a copy made outside
+  those three holders, would be missed.
+
+### 7.3 The binding
+
+- **ON.** Under `kSEntityInitPassEReleaseBound`, the pass E row
+  `SEntity::InitAll pass E release_spawn_holder` (00926317) is logged as implemented and
+  counted. The release is exact, because the entity's copy is already gone by then.
+- **OFF.** The named record.
+- **Summary line:** `summary SEntity::InitAll pass E bound=<0|1> released=N`.
+- **The fold-in.** 009295B0's think-script name was settled by packet 1 (section 1.3): it is not
+  reachable on a fresh mission. Its 00928100 arm is packet 3.
+
+### 7.4 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - The native row `pass E release_spawn_holder` goes from UNIMPLEMENTED 60 to concrete 60.
+  - The summary goes from `released=0` to `released=60`. Nothing else moves.
+  - Gameplay identical: deaths, hit records, releases, death rows, unit table.
+- **USN02 9200/9000:** the row goes from UNIMPLEMENTED 4 to concrete 4, `released` from 0 to 4,
+  and gameplay is identical.
+- **If anything else moves,** the switch stays OFF.
+
+### 7.5 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\pe_off` (the committed OFF, 53ee0ad6a) and
+  `local\bin\pe_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\pe_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. The only changes are the pass E row, from UNIMPLEMENTED to concrete with the same call
+  count, and the pass E summary line.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `pass E release_spawn_holder` 00926317 | UNIMPLEMENTED 60 | concrete 60 | UNIMPLEMENTED 4 | concrete 4 |
+| `released` | 0 | 60 | 0 | 4 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+| other lines (masked multiset) | - | 0 / 0 | - | 0 / 0 |
+
+**Every prediction held. Verdict: ON.**

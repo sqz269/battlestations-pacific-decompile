@@ -2888,7 +2888,18 @@ public:
         host_.log_.implemented("SEntity::InitAll pass D session_register", "0077f090");
     }
     void entity_release_spawn_descriptor(void*) override {
-        host_.log_.unimplemented("SEntity::InitAll pass E release_spawn_holder", "00926317");
+        if constexpr (kSEntityInitPassEReleaseBound) {
+            // Packet cc9_init_pass_e_property_bag. 00926301..00926319: the
+            // holder's slot 0 with 1, then +C0h = 0. The holder owns the clone
+            // 00922E2D made; this process's copy is the creator's temporary
+            // record, which no reader holds past the creator call
+            // (docs/SENTITY_INIT_ATTACH_ORDER.md section 7). So after this
+            // pass no authored value is read from the entity's copy.
+            ++host_.summary_.init_all_holders_released;
+            host_.log_.implemented("SEntity::InitAll pass E release_spawn_holder", "00926317");
+        } else {
+            host_.log_.unimplemented("SEntity::InitAll pass E release_spawn_holder", "00926317");
+        }
     }
     void set_init_active_flag_00f899a5(bool value) override {
         host_.init_active_00f899a5_ = value;
@@ -3955,6 +3966,8 @@ void GameMissionLuaHost::report_mission_script_state() {
         "squadron_ids=%llu think_names=0",
         kSEntityInitThisTableStepsBound ? 1 : 0, summary_.init_all_class_bound,
         summary_.init_all_squadron_ids);
+    log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
+        kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
     if (state_ == nullptr) return;
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "Mission");
