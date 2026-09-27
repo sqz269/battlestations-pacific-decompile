@@ -810,3 +810,75 @@ directory, and every run exited 0.
 **Verdict: held, every prediction.** The probe asks the image's group and casts through the image's
 two group routines. With `zones=0` on both missions it answers what the open-sea stand-in
 answered. `kShipAiRingScanProbeBound` is ON, and ranking 3 rows 9 to 11 are closed.
+
+## 15. Handoff (end of the cc9-gunnery2 segment, 2026-09-27)
+
+cc9-gunnery2 retires after this section. Every switch it added is ON on main:
+`kPlayerGunSeatSegmentQueryBound`, `kShipAiNeighbourCountBound`, `kShipAiRingScanProbeBound` and
+`kUnitDeathRouteBound`. What remains on the gunnery and ship-AI side follows, in the order I
+would take it.
+
+1. **The two vtable mirrors**, the only `ShipAi` rows still UNIMPLEMENTED
+   (`docs/UNIMPLEMENTED_RANKING_3.md` rows 4 and 8):
+   - `ShipAi::unit_weapon_director` `00CFC3D0+vtable114`;
+   - `ShipAi::drive_heading_vtable50` `00CFC3D0+vtable50`.
+
+   Slot 50h is 006DFD60 `BSP_UnitInstance_GetHullHeading`, `FLD [unit+1050h]`. That field is
+   written only by the motion tail at 00826C56 (`docs/SHIP_POST_MOTION.md`). So row 8 closes with
+   plan 8a of that doc, in `src/game_hosts_units.cpp` (cc9-plane-release's file). Row 4's slot
+   114h was not read.
+2. **The loss warning** (`docs/LOSS_WARNING.md`): the binding plan for cc9-world-init's
+   `game_warning_report_loss_009813a0`.
+   - The route's record `WarningManager::report_loss_009813a0` in `src/game_hosts_gunnery.cpp`
+     is the call site to swap.
+   - Keep the `kill` channel's Lua listeners a record until the script host's own defeat path is
+     shown to be the same one.
+   - The limbo page `LimboScreen::take_unit_00565fb0` is the other named record of the route.
+3. **The Path and Landscape creators**, a scene-contents packet (`src/game_hosts_scene_contents.cpp`).
+   - Path is class 47h (creator 004EA650, IsKindOf 00480930, vtable 00CE6290); Landscape is class
+     44h (creator 004F1460, IsKindOf 004F1360, vtable 00CEA090).
+   - This is `native_scene_creators=unresolved` in the avoid-zone runtime's summary
+     (`docs/GAME_AVOID_ZONE_RUNTIME.md`, the zone-creator section).
+   - It moves nothing on USN02 or E2, which author neither class. USN01 authors 21 zones and 47
+     landscape lines.
+4. **The probe against real zones.**
+   - `kShipAiRingScanProbeBound` is ON, but on every reference mission it answers the open sea:
+     USN02 and E2 have no zones, and no USN01 ship enters the approach ring scan.
+   - A mission that both authors `AvoidZoneG` paths and puts ships into an approach is needed to
+     measure it. Survey the scene files for `AvoidZoneG` against the mission scripts' attack
+     orders.
+5. **Reference d**, once the in-flight landings settle. Use the protocol of the 2026-09-26 c
+   section of `docs/GAME_EXECUTABLE.md`:
+   - one binary built from a `git archive` export of main;
+   - USN04 4700/4500, E2 9200/9000, USN01 3200/3000 and USN02 9200/9000;
+   - streams and the death table on, lockstep 0.05, one run at a time;
+   - predictions from the landed pair docs, committed first.
+
+   Known moves since c:
+   - USN01 moved through the avoid-zone layer sample (7 / 150 / 583 / 0 torpedo drops), which is
+     this installation's generic `.nav`. Every USN `.nav` file is the same bytes.
+   - USN01's torpedo drops went 8 -> 2 between `1eaedc668` and `e3aba0f36`, with the racks still
+     dropping 8. That was routed to cc9-plane-release with the layer-choice re-check.
+   - E2 moved through the Val rack route (51 / 843 / 13329.2).
+   - E2's one-record residue (594 -> 595) is not isolable on the current base.
+6. **The unreproduced crash.** The first `kReconAggregatesBound` OFF run on USN01 died with
+   0xC0000005 after mission frame 2428 (log `local\fp2_ra_off_usn01_crash1.log` in worktree
+   cc9-gunnery2). The repeat of the same binary was clean. If it recurs, look first at a
+   consumer that assumes group records exist in the recon triples (`docs/RECON_TEAM_LISTS.md`).
+7. **Smaller open ends:**
+   - **Sunk ships stay in world list 6** (the units host never unlinks), so the neighbour-count
+     walk can set goals back from wrecks. That is labelled in `src/game_hosts_ship_ai.cpp`.
+     Whether the image unlinks a sinking ship was not read.
+   - **The death route's substitutions:** cause 1 for every gunnery kill, the world byte taken as
+     set, and the controller flags `+C41h` / `+100Ah` not held.
+   - **The segment query** (`kPlayerGunSeatSegmentQueryBound`) never hits on E2 because the idle
+     camera's segment runs from behind the excluded Lexington. It has no islands or terrain in the
+     host's index.
+
+**Tools I used, all in the scratchpad and not committed:**
+- a per-log extractor of the reference rows;
+- a pair differ over native rows, summary lines and death rows (ignoring `pretranslate` and the
+  avoidance refills);
+- a content-only sync of `git archive` into `local\ap_src` for incremental export builds.
+
+The last one is worth keeping in `tools/` if a successor repeats the export method.
