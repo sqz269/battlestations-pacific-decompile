@@ -1439,6 +1439,18 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.party_symbol = party.symbol;
     record.party = party_id;
     record.race = race_id;
+    if (klass->class_id == 0x18) {
+        // Packet cc9_scene_home_base_contract: 007F4C43 reads `HomeBase` from the
+        // squadron's bag at pass C; carried on the record for the units host.
+        record.home_base_carried = true;
+        if (const SceneProperty* home = bag.find("HomeBase")) {
+            std::string name = home->values.empty() ? std::string() : home->values.back();
+            if (name.size() >= 2 && name.front() == '"' && name.back() == '"') {
+                name = name.substr(1, name.size() - 2);
+            }
+            record.home_base = name;
+        }
+    }
     record.generated = gate.generate;
     record.gate_rule = rule_name;
     std::memcpy(record.world, world_frame, sizeof(record.world));

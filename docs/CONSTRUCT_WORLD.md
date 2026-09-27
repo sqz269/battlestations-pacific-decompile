@@ -2342,3 +2342,48 @@ DEATH ROWS: 40 -> 40 rows, 0 only ON, 0 only OFF, 12 changed
   The joint pair, with both halves ON, is the first measurement of the whole change. This half's
   pair shows only that the index order moves USN04's air battle within its usual bands.
 - **State: committed OFF, held for the joint flip** with cc9-movie-camera's Lua half.
+
+## 31. The scene-contents half of the HomeBase contract (packet `cc9_scene_home_base_contract`, `kSceneHomeBaseContractBound`, committed OFF)
+
+Worker cc9-ships, 2026-09-27. It wires section 29's contract.
+
+### 31.1 The binding
+
+- **The record.** The scene-contents host reads a PlaneSquadronGen row's (class 18h) `HomeBase`
+  (00CF8820) into `GameSceneEntityRecord::home_base`, and marks the record `home_base_carried`.
+  - The value is the authored name; "" when the key is empty or absent. Surrounding quotes are
+    stripped.
+  - A held-back row keeps its whole record in the spawn pool. So the key reaches
+    GenerateObject/SpawnNew with the record, the way `WingCount` reaches it on the pool entry.
+- **The call.** Under the switch, `create_units` calls
+  `set_squadron_scene_home_base(index, home_base)` for every created record that is class 18h and
+  carries the key.
+  - That covers both routes that build a squadron from a row: the scene load, and the
+    GenerateObject/SpawnNew creator (`create_unit_from_scene_record_0046db4b`).
+  - Both run before the squadron's InitAll pass C, which reads the key at 007F4C43.
+- **Not called for:**
+  - an air-ops launch: its record is built fresh in `create_air_ops_squadron_006c5050`, and its
+    bag's `HomeBase` is the deck owner, which section 29 handles on that path;
+  - a wing plane (class -1).
+- **The census:** `summary squadron scene home base contract bound=.. calls=..`, beside section
+  29's line.
+
+### 31.2 Which mission measures it
+
+- **IJN08 is the one mission in this installation that authors a non-empty `HomeBase`.** Its rows
+  "Ki-43 Oscar 01" and "Gekko 01" read `RFort "Landscape 01\MainAirFieldEntity 01"`, in each of
+  four copies of the scene (section 29).
+- USN04 authors only `RFort ""` in its PlaneSquadronWNavpoint templates. USN02 authors none.
+- So the reference pairs are identity by construction. An IJN08 run with the switch on would show
+  `keys=2` and the resolution counts of section 29's line.
+
+### 31.3 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `calls` is the number of squadrons created from a PlaneSquadronGen row: the SpawnNew groups'
+    squadrons, 16 in the hook census (20 pass A calls less the 4 air-ops launches);
+  - section 29's `keys`, `resolved`, `unresolved`, `not_airbase` and `queue_pushes` stay 0,
+    because every name is "".
+- **USN02 9200/9000:** `calls=0`.
+- **Both:** pair_diff exit 1, gameplay and every per-entity table identical, only the census line
+  moved.

@@ -3798,6 +3798,7 @@ struct GameUnitsHost::Impl {
     static constexpr bool kUnitsPendingPushBound = true;
     unsigned long long construction_pushes = 0;
     unsigned long long squadron_pass_a_hook_calls = 0;  // packet cc9_squadron_pass_hooks
+    unsigned long long scene_home_contract_calls = 0;   // packet cc9_scene_home_base_contract
     // Packet cc9_wing_construction: the held-back wings, by leader index.
     std::map<std::size_t, std::vector<GameSceneEntityRecord>> staged_wings;
     unsigned long long wing_records_staged = 0;
@@ -7543,6 +7544,14 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         host.register_in_world_lists(*slot);
         Impl::publish_pose(*slot);
         host.slots.push_back(std::move(slot));
+        if constexpr (kSceneHomeBaseContractBound) {
+            // Packet cc9_scene_home_base_contract: a squadron built from a
+            // PlaneSquadronGen row gets its row's HomeBase before its pass C.
+            if (entity.class_id == 0x18 && entity.home_base_carried) {
+                set_squadron_scene_home_base(host.slots.size() - 1, entity.home_base);
+                ++host.scene_home_contract_calls;
+            }
+        }
         if constexpr (Impl::kUnitsPendingPushBound) {
             // Packet cc9_units_push_pending: the base constructor 00928630, at 00928760,
             // pushes every entity onto 00F899D0 through 00926BE0. The id is the
@@ -18779,6 +18788,10 @@ void GameUnitsHost::report() {
             "cc9_scene_home_base_key)", Impl::kSceneHomeBaseBound ? 1 : 0,
             host.scene_home_keys_set, host.scene_home_resolved, host.scene_home_unresolved,
             host.scene_home_not_airbase, host.scene_home_queue_pushes);
+        host.log.notef("summary squadron scene home base contract bound=%d calls=%llu "
+            "(create_units -> set_squadron_scene_home_base, packet "
+            "cc9_scene_home_base_contract)", kSceneHomeBaseContractBound ? 1 : 0,
+            host.scene_home_contract_calls);
         host.log.notef("summary units construction push bound=%d pushes=%llu (00928760 -> "
             "00926BE0, packet cc9_units_push_pending)", Impl::kUnitsPendingPushBound ? 1 : 0,
             host.construction_pushes);

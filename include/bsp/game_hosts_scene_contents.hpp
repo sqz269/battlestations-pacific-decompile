@@ -66,6 +66,13 @@ struct GameSceneEntityRecord {
     int race{-1};
     bool generated{false};     // 0046c550 returned AL != 0
     std::string gate_rule;     // which rule of the gate produced that answer
+    // Packet cc9_scene_home_base_contract: a PlaneSquadronGen row's `HomeBase`
+    // (00CF8820) as authored, "" when empty or absent; `home_base_carried` marks a
+    // record that came from such a row. The bag does not survive a hold-back, so
+    // the key travels on the record the spawn pool keeps (as WingCount travels
+    // on the pool entry) to the squadron's creation.
+    std::string home_base;
+    bool home_base_carried{false};
     bool created{false};       // the class creator ran and handed back an instance
     std::string skipped_because;
     float world[16]{};
@@ -323,6 +330,13 @@ inline constexpr bool kScenePathLandscapeCreatorsBound = true;
 // them at the next InitAll's pass C, fixed-step row 12. False: neither is
 // written, as before.
 inline constexpr bool kSceneRaceAndScriptIdentityBound = true;
+
+// Packet cc9_scene_home_base_contract (docs/CONSTRUCT_WORLD.md section 31). True:
+// create_units hands every squadron built from a PlaneSquadronGen row its
+// row's HomeBase name through set_squadron_scene_home_base, before the
+// squadron's InitAll pass C reads it (007F4C43). Covers the load-time rows and
+// the held-back rows GenerateObject/SpawnNew create. False: never called.
+inline constexpr bool kSceneHomeBaseContractBound = false;
 
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
