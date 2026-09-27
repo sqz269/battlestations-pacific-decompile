@@ -762,3 +762,75 @@ through the runner, and the two `Session::` rows are records inside the pump. Th
 themselves moved exactly as predicted.
 
 **Verdict: ON.**
+
+## 12. The deck-tick launch lag (packet `cc9_deck_tick_in_step`, `kDeckTickInFixedStepBound`)
+
+Worker cc9-init-passes, 2026-09-27. Ghidra was read only.
+
+### 12.1 Where the image ticks the decks (V)
+
+- **Callers of 006CDC70** (Ghidra xrefs):
+  - 0075828E in 00758270 `BSP_MotherShipUnit_UpdateMotion`, the carrier;
+  - 006D254B in 006D2510 `BSP_AirField_TickAdvance`, the airfield;
+  - 00896983 in `LaunchAirBaseSlot`.
+- **Where motion runs.** Unit motion runs from the step's job waves: 00875CDD, 00875D4D and
+  00875DBD (`docs/IN_MISSION_SUBSYSTEM_TICK.md`, the step loop, item 2). The waves come before
+  the fan-out 00875E0C..00875EDF, whose row 12 at 00875EA2 runs InitAll. A launch the deck tick
+  starts pushes its squadron in the waves, and the same step's row 12 attaches it.
+- **The host** ran the tick from `GameScriptOrdersHost::run_script_timers`. The mission frame
+  calls that after `run_mission_frame`, so after the frame's fixed step. Such a launch was
+  attached at the next step's row 12, one step later. At the harness's lockstep that is one
+  frame.
+
+### 12.2 The binding
+
+- **Under the switch,** `FixedStepBinding::run_step_job_waves` (`src/game_hosts_mission_frame.cpp`)
+  calls `run_air_ops_update_006cdc70(0.05f)` right after the job waves, once per fixed step.
+- **`run_script_timers`** no longer runs it.
+- **Not reproduced: the order among units.** The tick runs once for all decks, not inside each
+  owner's motion. The ship motion 00825F20 still runs after the fan-out in this host.
+- **LaunchAirBaseSlot's own call** (00896983) is not a host route.
+
+### 12.3 How to show the lag, since neither reference mission queues a launch
+
+- **Why the reference missions cannot show it.** USN04's four LaunchSquadron calls all log
+  `(started)`: they are started inside the call and attached at 0089E613. USN02 has no deck.
+- **What a demonstration needs.** A launch the deck tick starts later, which is a `LaunchSquadron`
+  that returns queued (the slot not ready: state 3 or 4, being refilled).
+- **What to compare.** In such a run, compare the frame of the tick's `LaunchSquadron`/
+  `air ops tick` note with the `SEntity::InitAll 00925f20 at 00875ea2: N pending` note:
+  - OFF: the next frame;
+  - ON: the same frame.
+- **No mission is picked here.** A mission script that launches twice from one slot within a
+  refill would do; none was searched for in this packet.
+
+### 12.4 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `AirOps::update` 006cdc70, `update_slots` 006c0da0 and `slot_tick` 006c0510 keep their
+    call counts within ±2. The count moves from simulated frames with a positive delta to fixed
+    steps, and at lockstep the two agree.
+  - No launch is queued, so no InitAll row moves.
+  - Gameplay identical: deaths, hit records, releases, death rows, plane death modes and the unit
+    table.
+  - The `air ops tick 006c0510` refill notes keep their text. The tick now runs before the fan-out
+    and before ship motion in the same frame, and it reads nothing either writes.
+- **USN02 9200/9000.** There are no decks. The tick walks an empty registry, the counts are within
+  ±2, and gameplay is identical.
+- **If a gameplay row moves,** the likely cause is `resolve_plane_squadron_members`, which now
+  runs before ship motion in the frame instead of after it. The switch stays OFF.
+
+### 12.5 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\dt_off` (the committed OFF, a909d98dd) and
+  `local\bin\dt_on` (flipped locally, then reverted). Their SHA-256 prefixes differ:
+  `6ec7c4a94dbe` and `5256240b14b9`. `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were
+  set. All four logs have the fit line, the immediate present interval and the final COM release,
+  and each module directory is under `local\bin\dt_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 0 on both pairs: identical apart from noise.
+  The native tables are equal row for row. `AirOps::update` is 4,500 calls on both sides of
+  USN04, so the ON tick ran once per fixed step from the job waves, where OFF ran it once per
+  frame from the timers.
+- **The lag itself is not shown** by these pairs. See 12.3 for the run that would show it.
+
+**Every prediction held. Verdict: ON.**

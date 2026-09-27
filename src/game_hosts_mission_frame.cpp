@@ -712,6 +712,15 @@ public:
     void run_step_job_waves(std::uint8_t run_pass) override {
         // Milestone 2g: the three waves over the five 68h groups at 00f876c0.
         owner_.fixed_step->run_job_waves_00875cc0(run_pass);
+        if constexpr (kDeckTickInFixedStepBound) {
+            // Packet cc9_deck_tick_in_step: 006CDC70 at the owner's motion
+            // (0075828E / 006D254B), which the job waves reach before the
+            // fan-out's row 12.
+            if (owner_.script_orders != nullptr) {
+                owner_.script_orders->run_air_ops_update_006cdc70(
+                    bsp::kFixedSimulationStepFloat);
+            }
+        }
     }
     void run_step_subsystems(float step, bool world_active) override {
         // Milestone 2g: the sixteen per-step calls and their world gate. The

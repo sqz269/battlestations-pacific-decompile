@@ -139,6 +139,19 @@ inline constexpr bool kLoadTimeInitAllBound = true;
 // route runs the InitAll row alone. ON by the verdict (section 11.4).
 inline constexpr bool kRunExtraFixedStepBound = true;
 
+// Packet cc9_deck_tick_in_step (docs/SENTITY_INIT_ATTACH_ORDER.md section 12).
+// The image ticks the air-ops decks (006CDC70) from the owner's motion virtual:
+// 0075828E in 00758270 BSP_MotherShipUnit_UpdateMotion for a carrier and
+// 006D254B in 006D2510 BSP_AirField_TickAdvance for an airfield. Unit motion
+// runs in the step's job waves (00875CDD..00875DBD), before the fan-out whose
+// row 12 (00875EA2) runs InitAll, so a launch the deck tick starts is attached
+// in the same step. True: the deck tick runs once per fixed step right after
+// the job waves, and the per-frame script timers no longer run it. False: the
+// script timers run it after the frame's fixed step, and such a launch
+// attaches one step later. ON by the verdict: identity on USN04 and USN02
+// (section 12.5).
+inline constexpr bool kDeckTickInFixedStepBound = true;
+
 // The fixed-step host's 00874D00, for the Lua routes that call it.
 class GameExtraFixedStepRunner {
 public:

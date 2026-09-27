@@ -11,6 +11,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"  // kFixedSimulationStepSeconds / Float
 #include "bsp/command_execution.hpp"
 #include "bsp/lua_binding_navigator.hpp"
@@ -2721,7 +2722,9 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
 }
 
 void GameScriptOrdersHost::run_script_timers(float step) {
-    run_air_ops_update_006cdc70(step);
+    // Packet cc9_deck_tick_in_step: with the switch on, the fixed step runs the
+    // deck tick at its owner's motion instead (bsp/game_hosts_fixed_step.hpp).
+    if (!kDeckTickInFixedStepBound) run_air_ops_update_006cdc70(step);
     if (machine_state_ == nullptr) return;
     observe_mission_end();
     publish_unit_deaths_00929800();
