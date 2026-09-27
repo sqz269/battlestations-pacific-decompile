@@ -1,0 +1,46 @@
+{
+  "packet": "cc9_set_selected_unit",
+  "doc": "docs/CONTROLLED_UNIT.md (section 'SetSelectedUnit and 00647300'); docs/HUD_PICK_SEGMENT_QUERY.md sections 7.1, 8.1, 8.6",
+  "switch": "kSetSelectedUnitBound (include/bsp/game_hosts_hud.hpp): committed OFF in abed521b1/0aac5988c, set ON by the verdict",
+  "calls": [
+    {"address": "008AB380", "native": "00647300", "function": "008AB260", "kind": "call",
+     "host": "binding_trampoline select_unit_row -> bsp::game::hud_set_selected_unit_00647300"},
+    {"address": "00647317", "native": "00645060", "function": "00647300", "kind": "call",
+     "host": "bsp::unit_is_selectable_00645060 over GameHudHost::Impl::selectable_inputs_00645060"},
+    {"address": "00647323", "native": "00645600", "function": "00647300", "kind": "call",
+     "host": "bsp::select_controlled_unit_00645600 with SelectControlledUnitBinding (setter GameUnitsHost::set_controlled_unit_004c0890)"},
+    {"address": "0064734B", "native": "004CC460", "function": "00647300", "kind": "call",
+     "host": "record SetSelectedUnit::push_limbo_34h (unreachable after an accepted unit)"},
+    {"address": "00647357", "native": "00647040", "function": "00647300", "kind": "call",
+     "host": "inline in GameHudHost::set_selected_unit_00647300"},
+    {"address": "00647059", "native": "005251C0", "function": "00647040", "kind": "call",
+     "host": "record SetSelectedUnit::screen_reset_005251c0"},
+    {"address": "00647077", "native": "004CC460", "function": "00647040", "kind": "call",
+     "host": "unit_request_pending/applied re-armed; serviced by apply_pending_interface_0068aca0"},
+    {"address": "00645121", "native": "00927C50", "function": "00645060", "kind": "call",
+     "host": "UnitSelectableInputs::team_query_00927c50 from GameUnitsHost::unit_role_permission"}
+  ],
+  "routines": [
+    {"address": "008AB260", "coverage": "complete (argument resolved through the entity ID)"},
+    {"address": "00647300", "coverage": "complete"},
+    {"address": "00647040", "coverage": "partial: 005251C0 unread (record)"},
+    {"address": "00645060", "coverage": "complete for ships; vtable[124h] of non-ship classes unread (record, answers false)"},
+    {"address": "00645600", "coverage": "complete; callees 00817380, 0080E290, 006952A0, 00694A60, 00954990 are records"}
+  ],
+  "corrections": [
+    {"was": "00645060 requires IsKindOf(0Fh)", "is": "IsKindOf(0Fh) rejects", "evidence": "006450DF JNZ 00645151"},
+    {"was": "00645060 rejects when [team+19h] is set", "is": "the spectator door needs [team+19h] set", "evidence": "0064512E CMP [EBP+19h],AL (AL=0); 00645131 JZ 0064513C"},
+    {"was": "BL zeroed when game+2194h is set", "is": "BL zeroed when game+2194h is clear", "evidence": "00645071 CMP [EAX+2194h],0; 00645078 JNZ; 0064507A XOR BL,BL"},
+    {"was": "00645600 step 4 compares presence", "is": "it compares identity", "evidence": "0064567B..00645681 CMP ECX,ESI"},
+    {"was": "HUD_PICK_SEGMENT_QUERY 7.1/8.1: luaIn issues orders only", "is": "luaIn calls SetSelectedUnit(Northampton)", "evidence": "usn_1_marshall.lua 669, 275"}
+  ],
+  "ghidra": "read-only; decompile of 008AB260, 00647300, 00647040, 00645060, 00927C50, 008AAF30, 006485A0 callees; listings of 00645060, 00647040, 00647300, 005251C0 head; disk bytes of vtable 00CFB738 slots 124h/140h, 006D1EF0, 0047F320",
+  "no_ghidra_function": [
+    {"start": "006D1EF0", "end_inclusive": "006D1F10", "what": "ship vtable[124h] (00CFB85C): +5Ch set and +5Dh/+60h/+5Eh clear; RET at 006D1F10"}
+  ],
+  "verdict": "ON",
+  "pairs": {
+    "usn01": {"exit": 3, "gameplay": "identical (deaths 7, hits 150, damage 2690.0, shots 583, death rows, unit table)", "moved_row": "controlled Airfield2 -> Northampton (the binding itself)", "camera_basis_unimplemented": [6160, 805], "pick_land_hits": [0, 0], "owner_140": [0, 0]},
+    "usn04": {"exit": 1, "gameplay": "identical (deaths 43, hits 788, damage 11917.1, shots 5075)", "set_controlled_unit_calls": [1, 3]}
+  }
+}

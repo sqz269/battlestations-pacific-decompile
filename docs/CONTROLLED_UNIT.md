@@ -200,3 +200,161 @@ was not read and nothing is claimed about it.
 * `hud_root_unit_selection` - addresses `00647300`, `006485A0`, `00649860`, `00927C50`,
   `00645060` (read); files `docs/HUD_ROOT_UNIT_ROWS.md`. Who calls `00645600` and with
   what, which settles the spectator half of the selectable test.
+
+## SetSelectedUnit and 00647300 (packet `cc9_set_selected_unit`, `kSetSelectedUnitBound`)
+
+Worker cc9-movie-camera, 2026-09-27, base main 83ece7303. Ghidra was read only.
+
+### The path (V)
+
+- **008AB260 `SetSelectedUnit`.** It reads argument 0 as an entity (`BSP_ObjectHandle_FromLuaTable`)
+  and calls 00647300 `BSP_InGameHudRoot_SetSpectatedUnit` on the HUD root.
+- **00647300** (`__thiscall(hudRoot, unit)`, RET 4 at 00647352 and 0064735E):
+  1. 00645060(unit, `[game+18ECh]`, 1) at 00647317. If it rejects, the routine returns.
+  2. 00645600(unit) at 00647323.
+  3. If `[00E188D8]` is null and the manager's applied pair equals its pending pair, it pushes
+     34h `INTF_LIMBO` (0064734B).
+  4. Otherwise it calls 00647040.
+- **00647040** (00647040..0064707C):
+  - 0059DA80 on `[manager+54h]`, which is a bare `RET`;
+  - 005251C0 on `[manager+CCh]`, a screen reset that is unread here;
+  - then 004CC460(20h, `[00E188D8]->vtable[140h]()`).
+  - For a ship (vtable 00CFB738) slot 140h is 0047F320, `MOV EAX,ECX; RET`, so the payload is
+    the unit itself.
+- **00645060's two host probes, read for this packet:**
+  - `vtable[124h]` for a ship is 006D1EF0 (no Ghidra function, 006D1EF0..006D1F10 inclusive,
+    `RET` at 006D1F10). It answers `+5Ch` set and `+5Dh`, `+60h`, `+5Eh` clear, the same four
+    bytes as 0043F080.
+  - 00927C50(unit, team) is true when any of the nine words `unit+188h..` is 9 or equals
+    `team`. That is the role permission table `SetRoleAvailable` writes.
+- **In single player the spectator door is shut.** `game+2194h` is clear, so BL = 0 at
+  0064507A.
+
+### Corrections to the section "`00645060`, the selectable test" (V, listing)
+
+- **006450DF is `JNZ` to the reject exit.** A unit answering `IsKindOf(0Fh)` (a plane) is
+  rejected. The first reconstruction required it.
+- **0064512E `CMP [EBP+19h],AL` with AL = 0, then `JZ` to the reject exit.** The spectator door
+  needs `[team+19h]` **set**. The first reconstruction rejected when it was set.
+- **0064507A.** BL is zeroed when `game+2194h` is **clear**, not when it is set.
+- **00645600 step 4 compares identity** (`CMP ECX,ESI` at 0064567B..00645681). The host
+  interface gained `controlled_is_candidate()`.
+
+`src/controlled_unit.cpp` and `include/bsp/controlled_unit.hpp` carry the fixes. Nothing called
+either routine before this packet.
+
+### The binding
+
+- **The switch.** `kSetSelectedUnitBound` in `include/bsp/game_hosts_hud.hpp`, committed OFF.
+- **The Lua row.** `src/game_hosts_lua.cpp` routes row 008AB260 to
+  `hud_set_selected_unit_00647300`. It resolves the argument through the entity `ID`, as the
+  objective rows do.
+- **The HUD side.** `GameHudHost::set_selected_unit_00647300` runs 00645060 with inputs from
+  the units host, then `bsp::select_controlled_unit_00645600`. Its setter is the units host's
+  004C0890. Then it runs 00647040's push, which re-arms the pending/applied pair so the next
+  006840F0 service runs 0068ACA0's 20h classifier with the new controlled unit.
+- **Substitutions (labelled in the code):**
+  - The local player's side record `+28h` is party 0. game_hosts_ai.cpp makes the same
+    assumption.
+  - `vtable[124h]` is read for ships only. Any other class is the record
+    `SetSelectedUnit::unit_vtable_124` and answers false.
+  - `[team+19h]` and `game+2194h` are not modelled. Both only matter on the spectator door,
+    which single player never opens.
+- **Records left:** 005251C0 (screen reset), 00817380 and 0080E290 (the release broadcasts),
+  006952A0 and 00694A60 (the observer pair), 00954990 (audio), and 0064734B (the 34h push).
+- **`ForceSelectUnit` 008AAF30 does not share the path.** It calls 006485A0, which runs 00645600,
+  00647040 and the unit-list rebuild 00648290 with no argument. It is not called within USN04's
+  4,500 frames, since `luaEndZuikakuDeadMovie` never runs. It stays unbound.
+- **What the host does on USN04 today.** The Lexington is already the controlled unit by
+  another route: the mission frame's `set_controlled_unit_004c0890(0)`, the first created unit.
+  The one `SetSelectedUnit` call is `luaWeHere` (`usn_19_coralus.lua` 3352,
+  `SetSelectedUnit(Mission.Lex)`) at t = 25.0 s, and today it is an UNIMPLEMENTED record.
+
+### Predictions (written before the pairs; the same tree, switch only, `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`)
+
+**USN01 3200/3000:**
+1. The native row `SetSelectedUnit` goes from UNIMPLEMENTED calls=2 to concrete calls=2.
+2. **Call 1**, `luaIn` at about t = 20.1 s:
+   - Northampton is accepted.
+   - `00e188d8` moves from `Airfield2` to `Northampton`.
+   - A second `controlled unit:` line appears.
+   - The next pump applies 25h: `applied as 25h`, screens `29h 49h 44h 27h 4Dh 45h 46h 26h 2Eh 35h 50h`.
+   - `mission camera: ShipCaptain mover bound to "Northampton"` appears.
+3. **Call 2**, `luaPh2MovieEnd` at about t = 100 s: `SetSelectedUnit(Mission.ScoutBomba)`, the
+   generated `ScoutDauntless`, is rejected with `kind0F=1`.
+4. **The pick:**
+   - The `unit pick: first camera basis` line appears once, at about hud update frame 400.
+   - `UnitPickScreen::camera_basis` UNIMPLEMENTED falls from 6,160 to about 800 calls (2 per
+     frame before the publish).
+   - Pick casts stay about 5,999, because screen 29h is in both sets.
+   - Pick land hits: from 0 to somewhere in [0, 2,600], expected small. The camera sits behind
+     and above Northampton, looking along its bow at the initial pitch. Land is hit only when the
+     10,000-unit ray reaches an island inside the bounds of `docs/SCENE_CONTENTS_HOSTS.md`
+     section 8.
+   - `UnitPickScreen::owner_140` appears with calls equal to the frames whose pick resolved to a
+     unit. The band is [0, 2,600], expected nonzero, since the formation (SaltLakeCity, Dunlap)
+     follows Northampton inside the ray.
+5. **Screens.** The 25h screens start updating on USN01: ship screen 45h, weapon groups 2Eh
+   (enter 005494C0), role 27h and warning 50h. The role screen takes role 0 on Northampton for
+   the local player. Screen 27h's 0067BB50 now sees a kind-2 controlled unit, so the units host's
+   `role_message_4b` count grows by at least 1.
+6. **Gameplay.** It is identical unless one of two routes carries a change:
+   - a resolved pick reaches the weapon-group fire path, which needs player input, so it is not
+     expected;
+   - the role-0 take makes Northampton player-held: the `unit+184h` readers 009F3DF3 and
+     009F5E06 in the bot fire-target path.
+   If rows move, the prediction is that only Northampton's own gunnery rows move first (its
+   shots and hits from t >= 20.1 s), and everything after is RNG-coupled.
+
+**USN04 4700/4500:**
+1. The native row `SetSelectedUnit` goes from UNIMPLEMENTED calls=1 to concrete calls=1 at
+   t = 25.0 s. The Lexington is accepted.
+2. 00645600 finds the Lexington already controlled, so `refreshed_in_place=1`.
+   `ControlledUnit::set_controlled_unit` goes from 1 to 3 calls (the republish and the setter).
+3. The 20h push re-runs the 25h arm:
+   - `MissionCamera::bind_ship_view` and `HudWeaponGroupScreen::bind` go from 1 to 2 calls;
+   - there is a second `applied as 25h` line;
+   - the ShipCaptain keeps its target (no retarget), so only its sway and focus reset.
+4. **Gameplay identical.** The controlled unit does not change, and the weapon-group release
+   finds no selected group.
+
+### Pairs and verdict
+
+**Setup.** The same tree at 0aac5988c, switch only. Binaries are `local\bin\ss_off` and
+`local\bin\ss_on`, both runs had `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, and every
+log shows the harness override lines and its own module directory.
+
+| row | USN01 OFF | USN01 ON | USN04 OFF | USN04 ON |
+| --- | --- | --- | --- | --- |
+| `pair_diff` exit | | 3 (controlled row only) | | 1 |
+| deaths / hit records / damage / shots | 7 / 150 / 2690.0 / 583 | same | 43 / 788 / 11917.1 / 5075 | same |
+| death rows, plane death modes, unit table | | identical | | identical |
+| controlled unit | Airfield2 | Northampton | Lexington-class01 | same |
+| `SetSelectedUnit` | UNIMPLEMENTED 2 | concrete, accepted 1 | UNIMPLEMENTED 1 | concrete, accepted 1 |
+| `UnitPickScreen::camera_basis` UNIMPLEMENTED | 6,160 | 805 | 3 | 3 |
+| pick casts / land hits | 5,999 / 0 | 5,999 / 0 | | |
+| `owner_140` | 0 | 0 | | |
+| `ControlledUnit::set_controlled_unit` | 1 | 2 | 1 | 3 |
+| player role takes / releases | 0 / 0 | 4 / 4 | 3 / 0 | 5 / 2 |
+
+**USN01 ON, from the log:**
+- `SetSelectedUnit 00647300: "Northampton" accepted` appears at t = 20.1 s.
+- It is followed by `applied as 25h` with the eleven screens, and by `ShipCaptain mover bound to
+  "Northampton"`.
+- `unit pick: first camera basis ... at hud update frame 403: from=(6300.0,37.8,-3377.3)
+  forward=(0.0000,-0.1736,0.9848)`, a pitch of -10 degrees behind the bow.
+- The second call, `"ScoutDauntless" rejected ... kind0F=1`, lands at about t = 100 s.
+- `landscape attach traces` falls from 6,401 to 1,207. The zero-length ray at the origin sat
+  inside a landscape's box, while the real rays miss every landscape box.
+
+**Failed or unpredicted:**
+- `owner_140` stayed 0 where I expected nonzero. The ray pitches 10 degrees down from about
+  37.8 above the water, so it enters the sea about 214 units ahead. The formation follows behind
+  Northampton, and nothing lies in front of it in that range.
+- On USN04, `released_previous=1` was not predicted. The Lexington is kind 6, so step 1's release
+  runs even when the unit is re-selected.
+- On USN04 the role takes and releases rose by 2 each, from the weapon-group rebind.
+- Every other prediction held.
+
+**Verdict: ON.** Gameplay is identical on both missions, and every change is the binding's own
+row. `kSetSelectedUnitBound` is set true in the verdict commit.

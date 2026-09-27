@@ -314,6 +314,11 @@ takes the movie through these steps:
   installed.** The node carries the last keyframe's pose, relative to `CB2` in USN01's intro
   (lines 627..630), for the rest of the run, unless the mission's callback or a later movie changes
   it. The callback was not read.
+- **Correction (section 8.6, 2026-09-27):** the callback does change it. `luaIntroMovieEnd`
+  blacks out into `luaIn`, and `luaIn` calls `SetSelectedUnit(Mission.BmdGroup[1])`, which is
+  Northampton (line 669). In the image that reaches 00645600 and a 20h push, so the 25h arm
+  installs the ShipCaptain mover on Northampton at about t = 20.1 s. Also, the pick screen is
+  not in the 2Ch movie set, so the pick casts nothing during the movie.
 
 **This host has neither mover.**
 - `toggle_movie_camera` 0068A160 and `toggle_new_movie_camera` 0068A1F0 are records in
@@ -356,7 +361,8 @@ binding packet.
 - **No other native starts or stops the movie camera.** `EnableInput(false)` and
   `BlackBars(true)` come first. `luaCamOnTargetExt` (7824) removes the listener, kills the script
   and calls `luaIntroMovieEnd`, which is `Blackout(true, "luaIn", 3)` (mission line 648). `luaIn`
-  (654) issues orders only.
+  (654) issues orders and, at line 669, calls `SetSelectedUnit(Northampton)`. The earlier text
+  said "orders only", which is corrected in section 8.6.
 
 ### 8.2 The native side (V)
 
@@ -646,3 +652,16 @@ reaches back past the last cut.
 | 00795650 | complete for keepall and the kind-6 wanderer; keepnone/keepy (004142A0, 0085DAD0) and the kind-0Fh offset 0078FCC0 are unread |
 | 00798130 | complete, except the flyalt lift 007986C0..007987B4 (00414C60, 00419010), which is unread |
 | 0079A3B0 update, 007A0860 seed, 0078FAF0 smoothing, 0079D020 constructor | unread in this commit |
+
+### Named records left by the re-scope (lead ruling, 2026-09-27: option A)
+
+The movie camera is not bound. Its natives and bodies stay records until packet
+`cc9_movie_interface_and_reseed`:
+- `MissionLuaNative::MovCamNew_AddPosition` 008B79F0 (UNIMPLEMENTED);
+- `ensure_movie_camera` 005CC170;
+- the keyframe store 007A44D0 and 007A42C0;
+- the update 0079A3B0;
+- `InGameInterfaceUpdate::toggle_new_movie_camera` 0068A1F0.
+
+USN01's pick after `luaIn` comes from `SetSelectedUnit`, bound in packet `cc9_set_selected_unit`
+(`docs/CONTROLLED_UNIT.md`, section "SetSelectedUnit and 00647300").

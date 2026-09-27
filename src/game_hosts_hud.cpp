@@ -6,6 +6,8 @@
 #include "bsp/gui_aspect_extent.hpp"
 #include "bsp/platform_window.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
+#include "bsp/controlled_unit.hpp"
+#include "bsp/unit_instance_layout.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
 #include "bsp/hud_ship_screen.hpp"
@@ -157,6 +159,13 @@ struct GameHudHost::Impl {
     bool unit_request_pending{false};
     bool unit_request_applied{false};
     int unit_interface_id{0};
+    // Packet cc9_set_selected_unit: 00647300's calls, acceptances, and the
+    // 20h pushes it made (serviced through the same pending/applied pair).
+    unsigned long long select_calls{0};
+    unsigned long long select_accepted{0};
+    unsigned long long select_pushes{0};
+    bool pick_first_basis_logged{false};
+    bsp::UnitSelectableInputs selectable_inputs_00645060(std::size_t unit);
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -1295,6 +1304,22 @@ float CameraOcean::water_height(float x, float z) {
 }
 }  // namespace
 
+namespace {
+// The HUD whose world is attached, for hud_set_selected_unit_00647300. The
+// image's route is the global manager [00E198C4] and its +40h (slot 44h).
+GameHudHost*& attached_hud_for_selection() noexcept {
+    static GameHudHost* hud = nullptr;
+    return hud;
+}
+}  // namespace
+
+bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached) {
+    GameHudHost* hud = attached_hud_for_selection();
+    reached = hud != nullptr;
+    if (hud == nullptr) return false;
+    return hud->set_selected_unit_00647300(unit);
+}
+
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
     Impl& impl = *impl_;
     impl.units = &units;
@@ -1303,10 +1328,12 @@ void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua)
     if (!impl.markers) impl.markers = std::make_unique<GameHudMarkersHost>(impl.log, impl.menu);
     impl.minimap->attach_world(units, lua);
     impl.markers->attach_world(units);
+    attached_hud_for_selection() = this;
 }
 
 void GameHudHost::detach_world_2k() noexcept {
     Impl& impl = *impl_;
+    if (attached_hud_for_selection() == this) attached_hud_for_selection() = nullptr;
     impl.units = nullptr;
     impl.lua = nullptr;
     impl.camera_bound = false;
@@ -1350,6 +1377,162 @@ void GameHudHost::request_scene_interface_for_unit_004cc460() {
     impl.log.note("interface request 20h pushed with the controlled unit as its payload: "
         "milestone 2h applied the null-payload request Init pushes at 0068d73a, whose arm "
         "publishes only 29h 49h 44h 35h; the same arm with a unit is a classifier");
+}
+
+// 00645060's inputs for one unit, teamIndex [game+18ECh] = 0 (single player)
+// and allowSpectate 1 (00647313 PUSH 1).
+bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::size_t unit) {
+    bsp::UnitSelectableInputs in{};
+    // 00645091..006450B3: +5Ch set, +5Dh/+60h/+5Eh clear. The units host
+    // answers the four together (its 0043F080 test, the same four bytes).
+    const bool alive = units->unit_alive_and_visible(unit);
+    in.alive_5c = alive;
+    // 006450B9..006450BF: [unit+54h] == [[game+18CCh]+28h]. SUBSTITUTION
+    // (labelled, as game_hosts_ai.cpp does for the same read): the local
+    // player's side record is party 0, and unit+54h is the authored party.
+    in.team_matches_owner = units->unit_side_0054(unit) == 0;
+    in.is_kind_2 = units->unit_is_kind_of(unit, bsp::kUnitTraitSelectableBase);
+    in.is_kind_0f = units->unit_is_kind_of(unit, 0x0f);
+    in.is_kind_2a = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedA);
+    in.is_kind_46 = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedB);
+    in.is_kind_45 = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedC);
+    // 00645110 vtable[124h]: read for the ship vtable only (006D1EF0, the same
+    // four bytes). Any other class is a record answering false.
+    if (units->unit_is_kind_of(unit, 6)) {
+        in.vtable_124_allows = alive;
+    } else {
+        record("SetSelectedUnit::unit_vtable_124", 0x00645110u);
+        in.vtable_124_allows = false;
+    }
+    // 00645121 00927C50(unit, 0): any role word 9 or 0.
+    for (int role = 0; role < bsp::kUnitRoleTableEntries; ++role) {
+        std::int32_t word = 0;
+        if (!units->unit_role_permission(unit, role, word)) continue;
+        if (role == 0) in.spectate_kind = word;          // [unit+188h]
+        if (word == 9 || word == 0) in.team_query_00927c50 = true;
+    }
+    // 0064507A: in single player game+2194h is clear, so BL = 0 and the
+    // spectator door is shut. SUBSTITUTION (labelled): +2194h is not modelled;
+    // [team+19h] is unread and left false.
+    in.spectate_allowed = false;
+    in.team_is_local = false;
+    return in;
+}
+
+namespace {
+// 00645600's host over the units host. The unit-side broadcasts and the
+// observer pair are records: no host state carries them.
+class SelectControlledUnitBinding final : public bsp::SelectControlledUnitHost {
+public:
+    SelectControlledUnitBinding(GameHudHost::Impl& owner, std::size_t candidate, bool selectable)
+        : owner_(owner), candidate_(candidate), selectable_(selectable) {}
+    bool current_is_kind_6() override {
+        return owner_.units->controlled_bound()
+            && owner_.units->unit_is_kind_of(owner_.units->controlled_index(), 6);
+    }
+    void release_unit_parts() override {
+        owner_.record("SetControlledUnit::release_unit_parts", 0x00817380u);
+    }
+    void release_unit_nodes() override {
+        owner_.record("SetControlledUnit::release_unit_nodes", 0x0080e290u);
+    }
+    void clear_hud_slot() override {
+        owner_.record("SetControlledUnit::clear_hud_root_1c", 0x00645637u);
+    }
+    bool candidate_is_selectable() override { return selectable_; }
+    bool candidate_is_kind_1() override { return owner_.units->unit_is_kind_of(candidate_, 1); }
+    bool candidate_vtable_124() override {
+        return owner_.units->unit_is_kind_of(candidate_, 6)
+            && owner_.units->unit_alive_and_visible(candidate_);
+    }
+    void unregister_observer() override {
+        owner_.record("SetControlledUnit::unregister_observer", 0x006952a0u);
+    }
+    void register_observer() override {
+        owner_.record("SetControlledUnit::register_observer", 0x00694a60u);
+    }
+    void set_unit_controlled_audio(bool) override {
+        owner_.record("SetControlledUnit::controlled_audio", 0x00954990u);
+    }
+    void set_controlled_unit(bool candidate_present) override {
+        if (!candidate_present) {
+            // 004C0890(null): not reached from 00647300, whose 00645060 already
+            // accepted the same unit with the same arguments.
+            owner_.record("SetControlledUnit::clear_controlled_unit", 0x004c0890u);
+            return;
+        }
+        owner_.units->set_controlled_unit_004c0890(candidate_);
+    }
+    bool controlled_unit_present() override { return owner_.units->controlled_bound(); }
+    bool controlled_is_candidate() override {
+        return owner_.units->controlled_bound()
+            && owner_.units->controlled_index() == candidate_;
+    }
+    bool controlled_is_kind_5() override {
+        return owner_.units->controlled_bound()
+            && owner_.units->unit_is_kind_of(owner_.units->controlled_index(), 5);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+    std::size_t candidate_;
+    bool selectable_;
+};
+}  // namespace
+
+bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
+    Impl& impl = *impl_;
+    ++impl.select_calls;
+    if (impl.units == nullptr || unit >= impl.units->count()) {
+        // 00645082: a null unit is rejected by 00645060.
+        impl.log.notef("SetSelectedUnit 00647300: unit index %zu has no created unit; "
+            "00645060 rejects a null unit", unit);
+        return false;
+    }
+    const GameUnitRow* row = impl.units->unit_row(unit);
+    const std::string name = row != nullptr ? row->name : std::string("?");
+    const bsp::UnitSelectableInputs in = impl.selectable_inputs_00645060(unit);
+    const bool accepted = bsp::unit_is_selectable_00645060(in);        // 00647317
+    impl.done("SetSelectedUnit::selectable_00645060", 0x00645060u);
+    if (!accepted) {                                                  // 0064731E
+        impl.log.notef("SetSelectedUnit 00647300: \"%s\" rejected by 00645060 (alive=%d "
+            "party0=%d kind2=%d kind0F=%d kind2A=%d kind46=%d kind45=%d vt124=%d role=%d)",
+            name.c_str(), in.alive_5c ? 1 : 0, in.team_matches_owner ? 1 : 0,
+            in.is_kind_2 ? 1 : 0, in.is_kind_0f ? 1 : 0, in.is_kind_2a ? 1 : 0,
+            in.is_kind_46 ? 1 : 0, in.is_kind_45 ? 1 : 0, in.vtable_124_allows ? 1 : 0,
+            in.team_query_00927c50 ? 1 : 0);
+        return false;
+    }
+    ++impl.select_accepted;
+    const std::string before = impl.units->controlled_bound()
+        ? impl.units->unit_row(impl.units->controlled_index())->name : std::string("none");
+    SelectControlledUnitBinding binding(impl, unit, accepted);
+    const bsp::SelectControlledUnitResult result =
+        bsp::select_controlled_unit_00645600(true, binding);          // 00647323
+    impl.done("SetSelectedUnit::set_controlled_unit_00645600", 0x00645600u);
+    if (!impl.units->controlled_bound()) {                            // 00647328
+        // 00647331..0064734B: the manager idle, push 34h INTF_LIMBO. Not
+        // reachable after an accepted unit (the setter bound it).
+        impl.record("SetSelectedUnit::push_limbo_34h", 0x0064734bu);
+        return true;
+    }
+    // 00647040: 0059DA80 on [manager+54h] is a bare RET; 005251C0 on
+    // [manager+CCh] (a screen reset: +C0h, its vector, +D4h = -1 and two input
+    // context levels) is unread here and recorded.
+    impl.record("SetSelectedUnit::screen_reset_005251c0", 0x005251c0u);
+    // 0064705E..00647077: 004CC460(20h, [00E188D8]->vtable[140h]()). For a
+    // ship the slot is 0047F320, `MOV EAX,ECX`: the unit itself, which is the
+    // payload the host's classifier already reads (the controlled unit).
+    impl.unit_request_pending = true;
+    impl.unit_request_applied = false;
+    ++impl.select_pushes;
+    impl.done("SetSelectedUnit::push_interface_20h", 0x00647077u);
+    impl.log.notef("SetSelectedUnit 00647300: \"%s\" accepted by 00645060; 00645600 moved "
+        "00e188d8 from \"%s\" to \"%s\" (released_previous=%d refreshed_in_place=%d); "
+        "00647040 pushed interface 20h with the unit, serviced by the next 006840f0",
+        name.c_str(), before.c_str(), name.c_str(), result.released_previous ? 1 : 0,
+        result.refreshed_in_place ? 1 : 0);
+    return true;
 }
 
 void GameHudHost::update_minimap_screen_005c0f20(float seconds) {
@@ -2339,6 +2522,15 @@ public:
             forward[i] = world[8 + i];
             position[i] = world[12 + i];
         }
+        if (!owner_.pick_first_basis_logged) {
+            owner_.pick_first_basis_logged = true;
+            owner_.log.notef("unit pick: first camera basis from the published mover at hud "
+                "update frame %llu: from=(%.1f,%.1f,%.1f) forward=(%.4f,%.4f,%.4f)",
+                owner_.summary.update_frames, static_cast<double>(position[0]),
+                static_cast<double>(position[1]), static_cast<double>(position[2]),
+                static_cast<double>(forward[0]), static_cast<double>(forward[1]),
+                static_cast<double>(forward[2]));
+        }
     }
     bool ray_pick_009043a0(const float* from, const float* to, std::size_t ignore,
                            std::size_t& hit) override {
@@ -2821,6 +3013,10 @@ void GameHudHost::report() {
         impl.summary.pump_frames, impl.summary.update_frames,
         impl.summary.audio_environment.empty() ? "(none)"
                                                : impl.summary.audio_environment.c_str());
+    impl.log.notef("summary mission hud set selected unit (packet cc9_set_selected_unit, "
+        "008AB260 / 00647300): bound=%d calls=%llu accepted=%llu pushes_20h=%llu",
+        kSetSelectedUnitBound ? 1 : 0, impl.select_calls, impl.select_accepted,
+        impl.select_pushes);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is

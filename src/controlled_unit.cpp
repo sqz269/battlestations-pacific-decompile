@@ -56,8 +56,8 @@ bool unit_is_selectable_00645060(const UnitSelectableInputs& in) noexcept {
     if (!in.is_kind_2) {
         return false; // 006450D0
     }
-    if (!in.is_kind_0f) {
-        return false; // 006450DF
+    if (in.is_kind_0f) {
+        return false; // 006450DF JNZ: a plane is rejected
     }
     if (in.is_kind_2a) {
         return false; // 006450EE
@@ -84,8 +84,8 @@ bool unit_is_selectable_00645060(const UnitSelectableInputs& in) noexcept {
     if (!in.spectate_allowed) {
         return false; // 0064512C -> 0064513C, AL = 0
     }
-    if (in.team_is_local) {
-        return false; // 00645131, CMP [EBP+19h],AL with AL still 0 from the query
+    if (!in.team_is_local) {
+        return false; // 00645131 JZ: CMP [EBP+19h],AL with AL = 0, byte clear rejects
     }
     return in.spectate_kind != kUnitSpectateKindBlocked; // 00645133
 }
@@ -117,8 +117,10 @@ SelectControlledUnitResult select_controlled_unit_00645600(bool candidate_presen
 
     // 0064567B..0064568C: the republish when nothing is changing. The listing compares
     // the global against the filtered candidate and calls the setter on equality.
-    // Presence is all this reconstruction can compare; identity is the host's.
-    if (host.controlled_unit_present() == candidate) {
+    // Both null, or the global already is the candidate (identity, through the host).
+    const bool same = candidate ? host.controlled_is_candidate()
+                                : !host.controlled_unit_present();
+    if (same) {
         host.set_controlled_unit(candidate);
         result.refreshed_in_place = true;
     }

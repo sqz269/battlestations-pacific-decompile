@@ -127,14 +127,26 @@ struct UnitSelectableInputs {
     bool reject_60{false};        // unit+60h
     bool team_matches_owner{false}; // [unit+54h] == [team+28h]
     bool is_kind_2{false};
+    // A rejection, like 2Ah/46h/45h: 006450DF is JNZ to the AL=0 exit, so a
+    // plane is never selectable. Corrected 2026-09-27 (packet cc9_set_selected_unit);
+    // the first reconstruction required it.
     bool is_kind_0f{false};
     bool is_kind_2a{false};
     bool is_kind_46{false};
     bool is_kind_45{false};
-    bool vtable_124_allows{false}; // unit->vtable[124h]() at 00645110
-    bool team_query_00927c50{false}; // 00645121, with the team index in EDI
-    bool spectate_allowed{false};  // BL: the caller's flag, or 0 when game+2194h is set
-    bool team_is_local{false};     // [team+19h]
+    // unit->vtable[124h]() at 00645110. For a ship (vtable 00CFB738, slot 00CFB85C)
+    // it is 006D1EF0: +5Ch set and +5Dh, +60h, +5Eh clear.
+    bool vtable_124_allows{false};
+    // 00645121 00927C50(unit, teamIndex): any of the nine words unit+188h.. is 9
+    // or equals teamIndex (the role permission table SetRoleAvailable writes).
+    bool team_query_00927c50{false};
+    // BL: 0 when the game exists and game+2194h is CLEAR (0064507A), else the
+    // caller's flag. Corrected 2026-09-27: the first reconstruction said "set".
+    bool spectate_allowed{false};
+    // [team+19h]. 0064512E CMP [EBP+19h],AL with AL = 0, JZ reject: the spectator
+    // door needs the byte SET. Corrected 2026-09-27: the first reconstruction
+    // rejected when it was set.
+    bool team_is_local{false};
     int spectate_kind{0};          // [unit+188h]
 };
 
@@ -189,6 +201,10 @@ struct SelectControlledUnitHost {
 
     // The global read back after each setter call: DAT_00E188D8 != 0.
     virtual bool controlled_unit_present() = 0;
+    // 0064567B..00645681 CMP ECX,ESI: the global is the (non-null) candidate.
+    // Added 2026-09-27 (packet cc9_set_selected_unit): step 4 compares identity,
+    // not presence.
+    virtual bool controlled_is_candidate() = 0;
     // 006456AB / 006456E5: the global's trait 5 probe, guarding both audio calls.
     virtual bool controlled_is_kind_5() = 0;
 };
