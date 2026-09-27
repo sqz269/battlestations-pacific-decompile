@@ -71,7 +71,8 @@ inline constexpr bool kWingConstructionLuaBound = true;
 // slots +9Ch (007F4580, pass A) and +A4h (007F4BA0, pass C). When set, the
 // load walk marks a scene squadron's node a squadron, so passes A and C call
 // the units host's two hooks for it as for a route squadron.
-inline constexpr bool kLoadTimeSquadronHooksBound = false;
+// ON since the pairs (docs/SENTITY_INIT_ATTACH_ORDER.md 19.5).
+inline constexpr bool kLoadTimeSquadronHooksBound = true;
 
 class GameHostLog;
 class GameVfsHost;
