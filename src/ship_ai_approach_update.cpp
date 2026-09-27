@@ -1351,4 +1351,23 @@ ShipAiTorpedoStandoffResult ship_ai_torpedo_standoff_009f2ac9(
     return out;
 }
 
+ShipAiQueryGateBytes ship_ai_query_gate_bytes_009f2ac9(const ShipAiTorpedoStandoffInputs& in,
+                                                       ShipAiQueryGateHost& host) {
+    ShipAiQueryGateBytes out{};
+    if (!in.has_raw_target) {
+        out.aa_12b8 = host.director_aa_enable_0221();                  // 009F2E0F
+        out.artillery_12b9 = host.director_artillery_enable_0220();    // 009F2E29
+        out.depth_charge_12bb = host.director_depth_charge_enable_0223(); // 009F2E43
+        return out;
+    }
+    // 009F2ADF..009F2B04: the byte, then the group test only when it is set.
+    out.aa_12b8 = host.director_aa_enable_0221() && host.aa_group_accepts_008637d0();
+    out.artillery_12b9 = host.director_artillery_enable_0220() &&
+                         host.artillery_group_accepts_00863840(); // 009F2B18..009F2B3D
+    // 009F2B43..009F2B8A: the ship target first, then +223h, then the group.
+    out.depth_charge_12bb = in.has_ship_target && host.director_depth_charge_enable_0223() &&
+                            host.depth_charge_group_accepts_008638b0();
+    return out;
+}
+
 } // namespace bsp

@@ -200,6 +200,12 @@ struct GameShipAiRow {
     unsigned long long torpedo_standoff_frames{0};   // the block ran
     unsigned long long torpedo_standoff_enabled{0};  // it left +12BAh set
     unsigned long long torpedo_standoff_cap_gates{0}; // 009E731B with ready barrels > 0
+    // Packet cc9_torpedo_gate_bytes: frames 009F1BC0 filled the gate bytes, and
+    // how many left each set (+12B8h AA, +12B9h artillery, +12BBh depth charge).
+    unsigned long long query_gate_frames{0};
+    unsigned long long query_gate_aa{0};
+    unsigned long long query_gate_artillery{0};
+    unsigned long long query_gate_depth_charge{0};
     float torpedo_standoff_clearance_min{-1.0f};     // the smallest +12B4h left with +12BAh set
     float torpedo_standoff_clearance_last{-1.0f};
     // Packet cc8_ship_ai_firepower_inputs: how much of each 60-sample curve
@@ -468,6 +474,13 @@ struct GameShipAiSummary {
     unsigned long long torpedo_standoff_exits[9]{};
     unsigned long long torpedo_standoff_cap_tests{0};  // 009E731B reached (+12BAh, +12B4h > 0)
     unsigned long long torpedo_standoff_cap_gates{0};  // and 0080DF40 answered > 0
+    // Packet cc9_torpedo_gate_bytes: frames and set counts of the four gate
+    // bytes 009F1BC0 fills (+12BAh counted after the standoff block).
+    unsigned long long query_gate_frames{0};
+    unsigned long long query_gate_aa{0};
+    unsigned long long query_gate_artillery{0};
+    unsigned long long query_gate_torpedo{0};
+    unsigned long long query_gate_depth_charge{0};
     unsigned long long firepower_gate_stops{0}; // 0095EB6E, b[0] >= unit+494h
     unsigned long long firepower_mounts{0};     // gun list nodes 0095EB40 walked
     unsigned long long path_follower_points{0}; // 009E3C00 through the full follower

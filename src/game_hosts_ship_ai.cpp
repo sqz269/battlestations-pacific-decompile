@@ -942,6 +942,15 @@ struct GameShipAiHost::Impl {
     // Packet cc9_torpedo_standoff. [0080E160(unit)+222h]: the per-name table
     // the stance push reads (kShipDirectorEnablesBound), the constructor's 1
     // (007202FD) for a name without an entry.
+    // Packet cc9_torpedo_gate_bytes: all four director bytes +220h..+223h, the
+    // constructor's four 1s for a name without an entry.
+    SceneDirectorEnables director_enables_0220(std::size_t index) const {
+        const GameGunneryUnitRow* row = gunnery_unit_row(index);
+        if (row != nullptr) {
+            if (const SceneDirectorEnables* e = scene_director_enables_find(row->name)) return *e;
+        }
+        return SceneDirectorEnables{};
+    }
     bool director_torpedo_enable_0222(std::size_t index) const {
         const GameGunneryUnitRow* row = gunnery_unit_row(index);
         if (row == nullptr) return true;
@@ -1621,11 +1630,19 @@ struct GameShipAiHost::Impl {
         q.require_bearing = 1;   // 009E8171
         q.use_ready_rounds = 1;  // 009E8178
         // 009F2AE7 and the three beside it, from [0080E160(unit)+220h..+223h].
-        // No producer in this process; with all four clear nothing is rated.
-        q.allow_machine_gun = 1;
-        q.allow_artillery = 1;
-        q.allow_torpedo = 1;
-        q.allow_depth_charge = 1;
+        // Packet cc9_torpedo_gate_bytes: bound, the block's four bytes as
+        // 009F1BC0 left them and 009E8019 may have cleared +12BAh. Unbound: all 1.
+        if (bsp::kShipAiQueryGateBytesBound) {
+            q.allow_machine_gun = ctl.approach.allow_aa_12b8 ? 1 : 0;
+            q.allow_artillery = ctl.approach.allow_artillery_12b9 ? 1 : 0;
+            q.allow_torpedo = ctl.approach.clearance_valid_12ba ? 1 : 0;
+            q.allow_depth_charge = ctl.approach.allow_depth_charge_12bb ? 1 : 0;
+        } else {
+            q.allow_machine_gun = 1;
+            q.allow_artillery = 1;
+            q.allow_torpedo = 1;
+            q.allow_depth_charge = 1;
+        }
         if (kShipAiRingQueryBound) {
             // 009F2AB1's no-target divisor, then the target words if there is one.
             q.damage_threshold = 10000.0f;
@@ -3628,6 +3645,43 @@ private:
     std::size_t index_;
 };
 
+// Packet cc9_torpedo_gate_bytes (docs/SENTITY_INIT_PASSES.md section 10): the
+// calls 009F1BC0 makes for the gate bytes +12B8h, +12B9h and +12BBh.
+class QueryGateBinding final : public bsp::ShipAiQueryGateHost {
+public:
+    QueryGateBinding(GameShipAiHost::Impl& owner, std::size_t index, std::size_t target)
+        : owner_(owner), index_(index), target_(target) {}
+    bool director_artillery_enable_0220() override { return enables().artillery; }
+    bool director_aa_enable_0221() override { return enables().anti_air; }
+    bool director_depth_charge_enable_0223() override { return enables().depth_charge; }
+    bool aa_group_accepts_008637d0() override {
+        return group(bsp::kUnitGunneryAaGroupAddress, "ShipAiQueryGate::aa_group_008637d0",
+                     0x008637d0u);
+    }
+    bool artillery_group_accepts_00863840() override {
+        return group(bsp::kUnitGunneryArtilleryGroupAddress,
+                     "ShipAiQueryGate::artillery_group_00863840", 0x00863840u);
+    }
+    bool depth_charge_group_accepts_008638b0() override {
+        return group(bsp::kUnitGunneryDepthChargeGroupAddress,
+                     "ShipAiQueryGate::depth_charge_group_008638b0", 0x008638b0u);
+    }
+
+private:
+    SceneDirectorEnables enables() const { return owner_.director_enables_0220(index_); }
+    bool group(std::uint32_t list, const char* method, std::uint32_t address) {
+        if (owner_.gunnery == nullptr) {
+            owner_.record(method, address);
+            return false;
+        }
+        owner_.done(method, address);
+        return owner_.gunnery->group_accepts_target_008637d0(index_, list, target_);
+    }
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+    std::size_t target_;
+};
+
 // Packet cc9_torpedo_standoff (docs/SENTITY_INIT_PASSES.md section 9): the
 // calls 009F1BC0 makes in 009F2AC9..009F2E9B for the torpedo gate +12BAh and
 // the clearance +12B4h.
@@ -3657,6 +3711,12 @@ public:
             row->max_health > 0.0f);
     }
     bool torpedo_group_accepts_target_00863920() override {
+        if (bsp::kShipAiQueryGateBytesBound && owner_.gunnery != nullptr) {
+            // Packet cc9_torpedo_gate_bytes: the gunnery host's live pass state.
+            owner_.done("ShipAiTorpedoStandoff::torpedo_group_00863920", 0x00863920u);
+            return owner_.gunnery->group_accepts_target_008637d0(index_,
+                bsp::kUnitGunneryTorpedoGroupAddress, target_);
+        }
         return owner_.torpedo_group_accepts_target_00863920(index_, target_);
     }
     bool torpedo_projectile_00814350(bsp::ShipAiFirepowerProjectileClass& out) override {
@@ -3793,6 +3853,7 @@ public:
         // Packet cc9_torpedo_standoff: 009F2AC9..009F2E9B run before the two
         // refills below, so 00952530 at 009F2D98 samples last frame's curve.
         if (bsp::kTorpedoStandoffBound) run_torpedo_standoff();
+        if (bsp::kShipAiQueryGateBytesBound) run_query_gate_bytes();
         // 009F2F11 and 009F2FB1, the two 0095F080 refills of the curve objects
         // the standoff scan then samples. They sit in the span of 009F1BC0 the
         // projection does not cover, and the countdowns they re-arm are the
@@ -3961,6 +4022,35 @@ private:
         return owner_.target_block_1238h(index_);
     }
 
+    void run_query_gate_bytes() {
+        // Packet cc9_torpedo_gate_bytes: 009F2AD1..009F2B8A / 009F2DF7..009F2E43.
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        bsp::ShipAiTorpedoStandoffInputs in{};
+        in.has_raw_target = handle != 0u;
+        std::size_t target = owner_.units.count();
+        if (in.has_raw_target && handle - 1u < owner_.units.count()) {
+            target = static_cast<std::size_t>(handle - 1u);
+            in.has_ship_target = owner_.units.unit_is_kind_of(target, 6);
+        }
+        QueryGateBinding host(owner_, index_, target);
+        const bsp::ShipAiQueryGateBytes out = bsp::ship_ai_query_gate_bytes_009f2ac9(in, host);
+        ctl_.approach.allow_aa_12b8 = out.aa_12b8;
+        ctl_.approach.allow_artillery_12b9 = out.artillery_12b9;
+        ctl_.approach.allow_depth_charge_12bb = out.depth_charge_12bb;
+        owner_.done("ShipAiApproach::query_gate_bytes_009f2ac9", 0x009f2ae7u);
+        ++owner_.summary.query_gate_frames;
+        ++row_.query_gate_frames;
+        if (out.aa_12b8) { ++owner_.summary.query_gate_aa; ++row_.query_gate_aa; }
+        if (out.artillery_12b9) { ++owner_.summary.query_gate_artillery; ++row_.query_gate_artillery; }
+        if (ctl_.approach.clearance_valid_12ba) {
+            ++owner_.summary.query_gate_torpedo;
+        }
+        if (out.depth_charge_12bb) {
+            ++owner_.summary.query_gate_depth_charge;
+            ++row_.query_gate_depth_charge;
+        }
+    }
+
     void run_torpedo_standoff() {
         const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
         bsp::ShipAiTorpedoStandoffInputs in{};
@@ -4018,10 +4108,19 @@ private:
         // [0080E160(unit)+220h..+223h]. No producer in this process; with all
         // four clear 0095EBD7 skips every category and the rating is always
         // zero, so every category is allowed here. LABELLED SUBSTITUTION.
-        query.allow_machine_gun = 1;
-        query.allow_artillery = 1;
-        query.allow_torpedo = 1;
-        query.allow_depth_charge = 1;
+        if (bsp::kShipAiQueryGateBytesBound) {
+            // Packet cc9_torpedo_gate_bytes: the four bytes 009F1BC0 has just
+            // written, 009F2F11 runs after them in the same body.
+            query.allow_machine_gun = ctl_.approach.allow_aa_12b8 ? 1 : 0;
+            query.allow_artillery = ctl_.approach.allow_artillery_12b9 ? 1 : 0;
+            query.allow_torpedo = ctl_.approach.clearance_valid_12ba ? 1 : 0;
+            query.allow_depth_charge = ctl_.approach.allow_depth_charge_12bb ? 1 : 0;
+        } else {
+            query.allow_machine_gun = 1;
+            query.allow_artillery = 1;
+            query.allow_torpedo = 1;
+            query.allow_depth_charge = 1;
+        }
         if (kShipAiOwnCurveTargetBound) {
             // 009F2AB1: the no-target fire divisor is 10000.0f (00CE3D64), not 0.
             query.damage_threshold = 10000.0f;
@@ -4029,7 +4128,11 @@ private:
         } else {
             owner_.record("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
         }
-        owner_.record("ShipAiApproach::curve_query_allow_bytes", 0x009f2ae7u);
+        if (bsp::kShipAiQueryGateBytesBound) {
+            owner_.done("ShipAiApproach::curve_query_allow_bytes", 0x009f2ae7u);
+        } else {
+            owner_.record("ShipAiApproach::curve_query_allow_bytes", 0x009f2ae7u);
+        }
         FirepowerBinding firepower(owner_, index_);
 
         if (ctl_.approach.timer_1220 <= 0.0f) {
@@ -8532,6 +8635,18 @@ void GameShipAiHost::report() {
             host.summary.torpedo_standoff_frames, e[0], e[1], e[2], e[3], e[4], e[5], e[6],
             e[7], e[8], host.summary.torpedo_standoff_cap_tests,
             host.summary.torpedo_standoff_cap_gates, bsp::kTorpedoStandoffBound ? 1 : 0);
+        host.log.notef("summary mission ship ai query gates frames=%llu aa=%llu artillery=%llu "
+            "torpedo=%llu depth_charge=%llu bound=%d (009f2ae7..009f2e43, packet "
+            "cc9_torpedo_gate_bytes)",
+            host.summary.query_gate_frames, host.summary.query_gate_aa,
+            host.summary.query_gate_artillery, host.summary.query_gate_torpedo,
+            host.summary.query_gate_depth_charge, bsp::kShipAiQueryGateBytesBound ? 1 : 0);
+        for (const GameShipAiRow& row : host.rows) {
+            if (row.query_gate_frames == 0) continue;
+            host.log.notef("  query gates %-20s frames=%llu aa=%llu artillery=%llu depth_charge=%llu",
+                row.unit.c_str(), row.query_gate_frames, row.query_gate_aa,
+                row.query_gate_artillery, row.query_gate_depth_charge);
+        }
         for (const GameShipAiRow& row : host.rows) {
             if (row.torpedo_standoff_enabled == 0 && row.torpedo_standoff_cap_gates == 0) continue;
             host.log.notef("  torpedo standoff %-20s frames=%llu enabled=%llu cap_gates=%llu "
