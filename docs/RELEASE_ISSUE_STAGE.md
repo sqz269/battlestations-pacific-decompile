@@ -269,3 +269,50 @@ image refuses them, by the stage's death guard. Every behaviour row is identical
 run-time evidenced:** the live Val's issue, rack drop, roll curve and the one-round consequence.
 No mission in this tree currently has a live Val release. The first mission that does is the
 test, and it should show one bomb per Val where OFF spawned two from a two-round glide.
+
+## Carried rounds (packet cc9_dive_bomb_carried_rounds)
+
+2026-09-26. Switch `kDiveBombCarriedRoundsBound`, committed OFF with the predictions below.
+
+**What the image reads.** `007C1DB0` `BSP_Unit_CountRemainingOrdnanceRounds` walks unit+48h and
+sums `006E3500` over every child answering `IsKindOf(25h)`. `006E3500` is `vtable[21Ch](2Ah)`,
+the loaded round, plus ammo +484h. Its callers are the aimglide enter `009C4F00` and tick
+`009C5180`, the HUD's unit rows `00648C20`, `00609BD0` and `009A3290`. For a D3A the value is 1
+until the rack drops its round and 0 after. The spend at the request (`approach+2Ch`, the host's
+`spend_round`) is the task's own latched count, not this one.
+
+**The authored count.** This installation's `scripts/datatables/autoload/vehicleclasses.lua`
+(modified 2026-05-09 21:52) gives `VehicleClass[158]` "D3A Val" one equipment,
+`Equipments[1][50] = { Ammo = 1, Platform = 87, ReloadTime = 60 }`, and `DefaultEquipment = 1`.
+Platform 50 mounts device class 87, a single `BombPlatform`. The equipment reader is `00961F57`
+(`docs/VEHICLE_CLASS_FIELDS.md`). The step from the equipment's `Ammo` to the rack's setter
+`006E3530` was not read, so it is an assumption.
+
+**The binding.** ON, the census adds each single rack's authored `Ammo` (through its platform
+key `p<n>_key`) into `rack_rounds_authored`. `dive_bomb_rounds_remaining` returns it until the
+issue's first check. After that it returns the rack's ammo, which only the rack drop spends. The
+issue's first check seeds the rack's ammo with the same number, and `007C1F60`'s rounds and
+`007B9140`'s holds-2Ah read it too. An aircraft with no single rack or no authored `Ammo` keeps
+the substitute 2. **Assumption:** the aircraft carries its `DefaultEquipment`.
+
+The glide's travel seed does not move: max((rounds − 1) × 0.07 × approach+A4h, 5.0) is 5.0 for
+both 1 and 2 rounds.
+
+### Predictions (written before the runs)
+
+Same-tree pairs `local\cr_off` against `local\cr_on`, the switch only, streams and death table
+on, one run at a time. On main, the only Val releases on both missions come from three dead Vals.
+#1.1|.-4 made a two-round glide at 128.10 s. #1.1|.-2 (129.60 s) and #5.1|.-2 (205.66 s) each
+made a one-round aimdive release.
+
+| row | USN04 9200/9000 | USN04 4700/4500 |
+| --- | --- | --- |
+| census | every D3A `authored=1` on both sides (the line prints in both builds) | same |
+| #1.1\|.-4's glide at 128.10 s | `rounds=2` -> `rounds=1`: the second glide request goes; `deferred` 2 -> 1, `C20h` 2 -> 1 at the first release | same |
+| #1.1\|.-4 afterwards | OFF its count reaches 0 and approach+D1h drops, so the task goes to `done` (18 ticks). ON its count stays 1, because a dead aircraft's rack never drops, so D1h stays set: its state counts move, and it may request again | same |
+| #1.1\|.-2 and #5.1\|.-2 | identical: one-round aimdive requests at the same times | same |
+| `Plane::release_spawn_deferred_to_rack` | 9 -> 8, plus any new request by #1.1\|.-4 | same |
+| live Val rows, bombs spawned | identical; 0 bombs on both | same |
+| deaths | the same victims; times identical, unless #1.1\|.-4's own flight moves | same |
+| hit records | ± 40 | ± 40 |
+| the Lexington's movement line | identical | identical |
