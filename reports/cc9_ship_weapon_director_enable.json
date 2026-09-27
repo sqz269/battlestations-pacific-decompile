@@ -1,0 +1,119 @@
+{
+  "packet": "cc9_ship_weapon_director_enable",
+  "doc": "docs/SENTITY_INIT_PASSES.md",
+  "calls": [
+    {
+      "address": "00823A9F",
+      "native": "007214C0",
+      "note": "pass B builds the director state message"
+    },
+    {
+      "address": "00823B6B",
+      "native": "00D09F58+vtable3C",
+      "note": "controller vt[3Ch] 00835690 -> message slot 8h 007219C0"
+    },
+    {
+      "address": "007219CA",
+      "native": "00721890",
+      "function": "007219C0",
+      "note": "inbound base, clears the command slots"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "007214C0",
+      "coverage": "complete"
+    },
+    {
+      "routine": "007219C0",
+      "coverage": "partial: the enable and +240h stores; the +47h..+4Ch tail unread"
+    },
+    {
+      "routine": "00822C20 director arm",
+      "coverage": "partial: 008238F0..00823B6B"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "the controller's +220h..+223h after pass B",
+      "is": "read from the scene host's per-name table at each stance push",
+      "evidence": "the values never change after pass B on these missions"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "the host's ship director starts with all four enables set (007202FD) and nothing moves them",
+      "is": "pass B sets them from the bag; this installation's ship.props defaults TorpedoDirector to false",
+      "evidence": "008238F0..008239A3, 00823AEA..00823B1C, 007219DB..007219ED"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kShipDirectorEnablesBound",
+      "state": "OFF",
+      "pair": "local/wd_off_usn02.log vs local/wd_on_usn02.log (exit 3, gameplay moved), local/wd_off_e2.log vs local/wd_on_e2.log (exit 1) (local/wd_off EE0CB4008F2E, local/wd_on 88CF702DD4A6)"
+    }
+  ],
+  "pair_diff": {
+    "usn02": [
+      "GAMEPLAY: MOVED",
+      "* deaths                                 20                                       19",
+      "* hit records                            329                                      529",
+      "* hull hits                              167                                      264",
+      "* damage                                 59663.8                                  29803.7",
+      "* shots                                  807                                      779",
+      "* first hit                              30.25 s                                  37.75 s",
+      "  torpedo-task releases                                                           ",
+      "  dive-bomb-task releases                                                         ",
+      "  torpedo drops                          0                                        0",
+      "  plane water contacts                                                            ",
+      "* controlled moved                       DeRuyter 316.14                          DeRuyter 1603.01",
+      "  units                                  32                                       32",
+      "* mission end                            failed at 39.65 s (Mission.EndMission) text=\"Game Over\" e... none (Mission.EndMission never true)",
+      "* host methods concrete/unimplemented    980 / 519                                967 / 510",
+      "DEATH ROWS: 20 -> 19 rows, 8 only ON, 9 only OFF, 11 changed"
+    ],
+    "e2": [
+      "GAMEPLAY: identical",
+      "  deaths                                 52                                       52",
+      "  hit records                            875                                      875",
+      "  hull hits                              345                                      345",
+      "  damage                                 13618.3                                  13618.3",
+      "  shots                                  6092                                     6092",
+      "  first hit                              93.00 s                                  93.00 s",
+      "  torpedo-task releases                  4 of 16                                  4 of 16",
+      "  dive-bomb-task releases                1 of 19                                  1 of 19",
+      "  torpedo drops                          1                                        1",
+      "  plane water contacts                   19                                       19",
+      "  controlled moved                       Lexington-class01 6017.22                Lexington-class01 6017.22",
+      "  units                                  81                                       81",
+      "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+      "* host methods concrete/unimplemented    1043 / 548                               1044 / 548",
+      "DEATH ROWS: identical (52 rows)",
+      "PLANE DEATH MODES: identical (52 rows)",
+      "UNIT TABLE: identical (81 rows)"
+    ]
+  },
+  "failed_predictions": [
+    {
+      "row": "USN02 deaths",
+      "predicted": "5..16",
+      "measured": "19",
+      "why": "the longer battle trades more gunfire; the dead flip sides"
+    },
+    {
+      "row": "USN02 hit records",
+      "predicted": "down, 150..329",
+      "measured": "529",
+      "why": "the battle lasts longer without the early torpedo kills"
+    },
+    {
+      "row": "USN02 shots",
+      "predicted": "350..700",
+      "measured": "779",
+      "why": "gyro launches are not counted one-for-one as shots"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

@@ -309,3 +309,95 @@ killer_cat=7`, a torpedo).
 - **Identity on every gameplay row:** 52 deaths, 875 hit records, 6,092 shots. Only the census
   pushes and the native row differ.
 
+### The pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `453041b29`, which is main `bb6a76f67`
+  plus this packet), built twice with only the switch flipped:
+  - `local\wd_off`, SHA-256 prefix `EE0CB4008F2E`;
+  - `local\wd_on`, SHA-256 prefix `88CF702DD4A6`.
+- **Logs.** `local\wd_{off,on}_{usn02,e2}.log`, each with the 1600x900 override and its own
+  module directory.
+
+**`tools/pair_diff.py`, USN02 9200/9000: exit 3, gameplay moved.**
+
+```
+GAMEPLAY: MOVED
+* deaths                                 20                                       19
+* hit records                            329                                      529
+* hull hits                              167                                      264
+* damage                                 59663.8                                  29803.7
+* shots                                  807                                      779
+* first hit                              30.25 s                                  37.75 s
+  torpedo-task releases                                                           
+  dive-bomb-task releases                                                         
+  torpedo drops                          0                                        0
+  plane water contacts                                                            
+* controlled moved                       DeRuyter 316.14                          DeRuyter 1603.01
+  units                                  32                                       32
+* mission end                            failed at 39.65 s (Mission.EndMission) text="Game Over" e... none (Mission.EndMission never true)
+* host methods concrete/unimplemented    980 / 519                                967 / 510
+DEATH ROWS: 20 -> 19 rows, 8 only ON, 9 only OFF, 11 changed
+```
+
+- **Torpedoes.** Gyro launches go from 314 to 0 (`torpedo_disabled_pushes=4383`). No death is
+  `killer_cat=7`: the ON causes are category 2 (3), 3 (10) and 6 (6).
+- **DeRuyter** now dies at 151.95 s (Yudachi, category 6), not at 30.25 s (Jintsu, category 7).
+  The 39.65 s `Game Over` does not happen: mission end is `none`.
+- **The dead flip sides.**
+  - OFF only: Exeter, Houston, Alden, John1, Perth, Witte, John2, Jupiter and Encounter survive ON.
+  - ON only: Minegumo, Harusame, Haguro, Tokitsukaze, Jintsu, Hatsukaze, Amatsukaze and Yukikaze
+    die.
+  - Eleven other death rows move in time and killer.
+
+**`tools/pair_diff.py`, E2 = USN04 9200/9000: exit 1, gameplay identical.**
+
+```
+GAMEPLAY: identical
+  deaths                                 52                                       52
+  hit records                            875                                      875
+  hull hits                              345                                      345
+  damage                                 13618.3                                  13618.3
+  shots                                  6092                                     6092
+  first hit                              93.00 s                                  93.00 s
+  torpedo-task releases                  4 of 16                                  4 of 16
+  dive-bomb-task releases                1 of 19                                  1 of 19
+  torpedo drops                          1                                        1
+  plane water contacts                   19                                       19
+  controlled moved                       Lexington-class01 6017.22                Lexington-class01 6017.22
+  units                                  81                                       81
+  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)
+* host methods concrete/unimplemented    1043 / 548                               1044 / 548
+DEATH ROWS: identical (52 rows)
+PLANE DEATH MODES: identical (52 rows)
+UNIT TABLE: identical (81 rows)
+```
+
+The E2 census reads `torpedo_disabled_pushes=3960`. No ship there launched before either.
+
+**Predictions against the measurement (USN02):**
+
+| row | predicted | measured | held |
+| --- | --- | --- | --- |
+| torpedo launches | 0 | 0 | yes |
+| category-7 deaths | 0 | 0 | yes |
+| DeRuyter / mission end | survives 30.25 s, no 39.65 s fail | dies 151.95 s, end `none` | yes |
+| deaths | down, 5..16 | 20 -> 19 | direction yes, band **no** |
+| hit records | down, 150..329 | 329 -> 529 | **no** (up) |
+| shots | down, 350..700 | 807 -> 779 | band **no** |
+
+Why the hit records rose: without the early torpedo kills the battle lasts longer, and both
+fleets trade more gunfire. Why shots barely moved: the 314 launches are gyro launches, not 314
+separate shots in the shot counter.
+
+**Verdict: stays OFF, with the read that gates it named.**
+- The reading holds for the director's automatic fire: pass B's message sets `+222h` from
+  `TorpedoDirector`, 007219C0 stores it, and 008624C0 masks category 7 on it.
+- **What is not read** is whether a ship's torpedoes in the image are fired only by that masked
+  pass. The ship AI's attack orders, the torpedo-attack arm of the command step 00836920, and
+  009F1BC0's per-pass cache could launch torpedoes past the mask.
+- If they do, this switch removes torpedo attacks the image makes. The Java Sea is a mission where
+  the enemy's torpedo attack is the scenario.
+- **Next packet:** read the ship-side torpedo launch paths in the image against the category mask
+  (00861D70's mask word, its readers, and the command step's torpedo arm). Flip only if no path
+  bypasses the mask.
+

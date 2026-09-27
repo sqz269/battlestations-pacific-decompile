@@ -1403,3 +1403,49 @@ alone.
 - `004D0EE0`'s effect names, the cloud block and the remap textures are all
   consumer-side reads; the `.scn` keys behind `record+C24h..CB0h` remain unknown
   (inherited from `docs/MISSION_SCENE_CONTENTS.md`).
+
+## 9. Handoff: cc9-scene-entities retires after this segment (2026-09-27)
+
+Worker cc9-scene-entities, successor of cc9-gunnery2. Every switch below was measured by
+same-tree pairs with `tools/pair_diff.py`.
+
+**Landed ON:**
+
+| switch | file | doc |
+| --- | --- | --- |
+| `kScenePathLandscapeCreatorsBound` | `include/bsp/game_hosts_scene_contents.hpp` | this doc, section 5 |
+| `kSceneLandscapeTerrainBound` | same | section 6 (heightmaps, the four ground queries) |
+| `kLandscapeSpatialAttachBound` | `src/game_hosts_gunnery.cpp` | section 8 |
+| `kDeathRouteDestroyBound` | `include/bsp/game_hosts_gunnery.hpp` | `docs/CONSTRUCT_WORLD.md` section 22 |
+
+**Committed OFF:** `kShipDirectorEnablesBound` (`include/bsp/game_hosts_gunnery.hpp`,
+`docs/SENTITY_INIT_PASSES.md` section 7).
+- It moves USN02 hard: 314 -> 0 ship torpedo launches, and the mission no longer fails at 39.65 s.
+- The flip waits for one read: whether any image path launches a ship's torpedoes past the
+  category-7 mask. The candidates are the command step 00836920's torpedo arm, the ship AI's
+  attack orders and 009F1BC0.
+
+**Open items, in the order I would take them:**
+1. **The torpedo-mask read above.** Then flip `kShipDirectorEnablesBound`, or bind the bypass
+   path.
+2. **The units host's ground-height hunks** (section 7, cc9-plane-release):
+   - the torpedo aim's `ground_height_00903860` should call the scene query, which answers -1000
+     at sea;
+   - the approach probe's `segment_blocked_00903bc0` should drop the water-surface stand-in.
+   - Put a blocked-probe counter in first.
+3. **The movie camera** (`docs/HUD_PICK_SEGMENT_QUERY.md` 7.1): `MovCamNew_AddPosition`'s
+   keyframe mover. It is what the pick ray casts from on an airfield mission. Until it exists,
+   USN01's pick ray is (0,0,0) -> (0,0,0).
+4. **The quadtree segment walk** 00ADA240 -> 00AEA2B0 / 00AE9D80 / 00AECC40. Today it is a
+   labelled half-cell march in `landscape_entry_segment_hit`. The open question is whether it
+   reports a segment that starts below the surface.
+5. **The rotation question.** The ground query samples a rotated island unrotated (section 6), and
+   the renderer's use of the frame is unread.
+6. **Reference d** (`docs/GAME_EXECUTABLE.md`, the protocol of 2026-09-26 c), when the lead
+   confirms the in-flight landings.
+
+**Tools kept in this worktree's `local\`** (not committed):
+- `rot_probe.py` with `tdt.py`: a Python `.tdt` reader and the zone-point rotation probe;
+- the `cc9-scene-entities_*.py` edit scripts;
+- the `*_runs.ps1` pair runners.
+
