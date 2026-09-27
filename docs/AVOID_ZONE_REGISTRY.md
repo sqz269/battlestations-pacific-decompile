@@ -262,3 +262,35 @@ Same-tree pairs `local\uc_off` against `local\uc_on`, the switch only, streams o
 | `squadron world list 24 push` lines | ON only, 21, the first at mission start for the scene squadrons and the rest at each launch | none |
 | natives | ON: `PlaneSquadron::register_in_world_lists_007f10b0` 21, `PlaneStep::height_rate_9b8_007ce92a` concrete; `UnitList::push_back` + 21 | identical |
 | gameplay | identical: the proximity scan, the only list-24 reader, is not bound on this tree (`WarningManager::scan_proximity` UNIMPLEMENTED), and nothing reads unit+9B8h | identical |
+
+### The pairs, measured
+
+The logs of record are `local\UC3_OFF_4500.log` / `UC3_ON_4500.log` and `UC3_OFF_USN02.log` /
+`UC3_ON_USN02.log` in worktree cc9-plane-release, from `b8eac497e` with the switch only and
+streams on. All four show the 1600x900 line, a module directory in that tree and the final COM
+release.
+
+Two earlier pairs are superseded by these:
+- The pair from `a7bb64b93` (`UC_*`) and the pair from `c374fb619` (`UC2_*`) both printed
+  `with_parts>1=0` for every ship.
+- The Lua chunk that counts `Damage.Sections` is about 270 bytes, and it was formatted into a
+  256-byte buffer, so it never compiled. `b8eac497e` fixes the buffer.
+- Their list-24 and 9B8h rows equal the rows below.
+
+| row | USN04 4500 OFF -> ON | USN02 9000 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| list 24 | 0 -> 21 (`lists{... 24=21}`); `UnitList::push_back` 486 -> 507 | 0 -> 0 (no squadron) | 21 / 0 | held |
+| push times | movieval at 0.00 s; the first eight strike squadrons at 25.10-26.75 s (their launches); the four US CAP squadrons at 27.05 and 30.05 s; the second wave at 105.05-106.55 s | - | at creation, launches for the strikes | held |
+| 9B8h | writes 0 -> 163,705, range [−228.74, 71.53] | 0 -> 0 | 100,000-183,221, within ±400 | held |
+| `list6` / `with_parts>1` | 18 / 18 on both sides | 32 / 32 on both sides | printed identically | held. It answers the scan's stand-in: every list-6 ship carries more than one part |
+| natives | `PlaneSquadron::register_in_world_lists_007f10b0` 21, `PlaneStep::height_rate_9b8_007ce92a` 163,705, concrete | identical | as written | held |
+| gameplay | identical: deaths, hits, releases, every per-entity and gunnery row | identical | identical | held |
+
+The only other diff lines are the ignored refill counter, the harness slot lines, and on USN02
+one pre-window sound-startup count (`fmod_calls` 131 against 132). That count is taken before the
+window and the mission exist, so the switch cannot reach it.
+
+**Verdict: `kUnitsContractsBound` ON.** List 24 answers as the image fills it, the part count
+answers from the class data, and unit+9B8h is stored. None of them has a reader on this tree
+until the proximity scan's consumer side is bound to `unit_part_descriptor_count` and
+`squadron_list_24_leader`.
