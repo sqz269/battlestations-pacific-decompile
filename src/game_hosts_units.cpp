@@ -1931,7 +1931,7 @@ struct GameUnitsHost::Impl {
             "for _, v in pairs(d.Sections) do n = n + 1 end\n"
             "return n\n", class_id);
         const int top = lua.lua_gettop();
-        int value = -1;
+        int value = -2;   // -2: the chunk did not run; -1: no class row
         if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
                                 "bsp_damage_sections") == 0 &&
             lua.lua_pcall(0, 1, 0) == 0) {
@@ -3376,6 +3376,7 @@ struct GameUnitsHost::Impl {
     std::vector<unsigned char> squadron_list24_pushed;
     int squadron_list24_pushes = 0;
     std::map<int, int> part_count_cache;
+    std::size_t part_count_primed = 0;
     // Diagnostic census of both heights at every sample, in both builds.
     unsigned long long az_samples = 0;
     unsigned long long az_samples_layer_nonzero = 0;
@@ -7309,6 +7310,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
     if constexpr (Impl::kUnitsContractsBound) host.sync_squadron_world_list_24();
+    // Packet cc9_units_contracts: read each class's Damage.Sections count while
+    // the class tables are live (the end-of-mission census found them gone).
+    while (host.part_count_primed < host.slots.size()) {
+        host.damage_section_count(host.slots[host.part_count_primed]->row.type_id);
+        ++host.part_count_primed;
+    }
     if (!host.logged_precision) {
         // The second half of docs/X87_CONTROL_WORD.md's read, taken where that
         // document says it matters: the fixed step that runs the reconstruction
