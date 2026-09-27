@@ -8833,6 +8833,16 @@ bool GameGunneryHost::run_recon_pass_at_scene_load_004e059b() {
     return true;
 }
 
+bool GameGunneryHost::force_recon_refresh_00807a50() {
+    // 00807A50..00807A6B: [00F874B8] = [00D08E6C] (-1.0e-4f), then
+    // 008079B0(0.0f): the countdown is not positive, so it reloads by the
+    // period and runs 008073C0 at once.
+    if (impl_->units.count() == 0) return false;
+    impl_->recon_refresh_timer = -1.0e-4f;
+    impl_->step_recon_sensor_pass_008073c0(0.0f);
+    return true;
+}
+
 bool GameGunneryHost::reseed_shared_stream_00bd2fd0(int stream, std::uint32_t seed) {
     if (stream != 1) return false;   // stream 0: no generator in this host
     impl_->rng = seed;               // SUBSTITUTION: the LCG stand-in's state

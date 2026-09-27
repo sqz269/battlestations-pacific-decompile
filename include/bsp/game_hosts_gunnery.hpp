@@ -692,6 +692,12 @@ public:
     // this host's pass covers every side at once, not only the local slot.
     // Returns false when no unit is registered (the pass has nothing to scan).
     bool run_recon_pass_at_scene_load_004e059b();
+    // Packet cc9_recon_level_table: 00807A50 BSP_Recon_ForceRefreshNow, the
+    // whole body of the Lua native ForceRecon (008AADF0). It stores
+    // -1.0e-4f (00D08E6C) into the countdown [00F874B8] and runs 008079B0
+    // with a zero step, so the pass runs now and the countdown comes back
+    // just under the full period. Returns false with no unit registered.
+    bool force_recon_refresh_00807a50();
 
     // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md section 4): 0098ADD0
     // over this host's units, as 009043A0 calls it with kind filter 0. `exclude`

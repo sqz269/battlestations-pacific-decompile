@@ -202,3 +202,104 @@ The ship AI's goal-vector path does not run on USN01 (`ring_scans=0`, `firepower
 | `recon_slot_object` | `008073C0`, `00806B10` | This driver walks sides because the process builds no recon slot object, and it folds the drain per target. A slot object would let the drain run once at `00807634` as `00807615` flattens, and would carry slot+2Ch per slot instead of one host-wide stamp |
 | `recon_forced_detection` | `00806883` | det+10h, the forced arm the pass skips the sensor test for. No producer in this process sets it, so `targets_skipped_forced` is 0 in both runs |
 | `vehicle_class_number_reader` | `009623A9` | Landed for `ReconModifier`. `src/vehicle_class_fields.cpp` lists other float fields at sibling offsets that `GameVehicleClassRow` does not carry; the reader now exists for them |
+
+## The reconlevel table (packet cc9_recon_level_table)
+
+The switch `kReconLevelTableBound` in `include/bsp/game_hosts_script_orders.hpp` is committed OFF,
+with these predictions, before any run.
+
+### What the image does
+
+**Creation, `0077FAD0`.** This is a unit vtable method, found by a rel32 and absolute-dword scan:
+- Calls come from `006FE823`, `006FF733`, `00742C2E`, `007F4BBD` and `0087BF9E`.
+- It sits in 12 vtables, from `00CEA2BC` to `00D0D1D4`.
+- If the property holder at `unit+C0h` is null or not kind 3 (`0077FBF9`..`0077FC0B`), it runs
+  `0077FD9C`..`0077FDF1`. That code builds the literal `reconlevel` (`00D03DA0`) and takes the
+  unit's Lua self table (`00927B40`). It then calls `00B67580 BSP_LuaObject_SetNewTable`, so
+  `thisTable[id].reconlevel = {}`.
+
+**Writes, `0077B0C0`.** This is `__thiscall(this = unit+1E4h, int party, int old_level, int
+new_level)`, `RET 0Ch`. Its body is **`0077B0C0`-`0077B27E`**, inclusive (the `RET 0Ch` is at
+`0077B27C`). **It has no Ghidra function.**
+- It sits at slot 0 of the `+1E4h` sub-object's vtable, in about 40 vtables (for example
+  `00CF9080`), and nothing calls it by rel32.
+- `00805AF0 BSP_Recon_AccumulateDetection` is the caller.
+  - At `00805B6A`..`00805B73` it stores the new level (0 below 0.25, 1 below 0.5, else 2) at
+    record `+4h`.
+  - At `00805B98`..`00805BD8` it compares the effective level with the previous one. The effective
+    level is `+8h` when the force byte `+10h` is set, else `+4h`.
+  - On a change it calls `[record+2Ch]->vtable[0](party = record+30h, old, new)`.
+- The body does this:
+  1. It calls `00803BA0 BSP_Recon_MarkSlotDirty(party)`.
+  2. Unless the mode word `[00E188A8]+1FE4h` is 2, it indexes `reconlevel` through `00B67800` and
+     calls `00B665D0(party, new)`. That is two `lua_pushnumber` calls and a `lua_settable`, so
+     `reconlevel[party] = new`, with a number key and a number value.
+  3. It calls `00980E50(party, unit, old, new)` with `ECX = [00F8A0C4]`.
+  4. It updates `unit+2F8h`, `+2FCh` and `+300h` for the local party (`0077B20E`..`0077B265`).
+- A record starts at level 0 (`00805BE0`). So `reconlevel[party]` stays nil until that party first
+  detects the unit. It is never written as 0 unless the level falls back after a detection.
+- An own unit is refreshed by `008065B0` with `+1` each pass. It therefore reads 2 from the first
+  pass.
+
+**`ForceRecon`, `008AADF0`.** It only calls `00807A50 BSP_Recon_ForceRefreshNow`: the countdown is
+set to -1.0e-4, then `008079B0(0)` runs the pass at once.
+
+**The level-to-integer mapping** is the record's own int: 0 none, 1 blip, 2 identified. It is the
+same as `bsp::ReconDetectionLevel`, and the party key is `unit+54h`. The scripts use `PARTY_ALLIED
+= 0`, `PARTY_JAPANESE = 1` and `PARTY_NEUTRAL = 2` (`scripts/global/luamw_init.lua:73..75`).
+
+### The binding
+
+- **`GameGunneryHost::force_recon_refresh_00807a50`** sets the refresh timer to -1.0e-4 and steps
+  the periodic service with 0.
+- **`GameScriptOrdersHost::sync_recon_level_tables_0077b0c0`** creates `reconlevel = {}` on each
+  unit's `thisTable` entry that lacks one. It then writes `reconlevel[side] = level` for every
+  covered side whose level changed since the last write. The level is 2 for the unit's own side
+  (0 once dead), and otherwise `recon_pass.level(side, unit)`. It runs:
+  - at every native dispatch after a new pass;
+  - at the start of every think pass;
+  - inside `ForceRecon`, right after the forced pass.
+- **`ForceRecon` is bound** under the same switch.
+
+**Labelled substitutions:**
+- The tables and writes happen at the host's sync points, not inside the pass or at unit init.
+  Nothing reads a table between a pass and the next sync.
+- Forced levels (`SetForcedReconLevel`) are not modelled.
+- `0077B0C0`'s `MarkSlotDirty`, its `00980E50` notify and its `+2F8h`/`+2FCh`/`+300h` stores are
+  not modelled.
+- Every host unit with a `thisTable` entry gets a table, because no host unit has a kind-3 holder.
+- Only sides the host pass covers are written.
+
+### Predictions, before any run
+
+**LOMP06 1200/1000:**
+- **The six failures at `:531` go to 0.**
+- `SubC1Attack` runs `ForceRecon` (6 calls or more), then reads `Mission.PlayerUnit.reconlevel[1]`.
+  That is nil unless a Japanese observer has detected Narwhal. I expect nil: a periscope-depth boat
+  that nothing has raised.
+- `isVisible == 0` is false either way. The function goes on to the escort loop, where Yugiri (the
+  first Fubuki-class `Destroyer` in `Mission.Escorts`) is set as `Mission.Attacker`:
+  - `IsInFormation` has no host and answers nil, so `LeaveFormation` is not called;
+  - `SetShipSpeed(unit, 20)` has no host;
+  - `NavigatorAttackMove(Yugiri, Narwhal, {})` is bound, so **exactly one NavigatorAttackMove call**
+    is made.
+- `luaControlStages` then re-arms every second (about 20 frames), so the timers run about 19
+  times instead of 6.
+- **Gameplay is expected to move (exit 3):**
+  - Yugiri takes the attack order;
+  - each `ForceRecon` resets the pass's accumulation interval, so the recon levels and the gunnery
+    contacts can move.
+  If Yugiri's order is not applied by the host, only the recon cadence can move it.
+
+**USN02 9200/9000 and USN04 4700/4500: identical (exit 0 or 1)** apart from the new summary line.
+- Every unit table gains `reconlevel`.
+- No script those missions load reads it:
+  - `reconlevel` appears only in commandhelpers' `luaGetReconLevel`, chg_7, jm04 and LOMP06;
+  - `luaGetReconLevel` is reached through messagesender's `ReconCheck`, which neither
+    usn_2_java.lua nor usn_19_coralus.lua sets.
+- No `ForceRecon` call.
+
+**A risk for later packets, not these three:** `luaGetReconLevel` does
+`ent.reconlevel = GetProperty(ent, "reconlevel")`. The host's GetProperty (`0088BF80`, in
+game_hosts_lua) does not serve `reconlevel`, so that line overwrites the table with nil. The image's
+reader `00779BB0` walks the three records (`00779B28`). That needs its own packet in the Lua host.

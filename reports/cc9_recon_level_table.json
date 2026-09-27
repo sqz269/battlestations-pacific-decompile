@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_recon_level_table",
+  "doc": "docs/RECON_SENSOR_PASS_BINDING.md, The reconlevel table",
+  "switch": "kReconLevelTableBound (include/bsp/game_hosts_script_orders.hpp)",
+  "addresses": {
+    "0077FAD0": "unit vtable method (12 vtables; rel32 callers 006FE823, 006FF733, 00742C2E, 007F4BBD, 0087BF9E): 0077FD9C..0077FDF1 thisTable[id].reconlevel = {} via 00927B40 / 00B67580 unless the +C0h holder is kind 3",
+    "0077B0C0": "+1E4h sub-object vtable slot 0 (~40 vtables, no rel32 caller): __thiscall(party, old, new), RET 0Ch; 00803BA0, then unless [00E188A8]+1FE4h == 2 reconlevel[party] = new via 00B67800 / 00B665D0, then 00980E50, then +2F8h/+2FCh/+300h for the local party",
+    "00805AF0": "caller: 00805B98..00805BD8 compares the effective level (+8h when +10h set, else +4h) and calls [record+2Ch]->vtable[0](record+30h, old, new)",
+    "008AADF0": "ForceRecon: only 00807A50 BSP_Recon_ForceRefreshNow"
+  },
+  "no_ghidra_function": [
+    {"start": "0077B0C0", "end_inclusive": "0077B27E", "evidence": "RET 0Ch at 0077B27C, INT3 at 0077B27F, FUN_0077b280 follows; disasm-raw from disk"}
+  ],
+  "calls": [],
+  "substitutions": [
+    "tables made and level changes written at host sync points (native dispatch after a new pass, think pass start, inside ForceRecon), not at unit init or inside the pass",
+    "forced levels (SetForcedReconLevel) not modelled",
+    "0077B0C0's 00803BA0 mark, 00980E50 notify and +2F8h/+2FCh/+300h stores not modelled",
+    "own-side level 2 for every live unit of a covered side (008065B0's +1 per pass)",
+    "only sides the host pass covers are written; every host unit with a thisTable entry gets a table (no kind-3 holder)"
+  ],
+  "predictions": {
+    "LOMP06_1200_1000": "the six :531 failures go to 0; ForceRecon calls >= 6; reconlevel[1] for Narwhal nil (not detected at periscope); exactly one NavigatorAttackMove (Yugiri -> Narwhal); the stage loop re-arms every second (about 19 timer runs); gameplay expected to move (exit 3) through Yugiri's order and the forced recon cadence",
+    "USN02_9200_9000": "identical (exit 0 or 1): no script reads reconlevel, no ForceRecon",
+    "USN04_4700_4500": "identical (exit 0 or 1): no script reads reconlevel, no ForceRecon"
+  },
+  "off_commit": "pending",
+  "results": "pending"
+}
