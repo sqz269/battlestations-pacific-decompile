@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_construct_world",
+  "part": 1,
+  "doc": "docs/CONSTRUCT_WORLD.md",
+  "switch": "none in part 1 (docs only)",
+  "calls": [
+    {"address": "004E01DE", "native": "004DE610", "function": "004DFB70", "kind": "call", "host": "MissionSceneLoadHost::construct_world (load record)"},
+    {"address": "004DE69C", "native": "009037F0", "function": "004DE610", "kind": "call", "host": "not bound (chain headers are the executable's own, milestone 2i)"},
+    {"address": "004E52F4", "native": "00481640", "function": "004E4A40", "kind": "call", "host": "update_entity_manager_00481640 behind world_gate.enabled (never true)"},
+    {"address": "004E5382", "native": "00903670", "function": "004E4A40", "kind": "call", "host": "kill pass"},
+    {"address": "00875EDA", "native": "00903610", "function": "00875BB0", "kind": "call", "host": "release_expired_world_objects_00903610, ungated"}
+  ],
+  "world_fields": [
+    {"offset": "+4ACh", "writers": ["004CB098 (1)", "00904C67 (0)"], "readers": ["00875E78", "0048164B", "00874D3A", "00534BCB", "007D0C75", "007F3A7A", "007F3B2A", "00806F12", "0095948A", "00959537", "0047F130 (no Ghidra function)"]},
+    {"offset": "+18h+n*0Ch", "writers": ["vtable+130h registrars via 00928860, e.g. 006FE620, 007F10B0"], "readers": ["00977990 (+64h, +13Ch)", "009EEB80 (+60h)", "about 45 functions; see doc section 4"]}
+  ],
+  "census": {"sites_19cc": 287, "renderer_sites": 3, "world_functions": 189, "sites_without_function": ["0042367C", "00434F50", "00434F86", "00517A3B", "00534BC5", "0053DE63", "006E5CF4", "006EDBA3", "007AB428", "007F4C7F", "007F4CCF", "00806F0A", "00814426", "009412DE", "009503D3", "00A1FC51"]},
+  "corrections": [
+    {"was": "the world grid [game+19CCh]+84h (009043A0)", "is": "the spatial index singleton [0042E630()]+84h; on the world +84h is list 9's count", "evidence": "009043AA CALL 0042E630, 009043D2 MOV ECX,EDI, 009043D4 CALL 0098ADD0; ECX never read"},
+    {"was": "the entity manager at game+21A0h is null (host log text)", "is": "00481640 runs on game+21D0h (TrafficConfig); what is missing is world+4ACh", "evidence": "0048164B CMP byte [EDX+4ACh],0; ECX from 004E52F4"},
+    {"was": "the world lists are not built (host comments)", "is": "the units host fills every list its registrars reach, list 6 included; list 24 is still empty", "evidence": "include/bsp/game_hosts_units.hpp world_list_*; src/game_hosts_ship_ai.cpp brain pre-pass reads list 6"},
+    {"was": "rows 9-11 and 15 wait on the world", "is": "they read the avoid-zone manager [00E17624] and registry [00E17620]", "evidence": "006DFD90 -> 0082ADA0 -> 004218E0; 007CE88C [EAX+34Ch] written at 007F1DCA from 0041DF40"}
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "part 1: plan only"
+}
