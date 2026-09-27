@@ -360,21 +360,6 @@ void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
     if (!ran) return;
     ++host.summary.list_builds;
     host.summary.lists_built = true;
-    if (kInitialControlledUnitBound && host.summary.scene_load_force_select_pending
-        && host.walk_triple_sizes[0] >= 0) {
-        // 004E05AE..004E05B7: [00E198C4]+40h, then 006485A0. SUBSTITUTION
-        // (labelled): the image runs it at the end of scene load, after its own
-        // 008073C0 on the local slot; here it runs after the first list build
-        // whose own triple the gunnery host has published (the first tick).
-        if (hud_force_select_unit_006485a0()) {
-            host.summary.scene_load_force_select_pending = false;
-            ++host.summary.scene_load_force_selects;
-            host.done("SceneLoad::force_select_unit_006485a0", 0x004e05b7u);
-        } else {
-            // No HUD attached yet: kept pending for the next build.
-            host.record("SceneLoad::force_select_no_hud", 0x004e05b7u);
-        }
-    }
     host.summary.list_walk0_units = host.units.count();
     for (std::size_t index = 0; index < bsp::kLocalPlayerUnitListCount; ++index) {
         host.summary.list_counts[index] = host.lists[index].size();
@@ -404,6 +389,22 @@ void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
         host.log.notef("local-player unit list %s: %s",
             list == bsp::LocalPlayerUnitList::kWalk0Rest ? "game+1970h" : "game+19B8h",
             names.empty() ? "(empty)" : names.c_str());
+    }
+    if (kInitialControlledUnitBound && host.summary.scene_load_force_select_pending
+        && host.walk_triple_sizes[0] >= 0) {
+        // 004E05AE..004E05B7: [00E198C4]+40h, then 006485A0. SUBSTITUTION
+        // (labelled): the image runs it at the end of scene load, after its own
+        // 008073C0 on the local slot; here it runs after the first list build
+        // whose own triple the gunnery host has published (the first tick),
+        // once game_local_player_unit_lists publishes that build.
+        if (hud_force_select_unit_006485a0()) {
+            host.summary.scene_load_force_select_pending = false;
+            ++host.summary.scene_load_force_selects;
+            host.done("SceneLoad::force_select_unit_006485a0", 0x004e05b7u);
+        } else {
+            // No HUD attached yet: kept pending for the next build.
+            host.record("SceneLoad::force_select_no_hud", 0x004e05b7u);
+        }
     }
 }
 
