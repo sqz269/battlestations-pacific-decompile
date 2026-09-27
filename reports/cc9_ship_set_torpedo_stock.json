@@ -24,8 +24,8 @@
   "switches": [
     {
       "name": "kShipSetTorpedoStockBound",
-      "state": "OFF",
-      "pair": "local/sst_{off,on}_{usn02,usn04}.log: both exit 1, calls=0; ON 3900D0CA9B61. Unexercised: BSM01 luaInit fails at line 1857 (FillPathPoints 0089A190 unimplemented), LOMP06 chunk errors"
+      "state": "ON",
+      "pair": "local/sst2_{off,on}_bsm01.log: exit 1, HenryPT ShipSetTorpedoStock(0) loaded=4 unloaded=4 (pair_export of e292d38af, ON 5F5E350FC319); local/sst_{off,on}_{usn02,usn04}.log identity"
     }
   ],
   "no_ghidra_function": [],

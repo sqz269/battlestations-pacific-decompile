@@ -312,7 +312,7 @@ inline constexpr bool kTorpedoSupplyTickBound = true;
 // guns. LABELLED SUBSTITUTION: the script host queues the call and the gunnery
 // host applies it at the start of its next fixed step (the image calls
 // 0081F8B0 inside the native). False: the native stays an unimplemented record.
-inline constexpr bool kShipSetTorpedoStockBound = false;
+inline constexpr bool kShipSetTorpedoStockBound = true;
 
 // The queue between the script host's ShipSetTorpedoStock and the gunnery host.
 // `unit_index` is the units host's index. Process-wide, drained by

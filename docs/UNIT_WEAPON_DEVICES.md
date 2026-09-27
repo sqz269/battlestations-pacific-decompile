@@ -721,3 +721,28 @@ Worker cc9-ships2, on main `5eab91a79`. Ghidra was read-only. The switch is in
   is build-tested only.
 - Measuring it needs FillPathPoints (0089A190) bound first, so that BSM01 reaches line 1790. That
   is a separate packet.
+
+### The BSM01 measuring pair (after FillPathPoints, `e292d38af`)
+
+- FillPathPoints landed ON, so BSM01's `luaInit` now completes and `luaStartMission` runs.
+- OFF is this tree's `build\` at `e292d38af`; ON is `pair_export --flip
+  kShipSetTorpedoStockBound=true` of the same commit (SHA-256 `5F5E350FC319`).
+- Both sides ran BSM01 at 9200/9000 frames with the streams and the death table on. Logs:
+  `local\sst2_{off,on}_bsm01.log`.
+- Both logs were checked for their milestone line (`menu_select=BSM01`), module directory and
+  final COM release line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| script call | `ShipSetTorpedoStock` UNIMPLEMENTED `calls=1` | `ShipSetTorpedoStock: HenryPT stock=0` | one call for HenryPT | holds |
+| the pass C set | - | `HenryPT MaxTorpedoStock=12 loaded=4 spare=8` | stock 12, spare `12 - L` | holds (L = 4) |
+| the application | - | `ShipSetTorpedoStock(0) loaded=4 spare 8 -> 0 unloaded=4 rearmed=0`; four `unloads` lines (guns 6, 4, 5, 3) | every loaded tube unloaded | holds |
+| census | `calls=0` | `calls=1`; the supply line's `unloaded=4` | - | - |
+| HenryPT launches | 0 | 0 | 0 on ON | holds |
+| `pair_diff` | - | 1, gameplay identical | 1 when HenryPT launches nothing on OFF | holds |
+
+**Verdict: `kShipSetTorpedoStockBound` ON.**
+- BSM01 executes the native and the routine does what the read says: the pass C set, then the
+  unload loop through 0081DCB0 down to the requested 0.
+- The reference missions were identity (the pairs above).
+- The think's later stop at line 683 (`Scoring_GetPlayerShotDown`) does not reach this path.
