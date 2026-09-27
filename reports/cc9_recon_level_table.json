@@ -9,7 +9,11 @@
     "008AADF0": "ForceRecon: only 00807A50 BSP_Recon_ForceRefreshNow"
   },
   "no_ghidra_function": [
-    {"start": "0077B0C0", "end_inclusive": "0077B27E", "evidence": "RET 0Ch at 0077B27C, INT3 at 0077B27F, FUN_0077b280 follows; disasm-raw from disk"}
+    {
+      "start": "0077B0C0",
+      "end_inclusive": "0077B27E",
+      "evidence": "RET 0Ch at 0077B27C, INT3 at 0077B27F, FUN_0077b280 follows; disasm-raw from disk"
+    }
   ],
   "calls": [],
   "substitutions": [
@@ -24,6 +28,32 @@
     "USN02_9200_9000": "identical (exit 0 or 1): no script reads reconlevel, no ForceRecon",
     "USN04_4700_4500": "identical (exit 0 or 1): no script reads reconlevel, no ForceRecon"
   },
-  "off_commit": "pending",
-  "results": "pending"
+  "off_commit": "72c01329b",
+  "results": {
+    "logs": "local/rlt_{off,on}_{lomp06,usn02,usn04}.log",
+    "LOMP06_1200_1000": {
+      "pair_diff": "exit 3",
+      "failures": "6 at :531 -> 0",
+      "summary_on": "syncs=33 tables=198 writes=971 force_recon=21",
+      "NavigatorAttackMove": "1 call (concrete); IsInFormation reached (UNIMPLEMENTED, 1)",
+      "gameplay": "OFF: Narwhal sunk at 46.60 s by Mikuma (first hit 43.10 s, 1 death, 10 hit records, 16 shots). ON: no death, no hit, 6 shots (all Yugiri); Narwhal alive at 1500 health and moved 352.61 m",
+      "mechanism": "21 forced passes: 33 triple builds instead of 18 and 99 side passes instead of 54. Each forced pass accumulates over the gap since the previous one (1 s instead of 3 s) after 00805BE0's per-pass reset, so the sensor pass published blip 8229 / identified 3787 against 115 / 6079. Blips go to the 'unknown' triple (enemy mean 57.0 -> 19.1, unknown 6.4 -> 249.4), so the Japanese guns lose Narwhal and the other targets (Mikuma, Kitakami, Asagiri, the Gyoraitei and the Marus read range 0)"
+    },
+    "USN02_9200_9000": "exit 1; syncs=151 tables=28 writes=104 force_recon=0",
+    "USN04_4700_4500": "exit 1; syncs=87 tables=81 writes=381 force_recon=0"
+  },
+  "on_export": "tools/pair_export.py --commit 72c01329b --flip kReconLevelTableBound=true -> local/rlt_on",
+  "verdicts": {
+    "LOMP06_failures": "held (6 -> 0)",
+    "LOMP06_attack_move": "held (exactly one NavigatorAttackMove)",
+    "LOMP06_exit": "held (exit 3), but the mechanism was only half predicted: the move is dominated by the forced recon cadence blinding the Japanese guns, which saves Narwhal, not by Yugiri's order",
+    "ForceRecon_calls": "held (21 >= 6)",
+    "USN02_USN04": "held (exit 1)",
+    "flip": "ON"
+  },
+  "flags": [
+    "open: LOMP06 now depends on ForceRecon's cadence. A forced pass every second accumulates 1 s of gain after the per-pass reset and demotes identified contacts to blips. That is the image's rule as the host pass reconstructs it (dt = the measured gap, 008073C1..008073D6, and the 00805BE0 reset). Before LOMP06 is used as a reference, check it: whether 00805BE0 really zeroes +0Ch every pass, or whether a forced pass keeps the value",
+    "next Lua-host gap: luaGetReconLevel (commandhelpers.lua:1821) does ent.reconlevel = GetProperty(ent, \"reconlevel\"); the host GetProperty (0088BF80, game_hosts_lua) does not serve the key, so the call replaces the table with nil. The image's reader 00779BB0 walks the three detection records (00779B28)"
+  ],
+  "names_added": []
 }
