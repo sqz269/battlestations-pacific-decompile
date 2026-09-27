@@ -1,0 +1,38 @@
+{
+  "packet": "cc9_unit_death_route",
+  "doc": "docs/UNIT_DEATH_ROUTE.md",
+  "ghidra": "read-only; no renames, comments or saves",
+  "answer": "kill_unit runs bsp::unit_death_00959450 after the sink: gate (clock > 1, cause 1, world byte), the victim's guns take vt[1E8h](0) (009594BB), the loss report 009813A0 (named record; no warning-manager entry and the frame file is leased), the kill credit 0091BDA0 when the gate passes, and the limbo page 00565FB0 for the controlled unit (named record). Switch kUnitDeathRouteBound committed OFF.",
+  "steps": [
+    {
+      "address": "009594bb",
+      "native": "vtable+1e8h",
+      "function": "00959450",
+      "rule": "child vt[1E8h](0), indirect"
+    },
+    {
+      "address": "00959519",
+      "native": "0091bda0",
+      "function": "00959450",
+      "rule": "the kill credit, only caller"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00959450",
+      "coverage": "complete as the mission_result model; 009813A0 and 00565FB0 bodies unread (records)"
+    }
+  ],
+  "substitutions": [
+    "unit+70h = 1 for every gunnery kill",
+    "world+4ACh = 1 (set at load, never cleared here)",
+    "controller flags +C41h / +100Ah not held: the loss report is never skipped"
+  ],
+  "switch": {
+    "name": "kUnitDeathRouteBound",
+    "file": "include/bsp/game_hosts_gunnery.hpp",
+    "committed": false
+  },
+  "contract": "include/bsp/game_hosts_mission_frame.hpp: game_warning_report_loss_009813a0(std::size_t unit), for the frame file's owner",
+  "pairs": "pending"
+}
