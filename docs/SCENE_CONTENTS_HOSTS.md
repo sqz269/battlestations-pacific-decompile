@@ -1663,3 +1663,53 @@ Worker cc9-init2, 2026-09-27, on main f424d4880. Ghidra was read only. The lead 
 - **A measuring mission for the rotation.** usn_13_truk, yamato or shogo_four have rotated
   Landscapes. A pick or line-of-fire hit on one of them would compare the host with the image
   there.
+
+## 11. Handoff: cc9-init2 stops here (2026-09-27)
+
+Worker cc9-init2 stops at about 65 % of its context, after `cc9_terrain_segment_quadtree` (ON at
+b0f94edec).
+
+### What this worker landed (all ON)
+
+| switch | doc | what |
+| --- | --- | --- |
+| `kLoadTimeSquadronHooksBound` | SENTITY_INIT_ATTACH_ORDER.md 19 | scene squadrons call the pass A and pass C hooks at load |
+| `kSceneHomeBaseQualifiedNameBound` | CONSTRUCT_WORLD.md 32 | 009251F0's case-insensitive last-segment HomeBase match |
+| `kLoadWingSquadronIdBound` | SENTITY_INIT_ATTACH_ORDER.md 20 | load wing planes get `SquadronID` |
+| `kTerrainSegmentQuadtreeBound` | this doc, 10 | slot 3Ch's quadtree walk, and 00903BC0 through every Landscape's slot 3Ch |
+
+It also closed two items by reading and one by bisect:
+- the SpawnNew bag `HomeBase` (CONSTRUCT_WORLD.md 33);
+- the 00AE9D80 boundary extent, which the lead repaired at f424d4880;
+- the USN02 552 -> 579 reference flag, the torpedo stock alone (GAME_EXECUTABLE.md reference e).
+
+### Open items, in order
+
+1. **The vertical case 00AECC40's sub-walk 00AECA60** (00AECA60..00AECC3D), a scoping read only.
+   - **What it does.** It clips the from/to pair, in tile units, to the grid [0, +38h] x [0, +3Ch]
+     through 00AEBD20. It returns 0 when both points lie on the far x edge or the far z edge
+     (double equality with the tile counts).
+   - **What it calls.** It sets up 00AEB770 (on the terrain), the iterator 00AEADE0 and 00AEB890
+     (sqrt 00BF7030), then ends in **00AEC7C0** (00AEC7C0..00AECA4B, a further walk not yet read).
+     00AEBD20 calls 00AEBA00 and 00AEBB90. Every body ends where Ghidra says.
+   - **The inputs.** 00AECC40 hands it only the `to` point scaled to tile units (1/300 after the
+     origin), and a point it writes back. It also calls the terrain's vt+48h (unread) when the two
+     points are equal in tile units.
+   - **Cost and value.** About seven bodies. USN01 takes this case 3 times, with 0 hits. The host
+     answers it with the half-cell march (labelled in 10.3).
+2. **A measuring mission for the island rotation.** usn_13_truk, yamato or shogo_four author
+   rotated Landscapes (10.2). A pick, line-of-fire or, once bound, pilot trace against one of
+   them would measure the image's segment/height disagreement in the host.
+3. **00903BC0's consumers** (section 7's contracts) are still unbound, so its per-Landscape
+   path runs 0 times on the reference missions.
+4. **From SENTITY_INIT_ATTACH_ORDER.md 19.1:** the host issues authored commands before the load
+   walk, and the image issues them after it, at 0046AAB0. This is labelled, and no measured row
+   depends on it yet.
+
+### State left by this worker
+
+- Worktree cc9-init2 is clean after this commit. No lease is held after the report.
+- Scripts are under `local\` with the prefix `cc9-init2-`:
+  - `pe.py` reads dwords from the image on disk;
+  - `landscapes.py` is the rotated-Landscape census;
+  - `bis.ps1` is the first-parent bisect runner.
