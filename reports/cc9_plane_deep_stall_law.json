@@ -1,0 +1,13 @@
+{
+  "packet": "cc9_plane_deep_stall_law",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, section 20",
+  "kind": "read, nothing bound",
+  "calls": [],
+  "switches": [],
+  "findings": [
+    "the image rotation law 007DA710 with 007D9A70 authority (floor 0.0625 below 1.1 x StallSpd) is reproduced; a stalled plane cannot recover quickly in the image either",
+    "the onset is a +1 pitch input at full authority for about 6 s while 0099E490 demands -1: a later writer of the pitch slot flips the command; the follow hold arm 009BEE56 is the candidate"
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}

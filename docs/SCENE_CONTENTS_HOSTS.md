@@ -2452,3 +2452,100 @@ Worker cc9-terrain2, 2026-09-27, on main 93e12f5a4. Logs: `local\FN_{OFF,ON}_USN
   lease, and the contacts are not shown to be the image's own. Its reason should read "21 live
   torpedo bombers stall into the sea (host flight / formation question, docs/SCENE_CONTENTS_HOSTS.md
   19)" rather than a water-contact defect.
+
+## 20. The deep stall traced (packet `cc9_plane_deep_stall_law`, read, nothing bound)
+
+Worker cc9-terrain2, 2026-09-27, on main 9cd1ff0ae. Ghidra was read only.
+- **The trace.** A temporary per-tick trace of one plane, not committed, is kept as the patch
+  `local\cc9-terrain2-pitchtrace.patch`. It is gated on `BSP_PITCH_TRACE=<unit name>` and prints
+  `pitchtrace` and `pitchdemand` lines.
+- **The runs:** `local\DG_USN13.log` and `local\DG2_USN13.log`, worktree cc9-terrain2, USN13
+  3200/3000, plane `bruh #1.12`.
+
+### 20.1 The plane's law is not what fails
+
+- **In the image, a plane's rotation comes only from the rate law 007DA710.** The body rate at
+  ctl+48h moves toward `PitchSpd · f1 · latched pitch` and cannot pass it. f1 is 007D9A70's
+  authority, `t²` where t = max(an airborne term up to 0.25, a speed ramp that is 0 below 1.1 x
+  StallSpd).
+- **So a plane below that speed keeps an authority of 0.0625** and can change its pitch rate only
+  slowly. No stall term, lift table or nose-drop exists in the rotation. The pose advance 007C6500
+  only integrates the rate (docs/PLANE_ADVANCE_POSE.md), plus a roll-levelling lerp.
+- **The host reproduces this** (`control_authority`, `plane_control_axis_step_007da710`). With
+  authority at 0.0625, `bruh #1.12` needed about 40 s to fall 1370 m in a tail slide:
+  - nose 1.2..1.56 rad, forward speed -10 to -17 m/s;
+  - the rate law was moving the pitch rate by about 0.01 rad/s either way.
+
+### 20.2 What does fail: a nose-up command against a nose-down demand
+
+- **The onset, at 1237 m.** Authority was 1.0 and speed 50 m/s. The latched pitch input was +1 and
+  the body pitch rate was +0.1745 (PitchSpd, nose up) for about 6 s, as the nose went 0.57 -> 1.18
+  rad and the speed fell to 29 m/s. Then authority collapsed.
+- **Over the same ticks the attitude demand 0099E490 asked nose-down.**
+  - target plan+2BCh 0.10..0.13, bank about 0, `demand` -4.0 -> -8.4 (and -36..-66 once
+    authority fell);
+  - `plan_pitch_0099e68d` clamps that to a desired value of -1, sign kept.
+- **So something writes the pitch slot or command after the demand, with the opposite sign.**
+  - The pitch slot's desired value has ten writers in `src/game_hosts_units.cpp`.
+  - The one the torpedo approach's `follow` state reaches is the follow hold arm 009BEE56
+    (`plane_follow_hold_command_009bee56`, around line 4880). It writes `desired = c.pitch_29c`,
+    sets slot 3 active and plan+2D0h = 0, from the follow gains `PF_Pitch*` and `PF_VertPos*`.
+  - This is the same code as read 1 (station keeping in 009C1FD0). The clumped wingmen of section
+    19 and a leader commanded nose-up would both come from it.
+
+### 20.3 Next step (the packet continues as read 1)
+
+1. **Extend the trace.** Log `c.pitch_29c`, the station offset and the vertical position error in
+   `plane_follow_hold_command_009bee56` for `bruh #1.12` and its wingmen, and the slot's final
+   `desired` and `cmd[kPilotCmdPitch]` each tick.
+2. **Compare against 009BEE56's listing,** starting with the sign of the vertical term (`PF_VertDir`)
+   and what the leader of a squadron follows. An AI leader in `follow` should have no station
+   (`c.locked` is never set for it).
+3. **Bind the difference behind one switch, with predictions:** USN13 21 sea crashes -> few, 34
+   deaths -> fewer, the water-contact record 670 -> small, 204 hit records moving. USN04's air
+   battle (44 deaths) and USN01's Mavis and scout rows would also be judged by the pairs.
+
+Nothing was bound in this packet.
+
+## 21. Handoff: cc9-terrain2 stops here (2026-09-27)
+
+Worker cc9-terrain2 stops at about 75 % of its context. Section 15 was its first handoff; this one
+supersedes it.
+
+### Landed after section 15 (all ON)
+
+| switch | doc | what |
+| --- | --- | --- |
+| `kDisablePhysicsBound`, `kAddMatrixInterpolatorBound`, `kExplodeToPartsBound` | LUA_BINDING_MISSION.md, "BSM01's state natives" | bound but unexercised: no reference run reaches a call |
+| `kSceneFrameNormaliseBound` | this doc, 18 | every localframe normalised at parse, as 0046D168..0046D222 does |
+
+Reads: 16 (the entity reader normalises frames), 17 (007C3CB0's caller is the plane effects screen),
+19 (USN13's water contacts), 20 (the deep stall).
+
+### Open items, in order
+
+1. **The follow hold arm's pitch (sections 19 and 20).**
+   - A USN13 torpedo bomber in `follow` is commanded pitch +1 while 0099E490 asks for -1; the
+     likely writer is `plane_follow_hold_command_009bee56` (`desired = c.pitch_29c`).
+   - Wingmen 0-2 and 1-3 stay 12..68 m apart in the same state.
+   - Next: extend `local\cc9-terrain2-pitchtrace.patch` to the hold arm's terms, compare with
+     009BEE56's listing (the vertical sign, and whether an AI leader should run it at all), and
+     bind.
+   - Predicted payoff: USN13's 21 sea crashes and most of its 670 water-contact records.
+2. **The first measurement of the unexercised bindings.** Branch A (12), the three BSM01 natives,
+   and the tile/cell steppers of 14 need a scenario run: a live flying boat on the water, a damaged
+   Pearl Harbor battleship, a trace that crosses a grid line in the vertical case.
+3. **Noise-list candidates** (15 item 1) are with cc9-tooling.
+4. **Bit-exact x87 rounding** of the slot 3Ch walks (10.3, 14.5) is not verified.
+5. **USN02's reference** is now 19 deaths / 573 hit records on the normalised frames (18.4); the
+   next reference rebaseline should take it.
+
+### State left by this worker
+
+- Worktree cc9-terrain2 is clean after this commit; no lease is held after the report.
+- Scripts are under `local\` with the prefix `cc9-terrain2-`:
+  - `pe.py` reads image constants;
+  - `vtscan.py` walks a vtable back to its start and finds its constructors;
+  - `framecensus.py` is the .scn frame normalisation census;
+  - `pairs*.ps1` are the pair runners;
+  - `pitchtrace.patch` is the plane pitch trace (apply, build, set `BSP_PITCH_TRACE`).
