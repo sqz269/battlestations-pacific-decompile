@@ -1786,3 +1786,34 @@ boats that were already dead (`dead=1`), which the caller 009A17F8 rejects.
   - `pair_diff` exit 1: only the `bound` field differs.
 - **USN04 4700/4500 and USN02 9200/9000** have no Landscape: `sweep_entries=0`, `probes=0`,
   `pair_diff` exit 1.
+
+### 12.5 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\wp_off`, a build of 3f15c9c8b. ON is `pair_export` of 3f15c9c8b
+  with the switch flipped (SHA-256 E263CD8C502F). Both variables were set, lockstep 0.05, idle
+  player. Logs: `local\WP_{OFF,ON}_{USN01,USN04,USN02}.log` in worktree cc9-terrain2.
+
+| row | USN01 OFF | USN01 ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| water probe probes / blocked | 0 / 0 | 0 / 0 | 0 | held |
+| 00903BC0 calls, endpoint blocks | 1152, 0 | 1152, 0 | calls = torpedo probes (1152), 0 | held |
+| sweep entries / blocks | 4608 / 0 | 4608 / 0 | 4 x calls / 0 | held |
+| deaths, hit records, shots | 7, 150, 561 | 7, 150, 561 | unchanged | held |
+| pick land hits | 5357/22 | 5357/22 | unchanged | held |
+| death rows, plane death modes, unit table | 7, 7, 28 | identical | identical | held |
+| `pair_diff` | | exit 1, only `bound` 0 -> 1 | exit 1 | held |
+| USN04: calls / entries / probes | 7128 / 0 / 0 | 7128 / 0 / 0 | entries 0, probes 0 | held |
+| USN04 deaths, hits, shots; `pair_diff` | 44, 789, 6321 | identical; exit 1 | exit 1 | held |
+| USN02: calls / entries / probes | 0 / 0 / 0 | 0 / 0 / 0 | entries 0, probes 0 | held |
+| USN02 deaths, hits, shots; `pair_diff` | 21, 652, 1095 | identical; exit 1 | exit 1 | held |
+
+**Verdict: ON.** Every prediction held. No plane pulls up, turns or crashes through 00903BC0 on the
+reference missions: the only bound consumer that runs is the torpedo approach, and none of its
+probes is blocked. Branch A is bound but unexercised; a mission with a live flying boat on the
+water near land would be its first measurement.
+
+### 12.6 Open
+
+- **00609BD0's Ghidra body is truncated** at 0060ABCC. The code runs on to the `RET 4` at
+  0060C5A9 (INT3 from 0060C5AC), and it holds 007C3CB0's only call (0060AC1A). The lead redefines it.
+- **007C3CB0** stays unbound: its caller, the player-plane GUI update, has no host counterpart.

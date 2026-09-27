@@ -1,0 +1,99 @@
+{
+  "packet": "cc9_terrain_segment_consumers",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, section 12",
+  "calls": [
+    {
+      "address": "009D39D3",
+      "native": "00903BC0",
+      "function": "009D3420",
+      "note": "torpedo approach sector probe; already bound (kGroundHeightHunksBound)"
+    },
+    {
+      "address": "009A15C1",
+      "native": "00903BC0",
+      "function": "0099F1C0",
+      "note": "branch A first probe, +-30 degrees, y 0.1"
+    },
+    {
+      "address": "009A172E",
+      "native": "00903BC0",
+      "function": "0099F1C0",
+      "note": "branch A fan probe"
+    },
+    {
+      "address": "009A1464",
+      "native": "007C4810",
+      "function": "0099F1C0",
+      "note": "min control speed on pilot+2F8h, plain RET"
+    },
+    {
+      "address": "009A147F",
+      "native": "00419010",
+      "function": "0099F1C0",
+      "note": "probe length from TakeOffMax/MinLength"
+    },
+    {
+      "address": "009A150C",
+      "native": "00438AA0",
+      "function": "0099F1C0",
+      "note": "heading + side angle"
+    },
+    {
+      "address": "009A1524",
+      "native": "007BA2E0",
+      "function": "0099F1C0",
+      "note": "heading to (cos, 0, sin) of pi/2 - h"
+    },
+    {
+      "address": "009A1657",
+      "native": "00438AA0",
+      "function": "0099F1C0",
+      "note": "heading + idx/12 pi"
+    },
+    {
+      "address": "009A175C",
+      "native": "0099B790",
+      "function": "0099F1C0",
+      "note": "band into pilot+4h"
+    },
+    {
+      "address": "009A176D",
+      "native": "007D99C0",
+      "function": "0099F1C0",
+      "note": "forward speed for the throttle"
+    },
+    {
+      "address": "009A1796",
+      "native": "00419010",
+      "function": "0099F1C0",
+      "note": "pilot+25Ch = interp(1, 1, 8, -1, v)"
+    },
+    {
+      "address": "007C3E00",
+      "native": "00903BC0",
+      "function": "007C3CB0",
+      "note": "vertical segment (x,20,z)-(x,0,z), cosmetic effect; no host caller"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kAvoidTerrainWaterProbeBound",
+      "state": "ON",
+      "pair": "local/WP_OFF_{USN01,USN04,USN02}.log (build of 3f15c9c8b, local/bin/wp_off) against local/WP_ON_*.log (pair_export of 3f15c9c8b, SHA-256 E263CD8C502F), worktree cc9-terrain2. All three exit 1, gameplay, death rows, plane death modes and unit tables identical; the only changed summary field is the new line's bound 0 -> 1. Branch A made 0 probes on every mission (no live plane in mode 6).",
+      "census": "USN01 world segment calls=1152 endpoint_blocks=0 sweep_entries=4608 sweep_blocks=0; USN04 calls=7128 entries=0; USN02 calls=0"
+    }
+  ],
+  "substitutions": [
+    "branch A: unit->vt+38h is the live velocity length",
+    "branch A: vt+50h is plane_heading_c6c",
+    "branch A: position is the host world row without the 00414DB0 refresh"
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "0060ABCD",
+      "end_inclusive": "0060C5AB",
+      "note": "tail of 00609BD0 (player-plane GUI update): Ghidra's body stops at 0060ABCC but the code runs on (0060AC0A JMP 0060C591, epilogue RET 4 at 0060C5A9, INT3 from 0060C5AC); no function starts between them (bsp.py range). It holds the only call to 007C3CB0 at 0060AC1A. Proposed: extend 00609BD0 to 00609BD0..0060C5AB, __thiscall-like RET 4; the embedded structure was not swept"
+    }
+  ],
+  "names_added": []
+}

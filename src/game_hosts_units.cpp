@@ -3785,7 +3785,9 @@ struct GameUnitsHost::Impl {
     // and, when it is blocked, the 15-degree fan 3,-3,4,-4..12,-12,13, the band
     // 0099B790 on pilot+4h and the throttle pilot+25Ch. OFF: branch A returns before
     // probing (the earlier labelled substitution).
-    static constexpr bool kAvoidTerrainWaterProbeBound = false;
+    // ON since the USN01 / USN04 / USN02 pairs: identical, and branch A made 0
+    // probes on all three (no live plane in mode 6), so it is bound but unexercised.
+    static constexpr bool kAvoidTerrainWaterProbeBound = true;
     // Packet cc9_mavis_rack_drops, docs/RELEASE_ISSUE_STAGE.md section "Mavis rack
     // drops": 007C0D90 fires ONE rack per issue (007C0E17 vtable[1F0h] = 006E3550
     // on the first IsKindOf(25h) child holding 2Ah and not busy, then returns for
