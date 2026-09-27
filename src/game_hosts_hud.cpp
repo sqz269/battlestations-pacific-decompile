@@ -7,6 +7,7 @@
 #include "bsp/platform_window.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/controlled_unit.hpp"
+#include "bsp/interface_runtime_tail.hpp"
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
@@ -165,6 +166,16 @@ struct GameHudHost::Impl {
     unsigned long long select_accepted{0};
     unsigned long long select_pushes{0};
     bool pick_first_basis_logged{false};
+    // Packet cc9_movie_interface_and_reseed: the movie screen 37h's +1Ch/+20h,
+    // the 00E19894 lock as 005CD1A0 sees it (never raised in single player),
+    // and a pending non-20h request (004CC460 writes the one pending record,
+    // so a later push replaces an earlier one).
+    bsp::HudMovieScreenState movie_screen{};
+    bsp::FrontEndInterfaceLock movie_lock{};
+    int pending_interface_id{0};
+    unsigned long long movie_calls{0};
+    unsigned long long movie_engages{0};
+    unsigned long long movie_pushes{0};
     bsp::UnitSelectableInputs selectable_inputs_00645060(std::size_t unit);
 
     void record(const char* method, std::uint32_t address) {
@@ -744,8 +755,15 @@ void GameHudHost::apply_pending_interface_0068aca0() {
     Impl& impl = *impl_;
     if (!impl.summary.manager_built) return;
     bool has_payload = false;
+    int requested = kInterfaceScene3d;
     if (!impl.summary.interface_applied) {
         has_payload = false;
+    } else if (impl.pending_interface_id != 0) {
+        // Packet cc9_movie_interface_and_reseed: a non-20h push (005CD1CE's 2Ch
+        // with [00E188D8]), serviced through the same 006840f0 / 00684600 path.
+        requested = impl.pending_interface_id;
+        impl.pending_interface_id = 0;
+        has_payload = impl.units != nullptr && impl.units->controlled_bound();
     } else if (impl.unit_request_pending && !impl.unit_request_applied) {
         // Milestone 2k: the second request, the one that carries the controlled
         // unit. Serviced through the same 006840f0 / 00684600 path.
@@ -760,7 +778,7 @@ void GameHudHost::apply_pending_interface_0068aca0() {
     HudUnitQuery query(impl);
     HudInterfaceBinding binding(impl, query);
     const bool accepted = apply_in_game_interface_0068aca0(impl.manager, binding,
-        kInterfaceScene3d, has_payload);
+        requested, has_payload);
     impl.done("InGameInterface::apply_pending_interface", 0x0068aca0u);
     if (!has_payload) impl.summary.interface_applied = accepted;
     if (has_payload) impl.unit_interface_id = impl.summary.applied_interface_id;
@@ -795,12 +813,13 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         if (!pages.empty()) pages += ' ';
         pages += page;
     }
-    impl.log.notef("in-mission level-1 set for INTF_SCENE3D (%s payload, single player) "
+    impl.log.notef("in-mission level-1 set for %s (%s payload, single player) "
         "applied as %02Xh: screens %s| contexts %s| pages %s",
+        requested == kInterfaceScene3d ? "INTF_SCENE3D" : "request 2Ch (movie camera new)",
         has_payload ? "controlled unit" : "null",
         static_cast<unsigned>(impl.summary.applied_interface_id), screens.c_str(),
         contexts.c_str(), pages.c_str());
-    if (has_payload) {
+    if (has_payload && requested == kInterfaceScene3d) {
         impl.log.note("the 20h arm classified the controlled unit through the recovered "
             "IsKindOf chain and re-entered its own virtual +10h, which is what raises the "
             "world markers screen (4Dh) and keeps the minimap (35h): both have a "
@@ -1353,6 +1372,8 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
     impl.unit_interface_id = 0;
+    impl.movie_screen = bsp::HudMovieScreenState{};
+    impl.pending_interface_id = 0;
     // The child hosts borrow units and Lua. Their default destructors release
     // source caches without invoking their borrowed owners.
     impl.markers.reset();
@@ -1480,6 +1501,72 @@ private:
 };
 }  // namespace
 
+namespace {
+// 005CD1A0's callees over this host. Switch 1 binds the 2Ch push; the reseed
+// (switch 2) and the camera (switch 3) stay records here.
+class MovieInterfaceBinding final : public bsp::MovieInterfaceHost {
+public:
+    explicit MovieInterfaceBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    void seed_random_stream(int, std::uint32_t) override {
+        owner_.record("MovieInterface::seed_random_stream", 0x00bd2fd0u);
+    }
+    void push_interface_request(int interface_id, const void*) override {
+        // 005CD1CE 004CC460(2Ch, [00E188D8]); the pending record is replaced.
+        owner_.pending_interface_id = interface_id;
+        ++owner_.movie_pushes;
+        owner_.done("MovieInterface::push_interface_2ch", 0x005cd1ceu);
+    }
+    void set_input_context_level(int, int) override {
+        // 005CD1F6, only behind the multiplayer lock gate: not reached here.
+        owner_.record("MovieInterface::input_context_level", 0x00a933f0u);
+    }
+    std::uint32_t ensure_movie_camera(std::uint32_t existing) override {
+        owner_.record("MovieInterface::ensure_movie_camera", 0x005cc170u);
+        return existing;
+    }
+    void send_unit_session_message(int) override {
+        owner_.record("MovieInterface::session_message_1ff", 0x0077c470u);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+void GameHudHost::movie_screen_camera_005cd240() {
+    Impl& impl = *impl_;
+    ++impl.movie_calls;
+    const bool first = !impl.movie_screen.engaged;
+    bsp::MovieInterfaceEngageInputs inputs{};
+    inputs.game_present = true;              // 005CD1D3
+    inputs.local_view_mode_active = false;   // game+1FE4h, single player
+    inputs.player_unit_present = impl.units != nullptr && impl.units->controlled_bound();
+    if (inputs.player_unit_present) {
+        // 005CD20E 00927F30(unit, 0): the unit's role 0 is held by slot 0.
+        std::int32_t holder = -1;
+        inputs.unit_is_local_player_role =
+            impl.units->unit_current_role_slot(impl.units->controlled_index(), 0, holder)
+            && holder == 0;
+    }
+    MovieInterfaceBinding binding(impl);
+    bsp::movie_screen_camera_005cd240(impl.movie_screen, impl.movie_lock, inputs, nullptr,
+        binding);
+    impl.done("MovieScreen::get_camera_005cd240", 0x005cd240u);
+    if (first) {
+        ++impl.movie_engages;
+        impl.log.notef("movie interface 005CD1A0 engaged on the first MovCamNew call (hud update "
+            "frame %llu): 004CC460(2Ch, controlled unit) pushed; the next 006840f0 applies "
+            "{37h}", impl.summary.update_frames);
+    }
+}
+
+bool hud_movie_screen_camera_005cd240() {
+    GameHudHost* hud = attached_hud_for_selection();
+    if (hud == nullptr) return false;
+    hud->movie_screen_camera_005cd240();
+    return true;
+}
+
 bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
     Impl& impl = *impl_;
     ++impl.select_calls;
@@ -1525,6 +1612,7 @@ bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
     // payload the host's classifier already reads (the controlled unit).
     impl.unit_request_pending = true;
     impl.unit_request_applied = false;
+    impl.pending_interface_id = 0;   // 004CC460 overwrites the one pending record
     ++impl.select_pushes;
     impl.done("SetSelectedUnit::push_interface_20h", 0x00647077u);
     impl.log.notef("SetSelectedUnit 00647300: \"%s\" accepted by 00645060; 00645600 moved "
@@ -3017,6 +3105,10 @@ void GameHudHost::report() {
         "008AB260 / 00647300): bound=%d calls=%llu accepted=%llu pushes_20h=%llu",
         kSetSelectedUnitBound ? 1 : 0, impl.select_calls, impl.select_accepted,
         impl.select_pushes);
+    impl.log.notef("summary mission hud movie interface (packet cc9_movie_interface_and_reseed, "
+        "005CD240 / 005CD1A0): bound=%d calls=%llu engages=%llu pushes_2ch=%llu",
+        kMovieInterfacePushBound ? 1 : 0, impl.movie_calls, impl.movie_engages,
+        impl.movie_pushes);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is

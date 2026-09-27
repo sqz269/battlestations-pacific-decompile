@@ -159,6 +159,12 @@ public:
     // controlled unit and the manager idle it pushes 34h INTF_LIMBO (0064734B).
     // `unit` is the units host's index. Returns whether 00645060 accepted it.
     bool set_selected_unit_00647300(std::size_t unit);
+    // Packet cc9_movie_interface_and_reseed. 005CD240 on the movie screen
+    // (registry slot 37h), which every MovCamNew native calls first
+    // (008B7941, 008B7AE1, 008B7C92): the first call engages the movie
+    // interface through 005CD1A0 (the reseed of streams 1 and 0, then
+    // 004CC460(2Ch, [00E188D8])), later calls only run 005CC170.
+    void movie_screen_camera_005cd240();
     // The update virtual of one HUD screen, called by the recovered pump 004f8830
     // for every screen the applied interface published into level 1.
     void update_minimap_screen_005c0f20(float seconds);
@@ -206,5 +212,14 @@ inline constexpr bool kSetSelectedUnitBound = true;
 // while a world is attached (attach_world_2k / detach_world_2k). Returns false
 // with `reached` false when no HUD is attached.
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
+
+// Packet cc9_movie_interface_and_reseed, switch 1, committed OFF (eaa9a301b), set ON by the
+// USN01/USN04 pair verdict (docs/HUD_PICK_SEGMENT_QUERY.md 8.7): while true
+// the MovCamNew natives run 005CD240 through the attached HUD, whose first
+// call pushes 2Ch kMovieCameraNewInterface, so the level-1 set becomes {37h}
+// until a later 20h push (SetSelectedUnit) replaces it.
+inline constexpr bool kMovieInterfacePushBound = true;
+// Returns false when no HUD is attached.
+bool hud_movie_screen_camera_005cd240();
 
 }  // namespace bsp::game

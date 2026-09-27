@@ -665,3 +665,107 @@ The movie camera is not bound. Its natives and bodies stay records until packet
 
 USN01's pick after `luaIn` comes from `SetSelectedUnit`, bound in packet `cc9_set_selected_unit`
 (`docs/CONTROLLED_UNIT.md`, section "SetSelectedUnit and 00647300").
+
+## 8.7 The movie interface and the reseed (packet `cc9_movie_interface_and_reseed`)
+
+Worker cc9-movie-camera, 2026-09-27, base main 640b48f5d. Ghidra was read only.
+
+### The movie screen 37h (V, listing)
+
+- **Its vtable is 00CF17A8.** `+18h` enter is 005CD9C0 and `+1Ch` exit is 005CDB00. `+20h`
+  update is 005CBAF0, the black-bar slide on `+21h`/`+22h`/`+24h`.
+- **005CD9C0 enter** (no Ghidra function, 005CD9C0..005CDAF5 inclusive, `RET` at 005CDAF5):
+  - when `+20h` is clear, 005CD1A0(`[00E188D8]`);
+  - then 005CC170;
+  - `game+61Dh` = 1;
+  - 004D6480(game, {36h, 37h, 38h, 53h, 33h, 55h, 47h, 5Ah}, 1).
+- **005CDB00 exit:**
+  - 00B0D0B0(0.0) on `[00F8D39C]`;
+  - input contexts 1Eh and 3 to level 0;
+  - `game+61Dh` = 0;
+  - the same eight ids to 004D6480 with 0.
+- **Nothing clears `+20h` after 005CD229.** No write shows in 005CD1A0, 005CD240, the enter, the
+  exit, the update or the other slots. **So 2Ch is pushed once per mission, on the first movie.**
+  - 005CC170 installs the camera only while `+1Ch` is null. 004BC410 destroys the outgoing
+    mover (`docs/MISSION_CAMERA.md` section 2), and the observer 00694A60 that 005CC2B4
+    registers then clears `+1Ch`. So a later movie rebuilds and reinstalls the camera under
+    whatever interface is current.
+  - That last part is switch 3's concern, and the observer's clearing is inferred, not read.
+- **All three measured missions leave 2Ch through `SetSelectedUnit`:**
+  - USN01 `luaIn` line 669;
+  - USN04 `luaWeHere` line 3352;
+  - USN02 `luaIntroMovieEnd` line 657.
+  None of them needs `ForceSelectUnit`.
+- **`ForceSelectUnit` 008AAF30 calls 006485A0** (`__thiscall(hudRoot)`, 006485A0..00648644):
+  1. `+C0h` = 0, then 00648290 rebuilds the root's unit lists and 00645710 settles the cursor
+     `+C2h`/`+C4h`.
+  2. With an empty list (`+90h..+94h`) it calls 00645600(null), then pushes 34h, or 2Ah in
+     multiplayer, when the manager is idle.
+  3. Otherwise it calls 00645600(00644A60()), the list entry at cursor `+C4h` in list `+8Ch`, or
+     `+9Ch` when `+C2h` is set. Then, with a controlled unit, it tail-jumps to 00647040.
+  **Not bound:** it needs the HUD root's unit lists and cursor, and no measured mission reaches
+  it. USN04 calls it only from `luaZuikakuDeadMovie` and its end, which do not run within 4,500
+  frames.
+
+### Switch 1, `kMovieInterfacePushBound`: the 2Ch push (predictions written before the pairs)
+
+The binding:
+- The three MovCamNew rows (008B7850, 008B79F0, 008B7BA0) call `hud_movie_screen_camera_005cd240`
+  first. That runs `bsp::movie_screen_camera_005cd240` over the HUD's movie-screen state.
+- The first call pushes 2Ch with the controlled unit. `apply_pending_interface_0068aca0`
+  services it through the 2Ch arm, which gives the level-1 set `{37h}`.
+- The reseed, 005CC170 and the 1FFh session message stay records.
+- The rows stay UNIMPLEMENTED, because the keyframe store and the FOV that follow are unbound.
+
+**USN01 3200/3000** (the movie starts at t = 4.00 s, frame 80; `luaIn` at t = 20.1 s):
+1. One `movie interface 005CD1A0 engaged` line, then `applied as 2Ch: screens 37h`. At t = 20.1 s,
+   `applied as 25h` follows as before. The phase-2 movie at t = 91 s pushes nothing (`engages=1`).
+   `summary ... movie interface bound=1 calls=12 engages=1 pushes_2ch=1`.
+2. **Pick.**
+   - `UnitPickScreen::update` falls from 6,160 to about 5,516 (2 per frame for the 322 frames in 2Ch).
+   - Pick casts fall from 5,999 to about 5,355 (±30).
+   - `camera_basis` UNIMPLEMENTED falls from 805 to about 160 (frames 0..80 only).
+   - `HudMinimap::update` falls by the same 644.
+3. **Gameplay identical.** Screens 29h, 49h, 44h and 35h drive no gameplay on USN01.
+
+**USN04 4700/4500** (the movie starts at t = 4.00 s, frame 80; `luaWeHere` at t = 25.0 s):
+1. `applied as 2Ch` at frame 80, then `applied as 25h` at t = 25.0 s.
+2. **Screen updates.** The 25h screens stop for 420 frames:
+   - `UnitPickScreen::update` falls from 9,160 to about 8,320;
+   - pick casts fall from 8,999 to about 8,160;
+   - seat casts fall from 8,997 to about 8,160;
+   - `HudMinimap::update` falls from 9,160 to about 8,320.
+3. **The ShipCaptain is not stepped from 4 to 25 s**, because its step rides the minimap and
+   markers updates. After 25 s its sway and zoom state differ, so pick-ray endpoints may differ.
+   Pick land hits stay 0.
+4. **Weapon groups and roles.** Screen 2Eh's exit (005470A0) at 4 s and its enter (005494C0) at
+   25 s add player role releases and takes.
+5. **Gameplay identical**, because the first contact is at t = 93 s. The one route that could
+   move it is a role on the Lexington's weapon groups left released at 25 s. If rows move, only
+   the Lexington's own gunnery rows should move first.
+
+**Switch 1, pairs and verdict.** The same tree at eaa9a301b, switch only, `BSP_GUNNERY_RNG_STREAMS=1`
+and `BSP_DEATH_TABLE=1`, binaries `local\bin\mi_off` and `local\bin\mi_on`.
+
+| row | USN01 OFF | USN01 ON | USN04 OFF | USN04 ON |
+| --- | --- | --- | --- | --- |
+| `pair_diff` exit, gameplay | | 1, identical | | 1, identical |
+| deaths / hits / damage / shots | 7 / 150 / 2690.0 / 561 | same | 40 / 799 / 11621.4 / 6395 | same |
+| interface sequence | 20h, 2Eh, 25h | 20h, 2Eh, **2Ch** at frame 81, 25h | 20h, 25h, 25h | 20h, 25h, **2Ch**, 25h |
+| `UnitPickScreen::update` | 6,160 | 5,518 | 9,160 | 8,320 |
+| pick casts | 5,999 | 5,357 | 8,999 | 8,159 |
+| `camera_basis` UNIMPLEMENTED | 805 | 163 | 3 | 3 |
+| seat casts | 0 | 0 | 8,997 | 8,157 |
+| movie calls / engages / 2Ch pushes | | 12 / 1 / 1 | | 6 / 1 / 1 |
+
+Every numeric prediction held.
+
+Not predicted:
+- USN04's `mission gunnery aim: steps` fell from 228,484 to 228,101, and `held_retakes` rose
+  from 2 to 4. Both belong to screen 45h's seat, which does not run while 2Ch is up, and to the
+  2Eh exit and enter. No gameplay row moved.
+- USN02 was not paired. Its logs show both movies inside 9,000 frames (8 AddPosition calls), and
+  each is left through `SetSelectedUnit(Mission.Houston)` (lines 657, 767). Only the first pushes
+  2Ch.
+
+**Verdict: ON** (`kMovieInterfacePushBound = true`).

@@ -291,6 +291,15 @@ int binding_trampoline(lua_State* state) {
             host->set_avoid_all_ship_collision_008d0852(lua_toboolean(state, 1) != 0);
         return 0;
     }
+    // Packet cc9_movie_interface_and_reseed: every MovCamNew native starts with
+    // 005CD240 on the movie screen (008B7941 AddPositions, 008B7AE1 AddPosition,
+    // 008B7C92 SetFOV). Only that call is bound; the rows stay UNIMPLEMENTED for
+    // the keyframe store and the FOV that follow it.
+    if (bsp::game::kMovieInterfacePushBound && !host->error_replay()
+        && (dispatch_row.address == 0x008b7850u || dispatch_row.address == 0x008b79f0u
+            || dispatch_row.address == 0x008b7ba0u)) {
+        bsp::game::hud_movie_screen_camera_005cd240();
+    }
     if (select_unit_row) {
         // 008AB260: BSP_ObjectHandle_FromLuaTable(argument 0), then 00647300.
         // The entity table's `ID` names the created unit, as the objective rows
