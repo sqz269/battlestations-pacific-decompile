@@ -801,3 +801,32 @@ SetParty on any other entity stays the unimplemented record it was.
 - `written` 13 on USN04 and 16 on USN02;
 - pair_diff exit 1, with the two census lines and the 00928100 / 00928F50 native rows the only
   changes.
+
+### 11.7 The re-run pair, and the verdict
+
+- **Builds.** `tools/pair_export.py` of `9e5aaf488`: `local\ri_off` (SHA-256 prefix
+  `52F7C5EB76B4`) and `local\ri_on` (`4CBB89D2C0A3`, the switch flipped).
+- **Logs.** `local\ri2_{off,on}_{usn04,usn02}.log`. Each shows the 1600x900 fit, the immediate
+  present interval, its own module directory and the final COM release.
+- **`tools/pair_diff.py`: exit 1 on both, gameplay identical.**
+  - The death, plane and unit tables are identical: USN04 43 / 43 / 81 rows, USN02 21 / 0 / 32.
+  - The masked multiset of other lines shows 0 lines only OFF and 0 only ON.
+
+| row | USN04 4700/4500 | USN02 9200/9000 | predicted | held |
+| --- | --- | --- | --- | --- |
+| `races_fed` | 0 -> 24 | 0 -> 30 | 24 / 30 | yes |
+| `written` | 0 -> 13 | 0 -> 16 | 13 / 16 | yes |
+| `party_sets` | 0 -> 1 | 0 -> 1 | 1 / 1 | yes |
+| native rows | + `ScriptEntity::InitAll pass C mirror_identity` 13, + `ScriptEntity::set_party_race_lua_mirror` 1, - `LuaBindingCore::entity_set_party_vtable_2c` 1 | the same, with 16 | as predicted | yes |
+| CreateScript, SetThink, timetable counts | identical | identical | identical | yes |
+| `mission script state` Party | 0 both | 0 both | 0 | yes |
+
+**Verdict: `kSceneRaceAndScriptIdentityBound` ON.**
+- Scene units and markers carry the bag's Race into `thisTable`.
+- A script entity carries 00928100's Race, Party and Type, with SetParty's value kept as the image
+  keeps it.
+- No reference mission reads the fields, so nothing else moves.
+- **Open:**
+  - the marker mirror in `src/game_hosts_lua.cpp` still writes Party only; Race reaches markers
+    through the pass-A write instead, on a file this packet could not lease;
+  - SetParty on a non-script entity (`vtable[2Ch]` for units) is still a record.
