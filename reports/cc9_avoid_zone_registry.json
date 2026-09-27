@@ -1,0 +1,58 @@
+{
+  "packet": "cc9_avoid_zone_registry",
+  "doc": "docs/AVOID_ZONE_REGISTRY.md",
+  "calls": [
+    {"address": "007CE8FF", "native": "0041BC20", "function": "007CE040", "note": "unit+9B4h = y - layer(x, z), layer squadron+34Ch"},
+    {"address": "007CE92A", "native": "0041BC20", "function": "007CE040", "note": "unit+9B8h, not bound"},
+    {"address": "0099F9F3", "native": "0041BC20", "function": "0099F1C0", "note": "AvoidTerrain probe"},
+    {"address": "009A05DF", "native": "0041BC20", "function": "0099F1C0", "note": "AvoidTerrain probe"},
+    {"address": "009A0E1A", "native": "0041BC20", "function": "0099F1C0", "note": "AvoidTerrain probe"},
+    {"address": "009D36A9", "native": "0041BC20", "function": "009D3420", "note": "torpedo approach scan"},
+    {"address": "009D386D", "native": "0041BC20", "function": "009D3420", "note": "torpedo approach scan"},
+    {"address": "009D3A42", "native": "0041BC20", "function": "009D3420", "note": "torpedo approach over-land test"},
+    {"address": "009CFAD0", "native": "0041BC20", "function": "009CFA80", "note": "move-to, squadron+350h; not bound"},
+    {"address": "0041BC40", "native": "00417FA0", "function": "0041BC20", "note": "world to cell"},
+    {"address": "0041BC6D", "native": "0041BAE0", "function": "0041BC20", "note": "cell (ix+1, iz+1)"},
+    {"address": "0041BC97", "native": "0041BAE0", "function": "0041BC20", "note": "cell (ix, iz)"},
+    {"address": "007F1DA7", "native": "0041DF40", "function": "007F1D90", "note": "squadron+350h"},
+    {"address": "007F1DC5", "native": "0041DF40", "function": "007F1D90", "note": "squadron+34Ch, (1.5, true)"},
+    {"address": "004D5251", "native": "004C17D0", "function": "004D4DF0", "note": "the registry at scene load"},
+    {"address": "0082ADA3", "native": "004218E0", "function": "0082ADA0", "note": "the manager singleton"},
+    {"address": "0082ADC3", "native": "004218E0", "function": "0082ADC0", "note": "the manager singleton"},
+    {"address": "0082ADD1", "native": "004120D0", "function": "0082ADC0", "note": "group for desc+570h"},
+    {"address": "0041B4F9", "native": "004179D0", "function": "0041B4E0", "note": "group segment hit"}
+  ],
+  "coverage": [
+    {"routine": "0041BC20", "coverage": "complete"},
+    {"routine": "00417FA0", "coverage": "complete"},
+    {"routine": "0041BAE0", "coverage": "complete except the CRT invalid-parameter call at 0041BB25 (returns 0)"},
+    {"routine": "004C17D0", "coverage": "partial: the singleton and the default layer; the lifetime registration and the critical section are not modelled"},
+    {"routine": "00424680", "coverage": "complete (as data)"},
+    {"routine": "007CE040", "coverage": "partial: the 007CE8FF unit+9B4h sample only; 007CE92A (unit+9B8h) not bound"}
+  ],
+  "substitutions": [
+    {"what": "unit+9B4h", "is": "sampled when a consumer reads it, for every plane", "evidence": "the image writes it in the fixed step and skips a plane with a null unit+9D4h (007CE87F)"},
+    {"what": "a second scene load", "is": "restarts from the constructor's default layer", "evidence": "004248A0 appends without clearing; one mission per process in every measured run"}
+  ],
+  "corrections": [
+    {"was": "no reader of TerrainGridLayer +10h was found (docs/SCENE_CONTENTS_HOSTS.md)", "is": "0041BAE0 multiplies the cell byte by +10h: it is the grid's height scale", "evidence": "0041BB2D-0041BB3E"},
+    {"was": "the sea surface stood in for the avoid-zone layer", "is": "the stand-in returned exactly 0 at every sample on USN04", "evidence": "census line sea=[0.000 0.000] in AZ_OFF_9000.log and AZ_OFF_4500.log"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kAvoidZoneLayerSampleBound", "state": "ON",
+     "pair": "local/AZ_OFF_9000.log vs local/AZ_ON_9000.log, local/AZ_OFF_4500.log vs local/AZ_ON_4500.log, local/AZ_OFF_USN02.log vs local/AZ_ON_USN02.log"}
+  ],
+  "failed_predictions": [
+    {"row": "the sea stand-in's range", "predicted": "within about 1 m", "measured": "exactly 0.000", "why": "the stand-in returned the flat water level at every sample"}
+  ],
+  "no_ghidra_function": [
+    {"start": "006DFD90", "end_inclusive": "006DFD9D", "evidence": "ship vtable slot +218h (00CFC5E8, 00D09890 and six more); RET at 006DFD9D; INT3 006DFD8D-006DFD8F and from 006DFD9E"}
+  ],
+  "ledger_names_added": [
+    {"address": "00417FA0", "name": "BSP_AvoidZoneLayer_WorldToCell"},
+    {"address": "0041B4E0", "name": "BSP_AvoidZoneGroup_SegmentHitThunk"},
+    {"address": "006DFD90", "name": "BSP_ShipUnit_GetNavigationGroup"},
+    {"address": "0082ADA0", "name": "BSP_ShipClass_NavigationGroupAtDepth"},
+    {"address": "0082ADC0", "name": "BSP_ShipClass_NavigationGroup570"}
+  ]
+}

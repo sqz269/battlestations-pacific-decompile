@@ -3290,7 +3290,10 @@ struct GameUnitsHost::Impl {
     // scene `.nav`'s tan(70 deg) layer) at the fixed step's unit+9B4h writer
     // 007CE8FF, AvoidTerrain's 0099F9F3 / 009A05DF / 009A0E1A and the torpedo
     // approach's 009D36A9 / 009D386D / 009D3A42. OFF: the water surface stands in.
-    static constexpr bool kAvoidZoneLayerSampleBound = false;
+    // ON since the USN04 9000 / 4500 and USN02 pairs: the Yorktown's fighters
+    // now fly terrain avoidance over the eastern block; no death, hit or release
+    // moved, and USN02's ship rows are identical.
+    static constexpr bool kAvoidZoneLayerSampleBound = true;
     // Diagnostic census of both heights at every sample, in both builds.
     unsigned long long az_samples = 0;
     unsigned long long az_samples_layer_nonzero = 0;
