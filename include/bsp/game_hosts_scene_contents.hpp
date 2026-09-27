@@ -58,6 +58,12 @@ struct GameSceneEntityRecord {
     int type_id{-1};           // the symbol resolved through the library's enum
     std::string party_symbol;
     int party{-1};
+    // Packet cc9_scene_race_and_script_identity: the bag's `Race` (00CE8EE0), which
+    // 00927050's kind-1 arm stores at entity+58h (0092708F..0092709C) with no
+    // presence test. `properties Common` (global.enums) defaults it to Neutral 0,
+    // so every entity whose group derives from Common has one; -1 when the bag
+    // has none.
+    int race{-1};
     bool generated{false};     // 0046c550 returned AL != 0
     std::string gate_rule;     // which rule of the gate produced that answer
     bool created{false};       // the class creator ran and handed back an instance
@@ -306,6 +312,17 @@ ScenePathRegistry& scene_path_registry() noexcept;
 // identity on every death, hit and shot row, so it is ON. False keeps
 // the record path: `SceneContents::class_creator` stays UNIMPLEMENTED.
 inline constexpr bool kScenePathLandscapeCreatorsBound = true;
+
+// Packet cc9_scene_race_and_script_identity (docs/SENTITY_INIT_ATTACH_ORDER.md
+// section 11). True: (1) the mission frame hands each scene unit and each marker
+// its record's Race, which the Lua host's load-time pass A writes into
+// thisTable[key].Race (00928F50 for a unit, 00928100 for a marker; both read
+// entity+58h, which 00927050 set from the bag); (2) a CreateScript entity gets
+// 00928100's fields (Race -1, Party 2, Type SCRIPTENTITY 00D19034, no Name) on
+// the mission frame after its creation. SUBSTITUTION for (2): the image writes
+// them at the next InitAll's pass C, fixed-step row 12. False: neither is
+// written, as before.
+inline constexpr bool kSceneRaceAndScriptIdentityBound = false;
 
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
