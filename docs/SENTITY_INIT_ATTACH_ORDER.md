@@ -1552,3 +1552,84 @@ Worker cc9-init2, 2026-09-27, on 3ef1ec0c1. Ghidra was read only. This closes 19
   that switch's. Gameplay was identical in every pair.
 
 **Verdict: ON.**
+
+## 21. The init-passes leftovers of section 16.2 item 7 (packet `cc9_init_passes_leftovers`, read only)
+
+Worker cc9-hud2, 2026-09-27, base e52d819ff. Ghidra was read only, and **no binding lands**.
+Each item was read for a host counterpart and closed.
+
+### 21.1 The callers of the XLive slots `54h` and `184h` (V)
+
+The slots are reached only through **session message receivers** in 00777850, the dispatcher
+`BSP_Session_PumpStep` calls:
+
+| slot | receiver | message | posters of that message |
+| --- | --- | --- | --- |
+| `54h`, 00A43650 `XLiveSystem_ArmCountdown` | 0076D030 (00777B89, when the message `vtable[0Ch](0Bh)`) | 0Bh | `BSP_Session_BeginMissionReload` 00772610 (0077268D, from 004D7940); the constructor at 0076BC40..0076BC63 (no Ghidra function, no reference found) |
+| `184h`, 00A47B80 | 007746F0 (00778286, when `vtable[0Ch](0E4h)`) | E4h, built by 004C9780 | `BSP_OnlineStats_UpdateWrite` 004CAA90, the Lua native `EndSCore` 008AFFC0 (`scripts/global/commandhelpers.lua` 10599), and 007746F0 itself |
+
+- **0076D030** also stores `game+1EE3h` = (game+1FE4h != 0) and calls 004D7920(game, 0Ah): the
+  reload's state change.
+- **Single player:**
+  - a mission reload arms `+85h`, and `EndSCore` or an online-stats write sets `+88h`;
+  - the countdown's expiry 00A435E0 returns at 00A435F8/00A435FF because game+1FE4h is 0;
+  - neither posting path occurs in the idle runs of USN01, USN02 or USN04 (`EndSCore` never
+    called, no reload).
+- **No gameplay state; no binding.** The record `Session::global_object_step_00f8a2fc` stays.
+
+### 21.2 The deck-tick launch lag's demonstration (read)
+
+A demonstration needs a `LaunchSquadron` that returns **queued**. No mission the harness can run
+provides one:
+- **USN04** (`usn_19_coralus.lua`) calls it 4 times in 4,500 frames and 4 times in 9,000. All
+  return `(started)`, and its later calls are in phase 2, which does not start on this base.
+- **USN13** (`usn_13_truk.lua`) and **USN14** (`usn_14_phil_sea.lua`) launch once per carrier in
+  `luaInit` (lines 291/348/399 and 298/359/425), each on a fresh slot, so they start.
+- **The training grounds** (`traininggrounds/grounds.lua`, 64 calls) are group 0, which the
+  harness does not load (`docs/GAME_EXECUTABLE.md`, `--menu-select TRN1`).
+- The air-ops summary on USN04 shows `refills_3_4_to_5=0`, so no slot is ever refilling when a
+  launch arrives.
+
+**Outcome:** the lag stays shown by the read of section 12.1 only. A demonstration needs a
+mission that launches twice from one slot inside a refill; none is runnable today.
+
+### 21.3 The loopback drain's per-poster contract (V where cited, positions from the frame map)
+
+**The rule** (section 13.2): a local order routed before fan-out row 9 (`BSP_Session_PumpStep`)
+arrives in the same fixed step, which direct delivery reproduces exactly. One routed after row 9
+arrives in the next step's pump.
+
+**The frame positions.**
+- `BSP_Game_OnMove` step 18 runs 004C40A0, which holds the fixed-step driver 00875BB0 (job waves,
+  then fan-out rows 1..16), and only then the interface update 0068C1F0
+  (`docs/GAME_ON_MOVE_MAP.md`).
+- The world tick (step 20) follows.
+
+| kind | image enqueue site | posters (rel32 callers of the builder's caller) | position against row 9 |
+| --- | --- | --- | --- |
+| 58h `MT_COMMAND` | 007798D0, from 0077D600 `BSP_Entity_IssueCommand` (0077D7BE) | **Lua natives** (0089A660, 008A2BC0..008A7940: Navigator/Pilot orders) | **before** when the Lua runs in row 7 (queued calls) or row 8 (entity thinks). **After** when it runs from a Blackout callback: 005B9800 is screen 33h's update, inside 0068C1F0 (`docs/MISSION_BLACKOUT.md`) |
+| | | **AI commands** (00A02020, 00A13B60, 00A14DD0, 00A11FF0, 00A2F6F0) | **before**: the AI think is slot `+8h` of a fixed-step group 0 tick element (00A32D50, `docs/AI_GROUP_THINK.md`), in the job waves |
+| | | **air ops** (006CCDA0, 006CD350), **airfield** (006D2780) | **before**: the deck tick runs in unit motion, in the job waves (section 12.1) |
+| | | **HUD screens** (00527260/00526720/005241D0/00525250 of 29h, 0064D610 of 46h, 005F9AA0..005FAAE0, 0053A4D0, 00535B20, 0065D070, 00675C40) | **after**: 0068C1F0. All are input-driven on an idle run |
+| | | **squadron** 007F4BA0 (`SEntityInitSlotA4`) | **after**: InitAll is row 12 |
+| | | 007F31A0 (plane left map), shipyard 00846320/00844FC0, 0074A990, 0077F7B0, 007C3EA0, 00894440, 004650F0 | not placed |
+| | | 00816E30, 008358D0, 00835C70, 008438B0, 00744A90 (receivers that re-issue) | inside row 9's drain |
+| | | 0046AAB0 (scene load), 00853E10 (serialize) | outside the step |
+| 5Eh fire target | 00835740, from 00835860 `BSP_WeaponDirector_SetFireTarget` (0083589E) | the Lua `SetFireTarget` 0089A8B0; 004643A0; the per-director tick 009F5DA0 (vtable slot, caller unread) | Lua as above; 009F5DA0 not placed |
+| 5Ah director | 0071C5E5, 0071DA50, 0071DD30.., 00835940.. | 00857C80, 008A6C30 (Lua), the director's own senders | not placed beyond the Lua rule |
+| 8Fh pass-side | 009D66B0, from 009D8C60 (009D8CB0) | 009F0100 <- 009F4D10 `BSP_ShipAi_PublishOrderSlot` | **not placed**: where the ship AI controller runs in the step was not read |
+
+**What this means for the host:**
+- The known after-row-9 posters are the HUD screens, Lua run from Blackout callbacks, and
+  InitAll's row 12.
+- Of these, only the Blackout path posts on idle runs: USN01's `luaIn` (at 20.1 s,
+  `usn_1_marshall.lua` 654) issues orders from a Blackout callback, and `luaMoveToPh2` would on
+  USN04 if phase 2 started. The host delivers those orders directly, **one
+  step earlier** than the image.
+- A host-wide queue would be needed only for these. The ship AI's 8Fh and the per-director tick
+  must be placed before anything is concluded about them.
+
+### 21.4 Bodies without a Ghidra function
+
+- 0076BC40..0076BC63: message 0Bh's constructor (vtable 00D0314C). RET 4 at 0076BC61, INT3
+  before and after. No rel32 or absolute reference was found.
