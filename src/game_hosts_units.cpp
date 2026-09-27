@@ -71,6 +71,7 @@
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
 #include "bsp/ship_ai_rudder_hop.hpp"
+#include "bsp/unit_group_slot_swap.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
@@ -1939,8 +1940,70 @@ struct GameUnitsHost::Impl {
     }
     // 0070DB60 BSP_UnitGroup_SwapSlotsByDistance. A record until packet
     // cc9_ship_motion_tail's part 8b binds the reconstruction.
-    void run_formation_slot_swap_0070db60(std::int32_t /*group*/) {
-        record("UnitGroup::swap_slots_by_distance_0070db60", 0x0070db60u);
+    void run_formation_slot_swap_0070db60(std::int32_t group) {
+        if constexpr (!kFormationSlotSwapBound) {
+            record("UnitGroup::swap_slots_by_distance_0070db60", 0x0070db60u);
+            return;
+        } else {
+            if (group < 0 || static_cast<std::size_t>(group) >= formation_groups.size()) return;
+            const std::size_t g = static_cast<std::size_t>(group);
+            if (!slot_swap_membership_logged) {
+                slot_swap_membership_logged = true;
+                for (std::size_t k = 0; k < formation_groups.size(); ++k) {
+                    std::string names;
+                    for (const auto& m : formation_groups[k].members) {
+                        if (m.entity == 0 || m.entity > slots.size()) continue;
+                        if (!names.empty()) names += ",";
+                        names += slots[m.entity - 1]->row.name;
+                    }
+                    log.notef("formation group %zu: leader=%s type=%d column=%d members=[%s]", k,
+                        formation_groups[k].leader < slots.size()
+                            ? slots[formation_groups[k].leader]->row.name.c_str() : "-",
+                        formation_groups[k].type_04fc, formation_groups[k].column, names.c_str());
+                }
+            }
+            if (slot_swap_runs_by_group.size() < formation_groups.size()) {
+                slot_swap_runs_by_group.resize(formation_groups.size(), 0);
+                slot_swaps_by_group.resize(formation_groups.size(), 0);
+                slot_swap_gated_by_group.resize(formation_groups.size(), 0);
+            }
+            FormationGroup& fg = formation_groups[g];
+            struct Host final : bsp::UnitGroupSlotSwapHost {
+                Host(Impl& o, std::size_t leader) : owner(o), leader_(leader) {}
+                std::uint32_t member_class_0538(std::uint32_t entity) override {
+                    if (entity == 0 || entity > owner.slots.size()) return 0;
+                    return static_cast<std::uint32_t>(owner.slots[entity - 1]->row.type_id);
+                }
+                bool decompose_against_leader_00811180(std::uint32_t entity, float& across,
+                                                       float& along) override {
+                    if (entity == 0 || entity > owner.slots.size() ||
+                        leader_ >= owner.slots.size()) return false;
+                    const float* p = owner.slots[entity - 1]->world.data() + 12;  // +0FCh
+                    const float world[3] = {p[0], p[1], p[2]};
+                    const bsp::ShipAiWakeDecomposition d =
+                        bsp::ship_ai_wake_decompose_00811180(owner.slots[leader_]->wake, world);
+                    across = d.across;
+                    along = d.along;
+                    return d.valid;
+                }
+                Impl& owner;
+                std::size_t leader_;
+            } host_(*this, fg.leader);
+            const std::uint32_t controlled =
+                controlled_bound ? static_cast<std::uint32_t>(controlled_index + 1) : 0u;
+            const bsp::UnitGroupSlotSwapResult r = bsp::unit_group_swap_slots_by_distance_0070db60(
+                fg.members, fg.column, fg.type_04fc, controlled, host_);
+            ++slot_swap_runs_by_group[g];
+            slot_swaps_by_group[g] += static_cast<unsigned long long>(r.swaps);
+            if (r.gated) slot_swap_gated_by_group[g] = 1;
+            slot_swap_pairs += static_cast<unsigned long long>(r.pairs_compared);
+            slot_swap_pairs_invalid += static_cast<unsigned long long>(r.pairs_skipped_invalid);
+            done("UnitGroup::swap_slots_by_distance_0070db60", 0x0070db60u);
+            if (r.swaps > 0) {
+                log.notef("formation slot swap: group=%zu swaps=%d t=%.2f", g, r.swaps,
+                    static_cast<double>(summary.simulated_seconds));
+            }
+        }
     }
 
     // Packet cc9_units_contracts. The count of the class's Damage.Sections, the
@@ -3417,6 +3480,14 @@ struct GameUnitsHost::Impl {
     unsigned long long tail_slot_swap_calls = 0;
     unsigned long long tail_expiry_calls = 0;
     float formacio_update_interval = -1.0f;   // -1 until read
+    // Packet cc9_ship_motion_tail part 8b: 0070DB60 on the group the expired
+    // leader timer names. OFF: a record.
+    static constexpr bool kFormationSlotSwapBound = false;
+    std::vector<unsigned long long> slot_swap_runs_by_group;
+    std::vector<unsigned long long> slot_swaps_by_group;
+    std::vector<unsigned char> slot_swap_gated_by_group;
+    unsigned long long slot_swap_pairs = 0, slot_swap_pairs_invalid = 0;
+    bool slot_swap_membership_logged = false;
     unsigned long long h9b8_writes = 0;
     double h9b8_min = 0.0, h9b8_max = 0.0;
     std::vector<unsigned char> squadron_list24_pushed;
@@ -18648,6 +18719,26 @@ void GameUnitsHost::report() {
                             host.squadron_list24_pushes, n6, multi,
                             host.h9b8_writes, host.h9b8_min, host.h9b8_max);
                         static_cast<void>(ships);
+                    }
+                    {
+                        // Packet cc9_ship_motion_tail: the tail's census, both builds.
+                        std::string per;
+                        for (std::size_t k = 0; k < host.slot_swap_runs_by_group.size(); ++k) {
+                            char b[80];
+                            std::snprintf(b, sizeof(b), "%s%zu:runs=%llu,swaps=%llu%s",
+                                per.empty() ? "" : " ", k, host.slot_swap_runs_by_group[k],
+                                host.slot_swaps_by_group[k],
+                                host.slot_swap_gated_by_group[k] ? ",gated" : "");
+                            per += b;
+                        }
+                        host.log.notef("summary mission ship motion tail: bound=%d swap_bound=%d "
+                            "slot_swap_calls=%llu expiry_calls=%llu pairs=%llu invalid=%llu "
+                            "groups=%zu [%s]",
+                            GameUnitsHost::Impl::kShipMotionTailBound ? 1 : 0,
+                            GameUnitsHost::Impl::kFormationSlotSwapBound ? 1 : 0,
+                            host.tail_slot_swap_calls, host.tail_expiry_calls,
+                            host.slot_swap_pairs, host.slot_swap_pairs_invalid,
+                            host.formation_groups.size(), per.c_str());
                     }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;

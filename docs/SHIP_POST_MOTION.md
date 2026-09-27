@@ -273,3 +273,54 @@ final COM release.
 **Verdict: `kShipMotionTailBound` ON.** The wake now carries the image's yaw rate, from the
 ordered rudder through `00811890`. The followers' speed blend reads it, and every moved row stays
 inside its band.
+
+## 13. Part 8b: 0070DB60 reconstructed from the listing (`kFormationSlotSwapBound`, committed OFF)
+
+`src/unit_group_slot_swap.cpp` / `include/bsp/unit_group_slot_swap.hpp`. It was read from the
+Ghidra listing, x87 included. Section 11's two open points are settled:
+- **The pair order is every i < j.** The outer loop runs i from 0 (`[ESP+2Ch]` holds i + 1 and
+  the test at `0070E37D` is `ESI = ECX − 1 < count`) and skips an empty member (`0070DBC7`). The
+  inner loop runs j from i + 1 (`0070DBAB` / `0070E355`) and skips an empty member (`0070DBF8`)
+  or a different class descriptor `+538h` (`0070DC06`). Member i is re-read on every inner step
+  (`0070DBFE`), so a swap made for (i, j) is seen by (i, j + 1).
+- **The pattern columns.** `[ESP+14h]` and `[ESP+20h]` are dword indices 13·i and 13·j (34h
+  bytes = 13 dwords), so `[EBX + (column + 13k)·4 + 28h]` is member k's `+10h` (across) and
+  `+38h` is its `+20h` (along), both at the group's column `+500h` (`0070E15B`-`0070E18D`).
+- **The positions.** They come from `00811180` on the leader `[group+14h]` for each member's
+  `+0FCh` (`0070E066`, `0070E156`). The second out-parameter is across and the third is along
+  (`include/bsp/ship_ai_formation.hpp`).
+- **The test.** Four distances are computed:
+  - `d_ii` `[ESP+40h]`, i against its own slot;
+  - `d_ij` `[ESP+24h]`, i against j's slot;
+  - `d_ji` `[ESP+44h]`, j against i's slot;
+  - `d_jj` `[ESP+3Ch]`, j against its own slot.
+
+  Each difference is a stored float. The squared sum is a stored float, and above the double
+  1e−10 at `[00CE3820]` it goes through `00BF7030` (sqrt), else it is 0. Then
+  `0070E2FD`-`0070E321` compare the stored floats `kept = d_jj + d_ii` and
+  `swapped = d_ji + d_ij`, and `JBE` skips the swap unless `kept > swapped`.
+- **The swap** (`0070E323`-`0070E33E`) trades the entity dwords and the `+30h` dwords (a float,
+  moved as `FLD`/`MOVSS`). The pattern columns stay with the slots, and `[group+14h]` (the
+  leader) is not touched.
+- **The gates.** The group type `+4FCh` == 18h (`0070DB69`), and any member's entity equal to
+  `[00E188D8]` (`0070DB90`). The second gate also matches an empty member when no unit is
+  controlled.
+- **Host divergence (labelled).** When `00811180` has no leg to measure along, the image reads
+  stale stack slots. The host skips that pair and counts it as `invalid`.
+
+**The binding.** `run_formation_slot_swap_0070db60` calls it on `formation_groups[unit+284h]`,
+with the class `row.type_id` and the member's world position `unit+0FCh`. It logs the group
+membership once, and a summary line gives the runs, swaps and gate per group.
+
+### Predictions (written before the runs)
+
+The pairs are `local\ss_off` against `local\ss_on`, from `8a` ON, with the switch only, streams
+and death table on.
+
+| row | USN04 9200/9000 (E2) | USN02 9200/9000 |
+| --- | --- | --- |
+| `0070DB60` | record 46 -> concrete 46 | same |
+| per-group runs and swaps | the group holding the controlled unit (the Lexington's, if it is the one the timer runs) `gated`, 0 swaps; a group without it swaps 0..20 times, most at the first run (t = 0) | the DeRuyter group `gated`; another group 0..20 swaps |
+| follower stations | move after the first swap, if any | same |
+| deaths, hit records | 45..57 aircraft deaths, 780..900 hit records, no ship sinks | 18..26 deaths, 380..500 hit records, the failure between 30 and 60 s |
+| identical | everything, if the only group whose timer runs is gated | same |
