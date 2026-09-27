@@ -603,3 +603,7 @@ are called by the Lua host since 27ab3a4b4 (20 / 20 on USN04, 0 on USN02).
   launches have a home base in the host.
 - **Not isolated:** on the sink-descent pair, Kawakaze's first damage moved 2 s before any kill.
   If it recurs, check the heeling wrecks' hull geometry against rounds first.
+
+## The sink-descent pair's pre-kill move, isolated (packet `cc9_sink_pair_prekill_move_read`)
+
+Moved to docs/WRECK_MOTION_AVOIDANCE.md.
