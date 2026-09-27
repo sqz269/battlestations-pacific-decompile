@@ -769,3 +769,46 @@ Not predicted:
   2Ch.
 
 **Verdict: ON** (`kMovieInterfacePushBound = true`).
+
+### Switch 2, `kMovieReseedBound`: the reseed of streams 1 and 0 (predictions written before the pairs)
+
+**What the image does (`docs/RANDOM_STREAMS.md` section 1, V):**
+- 005CD1A0 seeds stream 1 = 12345 and stream 0 = 54321 through 00BD2FD0, before the 2Ch push.
+- Three later seeds follow, all on the path switch 3 would take:
+  - the movie camera's constructor 0079D020 (run inside the same engage by 005CC170) seeds
+    stream 1 = 123;
+  - its first step with dt > 0, 00798C80, seeds 12345 and 54321 again;
+  - its destructor 0079A260 seeds stream 1 from wall-clock milliseconds when the ShipCaptain
+    replaces it at `SetSelectedUnit`.
+- So the image's gameplay stream after the first movie is not reproducible. The reseed at
+  005CD1A0 is only the first of those writes.
+
+**What the host has:**
+- No stream-numbered gameplay generator. The gunnery host's shared LCG
+  (`random_range_00bd2f10`) is the labelled stand-in for stream 1, and stream 0 has none.
+- Under `BSP_GUNNERY_RNG_STREAMS=1`, every gunnery draw is key-local (splitmix of its key), so
+  nothing reads the shared LCG.
+- The binding `GameGunneryHost::reseed_shared_stream_00bd2fd0` sets the LCG state to 12345 for
+  stream 1 and does nothing for stream 0. **It reaches only the default shared path.**
+
+**Predictions, streams ON** (USN01 3200/3000 and USN04 4700/4500, the protocol pairs):
+- Identity on every gameplay, per-entity and native row, apart from these:
+  - `MovieInterface::seed_random_stream` 00BD2FD0 UNIMPLEMENTED calls goes from 2 to 1;
+  - `MovieInterface::seed_random_stream_1` 005CD1B0 concrete appears with calls=1;
+  - the summary gets `reseed_bound=1 stream1_reseeds=1`.
+- `pair_diff` exit 1.
+
+**Prediction, default path** (streams unset). This is **not a reference protocol**: it only shows
+what the reseed reorders. It is one USN04 4700/4500 pair.
+- From t = 4.0 s every shared draw is reordered: fire stagger, hull damage, hit effects, aim
+  error, ship-AI torpedo, death mode and delay, bullet throw, torpedo gyro, component failure and
+  ranging.
+- Gameplay moves broadly (exit 3). Expected bands against its own OFF:
+  - deaths within ±25%;
+  - hit records and damage within ±20%;
+  - shots within ±10%;
+  - the first hit within ±10 s of OFF's;
+  - death rows differ in membership and times.
+- The clock offset stays 0, because the step sequence is unchanged.
+- The switch is judged on the streams-ON pairs. The default pair is recorded as the reorder
+  it causes.

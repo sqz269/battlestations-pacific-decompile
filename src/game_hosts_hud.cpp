@@ -176,6 +176,7 @@ struct GameHudHost::Impl {
     unsigned long long movie_calls{0};
     unsigned long long movie_engages{0};
     unsigned long long movie_pushes{0};
+    unsigned long long movie_reseeds{0};
     bsp::UnitSelectableInputs selectable_inputs_00645060(std::size_t unit);
 
     void record(const char* method, std::uint32_t address) {
@@ -1507,7 +1508,17 @@ namespace {
 class MovieInterfaceBinding final : public bsp::MovieInterfaceHost {
 public:
     explicit MovieInterfaceBinding(GameHudHost::Impl& owner) : owner_(owner) {}
-    void seed_random_stream(int, std::uint32_t) override {
+    void seed_random_stream(int stream, std::uint32_t seed) override {
+        // 005CD1B0 / 005CD1BC. Switch 2: the gunnery host's shared stand-in
+        // takes stream 1's seed (a labelled substitution there); stream 0 has
+        // no host generator and stays a record.
+        GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+        if (kMovieReseedBound && gunnery != nullptr
+            && gunnery->reseed_shared_stream_00bd2fd0(stream, seed)) {
+            ++owner_.movie_reseeds;
+            owner_.done("MovieInterface::seed_random_stream_1", 0x005cd1b0u);
+            return;
+        }
         owner_.record("MovieInterface::seed_random_stream", 0x00bd2fd0u);
     }
     void push_interface_request(int interface_id, const void*) override {
@@ -3106,9 +3117,10 @@ void GameHudHost::report() {
         kSetSelectedUnitBound ? 1 : 0, impl.select_calls, impl.select_accepted,
         impl.select_pushes);
     impl.log.notef("summary mission hud movie interface (packet cc9_movie_interface_and_reseed, "
-        "005CD240 / 005CD1A0): bound=%d calls=%llu engages=%llu pushes_2ch=%llu",
+        "005CD240 / 005CD1A0): bound=%d calls=%llu engages=%llu pushes_2ch=%llu reseed_bound=%d "
+        "stream1_reseeds=%llu",
         kMovieInterfacePushBound ? 1 : 0, impl.movie_calls, impl.movie_engages,
-        impl.movie_pushes);
+        impl.movie_pushes, kMovieReseedBound ? 1 : 0, impl.movie_reseeds);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is
