@@ -982,7 +982,7 @@ retirement lands first and the hooks follow in the next landing.
 | `skipped_pending` | 21 | 0 | 32 | 0 |
 | `squadron_upgrades` / `wing_deferred` | 20 / 40 | 20 / 40 | 0 / 0 | 0 / 0 |
 | InitAll calls / with work / entities / pushes | 4,513 / 13 / 86 / 86 | identical | 9,009 / 5 / 34 / 34 | identical |
-| deaths, hit records | 43, 788 | identical | 21, 354 | identical |
+| deaths, hit records | 43, 788 | identical | 21, 566 | identical |
 
 **Every prediction held. Verdict: ON.** `create_units` is the one push for units. The routes and
 the load walk look its node up. The squadron routes annotate it, and the markers still push at
