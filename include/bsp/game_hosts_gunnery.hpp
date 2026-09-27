@@ -302,7 +302,7 @@ inline constexpr bool kTorpedoStockBound = true;
 // rows in this installation's .scn files is "", as are the ship.props and
 // landfort.props defaults. A savegame bag (mode 2) could still carry one; the
 // harness never loads one.
-inline constexpr bool kTorpedoSupplyTickBound = false;
+inline constexpr bool kTorpedoSupplyTickBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's

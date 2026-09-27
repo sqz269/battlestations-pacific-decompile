@@ -599,3 +599,28 @@ barrel order (0081DD10..0081DD44). It picks one with `trunc(00BD2F10(stream 1, 0
 | USN04 `pair_diff` | 1: no area, and no ship fires a torpedo, so no stock is ever set |
 | USN04 `torpedo supply` | `in_area=0 sets=0 unloaded=0`, `ticks` nonzero |
 | both | the torpedo stock lines (`sets`, `spent`, `emptied_barrels`, `ships_dry`) identical |
+
+### The pairs, measured, and the verdict
+
+- OFF is this tree's `build\` at `1d3d8b69b`; ON is `pair_export --flip
+  kTorpedoSupplyTickBound=true` of the same commit (SHA-256 `59719485BD9D`).
+- Both sides ran with the streams and the death table on. Logs: `local\st_{off,on}_{usn02,usn04}.log`.
+- Every log was checked for its module directory and its final COM release line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 `pair_diff` | - | 1, gameplay identical | 1 | holds |
+| USN02 `torpedo supply` | ticks 0 | ticks 285540, in_area 0, sets 0, unloaded 0 | in_area 0, ticks nonzero | holds |
+| USN02 torpedo stock | sets 18, spent 187, emptied 34, dry 2 | the same | identical | holds |
+| USN04 `pair_diff` | - | 1, gameplay identical | 1 | holds |
+| USN04 `torpedo supply` | ticks 0 | ticks 81000, in_area 0, sets 0, unloaded 0 | in_area 0, ticks nonzero | holds |
+| USN04 torpedo stock | sets 0 | sets 0 | identical | holds |
+
+**Verdict: `kTorpedoSupplyTickBound` ON.** The read is the evidence, and the census proves the tick
+runs for every ship.
+- **The area arm (steps 5 and the resupply) is game-validated nowhere.** No fresh mission in this
+  installation registers an area. Only a savegame bag (00809BC0's mode 2) reaches 00809880 without
+  a non-empty `RepairZoneArea`. Validating the arm needs a savegame whose `_entities` carry a
+  repair zone.
+- **The unload (0081DCB0) is unreached on both missions.** No USN02 ship has stock below loaded,
+  and USN04 sets no stock.
