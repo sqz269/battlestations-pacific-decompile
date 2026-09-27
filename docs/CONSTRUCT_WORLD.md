@@ -1728,3 +1728,60 @@ other lines is empty.
 **Verdict: ON.** `create_units` is now a pusher, as 00928630 is in the image. The Lua routes'
 pushes and the load walk's unit pushes are duplicates the dedup list skips. Retiring them is
 cc9-init-passes' next step. The wing-construction contract (section 9.3) remains open.
+
+## 27. The units host's init-pass gaps, read (packet `cc9_units_init_pass_gaps`)
+
+2026-09-27, worker cc9-units2, on main 34191e927. Ghidra was read only. This covers the rows of
+docs/SENTITY_INIT_PASSES.md section 4 that name `src/game_hosts_units.cpp`, each checked against
+the image and the host before any binding. The result: no row has a gameplay effect the units
+file can bind alone on the reference missions. One row is a real candidate that needs the Lua
+host's pass C (below). So no switch is added.
+
+| row | image | host | verdict |
+| --- | --- | --- | --- |
+| ship pass C immediate rudder `0080DA00` (`0081FD6E`) | inside `0081F980`'s holder-kind-3 branch (`SEntity_GetSavedEntityLuaData`, the entity's saved Lua table; docs/ENTITY_LIFECYCLE_TAILS.md, kind 3 = the `_entity` table), next to `camoColor`, `leakManager` and the weapon-director state | scene creation makes the kind-1 property bag | **not reached on scene creation**: a save/restore path, no gap |
+| ship pass C immediate throttle | kind-1 branch: the bag's StartSpeed -> `0080D9B0` | host (`SceneStartSpeed`) | covered |
+| ship pass C torpedo stock `0081F8B0` (`008201B8`, argument class+7A0h `MaxTorpedoStock`) | after the kind-1/2 branch: with fewer live torpedoes (`00810E90`) than the stock, spare unit+104Ch = stock − live; else unload (`0081DCB0`) down to the stock; then re-arm every torpedo barrel (weapon type 7) whose timer sits at the FLT_MAX sentinel (`00D7A278`) through `0072D520` | no spare field; the gunnery host re-arms tubes on its own clock, and the HUD's `00815850` gauge is a record | **contract for the gunnery owner** (below); a units-side store alone changes nothing |
+| squadron avoid-zone layers `007F1D90` (pass B) and `0041DF40` (pass C, `007F524A` / `007F5268`) | pass C re-selects both: +350h by the bag's slope value (flag 0), +34Ch by (1.5, true) again | +34Ch sampled (`kAvoidZoneLayerSampleBound`); +350h's only reader is the move-to's `009CFAD0`, which the host does not run (docs/AVOID_ZONE_REGISTRY.md) | covered; the 0041DF40 census is now four call sites, all two pairs of the same queries |
+| squadron pass C initial command `0077D600` (`007F4E9E`) | only when the squadron has no current command (`007F4E11`) and lobby mode != 2: if its first member's +900h is 6 (on the water) a `stop` (`00E08F88`) at its position (`007EF8F0` / `00468560`), else if it has a home base (+404h, written by `007F1C00` `SetHomeAirBase`) a `moveto` (`00E08F68`) toward that entity | the host issues each unit's authored `Command` token at load and the scripts' orders; nothing issues this default | **gameplay candidate**, not bound: it needs the squadron's pass C (the Lua host's InitAll) and the squadron's current-command state; see the plan below |
+| plane pass B physics body `00C5D580` | `007D6137` | the host's plane motion has no rigid body (`plane_flight.cpp`); the ship hull body uses `00C5D580` (`dyn_body_creation.cpp`) | not a units-file row while planes fly on the host's own law |
+| plane pass B flight-controller setters `007D9E80` (`007D64E5`, `007D654D`) / `007D9EE0` (`007D659B`) | the bag's `Velocity` (km/h, over the double 3.6 at `00D06588`) and `VelocitySI`, each capped by class+18Ch, and `Vel3D` set the initial speed | the host seeds the class travel speed (`007C6340`'s rule) | only a plane with its own scene bag reads them; wing planes have none, and neither reference mission authors a plane row with these keys; not bound |
+| actuators `007EABC0`, neighbours `007E1E20` | built at `007D61AB`, `007D620E` | the torpedo release uses `007EABC0`'s block (`torpedo_release_spawn.cpp`); the neighbour list is the host's own squadron registry | covered in effect |
+| firing-gun registration `007C74A0` (`007D7038`) | the plane joins the firing list on lastGunState +C35h | `kPilotGunfireAvoidanceBound` (the host's gunFire byte +BC9h stands in, labelled) | covered |
+| the `00BD2F10` draw (`007D6247`) | U(2.0, 4.0) (`00CE3958`, `00CE3D34`) into unit+C44h | its readers are `007CBFA0` `BSP_Plane_GroundRollStep` (`007CC003`..`007CC017`), the ground-roll arm; the host counts that arm but runs no roll | render/take-off only; the draw's stream position matters only for a shared generator, and the host's streams are keyed |
+| `Skill` `00927A80` (`007D65AA`) | the bag's skill | docs/PILOT_SKILL_LEVEL.md; the host's `set_skill_level_007b8ae0` | covered by the skill packet |
+
+### Contract for the gunnery owner (cc9-ships): the torpedo stock
+
+- **At a ship's pass C,** `0081F8B0(class+7A0h)` sets spare unit+104Ch = MaxTorpedoStock minus the
+  loaded torpedo barrels (`00810E90` counts barrels whose timer is below FLT_MAX). A barrel at
+  the sentinel is empty and re-armed only by `0081F8B0`, which runs from pass C and from the
+  supply tick `00825450`. So the spare is the ship's whole reserve.
+- **The Lua property `TorpedoStock`** (`00815870`) reads spare + loaded.
+- **The host needs:** a spare per ship (this installation's `MaxTorpedoStock`, e.g. Fletcher 30,
+  Fubuki 27, Mogami 18), a tube that goes to the sentinel after it fires when no spare is left,
+  and the re-arm that spends the spare. The units host can store the spare and answer
+  `00815850` once the gunnery host says how many barrels are loaded. The consumer, where a fired
+  tube waits for a spare, is the gunnery file's `[gun+3F0h]->vtable[1F4h]/[1F8h]`
+  (docs/GUN_SHOT_CADENCE.md, `unit_ammunition_provider`).
+
+### Plan for the squadron's initial command (the one candidate)
+
+1. **The hook.** The Lua host's pass C for a squadron node (`SEntity::InitAll pass C init_slot_a4`,
+   cc9-init-passes' file) calls a units-host entry, `squadron_initial_command_007f4e11(leader)`,
+   at the image's point: after pass A and B, once the node's home base is known.
+2. **The test.**
+   - The squadron's current command (`007F4E11`, the command controller's current entry) must be
+     empty. The host keeps command rows per slot (`GameCommandRow`); "empty" is no row issued to
+     the leader yet.
+   - Lobby mode is 0 in single player.
+3. **The two arms** through `issue_script_command`:
+   - first member on the water: `stop` at its pose;
+   - else, with a home base: `moveto` with the home entity as the object target.
+4. **Home base.** It is set for the air-ops launches (`air_operations.cpp`, `home=` on the
+   launch line), and from a squadron bag's `HomeBase` key (`00CF8820`) at pass C.
+5. **Predictions to write:**
+   - USN04's four air-ops launches get a `moveto` to their carrier unless their launch already
+     commands them;
+   - USN02's Kingfisher row (on the water) gets a `stop` unless it carries an authored command.
+   - Gameplay moves only through those squadrons.

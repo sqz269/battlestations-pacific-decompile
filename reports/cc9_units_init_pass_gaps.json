@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_units_init_pass_gaps",
+  "doc": "docs/CONSTRUCT_WORLD.md",
+  "calls": [
+    {"address": "0081FD6E", "native": "0080DA00", "function": "0081F980", "note": "immediate rudder, holder kind 3 (saved Lua table) branch only"},
+    {"address": "008201B8", "native": "0081F8B0", "function": "0081F980", "note": "torpedo stock from class+7A0h after the kind-1/2 branch"},
+    {"address": "007F524A", "native": "0041DF40", "function": "007F4BA0", "note": "pass C re-selects +350h"},
+    {"address": "007F5268", "native": "0041DF40", "function": "007F4BA0", "note": "pass C re-selects +34Ch with (1.5, true)"},
+    {"address": "007F4E9E", "native": "0077D600", "function": "007F4BA0", "note": "initial command: stop on the water or moveto home base, only with no current command"},
+    {"address": "007D6247", "native": "00BD2F10", "function": "007D5D20", "note": "U(2,4) into +C44h, read by the ground roll 007CBFA0"},
+    {"address": "007D64E5", "native": "007D9E80", "function": "007D5D20", "note": "bag Velocity / 3.6 capped by class+18Ch"},
+    {"address": "007D659B", "native": "007D9EE0", "function": "007D5D20", "note": "bag Vel3D"},
+    {"address": "007D7038", "native": "007C74A0", "function": "007D5D20", "note": "firing-gun registration"}
+  ],
+  "coverage": [
+    {"routine": "0081F980", "coverage": "partial: the holder-kind dispatch 0081FA60..008201B8 read"},
+    {"routine": "0081F8B0", "coverage": "complete (read)"},
+    {"routine": "007F4BA0", "coverage": "partial: 007F4E06..007F4EA3 (initial command) and 007F5239..007F5273 (layers) read"},
+    {"routine": "007D5D20", "coverage": "partial: 007D6137..007D65AA and the listed call sites read"}
+  ],
+  "substitutions": [],
+  "corrections": [
+    {"was": "ship pass C's immediate rudder 0080DA00 is a missing gameplay step (docs/SENTITY_INIT_PASSES.md section 3)", "is": "it is in 0081F980's holder-kind-3 branch (the saved-entity Lua table), not reached by scene creation", "evidence": "0081F980 decompile: the Lua reads sit under *(holder+4) == 3 after SEntity_GetSavedEntityLuaData; the kind-1 branch runs only the throttle"}
+  ],
+  "switches": [],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
