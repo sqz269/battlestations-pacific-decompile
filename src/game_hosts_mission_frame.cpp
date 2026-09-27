@@ -133,8 +133,9 @@ constexpr bool kWorldActiveByteBound = true;
 // (00D7A308); a miss past the deadline with a live effect stops it
 // (00867B10). Two labelled stand-ins: the part test answers true for every
 // list-6 entity (no units-host size entry for +348h yet), and list 24 is empty
-// (no host registrar fills it). False: one record per call, as before.
-constexpr bool kScanProximityBound = false;
+// (no host registrar fills it). False: one record per call, as before. ON by
+// the verdict: USN04 and USN02 pairs identical but for the scan row (section 12).
+constexpr bool kScanProximityBound = true;
 
 // Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the

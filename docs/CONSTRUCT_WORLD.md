@@ -388,3 +388,29 @@ Two entries would retire both stand-ins:
 | every other native row, per-entity rows, death rows, gunnery and summary lines | identical, zero clock offset | identical |
 
 The ignored counters are `ship avoidance search refills` and `pretranslate`.
+
+## 12. Part 3 pairs and verdict
+
+One tree, 37ac200de, with `local\bin\sp_off` against `local\bin\sp_on`. The two builds differ
+only by the switch. Both variables were set. All four logs show the fit line, the module
+directory in this tree and the final COM release. The USN04 OFF run ended with a present
+failure (`exit_code=1`, `presents_skipped=7`) after all 4,500 mission frames. That is the
+device-lost ending the rules say not to reject, and its mission rows are complete.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| native table rows | 1,537 | 1,537 | 1,438 | 1,438 |
+| `WarningManager::scan_proximity` | UNIMPLEMENTED 55 | concrete 55 | UNIMPLEMENTED 111 | concrete 111 |
+| ships scanned | 0 | 990 (55 x 18) | 0 | 3,524 (under 111 x 32; ships died) |
+| records created | 0 | 18 | 0 | 32 |
+| hits, expiries | 0, 0 | 0, 0 | 0, 0 | 0, 0 |
+| death rows, gunnery | 41, 727 hits | identical | 22, 440 hits | identical |
+
+**Every prediction held.** A masked whole-log diff leaves only these lines:
+- the scan row and its summary line;
+- the ignored counters;
+- the pre-mission blink alpha;
+- USN04 OFF's device-lost ending lines.
+
+**Verdict: ON.** The walk, the tests and the record map are the image's. The squadron arm stays
+unreachable until list 24 exists (the contract in section 11).

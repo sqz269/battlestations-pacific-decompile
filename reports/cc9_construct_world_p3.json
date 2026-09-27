@@ -1,0 +1,32 @@
+{
+  "packet": "cc9_construct_world_p3",
+  "doc": "docs/CONSTRUCT_WORLD.md sections 11 and 12",
+  "switch": "kScanProximityBound (src/game_hosts_mission_frame.cpp): committed OFF in 37ac200de, set ON by the verdict",
+  "calls": [
+    {"address": "00977B0A", "native": "00975D00", "function": "00977990", "kind": "call", "host": "proximity_records find-or-insert (default deadline -1.0e10, 00CE4ADC)"},
+    {"address": "00977B1B", "native": "0096C070", "function": "00977990", "kind": "call", "host": "WarningManager::proximity_effect_0096c070 (record; unreachable while list 24 is empty)"},
+    {"address": "00977B52", "native": "00867B10", "function": "00977990", "kind": "call", "host": "WarningManager::proximity_effect_stop_00867b10 (record)"}
+  ],
+  "routines": [
+    {"address": "00977990", "coverage": "complete"},
+    {"address": "00803CE0", "coverage": "complete (relation_00803ce0; the level through ReconSensorPassState::level)"},
+    {"address": "00975D00", "coverage": "find-or-insert with defaults only; the tree walk is std::map"},
+    {"address": "0096C070", "coverage": "read: point effect from manager+194h parented to entity+4A4h; not reconstructed"}
+  ],
+  "substitutions": [
+    "part test (+348h..+34Ch holds more than one descriptor) answers true for every list-6 entity: Destroyer, Cruiser, LandingShip, Cargo, BattleShip, Submarine, TorpedoBoat, MotherShip",
+    "list 24 (plane squadrons) is empty: no host registrar fills it"
+  ],
+  "contracts": [
+    "cc9-plane-release, src/game_hosts_units.cpp: std::size_t unit_part_descriptor_count(std::size_t index) const = (unit+34Ch - unit+348h) >> 2",
+    "cc9-plane-release, src/game_hosts_units.cpp: 007F10B0's push into id 24 (ADD ECX,138h) so world_list_size/entry(24) answer"
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "usn04": {"scan_proximity": "UNIMPLEMENTED 55 -> concrete 55", "ships": 990, "records": 18, "hits": 0, "deaths": 41, "hit_records": 727, "gameplay": "identical", "note": "OFF run ended device-lost after the mission (exit 1)"},
+    "usn02": {"scan_proximity": "UNIMPLEMENTED 111 -> concrete 111", "ships": 3524, "records": 32, "hits": 0, "deaths": 22, "hit_records": 440, "gameplay": "identical"},
+    "unpredicted": "none"
+  }
+}
