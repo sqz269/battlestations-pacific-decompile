@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_scene_home_base_contract",
+  "doc": "docs/CONSTRUCT_WORLD.md section 31",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kSceneHomeBaseContractBound",
+      "state": "ON",
+      "pair": "local/hb_{off,on}_{usn04,usn02}.log, both exit 1 (pair_export of ec7acc31a: ri_off AB219D4487EF, ri_on B8CD7DB8B810)"
+    }
+  ],
+  "measuring_mission": "IJN08 (Ki-43 Oscar 01 and Gekko 01 author RFort \"Landscape 01\\MainAirFieldEntity 01\")",
+  "failed_predictions": [
+    {
+      "row": "USN04 calls",
+      "predicted": "16",
+      "measured": "1",
+      "why": "SpawnNew builds its member records from the Lua table, not a PlaneSquadronGen row; the one call is movieval, the scene's one created PlaneSquadronGen row, with HomeBase RFort \"\""
+    }
+  ],
+  "substitutions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

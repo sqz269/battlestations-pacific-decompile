@@ -1657,6 +1657,9 @@ controller+84h over the host's stand-in element list (capacity = Mass / 3), so t
 a property of the stand-in. It will move when the element producer is read.
 **Resolved in section 28:** with the image's list the descent is 106..117 s on USN02.
 
+**See also** `docs/WRECK_MOTION_AVOIDANCE.md` (cc9-units3): how a wreck's motion reaches live
+ships' avoidance.
+
 ## 26. The pending-list push moves to create_units (packet `cc9_units_push_pending`, `kUnitsPendingPushBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units2, on main af9eab355, after cc9-init-passes' dedup list (docs/
@@ -2342,3 +2345,82 @@ DEATH ROWS: 40 -> 40 rows, 0 only ON, 0 only OFF, 12 changed
   The joint pair, with both halves ON, is the first measurement of the whole change. This half's
   pair shows only that the index order moves USN04's air battle within its usual bands.
 - **State: committed OFF, held for the joint flip** with cc9-movie-camera's Lua half.
+
+## 31. The scene-contents half of the HomeBase contract (packet `cc9_scene_home_base_contract`, `kSceneHomeBaseContractBound`, committed OFF)
+
+Worker cc9-ships, 2026-09-27. It wires section 29's contract.
+
+### 31.1 The binding
+
+- **The record.** The scene-contents host reads a PlaneSquadronGen row's (class 18h) `HomeBase`
+  (00CF8820) into `GameSceneEntityRecord::home_base`, and marks the record `home_base_carried`.
+  - The value is the authored name; "" when the key is empty or absent. Surrounding quotes are
+    stripped.
+  - A held-back row keeps its whole record in the spawn pool. So the key reaches
+    GenerateObject/SpawnNew with the record, the way `WingCount` reaches it on the pool entry.
+- **The call.** Under the switch, `create_units` calls
+  `set_squadron_scene_home_base(index, home_base)` for every created record that is class 18h and
+  carries the key.
+  - That covers both routes that build a squadron from a row: the scene load, and the
+    GenerateObject/SpawnNew creator (`create_unit_from_scene_record_0046db4b`).
+  - Both run before the squadron's InitAll pass C, which reads the key at 007F4C43.
+- **Not called for:**
+  - an air-ops launch: its record is built fresh in `create_air_ops_squadron_006c5050`, and its
+    bag's `HomeBase` is the deck owner, which section 29 handles on that path;
+  - a wing plane (class -1).
+- **The census:** `summary squadron scene home base contract bound=.. calls=..`, beside section
+  29's line.
+
+### 31.2 Which mission measures it
+
+- **IJN08 is the one mission in this installation that authors a non-empty `HomeBase`.** Its rows
+  "Ki-43 Oscar 01" and "Gekko 01" read `RFort "Landscape 01\MainAirFieldEntity 01"`, in each of
+  four copies of the scene (section 29).
+- USN04 authors only `RFort ""` in its PlaneSquadronWNavpoint templates. USN02 authors none.
+- So the reference pairs are identity by construction. An IJN08 run with the switch on would show
+  `keys=2` and the resolution counts of section 29's line.
+
+### 31.3 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `calls` is the number of squadrons created from a PlaneSquadronGen row: the SpawnNew groups'
+    squadrons, 16 in the hook census (20 pass A calls less the 4 air-ops launches);
+  - section 29's `keys`, `resolved`, `unresolved`, `not_airbase` and `queue_pushes` stay 0,
+    because every name is "".
+- **USN02 9200/9000:** `calls=0`.
+- **Both:** pair_diff exit 1, gameplay and every per-entity table identical, only the census line
+  moved.
+
+### 31.4 The pairs, measured, and the verdict
+
+- **Builds.** `tools/pair_export.py` of `ec7acc31a`: `local\ri_off` (SHA-256 prefix
+  `AB219D4487EF`) and `local\ri_on` (`B8CD7DB8B810`).
+- **Logs.** `local\hb_{off,on}_{usn04,usn02}.log`. Each shows the 1600x900 fit, the immediate
+  present interval, its own module directory and the final COM release.
+- **`tools/pair_diff.py`: exit 1 on both.**
+  - Gameplay, the death, plane and unit tables and the native table are identical.
+  - 0 other lines are only OFF or only ON.
+  - The only moved line is the contract's census: USN04 `bound 0 -> 1, calls 0 -> 1`, USN02
+    `bound 0 -> 1, calls 0`.
+- Section 29's line reads `keys=0 resolved=0 unresolved=0 not_airbase=0 queue_pushes=0` on all
+  four logs.
+
+| row | predicted | measured | held |
+| --- | --- | --- | --- |
+| USN04 `calls` | 16 | **1** | **no** |
+| USN02 `calls` | 0 | 0 | yes |
+| section 29's counts | 0 | 0 | yes |
+| gameplay and tables | identical | identical | yes |
+
+**The failed prediction.** Its premise was wrong: USN04's 16 SpawnNew squadrons are not built from
+PlaneSquadronGen rows.
+- `SpawnNew` builds each member's record from the script's Lua member table, with
+  `class_id = 18h` but no scene row behind it (`src/game_hosts_lua.cpp`, the SpawnNew member loop).
+  So it carries no key, and the contract rightly skips it.
+- The one call is `movieval`, the one PlaneSquadronGen row USN04's scene creates (`seen=2
+  generated=1 created=1`). Its authored `HomeBase` is `RFort ""`, so `keys` stays 0.
+- Whether the image's SpawnNew bag carries a `HomeBase` for a member is **unread**: the member
+  table's keys are not read here.
+
+**Verdict: `kSceneHomeBaseContractBound` ON.** It is the contract's call, it changes nothing on
+the reference missions, and IJN08 is the mission that would measure it.
