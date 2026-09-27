@@ -3863,8 +3863,8 @@ struct GameUnitsHost::Impl {
     // message (008221A7: amount = (float)(uint32)n * 10.0). OFF: it counts
     // the call and does nothing. The sender is the gunnery host's R10 / R11c
     // (0082755F, and the inline build at 00827663..), a follow-up there.
-    // ON since the USN02 / USN04 pairs (27cc522b2): identical; every live
-    // warship hit is refused by the Repair gate.
+    // ON since the USN02 / USN04 pairs (27cc522b2): identical, because the
+    // Repair substitution (0 for every class) refuses every live hit.
     static constexpr bool kLiveHullLeakBound = true;
     // SUBSTITUTION, labelled: GameSettings +40Ch VizbeomlesDolgok.DologSzorzo
     // is this installation's scripts/datatables/shipglobals.lua line 388
@@ -18322,9 +18322,11 @@ bool GameUnitsHost::add_leak_0074f440(std::size_t index, std::uint32_t count,
         const float amount = static_cast<float>(static_cast<double>(count) * 10.0);
         // 0074F09A..0074F0BF: a live unit (+5Ch set, +5Dh / +60h / +5Eh clear)
         // takes the leak only when its class `Repair` byte (+D0h) is set.
-        // SUBSTITUTION, labelled: this host does not load `Repair` (the Lua host
-        // has no boolean class reader yet), so every class answers 0 here and no
-        // live hull floods; a wreck (+5Dh set) always takes the leak.
+        // SUBSTITUTION, labelled: the units host does not load `Repair`, so every
+        // class answers 0 here and no live hull floods; a wreck (+5Dh set) always
+        // takes the leak. In the image the byte is 1 unless the class authors
+        // Repair = false (00962DCF..00962E16: nil -> 1), so this holds back live
+        // flooding on every class but Kaiten in this installation.
         const bool live = s.state != nullptr && s.state->active != 0 &&
                           s.state->simulate == 0 && s.scene_destroyed_005e == 0 &&
                           s.scene_pending_destroy_0060 == 0;

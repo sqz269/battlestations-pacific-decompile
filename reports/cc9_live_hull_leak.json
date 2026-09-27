@@ -72,6 +72,11 @@
       "was": "R10 is a hull impact effect (docs/SHIP_HIT_RECORD.md)",
       "is": "R10's 90h is MT_SHIP_LEAK: it adds leak rate through 0074F090",
       "evidence": "0080FF80 pushes 90h; 008221A7 -> 0074F440 -> 0074F090 writes leak+18h[i] and +2Ch"
+    },
+    {
+      "was": "Repair = true only on 30 classes; no warship floods from a live hit",
+      "is": "class+D0h is 1 when Repair is absent (nil -> 1); only Kaiten authors false, so nearly every live ship floods in the image",
+      "evidence": "00962DCF 00B65FB0 IsNil, 00962DD8 MOV AL,1, 00962E16 store"
     }
   ],
   "switches": [
