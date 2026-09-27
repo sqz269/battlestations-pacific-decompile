@@ -336,7 +336,7 @@ inline constexpr bool kSceneRaceAndScriptIdentityBound = true;
 // row's HomeBase name through set_squadron_scene_home_base, before the
 // squadron's InitAll pass C reads it (007F4C43). Covers the load-time rows and
 // the held-back rows GenerateObject/SpawnNew create. False: never called.
-inline constexpr bool kSceneHomeBaseContractBound = false;
+inline constexpr bool kSceneHomeBaseContractBound = true;
 
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h

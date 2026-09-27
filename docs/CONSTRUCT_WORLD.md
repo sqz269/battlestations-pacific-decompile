@@ -2387,3 +2387,37 @@ Worker cc9-ships, 2026-09-27. It wires section 29's contract.
 - **USN02 9200/9000:** `calls=0`.
 - **Both:** pair_diff exit 1, gameplay and every per-entity table identical, only the census line
   moved.
+
+### 31.4 The pairs, measured, and the verdict
+
+- **Builds.** `tools/pair_export.py` of `ec7acc31a`: `local\ri_off` (SHA-256 prefix
+  `AB219D4487EF`) and `local\ri_on` (`B8CD7DB8B810`).
+- **Logs.** `local\hb_{off,on}_{usn04,usn02}.log`. Each shows the 1600x900 fit, the immediate
+  present interval, its own module directory and the final COM release.
+- **`tools/pair_diff.py`: exit 1 on both.**
+  - Gameplay, the death, plane and unit tables and the native table are identical.
+  - 0 other lines are only OFF or only ON.
+  - The only moved line is the contract's census: USN04 `bound 0 -> 1, calls 0 -> 1`, USN02
+    `bound 0 -> 1, calls 0`.
+- Section 29's line reads `keys=0 resolved=0 unresolved=0 not_airbase=0 queue_pushes=0` on all
+  four logs.
+
+| row | predicted | measured | held |
+| --- | --- | --- | --- |
+| USN04 `calls` | 16 | **1** | **no** |
+| USN02 `calls` | 0 | 0 | yes |
+| section 29's counts | 0 | 0 | yes |
+| gameplay and tables | identical | identical | yes |
+
+**The failed prediction.** Its premise was wrong: USN04's 16 SpawnNew squadrons are not built from
+PlaneSquadronGen rows.
+- `SpawnNew` builds each member's record from the script's Lua member table, with
+  `class_id = 18h` but no scene row behind it (`src/game_hosts_lua.cpp`, the SpawnNew member loop).
+  So it carries no key, and the contract rightly skips it.
+- The one call is `movieval`, the one PlaneSquadronGen row USN04's scene creates (`seen=2
+  generated=1 created=1`). Its authored `HomeBase` is `RFort ""`, so `keys` stays 0.
+- Whether the image's SpawnNew bag carries a `HomeBase` for a member is **unread**: the member
+  table's keys are not read here.
+
+**Verdict: `kSceneHomeBaseContractBound` ON.** It is the contract's call, it changes nothing on
+the reference missions, and IJN08 is the mission that would measure it.
