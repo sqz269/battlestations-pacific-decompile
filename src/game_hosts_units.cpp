@@ -2824,17 +2824,18 @@ struct GameUnitsHost::Impl {
                 static_cast<double>(slot.plane_bank_angle_c68),
                 static_cast<unsigned>(slot.dive_bomb_state));
         }
-        // Packet cc9_release_issue_stage_vals. 007BBC00 raises unit+C20h on
-        // every path of 007BBBA0, once per call, and the aimglide calls it once
-        // per round; the spawn waits for the rack (run_rack_tick_006e56f0).
+        // Packet cc9_release_issue_stage_vals: the spawn waits for the rack
+        // (run_rack_tick_006e56f0). unit+C20h is NOT raised here: the task's
+        // request_ordnance_release hook already routes each 007BBBA0 call
+        // (009C60F1, 009C5777 per round) through release_ordnance_007bbba0,
+        // whose 007BBC00 raise is the image's one per call. A raise here doubled
+        // it (the first ON run, local\RV_ON1_4500.log of dadc05b84).
         // Only an aircraft whose census found a single rack takes this route;
         // a multi rack (26h, never busy) is not bound, so such an aircraft keeps
         // the request spawn below. The death refusal is the stage's guard.
         if constexpr (kReleaseIssueStageBound && kReleaseIssueStageValsBound) {
             if (slot.rack_census_done && slot.rack_single_count > 0) {
                 for (int i = 0; i < rounds; ++i) {
-                    slot.torpedo_issue_requests_c20 =
-                        bsp::release_request_raise_007bbc00(slot.torpedo_issue_requests_c20);
                     ++slot.rack_requests_deferred;
                     record("Plane::release_spawn_deferred_to_rack", 0x006e4d50u);
                 }
