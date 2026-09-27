@@ -55,6 +55,8 @@
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/simulation_gate.hpp"
 #include "bsp/world_entities.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/recon_sensor_pass.hpp"
 #include "bsp/world_ocean.hpp"
 
 #include <cmath>
@@ -118,6 +120,22 @@ constexpr bool kWarningManagerTickBound = true;
 // never set and both gates stay closed. ON by the verdict: the USN04 and
 // USN02 pairs moved only the predicted record rows (docs section 10).
 constexpr bool kWorldActiveByteBound = true;
+
+// Packet cc9_construct_world_p3 (docs/CONSTRUCT_WORLD.md section 11). True:
+// 00977990 ScanProximity runs as the image's walk. For each entity of world
+// list 6 (the units host's registry, [game+19CCh]+64h) that is live (+5Ch set,
+// +5Dh, +60h, +5Eh clear) and has more than one part descriptor (+348h..+34Ch),
+// it walks list 24 ([game+19CCh]+13Ch, plane squadrons) for an entity of
+// another side that 00803CE0 rates enemy-identified and whose +3D0h leader
+// is within 2000 m (squared 4.0e6, 00D09FE8). The per-entity record
+// 00975D00 (manager+184h, fields +4h deadline and +8h effect) is created
+// either way; a hit spawns the point effect 0096C070 and holds it 2.0 s
+// (00D7A308); a miss past the deadline with a live effect stops it
+// (00867B10). Two labelled stand-ins: the part test answers true for every
+// list-6 entity (no units-host size entry for +348h yet), and list 24 is empty
+// (no host registrar fills it). False: one record per call, as before. ON by
+// the verdict: USN04 and USN02 pairs identical but for the scan row (section 12).
+constexpr bool kScanProximityBound = true;
 
 // Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the
@@ -191,6 +209,17 @@ struct GameMissionFrameHost::Impl {
     // Packet cc9_warning_manager_tick: the manager's fields this process holds.
     bsp::WarningManagerState warning{};
     std::map<std::size_t, float> warning_effect_deadline;  // 00975D00 record +0h, per unit
+    // The same 00975D00 record's +4h deadline and +8h effect, which 00977990
+    // uses; held apart from +0h because the torpedo path keeps its own map.
+    struct ProximityRecord {
+        float deadline_04{-1.0e10f};  // 00CE4ADC
+        bool effect_live{false};      // +8h non-null
+    };
+    std::map<std::size_t, ProximityRecord> proximity_records;
+    unsigned long long proximity_ships_scanned{0};
+    unsigned long long proximity_records_created{0};
+    unsigned long long proximity_hits{0};
+    unsigned long long proximity_expiries{0};
     unsigned long long warning_scans{0};
     unsigned long long warning_torpedo_calls{0};
     unsigned long long warning_torpedo_accepted{0};
@@ -359,17 +388,99 @@ public:
         }
     }
     void mission_events_periodic_00977990() override {
-        if constexpr (kWarningManagerTickBound) {
+        if constexpr (kWarningManagerTickBound && kScanProximityBound) {
+            ++owner_.warning_scans;
+            scan_proximity_00977990_bound();
+            owner_.done("WarningManager::scan_proximity", 0x00977990u);
+        } else if constexpr (kWarningManagerTickBound) {
             // 00977990 walks the world lists [game+19CCh]+64h (list 6, ships)
-            // and +13Ch (list 24, plane squadrons). The units host fills list
-            // 6 through the registrars; no host registrar fills list 24
-            // (docs/CONSTRUCT_WORLD.md section 6). The scan is not bound yet.
+            // and +13Ch (list 24, plane squadrons); see kScanProximityBound.
             ++owner_.warning_scans;
             owner_.record("WarningManager::scan_proximity", 0x00977990u);
         } else {
             owner_.record("MissionEvents::periodic", 0x00977990u);
         }
     }
+    // 00977990 with kScanProximityBound. Units are host indices.
+    void scan_proximity_00977990_bound() {
+        if (owner_.units == nullptr) return;
+        const GameUnitsHost& units = *owner_.units;
+        // 009779A2 MOV EAX,[ECX+64h]: list 6 from its head, in 00484540's order.
+        const std::size_t ships = units.world_list_size(6);
+        for (std::size_t n = 0; n < ships; ++n) {
+            const std::size_t ship = units.world_list_entry(6, n);
+            if (ship >= units.count()) break;
+            // 009779B8..009779EB: +5Ch set, +5Dh, +60h, +5Eh clear (0043F080's
+            // four bytes), then +348h non-null and (+34Ch - +348h) >> 2 > 1.
+            if (!units.unit_alive_and_visible(ship)) continue;
+            // SUBSTITUTION: the part-descriptor table size has no units-host
+            // entry; every list-6 entity (the eight ship kinds that register
+            // id 6) is taken to carry more than one part.
+            ++owner_.proximity_ships_scanned;
+            const int side = units.unit_side_0054(ship);
+            bool hit = false;
+            // 00977A25 MOV EBP,[ECX+13Ch]: list 24, the plane squadrons.
+            // SUBSTITUTION: no host registrar fills list 24, so the walk has no
+            // entry (docs/CONSTRUCT_WORLD.md section 11, contract for the units
+            // host). The per-candidate tests would be: live bytes, side
+            // (+54h) differs, 00803CE0(side, squadron) == 1, and the squared
+            // distance from ship+FCh to [squadron+3D0h]+FCh below 4.0e6.
+            const std::vector<std::size_t> squadrons_list_24{};
+            for (const std::size_t squadron : squadrons_list_24) {
+                if (!units.unit_alive_and_visible(squadron)) continue;
+                if (units.unit_side_0054(squadron) == side) continue;
+                if (relation_00803ce0(side, squadron) != 1) continue;
+                float sx = 0.0f, sy = 0.0f, sz = 0.0f, qx = 0.0f, qy = 0.0f, qz = 0.0f;
+                units.unit_position_00fc(ship, sx, sy, sz);
+                units.unit_position_00fc(squadron, qx, qy, qz);
+                const float dx = sx - qx, dy = sy - qy, dz = sz - qz;
+                const float d2 = dz * dz + dy * dy + dx * dx;
+                if (static_cast<double>(d2) < 4.0e6) {  // 00977AE0 FLD double [00D09FE8]
+                    hit = true;
+                    break;
+                }
+            }
+            // 00977B04 ADD ECX,184h; CALL 00975D00: the record, created with the
+            // default deadline -1.0e10 (00CE4ADC) when absent.
+            auto found = owner_.proximity_records.find(ship);
+            if (found == owner_.proximity_records.end()) {
+                found = owner_.proximity_records.emplace(ship, GameMissionFrameHost::Impl::ProximityRecord{}).first;
+                ++owner_.proximity_records_created;
+            }
+            auto& record = found->second;
+            if (hit) {
+                // 00977B1B 0096C070: the point effect from manager+194h, parented
+                // to the ship's node +4A4h; render-side here.
+                record.effect_live = true;
+                record.deadline_04 = static_cast<float>(
+                    static_cast<double>(owner_.world_clock) + 2.0);  // 00D7A308
+                ++owner_.proximity_hits;
+                owner_.record("WarningManager::proximity_effect_0096c070", 0x0096c070u);
+            } else if (record.deadline_04 < owner_.world_clock && record.effect_live) {
+                // 00977B52 00867B10, effect+9 = 1, release.
+                record.effect_live = false;
+                ++owner_.proximity_expiries;
+                owner_.record("WarningManager::proximity_effect_stop_00867b10", 0x00867b10u);
+            }
+        }
+    }
+    // 00803CE0(ECX = side, EDX = unit): 3 when the side's detection level of
+    // the unit is below 2 (00803CFE); else 0 own, 2 neutral, 1 enemy. The level
+    // is the host's recon sensor pass (ReconSensorPassState::level).
+    int relation_00803ce0(int side, std::size_t unit) const {
+        const GameGunneryHost* gunnery =
+            owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+        if (gunnery == nullptr) return 3;
+        if (gunnery->recon_sensor_pass_state().level(side, unit)
+                != bsp::ReconDetectionLevel::identified) {
+            return 3;
+        }
+        const int other = owner_.units->unit_side_0054(unit);
+        if (side == 2) return other == 2 ? 0 : 2;              // 00803D26
+        if (side == other) return 0;                           // 00803D15
+        return other == 2 ? 2 : 1;                             // 00803D18
+    }
+
     void mission_events_poll_0096d540() override {
         if constexpr (kWarningManagerTickBound) {
             // 0096D540: +19Ch, the pending prompt callback, has no writer in this
@@ -2220,6 +2331,10 @@ void GameMissionFrameHost::report(long requested_frames) {
     host.log.notef("summary mission world active_byte_bound=%d active=%d traffic_walks=%llu "
         "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,
         host.world.world_gate.enabled ? 1 : 0, host.frames.traffic_walks);
+    host.log.notef("summary mission proximity scan bound=%d scans=%llu ships=%llu records=%llu "
+        "hits=%llu expiries=%llu list24=stand-in-empty (packet cc9_construct_world_p3, 00977990)",
+        kScanProximityBound ? 1 : 0, host.warning_scans, host.proximity_ships_scanned,
+        host.proximity_records_created, host.proximity_hits, host.proximity_expiries);
     host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
         "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu (packet "
         "cc9_warning_manager_tick)", kWarningManagerTickBound ? 1 : 0, host.warning_scans,
