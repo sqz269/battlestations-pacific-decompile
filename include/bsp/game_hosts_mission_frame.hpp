@@ -48,6 +48,15 @@ void game_warning_report_torpedo_00977690(std::size_t unit);
 // 00977820(this, entity): a 30 s per-entity cooldown on 00975D00's record, then a
 // point effect (this+190h) parented to entity+4A4h.
 void game_warning_torpedo_effect_00977820(std::size_t unit);
+// Packet cc9_loss_report_entry (docs/UNIT_DEATH_ROUTE.md, docs/LOSS_WARNING.md).
+// 009813A0 on [00F8A0C4](this, entity): the loss report. Only its guard is run:
+// side +54h < 2 as a SIGNED compare (009813C9 CMP EAX,2 / JGE 00981658), then
+// IsKindOf 18h (009813DD) or IsKindOf 6 (009813EC). The rest of the body,
+// 009813FA..00982110 (the cancel under the manager lock, the text and the Lua
+// listeners), is the named record `WarningManager::report_loss_body`. Callers:
+// 00959507 in the death route and 007F3B56 in BSP_Aircraft_OnDestroyed. No
+// gunnery or ship-AI counter is touched.
+void game_warning_report_loss_009813a0(std::size_t unit);
 
 // Packet cc9_bot_scheduler_writers (docs/BOT_SCHEDULER_WRITERS.md). True: the
 // three writers of the side-AI scheduler's gate and periods run - 0091B2E0's
