@@ -1633,3 +1633,60 @@ arrives in the next step's pump.
 
 - 0076BC40..0076BC63: message 0Bh's constructor (vtable 00D0314C). RET 4 at 0076BC61, INT3
   before and after. No rel32 or absolute reference was found.
+
+## 22. The after-row-9 order queue (packet `cc9_after_row9_order_queue`, read and predictions; binding blocked)
+
+Worker cc9-hud2, 2026-09-27, base e7aacfb4c.
+
+### 22.1 Which after-row-9 posters exist in the host (read)
+
+- **Lua run from Blackout callbacks.** The callback runs through
+  `GameScriptOrdersHost::mission_lua_call_named_00887e50`, called from `src/mission_blackout.cpp`
+  (005B9800, screen 33h's update, inside 0068C1F0). Its order natives dispatch through the same
+  host (`GameScriptOrdersHost::dispatch`).
+  - This is the one after-row-9 poster that fires on idle runs.
+  - **The binding needs `src/game_hosts_script_orders.cpp` and its header, leased to cc9-ships2
+    (`cc9_bsm01_think_natives`).** Both the callback runner that has to mark "inside a Blackout
+    callback" and the order issue that has to be deferred are there, so the packet is blocked.
+- **The HUD screens** (29h, 46h and the others of section 21.3) post only on player input.
+  `pair_diff` would see nothing on an idle run.
+- **The squadron's pass C 007F4BA0** (InitAll row 12) reaches
+  `on_squadron_pass_c_initial_command` (`src/game_hosts_lua.cpp`), a counted no-op in the units
+  host (`include/bsp/game_hosts_fixed_step.hpp`). No order exists to defer.
+- **Unplaced, recorded:** 8Fh (the ship AI), 5Ah beyond the Lua rule, and the per-director 5Eh
+  tick 009F5DA0.
+
+**The binding, as it would be made** (one switch, `kAfterRow9OrderQueueBound`):
+- Around `mission_lua_call_named_00887e50` when called from 005B9800, set a flag.
+- While it is set, the order natives that end in 0077D600 (58h) or 00835860 (5Eh) enqueue their
+  effect instead of applying it.
+- The next fixed step's session pump position (`GameFixedStepHost::pump_session_00778450`) applies
+  the queue, in post order.
+- A census line counts deferred orders per poster (`blackout:<callback>`).
+- Entity creation (`GenerateObject`, 47h) and `SetSelectedUnit` (not a session order) stay direct.
+
+### 22.2 Which Blackout callbacks fire on the idle runs (measured, `ld_on_*` logs at c6f72e68b)
+
+| mission | callbacks that ran | orders they issue |
+| --- | --- | --- |
+| USN01 3200/3000 | `luaIngameMovieBOStart`, `luaIn` (at 20.1 s) | `luaIn` (`usn_1_marshall.lua` 654): five `PilotSetTarget` (Mavis 1..5 onto Dunlap, Northampton, Northampton, SaltLakeCity, SaltLakeCity), then `SetSelectedUnit`, `Blackout(false)` and `luaAddFirstObjs` |
+| USN04 4700/4500 | `luaIngameMovieBOStart` twice | no unit orders: movie keyframes and input only |
+| USN02 9200/9000 | `luaIn` (`SetSelectedUnit(Houston)` only), `luaIngameMovieBOStart` twice, `luaMoveToPh2` | `luaMoveToPh2` (`usn_2_java.lua` 677): `NavigatorAttackMove` on its units, the torpedo-evasion and land-avoidance settings, and four `GenerateObject` calls (not deferred) |
+
+### 22.3 Predictions for the pair, when it can be run (written now)
+
+- **USN01:**
+  - The five `PilotSetTarget` orders land one fixed step (0.05 s) later. Census: `blackout:luaIn`
+    5.
+  - The Mavis squadrons begin their attack runs one step later, so Mav1..Mav5's death rows move
+    in time (the order of 0.05..1 s), and their killers may change.
+  - **Gameplay moves, exit 3,** by a few hit records and shots. Deaths are expected to stay 7
+    (Mavis and escorts), with the per-entity times moved.
+  - The pick counts (`owner_140`, ray picks) move only if a Mavis path passes the pick ray
+    differently: a small move or none.
+- **USN04:** census 0, because no Blackout callback issues an order. **Identity, exit 1.**
+- **USN02:**
+  - `luaMoveToPh2`'s `NavigatorAttackMove` orders land one step later. Census:
+    `blackout:luaMoveToPh2` = the number of its `NavigatorAttackMove` calls.
+  - **Gameplay moves, exit 3,** because the ships' attack paths start 0.05 s later. `luaIn` defers
+    nothing: `SetSelectedUnit` stays direct.
