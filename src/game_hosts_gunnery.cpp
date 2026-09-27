@@ -168,7 +168,9 @@ constexpr bool kAaLineOfFireBound = true;
 //    static half (0098ADD0 at 0072CE91, kind filter 44h) blocks the line of
 //    fire on any Landscape hit, before the friendly-unit walk. OFF: the units
 //    only, as before.
-constexpr bool kLandscapeSpatialAttachBound = false;
+//    Committed false for the pairs; USN01 and USN04 were identity (no ray met
+//    land; the pick ray has no camera here), so it is ON.
+constexpr bool kLandscapeSpatialAttachBound = true;
 //  * kAabb0085cdb0Bound: packet cc9_aabb_0085cdb0 (docs/AABB_0085CDB0.md).
 //    0098B130 tests each unit's spatial-index WORLD AABB (0098A750: the
 //    oriented box's axis-aligned hull) with 0085CDB0, nearest hit first;

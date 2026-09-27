@@ -1,21 +1,132 @@
 {
   "packet": "cc9_landscape_spatial_attach",
   "doc": "docs/SCENE_CONTENTS_HOSTS.md",
-  "state": "read-only part committed; the SegmentBinding hunk waits for src/game_hosts_gunnery.cpp (leased to cc9-world-init)",
+  "state": "bound ON after identity pairs",
   "calls": [
-    {"address": "00884066", "native": "0098A920", "function": "00883BB0", "note": "the node's bounds from the terrain box"},
-    {"address": "00884078", "native": "0098BA10", "function": "00883BB0", "note": "static root attach, loose array"},
-    {"address": "0087FFA4", "native": "00D5D350+vtable3C", "function": "0087FF80", "note": "terrain segment walk 00ADA240"},
-    {"address": "0087FFD9", "native": "00470370", "function": "0087FF80", "note": "record entity = shape - 344h, the Landscape"}
+    {
+      "address": "00884066",
+      "native": "0098A920",
+      "function": "00883BB0",
+      "note": "the node's bounds from the terrain box"
+    },
+    {
+      "address": "00884078",
+      "native": "0098BA10",
+      "function": "00883BB0",
+      "note": "static root attach, loose array"
+    },
+    {
+      "address": "0087FFA4",
+      "native": "00D5D350+vtable3C",
+      "function": "0087FF80",
+      "note": "terrain segment walk 00ADA240"
+    },
+    {
+      "address": "0087FFD9",
+      "native": "00470370",
+      "function": "0087FF80",
+      "note": "record entity = shape - 344h, the Landscape"
+    },
+    {
+      "address": "0072CE91",
+      "native": "0098ADD0",
+      "function": "0072CDD0",
+      "note": "static half, kind filter 44h; bound in line_of_fire_blocked_0072cdd0"
+    },
+    {
+      "address": "00957DA0",
+      "native": "0098ADD0",
+      "function": "00957BD0",
+      "note": "gun seat; land point accepted above y 0"
+    },
+    {
+      "address": "00526C4A",
+      "native": "009043A0",
+      "function": "00526A40",
+      "note": "pick; a land hit is no pick (00526DAF)"
+    },
+    {
+      "address": "0084C1D3",
+      "native": "0098B370",
+      "function": "0084BF00",
+      "note": "shell sweep; a land hit ends the round with its blast"
+    }
   ],
   "coverage": [
-    {"routine": "0087FF80", "coverage": "complete"},
-    {"routine": "00883BB0", "coverage": "partial, as section 5; 00883F88-008840A0 reread here"}
+    {
+      "routine": "0087FF80",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00883BB0",
+      "coverage": "partial, as section 5; 00883F88-008840A0 reread here"
+    }
   ],
   "substitutions": [],
   "corrections": [],
-  "switches": [],
-  "failed_predictions": [],
+  "switches": [
+    {
+      "name": "kLandscapeSpatialAttachBound",
+      "state": "ON",
+      "pair": "local/sa2_off_usn01.log vs local/sa2_on_usn01.log, local/sa2_off_usn04.log vs local/sa2_on_usn04.log (local/sa_off DE033DD5025D, local/sa_on 4264BB75E479); pair_diff exit 1, gameplay identical"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "pick ray land hits (USN01)",
+      "predicted": "1000..6160",
+      "measured": "0 of 5999",
+      "why": "the pick ray runs from (0,0,0) to (0,0,0): no camera at game+19FCh in this process"
+    },
+    {
+      "row": "USN04 base values",
+      "predicted": "41 / 743 / 5603 on both sides",
+      "measured": "43 / 788 / 5075 on both sides",
+      "why": "the quoted values were an older main's; identity holds"
+    }
+  ],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "pair_diff": {
+    "usn01": [
+      "GAMEPLAY: identical",
+      "  deaths                                 7                                        7",
+      "  hit records                            150                                      150",
+      "  hull hits                              85                                       85",
+      "  damage                                 2690.0                                   2690.0",
+      "  shots                                  583                                      583",
+      "  first hit                              53.75 s                                  53.75 s",
+      "  torpedo-task releases                  3 of 5                                   3 of 5",
+      "  dive-bomb-task releases                0 of 2                                   0 of 2",
+      "  torpedo drops                          0                                        0",
+      "  plane water contacts                   3                                        3",
+      "  controlled moved                       Airfield2 0.00                           Airfield2 0.00",
+      "  units                                  64                                       64",
+      "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+      "  host methods concrete/unimplemented    887 / 466                                887 / 466",
+      "DEATH ROWS: identical (7 rows)",
+      "PLANE DEATH MODES: identical (7 rows)",
+      "UNIT TABLE: identical (28 rows)"
+    ],
+    "usn04": [
+      "GAMEPLAY: identical",
+      "  deaths                                 43                                       43",
+      "  hit records                            788                                      788",
+      "  hull hits                              331                                      331",
+      "  damage                                 11917.1                                  11917.1",
+      "  shots                                  5075                                     5075",
+      "  first hit                              93.00 s                                  93.00 s",
+      "  torpedo-task releases                  4 of 16                                  4 of 16",
+      "  dive-bomb-task releases                1 of 19                                  1 of 19",
+      "  torpedo drops                          1                                        1",
+      "  plane water contacts                   16                                       16",
+      "  controlled moved                       Lexington-class01 3514.72                Lexington-class01 3514.72",
+      "  units                                  81                                       81",
+      "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+      "  host methods concrete/unimplemented    1042 / 549                               1042 / 549",
+      "DEATH ROWS: identical (43 rows)",
+      "PLANE DEATH MODES: identical (43 rows)",
+      "UNIT TABLE: identical (81 rows)"
+    ]
+  }
 }
