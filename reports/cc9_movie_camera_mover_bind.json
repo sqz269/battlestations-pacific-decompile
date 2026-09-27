@@ -1,0 +1,35 @@
+{
+  "packet": "cc9_movie_camera_mover_bind",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md sections 8.6 and 8.7 (switch 3)",
+  "switch": "kMovieMoverBound (include/bsp/game_hosts_hud.hpp): committed OFF in 93e87be80; not flipped, pending the lead's ruling on the USN04 move",
+  "calls": [
+    {"address": "005CC1CB", "native": "0079D020", "function": "005CC170", "kind": "call", "host": "bsp::movie_camera_construct_0079d020"},
+    {"address": "005CC29A", "native": "007A0860", "function": "005CC170", "kind": "call", "host": "bsp::movie_camera_seed_007a0860"},
+    {"address": "005CC2A9", "native": "004BC410", "function": "005CC170", "kind": "call", "host": "movie_active = true, camera_bound = false (ShipCaptain destroyed)"},
+    {"address": "007A2CE5", "native": "007A0770", "function": "007A2CD0", "kind": "call", "host": "append_007a0770 (camera track)"},
+    {"address": "0079B2A8", "native": "00798130", "function": "0079A3B0", "kind": "call", "host": "evaluate_00798130 (look-at track)"},
+    {"address": "0079B2D7", "native": "00798130", "function": "0079A3B0", "kind": "call", "host": "evaluate_00798130 (camera track)"},
+    {"address": "0079B691", "native": "0078FAF0", "function": "0079A3B0", "kind": "call", "host": "zero-state ground clearance (+4FCh clear)"},
+    {"address": "0079B7DF", "native": "0085DC80", "function": "0079A3B0", "kind": "call", "host": "bsp::orthonormalize_pose_matrix_0085dc80"},
+    {"address": "0079B854", "native": "00435410", "function": "0079A3B0", "kind": "call", "host": "publish_mission_camera (004329D0; 0042F0C0 returns at vtable +130h 0042A900)"},
+    {"address": "007981FA", "native": "007911E0", "function": "00798130", "kind": "call", "host": "step_007911e0"},
+    {"address": "007984E1", "native": "00795C10", "function": "00798130", "kind": "call", "host": "weight_00795c10"},
+    {"address": "00795CBF", "native": "00795650", "function": "00795C10", "kind": "call", "host": "evaluate_position_00795650"},
+    {"address": "00798CAD", "native": "00BD2FD0", "function": "00798C80", "kind": "call", "host": "reseed_stream(1, 12345) through switch 2's stand-in"}
+  ],
+  "routines": [
+    {"address": "007A0EB0", "coverage": "partial: the keys luaCamIngameMovieAuto passes; modifier/deckpos/upvector/relativetotarget/event/finishscript/flyalt/thennone counted as unsupported"},
+    {"address": "00798130", "coverage": "complete except modifiers and the flyalt lift 007986C0..007987B4"},
+    {"address": "00795650", "coverage": "complete for keepnone/keepy/keepz/keepall and the ship/plane wanderers; relativetotarget, the kind-20h matrix and terrainavoid unsupported"},
+    {"address": "0079A3B0", "coverage": "partial: 0079A3B0..0079A584 and 0079B2A2..0079B866; the editor block 0079A584..0079B2A2 (unreachable without +514h) and the multiplayer tail 0079B86C..0079BBE1 unread"},
+    {"address": "00798C80", "coverage": "complete; the per-step stream-1 draw 00798D07 is a record"},
+    {"address": "0079D020", "coverage": "complete (fields)"},
+    {"address": "007A0860", "coverage": "complete"}
+  ],
+  "no_ghidra_function": [],
+  "verdict": "not flipped (recommend ON after the 46h +20h observer is read)",
+  "pairs": {
+    "usn01": {"exit": 1, "gameplay": "identical", "builds": 2, "destroys": 1, "keyframes": 16, "owner_140": [0, 2404], "ray_pick_other": [0, 2240], "land_hits": [0, 22]},
+    "usn04": {"exit": 3, "gameplay": "moved: deaths 40 -> 41, hits 799 -> 808, shots 6395 -> 6374, first difference t=110 s", "cause": "rebuilt ShipCaptain at 25 s; the player seat aims from the camera (held ticks 7071 -> 5707)"}
+  }
+}

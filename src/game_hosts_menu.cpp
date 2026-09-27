@@ -866,6 +866,12 @@ public:
             owner_.hud->update_warning_screen_00683020(seconds);
             return;
         }
+        // Packet cc9_movie_camera_mover_bind: screen 37h's 005CBAF0, while 2Ch
+        // is applied; the HUD steps the movie mover from it.
+        if (kMovieMoverBound && owner_.hud != nullptr && slot == 0x37) {
+            owner_.hud->update_movie_screen_005cbaf0(seconds);
+            return;
+        }
         // Packet cc9_screen_26h_2eh: these three slots' update virtual is the
         // base 004F75C0 itself, `RET 4`, so the call does nothing.
         if (kHudBaseUpdateScreensBound && (slot == 0x26 || slot == 0x2e || slot == 0x3e)) {
