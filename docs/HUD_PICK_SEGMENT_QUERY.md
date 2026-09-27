@@ -897,3 +897,92 @@ not on context. What is read so far:
   later `SetSelectedUnit(ScoutBomba)` is rejected.
 - **Both.** The camera's own reseeds (123, then 12345 and 54321 at the first step, then wall-clock
   at the destructor) join switch 2's.
+
+### Switch 3, `kMovieMoverBound`: the movie camera mover (binding and predictions, written before the pairs)
+
+**The +391h writer, found (supersedes the handoff above).** The camera's `+170h` sub-object is its
+tick element (vtable 00D04718, registered through 00929E50, `docs/TICK_ELEMENT_OVERRIDES.md`).
+- Slot `+8h` is 00798C80, run in wave 3 of each fixed step.
+- On the first step with dt > 0 it sets `+221h` of the sub-object, which is **camera+391h**
+  (170h + 221h), at 00798CA6. It then reseeds stream 1 = 12345 and stream 0 = 54321.
+- On every later step it counts `+408h`, accumulates `+40Ch` and draws one stream-1 uniform in
+  [0, 65535] (00D046A8) into a 16-entry ring at `+3C4h`. It also calls 00797ED0 on both tracks,
+  which runs keyframe modifiers and events only.
+- Slot `+4h` 00798C50 calls 00797E40 on both tracks, for modifiers only.
+- The displacement scans missed the writer because its base is the sub-object.
+
+**The rest of the update, read (0079B2A2..0079B866):**
+1. It evaluates the look-at track and copies it to `+384h`, then evaluates the camera track.
+2. **Ground clearance.** With the world present and dt > 0, and `+4FCh` clear, `+520h` becomes
+   `-(2 * +51Ch + +524h)`, times 0.6 (double 00CEFF98) when positive. 0078FAF0 then moves `+51Ch`
+   towards `+520h` with a rate limit and integrates `+524h`. The state starts at zero, so the
+   camera-height offset `+524h` stays 0.
+3. **Forward** is target minus camera, normalized. It is (0, 0, 1) below `len^2` 1e-8 (00D7A350).
+4. **Basis.** With `+4F4h` clear, `+548h` = forward and `+538h` = the track's up, 0085DC80 builds
+   the basis, and `+558h` = the camera position.
+5. **FOV.** 00B6FBB0 receives `+410h / +4F8h`, where `+4F8h` is the camera track's zoom `+60h`.
+6. **Pose.** `+74h` = the matrix, `+3B8h` = 0, then 00435410, which is 004329D0(dt).
+7. In single player the update ends at 0079B866, because `game+1FE4h` is 0.
+
+**Other reads:**
+- The base 004329D0's water probe 0042F0C0 returns at once for this class: vtable `+130h` is
+  0042A900, `XOR EAX,EAX`. So the published world is the matrix.
+- **Position arms** (00795650, jump table 00795BB8):
+  - keepnone: parent translation plus position, up unrotated;
+  - keepy: row 1 forced to world up, then 0085DAD0, the position transformed, up unrotated;
+  - keepz: row 1 forced to world up, then 0085DC80, both transformed; a ship wanderer takes the
+    keepy arm;
+  - keepall: both transformed.
+- **The ship wanderer** subtracts (0, y - Height * 0.5, 0). The class field `+A8h` is `Height`.
+- **The plane wanderer** subtracts plane+810h..818h. That field has no traced writer, so it is
+  taken as zero (labelled).
+- **The seed keyframes** have `+26h` = 1 from 00799B00 and are first in both tracks. Every mission
+  keyframe inherits `+26h`, `+2Ch` (keepy) and `+CCh` (1.0) from them, so **look-at keyframes are
+  wanderers too**.
+
+**The binding** (`src/hud_movie_camera.cpp`, `src/game_hosts_hud.cpp`, `src/game_hosts_lua.cpp`,
+`src/game_hosts_menu.cpp`):
+- 005CC170 builds the camera, seeds it from the published node (identity before any mover) and
+  installs it. The ShipCaptain is destroyed (`camera_bound = false`).
+- The next 0064DA40 destroys the movie camera and clears the screen's `+1Ch`. The destructor's
+  wall-clock reseed is a record.
+- MovCamNew_AddPosition becomes concrete: 005CD240, then 007A44D0 with the parsed table.
+- **SUBSTITUTIONS, labelled:**
+  - The mover steps once per frame, from the first screen update (4Dh or 35h under 25h, 37h under
+    2Ch), and 00798C80 runs once per frame (one 0.05 s fixed step per frame here).
+  - The per-step stream-1 draw 00798D07 is not taken.
+  - The camera's reseeds (constructor 123, first step 12345 and 54321) go through switch 2's
+    stand-in.
+
+**Predictions, streams ON and `BSP_DEATH_TABLE=1`:**
+
+USN01 3200/3000:
+- **Summary:** `builds=2 destroys=1 keyframes=16 active_at_end=1`.
+  - The intro at t = 4.0 s adds 8 keyframes, 4 camera and 4 look-at. The builder replaced no mover.
+  - `SetSelectedUnit` at 20.1 s destroys the movie camera when 0064DA40 binds Northampton's
+    ShipCaptain.
+  - The phase-2 movie at about 91 s adds 8, 4 `cameraandtarget` rows at 2 each. It rebuilds the
+    camera under 25h and replaces the ShipCaptain.
+- **Poses** (logged every 40 frames):
+  - From t = 4.0 s the camera sits at SaltLakeCity's frame plus about (0, 8, 100). The look-at
+    point is the same point, so the forward falls back to (0, 0, 1). It then blends towards
+    (0, 8, 110) over 7 s.
+  - It cuts to CB2's frame plus (-50, 12, 0) at clock about 7 s, then blends towards (-60, 13, 0).
+  - In both segments the look-at stays on the first point of the pair, smoothed over 1 s windows.
+- **Pick.** Identical to OFF until about 91 s, then `unit pick: camera basis now from the movie
+  camera`. The rays point from the movie camera at ScoutDauntless or ConLeader.
+- `UnitPickScreen::owner_140` goes from 0 to [1, 1,200], expected nonzero, because the look-at
+  sits on a unit. Pick land hits stay in [0, 1,200].
+- **Gameplay identical**, unless a resolved pick reaches the weapon-group fire path, which needs
+  input.
+
+USN04 4700/4500:
+- **Summary:** `builds=1 destroys=1 keyframes=12 active_at_end=0`.
+  - The intro at t = 4.0 s replaces the ShipCaptain on the Lexington and adds 8 keyframes.
+  - `luaIntroMovieEnd` at about t = 18 s appends 4 more to the same camera, with start times
+    offset by its clock.
+  - `SetSelectedUnit(Lex)` at t = 25.0 s destroys the camera, and 0064DA40 **rebuilds** the
+    ShipCaptain: a fresh construct with the retarget seed. OFF keeps the old ShipCaptain.
+- **Pick and seat.** The ShipCaptain's pose after 25 s differs from OFF, so pick and seat ray
+  endpoints differ from then. The counts stay the same (8,159 and 8,157).
+- **Gameplay identical.** Seat and pick hits stay 0 on both sides.

@@ -31,6 +31,10 @@
 #include <string>
 #include <vector>
 
+namespace bsp {
+struct MovieKeyframeInput;
+}  // namespace bsp
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -165,6 +169,14 @@ public:
     // interface through 005CD1A0 (the reseed of streams 1 and 0, then
     // 004CC460(2Ch, [00E188D8])), later calls only run 005CC170.
     void movie_screen_camera_005cd240();
+    // Packet cc9_movie_camera_mover_bind: 007A44D0 on the movie camera, the
+    // keyframe store MovCamNew_AddPosition calls after 005CD240.
+    int movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
+    // Screen 37h's update slot +20h (005CBAF0, the black-bar slide, a record);
+    // the pump reaches it only while 2Ch is applied. The movie mover is stepped
+    // from here then (SUBSTITUTION: the image steps movers from the camera
+    // system, not from a screen).
+    void update_movie_screen_005cbaf0(float seconds);
     // The update virtual of one HUD screen, called by the recovered pump 004f8830
     // for every screen the applied interface published into level 1.
     void update_minimap_screen_005c0f20(float seconds);
@@ -225,5 +237,13 @@ inline constexpr bool kMovieInterfacePushBound = true;
 inline constexpr bool kMovieReseedBound = true;
 // Returns false when no HUD is attached.
 bool hud_movie_screen_camera_005cd240();
+
+// Switch 3, committed OFF: 005CC170 builds the 570h movie camera and installs
+// it as the mover (004BC410 destroys the ShipCaptain, whose next 0064DA40
+// rebuilds it and destroys the movie camera in turn); 007A44D0 stores the
+// keyframes; 0079A3B0 poses the node every frame. bsp/hud_movie_camera.hpp.
+inline constexpr bool kMovieMoverBound = false;
+// Returns the keyframes added, or -1 when no HUD is attached.
+int hud_movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
 
 }  // namespace bsp::game

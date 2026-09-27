@@ -22,6 +22,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/hud_movie_camera.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
@@ -61,6 +62,7 @@ extern "C" {
 #include <cstdio>
 #include <cstring>
 #include <functional>
+#include <optional>
 #include <type_traits>
 
 namespace bsp::game {
@@ -159,6 +161,105 @@ GameMissionLuaHost* host_from_upvalue(lua_State* state) {
 // time, so it carries the host pointer and the row index as upvalues. The
 // global is still a plain C closure under a plain name, which is the only part
 // of the registration contract that is recovered.
+// Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
+// 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
+// reads but the host does not model are listed in `unsupported_keys` when
+// present and non-nil.
+bool movie_number(lua_State* state, int table, const char* key, std::optional<float>& out) {
+    lua_getfield(state, table, key);
+    const bool is = lua_type(state, -1) == LUA_TNUMBER;
+    if (is) out = static_cast<float>(lua_tonumber(state, -1));
+    lua_pop(state, 1);
+    return is;
+}
+bool movie_vector(lua_State* state, int table, std::array<float, 3>& out) {
+    // 0079C040: three string keys among x/y/z read by name (0078FD70), else
+    // the array part 1..3.
+    lua_getfield(state, table, "x");
+    const bool named = lua_type(state, -1) == LUA_TNUMBER;
+    lua_pop(state, 1);
+    const char* names[3] = {"x", "y", "z"};
+    for (int i = 0; i < 3; ++i) {
+        if (named) {
+            lua_getfield(state, table, names[i]);
+        } else {
+            lua_rawgeti(state, table, i + 1);
+        }
+        out[static_cast<std::size_t>(i)] = static_cast<float>(lua_tonumber(state, -1));
+        lua_pop(state, 1);
+    }
+    return true;
+}
+void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& in) {
+    const int top = lua_gettop(state);
+    lua_getfield(state, table, "postype");
+    if (lua_type(state, -1) == LUA_TSTRING) in.postype = lua_tostring(state, -1);
+    lua_pop(state, 1);
+    lua_getfield(state, table, "transformtype");
+    if (lua_type(state, -1) == LUA_TSTRING) in.transformtype = std::string(lua_tostring(state, -1));
+    lua_pop(state, 1);
+    lua_getfield(state, table, "wanderer");
+    if (lua_type(state, -1) == LUA_TBOOLEAN) in.wanderer = lua_toboolean(state, -1) != 0;
+    lua_pop(state, 1);
+    lua_getfield(state, table, "position");
+    if (lua_type(state, -1) == LUA_TTABLE) {
+        in.has_position = true;
+        const int position = lua_gettop(state);
+        lua_getfield(state, position, "parent");
+        if (lua_type(state, -1) == LUA_TTABLE) {
+            in.has_parent = true;
+            lua_getfield(state, -1, "ID");
+            const int type = lua_type(state, -1);
+            if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+                const int id = static_cast<int>(lua_tonumber(state, -1));
+                if (id > 0) in.parent = static_cast<std::size_t>(id - 1);
+            }
+            lua_pop(state, 1);
+        }
+        lua_pop(state, 1);
+        lua_getfield(state, position, "parentID");
+        if (!lua_isnil(state, -1)) in.unsupported_keys.push_back("parentID");
+        lua_pop(state, 1);
+        lua_getfield(state, position, "pos");
+        if (lua_type(state, -1) == LUA_TTABLE) {
+            std::array<float, 3> v{};
+            movie_vector(state, lua_gettop(state), v);
+            in.pos = v;
+        }
+        lua_pop(state, 1);
+        lua_getfield(state, position, "polar");
+        if (lua_type(state, -1) == LUA_TTABLE) {
+            std::array<float, 3> v{};
+            for (int i = 0; i < 3; ++i) {
+                lua_rawgeti(state, -1, i + 1);
+                v[static_cast<std::size_t>(i)] = static_cast<float>(lua_tonumber(state, -1));
+                lua_pop(state, 1);
+            }
+            in.polar = v;
+        }
+        lua_pop(state, 1);
+        for (const char* key : {"deckpos", "upvector", "modifier", "relativetotarget",
+                 "terrainavoid"}) {
+            lua_getfield(state, position, key);
+            if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
+            lua_pop(state, 1);
+        }
+    }
+    lua_pop(state, 1);
+    movie_number(state, table, "starttime", in.starttime);
+    movie_number(state, table, "blendtime", in.blendtime);
+    movie_number(state, table, "linearblend", in.linearblend);
+    movie_number(state, table, "nonlinearblend", in.nonlinearblend);
+    movie_number(state, table, "zoom", in.zoom);
+    movie_number(state, table, "smoothtime", in.smoothtime);
+    for (const char* key : {"event", "finishscript", "flyalt"}) {
+        lua_getfield(state, table, key);
+        if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
+        lua_pop(state, 1);
+    }
+    lua_settop(state, top);
+}
+
 int binding_trampoline(lua_State* state) {
     GameMissionLuaHost* host = host_from_upvalue(state);
     const int row = static_cast<int>(lua_tointeger(state, lua_upvalueindex(2)));
@@ -193,9 +294,11 @@ int binding_trampoline(lua_State* state) {
     // bsp/game_hosts_hud.hpp, committed OFF.
     const bool select_unit_row
         = bsp::game::kSetSelectedUnitBound && dispatch_row.address == 0x008ab260u;
+    const bool movie_add_row
+        = bsp::game::kMovieMoverBound && dispatch_row.address == 0x008b79f0u;
     const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
-        || select_unit_row
+        || select_unit_row || movie_add_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -295,10 +398,20 @@ int binding_trampoline(lua_State* state) {
     // 005CD240 on the movie screen (008B7941 AddPositions, 008B7AE1 AddPosition,
     // 008B7C92 SetFOV). Only that call is bound; the rows stay UNIMPLEMENTED for
     // the keyframe store and the FOV that follow it.
-    if (bsp::game::kMovieInterfacePushBound && !host->error_replay()
+    if ((bsp::game::kMovieInterfacePushBound || bsp::game::kMovieMoverBound)
+        && !host->error_replay()
         && (dispatch_row.address == 0x008b7850u || dispatch_row.address == 0x008b79f0u
             || dispatch_row.address == 0x008b7ba0u)) {
         bsp::game::hud_movie_screen_camera_005cd240();
+    }
+    // Packet cc9_movie_camera_mover_bind: 008B7AE8, the table to 007A44D0.
+    if (movie_add_row) {
+        if (!host->error_replay() && argc >= 1 && lua_type(state, 1) == LUA_TTABLE) {
+            bsp::MovieKeyframeInput input;
+            parse_movie_keyframe(state, 1, input);
+            bsp::game::hud_movie_add_position_007a44d0(input);
+        }
+        return 0;
     }
     if (select_unit_row) {
         // 008AB260: BSP_ObjectHandle_FromLuaTable(argument 0), then 00647300.

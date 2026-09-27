@@ -8,6 +8,7 @@
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/controlled_unit.hpp"
 #include "bsp/interface_runtime_tail.hpp"
+#include "bsp/hud_movie_camera.hpp"
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
@@ -177,6 +178,21 @@ struct GameHudHost::Impl {
     unsigned long long movie_engages{0};
     unsigned long long movie_pushes{0};
     unsigned long long movie_reseeds{0};
+    // Packet cc9_movie_camera_mover_bind: the movie camera (screen 37h's +1Ch)
+    // while it is the installed mover.
+    bsp::HudMovieCamera movie{};
+    bool movie_active{false};
+    unsigned long long movie_builds{0};
+    unsigned long long movie_destroys{0};
+    unsigned long long movie_keyframes{0};
+    unsigned long long movie_publishes{0};
+    unsigned long long movie_unsupported{0};
+    unsigned long long movie_last_pose_log{0};
+    int pick_basis_source{0};   // 0 none, 1 ShipCaptain, 2 movie camera
+    bool build_movie_camera_005cc170();
+    void destroy_movie_camera(const char* why);
+    void step_movie_camera(float seconds);
+    void reseed_stream(int stream, std::uint32_t seed, std::uint32_t site);
     bsp::UnitSelectableInputs selectable_inputs_00645060(std::size_t unit);
 
     void record(const char* method, std::uint32_t address) {
@@ -1236,6 +1252,10 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
     if (!camera_pipe_sight_read) record("MissionCamera::pipe_sight_params", 0x0083b5e0u);
     camera_class = bsp::ship_class_camera_00831e0d(inputs);
     camera_class_length = inputs.base_length;
+    // Packet cc9_movie_camera_mover_bind: 004BC410 at 0064DC9C installs the
+    // ShipCaptain and destroys the outgoing mover through 00926D90; when that
+    // is the movie camera, its observer clears screen 37h's +1Ch.
+    if (movie_active) destroy_movie_camera("0064DA40 installed the ShipCaptain (004BC410 at 0064DC9C)");
     if (!camera_bound) {
         bsp::construct_ship_captain_0064b650(camera);
         // The three 00BD2F10 phase draws of 00432750, not taken (see
@@ -1282,13 +1302,20 @@ private:
 }  // namespace
 
 void GameHudHost::Impl::step_mission_camera(float seconds) {
-    if (!kMissionCameraBound || !camera_bound) return;
+    if (!kMissionCameraBound) return;
+    if (!movie_active && !camera_bound) return;
     // The mover is a world entity ticked by the world update before the
     // interface runs. SUBSTITUTION: this host ticks it once per in-game
     // interface frame, at the first screen update of that frame, with the
     // screen's own delta.
     if (camera_last_frame == summary.update_frames) return;
     camera_last_frame = summary.update_frames;
+    if (movie_active) {
+        // Packet cc9_movie_camera_mover_bind: the installed mover is the movie
+        // camera (004BC410 at 005CC2A9 replaced the ShipCaptain).
+        step_movie_camera(seconds);
+        return;
+    }
     bsp::ShipCaptainTargetView view{};
     if (!camera_target_view(view)) return;
     CameraOcean ocean(log);
@@ -1375,6 +1402,8 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.unit_interface_id = 0;
     impl.movie_screen = bsp::HudMovieScreenState{};
     impl.pending_interface_id = 0;
+    impl.movie = bsp::HudMovieCamera{};
+    impl.movie_active = false;
     // The child hosts borrow units and Lua. Their default destructors release
     // source caches without invoking their borrowed owners.
     impl.markers.reset();
@@ -1509,17 +1538,8 @@ class MovieInterfaceBinding final : public bsp::MovieInterfaceHost {
 public:
     explicit MovieInterfaceBinding(GameHudHost::Impl& owner) : owner_(owner) {}
     void seed_random_stream(int stream, std::uint32_t seed) override {
-        // 005CD1B0 / 005CD1BC. Switch 2: the gunnery host's shared stand-in
-        // takes stream 1's seed (a labelled substitution there); stream 0 has
-        // no host generator and stays a record.
-        GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
-        if (kMovieReseedBound && gunnery != nullptr
-            && gunnery->reseed_shared_stream_00bd2fd0(stream, seed)) {
-            ++owner_.movie_reseeds;
-            owner_.done("MovieInterface::seed_random_stream_1", 0x005cd1b0u);
-            return;
-        }
-        owner_.record("MovieInterface::seed_random_stream", 0x00bd2fd0u);
+        // 005CD1B0 / 005CD1BC.
+        owner_.reseed_stream(stream, seed, 0x005cd1b0u);
     }
     void push_interface_request(int interface_id, const void*) override {
         // 005CD1CE 004CC460(2Ch, [00E188D8]); the pending record is replaced.
@@ -1532,8 +1552,14 @@ public:
         owner_.record("MovieInterface::input_context_level", 0x00a933f0u);
     }
     std::uint32_t ensure_movie_camera(std::uint32_t existing) override {
-        owner_.record("MovieInterface::ensure_movie_camera", 0x005cc170u);
-        return existing;
+        if constexpr (kMovieMoverBound) {
+            // 005CC170: only while +1Ch is null (005CC192).
+            if (existing != 0) return existing;
+            return owner_.build_movie_camera_005cc170() ? 1u : 0u;
+        } else {
+            owner_.record("MovieInterface::ensure_movie_camera", 0x005cc170u);
+            return existing;
+        }
     }
     void send_unit_session_message(int) override {
         owner_.record("MovieInterface::session_message_1ff", 0x0077c470u);
@@ -1569,6 +1595,183 @@ void GameHudHost::movie_screen_camera_005cd240() {
             "frame %llu): 004CC460(2Ch, controlled unit) pushed; the next 006840f0 applies "
             "{37h}", impl.summary.update_frames);
     }
+}
+
+namespace {
+// The keyframes' parent queries over the units host.
+class MovieParentBinding final : public bsp::MovieCameraParentHost {
+public:
+    explicit MovieParentBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    bool destroyed_5e(std::size_t unit) override {
+        // SUBSTITUTION: 00799D70 reads +5Eh alone; the units host answers the
+        // four bytes of 0043F080 together.
+        return owner_.units == nullptr || !owner_.units->unit_alive_and_visible(unit);
+    }
+    bool is_kind(std::size_t unit, int kind) override {
+        return owner_.units != nullptr && owner_.units->unit_is_kind_of(unit, kind);
+    }
+    std::size_t squadron_leader_3d0(std::size_t unit) override {
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != unit) continue;
+            for (const std::size_t u : r.member_units) {
+                if (u != bsp::kPlaneSquadronNoUnit) return u;
+            }
+        }
+        unsupported("MovieKeyframe::squadron_leader", 0x00799d9bu);
+        return bsp::kMovieNoParent;
+    }
+    bool world(std::size_t unit, std::array<float, 16>& m) override {
+        float right[3], up[3], forward[3], translation[3];
+        if (owner_.units == nullptr
+            || !owner_.units->unit_pose(unit, right, up, forward, translation)) {
+            m = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+            return false;
+        }
+        m = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2], 0.0f,
+            forward[0], forward[1], forward[2], 0.0f,
+            translation[0], translation[1], translation[2], 1.0f};
+        return true;
+    }
+    float class_height_a8(std::size_t unit) override {
+        // [[unit+538h]+A8h] is the class `Height` (docs/GUN_MOUNT_POSITIONS.md),
+        // read from the installed VehicleClass row.
+        const GameUnitRow* row = owner_.units != nullptr ? owner_.units->unit_row(unit) : nullptr;
+        if (row == nullptr || owner_.lua == nullptr) return 0.0f;
+        return owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
+    }
+    std::array<float, 3> plane_velocity_810(std::size_t) override {
+        // SUBSTITUTION: plane+810h..818h has no traced writer
+        // (docs/PLANE_ADVANCE_POSE.md); zero.
+        return {0.0f, 0.0f, 0.0f};
+    }
+    void unsupported(const char* what, std::uint32_t address) override {
+        ++owner_.movie_unsupported;
+        owner_.record(what, address);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+void GameHudHost::Impl::reseed_stream(int stream, std::uint32_t seed, std::uint32_t site) {
+    // Switch 2: stream 1 reaches the gunnery host's shared stand-in (a
+    // labelled substitution there); stream 0 has no host generator.
+    GameGunneryHost* gunnery = units != nullptr ? units->gunnery() : nullptr;
+    if (kMovieReseedBound && gunnery != nullptr
+        && gunnery->reseed_shared_stream_00bd2fd0(stream, seed)) {
+        ++movie_reseeds;
+        done(site == 0x005cd1b0u ? "MovieInterface::seed_random_stream_1"
+                                 : "MovieCamera::seed_random_stream_1", site);
+        return;
+    }
+    record(site == 0x005cd1b0u ? "MovieInterface::seed_random_stream"
+                               : "MovieCamera::seed_random_stream", 0x00bd2fd0u);
+}
+
+bool GameHudHost::Impl::build_movie_camera_005cc170() {
+    // 005CC19F operator new(570h), 0079D020, then its 00BD2FD0(1, 123).
+    bsp::movie_camera_construct_0079d020(movie);
+    reseed_stream(1, 123u, 0x0079d1abu);
+    record("MovieCamera::place_in_world", 0x00923870u);
+    // 005CC27C..005CC29A: 00B6DB70 on the node, then 007A0860 with its world.
+    std::array<float, 16> seed{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    const bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+    if (node.ready) {
+        for (std::size_t i = 0; i < 16; ++i) seed[i] = node.state.transform.world[i];
+    }
+    bsp::movie_camera_seed_007a0860(movie, seed);
+    // 005CC2A9 004BC410: the outgoing mover is destroyed (00926D90).
+    const bool replaced = camera_bound;
+    camera_bound = false;
+    movie_active = true;
+    ++movie_builds;
+    record("MovieCamera::observer_pair", 0x00694a60u);
+    done("MovieCamera::build_005cc170", 0x005cc170u);
+    log.notef("movie camera 005CC170 built and installed as the mover (004BC410 at 005CC2A9, "
+        "hud update frame %llu); it replaced %s; seed position (%.1f,%.1f,%.1f)",
+        summary.update_frames, replaced ? "the ShipCaptain, destroyed" : "no mover",
+        static_cast<double>(seed[12]), static_cast<double>(seed[13]),
+        static_cast<double>(seed[14]));
+    return true;
+}
+
+void GameHudHost::Impl::destroy_movie_camera(const char* why) {
+    movie_active = false;
+    movie_screen.camera = 0;                            // the 00694A60 observer
+    ++movie_destroys;
+    // 0079A2FB, the destructor: 00BD2FD0(1, wall-clock milliseconds). Not
+    // reproducible (docs/RANDOM_STREAMS.md), so a record.
+    record("MovieCamera::destructor_reseed_wall_clock", 0x0079a2fbu);
+    log.notef("movie camera destroyed at hud update frame %llu: %s (clock %.2f s, %zu camera "
+        "and %zu look-at keyframes)", summary.update_frames, why,
+        static_cast<double>(movie.clock_3b0), movie.camera_498.keys.size(),
+        movie.target_414.keys.size());
+    movie = bsp::HudMovieCamera{};
+}
+
+void GameHudHost::Impl::step_movie_camera(float seconds) {
+    // SUBSTITUTION: the tick element's wave-3 slot 00798C80 runs once per
+    // fixed step; this host runs one 0.05 s fixed step per frame, so it is
+    // called once per frame here, before the frame's 0079A3B0.
+    if (bsp::movie_camera_fixed_step_00798c80(movie, 0.05f)) {
+        reseed_stream(1, 12345u, 0x00798cadu);          // 00798CAD
+        reseed_stream(0, 54321u, 0x00798cb9u);          // 00798CB9
+    }
+    // 00798D07: one stream-1 draw per step into a 16-entry ring. SUBSTITUTION:
+    // not taken (the ring feeds nothing this host reads).
+    record("MovieCamera::fixed_step_draw", 0x00798d07u);
+    MovieParentBinding parents(*this);
+    std::array<float, 16> world{};
+    float fov = 0.0f;
+    if (!bsp::movie_camera_update_0079a3b0(movie, parents, seconds, world, fov)) {
+        record("MovieCamera::update_empty_track", 0x0079bbd5u);
+        return;
+    }
+    done("MovieCamera::update", 0x0079a3b0u);
+    bsp::CameraMatrix16 matrix{};
+    for (std::size_t i = 0; i < 16; ++i) matrix[i] = world[i];
+    bsp::MissionCameraProjection projection = camera_projection;
+    projection.fov = fov;                                // 0079B833 00B6FBB0
+    bsp::publish_mission_camera(matrix, projection);
+    ++movie_publishes;
+    if (movie_publishes == 1 || summary.update_frames >= movie_last_pose_log + 40) {
+        movie_last_pose_log = summary.update_frames;
+        log.notef("movie camera pose at hud update frame %llu: clock %.2f s, position "
+            "(%.1f,%.1f,%.1f), look-at (%.1f,%.1f,%.1f), forward (%.4f,%.4f,%.4f), fov %.4f",
+            summary.update_frames, static_cast<double>(movie.clock_3b0),
+            static_cast<double>(world[12]), static_cast<double>(world[13]),
+            static_cast<double>(world[14]), static_cast<double>(movie.look_384[0]),
+            static_cast<double>(movie.look_384[1]), static_cast<double>(movie.look_384[2]),
+            static_cast<double>(world[8]), static_cast<double>(world[9]),
+            static_cast<double>(world[10]), static_cast<double>(fov));
+    }
+}
+
+int GameHudHost::movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in) {
+    Impl& impl = *impl_;
+    // 008B7AE6: the camera 005CD240 returned; null skips the store.
+    if (!impl.movie_active || impl.movie_screen.camera == 0) {
+        impl.record("MovieCamera::add_position_no_camera", 0x008b7ae8u);
+        return 0;
+    }
+    MovieParentBinding parents(impl);
+    const int added = bsp::movie_camera_add_position_007a42c0(impl.movie, in, parents);
+    impl.movie_keyframes += static_cast<unsigned long long>(added);
+    impl.done("MovieCamera::add_position_007a44d0", 0x007a44d0u);
+    return added;
+}
+
+int hud_movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in) {
+    GameHudHost* hud = attached_hud_for_selection();
+    if (hud == nullptr) return -1;
+    return hud->movie_add_position_007a44d0(in);
+}
+
+void GameHudHost::update_movie_screen_005cbaf0(float seconds) {
+    Impl& impl = *impl_;
+    impl.record("MovieScreen::black_bars_update", 0x005cbaf0u);
+    impl.step_mission_camera(seconds);
 }
 
 bool hud_movie_screen_camera_005cd240() {
@@ -2621,10 +2824,13 @@ public:
             forward[i] = world[8 + i];
             position[i] = world[12 + i];
         }
-        if (!owner_.pick_first_basis_logged) {
+        const int source = owner_.movie_active ? 2 : 1;
+        if (source != owner_.pick_basis_source) {
+            owner_.pick_basis_source = source;
             owner_.pick_first_basis_logged = true;
-            owner_.log.notef("unit pick: first camera basis from the published mover at hud "
+            owner_.log.notef("unit pick: camera basis now from the %s at hud "
                 "update frame %llu: from=(%.1f,%.1f,%.1f) forward=(%.4f,%.4f,%.4f)",
+                source == 2 ? "movie camera" : "published mover",
                 owner_.summary.update_frames, static_cast<double>(position[0]),
                 static_cast<double>(position[1]), static_cast<double>(position[2]),
                 static_cast<double>(forward[0]), static_cast<double>(forward[1]),
@@ -3121,6 +3327,11 @@ void GameHudHost::report() {
         "stream1_reseeds=%llu",
         kMovieInterfacePushBound ? 1 : 0, impl.movie_calls, impl.movie_engages,
         impl.movie_pushes, kMovieReseedBound ? 1 : 0, impl.movie_reseeds);
+    impl.log.notef("summary mission hud movie camera (packet cc9_movie_camera_mover_bind, "
+        "005CC170 / 0079A3B0): bound=%d builds=%llu destroys=%llu keyframes=%llu "
+        "publishes=%llu unsupported=%llu active_at_end=%d", kMovieMoverBound ? 1 : 0,
+        impl.movie_builds, impl.movie_destroys, impl.movie_keyframes, impl.movie_publishes,
+        impl.movie_unsupported, impl.movie_active ? 1 : 0);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is
