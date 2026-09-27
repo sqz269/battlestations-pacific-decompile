@@ -1,0 +1,13 @@
+{
+ "packet": "cc9_own_triple_order",
+ "worker": "agent/cc9-hud2",
+ "kind": "read only, no binding",
+ "doc": "docs/CONTROLLED_UNIT.md, section \"The own triple's order\"",
+ "steps": [
+  {"address": "0080753a", "native": "00804e10", "function": "008073c0", "what": "triple 0 appends the 61h own buckets in ascending class-id order"},
+  {"address": "004e05b7", "native": "006485a0", "function": "004dfb70", "what": "scene load step 19 ForceSelectUnit, before luaStageInit at step 25"}
+ ],
+ "result": "host own-triple order equals the image's rule over the same creation order; load-time units Dunlap (USN01), Fletcher-class01 (USN04), Kortenaer (USN02) stand",
+ "names_added": {},
+ "no_ghidra_function": []
+}
