@@ -1286,3 +1286,48 @@ The substitutions labelled in the binding stand:
 - the slot's own liveness is the wing-0 plane's;
 - the observer releases at that plane's death rather than at the squadron's;
 - the plane interface's camera hand-off is not modelled.
+
+## A controlled plane under INTF_PLANE, with an idle player (packet `cc9_controlled_plane_seat`, a read)
+
+Worker cc9-hud3, 2026-09-27, base 92ded9747. Ghidra was read only, and **no code changed**. The
+image's rule for an idle player is what the host already does, so there is nothing to bind.
+
+**The two producers of a plane's pilot command block** (`docs/PILOT_COMMAND_PATH.md`,
+`docs/PILOT_CONTROLS.md`). Both write `unit+9FCh..+A10h` through 007B8C90.
+- **The pilot bot**, 0099ACD0 (PilotBot `+0Ch`), pushes every tick at 0099B0B9.
+  - Its only gates are at 0099ACD6..0099AD09: the unit pointer, `+5Dh`, `+60h`, `+61h` and the
+    squadron's `+61h`.
+  - **No role test and no `00E188D8` test.**
+  - The `+61h` writers are the setters 007B8840/007B8860, the launch routine 007C6760 (from
+    006C3E50) and the constructors. None is in the pilot screen or the role path
+    (`C6 ?? 61 01`, `88 ?? 61` over the image).
+- **The player**, 00519520 (from the INTF_PLANE HUD screen update 00519BB0 at 00519CF7), runs only
+  when 007BB9A0 is true. It pushes its command at 00519818 **only when
+  `00927F30(unit, 1)` holds**, that is when the local player holds role 1, the pilot seat
+  (00519807).
+  - With role 0 only, it *tracks*: `unit+9F0h` goes into the screen's own `+24h` (005197F9..
+    005197FF).
+  - It takes the pilot seat through `0077C470(2, 1)` only when the stick moved more than 0.2
+    (`00CE3D10`).
+
+**What the controlled squadron gets on USN01:**
+- The role screen 0067BB50 takes role 0 (mask 1) on the controlled slot. The combined re-pair
+  shows it: `player roles: takes 8 -> 9`.
+- Role 1 is never taken, because an idle stick never moves.
+- So 00519520 never pushes, and the pilot bot keeps flying ScoutDauntless as an autopilot, attacks
+  included. **The host's behaviour (the AI flies it; combat identical) is the image's.**
+- **The "held level" and "last input latched" readings are both excluded:** the player's block is
+  never written without role 1.
+
+**What the plane interface adds for an idle player is display only:**
+- 00519BB0's `role_Text` shows `ingame.pilotai`, because role 1 is not the local player's
+  (00519BF0..00519C92);
+- 005191B0 and 00519020 update HUD pages and the part flags `vtable[21Ch](2Ah/2Bh)`;
+- the camera hand-off `+6Ch`/`+68h`.
+All stay records or labelled, as before. If 007BB9A0 turned false, the screen would hand the unit
+to the spectator HUD (`00647300(root, unit+9D4h)`, then `004CC460(24h, unit)`). It is true for
+ScoutDauntless while it flies.
+
+**Consequence for measured pairs:** until a run gives the plane stick input (a scenario like
+`BSP_PLAYER_HELM` for ships), no plane-seat binding can move gameplay. The ship-side equivalent is
+the scripted helm option (`docs/SCRIPTED_HELM.md`).

@@ -1,0 +1,15 @@
+{
+  "packet": "cc9_controlled_plane_seat",
+  "worker": "cc9-hud3",
+  "kind": "read",
+  "base": "92ded9747",
+  "doc": "docs/CONTROLLED_UNIT.md, A controlled plane under INTF_PLANE, with an idle player",
+  "code_changed": false,
+  "findings": [
+    "The pilot bot 0099ACD0 pushes the command block every tick; its gates (0099ACD6..0099AD09) are the unit, +5Dh, +60h, +61h and the squadron's +61h: no role or controlled-unit test.",
+    "The player's 00519520 pushes only when the local player holds role 1 (00519807); with role 0 only it tracks, and takes role 1 through 0077C470(2,1) only after the stick moves more than 0.2 (00CE3D10).",
+    "An idle player holds role 0 only (0067BB50), so the bot keeps flying the controlled plane: the host's behaviour is the image's; no switch is needed."
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}
