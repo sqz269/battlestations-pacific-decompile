@@ -2,31 +2,129 @@
  "packet": "cc9_spawn_new_placement",
  "worker": "cc9-plane2",
  "switch": "kSpawnNewPlacementBound",
- "state": "ON (placement world not registered: test and retry inert until the game_hosts_lua.cpp hunk lands)",
+ "state": "ON, full binding (world of live units, class Length/Width, requeue on refusal) at be664aa2f",
  "doc": "docs/SCENE_CONTENTS_HOSTS.md section 23",
- "pending_hunk": "local/cc9-plane2-luahost.patch in worktree cc9-plane2 (src/game_hosts_lua.cpp, leased to cc9-hud3)",
  "steps": [
-  {"address": "0094a6a0", "native": "00413920", "function": "0094a140", "what": "candidate = RotY(a) T RotY(-a) R, first of three multiplies"},
-  {"address": "0094a40a", "native": "00b646e0", "function": "0094a140", "what": "RotY(-a)"},
-  {"address": "0094a15e", "native": "008f8680", "function": "0094a140", "what": "reference frame from record+10h"},
-  {"address": "00949ee7", "native": "0085dc80", "function": "00949750", "what": "lookAt frame orthonormalised"},
-  {"address": "0094942d", "native": "00941d30", "function": "00949300", "what": "per-member legality test"},
-  {"address": "009493e4", "native": "00413920", "function": "00949300", "what": "member frame = T(offset) candidate"}
+  {
+   "address": "0094a6a0",
+   "native": "00413920",
+   "function": "0094a140",
+   "what": "candidate = RotY(a) T RotY(-a) R, first of three multiplies"
+  },
+  {
+   "address": "0094a40a",
+   "native": "00b646e0",
+   "function": "0094a140",
+   "what": "RotY(-a)"
+  },
+  {
+   "address": "0094a15e",
+   "native": "008f8680",
+   "function": "0094a140",
+   "what": "reference frame from record+10h"
+  },
+  {
+   "address": "00949ee7",
+   "native": "0085dc80",
+   "function": "00949750",
+   "what": "lookAt frame orthonormalised"
+  },
+  {
+   "address": "0094942d",
+   "native": "00941d30",
+   "function": "00949300",
+   "what": "per-member legality test"
+  },
+  {
+   "address": "009493e4",
+   "native": "00413920",
+   "function": "00949300",
+   "what": "member frame = T(offset) candidate"
+  }
  ],
  "substitutions": [
   "entity refPos basis taken as identity (request keeps a position only)",
   "the frame's pitch is not carried into the created entity (SpawnNewFrame holds a heading)",
-  "no world registered: every candidate legal (until the hunk)",
   "hunk: 0071C4F0 map bounds answered false (zone runtime not reachable from the Lua host)"
  ],
  "names_added": {},
  "no_ghidra_function": [],
  "verdict": [
-  {"row": "USN13 member positions", "off": "flat 1200", "on": "1169.8..1626.3", "predicted": "computed", "verdict": "holds"},
-  {"row": "USN13 deaths", "off": 20, "on": 27, "predicted": "12..30", "verdict": "holds"},
-  {"row": "USN13 sea crashes", "off": 0, "on": 0, "predicted": "0..2", "verdict": "holds"},
-  {"row": "USN04", "off": "-", "on": "pair_diff 0", "predicted": "identical", "verdict": "holds"},
-  {"row": "USN01", "off": "-", "on": "pair_diff 0", "predicted": "identical", "verdict": "holds"},
-  {"row": "USN02", "off": "-", "on": "pair_diff 0", "predicted": "identical", "verdict": "holds"}
- ]
+  {
+   "row": "USN13 member positions",
+   "off": "flat 1200",
+   "on": "1169.8..1626.3",
+   "predicted": "computed",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN13 deaths",
+   "off": 20,
+   "on": 27,
+   "predicted": "12..30",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN13 sea crashes",
+   "off": 0,
+   "on": 0,
+   "predicted": "0..2",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN04",
+   "off": "-",
+   "on": "pair_diff 0",
+   "predicted": "identical",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN01",
+   "off": "-",
+   "on": "pair_diff 0",
+   "predicted": "identical",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN02",
+   "off": "-",
+   "on": "pair_diff 0",
+   "predicted": "identical",
+   "verdict": "holds"
+  }
+ ],
+ "verdict_full_binding": [
+  {
+   "row": "USN13 accepted candidate",
+   "on": "first, 313 entities, nearest 2316 m",
+   "predicted": "first candidate",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN13 deaths / hits",
+   "off": "20 / 460",
+   "on": "27 / 527",
+   "predicted": "as axes-only",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN04",
+   "on": "pair_diff 1 (log only); 8 first candidates, nearest 2051..8032 m",
+   "predicted": "identical",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN01",
+   "on": "pair_diff 0",
+   "predicted": "identical",
+   "verdict": "holds"
+  },
+  {
+   "row": "USN02",
+   "on": "pair_diff 0",
+   "predicted": "identical",
+   "verdict": "holds"
+  }
+ ],
+ "unexercised": "no reference mission refuses a candidate; the retry path is unmeasured"
 }

@@ -2716,9 +2716,10 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             if (i == 0 && request.exclude.present) {
                 if (const bsp::SpawnPlacementResult* p = bsp::last_spawn_placement_0094a140()) {
                     log_.notef("  spawn placement 0094a140: serial %u attempt %u candidates %d "
-                        "accepted %d angle %.4f distance %.1f",
+                        "accepted %d angle %.4f distance %.1f entities %d nearest %.1f",
                         request.serial, request.attempts, p->candidates, p->accepted ? 1 : 0,
-                        static_cast<double>(p->angle), static_cast<double>(p->distance));
+                        static_cast<double>(p->angle), static_cast<double>(p->distance),
+                        p->entities, static_cast<double>(p->nearest));
                 }
             }
         }
