@@ -81,6 +81,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // re-enable the Japanese destroyers' torpedo director after pass B cleared
     // it. Handled only with kShipDirectorEnablesBound.
     {"TorpedoEnable", 0x0089c8f0u},
+    // Packet cc9_ship_set_torpedo_stock: bsm_01_stationed_at_pearl.lua:1790 and
+    // the COTP-IJN spawn tables call it. Handled only with
+    // kShipSetTorpedoStockBound.
+    {"ShipSetTorpedoStock", 0x0089eee0u},
     {"SetRoleAvailable", 0x008ab850u},
     // Packet cc_lua_binding_audit: the delayed-call scheduler and the four state
     // queries usn_2_java's objective checker reads. src/lua_binding_mission.cpp
@@ -267,6 +271,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     // concrete binding that does nothing.
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
+    if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
         std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         return bsp::kMissionTurnAndStanceBound;
@@ -1808,6 +1813,18 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
                        : scene_director_torpedo_writes().lua_disables);
             log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
                 "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
+        }
+    } else if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) {
+        // 0089EEE0: 008F2260 resolves argument 0, 00B66290 reads argument 1 as
+        // an integer, and 0081F8B0 runs on the unit with no class test and no
+        // director (0089EFD0..0089F01D). A null entity reaches 0081F8B0 with
+        // ECX = 0 in the image; the host drops it. LABELLED: queued for the
+        // gunnery host's next fixed step.
+        const int stock = argument_integer(1);
+        if (subject != nullptr && row.unit_index < units_.count()) {
+            queue_ship_set_torpedo_stock_0089eee0(row.unit_index, stock);
+            log_.notef("  ShipSetTorpedoStock: %s stock=%d (0089EEE0, queued for 0081F8B0)",
+                row.unit.c_str(), stock);
         }
     } else if (std::strcmp(binding->name, "RepairEnable") == 0) {
         bsp::RepairEnableArm arm = bsp::RepairEnableArm::kLocalFieldWrite;

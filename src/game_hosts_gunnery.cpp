@@ -1621,9 +1621,31 @@ struct GameGunneryHost::Impl {
     // 00810DA0 on the unit's spare. Returns the timer to store.
     float torpedo_stock_rearm_0072d520(std::size_t unit, float reload) {
         auto& us = unit_state[unit];
-        if (!us.torpedo_stock_set) {
-            // 0081F8B0(class+7A0h) at pass C, 008201B8: every barrel is loaded
-            // at the first shot, so the count taken now is pass C's.
+        if (!us.torpedo_stock_set) torpedo_stock_pass_c_0081f8b0(unit);
+        if (us.torpedo_spare != 0) {               // 00810D80
+            if (us.torpedo_spare > 0) {            // 00810DA0
+                --us.torpedo_spare;
+                ++torpedo_spares_spent;
+            }
+            return reload;
+        }
+        // 0072D592..0072D5A5: 0072CF00(barrel, *00CFDBF8 = FLT_MAX, 0).
+        ++torpedo_barrels_emptied;
+        if (loaded_torpedo_barrels_00810e90(unit) <= 1) {
+            ++torpedo_ships_dry;
+            log.notef("  torpedo stock: %s fires its last torpedo (0072D520 pins the barrel "
+                "at FLT_MAX)", us.row.name.c_str());
+        }
+        return FLT_MAX;
+    }
+
+    // Packet cc9_torpedo_stock: 0081F8B0(class+7A0h) at pass C, 008201B8, made
+    // lazily. Every barrel is loaded until the first shot, so the count taken
+    // then is pass C's. Packet cc9_ship_set_torpedo_stock factored it out so a
+    // script call can run it first.
+    void torpedo_stock_pass_c_0081f8b0(std::size_t unit) {
+        auto& us = unit_state[unit];
+        {
             us.torpedo_stock_set = true;
             const int loaded = loaded_torpedo_barrels_00810e90(unit);
             us.torpedo_spare = us.max_torpedo_stock < loaded ? 0
@@ -1645,21 +1667,55 @@ struct GameGunneryHost::Impl {
             log.notef("  torpedo stock: %s MaxTorpedoStock=%d loaded=%d spare=%d (0081F8B0)",
                 us.row.name.c_str(), us.max_torpedo_stock, loaded, us.torpedo_spare);
         }
-        if (us.torpedo_spare != 0) {               // 00810D80
-            if (us.torpedo_spare > 0) {            // 00810DA0
-                --us.torpedo_spare;
-                ++torpedo_spares_spent;
+    }
+
+    // Packet cc9_ship_set_torpedo_stock. 0081F8B0(unit, stock) from the Lua
+    // native: the pass C set first if the unit has not had it (pass C runs at
+    // load, before any script), then the image's routine: a stock below the
+    // loaded barrels clears the spare and unloads (0081DCB0) down to it; else
+    // the spare is stock - loaded; then every barrel of the unit's torpedo
+    // guns whose timer is at or above FLT_MAX (00D7A278) goes through
+    // 0072D520(gun, barrel, 1). LABELLED: the re-arm takes the gun row's
+    // scalar ReloadTime without 0072D520's 00BD2F10 draw (every ReloadTime in
+    // this installation is a scalar, so the draw's value is the same; the
+    // draw's stream advance is not modelled, as on the fire path).
+    void set_torpedo_stock_0081f8b0(std::size_t unit, std::int32_t stock) {
+        if (unit >= unit_state.size()) return;
+        auto& us = unit_state[unit];
+        if (!us.torpedo_stock_set) torpedo_stock_pass_c_0081f8b0(unit);
+        const int loaded = loaded_torpedo_barrels_00810e90(unit);
+        const int spare_before = us.torpedo_spare;
+        int unloaded = 0;
+        if (stock < loaded) {
+            us.torpedo_spare = 0;
+            const int wanted = stock < 0 ? 0 : stock;
+            int current = loaded;
+            while (wanted < current) {
+                unload_random_torpedo_barrel_0081dcb0(unit);
+                const int next = loaded_torpedo_barrels_00810e90(unit);
+                if (next == current) break;   // the native loop has no guard
+                current = next;
+                ++unloaded;
             }
-            return reload;
+        } else {
+            us.torpedo_spare = stock - loaded;
         }
-        // 0072D592..0072D5A5: 0072CF00(barrel, *00CFDBF8 = FLT_MAX, 0).
-        ++torpedo_barrels_emptied;
-        if (loaded_torpedo_barrels_00810e90(unit) <= 1) {
-            ++torpedo_ships_dry;
-            log.notef("  torpedo stock: %s fires its last torpedo (0072D520 pins the barrel "
-                "at FLT_MAX)", us.row.name.c_str());
+        int rearmed = 0;
+        for (GameGunRow& g : guns) {
+            if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
+            for (float& timer : g.fire.barrel_timers) {
+                if (!(static_cast<double>(timer) >= static_cast<double>(FLT_MAX))) continue;
+                if (us.torpedo_spare != 0) {       // 00810D80
+                    if (us.torpedo_spare > 0) --us.torpedo_spare;   // 00810DA0
+                    timer = g.reload_time;         // full: 0072CF00(barrel, reload, 1)
+                    ++rearmed;
+                }                                  // else 0072CF00(FLT_MAX): stays pinned
+            }
         }
-        return FLT_MAX;
+        ++torpedo_stock_lua_sets;
+        log.notef("  torpedo stock: %s ShipSetTorpedoStock(%d) loaded=%d spare %d -> %d "
+            "unloaded=%d rearmed=%d (0089EEE0 -> 0081F8B0)", us.row.name.c_str(),
+            static_cast<int>(stock), loaded, spare_before, us.torpedo_spare, unloaded, rearmed);
     }
     float flat_scaled(int class_id, const char* key, float scale, float fallback) {
         const int raw = flat(class_id, key, 0x7FFFFFFF);
@@ -1691,6 +1747,8 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_ships_dry{0};
     // Packet cc9_torpedo_supply_tick.
     unsigned long long torpedo_barrels_unloaded{0};
+    // Packet cc9_ship_set_torpedo_stock.
+    unsigned long long torpedo_stock_lua_sets{0};
     unsigned long long torpedo_supply_ticks{0};
     unsigned long long torpedo_supply_in_area{0};
     unsigned long long torpedo_supply_calls{0};
@@ -7486,8 +7544,28 @@ void GameGunneryHost::register_new_units_00864bd0() {
         first, count - 1, host.guns.size() - guns_before, host.guns.size(), first);
 }
 
+namespace {
+std::vector<std::pair<std::size_t, std::int32_t>>& ship_torpedo_stock_queue() {
+    static std::vector<std::pair<std::size_t, std::int32_t>> queue;
+    return queue;
+}
+}  // namespace
+
+void queue_ship_set_torpedo_stock_0089eee0(std::size_t unit_index, std::int32_t stock) {
+    ship_torpedo_stock_queue().emplace_back(unit_index, stock);
+}
+
 void GameGunneryHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
+    if constexpr (kShipSetTorpedoStockBound) {
+        // Packet cc9_ship_set_torpedo_stock: the script host's calls since the
+        // last step, in call order.
+        std::vector<std::pair<std::size_t, std::int32_t>> pending;
+        pending.swap(ship_torpedo_stock_queue());
+        for (const auto& request : pending) {
+            host.set_torpedo_stock_0081f8b0(request.first, request.second);
+        }
+    }
     if (host.guns.empty()) return;
     host.clock_seconds += step_seconds;
     ++host.step_index;
@@ -8136,6 +8214,9 @@ void GameGunneryHost::report() {
                 "cc9_torpedo_supply_tick)", kTorpedoSupplyTickBound ? 1 : 0,
                 host.torpedo_supply_ticks, host.torpedo_supply_in_area,
                 host.torpedo_supply_calls, host.torpedo_barrels_unloaded);
+            host.log.notef("summary mission gunnery ship set torpedo stock bound=%d calls=%llu "
+                "(0089EEE0 -> 0081F8B0, packet cc9_ship_set_torpedo_stock)",
+                kShipSetTorpedoStockBound ? 1 : 0, host.torpedo_stock_lua_sets);
         host.log.notef("summary mission gunnery ship director torpedo writes lua_enable=%llu "
                 "lua_disable=%llu close_attack_sends=%llu changed=%llu bound=%d (0071E0D0 from "
                 "0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)",

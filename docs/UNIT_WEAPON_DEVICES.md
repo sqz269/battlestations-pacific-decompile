@@ -624,3 +624,67 @@ runs for every ship.
   repair zone.
 - **The unload (0081DCB0) is unreached on both missions.** No USN02 ship has stock below loaded,
   and USN04 sets no stock.
+
+## ShipSetTorpedoStock, wired (packet `cc9_ship_set_torpedo_stock`, `kShipSetTorpedoStockBound`, committed OFF)
+
+Worker cc9-ships2, on main `5eab91a79`. Ghidra was read-only. The switch is in
+`include/bsp/game_hosts_gunnery.hpp`.
+
+### The read
+
+- **0089EEE0**, the `ShipSetTorpedoStock` row of 00E0B7B8, resolves argument 0 to an entity and
+  reads argument 1 with BSP_LuaObject_GetInteger. It then calls 0081F8B0 directly: no class test,
+  no director, no session message (the decompile's body; the "luaMW_ShipSetTorpedoStock failed:"
+  string is its error prefix).
+- **0081F8B0** is this file's "Torpedo stock" table:
+  - the loaded count 00810E90;
+  - below it, the spare is cleared and 0081DCB0 unloads down to the stock;
+  - otherwise the spare is `stock - loaded`;
+  - then `0072D520(gun, barrel, 1)` runs on every barrel at or above FLT_MAX.
+- **0072D520 with `full = 1`** asks the provider `vtable[1F4h]` for a round.
+  - Without one, it re-pins the barrel at FLT_MAX.
+  - With one, it consumes it through `vtable[1F8h]` and re-arms the barrel with a reload drawn by
+    00BD2F10 over `[gun+3F8h]+28h..+2Ch`, the ReloadTime range.
+
+### Callers in this installation's Lua (read-only)
+
+- `ShipSetTorpedoStock` appears in 63 files under `scripts/`.
+- **The three reference missions do not reach it.** usn_2_java.lua and usn_19_coralus.lua call it
+  only through `luaMessageHandler` (commandhelpers.lua:3462). There its eight calls sit in the
+  `MSG_CHEAT` arms, keyboard cheats an idle run never sends. commandhelpers.lua's other caller,
+  `luaTorpedoReloader` (8477), is called by no mission file.
+- usn_1_marshall.lua (USN01) is the same.
+- The modded mission tree adds three more callers. `USNRM/usn_1_pearl.lua` (selectable as
+  `USNRM01`, missiontree.lua:3291) calls it at line 1796 inside `luaGeneratePanicTraffic`. Two
+  LOMP scripts (`03_defending_midway.lua:907`, `06_crucial_cargo.lua:110`) serve the
+  missiontree's LOMP entries. None is a reference mission.
+- **The cheapest selectable caller is BSM01**, bsm_01_stationed_at_pearl.lua.
+  - Line 1790 calls `ShipSetTorpedoStock(Mission.Henry, 0)` as the first statement of
+    `luaStartMission`. That runs on the mission's first think (line 650, `if not Mission.Started`).
+  - `Mission.Henry` is `FindEntity("HenryPT")` (line 377). In the scene it is a `TBoatGen` of
+    class `Elco` (VehicleClass[27], vehicleclasses.lua:17667, `MaxTorpedoStock = 12` at 17771).
+  - The script empties the player's PT boat of torpedoes at the start.
+
+### The binding (under `kShipSetTorpedoStockBound`)
+
+- The script host handles the native and queues (unit, stock). The gunnery host drains the queue
+  at the start of its next fixed step (**LABELLED**: the image calls 0081F8B0 inside the native).
+- The gunnery host's `set_torpedo_stock_0081f8b0` is the routine above. It is preceded by the
+  pass C set (`class+7A0h`) when the unit has not had it, since pass C runs at load before any
+  script.
+  - That pass C set is factored out of the fire path unchanged (`torpedo_stock_pass_c_0081f8b0`).
+- **LABELLED:** the re-arm takes the gun row's scalar ReloadTime and makes no 00BD2F10 draw, as on
+  the fire path. Every ReloadTime in this installation is a scalar.
+- **Census:** `summary mission gunnery ship set torpedo stock bound=.. calls=..`; one
+  `ShipSetTorpedoStock:` line per script call; one `torpedo stock: <ship> ShipSetTorpedoStock(n)
+  loaded=.. spare .. -> .. unloaded=.. rearmed=..` line per application.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+| row | prediction |
+| --- | --- |
+| USN02 `pair_diff` | 1; `calls=0` on both sides |
+| USN04 `pair_diff` | 1; `calls=0` on both sides |
+| BSM01 (proposed measuring pair, 9200/9000 frames, the reference settings) | the run reaches `luaStartMission`: one `ShipSetTorpedoStock: HenryPT stock=0` line, then `torpedo stock: HenryPT MaxTorpedoStock=12 loaded=L spare=12-L` (the pass C set) and `ShipSetTorpedoStock(0) loaded=L spare 12-L -> 0 unloaded=L rearmed=0`, with L the Elco's tube count |
+| BSM01 HenryPT torpedo launches | 0 on ON |
+| BSM01 `pair_diff` | 1, gameplay identical, provided HenryPT launches nothing on OFF. Pearl Harbor's attackers are aircraft, and the torpedo preference row ranks no plane class. Otherwise 3, carried by HenryPT's launches alone |
