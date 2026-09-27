@@ -2735,3 +2735,26 @@ no world and takes the first candidate.
 | USN13 sea crashes | 0 | 0..2 | 0..2 |
 | USN04 4700/4500 | 44 deaths, releases 6 / 8 | identical | identical: first candidates accepted, extents under fH 100 |
 | USN01, USN02 | - | identical | identical |
+
+### 23.5 The axes-only pairs (flipped ON)
+
+OFF is this tree's build at 91544ca32. ON is `pair_export --flip kSpawnNewPlacementBound=true` from
+the same commit. No placement world is registered (the hunk of 23.3 is not applied), so the test and
+the retry are inert and the first candidate is taken. Environment as in 22.5. Logs are
+`local\PL_{OFF,ON}_<mission>.log` in worktree cc9-plane2.
+
+| row | OFF | ON | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN13 member positions | flat 1200 | member 1 (-4855.5, 1169.8, -5398.7), rows 1169.8..1626.3 | as computed | holds, to 0.1 m |
+| USN13 deaths | 20 | 27 | 12..30 | holds |
+| USN13 hit records / shots | 460 / 4033 | 527 / 4180 | move | holds |
+| USN13 sea crashes (first_damage -1) | 0 | 0 | 0..2 | holds |
+| USN13 water-contact records | 5 | 8 | not predicted | - |
+| USN13 torpedo-task releases | 0 of 60 | 2 of 60 | not predicted | - |
+| USN04 4700/4500 | - | pair_diff 0 | identical | holds |
+| USN01, USN02 | - | pair_diff 0 | identical | holds |
+
+- **No failed prediction.**
+- **The switch is ON with the test inert.** Applying the 23.3 hunk activates the test and the
+  retry. Its own pair is predicted to be identical on all four missions, with the first candidate
+  accepted.

@@ -340,7 +340,7 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
 // With the switch on, the group frame is 0094A140's own and the members pass
 // through 00941D30 with 0094A140's retry. Off, section 22's frame runs.
 // ---------------------------------------------------------------------------
-inline constexpr bool kSpawnNewPlacementBound = false;
+inline constexpr bool kSpawnNewPlacementBound = true;   // 23.5; the test is inert until the host registers a world
 
 // A row-major 4x4: rows 0/1/2 right/up/forward, row 3 the translation, which
 // is the order BSP_Matrix_Multiply4x4 (00413920) and 00B646E0 use.
