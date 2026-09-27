@@ -3375,6 +3375,33 @@ std::size_t GameMissionLuaHost::run_scene_load_init_all_0046eb4b(
             }
         }
     }
+    if constexpr (kLoadWingSquadronIdBound) {
+        // Packet cc9_load_wing_squadron_id. Every plane 007F4580 constructs
+        // carries its squadron at +9D4h (007F4B49), so its pass C (007C9770,
+        // 007C97E8) writes SquadronID. SUBSTITUTION, labelled: the host fuses
+        // slot 0 with the squadron node, which gets none (as for a mission-time
+        // wing); members 1.. are marked here, after every node is pushed, since
+        // a wing plane may precede its leader in the load list. class_index is
+        // left as create_units pushed it.
+        for (const bsp::PlaneSquadronHostRecord& record :
+             bsp::plane_squadron_registry().records()) {
+            if (record.from_air_ops_launch || record.squadron_unit == bsp::kPlaneSquadronNoUnit) {
+                continue;
+            }
+            const PendingEntity* const leader =
+                find_pending(static_cast<int>(record.squadron_unit) + 1);
+            if (leader == nullptr || !leader->load_scene || !leader->squadron) continue;
+            for (std::size_t m = 1; m < record.member_units.size(); ++m) {
+                const std::size_t unit = record.member_units[m];
+                if (unit == bsp::kPlaneSquadronNoUnit) continue;
+                PendingEntity* const plane = find_pending(static_cast<int>(unit) + 1);
+                if (plane == nullptr || !plane->load_scene || plane->squadron) continue;
+                plane->wing_member = true;
+                plane->squadron_id = leader->entity_id;
+                ++summary_.load_wing_marked;
+            }
+        }
+    }
     run_sentity_init_all_00925f20(false, 0x0046eb4bu);
     return static_cast<std::size_t>(summary_.init_all_entities - before);
 }
@@ -4529,6 +4556,9 @@ void GameMissionLuaHost::report_mission_script_state() {
     log_.notef("summary SEntity::InitAll load squadron hooks bound=%d squadrons=%llu "
         "(007F4580 / 007F4BA0 at 0046EB4B, packet cc9_load_time_squadron_hooks)",
         kLoadTimeSquadronHooksBound ? 1 : 0, summary_.load_squadron_nodes);
+    log_.notef("summary SEntity::InitAll load wing squadron ids bound=%d marked=%llu "
+        "(007F4B49 +9D4h -> 007C9770, packet cc9_load_wing_squadron_id)",
+        kLoadWingSquadronIdBound ? 1 : 0, summary_.load_wing_marked);
     log_.notef("summary SceneLoad thisTable identity bound=%d class_bound=%llu mirrored=%llu",
         kSceneLoadThisTableIdentityBound ? 1 : 0, summary_.load_class_bound,
         summary_.load_identity_mirrored);

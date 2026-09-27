@@ -1476,3 +1476,46 @@ sets their `wing_member`, `squadron_id` (007F4B49's plane+9D4h) or `class_index`
 no `SquadronID` into their `thisTable` (007C9770), and JM08 reads `squadron_ids=0`. In the image
 the planes are constructed inside the squadron's pass A and carry +9D4h. The follow-up: in the load
 walk, mark the registry record's other `member_units` as that squadron's wing.
+
+## 20. The load wing planes' `SquadronID` (packet `cc9_load_wing_squadron_id`, `kLoadWingSquadronIdBound`)
+
+Worker cc9-init2, 2026-09-27, on 3ef1ec0c1. Ghidra was read only. This closes 19.6.
+
+### 20.1 The image
+
+- **The store.** 007F4580 constructs each plane of the wing. At 007F4B43..007F4B55 it writes, for
+  every plane EBX it built: `+9D8h` = the squadron's count `+3CCh`, `+9D4h` = the squadron ESI
+  (007F4B49), and `squadron+3D0h[count]` = the plane. Nothing skips slot 0.
+- **The reader.** The plane's pass C, slot `+A4h`, is 007C9770 (Ghidra function 007C9770..
+  007C985F, RET at 007C985F). Past the skip test at 007C97C4 (`JE 007C983F`) and 00927B40 at
+  007C97E3, it loads `+9D4h` at 007C97E8, takes the squadron's word `+174h` at 007C97EE, and writes
+  it as `thisTable[plane].SquadronID` through 00B67460 (007C9805).
+- **So every plane a scene squadron builds gets `SquadronID`** in the load InitAll's pass C.
+
+### 20.2 The binding
+
+- Under `kLoadWingSquadronIdBound`, after the load walk has pushed every node and before it runs
+  InitAll, each plane-squadron record that is not an air-ops launch and whose leader node is a
+  load squadron (section 19) marks its members 1.. as that squadron's wing: `wing_member` and
+  `squadron_id` = the leader's id. Pass A then counts the wing table, and pass C's existing
+  `set_plane_squadron_id_007c97e3` writes `SquadronID`.
+- **SUBSTITUTION, labelled:** slot 0 is fused with the squadron node and gets none, as for a
+  mission-time wing (section 15.4). `class_index` is left as `create_units` pushed it.
+- **Summary line:** `summary SEntity::InitAll load wing squadron ids bound=<0|1> marked=N`.
+
+### 20.3 Predictions (written before the pairs; both variables set, lockstep 0.05, idle player)
+
+- **Script readers.** In this installation only three multiplayer scripts read `SquadronID`
+  (`ESMP/03_south_pacific.lua` 1195, `ESMP/05_philippine_sea.lua` 602, `LOMP/05_santa_cruz.lua`
+  1174). No reference mission reads it, so **gameplay is identical on all three**.
+- **JM08 3200/3000.** Two scene squadrons have wings of 3: Ki-43 Oscar 01 and Gekko 01.
+  - `marked` 0 -> 4;
+  - `thisTable steps squadron_ids` 0 -> 4;
+  - the native row `SEntity::InitAll pass C plane squadron_id` is added with 4 calls.
+  - `pair_diff` exits 1.
+- **USN04 4700/4500.** `movieval` has a wing of 3.
+  - `marked` 0 -> 2; `squadron_ids` 40 -> 42; the `pass C plane squadron_id` row 40 -> 42;
+  - the SpawnNew line's `wing_member_tables` 40 -> 42, since pass A counts every wing node it
+    attaches.
+  - `pair_diff` exits 1.
+- **USN02 9200/9000.** No scene squadron: only the new line's `bound` field moves, exit 1.
