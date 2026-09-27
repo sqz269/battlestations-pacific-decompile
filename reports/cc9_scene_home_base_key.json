@@ -2,24 +2,97 @@
   "packet": "cc9_scene_home_base_key",
   "doc": "docs/CONSTRUCT_WORLD.md",
   "calls": [
-    {"address": "007F4C4A", "native": "008F2260", "function": "007F4BA0", "note": "bag lookup of HomeBase (00CF8820)"},
-    {"address": "007F4C85", "native": "00925A90", "function": "007F4BA0", "note": "entity by the HomeBase name"},
-    {"address": "007F4CFA", "native": "007F1C00", "function": "007F4BA0", "note": "store +404h and queue on the home's block"},
-    {"address": "007F1C40", "native": "006BCD20", "function": "007F1C00", "note": "air-operations block of the home, no null check after"},
-    {"address": "007F1C69", "native": "006CC7B0", "function": "007F1C00", "note": "campaign queue at block+74h"}
+    {
+      "address": "007F4C4A",
+      "native": "008F2260",
+      "function": "007F4BA0",
+      "note": "bag lookup of HomeBase (00CF8820)"
+    },
+    {
+      "address": "007F4C85",
+      "native": "00925A90",
+      "function": "007F4BA0",
+      "note": "entity by the HomeBase name"
+    },
+    {
+      "address": "007F4CFA",
+      "native": "007F1C00",
+      "function": "007F4BA0",
+      "note": "store +404h and queue on the home's block"
+    },
+    {
+      "address": "007F1C40",
+      "native": "006BCD20",
+      "function": "007F1C00",
+      "note": "air-operations block of the home, no null check after"
+    },
+    {
+      "address": "007F1C69",
+      "native": "006CC7B0",
+      "function": "007F1C00",
+      "note": "campaign queue at block+74h"
+    }
   ],
   "coverage": [
-    {"routine": "007F4BA0", "coverage": "partial: 007F4C12..007F4CFA (State, HomeBase, 007F1C00) bound; SpawnPoint 007F4C8C..007F4CF0 read, not bound (no scene authors it); 007F4CFF..007F4E05 not bound"},
-    {"routine": "007F1C00", "coverage": "partial: the campaign arm (006CC7B0) with flag 0; the spotting arm 006CC760 and the flag arm 007ED6E0 not bound"}
+    {
+      "routine": "007F4BA0",
+      "coverage": "partial: 007F4C12..007F4CFA (State, HomeBase, 007F1C00) bound; SpawnPoint 007F4C8C..007F4CF0 read, not bound (no scene authors it); 007F4CFF..007F4E05 not bound"
+    },
+    {
+      "routine": "007F1C00",
+      "coverage": "partial: the campaign arm (006CC7B0) with flag 0; the spotting arm 006CC760 and the flag arm 007ED6E0 not bound"
+    }
   ],
   "substitutions": [
-    {"what": "007F1C00 on a home without an air-operations block (the original faults in 006CC7B0)", "is": "refused; +404h stays null, counted not_airbase", "where": "on_squadron_pass_c_initial_command"},
-    {"what": "squadron +35Ch / +3CCh for the queue entry", "is": "the registry record's Type and member count", "where": "on_squadron_pass_c_initial_command"},
-    {"what": "the scene row's HomeBase value", "is": "handed over by the scene-contents owner through set_squadron_scene_home_base (contract, not yet wired)", "where": "include/bsp/game_hosts_units.hpp"}
+    {
+      "what": "007F1C00 on a home without an air-operations block (the original faults in 006CC7B0)",
+      "is": "refused; +404h stays null, counted not_airbase",
+      "where": "on_squadron_pass_c_initial_command"
+    },
+    {
+      "what": "squadron +35Ch / +3CCh for the queue entry",
+      "is": "the registry record's Type and member count",
+      "where": "on_squadron_pass_c_initial_command"
+    },
+    {
+      "what": "the scene row's HomeBase value",
+      "is": "handed over by the scene-contents owner through set_squadron_scene_home_base (contract, not yet wired)",
+      "where": "include/bsp/game_hosts_units.hpp"
+    }
   ],
   "corrections": [],
-  "switches": [{"name": "kSceneHomeBaseBound", "committed": "OFF", "file": "src/game_hosts_units.cpp"}],
+  "switches": [
+    {
+      "name": "kSceneHomeBaseBound",
+      "committed": "OFF, flipped ON after the pairs",
+      "file": "src/game_hosts_units.cpp"
+    }
+  ],
   "failed_predictions": [],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "pairs": {
+    "USN04_4700": {
+      "exit": 1,
+      "deaths": [
+        40,
+        40
+      ],
+      "hit_records": [
+        799,
+        799
+      ]
+    },
+    "USN02_9200": {
+      "exit": 1,
+      "deaths": [
+        21,
+        21
+      ],
+      "hit_records": [
+        596,
+        596
+      ]
+    }
+  }
 }

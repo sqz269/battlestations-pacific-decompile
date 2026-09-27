@@ -2106,7 +2106,7 @@ own model and class row. The capacity is exactly the closed form, with no fallba
 mission. The descent of section 25 is now 106..117 s from first +5Dh to −200 m on USN02, not
 91..98 s. The caveat in section 25 is resolved by this section.
 
-## 29. A scene row's `HomeBase` at squadron pass C (packet `cc9_scene_home_base_key`, `kSceneHomeBaseBound`, committed OFF)
+## 29. A scene row's `HomeBase` at squadron pass C (packet `cc9_scene_home_base_key`, `kSceneHomeBaseBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units3, on main b4687c7a1. Ghidra was read only.
 
@@ -2204,3 +2204,28 @@ wired, and neither mission authors a non-empty `HomeBase`, so the two builds mus
 | deaths, hit records, releases, every per-entity row | identical | identical |
 | native table | identical (the `set_home_air_base_007f1c00` row is never reached) | identical |
 | pair_diff exit | 1 (only the summary line's `bound`) | 1 |
+
+### The pairs, measured
+
+One tree, `ef25d5c4f`. The OFF build is the tree's own `build\`; the ON build is
+`tools/pair_export.py --flip kSceneHomeBaseBound=true --out local\bu_on`. Both variables were
+set. The logs are `local\HB_{OFF,ON}_{USN04,USN02}.log` in worktree cc9-units3. All four show
+the fit line, the immediate present interval, a module directory in this tree and the final COM
+release.
+
+| row | USN04 4700/4500 | USN02 9200/9000 | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `summary squadron scene home base` | `bound` 0 -> 1, all counts 0 | the same | the same | held |
+| initial command movetos / no_home | 4 / 16 both | 0 / 0 both | unchanged | held |
+| deaths, hit records | 40, 799 both | 21, 596 both | identical | held |
+| releases | 7 of 16, 3 of 19 both | - | identical | held |
+| death rows, unit table, native table | identical (40, 81, 1598 rows) | identical (21, 32, 1511 rows) | identical | held |
+| pair_diff exit | 1 | 1 | 1 | held |
+
+**Verdict: ON.** No reference mission authors a non-empty `HomeBase`, and nothing calls the
+entry yet, so ON changes nothing today. It makes the image's path live the moment the scene
+owner wires the contract. The first mission it will act on is IJN08: its two squadrons name the
+airfield "Landscape 01\MainAirFieldEntity 01". **Open, for that mission:** whether the host
+registers an air-ops deck under that name, and whether a unit slot carries it. If no slot
+carries it, the moveto arm counts `no_home` and the squadron is queued but not ordered (the
+substitution above).

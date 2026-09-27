@@ -3850,7 +3850,9 @@ struct GameUnitsHost::Impl {
     // at +404h and pushes the squadron onto that deck's campaign queue
     // (006CC7B0 at 007F1C69), and the initial command's moveto arm then targets
     // it. OFF: only an air-ops launch has a home base (the deck search).
-    static constexpr bool kSceneHomeBaseBound = false;
+    // ON since the USN04 4700/4500 and USN02 9200/9000 pairs: identical (no
+    // reference row authors a HomeBase and the contract is not wired yet).
+    static constexpr bool kSceneHomeBaseBound = true;
     unsigned long long scene_home_keys_set = 0;
     unsigned long long scene_home_resolved = 0;
     unsigned long long scene_home_unresolved = 0;
