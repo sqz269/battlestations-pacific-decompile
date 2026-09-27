@@ -10610,3 +10610,43 @@ reference parameters.
 
 The surplus drops themselves were retired later by the Mavis per-rack ammo
 (`kRackRoundsPerRackBound`, `docs/RELEASE_ISSUE_STAGE.md`, "Mavis rack drops").
+
+## Mission reference baselines, 2026-09-27 e (main 7711f353f)
+
+Packet `cc9_reference_rebaseline_5`, worker cc9-units3. **It replaces the 2026-09-27 d rows
+above** once the runs below are recorded.
+
+**Run parameters:**
+- one binary, `local\rb5\build\win32\Release\bsp_game.exe` in worktree cc9-units3: a clean
+  `tools/pair_export.py` export of main `7711f353f` with no flip, so every switch is in its landed
+  state (SHA-256 prefix under "The runs");
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep `--mission-frame-seconds 0.05`, no
+  frame jitter, idle player, present interval immediate, one run at a time through
+  `tools/run_game.ps1`;
+- USN04 4700/4500, E2 = USN04 9200/9000, USN01 3200/3000 and USN02 9200/9000, each
+  `--press-start-frame 30 --menu-select <mission>`.
+
+**Known behaviours carried into this reference:**
+- **USN02 is controlled through Houston**, not DeRuyter (`kSetSelectedUnitBound`, packet
+  `cc9_set_selected_unit`).
+- **E2 ends in phase 1** under lockstep: `Blackout(true, "luaMoveToPh2")` is re-issued with no
+  callback (docs/MISSION_BLACKOUT.md).
+
+### Predictions, committed before the runs
+
+- **USN04 4500** from `local\RP_ON_USN04.log` (the Repair pair's ON side, the tip of this
+  commit): 41 deaths, 812 hit records (307 hull), 6341 shots, 11758.0 damage, first hit 93.00 s,
+  Lexington 3497.48 m. `pair_diff` exits 0 or 1 against it.
+- **USN02 9000** from `local\RP_ON_USN02.log`: 20 deaths, 664 hit records (305 hull), 53370.4
+  damage, first hit 35.65 s, Houston 1167.61 m, failure at 39.65 s. `pair_diff` exits 0 or 1
+  against it.
+- **E2 9000: no log on this tip.** The last E2 measurement is the buoyancy pair (51 / 894).
+  - E2 moves since then are expected from the wing flip (its first 4500 frames are USN04: hit
+    records +4) and from the later USN04-visible landings.
+  - Band: deaths 49..55, hit records 860..940, phase 1 only.
+- **USN01 3000: no log since d** (7 / 150, 583 shots, 0 torpedo drops).
+  - Landings that can reach it: the wing flip, the squadron initial command, the movie
+    interface / reseed / mover, the wreck and leak packets (USN01 has ships), the torpedo stock
+    and the HomeBase contract.
+  - Band: deaths 6..9, hit records 140..175. Any move is **flagged as unpaired** unless a pair
+    doc names USN01.
