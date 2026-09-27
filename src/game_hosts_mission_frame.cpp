@@ -69,7 +69,8 @@
 
 namespace bsp::game {
 // Packet cc9_authored_command_order: see the call sites below.
-constexpr bool kAuthoredCommandsAfterLoadWalkBound = false;
+// ON since the JM08 / USN01 / USN04 / USN02 pairs (SENTITY_INIT_ATTACH_ORDER.md 23.4).
+constexpr bool kAuthoredCommandsAfterLoadWalkBound = true;
 
 namespace {
 

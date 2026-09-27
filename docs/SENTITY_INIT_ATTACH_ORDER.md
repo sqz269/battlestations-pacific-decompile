@@ -2010,3 +2010,29 @@ Worker cc9-terrain2, 2026-09-27, on main 6dac89994. Ghidra was read only. This c
   - Gameplay is identical. `pair_diff` exit 1 from the new line alone.
   - **Risk, stated:** a `Cruise` latch captures the order ring when it is issued. If a load InitAll
     pass writes a ship's ring, the captured values change. None is known to.
+
+### 23.4 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\ac_off`, a build of 90c96a65d. ON is `pair_export` of 90c96a65d
+  with the switch flipped (SHA-256 A9CD0850337A). Both variables were set, lockstep 0.05, idle
+  player. Logs: `local\AC_{OFF,ON}_{JM08,USN01,USN04,USN02}.log` in worktree cc9-terrain2.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| JM08 `skipped_current` | 3 | 0 | 3 -> 0 | held |
+| JM08 `no_home` | 4 | 7 | +3 (1 -> 4) | the +3 held; the OFF base was 4, not 1: **failed** (base drift since cc9-init2's log) |
+| JM08 `movetos` / `stops` / `member_orders` | 2 / 0 / 6 | 2 / 0 / 6 | unchanged | held |
+| JM08 deaths, hit records, shots | 2, 127, 1351 | identical | identical | held |
+| JM08 death rows, plane death modes, unit table | 2, 1, 52 | identical | identical | held |
+| USN01 deaths, hits, shots | 7, 150, 561 | identical | identical | held |
+| USN04 deaths, hits, shots | 44, 789, 6321 | identical | identical | held |
+| USN02 deaths, hits, shots | 19, 566, 850 | identical | identical | held |
+| `pair_diff` (all four) | | exit 1: the new line, and on JM08 the pass C census | exit 1 | held |
+
+- **The H6K Mavis rows** took `no_home`: no water stop at load, and no home base. So pass C issues
+  nothing for them, and the authored `Stop` that follows is the same current command as before.
+- **Noise.** JM08's `ShipAiSectorScan` rows went from absent to 6000/3000 (listed noise). USN01's
+  `pretranslate` count is listed noise too.
+
+**Verdict: ON.** Pass C now sees the image's order. No gameplay row moved on any of the four
+missions.
