@@ -195,3 +195,53 @@ harness crash: minidump J:\PROG\battlestations-pacific-decompile-cc9-tooling\loc
 arguments and no `--crash-test` (`local\cr_base_usn02.log`, `local\cr_new_usn02.log`).
 `tools/pair_diff.py` reports exit 0, identical apart from noise. The whole native table (1,467
 rows), all 188 summary lines, the 32-row unit table and every other masked line are identical.
+
+## 5. Where a run's wall time goes (read-only profile, 2026-09-27)
+
+**Result.** The main thread spends about 98.6% of a USN04 run in the host-call bookkeeping
+`GameHostLog::record` (`src/game_hosts.cpp`). Rendering is about 1%, and the thread never waits on
+vsync. So a headless mode would save almost nothing. Nothing was implemented from this.
+
+**The run.** It was USN04 4700/4500 with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`,
+lockstep 0.05, launched through `tools/run_game.ps1` from this worktree (`local\prof_usn04.log`,
+build of `439238465`). Wall time was 479 s. The run exited 0 with 4,699 frames presented.
+
+**Method.**
+- **No existing profiler was usable.** The harness logs no frame or present times. WPR and xperf
+  are installed, but kernel sampling needs elevation, which the session does not have.
+- **The sampler.** It is a Python script in the session scratchpad, not committed and nothing
+  installed, and it uses only OS debugging APIs. It finds the bootstrap child by its `--log` path.
+  At each sample it suspends the thread and reads EIP/ESP (`Wow64GetThreadContext`), then reads
+  32 KB of stack and resumes the thread.
+- **Callers and symbols.** Callers come from stack scanning: a dword inside a module's code that
+  is preceded by a CALL. They are symbolized from `build\win32\bsp_game.map` and from the system
+  DLLs' export tables. The main thread is the earliest-created thread.
+- **Categories.** The innermost frame that matches decides:
+  - logging: `GameHostLog`, stdio, `WriteFile`;
+  - rendering: d3d9 or the driver modules, or Render/Present/Draw/Shader/Texture/`GameDeviceHost`;
+  - interface: Gui/Hud/Text/Widget/Font;
+  - simulation: otherwise, `run_mission_frame_004e4a40` or the fixed step on the stack.
+- **Coverage.** 3,578 main-thread samples over 475 s (about 7.5 Hz, limited by the thread
+  enumeration each round). The first ~4 s of startup were not sampled.
+
+| main thread, mission phase | samples | share |
+| --- | ---: | ---: |
+| logging | 3,527 | 98.6% |
+| of which the leaf is `GameHostLog::record` | 3,339 | 93.3% |
+| rendering | 32 | 0.9% |
+| interface | 19 | 0.5% |
+| simulation or other | 0 | 0% |
+| leaf in any wait (vsync, Sleep) | 0 | 0% |
+
+Simulation reads 0% because the recorder sits inside almost every simulation call, and the
+innermost match wins. Its true share is small but unmeasured.
+
+**The cause.** `record()` walks `records_` linearly and compares a `std::string` with the
+`const char*` name on every host call. This run's native table has 1,582 rows and 63,346,428
+calls. The largest rows are `ShipMotion::ocean_wave_field` and `ShipMotion::ocean_coverage_mask`
+(2,784,831 each), then `Gun::step_aim_0085ad80` and two sibling gun rows (2,696,872 each).
+
+**Suggestion, not implemented.** Add an index beside the vector, for example from the name pointer
+to the vector slot with a string-keyed fallback. Keep the vector order so the printed table does
+not change, and use `tools/pair_diff.py` to show the log is identical. The expected speed-up is
+several-fold. It is an estimate, not a measurement.
