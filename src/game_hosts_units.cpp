@@ -66,6 +66,7 @@
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ship_hydro_forces.hpp"
 #include "bsp/ship_buoyancy_elements.hpp"
+#include "bsp/unit_death_sink.hpp"
 #include "bsp/gun_fire_points.hpp"
 #include <array>
 #include "bsp/pose_refresh.hpp"
@@ -18273,6 +18274,8 @@ bool GameUnitsHost::ship_wreck_sink_00824fe5(const void* identity) {
     } else {
         for (const auto& owned : impl_->slots) {
             if (owned.get() != identity) continue;
+            // Packet cc9_wreck_pre_sink: 0082524B, the handler's throttle cut.
+            if constexpr (bsp::kWreckThrottleCutBound) bsp::wreck_throttle_cut_0082524b(owned->ring);
             if (!owned->leak_ready) return false;
             impl_->ship_wreck_sink_block_00824fe5(*owned);
             return true;

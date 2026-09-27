@@ -258,9 +258,11 @@ void on_wrecked_00824fe5(WreckPhysicsHost& host,
 // only builds one or two point effects (unit+74Ch..+760h, 008687C0, one draw
 // of 00BD2F10 each), which this host does not model.
 //
-// Committed OFF with predictions; the units host calls this from its row-15
-// wreck entry once wired (a one-line follow-up in src/game_hosts_units.cpp).
-inline constexpr bool kWreckThrottleCutBound = false;
+// The units host calls this from its row-15 wreck entry
+// (GameUnitsHost::ship_wreck_sink_00824fe5).
+// ON since the USN02 9200/9000 and USN04 4700/4500 pairs (f0186dc93): the
+// controlled wreck stops within 0.45 s of its death; USN04 identical.
+inline constexpr bool kWreckThrottleCutBound = true;
 void wreck_throttle_cut_0082524b(UnitOrderRing& ring) noexcept;
 
 }  // namespace bsp

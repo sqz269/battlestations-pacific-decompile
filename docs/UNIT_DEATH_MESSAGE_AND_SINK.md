@@ -316,7 +316,7 @@ not see a store made through that sub-object base.
 - Once both hull ends are below `VizbeomlesDolgok.KillDepth` (GameSettings `+3F4h`, -200.0 in
   this installation), 00826628 calls Kill 00926D90(1).
 
-## The rest of 00824B60: the pre-sink part and the throttle cut (packet `cc9_wreck_pre_sink`, `kWreckThrottleCutBound`, committed OFF)
+## The rest of 00824B60: the pre-sink part and the throttle cut (packet `cc9_wreck_pre_sink`, `kWreckThrottleCutBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units3, on main 2872fab7b. Ghidra was read only. This packet follows
 docs/WRECK_MOTION_AVOIDANCE.md, which found that a host wreck keeps cruising under its last
@@ -381,7 +381,7 @@ is already damped.
 
 - `kWreckThrottleCutBound` and `wreck_throttle_cut_0082524b(UnitOrderRing&)` in
   `include/bsp/unit_death_sink.hpp` / `src/unit_death_sink.cpp`, committed OFF.
-- **Wiring, a follow-up** applied when `src/game_hosts_units.cpp` is free: one line at the head
+- **Wiring**, applied at `f0186dc93` once `src/game_hosts_units.cpp` was free: one line at the head
   of `GameUnitsHost::ship_wreck_sink_00824fe5`, inside the identity match and before the
   `leak_ready` test, because the cut does not depend on the leak model:
   `if constexpr (bsp::kWreckThrottleCutBound) bsp::wreck_throttle_cut_0082524b(owned->ring);`
@@ -402,3 +402,47 @@ Same tree, the switch only, both variables set, against current main.
 | deaths, hit records | 21 ± 2, 596 ± 5 % | identical (40, 799) |
 | kills | 16 ± 2 | 0 |
 | pair_diff exit | 3 (the controlled distance alone moves) | 1, or 0 if no census line changes |
+
+### The pairs, measured
+
+One tree, `f0186dc93` (the wiring commit, the switch OFF). The OFF build is the tree's own
+`build\`; the ON build is `tools/pair_export.py --flip kWreckThrottleCutBound=true --out
+local\bu_on`. Both variables were set. The logs are `local\TC_{OFF,ON}_{USN02,USN04}.log` in
+worktree cc9-units3. All four show the fit line, the immediate present interval, a module
+directory in this tree and the final COM release.
+
+**The controlled unit changed on main.** Between the predictions and the runs, main began
+controlling Houston on USN02, not DeRuyter. The predicted DeRuyter observables are therefore
+judged on Houston, the controlled wreck, which dies at 74.55 s in both builds.
+
+| row | USN02 OFF | USN02 ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| controlled wreck's throttle after death (Houston, 74.55 s) | 1.062, held to the end | 0.000 at the next logged sample, 75.00 s | 0 within 0.3 s | held at the log's 0.5 s resolution (0.45 s after the death) |
+| its speed | 1.9 m/s, circling (heading −34° -> −91° from 80 to 140 s) | 10.75 m/s at 75.00 s, 0.000 from 80.0 s, heading fixed at −29.7° | below 0.5 m/s within 16 s; no circling | held |
+| controlled distance | Houston 1239.15 m | 1165.78 m | DeRuyter 2196.68 -> about 1900 | not applicable as written (another unit); the same effect, −73 m |
+| descent, first +5Dh to −200 m, per common wreck | 106.25..112.25 s | 104.35..112.25 s (−2.70..0.00 s each) | ± 3 s | held |
+| kills, unlinked nodes, list 6 | 17, 102, 15 | 16, 96, 16 | 16 ± 2 | held |
+| deaths | 22 | 22 (Asagumo and Jupiter survive; John3 and Alden die) | 21 ± 2 | held |
+| hit records, hull hits | 603, 305 | 552 (−8.5 %), 278 | ± 5 % | **failed** |
+| first moved death row | - | Perth 155.05 -> 167.91 s, after the first cut (74.55 s) | after the first death | held |
+| natives | - | five HUD pick rows gone (`UnitPickScreen::*` at 00526C62..0052731C and `HudWeaponGroupScreen::relation` 00803CE0, 327 calls each) | not predicted | - |
+| pair_diff exit | - | 3 | 3 | held |
+
+The five native rows are the HUD's pick query against a unit under the view. They run in OFF
+while the controlled wreck circles, and not in ON.
+
+| row | USN04 4700/4500 | prediction | verdict |
+| --- | --- | --- | --- |
+| deaths, hit records | 40, 799 both | identical | held |
+| every table, summary and other line | identical | - | - |
+| pair_diff exit | 0 | 1 or 0 | held |
+
+**Why the hit band failed.** A wreck that stops, instead of circling under its last throttle,
+changes the neighbour boxes and the lines of fire of every ship near it, from the first death on
+(docs/WRECK_MOTION_AVOIDANCE.md). Two survivors swap on USN02. The ± 5 % band assumed a crawling
+wreck moves the engagement little. On this mission the change comes from a 1.9 m/s circle
+around a dead flagship, and it moved hull hits by 27.
+
+**Verdict: ON.** A wreck's throttle is cut at the handler, as the image does at `0082524B`. The
+controlled wreck stops within half a second of its death instead of circling. USN04 is
+identical. The failed band belongs to the change: the host's wrecks no longer drive.
