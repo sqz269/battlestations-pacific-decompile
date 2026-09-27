@@ -1155,14 +1155,14 @@ cc9-units2 holds `docs/CONSTRUCT_WORLD.md` and `src/game_hosts_units.cpp`
   their logs beside them in `local\`, and the scripts are the `local\cc9-init-passes-*` files.
 - **Leases:** none after this landing.
 
-## 11. Race on the scene record, and the script entity's identity (packet `cc9_scene_race_and_script_identity`, `kSceneRaceAndScriptIdentityBound`)
+## 17. Race on the scene record, and the script entity's identity (packet `cc9_scene_race_and_script_identity`, `kSceneRaceAndScriptIdentityBound`)
 
 Worker cc9-ships, 2026-09-27, base main `df7f875c7`. Ghidra was read only. This packet takes the
 two contracts of section 8.4. The Lua host files (`src/game_hosts_lua.cpp` and its header) are
 leased to cc9-units3, so the binding feeds the Lua host's existing `race` field and does not edit
 the mirror.
 
-### 11.1 Race (V)
+### 17.1 Race (V)
 
 - **00927050's kind-1 arm** reads two keys with no presence test:
   - `Race` (00CE8EE0, pushed at 0092708F) is stored at `+58h` (0092709C);
@@ -1182,7 +1182,7 @@ the mirror.
 - **The two writers.** 00928F50 (vtable `+2Ch`, the party-set mirror) writes `Race = +58h` at
   00928FD9 for a unit. 00928100 (pass C of the seven marker classes) writes it at 0092814B.
 
-### 11.2 The script entity (V)
+### 17.2 The script entity (V)
 
 - **CreateScript 00898750:**
   - allocates 1E4h zeroed bytes (00898834, 00BF79F0);
@@ -1204,7 +1204,7 @@ the mirror.
   - **So the script entity is unnamed at its InitAll, and no `Name` is written.** This closes
     8.4's "contract: unread".
 
-### 11.3 The binding
+### 17.3 The binding
 
 `kSceneRaceAndScriptIdentityBound` (`include/bsp/game_hosts_scene_contents.hpp`), committed OFF.
 - **The record.** `GameSceneEntityRecord::race` resolves the bag's `Race` enum like `Party`. It is
@@ -1225,13 +1225,13 @@ the mirror.
   - `summary SceneLoad race identity bound=.. races_fed=..`;
   - `summary mission script entity identity bound=.. written=..`.
 
-### 11.4 Script readers
+### 17.4 Script readers
 
 Section 8.3's reader census covers `.Race`, `.Type` and `.Name`. No reached script path reads
 them from an entity table. The `["Race"] = Japan` rows in usn_19_coralus.lua (1061..1141) and
 commandhelpers.lua 16796 are spawn parameter tables, not reads.
 
-### 11.5 Predictions (written before the pairs; the same tree, switch only, both variables set)
+### 17.5 Predictions (written before the pairs; the same tree, switch only, both variables set)
 
 - **USN04 4700/4500:**
   - `races_fed` 19..24: 19 created scene units, plus up to 5 markers whose group carries `Race`;
@@ -1243,7 +1243,7 @@ commandhelpers.lua 16796 are spawn parameter tables, not reads.
   - pair_diff exit 1: every gameplay row, the death, plane and unit tables and every other
     summary line identical, the two census lines apart.
 
-### 11.6 The first pair, and what it caught
+### 17.6 The first pair, and what it caught
 
 The first pair was run on `81318497d`:
 - exports `local\ri_off` (SHA-256 prefix `8021B739520A`) and `local\ri_on` (`D76E077E7FEE`);
@@ -1283,7 +1283,7 @@ SetParty on any other entity stays the unimplemented record it was.
 - pair_diff exit 1, with the two census lines and the 00928100 / 00928F50 native rows the only
   changes.
 
-### 11.7 The re-run pair, and the verdict
+### 17.7 The re-run pair, and the verdict
 
 - **Builds.** `tools/pair_export.py` of `9e5aaf488`: `local\ri_off` (SHA-256 prefix
   `52F7C5EB76B4`) and `local\ri_on` (`4CBB89D2C0A3`, the switch flipped).

@@ -3798,6 +3798,11 @@ struct GameUnitsHost::Impl {
     static constexpr bool kUnitsPendingPushBound = true;
     unsigned long long construction_pushes = 0;
     unsigned long long squadron_pass_a_hook_calls = 0;  // packet cc9_squadron_pass_hooks
+    // Packet cc9_wing_construction: the held-back wings, by leader index.
+    std::map<std::size_t, std::vector<GameSceneEntityRecord>> staged_wings;
+    unsigned long long wing_records_staged = 0;
+    unsigned long long wing_hook_builds = 0;
+    unsigned long long wing_planes_built = 0;
     unsigned long long squadron_pass_c_hook_calls = 0;
     // Packet cc9_squadron_initial_command, docs/CONSTRUCT_WORLD.md section 27:
     // the squadron's pass C default order at 007F4E9E. OFF: none.
@@ -18024,8 +18029,45 @@ bool GameUnitsHost::store_scene_node_flags(const void* identity,
 // Packet cc9_squadron_pass_hooks: declared no-ops, counted, until the two
 // bindings land (docs/CONSTRUCT_WORLD.md section 27).
 void GameUnitsHost::on_squadron_pass_a_construct_wing(std::size_t squadron_index) {
-    static_cast<void>(squadron_index);
     ++impl_->squadron_pass_a_hook_calls;
+    if constexpr (!kWingConstructionInPassABound) {
+        static_cast<void>(squadron_index);
+    } else {
+        // Packet cc9_wing_construction. 007F4580, the squadron's slot-39 attach,
+        // constructs each wing plane through the vehicle class's vtable +28h
+        // (007CFD20 for a plane Type) at 007F4811; each construction reaches
+        // 00928760 CALL 00926BE0, so the planes join the pending list while
+        // this pass A walks it. create_units makes the same push.
+        Impl& host = *impl_;
+        const auto staged = host.staged_wings.find(squadron_index);
+        if (staged == host.staged_wings.end()) return;
+        std::vector<GameSceneEntityRecord> wing = std::move(staged->second);
+        host.staged_wings.erase(staged);
+        const std::size_t before = host.slots.size();
+        create_units(wing);
+        const std::size_t made = host.slots.size() - before;
+        ++host.wing_hook_builds;
+        host.wing_planes_built += made;
+        // 007F4B49: +3D0h[wing] names each plane; the registry record's
+        // member_units is that array.
+        if (bsp::PlaneSquadronHostRecord* squadron =
+                bsp::plane_squadron_registry().find_by_member_unit(squadron_index)) {
+            for (std::size_t i = 0; i < made; ++i) {
+                const std::size_t slot = i + 1;
+                if (slot < squadron->member_units.size()) {
+                    squadron->member_units[slot] = before + i;
+                }
+            }
+        }
+        host.done("PlaneSquadron::pass_a_construct_wing_007f4580", 0x007f4580u);
+    }
+}
+
+void GameUnitsHost::stage_squadron_wing(std::size_t leader_index,
+                                        std::vector<GameSceneEntityRecord> wing) {
+    Impl& host = *impl_;
+    host.wing_records_staged += wing.size();
+    host.staged_wings[leader_index] = std::move(wing);
 }
 
 void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_index) {
@@ -18722,6 +18764,10 @@ void GameUnitsHost::report() {
         host.log.notef("summary squadron pass hooks pass_a=%llu pass_c=%llu (no-op entries, "
             "packet cc9_squadron_pass_hooks)", host.squadron_pass_a_hook_calls,
             host.squadron_pass_c_hook_calls);
+        host.log.notef("summary squadron wing construction bound=%d staged=%llu builds=%llu "
+            "planes=%llu left_staged=%zu (007F4580 in pass A, packet cc9_wing_construction)",
+            kWingConstructionInPassABound ? 1 : 0, host.wing_records_staged,
+            host.wing_hook_builds, host.wing_planes_built, host.staged_wings.size());
         host.log.notef("summary squadron initial command bound=%d movetos=%llu stops=%llu "
             "member_orders=%llu skipped_current=%llu no_home=%llu (007F4E9E, packet "
             "cc9_squadron_initial_command)", Impl::kSquadronInitialCommandBound ? 1 : 0,
