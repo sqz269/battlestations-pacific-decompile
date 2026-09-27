@@ -2817,6 +2817,14 @@ public:
             if (id == leader) continue;
             const GameUnitRow* const row = units.unit_row(index);
             if (row == nullptr) continue;
+            if constexpr (kPendingListDedupBound) {
+                // Packet cc9_pending_list_dedup: a plane some other pusher
+                // already queued is not queued twice.
+                if (host_.find_pending(id) != nullptr) {
+                    ++host_.summary_.dedup_wing_append_skipped;
+                    continue;
+                }
+            }
             GameMissionLuaHost::PendingEntity plane;
             plane.entity_id = id;
             plane.name = row->name;
@@ -3015,8 +3023,27 @@ bool GameMissionLuaHost::set_plane_squadron_id_007c97e3(int plane_id, int squadr
     return true;
 }
 
+GameMissionLuaHost::PendingEntity* GameMissionLuaHost::find_pending(int entity_id) {
+    for (PendingEntity& node : pending_entities_) {
+        if (node.entity_id == entity_id) return &node;
+    }
+    return nullptr;
+}
+
 void GameMissionLuaHost::push_pending_entity_00926be0(int entity_id,
     const std::string& name, int class_index) {
+    if constexpr (kPendingListDedupBound) {
+        // Packet cc9_pending_list_dedup. One node per constructed entity, as
+        // 00928760's single push gives the image.
+        if (find_pending(entity_id) != nullptr) {
+            ++summary_.dedup_skipped_pending;
+            return;
+        }
+        if (init_all_attached_.count(entity_id) != 0 || load_attached_.count(entity_id) != 0) {
+            ++summary_.dedup_skipped_attached;
+            return;
+        }
+    }
     PendingEntity node;
     node.entity_id = entity_id;
     node.name = name;
@@ -3027,6 +3054,43 @@ void GameMissionLuaHost::push_pending_entity_00926be0(int entity_id,
 
 void GameMissionLuaHost::push_pending_squadron_00926be0(int entity_id,
     const std::string& name, int class_index, std::size_t units_before) {
+    if constexpr (kPendingListDedupBound) {
+        // Packet cc9_pending_list_dedup. Never while a walk holds node
+        // pointers: pushes come from the routes, outside 00925F20.
+        const std::size_t units_end
+            = script_orders_ != nullptr ? script_orders_->units().count() : units_before;
+        if (!init_active_00f899a5_) {
+            // The wing's planes belong at the tail, after the squadron's pass A
+            // (007F4580 constructs and pushes them there). A plain node another
+            // pusher queued for one of them is dropped; pass A re-appends it.
+            for (std::deque<PendingEntity>::iterator it = pending_entities_.begin();
+                 it != pending_entities_.end();) {
+                const int id = it->entity_id;
+                const bool wing = id != entity_id && !it->squadron
+                    && id >= static_cast<int>(units_before) + 1
+                    && id <= static_cast<int>(units_end);
+                if (wing) {
+                    it = pending_entities_.erase(it);
+                    ++summary_.dedup_wing_deferred;
+                } else {
+                    ++it;
+                }
+            }
+        }
+        if (PendingEntity* const existing = find_pending(entity_id)) {
+            existing->squadron = true;
+            existing->name = name;
+            existing->class_index = class_index;
+            existing->units_before = units_before;
+            existing->units_end = units_end;
+            ++summary_.dedup_squadron_upgrades;
+            return;
+        }
+        if (init_all_attached_.count(entity_id) != 0 || load_attached_.count(entity_id) != 0) {
+            ++summary_.dedup_skipped_attached;
+            return;
+        }
+    }
     PendingEntity node;
     node.entity_id = entity_id;
     node.name = name;
@@ -3774,6 +3838,20 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         // reaches virtual slot 39; only the entities whose world bucket
         // 0088B1B0 walks enter the name index the FindEntity tail uses.
         if (entity.findable) scene_entity_ids_[entity.name] = entity.id;
+        if constexpr (kPendingListDedupBound) {
+            // Packet cc9_pending_list_dedup: the load attach stands for the scene
+            // read's InitAll, so a node another pusher queued for this id is done.
+            load_attached_.insert(entity.id);
+            for (std::deque<PendingEntity>::iterator it = pending_entities_.begin();
+                 it != pending_entities_.end();) {
+                if (it->entity_id == entity.id) {
+                    it = pending_entities_.erase(it);
+                    ++summary_.dedup_load_dropped;
+                } else {
+                    ++it;
+                }
+            }
+        }
         ++made;
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
@@ -4053,6 +4131,13 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.init_all_squadron_ids);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
+    log_.notef("summary SEntity::InitAll pending dedup bound=%d skipped_pending=%llu "
+        "skipped_attached=%llu squadron_upgrades=%llu wing_deferred=%llu "
+        "wing_append_skipped=%llu load_dropped=%llu",
+        kPendingListDedupBound ? 1 : 0, summary_.dedup_skipped_pending,
+        summary_.dedup_skipped_attached, summary_.dedup_squadron_upgrades,
+        summary_.dedup_wing_deferred, summary_.dedup_wing_append_skipped,
+        summary_.dedup_load_dropped);
     log_.notef("summary SceneLoad thisTable identity bound=%d class_bound=%llu mirrored=%llu",
         kSceneLoadThisTableIdentityBound ? 1 : 0, summary_.load_class_bound,
         summary_.load_identity_mirrored);

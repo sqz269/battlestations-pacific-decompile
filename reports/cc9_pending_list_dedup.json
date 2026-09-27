@@ -1,0 +1,25 @@
+{
+  "packet": "cc9_pending_list_dedup",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 9",
+  "switch": "kPendingListDedupBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "calls": [
+    {
+      "address": "00928760",
+      "native": "00926BE0",
+      "function": "00928630",
+      "kind": "call",
+      "host": "GameMissionLuaHost::push_pending_entity_00926be0 / push_pending_squadron_00926be0 (one node per entity id under the switch)"
+    }
+  ],
+  "routines": [
+    {"address": "00926BE0", "coverage": "as docs/CONSTRUCT_WORLD.md section 17: locked push_back, no dedup in the image"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "contracts": [
+    {"owner": "cc9-units2 and the script-orders owner", "file": "src/game_hosts_units.cpp, src/game_hosts_script_orders.cpp", "contract": "construct a squadron's wing planes from its pass A (007F4580) through a units-host call the Lua host makes at entity_attach_lua_self_vcall_9c, each plane pushed as constructed; the pass A wing append is the stand-in until then"}
+  ],
+  "verdict": "pending",
+  "pairs": {}
+}

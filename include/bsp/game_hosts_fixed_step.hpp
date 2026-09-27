@@ -95,6 +95,22 @@ inline constexpr bool kSEntityInitPassEReleaseBound = true;
 // USN02 pairs moved only the two new rows and the summary line (section 8.6).
 inline constexpr bool kSceneLoadThisTableIdentityBound = true;
 
+// Packet cc9_pending_list_dedup (docs/SENTITY_INIT_ATTACH_ORDER.md section 9).
+// The image pushes each entity once, from its base constructor (00928760 CALL
+// 00926BE0). This process has two pushers for one construction: the Lua
+// routes (GenerateObject, SpawnNew, LaunchSquadron, air-ops creation) and,
+// once it lands, create_units. True, the list keeps one node per entity id:
+//   - a plain push is skipped when the id is pending or already attached
+//     (by a pass A, or by the load attach);
+//   - a squadron push upgrades a pending plain node of the same id in place,
+//     and drops the pending plain nodes of its own wing, so its pass A appends
+//     them at the tail, which is where 007F4580's constructions push them;
+//   - pass A's wing append skips an id already pending;
+//   - the load attach drops pending nodes of the ids it attaches.
+// With the Lua routes the only pusher (today), none of these fires. False: the
+// list takes every push.
+inline constexpr bool kPendingListDedupBound = false;
+
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
 class GameEntityInitAllRunner {
