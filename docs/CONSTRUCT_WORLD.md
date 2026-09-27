@@ -1276,3 +1276,85 @@ record and the kill credit and before the `unit_death_00959450` model:
   `ship_destroy_flags=0`. Identity on every row: 52 deaths, 875 hit records. The only difference
   is the summary's `bound` field.
 
+### The pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `f63932d2e`, which is main `1c9730a29`
+  plus this packet), built twice with only the switch flipped:
+  - `local\dd_off`, SHA-256 prefix `6BDE629DE937`;
+  - `local\dd_on`, SHA-256 prefix `2364BEBBF34A`.
+- **Logs.** `local\dd_{off,on}_{usn02,e2}.log`. Each shows the 1600x900 override and its own
+  module directory, and each exited 0.
+
+**`tools/pair_diff.py`, USN02 9200/9000: exit 1, gameplay identical.**
+
+```
+GAMEPLAY: identical
+  deaths                                 20                                       20
+  hit records                            329                                      329
+  hull hits                              167                                      167
+  damage                                 59663.8                                  59663.8
+  shots                                  807                                      807
+  first hit                              30.25 s                                  30.25 s
+  torpedo-task releases                                                           
+  dive-bomb-task releases                                                         
+  torpedo drops                          0                                        0
+  plane water contacts                                                            
+  controlled moved                       DeRuyter 316.14                          DeRuyter 316.14
+  units                                  32                                       32
+  mission end                            failed at 39.65 s (Mission.EndMission) text="Game Over" e... failed at 39.65 s (Mission.EndMission) text="Game Over" e...
+* host methods concrete/unimplemented    979 / 519                                980 / 519
+DEATH ROWS: identical (20 rows)
+PLANE DEATH MODES: identical (0 rows)
+UNIT TABLE: identical (32 rows)
+```
+
+- **Destroys.** `death route destroys` is 0 OFF and 20 ON. `ship_destroy_flags` is 20 on both
+  sides, as predicted.
+- **Native table.** It gains `Death::destroy_00926c80` (20 calls). **Counts moved on 20 GUI text
+  rows**, for example `GuiText::find_font` 1216 -> 1214, and the summary's `text` line changed.
+  - The two OFF-only lines are `Unit_name_Text` and `Distance_Text`, just after
+    `death row: victim=DeRuyter t=30.25`. DeRuyter is the controlled ship, killed in one hit.
+
+**`tools/pair_diff.py`, E2 = USN04 9200/9000: exit 1, gameplay identical.**
+
+```
+GAMEPLAY: identical
+  deaths                                 52                                       52
+  hit records                            875                                      875
+  hull hits                              345                                      345
+  damage                                 13618.3                                  13618.3
+  shots                                  6092                                     6092
+  first hit                              93.00 s                                  93.00 s
+  torpedo-task releases                  4 of 16                                  4 of 16
+  dive-bomb-task releases                1 of 19                                  1 of 19
+  torpedo drops                          1                                        1
+  plane water contacts                   19                                       19
+  controlled moved                       Lexington-class01 6017.22                Lexington-class01 6017.22
+  units                                  81                                       81
+  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)
+  host methods concrete/unimplemented    1043 / 548                               1043 / 548
+DEATH ROWS: identical (52 rows)
+PLANE DEATH MODES: identical (52 rows)
+UNIT TABLE: identical (81 rows)
+```
+
+The native table is identical, destroys are 0 on both sides, and the only difference is the
+summary's `bound` field.
+
+**Failed prediction: the window.**
+- **The claim** was that no host consumer reads `+60h` between the kill and row 15.
+- **What the host actually does.** The units host's fixed step, which runs the gunnery pass and so
+  the kills, is `motion_step_00825f20`. That is called **after** `run_subsystems_00875e0c` in the
+  same step (`src/game_hosts_mission_frame.cpp`, the `FixedStepBinding::run_step_subsystems` body),
+  so a host kill lands after that step's row-15 flush.
+- **The consequence.** With the switch OFF, a dead ship keeps `+60h` clear through the frame's HUD
+  pass until the next step's row 15. The HUD markers' live test
+  (`HudMarkers::is_alive_and_visible`, 0043F080, `src/game_hosts_hud_world.cpp`) drew DeRuyter's
+  name and distance for one more frame. ON matches the image: its Destroy sets `+60h` at the
+  damage, before any frame.
+- **The same window** holds for any frame-level reader, such as the proximity scan 00977990 and
+  the minimap. Only the marker texts moved on USN02.
+
+**Verdict: ON.** Gameplay is identical on both missions. The one presentation difference moves
+the host toward the image, and the destroy count is unchanged.
+

@@ -258,7 +258,9 @@ inline constexpr bool kUnitDeathRouteBound = true;
 // setting +5Dh and finds +60h already set. Planes already get both bytes in the
 // units host (kPlaneDeathFlagsBound). False: +60h lands at row 15, the flush's
 // labelled substitution.
-inline constexpr bool kDeathRouteDestroyBound = false;
+// Committed false for the pairs; USN02 and E2 kept gameplay identical, and the
+// HUD markers stop drawing a dead ship one frame earlier, as in the image. ON.
+inline constexpr bool kDeathRouteDestroyBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
