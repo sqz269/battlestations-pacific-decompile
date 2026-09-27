@@ -1,17 +1,65 @@
 {
   "packet": "cc9_squadron_pass_hooks_calls",
   "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 15",
-  "switch": "kSquadronPassHooksCalled (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "switch": "kSquadronPassHooksCalled (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 20e3d4387, set ON by the verdict",
   "calls": [
-    {"address": "0092604E", "native": "007F4580", "function": "00925F20", "kind": "virtual", "host": "GameMissionLuaInitAllBinding::entity_attach_lua_self_vcall_9c -> GameUnitsHost::on_squadron_pass_a_construct_wing (squadron vtable 00D087C0 slot 9Ch)"},
-    {"address": "007F4E9E", "native": "0077D600", "function": "007F4BA0", "kind": "call", "host": "GameMissionLuaInitAllBinding::entity_init_third_vcall_a4 -> GameUnitsHost::on_squadron_pass_c_initial_command"}
+    {
+      "address": "00926054",
+      "native": "007F4580",
+      "function": "00925F20",
+      "kind": "virtual",
+      "host": "GameMissionLuaInitAllBinding::entity_attach_lua_self_vcall_9c -> GameUnitsHost::on_squadron_pass_a_construct_wing (squadron vtable 00D087C0 slot 9Ch)"
+    },
+    {
+      "address": "007F4E9E",
+      "native": "0077D600",
+      "function": "007F4BA0",
+      "kind": "call",
+      "host": "GameMissionLuaInitAllBinding::entity_init_third_vcall_a4 -> GameUnitsHost::on_squadron_pass_c_initial_command"
+    }
   ],
   "routines": [
-    {"address": "007F4BA0", "coverage": "the 007F4E9E point only (docs/CONSTRUCT_WORLD.md section 27)"}
+    {
+      "address": "007F4BA0",
+      "coverage": "the 007F4E9E point only (docs/CONSTRUCT_WORLD.md section 27)"
+    }
   ],
   "corrections": [],
   "no_ghidra_function": [],
   "names": [],
-  "verdict": "pending",
-  "pairs": {}
+  "verdict": "ON: USN04 only the two hook rows (20 each) and the hook summary moved; USN02 identical (exit 0)",
+  "pairs": {
+    "binaries": "local/bin/sh_off, local/bin/sh_on (one tree, 20e3d4387, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "pass_a": [
+        0,
+        20
+      ],
+      "pass_c": [
+        0,
+        20
+      ],
+      "deaths": [
+        43,
+        43
+      ],
+      "hit_records": [
+        788,
+        788
+      ],
+      "pair_diff_exit": 1
+    },
+    "usn02_9200_9000": {
+      "pass_a": [
+        0,
+        0
+      ],
+      "pass_c": [
+        0,
+        0
+      ],
+      "pair_diff_exit": 0
+    }
+  }
 }

@@ -133,8 +133,8 @@ inline constexpr bool kRoutePushesRetiredBound = true;
 // at 007F4580's point, before the wing append that stands in for its plane
 // constructions, and on_squadron_pass_c_initial_command at 007F4E9E's point in
 // the squadron's pass C 007F4BA0. Both entries are counted no-ops today. False:
-// neither is called.
-inline constexpr bool kSquadronPassHooksCalled = false;
+// neither is called. ON by the verdict (section 15.3).
+inline constexpr bool kSquadronPassHooksCalled = true;
 
 // Packet cc9_load_time_init_all (docs/SENTITY_INIT_ATTACH_ORDER.md section 10).
 // BSP_SceneFile_Read 0046DF00 runs InitAll once per instantiate pass, at the

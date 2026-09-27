@@ -1020,3 +1020,20 @@ of the squadron's fused leader, its entity id - 1.
 - **E2 (USN04 9200/9000):** the same 20 and 20. Not run in this packet.
 - **USN02 9200/9000:** no squadron node, so both counts stay 0, no row is added, and `pair_diff`
   exits 0.
+
+### 15.3 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\sh_off` (the committed OFF, 20e3d4387) and
+  `local\bin\sh_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\sh_*` in this tree.
+- **USN04 4700/4500.** `pair_diff` exits 1.
+  - The two hook rows are added, 20 calls each.
+  - `squadron pass hooks` goes from `pass_a=0 pass_c=0` to `pass_a=20 pass_c=20`.
+  - Nothing else moves: 43 deaths and 788 hit records on both sides, and the death rows, plane
+    death modes and 81 unit rows are identical.
+- **USN02 9200/9000.** `pair_diff` exits 0: identical apart from noise, with no squadron node.
+- **The report's pass A call site** is 00926054 (`CALL EAX` after the `+9Ch` load at 0092604E),
+  corrected from the OFF commit's 0092604E.
+
+**Every prediction held. Verdict: ON.**
