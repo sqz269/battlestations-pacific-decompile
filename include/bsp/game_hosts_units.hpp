@@ -310,6 +310,10 @@ public:
 
     // 004c0890 on one created unit, through bsp::set_controlled_unit_004c0890.
     void set_controlled_unit_004c0890(std::size_t index);
+    // 004C0890(null): 004C0893 stores null before its TEST ECX,ECX, so the
+    // global is left empty. Packet cc9_controlled_unit_observer: the HUD
+    // root observer's destruction slot 00644A20 calls it at 00644A38.
+    void clear_controlled_unit_004c0890();
 
     // --order throttle=<f>,rudder=<f>: one player order into the controlled
     // unit's ring, through the same 00816a40 the authored command takes.

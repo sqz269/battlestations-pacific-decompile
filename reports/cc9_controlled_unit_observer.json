@@ -1,0 +1,14 @@
+{
+ "packet": "cc9_controlled_unit_observer",
+ "worker": "agent/cc9-hud2",
+ "doc": "docs/CONTROLLED_UNIT.md, section \"The controlled unit's destruction notice\"",
+ "switch": "kControlledUnitObserverBound, include/bsp/game_hosts_hud.hpp, committed false",
+ "steps": [
+  {"address": "00645699", "native": "006952a0", "function": "00645600", "what": "observer unregister from the outgoing unit"},
+  {"address": "006456d3", "native": "00694a60", "function": "00645600", "what": "observer register on the new controlled unit"},
+  {"address": "00644a38", "native": "004c0890", "function": "00644a20", "what": "004C0890(null) in the root observer's destruction slot"}
+ ],
+ "names_added": {},
+ "no_ghidra_function": [],
+ "substitutions": ["the destruction notice keys off the units host's destroyed-unit record (sunk gunnery row), checked once per interface update, not the on-killed dispatch"]
+}

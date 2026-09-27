@@ -167,6 +167,11 @@ struct GameHudHost::Impl {
     // Packet cc9_set_selected_unit: 00647300's calls, acceptances, and the
     // 20h pushes it made (serviced through the same pending/applied pair).
     unsigned long long select_calls{0};
+    // Packet cc9_controlled_unit_observer: the unit the root observer is on.
+    std::size_t observed_unit{SIZE_MAX};
+    unsigned long long observer_notices{0};
+    unsigned long long observer_releases{0};
+    void run_root_observer_notice();
     // Packet cc9_force_select_unit: the HUD root's unit vectors and cursor.
     bsp::HudRootUnitLists root_lists{};
     unsigned long long root_rebuilds{0};
@@ -1514,10 +1519,23 @@ public:
             && owner_.units->unit_alive_and_visible(candidate_);
     }
     void unregister_observer() override {
-        owner_.record("SetControlledUnit::unregister_observer", 0x006952a0u);
+        if constexpr (kControlledUnitObserverBound) {
+            // 00645699 006952A0(controlled, root+8h).
+            owner_.observed_unit = SIZE_MAX;
+            owner_.done("SetControlledUnit::unregister_observer", 0x006952a0u);
+        } else {
+            owner_.record("SetControlledUnit::unregister_observer", 0x006952a0u);
+        }
     }
     void register_observer() override {
-        owner_.record("SetControlledUnit::register_observer", 0x00694a60u);
+        if constexpr (kControlledUnitObserverBound) {
+            // 006456D3 00694A60([00E188D8], root+8h), after 004C0890 bound it.
+            owner_.observed_unit = owner_.units->controlled_bound()
+                ? owner_.units->controlled_index() : SIZE_MAX;
+            owner_.done("SetControlledUnit::register_observer", 0x00694a60u);
+        } else {
+            owner_.record("SetControlledUnit::register_observer", 0x00694a60u);
+        }
     }
     void set_unit_controlled_audio(bool) override {
         owner_.record("SetControlledUnit::controlled_audio", 0x00954990u);
@@ -3542,6 +3560,9 @@ void GameHudHost::report() {
         "primary_8c=%zu secondary_9c=%zu", kForceSelectUnitBound ? 1 : 0, impl.force_calls,
         impl.force_selects, impl.root_rebuilds, impl.root_lists.primary_8c.size(),
         impl.root_lists.secondary_9c.size());
+    impl.log.notef("summary mission hud root observer (packet cc9_controlled_unit_observer, "
+        "00644A20): bound=%d notices=%llu releases=%llu", kControlledUnitObserverBound ? 1 : 0,
+        impl.observer_notices, impl.observer_releases);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is
@@ -3570,8 +3591,39 @@ bool GameHudHost::manager_active() const noexcept {
     return impl_->summary.manager_built && impl_->manager.base.active;
 }
 
+void GameHudHost::Impl::run_root_observer_notice() {
+    // The destruction notice. SUBSTITUTION (labelled): the image delivers it
+    // in the on-killed dispatch (009274DE..00927510, 00696330 -> 00693550 ->
+    // observer->vtable[4h]); here the units host's destroyed-unit record
+    // (a sunk gunnery row) stands for it, read once per interface update.
+    if (observed_unit == SIZE_MAX || units == nullptr) return;
+    bool destroyed = false;
+    for (const auto& death : units->destroyed_units()) {
+        if (death.first == observed_unit) { destroyed = true; break; }
+    }
+    if (!destroyed) return;
+    ++observer_notices;
+    const std::size_t unit = observed_unit;
+    observed_unit = SIZE_MAX;   // the entity's observer list goes with it
+    // 00644A20..00644A50: only when the entity is [00E188D8].
+    if (!units->controlled_bound() || units->controlled_index() != unit) {
+        done("HudRootObserver::destruction_notice_other", 0x00644a2du);
+        return;
+    }
+    record("HudRootObserver::clear_root_1c", 0x00644a31u);   // root+1Ch, no host field
+    units->clear_controlled_unit_004c0890();                  // 00644A38
+    root_lists.cursor = bsp::HudUnitSelection{false, 0xffffu};   // 00644A3D/00644A44
+    ++observer_releases;
+    done("HudRootObserver::destruction_notice_00644a20", 0x00644a20u);
+    const GameUnitRow* row = units->unit_row(unit);
+    log.notef("hud root observer 00644A20: controlled unit \"%s\" destroyed; 004C0890(null) "
+        "and cursor (0,-1) at hud update frame %llu", row != nullptr ? row->name.c_str() : "?",
+        summary.update_frames);
+}
+
 void GameHudHost::update_in_game_interface_0068c1f0() {
     Impl& impl = *impl_;
+    if constexpr (kControlledUnitObserverBound) impl.run_root_observer_notice();
     if (!manager_active()) return;
     HudUpdateBinding binding(impl);
     bsp::update_in_game_interface_0068c1f0(impl.manager, impl.update_state, binding);

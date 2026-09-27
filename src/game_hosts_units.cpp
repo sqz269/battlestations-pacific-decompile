@@ -7975,6 +7975,22 @@ void GameUnitsHost::set_controlled_unit_004c0890(std::size_t index) {
         query.unit_is_kind_of(0x18) ? 1 : 0);
 }
 
+void GameUnitsHost::clear_controlled_unit_004c0890() {
+    Impl& host = *impl_;
+    const std::string before = host.controlled_bound && host.controlled_index < host.slots.size()
+        ? host.slots[host.controlled_index]->row.name : std::string("none");
+    ControlledUnitQueryBinding query(-1);   // not consulted on the null arm
+    SetControlledUnitBinding binding(host);
+    const bsp::ControlledUnitGlobals globals
+        = bsp::set_controlled_unit_004c0890(false, query, binding);
+    host.done("ControlledUnit::clear_controlled_unit", 0x004c0890u);
+    for (std::unique_ptr<GameUnitSlot>& other : host.slots) other->row.controlled = false;
+    host.summary.controlled_bound = globals.unit_present;
+    host.summary.controlled_name.clear();
+    host.log.notef("controlled unit: 00e188d8 = null (was \"%s\"); 004C0890(null)",
+        before.c_str());
+}
+
 void GameUnitsHost::issue_player_order(float throttle, float rudder) {
     Impl& host = *impl_;
     if (!host.controlled_bound || host.controlled_index >= host.slots.size()) return;

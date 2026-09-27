@@ -797,3 +797,46 @@ binding lands in this packet**, so there are no pairs.
 **Also settled:** the root constructor stores `+C2h` = 0 and `+C4h` = 0FFFFh at
 0068BFDC..0068BFE2. So the initial cursor (0, -1) that `ForceSelectUnit`'s binding took as a
 substitution is the image's value.
+
+## The controlled unit's destruction notice (packet `cc9_controlled_unit_observer`, `kControlledUnitObserverBound`)
+
+Worker cc9-hud2, 2026-09-27, base b00fb0f15. It binds the record of "SetSelectedUnit's records"
+that was blocked on the units-host lease.
+
+### The binding
+
+- **Switch:** `kControlledUnitObserverBound` in `include/bsp/game_hosts_hud.hpp`, committed OFF.
+- **Registration.** 00645600's 006952A0 (00645699) and 00694A60 (006456D3) now move the HUD
+  root's observer: the host's `observed_unit` follows the controlled unit that
+  `SetSelectedUnit`, `ForceSelectUnit` and the load's step 19 bind.
+- **The notice.** When the observed unit is destroyed, 00644A20 runs:
+  - it does nothing unless the unit is still `[00E188D8]` (00644A2D);
+  - root+1Ch = 0 (00644A31; a record, since the host has no field);
+  - `GameUnitsHost::clear_controlled_unit_004c0890` (00644A38, new: 004C0890(null) stores the
+    empty global and publishes no listener);
+  - the cursor becomes (0, -1) (00644A3D/00644A44).
+- **SUBSTITUTION, labelled:** the image delivers the notice in the on-killed dispatch
+  (009274DE..00927510 -> 00696330 -> 00693550 -> `observer->vtable[4h]`). Here the units host's
+  destroyed-unit record (a sunk gunnery row) stands for it, checked once per interface update
+  before 0068C1F0.
+
+### Predictions (written before any run; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+- **USN01 3200/3000 and USN04 4700/4500: identity, exit 1.**
+  - Neither controlled unit is destroyed: Northampton, and before 25 s Fletcher-class01, then the
+    Lexington.
+  - The summary shows `notices=0 releases=0`. Only the observer rows change: 006952A0 and 00694A60
+    become concrete.
+- **USN02 9200/9000:**
+  - Houston, controlled from `SetSelectedUnit`, dies at 74.55 s. The next interface update
+    releases control: one `controlled unit: 00e188d8 = null` line and `notices=1 releases=1`.
+  - After that:
+    - the player gun seat has no unit, so its messages and casts stop from 74.55 s;
+    - the pick keeps casting from the ShipCaptain's camera, because the camera's unit is not
+      cleared by this binding;
+    - every host reader of `controlled_bound()` answers false.
+  - **Gameplay identical, exit 1,** because Houston is already dead and the mission failed at
+    39.65 s.
+  - **The risk,** named in advance: if a host AI path treats the controlled unit specially, for
+    example the player ship's exemption from ship AI or formation leadership, the escorts' AI
+    moves after 74.55 s.
