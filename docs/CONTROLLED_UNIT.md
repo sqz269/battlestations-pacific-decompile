@@ -800,7 +800,7 @@ substitution is the image's value.
 
 ## The controlled unit's destruction notice (packet `cc9_controlled_unit_observer`, `kControlledUnitObserverBound`)
 
-Worker cc9-hud2, 2026-09-27, base b00fb0f15. It binds the record of "SetSelectedUnit's records"
+Worker cc9-hud2, 2026-09-27, base 02b0c988f + 06f268757 (corrected below). It binds the record of "SetSelectedUnit's records"
 that was blocked on the units-host lease.
 
 ### The binding
@@ -840,3 +840,85 @@ that was blocked on the units-host lease.
   - **The risk,** named in advance: if a host AI path treats the controlled unit specially, for
     example the player ship's exemption from ship AI or formation leadership, the escorts' AI
     moves after 74.55 s.
+
+### Pairs and verdict
+
+**Base correction.** This packet's tree was 02b0c988f plus 06f268757, not b00fb0f15. `bsp.py sync`
+refused while 06f268757 was unlanded. The pairs are the same tree at 2abbbef25, switch only, with
+streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | identical; `notices=0` |
+| USN04 4700/4500 | exit 1 | identical; `notices=0` |
+| USN02 9200/9000 | **exit 3** | Houston destroyed; the notice fires at hud update frame 1490 (about 74.5 s); `controlled unit: 00e188d8 = null (was "Houston")`; `notices=1 releases=1`. **Gameplay moved:** deaths 21 -> 22 (John2 only ON), hit records 652 -> 650, damage 49661.5 -> 50259.2, shots 1095 -> 1089; 8 death rows and 11 unit rows changed (Alden dies at 336.69 s instead of 315.70 s, killed by Haguro instead of John1) |
+
+**Predictions.** USN01, USN04 and the USN02 release held. **USN02's "gameplay identical" failed:**
+the named risk fired, through the host rather than the image.
+
+**Why USN02 moved.**
+- Both runs log Houston's ship-AI lines equally (133 each). What changes is who drives the wreck.
+- While Houston is the controlled unit, the host holds it on the idle player's standing order
+  (throttle 0, rudder 1; the OFF log's `controlled unit frame` lines continue after 74.55 s).
+- Once control is released, its ship AI's output drives the sunk hull (`attackmove`,
+  `navigate_astern`). Its position moves (`controlled moved` 1167.61 against 1155.93), and the
+  escorts' and enemies' geometry follows.
+- In the image a killed ship's AI is gated. 009F50E0's gate requires `unit+5Dh` clear, and the
+  kill flush 009273A0 sets `+5Dh` and `+60h` (section "SetSelectedUnit's records",
+  `docs/ENTITY_LIFECYCLE_TAILS.md`). The host's controller never sees a sunk ship as gated. That
+  gap, not the notice, is what moves USN02.
+
+**Verdict: not flipped** (`kControlledUnitObserverBound` stays false).
+- **Follow-up for the ship-AI owner:** the gate on a killed ship's `+5Dh` (or the units host's
+  `pending_destroy`/`destroyed` flags) in 009F50E0.
+- With that gate in place, this pair is predicted to be identity. Then flip.
+
+## Handoff (cc9-hud2 retires after this commit)
+
+Worker cc9-hud2, 2026-09-27. The branch is `agent/cc9-hud2` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-hud2`. It holds no leases.
+
+### Switches this worker set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kMovieStepDrawBound`, `kMovieParentKilledByteBound`, `kMovieTerrainAvoidBound` | `include/bsp/game_hosts_hud.hpp` | ON | `docs/HUD_PICK_SEGMENT_QUERY.md` 10 |
+| `kForceSelectUnitBound` | same | ON (the call itself unmeasured) | this doc, "ForceSelectUnit and 006485A0" |
+| `kLocalPlayerUnitListRuleBound` | `include/bsp/game_hosts_world.hpp` | ON | `docs/LOCAL_PLAYER_UNIT_LISTS.md` |
+| `kInitialControlledUnitBound` | same | ON | this doc, "The initial controlled unit" |
+| `kControlledUnitObserverBound` | `include/bsp/game_hosts_hud.hpp` | **OFF** | this doc, "The controlled unit's destruction notice" |
+
+### Open, in order
+
+1. **The after-row-9 order queue** (`kAfterRow9OrderQueueBound`, not yet written).
+   `docs/SENTITY_INIT_ATTACH_ORDER.md` section 22 has the design, the per-callback census and the
+   predictions. It waits on `src/game_hosts_script_orders.cpp` and its header: cc9-ships2 holds
+   them under `cc9_get_hp_percentage`.
+   - Set a flag around `GameScriptOrdersHost::mission_lua_call_named_00887e50` when
+     `src/mission_blackout.cpp` (005B9800) calls it.
+   - While the flag is set, the 58h (0077D600) and 5Eh (00835860) order natives enqueue.
+   - The next `GameFixedStepHost::pump_session_00778450` applies the queue in post order.
+   - `GenerateObject` and `SetSelectedUnit` stay direct.
+   - Predictions: USN01 moves through `luaIn`'s five `PilotSetTarget`; USN04 is identity, census
+     0; USN02 moves through `luaMoveToPh2`'s `NavigatorAttackMove`.
+2. **The observer switch** waits on a ship-AI fix:
+   - 009F50E0 must stop driving a killed ship, gating on `+5Dh` as the image's kill flush sets
+     it.
+   - With that gate, USN02 9200/9000 is predicted identical. Then flip
+     `kControlledUnitObserverBound`.
+3. **Non-ship `vtable[124h]`** ("SetSelectedUnit's records"). 006D1EF0 is the base liveness test
+   of 23 vtables. The host answers false for every non-ship and needs a class-to-vtable map.
+4. **For the gunnery owner:** 0085AD00 skips unauthored RestAngles (FLT_MAX at 00D7A278), while
+   the host's `rest_horz` defaults to 0.0.
+5. **For the world host:** USN01's intro movie poses vary from run to run
+   (`docs/HUD_PICK_SEGMENT_QUERY.md` 10.4); the source is not found.
+6. **Movie camera parse keys** left unbound (`docs/HUD_PICK_SEGMENT_QUERY.md` 10.2): `flyalt`
+   (x87 constants), the `goaround`/`gamecamera` modifiers, `event` and `finishscript`. None is
+   reached by an idle measured run.
+
+### Local files
+
+- **Pair binaries:** `local\{sd_on,pt_on,fs_on,lp_on,ic_on,kk_ctl}`, each an export with its
+  build.
+- **Logs:** `local\{kk,sd,pt,fs,lp,ic,ic2,ld,ob}_*_usnNN.log`.
+- **Scripts:** `local\cc9-hud2-*`.
