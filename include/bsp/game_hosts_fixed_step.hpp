@@ -74,8 +74,9 @@ inline constexpr bool kSEntityInitThisTableStepsBound = true;
 // GameSceneEntityRecord its creator passes to create_units, a temporary that
 // no reader holds past the creator call; the spawn pool and the scene
 // entities stand for the scene database. True: the release is exact, logged as
-// implemented, and counted. False: the named record.
-inline constexpr bool kSEntityInitPassEReleaseBound = false;
+// implemented, and counted. False: the named record. ON by the verdict: the
+// USN04 and USN02 pairs moved only the row's status and the pass E summary line.
+inline constexpr bool kSEntityInitPassEReleaseBound = true;
 
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.

@@ -284,3 +284,23 @@ Every read of an authored field outside the scene reader, with when it runs:
 - **USN02 9200/9000:** the row goes from UNIMPLEMENTED 4 to concrete 4, `released` from 0 to 4,
   and gameplay is identical.
 - **If anything else moves,** the switch stays OFF.
+
+### 7.5 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\pe_off` (the committed OFF, 53ee0ad6a) and
+  `local\bin\pe_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\pe_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. The only changes are the pass E row, from UNIMPLEMENTED to concrete with the same call
+  count, and the pass E summary line.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `pass E release_spawn_holder` 00926317 | UNIMPLEMENTED 60 | concrete 60 | UNIMPLEMENTED 4 | concrete 4 |
+| `released` | 0 | 60 | 0 | 4 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+| other lines (masked multiset) | - | 0 / 0 | - | 0 / 0 |
+
+**Every prediction held. Verdict: ON.**
