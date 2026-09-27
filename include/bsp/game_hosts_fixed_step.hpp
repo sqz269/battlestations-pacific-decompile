@@ -122,8 +122,9 @@ inline constexpr bool kPendingListDedupBound = true;
 // LaunchSquadron and the air-ops creation) keep their call, which is now only
 // the annotation of that node as a squadron with its wing range. The markers'
 // load pushes stay (their constructor is the scene-contents host's). False: the
-// routes push and the dedup list skips the repeats.
-inline constexpr bool kRoutePushesRetiredBound = false;
+// routes push and the dedup list skips the repeats. ON by the verdict
+// (section 14.4).
+inline constexpr bool kRoutePushesRetiredBound = true;
 
 // Packet cc9_load_time_init_all (docs/SENTITY_INIT_ATTACH_ORDER.md section 10).
 // BSP_SceneFile_Read 0046DF00 runs InitAll once per instantiate pass, at the

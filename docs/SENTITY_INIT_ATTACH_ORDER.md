@@ -965,3 +965,25 @@ retirement lands first and the hooks follow in the next landing.
   - Native table identical, gameplay identical.
 - **If `fallback_pushes` is not 0,** a route runs without `create_units`'s push first, and that
   route's order must be read before ON.
+
+### 14.4 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\rp_off` (the committed OFF, 886959c2e) and
+  `local\bin\rp_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\rp_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs. The native tables are
+  identical, and so are gameplay, death rows, plane death modes and the unit table. The clock
+  offset is +0.00 s. The masked multiset of other lines is empty.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `retired` / `squadron_annotations` / `fallback_pushes` | 0 / 0 / 0 | 21 / 20 / 0 | 0 / 0 / 0 | 32 / 0 / 0 |
+| `skipped_pending` | 21 | 0 | 32 | 0 |
+| `squadron_upgrades` / `wing_deferred` | 20 / 40 | 20 / 40 | 0 / 0 | 0 / 0 |
+| InitAll calls / with work / entities / pushes | 4,513 / 13 / 86 / 86 | identical | 9,009 / 5 / 34 / 34 | identical |
+| deaths, hit records | 43, 788 | identical | 21, 354 | identical |
+
+**Every prediction held. Verdict: ON.** `create_units` is the one push for units. The routes and
+the load walk look its node up. The squadron routes annotate it, and the markers still push at
+load.
