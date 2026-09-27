@@ -2,37 +2,170 @@
   "packet": "cc9_torpedo_standoff",
   "doc": "docs/SENTITY_INIT_PASSES.md section 9",
   "calls": [
-    {"address": "009F2BCE", "native": "00923BE0", "function": "009F1BC0", "note": "own health, the weight h"},
-    {"address": "009F2BF9", "native": "00419010", "function": "009F1BC0", "note": "h = lerp(0, 3.0, 0.4, 1.0, health)"},
-    {"address": "009F2C1F", "native": "00863920", "function": "009F1BC0", "note": "torpedo group accepts the target"},
-    {"address": "009F2C45", "native": "00814350", "function": "009F1BC0", "note": "first torpedo tube's projectile class"},
-    {"address": "009F2C5F", "native": "0095E9A0", "function": "009F1BC0", "note": "torpedo hits to sink the target"},
-    {"address": "009F2C77", "native": "0080DF40", "function": "009F1BC0", "note": "ready torpedo barrels"},
-    {"address": "009F2C8E", "native": "00814390", "function": "009F1BC0", "note": "own torpedoes threatening the target"},
-    {"address": "009F2CDB", "native": "00415550", "function": "009F1BC0", "note": "max(in-flight cover, foreign threats / 5)"},
-    {"address": "009F2D46", "native": "00729F40", "function": "009F1BC0", "note": "torpedo bot FireTargetAccuracy"},
-    {"address": "009F2D62", "native": "00424C40", "function": "009F1BC0", "note": "settings singleton"},
-    {"address": "009F2D87", "native": "008387B0", "function": "009F1BC0", "note": "clearance = range fraction * torpedo range"},
-    {"address": "009F2D98", "native": "00952530", "function": "009F1BC0", "note": "target curve effective range"},
-    {"address": "009F2DB7", "native": "00415550", "function": "009F1BC0", "note": "max(300, curve)"},
-    {"address": "009E731B", "native": "0080DF40", "function": "009E6E80", "note": "the standoff cap's ready-barrel gate"},
-    {"address": "009E7338", "native": "00415510", "function": "009E6E80", "note": "standoff = min(standoff, clearance - turn radius)"},
-    {"address": "0080DF59", "native": "00729F10", "function": "0080DF40", "note": "device operational"},
-    {"address": "0080DF6A", "native": "00727D70", "function": "0080DF40", "note": "ready barrels at horizon 0"},
-    {"address": "00838847", "native": "00838530", "function": "008387B0", "note": "torpedo arm, profile +2F0h"},
-    {"address": "00838573", "native": "00419010", "function": "00838530", "note": "length weight w"},
-    {"address": "0095EAAD", "native": "00419010", "function": "0095E9A0", "note": "kill fraction"},
-    {"address": "0095EAF6", "native": "00424C40", "function": "0095E9A0", "note": "WaterTickDamage +3B0h"},
-    {"address": "008174DD", "native": "0042B2F0", "function": "008173E0", "note": "flattened distance"},
-    {"address": "0081752C", "native": "00419010", "function": "008173E0", "note": "angular tolerance"},
-    {"address": "00817543", "native": "007B4E90", "function": "008173E0", "note": "bearing torpedo to unit"},
-    {"address": "00817570", "native": "00438B10", "function": "008173E0", "note": "signed heading difference"}
+    {
+      "address": "009F2BCE",
+      "native": "00923BE0",
+      "function": "009F1BC0",
+      "note": "own health, the weight h"
+    },
+    {
+      "address": "009F2BF9",
+      "native": "00419010",
+      "function": "009F1BC0",
+      "note": "h = lerp(0, 3.0, 0.4, 1.0, health)"
+    },
+    {
+      "address": "009F2C1F",
+      "native": "00863920",
+      "function": "009F1BC0",
+      "note": "torpedo group accepts the target"
+    },
+    {
+      "address": "009F2C45",
+      "native": "00814350",
+      "function": "009F1BC0",
+      "note": "first torpedo tube's projectile class"
+    },
+    {
+      "address": "009F2C5F",
+      "native": "0095E9A0",
+      "function": "009F1BC0",
+      "note": "torpedo hits to sink the target"
+    },
+    {
+      "address": "009F2C77",
+      "native": "0080DF40",
+      "function": "009F1BC0",
+      "note": "ready torpedo barrels"
+    },
+    {
+      "address": "009F2C8E",
+      "native": "00814390",
+      "function": "009F1BC0",
+      "note": "own torpedoes threatening the target"
+    },
+    {
+      "address": "009F2CDB",
+      "native": "00415550",
+      "function": "009F1BC0",
+      "note": "max(in-flight cover, foreign threats / 5)"
+    },
+    {
+      "address": "009F2D46",
+      "native": "00729F40",
+      "function": "009F1BC0",
+      "note": "torpedo bot FireTargetAccuracy"
+    },
+    {
+      "address": "009F2D62",
+      "native": "00424C40",
+      "function": "009F1BC0",
+      "note": "settings singleton"
+    },
+    {
+      "address": "009F2D87",
+      "native": "008387B0",
+      "function": "009F1BC0",
+      "note": "clearance = range fraction * torpedo range"
+    },
+    {
+      "address": "009F2D98",
+      "native": "00952530",
+      "function": "009F1BC0",
+      "note": "target curve effective range"
+    },
+    {
+      "address": "009F2DB7",
+      "native": "00415550",
+      "function": "009F1BC0",
+      "note": "max(300, curve)"
+    },
+    {
+      "address": "009E731B",
+      "native": "0080DF40",
+      "function": "009E6E80",
+      "note": "the standoff cap's ready-barrel gate"
+    },
+    {
+      "address": "009E7338",
+      "native": "00415510",
+      "function": "009E6E80",
+      "note": "standoff = min(standoff, clearance - turn radius)"
+    },
+    {
+      "address": "0080DF59",
+      "native": "00729F10",
+      "function": "0080DF40",
+      "note": "device operational"
+    },
+    {
+      "address": "0080DF6A",
+      "native": "00727D70",
+      "function": "0080DF40",
+      "note": "ready barrels at horizon 0"
+    },
+    {
+      "address": "00838847",
+      "native": "00838530",
+      "function": "008387B0",
+      "note": "torpedo arm, profile +2F0h"
+    },
+    {
+      "address": "00838573",
+      "native": "00419010",
+      "function": "00838530",
+      "note": "length weight w"
+    },
+    {
+      "address": "0095EAAD",
+      "native": "00419010",
+      "function": "0095E9A0",
+      "note": "kill fraction"
+    },
+    {
+      "address": "0095EAF6",
+      "native": "00424C40",
+      "function": "0095E9A0",
+      "note": "WaterTickDamage +3B0h"
+    },
+    {
+      "address": "008174DD",
+      "native": "0042B2F0",
+      "function": "008173E0",
+      "note": "flattened distance"
+    },
+    {
+      "address": "0081752C",
+      "native": "00419010",
+      "function": "008173E0",
+      "note": "angular tolerance"
+    },
+    {
+      "address": "00817543",
+      "native": "007B4E90",
+      "function": "008173E0",
+      "note": "bearing torpedo to unit"
+    },
+    {
+      "address": "00817570",
+      "native": "00438B10",
+      "function": "008173E0",
+      "note": "signed heading difference"
+    }
   ],
   "switches": [
-    {"name": "kTorpedoStandoffBound", "state": "OFF", "pair": "pending"}
+    {
+      "name": "kTorpedoStandoffBound",
+      "state": "ON",
+      "pair": "local/tsd_{off,on}_{usn02,usn04}.log: USN02 exit 3, USN04 exit 1 (pair_export of 5bb6fb14b, ON 740E378D4C66)"
+    }
   ],
   "no_ghidra_function": [
-    {"start": "00814420", "end": "00814492", "note": "ship vtable+1D4h (00CFC5A4), foreign torpedo threats; RET at 00814492, INT3 from 00814493"}
+    {
+      "start": "00814420",
+      "end": "00814492",
+      "note": "ship vtable+1D4h (00CFC5A4), foreign torpedo threats; RET at 00814492, INT3 from 00814493"
+    }
   ],
   "names_added": [
     "0080DF40 BSP_UnitInstance_ReadyTorpedoBarrels",
@@ -49,5 +182,36 @@
     "torpedo +46Ch as atan2(vx, vz) of the host round; class+570h = 0 for a target with no ship depth input",
     "WaterTickDamage 100 from shipglobals.lua"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "USN02 first divergence",
+      "predicted": "before 10.4 s",
+      "measured": "first visible at the 55 s gunnery step",
+      "why": "no finer trace; aggregates identical through 50 s"
+    },
+    {
+      "row": "USN02 torpedo launches",
+      "predicted": "more than 219",
+      "measured": "219",
+      "why": "the cap moves positions; launches come from the same bots"
+    },
+    {
+      "row": "USN02 mission end time",
+      "predicted": "moves off 39.65 s",
+      "measured": "39.65 s",
+      "why": "Exeter's death is unchanged"
+    },
+    {
+      "row": "USN04 pair_diff",
+      "predicted": "3",
+      "measured": "1",
+      "why": "escorts always hold a plane target: the target arm needs a ship target"
+    },
+    {
+      "row": "USN04 census arm",
+      "predicted": "no-target arm",
+      "measured": "not_ship_or_off 2265 of 2265",
+      "why": "as above"
+    }
+  ]
 }

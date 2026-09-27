@@ -698,3 +698,62 @@ Measured on OFF logs of cc9-ships's `ts_*` pair (main `87b51d106`'s parent tree)
 | USN04 first divergence | at or after 95 s, on a Fletcher-class standoff; nothing before |
 | USN04 ship torpedo launches | 0 on both sides (no ship target, `targeted=0`) |
 | USN04 deaths | 2 through 95 s on both sides; later ones may move through the escorts' positions |
+
+### The pairs, measured
+
+- OFF is this tree's `build\` at `5bb6fb14b`; ON is `pair_export --flip kTorpedoStandoffBound=true`
+  of the same commit (SHA-256 `740E378D4C66`).
+- Both sides ran with `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle
+  player. Logs: `local\tsd_{off,on}_{usn02,usn04}.log`.
+- Each log was checked for its module directory and its final COM release line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 `pair_diff` | - | exit 3 | 3 | holds |
+| USN02 first divergence | - | the 55 s gunnery step (identical through 50 s; the log has no finer ship trace) | before 10.4 s on a Japanese script destroyer | **failed** (not visible before 55 s) |
+| USN02 ship torpedo launches | 219 | 219 | more than 219 | **failed** |
+| USN02 deaths | 22 | 21 (John1 and Alden survive, Witte dies at 407.92 s to Tokitsukaze) | differ | holds |
+| USN02 hit records / hull hits | 579 / 290 | 656 / 330 | move | holds |
+| USN02 death rows | - | 10 changed; Kortenaer 84.50 -> 72.90 s, Electra 120.45 -> 112.15 s, DeRuyter 183.71 -> 176.66 s | move | holds |
+| USN02 mission end | Game Over 39.65 s | Game Over 39.65 s | Game Over, time moves | **half failed**: the time did not move |
+| USN02 census | frames 0 | frames 16305; clearance 8716, capped 4171, not_ship_or_off 1794, no_devices 1624; cap gates 7610 | - | - |
+| USN02 Allied `clearance_min` under 950 | - | 300.0 on every row | under 950 | holds, for another reason (below) |
+| USN04 `pair_diff` | - | exit 1, gameplay identical | 3 | **failed** |
+| USN04 census | frames 0 | frames 2265, all `not_ship_or_off`, cap tests 0 | the no-target arm | **failed** |
+| USN04 ship torpedo launches | 0 | 0 | 0 | holds |
+
+**Why the predictions failed:**
+- **USN04:** the escorts always hold a raw target, a plane, after the promotion. So 009F2AC9 takes
+  the target arm, and the gate needs a SHIP target (009F2BA8). The no-target arm (`0.8 * range`)
+  is never reached.
+- **USN02 launches:** the cap moves where the tube ships sit. Every launch still comes from the
+  same torpedo bots, and the total is unchanged at 219. The moved kills come from gunfire at the new
+  ranges: Jupiter's dealt damage goes 4930 -> 7364, and the ships' nearest distances shrink
+  (John1 661 -> 241).
+- **`clearance_min` = 300 on every row:** a ship's first target frames come before its target
+  curve (`nested+13B0h`) is first filled at 009F2FB1. 00952530 then answers 0, so the cap is
+  `max(300, 0) * h`. That is the image's order, since 009F2D98 runs before the refill in the same
+  frame. Afterwards the clearances settle at 1665..1796 m for the Allied tube ships and 1850..2797 m
+  for the Japanese script destroyers. These are closer to the target curve than to `0.5 * range`.
+- **The Allied ships are enabled on every one of their frames.** Their approach frames begin only
+  once their group is in CLOSEATTACK, and by then its tail has already set `+222h`.
+
+### Verdict: `kTorpedoStandoffBound` ON
+
+The block runs as read, and USN02 moves through the standoff alone:
+- 4171 capped clearances;
+- 7610 cap gates with ready barrels;
+- deaths, kills and hit records moved;
+- the same launch count.
+
+USN04 is untouched. The failed rows are predictions of effect, not mismatches with the image.
+
+### Open
+
+- **The other three gate bytes** `+12B8h`, `+12B9h` and `+12BBh`, and the torpedo byte's copy in
+  the query 0095F080 rates, are still the host's all-1 substitution
+  (`ShipAiApproach::curve_query_allow_bytes`, 009F2AE7). They need 008637D0, 00863840 and 008638B0.
+- 00863920 is recomputed rather than read from the gunnery host. It should be replaced by an
+  accessor on `GameGunneryHost` once `src/game_hosts_gunnery.cpp` is free.
+- The TorpedoBot descriptor (008FB530) is not loaded in this process; the six accuracies are
+  constants.
