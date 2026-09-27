@@ -3281,7 +3281,9 @@ struct GameUnitsHost::Impl {
     // VehicleClass[id].Equipments[DefaultEquipment][platform key].Ammo) until the
     // issue's first check, then the rack's own ammo, which only the rack drop
     // spends. OFF: kDiveBombCarriedRoundsSubstitute (2), spent at the request.
-    static constexpr bool kDiveBombCarriedRoundsBound = false;
+    // ON since the USN04 9000 / 4500 pairs: only the dead Val #1.1|.-4's rows
+    // moved (its two-round glide became one), deaths and hits identical.
+    static constexpr bool kDiveBombCarriedRoundsBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.

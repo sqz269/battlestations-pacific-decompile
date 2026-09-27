@@ -316,3 +316,24 @@ made a one-round aimdive release.
 | deaths | the same victims; times identical, unless #1.1\|.-4's own flight moves | same |
 | hit records | ± 40 | ± 40 |
 | the Lexington's movement line | identical | identical |
+
+### The pairs, measured
+
+Logs in worktree cc9-plane-release: `local\CR_OFF_9000.log` / `CR_ON_9000.log` and
+`CR_OFF_4500.log` / `CR_ON_4500.log`, all from the binary of `37d74858f` with the switch only.
+All four show the 1600x900 line and a module directory in that tree. Apart from pointers, the
+harness slot lines and the ignored refill counter, both pairs differ in the same lines, all of
+them #1.1|.-4's or the census they sum into.
+
+| row | 9000 and 4500 (identical pattern) | prediction | verdict |
+| --- | --- | --- | --- |
+| census | 19 D3A `authored=1` on both sides | same | held |
+| #1.1\|.-4's glide at 128.10 s | `rounds=2` -> `rounds=1`; `deferred` 2 -> 1; `C20h` 2 -> 1; `007BBBA0` calls 12 -> 11; the second release census line goes | the second request goes | held |
+| #1.1\|.-4 afterwards | OFF `aimglide -> done` at tick 1030 (D1h 0, 18 done ticks). ON D1h stays 1, the glide runs 17 calls (blocked by rearm, bearing and lead) and leaves `aimglide -> goaway` at tick 1045 at 23.3 m. It meets the water one fixed step later (surface steps +1). No further request | states move, it may request again | held; no new request |
+| #1.1\|.-2, #5.1\|.-2 | identical | identical | held |
+| live Val rows, bombs | identical; 0 bombs | identical | held |
+| deaths, death table, hit records, the Lexington's line | identical | same victims, ± 40 | held |
+| natives | `count_remaining_rounds_007c1db0` concrete (23756 / 26270 calls); `release_spawn_deferred_to_rack` 9 -> 8; the done state's two records go; one fewer free-flight step | as predicted | held |
+
+**Verdict: `kDiveBombCarriedRoundsBound` ON.** The count is the rack's, as `007C1DB0` reads it.
+The only moved rows belong to the one dead Val whose two-round glide became one.
