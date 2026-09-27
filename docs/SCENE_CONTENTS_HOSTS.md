@@ -472,7 +472,8 @@ of 004C17D0. A Landscape only resets those layers at teardown.
 
 ### The binding
 
-`kScenePathLandscapeCreatorsBound` (committed **false**) is in `src/game_hosts_scene_contents.cpp`.
+`kScenePathLandscapeCreatorsBound` (committed false for the pairs, **ON** after them) is declared in
+`include/bsp/game_hosts_scene_contents.hpp` and used in `src/game_hosts_scene_contents.cpp`.
 - **The object.** For each generated row of class 47h or 44h, `create_scene_world_object`
   builds a `SceneWorldObject`, the host stand-in for the native entity. It appends the object to
   `scene_world_class_lists()`, the stand-in for lists 47h and 44h.
@@ -564,6 +565,58 @@ with `--frames <F> --press-start-frame 30 --menu-select <M> --mission-frames <N>
 **USN04 4700/4500** (`usn_19_coralus.scn`, no rows).
 - **Census:** zero on both sides, `path seen=0 ... landscape seen=0`.
 - **Outcome:** identity on every row.
+
+### The pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `0e10276ef`, which is main `76c08fbe2` plus
+  this packet), built twice with only the switch flipped:
+  - `local\pl_off`, SHA-256 prefix `7CA40E879BC2`;
+  - `local\pl_on`, SHA-256 prefix `6ECF040F016B`.
+- **Logs.** `local\pl_{off,on}_{usn01,usn04}.log`. Each shows the 1600x900 override and its own
+  module directory in this tree, and each exited 0.
+
+**USN01 3200/3000: identity on every measured row.**
+- **Census.**
+  - OFF: `bound=0 path seen=55 generated=55 rejected=0 created=0 landscape seen=4 generated=4
+    rejected=0 created=0 list47=0 list44=0`.
+  - ON: `bound=1 ... created=55 ... created=4 list47=55 list44=4 avoid_zone_paths=21
+    list_order_matches_records=1 terrain heightmaps=4/4 colormaps=0/4 models=4/4`.
+- **Zones.** Both sides: `groups=6 zones=21 source_points=2193 corners=2193 associated=21`.
+- **Outcome.** Both sides: 7 deaths, 150 hit records, 583 shots and `damage=2690.0`. All 23
+  death rows and every summary line are identical, except the census line.
+- **Native table.** Six rows differ, all as predicted:
+  - `create_path` 004EA650 (55) and `create_landscape` 004F1460 (4) appear;
+  - `Landscape::load_terrain` 00882AC0 (4) and `Landscape::attach_terrain_vcall_9c` 00883BB0 (4)
+    appear;
+  - the `SceneContents::class_creator` record goes from 70 calls to 11.
+
+  The native table keys that record by name and shows the first caller's address. OFF lists it
+  as 004F1460 with 70 calls: 4 Landscape, 55 Path and 11 others. ON lists it as 004E9D40 with the
+  11 others.
+- **The four Landscapes:**
+  - `Landscape 03`, FilePath `islands/m07_a`;
+  - `Landscape 04..06`, FilePath `islands/DLC_L_03_S`.
+
+  Each has a `ShallowWater` block and an empty `ModelPath`.
+
+**Failed prediction: the heightmaps resolve, 4/4, not 0/4.** The native name
+`terrain/islands/<F>_heightmap.tdt`, with no `models/` prefix, is found by this process's VFS
+search, including the DLC island's, which has no loose file. So the `.tdt` height field is
+reachable for a later terrain reader. The colormaps resolve 0/4 as predicted, and the models 4/4.
+
+**USN04 4700/4500: identity on every measured row.**
+- **Outcome.** Both sides: 41 deaths, 743 hit records, 5,603 shots and `damage=11494.8`. All 112
+  death rows and every summary line are identical, except the census line.
+- **Native table.** Three rows differ: `create_path` 004EA650 appears with 4 calls, and the
+  `class_creator` record changes from 004EA650 (5) to 004E99B0 (1).
+
+**Failed prediction: USN04 has four Path rows, not none.** `usn_19_coralus.scn` authors no
+`AvoidZone` path and no Landscape, but it has four non-zone paths, `CarrierPath1..4`, with party 2
+and 6, 6, 8 and 8 points. The census reads `path seen=4 created=4 list47=4 avoid_zone_paths=0`.
+
+**Verdict: ON.** Both pairs are identity on every death, hit-record and shot row, and the census is
+exact. The objects now exist for the consumers listed under the contracts above. No consumer reads
+them yet, so no measured row moves.
 
 ## Ledger names recorded
 

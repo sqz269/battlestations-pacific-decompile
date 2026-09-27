@@ -301,10 +301,11 @@ ScenePathRegistry& scene_path_registry() noexcept;
 // True binds the two creators: the instantiate pass builds a SceneWorldObject
 // for each generated row and appends it to the class list below, and the
 // Landscape's terrain file names are resolved against the VFS as a census.
-// Nothing consumes the objects yet (see the doc's contracts), so the switch is
-// committed false with the prediction that no measured row moves. False keeps
+// Nothing consumes the objects yet (see the doc's contracts). Committed false
+// with the prediction that no measured row moves; the USN01 and USN04 pairs were
+// identity on every death, hit and shot row, so it is ON. False keeps
 // the record path: `SceneContents::class_creator` stays UNIMPLEMENTED.
-inline constexpr bool kScenePathLandscapeCreatorsBound = false;
+inline constexpr bool kScenePathLandscapeCreatorsBound = true;
 
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
