@@ -2941,3 +2941,47 @@ unverified step.
    (script `local\cc9-plane2-static.py`).
 
 Question 2 was answered by docs/PILOT_MOVETO_TASK.md parts 1-4 (section 6a there).
+
+## 27. The release-order gate is not what limits USN04's releases (packet `cc9_release_order_gate`, read, markers made concrete)
+
+Worker cc9-plane2, 2026-09-27, on main 7ca25aa95. Ghidra was read only.
+
+### 27.1 007EE7F0 is already modelled
+
+- **The UNIMPLEMENTED row was a marker, not a missing body.**
+  `PilotControl::pre_issue_hook 007ee7f0` is the host's hook for 007EEF3B CALL 007EE7F0. That
+  body stores ctl+3ECh = 0 and the armed fraction ctl+374h (docs/TORPEDO_RELEASE_ORDERS.md (5)).
+- **The fraction is computed before 007EEF40 reads it.** `read_issue_inputs` computes it through
+  `bsp::flight_armed_fraction_007ee7f0` every time. The hook only logged.
+- **The threshold is the one live substitution beside it.** ctl+390h stands in at 1.0 x 0.95 for
+  `*(unit+538h)+A0h` x 0.95 (0079CD36). It can close the gate only when the armed fraction reaches
+  0.95. With the caller's own round deducted, a four- or five-plane flight tops out at 0.75 or 0.8.
+  So it cannot refuse any reference squadron.
+
+### 27.2 Where USN04's releases go
+
+- **Most torpedo bombers never reach the gate.** On `local\FP_ON_USN04.log` (worktree cc9-plane2)
+  the per-unit `issue gate 007EEF40` report shows ctl+390h = 0 for every Kate but one. Those
+  aircraft never ran 007C0D90's issue path. The one that did had the gate open (0.95 > 0.0).
+- **They die first.** All 16 Kates die in the run (16 death rows), 6 of them after releasing. Of
+  the 19 Vals, 12 die and 8 release.
+- **So the low release counts are an attrition question, not a gate question.** Nothing is bound
+  here. Where the Kates die and to whom is in the per-entity death table; that belongs to the
+  gunnery owners.
+
+### 27.3 Two markers made concrete (gameplay-neutral)
+
+- `PilotControl::pre_issue_hook` (007EE7F0) now calls `done`: its effect is the modelled armed
+  fraction.
+- `BotApproach::command_altitude` (009FBA50) now calls `done`: the site runs
+  `bsp::cruise_altitude_command_009fba50`, and its one labelled gap (the squadron+394h leg) is
+  unchanged.
+- **Both logged UNIMPLEMENTED whatever the site computed.** The hook called `log.unimplemented`
+  directly, and the 009FBA50 site used the string form of `record`, which does the same. Eight more `record(name, "<address>")` sites remain in src/game_hosts_units.cpp; each
+  needs its own check before it is made concrete.
+
+| row | before | after | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 gameplay | FP_ON (44 deaths) | MK_USN04 | identical | holds (pair_diff 1) |
+| USN13 3200/3000 gameplay | LS (27 deaths) | MK_USN13 | identical | holds (pair_diff 1) |
+| host methods concrete / unimplemented, USN04 | 1095 / 558 | 1097 / 556 | two rows move | holds |

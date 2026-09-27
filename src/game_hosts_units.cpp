@@ -9284,8 +9284,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             slot_.torpedo_release_pending_c25 = value;  // 007C0EE2
                         }
                         void pre_issue_hook_007ee7f0() override {
-                            owner_.log.unimplemented(
-                                "PilotControl::pre_issue_hook", "007ee7f0");
+                            // 007EEF3B CALL 007EE7F0. It stores ctl+3ECh = 0 and ctl+374h,
+                            // the armed fraction, which read_issue_inputs below
+                            // computes through bsp::flight_armed_fraction_007ee7f0
+                            // before 007EEF40 reads it, so the call is concrete
+                            // (packet cc9_release_order_gate). ctl+3ECh is
+                            // not carried by this host.
+                            owner_.done("PilotControl::pre_issue_hook", 0x007ee7f0u);
                         }
                         bsp::ReleaseOrderIssueInputs read_issue_inputs() override {
                             // 007EEF40 gates on ctl+390h > ctl+374h.
@@ -9774,7 +9779,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
                                 slot_.plan_state.pitch_mode_2d0 = 2;
                             }
-                            record("BotApproach::command_altitude", "009fba50");
+                            // Runs bsp::cruise_altitude_command_009fba50 above, with
+                            // the squadron+394h leg labelled unmodelled, so the
+                            // record is concrete (packet cc9_release_order_gate).
+                            owner_.done("BotApproach::command_altitude", 0x009fba50u);
                         }
                         void write_command_word(void*, int, int) override {}
                         void write_command_byte(void*, int, unsigned char) override {}
