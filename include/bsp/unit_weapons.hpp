@@ -253,8 +253,13 @@ struct UnitWeaponHost {
                                     float window) = 0;
 
     // -- torpedo stock -------------------------------------------------------
-    virtual int torpedo_count(NativeHandle unit) = 0;      // 00810E90
-    virtual void torpedo_spawn_one(NativeHandle unit) = 0; // 0081DCB0
+    // 00810E90: the loaded torpedo barrels, the barrels of the category-7 list
+    // unit+3ECh whose +414h timer is below FLT_MAX (00D7A278). Not a count of
+    // torpedoes in the water (packet cc9_torpedo_stock).
+    virtual int loaded_torpedo_barrels_00810e90(NativeHandle unit) = 0;
+    // 0081DCB0: unloads one random loaded torpedo barrel (00BD2F10 on stream 1,
+    // then 0072CF00 with FLT_MAX). It spawns nothing.
+    virtual void unload_random_torpedo_barrel_0081dcb0(NativeHandle unit) = 0;
     virtual void unit_set_torpedo_spare(NativeHandle unit, int spare) = 0; // +104Ch
     virtual int live_torpedo_count() = 0; // registry at (00E188A8)+19CCh +21Ch
     virtual NativeHandle live_torpedo_at(int index) = 0; // list walk, node +8h
@@ -289,8 +294,34 @@ NativeHandle find_gun_008cf350(UnitWeaponHost& host, NativeHandle unit, int inde
 // 0071BE80 / 0071BED0 / 0071BF20.
 void director_set_stance_0071be80(UnitWeaponHost& host, NativeHandle director, int stance);
 
-// 0081F8B0: reconcile the live torpedo count with `stock`, then re-arm every
-// empty barrel of every direct-child torpedo gun.
+// 0081F8B0: reconcile the loaded torpedo barrels with `stock` (unloading
+// random barrels while more are loaded than the stock allows, else keeping the
+// rest as the spare +104Ch), then re-arm every pinned barrel of every
+// direct-child torpedo gun.
 void set_torpedo_stock_0081f8b0(UnitWeaponHost& host, NativeHandle unit, int stock);
+
+// Packet cc9_torpedo_supply_tick (docs/UNIT_WEAPON_DEVICES.md, "The supply
+// tick"). 00825450, __thiscall(unit)(float seconds), body 00825450-0082558F,
+// called from UpdateShipMotion 00825F20 at 00826182. The unit fields it keeps.
+struct TorpedoSupplyTickState {
+    std::int32_t area_112c = 0;           // unit+112Ch, the area 00809C50 found
+    float repair_multiplier_1150 = 1.0f;  // unit+1150h, 1.0 (00D7A24C) outside an area
+    float restock_timer_1154 = 0.0f;      // unit+1154h
+};
+struct TorpedoSupplyTickInputs {
+    float seconds = 0.0f;
+    std::int32_t area = 0;                // 00809C50(unit, side, &unit+0FCh)
+    bool session_kind_2 = false;          // [[00E188A8]+1FE4h] == 2 skips the rest
+    std::int32_t spare_104c = -1;         // unit+104Ch
+    std::int32_t loaded_00810e90 = 0;     // read only when the spare is not negative
+    std::int32_t max_torpedo_stock_07a0 = 0; // [unit+538h]+7A0h
+    float repair_zone_multiplier_0494 = 5.0f; // settings+494h, shipglobals.lua:437
+    float torpedo_restock_time_0498 = 1.0f;   // settings+498h, shipglobals.lua:438
+};
+// Returns the stock the tick hands 0081F8B0 (spare + loaded + 1, or spare + 1
+// for an unlimited -1 spare), or -1 when it makes no call. The session message
+// 96h (0080FE10 / 0077C7B0) that follows the call is the caller's.
+std::int32_t torpedo_supply_tick_00825450(TorpedoSupplyTickState& state,
+                                          const TorpedoSupplyTickInputs& in) noexcept;
 
 } // namespace bsp

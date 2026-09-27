@@ -1,0 +1,57 @@
+{
+  "packet": "cc9_torpedo_supply_tick",
+  "doc": "docs/UNIT_WEAPON_DEVICES.md, The supply tick",
+  "calls": [
+    {
+      "address": "00826182",
+      "native": "00825450",
+      "function": "00825F20",
+      "note": "UpdateShipMotion"
+    },
+    {
+      "address": "00825479",
+      "native": "00809C10",
+      "function": "00825450",
+      "note": "own area holder step"
+    },
+    {
+      "address": "0082549A",
+      "native": "00809C50",
+      "function": "00825450",
+      "note": "area test"
+    },
+    {
+      "address": "00809C7B",
+      "native": "00809A80",
+      "function": "00809C50",
+      "note": "per-area test"
+    },
+    {
+      "address": "0081DD85",
+      "native": "00BD2F10",
+      "function": "0081DCB0",
+      "note": "stream 1 pick"
+    },
+    {
+      "address": "0081DDDD",
+      "native": "0072CF00",
+      "function": "0081DCB0",
+      "note": "pin at FLT_MAX"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kTorpedoSupplyTickBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "supply-area registry 00F874F0 empty: no non-empty RepairZoneArea in any .scn of this installation",
+    "tick run after the gunnery passes, not inside UpdateShipMotion",
+    "unload at the first torpedo shot, not pass C"
+  ],
+  "failed_predictions": []
+}

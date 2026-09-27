@@ -958,9 +958,10 @@ ShipAiTorpedoStandoffResult ship_ai_torpedo_standoff_009f2ac9(
 // docs/SENTITY_INIT_PASSES.md section 10. True: 009F1BC0 fills +12B8h, +12B9h
 // and +12BBh every frame, and the frame-state query (0095F080 at 009F2F11) and
 // the ring query (009E7FC0 -> 009E5DA0) take all four gate bytes from the
-// block, the torpedo one being +12BAh; 00863920 is the gunnery host's live
-// answer. False: all four gates are 1 in both queries (the earlier labelled
-// substitution) and 00863920 is recomputed from the stance-push inputs.
+// block, the torpedo one being +12BAh. False: all four gates are 1 in both
+// queries (the earlier labelled substitution). 00863920 is the gunnery host's
+// live answer either way (packet cc9_torpedo_supply_tick retired the
+// stance-push recomputation).
 inline constexpr bool kShipAiQueryGateBytesBound = true;
 
 // The calls 009F2AD1..009F2B8A and 009F2DF7..009F2E43 make for the three
