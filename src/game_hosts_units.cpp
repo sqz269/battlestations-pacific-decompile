@@ -106,6 +106,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <exception>
+#include <cctype>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -3899,6 +3900,13 @@ struct GameUnitsHost::Impl {
     // ON since the USN04 4700/4500 and USN02 9200/9000 pairs: identical (no
     // reference row authors a HomeBase and the contract is not wired yet).
     static constexpr bool kSceneHomeBaseBound = true;
+    // Packet cc9_ijn08_home_base_measure (docs/CONSTRUCT_WORLD.md section 32). ON:
+    // the scene HomeBase name resolves the way 00925A90's matcher 009251F0 does:
+    // case-insensitively (0092521E, 00438E10), and a "Parent\Child" path by its
+    // child (0092523A _strchr on 5Ch, then the children). SUBSTITUTION, labelled:
+    // the host keeps no scene tree, so the parent segments are not checked and
+    // the last segment is matched. OFF: an exact, case-sensitive whole-name match.
+    static constexpr bool kSceneHomeBaseQualifiedNameBound = false;
     unsigned long long scene_home_keys_set = 0;
     unsigned long long scene_home_resolved = 0;
     unsigned long long scene_home_unresolved = 0;
@@ -18145,18 +18153,38 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
             GameUnitSlot& squadron = *host.slots[squadron_index];
             const std::string& key = squadron.scene_home_base_key;
             if (!key.empty()) {
+                // Packet cc9_ijn08_home_base_measure: 009251F0's matching rule.
+                const auto name_matches = [&key](const std::string& candidate) {
+                    if constexpr (!Impl::kSceneHomeBaseQualifiedNameBound) {
+                        return candidate == key;
+                    } else {
+                        const std::size_t cut = key.find_last_of('\\');
+                        const std::string leaf =
+                            cut == std::string::npos ? key : key.substr(cut + 1);
+                        if (leaf.size() != candidate.size()) return false;
+                        for (std::size_t c = 0; c < leaf.size(); ++c) {
+                            if (std::tolower(static_cast<unsigned char>(leaf[c])) !=
+                                std::tolower(static_cast<unsigned char>(candidate[c])))
+                                return false;
+                        }
+                        return true;
+                    }
+                };
                 bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
                 bsp::AirOpsDeck* deck = nullptr;
+                std::string resolved_name;
                 for (std::size_t d = 0; d < decks.size(); ++d) {
-                    if (decks.name_at(d) == key) {
+                    if (name_matches(decks.name_at(d))) {
                         deck = decks.mutable_at(d);
+                        resolved_name = decks.name_at(d);
                         break;
                     }
                 }
                 bool named_unit = false;
                 for (const auto& owned : host.slots) {
-                    if (owned->row.name == key) {
+                    if (name_matches(owned->row.name)) {
                         named_unit = true;
+                        if (resolved_name.empty()) resolved_name = owned->row.name;
                         break;
                     }
                 }
@@ -18177,7 +18205,7 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
                         "006CC7B0, the host keeps +404h null (packet "
                         "cc9_scene_home_base_key)", squadron.row.name.c_str(), key.c_str());
                 } else {
-                    squadron.scene_home_base_404 = key;
+                    squadron.scene_home_base_404 = resolved_name;
                     ++host.scene_home_resolved;
                     // 007F1C4B: [00E188A8]+1FE4h is zero in this campaign
                     // process, so 006CC7B0 (007F1C69) queues the squadron on the

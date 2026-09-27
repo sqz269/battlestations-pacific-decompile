@@ -1,0 +1,20 @@
+{
+  "packet": "cc9_ijn08_home_base_measure",
+  "doc": "docs/CONSTRUCT_WORLD.md section 32",
+  "calls": [
+    {"address": "00925ACA", "native": "009251F0", "function": "00925A90", "note": "the per-node qualified-name matcher"},
+    {"address": "00925273", "native": "00BFAE6B", "function": "009251F0", "note": "__strnicmp on the path prefix; 0092523A calls 00BF86F0 _strchr and 0092521E 00438E10 the case-insensitive compare"}
+  ],
+  "coverage": [{"routine": "009251F0", "coverage": "complete (read)"}],
+  "runs": [
+    {"menu_select": "IJN08", "scene": "IJN/ijn_8_north_sol.scn", "log": "local/IJN08_SMOKE.log", "result": "clean; keys 0, contract calls 0"},
+    {"menu_select": "JM08", "scene": "COTP-IJN/PRCPIJN/prcpijn_08_defend_guadalcanal.scn", "log": "local/JM08_SMOKE.log", "result": "clean; contract calls 6, keys 2, pass_c 0, resolved 0; deck 'MainAirFieldEntity 01'"}
+  ],
+  "substitutions": [{"what": "009251F0's parent-path check", "is": "the last path segment matched case-insensitively (no scene tree in the host)", "where": "on_squadron_pass_c_initial_command"}],
+  "contracts": [{"owner": "the Lua host (src/game_hosts_lua.cpp)", "what": "the load-time InitAll's pass A and pass C call the units host's squadron hooks for squadron nodes"}],
+  "switches": [{"name": "kSceneHomeBaseQualifiedNameBound", "committed": "OFF", "file": "src/game_hosts_units.cpp"}],
+  "corrections": [{"was": "IJN08 is the HomeBase measuring mission", "is": "--menu-select IJN08 loads ijn_8_north_sol.scn; the HomeBase scene is JM08 (prcpijn_08_defend_guadalcanal.scn)", "evidence": "missiontree.lua 1551 and 4974; local/IJN08_SMOKE.log and JM08_SMOKE.log"}],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

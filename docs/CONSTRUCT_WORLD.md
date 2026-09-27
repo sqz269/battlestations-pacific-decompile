@@ -2491,3 +2491,82 @@ PlaneSquadronGen rows.
 
 **Verdict: `kSceneHomeBaseContractBound` ON.** It is the contract's call, it changes nothing on
 the reference missions, and IJN08 is the mission that would measure it.
+
+## 32. Measuring the scene HomeBase on the mission that authors it (packet `cc9_ijn08_home_base_measure`, `kSceneHomeBaseQualifiedNameBound`, committed OFF)
+
+2026-09-27, worker cc9-units3, on main 088805f9a. Ghidra was read only. Sections 29 and 31 bound
+the read and its contract. Section 29 left open whether the host registers a deck under the
+airfield's name, and cc9-ships's handoff left open whether the image's SpawnNew bag carries a
+`HomeBase`.
+
+### Which menu id runs the HomeBase scene
+
+- **`--menu-select IJN08` does not.** It loads `universe/Scenes/missions/IJN/ijn_8_north_sol.scn`,
+  which authors no `HomeBase` (section 29's census). Smoke run `local\IJN08_SMOKE.log` (3200 /
+  3000, both variables, idle player):
+  - clean: the fit line, the immediate present interval, a module directory in this tree, the
+    final COM release, and no crash record;
+  - the home-base census reads `keys=0`, contract `calls=0`;
+  - its airfields register as decks under their unit names (`Jap_Airfield`, `US_Airfield_01..03`,
+    class 69).
+- **`--menu-select JM08` does.** `missiontree.lua` line 4974 gives `JM08`, "PRCP - Defense of
+  Gaudalcanal", the scene `COTP-IJN/PRCPIJN/prcpijn_08_defend_guadalcanal.scn` (2024-08-09). Its
+  rows "Ki-43 Oscar 01" and "Gekko 01" author `HomeBase = RFort "Landscape 01\MainAirFieldEntity
+  01"` (lines 26768, 26787). It had never run in bsp_game. Smoke run `local\JM08_SMOKE.log`,
+  same settings: clean, the same four lines, no crash record, 381 units.
+
+### What the JM08 run measures
+
+| row | value |
+| --- | --- |
+| scene-contents contract `calls` | 6: every squadron built from a row |
+| home-base `keys` | 2: the two authored rows |
+| `resolved` / `unresolved` / `not_airbase` / `queue_pushes` | 0 / 0 / 0 / 0 |
+| squadron pass hooks | `pass_a=0 pass_c=0` |
+| the airfield's deck | `air ops deck: unit=MainAirFieldEntity 01 class=69 NumSlots=4 MaxInAirPlanes=12` |
+
+**Two gaps, both confirmed.**
+
+1. **The keys are never read.** These squadrons are built at scene load, and the load-time
+   InitAll (`summary SEntity::InitAll load walk pushes=482`) never calls the units host's squadron
+   hooks (`pass_a=0 pass_c=0`).
+   - In the image every entity runs its passes, and a squadron's pass C is 007F4BA0, which reads
+     `HomeBase` at 007F4C43.
+   - So the two stored keys never reach 007F1C00 here. On USN04 the hooks run only for squadrons
+     created during the mission (20 calls).
+   - **Contract for the Lua host (`src/game_hosts_lua.cpp`, cc9-hud2's lease at the time of
+     writing):** the load-time InitAll's pass A and pass C should call
+     `on_squadron_pass_a_construct_wing` and `on_squadron_pass_c_initial_command` for squadron
+     nodes, as the mission-time InitAll walk does.
+2. **The name would not resolve.**
+   - **The host.** The deck registers under the airfield's own name, "MainAirFieldEntity 01".
+     The key is the scene path "Landscape 01\MainAirFieldEntity 01", and the host's match is
+     exact.
+   - **The image.** 00925A90's matcher 009251F0 (`BSP_SceneNode_FindByQualifiedName`) compares
+     case-insensitively (0092521E, 00438E10). It splits a path at `\` (0092523A `_strchr(name, 5Ch)`, 00BF86F0),
+     requires the node's name to equal the prefix (00925263 length test, 00925273
+     `__strnicmp`), and recurses into the node's children (0092529E). So the image finds the
+     Landscape's child.
+   - **Bound here:** `kSceneHomeBaseQualifiedNameBound` (units host, committed OFF). It matches
+     case-insensitively and takes a path's last segment.
+     - **SUBSTITUTION, labelled:** the host keeps no scene tree, so the parent segments are not
+       checked.
+     - OFF keeps the exact match, and the stored home is then the deck's own name.
+
+### The SpawnNew bag (narrowed, not closed)
+
+The GenerateObject/SpawnNew creator (`create_unit_from_scene_record_0046db4b`) builds from the
+scene record it holds back. Section 31 carries the row's `HomeBase` on that record. JM08's two
+keyed rows are built at load, not by SpawnNew, so this run does not measure the SpawnNew path.
+The image's bag reader on that path was not read.
+
+### Predictions (written before any pair; no pair runs in this packet)
+
+- **The switch alone:** identity on every mission. No squadron reaches pass C with a key until
+  gap 1 is wired: USN04, USN02, IJN08 and JM08 all read `resolved=0 unresolved=0`.
+- **With gap 1 wired, JM08 3200/3000:**
+  - OFF: pass C runs for the load squadrons, and the two keyed ones read `unresolved=2`
+    (no exact match);
+  - ON: `resolved=2`, `queue_pushes=2`, and the moveto arm finds the unit "MainAirFieldEntity 01".
+  - Whether that unit is a slot the moveto can target, and what the two squadrons then do, is for
+    that pair.

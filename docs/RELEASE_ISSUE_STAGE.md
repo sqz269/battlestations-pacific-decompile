@@ -607,3 +607,48 @@ are called by the Lua host since 27ab3a4b4 (20 / 20 on USN04, 0 on USN02).
 ## The sink-descent pair's pre-kill move, isolated (packet `cc9_sink_pair_prekill_move_read`)
 
 Moved to docs/WRECK_MOTION_AVOIDANCE.md.
+
+## Handoff: cc9-units3's queue (2026-09-27)
+
+Worker cc9-units3 stops here, at about 70 % of its context used, after
+`cc9_ijn08_home_base_measure` (committed OFF). Everything it landed, all ON unless noted:
+
+| switch | doc | what |
+| --- | --- | --- |
+| `kShipBuoyancyElementsBound` | docs/CONSTRUCT_WORLD.md 28 | the image's element list (0082D040) replaces the stand-in |
+| `kSceneHomeBaseBound` | CONSTRUCT_WORLD.md 29 | a scene row's `HomeBase` at squadron pass C (007F1C00) |
+| `kWreckThrottleCutBound` | docs/UNIT_DEATH_MESSAGE_AND_SINK.md | the wreck handler's throttle cut at 0082524B |
+| `kLiveHullLeakBound` | docs/UNIT_MESSAGE_ARMS.md "90h, bound" | the 90h leak receiver (0074F090) and the gunnery sends |
+| `kLiveHullRepairBound` | UNIT_MESSAGE_ARMS.md, "the Repair byte and the health" | the class Repair byte and the health into the leak manager |
+| `kWreckHitDeliveryBound` | docs/PROJECTILE_IMPACT.md, "Hits on a wreck" | a ship wreck takes hits for 60 s (009239A0) |
+| the joint wing flip | CONSTRUCT_WORLD.md 30.7 | both wing switches ON by the lead's ruling |
+| `kSceneHomeBaseQualifiedNameBound` (**OFF**) | CONSTRUCT_WORLD.md 32 | 009251F0's case-insensitive path match for the HomeBase name |
+
+It also wrote reference e (docs/GAME_EXECUTABLE.md, `reports/cc9_reference_rebaseline_5.json`),
+closed three of its four flags by pairs, and wrote docs/WRECK_MOTION_AVOIDANCE.md.
+
+### Open items, by owner
+
+- **Lua host (`src/game_hosts_lua.cpp`):** the load-time InitAll never calls the squadron pass A
+  and C hooks, so scene-load squadrons never read their `HomeBase` (JM08: keys 2, pass_c 0). Wire
+  it, then pair JM08 3200/3000 with `kSceneHomeBaseQualifiedNameBound` (predictions in 32).
+- **Units (this worker's files):** the JM08 pair above. Its OFF side should read `unresolved=2`
+  and its ON side `resolved=2 queue_pushes=2`.
+- **Open reference flags** (`reports/cc9_reference_rebaseline_5.json`):
+  - USN02 552 -> 579: no single switch of its window reproduces it on the current base;
+  - d's three carried flags.
+- **The quadtree walk** 00ADA240 -> 00AEA2B0 / 00AE9D80 / 00AECC40: 00AE9D80's Ghidra body is
+  cut at 14 bytes and needs a boundary repair first. The lead has it queued for a fresh worker.
+- **The SpawnNew bag's `HomeBase`:** narrowed in 32. JM08's keyed rows are built at load, so no
+  reference run exercises the SpawnNew path.
+- **Measuring missions:** `--menu-select IJN08` loads `ijn_8_north_sol.scn`, and `JM08` loads the
+  HomeBase scene. Both smoke runs are clean (`local\IJN08_SMOKE.log`, `local\JM08_SMOKE.log` in
+  worktree cc9-units3).
+
+### State left by this worker
+
+- The tree is clean after the last commit. No lease is held after the report.
+- Scripts are under `local\` with the prefix `cc9-units3-`:
+  - `firstdiff.py`: the keyed step-line diff;
+  - `linediff.py`: a masked sequence diff;
+  - `hullscan.py`: the class Hull and model scan.
