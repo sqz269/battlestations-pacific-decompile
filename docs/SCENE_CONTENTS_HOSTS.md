@@ -1213,6 +1213,163 @@ yet. The gunnery hunk is the loose entries plus the calls, under one switch.
 (`pick=calls/hits seat=... line_of_fire=... blocked=n projectile=...`). At load the block is zero
 until a consumer calls. The gunnery hunk prints the same block in its end-of-mission summary.
 
+### The gunnery hunk and its predictions (written before the runs)
+
+`kLandscapeSpatialAttachBound` in `src/game_hosts_gunnery.cpp` is committed **false**. With it
+true:
+- **`SegmentBinding` entries.** It adds the Landscapes as loose entries after the units, with
+  handles N+1.., the bounds of `landscape_segment_entry_bounds` and one shape.
+- **The Landscape trace.** Its `shape_trace_segment` calls `landscape_entry_segment_hit` and fills
+  the record: point, entity, kind 0Ah, segment -1. A unit hit clears `hit_landscape`, and a land
+  hit clears `hit_unit`.
+- **`query_segment_units_impl`** reports a land hit through a new `land_hit` flag and returns
+  false.
+  - **The pick** (`GameGunneryHost::query_segment_units`) sees no unit, which is 00526DAF.
+  - **The seat** takes the land point as its hit, subject to the unchanged y > 0 test at 00957DAF.
+- **The shell sweep.** A land hit ends the round: it runs `apply_impact_blast`, applies no hit and
+  records `Landscape::on_hit_0087f9a0`. The new counter is `impacts_land`.
+- **`line_of_fire_blocked_0072cdd0`** runs `landscape_segment_hit` from the raised muzzle to the
+  clamped target first (0072CE91), and a land hit blocks. The existing per (gun, target) cache
+  holds the answer.
+- **The census.** `summary mission gunnery landscape attach bound=.. entries=.. pick=c/h
+  seat=c/h line_of_fire=c/h blocked=n projectile=c/h impacts_land=n`.
+- **Untouched:** the death route's `kLossWarningBound` call site, and the trace counters
+  (`shell_mesh_hits` and `narrowphase_box_0085cdb0` are restored around the pick and the seat as
+  before).
+
+**The base for USN01 3200/3000** (section 6 ON log):
+
+| consumer | volume |
+| --- | --- |
+| `UnitPickScreen::segment_query` | 6,160 calls |
+| gun seat casts | 0 (the idle player never takes a seat) |
+| AA line-of-fire queries | 144, 0 blocked |
+| shell sweeps | 18,854 |
+
+The shells break down as 583 created, 103 entity impacts, 451 expired and 0 water. The outcome is
+7 deaths, 150 hit records and 583 shots.
+
+**Predictions, USN01:**
+- **Entries.** `entries=4`.
+- **Pick.** 6,160 calls, and land hits between 1,000 and 6,160. The camera sits over the player's
+  `Airfield2` on `Landscape 03`, so the 10,000-unit forward ray meets the island often.
+- **Seat.** `0/0`.
+- **Line of fire.** 144 queries, 0..40 blocked. AA on the island's forts fires upward at planes,
+  and ships firing across `Landscape 03` can be cut.
+- **Shells.** `impacts_land` between 0 and 150 of the 18,854 sweeps: rounds from the coastal forts
+  and rounds crossing the island.
+
+  **Uncertain:** `Coastal Gun 01` sits 66 m inside the hill (section 6 self-check). A segment
+  that starts below the surface hits at its start in the stand-in, so its rounds and its line of
+  fire end at once. Whether 00ADA240's quadtree walk reports a start below the surface was not
+  read.
+- **Outcome, with bands:**
+  - deaths down or equal, 4..7;
+  - hit records down or equal, 90..150;
+  - shots 450..700, direction uncertain: refusals remove shots, but fewer kills keep targets alive
+    longer;
+  - torpedo drops 0 on both sides.
+
+**Predictions, USN04 4700/4500.**
+- `usn_19_coralus.scn` has no Landscape, so `entries=0`.
+- The pick calls are counted with 0 land hits, and line of fire and shells show 0 land hits.
+- Identity on every gameplay row: 41 deaths, 743 hit records, 5,603 shots. The census line is the
+  only difference.
+
+### The gunnery pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `a7f606509`, which is main `fe93be072`
+  plus this packet), built twice with only `kLandscapeSpatialAttachBound` flipped:
+  - `local\sa_off`, SHA-256 prefix `DE033DD5025D`;
+  - `local\sa_on`, SHA-256 prefix `4264BB75E479`.
+- **Logs.** `local\sa2_{off,on}_{usn01,usn04}.log`. Each shows the 1600x900 override and its own
+  module directory in this tree, and each exited 0.
+- **The first pair, and the diagnostics.** The first pair (`local\sa_*`, before `a7f606509`) read
+  0 land hits everywhere, so three diagnostics were added (`a7f606509`) and both pairs rerun:
+  - the Landscape trace count past the broadphase;
+  - the first three pick rays;
+  - a vertical probe of the entry trace through every authored object at load.
+
+**`tools/pair_diff.py`, USN01 3200/3000: exit 1, gameplay identical.**
+
+```
+GAMEPLAY: identical
+  deaths                                 7                                        7
+  hit records                            150                                      150
+  hull hits                              85                                       85
+  damage                                 2690.0                                   2690.0
+  shots                                  583                                      583
+  first hit                              53.75 s                                  53.75 s
+  torpedo-task releases                  3 of 5                                   3 of 5
+  dive-bomb-task releases                0 of 2                                   0 of 2
+  torpedo drops                          0                                        0
+  plane water contacts                   3                                        3
+  controlled moved                       Airfield2 0.00                           Airfield2 0.00
+  units                                  64                                       64
+  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)
+  host methods concrete/unimplemented    887 / 466                                887 / 466
+DEATH ROWS: identical (7 rows)
+PLANE DEATH MODES: identical (7 rows)
+UNIT TABLE: identical (28 rows)
+```
+
+Native table: 1353 -> 1353 rows, 0 changed.
+
+**The census, ON:**
+`entries=4 pick=5999/0 seat=0/0 line_of_fire=144/0 blocked=0 projectile=18855/0 impacts_land=0`,
+with `traces=6401`.
+
+**Why every consumer reads 0.**
+- **The machinery works.** The load probe hits all 51 authored objects on `Landscape 03`, and 50
+  of the hits land within 5 cm of the ground height. The exception is `Coastal Gun 01`, 66 m inside
+  the hill, which the probe meets at the hill's surface.
+- **The broadphase passes.** 6,401 Landscape traces got past the box tests.
+- **The pick ray is degenerate in this process.** All three logged rays run from (0,0,0) to
+  (0,0,0): the HUD's pick has no camera (no camera at game+19FCh; `docs/HUD_PICK_SEGMENT_QUERY.md`),
+  so its segment cannot meet land. This belongs to the HUD host's camera stand-in, not to this
+  packet.
+- **The seat never casts** on USN01 (idle player).
+- **No other ray met land.** None of the 144 line-of-fire segments crosses an island below its
+  surface, and no shell segment does either.
+
+**`tools/pair_diff.py`, USN04 4700/4500: exit 1, gameplay identical.**
+
+```
+GAMEPLAY: identical
+  deaths                                 43                                       43
+  hit records                            788                                      788
+  hull hits                              331                                      331
+  damage                                 11917.1                                  11917.1
+  shots                                  5075                                     5075
+  first hit                              93.00 s                                  93.00 s
+  torpedo-task releases                  4 of 16                                  4 of 16
+  dive-bomb-task releases                1 of 19                                  1 of 19
+  torpedo drops                          1                                        1
+  plane water contacts                   16                                       16
+  controlled moved                       Lexington-class01 3514.72                Lexington-class01 3514.72
+  units                                  81                                       81
+  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)
+  host methods concrete/unimplemented    1042 / 549                               1042 / 549
+DEATH ROWS: identical (43 rows)
+PLANE DEATH MODES: identical (43 rows)
+UNIT TABLE: identical (81 rows)
+```
+
+USN04 has no Landscape, so the entries are 0. The census counts pick 8999, seat 8997, line of fire
+2242 and projectile 147931 calls, all with 0 land hits. The native table is identical.
+
+**Failed predictions:**
+- **Pick land hits.** I predicted 1,000..6,160 and measured 0: the pick ray is degenerate (above).
+- **The USN04 base values** quoted before the runs (41 / 743 / 5,603) were an older main's. This
+  main reads 43 / 788 / 5,075 on both sides. The identity prediction holds.
+
+**Within the bands:** line of fire 0 blocked (0..40); shells 0 on land (0..150); USN01 deaths 7,
+hit records 150 and shots 583 (bands 4..7, 90..150 and 450..700).
+
+**Verdict: ON.** Identity on both missions. The entry is exercised: 6,401 traces, and the load
+probe is exact. It takes effect on any mission where a shell, a line of fire or a camera ray
+crosses an island.
+
 ## Ledger names recorded
 
 | Address | Name |
