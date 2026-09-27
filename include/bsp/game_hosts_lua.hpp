@@ -83,6 +83,17 @@ inline constexpr bool kLoadTimeSquadronHooksBound = true;
 // ON since the pairs (docs/SENTITY_INIT_ATTACH_ORDER.md 20.4).
 inline constexpr bool kLoadWingSquadronIdBound = true;
 
+// Packet cc9_generated_entity_party (docs/SENTITY_INIT_ATTACH_ORDER.md 23),
+// committed OFF with predictions. A GenerateObject'd entity (00944FD0 ->
+// 0046D930/0046DC10) is built from its held-back scene record, whose kind-1
+// bag carries `Party` and `Race` (every group derives from `Common`,
+// section 17.1); pass A's attach 00928A00 reads them through 00927050
+// (00928A1E) into +54h/+58h, and the Lua table gets them through the 00928F50
+// mirror. While true, the GenerateObject route hands the record's party and
+// race to its pending node, and pass A writes thisTable[key].Party/.Race as it
+// does for a load-time node. While false only load-time nodes get them.
+inline constexpr bool kGeneratedEntityPartyBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -287,6 +298,9 @@ struct GameMissionLuaSummary {
     unsigned long long generate_object_created{0};
     unsigned long long generate_object_repeat{0};
     unsigned long long generate_object_unknown{0};
+    // Packet cc9_generated_entity_party.
+    unsigned long long generated_party_nodes{0};
+    unsigned long long generated_party_writes{0};
     // 0094C480 / 00949750 / 0094C490. docs/LUA_SPAWN_NEW_HOST.md.
     unsigned long long spawn_new_calls{0};       // tables the binding accepted
     unsigned long long spawn_new_rejected{0};    // argument 1 was not a table
@@ -902,6 +916,9 @@ private:
         int marker_authored_party{-1};
         int party{-1};
         int race{-1};
+        // Packet cc9_generated_entity_party: a GenerateObject'd node that
+        // carries its record's party and race.
+        bool generated_party{false};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the
