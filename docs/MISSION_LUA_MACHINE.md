@@ -231,3 +231,62 @@ brief's expectation that they would have to be read from the raw listing no long
 
 Build-tested at `/W4 /WX`. Installed-file-checked: 299 mission scripts, 21 global and autoload
 scripts, `Scripts/fundamentals.lua`. Not game-validated.
+
+## The mission script name comes from the scene header (packet `cc9_stage_init_chunk_errors`, `kSceneStageScriptBound`, committed OFF)
+
+Worker cc9-ships2, on main `282f6b9e5`. Ghidra was read-only. The switch is in
+`src/game_hosts_mission.cpp`.
+
+### What the "chunk error in luaStageInit" lines were
+
+**They were not errors.** `GameMissionLuaHost::lua_tolstring_at_top` logged whatever sat on top of
+the Lua stack as a chunk error. The units host reads its own query chunks' numeric results through
+that accessor after a successful load and call:
+- `bsp_damage_sections` (the count of VehicleClass damage sections);
+- `bsp_equipment_ammo`;
+- `bsp_formacio_interval`.
+
+JM06's "0", "1", "5" and "10" are those numbers. The accessor now reports only after a failed load
+or call, and names the chunk and the status. This is a log change only; it moves no behaviour.
+
+### Why JM06 and LOMP06 run no script
+
+- **What the host does.** It derived the mission script name from the scene path: the scene's
+  parent folder lower-cased, then the installed subdirectories.
+  - JM06's scene `COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn` gave
+    `Scripts/missions/prcpijn/ijn_06_prelude_to_midway.lua`, which does not exist.
+  - So the run loaded no mission script: `script_calls=0` on every frame, and no Lua-native row.
+  - LOMP06 has the same fault, with `lomp/06_crucial_cargo` against the real
+    `USN\LOMP\06_crucial_cargo`.
+- **What the image does.** It takes the name from the scene record, not the path.
+  - 004F1D70 BSP_SceneRecord_ApplyHeaderProperties stores the header property `GameStageScript`,
+    or `StageScript` when that is absent, into `record+968h`: slot 8 of the 11-string table at
+    `+928h`, stride 8.
+  - A single-player load selects slot 8. 004E087B normalises the slot to 8 unless it is forced or
+    the session is not 0.
+  - 008860B0 then builds `Scripts/missions/` + name + `.lua` verbatim.
+- **The header values in this installation:**
+  - JM06: `StageScript = S "COTP-IJN\\PRCPIJN\\JM06"` (scene line 548);
+  - LOMP06: `"USN\\LOMP\\06_crucial_cargo"`;
+  - USN02 `"USN\\usn_2_java"`, USN04 `"USN\\usn_19_coralus"`, USN01 `"USN\\usn_1_marshall"` and
+    BSM01 `"BSM\\bsm_01_stationed_at_pearl"`: each names the file the derivation already finds.
+- **The old comment was wrong.** It said the executable derives the name from the scene path. It
+  does not: 004F1D70 fills the table, and it is the host's header pass that did not.
+
+### The binding (under `kSceneStageScriptBound`)
+
+- The header pass fills `record.script_names[8]` from `GameStageScript` / `StageScript`, as the
+  token the scene lexer keeps (the backslashes as written).
+- `finish_scene_load` takes that name verbatim when it is set. The native VFS runtime resolves the
+  path as the game's own does.
+- **Census:** a `mission script name from the scene header: <name> (record+968h; the path
+  derivation answered <old>)` line.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+| row | prediction |
+| --- | --- |
+| USN02 / USN04 `pair_diff` | 1: the header names the file the derivation found; only the path text in the log differs |
+| JM06 9200/9000 | its script loads: `script_calls` above 0, a `luaInit` call and think registrations, and Lua-native rows appear. `pair_diff` 3 |
+| LOMP06 1200/1000 | the same: `luaInitLOMP06` runs, and its `ShipSetTorpedoStock(Narwhal, ...)` at 06_crucial_cargo.lua:110 shows as a native call |
+| "chunk error" lines | none on any run unless a real load or call fails, and then named |
