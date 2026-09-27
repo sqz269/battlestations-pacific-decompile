@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_dive_bomb_carried_rounds",
+  "doc": "docs/RELEASE_ISSUE_STAGE.md",
+  "calls": [
+    {"address": "007C1DCC", "native": "006E3500", "function": "007C1DB0", "note": "per IsKindOf(25h) device: loaded round + ammo +484h"}
+  ],
+  "coverage": [
+    {"routine": "007C1DB0", "coverage": "complete for single racks through the census; multi racks (26h) keep the substitute"}
+  ],
+  "substitutions": [
+    {"what": "the rack's rounds", "is": "VehicleClass[id].Equipments[DefaultEquipment][platform key].Ammo summed over the census's single racks", "evidence": "this installation's scripts/datatables/autoload/vehicleclasses.lua (2026-05-09 21:52): VehicleClass[158] D3A Val Equipments[1][50].Ammo = 1; the equipment-to-006E3530 link is unread; DefaultEquipment assumed"},
+    {"what": "an aircraft with no single rack or no authored Ammo", "is": "kDiveBombCarriedRoundsSubstitute (2)", "evidence": "multi racks unbound"}
+  ],
+  "corrections": [
+    {"was": "a dive bomber carries two rounds (kDiveBombCarriedRoundsSubstitute)", "is": "007C1DB0 returns the racks' rounds: 1 for this installation's D3A until its rack drops", "evidence": "007C1DB0 listing; 006E3500; vehicleclasses.lua VehicleClass[158]"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kDiveBombCarriedRoundsBound", "state": "ON",
+     "pair": "local/CR_OFF_9000.log vs local/CR_ON_9000.log, local/CR_OFF_4500.log vs local/CR_ON_4500.log"}
+  ],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

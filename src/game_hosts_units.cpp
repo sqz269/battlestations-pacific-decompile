@@ -955,6 +955,7 @@ struct GameUnitSlot {
     int rack_gate_refused{0};          // 007CC8E0 / 007C7600 said no
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
     int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
+    int rack_rounds_authored{0};       // packet cc9_dive_bomb_carried_rounds
     int db_bomb_requests_logged{0};    // diagnostic line cap
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
@@ -1908,11 +1909,46 @@ struct GameUnitsHost::Impl {
         return kPilotDiveBombRows[i];
     }
 
+    // VehicleClass[class].Equipments[DefaultEquipment or 1][platform].Ammo, the
+    // authored round count of one platform (the equipment reader 00961F57 stores
+    // Platform, Ammo and ReloadTime per entry). -1 when any level is absent.
+    // ASSUMED: the aircraft carries its DefaultEquipment; a mission that picks
+    // another equipment is not modelled.
+    int read_equipment_ammo(int class_id, int platform_key) {
+        if (platform_key < 0) return -1;
+        char chunk[320];
+        std::snprintf(chunk, sizeof(chunk),
+            "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+            "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
+            "local e = c.Equipments[c.DefaultEquipment or 1]\n"
+            "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
+            "return tonumber(e[%d].Ammo) or -1\n", class_id, platform_key, platform_key);
+        const int top = lua.lua_gettop();
+        int value = -1;
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_equipment_ammo") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            const std::string text = lua.lua_tolstring_at_top();
+            if (!text.empty()) value = std::atoi(text.c_str());
+        }
+        lua.lua_settop(top);
+        return value;
+    }
+
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
     // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
     // count here is the aircraft's bomb platforms, one round each, minus what
     // it has already dropped.
     int dive_bomb_rounds_remaining(GameUnitSlot& slot) {
+        if constexpr (kDiveBombCarriedRoundsBound) {
+            // 007C1DB0 over the census's single racks. An aircraft whose census
+            // found no single rack, or no authored Ammo, keeps the substitute.
+            if (slot.rack_census_done && slot.rack_single_count > 0 &&
+                slot.rack_rounds_authored > 0) {
+                done("Unit::count_remaining_rounds_007c1db0", 0x007c1db0u);
+                return slot.rack_ammo < 0 ? slot.rack_rounds_authored : slot.rack_ammo;
+            }
+        }
         const int dropped = slot.torpedo_drops_spawned;
         const int carried = slot.dive_bomb_task_installed
             ? slot.dive_bomb_rounds_remaining + dropped
@@ -3238,6 +3274,16 @@ struct GameUnitsHost::Impl {
     // dead Vals' requests held by the stage's guard. The live Val's drop has no
     // run-time evidence yet (no mission here has a live Val release).
     static constexpr bool kReleaseIssueStageValsBound = true;
+    // Packet cc9_dive_bomb_carried_rounds, docs/RELEASE_ISSUE_STAGE.md section
+    // "Carried rounds": 007C1DB0 sums 006E3500 (loaded round + ammo +484h) over
+    // the aircraft's IsKindOf(25h) racks. ON: the host's count is the census's
+    // single racks' authored rounds (this installation's
+    // VehicleClass[id].Equipments[DefaultEquipment][platform key].Ammo) until the
+    // issue's first check, then the rack's own ammo, which only the rack drop
+    // spends. OFF: kDiveBombCarriedRoundsSubstitute (2), spent at the request.
+    // ON since the USN04 9000 / 4500 pairs: only the dead Val #1.1|.-4's rows
+    // moved (its two-round glide became one), deaths and hits identical.
+    static constexpr bool kDiveBombCarriedRoundsBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
@@ -8128,7 +8174,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 007C0DE3-007C0DEF: the first rack holding 2Ah that
                                 // is not busy. The host's rack census and ammo.
                                 if (slot_.rack_ammo < 0) {
-                                    slot_.rack_ammo = slot_.rack_single_count;
+                                    slot_.rack_ammo =
+                                        (GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                                         slot_.rack_rounds_authored > 0)
+                                            ? slot_.rack_rounds_authored
+                                            : slot_.rack_single_count;
                                 }
                                 // 007C0DCB vtable[210h](2Ah, 0): a torpedo and a
                                 // general bomb both answer 2Ah. With the Vals
@@ -8191,8 +8241,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         // 006E3500 summed over the racks: the
                                         // host's rack rounds (one per single
                                         // rack until the issue's first check).
-                                        n = u->rack_ammo < 0 ? u->rack_single_count
-                                                             : u->rack_ammo;
+                                        n = u->rack_ammo >= 0 ? u->rack_ammo
+                                            : (GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                                               u->rack_rounds_authored > 0)
+                                                  ? u->rack_rounds_authored
+                                                  : u->rack_single_count;
                                     }
                                 }
                                 rounds.push_back(n);
@@ -8292,8 +8345,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 holds_2ah = bsp::ordnance_has_torpedo_2bh(set);
                                 if (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
                                     !holds_2ah && bsp::ordnance_has_general_bomb_2ah(set)) {
-                                    const int left = u->rack_ammo < 0
-                                        ? u->rack_single_count : u->rack_ammo;
+                                    const int left = u->rack_ammo >= 0 ? u->rack_ammo
+                                        : (GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                                           u->rack_rounds_authored > 0)
+                                              ? u->rack_rounds_authored
+                                              : u->rack_single_count;
                                     holds_2ah = left > 0;
                                 }
                             }
@@ -13340,8 +13396,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 type_id, "BSPGun", key, -1);
                             const std::string type = dev >= 0
                                 ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
-                            if (type == "BombPlatform") ++unit_.rack_single_count;
-                            else if (type == "MultiBombPlatform") ++unit_.rack_multi_count;
+                            if (type == "BombPlatform") {
+                                ++unit_.rack_single_count;
+                                // The platform's authored rounds (packet
+                                // cc9_dive_bomb_carried_rounds). -1 when absent.
+                                std::snprintf(key, sizeof(key), "p%d_key", p);
+                                const int pkey = owner_.lua.read_vehicle_class_integer(
+                                    type_id, "BSPGun", key, -1);
+                                const int ammo = owner_.read_equipment_ammo(type_id, pkey);
+                                if (ammo > 0) unit_.rack_rounds_authored += ammo;
+                            } else if (type == "MultiBombPlatform") {
+                                ++unit_.rack_multi_count;
+                            }
                         }
                     }
 
@@ -17582,11 +17648,11 @@ void GameUnitsHost::report() {
                 // Packet cc9_release_issue_stage_vals: the Val's stage and rack,
                 // printed in both builds so a pair diffs line for line.
                 host.log.notef("  divebomb %-12s rack 006E56F0: single=%d multi=%d "
-                    "deferred=%d drops=%d ammo=%d dropping=%d gate_refused=%d "
+                    "authored=%d deferred=%d drops=%d ammo=%d dropping=%d gate_refused=%d "
                     "| stage 007CE9FD: issues=%d guard_blocked=%d C20h=%d C25h=%d",
                     slot->row.name.c_str(), slot->rack_single_count,
-                    slot->rack_multi_count, slot->rack_requests_deferred,
-                    slot->rack_bomb_drops, slot->rack_ammo,
+                    slot->rack_multi_count, slot->rack_rounds_authored,
+                    slot->rack_requests_deferred, slot->rack_bomb_drops, slot->rack_ammo,
                     slot->rack_dropping ? 1 : 0, slot->rack_gate_refused,
                     slot->torpedo_issue_stage_issues,
                     slot->torpedo_issue_stage_guard_blocked,
