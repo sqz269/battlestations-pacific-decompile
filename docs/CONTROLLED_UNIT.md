@@ -873,6 +873,18 @@ the named risk fired, through the host rather than the image.
   `pending_destroy`/`destroyed` flags) in 009F50E0.
 - With that gate in place, this pair is predicted to be identity. Then flip.
 
+**Superseded: flipped ON (lead ruling 2026-09-27).**
+- cc9-ships2 read the USN02 move (its section in this doc, landed at ce8e85b75). The host already
+  treats a released wreck as the image does.
+- The move is the image's own formation slot-swap rule 0070DB60, which never swaps a group that
+  contains the controlled unit:
+  - OFF, dead Houston stays controlled and group 0 never swaps again;
+  - ON, the release lets it swap between 80 and 240 s, and the followers move.
+- So the move is this binding's consequence, not a host gap.
+- `kControlledUnitObserverBound = true`, with no re-run. The expected rows are the measured ON
+  side: USN02 deaths 22, hit records 650, Alden dead at 336.69 s (Haguro); USN01 and USN04
+  identity.
+
 ## Handoff (cc9-hud2 retires after this commit)
 
 Worker cc9-hud2, 2026-09-27. The branch is `agent/cc9-hud2` and the worktree

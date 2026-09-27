@@ -242,7 +242,7 @@ inline constexpr bool kForceSelectUnitBound = true;
 // vtable 00CF5A84) on the controlled unit, and that unit's destruction notice
 // runs the observer's slot +4h 00644A20: root+1Ch = 0, 004C0890(null) and the
 // cursor (+C2h, +C4h) = (0, -1).
-inline constexpr bool kControlledUnitObserverBound = false;
+inline constexpr bool kControlledUnitObserverBound = true;  // ON: lead ruling, 0070DB60 slot swap (docs/CONTROLLED_UNIT.md)
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 
