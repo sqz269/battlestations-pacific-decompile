@@ -207,6 +207,9 @@ clamp branch decides the answer.
 The member names in `include/bsp/ship_hydro_forces.hpp` are left alone so nothing downstream
 breaks; `include/bsp/ship_buoyancy_elements.hpp` carries accessors with the corrected names.
 
+**Bound (2026-09-27):** the units host builds each ship class's list with this producer and
+uses it for every hull (`kShipBuoyancyElementsBound`, docs/CONSTRUCT_WORLD.md section 28).
+
 ## Follow-up packets
 
 | packet | addresses | question |

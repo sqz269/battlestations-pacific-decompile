@@ -1655,6 +1655,7 @@ Haguro die.
 and the kill, the unlink and the expiry release now run. **Caveat:** the descent's rate comes from
 controller+84h over the host's stand-in element list (capacity = Mass / 3), so the ~97 s descent is
 a property of the stand-in. It will move when the element producer is read.
+**Resolved in section 28:** with the image's list the descent is 106..117 s on USN02.
 
 ## 26. The pending-list push moves to create_units (packet `cc9_units_push_pending`, `kUnitsPendingPushBound`, committed OFF, ON since the pairs)
 
@@ -1901,7 +1902,7 @@ this tree and the final COM release.
 **Verdict: ON.** The moveto toward the carrier is issued as in the image. The AI group's
 `dogfight` replaces it before it changes an intercept on these missions.
 
-## 28. The image's buoyancy element list replaces the stand-in (packet `cc9_buoyancy_elements`, `kShipBuoyancyElementsBound`, committed OFF)
+## 28. The image's buoyancy element list replaces the stand-in (packet `cc9_buoyancy_elements`, `kShipBuoyancyElementsBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units3, on main 5b9a40d70. Ghidra was read only.
 
@@ -2040,3 +2041,67 @@ verdicts on USN02.
 | first moved gameplay row | before the first kill, possibly before the first death: live hulls float differently from t = 0 | anywhere |
 | failure time | 39.65 s ± 2 s (it is scripted; a change means the early engagement moved) | none |
 | pair_diff exit | 3 | 3 (1 only if no live motion reaches a hit or a death) |
+
+### The pairs, measured
+
+One tree, `2a41fc841`. The OFF build is the tree's own `build\`; the ON build is
+`tools/pair_export.py --flip kShipBuoyancyElementsBound=true --out local\bu_on`. Both variables
+were set. The logs are `local\BU_OFF_USN02.log` / `BU_ON_USN02.log` and `BU_OFF_E2.log` /
+`BU_ON_E2.log` in worktree cc9-units3. All four show the fit line, the immediate present
+interval, a module directory in this tree and the final COM release. `tools/pair_diff.py`
+returned exit 3 on both pairs.
+
+Every ship class on both missions built its list from the model: 11 classes on USN02 and 8 on
+E2, with no fallbacks. `sum_coef_draught` equals 10 × Mass exactly on every class line. The PACK3
+row: Kortenaer is class 265 (`models/ships/rn/tribal.mmod`, r = 0.50, Segments 5).
+
+| row | USN02 OFF | USN02 ON | prediction | verdict |
+| --- | ---: | ---: | --- | --- |
+| hulls on the image list / stand-in / fallbacks | 0 / 32 / 0 | 32 / 0 / 0 | 32 / 0 / 0 | held |
+| capacity: DeRuyter, Houston, Exeter | 2562.67, 3867.33, 3450.00 | 9396.44, 9492.55, 10350.00 | 9396, 9492, 10350 | held (exact) |
+| `elements=`: DeRuyter, Houston, Alden | 8, 8, 8 | 10, 8, 10 | 10, 8, 10 | held |
+| time from first +5Dh to −200 m | 91.50..97.95 s (19 wrecks) | 106.25..117.35 s (16 wrecks) | 140..152 s, band 115..200 | **failed**: 13 of 16 below the band, all about 35 s faster than the estimate |
+| water at −200 m (DeRuyter) | 9979 (1.30 × Mass) | 39916 (5.19 × Mass) | not predicted | - |
+| kills, unlinked nodes | 19, 114 | 16, 96 | 13 (9..16) | held at the band's edge |
+| list 6 at the end | 13 | 16 | 19 (16..23) | held at the band's edge |
+| not under by 450 s | Haguro, Jintsu | Encounter, Haguro, Jintsu, Murasame, Harusame | - | - |
+| neighbour `mean_count` | 28.24 | 28.41 | OFF..OFF+4 | held |
+| hydrodynamics `element_steps` | 1,803,096 | 2,232,148 (× 1.24) | × 1.0..1.35 | held |
+| deaths | 21 | 21 (Asagumo survives, John1 dies) | OFF ± 4 | held |
+| hit records, hull hits | 566, 287 | 596 (+5.3 %), 301 | ± 15 % | held |
+| first hit | 35.80 s | 35.65 s | first moved row before any kill | held (moved before the first death) |
+| failure | 39.65 s | 39.65 s | ± 2 s | held |
+| controlled DeRuyter distance | 2082.34 m | 2196.68 m | not predicted | - |
+| pair_diff exit | - | 3 | 3 | held |
+
+| row | E2 OFF | E2 ON | prediction | verdict |
+| --- | ---: | ---: | --- | --- |
+| hulls on the image list / stand-in / fallbacks | 0 / 18 / 0 | 18 / 0 / 0 | 18 / 0 / 0 | held |
+| hydrodynamics `element_steps` | 1,296,000 | 1,674,000 (× 1.29) | × 1.1..1.6 | held |
+| deaths | 52 | 51 | 52 ± 6 | held |
+| hit records, hull hits | 875, 345 | 894 (+2.2 %), 320 | ± 12 % | held |
+| shots | 6092 | 7454 | not predicted | - |
+| torpedo-task / dive-bomb-task releases | 4 of 16 / 1 of 19 | 7 of 16 / 3 of 19 | not predicted | - |
+| controlled Lexington distance | 6017.22 m | 5819.94 m | not predicted | - |
+| neighbour `mean_count` | 18.00 | 18.00 | unchanged | held |
+| first hit | 93.00 s | 93.00 s | - | - |
+| pair_diff exit | - | 3 | 3 | held |
+
+**Why the descent estimate failed.** The model assumed that after neutral the wreck follows the
+stand-in's curve, because the net buoyant acceleration matches. But the hydrodynamic drag is a
+force scaled by class Mass / count (`00933018`) and divided by the total mass Mass + water
+(`00932B72`). A real-list wreck carries 3 to 5 times its mass in water by the time it goes under,
+against 1.3 times for the stand-in. So its drag deceleration is several times weaker, and it falls
+faster once its deck line is under. The capacity and the inflow (2 × cap, DeRuyter 376 per
+second) are as predicted.
+
+**What moved on E2 without a death.** No ship dies on E2, so the change is live flotation only.
+Hulls now roll on their elements at ±Width/2 and trim along their deck and keel lines. The shots
+the ships fire, the AA hits on the raids and the aircraft releases all moved. The release counts
+are aircraft task outcomes on a changed AA screen, not a buoyancy effect of their own. The first
+hit is identical (93.00 s).
+
+**Verdict: ON.** Every hull floats on and sinks by the element list the image builds from its
+own model and class row. The capacity is exactly the closed form, with no fallback on either
+mission. The descent of section 25 is now 106..117 s from first +5Dh to −200 m on USN02, not
+91..98 s. The caveat in section 25 is resolved by this section.
