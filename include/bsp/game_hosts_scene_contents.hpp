@@ -313,6 +313,8 @@ inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] =
 // A host stand-in for the native Path (210h bytes, vtable 00CE6290) or
 // Landscape (430h bytes, vtable 00CEA090) entity. The comments give the native
 // field each member stands for; this is not the native layout.
+struct SceneTerrainHeightField;
+
 struct SceneWorldObject {
     int class_id{-1};                // +C4h
     std::string name;                // +154h (length) / +158h (buffer)
@@ -343,7 +345,91 @@ struct SceneWorldObject {
     bool heightmap_resolved{false};
     bool colormap_resolved{false};
     bool model_resolved{false};
+
+    // Packet cc9_landscape_terrain: the terrain object +3D0h, when
+    // kSceneLandscapeTerrainBound loaded it. Null otherwise.
+    std::shared_ptr<const SceneTerrainHeightField> terrain;
 };
+
+// ---------------------------------------------------------------------------
+// Packet cc9_landscape_terrain. docs/SCENE_CONTENTS_HOSTS.md section 6.
+//
+// The Landscape's terrain object (+3D0h, class vtable 00D5D350, built by
+// 00ADD290) and the four world queries over list 44h: 00903860 ground height,
+// 009038F0 ground normal, 009039D0 the Landscape under a point and 00903BC0
+// the segment test. The terrain is the `.tdt` height field 00ADDA60 parses
+// (both arms of 00882AC0's branch at 00882EE6 reach it: 00883A7D directly and
+// 00ADE820 -> 00ADE500 -> 00ADDA60).
+//
+// True loads each Landscape's height field at the pass-A point and answers the
+// queries below. No consumer calls them: the 30 native call sites of 00903860
+// and the others stay in their owners' files (see the doc's contracts), so the
+// switch is committed false with the prediction that no measured row moves.
+inline constexpr bool kSceneLandscapeTerrainBound = false;
+
+// One 33x33 sample block of a `NODE` tile (00ADFD70: 00ADC420(21h, 21h), block
+// vtable 00D5D314, 2 bytes per sample). 00ADC6C0 reads `offset` (+2Ch) and
+// `scale` (+30h) and stores 1/scale at +34h; 00ADC5F0 answers a sample as
+// -1000.0 [00D7A240] for FFFFh, else float(s * inv_scale + offset).
+struct SceneTerrainBlock {
+    float offset{0.0f};
+    float inv_scale{0.0f};
+    std::array<std::uint16_t, 33 * 33> samples{};
+};
+
+// The terrain object's height field. Values are the native's:
+//   +18h tile world size 300.0 [00CE3AE8] and +1Ch cell size 9.375 [00D0E658]
+//   (00AE9870); the tile grid +38h x +3Ch with its block pointers at +40h
+//   (00ADADC0, from the root's two dwords); the origin +80h / +84h, which
+//   00ADDA60 sets for a `TRNV2` root to floor(min / 300 - 1) * 300 of the box
+//   00ADA420 accumulates at +68h / +70h (0 for any other root name).
+struct SceneTerrainHeightField {
+    std::string root;               // `TRNV2` on this installation's islands
+    int tiles_wide{0};              // +38h
+    int tiles_deep{0};              // +3Ch
+    std::vector<int> block_index;   // +40h: tiles_wide*tz + tx -> blocks, or -1
+    std::vector<SceneTerrainBlock> blocks;
+    float origin_x{0.0f};           // +80h
+    float origin_z{0.0f};           // +84h
+    float box_min_x{0.0f};          // +68h (see the doc: the model's BoundingBox)
+    float box_min_z{0.0f};          // +70h
+    // The terrain node +2Ch's world translation (+120h / +124h / +128h),
+    // which 00ADE820 sets from the Landscape's +74h frame.
+    float node_x{0.0f};
+    float node_y{0.0f};
+    float node_z{0.0f};
+
+    // Terrain slot 20h, 00ADB3A0: the height of sample (i, j), node y added;
+    // -1000.0 outside [0, tiles*32] or in a missing tile or a hole.
+    float cell_height_00adb3a0(int i, int j) const noexcept;
+    // Terrain slot 28h, 00ADA900 -> slot 48h 00ADB480: bilinear height at a
+    // world (x, z).
+    float height_00ada900(float x, float z) const noexcept;
+    // Terrain slot 38h, 00ADABA0 -> slot 30h 00ADAA40: the unit normal of the
+    // cell the world (x, z) truncates to.
+    void normal_00adaba0(float x, float z, float out[3]) const noexcept;
+};
+
+// The four world queries, over scene_world_class_lists().list(44h) in list
+// order. All return what the native returns; `landscape` is an index into
+// scene_world_class_lists().objects(), or -1.
+bool world_ground_height_00903860(const float point[3], float& out) noexcept;
+bool world_ground_normal_009038f0(const float point[3], float normal[3]) noexcept;
+int world_landscape_at_009039d0(const float point[3]) noexcept;
+// LABELLED STAND-IN for the per-terrain sweep (slot 3Ch 00ADA240 -> the
+// quadtree ray walk 00AEA2B0 / 00AE9D80 and the vertical case 00AECC40, not
+// reconstructed): the segment is marched in half-cell steps against
+// height_00ada900. The two endpoint ground tests are the native's.
+bool world_segment_blocked_00903bc0(const float from[3], const float to[3]) noexcept;
+
+struct SceneTerrainQueryCensus {
+    unsigned long long height_calls{0}, height_hits{0}, height_fallbacks{0};
+    unsigned long long normal_calls{0}, normal_hits{0};
+    unsigned long long landscape_calls{0}, landscape_hits{0};
+    unsigned long long segment_calls{0}, segment_endpoint_blocks{0};
+    unsigned long long segment_sweep_blocks{0};
+};
+SceneTerrainQueryCensus& scene_terrain_query_census() noexcept;
 
 // The world's per-class entity lists (world+18h + class*0Ch, 97 heads built by
 // 004CB030) for the two classes this packet creates, appended in creation

@@ -1,0 +1,86 @@
+{
+  "packet": "cc9_landscape_terrain",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md",
+  "calls": [
+    {"address": "00883058", "native": "00ADE820", "function": "00882AC0", "note": "model arm: terrain in ECX, model instance, extents, &landscape+74h"},
+    {"address": "00883A7D", "native": "00ADDA60", "function": "00882AC0", "note": "no-model arm: the .tdt parse directly"},
+    {"address": "00882E0F", "native": "00ADD290", "function": "00882AC0", "note": "the terrain object +3D0h"},
+    {"address": "00ADDC45", "native": "00ADADC0", "function": "00ADDA60", "note": "tile grid from the root's two dwords"},
+    {"address": "00ADDCF8", "native": "00ADFEB0", "function": "00ADDA60", "note": "per NODE: its chunks"},
+    {"address": "00ADDB50", "native": "00425850", "function": "00ADDA60", "note": "root tag == TRNV2 selects the origin arm"},
+    {"address": "00ADDB8C", "native": "00BF85B0", "function": "00ADDA60", "note": "floor for +80h"},
+    {"address": "00903BD8", "native": "00903860", "function": "00903BC0", "note": "endpoint 1 ground test"},
+    {"address": "00903C08", "native": "00903860", "function": "00903BC0", "note": "endpoint 2 ground test"},
+    {"address": "0090389E", "native": "00D5D350+vtable28", "function": "00903860", "note": "terrain height per list-44h node"},
+    {"address": "00903C39", "native": "00D5D350+vtable3C", "function": "00903BC0", "note": "terrain segment per node (stand-in in the host)"},
+    {"address": "00ADAB3E", "native": "004F9B30", "function": "00ADAA40", "note": "cross(P2-P0, P1-P0)"},
+    {"address": "00ADAB47", "native": "00419440", "function": "00ADAA40", "note": "length"},
+    {"address": "0099FA2C", "native": "00903860", "note": "consumer: AvoidTerrain 0099F1C0, game_hosts_units.cpp"},
+    {"address": "009D16D1", "native": "00903860", "note": "consumer: torpedo aim tick"},
+    {"address": "007AC244", "native": "009038F0", "note": "consumer: 007AC000, fixed_step_callbacks.cpp"},
+    {"address": "004B2131", "native": "009039D0", "note": "consumer: 004B2030, no host reference"},
+    {"address": "009D39D3", "native": "00903BC0", "note": "consumer: torpedo approach 009D3420"}
+  ],
+  "coverage": [
+    {"routine": "00903860", "coverage": "complete"},
+    {"routine": "009038F0", "coverage": "complete"},
+    {"routine": "009039D0", "coverage": "complete"},
+    {"routine": "00903BC0", "coverage": "complete (the per-node slot 3Ch is a labelled stand-in)"},
+    {"routine": "00ADDA60", "coverage": "partial: root, NODE and U16 paths and the origin; the F32/U8 arms and the quadtree build 00AEA900/00AEA820 unread"},
+    {"routine": "00ADB3A0", "coverage": "complete"},
+    {"routine": "00ADA900", "coverage": "complete"},
+    {"routine": "00ADB480", "coverage": "complete"},
+    {"routine": "00ADABA0", "coverage": "complete"},
+    {"routine": "00ADAA40", "coverage": "complete"},
+    {"routine": "00ADA890", "coverage": "complete"},
+    {"routine": "00ADC5F0", "coverage": "complete"},
+    {"routine": "00ADC6C0", "coverage": "complete"},
+    {"routine": "00ADA240", "coverage": "partial: transform and dispatch read; 00AEA2B0 / 00AE9D80 / 00AECC40 not reconstructed"},
+    {"routine": "00ADE820", "coverage": "partial: the node build, its frame and the 00ADE500 call"},
+    {"routine": "00ADE500", "coverage": "partial: the box walk and the 00ADDA60 call"}
+  ],
+  "substitutions": [
+    {"what": "+68h/+70h, the box 00ADA420 accumulates over the terrain node tree", "is": "the island model's BoundingBox (read_mmod_bounding_box)", "evidence": "m07_a: origin (-900,-1200) makes 11x12 tiles span the box exactly; the self-check puts authored objects on the ground"},
+    {"what": "slot 3Ch quadtree segment walk", "is": "a half-cell march against the height", "evidence": "00AEA2B0 / 00AE9D80 / 00AECC40 not reconstructed"},
+    {"what": "80-bit intermediates", "is": "double", "evidence": "the sample s*inv+offset, the grid subtraction chain and the length's sum; every FSTP kept as a float store"},
+    {"what": "the terrain node's world translation", "is": "the Landscape object's composed world frame", "evidence": "00ADE820 vt+38h(landscape+74h); USN01's Landscapes are top-level, so local = world"}
+  ],
+  "corrections": [
+    {"was": "009038F0 BSP_World_GroundHeightAndNormalAt (section 5)", "is": "BSP_World_GroundNormalAt: it writes only the normal (arg 2) and AL", "evidence": "0090399D..009039B1 store three floats to [arg2]; no store of the height"},
+    {"was": "the no-terrain ground height stand-in 0.0 (game_hosts_units.cpp)", "is": "-1000.0 with AL = 0", "evidence": "00903876 stores [00D7A240] = -1000.0f; 009038C2 FUCOMIP against [00CE6658] = -1000.0"}
+  ],
+  "switches": [
+    {"name": "kSceneLandscapeTerrainBound", "state": "OFF", "pair": "pending"}
+  ],
+  "failed_predictions": [],
+  "no_ghidra_function": [
+    {"start": "00ADB3A0", "end_inclusive": "00ADB475", "evidence": "terrain vtable 00D5D350 slot 20h; RET 8 at 00ADB473, INT3 from 00ADB476"},
+    {"start": "00ADA890", "end_inclusive": "00ADA8FF", "evidence": "slot 44h; RET 18h at 00ADA8FD; 00ADA900 is FUN_00ada900"},
+    {"start": "00ADAC50", "end_inclusive": "00ADAC64", "evidence": "slot 10h; RET at 00ADAC64, INT3 from 00ADAC65"},
+    {"start": "00ADAC70", "end_inclusive": "00ADAC84", "evidence": "slot 14h; RET at 00ADAC84, INT3 from 00ADAC85"},
+    {"start": "00ADC5F0", "end_inclusive": "00ADC637", "evidence": "U16 block vtable 00D5D314 slot 8h; RET 0Ch at 00ADC635, INT3 from 00ADC638"}
+  ],
+  "ledger_names_added": [
+    {"address": "00ADD290", "name": "BSP_TerrainHeightField_Construct"},
+    {"address": "00ADDA60", "name": "BSP_TerrainHeightField_LoadTdt"},
+    {"address": "00ADB3A0", "name": "BSP_TerrainHeightField_CellHeight"},
+    {"address": "00ADA900", "name": "BSP_TerrainHeightField_HeightAt"},
+    {"address": "00ADB480", "name": "BSP_TerrainHeightField_SampleBilinear"},
+    {"address": "00ADABA0", "name": "BSP_TerrainHeightField_NormalAt"},
+    {"address": "00ADAA40", "name": "BSP_TerrainHeightField_CellNormal"},
+    {"address": "00ADA890", "name": "BSP_TerrainHeightField_SplitIndex"},
+    {"address": "00ADAC50", "name": "BSP_TerrainHeightField_SamplesWide"},
+    {"address": "00ADAC70", "name": "BSP_TerrainHeightField_SamplesDeep"},
+    {"address": "00ADC5F0", "name": "BSP_TerrainBlockU16_Sample"},
+    {"address": "00ADC6C0", "name": "BSP_TerrainBlockU16_Read"},
+    {"address": "00ADFD70", "name": "BSP_TerrainTile_ReadU16Block"},
+    {"address": "00ADFEB0", "name": "BSP_TerrainTile_ReadChunks"},
+    {"address": "00ADADC0", "name": "BSP_TerrainGrid_Resize"},
+    {"address": "00ADA240", "name": "BSP_TerrainHeightField_SegmentHit"},
+    {"address": "00AEA2B0", "name": "BSP_TerrainQuadtree_RayWalk"},
+    {"address": "00ADE820", "name": "BSP_TerrainHeightField_AttachModel"},
+    {"address": "00ADE500", "name": "BSP_TerrainHeightField_LoadForModel"},
+    {"address": "00ADA420", "name": "BSP_Node_AccumulateModelBox"},
+    {"address": "009038F0", "name": "BSP_World_GroundNormalAt (replaces BSP_World_GroundHeightAndNormalAt)"}
+  ]
+}
