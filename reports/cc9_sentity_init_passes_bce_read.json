@@ -1,0 +1,31 @@
+{
+  "packet": "cc9_sentity_init_passes_bce_read",
+  "doc": "docs/SENTITY_INIT_PASSES.md",
+  "switch": "none (docs only)",
+  "calls": [
+    {"address": "007F218E", "native": "009292B0", "function": "007F1FE0", "kind": "call", "host": "missing: squadron pass B BindLuaClass (contract, src/game_hosts_lua.cpp)"},
+    {"address": "007F2114", "native": "007F1D90", "function": "007F1FE0", "kind": "call", "host": "missing: squadron avoid-zone layers (contract, src/game_hosts_units.cpp)"},
+    {"address": "0081FD6E", "native": "0080DA00", "function": "0081F980", "kind": "call", "host": "missing: ship immediate rudder (contract, src/game_hosts_units.cpp)"},
+    {"address": "008201B8", "native": "0081F8B0", "function": "0081F980", "kind": "call", "host": "missing: ship torpedo stock (contract, src/game_hosts_units.cpp)"},
+    {"address": "00823A9F", "native": "007214C0", "function": "00822C20", "kind": "call", "host": "missing: weapon director enable message (contract, src/game_hosts_gunnery.cpp)"},
+    {"address": "007F4E9E", "native": "0077D600", "function": "007F4BA0", "kind": "call", "host": "squadron pass C initial command; host issue path elsewhere (contract: unread)"},
+    {"address": "00929687", "native": "0088A330", "function": "009295B0", "kind": "call", "host": "missing: default pass C think-script name (contract, src/game_hosts_scene_contents.cpp)"},
+    {"address": "006E2694", "native": "0077EED0", "function": "006E2670", "kind": "call", "host": "bombs are entities in the image; not in this host (contract)"}
+  ],
+  "routines": [
+    {"address": "00822C20", "coverage": "partial: call list matched against the host native table"},
+    {"address": "0081F980", "coverage": "partial: call list matched against the host native table"},
+    {"address": "007593D0", "coverage": "partial: call list"},
+    {"address": "00758210", "coverage": "complete"},
+    {"address": "007F1FE0", "coverage": "partial: call list"},
+    {"address": "007F4BA0", "coverage": "partial: call list and 007F4BA0..007F4CA1"},
+    {"address": "007D5D20", "coverage": "partial: call list"},
+    {"address": "007C9770", "coverage": "complete"},
+    {"address": "009295B0", "coverage": "partial: call list"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "docs only",
+  "pairs": {}
+}
