@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
@@ -187,8 +188,14 @@ int binding_trampoline(lua_State* state) {
     // argument 0 as a boolean (008B88EF) into 00905340 on [game+21A0h].
     const bool scoring_play_time_row
         = kBotSchedulerWritersBound && dispatch_row.address == 0x008b87f0u;
+    // Packet cc9_set_selected_unit: SetSelectedUnit 008AB260 hands argument 0
+    // to 00647300 on the HUD root (docs/CONTROLLED_UNIT.md). Switch in
+    // bsp/game_hosts_hud.hpp, committed OFF.
+    const bool select_unit_row
+        = bsp::game::kSetSelectedUnitBound && dispatch_row.address == 0x008ab260u;
     const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
+        || select_unit_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -282,6 +289,19 @@ int binding_trampoline(lua_State* state) {
         // diagnostic string or native SEH construction is claimed here.
         if (!host->error_replay())
             host->set_avoid_all_ship_collision_008d0852(lua_toboolean(state, 1) != 0);
+        return 0;
+    }
+    if (select_unit_row) {
+        // 008AB260: BSP_ObjectHandle_FromLuaTable(argument 0), then 00647300.
+        // The entity table's `ID` names the created unit, as the objective rows
+        // resolve it. The native returns its result count, 0 here (no push).
+        if (!host->error_replay()) {
+            std::size_t unit = 0;
+            bool reached = false;
+            if (objective_argument_unit(state, 0, unit)) {
+                bsp::game::hud_set_selected_unit_00647300(unit, reached);
+            }
+        }
         return 0;
     }
     if (scoring_play_time_row) {
