@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/gameplay_settings.hpp"
@@ -1023,6 +1024,13 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_segment_casts{0};
     unsigned long long seat_segment_hits{0};
     unsigned long long seat_segment_aims{0};
+    // Packet cc9_unit_death_route.
+    unsigned long long death_route_calls{0};
+    unsigned long long death_route_reported{0};
+    unsigned long long death_route_child_triggers{0};
+    unsigned long long loss_reports[2]{0, 0};        // by side, 009813A0's own guard passed
+    unsigned long long loss_report_calls{0};         // every 009813A0 call
+    unsigned long long limbo_pages{0};
     void apply_gun_aim_message(std::size_t unit, const GunAimMessage79& message);
     // ShipGlobals.AAGunnerErrorModifier.CalcTargetPosTimeAddFix / AddMul, the
     // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
@@ -6792,6 +6800,51 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         ++unit_state[target.last_attacker - 1].row.kill_credits;
     }
 
+    if constexpr (kUnitDeathRouteBound) {
+        // 00959450 BSP_Unit_OnDestroyed, reached from 00825271 (OnWrecked) for
+        // a ship and 007BCAD9 (Plane_OnDestroyed) for a plane.
+        // SUBSTITUTIONS: unit+70h is 1 (every gunnery kill is a harm death,
+        // docs/KILL_CREDIT.md); world+4ACh is 1 (set at the construct_world
+        // load step and never cleared in this host, docs/CONSTRUCT_WORLD.md
+        // section 9); the controller flags +C41h / +100Ah are not held here,
+        // so the loss report is never skipped.
+        bsp::UnitDeathInputs death{};
+        death.mission_clock = clock_seconds;
+        death.unit_party_70 = 1;
+        death.world_gate_4ac = true;
+        death.is_controlled_unit = units.controlled_bound() && units.controlled_index() == victim;
+        const bsp::UnitDeathDecision decision = bsp::unit_death_00959450(death);
+        done("Death::unit_on_destroyed_00959450", 0x00959450u);
+        ++death_route_calls;
+        if (decision.reports_alternate) {
+            ++death_route_reported;
+            // 009594A0..009594BB: the +48h/+44h children of kind 20h take
+            // vt[1E8h](0), the trigger off; here the unit's guns.
+            for (GameGunRow& gun : guns) {
+                if (gun.unit_index != victim) continue;
+                gun.seat_trigger = false;
+                ++death_route_child_triggers;
+            }
+            done("Death::child_trigger_off_vtable1e8", 0x009594bbu);
+        }
+        if (decision.reports_kill) {
+            // 009813A0 on [00F8A0C4]; its own guard is side < 2 and IsKindOf
+            // 18h or 6. The body (009813A0..00982110) builds the radio loss
+            // report and is not reconstructed.
+            record("WarningManager::report_loss_009813a0", 0x009813a0u);
+            ++loss_report_calls;
+            if (target.row.side >= 0 && target.row.side < 2
+                && units.unit_is_kind_of(victim, bsp::kUnitGunneryKindShipBase)) {
+                ++loss_reports[target.row.side];
+            }
+        }
+        if (decision.registers_limbo_page) {
+            record("LimboScreen::take_unit_00565fb0", 0x00565fb0u);
+            ++limbo_pages;
+        }
+        if (!decision.reports_alternate) return;   // 0091BDA0 runs only when reported
+    }
+
     struct KillBinding final : bsp::KillCreditHost {
         explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
         int session_mode() override { return 0; }
@@ -7659,6 +7712,12 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
+            "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
+            "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route)",
+            host.death_route_calls, host.death_route_reported, host.death_route_child_triggers,
+            host.loss_report_calls, host.loss_reports[0], host.loss_reports[1], host.limbo_pages,
+            kUnitDeathRouteBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat segment casts=%llu hits=%llu "
             "aims=%llu bound=%d (00957DA0, packet cc9_player_gun_seat_segment_query)",
             host.seat_segment_casts, host.seat_segment_hits, host.seat_segment_aims,

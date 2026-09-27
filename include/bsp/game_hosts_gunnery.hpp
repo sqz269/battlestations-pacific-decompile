@@ -241,6 +241,16 @@ inline constexpr bool kPlayerGunSeatBound = true;
 // terrain in it). ON: the USN02 and E2 pairs held (docs/PLAYER_GUN_SEAT.md 6.4).
 inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
 
+// Packet cc9_unit_death_route, docs/UNIT_DEATH_ROUTE.md. True: a sunk or
+// wrecked unit goes through 00959450 BSP_Unit_OnDestroyed's model
+// (bsp::unit_death_00959450) after the sink: the report gate (clock > 1.0,
+// KillReason 1, world+4ACh), the kind-20h children's vt[1E8h](0), the loss
+// report 009813A0 (a named record: the warning manager has no entry for it),
+// the kill credit 0091BDA0 when the gate passes, and the limbo page 00565FB0
+// for the controlled unit (a named record). False: the sink goes straight to
+// the kill credit. ON: the USN02 and E2 pairs held (docs/UNIT_DEATH_ROUTE.md s4).
+inline constexpr bool kUnitDeathRouteBound = true;
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),
