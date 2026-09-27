@@ -5311,8 +5311,9 @@ float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
     if constexpr (kAvoidZoneLayerSampleBound) {
         done("AvoidZoneLayer::sample_0041bc20", 0x0041bc20u);
         return layer_h;
+    } else {
+        return sea_h;
     }
-    return sea_h;
 }
 
 // 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
