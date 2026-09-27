@@ -880,3 +880,56 @@ Both missions move through the ratings alone. 00863920 now answers from the gunn
 
 - Section 9's recomputation (`torpedo_group_accepts_target_00863920` in the ship AI host) is dead
   code on the ON path. It can be removed with the switch once this lands.
+
+## 9a. 00A11B80, CLOSEATTACK's and DEFENDPOSITION's middle call: the transports' landing approach (packet `cc9_ai_group_transport_moves`, a read)
+
+Worker cc9-ships2, on main `b8b7c6ec8`. Ghidra was read-only. No code changed.
+
+### The read
+
+`00A11B80` is `__thiscall(command)(group other)`. Its callers are 00A15490 (the CLOSEATTACK tick),
+00A15500 (the DEFENDPOSITION tick) and 00A15570. It walks the command's own group (`[cmd+4h]+563Ch`,
+the list at `+5640h`). For each member that answers `IsKindOf(6)` and whose class answers
+`vtable[2Ch]()`:
+
+- **The class test** is `00827FB0`, the same slot in every ship class vtable (00D1ACF8, 00D1AD38,
+  00D1ADBC, 00D1ADF8, 00D1AE38, 00D1AE78, 00D1AEBC). **No Ghidra function:** 00827FB0..00827FC6,
+  `RET` at 00827FC6 and INT3 from 00827FC7. It answers `class+78Ch != 0 && class+790h != 0`: a
+  `LandingShip` class pointer and a nonzero `LandingShipAmount` (docs/SHIP_CLASS_FIELDS.md), so a
+  troop transport.
+- **`member->vtable[234h](0)`** is 008128E0. It is false unless:
+  - the class test holds;
+  - `+1124h` is not above 0;
+  - `006F2C30(2, &member)` (with no argument; a landing site near the member) answers;
+  - `006F2A50(0)` answers.
+
+  Neither 006F2C30 nor 006F2A50 is read.
+- **When it is false**, the first such member fixes an anchor:
+  - with no `other`, the nearest entity of another party in the world list
+    `[[00E188A8]+19CCh]+16Ch`, within the active tuning's `+1F4h`, measured from the group's first
+    member (or the zero vector 00F87574);
+  - with `other`, that group's first member answering `IsKindOf(1Ch)`.
+
+  Every member then farther than `0.75` (00CEC9D8) times `anchor+7A0h` from the anchor gets
+  `00A02020 BSP_AiCommand_IssueMoveToMember(member, anchor position)`.
+- **When it is true**, session message 94h is routed for the member (the landing launch).
+
+### Reach in this installation
+
+Only two classes carry landing craft (`LandingShipAmount > 0`): VehicleClass[224], IJN Troop
+Transport, and [234], US Troop Transport. The reference missions' AI groups on this base
+(`local\dm_on_usn0{1,2,4}.log`) reach neither:
+
+| mission | CLOSEATTACK / DEFENDPOSITION groups | transports in them |
+| --- | --- | --- |
+| USN02 | the Allied group (7, leader Houston) | none: USN02 has no troop transport |
+| USN04 | Lexington's two groups (18 ships; 12 planes) | none: its transports (`TroopTransJ_light`) are Japanese, and the Japanese party runs no AI brain |
+| USN01 | the group led by "Storage, 05 01" (8) | none: structures, and no member answers `IsKindOf(6)` with the class test |
+
+So `00A11B80` issues no move and no 94h message on any reference run, and binding it cannot move
+USN01, USN02 or USN04.
+
+**Closed as a read.** A binding would rest on the unread 006F2C30 / 006F2A50, the landing-craft
+machinery and message 94h, which this host does not model, and no mission the harness runs would
+measure it. It belongs to a later landing-operations packet with a mission whose AI group holds a
+troop transport.

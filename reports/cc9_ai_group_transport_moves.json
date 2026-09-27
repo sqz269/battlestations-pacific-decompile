@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_ai_group_transport_moves",
+  "doc": "docs/SENTITY_INIT_PASSES.md section 9a",
+  "calls": [],
+  "switches": [],
+  "no_ghidra_function": [
+    {
+      "start": "00827FB0",
+      "end": "00827FC6",
+      "note": "ship class vtable +2Ch: LandingShip (+78Ch) and LandingShipAmount (+790h) both set; RET at 00827FC6, INT3 from 00827FC7"
+    }
+  ],
+  "names_added": [],
+  "substitutions": [],
+  "failed_predictions": []
+}
