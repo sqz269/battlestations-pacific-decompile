@@ -46,6 +46,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
@@ -288,8 +289,13 @@ struct GameScriptTimerSummary {
 // While true, the MT_COMMAND issues (0077D600) that callback's bindings make
 // are queued and applied, in post order, by the next
 // GameFixedStepHost::pump_session_00778450. GenerateObject and
-// SetSelectedUnit are not session orders and stay direct.
-inline constexpr bool kAfterRow9OrderQueueBound = false;
+// SetSelectedUnit are not session orders and stay direct. The receiver side a
+// binding does after issuing (the bot task install, the squadron fan-out, the
+// path pair) runs on delivery through DeferredOrder::after_apply (packet
+// cc9_after_row9_continuation, section 22.8). ON by the verdict of section
+// 22.9: USN01 applied 7 with 6 continuations and identical gameplay; USN04 and
+// USN02 identical with no census.
+inline constexpr bool kAfterRow9OrderQueueBound = true;
 // The pump's loopback drain: applies the queued orders of the one live host.
 // Returns the number applied.
 std::size_t script_orders_drain_loopback_0076c600();
@@ -681,10 +687,25 @@ private:
         std::string source;
         std::string target_name;
         std::string poster;
+        // Packet cc9_after_row9_continuation (docs/SENTITY_INIT_ATTACH_ORDER.md
+        // 22.7): what the host does on the order's delivery, run right after the
+        // drain applies it. The image's receiver side (the bot's task install in
+        // 0099ACD0 behind +7Ch, the squadron fan-out 007ECF80, the path pair
+        // 0071C1B0 at 00721ADB) follows the delivery, so a deferred order carries
+        // it with it.
+        std::function<void()> after_apply;
     };
     std::vector<DeferredOrder> deferred_orders_;
     std::vector<std::pair<std::string, unsigned long long>> deferred_by_poster_;
     unsigned long long deferred_applied_{0};
+    unsigned long long deferred_continuations_{0};
+    // True when the last entity_issue_command queued its order.
+    bool last_issue_deferred_{false};
+    // The queued order's source while its continuation runs at the drain.
+    std::string delivery_source_;
+    // Runs `fn` now when the last order was applied directly, or attaches it to
+    // that queued order so the drain runs it on delivery.
+    void after_order_delivery(std::function<void()> fn);
     void apply_issued_order(std::size_t index, std::uint32_t command_object,
         const bsp::SceneCommandTarget& target, int flags, const std::string& source,
         const std::string& target_name);
