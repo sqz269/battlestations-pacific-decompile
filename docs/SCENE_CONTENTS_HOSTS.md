@@ -1107,6 +1107,83 @@ with the unit count and one shape per unit.
 - **Band:** unknown until the per-consumer counters exist. On the current base these are 583
   shots, 150 hit records and 7 deaths.
 
+### What each consumer does with a land hit (read, 2026-09-27)
+
+0098ADD0 has 15 rel32 callers plus one tail-jump from 009043A0. 009043A0 has five callers. The
+four the packet names:
+
+**The pick screen, 009043A0 at 00526C4A (00526A40 `BSP_HudUnitPickScreen_PickUnit`).**
+- A land hit leaves `record+0` = the Landscape, so 00526C62 does not take the no-hit exit.
+- The hit-section block (00526C80) needs kind 6, so it is skipped.
+- The seven `vtable[5Ch]` tests at 00526D1A..00526D84 ask for 6, 0Fh, 45h, 46h, 1Bh, 35h and
+  then 1Eh. A Landscape answers only 44h, 1, 0 and its own class (004F1360), so every test fails.
+- 00526D88 jumps to 00526DAF: the pick is zeroed, and execution falls into 00526DB7, **the
+  lock-radius walk**, the same path a miss takes.
+- **So a land hit gives no pick and does not block the radius walk.**
+- **But the land is still an occluder.** 0098ADD0 keeps the nearest hit and shortens `to` to it,
+  so a ship behind the island on the camera's line loses its ray pick and is only reachable by the
+  radius walk.
+
+**The player gun seat, 0098ADD0 at 00957DA0 (00957BD0), `docs/PLAYER_GUN_SEAT.md` 6.1.**
+- The test at 00957DA5..00957DD2 is AL set and the hit's y above 0.0 [00D7A218]. **It does not
+  look at the hit entity.** When the test passes, the land point becomes the aim point and the
+  code jumps to 009580AE, past the range sphere and the sea cut.
+- **So the seat aims at the island's surface** where the camera ray meets it above sea level. A
+  land hit at y <= 0 falls through to the range-sphere point, like a miss.
+
+**The gunnery line of fire, 0072CDD0 `BSP_LineOfFirePredicate_Blocked`, 0098ADD0 at 0072CE91.**
+- The second half of the predicate (`docs/SHIP_PLATFORM_ATTACHMENT.md`: "or when the
+  static-geometry query hits") is this call.
+- The target point is clamped to y >= 5.0 [00CE3850] (0072CE62..0072CE76). 0042E630 gives the
+  index.
+- The call is `0098ADD0(from = EBX, to, exclude 0, record = ESI+4, kind filter **44h**)`: pushes
+  0072CE81..0072CE8E.
+- AL set jumps to 0072CEE5, `MOV AL,1` / `RET 10h`: **blocked**. Otherwise it goes on to the
+  friendly-unit walk 0098B130 (0072CE9A).
+- **So the only thing the static half can hit is a Landscape** (the kind filter is 44h). A gun
+  whose line to its target crosses an island refuses the target, and 0072F6E0 caches the answer
+  per (gun, target).
+- The host models only the friendly-unit half (`src/game_hosts_gunnery.cpp` line 154: "the
+  static-geometry half (spatial query, flags 44h) is not modelled").
+
+**The projectile, 0098B370 `BSP_SpatialIndex_SweepSegments` at 0084C1D3 (0084BF00).**
+- The entity sweep reaches the Landscape as a loose entity, so a shell's segment that crosses an
+  island hits it: an entity hit, mode 1.
+- **0084BC60** refines it to **mode 3** at 0084BC99..0084BCA1 (`vtable[5Ch](44h)`), then:
+  - teleports the shell to the hit point (0084BCD4);
+  - takes the effect switch with the terrain slot `d+38h` (0084B8C0 / 0084B6F0, the point effect
+    on `[game+19ECh]`);
+  - **kills the shell** (0084BE00);
+  - queues the hit record with the Landscape as its subject (00926E80 at 0084BE20);
+  - runs the class's explosion when `classDesc+6Ch` is set (0084BE32 -> 0084BAD0), so the blast
+    radius can still reach a unit next to the impact.
+- **The dispatcher 009239A0**, draining that record:
+  - step 4 (00923A2C): the Landscape passes 44h, so `entity->vtable[24h]` = **0087F9A0** runs when
+    `source+CCh >= 0`. It calls `[+3D0h]` vt+40h, the terrain's render geometry, and 007407C0 on
+    `+168h` (section 5's slot 24h body), which reads as a terrain mark;
+  - step 5 (00923A70): `vtable[ECh]` on a Landscape is 0042BAF0 `BSP_Entity_HitNotHandledStub`,
+    and a top-level island has no `+3Ch` parent, so no hit handler accepts it.
+- **So a shell that meets land stops there.** It makes the terrain effect and mark and deals
+  only its blast, and it never reaches a target behind the island.
+
+**What the binding must add, per consumer, when the gunnery file is free.**
+- **The pick:** nothing beyond the entry. The query's nearest-hit shortening already makes the
+  island an occluder, and the no-pick path is the miss path.
+- **The seat:** nothing: it uses the point.
+- **The line of fire:** the static half, a kind-44h query from the gun's point to the target
+  raised to at least 5 m, blocked on any Landscape hit. This is the change that moves shots.
+- **The projectile trace:** the Landscape entry in the host's shell sweep, with the mode-3
+  outcome. The shell ends at the island, with the terrain effect and its blast, and no hit
+  record reaches a unit.
+
+**Predictions revised with this read (USN01; USN04 stays identity, no Landscape).**
+- **Shots:** down or equal. Forts on Landscape 03 and ships firing across it lose targets behind
+  the island to the refusal.
+- **Hit records:** down or equal. Shells that would pass through land now end on it.
+- **Deaths:** down or equal.
+- **Band:** none until the counters of the hunk exist: static refusals, shells ended on land,
+  and pick and seat land hits.
+
 ## Ledger names recorded
 
 | Address | Name |
