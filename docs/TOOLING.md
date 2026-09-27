@@ -71,6 +71,8 @@ Each item is masked (or, for the one native row, its count ignored) before anyth
 | avoidance-refills | `refills=` on `ship avoidance search:` | differs between identical runs of one binary (257 against 265, 2026-09-22) |
 | sector-scan-clip-arc-zones | the `ShipAiSectorScan::clip_arc_zones_00415970` native row: its count, and its presence | differs between identical JM08 runs of one binary (3200/3000, streams on, lockstep 0.05): 12,000 calls in `LSH_OFF_JM08.log`, no row at all in `LSH_OFF2_JM08.log` (worktree cc9-init2), with gameplay, death rows and unit table identical; 6,000 and 12,000 on two ON runs. A row with no calls is not printed, so presence is noise too |
 | sector-scan-zone-segment-crossing | the `ShipAiSectorScan::zone_segment_crossing_004158e0` native row: count and presence | moves with the row above: 6,000 then absent on the same OFF pair, 3,000 and 6,000 on the ON runs |
+| clearance-static-zone-blocks | the `ShipAiClearance::static_zone_blocks_009d57e0` native row: count and presence | across seven JM08 runs of identical binaries (worktree cc9-init2) it has 3 calls in `QN_ON_JM08.log` and `WS_OFF_JM08.log` and no row in `LSH_OFF/OFF2/ON/ON2_JM08.log` and `WS_ON_JM08.log`, independent of any switch, with gameplay identical in every pair (docs/SENTITY_INIT_ATTACH_ORDER.md section 20.4) |
+| clearance-static-zone-clearance | the `ShipAiClearance::static_zone_clearance_00415d70` native row: count and presence | comes and goes with the row above, 3 calls when present, on the same runs |
 | pretranslate-count | calls of the `PlatformLoopCallbacks::pretranslate` native row | window messages (focus, paint) depend on the desktop; printed as `(noise)` |
 
 ### Validation

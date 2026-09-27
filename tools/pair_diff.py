@@ -120,6 +120,18 @@ NOISE = [
         "name": "ShipAiSectorScan::zone_segment_crossing",
     },
     {
+        "id": "clearance-static-zone-blocks",
+        "why": "ShipAiClearance::static_zone_blocks_009d57e0 (3 calls) is present or absent across seven JM08 runs of identical binaries, independent of any switch (docs/SENTITY_INIT_ATTACH_ORDER.md 20.4); count and presence ignored",
+        "kind": "native-calls",
+        "name": "ShipAiClearance::static_zone_blocks",
+    },
+    {
+        "id": "clearance-static-zone-clearance",
+        "why": "ShipAiClearance::static_zone_clearance_00415d70 (3 calls) comes and goes with static_zone_blocks on the same JM08 runs; count and presence ignored",
+        "kind": "native-calls",
+        "name": "ShipAiClearance::static_zone_clearance",
+    },
+    {
         "id": "pretranslate-count",
         "why": "PlatformLoopCallbacks::pretranslate counts window messages (focus, paint), which depend on the desktop",
         "kind": "native-calls",
