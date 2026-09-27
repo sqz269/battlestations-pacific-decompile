@@ -230,11 +230,11 @@ inline constexpr bool kSetSelectedUnitBound = true;
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
 
 // Packet cc9_force_select_unit (docs/CONTROLLED_UNIT.md, "ForceSelectUnit"),
-// committed OFF with predictions. While true: the Lua host routes
+// committed OFF (39e587a19), ON by the identity pairs. While true: the Lua host routes
 // ForceSelectUnit 008AAF30 to 006485A0 on the HUD root, and screen 44h's enter
 // 006488D0 runs its 00648290 rebuild of the root's unit vectors (+8Ch, +9Ch)
 // and cursor (+C2h/+C4h). While false the native and the enter stay records.
-inline constexpr bool kForceSelectUnitBound = false;
+inline constexpr bool kForceSelectUnitBound = true;
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 
