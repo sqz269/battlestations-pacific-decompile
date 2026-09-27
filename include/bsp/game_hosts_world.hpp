@@ -63,7 +63,7 @@ inline constexpr bool kLocalPlayerUnitListRuleBound = true;
 inline constexpr int kLocalPlayerParty = 0;
 
 // Packet cc9_initial_controlled_unit (docs/CONTROLLED_UNIT.md, "The initial
-// controlled unit"), committed OFF with predictions. Scene load step 19
+// controlled unit"), committed OFF (71457582b), ON at the load-time pairs. Scene load step 19
 // (004E0565..004E05B7, single player included): 008073C0 on the local slot,
 // game+193Ch = 0, 004C3CB0, then 006485A0 ForceSelectUnit, which controls
 // +8Ch at the cursor. True: the mission frame no longer makes the first
@@ -71,7 +71,7 @@ inline constexpr int kLocalPlayerParty = 0;
 // the first 004C3CB0 build over a published own triple. False: the first
 // created unit through 004C0890. Needs kLocalPlayerUnitListRuleBound and
 // kForceSelectUnitBound.
-inline constexpr bool kInitialControlledUnitBound = false;
+inline constexpr bool kInitialControlledUnitBound = true;
 
 // The eight lists the last 004c3cb0 body built ([00E188A8]+1964h..+19B8h, a
 // field of the process-wide game object); nullptr before the first build or

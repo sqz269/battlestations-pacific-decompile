@@ -688,3 +688,33 @@ at a3a03908f):
     1095 -> about 1169. The exact rows may differ from a3a03908f's, because the first tick now
     sees Alden controlled.
   - Judged on the per-entity tables and the player-seat rows.
+
+**Pairs and verdict (load-time fix).** The same tree at e8ed6b35c, switch only, with streams ON,
+`BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player. Export `local\ic_on`.
+
+| pair | `pair_diff` | initial controlled unit (006485A0 at load, before hud update frame 0) | result |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | exit 1 | **Dunlap** (`+8Ch` 7 units); `SetSelectedUnit` moves control to Northampton at 20.1 s | gameplay, 7 death rows and 28 unit rows identical; seat messages 2,801 -> 2,961 |
+| USN04 4700/4500 | exit 1 | **Fletcher-class01** (`+8Ch` 18 units); `SetSelectedUnit(Lex)` at 25 s | gameplay, 44 death rows and 81 unit rows identical; seat messages and casts 8,157 -> 7,997 |
+| USN02 9200/9000 | exit 1 | **Kortenaer** (`+8Ch` 14 units); `SetSelectedUnit(Houston)` | gameplay, 21 death rows and 32 unit rows identical |
+
+**Predictions.**
+- **Held:** gameplay identity on USN01 and USN04, USN01's seat messages (2,961), the script
+  selections landing, and USN04 no longer moving. The t = 0.05 swap is gone, because a unit is
+  controlled before the first tick.
+- **Failed:** every initial unit name, and USN02's move.
+  - At load the scripts have not yet run `SetRoleAvailable`, so every own ship's role word is
+    open. The frame-1 44h rebuild is also no guide, because it ran after the scripts. `+8Ch` then
+    holds every selectable own unit that leads no selectable leader, and the cursor takes the
+    first of the local party's own triple.
+  - That order is the gunnery host's publication order, "scanned classes in bucket order", a
+    host stand-in for the native slot list. So the name the image picks is not established.
+  - USN02 does not move: Kortenaer, controlled until Houston, changes no combat row. The a3a03908f
+    move came from Alden being controlled from the first tick after an uncontrolled load window.
+    That window is gone.
+
+**Verdict: ON** (`kInitialControlledUnitBound = true`).
+- The image's step 19 now runs at the load site before the first tick, and gameplay is identical
+  on all three pairs.
+- The first unit's identity rests on the host's own-triple order and on role words that are open
+  at load. Both are recorded here as uncertain.
