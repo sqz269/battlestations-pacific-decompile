@@ -195,10 +195,11 @@ private:
     std::unique_ptr<Impl> impl_;
 };
 
-// Packet cc9_set_selected_unit, committed OFF. While true the Lua host routes
+// Packet cc9_set_selected_unit, committed OFF (0aac5988c) and set ON by the
+// verdict of the USN01 and USN04 pairs (docs/CONTROLLED_UNIT.md). While true the Lua host routes
 // SetSelectedUnit 008AB260 to GameHudHost::set_selected_unit_00647300 through
 // the slot below; while false the native stays the UNIMPLEMENTED record.
-inline constexpr bool kSetSelectedUnitBound = false;
+inline constexpr bool kSetSelectedUnitBound = true;
 
 // The image reaches the HUD root through the global manager [00E198C4]+40h.
 // The Lua host holds no HUD pointer, so the HUD host publishes itself here

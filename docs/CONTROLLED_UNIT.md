@@ -320,4 +320,41 @@ either routine before this packet.
 
 ### Pairs and verdict
 
-(filled after the runs)
+**Setup.** The same tree at 0aac5988c, switch only. Binaries are `local\bin\ss_off` and
+`local\bin\ss_on`, both runs had `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, and every
+log shows the harness override lines and its own module directory.
+
+| row | USN01 OFF | USN01 ON | USN04 OFF | USN04 ON |
+| --- | --- | --- | --- | --- |
+| `pair_diff` exit | | 3 (controlled row only) | | 1 |
+| deaths / hit records / damage / shots | 7 / 150 / 2690.0 / 583 | same | 43 / 788 / 11917.1 / 5075 | same |
+| death rows, plane death modes, unit table | | identical | | identical |
+| controlled unit | Airfield2 | Northampton | Lexington-class01 | same |
+| `SetSelectedUnit` | UNIMPLEMENTED 2 | concrete, accepted 1 | UNIMPLEMENTED 1 | concrete, accepted 1 |
+| `UnitPickScreen::camera_basis` UNIMPLEMENTED | 6,160 | 805 | 3 | 3 |
+| pick casts / land hits | 5,999 / 0 | 5,999 / 0 | | |
+| `owner_140` | 0 | 0 | | |
+| `ControlledUnit::set_controlled_unit` | 1 | 2 | 1 | 3 |
+| player role takes / releases | 0 / 0 | 4 / 4 | 3 / 0 | 5 / 2 |
+
+**USN01 ON, from the log:**
+- `SetSelectedUnit 00647300: "Northampton" accepted` appears at t = 20.1 s.
+- It is followed by `applied as 25h` with the eleven screens, and by `ShipCaptain mover bound to
+  "Northampton"`.
+- `unit pick: first camera basis ... at hud update frame 403: from=(6300.0,37.8,-3377.3)
+  forward=(0.0000,-0.1736,0.9848)`, a pitch of -10 degrees behind the bow.
+- The second call, `"ScoutDauntless" rejected ... kind0F=1`, lands at about t = 100 s.
+- `landscape attach traces` falls from 6,401 to 1,207. The zero-length ray at the origin sat
+  inside a landscape's box, while the real rays miss every landscape box.
+
+**Failed or unpredicted:**
+- `owner_140` stayed 0 where I expected nonzero. The ray pitches 10 degrees down from about
+  37.8 above the water, so it enters the sea about 214 units ahead. The formation follows behind
+  Northampton, and nothing lies in front of it in that range.
+- On USN04, `released_previous=1` was not predicted. The Lexington is kind 6, so step 1's release
+  runs even when the unit is re-selected.
+- On USN04 the role takes and releases rose by 2 each, from the weapon-group rebind.
+- Every other prediction held.
+
+**Verdict: ON.** Gameplay is identical on both missions, and every change is the binding's own
+row. `kSetSelectedUnitBound` is set true in the verdict commit.
