@@ -1,0 +1,52 @@
+{
+ "packet": "cc9_set_selected_unit_records",
+ "worker": "agent/cc9-hud2",
+ "kind": "read, no binding",
+ "doc": "docs/CONTROLLED_UNIT.md, section \"SetSelectedUnit's records\"",
+ "steps": [
+  {
+   "address": "00645622",
+   "native": "00817380",
+   "function": "00645600",
+   "what": "effect-group scalars; display-only"
+  },
+  {
+   "address": "0064562d",
+   "native": "0080e290",
+   "function": "00645600",
+   "what": "turning guns to rest; subsumed by the host gun bot"
+  },
+  {
+   "address": "00645699",
+   "native": "006952a0",
+   "function": "00645600",
+   "what": "root observer unregister"
+  },
+  {
+   "address": "006456b9",
+   "native": "00954990",
+   "function": "00645600",
+   "what": "engine/gun audio mix; display-only"
+  },
+  {
+   "address": "006456d3",
+   "native": "00694a60",
+   "function": "00645600",
+   "what": "root observer register; its slot +4h 00644A20 clears the controlled unit on destruction (blocked)"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "00644a20",
+   "end_inclusive": "00644a50",
+   "evidence": "root observer vtable 00CF5A84 slot +4h; RET 4 at 00644A4E..00644A50, INT3 after; calls 004C0890(null) at 00644A38 when the notice is for [00E188D8]"
+  },
+  {
+   "start": "0081c830",
+   "end_inclusive": "0081c938",
+   "evidence": "reader of unit+1008h at 0081C8CF; INT3 before 0081C830 (0081C821..0081C82F), RET 8 at 0081C936..0081C938, INT3 after; linear bound"
+  }
+ ],
+ "names_added": {},
+ "blocked": "the root observer binding needs a units-host clear of the controlled unit; game_hosts_units files leased to cc9-ships2"
+}
