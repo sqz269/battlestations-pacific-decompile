@@ -2649,7 +2649,9 @@ bool frame_inverse_point(const float m[16], const float p[3], double out[3]) noe
 // The two differ only on the 5 of 763 authored Landscape frames that are not
 // orthonormal (section 13.3). ASSUMPTION, labelled: the node's world matrix +F0h
 // is the authored localframe as the host composes it.
-constexpr bool kLandscapeScaledTransposeInverseBound = false;
+// ON since the USN13 / USN01 / USN04 / USN02 pairs: gameplay identical; Landscape
+// 07's census row moved as predicted (section 13.5).
+constexpr bool kLandscapeScaledTransposeInverseBound = true;
 
 bool frame_inverse_point_00b63b30(const float m[16], const float p[3], double out[3]) noexcept {
     bsp::CameraMatrix frame{};

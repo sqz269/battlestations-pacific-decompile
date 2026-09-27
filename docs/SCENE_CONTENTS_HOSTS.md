@@ -1949,3 +1949,43 @@ The load self-check gains one line per Landscape: `scene terrain rotation census
 - **USN01 3200/3000.** No frame is sheared, so everything is identical, including picks 5357/22
   and walks 5564/22. `pair_diff` exit 0.
 - **USN04 4700/4500 and USN02 9200/9000** have no Landscape: `pair_diff` exit 0.
+
+### 13.5 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\inv_off`, a build of 49f44fcff. ON is `pair_export` of 49f44fcff
+  with the switch flipped (SHA-256 06F975244F58). Both variables were set, lockstep 0.05, idle
+  player. Logs: `local\INV_{OFF,ON}_{USN13,USN01,USN04,USN02}.log` in worktree cc9-terrain2.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN13 Landscape 07 segment land / both | 90 / 3 | 54 / 8 | 0..60 / < 20 | held |
+| USN13 Landscape 07 mean / worst dy on both | 36.7 / 96.3 m | 68.5 / 161.9 m | - | - |
+| USN13 Landscape 11 counts | 87 / 89 / 4 | identical | identical | held |
+| USN13 Landscape 11 mean / worst dy | 68.588 / 118.746 | 68.601 / 118.732 | identical | **failed** (cm level) |
+| USN13 other ten census rows | | identical | identical | held |
+| USN13 00903BC0 calls / blocks; land hits in play | 13968 / 0; all 0 | identical | identical | held |
+| USN13 deaths, hits, shots | 34, 204, 2551 | identical | identical | held |
+| USN13 `pair_diff` | | exit 1 (the two census lines) | exit 1 | held |
+| USN01 Landscape 05 (91.5) mean / worst dy | | moved at the cm level, counts identical | identical | **failed** (cm level) |
+| USN01 picks 5357/22, walks, deaths 7, hits 150 | | identical | identical | held |
+| USN01 `pair_diff` | | exit 1 (that one census line) | exit 0 | **failed** |
+| USN04, USN02 `pair_diff` | | exit 0 | exit 0 | held |
+
+- **The failed prediction.** I expected the scaled transpose to equal the inverse to about 1e-7
+  for the 91.5-degree frames. Those frames are authored to four decimals (`0.9995`, `0.0195`...),
+  so their rows are off unit length and off orthogonal by about 1e-4. The two inverses therefore
+  differ by about 1e-4 of the distance from the node. That moves the hit heights of the census's
+  3000 m traces by centimetres, and no count.
+- **Landscape 07** now answers the image's sheared island: 54 land points on the drawn footprint
+  instead of 90, and 8 of them agree with the height query instead of 3.
+
+**Verdict: ON.** Gameplay, death rows and unit tables are identical on all four missions. The
+only moved lines are the switch's own census rows. Nothing in play touches land on these missions,
+so no gameplay row measures the change yet.
+
+### 13.6 Open
+
+- Whether the scene loader re-orthonormalises `localframe` before it becomes the node's world
+  matrix (the 13.3 assumption).
+- The vertical case 00AECC40 transforms again through the same inverse. The host's stand-in
+  already takes the local points from the switched inverse.
