@@ -61,8 +61,10 @@ inline constexpr bool kSEntityInitAllBound = true;
 // (the saved-game `_savedata._entities` data), so that step is not taken on a
 // fresh mission start, and no node this process pushes uses 009295B0.
 // False: pass A's attach writes `Class` (the stand-in for 009292B0's third
-// field), and no `ClassID`, `Name` or `SquadronID` is written.
-inline constexpr bool kSEntityInitThisTableStepsBound = false;
+// field), and no `ClassID`, `Name` or `SquadronID` is written. ON by the
+// verdict: the USN04, E2 and USN02 pairs moved only the predicted rows
+// (docs/SENTITY_INIT_ATTACH_ORDER.md section 6).
+inline constexpr bool kSEntityInitThisTableStepsBound = true;
 
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.

@@ -1,7 +1,7 @@
 {
   "packet": "cc9_init_attach_order",
   "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md",
-  "switch": "kSEntityInitThisTableStepsBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "switch": "kSEntityInitThisTableStepsBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 19c9c6998, set ON by the verdict",
   "calls": [
     {
       "address": "007F218E",
@@ -68,12 +68,30 @@
     }
   ],
   "routines": [
-    {"address": "009292B0", "coverage": "complete (existing reconstruction src/native_unit_class_lua.cpp); host projection writes ClassID, Name, Class"},
-    {"address": "007F1FE0", "coverage": "partial: 007F1FE0..007F21A3 (kind gate and the 009292B0 call's arguments); 007F21A3..end unread here"},
-    {"address": "007C9770", "coverage": "complete read; bound: the SquadronID store only"},
-    {"address": "009295B0", "coverage": "partial: the kind gate, the kind-3 arm's reads, the else call 009297E4; kind-3 arm stores beyond +1DCh/+1E0h unread"},
-    {"address": "00928100", "coverage": "complete read; not bound"},
-    {"address": "009238A0", "coverage": "complete read; not bound"}
+    {
+      "address": "009292B0",
+      "coverage": "complete (existing reconstruction src/native_unit_class_lua.cpp); host projection writes ClassID, Name, Class"
+    },
+    {
+      "address": "007F1FE0",
+      "coverage": "partial: 007F1FE0..007F21A3 (kind gate and the 009292B0 call's arguments); 007F21A3..end unread here"
+    },
+    {
+      "address": "007C9770",
+      "coverage": "complete read; bound: the SquadronID store only"
+    },
+    {
+      "address": "009295B0",
+      "coverage": "partial: the kind gate, the kind-3 arm's reads, the else call 009297E4; kind-3 arm stores beyond +1DCh/+1E0h unread"
+    },
+    {
+      "address": "00928100",
+      "coverage": "complete read; not bound"
+    },
+    {
+      "address": "009238A0",
+      "coverage": "complete read; not bound"
+    }
   ],
   "corrections": [
     {
@@ -89,10 +107,85 @@
   ],
   "no_ghidra_function": [],
   "names": [
-    {"address": "009295B0", "name": "SEntity_DefaultInitSlotA4"},
-    {"address": "00928100", "name": "SEntity_MirrorIdentityToThisTable"},
-    {"address": "009238A0", "name": "SEntity_GetSavedEntityLuaData"}
+    {
+      "address": "009295B0",
+      "name": "SEntity_DefaultInitSlotA4"
+    },
+    {
+      "address": "00928100",
+      "name": "SEntity_MirrorIdentityToThisTable"
+    },
+    {
+      "address": "009238A0",
+      "name": "SEntity_GetSavedEntityLuaData"
+    }
   ],
-  "verdict": "pending",
-  "pairs": {}
+  "verdict": "ON: all three pairs moved only the predicted rows (2 native rows and the steps summary line); gameplay, death rows, plane death modes and unit tables identical",
+  "pairs": {
+    "binaries": "local/bin/ao_off, local/bin/ao_on (one tree, 19c9c6998, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "off": "local/ao_off_usn04.log",
+      "on": "local/ao_on_usn04.log",
+      "class_bound": [
+        0,
+        60
+      ],
+      "squadron_ids": [
+        0,
+        40
+      ],
+      "deaths": [
+        43,
+        43
+      ],
+      "hit_records": [
+        788,
+        788
+      ],
+      "pair_diff_exit": 1
+    },
+    "e2_usn04_9200_9000": {
+      "off": "local/ao_off_e2.log",
+      "on": "local/ao_on_e2.log",
+      "class_bound": [
+        0,
+        60
+      ],
+      "squadron_ids": [
+        0,
+        40
+      ],
+      "deaths": [
+        52,
+        52
+      ],
+      "hit_records": [
+        875,
+        875
+      ],
+      "pair_diff_exit": 1
+    },
+    "usn02_9200_9000": {
+      "off": "local/ao_off_usn02.log",
+      "on": "local/ao_on_usn02.log",
+      "class_bound": [
+        0,
+        4
+      ],
+      "squadron_ids": [
+        0,
+        0
+      ],
+      "deaths": [
+        20,
+        20
+      ],
+      "hit_records": [
+        329,
+        329
+      ],
+      "pair_diff_exit": 1
+    }
+  }
 }

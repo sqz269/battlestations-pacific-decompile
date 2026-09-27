@@ -173,4 +173,44 @@ Ghidra functions (`ghidra proto --brief`).
 
 ## 6. Pairs and verdict
 
-(Filled in after the runs.)
+**The runs.**
+- **Binaries.** Both were built from one tree at 19c9c6998 and differ only by the switch:
+  `local\bin\ao_off` (committed OFF) and `local\bin\ao_on` (flipped locally, then reverted).
+- **Settings.** `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were set for every run,
+  launched through `tools/run_game.ps1`.
+- **Log checks.** All six logs have the fit line, the immediate present interval and the final
+  COM release. Each module directory is under `local\bin\ao_*` in this tree.
+
+| row | USN04 OFF | USN04 ON | E2 OFF | E2 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| native table rows | 1,591 | 1,593 | 1,591 | 1,593 | 1,498 | 1,499 |
+| `pass B bind_lua_class` 009292b0 | - | concrete 60 | - | concrete 60 | - | concrete 4 |
+| `pass C plane squadron_id` 007c97e3 | - | concrete 40 | - | concrete 40 | - | - |
+| `class_bound` / `squadron_ids` / `think_names` | 0 / 0 / 0 | 60 / 40 / 0 | 0 / 0 / 0 | 60 / 40 / 0 | 0 / 0 / 0 | 4 / 0 / 0 |
+| InitAll calls / with work / entities | 4,512 / 12 / 60 | identical | 9,012 / 12 / 60 | identical | 9,008 / 4 / 4 | identical |
+| deaths, hit records | 43, 788 | identical | 52, 875 | identical | 20, 329 | identical |
+| torpedo / dive-bomb task releases | 4 of 16 / 1 of 19 | identical | 4 of 16 / 1 of 19 | identical | - | - |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 52, 52, 81 | identical | 20, 0, 32 | identical |
+
+**What `tools/pair_diff.py` reports.** It exits 1 on all three pairs: every gameplay and
+per-entity row is identical. The clock offset is +0.00 s. In each pair, the only other changes
+are the added native rows above and the one summary line. The masked multiset of other lines
+shows 0 lines only OFF and 0 only ON. So every script-call and think-pass summary line is
+identical, and no think script runs that did not run before. The USN04 gameplay section:
+
+```
+GAMEPLAY: identical
+  deaths 43 / 43; hit records 788 / 788; hull hits 331 / 331; damage 11917.1 / 11917.1
+  shots 5075 / 5075; first hit 93.00 s / 93.00 s; torpedo-task releases 4 of 16 / 4 of 16
+  dive-bomb-task releases 1 of 19 / 1 of 19; torpedo drops 1 / 1; plane water contacts 16 / 16
+  controlled moved Lexington-class01 3514.72 / 3514.72; units 81 / 81
+DEATH ROWS: identical (43 rows)   PLANE DEATH MODES: identical (43 rows)   UNIT TABLE: identical (81 rows)
+```
+
+**Every prediction held.**
+
+**Also seen.** USN02 ends at 39.65 s with `Mission.EndMission` "Game Over" on both sides. This
+switch does not cause it: the OFF run shows the same end. The world-init worker's USN02 pair at
+70b4afc41 recorded 22 deaths and 439 hits, so the control has moved since that tree.
+
+**Verdict: ON.** `kSEntityInitThisTableStepsBound` is set true.
