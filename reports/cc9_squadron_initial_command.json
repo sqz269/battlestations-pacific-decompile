@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_squadron_initial_command",
+  "doc": "docs/CONSTRUCT_WORLD.md",
+  "calls": [
+    {"address": "007F4E0C", "native": "0071BE40", "function": "007F4BA0", "note": "current command of the squadron controller +348h"},
+    {"address": "007F4E50", "native": "00465080", "function": "007F4BA0", "note": "object descriptor for the home base"},
+    {"address": "007F4E87", "native": "007EF8F0", "function": "007F4BA0", "note": "stop point from the squadron position, unread"},
+    {"address": "007F4E9E", "native": "0077D600", "function": "007F4BA0", "note": "issue on the squadron, flags 1"}
+  ],
+  "coverage": [
+    {"routine": "007F4BA0", "coverage": "partial: 007F4E06..007F4EA3 bound"}
+  ],
+  "substitutions": [
+    {"what": "squadron controller +348h current command", "is": "the leader's director", "where": "GameUnitsHost::on_squadron_pass_c_initial_command"},
+    {"what": "007EF8F0 / 00468560 stop point", "is": "the leader's position", "where": "same"},
+    {"what": "home base +404h", "is": "the air-ops deck owner whose slot launched the squadron; scene HomeBase keys not read", "where": "same"}
+  ],
+  "corrections": [
+    {"was": "the stop is at the first member's position (docs/CONSTRUCT_WORLD.md section 27, first read)", "is": "at the squadron's own position +FCh", "evidence": "007F4E75 LEA ECX,[ESI+0FCh] with ESI the squadron"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kSquadronInitialCommandBound", "state": "OFF", "pair": "pending"}
+  ],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

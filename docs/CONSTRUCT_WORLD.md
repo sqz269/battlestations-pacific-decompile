@@ -1859,3 +1859,27 @@ pass C call landed by cc9-init-passes in both builds):
 | deaths, hit records | 43 ± 3, 788 ± 8 %: a 1.5 s heading change on 12 fighters shifts their intercepts | 52 ± 3, 875 ± 8 % | identical |
 | torpedo-task and dive-bomb-task releases | unchanged ± 1 | unchanged ± 1 | - |
 | pair_diff exit | 3 if an intercept moves, else 1 | same | 1 |
+
+### The initial command, bound (packet `cc9_squadron_initial_command`, `kSquadronInitialCommandBound`, committed OFF)
+
+`GameUnitsHost::on_squadron_pass_c_initial_command`, called by the Lua host's squadron pass C
+(27ab3a4b4), does the following:
+- **The test:** it returns when the leader's director has a current command.
+- **The stop arm:** a squadron whose first member's +900h is 6 gets a `stop` at the leader's
+  position.
+- **The moveto arm:** otherwise, a squadron with an air-ops home base gets a `moveto` toward it.
+  The home base is found by searching the decks for the slot whose `launched_squadron` is this
+  squadron's id.
+- **The orders:** each arm issues one `issue_script_command` per live member, flags 1, source
+  `squadron_pass_c`.
+- **The census:** a `squadron initial command ...` note per order and a summary line.
+
+**SUBSTITUTIONS, labelled:**
+- The leader's director stands in for the squadron controller +348h.
+- The stop's point is the leader's position, because `007EF8F0` and `00468560` are unread.
+- The only home base the host knows is an air-ops launch's. A scene row's `HomeBase` key is not
+  read. No reference row fills it.
+
+**Predictions:** the table under "The initial command, read for step 2" above. Also
+`skipped_current` + `no_home` = 16 on both USN04 pairs: the 16 SpawnNew squadrons, split by
+whether their route issued an authored command before pass C. It is 0 both ways on USN02.
