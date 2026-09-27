@@ -250,3 +250,26 @@ streams on and the death table on.
 | followers' speed blend and station keeping | they move: the wake's yaw rate changes from the steering rate to the ordered rudder's curve value | they move |
 | deaths, hit records | aircraft deaths 45..57, hit records 780..900, no ship sinks | deaths 18..26, hit records 380..500, the failure between 30 and 60 s |
 | rows identical | the plane-only rows until a moved ship changes a plane's world | every row before the first follower speed read |
+
+### 8a, the pairs measured
+
+The logs are `local\MT_OFF_USN02.log` / `MT_ON_USN02.log` and `MT_OFF_USN04.log` /
+`MT_ON_USN04.log` in worktree cc9-plane-release, from `a2ea7fe6e` with the switch only, streams
+and death table on. All four show the 1600x900 line, a module directory in that tree and the
+final COM release.
+
+| row | USN02 9000 OFF -> ON | USN04 9000 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `ShipMotion::tail` | absent -> concrete 285,540 | absent -> concrete 162,000 | the motion-tick count | held |
+| `UnitWake::append_sample` | 285,540 on both | 162,000 on both | unchanged | held |
+| `Formacio.UpdateInterval` | 10.000 | 10.000 | 10.000 | held |
+| `0070DB60` record calls | 46 | 46 | at most 138 / 92 | held. One group leader lives the whole run in each mission (1 + 450 s / 10 s = 46) |
+| `0077A650` | absent | absent | absent | held |
+| the mission end | failed at 39.65 s on both | none on both | 30..60 s / - | held |
+| deaths | 22 -> 22. The first four are identical to 51.65 s; the first moved is Kortenaer at 70.25 -> 70.30 s; one victim changes (Amatsukaze survives, Jupiter dies at 283.40 s) | 51 -> 52. The first moved is D3A #1.1\|.-3 at 93.70 -> 93.65 s; the extra victim is the Lexington CAP's `sqn01\|.-2`; no ship sinks on either side | 18..26 / 45..57 | held |
+| hit records | 439 -> 411 | 843 -> 875 | 380..500 / 780..900 | held |
+| other rows | follower paths move from the first follower speed read, so most later ship and gunnery lines move | same | they move | held |
+
+**Verdict: `kShipMotionTailBound` ON.** The wake now carries the image's yaw rate, from the
+ordered rudder through `00811890`. The followers' speed blend reads it, and every moved row stays
+inside its band.

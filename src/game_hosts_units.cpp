@@ -3412,7 +3412,8 @@ struct GameUnitsHost::Impl {
     // instead of the provisional steering rate, and runs the leader's
     // unit+1158h timer (Formacio.UpdateInterval) whose expiry calls 0070DB60,
     // a record until kFormationSlotSwapBound. OFF: the old wake block.
-    static constexpr bool kShipMotionTailBound = false;
+    // ON since the USN02 / USN04 9000 pairs: every moved row inside its band.
+    static constexpr bool kShipMotionTailBound = true;
     unsigned long long tail_slot_swap_calls = 0;
     unsigned long long tail_expiry_calls = 0;
     float formacio_update_interval = -1.0f;   // -1 until read
