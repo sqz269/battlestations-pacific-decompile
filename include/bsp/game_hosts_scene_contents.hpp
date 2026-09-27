@@ -486,6 +486,9 @@ struct SceneTerrainQueryCensus {
     unsigned long long landscape_calls{0}, landscape_hits{0};
     unsigned long long segment_calls{0}, segment_endpoint_blocks{0};
     unsigned long long segment_sweep_blocks{0};
+    // Packet cc9_terrain_segment_consumers: Landscape entries 00903C20..00903C42
+    // asked through slot 3Ch, over the run (the load summary prints before play).
+    unsigned long long segment_sweep_entries{0};
 };
 
 // Packet cc9_terrain_segment_quadtree: slot 3Ch calls by path, over the run.
