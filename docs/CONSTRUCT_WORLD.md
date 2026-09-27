@@ -1860,7 +1860,7 @@ pass C call landed by cc9-init-passes in both builds):
 | torpedo-task and dive-bomb-task releases | unchanged ± 1 | unchanged ± 1 | - |
 | pair_diff exit | 3 if an intercept moves, else 1 | same | 1 |
 
-### The initial command, bound (packet `cc9_squadron_initial_command`, `kSquadronInitialCommandBound`, committed OFF)
+### The initial command, bound (packet `cc9_squadron_initial_command`, `kSquadronInitialCommandBound`, committed OFF, ON since the pairs)
 
 `GameUnitsHost::on_squadron_pass_c_initial_command`, called by the Lua host's squadron pass C
 (27ab3a4b4), does the following:
@@ -1883,3 +1883,20 @@ pass C call landed by cc9-init-passes in both builds):
 **Predictions:** the table under "The initial command, read for step 2" above. Also
 `skipped_current` + `no_home` = 16 on both USN04 pairs: the 16 SpawnNew squadrons, split by
 whether their route issued an authored command before pass C. It is 0 both ways on USN02.
+
+**The pairs, measured.** The binaries are `local\ic_off` and `local\ic_on` from `19c45d4a0`, the
+switch only, both variables set. The logs are `local\IC_{OFF,ON}_{USN04,E2,USN02}.log` in worktree
+cc9-units2. Every log shows the fit line, the immediate present interval, a module directory in
+this tree and the final COM release.
+
+| row | USN04 4700/4500 | E2 9200/9000 | USN02 9200/9000 | prediction | verdict |
+| --- | --- | --- | --- | --- | --- |
+| movetos / member orders / stops | 0 -> 4 / 12 / 0 (Lex sqn01, Town sqn02, Lex sqn03, Town sqn04, each toward its own carrier) | the same | 0 | 4 / 12 / 0; USN02 none | held |
+| `skipped_current` / `no_home` | 0 / 16 | 0 / 16 | 0 / 0 | sum 16 | held |
+| deaths, hit records | 43, 788 both | 52, 875 both | 21, 566 both | ± 3, ± 8 % | held (identical) |
+| releases | 4 of 16, 1 of 19 both | identical | - | ± 1 | held |
+| natives | the order route rows + 12 | + 12, and `initial_command_007f4e9e` 4 | unchanged | - | - |
+| pair_diff exit | 1 | 1 | 1 | 1 or 3 | held |
+
+**Verdict: ON.** The moveto toward the carrier is issued as in the image. The AI group's
+`dogfight` replaces it before it changes an intercept on these missions.

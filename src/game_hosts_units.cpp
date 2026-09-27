@@ -3713,7 +3713,9 @@ struct GameUnitsHost::Impl {
     unsigned long long squadron_pass_c_hook_calls = 0;
     // Packet cc9_squadron_initial_command, docs/CONSTRUCT_WORLD.md section 27:
     // the squadron's pass C default order at 007F4E9E. OFF: none.
-    static constexpr bool kSquadronInitialCommandBound = false;
+    // ON since the USN04 4700/4500, E2 9200/9000 and USN02 pairs: 4 movetos (12
+    // member orders) on USN04, gameplay identical on all three.
+    static constexpr bool kSquadronInitialCommandBound = true;
     unsigned long long initial_command_movetos = 0;
     unsigned long long initial_command_stops = 0;
     unsigned long long initial_command_member_orders = 0;
