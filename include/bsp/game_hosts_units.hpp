@@ -681,6 +681,17 @@ public:
     std::size_t formation_leader_0014(std::int32_t group) const noexcept;
     // 007788B0 BSP_Unit_IsFormationFollower: in a group and not its leader.
     bool unit_is_formation_follower_007788b0(std::size_t index) const noexcept;
+    // Packet cc9_bsm01_think_natives. 008193A0, the unit vtable slot +118h
+    // (SetWorldPosition, docs/SHIP_ESCORT_SCREEN.md section 1), for the arm a
+    // unit that is neither a formation follower nor its group's leader takes:
+    // the position store 009583C0 and the wake-ring refill 00818EA0 from the
+    // new position along the unit's current heading. Answers false and places
+    // nothing for a follower (0081942F refuses |pos|^2 > 25.0; the station
+    // override 0081945D is not modelled) and does place a leader, whose group
+    // snap 0081963E is not modelled. LABELLED: 0092D620's controller sync is
+    // the motion state itself here, and vtable[0D8h] (00955970, the scene-node
+    // matrix refresh) and the 1.25 at unit+0BCCh have no host counterpart.
+    bool place_at_world_position_008193a0(std::size_t index, const float pos[3]);
     // group+4F8h.
     std::int32_t formation_member_count(std::int32_t group) const noexcept;
     // Packet cc9_ship_formation_speed: the unit record slot names,
