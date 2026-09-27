@@ -276,6 +276,12 @@ struct GameExecutableOptions {
     // Off (0) keeps the lockstep frame every reference row is taken with.
     float frame_jitter_percent{0.0f};
     std::uint32_t frame_jitter_seed{1};
+    // --present-interval <vsync|immediate|native>, packet cc9_tooling_present_interval (env
+    // BSP_PRESENT_INTERVAL, same words, only when the option is absent). Harness only: it
+    // replaces the VSync word of the renderer request the host hands to device creation
+    // (B2AEB0's presentation slot), never the options file or the settings read. -1 (native)
+    // leaves the settings' value; 0 forces vsync; 1 forces D3DPRESENT_INTERVAL_IMMEDIATE.
+    int present_interval{-1};
     // --trajectory-csv <path>, milestone 2j: one row per unit per fixed
     // simulation step, so an external comparison against a trace taken from the
     // running game can be made. Empty writes nothing. The column contract is in

@@ -90,6 +90,18 @@ NOISE = [
         "pattern": re.compile(r"^(sound startup before window:.*\bfmod_calls=)\d+"),
     },
     {
+        "id": "present-interval-header",
+        "why": "`present interval <x> (harness override)` appears only when --present-interval is in force (docs/TOOLING.md section 7); the line is dropped",
+        "kind": "drop",
+        "pattern": re.compile(r"^present interval \w+ \(harness override\)$"),
+    },
+    {
+        "id": "present-interval-device",
+        "why": "`device created by full native startup ... interval=` shows the D3D present interval, which the harness override changes; lockstep frames make it a wall-time setting only",
+        "kind": "mask",
+        "pattern": re.compile(r"^(device created by full native startup .*\binterval=)\S+"),
+    },
+    {
         "id": "avoidance-refills",
         "why": "`ship avoidance search: ... refills=N` differs on identical runs (257 vs 265 on one binary, 2026-09-22)",
         "kind": "mask",
@@ -118,6 +130,7 @@ def mask(line: str) -> str:
 
 
 NATIVE_CALL_NOISE = {r["name"] for r in NOISE if r["kind"] == "native-calls"}
+DROP_PATTERNS = [r["pattern"] for r in NOISE if r["kind"] == "drop"]
 
 # ---------------------------------------------------------------------------
 # Parsing
@@ -206,6 +219,8 @@ class Run:
         with open(self.path, encoding="utf-8", errors="replace") as fh:
             for raw in fh:
                 line = raw.rstrip("\r\n")
+                if any(pat.match(line) for pat in DROP_PATTERNS):
+                    continue
                 if in_native:
                     m = NATIVE_ROW_RE.match(line)
                     if m:

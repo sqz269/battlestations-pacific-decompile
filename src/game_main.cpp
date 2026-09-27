@@ -444,6 +444,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " | --order <command>=<x>,<z>]"
             " [--order-unit <name>] [--ai-drive <unit>=<throttle>,<rudder>]"
             " [--order-frame N] [--mission-frame-seconds S] [--frame-jitter <pct>[,<seed>]]"
+            " [--present-interval <vsync|immediate|native>]"
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
             " [--screenshot-mission-frame N] [--hardware-probe-commit]\n");
@@ -621,6 +622,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             static_cast<unsigned>(options.frame_jitter_seed));
     } else {
         log.notef("frame jitter off");
+    }
+    // Packet cc9_tooling_present_interval: printed only when an override is in force, so a
+    // run without it logs exactly what it did before.
+    if (options.present_interval >= 0) {
+        log.notef("present interval %s (harness override)",
+            options.present_interval == 0 ? "vsync" : "immediate");
     }
     if (!options.ai_drive_unit.empty()) {
         log.notef("--ai-drive %s=%.3f,%.3f: a labelled diagnostic stand-in for the ship AI "
