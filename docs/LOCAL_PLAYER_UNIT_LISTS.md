@@ -440,3 +440,32 @@ HUD (grep, base 6de0d8c6b):
 
 A move in gameplay would therefore mean one of these reaches a gameplay host, and would be
 reported as a failed prediction.
+
+### Pairs and verdict
+
+The OFF side is this tree's build at d978ef2c0. The ON side is the `tools/pair_export.py` export
+`local\lp_on` of the same commit with the switch flipped. Streams are ON, with
+`BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay, 7 death rows and 28 unit rows identical. game+1970h has 15 Allied units (Dunlap, Ralph, McCall, Blue, Enterprise, Northampton, SaltLakeCity, then forts and hangars) instead of 26 Japanese. Builds 1 -> 57 (49 recon clears, 7 kill clears). Final counts 7/26/0/0/0/0/0/0 -> 7/15/0/0/1/0/8/9, so game+19B8h holds 9. `owner_140` 2,404 -> 2,400; `ray_pick_other`/`ray_pick_own` 2,240/160 unchanged |
+| USN04 4700/4500 | exit 1 | gameplay, 44 death rows and 81 unit rows identical. Builds 1 -> 119 (74 recon, 44 kill). game+1970h 18 -> 34 at the end (squadrons entered). game+19B8h stays 0. `+8Ch` = {Lexington} at both 44h enters. `owner_140` 1 = 1 |
+| USN02 9200/9000 | exit 1 | gameplay, 21 death rows and 32 unit rows identical. Builds 1 -> 171 (149 recon, 21 kill). Final counts 14/14/0/0/0/0/0/0 -> 3/3/3/0/0/0/0/3, as dead units leave. `+8Ch` holds 10 units at both 44h enters, cursor (0, 0) at Alden. `owner_140` 241 = 241 |
+
+**Predictions.**
+- **Held:** gameplay identity on all three pairs. USN01's list side and its rebuild count (about
+  50, measured 57), with game+19B8h filling on USN01. USN04's `+8Ch`. The pick's ray rows
+  unchanged.
+- **Failed:**
+  1. USN01's `+8Ch` at frame 403 holds **3** units with the cursor (0, 0) at **Dunlap**, not
+     Northampton alone. Dunlap comes first in game+1970h and passes as a non-follower, or as a
+     follower whose leader 00645060 rejects. So `ForceSelectUnit` on USN01 would now select
+     Dunlap. At frame 1, with Airfield2 controlled, `+8Ch` = {Northampton}.
+  2. USN04's game+19B8h does not fill: the enemy and unknown triples of party 0 stay empty there.
+     On USN01 it filled to 9.
+- **Unpredicted:** USN02's cursor sits at Alden, entry 0 of 10, not at the controlled
+  DeRuyter/Houston.
+
+**Verdict: ON** (`kLocalPlayerUnitListRuleBound = true`). The lists move on all three missions,
+and gameplay moves on none.
