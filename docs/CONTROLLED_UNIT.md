@@ -601,3 +601,42 @@ through followers of the controlled unit's group.
   Houston.
 - **Gameplay moves, exit 3.** Alden, not DeRuyter, is the player's ship for the first 25 s, so
   the seat, the ShipCaptain and the ship AI exemption move from DeRuyter to Alden in that window.
+
+### Pairs and verdict
+
+- **A first ON export (71457582b) was invalid.** The host's call ran inside the first 004C3CB0
+  build, before `game_local_player_unit_lists` published it. It therefore saw an empty `+8Ch`,
+  and no unit was controlled until `SetSelectedUnit` (USN01: gameplay identical).
+- a3a03908f moves the call after the publication. The pairs below are the same tree at
+  a3a03908f, switch only, with streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | 006485A0 at frame 0: `+8Ch` = {Northampton}, cursor (0, 0), control "none" -> Northampton. `SetSelectedUnit(Northampton)` at 20.1 s refreshes it in place. **Gameplay, 7 death rows and 28 unit rows identical**; seat messages 2,801 -> 2,961, role takes 4 -> 5 |
+| USN04 4700/4500 | **exit 3** | 006485A0 at frame 0 controls the Lexington, as predicted. **Gameplay moved:** deaths 44 -> 43, hit records 789 -> 779, damage 11985.6 -> 11851.8, shots 6321 -> 6528, dive-bomb releases 4 -> 8 of 19; 9 death rows and 18 unit rows changed |
+| USN02 9200/9000 | exit 3 | 006485A0 at frame 0 controls **Alden**, as predicted. `SetSelectedUnit(Houston)` moves it to Houston. Gameplay moved: hit records 652 -> 645, damage 49661.5 -> 51163.0, shots 1095 -> 1169; deaths 21 = 21, with 2 rows swapped; mission failed at 39.65 s on both sides |
+
+**Predictions.**
+- **Held:** the initial unit on all three missions (Northampton, Lexington, Alden), the later
+  script selections landing, and USN02's move.
+- **Failed, USN01:** gameplay did not move. Northampton is controlled for 4 s before the intro
+  movie takes the camera, and nothing it does in that window reaches the combat rows.
+- **Failed, USN04:** the named risk happened, through a path other than the one named.
+  - The first difference is at t = 0.05. The ON run logs `formation slot swap: group=0 swaps=1`,
+    and Fletcher-class07 and Fletcher-class08 follow on different targets from ship-AI step 10.
+  - With the switch ON no unit is controlled during the first tick, until the world host's list
+    build runs 006485A0. The first tick's formation assignment therefore sees no player ship.
+    With the switch OFF the Lexington is controlled from load.
+  - In the image 006485A0 runs at scene load, before any tick, so the move comes from this
+    binding's timing substitution, not from the image's rule.
+
+**Verdict: not flipped** (`kInitialControlledUnitBound` stays false).
+- The rule is read (V), and the host's first unit is wrong on USN01 (Airfield2) and USN02
+  (DeRuyter).
+- But the ON path controls nothing during the first tick, which the image never does. That
+  one-tick gap moves USN04.
+- **What would fix it:** run step 19 at the load site itself. That needs the local slot's own
+  triple before the first tick: the gunnery host's 008073C0 pass (or its publication) run once at
+  load, as 004E059B does, then the world host's build and 006485A0, with the HUD attached. That
+  touches `src/game_hosts_gunnery.cpp` and the mission frame's load order, so it is a follow-up
+  packet.
