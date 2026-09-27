@@ -2291,3 +2291,54 @@ section 15.4, owned by cc9-movie-camera. Both halves flip together.
 - construction pushes 81 unchanged, with 40 during pass A;
 - `entities`, `self_table_entities` and `wing_member_tables` unchanged; `squadron_ids` 40;
 - identical gameplay.
+
+### 30.4 The pairs, measured (this half alone)
+
+- **Builds.** `tools/pair_export.py` of `212eac5a3`: `local\ri_off` (SHA-256 prefix
+  `B9C6C653C435`) and `local\ri_on` (`2049997AB2E5`, `kWingConstructionInPassABound` flipped).
+- **Logs.** `local\wc_{off,on}_{usn04,usn02}.log` in worktree cc9-ships. Each shows the 1600x900
+  fit, the immediate present interval, its own module directory and the final COM release.
+
+**USN02 9200/9000: pair_diff exit 1.**
+- Gameplay, the death table (22 rows) and the unit table are identical.
+- The native table is identical, and 0 other lines are only OFF or only ON.
+- The census moved only `bound 0 -> 1`, with `staged=0`.
+
+**USN04 4700/4500: pair_diff exit 3.** Every census prediction held:
+
+| row | OFF | ON | predicted | held |
+| --- | --- | --- | --- | --- |
+| staged / builds / planes / left_staged | 0 / 0 / 0 / 0 | 40 / 20 / 40 / 0 | 40 / at most 20 / 40 / 0 | yes |
+| `wing_appended` | 40 | 0 | 0 | yes |
+| `wing_deferred` | 40 | 0 | 0 | yes |
+| InitAll pushes, entities, `self_table_entities` | 81, 86, 86 | 81, 86, 86 | unchanged | yes |
+| `wing_member_tables`, `squadron_ids` | 40, 40 | 0, 0 | 0, 0 (the Lua half's job) | yes |
+
+**The gameplay prediction failed.**
+
+```
+  deaths                                 40                                       40
+* hit records                            799                                      801
+* hull hits                              306                                      308
+* damage                                 11621.4                                  11662.6
+* shots                                  6395                                     6388
+  first hit                              93.00 s                                  93.00 s
+* torpedo-task releases                  7 of 16                                  5 of 16
+* dive-bomb-task releases                3 of 19                                  5 of 19
+  torpedo drops                          1                                        1
+DEATH ROWS: 40 -> 40 rows, 0 only ON, 0 only OFF, 12 changed
+```
+
+- **The same 40 victims die.** Twelve death rows move in range, altitude or credit.
+- **The draws.** Twenty-six plane death modes change. Their draws are mostly the OFF run's values
+  handed to other planes: 36 of the 40 values are shared, and 4 differ on each side.
+- **The likely cause is the order, not the construction.**
+  - ON, every wing plane's unit index comes after all leaders of its group. The per-step plane
+    walk and the shared RNG stream (00BD2F10)
+    now see the planes in a different order.
+  - This is the order the image creates them in: leaders by the SpawnNew loop, then each wing in
+    its squadron's pass A.
+- **Not separated.** The missing `SquadronID` (the Lua half's) could also move a script path.
+  The joint pair, with both halves ON, is the first measurement of the whole change. This half's
+  pair shows only that the index order moves USN04's air battle within its usual bands.
+- **State: committed OFF, held for the joint flip** with cc9-movie-camera's Lua half.

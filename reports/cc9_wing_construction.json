@@ -1,6 +1,35 @@
 {
   "packet": "cc9_wing_construction",
   "doc": "docs/CONSTRUCT_WORLD.md section 30",
-  "switches": [{"name": "kWingConstructionInPassABound", "state": "OFF", "pair": "pending"}],
-  "failed_predictions": []
+  "calls": [],
+  "switches": [
+    {
+      "name": "kWingConstructionInPassABound",
+      "state": "OFF, held for the joint flip with the Lua half",
+      "pair": "local/wc_{off,on}_{usn04,usn02}.log: USN04 exit 3 (census as predicted, air battle moved), USN02 exit 1 (pair_export of 212eac5a3: ri_off B9C6C653C435, ri_on 2049997AB2E5)"
+    }
+  ],
+  "census_usn04": {
+    "staged": "0 -> 40",
+    "builds": "0 -> 20",
+    "planes": "0 -> 40",
+    "wing_appended": "40 -> 0",
+    "wing_deferred": "40 -> 0",
+    "pushes": "81 both",
+    "entities": "86 both",
+    "self_table_entities": "86 both",
+    "wing_member_tables": "40 -> 0",
+    "squadron_ids": "40 -> 0"
+  },
+  "failed_predictions": [
+    {
+      "row": "USN04 gameplay",
+      "predicted": "identical",
+      "measured": "hit records 799 -> 801, releases 7/3 -> 5/5 of 16/19, same 40 victims, 26 death-mode draws reassigned",
+      "why": "wing plane indices now follow all leaders (the image order); index-ordered walks and the shared RNG stream see planes in a new order; not separated from the missing SquadronID until the joint pair"
+    }
+  ],
+  "substitutions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
 }
