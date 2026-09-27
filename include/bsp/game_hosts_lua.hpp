@@ -102,6 +102,16 @@ inline constexpr bool kGeneratedEntityPartyBound = true;  // ON: identity pairs 
 // units. Nothing native ends the mission or scores from +1Ch; the scripts keep
 // their own Mission.Objectives state. While true the two rows update
 // bsp::game::game_objective_sets(); while false they stay records.
+// Packet cc9_generated_wing_party (docs/SENTITY_INIT_ATTACH_ORDER.md 23.5),
+// committed OFF with predictions. 007F4580 hands every wing plane it builds
+// the squadron's spawn descriptor: 007F48F4 [squadron+C0h] -> 00922DE0 ->
+// 007F491A MOV [plane+C0h],EAX. The plane's own pass A (00928A00 -> 00927050,
+// 00928A1E) then reads the squadron's bag, so each wing plane carries the
+// squadron's Party and Race. While true, a generated squadron's wing nodes take
+// the squadron node's party and race and pass A writes them as it does for the
+// squadron; while false they carry none.
+inline constexpr bool kGeneratedWingPartyBound = true;  // ON: identity pairs (section 23.6)
+
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
 class GameHostLog;

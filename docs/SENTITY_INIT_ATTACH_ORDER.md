@@ -2111,3 +2111,50 @@ USN01 the five `commandhelpers.lua:330` failures are gone (`failures=0`, fires 8
 Details are in `docs/CONTROLLED_UNIT.md`, "The squadron slot in the selection tests".
 
 **Every prediction held.** **Verdict: `kGeneratedEntityPartyBound = true`.**
+
+### 23.5 The wing planes of a generated squadron (packet `cc9_generated_wing_party`, `kGeneratedWingPartyBound`)
+
+Worker cc9-hud3, 2026-09-27, base ac9efa4ef. Ghidra was read only.
+
+**The rule (V).**
+- 007F4580 builds each wing plane from the class descriptor's creator (`[desc]+28h`, 007F4811) and
+  places it through its vtable `+98h` (007F48BA or 007F48D2).
+- It then wraps the **squadron's** spawn descriptor (`[squadron+C0h]`, 007F48F4) in a 12-byte
+  holder (00922DE0, at 007F48FD) and stores it at the plane's `+C0h` (007F491A).
+- The plane's pass A attach 00928A00 opens with 00927050 (00928A1E), whose kind-1 arm reads `Race`
+  and `Party` into `+58h`/`+54h` (17.1). It reads the squadron's bag, so **every wing plane carries
+  the squadron's Party and Race**.
+- There is no separate store: 007F4580 has no `+54h`/`+58h` write and no `vtable[2Ch]` call.
+  The plane's pass C 007C9770 writes `SquadronID`, not Party.
+- As in 23.1, the moment of the Lua mirror (00928F50) is unread. The host writes at the plane's
+  pass A, the same point it uses for the squadron. **Labelled.**
+
+**The binding.**
+- **Switch:** `kGeneratedWingPartyBound` in `include/bsp/game_hosts_lua.hpp`, committed OFF.
+- Both places that mark a generated squadron's wing nodes copy the squadron node's party, race and
+  `generated_party`: the construction hook's walk, and the retired append.
+- Pass A then writes them through the 23.2 path. The census is the existing
+  `generated entity party` lines and the `writes=` count.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+- **USN01 3200/3000:**
+  - one more write: the wing plane "ScoutDauntless|.-2" gets `Party=0 Race=2`, and `writes` goes
+    1 -> 2;
+  - no reached script reads a wing plane's `Party` (the plane is never selected);
+  - **gameplay identical, exit 1.**
+- **USN04 4700/4500 and USN02 9200/9000:** no GenerateObject, so no change. **Identity** (exit 0
+  or 1).
+
+### 23.6 Pairs and verdict
+
+- **The pairs.** The OFF side is this tree's build at 0c0ed16c7 (`local\wg_off_*`). The ON side is
+  `local\wg_on`, an export of the same commit with only the switch flipped.
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | `thisTable[64]` ("ScoutDauntless\|.-2") `Party=0 Race=2`; `writes 1 -> 2`. Gameplay, 7 death rows and 28 unit rows identical |
+| USN04 4700/4500 | exit 0 | identical |
+| USN02 9200/9000 | exit 0 | identical |
+
+**Every prediction held.** **Verdict: `kGeneratedWingPartyBound = true`.**

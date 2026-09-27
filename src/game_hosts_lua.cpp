@@ -3073,6 +3073,13 @@ public:
                 plane.wing_member = true;
                 plane.squadron_id = node.entity_id;
                 plane.class_index = node.class_index;
+                // Packet cc9_generated_wing_party: 007F491A, the squadron's
+                // descriptor in the plane's +C0h.
+                if (kGeneratedWingPartyBound && node.generated_party) {
+                    plane.party = node.party;
+                    plane.race = node.race;
+                    plane.generated_party = true;
+                }
                 ++host_.summary_.init_all_wing_marked;
             }
             return;   // the wing append below is retired
@@ -3105,6 +3112,13 @@ public:
             plane.class_index = class_index;
             plane.wing_member = true;
             plane.squadron_id = leader;  // 007F4B49 MOV [EBX+9D4h],ESI
+            // Packet cc9_generated_wing_party: 007F491A, the squadron's
+            // descriptor in the plane's +C0h.
+            if (kGeneratedWingPartyBound && node.generated_party) {
+                plane.party = node.party;
+                plane.race = node.race;
+                plane.generated_party = true;
+            }
             host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
             ++host_.summary_.init_all_wing_appended;
         }
