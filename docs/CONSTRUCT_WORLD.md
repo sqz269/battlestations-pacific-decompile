@@ -1514,7 +1514,7 @@ in no mission here, and neither has the −1 retirement in `src/game_hosts_ready
 descent model to land should re-run USN02 and expect each wreck to leave list 6 as it passes
 −200 m.
 
-## 25. A wreck's descent: the leak manager and the wreck handler's sink block (packet `cc9_ship_sink_descent`, `kShipSinkDescentBound`, committed OFF)
+## 25. A wreck's descent: the leak manager and the wreck handler's sink block (packet `cc9_ship_sink_descent`, `kShipSinkDescentBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units2, on main ad2c11cb0. Ghidra was read only. Section 24 left every host
 wreck afloat: the lowest hull end on USN02 was −47.04 m.
@@ -1615,3 +1615,43 @@ The quasi-steady speed then reaches about 3.3 m/s at 60 s and 3.8 m/s at 75 s, s
 | failure time | 39.65 s, identical (before any wreck floods far) | none, identical |
 | alive ships | water 0 on every live hull (no 90h) | water 0 everywhere; gameplay identical |
 | pair_diff exit | 3 if any gameplay row moves after 105 s, else 1 | 1 |
+
+### The pairs, measured
+
+One tree, `2e58c646c`: `local\sd_off` against `local\sd_on`, the switch only, both variables set.
+Logs `local\SD_OFF_USN02.log` / `SD_ON_USN02.log` and `SD_OFF_E2.log` / `SD_ON_E2.log` in
+worktree cc9-units2. All four show the fit line, the immediate present interval, a module
+directory in this tree and the final COM release. `tools/pair_diff.py`: USN02 exit 3, E2 exit 1.
+
+| row | USN02 OFF | USN02 ON | prediction | verdict |
+| --- | ---: | ---: | --- | --- |
+| `leak_models` / `redistributions` | 0 / 0 | 32 / 21 (one per wreck; 21 wrecks ON) | 32 / 20 | held (one more wreck) |
+| time from first +5Dh to −200 m | - | 91.6..98.6 s on all 17 (DeRuyter 30.30 -> 127.90 s, Java 32.45 -> 130.95, Exeter 36.00 -> 132.05, Yamakaze 51.70 -> 149.00, Houston 74.60 -> 169.51, Kortenaer 80.80 -> 178.11, Kawakaze 111.20 -> 208.96, Electra 113.80 -> 211.11, Alden 149.80 -> 247.11, John1 158.21 -> 256.11, Asagumo 187.46 -> 285.05, Witte 266.61 -> 363.93, Jupiter 267.21 -> 365.38, Yukikaze 293.20 -> 390.48, Samidare 314.00 -> 407.52, Yudachi 326.29 -> 417.77, Murasame 356.99 -> 448.46) | +75 s, band +40..+200 | held (about 20 s slower than the estimate) |
+| not under by 450 s | - | Encounter −160.95 m, Harusame −177.83, Jintsu −104.04, Haguro −35.99 (all late deaths) | Encounter, John3 | held in kind |
+| `kills`, `unlinked_nodes` | 0, 0 | 17, 102 (6 each) | 18 (14..19), 6 each | held |
+| list 6 at the end | 32 | 15 | 14 (13..18) | held |
+| expiry `released` | 0 | 17, each slot once, no hang | = kills | held |
+| neighbour `mean_count` | 31.97 | 25.48 | 27..31.9 | **failed**: fell further |
+| station keeping | 208 | 209 | moves after the first kill | held |
+| proximity scan records / ships | 32 / 2,283 | 32 / 2,263 | unchanged ± a few | held |
+| deaths | 20 | 21 | 20 ± 3 | held |
+| hit records | 329 | 354 (+7.6 %) | ± 15 % | held |
+| failure | 39.65 s | 39.65 s | identical | held |
+| first moved death row | - | Kawakaze 113.10 -> 111.15 s (first damage 104.05 -> 102.10) | moves only after the first kill (~105 s) | **failed**: moved before the first kill at 127.90 s |
+| controlled DeRuyter distance | 316.14 m | 711.72 m | not predicted | **not predicted** |
+
+E2 = USN04 9200/9000: identical (exit 1). The only change is `leak_models 0 -> 18`: no ship dies,
+and every live hull's water stays 0.
+
+**What moved, and why (partly unexplained).** A flooding wreck changes the battle before any kill.
+Its hull goes down and heels, the linear damping 0.5 changes its drift, and the dead DeRuyter now
+travels 712 m while it sinks. Rounds and neighbour views that met the floating wrecks now meet
+sinking ones. Hull hits rise 167 -> 179. Which of these moved Kawakaze's first damage 2 s earlier
+was not isolated. After the first kills, the unlinks take the wrecks out of list 6, and
+`mean_count` falls to 25.48. Perth, John2 and John3 survive, and Yukikaze, Harusame, Jintsu and
+Haguro die.
+
+**Verdict: ON.** A wreck floods and sinks as the image's leak manager and wreck handler make it,
+and the kill, the unlink and the expiry release now run. **Caveat:** the descent's rate comes from
+controller+84h over the host's stand-in element list (capacity = Mass / 3), so the ~97 s descent is
+a property of the stand-in. It will move when the element producer is read.

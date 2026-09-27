@@ -3710,7 +3710,9 @@ struct GameUnitsHost::Impl {
     // 0074F2E0 run over the six leaks, so a wreck takes on water, the flooding
     // weight 00933A3A pulls it down and the KillDepth kill can fire. OFF: the
     // leak model has no entries (today's empty list).
-    static constexpr bool kShipSinkDescentBound = false;
+    // ON since the USN02 / E2 9200/9000 pairs: 17 USN02 wrecks pass -200 m
+    // (91.6..98.6 s after +5Dh) and are killed, unlinked and released; E2 identical.
+    static constexpr bool kShipSinkDescentBound = true;
     // SUBSTITUTIONS, labelled: GameSettings is not loaded into this host, so
     // +400h MaxLeakPercent and +404h EnnyiVizEsKeszPercent are this
     // installation's scripts/datatables/shipglobals.lua lines 383 and 381
