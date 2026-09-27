@@ -1291,3 +1291,72 @@ startup-only and feeds nothing in the mission.
 
 **For pairs:** USN01's intro pose lines are no longer known noise at this base. A moved intro pose
 line in a same-tree pair now belongs to the change. `tools/pair_diff.py` never masked them.
+
+### 10.6 The unbound parse keys, read (packet `cc9_movie_camera_parse_keys`)
+
+Worker cc9-hud3, 2026-09-27. No code changed; Ghidra was read only. The keys are not bound,
+because no measured mission reaches them. They are used only in `global/commandhelpers.lua`:
+- `flyalt` (1000 in all four places) and `goaround`: `luaMissionFailedNew_CamOnFailEnt`,
+  `luaMissionEnd_CamOnEnt` and `luaMissionCompletedNew_CamOnComplEnt`;
+- `goaround` also in one `luaMessageHandler` arm;
+- `gamecamera`: `luaCamOnTargetNew`;
+- `event`: `luaCamIngameMovieAuto` and the completion cameras.
+
+`finishscript` and `fpscamera` appear in no script of this installation that was searched
+(`missions/usn/usn_1_marshall.lua`, `missions/usn/usn_2_java.lua` and `global/*.lua`). Idle runs
+of USN01, USN02 and USN04 log `unsupported=0`.
+
+**`flyalt`, the evaluator lift (00798130, 007986C0..007987B8, V from disk bytes):**
+- **Gate.** 007986C3 `CMP byte [key+DCh],0`. The key must carry `flyalt`. As 10.2 says, only its
+  presence is read.
+- **Placement.** It runs per sample `s` after the key's contribution to `pos[s]`. The sample is at
+  `[ESP+EDI+C8h..D0h]`, and the key's evaluated point is `key+4Ch`.
+- **The formula:**
+  - `d = BSP_Vector2f_LengthWithCutoff(pos[s].xz - key.eval.xz)` (00414C60), stored to float;
+  - if `d > 3500.0` (double 00D046A0), then `d = 3500.0f` (00D04698);
+  - `t = BSP_Math_InterpolateClamped(600.0f (00CE4BC4), 1.0, 1200.0f (00CFD714), 0.0, pos[s].y)`
+    (00419010): 1 at or below 600 m, 0 at or above 1200 m;
+  - `lift = t * (d * 0.35) * w`. Here 0.35 is the double 0x3FD6666660000000 at 00D04690, and `w`
+    is the key's weight from 00795C10 (`[ESP+1Ch]`, stored at 007984E6);
+  - `pos[s].y = lift + pos[s].y`, stored to float at 007987B2.
+  - The x87 order is `d*0.35` first, then `*w`, then `*t`, rounded to float at 007987A6, then the
+    add.
+- **The flag.** The lift sets byte `track+64h = 1` (0079879A). 00798189 clears it at the start of
+  each evaluation. These are the only immediate byte stores to `+64h` in 00790000..007A4FFF.
+  - A register store `MOV [ESI+64h],AL` at 0079CFE8 (in 0079CFC0) was not attributed to a
+    class.
+  - For the camera track (`camera+498h`), that byte is **`camera+4FCh`**, which 0079A3B0 tests at
+    0079B3DC.
+  - So `flyalt` also switches the update from the zero-state ground arm (0079B631.., what the host
+    runs) to the arm at 0079B3E9..0079B62F.
+- **The 0079B3E9 arm (outline only).**
+  - It runs when dt > 0 and `[EDI+19CCh]` is non-null (0079B3BE; EDI is the game object, which
+    0079B4A3 reloads from `[00E188A8]`). The test that sets the flags for the `JZ` at 0079B3B8 was
+    not read.
+  - It builds the camera's horizontal motion over the step and scales dt by 0.33 (double
+    00D049B8).
+  - It probes through 0042AE80 and 0042B2F0, compares against 100.0 (00D7A220) and 1.0f
+    (00D7A24C), and writes `camera+520h` with the factors 1.8 (00D049A8) or 0.6 (00CEFF98) before
+    joining 0078FAF0 at 0079B684.
+  - The probes' meaning was not read.
+
+**`finishscript` (007911E0, 00791297..007912E5):**
+- The key's string sits at `+FCh`. The step tests the dword `[key+FCh] > 0` (read as the
+  string's length; the NativeString layout was not checked) and passes `&key+FCh`.
+- In state 1 with `clock >= start + blend` and a non-empty string, it calls **00887E50** on the
+  mission Lua host `[[00E188A8]+1A08h]` with `(0, &name, 0, 0, -1)`. That is the same named-call
+  runner the Blackout callbacks use (`GameScriptOrdersHost::mission_lua_call_named_00887e50`).
+- **The gate is BL:** 00791214..00791226 set it when the key's owner `[key+4h]` has a `+74h` whose
+  byte `+390h` is set. A set BL skips the call.
+- In every case the key goes to state 2 (007912E5).
+
+**`modifier` (007911E0, 0079126B..00791295):** when ECX is non-null, each step calls
+`[ECX]->vtable[8h](clock - start, &local pose)`, the modifier slot `+8h` that 10.2 records. The load
+of ECX (the key's `+E4h` in 10.2) was not re-read here.
+
+**`event`:** not read further than 10.2.
+
+**If a runnable mission ever reaches these keys:**
+- `flyalt`'s lift and flag are fully read and could be bound; its update arm needs 0042AE80 and
+  0042B2F0 read first.
+- `finishscript` binds onto the existing 00887E50 runner, with the `+390h` gate.

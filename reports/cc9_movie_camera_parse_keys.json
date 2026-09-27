@@ -1,0 +1,15 @@
+{
+  "packet": "cc9_movie_camera_parse_keys",
+  "worker": "cc9-hud3",
+  "kind": "read",
+  "base": "a4a9e30c4",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md section 10.6",
+  "code_changed": false,
+  "findings": [
+    "flyalt lift (00798130, 007986C0..007987B8): y += InterpolateClamped(600,1,1200,0,y) * min(|xz - key.eval.xz|, 3500) * 0.35 * w; sets track+64h, which for the camera track is camera+4FCh, the gate of 0079A3B0's arm at 0079B3E9..0079B62F.",
+    "finishscript (007911E0, 00791297..007912E5): at the end of blend, 00887E50 on [[00E188A8]+1A08h] with (0, &key+FCh, 0, 0, -1), skipped when the owner track's +74h +390h byte is set.",
+    "No measured mission reaches these keys; flyalt, goaround, gamecamera and event are used only by commandhelpers.lua camera helpers; finishscript and fpscamera by no searched script."
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}
