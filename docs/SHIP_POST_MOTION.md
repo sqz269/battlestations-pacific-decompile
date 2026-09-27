@@ -341,3 +341,19 @@ All four show the fit line, the module directory in this tree and the final COM 
 **Verdict: `kFormationSlotSwapBound` ON.** It is the image's gate and loop, but on these two
 missions the gate ends every call. The distance test and the swap have no run-time evidence
 yet. The first mission with an uncontrolled multi-ship group is their test.
+
+## 14. Part 8c: 00826B84's bookkeeping row (`kShipPostMotionRepairOrder`, committed OFF)
+
+`unit_post_motion` evaluates `008160B0`'s entity gate: `+5Ch` set, and `+5Dh`, `+60h`, `+5Eh`
+clear. The row becomes concrete, and a census counts the gate passes. The class flag `+D0h` has
+no host field, so it is taken as set. The repair work itself stays in `run_damage_control`, so
+the order of repair against the projectile pass is unchanged.
+
+**Predictions** (from `a30bdfa66`, with 8a and 8b ON; the switch only, streams and death table
+on):
+
+| row | USN02 9000 | USN04 9000 |
+| --- | --- | --- |
+| `ShipMotion::unit_post_motion` | UNIMPLEMENTED -> concrete at the motion-tick count, 285,540 | 162,000 |
+| `post_motion_gate` | 0 -> the live ships' ticks, below 285,540 | below 162,000 |
+| every other row | identical | identical |

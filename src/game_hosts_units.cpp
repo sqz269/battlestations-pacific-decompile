@@ -3484,6 +3484,14 @@ struct GameUnitsHost::Impl {
     // leader timer names. OFF: a record.
     // ON since the USN02 / USN04 pairs: identical; both missions gate every call.
     static constexpr bool kFormationSlotSwapBound = true;
+    // Packet cc9_ship_motion_tail part 8c: 00826B84's unit->vtable[1ECh](dt) is
+    // 008160B0 on every ship class, the repair tick whose work (0093CA20) the
+    // gunnery host's run_damage_control already runs, after the projectile pass.
+    // ON: the row evaluates 008160B0's entity gate (+5Ch set; +5Dh, +60h, +5Eh
+    // clear) and is concrete; the class flag +D0h has no host field and is taken
+    // as set. OFF: the record. Bookkeeping only; the repair order is not moved.
+    static constexpr bool kShipPostMotionRepairOrder = false;
+    unsigned long long post_motion_gate_passes = 0;
     std::vector<unsigned long long> slot_swap_runs_by_group;
     std::vector<unsigned long long> slot_swaps_by_group;
     std::vector<unsigned char> slot_swap_gated_by_group;
@@ -5422,7 +5430,16 @@ public:
         owner_.done("ShipMotion::controller_step", 0x0092be80u);
     }
     void unit_post_motion(float) override {
-        owner_.record("ShipMotion::unit_post_motion", 0x00826b84u);
+        if constexpr (GameUnitsHost::Impl::kShipPostMotionRepairOrder) {
+            // 008160B0: class+D0h (taken as set), then the four entity bytes.
+            const bool live = slot_.state != nullptr && slot_.state->active != 0 &&
+                              slot_.state->simulate == 0 && slot_.scene_destroyed_005e == 0 &&
+                              slot_.scene_pending_destroy_0060 == 0;
+            if (live) ++owner_.post_motion_gate_passes;   // 008160D7 would call 0093CA20
+            owner_.done("ShipMotion::unit_post_motion", 0x00826b84u);
+        } else {
+            owner_.record("ShipMotion::unit_post_motion", 0x00826b84u);
+        }
     }
 
     float forward_speed() const {
@@ -18734,12 +18751,14 @@ void GameUnitsHost::report() {
                         }
                         host.log.notef("summary mission ship motion tail: bound=%d swap_bound=%d "
                             "slot_swap_calls=%llu expiry_calls=%llu pairs=%llu invalid=%llu "
-                            "groups=%zu [%s]",
+                            "groups=%zu [%s] post_motion_bound=%d post_motion_gate=%llu",
                             GameUnitsHost::Impl::kShipMotionTailBound ? 1 : 0,
                             GameUnitsHost::Impl::kFormationSlotSwapBound ? 1 : 0,
                             host.tail_slot_swap_calls, host.tail_expiry_calls,
                             host.slot_swap_pairs, host.slot_swap_pairs_invalid,
-                            host.formation_groups.size(), per.c_str());
+                            host.formation_groups.size(), per.c_str(),
+                            GameUnitsHost::Impl::kShipPostMotionRepairOrder ? 1 : 0,
+                            host.post_motion_gate_passes);
                     }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;
