@@ -1921,7 +1921,7 @@ struct GameUnitsHost::Impl {
     int damage_section_count(int class_id) {
         const auto it = part_count_cache.find(class_id);
         if (it != part_count_cache.end()) return it->second;
-        char chunk[256];
+        char chunk[512];  // the chunk is about 270 bytes; 256 truncated it
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' then return -1 end\n"
@@ -1987,7 +1987,7 @@ struct GameUnitsHost::Impl {
     // another equipment is not modelled.
     int read_equipment_ammo(int class_id, int platform_key) {
         if (platform_key < 0) return -1;
-        char chunk[320];
+        char chunk[512];
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
