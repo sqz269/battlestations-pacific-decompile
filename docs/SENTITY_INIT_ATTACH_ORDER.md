@@ -673,3 +673,65 @@ inside that pass. Until then, the mission frame's push-and-walk is the stand-in.
 
 **Every prediction held. Verdict: ON.** The load attach and the section 8 block are retired while
 the switch is on. Both stay in the code as the OFF path.
+
+## 11. RunExtraFixedStep's other rows (packet `cc9_run_extra_fixed_step`, `kRunExtraFixedStepBound`)
+
+Worker cc9-init-passes, 2026-09-27, base main 9db5c5290. Ghidra was read only.
+
+### 11.1 00874D00 `BSP_Game_RunExtraFixedStep` (V)
+
+- **Callers** (Ghidra xrefs, 19 sites):
+  - GenerateObject, 00945311 (`MOV CL,1` at 0094530F);
+  - Spawn, 00944D93 (`MOV CL,1` at 00944D8F);
+  - LaunchAirBaseSlot, 00896976 and 0089698A;
+  - 0046B730, ten sites;
+  - 00904C40, five sites.
+  Only GenerateObject is reached in the two reference missions: USN02 calls it four times, and
+  USN04 not at all.
+- **The body.** BL = CL throughout.
+
+| step | site | CL = 1 | CL = 0 |
+| --- | --- | --- | --- |
+| queued-call drain 00888230 (`[game+1A08h]`) | 00874D0F | yes | yes |
+| due think 00929460 with `[00D0DE84]` = 0.05 | 00874D22 | no | yes |
+| world gate `[[game+19CCh]+4ACh]` | 00874D2E..00874D41 | - | - |
+| session pump 00778450 | 00874D68 | dt 0.0 | dt 0.05 |
+| 0077EC20, 00874C90 | 00874D6D, 00874D72 | yes | yes |
+| InitAll 00925F20 (CL = 0) | 00874D79 | yes | yes |
+| outbound flush 0076FFC0 (dt, `SETZ DL` mode) | 00874DAF | 0.0, mode 0 | 0.05, mode 1 |
+| 00926700, 009273A0, then `JMP 00903610` | 00874DB9..00874DD1 | no | yes |
+
+The pump, the creation apply, the registrations flush, InitAll and the outbound flush all sit
+under the world gate.
+
+### 11.2 The binding
+
+- **The method.** `GameFixedStepHost::run_extra_fixed_step_00874d00(flag, site)` runs these
+  steps through the fixed-step host's own row methods: rows 7, 8, 9, 10, 11, 12 and 13, and the
+  tail rows. Each row keeps its current single-player body.
+- **The world gate** is the one the last fixed step saw.
+- **Wiring.** The Lua host reaches the method through `GameExtraFixedStepRunner`, which the
+  mission frame attaches.
+- **Under the switch,** GenerateObject calls it with CL = 1 at 00945311, in place of its lone
+  InitAll row.
+- **Not bound:** Spawn and LaunchAirBaseSlot. They are not host routes that reach the call.
+
+### 11.3 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500.** No GenerateObject, so the logs are identical. `pair_diff` exits 0, or 1
+  on the noise list alone.
+- **USN02 9200/9000.** Four GenerateObject calls. At each one the world gate is open, because
+  the calls come mid-mission after fixed steps have run.
+  - New row: `Game::run_extra_fixed_step` 00874d00, concrete with 4 calls.
+  - These rows gain 4 calls each: `FixedStepFanout::drain_queued_lua_calls` (and the
+    subsystems' own drain row, if it logs one), `pump_session`, the two `Session::` records,
+    `apply_pending_entity_creates`, `flush_tick_registrations` and `flush_outbound_session`.
+  - `SEntity::InitAll` stays at 9,009 calls: the same call is now made from inside 00874D00.
+  - The fixed-step summary's fan-out count rises by 4 × 7 = 28, if it prints one.
+  - ON only: four `RunExtraFixedStep 00874d00 from 00945311: CL=1, world gate open` notes.
+  - **Gameplay identical.** The queued-call list is empty in this process (its producer 00887560
+    runs only off the main thread). Every other row's single-player body is a no-op, and the
+    session countdown is held at -1.0, so dt 0.0 does nothing.
+- **If the gate is closed** at a call, only the drain row gains that call. That would mean a call
+  came before the first fixed step.
+- **If any gameplay row moves,** the switch stays OFF.

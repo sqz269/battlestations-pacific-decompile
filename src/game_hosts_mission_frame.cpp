@@ -184,6 +184,8 @@ struct GameMissionFrameHost::Impl {
         fixed_step->attach_subsystems(step_subsystems.get());
         // Packet cc9_sentity_init_all: row 12's pending list is the Lua host's.
         fixed_step->attach_entity_init(&lua);
+        // Packet cc9_run_extra_fixed_step: GenerateObject's 00874D00.
+        lua.attach_extra_fixed_step(fixed_step.get());
     }
 
     ~Impl() { release_units(); }

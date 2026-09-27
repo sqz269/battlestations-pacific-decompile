@@ -126,6 +126,26 @@ inline constexpr bool kPendingListDedupBound = true;
 // and USN02 pairs moved only the predicted rows (section 10.4).
 inline constexpr bool kLoadTimeInitAllBound = true;
 
+// Packet cc9_run_extra_fixed_step (docs/SENTITY_INIT_ATTACH_ORDER.md section
+// 11). 00874D00 BSP_Game_RunExtraFixedStep(CL flag), which GenerateObject
+// (00945311) and Spawn (00944D93) call with CL = 1: the queued-call drain
+// 00888230 (00874D0F); with CL = 0 only, the think pass 00929460 with the
+// fixed step [00D0DE84] (00874D22); while the world is active (00874D2E..
+// 00874D41), the session pump 00778450 with 0.0 for CL = 1 or the step
+// (00874D68), 0077EC20, 00874C90, InitAll 00925F20 with CL = 0 (00874D79) and
+// the outbound flush 0076FFC0 (00874DAF); with CL = 0 only, 00926700,
+// 009273A0 and the tail jump to 00903610. True: the GenerateObject route runs
+// the whole body through the fixed-step host's own row methods. False: the
+// route runs the InitAll row alone.
+inline constexpr bool kRunExtraFixedStepBound = false;
+
+// The fixed-step host's 00874D00, for the Lua routes that call it.
+class GameExtraFixedStepRunner {
+public:
+    virtual ~GameExtraFixedStepRunner() = default;
+    virtual void run_extra_fixed_step_00874d00(bool flag, std::uint32_t call_site) = 0;
+};
+
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
 class GameEntityInitAllRunner {
@@ -159,6 +179,7 @@ struct GameFixedStepSummary {
 // Held for the whole run because the counters are per run and the dynamics list
 // behind call 2 is the mission frame host's.
 class GameFixedStepHost final : public bsp::FixedStepFanoutHost,
+                                public GameExtraFixedStepRunner,
                                 public bsp::FixedStepJobWaveHost,
                                 private bsp::GameDynamicsBuoyancyHost {
 public:
@@ -172,6 +193,8 @@ public:
     void attach_native_game(GameNativeGameRuntime* game) noexcept;
     // Packet cc9_sentity_init_all: row 12's owner. Attached for the whole run.
     void attach_entity_init(GameEntityInitAllRunner* runner) noexcept;
+    // Packet cc9_run_extra_fixed_step.
+    void run_extra_fixed_step_00874d00(bool flag, std::uint32_t call_site) override;
 
     // 00875cc0..00875dfc, waves 1..3 over the five groups, inside the step loop.
     void run_job_waves_00875cc0(std::uint8_t run_pass);
@@ -236,6 +259,10 @@ private:
     GameStepSubsystemsHost* subsystems_{nullptr};
     GameNativeGameRuntime* native_game_{nullptr};
     GameEntityInitAllRunner* entity_init_{nullptr};
+    // Packet cc9_run_extra_fixed_step: the world gate the last fixed step saw
+    // ([[game+19CCh]+4ACh], 00874D3A reads the same byte), and the extra steps.
+    bool last_world_active_{false};
+    unsigned long long extra_steps_{0};
     GameFixedStepSummary summary_{};
     // session+278h (game+2168h), 00778450's countdown; -1.0 from 0076EE67.
     float session_countdown_278_{-1.0f};

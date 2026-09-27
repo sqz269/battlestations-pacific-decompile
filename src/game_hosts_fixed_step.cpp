@@ -193,7 +193,40 @@ void GameFixedStepHost::run_interpolation_job_00875160(std::size_t group,
 // The sixteen per-step calls, 00875e0c..00875edf
 // ---------------------------------------------------------------------------
 
+// Packet cc9_run_extra_fixed_step. 00874D00, row by row through this host's
+// own row methods (the fixed-step fan-out's rows 7, 8, 9, 10, 11, 12, 13, 14,
+// 15 and the tail), in the body's order. The world-active byte is the one the
+// last fixed step read (00874D3A reads [[game+19CCh]+4ACh], set once at load).
+void GameFixedStepHost::run_extra_fixed_step_00874d00(bool flag, std::uint32_t call_site) {
+    ++extra_steps_;
+    constexpr float kFixedStep00d0de84 = 0.05f;  // 0x3D4CCCCD
+    drain_queued_lua_calls_00888230();                        // 00874D0F
+    if (!flag) run_due_entity_think_00929460(kFixedStep00d0de84);  // 00874D22
+    if (last_world_active_) {                                 // 00874D2E..00874D41
+        pump_session_00778450(flag ? 0.0f : kFixedStep00d0de84);  // 00874D68
+        apply_pending_entity_creates_0077ec20();              // 00874D6D
+        flush_pending_tick_registrations_00874c90();          // 00874D72
+        if (entity_init_ != nullptr) {                        // 00874D77 XOR CL,CL
+            entity_init_->run_sentity_init_all_00925f20(false, 0x00874d79u);
+        }
+        // 00874D8F TEST BL,BL / SETZ DL: mode 1 for CL = 0, 0 for CL = 1.
+        flush_outbound_session_0076ffc0(flag ? 0.0f : kFixedStep00d0de84, flag ? 0 : 1);
+    }
+    if (!flag) {                                              // 00874DB4
+        drain_deferred_entity_events_00926700();              // 00874DB9
+        flush_pending_entity_queues_009273a0();               // 00874DBE
+        release_expired_world_objects_00903610();             // 00874DD1 JMP
+    }
+    done("Game::run_extra_fixed_step", 0x00874d00u);
+    if (extra_steps_ <= 8) {
+        log_.notef("  RunExtraFixedStep 00874d00 from %08x: CL=%d, world gate %s",
+            static_cast<unsigned>(call_site), flag ? 1 : 0,
+            last_world_active_ ? "open" : "closed");
+    }
+}
+
 void GameFixedStepHost::run_subsystems_00875e0c(float step, bool world_active) {
+    last_world_active_ = world_active;
     bsp::FixedStepWorldGate gate{};
     gate.game_present = true;                  // 00875e6e, the process owns the game object
     gate.world_active = world_active;          // 00875e78, [[game+19CCh]+4ACh]

@@ -809,6 +809,13 @@ private:
     // slot is keyed by. This is the executable's stand-in for 00925a90.
     std::map<std::string, int> scene_entity_ids_;
     GameScriptOrdersHost* script_orders_{nullptr};
+    // Packet cc9_run_extra_fixed_step: the fixed-step host's 00874D00.
+    GameExtraFixedStepRunner* extra_fixed_step_{nullptr};
+public:
+    void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {
+        extra_fixed_step_ = runner;
+    }
+private:
     // Packet cc9_sentity_init_all. A node of 00F899D0: the entity and what pass
     // A hands 00928A00. A deque, because pass A appends while the walk holds
     // pointers to earlier nodes.
