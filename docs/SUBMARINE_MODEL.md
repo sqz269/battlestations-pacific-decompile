@@ -519,3 +519,107 @@ the air model, the crush model and the effective-band resolution. Analysed but n
 the seabed geometry ring, the `sullyesztoEro` slew, the periscope mast pose and the wake effects.
 Not started: the `6Ch` object at `+1224h`, the `00852970` tick it receives, and the periscope
 camera. None of the reconstruction is ABI-compatible; it is a behavioural projection.
+
+## 11. `GetSubmarineDepthLevel`, the native `00894100` (packet cc9_submarine_depth_level, read)
+
+**The read is recorded here. The binding waits for three host files that another worker's lease
+holds**, so the section describes the native, the planned binding and the predictions. Nothing is
+built or measured yet.
+
+### The native
+
+`00894100` (`__fastcall(lua_State*)`, `RET 0`, body `00894100`-`008942B0`), read from the listing
+at `00894200`..`0089425C`:
+- **Argument:** argument 0 goes through `00888AA0` (`BSP_ObjectHandle_FromLuaTable`) with no kind
+  check. Any unit is read at the submarine's offsets.
+- **Value:** `EDI = unit+1268h`, the recovered `depthLevel` (section 1), loaded at `0089421E`.
+- **Gate:** if `needAir` (`+1281h`, `00894217`) or the death flag (`+5Dh`, `00894226`) is set, or
+  if `008522C0` (`BSP_SubmarineUnit_CatapultNeedsSurface`, `0089422E`) answers true, the class is
+  asked:
+  - if `class+510h` (KamikazeDamage) or `class+514h` (KamikazeBlastDamage) is above 0, the level
+    stands;
+  - otherwise it becomes 0 (`0089425A XOR EDI,EDI`).
+- **Result:** `0089425C PUSH EDI` into `00B664B0` (push integer), one result.
+
+### The seed, `00853630`
+
+The submarine's vtable slot `0A0h` override calls `00822C20` first (`0085364C`), then picks
+`depthLevel` in three stages, read with disasm-raw at `00853A1C`..`00853BB3`:
+
+1. **Class stage** (`00853A31`..`00853A81`): `+1268h = (class+510h > 0 || class+514h > 0) ? 1 : 0`.
+2. **Scene stage** (`00853B05`..`00853BAA`): only when the property holder at `unit+C0h` has kind 1
+   (a scene-sourced unit).
+   - `Dive` (`00D0B6A4`): when found with type word 0, `+0Ch` goes to `+1268h`. The hull's local Y
+     is set to `bands[level]` (`+A8h`), `+C8h`/`+10Ch` are cleared and every child pose is
+     invalidated.
+   - `TargetDive` (`00CFCCF0`): the same find, which sets `+1268h` only.
+3. **Nearest-band stage** (from `00853BEB`): only for a unit without a kind-1 holder. The band
+   whose world Y is nearest the hull wins.
+
+**The scene data:**
+- `universe/library/global.enums` defines `Depth` as `Surface` 0, `Periscope` 1, `"Dive 1"` 2 and
+  `"Dive 2"` 3.
+- `universe/library/ship.props` gives `properties Sub(Ship)` the default `Dive = E Depth :
+  "Surface"`, so every scene submarine has a `Dive`.
+- LOMP06's `06_crucial_cargo.scn` authors `Dive = E Depth : Periscope ;` on `Narwhal`
+  (`SubmarineGen`, template `USA\SEA\Narwhal-class Submarine`, local Y -20).
+- **The image's value for Narwhal is therefore 1.** Nothing in `06_crucial_cargo.lua` sets a depth
+  (it has no `SetSubmarineDepthLevel`), and an idle player orders none. The level should stay 1
+  for the whole run, unless the boat dies or its air runs out.
+
+### What the script does with it
+
+`luaSubC1luaReportEnemy` (`06_crucial_cargo.lua:687`) runs every second from `luaControlStages`
+once `Mission.FreeToGo` is set (`:675`):
+- **Line 700** (`<= 1`) is reached only when `UnitGetAttackTarget` answers a unit. On this host that
+  native has no host and answers nil.
+- **Line 713**, `IsGUIActive("GUI_periscope") or GetSubmarineDepthLevel(Mission.PlayerUnit) < 1`:
+  IsGUIActive has no host, so the comparison runs. Nil there raises "attempt to compare nil with
+  number".
+- The raise aborts `luaControlStages` before `SubC1Attack()` and before its own
+  `luaDelay(luaControlStages, 1)` re-arm. The timer is left unadvanced and its script retries every
+  60 frames. That is where the six failures at mission frames 617, 660, 720, 780, 840 and 900 come
+  from (`local\ss_on_lomp06.log`, worktree cc9-ships2).
+- **Line 755** (`== 0`, the seaplanes dive-bomb the boat when it surfaces) is phase 2 only.
+
+No other shipped script this build loads calls the native:
+- The callers are chg_7, jm04, jm05, jm06 (both copies), jm10, jm12, prcp_06, prcp_11, usn_06,
+  usn_11, competitive08 and LOMP06.
+- The two calls in `COTP-IJN/PRCPIJN/jm06.lua` (`:794`, `:1232`) are commented out.
+- USN02 and USN04 do not call it.
+
+### The planned binding
+
+One switch, `kSubmarineDepthLevelBound`, committed OFF:
+- **Scene contents:** when the merged bag is stored (next to `StartSpeed`), resolve `Dive` and
+  `TargetDive` through the property library's enum tables (`Depth`) and keep present flags and
+  values.
+- **Units:** in the `00926110` block, a submarine slot takes stage 1 from its
+  `fields.kamikaze_damage` / `kamikaze_blast_damage`, then stage 2 from the stored values.
+- **Script orders:** `GetSubmarineDepthLevel` resolves argument 0, applies the `00894100` gate with
+  the death flag from the gunnery host, and pushes the integer.
+
+**Labelled substitutions:**
+- `needAir` reads false: the host has no air supply model (section 4).
+- `008522C0` reads false: the host has no catapult children.
+- The stage-2 hull move to `bands[level]` is not applied; the host hull keeps its authored Y.
+- Stage 3 is not modelled. Every host unit that reaches the seed is scene-sourced.
+- No depth writer is modelled (`008528B0`'s seven callers, SetSubmarineDepthLevel `00893F40`), so
+  the level stays at its seed.
+- A unit that is not a submarine answers 0. The image would read whatever that class has at
+  `+1268h`.
+
+### Predictions, written before any binding
+
+For LOMP06 1200/1000 as a same-tree pair:
+- **The failures at line 713 go from 6 to 0.** Narwhal answers 1 on every call, so line 713 is false
+  and `luaSubC1luaReportEnemy` returns.
+- **The failures move to line 531.** `luaControlStages` goes on to `SubC1Attack()` (`:525`). Its
+  line 531, `local isVisible = Mission.PlayerUnit.reconlevel[PARTY_JAPANESE]`, should raise
+  "attempt to index field 'reconlevel' (a nil value)" six times at the same frames. The host's
+  entity tables carry `ID`, `Dead`, `Ptr` and `Class` only, and ForceRecon (`008AADF0`) has no host.
+  - If `Mission.Escorts` is empty, the function returns at `:526` instead. In that case the stage
+    loop re-arms every 20 frames and the escorts are never ordered.
+- **Gameplay should not move** (pair_diff exit 1), apart from the native's own row and the failure
+  lines. The next gap is ForceRecon's `reconlevel` table, which is queued.
+- **USN02 and USN04 should be identical** (exit 0 or 1): neither mission calls the native.
