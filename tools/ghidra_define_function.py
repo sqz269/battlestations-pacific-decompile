@@ -9,6 +9,7 @@ ledger name when one exists. Every event is appended to the record file. Runs un
 Ghidra write lock; refuses addresses leased to another owner.
 """
 import json
+import re
 import sys
 from pathlib import Path
 from urllib.parse import urlencode
@@ -30,6 +31,7 @@ def main(argv):
         del argv[i:i + 2]
     recreate = '--recreate' in argv  # delete a truncated existing function first, keeping its name and plate comment
     force = '--force' in argv  # proceed over another owner's lease (a body repair changes no name; record why)
+    delete_inside = '--delete-inside' in argv  # delete bogus functions whose entry lies strictly inside a range (a mid-body start that truncated the real function)
     args = [a for a in argv if not a.startswith('--')]
     if len(args) < 2 or len(args) % 2:
         sys.exit(__doc__)
@@ -71,6 +73,20 @@ def main(argv):
         for start, end in pairs:
             length = int(end, 16) - int(start, 16)
             assert 0 < length < 0x4000, f'{start}-{end}: implausible length {length}'
+            if delete_inside:
+                inside = set()
+                for probe in range(int(start, 16) + 1, int(end, 16), 8):
+                    found = c.get('get_function_by_address', address=f'{probe:08x}')
+                    m = re.search(r'\b(?:at|@)\s*0?x?([0-9a-fA-F]{8})\b', str(found)) if isinstance(found, str) else None
+                    if isinstance(found, str) and 'No function' not in found and 'error' not in found.lower():
+                        entry = m.group(1).lower() if m else None
+                        if entry and int(start, 16) < int(entry, 16) < int(end, 16):
+                            inside.add(entry)
+                for entry in sorted(inside):
+                    record['events'].append({'delete_inside': entry, 'range': [start, end]})
+                    save()
+                    post('delete_function', {'address': entry})
+                    print(f'{start}: deleted the mid-body function at {entry}')
             existing = c.get('get_function_by_address', address=start)
             plate = None
             if isinstance(existing, str) and 'No function' not in existing and 'error' not in existing.lower():
