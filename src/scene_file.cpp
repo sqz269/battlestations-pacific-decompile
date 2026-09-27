@@ -3,6 +3,9 @@
 //            0046aab0, 008d9cf0, 008d8a70, 008d8960, 008d9930, 008d9980,
 //            008d9ad0, 008d9b40.
 #include "bsp/scene_file.hpp"
+#include "bsp/plane_pose_commit.hpp"
+
+#include <cmath>
 
 #include <cctype>
 #include <cstdio>
@@ -204,6 +207,29 @@ std::size_t skip_balanced_block(SceneLexer& lexer)
     return tokens;
 }
 
+// Packet cc9_scene_frame_normalise (docs/SCENE_CONTENTS_HOSTS.md section 18):
+// BSP_SceneFile_ReadEntityBlock 0046CF40 rebuilds every authored localframe
+// before anything uses it. 0046D168..0046D1A5: s = sqrt(row0 . row0), the sum
+// stored float, s = 0 unless it is above 1e-10 [00CE3820]; 0046D1BA: 0085DC80
+// on the frame (row 2 the authority); 0046D1BF..0046D222: rows 0..2 each
+// multiplied by s and stored float. The translation row is untouched.
+// OFF: the frame as read (the earlier host behaviour).
+constexpr bool kSceneFrameNormaliseBound = false;
+
+void normalise_localframe_0046d168(float m[16])
+{
+    const double sum = static_cast<double>(m[0]) * m[0] + static_cast<double>(m[1]) * m[1]
+        + static_cast<double>(m[2]) * m[2];
+    const float stored = static_cast<float>(sum);                   // 0046D184
+    float s = 0.0f;                                                  // 0046D1AB XORPS
+    if (static_cast<double>(stored) > 1e-10) {                       // 0046D192 FCOMI, JBE
+        s = static_cast<float>(std::sqrt(static_cast<double>(stored)));   // 0046D198 00BF7030
+    }
+    bsp::orthonormalize_pose_matrix_0085dc80(m);                     // 0046D1BA
+    const int rows[9] = {0, 1, 2, 4, 5, 6, 8, 9, 10};
+    for (int k : rows) m[k] = static_cast<float>(static_cast<double>(m[k]) * s);
+}
+
 SceneEntity parse_entity(Cursor& cur)
 {
     SceneEntity ent;
@@ -217,6 +243,7 @@ SceneEntity parse_entity(Cursor& cur)
         ent.frame[i] = cur.read_float();
     }
     cur.expect(";");
+    if constexpr (kSceneFrameNormaliseBound) normalise_localframe_0046d168(ent.frame);
     if (cur.at("template")) {
         cur.expect("template");
         ent.template_path = cur.read_token();

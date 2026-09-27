@@ -2293,3 +2293,55 @@ and the provisional wording of 12.1 and 13.
 - **The host carries slot 3Fh only as a register-table row** (`src/hud_screens.cpp`, 00607BE0),
   with no +20h update, so 007C3CB0 stays unbound. Its test is a vertical
   segment, which misses in the image (14.7).
+
+## 18. Every localframe normalised at parse (packet `cc9_scene_frame_normalise`, `kSceneFrameNormaliseBound`)
+
+Worker cc9-terrain2, 2026-09-27, on main 743373aae. Ghidra was read only. This is the packet
+section 16 proposed.
+
+### 18.1 The binding (committed OFF)
+
+- `normalise_localframe_0046d168` in `src/scene_file.cpp` runs right after `parse_entity` reads the
+  16 floats, so every consumer of `SceneEntity::frame` sees the image's frame: the composition in
+  `visit_entity` and the scene contents host's `entity.frame` reads. It does three things:
+  - s = f32(sqrt(f32(row0 · row0))), or 0 unless the stored sum is above 1e-10;
+  - the host's `orthonormalize_pose_matrix_0085dc80`;
+  - rows 0..2 each times s, stored float.
+- **Consequence.** The unit creators seed a unit's motion pose rows straight from the composed frame
+  (`src/game_hosts_units.cpp`, "The frame 0046cf40 composed"). So the normalised rows become the
+  start pose.
+
+### 18.2 What moves, per mission (a census of this installation's `.scn` files; script `local\cc9-terrain2-framecensus.py`)
+
+| mission | entities with a frame | changed | largest element change | what |
+| --- | --- | --- | --- | --- |
+| USN01 (usn_1_marshall) | 147 | 70 | 7.2e-5 | four-decimal rounding: 32 LandForts, 14 Paths, 10 DestroyerGen, 8 LandingPoints, Landscapes 04/05, the airfield, a command building, the carrier and one squadron |
+| USN02 (usn_2_java) | 34 | 18 | 0.866 | 18 DestroyerGen carry the sheared `-0.866 0 0.5 / 0 1 0 / -0.5 0 0` frame: row 2 becomes (-1, 0, 0) and row 0 becomes (0, 0, 1); heading unchanged (-90) |
+| USN04 (usn_19_coralus) | 58 | 54 | 0.866 (NavPoint `IJNRetreat` only) | ships and carriers at up to 5.1e-5; the NavPoint has the sheared frame |
+| USN13 (usn_13_truk) | 524 | 307 | 0.866 | the Maru transports and Landscape 07 have the sheared frame; the rest is rounding |
+
+The translation row never changes, so no start position moves.
+
+### 18.3 Predictions (written before the pairs; streams and the death table on, lockstep 0.05, idle player)
+
+- **USN01 3200/3000.** Rows move by at most 7.2e-5, and no start position moves.
+  - The start headings (the unit table) agree to the printed precision.
+  - A deterministic run can still carry a 1e-5 difference into gunnery.
+  - Predicted: deaths 7 -> 7 and hit records 150 within +-5. `pair_diff` 1 or 3; if 3, at most one
+    death row differs.
+  - Rotation census (13.2): Landscape 05's tiny tilt is normalised, so its dy moves at the
+    centimetre level; the counts are unchanged.
+- **USN02 9200/9000.** The 18 sheared destroyers start with a unit forward row, where the host gave
+  them a forward row of length 0.5 and a skewed right row.
+  - Every motion rule that reads the pose rows (speed along the forward row, turning, hull
+    segments) changes for them from frame 1.
+  - Predicted: `pair_diff` 3. Those destroyers' tracks, hits and deaths move, in either direction;
+    deaths 19 and hit records 566 move.
+- **USN04 4700/4500.** Ships and carriers change by up to 5e-5; the NavPoint's rows do not feed a
+  unit pose.
+  - Predicted as USN01: deaths 44 and hit records 789 within noise (+-10), `pair_diff` 1 or 3 with
+    at most a death row or two.
+- **USN13 3200/3000.** The sheared Marus change as USN02's destroyers do, so `pair_diff` 3.
+  - Landscape 07's rotation census row changes: the drawn footprint becomes the -90 degree island,
+    and the segment test and the ground height still disagree (rotation).
+  - Deaths 34 and hit records 204 move.
