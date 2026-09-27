@@ -127,6 +127,15 @@ inline constexpr bool kEntityDeadBound = true;
 // the three bindings stay host records and no row is written.
 inline constexpr bool kMissionEndBound = true;
 
+// Packet cc9_fill_path_points (docs/LUA_BINDING_MISSION.md, "FillPathPoints").
+// True: the Lua native FillPathPoints (0089A190) answers a new table whose
+// entry i + 1 is {x, y, z}, point i of the path entity's point list carried
+// through 007AF800 into the world (0088BA30 writes the three fields). The
+// points are the scene path registry's, which applies the same 007AF800 step
+// to the authored PathPoints/Point%02i/Pos at scene load. False: the native
+// stays an unimplemented record and answers nothing (the script sees nil).
+inline constexpr bool kFillPathPointsBound = false;
+
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
 // (00875E64 inside 00875BB0), while the Blackout fade still steps once per frame
@@ -527,6 +536,9 @@ private:
     unsigned long long dialog_starts_{0};
     unsigned long long dialog_kills_{0};
     unsigned long long dialog_queries_{0};
+    // Packet cc9_fill_path_points.
+    unsigned long long fill_path_points_calls_{0};
+    unsigned long long fill_path_points_empty_{0};
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a
     // unit and a target, which was the open question the wiring settles.

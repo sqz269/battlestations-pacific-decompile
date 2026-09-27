@@ -386,3 +386,75 @@ None. Every routine this packet read has a Ghidra function, and the one listing 
 (`008985B6`-`008985BE`, inside `00898490`) is a `CALL_RETURN` flow override on the CRT free
 helper, not a missing function; the bytes were read from the disk image and are quoted in the
 `ClearThink` section above. `tools/ghidra_flow_repair.py 00898490 --apply` would close it.
+
+## FillPathPoints, 0089A190 (packet `cc9_fill_path_points`, `kFillPathPointsBound`, committed OFF)
+
+Worker cc9-ships2, on main `002675288`. Ghidra was read-only. The switch is in
+`include/bsp/game_hosts_script_orders.hpp`.
+
+### The read
+
+0089A190 is the `FillPathPoints` row of the binding table. Ghidra has no callers for it; it is
+reached only through the table. It is `lua_CFunction`-shaped (`__fastcall(lua_State*)`), with
+the usual "luaMW_FillPathPoints failed:" error prefix and the "luakod" static.
+1. Argument 0 goes through 00888AA0 (the entity handle from its Lua table), then 007AC9D0
+   BSP_Entity_PathInterfaceForKind.
+2. 00B67930 BSP_LuaObject_NewTable makes the result table (0089A2B7).
+3. For `i` from 0 while `i < 00415870(path)` (the point count):
+   - 00B66670 and 00B67720 (BSP_LuaObject_GetByIndex) make entry `i + 1`, and 00B67700
+     destroys the temporary (0089A317);
+   - 007AF800 BSP_ScenePath_TransformPointToWorld gives point `i` in world space;
+   - 0088BA30 writes it as the fields `x`, `y` and `z` (0089A2E7..0089A32D).
+4. The table is the one result.
+
+The host already has these points. At scene load, `retain_path_points` keeps each Path's
+`PathPoints/Point%02i/Pos` (007B352E..007B3604). The scene path registry holds them after the same
+007AF800 step, and NavigatorMoveOnPath already looks paths up there by name.
+
+### Callers in this installation's Lua (read-only)
+
+| file | line | reached? |
+| --- | --- | --- |
+| bsm_01_stationed_at_pearl.lua | 1833, `luaGenerateHarborTrafic`, called from `luaInit` (607) | yes, at init, over pt_path1..4 |
+| bsm_01_stationed_at_pearl.lua | 1571, `luaGeneratePanicTraffic`, called from `luaMoveToPh2` (1178) | phase 2 only |
+| usn_2_java.lua | 867, `luaShowPath` | no caller; USN02's OFF log has no FillPathPoints row |
+| usn_1_marshall.lua | 1057 | not a reference mission |
+| commandhelpers.lua | 6827, 9209, 9251, 12389, 12401 | helpers; USN02 and USN04 OFF logs have no FillPathPoints row |
+
+**Why BSM01 stops today.** With the native unimplemented, `pathTbl` is nil.
+- `luaInit` fails at line 1857 (`sst_off_bsm01.log`: "attempt to index local pathTbl").
+- So `SetThink(this, "lua_Think")` (line 608) never runs: the timer census shows
+  `think_registrations=0 failures=1`.
+- Therefore `luaStartMission` never runs either.
+
+BSM01's four PT paths in the scene, with the host's retention lines agreeing:
+
+| path | points |
+| --- | --- |
+| pt_path1 | 16 |
+| pt_path2 | 11 |
+| pt_path3 | 18 |
+| pt_path4 | 12 |
+
+### The binding (under `kFillPathPointsBound`)
+
+- The script-orders host handles the native.
+  - It resolves argument 0 as NavigatorMoveOnPath does: the marker registry first, then the name.
+  - It answers a new table whose entry `i + 1` is the registry's world point `i`, as `{x, y, z}`
+    (the same helper GetPosition uses for 0088BA30).
+- **LABELLED:** an argument that is not a retained path answers an empty table. The image
+  dereferences whatever 007AC9D0 returned.
+- **Census:** `summary mission script fill path points bound=.. calls=.. empty=..`, and one
+  `FillPathPoints(<path>) points=..` line per call.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+| row | prediction |
+| --- | --- |
+| USN02 `pair_diff` | 1, `calls=0` on both sides |
+| USN04 `pair_diff` | 1, `calls=0` on both sides |
+| BSM01 FillPathPoints lines, ON | at least four; the first four are pt_path1..4 with points 16, 11, 18 and 12; `empty=0` |
+| BSM01 `luaInit` | no failure on ON: the timer census shows `think_registrations` at least 1, where OFF shows 0 with `failures=1` |
+| BSM01 `luaStartMission` | reached on ON: the native table's `ShipSetTorpedoStock` row shows `calls=1` (an unimplemented record, since `kShipSetTorpedoStockBound` is still OFF), where OFF has no row |
+| BSM01 script failures after init | none, so `failures=0` on ON |
+| BSM01 `pair_diff` | 3: the PT boats and rescue craft are generated and put on the paths only on ON |

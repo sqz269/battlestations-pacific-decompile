@@ -96,6 +96,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"DeleteScript", 0x00898ac0u},
     {"GetHpPercentage", 0x0088e9d0u},
     {"GetPosition", 0x008a7b00u},
+    // Packet cc9_fill_path_points: bsm_01_stationed_at_pearl.lua:1571/1833,
+    // usn_2_java.lua:867 (luaShowPath, never called) and five commandhelpers
+    // helpers. Handled only with kFillPathPointsBound.
+    {"FillPathPoints", 0x0089a190u},
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
@@ -272,6 +276,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
+    if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
     if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
         std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         return bsp::kMissionTurnAndStanceBound;
@@ -1814,6 +1819,36 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
                 "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
         }
+    } else if (std::strcmp(binding->name, "FillPathPoints") == 0) {
+        // 0089A190: argument 0 through 00888AA0 and 007AC9D0 (the path
+        // interface), 00B67930's new table, then for i < 00415870's count
+        // 00B67720(i + 1) and 0088BA30 of 007AF800(i) (0089A2E7..0089A32D);
+        // the table is the one result. The path is found by name, as
+        // NavigatorMoveOnPath finds it, marker registry first.
+        // LABELLED: an argument that is no retained path answers an empty
+        // table; the image would dereference whatever 007AC9D0 returned.
+        void* path_entity = entity_from_argument(0);
+        const SceneMarker* marker = path_entity == nullptr ? nullptr
+            : marker_for_id(static_cast<int>(reinterpret_cast<std::uintptr_t>(path_entity)));
+        const std::string path_name = marker != nullptr ? marker->name
+            : (path_entity != nullptr ? name_of(path_entity) : std::string());
+        const bsp::game::ScenePathEntry* authored = path_name.empty() ? nullptr
+            : bsp::game::scene_path_registry().find(path_name);
+        const std::size_t count = authored != nullptr ? authored->points_world.size() : 0;
+        ++fill_path_points_calls_;
+        if (count == 0) ++fill_path_points_empty_;
+        log_.notef("  FillPathPoints(%s) points=%zu (0089A190 -> 007AF800)",
+            path_name.empty() ? "?" : path_name.c_str(), count);
+        if (state_ != nullptr) {
+            lua_createtable(state_, static_cast<int>(count), 0);
+            for (std::size_t i = 0; i < count; ++i) {
+                push_vector3_table_0088ba30(authored->points_world[i].data());
+                lua_rawseti(state_, -2, static_cast<int>(i + 1));
+            }
+            results = 1;
+        } else {
+            results = 0;
+        }
     } else if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) {
         // 0089EEE0: 008F2260 resolves argument 0, 00B66290 reads argument 1 as
         // an integer, and 0081F8B0 runs on the unit with no class test and no
@@ -2859,6 +2894,9 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    log_.notef("summary mission script fill path points bound=%d calls=%llu empty=%llu "
+        "(0089A190, packet cc9_fill_path_points)", kFillPathPointsBound ? 1 : 0,
+        fill_path_points_calls_, fill_path_points_empty_);
     if (kMissionEndBound) {
         // Packet cc9_mission_end. docs/MISSION_END.md: the image's end of a failed
         // single-player mission is EndScene 008B01B0 raising the restart prompt,
