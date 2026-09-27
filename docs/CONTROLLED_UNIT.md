@@ -707,8 +707,9 @@ at a3a03908f):
     open. The frame-1 44h rebuild is also no guide, because it ran after the scripts. `+8Ch` then
     holds every selectable own unit that leads no selectable leader, and the cursor takes the
     first of the local party's own triple.
-  - That order is the gunnery host's publication order, "scanned classes in bucket order", a
-    host stand-in for the native slot list. So the name the image picks is not established.
+  - That order is the gunnery host's publication order, "scanned classes in bucket order". It is
+    the image's order; see "The own triple's order" below (packet `cc9_own_triple_order`), which
+    supersedes the doubt this line first recorded.
   - USN02 does not move: Kortenaer, controlled until Houston, changes no combat row. The a3a03908f
     move came from Alden being controlled from the first tick after an uncontrolled load window.
     That window is gone.
@@ -716,5 +717,51 @@ at a3a03908f):
 **Verdict: ON** (`kInitialControlledUnitBound = true`).
 - The image's step 19 now runs at the load site before the first tick, and gameplay is identical
   on all three pairs.
-- The first unit's identity rests on the host's own-triple order and on role words that are open
-  at load. Both are recorded here as uncertain.
+- The first unit's identity rests on the own-triple order and on role words that are open at
+  load. Both are read (V) in "The own triple's order" below.
+
+### The own triple's order (packet `cc9_own_triple_order`, read only)
+
+Worker cc9-hud2, 2026-09-27, base c2f07e359. This settles which unit the image controls at load.
+
+**How 008073C0 orders triple 0** (`docs/RECON_SLOT_LISTS.md` section 3, V):
+- **The buckets.** 00807529..00807545 walks the 61h own buckets from slot `+34h` upward, stride
+  `0Ch`, ECX = triple 0 at `+DD8h`, and appends each (00804E10). So triple 0 is ordered by
+  **class id, ascending**, then the squadron and convoy aggregates `A[18h]`/`A[1Ah]` at step 11.
+- **Inside a bucket.** The records follow the scan of that class's world registry list,
+  `[game+19CCh] + 18h + id*0Ch`. 008065B0 appends a new record and splices a carried one to the
+  tail, and step 3 empties A before every scan.
+- **The registry list order.** It is insertion order: each unit's `vtable[130h]` registration
+  (`GameEntity::register_in_parent_entity_list`, 00928560) pushes it at creation. The scene read
+  creates the load-time units in scene-file order.
+- **No sort** appears anywhere in the rebuild.
+
+**What 006485A0 takes.** The cursor at load is (0, -1). The settle 00645710 turns it into (0, 0)
+on a non-empty `+8Ch`, so the unit is **entry 0 of `+8Ch`**: the first unit of game+1970h (walk 0
+of triple 0, without ordnance) that 00645060 accepts and that is not a follower of a selectable
+leader.
+
+**The inputs at step 19 in the image:**
+- **Role words.** `unit+188h + role*4` starts at 9 for every role, from 00928630's
+  `vtable[148h](1FFh, 9)` (`docs/SCRIPTED_HELM.md`). The mission script's `luaStageInit`, where
+  `SetRoleAvailable` runs, is scene-load step 25 (`0045F440`), **after** step 19. So every own
+  ship is selectable at step 19.
+- **Liveness.** `+5Ch` is set by `BSP_SEntity_InitAll` (00925F20 -> 00922F30). The scene read runs
+  InitAll inside step 11/13 (0046EB4B..0046ED0F), before step 19.
+
+**The host against the image.**
+- The host's publication (`publish_recon_triples_008073c0`) walks the class ids ascending and,
+  inside each, `world_list_entry`, the host's per-class list.
+- `register_in_world_lists` fills that list by the reconstructed 00928560 push-back at creation,
+  and `create_units` runs over the scene read's entities in file order.
+- The host order is therefore the image's rule over the same creation order.
+- The load-time selections, Dunlap (USN01), Fletcher-class01 (USN04) and Kortenaer (USN02), are
+  the image's too.
+- Each is the first unit of the lowest own class bucket present (USN01's class 7 destroyers first,
+  then class 9 Enterprise, then class Ah Northampton).
+
+**Remaining assumption, labelled.** The equality of creation order rests on
+`scene_contents->entities()` being the scene read's instantiation order. That is the host's
+existing contract, not re-read here.
+
+**Outcome:** no binding. The doubt recorded in "Pairs and verdict (load-time fix)" is withdrawn.
