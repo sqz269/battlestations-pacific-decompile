@@ -245,12 +245,14 @@ struct UnitDeathInputs {
     bool front_end_idle{false};     // [+4h]==[+20h] && [+1Ch]==[+38h]
     bool limbo_suppressed_0068a120{false}; // 0068a120()
     bool limbo_notice_byte_fd{false};      // [00e198c4]+FDh
+    // 009594C4..009594FE: the controller at unit+538h answers kind 17h and
+    // unit+C41h is set, or kind 6 and unit+100Ah is set. True skips 009813A0.
     bool owner_allows_alternate_report{false}; // the 17h / 6 virtual queries
 };
 
 struct UnitDeathDecision {
     bool reports_kill{false};        // 009813a0, the `kill` warning channel
-    bool reports_alternate{false};   // 0091bda0
+    bool reports_alternate{false};   // 0091bda0, the kill credit; every report runs it
     bool registers_limbo_page{false};// 00565fb0(unit+70h)
     bool pushes_limbo_interface{false};   // PushInterfaceRequest(34h, 0)
     bool retargets_front_end{false};      // [00e198c4] vtable +10h
