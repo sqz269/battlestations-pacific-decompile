@@ -65,6 +65,7 @@
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ship_hydro_forces.hpp"
+#include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
@@ -1322,6 +1323,17 @@ struct GameUnitSlot {
     float wreck_last_y{0.0f};
     float kill_depth_at{-1.0f};
     std::size_t world_nodes_unlinked{0};
+    // Packet cc9_ship_sink_descent: the leak manager at unit+10D4h (constructor
+    // 0074E7B0, init 0074F490 from 00823780). `leaks` holds its three parallel
+    // arrays (+18h rates, +1Ch water, +20h points), count +14h = 6.
+    bool leak_ready{false};
+    std::array<bsp::UnitLeakEntry, 6> leaks{};
+    float leak_rate_cap_08{0.0f};     // +08h
+    float leak_capacity_0c{0.0f};     // +0Ch = controller+84h / 10
+    float leak_rate_34{0.0f};         // +34h
+    float controller_reserve_84{0.0f}; // controller+84h, 00937F74
+    bool leak_redistributed{false};   // 0074EC50 ran (the wreck handler)
+    float leak_first_water_t{-1.0f};
     bool scene_flags_available{false}; // process provenance, not a native byte
     bsp::UnitClassBlock class_block{};
 
@@ -1710,6 +1722,122 @@ struct GameUnitsHost::Impl {
             }
         }
         done("UnitList::erase_004837d0", 0x004837d0u);
+    }
+
+    // Packet cc9_ship_sink_descent. controller+84h (00937DBB..00937F74) and the
+    // leak manager's init 0074F490 (called from 00823780 in 00822C20).
+    void build_leak_model_0074f490(GameUnitSlot& s) {
+        // 00937D8E..00937DB8: Mass < 100.0 (00D7A220) -> 1, else the unit's
+        // IsKindOf(8) -> 2, else 0.
+        const float mass = s.motion_class.hull_mass;             // class+B0h
+        const bsp::ShipPhysicsMaterial index =
+            (static_cast<double>(mass) < 100.0) ? bsp::ShipPhysicsMaterial::kTBoat
+            : bsp::unit_is_kind_of(s.class_id, 8) ? bsp::ShipPhysicsMaterial::kSubmarine
+            : bsp::ShipPhysicsMaterial::kShip;
+        const bsp::ShipPhysicsMaterialRecord rec = bsp::ship_physics_material_shipped(index);
+        // Per record: frac = |(+0Ch - +08h) / (+04h - +0Ch)| (00937E41..00937E80),
+        // shaped by settings+50Ch (the Kitevo ladder, previous value kept),
+        // times |+04h - +0Ch| (00937EDC..00937EFD), times +00h and settings
+        // +510h, over the double 10.0 (00937F06..00937F1F), each stored float.
+        float sum = 0.0f;
+        float shaped = 0.0f;  // [ESP+10h], carried between records
+        for (const bsp::ShipBuoyancyElement& e : s.buoyancy_elements) {
+            const float frac = std::fabs(
+                (e.level_base - e.level_draft) / (e.level_top - e.level_base));
+            shaped = bsp::ship_hydro_depth_factor_00932fb5(frac, rec.depth_exponent, shaped);
+            shaped = std::fabs(e.level_top - e.level_base) * shaped;
+            const float term = static_cast<float>(static_cast<double>(e.coefficient)
+                * static_cast<double>(shaped) * static_cast<double>(rec.gravity) / 10.0);
+            sum = term + sum;
+        }
+        // 00937F46..00937F74: controller+84h = sum - settings+510h * Mass.
+        s.controller_reserve_84 = sum - rec.gravity * mass;
+        // 0074F490: count 6 (+14h); capacity +0Ch = (float)(0092BEB0() / 10.0).
+        s.leak_capacity_0c = static_cast<float>(
+            static_cast<double>(s.controller_reserve_84) / 10.0);
+        // 0074F51B..0074F56D: IsKindOf(0Eh), or IsKindOf(0Ch) with Mass below
+        // 500.0 (00CE3840), triples the rate cap (the double 3.0 at 00D7A2B0).
+        float cap = kMaxLeakPercentSubstitute * s.leak_capacity_0c;
+        if (bsp::unit_is_kind_of(s.class_id, 0x0E) ||
+            (bsp::unit_is_kind_of(s.class_id, 0x0C) && static_cast<double>(mass) < 500.0)) {
+            cap = static_cast<float>(static_cast<double>(cap) * 3.0);
+        }
+        s.leak_rate_cap_08 = cap;
+        // The six points: side -1 then +1 (local_8), three stations each at
+        // z = (L / 2) * i - L * 0.5, x = Width * side, y = 0.
+        const float length = s.motion_class.hull_length;       // class+A0h
+        const float width = s.class_width_00a4;                 // class+A4h
+        std::size_t k = 0;
+        for (int side = -1; side < 2; side += 2) {
+            for (int i = 0; i < 3; ++i) {
+                bsp::UnitLeakEntry& leak = s.leaks[k++];
+                leak.rate = 0.0f;
+                leak.water = 0.0f;
+                leak.point = bsp::OceanVec3{width * static_cast<float>(side), 0.0f,
+                    (length / 2.0f) * static_cast<float>(i) - length * 0.5f};
+            }
+        }
+        // 0074F6A4..0074F6D5: +38h/+3Ch take class DamageToDeath (+54Ch) and
+        // TimeToDeath (+550h) when both are >= 0; else the constructor's
+        // 200.0 and 60.0 (0074E7B0). +34h = 2 * settings+404h * capacity / +3Ch,
+        // and the cap is raised to it.
+        float damage_to_death = 200.0f, time_to_death = 60.0f;
+        const float d = lua.read_vehicle_class_number(s.row.type_id, "DamageToDeath", -1.0f);
+        const float t = lua.read_vehicle_class_number(s.row.type_id, "TimeToDeath", -1.0f);
+        if (0.0f <= d && 0.0f <= t) {
+            damage_to_death = d;
+            time_to_death = t;
+        }
+        static_cast<void>(damage_to_death);  // +30h = +34h / +38h has no reader here
+        const float r34 = kEnnyiVizEsKeszPercentSubstitute * s.leak_capacity_0c;
+        s.leak_rate_34 = (r34 + r34) / time_to_death;
+        if (s.leak_rate_cap_08 < s.leak_rate_34) s.leak_rate_cap_08 = s.leak_rate_34;
+        s.leak_ready = true;
+        ++leak_models_built;
+        done("LeakManager::init_0074f490", 0x0074f490u);
+    }
+
+    // 00824FE5..00825086, the wreck handler's sink block, for one ship.
+    void ship_wreck_sink_block_00824fe5(GameUnitSlot& s) {
+        if (!s.leak_ready || s.leak_redistributed) return;
+        s.leak_redistributed = true;
+        // 0074EC50: with lobby mode [00E188A8]+1FE4h != 2 (single player), each
+        // leak draws U(0, 1) from 00BD2F10 (ECX = 1). SUBSTITUTION, labelled: the
+        // draws come from this host's keyed release stream, one key per ship.
+        float draws[6]{};
+        float sum_draws = 0.0f;
+        for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+            const float r = release_altitude_draw_00bd2f10(s.row.name + "#leak", 0.0f, 1.0f);
+            sum_draws = r + sum_draws;                    // 0074ECBD
+            draws[i] = r + s.leaks[i].water;              // 0074ECC5
+        }
+        // 0074ECD6..0074ED18: rate' = draw * (cap + cap) / (total_water + sum) + rate.
+        float total_water = 0.0f;
+        for (const bsp::UnitLeakEntry& leak : s.leaks) total_water += leak.water;
+        for (std::size_t i = 0; i < s.leaks.size(); ++i) {
+            const float twice = s.leak_rate_cap_08 + s.leak_rate_cap_08;
+            s.leaks[i].rate = (draws[i] * twice) / (total_water + sum_draws) + s.leaks[i].rate;
+        }
+        // The rates travel in message 92h through 0077C2A0 (route 7, 0074ED76);
+        // its arm 0082220D -> 0074E860 loads them. SUBSTITUTION, labelled: applied
+        // at once, not through the session router.
+        record("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
+        done("LeakManager::redistribute_0074ec50", 0x0074ec50u);
+        // 00824FF0..00825074 on the hull body: inertia x2 (00D7A308), angular
+        // damping 2.5f (00CF87C8), linear damping 0.5f (00CE3800).
+        s.body.motion = &s.motion_state;
+        const bsp::OceanVec3 inv = s.motion_state.inverse_inertia_body;
+        const bsp::OceanVec3 twice{
+            inv.x == 0.0f ? 0.0f : static_cast<float>(2.0 * static_cast<double>(1.0f / inv.x)),
+            inv.y == 0.0f ? 0.0f : static_cast<float>(2.0 * static_cast<double>(1.0f / inv.y)),
+            inv.z == 0.0f ? 0.0f : static_cast<float>(2.0 * static_cast<double>(1.0f / inv.z))};
+        bsp::dyn_body_set_inertia_00c37e70(s.body, twice);
+        bsp::dyn_body_set_angular_damping_00c37de0(s.body, 2.5f);
+        bsp::dyn_body_set_linear_damping_00c37e00(s.body, 0.5f);
+        // 0082507E / 00825086.
+        s.sink_time_828 = 0.0f;
+        ++leak_redistributions;
+        done("UnitInstance::wreck_sink_block_00824fe5", 0x00824fe5u);
     }
 
     //009288F1 dispatches the actual leaf+130h registrar after placement.
@@ -3573,6 +3701,24 @@ struct GameUnitsHost::Impl {
     // This installation's scripts/datatables/shipglobals.lua line 377
     // (2024-07-13): VizbeomlesDolgok.KillDepth = -200.0.
     static constexpr float kKillDepthSubstitute = -200.0f;
+    // Packet cc9_ship_sink_descent, docs/CONSTRUCT_WORLD.md section 25. ON: the
+    // leak manager at unit+10D4h is built (0074F490 with controller+84h from the
+    // displacement sum 00937DBB..00937F74 over the hull's element list), the
+    // wreck handler's sink block 00824FE5..00825086 runs at the row-15 flush
+    // (0074EC50's rate redistribution, inertia x2, angular damping 2.5, linear
+    // damping 0.5) and the hydrodynamics' leak tick 0074F930 and heel torque
+    // 0074F2E0 run over the six leaks, so a wreck takes on water, the flooding
+    // weight 00933A3A pulls it down and the KillDepth kill can fire. OFF: the
+    // leak model has no entries (today's empty list).
+    static constexpr bool kShipSinkDescentBound = false;
+    // SUBSTITUTIONS, labelled: GameSettings is not loaded into this host, so
+    // +400h MaxLeakPercent and +404h EnnyiVizEsKeszPercent are this
+    // installation's scripts/datatables/shipglobals.lua lines 383 and 381
+    // (2024-07-13): 0.02 and 0.2.
+    static constexpr float kMaxLeakPercentSubstitute = 0.02f;
+    static constexpr float kEnnyiVizEsKeszPercentSubstitute = 0.2f;
+    unsigned long long leak_models_built = 0;
+    unsigned long long leak_redistributions = 0;
     unsigned long long kill_depth_tests = 0;
     std::size_t kill_depth_kills = 0;
     unsigned long long world_nodes_unlinked = 0;
@@ -5189,8 +5335,23 @@ public:
         // Every scalar past `count` is read only inside the per-leak passes, so
         // with a count of zero the result is the zero the routine's own two
         // accumulators start at, whatever they are.
-        leak_water_mass_10fc = bsp::unit_leak_tick_0074f930(nullptr, 0u, 0.0f, 0.0f,
-            0.0f, 1.0f, false, dt).total_water;
+        if (GameUnitsHost::Impl::kShipSinkDescentBound && slot_.leak_ready) {
+            // Packet cc9_ship_sink_descent: the six leaks. The health 00923BE0
+            // is read only by the cap, which +5Dh suppresses; a live hull's rates
+            // are zero here (no 90h leak is bound), so its water stays zero and
+            // the health does not matter: 1.0 is passed, labelled.
+            const bool gate_5d = slot_.state != nullptr && slot_.state->simulate != 0;
+            const bsp::UnitLeakTickResult r = bsp::unit_leak_tick_0074f930(
+                slot_.leaks.data(), static_cast<std::uint32_t>(slot_.leaks.size()),
+                slot_.leak_rate_cap_08, slot_.leak_capacity_0c,
+                GameUnitsHost::Impl::kEnnyiVizEsKeszPercentSubstitute, 1.0f, gate_5d, dt);
+            leak_water_mass_10fc = r.total_water;
+            if (r.total_water > 0.0f && slot_.leak_first_water_t < 0.0f)
+                slot_.leak_first_water_t = owner_.summary.simulated_seconds;
+        } else {
+            leak_water_mass_10fc = bsp::unit_leak_tick_0074f930(nullptr, 0u, 0.0f, 0.0f,
+                0.0f, 1.0f, false, dt).total_water;
+        }
         owner_.done("ShipHydro::leak_tick", 0x0074f930u);
     }
     // 00933A52, over the same empty list, so the heeling torque is the zero the
@@ -5200,7 +5361,10 @@ public:
             slot_.motion.pose_row0[0], slot_.motion.pose_row0[1], slot_.motion.pose_row0[2],
             slot_.motion.pose_row1[0], slot_.motion.pose_row1[1], slot_.motion.pose_row1[2],
             slot_.motion.pose_row2[0], slot_.motion.pose_row2[1], slot_.motion.pose_row2[2]};
-        const bsp::OceanVec3 torque = bsp::unit_leak_torque_0074f2e0(nullptr, 0u, rows);
+        const bool leaks = GameUnitsHost::Impl::kShipSinkDescentBound && slot_.leak_ready;
+        const bsp::OceanVec3 torque = bsp::unit_leak_torque_0074f2e0(
+            leaks ? slot_.leaks.data() : nullptr,
+            leaks ? static_cast<std::uint32_t>(slot_.leaks.size()) : 0u, rows);
         owner_.done("ShipHydro::leak_heel_torque", 0x0074f2e0u);
         return torque;
     }
@@ -7177,6 +7341,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                     slot->buoyancy_elements.push_back(element);
                 }
             }
+        }
+
+        if constexpr (Impl::kShipSinkDescentBound) {
+            if (!slot->buoyancy_elements.empty()) host.build_leak_model_0074f490(*slot);
         }
 
         slot->parent = nullptr;
@@ -17677,6 +17845,21 @@ bool GameUnitsHost::store_scene_node_flags(const void* identity,
     return false;
 }
 
+bool GameUnitsHost::ship_wreck_sink_00824fe5(const void* identity) {
+    if constexpr (!Impl::kShipSinkDescentBound) {
+        static_cast<void>(identity);
+        return false;
+    } else {
+        for (const auto& owned : impl_->slots) {
+            if (owned.get() != identity) continue;
+            if (!owned->leak_ready) return false;
+            impl_->ship_wreck_sink_block_00824fe5(*owned);
+            return true;
+        }
+        return false;
+    }
+}
+
 bool GameUnitsHost::unit_pending_destroy_0060(std::size_t index, bool& out) const noexcept {
     if (index >= impl_->slots.size()) return false;
     const GameUnitSlot& slot = *impl_->slots[index];
@@ -18151,7 +18334,24 @@ void GameUnitsHost::report() {
                 static_cast<double>(slot->wreck_min_end_y),
                 static_cast<double>(slot->wreck_last_y),
                 static_cast<double>(slot->kill_depth_at), slot->world_nodes_unlinked);
+            // Packet cc9_ship_sink_descent: the leak manager of the wreck.
+            host.log.notef("  wreck %-16s leaks bound=%d built=%d redistributed=%d "
+                "reserve_84=%.1f capacity=%.2f rate_cap=%.4f rate_34=%.4f water=%.2f "
+                "first_water_t=%.2f mass=%.1f", slot->row.name.c_str(),
+                Impl::kShipSinkDescentBound ? 1 : 0, slot->leak_ready ? 1 : 0,
+                slot->leak_redistributed ? 1 : 0,
+                static_cast<double>(slot->controller_reserve_84),
+                static_cast<double>(slot->leak_capacity_0c),
+                static_cast<double>(slot->leak_rate_cap_08),
+                static_cast<double>(slot->leak_rate_34),
+                static_cast<double>(slot->leak_water_mass_10fc),
+                static_cast<double>(slot->leak_first_water_t),
+                static_cast<double>(slot->motion_class.hull_mass));
         }
+        host.log.notef("summary ship sink descent bound=%d leak_models=%llu "
+            "redistributions=%llu (00824FE5 / 0074F490, packet cc9_ship_sink_descent)",
+            Impl::kShipSinkDescentBound ? 1 : 0, host.leak_models_built,
+            host.leak_redistributions);
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "
             "packet cc9_sunk_ship_kill_depth)", Impl::kSunkShipKillDepthBound ? 1 : 0,

@@ -1513,3 +1513,105 @@ the leak manager is bound. So the kill, the removal, the unlink and the expiry r
 in no mission here, and neither has the −1 retirement in `src/game_hosts_ready.cpp`. The first
 descent model to land should re-run USN02 and expect each wreck to leave list 6 as it passes
 −200 m.
+
+## 25. A wreck's descent: the leak manager and the wreck handler's sink block (packet `cc9_ship_sink_descent`, `kShipSinkDescentBound`, committed OFF)
+
+2026-09-27, worker cc9-units2, on main ad2c11cb0. Ghidra was read only. Section 24 left every host
+wreck afloat: the lowest hull end on USN02 was −47.04 m.
+
+### How a dead ship descends in the image (V)
+
+- **`008110F0` is not the descent.** It is `BSP_UnitInstance_Sink`, the Lua entry: it refuses on
+  +5Dh or on a non-zero invincibility +150h, then Destroy (`vt[70h](1)`), zeroes +828h and +82Ch,
+  and releases +740h. It reaches the same wreck handler a damage death does.
+- **The water.** The leak manager at unit+10D4h is built by `0074E7B0` (from the vehicle base
+  constructor at `0081F15F`): +38h = 200.0 (`00CE386C`), +3Ch = 60.0 (`00CEB4B0`). `0074F490`
+  (from `00822C20` at `00823780`) sets it up:
+  - count +14h = 6;
+  - capacity +0Ch = (float)(`0092BEB0`(parts) / 10.0), where parts+84h = controller+84h is the
+    reserve buoyancy `00937DBB`..`00937F74` (sum over the class's elements of
+    coefficient × |top − base| × shape × Gravitacio / 10, minus Gravitacio × Mass);
+  - rate cap +08h = settings+400h (MaxLeakPercent) × capacity, × 3.0 (`00D7A2B0`) for
+    IsKindOf(0Eh), or for IsKindOf(0Ch) with Mass < 500.0 (`00CE3840`);
+  - six points: sides −1 then +1, x = Width × side, y = 0, z = (Length / 2) × i − Length × 0.5;
+  - +38h/+3Ch take the class DamageToDeath (+54Ch) and TimeToDeath (+550h) when both are ≥ 0;
+    +34h = 2 × settings+404h (EnnyiVizEsKeszPercent) × capacity / +3Ch, and the cap is raised to it.
+- **At death**, the wreck handler `00824B60` (row 15, `vt[7Ch]`) runs `00824FE5`
+  `0074EC50(&unit+10D4h)`. With lobby mode ≠ 2, each leak draws U(0, 1) from `00BD2F10`
+  (`ECX = 1`, `0074EC9B`). Each rate becomes `(draw + water) × 2 × cap / (total water + Σdraws) +
+  rate`. The rates travel in message 92h (`MT_SHIP_SINK`) through `0077C2A0`, and its arm
+  `0082220D` → `0074E860` loads them. Then `00825044` sets the inertia to 2× (`00D7A308`),
+  `0082505C` the angular damping to 2.5 (`00CF87C8`), `00825074` the linear damping to 0.5
+  (`00CE3800`), and +828h and +82Ch are zeroed.
+- **Every hydrodynamic step** (`009329C0`, tail `00933A01`) ticks `0074F930`. Each leak takes
+  min(rate, cap) × dt. While +5Dh is clear, the total is capped by (1 − health) × settings+404h ×
+  capacity. +5Dh suppresses the cap, so a wreck floods without limit. The total is unit+10FCh.
+  It adds to the mass (`00932B72`) and pulls down as a weight of 10 × water (`00933A3A`).
+  `0074F2E0` turns each leak's water into a heeling torque about its point.
+- **The descent** is the hull body's response. The element buoyancy saturates once an element is
+  fully under (`00932DD5` clamps the depth to its span), so a wreck whose water weight exceeds its
+  reserve goes down until the vertical drag (`L`/`N` down pair) and the linear damping balance it.
+  Then the KillDepth kill of section 24 fires.
+- **While alive**, leaks come from message 90h (`MT_SHIP_LEAK`, `008221A7` → `0074F440` →
+  `0074F090`). That path is not bound here; see the contract below.
+
+### What the host had
+
+| part | host before this packet |
+| --- | --- |
+| hydrodynamics `009329C0`, flooding weight, mass | yes, with unit+10FCh |
+| leak tick `0074F930`, heel torque `0074F2E0` | reconstructed (`bsp/unit_forces.hpp`), run over an empty list |
+| leak manager init `0074F490`, reserve buoyancy controller+84h | missing |
+| wreck handler `00824B60` | a record at the row-15 flush |
+| leaks from hits (90h) | missing; the gunnery host's flooding (`docs/SHIP_FIRE_FLOODING.md`) is the damage-control task's water seconds at unit+A20h, a different model that damages health and never touches unit+10D4h |
+| buoyancy elements | a stand-in: eight elements, draft H/2, solved so the hull displaces its weight at that draft |
+
+### The binding
+
+- **At creation (ON)**, for every hull with an element list: controller+84h over the host's
+  element list, then `0074F490`. **Consequence of the stand-in list, labelled:** the eight
+  stand-in elements have frac = 0.5 and Ship Kitevo 1.0, and coefficient × draft = Mass × 10 / 6
+  each. So the sum is 13.33 × Mass, controller+84h = 3.333 × Mass and capacity = 0.3333 × Mass.
+  The real list's value is unknown until the element producer is read.
+- **SUBSTITUTIONS, labelled:** settings+400h = 0.02 and +404h = 0.2, from this installation's
+  `shipglobals.lua` lines 383 and 381 (2024-07-13). GameSettings is not loaded into this host.
+- **At the row-15 flush (ON)**, `src/game_hosts_ready.cpp` calls the units host's
+  `ship_wreck_sink_00824fe5`: the redistribution, then inertia, damping and the zeroed floats.
+  **SUBSTITUTION, labelled:** the six draws come from the units host's keyed release stream, key
+  `<ship>#leak` (so `BSP_GUNNERY_RNG_STREAMS=1` isolates them). The 92h message is applied at
+  once.
+- **In the hydrodynamics (ON)**, the leak tick and the heel torque run over the six leaks. The
+  health argument is 1.0, labelled: the cap reads it only while +5Dh is clear, and a live hull's
+  rates are zero here.
+- **The census** adds a `leaks` line per wreck and a `ship sink descent` summary, in both builds.
+
+**Contract for the gunnery host (cc9-ships):** the image's live-hull leak is message 90h
+(`008221A7`), amount = (float)(uint32)msg+1Ch × 10.0 at a hull point. When the gunnery host binds
+the hit that sends it, it calls a units-host entry to be added then, `add_leak_0074f440(unit,
+amount, point)`, which transforms the point and runs `0074F090`. Until then a live hull never
+floods through unit+10D4h.
+
+### Predictions (written before the runs)
+
+Same tree, `local\sd_off` against `local\sd_on`, the switch only, both variables set.
+
+The rough dynamics, per wreck, capacity C = Mass / 3 and cap = 0.02 × C: the inflow after the
+handler is about 2 × cap = 0.0133 × Mass per second. The net downward acceleration is about
+0.133 × t m/s², against a hydrodynamic drag of v + 0.3 v² (m/s²) and the linear damping of 0.5.
+The quasi-steady speed then reaches about 3.3 m/s at 60 s and 3.8 m/s at 75 s, so a hull reaches
+−200 m roughly 75 s after its first +5Dh time.
+
+| row | USN02 9200/9000 | E2 = USN04 9200/9000 |
+| --- | --- | --- |
+| `leak_models` | 32 ON (every ship), 0 OFF | 18 ON, 0 OFF |
+| `redistributions` | 20 ON, one per wreck | 0 |
+| each wreck's −200 m time | first +5Dh time + 75 s, band +40..+200 s: DeRuyter ~105 s, Java ~107 s, Exeter ~111 s, Yamakaze ~127 s, Houston ~150 s, Kortenaer ~156 s, Kawakaze ~188 s, Electra ~189 s, Alden ~225 s, John1 ~234 s, Asagumo ~324 s, Perth ~341 s, Witte ~342 s, John2 ~344 s, Jupiter ~344 s, Samidare ~400 s, Yudachi ~411 s, Murasame ~436 s; Encounter (376 s) and John3 (447 s) not within 450 s | none |
+| `kills`, `unlinked_nodes` | 18 kills (band 14..19), 6 nodes each | 0 |
+| list 6 at the end | 32 -> 14 (band 13..18) | 18 both |
+| neighbour count (`traffic setback ... mean_count`) | falls from 31.97 (band 27..31.9) | unchanged |
+| expiry release | first run ever: `released` = kills; each slot released once (the −1 guard), no hang | 0 |
+| setback and station-keeping rows | move after the first kill (~105 s) | identical |
+| deaths, hit records | 20 ± 3, 329 ± 15 %: a live ship's avoidance loses its sunk neighbours after the first kill | identical (52, 875) |
+| failure time | 39.65 s, identical (before any wreck floods far) | none, identical |
+| alive ships | water 0 on every live hull (no 90h) | water 0 everywhere; gameplay identical |
+| pair_diff exit | 3 if any gameplay row moves after 105 s, else 1 | 1 |
