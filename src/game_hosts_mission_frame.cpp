@@ -146,8 +146,9 @@ constexpr bool kScanProximityBound = true;
 // not load that block (SceneContents::load_traffic_block stays a record), so
 // the walk visits nothing. SUBSTITUTION, exact only for a scene whose traffic
 // block has no item, as USN04 (usn_19_coralus.scn line 2567) and USN02
-// (usn_2_java.scn line 1760) are. False: the walk is the named record.
-constexpr bool kTrafficWalkBound = false;
+// (usn_2_java.scn line 1760) are. False: the walk is the named record. ON by
+// the verdict: USN04 and USN02 pairs identical but for this row (section 15).
+constexpr bool kTrafficWalkBound = true;
 
 // Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the

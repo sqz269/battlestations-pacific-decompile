@@ -637,3 +637,57 @@ Then act on the decision:
 | every other native row, per-entity rows, death rows, gunnery and summary lines | identical, zero clock offset | identical |
 
 The `mission_result` correction has no caller, so it cannot move a row.
+
+### Part 8 pairs and verdict
+
+One tree, f7c11bf4e, with `local\bin\tw_off` against `local\bin\tw_on`. The two builds differ
+only by the switch. Both variables were set. All four logs show the fit line and the final COM
+release.
+
+| row | USN04 OFF -> ON | USN02 OFF -> ON |
+| --- | --- | --- |
+| native table rows | 1,540 = 1,540 | 1,442 = 1,442 |
+| `TrafficConfig::group_walk_00487270` | UNIMPLEMENTED 4,500 -> concrete 4,500 | 9,000 -> concrete 9,000 |
+| death rows, gunnery | 41, 727 hits, identical | 22, 440 hits, identical |
+
+**Every prediction held.** A masked whole-log diff leaves only the ignored counters and the
+pre-mission blink. **Verdict: ON.**
+
+## 16. Handoff (cc9-side-ai retires after this packet)
+
+**State reached on the world object** (sections 9 to 15, all ON on main once this lands):
+- **The world-active byte `+4ACh`** is set at the `construct_world` load step. It opens the
+  fan-out gate and 00481640.
+- **ScanProximity 00977990** is bound over list 6. The part-count test and list 24 are labelled
+  stand-ins.
+- **Fan-out rows 9, 10, 11 and 13** run their single-player arms. The pump's `[00F8A2FC]` step
+  and its loopback drain are named records.
+- **The traffic walk 00487270** runs over an empty group list. That is exact for scenes with an
+  empty `traffic` block.
+- **The 00959450 model** in `src/mission_result.cpp` is corrected: the credit is always run,
+  and only the loss warning is gated.
+
+**Open items for a successor, with owners as of 2026-09-27, taken from `bsp.py lease list` just
+before this commit:**
+
+| item | what | files and owners | where it is written up |
+| --- | --- | --- | --- |
+| SEntity_InitAll 00925F20 | a pending-entity list, the image's 00F899D0, fed at unit creation, with InitAll at the four routes: fixed-step row 12, GenerateObject/SpawnNew, the air-ops launch and RunExtraFixedStep. Passes B to E (vt+A0h, vt+A4h with the start branch, 0077F090, the descriptor destroy) must be read first for the plane, squadron and ship classes. It retires the creation-time `attach_created_entity_00928a00` and `attach_wing_member_tables` in favour of pass A. | `src/game_hosts_fixed_step.cpp`, `src/game_hosts_lua.cpp` and `src/game_hosts_script_orders.cpp` are unleased. `src/game_hosts_units.cpp`, where `create_units` is, is leased to cc9-plane-release (cc9_units_contracts). | section 13; pairs USN04 4700/4500 and E2, where launches and GenerateObject happen |
+| the 00959450 route | route sunk and wrecked units through `unit_death_00959450`. That adds the loss warning 009813A0 and the limbo page 00565FB0 before the existing credit. | `src/game_hosts_gunnery.cpp` (cc9-gunnery2's file, unleased right now); a new warning-manager method in `src/game_hosts_mission_frame.cpp`, which is free | section 15, the contract |
+| the scene traffic block | load `traffic {}` items (009514B0) and commit them (004A5620 -> 004A50D0), so the walk has elements in the scenes that author some (172 items over 251 files) | `src/game_hosts_scene_contents.cpp`, unleased | section 15; `docs/SCENE_TRAFFIC_BLOCK.md` |
+| ScanProximity stand-ins | `unit_part_descriptor_count` and 007F10B0's push into list 24 | `src/game_hosts_units.cpp`, cc9-plane-release; the lead routed both contracts | section 11 |
+| the pump's two records | the object at `[00F8A2FC]` (its `vtable[5Ch]` step) and 0076C600's drain, once more loopback kinds exist than 8Fh | `src/game_hosts_fixed_step.cpp` (free), `src/game_hosts_ship_ai.cpp` (cc9-gunnery2) | section 13 |
+
+**Parts 4 to 6** (section 7 plan) belong to other workers:
+- **Part 4, the neighbour count 009EEB8B.** It landed on main at cd9264a68, merging cc9-gunnery2.
+- **Part 5, the ring-scan probe (ranking rows 9 to 11).** It is with cc9-gunnery2. It reads the
+  avoid-zone manager `[00E17624]`, not the world.
+- **Part 6, the AvoidZoneLayer sample 0041BC20 (row 15).** It is with cc9-plane-release. It
+  reads the avoid-zone registry `[00E17620]`, not the world. Main now has
+  `src/game_hosts_avoid_zones.cpp` from that line of work.
+
+**Not done and not planned here:**
+- the world's `+Ch..+14h`, `+4A4h` and `+4A8h` meanings;
+- the 0047F130 getter's extent;
+- list 28 and list 71 fillers;
+- the other `+4ACh` readers' routines (section 9 table), none reached by the host.
