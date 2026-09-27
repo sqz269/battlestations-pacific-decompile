@@ -3010,7 +3010,11 @@ public:
             }
         }
         host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
-        if (!node.squadron || host_.script_orders_ == nullptr) return;
+        if (!node.squadron) return;
+        // Packet cc9_load_time_squadron_hooks: the scene read's walk runs
+        // before the script-orders host exists, and neither the hook nor the
+        // wing marking below needs it; only the legacy wing append does.
+        if (!kLoadTimeSquadronHooksBound && host_.script_orders_ == nullptr) return;
         // Packet cc9_wing_construction_lua: the list size before 007F4580.
         const std::size_t pending_before = host_.pending_entities_.size();
         if constexpr (kSquadronPassHooksCalled) {
@@ -3047,6 +3051,7 @@ public:
         const int class_index = node.class_index;
         const std::size_t first = node.units_before;
         const std::size_t end = node.units_end;
+        if (host_.script_orders_ == nullptr) return;
         const GameUnitsHost& units = host_.script_orders_->units();
         for (std::size_t index = first; index < end && index < units.count(); ++index) {
             const int id = static_cast<int>(index) + 1;
