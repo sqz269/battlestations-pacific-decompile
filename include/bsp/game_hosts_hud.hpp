@@ -213,11 +213,12 @@ inline constexpr bool kSetSelectedUnitBound = true;
 // with `reached` false when no HUD is attached.
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
 
-// Packet cc9_movie_interface_and_reseed, switch 1, committed OFF: while true
+// Packet cc9_movie_interface_and_reseed, switch 1, committed OFF (eaa9a301b), set ON by the
+// USN01/USN04 pair verdict (docs/HUD_PICK_SEGMENT_QUERY.md 8.7): while true
 // the MovCamNew natives run 005CD240 through the attached HUD, whose first
 // call pushes 2Ch kMovieCameraNewInterface, so the level-1 set becomes {37h}
 // until a later 20h push (SetSelectedUnit) replaces it.
-inline constexpr bool kMovieInterfacePushBound = false;
+inline constexpr bool kMovieInterfacePushBound = true;
 // Returns false when no HUD is attached.
 bool hud_movie_screen_camera_005cd240();
 

@@ -743,3 +743,29 @@ The binding:
 5. **Gameplay identical**, because the first contact is at t = 93 s. The one route that could
    move it is a role on the Lexington's weapon groups left released at 25 s. If rows move, only
    the Lexington's own gunnery rows should move first.
+
+**Switch 1, pairs and verdict.** The same tree at eaa9a301b, switch only, `BSP_GUNNERY_RNG_STREAMS=1`
+and `BSP_DEATH_TABLE=1`, binaries `local\bin\mi_off` and `local\bin\mi_on`.
+
+| row | USN01 OFF | USN01 ON | USN04 OFF | USN04 ON |
+| --- | --- | --- | --- | --- |
+| `pair_diff` exit, gameplay | | 1, identical | | 1, identical |
+| deaths / hits / damage / shots | 7 / 150 / 2690.0 / 561 | same | 40 / 799 / 11621.4 / 6395 | same |
+| interface sequence | 20h, 2Eh, 25h | 20h, 2Eh, **2Ch** at frame 81, 25h | 20h, 25h, 25h | 20h, 25h, **2Ch**, 25h |
+| `UnitPickScreen::update` | 6,160 | 5,518 | 9,160 | 8,320 |
+| pick casts | 5,999 | 5,357 | 8,999 | 8,159 |
+| `camera_basis` UNIMPLEMENTED | 805 | 163 | 3 | 3 |
+| seat casts | 0 | 0 | 8,997 | 8,157 |
+| movie calls / engages / 2Ch pushes | | 12 / 1 / 1 | | 6 / 1 / 1 |
+
+Every numeric prediction held.
+
+Not predicted:
+- USN04's `mission gunnery aim: steps` fell from 228,484 to 228,101, and `held_retakes` rose
+  from 2 to 4. Both belong to screen 45h's seat, which does not run while 2Ch is up, and to the
+  2Eh exit and enter. No gameplay row moved.
+- USN02 was not paired. Its logs show both movies inside 9,000 frames (8 AddPosition calls), and
+  each is left through `SetSelectedUnit(Mission.Houston)` (lines 657, 767). Only the first pushes
+  2Ch.
+
+**Verdict: ON** (`kMovieInterfacePushBound = true`).
