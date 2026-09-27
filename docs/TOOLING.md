@@ -73,6 +73,8 @@ Each item is masked (or, for the one native row, its count ignored) before anyth
 | sector-scan-zone-segment-crossing | the `ShipAiSectorScan::zone_segment_crossing_004158e0` native row: count and presence | moves with the row above: 6,000 then absent on the same OFF pair, 3,000 and 6,000 on the ON runs |
 | clearance-static-zone-blocks | the `ShipAiClearance::static_zone_blocks_009d57e0` native row: count and presence | across seven JM08 runs of identical binaries (worktree cc9-init2) it has 3 calls in `QN_ON_JM08.log` and `WS_OFF_JM08.log` and no row in `LSH_OFF/OFF2/ON/ON2_JM08.log` and `WS_ON_JM08.log`, independent of any switch, with gameplay identical in every pair (docs/SENTITY_INIT_ATTACH_ORDER.md section 20.4) |
 | clearance-static-zone-clearance | the `ShipAiClearance::static_zone_clearance_00415d70` native row: count and presence | comes and goes with the row above, 3 calls when present, on the same runs |
+| clearance-category-enabled | the `ShipAiClearance::category_enabled_009ec770` native row: count and presence | 7,026 in `VS_ON2_USN13.log` against 6,999 in `VS_ON3_USN13.log`: two USN13 3200/3000 runs of one binary (`local\bin\vs_on2`, SHA-256 `B544BC1BA071`, worktree cc9-terrain2) with gameplay identical, moving together with the static-zone and sector-scan rows (docs/SCENE_CONTENTS_HOSTS.md section 15) |
+| clearance-avoidance-enabled | the `ShipAiClearance::avoidance_enabled_0080e160` native row: count and presence | 1,109 against 1,108 on the same pair |
 | pretranslate-count | calls of the `PlatformLoopCallbacks::pretranslate` native row | window messages (focus, paint) depend on the desktop; printed as `(noise)` |
 
 ### Validation

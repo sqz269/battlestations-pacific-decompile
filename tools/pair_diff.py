@@ -132,6 +132,18 @@ NOISE = [
         "name": "ShipAiClearance::static_zone_clearance",
     },
     {
+        "id": "clearance-category-enabled",
+        "why": "ShipAiClearance::category_enabled_009ec770 moved 7026 -> 6999 between two USN13 runs of one binary with gameplay identical (cc9-terrain2 VS_ON2/VS_ON3_USN13; docs/SCENE_CONTENTS_HOSTS.md 15); count and presence ignored",
+        "kind": "native-calls",
+        "name": "ShipAiClearance::category_enabled",
+    },
+    {
+        "id": "clearance-avoidance-enabled",
+        "why": "ShipAiClearance::avoidance_enabled_0080e160 moved 1109 -> 1108 on the same USN13 pair; count and presence ignored",
+        "kind": "native-calls",
+        "name": "ShipAiClearance::avoidance_enabled",
+    },
+    {
         "id": "pretranslate-count",
         "why": "PlatformLoopCallbacks::pretranslate counts window messages (focus, paint), which depend on the desktop",
         "kind": "native-calls",
