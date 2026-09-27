@@ -2549,3 +2549,84 @@ Reads: 16 (the entity reader normalises frames), 17 (007C3CB0's caller is the pl
   - `framecensus.py` is the .scn frame normalisation census;
   - `pairs*.ps1` are the pair runners;
   - `pitchtrace.patch` is the plane pitch trace (apply, build, set `BSP_PITCH_TRACE`).
+
+## 22. The USN13 stall is a spawn spacing defect (packet `cc9_plane_follow_pitch_flip`, `kSpawnNewMemberOffsetsBound`)
+
+Worker cc9-plane2, 2026-09-27, on main 1c2e84d27. Ghidra was read only. Addresses: 0099BF30,
+0099B940, 007DF4F0, 009C1FD0, 0094A140, 00949300, 00941D30, 00948CC0, 009481A0.
+
+### 22.1 The hold arm is not the writer
+
+- **The trace.** Section 20's patch, extended to the repair pass 0099BF30, the hold arm 009BEE56,
+  the slot evaluation 0099BC00 and the vehicle-avoidance bands of 007DF4F0. It is kept uncommitted as
+  `local\cc9-plane2-pitchtrace.patch` in worktree cc9-plane2. Runs: `local\T1_USN13.log`,
+  `local\T2_USN13.log`, USN13 3200/3000, plane `bruh #1.12`.
+- **`bruh #1.12` is its squadron's leader.** 007F23A0 gives it no station, so 009C1FD0 does nothing
+  but store pilot+26Ch = 2. The image does the same when 009BFD70 answers false. The hold arm never
+  ran for it (0 records), and plan+2D0h stayed 2 on all 1065 thinks.
+- **The +1 comes from the repair pass.** On 572 of 1065 thinks, 0099B940 found the pitch command
+  inside a band covering all of [-1, 1]. 0099BF30 then substitutes +1.1 for |bank| <= pi/2
+  (`00CE3830`, `00CE6448`), which 0099BF30's own clamp makes +1. That fallback is already bound
+  and its constants match (docs/PILOT_COMMAND_BAND_REPAIR.md).
+- **The band is `[-5, 5]` from the first think at spawn, for 367 thinks in a row.** It is 0099B790's
+  clamp of a vehicle-avoidance band (007DFDC4) whose half-width w reaches 1.4..2.0. Another plane
+  inside the combined radius rr = 25 m gives w = 1.25 x 1.6.
+- **The planes inside that radius are other squadrons' planes.** The avoidance partners of
+  `bruh #1.12` were the leaders and wingmen of `bruh #1.7`..`#1.15` (2700 records). Its own wingmen
+  gave 15. The leader climbs at pitch command +1 from 1200 m, reaches 1419 m with the nose at
+  1.25 rad and falls into the tail slide section 20.1 describes.
+
+### 22.2 Why the squadrons are 5 m apart
+
+- **USN13's wave is one `SpawnNew` request with 15 group members** (`usn_13_truk.lua`
+  `luaSpawnAttackWave`, this installation's file dated 2024-08-13). It passes `angleRange` +/-10
+  degrees, `lookAt` Enterprise, no `distRange`, and `excludeRadiusOverride` with all five radii 500.
+- **The host placed each member by its own fan-out contract** (`spawn_member_frame_0094a140`,
+  labelled CONTRACT in the source): the angle spread by member index at the 200 m low distance. That
+  is about 5 m between consecutive squadrons.
+- **The image places the members from offsets built by the record constructor 00948CC0**
+  (00948E56-009492C0). 00949300 composes each offset with the one group frame (BSP_Matrix_Multiply4x4)
+  and 009483D0 reads the vector back at 00948440. The loop, per row r of three members A, B, C:
+
+  ```
+  L = max(fH, (A.A4 + B.A4) * 0.5, (A.A4 + C.A4) * 0.5) * 2.5 + 5     ([00CE3DE0] 2.5, [00D7A370] 5.0)
+  G = 5 + max(fH, (prev.A0 + this.A0) * 0.5 for each seat) * 1.5       ([00CE3D78] 1.5)
+  z_r = z_(r-1) - G, z_0 = 0
+  full row: A (0,0,z), B (-L,0,z), C (+L,0,z); two in the row: (-L/2,0,z), (+L/2,0,z)
+  ```
+
+- **fH is record+ACh = `formationHorizontal`.** 009481A0 reads the five keys in the order
+  ownHorizontal, enemyHorizontal, ownVertical, enemyVertical, formationHorizontal (strings
+  `00D19968`, `00D19958`, `00D1994C`, `00D1993C`, `00D19928`) into block+0..+10h. It stores the
+  squares of the first two at +14h/+18h, and the constructor copies the seven dwords to record+9Ch.
+  00941D30 confirms the layout: it tests own entities against +8h and +14h and enemies against
+  +Ch and +18h.
+- **So on USN13 the image's squadrons are 1255 m apart across and 755 m between rows.** The host has
+  them 5 m apart. On USN04 (`usn_19_coralus.lua`, fH 100, two members) the image's pair is 255 m
+  apart; the host has 69 m.
+
+### 22.3 The binding
+
+`kSpawnNewMemberOffsetsBound` (include/bsp/lua_spawn_new.hpp), committed OFF. With it on, a request
+with a positive `formationHorizontal` takes one group frame and 00948CC0's offsets.
+- **The group frame is the contract's mid-angle candidate.** That is 0094A140's first candidate: the
+  mid angle, at the low distance record+70h.
+- **SUBSTITUTION, labelled:** the frame's axes are the host's yaw toward `lookAt`. 0094A140's
+  rotation pair about the 008F8680 reference frame was not decoded.
+- **SUBSTITUTION, labelled:** the class extents +A0h/+A4h are not carried in the request and are
+  taken as 0. That is exact while fH covers every half sum, which aircraft under fH 100 and 500 do.
+  A request with fH <= 0 keeps the contract.
+- **Not changed:** the placement test 00941D30 and 0094A140's retry still do not run
+  (docs/LUA_SPAWN_NEW_HOST.md section 8).
+
+### 22.4 Predictions (written before the pairs)
+
+| row | OFF | predicted ON |
+| --- | --- | --- |
+| USN13 3200/3000 undamaged `bruh` sea crashes (first_damage -1) | 21 | 0..3 |
+| USN13 deaths | 34 | 15..40, with the shot-down share rising |
+| USN13 `Plane::water_contact_007cb7f0` records | 670 | under 150 |
+| USN13 hit records 204, shots 2551 | - | both move |
+| USN04 4700/4500 | 44 deaths | gameplay moves (pair_diff 3); deaths within 36..52 |
+| USN01 3200/3000 | - | identical: no `SpawnNew` request |
+| USN02 9200/9000 | - | identical: no `SpawnNew` request |

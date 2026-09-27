@@ -108,8 +108,66 @@ void run_spawn_queue_step_0094c8f0(float scaled_delta) {
     g_spawn_queue_drain->run_spawn_queue_0094c490(scaled_delta);
 }
 
+bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t member,
+                                  float offset[3]) noexcept {
+    if (!request.exclude.present || !(request.exclude.formation_horizontal > 0.0f)) {
+        return false;
+    }
+    const std::size_t count = request.members.size();
+    if (member >= count) return false;
+    const float fh = request.exclude.formation_horizontal;   // record+ACh, >= 0
+    // Class extents taken as 0 (labelled in the header), so both maxima are fH.
+    const float lateral = static_cast<float>(static_cast<double>(fh) * 2.5 + 5.0);
+    const float gap = static_cast<float>(5.0 + static_cast<double>(fh) * 1.5);
+    const std::size_t row = member / 3u;
+    const std::size_t seat = member % 3u;
+    float z = 0.0f;
+    for (std::size_t r = 1; r <= row; ++r) z -= gap;   // 00949209 area, param_2 -= G
+    const bool has_b = 3u * row + 1u < count;
+    const bool has_c = 3u * row + 2u < count;
+    float x = 0.0f;
+    if (!has_b || has_c) {
+        if (seat == 1u) x = -lateral;          // 0.0 - L, [00D7A208] -0.0
+        else if (seat == 2u) x = lateral;
+    } else {
+        const float half = static_cast<float>(static_cast<double>(lateral) * 0.5);
+        x = seat == 0u ? -half : half;         // the two-member row
+    }
+    offset[0] = x;
+    offset[1] = 0.0f;
+    offset[2] = z;
+    return true;
+}
+
 SpawnNewFrame spawn_member_frame_0094a140(const SpawnNewRequest& request,
                                           std::size_t member) noexcept {
+    if constexpr (kSpawnNewMemberOffsetsBound) {
+        float offset[3];
+        if (spawn_member_offset_00948cc0(request, member, offset)) {
+            // The group frame: 0094A140's first candidate is the mid angle
+            // (fVar2 + 0/d) at the low distance (local_358 = record+70h), the
+            // same candidate this function's contract gives at t = 0.5. Its
+            // axes are taken from the host's yaw toward `lookAt` (SUBSTITUTION,
+            // labelled: 0094A140's rotation pair around the reference frame
+            // from 008F8680 was not decoded).
+            SpawnNewRequest one = request;
+            one.members.resize(1);
+            SpawnNewFrame frame = spawn_member_frame_0094a140_contract(one, 0);
+            const float c = std::cos(frame.yaw);
+            const float s = std::sin(frame.yaw);
+            // Row vector times the frame: x along row 0 (c, 0, -s), z along
+            // row 2 (s, 0, c), as apply_scene_yaw_00467050 lays the rows.
+            frame.position[0] += offset[0] * c + offset[2] * s;
+            frame.position[1] += offset[1];
+            frame.position[2] += -offset[0] * s + offset[2] * c;
+            return frame;
+        }
+    }
+    return spawn_member_frame_0094a140_contract(request, member);
+}
+
+SpawnNewFrame spawn_member_frame_0094a140_contract(const SpawnNewRequest& request,
+                                                   std::size_t member) noexcept {
     SpawnNewFrame frame;
     frame.position[0] = request.ref_pos[0];
     frame.position[1] = request.ref_pos[1];

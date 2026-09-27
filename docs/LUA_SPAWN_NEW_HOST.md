@@ -293,6 +293,9 @@ DEVIATIONS, each labelled in the source where it is taken:
    `game+18CCh`; this process has no party table, so the selection always answers the head - which
    is what the native itself does whenever the queue holds fewer than two records.
 3. **The member fan-out is this process's rule**, not `0094A140`'s. See section 9.
+   The image's member layout is now read: the record constructor `00948CC0` builds per-member
+   offsets from `formationHorizontal`, bound behind `kSpawnNewMemberOffsetsBound`
+   (docs/SCENE_CONTENTS_HOSTS.md section 22).
 4. **Member names carry the request serial.** The scripts reuse names across requests
    (`"Lexkiller 1"` at both line 1059 and line 1115) and the squadron registry is keyed by name, so
    `" #<serial>.<index>"` is appended. The script never sees the string; it addresses the unit
