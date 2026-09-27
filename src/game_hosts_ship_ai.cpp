@@ -59,6 +59,9 @@
 #include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/ship_ai_approach_tune.hpp"
 #include "bsp/ship_ai_bearing_rating.hpp"
+#include "bsp/ship_ai_settings_block.hpp"
+#include "bsp/ai_close_attack_tick.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/ship_ai_clearance_profile.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
@@ -936,6 +939,91 @@ struct GameShipAiHost::Impl {
     // Packet cc9_own_curve_target / cc9_ring_query. 009F29E0..009F2AC1, the
     // target words of nested+127Ch. Returns false when there is no unit target, and
     // leaves q with the caller's no-target constants. See docs/SHIP_AI_OWN_CURVE.md.
+    // Packet cc9_torpedo_standoff. [0080E160(unit)+222h]: the per-name table
+    // the stance push reads (kShipDirectorEnablesBound), the constructor's 1
+    // (007202FD) for a name without an entry.
+    bool director_torpedo_enable_0222(std::size_t index) const {
+        const GameGunneryUnitRow* row = gunnery_unit_row(index);
+        if (row == nullptr) return true;
+        if (const SceneDirectorEnables* e = scene_director_enables_find(row->name)) {
+            return e->torpedo;
+        }
+        return true;
+    }
+    // 00863920(unit, target): the group 00E0A520 = {7}. Byte +70h+7 is +77h,
+    // which the stance push sets from +222h (00861DB7); [+60h]->vtable[4] is
+    // 00861BE0, `MOV AL,1`; 008633D0 is 00862820 then mask[7], which 00861D70
+    // stores as 3 or 0 from the same +222h. LABELLED: recomputed here from the
+    // same inputs the gunnery host's stance push uses (a live-state accessor
+    // would need src/game_hosts_gunnery.cpp); the liveness, class and rank
+    // tests follow the gunnery host's score_candidate_00863990.
+    bool torpedo_group_accepts_target_00863920(std::size_t index, std::size_t target) const {
+        if (target >= units.count()) return false;
+        bsp::DirectorGunneryStance stance;
+        stance.torpedo = director_torpedo_enable_0222(index);
+        int countdown = 0;
+        bool allow_fire_cache = false;
+        const bsp::UnitGunneryCategoryState state = bsp::apply_director_stance_008624c0(
+            bsp::unit_gunnery_initial_category_state_00864580(), stance, false, true,
+            countdown, allow_fire_cache);
+        if (!state.torpedo_group_flag) return false;          // byte +77h
+        bsp::GunneryTargetLiveness liveness;
+        liveness.registered = units.unit_active(target);
+        liveness.dead = gunnery != nullptr && gunnery->unit_dead(target);
+        if (!bsp::target_is_engageable_00862820(liveness)) return false;
+        const int class_id = units.unit_class_id(target);
+        if (class_id < 0) return false;
+        static const std::vector<int> ranks = [] {
+            std::vector<int> table(static_cast<std::size_t>(bsp::kUnitGunneryCategoryCount) *
+                                   static_cast<std::size_t>(bsp::kUnitGunneryClassIdCount), 0);
+            bsp::build_rank_table_00727bd0(bsp::kGunneryPreferenceLists, table.data());
+            return table;
+        }();
+        if (bsp::gunnery_rank(ranks.data(), bsp::kTorpedoStandoffWeaponKind, class_id) == 0) {
+            return false;
+        }
+        const bool plane = units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase);
+        return bsp::category_mask_admits_target_008633d0(
+            state.mask[static_cast<std::size_t>(bsp::kTorpedoStandoffWeaponKind)], plane);
+    }
+    // 00814390(unit, target) when `own` (torpedoes whose owner +4F8h is
+    // `owner_handle`), 00814420 on the target otherwise (owner != the target):
+    // the live torpedoes target->vtable[1D0h] 008173E0 calls a threat.
+    // LABELLED: the torpedo's +46Ch is atan2(vx, vz) of the host round (it runs
+    // straight on its launch heading, as torpedo_candidate has it), and a
+    // target with no ship depth input takes class+570h = 0.
+    int torpedoes_threatening_00814390(std::size_t target, std::size_t owner_handle, bool own) {
+        if (target >= units.count()) return 0;
+        bsp::ShipAiTorpedoThreatInputs in{};
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        units.unit_position_00fc(target, x, y, z);
+        in.unit_position[0] = x;
+        in.unit_position[1] = y;
+        in.unit_position[2] = z;
+        in.unit_is_submarine = units.unit_is_kind_of(target, 8);
+        if (target < controllers.size() && controllers[target].class_depth_loaded) {
+            in.class_0570 = static_cast<std::int32_t>(controllers[target].class_reference_0570);
+        }
+        const GameGunneryUnitRow* row = gunnery_unit_row(target);
+        if (settings_owner != nullptr && row != nullptr && row->type_id >= 0) {
+            in.class_length_00a0 = settings_owner->read_vehicle_class_number(row->type_id,
+                "Length", 0.0f);
+        }
+        int count = 0;
+        for (const GameGunneryHost::LiveTorpedo& t : live_torpedoes()) {
+            if ((t.owner_unit == owner_handle) != own) continue;
+            in.torpedo_run_seconds = t.swim_seconds;
+            in.torpedo_position[0] = t.position[0];
+            in.torpedo_position[1] = t.position[1];
+            in.torpedo_position[2] = t.position[2];
+            in.torpedo_heading = static_cast<float>(std::atan2(
+                static_cast<double>(t.velocity[0]), static_cast<double>(t.velocity[2])));
+            in.water_travel_speed = t.water_travel_speed;
+            if (bsp::ship_ai_torpedo_threatens_008173e0(in)) ++count;
+        }
+        return count;
+    }
+
     bool fill_target_block_127ch(const Controller& ctl, bsp::ShipAiFirepowerQuery& q) const {
         const std::uint32_t handle = ctl.goal_vector.raw_target_0b20;
         if (handle == 0u || handle - 1u >= units.count()) return false;
@@ -2892,6 +2980,24 @@ private:
     std::size_t index_;
 };
 
+// Packet cc9_torpedo_standoff. 0080DF40(unit): 00727D70(0.0) summed over the
+// operational devices of the category-7 list, through the same gun-row answers
+// FirepowerBinding gives 0095EB40.
+int ready_torpedo_barrels_0080df40(GameShipAiHost::Impl& owner, std::size_t index) {
+    if (owner.gunnery == nullptr) return 0;
+    const std::vector<std::size_t>* list =
+        owner.gunnery->unit_category_guns(index, bsp::kTorpedoStandoffWeaponKind);
+    if (list == nullptr) return 0;
+    FirepowerBinding firepower(owner, index);
+    int ready = 0;
+    for (const std::size_t gun : *list) {
+        const bsp::NativeHandle device = static_cast<bsp::NativeHandle>(gun + 1u);
+        if (!firepower.device_is_operational(device)) continue;   // 0080DF59
+        ready += firepower.device_ready_rounds(device, 0.0f);     // 0080DF6A
+    }
+    return ready;
+}
+
 // 009E6640's own host, the obstacle probe behind the accept/reject test.
 class RingScanProbeBinding final : public bsp::ShipAiRingScanHost {
 public:
@@ -3192,8 +3298,21 @@ public:
         return owner_.units.unit_class_turn_circle_radius_0082e960(index_, rudder);
     }
     int unit_clearance_count_0080df40() override {
-        owner_.record("ShipAiApproach::unit_clearance_count_0080df40", 0x0080df40u);
-        return 0;
+        // 009E731B, reached only with +12BAh set and +12B4h above 0.
+        ++owner_.summary.torpedo_standoff_cap_tests;
+        if (!bsp::kTorpedoStandoffBound) {
+            owner_.record("ShipAiApproach::unit_clearance_count_0080df40", 0x0080df40u);
+            return 0;
+        }
+        // Packet cc9_torpedo_standoff: 0080DF40 is the ready torpedo barrels,
+        // 00727D70(0.0) over the operational devices of unit+3ECh.
+        const int ready = ready_torpedo_barrels_0080df40(owner_, index_);
+        owner_.done("ShipAiApproach::unit_clearance_count_0080df40", 0x0080df40u);
+        if (ready > 0) {
+            ++owner_.summary.torpedo_standoff_cap_gates;
+            if (index_ < owner_.rows.size()) ++owner_.rows[index_].torpedo_standoff_cap_gates;
+        }
+        return ready;
     }
     void score_slot_009e6870(int slot, float side_weight, float span_weight,
                              float slot_scale, float tune_04) override {
@@ -3509,6 +3628,135 @@ private:
     std::size_t index_;
 };
 
+// Packet cc9_torpedo_standoff (docs/SENTITY_INIT_PASSES.md section 9): the
+// calls 009F1BC0 makes in 009F2AC9..009F2E9B for the torpedo gate +12BAh and
+// the clearance +12B4h.
+class TorpedoStandoffBinding final : public bsp::ShipAiTorpedoStandoffHost {
+public:
+    TorpedoStandoffBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                           std::size_t index, std::size_t target, bool have_target_block,
+                           const bsp::ShipAiFirepowerQuery& target_block)
+        : owner_(owner), ctl_(ctl), index_(index), target_(target),
+          have_target_block_(have_target_block), target_block_(target_block) {}
+
+    bool director_torpedo_enable_0222() override {
+        return owner_.director_torpedo_enable_0222(index_);
+    }
+    float own_health_00923be0() override {
+        // 00923BE0: the +5Dh arm, else the class fraction unit+370h/unit+36Ch
+        // clamped into [0, 1]; the gunnery host keeps both halves.
+        const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+        if (row == nullptr) {
+            owner_.record("ShipAiTorpedoStandoff::own_health_00923be0", 0x009f2bceu);
+            return bsp::ai_unit_health_00923be0(false, 0.0f, false);
+        }
+        owner_.done("ShipAiTorpedoStandoff::own_health_00923be0", 0x009f2bceu);
+        const bool torn_down = owner_.gunnery != nullptr && owner_.gunnery->unit_dead(index_);
+        return bsp::ai_unit_health_00923be0(torn_down,
+            row->max_health > 0.0f ? row->health / row->max_health : 0.0f,
+            row->max_health > 0.0f);
+    }
+    bool torpedo_group_accepts_target_00863920() override {
+        return owner_.torpedo_group_accepts_target_00863920(index_, target_);
+    }
+    bool torpedo_projectile_00814350(bsp::ShipAiFirepowerProjectileClass& out) override {
+        // 00814350(unit, 7): the category-7 count, the first node's device, its
+        // ammunition's class. The host reaches the class through the gun row.
+        const std::vector<std::size_t>* list = torpedo_list();
+        if (list == nullptr || list->empty()) return false;
+        FirepowerBinding firepower(owner_, index_);
+        out = firepower.ammo_projectile_class(
+            static_cast<bsp::NativeHandle>(list->front() + 1u));
+        owner_.done("ShipAiTorpedoStandoff::torpedo_projectile_00814350", 0x00814350u);
+        return true;
+    }
+    float hits_to_sink_0095e9a0(const bsp::ShipAiFirepowerProjectileClass& p,
+                                float damage_offset) override {
+        bsp::ShipAiTorpedoSinkInputs in{};
+        in.target_torn_down = owner_.gunnery != nullptr && owner_.gunnery->unit_dead(target_);
+        in.damage_offset = damage_offset;
+        in.have_projectile = true;
+        in.projectile = p;
+        // [target+370h] and the class armours, as the target block holds them
+        // (fill_target_block_127ch: the gunnery host's health, the class rows).
+        in.target_health = have_target_block_ ? target_block_.damage_cap : 0.0f;
+        in.target_armour = target_block_.armour;
+        in.target_armour_torpedo = target_block_.armour_torpedo;
+        // settings+3B0h WaterTickDamage: shipglobals.lua:77 authors 100, the
+        // value FirepowerBinding::gameplay_tick_damage answers.
+        in.water_tick_damage = 100.0f;
+        owner_.done("ShipAiTorpedoStandoff::hits_to_sink_0095e9a0", 0x0095e9a0u);
+        return bsp::ship_ai_torpedo_hits_to_sink_0095e9a0(in);
+    }
+    int ready_torpedo_barrels_0080df40() override {
+        return ::bsp::game::ready_torpedo_barrels_0080df40(owner_, index_);
+    }
+    int own_torpedoes_threatening_target_00814390() override {
+        owner_.done("ShipAiTorpedoStandoff::own_in_flight_00814390", 0x00814390u);
+        return owner_.torpedoes_threatening_00814390(target_, index_ + 1u, true);
+    }
+    int torpedoes_threatening_target_00814420() override {
+        // 00CFC5A4, ship vtable[1D4h] = 00814420 (no Ghidra function,
+        // 00814420-00814492): every live torpedo NOT owned by the target.
+        owner_.record("ShipAiTorpedoStandoff::threats_00814420_no_ghidra_function", 0x00814420u);
+        return owner_.torpedoes_threatening_00814390(target_, target_ + 1u, false);
+    }
+    int torpedo_device_count_03e8() override {
+        const std::vector<std::size_t>* list = torpedo_list();
+        return list == nullptr ? 0 : static_cast<int>(list->size());
+    }
+    bool first_torpedo_device_present() override {
+        const std::vector<std::size_t>* list = torpedo_list();
+        return list != nullptr && !list->empty();
+    }
+    float first_torpedo_bot_accuracy_00729f40() override {
+        // 00729F40(7) on the first category-7 gun: 0072C870 gives every
+        // Function-7 gun a TorpedoBot at +39Ch (docs/GUN_BOT_TICKS.md section 3),
+        // so the answer is its vtable[20h] 008FB530, [[00E1998C] + 14h*(lv+1)],
+        // the level row's FireTargetAccuracy. LABELLED SUBSTITUTION: this process
+        // holds no TorpedoBot descriptor, so the six values are this
+        // installation's robots.lua (lines 392..432, mtime 2025-06-01) in the
+        // level order robot_config.cpp:773 gives (Stun 0, SPNormal 1, SPVeteran 2,
+        // MPNormal 3, MPVeteran 4, Elite 5), and the level is the units host's
+        // skill level with its out-of-range fallback 1, as the throw path uses it.
+        static constexpr float kFireTargetAccuracy[6] = {0.03f, 0.35f, 0.055f, 0.04f, 0.045f,
+                                                         0.055f};
+        int level = owner_.units.skill_level(index_);
+        if (level < 0 || level > 5) level = 1;
+        owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
+        return kFireTargetAccuracy[level];
+    }
+    float torpedo_range_044c() override {
+        const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+        if (row == nullptr) return 0.0f;
+        return row->category_ranges[static_cast<std::size_t>(bsp::kTorpedoStandoffWeaponKind)];
+    }
+    float weapon_hit_accuracy_008387b0(int kind, float target_length, float scale,
+                                       float accuracy) override {
+        bsp::WeaponHitAccuracyProfile profiles[4];
+        owner_.weapon_hit_accuracy(profiles);
+        owner_.done("ShipAiTorpedoStandoff::weapon_hit_accuracy_008387b0", 0x008387b0u);
+        return bsp::weapon_hit_accuracy_scaled_008387b0(profiles, kind, target_length, scale,
+                                                        accuracy);
+    }
+    float target_curve_effective_range_00952530() override {
+        return bsp::ship_ai_approach_curve_effective_range_00952530(ctl_.approach_curve_target);
+    }
+
+private:
+    const std::vector<std::size_t>* torpedo_list() const {
+        if (owner_.gunnery == nullptr) return nullptr;
+        return owner_.gunnery->unit_category_guns(index_, bsp::kTorpedoStandoffWeaponKind);
+    }
+
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+    std::size_t target_;
+    bool have_target_block_;
+    bsp::ShipAiFirepowerQuery target_block_;
+};
+
 // bsp::ShipAiApproachUpdateHost, the seven calls of 009F3090 in their fixed
 // order. Only the first is run: it is the one that produces the approach point
 // and the goal range, and the other six need the 60-slot ring the four unread
@@ -3542,6 +3790,9 @@ public:
             ++row_.committed_slot_changes;
         }
         row_.ring_winner_last = ctl_.approach.committed_slot_11e8;
+        // Packet cc9_torpedo_standoff: 009F2AC9..009F2E9B run before the two
+        // refills below, so 00952530 at 009F2D98 samples last frame's curve.
+        if (bsp::kTorpedoStandoffBound) run_torpedo_standoff();
         // 009F2F11 and 009F2FB1, the two 0095F080 refills of the curve objects
         // the standoff scan then samples. They sit in the span of 009F1BC0 the
         // projection does not cover, and the countdowns they re-arm are the
@@ -3708,6 +3959,41 @@ private:
 
     bsp::ShipAiFirepowerQuery target_query_1238h() const {
         return owner_.target_block_1238h(index_);
+    }
+
+    void run_torpedo_standoff() {
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        bsp::ShipAiTorpedoStandoffInputs in{};
+        in.has_raw_target = handle != 0u;
+        std::size_t target = owner_.units.count();
+        if (in.has_raw_target && handle - 1u < owner_.units.count()) {
+            target = static_cast<std::size_t>(handle - 1u);
+            in.has_unit_target = owner_.units.unit_is_kind_of(target, 5); // 009F29F3
+            in.has_ship_target = owner_.units.unit_is_kind_of(target, 6); // 009F1DD5
+        }
+        // nested+1280h: 009F2A54's class Length, or 100.0f (009F2AC1).
+        bsp::ShipAiFirepowerQuery block{};
+        block.target_length = 100.0f;
+        const bool have_block = owner_.fill_target_block_127ch(ctl_, block);
+        in.target_length_1280 = block.target_length;
+        in.damage_offset_1218 = ctl_.approach.cleared_1218; // 009F2C52
+        TorpedoStandoffBinding host(owner_, ctl_, index_, target, have_block, block);
+        const bsp::ShipAiTorpedoStandoffResult out =
+            bsp::ship_ai_torpedo_standoff_009f2ac9(in, host);
+        ctl_.approach.clearance_valid_12ba = out.enabled_12ba;
+        ctl_.approach.clearance_12b4 = out.clearance_12b4;
+        owner_.done("ShipAiApproach::torpedo_standoff_009f2ac9", 0x009f2ac9u);
+        ++owner_.summary.torpedo_standoff_frames;
+        ++owner_.summary.torpedo_standoff_exits[static_cast<int>(out.exit)];
+        ++row_.torpedo_standoff_frames;
+        if (out.enabled_12ba) {
+            ++row_.torpedo_standoff_enabled;
+            row_.torpedo_standoff_clearance_last = out.clearance_12b4;
+            if (row_.torpedo_standoff_clearance_min < 0.0f ||
+                out.clearance_12b4 < row_.torpedo_standoff_clearance_min) {
+                row_.torpedo_standoff_clearance_min = out.clearance_12b4;
+            }
+        }
     }
 
     void refresh_approach_curves(bool has_target) {
@@ -8235,6 +8521,27 @@ void GameShipAiHost::report() {
     host.log.notef("summary mission ship ai standoff choices=%llu curve_refreshes=%llu "
         "(009e6e80 writes nested+11e4h; 0095f080 fills nested+12c0h and nested+13b0h)",
         host.summary.standoff_choices, host.summary.approach_curve_refreshes);
+    // Packet cc9_torpedo_standoff: 009F2AC9..009F2E9B's exits in the order of
+    // bsp::ShipAiTorpedoStandoffExit, and 009E72F3's gate.
+    {
+        const unsigned long long* e = host.summary.torpedo_standoff_exits;
+        host.log.notef("summary mission ship ai torpedo standoff frames=%llu exits "
+            "none_off=%llu none_on=%llu not_ship_or_off=%llu refused=%llu no_unit=%llu "
+            "in_flight=%llu no_devices=%llu clearance=%llu capped=%llu cap_tests=%llu "
+            "cap_gates=%llu bound=%d (009f2ac9..009f2e9b, 009e72f3; packet cc9_torpedo_standoff)",
+            host.summary.torpedo_standoff_frames, e[0], e[1], e[2], e[3], e[4], e[5], e[6],
+            e[7], e[8], host.summary.torpedo_standoff_cap_tests,
+            host.summary.torpedo_standoff_cap_gates, bsp::kTorpedoStandoffBound ? 1 : 0);
+        for (const GameShipAiRow& row : host.rows) {
+            if (row.torpedo_standoff_enabled == 0 && row.torpedo_standoff_cap_gates == 0) continue;
+            host.log.notef("  torpedo standoff %-20s frames=%llu enabled=%llu cap_gates=%llu "
+                "clearance_min=%.1f clearance_last=%.1f",
+                row.unit.c_str(), row.torpedo_standoff_frames, row.torpedo_standoff_enabled,
+                row.torpedo_standoff_cap_gates,
+                static_cast<double>(row.torpedo_standoff_clearance_min),
+                static_cast<double>(row.torpedo_standoff_clearance_last));
+        }
+    }
     for (const GameShipAiRow& row : host.rows) {
         if (row.standoff_choices == 0) continue;
         host.log.notef("  standoff %-20s choices=%llu first=%.1f last=%.1f "

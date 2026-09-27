@@ -13,10 +13,12 @@
 
 #include "bsp/ship_ai_approach_update.hpp"
 
+#include <array>
 #include <cmath>
 #include <cstring>
 
 #include "bsp/ship_ai_throttle_ring.hpp"
+#include "bsp/gamepad_force_events.hpp"
 #include "bsp/unit_rudder.hpp"
 
 namespace bsp {
@@ -462,7 +464,13 @@ void ship_ai_approach_reset_scores_009e7fc0(ShipAiApproachState& state,
 
     // 009E813D..009E8178.
     state.avoid_radius_1290 = state.slot_scale_11dc;
-    state.clearance_valid_12ba = true; // 009E8171 and 009E8178 set +12BCh/+12BDh
+    // 009E8171 and 009E8178 store 1 at +12BCh and +12BDh, the query block's
+    // require_bearing and use_ready_rounds bytes, not at +12BAh. The earlier
+    // projection set the standoff gate here; with the torpedo standoff bound
+    // (packet cc9_torpedo_standoff) only 009F1BC0 writes it.
+    if (!kTorpedoStandoffBound) {
+        state.clearance_valid_12ba = true;
+    }
 
     // 009E8192..009E81DA, the scoring pass and its running maximum, which the
     // image seeds with 1.0f so the normalisation never divides by less.
@@ -1157,6 +1165,190 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
     // in that same slot.
     state.committed_slot_11e8 =
         ship_ai_approach_slot_of_bearing_009e5e90(state.unit_heading_11ec);
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_torpedo_standoff (docs/SENTITY_INIT_PASSES.md section 9)
+// ---------------------------------------------------------------------------
+
+namespace {
+
+// 00415550 BSP_Math_MaxFloatByRef as the listing has it: FLD b, FLD a,
+// FCOMI ST(1), JBE -> b. So a only when a > b; an unordered pair returns b.
+float torpedo_max_by_ref_00415550(float a, float b) noexcept { return (a > b) ? a : b; }
+
+} // namespace
+
+float ship_ai_torpedo_hits_to_sink_0095e9a0(const ShipAiTorpedoSinkInputs& in) noexcept {
+    // 0095E9A7..0095E9B2: FLD health, FSUB offset, FSTP float.
+    const float remaining = static_cast<float>(static_cast<double>(in.target_health) -
+                                               in.damage_offset);
+    if (in.target_torn_down) return 0.0f;   // 0095E9B6
+    if (!in.have_projectile) return 0.0f;   // 0095E9C2
+    if (0.0f >= remaining) return 0.0f;     // 0095E9CB COMISS, JAE
+    const ShipAiFirepowerProjectileClass& p = in.projectile;
+    // 0095E9D6..0095EA0F: sub-types 0Ah and 0Bh take the class's vtable[24h].
+    const float armour = (p.sub_type == 0x0A || p.sub_type == 0x0B)
+                             ? in.target_armour_torpedo
+                             : in.target_armour;
+    // 0095EA15..0095EA4B and 0095EA4B..0095EA81: FCOMI then JBE keeps the
+    // second operand on a tie.
+    const float lo = (p.damage_min > p.blast_damage_min) ? p.damage_min : p.blast_damage_min;
+    const float hi = (p.damage_max > p.blast_damage_max) ? p.damage_max : p.blast_damage_max;
+    const float fraction = clamped_interpolate_00419010(lo, 1.0f, hi, 0.0f, armour); // 0095EAAD
+    if (!(fraction > 0.0f)) return kTorpedoSinkNoKill; // 0095EAC0 JBE
+    // 0095EAC2..0095EAE8: FCOMI lo against armour, JBE when lo <= armour.
+    float excess = 0.0f;
+    if (lo > armour) {
+        excess = static_cast<float>((static_cast<double>(lo) + hi) * 0.5 - armour);
+    } else {
+        excess = static_cast<float>((static_cast<double>(hi) - armour) * 0.5);
+    }
+    // 0095EAFB..0095EB13: tick * WaterDamage * 0.5 + excess, one float store.
+    const float per_hit = static_cast<float>(
+        static_cast<double>(in.water_tick_damage) * p.water_damage * 0.5 + excess);
+    // 0095EB17..0095EB21: remaining / (per_hit * fraction).
+    return static_cast<float>(static_cast<double>(remaining) /
+                              (static_cast<double>(per_hit) * fraction));
+}
+
+float ship_ai_compass_heading_007b4e90(float x, float z) noexcept {
+    // 007B4E91..007B4E9B: FLD [vec+8], FLD [vec], CALL 00BF701A (_CIatan2 of
+    // ST1 over ST0), FSTP float.
+    const float angle = static_cast<float>(std::atan2(static_cast<double>(z),
+                                                      static_cast<double>(x)));
+    // 007B4EA1: FSUBR the double 00CE3830 (pi/2 as a float, widened).
+    float heading = static_cast<float>(1.5707963705062866 - angle);
+    if (0.0f > heading) { // 007B4EAD..007B4EB1
+        heading = static_cast<float>(static_cast<double>(heading) + 6.2831854820251465);
+    }
+    return heading;
+}
+
+bool ship_ai_torpedo_threatens_008173e0(const ShipAiTorpedoThreatInputs& in) noexcept {
+    if (in.torpedo_torn_down) return false;               // 008173F3
+    if (0.0f >= in.torpedo_run_seconds) return false;     // 00817400 COMISS, JAE
+    // 0081742D..00817462: unit - torpedo, each component float-stored.
+    std::array<float, 3> delta{
+        static_cast<float>(static_cast<double>(in.unit_position[0]) - in.torpedo_position[0]),
+        static_cast<float>(static_cast<double>(in.unit_position[1]) - in.torpedo_position[1]),
+        static_cast<float>(static_cast<double>(in.unit_position[2]) - in.torpedo_position[2])};
+    if (in.unit_is_submarine) {
+        // 0081746C..00817492: the sign-masked height difference against 6.0.
+        if (sign_masked(delta[1]) > 6.0f) return false;
+    } else {
+        // 008174AE..008174CE: FILD -class+570h, FCOMI against the torpedo's y,
+        // JAE: at or below that depth the torpedo passes underneath.
+        const std::int32_t depth = static_cast<std::int32_t>(
+            0u - static_cast<std::uint32_t>(in.class_0570));
+        if (static_cast<double>(depth) >= in.torpedo_position[1]) return false;
+    }
+    delta[1] = 0.0f; // 008174D7
+    const float distance = force_event_vector_length_0042b2f0(delta); // 008174DD
+    const float seconds = static_cast<float>(static_cast<double>(distance) /
+                                             in.water_travel_speed); // 008174F0
+    // 00817505..0081752C: 00419010(2.0, 1.3962634, 6.0, 0.7853982, seconds).
+    const float tolerance = clamped_interpolate_00419010(2.0f, 1.3962634801864624f, 6.0f,
+                                                         0.7853981852531433f, seconds);
+    const float bearing = ship_ai_compass_heading_007b4e90(delta[0], delta[2]); // 00817543
+    const float heading_w = ship_ai_firepower_wrap_angle_00605070(in.torpedo_heading); // 00817550
+    const float bearing_w = ship_ai_firepower_wrap_angle_00605070(bearing);            // 00817559
+    const float difference = wrapped_angle_subtract_00438b10(heading_w, bearing_w);    // 00817570
+    // 00817575..008175B1: (tolerance > difference) as a float, sign-masked,
+    // UCOMISS against 0: any nonzero answers true. The difference is SIGNED.
+    if (tolerance > difference) return true;
+    // 008175B3..008175CD: Length * 0.5 > distance.
+    return static_cast<double>(in.class_length_00a0) * 0.5 > distance;
+}
+
+ShipAiTorpedoStandoffResult ship_ai_torpedo_standoff_009f2ac9(
+    const ShipAiTorpedoStandoffInputs& in, ShipAiTorpedoStandoffHost& host) {
+    ShipAiTorpedoStandoffResult out{};
+    if (!in.has_raw_target) {
+        // 009F2DF7..009F2E9B, the arm with no target.
+        out.enabled_12ba = host.director_torpedo_enable_0222(); // 009F2E54
+        out.need_12a0 = out.enabled_12ba ? kTorpedoStandoffNoTargetNeed : 0.0f; // 009F2E78
+        if (out.enabled_12ba) {
+            // 009F2E8B..009F2E9B: FLD [unit+44Ch], FMUL 0.8 (double), FSTP.
+            out.clearance_12b4 = static_cast<float>(
+                static_cast<double>(host.torpedo_range_044c()) * kTorpedoStandoffNoTargetScale);
+            out.exit = ShipAiTorpedoStandoffExit::no_target_enabled;
+        } else {
+            out.clearance_12b4 = 0.0f; // 009F2E99 FLDZ
+            out.exit = ShipAiTorpedoStandoffExit::no_target_disabled;
+        }
+        return out;
+    }
+    // 009F2B90..009F2BC2: word 9 = 0; the gate needs a ship target and +222h.
+    out.need_12a0 = 0.0f;
+    out.enabled_12ba = in.has_ship_target && host.director_torpedo_enable_0222();
+    // 009F2BC8..009F2BFE: the health weight is taken on every target frame.
+    const float health_weight = clamped_interpolate_00419010(
+        0.0f, kTorpedoStandoffHealthY0, kTorpedoStandoffHealthX1, 1.0f,
+        host.own_health_00923be0());
+    if (!out.enabled_12ba) { // 009F2C09
+        out.exit = ShipAiTorpedoStandoffExit::not_ship_or_disabled;
+        return out;
+    }
+    out.enabled_12ba = host.torpedo_group_accepts_target_00863920(); // 009F2C26
+    if (!out.enabled_12ba) {
+        out.exit = ShipAiTorpedoStandoffExit::group_refused;
+        return out;
+    }
+    if (!in.has_unit_target) { // 009F2C34
+        out.exit = ShipAiTorpedoStandoffExit::no_unit_target;
+        return out;
+    }
+    ShipAiFirepowerProjectileClass projectile{};
+    if (host.torpedo_projectile_00814350(projectile)) { // 009F2C4C
+        // 009F2C5F..009F2C6B: FMUL the health weight, FSTP float.
+        out.need_12a0 = static_cast<float>(
+            static_cast<double>(host.hits_to_sink_0095e9a0(projectile, in.damage_offset_1218)) *
+            health_weight);
+        if (host.ready_torpedo_barrels_0080df40() > 0) { // 009F2C7E
+            // 009F2C8E..009F2CA1: FILD count, FMUL 0.5, FSTP float.
+            float covered = static_cast<float>(
+                static_cast<double>(host.own_torpedoes_threatening_target_00814390()) *
+                kTorpedoInFlightWeight);
+            if (out.need_12a0 > covered) { // 009F2CAF FCOMI, JBE
+                const float share = static_cast<float>(
+                    static_cast<double>(host.torpedoes_threatening_target_00814420()) /
+                    kTorpedoThreatShareDivisor); // 009F2CC5..009F2CD7
+                covered = torpedo_max_by_ref_00415550(covered, share); // 009F2CDB
+            }
+            // 009F2CE4..009F2CF6: need - covered, FSTP float, then FST into word 9.
+            out.need_12a0 = static_cast<float>(static_cast<double>(out.need_12a0) - covered);
+            if (!(0.0f < out.need_12a0)) { // 009F2CFE FCOMI, JB
+                out.enabled_12ba = false;  // 009F2D04
+                out.exit = ShipAiTorpedoStandoffExit::enough_in_flight;
+                return out;
+            }
+        }
+    }
+    if (host.torpedo_device_count_03e8() <= 0) { // 009F2D21 JLE
+        out.enabled_12ba = false;                // 009F2DEB
+        out.exit = ShipAiTorpedoStandoffExit::no_devices;
+        return out;
+    }
+    float accuracy = 0.0f; // 009F2D3C
+    if (host.first_torpedo_device_present()) {
+        accuracy = host.first_torpedo_bot_accuracy_00729f40(); // 009F2D46
+    }
+    const float range = host.torpedo_range_044c(); // 009F2D58
+    out.clearance_12b4 = host.weapon_hit_accuracy_008387b0(
+        kTorpedoStandoffWeaponKind, in.target_length_1280, range, accuracy); // 009F2D8C
+    // 009F2D92..009F2DC0: max(300.0, curve) * health weight, FSTP float.
+    const float cap = static_cast<float>(
+        static_cast<double>(torpedo_max_by_ref_00415550(
+            kTorpedoStandoffRangeFloor, host.target_curve_effective_range_00952530())) *
+        health_weight);
+    if (out.clearance_12b4 > cap) { // 009F2DCE FCOMI, JBE
+        out.clearance_12b4 = cap;   // 009F2DDE
+        out.exit = ShipAiTorpedoStandoffExit::clearance_capped;
+    } else {
+        out.exit = ShipAiTorpedoStandoffExit::clearance;
+    }
+    return out;
 }
 
 } // namespace bsp

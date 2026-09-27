@@ -135,6 +135,34 @@ bool ship_avoidance_side_accepted_009ec79b(int query_side, int record_side_filte
 bool weapon_hit_accuracy_category_008387b0(int weapon_kind,
                                            WeaponHitAccuracyCategory& out) noexcept;
 
+// Packet cc9_torpedo_standoff (docs/SENTITY_INIT_PASSES.md section 9).
+// 00838530, __thiscall(profile)(float target_length, float accuracy) -> ST0,
+// RET 8, body 00838530-008386E5, read whole from the listing. The inverse of
+// 008383D0: it answers the range FRACTION at which the profile's accuracy has
+// fallen to `accuracy`. The first float is the target length (it is compared
+// with TargetReferenceSizes, 0083855D..00838573), not a range as the ledger's
+// earlier signature said; the second is compared with the accuracy rows.
+//   w = 0.5f (00CE3800) when 0 > length (0083853E), else
+//       00419010(x0=+0h, y0=1.0, x1=+4h, y1=0.0, x=length), float-stored;
+//   per row (+8h small, +30h large): i = the first slot below `accuracy`
+//       (0083858D..008385A4, FCOMI then JA), 10 when none is;
+//       i == 0 -> 0.1f (00D7A2F0), i == 10 -> 1.0f (00D7A24C), otherwise
+//       00419010(x0=row[i], y0=float((i+1)*0.1), x1=row[i-1], y1=float(i*0.1), x=accuracy)
+//       with 0.1 the double 00D7A3A0 (0.1f widened);
+//   result = float(r_large * float(1 - w) + r_small * w) (008386C6..008386D8).
+float weapon_hit_accuracy_range_fraction_00838530(const WeaponHitAccuracyProfile& profile,
+                                                  float target_length,
+                                                  float accuracy) noexcept;
+
+// 008387B0 whole: `profiles` in the order +240h, +298h, +2F0h, +348h. A matched
+// kind answers float(00838530(profile, target_length, accuracy) * scale)
+// (0083884C FMUL then FSTP); an unmatched kind returns `scale` (00838891).
+// 009F2D87 calls it with kind 7, the target length nested+1280h, the torpedo
+// category range unit+44Ch and the torpedo bot's FireTargetAccuracy.
+float weapon_hit_accuracy_scaled_008387b0(const WeaponHitAccuracyProfile profiles[4],
+                                          int weapon_kind, float target_length,
+                                          float scale, float accuracy) noexcept;
+
 // ---------------------------------------------------------------------------
 // The tables
 // ---------------------------------------------------------------------------
