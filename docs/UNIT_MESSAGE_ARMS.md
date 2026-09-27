@@ -505,7 +505,7 @@ image's gate would pass every one of the 664 USN02 sends and the 5 USN04 hull se
 either mission). The Repair substitution (0 for every class) and the host's dead-victim return
 leave nothing to flood on these two missions today.
 
-## 90h: the Repair byte and the health (packet `cc9_live_hull_repair`, `kLiveHullRepairBound`, committed OFF)
+## 90h: the Repair byte and the health (packet `cc9_live_hull_repair`, `kLiveHullRepairBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units3, on main 0870e14a8 (wings on). Ghidra was read only. This packet
 retires the two substitutions that keep every live hull dry:
@@ -584,3 +584,59 @@ go to aircraft.
 - USN02 wreck descents shorten by 5..40 s.
 - USN02 hit records and deaths stay within their bands.
 - USN04 stays essentially identical: the Lexington floods but survives.
+
+### The pairs, measured (`f27fb079a`, wings on)
+
+The OFF build is the tree's own `build\`; the ON build is `tools/pair_export.py --flip
+kLiveHullRepairBound=true --out local\bu_on`. Both variables were set. The logs are
+`local\RP_{OFF,ON}_{USN02,USN04}.log` in worktree cc9-units3. All four show the fit line, the
+immediate present interval, a module directory in this tree and the final COM release.
+`pair_diff` returned exit 3 on both.
+
+**USN02 9200/9000.** The OFF rows match `WH2_ON_USN02` (674 hit records, 20 deaths, 15 kills),
+as predicted.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| leak sends applied / gated | 71 / 662 | 693 / 0 | every live send passes | held |
+| hulls with water at the end | 20 (wrecks) | 22 | about 25 | held in kind |
+| damaged survivors | dry | Alden 69.5 at health 0.5888 and John1 70.3 at 0.5839: each exactly `(1 − h) × 0.2 × capacity`; neither sinks | flood to the cap, no sinking | held |
+| deaths | 20 | 20 (John1 survives, Witte dies) | 20 ± 2 | held |
+| wreck descent, hit over time (Kawakaze, Electra, Kortenaer, Yudachi, Samidare, Yamakaze, Amatsukaze, John3) | 95.4..111.8 s | Kawakaze 82.20; the others 93.0..103.1 | 65..90 s | **failed** except Kawakaze |
+| wreck descent, others | Exeter 103.95, Houston 106.05, Perth 106.10, DeRuyter 101.50, Java 103.75, Yukikaze 106.50 | 160.71, 146.35, 142.15, 119.10, 111.10, 115.65 | 5..20 s faster | **failed**: slower by 7..57 s |
+| the controlled Houston | 106.05 s | 146.35 s | 90..101 s | **failed** |
+| kills, list 6 | 15, 17 | 15, 17 | 16..19, 13..16 | **failed** |
+| hit records, hull hits | 674, 295 | 664 (−1.5 %), 305 | ± 5 % | held |
+
+**Why the descents failed (V).** The wreck handler's `0074EC50` shares its `2 × cap` among the
+six leaks in proportion to each leak's `(draw + water)` (docs/CONSTRUCT_WORLD.md 25). A hull that
+flooded while alive holds its water in the one or two leaks its hits chose (0074F090's station
+index), so nearly all of the `2 × cap` goes to those leaks. There, `0074F930` clips each leak at
+`cap`, so the wreck's total inflow falls toward `1 × cap` instead of `2 × cap`. The water already
+aboard and the hit rates do not make up for it.
+- A one-hit death (Exeter, Houston, Perth) has its water in a single leak, and it sinks slowest.
+- A hull hit all over (Kawakaze) keeps its inflow spread, and it sinks faster, as predicted.
+- The model behind the predictions assumed the redistribution stays `2 × cap` whatever the
+  water is. That assumption was wrong, not the binding.
+
+**USN04 4700/4500.** The 5 live hull sends all went to Fletcher-class05 (health 0.3199), which
+floods to exactly its cap: 200.3 = (1 − 0.3199) × 0.2 × 1472.7. Deaths are 41 and hit records
+812, both unchanged. The gameplay rows that moved: hull hits 306 -> 307, shots 6366 -> 6341, and
+three aircraft death rows by up to 1.1 s.
+
+| row | prediction | measured | verdict |
+| --- | --- | --- | --- |
+| the idle Lexington | floods to about 14 813 (at 15 / 8000) | dry: **on current main it is at 8000 / 8000**, took no hull send, and the knife-edge premise is stale | **failed** (premise) |
+| other hulls under fire | flood to their cap | Fletcher-class05 exactly at its cap | held |
+| deaths, hit records | identical | 41, 812 | held |
+| pair_diff exit | 1, or 3 if one contact moves | 3 (hull hits +1, shots −25) | held |
+
+**Verdict: ON.** Live hulls take leaks and water as the image's gate and cap make them, and every
+flooded survivor sits exactly at its cap. The failed descent predictions come from the
+redistribution's water weighting, which is the image's own rule.
+
+**Reference e, how the rows move:**
+- USN02: hit records 674 -> 664, deaths 20 (John1 survives, Witte dies), kills 15, list 6 17.
+- USN02 wreck descents: most 3..26 s faster; the one-hit deaths 7..57 s slower (Exeter, Houston,
+  Perth, DeRuyter, Java, Yukikaze).
+- USN04: deaths 41 and hit records 812 unchanged; hull hits +1, shots −25.

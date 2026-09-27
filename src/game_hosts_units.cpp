@@ -3879,7 +3879,9 @@ struct GameUnitsHost::Impl {
     // the gunnery host hands them over. OFF: Repair 0 and health 1.0, the
     // labelled substitutions of packets cc9_live_hull_leak and
     // cc9_ship_sink_descent.
-    static constexpr bool kLiveHullRepairBound = false;
+    // ON since the USN02 / USN04 pairs (f27fb079a): live hulls flood to their
+    // cap; one-hit wrecks sink slower (0074EC50 weights by water).
+    static constexpr bool kLiveHullRepairBound = true;
     unsigned long long hull_leak_calls = 0;
     unsigned long long hull_leak_no_model = 0;
     unsigned long long hull_leak_gated_live = 0;
