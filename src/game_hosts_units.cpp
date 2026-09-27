@@ -1278,6 +1278,8 @@ struct GameUnitSlot {
     // Packet cc9_terrain_segment_consumers: pilot+3F0h, branch A's side byte, and
     // its census (00903BC0 calls, blocked first probes, fan exits by side).
     bool tr_side_3f0{false};
+    // Packet cc9_bsm01_state_natives: controller+14h, set by DisablePhysics.
+    bool controller_disabled_14{false};
     int tr_water_probes{0};
     int tr_water_blocked{0};
     int tr_water_fan_pos{0};
@@ -5834,9 +5836,9 @@ public:
         hydro_host.leak_water_mass_10fc = slot_.leak_water_mass_10fc;
 
         bsp::ShipHydroInputs in{};
-        // controller+14h. Nothing in this process sets it, so the live path at
-        // 00932A1F is the one taken and the routine never writes a velocity.
-        in.disabled = false;
+        // controller+14h. Only DisablePhysics 00891380 sets it (packet
+        // cc9_bsm01_state_natives); clear, the live path at 00932A1F is taken.
+        in.disabled = slot_.controller_disabled_14;
         in.material = slot_.hull_material;
         in.record = bsp::ship_physics_material_shipped(slot_.hull_material);
         in.class_mass = slot_.motion_class.hull_mass;      // class+B0h
@@ -17677,6 +17679,46 @@ bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const fl
         formation_leader_0014(slot.formation_group) == index) {
         host.record("UnitPlace::group_snap_0081963e", 0x0081963eu);
     }
+    return true;
+}
+
+bool GameUnitsHost::disable_physics_00891380(std::size_t index) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    // unit+1018h is a ship's force controller; the host models it with the
+    // hydrodynamics of a ship that has buoyancy elements.
+    if (slot.buoyancy_elements.empty()) return false;
+    slot.controller_disabled_14 = true;                          // 0089149E
+    host.done("Unit::disable_physics_00891380", 0x00891380u);
+    return true;
+}
+
+bool GameUnitsHost::local_matrix_0074(std::size_t index, float out[16]) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    for (int k = 0; k < 16; ++k) out[k] = host.slots[index]->local[static_cast<std::size_t>(k)];
+    return true;
+}
+
+// 006E00A0 (slot 88h of the unit vtables, docs/ENTITY_LOCAL_MATRIX.md): 004134F0
+// copies the matrix into +74h, +C8h and +10Ch are cleared, the children are
+// invalidated through 0042ED50, then (entity+310h)->vtable[0Ch]() (006E00E3).
+// The host's pose rows are the motion state, so the matrix goes there and is
+// published. LABELLED: the +310h notification is unread and not reproduced.
+bool GameUnitsHost::set_local_matrix_006e00a0(std::size_t index, const float m[16]) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    for (int i = 0; i < 3; ++i) {
+        slot.motion.pose_row0[i] = m[i];
+        slot.motion.pose_row1[i] = m[4 + i];
+        slot.motion.pose_row2[i] = m[8 + i];
+        slot.motion.position[i] = m[12 + i];
+    }
+    Impl::publish_pose(slot);
+    host.done("Entity::set_local_matrix_006e00a0", 0x006e00a0u);
+    host.record("Entity::local_matrix_notice_310_vtable0c", 0x006e00e3u);
     return true;
 }
 

@@ -711,6 +711,13 @@ public:
     // the motion state itself here, and vtable[0D8h] (00955970, the scene-node
     // matrix refresh) and the 1.25 at unit+0BCCh have no host counterpart.
     bool place_at_world_position_008193a0(std::size_t index, const float pos[3]);
+    // Packet cc9_bsm01_state_natives. DisablePhysics 00891380: the force
+    // controller's +14h byte, which 009329C9 tests every step; false for a unit
+    // with no controller. The entity's local 4x4 (+74h) and its slot 88h setter
+    // 006E00A0, which the matrix interpolator pass writes through.
+    bool disable_physics_00891380(std::size_t index);
+    bool local_matrix_0074(std::size_t index, float out[16]) const;
+    bool set_local_matrix_006e00a0(std::size_t index, const float m[16]);
     // group+4F8h.
     std::int32_t formation_member_count(std::int32_t group) const noexcept;
     // Packet cc9_ship_formation_speed: the unit record slot names,

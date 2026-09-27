@@ -100,14 +100,28 @@ namespace {
 // bsp::MatrixInterpolatorHost, the four call sites inside 00904600
 // ---------------------------------------------------------------------------
 
+struct MatrixInterpolatorRequest {
+    std::size_t unit{0};
+    float translation[3]{};
+    float rotation[3]{};
+    float duration{0.0f};
+};
+
+std::vector<MatrixInterpolatorRequest>& matrix_interpolator_queue() {
+    static std::vector<MatrixInterpolatorRequest> queue;
+    return queue;
+}
+
 class MatrixInterpolatorBinding final : public bsp::MatrixInterpolatorHost {
 public:
     explicit MatrixInterpolatorBinding(GameWorldHost::Impl& owner) : owner_(owner) {}
     bool entity_active(std::uint32_t) override { return true; }  // entity+5Ch
-    void entity_set_local_matrix(std::uint32_t, const float[16]) override {
-        // The entity vtable slot 88h. docs/WORLD_ENTITY_UPDATE.md records that
-        // slot 88h's body was not read at all; packet cc_entity_matrix owns it.
-        owner_.record("MatrixInterpolator::entity_set_local_matrix", 0x00904ade);
+    void entity_set_local_matrix(std::uint32_t entity, const float m[16]) override {
+        // The entity vtable slot 88h: 006E00A0 for a unit (docs/ENTITY_LOCAL_MATRIX.md).
+        // A record's entity is the unit index + 1 (packet cc9_bsm01_state_natives).
+        if (entity == 0 || !owner_.units.set_local_matrix_006e00a0(entity - 1u, m)) {
+            owner_.record("MatrixInterpolator::entity_set_local_matrix", 0x00904ade);
+        }
     }
     void entity_invalidate_subtree_pose(std::uint32_t) override {
         owner_.record("MatrixInterpolator::invalidate_subtree_pose", 0x0042ed50);
@@ -140,6 +154,21 @@ public:
         // 00904c2b. The float the walk forwards is dead in the body: 00904600
         // works entirely off the mission clock at 00f876a4.
         static_cast<void>(scaled_delta);
+        // Packet cc9_bsm01_state_natives: the script host's AddMatrixInterpolator
+        // calls since the last pass, registered by 00905080 in call order with the
+        // unit's +74h matrix and the clock at registration.
+        {
+            std::vector<MatrixInterpolatorRequest> pending;
+            pending.swap(matrix_interpolator_queue());
+            for (const MatrixInterpolatorRequest& r : pending) {
+                float base[16];
+                if (!owner_.units.local_matrix_0074(r.unit, base)) continue;
+                bsp::add_matrix_interpolator_00905080(owner_.interpolators,
+                    static_cast<std::uint32_t>(r.unit + 1), r.translation, r.rotation,
+                    r.duration, base, owner_.clock);
+                owner_.done("World::add_matrix_interpolator_00905080", 0x00905080u);
+            }
+        }
         MatrixInterpolatorBinding host(owner_);
         const bsp::MatrixInterpolatorPassResult result
             = bsp::run_matrix_interpolator_pass_00904600(host, owner_.interpolators,
@@ -292,6 +321,18 @@ void GameWorldHost::build_entity_chains_009037f0() {
     host.log.notef("world entity chain: [[world+4]] holds %zu entity(ies), linked by +38h; "
         "the second header at world+8h is allocated and has no reader in anything "
         "docs/WORLD_ENTITY_UPDATE.md read", host.chain.size());
+}
+
+void queue_add_matrix_interpolator_008ade00(std::size_t unit_index, const float translation[3],
+                                            const float rotation[3], float duration) {
+    MatrixInterpolatorRequest r;
+    r.unit = unit_index;
+    for (int k = 0; k < 3; ++k) {
+        r.translation[k] = translation[k];
+        r.rotation[k] = rotation[k];
+    }
+    r.duration = duration;
+    matrix_interpolator_queue().push_back(r);
 }
 
 void GameWorldHost::run_world_entity_update_00904bf0(float scaled_delta) {
