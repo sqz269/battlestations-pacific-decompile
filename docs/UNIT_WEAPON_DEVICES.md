@@ -292,3 +292,95 @@ rates docs/GUN_AIMING.md reads belong to the gun class descriptor, not to the pr
   `row2 + throwB*(cos(throwA)*row1 + sin(throwA)*row0)` and left **unnormalised**, so the realised
   half-angle is `atan(throwB)` and the distribution is uniform in radius rather than in area.
   See docs/GUN_DISPERSION.md for the derivation and for the `Throw'` magnitude chain.
+
+## Torpedo stock, bound (packet `cc9_torpedo_stock`, `kTorpedoStockBound`, committed OFF)
+
+Worker cc9-ships, 2026-09-27. Ghidra was read only. It takes the contract in
+`docs/CONSTRUCT_WORLD.md` section 27.
+
+### The read (V)
+
+| routine | what it does | evidence |
+| --- | --- | --- |
+| pass B, 00822C20 | `unit+104Ch = -1` | 00823517 |
+| pass C, 0081F980 | `0081F8B0([unit+538h]+7A0h)`, `MaxTorpedoStock`, reached on both arms of the local branch | 008201A9..008201B8 |
+| 00810E90 | **loaded torpedo barrels**: walks the list at `unit+3ECh`, which is `+398h + 7*0Ch`, the head of category 7's gun list. It counts each gun's barrels (`gun+448h`) whose timer (`gun+414h`) is below the double at 00D7A278 (FLT_MAX). No weapon-type test is needed | 00810E91, 00810EB6..00810F3D |
+| 0081DCB0 | **unloads one random loaded torpedo barrel**: collects every {gun, barrel} with a timer below FLT_MAX, picks one with 00BD2F10, and sets its timer to 00D7A248 (the float FLT_MAX) through 0072CF00 | 0081DD10..0081DDDD |
+| 00810D80, no Ghidra function (00810D80..00810D9F) | the unit's `vtable[1F4h]`, *round available*: weapon kind `[desc+80h] != 7` answers 1; kind 7 answers `unit+104Ch != 0` | 00810D84..00810D9D |
+| 00810DA0, no Ghidra function (00810DA0..00810DC2) | the unit's `vtable[1F8h]`, *consume*: kind 7 with `unit+104Ch > 0` decrements it; -1 and 0 are left alone | 00810DA4..00810DC0 |
+| 0072D520 | after a shot: round available -> consume and reload; else `0072CF00(barrel, FLT_MAX, 0)`, and the barrel never fires again (`docs/GUN_SHOT_CADENCE.md`) | 0072D531..0072D5A5 |
+| 00825450, the supply tick | from `UpdateShipMotion` (00826182), only when 00809C50 finds the ship in a supply area: every `settings+498h` it calls `0081F8B0(stock + 1)` while spare + loaded is below `MaxTorpedoStock` | the decompile |
+
+- **Consequences.**
+  - Pass B's -1 means unlimited.
+  - After pass C a ship can fire exactly `MaxTorpedoStock` torpedoes, whatever its barrel count:
+    the loaded barrels plus the spare.
+  - A class with no `MaxTorpedoStock` (IntegerOrZero, 0) gets spare 0, and 0081DCB0 empties
+    every loaded tube at pass C.
+- **The table** 00810D80/00810DA0 sits in nine vtables (00CF92A4, 00CFA96C, 00CFB92C, 00CFC5C4,
+  00CFFC24, 00D01824, 00D0986C, 00D0C174, 00D0C83C), so it is the unit base's provider.
+
+**Corrections to `src/unit_weapons.cpp` / `include/bsp/unit_weapons.hpp` (names only, not
+edited):**
+- `torpedo_count` (00810E90) is the loaded-barrel count, not a count of torpedoes in the water.
+- `torpedo_spawn_one` (0081DCB0) unloads one random loaded barrel; it spawns nothing.
+- The reconstruction's control flow in `set_torpedo_stock_0081f8b0` matches the image.
+
+### This installation's stocks on USN02
+
+`scripts/datatables/autoload/vehicleclasses.lua` (2026-05-09, locally modified) against
+usn_2_java.scn's `Type` rows:
+
+| ships | class | `MaxTorpedoStock` |
+| --- | --- | --- |
+| Kortenaer, Electra, Encounter, Jupiter, Witte | Icarus (265) | 30 |
+| Alden, John1..3 | Clemson (25) | 24 |
+| Exeter | York (21) | 18 |
+| Perth | Fiji (263) | 22 |
+| Haguro, Nachi | Myoko (293) | 18 |
+| Jintsu, Naka | Kuma (70) | 18 |
+| Yudachi, Samidare, Murasame, Harusame, Yamakaze, Kawakaze | Shiratsuyu (289) | 24 |
+| Minegumo, Asagumo, Yukikaze, Tokitsukaze, Amatsukaze, Hatsukaze | Kagero (276) | 28 |
+| Sazanami, Ushio | Fubuki (73) | 27 |
+| DeRuyter, Java, Houston | DeRuyter (20), Northampton (19) | absent; no tubes |
+
+Reference d's launches per shooter (`local\rb4_usn02.log`, 209 in all):
+- Tokitsukaze and Minegumo launch 32 each, against a stock of 28.
+- Amatsukaze launches 24, Yukikaze 17, Asagumo 16, John1 12, and every other ship 9 or fewer.
+
+### The binding
+
+- **The class value.** The gunnery host's class reader adds `torpstock` (`MaxTorpedoStock`, 0
+  when absent) to each unit's state.
+- **The provider.** At the shared fire site, a ship's category-7 barrel runs 0072D520's provider
+  pair on the unit's spare:
+  - the first torpedo shot sets the spare as 0081F8B0 does at pass C;
+  - each later shot spends a spare if there is one;
+  - with none, the fired barrel is pinned at FLT_MAX.
+- **LABELLED SUBSTITUTIONS.**
+  - The pass C set is made at the ship's first torpedo shot. Every barrel is still loaded then,
+    so the count is pass C's.
+  - The supply tick 00825450 is not bound. No area test (00809C50) is read, so whether a
+    reference ship ever resupplies is unknown.
+  - The unload 0081DCB0 (stock below the loaded count) is not bound. No USN02 ship has fewer
+    stock than tubes.
+- **Planes:** not affected; the rule is limited to ships.
+- **The census:** `summary mission gunnery torpedo stock bound=.. sets=.. spent=..
+  emptied_barrels=.. ships_dry=..`, and one `torpedo stock:` line per ship set or dry.
+
+### Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+**USN02 9200/9000.**
+- `sets=19`: the 19 ships that launch in reference d.
+- `ships_dry=2`, Tokitsukaze and Minegumo, after their 28th launch.
+- `emptied_barrels=16`: 8 per dry Kagero. Each fired barrel after the spare runs out is pinned,
+  and the 8 loaded barrels are the last 8 shots.
+- **Timing.** Everything is identical up to Tokitsukaze's 29th launch in reference d (364.18 s).
+  Tokitsukaze then launches nothing, and Minegumo stops after its 28th (387.63 s).
+- **Gyro launches** 209 -> about 201. Later dynamics may move it by a few.
+- **Death rows** identical up to 364 s. Later deaths may move: Haguro at 384.03 s and Jintsu at
+  405.77 s in reference d.
+- pair_diff exit 3 if anything after 364 s moves, else exit 1.
+
+**USN04 4700/4500.** No ship launches a torpedo (reference d has 0 launch lines). So `sets=0`,
+and the pair is identical (exit 1).

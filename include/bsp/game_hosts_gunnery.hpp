@@ -278,6 +278,19 @@ inline constexpr bool kDeathRouteDestroyBound = true;
 // constructor's 1 (007202FD) and TorpedoEnable stays unimplemented.
 inline constexpr bool kShipDirectorEnablesBound = true;
 
+// Packet cc9_torpedo_stock (docs/UNIT_WEAPON_DEVICES.md, "Torpedo stock, bound").
+// True: a ship's torpedo tubes draw on the class's MaxTorpedoStock (class+7A0h).
+// 0081F8B0 at pass C (008201B8) sets the spare unit+104Ch = stock - loaded
+// barrels (00810E90 over the category-7 list at unit+3ECh); every fired
+// torpedo barrel then goes through 0072D520's provider pair, the unit's
+// vtable[1F4h] 00810D80 (kind 7: spare != 0) and [1F8h] 00810DA0 (kind 7:
+// spare > 0 -> spare - 1). With no spare left the barrel is pinned at FLT_MAX
+// and never fires again. SUBSTITUTION: the pass C set is made at the ship's
+// first torpedo shot (every barrel is still loaded then); the supply tick
+// 00825450 and the unload 0081DCB0 (stock < loaded) are not bound. False:
+// tubes reload without limit, as before.
+inline constexpr bool kTorpedoStockBound = false;
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),
