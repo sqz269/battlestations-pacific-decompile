@@ -285,8 +285,11 @@ int binding_trampoline(lua_State* state) {
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
+    const bool objective_status_row = kObjectiveStatusBound
+        && (dispatch_row.address == 0x008bd340u || dispatch_row.address == 0x008bd900u);
     const bool objective_row = dispatch_row.address == 0x008cd440u
-        || dispatch_row.address == 0x008cdd60u || dispatch_row.address == 0x008ce510u;
+        || dispatch_row.address == 0x008cdd60u || dispatch_row.address == 0x008ce510u
+        || objective_status_row;
     const bool get_property_row = dispatch_row.address == 0x0088bf80u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
@@ -364,6 +367,19 @@ int binding_trampoline(lua_State* state) {
         const unsigned int mask =
             objective_slot_mask(have_party, party, have_slot, slot_argument);
         const bool is_add = dispatch_row.address == 0x008cd440u;
+        // Packet cc9_objectives_completed: 008BD340 / 008BD900.
+        if (objective_status_row) {
+            const std::string key = objective_argument_string(state, 2);
+            const int status = dispatch_row.address == 0x008bd340u ? 1 : 2;
+            int matched = 0;
+            for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
+                if ((mask & (1u << k)) == 0u) continue;
+                if (sets.set_status(k, key, status)) ++matched;
+            }
+            static_cast<void>(matched);
+            host->note_objective_binding(dispatch_row.name, key, mask, 0);
+            return 0;
+        }
         const bool is_remove = dispatch_row.address == 0x008ce510u;
         // 008CD65A for Add and 008CDFFA (kObjectiveNameArgument) for AddUnit
         // both read argument 2 as the objective name.

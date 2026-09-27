@@ -1331,3 +1331,71 @@ ScoutDauntless while it flies.
 **Consequence for measured pairs:** until a run gives the plane stick input (a scenario like
 `BSP_PLAYER_HELM` for ships), no plane-seat binding can move gameplay. The ship-side equivalent is
 the scripted helm option (`docs/SCRIPTED_HELM.md`).
+
+## Handoff (cc9-hud3 retires after this commit)
+
+Worker cc9-hud3, 2026-09-27. The branch is `agent/cc9-hud3` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-hud3`. It holds no leases after this commit.
+
+### Switches this worker set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kAfterRow9OrderQueueBound` (+ delivery continuations) | `include/bsp/game_hosts_script_orders.hpp` | ON | `docs/SENTITY_INIT_ATTACH_ORDER.md` 22.7-22.9 |
+| `kUnitVtable124MapBound` | `include/bsp/game_hosts_hud.hpp` | ON | this doc, "The unit vtable[124h] map" |
+| `kSquadronSlotClassBound` | same | ON | this doc, "The squadron slot in the selection tests" |
+| `kPlaneInFlightTestBound` | same | ON | `docs/IN_GAME_INTERFACE_SCREEN_SETS.md`, "007BB9A0 in the plane arm" |
+| `kGeneratedEntityPartyBound` | `include/bsp/game_hosts_lua.hpp` | ON | `docs/SENTITY_INIT_ATTACH_ORDER.md` 23 |
+| `kObjectiveStatusBound` | same | ON | `docs/MISSION_OBJECTIVES.md` 8 |
+
+Reads closed without a switch:
+- the 47h create path (SENTITY 22.7);
+- USN01's intro pose noise, not reproducible (`docs/HUD_PICK_SEGMENT_QUERY.md` 10.5);
+- the movie parse keys (same doc 10.6);
+- the slot-swap caller (this doc);
+- the controlled plane seat (this doc).
+
+### Open, in order
+
+1. **A plane-seat scenario.** No idle pair can exercise the player's pilot seat: 00519520 pushes
+   only with role 1, taken through `0077C470(2, 1)` after a stick move above 0.2. A measurement
+   option like `BSP_PLAYER_HELM` for planes would be the only way to exercise it.
+2. **The squadron-slot substitutions** (units host). The squadron entity and its wing-0 plane share
+   one slot.
+   - After that plane dies, the slot reads dead, while the image's squadron outlives it.
+   - The HUD observer therefore releases the controlled unit at 129.85 s on USN01. The image would
+     release at the squadron's own end, through 007F3A60 or its destruction notice.
+   - The squadron's `+361h` (set by 007F31A0 at a map exit) is not modelled.
+   - A separate squadron slot (class 18h) would retire all three.
+3. **007BB9A0's inputs** (`GameUnitsHost::plane_local_input_gate_007bb9a0`).
+   - `+C0Ch` comes from 007C11E0's flight-state rule only. Its other writers are not modelled:
+     007B8C30 (through 008A5BD0), 007C6871 in 007C6760 (from 006C3E50) and the ground roll
+     007CC0E5.
+   - `+904h` and `+AA0h` are not carried. `+AA0h` is 5.0 only for a `ShipYardLaunch`, which would
+     turn the gate false.
+4. **The plane interface's camera hand-off** (`+6Ch`/`+68h` in 0068B03B/0068B047) is a record.
+   After a plane is selected, the mission camera stays unbound (display and pick only).
+5. **The bot's task-install trigger.** The setter of the pilot bot's dirty byte `+7Ch` (0099ACD0
+   installs a task while it is set; the constructor zeroes it at 0099A91E) was not found. The host
+   installs at the order's delivery, one bot tick early (SENTITY 22.7).
+6. **GenerateObject's party.**
+   - The image's 00928F50 call site on that route is unread, so the host writes Party and Race at
+     pass A (labelled).
+   - The wing planes of a generated squadron get no Party.
+   - 0046D930's bag handling 0046DA33..0046DB02 is unread.
+7. **Objectives.** The kind `+18h` is not recorded, so 008DFE50's hidden-objective early return is
+   not applied. No measured objective holds a unit. The announcement 008E1D30 (sound) and the
+   marker refresh are records.
+8. **Movie camera.**
+   - `flyalt`'s update arm 0079B3E9..0079B62F needs 0042AE80 and 0042B2F0 read before binding.
+   - `finishscript` would bind onto 00887E50 with the `+390h` gate.
+   - The `+64h` register store at 0079CFE8 (in 0079CFC0) is unattributed.
+   - No measured mission reaches any of these (`docs/HUD_PICK_SEGMENT_QUERY.md` 10.6).
+
+### Local files
+
+- **Pair binaries:** `local\{cq_on,vt_on,sq_on,gp_on,all_on,ob2_on}`, each an export with its
+  build.
+- **Logs:** `local\{cq,vt,sq,gp,all,ob2}_{off,on}_usnNN.log` and `local\cam_*_usn01.log` (the
+  intro-camera diagnostics).
+- **Scripts:** `local\cc9-hud3-*`.

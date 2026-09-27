@@ -94,6 +94,16 @@ inline constexpr bool kLoadWingSquadronIdBound = true;
 // does for a load-time node. While false only load-time nodes get them.
 inline constexpr bool kGeneratedEntityPartyBound = true;  // ON: identity pairs (section 23.4)
 
+// Packet cc9_objectives_completed (docs/MISSION_OBJECTIVES.md section 8),
+// committed OFF with predictions. 008BD340 Objectives_Completed and 008BD900
+// Objectives_Failed decode (party, slot, name, text, quiet) as Objectives_Add
+// does its first three, and for each selected slot run 008E20D0 / 008E2200 on
+// the set: the matching objective's +1Ch becomes 1 / 2 after 008DFE50 drops its
+// units. Nothing native ends the mission or scores from +1Ch; the scripts keep
+// their own Mission.Objectives state. While true the two rows update
+// bsp::game::game_objective_sets(); while false they stay records.
+inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
