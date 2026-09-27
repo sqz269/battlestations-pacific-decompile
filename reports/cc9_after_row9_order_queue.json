@@ -1,0 +1,13 @@
+{
+ "packet": "cc9_after_row9_order_queue",
+ "worker": "agent/cc9-hud2",
+ "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md 22 (22.5 binding and predictions)",
+ "switch": "kAfterRow9OrderQueueBound, include/bsp/game_hosts_script_orders.hpp, committed false",
+ "steps": [
+  {"address": "005b9969", "native": "00887e50", "function": "005b9800", "what": "the Blackout callback runner (flag set around it)"},
+  {"address": "00778542", "native": "0076c600", "function": "00778450", "what": "the loopback drain at the session pump"}
+ ],
+ "names_added": {},
+ "no_ghidra_function": [],
+ "substitutions": ["only 58h MT_COMMAND is queued: the host has no script SetFireTarget (5Eh) binding"]
+}

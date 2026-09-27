@@ -273,6 +273,20 @@ struct GameScriptTimerSummary {
     std::string first_error;
 };
 
+// Packet cc9_after_row9_order_queue (docs/SENTITY_INIT_ATTACH_ORDER.md 22),
+// committed OFF with predictions. A local order the image routes after
+// fixed-step fan-out row 9 reaches its receiver in the NEXT step's session
+// pump (0076C600 at 00778542). On an idle run the one such poster is the Lua a
+// Blackout callback runs (005B9800 is screen 33h's update, inside 0068C1F0).
+// While true, the MT_COMMAND issues (0077D600) that callback's bindings make
+// are queued and applied, in post order, by the next
+// GameFixedStepHost::pump_session_00778450. GenerateObject and
+// SetSelectedUnit are not session orders and stay direct.
+inline constexpr bool kAfterRow9OrderQueueBound = false;
+// The pump's loopback drain: applies the queued orders of the one live host.
+// Returns the number applied.
+std::size_t script_orders_drain_loopback_0076c600();
+
 // The host the reconstructed binding bodies run over. Owned for the whole run
 // because the rows are per run and the units it addresses are the created scene
 // instances.
@@ -285,6 +299,9 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
                                    public bsp::MissionBlackoutHost {
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
+    ~GameScriptOrdersHost();
+    // Packet cc9_after_row9_order_queue: apply the deferred orders.
+    std::size_t drain_deferred_orders_0076c600();
 
     // Packet cc8_ship_moveonpath: `GetSelectedUnit` 008AB070 reads the global
     // 00E188D8, which 004C0893 stores in BSP_Game_SetControlledUnit 004C0890.
@@ -647,6 +664,23 @@ private:
     bsp::MissionBlackoutFade blackout_{};
     bsp::BlackoutFillColour blackout_colour_{};
     GameBlackoutSummary blackout_summary_{};
+    // Packet cc9_after_row9_order_queue: the callback being run, and the queue.
+    std::string after_row9_poster_;
+    struct DeferredOrder {
+        std::size_t index{0};
+        std::uint32_t command_object{0};
+        bsp::SceneCommandTarget target{};
+        int flags{0};
+        std::string source;
+        std::string target_name;
+        std::string poster;
+    };
+    std::vector<DeferredOrder> deferred_orders_;
+    std::vector<std::pair<std::string, unsigned long long>> deferred_by_poster_;
+    unsigned long long deferred_applied_{0};
+    void apply_issued_order(std::size_t index, std::uint32_t command_object,
+        const bsp::SceneCommandTarget& target, int flags, const std::string& source,
+        const std::string& target_name);
     // *(float*)(00432650() + E0h), the configured default duration. That field
     // was not read by this packet; every `Blackout` in usn_2_java and
     // commandhelpers.lua passes an explicit numeric argument 3, so the default is

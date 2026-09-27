@@ -1721,3 +1721,38 @@ step's job waves with 0.05f, as the gun bots do.
 - Lua run from Blackout callbacks;
 - the HUD screens (input only);
 - the squadron's row-12 initial command (a no-op in the host).
+
+### 22.5 The binding and its predictions (`kAfterRow9OrderQueueBound`, committed OFF)
+
+Worker cc9-hud2, 2026-09-27, base 16233b564.
+
+**The binding:**
+- **Switch:** `include/bsp/game_hosts_script_orders.hpp`.
+- **The flag.** `GameScriptOrdersHost::mission_lua_call_named_00887e50`, the Blackout callback's
+  runner (005B9969, called only from 005B9800), records the callback's name around its
+  `lua_pcall`.
+- **The deferral.** While the flag is set, `entity_issue_command`, the one 0077D600 MT_COMMAND
+  issue every order binding reaches, queues the order instead of applying it.
+  - The host has no script `SetFireTarget` (5Eh) binding, so only 58h is queued.
+- **The drain.** `GameFixedStepHost::pump_session_00778450` calls
+  `script_orders_drain_loopback_0076c600` (00778542). It applies the queue in post order through
+  the same `units_.issue_script_command`.
+- **The frame order it reproduces.** The host runs the Blackout update in `run_script_timers`,
+  after the frame's fixed step (the image's 004C40F0 after 004C40A0). So a queued order lands in
+  the next frame's fixed step, at row 9.
+- **The census:** `summary mission script after-row-9 order queue ... deferred_by_poster:`.
+- **Direct as before:** `GenerateObject`, `SetSelectedUnit` and every non-order binding.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player). This replaces
+22.3's USN02 row: with the health slot ON (main 3a109dcb7), USN02 no longer reaches phase 2 within
+450 s. The OFF run at this base fires only `luaIn` and `luaIngameMovieBOStart`.
+- **USN01 3200/3000:**
+  - Census `blackout:luaIn=5`, `applied=5`.
+  - The five `PilotSetTarget` orders (Mavis 1..5) land one step later, at the pump of the frame
+    after `luaIn` (about 20.1 s).
+  - **Gameplay moves, exit 3:** the Mavis death rows move in time and possibly in killer, deaths
+    stay 7, and hits and shots move slightly.
+- **USN04 4700/4500:** census `(none)`, because `luaIngameMovieBOStart` issues no order.
+  **Identity, exit 1.**
+- **USN02 9200/9000:** census `(none)`. `luaIn` is only `SetSelectedUnit(Houston)`, and
+  `luaIngameMovieBOStart` is movie-only. **Identity, exit 1.**

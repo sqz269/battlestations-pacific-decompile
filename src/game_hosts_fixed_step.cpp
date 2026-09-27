@@ -28,6 +28,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_ready.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"
 
 #include <cstdio>
@@ -365,7 +366,13 @@ void GameFixedStepHost::pump_session_00778450(float step) {
         // 007784DF..007784F6: [00F8A2FC]->vtable[5Ch](step).
         log_.unimplemented("Session::global_object_step_00f8a2fc", "007784f6");
         // 007784F8 +F4h == 0: 00778542 CALL 0076C600, the loopback drain.
-        log_.unimplemented("Session::drain_loopback_queue_0076c600", "00778542");
+        if constexpr (kAfterRow9OrderQueueBound) {
+            // Packet cc9_after_row9_order_queue: the orders posted after the
+            // previous step's row 9 reach their receivers here.
+            script_orders_drain_loopback_0076c600();
+        } else {
+            log_.unimplemented("Session::drain_loopback_queue_0076c600", "00778542");
+        }
         done("FixedStepFanout::pump_session", 0x00875e91u);
     } else {
         static_cast<void>(step);
