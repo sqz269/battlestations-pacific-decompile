@@ -472,3 +472,29 @@ The base is main's current USN02: 20 deaths, 611 hit records, 865 shots
 - **The base moved.** The predictions above were written on the `hp_on` base (20 deaths, 611 hit
   records). This pair's OFF side is main `db46dce40`; the membership rows are judged as written,
   and the moved-gameplay rows against this OFF.
+
+### The pairs, measured, and the verdict
+
+- OFF is this tree's `build\` at `bb533d526`; ON is `pair_export --flip
+  kDeadMemberLeavesGroupBound=true` of the same commit (SHA-256 `BAA52D021D49`).
+- All runs had the streams and the death table on. Logs: `local\dm_{off,on}_{usn02,usn04,usn01}.log`.
+- Every log was checked for its milestone line, its module directory and its final COM release
+  line.
+- The OFF side reproduces the base the predictions were written on: 20 deaths, 611 hit records.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 leaves | 0 | 7: Exeter 35.80, Kortenaer 68.30, Electra 108.60, John3 172.46, DeRuyter 177.36, Java 192.81, Encounter 278.56 | 8, the same seven and Perth (301.00) | **failed** in part: on ON Perth survives the run, so group 0 ends at 7 members, not 6 |
+| USN02 leadership | DeRuyter throughout | DeRuyter -> Java at 177.36 s; Java -> Houston at 192.81 s (two hand-overs, each with the wake copy) | the living member with the smallest `axial[0]` takes over at DeRuyter's death | holds (Java); the second hand-over follows from the moved game |
+| USN02 slot-swap lines | none | none | none (Houston alive and controlled) | holds |
+| USN02 `pair_diff` | - | 3: deaths 20 -> 19, hit records 611 -> 566, hull hits 227 -> 217, shots 865 -> 850; 7 death rows changed, Perth only on OFF | 3, with moves from the first removal at 35.8 s | holds for the exit; **failed** for the timing |
+| USN04 `pair_diff` | - | 1; `leaves=0` | 1 | holds |
+| USN01 `pair_diff` | - | 1; `leaves=0` | 1 | holds |
+
+**The timing failure.** The first differing ship-AI sample is step 3820 (191 s), Java in `follow`
+just after it took the lead. The leaves of Exeter, Kortenaer, Electra and John3 change neither the
+leader nor any follower's station within the samples. The move comes with the leader hand-over and
+the inherited wake at 177.36 s.
+
+**Verdict: `kDeadMemberLeavesGroupBound` ON.** Dead ships leave their group as the image's destroy
+makes them, a dead leader hands the group to its successor, and USN04 and USN01 are identical.

@@ -24,8 +24,8 @@
   "switches": [
     {
       "name": "kDeadMemberLeavesGroupBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/dm_{off,on}_{usn02,usn04,usn01}.log: USN02 exit 3 (7 leaves, DeRuyter->Java->Houston, deaths 20->19, hits 611->566), USN04 exit 1, USN01 exit 1; ON BAA52D021D49"
     }
   ],
   "no_ghidra_function": [],
@@ -35,5 +35,18 @@
     "director notice, +FA0h/+FA8h and observer unregister recorded only",
     "ship() is the units host's ship-base dispatch"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "USN02 leaves",
+      "predicted": "8 (group 0 to 6)",
+      "measured": "7 (to 7)",
+      "why": "Perth survives on ON once the game moves"
+    },
+    {
+      "row": "USN02 first divergence",
+      "predicted": "from the first removal at 35.8 s",
+      "measured": "step 3820 (191 s), after the leader hand-over",
+      "why": "follower removals change no station until the leader changes"
+    }
+  ]
 }

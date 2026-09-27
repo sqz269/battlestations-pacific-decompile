@@ -90,7 +90,7 @@ inline constexpr bool kWingConstructionInPassABound = true;
 // new leader's +FA0h/+FA8h offsets and the observer unregister are recorded
 // only; 0070DA00's ceiling has no stored copy here, the host reduces members on
 // demand. False: a dead ship stays in its group, as before.
-inline constexpr bool kDeadMemberLeavesGroupBound = false;
+inline constexpr bool kDeadMemberLeavesGroupBound = true;
 
 class GameHostLog;
 class GameMissionLuaHost;
