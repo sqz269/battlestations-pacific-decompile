@@ -827,3 +827,56 @@ Every row below is one the log prints.
 | USN04 `query gates aa` and `artillery` | equal to the gate frames: category 1 ranks planes, and both lists contain it |
 | USN04 standoff rows | Fletcher-class01..04 (two category-7 and two category-8 mounts each) and York-class01/02 (two category-7) change `first` or `last`. Northampton-class01/02 (categories 1, 3 and 6 only, from the OFF log's mount lines) keep theirs |
 | USN04 `pair_diff` | 3, carried by the Fletcher standoffs; air deaths may move through AA geometry |
+
+### The pairs, measured
+
+- OFF is this tree's `build\` at `ee0753acc`; ON is `pair_export --flip
+  kShipAiQueryGateBytesBound=true` of the same commit (SHA-256 `3BC8815489D0`).
+- Both sides ran with the streams and the death table on. Logs: `local\gb_{off,on}_{usn02,usn04}.log`.
+- Every log was checked for its module directory and its final COM release line.
+- **The OFF control is not section 9's ON.** Main moved in between, and `pair_diff` of the two
+  USN02 logs exits 3: 220 launches against 219, 4160 capped clearances against 4171, 20 deaths
+  against 21. The rows below are judged against this OFF.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 `query gates depth_charge` | - | 0 | 0 | holds |
+| USN02 `query gates torpedo` vs standoff enabled | - | 13415 = 9101 + 4314 + 0 | within 5% | holds (equal) |
+| USN02 `query gates artillery` | - | 16951 of 16951 | over 90% | holds |
+| USN02 `pair_diff` | - | 3 | 3 | holds |
+| USN02 standoff `last` | Haguro 2300, Jintsu 2300 | 900, 1000; Alden, John1..3, Jupiter, Witte and Java also move | Haguro, Jintsu and half the Allied tube ships | holds |
+| USN02 torpedo launches | 220 | 221 | unchanged | **failed** (+1) |
+| USN02 deaths / hit records | 20 / 640 | 21 / 652 | differ | holds |
+| USN02 capped clearances | 4160 | 4314 | within 10% | holds (+3.7%) |
+| USN02 standoff `refused` | 0 | 56 | - | the live 00863920 refuses where section 9's recomputation did not |
+| USN04 `query gates torpedo` / `depth_charge` | - | 0 / 0 | 0 / 0 | holds |
+| USN04 `query gates aa` / `artillery` | - | 2159 / 2159 of 2159 | all frames | holds |
+| USN04 standoff rows | Fletcher-class01/02 last 1500 | 1450; Fletcher-class03/04 and York-class01/02 unchanged | Fletcher-class01..04 and York-class01/02 change | **failed** in part (only two of six changed) |
+| USN04 Northampton rows | 2250 / 2250 | 2250 / 2250 | unchanged | holds |
+| USN04 `pair_diff` | - | 3 (deaths 41 -> 44, hit records 812 -> 789) | 3 | holds |
+
+**Why the failed rows failed:**
+- **USN02 launches:** the moved positions change one torpedo bot's opening. The launch path still
+  does not read the block.
+- **USN04 standoff rows:** against a plane target the tubes and depth charges contribute nothing to
+  the rating either way. 0095EB40's hit probability is zero past the class range, and neither
+  category ranks a plane. So only the two Fletchers whose curve crossed a scan step changed. Every
+  escort's choice count fell by about 14 because the formation moved.
+
+The 56 refusals come from the live pass state. `torpedo_group_flag` follows the bridge's push,
+and the target's liveness is the gunnery host's own `dead`; section 9's recomputation assumed the
+push had already happened.
+
+### Verdict: `kShipAiQueryGateBytesBound` ON
+
+Every gate count is what the read predicts:
+- depth charges 0;
+- the torpedo byte equals the standoff gate;
+- AA and artillery on every frame, since category 1 is in both lists.
+
+Both missions move through the ratings alone. 00863920 now answers from the gunnery host.
+
+### Open
+
+- Section 9's recomputation (`torpedo_group_accepts_target_00863920` in the ship AI host) is dead
+  code on the ON path. It can be removed with the switch once this lands.
