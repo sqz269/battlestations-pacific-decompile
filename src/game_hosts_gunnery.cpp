@@ -8375,4 +8375,10 @@ float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float hig
     return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
 }
 
+bool GameGunneryHost::reseed_shared_stream_00bd2fd0(int stream, std::uint32_t seed) {
+    if (stream != 1) return false;   // stream 0: no generator in this host
+    impl_->rng = seed;               // SUBSTITUTION: the LCG stand-in's state
+    return true;
+}
+
 }  // namespace bsp::game

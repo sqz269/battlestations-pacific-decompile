@@ -219,6 +219,10 @@ bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
 // call pushes 2Ch kMovieCameraNewInterface, so the level-1 set becomes {37h}
 // until a later 20h push (SetSelectedUnit) replaces it.
 inline constexpr bool kMovieInterfacePushBound = true;
+// Switch 2, committed OFF (9637882a8), ON by the streams-on pair verdict (8.7): 005CD1A0's reseed of stream 1 (12345) reaches the
+// gunnery host's shared stand-in generator; stream 0 (54321) has none. Under
+// BSP_GUNNERY_RNG_STREAMS=1 nothing reads that generator.
+inline constexpr bool kMovieReseedBound = true;
 // Returns false when no HUD is attached.
 bool hud_movie_screen_camera_005cd240();
 

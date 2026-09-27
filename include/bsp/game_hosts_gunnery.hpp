@@ -807,6 +807,14 @@ public:
     // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
     // its own generator keyed by (unit), a measurement substitution.
     float ship_ai_draw(std::size_t unit_index, float low, float high);
+    // Packet cc9_movie_interface_and_reseed: 00BD2FD0(stream, seed) as 005CD1A0
+    // makes it (005CD1B0 stream 1 = 12345, 005CD1BC stream 0 = 54321).
+    // SUBSTITUTION, labelled: the image seeds MT19937 (sgenrand, docs/RANDOM_STREAMS.md);
+    // this host's stream-1 stand-in is the shared LCG, whose state takes the
+    // seed. It reaches only the default shared path: under
+    // BSP_GUNNERY_RNG_STREAMS=1 every draw is key-local and none reads it.
+    // Stream 0 has no host generator. Returns whether a generator took the seed.
+    bool reseed_shared_stream_00bd2fd0(int stream, std::uint32_t seed);
 
 private:
     std::unique_ptr<Impl> impl_;
