@@ -105,6 +105,19 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // accumulator reads the world state's never-written delta.
 constexpr bool kWarningManagerTickBound = true;
 
+// Packet cc9_construct_world part 2 (docs/CONSTRUCT_WORLD.md section 9). True:
+// the load step construct_world 004DE610 sets the world-active byte
+// [game+19CCh]+4ACh as 004CB030 does at 004CB098, held here as
+// world.world_gate.enabled. The fixed-step fan-out's gate 00875E69..00875E7F
+// and the gate of 00481640 at 0048164B read it, so rows 9..13 of the fan-out
+// and the TrafficConfig walk (game+21D0h, [+8]->vtable[1] = 00487270) are
+// reached as named records. The rest of 004DE610 (scene nodes, ocean, sky)
+// stays the load record; the 97 lists are the units host's own. The teardown
+// 004D2BB0 clears the byte through the destructor (00904C67); this host runs
+// no teardown, so the byte stays set to the end of the run. False: the byte is
+// never set and both gates stay closed.
+constexpr bool kWorldActiveByteBound = false;
+
 // Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the
 // world tick state every frame, so each world-tick reader of +21F0h sees it.
@@ -346,8 +359,10 @@ public:
     }
     void mission_events_periodic_00977990() override {
         if constexpr (kWarningManagerTickBound) {
-            // 00977990 walks the world lists [game+19CCh]+64h and +13Ch, which
-            // are not built (construct_world 004DE610 is a load record).
+            // 00977990 walks the world lists [game+19CCh]+64h (list 6, ships)
+            // and +13Ch (list 24, plane squadrons). The units host fills list
+            // 6 through the registrars; no host registrar fills list 24
+            // (docs/CONSTRUCT_WORLD.md section 6). The scan is not bound yet.
             ++owner_.warning_scans;
             owner_.record("WarningManager::scan_proximity", 0x00977990u);
         } else {
@@ -414,10 +429,13 @@ public:
 
     void entity_manager_update(float scaled_delta) override {
         static_cast<void>(scaled_delta);
-        // The sub-manager at entityManager+8h, virtual +4h. Its object is the
-        // world's; this process ticks the recovered walk over no entities.
-        ++owner_.frames.units_ticked;
-        owner_.record("EntityManager::submanager_update", 0x00481664u);
+        // 00481654..00481664: ECX = game+21D0h, the TrafficConfig
+        // (004A43C0); [+8] is the 20h object 0049D690 builds (vtable
+        // 00CE6600), and its slot 1 is 00487270, a std::list walk calling
+        // each traffic group's slot 1. No unit is on that list. The groups
+        // are not read (docs/CONSTRUCT_WORLD.md section 5): a named record.
+        ++owner_.frames.traffic_walks;
+        owner_.record("TrafficConfig::group_walk_00487270", 0x00481664u);
     }
 
     void power_ups_pre_pass_008eac80() override {
@@ -574,10 +592,10 @@ public:
         gate.view_mode_1fe4 = owner_.scene_state.session_mode;
         gate.session_count_9c = 0;
         FixedStepBinding host(owner_);
-        // The world gate of the fan-out, 00875e69..00875e7f: [[game+19CCh]+4ACh].
-        // construct_world 004de610 is a load record here, so there is no world
-        // object and the byte is zero; rows 9..13 are skipped every step.
-        const bool world_active = false;
+        // The world gate of the fan-out, 00875e69..00875e7f: [[game+19CCh]+4ACh],
+        // set by the construct_world load step when kWorldActiveByteBound.
+        // Closed, rows 9..13 are skipped every step.
+        const bool world_active = kWorldActiveByteBound && owner_.world.world_gate.enabled;
         const std::uint32_t steps = bsp::run_fixed_step_driver_00875bb0(
             owner_.fixed_clock, gate, scaled_delta, world_active, 0, host);
         owner_.fixed_steps += steps;
@@ -1782,6 +1800,16 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             ++host.load.concrete;
             continue;
         }
+        if (method == "construct_world") {
+            if constexpr (kWorldActiveByteBound) {
+                // 004DE651..004DE696 allocate, zero and construct the world;
+                // 004CB098 MOV byte ptr [ESI+4ACh],1 is the one write of the
+                // byte both gates read. The rest of 004DE610 stays the record
+                // below.
+                host.world.world_gate.enabled = true;
+                host.done("World::active_byte_004cb098", 0x004cb098u);
+            }
+        }
         if (method == "publish_mission_id") {
             host.published_mission_id = mission_id;
             host.done(label, step.address);
@@ -2163,12 +2191,12 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.trajectory_csv.close();
     }
     if (host.scene_contents) {
-        // Milestone 2h. The scene contents pass created unit records, and the
-        // frame's unit passes ticked none of them. That is not an empty scene:
-        // every container those passes walk hangs off the world object
-        // construct_world 004de610 would build, and that step is still a load
-        // record, so the entity manager reference at game+21A0h is null and the
-        // fixed step's world gate at 00875e69 is closed.
+        // Milestone 2h. The scene contents pass created unit records. The world
+        // object construct_world 004de610 builds is still mostly a load record:
+        // the 97 per-kind lists are the units host's own, and the one byte the
+        // gates read, [game+19CCh]+4ACh, is set only when kWorldActiveByteBound
+        // (docs/CONSTRUCT_WORLD.md). 00481640 runs on game+21D0h, the
+        // TrafficConfig, not on game+21A0h, which is the scoring object.
         const GameSceneContentsSummary& scene = host.scene_contents->summary();
         host.log.notef("summary mission scene contents mode=%d entities=%zu generated=%zu "
             "rejected=%zu created=%zu registration_bodies=%zu party_class_marks=%zu "
@@ -2180,15 +2208,17 @@ void GameMissionFrameHost::report(long requested_frames) {
         // them" for the world walk and the motion virtual: the executable owns
         // the chain header 009037f0 allocates, so 00904bf0 and 00825f20 now run
         // over the created units. The passes that still tick nothing are the
-        // ones that read the world object itself, which construct_world 004de610
-        // does not build: the entity manager at game+21A0h is null and the fixed
-        // step's world gate 00875e69 reads a world that does not exist.
+        // ones that read world fields this host does not model; the gates of
+        // 00875e69 and 00481640 read only the byte +4ACh (see above).
         host.log.notef("summary mission unit passes: %zu unit record(s) exist; the world walk "
             "00904bf0 updated %llu of them and the motion virtual 00825f20 ticked %llu, "
             "while every pass that reads the world object itself still ticks none, because "
             "construct_world 004de610 is a load record", scene.created,
             host.frames.entities_updated, host.frames.unit_motion_ticks);
     }
+    host.log.notef("summary mission world active_byte_bound=%d active=%d traffic_walks=%llu "
+        "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,
+        host.world.world_gate.enabled ? 1 : 0, host.frames.traffic_walks);
     host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
         "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu (packet "
         "cc9_warning_manager_tick)", kWarningManagerTickBound ? 1 : 0, host.warning_scans,
