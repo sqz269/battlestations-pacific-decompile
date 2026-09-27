@@ -2976,8 +2976,8 @@ Worker cc9-plane2, 2026-09-27, on main 7ca25aa95. Ghidra was read only.
 - `BotApproach::command_altitude` (009FBA50) now calls `done`: the site runs
   `bsp::cruise_altitude_command_009fba50`, and its one labelled gap (the squadron+394h leg) is
   unchanged.
-- **Both were in the string form of `record`**, which logs UNIMPLEMENTED whatever the site
-  computes. Eight more `record(name, "<address>")` sites remain in src/game_hosts_units.cpp; each
+- **Both logged UNIMPLEMENTED whatever the site computed.** The hook called `log.unimplemented`
+  directly, and the 009FBA50 site used the string form of `record`, which does the same. Eight more `record(name, "<address>")` sites remain in src/game_hosts_units.cpp; each
   needs its own check before it is made concrete.
 
 | row | before | after | predicted | verdict |
