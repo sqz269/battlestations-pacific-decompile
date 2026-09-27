@@ -1638,6 +1638,52 @@ struct GameUnitsHost::Impl {
     unsigned long long formation_joins{0};
     unsigned long long formation_creates{0};
     unsigned long long formation_rejoins{0};
+    // Packet cc9_dead_member_group_removal.
+    unsigned long long formation_death_leaves{0};
+    unsigned long long formation_death_handovers{0};
+    unsigned long long formation_groups_emptied{0};
+
+    bool unit_torn_down_005d(std::size_t index) const {
+        return index < slots.size() && slots[index]->state != nullptr
+            && slots[index]->state->simulate != 0;
+    }
+    // 0070D8D0(group, exclude), read whole. A follower's exclude answers the
+    // current leader; with no exclude, no leader or the leader excluded (and a
+    // group that is not type 18h) it resets the column (group+500h) and answers
+    // the living member (entity set, +5Dh clear, not `exclude`) with the
+    // smallest axial[0] (record+20h), the first on a tie, stopping at the
+    // leader's record. SIZE_MAX for none.
+    std::size_t group_successor_0070d8d0(FormationGroup& fg, std::size_t exclude) {
+        const std::size_t none = static_cast<std::size_t>(-1);
+        const std::size_t leader = fg.leader < slots.size() ? fg.leader : none;
+        if (!((exclude == none || leader == none || exclude == leader) && fg.type_04fc != 0x18)) {
+            return leader;
+        }
+        fg.column = 0;                                        // group+500h
+        std::size_t best = none;
+        float best_key = 0.0f;
+        for (const bsp::ShipAiUnitGroupMember& m : fg.members) {
+            if (m.entity == 0) continue;
+            const std::size_t u = static_cast<std::size_t>(m.entity) - 1u;
+            if (unit_torn_down_005d(u) || u == exclude) continue;
+            if (u == leader) break;
+            if (best == none || m.axial[0] < best_key) {
+                best = u;
+                best_key = m.axial[0];
+            }
+        }
+        return best;
+    }
+    // 00815E20(new, old): the new leader takes a copy of the old one's wake ring
+    // (00815680 on old+0BD0h). +FA0h/+FA4h/+FA8h have no host field: recorded.
+    void inherit_leader_wake_00815e20(std::size_t new_leader, std::size_t old_leader) {
+        if (new_leader >= slots.size() || old_leader >= slots.size()) return;
+        slots[new_leader]->wake = slots[old_leader]->wake;
+        done("UnitGroup::inherit_leader_wake_00815e20", 0x00815e20u);
+        record("UnitGroup::leader_offset_fa0_00815e20", 0x00815e7cu);
+        ++formation_death_handovers;
+    }
+    bool ship_unit(std::size_t u) const;
     unsigned long long formation_clamped{0};
     unsigned long long formation_columns_unmeasurable{0};
     // A flat copy of the rows, rebuilt on demand so units() can hand the caller
@@ -17634,6 +17680,78 @@ bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const fl
     return true;
 }
 
+bool GameUnitsHost::Impl::ship_unit(std::size_t u) const {
+    return u < slots.size() && slots[u]->motion_dispatch.runs_ship_base();
+}
+
+void GameUnitsHost::leave_group_on_destroy_0077bd70(std::size_t index) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return;
+    GameUnitSlot& slot = *host.slots[index];
+    const std::int32_t g = slot.formation_group;
+    if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return;
+    Impl::FormationGroup& fg = host.formation_groups[static_cast<std::size_t>(g)];
+    const std::size_t none = static_cast<std::size_t>(-1);
+    const std::size_t leader_before = fg.leader < host.slots.size() ? fg.leader : none;
+    // 0077BDA5..: the successor, asked twice when it answers the unit itself.
+    std::size_t successor = host.group_successor_0070d8d0(fg, index);
+    if (successor == index) successor = host.group_successor_0070d8d0(fg, index);
+    // vtable[114h]->vtable[5Ch](successor): the unit's director is told. Unread.
+    host.record("UnitGroup::leave_director_notice_vtable114", 0x0077bde4u);
+    // 0077BE0x: 0070D0C0 SetLeader(ship(successor), ship(unit)) when it differs.
+    if (successor != none && fg.leader != successor) {
+        const std::size_t new_leader = host.ship_unit(successor) ? successor : none;
+        const std::size_t old_leader = host.ship_unit(index) ? index : none;
+        if (new_leader != old_leader) {
+            if (old_leader != none && new_leader != none) {
+                host.inherit_leader_wake_00815e20(new_leader, old_leader);
+            }
+            fg.leader = new_leader;                               // group+14h
+        }
+    }
+    // 0070E4C0 DetachMember(group, unit, 0). Its own re-election runs only for a
+    // unit that still leads a group of more than one.
+    if (fg.leader == index && fg.members.size() > 1) {
+        std::size_t s = host.group_successor_0070d8d0(fg, index);
+        if (s == none) {
+            for (const bsp::ShipAiUnitGroupMember& m : fg.members) {
+                if (m.entity != 0 && static_cast<std::size_t>(m.entity) - 1u != index) {
+                    s = static_cast<std::size_t>(m.entity) - 1u;
+                    break;
+                }
+            }
+        }
+        const std::size_t old_ship = host.ship_unit(index) ? index : none;
+        const std::size_t new_ship = (s != none && host.ship_unit(s)) ? s : none;
+        if (new_ship != old_ship) {
+            if (old_ship != none && new_ship != none) {
+                host.inherit_leader_wake_00815e20(new_ship, old_ship);
+            }
+            fg.leader = new_ship;
+        }
+    }
+    slot.formation_group = -1;                                    // 0070E54x, +284h
+    host.record("UnitGroup::observer_unregister_00694a60", 0x0070e548u);
+    for (std::size_t i = 0; i < fg.members.size(); ++i) {       // 0070E591 compaction
+        if (fg.members[i].entity == static_cast<std::uint32_t>(index + 1u)) {
+            fg.members.erase(fg.members.begin() + static_cast<std::ptrdiff_t>(i));
+            break;
+        }
+    }
+    if (fg.members.empty()) {                                    // vtable[0](1)
+        fg.leader = none;
+        ++host.formation_groups_emptied;
+    }
+    ++host.formation_death_leaves;
+    host.done("UnitGroup::leave_on_destroy_0077bd70", 0x0077bd70u);
+    host.log.notef("formation leave: unit=%s group=%d t=%.2f leader %s -> %s members=%zu "
+        "column=%d (0077D1A0 -> 77h -> 0077BD70 -> 0070E4C0)", slot.row.name.c_str(), g,
+        static_cast<double>(host.summary.simulated_seconds),
+        leader_before < host.slots.size() ? host.slots[leader_before]->row.name.c_str() : "-",
+        fg.leader < host.slots.size() ? host.slots[fg.leader]->row.name.c_str() : "-",
+        fg.members.size(), fg.column);
+}
+
 bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
     // 007788B0 whole: g = [unit+284h]; g && [g+14h] != unit.
     const std::int32_t group = unit_formation_group_0284(index);
@@ -18959,6 +19077,10 @@ void GameUnitsHost::report() {
     // Packet cc8_ship_follow: the unit groups at entity+284h. Columns are NOT
     // produced yet (0070ED30 needs 00811180's across sign), so membership is all
     // this reports and no station may be computed from these records.
+    host.log.notef("summary unit formation death leaves=%llu handovers=%llu emptied=%llu bound=%d "
+        "(0077BD70 / 0070D8D0 / 0070D0C0 / 0070E4C0, packet cc9_dead_member_group_removal)",
+        host.formation_death_leaves, host.formation_death_handovers,
+        host.formation_groups_emptied, kDeadMemberLeavesGroupBound ? 1 : 0);
     host.log.notef("summary unit formation groups=%llu joins=%llu creates=%llu rejoins=%llu "
         "clamped=%llu columns_unmeasurable=%llu (0070DB20 create, 0070EF30 join, "
         "0070ED30 column 0)",

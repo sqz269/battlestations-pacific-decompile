@@ -452,3 +452,23 @@ The base is main's current USN02: 20 deaths, 611 hit records, 865 shots
 | USN02 `pair_diff` | 3: the followers' stations and the group speed ceiling move from the first removal (Exeter at 35.8 s); deaths, hit records and death rows move |
 | USN04 `pair_diff` | 1: its group 0 (Lexington's) holds only ships, and every USN04 death is a plane |
 | USN01 `pair_diff` | 1: its groups (Convoy1's, Northampton's and Enterprise's) lose no member; its deaths (Mav1..5) are not grouped |
+
+### The binding (written 2026-09-27 on main `db46dce40`, `kDeadMemberLeavesGroupBound`, committed OFF)
+
+- `GameUnitsHost::leave_group_on_destroy_0077bd70` implements the read above:
+  - 0070D8D0's successor rule;
+  - 0070D0C0 SetLeader, with the new leader copying the old leader's wake ring (00815E20);
+  - 0070E4C0 DetachMember: its own re-election, the record compaction, and the emptied group.
+- The sunk-ship flush calls it once per destroyed ship, at the pass that sets `+5Dh`.
+- **LABELLED:**
+  - it is applied at that row-15 pass rather than at the next session pump;
+  - the director notice `vtable[114h]->vtable[5Ch]`, the new leader's `+FA0h/+FA8h` and the observer
+    unregister are recorded only;
+  - the speed ceiling is reduced from the members on demand, so 0070DA00 has no stored copy to
+    refresh;
+  - `ship()` is the units host's ship-base dispatch.
+- **Census:** `summary unit formation death leaves=.. handovers=.. emptied=..`, and one
+  `formation leave:` line per leave.
+- **The base moved.** The predictions above were written on the `hp_on` base (20 deaths, 611 hit
+  records). This pair's OFF side is main `db46dce40`; the membership rows are judged as written,
+  and the moved-gameplay rows against this OFF.

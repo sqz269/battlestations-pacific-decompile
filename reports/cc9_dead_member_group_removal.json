@@ -24,12 +24,16 @@
   "switches": [
     {
       "name": "kDeadMemberLeavesGroupBound",
-      "state": "not written",
-      "pair": "blocked: src/game_hosts_units.cpp leased to cc9-terrain2 until 2026-09-28T04:47"
+      "state": "OFF",
+      "pair": "pending"
     }
   ],
   "no_ghidra_function": [],
   "names_added": [],
-  "substitutions": [],
+  "substitutions": [
+    "applied at the row-15 flush, not the next session pump",
+    "director notice, +FA0h/+FA8h and observer unregister recorded only",
+    "ship() is the units host's ship-base dispatch"
+  ],
   "failed_predictions": []
 }

@@ -580,6 +580,11 @@ void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
                     units_->store_scene_node_flags(identity, flags);
                 }
                 log_.implemented("EntityQueues::on_entity_destroyed_00926390", "0092639b");
+                // Packet cc9_dead_member_group_removal: the destroy's 77h leave
+                // (0077D1A0 -> 0077C980), delivered here.
+                if constexpr (kDeadMemberLeavesGroupBound) {
+                    units_->leave_group_on_destroy_0077bd70(unit);
+                }
                 // 009263AE JMP [vt+7Ch], the ship's wreck handler 00824B60: the
                 // gunnery death route already does its physics writes.
                 log_.unimplemented("EntityQueues::wreck_handler_vtable7c", "00824b60");
