@@ -60,9 +60,11 @@ struct ScriptOrderBinding {
 //    pass 00904600 applies through the entity's slot 88h.
 //  * ExplodeToParts 0088E1B0: 0080E490, then 00935C70 detaches every part whose
 //    health is above 0.
-constexpr bool kDisablePhysicsBound = false;
-constexpr bool kAddMatrixInterpolatorBound = false;
-constexpr bool kExplodeToPartsBound = false;
+// ON since the BSM01 / USN01 / USN04 / USN02 pairs: identical (no call reached on
+// any of them), so all three are bound but unexercised.
+constexpr bool kDisablePhysicsBound = true;
+constexpr bool kAddMatrixInterpolatorBound = true;
+constexpr bool kExplodeToPartsBound = true;
 
 constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"DisablePhysics", 0x00891380u},

@@ -1,0 +1,70 @@
+{
+  "packet": "cc9_bsm01_state_natives",
+  "doc": "docs/LUA_BINDING_MISSION.md, \"BSM01's state natives\"",
+  "calls": [
+    {
+      "address": "00891495",
+      "native": "0080E490",
+      "function": "00891380",
+      "note": "unit+1018h, the force controller; then MOV [EAX+14h],BL at 0089149E"
+    },
+    {
+      "address": "008ADF69",
+      "native": "00888760",
+      "function": "008ADE00",
+      "note": "a Vector3 argument"
+    },
+    {
+      "address": "008ADF79",
+      "native": "00888760",
+      "function": "008ADE00",
+      "note": "the other Vector3 argument"
+    },
+    {
+      "address": "008ADF92",
+      "native": "00905080",
+      "function": "008ADE00",
+      "note": "register the interpolator record"
+    },
+    {
+      "address": "0088E2C8",
+      "native": "0080E490",
+      "function": "0088E1B0",
+      "note": "the controller"
+    },
+    {
+      "address": "0088E2CF",
+      "native": "00935C70",
+      "function": "0088E1B0",
+      "note": "detach every live part"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kDisablePhysicsBound",
+      "state": "ON",
+      "pair": "local/BS_OFF_{BSM01,USN01,USN04,USN02}.log (build of b14ea3683, local/bin/bs_off) against local/BS_ON_*.log (pair_export of b14ea3683 with the three flips, SHA-256 099CE22D7AEB), worktree cc9-terrain2; all exit 0; no call reached",
+      "unexercised": true
+    },
+    {
+      "name": "kAddMatrixInterpolatorBound",
+      "state": "ON",
+      "pair": "local/BS_OFF_{BSM01,USN01,USN04,USN02}.log (build of b14ea3683, local/bin/bs_off) against local/BS_ON_*.log (pair_export of b14ea3683 with the three flips, SHA-256 099CE22D7AEB), worktree cc9-terrain2; all exit 0; no call reached",
+      "unexercised": true
+    },
+    {
+      "name": "kExplodeToPartsBound",
+      "state": "ON",
+      "pair": "local/BS_OFF_{BSM01,USN01,USN04,USN02}.log (build of b14ea3683, local/bin/bs_off) against local/BS_ON_*.log (pair_export of b14ea3683 with the three flips, SHA-256 099CE22D7AEB), worktree cc9-terrain2; all exit 0; no call reached",
+      "unexercised": true
+    }
+  ],
+  "substitutions": [
+    "the AddMatrixInterpolator and ExplodeToParts calls are queued to the next world pass / gunnery fixed step",
+    "(entity+310h)->vtable[0Ch] after the slot 88h copy is unread and not reproduced",
+    "00934150's debris, effects and dynamics are the ship motion's reading of the published destroyed segments",
+    "a unit with no buoyancy elements is treated as having no force controller"
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}

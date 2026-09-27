@@ -793,3 +793,26 @@ a defined Ghidra function, so there are no `no_ghidra_function` bodies.
   - No unit is frozen or moved by script, and deaths and hit records do not move.
   - This is a pair of three switches flipped together in one export: every one of them is
     unreached.
+
+### The pairs and the verdict
+
+- **The runs.** OFF is `local\bin\bs_off`, a build of b14ea3683. ON is `pair_export` of b14ea3683
+  with all three switches flipped (SHA-256 099CE22D7AEB). Streams and the death table were on,
+  lockstep 0.05, idle player. Logs: `local\BS_{OFF,ON}_{BSM01,USN01,USN04,USN02}.log` in worktree
+  cc9-terrain2. Each has its milestone line, module directory and final COM release.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| BSM01 native rows for the three | none | none | none | held |
+| BSM01 deaths, hit records, shots | 0, 0, 0 | identical | identical | held |
+| USN01 deaths, hits, shots | 7, 150, 561 | identical | identical | held |
+| USN04 deaths, hits, shots | 44, 789, 6321 | identical | identical | held |
+| USN02 deaths, hits, shots | 19, 566, 850 | identical | identical | held |
+| `pair_diff` (all four) | | exit 0 | exit 0 | held |
+
+**Verdict: all three ON, bound but unexercised.** No reference run reaches a call. The first
+measurement needs a run in which the player's side damages a Pearl Harbor battleship (BSM01) or
+sinks Shokaku or Zuikaku (USN04's late phase). That run should show:
+- the frozen hull (`DisablePhysics: ... controller+14h=1`);
+- the settling pose (the world's `interpolators=` field in the per-frame line);
+- `ExplodeToParts` segment lines.
