@@ -1,0 +1,30 @@
+{
+  "packet": "cc9_pick_squadron_members",
+  "doc": "docs/PICK_SQUADRON_MEMBERS.md",
+  "switch": "kPickSquadronMembersBound (src/game_hosts_hud.cpp): committed OFF in ad4e62791, both arms fixed in 54013982d, set ON by the verdict",
+  "calls": [
+    {"address": "00526E86", "native": "008DDF90", "function": "00526A40", "kind": "call", "host": "UnitPickBinding::grey_arrow_contains_008ddf90 (unchanged)"}
+  ],
+  "reads": [
+    {"site": "00526F33", "what": "PUSH 18h; CALL [vtable+5Ch] on the list entry", "host": "UnitPickBinding::is_kind_of(entry, 18h): registry squadron_unit when ON"},
+    {"site": "00526E58", "what": "MOV ESI,[EDI+3D0h]", "host": "UnitPickBinding::member_3d0(squadron, 0)"},
+    {"site": "00526FBE", "what": "CMP EBP,[EDI+3CCh]", "host": "UnitPickBinding::member_count_3cc"},
+    {"site": "00526FCF", "what": "MOV ESI,[ECX], the next +3D0h slot", "host": "UnitPickBinding::member_3d0(squadron, k)"}
+  ],
+  "routines": [
+    {"address": "00526A40", "coverage": "complete for the list arm 00526E30..00526FD9 (bsp::unit_pick_00526a40, already reconstructed)"}
+  ],
+  "substitutions": [
+    "the fused wing-0 leader answers IsKindOf(18h) at 00526F33 for a registry squadron_unit (the image's entry is the 414h container, class 18h)",
+    "+3D0h[k] is the k-th member with a unit; the host keeps no-unit slots the image's array does not have"
+  ],
+  "census": "USN04: list 1970 = 18 ships (classes 7h:9 9h:2 Ah:7), kind18=0; list 19b8 empty; built once at mission clock 0.05; the one registry squadron (Japanese Val, movieval) undetected, in neither list",
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "usn04": {"rows": "1524/1524 identical", "squadron_entry": 0, "squadron_members": 0, "grey_arrow_set": 164880, "gui_extent": 155669, "deaths": 41, "hit_records": 727, "gameplay": "identical"},
+    "e2": {"rows": "1526/1526 identical", "squadron_entry": 0, "squadron_members": 0, "grey_arrow_set": 326880, "gui_extent": 308669, "deaths": 51, "hit_records": 836, "gameplay": "identical"},
+    "unpredicted": "none; the masked whole-log diff leaves the render thread id, the pre-mission press-start blink alpha (E2) and the ignored avoidance refills"
+  }
+}

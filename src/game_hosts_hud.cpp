@@ -2255,7 +2255,9 @@ namespace {
 //    planes that exist; the host keeps a no-unit slot for a wing that never
 //    became a unit, so the k-th LIVE member is the image's slot k.
 // OFF keeps the entry as the one plane it is and records squadron_members.
-constexpr bool kPickSquadronMembersBound = false;
+// ON by the verdict: the USN04 and E2 pairs are identical (docs section 4). The
+// arm is unexercised there, because no squadron is in either list.
+constexpr bool kPickSquadronMembersBound = true;
 
 class UnitPickBinding final : public bsp::UnitPickHost {
 public:

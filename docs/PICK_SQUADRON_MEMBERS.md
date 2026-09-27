@@ -91,3 +91,38 @@ Same tree, `local\bin\psm_off` against `local\bin\psm_on`, `BSP_GUNNERY_RNG_STRE
   death table are identical, with a zero clock offset. No resolved pick can change, so nothing
   reaches the weapon-group fire path.
 - **Ignored counters.** `ship avoidance search refills` and `pretranslate` are ignored.
+
+## 4. The pairs and the verdict
+
+One tree, 54013982d, with `local\bin\psm_off` against `local\bin\psm_on`. The two builds differ
+only by the switch. Both variables were set. All four logs show the 1600x900 fit line, the
+module directory in this tree and the final COM release.
+
+| row | USN04 OFF | USN04 ON | E2 OFF | E2 ON |
+| --- | ---: | ---: | ---: | ---: |
+| native table rows | 1,524 | 1,524, all equal | 1,526 | 1,526, all equal |
+| `UnitPickScreen::squadron_entry` / `squadron_members` | absent | absent | absent | absent |
+| `UnitPickScreen::grey_arrow_set` | 164,880 | 164,880 | 326,880 | 326,880 |
+| `UnitPickScreen::gui_extent` | 155,669 | 155,669 | 308,669 | 308,669 |
+| deaths / hit records | 41 / 727 | 41 / 727 | 51 / 836 | 51 / 836 |
+| death rows | 41 | 41, equal | 51 | 51, equal |
+| pick list census lines | 2 | 2, equal | 2 | 2, equal |
+
+**Every prediction held. Pick candidates added per squadron entry: 0.** No list entry is a
+squadron, so the arm is not reached.
+
+A whole-log diff with heap addresses masked leaves only these lines:
+- the render thread id;
+- the front-end press-start text's blink alpha in E2 (0.83 against 0.87), before the mission
+  starts;
+- the ignored `ship avoidance search` refills counter.
+
+**Verdict: ON.** The arm now answers as the image does whenever a squadron group record reaches
+a pick list. It is unexercised in these two missions. The leader-as-container substitution is
+labelled in the code and in section 2.
+
+**Next steps, not taken here:**
+- A mission with an own squadron at load time, or a detected enemy one at clock 0.05, would
+  exercise the arm. An authored allied `PlaneSquadronGen` that is generated would do.
+- USN04's allied Kingfisher row is rejected at generation (`scene class PlaneSquadronGen seen=2
+  generated=1 rejected=1`). Why is a separate question.
