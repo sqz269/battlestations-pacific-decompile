@@ -1,0 +1,12 @@
+{
+  "packet": "cc9_slot_swap_walk_read",
+  "worker": "cc9-hud3",
+  "kind": "read",
+  "doc": "docs/CONTROLLED_UNIT.md, The slot swap after the selection",
+  "findings": [
+    "0070DB60's one caller is 00826D3E in 00825F20: each group leader's own timer +E48h, re-armed from [00424C40()+430h], swaps its own group [EDI-8Ch]; no walk over groups.",
+    "USN01's luaMoveToPh2 joins Northampton, SaltLakeCity and Dunlap to Enterprise's group; the controlled Northampton gates it on OFF; on ON the controlled unit moves at 100.2 s and the group swaps Ralph/McCall at 110 s: the image's consequence, no host gap."
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}

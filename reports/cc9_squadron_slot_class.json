@@ -4,12 +4,24 @@
   "base": "3e754f54e",
   "off_commit": "f9de31c1f",
   "switch": "kSquadronSlotClassBound",
-  "state": "OFF (verdict: not flipped)",
+  "state": "ON (flipped after the combined re-pair)",
   "doc": "docs/CONTROLLED_UNIT.md, The squadron slot in the selection tests",
   "pairs": [
-    {"mission": "USN01 3200/3000", "pair_diff": 3, "result": "combat numbers, death rows and unit rows identical; controlled Northampton -> ScoutDauntless at frame 2003, released at 129.85 s; interface 24h; Enterprise group swap at 110 s (Ralph/McCall stations); 5 luaTimetable failures (commandhelpers.lua:330, no Party on the generated squadron's Lua table)"},
-    {"mission": "USN04 4700/4500", "pair_diff": 1, "result": "identical, census none"},
-    {"mission": "USN02 9200/9000", "pair_diff": 1, "result": "identical, census none"}
+    {
+      "mission": "USN01 3200/3000",
+      "pair_diff": 3,
+      "result": "combat numbers, death rows and unit rows identical; controlled Northampton -> ScoutDauntless at frame 2003, released at 129.85 s; interface 24h; Enterprise group swap at 110 s (Ralph/McCall stations); 5 luaTimetable failures (commandhelpers.lua:330, no Party on the generated squadron's Lua table)"
+    },
+    {
+      "mission": "USN04 4700/4500",
+      "pair_diff": 1,
+      "result": "identical, census none"
+    },
+    {
+      "mission": "USN02 9200/9000",
+      "pair_diff": 1,
+      "result": "identical, census none"
+    }
   ],
   "failed_predictions": [
     "Interface 22h INTF_PLANE: measured 24h INTF_PLANESPAWN (007BB9A0 unimplemented, false).",
@@ -17,16 +29,18 @@
     "No formation swap: Enterprise's group swapped once at 110 s on ON only; cause not read.",
     "Not predicted: five luaTimetable failures from the missing Party field."
   ],
-  "blockers": [
-    "Party/Race on a GenerateObject'd entity's Lua table (00928F50 mirror).",
-    "007BB9A0 plane_is_in_flight.",
-    "The caller walk of 0070DB60."
-  ],
+  "blockers": [],
   "substitutions": [
     "The fused squadron slot's own four liveness bytes are the wing-0 plane's; the image's squadron entity outlives that plane.",
     "The HUD observer releases the controlled unit at the slot's (wing-0 plane's) death; the image releases when the squadron entity goes (007F3A60).",
     "The plane interface's camera hand-off (+6Ch/+68h) is not modelled; the mission camera stays unbound after a plane is selected."
   ],
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "repair": {
+    "on": "local/all_on: 519df06ec with kGeneratedEntityPartyBound, kPlaneInFlightTestBound, kSquadronSlotClassBound",
+    "USN01": "exit 3 through controlled moved only; combat, death rows, unit rows identical; failures 0; interface 22h; ScoutDauntless controlled 100.2 s to 129.85 s; group-2 swap at 110 s is the image's consequence (cc9_slot_swap_walk_read)",
+    "USN04": "exit 1",
+    "USN02": "exit 1"
+  }
 }

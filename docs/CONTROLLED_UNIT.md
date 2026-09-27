@@ -1234,3 +1234,55 @@ this order, then re-run this pair:
 
 The plane interface's camera hand-off (`+6Ch`/`+68h`) stays a labelled record. It only affects
 display and the pick.
+
+### The slot swap after the selection (packet `cc9_slot_swap_walk_read`, a read)
+
+Worker cc9-hud3, 2026-09-27. Ghidra was read only. This settles the squadron pair's "Failed 3".
+- **The caller.** 0070DB60 has one caller, 00826D3E in 00825F20
+  `BSP_UnitInstance_UpdateShipMotion` (`tools/callsite_census.py`: one rel32, no absolute
+  reference). It is **not a walk over the groups**:
+  - Each ship's motion update asks 00778890 whether the ship leads its group (00826CF5).
+  - A leader counts its own timer `+E48h` down by the step (00826CFE..00826D13).
+  - When the timer passes below zero, it re-arms it with `[00424C40()+430h]` (00826D21..00826D38)
+    and calls 0070DB60 on its own group `[EDI-8Ch]` (00826D32, 00826D3E).
+  - So one group's gate never stops another group's swap.
+- **What moved in the pair.** USN01's `luaMoveToPh2` (about 91 s) runs
+  `JoinFormation(unit, Mission.CVGroup[1])` over the live `Mission.BmdGroup` (Northampton,
+  SaltLakeCity, Dunlap; `usn_1_marshall.lua` 274-277, 699-701). Northampton, the controlled unit,
+  thereby joins Enterprise's group, the host's group 2.
+  - **On OFF,** 0070DB60's own gate (0070DB87..0070DBA0, a member equal to `00E188D8`) holds
+    group 2 for the rest of the run. The summary reads `2:runs=16,swaps=0,gated`.
+  - **On ON,** `00E188D8` becomes ScoutDauntless at 100.2 s. Group 2's next tick, at 110.00 s,
+    swaps Ralph and McCall (`2:runs=16,swaps=1,gated`; the gated mark is from before 100.2 s).
+- **Verdict:** the swap is the image's consequence of the new controlled unit, under 0070DB60's
+  per-group rule. **No host gap.** The downstream counters in the combined pair are that swap's
+  effect on the escorts' paths: `gunfire avoidance detect` 4462 -> 4402 and the 0041BC20
+  avoid-zone samples.
+
+### The re-pair with the party and 007BB9A0 switches
+
+- **The pairs.** The OFF side is this tree's build at 519df06ec, with all three switches off
+  (`local\gp_off_*`). The ON side is `local\all_on`, an export of 519df06ec with
+  `kGeneratedEntityPartyBound`, `kPlaneInFlightTestBound` and `kSquadronSlotClassBound` all ON.
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 3 | hits 150, hull hits 85, damage 2690.0, shots 561, first hit 53.75 s, 7 death rows, 7 plane death modes and 28 unit rows identical. The exit comes from `controlled moved` Northampton -> `(none)`. Script timer failures stay 0 (fires 85). The interface is 22h |
+| USN04 4700/4500 | exit 1 | identical; only the switches' summary lines changed |
+| USN02 9200/9000 | exit 1 | identical; only the switches' summary lines changed |
+
+**On USN01:**
+- ScoutDauntless is accepted at frame 2003. It is the controlled unit from 100.2 s until its
+  death at 129.85 s, when the observer releases it.
+- The group-2 swap at 110 s is the image's consequence (above).
+- **This is the lead's expectation: combat identical, with the squadron controlled from about
+  100 s to 129.85 s.**
+
+**Verdict: `kSquadronSlotClassBound = true`**, together with `kGeneratedEntityPartyBound` and
+`kPlaneInFlightTestBound`.
+
+The substitutions labelled in the binding stand:
+- the slot's own liveness is the wing-0 plane's;
+- the observer releases at that plane's death rather than at the squadron's;
+- the plane interface's camera hand-off is not modelled.

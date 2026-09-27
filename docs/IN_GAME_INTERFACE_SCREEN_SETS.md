@@ -341,3 +341,17 @@ answers true, and the classifier picks INTF_PLANE (22h).
   reaches the arm once, at mission frame 2003. ScoutDauntless is in free flight (`+900h` 7, seeded
   at creation), so the line reads `c0c=1 aa0=0.0 chA=0/-1.00 00604a20=0 5d=0 -> 1`. The interface
   becomes 22h INTF_PLANE, where it was 24h.
+
+**Pairs and verdict.**
+- **Alone.** With `kSquadronSlotClassBound` OFF, no run reaches the plane arm, so its ON side
+  cannot differ. The `gp_off` logs of 519df06ec have no `InGameInterface 007BB9A0` line on USN01,
+  USN04 or USN02. No separate export was run for this switch alone.
+- **In the combined re-pair** (`local\all_on`, 519df06ec with this switch, the party switch and the
+  slot-class switch ON), USN01's `SetSelectedUnit(ScoutDauntless)` reaches the arm once. It logs
+  `plane=1 c0c=1 aa0=0.0 chA=0/0.00 00604a20=0 5d=0 -> 1`, and the interface summary reads
+  `25h -> 22h` (INTF_PLANE). The squadron-slot pair without this switch gave 24h.
+  - **Failed prediction, minor:** channel A's value is 0.00, not the predicted -1.00. The host's
+    block is not the constructor's -1.0f by then. The channel is disabled, so the gate's answer
+    does not depend on it.
+- USN04 and USN02 are identical in the combined pair.
+- **Verdict: `kPlaneInFlightTestBound = true`.**

@@ -92,7 +92,7 @@ inline constexpr bool kLoadWingSquadronIdBound = true;
 // mirror. While true, the GenerateObject route hands the record's party and
 // race to its pending node, and pass A writes thisTable[key].Party/.Race as it
 // does for a load-time node. While false only load-time nodes get them.
-inline constexpr bool kGeneratedEntityPartyBound = false;
+inline constexpr bool kGeneratedEntityPartyBound = true;  // ON: identity pairs (section 23.4)
 
 class GameHostLog;
 class GameVfsHost;

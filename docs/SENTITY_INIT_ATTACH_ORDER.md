@@ -2088,3 +2088,26 @@ USN04 and USN02 call GenerateObject never, in these runs.
 - **USN01 with `kSquadronSlotClassBound` also ON** (the re-pair after 23 and 24): the five
   `commandhelpers.lua:330` failures go to 0.
 - **USN04 4700/4500 and USN02 9200/9000:** census `nodes=0 writes=0`. **Identity, exit 1.**
+
+### 23.4 Pairs and verdict
+
+- **The pairs.** The OFF side is this tree's build at 519df06ec, with every switch of this and the
+  next packet off (`local\gp_off_*`). The ON side is `local\gp_on`, an export of fd82be77f with
+  only `kGeneratedEntityPartyBound` flipped.
+  - Between those commits only packet `cc9_plane_in_flight_test` landed, OFF.
+  - Its one code path is the 20h classifier's plane arm, which no OFF run reaches (no
+    `InGameInterface 007BB9A0` line in any `gp_off` log).
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay, 7 death rows and 28 unit rows identical. The census goes `writes 0 -> 1`: `thisTable[63]` ("ScoutDauntless") `Party=0 Race=2` |
+| USN04 4700/4500 | exit 1 | census `nodes=0`; identical |
+| USN02 9200/9000 | exit 1 | census `nodes=0`; identical |
+
+**The combined re-pair.** `local\all_on` is an export of 519df06ec with this switch,
+`kPlaneInFlightTestBound` and `kSquadronSlotClassBound` all ON, run against the same OFF logs. On
+USN01 the five `commandhelpers.lua:330` failures are gone (`failures=0`, fires 85 as on OFF).
+Details are in `docs/CONTROLLED_UNIT.md`, "The squadron slot in the selection tests".
+
+**Every prediction held.** **Verdict: `kGeneratedEntityPartyBound = true`.**
