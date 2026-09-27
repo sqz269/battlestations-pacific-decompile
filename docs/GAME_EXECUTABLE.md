@@ -10211,3 +10211,16 @@ Predictions, committed before the runs:
 3000 frames cleanly on the repeat, and that repeat is the OFF side above. Two other workers' runs
 were live in the launcher's other slots at the time. The crash is **not reproduced and not
 explained**, and it was reported to the integrator.
+
+**Boundary pair for the USN01 refusal flag** (integrator's ruling, packet `cc9_reference_flag_pairs_2`).
+- **Builds:** a `git archive` export of `7edcb4c78` ("Flip the recon squadron aggregates ON") and
+  one of its parent `e9053b7db`, both in `local\bd_src`. The parent is built whole, then synced
+  forward and rebuilt. The two differ by the one constant in `src/game_hosts_gunnery.cpp`.
+- **Runs:** USN01 3200/3000, streams on, the same parameters as above.
+- **Predictions, before the runs:**
+  - **The parent:** `recon aggregates` group records 0, window refusals 385, admit_plane about
+    3922.
+  - **The landing:** group records about 293, refusals about 754, admit_plane about 7466. These are
+    the values of the switch pair above; that tree lacks later landings, so small differences in
+    the counts are possible.
+  - Deaths, hit records, shots and the death table are identical between the two.
