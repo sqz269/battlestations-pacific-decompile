@@ -1482,3 +1482,144 @@ same-tree pairs with `tools/pair_diff.py`.
 - the `cc9-scene-entities_*.py` edit scripts;
 - the `*_runs.ps1` pair runners.
 
+
+## 10. Slot 3Ch reconstructed: the quadtree segment walk (packet `cc9_terrain_segment_quadtree`, `kTerrainSegmentQuadtreeBound`)
+
+Worker cc9-init2, 2026-09-27, on main f424d4880. Ghidra was read only. The lead repaired
+00AE9D80's boundary (00AE9D80..00AEA292, the seven-dword table 00AEA294..00AEA2AF outside it).
+
+### 10.1 The walk, from the image
+
+- **00ADA240, slot 3Ch** `(from, to, out)`, `RET 0Ch`.
+  - Both world points go to local space through the node's inverse world matrix (00B6E0D0, then
+    004142E0 at 00ADA262 and 00ADA283).
+  - **Vertical case.** When |dx| < 0.001 and |dz| < 0.001 in local space, it calls 00AECC40 with
+    ECX = the terrain, EDX = the world `from`, and the world `to` and `out` on the stack
+    (00ADA2DC..00ADA2EE). 00AECC40 transforms both points again itself.
+  - **Otherwise.** It subtracts the origin `+80h/+84h` from x and z, calls 00AEA2B0, then adds the
+    origin back to the hit and transforms it through the node's world matrix `+F0h`.
+- **The tree, built at the end of 00ADDA60.**
+  - **Depth.** d = ceil(log2(max(tiles wide, tiles deep))), taking the max unsigned. 00AEA900
+    stores the box (0, -1000, 0)..(2^d·300, 1e10 [+14h], 2^d·300) and `+38h` = 2^d.
+  - **Nodes.** 00AEA820 pushes the root, and 00AEA5F0 appends four children per node, recursing
+    while the half size is above 1. Each node is 14h bytes: min y, max y, first child (-1 for a
+    leaf), tile x, tile z.
+  - **Child order.** Children are appended as (x,z), (x,z+h), (x+h,z), (x+h,z+h). Their tile
+    fields are `(k>>1)+x` and `(k&1)+z`.
+  - **Height range, 00AE9C80.** A node's range is the min and max of its tiles' `+14h/+18h`,
+    seeded [1000 (00CE3804), -1000]. A tile outside the grid, or one the file lacks, contributes
+    [-1000, 1000].
+  - **Tile range.** A tile's `+14h/+18h` come from the block's vt+0Ch 00AED020, the min and max of
+    all 33×33 samples with holes as -1000.0. 00ADF8B0 stores them (00ADF90A, 00ADF915).
+- **00AEA2B0, the ray** (a Revelles-style parametric walk in x and z).
+  - The direction is `(q-p)/|q-p|` (00419440).
+  - A negative x or z component is negated, the origin is mirrored about the box, and the flags
+    get 4 (x) or 2 (z).
+  - Each of dx and dz is then raised to at least 0.001 (00D7A23C).
+  - It computes the entry and exit parameters against the box and returns false when they do not
+    overlap.
+  - Otherwise it calls 00AE9D80(0, tx0, tz0, tx1, tz1, &ray). The record holds the origin (+0h),
+    the direction (+18h), the hit (+24h), the length (+30h) and the flags (+34h).
+- **00AE9D80, one node** (`__thiscall`, `RET 18h`).
+  - **Returns 0** when tx1 or tz1 is at most 0.
+  - **Returns -1** when t_in = max(tx0, tz0, 0) is not below t_out = min(tx1, tz1, length); the
+    ray has ended.
+  - **Pruning.** It un-mirrors the ray and returns 0 when the ray's y range over [t_in, t_out]
+    misses the node's [min, max].
+  - **Leaf** (first child -1): 00AE9BD0 with the tile and the un-mirrored start and end points.
+  - **Otherwise, the four children in ray order:**
+    - the first child from tx0 < tz0 and the midpoints (0.5 double, 00D7A280);
+    - children at `first + ((flags ^ k) >> 1)`, through the jump table's arms 0, 2, 4 and 6
+      (00AEA0B0);
+    - the next child from 00AE9A00, `(f1 <= f2) ? a : b`; 8 ends the walk.
+- **00AE9BD0, the leaf.** The tile must be inside the grid (00ADAC30 `+38h`, 00ADAC40 `+3Ch`) and
+  present. The sub-segment's squared length must be at least 1e-6 (00D7A2B8, 004193E0). Then it
+  calls 00ADF1B0.
+- **00ADF1B0, the tile.**
+  - A 2-D DDA over the tile's 32×32 cells of 9.375, from floor(local/9.375) toward the end cell.
+  - It steps z when `tz < tx` or the two are unordered (FCOMI, `JB` at 00ADF55D), else x. It stops
+    when the stepped axis reaches its end cell.
+  - For each cell with i, j < 32 it fetches four samples through the block's slot 8h 00ADC5F0
+    (no node y). It calls 00ADEB80 with
+    `(ECX = V(i,j), EDX = V(i+1,j), V(i+1,j+1), V(i,j+1), p, q, out)`, where
+    `V(i,j) = (tile_x·300 + i·9.375, h(i,j), tile_z·300 + j·9.375)`. The ESP was traced by hand
+    through 00ADF3E2..00ADF54A.
+- **00ADEB80, the cell** (fastcall a, b; then c, d, p, q, out). It is a scalar-triple
+  line-against-quad test in the form of Ericson's `IntersectLineQuad`, split on the b–d diagonal:
+  - m = pb × pq (004F9B30 at 00ADEC6A) and v = m · pd;
+  - **v < 0:** triangle a b d. It needs u = m·pa ≥ 0 and w = pq·(pd×pa) ≥ 0 (00ADEB40), and gives
+    r = (u·d − v·a + w·b)/(u − v + w);
+  - **otherwise:** triangle b c d. It needs u = −m·pc ≥ 0 and w = pq·(pc×pd) ≥ 0, and gives
+    r = (u·d + v·c + w·b)/(u + v + w).
+  - **It tests the LINE through p and q.** Nothing clips r to [p, q], so a hit just past either
+    end of the segment, inside the first or last cell the DDA visits, counts.
+
+### 10.2 The island rotation
+
+- **The image's point queries ignore rotation.** Ground height 00903860, ground normal 009038F0
+  and the landscape query 009039D0 subtract only the node's translation (section 6). The host
+  matches this already, and nothing changes here.
+- **The image's segment test uses the full frame.** 00ADA240 transforms through the inverse world
+  matrix, rotation included.
+  - The host's `landscape_entry_segment_hit`, which the pick, seat, line-of-fire and projectile
+    traces use, already did.
+  - The host's 00903BC0 sweep did not: it marched in world space against the unrotated height.
+    Under the switch it asks each Landscape's slot 3Ch, as 00903C20..00903C42 does
+    (vt+3Ch on the node's `+3D0h`).
+- **So in the image a rotated island's segment test and its ground height disagree.** The segment
+  sees the island where it is drawn. The height query sees the island un-rotated about its node.
+- **Rotated Landscape rows in this installation's `.scn` files:** 18 rows in 9 scenes. The rest of
+  the 763 rows in 223 scenes are identity.
+
+| scene | Landscapes (yaw) |
+| --- | --- |
+| usn_1_marshall | 04 (-180, tilt 3e-4), 05 (91.5, tilt 0.02) |
+| usn_13_truk | 05 (-180), 07 (-150), 11 (91.5) |
+| yamato (chg) | 05 (-180), 06 (91.5), 07 (-150) |
+| shogo_four | 02 (-150), 03..06 (-180) |
+| bsm_01_stationed_at_pearl | 02 (-180) |
+| empires_fall | 05 (134) |
+| bulls_run | 01 (-150) |
+| us_osumi | 01 (-56) |
+| ijn_2_force | "Bruh" (134) |
+
+  usn_2_java (USN02) and usn_19_coralus (USN04) author no Landscape at all.
+
+### 10.3 The binding (`kTerrainSegmentQuadtreeBound`, committed OFF)
+
+- **In `src/game_hosts_scene_contents.cpp`:**
+  - the tree is built on the first query (`build_quadtree_00aea820`);
+  - `ray_walk_00aea2b0`, `node_walk_00ae9d80`, `leaf_00ae9bd0`, `tile_walk_00adf1b0`,
+    `line_quad_00adeb80` and `scalar_triple_00adeb40` implement the chain above;
+  - `landscape_entry_segment_hit` calls the chain for a non-vertical segment.
+  - `world_segment_blocked_00903bc0` asks every Landscape's slot 3Ch after its two endpoint tests.
+- **LABELLED STAND-IN:** the vertical case 00AECC40 keeps the half-cell march. Its sub-walk
+  00AECA60 and the terrain's vt+48h are unread. It is counted as `vertical`.
+- **SUBSTITUTION, labelled:** the host's `fraction` is the hit's projection on from→to. 00ADA240
+  answers a point only, and with the line test that projection can fall outside [0, 1].
+- **Rounding.** Float stores are kept as floats and x87 register chains are evaluated in double.
+  The result is not bit-verified.
+- **Census.** The gunnery `landscape attach` line gains
+  `slot3c bound walks=N/hits vertical=N/hits leaves cells`. The load self-check adds, under the
+  switch, a slanted trace per object: `scene terrain slot 3Ch self-check ... slant_hits
+  on_local_surface_25cm worst`. Its hits must lie on that Landscape's own local surface.
+
+### 10.4 Predictions (written before the pairs; both variables set, lockstep 0.05, idle player)
+
+- **USN01 3200/3000** (usn_1_marshall, four Landscapes, two of them rotated). Reference e reads
+  `pick=5357/22 line_of_fire=141/0 projectile=17981/0 impacts_land=0`, and 00903BC0 is never
+  called (`segment calls=0`).
+  - **Self-check:** every Landscape's slanted traces hit. `on_local_surface_25cm` equals
+    `slant_hits`, because a planar cell and the bilinear surface differ by centimetres over a 9.4 m
+    cell.
+  - **Pick land hits 22 -> 18..26.** The surface changes from bilinear to two triangles per cell,
+    and the line test may add a hit just past a segment's end. The call counts stay 5357 / 141 /
+    17981.
+  - **Line-of-fire and projectile land hits stay 0**, and `impacts_land` stays 0.
+  - `vertical` is small next to `walks`; the pick rays come from the camera at an angle.
+  - The ground-height census rows do not move, since the point queries are unchanged.
+  - No plane dies by terrain, because 00903BC0's consumers are unbound.
+  - **Gameplay identical** (`pair_diff` exit 1): the pick result feeds no gameplay row, and the
+    line-of-fire and projectile traces hit nothing either way.
+- **USN04 4700/4500 and USN02 9200/9000.** No Landscape: the census reads `walks=0/0 vertical=0/0`.
+  Only the new `bound` field differs, so `pair_diff` exits 1 with gameplay identical.
