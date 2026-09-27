@@ -2264,3 +2264,32 @@ Worker cc9-terrain2, on main 26fa4ca42. Ghidra was read only. This closes item 2
   - every ship and plane's start frame moves by about 1e-4;
   - so gameplay rows on USN01, USN02 and USN04 may move slightly and must be judged per entity.
   It needs its own pairs on those three and on USN13.
+
+## 17. 007C3CB0's caller is the plane effects screen (read, 2026-09-27)
+
+Worker cc9-terrain2, on main 26fa4ca42. Ghidra was read only. This closes item 3 of section 15
+and the provisional wording of 12.1 and 13.
+
+- **The object has two vtables.**
+  - Its destructor 00606040 and its constructor 00606470 both store 00CF43AC at +0 and 00CF4394 at
+    +8.
+  - The slot 00CF43CC is +20h (slot 8) of the primary vtable 00CF43AC. Its neighbours are slot 7
+    00605CC0, slot 9 00606230 and slot 10 006067E0.
+  - Neither vtable has RTTI: the dword before each is not a complete-object locator.
+- **The class.**
+  - 00606470 opens with `BSP_FrontEndScreen_Construct`, and its only caller is
+    `BSP_InGameInterface_Init` 0068CC70 (0068CF87, 110h bytes, stored at interface +6Ch).
+  - That is screen slot 3Fh in docs/IN_MISSION_INTERFACE_MANAGER.md.
+  - docs/HUD_SCREEN_PAGES.md names it the **plane effects screen**. Its register 00607BE0 builds
+    `Planewindsmoke`, `warning heartbeat only` and `Turbo_Effect`, and its page `GUI_plane_effects`
+    is loaded by slot 3Eh.
+- **The virtual 0060ABD0..0060C5AB (+20h)** reads the plane at screen +B8h (0060ABF0).
+  - With none, it calls 006485A0 and leaves (0060ABFD..0060AC0A).
+  - With one, it calls 007C3CB0 on it (ECX = +B8h, the frame time pushed; 0060AC1A), and further
+    on calls the player-plane GUI update 00609BD0 (0060C35F).
+- **So 007C3CB0 is a cosmetic effect of the plane the in-mission interface shows,** the player's
+  plane. 12.1's statement holds, with the caller corrected to the screen's +20h virtual, which
+  reaches 00609BD0 itself.
+- **The host carries slot 3Fh only as a register-table row** (`src/hud_screens.cpp`, 00607BE0),
+  with no +20h update, so 007C3CB0 stays unbound. Its test is a vertical
+  segment, which misses in the image (14.7).
