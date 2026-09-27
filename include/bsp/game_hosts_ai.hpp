@@ -74,6 +74,9 @@ struct GameObjectiveSets {
     struct Objective {
         std::string name;
         std::vector<std::size_t> units;
+        // +1Ch: 0 active, 1 completed (008E2181), 2 failed (008E2200's store).
+        // Packet cc9_objectives_completed.
+        int state{0};
     };
     std::vector<Objective> slots[kSlotCount];
 
@@ -89,6 +92,14 @@ struct GameObjectiveSets {
     bool add_unit(int slot, const std::string& name, std::size_t unit);
     // 008DFC00's removal.
     bool remove_unit(int slot, const std::string& name, std::size_t unit);
+    // Packet cc9_objectives_completed. 008E20D0 (status 1) / 008E2200
+    // (status 2): the first objective of the slot whose name matches
+    // (008E20F6's length-then-_stricmp rule) takes the state after 008DFE50
+    // has handed its units to the removal 008DFC00. Returns false on no match.
+    bool set_status(int slot, const std::string& name, int status);
+    unsigned long long status_sets{0};
+    unsigned long long status_misses{0};
+    unsigned long long status_unit_drops{0};
     // Every unit of every objective of this slot: what 00A2C450 walks.
     std::vector<std::size_t> units_in_slot(int slot) const;
     std::size_t total_units() const noexcept;

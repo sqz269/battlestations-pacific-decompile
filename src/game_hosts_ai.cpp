@@ -87,6 +87,28 @@ bool GameObjectiveSets::remove_unit(int slot, const std::string& name, std::size
     return false;
 }
 
+bool GameObjectiveSets::set_status(int slot, const std::string& name, int status) {
+    if (slot < 0 || static_cast<std::size_t>(slot) >= kSlotCount) return false;
+    for (Objective& o : slots[static_cast<std::size_t>(slot)]) {
+        if (!(o.name.size() == name.size() && _stricmp(o.name.c_str(), name.c_str()) == 0)) {
+            continue;
+        }
+        // 008E216F 008E1D30, the announcement: sound only, not modelled here.
+        // 008E2177 008DFE50: every live unit of the objective goes to 008DFC00.
+        // SUBSTITUTION, labelled: the walk's early return for a hidden
+        // objective (+18h == 2) is not applied, because this host does not
+        // record the kind; on the measured missions no objective holds a unit.
+        status_unit_drops += o.units.size();
+        unit_removes += o.units.size();
+        o.units.clear();
+        o.state = status;                                 // 008E2181
+        ++status_sets;
+        return true;
+    }
+    ++status_misses;
+    return false;
+}
+
 std::vector<std::size_t> GameObjectiveSets::units_in_slot(int slot) const {
     std::vector<std::size_t> out;
     if (slot < 0 || static_cast<std::size_t>(slot) >= kSlotCount) return out;
@@ -2634,6 +2656,12 @@ void GameAiCoordinatorHost::report() {
         "empty and the native's 00A2C4B4 arm is the answer)",
         host.summary.world_set_queries, host.summary.world_set_hits,
         host.summary.objective_set_units);
+    {
+        const GameObjectiveSets& sets = game_objective_sets();
+        host.log.notef("summary mission objective status (packet cc9_objectives_completed, "
+            "008BD340/008BD900 -> 008E20D0/008E2200): sets=%llu misses=%llu unit_drops=%llu",
+            sets.status_sets, sets.status_misses, sets.status_unit_drops);
+    }
     host.log.notef("summary mission ai target weight queries=%llu objective_hits=%llu "
         "fort_targets=%llu non_command=%llu (00A0F810's four multipliers: 10.0 objective, "
         "0.1 for the 009FE0B0 trio, 0.01 when that trio is not a command building)",

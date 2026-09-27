@@ -1,0 +1,12 @@
+{
+  "packet": "cc9_objectives_completed",
+  "worker": "cc9-hud3",
+  "base": "d9d55c3f1",
+  "switch": "kObjectiveStatusBound",
+  "state": "OFF",
+  "doc": "docs/MISSION_OBJECTIVES.md section 8",
+  "substitutions": ["The objective kind is not recorded, so 008DFE50 drops units of hidden objectives too (none hold units on the measured missions).", "The announcement sound and marker refresh are not modelled."],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": "pending"
+}

@@ -195,3 +195,60 @@ that, and it could not have been learned from the listing alone.
 * `008BD340 Objectives_Completed` and `008BD900 Objectives_Failed`, still unimplemented: with
   records now in the sets they have something to act on.
 * A retail-install check of the three missions' objective tables, since this installation is modded.
+
+## 8. `Objectives_Completed` and `Objectives_Failed` (packet `cc9_objectives_completed`, `kObjectiveStatusBound`)
+
+Worker cc9-hud3, 2026-09-27, base d9d55c3f1. Ghidra was read only.
+
+**What the natives do** (V; `docs/MISSION_RESULT_DECISION.md`, `docs/OBJECTIVE_UNIT_LIST.md`):
+- **The call.** 008BD340 `Objectives_Completed` and 008BD900 `Objectives_Failed` take
+  `(party, slot, name, text, quiet)`. `luaObj_Completed` in `global/commandhelpers.lua` 5915-5920
+  passes `obj.Party`, `obj.PlayerIndex`, `obj.ID`, `obj.TextCompleted` and `quiet`. For each slot
+  the mask selects (the same party/slot rule as `Objectives_Add`), the native runs 008E20D0
+  (completed) or 008E2200 (failed) on that slot's set.
+- **The first objective whose name matches:**
+  - is announced by 008E1D30 (sound, unless quiet);
+  - goes through 008DFE50, which hands every live unit of a non-hidden objective to the removal
+    008DFC00;
+  - takes `+1Ch` = 1 or 2.
+- **`+1Ch` is the only field written.**
+
+**What reads the mark:**
+- 008DF2B0's hidden-objective marker gate (`+18h == 2 && +1Ch != 1`, at a later unit add);
+- 008DFE50's marker walk;
+- the HUD's objective pages.
+
+**Nothing native ends the mission or scores from it.** The mission end is script-driven:
+`Mission.EndMission`, `Scoring_SetMissionCompleted` 008B8AD0 and the end-movie request
+(`docs/MISSION_RESULT_DECISION.md`). `luaObj_Completed` also sets the script's own
+`obj.Success = true` (5923), which `luaObj_GetSuccess` reads, whatever the native did.
+
+**Callers in this installation's scripts** (read-only grep of `luaObj_Completed(` call sites):
+usn_1_marshall 10, usn_2_java 7, usn_19_coralus (USN04) 12, usn_13_truk (USN13) 9. BSM01
+(`bsm/bsm_01_stationed_at_pearl.lua`), JM06 and JM08 (`jm06.lua`, `jm08.lua`) exist and were not
+counted. On the measured idle runs the natives are reached:
+
+| mission | calls on the OFF logs (d9d55c3f1 tree) | objectives added |
+| --- | --- | --- |
+| USN01 3200/3000 | `Objectives_Completed` 2 | CA, DD |
+| USN04 4700/4500 | none | Bombers |
+| USN02 9200/9000 | `Objectives_Failed` 2 (the Houston loss path at 39.65 s) | Sink, CL |
+
+**The binding.**
+- **Switch:** `kObjectiveStatusBound` in `include/bsp/game_hosts_lua.hpp`, committed OFF.
+- The two rows join the objective rows of `src/game_hosts_lua.cpp` and call
+  `GameObjectiveSets::set_status` per selected slot (state and the unit drop).
+- **The census:** `summary mission objective status ... sets= misses= unit_drops=`, plus the
+  existing `objective binding` lines.
+- **SUBSTITUTIONS, labelled:**
+  - The kind (`+18h`) is not recorded by this host, so 008DFE50's early return for a hidden
+    objective is not applied. No objective on these missions holds a unit.
+  - The announcement sound and the HUD marker refresh are not modelled.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+- **USN01:** `sets=2 misses=0 unit_drops=0`, if the two keys are CA and DD. A key that names no
+  added objective counts as a miss. Mission end stays `none`. **Gameplay identical, exit 1.**
+- **USN02:** `sets` + `misses` = 2, `unit_drops=0`. The mission still fails at 39.65 s ("Game
+  Over", Houston). **Identity, exit 1.**
+- **USN04:** census all 0. The mission still ends without an end (phase 1). **Identity, exit 1.**
+- **No mission completes or scores differently:** nothing reads `+1Ch` toward the result.
