@@ -922,3 +922,40 @@ Worker cc9-hud2, 2026-09-27. The branch is `agent/cc9-hud2` and the worktree
   build.
 - **Logs:** `local\{kk,sd,pt,fs,lp,ic,ic2,ld,ob}_*_usnNN.log`.
 - **Scripts:** `local\cc9-hud2-*`.
+
+## What moved USN02 in the observer pair (packet `cc9_wreck_released_order`, a read, 2026-09-27)
+
+Worker cc9-ships2. No code changed. The evidence is cc9-hud2's own pair (`local\ob_{off,on}_usn02.log`
+in its tree) and this tree's USN02 logs.
+
+**The released wreck does not move; the host already matches the image there.**
+- **The AI stops at the kill.** The row-15 flush sets `+5Dh` for every dead ship
+  (`kSunkShipFlushBound`), and 009F50E0's gate stops the controller. Houston has 1491 controller
+  steps in both OFF and ON, which is its death at 74.55 s. DeRuyter (3845) and Exeter (716) stop
+  the same way, and USN02's `gated=42666` counts the skipped wreck steps.
+- **The throttle is cut.** The wreck handler's cut (0082524B, `kWreckThrottleCutBound`) zeroes the
+  ring's newest throttle. OFF shows the controlled frames going to throttle 0 at 75.0 s and the hull
+  at rest by 76.5 s.
+- **Houston's unit row is identical in the two runs.** The `controlled moved` difference
+  (1167.61 against 1155.93) comes from where the frames stop printing: OFF prints the controlled
+  frames to 450 s, and ON stops at the release at 74.5 s.
+
+**What moved the pair: the formation slot swap's controlled-unit gate.**
+- 0070DB60 BSP_UnitGroup_SwapSlotsByDistance returns without swapping for a group that holds the
+  controlled unit (0070DB87..0070DBA0, `src/unit_group_slot_swap.cpp`).
+- Houston is a member of DeRuyter's group 0 (the `formation group 0` line lists it).
+  - On OFF the dead Houston stays the controlled unit, so group 0's swaps are gated for the rest of
+    the mission.
+  - On ON the release clears `00E188D8` at 74.5 s, the gate lifts, and group 0 swaps slots at 80,
+    90, 130, 200, 210 and 240 s. These `formation slot swap` lines appear on ON only.
+- The reshuffled stations move the followers.
+  - The first differing ship-AI sample is step 3690 (184.5 s): Alden, John1 and John2 in `follow`,
+    with different station targets.
+  - The death rows follow from there: Alden 315.70 -> 336.69 s, John2 dies only on ON.
+
+**The rule is the image's**, given the release: 0070DB60 reads the controlled unit, and 004C0890(null)
+clears it. So the pair's move is a consequence of the observer switch, not a wreck-control gap.
+
+**One open question for a later packet:** does the image keep a dead ship in its group's member
+list? The host keeps Houston in group 0 after its death. If the image's kill path removed it, the
+gate would have lifted at 74.55 s even without the release, and OFF would swap too.
