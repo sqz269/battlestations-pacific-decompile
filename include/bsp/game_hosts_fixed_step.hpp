@@ -122,8 +122,9 @@ inline constexpr bool kPendingListDedupBound = true;
 // for their constructors' 00928760 pushes, and runs one InitAll walk at
 // 0046EB4B in place of attach_scene_entities_00928a00, so passes A..E and the
 // section 8 identity writes come from the walk. Needs kSEntityInitAllBound.
-// False: the load attach and its section 8 patch.
-inline constexpr bool kLoadTimeInitAllBound = false;
+// False: the load attach and its section 8 patch. ON by the verdict: the USN04
+// and USN02 pairs moved only the predicted rows (section 10.4).
+inline constexpr bool kLoadTimeInitAllBound = true;
 
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.

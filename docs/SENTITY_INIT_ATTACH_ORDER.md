@@ -642,3 +642,34 @@ inside that pass. Until then, the mission frame's push-and-walk is the stand-in.
   - Gameplay identical.
 - **If a gameplay row moves,** the call's later position or a pass the load attach never ran is
   the cause, and the switch stays OFF.
+
+### 10.4 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\lt_off` (the committed OFF, 86074aa4b) and
+  `local\bin\lt_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\lt_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. Every gameplay and per-entity row is identical, and the other changes are the ones
+  predicted in 10.3:
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| InitAll calls / with work / entities / pushes | 4,512 / 12 / 60 / 20 | 4,513 / 13 / 86 / 46 | 9,008 / 4 / 4 / 4 | 9,009 / 5 / 34 / 34 |
+| load walk pushes / mirrored | 0 / 0 | 26 / 5 | 0 / 0 | 30 / 2 |
+| pass A..E and start-branch rows | 60 each | 86 each | 4 each | 34 each |
+| pass B `bind_lua_class` | 60 | 81 | 4 | 32 |
+| `pass C mirror_identity` (walk) | - | 5 | - | 2 |
+| `SceneLoad::` rows, `MissionLua::entity_lua_attach` | 21, 5, 1 | removed | 28, 2, 1 | removed |
+| loading progress | 180 | 258 | 12 | 102 |
+| `self_table_entities` | 86 | 86 | 34 | 34 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+
+- **Other lines.** The two `thisTable:` load notes are OFF only. The `26 pending`/`INIT,ENUM:26`
+  notes (30 on USN02) are ON only. On USN04 the eighth runtime walk's two notes (`1 pending`,
+  `INIT,ENUM:3`) are OFF only, as predicted.
+- **Noise.** The pretranslate row, 18 -> 17 and 18 -> 19, is on the noise list.
+
+**Every prediction held. Verdict: ON.** The load attach and the section 8 block are retired while
+the switch is on. Both stay in the code as the OFF path.

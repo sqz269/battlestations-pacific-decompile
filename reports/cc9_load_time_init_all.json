@@ -1,7 +1,7 @@
 {
   "packet": "cc9_load_time_init_all",
   "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 10",
-  "switch": "kLoadTimeInitAllBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "switch": "kLoadTimeInitAllBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 86074aa4b, set ON by the verdict",
   "calls": [
     {
       "address": "0046EB4B",
@@ -40,7 +40,10 @@
     }
   ],
   "routines": [
-    {"address": "0046DF00", "coverage": "partial: the token loop's block dispatch 0046E9F0..0046EBDD and the end 0046ECFE..0046ED2A (the four InitAll sites and their latch); the block readers are not read here"}
+    {
+      "address": "0046DF00",
+      "coverage": "partial: the token loop's block dispatch 0046E9F0..0046EBDD and the end 0046ECFE..0046ED2A (the four InitAll sites and their latch); the block readers are not read here"
+    }
   ],
   "corrections": [
     {
@@ -52,8 +55,69 @@
   "no_ghidra_function": [],
   "names": [],
   "contracts": [
-    {"owner": "cc9-ships", "file": "src/game_hosts_scene_contents.cpp", "contract": "push each marker instance at construction and run the one load InitAll at the entity-blocks boundary through the Lua host's runner (site 0046EB4B), once create_units pushes and builds units inside the instantiate pass"}
+    {
+      "owner": "cc9-ships",
+      "file": "src/game_hosts_scene_contents.cpp",
+      "contract": "push each marker instance at construction and run the one load InitAll at the entity-blocks boundary through the Lua host's runner (site 0046EB4B), once create_units pushes and builds units inside the instantiate pass"
+    }
   ],
-  "verdict": "pending",
-  "pairs": {}
+  "verdict": "ON: only the predicted rows moved; gameplay and per-entity tables identical",
+  "pairs": {
+    "binaries": "local/bin/lt_off, local/bin/lt_on (one tree, 86074aa4b, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "load_pushes": [
+        0,
+        26
+      ],
+      "init_all_nonempty": [
+        12,
+        13
+      ],
+      "entities": [
+        60,
+        86
+      ],
+      "self_table_entities": [
+        86,
+        86
+      ],
+      "deaths": [
+        43,
+        43
+      ],
+      "hit_records": [
+        788,
+        788
+      ],
+      "pair_diff_exit": 1
+    },
+    "usn02_9200_9000": {
+      "load_pushes": [
+        0,
+        30
+      ],
+      "init_all_nonempty": [
+        4,
+        5
+      ],
+      "entities": [
+        4,
+        34
+      ],
+      "self_table_entities": [
+        34,
+        34
+      ],
+      "deaths": [
+        20,
+        20
+      ],
+      "hit_records": [
+        329,
+        329
+      ],
+      "pair_diff_exit": 1
+    }
+  }
 }
