@@ -971,3 +971,93 @@ clears it. So the pair's move is a consequence of the observer switch, not a wre
 **One open question for a later packet:** does the image keep a dead ship in its group's member
 list? The host keeps Houston in group 0 after its death. If the image's kill path removed it, the
 gate would have lifted at 74.55 s even without the release, and OFF would swap too.
+
+## The unit vtable[124h] map (packet `cc9_vtable124_liveness`, `kUnitVtable124MapBound`)
+
+Worker cc9-hud3, 2026-09-27, base 21b62fc38. Ghidra was read only.
+
+### The map (read)
+
+Every `.rdata` dword equal to 006D1EF0 was located with `tools/callsite_census.py`. There are 23,
+and each is a vtable's `+124h` slot. The classes come from `docs/ENTITY_CLASS_IDS.md`'s vtable
+column. The image carries no RTTI (the dword before each vtable is not a locator).
+
+| `+124h` | body | classes |
+| --- | --- | --- |
+| **006D1EF0** | 006D1EF0..006D1F10: `+5Ch` set and `+5Dh`, `+60h`, `+5Eh` clear (0043F080's four bytes) | 05 (00D1A698), the ship base 06 (00D09678) and ships 07-0E (00CFC3D0, 00D0BF80, 00D01630, 00CFB738, 00CFA778, 00CFFA30, 00CF90B0, 00D0C648); the plane base 0F (00D05F20) and planes 10-17 (00D06638, 00D1A000, 00D19D28, 00D06920, 00D00070, 00D0BA80, 00D00308, 00D1A2D8); MLandVehicle 19 (00CFFDE0); 35 (00CFCD60); MAirfield 45 (00CF8C08); MShipyard 46 (00D0B770) |
+| **006F5920** | 006F5920..006F5958, **no Ghidra function** | MCommandBuilding 1C (00CFB028): false when `+790h` is set and `[[+538h]+70h] == 58h`, else the four bytes |
+| **00745A50** | 00745A50..00745A52 (`XOR AL,AL`, `RET`), **no Ghidra function** | MLandFort 1B (00CFF3F8): false |
+| **007EE670** | 007EE670..007EE6AF, **no Ghidra function** | PlaneSquadronGen 18 (00D087C0): false when `+361h` or `+3B0h` is set, else the four bytes of the slot-0 plane `[+3D0h]`, false when that is null |
+| **00927800** | 00927800..00927802 (`XOR AL,AL`, `RET`), **no Ghidra function** | the class-02 family outside 05 and 18: 02 (00D03E80), 04 (00D0DF70), 1E (00CFDC58), the guns 20-28 (00CFE0A8, 00CFE308, 00CFBD20, 00CFE548, 00CFBF58, 00CF96A8, 00CF9918, 00CFC190, 00CFAAB8), LandConvoy 1A (00CEA570): false |
+
+**Coverage.** Every class-05 descendant in the table of `docs/ENTITY_CLASS_IDS.md` appears
+above, and so does every class-02 descendant that can reach the test. Classes 2A and later are
+rejected by 00645060 before `+124h` (`!IsKindOf(2Ah)`). 01, 03 and the other non-02 families fail
+`IsKindOf(2)` first.
+
+**Two single-player reductions (V):**
+- **MCommandBuilding `+790h`.** Its one setter is 006F292D in 006F2780, reached through a
+  vtable (00CFB0C8). It stores 1 only when 004BCA50 `BSP_Game_GetEffectiveGameMode` returns 2 or
+  3. In single player 004BCA50 reports 8 (the mode is not forced, `game+1FE4h` is 0, and the mode
+  is neither 8 nor 9). The constructor clears it at 006F5761. So 006F5920 reduces to the four
+  bytes.
+- **PlaneSquadronGen `+3B0h`.** Every store to the squadron's `+3B0h` is a clear: `MOV
+  [ESI+3B0h],BL` in the constructor at 007F2DD3, and `MOV [ECX+3B0h],DL` with `DL = 0` at 007EFB69.
+  The byte-store scans (`C6 ?? B0 03 00 00 01`, `88 ?? B0 03 00 00`, `C7`/`89`/`66 89` forms) find
+  no other store in the squadron code. The same `88` pattern does find those two, so the negative
+  is not vacuous. `docs/PLANE_SQUADRON.md`'s "any plane ready scratch" row names no setter.
+
+**Where the test is asked.** 00645110 in 00645060, after `IsKindOf(2)`, `!IsKindOf(0Fh)`,
+`!IsKindOf(2Ah)`, `!IsKindOf(46h)` and `!IsKindOf(45h)`. So planes, airfields and shipyards never
+reach it through 00645060. Also 0064565F in 00645600, for a candidate answering `IsKindOf(1)`.
+
+### The binding
+
+- **Switch:** `kUnitVtable124MapBound` in `include/bsp/game_hosts_hud.hpp`, committed OFF.
+- **The code:** `GameHudHost::Impl::unit_vtable_124` answers both sites by the map. It tests 1C
+  before 1B and 1B before 05, because 1C descends from 1B and 1B from 05.
+- **SUBSTITUTION, labelled:** the squadron's `+361h` is set by 007F31A0 when the leader leaves
+  the map with survivors. This host does not model it, so it reads clear.
+- **OFF keeps the old rule:** ships answer the four bytes, and every other class answers false as
+  the record.
+- **The census**, on both sides:
+  - `summary mission hud unit vtable124 map`: asks, and the units the map answers true for where
+    the old rule answered false, with class and first site;
+  - a `+8Ch members:` line after each root-list build, with class ids.
+
+### The OFF census (this commit's OFF build, `local\vt_off_*`)
+
+| mission | asks | map-only units | `+8Ch` builds |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | 59 | **ScoutDauntless/12h at 00645110** | frame 0: Dunlap, Ralph, McCall, Blue (07), Enterprise (09), Northampton, SaltLakeCity (0A); frame 1: Northampton; frame 403: Dunlap, Northampton, SaltLakeCity |
+| USN04 4700/4500 | 62 | none | frame 0: nine Fletchers (07), Lexington, Yorktown (09), seven cruisers (0A); frames 1 and 502: Lexington |
+| USN02 9200/9000 | 70 | none | frame 0: 14 ships; frames 1 and 524: 10 ships |
+
+No fort, command building, land vehicle, class-35 unit or squadron reaches either site with the
+map answering true, on any of the three missions. The `+8Ch` lists hold ships only.
+
+**ScoutDauntless** is asked by `SetSelectedUnit(Mission.ScoutBomba)` in `luaPh2MovieEnd`. The
+host's unit 62 is the squadron slot fused with its leader, and its class is the leader's
+dive-bomber class 12h. 00645060 rejects it at 006450DF (`IsKindOf(0Fh)`), before `+124h`, on
+either side.
+- **Observation, outside this switch.** In the image, `GenerateObject("ScoutDauntless")` returns
+  the PlaneSquadronGen entity (18h). It answers `IsKindOf(2)` and not `IsKindOf(0Fh)`, and its
+  `+124h` 007EE670 is true while its leader lives. So the image **accepts** this
+  `SetSelectedUnit`, and the player's controlled unit becomes the squadron at `luaPh2MovieEnd`.
+  The host rejects it because its squadron slot carries the leader's class.
+- That is a units-host class substitution. It needs the squadron slot to answer as class 18h to
+  00645060.
+
+### Predictions (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+- **USN01 3200/3000:**
+  - ScoutDauntless's `+124h` answer goes from false to true, and 00645060 still rejects it at
+    `IsKindOf(0Fh)`. The `SetSelectedUnit` line is unchanged except `vt124=1`.
+  - The `+8Ch` builds are identical (the same members, order and cursor). The initial controlled
+    unit stays Dunlap, and then Northampton.
+  - Pick counts are unchanged.
+  - The native table swaps the `SetSelectedUnit::unit_vtable_124` record for a concrete
+    `Unit::vtable_124` row.
+  - **Gameplay identical, exit 1.**
+- **USN04 4700/4500:** census none; the same table change. **Identity, exit 1.**
+- **USN02 9200/9000:** census none; the same table change. **Identity, exit 1.**
