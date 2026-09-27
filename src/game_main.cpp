@@ -16,10 +16,13 @@
 #define NOMINMAX
 #endif
 #include <windows.h>
+#include <dbghelp.h>
 #include <shellapi.h>
 #include <wincrypt.h>
 
 #include <cfloat>
+#include <cstdint>
+#include <cstdlib>
 #include <array>
 #include <cstdio>
 #include <cstring>
@@ -51,6 +54,13 @@
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/winmain_startup.hpp"
 
+namespace bsp::game {
+// Harness only (packet cc9_tooling_1), defined beside the frame-jitter hook in
+// src/game_hosts_mission.cpp and declared here, their only caller, so no shared header changes.
+long harness_mission_frame() noexcept;
+void arm_harness_crash_test(long mission_frame) noexcept;
+}  // namespace bsp::game
+
 namespace {
 
 // A WIN32-subsystem process has no console of its own. When it was started from a shell,
@@ -71,6 +81,95 @@ constexpr std::array<bsp::game::GameNativeDataSpan, 7> native_data_spans{{
     {0x00d70000u, 1}
 }};
 constexpr char handoff_prefix[] = "--bsp-native-data-handoff=";
+
+// ---- Harness crash record (packet cc9_tooling_1). Harness only: nothing here is read by the
+// frame or the simulation. An access violation used to leave no trace in the run log; the
+// top-level filter writes one line (code, faulting address, module + offset, access, thread,
+// mission frame), tries a minidump next to the log, and ends the process with the exception
+// code. The reconstructed CRT failure paths (src/native_crt_*_failure.cpp) clear the filter on
+// purpose, as the image's CRT does, so a /GS or invalid-parameter failure still bypasses it.
+bsp::game::GameHostLog* g_crash_log = nullptr;
+char g_crash_dump_path[MAX_PATH]{};
+
+LONG WINAPI harness_crash_record(EXCEPTION_POINTERS* info) {
+    const EXCEPTION_RECORD* const record = info != nullptr ? info->ExceptionRecord : nullptr;
+    const unsigned long code = record != nullptr ? record->ExceptionCode : 0;
+    const auto address = record != nullptr
+        ? reinterpret_cast<std::uintptr_t>(record->ExceptionAddress) : 0;
+    char module_path[MAX_PATH] = "(no module)";
+    std::uintptr_t base = 0;
+    HMODULE module = nullptr;
+    if (address != 0 && GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS
+            | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+            reinterpret_cast<LPCSTR>(address), &module) && module != nullptr) {
+        base = reinterpret_cast<std::uintptr_t>(module);
+        GetModuleFileNameA(module, module_path, MAX_PATH);
+    }
+    const char* module_name = std::strrchr(module_path, '\\');
+    module_name = module_name != nullptr ? module_name + 1 : module_path;
+    char access[64] = "";
+    if (code == EXCEPTION_ACCESS_VIOLATION && record->NumberParameters >= 2) {
+        const ULONG_PTR kind = record->ExceptionInformation[0];
+        std::snprintf(access, sizeof(access), " %s %08lx",
+            kind == 0 ? "reading" : kind == 1 ? "writing" : "executing",
+            static_cast<unsigned long>(record->ExceptionInformation[1]));
+    }
+    char frame[48] = "none (not in a mission frame yet)";
+    const long mission_frame = bsp::game::harness_mission_frame();
+    if (mission_frame >= 0) std::snprintf(frame, sizeof(frame), "%ld", mission_frame);
+    char line[768];
+    std::snprintf(line, sizeof(line), "harness crash: exception %08lx at %08lx%s module %s+%lx "
+        "(base %08lx) thread %lu mission_frame %s", code, static_cast<unsigned long>(address),
+        access, module_name, static_cast<unsigned long>(address - base),
+        static_cast<unsigned long>(base), GetCurrentThreadId(), frame);
+    if (g_crash_log != nullptr) g_crash_log->note(line);
+    else std::fprintf(stderr, "%s\n", line);
+
+    // The minidump is optional: dbghelp is loaded here so the build gains no import.
+    using WriteDump = BOOL(WINAPI*)(HANDLE, DWORD, HANDLE, MINIDUMP_TYPE,
+        PMINIDUMP_EXCEPTION_INFORMATION, PMINIDUMP_USER_STREAM_INFORMATION,
+        PMINIDUMP_CALLBACK_INFORMATION);
+    if (g_crash_dump_path[0] != '\0') {
+        const char* outcome = "dbghelp.dll unavailable";
+        if (HMODULE dbghelp = LoadLibraryA("dbghelp.dll")) {
+            const auto write = reinterpret_cast<WriteDump>(
+                GetProcAddress(dbghelp, "MiniDumpWriteDump"));
+            const HANDLE file = CreateFileA(g_crash_dump_path, GENERIC_WRITE, 0, nullptr,
+                CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+            if (write != nullptr && file != INVALID_HANDLE_VALUE) {
+                MINIDUMP_EXCEPTION_INFORMATION exception{GetCurrentThreadId(), info, FALSE};
+                outcome = write(GetCurrentProcess(), GetCurrentProcessId(), file,
+                    MiniDumpNormal, info != nullptr ? &exception : nullptr, nullptr, nullptr)
+                    ? "written" : "MiniDumpWriteDump failed";
+            } else {
+                outcome = "cannot create the file";
+            }
+            if (file != INVALID_HANDLE_VALUE) CloseHandle(file);
+        }
+        std::snprintf(line, sizeof(line), "harness crash: minidump %s: %s", g_crash_dump_path,
+            outcome);
+        if (g_crash_log != nullptr) g_crash_log->note(line);
+    }
+    return EXCEPTION_EXECUTE_HANDLER;  // no WER dialog; the process exits with `code`
+}
+
+// Remove `--crash-test [N]` (hidden, harness only) before the public parser sees argv. The
+// bootstrap child receives the same command line and strips it the same way. Returns the
+// mission frame to fault before, or -1.
+long take_crash_test_option(std::vector<char*>& argv) {
+    long frame = -1;
+    for (auto it = argv.begin(); it != argv.end();) {
+        if (std::strcmp(*it, "--crash-test") != 0) { ++it; continue; }
+        it = argv.erase(it);
+        frame = 10;
+        if (it != argv.end() && **it != '\0'
+                && std::strspn(*it, "0123456789") == std::strlen(*it)) {
+            frame = std::strtol(*it, nullptr, 10);
+            it = argv.erase(it);
+        }
+    }
+    return frame;
+}
 
 // The bootstrap appends this token last. Exclude it before the public parser
 // sees argv, including when a public option is missing its required value.
@@ -328,9 +427,12 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     attach_parent_console();
 
     const bool handoff_child = is_handoff_child();
+    std::vector<char*> public_argv(__argv, __argv + __argc);
+    const long crash_test_frame = take_crash_test_option(public_argv);
     bsp::game::GameExecutableOptions options;
     std::string error;
-    if (!options.parse(__argc - (handoff_child ? 1 : 0), __argv, error)) {
+    if (!options.parse(static_cast<int>(public_argv.size()) - (handoff_child ? 1 : 0),
+            public_argv.data(), error)) {
         std::fprintf(stderr, "bsp_game: %s\n", error.c_str());
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
@@ -368,6 +470,27 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
     if (!log.open(options.log_path)) {
         std::fprintf(stderr, "bsp_game: cannot write log %s\n", options.log_path.c_str());
         return 2;
+    }
+    // Harness crash record: installed once the log exists, removed before the log closes.
+    // The dump path is made absolute now, before --game-root changes the current directory.
+    struct CrashLogScope {
+        ~CrashLogScope() { g_crash_log = nullptr; }
+    } crash_log_scope;
+    g_crash_log = &log;
+    if (!options.log_path.empty()) {
+        std::string dump = options.log_path;
+        const std::size_t dot = dump.find_last_of('.');
+        const std::size_t slash = dump.find_last_of("\\/");
+        if (dot != std::string::npos && (slash == std::string::npos || dot > slash)) dump.resize(dot);
+        dump += ".dmp";
+        if (GetFullPathNameA(dump.c_str(), MAX_PATH, g_crash_dump_path, nullptr) >= MAX_PATH)
+            g_crash_dump_path[0] = '\0';
+    }
+    SetUnhandledExceptionFilter(harness_crash_record);
+    if (crash_test_frame > 0) {
+        bsp::game::arm_harness_crash_test(crash_test_frame);
+        log.notef("harness crash test armed: null write before mission frame %ld",
+            crash_test_frame);
     }
 
     bsp::game::GameNativeReadOnlyData* native_data = nullptr;

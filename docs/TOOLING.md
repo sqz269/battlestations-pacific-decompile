@@ -10,6 +10,7 @@ or a reconstructed body.
 | `tools/pair_diff.py` | `python tools/pair_diff.py local\X_OFF.log local\X_ON.log [--json out.json] [--limit N]` |
 | `tools/pair_export.py` | `python tools/pair_export.py --commit <sha> --flip kSwitch=true [--flip ...] --out local\<name> [--mission E2] [--no-build]` |
 | `bsp.py sync` | `python tools/bsp.py sync [--no-fetch]` (and one line in `bsp.py brief`) |
+| crash record | `./tools/run_game.ps1 -Log local\crash_test.log -- ... --crash-test [N]` (the record itself is always on) |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison
 
@@ -141,3 +142,56 @@ commit.
 `brief` printed `branch tip is on main`. At `7edcebad5`, before landing, `sync` printed the one
 unlanded commit and `unlanded: report to the lead` and exited 1, and `brief` printed
 `1 commits not on main: 7edcebad5`.
+
+## 4. The harness crash record
+
+An access violation in `bsp_game` used to leave no exception information in its log. The bootstrap
+child (the process that writes the log) now installs a top-level exception filter once the log is
+open. The filter is harness code in `src/game_main.cpp`. On an unhandled exception it:
+- writes one line to the run log, as shown below;
+- writes a minidump next to the log (`local\<name>.dmp`), with dbghelp loaded at that moment so
+  the build gains no import;
+- ends the process with the exception code as its exit code, without a Windows Error Reporting
+  dialog.
+
+```
+harness crash: exception <code> at <address> [reading|writing|executing <target>] module <name>+<offset> (base <base>) thread <tid> mission_frame <n|none (not in a mission frame yet)>
+harness crash: minidump <path>: written
+```
+
+- **`module+offset`.** It maps the faulting address to `bsp_game.exe` (or a DLL) independent of
+  where the image was loaded. `bsp_game.exe` itself loads at `10000000`.
+- **`mission_frame`.** It is the in-mission frame the main thread was running, from a counter the
+  mission-frame driver sets next to the frame-jitter hook (`src/game_hosts_mission.cpp`). A fault
+  on another thread (the render worker) prints its own thread id with the main thread's frame.
+- **What bypasses it.** The reconstructed CRT failure paths (`src/native_crt_*_failure.cpp`) clear
+  the filter on purpose, as the image's CRT does. So a /GS or invalid-parameter failure still
+  terminates without this line.
+
+**`--crash-test [N]`** is hidden and harness only. It is stripped from argv before the public
+parser, in both the parent and the child. It writes through a null pointer in
+`harness_crash_test_fault` just before in-mission frame N (default 10), and logs the function's
+module offset first so the record can be checked against it. Without the option nothing is armed,
+and nothing new is printed.
+
+**Verified, 2026-09-27.** This worktree at `3f81662cf` plus this change, console session:
+
+```
+./tools/run_game.ps1 -Log local\crash_test.log -- --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --mission-frame-seconds 0.05 --crash-test 10
+```
+
+The launcher reported `EXITCODE=-1073741819` (0xC0000005). The log ends:
+
+```
+harness crash test: null write in harness_crash_test_fault (bsp_game.exe+a7a20) before mission frame 10
+harness crash: exception c0000005 at 100a7a2e writing 00000000 module bsp_game.exe+a7a2e (base 10000000) thread 14144 mission_frame 10
+harness crash: minidump J:\PROG\battlestations-pacific-decompile-cc9-tooling\local\crash_test.dmp: written
+```
+
+`+a7a2e` lies 0Eh into the fault function at `+a7a20`, and the minidump is 298,352 bytes.
+
+**Nothing else changes.** Main `7e7b78339`, built as a no-flip `tools/pair_export.py` export
+(`local\pe_on`, SHA-256 `D6BDA657D168`), was run against this build with the same USN02 1300/1200
+arguments and no `--crash-test` (`local\cr_base_usn02.log`, `local\cr_new_usn02.log`).
+`tools/pair_diff.py` reports exit 0, identical apart from noise. The whole native table (1,467
+rows), all 188 summary lines, the 32-row unit table and every other masked line are identical.

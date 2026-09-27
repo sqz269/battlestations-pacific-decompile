@@ -60,6 +60,19 @@ struct MissionFrameJitter {
 };
 MissionFrameJitter g_mission_frame_jitter;
 
+// Harness only (packet cc9_tooling_1): the in-mission frame the crash record in
+// src/game_main.cpp reads (-1 before the first mission frame), and the --crash-test
+// trigger (-1 disarmed). Neither is read by the simulation.
+volatile long g_harness_mission_frame = -1;
+long g_harness_crash_test_frame = -1;
+
+// A real write through a null pointer, so the record shows a genuine access violation at a
+// known instruction in bsp_game.exe. noinline keeps the faulting instruction in this body.
+__declspec(noinline) void harness_crash_test_fault() {
+    volatile int* volatile target = nullptr;
+    *target = 0x0BADF00D;
+}
+
 
 // The locale text of a menu label id, folded to ASCII for the log exactly as
 // milestone 2d folds a resolved Text run.
@@ -1840,6 +1853,15 @@ bool GameMissionHost::advance(float seconds) {
                 frame_seconds = seconds * factor;
             }
         }
+        g_harness_mission_frame = static_cast<long>(host.summary.mission_frames_run) + 1;
+        if (g_harness_mission_frame == g_harness_crash_test_frame) {
+            host.log.notef("harness crash test: null write in harness_crash_test_fault "
+                "(bsp_game.exe+%lx) before mission frame %ld",
+                static_cast<unsigned long>(reinterpret_cast<std::uintptr_t>(&harness_crash_test_fault)
+                    - reinterpret_cast<std::uintptr_t>(GetModuleHandleA(nullptr))),
+                g_harness_mission_frame);
+            harness_crash_test_fault();
+        }
         const bool more = host.frame_host->run_mission_frame_004e4a40(frame_seconds);
         host.publish_frame_summary();
         host.step = GameMissionStep::MissionFrames;
@@ -1862,6 +1884,10 @@ bool GameMissionHost::advance(float seconds) {
     }
     return false;
 }
+
+// Harness only (packet cc9_tooling_1); declared in src/game_main.cpp, the only caller.
+long harness_mission_frame() noexcept { return g_harness_mission_frame; }
+void arm_harness_crash_test(long mission_frame) noexcept { g_harness_crash_test_frame = mission_frame; }
 
 void set_mission_frame_jitter(float percent, std::uint32_t seed) noexcept {
     g_mission_frame_jitter.armed = percent > 0.0f;
