@@ -500,3 +500,56 @@ What is left for a successor, in the order I would take it.
 
    Read each record's call counts from the latest E2 log before choosing, and check each against
    the listing first. Tail (b) showed that a record can sit on a path the image itself skips.
+
+## 11. The warning flags have no producer; the records list was stale (cc9-gunnery2, 2026-09-26)
+
+### 11.1 blk+3E9h / +3EAh (packet `cc9_torpedo_warning_flags`): doc only, no binding
+
+**The triple.** The flags are three adjacent bytes of the ship-AI controller C, at C+448h..C+44Ah.
+The controller step 009F50E0 writes ESI once, from ECX at 009F50E2, and passes two bases:
+- **the timer** 009DA8D0 gets `brain = C+58h` (009F5231), so it reads +3F1h and +3F2h;
+- **the hull pre-step** 009E0270 gets `blk = C+60h` (009F5150), so it writes +3E8h..+3EAh.
+
+**The sweep** used `scan-bytes --section .text --limit 4000`.
+- **Displacements:** all nine, 3E8h..3EAh (blk), 3F0h..3F2h (brain) and 448h..44Ah (C).
+- **Forms:** byte stores `C6 /0` and `88 /r`, with and without a SIB byte; word stores `66 89` and
+  `66 C7`; dword stores `89` and `C7` covering the pair (displacements E7h..EAh and EFh..F2h);
+  SETcc; `80 /x` (OR, AND, CMP); `FE` (INC); `86` (XCHG); LEA; and `81 /0` and `05` ADD imm32.
+- **Not vacuous:** the pre-step's clears (`C6 86 EA/E9/E8 03 00 00`) and the timer's two
+  `80 BE F2/F1 03 00 00` are found in the same encodings.
+
+**The results:**
+- **Writers of the triple:** only the constructor 009E4330 (009E43D5..009E43E1, BL = 0 from the XOR
+  at 009E4351) and the pre-step (009E04A0..009E04B0, immediate 0).
+- **Readers:** only the timer's two CMPs (009DA8F8 and 009DA913).
+- **00A3F13D** (`MOV byte [ESI+3E9h],1`, in 00A3F100) belongs to the XLive layer, not ship AI.
+  00A3F100 is `XenonSystemManager` sign-in: it prints `SignInUser(%d)` (00D240E0) and
+  `XenonSystemManager ChangeState To %d` (00D240B0), and its only caller is the adjustor thunk
+  00A3F3D0. Its +3E9h is that manager's field.
+- **The C+448h hits** outside ship AI (LEAs in 009CD390, 009CF8E0 and 009CFC70, and reads in
+  009CC2F0..009CC690) are plane-bot objects. None is a store to the triple.
+- **Interior pointers and copies:** a Capstone sweep of every function start in
+  009D0000..009F8000 covered LEA into the three windows below the flags, and REP MOVS. It found
+  reads only:
+  - brain+3C8h to `BSP_Math_MinFloatByRef` 00415510;
+  - a float store through brain+39Ch;
+  - three 44h-byte by-value stack copies at 009E81A2, 009F2F09 and 009F2FAD.
+- **Rebased displacements** (from the constructor's sub-objects at +4h, +46h and +1C4h) found no
+  store to the triple.
+
+**Verdict.** In this build nothing sets the triple, so the timer's two report branches (00977690 and
+00977820) are dead code.
+- **Scope of the negative:** a disp8 write through an interior pointer outside 009D0000..009F8000
+  would escape this sweep.
+- The host's records stay as they are, with no binding. Section 9's zero report counts are the
+  image's behaviour, not a gap.
+
+### 11.2 The records handoff list (section 10, item 3) was stale
+
+All seven rows are already concrete on main in `wt_on_e2.log` and `wt_on_usn02.log`
+(cc9-aa-targeting): `throttle_ceiling`, `step_009eca20`, `hold`, `replan_finish`,
+`replan_prepare_threat_scan`, `station_keeping_arm` and `neighbour_list_add_009f0d20`. Each is
+`done` behind its switch, with the record only in the OFF branch.
+- `hold_before_snapshot` does not appear in either log. Its path is not taken.
+- **Still UNIMPLEMENTED among `ShipAi` rows:** the two vtable mirrors `ShipAi::drive_heading_vtable50`
+  and `ShipAi::unit_weapon_director` (`00CFC3D0+vtable50` and `+vtable114`).
