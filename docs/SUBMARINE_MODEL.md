@@ -623,3 +623,30 @@ For LOMP06 1200/1000 as a same-tree pair:
 - **Gameplay should not move** (pair_diff exit 1), apart from the native's own row and the failure
   lines. The next gap is ForceRecon's `reconlevel` table, which is queued.
 - **USN02 and USN04 should be identical** (exit 0 or 1): neither mission calls the native.
+
+### The pairs, and the flip
+
+The switch was committed OFF at `eedf5dc79` and flipped by pairs against
+`tools/pair_export.py --commit eedf5dc79 --flip kSubmarineDepthLevelBound=true`. The logs are
+`local\sdl_{off,on}_{lomp06,usn02,usn04}.log` in worktree cc9-ships2, with streams and the death
+table on, lockstep 0.05 and an idle player.
+
+| mission | pair_diff | what moved |
+| --- | --- | --- |
+| LOMP06 1200/1000 | exit 1 | the native answers 1 on all 6 calls (`forced=0`); the 6 failures move from `:713` to `:531` |
+| USN02 9200/9000 | exit 1 | nothing (19 / 573 both sides) |
+| USN04 4700/4500 | exit 1 | nothing (44 / 789 both sides) |
+
+- **The seed line reads `unit=Narwhal level=1 dive=1:1`.**
+- **Every prediction held.** The failure is now "attempt to index field 'reconlevel' (a nil value)"
+  at the same six timers. `ForceRecon` (`008AADF0`, line 530) is now reached and records
+  UNIMPLEMENTED six times.
+- **Gameplay, the death rows and the unit table are identical.** The switch is ON.
+
+**The next gap is `reconlevel`, not ForceRecon itself.**
+- `008AADF0` only calls `00807A50 BSP_Recon_ForceRefreshNow`.
+- The table is made by the unit vtable method `0077FAD0`: at `0077FD9C`..`0077FDF1` it sets
+  `thisTable.reconlevel = {}` through `00B67580`, unless the holder at `+C0h` has kind 3.
+- It is filled by `0077B0C0` (no Ghidra function; a `+1E4h` sub-object vtable method in about 40
+  vtables). Unless the mode word `[00E188A8]+1FE4h` is 2, it indexes `reconlevel` (`00B67800`) and
+  stores `[party] = level` (`00B665D0`), then notifies `00980E50`.

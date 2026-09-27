@@ -175,7 +175,6 @@
   ],
   "flags": [
     "closed: E2 902 -> 854 is the query gate bytes entire (flip-off pair e2gb, exit 1 against e's E2)",
-    "new, open: USN13 670 plane water contacts - 21 live torpedo bombers stall into the sea (host flight/formation question, SCENE_CONTENTS_HOSTS 19)",
     "new: USN02 664 -> 640 bracketed to merge e4dbf38b2",
     "carried: USN02 torpedo stock on top of the throttle cut",
     "carried: what enabled kSetSelectedUnitBound between fc14864c9 and the throttle-cut base",
@@ -229,5 +228,8 @@
       "attribution": "the whole E2 902 -> 854 drop is the query gate bytes (fb44fcf1d); nothing else since e moved E2",
       "rows_that_move": "FAILED in part: Lexington moved as predicted, but the plane releases moved too (torpedo-task 4 -> 3 of 16, dive-bomb-task 5 -> 4 of 19 with the gate bytes on)"
     }
-  }
+  },
+  "closed_flags": [
+    "USN13 670 plane water contacts: closed by cc9-plane2 (2d4862ea0, docs/SCENE_CONTENTS_HOSTS.md section 22). The 21 sea crashes were the host SpawnNew fan-out placing a squadron's members about 5 m apart where the image's record constructor 00948CC0 spaces them in rows of three by formationHorizontal; with kSpawnNewMemberOffsetsBound ON USN13 reads 20 deaths, 460 hit records and 5 water-contact records, and USN04 moves too (releases 3 -> 6 and 4 -> 8 at 44 deaths)"
+  ]
 }
