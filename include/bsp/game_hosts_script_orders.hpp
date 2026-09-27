@@ -165,7 +165,7 @@ inline constexpr bool kPutToBound = true;
 // over max health) float-stored; a scene marker (no unit) takes the base
 // entity's 0042BB50, FLD1. False: the gate is clear and the slot answers 0, so
 // every unit reads 0% to the scripts.
-inline constexpr bool kUnitHealthFractionBound = false;
+inline constexpr bool kUnitHealthFractionBound = true;
 
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
