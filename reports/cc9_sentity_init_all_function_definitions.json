@@ -1,0 +1,111 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007c9770",
+    "end_address": "007c9860"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007c9770",
+    "end_address": "007c985f",
+    "bytes_disassembled": 240,
+    "message": "Successfully disassembled 240 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007c9770",
+    "disassemble_first": false,
+    "name": "BSP_Plane_SEntityInitSlotA4"
+   },
+   "result": {
+    "success": true,
+    "address": "007c9770",
+    "function_name": "BSP_Plane_SEntityInitSlotA4",
+    "entry_point": "007c9770",
+    "body_size": 240,
+    "message": "Function created successfully at 007c9770",
+    "warnings": [
+     "Function name 'BSP_Plane_SEntityInitSlotA4' \u2014 main part 'Plane_SEntityInitSlotA4' is not PascalCase. Expected: PlaneSentityinitslota4",
+     "Function name 'BSP_Plane_SEntityInitSlotA4' \u2014 main part 'Plane_SEntityInitSlotA4' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Plane_SEntityInitSlotA4' does not start with a recognized verb. First word 'Plane_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007c9770",
+   "end": "007c9860",
+   "name": "BSP_Plane_SEntityInitSlotA4",
+   "after": "Function: BSP_Plane_SEntityInitSlotA4 at 007c9770\nSignature: undefined BSP_Plane_SEntityInitSlotA4(void)\nEntry: 007c9770\nBody: 007c9770 - 007c985f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007f4ba0",
+    "end_address": "007f5450"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007f4ba0",
+    "end_address": "007f544f",
+    "bytes_disassembled": 2224,
+    "message": "Successfully disassembled 2224 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007f4ba0",
+    "disassemble_first": false,
+    "name": "BSP_PlaneSquadron_SEntityInitSlotA4"
+   },
+   "result": {
+    "success": true,
+    "address": "007f4ba0",
+    "function_name": "BSP_PlaneSquadron_SEntityInitSlotA4",
+    "entry_point": "007f4ba0",
+    "body_size": 2224,
+    "message": "Function created successfully at 007f4ba0",
+    "warnings": [
+     "Function name 'BSP_PlaneSquadron_SEntityInitSlotA4' \u2014 main part 'PlaneSquadron_SEntityInitSlotA4' is not PascalCase. Expected: PlanesquadronSentityinitslota4",
+     "Function name 'BSP_PlaneSquadron_SEntityInitSlotA4' \u2014 main part 'PlaneSquadron_SEntityInitSlotA4' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_PlaneSquadron_SEntityInitSlotA4' does not start with a recognized verb. First word 'Plane' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "007f4ba0",
+   "end": "007f5450",
+   "name": "BSP_PlaneSquadron_SEntityInitSlotA4",
+   "after": "Function: BSP_PlaneSquadron_SEntityInitSlotA4 at 007f4ba0\nSignature: undefined BSP_PlaneSquadron_SEntityInitSlotA4(void)\nEntry: 007f4ba0\nBody: 007f4ba0 - 007f544f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
