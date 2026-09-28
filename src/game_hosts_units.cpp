@@ -4264,7 +4264,7 @@ struct GameUnitsHost::Impl {
     // (0092639B), so from its death on no task arm, planner or 007B8C90 command
     // runs, and 007BB920 finds no pending block: the live controls hold what
     // was last committed. OFF: a dead aircraft keeps thinking and steering.
-    static constexpr bool kDeadPlaneBotThinkBound = false;
+    static constexpr bool kDeadPlaneBotThinkBound = true;   // ON by its pairs (PLANE_DEATH_MODES 7.5)
     // Packet cc9_pilot_surface_climbout: a dead plane leaves its squadron
     // (007BCAA0 -> 007F3970), so no member is placed on a dead leader's station.
     // docs/PILOT_SURFACE_CLIMBOUT.md.

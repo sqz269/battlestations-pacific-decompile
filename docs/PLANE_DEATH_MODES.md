@@ -357,7 +357,7 @@ aircraft keeps running its task arms, its planner and its command publish every 
 powerlost glide is therefore steered, and the arms' draws on the shared stream continue after the
 death. That is where cc9-lua6's per-member draws came from.
 
-### 7.3 The binding (`kDeadPlaneBotThinkBound`, committed OFF)
+### 7.3 The binding (`kDeadPlaneBotThinkBound`, committed OFF, flipped ON in 7.5)
 
 - With the switch on, a plane whose `+5Dh` (`state->simulate`) or `+60h`
   (`scene_pending_destroy_0060`) is set skips the accumulator and the whole think.
@@ -397,3 +397,65 @@ The death lists are from the current tree's OFF logs (LOMP10, USN01) and from `r
 - **The verdict rule.** The mechanism check is the gate lines: every dead plane gated at its death
   tick, and none gated before. The combat rows are shared-stream consequences, and they are
   recorded rather than predicted exactly.
+
+### 7.5 Pairs
+
+**The binaries.** OFF is this tree's build at `8994a7f65` (SHA-256 prefix `000E29701DE0`). ON is
+`pair_export --commit 8994a7f65 --flip kDeadPlaneBotThinkBound=true` (prefix `6DBD592D11AE`). The
+launch lines are the reference ones. The logs are `local/l7_dpoff_<row>.log` and
+`local/l7_dpon_<row>.log` in worktree cc9-lua7.
+
+| row | `pair_diff` | deaths, hits, damage, shots, drops | task releases (torpedo / dive) | plane water contacts | gated planes |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 3 | identical (40 / 749 / 13347.8 / 10512 / 5) | 8 -> 5 / 4 -> 1 | 11 -> 13 | 30 of 40 deaths, 5577 ticks skipped |
+| USN01 3200/3000 | exit 3 | identical (5 / 516 / 2833.5 / 1534 / 0) | 2 -> 0 / 2 -> 2 | 3 -> 3 | 5 of 5, 785 ticks |
+| LOMP10 3200/3000 | exit 3 | identical (10 / 279 / 3500.0 / 1887 / -) | - / 4 -> 3 | 0 -> 1 | 5 of 10, 293 ticks |
+
+**The mechanism matches on every plane.**
+- Every gate line falls on its plane's death step, with a lag of 0.00 s on all 40 gated planes.
+- No live plane is gated.
+- Every dead plane that is not gated died by `explosion`: 10 on USN04 and 5 on LOMP10. Those are
+  killed and removed in the same step (section 1, step 4).
+
+**Every lost release was a dead plane's.** `local/l7_rel.py` classifies each `release census:`
+line by whether its plane had already died.
+- **USN04 OFF** logs six releases after a powerlost death:
+  - B5N Kate #2.1|.-3, dead at 124.40 s;
+  - D3A Val #1.1, dead at 134.50 s, three times;
+  - B5N Kate #6.1|.-2, dead at 204.81 s;
+  - B5N Kate #6.1|.-4, dead at 204.31 s.
+- **USN01 OFF** logs Mav2 (dead at 76.80 s) and Mav3 (dead at 78.10 s).
+- **LOMP10 OFF** logs Lightning 01 twice (dead at 110.65 s).
+- **ON** logs none of those, and every live plane's releases are the same in number and order.
+  That includes the six Warhawk wingman releases on LOMP10 after Warhawk 01 dies.
+
+The torpedo drops do not move (USN04 5 on both sides). So the dead planes' task releases never
+produced a weapon. They were the task counter answering for a plane the image had already stopped
+thinking for. Section 6's release-stage refusal (`dead_releases_refused=0`) never saw them.
+
+**The other moves:**
+- **Water contacts.** On USN01 the frozen glides bring Mav3 onto the water. On LOMP10 they bring
+  Lightning 01 onto the water. On USN04 two more Kates reach the water. B5N Kate #2.1|.-3's contact
+  and B5N Kate #4.1|.-3's contact change speed.
+- **One USN01 death row.** Mav4's `killer_range` goes 772 -> 770 and its `nearest_horizontal`
+  761 -> 759. Mav4 dies 1.45 s after Mav5, whose controls are now frozen. This is a 2 m move in a
+  distance measured at the death.
+
+**Against the predictions (7.4):**
+- **USN01 moved, as predicted.** "Moved, not identity" holds. The move is the dead planes'
+  releases and Mav4's death row, not a combat change.
+- **USN04 missed on releases.** I predicted +-1 and measured -3 torpedo and -3 dive. I had not
+  seen that a dead plane's task counts a release. The death count I predicted from `rb9_usn04.log`
+  (43) was stale: this tree's OFF has 40, identical ON.
+- **LOMP10 held.** It moved from the first dead plane, the Warhawk wingmen are unchanged, and
+  Lightning 01 glides frozen.
+
+**Verdict: `kDeadPlaneBotThinkBound = true`.** The mechanism matches: every gate falls on a death
+step, no live plane is touched, and every lost release is a dead plane's. The misses are in spread,
+and the mechanism explains them.
+
+**Next, from cc9-lua6's handoff item 2.** The gate closes in the death step itself: the death
+block runs before the plane's fixed step, and the gate lines show a lag of 0.00 s. So a think-driven
+draw in the death tick is now skipped. Whether the own-block draw cc9-lua6 saw came from the think
+is not yet checked. It wants one `kDepartedWingmanTaskBlockBound` log on this base before anyone
+codes either of cc9-lua6's two fixes.
