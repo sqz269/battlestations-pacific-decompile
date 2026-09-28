@@ -8530,6 +8530,15 @@ bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, i
     return true;
 }
 
+bool GameUnitsHost::submarine_band_y(std::size_t unit_index, int band, float& y) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || band < 0 || band > 3) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.row.submarine_depth_seeded) return false;
+    y = slot.sub_bands[band];
+    return true;
+}
+
 // Packet cc9_submarine_air. 00893C00's store at unit+1280h.
 bool GameUnitsHost::set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude,
                                                      bool force) {

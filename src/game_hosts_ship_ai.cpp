@@ -73,6 +73,8 @@
 #include "bsp/ship_ai_obstacle_point.hpp"
 #include "bsp/ship_ai_neighbour_clips.hpp"
 #include "bsp/native_vector2_math.hpp"
+#include "bsp/ship_ai_sub_attack.hpp"
+#include "bsp/system_camera_axes.hpp"
 #include "bsp/ship_ai_navigation.hpp"
 #include "bsp/ship_ai_navigation_arm_tail.hpp"
 #include "bsp/ship_ai_path_follower.hpp"
@@ -342,6 +344,17 @@ inline constexpr bool kShipNeighbourClipsBound = true;
 // vtable[164h] 00821E80's 8Fh arm (00822294) -> the ai's vtable[28h] 009F3E30 ->
 // 009D8CE0, which writes node+88h. False: the post is a record, as before.
 inline constexpr bool kShipPassSideMessageBound = true;
+// Packet cc9_submarine_ai_states, docs/SHIP_AI_SUB_ATTACK.md. The selector:
+// 009F3D73 tests [ai+0B0Ch] = brain+0AB4h, which 009F1160 sets to the brain's own
+// unit when it is a submarine (009F11C9). True: a submarine's attackmove or
+// artillery command selects sub_attack (ai+217Ch), or kamikaze_attack (ai+2254h)
+// for a class with KamikazeDamage or KamikazeBlastDamage above zero (00779AA0).
+// False: every unit takes attackmove, as before.
+inline constexpr bool kShipAiSubAttackSelectBound = false;
+// The states: the parent tick 009EAA90 with its one-second switch 009EAA10, the
+// "approach" step 009E4B90 and the "fire" enter 009EABE0 and step 009E9EB0. False:
+// a selected sub_attack is a record with its own address (no drive).
+inline constexpr bool kShipAiSubAttackStatesBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -463,7 +476,8 @@ const StateDescriptor* state_for_ai_offset(std::uint32_t ai_offset) noexcept {
         {"moveonpath",      0x00e08f80u, 0x009e59c0u, kSharedIntervalGetter, false},
         {"attackmove",      0x00e08f78u, 0x009e8820u, kSharedIntervalGetter, false},
         {"kamikaze_attack", 0x00e08f78u, 0x009e2020u, kSharedIntervalGetter, false},
-        {"sub_attack",      0x00e08f78u, 0u,          kSharedIntervalGetter, false},
+        // 00D2195C+0Ch = 009EAA90 (packet cc9_submarine_ai_states).
+        {"sub_attack",      0x00e08f78u, 0x009eaa90u, kSharedIntervalGetter, false},
     };
     static const std::uint32_t kOffsets[] = {
         0x0BC8u, 0x0BD8u, 0x0BE4u, 0x0C38u, 0x0C5Cu, 0x0C64u,
@@ -610,6 +624,13 @@ struct GameShipAiHost::Impl {
         return value;
     }
     // settings+240h..+39Fh, or the 00836EF0 defaults when ShipGlobals did not load.
+    // Packet cc9_submarine_ai_states: a number from the unit's class table,
+    // `fallback` without the stored settings or a class row.
+    float class_number(std::size_t index, const char* key, float fallback = 0.0f) const {
+        const GameGunneryUnitRow* row = gunnery_unit_row(index);
+        if (settings_owner == nullptr || row == nullptr || row->type_id < 0) return fallback;
+        return settings_owner->read_vehicle_class_number(row->type_id, key, fallback);
+    }
     void weapon_hit_accuracy(bsp::WeaponHitAccuracyProfile (&out)[4]) const {
         if (settings_owner && settings_owner->read_weapon_hit_accuracy(out)) return;
         for (int c = 0; c < 4; ++c) bsp::apply_weapon_hit_accuracy_defaults_00836ef0(out[c]);
@@ -923,6 +944,30 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiApproachRangeCurve approach_curve_own{};    // nested+12C0h
         bsp::ShipAiApproachRangeCurve approach_curve_target{}; // nested+13B0h
         bool approach_curves_built{false};
+        // Packet cc9_submarine_ai_states: brain+2124h and its census.
+        bsp::ShipAiSubAttackState sub_attack{};
+        // unit+122Ch periscopeState as the fire step writes it. LABELLED: the
+        // units host models no periscope, so nothing else reads or writes it
+        // and the broken state 2 has no producer.
+        int periscope_state_122c{0};
+        bool sub_tubes_built{false};                  // brain+0AC8h, 009E97B0
+        std::vector<std::size_t> sub_tubes_fore;      // brain+0AD0h..+0AD4h
+        std::vector<std::size_t> sub_tubes_aft;       // brain+0AE0h..+0AE4h
+        float sub_tubes_min_speed_0aec{3.4028234663852886e+38f};  // brain+0AECh
+        unsigned long long sub_attack_selects{0};
+        unsigned long long sub_attack_ticks{0};
+        unsigned long long sub_attack_approach_steps{0};
+        unsigned long long sub_attack_fire_steps{0};
+        unsigned long long sub_attack_to_fire{0};
+        unsigned long long sub_attack_to_approach{0};
+        unsigned long long sub_attack_depth_requests[4]{};
+        unsigned long long sub_attack_periscope_raises{0};
+        double sub_attack_first_seconds{-1.0};
+        double sub_attack_first_fire_seconds{-1.0};
+        float sub_attack_min_range{-1.0f};
+        float sub_attack_last_throttle{0.0f};
+        int sub_attack_logs{0};
+        unsigned long long sub_attack_shadow_steps{0};
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -956,6 +1001,7 @@ struct GameShipAiHost::Impl {
     unsigned long long autotarget_recon_unbuilt{0};
     GameShipAiSummary summary{};
     unsigned long long steps{0};
+    double sub_attack_clock{0.0};   // packet cc9_submarine_ai_states, census only
     bool logged_position{false};
     bool logged_gates{false};
     bool logged_party_list{false};
@@ -1228,6 +1274,15 @@ struct GameShipAiHost::Impl {
             ctl.neighbour_period_b4c = draw.uniform_00bd2f10(1.0f, 2.0f);     // 009F13F0, B4C
             ctl.neighbour_timer_seeded = true;
             ctl.torpedo_timer.seeded = true;
+            if (kShipAiSubAttackStatesBound && units.unit_is_kind_of(index, 8)) {
+                // Packet cc9_submarine_ai_states: 009E4F90's parent+CCh =
+                // -U(0, 1) at 009E5061, called from 009F39C0 after 009F1160.
+                // LABELLED: drawn for submarines only (no other brain reaches
+                // sub_attack), and any stream-1 draw of the state constructors
+                // between the two is not reproduced.
+                ctl.sub_attack.countdown_cc = -draw.uniform_00bd2f10(0.0f, 1.0f);
+                ctl.sub_attack.seeded = true;
+            }
             ++brain_seed_draws;
         }
     }
@@ -1859,10 +1914,44 @@ public:
                 || command == kShipAiAttackMoveCommandObject)) {
             // 009F3D73: with [ai+0B0Ch] non-null the arm asks 00779AA0 and picks
             // `kamikaze_attack` or `sub_attack`; with it null it takes
-            // `attackmove`. brain+0AB4h has no producer in this process, so the
-            // null path is the one that runs and 00779AA0 is not reached.
-            owner_.record("ShipAiState::attack_subject_00779aa0", 0x00779aa0u);
-            ai_offset = kAiOffsetAttackMove;
+            // `attackmove`. [ai+0B0Ch] is brain+0AB4h, which 009F1160 writes once
+            // at 009F11C9 as `unit->vtable[5Ch](8) ? unit : 0`: the brain's own
+            // unit when it is a submarine (packet cc9_submarine_ai_states).
+            if (!kShipAiSubAttackSelectBound) {
+                owner_.record("ShipAiState::attack_subject_00779aa0", 0x00779aa0u);
+                ai_offset = kAiOffsetAttackMove;
+            } else {
+                const bool submarine = owner_.units.unit_is_kind_of(index_, 8);
+                bool kamikaze = false;
+                if (submarine) {
+                    // 00779AA0: [[unit+538h]+510h] > 0 or [+514h] > 0, the class
+                    // KamikazeDamage / KamikazeBlastDamage (00831840's reads),
+                    // read here from the class table the same descriptor loads.
+                    kamikaze = owner_.class_number(index_, "KamikazeDamage") > 0.0f
+                        || owner_.class_number(index_, "KamikazeBlastDamage") > 0.0f;
+                    owner_.done("ShipAiState::attack_subject_00779aa0", 0x00779aa0u);
+                }
+                owner_.done("ShipAiState::attack_subject_0b0c", 0x009f3d73u);
+                switch (bsp::ship_ai_attack_arm_009f3d73(submarine, kamikaze)) {
+                    case bsp::ShipAiAttackArm::SubAttack: ai_offset = kAiOffsetSubAttack; break;
+                    case bsp::ShipAiAttackArm::Kamikaze: ai_offset = kAiOffsetKamikaze; break;
+                    default: ai_offset = kAiOffsetAttackMove; break;
+                }
+                if (ai_offset == kAiOffsetSubAttack
+                        && ctl_.active_state_ai_offset != kAiOffsetSubAttack) {
+                    ++ctl_.sub_attack_selects;
+                    if (ctl_.sub_attack_first_seconds < 0.0) {
+                        ctl_.sub_attack_first_seconds = owner_.sub_attack_clock;
+                    }
+                    if (ctl_.sub_attack_logs < 40) {
+                        ++ctl_.sub_attack_logs;
+                        owner_.log.notef("ship ai sub_attack select: unit=%s t=%.2f "
+                            "command=%08x from=%s (009F3D8E, packet cc9_submarine_ai_states)",
+                            row_.unit.c_str(), owner_.sub_attack_clock,
+                            static_cast<unsigned>(command), row_.state.c_str());
+                    }
+                }
+            }
         }
         if (ai_offset == 0) {
             ai_offset = kShipAiDefaultStateAiOffset;  // 009F3DA0, the `stop` state
@@ -3120,6 +3209,19 @@ private:
     std::size_t index_;
 };
 
+// [[00E1998C] + 14h*(lv+1)], a TorpedoBot level row's FireTargetAccuracy (008FB530,
+// and 00901BA0 with its flag set). LABELLED SUBSTITUTION: this process holds no
+// TorpedoBot descriptor, so the six values are this installation's robots.lua
+// (lines 392..432, mtime 2025-06-01) in the level order robot_config.cpp:773 gives
+// (Stun 0, SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5), and the level
+// is the units host's skill level with its out-of-range fallback 1.
+float torpedo_bot_fire_target_accuracy(int level) {
+    static constexpr float kFireTargetAccuracy[6] = {0.03f, 0.35f, 0.055f, 0.04f, 0.045f,
+                                                     0.055f};
+    if (level < 0 || level > 5) level = 1;
+    return kFireTargetAccuracy[level];
+}
+
 // Packet cc9_torpedo_standoff. 0080DF40(unit): 00727D70(0.0) summed over the
 // operational devices of the category-7 list, through the same gun-row answers
 // FirepowerBinding gives 0095EB40.
@@ -3913,12 +4015,8 @@ public:
         // level order robot_config.cpp:773 gives (Stun 0, SPNormal 1, SPVeteran 2,
         // MPNormal 3, MPVeteran 4, Elite 5), and the level is the units host's
         // skill level with its out-of-range fallback 1, as the throw path uses it.
-        static constexpr float kFireTargetAccuracy[6] = {0.03f, 0.35f, 0.055f, 0.04f, 0.045f,
-                                                         0.055f};
-        int level = owner_.units.skill_level(index_);
-        if (level < 0 || level > 5) level = 1;
         owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
-        return kFireTargetAccuracy[level];
+        return torpedo_bot_fire_target_accuracy(owner_.units.skill_level(index_));
     }
     float torpedo_range_044c() override {
         const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
@@ -6787,6 +6885,208 @@ void publish_neighbour_view(GameShipAiHost::Impl::Controller& ctl) {
     ctl.nav_block.neighbour_count_604 = static_cast<int>(ctl.neighbours.size());
 }
 
+// Packet cc9_submarine_ai_states, docs/SHIP_AI_SUB_ATTACK.md: the host of the
+// sub_attack parent 009EAA90 and its sub-states 009E4B90 / 009E9EB0.
+class SubAttackBinding final : public bsp::ShipAiSubAttackHost {
+public:
+    SubAttackBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                     GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    static constexpr std::size_t kNone = static_cast<std::size_t>(-1);
+    std::size_t target() const {
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        if (handle == 0u || handle - 1u >= owner_.units.count()) return kNone;
+        return static_cast<std::size_t>(handle - 1u);
+    }
+    std::array<float, 3> position(std::size_t unit) const {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(unit, x, y, z);
+        return {x, y, z};
+    }
+
+    bool target_present_0b20() override { return target() != kNone; }
+    std::array<float, 3> self_position() override { return position(index_); }
+    std::array<float, 3> target_position() override {
+        const std::size_t t = target();
+        return t == kNone ? std::array<float, 3>{} : position(t);
+    }
+    bool target_is_kind(int kind) override {
+        const std::size_t t = target();
+        return t != kNone && owner_.units.unit_is_kind_of(t, kind);
+    }
+    float self_class_length_00a0() override { return owner_.class_number(index_, "Length"); }
+    float target_class_length_00a0() override {
+        const std::size_t t = target();
+        return t == kNone ? 0.0f : owner_.class_number(t, "Length");
+    }
+    float self_heading_vtable50() override { return owner_.units.unit_heading_radians(index_); }
+    std::array<float, 3> target_velocity_vtable34() override {
+        // 00812090 through the same labelled substitution as the neighbour walk.
+        const std::size_t t = target();
+        return t == kNone ? std::array<float, 3>{} : neighbour_world_velocity(owner_.units, t);
+    }
+    float self_class_max_speed_0500() override {
+        return owner_.class_number(index_, "MaxSpeed");      // 00831903, +500h
+    }
+    int tubes_ready(bool fore, float horizon) override {
+        build_tubes_009e97b0();
+        int ready = 0;
+        for (const std::size_t gun : fore ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft) {
+            const GameGunRow& row = owner_.gunnery->guns()[gun];
+            // 00727D30: any of the first [+448h] barrel timers at or under the horizon.
+            const std::size_t barrels = std::min(row.fire.barrel_timers.size(),
+                static_cast<std::size_t>(std::max(row.barrel_num, 0)));
+            bool loaded = false;
+            for (std::size_t b = 0; b < barrels; ++b) {
+                if (row.fire.barrel_timers[b] <= horizon) { loaded = true; break; }
+            }
+            if (loaded && operational()) ++ready;
+        }
+        return ready;
+    }
+    float tubes_min_reload(bool fore) override {
+        build_tubes_009e97b0();
+        float least = 3600.0f;                               // 00CFDEB0
+        for (const std::size_t gun : fore ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft) {
+            if (!operational()) continue;
+            const GameGunRow& row = owner_.gunnery->guns()[gun];
+            // 00729920: the least of the first [+448h] barrel timers (<= keeps).
+            float timer = 3600.0f;
+            const std::size_t barrels = std::min(row.fire.barrel_timers.size(),
+                static_cast<std::size_t>(std::max(row.barrel_num, 0)));
+            for (std::size_t b = 0; b < barrels; ++b) {
+                if (row.fire.barrel_timers[b] <= timer) timer = row.fire.barrel_timers[b];
+            }
+            if (timer < least) least = timer;
+        }
+        return least;
+    }
+    float tubes_min_water_speed_0aec() override {
+        build_tubes_009e97b0();
+        return ctl_.sub_tubes_min_speed_0aec;
+    }
+    bool torpedo_bot_range_00901ba0(float target_length, float& range) override {
+        build_tubes_009e97b0();
+        // 009E9BC0: the first fore tube, else the first aft tube.
+        const std::vector<std::size_t>& list =
+            !ctl_.sub_tubes_fore.empty() ? ctl_.sub_tubes_fore : ctl_.sub_tubes_aft;
+        if (list.empty()) return false;
+        // 00901BA0(bot, length, 1): 00731020's range of the tube, then
+        // 008387B0(7, length, range, [[00E1998C] + 14h*(lv+1)]). Every Function-7
+        // gun has a TorpedoBot at +39Ch (0072C870), so the bot test passes.
+        const GameGunRow& row = owner_.gunnery->guns()[list.front()];
+        bsp::WeaponHitAccuracyProfile profiles[4];
+        owner_.weapon_hit_accuracy(profiles);
+        range = bsp::weapon_hit_accuracy_scaled_008387b0(profiles, 7, target_length,
+            row.max_range, torpedo_bot_fire_target_accuracy(owner_.units.skill_level(index_)));
+        owner_.done("ShipAiSubAttack::torpedo_range_00901ba0", 0x00901ba0u);
+        return true;
+    }
+    float uniform_00bd2f10(float low, float high) override {
+        if (owner_.gunnery_draws == nullptr) return low;
+        return owner_.gunnery_draws->ship_ai_draw(index_, low, high);
+    }
+    void set_depth_level_008528b0(int level) override {
+        if (level >= 0 && level <= 3) ++ctl_.sub_attack_depth_requests[level];
+        owner_.units.set_submarine_depth_level_008528b0(index_, level);
+        owner_.done("ShipAiSubAttack::set_depth_level_008528b0", 0x008528b0u);
+    }
+    int periscope_state_122c() override { return ctl_.periscope_state_122c; }
+    void set_periscope_state_122c(int state) override {
+        if (state == 1 && ctl_.periscope_state_122c != 1) ++ctl_.sub_attack_periscope_raises;
+        ctl_.periscope_state_122c = state;
+        owner_.record("ShipAiSubAttack::periscope_state_122c", 0x009e4dc1u);
+    }
+    bool has_periscope_1214() override {
+        // 00853630: a kamikaze class gets +1214h = 0, every other class the
+        // "periszkop" node. LABELLED: the node is taken as found.
+        return !(owner_.class_number(index_, "KamikazeDamage") > 0.0f
+                 || owner_.class_number(index_, "KamikazeBlastDamage") > 0.0f);
+    }
+    int depth_level_1268() override {
+        const GameUnitRow* row = owner_.units.unit_row(index_);
+        return row != nullptr ? row->submarine_depth_level : 0;
+    }
+    float local_y_00a8() override {
+        // unit+0A8h is the parent-relative Y; a ship has no parent node here,
+        // so it is the world Y (LABELLED).
+        return position(index_)[1];
+    }
+    float periscope_band_1204() override {
+        float y = -20.0f;                                    // 00E0B578 default bands[1]
+        owner_.units.submarine_band_y(index_, 1, y);
+        return y;
+    }
+    bool allow_max_depth_0020() override {
+        // [unit+73Ch]+20h: 00822B70(1) sets it at SEntityInit (00822CCB) and only
+        // luaMW_NavigatorAllowMaxDepth writes it after. LABELLED: this host has no
+        // field; no script this installation ships for JM06 or LOMP06 calls the
+        // binding (only bsm_07 and bsm_11 do), so the value is the seed, 1.
+        return true;
+    }
+    void set_navigation_goal_009de050(float x, float z) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, x, z, false, true);
+    }
+    void hold_heading_and_stop_009e00a0() override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
+        owner_.done("ShipAiSubAttack::hold_heading_and_stop", 0x009e00a0u);
+    }
+    void set_desired_heading_009e0040(float heading) override {
+        SetterBinding setters(owner_);
+        bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
+        owner_.done("ShipAiSubAttack::set_desired_heading", 0x009e0040u);
+    }
+    void set_desired_throttle_009dbf90(float throttle) override {
+        bsp::ship_ai_set_desired_throttle_009dbf90(ctl_.blk, throttle);
+        owner_.done("ShipAiSubAttack::set_desired_throttle", 0x009ea80bu);
+    }
+    std::array<float, 3> normalize_00419510(const std::array<float, 3>& v) override {
+        std::array<float, 3> out{};
+        bsp::camera_vector_normalize_00419510(out.data(), v.data(),
+                                              &application_camera_axes_crt());
+        return out;
+    }
+
+private:
+    // 00729F10 through the same answers FirepowerBinding gives 0095EB40: the
+    // three bytes have no producer here, so every tube is operational (LABELLED).
+    static bool operational() { return bsp::ship_ai_gun_is_operational_00729f10(false, false, false); }
+    // 009E97B0, once per brain (+0AC8h): the unit's Function-7 guns split by the
+    // sign of their node's forward axis (node+110h, row 2 of the world matrix)
+    // against the hull's (+0ECh..+0F4h), and the least WaterTravelSpeed
+    // ([[gun+3F8h]+34h]+0E4h) at +0AECh. LABELLED SUBSTITUTIONS: the category-7
+    // list in build order stands for the child walk unit+48h; the node axis is the
+    // hull's forward axis turned by the gun's horizontal angle, as the gunnery
+    // host builds it for 008FFF20, so the dot product is cos(horz).
+    void build_tubes_009e97b0() {
+        if (ctl_.sub_tubes_built) return;
+        ctl_.sub_tubes_built = true;
+        float least = 3.4028234663852886e+38f;               // 00D7A248
+        const std::vector<std::size_t>* list = owner_.gunnery == nullptr ? nullptr
+            : owner_.gunnery->unit_category_guns(index_, bsp::kTorpedoStandoffWeaponKind);
+        if (list != nullptr) {
+            for (const std::size_t gun : *list) {
+                const GameGunRow& row = owner_.gunnery->guns()[gun];
+                if (!(row.water_travel_speed > least)) least = row.water_travel_speed;
+                if (std::cos(static_cast<double>(row.angles.horz)) > 0.0) {
+                    ctl_.sub_tubes_fore.push_back(gun);       // 009E98C5, +0ACCh
+                } else {
+                    ctl_.sub_tubes_aft.push_back(gun);        // 009E98D2, +0ADCh
+                }
+            }
+        }
+        ctl_.sub_tubes_min_speed_0aec = least;               // 009E98EF
+        owner_.done("ShipAiSubAttack::tube_lists_009e97b0", 0x009e97b0u);
+    }
+
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
 class ControllerBinding final : public bsp::ShipAiControllerHost {
 public:
     ControllerBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -7020,6 +7320,47 @@ public:
             AttackMoveStepBinding attack(owner_, ctl_, row_, index_);
             bsp::ship_ai_attackmove_step_009e8820(elapsed, attack);
             owner_.done("ShipAiState::attackmove_step", 0x009e8820u);
+            sub_attack_shadow();
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
+            return;
+        }
+        if (state != nullptr && state->step == 0x009eaa90u && kShipAiSubAttackStatesBound) {
+            // Packet cc9_submarine_ai_states: 009EAA90 with the replan's elapsed
+            // time, as 009F5186 passes it to every state's vtable[0Ch].
+            SubAttackBinding sub(owner_, ctl_, row_, index_);
+            const bool was_fire = ctl_.sub_attack.fire_current;
+            const bsp::ShipAiSubAttackTick tick =
+                bsp::ship_ai_sub_attack_tick_009eaa90(ctl_.sub_attack, elapsed, sub);
+            owner_.done("ShipAiState::sub_attack_step", 0x009eaa90u);
+            ++ctl_.sub_attack_ticks;
+            if (tick.approach_step) ++ctl_.sub_attack_approach_steps;
+            if (tick.fire_step) {
+                ++ctl_.sub_attack_fire_steps;
+                ctl_.sub_attack_last_throttle = tick.throttle;
+            }
+            if (tick.switched_to_fire) ++ctl_.sub_attack_to_fire;
+            if (tick.switched_to_approach) ++ctl_.sub_attack_to_approach;
+            if (tick.fire_step && ctl_.sub_attack_first_fire_seconds < 0.0) {
+                ctl_.sub_attack_first_fire_seconds = owner_.sub_attack_clock;
+            }
+            if (tick.ran && (ctl_.sub_attack_min_range < 0.0f
+                             || tick.range < ctl_.sub_attack_min_range)) {
+                ctl_.sub_attack_min_range = tick.range;
+            }
+            if ((tick.switched_to_fire || tick.switched_to_approach
+                 || was_fire != ctl_.sub_attack.fire_current) && ctl_.sub_attack_logs < 40) {
+                ++ctl_.sub_attack_logs;
+                owner_.log.notef("ship ai sub_attack switch: unit=%s t=%.2f to=%s range=%.1f "
+                    "outer=%.1f inner=%.1f (009EAA10, packet cc9_submarine_ai_states)",
+                    row_.unit.c_str(), owner_.sub_attack_clock,
+                    ctl_.sub_attack.fire_current ? "fire" : "approach",
+                    static_cast<double>(tick.range),
+                    static_cast<double>(ctl_.sub_attack.fire.outer_58),
+                    static_cast<double>(ctl_.sub_attack.fire.inner_54));
+            }
             ++owner_.summary.state_steps_concrete;
             ++row_.state_step_real;
             ++owner_.summary.state_steps_real;
@@ -7028,7 +7369,7 @@ public:
         }
         // Every remaining leaf's step was named by docs/SHIP_AI_STATES.md as a
         // vtable slot and its body was not read, so the step is a record with
-        // its own address. `sub_attack`'s vtable was not read at all.
+        // its own address.
         ++owner_.summary.state_steps_recorded;
         apply_ai_drive();
         if (state == nullptr || state->step == 0u) {
@@ -7039,6 +7380,38 @@ public:
         std::snprintf(method, sizeof(method), "ShipAiState::%s_step", state->name);
         owner_.record(method, state->step);
         static_cast<void>(elapsed);
+    }
+    // DIAGNOSTIC, packet cc9_submarine_ai_states, BSP_SUB_ATTACK_SHADOW=1 only:
+    // for a submarine running attackmove, what 009E4A60 and 009E9CE0 would
+    // answer, so predictions can be written from an OFF run. It draws nothing
+    // and writes only the brain's tube lists, which nothing else reads.
+    void sub_attack_shadow() {
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t length = 0;
+            const bool on = _dupenv_s(&text, &length, "BSP_SUB_ATTACK_SHADOW") == 0 &&
+                text != nullptr && text[0] == '1';
+            std::free(text);
+            return on;
+        }();
+        if (!enabled || !owner_.units.unit_is_kind_of(index_, 8)) return;
+        SubAttackBinding sub(owner_, ctl_, row_, index_);
+        if (!sub.target_present_0b20()) return;
+        ++ctl_.sub_attack_shadow_steps;
+        if (ctl_.sub_attack_shadow_steps != 1 && ctl_.sub_attack_shadow_steps % 20 != 0) return;
+        bsp::ShipAiSubAttackTubeCache cache;
+        const float range = bsp::ship_ai_sub_attack_range_009e4a60(sub);
+        const float torpedo = bsp::ship_ai_sub_attack_torpedo_range_009e9ce0(cache, sub);
+        const std::size_t t = sub.target();
+        owner_.log.notef("ship ai sub_attack shadow: unit=%s t=%.2f target=%s range=%.1f "
+            "torpedo_range=%.1f fore=%zu aft=%zu water=%.2f ready=%d/%d",
+            row_.unit.c_str(), owner_.sub_attack_clock,
+            t < owner_.rows.size() ? owner_.rows[t].unit.c_str() : "?",
+            static_cast<double>(range), static_cast<double>(torpedo),
+            ctl_.sub_tubes_fore.size(), ctl_.sub_tubes_aft.size(),
+            static_cast<double>(ctl_.sub_tubes_min_speed_0aec),
+            sub.tubes_ready(true, bsp::kSubAttackReadyHorizon),
+            sub.tubes_ready(false, bsp::kSubAttackReadyHorizon));
     }
     // --ai-drive was milestone 2o's labelled diagnostic stand-in for the state
     // steps that produced no desired throttle. Milestone 2r retires it: all
@@ -8471,6 +8844,7 @@ void GameShipAiHost::controller_step(float seconds) {
     if (host.controllers.empty()) return;
     if constexpr (kGeneratedShipAiBound) host.register_generated_units();
     ++host.steps;
+    host.sub_attack_clock += static_cast<double>(seconds);
     // The session pump (fixed-step row 9) drains last step's queue before the
     // world entity tick runs the controllers (packet cc9_pass_side_message).
     if (kShipPassSideMessageBound) host.deliver_pass_side_messages();
@@ -8820,6 +9194,27 @@ void GameShipAiHost::report() {
         "movetopos=%zu other=%zu", host.summary.states_cruise, host.summary.states_stop,
         host.summary.states_attackmove, host.summary.states_movetopos,
         host.summary.states_other);
+    // Packet cc9_submarine_ai_states: one line per brain that selected sub_attack.
+    host.log.notef("summary mission ship ai sub_attack select_bound=%d states_bound=%d "
+        "(009F3D73 / 009EAA90, packet cc9_submarine_ai_states)",
+        kShipAiSubAttackSelectBound ? 1 : 0, kShipAiSubAttackStatesBound ? 1 : 0);
+    for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
+         ++index) {
+        const Impl::Controller& c = host.controllers[index];
+        if (c.sub_attack_selects == 0) continue;
+        host.log.notef("  sub_attack %-20s selects=%llu ticks=%llu approach=%llu fire=%llu "
+            "to_fire=%llu to_approach=%llu depth=%llu/%llu/%llu/%llu raises=%llu first=%.2f "
+            "first_fire=%.2f min_range=%.1f throttle=%.3f tubes=%zu/%zu water=%.2f",
+            host.rows[index].unit.c_str(), c.sub_attack_selects, c.sub_attack_ticks,
+            c.sub_attack_approach_steps, c.sub_attack_fire_steps, c.sub_attack_to_fire,
+            c.sub_attack_to_approach, c.sub_attack_depth_requests[0],
+            c.sub_attack_depth_requests[1], c.sub_attack_depth_requests[2],
+            c.sub_attack_depth_requests[3], c.sub_attack_periscope_raises,
+            c.sub_attack_first_seconds, c.sub_attack_first_fire_seconds,
+            static_cast<double>(c.sub_attack_min_range),
+            static_cast<double>(c.sub_attack_last_throttle), c.sub_tubes_fore.size(),
+            c.sub_tubes_aft.size(), static_cast<double>(c.sub_tubes_min_speed_0aec));
+    }
     // Milestone 2o: the hop's own table, one row per unit that wrote a ring
     // slot, so a reader can see what reached the ring rather than only what the
     // controller decided.
