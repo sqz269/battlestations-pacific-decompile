@@ -473,3 +473,59 @@ Each is a descriptive hypothesis, not a recovered symbol.
 - Every units-host slot is taken to have a director.
 - `reconlevel`'s levels come from the host's recon pass rather than from the records at
   `unit+1E8h`. Forced levels are not modelled. The own side reads 2 even before the first pass.
+
+### 9.12 The pairs and the verdict
+
+**Setup.**
+- OFF is this tree's build of `6d62bcaf6`.
+- ON is `tools/pair_export.py --commit 6d62bcaf6 --flip kGetPropertyClassReadersBound=true`
+  (`local/gp_on`, SHA-256 `A955AC1F04EF`).
+- Every run used `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle
+  player. The frame counts are those of 9.7, and each header was checked.
+- The logs are `local/gp_{off,on}_<mission>.log` in the cc9-lua2 tree.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 0 calls | 0 calls | identical | held: pair_diff exit 1, gameplay identical; the only difference is the new summary line's `bound` |
+| USN02 9200/9000 | 0 calls | 0 calls | identical | held: exit 1, as USN01 |
+| USN04 4700/4500 | 136/136/0 | 136/136/0 | identical | held: exit 1, as USN01; 44 death rows and 81 unit rows identical |
+| LOMP06 1200/1000 | 0 calls | 0 calls | identical, `reconlevel` unresolved | held: exit 1, gameplay identical; the `bound` line, masked sector-scan noise, and one movie-camera pose line at HUD frame 441 differ |
+| JM06 3200/3000, keys | 17 calls, 0 served, 17 unserved | 18 calls, 18 served (18 `unitcommand`, all named) | served 0 -> 17 | held; the one extra call is below |
+| JM06, the orders | `NavigatorAttackMove` 17 | 0 | 17 -> fewer | held; see below |
+| JM06, gameplay | deaths 5, hits 424, damage 12144, shots 668 | deaths 4, hits 405, damage 10109, shots 652 | may move, but only through the Narwhal | **failed** (exit 3): the whole convoy battle moved |
+
+**Why the orders fell to 0 rather than to 1.**
+- The Narwhal already carries a current `attackmove` from its stage-init order, which targets
+  `PlayerSub 03`.
+- So the first check at :1162 reads `"attackmove"` and never re-issues.
+- OFF re-targeted it at `Mission.PlayerUnit` (`PlayerSub 01`) 17 times.
+- The binding summary shows `attackmove 17 -> 0` and `issued 22 -> 5`.
+- The extra GetProperty call (18 against 17) is one more check within 3000 m on the changed
+  course.
+
+**The failed prediction.** Gameplay moved well beyond the Narwhal's own rows. The Narwhal keeps
+its authored target instead of being re-aimed at the player every second, and the rest follows
+from that:
+- it closes to 70 m, not 424 m;
+- it takes 0 damage instead of 1482, and survives: the only-OFF death row;
+- it shoots 13 times, not 20.
+
+As a consequence:
+- `PlayerSub 03` sinks 9.35 s earlier;
+- `US Cargo Transport 01`'s killer changes;
+- 14 unit rows change;
+- the other units' periodic `command target` resolves shift.
+
+No other script order changed:
+- orders issued go from 22 to 5, which is exactly the 17 re-issues;
+- binding calls go from 198 to 183, which is those 17 less two more `GetPosition` calls
+  (104 -> 106).
+
+No other GetProperty key was asked. The prediction was wrong
+about scope, because one submarine's survival cascades through a small convoy battle. It was not
+wrong about the mechanism.
+
+**The switch stays OFF, pending the lead's ruling.** The JM06 move is the image's own behaviour,
+because `00927AD0` reports the current command name. Every identity row held. By the rule
+"flip only if the verdict holds", the stated gameplay prediction failed. The recommendation is
+ON.
