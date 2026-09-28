@@ -162,6 +162,12 @@ inline constexpr bool kCautiousAttackTickBound = true;
 // cost 00A010F0 and sent with the target as MT_GAMEUNIT_ADDUSERPATHPOINT
 // messages. False: the no-route moveto every tick, as before.
 inline constexpr bool kCautiousRouteBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 9
+// docs/AI_CAUTIOUS_ROUTE.md section 11. True: CAUTIOUSMOVE's tick 00A152B0 runs
+// 00A14DD0 on its own +14h base (00A102D0: +18h = 0, +1Ch = 4) toward the command's
+// +8h destination before the follower pass, as CAUTIOUSATTACK does. False: the
+// follower pass alone, as before. No creator of CAUTIOUSMOVE is bound in this
+// host (00A2CCF0 from the Duel think, 00A13340 from Lua), so it has no reach yet.
+inline constexpr bool kCautiousMoveRouteBound = false;
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and

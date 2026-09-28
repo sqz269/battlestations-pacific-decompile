@@ -261,3 +261,88 @@ records go from 19 to 26 and damage from 9944.7 to 20582.0.
 
 **Verdict: both switches ON.** Every prediction of section 8 held. Sections 5-7 were the pre-merge
 record, and this section supersedes their verdict.
+
+## 10. Open item 1: `00A11690`, the threat-facing wedge (read, not bound)
+
+`__fastcall(base)`, body 00A11690-00A11AEC, listing read whole. It runs after the follower pass in
+CAUTIOUSATTACK (00A15350), DEFENDPOSITION and CAUTIOUSMOVE. It is the sibling of the move family's
+00A11070, and the two are docs/AI_COMMAND_TICK.md's "ai_group_formation_shape" family. Neither is bound
+in this host.
+
+1. **The gate.** The group's first member must answer `vtable[5Ch](6)` (a ship). Its formation
+   `+284h` must be non-null.
+2. **00A113D0, the threat direction.** For `a = 0; a < 2pi (00CE3828); a += pi/6` (the double at
+   00CEC730, twelve samples):
+   - `d = (sin a * 750, 0 * 750, cos a * 750)` (the double 750.0 at 00D22C70);
+   - `cost = 00A010F0(leader+FCh + d, group+5638h == 0)`;
+   - the strict greatest cost, seeded with -1.0e10 at 00CE4ADC, keeps its `d`.
+   An empty group samples around the zero vector at 00F87574.
+3. **The frame** (00A1172B..00A11837):
+   - `h = atan2([leader+0ECh], [leader+0F4h])` (_CIatan2 with ST0 = z, ST1 = x), then `a = -h`.
+   - `u = normalize2(cos a * d[0] + sin a * d[1], cos a * d[1] - sin a * d[0])`, through 004F2F40.
+     **The listing reads `d[0]` and `d[1]` (`[ESP+2Ch]`, `[ESP+30h]`), and `d[1]` is the zero y.**
+     So `u` is `+/-(cos h, sin h)` by the sign of the threat's x alone. The threat's z never enters.
+     This is the image's own arithmetic.
+   - `v` is the same with `a + pi/2` (the double pi/2 at 00CE3830). It is negated (the double -1.0
+     at 00D7A250) when its second component is negative.
+4. **The shape.** 0070EFD0(0) on the group (`+14h` of the formation object). Shape 0 indexes the table
+   base 00E08F18, which holds command-object pointers, so column 0 of every member is rewritten from
+   those words read as floats times FormationShipDist. The ship branch below overwrites them;
+   non-ship members keep them.
+5. **The wedge.** `s = tuning+210h` (Formation_UnitDist, 500 in this installation's
+   highlvlaiglobals.lua line 125). `F = s*u` and `P = s*v`.
+   - The members are walked from the second entry of `+5640h`; ship members with a record (0070D080)
+     are placed in rows `r = 1, 2, ...` of `2r + 1` places `j = 0..2r`:
+     `off = r*F`, plus `j*(P - F)` for `0 < j <= r`, plus `(j - r)*(-P - F)` for `j > r`.
+   - `record+10h = -0.0 - off.x` and `record+20h = -0.0 - off.z`, which are column 0's lateral and
+     axial.
+   - A row ends when `j` exceeds `2r` (the limit starts at 2 and grows by 2).
+6. **The tail.** 0077A080 and 0077C880 on the formation (`+284h`) send the formation update.
+
+**Why it is not bound here.** The column-0 records live in the units host's formation model
+(`src/game_hosts_units.cpp`, `record.lateral[0]` at the 0070D7B0 decomposition). That file is leased
+to cc9-lua6. The binding needs one units-host entry point:
+`bool set_formation_member_offset_0070d080(std::size_t leader, std::size_t member, int column,
+float lateral, float axial)`, false without a record. The shape-0 rewrite of 0070EFD0 would be a
+second entry point. With them, the rule above is pure arithmetic over the AI host's danger cost, so
+it can sit in `src/ai_command_tick.cpp` beside 00A14DD0.
+
+## 11. Open items 2-5
+
+**2. CAUTIOUSMOVE's call, 00A152B0 (bound OFF as `kCautiousMoveRouteBound`).**
+- 00A152B0 is `00A14DD0(this+14h)(this+4h group, this+8h destination)`, then `00A10DC0`, then
+  `JMP 00A11690`.
+- Its constructor 00A102D0 (vtable 00D22AEC, instance 20h) sets `+14h` to vtable 00D22A08 and then
+  00D22AE4, the flag `+18h` = 0, and the counter `+1Ch` = 4. That is the same base CAUTIOUSATTACK
+  keeps at `+20h`.
+- The switch runs `ai_cautious_approach_pass_00a14dd0` toward `+8h` before the follower pass.
+- **Reach: none in this host.** CAUTIOUSMOVE is built only by 00A13340 (`BSP_AiCommand_CreateFromLua`)
+  and by 00A2CCF0. 00A2CCF0 is reached from `BSP_AiPlanner_DuelThink` 00A25F70 for a non-ship leader
+  when 00A2C9F0 passes and a stream-1 fraction exceeds the argument. No script in this installation
+  names CAUTIOUSMOVE, and this host binds neither creator.
+- **Prediction, written before its ON run:** identity on USN12 and USN04 (exit 0 or 1), with the
+  cautious-route census unchanged.
+
+**3. The out-of-map crossing of 0071FDE0.** 004BBDD0 (`__thiscall(world)(from, to, out)`, read whole):
+- It clips `to` into the world box (`+711Ch`/`+7128h` in x, `+7130h`/`+7124h` in z), placing it 1 m
+  inside along the segment from `from`.
+- It keeps the original point when the clipped move is under 1.0 on either axis (00D7A24C).
+- `out` = clipped + `normalize(...) * (00CE7530 / max(min(|n.x|, |n.z|), 00D7A2F8 -> 00CE746C))`.
+- 0071FDE0 pushes the clipped point and then `out`, instead of the point.
+- **Not bound: no reach.** `outside_map` stayed 0 on every run of sections 5-9. The route's
+  candidates lie between two leaders, 0.3 of their distance off the line.
+
+**4. The slot's `+18h`: confirmed as the follower's index, delivered by message.**
+- The listener sub-object at `+10h` (vtable 00CFDB10) has slot 2 at 0071CDD0. That slot builds session
+  message 60h with its argument at `+20h` and routes it with flags 7.
+- 00721A40's 60h arm is 0071C0B0, `ECX = [director+1A4h] + 10h`, `JMP 007AE060`. It stores the
+  argument at listener `+8h` = slot `+18h` when it is at most the source's point count - 1.
+- So `+18h` is the index the follower reports, one session delivery late.
+- The host reads the cursor's own index (`path_cursor.index_08`). That is the same value without the
+  delivery delay. It stays LABELLED.
+
+**5. 5Fh delivery under `kSetCommandQueueDelayBound`.**
+- `post_user_path_point_0071d340` posts a loopback message when the switch is set, and the drain
+  delivers it. It delivers at the call otherwise.
+- The switch is ON on main since cc9-gunnery6's landing, so the section 9 pairs were measured with the
+  5Fh points delivered at the row-9 drain. Nothing is left to do.
