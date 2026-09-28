@@ -1,0 +1,30 @@
+{
+  "packet": "cc9_lua_set_ship_speed",
+  "doc": "docs/LUA_BINDING_MISSION.md, SetShipSpeed, 00890D30",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kLuaSetShipSpeedBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "ON"
+    }
+  ],
+  "substitutions": [
+    "entity with no units-host slot counted unresolved"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": [
+    {
+      "row": "LOMP06 player",
+      "predicted": "the controlled unit is held",
+      "measured": "Narwhal moved 352.61 -> 421.38 m",
+      "why": "the commanded speed drives the controlled submarine"
+    }
+  ],
+  "pairs": {
+    "LOMP06": "exit 3, 20 calls, 19 unit rows moved, first hit at 38.95 s",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
+  }
+}

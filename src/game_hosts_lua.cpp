@@ -315,6 +315,7 @@ int binding_trampoline(lua_State* state) {
     const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
     const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
     const bool aa_enable_row = kLuaAAEnableBound && dispatch_row.address == 0x0089c740u;
+    const bool ship_speed_row = kLuaSetShipSpeedBound && dispatch_row.address == 0x00890d30u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -342,7 +343,7 @@ int binding_trampoline(lua_State* state) {
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
-        || forced_recon_row || add_damage_row || aa_enable_row
+        || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -438,6 +439,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (ship_speed_row) {
+        if (!host->error_replay()) host->run_set_ship_speed_00890d30(state, argc);
+        return 0;
     }
     if (aa_enable_row) {
         if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
@@ -4263,6 +4268,31 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     }
 }
 
+// Packet cc9_lua_set_ship_speed. 00890D30 SetShipSpeed(entity, speed): argument 0
+// through 00888AA0, argument 1 through 00B66270 (a number), then 00890E6F stores
+// max(speed, 0) at [entity+73Ch]+24h and the clock [00F876A4] at +28h. No class
+// test. SUBSTITUTION (labelled): an entity with no units-host slot is not reached.
+int GameMissionLuaHost::run_set_ship_speed_00890d30(lua_State* state, int argument_count) {
+    ++summary_.ship_speed_calls;
+    const float speed = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.ship_speed_unresolved;
+        log_.notef("  SetShipSpeed 00890d30: entity id %d has no units-host slot (packet "
+            "cc9_lua_set_ship_speed)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    units->store_commanded_speed_00890e6f(index, speed);
+    ++summary_.ship_speed_units;
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetShipSpeed 00890d30: \"%s\" speed=%.2f (packet cc9_lua_set_ship_speed)",
+        row != nullptr ? row->name.c_str() : "?", static_cast<double>(speed));
+    log_.implemented("MissionLuaNative::SetShipSpeed", "00890d30");
+    return 0;
+}
+
 // Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
 // 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
 // vtable[114h] director exists, 0071E050(flag) -> director+221h.
@@ -5603,6 +5633,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
         summary_.listener_hit_unmodelled);
+    log_.notef("summary mission script ship speed bound=%d calls=%llu units=%llu unresolved=%llu "
+        "(00890D30 -> 00890E6F, packet cc9_lua_set_ship_speed)", kLuaSetShipSpeedBound ? 1 : 0,
+        summary_.ship_speed_calls, summary_.ship_speed_units, summary_.ship_speed_unresolved);
     log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
         "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
         kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,

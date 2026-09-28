@@ -191,6 +191,13 @@ inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs
 // (bsp::game::scene_director_enables_set). False: record.
 inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_lua_set_ship_speed (docs/LUA_BINDING_MISSION.md, "SetShipSpeed, 00890D30").
+// SetShipSpeed(entity, speed) stores max(speed, 0) at [entity+73Ch]+24h and the
+// mission clock at +28h (00890E6F), the commanded-speed pair the cruise path reads
+// (docs/UNIT_COMMANDED_SPEED.md). True: GameUnitsHost::store_commanded_speed_00890e6f
+// for the resolved slot. False: record.
+inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -421,6 +428,9 @@ struct GameMissionLuaSummary {
     unsigned long long aa_enable_calls{0};
     unsigned long long aa_enable_disables{0};
     unsigned long long aa_enable_unresolved{0};
+    unsigned long long ship_speed_calls{0};
+    unsigned long long ship_speed_units{0};
+    unsigned long long ship_speed_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -898,6 +908,8 @@ public:
     int run_add_damage_0088e000(lua_State* state, int argument_count);
     // Packet cc9_lua_aa_enable, under kLuaAAEnableBound.
     int run_aa_enable_0089c740(lua_State* state, int argument_count);
+    // Packet cc9_lua_set_ship_speed, under kLuaSetShipSpeedBound.
+    int run_set_ship_speed_00890d30(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

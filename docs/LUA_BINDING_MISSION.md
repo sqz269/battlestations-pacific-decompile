@@ -1850,3 +1850,72 @@ the first ranking.
 
 **Next packet: `SetShipSpeed` (`00890D30`),** measured on LOMP06 1200/1000. The convoy should
 move at its scripted speed from the stage init, so exit 3 is likely.
+
+## SetShipSpeed, 00890D30 (packet `cc9_lua_set_ship_speed`, `kLuaSetShipSpeedBound`, committed OFF)
+
+Worker cc9-lua2, 2026-09-28. This is item 1 of the refreshed ranking.
+
+**The image (V).**
+- `SetShipSpeed(entity, speed)` resolves argument 0 (`00888AA0`) and reads argument 1 as a number.
+- It stores `max(speed, 0)` at `[entity+73Ch]+24h` and the mission clock `[00F876A4]` at `+28h`
+  (`00890E6F`), with no class test.
+- That is the commanded-speed pair the cruise path divides by the reference speed
+  (`docs/UNIT_COMMANDED_SPEED.md`, `docs/CRUISE_SPEED_SETTING.md`). It also makes the weapon
+  director's idle tail choose `cruise` over `stop`.
+
+**The binding.**
+- `GameMissionLuaHost::run_set_ship_speed_00890d30` calls the existing
+  `GameUnitsHost::store_commanded_speed_00890e6f`, the same store the `--order speed=` harness
+  option makes.
+- The census is `summary mission script ship speed bound=.. calls=.. units=.. unresolved=..`,
+  plus one line per call.
+- **SUBSTITUTION, labelled:** an entity with no units-host slot is counted `unresolved`.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| row | prediction |
+| --- | --- |
+| LOMP06 1200/1000 | **exit 3 likely**. There are 20 calls: `Mission.PlayerUnit` at its class `MaxSpeed` (111); the convoy at `Mission.ConvoySpeed` (205..219); and two escorts at 20 (558, 570), if reached. The convoy's ships cruise at the scripted speed instead of their authored or default one, and every moved row should trace to their changed positions. The player's call lands on the controlled unit, which the idle player holds |
+| USN01, USN04, USN02 | no call, identity |
+
+### SetShipSpeed pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `d0a527386`.
+- ON is `pair_export --flip kLuaSetShipSpeedBound=true` (`local/sp_on`, SHA-256 `04633BE5E0C4`).
+- The logs are `local/sp_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| LOMP06 1200/1000 | `calls=20 units=20`. The convoy and escorts (Asagiri, Kitakami, Gyoraitei 1/2, the Maru freighters and the rest) take their scripted speeds; `00890E6F` stores go 3 -> 23. The cruise path runs (`CruiseState` and `ShipAiState::cruise_step` rows, 63 calls each). pair_diff exit 3: 19 unit rows moved, first hit -1 -> 38.95 s, hits 0 -> 4, shots 6 -> 9, no deaths | held |
+| USN01 3200/3000 | `calls=0`, exit 1 | held |
+| USN04 4700/4500 | `calls=0`, exit 1 | held |
+
+**Failed sub-prediction.** I said the player's call (111) lands on a controlled unit the idle
+player holds. The controlled Narwhal moved **352.61 -> 421.38 m**, so the commanded speed does
+drive the controlled submarine on this path.
+
+**Verdict: `kLuaSetShipSpeedBound = true`.**
+
+## UnitGetAttackTarget, 008A6DE0 (packet `cc9_lua_unit_attack_target`, a read; binding open)
+
+Worker cc9-lua2, 2026-09-28. This is item 2 of the refreshed ranking: LOMP06, 21 calls.
+
+**The image (V, from the pseudocode).**
+- It resolves argument 0 (`00888AA0`) and takes the director (`vtable[114h]`).
+- **When `director->vtable[48h](2)` answers true**, the target is `director->vtable[2Ch]()`.
+- **Otherwise** it reads the current command (`0071BE40`). When that command's
+  `vtable[0Ch]()` kind is 1 or 2, the target is the resolved command target
+  (`BSP_EntityCommand_ActiveTargetDescriptor`, then `BSP_CommandTarget_ResolveObject`).
+- **The result.** A target with `+5Dh` clear is pushed as `thisTable[tostring(target+174h)]`;
+  anything else is nil.
+
+**Open before binding.**
+- The director slot `48h` and its argument 2 are unread. It is likely a role or mode test that
+  picks the player's own target over the AI command's.
+- The director's `vtable[2Ch]` is unread.
+- The command's `vtable[0Ch]` kinds 1 and 2 need mapping onto the host's command classes. The
+  commands host has `current_command_0071be40` and `active_command_descriptor_0071eb60`.
+- **What it would change.** LOMP06 asks on `Mission.PlayerUnit` (`06_crucial_cargo.lua` 696).
+  With a live target, `luaSubC1luaReportEnemy` reaches `luaGetReconLevel` and `luaSubC1AddUnit`,
+  which are objectives, so gameplay could move.
