@@ -822,3 +822,14 @@ kGunWaveOrderBound=true` (`local\wr_on`). OFF is `local\AT_ON_<m>.log`.
 - The structure is 10.7's: wave 1 steps the gun before wave 2's bot sets and tests the new
   command, and MSTGun's salvo test runs after the send.
 - Every prediction of 10.10 held.
+
+**USN01, added after the flip at the lead's request** (not predicted before its run). OFF is
+`local\AT_ON_usn01.log` and ON is `local\WR_ON_usn01.log`, from the same `local\wr_on` export.
+
+| mission | OFF deaths / hit records / shots | ON | category 1 shots | category 5 | category 6 |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 5 / 441 / 1510 | 5 / 538 / 1498 | 1465 -> 1454 | 20 -> 20 | 25 -> 24 |
+
+pair_diff exits 3. The shots move -0.8% and the deaths are unchanged. The hit records rise,
+because the convoy's AA is aimed one step later and the Dauntlesses take hits on a different
+schedule. This is consistent with USN04 and USN13, and it does not change the decision.

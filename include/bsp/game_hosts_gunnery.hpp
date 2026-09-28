@@ -877,6 +877,20 @@ public:
         std::size_t shooter;
         int bullet_class;
         float damage;
+        // For the Lua hit listeners' per-(victim, attacker) rate limit (00988510).
+        // Inert here: the Lua host reads them only behind its own switches.
+        // [src+1Ch], src = the ordnance's vtable[108h](); -1 with no ordnance.
+        // No producer yet: the host keeps no player index at fire time.
+        int attacker_player_index{-1};
+        // [hit+0h] when it is a live child of the victim other than the victim
+        // itself; 0 otherwise. No producer yet: the host builds no device entities.
+        std::uint32_t device_entity{0};
+        float fire_caused{0.0f};   // hit record +4Ch (008273F5), 0 when no fire started
+        float leak_caused{0.0f};   // hit record +50h (00827358), 0 when no leak started
+        // [[src+4h]+8h], the ordnance kind 00988510's rate limit keys on. Filled
+        // with the fired class's sub-type (classDesc+8h, the host's
+        // bullet_sub_type); that the two are the same field is a hypothesis.
+        int ordnance_kind{-1};
     };
     std::vector<GameGunneryHitEvent> take_hit_events();
     void kill_unit_00926d90(std::size_t unit_index, int cause);
