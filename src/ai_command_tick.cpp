@@ -261,6 +261,29 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         // leader point, a null target and 1.0f to 00A13B60.
         add(result, ai_command_follower_pass_00a10dc0(host, group));
         return result;
+    case AiCommandType::PatrolTo: {
+        // 00A15570-00A1566A. The leader (the first +563Ch member) must pass
+        // 009FE080; then the squared x/z distance from its +FCh (00F87574 for an
+        // empty group) to the command's +8h/+10h decides `far` (JA against the
+        // float 202500.0 at 00D22C98) and `near` ((tuning+1F4h * 1.5)^2 above
+        // it, FCOMIP / JA), and 00A10DC0 and 00A11070 run. 00A11070 was not
+        // read. Without a groupable leader, far stays 0 and near stays 1.
+        if (host.tick_group_population(group) == 0u) return result;
+        void* leader = host.tick_member_at(group, 0);
+        if (leader == nullptr || !host.tick_member_is_groupable_combatant(leader)) return result;
+        float own_point[3] = {0.0f, 0.0f, 0.0f};
+        host.tick_leader_point(group, own_point);
+        const float dx = own_point[0] - command.target_position[0];
+        const float dz = own_point[2] - command.target_position[2];
+        const float d2 = dz * dz + dx * dx;
+        result.patrol_far = d2 > 202500.0f;
+        const float collect = static_cast<float>(
+            static_cast<double>(host.tick_tuning_field(kAiTuningCloseAttackCollectDist)) * 1.5);
+        const float collect2 = collect * collect;
+        result.patrol_near = collect2 > d2;
+        add(result, ai_command_follower_pass_00a10dc0(host, group));
+        return result;
+    }
     case AiCommandType::Idle:
         // 00A12430: CALL 00A10EC0 at 00A12433, CALL 00A10DC0 at 00A1243A, then
         // JMP 00A11070 at 00A12442. The follower pass is the middle call;
@@ -272,6 +295,17 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         // classes' bodies were read only to their first dispatch.
         return result;
     }
+}
+
+AiCommandTickResult ai_command_patrol_to_tail_00a15695(AiCommandTickHost& host,
+                                                       const AiCommandObject& command,
+                                                       bool patrol_far,
+                                                       bool close_pass_found_target) {
+    AiCommandTickResult result;
+    if (!patrol_far || close_pass_found_target) return result;
+    if (command.owner_group == nullptr) return result;
+    order_leader(host, command.owner_group, command.target_position, result);
+    return result;
 }
 
 }  // namespace bsp

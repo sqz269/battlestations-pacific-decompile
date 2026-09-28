@@ -22,6 +22,7 @@
 #include "bsp/ai_command_tick.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
+#include "bsp/ai_planner_tails.hpp"
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/ai_target_weights.hpp"
 #include "bsp/game_hosts.hpp"
@@ -239,6 +240,18 @@ constexpr bool kAiPlannerSlotKindsBound = true;
 // USN04, USN13, USN01 identical (docs/PLANNER_TASK_CHOICE.md section 6.4).
 constexpr bool kAiCaptureThinkBound = true;
 
+// Packet cc9_planner_defend_capture_thinks part 2, docs/PLANNER_TASK_CHOICE.md
+// section 8. True: a Capture think that has an enemy CommandBuilding runs
+// 00A29FD0's target path: the 00A1E250 records (00A2A120-00A2A1E7), the
+// per-group pass (00A2A263-00A2AA90), the assignment loop (00A2AAA0-00A2AF40,
+// 00A1A720 at 00A2AD77), the 00A1D010 merges (00A2B12F), the hand-off of every
+// unassigned group and the spawn arm as a record. False: that think runs the
+// Siege-shape stand-in and counts a target_fallback. ON: USN13 and USN01 moved
+// (Enterprise's group is ordered at the CommandBuilding group and draws
+// CAUTIOUSATTACK against 0.5), USN02 and USN04 identical
+// (docs/PLANNER_TASK_CHOICE.md section 8.4).
+constexpr bool kAiCaptureTargetPathBound = true;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -402,6 +415,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiPlannerKind kind{bsp::AiPlannerKind::Siege};
         int slot{0};
         std::vector<Group*> owned;
+        // 00A1F44C / 00A1F451 / 00A1F45E, the Capture constructor: +38h (planner
+        // age) and +3Ch (time since the last spawn) start at 0, +40h (the last
+        // think's clock) at -1.0 (00D7A260). 00A29FD0 advances them.
+        float age_0038{0.0f};
+        float since_spawn_003c{0.0f};
+        float last_clock_0040{-1.0f};
     };
 
     struct Brain {
@@ -1138,7 +1157,30 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 }
             }
         }
-        const bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        if (cmd->type == bsp::AiCommandType::PatrolTo) {
+            // 00A15671-00A156C8: 00A13B60(1.0, &+8h, 0, 0) when near, 00A11B80(0)
+            // (not bound, as for CLOSEATTACK), then the leader moveto when far
+            // and the pass found no target.
+            bool found = false;
+            if (tick.patrol_near) {
+                const bsp::AiCloseAttackTickResult close_tick =
+                    bsp::ai_close_attack_tick_00a13b60(*this, *cmd, 1.0f, cmd->target_position);
+                found = close_tick.candidate_found;
+                summary.close_members_served += close_tick.members_served;
+                summary.close_attack_move_orders += close_tick.attack_move_orders;
+                summary.close_set_target_orders += close_tick.set_target_orders;
+                summary.close_fallback_movetos += close_tick.fallback_movetos;
+                summary.close_candidates_scored += close_tick.candidates_scored;
+                ++patrol_close_passes;
+            }
+            const bsp::AiCommandTickResult tail =
+                bsp::ai_command_patrol_to_tail_00a15695(*this, *cmd, tick.patrol_far, found);
+            tick.orders_issued += tail.orders_issued;
+            tick.leader_ordered = tick.leader_ordered || tail.leader_ordered;
+            ++patrol_ticks;
+            done("AiCommand::patrol_to_tick", 0x00a15570u);
+        }
         // 00A15490 and 00A15500 both end in 00A13B60, with the target group's
         // leader point and 1.5f for CLOSEATTACK and the own group's and 1.0f
         // for DEFENDPOSITION.
@@ -2034,6 +2076,15 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             else own_building = true;
         }
         if (have_target) {
+            if constexpr (kAiCaptureTargetPathBound) {
+                Brain* owner = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
+                    ? brains[static_cast<std::size_t>(side)].get() : nullptr;
+                capture_target_path_00a29fd0(p, side, owner);
+                return true;
+            }
+            // BSP_CAPTURE_DIAG=1: print what the target path would do, and do
+            // nothing with it.
+            if (capture_diag_enabled()) capture_diag(capture_plan_00a29fd0(p, side), side, false);
             ++capture_target_fallbacks;
             record("AiPlanners::capture_target_path_00a2a130", 0x00a2a130u);
             return false;
@@ -2062,6 +2113,597 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         done("AiPlanners::capture_think_00a29fd0", 0x00a29fd0u);
         return true;
     }
+
+    // ---- Packet cc9_planner_defend_capture_thinks part 2: the target path ----
+    // docs/PLANNER_TASK_CHOICE.md section 8 carries the listings.
+
+    // The Capture_ keys 00A335D0 stores (loader +19Ch..+1CCh, which 00A371A0's
+    // reader sees 4 bytes lower), as this installation's
+    // scripts/datatables/highlvlaiglobals.lua (mtime 2024-07-13) authors them in
+    // IslandCaptureParams_Rookie lines 94-103. Regular and Veteran author the
+    // same scoring values and differ only in Capture_SpawnDelay ({15,5} and
+    // {5,1}), which feeds the spawn arm this host keeps as a record. The shared
+    // tuning block does not load these keys, so the host carries them here.
+    struct CaptureTuning {
+        float arrive_to_range_time{30.0f};    // reader +198h Capture_ArriveToRangeTime
+        float point_value{35.0f};             // +19Ch Capture_CapturePointResourceValue
+        float min_resource{200.0f};           // +1A0h Capture_MinimalResource
+        float collect_defenders{3000.0f};     // +1A4h Capture_CollectDefendersDist
+        float act_mul_2{1.15f};               // +1A8h Capture_ActAttackTargetWeightMul[2]
+        float act_mul_1{15.0f};               // +1ACh Capture_ActAttackTargetWeightMul[1]
+        float act_dist_1{3000.0f};            // +1B0h Capture_ActAttackTargetWeightMulDist[1]
+        float act_dist_2{4500.0f};            // +1B4h Capture_ActAttackTargetWeightMulDist[2]
+        float min_cb_target_weight{0.5f};     // +1B8h Capture_MinimalCBTargetWeight
+        float cb_strategic_mul{0.8f};         // +1BCh Capture_CommandBuildingStrategicWeightMul
+        float spawn_delay_1{60.0f};           // +1C0h Capture_SpawnDelay[1]
+        float spawn_delay_2{45.0f};           // +1C4h Capture_SpawnDelay[2]
+        float spawn_delay_time{150.0f};       // +1C8h Capture_SpawnDelayTime
+    };
+    CaptureTuning capture_tuning() const {
+        CaptureTuning t;
+        if (tuning.mode == bsp::AiTuningMode::IslandCaptureRegular) {
+            t.spawn_delay_1 = 15.0f;
+            t.spawn_delay_2 = 5.0f;
+        } else if (tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran) {
+            t.spawn_delay_1 = 5.0f;
+            t.spawn_delay_2 = 1.0f;
+        }
+        return t;
+    }
+
+    // 00A1E6D9 / 00A1E701 -> 00946FC0 BSP_AiParty_AvailableResources:
+    // [00E0CFB4] * 0.5 - sum(unit+304h) - 009469F0(team). [00E0CFB4] holds
+    // 2400.0 in the image's .data (and 00CE396C, the 2400.0 005E3262 stores
+    // whenever 004BCA50 answers above 3, which a campaign mission does).
+    // unit+304h is the entity's `ResourceUsage` (0077E864), which nothing in
+    // this installation's scripts or reference scenes authors, so every unit
+    // holds 0. LABELLED: 009469F0 sums 009467B0 over the [00F89B3C] records
+    // of the team, which this process never creates (the spawn arm is a
+    // record), so it is 0.
+    static constexpr float kCaptureAvailableResources = 2400.0f * 0.5f;
+    // 00A2C530, the group's resource: sum(member+304h). 0 for every group on
+    // this installation (see above), so no assignment ever lowers a price.
+    static constexpr float kCaptureGroupResource = 0.0f;
+    // LABELLED: the CommandBuilding's +7A0h CaptureRange (006F2780, default
+    // 500 at 006F27E5). This installation's four reference CommandBuildings
+    // (USN01 CB2, USN13 CB2 / CB4 / CBT) author 100; the host has no property
+    // bag reader for it here, so the default stands.
+    static constexpr float kCaptureRangeStandIn = 500.0f;
+
+    // 00A03510, the unit's CaptureWeight, switched on entity+C4h: Destroyer 7
+    // -> 2.0 (00CE3958); Submarine 8, TorpedoBoat 0Eh, PlaneSquadron 18h -> 1.0;
+    // MotherShip 9 -> 3.0 (00CE3854); Cruiser 0Ah -> 4.0 (00CE3D34); BattleShip
+    // 0Dh -> 5.0 (00CE3850); CommandBuilding 1Ch -> the Lua `CaptureWeight`,
+    // GetFloatOrDefault(1.0), unauthored on this installation; any other id 0.
+    // LABELLED: Cargo 0Bh answers 3.0 when [unit+538h]->vtable[+2Ch]() is true
+    // and 0 otherwise; that slot was not read, so 0. LandingShip 0Ch answers
+    // 0.1 (00D7A2F0) when 00827F70 is true, which for a class-0Ch ship is the
+    // BigLandingShip byte +808h being clear (its default), else 1.0; the host
+    // has no reader for +808h, so the default arm 0.1 stands.
+    static float capture_weight_00a03510(int class_id) {
+        switch (class_id) {
+        case 0x07: return 2.0f;
+        case 0x08: case 0x0E: case 0x18: return 1.0f;
+        case 0x09: return 3.0f;
+        case 0x0A: return 4.0f;
+        case 0x0B: return 0.0f;
+        case 0x0C: return 0.1f;
+        case 0x0D: return 5.0f;
+        case 0x1C: return 1.0f;
+        default: return 0.0f;
+        }
+    }
+
+    float unit_xz_distance(std::size_t a, std::size_t b) const {
+        float ax = 0.0f, ay = 0.0f, az = 0.0f, bx = 0.0f, by = 0.0f, bz = 0.0f;
+        units.unit_position_00fc(a, ax, ay, az);
+        units.unit_position_00fc(b, bx, by, bz);
+        const float v[3] = {ax - bx, ay - by, az - bz};
+        return bsp::ai_tail_horizontal_length(v);   // 009FFC10
+    }
+
+    // 00A1E250 over this process's world lists, one method per native site.
+    struct CaptureScoreHost final : bsp::AiCaptureScoreHost {
+        struct WorldUnit {
+            std::size_t unit;
+            int class_id;
+        };
+        Impl& h;
+        const CaptureTuning& t;
+        std::vector<WorldUnit> world;
+        std::vector<std::size_t> near_list;
+        CaptureScoreHost(Impl& host, const CaptureTuning& tuning_in) : h(host), t(tuning_in) {
+            // 00A1E2A0 [+64h] list 6 (every ship), 00A1E2F1 [+13Ch] list 24
+            // (plane squadrons, 007F10B0). 00A1E343 [+358h] list 69 (AirField)
+            // and 00A1E395 [+364h] list 70 (Shipyard) take 00A03510's default
+            // arm, weight 0, and 00A03760 then answers 0 in or out of range, so
+            // they are not walked.
+            for (std::size_t i = 0; i < h.units.world_list_size(6); ++i) {
+                const std::size_t u = h.units.world_list_entry(6, i);
+                if (u < h.units.count()) world.push_back({u, h.units.unit_class_id(u)});
+            }
+            for (std::size_t i = 0; i < h.units.world_list_size(24); ++i) {
+                const std::size_t u = h.units.world_list_entry(24, i);
+                if (u < h.units.count()) world.push_back({u, 0x18});
+            }
+            // 00A1E410-00A1E64E: [+16Ch] list 28, the CommandBuildings.
+            for (std::size_t i = 0; i < h.units.world_list_size(28); ++i) {
+                const std::size_t u = h.units.world_list_entry(28, i);
+                if (u < h.units.count()) near_list.push_back(u);
+            }
+        }
+        int world_unit_count() override { return static_cast<int>(world.size()); }
+        int world_unit_team(int i) override {
+            return h.units.unit_side_0054(world[static_cast<std::size_t>(i)].unit);
+        }
+        float unit_arrival_value(int i, void* target) override {
+            // 00A03760.
+            const WorldUnit& w = world[static_cast<std::size_t>(i)];
+            bsp::AiTailArrivalValueInputs in;
+            in.capture_weight = capture_weight_00a03510(w.class_id);
+            in.distance = h.unit_xz_distance(w.unit, unit_index_of(target));
+            in.capture_radius = static_cast<float>(static_cast<int>(kCaptureRangeStandIn));
+            // IsType(6): [unit+538h]+500h MaxSpeed. IsType(18h): [unit+35Ch]+188h,
+            // the plane class MaxSpd. LABELLED: the units host exposes no plane
+            // MaxSpd, so a squadron's speed is 0 and it counts only inside the
+            // radius (contract in docs/PLANNER_TASK_CHOICE.md section 8).
+            in.speed = (w.class_id != 0x18 &&
+                        h.units.unit_is_kind_of(w.unit, bsp::kUnitGunneryKindShipBase))
+                ? h.units.unit_class_max_speed_0500(w.unit) : 0.0f;
+            in.arrive_to_range_time = t.arrive_to_range_time;
+            return bsp::ai_tail_unit_arrival_value(in);
+        }
+        int near_unit_count() override { return static_cast<int>(near_list.size()); }
+        int near_unit_team(int i) override {
+            return h.units.unit_side_0054(near_list[static_cast<std::size_t>(i)]);
+        }
+        float near_unit_distance(int i, void* target) override {
+            return h.unit_xz_distance(near_list[static_cast<std::size_t>(i)], unit_index_of(target));
+        }
+        float available_resources(int team) override {
+            (void)team;
+            return kCaptureAvailableResources;
+        }
+        float tuning(std::uint32_t offset) override {
+            if (offset == bsp::kAiTailTuningCapturePointValue) return t.point_value;
+            if (offset == bsp::kAiTailTuningMinCbTargetWeight) return t.min_cb_target_weight;
+            return 0.0f;
+        }
+        float strategic_gain(void* target) override {
+            // 00A1E7A5-00A1E7DA: the target's Lua `StrategicGain`, default 0.0.
+            // No reference scene or installed script authors it.
+            (void)target;
+            return 0.0f;
+        }
+    };
+
+    static constexpr std::size_t kCaptureNone = static_cast<std::size_t>(-1);
+    struct CaptureTargetRec {
+        std::size_t unit{kCaptureNone};
+        bsp::AiTailCaptureScoreTerms terms{};
+        float price{0.0f};            // rec+1Ch
+        std::size_t defenders{0};     // 00A24870's record count, for the stand-in
+        bool live{true};
+        std::vector<Group*> assigned; // 00A27AE0's per-target list
+    };
+    struct CaptureGroupRec {
+        Group* g{nullptr};
+        float resource{0.0f};                 // value[1], 00A2C530
+        std::size_t current{kCaptureNone};    // value[2], 00A1A7A0
+        std::size_t near_own{kCaptureNone};   // value[3]
+        float near_d2{1.0e10f};               // value[4], seeded from 00CE4970
+        std::vector<float> weight;            // value[5], the 00A22D10 map
+        std::vector<char> has_weight;
+        bool live{true};
+    };
+    struct CapturePlan {
+        std::vector<CaptureTargetRec> targets;
+        std::vector<CaptureGroupRec> groups;
+        std::vector<std::pair<std::size_t, std::size_t>> assignments;  // (group rec, target rec)
+        std::vector<float> assignment_scores;
+    };
+
+    // 00A1A7A0(planner)(group): the first list-28 entity not on the planner's
+    // side that the group's command is already working on: 00A2BDB0 (an ATTACK
+    // whose +1Ch is the entity's +16Ch group), 00A2C150 (a MOVE-family point),
+    // 00A2C230 (PATROLTO) or 00A2C1C0 (REGROUPINGMOVE) within 1.0 squared of
+    // the entity's +FCh in x and z.
+    std::size_t capture_current_target_00a1a7a0(Group* g, int side) const {
+        const bsp::AiCommandObject& cmd = g->command;
+        for (std::size_t i = 0; i < units.world_list_size(28); ++i) {
+            const std::size_t e = units.world_list_entry(28, i);
+            if (e >= units.count() || units.unit_side_0054(e) == side) continue;
+            Group* eg = e < group_of_unit.size() ? group_of_unit[e] : nullptr;
+            if (bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::Attack) &&
+                cmd.target_group == static_cast<void*>(eg)) {
+                return e;
+            }
+            float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+            units.unit_position_00fc(e, ex, ey, ez);
+            const float dx = cmd.target_position[0] - ex;
+            const float dz = cmd.target_position[2] - ez;
+            const bool at_point = dz * dz + dx * dx < 1.0f;
+            if (at_point && (bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::Move) ||
+                             bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::PatrolTo) ||
+                             bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::RegroupingMove))) {
+                return e;
+            }
+        }
+        return kCaptureNone;
+    }
+
+    // LABELLED stand-in for 00A250A0 (00A07E40 builds the group's records,
+    // 00A24870 the target's, and 00A0C650 BSP_AiGroup_ComposeAttackValue scores
+    // them). 00A24870 collects, from world list 2, every entity with +5Dh clear,
+    // +54h == planner+34h (the enemy side, 00A1EEB8 SETZ) and IsKindOf 6, 18h or
+    // 1Bh within Capture_CollectDefendersDist (3-D, 00A1A660) of the target, or
+    // the target alone when there is none. 00A0C650's pair terms are not
+    // reconstructed (docs/PLANNER_KATE_TARGETING.md section 3), so this counts
+    // the attacker-defender pairs: members x defenders, always positive.
+    std::size_t capture_defenders_00a24870(std::size_t target, int enemy_side,
+                                            const CaptureTuning& t) const {
+        float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+        units.unit_position_00fc(target, tx, ty, tz);
+        const float r2 = t.collect_defenders * t.collect_defenders;
+        std::size_t n = 0;
+        for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
+            const std::size_t u = units.world_list_entry(2, i);
+            if (u >= units.count()) continue;
+            if (!units.unit_active(u)) continue;   // LABELLED: +5Dh read as the active row
+            if (units.unit_side_0054(u) != enemy_side) continue;
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units.unit_position_00fc(u, x, y, z);
+            const float dx = x - tx, dy = y - ty, dz = z - tz;
+            if (r2 < dz * dz + dy * dy + dx * dx) continue;   // 00A1A660 answers 1: skip
+            if (units.unit_is_kind_of(u, 0x06) || units.unit_is_kind_of(u, 0x18) ||
+                units.unit_is_kind_of(u, 0x1B)) {
+                ++n;
+            }
+        }
+        return n == 0 ? 1u : n;   // 00A248FD: the target's own record
+    }
+
+    std::size_t group_alloc_order(const Group* g) const {
+        for (std::size_t i = 0; i < groups.size(); ++i) {
+            if (groups[i].get() == g) return i;
+        }
+        return groups.size();
+    }
+
+    // 00A2A0C1-00A2AF40 as a pure plan: nothing is ordered here.
+    CapturePlan capture_plan_00a29fd0(Planner& p, int side) {
+        CapturePlan plan;
+        const CaptureTuning t = capture_tuning();
+        const int enemy = bsp::ai_tail_enemy_team(side);   // planner+34h
+        CaptureScoreHost score_host(*this, t);
+        // 00A2A120-00A2A1E7. The records sit in a map keyed by the entity
+        // pointer; LABELLED: this process orders them by unit index (creation
+        // order) for want of the image's allocation addresses.
+        std::vector<std::size_t> list28;
+        for (std::size_t i = 0; i < units.world_list_size(28); ++i) {
+            const std::size_t e = units.world_list_entry(28, i);
+            if (e < units.count()) list28.push_back(e);
+        }
+        std::vector<std::size_t> enemy_cbs;
+        for (const std::size_t e : list28) {
+            if (units.unit_side_0054(e) != side) enemy_cbs.push_back(e);   // 00A2A13B
+        }
+        std::sort(enemy_cbs.begin(), enemy_cbs.end());
+        enemy_cbs.erase(std::unique(enemy_cbs.begin(), enemy_cbs.end()), enemy_cbs.end());
+        for (const std::size_t e : enemy_cbs) {
+            CaptureTargetRec rec;
+            rec.unit = e;
+            // 00A2A184: ECX = [brain+24h], the planner's side.
+            rec.terms = bsp::ai_capture_target_score(score_host, handle(e), side);
+            // 00A2A18B-00A2A1E2, the target's CaptureWeight being the Lua 1.0.
+            rec.price = bsp::ai_tail_capture_record_price(rec.terms, capture_weight_00a03510(0x1C),
+                                                          t.point_value, t.min_resource);
+            rec.defenders = capture_defenders_00a24870(e, enemy, t);
+            plan.targets.push_back(std::move(rec));
+        }
+        // 00A2A263-00A2AA90, one record per owned group, keyed by the group
+        // pointer; LABELLED: ordered by the host's allocation order.
+        std::vector<Group*> owned;
+        for (Group* g : p.owned) {
+            if (g != nullptr && !g->destroyed) owned.push_back(g);
+        }
+        std::stable_sort(owned.begin(), owned.end(), [this](const Group* a, const Group* b) {
+            return group_alloc_order(a) < group_alloc_order(b);
+        });
+        for (Group* g : owned) {
+            CaptureGroupRec gr;
+            gr.g = g;
+            gr.resource = kCaptureGroupResource;                           // 00A2A2C7
+            gr.current = capture_current_target_00a1a7a0(g, side);         // 00A2A2D2
+            gr.weight.assign(plan.targets.size(), 0.0f);
+            gr.has_weight.assign(plan.targets.size(), 0);
+            float leader[3] = {0.0f, 0.0f, 0.0f};
+            tick_leader_point(g, leader);   // group+5640h's first member, or 00F87574
+            for (const std::size_t e : list28) {
+                if ((e < group_of_unit.size() ? group_of_unit[e] : nullptr) == g) continue;  // 00A2A319
+                float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+                units.unit_position_00fc(e, ex, ey, ez);
+                const float dx = leader[0] - ex;
+                const float dz = leader[2] - ez;
+                if (units.unit_side_0054(e) == side) {
+                    // 00A2A84E..: the nearest own list-28 entity.
+                    const float d2 = dx * dx + dz * dz;
+                    if (d2 < gr.near_d2) {
+                        gr.near_own = e;
+                        gr.near_d2 = d2;
+                    }
+                    continue;
+                }
+                std::size_t ti = 0;
+                while (ti < plan.targets.size() && plan.targets[ti].unit != e) ++ti;
+                if (ti == plan.targets.size()) continue;
+                // 00A2A380: the base weight (stand-in above).
+                const float base = static_cast<float>(g->members.size()) *
+                                   static_cast<float>(plan.targets[ti].defenders);
+                // 00A2A393: 1.0 (00D7A24C) unless this is the group's current
+                // target, which takes 00419010(+1B0h, +1ACh, +1B4h, +1A8h, d).
+                float mul = 1.0f;
+                if (e == gr.current) {
+                    const double d2 = static_cast<double>(dz * dz + dx * dx);
+                    const float d = d2 <= 1.0e-11 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                    mul = bsp::ai_tail_capture_attack_weight(d, t.act_dist_1, t.act_mul_1,
+                                                             t.act_dist_2, t.act_mul_2);
+                }
+                gr.weight[ti] = mul * base;   // 00A2A660-00A2A66E
+                gr.has_weight[ti] = 1;
+            }
+            plan.groups.push_back(std::move(gr));
+        }
+        // 00A2AAA0-00A2AF40, while both maps are non-empty.
+        std::size_t live_targets = plan.targets.size();
+        std::size_t live_groups = plan.groups.size();
+        while (live_targets != 0 && live_groups != 0) {
+            float best = -1.0e10f;                   // 00CE4ADC
+            std::size_t best_t = kCaptureNone, best_g = kCaptureNone;
+            for (std::size_t ti = 0; ti < plan.targets.size(); ++ti) {
+                if (!plan.targets[ti].live) continue;
+                const float s = plan.targets[ti].terms.total;   // rec+4h
+                for (std::size_t gi = 0; gi < plan.groups.size(); ++gi) {
+                    const CaptureGroupRec& gr = plan.groups[gi];
+                    if (!gr.live) continue;
+                    const float w = gr.has_weight[ti] ? gr.weight[ti] : 0.0f;
+                    if (!(w > 0.0f)) continue;           // 00A2AC02 COMISS 00D7A218, JBE
+                    // 00A2AC11-00A2AC3E: (1 - k) * w as a double, + k * s, to float.
+                    const double k = static_cast<double>(t.cb_strategic_mul);
+                    const float score = static_cast<float>(
+                        k * static_cast<double>(s) + (1.0 - k) * static_cast<double>(w));
+                    if (score > best) {                 // 00A2AC4A FCOMIP, JBE
+                        best = score;
+                        best_t = ti;
+                        best_g = gi;
+                    }
+                }
+            }
+            if (best_t == kCaptureNone) break;          // 00A2ACC1
+            plan.assignments.push_back({best_g, best_t});
+            plan.assignment_scores.push_back(best);
+            CaptureTargetRec& tr = plan.targets[best_t];
+            tr.assigned.push_back(plan.groups[best_g].g);
+            tr.price -= plan.groups[best_g].resource;   // 00A2ADD7-00A2ADE4
+            plan.groups[best_g].live = false;
+            --live_groups;
+            if (tr.price < 0.0f) {                      // <= 0 and != 0
+                tr.live = false;
+                --live_targets;
+            }
+        }
+        return plan;
+    }
+
+    // 00A1A720 BSP_AiPlanner_OrderCaptureGroup (docs/AI_PLANNER_TAILS.md 3).
+    // Answers 0 attack, 1 defendposition, 2 patrolto, 3 kept.
+    int order_capture_group_00a1a720(Group* g, std::size_t target) {
+        Group* tg = target < group_of_unit.size() ? group_of_unit[target] : nullptr;
+        if (tg != nullptr) {
+            // target+16Ch set: 00A2CBD0 with [00F8A8D0 + party*1Ch].
+            order_attack(g, tg, kPartyAggressiveRatio);
+            return 0;
+        }
+        if (group_matches_009fe0b0(g)) {
+            // 00A2BE20: returns when the command already answers IsType(11).
+            if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) return 3;
+            if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+            bsp::AiCommandObject c;
+            c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
+            c.owner_group = g;
+            g->command = c;
+            ++capture_orders_defend;
+            return 1;
+        }
+        // 00A2C310 with the target's +FCh: nothing when 00A2C230 finds the
+        // command already a PATROLTO within 1.0 of it; otherwise new(14h) with
+        // the PATROLTO vtable 00D22B3C and the point at +8h.
+        float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+        units.unit_position_00fc(target, ex, ey, ez);
+        if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::PatrolTo)) {
+            const float dx = g->command.target_position[0] - ex;
+            const float dz = g->command.target_position[2] - ez;
+            if (dz * dz + dx * dx < 1.0f) return 3;
+        }
+        if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+        bsp::AiCommandObject c;
+        c.type = bsp::AiCommandType::PatrolTo;
+        c.owner_group = g;
+        c.target_position[0] = ex;
+        c.target_position[1] = ey;
+        c.target_position[2] = ez;
+        g->command = c;
+        ++capture_orders_patrol;
+        return 2;
+    }
+
+    // 00A1D010(a, b), from 00A2B12F with the earlier and the later group of
+    // one target's list: both populated (+5644h), both grouping-enabled
+    // (+5648h, 1 from the constructor), same team (+5638h), neither answering
+    // 00A2C600, fewer than four members together, leaders closer than 1000
+    // (3-D squared against the double 1.0e6 at 00CE4C08) and both first
+    // members alike under IsKindOf(6): then 00A2DB80, a absorbs b.
+    bool capture_merge_00a1d010(Group* a, Group* b) {
+        if (a == nullptr || b == nullptr || a == b) return false;
+        if (a->members.empty() || b->members.empty()) return false;
+        if (a->team != b->team) return false;
+        if (group_matches_009fe0b0(a) || group_matches_009fe0b0(b)) return false;
+        if (a->members.size() + b->members.size() >= 4u) return false;
+        float pa[3] = {0.0f, 0.0f, 0.0f};
+        float pb[3] = {0.0f, 0.0f, 0.0f};
+        tick_leader_point(a, pa);
+        tick_leader_point(b, pb);
+        const float d[3] = {pb[0] - pa[0], pb[1] - pa[1], pb[2] - pa[2]};
+        const float len2 = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+        if (!(static_cast<double>(len2) < 1.0e6)) return false;
+        const bool a_ship = !is_squadron(a->members.front()) &&
+            units.unit_is_kind_of(a->members.front(), bsp::kUnitGunneryKindShipBase);
+        const bool b_ship = !is_squadron(b->members.front()) &&
+            units.unit_is_kind_of(b->members.front(), bsp::kUnitGunneryKindShipBase);
+        if (a_ship != b_ship) return false;
+        merge_group(a, b);
+        ++capture_merges;
+        return true;
+    }
+
+    // 00A1E210 (planner vtable +24h, no Ghidra function; body 00A1E210-00A1E246):
+    // when the planner owns the group, unregister the observer, erase it from
+    // +20h and clear group+5654h. Then 00A2B1E3 / 00A2B2C3 claim it for the
+    // next planner when that one does not own it already.
+    void capture_hand_off(Planner& from, Group* g, Planner& to) {
+        if (std::find(from.owned.begin(), from.owned.end(), g) != from.owned.end()) {
+            from.owned.erase(std::remove(from.owned.begin(), from.owned.end(), g), from.owned.end());
+            if (g->claimed_by == &from) g->claimed_by = nullptr;
+        }
+        if (g->claimed_by == nullptr) {
+            g->claimed_by = &to;
+            to.owned.push_back(g);
+            ++capture_handoffs;
+        }
+    }
+
+    const char* capture_order_name(Group* g, std::size_t target) {
+        Group* tg = target < group_of_unit.size() ? group_of_unit[target] : nullptr;
+        if (tg != nullptr) return "attack";
+        return group_matches_009fe0b0(g) ? "defendposition" : "patrolto";
+    }
+
+    void capture_diag(const CapturePlan& plan, int side, bool applying) {
+        if (diag_capture_lines >= 60) return;
+        ++diag_capture_lines;
+        log.notef("  capture diag %s t=%.2f party=%d targets=%zu groups=%zu assignments=%zu",
+            applying ? "on" : "off-plan", static_cast<double>(clock_seconds), side,
+            plan.targets.size(), plan.groups.size(), plan.assignments.size());
+        for (const CaptureTargetRec& tr : plan.targets) {
+            Group* tg = tr.unit < group_of_unit.size() ? group_of_unit[tr.unit] : nullptr;
+            log.notef("    target %s side=%d total=%.3f a=%.3f b=%.3f c=%.3f d=%.3f e=%.3f "
+                "price=%.1f defenders=%zu group_leader=%s group_members=%zu",
+                unit_name(tr.unit).c_str(), units.unit_side_0054(tr.unit),
+                static_cast<double>(tr.terms.total), static_cast<double>(tr.terms.own_value),
+                static_cast<double>(tr.terms.enemy_value), static_cast<double>(tr.terms.own_reach),
+                static_cast<double>(tr.terms.enemy_reach), static_cast<double>(tr.terms.strategic_gain),
+                static_cast<double>(tr.price), tr.defenders,
+                (tg == nullptr || tg->members.empty()) ? "-" : unit_name(proxy(tg->members.front())).c_str(),
+                tg == nullptr ? std::size_t{0} : tg->members.size());
+        }
+        for (const CaptureGroupRec& gr : plan.groups) {
+            log.notef("    group leader=%s members=%zu command=%d current=%s near_own=%s",
+                gr.g->members.empty() ? "-" : unit_name(proxy(gr.g->members.front())).c_str(),
+                gr.g->members.size(), static_cast<int>(gr.g->command.type),
+                gr.current == kCaptureNone ? "-" : unit_name(gr.current).c_str(),
+                gr.near_own == kCaptureNone ? "-" : unit_name(gr.near_own).c_str());
+        }
+        for (std::size_t i = 0; i < plan.assignments.size(); ++i) {
+            const CaptureGroupRec& gr = plan.groups[plan.assignments[i].first];
+            const CaptureTargetRec& tr = plan.targets[plan.assignments[i].second];
+            log.notef("    assign leader=%s -> %s score=%.3f order=%s",
+                gr.g->members.empty() ? "-" : unit_name(proxy(gr.g->members.front())).c_str(),
+                unit_name(tr.unit).c_str(), static_cast<double>(plan.assignment_scores[i]),
+                capture_order_name(gr.g, tr.unit));
+        }
+    }
+
+    static bool capture_diag_enabled() {
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_CAPTURE_DIAG") != 0) return false;
+            const bool on = text != nullptr && text[0] != '0';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
+    // 00A29FD0 with an enemy CommandBuilding (kAiCaptureTargetPathBound).
+    void capture_target_path_00a29fd0(Planner& p, int side, Brain* brain) {
+        ++capture_path_thinks;
+        const CaptureTuning t = capture_tuning();
+        // 00A2A046-00A2A0C1: dt from +40h, then +38h and +3Ch advance, and the
+        // spawn gate compares +3Ch with the ramp over +38h.
+        float dt = 0.0f;
+        if (p.last_clock_0040 >= 0.0f && clock_seconds - p.last_clock_0040 >= 0.0f) {
+            dt = clock_seconds - p.last_clock_0040;
+        }
+        p.last_clock_0040 = clock_seconds;
+        p.age_0038 += dt;
+        p.since_spawn_003c += dt;
+        const bool spawn_due = bsp::ai_tail_capture_spawn_due(p.age_0038, p.since_spawn_003c,
+            t.spawn_delay_1, t.spawn_delay_2, t.spawn_delay_time);
+        CapturePlan plan = capture_plan_00a29fd0(p, side);
+        if (capture_diag_enabled()) capture_diag(plan, side, true);
+        // 00A1A720 at 00A2AD77, in the loop's own order.
+        for (const auto& a : plan.assignments) {
+            ++capture_assignments;
+            const int kind = order_capture_group_00a1a720(plan.groups[a.first].g,
+                                                          plan.targets[a.second].unit);
+            if (kind == 0) ++capture_orders_attack;
+            else if (kind == 3) ++capture_orders_kept;
+        }
+        // 00A2AF60-00A2B15C: every target whose list holds more than one group
+        // offers each earlier group every later one.
+        for (CaptureTargetRec& tr : plan.targets) {
+            if (tr.assigned.size() < 2u) continue;
+            for (std::size_t i = 0; i < tr.assigned.size(); ++i) {
+                for (std::size_t j = i + 1; j < tr.assigned.size(); ++j) {
+                    capture_merge_00a1d010(tr.assigned[i], tr.assigned[j]);
+                }
+            }
+        }
+        // 00A2AFC0: the unassigned groups, split by value[3], are released and
+        // handed to brain+4h (none) or brain+8h (an own list-28 entity).
+        if (brain != nullptr) {
+            std::vector<Group*> to_attack, to_sell;
+            for (const CaptureGroupRec& gr : plan.groups) {
+                if (!gr.live) continue;
+                (gr.near_own == kCaptureNone ? to_attack : to_sell).push_back(gr.g);
+            }
+            for (Group* g : to_attack) capture_hand_off(p, g, brain->planners[1]);
+            for (Group* g : to_sell) capture_hand_off(p, g, brain->planners[2]);
+        }
+        // 00A2B3F0: no live target left frees and returns. Otherwise the spawn
+        // arm (00A2B400-00A2B7EB): gated by 00946970(brain+20h) <= 0 and the
+        // ramp, then the budget; it quick-spawns "[capture]<id>" at the best
+        // target. LABELLED: a record, like every host quick-spawn.
+        bool any_live = false;
+        for (const CaptureTargetRec& tr : plan.targets) any_live = any_live || tr.live;
+        if (any_live && spawn_due) {
+            ++capture_spawn_due;
+            record("AiPlanners::capture_spawn_arm_00a2b400", 0x00a2b400u);
+        }
+        done("AiPlanners::capture_target_path_00a29fd0", 0x00a29fd0u);
+    }
+    unsigned long long capture_path_thinks{0};
+    unsigned long long patrol_ticks{0};
+    unsigned long long patrol_close_passes{0};
+    unsigned long long capture_assignments{0};
+    unsigned long long capture_orders_attack{0};
+    unsigned long long capture_orders_defend{0};
+    unsigned long long capture_orders_patrol{0};
+    unsigned long long capture_orders_kept{0};
+    unsigned long long capture_merges{0};
+    unsigned long long capture_spawn_due{0};
+    int diag_capture_lines{0};
     void* first_group_of_party(int party_slot) override {
         if (party_slot < 0 || party_slot >= static_cast<int>(by_team.size())) return nullptr;
         return open(by_team[static_cast<std::size_t>(party_slot)]);
@@ -2881,6 +3523,16 @@ void GameAiCoordinatorHost::report() {
         host.log.notef("summary mission ai capture thinks=%llu target_fallbacks=%llu handoffs=%llu "
             "attack_thinks=%llu (packet cc9_planner_defend_capture_thinks)", host.capture_thinks,
             host.capture_target_fallbacks, host.capture_handoffs, host.attack_thinks);
+    }
+    if constexpr (kAiCaptureTargetPathBound) {
+        host.log.notef("summary mission ai capture path thinks=%llu assignments=%llu attack=%llu "
+            "defendposition=%llu patrolto=%llu kept=%llu merges=%llu spawn_due=%llu "
+            "patrol_ticks=%llu patrol_close_passes=%llu "
+            "(00A29FD0 target path, packet cc9_planner_defend_capture_thinks)",
+            host.capture_path_thinks, host.capture_assignments, host.capture_orders_attack,
+            host.capture_orders_defend, host.capture_orders_patrol, host.capture_orders_kept,
+            host.capture_merges, host.capture_spawn_due, host.patrol_ticks,
+            host.patrol_close_passes);
     }
     if constexpr (kGeneratedSquadronBrainBound) {
         host.log.notef("summary mission ai generated squadrons=%llu index_shifts=%llu "
