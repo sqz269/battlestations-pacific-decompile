@@ -370,3 +370,126 @@ the strict comparison. That version gave 697 shots and a `queued_hits = 181` aga
 mismatch that no other run has shown. It was caught because the result contradicted the prediction
 above and prompted a re-read of the original rather than banking the number. Only the constant
 differs now.
+
+## 10. The immediate-fire slot `vtable[1F0h]` (packet `cc9_mrtgun_immediate_fire`, switch `kGunImmediateFireSlotBound`)
+
+This section answers section 8's `gun_immediate_fire_006fdf60` and divergence 3. Ghidra has no
+function at the slot bodies, so they were read from the disk bytes (`bsp.py disasm-raw`). The
+`+310h` sub-object vtables were read from the PE on disk.
+
+### 10.1 What the slot does
+
+**MRTGun** (`Rapid_Turning_Gun`, class `24h`, built by `00731E20`, primary vtable `00CFBF58`,
+`+310h` vtable `00CFBF10`):
+
+```
+006fdf60: mov byte ptr [ecx + 0x4d4], 1        ; slot 1F0h: raise gun+4D4h
+006fdf67: ret
+```
+
+- **The reader is `0084C5B0`**, slot 8 of the `+310h` vtable. It is the class's per-step tick,
+  with `ESI = gun+310h`:
+
+```
+0084c5d4: CALL 0x0072d130                      ; the base tick (latch -> 0ADh)
+0084c5db: CMP byte ptr [ESI + 0x1c4],BL        ; gun+4D4h
+0084c5e3: PUSH 0xad                            ; build message 0ADh ...
+0084c625: CALL 0x0077c2a0                      ; ... and route it on the gun (ESI-310h)
+```
+
+  The `0ADh` arm (`0072D860`) is `vtable[1DCh]()`, which is FireIfReady and ignores the payload.
+  So while `+4D4h` is set, the gun asks to fire every step. That request does **not** go through
+  `0072D130`'s three gates, and it does not need the latch `+454h`.
+- **The only clear is `006FDC90`**, MRTGun's `vtable[1E8h]`. It calls `0072D2C0(want)` and then
+  zeroes `+4D4h` when `+454h` came back clear.
+- **The scan:** `D4 04 00 00` occurs in 70 places, and only these three are in gun code
+  (`006FDCA8`, `006FDCF4`, `006FDF62`, all writes). The reader goes through the sub-object
+  (`C4 01 00 00` at `0084C5DD`).
+
+**MSTGun** (`Single_Turning_Gun`, class `27h`, built by `006FE390`, primary vtable `00CFC190`,
+`+310h` vtable `00CFC14C`):
+
+```
+006fdc50: mov eax, [ecx]; mov edx, [eax+1E8h]; push 1; call edx; ret   ; slot 1F0h = vtable[1E8h](1)
+```
+
+- **Its tick is `006FE0D0`** (`+310h` slot 8). It runs `0084C5B0` first. Then, when the latch
+  `gun+454h` is set, it takes the muzzle count `M = (desc+A0h - desc+9Ch) / 0Ch`:
+
+```
+006fe117: mov ecx, [esi+13Ch]                  ; the barrel cursor gun+44Ch
+006fe11d: add eax, -1
+006fe120: cmp ecx, eax                         ; cursor == M - 1 ?
+006fe136: push 0 ; call [vtable+1E8h]          ;   yes: request off
+006fe13a: mov byte ptr [esi+1C8h], 0           ;        gun+4D8h = 0
+006fe149: mov byte ptr [esi+1C8h], 1           ;   no, and cursor != 0: gun+4D8h = 1
+```
+
+- **`006FDCD0`, MSTGun's `vtable[1E8h]`, skips a false request while `+4D8h` is set.** Otherwise
+  it behaves like `006FDC90`.
+
+**Who calls slot 1F0h:**
+- **The ArtilleryGunnerBot** `006DF520` (GUN_BOT_TICKS). It never calls `vtable[1E8h](1)`. Step 12
+  arms `delayedFire` when the solver and `0085ABA0` succeeded and both angles are within 0.1 degree.
+  Step 13 draws `fireDelayTime = U(0, 0.1)`. Step 15 counts it down in the same tick
+  (`006DFC37..006DFC61`) and calls `vtable[1F0h]` on `t < 0` (`fldz; fcompi; jbe`). It lowers the
+  request only through `006DF4C0` when the target clears.
+- **The TorpedoBot** `008FFF20`. It re-decides every 0.2 s and sends `vtable[1E8h](0)` on every
+  abort, so the host's per-step request already matches it. It is not changed here.
+
+### 10.2 The divergence
+
+With the switch OFF, the host feeds `want_fire = target && accepted && settled && window` into the
+latch every step, for every gun. In the image:
+- **An artillery-bot gun raises its request after settling plus a `U(0, 0.1)` delay, and holds it
+  while unsettled.** Only the MSTGun salvo test or a target clear lowers it. The window is still
+  enforced, by CanFire (`0085A830`).
+- **Every MSTGun, whichever bot drives it, drops its latched request once the cursor reaches the
+  last muzzle.** A guarded false request is ignored while `+4D8h` is set.
+
+### 10.3 The binding (committed OFF)
+
+`kGunImmediateFireSlotBound` in `src/game_hosts_gunnery.cpp`:
+- **The turning class** comes from the device row's `Type`: `Rapid_Turning_Gun` is 24h and
+  `Single_Turning_Gun` is 27h. It is read into `gun_turning_class`.
+- **For those two classes,** the request goes through the class `vtable[1E8h]`. Guns in an
+  artillery-bot category (2, 3, 4, 6, 9, against a non-plane) run steps 12, 13 and 15 in place of
+  `want_fire`. The new stream `Draw::artillery_fire_delay` (18) supplies the draw.
+- **MRTGun's extra `0ADh`** turns the step's fire attempt on while `+4D4h` is set.
+- **MSTGun's salvo test** runs at the top of the gun's next step, before its bot. The bot is the
+  next reader of the latch, so the order is the image's.
+- **Census line:** `summary mission gunnery immediate fire ...`.
+- **Labelled:**
+  - `0ADh` is taken as delivered in the same step, as the host already does for `0072D130`.
+  - One fire attempt stands for two sends in a step. A second FireIfReady after a shot is refused
+    by the barrel delay.
+  - The MSTGun count uses the host's `barrel_num` (at least 1) where the image would compare
+    against `-1` for a model with no muzzle node.
+
+### 10.4 Census (OFF runs, `local\IF_OFF_<m>.log`)
+
+| mission | MRTGun, artillery-bot categories / other | MSTGun, artillery-bot categories / other |
+| --- | --- | --- |
+| USN02 | 0 / 204 | 134 / 120 |
+| USN04 | 0 / 259 | 106 / 64 |
+| USN01 | 0 / 129 | 41 / 46 |
+| USN13 | 0 / 1068 | 261 / 194 |
+
+**No MRTGun on these missions has an artillery-bot category,** so `006FDF60`'s sticky flag is never
+raised here. The switch acts through the MSTGun half: the artillery bot's delayed raise, and the
+salvo test on every MSTGun (artillery, torpedo, single AA and depth-charge mounts).
+
+### 10.5 Predictions, written before any ON run
+
+| row | OFF (`IF_OFF_<m>`) | prediction ON |
+| --- | --- | --- |
+| all four: `extra_sends`, `flag_drops` | - | **0** (no MRTGun is armed by the artillery bot) |
+| all four: `slot_calls`, `arms`, `salvo_drops` | - | each above 0 |
+| USN02 9200/9000 | 26 deaths, 847 hit records, 1117 shots, first hit 41.05 s, failed 212.91 s | shots within -15%..+5% (the salvo test re-raises through fresh staggers, and torpedo tubes lose the last tube of a spread); first hit **same or later**, by at most 0.15 s; deaths 26 +- 4; pair_diff exit 3 |
+| USN04 4700/4500 | 40 / 644 / 5333, first hit 92.50 s | shots down 0..10% (64 non-artillery MSTGuns re-stagger); first hit same or later by at most 0.15 s; deaths 40 +- 3; exit 3 |
+| USN01 3200/3000 | 5 / 178 / 623, first hit 53.75 s | shots within -10%..+5%; deaths 5 +- 1; exit 3 |
+| USN13 3200/3000 | 23 / 572 / 4265, first hit 67.90 s | shots down 0..10%; deaths 23 +- 3; exit 3 |
+
+**The direction of the first shot is the one firm prediction.** A gun's first request now waits
+for the `U(0, 0.1)` delay after its first settle. The first stagger draw per gun is unchanged,
+because the stream is keyed per gun, so no gun fires earlier than OFF.
