@@ -523,3 +523,11 @@ table.
 
 Pass an absolute path. The run spawns a second process, and the path is resolved against its
 working directory.
+
+**Added by packet `cc9_helm_orders_helm_route`:** two more line forms,
+`<frame> takehelm <unit> <throttle> <x> <z>|<navpoint>` and
+`<frame> moveto <unit> <x> <z>|<navpoint> repeat <seconds>`.
+- `takehelm` takes the controlled unit's helm (role 1, `+184h`) and steers by the AI's own
+  rudder law `009DA250`.
+- `repeat` re-issues the moveto every N seconds while the unit is alive.
+- The labels are in docs/SCRIPTED_HELM.md section 9.2.

@@ -328,6 +328,10 @@ struct GameMissionFrameHost::Impl {
     struct HelmOrder {
         int line{0};
         long frame{0};
+        bool takehelm{false};      // packet cc9_helm_orders_helm_route
+        float throttle{0.0f};      // takehelm
+        float repeat_seconds{0.0f};  // moveto ... repeat N
+        unsigned applications{0};
         std::string unit;
         std::string point_name;   // empty for an x/z point
         float x{0.0f};
@@ -2421,12 +2425,42 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         char* end = nullptr;
         order.frame = std::strtol(words[0].c_str(), &end, 10);
         const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
-        if (!frame_ok || words.size() < 4 || words[1] != "moveto") {
+        const bool verb_ok = words.size() >= 2
+            && (words[1] == "moveto" || words[1] == "takehelm");
+        if (!frame_ok || words.size() < 4 || !verb_ok) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
-                "<unit> <x> <z>` or `<frame> moveto <unit> <navpoint>`", line, path.c_str());
+                "<unit> <x> <z>|<navpoint> [repeat <s>]` or `<frame> takehelm <unit> "
+                "<throttle> <x> <z>|<navpoint>`", line, path.c_str());
             continue;
         }
         order.unit = words[2];
+        // Packet cc9_helm_orders_helm_route: `takehelm` carries a throttle
+        // before the point, and `moveto` may end in `repeat <seconds>`.
+        if (words[1] == "takehelm") {
+            char* te = nullptr;
+            order.takehelm = true;
+            order.throttle = std::strtof(words[3].c_str(), &te);
+            if (te == nullptr || *te != '\0') {
+                host.log.notef("helm order refused: line %d of \"%s\": %s is not a throttle",
+                    line, path.c_str(), words[3].c_str());
+                continue;
+            }
+            words.erase(words.begin() + 3);
+        } else if (words.size() >= 6 && words[words.size() - 2] == "repeat") {
+            char* re = nullptr;
+            order.repeat_seconds = std::strtof(words.back().c_str(), &re);
+            if (re == nullptr || *re != '\0' || !(order.repeat_seconds > 0.0f)) {
+                host.log.notef("helm order refused: line %d of \"%s\": repeat needs a "
+                    "positive number of seconds", line, path.c_str());
+                continue;
+            }
+            words.resize(words.size() - 2);
+        }
+        if (words.size() < 4) {
+            host.log.notef("helm order refused: line %d of \"%s\" has no point", line,
+                path.c_str());
+            continue;
+        }
         if (words.size() == 5) {
             char* xe = nullptr;
             char* ze = nullptr;
@@ -2558,6 +2592,7 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
         for (Impl::HelmOrder& order : host.helm_orders) {
             if (order.applied || static_cast<unsigned long long>(order.frame) > now) continue;
             order.applied = true;
+            const long due = order.frame;
             float x = order.x;
             float z = order.z;
             if (!order.point_name.empty()) {
@@ -2575,15 +2610,47 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 x = found->position[0];
                 z = found->position[2];
             }
+            std::size_t unit_index = host.units->count();
+            for (std::size_t k = 0; k < host.units->count(); ++k) {
+                const GameUnitRow* row = host.units->unit_row(k);
+                if (row != nullptr && row->name == order.unit) { unit_index = k; break; }
+            }
+            if (order.takehelm) {
+                // Packet cc9_helm_orders_helm_route: the controlled unit's helm.
+                const bool taken = unit_index < host.units->count()
+                    && host.units->helm_route_take(unit_index, order.throttle, x, z);
+                if (taken) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
+                    "takehelm %s throttle %.3f %s(%.1f, %.1f)", taken ? "applied" : "refused",
+                    order.line, order.frame, now, order.unit.c_str(),
+                    static_cast<double>(order.throttle),
+                    order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
+                    static_cast<double>(x), static_cast<double>(z));
+                continue;
+            }
+            if (order.applications > 0 && (unit_index >= host.units->count()
+                    || !host.units->unit_alive_and_visible(unit_index))) {
+                continue;   // a repeat stops when the unit is gone
+            }
             char point[64];
             std::snprintf(point, sizeof(point), "%.3f,%.3f", static_cast<double>(x),
                 static_cast<double>(z));
             const bool issued = host.units->issue_player_command("moveto", point, order.unit);
+            ++order.applications;
+            if (issued && order.repeat_seconds > 0.0f) {
+                // Packet cc9_helm_orders_helm_route: a player clicking again.
+                const float frame_seconds = host.mission_frame_seconds > 0.0f
+                    ? host.mission_frame_seconds : 0.05f;
+                long step = static_cast<long>(order.repeat_seconds / frame_seconds + 0.5f);
+                if (step < 1) step = 1;
+                order.frame = static_cast<long>(now) + step;
+                order.applied = false;
+            }
             if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
             host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
                 "moveto %s %s(%.1f, %.1f) through the player's moveto form (00E08F68, point "
                 "descriptor, flags 1, 0077D600)", issued ? "applied" : "refused", order.line,
-                order.frame, now, order.unit.c_str(),
+                due, now, order.unit.c_str(),
                 order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
                 static_cast<double>(x), static_cast<double>(z));
         }

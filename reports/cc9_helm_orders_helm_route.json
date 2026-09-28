@@ -1,0 +1,20 @@
+{
+  "packet": "cc9_helm_orders_helm_route",
+  "doc": "docs/SCRIPTED_HELM.md section 9; docs/TOOLING.md section 10",
+  "switch": null,
+  "addresses": {
+    "0064B870": "HUD helm: role-1 transfer 0064B9A6 and lever issue 0064B9C0-0064BB16",
+    "0077C470": "the transfer message into the 4Bh arm, unit+184h",
+    "009F3DF3": "forces cruise for a helmed unit",
+    "009DA250": "the rudder law the harness uses as the hand (labelled)"
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "results": {
+    "takehelm": "transfer ok (+184h=1); rudder +1 toward bearing -2.936; Houston sunk 208.26 s by Haguro gunfire at ~4.1 km; primary 2 failed; torpedo overrides stop under helm (image rule)",
+    "repeat": "10 issues; Houston sunk 205.81 s by Haguro gunfire; primary 2 failed",
+    "identity": "USN04 no file vs empty file: pair_diff exit 0",
+    "smoke": "non-controlled takehelm refused, bad throttle refused, repeat ran"
+  }
+}

@@ -534,3 +534,94 @@ USN04 4700/4500 on this tree's head: no file against an empty file
 (`local\cc9-ships2-helm_empty.txt`). `pair_diff` gives **exit 0**, identical apart from noise.
 The smoke (`local\ho_smoke300.log`, USN02 300/100) exercised each refusal: an unknown unit, an
 unknown marker and a malformed line. Two good orders applied.
+
+
+## 9. The helm route and repeated orders (packet `cc9_helm_orders_helm_route`)
+
+Worker cc9-ships2, on main `cb15bd559`. This is harness code, and no image switch is involved.
+Ghidra was read-only. docs/AI_BRAIN_PLAYER_EXEMPTION.md explains why a player's ship is
+protected by the helm and not by the AI brain.
+
+### 9.1 The two new line forms
+
+```
+<frame> takehelm <unit> <throttle> <x> <z>|<navpoint>
+<frame> moveto <unit> <x> <z>|<navpoint> repeat <seconds>
+```
+
+**`takehelm`** calls `GameUnitsHost::helm_route_take`. It is **refused unless the unit is the
+controlled one** (`[00E188D8]`), because a player can take only that ship's helm. It then runs
+the path `BSP_PLAYER_HELM` uses (section 7):
+- **The pilot role is opened.** `SetRoleAvailable(unit, EROLF_PILOT, PLAYER_ANY)` runs through
+  `0077F360` into `00927D20`.
+- **The role-1 transfer is taken.** 0064B870's transfer `0077C470(unit, 2, 1)` goes into the
+  bound 4Bh arm, which sets `unit+184h`. `009F3DF3` then forces the ship AI into `cruise`
+  whatever the director holds, so AI orders cannot steer the ship.
+- **The helm is issued every step** through `00816A40`, with the levers quantized as
+  0064BAB5/0064BAEE do.
+- **The throttle** is the line's value.
+- **The rudder** is the image's AI rudder law `009DA250`, applied to the error from the hull
+  heading to the bearing of the point: `-error / (class+524h x 1.2)`, clamped, with its
+  low-speed ramp.
+- A progress line prints every 600 issues (30 s). `helm route arrived` prints once within 500 m.
+
+**`moveto ... repeat N`** re-issues the same moveto every N seconds, rounded to mission frames,
+while the unit is alive and visible. Each issue prints its census line. It stands in for a player
+clicking again.
+
+Refusals behave as before: the line number and reason are printed and the run continues. No
+file changes nothing.
+
+### 9.2 Where this differs from a real player's helm (LABELLED)
+
+1. **The rudder law is the AI's.** A player moves the turn lever by hand. The harness uses
+   `009DA250`, the image's own heading-to-rudder law, as the hand. The error is wrapped to
+   [-pi, pi] here in place of `00438B10`.
+2. **The levers are set, not integrated.** The input integration (0064B9C6-0064BA90) is replaced
+   by setting the levers, as section 7 already labels. `unit+1130h` and `game+19C4h` are taken
+   clear.
+3. **No HUD, camera, minimap or selection.** The unit must already be the controlled one; the
+   harness does not select it.
+4. **`repeat`** re-issues on a fixed period, whereas a player clicks irregularly.
+
+### 9.3 USN02 9200/9000
+
+**`3135 takehelm Houston 1.0 EscapePoint`** (`local\hr_helm_usn02.log`):
+- **The transfer succeeded:** `0077C470("Houston", 2, 1) -> role1=0 +184h=1`. After that,
+  Houston has no ship AI step lines.
+- **The torpedo response stops with it.** Overrides stay at 129, against 320 in the
+  moveto-only run, because the forced cruise keeps 009DA1D0 shut (docs/TORPEDO_EVASION.md, "Why
+  it is off for the controlled ship"). That is the image's own rule.
+- **The helm steered as asked.**
+  - At 156.75 s: heading -0.289, bearing -2.936, rudder +1.000, 9.4 m/s, 3890 m to go.
+  - 30 s later: heading -1.722, 16.7 m/s, still 4083 m to go because of the 2.6 rad turn at
+    about 0.048 rad/s.
+- **Houston was sunk at 208.26 s by Haguro's gunfire** (killer_cat 3, 1877 m; first damage
+  166.56 s), not by a torpedo.
+  - `luaMissionFailed` follows: `CL`, `Nav` and `Bruh` fail, EndMission is true, and the
+    distance reads 3.87 km.
+  - **Primary 2 does not complete, and Houston does not come within 500 m.**
+
+**`3135 moveto Houston EscapePoint repeat 5`** (`local\hr_repeat_usn02.log`):
+- It was issued 10 times.
+- Houston was sunk at 205.81 s by Haguro's gunfire (1618 m), at (382, -3375).
+- The same objectives fail, and the distance reads 3.82 km.
+
+**What blocks primary 2 now is the phase-2 enemy.**
+- luaMoveToPh2 sends the DRKillers and the FinalShips at the CATable and at Houston
+  (usn_2_java.lua 677-725).
+- Houston must turn about 150 degrees (about 52 s at a cruiser's rate, docs/SHIP_TURN_RATE.md)
+  and then run about 3.9 km (about 230 s at 16.6 m/s). It is under fire from 166.5 s.
+- Both player-order routes lose it at about 206 s. The moveto-only run, re-tasked to fight,
+  lived until 280.36 s.
+- Whether a real player survives this depends on the DRKillers' fire, which is gunnery's side.
+  **Not established here.**
+
+### 9.4 Identity
+
+USN04 4700/4500, no file against an empty file: `pair_diff` exit 0. The smoke
+(`local\hr_smoke300.log`) exercised:
+- a `takehelm` on a non-controlled unit, refused for both Houston before the script selects it
+  and Exeter;
+- a malformed throttle, refused;
+- a `repeat` moveto.
