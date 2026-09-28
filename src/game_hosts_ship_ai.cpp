@@ -250,8 +250,9 @@ inline constexpr bool kGeneratedShipAiBound = true;
 // Packet cc9_generated_ship_ai_registration part 2, docs/GENERATED_SHIP_AI.md
 // section 6. True: 009F1BC0's 00811A30(unit, 1.0) at 009F1D3C answers the class
 // turn circle, so nested+11F0h = max(class+500h * 10, circle * 1.5) as the image
-// forms it. False: 0, so nested+11F0h is class+500h * 10 alone.
-inline constexpr bool kApproachTurnRadiusBound = false;
+// forms it. False: 0, so nested+11F0h is class+500h * 10 alone. ON: USN02 and
+// USN13 identical, probe hits 0 both ways (docs/GENERATED_SHIP_AI.md section 6).
+inline constexpr bool kApproachTurnRadiusBound = true;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h

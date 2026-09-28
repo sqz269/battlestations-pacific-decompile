@@ -243,3 +243,26 @@ recorded above.
   - Blocked slots then change some ring winners: exit 3, with small moves and no predicted
     direction on deaths.
   - If hits stay 0, the row is identity, and the "hits rise" half of the prediction failed.
+
+**The pairs.**
+- **OFF** is this tree's build at `14f1cee4e`.
+- **ON** is `pair_export --commit abd2ab61f --flip kApproachTurnRadiusBound=true` into
+  `local\tr_on`. `abd2ab61f` only restructures the branch so the ON build has no unreachable
+  code.
+- **Logs:** `local\tr_{off,on}_{usn02,usn13}.log`.
+
+| mission | pair_diff | ring probe casts / hits | unit_turn_radius |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | exit 1, identical | 159600 / 0 both | record -> concrete (23830) |
+| USN13 3200/3000 | exit 1, identical | 52020 / 0 both | record -> concrete (7696) |
+
+**Predictions:**
+- **Held:** the census flip and USN02's identity.
+- **Failed:** the USN13 "hits rise" half. The longer probes still find no avoid-zone crossing,
+  so the slot scores and the gameplay are unchanged. Why no USN13 probe reaches an island zone
+  is not established here. Two things may contribute:
+  - the probe length is zero within 20 degrees of the reference bearing (`009E67AA`);
+  - each USN13 attackmove ship holds the state for only about 12 s (245 choices).
+
+**Decision: `kApproachTurnRadiusBound` is ON.** The value is the image's, the mechanism matches,
+and the failed half was on spread with no gameplay change.
