@@ -2508,3 +2508,77 @@ inputs) and `src/game_hosts_ai.cpp` (`009FFEB0`), so the binding exposes one hos
 the feed lines. Readers without a host model (`007B58D0`, `007B6240`, `007EEC00`, `0084E010`, and
 the break-off tests at `009A6600`, `009AE1D0`, `009B7AB0`, `009B7C90`, `009B8DB0`) stay
 unmodelled.
+
+## SetDeviceReloadEnabled, 008C1350 (packet `cc9_device_reload_enabled`, `kLuaDeviceReloadEnabledBound`, committed OFF)
+
+Worker cc9-lua4, 2026-09-28.
+
+### The image (V)
+
+- **The native.** `008C1350` reads argument 0 through `00B66250` (`lua_toboolean`, `008C144F`)
+  and stores it in the byte `00E17BF2` (`008C1458`). It takes no entity, makes no class test and
+  returns no value.
+- **The other writers.** The mission load's lobby sync writes the byte at `005E2FB2` (0) and at
+  `005E3017` (the settings' `sete`), which the host models as
+  `LobbySettingsModeFlags::reload_payload_on`. `BSP_Session_SetMode` writes 0 at `0076FE6C`.
+- **The partner byte.** Every reader tests `00E17BF2` together with the squadron's `+369h`, except
+  `009FFEB0`, which tests `00E17BF2` alone. `007F1FE0` fills `+369h` from the scene property
+  `ReloadEnabled` when it is a boolean (`type 3`), over the constructor's 1 (`007F2D09`).
+  `007F3500` and `007F1FE0`'s second arm copy it from a source object's `+124h`.
+- **Its absence here.** No `.scn` under this installation's `universe/Scenes/missions` contains
+  the string `ReloadEnabled`, while `FireStance`, read by the same function, is found. So every
+  squadron built from these scenes holds 1.
+- **The readers.** The dive-bomb approach (`009C7C08`, `009C7C50`), go-away (`009C7F60`,
+  `009C4A1F`) and entry (`009C8361`), the torpedo arm (`009D315C`), `009FFEB0`, and readers with no
+  host model: `007B58D0`, `007B6240`, the loadout index `007EEC00`, `0084E010`, and the break-off
+  tests `009A53CA`, `009A662D`, `009AD49E`, `009AE1DF`, `009B7ABF`, `009B7C90`, `009B8DBD`.
+
+### The script reach
+
+88 uncommented lines in this installation's scripts call `SetDeviceReloadEnabled(true)`, and 8 call it with
+false. None of the reference rows' scripts does (`usn_19_coralus.lua` for USN04,
+`usn_1_marshall.lua`, `usn_2_java.lua`, `usn_13_truk.lua`, `bsm_01_stationed_at_pearl.lua`,
+`06_crucial_cargo.lua`). The smoke rows JM06 (`jm06.lua` 333) and JM08 (`prcpjm08.lua` 104) call
+it once, with true.
+
+### The binding
+
+- **Lua side (this commit).** The row routes to `run_set_device_reload_enabled_008c1350`, which
+  stores the flag in one process-wide value. The lobby flags' publish resets that value from
+  `reload_payload_on`. `lua_device_reload_enabled_00e17bf2()` reports it, and reports false while
+  the switch is OFF. The summary line is `summary mission script device reload`.
+- **The feeds (routed, not in this commit).** The plane-task inputs in `src/game_hosts_units.cpp`
+  (`2605`, `2902`, `3110`, `10285`, `10360`, `10466`, `13651`) and `009FFEB0` in
+  `src/game_hosts_ai.cpp` still feed constant false. Each needs `global_e17bf2` from the accessor
+  and `control_flag_369` as `kLuaDeviceReloadEnabledBound`, the image's default of 1.
+- **SUBSTITUTION (labelled).** Every squadron's `+369h` is taken as 1. The clone paths that copy
+  `source+124h` are not modelled.
+
+### Predictions, before any run
+
+- **USN02, USN13, LOMP06: exit 0.** No script calls the native, and the lobby publish keeps the
+  byte at 0.
+- **JM06 and JM08: exit 1, gameplay identical.** The byte goes to 1 at the call, but neither run
+  orders a plane attack: `pilot attack` reports no attack order on both, and JM06 builds one
+  squadron (a PBY). The diff should be the native's note, summary and host-table lines.
+- **With the feeds routed**, the same verdicts are predicted on these rows. A mission whose idle
+  AI flies dive-bomb or torpedo attacks after the call would move: the entry's break-off at
+  `009C8361` holds instead of finishing an empty bomber, and the go-away turn scales by 1.5.
+
+### SetDeviceReloadEnabled: the Lua-side pairs (feeds not yet routed)
+
+OFF is this tree's build at `ed959c372`. ON is `local\dr_on`, a `pair_export` of `ed959c372` with
+`kLuaDeviceReloadEnabledBound=true` (SHA-256 prefix `167D28835E80`). Logs are
+`local\dr_{off,on}_<mission>.log`.
+
+| mission | pair_diff | reading |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 1, gameplay identical | the native fires once with true; the byte reads 1 at the end |
+| JM08 3200/3000 | exit 1, gameplay identical | the same |
+| USN13 3200/3000 | exit 1, gameplay identical | no call; the byte stays 0 |
+
+- **The USN13 prediction missed on its exit code, not its mechanism.** I predicted exit 0, but the
+  new summary line prints `bound=`, so every flipped run differs in text. Gameplay is identical,
+  as predicted.
+- **These pairs do not test the feeds.** The plane-task inputs still read constant false, so the
+  switch stays OFF until the routed feed lines land and the pairs are re-run.
