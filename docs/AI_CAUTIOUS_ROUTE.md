@@ -722,3 +722,37 @@ above, so the negative is not vacuous.
 **Conclusion.** An AI formation follower placed with `Cruise` keeps cruising in the image. USN12's
 followers never taking `follow` is the image's behaviour. The wedge's stations there have no motion
 consumer in the image either.
+
+## 17. The wedge on JM08 and USN01 (packet `cc9_wedge_reference_rows`)
+
+Worker cc9-ships6, 2026-09-28. The pairs are same-tree pairs on main `4215e40de`, where
+`kCautiousWedgeBound` is ON.
+- **ON** is the tree's own build.
+- **OFF** is `pair_export --commit 4215e40de --flip kCautiousWedgeBound=false` into
+  `local\ships6_off`.
+- Launch lines are reference i's: `--frames 3200 --press-start-frame 30 --menu-select <m>
+  --mission-frames 3000 --mission-frame-seconds 0.05`, with `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1`, an idle player and present interval immediate, through `tools/run_game.ps1`.
+
+**Predictions, written before any run.** They are drawn from reference i's end-of-run group dumps
+(`rb9_jm08`, `rb9_usn01`) and its director census.
+
+- **JM08.**
+  - The groups that call the wedge are DEFENDPOSITION, led by "Medium Bunker, Concrete 01" (17
+    members), and CAUTIOUSATTACK, led by "Wildcat #1.1" (3 members).
+  - Neither leader is a ship base: one is a structure, the other a plane. Every call stops at the
+    first gate, so `calls > 0`, `runs = 0` and `placed = 0`.
+  - The Helena group ends on MOVETOATTACK, which does not call the wedge. If it held a
+    wedge-calling command earlier in the run, `runs` would be above 0. It still could not move a
+    ship, because JM08's director census has `follow=0`: no station is ever read for motion.
+  - `pair_diff` exits 0 or 1. The summary line's `bound=` differs.
+- **USN01.**
+  - The wedge caller is DEFENDPOSITION, led by "Storage, 05 01" (8 members), a structure. So
+    `calls > 0` and `runs = 0`.
+  - USN01 does have `follow=2`: its director issues `follow` twice. Those followers belong to
+    Enterprise's MOVETOATTACK formation, which never calls the wedge. So a wedge write could not
+    reach a station that is read.
+  - `pair_diff` exits 0 or 1.
+
+**Verdict rule.** Identity on both rows confirms the switch's attribution. A row that moves keeps the
+switch as it is. It is then recorded as a reference-j flag with the moved lines.
