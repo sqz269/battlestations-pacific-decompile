@@ -342,6 +342,8 @@ struct GameCommandsHost::Impl {
     unsigned long long building_arm_hits{0};     // cc9_attackmove_building_arm
     unsigned long long building_arm_converts{0};
     int building_arm_traced{0};
+    unsigned long long queue_full_tests{0};             // cc9_director_slot_housekeeping
+    unsigned long long queue_full_tests_queued_path{0};
     unsigned long long fire_unresolved{0};
     unsigned long long fire_unresolved_by_id{0};
     int fire_unresolved_traced{0};
@@ -914,6 +916,21 @@ public:
             state.slots[i].command = chain_.director.slot_command[i];
         }
         const int weighted = bsp::command_queue_count(state, path_point_counts);
+        // Packet cc9_director_slot_housekeeping, diagnostic: a queued `moveonpath`
+        // in slots 1..9 is where 0071FB90's path objects (0 here) would weigh.
+        ++chain_.owner.queue_full_tests;
+        for (int i = 1; i < bsp::kDirectorCommandSlotCount; ++i) {
+            if (chain_.director.slot_command[i] == 0x00e08f80u) {
+                ++chain_.owner.queue_full_tests_queued_path;
+                if (chain_.owner.queue_full_tests_queued_path <= 8) {
+                    chain_.owner.log.notef("queue full test with a queued moveonpath: unit=%s slot=%d "
+                        "weighted=%d head=%s (0071D780, packet cc9_director_slot_housekeeping)",
+                        chain_.unit.name.c_str(), i, weighted,
+                        chain_.owner.life_command_name(chain_.director.slot_command[0]));
+                }
+                break;
+            }
+        }
         chain_.owner.note_weighted_command_count(weighted,
             chain_.owner.command_count(chain_.director));
         return weighted;
@@ -3482,6 +3499,9 @@ void GameCommandsHost::report() {
     host.log.notef("summary mission director attackmove building arm hits=%llu converts=%llu "
         "(00836B95, packet cc9_attackmove_building_arm)", host.building_arm_hits,
         host.building_arm_converts);
+    host.log.notef("summary mission director queue full tests=%llu with_queued_moveonpath=%llu "
+        "(0071D780 weights; 0071FB90 path objects, packet cc9_director_slot_housekeeping)",
+        host.queue_full_tests, host.queue_full_tests_queued_path);
     host.log.notef("summary mission director fire target unresolved=%llu by_object_id=%llu "
         "(00835930, packet cc9_unresolved_fire_target)", host.fire_unresolved,
         host.fire_unresolved_by_id);

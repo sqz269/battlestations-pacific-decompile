@@ -47,6 +47,7 @@ is ranked from its own evidence.
 | the submarine's sensor category `00852B90` (rank 1 on i) | section 32 | ON, `kSubmarineSensorCategoryBound`; the periscope byte `+1234h` stays a labelled substitution |
 | the forced fire target's handle at `00835930` (rank 2 on i) | section 33 | ON, `kFireTargetObjectIdBound`; the handle resolves by object id |
 | the attack-move arm on a command building `00836B95` (rank 3 on i) | section 35 | read; exact on the measured missions (0 conversions); the conversion is not issued |
+| the director slot housekeeping in `00720850`: `006952A0`, `00414DB0`, `0071FB90`, `007208A3` (rank 4 on i) | section 36 | read; exact in effect on the measured missions; the queue-full path-object hole is traced |
 
 **Still open from the closed rows:** the periscope byte `+1234h` (`periscopeOut`) has no producer,
 so a raised periscope never reads PeriscopeOut (section 32.4).
@@ -1737,3 +1738,47 @@ does. The label is corrected in the source.
 It would take the idle tail's route through the stage binding and the queued delivery (section 27).
 Bind it when a mission shows `converts` above 0, which needs a Capture that completes, or a building
 destroyed under an attack-move.
+
+## 36. The director slot housekeeping in `00720850` (packet `cc9_director_slot_housekeeping`, rank 4 of section 31)
+
+Since the clear-all landed (sections 28-29), the slot clear `00720850`
+(`src/command_execution.cpp` `clear_command_slot_00720850`) runs on every occupied slot. Its four
+host stand-ins went from 86 calls on h to thousands. Each was read for what its answer can change.
+
+| stand-in | image | host | effect |
+| --- | --- | --- | --- |
+| `006952A0` observer unregister | the (target, director) edge is **reference-counted**. `00694A60` creates it or adds 1 at `+0Ch`. `006952A0` clears pending dispatches for the pair, subtracts 1, and at 0 removes the edge (docs/OBSERVER_EDGES.md, OBSERVER_LIFETIME.md) | record | none. Every push registers, and only a head clear unregisters, so the count is at least the number of live slots holding the target. `release_observed_target_0071ddb0` scans every director's live slots, so it delivers to exactly the directors whose edge is still live. The host delivers synchronously, so no pending dispatch can exist |
+| `00414DB0` target pose refresh in `snap_to_target` | refreshes the entity's cached world pose (`+FCh`) when `+C8h` is clear | record | none: the host's unit positions are always current |
+| `0071FB90` path object for the vacated slot | a new empty path object at `director+1A4h+9*4` | 0 | see below |
+| `007208A3` session trace value | the clear's trace argument | 0 | presentation only |
+
+**Path objects.**
+- The host's only reader of `path_objects` is `command_slot_has_active_order`, and it has no caller.
+- The slot-0 path lives in `director.path_points`.
+- Where a path object would weigh is `0071D780`, the queue-full test (`CMP EAX,0xA` at `0071E6C8`). A
+  queued `moveonpath` in slots 1-9 counts as 1 here, where the image counts its path's points. That
+  is `command_count`'s named hole.
+- A diagnostic counts the tests with such a slot (`summary mission director queue full tests=
+  with_queued_moveonpath=`):
+
+| row (`local\g7hk_<row>.log`) | queue-full tests | with a queued `moveonpath` |
+| --- | --- | --- |
+| BSM01 3200/3000 | 491 | 0 |
+| JM06 3200/3000 | 717 | 0 |
+| USN04 4700/4500 | 1061 | 4 |
+
+- **USN04's four** are all Lexington-class01, with `moveto` at the head and `moveonpath` in slot 1:
+  weighted 2 here.
+- The carrier paths have 6 to 8 points (`CarrierPath1..4`). So the image's weight is at most
+  1 + 8 = 9, still below 10, and both refuse nothing.
+- BSM01's one refusal (weighted 16) comes from its slot-0 path, which the host does weigh.
+
+**Verdict: exact in effect on these missions; nothing is bound.**
+
+**Still open.**
+- **The queue-full hole.** It matters only where a queued `moveonpath` of 9 or more points meets a
+  head. The diagnostic traces the first eight tests that have a queued `moveonpath`, with their
+  weights.
+- **A latent defect.** `queue_state_back` keeps each slot's old `object` pointer while taking the
+  shifted slot's parameters. Nothing reads `slot_target[].object` today (resolution is by the object
+  id), so it has no effect. It should be fixed before anything does read it.
