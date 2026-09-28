@@ -1616,6 +1616,30 @@ bool GameMissionLuaHost::read_auto_thrust_0083cc2c(bsp::ShipAiAutoThrustSettings
     return true;
 }
 
+float GameMissionLuaHost::sub_attack_submarine_lost_time_04d4() const {
+    // Packet cc9_ships7_entry_points. 0083B5E0's SubAttack block: 0083F692
+    // pushes "SubAttack" (00D0A954), 0083F779 "SubmarineLostTime" (00D0A910),
+    // 0083F79C BSP_LuaObject_GetNumber (lua_tonumber, spilled to float) and
+    // 0083F7A1 FSTP [ESI+4D4h]. There is no default in the listing: a missing
+    // or non-numeric key reads 0, which is what lua_tonumber answers here too.
+    // This installation's Scripts/datatables/shipglobals.lua (mtime
+    // 2024-07-13) authors ShipGlobals["SubAttack"]["SubmarineLostTime"] = 30
+    // at line 473.
+    if (state_ == nullptr) return 0.0f;
+    const int top = ::lua_gettop(state_);
+    float value = 0.0f;
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, "SubAttack");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "SubmarineLostTime");
+            value = static_cast<float>(::lua_tonumber(state_, -1));
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
 bool GameMissionLuaHost::read_ship_camera_settings_0083b5e0(bsp::ShipCameraSettings& out) {
     if (state_ == nullptr) return false;
     const int top = ::lua_gettop(state_);

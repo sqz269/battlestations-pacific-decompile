@@ -19572,6 +19572,17 @@ float GameUnitsHost::unit_current_yaw_rate_00811940(std::size_t index) {
     return bsp::unit_current_yaw_rate_00811940(rudder);
 }
 
+float GameUnitsHost::unit_class_yaw_rate_0082ecb0(std::size_t index, float rudder,
+    float speed, float efficiency) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size()) return 0.0f;
+    // The binding supplies 0082E890's settings block (00424C40); the class
+    // fields are the slot's copy of [unit+538h].
+    UnitRudderBinding curve(host, *host.slots[index]);
+    return bsp::unit_class_yaw_rate_0082ecb0(host.slots[index]->fields, rudder, speed,
+        efficiency, curve);
+}
+
 bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     bsp::ShipAiControlBlock& blk, bsp::ShipAiSetterHost& setters) {
     Impl& host = *impl_;
