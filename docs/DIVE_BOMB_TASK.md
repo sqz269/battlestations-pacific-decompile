@@ -5266,3 +5266,52 @@ Dive length is not it: `aimdive` runs 53-59 ticks for every squadron. `movieval`
 released nothing in 117-869 ticks. So the second bomb is not lost in the fly-over or the turndown -
 it is lost to the aimglide's own steering, the block `cc8_dive_entry` measured at `bearing` failing
 about 90 per cent of ticks, which this packet did not touch.
+## The cruise profile's begin-altitude draw (packet `cc9_dive_profile_draw`, `kDiveProfileDrawBound`, committed OFF)
+
+Worker cc9-lua6, 2026-09-28. This binds the draw that "Candidate 3 settled" (above) read and left
+out, and it answers where that value goes.
+
+**The producer (V, listing `009C8920`-`009C8A87`).**
+- The profile's block runs only when `007B8AD0(unit)` answers true, meaning nothing is at
+  `+9D8h` (`009C8931`, `JE 009C8A1B`). The host's `unit_is_flight_leader_007b8ad0` answers the same
+  question.
+- **The draw comes first, on every such call:** `009C897C`..`009C899B`,
+  `00BD2F10(0.0, [00CE5380] = 15.0)` with `ECX = 1`, plus `tuning+4CCh` `BeginAltRange/1` at
+  `009C89A0`.
+- **The gate comes after the draw:** `+38Ch` (`009C89A6`), `+37Ch < 0` (`009C89B6`), `+3AAh`
+  (`009C89BF`).
+- An open gate writes `+398h` (`009C89CE`) and sets `+3ADh = 1`. The lock `+3AAh` is cleared either
+  way (`009C89DD`).
+- The block is `[task+404h]`, the squadron's cruise block. `SquadronSetAttackAlt` writes it through
+  the squadron (`docs/LUA_BINDING_MISSION.md`), and `docs/BOMBER_AFTER_TASK.md` reads it as the
+  squadron's shared profile.
+
+**The consumers.**
+- `009C7A96` copies `+398h` into `approach+ACh` on every approach update. The profile's own tail
+  also calls that update, at `009C8A7C`.
+- In this host `approach+ACh` is `db_begin_alt_ac`. It feeds:
+  - the dive-entry height `+D4h = max(+A8h + 250, (+ACh + +A8h) * 0.5)` (`009C4035`);
+  - the moveto state's near and far ranges (`009C87EF`..`009C8825`);
+  - the go-away's and done state's cruise altitude (`g.cruise_altitude_398`);
+  - the aimglide's unclamped altitude.
+
+**The binding.**
+- The approach update runs the block for the flight leader: the draw on a keyed stream
+  (`<name>#dp`), then the gate on the squadron block (shared with `SquadronSetAttackAlt`), then the
+  write.
+- Every member then copies the block's `+398h`.
+- **LABELLED:**
+  - the per-tick approach update stands for the profile's call;
+  - a plane with no squadron keeps the block on its own slot.
+- **Under `BSP_GUNNERY_RNG_STREAMS=1`** the draw has its own stream, so it shifts no other draw.
+  Only the drawn value can move anything: `approach+ACh` goes from a pinned 1000 to somewhere in
+  1000..1015.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| LOMP10 3200/3000 | **exit 1.** The dive squadrons, Lightning 01 and Warhawk 01, hold the script's forced 150 m. `+38Ch` shuts the gate, so the census reads `draws>0 writes=0` and nothing flies differently |
+| USN04 4700/4500 | **exit 3.** The Dauntless leaders write `+398h` in 1000..1015 on every approach update, and their members read it. The dive-entry height `(ACh + A8h) / 2` rises by up to 7.5 m where it is the larger term. The moveto far range and the go-away altitude rise by up to 15 m. Dive transitions and paths move by small amounts; releases, hits and deaths may move with them |
+| USN01 3200/3000 | **exit 3, small.** The same mechanism on its two dive-bomb releases. This is not an identity row: USN01 has dive-bomb tasks |

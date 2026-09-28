@@ -1245,6 +1245,12 @@ struct GameUnitSlot {
     double sq_timer_expiry_37c{-1.0};
     unsigned long long sq_attack_alt_reads{0};
     float sq_last_attack_alt{0.0f};
+    // Packet cc9_dive_profile_draw: the value 009C8920's open gate last wrote
+    // into +398h (BeginAltRange/1 + the 009C899B draw).
+    bool sq_profile_398_valid{false};
+    float sq_profile_398{0.0f};
+    unsigned long long sq_profile_draws{0};
+    unsigned long long sq_profile_writes{0};
     // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
     // as the pitch rate; 009D1E39 divides the nose-down angle by it to shallow
     // the aim tick's dive command as the dive steepens.
@@ -2585,7 +2591,51 @@ struct GameUnitsHost::Impl {
         // 009C7A96: approach+ACh = ctl+398h, which the cruise profile 009C8920
         // holds at Pilot/DiveBomb/BeginAltRange/1.
         slot.db_begin_alt_ac = kPilotDiveBombBeginAltRange1;
-        if constexpr (kSquadronAttackAltBound) {
+        if constexpr (kDiveProfileDrawBound) {
+            // Packet cc9_dive_profile_draw. 009C8920 runs its block only for a
+            // unit with nothing at +9D8h (009C8931 007B8AD0, JE 009C8A1B): the
+            // flight leader. It draws first (009C897C..009C899B: 00BD2F10(0.0,
+            // [00CE5380] = 15.0), ECX = 1), adds BeginAltRange/1 (009C89A0 FADD
+            // [EBP+4CCh]), then tests +38Ch, +37Ch < 0 and +3AAh before the write
+            // at 009C89CE and clears +3AAh at 009C89DD. The block is the
+            // squadron's ([task+404h]), so every member's 009C7A96 copy reads the
+            // leader's write. LABELLED: this per-tick approach update stands for
+            // the profile's call, and a plane with no squadron keeps the block on
+            // its own slot.
+            GameUnitSlot* sq = squadron_slot_of(slot.process_index);
+            GameUnitSlot& block = sq != nullptr ? *sq : slot;
+            if (unit_is_flight_leader_007b8ad0(slot.process_index)) {
+                const float value = static_cast<float>(
+                    static_cast<double>(release_altitude_draw_00bd2f10(
+                        slot.row.name + "#dp", 0.0f, 15.0f))
+                    + static_cast<double>(kPilotDiveBombBeginAltRange1));
+                ++block.sq_profile_draws;
+                bool open = true;
+                if (kSquadronAttackAltBound && block.sq_attack_alt_set) {
+                    const double now = summary.simulated_seconds;
+                    if (block.sq_freeze_38c) {
+                        open = false;                           // 009C89A6 JNE
+                    } else if (now >= block.sq_timer_expiry_37c && !block.sq_lock_3aa) {
+                        block.sq_attack_alt_set = false;       // the script value is replaced
+                    } else {
+                        open = false;
+                        block.sq_lock_3aa = false;              // 009C89DD
+                    }
+                }
+                if (open) {
+                    block.sq_profile_398 = value;               // 009C89CE
+                    block.sq_profile_398_valid = true;
+                    ++block.sq_profile_writes;
+                }
+            }
+            if (kSquadronAttackAltBound && block.sq_attack_alt_set) {
+                slot.db_begin_alt_ac = block.sq_alt_398;
+                ++block.sq_attack_alt_reads;
+                block.sq_last_attack_alt = slot.db_begin_alt_ac;
+            } else if (block.sq_profile_398_valid) {
+                slot.db_begin_alt_ac = block.sq_profile_398;    // 009C7A96
+            }
+        } else if constexpr (kSquadronAttackAltBound) {
             // Packet cc9_squadron_attack_alt: 009C8920's gate on the squadron's
             // second block (009C89A6 +38Ch, 009C89B6 +37Ch < 0, 009C89BF +3AAh;
             // the write 009C89CE and the lock clear 009C89DD). LABELLED: this
@@ -20769,6 +20819,15 @@ void GameUnitsHost::report() {
             "y=%.1f", s->row.name.c_str(), static_cast<double>(s->sq_alt_394),
             s->sq_freeze_38d ? 1 : 0, s->sq_alt_set ? 1 : 0,
             static_cast<double>(s->sq_last_cruise), static_cast<double>(s->motion.position[1]));
+    }
+    if constexpr (kDiveProfileDrawBound) {
+        for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+            if (s->sq_profile_draws == 0) continue;
+            host.log.notef("  dive profile draw %s: draws=%llu writes=%llu last_398=%.3f "
+                "(009C8920 009C899B, packet cc9_dive_profile_draw)", s->row.name.c_str(),
+                s->sq_profile_draws, s->sq_profile_writes,
+                static_cast<double>(s->sq_profile_398));
+        }
     }
     if constexpr (kSquadronAttackAltBound) {
         for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
