@@ -1120,6 +1120,23 @@ and the same orders.
   in 150 s.
 - Otherwise exit 3: `holds` above 0, and Salt Lake City stops short of where OFF takes it.
 
+### 14.2 The pairs
+
+- **OFF** is this tree's build at `f30f34e52` (main `6c2c46ddf` plus the switch, OFF). **ON** is
+  `pair_export --commit f30f34e52 --flip kCaptureAccessorsBound=true` into `local\cx_on`.
+
+| mission | pair_diff | note |
+| --- | --- | --- |
+| USN13 3200/3000 | exit 0 | an ON `BSP_CAPTURE_DIAG=1` run (`local\cx_diag_usn13.log`): all 117 printed records still `a = b = 0`, `total = 0.5`, price 1200 |
+| USN01 3200/3000 | exit 0 | |
+| LOMP07 3200/3000 | exit 0 | selling 49 approaches, 0 holds: Salt Lake City never comes within 1040 / 720 |
+
+**The predictions held.** No order target depends on the radius or the squadron speed on these
+runs. On USN13 no unit is within 30 s of a CommandBuilding in 150 s, even at squadron speed.
+
+**Decision: `kCaptureAccessorsBound` is ON.** It is the image's rule, and the labelled stand-ins
+are gone.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

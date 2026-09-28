@@ -299,8 +299,9 @@ constexpr bool kSellingTickBound = true;
 // (GameUnitsHost::command_building_capture_range_07a0, 006F2780) and a
 // squadron's speed its plane class MaxSpd (plane_class_max_speed_0188,
 // [unit+35Ch]+188h); SELLING's stop radius takes the same CaptureRange.
-// False: the 500 and 0 stand-ins.
-constexpr bool kCaptureAccessorsBound = false;
+// False: the 500 and 0 stand-ins. ON: USN13, USN01 and LOMP07 identical
+// (docs/PLANNER_TASK_CHOICE.md section 14.2).
+constexpr bool kCaptureAccessorsBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
