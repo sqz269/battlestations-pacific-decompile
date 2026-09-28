@@ -809,9 +809,13 @@ find a row. That scan was not done.
    wedge changes, and the path planner uses them (2816 calls on USN12). Their consumer publishes
    nothing on USN12 (`path_publishes=0`). Whether they ever feed a published path is untraced.
 2. **JM08's `follow=0`.** Presumably the same authored-`Cruise` cause; not traced.
-3. **The player's ships in Montpelier's AI group.** USN12's first ticks list the player's three
-   ships in Montpelier's AI group (`first_group_members=15`). Whether the image's grouping does the
-   same is untraced.
+3. **The player's ships in Montpelier's AI group: answered in section 19.** The image does not do
+   this. Its phase 3 seeds one group per entity (`00A2DFA0` at five sites, never `00A2D8E0`). The
+   host's lump-per-collection reading was wrong.
+   - The fix is bound OFF as `kAiGroupSeedPerEntityBound`, at `04df2a5c5` and `a1ad6a72b`.
+   - Its pairs move USN12, USN04 and JM08 (exit 3, the mechanism matching).
+   - The flip awaits a reference rebaseline. It changes every mission's AI grouping, so the wedge
+     and cautious-route rows of sections 9, 14 and 17 would need re-measuring after it.
 4. **The DEFENDPOSITION tick itself.** `00A15500` runs the wedge and then `00A13B60` with its own
    leader point. The host's DEFENDPOSITION arm calls the follower pass and the wedge, and the
    caller-side `00A13B60`, as before.
@@ -879,3 +883,35 @@ kAiGroupSeedPerEntityBound=true` against the tree's own build (OFF), with refere
 - If the mechanism matches, the gameplay moves are expected and do not by themselves block a flip.
   Because the change reaches every mission's grouping, the lead decides the flip after a reference
   rebaseline; this packet records the pairs.
+
+**The pairs.**
+- OFF is the tree's build of `04df2a5c5`, with logs `local\ships6_goff_<m>.log`.
+- ON is `pair_export --commit a1ad6a72b --flip kAiGroupSeedPerEntityBound=true` into
+  `local\ships6_gon` (bsp_game.exe SHA-256 prefix `F1E82347D226`), with logs
+  `local\ships6_gon_<m>.log`.
+- `a1ad6a72b` only restructures the switch so that the ON value compiles under `/WX`. It had left
+  unreachable code. The OFF path is unchanged.
+
+| row | pair_diff | grouping OFF -> ON | follow requests refused | moved gameplay lines |
+| --- | --- | --- | --- | --- |
+| USN12 3200/3000 | exit 3 | created 3 -> 19, merges (`prox_merges`) 0 -> 12, evicted 3 -> 0 | 575 -> 423, no `party 1/0` line | 4 unit rows; Montpelier moves 2247.37 -> 2240.06 m; deaths, hits and damage unchanged |
+| USN04 4700/4500 | exit 3 | created 12 -> 39, merges 9 -> 28, evicted 14 -> 12 | 1274 -> 681 | deaths 43 -> 42, damage 11740.0 -> 13529.3, hit records 798 -> 760 (hull 115 -> 147), shots 9611 -> 10817, dive-bomb releases 4 -> 9 of 19, torpedo releases 7 -> 8 of 16; 66 unit rows |
+| JM08 3200/3000 | exit 3 | created 5 -> 182, merges 0 -> 161, evicted 41 -> 7 | 917 -> 699 | deaths 9 -> 11, damage 3681.8 -> 4149.8, hit records 342 -> 361, shots 2091 -> 2324; 32 unit rows |
+
+**USN12's groups ON.**
+- The player's ships are in their own party-1 groups: Shigure with 2 members, Shiratsuyu with 1.
+- Montpelier's CAUTIOUSATTACK group has 4 ships. The wedge then places 3 per run (`placed=147` over
+  49 runs).
+- The other team-0 ships form MOVETOATTACK groups: Columbia with 6, and Claxton and Foote alone.
+- Fortress-07's DEFENDPOSITION group keeps 4.
+
+**Verdict: the mechanism matched, and the switch stays OFF pending the lead's rebaseline decision.**
+- No different-party member ever joins a group. USN12's party evictions and its 36 `00779D9F`
+  refusals are gone.
+- Groups now form only through phase 4 merges. The host counts those as `prox_merges`; its
+  `auto_merges` counter stays 0 on both sides. The prediction's "`auto_merges` > 0" named the wrong
+  counter; the merges themselves happened as predicted.
+- Every row moves, as predicted. USN04 and JM08 move in their fights: more damage, more hull hits,
+  and more ordnance releases.
+- The switch is the image's arithmetic, but it reaches every mission's AI grouping. Per the rule
+  above it is recorded rather than flipped here.
