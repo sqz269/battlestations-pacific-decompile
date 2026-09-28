@@ -73,7 +73,8 @@ namespace bsp::game {
 // (a troop lander is not served), at the approach warn sweep's 009F347E / 009F35E3,
 // and in 00A03510's Cargo arm (3.0 when it holds, else 0). False: all three answer
 // false, as the records did. Counted on both sides.
-inline constexpr bool kTroopLandingTraitBound = false;
+// ON (2026-09-28): JM06 moves by the 200 lander asks; five rows identical (section 19).
+inline constexpr bool kTroopLandingTraitBound = true;
 
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 

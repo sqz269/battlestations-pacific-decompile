@@ -1793,3 +1793,23 @@ the first answer per unit and site) names the units:
    - `target_warn_radius_07c4` answers 0, so the range gate `009F3585` fails;
    - `candidate_accepts_warning_vtable_0234` answers false;
    - `route_warning_message_0077c2a0` is a record.
+
+### The pairs and the verdict: ON
+
+OFF is the tree build of `3c63148ea` (`local\ships9_e0_<row>.log`). ON is
+`pair_export --commit 3c63148ea --flip kTroopLandingTraitBound=true`, SHA-256 prefix `E2841412EE4B`
+(`local\ships9_tton_<row>.log`).
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 | 1 | nothing (prediction 1) |
+| USN13 | 1 | nothing (prediction 1) |
+| LOMP10 | 1 | nothing (prediction 1) |
+| JM08 | 1 | nothing. The transports' 3.0 is summed by no capture or defend think in the window (prediction 3) |
+| JM05 | 1 | nothing, as JM08 (prediction 3) |
+| JM06 | 3 | the close attack: `served` 566 -> 366, exactly the 200 lander asks; `attackmove` 304 -> 104; scored 3606 -> 1406. Hit records 328 -> 247, shots 378 -> 266, first hit 79.15 -> 74.65 s, deaths 1 -> 1 (prediction 2) |
+
+- On JM06, USTroopTransport 01 to 03 take more or fewer hits, and US Tanker 01 is no longer hit
+  (30 hits -> 0). The Fletcher-class 08 the player controls moves 540.68 -> 75.88 m.
+- **Every prediction held and the mechanism matches exactly, so the switch is flipped ON.**
+- The approach half and the Cargo arm stay bound and inert on these rows.
