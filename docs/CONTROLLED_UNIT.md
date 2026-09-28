@@ -2202,3 +2202,52 @@ This is the fifth refresh (`docs/LUA_BINDING_MISSION.md`, head `2291cd778`) with
 - **Pair exports:** `local\{cm,sq,rtb,aa,dp,dw}_on`.
 - **Logs:** `local\{cm,sq,rtb,aa,dp,dw}_{off,on}_<mission>.log`, the census `local\l6_rk_*.log`,
   and the traces `local\l6_fe_jm05.log` and `local\dt_usn04.log`.
+
+## Handoff (cc9-lua7, 2026-09-28)
+
+This is written at about 80% context. Branch `agent/cc9-lua7`, worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua7`.
+
+### Done this session (all switches ON unless stated)
+
+| packet | switch | record |
+| --- | --- | --- |
+| `cc9_spawn_new_shipyard` | `kSpawnNewEntityRefPosBound` | LUA_BINDING_MISSION "SpawnNew with an entity refPos and a surface group" |
+| `cc9_land_convoy_unit_plan` | none (plan, PARKED) | LAND_AND_STRUCTURES, the last section |
+| `cc9_dead_plane_bot_think` | `kDeadPlaneBotThinkBound` | PLANE_DEATH_MODES section 7 |
+| `cc9_death_tick_draw_recheck` | closed, no switch | DIVE_BOMB_TASK, beside cc9-lua6's labelled note |
+| `cc9_ships7_entry_points` | none (inert accessors) | `GameUnitsHost::unit_class_yaw_rate_0082ecb0`, `GameMissionLuaHost::sub_attack_submarine_lost_time_04d4` |
+| `cc9_natives_ranking_6` | none (a read) | LUA_BINDING_MISSION "sixth refresh" |
+| `cc9_get_formation_leader` | `kLuaFormationLeaderBound` | LUA_BINDING_MISSION "GetFormationLeader, 00899AF0" |
+| `cc9_add_untouchable_unit` | `kLuaAddUntouchableUnitBound` (inert) | LUA_BINDING_MISSION "AddUntouchableUnit, 008AC140" |
+
+**Unlanded at this handoff:** `fb297db29` and `b5bc97bd1` (GetFormationLeader), `11bad8895` and
+`38d8d14db` (AddUntouchableUnit), this handoff, and the main merges between them.
+
+### Open, in order
+
+1. **The untouchable gate `00862440` (gunnery lane, cc9-gunnery8).**
+   - The flag is `bsp::game::lua_unit_untouchable_1d4(std::size_t index)`
+     (`include/bsp/game_hosts_lua.hpp`).
+   - The lead's brief asked for `GameUnitsHost::unit_untouchable_1d4`. The units host files were
+     leased to cc9-gunnery8 (`cc9_periscope_out`), so the flag lives in the Lua host instead.
+     gunnery8 can wrap it as that member.
+   - JM05 marks `PT Boat 80' Elco 01`/`02` and `Event2Pt` at stage init. USN01, USN04 and LOMP10
+     mark nothing.
+2. **`GetLastCatapulted` `00892860`** (JM05, 47 calls), rank 3 of the sixth refresh. Small reach:
+   it sets an elite skill on the catapult plane at 5812. First read whether the host catapults
+   anything at all.
+3. **The LandConvoy handle** is PARKED, because no reader in this host consumes a placed convoy.
+   The plan names two open reads: the convoy's `+1E4h` sensor category, and when its detection
+   record is created.
+4. **Known noise worth adding to the deterministic list:** LOMP10's minimap heading, landscape
+   attach cells, movie-camera poses and `ShipAiSectorScan` counters. They drifted between
+   same-binary LOMP10 runs in every pair this session.
+
+### Working notes
+
+- In the Git Bash tool, a heredoc or `printf` that contains an apostrophe (`80'`, `lua6's`) breaks
+  the whole command. Write such text with the Write tool and `git commit -F`.
+- `pair_export --out` needs `local/<name>` with a forward slash in bash. `local\\name` lost its
+  backslash and created `locall7_on` at the tree root.
+- The units host files (`game_hosts_units.*`) were leased to cc9-gunnery8 at this handoff.
