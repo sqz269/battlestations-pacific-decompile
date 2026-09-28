@@ -342,4 +342,149 @@ void submarine_run_motion_tick_tail_00855420(SubmarineMotionTickHost& host,
     }
 }
 
+// 00419010 BSP_Math_InterpolateClamped(x0, y0, x1, y1, x), the same body
+// src/dive_bomb_task.cpp reconstructs.
+static float submarine_interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                                    float x) noexcept {
+    if (x1 == x0) return y0;
+    const float v = static_cast<float>(((static_cast<double>(x) - x0) / (x1 - x0)) * (y1 - y0) + y0);
+    const float hi = (y1 < y0) ? y0 : y1;
+    const float lo = (y0 < y1) ? y0 : y1;
+    if (v < lo) return lo;
+    return (v <= hi) ? v : hi;
+}
+
+// 0042AC60 BSP_Math_StepTowards(state, target, maxStep).
+static float submarine_step_towards_0042ac60(float cur, float target, float max_step) noexcept {
+    const float diff = cur - target;
+    const float mag = diff < 0.0f ? -diff : diff;
+    if (max_step > mag) return target;
+    return (target > cur) ? cur + max_step : cur - max_step;
+}
+
+SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) noexcept {
+    SubmarineDiveResult out;
+    for (int i = 0; i < 3; ++i) {
+        out.linear[i] = in.linear[i];
+        out.angular[i] = in.angular[i];
+    }
+    out.seed_126c = in.seed_126c;
+    out.sink_1270 = in.sink_1270;
+    out.pitch_398 = in.pitch_398;
+    bool at_depth = in.at_depth_1278;
+    const bool surface = in.effective == SubmarineDepthBand::surface;
+    // 00936E8F..00936E9C: a set +1278h is cleared once the band is not the surface.
+    if (at_depth && !surface) at_depth = false;
+
+    const float vy = in.linear[1];                                   // [base+44h]
+    // 00936F20..00936F48: both candidate targets are stored as floats.
+    const float up_candidate = static_cast<float>(static_cast<double>(vy) - in.up_speed);
+    const float down_candidate = static_cast<float>(static_cast<double>(vy) + in.down_speed);
+    // 00936F4C..00936F56: error = target - hullY, stored as a float.
+    const float error = static_cast<float>(static_cast<double>(in.target_y) - in.hull_y);
+    out.error = error;
+    // 00936F5A..00936F7E: |error|, via -0.0 - error on the non-positive side.
+    const float abs_error = (error > 0.0f) ? error : (-0.0f - error);
+    float rate = 0.0f;
+    if (surface && error > 1.0f) {
+        // 00936F88..00936F9E: surfacing and more than a metre under: rate 0 and
+        // +1278h is left alone (the jump skips 00936FAF).
+        rate = 0.0f;
+    } else {
+        at_depth = surface;                                          // 00936FA5..00936FAF
+        float clamped_v;
+        if (error >= 0.0f) {                                         // 00936FA8 vs 0.0f
+            clamped_v = (static_cast<double>(vy) > 0.05000000074505806) ? vy : 0.05f;
+        } else {
+            clamped_v = (-0.05000000074505806 > static_cast<double>(vy)) ? vy : -0.05f;
+        }
+        // 00936FF9..0093700A: error * gain / clampedV, stored as a float.
+        const float ratio = static_cast<float>(
+            static_cast<double>(error) * in.gain / clamped_v);
+        // 0093701C..00937033: 00419010(0.5, 0.0, UpDownStopTime, 1.0, ratio).
+        const float curve = submarine_interpolate_clamped_00419010(0.5f, 0.0f, in.stop_time,
+                                                                   1.0f, ratio);
+        // 00937042..00937065: vy + (candidate - vy) * curve, rounded once.
+        const float candidate = (error >= 0.0f) ? up_candidate : down_candidate;
+        rate = static_cast<float>(static_cast<double>(vy)
+            + (static_cast<double>(candidate) - vy) * curve);
+    }
+    // 00937069..00937107: the seabed-clamp dive-plane writes (gain above 1.0) are
+    // made by the caller when it models the clamp; not here.
+
+    // 0093710E..00937145: the one-shot seed replaces the rate with -vy.
+    float compare = 0.0f;
+    if (in.seed_126c) {
+        rate = -0.0f - vy;
+        out.sink_1270 = rate;
+        out.sink_1274 = 0.0f;
+        out.seed_1274_written = true;
+        out.seed_126c = false;
+        compare = rate;
+    }
+    out.commanded_rate = rate;
+    // 0093714A..0093717D: the dive direction.
+    int direction;
+    if (2.0f > abs_error) {
+        direction = 0;
+    } else if (compare > error) {
+        direction = -1;
+    } else if (error > compare) {
+        direction = 1;
+    } else {
+        direction = 0;
+    }
+    out.direction = direction;
+
+    // 00937198..009371B5: the forward speed, dot(linear, row2), in the order the
+    // listing adds it.
+    const double forward = (static_cast<double>(in.linear[1]) * in.row2[1]
+        + static_cast<double>(in.linear[0]) * in.row2[0])
+        + static_cast<double>(in.linear[2]) * in.row2[2];
+    const float forward_f = static_cast<float>(forward);
+    // 009371C1..009371E1: forward / 0080FC30 / 10.0 * direction, stored as a float.
+    const float pitch_ratio = static_cast<float>(
+        static_cast<double>(forward_f) / in.reference_speed / 10.0 * direction);
+    // 009371E7..00937223: controller+398h steps toward ratio * -1.5 by at most dt * 0.5.
+    const float pitch_target = static_cast<float>(static_cast<double>(pitch_ratio) * -1.5);
+    const float max_step = static_cast<float>(static_cast<double>(in.dt) * 0.5);
+    out.pitch_398 = submarine_step_towards_0042ac60(in.pitch_398, pitch_target, max_step);
+
+    // 00937228..0093729B: a = (row2.y + pitch) * (-2.0 * dt); angular -= a * row0.
+    const double k4dt = -2.0 * static_cast<double>(in.dt);
+    const float a = static_cast<float>(
+        (static_cast<double>(in.row2[1]) + out.pitch_398) * k4dt);
+    for (int i = 0; i < 3; ++i) {
+        const float term = static_cast<float>(static_cast<double>(in.row0[i]) * a);
+        out.angular[i] = static_cast<float>(static_cast<double>(out.angular[i]) - term);
+    }
+    // 0093729F..0093730B: b = (-2.0 * dt) * row0.y; angular += b * row2.
+    const float b = static_cast<float>(k4dt * in.row0[1]);
+    for (int i = 0; i < 3; ++i) {
+        const float term = static_cast<float>(static_cast<double>(in.row2[i]) * b);
+        out.angular[i] = static_cast<float>(static_cast<double>(term) + out.angular[i]);
+    }
+
+    // 009372B7..00937314: the rate is clamped at zero from below.
+    const float limit = (0.0f > rate) ? 0.0f : rate;
+    // 0093731A..0093737C: +1270h slews toward the limit at UpDownAccel per second,
+    // and falls UpDownAccel * gain per second.
+    const float s = out.sink_1270;
+    float next;
+    if (s < limit) {
+        next = static_cast<float>(static_cast<double>(s) + static_cast<double>(in.dt) * in.accel);
+        if (next > limit) next = limit;
+    } else {
+        next = static_cast<float>(static_cast<double>(s)
+            - static_cast<double>(in.dt) * in.accel * in.gain);
+        if (limit > next) next = limit;
+    }
+    out.sink_1270 = next;
+    // 00937384..00937396: linear.y -= sink.
+    out.linear[1] = static_cast<float>(static_cast<double>(in.linear[1]) - next);
+    out.at_depth_1278 = at_depth;
+    return out;
+}
+
 }  // namespace bsp
+

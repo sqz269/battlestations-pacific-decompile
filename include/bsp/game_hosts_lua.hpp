@@ -317,6 +317,16 @@ struct GameVehicleClassRow {
     float y_drag{0.0f};               // desc+170h YDrag, 007D2150
     float max_spd{0.0f};              // desc+188h MaxSpd, 007D238A
     float travel_speed{0.0f};         // desc+18Ch TravelSpeed, 007D23C3
+    // Packet cc9_submarine_dive: the MSubmarine keys 00854230 reads, with its
+    // NumberOr defaults (src/vehicle_class_lua_load.cpp). SwimDepth1 is read into
+    // the PeriscopeDepth slot only when PeriscopeDepth left it negative.
+    float sub_periscope_depth{-1.0f};   // class+810h PeriscopeDepth / SwimDepth1
+    float sub_swim_depth2{-1.0f};       // class+814h SwimDepth2
+    float sub_swim_depth3{-1.0f};       // class+818h SwimDepth3
+    float sub_up_down_accel{0.25f};     // class+824h UpDownAccel
+    float sub_up_down_stop_time{5.0f};  // class+82Ch UpDownStopTime
+    float sub_up_speed{1.2f};           // class+830h UpSpeed
+    float sub_down_speed{1.2f};         // class+834h DownSpeed
     // The four the thrust and drag accelerations are built from. 007C4990 makes
     // the drag coefficient desc+50Ch out of two of them, Accel / MaxSpd^2, which
     // is what puts a plane's equilibrium airspeed exactly on MaxSpd.

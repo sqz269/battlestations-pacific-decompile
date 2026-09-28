@@ -654,3 +654,119 @@ table on, lockstep 0.05 and an idle player.
 - It is filled by `0077B0C0` (no Ghidra function; a `+1E4h` sub-object vtable method in about 40
   vtables). Unless the mode word `[00E188A8]+1FE4h` is 2, it indexes `reconlevel` (`00B67800`) and
   stores `[party] = level` (`00B665D0`), then notifies `00980E50`.
+
+## 12. The dive law, `00936DC0` (packet `cc9_submarine_dive`, `kSubmarineDiveBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This supersedes the partial read of section 6 for steps 4 to 8.
+Section 6's steps 1 to 3 stand.
+
+### The listing, traced
+
+The frame is `sub esp,4Ch` and then three pushes, so a local at `[base+L]` is `[esp+L]` between
+`00936DC5` and `00936F0C`, and `[esp+L+4]` while `EBP` is pushed (`00936F0C..009371F6`). The body
+reads the linear velocity into `[base+40h..48h]` and the angular one into `[base+34h..3Ch]`. It
+does this **before** the hydrodynamics `009329C0` (`00936DF8`), which only stage forces. At the end
+it writes both back (`0093739A` `00C37E50`, `009373A7` `00C37E20`).
+
+| step | addresses | what it does |
+| --- | --- | --- |
+| 1 | `00936E00..00936E2B` | every step the order-ring slot's `+0Ch` and `+10h` (`unit+844h`/`+848h` at the cursor `+97Ch`) get 2.0 (`00CE3958`) and -1.0 (`00D7A260`) |
+| 2 | `00936E34..00936E9C` | the effective band: `needAir` or `008522C0` and not kamikaze gives 0; dead (`+5Dh`) gives 3. A set `+1278h` is cleared when the band is not 0 |
+| 3 | `00936EA3..00936F06` | the target `bands[eff]` and gain 1.0; the seabed clamp (section 6 step 3) gives gain 1.5 (`00CE380C`) |
+| 4 | `00936F20..00936F48` | `vy - UpSpeed` and `vy + DownSpeed` stored as floats |
+| 5 | `00936F4C..00936F7E` | `error = target - hullY` (`unit+100h` after `00414DB0`), and `abs(error)` |
+| 6 | `00936F84..00936F9E` | band 0 and `error > 1.0`: the commanded rate is 0 and `+1278h` is left alone |
+| 7 | `00936FA3..00937065` | otherwise `+1278h = (band == 0)`. `v` is `vy` when it is above 0.05 (rising, `00D7A270` double) or below -0.05 (sinking, `00CF5C78`), else ±0.05 (`00CE7638`/`00D19688`). `curve = 00419010(0.5, 0, UpDownStopTime, 1, error*gain/v)`. Then `rate = vy + (candidate - vy)*curve`, the candidate being `vy - UpSpeed` when `error >= 0` and `vy + DownSpeed` otherwise |
+| 8 | `00937069..00937107` | with gain above 1.0, the dive-plane writes of section 6 step 5 |
+| 9 | `0093710E..00937145` | the one-shot `+126Ch` (set at `00853A2A`): `rate = +1270h = -0.0 - vy`, `+1274h = 0`, flag cleared |
+| 10 | `0093714A..0093717D` | direction: 0 when `abs(error) < 2.0`, otherwise -1 or +1 by the sign of `error` against 0 (against `-vy` on the seed step) |
+| 11 | `00937180..00937223` | pitch target: `forward = dot(linear, row2)` (`body+8h` `+18h..+20h`, summed y, x, z). Then `ratio = forward / 0080FC30() / 10.0 * direction` (`FDIVR` m64, `FDIV` `00CE3DC0`, `FIMUL`). `controller+398h` steps toward `ratio * -1.5` (`00D19680`) by at most `dt * 0.5` (`00D7A280`) through `0042AC60`. The `vtable[34h]` result read at `009371EB` is never used |
+| 12 | `00937228..0093729B` | `a = (row2.y + pitch) * (-2.0 * dt)` (`00D19660`); `angular -= a * row0` |
+| 13 | `0093729F..0093730B` | `b = (-2.0 * dt) * row0.y`; `angular += b * row2`. These two are the pitch and roll trims |
+| 14 | `009372B7..00937314` | the rate is clamped at 0 from below |
+| 15 | `0093731A..0093737C` | `+1270h` moves toward the rate: up by `UpDownAccel * dt` without passing it, or down by `UpDownAccel * gain * dt` without passing it |
+| 16 | `00937384..00937396` | `linear.y -= +1270h` |
+
+The two reverse subtractions are checked against the bytes. `0093705B` is `DE EA`, `FSUBP
+ST(2),ST(0)`, which gives `candidate - vy`. `00937344` is `DE E2`, `FSUBRP ST(2),ST(0)`, which gives
+`s - accel*gain*dt`. Ghidra's listing agrees.
+
+**What it means.** `+1270h` is velocity removed from the boat's vertical velocity every step. The
+rate is clamped at 0, so the law never pushes the boat up. It only removes upward velocity, which
+is how it holds a boat under against its own buoyancy and how it sinks one. Surfacing more than a
+metre under leaves the rate at 0 and lets buoyancy lift the boat.
+
+**Correction to section 6.** Step 7's "speed-dependent term on the decreasing side" is the gain,
+`[base+14h]`: 1.0, or 1.5 under the seabed clamp. It is not a speed.
+
+### The binding
+
+- `bsp::submarine_dive_step_00936dc0` (`src/submarine_model.cpp`) is steps 4 to 7 and 9 to 16. It
+  rounds wherever the listing stores a float.
+- `GameUnitsHost`'s motion binding calls it for a seeded submarine under `kSubmarineDiveBound`.
+  It runs in place of the ship force model `00937440`, whose rudder torque is not part of
+  `00936DC0`.
+- The band table and the rate keys come from the class row (`PeriscopeDepth`/`SwimDepth1..3`,
+  `UpSpeed`, `DownSpeed`, `UpDownStopTime`, `UpDownAccel`, with `00854230`'s defaults).
+- Both builds print `submarine depth trace` every 200 force steps per boat.
+- **SUBSTITUTIONS, labelled.**
+  - `needAir`, `008522C0` and the kamikaze test read false.
+  - There are no seabed samples, so the clamp never engages and the gain is 1.0.
+  - The ring writes (step 1) and the unused `vtable[34h]` read are not made.
+  - The `Dive` teleport of the seed stage (`00853B45`) is still not applied.
+
+### The other callers of `008528B0` (reads)
+
+| caller | site | what it does |
+| --- | --- | --- |
+| `004654D0` | four sites | the command strings `Surface`/`Periscope`/`Underwater`/`Maxdepth` (section 3) |
+| `00852C60` | `00852C81` | message `A2h`, `SetDepthLevel(payload)`: the echo of `008528B0`'s own post, and `A1h` steps it (`00852C9F`, `00852CB2`) |
+| `0081F980` | `0082018D` | the base save/load hook, not read |
+| `009E4B90` | `009E4BA5` | ship AI, `SetDepthLevel(2)` on entering a state |
+| `009E4EE0` | three sites | ship AI periscope logic (section 3) |
+| `009EA8DE`, `009EA949` | | ship AI, not read |
+
+The ship-AI callers are not reached: no host source names `009E4B90`, `009E4EE0`, `009EA8DE` or
+`009EA949`, so in this process the level changes only through the Lua writer.
+
+### Predictions (written before the ON runs)
+
+The baselines are this tree's OFF build (`local/dv_off_*.log`). Today every host submarine
+floats. JM06's `PlayerSub 01..03` are placed at -20 by `PutTo` and reach +0.44 m. The three
+`TypeB w Jake` boats go from -50 to +0.44. The `Narwhal-class` goes from -80 to +0.08. LOMP06's
+Narwhal goes from -20 to +0.07.
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 3.** Each boat holds near its band instead of floating: the PlayerSubs near -13, the TypeBs near -40, the Narwhal-class near -80. That holds if the law's removal outpaces the host's buoyancy; if not, they still rise but more slowly. The `Gato` (sinking past -198 m) keeps sinking, because a rising target gives a negative rate, clamped to 0. Submerged boats should take fewer surface hits, so the hit and death rows may move |
+| LOMP06 1200/1000 | **exit 3.** The Narwhal holds near its periscope band, -10.2, instead of +0.07. The hits on it (`hull water Narwhal`, first hit 38.95 s) may move |
+| USN01 3200/3000 | no submarine, exit 1 |
+
+### The pairs and the flip
+
+**Setup.**
+- OFF is this tree's build of `292b20eeb`.
+- ON is `pair_export --flip kSubmarineDiveBound=true` (`local/dv_on`).
+- The logs are `local/dv_{off,on}_<mission>.log`. Streams are ON, with `BSP_DEATH_TABLE=1`,
+  lockstep 0.05 and an idle player.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | Every boat holds its band. PlayerSub 01..03 settle at -12.90 (band -13.0) within 200 steps, the TypeBs at -39.6..-40.0 (band -40.0), the Narwhal-class at -79.9 (band -80.0). The Gato leaves the trace early, as OFF. pair_diff exit 3: deaths 2 -> 1 (`PlayerSub 03`, sunk on the surface OFF, survives submerged), hit records 145 -> 231, shots 233 -> 311, first hit 54.30 -> 54.35 s | held |
+| LOMP06 1200/1000 | The Narwhal settles at -10.11 (band -10.2) by step 400 instead of floating at +0.07. pair_diff exit 3: its 4 hits (225 damage, first hit 38.95 s) are gone; the controlled distance goes 421.38 -> 407.14 m; deaths 0 both sides | held |
+| USN01 3200/3000 | no submarine, exit 0 (byte-identical) | held |
+
+In steady state `+1270h` equals the buoyant velocity gained per step and cancels it, for example
+0.443 on the LOMP06 Narwhal. That is the mechanism the rate clamp describes.
+
+The JM06 hit, shot and unit-table movements follow from the boats being under water. The
+surface escorts now fire at different targets. No single hit is attributed.
+
+**Verdict: `kSubmarineDiveBound = true`.**
+
+**Still open.**
+- The seabed scan `00855420`, and the clamp and dive planes it feeds.
+- The `Dive` teleport of the seed.
+- The ring writes at `+844h`/`+848h`.
+- `needAir` and the air model, and the catapult surfacing.
+- The ship-AI depth callers.

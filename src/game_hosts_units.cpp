@@ -343,6 +343,21 @@ struct GameUnitSlot {
     float plane_world_velocity[3]{0.0f, 0.0f, 0.0f};
     float plane_lost_drag_timer_c3c{0.0f};
     bool plane_velocity_seeded{false};
+    // Packet cc9_submarine_dive: the submarine's depth state (00853630 seeds
+    // it; 00936DC0 steps it). bands are +1200h..+120Ch.
+    bool sub_dive_ready{false};
+    float sub_bands[4]{0.0f, -20.0f, -40.0f, -80.0f};
+    float sub_up_speed{1.2f};
+    float sub_down_speed{1.2f};
+    float sub_stop_time{5.0f};
+    float sub_accel{0.25f};
+    bool sub_seed_126c{false};
+    bool sub_at_depth_1278{false};
+    float sub_sink_1270{0.0f};
+    float sub_sink_1274{0.0f};
+    float sub_pitch_398{0.0f};   // controller+398h
+    unsigned long long sub_dive_steps{0};
+    unsigned long long sub_trace_counter{0};
     // The controller's body angular velocity, ctl+48h pitch, +4Ch yaw, +50h
     // roll. 007DA710 writes these three and 007D9C80 rotates them into world
     // for 0085E4D0 to turn the pose with; plane_angular_velocity.hpp records
@@ -5867,6 +5882,10 @@ public:
     // stage reaches the hull through 00C35360 AddForce and 00C35330 AddTorque,
     // and the velocity phase 00C41550 at the end of the step integrates it.
     bsp::OceanVec3 run_force_model(float dt) override {
+        if (slot_.sub_dive_ready) {
+            if (kSubmarineDiveBound) return run_submarine_dive_00936dc0(dt);
+            trace_submarine_depth(nullptr);
+        }
         bsp::UnitSteeringTorqueInputs in{};
         in.velocity = slot_.motion.linear_velocity;
         in.axis.x = slot_.motion.pose_row2[0];
@@ -5893,6 +5912,85 @@ public:
         }
         run_hydrodynamics_00937622(dt);
         return torque;
+    }
+
+    // Packet cc9_submarine_dive. 00936DC0, the submarine controller's slot-0
+    // force callback: velocities read first (00936DD0/00936DDD), the
+    // hydrodynamics 009329C0 (00936DF8), then the dive law and the write-back
+    // (0093739A, 009373A7). The rudder torque of 00937440 is not part of it.
+    // SUBSTITUTIONS (labelled): needAir (+1281h), 008522C0 and the kamikaze test
+    // read false; there are no seabed samples, so the clearance never clamps and
+    // the gain stays 1.0; the ring writes at +844h/+848h (slot +0Ch/+10h, 2.0 and
+    // -1.0, 00936E11/00936E2B) and the unused vtable[34h] read (009371E5) are not
+    // made; the reference speed is this binding's 0080FC30.
+    bsp::OceanVec3 run_submarine_dive_00936dc0(float dt) {
+        bsp::SubmarineDiveInputs in;
+        in.linear[0] = slot_.motion.linear_velocity.x;
+        in.linear[1] = slot_.motion.linear_velocity.y;
+        in.linear[2] = slot_.motion.linear_velocity.z;
+        in.angular[0] = slot_.motion.angular_velocity.x;
+        in.angular[1] = slot_.motion.angular_velocity.y;
+        in.angular[2] = slot_.motion.angular_velocity.z;
+        owner_.done("SubmarineController::read_velocities", 0x00c31f40u);
+        run_hydrodynamics_00937622(dt);
+        const bool dead = owner_.gunnery != nullptr
+            && owner_.gunnery->unit_dead(slot_.process_index);
+        bsp::SubmarineEffectiveBandInputs band;
+        const int level = slot_.row.submarine_depth_level;
+        band.commanded = static_cast<bsp::SubmarineDepthBand>(level < 0 ? 0 : (level > 3 ? 3 : level));
+        band.dead = dead;
+        in.effective = bsp::submarine_effective_depth_band_00936dc0(band);
+        const bsp::SubmarineDepthTarget target = bsp::submarine_depth_target_00936dc0(
+            slot_.sub_bands[static_cast<int>(in.effective)], 0.0f, false);
+        in.target_y = target.target_y;
+        in.gain = target.gain;
+        in.hull_y = slot_.motion.position[1];
+        for (int i = 0; i < 3; ++i) {
+            in.row0[i] = slot_.motion.pose_row0[i];
+            in.row2[i] = slot_.motion.pose_row2[i];
+        }
+        in.up_speed = slot_.sub_up_speed;
+        in.down_speed = slot_.sub_down_speed;
+        in.stop_time = slot_.sub_stop_time;
+        in.accel = slot_.sub_accel;
+        in.reference_speed = reference_speed();
+        in.dt = dt;
+        in.seed_126c = slot_.sub_seed_126c;
+        in.at_depth_1278 = slot_.sub_at_depth_1278;
+        in.sink_1270 = slot_.sub_sink_1270;
+        in.pitch_398 = slot_.sub_pitch_398;
+        const bsp::SubmarineDiveResult r = bsp::submarine_dive_step_00936dc0(in);
+        slot_.sub_seed_126c = r.seed_126c;
+        slot_.sub_at_depth_1278 = r.at_depth_1278;
+        slot_.sub_sink_1270 = r.sink_1270;
+        if (r.seed_1274_written) slot_.sub_sink_1274 = r.sink_1274;
+        slot_.sub_pitch_398 = r.pitch_398;
+        const bsp::OceanVec3 lin{r.linear[0], r.linear[1], r.linear[2]};
+        const bsp::OceanVec3 ang{r.angular[0], r.angular[1], r.angular[2]};
+        bsp::dyn_body_set_linear_velocity_00c37e50(slot_.body, lin);
+        slot_.motion.linear_velocity = lin;
+        bsp::dyn_body_set_angular_velocity_00c37e20(slot_.body, ang);
+        slot_.motion.angular_velocity = ang;
+        owner_.done("SubmarineController::step_depth_physics", 0x00936dc0u);
+        ++slot_.sub_dive_steps;
+        trace_submarine_depth(&r);
+        return bsp::OceanVec3{};
+    }
+
+    // One line per submarine every 200 force steps, in both switch states, so a
+    // pair compares depths directly.
+    void trace_submarine_depth(const bsp::SubmarineDiveResult* r) {
+        ++slot_.sub_trace_counter;
+        if ((slot_.sub_trace_counter % 200u) != 1u) return;
+        owner_.log.notef("submarine depth trace: unit=%s step=%llu level=%d y=%.2f vy=%.3f "
+            "sink=%.3f pitch=%.4f rate=%.3f dir=%d bound=%d (packet cc9_submarine_dive)",
+            slot_.row.name.c_str(), slot_.sub_trace_counter,
+            static_cast<int>(slot_.row.submarine_depth_level),
+            static_cast<double>(slot_.motion.position[1]),
+            static_cast<double>(slot_.motion.linear_velocity.y),
+            static_cast<double>(slot_.sub_sink_1270), static_cast<double>(slot_.sub_pitch_398),
+            r != nullptr ? static_cast<double>(r->commanded_rate) : 0.0,
+            r != nullptr ? r->direction : 0, kSubmarineDiveBound ? 1 : 0);
     }
 
     // 00937622, 00937440's last call. 009329C0 is slot 0 of the controller vtable
@@ -7765,6 +7863,31 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // applied: the host hull keeps its authored Y.
         if (bsp::unit_is_kind_of(slot->class_id, 0x08)) {
             row.submarine_depth_seeded = true;
+            // Packet cc9_submarine_dive: the band table (00853A90..00853AC5), the
+            // rate keys, and the one-shot +126Ch (00853A2A, with +1270h = 0).
+            {
+                bsp::SubmarineClassDepths keys;
+                keys.periscope_depth = lua_row.sub_periscope_depth;
+                keys.swim_depth_2 = lua_row.sub_swim_depth2;
+                keys.swim_depth_3 = lua_row.sub_swim_depth3;
+                const auto bands = bsp::submarine_build_depth_bands_00853630(keys);
+                for (int i = 0; i < 4; ++i) slot->sub_bands[i] = bands[static_cast<std::size_t>(i)];
+                slot->sub_up_speed = lua_row.sub_up_speed;
+                slot->sub_down_speed = lua_row.sub_down_speed;
+                slot->sub_stop_time = lua_row.sub_up_down_stop_time;
+                slot->sub_accel = lua_row.sub_up_down_accel;
+                slot->sub_seed_126c = true;
+                slot->sub_sink_1270 = 0.0f;
+                slot->sub_dive_ready = true;
+                host.log.notef("submarine dive bands: unit=%s bands=(%.1f %.1f %.1f %.1f) "
+                    "up=%.2f down=%.2f stop=%.2f accel=%.2f bound=%d (packet cc9_submarine_dive)",
+                    row.name.c_str(), static_cast<double>(bands[0]),
+                    static_cast<double>(bands[1]), static_cast<double>(bands[2]),
+                    static_cast<double>(bands[3]), static_cast<double>(slot->sub_up_speed),
+                    static_cast<double>(slot->sub_down_speed),
+                    static_cast<double>(slot->sub_stop_time),
+                    static_cast<double>(slot->sub_accel), kSubmarineDiveBound ? 1 : 0);
+            }
             row.submarine_depth_level = 0;
             if (entity.dive_present) row.submarine_depth_level = entity.dive_level;
             if (entity.target_dive_present) {
