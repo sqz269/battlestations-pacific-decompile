@@ -271,7 +271,7 @@ inline constexpr bool kLuaDeviceReloadEnabledBound = false;
 // target when unit+284h is set; 0077FE80's arm 3 delivers it to 0077BD70(unit, null), the
 // leave the host models as GameUnitsHost::leave_group_on_destroy_0077bd70. True: route both
 // rows to run_is_in_formation_008996a0 / run_leave_formation_00899eb0. False: unimplemented.
-inline constexpr bool kLuaFormationQueryBound = false;
+inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
 // are published and written by SetDeviceReloadEnabled. It answers false while

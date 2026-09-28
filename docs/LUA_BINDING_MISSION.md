@@ -2634,3 +2634,27 @@ group 0 (leader Mikuma), per the host's formation table.
     idle damage is 0, so the death and hit tables should stay empty.
 - **USN02, USN13, JM06, JM08: exit 1, gameplay identical.** No call is reached. The text differs
   only in the new summary line's `bound=`.
+
+### IsInFormation and LeaveFormation: the pairs and the verdict
+
+OFF is this tree's build at `28bcf320d`. ON is `local\fq_on`, a `pair_export` of `28bcf320d` with
+`kLuaFormationQueryBound=true`. Logs are `local\fq_{off,on}_<mission>.log`.
+
+| mission | pair_diff | reading |
+| --- | --- | --- |
+| LOMP06 1200/1000 | exit 1, gameplay identical | the mechanism fires as predicted; the tracks do not move |
+| JM06 3200/3000 | exit 1, gameplay identical | no call |
+| USN13 3200/3000 | exit 1, gameplay identical | no call |
+
+- **The mechanism matched.** `IsInFormation(Yugiri)` answered true (group 0). The script then
+  called `LeaveFormation(Yugiri)`, and Yugiri left group 0 at 30.90 s. Mikuma stayed leader with
+  17 members. The native table gained the LeaveFormation row.
+- **The spread prediction failed.** I predicted exit 3, with Yugiri's and the later followers'
+  tracks moving. Every `ship ai step` line and all 22 unit-table rows are identical.
+  - Yugiri was already in the attack move on both sides, which does not steer by the group.
+  - The remaining followers keep their stations after the compaction.
+  - What moved is bookkeeping: one more ship-AI plan seed and path swap, and two fewer
+    motion-tail pairs. The frame-441 movie camera pose moved by 0.1 m, which is the known
+    run-to-run noise (handoff cc9-lua3, item 5).
+- **Verdict: `kLuaFormationQueryBound = true`.** The mechanism matches the image, and the miss is
+  on spread only, which the flip rule allows when recorded.
