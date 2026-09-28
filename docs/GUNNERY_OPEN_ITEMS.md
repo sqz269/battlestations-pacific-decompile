@@ -27,6 +27,7 @@ is ranked from its own evidence.
 | the line of sight `00864680` (rank 1 of section 2) | sections 5, 8 | ON, `kGunneryLineOfSightBound` |
 | the stop-firing hook `0072B4C0` (rank 2) | section 7 | read; presentation only |
 | the director fire target `00835860` (rank 3) | sections 13-15 | ON, `kWeaponDirectorFireTargetBound` |
+| the director's target refusal `0071D6D0` and release observer `00694A60` / `0071DDB0` (rank 3 on h) | sections 19-21 | ON, `kDirectorTargetChecksBound` |
 | the target's sub-entity list `008654AC` (rank 4) | section 2 | exact for every unit this host builds |
 | the unit fire cooldown (rank 6) | sections 11-12 | ON, `kUnitFireCooldownBound` |
 | the invincibility floor | sections 9-10 | ON, `kUnitInvincibilityFloorBound` |
@@ -755,3 +756,28 @@ arguments):
     because the first end (Minegumo, 20.90 s) follows that torpedo's launch.
 - **Flip rule:** the flip goes ahead when the mechanism matches: the arm ends drop to 0, no
   refusals, and identity on the three missions without matches. A USN02 spread move is recorded.
+
+## 21. The director target-check pairs, and the flip (2026-09-29)
+
+OFF is this tree's build at `c67ca09e1`. ON is `pair_export --commit c67ca09e1 --flip
+kDirectorTargetChecksBound=true` (`local\g5_dtc`). The runs are `local\g5off_*.log` and
+`local\g5on_*.log`, with the reference h arguments.
+
+| mission | frames | `pair_diff` | death rows | slot-0 ends (ON) | `attackmove` arm ends OFF / ON | refusals |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 | 9000 | exit 1, gameplay identical | 10 identical; failed at 29.75 s both | 13 | 11 / 0 | 0 |
+| USN04 | 4500 | exit 1 | 44 identical | 0 | 0 / 0 | 0 |
+| USN13 | 3000 | exit 1 | identical | 0 | 0 / 0 | 0 |
+| USN01 | 3000 | exit 1 | identical | 0 | 0 / 0 | 0 |
+| JM06 | 3000 | exit 1 | identical | 1 | 1 / 0 | 0 |
+
+- **Every prediction held.** The mechanism matches: the arm's ends move to the death step, and
+  the refusal never fires.
+- **The spread** is the first branch of section 20: the idle tail re-issues the same default
+  command, so gameplay is identical.
+- **Flipped ON.** The unimplemented count drops by 4 on USN02 (509 to 505).
+- **Still labelled:**
+  - the aircraft retarget (no plane target matched on any of the five missions);
+  - the category test for slots above 0 (no match above slot 0).
+  They are re-checked when a mission queues more than one targeted command or targets an
+  aircraft.
