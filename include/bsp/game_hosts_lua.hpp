@@ -142,7 +142,7 @@ inline constexpr bool kLuaKillBound = true;  // ON: pairs held (docs/LUA_BINDING
 // every set is empty or holds the value (0096ACE0, 00979140). True: the host keeps
 // the registry and fires `kill` callbacks for units-host deaths. False: all three
 // natives stay unimplemented records.
-inline constexpr bool kLuaListenersBound = false;
+inline constexpr bool kLuaListenersBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;

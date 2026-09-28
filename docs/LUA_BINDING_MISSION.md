@@ -1289,3 +1289,30 @@ each registered entry, which settles the rows that depend on it):
 | LOMP06 1200/1000 | the adds are `hit`, `recon` and `input`, with no `kill` entry; identity |
 | JM06 3200/3000 | `kill_fires=0` unless `CVKill` (1761) is registered and its entity dies; otherwise identity |
 | USN04 4700/4500 | if a Zero `kill` entry (`ZuikakuZeroKillListener`/`ShokakuZeroKillListener`) is registered and its squadron's last plane dies, `luaZuikakuZeroDead`/`luaShokakuZeroDead` fires. That clears `Mission.ZeroOverZuikaku`, so the next launch pass (1386) may launch a fresh Zero squadron: exit 3. With no such entry, or no such death, identity |
+
+### The listener pairs and the verdict
+
+**Setup.**
+- OFF is this tree's build of `66f4f9596`, with Kill, squadron liveness and objective kind ON.
+- ON is `pair_export --flip kLuaListenersBound=true` of the same commit (`local/ls_on`, SHA-256
+  `1912FE1AE50B`).
+- The logs are `local/ls_{off,on}_<mission>.log`.
+
+| row | registered on ON (channel id -> callback) | census | pair_diff | verdict |
+| --- | --- | --- | --- | --- |
+| USN01 | `input IngameMovieInputListenerID` twice (added and removed), `hit ConLeadListener -> luaConLeadHit` | `adds=3 removes=2 registered=1 kill_deaths=7 kill_fires=0` | exit 1 | held |
+| USN02 | `input IngameMovieInputListenerID` | `adds=1 removes=1 kill_deaths=19 kill_fires=0` | exit 1 | held |
+| USN04 | `input IngameMovieInputListenerID` twice; **no Zero `kill` listener** | `adds=2 removes=2 kill_deaths=44 kill_fires=0` | exit 1 | held, on the no-entry branch |
+| JM06 | `hit playerHit -> luaJM6PlayerHit`, `hit hshit -> luaJM6HospitalShipHitByPlayer`, `recon usnsubListener -> luaJM6USNSubSighted`, `recon fleetrecon -> luaJM6FleetSpotted` | `adds=4 registered=4 kill_fires=0` | exit 1 | held |
+| LOMP06 | `input` twice, `hit listener_NarwhalDC -> luaNarwhalDC`, `recon listener_SeaplaneSpotted -> luaSeaplaneSpotted` | `adds=4 removes=2 registered=2 kill_fires=0` | exit 1 | held |
+
+**What the census settles.**
+- No measured idle run registers a `kill` listener, so slice 2 is inert on this set.
+- The listeners these runs do register are `hit` (USN01, JM06, LOMP06) and `recon` (JM06,
+  LOMP06).
+- **So the next slice with a measurable effect is firing `hit` and `recon`.** The dispatchers are
+  `00988510` for `hit` (producer `0077CE60`) and `00980E50` for `recon` (no native producer; the
+  recon pass's level changes, `docs/RECON_SENSOR_PASS_BINDING.md`). The subscriptions are `hit`
+  at `0097C2C0` (80h) and `recon` at `0097A220` (4Ch), both still to be read.
+
+**Verdict: `kLuaListenersBound = true`.** Every row is identity, as predicted.

@@ -6,7 +6,7 @@
     {
       "name": "kLuaListenersBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF"
+      "state": "ON (identity pairs)"
     }
   ],
   "substitutions": [
@@ -30,5 +30,12 @@
     }
   ],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [],
+  "pairs": {
+    "USN01": "exit 1",
+    "USN02": "exit 1",
+    "USN04": "exit 1 (no kill entry)",
+    "JM06": "exit 1",
+    "LOMP06": "exit 1"
+  }
 }
