@@ -781,3 +781,63 @@ kDirectorTargetChecksBound=true` (`local\g5_dtc`). The runs are `local\g5off_*.l
   - the category test for slots above 0 (no match above slot 0).
   They are re-checked when a mission queues more than one targeted command or targets an
   aircraft.
+
+## 22. Ranks 4 to 9 read (cc9-gunnery5, 2026-09-29)
+
+**Rank 4, the torpedo threat list `00814420`** (now named `BSP_Ship_CountForeignTorpedoThreats`,
+body 00814420-00814492, `RET`). **Its loop never advances its node.**
+- The walk `00814450..00814489` reads `ESI = [EBX+8]` from the head `EBX = [world+220h]` on
+  every pass, and decrements only the count. 00814390 advances with `MOV EDI,[EDI+4]` at
+  00814402.
+- The list is a push-back list (`00484540`: count +0, head +4, tail +8; 00856360 registers each
+  MTorpedo), so the head is the **oldest** torpedo still registered.
+- **The answer is therefore all or nothing:** the list count when that oldest torpedo is live
+  (`[+310h]` vtable[38h]), not the target's own (`+4F8h`), and threatening the target
+  (`target->vtable[1D0h]`); otherwise 0.
+- The host's stand-in (`game_hosts_ship_ai.cpp`, `torpedoes_threatening_target_00814420`) counts
+  each foreign threatening torpedo instead.
+- **The fix is in the ship-AI host**, which is not this worker's; it is routed to the lead.
+
+**Rank 5, the recon convoy and group-level records.**
+- `00805680` folds class-19h members through `unit+738h`. This host has no convoy membership
+  producer. Only JM08 carries class-19h records (102 on reference h; 0 on USN01, USN02, USN04,
+  USN13 and JM06). Binding it needs a units-host producer for `unit+738h`.
+- `008069A0` (body 008069A0-00806A59) writes each group's member maximum into **the group
+  entity's own** per-side detection record, `unit+1E8h+side*34h+4h`. Then it fires that record's
+  change delegate.
+- In this host the squadron entity is fused with its leader plane
+  (`plane_squadron_registry().squadron_unit`). Publishing would therefore overwrite the leader
+  plane's own detection level, which the image never does.
+- **It stays a record** until a squadron entity separate from its leader exists.
+
+**Rank 6, `0090E6C0`: not a death test.**
+- Body `__thiscall(game+21A0h, unit)`. It appends the unit's id (`+174h`), once, to a per-side
+  uint16 vector in the bot scheduler's record (`+140h+side*284h`, record `+13Ch`).
+- The one reader of that vector found is 00914100 (from `BSP_RepairTask_Update` 0093CA20). It
+  was found by the `IMUL r,r,284h` byte scan over 73 sites, then filtering for `+140h/+144h/+148h`.
+- When the listed ship's health recovers past the `GA_PL` threshold (0050FC30) while alive, it
+  pushes `{id, [00F876A4]}` through 0090E7C0: an award for saving a doomed ship.
+- **Score only; nothing decides a death.** Closed without a pair.
+
+**Rank 7, the death sink `008110F0`: never on the gunfire path.**
+- Its only callers are the Lua natives `Sink` (00891B20) and `SetDeadMeat` (008AC7B0; the name
+  is at 00D0FC7C).
+- The host recorded it once per gunfire death. That record was a mislabel, and it is removed
+  (identity: a record has no effect).
+- The invincibility-floor branch beside it only counts, and is unchanged.
+
+**Rank 8, the award threshold `0050FC30`.** It is a string-keyed award lookup (`GA_PL` above).
+Score only; closed.
+
+**Rank 9, the set-command message `0071C830` / `0077C2A0`: not exact.**
+- In a local session, `0077C2A0` posts to the loopback queue 0076E520. The session pump 00778450
+  drains it at fan-out row 9 (00875E91), after the entity think (00875E64) of the same fixed step
+  (GUN_SHOT_CADENCE 10.7).
+- The host stores a set-command at once (`pending_command`), and it routes its own stage-2 clear
+  (`route_clear_command`) at once. The image's director step of the same fixed step sees neither
+  one. It sees only the raised stage (`director+48h`), which 0071D810 writes directly.
+- **Binding it needs:**
+  - a message queue in the commands host;
+  - a drain call from `pump_session_00778450` in the fixed-step host, which is not this worker's.
+- It is proposed to the lead as its own packet. Section 21's pairs used the host's immediate
+  clear, which is the same modelling every other stage-2 raise in this host uses.

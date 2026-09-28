@@ -8088,9 +8088,11 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         && bsp::sink_is_refused_008110f0(false, invincibility_of(victim))) {
         ++invincibility_sink_refusals;       // 008110F9: inv > 0 refuses the sink
         done("Death::unit_sink_refused_008110f9", 0x008110f9u);
-    } else {
-        record("Death::unit_sink_008110f0", 0x008110f0u);
     }
+    // No sink here: 008110F0's only callers are the Lua natives `Sink`
+    // (00891B20) and `SetDeadMeat` (008AC7B0, name at 00D0FC7C). A gunfire
+    // death never reaches it (docs/GUNNERY_OPEN_ITEMS.md section 22), so the
+    // per-death record it had here was a mislabel, not a missing call.
 
     if (target.last_attacker != 0) {
         target.row.killed_by = unit_state[target.last_attacker - 1].row.name;
