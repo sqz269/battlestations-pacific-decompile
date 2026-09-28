@@ -1192,3 +1192,35 @@ ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=tru
 **Verdict: ON.** `kSetCommandClearAllMessageBound = true`.
 
 **Still open.** The idle tail's own 0071ECF0 make-room runs in the director step, and its drop now posts for row 9 like the others. The only remaining in-place director write in this path is 0071D810's stage store, which the image also makes directly.
+
+## 30. The USN04 dive-release drop: the first dive step against the image (read, cc9-gunnery6)
+
+**Question** (reference i's flag): with the loopback queue ON, USN04's dive-bomb releases fall from 10 of 19 to 4 of 19, while installs stay at 19 of 19. Does the image's dive-bomb task take its first step, relative to the 25 m aim gate, at the same fixed step as the host now, or one step earlier or later?
+
+**The image's timing**, for a PilotSetTarget run by the Lua drain (row 2) of step N:
+1. The MT_COMMAND is posted through 0077D600 / 0077C2A0 / 0076E520 and delivered at row 9 of step N. The SETCMD follows it in the same drain, so the director holds the command from row 9 of N (sections 26-27).
+2. The task is installed by the bot tick 0099ACD0, not at delivery. `docs/PILOT_BOT_TICK_GATES.md` has the retire-then-install; `src/pilot_command_path.cpp` `run_pilot_bot_command_tick_0099acd0` reconstructs the order:
+```
+0099ae72: MOV ECX,dword ptr [ESI + 0x58]   ; head task before
+0099ae7b: PUSH EBX
+0099ae7c: MOV ECX,ESI
+0099ae7e: CALL 0x0099a4c0                  ; retire head tasks that are over
+...
+0099a5e8: mov ecx, esi                     ; list at +58h empty:
+0099a5eb: jmp 0x99a170                     ; tail-jump to BSP_Bot_InstallCommandTask
+...
+0099af1c: CALL 0x009998a0                  ; BSP_PilotBot_Update
+009998fb: CALL EAX                         ; task->vtable[64h](dt), the per-kind arm
+```
+   So a task installed in a tick takes its first arm step in that same tick. The bot tick is the pilot think in the entity think (row 7). The first bot tick after the row-9 delivery is step N+1. **The image's first dive step is therefore at N+1 at the earliest.** It is later only when 0099A4C0 does not yet retire the old head, because its `vtable[38h]` / `[34h]` / `[40h]` predicates keep it. That can delay the install; it cannot bring it forward.
+3. The aim gate itself is not timing-dependent. It is the 25 m window at `00CE3880`, read at `009C60C1` after `009C60BB COMISS XMM0,[ESI+1Ch] / 009C60BF JB 009C611C` (`docs/DIVE_BOMB_TASK.md`, "The gate now").
+
+**The host's timing:**
+- **Before the queue** (OFF, `kSetCommandQueueDelayBound = false`): the install ran inside the issue at row 2 of step N (`after_order_delivery` in place). `run_dive_bomb_task_arm_009c8790` then ran on the pilot think of step N. That is **one fixed step earlier** than the image's earliest.
+- **Now** (ON, `1a6149672` / `c25c1fe7d`): the install runs after the row-9 delivery of step N. The first arm step is the pilot think of step N+1, which is the image's earliest.
+
+**Verdict.** The ON host's first dive step matches the image's earliest, so the difference against the old host is the image's own: the old host started every ordered dive one step early. USN04's 10 -> 4 releases is that one-step start at the aim gate, a knife-edge, and it is recorded as the image's. **Nothing is bound.**
+
+**Still open.**
+- **The retire predicate.** If the old head task survives 0099A4C0 for some ticks, the image starts later still. The candidates are the move-to or squadron task a PilotSetTarget aircraft holds, and `vtable[38h]`, `should_abandon` when `+2F4h == *(+2FCh + 3D0h)` (`docs/BOT_TASKS.md`). The host has no per-kind retire predicates for those tasks. That read, and moving the install into the retire path, belongs to the units and script-orders hosts (`docs/SENTITY_INIT_ATTACH_ORDER.md` 22.7).
+- **Reference i** should take USN04's releases from an ON build and cite this section.
