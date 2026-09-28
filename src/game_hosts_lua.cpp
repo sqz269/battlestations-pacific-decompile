@@ -321,6 +321,12 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_unit_get_attack_target.
     const bool attack_target_row = kLuaUnitGetAttackTargetBound
         && dispatch_row.address == 0x008a6de0u;
+    // Packet cc9_squadron_set_speed.
+    const bool squadron_speed_row = kLuaSquadronSetSpeedBound
+        && dispatch_row.address == 0x0089f780u;
+    // Packet cc9_is_class_changed.
+    const bool class_changed_row = kLuaIsClassChangedBound
+        && dispatch_row.address == 0x008cc4b0u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -444,6 +450,13 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (class_changed_row && !host->error_replay()) {
+        return host->run_is_class_changed_008cc4b0(state, argc);
+    }
+    if (squadron_speed_row) {
+        if (!host->error_replay()) host->run_squadron_set_speed_0089f780(state, argc);
+        return 0;
     }
     if (attack_target_row && !host->error_replay()) {
         return host->run_unit_get_attack_target_008a6de0(state, argc);
@@ -4379,6 +4392,82 @@ int GameMissionLuaHost::run_unit_get_attack_target_008a6de0(lua_State* state,
     return 1;
 }
 
+// Packet cc9_squadron_set_speed. 0089F780 SquadronSetSpeed(squadron, speed): argument 0
+// through 00888AA0, argument 1 as a number (00B66270), then for i below [entity+3CCh]
+// member[i] = i < 5 ? [entity+3D0h+4i] : null and member->vtable[3Ch](speed)
+// (0089F8CA..0089F8FF). There is no class test. On every plane class vtable[3Ch] is
+// 0074E1E0, which calls 007D9E80 on unit+AB0h. Returns no value.
+// SUBSTITUTIONS (labelled): the members are the squadron registry's member_units that
+// are still active, standing in for the compacted +3D0h array; an entity with no
+// squadron record is counted unresolved and nothing is called.
+int GameMissionLuaHost::run_squadron_set_speed_0089f780(lua_State* state, int argument_count) {
+    ++summary_.squadron_speed_calls;
+    const float speed = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.squadron_speed_unresolved;
+        log_.notef("  SquadronSetSpeed 0089f780: entity id %d has no units-host slot (packet "
+            "cc9_squadron_set_speed)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const bsp::PlaneSquadronHostRecord* record = nullptr;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == index) {
+            record = &r;
+            break;
+        }
+    }
+    const GameUnitRow* row = units->unit_row(index);
+    if (record == nullptr) {
+        ++summary_.squadron_speed_unresolved;
+        log_.notef("  SquadronSetSpeed 0089f780: \"%s\" has no squadron record (packet "
+            "cc9_squadron_set_speed)", row != nullptr ? row->name.c_str() : "?");
+        return 0;
+    }
+    std::size_t planes = 0;
+    std::size_t live = 0;
+    for (std::size_t member : record->member_units) {
+        if (member == bsp::kPlaneSquadronNoUnit || !units->unit_active(member)) continue;
+        if (live++ >= 5) break;  // 0089F8D8: a sixth member would be a null object
+        if (units->set_plane_forward_speed_007d9e80(member, speed)) ++planes;
+    }
+    summary_.squadron_speed_planes += planes;
+    log_.notef("  SquadronSetSpeed 0089f780: \"%s\" speed=%.2f planes=%zu (packet "
+        "cc9_squadron_set_speed)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(speed), planes);
+    log_.implemented("MissionLuaNative::SquadronSetSpeed", "0089f780");
+    return 0;
+}
+
+// Packet cc9_is_class_changed. 008CC4B0 IsClassChanged(id): argument 0 as an integer
+// (00B66290, 008CC5AF), then 00437F50 and CMP [EAX+ESI*4+2010h],ESI / SETNZ
+// (008CC5CB..008CC5D6) into 00B66450 (lua_pushboolean). One result.
+// The inverse map at registry+2010h is written only by 00506550 and 00592640. Both reset
+// all 800h pairs to the identity and then store one pair, the player's chosen ship:
+// 00592640 (the `continue` footer command) takes it from the profile's record for the
+// selected mission (007FC490 over 005806A0).
+// SUBSTITUTION (labelled): this process does not model that record, and the footer
+// command is recorded unimplemented, so the map here is the identity and every answer
+// is false. An id outside the 800h entries answers false, where the image would read
+// past the map.
+int GameMissionLuaHost::run_is_class_changed_008cc4b0(lua_State* state, int argument_count) {
+    ++summary_.class_changed_calls;
+    static const bsp::VehicleClassIndexMap identity_map = [] {
+        bsp::VehicleClassIndexMap m;
+        m.reset_identity_00592652();
+        return m;
+    }();
+    const int id = argument_count >= 1 ? static_cast<int>(::lua_tonumber(state, 1)) : 0;
+    const bool in_range = id >= 0 && id < bsp::kVehicleClassIndexMapSize;
+    const bool changed = in_range && identity_map.to_type_id(id) != id;
+    if (changed) ++summary_.class_changed_true;
+    ::lua_pushboolean(state, changed ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsClassChanged", "008cc4b0");
+    return 1;
+}
+
 // Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
 // 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
 // vtable[114h] director exists, 0071E050(flag) -> director+221h.
@@ -5728,6 +5817,14 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.attack_target_calls, summary_.attack_target_fire_arm,
         summary_.attack_target_command_arm, summary_.attack_target_pushed,
         summary_.attack_target_nil, summary_.attack_target_unresolved);
+    log_.notef("summary mission script squadron speed bound=%d calls=%llu planes=%llu "
+        "unresolved=%llu (0089F780 -> 0074E1E0 -> 007D9E80, packet cc9_squadron_set_speed)",
+        kLuaSquadronSetSpeedBound ? 1 : 0, summary_.squadron_speed_calls,
+        summary_.squadron_speed_planes, summary_.squadron_speed_unresolved);
+    log_.notef("summary mission script class changed bound=%d calls=%llu true=%llu "
+        "(008CC4B0, registry+2010h, packet cc9_is_class_changed)",
+        kLuaIsClassChangedBound ? 1 : 0, summary_.class_changed_calls,
+        summary_.class_changed_true);
     log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
         "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
         kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,
