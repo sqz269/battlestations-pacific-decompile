@@ -2036,7 +2036,7 @@ player):
 - OFF is this tree's build of `8a64f9a18`.
 - ON is `pair_export --flip kLuaSquadronSetSpeedBound=true` (`local/ss_on`).
 - The logs are `local/ss_{off,on}_<mission>.log`. The ON USN13 run was repeated after a
-  renderer-init outage (every binary failed at `CreateDevice`, hr `0x88760868`, 22:20 to 22:46).
+  renderer-init outage (every binary failed at `CreateDevice`, hr `0x88760868`, cleared by 22:46 local time).
 
 | row | result | verdict |
 | --- | --- | --- |
@@ -2084,6 +2084,29 @@ player):
 | row | prediction |
 | --- | --- |
 | LOMP06 1200/1000, JM06 3200/3000, USN13 3200/3000 | **exit 1** on each. `IsClassChanged` goes `UNIMPLEMENTED` -> concrete with the same call count, and `true=0`. Every caller's branch is unchanged, because false and nil are both falsy |
+
+### IsClassChanged pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `10422054f`.
+- ON is `pair_export --flip kLuaIsClassChangedBound=true` (`local/cc_on`).
+- The logs are `local/cc_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| LOMP06 1200/1000 | `calls=1 true=0`, exit 1. The only other line is the movie camera pose at frame 441 (z -5961.5 -> -5961.4). A repeat of the OFF run on the same binary (`cc_off2_lomp06.log`) gives -5961.4, so it is run-to-run noise | held |
+| JM06 3200/3000 | `calls=4 true=0`, exit 1, death rows and unit table identical | held |
+| USN13 3200/3000 | `calls=42 true=0`, exit 1, death rows and unit table identical | held |
+
+The 47 calls match the refreshed ranking.
+
+**Census defect, fixed in the same commit.** The native table showed these calls as
+`UNIMPLEMENTED` with doubled counts (1 -> 2, 4 -> 8, 42 -> 84). The four rows this worker added
+(`UnitGetAttackTarget`, `SquadronSetSpeed`, `IsClassChanged`, `SetSubmarineDepthLevel`) were
+missing from the dispatcher's `handled` list. The unhandled path only logs, so no value was
+pushed twice and behaviour is unaffected. The rows are now in the list.
+
+**Verdict: `kLuaIsClassChangedBound = true`.**
 
 ## SetSubmarineDepthLevel, 00893F40 (packet `cc9_set_submarine_depth_level`, `kLuaSetSubmarineDepthLevelBound`, committed OFF)
 

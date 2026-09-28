@@ -220,7 +220,7 @@ inline constexpr bool kLuaSquadronSetSpeedBound = true;  // ON: pairs held (docs
 // the inverse class-index map 00592640 and 00506550 reset to the identity and then
 // remap one pair in. True: route the row to run_is_class_changed_008cc4b0. False:
 // unimplemented (nil, which every caller in this installation reads as false).
-inline constexpr bool kLuaIsClassChangedBound = false;
+inline constexpr bool kLuaIsClassChangedBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_set_submarine_depth_level (docs/LUA_BINDING_MISSION.md,
 // "SetSubmarineDepthLevel, 00893F40"). SetSubmarineDepthLevel(entity, level) reads the

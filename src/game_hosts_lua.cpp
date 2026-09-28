@@ -358,6 +358,7 @@ int binding_trampoline(lua_State* state) {
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
+        || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
