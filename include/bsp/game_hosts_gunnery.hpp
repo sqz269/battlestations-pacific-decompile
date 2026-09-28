@@ -185,6 +185,11 @@ struct GameGunRow {
     std::vector<bsp::GunFiringArc> arcs;   // platform+3Ch, from `Windows`
     float rest_horz{0.0f};            // "RestAngles[1]", platform+94h
     float rest_vert{0.0f};            // "RestAngles[2]", platform+90h
+    // False when the platform authors no RestAngles table: the image's +94h then
+    // keeps FLT_MAX (00D7A278) and 0085AD00 / 0085A3D0 take their unauthored arms.
+    bool rest_authored{false};
+    // bot+54h, 008FBCE0's idle timer (kGunIdleRestBound), seeded as 0072BBD0 does.
+    float idle_elapsed{999.0f};        // == kGunIdleTimerSeed, declared below
     bsp::GunTurningAngles angles{};   // +480h/+484h/+494h/+498h
     bsp::GunRotationSpeeds speeds{};  // descriptor+88h/+8Ch
     bsp::GunFireRequestState fire{};  // +454h/+478h/+450h/+414h
@@ -316,6 +321,31 @@ inline constexpr bool kTorpedoSupplyTickBound = true;
 // host applies it at the start of its next fixed step (the image calls
 // 0081F8B0 inside the native). False: the native stays an unimplemented record.
 inline constexpr bool kShipSetTorpedoStockBound = true;
+
+// Packet cc9_gun_rest_angles (docs/GUN_REST_ANGLES.md). True: a targetless gun
+// follows the image's idle rule instead of commanding its rest angles every
+// tick. 008FBCE0, step 3 of every gun-bot prologue, keeps a per-bot timer
+// seeded 999.0 (00CF4888 at 0072BBD0), held at 0 while the bot has a target and
+// otherwise advanced by dt; past NoTargetTimeUntilRest, with the side gate
+// passing, it is pinned at FLT_MAX and a gun answering IsKindOf(22h) gets ONE
+// 0085AD00, which does nothing when the platform's RestAngles were not
+// authored (+94h == FLT_MAX, 00D7A278). A failing side gate winds a pinned timer
+// back to a quarter of the limit (00D7A348). Every other targetless tick issues
+// no angle command: the gun holds. An unauthored turning gun spawns at the
+// clamped midpoint of its first traverse-and-fire arc (0085A3D0), not at 0.
+// LABELLED SUBSTITUTIONS: the limit is kGunNoTargetTimeUntilRest below, not a
+// robots.lua descriptor read; the side gate is the host's player-seat test; the
+// 22h class test is the category rule (not PLANEGUN, BOMBPLATFORM, CATAPULT),
+// exact on this installation's device tables; one timer per gun row stands in
+// for one per bot. False: every targetless gun commands rest_horz/rest_vert
+// each tick, rest angles default to 0 and the gun spawns there.
+inline constexpr bool kGunIdleRestBound = false;
+// robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
+// AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
+// DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
+inline constexpr float kGunNoTargetTimeUntilRest = 20.0f;
+// 00CF4888, the idle timer's seed at 0072BBD0 (bot+54h).
+inline constexpr float kGunIdleTimerSeed = 999.0f;
 
 // The queue between the script host's ShipSetTorpedoStock and the gunnery host.
 // `unit_index` is the units host's index. Process-wide, drained by
@@ -567,6 +597,15 @@ struct GameGunnerySummary {
     // Ticks on which the gun actually held a target, split out of the
     // per-gun-per-tick angle tallies which carry no target information.
     unsigned long long angle_refusals_targeted{0};
+    // Packet cc9_gun_rest_angles: targetless ticks that issued no angle command,
+    // 0085AD00 calls made, calls that found RestAngles unauthored, the side
+    // gate's wind-backs, and the 0085A3D0 spawn seeds (and seeds with no arc).
+    unsigned long long idle_holds{0};
+    unsigned long long idle_rests{0};
+    unsigned long long idle_rests_unauthored{0};
+    unsigned long long idle_windbacks{0};
+    unsigned long long rest_seeds{0};
+    unsigned long long rest_seed_no_arc{0};
     unsigned long long want_fire_no_accept{0};
     unsigned long long want_fire_no_settle{0};
     unsigned long long want_fire_no_window{0};

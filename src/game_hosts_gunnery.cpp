@@ -488,6 +488,72 @@ constexpr float kHalfPi = 1.57079637050628662109375f;
 constexpr float kQuarterPi = 0.785398185253143310546875f;  // 00CEB5A8
 constexpr float kGravity = 9.8100004196166992187500f;      // 00CF9058
 
+// Packet cc9_gun_rest_angles: IsKindOf(22h), the turning-gun subtree (22h, MRTGun
+// 23h, MSTGun 24h, MDepthChargeLauncher 27h; tests 00730ED0, 006FDF20, 006FE050).
+// LABELLED SUBSTITUTION: the host keeps no class id per gun. The class comes from
+// the device's Lua `Type` (00443090), and in this installation's arcade and
+// realistic deviceclasses.lua `Type` follows `Function` exactly: PLANEGUN is
+// Rapid_Fixed_Slave_Gun (21h), BOMBPLATFORM is BombPlatform/MultiBombPlatform
+// (25h/26h), CATAPULT is Catapult (28h), and every other Function is a turning
+// gun or the depth-charge launcher. docs/GUN_REST_ANGLES.md 4.1.
+bool gun_answers_turning_22h(int category) noexcept {
+    return category != static_cast<int>(bsp::GunneryCategory::kPlaneGun)
+        && category != static_cast<int>(bsp::GunneryCategory::kBombPlatform)
+        && category != static_cast<int>(bsp::GunneryCategory::kCatapult);
+}
+
+// 0085A6AC..0085A7xx: each seeded angle is FMOD'ed by 2pi (00CE3828, the CRT
+// fmod at 00BF857A), stored as a float, then moved by 2pi into (-pi, pi]
+// (00CE3D18 = -pi, 00CE3D28 = pi, all three doubles of the float pi).
+float seed_wrap_0085a3d0(float x) noexcept {
+    constexpr double kNegPi = -3.1415927410125732;   // 00CE3D18
+    constexpr double kPosPi = 3.1415927410125732;    // 00CE3D28
+    constexpr double kTwoPi = 6.2831854820251465;    // 00CE3828
+    const float r = static_cast<float>(std::fmod(static_cast<double>(x), kTwoPi));
+    if (!(kNegPi < static_cast<double>(r))) {        // 0085A6D1 FCOMIP / JB
+        return static_cast<float>(static_cast<double>(r) + kTwoPi);
+    }
+    if (static_cast<double>(r) > kPosPi) {           // 0085A6EB FCOMI / JBE
+        return static_cast<float>(static_cast<double>(r) - kTwoPi);
+    }
+    return r;
+}
+
+// 0085A3D0's unauthored arm (platform+94h == FLT_MAX): walk the platform's arcs
+// (+3Ch, stride 14h) for the first with bits 0 and 1 both set, and seed each
+// axis at (min + max) * 0.5 (00D7A280) clamped into [min, max], then wrap. The
+// current, target and previous angles all take it. Returns false when no arc
+// qualifies: the image then reads the record one past the list's end, which the
+// host does not reproduce; the gun keeps (0, 0) and the summary counts it.
+bool seed_angles_from_first_arc_0085a3d0(GameGunRow& gun) noexcept {
+    const bsp::GunFiringArc* first = nullptr;
+    for (const bsp::GunFiringArc& arc : gun.arcs) {
+        if ((arc.flags & bsp::kGunArcFlagTraverse) != 0
+            && (arc.flags & bsp::kGunArcFlagFire) != 0) {
+            first = &arc;
+            break;
+        }
+    }
+    if (first == nullptr) return false;
+    auto midpoint = [](float lo, float hi) {
+        const float mid = static_cast<float>(
+            (static_cast<double>(lo) + static_cast<double>(hi)) * 0.5);
+        float v = lo;                      // 0085A7xx: lo <= mid ? (hi < mid ? hi : mid) : lo
+        if (lo <= mid) {
+            v = mid;
+            if (hi < mid) v = hi;
+        }
+        return v;
+    };
+    const float h = seed_wrap_0085a3d0(midpoint(first->min_horz, first->max_horz));
+    const float v = seed_wrap_0085a3d0(midpoint(first->min_vert, first->max_vert));
+    gun.angles.horz = h;          // +480h
+    gun.angles.target_horz = h;   // +494h
+    gun.angles.vert = v;          // +484h
+    gun.angles.target_vert = v;   // +498h
+    return true;
+}
+
 // 00470470's reset leaves +34h at -1, which is the hull segment a direct
 // segment hit keeps: all three known shapes write -1 (docs/HIT_NARROWPHASE.md).
 constexpr int kDirectHitHullSegment = -1;
@@ -2857,6 +2923,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             }
             gun.rest_horz = flat_scaled(type_id, make("rh"), kAngleScale, 0.0f);
             gun.rest_vert = flat_scaled(type_id, make("rv"), kAngleScale, 0.0f);
+            // The reader writes `rh` only when RestAngles is a table, so its absence
+            // is the image's FLT_MAX at platform+94h (docs/GUN_REST_ANGLES.md).
+            gun.rest_authored = flat(type_id, make("rh"), 0x7FFFFFFF) != 0x7FFFFFFF;
 
             // Packet cc9_aa_lead: Bullet[2], read for every gun, used only by a
             // sub-type 6 gun against a plane (dp_air_ammo).
@@ -3020,6 +3089,17 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.angles.vert = gun.rest_vert;
             gun.angles.target_horz = gun.rest_horz;
             gun.angles.target_vert = gun.rest_vert;
+            if (kGunIdleRestBound && !gun.rest_authored
+                && gun_answers_turning_22h(gun.category)) {
+                // 0085A3D0's unauthored arm: the first arc with traverse and fire
+                // set, the clamped midpoint of each axis, wrapped into (-pi, pi].
+                if (seed_angles_from_first_arc_0085a3d0(gun)) {
+                    ++summary.rest_seeds;
+                } else {
+                    ++summary.rest_seed_no_arc;
+                }
+                done("TurningGun::seed_angles_0085a3d0", 0x0085a3d0u);
+            }
             gun.fire.barrel_timers.assign(static_cast<std::size_t>(gun.barrel_num), 0.0f);
             if (kShipPlatformAttachmentBound
                 && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
@@ -4663,6 +4743,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // slot. A gun the player's seat holds gets no bot target, angle or
         // trigger; the angles and trigger come from message 79h instead.
         const bool player_seat = kPlayerGunSeatBound && !slot_ai_held_00927f10(gun.seat_1ac);
+        // bot+38h/+39h as 008FBCE0 sees them: after the prologue's validity drop
+        // (step 2), before the side gate (step 4).
+        const bool bot_has_target = have_target;
         if (player_seat) {
             have_target = false;
             ++seat_held_ticks;
@@ -4946,9 +5029,42 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
         float accepted_mark = 0.0f;
-        const bool accepted = bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
-            gun.speeds, want_horz, want_vert, accepted_mark);
-        if (accepted) {
+        bool command_angles = true;
+        if (kGunIdleRestBound) {
+            // 008FBCE0. The rest arm runs only through the side gate; a player
+            // seat's angles still come from message 79h above.
+            bsp::GunBotIdleTimer timer;
+            timer.elapsed = gun.idle_elapsed;
+            const bool side_enabled = slot_ai_held_00927f10(gun.seat_1ac);
+            const bool was_pinned = timer.elapsed == bsp::kGunBotFloatMax;
+            const bsp::GunBotIdleAction action = bsp::gun_bot_idle_timer_008fbce0(timer,
+                bot_has_target, side_enabled, gun_answers_turning_22h(gun.category),
+                kGunNoTargetTimeUntilRest, dt);
+            gun.idle_elapsed = timer.elapsed;
+            done("GunBot::idle_timer_008fbce0", 0x008fbce0u);
+            if (was_pinned && !side_enabled && !bot_has_target) ++summary.idle_windbacks;
+            if (!bot_has_target && !player_seat) {
+                command_angles = false;
+                if (action == bsp::GunBotIdleAction::kAimToRest) {
+                    ++summary.idle_rests;
+                    done("TurningGun::aim_to_rest_angles_0085ad00", 0x0085ad00u);
+                    if (gun.rest_authored) {
+                        want_horz = gun.rest_horz;   // platform+94h
+                        want_vert = gun.rest_vert;   // platform+90h
+                        command_angles = true;
+                    } else {
+                        ++summary.idle_rests_unauthored;   // 0085AD4x: FLT_MAX, no call
+                    }
+                }
+                if (!command_angles) ++summary.idle_holds;
+            }
+        }
+        const bool accepted = command_angles
+            && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
+                gun.speeds, want_horz, want_vert, accepted_mark);
+        if (!command_angles) {
+            // No 0085ABA0 call this tick: neither tally moves.
+        } else if (accepted) {
             ++gun.angle_sets;
             ++summary.angle_sets;
         } else {
@@ -8595,6 +8711,12 @@ void GameGunneryHost::report() {
         s.contact_considered, s.contact_reject_side, s.contact_reject_visible,
         s.contact_reject_dead, s.contact_reject_kind, s.contact_admit_ship,
         s.contact_admit_plane);
+    host.log.notef("summary mission gunnery idle rest bound=%d holds=%llu rests=%llu "
+        "rests_unauthored=%llu windbacks=%llu spawn_seeds=%llu seeds_no_arc=%llu "
+        "limit=%.1f (008FBCE0 / 0085AD00 / 0085A3D0, packet cc9_gun_rest_angles)",
+        kGunIdleRestBound ? 1 : 0, s.idle_holds, s.idle_rests, s.idle_rests_unauthored,
+        s.idle_windbacks, s.rest_seeds, s.rest_seed_no_arc,
+        static_cast<double>(kGunNoTargetTimeUntilRest));
     host.log.notef("summary mission gunnery targeted refusals=%llu no_accept=%llu "
         "no_settle=%llu no_window=%llu", s.angle_refusals_targeted,
         s.want_fire_no_accept, s.want_fire_no_settle, s.want_fire_no_window);
