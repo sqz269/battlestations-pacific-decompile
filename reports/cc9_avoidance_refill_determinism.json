@@ -1,0 +1,17 @@
+{
+  "packet": "cc9_avoidance_refill_determinism",
+  "doc": "docs/AVOIDANCE_REFILL_DETERMINISM.md",
+  "code_changed": "diagnostic only: BSP_AVOID_REFILL_TRACE in AvoidSearchBinding::avoid_zone_query_refresh_009d7050 (src/game_hosts_ship_ai.cpp); nothing when unset",
+  "addresses": {
+    "009D7050": "refresh: after a layer mismatch the old extent max-min is kept when larger (009D70F9..7101)",
+    "009E4401": "block constructor 009E4401..009E4437 writes enable, layer -1 and the list, never the bounds +A28h..+A34h"
+  },
+  "runs": {
+    "identical_pair": "local/ar_a_usn04.log / ar_b_usn04.log: refills 332 / 326, queries 80960 both, pair_diff exit 0",
+    "traced_pair": "local/ar_ta_usn04.log / ar_tb_usn04.log: refills 339 / 350; every query input identical; first-query before-bounds are heap garbage"
+  },
+  "verdict": "the variation is the image's own (uninitialised heap bounds read by the first refill); no binding; the pair_diff mask stays",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}

@@ -24,6 +24,7 @@
 #include <cmath>
 #include <deque>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <memory>
@@ -6231,8 +6232,34 @@ public:
     void avoid_zone_query_refresh_009d7050(std::size_t index,
         const bsp::ShipAiAvoidZoneQuery& query) override {
         auto& storage = *controller_.avoid_search;
-        if (owner_.zones.refresh_search(storage.cache(index), storage.list(index), query))
-            ++owner_.avoidance_refills;
+        // Packet cc9_avoidance_refill_determinism: a diagnostic only. With
+        // BSP_AVOID_REFILL_TRACE set, every query prints its inputs and the
+        // cache bounds before and after, as hex floats, so two runs diff exactly.
+        static const bool trace = [] {
+            char* text = nullptr;
+            std::size_t length = 0;
+            const bool on = _dupenv_s(&text, &length, "BSP_AVOID_REFILL_TRACE") == 0 &&
+                text != nullptr && text[0] != '\0';
+            std::free(text);
+            return on;
+        }();
+        const bsp::ShipAiAvoidZoneSearcher before = storage.cache(index);
+        const bool refilled =
+            owner_.zones.refresh_search(storage.cache(index), storage.list(index), query);
+        if (refilled) ++owner_.avoidance_refills;
+        if (trace) {
+            const bsp::ShipAiAvoidZoneSearcher& after = storage.cache(index);
+            owner_.log.notef("avoid refresh q=%llu unit=%zu x=%a z=%a half=%a layer=%d "
+                "refilled=%d before=(%a %a %a %a %d) after=(%a %a %a %a)",
+                owner_.avoidance_queries, index_, static_cast<double>(query.x),
+                static_cast<double>(query.z), static_cast<double>(query.half_width),
+                static_cast<int>(query.layer_key), refilled ? 1 : 0,
+                static_cast<double>(before.min_x), static_cast<double>(before.min_z),
+                static_cast<double>(before.max_x), static_cast<double>(before.max_z),
+                static_cast<int>(before.layer_key),
+                static_cast<double>(after.min_x), static_cast<double>(after.min_z),
+                static_cast<double>(after.max_x), static_cast<double>(after.max_z));
+        }
         ++owner_.avoidance_queries;
         owner_.done("ShipAiAvoidSearch::query_refresh", 0x009d7050u);
     }
