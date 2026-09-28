@@ -253,7 +253,7 @@ inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (d
 // clock + 1e-4 (00CE3C68) for ordnance kinds 8..0Fh, 12h and 13h. True: the host's
 // hit dispatcher applies it, the kind being GameGunneryHitEvent::ordnance_kind.
 // False: every hit is evaluated.
-inline constexpr bool kLuaHitRateLimitBound = false;
+inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h

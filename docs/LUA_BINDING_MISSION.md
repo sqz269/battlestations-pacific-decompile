@@ -2450,3 +2450,21 @@ show `fires=0` on every row. No `hit` callback fires today, so none can be suppr
 | JM06 3200/3000 | `events=320 fires=0` | **exit 1.** `throttled` counts the repeat gun hits on a pair within 2 s, and no callback changes |
 | USN01 3200/3000 | `events=538 fires=0` | **exit 1**, as above. `ConLeadListener` wants torpedo, bomb or rocket hits, which are unlimited anyway |
 | LOMP06 1200/1000 | `events=0` | **exit 1**, and `throttled=0` |
+
+#### Rate-limit pairs and verdict
+
+- OFF is this tree's build of `c88401ac4`.
+- ON is `pair_export --flip kLuaHitRateLimitBound=true` (`local/rl_on`).
+- The logs are `local/rl_{off,on}_<mission>.log`.
+
+| row | ON census | pair_diff | verdict |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | `passed=73 throttled=247 pairs=18` of 320 hits | exit 1: only the summary line moves | held |
+| USN01 3200/3000 | `passed=74 throttled=464 pairs=20` of 538 hits | exit 1: only the summary line | held |
+| LOMP06 1200/1000 | `passed=0 throttled=0` | exit 1: the summary line and the known frame-441 camera noise | held |
+
+Three quarters of the hits on these rows repeat a (victim, attacker) pair within 2 s. Once a gun
+`hit` listener exists on a row, it fires about a quarter as often as the host would have fired it
+before.
+
+**Verdict: `kLuaHitRateLimitBound = true`.**
