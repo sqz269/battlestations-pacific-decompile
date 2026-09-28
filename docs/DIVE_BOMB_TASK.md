@@ -5401,6 +5401,23 @@ player, present interval immediate):
 `member_units` (the removes-dead slot clear) but is not yet in `departed_units` (the compaction).
 For that one tick it resolves no record and takes its own slot. **LABELLED**, one tick per death.
 
+**CLOSED by `kDeadPlaneBotThinkBound` (cc9-lua7, 2026-09-28).**
+- `0099ACD0` exits at `0099ACE1`/`0099ACEB` once `+5Dh`/`+60h` are set. The host now takes both
+  bytes in the death step itself, before the plane's fixed step runs its think, so a dying plane
+  draws nothing in its death tick (docs/PLANE_DEATH_MODES.md section 7).
+- **The measurement.** One USN04 4700/4500 run of main at `b0e813aed`, merged into this tree
+  (`local/l7_dt_usn04.log` in worktree cc9-lua7, reference launch lines):
+  - Seven Val wingmen die: `#1.1|.-3`, `#3.1|.-4`, `#3.1|.-2`, `#3.1|.-3`, `#1.1|.-2`, `#5.1|.-3`
+    and `#7.1|.-4`. Five of them log a `dead plane bot think:` gate line; the other two died by
+    `explosion` and were removed in the same step.
+  - None of the seven has a `dive profile draw` line. Only the five squadron leaders draw (movieval
+    and Val `#1.1`, `#3.1`, `#5.1`, `#7.1`). cc9-lua6's ON log (`dw_on_usn04.log`) had five dead
+    wingmen with `draws=1` each.
+- **`block_reads=0`.** The departed-wingman resolution above no longer runs on USN04, because a dead
+  plane no longer reaches the dive profile at all. `kDepartedWingmanTaskBlockBound` stays ON. It is
+  now inert wherever a departure follows a death, and it would matter only for a plane removed
+  from its squadron while alive (`007F3BA0`, `008A20E0`). Neither of cc9-lua6's two fixes is needed.
+
 Gameplay is identical on all three rows. Only dead aircraft steer differently, and nothing compared
 moved.
 

@@ -1,0 +1,467 @@
+{
+ "packet": "cc9_reference_rebaseline_10",
+ "doc": "docs/GAME_EXECUTABLE.md, 'Mission reference baselines, 2026-09-28 j (main d384f1ef5)'",
+ "tree": "worktree cc9-gunnery8",
+ "binary": {
+  "path": "local/rb10/build/win32/Release/bsp_game.exe",
+  "sha256": "e5be1a9906b30c02af143adc7935859cc3b4050992b33e418873da8adca901cd",
+  "export": "tools/pair_export.py --commit d384f1ef5, no flip"
+ },
+ "env": {
+  "BSP_GUNNERY_RNG_STREAMS": "1",
+  "BSP_DEATH_TABLE": "1",
+  "lockstep": 0.05,
+  "player": "idle",
+  "present": "immediate"
+ },
+ "rows": [
+  {
+   "mission": "USN04",
+   "frames": "4700/4500",
+   "log": "local/rb10_usn04.log",
+   "damage": "13347.8",
+   "deaths": "40",
+   "hit records": "749",
+   "hull hits": "138",
+   "shots": "10512",
+   "first hit": "100.85 s",
+   "torpedo-task releases": "8 of 16",
+   "dive-bomb-task releases": "4 of 19",
+   "plane water contacts": "11",
+   "controlled moved": "Lexington-class01 3650.23",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "517",
+   "i": {
+    "damage": "11740.0",
+    "deaths": "43",
+    "hit records": "798",
+    "hull hits": "115",
+    "shots": "9611",
+    "first hit": "101.10 s",
+    "torpedo-task releases": "7 of 16",
+    "plane water contacts": "14",
+    "controlled moved": "Lexington-class01 3631.06",
+    "unimplemented": "512"
+   }
+  },
+  {
+   "mission": "USN01",
+   "frames": "3200/3000",
+   "log": "local/rb10_usn01.log",
+   "damage": "2833.5",
+   "deaths": "5",
+   "hit records": "516",
+   "hull hits": "79",
+   "shots": "1534",
+   "first hit": "49.10 s",
+   "torpedo-task releases": "2 of 5",
+   "dive-bomb-task releases": "2 of 2",
+   "plane water contacts": "3",
+   "controlled moved": "ScoutDauntless 4244.02",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "539",
+   "i": {
+    "damage": "2250.0",
+    "hit records": "538",
+    "hull hits": "77",
+    "shots": "1498",
+    "first hit": "53.60 s",
+    "controlled moved": "ScoutDauntless 4582.21",
+    "unimplemented": "515"
+   }
+  },
+  {
+   "mission": "USN04 (E2)",
+   "frames": "9200/9000",
+   "log": "local/rb10_e2.log",
+   "damage": "15075.1",
+   "deaths": "51",
+   "hit records": "861",
+   "hull hits": "165",
+   "shots": "12105",
+   "first hit": "100.85 s",
+   "torpedo-task releases": "8 of 16",
+   "dive-bomb-task releases": "6 of 19",
+   "plane water contacts": "19",
+   "controlled moved": "Lexington-class01 6369.71",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "522",
+   "i": {
+    "damage": "12797.1",
+    "hit records": "863",
+    "hull hits": "132",
+    "shots": "10779",
+    "first hit": "101.10 s",
+    "torpedo-task releases": "7 of 16",
+    "dive-bomb-task releases": "7 of 19",
+    "controlled moved": "Lexington-class01 5627.93",
+    "unimplemented": "516"
+   }
+  },
+  {
+   "mission": "USN02",
+   "frames": "9200/9000",
+   "log": "local/rb10_usn02.log",
+   "damage": "54395.4",
+   "deaths": "11",
+   "hit records": "1693",
+   "hull hits": "397",
+   "shots": "2047",
+   "first hit": "19.30 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Kortenaer 997.79",
+   "mission end": "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)",
+   "unimplemented": "507",
+   "i": {
+    "damage": "52340.6",
+    "deaths": "10",
+    "hit records": "4324",
+    "hull hits": "394",
+    "shots": "2582",
+    "first hit": "19.20 s",
+    "controlled moved": "Kortenaer 749.27",
+    "unimplemented": "501"
+   }
+  },
+  {
+   "mission": "JM06",
+   "frames": "3200/3000",
+   "log": "local/rb10_jm06.log",
+   "damage": "4730.3",
+   "deaths": "2",
+   "hit records": "284",
+   "hull hits": "264",
+   "shots": "352",
+   "first hit": "68.60 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Fletcher-class 08 1234.84",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "518",
+   "i": {
+    "damage": "2720.7",
+    "deaths": "1",
+    "hit records": "127",
+    "hull hits": "109",
+    "shots": "201",
+    "first hit": "68.65 s",
+    "controlled moved": "Fletcher-class 08 1227.87",
+    "unimplemented": "505"
+   }
+  },
+  {
+   "mission": "JM08",
+   "frames": "3200/3000",
+   "log": "local/rb10_jm08.log",
+   "damage": "4149.8",
+   "deaths": "11",
+   "hit records": "361",
+   "hull hits": "106",
+   "shots": "2324",
+   "first hit": "5.25 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "3",
+   "controlled moved": "Auilick 1495.61",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "493",
+   "i": {
+    "damage": "3681.8",
+    "deaths": "9",
+    "hit records": "342",
+    "hull hits": "86",
+    "shots": "2091",
+    "plane water contacts": "1",
+    "unimplemented": "486"
+   }
+  },
+  {
+   "mission": "USN13",
+   "frames": "3200/3000",
+   "log": "local/rb10_usn13.log",
+   "damage": "8451.7",
+   "deaths": "27",
+   "hit records": "591",
+   "hull hits": "200",
+   "shots": "6461",
+   "first hit": "94.55 s",
+   "torpedo-task releases": "1 of 60",
+   "dive-bomb-task releases": null,
+   "plane water contacts": "5",
+   "controlled moved": "Enterprise 2032.55",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "504",
+   "i": {
+    "damage": "6222.6",
+    "deaths": "20",
+    "hit records": "371",
+    "hull hits": "89",
+    "shots": "3626",
+    "first hit": "96.65 s",
+    "controlled moved": "Enterprise 1845.78",
+    "unimplemented": "501"
+   }
+  },
+  {
+   "mission": "BSM01",
+   "frames": "3200/3000",
+   "log": "local/rb10_bsm01.log",
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "HenryPT 0.00",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "471",
+   "i": {
+    "unimplemented": "470"
+   }
+  },
+  {
+   "mission": "LOMP06",
+   "frames": "1200/1000",
+   "log": "local/rb10_lomp06.log",
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "6",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Narwhal 649.66",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "482",
+   "i": {
+    "shots": "14",
+    "controlled moved": "Narwhal 450.86",
+    "unimplemented": "485"
+   }
+  },
+  {
+   "mission": "LOMP10",
+   "frames": "3200/3000",
+   "log": "local/rb10_lomp10.log",
+   "damage": "3500.0",
+   "deaths": "10",
+   "hit records": "279",
+   "hull hits": "222",
+   "shots": "1887",
+   "first hit": "90.50 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": "4 of 8",
+   "plane water contacts": null,
+   "controlled moved": "(none) 7041.17",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "494",
+   "i": "new row"
+  },
+  {
+   "mission": "JM05",
+   "frames": "3200/3000",
+   "log": "local/rb10_jm05.log",
+   "damage": "2396.3",
+   "deaths": "1",
+   "hit records": "41",
+   "hull hits": "24",
+   "shots": "100",
+   "first hit": "9.90 s",
+   "torpedo-task releases": "0 of 12",
+   "dive-bomb-task releases": "0 of 6",
+   "plane water contacts": null,
+   "controlled moved": "USS Phelps 2667.31",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "551",
+   "i": "new row"
+  },
+  {
+   "mission": "USN12",
+   "frames": "3200/3000",
+   "log": "local/rb10_usn12.log",
+   "damage": "978.1",
+   "deaths": "0",
+   "hit records": "30",
+   "hull hits": "15",
+   "shots": "83",
+   "first hit": "8.30 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Montpelier 2240.06",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "474",
+   "i": "new row"
+  }
+ ],
+ "anchors": {
+  "all": "rb10n0 (eighteen switches OFF) = i on all nine i rows, pair_diff exit 1",
+  "USN12": "rb10 = ships6_gon_usn12, exit 1",
+  "LOMP10": "rb10ngs = hp_on_lomp10, exit 1",
+  "JM05": "rb10ngs = cm_on_jm05, exit 1"
+ },
+ "usn02": {
+  "failure": "29.75 s, phase 1",
+  "cause": "Houston sunk 20.95 s by a Yamakaze Long Lance (2432 m); usn_2_java.lua:521",
+  "status": "unchanged; the seed moves the opening by 0.10 s"
+ },
+ "attribution_chain": {
+  "USN04": [
+   "i 43/798/9611 7 of 16 / 4 of 19",
+   "dive profile draw 27ff8bd99 -> 42/777/9867 1 of 19 (= ngs)",
+   "AI group seed 04d2101c8 -> 40/749/10512 8 of 16 / 4 of 19",
+   "other order: seed -> 42/760/10817 9 of 19 (= ndp = section 19 ON)"
+  ],
+  "E2": [
+   "seed, dive draw and cautious group all move it; tail after 4500: 11 deaths, 112 hit records (i: 8, 65); unpaired"
+  ],
+  "USN01": [
+   "AI group seed only (ngs = i, exit 1)"
+  ],
+  "USN02": [
+   "i 10/4324/2582",
+   "GetClosestBorderZone 6f889dbdb -> 11/4914/2719 (= ngs)",
+   "AI group seed -> 11/1693/2047; Houston first damage 19.20 -> 19.30 s; failure 29.75 s unchanged",
+   "ngbz = i"
+  ],
+  "JM06": [
+   "i 1/127/201",
+   "fire target 1a0f04564 -> 1/122, 2468.6 (= ngsub)",
+   "submarine states with the seed -> 2/284/352; US Cargo Transport 02 sinks 140.15 s"
+  ],
+  "JM08": [
+   "AI group seed only; exactly section 19's pair"
+  ],
+  "USN13": [
+   "AI group seed only (ngs = i); 7 new plane deaths; not run by section 19"
+  ],
+  "LOMP06": [
+   "seed + submarine switches OFF = i; seed OFF 663.09 m (sub states); sub OFF = j (states never tick with the seed ON)"
+  ],
+  "BSM01": [
+   "identical"
+  ],
+  "LOMP10": [
+   "new; seed OFF = hp_on_lomp10 (GUNNERY_OPEN_ITEMS 37.1); seed moves PT 01 nearest 10421 -> 8355 only"
+  ],
+  "JM05": [
+   "new; seed OFF = cm_on_jm05 (LAND_AND_STRUCTURES); seed moves USS Phelps 2568.46 -> 2667.31 m"
+  ],
+  "USN12": [
+   "new; = ships6_gon_usn12 (AI_CAUTIOUS_ROUTE 19 ON)"
+  ]
+ },
+ "leave_one_out": {
+  "n0": {
+   "off": "all eighteen",
+   "sha256": "22d5315c8a07c2e1e3af89b08d2a80a1c664cc9dd225838351a03da4d96dca26",
+   "result": "gameplay-identical to i on all nine i rows"
+  },
+  "ngs": {
+   "off": [
+    "kAiGroupSeedPerEntityBound"
+   ],
+   "sha256": "75df63c1fab7b86590d7a3c3607ac62c1d7f7159aa7b2150907a16b6e6db77c9",
+   "result": "USN01, JM08, USN13, BSM01 = i; USN04 42/777/9867 1 of 19 (dive draw ON row); E2 850/11073 4 of 19; USN02 11/4914/2719; JM06 1/107/173; LOMP06 663.09 m; LOMP10 = hp_on_lomp10; JM05 = cm_on_jm05; USN12 = ships6_goff_usn12"
+  },
+  "ndp": {
+   "off": [
+    "kDiveProfileDrawBound"
+   ],
+   "sha256": "e6f805559f404916347ddf3ade29a25d4e4c2f5e9bd1c37370809d9598c2445e",
+   "result": "USN04 42/760/10817 13529.3 9 of 19 (section 19 ON row); E2 12499 shots 10 of 19; USN01, USN13, LOMP10 identical"
+  },
+  "ncr": {
+   "off": [
+    "kCautiousRouteBound",
+    "kClearOrdersSendBound",
+    "kCautiousWedgeBound",
+    "kCautiousMoveRouteBound"
+   ],
+   "sha256": "da9e8c62ff5309636c0b171a1758e81ddb4e0931320d895d86b558d2c1cc0379",
+   "result": "USN04 48/851/11988; E2 879/12141 1 of 19; USN02 11/1476/1877; JM06 297/365; JM08 6 deaths; USN13 26/560/6414; LOMP06 710.43 m; USN12 Montpelier 2426.19 m; USN01, LOMP10 identical"
+  },
+  "nf": {
+   "off": [
+    "kFireTargetObjectIdBound"
+   ],
+   "sha256": "c4daa31ea8fd20f19563a227c6484ef38736b00c0b9d2e87d011835f03c8b410",
+   "result": "JM06 2/303/361"
+  },
+  "nsub": {
+   "off": [
+    "kSubmarineSensorCategoryBound",
+    "kShipAiSubAttackSelectBound",
+    "kShipAiSubAttackStatesBound"
+   ],
+   "sha256": "b54419608dd317a23f8d1383e16546313c4f8a3a444058c7a12bcb4a8dd8be4a",
+   "result": "JM06 1/308/388 (US Cargo Transport 02 survives); LOMP06, USN04, USN02 identical"
+  },
+  "nbz": {
+   "off": [
+    "kLuaClosestBorderZoneBound"
+   ],
+   "sha256": "380734ebeace8a040984fa3f88a98b2918c48dc2140b606c87f38849fc5de8ad",
+   "result": "USN02 1680 hit records; USN01, JM06 identical"
+  },
+  "nrest": {
+   "off": [
+    "kSquadronAttackAltBound",
+    "kLuaOverrideHpBound",
+    "kSquadronReturnToBaseResolveBound",
+    "kLuaSpawnNewIdQueriesBound",
+    "kDepartedWingmanTaskBlockBound",
+    "kLandConvoyMembersBound",
+    "kLandConvoyMovementBound"
+   ],
+   "sha256": "274f1b49edbe264c8a53f3936e60e05c93669dec6411160584792c7b0d657a34",
+   "result": "identical on USN04, E2, USN01, USN02, JM06, USN13, LOMP06; LOMP10 2 of 8, 3195 shots; JM05 Phelps 2658.53 m"
+  },
+  "ngsub": {
+   "off": "ngs + nsub",
+   "sha256": "5c1e3bf744b37065994e2386b72ac2ae9d8d14242ba683c1ae1bf7ad13a6598e",
+   "result": "LOMP06 = i; JM06 = i plus the fire-target pair (122 hit records, 2468.6)"
+  },
+  "ngbz": {
+   "off": "ngs + nbz",
+   "sha256": "f655d4d6d4d6e24eeff270a149079a1f06b629600892c03f397acb95ad0e0d25",
+   "result": "USN02 = i"
+  }
+ },
+ "flags": {
+  "closed": [
+   "AI_CAUTIOUS_ROUTE 19 re-measure (USN12, USN04, JM08)",
+   "i's USN02 border-zone move"
+  ],
+  "new": [
+   "seed moves USN01 and USN13 (not in section 19)",
+   "cautious switches act only on the seed's groups; not separated",
+   "JM06 sub-sighted dialog fires again (sub states raise the Narwhal-class); +1234h has no producer",
+   "JM06 US Cargo Transport 02 sinks to the sub states at 140.15 s",
+   "LOMP06 sub states displaced by the seed",
+   "unimplemented counts rise with the seed's natives"
+  ],
+  "carried": [
+   "E2 tail after 4500 unpaired",
+   "reload feed on USN04/E2 not bisected",
+   "JM06/JM08 not paired against earlier gunnery flips",
+   "USN02 outcome depends on the opening torpedo spread",
+   "friendly torpedo hits under the image swim",
+   "g-era gaps",
+   "USN02 664 -> 640",
+   "USN02 torpedo stock on top of the throttle cut",
+   "kSetSelectedUnitBound enabler",
+   "E2 594 -> 595",
+   "E2 ends in phase 1 under lockstep",
+   "Marshall .nav generic layer"
+  ]
+ }
+}
