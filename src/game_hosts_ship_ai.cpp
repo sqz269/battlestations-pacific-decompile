@@ -368,6 +368,15 @@ inline constexpr bool kShipAiSubAttackStatesBound = true;  // ON: pairs held, Na
 // member only, and the two steps are records. The gate's image answer is
 // counted on both sides.
 inline constexpr bool kShipAiSubTargetSubStatesBound = true;  // ON: pairs held, two spread misses recorded (docs/SHIP_AI_OPEN_ITEMS.md section 2)
+// Packet cc9_approach_enter_reseed, docs/SHIP_AI_OPEN_ITEMS.md sections 4 and 8.
+// True: the approach member's enter 009F3220 runs 009F30F0 (sixty ring records
+// cleared, each re-probe timer +48h drawn from stream 1 in [0, 2), +44h =
+// 1000, the traffic list freed, the avoidance refresh at -1, 009F1BC0(0) and
+// the heading fields restarted) and sets sub+14B4h = 1.0; and the attackmove
+// state's own enter 009E86C0 (selector countdown +1500h = 0, the current
+// member's vtable[4]) and exit 009E86E0 (the current member's vtable[8]) run at
+// the state switch. False: the three are records. Counted on both sides.
+inline constexpr bool kShipAiApproachEnterReseedBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1901,6 +1910,15 @@ namespace {
 // 009F3D00 that its last one enters.
 // ---------------------------------------------------------------------------
 
+// Packet cc9_approach_enter_reseed: the attackmove state's own vtable[4]
+// 009E86C0 and vtable[8] 009E86E0, defined after AttackMoveSelectorBinding.
+void ship_ai_attackmove_state_enter_009e86c0(GameShipAiHost::Impl& owner,
+                                             GameShipAiHost::Impl::Controller& ctl,
+                                             std::size_t index);
+void ship_ai_attackmove_state_exit_009e86e0(GameShipAiHost::Impl& owner,
+                                            GameShipAiHost::Impl::Controller& ctl,
+                                            std::size_t index);
+
 class SyncBinding final : public bsp::ShipAiSyncHost {
 public:
     SyncBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -1990,8 +2008,13 @@ public:
         if (ai_offset == ctl_.active_state_ai_offset) return;
         if (ctl_.active_state_ai_offset != 0) {
             // 009F3DB4..009F3DB9, the outgoing state's vtable[8].
-            owner_.record_slot("ShipAiState::exit_vtable08", "00d21598+vtable08");
+            if (ctl_.active_state_ai_offset == kAiOffsetAttackMove) {
+                ship_ai_attackmove_state_exit_009e86e0(owner_, ctl_, index_);
+            } else {
+                owner_.record_slot("ShipAiState::exit_vtable08", "00d21598+vtable08");
+            }
         }
+        const bool entering_attackmove = ai_offset == kAiOffsetAttackMove;
         ctl_.active_state_ai_offset = ai_offset;
         const StateDescriptor* state = state_for_ai_offset(ai_offset);
         ctl_.active_state_command = state != nullptr ? state->command_object : 0u;
@@ -2001,7 +2024,11 @@ public:
         row_.command_object = command;
         ++row_.state_changes;
         // 009F3DC1..009F3DC8, the incoming state's vtable[4].
-        owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
+        if (entering_attackmove) {
+            ship_ai_attackmove_state_enter_009e86c0(owner_, ctl_, index_);
+        } else {
+            owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
+        }
         owner_.done("ShipAiState::select_for_command", 0x009f3d00u);
     }
 
@@ -3015,6 +3042,10 @@ public:
         }
         member_enter(member);
     }
+    // Packet cc9_approach_enter_reseed: the state's own enter and exit reach
+    // the current member through these (009E86C0 / 009E86E0 tail-call it).
+    void enter_member(std::uint32_t member) { member_enter(member); }
+    void exit_member(std::uint32_t member) { member_exit(member); }
     bool call_009e85b0() override {
         EngageGateBinding gate(owner_, ctl_, index_);
         const bool open = bsp::ship_ai_attackmove_engage_gate_009e85b0(gate);
@@ -3076,6 +3107,42 @@ private:
     std::size_t index_;
 };
 
+// 009F3220, defined after ApproachUpdateBinding because it runs 009F1BC0.
+void ship_ai_approach_enter_009f3220(GameShipAiHost::Impl& owner,
+                                     GameShipAiHost::Impl::Controller& ctl,
+                                     std::size_t index);
+
+void ship_ai_attackmove_state_enter_009e86c0(GameShipAiHost::Impl& owner,
+                                             GameShipAiHost::Impl::Controller& ctl,
+                                             std::size_t index) {
+    ++owner.summary.attackmove_state_enters;
+    if (!kShipAiApproachEnterReseedBound) {
+        owner.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
+        return;
+    }
+    // 009E86C0: state+1500h = 0, then a tail jump to the current member's
+    // vtable[4]. The constructor's member is the initial one (009DB590), which
+    // this host holds as 0 and member_enter answers with its record.
+    ctl.selector.countdown_1500 = 0.0f;
+    AttackMoveSelectorBinding selector(owner, ctl, index);
+    selector.enter_member(ctl.selector.current_1508);
+    owner.done("ShipAiAttack::state_enter_009e86c0", 0x009e86c0u);
+}
+
+void ship_ai_attackmove_state_exit_009e86e0(GameShipAiHost::Impl& owner,
+                                            GameShipAiHost::Impl::Controller& ctl,
+                                            std::size_t index) {
+    ++owner.summary.attackmove_state_exits;
+    if (!kShipAiApproachEnterReseedBound) {
+        owner.record_slot("ShipAiState::exit_vtable08", "00d21598+vtable08");
+        return;
+    }
+    // 009E86E0: the current member's vtable[8].
+    AttackMoveSelectorBinding selector(owner, ctl, index);
+    selector.exit_member(ctl.selector.current_1508);
+    owner.done("ShipAiAttack::state_exit_009e86e0", 0x009e86e0u);
+}
+
 void AttackMoveSelectorBinding::member_enter(std::uint32_t member) {
     const std::uint32_t offset = member - kSubTargetMachineBase;
     if (offset == 0x14CCu) {
@@ -3090,9 +3157,14 @@ void AttackMoveSelectorBinding::member_enter(std::uint32_t member) {
     } else if (offset == 0x0008u) {
         // 009F3220: 009F30F0 on the nested object (the sixty ring records
         // re-seeded with one stream-1 draw each, the list freed, 009F1BC0(0))
-        // and sub+14B4h = 1.0f. Not bound: this process never ran it, not even
-        // on an attackmove's first selection (docs/SHIP_AI_OPEN_ITEMS.md 2).
-        owner_.record("ShipAiAttack::approach_enter_009f3220", 0x009f3220u);
+        // and sub+14B4h = 1.0f (docs/SHIP_AI_OPEN_ITEMS.md sections 4 and 8).
+        ++owner_.summary.approach_member_enters;
+        if (!kShipAiApproachEnterReseedBound) {
+            owner_.record("ShipAiAttack::approach_enter_009f3220", 0x009f3220u);
+        } else {
+            ship_ai_approach_enter_009f3220(owner_, ctl_, index_);
+            owner_.done("ShipAiAttack::approach_enter_009f3220", 0x009f3220u);
+        }
     } else if (offset == 0x14C0u) {
         owner_.record("ShipAiAttack::engage_enter_009db5e0", 0x009db5e0u);
     } else {
@@ -4801,6 +4873,54 @@ private:
     GameShipAiRow& row_;
     std::size_t index_;
 };
+
+// Packet cc9_approach_enter_reseed. 009F3220 (__thiscall(sub), RET): 009F30F0
+// on the nested object sub+8h, then sub+14B4h = 1.0f (00D7A24C, 009F322B).
+// docs/SHIP_AI_OPEN_ITEMS.md section 4 has the read.
+void ship_ai_approach_enter_009f3220(GameShipAiHost::Impl& owner,
+                                     GameShipAiHost::Impl::Controller& ctl,
+                                     std::size_t index) {
+    // The ring the construction pass 009E5530 built; the host builds it
+    // lazily, so it is built here first or the build would undo the re-seed.
+    owner.ensure_approach_ring(ctl, index);
+    ++owner.summary.approach_reseeds;
+    // 009F30F6..009F3169: sixty records, ESI stepping 4Ch. Each: +18h..+3Ch
+    // zeroed and the byte +40h cleared (the score half), then +48h = 00BD2F10
+    // (ECX = 1, 0.0, 2.0 [00CE3958]) at 009F314E, then +44h = 1000.0f
+    // [00CE3804]. The draw is the unit's own stream-1 draw (ship_ai_draw).
+    for (int i = 0; i < bsp::kAttackMoveRingSlotCount; ++i) {
+        ctl.approach_scores[i] = bsp::ShipAiApproachSlotScore{};
+        float draw = 0.0f;
+        if (owner.gunnery_draws != nullptr) {
+            draw = owner.gunnery_draws->ship_ai_draw(index, 0.0f, 2.0f);
+            ++owner.summary.approach_reseed_draws;
+        }
+        ctl.approach_ring[i].jitter_48 = draw;
+        ctl.approach_ring[i].reset_44 = 1000.0f;
+    }
+    // 009F316B..009F31A3: every node of the list at nested+14A4h freed, the
+    // count at +14A8h zeroed.
+    ctl.traffic.clear();
+    // 009F31A7..009F31B5: nested+11F4h = -1.0f [00D7A260], so the next pass
+    // refreshes the avoidance at once.
+    ctl.approach.avoid_refresh_11f4 = -1.0f;
+    // 009F31BD: 009F1BC0(nested, 0.0f), the frame state with zero seconds.
+    {
+        ApproachUpdateBinding update(owner, ctl, owner.rows[index], index);
+        update.frame_state_009f1bc0(0.0f);
+    }
+    // 009F31C2..009F31ED.
+    ctl.approach.retarget_timer_11d8 = 0.0f;
+    ctl.approach.flag_11d6 = false;
+    ctl.approach.selected_bearing_11f8 = ctl.approach.unit_heading_11ec;
+    ctl.approach.commanded_heading_120c = ctl.approach.unit_heading_11ec;
+    ctl.approach.flag_1208 = false;
+    // 009F31F3..009F3207: +1208h = unit->vtable[22Ch](), 006DFDB0 (XOR AL,AL;
+    // RET) in both ship vtables read, so it stays false.
+    ctl.approach.flag_1208 = false;
+    // 009F322B.
+    ctl.substate_ring_timer_14b4 = 1.0f;
+}
 
 class ApproachStepBinding final : public bsp::ShipAiAttackMoveApproachHost {
 public:
@@ -9932,6 +10052,12 @@ void GameShipAiHost::report() {
         host.summary.ring_probe_spaces, host.summary.ring_probe_moved_starts,
         host.summary.ring_probe_casts, host.summary.ring_probe_hits,
         kShipAiRingScanProbeBound ? 1 : 0);
+    host.log.notef("summary mission ship ai approach enter approach_member_enters=%llu "
+        "attackmove_state_enters=%llu attackmove_state_exits=%llu reseeds=%llu draws=%llu "
+        "bound=%d (009F3220 / 009E86C0 / 009E86E0, packet cc9_approach_enter_reseed)",
+        host.summary.approach_member_enters, host.summary.attackmove_state_enters,
+        host.summary.attackmove_state_exits, host.summary.approach_reseeds,
+        host.summary.approach_reseed_draws, kShipAiApproachEnterReseedBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",

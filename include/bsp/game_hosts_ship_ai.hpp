@@ -517,6 +517,14 @@ struct GameShipAiSummary {
     unsigned long long ring_probe_moved_starts{0};
     unsigned long long ring_probe_casts{0};
     unsigned long long ring_probe_hits{0};
+    // Packet cc9_approach_enter_reseed: approach member enters (009F3220),
+    // attackmove state enters and exits (009E86C0 / 009E86E0), and the stream-1
+    // draws the re-seeds took. The first three count on both sides.
+    unsigned long long approach_member_enters{0};
+    unsigned long long attackmove_state_enters{0};
+    unsigned long long attackmove_state_exits{0};
+    unsigned long long approach_reseeds{0};
+    unsigned long long approach_reseed_draws{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
