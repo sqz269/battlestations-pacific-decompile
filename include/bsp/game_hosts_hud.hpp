@@ -284,7 +284,7 @@ inline constexpr bool kSquadronSlotClassBound = true;  // ON: re-pair with the p
 // True: for a squadron's fused slot the notice fires when the squadron's live
 // member count reaches 0, not when the slot's own plane dies. False: it fires
 // on the slot's death, as before.
-inline constexpr bool kSquadronObserverLivenessBound = false;
+inline constexpr bool kSquadronObserverLivenessBound = true;  // ON: pairs held (docs/PLANE_SQUADRON.md)
 
 // Packet cc9_plane_in_flight_test (docs/IN_GAME_INTERFACE_SCREEN_SETS.md,
 // "007BB9A0"), committed OFF with predictions. The 20h classifier's plane arm
