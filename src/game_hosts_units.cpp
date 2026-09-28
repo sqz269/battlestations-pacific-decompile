@@ -18,6 +18,10 @@
 #include "bsp/plane_death_modes.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/camera_path_sampler.hpp"      // packet cc9_land_convoy_movement
+#include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
+#include "bsp/mission_camera.hpp"           // kWorldUp00f8758c
+#include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_angular_velocity.hpp"
 #include "bsp/plane_control_rate.hpp"
@@ -1668,6 +1672,33 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
     return true;
 }
 
+// Packet cc9_land_convoy_movement: one LandConvoy's element state and its Path.
+// Offsets name the native fields each member stands for.
+struct LandConvoyMotionState {
+    std::string name;
+    bsp::LandConvoyFormation formation;          // +354h..+368h, +3A8h, +3A9h
+    float live_arc_3ac{0.0f};                     // seeded by "Offset"
+    float committed_arc_3b0{0.0f};
+    float odometer_3b4{0.0f};                     // zeroed at 00742C58
+    std::vector<std::size_t> member_units;        // +398h, one per slot; npos = null
+    std::string path_name;
+    std::vector<bsp::CameraPathKnotWords> knots;  // the Path's knot records
+    std::vector<void*> knot_pointers;             // path +8h..+0Ch
+    void** knots_begin_08{nullptr};
+    void** knots_end_0c{nullptr};
+    void* path_parent_14{nullptr};                // unused by the local sampler
+    std::uint8_t closed_24{0};
+    bsp::CameraPathKnotTotals totals;
+    float path_local_74[16]{};                    // [path+14h]+74h, 007B03C0
+    std::size_t parent_scene_id{0};               // convoy +3A4h
+    float parent_world_cc[16]{};                  // parent +CCh..+108h
+    std::shared_ptr<const SceneTerrainHeightField> terrain;  // parent +3D0h
+    bool world_pose_law_3c8{false};
+    std::size_t steps{0};
+    std::size_t placements{0};
+    std::size_t range_errors{0};
+};
+
 struct GameUnitsHost::Impl {
     Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in)
         : log(log_in), lua(lua_in), commands(log_in) {}
@@ -1678,6 +1709,8 @@ struct GameUnitsHost::Impl {
     // Milestone 2l: the weapon director of every created unit, and the three
     // message hops between the authored `Command` token and its command slot.
     GameCommandsHost commands;
+    // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound.
+    std::vector<LandConvoyMotionState> land_convoys;
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
     std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
@@ -7726,6 +7759,285 @@ const std::string& GameUnitsHost::unit_land_convoy_738(std::size_t index) const 
 int GameUnitsHost::unit_land_convoy_slot_73c(std::size_t index) const {
     if (index >= impl_->slots.size()) return -1;
     return impl_->slots[index]->row.land_convoy_slot_73c;
+}
+
+namespace {
+bool land_name_equal(const std::string& a, const std::string& b) {
+    if (a.size() != b.size()) return false;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        if (std::tolower(static_cast<unsigned char>(a[i]))
+            != std::tolower(static_cast<unsigned char>(b[i]))) return false;
+    }
+    return true;
+}
+
+// 007B03C0's path half: the local sampler's record lookups against the knot
+// storage this convoy owns. The pose resolver is never entered by 007AFE80.
+class LandConvoyPathHost final : public bsp::CameraPathHost {
+public:
+    LandConvoyPathHost(LandConvoyMotionState& c, bsp::CameraPathView& view, GameHostLog& log)
+        : c_(c), view_(view), log_(log) {}
+    bsp::CameraPathView& resolve_path(void*) override { return view_; }
+    float* resolve_path_knot_words(void* actual_knot) override {
+        return static_cast<float*>(actual_knot);
+    }
+    void range_error_00bf6713() override { ++c_.range_errors; }
+    bsp::PoseRefreshView& resolve_pose(void*) override {
+        log_.unimplemented("LandConvoy::path_pose", "007b03c0");
+        throw std::runtime_error("the convoy path sampler asked for a pose");
+    }
+
+private:
+    LandConvoyMotionState& c_;
+    bsp::CameraPathView& view_;
+    GameHostLog& log_;
+};
+}  // namespace
+
+// The placement host for 00742400. Member handles are unit index + 1.
+class LandConvoyPlacementBinding final : public bsp::LandConvoyPlacementHost {
+public:
+    LandConvoyPlacementBinding(GameUnitsHost::Impl& host, LandConvoyMotionState& c)
+        : host_(host), c_(c) {}
+    int member_count() override { return static_cast<int>(c_.member_units.size()); }
+    std::uintptr_t member_at(int index) override {
+        const std::size_t u = c_.member_units[static_cast<std::size_t>(index)];
+        return u == static_cast<std::size_t>(-1) ? 0 : static_cast<std::uintptr_t>(u) + 1u;
+    }
+    std::uintptr_t convoy_parent() override { return c_.parent_scene_id; }
+    // 007B03C0: 007AFE80 in path space, then (p, 1.0f) through the path
+    // entity's local matrix with the homogeneous divide, and the direction
+    // through 0042D0D0 with normalise = 0 (no divide).
+    void sample_path_007b03c0(float arc, bsp::LandVec3* position, bsp::LandVec3* tangent) override {
+        bsp::CameraPathView view{c_.knots_begin_08, c_.knots_end_0c, c_.path_parent_14,
+                                 c_.closed_24};
+        LandConvoyPathHost path_host(c_, view, host_.log);
+        std::array<float, 3> p{};
+        std::array<float, 3> d{};
+        bsp::sample_camera_path_local_007afe80(view, arc, p, &d, 0u, path_host);
+        const float source[4] = {p[0], p[1], p[2], 1.0f};        // 00D7A24C
+        float out[4] = {};
+        bsp::transform_native_vector4_00b62d10(source, out, c_.path_local_74);
+        const float inverse = static_cast<float>(1.0 / static_cast<double>(out[3]));
+        position->x = inverse * out[0];
+        position->y = out[1] * inverse;
+        position->z = inverse * out[2];
+        bsp::AdvanceMatrix m{};
+        std::memcpy(m.m, c_.path_local_74, sizeof(m.m));
+        float direction[3] = {};
+        bsp::transform_direction_0042d0d0(direction, d.data(), m);
+        tangent->x = direction[0];
+        tangent->y = direction[1];
+        tangent->z = direction[2];
+    }
+    void orthonormalize_frame_0085dc80(bsp::LandPoseMatrix* matrix) override {
+        bsp::orthonormalize_pose_matrix_0085dc80(matrix->m.data());
+    }
+    bsp::LandVec3 world_up_00f8758c() override {
+        return {bsp::kWorldUp00f8758c[0], bsp::kWorldUp00f8758c[1], bsp::kWorldUp00f8758c[2]};
+    }
+    // The parent's world frame is the composed scene frame; nothing to refresh.
+    void refresh_world_pose_00414db0(std::uintptr_t) override {}
+    float terrain_height_0087fa20(std::uintptr_t, float x, float z) override {
+        return c_.terrain->local_height_00ada160(x, z);   // [parent+3D0h]->vtable[24h]
+    }
+    float parent_height_origin_00742792(std::uintptr_t) override {
+        return c_.parent_world_cc[13];                  // parent+100h
+    }
+    bsp::LandVec3 terrain_normal_0087fb90(std::uintptr_t, float x, float z) override {
+        float n[3] = {};
+        c_.terrain->local_normal_00ada1c0(x, z, n);     // [parent+3D0h]->vtable[34h]
+        return {n[0], n[1], n[2]};
+    }
+    void orthonormalize_from_normal_0085dad0(bsp::LandPoseMatrix* matrix,
+                                             const bsp::LandVec3& normal) override {
+        bsp::AdvanceMatrix a{};
+        std::memcpy(a.m, matrix->m.data(), sizeof(a.m));
+        a.m[4] = normal.x;
+        a.m[5] = normal.y;
+        a.m[6] = normal.z;
+        bsp::orthonormalize_up_first_0085dad0(a);
+        std::memcpy(matrix->m.data(), a.m, sizeof(a.m));
+    }
+    // The terrain law: member+74h is the local matrix under the convoy's
+    // parent; the host's pose rows are the world frame, local x parent.
+    void write_member_local_matrix(std::uintptr_t member,
+                                   const bsp::LandPoseMatrix& matrix) override {
+        bsp::AdvanceMatrix local{};
+        bsp::AdvanceMatrix parent{};
+        bsp::AdvanceMatrix world{};
+        std::memcpy(local.m, matrix.m.data(), sizeof(local.m));
+        std::memcpy(parent.m, c_.parent_world_cc, sizeof(parent.m));
+        bsp::multiply_00413920(world, local, parent);
+        write_world(member, world.m);
+    }
+    void invalidate_member_subtree_0042ed50(std::uintptr_t) override {}
+    void set_member_world_pose_00741e90(std::uintptr_t member,
+                                        const bsp::LandPoseMatrix& matrix) override {
+        write_world(member, matrix.m.data());
+    }
+    void notify_member_scene_node(std::uintptr_t) override {}
+
+private:
+    void write_world(std::uintptr_t member, const float* m) {
+        GameUnitSlot& slot = *host_.slots[static_cast<std::size_t>(member - 1u)];
+        for (int i = 0; i < 3; ++i) {
+            slot.motion.pose_row0[i] = m[i];
+            slot.motion.pose_row1[i] = m[4 + i];
+            slot.motion.pose_row2[i] = m[8 + i];
+            slot.motion.position[i] = m[12 + i];
+        }
+        GameUnitsHost::Impl::publish_pose(slot);
+        host_.refresh_row(slot);
+        ++c_.placements;
+    }
+
+    GameUnitsHost::Impl& host_;
+    LandConvoyMotionState& c_;
+};
+
+// Packet cc9_land_convoy_movement. 007420B0 resolves "Path" through 00925A90
+// (qualified, __strnicmp: "Landscape 01\<path>") and 007AC9D0; 007B34F0 then
+// 007AF150 built the knots from the authored Point%002i Pos triples at the
+// Path's load; 00742C10 sets +3C8h at 00742C70 from the two parents and zeroes
+// the odometer at 00742C58. LABELLED: the qualified name is matched as
+// "<parent name>\<leaf>" against the scene records, not walked through the
+// registry's party lists; a convoy whose parent has no loaded height field is
+// refused (the native would call through a null +3D0h).
+bool GameUnitsHost::bind_land_convoy_motion(const GameSceneEntityRecord& convoy,
+                                            const std::vector<GameSceneEntityRecord>& scene) {
+    Impl& host = *impl_;
+    if (!convoy.land_convoy_keys) return false;
+    LandConvoyMotionState c;
+    c.name = convoy.name;
+    c.formation.rows = convoy.convoy_rows;
+    c.formation.columns = convoy.convoy_columns;
+    c.formation.row_gap = convoy.convoy_row_gap;
+    c.formation.column_gap = convoy.convoy_column_gap;
+    c.formation.speed = convoy.convoy_speed;
+    c.formation.reverse = convoy.convoy_reverse;
+    c.formation.stopped = false;                              // 00743450 clears +3A8h
+    c.live_arc_3ac = convoy.convoy_offset;
+    c.path_name = convoy.convoy_path;
+    const std::size_t none = static_cast<std::size_t>(-1);
+    c.member_units.assign(convoy.convoy_slots.size(), none);
+    std::size_t members = 0;
+    for (std::size_t u = 0; u < host.slots.size(); ++u) {
+        const GameUnitRow& row = host.slots[u]->row;
+        if (row.land_convoy_738 != convoy.name) continue;
+        const int slot = row.land_convoy_slot_73c;
+        if (slot < 0 || static_cast<std::size_t>(slot) >= c.member_units.size()) continue;
+        c.member_units[static_cast<std::size_t>(slot)] = u;
+        ++members;
+    }
+    const std::size_t split = c.path_name.find_last_of('\\');
+    const std::string leaf = split == std::string::npos ? c.path_name : c.path_name.substr(split + 1);
+    const std::string qualifier = split == std::string::npos ? std::string() : c.path_name.substr(0, split);
+    const GameSceneEntityRecord* path = nullptr;
+    for (const GameSceneEntityRecord& record : scene) {
+        if (record.class_id != 0x47 || !land_name_equal(record.name, leaf)) continue;
+        if (!qualifier.empty() && !land_name_equal(record.parent_name, qualifier)) continue;
+        path = &record;
+        break;
+    }
+    const char* refused = nullptr;
+    if (members == 0) refused = "no members";
+    else if (path == nullptr) refused = "Path does not resolve";
+    else if (!path->path_points_retained) refused = "Path points not retained";
+    if (refused == nullptr) {
+        for (const auto& point : path->path_points_local) {
+            bsp::CameraPathKnotWords k{};
+            k[0] = point[0];
+            k[1] = point[1];
+            k[2] = point[2];
+            c.knots.push_back(k);
+        }
+        c.totals = bsp::derive_camera_path_knots_007af150(c.knots, bsp::kWorldUp00f8758c);
+        c.closed_24 = c.totals.closed_24 ? 1 : 0;
+        std::memcpy(c.path_local_74, path->local, sizeof(c.path_local_74));
+        c.parent_scene_id = convoy.parent_scene_id;
+        std::memcpy(c.parent_world_cc, convoy.parent_world, sizeof(c.parent_world_cc));
+        c.world_pose_law_3c8 = bsp::land_convoy_uses_world_pose_law_00742c70(
+            path->parent_scene_id, convoy.parent_scene_id);
+        c.formation.path_length = c.totals.length_28;
+        if (!c.world_pose_law_3c8) {
+            const SceneWorldClassLists& lists = scene_world_class_lists();
+            for (const SceneWorldObject& object : lists.objects()) {
+                if (object.scene_id == convoy.parent_scene_id && object.terrain) {
+                    c.terrain = object.terrain;
+                    break;
+                }
+            }
+            if (!c.terrain) refused = "parent has no height field";
+        }
+        if (!(c.formation.path_length > 0.0f)) refused = "Path length is not positive";
+    }
+    host.log.notef("  LandConvoy motion: \"%s\" path=\"%s\" knots=%zu closed=%d length=%.3f "
+        "law=%s members=%zu speed=%.2f reverse=%d%s%s (007AF150/00742C10, packet "
+        "cc9_land_convoy_movement)", c.name.c_str(), c.path_name.c_str(), c.knots.size(),
+        static_cast<int>(c.closed_24), static_cast<double>(c.totals.length_28),
+        c.world_pose_law_3c8 ? "world" : "terrain", members,
+        static_cast<double>(c.formation.speed), c.formation.reverse ? 1 : 0,
+        refused != nullptr ? " REFUSED: " : "", refused != nullptr ? refused : "");
+    if (refused != nullptr) return false;
+    host.land_convoys.push_back(std::move(c));
+    LandConvoyMotionState& kept = host.land_convoys.back();
+    kept.knot_pointers.clear();
+    for (bsp::CameraPathKnotWords& k : kept.knots) kept.knot_pointers.push_back(k.data());
+    kept.knots_begin_08 = kept.knot_pointers.data();
+    kept.knots_end_0c = kept.knot_pointers.data() + kept.knot_pointers.size();
+    host.done("LandConvoy::bind_motion", 0x007af150u);
+    return true;
+}
+
+namespace {
+// 00743060 (+4h, RET 4): when +3A8h is clear, live += t * speed * dir and wrap
+// with two loops, odometer += t * |speed|; then 00742400 in every case.
+void land_convoy_advance_and_place(GameUnitsHost::Impl& host, LandConvoyMotionState& c,
+                                   float t) {
+    const bsp::LandConvoyArcStep step = bsp::land_convoy_advance_arc_00743060(
+        c.formation, c.live_arc_3ac, c.odometer_3b4, t);
+    c.live_arc_3ac = step.live_arc;
+    c.odometer_3b4 = step.odometer;
+    LandConvoyPlacementBinding binding(host, c);
+    bsp::land_convoy_place_members_00742400(c.formation, c.live_arc_3ac,
+                                            c.world_pose_law_3c8, binding);
+}
+}  // namespace
+
+void GameUnitsHost::land_convoy_step_waves(float step) {
+    Impl& host = *impl_;
+    for (LandConvoyMotionState& c : host.land_convoys) {
+        land_convoy_advance_and_place(host, c, step);               // wave 1, +4h
+        c.committed_arc_3b0 = bsp::land_convoy_commit_arc_007410b0(c.live_arc_3ac);  // +0Ch
+        c.live_arc_3ac = bsp::land_convoy_restore_arc_007410c0(      // wave 3, +8h
+            c.formation, c.committed_arc_3b0, step);
+        ++c.steps;
+        if (c.steps == 1 || c.steps % 600 == 0) {
+            const std::size_t u = c.member_units.empty() ? static_cast<std::size_t>(-1)
+                                                         : c.member_units.front();
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            if (u < host.slots.size()) {
+                x = host.slots[u]->motion.position[0];
+                y = host.slots[u]->motion.position[1];
+                z = host.slots[u]->motion.position[2];
+            }
+            host.log.notef("LandConvoy step %zu \"%s\": arc=%.3f committed=%.3f odometer=%.3f "
+                "placements=%zu slot0=(%.2f, %.2f, %.2f) range_errors=%zu (00743060/007410C0, "
+                "packet cc9_land_convoy_movement)", c.steps, c.name.c_str(),
+                static_cast<double>(c.live_arc_3ac), static_cast<double>(c.committed_arc_3b0),
+                static_cast<double>(c.odometer_3b4), c.placements, static_cast<double>(x),
+                static_cast<double>(y), static_cast<double>(z), c.range_errors);
+        }
+    }
+    if (!host.land_convoys.empty()) host.done("LandConvoy::element_waves", 0x00743060u);
+}
+
+void GameUnitsHost::land_convoy_interpolation_wave(float leftover) {
+    Impl& host = *impl_;
+    for (LandConvoyMotionState& c : host.land_convoys) {
+        land_convoy_advance_and_place(host, c, leftover);
+    }
 }
 
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {

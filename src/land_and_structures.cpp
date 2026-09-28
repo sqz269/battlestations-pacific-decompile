@@ -65,8 +65,12 @@ LandConvoyArcStep land_convoy_advance_arc_00743060(const LandConvoyFormation& fo
         return out;
     }
 
-    const float scale = land_convoy_direction_scale(formation.reverse);
-    out.live_arc = live_arc + t * formation.speed * scale;
+    // 0074308B..007430B3: (speed * scale) * t + live in one x87 chain, stored
+    // through binary32 once (packet cc9_land_convoy_movement: was three
+    // binary32 roundings).
+    const double scale = land_convoy_direction_scale(formation.reverse);
+    out.live_arc = static_cast<float>(static_cast<double>(live_arc)
+        + static_cast<double>(formation.speed) * scale * static_cast<double>(t));
 
     // 007430D8-007430F0 and 007430FE-00743114: two loops, not two conditionals.
     // The length comes from [[convoy+344h]+28h], which is zero until 007420B0
@@ -87,7 +91,8 @@ LandConvoyArcStep land_convoy_advance_arc_00743060(const LandConvoyFormation& fo
 
     // 00743126-0074313E: the odometer takes the absolute speed, so it grows on
     // a reversed convoy too, and it is never wrapped.
-    out.odometer = odometer + t * std::fabs(formation.speed);
+    out.odometer = static_cast<float>(static_cast<double>(odometer)
+        + static_cast<double>(t) * std::fabs(static_cast<double>(formation.speed)));
     return out;
 }
 
@@ -105,8 +110,10 @@ float land_convoy_restore_arc_007410c0(const LandConvoyFormation& formation,
     {
         return committed_arc;
     }
-    const float scale = land_convoy_direction_scale(formation.reverse);
-    return committed_arc + dt * formation.speed * scale;
+    // 007410E5..007410FA: speed * scale * dt + committed, one binary32 store.
+    const double scale = land_convoy_direction_scale(formation.reverse);
+    return static_cast<float>(static_cast<double>(formation.speed) * scale
+        * static_cast<double>(dt) + static_cast<double>(committed_arc));
 }
 
 // ---------------------------------------------------------------------------
@@ -116,8 +123,11 @@ float land_convoy_group_arc_00742400(const LandConvoyFormation& formation,
                                      float live_arc,
                                      int group) noexcept
 {
-    const float scale = land_convoy_direction_scale(formation.reverse);
-    float arc = static_cast<float>(group) * scale * formation.row_gap + live_arc;
+    // 00742552..00742577: FILD group, * scale, * RowGap, + live, one binary32
+    // store.
+    const double scale = land_convoy_direction_scale(formation.reverse);
+    float arc = static_cast<float>(static_cast<double>(group) * scale
+        * static_cast<double>(formation.row_gap) + static_cast<double>(live_arc));
 
     // 00742581-007425A9: one conditional each way, unlike 00743060's loops. A
     // row gap wider than the path therefore leaves the arc outside [0, length),

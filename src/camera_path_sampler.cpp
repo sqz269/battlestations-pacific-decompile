@@ -1,6 +1,7 @@
 #include "bsp/camera_path_sampler.hpp"
 #include "bsp/camera_frame_state.hpp"
 #include "bsp/material_effect_plane.hpp"
+#include <cmath>
 #include <cstring>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -591,6 +592,57 @@ void sample_camera_path_world_007b04c0(CameraPathView& path, float parameter,
         transform_effect_direction_0042d0d0_no_normalize(result, *direction, direction_pose.world_cc);
         for (unsigned axis = 0; axis != 3; ++axis) copy_float((*direction)[axis], result[axis]);
     }
+}
+
+CameraPathKnotTotals derive_camera_path_knots_007af150(
+    std::vector<CameraPathKnotWords>& knots, const std::array<float, 3>& up_00f8758c) {
+    CameraPathKnotTotals totals;
+    const std::size_t n = knots.size();
+    if (n < 2) {
+        // 007AF16C..007AF1E8.
+        totals.length_28 = 0.0f;
+        totals.running_1c = 0.0f;
+        if (n == 1) {
+            CameraPathKnotWords& k = knots[0];
+            k[7] = 0.0f;                                   // +1C
+            k[6] = 0.0f;                                   // +18
+            k[3] = up_00f8758c[0];                         // +0C..+14
+            k[4] = up_00f8758c[1];
+            k[5] = up_00f8758c[2];
+        }
+        totals.built_18 = true;
+        return totals;
+    }
+    const CameraPathKnotWords& first = knots[0];
+    const CameraPathKnotWords& last = knots[n - 1];
+    const double cx = static_cast<double>(first[0]) - last[0];
+    const double cy = static_cast<double>(first[1]) - last[1];
+    const double cz = static_cast<double>(first[2]) - last[2];
+    totals.closed_24 = cz * cz + cy * cy + cx * cx < 1.0;   // 007AF297
+    totals.running_1c = 0.0f;                              // 007AF2BE
+    for (std::size_t i = 0; i < n; ++i) {
+        CameraPathKnotWords& k = knots[i];
+        k[6] = totals.running_1c;                          // 007AF4D8 +18
+        const std::size_t next = i + 1 < n ? i + 1 : (totals.closed_24 ? 1u : 0u);
+        const CameraPathKnotWords& to = knots[next];
+        const float dx = to[0] - k[0];                     // 007AF56D
+        const float dy = to[1] - k[1];
+        const float dz = to[2] - k[2];
+        const float d2 = static_cast<float>(
+            (static_cast<double>(dy) * dy + static_cast<double>(dx) * dx)
+            + static_cast<double>(dz) * dz);               // 007AF5A5
+        const float duration = static_cast<double>(d2) > 1e-10   // 00CE3820
+            ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+        k[7] = duration;                                   // 007AF5FB +1C
+        k[3] = dx / duration;                              // 007AF633..007AF649
+        k[4] = dy / duration;
+        k[5] = dz / duration;
+        if (i + 1 < n) totals.running_1c = k[7] + totals.running_1c;   // 007AF6BB
+    }
+    const CameraPathKnotWords& tail = knots[n - 1];
+    totals.length_28 = tail[6] + (totals.closed_24 ? 0.0f : tail[7]);  // 007AF723
+    totals.built_18 = true;
+    return totals;
 }
 
 } // namespace bsp
