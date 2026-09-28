@@ -375,4 +375,57 @@ void submarine_run_motion_tick_tail_00855420(SubmarineMotionTickHost& host,
                                              const SubmarineAirRates& rates,
                                              const SubmarineDepthSettings& settings);
 
+// ---------------------------------------------------------------------------
+// The dive law, 00936DC0 BSP_SubmarineController_StepDepthPhysics
+// ---------------------------------------------------------------------------
+//
+// Packet cc9_submarine_dive (docs/SUBMARINE_MODEL.md section 12). The submarine
+// controller's slot-0 force callback (vtable dword 00D196EC), __thiscall(controller,
+// float dt), RET 4, body 00936DC0-009373B4. It reads the body's linear and angular
+// velocity (00C31F40 / 00C31F20) BEFORE running the hydrodynamics 009329C0
+// (00936DF8), and at the end writes both back (00C37E50 at 0093739A, 00C37E20 at
+// 009373A7). The hydrodynamics only stage forces, so the write-back replaces the
+// velocities the step began with. Everything below is read from the listing; the
+// x87 stack is traced by hand in the doc.
+//
+// Constants: 00CE3958 2.0f, 00D7A260 -1.0f, 00D7A24C 1.0f, 00CE380C 1.5f,
+// 00D7A218 0.0f, 00D7A270 0.05 (double), 00CE7638 0.05f, 00CF5C78 -0.05 (double),
+// 00D19688 -0.05f, 00CE3800 0.5f, 00CE3DC0 10.0 (double), 00D19680 -1.5 (double),
+// 00D7A280 0.5 (double), 00D19660 -2.0 (double).
+struct SubmarineDiveInputs {
+    SubmarineDepthBand effective{SubmarineDepthBand::surface}; // after 00936E84's dead arm
+    float target_y{0.0f};     // bands[effective], or the seabed-clamped value
+    float gain{1.0f};         // 1.0, or 1.5 when the seabed clamp engaged
+    float hull_y{0.0f};       // unit+100h after 00414DB0
+    float linear[3]{};        // 00C31F40 at 00936DD0
+    float angular[3]{};       // 00C31F20 at 00936DDD
+    float row0[3]{};          // body+8h (00C32000) +00h..+08h
+    float row2[3]{};          // body+8h +18h..+20h
+    float up_speed{1.2f};     // class+830h UpSpeed
+    float down_speed{1.2f};   // class+834h DownSpeed
+    float stop_time{5.0f};    // class+82Ch UpDownStopTime
+    float accel{0.25f};       // class+824h UpDownAccel
+    float reference_speed{1.0f}; // 0080FC30
+    float dt{0.0f};
+    // Unit state carried from step to step.
+    bool seed_126c{false};    // set once by 00853630 at 00853A2A
+    bool at_depth_1278{false};
+    float sink_1270{0.0f};    // "sullyesztoEro", the velocity removed from y
+    float pitch_398{0.0f};    // controller+398h, the slewed pitch offset
+};
+struct SubmarineDiveResult {
+    float linear[3]{};
+    float angular[3]{};
+    bool seed_126c{false};
+    bool at_depth_1278{false};
+    float sink_1270{0.0f};
+    float sink_1274{0.0f};
+    float pitch_398{0.0f};
+    float commanded_rate{0.0f}; // the frame local at [base+0Ch] before the >= 0 clamp
+    int direction{0};           // the frame local at [base+18h] after 0093714A
+    float error{0.0f};
+    bool seed_1274_written{false};
+};
+SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) noexcept;
+
 }  // namespace bsp

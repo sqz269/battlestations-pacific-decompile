@@ -229,6 +229,13 @@ inline constexpr bool kLuaIsClassChangedBound = true;  // ON: identity pairs (do
 // row to run_set_submarine_depth_level_00893f40. False: unimplemented.
 inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
+// 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
+// (+4Ch, count +50h) to exactly n through 006C7E20: new slots are default records, a
+// shrink destroys from the tail. True: route the row to
+// run_set_air_base_slot_count_008963e0. False: unimplemented.
+inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, one recorded miss (docs/LUA_BINDING_MISSION.md)
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -310,6 +317,16 @@ struct GameVehicleClassRow {
     float y_drag{0.0f};               // desc+170h YDrag, 007D2150
     float max_spd{0.0f};              // desc+188h MaxSpd, 007D238A
     float travel_speed{0.0f};         // desc+18Ch TravelSpeed, 007D23C3
+    // Packet cc9_submarine_dive: the MSubmarine keys 00854230 reads, with its
+    // NumberOr defaults (src/vehicle_class_lua_load.cpp). SwimDepth1 is read into
+    // the PeriscopeDepth slot only when PeriscopeDepth left it negative.
+    float sub_periscope_depth{-1.0f};   // class+810h PeriscopeDepth / SwimDepth1
+    float sub_swim_depth2{-1.0f};       // class+814h SwimDepth2
+    float sub_swim_depth3{-1.0f};       // class+818h SwimDepth3
+    float sub_up_down_accel{0.25f};     // class+824h UpDownAccel
+    float sub_up_down_stop_time{5.0f};  // class+82Ch UpDownStopTime
+    float sub_up_speed{1.2f};           // class+830h UpSpeed
+    float sub_down_speed{1.2f};         // class+834h DownSpeed
     // The four the thrust and drag accelerations are built from. 007C4990 makes
     // the drag coefficient desc+50Ch out of two of them, Accel / MaxSpd^2, which
     // is what puts a plane's equilibrium airspeed exactly on MaxSpd.
@@ -476,6 +493,9 @@ struct GameMissionLuaSummary {
     unsigned long long sub_depth_calls{0};
     unsigned long long sub_depth_stored{0};
     unsigned long long sub_depth_unresolved{0};
+    unsigned long long slot_count_calls{0};
+    unsigned long long slot_count_resized{0};
+    unsigned long long slot_count_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -963,6 +983,8 @@ public:
     int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
     // Packet cc9_set_submarine_depth_level, under kLuaSetSubmarineDepthLevelBound.
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
+    // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
+    int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

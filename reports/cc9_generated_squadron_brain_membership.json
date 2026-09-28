@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_generated_squadron_brain_membership",
+  "doc": "docs/GENERATED_SHIP_AI.md section 7",
+  "code_changed": true,
+  "switch": {
+    "kGeneratedSquadronBrainBound": "ON (lead ruling after cc9_order_ring_replace: two flips vs membership-only exit 1 on USN13 and USN04)"
+  },
+  "addresses": {
+    "00A2E835": "compose phase 3: walks the live entity lists off world+19CCh each pass; admits +5Ch set, +5Dh/+60h/+5Eh clear, +16Ch null, +54h < 2; 00A2E881 seeds a group via 00A2DFA0",
+    "00A32350": "coordinator creation; the host built its squadron list only here"
+  },
+  "pairs": {
+    "USN04 4700/4500": "exit 3; generated 20, index shifts 93; squadron commands 1->4, member orders 3->12; torpedo releases 5->10 of 16, dive releases 1->6 of 19, drops 0->8; deaths 40->29",
+    "USN13 3200/3000": "exit 3; generated 24; squadron commands 0->466, member orders 0->1398; deaths 24->16, hit records 720->294",
+    "USN01 3200/3000": "exit 1; generated 1, no commands",
+    "USN02 9200/9000": "exit 1"
+  },
+  "predictions": "held on mechanism, census, orders reaching squadrons, moves and identities; failed on spread: USN04 groups created fell 15->12 (predicted rise); USN13's magnitude not anticipated",
+  "flag": "player-launched squadrons are now brain-tasked (image rule per docs/AI_BRAIN_PLAYER_EXEMPTION.md); the host's order ring appends where 0077D600 replaces, which may amplify the moveto churn",
+  "verdict": "flip ON",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}

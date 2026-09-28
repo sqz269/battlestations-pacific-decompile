@@ -2166,9 +2166,118 @@ player):
 | --- | --- | --- |
 | JM06 3200/3000 | `calls=5 stored=0`, exit 1, death rows and unit table identical. All five calls are `luaJM6SubInit`'s and the group-1 followers' requests for level 1 on `PlayerSub 01..03`, each already seeded at 1, so `008528B0` stores nothing (`0085290D JE`). The I-400 calls (to 3, then to 0) are not reached in 3000 frames | held |
 | LOMP06 1200/1000 | no call, exit 1 | held |
+| USN01 3200/3000 (added at the lead's request) | no call, exit 1, native table identical | held |
+| USN04 4700/4500 (added at the lead's request) | no call, exit 1, native table identical | held |
 
 **Verdict: `kLuaSetSubmarineDepthLevelBound = true`.** The binding stores the level only.
 
 **The gameplay gap that remains is the dive itself.** `A2h` is not posted, and the hull move to
 `bands[level]` is not modelled. The first run that reaches the I-400's `SetSubmarineDepthLevel(unit, 3)`
 (1380) changes the level the getter answers, but not where the hull sits.
+
+## SetAirBaseSlotCount, 008963E0 (packet `cc9_set_air_base_slot_count`, `kLuaSetAirBaseSlotCountBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This is item 6 of the refreshed ranking.
+
+**The image (V).**
+- `008963E0` resolves argument 0 (`00888AA0`) and takes its air-ops block
+  (`BSP_AirOps_GetBlock`). It reads argument 1 as an integer and calls `006C7E20(n)` on the
+  block. It returns no value.
+- `006C7E20` has one caller, this native. It resizes the `58h` slot array at `block+4Ch`, with
+  its count at `+50h`, to exactly `n`.
+- While the count is below `n` (`006C7E73 JAE`, looping back at `006C8060`), it appends a
+  default record, built at `006C7EA3..006C7F1C`: class 0, assigned 0, requested 3, class+134h
+  copy 0, no squadron, state 1, timer 0.0 and the launch request clear.
+- While the count is above `n` (`006C8069..006C8089`), it destroys the tail record through its
+  vtable.
+- The count comparison is unsigned. There is no test for an entity without a block.
+
+**The binding.**
+- `GameMissionLuaHost::run_set_air_base_slot_count_008963e0` resizes the entity's deck in
+  `bsp::air_ops_decks()` the same way.
+- The census is `summary mission script air base slot count bound=.. calls=.. resized=..
+  unresolved=..`, plus one line per call.
+- **SUBSTITUTIONS, labelled.** An entity with no deck is counted unresolved. A negative `n` is
+  ignored.
+
+**Callers.** `usn_13_truk.lua` (mtime 2024-08-13) sets its three airfields to 4 slots, or 6 on
+difficulty 2 (559, 563). It sets each US carrier to 4 (1096). `usn_19_coralus.lua` 212 is not a
+measured row.
+
+**Predictions** (written before the runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| USN13 3200/3000 | **exit 1.** The harness runs at difficulty 1 (`set_effective_difficulty game+6ACh=1`), so the airfields ask for 4. Every deck in `ss_off_usn13.log` is authored with `NumSlots=4`, so each call is a no-op (`resized=0`). The carrier loop at 1096 is a later stage and may not be reached |
+| USN04 4700/4500 | no call, exit 1 |
+
+### SetAirBaseSlotCount pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `b2b454eeb`.
+- ON is `pair_export --flip kLuaSetAirBaseSlotCountBound=true` (`local/sc_on`).
+- The logs are `local/sc_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| USN13 3200/3000 | `calls=3 resized=0`. Airfield2, Airfield5 and JapAF go 4 -> 4. Exit 1, death rows and unit table identical | held |
+| USN04 4700/4500 | **Two calls, not none.** USN04 runs `usn_19_coralus.lua` (mtime 2024-08-26), whose line 212 sets `Mission.Town` (`Yorktown-class01`) to 0 slots and 213 sets `Mission.Lex` to 4. `resized=1` (Yorktown 4 -> 0), air-ops `slot_ticks` 36000 -> 25858, two `IsReadyToSendPlanes` answers on Yorktown's deck gone. Exit 1: gameplay, 40 death rows and the unit table identical | **missed caller** |
+| USN04 9200/9000 (added for the miss) | the same two calls; `slot_ticks` 72000 -> 52858. Exit 1, 51 death rows and the unit table identical | held |
+
+**The failed prediction is a caller census miss, not the mechanism.** The ranking's first table
+already listed `usn_19_coralus 212`, and I did not map that script to USN04. The binding does
+what the script asks, and Yorktown's deck is never used for a launch on these rows.
+
+**Verdict: `kLuaSetAirBaseSlotCountBound = true`, recorded.** `luaZuikakuMovieEnd` (1949)
+restores Yorktown to 4 slots. Those slots are default records (class 0, requested 3), as in the
+image, so the first run that reaches that stage may launch differently from Yorktown.
+
+## The unfired `command` and `input` channels, a census (cc9-lua3, 2026-09-28)
+
+Item 3 of the cc9-lua2 handoff. Before binding, I checked which measured row could show either
+channel firing. This is a read of this installation's scripts; nothing is bound.
+
+**`command`: no measured mission registers one.**
+- **Correction.** The handoff and the plan above name JM06's `submove` (`jm06.lua` 1205) as the
+  measure. It is registered only inside `luaJM6SubPathListener`, and no script in this
+  installation calls that function (its only occurrence under `scripts/` is the definition). So
+  JM06 never registers a `command` listener.
+- The registrations that do run are in JM02 (`BettyRetreat` 1561, `NellRetreat` 1601), JM07
+  (`fleet1move` 1435, `atlantamove` 2495) and JM13 (`junklistener` 2146), under
+  `missions/COTP-IJN/`. None of these is a reference row.
+- Binding `command` therefore needs one of those missions as its measured row. `submove`'s keys
+  (`command = {"moveonpath"}`, `status = {"finish"}`) show that the channel reports a command's
+  start or finish per entity.
+
+**`input`: an idle player cannot fire it.**
+- Every registration comes from `global/commandhelpers.lua`. It is either the in-game movie skip
+  (`IngameMovieInputListenerID` -> `luaCamOnTargetExt`) or the `Launch_Airbase_Stock_N` keys.
+- Both answer to player input. The harness plays idle, so on every reference row the ON run would
+  be byte-identical to the OFF run for this channel.
+
+### The `command` channel: no reachable row (cc9-lua3, 2026-09-28)
+
+The lead approved JM07 3200/3000 as the measured row for `command`, with JM02 as the fallback.
+Neither runs a `command` listener in this build. 300-frame smokes and the mission tree
+(`scripts/datatables/missiontree.lua`, mtime 2025-06-02, modded) show why:
+
+| menu id | scene | script the host runs | `command` listener |
+| --- | --- | --- | --- |
+| JM07 | `COTP-IJN/PRCPIJN/prcpijn_midway.scn` | `PRCPIJN/prcpijn_midway.lua` | none |
+| JM02 | `COTP-IJN/PRCPIJN/prcpijn_02_force_z.scn` | `PRCPIJN/prcpjm02.lua` | none |
+| JM13 | `COTP-IJN/ijn_16_ambushed_at_wake_island.scn` | `COTP-IJN/JM16.lua` | none |
+| IJN13 | `IJN/ijn_13_yorktown.scn` | `Ijn/ijn_13_yorktown.lua` | none (only the movie-skip `input`) |
+| JM06 | `COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn` | `PRCPIJN/JM06.lua` | `submove` is never registered (above) |
+
+- **The scripts that do register one** are `jm02`, `jm06`, `jm07` and `jm13` under
+  `missions/COTP-IJN/`, `jm06`, `jm07` and `prcpjm07` under `PRCPIJN/`, and four copies under
+  `missions/ijn/JM/`.
+- **No tree entry reaches them.** Under the host's script derivation, no scene in the tree maps
+  to any of those files. The `ijn_02_force_z` and `ijn_07_invasion_of_midway` scenes exist on
+  disk but no tree entry names them.
+- **Caveat on the derivation.** It is itself a host substitution: the scene record's `+928h`
+  script table is not filled by the header pass. The image might pick a different script for
+  some of these scenes. The scene files carry no `.lua` string to check against.
+- **So the `command` channel stays unbound.** Binding it needs either the `+928h` script table,
+  or a harness option that runs a named mission script.

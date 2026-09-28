@@ -330,6 +330,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_submarine_depth_level.
     const bool sub_depth_row = kLuaSetSubmarineDepthLevelBound
         && dispatch_row.address == 0x00893f40u;
+    // Packet cc9_set_air_base_slot_count.
+    const bool slot_count_row = kLuaSetAirBaseSlotCountBound
+        && dispatch_row.address == 0x008963e0u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -359,6 +362,7 @@ int binding_trampoline(lua_State* state) {
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
+        || slot_count_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -454,6 +458,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (slot_count_row) {
+        if (!host->error_replay()) host->run_set_air_base_slot_count_008963e0(state, argc);
+        return 0;
     }
     if (sub_depth_row) {
         if (!host->error_replay()) host->run_set_submarine_depth_level_00893f40(state, argc);
@@ -704,6 +712,25 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.y_drag = number("YDrag");
             row.max_spd = number("MaxSpd");
             row.travel_speed = number("TravelSpeed");
+            // Packet cc9_submarine_dive: 00854230's NumberOr keys, each keeping
+            // its literal default when the row does not author it.
+            const auto number_or = [&](const char* key, float fallback) -> float {
+                ::lua_getfield(state_, -1, key);
+                const float value = ::lua_type(state_, -1) == LUA_TNUMBER
+                    ? static_cast<float>(::lua_tonumber(state_, -1)) : fallback;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                return value;
+            };
+            row.sub_periscope_depth = number_or("PeriscopeDepth", -1.0f);
+            if (row.sub_periscope_depth < 0.0f) {
+                row.sub_periscope_depth = number_or("SwimDepth1", row.sub_periscope_depth);
+            }
+            row.sub_swim_depth2 = number_or("SwimDepth2", -1.0f);
+            row.sub_swim_depth3 = number_or("SwimDepth3", -1.0f);
+            row.sub_up_down_accel = number_or("UpDownAccel", 0.25f);
+            row.sub_up_down_stop_time = number_or("UpDownStopTime", 5.0f);
+            row.sub_up_speed = number_or("UpSpeed", 1.2f);
+            row.sub_down_speed = number_or("DownSpeed", 1.2f);
             // 007D20C6 scales Accel in place by tuning+31Ch * tuning+320h when
             // the second is above 1.0 and leaves it raw otherwise
             // (src/plane_class_fields.cpp:207-219). The raw value is read here:
@@ -4506,6 +4533,53 @@ int GameMissionLuaHost::run_set_submarine_depth_level_00893f40(lua_State* state,
     return 0;
 }
 
+// Packet cc9_set_air_base_slot_count. 008963E0 SetAirBaseSlotCount(entity, n): argument 0
+// through 00888AA0, BSP_AirOps_GetBlock, argument 1 as an integer, then 006C7E20(n) on the
+// block. 006C7E20 appends default records while [block+50h] < n (006C7E73 JAE, loop back
+// at 006C8060) and destroys from the tail while it is above n (006C8069..006C8089). The
+// default record (006C7EA3..006C7F1C): class 0, assigned 0, requested 3, class+134h copy
+// 0, no squadron, state 1, timer 0.0, launch request clear. Returns no value.
+// SUBSTITUTIONS (labelled): the deck is the air-ops deck registry's entry for the entity;
+// an entity with no deck is counted unresolved (the image has no such test); a negative n
+// is ignored, where the unsigned compare would grow the array without bound.
+int GameMissionLuaHost::run_set_air_base_slot_count_008963e0(lua_State* state,
+                                                            int argument_count) {
+    ++summary_.slot_count_calls;
+    const int count = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const int id = air_ops_entity_id(state);
+    bsp::AirOpsDeck* deck = id > 0 ? bsp::air_ops_decks().find_mutable_by_entity_id(id) : nullptr;
+    if (deck == nullptr || count < 0) {
+        ++summary_.slot_count_unresolved;
+        log_.notef("  SetAirBaseSlotCount 008963e0: entity id %d n=%d has no deck or a "
+            "negative count (packet cc9_set_air_base_slot_count)", id, count);
+        return 0;
+    }
+    const std::size_t before = deck->slots.size();
+    const std::size_t wanted = static_cast<std::size_t>(count);
+    while (deck->slots.size() < wanted) {
+        bsp::AirOpsSlot slot;
+        slot.vehicle_class = 0;
+        slot.assigned_count = 0;
+        slot.requested_count = 3;                       // 006C7EB3
+        slot.class_field_134 = 0;
+        slot.launched_squadron = 0;
+        slot.state = bsp::AirOpsSlotState::kCooldown;   // 006C7EDC, 1
+        slot.timer = 0.0f;
+        slot.launch_requested = false;
+        deck->slots.push_back(slot);
+    }
+    while (deck->slots.size() > wanted) deck->slots.pop_back();
+    if (deck->slots.size() != before) ++summary_.slot_count_resized;
+    const GameUnitsHost* units = units_hooks_;
+    const GameUnitRow* row = (units != nullptr && static_cast<std::size_t>(id) <= units->count())
+        ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SetAirBaseSlotCount 008963e0: \"%s\" slots %zu -> %zu (packet "
+        "cc9_set_air_base_slot_count)", row != nullptr ? row->name.c_str() : "?", before,
+        deck->slots.size());
+    log_.implemented("MissionLuaNative::SetAirBaseSlotCount", "008963e0");
+    return 0;
+}
+
 // Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
 // 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
 // vtable[114h] director exists, 0071E050(flag) -> director+221h.
@@ -5867,6 +5941,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (00893F40 -> 008528B0, packet cc9_set_submarine_depth_level)",
         kLuaSetSubmarineDepthLevelBound ? 1 : 0, summary_.sub_depth_calls,
         summary_.sub_depth_stored, summary_.sub_depth_unresolved);
+    log_.notef("summary mission script air base slot count bound=%d calls=%llu resized=%llu "
+        "unresolved=%llu (008963E0 -> 006C7E20, packet cc9_set_air_base_slot_count)",
+        kLuaSetAirBaseSlotCountBound ? 1 : 0, summary_.slot_count_calls,
+        summary_.slot_count_resized, summary_.slot_count_unresolved);
     log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
         "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
         kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,
