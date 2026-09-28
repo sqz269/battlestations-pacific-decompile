@@ -1505,3 +1505,34 @@ Worker cc9-lua2, 2026-09-28. This is item 4 of the ranking. Ghidra was read only
   - The ship and aircraft AI that reads the pass's levels (target choice, `luaGetShipsAround`'s
     recon tables) can engage earlier, so **exit 3 is likely**.
 - **Elsewhere.** USN01, USN04 and USN02 make no call on the idle runs, so they are identity.
+
+### The binding (`kForcedReconLevelBound`, committed OFF)
+
+- **The table.** `bsp::set_forced_recon_level_00805cf0(target, side, level)` fills a process-wide
+  (side, target) table in `src/recon_sensor_pass.cpp`.
+  - `recon_sensor_pass_step_008073c0` consults it for every tested target, after the host's
+    per-target hooks. A forced entry skips the sensor test and publishes the forced level, as
+    `det+10h` does.
+  - The table stays empty unless the native writes it, so the pass is unchanged with the switch
+    off.
+  - The gunnery host is not touched.
+- **The native.** `GameMissionLuaHost::run_set_forced_recon_level_008aa8f0` reads
+  (entity, level, party) and resolves the entity as `Kill` does. A squadron's fused slot forces
+  its live members.
+- **The census:**
+  - `summary mission script forced recon bound=.. calls=.. units=.. unresolved=..`;
+  - one `SetForcedReconLevel 008aa8f0:` line per call.
+
+**SUBSTITUTIONS, labelled:**
+- The force is published at the next pass; `00805CF0` notifies at once.
+- A LandConvoy forces its own slot.
+- Unresolved entities are counted.
+- The table is not cleared between missions; a run is one mission.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| row | prediction |
+| --- | --- |
+| USN13 3200/3000 | `calls=15`. The Japanese primary-3 targets and the attack-wave squadrons are published as identified to the Allied side (party 0) from the next pass on. `recon sensor_pass identified` rises, and every Allied AI path that reads the pass's levels sees them sooner. **Exit 3 likely**; every moved row should trace to Allied engagement of those units |
+| USN01 3200/3000 | no call on the current OFF log (`kill_off_usn01`; the script's line 836 is not reached); identity |
+| USN04 4700/4500 | no call, identity |

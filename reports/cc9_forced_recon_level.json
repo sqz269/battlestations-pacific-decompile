@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_forced_recon_level",
+  "doc": "docs/LUA_BINDING_MISSION.md, SetForcedReconLevel, 008AA8F0",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kForcedReconLevelBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "OFF"
+    }
+  ],
+  "substitutions": [
+    "published at the next pass",
+    "LandConvoy forces its own slot",
+    "unresolved counted",
+    "table not cleared between missions"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}

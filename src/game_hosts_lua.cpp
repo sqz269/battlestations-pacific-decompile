@@ -312,6 +312,7 @@ int binding_trampoline(lua_State* state) {
     const bool listener_active_row = kLuaListenersBound && dispatch_row.address == 0x008c6bb0u;
     // Packet cc9_set_invincible_native.
     const bool set_invincible_row = dispatch_row.address == 0x00897a50u;
+    const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -339,6 +340,7 @@ int binding_trampoline(lua_State* state) {
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
+        || forced_recon_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -434,6 +436,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (forced_recon_row) {
+        if (!host->error_replay()) host->run_set_forced_recon_level_008aa8f0(state, argc);
+        return 0;
     }
     if (set_invincible_row) {
         if (!host->error_replay()) host->run_set_invincible_00897a50(state, argc);
@@ -4201,6 +4207,48 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     }
 }
 
+// Packet cc9_forced_recon_level. 008AA8F0 SetForcedReconLevel(entity, level,
+// party): argument 0 through 00888AA0, arguments 1 and 2 as integers (00B66290),
+// then 00805CF0(level) on the entity's record for that party; a squadron (18h) or
+// LandConvoy (1Ah) forces each +3CCh member instead.
+// SUBSTITUTIONS (labelled): the force is published at the next recon pass, not by
+// 00805CF0's immediate notify; a LandConvoy forces its own slot (no member vector);
+// an entity with no units-host slot is counted unresolved.
+int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
+    int argument_count) {
+    ++summary_.forced_recon_calls;
+    const int level = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    const int party = argument_count >= 3 ? static_cast<int>(::lua_tonumber(state, 3)) : 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.forced_recon_unresolved;
+        log_.notef("  SetForcedReconLevel 008aa8f0: entity id %d has no units-host slot "
+            "(packet cc9_forced_recon_level)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    std::vector<std::size_t> targets;
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
+        for (std::size_t member : r.member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit) targets.push_back(member);
+        }
+        break;
+    }
+    if (targets.empty()) targets.push_back(index);
+    for (std::size_t unit : targets) {
+        bsp::set_forced_recon_level_00805cf0(unit, party, level);
+        ++summary_.forced_recon_units;
+    }
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetForcedReconLevel 008aa8f0: \"%s\" level=%d party=%d units=%zu (packet "
+        "cc9_forced_recon_level)", row != nullptr ? row->name.c_str() : "?", level, party,
+        targets.size());
+    log_.implemented("MissionLuaNative::SetForcedReconLevel", "008aa8f0");
+    return 0;
+}
+
 // Packet cc9_set_invincible_native. 00897A50 SetInvincible(entity, value):
 // argument 0 through 00888AA0; argument 1 is a boolean (00897B6F) giving 1.0 or
 // 0.0, otherwise its number, a fraction of maximum health (a nil or missing
@@ -5372,6 +5420,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
         listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
+    log_.notef("summary mission script forced recon bound=%d calls=%llu units=%llu "
+        "unresolved=%llu (008AA8F0 -> 00805CF0, packet cc9_forced_recon_level)",
+        kForcedReconLevelBound ? 1 : 0, summary_.forced_recon_calls,
+        summary_.forced_recon_units, summary_.forced_recon_unresolved);
     log_.notef("summary mission script set invincible calls=%llu units=%llu unresolved=%llu "
         "(00897A50 -> 0042ED80, packet cc9_set_invincible_native)", summary_.invincible_calls,
         summary_.invincible_units, summary_.invincible_unresolved);

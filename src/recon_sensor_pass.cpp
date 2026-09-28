@@ -1,6 +1,8 @@
 #include "bsp/recon_sensor_pass.hpp"
 
 #include <algorithm>
+#include <map>
+#include <utility>
 
 namespace bsp {
 
@@ -124,6 +126,11 @@ void recon_sensor_pass_step_008073c0(ReconSensorPassState& state, float dt,
             subject.is_surface_target = host.unit_is_surface_target(target);
             subject.detection_forced = host.unit_detection_forced(target);
             subject.forced_level = host.unit_forced_level(target);
+            ReconDetectionLevel forced = ReconDetectionLevel::none;
+            if (forced_recon_level(side, target, forced)) {   // packet cc9_forced_recon_level
+                subject.detection_forced = true;
+                subject.forced_level = forced;
+            }
 
             const GunneryReconContact contact = gunnery_recon_detect_00806840(
                 observers.data(), observers.size(), subject, env,
@@ -145,5 +152,29 @@ void recon_sensor_pass_step_008073c0(ReconSensorPassState& state, float dt,
         }
     }
 }
+
+namespace {
+std::map<std::pair<int, std::size_t>, ReconDetectionLevel>& forced_recon_table() {
+    static std::map<std::pair<int, std::size_t>, ReconDetectionLevel> table;
+    return table;
+}
+} // namespace
+
+void set_forced_recon_level_00805cf0(std::size_t target, int side, int level) {
+    // The record's int level: 0 none, 1 blip, 2 identified (bsp::ReconDetectionLevel).
+    const ReconDetectionLevel value = level <= 0 ? ReconDetectionLevel::none
+        : level == 1 ? ReconDetectionLevel::blip : ReconDetectionLevel::identified;
+    forced_recon_table()[std::make_pair(side, target)] = value;
+}
+
+bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out) {
+    const auto& table = forced_recon_table();
+    const auto it = table.find(std::make_pair(side, target));
+    if (it == table.end()) return false;
+    out = it->second;
+    return true;
+}
+
+void clear_forced_recon_levels() { forced_recon_table().clear(); }
 
 } // namespace bsp
