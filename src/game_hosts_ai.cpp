@@ -256,8 +256,9 @@ constexpr bool kAiCaptureTargetPathBound = true;
 // section 9. True: the Sell kind (brain+8h) runs 00A22800: 00A2E4C0 splits the
 // air members off each owned group into a new group that 00A22750 claims, then
 // every owned group whose command is not SELLING (00A2BE10, IsType(0Eh)) gets
-// one (vtable 00D229B8, 00A2BD00). False: the Siege-shape stand-in.
-constexpr bool kAiSellThinkBound = false;
+// one (vtable 00D229B8, 00A2BD00). False: the Siege-shape stand-in. ON: USN13
+// and USN01 identical, no group reaches brain+8h there (section 9.4).
+constexpr bool kAiSellThinkBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a

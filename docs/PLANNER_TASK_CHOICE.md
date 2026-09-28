@@ -617,6 +617,20 @@ Capture planner hands a group on. Of this installation's scenes, `COTP-USN/def_a
 holds an Allied CommandBuilding next to a Japanese one. `COTP-IJN/ijn_08_defend_guadalcanal.scn`
 and `ijn_16_ambushed_at_wake_island.scn` hold Japanese ones, for a Japanese player party.
 
+### 9.4 The pairs
+
+- **OFF** is this tree's build at `2075be5eb`. **ON** is `pair_export --commit 2075be5eb --flip
+  kAiSellThinkBound=true` into `local\se_on`.
+- **Logs:** `local\se_{off,on}_{usn13,usn01}.log`.
+
+| mission | pair_diff | deaths | hit records | ON census |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | exit 1, identical | 17 | 283 | `sell thinks=39 splits=0 selling=0` |
+| USN01 3200/3000 | exit 1, identical | 5 | 172 | `sell thinks=38 splits=0 selling=0` |
+
+**The prediction held. Decision: `kAiSellThinkBound` is ON.** Its first gameplay effect will come
+with a mission from 9.3, and it will be limited while SELLING has no tick arm.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
