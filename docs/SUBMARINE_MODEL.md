@@ -954,3 +954,47 @@ set by the terrain under each boat, which no earlier run printed. The host's Lan
 **Verdict: `kSubmarineSeabedBound = true`, with the JM06 spread miss recorded.** The clamp, the
 publish and the trace numbers follow the traced law. Which boat crosses shallow water was the
 unknown.
+
+## 15. The `Dive` teleport (packet `cc9_submarine_dive_teleport`, `kSubmarineDiveTeleportBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. Stage 2 of `00853630` (section 3, "The initial band"), read from the
+listing.
+
+**What it writes.**
+- When the scene holder's kind is 1 and the row authors `Dive`, `00853B3E` stores the level at
+  `+1268h`.
+- `00853B44` loads `bands[level]` (no range check). `00853B4D..00853B5D` rewrite the local
+  position `+A4h/+A8h/+ACh` with X and Z unchanged and Y = `bands[level]`.
+- `+C8h` and `+10Ch` are cleared. Each child on the `+48h`/`+44h` list is invalidated through
+  `0042ED50`, and the "moved" flag at `[esp+13h]` is set.
+- `TargetDive` then sets the level only.
+- **So a boat that authors `Dive` starts exactly at its band.** Without the teleport the dive law
+  moves it there over about 10 s.
+
+**Who uses it.** Every submarine in the reference rows authors `Dive`, per this host's
+`submarine depth seed` lines.
+
+| mission | boat | `Dive` | authored Y | teleported Y |
+| --- | --- | --- | --- | --- |
+| JM06 | `Narwhal-class Submarine 01` | 3 | -79.90 | -80.0 |
+| JM06 | `Gato-class Submarine 01` | 1 | -0.01 | -12.8 (a wreck, dead at t=0) |
+| JM06 | `PlayerSub 01..03` | 1 | -20.00 | -13.0, then `luaJM6SubInit`'s `PutTo` puts them back at y = -20 |
+| JM06 | `Submarine TypeB w Jake 01..03` | 2 | -50.00 | -40.0 |
+| LOMP06 | `Narwhal` | 1 | -20.00 | -10.2 |
+
+**The binding.** It is at the seed site in `src/game_hosts_units.cpp`, before the hull body is
+built from the slot position.
+
+**SUBSTITUTIONS, labelled.**
+- Local is world, because every host submarine is top-level.
+- The children have no host pose to invalidate.
+- The level is clamped to 0..3 as a guard, where the image indexes without a check.
+
+**Predictions** (written before the ON runs; the OFF baseline is this tree with dive, air and
+seabed ON).
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 3.** The PlayerSubs are unchanged at step 1 (-20.00, `PutTo` runs before the first physics step). The TypeBs start at -40.0 instead of rising from -50 over about 200 steps. The Gato wreck starts sinking from -12.8. The Narwhal-class moves by 0.1 m. The early traces move; hits and deaths may shift through the TypeBs' first seconds |
+| LOMP06 1200/1000 | **exit 3, small.** The Narwhal starts at -10.2 instead of -20, so its first 200 steps' vertical motion and drag differ. The controlled distance moves slightly and the camera that tracks it moves. No hit or death change |
+| USN01 3200/3000 | no submarine, exit 0 |

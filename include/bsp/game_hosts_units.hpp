@@ -272,6 +272,12 @@ inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMAR
 // clamp, no bounds write.
 inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06 spread miss recorded (docs/SUBMARINE_MODEL.md section 14)
 
+// Packet cc9_submarine_dive_teleport (docs/SUBMARINE_MODEL.md section 15). True: a
+// submarine whose scene row authors `Dive` is placed at bands[Dive] at attach
+// (00853B2B..00853B86: local Y +A8h, X and Z kept), before its hull body is built.
+// False: the hull keeps its authored Y.
+inline constexpr bool kSubmarineDiveTeleportBound = false;
+
 class GameUnitsHost {
 public:
     GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua);
