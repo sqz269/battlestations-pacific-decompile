@@ -703,6 +703,10 @@ void GameScriptOrdersHost::run_air_ops_update_006cdc70(float step) {
         }
     }
     const bsp::AirOpsDeckTickResult tick = bsp::air_ops_update_decks_006cdc70(step);
+    // 006CDCDC: the landing queue 006CD240, after 006C0DA0 in 006CDC70's order
+    // (006C77E0, 006C64B0 and 006C6540 between them are not run here). Packet
+    // cc9_landing_sequencer; returns at once while kLandingSequencerBound is off.
+    units_.run_landing_queue_006cd240(step);
     air_ops_ticks_ += tick.slots;
     air_ops_refills_ += tick.became_ready;
     air_ops_tracking_ = tick.tracking;
