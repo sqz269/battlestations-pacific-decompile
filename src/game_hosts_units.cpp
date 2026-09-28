@@ -19,6 +19,7 @@
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/camera_path_sampler.hpp"      // packet cc9_land_convoy_movement
+#include "bsp/return_to_base.hpp"           // packet cc9_squadron_land_task
 #include "bsp/land_and_structures.hpp"      // packet cc9_land_convoy_movement
 #include "bsp/mission_camera.hpp"           // kWorldUp00f8758c
 #include "bsp/native_camera_plane_transform.hpp"
@@ -1711,6 +1712,17 @@ struct GameUnitsHost::Impl {
     GameCommandsHost commands;
     // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound.
     std::vector<LandConvoyMotionState> land_convoys;
+    // Packet cc9_squadron_land_task, under kSquadronReturnToBaseResolveBound.
+    struct ReturnToBaseCensus {
+        std::string squadron;
+        unsigned long long resolutions{0};
+        int last_arm{-1};
+        std::string last_site;
+        std::string last_note;
+    };
+    std::vector<ReturnToBaseCensus> rtb_census;
+    unsigned long long rtb_arm_counts[4]{};
+    void record_return_to_base_007f16d0(std::size_t unit_index);
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
     std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
@@ -8040,6 +8052,138 @@ void GameUnitsHost::land_convoy_interpolation_wave(float leftover) {
     }
 }
 
+// Packet cc9_squadron_land_task. The squadron intake 007F1940's returntobase
+// arm (007F1AF9): 007F16D0 with ECX = the squadron. The host's AI hands the
+// order to each member plane (fan-out substitution, src/game_hosts_ai.cpp), so
+// the resolution runs once per order, at the flight leader's. LABELLED inputs:
+//  - the class descriptor sq+35Ch is the head's VehicleClass row (MinWaterSpd);
+//  - sq+369h is ReloadEnabled, default 1 at 007F2D09; the authored key is not
+//    read here, so it is taken as 1;
+//  - head+C24h is not carried (read only for a kamikaze head);
+//  - the home arm's 006BCD20/006C4790/006BED30 are unread: a squadron with a
+//    scene HomeBase is recorded as "home arm unread", not issued;
+//  - 006C0840: the head's scene parent (00923810(1)) is not carried by the unit
+//    rows, so the own-site branch is not taken; every air-ops deck is one node
+//    with owner +5Dh clear; 006BC530 and the ordering key are unread, so with
+//    two or more decks past the filters the answer is flagged "key unread";
+//    block+20h bit 1 is unread, so a head of class 10h/16h leaves the deck
+//    undetermined;
+//  - the retreat arm takes the nearest zone of the squadron's side from the
+//    Lua host's world+7134h records, at the squadron's position.
+void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index) {
+    const bsp::PlaneSquadronHostRecord* sq =
+        bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+    if (sq == nullptr) return;
+    const std::size_t head = sq->flight_leader();
+    if (head != unit_index || head >= slots.size()) return;
+    const GameUnitRow& head_row = slots[head]->row;
+    std::string note;
+    bsp::ReturnToBaseInputs in;
+    const GameVehicleClassRow cls = lua.read_vehicle_class_row(head_row.type_id);
+    in.class_descriptor_35c = cls.found;
+    in.min_water_spd_198 = cls.min_water_spd;
+    in.head_present = true;
+    in.head_is_kamikaze_17 = bsp::unit_is_kind_of(slots[head]->class_id, 0x17);
+    in.head_c24 = false;
+    in.has_deck_369 = true;
+    const bool home_authored = sq->squadron_unit < slots.size()
+        && !slots[sq->squadron_unit]->scene_home_base_key.empty();
+    in.home_arm_issues = false;
+    if (home_authored) note += " home-arm-unread";
+    // 006C0840(side = sq+54h, head, 0, 0047B850(head), 1).
+    bsp::NearestLandingSiteInputs site_in;
+    site_in.side = sq->party;
+    site_in.head_present = true;
+    site_in.head_control_9d4 = true;
+    site_in.multiplayer_927c90 = false;
+    site_in.need_approach_bit = bsp::unit_is_kind_of(slots[head]->class_id, 0x10)
+        || bsp::unit_is_kind_of(slots[head]->class_id, 0x16);
+    site_in.local_only = true;
+    std::vector<std::size_t> dead;
+    if (gunnery != nullptr) {
+        for (const GameGunneryUnitRow& r : gunnery->unit_rows()) if (r.sunk) dead.push_back(r.unit_index);
+    }
+    std::vector<bsp::LandingSiteCandidate> list;
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    bool bit_undetermined = false;
+    for (std::size_t i = 0; i < decks.size(); ++i) {
+        const bsp::AirOpsDeck* deck = decks.mutable_at(i);
+        bsp::LandingSiteCandidate c;
+        c.node = i + 1u;
+        c.block_present = true;
+        c.owner_present = deck->owner_present;
+        std::size_t owner = slots.size();
+        for (std::size_t u = 0; u < slots.size(); ++u) {
+            if (slots[u]->row.name == decks.name_at(i)) { owner = u; break; }
+        }
+        c.owner_dead_5e = owner < slots.size()
+            && std::find(dead.begin(), dead.end(), owner) != dead.end();
+        c.owner_remote_5d = false;
+        c.approach_bit_20 = true;
+        if (site_in.need_approach_bit) bit_undetermined = true;
+        c.owner_side_54 = deck->owner_party;
+        c.accepts_6bc530 = false;
+        c.key_known = false;
+        list.push_back(c);
+    }
+    const bsp::NearestLandingSiteResult site = bsp::nearest_landing_site_006c0840(site_in, list);
+    if (site.key_unknown) note += " site-key-unread";
+    if (bit_undetermined && site.node != 0) note += " approach-bit-20-unread";
+    in.site_node = site.node;
+    in.site_block_present = site.node != 0;
+    in.site_block_refuses_6bc120 = false;   // owner present, +5Dh clear
+    const bsp::BorderZoneSet* zones = lua.world_border_zones();
+    float sx = 0.0f, sy = 0.0f, sz = 0.0f;
+    const std::size_t at = sq->squadron_unit < slots.size() ? sq->squadron_unit : head;
+    sx = slots[at]->motion.position[0];
+    sy = slots[at]->motion.position[1];
+    sz = slots[at]->motion.position[2];
+    if (zones != nullptr) {
+        const bsp::BorderZoneHit hit =
+            bsp::closest_border_zone_004c7730(*zones, {sx, sy, sz}, sq->party);
+        if (hit.zone != nullptr) {
+            in.zone_found = true;
+            const bsp::BorderZoneRecord& zr = *hit.zone;
+            const float corners[8] = {zr.a[0], zr.a[2], zr.b[0], zr.b[2],
+                                      zr.c[0], zr.c[2], zr.d[0], zr.d[2]};
+            std::copy(corners, corners + 8, in.zone_corners_xz);
+        }
+    } else {
+        note += " no-zones";
+    }
+    const bsp::ReturnToBaseResult r = bsp::resolve_return_to_base_007f16d0(in);
+    const int arm = static_cast<int>(r.arm);
+    ++rtb_arm_counts[arm];
+    std::string site_name;
+    if (r.arm == bsp::ReturnToBaseArm::kLandAtSite && site.node != 0) {
+        site_name = decks.name_at(static_cast<std::size_t>(site.node - 1u));
+    }
+    ReturnToBaseCensus* entry = nullptr;
+    for (ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
+    if (entry == nullptr) {
+        rtb_census.push_back(ReturnToBaseCensus{});
+        entry = &rtb_census.back();
+        entry->squadron = sq->name;
+    }
+    ++entry->resolutions;
+    const bool changed = entry->last_arm != arm || entry->last_site != site_name
+        || entry->last_note != note;
+    entry->last_arm = arm;
+    entry->last_site = site_name;
+    entry->last_note = note;
+    if (changed) {
+        static const char* const kArm[4] = {"null", "land at home", "land at site", "retreat"};
+        log.notef("returntobase 007F16D0: squadron \"%s\" head \"%s\" side=%d -> %s%s%s "
+            "(MinWaterSpd=%.4f sites=%zu passed=%d%s; retreat point (%.1f, %.1f)) at %.2f s "
+            "RECORD ONLY (packet cc9_squadron_land_task)", sq->name.c_str(),
+            head_row.name.c_str(), sq->party, kArm[arm], site_name.empty() ? "" : " ",
+            site_name.c_str(), static_cast<double>(in.min_water_spd_198), list.size(),
+            site.candidates_passed, note.c_str(), static_cast<double>(r.retreat_x),
+            static_cast<double>(r.retreat_z), static_cast<double>(summary.simulated_seconds));
+    }
+    record("Squadron::resolve_return_to_base_007f16d0", 0x007f16d0u);
+}
+
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;
     for (const GameSceneEntityRecord& entity : entities) {
@@ -8855,6 +8999,9 @@ const GameCommandRow* GameUnitsHost::issue_script_command(std::size_t unit_index
     if (unit_index >= host.slots.size()) return nullptr;
     GameUnitSlot& slot = *host.slots[unit_index];
     const float heading = host.pose_heading_radians(slot);
+    if constexpr (kSquadronReturnToBaseResolveBound) {
+        if (command_object == 0x00E08F98u) host.record_return_to_base_007f16d0(unit_index);
+    }
     const GameCommandRow* row = host.commands.issue_command_object(unit_index,
         command_object, target, flags, source, target_name, slot.ring, heading);
     // The unit's own row keeps the token the scene authored: a scripted order is
@@ -20280,6 +20427,12 @@ void GameUnitsHost::log_controlled_trajectory(unsigned long long mission_frame) 
 void GameUnitsHost::report() {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
+    if constexpr (kSquadronReturnToBaseResolveBound) {
+        host.log.notef("summary squadron returntobase 007F16D0 null=%llu home=%llu site=%llu "
+            "retreat=%llu squadrons=%zu RECORD ONLY (packet cc9_squadron_land_task)",
+            host.rtb_arm_counts[0], host.rtb_arm_counts[1], host.rtb_arm_counts[2],
+            host.rtb_arm_counts[3], host.rtb_census.size());
+    }
     if (host.gunnery != nullptr) host.gunnery->report();
     if (host.ai != nullptr) host.ai->report();
     host.log.notef("unit motion: %llu motion step(s) of %llu unit tick(s) over %.2f s of "

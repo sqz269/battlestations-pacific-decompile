@@ -2053,3 +2053,52 @@ pointer is non-null, it gets 0 for an accepting best, else `sqrt(key)`.
 and flies about 9.5 km in the run. So the land task would spend most of the row in mode 1, the
 moveto. Whether it reaches mode 2 depends on when the first `returntobase` lands and on
 `009B34D0`.
+
+### The record switch `kSquadronReturnToBaseResolveBound` (cc9-lua6, part 2, ON)
+
+`issue_script_command` runs the resolution when the SELLING tick places `returntobase`
+(`00E08F98`) on a squadron's flight leader. The inputs are labelled in the code
+(`record_return_to_base_007f16d0`). The command is still placed as before, so the switch is a
+record only.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| LOMP10 3200/3000 | **exit 1.** One `returntobase 007F16D0` line each for `B-25 01`, `Lightning 01` and `Warhawk 01`, all `-> land at site CB4_AF` with `sites=1 passed=1`. B-25 01's line carries `approach-bit-20-unread`, because its head is class 10h. None carries `home-arm-unread`. The summary reads `null=0 home=0 retreat=0 squadrons=3`, and `site` equals the number of leader placements. Gameplay identical |
+| USN01 3200/3000 | **exit 1.** No SELLING returntobase, so the summary line reads all zeros with `squadrons=0` |
+
+#### Record switch pairs and verdict
+
+- OFF is this tree's build of `1749c12d1`.
+- ON is `pair_export --commit 1749c12d1 --flip kSquadronReturnToBaseResolveBound=true`
+  (`local/rtb_on`).
+- The logs are `local/rtb_{off,on}_<mission>.log` in worktree cc9-lua6.
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| LOMP10 3200/3000 | exit 1 | the record lines and the summary, and the same-binary noise below | held |
+| USN01 3200/3000 | exit 1 | the summary line, all zero | held |
+
+**LOMP10, ON.** All three squadrons resolve to `land at site CB4_AF` at 8.65 s, the first SELLING
+tick:
+- MinWaterSpd is 22.2222 for all three;
+- each line reads `sites=1 passed=1`;
+- B-25 01's line carries `approach-bit-20-unread`.
+
+The summary reads `null=0 home=0 site=117 retreat=0 squadrons=3`. The 117 are the SELLING
+tick's squadron-level placements. Gameplay is identical: deaths, hits and the 34 compared
+unit-table rows.
+
+**The moved presentation lines are same-binary noise.** A second OFF run
+(`local/rtb_off2_lomp10.log`) against the first gives the same kind of drift:
+- the minimap heading 0.4535 against 0.4537 rad;
+- the landscape attach cells 46835 against 46833;
+- 70 movie-camera pose lines moving by about 0.1 m;
+- the doubled `ShipAiSectorScan` counters.
+
+Those LOMP10 variances are not yet in the deterministic-noise list.
+
+**Verdict: `kSquadronReturnToBaseResolveBound = true`.** It stays a record. The issue waits for
+the flown `land` task, which is parked (the land-task section above).
