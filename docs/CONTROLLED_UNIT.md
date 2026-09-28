@@ -1458,3 +1458,58 @@ the work is in `docs/LUA_BINDING_MISSION.md`, whose sections are named below.
 - **Pair exports:** `local\{gp,kill,sq,ok,ls,rl,rc,fr,ad,ht,aa,sp}_on`.
 - **Logs:** `local\<prefix>_{off,on}_<mission>.log`.
 - **Scripts:** `local\cc9-lua2-*`.
+
+## Handoff (cc9-lua3, 2026-09-28)
+
+Worker cc9-lua3 took over cc9-lua2's lane (handoff above). The branch is `agent/cc9-lua3` and the
+worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua3`. It holds no leases after this
+commit. Everything below is on main except the last two rate-limit commits and this handoff,
+which were reported to the lead.
+
+### Switches this worker set (all ON by their pairs)
+
+| switch | file | doc |
+| --- | --- | --- |
+| `kLuaUnitGetAttackTargetBound` | `include/bsp/game_hosts_lua.hpp` | `docs/LUA_BINDING_MISSION.md`, "UnitGetAttackTarget, 008A6DE0" |
+| `kLuaSquadronSetSpeedBound` | same | "SquadronSetSpeed, 0089F780" |
+| `kLuaIsClassChangedBound` | same | "IsClassChanged, 008CC4B0" |
+| `kLuaSetSubmarineDepthLevelBound` | same | "SetSubmarineDepthLevel, 00893F40" |
+| `kLuaSetAirBaseSlotCountBound` | same | "SetAirBaseSlotCount, 008963E0" (USN04 caller miss recorded) |
+| `kLuaHitFilterFieldsBound` | same | "The unmodelled `hit` filters, bound" |
+| `kLuaHitRateLimitBound` | same | "The hit-callback rate limit" |
+| `kSubmarineDiveBound` | `include/bsp/game_hosts_units.hpp` | `docs/SUBMARINE_MODEL.md` section 12 (the dive law, 00936DC0) |
+| `kSubmarineAirBound` | same | section 13 (air 00855250, crush 008551C0, `SetUnlimitedAirSupply`) |
+| `kSubmarineSeabedBound` | same | section 14 (the scan 00855420, the clamp, the order-ring throttle bounds) |
+| `kSubmarineDiveTeleportBound` | same | section 15 (the `Dive` teleport) |
+
+The four new Lua rows are in the dispatcher's `handled` list (`src/game_hosts_lua.cpp`).
+
+### Closed without a binding
+
+- **The `command` listener channel.** No reachable mission registers one: JM07, JM02, JM13 and
+  IJN13 run header scripts without it. The scripts that register one are not in
+  `missiontree.lua`.
+- **The `+928h` script table.** It is already bound by `kSceneStageScriptBound`. The log line now
+  names its source.
+- **`attackerPlayerIndex`.** The fire-time producer of `[src+1Ch]` is unread, and gunnery4's field
+  stays -1. It is counted `unmodelled`.
+
+### Open, in order
+
+1. **The natives ranking refresh** on the current head, asked for by the lead. USN02 fails at
+   29.75 s, so its phase-2 rows are gone. JM06 and LOMP06 carry the four submarine flips; rebaseline
+   them first.
+2. **`attackerPlayerIndex`** needs the producer of the ordnance record's `+1Ch` (stamped at fire
+   time). `00988510`'s send block compares it with `attacker[+1ACh + category*4]`.
+3. **The rate limit's `this+1A4h` list test** and a kamikaze shooter's forced kind 11h are not
+   modelled.
+4. **Submarine leftovers.** The ship-AI depth callers (`009E4B90`, `009E4EE0`, `009EA8DE`,
+   `009EA949`), the message `A2h` echo, and the unread `00852970` periscope object tick.
+5. **Noise to know.** The LOMP06 movie camera pose at frame 441 varies by 0.1 m run to run. The
+   one at frame 201 moves with the seabed binding (section 14).
+
+### Local files
+
+- **Pair exports:** `local\{ga,ss,cc,sd,sc,dv,ar,hf,sb,dt,rl}_on`, and `local\sd_off`.
+- **Logs:** `local\<prefix>_{off,on}_<mission>.log`.
+- **Scripts:** `local\l3_*`.
