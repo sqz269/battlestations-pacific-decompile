@@ -105,6 +105,21 @@ kind i.
 - **Census.** The `ai diag planner kind=` lines change: slots 0..3 read 0, 1, 2, 3 instead of
   1, 0, 3, 4. The quick-spawn record may name a different tag. Nothing else moves.
 
+**The pairs.**
+- **OFF** is `80fab5bd4`, this tree's build. **ON** is `pair_export --commit 80fab5bd4 --flip
+  kAiPlannerSlotKindsBound=true` into `local\pk_on`.
+- **Logs:** `local\pk_{off,on}_{usn02,usn13,usn04}.log`.
+
+| mission | pair_diff | deaths | hit records |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | exit 1, identical | 9 | 4415 |
+| USN13 3200/3000 | exit 1, identical | 16 | 312 |
+| USN04 4700/4500 | exit 1, identical | 27 | 501 |
+
+The diagnostic planner lines read `kind=0 1 2 3`. **The prediction held.**
+
+**Decision: `kAiPlannerSlotKindsBound` is ON.**
+
 ## 5. Follow-up
 
 **`cc9_planner_defend_capture_thinks`** would reconstruct the Defend think (`00A28A60-00A29E2A`)

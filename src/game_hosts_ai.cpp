@@ -227,7 +227,8 @@ constexpr bool kAiOrderReissueBound = true;
 // [ESI], 00A15C61 Attack -> +4h, 00A15C92 Sell -> +8h, 00A15CC3 Capture -> +0Ch,
 // 00A15ADA Duel -> +10h (mode 4), then Escort, Siege, Competitive. False: the
 // permuted table (Attack, Defend, Capture, Duel, Escort, Siege, Competitive).
-constexpr bool kAiPlannerSlotKindsBound = false;
+// ON: USN02, USN13 and USN04 identical (docs/PLANNER_TASK_CHOICE.md section 4).
+constexpr bool kAiPlannerSlotKindsBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
