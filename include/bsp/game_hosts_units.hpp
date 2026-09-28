@@ -301,6 +301,12 @@ public:
     // parameter block at *(unit+73Ch), and the pair as it stands.
     void store_commanded_speed_00890e6f(std::size_t unit_index, float speed);
     bsp::CruiseSpeedSetting commanded_speed(std::size_t unit_index) const;
+    // Packet cc9_squadron_set_speed. A plane's vtable[3Ch], 0074E1E0, is
+    // 007D9E80(unit+AB0h, speed): the controller's body linear velocity becomes
+    // (0, 0, speed), its body angular velocity the zero vector at 00F87574, then
+    // 007D9C80 rotates both into world. False (nothing written) for a slot that
+    // is not a seeded plane.
+    bool set_plane_forward_speed_007d9e80(std::size_t unit_index, float speed);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
     // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The

@@ -8181,6 +8181,31 @@ void GameUnitsHost::store_commanded_speed_00890e6f(std::size_t unit_index, float
         host.summary.simulated_seconds);
 }
 
+// Packet cc9_squadron_set_speed. 007D9E80: ctl+3Ch/+40h = 0 and ctl+44h = speed
+// (007D9E86..007D9E96), ctl+48h..+50h from 00F87574..00F8757C, the zero vector
+// (007D9E9B..007D9EBD), then 007D9C80 body to world through unit+74h and the
+// world linear velocity copied to ctl+30h..+38h (007D9EC7..007D9ED6).
+// SUBSTITUTION, labelled: the body +Z axis in world is the pose's forward row,
+// the same axis the spawn seed uses; the ctl+30h..+38h copy has no host field.
+bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, float speed) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.plane_velocity_seeded) return false;
+    const float* const fwd = slot.motion.pose_row2;
+    const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
+    if (!(len > 1e-6f)) return false;
+    for (int i = 0; i < 3; ++i) {
+        slot.plane_world_velocity[i] = speed * fwd[i] / len;
+        slot.plane_body_angular[i] = 0.0f;
+    }
+    slot.motion.linear_velocity = bsp::OceanVec3{
+        slot.plane_world_velocity[0], slot.plane_world_velocity[1],
+        slot.plane_world_velocity[2]};
+    host.done("PlaneFlightController::set_forward_speed", 0x007d9e80u);
+    return true;
+}
+
 bsp::CruiseSpeedSetting GameUnitsHost::commanded_speed(std::size_t unit_index) const {
     return impl_->commands.commanded_speed(unit_index);
 }

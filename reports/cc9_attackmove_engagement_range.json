@@ -1,0 +1,32 @@
+{
+  "packet": "cc9_attackmove_engagement_range",
+  "doc": "docs/ATTACKMOVE_ENGAGEMENT_RANGE.md",
+  "base": "main b605b9eb9",
+  "code_changed": false,
+  "addresses": {
+    "009E85B0": "engage gate; first conjunct [[unit+538h]+510h] or +514h > 0 (009E85CD..009E85E8)",
+    "00831A22": "BSP_ShipClass_ReadLuaFields stores KamikazeDamage (00D09CF4) to class+510h",
+    "00831A67": "BSP_ShipClass_ReadLuaFields stores KamikazeBlastDamage (00D09CE0) to class+514h",
+    "009E86F0": "selector: engage member reached only through 009E85B0 for a non-kind-8, non-kind-1Ch target",
+    "009E23B0": "engage step: intercept point, 250 m run latch; unreachable for non-kamikaze classes",
+    "009F3240": "approach sub-state; [unit+494h] term goes to brain+258h/+2C0h, no reader",
+    "009E6E80": "standoff choice; mode 0 seed 00952530(target curve) + 300 at 009E71A5..009E71C1; span radius max(250, 00811A30(1.0)*1.5) at 009E6FBD",
+    "009E6A90": "arrival rule side 2: limit=min(limit, clamp((d-50)/80,0,2)); d<-50 -> -min(limit, clamp((-d-50)/40,0,0.5)); both only with |e|<pi/12 (009E6D42..009E6E2A)",
+    "009F1BC0": "nested+11F0h = max(class+500h*10, 00811A30(unit,1.0)*1.5) at 009F1D1E..009F1D6D; the host answers 00811A30 with 0 here"
+  },
+  "constants": {"00CE4938": -50.0, "00CE3938": 50.0, "00CF1440": 80.0, "00D7A378": 40.0, "00D05AA8": 0.2618, "00CE3800": 0.5, "00CE3958": 2.0, "00CE3D78": 1.5, "00CE3DC0": 10.0},
+  "installation": "vehicleclasses.lua mtime 2026-05-09 (modded): KamikazeDamage defined only for the Kaiten (class 4) and the Kamikaze Boat",
+  "measured": {
+    "helm run local/s3_tr_helm_usn02.log": {"Houston": "sunk 208.26 s by Haguro gunfire at 1878 m, first damage 166.61 s", "Haguro": "standoff 1900/2150, closest 1694 m at 188.5 s, rel -38..-22 deg, speed about 0", "Samidare": "closest 1658 m", "Murasame": "closest 1888 m, bow-on", "Harusame": "closest 2282 m, passes broadside", "Jintsu": "closest 2148 m"},
+    "plain run local/s3_tr_usn02.log": {"Houston": "survives, 6037 health, took 900", "Haguro": "closest 1571 m at 206.5 s", "Murasame": "1496 m at 212 s, closing bow-on"}
+  },
+  "verdict": "image holds a curve-chosen standoff with a 50 m arrival band and an astern back-off; the host runs the same chain concretely; the engage (point-blank) sub-state is kamikaze-only; no binding",
+  "follow_ups": [
+    "009F1D3C: bind 00811A30(unit,1.0) in ApproachPointBinding::unit_turn_radius_00811a30 (probe length of 009E6640 only; USN02 ring probe hits=0)",
+    "phase-2 generated units (Nachi, Sazanami, Naka, Ushio) get no ship AI controller: GameShipAiHost::register_units sizes controllers once; they sit at their spawn points and fire 0 shots",
+    "engage gate from class KamikazeDamage/KamikazeBlastDamage plus the 009E23B0 step, only for missions with an AI Kamikaze Boat or Kaiten on attackmove"
+  ],
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
