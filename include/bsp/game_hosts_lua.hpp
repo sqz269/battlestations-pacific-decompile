@@ -213,7 +213,7 @@ inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (d
 // each of the +3CCh members at +3D0h (0089F8CA..0089F8FF); on a plane that is
 // 0074E1E0 -> 007D9E80, the controller's forward-speed set. True: route the row to
 // run_squadron_set_speed_0089f780. False: unimplemented.
-inline constexpr bool kLuaSquadronSetSpeedBound = false;
+inline constexpr bool kLuaSquadronSetSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_is_class_changed (docs/LUA_BINDING_MISSION.md, "IsClassChanged, 008CC4B0").
 // IsClassChanged(id) pushes the boolean [registry+2010h+id*4] != id (008CC5CB..008CC5DA),

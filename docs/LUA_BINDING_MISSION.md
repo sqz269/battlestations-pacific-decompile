@@ -2030,6 +2030,24 @@ player):
 | USN13 3200/3000 | **exit 3.** There are 15 calls from `luaAttackWaveSpawned` (`usn_13_truk.lua` 1641, mtime 2024-08-13), each on a spawned squadron at 67, with 4 planes each (the forced-recon lines of cc9-lua2's `rk_usn13.log` resolve 4 members). So `planes=60`. The wave's planes start at 67 m/s instead of their spawn seeds (61.1 and 55.6 m/s in that log). Their positions move from the spawn on, so the attack-wave unit rows, the first hits on the US carriers and possibly the AA kills move. That is RNG-coupled, so per-kill attribution is not claimed |
 | USN04 4700/4500 | no call, exit 1 |
 
+### SquadronSetSpeed pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `8a64f9a18`.
+- ON is `pair_export --flip kLuaSquadronSetSpeedBound=true` (`local/ss_on`).
+- The logs are `local/ss_{off,on}_<mission>.log`. The ON USN13 run was repeated after a
+  renderer-init outage (every binary failed at `CreateDevice`, hr `0x88760868`, 22:20 to 22:46).
+
+| row | result | verdict |
+| --- | --- | --- |
+| USN13 3200/3000 | `calls=15 planes=60`, 4 per squadron, each at 67. pair_diff exit 3: deaths 24 -> 23, hit records 720 -> 572, shots 6607 -> 4265, first hit 68.10 -> 67.90 s. Every moved death row is an attack-wave plane (`bruh #1.*`), with its time, altitude, killer and range moved. Torpedo-task releases hold at 2 of 60 | held |
+| USN04 4700/4500 | no call, exit 1, native table identical | held |
+
+The attack-wave kills are coupled through the shared RNG stream and the AA engagement, so no
+single kill is attributed to the speed. The Enterprise's distance moved by 0.06 m.
+
+**Verdict: `kLuaSquadronSetSpeedBound = true`.**
+
 ## IsClassChanged, 008CC4B0 (packet `cc9_is_class_changed`, `kLuaIsClassChangedBound`, committed OFF)
 
 Worker cc9-lua3, 2026-09-28. This is item 4 of the refreshed ranking.
