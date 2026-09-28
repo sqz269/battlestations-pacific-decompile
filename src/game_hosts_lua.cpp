@@ -333,6 +333,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_air_base_slot_count.
     const bool slot_count_row = kLuaSetAirBaseSlotCountBound
         && dispatch_row.address == 0x008963e0u;
+    // Packet cc9_device_reload_enabled.
+    const bool device_reload_row = kLuaDeviceReloadEnabledBound
+        && dispatch_row.address == 0x008c1350u;
     // Packet cc9_submarine_air.
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
@@ -365,7 +368,7 @@ int binding_trampoline(lua_State* state) {
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
-        || slot_count_row || unlimited_air_row
+        || slot_count_row || device_reload_row || unlimited_air_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -468,6 +471,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (slot_count_row) {
         if (!host->error_replay()) host->run_set_air_base_slot_count_008963e0(state, argc);
+        return 0;
+    }
+    if (device_reload_row) {
+        if (!host->error_replay()) host->run_set_device_reload_enabled_008c1350(state, argc);
         return 0;
     }
     if (sub_depth_row) {
@@ -4597,6 +4604,30 @@ int GameMissionLuaHost::run_set_air_base_slot_count_008963e0(lua_State* state,
     return 0;
 }
 
+namespace {
+// 00E17BF2. One byte in the image, so one value per process here.
+bool g_device_reload_enabled_00e17bf2 = false;
+}  // namespace
+
+bool lua_device_reload_enabled_00e17bf2() noexcept {
+    return kLuaDeviceReloadEnabledBound && g_device_reload_enabled_00e17bf2;
+}
+
+// Packet cc9_device_reload_enabled. 008C1350 SetDeviceReloadEnabled(flag): argument 0
+// through 00B66250 (lua_toboolean) into the byte 00E17BF2 at 008C1458. No entity, no
+// class test, no return value.
+int GameMissionLuaHost::run_set_device_reload_enabled_008c1350(lua_State* state,
+    int argument_count) {
+    ++summary_.device_reload_calls;
+    const bool flag = argument_count >= 1 && ::lua_toboolean(state, 1) != 0;
+    g_device_reload_enabled_00e17bf2 = flag;
+    if (flag) ++summary_.device_reload_true;
+    log_.notef("  SetDeviceReloadEnabled 008c1350: flag=%d -> 00E17BF2 (packet "
+        "cc9_device_reload_enabled)", flag ? 1 : 0);
+    log_.implemented("MissionLuaNative::SetDeviceReloadEnabled", "008c1350");
+    return 0;
+}
+
 // Packet cc9_submarine_air. 00893C00 SetUnlimitedAirSupply(entity, flag): argument 0
 // through 00888AA0, argument 1 through 00B66250 (lua_toboolean), stored at unit+1280h
 // with no class test. Returns no value.
@@ -5379,6 +5410,8 @@ public:
     }
     void publish_mode_flags(const bsp::LobbySettingsModeFlags& flags) override {
         flags_ = flags;
+        // Packet cc9_device_reload_enabled: 005E2FB2 / 005E3017 write 00E17BF2.
+        g_device_reload_enabled_00e17bf2 = flags.reload_payload_on;
         // The three bytes 00E0C978, 00E17BF2 and 00E08880. The executable holds
         // them as its own state; 0080FC30's gate reads the first of them.
         log_.implemented("MissionLua::lobby_settings_mode_flags", "005e3017");
@@ -6027,6 +6060,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (008963E0 -> 006C7E20, packet cc9_set_air_base_slot_count)",
         kLuaSetAirBaseSlotCountBound ? 1 : 0, summary_.slot_count_calls,
         summary_.slot_count_resized, summary_.slot_count_unresolved);
+    log_.notef("summary mission script device reload bound=%d calls=%llu true=%llu "
+        "now=%d (008C1350 -> 00E17BF2, packet cc9_device_reload_enabled)",
+        kLuaDeviceReloadEnabledBound ? 1 : 0, summary_.device_reload_calls,
+        summary_.device_reload_true, lua_device_reload_enabled_00e17bf2() ? 1 : 0);
     log_.notef("summary mission script unlimited air bound=%d calls=%llu stored=%llu "
         "(00893C00 -> unit+1280h, packet cc9_submarine_air)", kSubmarineAirBound ? 1 : 0,
         summary_.unlimited_air_calls, summary_.unlimited_air_stored);

@@ -255,6 +255,21 @@ inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (d
 // False: every hit is evaluated.
 inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_device_reload_enabled (docs/LUA_BINDING_MISSION.md, "SetDeviceReloadEnabled,
+// 008C1350"). SetDeviceReloadEnabled(flag) stores lua_toboolean(argument 0) in the global
+// byte 00E17BF2 (008C144F -> 008C1458). The mission load's lobby sync writes the same byte
+// (005E2FB2 / 005E3017, bsp::LobbySettingsModeFlags::reload_payload_on) and so does
+// 0076FE6C. Every image reader pairs it with the squadron's ReloadEnabled byte +369h.
+// True: route the row to run_set_device_reload_enabled_008c1350, and
+// lua_device_reload_enabled_00e17bf2() reports the byte to the plane-task feeds.
+// False: unimplemented, and the accessor reports false as before.
+inline constexpr bool kLuaDeviceReloadEnabledBound = false;
+
+// The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
+// are published and written by SetDeviceReloadEnabled. It answers false while
+// kLuaDeviceReloadEnabledBound is false.
+bool lua_device_reload_enabled_00e17bf2() noexcept;
+
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
 // (00893C00). Routed together with the air model: under kSubmarineAirBound
@@ -523,6 +538,8 @@ struct GameMissionLuaSummary {
     unsigned long long slot_count_calls{0};
     unsigned long long slot_count_resized{0};
     unsigned long long slot_count_unresolved{0};
+    unsigned long long device_reload_calls{0};
+    unsigned long long device_reload_true{0};
     unsigned long long unlimited_air_calls{0};
     unsigned long long unlimited_air_stored{0};
     unsigned long long listener_hit_throttled{0};   // packet cc9_hit_rate_limit
@@ -1016,6 +1033,8 @@ public:
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
     // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
+    // Packet cc9_device_reload_enabled, under kLuaDeviceReloadEnabledBound.
+    int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
     // Packet cc9_submarine_air, under kSubmarineAirBound.
     int run_set_unlimited_air_00893c00(lua_State* state, int argument_count);
 
