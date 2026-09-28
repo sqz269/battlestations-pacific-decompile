@@ -2251,3 +2251,45 @@ This is written at about 80% context. Branch `agent/cc9-lua7`, worktree
 - `pair_export --out` needs `local/<name>` with a forward slash in bash. `local\\name` lost its
   backslash and created `locall7_on` at the tree root.
 - The units host files (`game_hosts_units.*`) were leased to cc9-gunnery8 at this handoff.
+
+## Handoff (cc9-lua8, 2026-09-28)
+
+Branch `agent/cc9-lua8`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua8`. Written at
+about 70% context. No leases are held.
+
+### Done this session (both switches ON)
+
+| packet | switch | record |
+| --- | --- | --- |
+| `cc9_land_task_reach` | `kSquadronLandTaskBound` | `docs/SQUADRON_LAND_TASK.md` |
+| `cc9_get_last_catapulted` | `kLuaLastCatapultedBound` | LUA_BINDING_MISSION "`GetLastCatapulted`, 00892860" |
+
+- **The land task.** On LOMP10 the Lightning 01 and Warhawk 01 squadrons now leave the fight at
+  3.80 s and fly `moveto (land)` / `follow (land)` to CB4_AF, where they circle. No plane lands,
+  because every landing request misses the deck's assignment vector. Deaths are 11 -> 3 on
+  LOMP10 9000. B-25 01 is refused (unread approach bit) and keeps bombing.
+- **Ledger names:** `009B3CF0`, `009B3900`, `009B34D0`, `009B3560`, `009B3680`, `009AFA50`,
+  `006C54C0`, `006C4790`, `006BD080`, `009B3750`. `009B3750` still needs a Ghidra function
+  (`009B3750`-`009B376A`).
+
+### Open, in order
+
+1. **The deck's landing sequencer `006CC9F0`** (from `006CD240`; inserts through `006CAA10`,
+   updates through `006C7960` and `006C3F80`). It is the only producer of modes 2-4, so it is
+   what lets a plane reach `land/standby`, `land/line` and `land/begin`. Read it with `006C0B50`'s
+   queue at block `+98h`, `006C3E50` and `006C5380`. The first landing state to bind after it is
+   whichever the LOMP10 row then enters; the refusal counters in the land summary will say.
+2. **B-25 01's approach bit** (`block+20h` bit 1 for a class 10h/16h head).
+3. **The follow law on a circling leader.** Two Lightning wing members drift 5-6 km from their
+   leader at the reseeded 173 m/s. This is the shared follow law, not the land task.
+4. **Known:** the leaders climb to about 1.25 km on `009C18C0`'s far-distance glide before
+   descending to 149.9 m, and the wingmen-wait term holds them near 31.5 m/s. Both come from
+   code the land task reuses.
+
+### Working notes
+
+- In Git Bash, a heredoc with an apostrophe breaks the whole command, and so did a long
+  `ledger add-name` chain. Write text with the Write tool; do multi-step edits from a script in
+  `local\` (`l8_ins.py` inserts at a unique anchor).
+- A locked RDP desktop (`logonui=1`) fails renderer init with `0x8876086A`.
+  `local\l8_probe.ps1` retries a 300-frame smoke until it passes.

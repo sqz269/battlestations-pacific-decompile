@@ -364,6 +364,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_get_formation_leader.
     const bool formation_leader_row = kLuaFormationLeaderBound
         && dispatch_row.address == 0x00899af0u;
+    // Packet cc9_get_last_catapulted.
+    const bool last_catapulted_row = kLuaLastCatapultedBound
+        && dispatch_row.address == 0x00892860u;
     // Packet cc9_add_untouchable_unit.
     const bool untouchable_row = kLuaAddUntouchableUnitBound
         && dispatch_row.address == 0x008ac140u;
@@ -531,6 +534,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (formation_leader_row && !host->error_replay()) {
         return host->run_get_formation_leader_00899af0(state, argc);
+    }
+    if (last_catapulted_row && !host->error_replay()) {
+        return host->run_get_last_catapulted_00892860(state, argc);
     }
     if (untouchable_row) {
         if (!host->error_replay()) host->run_add_untouchable_unit_008ac140(state, argc);
@@ -4990,6 +4996,38 @@ int GameMissionLuaHost::run_is_in_formation_008996a0(lua_State* state, int argum
     return 1;
 }
 
+// Packet cc9_get_last_catapulted. 00892860 GetLastCatapulted(ship): 0089295E
+// 00888AA0 on argument 0, 00892987 vtable[5Ch](6), then 00892993 00953A60
+// (00953A60-00953A77: [unit+630h] < 0 answers 0, else [unit+550h+18h*i]); 0
+// pushes nil (00892A4B 00B66430), a plane its thisTable slot keyed by the
+// +174h id (008929B6..008929F8). A non-ship pushes nothing. LABELLED: no path in this host writes
+// unit+630h (the launch 006EC8E0 and the message to 00957450 are not built),
+// so a ship's index is its constructor value, -1.
+int GameMissionLuaHost::run_get_last_catapulted_00892860(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.last_catapulted_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const bool ship = valid && units->unit_is_kind_of(static_cast<std::size_t>(id - 1), 6);
+    if (summary_.last_catapulted_calls <= 8) {
+        const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+        log_.notef("  GetLastCatapulted 00892860: \"%s\" ship=%d -> %s (unit+630h = -1, "
+            "packet cc9_get_last_catapulted)", row != nullptr ? row->name.c_str() : "?",
+            ship ? 1 : 0, ship ? "nil" : "no result");
+    }
+    log_.implemented("MissionLuaNative::GetLastCatapulted", "00892860");
+    if (!ship) {
+        ++summary_.last_catapulted_not_ship;
+        return 0;
+    }
+    ++summary_.last_catapulted_nil;
+    ::lua_pushnil(state);
+    return 1;
+}
+
 // Packet cc9_get_formation_leader. 00899AF0 GetFormationLeader(unit): 00888AA0 on
 // argument 0 (00899BEF), 007788D0 (00899C08), then nil (00899CB4) or the leader's
 // thisTable slot (00899C15..00899C65). One result.
@@ -6587,6 +6625,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
         kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,
         summary_.formation_leader_found, summary_.formation_leader_other);
+    log_.notef("summary mission script last catapulted bound=%d calls=%llu nil=%llu "
+        "not_ship=%llu (00892860 -> 00953A60, packet cc9_get_last_catapulted)",
+        kLuaLastCatapultedBound ? 1 : 0, summary_.last_catapulted_calls,
+        summary_.last_catapulted_nil, summary_.last_catapulted_not_ship);
     log_.notef("summary mission script unlimited air bound=%d calls=%llu stored=%llu "
         "(00893C00 -> unit+1280h, packet cc9_submarine_air)", kSubmarineAirBound ? 1 : 0,
         summary_.unlimited_air_calls, summary_.unlimited_air_stored);

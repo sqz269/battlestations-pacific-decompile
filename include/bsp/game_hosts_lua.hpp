@@ -304,6 +304,16 @@ inline constexpr bool kLuaDeviceReloadEnabledBound = true;  // ON: identity pair
 // thisTable slot keyed by its +174h id (00899C15..00899C65). True: the row
 // answers from the units host's group; false: the entity arm answers nil.
 inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA_BINDING_MISSION)
+// Packet cc9_get_last_catapulted (docs/LUA_BINDING_MISSION.md). 00892860
+// GetLastCatapulted(ship): argument 0 through the object handle; an entity that
+// does not answer vtable[5Ch](6) pushes nothing and returns 0 results; a ship
+// asks 00953A60, which reads unit+630h (set to -1 at 0095CDDD and written only
+// by 00957450 BSP_UnitInstance_AddLaunchedChild, on the launched-child message)
+// and answers 0 for a negative index, pushed as nil, else the plane in launch
+// slot +550h + 18h * index, pushed as its thisTable slot. This host builds no
+// catapult launch, so the index stays -1. True: the row answers from that
+// state; false: the row stays unimplemented.
+inline constexpr bool kLuaLastCatapultedBound = true;  // ON by its pairs (LUA_BINDING_MISSION)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -599,6 +609,9 @@ struct GameMissionLuaSummary {
     unsigned long long in_formation_calls{0};
     unsigned long long in_formation_true{0};
     unsigned long long formation_leader_calls{0};   // packet cc9_get_formation_leader
+    unsigned long long last_catapulted_calls{0};    // packet cc9_get_last_catapulted
+    unsigned long long last_catapulted_nil{0};
+    unsigned long long last_catapulted_not_ship{0};
     unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
     unsigned long long untouchable_marked{0};
     unsigned long long formation_leader_found{0};
@@ -1118,6 +1131,7 @@ public:
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
+    int run_get_last_catapulted_00892860(lua_State* state, int argument_count);
     int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.

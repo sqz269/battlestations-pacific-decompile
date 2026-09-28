@@ -3641,3 +3641,54 @@ the OFF log is exit 1.
 
 **Verdict: `kLuaAddUntouchableUnitBound = true` on identity.** The flag stays inert until the gate
 `00862440` reads `lua_unit_untouchable_1d4`.
+
+## `GetLastCatapulted`, 00892860 (packet `cc9_get_last_catapulted`, `kLuaLastCatapultedBound`)
+
+Worker cc9-lua8, 2026-09-28. Rank 3 of the sixth refresh (JM05, 47 calls).
+
+### The image (V)
+
+- **`00892860`**: `0089295E` `00888AA0` resolves argument 0. `00892987` asks `vtable[5Ch](6)`.
+  - A non-ship pushes nothing and returns 0 results.
+  - A ship calls `00953A60` at `00892993`. On 0 it pushes nil (`00892A4B` `00B66430`); otherwise it
+    pushes the plane's `thisTable` slot, keyed by its `+174h` id (`008929B6`..`008929F8`).
+- **`00953A60 BSP_Ship_GetLastCatapulted`** (`00953A60`-`00953A77`): `[unit+630h]` < 0 answers 0,
+  else `[unit+550h + 18h * index]`.
+- **unit+630h** is set to -1 by the constructor (`0095CDBE OR EAX,-1`, `0095CDDD`; no call between).
+  The only other writer is `00957450 BSP_UnitInstance_AddLaunchedChild` (`009574A9`), called from
+  `BSP_UnitInstance_HandleMessage` at `00821F47`. The census is a disk scan for disp32 `630h`
+  stores (`?? ?? 30 06 00 00`), which also finds `0095CDDD`, so the pattern is known to occur.
+- **The JM05 caller.** `luaJM5PeteSkill` and `luaJM5PeteOrdCheat` (`jm05.lua` 5493 and 5512, this
+  installation, mtime 2024-07-13) ask it for `Mission.Cruiser`, the first player unit. On nil they
+  skip `SetSkillLevel(pete, SKILL_ELITE)` and the reload cheat. JM05 never calls
+  `ShipUseCatapult`.
+
+### The binding
+
+`run_get_last_catapulted_00892860` in `src/game_hosts_lua.cpp`. **LABELLED:** no path in this
+host writes unit+630h, because the launch `006EC8E0` and the message to `00957450` are not built.
+So a ship answers nil, which is the image's answer for a ship that has launched nothing. The
+summary line is `summary mission script last catapulted`.
+
+### Predictions, written before the ON runs
+
+OFF is this tree's build of `75b14b8c5`; ON is `pair_export --commit 75b14b8c5 --flip
+kLuaLastCatapultedBound=true` (`local/l8_lc_on`).
+- **JM05 3200/3000: exit 1.** 47 calls, all on a ship (`Mission.Cruiser`), all nil. The host
+  table moves `GetLastCatapulted` from UNIMPLEMENTED to concrete. Gameplay is identical, because
+  the unimplemented row's neutral value is also nil.
+- **USN01 3200/3000: exit 1.** No calls; the summary line reads zeros.
+
+### Pairs and verdict
+
+The logs are `local\l8_lc{off,on}_{jm05,usn01}.log` and the diffs `local\l8_lcdiff_*.txt`, in
+worktree cc9-lua8.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 1 | `GetLastCatapulted` UNIMPLEMENTED -> concrete (47 calls, all on `Mogami-class 01`, all nil); host methods 1150/548 -> 1151/547; the summary line |
+| USN01 3200/3000 | exit 1 | the summary line (bound 0 -> 1, no calls) |
+
+Every prediction held. **Verdict: `kLuaLastCatapultedBound = true`.** The row starts answering a
+plane only when the host builds the catapult launch (`006EC8E0`) and the launched-child message
+(`00957450`).
