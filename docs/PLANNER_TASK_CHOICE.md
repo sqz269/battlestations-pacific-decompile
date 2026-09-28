@@ -808,6 +808,30 @@ CAUTIOUSATTACK there.
 - **Direction:** the ScoutDauntless may take AA fire near CB2: one more plane death or later hits.
   Nothing before 91 s moves.
 
+**Addendum, written after the four reference pairs and before any other ON run.** On `dcfebd652` the
+USN01 premise above is false: the ScoutDauntless now draws MOVETOATTACK (`cautious=0`). The tables
+in 11.3 came from pre-sync logs. With no CAUTIOUSATTACK anywhere, all four reference pairs are
+identical (11.4), so they do not exercise the arm. An OFF sweep of USN03 to USN14 (3200/3000) finds
+four missions that hold it:
+
+| mission | cautious group -> target | OFF `tick_orders` |
+| --- | --- | --- |
+| USN07 | PBY Catalina 01 (1) -> the Office 01 group (4) | 0 |
+| USN09 | Enterprise (17) and Enterprise_sqn01 (1) -> the Zuikaku group (12) | 0 |
+| USN10 | Atlanta-class 01 (8) -> the South_Tone_1 group (11); Cleveland-class 01 holds MOVETOATTACK | 46 |
+| USN12 | Montpelier (12) -> the Shigure group (3) | 0 |
+
+**Predictions for those four, exit 3 each:**
+- **`tick_orders` rise** above the OFF values: every command tick the cautious leader gets
+  `00A02020` toward the target leader.
+- **The cautious leaders move toward their targets.** Where Montpelier or Enterprise is the
+  controlled unit, its "controlled moved" rises.
+- **Promotion:** the two air leaders (PBY Catalina 01, Enterprise_sqn01) close inside 3000 within the
+  150 s and are promoted to CLOSEATTACK (`ai command promote`). A ship leader is promoted only if it
+  starts within about 5 km.
+- **Direction:** hits and deaths move toward the targeted groups: Office 01's group, Zuikaku's,
+  South_Tone_1's and Shigure's.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
