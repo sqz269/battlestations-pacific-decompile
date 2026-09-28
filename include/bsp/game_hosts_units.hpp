@@ -257,6 +257,13 @@ struct GameUnitsSummary {
 // instead of the surface ship's 00937440. False: the ship force model, as before.
 inline constexpr bool kSubmarineDiveBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 12)
 
+// Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13). True: each seeded
+// submarine runs the air model 00855250 and the crush model 008551C0 once per force
+// step (the tail of 00855420 in the image), needAir feeds the dive law's effective
+// band, a drowned boat dies through 00926D90, the crush pulse applies 0095DA00, and
+// SetUnlimitedAirSupply (00893C00) is routed. False: needAir reads false, no crush.
+inline constexpr bool kSubmarineAirBound = false;
+
 class GameUnitsHost {
 public:
     GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua);
@@ -317,6 +324,9 @@ public:
     // the level clamped to 0..3 (1 for a kamikaze class, LABELLED false here),
     // stored at +1268h only when it differs (0085290D). True when it was stored.
     bool set_submarine_depth_level_008528b0(std::size_t unit_index, int requested);
+    // Packet cc9_submarine_air. unit+1280h, 00893C00's store. False when the slot
+    // is not a seeded submarine.
+    bool set_unlimited_air_00893c00(std::size_t unit_index, bool flag);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
     // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The
