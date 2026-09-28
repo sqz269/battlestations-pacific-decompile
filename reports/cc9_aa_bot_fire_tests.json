@@ -1,0 +1,46 @@
+{
+  "packet": "cc9_aa_bot_fire_tests",
+  "switch": "kAaBotFireTestsBound",
+  "doc": "docs/GUN_SHOT_CADENCE.md 10.9",
+  "commits": {
+    "off_with_predictions": "661f3ad89"
+  },
+  "image": {
+    "00902920 AAGunnerBot (ship category 1)": "0085ABA0 accepted, distance < 0.9 x range (00D7A390), |dh|+|dv| < 5 deg (00CF0098), inhibit bit 0; direct vtable[1E8h]",
+    "009030C0 AAFlakBot (category 5, 6 vs plane)": "MinRange < distance < range, |dh| < 1 deg and |dv| < 1 deg (00CE3984), inhibit bit 0; 0085ABA0 not tested",
+    "008FFA20 TailGunnerBot (category 1 under a plane)": "ShootRange-40 / 6 deg to open, +20 / 9 deg to hold (00D7A378, 00D18390, 00CE3D88, 00D18388), then 008FEF40",
+    "008FEF40": "changed request: store, timer 0.1 open / 0.3 cease; repeated: timer -= dt while >= 0, commit when <= 0; vtable[1E8h](committed) every tick"
+  },
+  "pairs": {
+    "USN04": {
+      "off": "28 / 491 / 3656, 100.85 s, plane deaths 29",
+      "on": "44 / 803 / 10090, 100.95 s, plane deaths 45",
+      "cat1_shots": "3173 -> 9174",
+      "pair_diff": 3
+    },
+    "USN13": {
+      "off": "16 / 312 / 2069, 97.00 s",
+      "on": "19 / 400 / 4152, 96.65 s",
+      "cat1_shots": "1815 -> 3667",
+      "pair_diff": 3
+    },
+    "USN01": {
+      "off": "5 / 177 / 623",
+      "on": "5 / 441 / 1510",
+      "cat1_shots": "583 -> 1465",
+      "pair_diff": 3
+    },
+    "USN02": {
+      "pair_diff": 1,
+      "note": "identity, no plane targets"
+    }
+  },
+  "failed": [
+    "USN04 first hit 0.1 s later",
+    "USN13 category-1 hits 115 -> 90 (AA total up 312 -> 400)"
+  ],
+  "decision": "ON",
+  "labelled": [
+    "[muzzle+58h]/[+60h] taken as MinRange and the class range"
+  ]
+}

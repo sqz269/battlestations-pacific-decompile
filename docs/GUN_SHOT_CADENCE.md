@@ -659,3 +659,128 @@ OFF is `local\WO_OFF_<m>.log`: this tree at `1446b3f62`, copied to `local\wo_off
   the AA path.
 - **The next step is to bind the AA bots' own fire tests, then flip `kGunWaveOrderBound`.** The
   structure is established: wave 1 before wave 2, and the salvo test after the send.
+
+### 10.9 The AA bots' own fire tests (packet `cc9_aa_bot_fire_tests`, switch `kAaBotFireTestsBound`)
+
+Section 10.8 found the host gating every gun on `006DF520`'s 0.1-degree settle. The three AA bots
+were read for the tests they actually apply.
+
+**Which bot drives which gun.**
+- The bot slots are fixed by sub-type (GUN_BOT_TICKS). The sub-type 1 slot takes `00902920` unless
+  the gun sits under an owner of kind `0Fh` (a plane), in which case it takes `008FFA20`.
+- robots.lua names them. `008FFA20`'s row reader is `TailGunnerBot`'s (`ShootRange` at `+18h`,
+  `008FCAF8`), and `00902920` is `AAGunnerBot`.
+- Sub-types 5 and 6 against a plane take `009030C0`, `AAFlakBot`.
+
+**`00902920` AAGunnerBot, ship category-1 guns.** The request goes straight to `vtable[1E8h]`, with
+no debounce:
+
+```
+00902fb0: call 0x85aba0 ; test al,al ; je 0x903078          ; accepted, else fire = 0
+00902fcd: fld [eax+60h] ; fmul qword [00D7A390] (0.9)       ; 0.9 x the class range
+00902fde: fcompi ; jbe 0x90306f                             ; fire only if distance < it
+00902ffc: call 0x438b10 (gun+480h, h) ; and 7fffffffh       ; |dh|
+0090302a: call 0x438b10 (gun+484h, v) ; and 7fffffffh       ; |dv|
+00903044: fadd ; fld qword [00CF0098] (0.0872665, 5 deg) ; fcompi ; jbe 0x90306f   ; |dh|+|dv| < 5 deg
+00903066: test byte [eax+634h],1 ; je 0x903078              ; inhibit bit 0
+009030a8: jmp [edx+1E8h]                                    ; vtable[1E8h](fire)
+```
+
+**`009030C0` AAFlakBot, category 5 and category 6 against a plane.** `0085ABA0`'s answer is not
+tested:
+
+```
+0090332c: fld [edx+58h] ; fld dist ; fcomi ; jbe 0x903412   ; min < distance, else fire = 0
+0090333d: fld [edx+60h] ; fcompi ; jbe 0x9033db             ; distance < max
+0090335e: call 0x438b10 (gun+480h, h) ; comiss [00CE3984] (1 deg) ; jbe 0x9033db
+0090339a: call 0x438b10 (gun+484h, v) ; comiss [00CE3984] ; jbe 0x9033db
+009033d2: test byte [eax+634h],1
+00903410: jmp [edx+1E8h]
+```
+
+**`008FFA20` TailGunnerBot, a category-1 gun under a plane.** The range is `bot+90h` `shootRange`,
+robots.lua `ShootRange`: 950 / 750 / 800 / 800 / 850 / 950 by skill index. The angles are the
+cached request `bot+70h` / `+74h` against `gun+480h` / `+484h`:
+
+```
+008ffdbe: cmp byte [esi+58h],0 ... jnz 0x8ffe75             ; committed state picks the branch
+008ffdec: fsub qword [00D7A378] (40.0)                      ; not firing: distance < range - 40
+008ffe62: fld qword [00D18390] (0.1047, 6 deg) ; fcompi ; jbe  ;   and |dh|+|dv| < 6 deg -> request 1
+008ffdd4: fld qword [00CE3D88] (20.0) ; fadd                ; firing: range + 20
+008ffe8d: ja 0x8ffefe                                       ;   distance > range + 20 -> request 0
+008ffef0: fld qword [00D18388] (0.1571, 9 deg) ; fcomip ; jbe  ;   |dh|+|dv| > 9 deg -> request 0
+008fff12: call 0x008fef40                                   ; the debounce
+```
+
+**`008FEF40`, the debounce.**
+- A changed request stores it at `+59h` and sets `+5Ch` to 0.1 s (`00D17D3C`) to open or 0.3 s
+  (`00CE69C8`) to cease. It does not commit.
+- A repeated request subtracts `dt` while `+5Ch >= 0` (`008FEF7B`). It commits `+58h = +59h` once
+  `+5Ch <= 0` (`008FEF91`).
+- Then it calls `vtable[1E8h](+58h)` every tick.
+
+**None of the three tests the fire window.** CanFire (`0085A830`) enforces it.
+
+**The binding (committed OFF).**
+- `kAaBotFireTestsBound` replaces `want_fire` for those three gun kinds with the rules above. The
+  distance is the muzzle to the target's aim point. The class range is `gun.max_range`, or the
+  second ammunition's range for a category-6 gun firing flak. The minimum is `MinRange`.
+- The census line is `summary mission gunnery aa bot fire tests ...`.
+- **Labelled:** `+58h` / `+60h` taken as `MinRange` and the class range, the host's two fields for
+  them.
+
+**OFF (`local\AT_OFF_<m>.log`, this tree at the head with the wave order OFF):**
+
+| mission | deaths / hit records / shots | first hit | plane deaths | category 1 shots / hits | category 5 | category 6 |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 28 / 491 / 3656 | 100.85 s | 29 | 3173 / 93 | 150 / 98 | 333 / 278 |
+| USN13 | 16 / 312 / 2069 | 97.00 s | 17 | 1815 / 115 | 47 / 31 | 207 / 166 |
+| USN01 | 5 / 177 / 623 | 53.75 s | 6 | 583 / 123 | 16 / 24 | 24 / 30 |
+| USN02 | 12 / 5166 / 3826 | 19.20 s | - | 0 | 0 | 2647 (no plane target) |
+
+**Predictions, written before the ON runs:**
+
+| row | prediction |
+| --- | --- |
+| USN04 category-1 shots | **up**, at least +30%: the 5-degree sum replaces the flickering 0.1-degree settle |
+| USN04 category 5 and 6 (against planes) shots | up |
+| USN04 AA hits and plane kills | up (category 1 hits above 93); deaths 28 -> at least 28 |
+| USN04 first hit | same or earlier than 100.85 s |
+| USN13 | category-1 shots up at least +30%, AA hits up |
+| USN01 | **moves**, against the brief's identity: its convoy fires category-1 AA at the Dauntlesses (583 shots OFF). Category-1 shots up |
+| USN02 | **identity**, pair_diff exit 0 or 1: no plane is ever a target |
+| census | gunner and flak counts above 0 on USN04, USN13 and USN01; tail above 0 wherever a plane's rear gun has a target |
+
+**The pairs** (ON: `pair_export --commit 661f3ad89 --flip kAaBotFireTestsBound=true`, `local\at_on`;
+logs `local\AT_{OFF,ON}_<m>.log`):
+
+| mission | OFF deaths / hit records / shots | ON | category 1 shots | 5 | 6 | AA hits (1 / 5 / 6) | plane deaths | pair_diff |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 28 / 491 / 3656, 100.85 s | 44 / 803 / 10090, 100.95 s | 3173 -> 9174 | 150 -> 197 | 333 -> 719 | 93/98/278 -> 128/125/535 | 29 -> 45 | 3 |
+| USN13 | 16 / 312 / 2069, 97.00 s | 19 / 400 / 4152, 96.65 s | 1815 -> 3667 | 47 -> 106 | 207 -> 379 | 115/31/166 -> 90/53/257 | 17 -> 20 | 3 |
+| USN01 | 5 / 177 / 623, 53.75 s | 5 / 441 / 1510, 53.60 s | 583 -> 1465 | 16 -> 20 | 24 -> 25 | 123/24/30 -> 391/27/23 | 6 -> 6 | 3 |
+| USN02 | 12 / 5166 / 3826 | identical | 0 | 0 | 2647 | - | - | **1** |
+
+Census, ON:
+
+| mission | gunner | flak | tail |
+| --- | --- | --- | --- |
+| USN04 | 1007689 | 173167 | 72815 |
+| USN13 | 2592000 | 158223 | 505426 |
+| USN01 | 321000 | 66019 | 30932 |
+
+| prediction | verdict |
+| --- | --- |
+| USN04 category 1 shots up at least 30% | held (+189%) |
+| USN04 category 5 and 6 up | held |
+| USN04 AA hits and plane kills up | held (kills 29 -> 45) |
+| USN04 first hit same or earlier | **failed**: 0.1 s later (100.95 s) |
+| USN13 category 1 shots up at least 30%, AA hits up | shots held (+102%); AA hits up in total (312 -> 400), but category 1 hits **fell** (115 -> 90) |
+| USN01 moves, category 1 shots up | held |
+| USN02 identity | held (exit 1) |
+| census above 0 | held |
+
+**Decision: `kAaBotFireTestsBound` is ON.**
+- The three requests are the listings above.
+- The rise stays within CanFire's reload timers, which are unchanged.
+- The two failed rows are small and downstream of a longer AA engagement.
