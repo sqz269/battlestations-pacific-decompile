@@ -94,6 +94,12 @@ The per pair value is 00A0C3C0 = 00A0C330 × distmul, where:
 
 The population stand-in remains, and this doc names it as the next term.
 
+**Update (packet `cc9_planner_group_target_value`, 2026-09-28).** The population stand-in is
+replaced, ON, by the value itself: docs/SHIP_AI_OPEN_ITEMS.md section 7 reads the whole path. On
+the planner's call the penalties are zeroed (`a1` = 0, `00A0CE71`), the tuning keys above are
+authored uniformly across the seven tables, `00A04240` is 1.0 outside the competitive scripts, and
+the pointer-modulo spread is stood in by its midpoint.
+
 ## 4. Predictions for the pair (written before the runs)
 
 The pair is E2 9000 with `BSP_GUNNERY_RNG_STREAMS=1`, built in this tree from 99f51dc34 (the

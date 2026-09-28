@@ -279,7 +279,8 @@ struct AiPlannerHost {
     virtual AiCommandType group_command_type(void* group) = 0;                // vtable +4h
     virtual void* group_command_target(void* group) = 0;                      // command+1Ch
     virtual void clear_group_target_cache(void* group) = 0;                   // +5624h, +5628h
-    virtual float candidate_base_weight(void* group) = 0;                     // 00A0F970
+    // 00A0F970(ECX = the planner's group, EDX = the candidate), called at 00A1CC65.
+    virtual float candidate_base_weight(void* own_group, void* candidate) = 0;
     virtual float squared_planar_distance(void* a, void* b) = 0;              // leader poses
     virtual float near_radius_squared() = 0;                                  // 00CE3820
     virtual float tuning_field(std::uint32_t offset) = 0;                     // 00A371A0 + off
