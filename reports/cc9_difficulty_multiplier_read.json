@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_difficulty_multiplier_read",
+  "doc": "docs/DIFFICULTY_MULTIPLIERS.md",
+  "code_changed": false,
+  "addresses": {
+    "00927F30": "IsLocalPlayerRole: [game+18ECh] <= 7 && unit[1ACh + role*4] == [game+18ECh]",
+    "0095DA00": "AddDamage: single player and role 0 held by the local player -> x config+4Ch[level] (1/PlayerCheatMultipliers), then 0087D730",
+    "0087D730": "single player and unit+54h == local player record +28h (the party) -> x config+1Ch[level] (1/HPMultipliers), then 00879070",
+    "008270AD": "00826F10 hull pass: the same party test, x config+1Ch[level]",
+    "0087DB61": "0087D7B0 fills: +1Ch = 1/HPMultipliers, +2Ch ScoreMultipliers, +3Ch LockRadiusMultipliers, +4Ch = 1/PlayerCheatMultipliers"
+  },
+  "values": "globals.lua HPMultipliers {1.8,1.8,1.8} -> 0.5556 at every level; PlayerCheatMultipliers {1,1,1} -> 1.0",
+  "correction": "0087D730 tests the party, not the player's own unit (docs/UNIT_DAMAGE_AND_DEATH.md); the Exeter section's 'difficulty scaling does not apply' is wrong",
+  "edit_step": "held: src/game_hosts_gunnery.cpp leased by cc9-gunnery3 (cc9_gun_rest_angles, cc9_plane_gun_mounts, cc9_set_invincible_floor, cc9_gunnery_line_of_sight)",
+  "predictions": {
+    "USN02": "party-0 damage x0.556 (20579 -> ~11400); Exeter ~3604 of 6500 from the 35.65 s torpedo, expected to survive it; failure later or gone, phase 2 reachable; exit 3",
+    "USN04": "Fletcher-class05 1149 -> ~638, deaths 44 unchanged, exit 3",
+    "USN01": "ScoutDauntless 220 -> ~122 each if the plane path reaches 0087D730; deaths may flip, exit 3",
+    "JM06": "identical"
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
