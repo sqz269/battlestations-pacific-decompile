@@ -182,6 +182,8 @@ class LeaseTransactionTests(unittest.TestCase):
                     coordination.claim('parent', files=['tools/'], owner='third')
                 coordination.claim('sibling', files=['src/gameplay.cpp'], owner='third')  # a prefix, not a parent
                 coordination.claim('dir', files=['src/game/hosts.cpp'], owner='first')  # same owner stays allowed
+                self.assertEqual([l['id'] for l in coordination.path_holders('src/Game/other.cpp')],
+                                 ['first:dir'])  # `lease check` reports the directory lease
 
 
 if __name__ == '__main__':

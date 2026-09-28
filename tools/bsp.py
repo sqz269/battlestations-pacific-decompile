@@ -1002,7 +1002,7 @@ def lease_cmd(args):
                 print(f"{h(a)}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
             else:
                 path = target.replace(chr(92), '/')
-                holders = [l for l in active if path in [f.replace(chr(92), '/') for f in l.get('files', [])]]
+                holders = coordination.path_holders(path, active)  # directory-aware, as a claim refusal
                 print(f"{path}: " + ('; '.join(f"{l['id']} until {l['expires'][:16]}" for l in holders) if holders else 'unleased'))
     elif sub == 'lock-status':
         lock = coordination.lock_status()
