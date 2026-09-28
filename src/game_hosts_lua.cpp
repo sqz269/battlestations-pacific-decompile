@@ -1284,6 +1284,54 @@ bool GameMissionLuaHost::read_lock_radius_multipliers_0087dc85(std::vector<float
     return !out.empty();
 }
 
+bool GameMissionLuaHost::read_difficulty_multipliers_0087d7b0(std::vector<float>& hp_inverse,
+    std::vector<float>& cheat_inverse) {
+    hp_inverse.clear();
+    cheat_inverse.clear();
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        set_phase("global config");
+        bsp::run_script_file(*this, kGlobalConfigScriptPath);
+        lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    }
+    bool ok = false;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, "Difficulty");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "HPMultipliers");
+            ::lua_getfield(state_, -2, "PlayerCheatMultipliers");
+            // 0087DB08..0087DDB3: while HPMultipliers[index] is not nil, each
+            // vector takes its entry at that index. 0087DB61 FLD1 / 0087DB63
+            // FDIVRP store 1/HPMultipliers[i] into the vector at config+1Ch;
+            // 0087DD33 FLD1 / 0087DD35 FDIVRP store 1/PlayerCheatMultipliers[i]
+            // into the vector at config+4Ch.
+            if (lua_type(state_, -2) == LUA_TTABLE && lua_type(state_, -1) == LUA_TTABLE) {
+                ok = true;
+                for (int index = 1;; ++index) {
+                    ::lua_rawgeti(state_, -2, index);
+                    const bool present = lua_type(state_, -1) != LUA_TNIL;
+                    const float hp = static_cast<float>(::lua_tonumber(state_, -1));
+                    ::lua_pop(state_, 1);
+                    if (!present) break;
+                    ::lua_rawgeti(state_, -1, index);
+                    const float cheat = static_cast<float>(::lua_tonumber(state_, -1));
+                    ::lua_pop(state_, 1);
+                    hp_inverse.push_back(1.0f / hp);
+                    cheat_inverse.push_back(1.0f / cheat);
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    log_.notef("difficulty: Globals[\"Difficulty\"] HPMultipliers/PlayerCheatMultipliers read %u "
+        "value(s) from %s (0087DB61 / 0087DD33)", static_cast<unsigned>(hp_inverse.size()),
+        kGlobalConfigScriptPath);
+    return ok;
+}
+
 bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,
     float& visibility_range) {
     if (state_ == nullptr) {

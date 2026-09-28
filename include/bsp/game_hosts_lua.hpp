@@ -582,6 +582,11 @@ public:
     // index 1 while Difficulty's HPMultipliers has that index. Runs
     // globals.lua when Globals is absent. False when nothing was read.
     bool read_lock_radius_multipliers_0087dc85(std::vector<float>& out);
+    // 0087D7B0's Difficulty walk: 1/HPMultipliers[i] (0087DB61, config+1Ch) and
+    // 1/PlayerCheatMultipliers[i] (0087DD33, config+4Ch). False when either table
+    // is missing. No caller in this file; the gunnery host reads it.
+    bool read_difficulty_multipliers_0087d7b0(std::vector<float>& hp_inverse,
+        std::vector<float>& cheat_inverse);
     // Packet cc9_hit_accuracy: the four WeaponHitAccuracy sub-objects at
     // settings+240h/+298h/+2F0h/+348h as 0083C795..0083C919 fills them. False
     // until ShipGlobals ran; the caller then keeps the 00836EF0 defaults.
