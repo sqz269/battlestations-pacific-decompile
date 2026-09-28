@@ -172,7 +172,7 @@ inline constexpr bool kSetCommandClearAllMessageBound = true;
 // delivered at the row-9 drain). That packet bound 0081733E and 0071E5AA only;
 // this arm's call at 008171BD stayed a record. False: a `clearorders` order leaves
 // the queue as it was.
-inline constexpr bool kClearOrdersSendBound = false;
+inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 9
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
