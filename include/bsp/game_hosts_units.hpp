@@ -663,6 +663,11 @@ public:
     // host carries as markers). False when the id names no marker.
     void register_scene_marker_position(int id, const float world[3]);
     bool scene_marker_position(std::uint32_t id, float world[3]) const;
+    // Packet cc9_spawn_new_shipyard. A marker's whole authored world matrix
+    // (entity+CCh, rows 0..2 the basis and row 3 the translation), which
+    // 008F8680 hands SpawnNew when `refPos` is that marker.
+    void register_scene_marker_frame(int id, const float world[16]);
+    bool scene_marker_frame(std::uint32_t id, float world[16]) const;
     // 004142e0 BSP_Vector3f_TransformAffinePoint with the matrix at unit+0cch,
     // which is what 009dbcc0 carries the latched offset out through.
     void transform_by_unit_matrix_004142e0(std::size_t index, float in_x, float in_y,

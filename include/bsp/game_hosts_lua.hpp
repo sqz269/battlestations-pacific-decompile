@@ -1209,6 +1209,10 @@ private:
     // 0094A140 -> 00949300 -> 009483D0: build the frame, create every member,
     // set record+C0h. 0094C777: the completion walk over record+CCh.
     void fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request);
+    // Packet cc9_spawn_new_shipyard. 008F8680's +14h arm: the world matrix at
+    // entity+CCh of the entity numbered `entity_id` (a unit's pose, or a scene
+    // marker's authored frame). False when the id names neither.
+    bool spawn_ref_entity_frame_008f8680(std::int32_t entity_id, float frame[16]) const;
     void complete_spawn_request_0094c777(const bsp::SpawnNewRequest& request);
     // globalConfig+2DCh, read once from Globals["SpawnAttemptDelay"].
     float spawn_attempt_delay_0087f800();

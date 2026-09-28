@@ -1743,6 +1743,7 @@ struct GameUnitsHost::Impl {
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
     std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
+    std::map<std::uint32_t, std::array<float, 16>> scene_marker_frames;  // cc9_spawn_new_shipyard
     // Packet cc8_ship_follow: the 508h-byte unit groups 0070DB20 allocates. A
     // unit points at one through GameUnitSlot::formation_group (unit+284h).
     struct FormationGroup {
@@ -20269,6 +20270,20 @@ void GameUnitsHost::register_scene_marker_position(int id, const float world[3])
     if (id <= 0) return;
     impl_->scene_marker_positions[static_cast<std::uint32_t>(id)] =
         std::array<float, 3>{world[0], world[1], world[2]};
+}
+
+void GameUnitsHost::register_scene_marker_frame(int id, const float world[16]) {
+    if (id <= 0) return;
+    std::array<float, 16> m{};
+    for (int i = 0; i < 16; ++i) m[static_cast<std::size_t>(i)] = world[i];
+    impl_->scene_marker_frames[static_cast<std::uint32_t>(id)] = m;
+}
+
+bool GameUnitsHost::scene_marker_frame(std::uint32_t id, float world[16]) const {
+    const auto found = impl_->scene_marker_frames.find(id);
+    if (found == impl_->scene_marker_frames.end()) return false;
+    for (int i = 0; i < 16; ++i) world[i] = found->second[static_cast<std::size_t>(i)];
+    return true;
 }
 
 bool GameUnitsHost::scene_marker_position(std::uint32_t id, float world[3]) const {

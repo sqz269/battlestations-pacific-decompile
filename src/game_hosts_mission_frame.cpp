@@ -1508,6 +1508,7 @@ struct GameSceneMarkerSeed {
     bool findable{false};
     std::uint32_t attach{0};
     float position[3]{0.0f, 0.0f, 0.0f};
+    float world[16]{};  // packet cc9_spawn_new_shipyard: the whole entity+CCh matrix
     int party{-1};  // packet cc9_init_identity_gaps: the record's authored Party
     int race{-1};   // packet cc9_scene_race_and_script_identity: the record's Race
 };
@@ -1549,6 +1550,7 @@ std::vector<GameSceneMarkerSeed> collect_scene_markers(
         seed.position[0] = entity.world[12];
         seed.position[1] = entity.world[13];
         seed.position[2] = entity.world[14];
+        for (int i = 0; i < 16; ++i) seed.world[i] = entity.world[i];
         markers.push_back(seed);
     }
     return markers;
@@ -2134,6 +2136,7 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             for (const GameSceneMarkerSeed& marker : markers) {
                 host.script_orders->register_scene_marker(marker.id, marker.name,
                     marker.position);
+                host.units->register_scene_marker_frame(marker.id, marker.world);
                 if (!host.helm_orders.empty()) {
                     Impl::HelmMarker named;
                     named.name = marker.name;
