@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_prcp03_phase1_shortfall",
+  "doc": "docs/GAME_SHIP_NAVIGATION_BINDING.md, PRCP03's phase-1 shortfall is the image's own",
+  "code_changed": false,
+  "addresses": {
+    "008A2F20": "NavigatorMoveToRange: 00888AA0 entity, 0088A810 target, 0077D600 with 00E08F68; no speed argument or store",
+    "009F4DA0": "leader arm 009F4E06..009F4E72: limit = min(0070D140, 0070D0F0) / 0080FC30"
+  },
+  "calls": [],
+  "evidence": {
+    "speeds": "carriers reference_speed 9.26000023, Aylwin 19.0344009 (local/p2_off_prcp03.log); limit 0.4865 = slot_thr every step",
+    "distance": "spawn (-7400, 7800) to CarrierPoint (-2500.3, 3000.9) 6858 m; 5258 m to the 1600 m circle",
+    "radius": "script's luaGetDistance < 1600 (prcp_07_tarawa.lua:782)"
+  },
+  "verdict": "image and host alike: phase 1 completes around mission frame 11400; no binding",
+  "no_ghidra_function": [],
+  "names_added": []
+}
