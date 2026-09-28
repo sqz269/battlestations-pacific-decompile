@@ -46,6 +46,9 @@ is ranked from its own evidence.
 | USN04's dive-release drop 10 -> 4 | section 30 | the image's own; nothing bound |
 | the submarine's sensor category `00852B90` (rank 1 on i) | section 32 | ON, `kSubmarineSensorCategoryBound`; the periscope byte `+1234h` stays a labelled substitution |
 
+**Still open from the closed rows:** the periscope byte `+1234h` (`periscopeOut`) has no producer,
+so a raised periscope never reads PeriscopeOut (section 32.4).
+
 ## 2. The ranking
 
 | rank | item | image | reach | calls | what the host does now |
@@ -1473,3 +1476,62 @@ recon lists. `kSubmarineSensorCategoryBound = true`.
   (SUBMARINE_MODEL).
 - **JM06's reference row does not move.** Its script flow does: the sub-sighted dialog is gone.
   Reference j should note it.
+
+## 33. The unresolved fire target `00835930` (packet `cc9_unresolved_fire_target`, rank 2 of section 31)
+
+### 33.1 The image, and what the host dropped
+
+`008358D0` (`BSP_WeaponDirector_SetCommand`, director vtable `+60h`) pushes the slot through
+`0071E6C0`. When the command's category is 1 or 2 and the session mode is 0 or 1, it resolves the
+descriptor (`00521EA0`) and calls `00835860` at `00835930` with that entity and force 1. The fire
+target becomes the commanded entity.
+
+The host's `set_fire_target` accepted only a pointer to one of the commands host's own unit records.
+**Every one of the 154 unresolved calls on reference i carries a handle instead**: the pointer field
+holds the entity's object id. A diagnostic run of this tree (`local\g7ft_<row>.log`) traced the
+first 12 per mission. On each of them the pointer value equals the descriptor's object id (`+2h`), and
+that id names a live unit:
+
+| row | unresolved | by object id | kinds (traced) |
+| --- | --- | --- | --- |
+| USN02 9000 | 14 | 14 | ship `attackmove`: Haguro and Murasame on DeRuyter, Jintsu on Java, Yamakaze on Alden, Minegumo on Houston, Tokitsukaze on Exeter, ... |
+| USN04 4500 | 35 | 35 | plane `divebomb` and `torpedo` on Lexington and Yorktown |
+| USN13 3000 | 60 | 60 | plane `torpedo` on Monterey (the first 12) |
+| USN01 3000 | 7 | 7 | Mav1-5 `torpedo` on Dunlap, Northampton and SaltLakeCity; ScoutDauntless `divebomb` on Convoy1 |
+| JM06 3000 | 2 | 2 | PlayerSub 02 `attackmove` on US Tanker 01, PlayerSub 03 on US Cargo Transport 02 |
+| LOMP06 1000 | 1 | 1 | Yugiri `attackmove` on Narwhal |
+
+The producers are the script orders, the ship-AI planner and the plane orders. They use the object
+id or index+1 as the opaque entity handle (for example `game_hosts_script_orders.cpp`,
+`game_hosts_ship_ai.cpp`). The commands host itself already resolves every other descriptor by the
+object id (`resolve_target_00521ea0`).
+
+### 33.2 The binding (committed OFF)
+
+- `kFireTargetObjectIdBound` (in `game_hosts_commands.cpp`) resolves such a handle by the
+  descriptor's object id and routes the fire target like a resolved one. That means one
+  `fire_target_requests` entry, consumed by the ship-AI host's `store_fire_target`
+  (`kWeaponDirectorFireTargetBound`).
+- It is a labelled substitution: the handle stands in for the image's entity pointer.
+- OFF keeps the drop.
+- The summary line is `summary mission director fire target unresolved= by_object_id=`. The first
+  12 per run are traced as `fire target unresolved (00835930): ...`.
+- The ship-AI consumer skips `generated_non_ship` controllers, which are units created after load
+  that are not ships. That covers USN04's and USN13's launched squadrons.
+
+### 33.3 Predictions (written before the ON runs)
+
+- **F1, the mechanism.** ON, `unresolved` and `by_object_id` equal OFF's until the tracks diverge.
+  `ship ai director fire target command_requests` rises by the calls whose unit has a ship
+  controller.
+- **F2, USN02: exit 3.**
+  - The 14 Japanese attack-move ships take their commanded targets as fire targets.
+  - Death rows move.
+  - The mission still fails in phase 1, torpedo-driven, within 10 s of 29.75 s.
+- **F3, JM06 and LOMP06: exit 3, small.** The two PlayerSubs and Yugiri fire at their commanded
+  targets.
+- **F4, USN04 and USN13: exit 1, gameplay identical.** Their requests come from launched
+  squadrons, which the consumer skips.
+- **F5, USN01: exit 1.** The Mavs and the ScoutDauntless are planes. I expect a fire target stored on
+  a plane's row not to reach its gunnery. That is unverified, and it is what this row tests.
+- **The flip rule:** ON when F1 holds and every move traces to a forced fire target.
