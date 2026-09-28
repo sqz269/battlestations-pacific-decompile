@@ -130,7 +130,7 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 // 006CC9F0), which this host does not build, so every request answers mode 1.
 // False: the resolution stays a record and the planes keep their attack task.
 // docs/SQUADRON_LAND_TASK.md.
-inline constexpr bool kSquadronLandTaskBound = false;
+inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
 class GameHostLog;
