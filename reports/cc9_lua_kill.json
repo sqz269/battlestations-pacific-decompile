@@ -1,0 +1,33 @@
+{
+  "packet": "cc9_lua_kill",
+  "doc": "docs/LUA_BINDING_MISSION.md, Kill, 008AC5C0",
+  "calls": [
+    {
+      "address": "008AC756",
+      "native": "00926D90",
+      "function": "008AC5C0",
+      "note": "the default arm"
+    },
+    {
+      "address": "008AC732",
+      "native": "007ED380",
+      "function": "008AC5C0",
+      "note": "squadron arm"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kLuaKillBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "OFF, pairs pending (lock screen)"
+    }
+  ],
+  "substitutions": [
+    "no units-host slot: not killed (script entities)",
+    "LandConvoy kills its own slot only",
+    "gunnery funnel ignores the cause and counts water_depth_kills"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}

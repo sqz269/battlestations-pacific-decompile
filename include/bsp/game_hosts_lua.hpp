@@ -125,6 +125,15 @@ inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs
 // LandConvoy keys) stay unserved. False: both keys return no value, as before.
 inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling (docs/MISSION_LUA_GETPROPERTY.md 9.13)
 
+// Packet cc9_lua_kill (docs/LUA_BINDING_MISSION.md, "Kill, 008AC5C0"). The Lua
+// native Kill(entity [, hard]) resolves argument 0 (00888AA0) and takes cause 1,
+// or 2 when a second argument reads true (008AC6DF..008AC71B). A squadron (18h,
+// 008AC729) kills its members through 007ED380, a LandConvoy (1Ah, 008AC740) its
+// vector through 00742210, any other entity itself through 00926D90 (008AC756).
+// True: the host kills the units-host slot (a squadron's live members) through the
+// gunnery host's death funnel. False: the native stays an unimplemented record.
+inline constexpr bool kLuaKillBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -323,6 +332,13 @@ struct GameMissionLuaSummary {
     unsigned long long get_property_unitcommand_unnamed{0};
     unsigned long long get_property_reconlevel_asked{0};
     unsigned long long get_property_reconlevel_tables{0};
+    // Packet cc9_lua_kill: Kill calls, units killed, calls with no units-host
+    // slot, calls on an already dead unit, squadron calls.
+    unsigned long long kill_calls{0};
+    unsigned long long kill_units{0};
+    unsigned long long kill_unresolved{0};
+    unsigned long long kill_already_dead{0};
+    unsigned long long kill_squadrons{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -775,6 +791,8 @@ public:
     // kGetPropertyClassReadersBound: pushed count, or -1 when the key is
     // neither or the switch is off. docs/MISSION_LUA_GETPROPERTY.md 9.6.
     int run_get_property_class_readers(lua_State* state, const char* key);
+    // 008AC5C0 Kill under kLuaKillBound. docs/LUA_BINDING_MISSION.md.
+    int run_kill_008ac5c0(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
