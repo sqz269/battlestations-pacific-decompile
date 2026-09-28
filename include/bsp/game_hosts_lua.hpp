@@ -264,7 +264,7 @@ inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs
 // lua_device_reload_enabled_00e17bf2() reports the byte to the plane-task feeds in
 // src/game_hosts_units.cpp, which also take the squadron +369h as its default 1.
 // False: unimplemented, and the accessor reports false as before.
-inline constexpr bool kLuaDeviceReloadEnabledBound = false;
+inline constexpr bool kLuaDeviceReloadEnabledBound = true;  // ON: identity pairs, feeds wired (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_lua_formation_query (docs/LUA_BINDING_MISSION.md, "IsInFormation 008996A0 and
 // LeaveFormation 00899EB0"). IsInFormation(unit) pushes unit+284h != 0 (008996A0).

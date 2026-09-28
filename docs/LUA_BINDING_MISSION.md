@@ -2821,3 +2821,19 @@ routing, is:
 - **What would move.** A row whose script calls the native and whose idle AI then flies dive-bomb or
   torpedo attacks. None of the measured rows does: the reference rows never call it, and JM06/JM08
   order no attack in their windows.
+
+### SetDeviceReloadEnabled: the feed pairs and the verdict
+
+OFF is this tree's build at `9859b3ea7`. ON is `local\rf_on`, a `pair_export` of `9859b3ea7` with
+`kLuaDeviceReloadEnabledBound=true`. Logs are `local\rf_{off,on}_<mission>.log`.
+
+| mission | pair_diff | reading |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 1, gameplay identical | the native fires once with true; only its host row and summary line differ |
+| JM08 3200/3000 | exit 1, gameplay identical | the same |
+| USN13 3200/3000 | exit 1, gameplay identical | no call; only the `bound=` field of the summary differs |
+
+All three match the predictions. No fed plane task runs after the call on these rows.
+
+**Verdict: `kLuaDeviceReloadEnabledBound = true`.** The `009FFEB0` line in `src/game_hosts_ai.cpp`
+stays a labelled stand-in until it is routed. It gives the same answer, false, either way.
