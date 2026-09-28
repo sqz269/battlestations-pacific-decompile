@@ -1759,3 +1759,62 @@ This corrects the deferral of `GetClosestBorderZone` (handoff item 3).
 
 `docs/ATTACK_COMMANDS.md` ("`returntobase` and `land`") read `+35Ch` as an assigned base; it now
 carries a correction.
+
+## Handoff (cc9-lua5, 2026-09-28)
+
+Worker cc9-lua5 took over cc9-lua4's lane (handoff above). The branch is `agent/cc9-lua5` and the
+worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua5`. It holds no leases after this commit.
+
+### Switches this worker set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kLuaHitAttackerPlayerIndexBound` | `include/bsp/game_hosts_lua.hpp` | ON | `docs/LUA_BINDING_MISSION.md`, "`attackerPlayerIndex`, bound" |
+| `kLuaClosestBorderZoneBound` | same | ON (exit-code miss recorded) | `docs/LUA_BINDING_MISSION.md`, "`GetClosestBorderZone`, bound"; `docs/WORLD_MAP_BOUNDS.md`, "Border zones" |
+
+The border-zone records and queries are new C++ in `src/world_map_bounds.cpp`. The mission frame
+hands the Lua host the map bounds at the avoid-zone load (`src/game_hosts_mission_frame.cpp`).
+
+### Reads closed
+
+- **The `hit` filters are all modelled now.** 84 `hit` listeners in this installation name an
+  `attackerPlayerIndex` set, not one. No measured row reaches the test.
+- **The LOMP10 obedience cases** (this doc, "The LOMP10 obedience cases"):
+  - the CargoShip obeys its `moveto`;
+  - the planes fly their `levelbomb`;
+  - the image would clear that and land or retreat the squadrons, and the host drops
+    `returntobase`.
+- **The fourth natives ranking** (`docs/LUA_BINDING_MISSION.md`): after `GetClosestBorderZone`, no
+  unimplemented native with gameplay reach is left on the measured rows.
+  - USN02's `CountdownCancel` cancels a countdown that was never started.
+  - `Scoring_SetMissionCompleted` and `BannSupportmanager` are the failure path's scoring.
+  - JM06's `LoadCheckpoint` answers "no checkpoint", as a fresh run would.
+
+### Open, in order
+
+1. **`returntobase` for AI squadrons.** In order:
+   - `006C0840`, the nearest landing site: read its register ABI from the listing;
+   - a flown `retreat` and `land` bot task (`009CA2B0`, `009B41C0`), which the host lacks;
+   - then the squadron intake `007F1940`: resolve through `007F16D0`, clear, issue.
+   The retreat arm's zone query is ready (`closest_border_zone_004c7730` with the squadron's side).
+   Until a flown task exists, binding the intake would strand the squadrons. It belongs with
+   whoever owns plane flight.
+2. **`PilotRetreat` (`008A4300`)** can now take its zone from `closest_border_zone_004c7730`
+   (`docs/PILOT_ORDER_BINDINGS.md` step 3'). It needs the same flown `retreat` task.
+3. **USN02's reference row moved** after its failure (`GetClosestBorderZone`). Re-anchor it at the
+   next re-baseline.
+4. **Records for the lead:** the ledger and Ghidra names and comments for `004C71C0`, `004C7150`,
+   `004C7730`, `004CA930` (unreferenced), `008AECD0`, `007F1940` (the squadron's `vtable[160h]`)
+   and the `007F16D0` correction.
+   - Ghidra was read-only for this worker.
+   - `tools/const_width_sweep.py` was not run on the new constants.
+
+### Local files
+
+- **Pair exports:** `local\{ap,bz}_on`.
+- **Logs:** `local\{ap,bz}_{off,on}_<mission>.log`, the LOMP10 re-measure `local\rt_base_lomp10.log`,
+  and the census `local\l5_rk_*.log`.
+- **Scripts:** `local\l5_*`.
+  - `l5_runs.ps1` and `l5_wait.sh` are lua4's with the tree renamed.
+  - `l5_api_census.py` lists the `attackerPlayerIndex` users.
+  - `l5_minwater.py` maps `MinWaterSpd` to classes.
