@@ -234,3 +234,28 @@ Worker cc9-gunnery3, 2026-09-28, on main 088e94d34.
 | USN01 3200/3000 | Both Dauntlesses still die, 2 to 3 s later; deaths stay 7. Exit 3 |
 | JM06 3200/3000 | Identical (exit 0 or 1) |
 | every mission, ON | `hp_inverse=0.5556`, `cheat_inverse=1.0000`, `party_scaled > 0` wherever party 0 takes damage |
+
+### 6.3 The pairs, and the flip
+
+OFF is this worktree at `dc783f42a` (`local\DM_OFF_<m>.log`). ON is `pair_export --commit
+dc783f42a --flip kDifficultyMultipliersBound=true` (`local\DM_ON_<m>.log`). RNG streams and the
+death table were on. Every ON run reads `levels=3`, `hp_inverse=0.5556`, `cheat_inverse=1.0000`.
+The OFF baselines are today's main, which already carries the gunnery flips of 2026-09-27. So
+some OFF rows differ from section 4's source logs.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 Exeter | sunk at 35.80 s, 6486 taken | **survives**, 3604 taken (= 0.5556 x 6486) | survives the torpedo with about 2500 left | held (health 5334 at the end, after repair) |
+| USN02 the 39.65 s failure | `MissionPhase=1 EndMission=true` | `MissionPhase=2 EndMission=nil` | no failure; a later failure or phase 2 | held: **phase 2 is reached** |
+| USN02 party-0 damage | 21903 | 16095 (x0.735) | about x0.556 | **failed as a total**: the longer fight lands more hits; per hit the factor is exact |
+| USN02 deaths | 19 | 17 (DeRuyter, Java and Exeter survive; Electra later; Hatsukaze now dies) | party-0 deaths fall, party-1 rise | held |
+| USN04 Fletcher-class05 | takes no damage on this OFF | - | 1149 -> about 638 | **vacuous**: today's baseline does not hit her |
+| USN04 party-0 damage | 9 (a Lexington fighter) | 5 | x0.556 | held, exactly |
+| USN04 deaths | 44 | 44 | 44 | held |
+| USN01 Dauntless deaths | 130.05 s, 137.55 s | 130.60 s, 140.40 s | both die, 2-3 s later | half held: +0.55 s and +2.85 s |
+| USN01 deaths | 7 | 7 | 7 | held |
+| JM06 | party 0 takes 6194, 5 deaths | 4308, 3 deaths (USTroopTransport 01 and US Tanker 01/02 hold) | identical | **failed**: section 4's OFF had party 0 untouched; today's baseline has the submarines hitting the convoy, so the multiplier bites |
+
+**Decision: `kDifficultyMultipliersBound` is ON.** Every scaled write matches `0.5556 x` the raw
+damage where one can be isolated (Exeter's torpedo, USN04's fighter). The failed rows come from the
+baseline moving under the section-4 predictions, not from the binding.

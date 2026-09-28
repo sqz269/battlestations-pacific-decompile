@@ -354,7 +354,8 @@ inline constexpr bool kGunIdleRestBound = true;
 // LABELLED: the local player's party (record +28h) is taken as the controlled
 // unit's party; single player only (game+1FE4h == 0); the level is game+6ACh.
 // False: no damage is scaled, as before.
-inline constexpr bool kDifficultyMultipliersBound = false;
+// ON by the pairs of 2026-09-28 (docs/DIFFICULTY_MULTIPLIERS.md section 6.3).
+inline constexpr bool kDifficultyMultipliersBound = true;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
