@@ -169,7 +169,8 @@ constexpr bool kShipPlatformAttachmentBound = true;
 //    inv * max; and the 008110F0 sink record is refused (counted) for inv > 0.
 //    The host's sink is a record only, so the refusal changes no state. OFF:
 //    every site passes 0, as before. The floor itself is stored either way.
-constexpr bool kUnitInvincibilityFloorBound = false;
+//    ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 10).
+constexpr bool kUnitInvincibilityFloorBound = true;
 //  * kGunneryLineOfSightBound (packet cc9_gunnery_line_of_sight,
 //    docs/GUNNERY_OPEN_ITEMS.md section 5): 00864D90's visibility test runs
 //    00864680 instead of answering visible. The target's point is its pose raised

@@ -245,3 +245,59 @@ a Landscape shape's bounds, and none of them met terrain between a gun and its t
 
 **Decision: `kGunneryLineOfSightBound` is ON.** It is gameplay-identical on all four and faithful to
 the listing.
+
+## 9. The invincibility floor pair, predictions (packet `cc9_set_invincible_floor`, recorded before the ON runs)
+
+OFF is this worktree at `df7ba20c5` (main, with cc9-lua2's SetInvincible native and the
+multiplier ON), in `local\IF_OFF_<m>.log`. ON flips only `kUnitInvincibilityFloorBound`, which
+also carries section 6's 007BC5B0 fold.
+
+**What the OFF logs show the native doing.**
+- **USN02: 20 calls, not 10.** At frame 37 it floors DeRuyter, Java, Kortenaer and Electra at 0.1,
+  and Haguro, Jintsu, Yudachi, Samidare, Murasame and Harusame at 0.5. At frame 3764 (about
+  186 s, `luaPh2MovieEnd`, which the multiplier now lets the run reach) it sets all ten back to 0.
+- **USN04:** Yorktown-class01 at 0.24. It takes no damage on OFF.
+- **USN01: Convoy1-6 at 0.1, and both ScoutDauntlesses at 1.0** (one call, `units=2`). The
+  convoys take no damage on OFF. The Dauntlesses die at 130.60 s and 140.40 s.
+
+**Predictions.**
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| USN02 floored ships dying before 186 s | Kortenaer 87.85, Electra 127.05, Yudachi 152.80, Samidare 170.21 | none of the ten dies before the release; any of them may die after 186 s |
+| USN02 census | sets 20, floored_writes 0 | floored_writes > 0; sink_refusals 0 (a floored ship never reaches 0 health by damage) |
+| USN02 deaths | 17 | moves, exit 3; the fight runs differently from 88 s on |
+| USN04 | Yorktown untouched | identical (pair_diff 0 or 1) |
+| USN01 ScoutDauntlesses | die at 130.60 s and 140.40 s | **both survive**: at 1.0 the floor is the full health, so no damage lands. Deaths 7 -> 5, exit 3. This departs from the brief's "USN01 identity" |
+| USN01 convoys | untouched | untouched |
+| water gate (section 6) | - | no `plane water contact ignored` line on any of the three: no invincible aircraft touches water |
+
+## 10. The invincibility floor pair, and the flip (2026-09-28)
+
+OFF `local\IF_OFF_<m>.log` (`df7ba20c5`); ON `local\IF_ON_<m>.log` (`pair_export --commit
+df7ba20c5 --flip kUnitInvincibilityFloorBound=true`). RNG streams and the death table were on.
+
+| row | OFF | ON | prediction (section 9) | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 floored ships dying before the release | Kortenaer 87.85, Electra 127.05, Yudachi 152.80, Samidare 170.21 | none of the ten dies at all | none before the release | held |
+| USN02 floors | - | Kortenaer 263, Electra 281 (0.1 of max); Samidare, Harusame, Yudachi 1350 (0.5) | - | exact |
+| USN02 census | floored_writes 0 | floored_writes 32337, sink_refusals 0 | > 0, 0 | held |
+| USN02 deaths | 17 | 12 | moves, exit 3 | held |
+| USN04 | - | pair_diff 1 | identical | held |
+| USN01 ScoutDauntlesses | die at 130.60 s and 140.40 s | both survive; deaths 7 -> 5 | both survive | held |
+| water gate | - | no `plane water contact ignored` line on any of the three | none | held |
+
+**Not predicted: USN02 now fails in phase 1.**
+- The release never comes. The ON run makes only the 10 floor calls, because `luaPh2MovieEnd`
+  runs only after phase 1 completes.
+- Phase 1 completes (`usn_2_java.lua:531`) when DeRuyter's health is below 15%, or when every
+  ship of `EnemyDestroya` is dead. With the floor ON the Japanese destroyers cannot fall below 50%,
+  so only DeRuyter's health can end it, and her floor is 10%. She is left at 1700 (2420 taken).
+- Exeter is not floored. She is sunk at 385.68 s, and `usn_2_java.lua:521`'s test ends the
+  mission (`MissionPhase=1 EndMission=true`).
+- The script and the floor are the image's. What the run lacks is enough fire on DeRuyter, which
+  is the ship AI's and the gunnery host's targeting. That is the next thing to read for USN02,
+  not the floor.
+
+**Decision: `kUnitInvincibilityFloorBound` is ON**, and with it section 6's 007BC5B0 fold. Every
+floor holds at its exact fraction, and every recorded prediction held.
