@@ -162,3 +162,47 @@ and the commanded altitude.
 - **USN01 3200/3000:** it has planes (the Mavises and the ScoutDauntless pair), so it moves (exit 3).
   Deaths stay within 7 +- 1.
 - **USN02 9200/9000:** it has no aircraft, so it is identical (exit 0 or 1).
+
+### The pairs, and the flip
+
+- **Commit:** OFF is `b2e64ab63`, this tree's `build\`.
+- **ON:** `tools/pair_export.py --commit b2e64ab63 --flip kPlanePitchModeTwoBound=true` into
+  `local\m2_on`.
+- **Logs:** `local\m2_{off,on}_{usn04,usn01,usn02}.log`, with streams, the death table and
+  `BSP_PLANE_RATE_TRACE` on the Kate. The 300-frame smoke `local\m2_smoke300.log` passed first.
+
+| mission | pair_diff | mode-2 steps ON | what moved |
+| --- | --- | --- | --- |
+| USN04 4700/4500 | exit 3 | 70871 | Deaths 44 to 41 (three Zeros survive), hit records 707 to 670, shots 5433 to 4461, water contacts 16 to 12. Releases 4 of 16 / 4 of 19 and drops 0 are unchanged |
+| USN01 3200/3000 | exit 3 | 5096 | Deaths 7 unchanged, hit records 149 to 148, shots 557 to 561 |
+| USN02 9200/9000 | exit 1 | 0 | nothing (no aircraft) |
+
+**The Kate (`#4.1|.-3`), OFF and ON:**
+
+| window | \|w\| mean, deg/s | steps above 1.81 | \|pitch stick\| mean | \|alt - commanded\| mean | pitch - measured mean |
+| --- | --- | --- | --- | --- | --- |
+| straight, 20-60 s | 0.75 / 1.29 | 5% / 14% | 0.037 / 0.036 | 21.7 / 21.9 m | -0.0001 / -0.0010 rad |
+| the run, last 600 steps | 4.00 / 4.07 | 75% / 74% | 0.139 / 0.187 | 462.7 / 452.5 m | 0.0002 / 0.0024 rad |
+
+**Failed prediction.** "The Kate's run pitch activity falls" did not hold: |w| and the share above
+the gate are unchanged within noise.
+- The reason is in the last column. This host's plane flies with the nose almost exactly on the
+  flight path (under 0.003 rad apart), so measuring the flight-path angle instead of the nose
+  changes almost nothing for a Kate.
+- The rule moves other aircraft: 70871 mode-2 steps, and USN04's Zeros live longer.
+- The run's pitch activity is the **descent itself**. The Kate is on average 450 m above its
+  commanded altitude over the last 600 steps, and `009FB800` pitches it down at the class
+  `DropAngle` and levels it out at the drop height. That is the same law in the image.
+
+**Decision: ON.** The arm is the image's, and USN02 held.
+
+**Answer to the packet's question.**
+- The image flies the torpedo run with the same pitch law as the host now does. The pitch activity
+  that passes `00901C20`'s gate is the descent from cruise to drop height, which the image also
+  commands.
+- What the host still lacks is an angle of attack. Its plane flies with the nose on the flight
+  path, so the image's version of the run may differ in how the nose moves, but not in the commanded
+  descent.
+- **On this evidence `kAaTargetTurnAverageBound` belongs ON, with the image's own consequence: a
+  descending Kate is a turning target to the AA director and is shot down before release more
+  often.** The ruling is cc9-gunnery3's.

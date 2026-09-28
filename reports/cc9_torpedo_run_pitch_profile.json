@@ -17,8 +17,21 @@
     "USN01": "exit 3; deaths 7 +- 1",
     "USN02": "identical (no aircraft)"
   },
-  "off_commit": "pending",
-  "results": "pending",
+  "off_commit": "b2e64ab63",
+  "results": {
+    "logs": "local/m2_{off,on}_{usn04,usn01,usn02}.log",
+    "USN04": "exit 3; mode-2 steps 70871; deaths 44 -> 41, hits 707 -> 670, shots 5433 -> 4461; drops 0",
+    "USN01": "exit 3; steps 5096; deaths 7",
+    "USN02": "exit 1; steps 0",
+    "kate_run": "|w| 4.00 -> 4.07, above 1.81 75% -> 74%, pitch - measured under 0.003 rad (the host flies nose on flight path)"
+  },
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "verdicts": {
+    "USN04": "held (exit 3, deaths within 44 +- 3, drops 0-2)",
+    "USN01": "held",
+    "USN02": "held",
+    "kate_run": "FAILED: pitch activity unchanged (no angle of attack in the host)"
+  },
+  "decision": "ON; the run's pitch is the commanded descent (009FB800), image and host alike; kAaTargetTurnAverageBound belongs ON with the image's consequence, gunnery3 to rule"
 }

@@ -3734,7 +3734,8 @@ struct GameUnitsHost::Impl {
     // target +2BCh becomes held + inc and the measured angle is the live pitch,
     // else the measured angle is the flight-path angle. Mode 1 measures the live
     // pitch. False: the live pitch in every mode, no limit, as before.
-    static constexpr bool kPlanePitchModeTwoBound = false;
+    // ON by the pairs at b2e64ab63: USN04 and USN01 move, USN02 identical.
+    static constexpr bool kPlanePitchModeTwoBound = true;
     // The dogfight task's skeleton (packet cc9_dogfight_task): install, the
     // 009AAFA0 unengaged arm (moveto leader / follow wing), the generic follow
     // tick, and a labelled moveto stand-in. docs/DOGFIGHT_TASK.md.
