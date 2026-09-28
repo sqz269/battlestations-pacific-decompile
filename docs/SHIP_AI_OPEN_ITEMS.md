@@ -1382,3 +1382,31 @@ No sector scan reaches its avoid-zone arm on these rows, so every call is the ar
   answer nothing. Section 1's count was the old searcher box; this query's box is larger.
 
 **Verdict: ON.** The mechanism matches, and the moves are the two predicted rows.
+
+### Section 10: the yaw-rate half, re-paired after `kUnitYawRateForwardSpeedBound` (main `5d12669e0`)
+
+- The base is this tree at `28e776eb1`: main merged, `kShipFollowStationPointBound` ON, and the
+  units fix ON.
+- **OFF** is `pair_export --commit 28e776eb1 --flip kShipFollowStationPointBound=false`, SHA-256
+  prefix `5928B1898F5C`, logs `local\ships8_y0_<row>.log`.
+- **ON** is the tree's own build, logs `local\ships8_y1_<row>.log`.
+- The zone half was identity on every row (above), so this pair measures the leader yaw rate at
+  `009DF607`.
+
+**OFF census.** `leader_turning` counts the calls whose `00811940` now answers non-zero:
+
+| Row | `00811940` calls | non-zero |
+| --- | --- | --- |
+| USN04 | 8186 | 7991 |
+| USN02 | 1496 | 1371 |
+| JM06 | 565 | 556 |
+| USN12 | 10 | 10 |
+
+**Predictions, written before the ON runs.**
+- The follower's speed blend `009DACD0` at `009DF612` now takes the leader's real yaw rate, where
+  it took 0.
+- So a follower on the outside of a turn speeds up and one on the inside slows.
+- USN04, USN02 and JM06: exit 3, with formation followers' tracks and speeds moving. Death rows may
+  move on USN04 and USN02.
+- USN12: exit 1 or 3; only 10 calls.
+- Mechanism check: `leader_turning` on ON matches OFF until the tracks diverge.
