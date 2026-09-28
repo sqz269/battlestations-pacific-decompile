@@ -45,6 +45,7 @@ is ranked from its own evidence.
 | the projectile team id | section 26 | stamped; no switch |
 | USN04's dive-release drop 10 -> 4 | section 30 | the image's own; nothing bound |
 | the submarine's sensor category `00852B90` (rank 1 on i) | section 32 | ON, `kSubmarineSensorCategoryBound`; the periscope byte `+1234h` stays a labelled substitution |
+| the forced fire target's handle at `00835930` (rank 2 on i) | section 33 | ON, `kFireTargetObjectIdBound`; the handle resolves by object id |
 
 **Still open from the closed rows:** the periscope byte `+1234h` (`periscopeOut`) has no producer,
 so a raised periscope never reads PeriscopeOut (section 32.4).
@@ -1535,3 +1536,36 @@ object id (`resolve_target_00521ea0`).
 - **F5, USN01: exit 1.** The Mavs and the ScoutDauntless are planes. I expect a fire target stored on
   a plane's row not to reach its gunnery. That is unverified, and it is what this row tests.
 - **The flip rule:** ON when F1 holds and every move traces to a forced fire target.
+
+### 33.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is `pair_export --commit 296e445b4` (SHA-256 prefix `CD98253065FC`).
+- **ON** is the same commit with `--flip kFireTargetObjectIdBound=true` (`D1A4A1DC3B3C`).
+- The logs are `local\ft_{off,on}_<row>.log`, and the run parameters are reference i's.
+
+| row | `pair_diff` | unresolved (OFF = ON) | ship-AI command requests / changes, OFF -> ON | what moved |
+| --- | --- | --- | --- | --- |
+| USN02 9000 | exit 1, gameplay identical | 14 | 1218 / 51 -> 1232 / 51 | nothing: each forced target was already that ship's fire target |
+| JM06 3000 | **exit 3** | 2 | 337 / 20 -> 339 / 22 | PlayerSub 02 fires on US Tanker 01 and PlayerSub 03 on US Cargo Transport 02: hit records 127 -> 122, damage 2720.7 -> 2468.6, Tanker 01 taken 502 -> 368; the same death row |
+| LOMP06 1000 | exit 1, gameplay identical | 1 | 14 / 2 -> 15 / 3 | Yugiri takes the Narwhal as its fire target (torpedo candidates' fire target 920 -> 1302); no shot lands |
+| USN04 4500 | exit 1, gameplay identical | 35 | 0 / 0 -> 3 / 3 | three requests reach load-time plane rows (the AutoTarget accepts the locked target 665 times and scans 665 fewer) |
+| USN13 3000 | exit 1, gameplay identical | 60 | 0 -> 0 | every request comes from a launched squadron and is skipped |
+| USN01 3000 | exit 1, gameplay identical | 7 | 0 / 0 -> 5 / 5 | the Mavs' rows take their torpedo targets; no gameplay moves |
+
+**Against the predictions.**
+- **F1 held.** `unresolved` and `by_object_id` are equal OFF and ON on every row. The ship-AI
+  requests rise by the calls that reach a ship-AI row.
+- **F2 missed.** USN02 is identical: the planner's attack-move targets were already each ship's fire
+  target, so all 14 stores change nothing. The 29.75 s failure is unchanged.
+- **F3 held on JM06** (exit 3, small, from the two forced targets). **It missed on LOMP06**, which is
+  identical: Yugiri's target changes, but no shot lands within 1000 frames.
+- **F4 held on USN13.** On USN04 three requests reached load-time plane rows, which F4 did not
+  expect, and gameplay is still identical.
+- **F5 held.**
+- Every move traces to a forced fire target.
+
+**Verdict: ON.** `kFireTargetObjectIdBound = true`.
+
+**Still open.** Plane rows hold the stored target, and their AutoTarget accepts it (`accept.true`).
+Whether the image's plane gunnery reads the director fire target is not read here. The plane
+packets own that.

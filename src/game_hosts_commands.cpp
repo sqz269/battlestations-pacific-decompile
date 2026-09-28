@@ -60,7 +60,9 @@ constexpr bool kDirectorCommandArmsBound = true;
 // records, by its object id (+2h), as resolve_target_00521ea0 does. LABELLED:
 // the handle stands in for the entity pointer the image carries. False: such a
 // target is dropped and the director keeps its own pick.
-constexpr bool kFireTargetObjectIdBound = false;
+// ON by the pairs of 2026-09-28: JM06 moves (the two PlayerSubs fire on their
+// commanded targets); USN02, USN04, USN13, USN01 and LOMP06 gameplay identical.
+constexpr bool kFireTargetObjectIdBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
