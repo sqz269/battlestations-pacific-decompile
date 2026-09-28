@@ -122,6 +122,36 @@ constexpr bool kGunAimErrorBound = true;
 //    step, as the host already does for 0072D130's send.
 //    ON since the pairs (docs/GUN_SHOT_CADENCE.md 10.6).
 constexpr bool kGunImmediateFireSlotBound = true;
+//  * kTorpedoSwimThrustBound: packet cc9_torpedo_tube_turn,
+//    docs/TORPEDO_FRIENDLY_CROSSING.md section 6. 00857480, the swim advance,
+//    per step on a torpedo in the water: 00856BB0 -> 00857061 yaws the NOSE
+//    toward record+46Ch at HeadingTurn; 00857536..00857673 splits the velocity
+//    on the nose and scales the axial part by 1 - record+474h * dt (0.6,
+//    00D0C5EC) and the lateral part by 1 - record+478h * dt (3.0, 00D0C5E8);
+//    008576C6..0085775D then adds nose * record+470h * dt, where +470h is
+//    WaterTravelSpeed * 0.6 (0085785D, 00D0C5E0) and the 008E6430(0Eh) modifier
+//    is 1 with no modifier active. So the round keeps the velocity it entered
+//    the water with (008568E0 does not set a speed), accelerates toward
+//    WaterTravelSpeed with a 1/0.6 s time constant, and its path lags its nose.
+//    OFF: the host snaps the swim to WaterTravelSpeed * 0.6 at the water
+//    crossing and rotates the velocity itself toward record+46Ch.
+//    Labelled: the vertical is still the host's surface plane (the forward.y
+//    decay and depth keeping are not modelled), as with the OFF swim.
+constexpr bool kTorpedoSwimThrustBound = false;
+constexpr float kTorpedoAxialDrag474 = 0.5999994277954102f;    // 00D0C5EC
+constexpr float kTorpedoLateralDrag478 = 3.0000007152557373f;  // 00D0C5E8
+// DIAGNOSTIC gate for the per-launch tube line (packet cc9_torpedo_tube_turn).
+bool torpedo_tube_trace_env() {
+    static const bool on = [] {
+        char* text = nullptr;
+        std::size_t length = 0;
+        const bool set = _dupenv_s(&text, &length, "BSP_TORPEDO_TUBE_TRACE") == 0
+            && text != nullptr && text[0] != '\0' && text[0] != '0';
+        std::free(text);
+        return set;
+    }();
+    return on;
+}
 // Packet cc9_aa_lead, docs/AA_LEAD.md.
 //  * kPlaneGunfireHooked: a plane's forward guns (PLANEGUN, category 0) take their
 //    trigger from the latched gunFire the plane's fixed step hands each enabled
@@ -917,6 +947,12 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, ImmediateFireState> immediate_fire_by_gun;
     std::vector<int> gun_turning_class;   // parallel to guns
+    // Packet cc9_torpedo_tube_turn (kTorpedoSwimThrustBound): the swimming
+    // torpedo's nose yaw, keyed by the shot's serial. The velocity follows it.
+    std::map<unsigned long long, float> torpedo_nose_yaw;
+    unsigned long long torpedo_thrust_steps{0};
+    unsigned long long torpedo_swims_kept_entry{0};
+    double torpedo_entry_speed_sum{0.0};
     unsigned long long immediate_arms{0};
     unsigned long long immediate_slot_calls{0};
     unsigned long long immediate_extra_sends{0};
@@ -5855,6 +5891,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 torpedo_gyro_offset_sum_deg += std::fabs(bsp::wrapped_angle_subtract_00438b10(
                     shot.commanded_heading, vyaw)) * 57.2957795;
                 ++torpedo_gyro_launches;
+                if (torpedo_tube_trace_env()) {
+                    // DIAGNOSTIC, packet cc9_torpedo_tube_turn: the tube heading the
+                    // round leaves on and the gyro heading 00856637 installs.
+                    log.notef("gunnery: torpedo tube t=%.2f shooter=%s plat=%d class=%d "
+                        "tube_deg=%.1f gyro_deg=%.1f off_deg=%.1f speed=%.1f",
+                        static_cast<double>(clock_seconds), state.row.name.c_str(),
+                        gun.platform_key, shot.bullet_class, static_cast<double>(vyaw) * 57.2957795,
+                        static_cast<double>(shot.commanded_heading) * 57.2957795,
+                        static_cast<double>(bsp::wrapped_angle_subtract_00438b10(
+                            shot.commanded_heading, vyaw)) * 57.2957795,
+                        static_cast<double>(std::sqrt(shot.flight.velocity.x
+                            * shot.flight.velocity.x + shot.flight.velocity.z
+                            * shot.flight.velocity.z)));
+                }
             }
         }
         shots.push_back(shot);
@@ -6268,7 +6318,39 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         if (!shot.alive) continue;
         if (shot.serial == 0) shot.serial = ++next_projectile_serial;
         if (shot.swimming) shot.swim_seconds += dt;   // 0085748A, record+488h += dt
-        if (kTorpedoGyroHeadingBound && shot.swimming && shot.commanded_heading != 10000.0f) {
+        if (kTorpedoSwimThrustBound && shot.swimming) {
+            // 00857480 steps 4 and 5 and its tail, horizontally.
+            const GameBulletClassRow* round = bullet(shot.bullet_class);
+            auto nose_it = torpedo_nose_yaw.find(shot.serial);
+            if (nose_it == torpedo_nose_yaw.end()) {
+                nose_it = torpedo_nose_yaw.emplace(shot.serial,
+                    std::atan2(shot.flight.velocity.x, shot.flight.velocity.z)).first;
+            }
+            float& nose = nose_it->second;
+            if (kTorpedoGyroHeadingBound && shot.commanded_heading != 10000.0f && round != nullptr
+                && round->heading_turn > 0.0f) {
+                // 00857061: e = -SubtractWrapped(yaw, +46Ch), clamp(e, +/-rate) * dt.
+                const float e = bsp::wrapped_angle_subtract_00438b10(shot.commanded_heading, nose);
+                const float rate = static_cast<float>(round->heading_turn * 3.14159265358979 / 180.0);
+                const float step = std::max(-rate, std::min(rate, e)) * dt;
+                if (step != 0.0f) {
+                    nose = static_cast<float>(bsp::wrapped_angle_subtract_00438b10(nose + step, 0.0f));
+                    ++torpedo_gyro_turn_steps;
+                }
+            }
+            const float fx = std::sin(nose), fz = std::cos(nose);
+            const float vx = shot.flight.velocity.x, vz = shot.flight.velocity.z;
+            const float along = vx * fx + vz * fz;                          // 00857540..00857570
+            const float px = fx * along, pz = fz * along;
+            const float lx = vx - px, lz = vz - pz;
+            const float keep_axial = 1.0f - kTorpedoAxialDrag474 * dt;       // 00857603..0085760D
+            const float keep_lateral = 1.0f - kTorpedoLateralDrag478 * dt;   // 008575C4..008575D7
+            const float thrust = round != nullptr ? round->swim_speed : 0.0f; // +470h
+            shot.flight.velocity.x = px * keep_axial + lx * keep_lateral + fx * thrust * dt;
+            shot.flight.velocity.z = pz * keep_axial + lz * keep_lateral + fz * thrust * dt;
+            ++torpedo_thrust_steps;
+        } else if (kTorpedoGyroHeadingBound && shot.swimming
+                   && shot.commanded_heading != 10000.0f) {
             // 00857061: e = -SubtractWrapped(yaw, record+46Ch), clamped to
             // +/- HeadingTurn (deg/s, classDesc+0E8h) * pi/180, times dt.
             const GameBulletClassRow* round = bullet(shot.bullet_class);
@@ -6625,7 +6707,13 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                 const float vx = shot.flight.velocity.x;
                 const float vz = shot.flight.velocity.z;
                 const float horizontal = std::sqrt(vx * vx + vz * vz);
-                if (horizontal > 0.0f) {
+                if (kTorpedoSwimThrustBound) {
+                    // 008568E0 / 006E6450 set no speed: the round keeps the
+                    // horizontal velocity it entered with, and 00857480's thrust
+                    // takes it toward WaterTravelSpeed from here.
+                    ++torpedo_swims_kept_entry;
+                    torpedo_entry_speed_sum += horizontal;
+                } else if (horizontal > 0.0f) {
                     shot.flight.velocity.x = vx / horizontal * swim;
                     shot.flight.velocity.z = vz / horizontal * swim;
                 }
@@ -8920,6 +9008,13 @@ void GameGunneryHost::report() {
             host.torpedo_gyro_launches ? host.torpedo_gyro_offset_sum_deg / host.torpedo_gyro_launches
                                        : 0.0,
             kTorpedoGyroHeadingBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo swim thrust bound=%d steps=%llu "
+            "kept_entry=%llu mean_entry_speed=%.1f (00857480, packet cc9_torpedo_tube_turn)",
+            kTorpedoSwimThrustBound ? 1 : 0, host.torpedo_thrust_steps,
+            host.torpedo_swims_kept_entry,
+            host.torpedo_swims_kept_entry
+                ? host.torpedo_entry_speed_sum / static_cast<double>(host.torpedo_swims_kept_entry)
+                : 0.0);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
             "mean_magnitude_deg=%.4f mean_angle_deg=%.4f seats aa=%llu tail=%llu flak=%llu "
             "torpedo=%llu depth=%llu artillery=%llu pilot=%llu none=%llu bound=%d "

@@ -90,6 +90,90 @@ The image lets this launch through, so the packet records it and stops. Whether 
 torpedo turn out of the tube matches the image's is a gunnery-side question: the
 `007311B0`/`00856637` gyro record and the torpedo turn rate. It is not the gate.
 
+## 6. The torpedo out of the tube (packet `cc9_torpedo_tube_turn`, worker cc9-gunnery4, switch `kTorpedoSwimThrustBound`)
+
+Section 4 left one question: whether the host's torpedo leaves the tube and joins the gyro line the
+way the image's does. The answer is **no, and the difference is not the turn rate. It is the swim
+itself.** The image's torpedo is a thrust-and-drag body whose velocity follows its nose. The
+host's swims at a fixed speed with its velocity rotated directly.
+
+### 6.1 The image, term by term
+
+| term | image | evidence |
+| --- | --- | --- |
+| launch heading | the gun's trained angles, the tube heading `bot+60h` snapped up to pi/4 (`0090043D`); the round leaves along it at `V0` | USN02_SAMESIDE_TORPEDOES 3, `006E8430` |
+| gyro heading | `007311B0`'s `heading` = the gate's run line + AngleErr jitter, installed at `record+46Ch` by `00856637` | USN02_SAMESIDE_TORPEDOES 3 |
+| water entry | `008568E0` breaks the round up above `MaxWaterHitVel`, otherwise `006E6450` sets `+44h` and swaps the trails. **It sets no speed.** | TORPEDO_TICK, `008568E0` |
+| the swim step | `00857480`, per step while in the water | below |
+| turn | `00857061` yaws the **nose** (the local matrix) toward `+46Ch` by `clamp(e, +-HeadingTurn * pi/180) * dt`; HeadingTurn is 10 in every row | TORPEDO_TICK "Heading" |
+| drag | `00857536..00857673`: `par = f (v.f)`, `perp = v - par`, `v = par (1 - [+474h] dt) + perp (1 - [+478h] dt)` | listing below |
+| thrust | `008576C6..0085775D`: `v += f * [+470h] * k * dt`, `k = 008E6430(0Eh)`, 1 with no modifier | listing below |
+| the three fields | `+470h = WaterTravelSpeed * 0.5999994` (`0085785D`, `00D0C5E0`); `+474h = 0.5999994` (`00D0C5EC`); `+478h = 3.0000007` (`00D0C5E8`) | `00857827..0085788B` |
+| arming | `+45Ch` is seeded `-1.0` (`00D7A260`) by `006E2670`, which the torpedo constructor `00856050` calls. The scan of `5C 04 00 00` finds no other projectile writer, so **a torpedo is armed from launch**, as in the host | `006E270C`, scan |
+| hit test | the projectile's segment sweep, as for every round | PROJECTILE_IMPACT |
+
+```
+00857603: fld [ebx+474h] ; fmul st1 (dt) ; fld1 ; fsubrp        ; 1 - 0.6 dt, the axial keep
+008575C4: fld [ebx+478h] ; fld [esp+80h] (dt) ... fld1 ; fsubrp ; 1 - 3.0 dt, the lateral keep
+008576C6: fld [ebx+470h]                                        ; T = 0.6 * WaterTravelSpeed
+00857733: fld [ebx+318h] ; fadd [esp+24h] ; fstp [ebx+318h]     ; v.x += f.x * T * k * dt (and y, z)
+```
+
+**Consequences in the image:**
+- The round enters the water at its launch speed, about 13 m/s for classes 62 and 67 and 23 m/s
+  for class 61. It accelerates toward `T / 0.6 = WaterTravelSpeed` with a time constant of
+  1/0.6 = 1.67 s.
+- Its path lags its nose by about 1/3 s, from the lateral drag.
+
+### 6.2 The host, term by term
+
+| term | host (`src/game_hosts_gunnery.cpp`, `run_projectiles`) | same? |
+| --- | --- | --- |
+| launch heading | the gun's angles, `projectile_launch_velocity_006e8430` | yes |
+| gyro heading | `kTorpedoGyroHeadingBound`, the same `+46Ch` | yes |
+| arming | none | yes |
+| water entry | **the velocity is set to `WaterTravelSpeed * 0.6` along the entry heading** | **no** |
+| the swim | **constant speed; the velocity vector itself is turned at HeadingTurn** | **no** |
+| steady speed | **0.6 x WaterTravelSpeed**: class 62 30.9 m/s, class 67 102.3 m/s | **no**: the image tends to WaterTravelSpeed (51.4 and 170.4 m/s) |
+
+### 6.3 The binding (committed OFF)
+
+`kTorpedoSwimThrustBound`:
+- **At the water crossing** the round keeps its horizontal entry velocity.
+- **On every swim step** the nose yaws by 00857061's rule, then the drag split and the thrust run
+  with the three image constants. `GameBulletClassRow::swim_speed` is exactly `+470h`.
+- **Labelled:** the vertical stays the host's surface plane, as with the OFF swim.
+- **The diagnostic** `BSP_TORPEDO_TUBE_TRACE=1` logs every gyro launch as
+  `gunnery: torpedo tube t= ... tube_deg gyro_deg off_deg speed`.
+- **The census** is `summary mission gunnery torpedo swim thrust ...`.
+
+### 6.4 The launches this head makes (OFF, `local\TS_OFF_<m>.log`)
+
+- **USN02:** 227 gyro launches: 168 class 67, 24 class 62 and 35 class 61. The mean tube-to-gyro
+  offset is 24.7 degrees. Category 7 has 227 shots and 76 hits, which dealt 27243.
+  - Houston is sunk at 33.80 s by a Minegumo Long Lance from the opening spread (launched
+    1.45..4.95 s, 2719 m). The mission fails at 34.70 s.
+  - **John1's 273.71 s launch of section 4 does not happen on this head.** Since
+    `kGunImmediateFireSlotBound` (GUN_SHOT_CADENCE 10.6), Houston is dead by then.
+- **USN04, USN01, USN13:** no gyro launch and no torpedo drop in their frames.
+
+### 6.5 Predictions, written before any ON run
+
+Distance run from the water:
+- **Class 67, image:** `170.4 t - 262 (1 - e^(-0.6 t))`. Against the host's `102.3 t`, the image
+  is behind until about 3.3 s (about 340 m) and ahead after that. A 2719 m run takes about 17.5 s
+  against 26.6 s.
+- **Class 62:** the image catches up at about 2.7 s and is ahead after that.
+
+| row | prediction |
+| --- | --- |
+| USN04, USN01, USN13 | **identity**: pair_diff exit 0 or 1, thrust steps 0 |
+| USN02 thrust census | steps above 0, `kept_entry` equal to the swims started, mean entry speed between 12 and 24 m/s |
+| USN02 torpedo hits (category 7, 76 OFF) | **up**: the faster long runs leave targets less time to turn away |
+| USN02 Houston | still lost to an opening-spread Long Lance, and **earlier than 33.80 s**, so the failure comes earlier than 34.70 s |
+| USN02 John1's hits on Houston at 276-277 s | **vacuous on this head**: Houston is dead long before |
+| USN02 pair_diff | exit 3 |
+
 ## no_ghidra_function
 
 None. Every address named lies inside a Ghidra function.
