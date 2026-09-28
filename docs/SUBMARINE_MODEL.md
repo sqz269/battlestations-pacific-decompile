@@ -834,3 +834,106 @@ pulses, which `0095DA00` ignores on a dead unit. The mechanism matches the image
 the dead boat the same way.
 
 **Verdict: `kSubmarineAirBound = true`.**
+
+## 14. The seabed scan `00855420` and the throttle bounds (packet `cc9_submarine_seabed`, `kSubmarineSeabedBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This completes section 7's partial read. It corrects sections 6 and
+12 on what `unit+844h`/`+848h` are.
+
+### The scan, traced (`00855420`, listing over the PE, `this` = `unit+310h`)
+
+**The frame.** `sub esp,30h`, then `PUSH EBP`, `PUSH ESI` and a pushed `dt` that `00825F20`
+pops. `0092D730`'s speed is stored to `[+1Ch]`. **It also stays on the x87 stack:** `008554A1`
+`FLDZ`, then `FLD`, `FCOMI` and `FSTP ST(1)` leave it as the fourth register the arms consume.
+
+**Before the jump:**
+- `frac = |speed| / class.MaxSpeed` (`+500h`).
+- `F = -unit+984h * frac`. `unit+984h` is the ring's current ordered rudder.
+- `[+14h] = Width` (`+A4h`), `[+10h] = Length` (`+A0h`).
+- `[+18h] = 0.6 * Length` (`00CEFF98`, the double of the float 0.6).
+- `[+8h] = 2 * Width`.
+- On the stack: 3.0 (`00D7A2B0`), 1.0, `frac`, `speed`.
+
+**The 13 points** (x across, z along the hull; jump table `00855938`). `L` is Length, `W` is
+Width.
+
+| state | arm | point |
+| --- | --- | --- |
+| 0 | `0085554E` | `(W, 0.6L)` |
+| 1 | `0085556B` | `(-W, 0.6L)` |
+| 2 | `00855573` | `(W, -0.6L)` |
+| 3 | `00855590` | `(-W, -0.6L)` |
+| 4 | `008555B0` | `(2W, L)` |
+| 5 | `008555C7` | `(0, L)` |
+| 6 | `008555DB` | `(-2W, L)` |
+| 7 | `008555F2` | `(2W, -L)` |
+| 8 | `0085560D` | `(0, -L)` |
+| 9 | `00855625` | `(-2W, -L)` |
+| 10 | `00855643` | `(2W*(1 + 1.5*frac + 3F), 9*speed ± L)` |
+| 11 | `00855680` | `(2W*3F, 10*speed ± L)` |
+| 12 | `008556A9` | `(2W*(3F - (1 + 1.5*frac)), 9*speed ± L)`; `008556B7` is `DE E9`, `FSUBP ST(1),ST(0)` |
+| > 0Ch | `008556BB` | the zero offset, and the state resets to 0 |
+
+- The sign of `± L` follows `speed` (`00855655` `COMISS` / `JB`). Constants: 1.5 (`00CE3D78`),
+  9.0 (`00CF0AB8`), 10.0 (`00CE3DC0`).
+- Points 10 to 12 are a look-ahead fan, biased toward the turn by `F`.
+- **The time to the point** (`008556CD..0085576B`): `max(|p| - 0.6L, 0.1)`, over
+  `max(|speed|, 1.0)`. The 0.1 is `00D7A3A0` and `00D7A2F0`.
+
+**The sample.**
+- The point goes to world through the pose (`004142E0` against `unit+CCh`).
+- Every object on `[00E188A8]+19CCh -> +34Ch` is sampled through `0087FA50`, which is
+  `this+3D0h->vtable[28h](x, z)`. That is the Landscape list 44h and `00ADA900`, the same walk
+  `00903860` makes. A zero sample is skipped (`FUCOMIP`, `LAHF` / `TEST AH,44h` / `JNP`).
+- `candidate = sample + (class.Height + 3.0)`. It raises `+1248h`.
+- For states below 10, a candidate above the hull adds `(candidate - hullY) / time` to `+124Ch`
+  (states 0, 1, 4, 5, 6) or `+1250h` (states 2, 3, 7, 8, 9), each keeping its maximum. The first
+  is the front bucket, the second the rear.
+- The state advances and wraps after 0Ch.
+- When the state is 0 at the start of a tick (`00855434`), the tick first publishes and reseeds:
+  `+123Ch = +1248h`; `+1240h = +124Ch`, then 0; `+1244h = +1250h`, then 0; `+1248h = bands[3]`.
+- The seed at attach (`00853AD5..00853AE5`) sets `+123Ch = +1248h = bands[3]` and
+  `+1244h = 0`.
+
+### The clamp and the bounds (`00936DC0`)
+
+- **The clamp** (section 6 step 3) needs the ship bot's owner helm slot to be 8 or AI-held
+  (00927F10). That slot is `[[unit+740h]+50h]+1B0h`, role 1. Under the clamp, the target is the
+  published clearance and the gain is 1.5.
+- **Correction to sections 6 and 12:** `unit+844h`/`+848h` at the cursor `+97Ch` are **order-ring
+  slot `+0Ch`/`+10h`, the throttle bounds `param_a_high`/`param_a_low`**
+  (`include/bsp/unit_state_message.hpp`), not dive planes. The ring tick `00813020` clamps the
+  ordered throttle to them.
+  - Every step the force callback writes 2.0 and -1.0, so a submarine can never order more than
+    -1.0 reverse; the ring's own default is -2.0.
+  - Under the clamp it writes `high = 00419010(0.5, 1.0, 3.0, 0.0, +1240h)` and
+    `low = -00419010(0.5, 1.0, 3.0, 0.0, +1244h)`. Ground rising ahead cuts the forward throttle
+    toward 0 as the climb rate goes from 0.5 to 3.0 m/s. Ground rising astern does the same to
+    reverse.
+
+### The binding
+
+- The rules are `submarine_scan_point_00855420`, `submarine_scan_time_00855420`,
+  `submarine_scan_publish_00855440`, `submarine_scan_sample_00855420`,
+  `submarine_scan_advance_00855420` and `submarine_throttle_bounds_00936dc0`, in
+  `src/submarine_model.cpp`.
+- The units host runs the scan per force step after the dive law, over the host's Landscape
+  list (`height_00ada900`). It feeds the published clearance into the existing clamp and writes
+  the bounds into `ring.slot[write_cursor]`.
+- The depth trace gains `clear`, `front`, `rear` and `clamps`.
+- **SUBSTITUTIONS, labelled.**
+  - The scan runs after the force callback, not after `00825F20`.
+  - The speed is `dot(linear, row2)` of the velocity the dive law wrote.
+  - The bot's owner is the boat itself, and a helm slot 0..7 reads as player-held.
+
+### Predictions (written before the ON runs)
+
+The OFF baseline is this tree's build of the commit, with dive and air ON. What the scan sees is
+set by the terrain under each boat, which no earlier run printed. The host's Landscape height is
+-1000 outside a terrain tile; that is not zero, so it is sampled and never raises anything.
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **Mechanism:** every boat's `clear` in the trace moves off -80.0 once terrain lies under its footprint. It stays -80.0 over open water. The clamp engages only where `terrain + Height + 3` is above the boat's band. **Spread:** most likely **exit 1**, since the boats hold -13, -40 and -80 m in open water off Midway. If a boat clamps, it rises toward the clearance and its throttle bound drops, so its position and hits move (exit 3). The -1.0 reverse bound changes nothing unless an AI boat orders more than -1.0 reverse |
+| LOMP06 1200/1000 | **exit 1.** The Narwhal holds -10.1 m in the convoy lane, away from land |
+| USN01 3200/3000 | no submarine, exit 1 |

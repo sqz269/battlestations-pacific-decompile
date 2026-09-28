@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_submarine_seabed",
+  "doc": "docs/SUBMARINE_MODEL.md section 14",
+  "addresses": {
+    "scan": "00855420-00855937 (jump table 00855938, 13 dwords)",
+    "provider_sample": "0087FA50 -> [obj+3D0h]->vtable[28h] = 00ADA900 (Landscape list 44h, [00E188A8]+19CCh+34Ch)",
+    "seed": "00853AD5..00853AE5",
+    "force_callback_bounds": "00936E00..00936E2B, 00937069..00937107"
+  },
+  "constants": {
+    "00CEFF98": "0.6 (double of float 0.6)",
+    "00D7A2B0": "3.0 (double), the clearance margin",
+    "00CE3D78": "1.5",
+    "00CF0AB8": "9.0",
+    "00CE3DC0": "10.0",
+    "00D7A3A0/00D7A2F0": "0.1, the time-to-point distance floor"
+  },
+  "switch": {
+    "name": "kSubmarineSeabedBound",
+    "file": "include/bsp/game_hosts_units.hpp",
+    "state": "OFF, predictions written; pairs pending"
+  },
+  "corrections": [
+    "unit+844h/+848h are order-ring slot +0Ch/+10h (param_a_high/param_a_low), not dive planes (docs/SUBMARINE_MODEL.md sections 6 and 12)"
+  ]
+}
