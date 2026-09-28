@@ -998,3 +998,22 @@ seabed ON).
 | JM06 3200/3000 | **exit 3.** The PlayerSubs are unchanged at step 1 (-20.00, `PutTo` runs before the first physics step). The TypeBs start at -40.0 instead of rising from -50 over about 200 steps. The Gato wreck starts sinking from -12.8. The Narwhal-class moves by 0.1 m. The early traces move; hits and deaths may shift through the TypeBs' first seconds |
 | LOMP06 1200/1000 | **exit 3, small.** The Narwhal starts at -10.2 instead of -20, so its first 200 steps' vertical motion and drag differ. The controlled distance moves slightly and the camera that tracks it moves. No hit or death change |
 | USN01 3200/3000 | no submarine, exit 0 |
+
+### Teleport pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `5f660259c`, with dive, air and seabed ON.
+- ON is `pair_export --flip kSubmarineDiveTeleportBound=true` (`local/dt_on`).
+- The logs are `local/dt_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | Nine teleport lines match the table above. `PlayerSub 01..03` read -20.00 at step 1: `PutTo` ran first. The TypeBs read -40.00 at step 1. **pair_diff exit 3:** the Gato wreck's death altitude goes 4 -> -9; deaths 2 -> 1 (`PlayerSub 03` survives again); hit records 233 -> 231; the Narwhal-class's engagement moves (dealt 803 -> 711) | held |
+| LOMP06 1200/1000 | The Narwhal starts at -10.20. pair_diff exit 3, small: the controlled distance goes 407.14 -> 421.34 m, next to the 421.38 m before the dive law. Nearest-ship distances shift by about 10 m. No hit or death change | held |
+| USN01 3200/3000 | exit 0 | held |
+
+**The LOMP06 distance explains section 12's move.** The 421.38 -> 407.14 m drop when the dive law
+was flipped came from the Narwhal's 10 m vertical transient from its authored -20 m. The
+teleport removes that transient, as the image does.
+
+**Verdict: `kSubmarineDiveTeleportBound = true`.**

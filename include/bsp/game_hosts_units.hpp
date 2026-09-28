@@ -276,7 +276,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // submarine whose scene row authors `Dive` is placed at bands[Dive] at attach
 // (00853B2B..00853B86: local Y +A8h, X and Z kept), before its hull body is built.
 // False: the hull keeps its authored Y.
-inline constexpr bool kSubmarineDiveTeleportBound = false;
+inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 15)
 
 class GameUnitsHost {
 public:
