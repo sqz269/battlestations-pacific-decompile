@@ -2051,3 +2051,49 @@ every call these rows make. A binding would change no answer, so nothing is comm
 
 The commands host holds no class ids. A binding would need the units host's `unit_is_kind_of` and
 the scene markers' classes, and a way to tell the markers from the host's unit handles.
+
+## 40. The untouchable gate `00862440` (packet `cc9_untouchable_gate`, the gunnery half of lua7's natives rank 1)
+
+### 40.1 The image
+
+- **The gate.** `00862440 BSP_Entity_UnitAiSuppressesGunnery`, `__thiscall(entity)`, body
+  `00862440-00862471`, RET 0. It calls `entity->vtable[140h]()` twice (`0086244B`, `0086245B`). It
+  answers 1 when the result is non-null and its byte `+1D4h` is set (`0086245D`), and 0 otherwise.
+  The proxy is the entity itself for a ship (`0047F320` is `mov eax, ecx`), `[plane+9D4h]` for a
+  plane, and `[fort+738h]` or the fort for a land fort (`include/bsp/gunnery_tables.hpp`).
+- **Its only caller** is `00865248` in `00864FE0 BSP_UnitGunneryAi_Tick`. A `rel32` scan of
+  `.text` finds that CALL and nothing else, and no absolute dword names `00862440`.
+  - The site walks the unit's recon list (`[..+DE8h]`, next at `+8h`, the entity at `+4h`).
+  - `00863990` scores each candidate. If it accepts (`0086523C`), the gate runs. A true gate jumps
+    to `0086542F`, the next candidate, before the visibility test `00864D90` (`0086525D`) and the
+    pick.
+  - **What it blocks:** only the unit gunnery AI's own choice of a target for its gun categories.
+    It is not in the ship AI's target choice, the attack-move or ramming paths, or a commanded fire
+    target (`00835860`).
+- **The writer.** The Lua native AddUntouchableUnit `008AC140` writes the byte through the same
+  `vtable[140h]` (`008AC263`), as lua7 read it (LUA_BINDING_MISSION). The flag therefore sits on
+  the unit's proxy, which is where the gate reads it.
+
+### 40.2 The binding (committed OFF)
+
+`kAiUntouchableGateBound` in `src/game_hosts_gunnery.cpp`. The gunnery host's
+`unit_ai_suppresses_00862440` reads `bsp::game::lua_unit_untouchable_1d4(index)` for the
+candidate's units-host index. It counts the reads, and the reads a set byte would suppress, on
+both sides. The summary line is `summary mission gunnery untouchable gate reads=... marked=...
+bound=...`, and the first six marked reads are traced.
+- **LABELLED:** the Lua host keys the flag by the unit the script passed. That unit is the proxy
+  for a ship. A plane's proxy `[plane+9D4h]` is not followed.
+
+### 40.3 OFF counters and predictions (written before the ON runs)
+
+The OFF side is this tree's build, with reference j's run parameters plus main's later landings.
+
+| row | OFF | prediction |
+| --- | --- | --- |
+| JM05 3200/3000 | AddUntouchableUnit marks units 339, 340 and 364 at t=0.00. The gate reads 2520 candidates, **none of them marked**. PT Boat 80' Elco 01 and 02 are on side 2, with no enemy nearest and no shots at them. Event2Pt is on side 0, with its nearest enemy 6829 m away, beyond every gun range | **exit 1, gameplay identical.** The summary line changes only its `bound`. No attack on the PT boats exists to disappear in this window, and the death rows are unchanged |
+| USN04 4700/4500 | no mark (`calls=0`); the gate reads candidates, none marked | exit 1, the summary line's `bound` only |
+
+- **U1, the mechanism:** `marked` is the same on both sides of each row. ON suppresses exactly the
+  marked reads.
+- **U2:** no gameplay line moves on either row.
+- The verdict rule: U1 is the mechanism. The flip follows U1 and U2.
