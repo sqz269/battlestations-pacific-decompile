@@ -44,6 +44,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -324,6 +325,11 @@ public:
     // while kSetCommandQueueDelayBound is false. finish answers the deliveries.
     void begin_loopback_drain_0076c600();
     std::size_t finish_loopback_drain_0076c600();
+    // When the last issue's MT_COMMAND waits in the queue, `fn` is taken and
+    // run after that chain's delivery (its push and finish tail); answers
+    // false, leaving `fn`, when the order was delivered already or the switch
+    // is off.
+    bool after_last_issue_delivery(std::function<void()>& fn);
 
     const GameCommandRow* issue(std::size_t unit_index, const std::string& token,
         const std::string& target_token, const bsp::UnitOrderRing& ring,
@@ -516,5 +522,6 @@ private:
 // (GameFixedStepHost reaches the session pump, not the commands host).
 void commands_begin_loopback_drain_0076c600();
 std::size_t commands_finish_loopback_drain_0076c600();
+bool commands_after_last_issue_delivery(std::function<void()>& fn);
 
 }  // namespace bsp::game

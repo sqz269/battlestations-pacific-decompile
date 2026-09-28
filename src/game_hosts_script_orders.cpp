@@ -5,6 +5,7 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
@@ -383,6 +384,11 @@ void GameScriptOrdersHost::after_order_delivery(std::function<void()> fn) {
         }
         return;
     }
+    // Packet cc9_set_command_queue_delay: with the loopback queue bound, a
+    // direct order's MT_COMMAND waits for the session pump's drain, and the
+    // receiver side runs after its delivery there (false when it has been
+    // delivered already, or while the switch is off).
+    if (commands_after_last_issue_delivery(fn)) return;
     fn();
 }
 
