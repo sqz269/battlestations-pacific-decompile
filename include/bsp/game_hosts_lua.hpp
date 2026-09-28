@@ -420,6 +420,17 @@ struct GameVehicleClassRow {
     float y_drag{0.0f};               // desc+170h YDrag, 007D2150
     float max_spd{0.0f};              // desc+188h MaxSpd, 007D238A
     float travel_speed{0.0f};         // desc+18Ch TravelSpeed, 007D23C3
+    // Packet cc9_unit_class_lands_troops: the three keys [class+538h]->vtable[2Ch]
+    // reads. 00833B7D..00833BB6 (inside the ship reader 00831840) stores
+    // class+78Ch only when `LandingShip` is non-zero, 00964790 resolves it and the
+    // descriptor's vtable[18h](0Ch) answers true (00963C80 answers 0Ch only on the
+    // MLandingShip descriptor); landing_ship_resolves is that store's condition.
+    // LandingShipAmount is class+790h (ShipClassFields::landing_ship_amount) and
+    // Rocketer is the landing-ship reader 0074C630's class+809h.
+    int landing_ship_id{0};             // `LandingShip`, IntegerOr 0
+    bool landing_ship_resolves{false};  // class+78Ch != 0
+    int landing_ship_amount{0};         // class+790h `LandingShipAmount`, IntegerOr 0
+    bool landing_ship_is_rocketer{false};  // class+809h `Rocketer`, BooleanOr false
     // Packet cc9_submarine_dive: the MSubmarine keys 00854230 reads, with its
     // NumberOr defaults (src/vehicle_class_lua_load.cpp). SwimDepth1 is read into
     // the PeriscopeDepth slot only when PeriscopeDepth left it negative.
