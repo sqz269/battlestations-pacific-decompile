@@ -1224,6 +1224,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 }
             }
         }
+        if (tick.wedge_ran) {
+            // Packet cc9_cautious_wedge: the census of 00A11690.
+            ++cautious_wedge_calls;
+            if (tick.wedge.ran) {
+                ++cautious_wedge_runs;
+                cautious_wedge_placed += static_cast<unsigned long long>(tick.wedge.placed);
+                cautious_wedge_no_record +=
+                    static_cast<unsigned long long>(tick.wedge.no_record);
+                if (tick.wedge.frame_u[0] == 0.0f && tick.wedge.frame_u[1] == 0.0f) {
+                    ++cautious_wedge_zero_frame;
+                }
+                log_cautious_wedge(cmd->owner_group, tick.wedge);
+                done("AiCommand::formation_wedge_00a11690", 0x00a11690u);
+            }
+        }
         if constexpr (kSellingTickBound) {
             if (cmd->type == bsp::AiCommandType::Selling) {
                 const bsp::AiCommandTickResult sell = selling_tick_00a11ff0(*cmd);
@@ -1970,6 +1985,73 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             static_cast<double>(z));
     }
     int cautious_route_logs{0};
+
+    // ---- packet cc9_cautious_wedge (kCautiousWedgeBound) --------------------
+    bool tick_member_forward_row(void* member, float out[3]) override {
+        out[0] = out[1] = out[2] = 0.0f;
+        if (member == nullptr) return false;
+        float right[3] = {0.0f, 0.0f, 0.0f};
+        float up[3] = {0.0f, 0.0f, 0.0f};
+        float translation[3] = {0.0f, 0.0f, 0.0f};
+        return units.unit_pose(unit_index_of(member), right, up, out, translation);
+    }
+    bool tick_member_has_formation_0284(void* member) override {
+        if (member == nullptr) return false;
+        return units.unit_formation_group_0284(unit_index_of(member)) >= 0;
+    }
+    int tick_formation_shape0_0070efd0(void* leader) override {
+        // 0070EFD0(0) (body 0070EFD0-0070F08C): every record whose +0h is set
+        // gets column 0 rewritten, the formation leader's to (0, 0) (0070F03A)
+        // and every other one's to table 00E08F18 + slot*8 read as floats. At
+        // run time those words are the registered command objects' vtable and
+        // ordinal (bsp/entity_orders.hpp), so the products with
+        // FormationShipDist are near 1e-38 m. LABELLED: written as 0.0f.
+        if (leader == nullptr) return 0;
+        const std::size_t unit = unit_index_of(leader);
+        const std::int32_t group = units.unit_formation_group_0284(unit);
+        if (group < 0) return 0;
+        int rewritten = 0;
+        const std::int32_t count = units.formation_member_count(group);
+        for (std::int32_t slot = 0; slot < count; ++slot) {
+            const std::size_t member = units.formation_member_unit(group, slot);
+            if (member == static_cast<std::size_t>(-1)) continue;
+            if (units.set_formation_member_offset_0070d080(unit, member, 0, 0.0f, 0.0f)) {
+                ++rewritten;
+            }
+        }
+        done("AiCommand::formation_shape0_0070efd0", 0x0070efd0u);
+        return rewritten;
+    }
+    bool tick_formation_set_column0_0070d080(void* leader, void* member, float lateral,
+                                             float axial) override {
+        if (leader == nullptr || member == nullptr) return false;
+        return units.set_formation_member_offset_0070d080(unit_index_of(leader),
+            unit_index_of(member), 0, lateral, axial);
+    }
+    void log_cautious_wedge(void* group, const bsp::AiCautiousWedgeResult& w) {
+        if (cautious_wedge_logs >= 60) return;
+        ++cautious_wedge_logs;
+        Group* g = group_at(group);
+        const std::string leader = (g != nullptr && !g->members.empty())
+            ? unit_name(g->members.front()) : std::string();
+        log.notef("  ai cautious wedge: t=%.2f leader=%s samples=%d threat=(%.1f %.1f %.1f) "
+            "cost=%.1f u=(%.4f %.4f) v=(%.4f %.4f) dist=%.0f shape0=%d placed=%d not_ship=%d "
+            "no_record=%d first=(%.1f %.1f) last=(%.1f %.1f) (00A11690, packet cc9_cautious_wedge)",
+            clock_seconds, leader.c_str(), w.samples, static_cast<double>(w.threat[0]),
+            static_cast<double>(w.threat[1]), static_cast<double>(w.threat[2]),
+            static_cast<double>(w.threat_cost), static_cast<double>(w.frame_u[0]),
+            static_cast<double>(w.frame_u[1]), static_cast<double>(w.frame_v[0]),
+            static_cast<double>(w.frame_v[1]), static_cast<double>(w.unit_dist),
+            w.shape0_records, w.placed, w.not_ship, w.no_record,
+            static_cast<double>(w.first_offset[0]), static_cast<double>(w.first_offset[1]),
+            static_cast<double>(w.last_offset[0]), static_cast<double>(w.last_offset[1]));
+    }
+    int cautious_wedge_logs{0};
+    unsigned long long cautious_wedge_calls{0};
+    unsigned long long cautious_wedge_runs{0};
+    unsigned long long cautious_wedge_placed{0};
+    unsigned long long cautious_wedge_no_record{0};
+    unsigned long long cautious_wedge_zero_frame{0};
 
     void tick_replace_command(void* group, bsp::AiCommandType type) override {
         // 00A12C1B: new(20h) + 00A10710(group, target), vtable 00D22C44, then
@@ -4190,6 +4272,11 @@ void GameAiCoordinatorHost::report() {
         host.summary.cautious_route_clears, host.summary.cautious_route_waits,
         host.summary.cautious_route_movetos, host.summary.cautious_route_no_slot,
         static_cast<double>(host.tuning.at(0x190)), static_cast<double>(host.tuning.at(0x194)));
+    host.log.notef("summary mission ai cautious wedge bound=%d calls=%llu runs=%llu placed=%llu "
+        "no_record=%llu zero_frame=%llu (00A11690, packet cc9_cautious_wedge)",
+        bsp::kCautiousWedgeBound ? 1 : 0, host.cautious_wedge_calls, host.cautious_wedge_runs,
+        host.cautious_wedge_placed, host.cautious_wedge_no_record,
+        host.cautious_wedge_zero_frame);
     host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
         "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "

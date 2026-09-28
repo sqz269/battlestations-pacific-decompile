@@ -221,8 +221,8 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
     }
     case AiCommandType::CautiousMove: {
         // 00A152B0 forwards the group and the +8h destination to 00A14DD0 on
-        // the +14h sub-object, then runs 00A10DC0 and JMP 00A11690 (not bound,
-        // docs/AI_CAUTIOUS_ROUTE.md section 10).
+        // the +14h sub-object, then runs 00A10DC0 and JMP 00A11690
+        // (kCautiousWedgeBound, docs/AI_CAUTIOUS_ROUTE.md section 10).
         AiCommandObject* state = kCautiousMoveRouteBound ? host.tick_command_state(group)
                                                          : nullptr;
         if (state != nullptr) {
@@ -231,6 +231,10 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
             result.route_ran = true;
         }
         add(result, ai_command_follower_pass_00a10dc0(host, group));
+        if constexpr (kCautiousWedgeBound) {                      // 00A152CD JMP
+            result.wedge = ai_formation_wedge_00a11690(host, group);
+            result.wedge_ran = true;
+        }
         return result;
     }
     case AiCommandType::MoveToAttack: {
@@ -269,6 +273,10 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         // 00A15500 runs 00A10DC0 and 00A11690 first, then hands its OWN
         // leader point, a null target and 1.0f to 00A13B60.
         add(result, ai_command_follower_pass_00a10dc0(host, group));
+        if constexpr (kCautiousWedgeBound) {                      // 00A1550A
+            result.wedge = ai_formation_wedge_00a11690(host, group);
+            result.wedge_ran = true;
+        }
         return result;
     case AiCommandType::CautiousAttack: {
         if constexpr (kCautiousAttackTickBound) {
@@ -299,8 +307,12 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
                 order_leader(host, group, target_point, result);
             }
         }
-        // 00A15349 00A10DC0, then 00A11690 (not read).
+        // 00A15349 00A10DC0, then 00A15350 00A11690 (kCautiousWedgeBound).
         add(result, ai_command_follower_pass_00a10dc0(host, group));
+        if constexpr (kCautiousWedgeBound) {
+            result.wedge = ai_formation_wedge_00a11690(host, group);
+            result.wedge_ran = true;
+        }
         // 00A15355-00A15429: collect = tuning+1F4h; d2 = the x/z squared
         // distance between the two leaders; FCOMPI of collect^2 against d2,
         // JBE skips, so collect^2 > d2 promotes: new(20h), 00A10710(owner,
@@ -465,6 +477,190 @@ AiCautiousRouteResult ai_cautious_approach_pass_00a14dd0(AiCommandTickHost& host
     route.built = true;
     route.points = built;
     return route;
+}
+
+namespace {
+
+// 004F2F40 BSP_Geometry_NormalizeVector2DWithCutoff, __thiscall(float v[2]),
+// body 004F2F40-004F2FAE read whole: both components are stored as binary32,
+// the squared length is summed on the x87 stack and stored as binary32, and
+// FCOMI against the double 1e-10 (JBE, so an unordered length also takes the
+// short branch) chooses _CIsqrt of it or the double 1e-5 as the divisor.
+void normalize2_004f2f40(float v[2]) noexcept {
+    const float x = v[0];
+    const float y = v[1];
+    const float len2 = static_cast<float>(static_cast<double>(x) * x
+                                          + static_cast<double>(y) * y);
+    const float len = static_cast<double>(len2) > kWedgeNormalizeCutoff
+        ? static_cast<float>(std::sqrt(static_cast<double>(len2)))
+        : static_cast<float>(kWedgeNormalizeShort);
+    v[0] = static_cast<float>(static_cast<double>(x) / len);
+    v[1] = static_cast<float>(static_cast<double>(y) / len);
+}
+
+// 00A113D0, __thiscall(base)(float out[3]), RET 4, body 00A113D0-00A1152A.
+// The ring starts at a = 0.0f and steps by the double pi/6 at 00CEC730,
+// storing a as binary32 after each add, while the double 2pi at 00CE3828 is
+// above it (00A11514 FCOMIP, JA back). The float accumulation reaches
+// 6.2831845 before the test fails, so the ring has 13 samples, not 12.
+void wedge_threat_direction_00a113d0(AiCommandTickHost& host, void* group,
+                                     AiCautiousWedgeResult& out) {
+    // 00A113D3: FLDZ, FMUL 750.0, stored as the sample's y.
+    const float y = static_cast<float>(0.0 * kWedgeSampleRadius);
+    float best = kWedgeNoCost;                                   // 00A113D5
+    // 00A113F6 SETZ: EDX for 00A010F0 is (group+5638h == 0).
+    const int team = host.tick_group_team(group) == 0 ? 1 : 0;
+    // 00A11433: +5644h == 0 takes 00F87574 (zero), else the first member's
+    // +FCh after 00414DB0. 00A10C20 in tick_leader_point is the same read.
+    float center[3] = {0.0f, 0.0f, 0.0f};
+    host.tick_leader_point(group, center);
+    // LABELLED: when no cost is above the seed, the image leaves the caller's
+    // uninitialised stack in out; here it stays zero.
+    float a = 0.0f;
+    do {
+        const float c = static_cast<float>(std::cos(static_cast<double>(a)));  // 00A11414
+        const float s = static_cast<float>(std::sin(static_cast<double>(a)));  // 00A11426
+        // 00A1143A..00A1144C: DC C9 is FMUL ST(1),ST(0), so x = 750 sin a
+        // and z = 750 cos a.
+        const float dx = static_cast<float>(kWedgeSampleRadius * s);
+        const float dz = static_cast<float>(kWedgeSampleRadius * c);
+        const float point[3] = {
+            static_cast<float>(static_cast<double>(center[0]) + dx),
+            static_cast<float>(static_cast<double>(center[1]) + y),
+            static_cast<float>(static_cast<double>(center[2]) + dz)};
+        const float cost = host.tick_danger_cost_00a010f0(point, team);   // 00A114B9
+        ++out.samples;
+        if (cost > best) {                                       // 00A114CA FCOMIP, JBE skips
+            out.threat[0] = dx;
+            out.threat[1] = y;
+            out.threat[2] = dz;
+            best = cost;
+        }
+        a = static_cast<float>(static_cast<double>(a) + kWedgeSampleStep);   // 00A11500
+    } while (kWedgeSampleEnd > static_cast<double>(a));          // 00A11514
+    out.threat_cost = best;
+}
+
+}  // namespace
+
+AiCautiousWedgeResult ai_formation_wedge_00a11690(AiCommandTickHost& host, void* group) {
+    AiCautiousWedgeResult out;
+    if (group == nullptr || host.tick_group_population(group) == 0u) return out;
+    // 00A116C7: the first member must answer vt+5Ch(6), a ship base.
+    void* leader = host.tick_member_at(group, 0);
+    if (leader == nullptr || !host.tick_member_is_ship_base(leader)) return out;
+    // 00A116F3: [leader+284h], the formation group, must be set.
+    if (!host.tick_member_has_formation_0284(leader)) return out;
+    out.ran = true;
+    // 00A11709: 00414DB0 refreshes the pose when +C8h is clear; the host's
+    // poses are always current.
+    wedge_threat_direction_00a113d0(host, group, out);          // 00A11726
+    const float d0 = out.threat[0];                              // [ESP+2Ch]
+    const float d1 = out.threat[1];                              // [ESP+30h], the zero y
+
+    // 00A1172B..00A11746: _CIatan2 with ST0 = +F4h and ST1 = +ECh.
+    float forward[3] = {0.0f, 0.0f, 0.0f};
+    host.tick_member_forward_row(leader, forward);
+    const float h = static_cast<float>(std::atan2(static_cast<double>(forward[0]),
+                                                  static_cast<double>(forward[2])));
+    const float a = -h;                                          // 00A1174E FCHS
+    // 00A11758..00A117B8. The rotation reads (d[0], d[1]) and d[1] is the
+    // zero y, so the threat's z never enters: only the sign of d[0] turns u.
+    // Kept as the image's arithmetic (docs/AI_CAUTIOUS_ROUTE.md section 10).
+    {
+        const double c = static_cast<float>(std::cos(static_cast<double>(a)));
+        const double s = static_cast<float>(std::sin(static_cast<double>(a)));
+        out.frame_u[0] = static_cast<float>(s * d1 + c * d0);   // 00A11782
+        out.frame_u[1] = static_cast<float>(c * d1 - s * d0);   // 00A117B8
+        normalize2_004f2f40(out.frame_u);                        // 00A117BC
+    }
+    // 00A117C1..00A11837: the same with a + pi/2, stored as binary32 first.
+    {
+        const float a2 = static_cast<float>(static_cast<double>(a) + kWedgeQuarterTurn);
+        const double c = static_cast<float>(std::cos(static_cast<double>(a2)));
+        const double s = static_cast<float>(std::sin(static_cast<double>(a2)));
+        out.frame_v[0] = static_cast<float>(s * d1 + c * d0);   // 00A117FD
+        out.frame_v[1] = static_cast<float>(c * d1 - s * d0);   // 00A11833
+        normalize2_004f2f40(out.frame_v);                        // 00A11837
+    }
+    // 00A1183C..00A1185A: FLDZ, FCOMIP against v[1], JBE skips, so a
+    // negative second component flips v by the double -1.0.
+    if (0.0 > static_cast<double>(out.frame_v[1])) {
+        out.frame_v[0] = static_cast<float>(static_cast<double>(out.frame_v[0]) * kWedgeFlip);
+        out.frame_v[1] = static_cast<float>(kWedgeFlip * static_cast<double>(out.frame_v[1]));
+    }
+
+    // 00A11866: 0070EFD0(0) on the formation group rewrites column 0 first.
+    out.shape0_records = host.tick_formation_shape0_0070efd0(leader);
+
+    // 00A11879..00A118C6: Formation_UnitDist through 00A371A0, then F = s*u
+    // and P = s*v, each stored as binary32.
+    const float dist = host.tick_tuning_field(kAiTuningFormationUnitDist);
+    out.unit_dist = dist;
+    const float F[2] = {static_cast<float>(static_cast<double>(dist) * out.frame_u[0]),
+                        static_cast<float>(static_cast<double>(dist) * out.frame_u[1])};
+    const float P[2] = {static_cast<float>(static_cast<double>(dist) * out.frame_v[0]),
+                        static_cast<float>(static_cast<double>(dist) * out.frame_v[1])};
+
+    // 00A1186B..00A118D4: row r = 1, place j = 0, row limit 2.
+    int row = 1;
+    int place = 0;
+    int limit = 2;
+    bool first = true;
+    const std::size_t count = host.tick_member_count(group);
+    for (std::size_t i = 1; i < count; ++i) {                    // from the second entry
+        void* member = host.tick_member_at(group, i);
+        if (member == nullptr) continue;
+        if (!host.tick_member_is_ship_base(member)) {             // 00A11922 vt+5Ch(6)
+            ++out.not_ship;
+            continue;
+        }
+        // 00A1194B..00A11977: r*F, as binary32.
+        const double rf = static_cast<float>(row);
+        float off[2] = {static_cast<float>(rf * F[0]), static_cast<float>(rf * F[1])};
+        if (place > row) {                                       // 00A11953 CMP, JLE
+            // 00A1197D..00A119DF: (j - r) * (-P - F).
+            const float e[2] = {static_cast<float>(static_cast<double>(-P[0]) - F[0]),
+                                static_cast<float>(static_cast<double>(-P[1]) - F[1])};
+            const double k = static_cast<float>(place - row);
+            off[0] = static_cast<float>(static_cast<double>(static_cast<float>(e[0] * k)) + off[0]);
+            off[1] = static_cast<float>(static_cast<double>(static_cast<float>(k * e[1])) + off[1]);
+        } else if (place > 0) {                                  // 00A119E5 TEST, JLE
+            // 00A119E9..00A11A2F: j * (P - F).
+            const float e[2] = {static_cast<float>(static_cast<double>(P[0]) - F[0]),
+                                static_cast<float>(static_cast<double>(P[1]) - F[1])};
+            const double k = static_cast<float>(place);
+            off[0] = static_cast<float>(static_cast<double>(static_cast<float>(e[0] * k)) + off[0]);
+            off[1] = static_cast<float>(static_cast<double>(static_cast<float>(k * e[1])) + off[1]);
+        }
+        // 00A11A39..00A11A5C: SUBSS from -0.0 (00D7A208), then the stores.
+        const float lateral = kWedgeNegativeZero - off[0];
+        const float axial = kWedgeNegativeZero - off[1];
+        if (!host.tick_formation_set_column0_0070d080(leader, member, lateral, axial)) {
+            ++out.no_record;                                     // 00A11945 JZ
+            continue;
+        }
+        ++out.placed;
+        if (first) {
+            out.first_offset[0] = lateral;
+            out.first_offset[1] = axial;
+            first = false;
+        }
+        out.last_offset[0] = lateral;
+        out.last_offset[1] = axial;
+        // 00A11A41..00A11A75: the place advances; past the limit, the next row.
+        ++place;
+        if (place > limit) {
+            limit += 2;
+            ++row;
+            place = 0;
+        }
+    }
+    // 00A11A8C..00A11AAA: 0077A080 builds MT_FORMATION_SET (78h) from the
+    // group's +500h column and every record's four columns, and 0077C880 sends
+    // it: 0077C7B0 (to the other peers) unless [00E188A8+1FE4h] is 2. A
+    // single-player session has no peer, so nothing is delivered here.
+    return out;
 }
 
 }  // namespace bsp
