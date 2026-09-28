@@ -227,6 +227,16 @@ command tick, seconds after any delivery. Both route switches are OFF on `2d3719
 - Timings may differ by a step from sections 5-7. `kSetCommandQueueDelayBound` now delivers the 5Fh and
   5Dh messages at the drain.
 
+**Addendum to section 8: which prediction the pre-pass changed.**
+- Only the section 4 premise changed: "the user `moveonpath` stays queued behind `cruise` and never
+  attaches".
+- With 00836941 read, the path attaches one director step after its 5Fh delivery. The predicted
+  sequence of four builds (10 points, 2 dropped) followed by a late moveto is therefore not the
+  image's.
+- In its place, section 6 and section 8 predict one build, a follow, and a clear-and-rebuild once the
+  first waypoint is passed. Section 9 measured exactly that.
+- The counts of points per build, the 8-ahead limit and the no-slot rule were not affected.
+
 ## 9. The re-pairs on the merged head, and the verdict
 
 Commit `2d37190cf` (main `8d9b938c7` merged). OFF is `local\s5m_off_<m>.log`. ON is `local\s5m_route` (the
