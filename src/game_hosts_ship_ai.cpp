@@ -247,6 +247,12 @@ inline constexpr bool kShipAiRingScanProbeBound = true;
 // ON: USN02 moved as predicted (Exeter lost at 210.81 s, the mission fails at
 // 212.91 s); USN01, USN04 and JM06 identical (docs/GENERATED_SHIP_AI.md section 5).
 inline constexpr bool kGeneratedShipAiBound = true;
+// Packet cc9_generated_ship_ai_registration part 2, docs/GENERATED_SHIP_AI.md
+// section 6. True: 009F1BC0's 00811A30(unit, 1.0) at 009F1D3C answers the class
+// turn circle, so nested+11F0h = max(class+500h * 10, circle * 1.5) as the image
+// forms it. False: 0, so nested+11F0h is class+500h * 10 alone. ON: USN02 and
+// USN13 identical, probe hits 0 both ways (docs/GENERATED_SHIP_AI.md section 6).
+inline constexpr bool kApproachTurnRadiusBound = true;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h
@@ -2661,11 +2667,22 @@ public:
         owner_.done("ShipAiApproachPoint::shipclass_radius", 0x009f1d1eu);
         return owner_.units.unit_class_max_speed_0500(index_);
     }
-    float unit_turn_radius_00811a30(float) override {
+    float unit_turn_radius_00811a30(float fraction) override {
         // 009F1D3C, 00811A30 with ECX = unit and the literal 1.0: the turn
-        // radius at full helm. Body unread by every packet.
-        owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
-        return 0.0f;
+        // circle at full helm. 009F1D41 scales it by 1.5 (00CE3D78) and
+        // 009F1D53..009F1D6D keep the larger of that and class+500h * 10 as
+        // nested+11F0h, the probe length of 009E6640. The same call in
+        // 009E6E80's tail (009E6FCB) is already answered by the units host's
+        // 0082E960 turn circle; kApproachTurnRadiusBound answers this site the
+        // same way (packet cc9_generated_ship_ai_registration, part 2).
+        if constexpr (kApproachTurnRadiusBound) {
+            owner_.done("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
+            return owner_.units.unit_class_turn_circle_radius_0082e960(index_, fraction);
+        } else {
+            static_cast<void>(fraction);
+            owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
+            return 0.0f;
+        }
     }
     float random_stream1_00bd2f10(float low, float) override {
         // 009F1DB4, the retarget timer's reseed in [2, 3). 00BD2F10 was not
