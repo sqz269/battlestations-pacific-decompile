@@ -1,0 +1,97 @@
+{
+  "packet": "cc9_gameplay_modifier_registry",
+  "doc": "docs/GAMEPLAY_MODIFIERS.md",
+  "switch": null,
+  "addresses": {
+    "00E0C978": "EnablePowerups; forced 1 in single player by 005E2F00 at 005E2FAB",
+    "008EE410": "AddPowerup native -> 008EDDC0 (local player with one argument)",
+    "008EDDC0": "grant: append to inventory manager+20h+player*0Ch; no category list write",
+    "008EADA0": "use: 008EA250 per non-1.0 class multiplier (class+8Ch[16]); 008E4B00 stamps expiry/cooldown",
+    "008EA250": "the only category-list insert (called from 008EAFD3)",
+    "008EB110": "expiry of list nodes past node+20h",
+    "008E6430": "product over list at manager+80h+cat*0Ch; every caller gates on size at +88h+cat*0Ch",
+    "008E4680": "filter: unit id, party (<2), player slot, or range around a same-party centre unit",
+    "00A179E0": "AI party brain engagement pass: uses its own slot's items (00A180C9)"
+  },
+  "categories": {
+    "1": [
+      "0047057F",
+      "0047062F"
+    ],
+    "2": [
+      "0087784F",
+      "00877875",
+      "00877965",
+      "008779A3"
+    ],
+    "3": [
+      "0082791B",
+      "0093C16A",
+      "0093C25A",
+      "0093C592",
+      "0093C7C5",
+      "0093C8C5",
+      "006496A1",
+      "006496B7"
+    ],
+    "4": [
+      "0080FC4F",
+      "00824252",
+      "00824538",
+      "00824736",
+      "00826A21"
+    ],
+    "5": [
+      "008118BA",
+      "00811A59"
+    ],
+    "6": [
+      "007DB7DB"
+    ],
+    "7": [
+      "00730619"
+    ],
+    "8": [
+      "0072CF4E"
+    ],
+    "9": [
+      "007CEBCC"
+    ],
+    "10": [
+      "006F69B9",
+      "006F6A13",
+      "006F6B4C",
+      "006F6BA3",
+      "006F6CFA"
+    ],
+    "11": [
+      "006F6D90"
+    ],
+    "12": [
+      "008043D5",
+      "0080466E",
+      "0080491E"
+    ],
+    "13": [
+      "007DA067"
+    ],
+    "14": [
+      "008576A4"
+    ],
+    "15": [
+      "008570B8"
+    ]
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "single_player": {
+    "USN02": "no grant (usn_2_java.lua 2024-07-13)",
+    "USN01": "no grant (usn_1_marshall.lua 2024-07-13)",
+    "USN04": "radar_sweep (:625) and full_throttle (:804) after secondary/hidden objectives (usn_19_coralus.lua 2024-08-26)",
+    "E2/LOMP06/USN13": "no grant",
+    "JM06/JM08": "scripts not loose; no native calls in logs",
+    "logs": "zero AddPowerup/PreparePowerup/GetAvailablePowerups calls in every local log"
+  },
+  "decision": "close the residual: no modifier registers on any measured run; no binding contract"
+}
