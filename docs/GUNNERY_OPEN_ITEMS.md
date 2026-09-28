@@ -1173,3 +1173,22 @@ The OFF logs are `local\g6caoff_<row>.log`, built from `78895f00c`, whose OFF co
 - USN13, USN01 and USN04 are gameplay-identical (exit 1). Their re-issues replace a `moveto` or an attack order whose stage is still 0.
 - USN02 is exit 1, or exit 3 with small moves where an AI-coordinator retarget lands on a head whose stage was already raised.
 - The death counts equal OFF's on all four rows.
+
+## 29. The clear-all pairs, and the flip (2026-09-29)
+
+ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=true` (SHA-256 prefix `00CA7C47C8F8`, `local\g6caon_<row>.log`). OFF is section 28's `local\g6caoff_<row>.log`.
+
+| row | pair_diff | deaths | clear-all | drops | 00720CA0 slot clears | clear_receives OFF -> ON |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 9000 | 1, identical | 10 | 1345 | 1199 | 1318 | 13 -> 2557 |
+| USN13 3000 | 1, identical | 20 | 1600 | 0 | 1471 | 0 -> 1600 |
+| USN04 4500 | 1, identical | 45 | 957 | 0 | 965 | 10 -> 967 |
+| USN01 3000 | 1, identical | 5 | 119 | 2 | 107 | 2 -> 123 |
+
+- **C1 held.** The clear-all counts equal OFF's, and `slot_clears_00720ca0` is non-zero on every row. The drops are 1199 on USN02 (AI-coordinator `attackmove` onto an `attackmove` top), 0 on USN13 and USN04, and 2 on USN01. `clear_receives` = clear-alls + drops + the stage-2 clears exactly: USN02 1345 + 1199 + 13 = 2557.
+- **C2 is consistent.** Every drop is delivered after its clear-all. The idle-tail totals, `pushed` and every death row are unchanged, which is what a no-op drop and a stage reset on a stage-0 head give.
+- **Spread held**: exit 1 on all four rows.
+
+**Verdict: ON.** `kSetCommandClearAllMessageBound = true`.
+
+**Still open.** The idle tail's own 0071ECF0 make-room runs in the director step, and its drop now posts for row 9 like the others. The only remaining in-place director write in this path is 0071D810's stage store, which the image also makes directly.

@@ -159,7 +159,10 @@ inline constexpr bool kSetCommandQueueDelayBound = true;
 // 00720850). True: both are posted through route_clear_command, so with the
 // queue bound they are delivered after the MT_COMMAND that posted them and
 // before its SETCMD, and 0071ECF0's make-room reads the queue as it was.
-inline constexpr bool kSetCommandClearAllMessageBound = false;
+// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 29): gameplay identical on
+// USN02 / USN13 / USN04 / USN01; drops 1199 / 0 / 0 / 2, every one after the
+// clear-all.
+inline constexpr bool kSetCommandClearAllMessageBound = true;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
