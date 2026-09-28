@@ -244,7 +244,9 @@ inline constexpr bool kShipAiRingScanProbeBound = true;
 // the brain constructor draws, before the first controller step that sees it.
 // A generated unit that is not a ship class keeps no controller work, as
 // before (00810DD0 is a ship-vtable slot). False: controllers stay sized at load.
-inline constexpr bool kGeneratedShipAiBound = false;
+// ON: USN02 moved as predicted (Exeter lost at 210.81 s, the mission fails at
+// 212.91 s); USN01, USN04 and JM06 identical (docs/GENERATED_SHIP_AI.md section 5).
+inline constexpr bool kGeneratedShipAiBound = true;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h

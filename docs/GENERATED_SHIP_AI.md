@@ -129,3 +129,83 @@ held back for GenerateObject); no ship is generated.
 - OFF sinks Houston at 208.26 s by Haguro. ON, the FinalShips are still about 4 km away at
   208 s. Houston's loss time stays near 208 s or comes earlier, never later by more than the
   RNG coupling (docs/SHIP_AI_TAILS.md, the shared stream).
+
+## 5. The pairs, and the flip
+
+- **OFF** is `d7b44375a`, this tree's build. It is gameplay-identical to the head run (`pair_diff`
+  exit 1 against `local\s3_head_usn02.log`).
+- **ON** is `pair_export --commit d7b44375a --flip kGeneratedShipAiBound=true` into
+  `local\gs_on`.
+- **Logs:** `local\gs_{off,on}_{usn02,usn01,usn04,jm06,helm}.log`, run with streams and the death
+  table on, lockstep 0.05, idle player.
+
+| mission | pair_diff | result |
+| --- | --- | --- |
+| USN02 9200/9000 | exit 3 | shown below |
+| helm `3135 takehelm Houston 1.0 EscapePoint` | exit 3 | shown below |
+| USN01 3200/3000 | exit 1 | identical; no generated ship |
+| USN04 4700/4500 | exit 1 | identical |
+| JM06 3200/3000 | exit 1 | identical |
+
+**USN02, OFF against ON:**
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 23 | 26 |
+| hit records | 797 | 847 |
+| damage | 44672 | 56440 |
+| shots | 1052 | 1117 |
+| registered | none | 4 of 4 ships, at mission step 3000 |
+| Exeter | survives, took 3859 | sunk at 210.81 s by an Ushio torpedo, took 6309 |
+| mission end | none | `EndMission` failure at 212.91 s |
+| Houston | survives, took 900 | sunk at 295.95 s by Jintsu, took 2845 |
+
+- **The four ships enter `attackmove` and close.** Their nearest-target ranges fall:
+
+  | ship | OFF | ON |
+  | --- | --- | --- |
+  | Nachi | 3631 | 2437 |
+  | Sazanami | 4076 | 2534 |
+  | Naka | 3631 | 3002 |
+  | Ushio | 4092 | 3360 |
+
+- **Their standoffs:**
+
+  | ship | first | last |
+  | --- | --- | --- |
+  | Nachi | 900 | 1719 |
+  | Sazanami | 900 | 1450 |
+  | Naka | 1500 | 1795 |
+  | Ushio | 900 | 900 |
+
+- **Naka and Ushio go to `stop` at about 219 s,** after their target Exeter dies.
+- **Nothing moved before phase 2.** The death list is identical to 196.96 s. The first moved
+  death is Perth, 203.71 s against 203.86 s, killed by Ushio both times.
+
+**Helm row.**
+- Houston is sunk at 208.26 s by Haguro from 1878 m, the same in both runs.
+- ON, Exeter is also sunk, at 211.56 s by an Ushio torpedo from 4606 m.
+- Both runs fail at 212.91 s.
+
+**Predictions:**
+- **Held:**
+  - the census, 4 of 4;
+  - the four ships steer and close;
+  - Houston and Exeter take more fire, and each is lost;
+  - the mission failure appears where OFF had none;
+  - deaths move;
+  - the three identities;
+  - Houston's helm-row loss time.
+- **Failed on spread:**
+  - **Timing.** Exeter's loss came at 210.81 s, not "late in the run". It came from Ushio's
+    torpedoes launched on the approach, not from the gun fight at the standoff, which is
+    about 3 minutes away.
+  - **Gun hits.** The four ships' gun hits stayed 0. Ushio's damage, 6993, is torpedoes.
+  - **Naka's shots** fell from 8 to 4 instead of rising.
+- **The mechanism matched the image**: registration through the load-time body, then
+  `attackmove` at the scripted target.
+
+**Decision: `kGeneratedShipAiBound` is ON.** The predictions failed on spread only, which is
+recorded above.
+
+**For reference g:** USN02 now fails in phase 2 at 212.91 s, when Exeter is lost.
