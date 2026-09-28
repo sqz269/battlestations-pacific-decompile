@@ -174,6 +174,65 @@ Distance run from the water:
 | USN02 John1's hits on Houston at 276-277 s | **vacuous on this head**: Houston is dead long before |
 | USN02 pair_diff | exit 3 |
 
+### 6.6 The pairs, and the flip
+
+OFF is `local\TS_OFF_<m>.log`: this tree at `c1315b447`, copied to `local\ts_off_bin`. ON is
+`local\TS_ON_<m>.log`: `pair_export --commit c1315b447 --flip kTorpedoSwimThrustBound=true`
+(`local\ts_on`). Streams, the death table and `BSP_TORPEDO_TUBE_TRACE=1` were on. OFF equals the
+previous head: `pair_diff` against cc9-gunnery4's `local\IF_FLIP_usn04.log` exits 1.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN04, USN01, USN13 | - | pair_diff 1 on each, thrust steps 0 | identity | held |
+| USN02 census | - | steps 218440, kept_entry 223, mean entry speed 15.2 m/s | steps > 0, entry 12..24 m/s | held |
+| USN02 torpedo hits (category 7) | 227 shots, 76 hits | 229 shots, 90 hits | up | held |
+| USN02 Houston | sunk 33.80 s, Minegumo gun 287, 2719 m | sunk 22.75 s, Minegumo gun 287, 2818 m | same spread, earlier | held |
+| USN02 failure | 34.70 s | 29.75 s | earlier | held |
+| USN02 totals | 9 deaths, 4597 hit records, 3666 shots, first hit 33.35 s | 11 / 5322 / 3910, first hit 19.20 s | exit 3 | held |
+| John1's hits on Houston | - | - | vacuous on this head | held (Houston dies first) |
+
+**John1's launch, reproduced with `kGunImmediateFireSlotBound` off.** Two more exports of
+`c1315b447` were built: `local\ts_jo_off` (that switch off) and `local\ts_jo_on` (that switch off,
+this one on). Their logs are `local\TS_JO_{OFF,ON}_usn02.log`.
+- **With both switches off, the section 4 run returns.** The failure is at 212.91 s, Houston is
+  sunk at 295.95 s, and John1's hits land at 276.11 and 277.01 s. The new trace line gives the
+  launch that section 4 lacked:
+
+```
+gunnery: torpedo tube t=273.71 shooter=John1 plat=11 class=62 tube_deg=44.7 gyro_deg=-2.9 off_deg=-47.7 speed=13.0
+```
+
+  **The tube points 47.7 degrees off the gyro line, toward Houston's side.** Section 4's
+  explanation is now established.
+- **With the image swim, that battle diverges within 20 s,** so the 273.71 s launch never happens.
+  Houston is sunk at 22.80 s. The answer therefore comes from the launch itself.
+  `local\g4_john1_sim.py` swims both laws from this launch against Houston's logged position and
+  motion (section 4's table), with the hull taken as 180 m by 20 m:
+
+| swim | first point inside Houston's hull (t, along, across) |
+| --- | --- |
+| host (OFF) | 2.15 s, 52.9 m, 39.4 m |
+| image (ON) | 2.15 s, 51.4 m, 39.3 m |
+
+  Under the image's law the path even swings wider: its greatest excursion off the run line is
+  75.5 m at 9.7 s. **So the image would hit Houston too.** John1's hits are the tube's 47.7-degree
+  snap and the turn onto the gyro line, which the gate does not model (section 1). They are not a
+  host defect.
+- **Friendly direct torpedo hits per run:**
+
+| run | friendly direct hits |
+| --- | --- |
+| `TS_OFF_usn02` | 6 |
+| `TS_ON_usn02` | 7 |
+| `TS_JO_OFF_usn02` | 4 |
+| `TS_JO_ON_usn02` | 11 |
+
+  The faster, lagging image swim spreads wider off the tube line. Recorded, not bound further.
+
+**Decision: `kTorpedoSwimThrustBound` is ON.**
+- The swim is `00857480`'s, read from the listing, and every recorded prediction held.
+- The image arms torpedoes from launch, and turns them only while they swim, as the host does.
+
 ## no_ghidra_function
 
 None. Every address named lies inside a Ghidra function.

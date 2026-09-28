@@ -137,7 +137,8 @@ constexpr bool kGunImmediateFireSlotBound = true;
 //    crossing and rotates the velocity itself toward record+46Ch.
 //    Labelled: the vertical is still the host's surface plane (the forward.y
 //    decay and depth keeping are not modelled), as with the OFF swim.
-constexpr bool kTorpedoSwimThrustBound = false;
+//    ON since the pairs (docs/TORPEDO_FRIENDLY_CROSSING.md 6.6).
+constexpr bool kTorpedoSwimThrustBound = true;
 constexpr float kTorpedoAxialDrag474 = 0.5999994277954102f;    // 00D0C5EC
 constexpr float kTorpedoLateralDrag478 = 3.0000007152557373f;  // 00D0C5E8
 // DIAGNOSTIC gate for the per-launch tube line (packet cc9_torpedo_tube_turn).
