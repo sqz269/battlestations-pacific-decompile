@@ -1,6 +1,6 @@
 # Ship AI and AI command: open items, ranked
 
-Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0
+Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0 009F6A20 007788B0 0077C980
 
 This file ranks what is still open in the ship-AI and AI-command lane, as
 docs/GUNNERY_OPEN_ITEMS.md section 31 does for gunnery and docs/LUA_BINDING_MISSION.md does for the
@@ -1049,3 +1049,77 @@ loaded value being the 30 this installation authors.
 - The yaw-rate half becomes live when `GameUnitsHost::unit_current_yaw_rate_00811940` sets its
   binding's forward speed. The one-line fix is with the lead. **That landing will move every row
   with a turning formation leader, and needs its own pair.**
+
+## 11. No AutoTarget on plane rows (packet `cc9_plane_row_autotarget`, queue item 5, `kPlaneRowAutoTargetBound`)
+
+Worker cc9-ships8, 2026-09-28. The read is cc9-gunnery9's (docs/GUNNERY_OPEN_ITEMS.md section 42):
+- `009F6A20` builds the AutoTarget selector. Its one caller is `0083676A`, in the ship director's
+  constructor `008366D0`.
+- A plane's fire-target provider is `vtable[114h]` = `0047F180`, which answers null. A squadron's
+  is `007ECFD0`, which answers `[+348h]`, the `0084D810` controller.
+- So no plane or squadron runs `009F5DA0`.
+
+**The host.** `ControllerUpdateBinding::step_auto_target` ran the ship director's AutoTarget on
+every ship-AI row, the load-time plane rows included.
+
+**The binding.**
+- ON, a row answering `IsKindOf(0Fh)` or `IsKindOf(18h)` returns before the tick.
+- The census line is `summary mission ship ai plane row autotarget ticks= thinks= bound=`. It counts
+  the plane-row ticks on both sides and their thinks on OFF.
+- The gunnery side (`kPlaneNullFireTargetProviderBound`, ON on main) already drops a plane row's
+  stored target in the pass. This packet removes the producer too.
+
+### The OFF census (`local\ships8_c0_<row>.log`, this tree at `58b617200`)
+
+| Row | plane-row ticks | thinks |
+| --- | --- | --- |
+| USN04 4700/4500 | 13500 | 678 |
+| USN01 3200/3000 | 15000 | 755 |
+| USN13 3200/3000 | 0 | 0 |
+| JM06 / JM05 / JM08 / LOMP10 | 3000 / 27000 / 30000 / 30000 | 151 / 1359 / 1510 / 1510 |
+
+### Predictions, written before any ON run
+
+- **USN04 and USN01: exit 1 or 3.**
+  - The gunnery pass already ignores these rows' stored targets.
+  - What remains is the tick's own side effects: its stream-1 draws and the row's think counters.
+    With per-unit streams, a draw moves only that plane's later draws.
+- **USN13: exit 1.** No plane row ticks. Only the census line changes.
+- **Mechanism check:** ON reads `ticks` equal to OFF's until the tracks diverge, and no plane-row
+  think is run.
+
+## 12. The AutoTarget follower gate (packet `cc9_autotarget_follower_gate`, queue item 7, `kAutoTargetFollowerGateBound`)
+
+Worker cc9-ships8, 2026-09-28. The read is cc9-gunnery9's (docs/GUNNERY_OPEN_ITEMS.md section 44).
+The binding is 44.4's code as written, with two counters added: follower thinks, on both sides,
+and leaves run, ON only.
+
+### The OFF census (`local\ships8_c0_<row>.log`)
+
+| Row | follower thinks |
+| --- | --- |
+| USN04 | 3616 |
+| USN01 | 1575 |
+| USN13 | 7097 |
+| JM06 | 1509 |
+| JM05 | 6027 |
+| JM08 | 2717 |
+| LOMP10 | 1207 |
+
+**Correction to 44.3 and 44.4.**
+- 44.3 counted the Lua follow joins. The scene's own formation groups make many more followers:
+  every row above has formation followers, USN04 included.
+- So 44.4's "USN04 identity" does not hold on this base.
+
+### Predictions, written before any ON run
+
+- **Every row above: exit 3.**
+  - A follower no longer picks its own fire target. Its guns take targets only from its
+    director's commands.
+  - A follower whose current command is neither null nor `follow` leaves its formation
+    (`leaves` > 0). Its group then loses a member, and the follow and formation summaries move.
+  - Death rows can move on the fighting rows (JM06, JM05, USN04, USN13).
+- **Mechanism check:**
+  - ON reads `follower_thinks` > 0 on every row.
+  - Each leave is followed by a formation-group change for that unit.
+  - After its leave a unit stops being counted as a follower.
