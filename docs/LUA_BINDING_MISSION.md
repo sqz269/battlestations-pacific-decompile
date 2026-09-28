@@ -2276,9 +2276,25 @@ Neither runs a `command` listener in this build. 300-frame smokes and the missio
 - **No tree entry reaches them.** Under the host's script derivation, no scene in the tree maps
   to any of those files. The `ijn_02_force_z` and `ijn_07_invasion_of_midway` scenes exist on
   disk but no tree entry names them.
-- **Caveat on the derivation.** It is itself a host substitution: the scene record's `+928h`
-  script table is not filled by the header pass. The image might pick a different script for
-  some of these scenes. The scene files carry no `.lua` string to check against.
+- **The caveat is withdrawn** (packet `cc9_scene_script_table`). The script is not derived:
+  under `kSceneStageScriptBound` (`src/game_hosts_mission.cpp`) the host takes the scene record's
+  `+928h` slot 8 (`+968h`). `004F1D70` fills it from the header property `GameStageScript`, or
+  `StageScript` when that is absent. Every smoke and reference row logs
+  `mission script name from the scene header`:
+
+  | row | header script |
+  | --- | --- |
+  | JM07 | `COTP-IJN\PRCPIJN\prcpijn_midway` |
+  | JM02 | `COTP-IJN\PRCPIJN\prcpjm02` |
+  | JM13 | `COTP-IJN\JM16` |
+  | IJN13 | `Ijn\ijn_13_yorktown` |
+  | JM06 | `COTP-IJN\PRCPIJN\JM06` |
+  | LOMP06 | `USN\LOMP\06_crucial_cargo` |
+  | USN01 | `USN\usn_1_marshall` |
+
+  So the scripts above are the image's own choice, and no reachable mission registers a `command`
+  listener. The line that said "derived from the scene path ... not filled by the header pass"
+  printed the final name whichever source won. It now names its source.
 - **So the `command` channel stays unbound.** Binding it needs either the `+928h` script table,
   or a harness option that runs a named mission script.
 
