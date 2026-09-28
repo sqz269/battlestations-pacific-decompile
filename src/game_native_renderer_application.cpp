@@ -140,6 +140,70 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_resources.inc"
 #include "game_native_renderer_shadow.inc"
 #include "game_native_renderer_frame.inc"
+
+// ---- Harness only (packet cc9_tooling_renderer_init). 00B2AEB0 ignores CreateDevice's HRESULT,
+// as the image does, and then reads the device (00B24460, 00B26170). When CreateDevice fails
+// (a locked workstation, a lost display) that read is a null-pointer crash with no cause in the
+// log. The host runs 00B2AEB0 under a guard that takes only an access violation with the device
+// slot +1A10 still null; anything else still reaches the crash record. On that failure it logs
+// one line with the HRESULT of a retry, the adapter, the requested mode and the display and
+// session facts, and ends the process with exit code 4. A successful startup runs exactly as
+// before: the guard adds an SEH frame and nothing else.
+int device_startup_guard_filter(unsigned long code,void* renderer) noexcept {
+    return code==EXCEPTION_ACCESS_VIOLATION && get<void*>(renderer,0x1a10)==nullptr
+        ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH;
+}
+bool guarded_device_startup(void* renderer,const NativeRendererDeviceStartupSlots& slots,
+    NativeRendererDeviceStartupContext& context) noexcept {
+    __try {
+        initialize_native_renderer_device_00b2aeb0(renderer,slots,context);
+        return true;
+    } __except(device_startup_guard_filter(GetExceptionCode(),renderer)) {
+        return false;
+    }
+}
+[[noreturn]] void report_renderer_init_failure(GameHostLog& log,void* renderer) noexcept {
+    auto* const d3d=get<IDirect3D9*>(renderer,0x1990);
+    D3DPRESENT_PARAMETERS requested=*static_cast<const D3DPRESENT_PARAMETERS*>(
+        static_cast<void*>(static_cast<unsigned char*>(renderer)+0x1a28));
+    HRESULT retry=E_POINTER;
+    char adapter[512]="(no IDirect3D9)";
+    if(d3d) {
+        D3DPRESENT_PARAMETERS again=requested;
+        IDirect3DDevice9* device=nullptr;
+        retry=d3d->CreateDevice(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,requested.hDeviceWindow,
+            D3DCREATE_SOFTWARE_VERTEXPROCESSING|D3DCREATE_MULTITHREADED,&again,&device);
+        if(device) device->Release();
+        D3DADAPTER_IDENTIFIER9 id{};
+        if(SUCCEEDED(d3d->GetAdapterIdentifier(D3DADAPTER_DEFAULT,0,&id)))
+            std::snprintf(adapter,sizeof(adapter),"%s",id.Description);
+        else std::snprintf(adapter,sizeof(adapter),"(GetAdapterIdentifier failed)");
+    }
+    DEVMODEA mode{};mode.dmSize=sizeof(mode);
+    const bool have_mode=EnumDisplaySettingsA(nullptr,ENUM_CURRENT_SETTINGS,&mode)!=FALSE;
+    DWORD session=0;ProcessIdToSessionId(GetCurrentProcessId(),&session);
+    char desktop[64]="unavailable (locked or secure desktop)";
+    if(HDESK input=OpenInputDesktop(0,FALSE,DESKTOP_READOBJECTS)) {
+        DWORD needed=0;
+        if(!GetUserObjectInformationA(input,UOI_NAME,desktop,sizeof(desktop),&needed))
+            std::snprintf(desktop,sizeof(desktop),"(name unreadable)");
+        CloseDesktop(input);
+    }
+    log.notef("harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; "
+        "retry hr=0x%08lx%s adapter=\"%s\" requested=%ux%u format=%u windowed=%d interval=0x%lx "
+        "display=%lux%lu@%luHz session=%lu console_session=%lu remote=%d input_desktop=%s; "
+        "exiting with code 4",
+        static_cast<unsigned long>(retry),SUCCEEDED(retry) ? " (the retry succeeded: transient)" : "",
+        adapter,requested.BackBufferWidth,requested.BackBufferHeight,
+        static_cast<unsigned>(requested.BackBufferFormat),requested.Windowed ? 1 : 0,
+        static_cast<unsigned long>(requested.PresentationInterval),
+        have_mode ? mode.dmPelsWidth : 0ul,have_mode ? mode.dmPelsHeight : 0ul,
+        have_mode ? mode.dmDisplayFrequency : 0ul,static_cast<unsigned long>(session),
+        static_cast<unsigned long>(WTSGetActiveConsoleSessionId()),
+        GetSystemMetrics(SM_REMOTESESSION) ? 1 : 0,desktop);
+    TerminateProcess(GetCurrentProcess(),4);
+    for(;;) {}
+}
 } // namespace
 
 struct GameNativeRendererApplication::Impl {
@@ -393,7 +457,8 @@ void GameNativeRendererApplication::create_device(const RendererInitRequest& req
             static_cast<U>(request.width),static_cast<U>(request.height),request.constant_15,
             request.constant_1,request.option,request.constant_4b,request.color_depth_selector,request.constant_0};
         NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
-        initialize_native_renderer_device_00b2aeb0(p.renderer,slots,p.devices.startup);
+        if(!guarded_device_startup(p.renderer,slots,p.devices.startup))
+            report_renderer_init_failure(p.log,p.renderer);
         p.retained_device=get<IDirect3DDevice9*>(p.renderer,0x1a10);
         check(p.retained_device && get<void*>(p.renderer,0x197c) && get<void*>(p.renderer,0x198c),"native default surfaces missing");
         p.retained_device->AddRef();p.phase=Impl::Phase::ready;

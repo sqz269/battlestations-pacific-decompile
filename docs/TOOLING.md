@@ -13,6 +13,7 @@ or a reconstructed body.
 | crash record | `./tools/run_game.ps1 -Log local\crash_test.log -- ... --crash-test [N]` (the record itself is always on) |
 | `tools/sample_main_thread.py` | `python tools/sample_main_thread.py --log local\X.log` (start it, then the run with the same -Log) |
 | present interval | `./tools/run_game.ps1 ... -- --present-interval <immediate|vsync|native>`; `config/run_game.json` defaults to immediate |
+| renderer init failure | automatic: a failed CreateDevice logs `harness renderer init failed: ...` and exits 4 (section 8) |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison
 
@@ -373,3 +374,57 @@ lockstep 0.05.
 
 **Reference rows are unaffected in content.** They are taken lockstep, and this setting changes
 presentation only.
+
+## 8. A failed device creation ends the run cleanly (packet `cc9_tooling_renderer_init`)
+
+**The failure.** From 17:12 on 2026-09-27 every run on this machine died with a null read, right
+after `renderer init request 1600x900`. The crash record showed `bsp_game.exe+22a775`, and
+`+22a605` on another build (cc9-lua2's `local\sq_off_usn04.log`, `local\cc9-lua2-probe_s2.log`).
+- **Where it crashes.** In that tree's `build\win32\bsp_game.map` the two offsets are
+  `set_native_renderer_render_state_00b24460+d5` and
+  `initialize_native_renderer_default_states_00b26170+2f5`.
+- **Why.** Both are called by `initialize_native_renderer_device_00b2aeb0` right after
+  CreateDevice. 00B2AEB0 ignores CreateDevice's HRESULT, as the image does, so when device
+  creation fails the next render-state call reads the null device.
+
+**The change.** It is harness only and lives in `src/game_native_renderer_application.cpp`, in
+the host's `create_device`.
+- **The guard.** The host runs 00B2AEB0 under an SEH guard whose filter takes only an access
+  violation while the device slot renderer+1A10 is still null. Every other exception, and every
+  later one, still reaches the crash record (section 4).
+- **The log line.** On that failure the host retries CreateDevice once, only to read an HRESULT,
+  and releases a device if one appears. It writes one line and ends the process with **exit code
+  4**:
+
+```
+harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; retry hr=<hr> adapter="<description>" requested=<w>x<h> format=<fmt> windowed=<0|1> interval=<interval> display=<w>x<h>@<Hz>Hz session=<id> console_session=<id> remote=<0|1> input_desktop=<name|unavailable (locked or secure desktop)>; exiting with code 4
+```
+
+- **The success path.** A successful startup runs exactly as before: the guard adds an SEH frame
+  and nothing else. 00B2AEB0 itself is unchanged.
+
+**Verified on the failure path, 2026-09-27.** This worktree at `cc5d8f35d` plus this change, with
+the machine in the state that crashed every run:
+
+```
+./tools/run_game.ps1 -Log local\rinit_try.log -- --frames 400 --press-start-frame 30 --menu-select USN02 --mission-frames 300 --mission-frame-seconds 0.05
+```
+
+The launcher printed `EXITCODE=4`. The log ends:
+
+```
+renderer init request 1600x900 fullscreen=0 vsync=1 antialias=8
+harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; retry hr=0x88760868 adapter="NVIDIA GeForce RTX 5090" requested=1600x900 format=21 windowed=1 interval=0x80000000 display=2560x1440@59Hz session=1 console_session=1 remote=0 input_desktop=Default; exiting with code 4
+```
+
+- **What the line says.** `0x88760868` is `D3DERR_DEVICELOST`. The console session is active and
+  local.
+- **The input desktop is not a lock signal.** The input desktop reads `Default` even with the
+  lock screen up, because `LockApp.exe` draws on the Default desktop. Only
+  `unavailable (locked or secure desktop)` means something there, and that value marks a secure
+  desktop such as a UAC prompt.
+
+**Identity on the success path: not yet measured.** No run can create a device on this machine
+while it is in this state. The USN04 4700/4500 pair (this build against the build without the
+guard) is left for when runs complete again. Until it is run, "gameplay-neutral" rests on the
+code: the success path is the unchanged call plus an SEH frame.
