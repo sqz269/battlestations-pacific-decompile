@@ -155,10 +155,14 @@ SensorClassTable* resolve_sensor_class_00808f90(int recon_class_id,
 
 SensorCategory sensor_category_submarine_00852b90(
     float world_y, const SubmarineDepthBands& bands) noexcept {
-    // 00852BAB..00852BD3.
-    const float surface_limit =
-        (bands.band_1204 + bands.band_1200) / kSubmarineSurfaceDivisor;
-    if (world_y > surface_limit) {
+    // 00852BAB..00852BD3. The quotient stays on the x87 stack (no FSTP to a
+    // float slot before the FCOMIP), so it is compared unrounded; a double is
+    // exact enough for a float Y. The other two limits are stored to a float
+    // slot first ([ESP+8]), which the float arithmetic below reproduces.
+    const double surface_limit =
+        (static_cast<double>(bands.band_1204) + static_cast<double>(bands.band_1200)) /
+        static_cast<double>(kSubmarineSurfaceDivisor);
+    if (static_cast<double>(world_y) > surface_limit) {
         return SensorCategory::surface;
     }
     // 00852BE4..00852C02 and 00852C4C.

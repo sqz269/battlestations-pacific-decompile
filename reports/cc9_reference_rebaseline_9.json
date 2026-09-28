@@ -1,0 +1,412 @@
+{
+ "packet": "cc9_reference_rebaseline_9",
+ "doc": "docs/GAME_EXECUTABLE.md, 'Mission reference baselines, 2026-09-29 i (main d466d4250)'",
+ "tree": "worktree cc9-gunnery7",
+ "binary": {
+  "path": "local/rb9/build/win32/Release/bsp_game.exe",
+  "sha256": "d119e0505144c50694fd530599d1e1c58bb370330fc487f60ec1254c981939c3",
+  "export": "tools/pair_export.py --commit d466d4250, no flip"
+ },
+ "rows": [
+  {
+   "mission": "USN04",
+   "frames": "4700/4500",
+   "log": "local/rb9_usn04.log",
+   "damage": "11740.0",
+   "deaths": "43",
+   "hit records": "798",
+   "hull hits": "115",
+   "shots": "9611",
+   "first hit": "101.10 s",
+   "torpedo-task releases": "7 of 16",
+   "dive-bomb-task releases": "4 of 19",
+   "plane water contacts": "14",
+   "controlled moved": "Lexington-class01 3631.06",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "512",
+   "h": {
+    "damage": "14463.0",
+    "deaths": "44",
+    "hit records": "749",
+    "hull hits": "126",
+    "shots": "9310",
+    "torpedo-task releases": "8 of 16",
+    "dive-bomb-task releases": "10 of 19",
+    "controlled moved": "Lexington-class01 3631.00",
+    "host methods concrete/unimplemented": "1026 / 522",
+    "unimpl_line": "522"
+   }
+  },
+  {
+   "mission": "USN01",
+   "frames": "3200/3000",
+   "log": "local/rb9_usn01.log",
+   "damage": "2250.0",
+   "deaths": "5",
+   "hit records": "538",
+   "hull hits": "77",
+   "shots": "1498",
+   "first hit": "53.60 s",
+   "torpedo-task releases": "2 of 5",
+   "dive-bomb-task releases": "2 of 2",
+   "plane water contacts": "3",
+   "controlled moved": "ScoutDauntless 4582.21",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "515",
+   "h": {
+    "controlled moved": "ScoutDauntless 0.00",
+    "host methods concrete/unimplemented": "999 / 526",
+    "unimpl_line": "526"
+   }
+  },
+  {
+   "mission": "USN04 (E2)",
+   "frames": "9200/9000",
+   "log": "local/rb9_e2.log",
+   "damage": "12797.1",
+   "deaths": "51",
+   "hit records": "863",
+   "hull hits": "132",
+   "shots": "10779",
+   "first hit": "101.10 s",
+   "torpedo-task releases": "7 of 16",
+   "dive-bomb-task releases": "7 of 19",
+   "plane water contacts": "19",
+   "controlled moved": "Lexington-class01 5627.93",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "516",
+   "h": {
+    "damage": "15557.3",
+    "hit records": "865",
+    "hull hits": "131",
+    "shots": "11559",
+    "torpedo-task releases": "8 of 16",
+    "dive-bomb-task releases": "11 of 19",
+    "controlled moved": "Lexington-class01 4920.35",
+    "host methods concrete/unimplemented": "1027 / 522",
+    "unimpl_line": "522"
+   }
+  },
+  {
+   "mission": "USN02",
+   "frames": "9200/9000",
+   "log": "local/rb9_usn02.log",
+   "damage": "52340.6",
+   "deaths": "10",
+   "hit records": "4324",
+   "hull hits": "394",
+   "shots": "2582",
+   "first hit": "19.20 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Kortenaer 749.27",
+   "mission end": "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)",
+   "unimplemented": "501",
+   "h": {
+    "damage": "50892.0",
+    "hit records": "4226",
+    "hull hits": "388",
+    "shots": "2621",
+    "controlled moved": "Kortenaer 1136.82",
+    "host methods concrete/unimplemented": "1045 / 510",
+    "unimpl_line": "510"
+   }
+  },
+  {
+   "mission": "JM06",
+   "frames": "3200/3000",
+   "log": "local/rb9_jm06.log",
+   "damage": "2720.7",
+   "deaths": "1",
+   "hit records": "127",
+   "hull hits": "109",
+   "shots": "201",
+   "first hit": "68.65 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Fletcher-class 08 1227.87",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "505",
+   "h": {
+    "damage": "4895.1",
+    "deaths": "2",
+    "hit records": "320",
+    "hull hits": "271",
+    "shots": "414",
+    "first hit": "90.35 s",
+    "host methods concrete/unimplemented": "1101 / 527",
+    "unimpl_line": "527"
+   }
+  },
+  {
+   "mission": "JM08",
+   "frames": "3200/3000",
+   "log": "local/rb9_jm08.log",
+   "damage": "3681.8",
+   "deaths": "9",
+   "hit records": "342",
+   "hull hits": "86",
+   "shots": "2091",
+   "first hit": "5.25 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "1",
+   "controlled moved": "Auilick 1495.61",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "486",
+   "h": {
+    "damage": "3745.4",
+    "hit records": "310",
+    "hull hits": "89",
+    "shots": "1689",
+    "host methods concrete/unimplemented": "954 / 495",
+    "unimpl_line": "495"
+   }
+  },
+  {
+   "mission": "USN13",
+   "frames": "3200/3000",
+   "log": "local/rb9_usn13.log",
+   "damage": "6222.6",
+   "deaths": "20",
+   "hit records": "371",
+   "hull hits": "89",
+   "shots": "3626",
+   "first hit": "96.65 s",
+   "torpedo-task releases": "1 of 60",
+   "dive-bomb-task releases": null,
+   "plane water contacts": "5",
+   "controlled moved": "Enterprise 1845.78",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "501",
+   "h": {
+    "damage": "6121.2",
+    "hit records": "396",
+    "hull hits": "82",
+    "shots": "3903",
+    "first hit": "96.70 s",
+    "controlled moved": "Enterprise 2051.45",
+    "host methods concrete/unimplemented": "987 / 506",
+    "unimpl_line": "506"
+   }
+  },
+  {
+   "mission": "BSM01",
+   "frames": "3200/3000",
+   "log": "local/rb9_bsm01.log",
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "HenryPT 0.00",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "470",
+   "h": {
+    "host methods concrete/unimplemented": "928 / 475",
+    "unimpl_line": "475"
+   }
+  },
+  {
+   "mission": "LOMP06",
+   "frames": "1200/1000",
+   "log": "local/rb9_lomp06.log",
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "14",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Narwhal 450.86",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "485",
+   "h": {
+    "shots": "16",
+    "controlled moved": "Narwhal 758.85",
+    "host methods concrete/unimplemented": "1002 / 489",
+    "unimpl_line": "489"
+   }
+  }
+ ],
+ "anchors": {
+  "USN02, USN01, USN04": "h rb8_<row> = cc9-gunnery6 g6off2_<row> (pair_diff exit 1); chain runs through GUNNERY_OPEN_ITEMS 27 and 29, then the merge g6caon -> rb9",
+  "USN13": "rb9np_usn13 (planner paths OFF) = h rb8_usn13, exit 1",
+  "JM06": "rb9nqt_jm06 (queue, clear-all, teleport OFF) = h rb8_jm06, exit 1",
+  "JM08": "LUA_BINDING_MISSION SquadronSetTravelAlt pair, same numbers",
+  "LOMP06": "rb9nk_lomp06 (CAUTIOUSATTACK OFF) 770.74 m; rb9nt_lomp06 (teleport OFF) 439.91 m",
+  "BSM01": "h rb8_bsm01, gameplay identical"
+ },
+ "usn02": {
+  "failure": "29.75 s, phase 1",
+  "cause": "Houston sunk 20.85 s by a Yamakaze Long Lance (2439 m); usn_2_java.lua:521",
+  "status": "image's own for an idle player (GUN_SHOT_CADENCE 10.8, 10.10); unchanged from h"
+ },
+ "attribution_chain": {
+  "USN04": [
+   "h 44/749/9310 10 of 19 = queue OFF",
+   "loopback queue 45, 7 of 16 / 4 of 19 (GUNNERY_OPEN_ITEMS 27, 30: image's own)",
+   "clear-all identical 45/801/10050 (29)",
+   "merge: reload feeds 43/798/9611 (rb9nr = g6caon)"
+  ],
+  "USN01": [
+   "h 5/538/1498",
+   "planner Capture/Defend net identity (rb9np)",
+   "queue: Mav1 70.95 -> 71.00 s",
+   "clear-all identical",
+   "merge: plane row position ScoutDauntless 0 -> 4582.21 m (CONTROLLED_UNIT)"
+  ],
+  "E2": [
+   "first 4500 frames = USN04",
+   "tail 7 deaths/116 hits -> 8/65; reload feed OFF 854 total hits; rest unpaired"
+  ],
+  "USN02": [
+   "h 10/4226/2621 failed 29.75",
+   "director, threat head, accept, AutoTarget, team id, planner: identity",
+   "queue: 5 death rows moved, Kortenaer 749 m (27)",
+   "clear-all and merge identical -> 10/4324/2582 failed 29.75"
+  ],
+  "USN13": [
+   "h 20/396/3903",
+   "Capture path, Defend think, Defend records path -> 20/371/3626 (rb9np = h)",
+   "queue, clear-all, merge identical"
+  ],
+  "JM06": [
+   "h 2/320/414",
+   "loopback queue -> US Cargo Transport 02 survives (rb9nqt = h)",
+   "teleport 123 -> 127 hits"
+  ],
+  "JM08": [
+   "h 9/310/1689",
+   "SquadronSetTravelAlt -> 9/342/2091 (LUA_BINDING_MISSION)"
+  ],
+  "LOMP06": [
+   "h 758.85 m",
+   "teleport -> 770.88 (h base), 439.91 -> 450.86 (i base)",
+   "CAUTIOUSATTACK tick -> 450.86 m, 14 shots (rb9nk 770.74)"
+  ],
+  "BSM01": [
+   "identical"
+  ]
+ },
+ "leave_one_out": {
+  "nr": {
+   "off": [
+    "kLuaDeviceReloadEnabledBound"
+   ],
+   "sha256_prefix": "DF0F7FDF1FC5"
+  },
+  "nc": {
+   "off": [
+    "kCaptureAccessorsBound"
+   ],
+   "sha256_prefix": "AA74E8D7D3A8"
+  },
+  "np": {
+   "off": [
+    "kAiCaptureTargetPathBound",
+    "kAiDefendThinkBound",
+    "kAiDefendRecordsPathBound"
+   ],
+   "sha256_prefix": "AC165B083E7D"
+  },
+  "nt": {
+   "off": [
+    "kSubmarineDiveTeleportBound"
+   ],
+   "sha256_prefix": "A0D4F5CCA9C7"
+  },
+  "nq": {
+   "off": [
+    "kSetCommandQueueDelayBound",
+    "kSetCommandClearAllMessageBound"
+   ],
+   "sha256_prefix": "A3707E8E15DD"
+  },
+  "nqt": {
+   "off": [
+    "kSetCommandQueueDelayBound",
+    "kSetCommandClearAllMessageBound",
+    "kSubmarineDiveTeleportBound"
+   ],
+   "sha256_prefix": "38F0F226CB5C"
+  },
+  "na": {
+   "off": [
+    "kAutoTargetReconCandidatesBound"
+   ],
+   "sha256_prefix": "01B9A5E6F829"
+  },
+  "nd": {
+   "off": [
+    "kForeignTorpedoThreatHeadBound",
+    "kAutoTargetCommandAcceptBound",
+    "kDirectorTargetChecksBound"
+   ],
+   "sha256_prefix": "B988D0873F99"
+  },
+  "nf": {
+   "off": [
+    "kLuaFormationQueryBound"
+   ],
+   "sha256_prefix": "A8AA17422C11"
+  },
+  "nm": {
+   "off": [
+    "kCautiousAttackTickBound",
+    "kSellingTickBound",
+    "kAiSellThinkBound",
+    "kPlaneRowPositionBound",
+    "kSquadronTravelAltBound",
+    "kLuaHitAttackerPlayerIndexBound",
+    "kLuaHitRateLimitBound"
+   ],
+   "sha256_prefix": "17A7AD5AE1C9"
+  },
+  "nk": {
+   "off": [
+    "kCautiousAttackTickBound"
+   ],
+   "sha256_prefix": "A2F7A6ECE005"
+  },
+  "ns": {
+   "off": [
+    "kSellingTickBound",
+    "kAiSellThinkBound"
+   ],
+   "sha256_prefix": "F25805703B4C"
+  }
+ },
+ "flags": {
+  "closed": [
+   "h's dive-teleport flag (landed; JM06 deaths 2 -> 1 are the queue's, not the teleport's)",
+   "USN04 dive releases 10 -> 4 (image's own, GUNNERY_OPEN_ITEMS 30; ON count taken)"
+  ],
+  "new": [
+   "reload feed moves USN04 (45 -> 43) and E2's tail; its pairs did not run them",
+   "CAUTIOUSATTACK tick moves LOMP06 (770.74 -> 450.86 m); PLANNER_TASK_CHOICE 11.4 did not run it",
+   "JM06's US Cargo Transport 02 survives under the loopback queue; section 27 did not run JM06"
+  ],
+  "carried": [
+   "E2 after frame 4500 unpaired (116 -> 65 hits)",
+   "JM06, JM08 not paired against the earlier gunnery flips",
+   "USN02 outcome depends on the opening torpedo spread",
+   "friendly torpedo hits under the image swim",
+   "g-era gaps (USN02 50851d56a, USN13 27 -> 26 / 25 -> 26)",
+   "USN02 664 -> 640 bracketed to e4dbf38b2",
+   "USN02 torpedo stock on top of the throttle cut",
+   "kSetSelectedUnitBound enabler not isolated",
+   "E2 594 -> 595 not isolated",
+   "E2 phase 1 under lockstep",
+   "Marshall .nav generic layer"
+  ]
+ }
+}
