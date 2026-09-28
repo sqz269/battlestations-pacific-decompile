@@ -11889,3 +11889,244 @@ pairs, as the lead relayed them; they were not re-exported here.
   - E2 594 -> 595 (before c): not isolated.
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
+
+## Mission reference baselines, 2026-09-28 k (main 5aaa4948a)
+
+Packet `cc9_reference_rebaseline_11`, worker cc9-gunnery10. **It replaces the 2026-09-28 j rows
+above.** The report is `reports/cc9_reference_rebaseline_11.json`.
+
+**Run parameters:**
+- One binary: `local\rb11\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery10 (SHA-256
+  `c56a5ad80ba639658ea96a557f99640b760b635339605350c12c21fab65d0808`, prefix `C56A5AD80BA6`). It
+  is a clean `tools/pair_export.py --commit 5aaa4948a` export with no flip.
+- The run parameters are j's: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, an
+  idle player, present interval immediate, `tools/run_game.ps1`, and
+  `--press-start-frame 30 --menu-select <mission>`. A 300-frame USN01 smoke ran first.
+- **Rows:** j's twelve rows at j's frame counts, plus one new row: **LOMP10 at 9200/9000**, the
+  land-task row (docs/SQUADRON_LAND_TASK.md).
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb11` and the final COM release.
+- **The session interrupted the runs twice.** Session 1 was disconnected from about 12:55 to 14:05
+  local (FMOD `sound/gui/error.fsb` create result 78, no window), and from about 14:51 renderer
+  init failed with `hr=0x8876086a` while `query session` still read Active. The cc9-lua10 and
+  cc9-ships9 trees failed the same way in the same minutes. Every failed log was deleted and re-run;
+  no row below comes from a failed run.
+- No predictions were committed before these runs. Each move against j is attributed by
+  leave-one-out exports of `5aaa4948a` (the table under "Leave-one-out exports").
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 10136.8 | 39 | 711 (128) | 9488 | 101.05 s | 1 of 16 / 0 of 19 | 15 | Lexington 3635.25 m | none | 506 | `local\rb11_usn04.log` |
+| USN01 | 3000 | 2831.2 | 5 | 474 (81) | 1480 | 49.10 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 3904.93 m | none | 534 | `local\rb11_usn01.log` |
+| USN04 (E2) | 9000 | 12158.7 | 51 | 860 (159) | 11455 | 101.05 s | 1 of 16 / 0 of 19 | 19 | Lexington 7285.28 m | none; phase 1 only (known) | 510 | `local\rb11_e2.log` |
+| USN02 | 9000 | 46042.5 | 13 | 3179 (442) | 2473 | 18.90 s | - | - | Kortenaer 771.70 m | **failed at 29.75 s**, phase 1 (unchanged) | 501 | `local\rb11_usn02.log` |
+| JM06 (smoke) | 3000 | 4231.2 | 1 | 328 (322) | 378 | 79.15 s | - | - | Fletcher-class 08 540.68 m | none | 485 | `local\rb11_jm06.log` |
+| JM08 (smoke) | 3000 | 4149.8 | 11 | 361 (106) | 2324 | 5.25 s | - | 4 | Auilick 1495.61 m | none | 491 | `local\rb11_jm08.log` |
+| USN13 (smoke) | 3000 | 8450.6 | 27 | 646 (196) | 6989 | 96.40 s | 0 of 60 / - | 5 | Enterprise 2034.34 m | none | 498 | `local\rb11_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 466 | `local\rb11_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 673.48 m | none | 470 | `local\rb11_lomp06.log` |
+| LOMP10 | 3000 | 980.0 | 2 | 94 (77) | 442 | 90.50 s | - / no dive-bomb task row | - | none controlled; 7044.64 m | none | 494 | `local\rb11_lomp10.log` |
+| JM05 | 3000 | 2396.3 | 1 | 41 (24) | 100 | 9.90 s | 0 of 12 / 0 of 6 | - | USS Phelps 2567.69 m | none | 543 | `local\rb11_jm05.log` |
+| USN12 | 3000 | 978.1 | 0 | 30 (15) | 83 | 8.30 s | - | - | Montpelier 2244.01 m | none | 473 | `local\rb11_usn12.log` |
+| LOMP10 (new, long) | 9000 | 1279.8 | 3 | 98 (79) | 446 | 90.50 s | - / no dive-bomb task row | - | none controlled; 7044.64 m | none | 512 | `local\rb11_lomp10l.log` |
+
+The unimplemented column is the last `host methods N concrete, M unimplemented` line. It **falls**
+on every row except LOMP10 3000, where it stays at 494: the new landings implement natives that were
+registered but unimplemented at j, for example `ShipAiArmFinal::free_bearing_009dc2e0` and
+`AiGroups::brain_wants_immediate_think 00a15970`.
+
+### The anchor: every move belongs to twenty switches
+
+A mechanical diff of every `constexpr bool k...` declaration between `d384f1ef5` and `5aaa4948a`
+finds twenty switches newly ON, and `kAutoTargetFollowerGateBound` newly declared OFF:
+`kShipAiSubTargetSubStatesBound`, `kShipAiSubTargetEntryPointsBound`, `kSpawnNewEntityRefPosBound`,
+`kDeadPlaneBotThinkBound`, `kAiPartyReplanFlagBound`, `kPlannerGroupTargetValueBound`,
+`kShipAiApproachEnterReseedBound`, `kShipFollowStationPointBound`, `kShipAiFreeBearingBound`,
+`kPlaneRowAutoTargetBound`, `kSubmarinePeriscopeOutBound`, `kAiUntouchableGateBound`,
+`kPlaneNullFireTargetProviderBound`, `kSquadronSetCommandBound`, `kShipHitRollTorqueBound`,
+`kSquadronLandTaskBound`, `kUnitYawRateForwardSpeedBound`, `kLuaFormationLeaderBound`,
+`kLuaAddUntouchableUnitBound` and `kLuaLastCatapultedBound`. `kLuaOverrideHpBound`,
+`kDepartedWingmanTaskBlockBound`, `kDiveProfileDrawBound` and `kSquadronAttackAltBound` were
+already ON at j and are in j's rows.
+
+With all twenty OFF (`rb11n0`), `5aaa4948a` is **gameplay-identical to reference j on all twelve
+of j's rows** (`pair_diff` exit 1 against `rb10_<row>` in cc9-gunnery8). Nothing else that landed
+since j moves a reference row. `kAutoTargetFollowerGateBound` is OFF on both sides.
+
+### What moved each row
+
+The attribution is by leave-one-out on this base: each variant turns one landing's switches OFF
+and is read with `pair_diff` against k. **The switches interact.** On USN02 five landings each have
+to be ON for the 13 deaths, and on JM06 the one death that disappears is removed redundantly.
+"OFF gives X" below means that variant's value; every variant not named is gameplay-identical to k
+on that row.
+
+**USN04 (4500).** 40 / 749 / 10512, damage 13347.8, 8 of 16 / 4 of 19 became **39 / 711 / 9488,
+10136.8, 1 of 16 / 0 of 19**; plane water contacts 11 -> 15.
+
+| landing OFF | deaths / hit records / shots, damage, releases | doc |
+| --- | --- | --- |
+| dead-plane bot think | 39 / 710 / 9683, 10064.8, 4 of 16 / 5 of 19 | PLANE_DEATH_MODES 7 |
+| party replan flag | 39 / 726 / 10637, 9611.8, 0 of 16 / 0 of 19 | SHIP_AI_OPEN_ITEMS 3 |
+| yaw-rate forward speed | **40** / 695 / 9211, 12142.0, 3 of 16 / 0 of 19 | UNIT_YAW_RATE_FORWARD_SPEED |
+
+- **The one death is the yaw-rate landing's.** Against n0, D3A Val #3.1|.-2, #3.1|.-3, A6M Zero
+  #7.2 and D3A Val #7.1|.-4 survive; D3A Val #1.1|.-4, A6M Zero #8.2|.-2 and #5.2|.-2 now die.
+- The dead-plane landing's direction holds: its pair recorded 8 -> 5 torpedo and 4 -> 1 dive
+  releases on its own base; here its OFF variant has 4 and 5 against k's 1 and 0. The release
+  counts are not additive across the three landings.
+
+**E2 (9000).** 51 / 861 / 12105, 15075.1, 8 of 16 / 6 of 19 became **51 / 860 / 11455, 12158.7,
+1 of 16 / 0 of 19**; Lexington 6369.71 -> 7285.28 m.
+- Dead-plane OFF: 863 / 11650, 4 of 16 / 5 of 19. Party replan OFF: 877 / 12662, 11520.0, 0 / 0.
+  Yaw-rate OFF: 858 / 11234, 14461.2, 3 of 16. Follow station point OFF moves only the Lexington
+  (7289.31 m).
+- The tail after frame 4500 is still unpaired (carried from i and j).
+
+**USN01 (3000).** 5 / 516 / 1534, 2833.5, 2 of 5 torpedo releases, ScoutDauntless 4244.02 m became
+**5 / 474 / 1480, 2831.2, 0 of 5, 3904.93 m**. Three landings split it:
+- **Dead-plane bot think owns the releases:** OFF gives 2 of 5 (its pair: 2 -> 0).
+- **Party replan owns the ScoutDauntless:** OFF gives 4244.02 m, j's value, with 524 / 1528.
+- **Free bearing owns the damage:** OFF gives 2833.5, j's value, with 466 / 1425.
+
+**USN02 (9000).** 11 / 1693 / 2047, 54395.4, first hit 19.30 s became **13 / 3179 / 2473, 46042.5,
+18.90 s**; Kortenaer 997.79 -> 771.70 m. The failure at 29.75 s is unchanged.
+- Against n0: Exeter, Jupiter and John2 survive; Tokitsukaze, Amatsukaze, Yamakaze, Hatsukaze and
+  Yukikaze sink. **Houston still sinks first, at 20.55 s instead of 20.95 s**, to Yamakaze.
+
+| landing OFF | deaths / hit records / shots, damage | Houston |
+| --- | --- | --- |
+| sub-target sub-states + entry points | 12 / 4237 / 2817, 46849.8 | 20.55 s |
+| party replan flag | 11 / 3789 / 2624, 47383.5 | 20.75 s |
+| group target value | 11 / 2303 / 2390, 50875.1 | **survives the run** |
+| approach enter reseed | 11 / 3996 / 2727, 44986.6 | 20.55 s |
+| follow station point | 11 / 3261 / 2533, 43106.7 | 20.55 s |
+| yaw-rate forward speed | 11 / 2270 / 2616, 43307.6 | 20.55 s |
+
+- **Every one of the six is needed for 13 deaths.** The pairs' directions hold: follow station point
+  11 -> 13 (SHIP_AI_OPEN_ITEMS 10), and the group target value is what brings Houston's early
+  sinking back (section 7 recorded 313.30 -> 20.55 s after the replan flag).
+- With the whole ship-AI group OFF (`nsai`) the row is 9 / 3165 against n0's 11 / 1693: the yaw-rate
+  landing moves it on its own as well.
+
+**JM06 (3000).** 2 / 284 / 352, 4730.3, first hit 68.60 s became **1 / 328 / 378, 4231.2,
+79.15 s**; Fletcher-class 08 1234.84 -> 540.68 m.
+- **US Cargo Transport 02 no longer sinks** (j: 140.15 s, to Fletcher-class 09). **No single
+  landing OFF brings it back**, and neither does the sub-target pair with follow station point
+  (`nstsfs`: 1 / 263 / 385). With the whole ship-AI group OFF (`nsai`) it sinks again, at 144.15 s.
+  The survival is redundant inside that group and is not separated further.
+- Follow station point OFF sinks a different ship instead: USTroopTransport 02 at 131.80 s, to
+  PlayerSub 03 (2 / 463 / 541, 5284.0).
+- Other variants move the row without a death: sub-target pair 310 / 381, party replan
+  284 / 320, group target value 304 / 370, approach reseed 330 / 378, yaw-rate 517 / 581. Free
+  bearing and the identity group move details only. First hit ranges 59.45 s (group target value OFF) to
+  98.00 s (approach reseed OFF).
+- **The identity group is not identity here.** With the plane-row AutoTarget, untouchable gate, null
+  fire-target provider, squadron SetCommand and roll torque OFF, PBY Catalina 01's nearest distance
+  is 7562 m against k's 8269 m, and the ship-AI plane thinks are 151 against k's 0. The totals equal k's. The
+  plane-row AutoTarget or the squadron SetCommand is the likely one; not separated.
+- The periscope-out landing is gameplay-identical here, as on its pair.
+
+**JM08 (3000).** Combat is identical to j. Plane water contacts 3 -> 4, **the dead-plane landing
+alone** (OFF: 3).
+
+**USN13 (3000).** 27 / 591 / 6461, 8451.7, first hit 94.55 s, 1 of 60 became **27 / 646 / 6989,
+8450.6, 96.40 s, 0 of 60**.
+- **Yaw-rate forward speed owns the combat move:** with it OFF the row is j's apart from the
+  release (`pair_diff` against `rb10_usn13`: only `1 of 60 -> 0 of 60`).
+- **Dead-plane bot think owns the release:** OFF gives 1 of 60.
+- Spawn ref pos and periscope out are noise only (`pair_diff` exit 0).
+
+**BSM01 (3000).** Gameplay-identical to j. The unimplemented count goes 471 -> 466.
+
+**LOMP06 (1000).** 0 / 0 / 6, Narwhal 649.66 m became **1 / 3 / 10, 2400.0, Narwhal 673.48 m**.
+- **Ryujin Maru now sinks at 36.90 s, to Yugiri.** Two new natives run:
+  `AiCommand::promote_to_close_attack 00a2bd00` (1 call) and `AiCommand::close_target_weight 00a0f810`.
+- **Both the sub-target pair and the group target value are needed:** each OFF gives 0 deaths
+  (Narwhal 673.70 and 715.97 m). Party replan, follow station point and yaw-rate move only the
+  Narwhal (about 662 to 673 m).
+
+**LOMP10 (3000).** 10 / 279 / 1887, 3500.0, 4 of 8 dive releases became **2 / 94 / 442, 980.0**,
+with no dive-bomb task row.
+- **The land task alone:** with it OFF the row is j's except `4 of 8 -> 3 of 8`, which is the
+  dead-plane landing's own pair (PLANE_DEATH_MODES 7: LOMP10 dive 4 -> 3).
+- Eight fighters no longer die: Warhawk 01 and its three wingmen, and Lightning 01 and its three.
+- Party replan moves details only (the same totals).
+
+**LOMP10 (9000, new).** There is no j row. n0 gives 11 / 283 / 1891, 3799.8; k gives
+**3 / 98 / 446, 1279.8**. **The land task alone**: with it OFF, 11 / 283 / 1891, 3 of 8. That is
+SQUADRON_LAND_TASK's 11 -> 3 exactly.
+
+**JM05 (3000).** Combat is identical to j. USS Phelps 2667.31 -> 2567.69 m, and the one death row
+changes in detail.
+- Spawn ref pos OFF: 2537.00 m. Party replan OFF: 2544.50 m. Follow station point OFF and yaw-rate OFF:
+  2687.72 m each. Free bearing moves details only.
+- With the whole ship-AI group OFF, 2667.53 m: nearly j's, not exactly. The four landings interact.
+
+**USN12 (3000).** Combat is identical to j. Montpelier 2240.06 -> 2244.01 m.
+- **The ship-AI group owns it:** with the group OFF the row is gameplay-identical to j. Within it,
+  party replan OFF gives 2184.64 m and free bearing OFF gives 2265.84 m.
+
+### Leave-one-out exports
+
+Each is `pair_export --commit 5aaa4948a` with only the listed switches OFF, run like the rows above
+(logs `local\rb11<v>_<row>.log`), and read with `pair_diff` against k. Every variant ran the twelve
+moving rows (all but BSM01, which n0 already shows identical) unless the table says otherwise.
+
+| v | switches OFF | SHA-256 prefix | rows that move against k |
+| --- | --- | --- | --- |
+| n0 | all twenty | A6479FD4C182 | all twelve j rows = j (exit 1); LOMP10 9000: 11 / 283 / 1891 |
+| nsts | `kShipAiSubTargetSubStatesBound`, `kShipAiSubTargetEntryPointsBound` | BDFD070069CF | USN02, JM06, LOMP06 |
+| nsp | `kSpawnNewEntityRefPosBound` | AEC5E5101434 | JM05; USN13 noise only |
+| ndpb | `kDeadPlaneBotThinkBound` | 3F7C508A99CB | USN04, E2, USN01, JM08, USN13 |
+| nrp | `kAiPartyReplanFlagBound` | D9C55A8E0DE8 | USN04, E2, USN01, USN02, JM06, LOMP06, both LOMP10, JM05, USN12 |
+| npg | `kPlannerGroupTargetValueBound` | B9F0D6BA225F | USN02, JM06, LOMP06 |
+| nar | `kShipAiApproachEnterReseedBound` | C786CAC55503 | USN02, JM06 |
+| nfs | `kShipFollowStationPointBound` | D2F1A3592337 | E2, USN02, JM06, LOMP06, JM05 |
+| nfb | `kShipAiFreeBearingBound` | 5E0F11DF0940 | USN01, JM06, JM05, USN12 |
+| nper | `kSubmarinePeriscopeOutBound` | 8C44434979C3 | none; USN13, JM05, USN12 noise only |
+| nlt | `kSquadronLandTaskBound` | E2B05D48B83D | both LOMP10 |
+| nyr | `kUnitYawRateForwardSpeedBound` | EB0BB8982DFF | USN04, E2, USN02, JM06, USN13, LOMP06, JM05 |
+| nlua | `kLuaFormationLeaderBound`, `kLuaAddUntouchableUnitBound`, `kLuaLastCatapultedBound` | 7DD612C3B6D6 | none |
+| nid | `kPlaneRowAutoTargetBound`, `kAiUntouchableGateBound`, `kPlaneNullFireTargetProviderBound`, `kSquadronSetCommandBound`, `kShipHitRollTorqueBound` | A0FCFD0A7C05 | JM06 (one plane's path) |
+| nstsfs | nsts and nfs | 6A69630A8992 | JM06 only run: 1 / 263 / 385, the Cargo Transport survives |
+| nsai | nsts, nrp, npg, nar, nfs, nfb and `kPlaneRowAutoTargetBound` | 26FA80E9A32D | JM06, USN02, LOMP06, USN01, USN12, JM05 run; against n0 only USN12 is identical |
+
+### Post-base landings (the first flags for reference l)
+
+These landed on main after `5aaa4948a` (main `576c859cd` when this section was written) and are not
+in k's rows. They were not exported here.
+- ON: `kFormationJoinFollowBound` (`c05ff3746`, packet `cc9_formation_join_follow`),
+  `kLandingSequencerBound` (`c3b35987f`, packet `cc9_landing_sequencer`) and
+  `kFollowLeaderTurnRateBound` (`3198cc88c`, packet `cc9_plane_follow_law_drift`).
+- Bound OFF: `kFollowLeaderLiveSpeedBound`, `kFollowTargetDirAcosBound`, `kShipAiArmFinalAreaKeyBound`,
+  `kShipAiClearancePathFadeBound` and `kTroopLandingTraitBound`.
+
+### Flags
+
+- **Closed:**
+  - **Every post-base flag j listed is measured.** The sub-target pair, spawn ref pos, dead-plane think and
+    periscope out are each attributed above.
+  - **SQUADRON_LAND_TASK's LOMP10 11 -> 3** holds exactly on the new long row.
+- **New:**
+  - **Six landings are each needed for USN02's 13 deaths.** Group target value OFF keeps Houston
+    afloat for the whole run.
+  - **JM06's US Cargo Transport 02 survival is redundant inside the ship-AI group.** The two landings
+    that each claimed it on their own bases do not restore it together. With follow station point
+    OFF, USTroopTransport 02 sinks instead.
+  - **LOMP06 has its first sinking**, Ryujin Maru to Yugiri at 36.90 s, needing both the sub-target
+    pair and the group target value.
+  - **The yaw-rate landing owns USN04's death change and USN13's combat move.**
+  - **The five-switch identity group moves one plane on JM06**, PBY Catalina 01. Not separated.
+  - **The LOMP10 dive-bomb task row disappears** under the land task: k has no dive-bomb task line.
+  - **The unimplemented counts fall** on eleven of twelve j rows.
+- **Carried from j:**
+  - **E2 after frame 4500 is unpaired.**
+  - The reload feed's move of USN04 and E2, recorded in i, is not bisected into the plane tasks.
+  - JM06 and JM08 were not paired against the earlier gunnery flips (immediate fire, AA tests, wave
+    order, torpedo swim).
+  - USN02's outcome depends on an opening torpedo spread against an idle Houston.
+  - The periscope byte `+1234h` still has no producer.
+  - E2 ends in phase 1 under lockstep (known). The Marshall `.nav` is the generic layer.

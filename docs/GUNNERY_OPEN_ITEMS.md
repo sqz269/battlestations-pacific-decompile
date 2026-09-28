@@ -2671,6 +2671,16 @@ binding. Names are hypotheses.
   means reference j's logs in cc9-gunnery8).
 - `g9_mmod.py <model> <n>`: hex and floats around the first n `ConvexObject` chunks of a `.mmod`.
 
+### 48.4 Reference k exists
+
+Reference k (docs/GAME_EXECUTABLE.md, "Mission reference baselines, 2026-09-28 k (main 5aaa4948a)",
+`reports/cc9_reference_rebaseline_11.json`, cc9-gunnery10) replaces j. It adds the LOMP10 9000 row. Of
+this lane's landings, `kAiUntouchableGateBound`, `kPlaneNullFireTargetProviderBound`,
+`kSquadronSetCommandBound` and `kShipHitRollTorqueBound` were exported together with
+`kPlaneRowAutoTargetBound`. That group moves one plane's path on JM06 (PBY Catalina 01) and is
+gameplay-identical on every other row. `kSubmarinePeriscopeOutBound` is gameplay-identical on
+every row.
+
 ## 49. The convex mesh's local box: read (section 47.3 step 1, cc9-gunnery10, docs only)
 
 Section 47's missing input is found. **The Dyn convex mesh is built inside the `ConvexObject` parse
