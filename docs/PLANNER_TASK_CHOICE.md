@@ -132,6 +132,121 @@ and the Capture think (`00A29FD0-00A2B7EB`):
 It would bind them behind a switch in place of the Siege shape for kinds Defend and Capture. That
 settles which enemy group Houston's group and the USN13 squadrons are sent at.
 
+## 6. The Capture think, part 1: its targets and the no-target hand-off (packet `cc9_planner_defend_capture_thinks`)
+
+### 6.1 The image
+
+**The targets are CommandBuildings only.** `00A29FD0` builds its target records by walking
+`[[00E188A8]+19CCh]+16Ch`, which is world list 28. The only one of the 21 read creators that
+registers there is CommandBuilding (docs/UNIT_WORLD_REGISTRATION.md, row CommandBuilding: lists
+1, 2, 4, 5, 27, 28).
+- Each entity with `+54h != planner+30h` gets a record through `00A22F60`. That record holds
+  `00A1E250`'s six floats and the price `max(value * (b + d), minimal * weight)`
+  (docs/AI_PLANNER_TAILS.md section 1).
+- USN02 (`usn_2_java.scn`) and USN04 (`usn_19_coralus.scn`) contain no CommandBuilding. USN01
+  (`usn_1_marshall.scn`) and USN13 (`usn_13_truk.scn`) do, 12 and 36 occurrences (this
+  installation's scene files).
+
+**The group records.** For every owned group (planner `+24h`), `00A287C0` inserts a map node
+keyed by the group. Its value is:
+- `[0]` the group;
+- `[1]` `00A2C530()`;
+- `[2]` `00A1A7A0(group)`;
+- `[3]` the **nearest own-side list-28 entity**, 0 when there is none. It is set at
+  `00A2A2xx`..: `local_144[3] = e` and `[4] = d2` when `d2` is below the running minimum;
+- `[4]` that squared distance, seeded from `00CE4970`.
+
+**The assignment loop needs both lists.** It is `while (targets != 0 && groups != 0)`, from
+`00A2AA..` to `00A2AD77`. It blends `(1 - CBStrategicMul) * w + CBStrategicMul * s` (tuning
+`+1BCh`), keeps the best pair, and issues `00A1A720(group, target)` at `00A2AD77`. **With no
+enemy CommandBuilding it never runs, and no Capture order is issued.**
+
+**The unassigned groups are handed on.** The listing, with `EBX` the map node and `EBP` = 0:
+
+```
+00A2AFC0  CMP dword [EBX+1Ch],EBP      ; value[3], the nearest own list-28 entity
+00A2AFC7  JZ  00A2AFED                 ; none -> the brain+4h list, else the brain+8h list
+00A2B1C7  MOV EAX,[EDX+24h] / CALL EAX ; planner vtable+24h = 00A1E210, release
+00A2B1CF  MOV ECX,[EDI+1Ch]            ; planner+1Ch, the brain
+00A2B1D2  MOV EDI,[ECX+4h]             ; brain+4h: Attack
+00A2B1E3  CALL 00A1C8B0                ; not already owned -> claim (inlined), 00A2B226 observer
+00A2B2AF  MOV ECX,[EDI+1Ch] / 00A2B2B2 MOV EDI,[ECX+8h]   ; the other list: brain+8h
+```
+
+- **`00A1E210` has no Ghidra function.** Its body is `00A1E210..00A1E246` inclusive, `RET 4` at
+  `00A1E244`, `INT3` at `00A1E247`. It runs: `if 00A1C8B0(group)` then `006952A0` (observer
+  unregister), `00A1D1D0` erases the group from `+20h`, and `group+5654h = 0`.
+- **With no target the think then returns** (`local_17c == 0` frees and returns) before the
+  spawn arm.
+- **Attack gets the group next think.** The brain ticks slots 0..3 in order, and Attack (slot 1)
+  ticks before Capture (slot 3), so a handed group gets its first Attack order on the next
+  think, 3 to 5 s later.
+
+**The Attack think** `00A1CF90` (`00A1CF90-00A1D00F`) runs `00A1CB80` on every owned group, with
+the party's aggressive ratio and `reset = 0`:
+
+```
+00A1CF94  MOV EAX,[EBX+1Ch] / MOV EAX,[EAX+20h]      ; brain+20h, the party
+00A1CFAB  MOVSS XMM0,[ECX*4 + 00F8A8D0]              ; party*1Ch: the aggressive ratio
+00A1CFEE  PUSH 0                                     ; resetTarget
+00A1CFF7  CALL 00A1CB80                              ; per owned group (00A1CFEB [EDI+8])
+```
+
+- The ratio's only writers are the init, `00A32F29`'s reset to 0.5 (`00CE3800`) and
+  `AIEnable`'s table branch (docs/AI_GROUP_THINK.md).
+- No installed mission script sets `aggressiveRatio`, and the host has no store for it, so 0.5
+  applies.
+
+### 6.2 The host, and the binding
+
+**Before this packet**, every host kind ran `ai_mode_planner_tick`:
+- it served only the **first** owned group;
+- it passed an aggressive factor of 1.0 and the `[00F8A9E0] == 3` reset;
+- it ran in the same think as the claim.
+
+**`kAiCaptureThinkBound`, committed OFF.** When ON:
+- **The Attack kind runs `attack_think_00a1cf90`**: every owned group, aggressive 0.5, reset 0.
+- **The Capture kind runs `capture_think_00a29fd0`.** The enemy-side CommandBuilding test is a
+  kind-1Ch unit that is alive and on another side, standing in for list 28, since only
+  CommandBuilding registers there.
+  - With no such target, every owned group is released and claimed by slot 1 (Attack), or by
+    slot 2 when an own-side CommandBuilding exists.
+  - With a target it returns false, and **the Siege-shape stand-in still runs**. The target path
+    is not reconstructed yet: the `00A1E250` records, the assignment loop, the merge of groups
+    assigned to one target (`00A1D010`) and the spawn arm. It is labelled and counted as
+    `target_fallbacks`.
+- **ON-only census line:** `summary mission ai capture thinks=... target_fallbacks=...
+  handoffs=... attack_thinks=...`.
+
+### 6.3 Predictions, written before the ON runs
+
+OFF is this tree's build: the head `96ec4c232` with the landed switches.
+
+**USN02 9200/9000.** On this head the mission fails at 34.70 s, after Houston is torpedoed at
+33.80 s. Party 1's group (Haguro's, 12 members) is never claimed: only party 0 thinks.
+- Party 0's single group (DeRuyter's, 7 members) is handed from Capture to Attack. Attack orders
+  it against **the only enemy group, Haguro's**: MOVETOATTACK, because its first member is a
+  ship, then CLOSEATTACK, the same target as OFF.
+- The first order comes **one party think later** than OFF.
+- Prediction: exit 1 or a small exit 3, with the failure time unchanged or within a few seconds.
+- The FinalShips (party 1) receive no planner orders either way.
+
+**USN04 4700/4500, exit 3.**
+- Party 0 owns two claimed groups: Lexington's (18 members, MOVETOATTACK) and the
+  `Lexington-class01_sqn01` squadron group (4 members, IDLE). OFF orders only the first.
+- ON, both go to Attack. The squadron group gets an attack order: CAUTIOUSATTACK or
+  MOVETOATTACK, drawn against 0.5.
+- `attack_orders` rise from 1, and commands rise.
+- Plane deaths and releases move. The direction is predicted as more Japanese planes engaged, so
+  Japanese plane deaths rise.
+
+**USN13 3200/3000: identity, exit 1.** Enemy CommandBuildings exist, so every Capture think falls
+back (`target_fallbacks` above 0, `handoffs=0`), and Attack owns nothing.
+
+**USN01 3200/3000: identity, exit 1**, for the same reason: its scene has CommandBuildings.
+
 ## no_ghidra_function
 
-None. Every address named lies inside a Ghidra function.
+| start | inclusive end | evidence |
+| --- | --- | --- |
+| `00A1E210` | `00A1E246` | Capture/Attack vtable `+24h` (`00D22E34+24h`, `00D22D94+24h` both read `00A1E210` from the PE). `RET 4` (`C2 04 00`) at `00A1E244`; `INT3` at `00A1E247`. `ghidra proto` finds no function |
