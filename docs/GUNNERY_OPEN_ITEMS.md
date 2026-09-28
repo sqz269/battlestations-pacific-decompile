@@ -20,10 +20,21 @@ is ranked from its own evidence.
 | the settle band 0.1 degree | GUN_SHOT_CADENCE 7.2 | fixed (its "Integration result") |
 | the flak passing rule | FLAK_PROXIMITY_BURST 7 | proven unreachable (USN04_KATE_ATTRITION 8.1) |
 | AA error terms, flak distance error, the lead's velocity | USN04_KATE_ATTRITION 6 | exact at the rows the missions set |
-| the turn-rate average `0085E4D0` | AA_LEAD, USN04_KATE_ATTRITION 8.2 | bound OFF, `kAaTargetTurnAverageBound` |
-| plane-gun muzzle origin | MUZZLE_OFFSETS 4 | bound OFF, `kPlanePlatformAttachmentBound` |
-| targetless guns and rest angles | GUN_REST_ANGLES | bound OFF, `kGunIdleRestBound` |
+| the turn-rate average `0085E4D0` | AA_LEAD, USN04_KATE_ATTRITION 8.2, 15 | ON, `kAaTargetTurnAverageBound` |
+| plane-gun muzzle origin | MUZZLE_OFFSETS 4, section 8 | ON, `kPlanePlatformAttachmentBound` |
+| targetless guns and rest angles | GUN_REST_ANGLES 9 | ON, `kGunIdleRestBound` |
 | the immediate-fire slot `vtable[1F0h]` (rank 7) | GUN_SHOT_CADENCE 10 | bound and ON, `kGunImmediateFireSlotBound`: MRTGun `006FDF60` / `0084C5B0`, MSTGun `006FDC50` / `006FE0D0`, the artillery bot's delayed raise; no MRTGun is artillery-armed on USN02/USN04/USN01/USN13 |
+| the line of sight `00864680` (rank 1 of section 2) | sections 5, 8 | ON, `kGunneryLineOfSightBound` |
+| the stop-firing hook `0072B4C0` (rank 2) | section 7 | read; presentation only |
+| the director fire target `00835860` (rank 3) | sections 13-15 | ON, `kWeaponDirectorFireTargetBound` |
+| the target's sub-entity list `008654AC` (rank 4) | section 2 | exact for every unit this host builds |
+| the unit fire cooldown (rank 6) | sections 11-12 | ON, `kUnitFireCooldownBound` |
+| the invincibility floor | sections 9-10 | ON, `kUnitInvincibilityFloorBound` |
+| the difficulty multipliers | DIFFICULTY_MULTIPLIERS 6 | ON, `kDifficultyMultipliersBound` |
+| the wave order, and both timing labels | GUN_SHOT_CADENCE 10.7, 10.8, 10.10 | ON, `kGunWaveOrderBound` |
+| the AA bots' own fire tests | GUN_SHOT_CADENCE 10.9 | ON, `kAaBotFireTestsBound` |
+| the torpedo swim | TORPEDO_FRIENDLY_CROSSING 6 | ON, `kTorpedoSwimThrustBound` |
+| the torpedo aim | TORPEDO_SPREAD_AIM | read, the image's; nothing bound |
 
 ## 2. The ranking
 
@@ -492,3 +503,70 @@ commands host's unit records. Those calls stay records (`WeaponDirector::set_fir
 **Decision: `kWeaponDirectorFireTargetBound` is ON.** The gate and store are `00836240`'s, and
 every command request was stored without a refusal. The failed rows are consequences, not
 divergences. The USN02 failure is flagged for reference g.
+
+## 16. The ranking refreshed on reference h (packet `cc9_gunnery_open_ranking_2`, 2026-09-29)
+
+**Source.** The eight reference h logs `local\rb8_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log`
+in worktree cc9-gunnery4 (main `d6fc6ee78`, rb8 SHA-256 prefix `5A2B887AA5ED`).
+- `local\g4_rank.py` sums every non-concrete native row whose class is gunnery-side, across the
+  eight logs. Every such row is `UNIMPLEMENTED`.
+- `local\g4_standins.py` reads what each stand-in answers.
+- The labelled substitutions come from `src/game_hosts_gunnery.cpp`'s switch notes.
+
+**Moved to section 1's closed table** (the day's landings):
+
+| item | where | state |
+| --- | --- | --- |
+| the line of sight `00864680` (old rank 1) | sections 5, 8 | ON, `kGunneryLineOfSightBound` |
+| the stop-firing hook `0072B4C0` (old rank 2) | section 7 | read; presentation only, the marker is concrete |
+| the director fire target `00835860` (old rank 3) | sections 13-15 | ON, `kWeaponDirectorFireTargetBound` |
+| the target's sub-entity list `008654AC` (old rank 4) | section 2 | exact for every unit this host builds (4729 calls, the base `00432480`) |
+| the unit fire cooldown (old rank 6) | sections 11-12 | ON, `kUnitFireCooldownBound` |
+| the immediate-fire slot and the wave order | GUN_SHOT_CADENCE 10.6, 10.7, 10.10 | ON, `kGunImmediateFireSlotBound`, `kGunWaveOrderBound`; both timing labels read (10.7) |
+| the AA bots' own fire tests | GUN_SHOT_CADENCE 10.9 | ON, `kAaBotFireTestsBound` |
+| the torpedo swim | TORPEDO_FRIENDLY_CROSSING 6 | ON, `kTorpedoSwimThrustBound` |
+| the torpedo aim (lead, spread, gyro) | TORPEDO_SPREAD_AIM | read, the image's; nothing bound |
+| the difficulty multipliers | DIFFICULTY_MULTIPLIERS 6 | ON, `kDifficultyMultipliersBound` |
+| the invincibility floor | sections 9-10 | ON, `kUnitInvincibilityFloorBound` |
+| rest angles, plane-gun mounts, the turn-rate average | GUN_REST_ANGLES 9, section 8, USN04_KATE_ATTRITION 15 | ON (`kGunIdleRestBound`, `kPlanePlatformAttachmentBound`, `kAaTargetTurnAverageBound`); the three OFF rows above now read ON |
+
+**The new ranking.**
+- **Reach 4:** decides who is shot at, or a death.
+- **Reach 3:** decides an order.
+- **Reach 2:** a count or a score only.
+- **Reach 1:** presentation.
+
+Calls are summed over the eight logs.
+
+| rank | item | image | reach | calls (h) | what the host does now |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **the AutoTarget candidate list** | `009F5D30`'s scan walks the chain at `[008053C0(party)]+0DE8h`, the party recon slot's enemy list | 4 | 148923 on all eight missions (`AutoTarget::party_recon_slot`); USN02 10689, JM08 57531, USN13 43186 | hands the scan **every live opposing unit** (`src/game_hosts_ship_ai.cpp`, `TargetBinding::scan_party_list`), detected or not. The recon team lists that `kReconTeamListsBound` builds are not used here |
+| 2 | the AutoTarget's commanded-target adoption | `0071D6D0` (command accepts target), `00521EA0` (resolve command target), `009F5E69` (director command state) | 4 | 17806 / 10181 / 148923; USN02 9216 / 9224 | answers false / null / 0: a director's commanded target never becomes the AutoTarget pick through this arm |
+| 3 | the director's target observation and refusal | `00694A60` (observe target), `0071D74A` (target refuses commands) | 3 | 3135 / 2078 (USN02 1245 / 1238) | records; the refusal answers a constant |
+| 4 | the torpedo standoff's threat list | `00814420` (no Ghidra function) | 3 | 12708 (USN02 10484, JM06 2147) | record; the standoff's accuracy term `008FB530` answers the robots.lua table and is exact |
+| 5 | the recon squadron and convoy aggregates | `00805680`, `008069A0` (classes 18h, 1Ah) | 3 | 1467 each | not built (`kReconTeamListsBound`'s SUBSTITUTIONS note) |
+| 6 | the damage-control death test | `0090E6C0` (pending damage exceeds health) | 4 | 766 (USN02 749) | record; the host's own `pending_over_health` path decides |
+| 7 | the death sink | `008110F0` | 2 | 140 (once per death) | record; the death itself is the host's funnel |
+| 8 | the kill award threshold | `0050FC30` | 2 | 266 | answers 0; score only |
+| 9 | the set-command message | `0071C830` / `0077C2A0` | 3 | 8022 each | the host stores the command directly (`pending_command`), which is the local-session loopback's effect (GUN_SHOT_CADENCE 10.7); likely exact |
+
+**Not ranked, and why:**
+- **Plane-side** (the largest counts): `PilotBot::plan_controls` 336743, the `BotApproach` and
+  `BotState*` rows up to 109598, and `BotTaskGun`. They belong to the plane packets.
+- **Player HUD:** `HudWeaponGroupScreen::*` and `PlayerGunSeat::message_other_group`. They are
+  player-only; the reference runs are idle.
+- **Labelled substitutions** that are exact at the rows these missions set:
+  - the bullet throw's `unit+63Ch = 1.0` and `00470440(7) = 1.0`;
+  - the flak distance error of 0 (SPVeteran);
+  - the torpedo swim's surface plane.
+  They are re-checked when a mission sets another row.
+
+**Next packet: rank 1, `cc9_autotarget_recon_candidates`.**
+- **Read** `009F5D30`'s list source: `008053C0`'s party recon slot and the chain at `+0DE8h`. Find
+  which recon levels put an enemy on it, how a blip or unknown contact is treated, and when the
+  chain is rebuilt.
+- **Bind** the candidate list to the recon team lists the host already builds
+  (`kReconTeamListsBound`), OFF, with predictions on USN02, USN04, USN13 and JM08. JM08 carries the
+  largest count.
+
+**Context** at the time of writing: about 60% of this worker's window. A handoff is due at about 80%.
