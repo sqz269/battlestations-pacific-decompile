@@ -3276,3 +3276,13 @@ player, present interval immediate):
 - The shot count falls with the lower approach. The shared stream couples the rest.
 
 **Verdict: `kSquadronAttackAltBound = true`.**
+
+### Unowned: the SpawnNew queue never places on JM05 (a brief for a later packet)
+
+- **Symptom.** `summary SpawnNew 0094c480` on JM05 3200/3000 reads 290 attempts, 290 requeues, 0
+  fulfilled and 0 units. Both `SH2SpawnRequest` Fletchers queued at stage init stay queued for the
+  whole run (`local/l6_rk_jm05.log`, worktree cc9-lua6).
+- **Where to look.** The drain `0094C490`'s placement: the solver `0094A140` and the fulfil test,
+  in `src/lua_spawn_new.cpp` / `run_spawn_queue_0094c490`. Find which test refuses every
+  candidate for a shipyard request whose `refPos` is absent. Pair on JM05, where a fulfilled
+  request spawns ships and fires `luaJM5Shipyard2Spawned`.
