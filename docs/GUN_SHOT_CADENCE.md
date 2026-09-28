@@ -493,3 +493,57 @@ salvo test on every MSTGun (artillery, torpedo, single AA and depth-charge mount
 **The direction of the first shot is the one firm prediction.** A gun's first request now waits
 for the `U(0, 0.1)` delay after its first settle. The first stagger draw per gun is unchanged,
 because the stream is keyed per gun, so no gun fires earlier than OFF.
+
+### 10.6 The pairs, and the flip
+
+OFF is `local\IF_OFF_<m>.log`: this tree at `5532a16cd`, copied to `local\if_off_bin`. ON is
+`local\IF_ON_<m>.log`: `pair_export --commit 5532a16cd --flip kGunImmediateFireSlotBound=true`
+into `local\if_on`. RNG streams and the death table were on, with lockstep 0.05. The OFF build
+equals the head without the switch: `pair_diff` against `local\g4_dr_usn04.log` exits 1.
+
+| mission | OFF deaths / hit records / shots, first hit | ON | census (ON) | prediction | verdict |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9200/9000 | 26 / 847 / 1117, 41.05 s, failed 212.91 s | **9 / 4597 / 3666, 33.35 s, failed 34.70 s**; pair_diff 3 | arms 111400, slot calls 111391, salvo drops 92516, ignored false 5829, extra sends 0 | shots -15..+5%, first hit same or later, deaths 26 +- 4 | **failed** on shots, first hit and deaths |
+| USN04 4700/4500 | 40 / 644 / 5333, 92.50 s | 41 / 633 / 5345, 92.50 s; pair_diff 3 | arms 0, salvo drops 16219 | shots down 0..10%, deaths 40 +- 3 | deaths and first hit held; shots **+0.2%**, a marginal fail |
+| USN01 3200/3000 | 5 / 178 / 623, 53.75 s | 5 / 177 / 623, 53.75 s; pair_diff 3 | arms 0, salvo drops 2368 | shots -10..+5%, deaths 5 +- 1 | held |
+| USN13 3200/3000 | 23 / 572 / 4265, 67.90 s | 23 / 552 / 4222, 67.90 s; pair_diff 3 | arms 0, salvo drops 6494 | shots down 0..10%, deaths 23 +- 3 | held (-1.0%) |
+| all four | - | extra sends 0, flag drops 0 | - | 0 | held |
+
+**What moved USN02.** The artillery half, in categories 2 and 6, per the gun rows:
+
+| category | shots OFF -> ON | latch rises OFF -> ON |
+| --- | --- | --- |
+| 2 | 209 -> 646 | 299 -> 34246 |
+| 3 | 263 -> 270 | 124 -> 8087 |
+| 6 | 433 -> 2523 | 289 -> 47277 |
+| 7 (torpedo) | 144 -> 227 | 126 -> 3132 |
+
+- **The Fubuki and Dutch 5-inch dual-purpose mounts (device 299) go from single figures to about
+  100..155 shots each.** Their reload is 2.7 s over 2 barrels, so 450 s allows about 330; no gun
+  exceeds its reload bound.
+- **With the switch OFF, a gun had to be settled on every step until the stagger (`U(0, 0.12)`,
+  drawn at each rise) ran out.** Its request flickered with the settle test while the aim-error
+  envelope moved the commanded angles, and each rise redrew the stagger.
+- **In the image, the settle test only arms the request.** The latch then holds until the salvo
+  test drops it, so the stagger runs out and the ready barrel fires.
+- **So the first-shot prediction was wrong in its premise.** OFF needs a settle on the step of
+  the shot, while ON needs one only at the arm, so ON guns can fire earlier.
+- **The torpedo rise is downstream.** Minegumo's first spread launches at the same times on both
+  sides (1.45..4.95 s). The later spreads, at 208, 328 and 448 s, follow a different battle.
+  Torpedoes are not armed by this binding.
+- **The USN02 outcome.** Houston is sunk at 33.80 s by Minegumo's opening spread, from 2719 m.
+  Houston's path changes in the heavier opening exchange (controlled moved 3581 -> 444 m), and
+  the mission fails at 34.70 s. Reference g's USN02 row and GENERATED_SHIP_AI 5's phase-2 failure
+  no longer describe the head once this is ON.
+
+**Decision: `kGunImmediateFireSlotBound` is ON.**
+- The request path is the image's, read from the listings above: slot 1F0h on both classes,
+  `0084C5B0`, `006FE0D0`, and the artillery bot's steps 12, 13 and 15.
+- The failed rows are consequences of the settle test no longer gating every step. The mispredicted
+  first-shot direction came from reasoning that assumed it did.
+- The census holds: no MRTGun is armed on these missions, so `006FDF60`'s sticky flag is bound but
+  unexercised here.
+- **Labelled, and worth checking first if USN02 looks wrong:**
+  - the same-step `0ADh` delivery;
+  - the host evaluates settle after stepping the gun, where `006DF520` compares the angles before
+    the gun's own step.

@@ -120,7 +120,8 @@ constexpr bool kGunAimErrorBound = true;
 //    OFF: every gun re-evaluates want_fire (target, acceptance, settle, window)
 //    into the latch each step. Labelled: 0ADh is taken as delivered in the same
 //    step, as the host already does for 0072D130's send.
-constexpr bool kGunImmediateFireSlotBound = false;
+//    ON since the pairs (docs/GUN_SHOT_CADENCE.md 10.6).
+constexpr bool kGunImmediateFireSlotBound = true;
 // Packet cc9_aa_lead, docs/AA_LEAD.md.
 //  * kPlaneGunfireHooked: a plane's forward guns (PLANEGUN, category 0) take their
 //    trigger from the latched gunFire the plane's fixed step hands each enabled

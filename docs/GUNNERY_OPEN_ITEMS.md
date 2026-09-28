@@ -23,6 +23,7 @@ is ranked from its own evidence.
 | the turn-rate average `0085E4D0` | AA_LEAD, USN04_KATE_ATTRITION 8.2 | bound OFF, `kAaTargetTurnAverageBound` |
 | plane-gun muzzle origin | MUZZLE_OFFSETS 4 | bound OFF, `kPlanePlatformAttachmentBound` |
 | targetless guns and rest angles | GUN_REST_ANGLES | bound OFF, `kGunIdleRestBound` |
+| the immediate-fire slot `vtable[1F0h]` (rank 7) | GUN_SHOT_CADENCE 10 | bound and ON, `kGunImmediateFireSlotBound`: MRTGun `006FDF60` / `0084C5B0`, MSTGun `006FDC50` / `006FE0D0`, the artillery bot's delayed raise; no MRTGun is artillery-armed on USN02/USN04/USN01/USN13 |
 
 ## 2. The ranking
 

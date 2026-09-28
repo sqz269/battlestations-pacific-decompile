@@ -1,0 +1,66 @@
+{
+  "packet": "cc9_mrtgun_immediate_fire",
+  "switch": "kGunImmediateFireSlotBound",
+  "doc": "docs/GUN_SHOT_CADENCE.md section 10",
+  "commits": {
+    "off_with_predictions": "5532a16cd"
+  },
+  "read": {
+    "006FDF60": "MRTGun slot 1F0h: mov byte [ecx+4D4h], 1; ret",
+    "0084C5B0": "MRTGun +310h slot 8 tick: 0072D130, then while gun+4D4h one more 0ADh (FireIfReady) with no gate",
+    "006FDC90": "MRTGun vtable[1E8h]: 0072D2C0, then clear gun+4D4h when the latch is clear",
+    "006FDC50": "MSTGun slot 1F0h: vtable[1E8h](1)",
+    "006FE0D0": "MSTGun +310h slot 8 tick: 0084C5B0, then with the latch set: cursor == M-1 -> vtable[1E8h](0), +4D8h = 0; cursor != 0 -> +4D8h = 1",
+    "006FDCD0": "MSTGun vtable[1E8h]: a false request is skipped while +4D8h is set",
+    "006DF520": "steps 12/13/15: arm on 0.1-degree settle, fireDelayTime = U(0, 0.1), count down in the same tick, t < 0 -> vtable[1F0h]; never vtable[1E8h](1)",
+    "0072D860": "the 0ADh arm is vtable[1DCh]() FireIfReady; the payload is unused"
+  },
+  "census_off": {
+    "USN02": "rapid 0/204, single 134/120",
+    "USN04": "rapid 0/259, single 106/64",
+    "USN01": "rapid 0/129, single 41/46",
+    "USN13": "rapid 0/1068, single 261/194"
+  },
+  "pairs": {
+    "USN02": {
+      "off": "26 / 847 / 1117, first hit 41.05 s, failed 212.91 s",
+      "on": "9 / 4597 / 3666, first hit 33.35 s, failed 34.70 s",
+      "pair_diff": 3,
+      "verdict": "failed prediction on shots, first hit and deaths: the settle test no longer gates every step; categories 2 and 6 fire within their reload bounds"
+    },
+    "USN04": {
+      "off": "40 / 644 / 5333, 92.50 s",
+      "on": "41 / 633 / 5345, 92.50 s",
+      "pair_diff": 3,
+      "verdict": "deaths and first hit held; shots +0.2% against a predicted fall"
+    },
+    "USN01": {
+      "off": "5 / 178 / 623",
+      "on": "5 / 177 / 623",
+      "pair_diff": 3,
+      "verdict": "held"
+    },
+    "USN13": {
+      "off": "23 / 572 / 4265",
+      "on": "23 / 552 / 4222",
+      "pair_diff": 3,
+      "verdict": "held"
+    }
+  },
+  "logs": {
+    "off": "local/IF_OFF_<m>.log",
+    "on": "local/IF_ON_<m>.log",
+    "flip_check": "local/IF_FLIP_usn04.log (exit 0 against IF_ON_usn04)"
+  },
+  "decision": "ON",
+  "labelled": [
+    "0ADh delivered in the same step",
+    "settle evaluated after the gun's step",
+    "one fire attempt for two sends in a step",
+    "MSTGun muzzle count at least 1"
+  ],
+  "flags": [
+    "reference g's USN02 row and GENERATED_SHIP_AI 5 no longer describe the head: USN02 fails at 34.70 s (Houston, Minegumo torpedo at 33.80 s)",
+    "006FDF60's sticky flag is bound but unexercised on these four missions"
+  ]
+}
