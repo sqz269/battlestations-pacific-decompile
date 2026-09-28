@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_wave_order_repair",
+  "switch": "kGunWaveOrderBound",
+  "doc": "docs/GUN_SHOT_CADENCE.md 10.10",
+  "commits": {
+    "predictions": "1a20a1ae6"
+  },
+  "off": "local/AT_ON_<m>.log (the AA-tests-ON head)",
+  "on": "local/WR_ON_<m>.log",
+  "pairs": {
+    "USN02": {
+      "off": "12 / 5166 / 3826",
+      "on": "10 / 4226 / 2621",
+      "vs_WO_ON_usn02": "pair_diff exit 1"
+    },
+    "USN04": {
+      "off": "44 / 803 / 10090, cat1 9174",
+      "on": "44 / 749 / 9310, cat1 8447"
+    },
+    "USN13": {
+      "off": "19 / 400 / 4152, cat1 3667",
+      "on": "20 / 396 / 3903, cat1 3434"
+    }
+  },
+  "verdict": "every prediction held; ON"
+}

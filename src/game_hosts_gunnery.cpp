@@ -148,7 +148,8 @@ constexpr bool kTorpedoSwimThrustBound = true;
 //    (00778450) delivers the 0ADh the same step. OFF: the host set the new
 //    command, stepped toward it and then tested settle, one aim step ahead of
 //    the image, and ran the salvo test before the bot.
-constexpr bool kGunWaveOrderBound = false;
+//    ON since the re-pair with the AA tests ON (GUN_SHOT_CADENCE 10.10).
+constexpr bool kGunWaveOrderBound = true;
 //  * kAaBotFireTestsBound: packet cc9_aa_bot_fire_tests, GUN_SHOT_CADENCE 10.9.
 //    The AA bots do not use 006DF520's 0.1-degree settle. AAGunnerBot 00902920
 //    (ship category 1) asks for fire while 0085ABA0 accepted, the target is

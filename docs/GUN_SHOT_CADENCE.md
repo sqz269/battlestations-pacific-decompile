@@ -800,3 +800,25 @@ tree's build (`pair_diff` exits 0 on USN04). ON is
 | USN02 9200/9000 | 12 / 5166 / 3826, device-299 mean 77.0 | **the same as 10.8's ON run**: USN02 has no AA target, and its OFF equals 10.8's OFF (`pair_diff` against `WO_OFF_usn02` exits 1). So pair_diff against `local\WO_ON_usn02.log` exits 0 or 1: 10 / 4226 / 2621, device-299 mean 66.7 (x0.87), Houston 20.85 s (Yamakaze), failure 29.75 s |
 | USN04 4700/4500 | 44 / 803 / 10090, category 1 shots 9174 | category-1 shots within -10%..+5% (the one-step lag is small against 5 degrees); deaths 44 +- 4; hit records within +-15% |
 | USN13 3200/3000 | 19 / 400 / 4152, category 1 shots 3667 | category-1 shots within -10%..+5%; deaths 19 +- 3 |
+
+**The pairs.** ON is `local\WR_ON_<m>.log`, from `pair_export --commit 1a20a1ae6 --flip
+kGunWaveOrderBound=true` (`local\wr_on`). OFF is `local\AT_ON_<m>.log`.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 | 12 / 5166 / 3826 | 10 / 4226 / 2621; **pair_diff exit 1 against `WO_ON_usn02`**, the death rows identical | equal to 10.8's ON | held |
+| USN04 category-1 shots | 9174 | 8447 (-7.9%) | -10%..+5% | held |
+| USN04 deaths / hit records | 44 / 803 | 44 / 749 (-6.7%) | 44 +- 4 / +-15% | held |
+| USN04 first hit | 100.95 s | 101.10 s | - | - |
+| USN13 category-1 shots | 3667 | 3434 (-6.4%) | -10%..+5% | held |
+| USN13 deaths | 19 | 20 | 19 +- 3 | held |
+
+**With the AA guns on their own tests, the image's order costs them 6..8% of their shots, not the
+60% of 10.8.**
+- USN02 carries the whole artillery effect: shots x0.69, and x0.87 on the device-299 mounts. Its
+  torpedo-driven 29.75 s failure is unchanged.
+
+**Decision: `kGunWaveOrderBound` is ON.**
+- The structure is 10.7's: wave 1 steps the gun before wave 2's bot sets and tests the new
+  command, and MSTGun's salvo test runs after the send.
+- Every prediction of 10.10 held.
