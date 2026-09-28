@@ -1193,6 +1193,10 @@ is the same commit with `kFollowTargetDirAcosBound=true` (`local\l10_ac`, `local
    positions and speeds moved.
 - **Verdict: ON.** Section 5.4's reading of the ramp's endpoints is corrected by 17.4.
 - The live-speed switch (17.2) should be re-paired on top of this.
+- **USN04 4700/4500, added afterwards:** exit 3. OFF is a clean export of `1d7b7045e`
+  (`local\l10_acbase`) and ON is `local\l10_ac`. Deaths go from 44 to 40, torpedo releases from 6 to
+  5 and damage from 15776.6 to 13914.3. The torpedo wings fly the fly-to arm, so this is
+  prediction 3 holding on a row with follow wings. The row is not an identity row for this switch.
 
 ### 17.7 The live speed re-paired on top of 17.4 and the turn rate (cc9-lua10, 2026-09-28): ON
 

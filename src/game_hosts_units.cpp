@@ -3926,7 +3926,7 @@ struct GameUnitsHost::Impl {
     // land/standby's enter/tick/exit (009B0230/009B0FE0/009B0240), the rule's
     // standby arm and 006C54C0's common tail (circle point and radius). Needs
     // kLandingSequencerBound. False: every entry to standby is refused.
-    static constexpr bool kLandStandbyStateBound = false;  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5d)
+    static constexpr bool kLandStandbyStateBound = true;  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5e)  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5d)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm

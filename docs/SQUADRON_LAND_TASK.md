@@ -711,6 +711,35 @@ off. The OFF sequencer history comes from `local\l10_h0_lomp10.log`.**
 - A mechanism failure is any of: no standby entry, a head whose circle distance diverges, or a
   state entered other than standby, moveto or follow.
 
+### The pair and the verdict (cc9-lua10, 2026-09-28): ON
+
+OFF is this tree's build of `ac4f1d6fe` (`local\l10_s0_<row>.log`). ON is `local\l10_sb`, the same
+commit with `kLandStandbyStateBound=true` (`local\l10_sbon_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (1); paths moved, B-25 01's travel 6691 -> 5945 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Entries: held.** Warhawk 01 entered at 70.90 s, Lightning 01 at 73.30 s and B-25 01 at
+   85.30 s. Each came at its first request after its head's mode 2.
+2. **Wingmen: held.** Every wingman's `land/line` (mode 2) is refused. They enter standby at mode 3,
+   the first being Warhawk 01's `|.-4` at 92.20 s (120.9 s OFF).
+3. **Flight: held.**
+
+   | head | r | settled circle distance | circle-point height | height reached |
+   | --- | --- | --- | --- | --- |
+   | Warhawk 01 | 1100 | 1070 to 1082 | 259.9 | 258 |
+   | Lightning 01 | 1100 | 1070 to 1082 | 239.9 | 238 |
+   | B-25 01 | 1890 (TurnCircleRadius x 1.05, a level bomber) | about 1858 | 219.9 | 218 |
+
+   - The three circle points sit at queue n = 2, 1 and 0.
+   - The commanded speed follows the spacing `+8h`, from 32 to 159 m/s.
+   - B-25 01 left and re-entered standby 11 times as its mode fell to 1 and came back.
+4. **Held.** LOMP10 moves; USN01 does not.
+5. **Held.** `land/line` and the rest stay refused.
+- **Verdict: ON.** `land/line` (wing members at mode 2) is the next state.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
