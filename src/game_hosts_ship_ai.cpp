@@ -367,7 +367,7 @@ inline constexpr bool kShipAiSubAttackStatesBound = true;  // ON: pairs held, Na
 // False: the gate is a record answering false, the machine switch stores the
 // member only, and the two steps are records. The gate's image answer is
 // counted on both sides.
-inline constexpr bool kShipAiSubTargetSubStatesBound = false;
+inline constexpr bool kShipAiSubTargetSubStatesBound = true;  // ON: pairs held, two spread misses recorded (docs/SHIP_AI_OPEN_ITEMS.md section 2)
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

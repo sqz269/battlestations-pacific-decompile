@@ -103,7 +103,7 @@ Where a flip could move a count, the table cites a newer log as well. The two su
 
 ## 2. A surface ship attacking a submarine (packet `cc9_submarine_target_substates`, rank 1, `kShipAiSubTargetSubStatesBound`)
 
-Worker cc9-ships7, 2026-09-28. The switch is bound OFF first. The pairs and the verdict follow the
+Worker cc9-ships7, 2026-09-28. The switch was bound OFF first and is now ON. The pairs and the verdict follow the
 predictions.
 
 ### The image
@@ -256,3 +256,80 @@ against this tree's OFF build, with reference i's launch lines.
     "no producer".
   - Its only use is the approach throttle at `brain+258h`, which has no reader in the recovered
     chain, so its reach is low.
+
+### The pairs
+
+- **OFF** is this tree's build: `local\ships7_off2_{jm06,lomp06}.log` at `46accdd3d`, and
+  `local\ships7_off_{usn01,usn02,usn04,usn13}.log` at `24e2b2194`. The fix between the two touches
+  only the ON path.
+- **ON** is `pair_export --commit 46accdd3d --flip kShipAiSubTargetSubStatesBound=true` into
+  `local\ships7_on2` (bsp_game.exe SHA-256 prefix `610D9346F379`). Its logs are
+  `local\ships7_on2_<row>.log`.
+- **A first ON export, at `24e2b2194`, failed its mechanism check.** The selector asks `007B6EE0`
+  for its member on every kind-8 open, and the binding skipped `007B6EE0`'s early return when the
+  machine already holds the member. So every open re-ran the exit and the enter: 676 lead enters on
+  JM06 for six attackers. `46accdd3d` adds the early return. Only the pairs below count.
+
+| row | pair_diff | reading |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 3 | deaths 2 -> 1, hit records 284 -> 314, damage 4730.3 -> 4405.8, shots 352 -> 381, first hit 68.60 -> 62.40 s |
+| LOMP06 1200/1000 | exit 3 | shots 6 -> 9; Yugiri's row moves |
+| USN01 3200/3000 | exit 1 | gameplay identical |
+| USN02 9200/9000 | exit 1 | gameplay identical |
+| USN04 4700/4500 | exit 1 | gameplay identical |
+| USN13 3200/3000 | exit 1 | gameplay identical |
+
+The ON census:
+
+| attacker | gate / open / visible | lead enters / steps | tangent enters / steps | notices | lost_ends |
+| --- | --- | --- | --- | --- | --- |
+| USTroopTransport 01..04 | 145 / 145 / 127 | 2 / 506 | 1 / 72 | 0 | 0 |
+| Fletcher-class 08 | 128 / 128 / 76 | 3 / 304 | 2 / 210 | 0 | 6 |
+| Fletcher-class 09 | 95 / 95 / 75 | 2 / 298 | 1 / 80 | 0 | 0 |
+| Yugiri (LOMP06) | 20 / 20 / 2 | 1 / 8 | 1 / 69 | 1 | 0 |
+
+**JM06's unit moves:**
+- **US Cargo Transport 02 survives with 2382 health.** OFF has it sunk at 140.15 s, killed by
+  Fletcher-class 09. In ON, Fletcher 09 fires 0 shots against 38, because it pursues PlayerSub 01
+  instead of holding the approach's standoff.
+- **USTroopTransport 02 takes 3599 damage against 1233** (health 402). USTroopTransport 01 closes
+  to 169 m against 731.
+- **Fletcher 08 takes no damage** (151 OFF), and its nearest approach opens from 48 to 107 m.
+- **The Hospital Ship's row** reads health 1583 -> 421 and `sunk_at` 445 -> 1662. That column holds
+  a value beside a non-zero health, so its meaning is not settled here; the numbers are quoted raw.
+
+**Predictions:**
+- **Held:**
+  - one lead enter at each first open (5.75 s, and 55.70 s for Fletcher 09);
+  - tangent enters only during invisible stretches, and none while the target is visible;
+  - no return to the approach, because every call opened;
+  - LOMP06's Yugiri in the tangent for most of its calls;
+  - identity on USN01, USN02, USN04 and USN13.
+- **Failed on spread:**
+  - "Fletcher 09 never enters the tangent": it enters it once.
+  - "`lost_ends` 0": Fletcher 08 gives up its command. Its target was visible on 76 of 128 calls
+    ON, against 107 of 145 OFF, and one invisible stretch passed SubmarineLostTime + 5 s = 35 s.
+    That is the image's give-up rule firing, not a wrong mechanism. Its six `0071E430` calls
+    are one per tangent step while the director's `+30h` was not yet 2. Its gate calls then stop
+    at 128.
+  - The notices: Yugiri has one, which is not a mechanism fault.
+
+**Verdict: `kShipAiSubTargetSubStatesBound` ON.** Every mechanism check held after the
+`007B6EE0` fix. The misses are on spread, and the switch is the image's selector, enters, exits
+and steps. By the brief's rule it flips, with the misses recorded.
+- JM06's moves are this switch's own.
+- The depth-charge fire in `009E2B60` is still a record. The attackers therefore reach their
+  targets, but only the gunnery side's own bots fire at them.
+
+**Open after this packet:**
+- `009E2B60`'s immediate fire on the Function-8 guns needs a gunnery-host entry.
+  - Proposed declaration: `bool GameGunneryHost::fire_function_guns_now_009e2b60(std::size_t
+    unit_index, int function)`. It would call `vtable[1F0h]` (`006FDF60`, the immediate fire) for
+    every kind-24h child whose `[+3F4h]+80h` equals `function`, and return whether any fired.
+  - It is routed through the lead, because `src/game_hosts_gunnery.cpp` is cc9-gunnery7's.
+- SubmarineLostTime is read from a constant. A Lua-host reader for the SubAttack block belongs to
+  cc9-lua7's lease.
+- The lead pursuit's `0082ECB0` inputs need a units-host door. Proposed declaration:
+  `float GameUnitsHost::unit_class_yaw_rate_0082ecb0(std::size_t index, float rudder, float speed,
+  float efficiency)`.
+- The approach enter `009F3220` (see above) is next in this lane.
