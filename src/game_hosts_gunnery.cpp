@@ -280,7 +280,10 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    LABELLED: the periscope byte +1234h has no producer in this process and
 //    reads clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
 //    seeded keeps the stowed-periscope answer. OFF: PeriscopeIn for every boat.
-constexpr bool kSubmarineSensorCategoryBound = false;
+//    ON by the pairs of 2026-09-29: JM06 gameplay identical within 3000 frames,
+//    but the DeepUnderwater Narwhal-class is never sighted, so the script's
+//    luaJM6USNSubSighted listener no longer fires; LOMP06, USN01, USN02 identity.
+constexpr bool kSubmarineSensorCategoryBound = true;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
