@@ -361,6 +361,9 @@ int binding_trampoline(lua_State* state) {
         && dispatch_row.address == 0x008996a0u;
     const bool leave_formation_row = kLuaFormationQueryBound
         && dispatch_row.address == 0x00899eb0u;
+    // Packet cc9_get_formation_leader.
+    const bool formation_leader_row = kLuaFormationLeaderBound
+        && dispatch_row.address == 0x00899af0u;
     // Packet cc9_submarine_air.
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
@@ -521,6 +524,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (in_formation_row && !host->error_replay()) {
         return host->run_is_in_formation_008996a0(state, argc);
+    }
+    if (formation_leader_row && !host->error_replay()) {
+        return host->run_get_formation_leader_00899af0(state, argc);
     }
     if (border_zone_row && !host->error_replay()) {
         return host->run_get_closest_border_zone_008aecd0(state, argc);
@@ -4938,6 +4944,44 @@ int GameMissionLuaHost::run_is_in_formation_008996a0(lua_State* state, int argum
     return 1;
 }
 
+// Packet cc9_get_formation_leader. 00899AF0 GetFormationLeader(unit): 00888AA0 on
+// argument 0 (00899BEF), 007788D0 (00899C08), then nil (00899CB4) or the leader's
+// thisTable slot (00899C15..00899C65). One result.
+// SUBSTITUTION (labelled): an entity with no units-host slot answers nil, as a unit
+// whose +284h is null does; a leader whose thisTable slot is missing also answers nil.
+int GameMissionLuaHost::run_get_formation_leader_00899af0(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.formation_leader_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const std::int32_t group = valid
+        ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    const std::size_t leader = group >= 0 ? units->formation_leader_0014(group)
+                                          : static_cast<std::size_t>(-1);
+    bool pushed = false;
+    if (valid && leader < units->count()) {
+        pushed = push_resolved_entity_by_id(state, static_cast<int>(leader) + 1);
+    }
+    if (pushed) {
+        ++summary_.formation_leader_found;
+        if (static_cast<int>(leader) + 1 != id) ++summary_.formation_leader_other;
+    }
+    if (summary_.formation_leader_calls <= 24 || (pushed && static_cast<int>(leader) + 1 != id)) {
+        const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+        const GameUnitRow* lrow = pushed ? units->unit_row(leader) : nullptr;
+        log_.notef("  GetFormationLeader 00899af0: \"%s\" group=%d -> %s%s (packet "
+            "cc9_get_formation_leader)", row != nullptr ? row->name.c_str() : "?",
+            static_cast<int>(group), lrow != nullptr ? lrow->name.c_str() : "nil",
+            pushed && static_cast<int>(leader) + 1 != id ? " (not the argument)" : "");
+    }
+    log_.implemented("MissionLuaNative::GetFormationLeader", "00899af0");
+    if (!pushed) ::lua_pushnil(state);
+    return 1;
+}
+
 // Packet cc9_lua_formation_query. 00899EB0 LeaveFormation(unit): argument 0 through
 // BSP_ObjectHandle_FromLuaTable, then 0077C980(unit, 0). With [unit+284h] set that sends
 // message 77h (null target), delivered by 0077FE80 arm 3 to 0077BD70(unit, null).
@@ -6489,6 +6533,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "cc9_lua_formation_query)", kLuaFormationQueryBound ? 1 : 0,
         summary_.in_formation_calls, summary_.in_formation_true,
         summary_.leave_formation_calls, summary_.leave_formation_left);
+    log_.notef("summary mission script formation leader bound=%d calls=%llu found=%llu "
+        "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
+        kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,
+        summary_.formation_leader_found, summary_.formation_leader_other);
     log_.notef("summary mission script unlimited air bound=%d calls=%llu stored=%llu "
         "(00893C00 -> unit+1280h, packet cc9_submarine_air)", kSubmarineAirBound ? 1 : 0,
         summary_.unlimited_air_calls, summary_.unlimited_air_stored);

@@ -3501,3 +3501,59 @@ USN01 and USN04 are added as rows. The census is `local/l7_natives.py`, which re
 
 **Next packet: `GetFormationLeader`.** Rank 1's native is this lane's, but its effect is entirely
 the gunnery gate `00862440`. It is the gunnery lane's item, or a joint one routed by the lead.
+
+## `GetFormationLeader`, 00899AF0 (packet `cc9_get_formation_leader`, `kLuaFormationLeaderBound`)
+
+Worker cc9-lua7, 2026-09-28. This is rank 2 of the sixth refresh and the top item this lane owns.
+
+### The image (V, raw listing `00899AF0`..`00899CC6`)
+
+- `00899BEF CALL 00888AA0` resolves argument 0 to the entity.
+- `00899C08 CALL 007788D0` is BSP_Unit_FormationLeader: `[unit+284h]`, and when that is set, the
+  group's `+14h` (`007788D0..007788DE`).
+- A null leader takes `00899CB4 CALL 00B66430`, which pushes nil.
+- Otherwise `00899C15` reads the leader's `+174h` id. `00899C2B` pushes the table name at
+  `00CE7494`, and `00B67910`/`00B678E0`/`00B663D0` push that table's slot for the id: the entity
+  tail every entity-returning native uses.
+- One result. A unit that is not in a group answers nil. A group's leader answers itself.
+
+### The host
+
+The row fell into the entity-returning arm (`mission_binding_returns_entity`). That arm resolves
+no entity for it, so every call answered nil and was counted UNIMPLEMENTED (JM05, 64 calls).
+
+### The binding (`kLuaFormationLeaderBound`, committed OFF)
+
+`run_get_formation_leader_00899af0` does the following:
+- takes the `ID` as the other `00888AA0` sites do;
+- reads `unit_formation_group_0284` and `formation_leader_0014`, the host's `+284h` and
+  `group+14h`, which `IsInFormation` already reads;
+- pushes the leader's `thisTable` slot through `push_resolved_entity_by_id`, or nil.
+
+SUBSTITUTION, labelled: an entity with no units-host slot, such as a scene marker, answers nil.
+
+### Predictions, written before any run
+
+**JM05 3200/3000 (the only row that calls it; 64 calls):**
+- `jm05.lua` 1992 asks for `Mission.Shipyard2Ships[1]`, the spawned `Clemson class 1930 #1.1`.
+  It leads formation 6, so it answers itself, which is the unit the nil fallback already chose.
+  **No change from that site.**
+- `jm05.lua` 3159 asks for `Mission.AIUnits[1]` (`JapUnits.Cruisers[2]`, lines 867-874).
+  - OFF answers nil every time. So every call re-runs the `JoinFormation(unit, AIUnits[1])` loop
+    over the other six `AIUnits` (3163-3171).
+  - ON answers once `AIUnits[1]` is in a group. After the first call's joins it leads that group
+    and answers itself. The loop is skipped from then on.
+  - **Prediction:** the `JoinFormation` census (332 calls OFF) falls by about six per later call,
+    and gameplay stays identical, on the assumption, not verified in the listing, that re-joining a member of its own
+    group changes nothing.
+  - **The risk to that:** if `AIUnits[1]` is already a *follower* in a scene formation at the first
+    call, ON answers that formation's leader instead. The loop is then never run, and the
+    `AIUnits` keep their authored formations. That would move the Japanese fleet's paths and
+    possibly the combat rows. The log line marks such an answer `(not the argument)`.
+- 2574 (`AlliedFleet[1]`) is not reached in 150 s. The fleet's `SpawnNew` is not among the two
+  requests.
+- 2042 dereferences `.ID` and stays unreached.
+- The summary line reads `calls=64` with `found` equal to the number of 1992 and 3159 calls made
+  after their groups exist.
+
+**USN04, USN01 and LOMP10: identical.** None calls `GetFormationLeader` (the census above).
