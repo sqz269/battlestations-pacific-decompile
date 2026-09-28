@@ -18,9 +18,11 @@
 // 00A10DC0 (body 00A10DC0-00A10EB6), and the tick bodies of MOVETO
 // (00A124E0-00A1253F), CAUTIOUSMOVE (00A152B0-00A152D1), MOVETOATTACK
 // (00A12A90-00A12C53), CLOSEATTACK (00A15490-00A154FB) and DEFENDPOSITION
-// (00A15500-00A1556A). Partial, by address range: the engagement helper
-// 00A13B60-00A14D9F, the cautious helper 00A14DD0-00A152A7, the formation pass
-// 00A11070-00A113C1 below its two named calls, 00A11690-00A11AEC,
+// (00A15500-00A1556A), and the threat-facing wedge 00A11690-00A11AED with its
+// helper 00A113D0-00A1152A (packet cc9_cautious_wedge; its replication tail
+// 0077A080 / 0077C880 is not modelled). Partial, by address range: the
+// engagement helper 00A13B60-00A14D9F, the cautious helper 00A14DD0-00A152A7,
+// the formation pass 00A11070-00A113C1 below its two named calls,
 // 00A11AF0-00A11B73, 00A11B80-00A11F63, and the REGROUPINGMOVE
 // (00A126C0-00A12A4C), PATROLTO (00A15570-00A156D3), RETREAT
 // (00A156E0-00A158FF), SELLING (00A11FF0-00A1242D) and CAUTIOUSATTACK
@@ -168,6 +170,16 @@ inline constexpr bool kCautiousRouteBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE
 // follower pass alone, as before. No creator of CAUTIOUSMOVE is bound in this
 // host (00A2CCF0 from the Duel think, 00A13340 from Lua), so it has no reach yet.
 inline constexpr bool kCautiousMoveRouteBound = true;  // ON: identity, no creator bound (docs/AI_CAUTIOUS_ROUTE.md section 11)
+// Packet cc9_cautious_wedge, docs/AI_CAUTIOUS_ROUTE.md sections 10, 12 and 13.
+// True: 00A11690 runs after the follower pass of CAUTIOUSATTACK (00A15350),
+// CAUTIOUSMOVE (00A152CD, a JMP) and DEFENDPOSITION (00A1550A). With a ship
+// leader in a formation group it takes the most dangerous of 13 directions 750 m
+// around the leader (00A113D0), rewrites column 0 of the formation to shape 0
+// (0070EFD0), and places the other ship members in rows of 2r+1 places spaced
+// Formation_UnitDist, writing each one's column-0 lateral and axial offsets
+// (00A11A57 / 00A11A5C). False: not run, as before. RETREAT's tick 00A156E0
+// also calls it (00A156EE); that tick is not bound in this host.
+inline constexpr bool kCautiousWedgeBound = false;
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and
@@ -176,6 +188,36 @@ inline constexpr bool kCautiousMoveRouteBound = true;  // ON: identity, no creat
 inline constexpr float kCautiousRouteTurn = 1.5707963705062866f;   // 00CE3C64
 inline constexpr double kCautiousRouteOffset = 0.30000001192092896; // 00CE3DC8
 inline constexpr float kCautiousRouteNoCost = 1.0e10f;              // 00CE4970
+
+// 00A113D0's sampling ring and 00A11690's frame, read from the image.
+inline constexpr double kWedgeSampleRadius = 750.0;                 // 00D22C70
+inline constexpr float kWedgeNoCost = -1.0e10f;                     // 00CE4ADC, the seed
+inline constexpr double kWedgeSampleStep = 0.5235987901687622;      // 00CEC730, pi/6
+inline constexpr double kWedgeSampleEnd = 6.2831854820251465;       // 00CE3828, 2pi
+inline constexpr double kWedgeQuarterTurn = 1.5707963705062866;     // 00CE3830, pi/2
+inline constexpr double kWedgeFlip = -1.0;                          // 00D7A250
+inline constexpr float kWedgeNegativeZero = -0.0f;                  // 00D7A208
+// 004F2F40 BSP_Geometry_NormalizeVector2DWithCutoff: the squared length is
+// compared with 1e-10, and at or below it the divisor is 1e-5.
+inline constexpr double kWedgeNormalizeCutoff = 1.0e-10;            // 00CE3820
+inline constexpr double kWedgeNormalizeShort = 1.0e-5;              // 00CE3C70
+
+// What one 00A11690 call did, for the census (kCautiousWedgeBound).
+struct AiCautiousWedgeResult {
+    bool ran{false};               // past both gates (ship leader, +284h set)
+    int samples{0};                // 00A113D0's ring, 13 for the float loop
+    float threat[3]{};             // the kept direction d
+    float threat_cost{0.0f};       // its 00A010F0 cost
+    float frame_u[2]{};            // u after 004F2F40
+    float frame_v[2]{};            // v after 004F2F40 and the sign flip
+    float unit_dist{0.0f};         // tuning +210h
+    int shape0_records{0};         // records 0070EFD0(0) rewrote
+    int placed{0};                 // ship members with a record
+    int not_ship{0};               // members skipped at vt+5Ch(6)
+    int no_record{0};              // ship members 0070D080 did not find
+    float first_offset[2]{};       // the first placed member's lateral, axial
+    float last_offset[2]{};        // the last placed member's lateral, axial
+};
 // What one pass did, for the census.
 struct AiCautiousRouteResult {
     bool moveto{false};                // 00A1526E, the no-route arm
@@ -202,6 +244,9 @@ struct AiCommandTickResult {
     // CAUTIOUSATTACK with kCautiousRouteBound: what 00A14DD0 did.
     bool route_ran{false};
     AiCautiousRouteResult route{};
+    // kCautiousWedgeBound: 00A11690 was called by the tick.
+    bool wedge_ran{false};
+    AiCautiousWedgeResult wedge{};
 };
 
 // MOVETOATTACK's transition at 00A12B55-00A12BA8: the tick reads tuning +1F4h
@@ -258,7 +303,29 @@ struct AiCommandTickHost {
     virtual float tick_danger_cost_00a010f0(const float point[3], int team) = 0;
     // vt[+18h] 0071D340 on the leader's slot 0: the 5Fh message with the point.
     virtual void tick_route_send_point_0071d340(void* leader, const float point[3]) = 0;
+
+    // Packet cc9_cautious_wedge (kCautiousWedgeBound).
+    // The member's world forward row, entity+ECh..+F4h (00A1172B, 00A11732).
+    virtual bool tick_member_forward_row(void* member, float out[3]) = 0;
+    // entity+284h is not null (00A116F3..00A11703), the formation group.
+    virtual bool tick_member_has_formation_0284(void* member) = 0;
+    // 0070EFD0(0) on [leader+284h] (00A11866): column 0 of every live record,
+    // (0, 0) for the formation leader. Answers the records rewritten.
+    virtual int tick_formation_shape0_0070efd0(void* leader) = 0;
+    // 0070D080 on [leader+284h] for the member (00A1193E), then the stores
+    // 00A11A57 (record+10h) and 00A11A5C (record+20h). False, with nothing
+    // written, when 0070D080 answers no record.
+    virtual bool tick_formation_set_column0_0070d080(void* leader, void* member,
+                                                     float lateral, float axial) = 0;
 };
+
+// 00A11690 BSP_AiCommand_FormationWedge (hypothesis), __fastcall(base) with
+// [base+4h] the owner group, body 00A11690-00A11AED read whole
+// (docs/AI_CAUTIOUS_ROUTE.md section 10), including its helper 00A113D0
+// (__thiscall(base)(float out[3]), RET 4, body 00A113D0-00A1152A). Coverage:
+// complete except the tail 0077A080 / 0077C880, the MT_FORMATION_SET (78h)
+// replication to peers, which a single-player session does not deliver.
+AiCautiousWedgeResult ai_formation_wedge_00a11690(AiCommandTickHost& host, void* group);
 
 // 00A14DD0 BSP_AiCommand_CautiousApproachPass, __thiscall(base +20h)(group,
 // point), RET 8, body 00A14DD0-00A152A7 read whole for this packet

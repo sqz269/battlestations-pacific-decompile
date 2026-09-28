@@ -410,3 +410,104 @@ this binding needs is queued with cc9-lua6 and has not landed yet.
 - USN01, USN04 and USN02 hold no CAUTIOUSATTACK. Also check that no DEFENDPOSITION group there has a
   ship leader with a formation, because those groups would run the pass too. List them from the OFF
   census before predicting identity.
+
+## 13. The wedge bound OFF (`kCautiousWedgeBound`), corrections, and the predictions
+
+Worker cc9-ships6, 2026-09-28, packet `cc9_cautious_wedge`. Code: `ai_formation_wedge_00a11690` in
+`src/ai_command_tick.cpp`, called after the follower pass of CAUTIOUSATTACK, CAUTIOUSMOVE and
+DEFENDPOSITION; the host methods and the census are in `src/game_hosts_ai.cpp`. The column-0 writes go
+through the units-host entry point `GameUnitsHost::set_formation_member_offset_0070d080` (cc9-lua6).
+
+**The routines.**
+
+| routine | ABI | body (exclusive end) | coverage |
+| --- | --- | --- | --- |
+| `00A11690` wedge | `__fastcall(base)`, `[base+4h]` the owner group, `RET` | `00A11690`-`00A11AED` | complete except the tail `0077A080`/`0077C880` (replication, below) |
+| `00A113D0` threat direction | `__thiscall(base)(float out[3])`, `RET 4` | `00A113D0`-`00A1152A` | complete |
+| `004F2F40` normalize | `__thiscall(float v[2])`, `RET` | `004F2F40`-`004F2FAE` | complete (already named `BSP_Geometry_NormalizeVector2DWithCutoff`) |
+
+**Corrections to section 10.**
+- **13 samples, not 12.** The angle is stored as binary32 after each `FADD` of the double pi/6 at
+  `00CEC730`, and the loop continues while the double at `00CE3828` (6.2831854820251465, 2pi rounded
+  to binary32) is above it. The accumulated angle reaches 6.2831845 before the test fails, so a 13th
+  sample runs at essentially 2pi. It only wins on a strictly greater cost than sample 0.
+- **A fourth caller.** RETREAT's tick `00A156E0` (vtable `00D22A60`, slot `+0Ch` at `00D22A6C`) runs
+  `00A10DC0` and then `00A11690` at `00A156EE`. RETREAT's tick is not bound in this host, so that call
+  has no reach here.
+- **The normalizer's cutoff.** `004F2F40` compares the squared length with the double 1e-10 at
+  `00CE3820` and divides by the double 1e-5 at `00CE3C70` at or below it. A zero `d[0]` therefore
+  gives `u = v = (0, 0)`, not a unit vector.
+
+**What a zero danger cost does.** The seed is -1e10 and the test is strict, so when every sample
+costs the same the first sample wins. Sample 0 is `a = 0`: `d = (750 sin 0, 0, 750 cos 0) = (0, 0,
+750)`. Its `d[0]` is exactly zero, so `u` and `v` normalize to `(0, 0)`, `F = P = 0`, and every placed
+member gets `(-0.0, -0.0)`. The wedge then puts every ship member's column-0 station on the leader's
+own point. This is the image's arithmetic; the host's danger cost is LABELLED (its entity list is
+the active units, and `PartyPresence_DistanceMin/Max` come from this installation's
+highlvlaiglobals.lua, 2000 and 4000), so a zero here depends on that substitution being faithful.
+
+**Does the host need `0070EFD0(0)`?**
+- For ship members of the AI group with a record, no: the wedge overwrites their column 0 in the same
+  call.
+- It matters for records the wedge does not place: non-ship members, and formation members that are
+  not in the AI group's list. `0070EFD0(0)` sets their column 0 to about 1e-38 m, because the shape-0
+  "table" at `00E08F18` is the registered command objects (vtable, ordinal) of
+  `bsp/entity_orders.hpp`. That puts those stations on the leader's point too.
+- So the host reproduces it through the same entry point: every live record of the leader's
+  formation gets `(0.0, 0.0)` first. LABELLED: 0.0 instead of the ~1e-38 products.
+- On USN12 the Montpelier formation is exactly the AI group's 12 ships, so the rewrite changes
+  nothing observable there.
+
+**The tail.** `0077A080` builds MT_FORMATION_SET (78h, `00D02348`) from the group's `+500h` column and
+every record's four columns, and `0077C880` sends it to the other peers (`0077C7B0`), or to the
+secondary's first peer when `[00E188A8+1FE4h]` is 2. A single-player session delivers nothing, so the
+host does not model it.
+
+**Host methods** (`AiCommandTickHost`, all in `src/game_hosts_ai.cpp`):
+
+| method | native | contract |
+| --- | --- | --- |
+| `tick_member_forward_row` | entity `+ECh..+F4h` (`00A1172B`, `00A11732`) | `GameUnitsHost::unit_pose` forward row |
+| `tick_member_has_formation_0284` | entity `+284h` (`00A116F3`) | `unit_formation_group_0284 >= 0` |
+| `tick_formation_shape0_0070efd0` | `0070EFD0(0)` at `00A11866` | every live record of the leader's formation to (0, 0), through the entry point |
+| `tick_formation_set_column0_0070d080` | `0070D080` at `00A1193E`, stores `00A11A57`/`00A11A5C` | the entry point with column 0; false without a record |
+| (existing) `tick_danger_cost_00a010f0` | `00A010F0` at `00A114B9` | `EDX = (group+5638h == 0)` |
+| (existing) `tick_tuning_field(0x210)` | `00A371A0` at `00A11879` | Formation_UnitDist, 500 |
+
+The census is one line per wedge run (`ai cautious wedge:`, the first 60) and the summary
+`summary mission ai cautious wedge bound= calls= runs= placed= no_record= zero_frame=`. `calls` counts
+every call by a bound tick. `runs` counts calls past both gates. `zero_frame` counts runs where `u` is
+`(0, 0)`.
+
+**Predictions, written before any ON run.** OFF is the tree's own build. ON is `pair_export --flip
+kCautiousWedgeBound=true` into `local\ships6_<row>`.
+
+- **USN12 3200/3000.**
+  - Groups (reference-era OFF log `s5m_both_usn12`): CAUTIOUSATTACK led by Montpelier (12 ships, 11
+    followers joined to its formation at start), DEFENDPOSITION led by Fortress-07 (4 members), and the
+    player's NONCONTROL group of three destroyers led by Shigure at (3500, -5859).
+  - Fortress-07 is not a ship base, so its calls stop at the first gate: `calls` exceeds `runs`.
+  - The first run is at 6.10 s, in the tick of the first route build. Montpelier is near (-2440,
+    -4202), about 6.1 km from Shigure, so every ring sample is beyond 4000 m of every player ship
+    and costs 0.
+  - First wedge line: `samples=13`, `threat=(0.0 0.0 750.0)`, `cost=0.0`, `u=(0.0000 0.0000)`,
+    `v=(0.0000 0.0000)`, `dist=500`, `shape0=12` (11 if the entry point does not answer the leader's
+    own record, a host detail rather than a mechanism failure), `placed=11`, `not_ship=0`, `no_record=0`, and both
+    offsets `(-0.0, -0.0)`.
+  - `zero_frame` equals `runs` while Montpelier stays beyond 4750 m of all three player ships. In the
+    OFF run it was still about 4.7 km away at 93.8 s. Any later run with a non-zero cost has
+    `u = +/-(cos h, sin h)`, the sign being that of the threat's x.
+  - **Positions.** From 6.10 s every follower's station is Montpelier's own point (across 0, along 0)
+    instead of the join offsets (across about +/-500 m, along 200 to 1700 m). The eleven followers
+    close on Montpelier and bunch around it. Montpelier's own route is the same unless ship avoidance
+    turns it.
+  - `pair_diff` exits 3. The fight measures may move; no sign is predicted for them.
+- **USN04 4700/4500.** Reference i (`local\rb9_usn04.log`, main `d466d4250`) has `cautious=0` in the
+  parties census and `defendposition=0` on both defend paths. The 00A28A60 records path has
+  `records=0`. So no group runs a wedge-calling tick: `calls=0`, and `pair_diff` exits 0 or 1. It is 1
+  if the summary's `bound=` value counts as a difference.
+
+**Verdict rule.**
+- A mechanism failure keeps the switch OFF and is recorded. That is a wrong census on USN12's first
+  line, a non-zero `u` while every cost is 0, or a USN04 call.
+- A spread miss with the mechanism matching may flip, and is recorded.
