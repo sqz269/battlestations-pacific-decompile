@@ -266,3 +266,136 @@ recorded above.
 
 **Decision: `kApproachTurnRadiusBound` is ON.** The value is the image's, the mechanism matches,
 and the failed half was on spread with no gameplay change.
+
+## 7. Squadrons generated after load (packet `cc9_generated_squadron_brain_membership`)
+
+**The host.** `GameAiCoordinatorHost::create_00a32350` runs `build_squadrons` once, at the first
+`create_units` (`src/game_hosts_ai.cpp`).
+- **A later squadron is never a squadron candidate.** SpawnNew waves, air-ops launches and
+  GenerateObject squadrons after load all miss the list.
+- **Its planes are seedable as plain units**, but `009FE080` refuses the plane base.
+- **A second defect rides on the same growth.** A squadron's candidate index is
+  `units.count() + i`. When units are created after the build, every stored squadron index,
+  in group members, `group_of_unit` and `last_order`, silently turns into the index of a new
+  unit.
+
+**The image admits squadrons live.** Compose phase 3 walks the entity lists hung off
+`world+19CCh` on every pass (docs/AI_GROUP_THINK.md; docs/AI_COORDINATOR_TICK.md):
+
+```
+00A2E835  MOV ESI,[EDI+8]             ; the node's entity
+00A2E838  CMP byte [ESI+5Ch],0 / JE next
+00A2E83E  CMP byte [ESI+5Dh],0 / JNE next ; 00A2E844 +60h ; 00A2E84A +5Eh
+00A2E850  CMP dword [ESI+16Ch],0 / JNE next    ; not already grouped
+00A2E859  CMP [ESI+54h],EBP (2) / JGE next     ; party 0 or 1
+00A2E85E  PUSH 5660h / CALL 00BF681B ; 00A2E881 CALL 00A2DFA0   ; a new group seeded on it
+00A2E88D  MOV EDI,[EDI+4] / TEST / JNE 00A2E835                ; the next node
+```
+
+- The lists are live, and the walk has no load-time snapshot. A squadron entity is therefore
+  a candidate on the first pass after it is in the world, whatever created it.
+- Its identity is the entity pointer, which does not move when other entities are created.
+
+**The binding.** `kGeneratedSquadronBrainBound`, committed OFF. At the head of each coordinator
+fixed step, when the unit count has grown since the last build:
+- every stored squadron index is shifted by the growth: group members, `group_of_unit`,
+  `last_order` and the seed cursor;
+- `seed_squadron_for_unit` runs on each new unit. That is build_squadrons' own per-unit body,
+  moved unchanged, so a new flight leader builds its squadron from the registry;
+- two ON-only lines report it: `ai squadron generated after load: leader=...` and
+  `summary mission ai generated squadrons=N index_shifts=M`.
+
+**Predictions, written before the ON runs.** OFF is this tree's build (main `734ee35a2` plus
+the docs-only `9fc5b352a`).
+
+**USN04 4700/4500, exit 3.**
+- **What is created after the build.** The build holds one squadron (movieval). Eight SpawnNew
+  bomber waves of two, and seven air-ops launches, are created after it.
+- **Squadrons.** Generated squadrons rise above 0, and `index_shifts` is above 0 for movieval's
+  stored index.
+- **Brain orders reach them.** OFF has `squadron_commands=1 member_orders=3`, and ON both rise.
+  Groups created rise from 15.
+- **Moves.** The brain's orders compete with the script's bomber orders, so torpedo and dive
+  releases move. Direction is not predicted. Deaths move, from 40 OFF.
+
+**USN13 3200/3000, exit 3.** OFF has no squadrons (`built=0`). One SpawnNew and twelve launches
+come after the build, so generated squadrons rise above 0, squadron commands rise from 0, and
+releases and deaths move.
+
+**USN01 3200/3000.**
+- ScoutDauntless is generated after the build (log line 15373, after the build at 1686). It
+  should be one generated squadron.
+- Squadron commands rise from 0 only if the brain orders it. The prediction is exit 1 or 3,
+  with any move limited to ScoutDauntless's flight and what it spots.
+
+**USN02 9200/9000: identity, exit 0 or 1.** No squadron exists at load or after, so no growth
+touches a squadron index.
+
+**The pairs.**
+- **OFF** is this tree's build. **ON** is `pair_export --commit 4376ade2a --flip
+  kGeneratedSquadronBrainBound=true` into `local\sq_on`.
+- **Logs:** `local\sq_{off,on}_{usn04,usn13,usn01,usn02}.log`.
+
+| mission | pair_diff | generated / index shifts | groups created | squadron commands / member orders |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 3 | 20 / 93 | 15 -> 12 | 1 / 3 -> 4 / 12 |
+| USN13 3200/3000 | exit 3 | 24 / 9 | 5 -> 5 | 0 / 0 -> 466 / 1398 |
+| USN01 3200/3000 | exit 1, identical | 1 / 0 | 5 -> 5 | 0 / 0 -> 0 / 0 |
+| USN02 9200/9000 | exit 1, identical | 0 / 0 | 3 -> 3 | 0 -> 0 |
+
+**USN04, OFF -> ON:**
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 40 | 29 |
+| hit records | 644 | 501 |
+| shots | 5333 | 3751 |
+| torpedo-task releases | 5 of 16 | 10 of 16 |
+| dive-bomb-task releases | 1 of 19 | 6 of 19 |
+| torpedo drops | 0 | 8 |
+| first hit | 92.50 s | 100.85 s |
+
+- **Deaths.** The eleven deaths only OFF has are Japanese planes: nine A6M Zeros, a D3A Val and
+  a B5N Kate.
+- **Why they survive.** The player's launched fighters (`Lexington-class01_sqn01` and the
+  others) are now brain-tasked and no longer meet the raids early.
+
+**USN13, OFF -> ON:**
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 24 | 16 |
+| hit records | 720 | 294 |
+| shots | 6607 | 2090 |
+| first hit | 68.10 s | 97.05 s |
+
+- **Deaths.** The eight deaths only OFF has are `bruh` attackers. The early kills by
+  `Yorktown_sqn02` and `Enterprise_sqn01` are gone.
+- **What the squadrons now do.** The player-launched squadrons receive repeated brain `moveto`
+  orders (`ai_command_tick`), about 20 per squadron.
+- **This is the image's rule.** docs/AI_BRAIN_PLAYER_EXEMPTION.md establishes that the image's
+  brain has no player exemption on its order path.
+- **One labelled host substitution sits on that path.** The host appends to the order ring
+  where `0077D600` replaces, with a duplicate filter. That may amplify the churn, and it is
+  not separated here.
+
+**Predictions:**
+- **Held:**
+  - generated squadrons and index shifts above 0 on USN04;
+  - brain orders reaching them on USN04 and USN13;
+  - releases and deaths moving;
+  - USN01 at one generated squadron and exit 1;
+  - USN02's identity.
+- **Failed on spread:** groups created fell on USN04, 15 -> 12, where I predicted a rise. The
+  size of the USN13 moves was not anticipated.
+
+**Decision: `kGeneratedSquadronBrainBound` is ON.** The failure is on spread only. The
+admission is the image's live-list rule, and the index shift removes a host defect.
+- **Flagged for reference g and the lead:** USN13's damage roughly halves.
+- Whether the brain's `moveto` churn on player squadrons matches the image depends on the
+  order ring's append-versus-replace substitution. That is a follow-up worth routing.
+
+**Lead's ruling: held OFF pending the order-ring read.** USN13's halved damage runs through
+the host's order ring, which appends with a duplicate filter where `0077D600` replaces. That
+substitution must be separated before this switch can carry the verdict. The pair rows above
+stand as recorded.
