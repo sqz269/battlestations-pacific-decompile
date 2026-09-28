@@ -1147,7 +1147,20 @@ public:
         return false;
     }
     void send_clear_commands_0071d880() override {
-        chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
+        if (!kClearOrdersSendBound) {
+            chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
+            return;
+        }
+        // 0071D880 -> MT_GAMEUNIT_CLEARCMD (+20h = 1, +24h = -1), the message
+        // clear_all_commands posts for 0081733E: routed through
+        // route_clear_command and answered by 00721A40's 5Dh arm with 00720CA0.
+        chain_.owner.done("EntityCommandArm::send_clear_commands", 0x0071d880u);
+        bsp::ClearCommandMessage every{};
+        every.arm = 1;
+        every.index = -1;
+        chain_.owner.route_clear_command(chain_.unit.index,
+            chain_.owner.player_of(chain_.unit.index), every);
+        ++chain_.owner.summary.clearorders_sends;
     }
     bool call_0080dc70() override {
         chain_.owner.record("EntityCommandArm::free_fire_gate", 0x0080dc70u);
@@ -3429,6 +3442,19 @@ void GameCommandsHost::report() {
         "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
         kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,
         host.summary.drop_calls, host.summary.clear_all_slot_clears);
+    {
+        unsigned long long received = 0, queued = 0, dropped = 0, outside = 0;
+        for (const GameDirector& d : host.directors) {
+            received += d.user_points_received;
+            queued += d.user_paths_queued;
+            dropped += d.user_points_dropped;
+            outside += d.user_points_outside_map;
+        }
+        host.log.notef("summary mission director user path points=%llu queued=%llu "
+            "dropped=%llu outside_map=%llu clearorders_bound=%d clearorders=%llu (007207C0 / "
+            "0071D880, packet cc9_director_moveonpath_route)", received, queued, dropped,
+            outside, kClearOrdersSendBound ? 1 : 0, host.summary.clearorders_sends);
+    }
 }
 
 }  // namespace bsp::game

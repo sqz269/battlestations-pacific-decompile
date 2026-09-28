@@ -164,6 +164,16 @@ inline constexpr bool kSetCommandQueueDelayBound = true;
 // clear-all.
 inline constexpr bool kSetCommandClearAllMessageBound = true;
 
+// Packet cc9_director_moveonpath_route, docs/AI_CAUTIOUS_ROUTE.md section 5. True:
+// the `clearorders` arm of 00816E30 (008171BD) reaches 0071D880 SendClearCommands,
+// whose MT_GAMEUNIT_CLEARCMD (+20h = 1, +24h = -1) the 5Dh arm answers with the
+// every-slot clear 00720CA0. It posts the same message clear_all_commands posts
+// for the 0081733E site under kSetCommandClearAllMessageBound (route_clear_command,
+// delivered at the row-9 drain). That packet bound 0081733E and 0071E5AA only;
+// this arm's call at 008171BD stayed a record. False: a `clearorders` order leaves
+// the queue as it was.
+inline constexpr bool kClearOrdersSendBound = false;
+
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
 struct GameReleasedTarget {
@@ -210,6 +220,7 @@ struct GameDirectorStepOutcome {
 
 struct GameCommandsSummary {
     std::size_t units{0};
+    unsigned long long clearorders_sends{0};   // 0071D880 bodies (kClearOrdersSendBound)
     // Packet cc8_ship_drive: how many times the unit table was re-registered
     // with directors already built, i.e. how many times the old `assign` wiped
     // every command queue in the mission.

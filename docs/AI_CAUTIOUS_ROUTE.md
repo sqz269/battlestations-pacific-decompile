@@ -104,3 +104,125 @@ category 1 or 2. So:
 - **USN04, USN02 and USN01** hold no CAUTIOUSATTACK (section 11.4): identity (exit 0 or 1), builds=0.
 - **Verdict rule:** a build count or point count other than above, or a moved reference row, keeps the
   switch OFF.
+
+## 5. The first pair, and why the switch stayed OFF
+
+Same tree, commit `3743a0548`. OFF is `local\s5r_off2_<m>.log` and ON (`kCautiousRouteBound` alone,
+`local\s5r_on`) is `local\s5r_on_<m>.log`.
+
+| mission | pair_diff | builds | points | clears | waits | `tick_orders` OFF -> ON |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN10 3200/3000 | exit 3 | 1 | 4 | 0 | 48 | 95 -> 46 |
+| USN12 3200/3000 | exit 3 | 1 | 4 | 21 | 27 | 49 -> 0 |
+| USN01 3200/3000 | exit 1 | 0 | 0 | 0 | 0 | 74 -> 74 |
+| USN04 4700/4500 | exit 1 | 0 | 0 | 0 | 0 | 78 -> 78 |
+| USN02 9200/9000 | exit 1 | 0 | 0 | 0 | 0 | 1 -> 1 |
+
+**The mechanism prediction failed.**
+- **`cruise` did not hold the user path back.** In this host the queued `moveonpath` became the head.
+  Montpelier runs `moveonpath` from step 270 and closes on the first waypoint at about 16.5 m/s.
+  - Montpelier reached the first waypoint at 90.75 s.
+  - Atlanta-class 01 never reached its first waypoint (the leg is a quarter of 7.9 km), so it waited
+    on every tick (48 waits).
+- **`clearorders` did nothing.** From 90.75 s, Montpelier issued it on every tick, 21 times. The
+  host's `clearorders` arm (008171BD in 00816E30) reaches `0071D880` SendClearCommands, and that call
+  was only a record in this host. So the path stayed attached, and neither a rebuild nor the moveto
+  ever came.
+
+**Verdict:** `kCautiousRouteBound` stays OFF under the protocol. The reference rows are identical.
+
+**The fix.** `kClearOrdersSendBound` (`include/bsp/game_hosts_commands.hpp`) binds 0071D880 as the
+every-slot clear. That is the same body `clear_all_commands` already runs for a flagged order. No OFF
+run on USN01, USN02, USN04, USN10 or USN12 sends `clearorders` (`send_clear_commands` is absent
+from all five OFF logs), so the arm is identity there by itself.
+
+## 6. Predictions for the second pair (both switches), written before its ON runs
+
+- **USN12 3200/3000:**
+  - It is identical to the first ON run up to 90.75 s: the build at 6.10 s with 3 waypoints, then
+    the follow.
+  - At 90.75 s `clearorders` empties Montpelier's queue. The next tick (about 3 s later) builds 2
+    waypoints plus the target from the current position, and Montpelier follows the new path.
+  - By 150 s: builds 2 or 3, clears 1 or 2, no moveto (`tick_orders` 0).
+  - Against OFF it is exit 3. Against the first ON run it moves only after 90.75 s.
+- **USN10 3200/3000:** it is identical to the first ON run in gameplay, because Atlanta-class 01 never
+  passes its first waypoint. So builds=1, clears=0 and waits=48, and it is exit 3 against OFF.
+- **USN01, USN02, USN04:** identity against OFF, with builds=0 and clearorders=0.
+- **Verdict rule:** as in section 4. Also, a USN12 clear that does not end the attachment keeps both
+  switches OFF.
+
+## 7. The second pair and the verdict
+
+Commit `1c69af06e`. OFF is `local\s5r_off3_<m>.log`. ON is `pair_export --flip kCautiousRouteBound=true
+--flip kClearOrdersSendBound=true` into `local\s5r_on2`, with logs `local\s5r_on2_<m>.log`.
+
+| mission | pair_diff | builds | points | clears | waits | `tick_orders` OFF -> ON |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN12 3200/3000 | exit 3 | 2 | 7 | 1 | 46 | 49 -> 0 |
+| USN10 3200/3000 | exit 3 | 1 | 4 | 0 | 48 | 95 -> 46 |
+| USN01 3200/3000 | exit 1 | 0 | 0 | 0 | 0 | 74 -> 74 |
+| USN04 4700/4500 | exit 1 | 0 | 0 | 0 | 0 | 78 -> 78 |
+| USN02 9200/9000 | exit 1 | 0 | 0 | 0 | 0 | 1 -> 1 |
+
+**USN12:**
+- It builds at 6.10 s with 3 waypoints.
+- It issues `clearorders` at 90.75 s. The queue empties this time.
+- It rebuilds at 93.80 s from (-1060, -4573) with 2 waypoints. Two user paths are queued and none is
+  dropped.
+- Montpelier moves 2247.71 m (OFF 2428.02).
+
+**USN10:**
+- Gameplay is identical to the first ON run: pair_diff of `s5r_on_usn10` against `s5r_on2_usn10`
+  exits 1.
+- Hit records go from 18 to 23 and damage from 10158.5 to 19077.2 against OFF.
+
+**Verdict: both switches ON.** Every prediction of section 6 held.
+
+**Left open:**
+- 00A11690.
+- CAUTIOUSMOVE's own call of 00A14DD0 (00A152B0).
+- The out-of-map crossing of 0071FDE0 (`outside_map` stayed 0).
+- What +18h really tracks (the listener at `+10h`).
+- The session delivery of 5Fh with `kSetCommandQueueDelayBound`.
+
+## 8. Does the image attach the path behind `cruise`? The merged head, and the re-pairs
+
+**The image does attach the path, so the section 4 premise was wrong about the image, not the host.**
+- The queued `moveonpath` ends `cruise` through the director step's pre-pass 00836941
+  (`weapon_director_step_prepass_00836941`, 00836962..00836985). When the head's stage is running
+  (1) and 0071BE60 counts more than one filled slot, or the unit is player-controlled, it raises the
+  head's stage to 2 with 0071D810.
+- That rule tests neither the head's category nor the queued command's category. So `cruise`
+  (category 3) ends as soon as the `moveonpath` (category 3) is queued behind it.
+- The first ON log shows exactly that at 6.10 s: `raise_primary_stage`, `build_clear_command` and
+  `apply_clear_command`, then "Montpelier cleared `cruise` from slot 0 ... the queue now holds
+  `moveonpath`", then `begin_user_path_0071f6a5`.
+- My section 4 test ("no director arm ends `cruise` for a queued category-3 command") looked only at the
+  per-command arms (stop, follow, attackmove, the generic arrival) and missed the pre-pass.
+- **The route arm builds waypoints the image also follows.**
+
+**The `clearorders` arm on main.** Main (`8d9b938c7`, merged here as `2d37190cf`) posts 0071D880 as a 5Dh
+every-slot message for 00816E30's clear-all at 0081733E and for 0071E5AA's drop
+(`kSetCommandClearAllMessageBound`, cc9-gunnery6). The `clearorders` arm's own 0071D880 call at 008171BD
+is still `record("EntityCommandArm::send_clear_commands")` there. So `kClearOrdersSendBound` is not
+redundant. After the merge it posts the same message through `route_clear_command`, delivered at the
+row-9 drain like the others. Section 31's rule holds: 00A14DD0 reads the director only on a later
+command tick, seconds after any delivery. Both route switches are OFF on `2d37190cf`.
+
+**Predictions for the re-pairs on `2d37190cf`, written before their ON runs.** OFF is `local\s5m_off_<m>.log`.
+- **`kCautiousRouteBound` alone (`local\s5m_route`):**
+  - USN12: one build at about 6.1 s (3 waypoints and the target). Montpelier follows the user path.
+    Once it passes the first waypoint (about 90 s), a `clearorders` on every tick leaves the path
+    attached: builds=1, clears in the twenties, no moveto.
+  - USN10: builds=1, clears=0, waits in the forties.
+  - USN01, USN04 and USN02: builds=0, identity (exit 0 or 1).
+  - **Verdict rule:** as in section 4. The switch cannot flip alone, because its clears are empty
+    without the second switch.
+- **Both switches (`local\s5m_both`):**
+  - USN12: as in section 7. The first `clearorders` empties the queue (on the drain), and the next tick
+    rebuilds with 2 waypoints: builds 2 or 3, clears 1 or 2, no moveto.
+  - USN10: as the route-alone run.
+  - The references: identity.
+  - **Verdict rule:** as in section 6.
+- Timings may differ by a step from sections 5-7. `kSetCommandQueueDelayBound` now delivers the 5Fh and
+  5Dh messages at the drain.
