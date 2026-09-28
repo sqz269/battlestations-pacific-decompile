@@ -573,14 +573,44 @@ Measured on a pair of this tree's build, OFF against ON:
 A mechanism failure is any of these: no insert, a head not at mode 3 on insert, a wingman not at mode 1, a
 mode outside 1 to 4, or a moved flight path. Any of them keeps the switch OFF, and the result is recorded.
 
+### The pairs and the verdict (cc9-lua10, 2026-09-28): ON
+
+The OFF runs used a clean export of `cce28dd60` (`local\l10_base`). The ON runs used the same commit
+with `kLandingSequencerBound=true` (`local\l10_ls`). Both used reference j's parameters.
+
+| row | frames | `pair_diff` | inserts | releases | lookups / found | modes 1 / 2 / 3 / 4 | k=0 mode-4 refusals |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| LOMP10 | 9200/9000 | 1, gameplay identical | 2 | 0 | 7150 / 5932 | 1617 / 1267 / 512 / 12 | 12 |
+| USN01 | 3200/3000 | 1, gameplay identical | no deck built | - | - | - | - |
+
+1. **Inserts: held.** Warhawk 01 inserted at 70.80 s, with its head 3124.6 m from T. Lightning 01
+   inserted at 87.80 s, at 3195.4 m. Each got 4 records, the head at mode 3 and the wingmen at
+   mode 1. B-25 01 got none.
+2. **The next pass: held.** One tick later (70.85 s and 87.85 s) both heads went to mode 2. Their
+   wingmen took mode 2 behind them, then dropped back to 1 once they were outside StandbyDist.
+3. **First landing states: held.** Every entry is refused: `refused_states` is 13995, keyed first
+   at `009B3E6D` (mode 2). Warhawk 01's head also reached mode 3 (from 142.90 s) and mode 4
+   (12 passes).
+4. **Flight paths: held.** Deaths, hits, damage, shots and the unit table are identical. The
+   native table adds `006CD240` and moves only the `006C0B50`/`006C5380` records, because the
+   found arm returns before them. The rest is the known noise.
+5. **No release: held.** `releases` is 0.
+6. **USN01: held** (exit 1).
+
+- **Refused and reached:** 006C3F80's k=0 mode-4 arm, which reads the launch-site object at block
+  `+3Ch`. It ran 12 times on LOMP10, and each time `+8h` kept its prior value. No state reads mode
+  4 yet: `land/begin` is refused. The arm must be read before `land/begin` is bound.
+- **Seen in the run, not predicted:** the wingmen's spacing `+8h` is 0.0. A wingman far behind
+  its head has t = G / speed below 0.5 F, so s = 0. It only gates mode 4.
+- **Verdict: ON.** Every mechanism clause matched, and gameplay is identical on both rows.
+
 ## 6. Open, in order
 
-1. **The landing sequencer `006CC9F0`** is read in section 5b; it is not bound. Two bodies are
-   left before the binding can be exact: `006C6020` (the record's `+4h`, whose arc term needs the
-   listing) and `006C3F80` (the record's `+8h`, which gates mode 4; read from the pseudocode,
-   its argument roles unverified). The binding then needs the
-   holder frame from the owner's pose, `RunwayWidth`/`RunwayLength` and block `vtable[10h]`. After
-   that come `land/standby` and `land/line` for the row.
+1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
+   heads reach modes 2, 3 and 4, and the wingmen reach modes 1 and 2. So `land/standby` and
+   `land/line` come next, then `land/begin`, which also needs `006C3F80`'s launch-site arm (block
+   `+3Ch`, `+40h` and `vtable[30h]`). A mother-ship holder, refreshed from the moving ship, is
+   still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
 3. **The follow law on a circling leader** (the Lightning members above). This belongs to the
@@ -599,12 +629,12 @@ mode outside 1 to 4, or a moved flight path. Any of them keeps the switch OFF, a
 | `009B3770`, `009B3CF0` | complete as a read; bound for moveto and follow, refusing every other state |
 | `006C54C0` | partial: the miss arm bound; `006C3E50` and `006C5380` read (section 5b); the frame sums unread |
 | `006BD080`, `006C4790` | complete as a read; the vector and list producers unread |
-| `006CD240`, `006CC9F0`, `006C7960`, `006C0B50`, `006BEF70`, `006C7540`, `006CAA10` | complete as a read (section 5b); not bound |
-| `006C3B10`, `006C5C40`, `006C5380`, `006C3E50`, `007C6760`, `006C46B0`, `006C45C0`, `006BED60` | complete as a read; not bound |
-| `006C0750`, `006BEE40`, `006BF0D0`, `006BC960`, `006BCC90`, `006BCA40`, `006BA620` | complete as a read; block `vtable[10h]` and `0085DEA0` unread |
-| `006C5E20` | partial: gates read, the heading test's argument roles unread |
-| `006C6020` | partial: `006C6038`-`006C60F0` and the tail stores read; the arc term (`00BF9940`) unread |
-| `006C3F80` | partial: read from the pseudocode; the `00419010` argument roles and `00E08E50`'s width unverified against the listing |
+| `006CD240`, `006CC9F0`, `006C7960`, `006C0B50`, `006BEF70`, `006C7540`, `006CAA10` | complete; bound (section 5c); the `006C0B50` slot tail is counted, not applied |
+| `006C3B10`, `006C5C40`, `006C5380`, `006C3E50`, `007C6760`, `006C46B0`, `006C45C0`, `006BED60` | complete; bound |
+| `006C0750`, `006BEE40`, `006BF0D0`, `006BC960`, `006BCC90`, `006BCA40`, `006BA620`, `0085DEA0`, `006CA5A0` | complete; bound for an airfield owner |
+| `006C5E20` | complete (section 5c); bound |
+| `006C6020` | complete (section 5c); bound |
+| `006C3F80` | complete (section 5c); bound except the k=0 mode-4 arm (launch-site object), refused |
 | the six landing states' bodies | unread |
 
 ## ABI

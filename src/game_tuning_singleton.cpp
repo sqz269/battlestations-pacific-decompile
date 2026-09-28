@@ -511,6 +511,22 @@ void game_tuning_load_007e2a20(GameTuningLuaHost& host, GameTuningBlock& block) 
         switch (key.kind) {
         case GameTuningValueKind::Number:
             *slot(block, key.offset) = static_cast<float>(host.value(value).number);
+            if constexpr (kFollowTargetDirAcosBound) {
+                if (key.offset == 0x3A4 || key.offset == 0x3A8) {
+                    // 007E88A1-007E88DA: the FSTP'd float v; v > 1 -> 0.0,
+                    // -1 > v -> pi (00D7A264), else float(acos(v)) (00BF9940).
+                    const float v = *slot(block, key.offset);
+                    float out;
+                    if (v > 1.0f) {
+                        out = 0.0f;
+                    } else if (-1.0f > v) {
+                        out = 3.14159274101257324f;
+                    } else {
+                        out = static_cast<float>(std::acos(static_cast<double>(v)));
+                    }
+                    *slot(block, key.offset) = out;
+                }
+            }
             break;
         case GameTuningValueKind::NumberOrDefault: {
             const GameTuningLuaValue v = host.value(value);
