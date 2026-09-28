@@ -778,6 +778,62 @@ on this evidence it would lose the same along-track component. Settling that nee
 `00811726` and a reading of what the image does for a point beyond the trail, neither of which this
 packet did.
 
+### 5g. The join's `follow` (packet `cc9_formation_join_follow`, cc9-lua9, 2026-09-28)
+
+This section reads the `0077FA8D` follow-up that 5f left unread. Both routines were read whole
+from the listing.
+
+- The loop `0077FA81`..`0077FABF` runs once per brought unit, `EBP` times. Each pass does:
+  - `0070EF30(list[i])` on the target group;
+  - `ESI->vtable[114h]()`. `ESI` is the **ordered** unit on every pass, never `list[i]`;
+  - when that answers non-null, `director->vtable[58h]([ESP+80h])`.
+- `[ESP+80h]` is the join's target argument, which `0077F9E6` overwrote with `[group+14h]` when the
+  target had a group. So the target is always the target group's leader.
+- `vtable[58h]` is `00720CD0` (`00720CD0`-`00720D79`, `RET 4`). It runs `00720850` on every
+  occupied slot, 9 down to 0. Then it calls `vtable[60h]` = `008358D0` with `00E08F60` `follow`
+  and a record naming the entity (`[entity+174h]`, flag 1, the floats at `00F87574`).
+- So the ordered unit alone ends the join holding `follow` on the leader, issued `brought` times
+  with identical arguments. The brought members get nothing.
+
+**Bound** behind `kFormationJoinFollowBound` (`GameUnitsHost::Impl`), OFF at commit.
+- `GameUnitsHost::formation_join_0077f940` calls cc9-gunnery9's
+  `GameCommandsHost::issue_follow_command_00720cd0(follower, target_leader)` after a successful
+  join, `brought.size()` times.
+- It calls it only from the top-level call. The one-level recursion that models the loop's
+  `0070EF30` calls tracks its depth and issues nothing.
+- The summary line `summary unit formation join follow calls=.. pushed=.. bound=..` counts the
+  calls in both builds; `pushed` counts the ON calls that `008358D0` accepted.
+- Not modelled: `0070EF30` with a unit that is already a member still reaches the follow in the
+  image, but the host's join returns before it. The ordered unit has always just been detached,
+  so the case needs a unit that was never grouped and is already a member of the target group.
+
+#### Predictions, written before the ON runs
+
+The reference counts come from cc9-ships8's OFF logs on an older base, `local\ships8_c0_<row>.log`:
+
+| row | joins | predicted `calls` |
+| --- | --- | --- |
+| JM06 | 21 | 21 |
+| USN01 | 13 | 13 |
+| USN04 | 16 | 16 |
+| JM08 | 18 | 18 |
+
+The `calls` value equals `joins` on each row, OFF and ON alike; the pair's own OFF log is the
+base for these numbers.
+
+- **Every row: exit 3.**
+  - A follower's queue is cleared at its join and then holds `follow` on the leader.
+  - Any scene or script command it held is dropped, so followers that were cruising or on a path
+    now keep station.
+  - Follower paths and station errors move. The idle tail's `follow` re-issues fall, because the
+    slot is no longer empty.
+- **Deaths** may move on the fighting rows JM06, USN04 and JM08. USN01 has 5 deaths and should
+  keep them, since its losses are the scripted raid targets.
+- **Mechanism check:**
+  - `pushed` = `calls` ON and 0 OFF.
+  - The ON log carries one `follow issued (00720CD0, source join 0077F940)` line per call.
+  - No follower that joined shows a non-`follow` slot 0 at its first director step after the join.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread
