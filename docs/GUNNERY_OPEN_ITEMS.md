@@ -87,3 +87,41 @@ is ranked from its own evidence.
 
 Rank 3 (`00835860`) is in the commands host, not a gun file. Rank 4 is exact for the units this
 host creates. So neither is proposed ahead of these.
+
+## 4. The invincibility floor, gunnery half (packet `cc9_set_invincible_floor`, switch `kUnitInvincibilityFloorBound`, OFF)
+
+The read is cc9-lua2's (docs/LUA_BINDING_MISSION.md, "SetInvincible, 00897A50"). This is the
+gunnery host's half. cc9-lua2 binds the native, which calls the setter.
+
+- **The store.** `GameGunneryHost::set_unit_invincibility(unit, value)` keeps unit+150h per unit
+  index. It holds the value whether or not the unit's gunnery row exists yet, because a mission's
+  `luaInit` can run first. `unit_invincibility(unit)` reads it back.
+- **The three damage sites** all pass it as `UnitHealth::invincibility` to
+  `bsp::apply_damage_00879070`, which already floors health at `inv * max`:
+  - the hull pass (`add_damage`);
+  - the delayed explosions;
+  - damage control's water and fire.
+- **The sink.** In the kill path, `bsp::sink_is_refused_008110f0` refuses the `008110F0` sink
+  record for `inv > 0`, and the refusal is counted. The host's sink is a record only, so nothing
+  else changes.
+- **Not gated, as in the image.** Script `Kill` (`008AC5C0`) and the plane depth kill
+  (`kill_unit_00926d90`).
+- **The census line.** `summary mission gunnery invincibility sets= floored_writes=
+  sink_refusals= bound=`.
+
+**A misreading found on the way.** The water-surface binding describes `007BC5B0`'s test as
+"the health test `unit+150h <= 0`", and answers it with `unit_dead()`
+(`include/bsp/game_hosts_gunnery.hpp`, packet `cc9_water_surface_law`). The listing returns 1 when
+`[unit+150h] <= 0` or when the unit is not AI-held (`+1ACh` not 8 and `00927F10` false). unit+150h
+is the invincibility float, so the test means "not invincible, or player-held", not "dead". Once
+the native side sets the floor, the plane owners can answer it with `unit_invincibility(i) <= 0`.
+No change is made here.
+
+**Predictions** (cc9-lua2's, for the pair with both halves bound):
+
+| row | prediction |
+| --- | --- |
+| USN04 4700/4500 | identity: the floored Yorktown takes no damage |
+| BSM01 3200/3000 | identity: no unit takes damage |
+| USN02 9200/9000 | moves (exit 3). The seven floored ships (DeRuyter, Java, Kortenaer, Electra, Samidare, Murasame, Harusame) cannot die before `luaPh2MovieEnd` releases them. Kortenaer does not die at 68.30 s; `floored_writes` > 0 |
+| this commit alone (no setter caller yet) | identity everywhere, `sets=0` |

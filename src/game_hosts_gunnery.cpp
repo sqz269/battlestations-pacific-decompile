@@ -158,6 +158,14 @@ constexpr bool kGunBarrelCountBound = true;
 //    chain (base, barrel, yaw and elevation) and the per-barrel muzzle offsets
 //    are not applied; planes are not covered. docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kShipPlatformAttachmentBound = true;
+//  * kUnitInvincibilityFloorBound (packet cc9_set_invincible_floor): the
+//    per-unit unit+150h that SetInvincible (00897A50 -> 0042ED80) sets is handed
+//    to 00879070 as UnitHealth::invincibility at the three damage sites (hull
+//    pass, delayed explosions, damage control), so health cannot fall below
+//    inv * max; and the 008110F0 sink record is refused (counted) for inv > 0.
+//    The host's sink is a record only, so the refusal changes no state. OFF:
+//    every site passes 0, as before. The floor itself is stored either way.
+constexpr bool kUnitInvincibilityFloorBound = false;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -1633,6 +1641,21 @@ struct GameGunneryHost::Impl {
     // 00818110's scheduled objects: (unit, msg+30h damage), stepped once by
     // 0081B630 on the next scheduler pass.
     std::vector<std::pair<std::size_t, float>> pending_explosions;
+    // Packet cc9_set_invincible_floor: unit+150h by unit index.
+    std::vector<float> invincibility_by_unit;
+    unsigned long long invincibility_sets{0};
+    unsigned long long invincibility_floored_writes{0};
+    unsigned long long invincibility_sink_refusals{0};
+    float invincibility_of(std::size_t unit) const {
+        if (!kUnitInvincibilityFloorBound || unit >= invincibility_by_unit.size()) return 0.0f;
+        return invincibility_by_unit[unit];
+    }
+    // 00879070's floor: count a write the floor raised above the plain subtraction.
+    void note_floor(const bsp::UnitHealth& health, float amount, float new_health) {
+        if (health.invincibility > 0.0f && new_health > health.current_health - amount) {
+            ++invincibility_floored_writes;
+        }
+    }
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
@@ -6536,11 +6559,13 @@ public:
         bsp::UnitHealth health;
         health.current_health = owner_.unit_state[victim_].health;
         health.max_health = owner_.unit_state[victim_].max_health;
+        health.invincibility = owner_.invincibility_of(victim_);   // unit+150h
         bsp::UnitDamageGates gates;
         const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
             damage);
         owner_.done("ShipHit::apply_damage_00879070", 0x00879070u);
         if (outcome.refused) return false;
+        owner_.note_floor(health, damage, outcome.new_health);
         const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
             outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
         owner_.done("ShipHit::set_health_00877b90", 0x00877b90u);
@@ -7293,10 +7318,12 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             bsp::UnitHealth health;
             health.current_health = state.health;
             health.max_health = state.max_health;
+            health.invincibility = invincibility_of(unit);   // unit+150h
             bsp::UnitDamageGates gates;
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
                 amount);
             if (!outcome.refused) {
+                note_floor(health, amount, outcome.new_health);
                 const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
                     outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
                 if (write.wrote) {
@@ -7342,10 +7369,12 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             bsp::UnitHealth health;
             health.current_health = state.health;
             health.max_health = state.max_health;
+            health.invincibility = invincibility_of(i);   // unit+150h
             bsp::UnitDamageGates gates;
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
                 amount);
             if (outcome.refused) return;
+            note_floor(health, amount, outcome.new_health);
             const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
                 outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
             if (write.wrote) state.health = write.stored_health;
@@ -7450,7 +7479,13 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
             static_cast<double>(dt.damage[5]), static_cast<double>(dt.damage[6]));
     }
     done("Death::entity_kill_00926d90", 0x00926d90u);
-    record("Death::unit_sink_008110f0", 0x008110f0u);
+    if (kUnitInvincibilityFloorBound
+        && bsp::sink_is_refused_008110f0(false, invincibility_of(victim))) {
+        ++invincibility_sink_refusals;       // 008110F9: inv > 0 refuses the sink
+        done("Death::unit_sink_refused_008110f9", 0x008110f9u);
+    } else {
+        record("Death::unit_sink_008110f0", 0x008110f0u);
+    }
 
     if (target.last_attacker != 0) {
         target.row.killed_by = unit_state[target.last_attacker - 1].row.name;
@@ -8038,6 +8073,23 @@ float GameGunneryHost::min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_inde
     return lowest;
 }
 
+void GameGunneryHost::set_unit_invincibility(std::size_t unit_index, float value) {
+    // 0042ED80: store unit+150h (0042ED8F) and fan it to the children. The host's
+    // children of a unit are its guns, which carry no health, so the unit's value
+    // is the whole effect here.
+    if (unit_index >= impl_->invincibility_by_unit.size()) {
+        impl_->invincibility_by_unit.resize(unit_index + 1, 0.0f);
+    }
+    impl_->invincibility_by_unit[unit_index] = value;
+    ++impl_->invincibility_sets;
+    impl_->done("Entity::set_invincible_0042ed80", 0x0042ed80u);
+}
+
+float GameGunneryHost::unit_invincibility(std::size_t unit_index) const noexcept {
+    if (unit_index >= impl_->invincibility_by_unit.size()) return 0.0f;
+    return impl_->invincibility_by_unit[unit_index];
+}
+
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
     // Cause 1 is the only one a caller passes (007CE3A7); the funnel is the
@@ -8579,6 +8631,11 @@ void GameGunneryHost::report() {
             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
             kShipPlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery invincibility sets=%llu floored_writes=%llu "
+            "sink_refusals=%llu bound=%d (00897A50 -> 0042ED80, 00879070, 008110F0, "
+            "packet cc9_set_invincible_floor)", host.invincibility_sets,
+            host.invincibility_floored_writes, host.invincibility_sink_refusals,
+            kUnitInvincibilityFloorBound ? 1 : 0);
         host.log.notef("summary mission gunnery turn average tests=%llu rotations=%llu "
             "bound=%d (00901CC1..00901EEE / 0085E4D0, packet cc9_aa_turn_average)",
             host.turn_average_tests, host.turn_average_rotations,
