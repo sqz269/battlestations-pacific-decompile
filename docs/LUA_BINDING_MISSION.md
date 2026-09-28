@@ -1652,6 +1652,19 @@ Worker cc9-lua2, 2026-09-28. The contract is `docs/USN02_PHASES.md` section 3.
   - Deaths rise by those not yet sunk; the FinalShips' targets and the later hit rows shift.
   - The switch stays OFF until the lead calls that pair.
 
+### AddDamage identity pairs
+
+**Setup.**
+- OFF is this tree's build of `330419917`.
+- ON is `pair_export --flip kLuaAddDamageBound=true` (`local/ad_on`, SHA-256 `DE070BDEB689`).
+- The logs are `local/ad_{off,on}_<mission>.log`.
+
+**Result.** USN01 3200/3000, USN04 4700/4500 and USN02 9200/9000 are each pair_diff exit 1
+(gameplay identical), and the ON census reads `bound=1 calls=0 units=0 unresolved=0` on all
+three. That is as predicted: USN02 fails in phase 1 and never reaches `luaPh2MovieEnd`.
+
+**The switch stays OFF.** The flip pair waits for a phase-2 USN02 run, on the lead's call.
+
 ## Firing `hit` (packet `cc9_lua_hit_listeners`, `kLuaHitListenersBound`, committed OFF)
 
 Worker cc9-lua2, 2026-09-28.
