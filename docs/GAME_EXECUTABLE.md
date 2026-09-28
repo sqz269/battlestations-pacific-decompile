@@ -11235,3 +11235,188 @@ longer shot down, as the PilotMoveTo verdict says.
   - E2 594 -> 595 (before c): not isolated.
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
+
+## Mission reference baselines, 2026-09-29 h (main d6fc6ee78)
+
+Packet `cc9_reference_rebaseline_8`, worker cc9-gunnery4. **It replaces the 2026-09-28 g rows
+above.**
+
+**Run parameters:**
+- One binary: `local\rb8\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery4 (SHA-256
+  `5a2b887aa5ed1fc693c45161aba4fe953911836176b2e91b80fb4f4c0018117b`, prefix `5A2B887AA5ED`). It
+  is a clean `tools/pair_export.py --commit d6fc6ee78` export with no flip.
+- The run parameters are g's: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, an
+  idle player, present interval immediate, `tools/run_game.ps1`, and
+  `--press-start-frame 30 --menu-select <mission>`.
+- **Rows:** the reference rows are USN04 4700/4500, E2 (USN04 9200/9000), USN01 3200/3000 and
+  USN02 9200/9000. The smoke rows are JM06, JM08, USN13 and BSM01 at 3200/3000, and LOMP06 at
+  1200/1000.
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb8\` and the final COM release.
+- **No predictions were committed before these runs.** Each row is anchored by `pair_diff`
+  against the latest landing's own ON log (the anchors table below).
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 14463.0 | 44 | 749 (126) | 9310 | 101.10 s | 8 of 16 / 10 of 19 | 14 | Lexington 3631.00 m | none | 522 | `local\rb8_usn04.log` |
+| USN01 | 3000 | 2250.0 | 5 | 538 (77) | 1498 | 53.60 s | 2 of 5 / 2 of 2 | 3 | ScoutDauntless 0.00 | none | 526 | `local\rb8_usn01.log` |
+| USN04 (E2) | 9000 | 15557.3 | 51 | 865 (131) | 11559 | 101.10 s | 8 of 16 / 11 of 19 | 19 | Lexington 4920.35 m | none; phase 1 only (known) | 522 | `local\rb8_e2.log` |
+| USN02 | 9000 | 50892.0 | 10 | 4226 (388) | 2621 | 19.20 s | - | - | Kortenaer 1136.82 m | **failed at 29.75 s**, phase 1 (`MissionPhase=1`) | 510 | `local\rb8_usn02.log` |
+| JM06 (smoke) | 3000 | 4895.1 | 2 | 320 (271) | 414 | 90.35 s | - | - | Fletcher-class 08 1227.87 m | none | 527 | `local\rb8_jm06.log` |
+| JM08 (smoke) | 3000 | 3745.4 | 9 | 310 (89) | 1689 | 5.25 s | - | 1 | Auilick 1495.61 m | none | 495 | `local\rb8_jm08.log` |
+| USN13 (smoke) | 3000 | 6121.2 | 20 | 396 (82) | 3903 | 96.70 s | 1 of 60 / - | 5 | Enterprise 2051.45 m | none | 506 | `local\rb8_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 475 | `local\rb8_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 16 | - | - | - | Narwhal 758.85 m | none | 489 | `local\rb8_lomp06.log` |
+
+### Anchors
+
+| mission | anchor log (worktree cc9-gunnery4) | pair_diff | reading |
+| --- | --- | --- | --- |
+| USN04 | `local\WR_FLIP_usn04.log` | exit 1, 44 death rows identical | the wave-order flip (GUN_SHOT_CADENCE 10.10) |
+| USN02 | `local\WR_ON_usn02.log` | exit 1, 10 death rows identical | the same |
+| USN13 | `local\WR_ON_usn13.log` | exit 1, 20 death rows identical | the same |
+| USN01 | `local\WR_ON_usn01.log` | exit 1, 5 death rows identical | the same |
+| BSM01 | reference g `local\rb7_bsm01.log` | gameplay identical | - |
+| E2, JM06, JM08, LOMP06 | none | - | not paired on these rows since g |
+
+**The landings after the wave order and before `d6fc6ee78` are identity on those four
+missions.** They are the Capture think (`008fdcd2e`, PLANNER_TASK_CHOICE 6) and the seabed
+(`322e6cd48`, SUBMARINE_MODEL 14). The anchors hold with them in.
+
+### USN02: the failure at 29.75 s, and its cause
+
+- **Houston is sunk at 20.85 s by a Yamakaze Long Lance** from the opening spread, at 2439 m
+  (`killer_cat=7`). The script's `Houston.Dead or Exeter.Dead` test (`usn_2_java.lua:521`) then
+  ends the mission at 29.75 s, in phase 1 (`MissionPhase=1`). No `luaMoveToPh2` blackout occurs.
+- **It is torpedo-driven.**
+  - With the torpedo swim (TORPEDO_FRIENDLY_CROSSING 6.6), the opening Long Lances run at up to
+    WaterTravelSpeed, not 0.6 of it.
+  - The immediate-fire slot (GUN_SHOT_CADENCE 10.6) and the wave order (10.10) change the
+    opening exchange around it.
+  - GUN_SHOT_CADENCE 10.8 and 10.10 record the failure as the image's own for an idle player.
+- **The ten death rows:** Houston 20.85 (Yamakaze); Kawakaze 48.30 (Exeter); Alden 135.20
+  (Yamakaze); Yamakaze 142.30 (John1); Exeter 142.65 (Tokitsukaze); Perth 147.00 (Amatsukaze);
+  Jupiter 147.25 (Amatsukaze); Tokitsukaze 159.66 (Exeter); John3 171.51 (Minegumo); John2 175.11
+  (Yukikaze).
+
+### USN04 and USN13: the brain re-tasks the player's squadrons
+
+- **What changed:** with `kGeneratedSquadronBrainBound` (GENERATED_SHIP_AI 7), squadrons launched
+  after load join the brain's membership. The brain then orders them. USN04's squadron commands
+  and member orders go from 4 / 12 to 203 / 609, and USN13's from 0 / 0 to 466 / 1398.
+- **What it moved:** together with the order re-issue (`kAiOrderReissueBound`, ORDER_RING_REPLACE 4
+  and 5):
+  - USN04 went from 40 deaths and 644 hit records to 29 and 501;
+  - USN13 went from 24 deaths and 720 hit records to 16 and 294.
+- **Attribution:** the rows with both switches ON equal the membership-only rows, so these moves
+  are the membership's own (ORDER_RING_REPLACE 5).
+
+### JM06 and LOMP06: the dive rows
+
+- **JM06:** eight boats carry dive bands (`submarine dive bands: ... bound=1`), for example
+  PlayerSub 01 at (0, -13.0, -40, -80) and the Narwhal-class at (0, -10.2, -40, -80).
+  - The dive (`1d9c7ea7a`, SUBMARINE_MODEL 12) holds each boat at its band. PlayerSub 03 no longer
+    dies on the surface.
+  - Air and crush (`a65aa492f`, SUBMARINE_MODEL 13) put the Narwhal-class at -80 m under the 9/s
+    crush pulse.
+  - The seabed (`322e6cd48`, SUBMARINE_MODEL 14) clamps the Narwhal-class near the ground.
+  - **Here the two deaths** are the Gato at 0 s (Kill) and US Cargo Transport 02 at 123.95 s, by
+    PlayerSub 03, which survives.
+- **LOMP06:** the Narwhal carries bands and holds its dive level. Its four hits of g are gone
+  (0 hit records), as the dive pair recorded (SUBMARINE_MODEL 12). `SetSubmarineDepthLevel` and
+  `UnitGetAttackTarget` are identity there (LUA_BINDING_MISSION).
+
+### Against the 2026-09-28 g section, and what moved each row
+
+The chain uses this worker's own pair logs (`local\<step>_<mission>.log`), each step's OFF and ON
+from the same tree. A **merge** step is main's landings merged between two of them.
+
+**USN04 (4500).** 40 / 644 / 5333 / 92.50 s became **44 / 749 / 9310 / 101.10 s**:
+
+| step | deaths / hit records / shots, first hit | by | doc |
+| --- | --- | --- | --- |
+| g | 40 / 644 / 5333, 92.50 s | - | - |
+| merge to `e9b3bb5ae` (generated-ship AI, SquadronSetSpeed, UnitGetAttackTarget) | identical (`IF_OFF`) | 387d86314, 753958573, 3aca18f07 | GENERATED_SHIP_AI 5; LUA_BINDING_MISSION |
+| immediate-fire slot | 41 / 633 / 5345 | 2f1071177 | GUN_SHOT_CADENCE 10.6 |
+| torpedo swim | identical (no swim step) | f4b55c185 | TORPEDO_FRIENDLY_CROSSING 6.6 |
+| merge to `eec19cbf1`: squadron membership, order re-issue, approach turn radius, dive | 28 / 491 / 3656, 100.85 s | a038a2f8a, 5f09603b4, 716e4cb73, 1d9c7ea7a | GENERATED_SHIP_AI 7; ORDER_RING_REPLACE 4-5 (both ON: 40 -> 29 / 644 -> 501) |
+| merge to `fe534a2b6`: planner slot kinds, submarine air | identical (`AT_OFF` = `WO_OFF`) | f1ec6130d, a65aa492f | PLANNER_TASK_CHOICE 4; SUBMARINE_MODEL 13 |
+| AA fire tests | 44 / 803 / 10090, 100.95 s | b21ef706b | GUN_SHOT_CADENCE 10.9 |
+| wave order | 44 / 749 / 9310, 101.10 s = h | 4adaada98 | GUN_SHOT_CADENCE 10.10 |
+
+**USN01 (3000).** 5 / 178 / 623 became **5 / 538 / 1498**:
+
+| step | deaths / hit records / shots | by | doc |
+| --- | --- | --- | --- |
+| g, and the merge to `e9b3bb5ae` | 5 / 178 / 623 | - | - |
+| immediate-fire slot | 5 / 177 / 623 | 2f1071177 | GUN_SHOT_CADENCE 10.6 |
+| torpedo swim; the merges to `fe534a2b6` | identical | f4b55c185, ... | TORPEDO_FRIENDLY_CROSSING 6.6 |
+| AA fire tests (the convoy's AA at the Dauntlesses) | 5 / 441 / 1510 | b21ef706b | GUN_SHOT_CADENCE 10.9 |
+| wave order | 5 / 538 / 1498 = h | 4adaada98 | GUN_SHOT_CADENCE 10.10 |
+
+**E2 (9000).** 51 / 755 / 6398 became **51 / 865 / 11559**. Its first 4500 frames are USN04's
+(644 -> 749 hit records). The rest is unpaired. It holds 111 hit records after frame 4500 in g and
+116 here.
+
+**USN02 (9000).** 23 / 797 / 1052 with no end became **10 / 4226 / 2621, failed at 29.75 s**:
+
+| step | deaths / hit records / shots, end | by | doc |
+| --- | --- | --- | --- |
+| g | 23 / 797 / 1052, none | - | - |
+| merge to `e9b3bb5ae`: generated-ship AI | 26 / 847 / 1117, failed 212.91 s (Exeter, Ushio torpedo 210.81 s) | 387d86314 | GENERATED_SHIP_AI 5 |
+| immediate-fire slot | 9 / 4597 / 3666, failed 34.70 s (Houston 33.80 s, Minegumo Long Lance) | 2f1071177 | GUN_SHOT_CADENCE 10.6 |
+| torpedo swim | 11 / 5322 / 3910, failed 29.75 s (Houston 22.75 s) | f4b55c185 | TORPEDO_FRIENDLY_CROSSING 6.6 |
+| merge to `eec19cbf1` (the order re-issue moved USN02 after its failure) | 12 / 5166 / 3826, failed 29.75 s | 5f09603b4 | ORDER_RING_REPLACE 4 |
+| AA fire tests | identical (no plane target) | b21ef706b | GUN_SHOT_CADENCE 10.9 |
+| wave order | 10 / 4226 / 2621, failed 29.75 s (Houston 20.85 s, Yamakaze) = h | 4adaada98 | GUN_SHOT_CADENCE 10.10 |
+
+**USN13 (3000).** 24 / 720 / 6607 became **20 / 396 / 3903**:
+
+| step | deaths / hit records / shots | by | doc |
+| --- | --- | --- | --- |
+| g | 24 / 720 / 6607 | - | - |
+| merge to `e9b3bb5ae`: SquadronSetSpeed (60 attack-wave planes to 67 m/s) | 23 / 572 / 4265 | 753958573 | LUA_BINDING_MISSION "SquadronSetSpeed pairs and verdict" |
+| immediate-fire slot | 23 / 552 / 4222 | 2f1071177 | GUN_SHOT_CADENCE 10.6 |
+| torpedo swim | identical | f4b55c185 | - |
+| merge to `eec19cbf1`: squadron membership and order re-issue | 16 / 312 / 2069 | a038a2f8a, 5f09603b4 | GENERATED_SHIP_AI 7; ORDER_RING_REPLACE 4-5 (both ON: 24 -> 16 / 720 -> 294) |
+| AA fire tests | 19 / 400 / 4152 | b21ef706b | GUN_SHOT_CADENCE 10.9 |
+| wave order | 20 / 396 / 3903 = h | 4adaada98 | GUN_SHOT_CADENCE 10.10 |
+
+**Smoke rows.**
+
+| mission | g -> h (deaths / hit records / shots) | moved by | doc |
+| --- | --- | --- | --- |
+| JM06 | 2 / 145 / 233 -> 2 / 320 / 414; first hit 54.30 -> 90.35 s | the dive, air and seabed (the boats hold their bands); **the gunnery flips are unpaired on JM06** | SUBMARINE_MODEL 12-14 |
+| JM08 | 2 / 103 / 757 -> 9 / 310 / 1689 | seven plane kills by ship AA (the H6K to Helena, the Gekko and Oscar rows to Bristol and Macomb); consistent with the AA fire tests, **unpaired** | GUN_SHOT_CADENCE 10.9 |
+| USN13 | as above | - | - |
+| BSM01 | identical | - | - |
+| LOMP06 | 0 / 4 / 9 -> 0 / 0 / 16 | the dive (the Narwhal holds its band and her hits are gone); UnitGetAttackTarget and SetSubmarineDepthLevel as identity | SUBMARINE_MODEL 12; LUA_BINDING_MISSION |
+
+### Flags
+
+- **Closed:**
+  - **g's "USN02's phase-2 failure is not main's":** superseded. USN02 now fails in phase 1 at
+    29.75 s, torpedo-driven, and this is recorded as the image's own for an idle player.
+  - **g's generated-ship-AI note:** it landed (the merge step above).
+  - **The John1 friendly-torpedo question (raised after g):** closed as the image's own (TORPEDO_FRIENDLY_CROSSING 5
+    and 6.6).
+- **New:**
+  - **JM06, JM08 and E2 after frame 4500 were not paired against the gunnery flips** (immediate
+    fire, AA tests, wave order, torpedo swim).
+  - **USN02's outcome depends on an opening torpedo spread against an idle Houston.** Any
+    torpedo-side change moves its failure time; read GUN_SHOT_CADENCE 10.10 before predicting it.
+  - **The friendly torpedo hits under the image swim** (TORPEDO_FRIENDLY_CROSSING 6.6): recorded,
+    not bound further.
+- **Carried from g:**
+  - E2 after frame 4500 is unpaired (now 111 -> 116 hit records).
+  - The g-era gaps: USN02 `50851d56a` -> the shared OFF, and USN13 27 -> 26 / 25 -> 26.
+  - JM08's shots: unpaired, and moved again here.
+  - USN02 664 -> 640, bracketed to merge `e4dbf38b2`, not paired on the e base.
+  - USN02, the torpedo stock on top of the throttle cut: open.
+  - What enabled `kSetSelectedUnitBound`'s effect between `fc14864c9` and the throttle-cut base:
+    not isolated.
+  - E2 594 -> 595 (before c): not isolated.
+  - E2 ends in phase 1 under lockstep (known).
+  - The Marshall `.nav` is the generic layer.
