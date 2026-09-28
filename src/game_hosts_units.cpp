@@ -8027,6 +8027,21 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             }
             row.submarine_depth_level = 0;
             if (entity.dive_present) row.submarine_depth_level = entity.dive_level;
+            // Packet cc9_submarine_dive_teleport. 00853B3E stores the level, 00853B44
+            // loads bands[level] and 00853B55 writes it to the local Y at +A8h (X and
+            // Z rewritten unchanged at 00853B4D/00853B5D); +C8h and +10Ch are cleared
+            // and every child is invalidated through 0042ED50. SUBSTITUTION, labelled:
+            // local is world here (every host submarine is a top-level entity), and
+            // the children have no host pose to invalidate.
+            if (kSubmarineDiveTeleportBound && entity.dive_present) {
+                const int lvl = entity.dive_level < 0 ? 0 : (entity.dive_level > 3 ? 3 : entity.dive_level);
+                const float from = slot->motion.position[1];
+                slot->motion.position[1] = slot->sub_bands[lvl];
+                row.position[1] = slot->motion.position[1];
+                host.log.notef("submarine dive teleport: unit=%s dive=%d y %.2f -> %.2f "
+                    "(00853B55, packet cc9_submarine_dive_teleport)", row.name.c_str(),
+                    lvl, static_cast<double>(from), static_cast<double>(slot->motion.position[1]));
+            }
             if (entity.target_dive_present) {
                 row.submarine_depth_level = entity.target_dive_level;
             }

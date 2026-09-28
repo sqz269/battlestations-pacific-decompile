@@ -954,3 +954,66 @@ set by the terrain under each boat, which no earlier run printed. The host's Lan
 **Verdict: `kSubmarineSeabedBound = true`, with the JM06 spread miss recorded.** The clamp, the
 publish and the trace numbers follow the traced law. Which boat crosses shallow water was the
 unknown.
+
+## 15. The `Dive` teleport (packet `cc9_submarine_dive_teleport`, `kSubmarineDiveTeleportBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. Stage 2 of `00853630` (section 3, "The initial band"), read from the
+listing.
+
+**What it writes.**
+- When the scene holder's kind is 1 and the row authors `Dive`, `00853B3E` stores the level at
+  `+1268h`.
+- `00853B44` loads `bands[level]` (no range check). `00853B4D..00853B5D` rewrite the local
+  position `+A4h/+A8h/+ACh` with X and Z unchanged and Y = `bands[level]`.
+- `+C8h` and `+10Ch` are cleared. Each child on the `+48h`/`+44h` list is invalidated through
+  `0042ED50`, and the "moved" flag at `[esp+13h]` is set.
+- `TargetDive` then sets the level only.
+- **So a boat that authors `Dive` starts exactly at its band.** Without the teleport the dive law
+  moves it there over about 10 s.
+
+**Who uses it.** Every submarine in the reference rows authors `Dive`, per this host's
+`submarine depth seed` lines.
+
+| mission | boat | `Dive` | authored Y | teleported Y |
+| --- | --- | --- | --- | --- |
+| JM06 | `Narwhal-class Submarine 01` | 3 | -79.90 | -80.0 |
+| JM06 | `Gato-class Submarine 01` | 1 | -0.01 | -12.8 (a wreck, dead at t=0) |
+| JM06 | `PlayerSub 01..03` | 1 | -20.00 | -13.0, then `luaJM6SubInit`'s `PutTo` puts them back at y = -20 |
+| JM06 | `Submarine TypeB w Jake 01..03` | 2 | -50.00 | -40.0 |
+| LOMP06 | `Narwhal` | 1 | -20.00 | -10.2 |
+
+**The binding.** It is at the seed site in `src/game_hosts_units.cpp`, before the hull body is
+built from the slot position.
+
+**SUBSTITUTIONS, labelled.**
+- Local is world, because every host submarine is top-level.
+- The children have no host pose to invalidate.
+- The level is clamped to 0..3 as a guard, where the image indexes without a check.
+
+**Predictions** (written before the ON runs; the OFF baseline is this tree with dive, air and
+seabed ON).
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 3.** The PlayerSubs are unchanged at step 1 (-20.00, `PutTo` runs before the first physics step). The TypeBs start at -40.0 instead of rising from -50 over about 200 steps. The Gato wreck starts sinking from -12.8. The Narwhal-class moves by 0.1 m. The early traces move; hits and deaths may shift through the TypeBs' first seconds |
+| LOMP06 1200/1000 | **exit 3, small.** The Narwhal starts at -10.2 instead of -20, so its first 200 steps' vertical motion and drag differ. The controlled distance moves slightly and the camera that tracks it moves. No hit or death change |
+| USN01 3200/3000 | no submarine, exit 0 |
+
+### Teleport pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `5f660259c`, with dive, air and seabed ON.
+- ON is `pair_export --flip kSubmarineDiveTeleportBound=true` (`local/dt_on`).
+- The logs are `local/dt_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | Nine teleport lines match the table above. `PlayerSub 01..03` read -20.00 at step 1: `PutTo` ran first. The TypeBs read -40.00 at step 1. **pair_diff exit 3:** the Gato wreck's death altitude goes 4 -> -9; deaths 2 -> 1 (`PlayerSub 03` survives again); hit records 233 -> 231; the Narwhal-class's engagement moves (dealt 803 -> 711) | held |
+| LOMP06 1200/1000 | The Narwhal starts at -10.20. pair_diff exit 3, small: the controlled distance goes 407.14 -> 421.34 m, next to the 421.38 m before the dive law. Nearest-ship distances shift by about 10 m. No hit or death change | held |
+| USN01 3200/3000 | exit 0 | held |
+
+**The LOMP06 distance explains section 12's move.** The 421.38 -> 407.14 m drop when the dive law
+was flipped came from the Narwhal's 10 m vertical transient from its authored -20 m. The
+teleport removes that transient, as the image does.
+
+**Verdict: `kSubmarineDiveTeleportBound = true`.**
