@@ -622,7 +622,7 @@ constexpr bool kKillCreditDamageGateBound = true;
 //    and since kFireTargetObjectIdBound a plane row can hold one. ON: kinds 0Fh
 //    and 18h take the null provider. OFF: the stored target is read (counted).
 //    Packet cc9_plane_forced_target_read, docs/GUNNERY_OPEN_ITEMS.md section 42.
-constexpr bool kPlaneNullFireTargetProviderBound = false;
+constexpr bool kPlaneNullFireTargetProviderBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter

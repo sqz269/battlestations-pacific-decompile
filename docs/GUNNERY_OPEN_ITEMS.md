@@ -1881,6 +1881,7 @@ larger health pools.
 - **Plane rows and the forced fire target.** Since `kFireTargetObjectIdBound`, plane rows store the
   commanded target and their AutoTarget accepts it (USN04 3, USN01 5). Whether the image's plane
   gunnery reads the director fire target is unread (section 33.4). That belongs to the plane packets.
+  **Closed by section 42:** no plane-side pass reads one (`kPlaneNullFireTargetProviderBound` ON).
 - **A LandConvoy unit.** `00805680`'s group records need a `LandConvoy` entry in the units host's
   index space (section 34). That belongs to the units lane. With one, JM05 is still predicted
   identity within 3000 frames.
@@ -2249,6 +2250,28 @@ are not followed here. The switch touches kinds `0Fh` and `18h` only.
 - **P3, USN04 4500: exit 1,** for the same reason.
 - **P4, USN13 3000: exit 0 or 1.** Nothing is read.
 - **The flip rule:** ON when P1 holds and every move traces to a dropped plane fire target.
+
+### 42.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `d00136644`.
+- **ON** is `pair_export --commit d00136644 --flip kPlaneNullFireTargetProviderBound=true` (SHA-256
+  prefix `A58039ACF449`).
+- The logs are `local\g9_pnoff_<row>.log` and `local\g9_pnon_<row>.log` in worktree cc9-gunnery9.
+  Both sides ran in the same session (an RDP session, whose 300-frame smoke passed renderer init).
+
+| row | `pair_diff` | plane or squadron pass ticks | stored-target reads (OFF) | nulled (ON) | against the prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1, gameplay identical | 213420 | 13317 | 13317 | P1, P3 held |
+| USN01 3200/3000 | exit 1, gameplay identical | 17592 | 12990 | 12990 | P1, P2 held |
+| USN13 3200/3000 | exit 1, gameplay identical | 233220 | 0 | 0 | P1, P4 held |
+
+**Verdict: ON.** The mechanism is the image's `008636A0` rule, and every row is identity.
+`kPlaneNullFireTargetProviderBound = true`.
+
+**Still open, outside this lane (passed to the lead):**
+- The commands host stores a forced fire target on a squadron row, where the image runs only
+  `0071E6C0`.
+- The ship-AI host runs an AutoTarget on load-time plane rows, which the image never builds.
 
 ## 43. The power-up subsystem: read and plan (packet `cc9_powerup_subsystem_plan`, cc9-gunnery9, docs only)
 
