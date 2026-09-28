@@ -1819,6 +1819,48 @@ host stand-ins went from 86 calls on h to thousands. Each was read for what its 
    sinks or dies later within 3000 frames, and USN04 identity (no call).
 4. Pair LOMP10 and USN04 with `pair_export --flip kLuaOverrideHpBound=true`, and flip by verdict.
 
+**OFF measurement** (`local\g7hp_lomp10.log`, main `400e76a72` with lua6's dispatch `3786d5641`):
+eight calls, each at full health, and each value exactly 1.25 x the maximum.
+
+| ship | value | maximum and health before |
+| --- | --- | --- |
+| Ashigara | 8750 | 7000 |
+| Oyodo | 7500 | 6000 |
+| Kiyoshimo, Asashimo | 3750 | 3000 |
+| Sugi, Kashi, Kaya | 3125 | 2500 |
+| Kasumi | 3500 | 2800 |
+
+None of the eight takes damage within 3000 frames OFF (taken 0, not sunk). The run has 10 deaths.
+
+**Predictions (written before the ON runs).**
+- **H1:** ON applies all eight (`applied=8`). Each ship's maximum and health read the value.
+- **H2, LOMP10:** only the eight health cells of the unit table move. Deaths, hit records, shots and
+  death rows are identical, because nothing damages these ships in the window. The health
+  fraction the AI reads (`+370h` / `+36Ch`) stays 1.0.
+- **H3, USN04:** `calls=0`, exit 1.
+
+**The pair commands:**
+```
+python tools/pair_export.py --commit <this commit> --out local\hp_off
+python tools/pair_export.py --commit <this commit> --flip kLuaOverrideHpBound=true --out local\hp_on
+./local/g7_pair.ps1 -Off hp_off -On hp_on -Rows 'lomp10:LOMP10:3200:3000','usn04:USN04:4700:4500'
+```
+**The pairs.**
+- OFF is `pair_export --commit a0c75d464` (SHA-256 prefix `1CB0651B8AD4`).
+- ON is the same commit with `--flip kLuaOverrideHpBound=true` (`6C9669205847`).
+- The logs are `local\hp_{off,on}_<row>.log`.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| LOMP10 3200/3000 | exit 3 | `applied` 0 -> 8. The unit table's health moves on exactly the eight ships (Ashigara 7000 -> 8750, Oyodo 6000 -> 7500, Kiyoshimo and Asashimo 3000 -> 3750, Sugi, Kashi and Kaya 2500 -> 3125, Kasumi 2800 -> 3500). The 10 death rows, hit records and shots are identical |
+| USN04 4700/4500 | exit 1 | the summary line only (`calls=0`) |
+
+- **H1, H2 and H3 held.**
+- Beside them, two summary counters moved by a hair: the minimap heading 0.4535 -> 0.4536 rad, and
+  the gunnery landscape attach cells 46835 -> 46837. They are recorded, not attributed.
+
+**Verdict: ON.** `kLuaOverrideHpBound = true`. The effect beyond 3000 frames is the San Jose ships'
+larger health pools.
 ### 37.2 What remains of section 31
 
 | rank | item | state |

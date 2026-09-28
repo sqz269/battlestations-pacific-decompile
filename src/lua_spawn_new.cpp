@@ -219,11 +219,17 @@ SpawnGroupFrame spawn_reference_frame_0094a140(const SpawnNewRequest& request) n
     f.m[12] = request.ref_pos[0];
     f.m[13] = request.ref_pos[1];
     f.m[14] = request.ref_pos[2];
+    if (kSpawnNewEntityRefPosBound && request.ref_frame_valid) {
+        // Packet cc9_spawn_new_shipyard. 008F8680's +14h arm: the entity's own
+        // world matrix at entity+CCh, basis and translation both.
+        for (int i = 0; i < 16; ++i) f.m[i] = request.ref_frame[i];
+    }
     if (request.has_look_at) {
-        // 00949E96..00949EE0: row 2 = lookAt - refPos, unnormalised.
-        f.m[8] = request.look_at[0] - request.ref_pos[0];
-        f.m[9] = request.look_at[1] - request.ref_pos[1];
-        f.m[10] = request.look_at[2] - request.ref_pos[2];
+        // 00949E7D takes the current frame (008F8680) and 00949E94 copies it;
+        // 00949E96..00949EE0: row 2 = lookAt - that frame's origin, unnormalised.
+        f.m[8] = request.look_at[0] - f.m[12];
+        f.m[9] = request.look_at[1] - f.m[13];
+        f.m[10] = request.look_at[2] - f.m[14];
         // 0085DC80: row 1 orthogonalised against row 2, row 0 = row1 x row2.
         float fwd[3] = {f.m[8], f.m[9], f.m[10]};
         normalize_row(fwd);

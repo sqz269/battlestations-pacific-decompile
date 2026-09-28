@@ -46,6 +46,7 @@
 #include "bsp/lua_numeric.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class.hpp"
+#include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/recon_values.hpp"
 #include "bsp/vfs_locale_runtime.hpp"
@@ -2806,7 +2807,33 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     if (::lua_type(state, -1) == LUA_TTABLE) {
         const int area = ::lua_gettop(state);
         ::lua_getfield(state, area, "refPos");
-        if (read_vector3_00888760(state, ::lua_gettop(state), request.ref_pos)) {
+        bool ref_is_entity = false;
+        if constexpr (bsp::kSpawnNewEntityRefPosBound) {
+            // Packet cc9_spawn_new_shipyard. 00949B60 CALL 008889C0 asks first
+            // whether the value is an entity table (a non-nil `Ptr` whose object
+            // answers vtable+5Ch(1)); yes takes 00888AA0 and 008F8530, which keep
+            // the entity itself. This process's stand-in for that handle is the
+            // `ID` field, as at every other 00888AA0 site here.
+            const int ref = ::lua_gettop(state);
+            if (::lua_type(state, ref) == LUA_TTABLE) {
+                ::lua_getfield(state, ref, "ID");
+                const int type = ::lua_type(state, -1);
+                const int id = (type == LUA_TNUMBER || type == LUA_TSTRING)
+                    ? static_cast<int>(::lua_tonumber(state, -1)) : 0;
+                ::lua_settop(state, ref);
+                float frame[16];
+                if (id > 0 && spawn_ref_entity_frame_008f8680(id, frame)) {
+                    ref_is_entity = true;
+                    request.has_ref_pos = true;
+                    request.ref_entity_id = id;
+                    request.ref_frame_valid = true;
+                    for (int i = 0; i < 16; ++i) request.ref_frame[i] = frame[i];
+                    for (int i = 0; i < 3; ++i) request.ref_pos[i] = frame[12 + i];
+                }
+            }
+        }
+        if (!ref_is_entity
+            && read_vector3_00888760(state, ::lua_gettop(state), request.ref_pos)) {
             request.has_ref_pos = true;
         }
         ::lua_settop(state, area);
@@ -2844,11 +2871,12 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
 
     if (summary_.spawn_new_queued < 16) {
         log_.notef("  SpawnNew 0094c480: serial %u party %d, %zu group member(s), "
-            "callback \"%s\"%s, angleRange %s, refPos %s(%.1f %.1f %.1f)",
+            "callback \"%s\"%s, angleRange %s, refPos %s%s(%.1f %.1f %.1f)",
             request.serial, request.party, request.members.size(),
             request.callback.c_str(), request.id.empty() ? "" : " id set",
             request.has_angle_range ? "given" : "absent",
             request.has_ref_pos ? "" : "ABSENT ",
+            request.ref_entity_id > 0 ? "entity " : "",
             static_cast<double>(request.ref_pos[0]),
             static_cast<double>(request.ref_pos[1]),
             static_cast<double>(request.ref_pos[2]));
@@ -2960,12 +2988,48 @@ private:
 };
 }  // namespace
 
+bool GameMissionLuaHost::spawn_ref_entity_frame_008f8680(std::int32_t entity_id,
+    float frame[16]) const {
+    // 008F8680: [ref+14h] set -> (00414DB0 when [entity+C8h] == 0) and entity+CCh.
+    // SUBSTITUTION, labelled: a unit's +CCh is read as the units host's pose rows
+    // and position; a scene marker's as its authored world matrix, which nothing
+    // in the mission moves (FixedInstance, docs/SCENE_ENTITY_FACTORY.md).
+    if (script_orders_ == nullptr || entity_id <= 0) return false;
+    const GameUnitsHost& units = script_orders_->units();
+    if (units.scene_marker_frame(static_cast<std::uint32_t>(entity_id), frame)) return true;
+    const std::size_t index = static_cast<std::size_t>(entity_id - 1);
+    if (index >= units.count()) return false;
+    float right[3], up[3], forward[3], translation[3];
+    if (!units.unit_pose(index, right, up, forward, translation)) return false;
+    for (int i = 0; i < 3; ++i) {
+        frame[i] = right[i];
+        frame[4 + i] = up[i];
+        frame[8 + i] = forward[i];
+        frame[12 + i] = translation[i];
+    }
+    frame[3] = frame[7] = frame[11] = 0.0f;
+    frame[15] = 1.0f;
+    return true;
+}
+
 void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request) {
     // 00949300 creates nothing unless EVERY member's placement passes; 009483D0
     // then makes them all and sets record+C0h. The all-or-nothing rule is kept;
     // with kSpawnNewPlacementBound the placement test 00941D30 and 0094A140's
     // retry run too (docs/SCENE_CONTENTS_HOSTS.md section 23).
     if (request.members.empty()) return;
+    if constexpr (bsp::kSpawnNewEntityRefPosBound) {
+        // 008F8680 reads the kept entity's +CCh each time 0094A140 asks, so a
+        // unit that moved since the request moves the frame with it.
+        if (request.ref_entity_id > 0) {
+            float frame[16];
+            if (spawn_ref_entity_frame_008f8680(request.ref_entity_id, frame)) {
+                for (int i = 0; i < 16; ++i) request.ref_frame[i] = frame[i];
+                for (int i = 0; i < 3; ++i) request.ref_pos[i] = frame[12 + i];
+                request.ref_frame_valid = true;
+            }
+        }
+    }
     if (!request.has_ref_pos) return;
 
     std::optional<SpawnPlacementUnits> placement_world;
@@ -3028,6 +3092,30 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
         // packet measures takes the other arm.
         record.class_name = "PlaneSquadronGen";
         record.class_id = 0x18;
+        // Packet cc9_spawn_new_shipyard. 00948519 asks the class vtable+18h(6);
+        // the eight ship leaves answer yes (00963B70 Destroyer, 00963BF0
+        // Cruiser, 00963C80 LandingShip, 00963D00 Cargo, 00963D80 BattleShip,
+        // 00963E10 Submarine, 00963E90 TorpedoBoat, 00963F10 MotherShip each
+        // compare 6), every plane and land leaf no. Kinds 7..0Eh are exactly
+        // those eight (bsp::VehicleClassKind).
+        // SUBSTITUTION, labelled: the image calls the class's vtable+28h(0)
+        // with no scene creator in between; this process reaches the same
+        // allocation through a DestroyerGen (07h) record, whose creator 004F0520
+        // is the one that makes load-time ships here. The units host keys the
+        // class on `type_id`, so a Cruiser or a Cargo is still that class.
+        bool surface = false;
+        if constexpr (bsp::kSpawnNewEntityRefPosBound) {
+            const GameVehicleClassRow class_row = read_vehicle_class_row(member.type_class_id);
+            const bsp::VehicleClassDescriptorRow* kind = class_row.found
+                ? bsp::vehicle_class_kind_row(class_row.type.c_str()) : nullptr;
+            surface = kind != nullptr
+                && static_cast<int>(kind->kind) >= static_cast<int>(bsp::VehicleClassKind::Destroyer)
+                && static_cast<int>(kind->kind) <= static_cast<int>(bsp::VehicleClassKind::TorpedoBoat);
+            if (surface) {
+                record.class_name = "DestroyerGen";
+                record.class_id = 0x07;
+            }
+        }
         record.type_id = member.type_class_id;
         record.party = request.party;
         record.created = true;
@@ -3063,14 +3151,44 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             // is 0094879A's InitAll after the whole member loop, so every
             // member squadron is attached before any plane (each squadron's
             // pass A appends its wing to the tail).
-            route_push_squadron(static_cast<int>(entity), record.name,
-                member.type_class_id, units_before);
+            if (surface) {
+                route_push_entity(static_cast<int>(entity), record.name,
+                    member.type_class_id);
+                // The member's property bag, which 009486B6 hands the entity at
+                // +C0h and pass A reads as a generated entity's: 009420A0 seeds
+                // Party = the request's party (009420AC) and Race = 2 for party 0,
+                // else 1 (009420B9..009420C1, NEG/SBB/ADD 2); 00944210's
+                // 0043D8F0 then merges the member table over it, so an authored
+                // `Race` wins. The host reads an absent `Race` as 0, so 0 takes
+                // the default (labelled: a Race of 0 authored on purpose would be
+                // replaced; no reference call site authors one).
+                if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
+                    node->party = request.party;
+                    node->race = member.race > 0 ? member.race
+                                                 : (request.party == 0 ? 2 : 1);
+                    node->generated_party = true;
+                }
+            } else {
+                route_push_squadron(static_cast<int>(entity), record.name,
+                    member.type_class_id, units_before);
+            }
         } else {
             if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
                                                 member.type_class_id)) {
                 break;
             }
             attach_wing_member_tables(units_before, entity, member.type_class_id);
+        }
+        if (surface && !made.empty()) {
+            // 009486C8..0094870E: a kind-6 member after the first (member index
+            // [ESP+10h] > 0) calls 0077C8D0 with ECX = this member and the first
+            // entity of record+CCh as the leader.
+            const bsp::FormationJoinOutcome joined = bsp::entity_join_formation(
+                *script_orders_, reinterpret_cast<void*>(static_cast<std::uintptr_t>(entity)),
+                reinterpret_cast<void*>(static_cast<std::uintptr_t>(made.front())));
+            log_.notef("  spawn queue 0094c490: serial %u member %zu joins member 1's "
+                "formation (0094870E -> 0077C8D0), outcome %d", request.serial, i + 1,
+                static_cast<int>(joined));
         }
         made.push_back(entity);
         if (summary_.spawn_new_units + made.size() <= 16) {

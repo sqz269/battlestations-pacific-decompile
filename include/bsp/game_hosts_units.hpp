@@ -335,6 +335,14 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // into the squadron's +398h (009C89CE), which 009C7A96 copies into approach+ACh.
 // True: the draw is made on every such profile call and the squadron's members
 // read the drawn +398h. False: +398h stays BeginAltRange/1 with no draw.
+// Packet cc9_air_ops_squadron_registry (docs/DIVE_BOMB_TASK.md, "Departed
+// wingmen keep their task's squadron block"). A plane 007F3970 removed at its
+// death keeps flying its bot task (the powerlost glide), and that task's
+// [task+404h] is still the squadron, while its +9D8h keeps the index it had.
+// True: in the dive profile, a departed plane resolves its block through the
+// squadron it left and takes 007B8AD0 from its kept +9D8h. False: it falls back
+// to its own slot and counts as a leader.
+inline constexpr bool kDepartedWingmanTaskBlockBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kDiveProfileDrawBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
@@ -655,6 +663,11 @@ public:
     // host carries as markers). False when the id names no marker.
     void register_scene_marker_position(int id, const float world[3]);
     bool scene_marker_position(std::uint32_t id, float world[3]) const;
+    // Packet cc9_spawn_new_shipyard. A marker's whole authored world matrix
+    // (entity+CCh, rows 0..2 the basis and row 3 the translation), which
+    // 008F8680 hands SpawnNew when `refPos` is that marker.
+    void register_scene_marker_frame(int id, const float world[16]);
+    bool scene_marker_frame(std::uint32_t id, float world[16]) const;
     // 004142e0 BSP_Vector3f_TransformAffinePoint with the matrix at unit+0cch,
     // which is what 009dbcc0 carries the latched offset out through.
     void transform_by_unit_matrix_004142e0(std::size_t index, float in_x, float in_y,

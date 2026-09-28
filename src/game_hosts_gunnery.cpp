@@ -295,7 +295,9 @@ constexpr bool kSubmarineSensorCategoryBound = true;
 //    The invincibility floor acts only in 00879070, which this write does not use.
 //    The call arrives from GameMissionLuaHost's dispatch (lua6's file).
 //    On 2026-09-28 it is a no-op there until that line lands.
-constexpr bool kLuaOverrideHpBound = false;
+//    ON by the pairs of 2026-09-28: LOMP10 moves only the eight San Jose ships'
+//    health (x1.25); USN04 identity.
+constexpr bool kLuaOverrideHpBound = true;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
