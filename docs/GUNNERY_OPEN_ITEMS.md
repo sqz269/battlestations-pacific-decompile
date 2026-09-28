@@ -1871,7 +1871,7 @@ larger health pools.
 | 4 | director slot housekeeping | exact in effect (section 36) |
 | 5 | command-allowed extra tests `009229F0` / `007AC9D0` (268 calls) | read and measured: the image allows every call on reference j's rows, as the host does; recorded, not bound (section 39) |
 | 6 | recon convoy and group records | the convoy fold is counted, not placed (section 34); the squadron group-level publish stays blocked (section 22) |
-| 7 | `007788B0` controller ownership | exact while `ctl+284h` is empty or names this controller (decompile); not checked for a player-controlled unit |
+| 7 | `007788B0` controller ownership | **read in section 44**: it is the formation-follower gate; the binding is the ship-AI lane's |
 | 8 | hull roll torque `00827312` (USN02, 52 calls) | **open, unread**; reach 2 |
 
 ### 37.3 Open items found on the way
@@ -2362,3 +2362,78 @@ TARGETING_ERROR, 8 DEVICE_RELOADING) moves. USN02 has early contact, but whether
 **Coverage.** This read covers `008EDC60`'s layout and `008EA0C0` completely. `008EADA0`,
 `008EDDC0` and `008EB110` are cited from docs/GAMEPLAY_MODIFIERS.md, not re-read. `00617030` is
 read only as a lookup keyed by the class.
+
+## 44. Rank 7: `007788B0` in the AutoTarget tick is the formation-follower gate (read, cc9-gunnery9)
+
+Section 37.2 left rank 7 as "exact while `ctl+284h` is empty or names this controller; not
+checked for a player-controlled unit". The read below replaces that framing.
+
+### 44.1 The image
+
+- **`007788B0` is `BSP_Unit_IsFormationFollower`,** `__fastcall(ECX = unit)`, body
+  `007788B0..007788C7`: `g = [unit+284h]`; false when `g` is null, else `[g+14h] != unit`. It is
+  true for a member of a unit group that is not the group's leader. Player control is not read.
+- **`009F5DC1..009F5DF4` in the AutoTarget tick `009F5DA0`:** when the unit is a follower, the
+  tick never selects a target. It reads the director's first command slot `[director+54h]`:
+  - null: return (`009F5DD5`);
+  - the `follow` singleton `00E08F60`: return (`009F5DE0`);
+  - anything else: `0077C980(unit, 0)` (`009F5DEB`), then return.
+- **`0077C980(unit, 0)` is the leave.** With `[unit+284h]` set it sends message 77h with a null
+  target, which `0077FE80` arm 3 delivers to `0077BD70(unit, null)`. That is the same chain as the
+  Lua `LeaveFormation` `00899EB0` (`src/game_hosts_lua.cpp`, packet `cc9_lua_formation_query`).
+  So a follower that holds any command other than `follow` leaves its formation on its next think.
+
+### 44.2 The host
+
+`TargetBinding` in `src/game_hosts_ship_ai.cpp` answers `controller_belongs_to_another` with false,
+and records `release_controller`. So every follower runs the full selection. The pieces the
+binding needs already exist:
+- `GameUnitsHost::unit_is_formation_follower_007788b0(index)`, which is `007788B0` whole;
+- `GameUnitsHost::leave_group_on_destroy_0077bd70(index)`, which the Lua `LeaveFormation` already
+  uses for this chain, with the same labelled substitution: the leave runs at the call, not through
+  the session route;
+- `director_command_slot()`, which answers the command singleton's image address, so the
+  comparison with `00E08F60` in `src/bot_fire_target.cpp` works as written.
+
+### 44.3 Reach, from reference j's logs (`rb10_<row>.log`, worktree cc9-gunnery8)
+
+Follow joins (`summary mission ai follow ... joins=`): JM06 4, JM05 3, JM08 1 and LOMP10 1. Every
+other row has 0. LOMP06 has one scripted formation, which it leaves. A follower's own command after
+a join is not measured here. If it is `follow`, the gate only suppresses the follower's automatic
+target choice. If it is anything else, the follower also leaves the formation.
+
+### 44.4 The binding, for the ship-AI lane (not committed here)
+
+In `src/game_hosts_ship_ai.cpp`, `TargetBinding`, behind a new `kAutoTargetFollowerGateBound`,
+committed OFF:
+
+```cpp
+bool controller_belongs_to_another(void*) override {
+    if (!kAutoTargetFollowerGateBound) {
+        owner_.record("AutoTarget::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    owner_.done("AutoTarget::controller_belongs_to_another", 0x007788b0u);
+    return owner_.units.unit_is_formation_follower_007788b0(index_);
+}
+void release_controller(void*, int) override {
+    // 0077C980(unit, 0) at 009F5DEB -> 77h -> 0077FE80 arm 3 -> 0077BD70(unit, null),
+    // run at the call as LeaveFormation 00899EB0 runs it (labelled).
+    if (!kAutoTargetFollowerGateBound) {
+        owner_.record("AutoTarget::release_controller", 0x0077c980u);
+        return;
+    }
+    if (owner_.units.unit_formation_group_0284(index_) >= 0) {
+        owner_.units.leave_group_on_destroy_0077bd70(index_);
+    }
+    owner_.done("AutoTarget::release_controller", 0x0077c980u);
+}
+```
+
+**Predictions for its pairs:**
+- JM06 3000 and JM05 3000: exit 3. Followers stop choosing their own fire targets. Death rows may
+  move on JM06, whose PlayerSubs and escorts fight.
+- JM08 and LOMP10: exit 1 or 3, small.
+- Every row without a join: exit 1.
+- **Mechanism check:** count follower thinks, and how many leave. A leave on a row predicts a
+  formation change that the follow summary shows.
