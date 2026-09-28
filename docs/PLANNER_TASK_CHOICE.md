@@ -1256,7 +1256,7 @@ section 16 lists its `SetDepthLevel` and periscope sites). **Not read here.**
 
 **Taken by cc9-ships5 (2026-09-28): docs/SHIP_AI_SUB_ATTACK.md.** brain+0AB4h is written once, by
 009F1160 at 009F11C9, as the brain's own unit when it is a submarine, so every submarine on
-attackmove or artillery runs `sub_attack`. The selector and the states are bound OFF
+attackmove or artillery runs `sub_attack`. The selector and the states are bound and, after the pairs, ON
 (`kShipAiSubAttackSelectBound`, `kShipAiSubAttackStatesBound`); pairs and verdicts are in that doc.
 
 ## no_ghidra_function

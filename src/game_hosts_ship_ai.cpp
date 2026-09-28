@@ -350,11 +350,11 @@ inline constexpr bool kShipPassSideMessageBound = true;
 // artillery command selects sub_attack (ai+217Ch), or kamikaze_attack (ai+2254h)
 // for a class with KamikazeDamage or KamikazeBlastDamage above zero (00779AA0).
 // False: every unit takes attackmove, as before.
-inline constexpr bool kShipAiSubAttackSelectBound = false;
+inline constexpr bool kShipAiSubAttackSelectBound = true;  // ON: pairs held (docs/SHIP_AI_SUB_ATTACK.md section 9)
 // The states: the parent tick 009EAA90 with its one-second switch 009EAA10, the
 // "approach" step 009E4B90 and the "fire" enter 009EABE0 and step 009E9EB0. False:
 // a selected sub_attack is a record with its own address (no drive).
-inline constexpr bool kShipAiSubAttackStatesBound = false;
+inline constexpr bool kShipAiSubAttackStatesBound = true;  // ON: pairs held, Narwhal timing spread miss recorded
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

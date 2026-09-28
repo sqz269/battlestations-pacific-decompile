@@ -195,3 +195,38 @@ driven):
 - USN02 and USN04: identity (exit 0 or 1, deaths identical).
 - Verdict rule: a boat that never enters the state, a switch at a range that contradicts
   `R+150`/`R+400`, or any movement on USN02/USN04 keeps both flags OFF.
+
+## 9. The pairs and the verdict
+
+Same tree (cc9-ships5), commit `1f39b05db`. OFF is the tree's build; ON exports by
+`tools/pair_export.py`: `local\s5_sel` (select only, SHA-256 prefix `3C4BC7C4E71F`) and `local\s5_on`
+(both flags, `263CF309D225`). The run parameters are reference h's. Logs are `local\s5_off_<m>.log`,
+`local\s5_sel_<m>.log` and `local\s5_on_<m>.log`.
+
+**Step 1 (select only), JM06 and LOMP06:** the selects land where predicted: the Narwhal at 8.90 s
+(from `stop`), PlayerSub 02 and 03 at 63.10 s (from `moveonpath`), and LOMP06's Narwhal at 10.50 s (from
+`cruise`). No submarine runs an `attackmove` step after its select. pair_diff exits 3 on both. The
+mechanism holds. As predicted, this flag does not flip alone.
+
+**Step 2 (both flags):**
+
+| mission | pair_diff | reading |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 3 | the selects as in step 1; to fire: PlayerSub 03 at 88.35 s (range 1065.4 < 1069.8), the Narwhal at 107.15 s (982.8 < 983.4), PlayerSub 02 at 107.85 s (1055.2 < 1069.8); no switch back; closest ranges 335 / 386 / 311 m, so the 50 m latch never sets |
+| LOMP06 1200/1000 | exit 3 | approach only (159 ticks at depth 2), closest range 1679 m > R+150; the Narwhal moves 663.20 m against 450.99 m |
+| USN02 9200/9000 | exit 1 | gameplay identical |
+| USN04 4700/4500 | exit 1 | gameplay identical |
+
+In fire the PlayerSubs return to depth 1 and raise the periscope once each (the bow tubes are ready and
+the bearing error is under 1.2). The Narwhal, whose target is a submarine, goes to depth 1 without
+raising its periscope (009E4D90's kind-8 test). JM06 moves as follows:
+- The deaths drop from 2 to 1: US Cargo Transport 02 survives with 486 health, where OFF has it
+  sunk by PlayerSub 03 at 123.95 s.
+- The hit records drop from 320 to 214, and the damage from 4895.8 to 3556.4.
+
+**Verdict: both flags ON.**
+- Every mechanism prediction held. The selects, the switch ranges against R+150, approach only on
+  LOMP06 and the identity rows all matched.
+- **One timing prediction failed.** The Narwhal was predicted to switch last, between 110 and 140 s. It
+  switched at 107.15 s, 0.7 s before PlayerSub 02, and at the range the predicate requires.
+- This is a spread miss with the mechanism matching the image, so the flags flip and the miss is recorded.
