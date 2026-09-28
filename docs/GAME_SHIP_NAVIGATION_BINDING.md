@@ -535,6 +535,14 @@ Each is already reconstructed from the listing and bound:
 
 ### Verdict
 
+**Correction (packet `cc9_difficulty_multiplier_read`, docs/DIFFICULTY_MULTIPLIERS.md).** The
+difficulty reasoning above is wrong. `0087D730` and the hull pass at `008270AD` test the unit's
+**party** against the local player's (`[EDX+28h]`), not the player's own unit. They multiply the
+damage taken by `1 / HPMultipliers[level]`, which is 1/1.8 in this installation. Exeter is on the
+player's side, so in the image the torpedo does about 3604, not 6486. The verdict below stands
+only for this host as it is. Whether the image's Exeter survives is measured with the multiplier
+binding.
+
 **The image sinks Exeter the same way.** One arcade Long Lance delivers 6486 of a York's 6500 HP
 and floods her. The failure test at `usn_2_java.lua:521` (`Houston.Dead or Exeter.Dead`) fires
 at 39.65 s. **No host difference, no binding.**
