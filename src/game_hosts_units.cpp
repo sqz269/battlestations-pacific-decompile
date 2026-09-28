@@ -18772,6 +18772,25 @@ bool GameUnitsHost::set_local_matrix_006e00a0(std::size_t index, const float m[1
     return true;
 }
 
+bool GameUnitsHost::set_formation_member_offset_0070d080(std::size_t leader,
+    std::size_t member, int column, float lateral, float axial) {
+    Impl& host = *impl_;
+    if (leader >= host.slots.size() || column < 0
+        || column >= static_cast<int>(bsp::kShipAiUnitGroupColumnCount)) return false;
+    const std::int32_t g = host.slots[leader]->formation_group;
+    if (g < 0 || static_cast<std::size_t>(g) >= host.formation_groups.size()) return false;
+    Impl::FormationGroup& group = host.formation_groups[static_cast<std::size_t>(g)];
+    // 0070D081..0070D0A1: a linear search of group+18h for the entity, stride 34h.
+    const std::uint32_t handle = static_cast<std::uint32_t>(member + 1u);
+    for (bsp::ShipAiUnitGroupMember& record : group.members) {
+        if (record.entity != handle) continue;
+        record.lateral[static_cast<std::size_t>(column)] = lateral;   // record+10h (00A11A57)
+        record.axial[static_cast<std::size_t>(column)] = axial;       // record+20h (00A11A5C)
+        return true;
+    }
+    return false;                                                     // 0070D0A3: no record
+}
+
 bool GameUnitsHost::Impl::ship_unit(std::size_t u) const {
     return u < slots.size() && slots[u]->motion_dispatch.runs_ship_base();
 }
