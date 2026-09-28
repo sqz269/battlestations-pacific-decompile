@@ -449,6 +449,55 @@ were run while it worked.
   native rows and 268 summary lines, with 0 other lines differing. The guard is gameplay-neutral on
   the success path.
 
+### 8.1 Keeping the display awake (packet `cc9_display_required`)
+
+**The cause of the device-lost windows** (the lead's finding, 2026-09-28): the active Balanced
+power plan turns the display off after 20 idle minutes on AC (`powercfg` VIDEOIDLE `0x4B0`). With
+the display off, `CreateDevice` fails with `D3DERR_DEVICELOST` (`0x88760868`), and a present that
+is already running fails the same way. The guard line above then reads `input_desktop=Default`
+and `logonui=0`. The user's power settings are not changed.
+
+**What the harness does now. It is harness only, not the original executable's behaviour.**
+- **Run start:** `src/game_main.cpp`, right after the crash record is installed, calls
+  `SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED)`. It logs one
+  line with the returned previous state:
+  `harness display required: ... previous=0x80000000`. A zero return is logged as
+  `(call failed)`.
+- **Exit:** a scope object calls `SetThreadExecutionState(ES_CONTINUOUS)` on every return path
+  after that point.
+- **Init failure only:** `report_renderer_init_failure` in
+  `src/game_native_renderer_application.cpp` injects one zero-delta mouse move with `SendInput`
+  and waits 2000 ms before its diagnostic retry. It logs
+  `harness display nudge: SendInput zero-delta mouse move sent=N ...` on its own line, so the
+  failure line keeps its format. The run still exits with code 4. The nudge exists so that the
+  next queued run finds the display lit. `ES_DISPLAY_REQUIRED` is not relied on to light a
+  display that is already off.
+
+**The test, and what it could not show.**
+
+| run | binary | display | result |
+| --- | --- | --- | --- |
+| `local\g4_dr_new.log` | the new build | off by `SC_MONITORPOWER 2`, 20 s | final COM release, exit 0; the request line shows `previous=0x80000000` |
+| `local\g4_dr_old.log` | `local\rb7` (before the change) | off, 20 s | **final COM release, exit 0**; the expected exit 4 did not happen |
+| `local\g4_dr_old120.log` | `local\rb7` | off, 120 s | final COM release, exit 0 |
+| `local\g4_dr_new2.log` | the new build with the nudge | off, 20 s | final COM release, exit 0 |
+
+- **The control did not fail.** A display turned off by `SC_MONITORPOWER` for 20 s or 120 s does
+  not reproduce `D3DERR_DEVICELOST`. So this test cannot show that the request prevents the
+  failure, nor whether `ES_DISPLAY_REQUIRED` wakes a display that is already dark.
+- **The idle-timeout sleep differs from a broadcast monitor-off in some way this test does not
+  reach.** The proof of the fix is the next unattended stretch longer than 20 minutes. Look for
+  runs that keep reaching the final COM release, or for a `harness display nudge` line followed
+  by a successful run.
+- **`powercfg /requests`** would list the request while a run is live, but it needs an elevated
+  prompt and was not run.
+- **The nudge path is unexercised.** It runs only when the device is null.
+
+**No gameplay effect.** USN04 4700/4500 of the new build (`local\g4_dr_usn04.log`, merged main
+`cf152453e` plus the change) against reference g's `local\rb7_usn04.log`: `pair_diff` exits 1.
+Gameplay, the 40 death rows, the 81 unit rows and the native table (1645 rows, 0 counts moved)
+are identical.
+
 ## 9. Handoff (cc9-tooling, 2026-09-28)
 
 Everything in sections 1-8 is landed on main. Nothing is in flight: no lease, no run, and the
