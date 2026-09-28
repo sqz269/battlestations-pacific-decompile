@@ -724,12 +724,15 @@ host. Nothing here is bound.
 | --- | --- | --- |
 | AutoTarget, `recon_triple_units(side, 1)` in `game_hosts_ship_ai.cpp` | the candidate gate is `IsKindOf(6)` (`009F5B81`), and the convoy answers no | no target change |
 | the gunnery contact count `008053C0` in `game_hosts_gunnery.cpp` | rejects anything that is neither ship base nor plane base | no change |
-| the minimap union walk `005C1610`, triple 4, in `game_hosts_hud_world.cpp` | walks own, enemy, neutral and unknown | **moves**: JM05's two own US convoys at level 2 would enter the local player's triple 0 |
+| the minimap union walk `005C1610`, triple 4, in `game_hosts_hud_world.cpp` | after the `+5Ch`/`+5Dh`/`+60h`/`+5Eh` byte tests, `005C165D PUSH 5 / CALL [vtable+5Ch]` asks `IsKindOf(5)`, and `004F2560` answers no | no icon; the entry is skipped at `005C1665` |
 | the 00806A60 level write | needs a per-slot detection record for the convoy | new state, no current reader |
 
 On JM05 the Japanese side still builds no convoy group within 3000 frames. All 510 of its member
-records sit at level 0 (section 34.3). So the predicted gameplay move is none. The presentation
-move is the minimap walk of the local player's own convoys.
+records sit at level 0 (section 34.3). So the predicted gameplay move is none. The minimap walk skips a convoy too (`IsKindOf(5)` at
+`005C165D`, read after the plan's first draft), so **no reader in this host consumes a placed
+convoy entry**. Binding the placement would move only the recon counters and the new level store.
+The follow-up is therefore low value until a reader that accepts kind `1Ah` is bound; that is why
+this packet stops at the plan.
 
 ### The choice: a unit row, or a handle outside the unit rows
 
@@ -776,15 +779,14 @@ move is the minimap walk of the local player's own convoys.
   - The minimap reader: `game_hosts_hud_world.cpp`.
 - **One switch**, OFF, with predictions written first:
   - **JM05 3200/3000:** gameplay identical, and the local player's triple 0 grows by two convoy
-    handles. The minimap union walk sees them. The icon lines move only if `005C1628..005C1675`
-    accept a class-`1Ah` entry, which is the first thing to read.
+    handles. The minimap union walk sees them and skips them at `005C1665`, so
+    no icon line moves.
   - **USN01, USN04 and LOMP10:** identical. None authors a LandConvoy; seven scenes of this
     installation do: `ijn_05`, `usn_12`, `usn_16` and `ijn_10`.
   - **A JM05 9000-frame row**, to reach a Japanese detection of a convoy member. There the enemy
     group level first matters, and even then no target pick changes, because the convoy fails
     `IsKindOf(6)`.
 - **Still to read before coding:**
-  - the minimap walk's class tests at `005C1628..005C1675` against a class-`1Ah` entry;
   - which `+1E4h` sensor category a convoy carries (`[convoy+1E4h]->vtable[1]`), because the
     group record stores it at `+8h`;
   - whether the convoy's detection record exists before its first group fold. `00806A60` writes
