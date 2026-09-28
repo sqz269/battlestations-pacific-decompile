@@ -776,6 +776,11 @@ public:
     // SUBSTITUTION, labelled: the image builds them inside 004E6C00's Map read;
     // the host takes them at the avoid-zone load step, before any script runs.
     void set_world_border_zones(const bsp::WorldMapBounds& bounds);
+    // Packet cc9_squadron_land_task: world+7134h for 007F16D0's retreat arm,
+    // null until set_world_border_zones ran.
+    const bsp::BorderZoneSet* world_border_zones() const noexcept {
+        return border_zones_loaded_ ? &border_zones_ : nullptr;
+    }
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
     // Packet cc9_ship_neighbour_list: the ShipAvoidance block settings+190h..+1D8h,

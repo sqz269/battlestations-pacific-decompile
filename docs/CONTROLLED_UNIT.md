@@ -1882,3 +1882,121 @@ The lead's later queue, taken after the handoff above:
 **New local files:**
 - **Pair exports:** `local\{bz_off,lc_on}`.
 - **Logs:** `local\lc_{off,on}_*.log` and `local\bz_{off,on}_usn04.log`.
+
+## The squadron's `returntobase` resolution, and the `land` task's shape (cc9-lua6, packet `cc9_squadron_land_task`, part 1)
+
+Worker cc9-lua6, 2026-09-28. This continues "`returntobase` on LOMP10 lands the squadrons" above.
+The resolution `007F16D0` and the site search `006C0840` are reconstructed in
+`src/return_to_base.cpp`. The host binding is written but not committed: `src/game_hosts_units.cpp`
+was leased to cc9-gunnery7 when it was ready. It is kept as `local\l6_rtb_units.patch` in worktree
+cc9-lua6.
+
+### `006C0840`, the nearest landing site (V, listing `006C0840`-`006C0B3C`)
+
+**The ABI.** `__fastcall`:
+- ECX = side, kept in EBX;
+- EDX = the head plane, kept in EDI;
+- stack: a distance out pointer, the "need approach bit" byte and the "local only" byte;
+- `RET 0Ch`.
+
+A null head, or a null `[head+9D4h]`, returns 0. The multiplayer flag is `00927C90(0) != 0`
+(`006C0866`, `SETE`).
+
+**The own-site branch.** `00923810(1)` is the head's scene parent `+3Ch`.
+- **An airfield:** the parent answers `vtable[5Ch](45h)`, is not dead (`+5Eh`), and its own parent
+  is null or not dead. Then:
+  - a non-null distance pointer gets 0;
+  - it returns `[site+7ACh]` when the side test passes, else 0.
+- **A carrier:** otherwise, the parent answers `vtable[5Ch](9)` under the same liveness test. It
+  returns `[site+1208h]` under the same side test, else 0.
+- **The side test** (`006C08CE`..`006C08E4`): the first compare is unsigned (`CMP EBX,1`/`JA`), so
+  any side other than 0 or 1 passes. Otherwise the site's `+54h` must equal the side, or be 2
+  outside multiplayer.
+
+**The walk.** The air-ops list is at `00E19948`, next at `node+BCh`. `node+4` is the block, and
+`block+7Ch` is its owner. A node qualifies when:
+- the block and the owner exist and the owner is not dead;
+- with "local only" set, the owner's `+5Dh` is clear;
+- with "need approach bit" set, `block+20h` bit 1 is set;
+- the side is negative, or the owner's `+54h` matches, or, outside multiplayer, the owner's side is
+  2 or more (`JL` at `006C09F8`, signed here, unlike the own-site test).
+
+**The choice.** Two values decide it:
+- **Acceptance:** `006BC530(head position, 0)`.
+- **The key:**
+  - for an accepting node, it comes from `block+88h` and `head->vtable[50h]()` through `00438B10`
+    and `0042BE90`;
+  - otherwise it is `00427E30` of `006BCC90`'s offset. That offset is the head's position in the
+    block frame `block+48h` (`004142E0`), minus `block+A4h..ACh`. Its y is scaled by `00CE3DC8`
+    below `00CE3948`.
+
+The best key starts at -1.0 (`00D7A260`). An accepting node beats a non-accepting one, and within
+a class the smaller key wins (`006C0AA3`..`006C0ADB`). It returns the **node**. When the distance
+pointer is non-null, it gets 0 for an accepting best, else `sqrt(key)`.
+- **Unread:** `006BC530`, `00438B10`, `0042BE90` and `00427E30`. With one node past the filters,
+  neither value decides.
+
+### `007F16D0`, re-read (V, listing `007F16D0`-`007F191F`)
+
+- **The null arm** (`007F18EB`) writes record `[0] = 0` and the zero position
+  `00F87574..00F8757C`.
+- **`sq+369h` is `ReloadEnabled`,** default 1 at `007F2D09` (the units host's
+  `control_flag_369`). It is not a deck flag. Both land arms need it.
+- **The site arm.** `006C0840`'s stack is `(0, 0047B850(head), 1)`, where `0047B850` is
+  `vtable[5Ch](10h) || vtable[5Ch](16h)`.
+  - From the node: `node+4` must be non-null, and `006BC120(block)` must be 0. `006BC120` answers 0
+    when `block+7Ch` exists with `+5Dh` clear.
+  - Then `007EF8B0(out, land 00E08FA0, 00465080(block+7Ch, 0.0))`.
+- **The retreat record:**
+  - `[0]` = `00E08F90`; word `+4` = 0; byte `+5` = 1;
+  - `+0Ch` = 0.25 × (0 + A.x + B.x + C.x + D.x), each sum stored as binary32, over `+10h`, `+1Ch`,
+    `+28h` and `+34h`;
+  - `+10h` = 0;
+  - `+14h` = the same over `+18h`, `+24h`, `+30h` and `+3Ch`. `00D7A348` is the double 0.25.
+
+**LOMP10, by these rules.**
+- There is one air-ops deck, `CB4_AF`, Allied, and no `HomeBase`.
+- **Lightning 01**'s head is class 13h, neither 10h nor 16h, so the approach bit is not needed.
+  `CB4_AF` passes the filters and it is **land at CB4_AF**.
+- **B-25 01**'s head is class 10h. `CB4_AF` qualifies only with `block+20h` bit 1, and that bit's
+  producer is unread.
+
+### The `land` task (`009B3240`, size 670h): what the flown task needs
+
+**The per-tick arm** is slot `+64h` = `009B3EB0` (no Ghidra function; `009B3EB0`-`009B3F49`,
+`RET 4`). It:
+1. sets `+4ACh` = FFh;
+2. calls `009B3900(approach, onGround, dt)`, where `onGround` means the current state is `+5D8h`,
+   `+5F8h`, `+620h` or `+64Ch`;
+3. when `+424h` is set, calls the state rule `009B3CF0` and then the current state's
+   `vtable[0Ch](dt)`;
+4. copies `+4ACh` to `+2E4h`.
+
+**The states.** These are whole-object offsets. The approach is at `+3F8h`.
+
+| offset | vtable | enter / exit / tick | reached when |
+| --- | --- | --- | --- |
+| `+4C4h` | moveto (`009C2AC0`) | shared | approach `+448h` = 1, through `009AFA50` |
+| `+500h` | follow | shared | the same, for a wingman |
+| `+598h` | `00D1FEA4` | `009B02E0` / `009B02F0` / `009B0300` | mode 2, wingman |
+| `+5B8h` | `00D1FEF4` | `009B0230` / `009B0240` / `009B0FE0` | mode 2 leader, mode 3, or `+66Ch` set in `+64Ch` |
+| `+5D8h` | `00D1FF14` | `009B13E0` / `009B0240` / `009B1D70` | mode 4 |
+| `+5F8h` | `00D1FF44` | `009B1E60` / `009B1E90` / `009B1ED0` | from `+5D8h` when `009B3C00` answers true |
+| `+620h` | `00D1FF60` | `009B21A0` / `009B21C0` / `009B22C0` | the plane's `+900h` is 4 or 5 (on the ground), from `+5F8h` when `009B3370` answers true, or at construction for a plane whose `(+72Ch)->vtable[38h]` is false |
+| `+64Ch` | `00D1FED4` | `009B0980` / `009B09A0` / `009B09C0` | from `+5D8h`/`+5F8h` when mode is not 4 |
+
+- **The mode `+448h`** (approach `+50h`) is written in the approach update `009B3900` and its
+  callee `009B34D0`. Those are tied to the air-ops landing request `006C54C0(plane, approach+38h)`,
+  which is paced by `+B0h`/`+ACh`.
+- **The cruise profile** `009B3C60` writes `ctl+394h` = `Pilot/Landing/CruisingAlt` (1400).
+
+**What a flown `land` needs**, beyond the moveto the pilot-moveto packet flies:
+- the landing request `006C54C0` and the mode writer `009B34D0`;
+- the six states' bodies, about 12 KB of listing from `009B0230` to `009B2C70`. `009B1420` and
+  `009B22C0` are about 2.5 KB each and x87-heavy;
+- the deck and runway side: touchdown `007CA3F0`, the slot release `006C65B0`, and the taxi.
+
+**On the measured row.** In the current LOMP10 log, Lightning 01 ends about 13 km from `CB4_AF`
+and flies about 9.5 km in the run. So the land task would spend most of the row in mode 1, the
+moveto. Whether it reaches mode 2 depends on when the first `returntobase` lands and on
+`009B34D0`.
