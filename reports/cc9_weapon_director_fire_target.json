@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_weapon_director_fire_target",
+  "doc": "docs/GUNNERY_OPEN_ITEMS.md sections 13-14",
+  "switch": "kWeaponDirectorFireTargetBound (include/bsp/game_hosts_ship_ai.hpp), OFF",
+  "calls": [
+    {"address": "009F5F21", "native": "00835860", "function": "009F5DA0", "note": "AutoTarget tick, force 0 (009F5F1E PUSH 0)"},
+    {"address": "00835930", "native": "00835860", "function": "008358D0", "note": "SetCommand, force 1 (00835924 PUSH 1)"},
+    {"address": "00835E07", "native": "00835860", "function": "00835C70", "note": "BeginCurrentCommand, the caller's force"},
+    {"address": "0089ABDC", "native": "00835860", "function": "0089A8B0", "note": "Lua SetFireTarget, force 1 (cc9-ships2)"}
+  ],
+  "no_ghidra_function": [],
+  "substitutions": [
+    "the routed kind-5Eh message is a host queue applied at the ship-AI session pump",
+    "the entity-command arm 00816E30 and the order appliers with untraced force stay records"
+  ],
+  "names_added": [],
+  "verdict": "pending: OFF committed, pair next"
+}

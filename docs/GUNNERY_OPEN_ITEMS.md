@@ -430,3 +430,38 @@ missions; `AutoTarget::set_fire_target` 2235 on USN02; USN02's script makes 14 `
   `cc9_usn02_deruyter_fire`. Shots about the same; hits on DeRuyter up.
 - **USN04 and the rest:** no script fire targets, so only the command paths move; identity
   where no command carries a target.
+
+## 14. The director fire-target binding (packet `cc9_weapon_director_fire_target`, switch `kWeaponDirectorFireTargetBound`, OFF)
+
+Built on main `bf6afe7ff`, which already carries cc9-ships2's `kScriptFireTargetBound`. That
+switch makes the AutoTarget tick read the director's lock at `009F5E37` and keep a locked
+scripted target, so the tick's own override of a scripted target is closed. What this switch adds:
+
+- **The AutoTarget write goes through `00836240`.** `AutoTarget::set_fire_target` now calls
+  `Impl::store_fire_target` with the tick's `force` of 0 (`009F5F1E`): it is refused while a
+  forced target holds the lock, and it clears the lock when accepted.
+- **The command paths store their targets.**
+  - `WeaponDirector::set_fire_target` for `SetCommand` (`00835930`, force 1; the target pointer is
+    resolved against the commands host's unit records).
+  - `WeaponDirector::set_fire_target` for `BeginCurrentCommand` (`00835E07`, the caller's force;
+    the target is unit index + 1).
+  - Both queue a `GameFireTargetRequest` (`GameCommandsHost::take_fire_target_requests`), which the
+    ship-AI host applies at the top of `controller_step`, beside the session pump that delivers
+    routed messages. That stands in for the kind-5Eh message's routing.
+- **Labelled.** The entity-command arm (`00816E30`) stays a record: it is not reached on the
+  reference runs. The five order sites whose `force` was not traced stay records.
+- **The census line.** `summary mission ship ai director fire target bound= command_requests=
+  refusals= changes=`.
+
+**Reach on the OFF logs of the current head** (`TA_OFF_<m>`): `WeaponDirector::set_fire_target`
+is called 28 times on USN02, 140 on USN04, 15 on USN01 and 262 on USN13; `AutoTarget::set_fire_target`
+1146 times on USN02. JM06 is measured on its OFF run.
+
+**Predictions, recorded before the pair.**
+
+| mission | ON prediction |
+| --- | --- |
+| USN02 9200/9000 | `command_requests` about 28; target switches fall because forced command targets lock the director; the DRKillers keep DeRuyter longer; hits on DeRuyter up; deaths and hits move (exit 3) |
+| USN04 4700/4500 | `command_requests` about 140; the ships under orders hold their ordered targets. Moves (exit 3), deaths within 40 +- 3 |
+| USN01 3200/3000 | `command_requests` about 15; small moves or identity; deaths 5 +- 1 |
+| JM06 3200/3000 | identity where no command carries a target; otherwise small moves |
