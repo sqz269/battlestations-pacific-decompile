@@ -1218,6 +1218,9 @@ struct GameUnitSlot {
     // desc+188h MaxSpd, the numerator of 009F9D30's run-profile speed ratio,
     // and the scale on the torpedo aim tick's pitch denominator at 009D1E64.
     float plane_max_spd{0.0f};
+    // Packet cc9_units_capture_accessors: unit+7A0h CaptureRange as 006F2780 stores
+    // it (the scene record's dword, 500 when unauthored).
+    std::int32_t capture_range_7a0{500};
     // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
     // as the pitch rate; 009D1E39 divides the nose-down angle by it to shallow
     // the aim tick's dive command as the dive steepens.
@@ -7949,6 +7952,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 spawn_heading);
             host.done("UnitPoseHistoryRing::fill_at_spawn", 0x00810020u);
         }
+
+        // Packet cc9_units_capture_accessors: 006F2780's CaptureRange, unit+7A0h.
+        slot->capture_range_7a0 = entity.capture_range_present ? entity.capture_range_raw : 500;
 
         // Milestone 2q: 00926110, BSP_SEntity_InitAll's call of the entity's
         // vtable slot 0A0h, which for this class family is 00822C20. Only that
@@ -19613,6 +19619,33 @@ float GameUnitsHost::unit_half_width_09cc(std::size_t index) const {
 float GameUnitsHost::unit_class_max_speed_0500(std::size_t index) const {
     if (index >= impl_->slots.size()) return 0.0f;
     return impl_->slots[index]->fields.max_speed;
+}
+
+float GameUnitsHost::command_building_capture_range_07a0(std::size_t unit_index) const {
+    // 006F2780 -> unit+7A0h; 00A03760 FILDs it. 1Ch is MCommandBuilding.
+    if (unit_index >= impl_->slots.size()) return 500.0f;
+    if (!unit_is_kind_of(unit_index, 0x1c)) return 500.0f;
+    return static_cast<float>(impl_->slots[unit_index]->capture_range_7a0);
+}
+
+float GameUnitsHost::plane_class_max_speed_0188(std::size_t unit_index) const {
+    if (unit_index >= impl_->slots.size()) return 0.0f;
+    if (unit_is_kind_of(unit_index, 0x18)) {
+        // [squadron+35Ch] is the plane class descriptor (docs/PLANE_SQUADRON.md);
+        // its members carry that class, so a member's value is the class value.
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != unit_index) continue;
+            for (std::size_t m : r.member_units) {
+                if (m < impl_->slots.size() && impl_->slots[m]->plane_max_spd > 0.0f) {
+                    return impl_->slots[m]->plane_max_spd;
+                }
+            }
+            return 0.0f;
+        }
+        return 0.0f;
+    }
+    if (unit_is_kind_of(unit_index, 0x0f)) return impl_->slots[unit_index]->plane_max_spd;
+    return 0.0f;
 }
 
 float GameUnitsHost::unit_class_max_rot_angle_04f8(std::size_t index) const {
