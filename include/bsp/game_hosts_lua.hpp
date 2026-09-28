@@ -317,7 +317,7 @@ bool lua_device_reload_enabled_00e17bf2() noexcept;
 // MOV byte [EAX+1D4h],1 (008AC263). No other write, no null test, no result
 // (008AC269 00B66400). The byte is what the unit-AI untouchable gate 00862440
 // reads. True: the row sets the flag below; false: the row stays unimplemented.
-inline constexpr bool kLuaAddUntouchableUnitBound = false;
+inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
 // The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
 // left it. False for every unit while kLuaAddUntouchableUnitBound is false.
 // Inert: nothing in this process reads it until the gunnery lane binds 00862440.

@@ -3616,3 +3616,28 @@ with cc9-gunnery8, which binds the gate.
   marks `Mission.CapPt`, the `Event2Pt` it has just generated. The summary reads `calls=3 marked=3`.
   `AddUntouchableUnit` turns concrete. Gameplay is identical.
 - **USN01 3200/3000: exit 1**, the new summary line only. USN01 makes no call.
+
+### Pairs and verdict
+
+OFF is this tree's build at `11bad8895`. The first ON was
+`pair_export --commit 11bad8895 --flip kLuaAddUntouchableUnitBound=true` (`local/l7_fl`). The logs
+are `local/l7_ut{off,on}_<row>.log` in worktree cc9-lua7, with the reference launch lines.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 1 | the three census lines and the summary (`calls=3 marked=3`); gameplay identical |
+| USN01 3200/3000 | exit 1 | the summary line only |
+
+**The census**, as predicted. All three calls come at stage init (`t=0.00`):
+- `PT Boat 80' Elco 01` (unit 339);
+- `PT Boat 80' Elco 02` (unit 340);
+- `Event2Pt` (unit 364), the generated capture PT.
+
+**One bookkeeping fix before the flip.** The first ON export still listed the native as
+UNIMPLEMENTED with its calls counted twice (3 -> 6), because the row was missing from the dispatch's
+`handled` set. The flip commit adds it. A rerun of the flipped tree
+(`local/l7_uton2_jm05.log`) lists `AddUntouchableUnit` as `concrete calls=3`, and `pair_diff` against
+the OFF log is exit 1.
+
+**Verdict: `kLuaAddUntouchableUnitBound = true` on identity.** The flag stays inert until the gate
+`00862440` reads `lua_unit_untouchable_1d4`.

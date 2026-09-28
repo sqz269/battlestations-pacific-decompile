@@ -407,6 +407,7 @@ int binding_trampoline(lua_State* state) {
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || slot_count_row || device_reload_row || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
+        || untouchable_row
         || attack_alt_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
