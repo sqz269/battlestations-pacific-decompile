@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_torpedo_friendly_crossing",
+  "doc": "docs/TORPEDO_FRIENDLY_CROSSING.md",
+  "code_changed": false,
+  "addresses": {
+    "0090058A": "008053C0(party)+0DDCh, the own-party list",
+    "0090060C": "squared distance against 4.0e6 (00D09FE8)",
+    "00900630": "friendly forward [+94h]/[+9Ch] * 1000.0 (00CE47A0), both ways",
+    "009006EE": "004F3730 segment-vs-segment, both parameters in [0,1]",
+    "009007D4": "threshold = run * 300 / 1000 + 200 (00CE3CA8, 00CE47A0, 00CE4D70)",
+    "009007F2": "FCOMIP threshold > miss -> hold (0090096D vtable[1E8h](0))"
+  },
+  "measured": "John1 at 273.71 s, run_dir (-0.052, 0.999); Houston along 87 across +51, heading +0.455 deg, 8.357 m/s, across speed +0.5; keel line meets the run line at along about -764 m, behind the gun: no crossing in the image either",
+  "host_vs_image": "identical terms; 004F3730 is a naked-asm port",
+  "verdict": "the image lets the launch through; no binding; the hit comes from the tube-to-gyro turn and hull extent, which the gate does not model (not established: the tube heading was not logged)",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
