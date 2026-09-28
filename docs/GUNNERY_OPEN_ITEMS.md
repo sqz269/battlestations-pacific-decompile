@@ -841,3 +841,45 @@ Score only; closed.
   - a drain call from `pump_session_00778450` in the fixed-step host, which is not this worker's.
 - It is proposed to the lead as its own packet. Section 21's pairs used the host's immediate
   clear, which is the same modelling every other stage-2 raise in this host uses.
+
+## 23. The torpedo threat head and the AutoTarget accept, bound OFF, with predictions (packet `cc9_torpedo_threat_first_node`)
+
+**The bindings** (commit `b1e6667eb`, both OFF):
+- **`kForeignTorpedoThreatHeadBound`** answers 00814420 as section 22 reads it. Only the head
+  torpedo is tested: the lowest serial of `live_torpedoes()`, since 00484540 is push-back. The
+  answer is the live list's size when the head is foreign and threatening, else 0.
+  - SUBSTITUTION: `live_torpedoes()` stands for the registered list. An exploded torpedo leaves
+    the host at once, and leaves the image at the destroy flush of the same fixed step.
+- **`kAutoTargetCommandAcceptBound`** answers 009F5E59's `0071D6D0(attackmove, locked target)`
+  from the commands host's concrete body, `GameCommandsHost::command_accepts_target_0071d6d0`.
+  That body is the descriptor 00465080 builds (kind 1, the target's id), then 0071D6D0's tests,
+  including section 19's released byte. Section 17's last rank-2 term.
+- The summary line `summary mission threat head` counts in both builds: calls, and how often the
+  head answer differs from the per-torpedo count; accept calls, and how many accept.
+
+**OFF counters** (`local\g5ttoff_*.log`):
+
+| mission | 00814420 calls | head differs | 0071D6D0 calls | accepts |
+| --- | --- | --- | --- | --- |
+| USN02 9000 | 10484 | 0 | 9216 | 8329 |
+| USN13 3000 | 0 | 0 | 0 | 0 |
+| USN04 4500 | 0 | 0 | 0 | 0 |
+| USN01 3000 | 0 | 0 | 0 | 0 |
+
+**Predictions:**
+- **USN13, USN04, USN01: identity.** Neither routine is asked.
+- **USN02, the threat head: no change.** The head answer equals the per-torpedo count on every
+  call. At every standoff test either no torpedo is live, or the torpedoes present agree.
+- **USN02, the accept.** On 8329 thinks the locked target (DRKillers' SetFireTarget) is kept
+  without the scan:
+  - `scans` drops by up to 8329;
+  - the retained score is no longer reset on those thinks.
+  - The pick is the locked target either way, since the scan's `keep_locked` holds it. So the
+    fire targets, shots, hits and death rows are predicted **identical** (exit 1).
+  - The risk is the retained score once a lock ends. A moved row would appear only after an
+    unlock, and would be a later target switch on DRKillers' ships.
+- **JM06** (2147 threat calls on reference h) is added as a check of the head. It is predicted
+  identical if its `differs` reads 0 OFF, and small moves in torpedo standoff (launch timing)
+  otherwise.
+- **Flip rule:** each switch flips when its mechanism matches. A USN02 move that is traced to the
+  accept alone keeps `kAutoTargetCommandAcceptBound` OFF pending a re-read of the retained score.
