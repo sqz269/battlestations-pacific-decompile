@@ -2638,6 +2638,44 @@ binding. Names are hypotheses.
 - The flip rule has to separate the shape-derived inertia from every torque it wakes. Pair it
   first with the roll torque OFF.
 
+### 47.4 The local box's producer, found (cc9-gunnery9, continued)
+
+- **The hull build.** The `ConvexObject` parse region calls `00C5DEB0` at `006FAECE` with
+  `ECX = resource+0Ch` (the handle) and the chunk's points. `00C5DEB0` is
+  `DYN_ConvexHull_Construct` (replacement order), reconstructed in docs/AVOID_ZONE_DYN_HULL.md.
+  Its internal record keeps the vertex minimum and maximum at `+18h` and `+24h`, written by
+  `00C389C0` from the hull's vertices. That record is `mesh+18h..+2Ch`, the box `00C57C40` reads.
+- **The offset cancels.** Before the call, `006FAEA0..006FAEC7` subtracts the resource's
+  `+14h..+1Ch` vector from every point (`FSUB [EDI+14h]`, `[EDI+18h]`, `[EDI+1Ch]`). SHIP_HULL_SHAPES
+  gives `record+14h` as the shape's translation, with an identity rotation. So a shape's box in the
+  body frame is the chunk points' own box, widened by 0.02, up to float rounding. A convex hull's
+  vertices are a subset of its points and include the extremes, unless the 4096-vertex limit cuts
+  some, so the hull's box equals the points' box.
+- **This installation's DeRuyter** (`models/ships/us/deruyter.mmod`, `local\g9_convex.py`) has ten
+  `ConvexObject` chunks. Nine are part-sized (extents of 1.3 to 16.5). One is the hull:
+
+  | chunk | points | min | max | extent |
+  | --- | --- | --- | --- | --- |
+  | file+`2C5AC04` | 117 | (-8.23, -5.65, -96.90) | (8.23, 12.20, 77.02) | (16.46, 17.85, 173.93) |
+
+  With only that shape kept, the body box is its box widened by 0.02 on each side, so
+  extent = (16.50, 17.89, 173.97). Mass 7688 (the run log) then gives `k = 7688/12 = 640.67`, and
+  `I = mul * 640.67 * (17.89^2 + 173.97^2, 16.50^2 + 173.97^2, 16.50^2 + 17.89^2)`, about
+  `mul * (19.6e6, 19.6e6, 0.38e6)`. The roll axis is row 2, so the roll inertia is the third
+  term, about `mul * 3.8e5`. USN02's largest torque of 4.0e6 then changes the roll rate by about
+  `10.5 / mul * dt` rad/s: 0.5 / `mul` rad/s over a 0.05 s step. That is large, so **the pair will
+  move**.
+- **Still unread: which records are kept.** The chunk does not name its owner node. The four
+  owners are `firstnode`, the node at `model+0Ch`, `front` and `back` (SHIP_HULL_SHAPES). The
+  DeRuyter has none of the named three, so the kept set is the records owned by `model+0Ch`. The
+  hull chunk is the obvious candidate, but that is not proven. The producer of `model+4Ch` (the
+  record list with each record's owner) and of `model+0Ch` is the model loader.
+
+**Packet 2 of 47.3, restated.** For each hull class: decode the `.mmod` hierarchy enough to know
+each `ConvexObject`'s owner and `model+0Ch`; keep the owned chunks; take the union of
+`[min - 0.02, max + 0.02]`; hand the extent to the hull build. `local\g9_convex.py` already
+decodes the point lists.
+
 ## 48. Handoff (cc9-gunnery9, 2026-09-28, at about 70% context)
 
 ### 48.1 What this worker landed or left
@@ -2649,7 +2687,7 @@ binding. Names are hypotheses.
 | 44 | rank 7, `007788B0` | read: the formation-follower gate; the binding `kAutoTargetFollowerGateBound` is routed to the ship-AI lane |
 | 45 | `cc9_squadron_set_command` | `kSquadronSetCommandBound` ON: plane and squadron rows run `0071E6C0` alone. Open: the squadron's `0084DD20` self-target rule (45.1) |
 | 46 | `cc9_hull_roll_torque` (rank 8) | `kShipHitRollTorqueBound` ON; identity until the hull has an inertia |
-| 47 | `cc9_hull_inertia` | read: the missing input is the Dyn convex mesh's local box; three packets planned |
+| 47 | `cc9_hull_inertia` | read: the local box is the `ConvexObject` points' box (47.4); the DeRuyter hull chunk measured; still unread: which records `model+0Ch` owns |
 
 ### 48.2 Open items this worker found
 
