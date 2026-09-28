@@ -2892,3 +2892,28 @@ Worker cc9-lua4, 2026-09-28. The lead gave this lane `src/game_hosts_units.cpp` 
 - **USN04 4700/4500 and USN13 3200/3000: exit 1, gameplay identical.** Neither run reaches the
   native (USN04 has one call, `usn_19_coralus.lua` 2182, not reached in 4500 frames); only the
   summary's `bound=` differs.
+
+### SquadronSetTravelAlt: the pairs and the verdict
+
+OFF is this tree's build at `0c48b1e44`. ON is `local\ta_on`, a `pair_export` of `0c48b1e44` with
+`kSquadronTravelAltBound=true`. Logs are `local\ta_{off,on}_<mission>.log`.
+
+| mission | pair_diff | what moved |
+| --- | --- | --- |
+| JM08 3200/3000 | exit 3 | shots 1689 -> 2091, hit records 310 -> 342, hull hits 89 -> 86, damage 3745.4 -> 3681.8; the same 9 death rows, 8 changed |
+| USN13 3200/3000 | exit 1 | nothing (no call) |
+| USN04 4700/4500 | exit 1 | nothing (no call in the window) |
+
+- **The mechanism held.**
+  - JM08's `squadron travel alt Movie Mavis: alt=750.0 force=1 active=1 last_cruise=750.0`, with
+    121 gated refreshes.
+  - The script kills the Mavis at 40.05 s in both runs (`KillReason=harm`, no first damage). It
+    dies at 759 m instead of 1391 m.
+- **What followed.**
+  - Lower down, AA reaches the Mavis: its death row now names "Stephen Potter" at 1313 m, where
+    OFF had no killer.
+  - The extra AA fire moves the shared stream and the later raid. H6K Mavis 01, the three Gekkos
+    and the three Oscars die 1 to 3 s earlier, with other killers.
+  - The victims are the same nine, as predicted.
+
+**Verdict: `kSquadronTravelAltBound = true`.**
