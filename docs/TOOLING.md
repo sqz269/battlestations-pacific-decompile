@@ -448,3 +448,56 @@ were run while it worked.
   identical apart from noise. That covers 44 death rows, 44 plane death modes, 81 unit rows, 1,653
   native rows and 268 summary lines, with 0 other lines differing. The guard is gameplay-neutral on
   the success path.
+
+## 9. Handoff (cc9-tooling, 2026-09-28)
+
+Everything in sections 1-8 is landed on main. Nothing is in flight: no lease, no run, and the
+tree is clean. What follows is what a successor needs.
+
+### The four proposed tools (awaiting the user's decision)
+
+These are one line each. None of them is started.
+
+| proposal | what it would do | evidence it rests on | recommendation |
+| --- | --- | --- | --- |
+| ranking generator from logs | Rank UNIMPLEMENTED native rows across a set of run logs by call count and mission coverage, to order reconstruction work. | Every log's native table carries status and calls (for example `UnitInstance::wake_setting` UNIMPLEMENTED with 17,603 calls on E2). `pair_diff.Run` already parses the table. | Build it. It is small, reuses `Run`, and needs no game run. |
+| merge resolver for appended doc sections | Teach `tools/merge_resolve.py` to union two branches that each append a section at the end of the same doc. | These conflicts come up in integration. I have not measured how often; the lead's integration log would say. | Build it only if that count is material. It is a text union like the startup.cmake case. |
+| deferred-name queue in the integrate script | Queue reviewed names whose Ghidra function is not defined yet, and apply them after `ghidra_define_function.py`. | Described by the lead. I have not read `integrate_workers.py`'s name step. | Needs a read of that step before sizing. It touches Ghidra writes, so it must take the write lock. |
+| reference-row extractor | Print a mission reference table (damage, deaths, hits, shots, first hit, releases, water contacts, controlled moved, mission end, unimplemented) from a log, in the GAME_EXECUTABLE.md column order. | These rows are hand-copied into every baselines section. `pair_diff.Run.headline()` already extracts all of them. | Build it first. It is the cheapest and removes a transcription step. |
+
+### How to read the renderer init failure line (section 8)
+
+`harness renderer init failed: ...; exiting with code 4` appears only when CreateDevice left the
+device null. Its fields:
+- **`retry hr`.** CreateDevice run once more by the host, with software vertex processing, only to
+  get an HRESULT. `0x88760868` is `D3DERR_DEVICELOST`. "(the retry succeeded: transient)" means the
+  cause went away in between.
+- **`adapter`, `requested`, `format`, `windowed`, `interval`.** The adapter description and the
+  D3D present parameters 00B2AEB0 built. `interval` is after any `--present-interval` override.
+- **`display`.** The desktop's current mode (`EnumDisplaySettings`).
+- **`session`, `console_session`, `remote`.** The process's session, the active console session
+  and `SM_REMOTESESSION`. A mismatch or `remote=1` points at a remote-desktop session.
+- **`input_desktop=<a>/<b>` and `logonui=<a>/<b>`.** Sampled at the failure and after the retry.
+  `Default` with `logonui=0` means no lock or logon screen had input. `unavailable (Winlogon or
+  another secure desktop)` or `logonui=1` is the lock evidence. `LockApp.exe` is deliberately not
+  reported, because it stays resident after an unlock.
+
+The one recorded failure (2026-09-27, 17:40-18:01) read `input_desktop=Default`, so the lock screen
+is ruled out as its cause, and the cause stays open. The two-sample fields are build-tested only.
+
+### The lease overlap rule's known limit (docs/COORDINATION.md)
+
+- **Absolute paths from another worktree.** Paths are normalised relative to *this* checkout's
+  root. An absolute path into another worktree does not reduce to a repo-relative path, so it is
+  compared as written and will not overlap that worktree's relative leases. Leases are claimed
+  with relative paths in practice, so this has not happened.
+- **No wildcards.** Globs are not understood: `src/*.cpp` is a literal name.
+- **Case-insensitive comparison.** This is right on Windows, and would over-match on a
+  case-sensitive filesystem.
+
+### pair_diff's noise list
+
+It is data in `NOISE` at the top of `tools/pair_diff.py`, and each entry cites its evidence
+(section 1). A new counter that varies between identical runs of one binary gets a
+`native-calls` entry, which ignores both its count and its presence, plus a row in section 1's
+table.
