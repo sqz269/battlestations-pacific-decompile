@@ -328,6 +328,14 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // through the same gate as 0089F550's (009C89A6..009C89DD), and the approach
 // update 009C7A96 copies ctl+398h into approach+ACh. True: the block is kept and
 // the dive-bomb approach reads it. False: unimplemented, the tuning value.
+// Packet cc9_dive_profile_draw (docs/DIVE_BOMB_TASK.md, "The cruise profile's
+// begin-altitude draw"). 009C8920, for a unit with no follow target (007B8AD0 at
+// 009C8931), draws 00BD2F10(0, [00CE5380] = 15.0) with ECX = 1 at 009C899B
+// before the +398h gate, and a gate that is open writes BeginAltRange/1 + draw
+// into the squadron's +398h (009C89CE), which 009C7A96 copies into approach+ACh.
+// True: the draw is made on every such profile call and the squadron's members
+// read the drawn +398h. False: +398h stays BeginAltRange/1 with no draw.
+inline constexpr bool kDiveProfileDrawBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
