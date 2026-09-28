@@ -554,6 +554,12 @@ struct GameShipAiSummary {
     unsigned long long clearance_outcome_frames[4]{};
     unsigned long long obstacle_turn_assist_raises{0};
     unsigned long long obstacle_secondary_raises{0};
+    // Packet cc9_heading_wrap_census: the heading stores 00605070 wraps in place
+    // (009DFF81, 009E00FA, the setter 009DFFB0, the approach 009F3360), and how many
+    // of them lie outside (-pi, pi].
+    unsigned long long heading_wrap_stores{0};
+    unsigned long long heading_wrap_out_of_range{0};
+    float heading_wrap_max_abs{0.0f};
     unsigned long long approach_troop_landers{0};
     unsigned long long arm_final_area_key_differs{0};
     unsigned long long autotarget_follower_leaves{0};

@@ -1972,3 +1972,36 @@ The revert is a host rule with no image counterpart at this site.
 **Next step, if the item is taken.** Read how the attack command tick uses `command+1Ch` after its
 group is freed (docs/AI_COMMAND_OBJECT.md), and decide whether the host's revert changes an order
 the image would issue. Until then the rank stays 5, with its reach unproven.
+
+## 22. Rank 7: the heading wrap `00605070`, census (packet `cc9_heading_wrap_census`)
+
+Worker cc9-ships9, 2026-09-28. This is a census only, with no switch.
+
+**Counter.** `summary mission ship ai heading wrap` counts the heading values the host stores
+where the image wraps them in place with `00605070`: `009DFF81`, `009E00FA`, the setter
+`009DFFB0` and the approach `009F3360`. It also counts the values outside (-pi, pi] and the
+largest magnitude. Logs: `local\ships9_g0_<row>.log`, tree build with sections 17 to 20 ON.
+
+| row | stores | out of range | max magnitude |
+| --- | --- | --- | --- |
+| JM06 | 2595 | **79** | 6.2785 |
+| USN13 | 70431 | 0 | 1.5970 |
+| USN02 | 31891 | 0 | 3.1416 |
+| JM08 | 21318 | 0 | 3.1416 |
+| USN12 | 13929 | 0 | 1.8588 |
+| JM05 | 13651 | 0 | 3.1416 |
+| LOMP10 | 11720 | 0 | 3.1416 |
+| USN01 | 6878 | 0 | 2.8274 |
+| USN04 | 59 | 0 | 1.3351 |
+| LOMP06 | 28 | 0 | 1.6494 |
+
+**Reach.** Only JM06 stores unwrapped headings, near 2pi. Their readers go through
+`wrapped_angle_subtract_00438b10` and `wrapped_angle_add_00438aa0`. Those loop by 2pi until the
+result lies in (-pi, pi] (`00438AB0..00438B0B`, `00438B20..00438B7B`), so an unwrapped input
+changes a result by float rounding only. One direct copy exists, `blk+324h = blk+1D8h` at
+`009ED947`, and its readers use the same helpers.
+
+**Rank 7 drops to reach 1**, a rounding difference on JM06's 79 stores. A faithful binding would
+pass the heading by reference through `after_heading_stored_00605070` and
+`wrap_brain_heading_00605070`, and wrap it with the recovered `00605070`. It is not worth a pair
+set on its own.

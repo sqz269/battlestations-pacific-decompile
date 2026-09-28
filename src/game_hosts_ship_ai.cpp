@@ -1192,6 +1192,13 @@ struct GameShipAiHost::Impl {
         }
         return static_cast<std::int32_t>(best);
     }
+    // Packet cc9_heading_wrap_census: 00605070 leaves a value in (-pi, pi] alone.
+    void count_heading_wrap_store(float heading) {
+        ++summary.heading_wrap_stores;
+        const float a = std::fabs(heading);
+        if (heading > 3.14159265f || heading <= -3.14159265f) ++summary.heading_wrap_out_of_range;
+        if (a > summary.heading_wrap_max_abs) summary.heading_wrap_max_abs = a;
+    }
     SceneDirectorEnables director_enables_0220(std::size_t index) const {
         const GameGunneryUnitRow* row = gunnery_unit_row(index);
         if (row != nullptr) {
@@ -2171,7 +2178,8 @@ public:
     void on_steering_mode_change_009da4e0() override {
         owner_.record("ShipAiControls::steering_mode_changed", 0x009da4e0u);
     }
-    void after_heading_stored_00605070(float) override {
+    void after_heading_stored_00605070(float heading) override {
+        owner_.count_heading_wrap_store(heading);
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -2243,7 +2251,8 @@ public:
         bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
         owner_.done("ShipAiHold::clear_path_plan", 0x009da4e0u);
     }
-    void after_heading_stored_00605070(float) override {
+    void after_heading_stored_00605070(float heading) override {
+        owner_.count_heading_wrap_store(heading);
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -5201,6 +5210,7 @@ public:
         owner_.done("ShipAiApproach::clear_turn_accumulators", 0x009f3348u);
     }
     void set_brain_heading_01e0(float heading) override {
+        owner_.count_heading_wrap_store(heading);  // 009F3360 wraps this store
         ctl_.blk.desired_heading = heading;
         owner_.done("ShipAiApproach::set_brain_heading", 0x009f335cu);
     }
@@ -10389,6 +10399,10 @@ void GameShipAiHost::report() {
         host.summary.clearance_outcome_frames[2], host.summary.clearance_outcome_frames[3],
         host.summary.obstacle_turn_assist_raises, host.summary.obstacle_secondary_raises,
         kShipAiClearanceOutcomeWiringBound ? 1 : 0);
+    host.log.notef("summary mission ship ai heading wrap stores=%llu out_of_range=%llu "
+        "max_abs=%.4f (00605070 at 009DFF81 / 009E00FA / 009DFFB0 / 009F3360; packet "
+        "cc9_heading_wrap_census)", host.summary.heading_wrap_stores,
+        host.summary.heading_wrap_out_of_range, static_cast<double>(host.summary.heading_wrap_max_abs));
     host.log.notef("summary mission ship ai arm final area key calls=%llu differs=%llu bound=%d "
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
