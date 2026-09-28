@@ -405,6 +405,13 @@ inline constexpr bool kShipFollowStationPointBound = true;
 // ever runs 009F5DA0. True: a row answering IsKindOf(0Fh) or IsKindOf(18h)
 // skips the tick. False: it runs the ship director's AutoTarget as before.
 inline constexpr bool kPlaneRowAutoTargetBound = false;
+// Packet cc9_autotarget_follower_gate, docs/GUNNERY_OPEN_ITEMS.md section 44 and
+// docs/SHIP_AI_OPEN_ITEMS.md section 12. True: 009F5DC4's 007788B0 is the
+// formation-follower test, so a follower skips target selection, and unless
+// its first command slot is null or `follow` (00E08F60) 009F5DEB runs 0077C980
+// (unit, 0), the leave chain to 0077BD70, at the call (labelled, as the Lua
+// LeaveFormation 00899EB0 runs it). False: the gate answers false.
+inline constexpr bool kAutoTargetFollowerGateBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -8611,8 +8618,14 @@ public:
         : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
 
     bool controller_belongs_to_another(void*) override {
-        owner_.record("AutoTarget::controller_belongs_to_another", 0x007788b0u);
-        return false;
+        const bool follower = owner_.units.unit_is_formation_follower_007788b0(index_);
+        if (follower) ++owner_.summary.autotarget_follower_thinks;
+        if (!kAutoTargetFollowerGateBound) {
+            owner_.record("AutoTarget::controller_belongs_to_another", 0x007788b0u);
+            return false;
+        }
+        owner_.done("AutoTarget::controller_belongs_to_another", 0x007788b0u);
+        return follower;
     }
     void* director_command_slot() override {
         // 009F5DD0, [director+54h]. 0071BE48 establishes that the first command
@@ -8623,7 +8636,17 @@ public:
         return reinterpret_cast<void*>(static_cast<std::uintptr_t>(command));
     }
     void release_controller(void*, int) override {
-        owner_.record("AutoTarget::release_controller", 0x0077c980u);
+        // 0077C980(unit, 0) at 009F5DEB -> 77h -> 0077FE80 arm 3 -> 0077BD70(unit,
+        // null), run at the call as LeaveFormation 00899EB0 runs it (labelled).
+        if (!kAutoTargetFollowerGateBound) {
+            owner_.record("AutoTarget::release_controller", 0x0077c980u);
+            return;
+        }
+        if (owner_.units.unit_formation_group_0284(index_) >= 0) {
+            owner_.units.leave_group_on_destroy_0077bd70(index_);
+            ++owner_.summary.autotarget_follower_leaves;
+        }
+        owner_.done("AutoTarget::release_controller", 0x0077c980u);
     }
     bool unit_suppresses_targeting(void*) override {
         owner_.done("AutoTarget::unit_player_controlled", 0x009f5e06u);
@@ -10172,6 +10195,11 @@ void GameShipAiHost::report() {
         "cc9_plane_row_autotarget)",
         host.summary.plane_row_autotarget_ticks, host.summary.plane_row_autotarget_thinks,
         kPlaneRowAutoTargetBound ? 1 : 0);
+    host.log.notef("summary mission ship ai autotarget follower gate follower_thinks=%llu "
+        "leaves=%llu bound=%d (007788B0 at 009F5DC4, 0077C980 at 009F5DEB; packet "
+        "cc9_autotarget_follower_gate)",
+        host.summary.autotarget_follower_thinks, host.summary.autotarget_follower_leaves,
+        kAutoTargetFollowerGateBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",

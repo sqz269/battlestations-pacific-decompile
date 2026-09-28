@@ -536,6 +536,10 @@ struct GameShipAiSummary {
     // squadron row (both sides) and the thinks they ran (OFF only).
     unsigned long long plane_row_autotarget_ticks{0};
     unsigned long long plane_row_autotarget_thinks{0};
+    // Packet cc9_autotarget_follower_gate: AutoTarget thinks by a formation
+    // follower (both sides) and the leaves 009F5DEB ran (ON only).
+    unsigned long long autotarget_follower_thinks{0};
+    unsigned long long autotarget_follower_leaves{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
