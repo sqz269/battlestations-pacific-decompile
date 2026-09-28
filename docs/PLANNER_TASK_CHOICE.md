@@ -331,6 +331,190 @@ image: Attack, against Haguro's group, one think after the Capture hand-off.
 - The lease is `cc9_planner_defend_capture_thinks`, which also covers a new
   `src/ai_planner_thinks.cpp` (not created yet; add it through `cmake/startup.cmake`).
 
+## 8. The Capture target path, part 2 (packet `cc9_planner_defend_capture_thinks`)
+
+Worker cc9-ships4. Ghidra was read-only. The listing is `00A29FD0`'s export (`s3_capture_asm`).
+
+### 8.1 The image
+
+**The target records** (`00A2A130-00A2A1E7`), one per list-28 entity not on the planner's side:
+
+```
+00A2A158  MOV EAX,[EDI+54h] / CMP EAX,[EBP+30h] / JZ skip   ; own side: no record
+00A2A16D  CALL 00A22F60                                     ; the map node, keyed by the entity
+00A2A176  MOV EAX,[EBP+1Ch] / MOV ECX,[EAX+24h]             ; ECX = brain+24h, the planner's side
+00A2A184  CALL 00A1E250 (EDX = entity, out = rec+4h) / FSTP ST0
+00A2A190  FLD [tuning+19Ch] / FLD [ESI+14h] / FADD [ESI+0Ch] / FMULP   ; 35 * (d + b)
+00A2A1A4  CALL 00A03510 (ECX = the entity)                  ; its CaptureWeight
+00A2A1B5  FLD [tuning+1A0h] / FMUL double                   ; 200 * CaptureWeight
+00A2A1CE  FCOMIP / JBE                                      ; the larger of the two
+00A2A1E2  MOVSS [ESI+1Ch],XMM0                              ; rec+1Ch, the price
+```
+
+`00A1E250`'s terms are in docs/AI_PLANNER_TAILS.md section 1. With this installation's values:
+- **a, b** sum `00A03760` over lists 6 (ships) and 24 (squadrons). Lists 69 and 70 (AirField,
+  Shipyard) take `00A03510`'s default arm, weight 0, so they add nothing.
+- **`00A03510`** switches on entity `+C4h`: 7 -> 2.0 (`00CE3958`); 8, 0Eh, 18h -> 1.0; 9 -> 3.0
+  (`00CE3854`); 0Ah -> 4.0 (`00CE3D34`); 0Dh -> 5.0 (`00CE3850`); 0Ch -> 0.1 (`00D7A2F0`) when
+  `00827F70` holds, else 1.0; 0Bh -> 3.0 when `[unit+538h]->vt[+2Ch]()`, else 0; 1Ch -> the Lua
+  `CaptureWeight`, default 1.0; anything else 0.
+- **c, d** are `00946FC0(team) * 1000 / max(nearest own-team list-28 distance, 1000) / 35`.
+  `00946FC0` starts from `[00E0CFB4] * 0.5`. `[00E0CFB4]` is 2400.0 in `.data` and is rewritten
+  to 2400.0 (`00CE396C`) at `005E3262` whenever `004BCA50` answers above 3; a campaign mission
+  answers 8. It then subtracts every unit's `+304h` `ResourceUsage` (`0077E864`), which no script or
+  reference scene of this installation authors, so 0. The target is itself in list 28, so the
+  enemy's reach factor is 1: `d = 1200 / 35 = 34.286`.
+- **e** is the Lua `StrategicGain`, default 0; nothing authors it.
+
+**The Capture_ tuning** that `00A335D0` stores (the loader writes `+19Ch..+1CCh`; `00A371A0`'s
+reader sees each 4 bytes lower). This installation's `highlvlaiglobals.lua` (mtime 2024-07-13),
+`IslandCaptureParams_Rookie` lines 94-103:
+
+| reader | key | value |
+| --- | --- | --- |
+| `+198h` | `Capture_ArriveToRangeTime` | 30 |
+| `+19Ch` | `Capture_CapturePointResourceValue` | 35 |
+| `+1A0h` | `Capture_MinimalResource` | 200 |
+| `+1A4h` | `Capture_CollectDefendersDist` | 3000 |
+| `+1ACh` / `+1A8h` | `Capture_ActAttackTargetWeightMul` [1] / [2] | 15.0 / 1.15 |
+| `+1B0h` / `+1B4h` | `Capture_ActAttackTargetWeightMulDist` [1] / [2] | 3000 / 4500 |
+| `+1B8h` | `Capture_MinimalCBTargetWeight` | 0.5 |
+| `+1BCh` | `Capture_CommandBuildingStrategicWeightMul` | 0.8 |
+| `+1C0h` / `+1C4h` / `+1C8h` | `Capture_SpawnDelay` [1] / [2], `Capture_SpawnDelayTime` | 60 / 45 / 150 |
+
+The Regular and Veteran blocks differ only in `Capture_SpawnDelay`. The 100x and 1.5x in section
+6 were the image defaults; the Lua values are 15x and 1.15x.
+
+**The per-group pass** (`00A2A263-00A2AA90`), one record per owned group:
+
+```
+00A2A2C7  CALL 00A2C530 / FSTP [ESI+4h]        ; value[1]: sum of member +304h, 0 here
+00A2A2D2  CALL 00A1A7A0 (ECX = planner, group) ; value[2]: the group's current target
+00A2A2E9  MOVSS [ESI+10h],[00CE4970]           ; value[4] = 1.0e10, value[3] = 0
+00A2A319  CMP EBP,EBX / JZ next                ; entity+16Ch is this group: skipped
+00A2A32C  CMP EAX,[EDI+30h] / JZ own           ; own side: the nearest-own test
+00A2A380  CALL 00A250A0 (planner; group, entity) / FSTP [ESP+0BCh]
+00A2A390  CMP ESI,[ECX+8h] / MOVSS XMM0,[00D7A24C] / JNZ   ; 1.0 unless value[2]
+00A2A60A..00A2A641  00419010(+1B0h, +1ACh, +1B4h, +1A8h, d)  ; pushes in reverse order
+00A2A65B  CALL 00A22D10 / FLD [ESP+0C4h] / FMUL [ESP+0BCh] / FSTP [EAX]  ; map[entity] = mul * w
+```
+
+- **`00A1A7A0`** returns the first list-28 entity not on the planner's side that the group's
+  command already serves. That is `00A2BDB0` (an ATTACK whose `+1Ch` is the entity's `+16Ch`),
+  or `00A2C150` / `00A2C230` / `00A2C1C0` (IsType 2, 0Ch or 5, with `+8h/+10h` within 1.0 squared of
+  the entity).
+- **`00A250A0`** is `00A0C650(00A07E40(group), 00A24870(entity), 0, -1.0, 0, 0, 1.0)`.
+  - `00A24870` collects, from list 2, the entities with `+5Dh` clear, `+54h == planner+34h`, and
+    IsKindOf 6, 18h or 1Bh within `+1A4h` of the target (3-D, `00A1A660`). With none, it takes
+    the target itself (`00A248FD`).
+  - `planner+34h` is the enemy side: `00A1EEB2 CMP [EAX+24h],EBX / SETZ DL / 00A1EEC1 MOV
+    [ESI+34h],EDX`.
+
+**The assignment loop** (`00A2AAA0-00A2AF40`):
+
+```
+00A2ABF9  CALL 00A22D10 / MOVSS XMM0,[EAX] / COMISS XMM0,[00D7A218] / JBE skip   ; w > 0.0
+00A2AC16  FLD [tuning+1BCh] / FLD1 / FSUBRP / FMUL w / FSTP double               ; (1 - k) w
+00A2AC2D  FLD [tuning+1BCh] / FMUL [ESP+0A0h] / FADD double / FSTP float          ; + k * rec+4h
+00A2AC4A  FCOMIP / JBE skip                                                       ; beats the best
+00A2AD77  CALL 00A1A720 (group, target)
+00A2ADD7..00A2ADE4  rec+1Ch -= value[1]; the group leaves the map
+```
+
+- The best starts at -1.0e10 (`00CE4ADC`). Targets are the outer loop and groups the inner one,
+  both in map (pointer) order, and a strict `>` keeps the first of equal scores.
+- A target leaves when its price drops below 0. Every group's `value[1]` is 0 here, so no target
+  ever leaves and every group with a positive weight is assigned.
+
+**The merge** (`00A2AF60-00A2B15C`): for each target with more than one group, `00A1D010(earlier,
+later)` for every pair (`00A2B129 PUSH ECX (later) / 00A2B12E PUSH EDX (earlier)`). `00A1D010`
+merges `later` into `earlier` (`00A2DB80`) only when:
+- both are populated and grouping-enabled, on one team, and neither answers `00A2C600`;
+- they hold fewer than four members together;
+- their leaders are within 1000, 3-D squared against the double `1.0e6` at `00CE4C08`;
+- both first members answer IsKindOf(6) alike.
+
+**`PATROLTO`'s tick** (`00A15570-00A156D3`), which the host had no arm for:
+
+```
+00A155AE  CALL 009FE080 / JZ tail       ; a groupable leader only
+00A15623  FLD [00D22C98] (float 202500.0) / FCOMI / JA   ; far: d2 > 450^2
+00A15638  FLD [tuning+1F4h] / FMUL double [00CE3D78] (1.5) / FMUL ST0 / FCOMIP / JA  ; near
+00A1565E  CALL 00A10DC0 / CALL 00A11070
+00A15683  CALL 00A13B60 (1.0, &+8h, 0, 0) when near; AL = a member found a candidate (00A149F3)
+00A15690  CALL 00A11B80(0)
+00A156C8  JMP 00A02020 (leader, &+8h) when far and AL == 0
+```
+
+### 8.2 The host, and the binding
+
+**`kAiCaptureTargetPathBound`, committed OFF.** When ON, a Capture think that has an enemy
+CommandBuilding runs `capture_target_path_00a29fd0`:
+- the records, the per-group pass, the loop and `00A1A720` (attack, DEFENDPOSITION, or PATROLTO);
+- the merges;
+- the hand-off of every unassigned group to brain+4h or brain+8h by `value[3]`;
+- the timers and the spawn arm, as a record.
+
+**The PATROLTO arm** is added to `ai_command_tick_vt000c`, with the `00A13B60` call and the leader
+tail in the host. The close-attack pass now reports its AL (`candidate_found`). Nothing issues
+PATROLTO when the switch is OFF, so the arm is dormant there.
+
+**Labelled substitutions:**
+- **`00A250A0`'s value** is members times defenders, a pair count, because `00A0C650`'s pair terms
+  are not reconstructed. It is always positive, so every group is assigned.
+- **The map order** is unit index for targets and allocation order for groups, not pointer order.
+- **CaptureRange** (`+7A0h`) is the `006F2780` default 500. The four reference CommandBuildings
+  author 100.
+- **A squadron's speed** in `00A03760` is 0, so a squadron counts only inside the radius.
+- **Cargo and LandingShip weights:** the Cargo `vt[+2Ch]` arm and the LandingShip `+808h` byte have
+  no reader, so Cargo takes 0 and LandingShip 0.1.
+- **`+5Dh`** in `00A24870` is read as the unit's active row.
+- **`009469F0`** is 0, because this process creates no `[00F89B3C]` records.
+
+**Contracts for the units host** would remove two of these: a CommandBuilding's authored
+`CaptureRange`, and the plane class MaxSpd (`+188h`) by unit index.
+
+**Diagnostic.** `BSP_CAPTURE_DIAG=1` prints each Capture think's records and assignments. OFF, it
+prints what the path would do and does nothing with it.
+
+### 8.3 Predictions, written before the ON runs
+
+They come from `BSP_CAPTURE_DIAG=1` OFF runs of this tree (`local\s4_plan_{usn13,usn01}.log`).
+- **Every target scores `total = 0.5`**, the floor: `a = b = c = 0` and `d = 34.286`.
+- **Every price is 1200**, and no price falls.
+- **The weight decides.** The score is `0.2 * members * defenders + 0.4`.
+
+**USN13 3200/3000: exit 3.**
+- **The records.** The US party's Capture planner sees CB2 (20 defenders), CB4 (14) and CBT (11).
+  All three share one Japanese host group, 28 members led by CB2.
+- **The first think** (t = 4.20 s) assigns Enterprise's group (51 members) to CB2, scoring 204.4.
+  `00A1A720` finds CB2's `+16Ch` set, so it issues `00A2CBD0` at **the CommandBuilding group**. OFF,
+  the Siege stand-in orders the same group at **Agano's group** (62 members).
+- **The draw.** Aggressive is 0.5 instead of the stand-in's 1.0, so the order is CAUTIOUSATTACK
+  when the draw exceeds 0.5. The host ticks no CAUTIOUSATTACK arm, so the group would then get no
+  leader movetos.
+- **Later thinks keep CB2.** It becomes `value[2]`, so its weight takes the 15x (inside 3000) or
+  1.15x factor. `00A2CBD0` then returns early.
+- **Census:** `attack=` about 1 per think while the order stands, which is 39 thinks. There is no
+  PATROLTO or DEFENDPOSITION, no merge (one group), no hand-off, and `spawn_due` above 0 after the
+  60 s ramp.
+- **Direction:** hits on the Japanese ships of Agano's group fall. If MOVETOATTACK is drawn,
+  hits on land structures (Storage and CB rows) rise, and US plane and ship deaths move.
+
+**USN01 3200/3000: exit 3, from about 91 s.**
+- **Until 91.35 s this is identity.** The one owned group is Enterprise's (7 members). OFF already
+  orders it at the CB2 group (9 members), and so does ON, with the same single draw at t = 4.20 s.
+  The first-order class can still differ: CAUTIOUSATTACK when that draw exceeds 0.5.
+- **From 91.35 s the ScoutDauntless squadron group** (1 member, IDLE) is owned too.
+  - The stand-in serves only the first owned group, so OFF leaves it IDLE.
+  - ON assigns it to CB2 (score 2.0) and orders it at the CB2 group.
+  - There is no merge, since 7 + 1 >= 4.
+- **Direction:** the ScoutDauntless leaves its idle position (reference g: "controlled moved
+  0.00"). Plane deaths or hits on CB2's group may move.
+
+**USN02 9200/9000 and USN04 4700/4500: identity, exit 0 or 1.** Their scenes hold no
+CommandBuilding, so the path never runs.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

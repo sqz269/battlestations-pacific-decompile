@@ -129,6 +129,10 @@ struct AiCloseAttackTickResult {
     std::uint32_t set_target_orders{0};
     std::uint32_t fallback_movetos{0};
     std::uint32_t candidates_scored{0};
+    // AL at 00A14DA7, the byte [ESP+1Bh]: cleared at 00A14395 and set at
+    // 00A149F3 when a member's best candidate exists (00A149DF), before its
+    // order is issued. PATROLTO (00A15688) keeps it.
+    bool candidate_found{false};
 };
 
 // Packet cc9_group_composition (docs/PLANNER_GROUP_COMPOSITION.md): the
