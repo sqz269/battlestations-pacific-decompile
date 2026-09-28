@@ -694,6 +694,14 @@ struct GameGunnerySummary {
     // Packet cc9_plane_forced_target_read: pass ticks on a plane or squadron
     // (008636A0 installs the null provider 00861B90 there), how many of them
     // found a stored ship-AI fire target, and how many the switch dropped.
+    // Packet cc9_hull_roll_torque: 00827126..00827329 on a torpedo hit of a hull
+    // over 500 mass, the message-93h torques posted, and those delivered to the
+    // units host one fixed step later (row 9 of the image's step, after 00875E0C).
+    unsigned long long roll_torque_calls{0};
+    unsigned long long roll_torque_posted{0};
+    unsigned long long roll_torque_delivered{0};
+    unsigned long long roll_torque_undelivered{0};
+    double roll_torque_max_magnitude{0.0};
     unsigned long long plane_null_provider_ticks{0};
     unsigned long long plane_fire_target_reads{0};
     unsigned long long plane_fire_target_nulled{0};

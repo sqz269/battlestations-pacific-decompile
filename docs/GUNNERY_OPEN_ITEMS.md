@@ -2486,3 +2486,61 @@ This is section 42's first outside-lane difference, bound in this lane.
 - **The flip rule:** ON when Q1 holds and every row is identity. A move would have to trace to a
   plane-row AutoTarget losing its locked target (USN04 and USN01), which section 42.1 records as a
   host-only path the ship-AI lane is removing.
+
+## 46. Rank 8, the hull roll torque `00827312`, bound OFF (packet `cc9_hull_roll_torque`, cc9-gunnery9)
+
+Section 41.1 read the inputs. This section checks the arithmetic and the timing, and binds it.
+
+### 46.1 The listing against `ship_roll_torque`
+
+`00827126..0082730B`, read from the disk bytes:
+- **The direction.** `shot->vtable[34h]` (`00827144`). The squared length is summed as `(x*x + y*y) + z*z` and
+  stored as a float before `_CIsqrt` (`0082717E`). x and z are divided by the float root
+  (`008271A2`, `008271AA`), and y is not used again.
+- **The axis.** `00C32000` returns the body matrix (`LEA EAX,[ECX+8]`), and `+18h..+20h` is row 2 (`008271B7..008271BD`).
+- **The mass term.** `1 / [settings+594h]` (`008271D8..008271E6`). A zero `[class+0B0h]` gives 0
+  (`LAHF / TEST AH,44h / JP`). A negative mass is negated as `[00D7A208] - mass`. Otherwise it is
+  `FYL2X / F2XM1 / FSCALE`, that is `pow(|mass|, 1/root)`.
+- **The scale.** `[settings+590h] * hull_damage(0) * mass_term`, stored as a float (`00827251..0082725F`).
+- **The sign.** `axis.z*dir.x - axis.x*dir.z` (`00827263..00827277`, `FSUBP ST(2)`). It is -1 when negative, 1 when positive
+  and 0 when zero.
+- **The result.** `sign * scale` rounded to a float, times each axis component (`008272B0..008272DB`). It is
+  packed at `00827312` and routed at `00827329`.
+
+`ship_roll_torque` matches in order and rounding at the x87 precision of 24 bits that d3d9 is expected to set
+(`include/bsp/game_hosts.hpp`, milestone 2l). **Uncertain by a few ULP:** the host takes `std::pow` where the image
+chains `FYL2X` and `F2XM1`. With every hull's inertia zero (46.3), that cannot move anything.
+
+### 46.2 Timing
+
+- The image posts message 93h at row 9 of the fixed step (`00778450`, `00875E91`).
+- The Dyn world step `00C5C540` runs at `00875E0C`, before every fan-out row. The tick-element waves that run the
+  gunnery and the motion ticks (wave 2, `00875D1A..00875D89`) run before it too.
+- So a hit's torque reaches the accumulator after its own step's integration and is integrated at the next step's
+  `00875E0C`. The accumulator is cleared only at the end of the position phase (`src/rigid_body_integration.cpp`).
+- In this host, the motion pass of step n is the image's motion tick plus Dyn step of n. The gunnery step runs
+  before it (`game_hosts_units.cpp`).
+- So the binding **posts** the torque and delivers it at the start of the next gunnery step. There it joins that
+  step's motion torques and is integrated with them, as the image integrates it at step n+1.
+
+### 46.3 The binding (committed OFF)
+
+- `kShipHitRollTorqueBound` (`src/game_hosts_gunnery.cpp`). It sets:
+  - the axis from `unit_pose`'s forward row, which `publish_pose` copies from `motion.pose_row2`;
+  - the two settings from `GameMissionLuaHost::read_physics_torpedo_force_0083b5e0`. This installation's
+    `shipglobals.lua` (2024-07-13) has `TorpedoForce = -75` and no `TorpedoForcePower`, so the power is 2.0;
+  - the sink, `GameUnitsHost::add_hull_torque_message_93h`, one step later.
+- The summary line is `summary mission gunnery hull roll torque calls= posted= delivered= undelivered= max= bound=`.
+- **Caveat, and the follow-up:** every host hull body has a zero inverse inertia, because the collision AABB's
+  producer `00C5C940` (the shape attach behind `00937D3F..009399BF`) is unread (`game_hosts_units.cpp`, the
+  hull-body build). `00C41550` turns a torque into angular velocity only through that tensor, so the torque moves
+  nothing until `00C5C940` is read.
+
+### 46.4 Predictions (written before the ON runs)
+
+- **R1, the mechanism.** ON, `posted` equals OFF's `calls`, which reference j counts as
+  `ShipHit::add_hull_torque_00827312` (USN02 9000: 30). `delivered + undelivered = posted` minus at most the last
+  step's posts. `max` is non-zero.
+- **R2, USN02 9000 and JM06 3000: exit 1, gameplay identical,** because of the zero inverse inertia.
+- **The flip rule:** ON when R1 holds and both rows are identity. Any move is a failure of the inertia claim and
+  keeps the switch OFF.

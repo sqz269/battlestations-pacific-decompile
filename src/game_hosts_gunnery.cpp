@@ -623,6 +623,21 @@ constexpr bool kKillCreditDamageGateBound = true;
 //    and 18h take the null provider. OFF: the stored target is read (counted).
 //    Packet cc9_plane_forced_target_read, docs/GUNNERY_OPEN_ITEMS.md section 42.
 constexpr bool kPlaneNullFireTargetProviderBound = true;
+//  * kShipHitRollTorqueBound: 00827126..00827329, the roll torque of a torpedo
+//    hit on a hull over 500 mass (ship_roll_torque). Inputs: the body row 2
+//    00C32000 returns (+18h..+20h; unit_pose's forward row, which publish_pose
+//    copies from motion.pose_row2), settings+590h Physics.TorpedoForce and
+//    +594h Physics.TorpedoForcePower (0083FE7C / 0083FEC8 of 0083B5E0, read
+//    through GameMissionLuaHost::read_physics_torpedo_force_0083b5e0). The sink
+//    is message 93h (0080FFD0 at 00827312, 0077C2A0 at 00827329), delivered at
+//    row 9 of the fixed step, after that step's Dyn integration 00875E0C, so the
+//    torque is integrated on the NEXT step: this host posts it and delivers it
+//    at the start of the next gunnery step, before the motion pass integrates.
+//    CAVEAT: every hull's inverse inertia is zero in this host (the collision
+//    AABB producer 00C5C940 is unread), so the torque moves nothing yet.
+//    OFF: the old stub (axis 0,1,0, both settings 0, the sink recorded).
+//    Packet cc9_hull_roll_torque, docs/GUNNERY_OPEN_ITEMS.md section 46.
+constexpr bool kShipHitRollTorqueBound = false;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -848,6 +863,28 @@ struct GameGunneryHost::Impl {
         std::size_t command_target{0};   // one based
     };
 
+    // Packet cc9_hull_roll_torque: message-93h posts awaiting next step's delivery.
+    struct PendingHullTorque {
+        std::size_t unit{0};
+        bsp::OceanVec3 torque{};
+    };
+    std::vector<PendingHullTorque> pending_hull_torques;
+    // settings+590h / +594h from the stored load, read once (defaults 1.0f / 2.0f).
+    bool physics_torpedo_force_loaded{false};
+    std::pair<float, float> physics_torpedo_force_values{1.0f, 2.0f};
+    std::pair<float, float> physics_torpedo_force() {
+        if (!physics_torpedo_force_loaded) {
+            physics_torpedo_force_loaded = true;
+            float force = 1.0f;
+            float power = 2.0f;
+            const bool ok = lua.read_physics_torpedo_force_0083b5e0(force, power);
+            physics_torpedo_force_values = {force, power};
+            log.notef("gunnery: Physics.TorpedoForce=%.3f TorpedoForcePower=%.3f "
+                "(settings+590h/+594h, 0083FE7C/0083FEC8, loaded=%d)",
+                static_cast<double>(force), static_cast<double>(power), ok ? 1 : 0);
+        }
+        return physics_torpedo_force_values;
+    }
     std::vector<UnitState> unit_state;
     std::vector<GameGunRow> guns;
     std::vector<GameDeviceClassRow> devices;
@@ -7235,11 +7272,32 @@ public:
         for (int i = 0; i < 3; ++i) out[i] = direction_[i];
     }
 
-    void roll_axis(float out[3]) override { out[0] = 0.0f; out[1] = 1.0f; out[2] = 0.0f; }
-    float settings_roll_torque_scale() override { return 0.0f; }
-    float settings_roll_mass_root() override { return 0.0f; }
-    void route_add_hull_torque(const bsp::ShipRollTorque&) override {
-        owner_.record("ShipHit::add_hull_torque_00827312", 0x00827312u);
+    void roll_axis(float out[3]) override {
+        if (!kShipHitRollTorqueBound) { out[0] = 0.0f; out[1] = 1.0f; out[2] = 0.0f; return; }
+        // 008271B2..008271BD: [[unit+1018h]+2Ch]+8+18h..+20h, body row 2.
+        float r[3], u[3], o[3];
+        owner_.unit_pose(victim_, r, u, out, o);
+    }
+    float settings_roll_torque_scale() override {
+        return kShipHitRollTorqueBound ? owner_.physics_torpedo_force().first : 0.0f;
+    }
+    float settings_roll_mass_root() override {
+        return kShipHitRollTorqueBound ? owner_.physics_torpedo_force().second : 0.0f;
+    }
+    void route_add_hull_torque(const bsp::ShipRollTorque& torque) override {
+        ++owner_.summary.roll_torque_calls;
+        if (!kShipHitRollTorqueBound) {
+            owner_.record("ShipHit::add_hull_torque_00827312", 0x00827312u);
+            return;
+        }
+        // 00827312 packs message 93h; 00827329 routes it (kind 7): posted here,
+        // delivered at the start of the next gunnery step.
+        owner_.pending_hull_torques.push_back({victim_, {torque.x, torque.y, torque.z}});
+        ++owner_.summary.roll_torque_posted;
+        const double m = std::sqrt(static_cast<double>(torque.x) * torque.x
+            + static_cast<double>(torque.y) * torque.y + static_cast<double>(torque.z) * torque.z);
+        if (m > owner_.summary.roll_torque_max_magnitude) owner_.summary.roll_torque_max_magnitude = m;
+        owner_.done("ShipHit::add_hull_torque_00827312", 0x00827312u);
     }
 
     float weapon_water_damage() override {
@@ -8635,6 +8693,20 @@ void queue_explode_to_parts_0088e1b0(std::size_t unit_index) {
 
 void GameGunneryHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
+    if (!host.pending_hull_torques.empty()) {
+        // Packet cc9_hull_roll_torque: the previous step's message-93h posts,
+        // delivered before this step's motion pass integrates (00821E80 case 93h,
+        // 00822235 -> 0092BF30 -> 00C35330 AddTorque).
+        std::vector<Impl::PendingHullTorque> pending;
+        pending.swap(host.pending_hull_torques);
+        for (const Impl::PendingHullTorque& t : pending) {
+            if (host.units.add_hull_torque_message_93h(t.unit, t.torque)) {
+                ++host.summary.roll_torque_delivered;
+            } else {
+                ++host.summary.roll_torque_undelivered;
+            }
+        }
+    }
     if constexpr (kShipSetTorpedoStockBound) {
         // Packet cc9_ship_set_torpedo_stock: the script host's calls since the
         // last step, in call order.
@@ -9782,6 +9854,11 @@ void GameGunneryHost::report() {
             "target=%zu (their only candidate source: 008651F5 cuts category 7 "
             "out of the recon sweep)", torpedo_units.size(), with_command);
     }
+        host.log.notef("summary mission gunnery hull roll torque calls=%llu posted=%llu "
+            "delivered=%llu undelivered=%llu max=%.1f bound=%d (00827312 -> 93h, packet "
+            "cc9_hull_roll_torque)", s.roll_torque_calls, s.roll_torque_posted,
+            s.roll_torque_delivered, s.roll_torque_undelivered, s.roll_torque_max_magnitude,
+            kShipHitRollTorqueBound ? 1 : 0);
         host.log.notef("summary mission gunnery plane fire target provider "
             "null_provider_ticks=%llu stored_target_reads=%llu nulled=%llu bound=%d",
             s.plane_null_provider_ticks, s.plane_fire_target_reads,
