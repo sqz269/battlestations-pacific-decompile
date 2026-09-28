@@ -17191,6 +17191,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_body_angular[axis] =
                                 bsp::plane_control_axis_step_007da710(factors, in, true, step);
                         }
+                        // Packet cc9_plane_body_rate_check: a diagnostic only.
+                        // BSP_PLANE_RATE_TRACE names one plane; each step prints
+                        // its latched stick, the three targets and the body rates
+                        // (ctl+48h/+4Ch/+50h) with |w| in degrees per second, the
+                        // magnitude 00901C20 gates at |w|^2 > 0.001.
+                        static const std::string rate_trace = [] {
+                            char* text = nullptr;
+                            std::size_t length = 0;
+                            std::string value;
+                            if (_dupenv_s(&text, &length, "BSP_PLANE_RATE_TRACE") == 0 &&
+                                text != nullptr) {
+                                value = text;
+                            }
+                            std::free(text);
+                            return value;
+                        }();
+                        if (!rate_trace.empty() && unit_.row.name == rate_trace) {
+                            const float* w = unit_.plane_body_angular;
+                            const double mag = std::sqrt(static_cast<double>(w[0]) * w[0] +
+                                static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
+                            owner_.log.notef("plane rate trace %s step=%.3f stick=(%.3f %.3f %.3f) "
+                                "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s",
+                                unit_.row.name.c_str(), static_cast<double>(step),
+                                static_cast<double>(unit_.plane_latched_controls[0]),
+                                static_cast<double>(unit_.plane_latched_controls[1]),
+                                static_cast<double>(unit_.plane_latched_controls[2]),
+                                static_cast<double>(gained.target[0]),
+                                static_cast<double>(gained.target[1]),
+                                static_cast<double>(gained.target[2]),
+                                static_cast<double>(w[0]), static_cast<double>(w[1]),
+                                static_cast<double>(w[2]), mag * 57.29577951308232);
+                        }
                         if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
                             // The free-flight arm (controller mode 0, flag 1) is
                             // read in full: docs/PLANE_CONTROL_RATE_LAW.md and
