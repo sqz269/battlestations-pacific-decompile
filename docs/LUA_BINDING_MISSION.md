@@ -1038,3 +1038,113 @@ The death rows before the release disappear or move later, and the battle's hit 
 move with them. The first row to check is Kortenaer, which does not die at 68.30 s.
 
 **So the measuring pair is USN02, not USN04 or BSM01.** Those two resolve as identity only.
+
+## The listener natives, first read (packet `cc9_lua_listeners`, a read)
+
+Worker cc9-lua2, 2026-09-27. This is item 3 of the ranking. Ghidra was read only, and the listings
+were read from disk.
+
+### Correction to the ranking's example
+
+The ranking gave USN04's `LexHitListener` (`usn_19_coralus.lua` 1201) as the example. It is
+registered only at the tail of the Zuikaku-sinking cinematic, which a 4500-frame idle run never
+reaches (`docs/HANDOFF_USN04_LUA_NATIVES.md` section 3). USN04's two measured `AddListener` calls
+are other listeners. The script offers the `kill` listeners at 1612/1635 (the Zeros over Zuikaku
+and Shokaku), the `recon` listener at 1932 and the helpers' `input` listeners. Which two run is
+not established.
+
+### The registry (V)
+
+- **`AddListener(channel, id, params)`, `008C6760`.** It reads arguments 0 and 1 as strings and
+  passes the table in argument 2 to `00980C10`.
+- **`00980C10`**, under the manager's lock at `+24h`:
+  - `00980150 BSP_WarningManager_ChannelIndex` selects the channel by name, with a
+    case-insensitive map;
+  - `00978D60` finds or creates the slot for `id` in that channel;
+  - the slot takes the subscription that `0097E360 BSP_WarningManager_ParseEventBlock` builds from
+    the params.
+- **The consequences.**
+  - A listener is keyed by (channel, id), and re-adding the same id replaces it.
+  - `IsListenerActive(channel, id)` (`008C6BB0`, through `00980E00`) is that lookup, pushed as a
+    boolean.
+  - `RemoveListener` (`008C6990`) erases it.
+- **Firing.** Each channel's dispatcher (`docs/MISSION_EVENTS_UPDATE.md`, "The named event
+  channels") evaluates the channel's subscriptions (`0097B8C0`: `subscription->vtable[3](params)`)
+  and calls each passing subscription's callback (`subscription+4h`) through the mission Lua
+  host.
+
+### The parser's channel table (V, from the listing of `0097E360`)
+
+- **How it tests.** Each arm compares the channel name, `__stricmp` for the first and
+  `00425850` for the rest.
+- **How it builds.** On a match it falls through to `operator new(size)` and the subscription's
+  constructor. The pairing below is read from the listing, because the pseudocode's else-chain
+  hides it.
+- **The check.** The first row matches the pseudocode's visible `recon` arm, `operator_new(0x4c)`
+  then `FUN_0097a220`.
+
+| channel | size | constructor | channel | size | constructor |
+| --- | --- | --- | --- | --- | --- |
+| `recon` | 4Ch | `0097A220` | `zone` | 3Ch | `0097C6D0` |
+| `kill` | 3Ch | `0097A450` | `command` | 4Ch | `0097C8A0` |
+| `hit` | 80h | `0097C2C0` | `target` | 2Ch | `0097AD80` |
+| `exitzone` | 2Ch | `0097A620` | `ammoType` | 2Ch | `0097AEF0` |
+| `input` | 1Ch | `0097A790` | `stock` | 3Ch | `0097B060` |
+| `surrender` | 1Ch | `0097A8B0` | `gui` | 2Ch | `0097CAD0` |
+| `failure` | 38h | `0097C560` | `generate` | 2Ch | `0097CC40` |
+| `leak` | 28h | `0097A9D0` | `player` | 2Ch | `0097CDB0` |
+| `fire` | 28h | `0097AAF0` | `musicOver` | 1Ch | `0097CF20` |
+| `repair` | 2Ch | `0097AC10` | `chat` | 3Ch | `0097D040` |
+| `entityKilled` | 2Ch | `0097D210` | `shipLanded` | 1Ch | `0097B230` |
+| `hpEvent` | 30h | `0097D380` | | | |
+
+The tool is `local/cc9-lua2-parse-map.py` in the cc9-lua2 tree.
+
+### The `kill` subscription (partial)
+
+- **The constructor `0097A450`** installs vtable `00D1B68C` and three empty sets: at `+0Ch` and
+  `+1Ch` (node factory `0096BA00`) and at `+2Ch` (`0096BA50`).
+- **The block's keys are not read in the constructor.** The three slots below push no string, so
+  the `target` and `callback` keys are read elsewhere: in `0097E360` after the constructor, or in
+  a slot not listed here. **Not read.**
+
+| slot | address | what it is |
+| --- | --- | --- |
+| 1 | `00972520` | set operations through `009721C0` and `009722D0`; no Ghidra function |
+| 2 | `0096E850` | set operations through `0096E3A0` and `0096E460`; no Ghidra function |
+| 3 | `0096ACE0` | the condition `0097B8C0` calls; three `00BF6713` range checks and `004254B0`; no Ghidra function |
+| 4 | `0097B390` | a destructor |
+| 5, 6, 7 | `009726D0`, `0096E9F0`, `00968710` | not read |
+
+### What binding them takes, in slices
+
+1. **The registry alone.**
+   - The work is `AddListener`, `RemoveListener` and `IsListenerActive` over (channel, id).
+   - Scripts test `IsListenerActive` only to add or remove, for example
+     `luaAddZuikakuZeroListener` (`usn_19_coralus.lua` 1610) and LOMP06 `luaNarwhalDC` 632.
+   - With no firing, **identity on every measured mission** is predicted: nil reads false
+     today, and true only changes whether a listener is added or removed again.
+   - This slice is the ground for the next one.
+2. **Firing `kill` and `hit`.**
+   - This needs slot 3's condition and the key reads.
+   - The producers are the host's own death and hit rows (`0077CE60` and `00959450` in the image,
+     `docs/MISSION_EVENTS_UPDATE.md`).
+   - **Measure:** USN04's Zero `kill` listeners, if one of its two calls is `ZuikakuZeroKillListener`.
+     Its callback `luaZuikakuZeroDead` runs when a listened Zero dies (Zeros die at 143.45 s and
+     after). LOMP06's `listener_NarwhalDC` (`hit`) only starts a dialog.
+3. **Firing `recon` and `command`.**
+   - The recon pass already produces the levels, and the commands host already has
+     `report_command_event_00984300`.
+   - **Measure:** JM06's `submove` command listener (1205) and `cvListener`/`usnsubListener`
+     (1582/1601), and LOMP06's `listener_SeaplaneSpotted` (328), whose callback
+     `luaSeaplaneSpotted` (638) runs on a detection.
+
+### no_ghidra_function
+
+| start | end (inclusive) | ABI | exits |
+| --- | --- | --- | --- |
+| `00972520` | `009725AC` | `__thiscall`, `RET 4`, INT3 after | one |
+| `0096E850` | `0096E8E5` | `__thiscall`, `RET 4`, INT3 after | one |
+| `0096ACE0` | `0096ADA6` | `__thiscall`, `RET 4` | two: `0096AD9C` and `0096ADA4`, INT3 after the second |
+
+All three are slots of vtable `00D1B68C`.
