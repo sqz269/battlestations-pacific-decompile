@@ -227,3 +227,21 @@ host builds no point effects, so there is nothing to store.
 
 **Prediction.** Gameplay is identical on all four reference missions (pair_diff exit 1). The
 `host methods` table moves by one row from unimplemented to concrete.
+
+## 8. The pairs for section 5 (line of sight), and the flip (2026-09-27)
+
+OFF `local\P0_OFF_<m>.log`; ON `local\P6_ON_<m>.log` (`pair_export --commit b4fcb606b --flip
+kGunneryLineOfSightBound=true`).
+
+| row | ON | prediction | verdict |
+| --- | --- | --- | --- |
+| USN02 | tests 1129, blocked 0, pair_diff 1 | identical | held |
+| USN04 | tests 1173, blocked 0, pair_diff 1 | identical | held |
+| USN13 | tests 1901, blocked 0, pair_diff 1 | blocked > 0, assignments and shots fall | **failed**: nothing is blocked |
+| USN01 | tests 44, blocked 0, pair_diff 1 | blocked 0 or small, 7 deaths | held |
+
+**Not vacuous.** On USN13 the Landscape traces rise from 438 to 451. So 13 line-of-sight rays reached
+a Landscape shape's bounds, and none of them met terrain between a gun and its target.
+
+**Decision: `kGunneryLineOfSightBound` is ON.** It is gameplay-identical on all four and faithful to
+the listing.

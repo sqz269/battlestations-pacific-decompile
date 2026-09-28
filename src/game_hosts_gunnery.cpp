@@ -132,6 +132,9 @@ constexpr bool kAaTargetWorldVelocityBound = true;
 //    body components go in as the axis unchanged, as in the image. Applied in both
 //    host sites of 00901C20: the AA bots' lead and the flak lock. OFF: V is used
 //    as it is.
+//    Stays OFF by the pairs of 2026-09-27: the Kate prediction failed and the
+//    host's plane body-rate magnitudes are not validated (88% of USN04's tests
+//    pass the 1.8 deg/s gate). docs/USN04_KATE_ATTRITION.md section 13.
 constexpr bool kAaTargetTurnAverageBound = false;
 //  * kFlakProximityBurstBound: a Flak-type round runs 0070C370's proximity fuse
 //    after the base tick's direct-strike sweep: it locks the nearest plane,
@@ -179,7 +182,9 @@ constexpr bool kUnitInvincibilityFloorBound = false;
 //    answers 0 here; the section-span raise branch (class+50h and 00862C00) is
 //    not taken; 00864680's 0.5 s point cache is not kept, the point is taken at
 //    each test. OFF: every test answers visible and the entry lives U(0, 5.0).
-constexpr bool kGunneryLineOfSightBound = false;
+//    ON by the pairs of 2026-09-27: gameplay identical on all four reference
+//    missions (docs/GUNNERY_OPEN_ITEMS.md section 8).
+constexpr bool kGunneryLineOfSightBound = true;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -190,7 +195,8 @@ constexpr bool kGunneryLineOfSightBound = false;
 //    OFF: a plane gun fires from the plane origin raised by the class Height
 //    along world up. Labelled as for ships: model +x starboard, +y up, +z nose;
 //    the store that places the gun entity at its platform is not read.
-constexpr bool kPlanePlatformAttachmentBound = false;
+//    ON by the pairs of 2026-09-27 (docs/USN04_KATE_ATTRITION.md section 13).
+constexpr bool kPlanePlatformAttachmentBound = true;
 //  * kAaLineOfFireBound: an AA gun (weapon kinds 1, 5, 6; 00729560 installs the
 //    predicate at gun+42Ch) refuses a target when 0072CDD0 answers blocked:
 //    the segment from the gun (+5 m) to the target (+5 m, at least y = 5)

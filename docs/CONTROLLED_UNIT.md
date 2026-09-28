@@ -1401,3 +1401,11 @@ Reads closed without a switch:
 - **Logs:** `local\{cq,vt,sq,gp,all,ob2}_{off,on}_usnNN.log` and `local\cam_*_usn01.log` (the
   intro-camera diagnostics).
 - **Scripts:** `local\cc9-hud3-*`.
+
+## Note from packet `cc9_gun_rest_angles` (2026-09-27)
+
+`kGunIdleRestBound` is ON (docs/GUN_REST_ANGLES.md section 9). The row above that calls
+`0080E290`'s `0085AD00` call "subsumed" no longer holds. The host no longer rests a targetless gun
+every tick. After a unit release, the idle timer waits out `NoTargetTimeUntilRest` before it rests
+the guns, where `0080E290` rests them at once. Idle-player reference runs never release a unit, so
+no reference row moves. Binding `0080E290`'s call is the fix.

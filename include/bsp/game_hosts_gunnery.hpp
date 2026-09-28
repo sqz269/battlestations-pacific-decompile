@@ -339,7 +339,8 @@ inline constexpr bool kShipSetTorpedoStockBound = true;
 // exact on this installation's device tables; one timer per gun row stands in
 // for one per bot. False: every targetless gun commands rest_horz/rest_vert
 // each tick, rest angles default to 0 and the gun spawns there.
-inline constexpr bool kGunIdleRestBound = false;
+// ON by the pairs of 2026-09-27 (docs/GUN_REST_ANGLES.md section 9).
+inline constexpr bool kGunIdleRestBound = true;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
