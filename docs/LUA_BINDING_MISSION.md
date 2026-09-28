@@ -3678,3 +3678,17 @@ kLuaLastCatapultedBound=true` (`local/l8_lc_on`).
   table moves `GetLastCatapulted` from UNIMPLEMENTED to concrete. Gameplay is identical, because
   the unimplemented row's neutral value is also nil.
 - **USN01 3200/3000: exit 1.** No calls; the summary line reads zeros.
+
+### Pairs and verdict
+
+The logs are `local\l8_lc{off,on}_{jm05,usn01}.log` and the diffs `local\l8_lcdiff_*.txt`, in
+worktree cc9-lua8.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 1 | `GetLastCatapulted` UNIMPLEMENTED -> concrete (47 calls, all on `Mogami-class 01`, all nil); host methods 1150/548 -> 1151/547; the summary line |
+| USN01 3200/3000 | exit 1 | the summary line (bound 0 -> 1, no calls) |
+
+Every prediction held. **Verdict: `kLuaLastCatapultedBound = true`.** The row starts answering a
+plane only when the host builds the catapult launch (`006EC8E0`) and the launched-child message
+(`00957450`).

@@ -313,7 +313,7 @@ inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA
 // slot +550h + 18h * index, pushed as its thisTable slot. This host builds no
 // catapult launch, so the index stays -1. True: the row answers from that
 // state; false: the row stays unimplemented.
-inline constexpr bool kLuaLastCatapultedBound = false;
+inline constexpr bool kLuaLastCatapultedBound = true;  // ON by its pairs (LUA_BINDING_MISSION)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
