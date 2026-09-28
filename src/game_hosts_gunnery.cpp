@@ -2588,16 +2588,6 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  think = Globals.WeaponSystems.WeaponDirectorThinkTime\n"
         "end\n"
         "local aafix, aamul = 0, 0\n"
-        "local dhp, dpc = {}, {}\n"
-        "if type(Globals) == 'table' and type(Globals.Difficulty) == 'table' then\n"
-        "  local d = Globals.Difficulty\n"
-        "  local i = 1\n"
-        "  while type(d.HPMultipliers) == 'table' and d.HPMultipliers[i] ~= nil do\n"
-        "    dhp[i] = d.HPMultipliers[i]\n"
-        "    if type(d.PlayerCheatMultipliers) == 'table' then dpc[i] = d.PlayerCheatMultipliers[i] end\n"
-        "    i = i + 1\n"
-        "  end\n"
-        "end\n"
         "if type(ShipGlobals) == 'table' and type(ShipGlobals.AAGunnerErrorModifier) == 'table' then\n"
         "  local m = ShipGlobals.AAGunnerErrorModifier\n"
         "  if type(m.CalcTargetPosTimeAddFix) == 'number' then aafix = m.CalcTargetPosTimeAddFix end\n"
@@ -2610,8 +2600,6 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.think = num(think, 1000) or 2000\n"
         "    f.aafix = num(aafix, 100000) or 0\n"
         "    f.aamul = num(aamul, 100000) or 0\n"
-        "    f.dhpn = #dhp\n"
-        "    for k = 1, #dhp do f['dhp' .. k] = num(dhp[k], 100000); f['dpc' .. k] = num(dpc[k], 100000) end\n"
         // Packet cc9_ship_fire_flooding: 00962DBC stores 1 unless Repair is
         // present and false; the ShipGlobals damage block with 0083E1B3..
         // 0083E4AA's defaults (0, 0, 0.2, 2) when a key is absent.
@@ -2794,14 +2782,6 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  end\n"
         "end\n";
 
-    if constexpr (kDifficultyMultipliersBound) {
-        // Packet cc9_difficulty_multipliers: Globals (scripts/datatables/globals.lua)
-        // is not loaded yet when this chunk runs. The Lua host's lock-radius reader
-        // runs that script when the table is missing (0087D7B0's own source), so it
-        // is called first for its side effect; its result is not used here.
-        std::vector<float> lock_radius;
-        lua.read_lock_radius_multipliers_0087dc85(lock_radius);
-    }
     const int loaded = lua.luaL_loadbuffer(chunk.c_str(),
         static_cast<int>(chunk.size()), "bsp_gunnery_flatten");
     if (loaded != 0) {
@@ -2889,25 +2869,15 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 think_read = true;
                 aa_time_add_fix = flat_scaled(type_id, "aafix", 100000.0f, 0.0f);
                 aa_time_add_mul = flat_scaled(type_id, "aamul", 100000.0f, 0.0f);
-                {
-                    // 0087D7B0: one entry per index while HPMultipliers[index] is
-                    // not nil; each stored as 1 / value.
-                    const int n = flat(type_id, "dhpn", 0);
-                    difficulty_hp_inverse.clear();
-                    difficulty_cheat_inverse.clear();
-                    for (int k = 1; k <= n && k <= 16; ++k) {
-                        char key[16];
-                        std::snprintf(key, sizeof(key), "dhp%d", k);
-                        const float hp = flat_scaled(type_id, key, 100000.0f, 0.0f);
-                        std::snprintf(key, sizeof(key), "dpc%d", k);
-                        const float pc = flat_scaled(type_id, key, 100000.0f, 0.0f);
-                        difficulty_hp_inverse.push_back(static_cast<float>(1.0 / static_cast<double>(hp)));
-                        difficulty_cheat_inverse.push_back(static_cast<float>(1.0 / static_cast<double>(pc)));
+                if constexpr (kDifficultyMultipliersBound) {
+                    // 0087D7B0: config+1Ch and +4Ch as 1/HPMultipliers[i] and
+                    // 1/PlayerCheatMultipliers[i] (0087DB61 / 0087DD33), from the Lua
+                    // host's reader, which loads globals.lua when Globals is missing.
+                    if (!lua.read_difficulty_multipliers_0087d7b0(difficulty_hp_inverse,
+                            difficulty_cheat_inverse)) {
+                        difficulty_hp_inverse.clear();
+                        difficulty_cheat_inverse.clear();
                     }
-                    log.notef("gunnery: Globals.Difficulty levels=%d HPMultipliers[1]=%.4f "
-                        "PlayerCheatMultipliers[1]=%.4f (0087D7B0, config+1Ch / +4Ch as 1/value)",
-                        n, n > 0 ? 1.0 / static_cast<double>(difficulty_hp_inverse[0]) : 0.0,
-                        n > 0 ? 1.0 / static_cast<double>(difficulty_cheat_inverse[0]) : 0.0);
                 }
                 if (!aa_time_logged) log.notef("gunnery: AAGunnerErrorModifier CalcTargetPosTimeAddFix=%.3f "
                     "AddMul=%.3f (settings +758h/+75Ch, 00901C20)",
