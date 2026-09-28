@@ -11,13 +11,13 @@ std::uint32_t ai_close_attack_order_class(bool member_is_ship_base) noexcept {
 }
 
 bool ai_close_attack_member_served(bool is_plane_squadron, bool squadron_carrier_excluded,
-                                   bool is_ship_base, bool controller_busy) noexcept {
+                                   bool is_ship_base, bool lands_troops) noexcept {
     // 00A143ED PUSH 18h picks the squadron arm, whose 00A14402 PUSH 17h and
     // 00A1440C byte test are 007EDA90's shape inline; 00A14413 JE skips the
     // member. The other arm is 00A14427 PUSH 6 and the 00A1443D vtable[+2Ch].
     if (is_plane_squadron) return !squadron_carrier_excluded;
     if (!is_ship_base) return false;
-    return !controller_busy;
+    return !lands_troops;
 }
 
 float ai_close_attack_collect_radius(float collect_dist, float radius_argument) noexcept {
@@ -92,7 +92,7 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
         if (!ai_close_attack_member_served(host.close_member_is_plane_squadron(member),
                                            host.close_member_squadron_excluded(member),
                                            host.close_member_is_ship_base(member),
-                                           host.close_member_controller_busy(member))) {
+                                           host.close_member_lands_troops(member))) {
             continue;
         }
         ++result.members_served;

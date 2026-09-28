@@ -15,6 +15,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
 #include "bsp/command_execution.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/ship_ai_goal_vector_visibility.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
@@ -5243,13 +5244,26 @@ public:
         return 0u;
     }
     bool member_is_kind_vtable_005c(std::uint32_t, int) override { return false; }
-    bool member_armament_ready_vtable_002c(std::uint32_t) override { return false; }
-    bool unit_armament_ready_vtable_002c() override {
-        // 009F35D8, [unit+538h]->vtable[2Ch](). The object at unit+538h has no
-        // recovered class, so the predicate is a record and false, which leaves
-        // the candidate list empty and skips the warn sweep.
-        owner_.record("ShipAiApproach::unit_armament_ready", 0x009f35d8u);
-        return false;
+    bool member_lands_troops_vtable_002c(std::uint32_t member) override {
+        // 009F3473 / 009F347E, [member+538h]->vtable[2Ch](), the troop-landing trait.
+        return lands_troops(member == 0u ? static_cast<std::size_t>(-1)
+                                         : static_cast<std::size_t>(member - 1u));
+    }
+    bool lands_troops(std::size_t unit) {
+        const bool trait = unit < owner_.units.count()
+            && owner_.units.unit_class_lands_troops_vtable_2c(unit);
+        ++owner_.summary.approach_trait_tests;
+        if (trait) ++owner_.summary.approach_troop_landers;
+        if (!bsp::game::kTroopLandingTraitBound) {
+            owner_.record("ShipAiApproach::unit_lands_troops", 0x009f35d8u);
+            return false;
+        }
+        owner_.done("ShipAiApproach::unit_lands_troops", 0x009f35d8u);
+        return trait;
+    }
+    bool unit_lands_troops_vtable_002c() override {
+        // 009F35D8 / 009F35E3, the non-leader arm: the same slot on the unit itself.
+        return lands_troops(index_);
     }
     std::uint32_t brain_unit_0aa8() override {
         return static_cast<std::uint32_t>(index_) + 1u;

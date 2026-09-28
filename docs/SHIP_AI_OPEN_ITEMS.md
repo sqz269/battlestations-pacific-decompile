@@ -1698,3 +1698,52 @@ member's leaf tuning, as the layer choice has it. A member without loaded tuning
 
 **Predictions.** They follow the OFF counter runs. The rule: a row with `differs=0` on OFF is
 identical ON.
+
+## 19. Rank 2: the troop-landing class trait (packet `cc9_close_member_class_trait`, `kTroopLandingTraitBound`)
+
+Worker cc9-ships9, 2026-09-28. Section 13 read the slot. This section binds it at its three sites.
+
+**The accessor.** cc9-lua9's `GameUnitsHost::unit_class_lands_troops_vtable_2c` (main `94be34af2`)
+answers `[unit+538h]->vtable[2Ch]()`:
+- `00827FB0` on a ship class: `LandingShip` and `LandingShipAmount` are both set.
+- `00963C70` on the landing-ship class: `Rocketer` is clear.
+- Plane, land and building descriptors answer false; their slot `2Ch` is unread.
+
+**The three sites, one switch** (`include/bsp/game_hosts_ai.hpp`, OFF):
+
+| site | image | host method, renamed | effect when true |
+| --- | --- | --- | --- |
+| the close attack's member pass | `00A14435 MOV ECX,[ESI+538h]`, `00A1443D CALL [EDX+2Ch]`, `00A14444 JNE 00A14D4D` in `00A13B60` | `AiCommand::close_member_lands_troops` (was `close_member_controller_busy`) | the member is not served |
+| the approach warn sweep | `009F347E` (group members), `009F35D8` / `009F35E3` (the unit itself) in the sub-state step | `ShipAiApproach::unit_lands_troops` (was `unit_armament_ready`; the member arm answered false with no record) | the unit joins the warning candidates |
+| the Cargo capture weight | `00A03510`, class `0Bh` | `capture_weight_00a03510(class, lands_troops)` | 3.0 instead of 0 |
+
+The rename follows the callee's body (checklist rule 1). "Busy" and "armament ready" were call-site
+guesses.
+
+**Counters, on both sides.**
+- `summary mission ai troop landing trait`: `close_landers`, the close-attack asks that answer
+  true, and `cargo_landers`.
+- The ship-AI host counts `approach_trait_tests` and `approach_troop_landers` (in
+  `GameShipAiSummary`, not printed).
+
+**ABI.** The slot is `__thiscall` on the class descriptor with no arguments and returns AL.
+
+**Uncertainty.** The approach's member arm walks the formation's members only for a leader
+(`009F3429`). The host still answers that leader query false (rank 3, section 17), so only the
+unit's own arm `009F35E3` asks. A kind other than ship answers false because its slot is unread.
+
+### Predictions, written before any ON run
+
+1. **USN04 is identical** (exit 0 or 1). It has no landing ship.
+2. **The Cargo arm moves nothing.** No Cargo class in this installation authors `LandingShip`, so
+   `cargo_landers` is 0 on every row.
+3. **The approach half moves nothing.** After the trait, the warn sweep still meets records:
+   - `target_warn_radius_07c4` answers 0, so the range gate `009F3585` fails;
+   - `candidate_accepts_warning_vtable_0234` answers false;
+   - `route_warning_message_0077c2a0` is a record.
+4. **The close attack moves the rows whose OFF `close_landers` is positive**, and only those.
+   - Section 13's census (`vehicleclasses.lua`, this installation, mtime 2026-05-09) expects JM08
+     (LST and LSM) and USN13.
+   - JM05 and LOMP10 are open: they move exactly when their OFF `close_landers` is positive.
+   - On a moving row, `close members served` falls by the landers and the close attack's orders to
+     them stop. Those landers keep whatever order they already had.
