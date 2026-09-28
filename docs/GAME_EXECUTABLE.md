@@ -11236,7 +11236,7 @@ longer shot down, as the PilotMoveTo verdict says.
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
 
-## Mission reference baselines, 2026-09-29 h (main d6fc6ee78)
+## Mission reference baselines, 2026-09-28 h (main d6fc6ee78)
 
 Packet `cc9_reference_rebaseline_8`, worker cc9-gunnery4. **It replaces the 2026-09-28 g rows
 above.**
@@ -11426,9 +11426,9 @@ from the same tree. A **merge** step is main's landings merged between two of th
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
 
-## Mission reference baselines, 2026-09-29 i (main d466d4250)
+## Mission reference baselines, 2026-09-28 i (main d466d4250)
 
-Packet `cc9_reference_rebaseline_9`, worker cc9-gunnery7. **It replaces the 2026-09-29 h rows
+Packet `cc9_reference_rebaseline_9`, worker cc9-gunnery7. **It replaces the 2026-09-28 h rows
 above.**
 
 **Run parameters:**
@@ -11502,7 +11502,7 @@ on every row as the bound natives and host methods above landed.
     Section 11.4's pairs did not run LOMP06, so this is recorded here and is **not a verdict on
     the tick**.
 
-### Against the 2026-09-29 h section, and what moved each row
+### Against the 2026-09-28 h section, and what moved each row
 
 h's logs (worktree cc9-gunnery4, `local\rb8_<row>.log`) are **gameplay-identical** (`pair_diff`
 exit 1) to section 27's OFF logs on USN02, USN01 and USN04 (worktree cc9-gunnery6,
@@ -11625,6 +11625,11 @@ queue-OFF base too. That combination is not separated further.
     m), which section 11.4 did not run.
   - **JM06's US Cargo Transport 02 survives under the loopback queue.** Section 27 did not run
     JM06.
+  - **USN02 moves again after its failure on the next base.** lua5's `kLuaClosestBorderZoneBound`
+    (merged as `5c15b3e2a`) landed after this section's base. The 29.75 s failure is unchanged.
+    After it, Alden is sent to (1174.14, -8550.00), 500 m past the south border zone, instead of
+    the neutral point. Deaths go 10 -> 11 and hit records 4226 -> 4899 (docs/LUA_BINDING_MISSION.md,
+    the GetClosestBorderZone section). Reference j's USN02 attribution starts from that pair.
 - **Carried from h:**
   - **E2 after frame 4500 is unpaired** (now 116 -> 65 hit records, 7 -> 8 deaths; the reload feed
     moves part of it).

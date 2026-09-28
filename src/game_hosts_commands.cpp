@@ -54,6 +54,15 @@ constexpr bool kAiRetaskBound = true;
 // by packet cc8_ship_moveonpath, and the override arm 00836D67 cannot fire here
 // because nothing writes director+188h. False: the record, as before.
 constexpr bool kDirectorCommandArmsBound = true;
+// Packet cc9_unresolved_fire_target (docs/GUNNERY_OPEN_ITEMS.md section 33).
+// True: 008358D0's forced fire target (00835930 -> 00835860) resolves a
+// descriptor whose object is a producer's handle, not one of this host's unit
+// records, by its object id (+2h), as resolve_target_00521ea0 does. LABELLED:
+// the handle stands in for the entity pointer the image carries. False: such a
+// target is dropped and the director keeps its own pick.
+// ON by the pairs of 2026-09-28: JM06 moves (the two PlayerSubs fire on their
+// commanded targets); USN02, USN04, USN13, USN01 and LOMP06 gameplay identical.
+constexpr bool kFireTargetObjectIdBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -327,6 +336,12 @@ struct GameCommandsHost::Impl {
     // Packet cc8_ship_drive: the one-time note that says what the weighted
     // 0071D780 answers next to the unweighted walk every index site runs.
     bool logged_weighted_count{false};
+    // Packet cc9_unresolved_fire_target: 00835930 calls whose object is not
+    // one of this host's unit records, and how many of them name a unit by the
+    // descriptor's object id (+2h) all the same.
+    unsigned long long fire_unresolved{0};
+    unsigned long long fire_unresolved_by_id{0};
+    int fire_unresolved_traced{0};
     bool logged_queue_full{false};
     void note_weighted_command_count(int weighted, int unweighted) {
         if (weighted != unweighted && !logged_weighted_count) {
@@ -834,6 +849,35 @@ public:
             if (&chain_.owner.units[i] == object) { plus_one = chain_.owner.units[i].index + 1; break; }
         }
         if (object != nullptr && plus_one == 0) {
+            // Packet cc9_unresolved_fire_target, diagnostic only: what the
+            // object is, by the descriptor this delivery carries.
+            const bsp::SceneCommandTarget& pt = chain_.pending_target;
+            const GameCommandUnit* by_id = nullptr;
+            if (pt.object_id != 0) {
+                for (const GameCommandUnit& u : chain_.owner.units) {
+                    if (u.object_id == pt.object_id) { by_id = &u; break; }
+                }
+            }
+            ++chain_.owner.fire_unresolved;
+            if (by_id != nullptr) ++chain_.owner.fire_unresolved_by_id;
+            // kFireTargetObjectIdBound: the script-order, ship-AI and plane
+            // producers hand this host an opaque handle (the entity's object id
+            // or index+1) where the image has the entity pointer. 00835860 sets
+            // the fire target to that entity, so resolve the handle the way this
+            // host resolves every descriptor at 00521EA0: by the object id (+2h).
+            if (kFireTargetObjectIdBound && by_id != nullptr) {
+                chain_.owner.fire_target_requests.push_back({chain_.unit.index, by_id->index + 1, true});
+                chain_.owner.done("WeaponDirector::set_fire_target", 0x00835860u);
+                return;
+            }
+            if (chain_.owner.fire_unresolved_traced < 12) {
+                ++chain_.owner.fire_unresolved_traced;
+                chain_.owner.log.notef("fire target unresolved (00835930): unit=%s command=%s "
+                    "kind=%u object_id=%u object=%p by_id=%s (packet cc9_unresolved_fire_target)",
+                    chain_.unit.name.c_str(), chain_.owner.life_command_name(chain_.pending_command),
+                    static_cast<unsigned>(pt.kind), static_cast<unsigned>(pt.object_id), object,
+                    by_id != nullptr ? by_id->name.c_str() : "-");
+            }
             chain_.owner.record("WeaponDirector::set_fire_target_unresolved", 0x00835930u);
             return;
         }
@@ -3411,6 +3455,9 @@ void GameCommandsHost::report() {
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,
         host.summary.current, host.summary.latched, host.summary.moving,
         host.summary.ai_groups, host.summary.ai_forwards, host.summary.steps);
+    host.log.notef("summary mission director fire target unresolved=%llu by_object_id=%llu "
+        "(00835930, packet cc9_unresolved_fire_target)", host.fire_unresolved,
+        host.fire_unresolved_by_id);
     host.log.notef("summary mission director steps=%llu idle_reissues=%llu stop=%zu "
         "cruise=%zu follow=%zu script_issues=%zu blocked_at_00816f7c=%zu commanded_speeds=%zu",
         host.summary.director_steps, host.summary.idle_reissues, host.summary.idle_stop,

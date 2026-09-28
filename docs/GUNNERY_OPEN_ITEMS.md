@@ -45,6 +45,10 @@ is ranked from its own evidence.
 | the projectile team id | section 26 | stamped; no switch |
 | USN04's dive-release drop 10 -> 4 | section 30 | the image's own; nothing bound |
 | the submarine's sensor category `00852B90` (rank 1 on i) | section 32 | ON, `kSubmarineSensorCategoryBound`; the periscope byte `+1234h` stays a labelled substitution |
+| the forced fire target's handle at `00835930` (rank 2 on i) | section 33 | ON, `kFireTargetObjectIdBound`; the handle resolves by object id |
+
+**Still open from the closed rows:** the periscope byte `+1234h` (`periscopeOut`) has no producer,
+so a raised periscope never reads PeriscopeOut (section 32.4).
 
 ## 2. The ranking
 
@@ -514,7 +518,7 @@ commands host's unit records. Those calls stay records (`WeaponDirector::set_fir
 every command request was stored without a refusal. The failed rows are consequences, not
 divergences. The USN02 failure is flagged for reference g.
 
-## 16. The ranking refreshed on reference h (packet `cc9_gunnery_open_ranking_2`, 2026-09-29)
+## 16. The ranking refreshed on reference h (packet `cc9_gunnery_open_ranking_2`, 2026-09-28)
 
 **Source.** The eight reference h logs `local\rb8_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log`
 in worktree cc9-gunnery4 (main `d6fc6ee78`, rb8 SHA-256 prefix `5A2B887AA5ED`).
@@ -621,7 +625,7 @@ Calls are summed over the eight logs.
 on a mission that sends override commands (`0071E7F0` reached), which the ranking should re-check
 whenever `queue_command` shows calls.
 
-## 18. Handoff (cc9-gunnery4, 2026-09-29, at about 75% context)
+## 18. Handoff (cc9-gunnery4, 2026-09-28, at about 75% context)
 
 **Where this worker stopped.** Everything is committed on `agent/cc9-gunnery4`.
 - Section 16's ranks 1 and 2 are done:
@@ -648,7 +652,7 @@ whenever `queue_command` shows calls.
 - `g4_*_queue.ps1`: the run queues. The exe and the log prefix are parameters.
 
 **Standing facts for the next reader.**
-- The reference is h (docs/GAME_EXECUTABLE.md 2026-09-29 h, main `d6fc6ee78`).
+- The reference is h (docs/GAME_EXECUTABLE.md 2026-09-28 h, main `d6fc6ee78`).
 - USN02's 29.75 s failure is the image's own for an idle player (TORPEDO_SPREAD_AIM).
 - JM06 and LOMP06 moved again with `kSubmarineDiveTeleportBound`, after h.
 
@@ -766,7 +770,7 @@ arguments):
 - **Flip rule:** the flip goes ahead when the mechanism matches: the arm ends drop to 0, no
   refusals, and identity on the three missions without matches. A USN02 spread move is recorded.
 
-## 21. The director target-check pairs, and the flip (2026-09-29)
+## 21. The director target-check pairs, and the flip (2026-09-28)
 
 OFF is this tree's build at `c67ca09e1`. ON is `pair_export --commit c67ca09e1 --flip
 kDirectorTargetChecksBound=true` (`local\g5_dtc`). The runs are `local\g5off_*.log` and
@@ -791,7 +795,7 @@ kDirectorTargetChecksBound=true` (`local\g5_dtc`). The runs are `local\g5off_*.l
   They are re-checked when a mission queues more than one targeted command or targets an
   aircraft.
 
-## 22. Ranks 4 to 9 read (cc9-gunnery5, 2026-09-29)
+## 22. Ranks 4 to 9 read (cc9-gunnery5, 2026-09-28)
 
 **Rank 4, the torpedo threat list `00814420`** (now named `BSP_Ship_CountForeignTorpedoThreats`,
 body 00814420-00814492, `RET`). **Its loop never advances its node.**
@@ -893,7 +897,7 @@ Score only; closed.
 - **Flip rule:** each switch flips when its mechanism matches. A USN02 move that is traced to the
   accept alone keeps `kAutoTargetCommandAcceptBound` OFF pending a re-read of the retained score.
 
-## 24. The threat-head and accept pairs, and the flip (2026-09-29)
+## 24. The threat-head and accept pairs, and the flip (2026-09-28)
 
 OFF is this tree at `b1e6667eb`. ON is `pair_export --commit b1e6667eb`, flipping both
 switches (`local\g5_tt`). The runs are `local\g5ttoff_*.log` / `local\g5tton_*.log`, with the
@@ -916,7 +920,7 @@ reference h arguments.
   where the host counted a subset.
 - **Both flipped ON.** The ship-AI lease is released with this commit.
 
-## 25. Rank 9 scoped, and handoff (cc9-gunnery5, 2026-09-29, at about 62% context)
+## 25. Rank 9 scoped, and handoff (cc9-gunnery5, 2026-09-28, at about 62% context)
 
 **Packet `cc9_set_command_queue_delay`** is approved (the commands host plus the fixed-step
 pump). It is **not started**; this section is its design.
@@ -1115,7 +1119,7 @@ The OFF runs use this tree's build of `f49312ad3` (`local\g6off_<row>.log`). The
 - **USN13:** exit 3. The death count is 20 ± 2, and the first hit is 96.65 s ± 0.5 s.
 - **USN01:** exit 3 with small moves. The death count is 5, and the first hit is 53.60 s ± 0.2 s.
 
-## 27. The loopback-queue pairs, and the flip (cc9-gunnery6, 2026-09-29)
+## 27. The loopback-queue pairs, and the flip (cc9-gunnery6, 2026-09-28)
 
 **The first ON pair failed on a receiver, not on the queue.** It was run on `f49312ad3` (logs `local\g6on_<row>.log`), and USN04 fell from 44 deaths to 19. PilotSetTarget's continuation runs 0099A170, the bot task install that reads the command the director holds. It ran right after the issue, before the order's row-9 delivery, so only 3 of 19 dive-bomb tasks installed. Two commits fixed it:
 - `1a6149672`: `after_order_delivery` attaches the continuation to the last issue's queued MT_COMMAND (`GameCommandsHost::after_last_issue_delivery`). The continuation now runs after that chain's push and finish tail.
@@ -1214,7 +1218,7 @@ The OFF logs are `local\g6caoff_<row>.log`, built from `78895f00c`, whose OFF co
 - USN02 is exit 1, or exit 3 with small moves where an AI-coordinator retarget lands on a head whose stage was already raised.
 - The death counts equal OFF's on all four rows.
 
-## 29. The clear-all pairs, and the flip (2026-09-29)
+## 29. The clear-all pairs, and the flip (2026-09-28)
 
 ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=true` (SHA-256 prefix `00CA7C47C8F8`, `local\g6caon_<row>.log`). OFF is section 28's `local\g6caoff_<row>.log`.
 
@@ -1293,7 +1297,7 @@ ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=tru
 
 **Verdict.** The release drop is recorded as the image's own consequence of the command delay: a changed dive geometry at the abort test, not a timing difference at the aim gate. Nothing is bound, and no pair is needed.
 
-## 31. Handoff (cc9-gunnery6, 2026-09-29, at about 72% context)
+## 31a. Handoff (cc9-gunnery6, 2026-09-28, at about 72% context)
 
 Rank 9 is closed. All of this worker's commits are on main (`2ce6c92cf`, `ea62f089a`, `796d5e684`, `d466d4250`). No lease is held.
 
@@ -1366,11 +1370,11 @@ These are unchanged from section 25:
 
 Reference i (cc9-gunnery7) takes USN04's dive releases from an ON build and cites section 30.
 
-## 31. The ranking refreshed on reference i (packet `cc9_gunnery_open_ranking_3`, cc9-gunnery7, 2026-09-29)
+## 31. The ranking refreshed on reference i (packet `cc9_gunnery_open_ranking_3`, cc9-gunnery7, 2026-09-28)
 
 **Source.** The eight reference i logs `local\rb9_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log`
 in worktree cc9-gunnery7 (main `d466d4250`, rb9 SHA-256 prefix `D119E0505144`;
-docs/GAME_EXECUTABLE.md "2026-09-29 i").
+docs/GAME_EXECUTABLE.md "2026-09-28 i").
 - `local\g7_rank.py` is section 16's census, pointed at these logs.
 - `local\g7_rankdiff.py` runs the same census over h's logs as well, with the ship-AI and
   command classes added. It prints each row's status and calls on both sides.
@@ -1505,7 +1509,7 @@ The OFF build is gameplay-identical to reference i on JM06 and LOMP06 (`pair_dif
 - **The flip rule:** ON when S1, S2 and S4 hold and JM06's moves trace to the category through the
   recon lists. A JM06 move with the opposite sign to S3 is a stop.
 
-### 32.4 The pairs, and the flip (2026-09-29)
+### 32.4 The pairs, and the flip (2026-09-28)
 
 - **OFF** is `pair_export --commit 93b8b8fc9` (SHA-256 prefix `F58B4755298D`).
 - **ON** is the same commit with `--flip kSubmarineSensorCategoryBound=true` (`A1DE346A1F3B`).
@@ -1546,3 +1550,95 @@ recon lists. `kSubmarineSensorCategoryBound = true`.
   (SUBMARINE_MODEL).
 - **JM06's reference row does not move.** Its script flow does: the sub-sighted dialog is gone.
   Reference j should note it.
+
+## 33. The unresolved fire target `00835930` (packet `cc9_unresolved_fire_target`, rank 2 of section 31)
+
+### 33.1 The image, and what the host dropped
+
+`008358D0` (`BSP_WeaponDirector_SetCommand`, director vtable `+60h`) pushes the slot through
+`0071E6C0`. When the command's category is 1 or 2 and the session mode is 0 or 1, it resolves the
+descriptor (`00521EA0`) and calls `00835860` at `00835930` with that entity and force 1. The fire
+target becomes the commanded entity.
+
+The host's `set_fire_target` accepted only a pointer to one of the commands host's own unit records.
+**Every one of the 154 unresolved calls on reference i carries a handle instead**: the pointer field
+holds the entity's object id. A diagnostic run of this tree (`local\g7ft_<row>.log`) traced the
+first 12 per mission. On each of them the pointer value equals the descriptor's object id (`+2h`), and
+that id names a live unit:
+
+| row | unresolved | by object id | kinds (traced) |
+| --- | --- | --- | --- |
+| USN02 9000 | 14 | 14 | ship `attackmove`: Haguro and Murasame on DeRuyter, Jintsu on Java, Yamakaze on Alden, Minegumo on Houston, Tokitsukaze on Exeter, ... |
+| USN04 4500 | 35 | 35 | plane `divebomb` and `torpedo` on Lexington and Yorktown |
+| USN13 3000 | 60 | 60 | plane `torpedo` on Monterey (the first 12) |
+| USN01 3000 | 7 | 7 | Mav1-5 `torpedo` on Dunlap, Northampton and SaltLakeCity; ScoutDauntless `divebomb` on Convoy1 |
+| JM06 3000 | 2 | 2 | PlayerSub 02 `attackmove` on US Tanker 01, PlayerSub 03 on US Cargo Transport 02 |
+| LOMP06 1000 | 1 | 1 | Yugiri `attackmove` on Narwhal |
+
+The producers are the script orders, the ship-AI planner and the plane orders. They use the object
+id or index+1 as the opaque entity handle (for example `game_hosts_script_orders.cpp`,
+`game_hosts_ship_ai.cpp`). The commands host itself already resolves every other descriptor by the
+object id (`resolve_target_00521ea0`).
+
+### 33.2 The binding (committed OFF)
+
+- `kFireTargetObjectIdBound` (in `game_hosts_commands.cpp`) resolves such a handle by the
+  descriptor's object id and routes the fire target like a resolved one. That means one
+  `fire_target_requests` entry, consumed by the ship-AI host's `store_fire_target`
+  (`kWeaponDirectorFireTargetBound`).
+- It is a labelled substitution: the handle stands in for the image's entity pointer.
+- OFF keeps the drop.
+- The summary line is `summary mission director fire target unresolved= by_object_id=`. The first
+  12 per run are traced as `fire target unresolved (00835930): ...`.
+- The ship-AI consumer skips `generated_non_ship` controllers, which are units created after load
+  that are not ships. That covers USN04's and USN13's launched squadrons.
+
+### 33.3 Predictions (written before the ON runs)
+
+- **F1, the mechanism.** ON, `unresolved` and `by_object_id` equal OFF's until the tracks diverge.
+  `ship ai director fire target command_requests` rises by the calls whose unit has a ship
+  controller.
+- **F2, USN02: exit 3.**
+  - The 14 Japanese attack-move ships take their commanded targets as fire targets.
+  - Death rows move.
+  - The mission still fails in phase 1, torpedo-driven, within 10 s of 29.75 s.
+- **F3, JM06 and LOMP06: exit 3, small.** The two PlayerSubs and Yugiri fire at their commanded
+  targets.
+- **F4, USN04 and USN13: exit 1, gameplay identical.** Their requests come from launched
+  squadrons, which the consumer skips.
+- **F5, USN01: exit 1.** The Mavs and the ScoutDauntless are planes. I expect a fire target stored on
+  a plane's row not to reach its gunnery. That is unverified, and it is what this row tests.
+- **The flip rule:** ON when F1 holds and every move traces to a forced fire target.
+
+### 33.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is `pair_export --commit 296e445b4` (SHA-256 prefix `CD98253065FC`).
+- **ON** is the same commit with `--flip kFireTargetObjectIdBound=true` (`D1A4A1DC3B3C`).
+- The logs are `local\ft_{off,on}_<row>.log`, and the run parameters are reference i's.
+
+| row | `pair_diff` | unresolved (OFF = ON) | ship-AI command requests / changes, OFF -> ON | what moved |
+| --- | --- | --- | --- | --- |
+| USN02 9000 | exit 1, gameplay identical | 14 | 1218 / 51 -> 1232 / 51 | nothing: each forced target was already that ship's fire target |
+| JM06 3000 | **exit 3** | 2 | 337 / 20 -> 339 / 22 | PlayerSub 02 fires on US Tanker 01 and PlayerSub 03 on US Cargo Transport 02: hit records 127 -> 122, damage 2720.7 -> 2468.6, Tanker 01 taken 502 -> 368; the same death row |
+| LOMP06 1000 | exit 1, gameplay identical | 1 | 14 / 2 -> 15 / 3 | Yugiri takes the Narwhal as its fire target (torpedo candidates' fire target 920 -> 1302); no shot lands |
+| USN04 4500 | exit 1, gameplay identical | 35 | 0 / 0 -> 3 / 3 | three requests reach load-time plane rows (the AutoTarget accepts the locked target 665 times and scans 665 fewer) |
+| USN13 3000 | exit 1, gameplay identical | 60 | 0 -> 0 | every request comes from a launched squadron and is skipped |
+| USN01 3000 | exit 1, gameplay identical | 7 | 0 / 0 -> 5 / 5 | the Mavs' rows take their torpedo targets; no gameplay moves |
+
+**Against the predictions.**
+- **F1 held.** `unresolved` and `by_object_id` are equal OFF and ON on every row. The ship-AI
+  requests rise by the calls that reach a ship-AI row.
+- **F2 missed.** USN02 is identical: the planner's attack-move targets were already each ship's fire
+  target, so all 14 stores change nothing. The 29.75 s failure is unchanged.
+- **F3 held on JM06** (exit 3, small, from the two forced targets). **It missed on LOMP06**, which is
+  identical: Yugiri's target changes, but no shot lands within 1000 frames.
+- **F4 held on USN13.** On USN04 three requests reached load-time plane rows, which F4 did not
+  expect, and gameplay is still identical.
+- **F5 held.**
+- Every move traces to a forced fire target.
+
+**Verdict: ON.** `kFireTargetObjectIdBound = true`.
+
+**Still open.** Plane rows hold the stored target, and their AutoTarget accepts it (`accept.true`).
+Whether the image's plane gunnery reads the director fire target is not read here. The plane
+packets own that.
