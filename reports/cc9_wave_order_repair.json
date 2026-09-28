@@ -20,7 +20,17 @@
     "USN13": {
       "off": "19 / 400 / 4152, cat1 3667",
       "on": "20 / 396 / 3903, cat1 3434"
+    },
+    "USN01": {
+      "off": "5 / 441 / 1510, cat1 1465",
+      "on": "5 / 538 / 1498, cat1 1454",
+      "pair_diff": 3,
+      "note": "added after the flip, not predicted before its run"
     }
   },
-  "verdict": "every prediction held; ON"
+  "verdict": "every prediction held; ON",
+  "hit_event_fields": {
+    "commit_note": "GameGunneryHitEvent gains attacker_player_index (-1, no producer), device_entity (0, no producer), fire_caused (hit+4Ch), leak_caused (hit+50h), ordnance_kind (bullet_sub_type, hypothesis)",
+    "identity": "USN04 4700/4500 against WR_FLIP_usn04: gameplay and the 44 death rows identical"
+  }
 }

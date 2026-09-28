@@ -1835,6 +1835,8 @@ struct GameGunneryHost::Impl {
     // Packet cc9_set_invincible_floor: unit+150h by unit index.
     std::vector<float> invincibility_by_unit;
     std::vector<GameGunneryHost::GameGunneryHitEvent> hit_events;   // cc9_lua_hit_listeners
+    float hit_event_fire{0.0f};   // packet cc9_hit_event_fields
+    float hit_event_leak{0.0f};
     unsigned long long invincibility_sets{0};
     unsigned long long invincibility_floored_writes{0};
     unsigned long long invincibility_sink_refusals{0};
@@ -7047,12 +7049,14 @@ public:
         return owner_.draw(GameGunneryHost::Impl::Draw::hit_effect, victim_, 0, 0.0f, 1.0f);
     }
     void record_flood_rate(float rate) override {
+        owner_.hit_event_leak = rate;     // hit+50h, packet cc9_hit_event_fields
         if (rate > 0.0f) {
             ++owner_.unit_state[victim_].row.floods_started;
             ++owner_.summary.flood_messages_9e;
         }
     }
     void record_fire_rate(float rate) override {
+        owner_.hit_event_fire = rate;     // hit+4Ch, packet cc9_hit_event_fields
         if (rate > 0.0f) {
             ++owner_.unit_state[victim_].row.fires_started;
             ++owner_.summary.fire_messages_9e;
@@ -7274,6 +7278,8 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     view.shot_is_torpedo = gun.category == bsp::kUnitGunneryTorpedoCategory;
     view.weapon_present = weapon != nullptr;
 
+    hit_event_fire = 0.0f;
+    hit_event_leak = 0.0f;
     ShipHitBinding binding(*this, victim, shooter, weapon, direction);
     binding.set_hit(hit);
     const float before = target.health;
@@ -7336,7 +7342,13 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         target.last_attacker = shooter + 1;
     }
     ++summary.attributions;
-    hit_events.push_back({victim, shooter, gun.bullet_class, applied});   // cc9_lua_hit_listeners
+    {
+        GameGunneryHitEvent ev{victim, shooter, gun.bullet_class, applied};   // cc9_lua_hit_listeners
+        ev.fire_caused = hit_event_fire;
+        ev.leak_caused = hit_event_leak;
+        ev.ordnance_kind = gun.bullet_sub_type;
+        hit_events.push_back(ev);
+    }
     done("Hit::attribution_0077ce60", 0x0077ce60u);
 
     bsp::UnitHealth health;
