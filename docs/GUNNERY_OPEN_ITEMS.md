@@ -1899,3 +1899,74 @@ larger health pools.
 - `g7_pair.ps1 -Off <export> -On <export> -Rows 'tag:MISSION:frames:mission_frames'`: runs
   both sides at once, waits in the foreground, and prints the pair_diff.
 - `g7_var.ps1`: leave-one-out variants against `rb9_<row>.log`.
+
+## 38. The periscope byte `+1234h` (packet `cc9_periscope_out`, cc9-gunnery8, 2026-09-28)
+
+The open item from sections 32.4 and 37.3: nothing in this process wrote `periscopeOut`, so a raised
+periscope never read PeriscopeOut.
+
+### 38.1 The image
+
+- **One writer.** `periscopeOut` is a reflection property (`00D0BEC8`, bound at `00853FE9`; the
+  Lua name is a property reader, not a script call). No mission script in this installation names
+  it. Its only writer is `00854650 BSP_SubmarineUnit_Update(unit, dt)`, the per-frame update
+  (SUBMARINE_MODEL "The periscope").
+- **The clear.** `00854AF8` loads the `periszkop` node `+1214h`, and `00854B00` stores 0 to
+  `+1234h` before the null test at `00854B06`. A boat without the node (a kamikaze class,
+  `00853630`) skips the whole arm with the byte clear.
+- **The mast.** From `00854F52` (read in the listing with `disasm-raw`):
+  - `periscopeState` (`+122Ch`) == 1 takes the extending arm. The mast node's local Y (from
+    `00B6DB60`, `+30h..+38h`) steps toward `[class+81Ch] + periscopeY` by `dt * 5.0` (`00D7A370`)
+    through `0042AC60 BSP_Math_StepTowards(this=&Y, target, step)`. The node takes the new pose
+    through `vtable[2Ch]`.
+  - Then `00855039..00855057`: when the new Y is at least `[class+81Ch] + periscopeY - 1.0`
+    (`00D7A210`), `+1234h` becomes 1.
+  - Any other state takes `00855063`, which steps back toward `periscopeY` at `dt * 3.0` and never
+    sets the byte.
+- **The rest position.** `periscopeY` (`+1230h`) is the node's own local Y at attach (`00853CB4`
+  `FLD [EAX+34h]`, `00853CB9` `FSTP [ESI+1230h]`), with `+122Ch` = 0 (`00853CA9`). The mast
+  therefore starts at rest and the byte is out `(range - 1.0) / 5.0` seconds after a raise.
+- **The range** is `PeriscopeMoveRange`, `class+81Ch`, NumberOr with 10.0 (`00CE38B8`). This
+  installation's `vehicleclasses.lua` (mtime 2026-05-09) authors values from 0 to 7.
+- **Who raises.** Only the ship AI's `009E4D90` (fire state, at periscope depth, with a
+  non-submarine target) stores 1. `009EA8FB` stores 0. The auto-raise at `00854ED7` needs
+  `+1235h`, which only the reflection setters `00464320` / `004649B0` write.
+
+### 38.2 The binding (committed OFF)
+
+`kSubmarinePeriscopeOutBound` in `include/bsp/game_hosts_units.hpp`:
+- The ship AI host's `set_periscope_state_122c` mirrors each store onto the seeded submarine's units
+  slot, with the node test (`has_periscope_1214`) and the class's `PeriscopeMoveRange` (default 10).
+  The mirror runs on both sides and logs `submarine periscope state:`.
+- ON, the units host runs the arm once per force step after the air step:
+  `run_submarine_periscope_00854650`. The gunnery host's `00852B90` reads the byte through
+  `submarine_periscope_out_1234`. OFF, the byte reads false, as before.
+- **SUBSTITUTIONS, labelled:** it runs in the force step, not in the unit update. The mast is held
+  as its offset above `periscopeY`, so `periscopeY` is 0 in the threshold. The node pose write and
+  the `+1210h` shape move (`00C357B0`) are not made. The repair and the auto-raise have no
+  producer here.
+
+### 38.3 Predictions (written before the ON runs)
+
+The pairs are this tree's build (OFF) against `pair_export --flip kSubmarinePeriscopeOutBound=true`,
+with reference j's run parameters. On reference j, JM06 is the only row with a submarine in
+sub_attack. PlayerSub 02 and 03 each raise once, in the fire state (first fire 102.85 and 99.35
+s). The Narwhal-class never raises, since its target is a submarine.
+
+- **P1, the mechanism (JM06).** The `submarine periscope state:` lines are the same on both sides:
+  one `state=1` each for PlayerSub 02 and 03, and none for the Narwhal-class. ON, each PlayerSub
+  prints `submarine periscope out: ... out=1` at most `(range - 1.0) / 5.0` s after its raise, and
+  at most 1.8 s after it. OFF prints none.
+- **P2, the sensor (JM06).** The recon summary's `periscope_out` rises from 0, and `periscope_in`
+  falls by the same count. `calls`, `underwater` and `deep` are unchanged, because the byte only
+  splits the PeriscopeIn state.
+- **P3, gameplay (JM06).** Nothing moves before the first `out=1` line, about 100 s in. After it,
+  the PlayerSubs see and are seen by the table's PeriscopeOut rows. **exit 1 or a small exit 3**,
+  confined to the last 50 s.
+- **P4, LOMP06 1200/1000.** No raise (the Narwhal is displaced by the seed, reference j), so no
+  state line and **exit 0**.
+- The verdict rule: P1 and P2 are the mechanism. A P3 spread miss with P1 and P2 held may flip.
+
+### 38.4 The pairs, and the flip
+
+(Pending.)

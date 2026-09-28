@@ -277,8 +277,10 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    is 00852B90's state from the hull's world Y (+100h) against the four
 //    depth words +1200h..+120Ch the dive binding seeded, so a boat held at a
 //    band reads Underwater (4) or DeepUnderwater (5) instead of PeriscopeIn.
-//    LABELLED: the periscope byte +1234h has no producer in this process and
-//    reads clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
+//    The periscope byte +1234h comes from the units host's 00854650 mast arm
+//    under kSubmarinePeriscopeOutBound (packet cc9_periscope_out,
+//    docs/GUNNERY_OPEN_ITEMS.md section 38); with that switch false it reads
+//    clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
 //    seeded keeps the stowed-periscope answer. OFF: PeriscopeIn for every boat.
 //    ON by the pairs of 2026-09-28: JM06 gameplay identical within 3000 frames,
 //    but the DeepUnderwater Narwhal-class is never sighted, so the script's
@@ -4644,7 +4646,7 @@ public:
             // which is the state a submarine that nothing has raised is in.
             // Packet cc9_submarine_sensor_category: with the bands seeded (the
             // dive binding holds them), the whole state is computable; the
-            // periscope byte +1234h stays clear (no producer, LABELLED above).
+            // periscope byte +1234h is the units host's (packet cc9_periscope_out).
             const bsp::SensorCategory stowed = bsp::submarine_periscope_sensor_state(false);
             ++owner_.sub_category_calls;
             float bands[4]{};
@@ -4664,7 +4666,9 @@ public:
             depth.band_1204 = bands[1];
             depth.band_1208 = bands[2];
             depth.band_120c = bands[3];
-            depth.periscope_raised = false;
+            // Packet cc9_periscope_out: +1234h from 00854650's mast arm (false
+            // while kSubmarinePeriscopeOutBound is false).
+            depth.periscope_raised = owner_.units.submarine_periscope_out_1234(index);
             const bsp::SensorCategory image = bsp::sensor_category_submarine_00852b90(y, depth);
             const int state = static_cast<int>(image);
             if (state >= 0 && state < 6) ++owner_.sub_category_states[state];

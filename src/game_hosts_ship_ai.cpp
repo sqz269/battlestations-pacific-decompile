@@ -6996,6 +6996,11 @@ public:
     void set_periscope_state_122c(int state) override {
         if (state == 1 && ctl_.periscope_state_122c != 1) ++ctl_.sub_attack_periscope_raises;
         ctl_.periscope_state_122c = state;
+        // Packet cc9_periscope_out: the store is unit+122Ch in the image, which
+        // 00854650 reads; the units host keeps the mast. +81Ch is NumberOr with
+        // 00CE38B8's 10.0.
+        owner_.units.set_submarine_periscope_state_122c(index_, state, has_periscope_1214(),
+            owner_.class_number(index_, "PeriscopeMoveRange", 10.0f));
         owner_.record("ShipAiSubAttack::periscope_state_122c", 0x009e4dc1u);
     }
     bool has_periscope_1214() override {

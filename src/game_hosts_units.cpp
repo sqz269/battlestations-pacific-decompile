@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
+#include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
@@ -370,6 +371,16 @@ struct GameUnitSlot {
     bsp::SubmarineAirRates sub_air_rates{};
     float sub_crush_1284{0.0f};
     unsigned long long sub_crush_pulses{0};
+    // Packet cc9_periscope_out: +122Ch periscopeState (mirrored from the ship AI),
+    // the node test +1214h, the class's +81Ch, the mast's local Y above periscopeY
+    // (+1230h, the node's own Y at attach, 00853CB4), and +1234h periscopeOut.
+    int sub_periscope_state_122c{0};
+    bool sub_periscope_node_1214{false};
+    float sub_periscope_move_range{10.0f};  // 00CE38B8, NumberOr's default
+    float sub_mast_offset{0.0f};
+    bool sub_periscope_out_1234{false};
+    unsigned long long sub_periscope_out_steps{0};
+    unsigned long long sub_periscope_raises{0};
     bool sub_drowned{false};
     // Packet cc9_submarine_seabed: unit+1238h..+1250h, and the class sizes.
     bsp::SubmarineSeabedScan sub_scan{};
@@ -6181,6 +6192,7 @@ public:
             run_submarine_seabed_scan(dt);
         }
         if (kSubmarineAirBound) run_submarine_air_and_crush(dt, dead);
+        if (kSubmarinePeriscopeOutBound) run_submarine_periscope_00854650(dt);
         return bsp::OceanVec3{};
     }
 
@@ -6219,6 +6231,45 @@ public:
         }
         bsp::submarine_scan_advance_00855420(scan);
         owner_.done("SubmarineUnit::seabed_scan", 0x00855420u);
+    }
+
+    // Packet cc9_periscope_out. 00854650's periscope arm, 00854AF8..00855057:
+    // 00854B00 clears +1234h and skips the arm when +1214h (the "periszkop" node)
+    // is null. The repair (00854E44) and the auto-raise (00854ED7, gated by
+    // +1235h) come first in the image; neither has a producer here (no break, no
+    // reflection setter), so periscopeState is the ship AI's store alone. Then
+    // 00854F52: state 1 steps the mast's local Y toward +81Ch + periscopeY at
+    // dt * 5.0 (00D7A370), any other state toward periscopeY at dt * 3.0
+    // (00D7A2B0), both through 0042AC60; only the extending arm reaches 00855045,
+    // which sets +1234h when the new Y is at least +81Ch + periscopeY - 1.0.
+    // SUBSTITUTIONS (labelled): it runs once per force step after the air step, not
+    // in the unit update; the mast is held as its offset above periscopeY, so
+    // periscopeY is 0 in the threshold (the image adds the node's attach Y to both
+    // sides); the node's pose write (vtable[2Ch]) and the +1210h shape move
+    // (00C357B0) are not made.
+    void run_submarine_periscope_00854650(float dt) {
+        const bool was_out = slot_.sub_periscope_out_1234;
+        slot_.sub_periscope_out_1234 = false;                              // 00854B00
+        if (!slot_.sub_periscope_node_1214) return;                         // 00854B06
+        const float range = slot_.sub_periscope_move_range;
+        if (slot_.sub_periscope_state_122c == 1) {                         // 00854F52
+            slot_.sub_mast_offset = bsp::unit_step_towards_0042ac60(
+                slot_.sub_mast_offset, range, dt * bsp::kSubPeriscopeRaiseRate);
+            slot_.sub_periscope_out_1234 = bsp::submarine_periscope_is_out_00855057(
+                slot_.sub_mast_offset, 0.0f, range);                         // 00855045
+        } else {                                                           // 00855063
+            slot_.sub_mast_offset = bsp::unit_step_towards_0042ac60(
+                slot_.sub_mast_offset, 0.0f, dt * bsp::kSubPeriscopeLowerRate);
+        }
+        if (slot_.sub_periscope_out_1234) ++slot_.sub_periscope_out_steps;
+        owner_.done("SubmarineUnit::periscope_out_00855045", 0x00855045u);
+        if (was_out != slot_.sub_periscope_out_1234) {
+            owner_.log.notef("submarine periscope out: unit=%s out=%d mast=%.3f range=%.2f "
+                "t=%.2f (00854650, packet cc9_periscope_out)", slot_.row.name.c_str(),
+                slot_.sub_periscope_out_1234 ? 1 : 0,
+                static_cast<double>(slot_.sub_mast_offset), static_cast<double>(range),
+                owner_.summary.simulated_seconds);
+        }
     }
 
     // Packet cc9_submarine_air. 00855420's tail: 00855250 (0085591C) then 008551C0
@@ -9160,6 +9211,30 @@ bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, i
     row.submarine_depth_level = level;
     host.record("SubmarineUnit::depth_message_a2", 0x0077c7b0u);
     return true;
+}
+
+void GameUnitsHost::set_submarine_periscope_state_122c(std::size_t unit_index, int state,
+                                                       bool has_node, float move_range) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return;
+    GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.row.submarine_depth_seeded) return;
+    slot.sub_periscope_node_1214 = has_node;
+    slot.sub_periscope_move_range = move_range;
+    if (slot.sub_periscope_state_122c == state) return;
+    if (state == 1) ++slot.sub_periscope_raises;
+    slot.sub_periscope_state_122c = state;
+    host.log.notef("submarine periscope state: unit=%s state=%d node=%d range=%.2f t=%.2f "
+        "bound=%d (+122Ch, packet cc9_periscope_out)", slot.row.name.c_str(), state,
+        has_node ? 1 : 0, static_cast<double>(move_range), host.summary.simulated_seconds,
+        kSubmarinePeriscopeOutBound ? 1 : 0);
+}
+
+bool GameUnitsHost::submarine_periscope_out_1234(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (!kSubmarinePeriscopeOutBound || unit_index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
+    return slot.row.submarine_depth_seeded && slot.sub_periscope_out_1234;
 }
 
 bool GameUnitsHost::submarine_band_y(std::size_t unit_index, int band, float& y) const {
