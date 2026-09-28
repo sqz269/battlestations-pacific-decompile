@@ -20,8 +20,15 @@
     "USN02_9200_9000": "exit 0 or 1",
     "USN04_4700_4500": "exit 0 or 1"
   },
-  "off_commit": "pending",
-  "results": "pending",
+  "off_commit": "4df48ee59 (tree with the switch OFF)",
+  "results": {
+    "logs": "OFF local/p2_off_{prcp03,usn01,usn02,usn04}.log, ON local/mk2_on_*.log (export 4df48ee59 + kShipAiMarkerTargetBound=true)",
+    "PRCP03": "exit 3; marker resolves 1800; Aylwin target 2.3458 rad (OFF 2.3660), d32c 2710.44 at frame 9000 (OFF 6408.59 to the origin); phase 1 not completed; deaths 21 and hit records 389 both sides, shots 1094 -> 1034",
+    "USN01": "exit 3; resolves 263; Convoy1 target 2.8308 rad, d32c 11089.98 (OFF 1.1852 / 3626.48 to the origin); deaths 7 / hits 150 both sides, shots 561 -> 572",
+    "USN02": "exit 3; resolves 28; DeRuyter's NavigatorMoveToRange to DRGoTo (250, 9000) (usn_2_java.lua:234) now steers there; deaths 19 -> 17 (John2, John3 survive), hit records 573 -> 610, shots 863 -> 937; failure still at 39.65 s",
+    "USN04": "exit 1; resolves 498; death rows identical"
+  },
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "verdict": "ON; PRCP03, USN01 and USN04 held; USN02 FAILED its identity prediction (DeRuyter's DRGoTo order is a marker moveto the unit-table scan missed)"
 }

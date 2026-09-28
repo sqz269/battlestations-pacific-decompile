@@ -63,7 +63,10 @@ namespace bsp::game {
 // position, not a latched object, so raw_target_0b20 stays 0 (the image would
 // hold the NavPoint there; 009F1491 filters it out as not IsKindOf(2)). The
 // weapon director's arrival test (00836A6C) still does not resolve markers.
-inline constexpr bool kShipAiMarkerTargetBound = false;
+// ON by the pairs at 4df48ee59: PRCP03 (Aylwin to CarrierPoint, 2710 m short),
+// USN01 (Convoy1 to ConvoyGoTo) and USN02 (DeRuyter to DRGoTo) move; USN04
+// identical.
+inline constexpr bool kShipAiMarkerTargetBound = true;
 
 class GameHostLog;
 class GameUnitsHost;

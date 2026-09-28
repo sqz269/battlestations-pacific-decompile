@@ -19,7 +19,16 @@
     "USN02_9200_9000": "exit 0 or 1",
     "USN04_4700_4500": "exit 0 or 1"
   },
-  "off_commit": "pending",
+  "off_commit": "4df48ee59 (tree with the switch OFF)",
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "results": {
+    "logs": "OFF local/p2_off_{jm06,bsm01,usn01,usn02,usn04}.log, ON local/pmop_on_*.log (export 4df48ee59 + kPilotMoveOnPathBound=true)",
+    "JM06": "exit 1, calls 1",
+    "BSM01": "exit 1, calls 2",
+    "USN01": "exit 1, calls 0",
+    "USN02": "exit 1, calls 0",
+    "USN04": "exit 1, calls 0"
+  },
+  "verdict": "ON; every prediction held (flight unchanged without the plane-bot path task)"
 }

@@ -204,7 +204,10 @@ inline constexpr bool kReconLevelTableBound = true;
 // 0077D600(entity, 00E08F68, &target, 1) as 008A4590 but reads no third
 // argument, so +14h keeps 0088A8C7's 0, and it has no pose-refresh tail. False:
 // the native stays an unimplemented record.
-inline constexpr bool kPilotMoveToBound = false;
+// ON by the pairs at 4df48ee59: JM08's four calls served, Movie Mavis to
+// MoviePoint (marker_goals=1), the Wildcat wave to the flagship; USN01, USN02
+// and USN04 identical.
+inline constexpr bool kPilotMoveToBound = true;
 
 // Packet cc9_pilot_move_on_path (docs/GAME_SHIP_NAVIGATION_BINDING.md,
 // "PilotMoveOnPath"). True: the Lua native PilotMoveOnPath (008A3E70) is served
@@ -215,7 +218,9 @@ inline constexpr bool kPilotMoveToBound = false;
 // 5Bh MT_GAMEUNIT_MOVEONPATH message (path id +174h at +20h, the pair at +24h /
 // +28h) through 0077C2A0; it has no argument 4 and no 00890E6F speed store.
 // False: the native stays an unimplemented record.
-inline constexpr bool kPilotMoveOnPathBound = false;
+// ON by the pairs at 4df48ee59: JM06 (1 call) and BSM01 (2 calls) served with
+// gameplay identical; USN01, USN02 and USN04 identical.
+inline constexpr bool kPilotMoveOnPathBound = true;
 
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo

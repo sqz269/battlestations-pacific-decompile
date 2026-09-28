@@ -16,10 +16,18 @@
     "USN04_4700_4500": "exit 0 or 1 (no PilotMoveTo)",
     "PilotMoveToRange_markers": "the marker rule also serves PilotMoveToRange under this switch; no measured mission reaches one (JM06's IJNSubSpawn order is past 3000 frames)"
   },
-  "off_commit": "pending",
+  "off_commit": "4df48ee59 (tree with the switch OFF)",
   "no_ghidra_function": [],
   "names_added": [],
   "substitutions": [
     "the marker's authored position is stored once as the steer point x/z (the image re-reads the NavPoint's pose each refresh; a NavPoint does not move)"
-  ]
+  ],
+  "results": {
+    "logs": "OFF local/p2_off_{jm08,usn01,usn02,usn04}.log, ON local/pmt_on_*.log (export 4df48ee59 + kPilotMoveToBound=true)",
+    "JM08": "exit 3; calls 4, marker_goals 1; Movie Mavis target_token 0 -> 1 task at MoviePoint; Wildcat #1.1/#1.2/#1.3 target_token 351 (the flagship); deaths 3 -> 2 (Movie Mavis no longer shot down), hit records 169 -> 144, shots 1102 -> 858",
+    "USN01": "exit 1, calls 0",
+    "USN02": "exit 1, calls 0",
+    "USN04": "exit 1, calls 0"
+  },
+  "verdict": "ON; every prediction held (the three other calls were the Wildcat wave, confirmed)"
 }

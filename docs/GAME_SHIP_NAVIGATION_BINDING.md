@@ -392,3 +392,31 @@ It is not a budget question. Flight along the path needs the plane-bot path task
 - **BSM01 3200/3000:** 2 calls served (the P-40 pair, follow mode `PATH_FM_CIRCLE`), with the same
   expectation (exit 1).
 - **USN01, USN02 and USN04: identical (exit 0 or 1).** None calls the native.
+
+### The pairs, and the flips (2026-09-27)
+
+The runs came back while the lock screen was still listed: the 300-frame smoke
+`local\pmop_smoke300.log` ends with the final COM release.
+- **OFF side:** this tree's `build\` at `4df48ee59`, where all three switches are OFF
+  (`local\p2_off_*.log`).
+- **ON sides:** three exports of `4df48ee59` with one switch flipped each: `local\mk2_on`,
+  `local\pmt_on` and `local\pmop_on`.
+- **Settings:** streams and the death table on, lockstep 0.05, idle player.
+
+| switch | mission | pair_diff | what moved |
+| --- | --- | --- | --- |
+| `kShipAiMarkerTargetBound` | PRCP03 9200/9000 | exit 3 | 1800 resolves. Aylwin aims 2.3458 rad at CarrierPoint and is 2710.44 m short at frame 9000; OFF aims 2.3660 at the origin, 6408.59 m away. Phase 1 is not done. Deaths 21 and hit records 389 are unchanged; shots go from 1094 to 1034 |
+| | USN01 3200/3000 | exit 3 | Convoy1 aims 2.8308 rad at ConvoyGoTo instead of 1.1852 at the origin. Deaths 7 and hits 150 are unchanged |
+| | USN02 9200/9000 | **exit 3** | DeRuyter's `NavigatorMoveToRange(DRGrp[1], DRGoTo)` (`usn_2_java.lua:234`) now steers to (250, 9000). Deaths go from 19 to 17 (John2 and John3 survive), hit records from 573 to 610. The failure is still at 39.65 s |
+| | USN04 4700/4500 | exit 1 | 498 resolves, death rows identical |
+| `kPilotMoveToBound` | JM08 3200/3000 | exit 3 | 4 calls, marker_goals 1. Movie Mavis flies to MoviePoint and is no longer shot down (deaths 3 to 2). The three Wildcats go at the flagship (token 351). Hit records go from 169 to 144 |
+| | USN01, USN02, USN04 | exit 1 | no calls |
+| `kPilotMoveOnPathBound` | JM06 3200/3000, BSM01 3200/3000 | exit 1 | 1 call and 2 calls served. Flight is unchanged, as labelled |
+| | USN01, USN02, USN04 | exit 1 | no calls |
+
+**Failed prediction: USN02 was not identical.**
+- My identity claim came from the final unit-table descriptors of `rb6_usn02`. By the end of the
+  run, DeRuyter's first order, a `moveto` at DRGoTo issued in stage init, no longer showed there.
+- The move is the fix working: in the image, DeRuyter's group heads for DRGoTo, not the origin.
+
+**All three switches are ON.**
