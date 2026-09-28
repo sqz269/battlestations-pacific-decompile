@@ -266,3 +266,71 @@ counted. On the measured idle runs the natives are reached:
 
 **Every prediction held. No mission completes or scores differently.** **Verdict:
 `kObjectiveStatusBound = true`.**
+
+## 9. The objective kind `+18h` (packet `cc9_objective_kind`, `kObjectiveKindBound`)
+
+Worker cc9-lua2, 2026-09-27. This is item 7 of the cc9-hud3 handoff. Ghidra was read only.
+
+### 9.1 Where the kind comes from (V)
+
+- **The record constructor.** `008DD5C0` stores its third stack argument at `+18h`
+  (`008DD678`/`008DD684`). Its frame is 20h deep: three SEH pushes and five registers. So
+  `[ESP+2Ch]` there is argument 3, and it returns through `RET 10h`.
+- **Add.** `008E1F80 BSP_ObjectiveSet_Add` hands its own argument 3 to that slot. Its four pushes
+  at `008E1FB4`..`008E1FC7` are read with the 48h-deep frame.
+- **Objectives_Add.** `008CD440` pushes `[ESP+70h]` as Add's argument 3 (`008CDB10`/`008CDB15`).
+  The one write to that slot is `008CD7A7`, the result of `008DBF40` on the string that
+  `008CD744`/`008CD758` read, Lua argument 4 (section 1).
+- **`008DBF40`** returns the case-insensitive (`__stricmp`) index of that string in the pointer
+  table `00E0C948`:
+
+| index | string |
+| --- | --- |
+| 0 | `primary` |
+| 1 | `secondary` |
+| 2 | `hidden` |
+| 3, 4, 5 | `marker1`, `marker2`, `marker3` |
+| 6 | no match: the loop ends after the sixth entry and returns 6 |
+
+- The shared helper passes the objective's level there:
+  `Objectives_Add(obj.Party, nil, obj.ID, obj.Text, level[, true])`
+  (`global/commandhelpers.lua` 5763-5769).
+
+### 9.2 What reads it
+
+- **`008DFE50`** returns before its unit walk when `+18h` is 2 (`008DFE6E`). A status change on a
+  hidden objective therefore keeps its units.
+- **`008DF2B0`'s marker gate** (section 8). The host models no marker, so this reader stays a
+  record.
+
+### 9.3 The binding
+
+- **Switch:** `kObjectiveKindBound` in `include/bsp/game_hosts_ai.hpp`, committed OFF.
+- While true:
+  - `Objectives_Add` records the kind: `objective_kind_008dbf40` over Lua argument 4, stored on
+    the newly made `GameObjectiveSets::Objective::kind`;
+  - `set_status` keeps a hidden objective's units and counts `hidden_status_holds`.
+- **The census:** `summary mission objective kind bound=.. hidden_objectives=..
+  hidden_status_holds=..`.
+- **SUBSTITUTION, labelled.** An objective the host finds already listed keeps its first kind. The
+  image's Add constructs a new record on every call.
+
+### 9.4 Predictions (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+The measured adds are:
+- USN01: `CA`, `DD`;
+- USN02: `Sink`, `CL`;
+- USN04: `Bombers`.
+
+None is a hidden objective. In this installation the hidden IDs are `Bruh` (USN01 and USN02) and
+`Trans` (USN04), and none of them is added on the idle runs. No measured objective holds a unit.
+
+| row | prediction |
+| --- | --- |
+| USN01 3200/3000 | `hidden_objectives=0 hidden_status_holds=0`; identity, exit 1 |
+| USN02 9200/9000 | the same; identity, exit 1 |
+| USN04 4700/4500 | the same; identity, exit 1 |
+
+The switch changes nothing measured. It is bound so that a run which adds a hidden objective with
+units (USN02 adds `Mission.HiddenTrgs` at `usn_2_java.lua` 777 on a later stage) keeps those units
+at completion, as the image does.

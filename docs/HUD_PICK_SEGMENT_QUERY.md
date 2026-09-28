@@ -1360,3 +1360,52 @@ of ECX (the key's `+E4h` in 10.2) was not re-read here.
 - `flyalt`'s lift and flag are fully read and could be bound; its update arm needs 0042AE80 and
   0042B2F0 read first.
 - `finishscript` binds onto the existing 00887E50 runner, with the `+390h` gate.
+
+### 10.7 The movie camera's leftovers, read (packet `cc9_movie_camera_leftovers`)
+
+Worker cc9-lua2, 2026-09-27. This is item 8 of the cc9-hud3 handoff. No code changed, and Ghidra
+was read only. None of the three is bound, because no measured mission reaches them.
+
+**The store at `0079CFE8` is attributed.**
+- `0079CFC0` is a constructor of the camera's **track** class. It installs vtable `00D04714`
+  (`0079CFC9`), then:
+  - builds the empty list at `+68h` through `007967E0`;
+  - zeroes `+74h`, `+78h` and `+80h`;
+  - stores `AL` at `+64h` (`0079CFE8`).
+- `AL` is 0 there (`0079CFDA XOR EAX,EAX`). So the store **clears** the flyalt flag, and does not
+  set it.
+- Vtable `00D04714` is the one the camera gives its tracks `+414h` and `+498h` (section 8.7 of this
+  doc). The camera constructor installs it inline (`0079A1B0`).
+- `0079CFC0` itself has no rel32 or vtable reference. It is the out-of-line copy the compiler kept.
+- The flag's only setter stays `0079879A` in the evaluator (10.6). Its only other clear is
+  `00798189`.
+
+**The flyalt update arm `0079B3E9`..`0079B62F`, its two helpers.**
+- **`0042AE80`** is `__thiscall(vec3*, float)`: it divides the three components by the argument,
+  in place.
+- **`0042B2F0 BSP_Vector3_LengthFloatThreshold`** is the vec3 length, 0 at or below `1e-10`. It is
+  already reconstructed (`include/bsp/gamepad_force_events.hpp`, `force_event_vector_length_0042b2f0`).
+- **The opening, V:**
+  - The arm forms the camera's horizontal motion over the step (`0079B3E9`..`0079B41E`). It
+    divides that by `dt * 0.33` (the double at `00D049B8`, `0079B422`..`0079B436`), which gives a
+    velocity. It takes that velocity's length (`0079B43F`).
+  - With a positive stored speed (`[ESP+5Ch]`) and a length below 100.0 (`00D7A220`), it keeps
+    the stored speed and skips to `0079B5CA`.
+  - Otherwise it enters a loop, with a back edge to `0079B49F` that reloads the game object at
+    `0079B4A3`. When the length is above 1.0 (`00D7A24C`), the loop forms a ratio with it
+    (`FDIVRP` at `0079B4BD`; the operand order across the x87 stack was not traced), else 0. It
+    then forms `1 - t*t*t` from that ratio (`0079B4D9`..`0079B4EA`).
+- **Not read:** the rest of the loop, and the `camera+520h` factors 1.8 and 0.6 of 10.6. The
+  loop's x87 register state crosses the back edge. That needs the EH-anchored listing sweep
+  before any binding, not the pseudocode.
+
+**`finishscript` is not unused.**
+- 10.6 searched three files. This installation's `scripts` tree has **21** files that use it,
+  among them `bsm_02`..`bsm_07`, six `chg` missions, `COTP-USN/usn_07` and `usn_09`, and
+  `COTP-IJN/PRCPIJN/jm01` and `jm15`. For example, `bsm_02_defense_of_the_philippines.lua` 1193
+  has `["finishscript"] = "luaStartMissionMovieEnd"`.
+- None of the eight measured missions uses it: USN01, USN02, USN04, BSM01, JM06, JM08, USN13 and
+  LOMP06 have 0 each.
+- The binding 10.6 outlines is `00887E50` on `[[00E188A8]+1A08h]` with `(0, &name, 0, 0, -1)`,
+  skipped when the key owner's `+74h` has byte `+390h` set. It becomes testable only on one of
+  those missions, and BSM02 is the nearest to the measured set.

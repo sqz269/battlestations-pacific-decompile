@@ -59,6 +59,14 @@
 
 namespace bsp::game {
 
+// Packet cc9_objective_kind (docs/MISSION_OBJECTIVES.md section 9). True: Objectives_Add
+// records the kind at +18h, 008DBF40's index of Lua argument 4 in the table 00E0C948
+// (primary 0, secondary 1, hidden 2, marker1..3 3..5, anything else 6), and a status
+// change on a hidden objective (kind 2) keeps its units, as 008DFE50 returns early
+// (008DFE6E CMP [EBP+18h],2). False: the kind is not recorded and every status
+// change drops the objective's units.
+inline constexpr bool kObjectiveKindBound = false;
+
 // game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
 // The world builds them at 004DF917 and only the mission Lua fills them, through
 // 008CD440 Objectives_Add, 008CDD60 Objectives_AddUnit and 008CE510
@@ -74,6 +82,9 @@ struct GameObjectiveSets {
     struct Objective {
         std::string name;
         std::vector<std::size_t> units;
+        // +18h, packet cc9_objective_kind: 008DBF40's index (2 is hidden).
+        // Written only by Objectives_Add while kObjectiveKindBound.
+        int kind{0};
         // +1Ch: 0 active, 1 completed (008E2181), 2 failed (008E2200's store).
         // Packet cc9_objectives_completed.
         int state{0};
@@ -88,6 +99,9 @@ struct GameObjectiveSets {
     void reset() noexcept;
     // 008E1F80: create the objective in this slot, or return the existing one.
     Objective* add_objective(int slot, const std::string& name);
+    // Packet cc9_objective_kind: the same, and a newly made objective takes `kind`.
+    Objective* add_objective(int slot, const std::string& name, int kind);
+    unsigned long long hidden_status_holds{0};
     // 008DF2B0's push, after the liveness test its caller already made.
     bool add_unit(int slot, const std::string& name, std::size_t unit);
     // 008DFC00's removal.

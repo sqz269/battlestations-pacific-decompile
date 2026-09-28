@@ -222,6 +222,47 @@ whole bot. Any of those produces no matching `disp8` and no xref. `0077D600
 BSP_Entity_IssueCommand` was not examined here, so the writeback doc's open question about it
 stays open.
 
+## The `+7Ch` setter, resolved (packet `cc9_bot_dirty_byte`, a read)
+
+Worker cc9-lua2, 2026-09-27. This is item 5 of the cc9-hud3 handoff (`docs/CONTROLLED_UNIT.md`,
+"Handoff (cc9-hud3 retires after this commit)"). It settles the two candidates of the section
+above.
+
+**Candidate 1, `009C1BA8`, is the bot's `+7Ch`. Proven.**
+- **ESI.** `009C19A8 LEA ESI,[EDI+4]`, with `EDI = this` from `009C18C9`. The body's ESI writes are
+  `009C18CB`, `009C1919`, `009C19A8` and `POP ESI` at `009C19CD` (a return arm). The branch
+  `009C19EB JZ 009C1B69` leaves from after `009C19A8`, so at `009C1B9B` `ESI` is state+4.
+- **State+4** is the state's owning approach controller (`docs/BOT_TASK_STATES.md`, base layout).
+  For this state it is the approach at task+3F8h, which `009C2DF0` builds through `009C1C30`.
+- **Approach+10h** is `unit->+DF4h`, which is the bot. The store is at `009F9D05`, in the shared
+  approach head `009F9CE0 BSP_BotApproach_ConstructSpeedReference`
+  (`docs/DIVE_BOMB_TASK.md`, the approach table).
+- So `009C1BA8` stores `bot+7Ch = 1`. It runs when the move-to state ticks with no target
+  (`+2Ch == 0`) on a plane whose `+C25h` is clear. That is `docs/BOT_TASK_STATES.md`'s step 4.
+- **The scan was widened.** An index-driven capstone sweep of every function start (not a byte
+  pattern) finds no other byte store to `[reg+7Ch]` in `00990000`..`009CFFFF` besides
+  `0099A91E` (the constructor), `0099ADB7` (the tick's clear) and `009BDD30`. It finds none at all
+  in `009D0000`..`00A3FFFF`, and no store of 1 or of a register in `007A0000`..`0085FFFF`. The
+  script is `local/cc9-lua2-scan7c.py` in the cc9-lua2 tree.
+
+**Candidate 2, `009BDD30`, is unreachable.** A disk scan finds no rel32 `CALL`/`JMP` to it and no
+absolute dword equal to it, which agrees with the census above.
+
+**What installs a task on a command change.** It is not `+7Ch`:
+- `0099A4C0`, from the tick and from the thunk `0099A600`, retires head tasks whose `vtable[38h]`,
+  `[34h]` or `[40h]` predicates say they are over.
+- When the list at `+58h` is empty, it tail-jumps (`0099A5EB`) to
+  `0099A170 BSP_Bot_InstallCommandTask`, which builds from the director's current command.
+- The thunk's one caller is `007C3EA0`, a plane routine. It issues command `00E08FA0` through
+  `0077D600` and then re-syncs the bot at once (`007C3F03`).
+- So after a new order, the image installs at the first bot tick in which the old task retires.
+  `+7Ch` only re-installs after a move-to runs out of target.
+
+**For the host.** The substitution recorded in `docs/SENTITY_INIT_ATTACH_ORDER.md` 22.7 (install at
+the order's delivery, one bot tick early) stands against `0099A4C0`'s retire-then-install, not
+against a `+7Ch` setter. Moving the install to the retire path belongs to the units and
+script-orders hosts. Both are leased to other workers now, so this read binds nothing.
+
 ---
 
 ## (2) `009998A0` — the call order, and the branch

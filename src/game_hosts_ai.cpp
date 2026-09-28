@@ -61,6 +61,16 @@ GameObjectiveSets::Objective* GameObjectiveSets::add_objective(int slot,
     return &list.back();
 }
 
+GameObjectiveSets::Objective* GameObjectiveSets::add_objective(int slot,
+    const std::string& name, int kind) {
+    const unsigned long long before = adds;
+    Objective* o = add_objective(slot, name);
+    // 008E1F80 constructs the record with the kind as 008DD5C0's third
+    // argument (+18h at 008DD684). An existing record keeps its own.
+    if (o != nullptr && adds != before) o->kind = kind;
+    return o;
+}
+
 bool GameObjectiveSets::add_unit(int slot, const std::string& name, std::size_t unit) {
     Objective* o = add_objective(slot, name);
     if (o == nullptr) return false;
@@ -98,6 +108,14 @@ bool GameObjectiveSets::set_status(int slot, const std::string& name, int status
         // SUBSTITUTION, labelled: the walk's early return for a hidden
         // objective (+18h == 2) is not applied, because this host does not
         // record the kind; on the measured missions no objective holds a unit.
+        if (kObjectiveKindBound && o.kind == 2) {
+            // Packet cc9_objective_kind: 008DFE50 returns at 008DFE6E for a
+            // hidden objective, so its units stay listed.
+            ++hidden_status_holds;
+            o.state = status;                             // 008E2181
+            ++status_sets;
+            return true;
+        }
         status_unit_drops += o.units.size();
         unit_removes += o.units.size();
         o.units.clear();
@@ -2661,6 +2679,15 @@ void GameAiCoordinatorHost::report() {
         host.log.notef("summary mission objective status (packet cc9_objectives_completed, "
             "008BD340/008BD900 -> 008E20D0/008E2200): sets=%llu misses=%llu unit_drops=%llu",
             sets.status_sets, sets.status_misses, sets.status_unit_drops);
+        int hidden = 0;
+        for (std::size_t k = 0; k < GameObjectiveSets::kSlotCount; ++k) {
+            for (const GameObjectiveSets::Objective& o : sets.slots[k]) {
+                if (o.kind == 2) ++hidden;
+            }
+        }
+        host.log.notef("summary mission objective kind bound=%d hidden_objectives=%d "
+            "hidden_status_holds=%llu (008DBF40 -> +18h, 008DFE6E, packet cc9_objective_kind)",
+            kObjectiveKindBound ? 1 : 0, hidden, sets.hidden_status_holds);
     }
     host.log.notef("summary mission ai target weight queries=%llu objective_hits=%llu "
         "fort_targets=%llu non_command=%llu (00A0F810's four multipliers: 10.0 objective, "

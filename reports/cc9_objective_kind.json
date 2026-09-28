@@ -1,0 +1,31 @@
+{
+  "packet": "cc9_objective_kind",
+  "doc": "docs/MISSION_OBJECTIVES.md section 9",
+  "calls": [
+    {
+      "address": "008CDB20",
+      "native": "008E1F80",
+      "function": "008CD440",
+      "note": "Add, argument 3 = [ESP+70h] = 008DBF40(Lua arg 4)"
+    },
+    {
+      "address": "008E1FCA",
+      "native": "008DD5C0",
+      "function": "008E1F80",
+      "note": "record ctor, argument 3 -> +18h"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kObjectiveKindBound",
+      "file": "include/bsp/game_hosts_ai.hpp",
+      "state": "OFF, pairs pending (renderer-init crash)"
+    }
+  ],
+  "substitutions": [
+    "an objective already listed keeps its first kind; the image constructs a new record per Add"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}
