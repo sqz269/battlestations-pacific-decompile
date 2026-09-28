@@ -17784,6 +17784,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 }
                 if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
                 ++host.summary.plane_steps;
+                if constexpr (kPlaneRowPositionBound) {
+                    // Packet cc9_controlled_plane_ai_moveto: the row's copy of
+                    // entity+FCh (008A7C3C's read) follows the plane, as
+                    // refresh_row keeps it for a ship. Only the position and the
+                    // moved distance; the ship-only row fields are left alone.
+                    GameUnitRow& row = slot.row;
+                    for (int i = 0; i < 3; ++i) row.position[i] = slot.motion.position[i];
+                    const double dx = static_cast<double>(row.position[0]) - row.start[0];
+                    const double dz = static_cast<double>(row.position[2]) - row.start[2];
+                    row.distance = static_cast<float>(std::sqrt(dx * dx + dz * dz));
+                    ++host.summary.plane_row_refreshes;
+                }
                 host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
                 continue;
             }
@@ -20075,6 +20087,9 @@ void GameUnitsHost::report() {
         host.summary.plane_steps, host.summary.plane_arm_free_flight,
         host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
         host.summary.plane_arm_none);
+    host.log.notef("summary mission plane row position bound=%d refreshes=%llu (entity+FCh "
+        "copy for 008A7C3C, packet cc9_controlled_plane_ai_moveto)",
+        kPlaneRowPositionBound ? 1 : 0, host.summary.plane_row_refreshes);
     {
         // Packet cc9_plane_death_modes.
         std::size_t modes[6] = {0, 0, 0, 0, 0, 0};

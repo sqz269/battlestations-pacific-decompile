@@ -1513,3 +1513,71 @@ The four new Lua rows are in the dispatcher's `handled` list (`src/game_hosts_lu
 - **Pair exports:** `local\{ga,ss,cc,sd,sc,dv,ar,hf,sb,dt,rl}_on`, and `local\sd_off`.
 - **Logs:** `local\<prefix>_{off,on}_<mission>.log`.
 - **Scripts:** `local\l3_*`.
+
+## Why a controlled plane reads 0.00 m (packet `cc9_controlled_plane_ai_moveto`, `kPlaneRowPositionBound`, committed OFF)
+
+Worker cc9-lua4, 2026-09-28. The question came from ships4's CAUTIOUSATTACK pairs
+(`docs/PLANNER_TASK_CHOICE.md` section 11.4): on USN07 and USN09 an AI moveto issued through
+`00A02020` to an air-group leader left it at 0.00 m.
+
+### The image (V): the pilot bot's role gate
+
+`BSP_PilotBot_Tick` (`0099ACD0`) runs its task logic only while the pilot role is AI-held.
+`0099AE3F` calls `006DEEC0(bot, 1)`:
+
+```
+006deec0  MOV ECX,[ECX+0x50]            ; the unit
+006deec7  MOV EAX,[ECX+EAX*4+0x1ac]     ; its role-1 (pilot) slot
+006deece  CMP EAX,8 / JE -> return 1     ; PLAYER_AI
+006deed4  CALL 00927F10 / JNZ -> return 1 ; the slot is AI-held
+006deedd  XOR EAX,EAX / RET 4            ; a player holds the pilot
+0099ae44  TEST AL,AL / JNZ 0099AE5C      ; AI: go on to the task logic
+0099ae4a  CALL 0099A0A0 / CALL 007B8DC0 / JMP 0099B11D   ; player: skip it
+```
+
+So a plane whose pilot role a player holds ignores every task, AI moveto included. That is gate
+7 of `docs/PILOT_BOT_TICK_GATES.md`. The host models none of the gates except the think interval.
+
+### Why the gate does not explain the 0.00 m
+
+- **USN07.** The controlled unit is `PBY Catalina 01`. Its roles are `held=088888888`: the player
+  holds role 0, and the pilot role 1 is 8. The gate therefore lets the moveto through, in the image
+  as in the host. The host installs the script's own `PilotMoveTo` task on it (`009C3000`), and
+  every one of the 3000 plane steps is a free-flight step.
+- **USN09.** The controlled unit is `Maury`, a destroyer, not `Enterprise_sqn01`. The 0.00 m there
+  belongs to the air group, not to the controlled unit.
+- **The cause is the host's row, not the plane.** `refresh_row` (`src/game_hosts_units.cpp`)
+  copies `motion.position` into the unit row. It runs only at the end of the ship-motion loop, and
+  the plane branch `continue`s before it. A plane's row therefore keeps its spawn position. On
+  reference h's USN04 every aircraft row shows `moved 0.00` at its spawn coordinates, although
+  those aircraft fly and drop torpedoes.
+- **What reads that row.**
+  - The "controlled moved" summary.
+  - `GameScriptOrdersHost::entity_pose_translation_008a7c3c`, the host's copy of `entity+FCh`
+    that `GetPosition` (`008A7B00`, the read at `008A7C3C`) returns.
+  - So a script's `GetPosition` on a plane returns its spawn point. No other native reads a unit
+    row's position.
+
+**Verdict on the question:** the image's gate is not what freezes these leaders, and the host's
+pilot task already accepts the moveto. The 0.00 m is the stale row.
+
+### The binding
+
+`kPlaneRowPositionBound` in `include/bsp/game_hosts_units.hpp`. After `007CE040`'s fixed step, a
+plane's row takes its motion position, and its moved distance follows. The ship-only row fields
+(speed, throttle, rudder) are left alone. The census is
+`summary mission plane row position bound=.. refreshes=..`.
+
+### Predictions, before any run (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+- **USN07 3200/3000: exit 3.** "controlled moved PBY Catalina 01" rises from 0.00, because the PBY
+  flies its moveto. `refreshes` equals the plane steps (3000). The rest of gameplay should be
+  identical unless a script reads a plane's position.
+- **USN09 3200/3000: exit 1.** The controlled Maury's "moved" is unchanged. Only the census
+  differs, unless one of its `GetPosition` calls names an aircraft.
+- **USN01 3200/3000: exit 3.** The controlled unit ends as the `ScoutDauntless` plane (reference
+  h prints it last), so "controlled moved" rises from 0.00 if that plane flies. USN01 makes no
+  `GetPosition` call.
+- **USN04 4700/4500, USN13 3200/3000: exit 1, gameplay identical.** Their controlled units are
+  ships. USN04 makes 8 `GetPosition` calls and USN13 27 (reference h). If any of them names an
+  aircraft, that value moves, and the pair shows it as exit 3.
