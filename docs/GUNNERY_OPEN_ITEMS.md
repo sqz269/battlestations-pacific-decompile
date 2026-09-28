@@ -2544,3 +2544,24 @@ chains `FYL2X` and `F2XM1`. With every hull's inertia zero (46.3), that cannot m
 - **R2, USN02 9000 and JM06 3000: exit 1, gameplay identical,** because of the zero inverse inertia.
 - **The flip rule:** ON when R1 holds and both rows are identity. Any move is a failure of the inertia claim and
   keeps the switch OFF.
+
+### 46.5 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `5cb63b252`.
+- **ON** is `pair_export --commit 5cb63b252 --flip kShipHitRollTorqueBound=true` (SHA-256 prefix
+  `128C3D8AF61C`).
+- The logs are `local\g9_rtoff_<row>.log` and `local\g9_rton_<row>.log` in worktree cc9-gunnery9.
+  Both sides ran in the same RDP session, and a 300-frame smoke passed first.
+- ON loads `Physics.TorpedoForce=-75.000 TorpedoForcePower=2.000 (loaded=1)`.
+
+| row | `pair_diff` | calls OFF | posted / delivered / undelivered ON | largest torque | against the prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9200/9000 | exit 1, gameplay identical | 26 | 26 / 26 / 0 | 4039222.0 | R1 and R2 held |
+| JM06 3200/3000 | exit 1, gameplay identical | 0 | 0 / 0 / 0 | 0 | R2 held, but vacuously: no torpedo hit lands on a hull over 500 mass |
+
+**Verdict: ON.** The mechanism is the image's, and every torque reaches the body. Nothing moves,
+because the inverse inertia is zero. `kShipHitRollTorqueBound = true`.
+
+**The follow-up** is the collision AABB producer `00C5C940`. Once a hull has a real inertia, these
+torques act, and USN02 (26 of them, up to 4.0e6) is the row to re-pair. The minus sign of this
+installation's `TorpedoForce` reverses the roll direction the axis sign gives.

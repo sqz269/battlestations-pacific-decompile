@@ -637,7 +637,7 @@ constexpr bool kPlaneNullFireTargetProviderBound = true;
 //    AABB producer 00C5C940 is unread), so the torque moves nothing yet.
 //    OFF: the old stub (axis 0,1,0, both settings 0, the sink recorded).
 //    Packet cc9_hull_roll_torque, docs/GUNNERY_OPEN_ITEMS.md section 46.
-constexpr bool kShipHitRollTorqueBound = false;
+constexpr bool kShipHitRollTorqueBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
