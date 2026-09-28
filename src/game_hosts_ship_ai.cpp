@@ -377,6 +377,16 @@ inline constexpr bool kShipAiSubTargetSubStatesBound = true;  // ON: pairs held,
 // member's vtable[4]) and exit 009E86E0 (the current member's vtable[8]) run at
 // the state switch. False: the three are records. Counted on both sides.
 inline constexpr bool kShipAiApproachEnterReseedBound = false;
+// Packet cc9_sub_target_entry_points, docs/SHIP_AI_OPEN_ITEMS.md section 9. The
+// three stand-ins of the submarine-target sub-states take the entry points now
+// on main. True: the lead pursuit's yaw rate is 0082ECB0 over the unit's class
+// with (unit+984h, the forward speed, 1.0) (GameUnitsHost::
+// unit_class_yaw_rate_0082ecb0); the tangent's SubmarineLostTime is the loaded
+// ShipGlobals value (GameMissionLuaHost::sub_attack_submarine_lost_time_04d4);
+// and 009E2B60 fires the unit's Function-8 guns (GameGunneryHost::
+// fire_function_guns_now_009e2b60). False: 00811940's current yaw rate, the
+// constant 30, and a counted record.
+inline constexpr bool kShipAiSubTargetEntryPointsBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1002,6 +1012,7 @@ struct GameShipAiHost::Impl {
         unsigned long long sub_tangent_steps{0};
         unsigned long long sub_approach_returns{0};   // back to state+8h from 14CC/14E0
         unsigned long long sub_sibling_notices{0};    // 009E2B60 calls
+        unsigned long long sub_sibling_fires{0};      // ...that marked a gun (ON)
         unsigned long long sub_lost_ends{0};          // 009F3718 0071E430 calls
         double sub_first_open_seconds{-1.0};
         float sub_min_target_y{0.0f};
@@ -2821,10 +2832,21 @@ public:
     float unit_forward_speed_vtable_0038() override {
         return owner_.units.unit_forward_speed_0092d730(index_);
     }
-    float unit_ordered_rudder_0984() override { return 0.0f; }
-    float yaw_rate_from_rudder_0082ecb0(float, float, float) override {
-        owner_.record("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
-        return owner_.units.unit_current_yaw_rate_00811940(index_);
+    float unit_ordered_rudder_0984() override {
+        if (!kShipAiSubTargetEntryPointsBound) return 0.0f;
+        // 009E2A6A, [unit+984h]: the ordered rudder the ring published, which
+        // the units host keeps on the unit's row (refresh_row).
+        const GameUnitRow* unit = owner_.units.unit_row(index_);
+        return unit != nullptr ? unit->ordered_rudder : 0.0f;
+    }
+    float yaw_rate_from_rudder_0082ecb0(float rudder, float speed, float efficiency) override {
+        if (!kShipAiSubTargetEntryPointsBound) {
+            owner_.record("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
+            return owner_.units.unit_current_yaw_rate_00811940(index_);
+        }
+        // 009E2A97: 0082ECB0(ECX = [unit+538h], rudder, speed, 1.0f).
+        owner_.done("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
+        return owner_.units.unit_class_yaw_rate_0082ecb0(index_, rudder, speed, efficiency);
     }
     float vector2_length_00414c60(float x, float z) override {
         return bsp::length_2d_00414c60(std::array<float, 2>{x, z});
@@ -2855,6 +2877,11 @@ public:
         // no reader of SubAttack reaches it. The value is 30 both in this
         // installation's datatables/shipglobals.lua (line 473, mtime 2024-07-13)
         // and as the loader default (0083F7A1, ship_ai_settings_block.cpp).
+        if (kShipAiSubTargetEntryPointsBound && owner_.settings_owner != nullptr) {
+            // The loaded ShipGlobals.SubAttack.SubmarineLostTime, 0 when absent
+            // (lua_tonumber), as 0083F779..0083F7A1 stores it.
+            return owner_.settings_owner->sub_attack_submarine_lost_time_04d4();
+        }
         return kSubTargetSubmarineLostTime;
     }
     std::uint32_t unit_director_vtable_0114() override {
@@ -2944,7 +2971,15 @@ public:
         // gun, the depth-charge group of 009542B0). The fire belongs to the
         // gunnery host; this process records the call and counts it.
         ++ctl_.sub_sibling_notices;
-        owner_.record("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
+        if (!kShipAiSubTargetEntryPointsBound || owner_.gunnery_draws == nullptr) {
+            owner_.record("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
+            return;
+        }
+        // 009E2B86 hard-codes Function 8, the depth-charge launcher group.
+        if (owner_.gunnery_draws->fire_function_guns_now_009e2b60(index_, 8)) {
+            ++ctl_.sub_sibling_fires;
+        }
+        owner_.done("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
     }
 
 private:
@@ -9732,13 +9767,14 @@ void GameShipAiHost::report() {
         if (c.sub_gate_calls == 0) continue;
         host.log.notef("  sub target %-20s gate=%llu open=%llu visible=%llu first_open=%.2f "
             "min_y=%.1f target=%s lead=%llu/%llu tangent=%llu/%llu returns=%llu notices=%llu "
-            "lost_ends=%llu",
+            "lost_ends=%llu fires=%llu entry_points=%d",
             host.rows[index].unit.c_str(), c.sub_gate_calls, c.sub_gate_open,
             c.sub_gate_open_visible,
             c.sub_first_open_seconds, static_cast<double>(c.sub_min_target_y),
             c.sub_last_target.c_str(), c.sub_lead_enters, c.sub_lead_steps,
             c.sub_tangent_enters, c.sub_tangent_steps, c.sub_approach_returns,
-            c.sub_sibling_notices, c.sub_lost_ends);
+            c.sub_sibling_notices, c.sub_lost_ends, c.sub_sibling_fires,
+            kShipAiSubTargetEntryPointsBound ? 1 : 0);
     }
     // Packet cc9_submarine_ai_states: one line per brain that selected sub_attack.
     host.log.notef("summary mission ship ai sub_attack select_bound=%d states_bound=%d "
