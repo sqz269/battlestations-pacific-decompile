@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_pilot_move_to",
+  "doc": "docs/GAME_SHIP_NAVIGATION_BINDING.md, PilotMoveTo",
+  "switch": "kPilotMoveToBound (include/bsp/game_hosts_script_orders.hpp), not yet written",
+  "addresses": {
+    "008A4150": "PilotMoveTo: 00888AA0(arg 0), 0088A810(arg 1), 0077D600(entity, 00E08F68, &target, 1); no range argument, no pose-refresh tail",
+    "008A4590": "PilotMoveToRange: the same issue plus the +14h range from argument 2 (008A46E5..008A4708) and three pose refreshes (008A472F..008A475A)",
+    "009BEBA0": "the kind-7 approach steers to [approach+44h]'s world +FCh/+104h, any entity"
+  },
+  "calls": [],
+  "status": "held: the steer-point setter needs src/game_hosts_units.cpp (cc9-gunnery3, cc9_plane_world_rate)",
+  "predictions": {
+    "JM08_3200_3000": "four PilotMoveTo calls served; Movie Mavis steers to MoviePoint (2000, 7500); three Wildcats to the flagship; exit 3",
+    "USN01_3200_3000": "exit 0 or 1",
+    "USN02_9200_9000": "exit 0 or 1",
+    "USN04_4700_4500": "exit 0 or 1"
+  },
+  "off_commit": "pending",
+  "no_ghidra_function": [],
+  "names_added": []
+}

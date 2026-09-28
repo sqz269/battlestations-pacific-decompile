@@ -239,3 +239,49 @@ scripts, with the targets classed from the scenes:
 - Identity on JM06 at 3200/3000, where the Catalina spawn is not reached.
 - A mission reaching `luaJM6CatalinaSpawned` would show the Catalina flying to IJNSubSpawn instead
   of the origin. JM06's frame budget for that callback was not measured.
+
+### `PilotMoveTo`, `008A4150` (packet `cc9_pilot_move_to`, read and plan)
+
+**The native** (`__fastcall(lua_State*)`, the `luaMW_...` failure-string prologue as its siblings):
+- argument 0 goes through `00888AA0` (`008A424F`), the entity;
+- argument 1 goes through `0088A810` (`008A4284`), the command target;
+- then `0077D600(entity, 00E08F68, &target, 1)` (`008A42A0`..`008A42A7`), the same issue with the
+  same moveto command class that `PilotMoveToRange` makes at `008A4723`..`008A472A`.
+
+**What differs from `PilotMoveToRange` (`008A4590`):**
+- `PilotMoveToRange` reads a third argument into the descriptor's `+14h` (`008A46E5`..`008A4708`,
+  `bsp::pilot_move_to_range_008a46dc`). `PilotMoveTo` never does, so `+14h` keeps the 0 that
+  `0088A8C7` stored.
+- `PilotMoveToRange` refreshes the unit's pose up to three times after the issue
+  (`008A472F`..`008A475A`). `PilotMoveTo` has no such tail.
+
+So `PilotMoveTo(u, t)` issues exactly what `PilotMoveToRange(u, t)` with two arguments issues. The
+target resolves through `0088A810`, and `00521EA0`'s handle tables hold a NavPoint like any other
+entity. The kind-7 task's approach `009BEBA0` then steers to that object's world position (the
+plane-side read above).
+
+**The binding, under one switch `kPilotMoveToBound` in `include/bsp/game_hosts_script_orders.hpp`,
+committed OFF:**
+- a `PilotMoveTo` row (`0x008a4150`) on the script-orders host, served by the `PilotMoveToRange`
+  body with the range forced to the two-argument 0;
+- the plane-marker rule: an unresolved target whose object id names a scene marker stores the
+  marker's authored position as the task's steer point (`moveto_point`), through a new units-host
+  setter. `moveto_refresh_009beba0` keeps it, because `moveto_target_plus_one` stays 0. The rule
+  applies to both natives under the same switch.
+
+**Held.** The steer-point setter lives in `src/game_hosts_units.cpp`, which cc9-gunnery3 holds
+(`cc9_plane_world_rate`, until 08:46Z). The code waits for that file.
+
+**Predictions, before any code:**
+- **JM08 3200/3000:** the four `PilotMoveTo` calls (`rb6_jm08`: UNIMPLEMENTED, calls=4) are served.
+  - `PilotMoveTo(Movie Mavis, MoviePoint)` (`prcpjm08.lua:573`) installs a moveto task whose steer
+    point is MoviePoint's (2000, 7500) under the marker rule, not the origin.
+  - The other three are presumably `luaF4FWaveSpawned`'s `PilotMoveTo(unit, Mission.Flagship)`
+    (`:722`), unit targets. The native table gives only the count, so this is to be confirmed by the
+    ON log.
+  - Gameplay moves (exit 3): the spawned wave flies at the flagship, and Movie Mavis flies to
+    MoviePoint.
+- **USN01 3200/3000, USN02 9200/9000 and USN04 4700/4500: identical (exit 0 or 1).**
+  - None calls `PilotMoveTo`.
+  - None has a `PilotMoveToRange` at a marker: USN04's two `moviefisher` orders target Zuikaku and
+    Shoho, which are units.
