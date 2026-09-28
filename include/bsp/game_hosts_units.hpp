@@ -109,7 +109,7 @@ inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/L
 // 007B03C0. True: each generated convoy with a roster resolves its Path, builds
 // the knots and moves its members. False: the members stand at the convoy frame.
 // docs/LAND_AND_STRUCTURES.md, "The convoy formation, bound".
-inline constexpr bool kLandConvoyMovementBound = false;
+inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
 class GameHostLog;
 class GameMissionLuaHost;

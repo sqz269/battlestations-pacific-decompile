@@ -560,7 +560,7 @@ LandConvoy roster 00743450: "RadarStationLandConvoy 01" rows=1 columns=1 slots=1
   belong to the gunnery lane, and the lead routes them.
   - On JM05 the members are Neutral, so the fold changes only the neutral recon triple.
 
-## The convoy formation, bound (packet `cc9_land_convoy_movement`, `kLandConvoyMovementBound`, committed OFF)
+## The convoy formation, bound (packet `cc9_land_convoy_movement`, `kLandConvoyMovementBound`, ON)
 
 Worker cc9-lua6, 2026-09-28. This closes the first bullet of "Still open" above.
 
@@ -648,3 +648,50 @@ player, present interval immediate):
 | JM05 3200/3000 | **exit 3.** `summary LandConvoy motion convoys=2 bound=1`, both `law=terrain`, knots 77 and 113, lengths 1837.456 and 2032.570 to three decimals. The five members leave the convoy frames and follow their paths. After about 3000 steps the committed arcs are near `3000 * 1.0 mod 1837.456 = 1162.5` (Secondary) and `3000 * 0.5 = 1500` (Radar), each within one step count of the first admitted step. By a linear reading of the knots, slot 0 of Secondary ends near world `(-1617, 3, -866)` and Radar's member near `(5723, 4, -2541)`, within 30 m for the cubic. Member heights follow the terrain. No range errors. Neutral party: deaths, hits, damage and shots unchanged |
 | USN01 3200/3000 | **exit 1.** No LandConvoy; only the new summary line (`convoys=0`) |
 | USN04 4700/4500 | **exit 1.** The same |
+
+#### Convoy formation pairs and verdict
+
+- OFF is this tree's build of `8acc84aa7`.
+- ON is `pair_export --commit 8acc84aa7 --flip kLandConvoyMovementBound=true` (`local/cm_on`).
+- The logs are `local/cm_{off,on}_<mission>.log` in worktree cc9-lua6.
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| JM05 3200/3000 | exit 1 (predicted 3) | the five members' end positions; the binding and wave native rows; the new summary line | held on the mechanism; two misses, below |
+| USN01 3200/3000 | exit 1 | the new summary line only | held |
+| USN04 4700/4500 | exit 1 | the same | held |
+
+**JM05, ON.** Both convoys bind under the terrain law. There are no range errors. The committed
+arc advances `0.1 * Speed` per step, and the odometer `0.05 * Speed`.
+
+| member | end position (x, z) | moved | arc at step 3000 |
+| --- | --- | --- | --- |
+| `SecondaryLandConvoy 01-1` Us_truck | (-1617.9, -866.8) | 461.57 m | committed 1162.044 |
+| `-2` Us_ambulance | (-1595.2, -856.4) | 438.17 m | group 1, 25 behind |
+| `-3` Us_apc | (-1572.6, -845.6) | 415.11 m | group 2 |
+| `-4` Us_jeep | (-1549.7, -835.6) | 391.98 m | group 3 |
+| `RadarStationLandConvoy 01-1` Us_jeep | (5430.1, -2487.3) | 140.62 m | committed 146.721 |
+
+- **Secondary** matched the prediction to within 1 m: predicted (-1617, -866) at arc 1162.5.
+- **Deaths, hits, damage, shots and the first hit are identical**, and so are the 150 compared
+  unit-table rows.
+
+**The two misses:**
+1. **The exit code.** `pair_diff`'s unit table compares 150 rows and the convoy members are not
+   among them. The unit count does not change either. The member rows moved only in the masked
+   "other lines". That is the diff's scope, not the mechanism.
+2. **The Radar path's shape.** The prediction took it as open, with length 2032.570. The host
+   found it closed, with length 1353.029. The prediction script read the points in file order,
+   which is lexical (`Point10`, `Point100` .. `Point109`, `Point11`, ...). `007B34F0` looks them
+   up as `Point%002i` in numeric order, and so does the host. In numeric order, `Point112` is
+   (0.86, 0.18, -0.34), within 1 of `Point00`. Re-run in numeric order, the script gives 113
+   points, closed, length 1353.029, as the host does. The end arc is `1500 mod 1353.029 = 146.97`,
+   as logged.
+
+**Verdict: `kLandConvoyMovementBound = true`.** The mechanism matches the image on every row. The
+two misses are the diff's scope and the prediction's own arithmetic, recorded above.
+
+**Still open after this:**
+- the member-death kill `007422A0` and the convoy's `+5Eh`;
+- the gunnery fold `00805680` (the lead routes it);
+- `HudMinimap::land_vehicle_player_query 008DDF00`.
