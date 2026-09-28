@@ -394,3 +394,8 @@ admission is the image's live-list rule, and the index shift removes a host defe
 - **Flagged for reference g and the lead:** USN13's damage roughly halves.
 - Whether the brain's `moveto` churn on player squadrons matches the image depends on the
   order ring's append-versus-replace substitution. That is a follow-up worth routing.
+
+**Lead's ruling: held OFF pending the order-ring read.** USN13's halved damage runs through
+the host's order ring, which appends with a duplicate filter where `0077D600` replaces. That
+substitution must be separated before this switch can carry the verdict. The pair rows above
+stand as recorded.

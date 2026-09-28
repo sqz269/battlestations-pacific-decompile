@@ -207,9 +207,10 @@ constexpr bool kAiLeaderOrderKeyBound = true;
 // grows (their index is units.count() + i, so every stored squadron index is
 // shifted by the growth). False: the squadron list is the load-time one, and a
 // stored squadron index that the unit growth overtakes reads as a unit.
-// ON: USN04 and USN13 moved (brain orders reach the generated squadrons),
-// USN01 and USN02 identical (docs/GENERATED_SHIP_AI.md section 7).
-constexpr bool kGeneratedSquadronBrainBound = true;
+// Pairs: USN04 and USN13 moved (brain orders reach the generated squadrons),
+// USN01 and USN02 identical (docs/GENERATED_SHIP_AI.md section 7). Held OFF
+// pending the order-ring read: the host ring appends where 0077D600 replaces.
+constexpr bool kGeneratedSquadronBrainBound = false;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
