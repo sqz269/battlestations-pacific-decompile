@@ -908,3 +908,72 @@ reference h arguments.
   head while a newer one does. That leaves 0 where the host counted one, or the whole list
   where the host counted a subset.
 - **Both flipped ON.** The ship-AI lease is released with this commit.
+
+## 25. Rank 9 scoped, and handoff (cc9-gunnery5, 2026-09-29, at about 62% context)
+
+**Packet `cc9_set_command_queue_delay`** is approved (the commands host plus the fixed-step
+pump). It is **not started**; this section is its design.
+
+**The image's timing, from the listings.**
+- Every local director message goes through `0077C2A0` into the loopback vector
+  `session+24Ch` (count `+250h`).
+  - That covers MT_COMMAND (0077D600 at 0077D7BD), MT_GAMEUNIT_SETCMD (0071C830 at 0071ED81) and
+    the 5Dh clear (0071C730, 0071D900).
+- The drain `0076C600` (body 0076C600-0076C737) runs from the session pump 00778450 at 00778542.
+  That pump is fan-out row 9 (00875E91), after the entity think (00875E64).
+- **The drain re-reads its end on every pass** (`0076C700..0076C70B`). A post made during a
+  delivery goes to the insertion pointer `+258h`, which is set to the slot after the current
+  message at 0076C639. So MT_COMMAND's delivery (00816E30 -> 0071ECF0) posts SETCMD, and SETCMD
+  is delivered **in the same drain, next**.
+- **Net:**
+  - a command issued at row 2 (the Lua drain) or inside the entity think (the planner, the idle
+    tail 00836DC9) reaches the slots at row 9, after every director step of that fixed step;
+  - a stage-2 clear raised in a director step advances the queue at row 9;
+  - `0071D810`'s stage store itself (`director+48h`) is immediate.
+
+**What the host does.** `issue()` / `issue_command_object()` build a `ChainState` and run all
+three hops synchronously. So does `DirectorStageBinding::director_raise_primary_stage_0071d810`
+-> `route_clear_command`. USN02 (on 72256c4d7): issued 1345, pushed 1356, script issues 114,
+clears 13.
+
+**Why it is not a small queue.** `ChainState` carries caller-owned pointers:
+- `row`, a local `GameCommandRow` that `issue()` returns to its caller;
+- `ring`, the caller's `UnitOrderRing`;
+- `ai_block`, `ai_setters`, `avoidance_request` and `avoidance_inputs`, from the ship-AI caller
+  (`cruise_step` at about line 2665, `director_step_00836920`).
+
+A deferred hop 2 needs these at row 9. The design:
+1. **Split `route_set_command_message`** into post and deliver. Post captures the values:
+   unit index, `pending_command`, `pending_target`, `pending_flag`, the heading and a copy of the
+   ring.
+2. **Re-provide the ship-AI pointers at delivery** through a provider the ship-AI host registers
+   once, keyed by unit (the brain block is stable per controller). Check `avoidance_inputs`'
+   lifetime first: it may be a per-step local.
+3. **The row:** `issue()` returns the row before the slot push has happened. Its `slot_pushed` /
+   `slot_index` must be filled at delivery, by an index into `host.rows` and not a pointer. Check
+   every caller of the returned row (script orders and ship AI) for fields read after the return.
+4. **Defer `route_clear_command`**'s three callers (the stage binding, `CompletionBinding`, and
+   section 19's release path) as posts of the 5Dh message. `queue_advanced` then stays false in
+   the raising step.
+5. **The drain:** `GameCommandsHost::begin_loopback_drain()` before the fixed-step host's
+   `script_orders_drain_loopback_0076c600()` (those orders were posted earlier), then
+   `finish_loopback_drain()`:
+   - it delivers this host's queue in post order;
+   - a post made while draining delivers at once, which is the `+258h` insertion;
+   - one switch, `kSetCommandLoopbackBound`, OFF.
+   Call site: `src/game_hosts_fixed_step.cpp` `pump_session_00778450`, beside the existing
+   `kAfterRow9OrderQueueBound` drain.
+6. **Predictions** to write after the OFF counters: every push and every clear lands one entity
+   think later. The director step that would have begun a command begins it one fixed step late
+   (0.05 s), so first shots and first moves shift by a step. Expect `pair_diff` exit 3 on USN02,
+   USN04, USN13 and USN01, with small timing moves; judge the mechanism by a per-command
+   post-to-delivery row count.
+
+**Where this worker stopped.** Everything is committed on `agent/cc9-gunnery5`: ranks 3 and 4, the
+0071D6D0 accept, and ranks 5-9 read (sections 19-24). No lease is held.
+- Tools in `local\`: `g5_queue.ps1` (the run queue; pass `-Exe` and `-Prefix`) and `g5_*.py`
+  (edit scripts).
+- **The remaining gunnery open items:**
+  - rank 9 (above);
+  - rank 5's convoy producer (routed to cc9-lua4);
+  - rank 5's squadron detection publish, which needs a squadron entity separate from its leader.
