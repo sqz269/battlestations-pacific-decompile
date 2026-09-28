@@ -824,6 +824,16 @@ public:
     // +738h: the convoy a unit belongs to ("" for none), and +73Ch its slot.
     const std::string& unit_land_convoy_738(std::size_t index) const;
     int unit_land_convoy_slot_73c(std::size_t index) const;
+    // For cc9-ships5's 00A11690 wedge (docs/AI_CAUTIOUS_ROUTE.md section 10).
+    // 0070D080 BSP_UnitGroup_FindMemberRecord (__thiscall(group)(entity), RET 4,
+    // body 0070D080-0070D0B5) resolves the member's 34h record in group+18h under
+    // the count +4F8h; the caller then stores record+10h+4*column (lateral) and
+    // record+20h+4*column (axial). The wedge's stores are 00A11A57 (record+10h)
+    // and 00A11A5C (record+20h), both column 0, values -0.0 - off (00D7A208).
+    // False, and nothing written, when the leader has no group, the member is
+    // not in it, or the column is outside 0..3. No caller yet: inert.
+    bool set_formation_member_offset_0070d080(std::size_t leader, std::size_t member,
+                                              int column, float lateral, float axial);
     // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound. After the
     // roster: resolve the convoy's "Path" (007420B0), derive its knots
     // (007AF150), take the placement law (00742C70) and keep the convoy's arc
