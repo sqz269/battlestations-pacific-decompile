@@ -442,3 +442,66 @@ Worker cc9-lua4, 2026-09-28. Asked for by gunnery5's rank 5 (`docs/GUNNERY_OPEN_
   `PositionN` keys, and the per-step pose writer `00742400`. The host creates LandConvoy entities
   (`src/scene_entity_factory.cpp`) but not their members. That is a packet of its own, measurable
   only on the seven scenes above.
+
+## The LandConvoy roster, bound (packet `cc9_land_convoy_members`, `kLandConvoyMembersBound`, committed OFF)
+
+Worker cc9-lua5, 2026-09-28. This is the first half of the packet: the roster `00743450` and the
+back pointer. The per-step formation `00742400` and the arc `00743060` follow in a second commit.
+Their host needs the Path's knot records (direction, start, duration), which the host's path
+retention does not build yet.
+
+**The read (V, `00743450` listing and pseudocode).**
+- **The scalars.** `Reverse` goes to `+3A9h`. `Speed`, `ColumnGap`, `HP`, `RowGap` and `Offset` go
+  to `+368h`, `+360h`, `+364h`, `+35Ch` and `+3ACh` (an `F` as float, an `I` as its integer).
+  `Columns` goes to `+358h` and `Rows` to `+354h`. The library group `landconvoy.props` supplies
+  the defaults: `Rows 1`, `Columns 1`, `RowGap 10`, `ColumnGap 10`, `Speed 1`, `HP 0`,
+  `Offset 0`, `Party Neutral`.
+- **The slot map.** It has `Rows * Columns` entries, all -1 to start. For `Type1`..`Type4`, then
+  `Position1`..`Position4` inside each:
+  - position 0 fills every slot with that block's `Type`;
+  - a positive position fills slot `position - 1`;
+  - later writes win.
+  - The template's `Type1` has `Position1 = 0` and every other position -1. So an unpositioned
+    `Type1` fills the whole convoy, and the later types overwrite their slots.
+- **One member per slot whose type is at least 1:**
+  - `BSP_VehicleClass_GetOrCreate` then `vtable[28h](0)`;
+  - `vtable[98h](convoy+3Ch, convoy+30h, convoy+74h)`: the convoy's parent and frame;
+  - the name `"<convoy>-<slot+1>"` (`007438F6` `ADD EDX,1`, then `00742A70`);
+  - `+58h` and `+54h` from the convoy;
+  - `+30h` a copy of the convoy's bag (`00922DE0`);
+  - `+738h` = convoy (`00743A34`) and `+73Ch` = slot;
+  - pushed into `+398h`, with `+3BCh` counting them.
+
+**The binding.**
+- The scene pass lifts the keys and the slot map onto the LandConvoy record, from the bag merged
+  with the library group (`retain_land_convoy_roster`).
+- After the load walk's InitAll, the mission frame runs `build_land_convoy_roster_00743450` for
+  every generated LandConvoy record. It creates the members through `create_units` and sets each
+  row's `land_convoy_738` and `land_convoy_slot_73c`.
+- The accessors `unit_land_convoy_738` and `unit_land_convoy_slot_73c` are for the gunnery
+  host's `00805680` fold.
+- **Labelled substitutions:**
+  - the member is a `LandFort` scene record whose `Type` is the `LandVehicleClasses` value. That
+    is the route a scene vehicle takes to creator `0074DF10`;
+  - no bag copy;
+  - the convoy has no instance, so `+738h` holds its scene name;
+  - the members get no Lua attach of their own.
+
+**What JM05 authors** (`PRCPIJN/ijn_05_invasion_of_port_moresby.scn`, this installation, mtime
+2024-07-13). JM05 is `missiontree.lua`'s id for that scene. The scene has six LandConvoys; the
+generation gate keeps two.
+- `SecondaryLandConvoy 01`: `Rows 4`, `RowGap 25`, `Speed 10`, Path
+  `SecondaryLandConvoy01Path 01`. `Type1 Us_jeep` (template `Position1 = 0`), `Type2 Us_truck` at
+  position 1, `Type3 Us_ambulance` at 2 and `Type4 Us_apc` at 3.
+- `RadarStationLandConvoy 01`: the template's 1x1, `Speed 5`, `Type1 Us_jeep`. `Type2 Us_truck`
+  has no position.
+- Both are Party Neutral: one by the template's default, the other as authored.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| JM05 3200/3000 | **exit 3.** `summary LandConvoy roster convoys=2 members=5`. The members are `SecondaryLandConvoy 01-1` Us_truck, `-2` Us_ambulance, `-3` Us_apc and `-4` Us_jeep, and `RadarStationLandConvoy 01-1` Us_jeep. Each stands at its convoy's frame, and they do not move (no formation yet). The unit table grows by 5. Neutral party, so no side targets them: deaths, hits and damage unchanged. The gunnery fold is unwired, so `convoy_member_records` stays 0 |
+| USN01 3200/3000 | **exit 1.** No LandConvoy; only the new summary line (`convoys=0 members=0`) |
+| USN04 4700/4500 | **exit 1.** The same |

@@ -2082,6 +2082,18 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.lua.attach_scene_entities_00928a00(entities);
                 }
                 if (!markers.empty()) report_scene_markers(host.log, markers);
+                if constexpr (bsp::game::kLandConvoyMembersBound) {
+                    // Packet cc9_land_convoy_members: the convoy marker's attach
+                    // 00743450, in the load walk that reaches its slot 39.
+                    std::size_t convoys = 0, members = 0;
+                    for (const GameSceneEntityRecord& record : host.scene_contents->entities()) {
+                        if (record.class_id != 0x1a || !record.generated) continue;
+                        ++convoys;
+                        members += host.units->build_land_convoy_roster_00743450(record);
+                    }
+                    host.log.notef("summary LandConvoy roster convoys=%zu members=%zu "
+                        "(00743450, packet cc9_land_convoy_members)", convoys, members);
+                }
             }
             if constexpr (kAuthoredCommandsAfterLoadWalkBound) {
                 host.units->issue_authored_commands();                  // 0046ED1E

@@ -7655,6 +7655,79 @@ void GameUnitsHost::load_gameplay_settings_0083b5e0() {
         static_cast<double>(settings.speed_043c), static_cast<double>(settings.value_0438));
 }
 
+// Packet cc9_land_convoy_members. 00743450 after its scene reads (the record
+// carries them, src/game_hosts_scene_contents.cpp retain_land_convoy_roster):
+// for each slot in order (00743799..00743B5C) a type below 1 pushes a null into
+// +398h and makes nothing; otherwise one member. SUBSTITUTIONS (labelled): the
+// member is created as a LandFort scene record whose `Type` is the
+// LandVehicleClasses value, the route the load pass takes for a scene vehicle
+// (creator 0074DF10); its property-bag copy 00922DE0 is not modelled; the
+// convoy's live count +3BCh and member vector +398h are the returned count and
+// the rows' back pointers.
+std::size_t GameUnitsHost::build_land_convoy_roster_00743450(
+    const GameSceneEntityRecord& convoy) {
+    Impl& host = *impl_;
+    if (!convoy.land_convoy_keys) return 0;
+    std::vector<GameSceneEntityRecord> batch;
+    std::vector<int> slots;
+    for (std::size_t slot = 0; slot < convoy.convoy_slots.size(); ++slot) {
+        const int type = convoy.convoy_slots[slot];
+        if (type < 1) continue;                                   // 0074379C
+        GameSceneEntityRecord member;
+        member.name = convoy.name + "-" + std::to_string(slot + 1);  // 007438F6, 00742A70
+        member.class_name = "LandFort";
+        member.class_id = 0x1b;
+        member.type_table = "LandVehicleClasses";
+        member.type_symbol = convoy.convoy_slot_symbols[slot];
+        member.type_id = type;
+        member.party = convoy.party;                              // +54h
+        member.party_symbol = convoy.party_symbol;
+        member.race = convoy.race;                                // +58h
+        member.generated = true;
+        member.created = true;
+        std::memcpy(member.world, convoy.world, sizeof(member.world));   // vtable[98h]
+        std::memcpy(member.local, convoy.local, sizeof(member.local));
+        member.parent_scene_id = convoy.parent_scene_id;
+        member.parent_name = convoy.parent_name;
+        std::memcpy(member.parent_world, convoy.parent_world, sizeof(member.parent_world));
+        batch.push_back(member);
+        slots.push_back(static_cast<int>(slot));
+    }
+    const std::size_t before = host.slots.size();
+    create_units(batch);
+    const std::size_t made = host.slots.size() - before;
+    for (std::size_t i = 0; i < made && i < slots.size(); ++i) {
+        GameUnitRow& row = host.slots[before + i]->row;
+        row.land_convoy_738 = convoy.name;                        // 00743A34
+        row.land_convoy_slot_73c = slots[i];                      // +73Ch
+    }
+    host.log.notef("  LandConvoy roster 00743450: \"%s\" rows=%d columns=%d slots=%zu "
+        "members=%zu path=\"%s\" speed=%.2f offset=%.2f (packet cc9_land_convoy_members)",
+        convoy.name.c_str(), convoy.convoy_rows, convoy.convoy_columns,
+        convoy.convoy_slots.size(), made, convoy.convoy_path.c_str(),
+        static_cast<double>(convoy.convoy_speed), static_cast<double>(convoy.convoy_offset));
+    for (std::size_t i = 0; i < made; ++i) {
+        const GameUnitRow& row = host.slots[before + i]->row;
+        host.log.notef("    member %s type %s (%d) slot %d pos=(%.1f, %.1f, %.1f)",
+            row.name.c_str(), row.type_symbol.c_str(), row.type_id, row.land_convoy_slot_73c,
+            static_cast<double>(row.position[0]), static_cast<double>(row.position[1]),
+            static_cast<double>(row.position[2]));
+    }
+    host.done("LandConvoy::attach_and_build_roster", 0x00743450u);
+    return made;
+}
+
+const std::string& GameUnitsHost::unit_land_convoy_738(std::size_t index) const {
+    static const std::string none;
+    if (index >= impl_->slots.size()) return none;
+    return impl_->slots[index]->row.land_convoy_738;
+}
+
+int GameUnitsHost::unit_land_convoy_slot_73c(std::size_t index) const {
+    if (index >= impl_->slots.size()) return -1;
+    return impl_->slots[index]->row.land_convoy_slot_73c;
+}
+
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;
     for (const GameSceneEntityRecord& entity : entities) {

@@ -93,6 +93,17 @@ inline constexpr bool kWingConstructionInPassABound = true;
 // demand. False: a dead ship stays in its group, as before.
 inline constexpr bool kDeadMemberLeavesGroupBound = true;
 
+// Packet cc9_land_convoy_members (docs/LAND_AND_STRUCTURES.md, "The LandConvoy
+// roster, bound"). 00743450, the LandConvoy's attach (vtable +9Ch), creates one
+// member per slot of its Rows x Columns map whose type is at least 1: the
+// type's class instance (BSP_VehicleClass_GetOrCreate, vtable[28h](0)), posed
+// at the convoy's own frame (vtable[98h](convoy+3Ch, convoy+30h, convoy+74h)),
+// named "<convoy>-<slot+1>" (00742A70 on slot+1, 007438F6), with the convoy's
+// party +54h and race +58h, and the back pointer +738h = convoy, +73Ch = slot.
+// True: the load walk runs it for every generated LandConvoy (build_land_
+// convoy_roster_00743450). False: the convoy's attach stays a record.
+inline constexpr bool kLandConvoyMembersBound = false;
+
 class GameHostLog;
 class GameMissionLuaHost;
 class GameObserverRuntime;
@@ -113,6 +124,11 @@ struct GameUnitRow {
     int type_id{-1};          // the symbol resolved through the enum library
     int party{-1};
     std::string command;      // the authored `Command` token
+    // Packet cc9_land_convoy_members: +738h (the convoy, by its scene name; the
+    // host builds no convoy instance) and +73Ch (the slot). Empty / -1 outside
+    // a convoy, as the constructor's memset leaves them.
+    std::string land_convoy_738;
+    int land_convoy_slot_73c{-1};
     std::string command_target;  // the authored `CommandTarget`, "" when unset
     // Milestone 2l: what the recovered command path did with that token. The
     // latched triple is the weapon director's +243h / +244h / +248h after
@@ -791,6 +807,13 @@ public:
     // this: its bag's `HomeBase` is the deck owner, which the host finds from
     // the deck slot that launched the squadron.
     void set_squadron_scene_home_base(std::size_t squadron_index, const std::string& home_base);
+    // Packet cc9_land_convoy_members, under kLandConvoyMembersBound: 00743450 for
+    // one generated LandConvoy record (its roster keys lifted by the scene pass).
+    // Appends the members through create_units and answers how many it made.
+    std::size_t build_land_convoy_roster_00743450(const GameSceneEntityRecord& convoy);
+    // +738h: the convoy a unit belongs to ("" for none), and +73Ch its slot.
+    const std::string& unit_land_convoy_738(std::size_t index) const;
+    int unit_land_convoy_slot_73c(std::size_t index) const;
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
