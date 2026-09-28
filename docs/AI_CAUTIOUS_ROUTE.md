@@ -226,3 +226,28 @@ command tick, seconds after any delivery. Both route switches are OFF on `2d3719
   - **Verdict rule:** as in section 6.
 - Timings may differ by a step from sections 5-7. `kSetCommandQueueDelayBound` now delivers the 5Fh and
   5Dh messages at the drain.
+
+## 9. The re-pairs on the merged head, and the verdict
+
+Commit `2d37190cf` (main `8d9b938c7` merged). OFF is `local\s5m_off_<m>.log`. ON is `local\s5m_route` (the
+route switch alone) and `local\s5m_both` (both switches).
+
+| mission | route alone: exit, builds / clears / waits | both: exit, builds / clears / waits | `tick_orders` OFF -> both |
+| --- | --- | --- | --- |
+| USN12 3200/3000 | 3, 1 / 21 / 27 | 3, 2 / 1 / 46 | 49 -> 0 |
+| USN10 3200/3000 | 3, 1 / 0 / 47 | 3, 1 / 0 / 47 | 94 -> 46 |
+| USN01 3200/3000 | 1, 0 / 0 / 0 | 1, 0 / 0 / 0 | 74 -> 74 |
+| USN04 4700/4500 | 1, 0 / 0 / 0 | 1, 0 / 0 / 0 | 78 -> 78 |
+| USN02 9200/9000 | 1, 0 / 0 / 0 | 1, 0 / 0 / 0 | 1 -> 1 |
+
+**USN12 with both switches:**
+- It builds at 6.10 s, issues `clearorders` at 90.75 s (the queue empties on the drain), and rebuilds at
+  93.80 s with 2 waypoints.
+- Two user paths are queued and none is dropped.
+- Montpelier moves 2247.37 m (OFF 2428.02).
+
+**USN10:** the both-switches run is gameplay-identical to the route-alone run (exit 1). Against OFF, hit
+records go from 19 to 26 and damage from 9944.7 to 20582.0.
+
+**Verdict: both switches ON.** Every prediction of section 8 held. Sections 5-7 were the pre-merge
+record, and this section supersedes their verdict.
