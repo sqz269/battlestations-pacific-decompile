@@ -314,6 +314,7 @@ int binding_trampoline(lua_State* state) {
     const bool set_invincible_row = dispatch_row.address == 0x00897a50u;
     const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
     const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
+    const bool aa_enable_row = kLuaAAEnableBound && dispatch_row.address == 0x0089c740u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -341,7 +342,7 @@ int binding_trampoline(lua_State* state) {
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
-        || forced_recon_row || add_damage_row
+        || forced_recon_row || add_damage_row || aa_enable_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -437,6 +438,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (aa_enable_row) {
+        if (!host->error_replay()) host->run_aa_enable_0089c740(state, argc);
+        return 0;
     }
     if (add_damage_row) {
         if (!host->error_replay()) host->run_add_damage_0088e000(state, argc);
@@ -4258,6 +4263,41 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     }
 }
 
+// Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
+// 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
+// vtable[114h] director exists, 0071E050(flag) -> director+221h.
+// SUBSTITUTIONS (labelled): the flag is written into the unit's scene director
+// entry (by name) at the call, not routed through session message 5Ah; an entity
+// with no units-host slot is counted unresolved; every units-host slot is taken to
+// have a director.
+int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_count) {
+    ++summary_.aa_enable_calls;
+    const bool flag = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const GameUnitRow* row = (units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count())
+        ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    if (row == nullptr) {
+        ++summary_.aa_enable_unresolved;
+        log_.notef("  AAEnable 0089c740: entity id %d has no units-host slot (packet "
+            "cc9_lua_aa_enable)", id);
+        return 0;
+    }
+    // 007202FD: a director with no pass-B entry starts with all four enables set.
+    bsp::game::SceneDirectorEnables enables;
+    if (const bsp::game::SceneDirectorEnables* e = bsp::game::scene_director_enables_find(row->name)) {
+        enables = *e;
+    }
+    enables.anti_air = flag;                                   // 0071C246, +221h
+    bsp::game::scene_director_enables_set(row->name, enables);
+    if (!flag) ++summary_.aa_enable_disables;
+    log_.notef("  AAEnable 0089c740: \"%s\" aaEnabled=%d (packet cc9_lua_aa_enable)",
+        row->name.c_str(), flag ? 1 : 0);
+    log_.implemented("MissionLuaNative::AAEnable", "0089c740");
+    return 0;
+}
+
 // Packet cc9_lua_add_damage. 0088E000 AddDamage(entity, amount); returns no value.
 // SUBSTITUTION (labelled): an entity with no units-host slot is not reached.
 int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_count) {
@@ -5563,6 +5603,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
         summary_.listener_hit_unmodelled);
+    log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
+        "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
+        kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,
+        summary_.aa_enable_unresolved);
     log_.notef("summary mission script add damage bound=%d calls=%llu units=%llu unresolved=%llu "
         "(0088E000 -> 0095DA00, packet cc9_lua_add_damage)", kLuaAddDamageBound ? 1 : 0,
         summary_.add_damage_calls, summary_.add_damage_units, summary_.add_damage_unresolved);

@@ -1727,3 +1727,42 @@ Worker cc9-lua2, 2026-09-28.
 
 **Verdict: `kLuaHitListenersBound = true`.** It is inert on these idle runs. The first run in
 which the convoy leader or the player is hit exercises it.
+
+## AAEnable, 0089C740 (packet `cc9_lua_aa_enable`, `kLuaAAEnableBound`, committed OFF)
+
+Worker cc9-lua2, 2026-09-28. This is item 5 of the ranking. Ghidra was read only.
+
+**The image (V).**
+- `AAEnable(entity, flag)` resolves argument 0 (`00888AA0`), takes the director through
+  `vtable[114h]` and reads argument 1 with `00B66250` (lua_toboolean).
+- When the director exists, it calls `0071E050 BSP_WeaponDirector_SendSubKind4Message(flag)`.
+  That sends session message `5Ah` with sub-kind 4, whose receiver stores the flag at
+  **director+221h** (`0071C246`): `aaEnabled`, next to the artillery flag at `+220h`.
+- **The readers:**
+  - the gunnery stance `008624C0` (`anti_air`, the flak category, `include/bsp/unit_gunnery_pass.hpp`);
+  - the ship AI's approach (`009F2E0F`, `aa_12b8`);
+  - `009F1BC0`.
+
+**The host.**
+- The four director enables are the name-keyed scene table
+  (`bsp::game::scene_director_enables_set/find`). The gunnery host reads it each pass
+  (`apply_director_stance_008624c0`, `kShipDirectorEnablesBound`, ships only), and the ship AI
+  reads it through `enables()`.
+- **The binding** copies the unit's entry, or the constructor's all-true default (`007202FD`),
+  sets `anti_air` and writes it back.
+- **The census** is `summary mission script aa enable bound=.. calls=.. disables=..
+  unresolved=..`, plus one line per call.
+
+**SUBSTITUTIONS, labelled:**
+- The flag is written at the call, not delivered by session message `5Ah`.
+- Every units-host slot is taken to have a director.
+- An entity with no slot is counted `unresolved`.
+- The gunnery stance applies it to ships only, as `kShipDirectorEnablesBound` does.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| row | prediction |
+| --- | --- |
+| BSM01 3200/3000 | `calls=33`, most of them disables. They come from the stage init's loops (`bsm_01` 404..468 over the battleship-row groups and others) and the PT-boat lines (1579, 1841); the `true` lines (1632..1670) belong to a later phase. **Identity, exit 1**: the last BSM01 log (`rb6_bsm01`) has no hit, no shot and no death in 3000 frames, so no AA target is in reach. **Named risk:** the ship AI's approach reads `+221h` (`aa_12b8`) only with a raw target, and there is none |
+| USN01 3200/3000 | no call, identity |
+| USN04 4700/4500 | no call, identity |
