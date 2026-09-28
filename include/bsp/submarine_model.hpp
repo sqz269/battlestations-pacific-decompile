@@ -428,4 +428,66 @@ struct SubmarineDiveResult {
 };
 SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) noexcept;
 
+// ---------------------------------------------------------------------------
+// The seabed scan, 00855420 (packet cc9_submarine_seabed, docs/SUBMARINE_MODEL.md 14)
+// ---------------------------------------------------------------------------
+//
+// One footprint point per motion tick, the state at unit+1238h selecting it through
+// the 13-entry jump table at 00855938. `forward_term` is [base+0Ch]:
+// -rudder(unit+984h) * |speed| / MaxSpeed. Lengths are the class's Width (+A4h) and
+// Length (+A0h); the constants are 0.6 (00CEFF98, a double of the float 0.6), 1.5
+// (00CE3D78), 9.0 (00CF0AB8) and 10.0 (00CE3DC0). A state above 0Ch answers the zero
+// offset and resets the state to 0 (008556BB).
+struct SubmarineScanPoint {
+    float x{0.0f};
+    float z{0.0f};
+    bool reset_state{false};
+};
+SubmarineScanPoint submarine_scan_point_00855420(int state, float width, float length,
+                                                 float speed, float max_speed,
+                                                 float rudder) noexcept;
+
+// 008556CD..0085576B: the time to the sample, (max(|p| - 0.6*Length, 0.1)) /
+// max(|speed|, 1.0).
+float submarine_scan_time_00855420(const SubmarineScanPoint& p, float length,
+                                   float speed) noexcept;
+
+// The published outputs and the running accumulators (unit+123Ch..+1250h).
+struct SubmarineSeabedScan {
+    int state{0};             // +1238h
+    float clearance{-80.0f};  // +123Ch, seeded with bands[3] at 00853AD5
+    float front_rate{0.0f};   // +1240h
+    float rear_rate{0.0f};    // +1244h, zeroed at 00853AE5
+    float clearance_acc{-80.0f}; // +1248h, seeded with bands[3] at 00853ADD
+    float front_acc{0.0f};    // +124Ch
+    float rear_acc{0.0f};     // +1250h
+};
+
+// 00855434..0085547A: when the state is 0 at the start of a tick, publish the
+// accumulators and reseed them (the clearance from bands[3]).
+void submarine_scan_publish_00855440(SubmarineSeabedScan& scan, float deepest_band) noexcept;
+
+// 008557EA..008558E4 for one provider sample. A zero sample is skipped (FUCOMIP
+// then LAHF / TEST AH,44h / JNP). The candidate is sample + (Height + 3.0) as a
+// float; it raises the clearance accumulator. For states below 10 a candidate
+// above the hull adds (candidate - hullY) / time to the front bucket (states 0,
+// 1, 4, 5, 6) or the rear one (2, 3, 7, 8, 9), each keeping its maximum.
+void submarine_scan_sample_00855420(SubmarineSeabedScan& scan, float sample,
+                                    float class_height, float hull_y, float time) noexcept;
+
+// 008558F1..0085590C: advance, wrapping after 0Ch.
+void submarine_scan_advance_00855420(SubmarineSeabedScan& scan) noexcept;
+
+// 00936E00..00936E2B and 00937069..00937107: the order-ring slot bounds the force
+// callback writes at the write cursor, slot +0Ch (param_a_high) and +10h
+// (param_a_low). Every step: 2.0 and -1.0. With the seabed clamp (gain above 1.0):
+// high = 00419010(0.5, 1.0, 3.0, 0.0, front_rate) and
+// low = -00419010(0.5, 1.0, 3.0, 0.0, rear_rate).
+struct SubmarineThrottleBounds {
+    float high{2.0f};
+    float low{-1.0f};
+};
+SubmarineThrottleBounds submarine_throttle_bounds_00936dc0(bool clamped, float front_rate,
+                                                           float rear_rate) noexcept;
+
 }  // namespace bsp

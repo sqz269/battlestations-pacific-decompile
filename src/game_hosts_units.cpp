@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
+#include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_death_modes.hpp"
@@ -365,6 +366,14 @@ struct GameUnitSlot {
     float sub_crush_1284{0.0f};
     unsigned long long sub_crush_pulses{0};
     bool sub_drowned{false};
+    // Packet cc9_submarine_seabed: unit+1238h..+1250h, and the class sizes.
+    bsp::SubmarineSeabedScan sub_scan{};
+    float sub_class_width{0.0f};
+    float sub_class_length{0.0f};
+    float sub_class_height{0.0f};
+    float sub_class_max_speed{1.0f};
+    unsigned long long sub_scan_samples{0};
+    unsigned long long sub_clamp_steps{0};
     // The controller's body angular velocity, ctl+48h pitch, +4Ch yaw, +50h
     // roll. 007DA710 writes these three and 007D9C80 rotates them into world
     // for 0085E4D0 to turn the pose with; plane_angular_velocity.hpp records
@@ -5948,8 +5957,16 @@ public:
         band.dead = dead;
         band.need_air = kSubmarineAirBound && slot_.sub_air.need_air;  // +1281h
         in.effective = bsp::submarine_effective_depth_band_00936dc0(band);
+        // 00936EA3..00936F06: the clamp needs the bot's owner helm slot (role 1,
+        // [[unit+740h]+50h]+1B0h) to be 8 or AI-held (00927F10). SUBSTITUTION,
+        // labelled: the bot's owner is the boat itself, and a slot 0..7 reads as
+        // player-held.
+        const bool clamp_allowed = kSubmarineSeabedBound
+            && slot_.current_roles_01ac[1] == 8;
         const bsp::SubmarineDepthTarget target = bsp::submarine_depth_target_00936dc0(
-            slot_.sub_bands[static_cast<int>(in.effective)], 0.0f, false);
+            slot_.sub_bands[static_cast<int>(in.effective)], slot_.sub_scan.clearance,
+            clamp_allowed);
+        if (target.clamped_by_seabed) ++slot_.sub_clamp_steps;
         in.target_y = target.target_y;
         in.gain = target.gain;
         in.hull_y = slot_.motion.position[1];
@@ -5982,8 +5999,57 @@ public:
         owner_.done("SubmarineController::step_depth_physics", 0x00936dc0u);
         ++slot_.sub_dive_steps;
         trace_submarine_depth(&r);
+        if (kSubmarineSeabedBound) {
+            // 00936E00..00936E2B and 00937069..00937107: the bounds at the ring's
+            // write cursor, slot +0Ch / +10h.
+            const bsp::SubmarineThrottleBounds bounds = bsp::submarine_throttle_bounds_00936dc0(
+                target.gain > 1.0f, slot_.sub_scan.front_rate, slot_.sub_scan.rear_rate);
+            const int cursor = slot_.ring.write_cursor;
+            if (cursor >= 0 && cursor < static_cast<int>(bsp::kUnitOrderRingSlotCount)) {
+                slot_.ring.slot[cursor].param_a_high = bounds.high;
+                slot_.ring.slot[cursor].param_a_low = bounds.low;
+            }
+            run_submarine_seabed_scan(dt);
+        }
         if (kSubmarineAirBound) run_submarine_air_and_crush(dt, dead);
         return bsp::OceanVec3{};
+    }
+
+    // Packet cc9_submarine_seabed. 00855420's body before its tail: publish at state
+    // 0, one footprint point, every Landscape provider's height at it, advance.
+    // SUBSTITUTIONS (labelled): it runs after the force callback, not after
+    // 00825F20's motion update; the body-axis speed 0092D730 is dot(linear, row2)
+    // of the velocity the dive law wrote; the point is transformed by the pose rows
+    // (004142E0 against unit+CCh).
+    void run_submarine_seabed_scan(float dt) {
+        (void)dt;
+        bsp::SubmarineSeabedScan& scan = slot_.sub_scan;
+        bsp::submarine_scan_publish_00855440(scan, slot_.sub_bands[3]);
+        const float speed = static_cast<float>(
+            static_cast<double>(slot_.motion.linear_velocity.y) * slot_.motion.pose_row2[1]
+            + static_cast<double>(slot_.motion.linear_velocity.x) * slot_.motion.pose_row2[0]
+            + static_cast<double>(slot_.motion.linear_velocity.z) * slot_.motion.pose_row2[2]);
+        const bsp::SubmarineScanPoint p = bsp::submarine_scan_point_00855420(scan.state,
+            slot_.sub_class_width, slot_.sub_class_length, speed,
+            slot_.sub_class_max_speed, slot_.ring.current_param_b);
+        if (p.reset_state) scan.state = 0;
+        const float time = bsp::submarine_scan_time_00855420(p, slot_.sub_class_length, speed);
+        const float hull_y = slot_.motion.position[1];
+        float world[3];
+        for (int i = 0; i < 3; ++i) {
+            world[i] = slot_.motion.position[i] + p.x * slot_.motion.pose_row0[i]
+                + p.z * slot_.motion.pose_row2[i];
+        }
+        const bsp::game::SceneWorldClassLists& lists = bsp::game::scene_world_class_lists();
+        for (std::size_t index : lists.list(bsp::game::kSceneLandscapeClassId)) {
+            const bsp::game::SceneWorldObject& object = lists.objects()[index];
+            if (!object.terrain) continue;
+            const float sample = object.terrain->height_00ada900(world[0], world[2]);
+            bsp::submarine_scan_sample_00855420(scan, sample, slot_.sub_class_height, hull_y, time);
+            ++slot_.sub_scan_samples;
+        }
+        bsp::submarine_scan_advance_00855420(scan);
+        owner_.done("SubmarineUnit::seabed_scan", 0x00855420u);
     }
 
     // Packet cc9_submarine_air. 00855420's tail: 00855250 (0085591C) then 008551C0
@@ -6038,7 +6104,7 @@ public:
         ++slot_.sub_trace_counter;
         if ((slot_.sub_trace_counter % 200u) != 1u) return;
         owner_.log.notef("submarine depth trace: unit=%s step=%llu level=%d y=%.2f vy=%.3f "
-            "sink=%.3f pitch=%.4f rate=%.3f dir=%d air=%.3f need=%d bound=%d (packet cc9_submarine_dive)",
+            "sink=%.3f pitch=%.4f rate=%.3f dir=%d air=%.3f need=%d clear=%.2f front=%.3f rear=%.3f clamps=%llu bound=%d (packet cc9_submarine_dive)",
             slot_.row.name.c_str(), slot_.sub_trace_counter,
             static_cast<int>(slot_.row.submarine_depth_level),
             static_cast<double>(slot_.motion.position[1]),
@@ -6046,7 +6112,10 @@ public:
             static_cast<double>(slot_.sub_sink_1270), static_cast<double>(slot_.sub_pitch_398),
             r != nullptr ? static_cast<double>(r->commanded_rate) : 0.0,
             r != nullptr ? r->direction : 0, static_cast<double>(slot_.sub_air.air),
-            slot_.sub_air.need_air ? 1 : 0, kSubmarineDiveBound ? 1 : 0);
+            slot_.sub_air.need_air ? 1 : 0, static_cast<double>(slot_.sub_scan.clearance),
+            static_cast<double>(slot_.sub_scan.front_rate),
+            static_cast<double>(slot_.sub_scan.rear_rate), slot_.sub_clamp_steps,
+            kSubmarineDiveBound ? 1 : 0);
     }
 
     // 00937622, 00937440's last call. 009329C0 is slot 0 of the controller vtable
@@ -7934,6 +8003,13 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 slot->sub_accel = lua_row.sub_up_down_accel;
                 slot->sub_air_rates.run_out_time = lua_row.sub_air_run_out_time;
                 slot->sub_air_rates.reload_time = lua_row.sub_air_reload_time;
+                // 00853AD5..00853AE5: +123Ch and +1248h from bands[3], +1244h zero.
+                slot->sub_scan.clearance = bands[3];
+                slot->sub_scan.clearance_acc = bands[3];
+                slot->sub_class_width = lua_row.width;
+                slot->sub_class_length = lua_row.length;
+                slot->sub_class_height = lua_row.height;
+                slot->sub_class_max_speed = lua_row.max_speed;
                 slot->sub_seed_126c = true;
                 slot->sub_sink_1270 = 0.0f;
                 slot->sub_dive_ready = true;

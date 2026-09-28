@@ -4099,6 +4099,14 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             listener_read_int_set_fn(state, 3, "leakCaused", leak);
             entry.hit_filters_unmodelled = device || !player_index.empty() || !fire.empty()
                 || !leak.empty();
+            if (kLuaHitFilterFieldsBound) {
+                // Packet cc9_hit_listener_filters: only attackerPlayerIndex is left
+                // unmodelled; the other three are matched at dispatch.
+                entry.hit_filters_unmodelled = !player_index.empty();
+                entry.hit_device_filter = device;
+                for (int v : fire) entry.fire_range.push_back(static_cast<float>(v));
+                for (int v : leak) entry.leak_range.push_back(static_cast<float>(v));
+            }
         }
         if (listener_key_equal(entry.channel, "recon")) {
             // 00972450: callback, entity (+0Ch, 009721C0), oldLevel, newLevel and
@@ -4708,6 +4716,19 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             }
             if (entry.damage_range.size() >= 2
                 && (hit.damage < entry.damage_range[0] || hit.damage > entry.damage_range[1])) {
+                continue;
+            }
+            // Packet cc9_hit_listener_filters. The host's hits carry no device entity,
+            // so a non-empty targetDevice set never holds the parameter; they start no
+            // fire and no leak, so fireCaused and leakCaused are 0.0 against the range
+            // (the same two-value bracket damageCaused takes).
+            if (entry.hit_device_filter) continue;
+            if (entry.fire_range.size() >= 2
+                && (0.0f < entry.fire_range[0] || 0.0f > entry.fire_range[1])) {
+                continue;
+            }
+            if (entry.leak_range.size() >= 2
+                && (0.0f < entry.leak_range[0] || 0.0f > entry.leak_range[1])) {
                 continue;
             }
             if (entry.hit_filters_unmodelled) {

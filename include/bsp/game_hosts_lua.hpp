@@ -236,6 +236,16 @@ inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held
 // run_set_air_base_slot_count_008963e0. False: unimplemented.
 inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, one recorded miss (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_hit_listener_filters (docs/LUA_BINDING_MISSION.md, "The unmodelled `hit`
+// filters, bound"). 00988510 hands the channel eight parameters: target, targetDevice
+// (the hit record's own entity when it is a live child other than the victim), attacker,
+// attackType, attackerPlayerIndex ([src+1Ch]), and the record's floats +48h
+// damageCaused, +4Ch fireCaused, +50h leakCaused. True: targetDevice, fireCaused and
+// leakCaused are matched against what this process's hits carry (no device entity, no
+// fire, no leak: 0.0); attackerPlayerIndex stays unmodelled. False: an entry naming any
+// of the four is counted unmodelled and never fires.
+inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
+
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
 // (00893C00). Routed together with the air model: under kSubmarineAirBound
@@ -1171,6 +1181,10 @@ private:
         std::vector<std::string> attack_types;
         std::vector<float> damage_range;
         bool hit_filters_unmodelled{false};
+        // Packet cc9_hit_listener_filters, under kLuaHitFilterFieldsBound.
+        bool hit_device_filter{false};      // targetDevice (+1Ch), non-empty
+        std::vector<float> fire_range;      // fireCaused (+68h)
+        std::vector<float> leak_range;      // leakCaused (+74h)
     };
     std::vector<ListenerEntry> listeners_;
     std::vector<bool> listener_death_seen_;
