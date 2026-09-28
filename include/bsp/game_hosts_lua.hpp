@@ -159,7 +159,7 @@ inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/L
 // not cycle. True: each pass fires both transitions for every non-forced record
 // with a level, and a unit's own party reads 2 each pass. False: only net changes
 // fire, and the own party steps 0 -> 1 -> 2.
-inline constexpr bool kReconListenerResetCycleBound = false;
+inline constexpr bool kReconListenerResetCycleBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_forced_recon_level (docs/LUA_BINDING_MISSION.md, "SetForcedReconLevel,
 // 008AA8F0"). True: SetForcedReconLevel(entity, level, party) forces the recon record
