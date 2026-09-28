@@ -2209,3 +2209,24 @@ player):
 | --- | --- |
 | USN13 3200/3000 | **exit 1.** The harness runs at difficulty 1 (`set_effective_difficulty game+6ACh=1`), so the airfields ask for 4. Every deck in `ss_off_usn13.log` is authored with `NumSlots=4`, so each call is a no-op (`resized=0`). The carrier loop at 1096 is a later stage and may not be reached |
 | USN04 4700/4500 | no call, exit 1 |
+
+### SetAirBaseSlotCount pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `b2b454eeb`.
+- ON is `pair_export --flip kLuaSetAirBaseSlotCountBound=true` (`local/sc_on`).
+- The logs are `local/sc_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| USN13 3200/3000 | `calls=3 resized=0`. Airfield2, Airfield5 and JapAF go 4 -> 4. Exit 1, death rows and unit table identical | held |
+| USN04 4700/4500 | **Two calls, not none.** USN04 runs `usn_19_coralus.lua` (mtime 2024-08-26), whose line 212 sets `Mission.Town` (`Yorktown-class01`) to 0 slots and 213 sets `Mission.Lex` to 4. `resized=1` (Yorktown 4 -> 0), air-ops `slot_ticks` 36000 -> 25858, two `IsReadyToSendPlanes` answers on Yorktown's deck gone. Exit 1: gameplay, 40 death rows and the unit table identical | **missed caller** |
+| USN04 9200/9000 (added for the miss) | the same two calls; `slot_ticks` 72000 -> 52858. Exit 1, 51 death rows and the unit table identical | held |
+
+**The failed prediction is a caller census miss, not the mechanism.** The ranking's first table
+already listed `usn_19_coralus 212`, and I did not map that script to USN04. The binding does
+what the script asks, and Yorktown's deck is never used for a launch on these rows.
+
+**Verdict: `kLuaSetAirBaseSlotCountBound = true`, recorded.** `luaZuikakuMovieEnd` (1949)
+restores Yorktown to 4 slots. Those slots are default records (class 0, requested 3), as in the
+image, so the first run that reaches that stage may launch differently from Yorktown.

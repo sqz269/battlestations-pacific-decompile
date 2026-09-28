@@ -234,7 +234,7 @@ inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held
 // (+4Ch, count +50h) to exactly n through 006C7E20: new slots are default records, a
 // shrink destroys from the tail. True: route the row to
 // run_set_air_base_slot_count_008963e0. False: unimplemented.
-inline constexpr bool kLuaSetAirBaseSlotCountBound = false;
+inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, one recorded miss (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
