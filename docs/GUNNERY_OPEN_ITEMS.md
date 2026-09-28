@@ -2670,3 +2670,95 @@ binding. Names are hypotheses.
   wait on the final COM release line. `g9_cmp.ps1 -A -B -Rows`: `pair_diff` headlines (`rb10`
   means reference j's logs in cc9-gunnery8).
 - `g9_mmod.py <model> <n>`: hex and floats around the first n `ConvexObject` chunks of a `.mmod`.
+
+## 49. The convex mesh's local box: read (section 47.3 step 1, cc9-gunnery10, docs only)
+
+Section 47's missing input is found. **The Dyn convex mesh is built inside the `ConvexObject` parse
+itself, and its local box is the AABB of the chunk's vertices after they are re-centred.** Ghidra
+hides it because its body for `006FAD70` stops at the `_free` at `006FADDE` (the CRT CALL_RETURN
+gap: `bsp.py ghidra flow 006fad70` reports `006FADE3..006FADE6`). The disk bytes continue to
+`006FAEE2 RET 4`. Names are hypotheses; Ghidra was not changed.
+
+### 49.1 The `ConvexObject` resource (2Ch bytes)
+
+| offset | producer | meaning |
+| --- | --- | --- |
+| `+00h` | `006F9CFD` | vtable `00CFB6A4`; slots `+08h`/`+14h` return the type tokens `[00E19A98]`/`[00E19AA4]` (`006F9AA0`, `006F9AB0`) |
+| `+04h` | `00B868B8` (`BSP_ResourceItem_ConstructReferenceBase`) | reference count, 1. **Not a node**: the owner node lives in the model's vector element (49.2) |
+| `+08h` | `006FAD8F` | `00BE9A10`'s result, read only when at least 0Ch bytes remain in the chunk (`006FAD83`) |
+| `+0Ch..+13h` | `00C32D50` zeroes it; `00C5DEB0` at `006FAECE` fills it | the Dyn hull handle `{data pointer, 0}` (`AvoidZoneDynHullHandle` in `bsp/avoid_zone_dyn_hull.hpp`) |
+| `+14h..+1Ch` | `006F9EE0` | centre = (min + max) * 0.5 of the raw vertices (the double 0.5 at `00D7A280`) |
+| `+20h..+28h` | `006F9EE0` | half extent = (max - min) * 0.5; min and max seed at `+FLT_MAX` `00D7A248` and `-FLT_MAX` `00D7A244` |
+
+### 49.2 The parse `006FAD70` (`__thiscall`, ECX the object, one stack argument the reader, `RET 4`)
+
+```
+006FAD9D  CALL 006FA7F0      ; count -> [ESP+28h]; 20h-byte records, float3 at +4h (00BE9A60 x3), then index lists
+006FADAD  CALL 006FA910      ; a second 20h-byte record array
+006FADBD  CALL 006FACE0      ; 14h-byte records (006F9B20)
+006FADFE  CALL 006FAA20
+006FAE22  new(count * 0Ch)   ; a packed float3 array, EBX
+006FAE40..006FAE5F           ; copy each vertex record's +4h..+0Fh into it (stride 20h -> 0Ch)
+006FAE89  CALL 006F9EE0      ; this, (points, count): the AABB into +14h..+28h
+006FAEA0..006FAEC7           ; points[i] -= this+14h/+18h/+1Ch   (re-centre on the box centre)
+006FAECE  CALL 00C5DEB0      ; ECX = this+0Ch, stack (count, points): build the Dyn hull
+006FAED4  free(points)
+006FAEE2  RET 4
+```
+
+The loop count at `006FAE30` and `006FAE81` is `[ESP+28h]`, the count `006FA7F0` wrote, so the
+hull's points are the first record array. `006FAF00` (the parse slot) allocates the object with
+`operator new(2Ch)`, runs `006F9CD0` and calls `006FAD70`.
+
+`00C5DEB0` is already reconstructed (`avoid_zone_dyn_hull_replace_00c5deb0`, docs/AVOID_ZONE_DYN_HULL.md;
+719 differential cases). Its `68h` data record holds the hull's **minimum XYZ at `+18h` and
+maximum at `+24h`**, which are exactly the `mesh+18h..+2Ch` that `00C57C40` reads through
+`*(record+0Ch)`.
+
+### 49.3 The model's `+4Ch` vector and the owner
+
+The hull walk (`00938F61..0093918C`) reads the model as `[[edi+1Ch]+360h]+160h` (`00938F76..00938FA9`).
+`model+4Ch` is a checked vector with first/last at `+50h`/`+54h` (`00938FB3`, `00938FB6`). **Each
+element is 8 bytes** (`ADD EBX,8` at `00939177`): `+0` a `ConvexObject*` (`MOV EBP,[EBX]` at
+`0093908D`) and `+4` the owner node (compared at `00939023..0093906C`). The walk pushes
+`object + 0Ch`, the handle's address, into `controller+34h` (`00939097`; stored at `009390C9`, or
+through the insert `009313C0` at `009390F3`). So SHIP_HULL_SHAPES' "record" is the `ConvexObject`, and its "record+14h
+translation" is the box centre.
+
+**Consequence: the shape's box in body space is just the raw vertex box.** The shape sits at the
+centre `c` with identity rotation and its local box is `c`-relative, so `00C57C40` yields
+`[min - 0.02, max + 0.02]` of the chunk's own vertices, up to the hull generator's 0.001 dedup.
+Every extreme vertex is on the hull, so dedup and the 4096-vertex limit are the only ways the box
+could differ; a degenerate chunk takes the generator's synthetic eight-point box
+(AVOID_ZONE_DYN_HULL, "Producer evidence").
+
+**Not read:**
+- **Who appends to `model+4Ch`.** The type tokens are read only by the resource's own slots and
+  `00CCEC17`/`00CCEC4A` (a registration), so the loader reaches the objects through a virtual call.
+  It belongs to the model loader (MODEL_REACHES_UNIT: the model is `class+50h`'s `vtable[8h]()`,
+  stored at part instance `+160h` by `00713604`).
+- **Which node `model+0Ch` is.** SHIP_HULL_SHAPES found `firstnode`, `front` and `back` absent from
+  `deruyter.mmod`, so the hull is the records owned by the `model+0Ch` node.
+- **A contradiction to settle.** MODEL_REACHES_UNIT reports no non-null writer of `class+50h`, so
+  `unit+360h` would stay 0. But the walk has no null exit: with `[unit+360h]` zero it takes
+  `00938F93 XOR ECX,ECX` and then `00938F9D MOV ECX,[ECX+0Ch]`, a read of address `0Ch`. A ship
+  that reaches the hull build natively therefore has a non-null `unit+360h`, and the "no writer"
+  negative is probably a vacuous scan (a block copy or a virtual store). The same unguarded pattern
+  (`[unit+360h]` null gives a null model, then `MOV EBP,[EAX+50h]`) already runs at `0093856C..00938580`.
+  **Not excluded:** an earlier branch of `00937C90` that skips all of this when `unit+360h` is null;
+  the function's control flow above `0093855D` was not read.
+
+### 49.4 Plan for step 2, `cc9_hull_aabb_host` (not bound)
+
+1. **The reader.** For a hull class's `.mmod` from this installation, find each `ConvexObject` chunk
+   (section 47.2's layout: name, u32 size, u32 0, u32 record count, then per record a float3 and
+   three equal-count index lists). Take the owner from the enclosing node chunk; that framing is
+   the one input still to be read from the file, since the owner is not inside the chunk.
+2. **The box.** Keep the records owned by the `model+0Ch` node. For each, compute `min`/`max` of its
+   float3s, the centre, and the re-centred points; run `avoid_zone_dyn_hull_replace_00c5deb0` and
+   take `data->minimum/maximum` as `mesh_local`. Feed `dyn_convex_mesh_shape_bounds_00c57c40` with
+   identity rotation and the centre, then the union (`00C55FC0`).
+3. **A cheap first check.** Compare the hull's box with the raw vertex box for every chunk of
+   `deruyter.mmod`; any difference beyond 0.001 means the dedup or a degenerate case acted.
+4. The binding stays step 3 (units lane, `kHullInertiaFromShapesBound`, OFF), with section 47.3's
+   predictions.
