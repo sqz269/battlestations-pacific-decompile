@@ -249,6 +249,12 @@ struct GameExecutableOptions {
     // player-controlled unit at 009f3df3, so a command issued to the controlled
     // ship can never put its AI controller into any other state.
     std::string order_unit;
+    // Packet cc9_scripted_helm_orders (docs/SCRIPTED_HELM.md section 8):
+    // --helm-orders <file>, lines `<mission frame> moveto <unit> <x> <z>` or
+    // `<mission frame> moveto <unit> <navpoint>`. A HARNESS PATH: each order
+    // goes to the named unit through the player's moveto command form (005F9B20
+    // -> 0077D600), with no HUD, selection or camera. Empty means no change.
+    std::string helm_orders_path;
     // Milestone 2o: --ai-drive <name>=<throttle>,<rudder>. A LABELLED
     // DIAGNOSTIC STAND-IN, engaged on --order-frame like the player order.
     // Eight of the nine ship AI state steps have no reconstructed body, so on

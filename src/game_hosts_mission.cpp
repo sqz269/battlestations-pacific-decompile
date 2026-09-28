@@ -362,6 +362,7 @@ struct GameMissionHost::Impl {
     std::string order_command;
     std::string order_command_target;
     std::string order_unit;   // milestone 2n, --order-unit <name>
+    std::string helm_orders_path;   // packet cc9_scripted_helm_orders
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>.
     std::string ai_drive_unit;
     float ai_drive_throttle{0.0f};
@@ -1419,6 +1420,10 @@ void GameMissionHost::set_order_unit(std::string unit) {
     impl_->order_unit = std::move(unit);
 }
 
+void GameMissionHost::set_helm_orders(std::string path) {
+    impl_->helm_orders_path = std::move(path);
+}
+
 void GameMissionHost::set_ai_drive(std::string unit, float throttle, float rudder) {
     impl_->ai_drive_unit = std::move(unit);
     impl_->ai_drive_throttle = throttle;
@@ -1727,6 +1732,8 @@ void GameMissionHost::Impl::finish_scene_load() {
     frame_host->set_player_order(order_frame, order_throttle, order_rudder);
     // Milestone 2l: --order <command>[:<entity>] takes the same frame.
     frame_host->set_player_command(order_command, order_command_target, order_unit);
+    // Packet cc9_scripted_helm_orders: the timed order file, if one was given.
+    if (!helm_orders_path.empty()) frame_host->set_helm_orders(helm_orders_path);
     // Milestone 2o: --ai-drive engages on that frame too, so the order that
     // puts a unit into a state and the stand-in for that state's step start
     // together.

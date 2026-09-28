@@ -66,6 +66,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace bsp::game {
 // Packet cc9_authored_command_order: see the call sites below.
@@ -323,6 +324,25 @@ struct GameMissionFrameHost::Impl {
     std::string order_command;
     std::string order_command_target;
     std::string order_command_unit;   // milestone 2n, --order-unit <name>
+    // Packet cc9_scripted_helm_orders: --helm-orders <file>.
+    struct HelmOrder {
+        int line{0};
+        long frame{0};
+        std::string unit;
+        std::string point_name;   // empty for an x/z point
+        float x{0.0f};
+        float z{0.0f};
+        bool applied{false};
+    };
+    std::vector<HelmOrder> helm_orders;
+    std::string helm_orders_path;
+    struct HelmMarker {
+        std::string name;
+        float position[3]{};
+    };
+    std::vector<HelmMarker> helm_markers;   // the scene's markers, by name
+    unsigned long long helm_orders_applied{0};
+    unsigned long long helm_orders_refused{0};
     float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
     // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed step.
     std::string trajectory_csv_path;
@@ -2060,6 +2080,14 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             for (const GameSceneMarkerSeed& marker : markers) {
                 host.script_orders->register_scene_marker(marker.id, marker.name,
                     marker.position);
+                if (!host.helm_orders.empty()) {
+                    Impl::HelmMarker named;
+                    named.name = marker.name;
+                    named.position[0] = marker.position[0];
+                    named.position[1] = marker.position[1];
+                    named.position[2] = marker.position[2];
+                    host.helm_markers.push_back(named);
+                }
             }
             host.lua.attach_script_orders(host.script_orders.get());
             // Milestone 2n: the ship AI controller family at 00d21598 over the
@@ -2366,6 +2394,65 @@ void GameMissionFrameHost::set_player_command(std::string token, std::string tar
     impl_->order_command_unit = std::move(unit);
 }
 
+void GameMissionFrameHost::set_helm_orders(const std::string& path) {
+    // Packet cc9_scripted_helm_orders. One order per line:
+    //   <mission frame> moveto <unit> <x> <z>
+    //   <mission frame> moveto <unit> <navpoint name>
+    // Blank lines and lines starting with '#' are skipped. A malformed line is
+    // refused here, with its number, and the rest are kept.
+    Impl& host = *impl_;
+    host.helm_orders_path = path;
+    std::FILE* file = nullptr;
+    if (fopen_s(&file, path.c_str(), "r") != 0 || file == nullptr) {
+        host.log.notef("helm orders refused: cannot open \"%s\"", path.c_str());
+        return;
+    }
+    char text[512];
+    int line = 0;
+    while (std::fgets(text, sizeof(text), file) != nullptr) {
+        ++line;
+        std::istringstream in(text);
+        std::vector<std::string> words;
+        std::string word;
+        while (in >> word) words.push_back(word);
+        if (words.empty() || words[0][0] == '#') continue;
+        Impl::HelmOrder order;
+        order.line = line;
+        char* end = nullptr;
+        order.frame = std::strtol(words[0].c_str(), &end, 10);
+        const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
+        if (!frame_ok || words.size() < 4 || words[1] != "moveto") {
+            host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
+                "<unit> <x> <z>` or `<frame> moveto <unit> <navpoint>`", line, path.c_str());
+            continue;
+        }
+        order.unit = words[2];
+        if (words.size() == 5) {
+            char* xe = nullptr;
+            char* ze = nullptr;
+            order.x = std::strtof(words[3].c_str(), &xe);
+            order.z = std::strtof(words[4].c_str(), &ze);
+            if (xe == nullptr || *xe != '\0' || ze == nullptr || *ze != '\0') {
+                host.log.notef("helm order refused: line %d of \"%s\": %s %s is not an x z "
+                    "pair", line, path.c_str(), words[3].c_str(), words[4].c_str());
+                continue;
+            }
+        } else if (words.size() == 4) {
+            order.point_name = words[3];
+        } else {
+            host.log.notef("helm order refused: line %d of \"%s\" has %zu words", line,
+                path.c_str(), words.size());
+            continue;
+        }
+        host.helm_orders.push_back(order);
+    }
+    std::fclose(file);
+    if (!host.helm_orders.empty()) {
+        host.log.notef("helm orders: %zu read from \"%s\"", host.helm_orders.size(),
+            path.c_str());
+    }
+}
+
 void GameMissionFrameHost::set_ai_drive(std::string unit, float throttle, float rudder) {
     impl_->ai_drive_unit = std::move(unit);
     impl_->ai_drive_throttle = throttle;
@@ -2458,6 +2545,48 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             return false;
         }
         return true;
+    }
+
+    // Packet cc9_scripted_helm_orders: every --helm-orders line whose mission
+    // frame has come. HARNESS PATH (docs/SCRIPTED_HELM.md section 8): the order
+    // is the player's moveto command form, 005F9B20's MoveTo object 00E08F68
+    // with a point descriptor and flags 1 into 0077D600, but it is addressed to
+    // the named unit directly instead of [00E188D8], and no HUD, selection or
+    // camera step runs.
+    if (!host.helm_orders.empty() && host.units != nullptr) {
+        const unsigned long long now = host.frames.frames + 1;
+        for (Impl::HelmOrder& order : host.helm_orders) {
+            if (order.applied || static_cast<unsigned long long>(order.frame) > now) continue;
+            order.applied = true;
+            float x = order.x;
+            float z = order.z;
+            if (!order.point_name.empty()) {
+                const Impl::HelmMarker* found = nullptr;
+                for (const Impl::HelmMarker& marker : host.helm_markers) {
+                    if (marker.name == order.point_name) { found = &marker; break; }
+                }
+                if (found == nullptr) {
+                    ++host.helm_orders_refused;
+                    host.log.notef("helm order refused: line %d frame %ld moveto %s %s: no "
+                        "scene marker has that name", order.line, order.frame,
+                        order.unit.c_str(), order.point_name.c_str());
+                    continue;
+                }
+                x = found->position[0];
+                z = found->position[2];
+            }
+            char point[64];
+            std::snprintf(point, sizeof(point), "%.3f,%.3f", static_cast<double>(x),
+                static_cast<double>(z));
+            const bool issued = host.units->issue_player_command("moveto", point, order.unit);
+            if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+            host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
+                "moveto %s %s(%.1f, %.1f) through the player's moveto form (00E08F68, point "
+                "descriptor, flags 1, 0077D600)", issued ? "applied" : "refused", order.line,
+                order.frame, now, order.unit.c_str(),
+                order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
+                static_cast<double>(x), static_cast<double>(z));
+        }
     }
 
     // --order-frame N with --order throttle=<f>,rudder=<f>: one player order to

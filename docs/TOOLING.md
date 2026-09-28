@@ -501,3 +501,25 @@ It is data in `NOISE` at the top of `tools/pair_diff.py`, and each entry cites i
 (section 1). A new counter that varies between identical runs of one binary gets a
 `native-calls` entry, which ignores both its count and its presence, plus a row in section 1's
 table.
+
+
+## 10. Timed player orders, `--helm-orders <file>` (packet `cc9_scripted_helm_orders`)
+
+- **Lines:** `<mission frame> moveto <unit> <x> <z>` or `<mission frame> moveto <unit>
+  <navpoint>`, with `#` for comments.
+- **Path:** each line is issued once, on its mission frame, as the player's moveto command form
+  (005F9B20's MoveTo object 00E08F68, point descriptor and flags 1 into 0077D600).
+- **Log lines:** `helm order applied: ...` for each applied order, and `helm order refused: ...`
+  for an unknown unit, an unknown marker or a malformed line. The run continues after a refusal.
+- **Without the option nothing changes,** and an empty file is identical too (USN04 pair_diff
+  exit 0).
+- **Harness limits** are listed in docs/SCRIPTED_HELM.md section 8.2: no HUD, selection or camera,
+  and the point is taken directly.
+- **Example:**
+
+```
+./tools/run_game.ps1 -Log local\x.log -- --frames 9200 --press-start-frame 30 --menu-select USN02 --mission-frames 9000 --mission-frame-seconds 0.05 --helm-orders J:\path\orders.txt
+```
+
+Pass an absolute path. The run spawns a second process, and the path is resolved against its
+working directory.

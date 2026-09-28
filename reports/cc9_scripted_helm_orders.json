@@ -1,0 +1,30 @@
+{
+  "packet": "cc9_scripted_helm_orders",
+  "doc": "docs/SCRIPTED_HELM.md section 8; docs/TOOLING.md section 10",
+  "switch": null,
+  "option": "--helm-orders <file>",
+  "addresses": {
+    "005F9B20": "HUD moveto (body 005F9B20-005F9BA2): MoveTo 00E08F68, point descriptor, flags 1, ECX=[00E188D8], CALL 0077D600",
+    "005FC329": "its caller, point from 00927880([00E188D8])",
+    "0077D600": "BSP_Entity_IssueCommand",
+    "008358D0": "BSP_WeaponDirector_SetCommand (00835930 inside)",
+    "008A2BC0": "NavigatorMoveToPos: the same object/descriptor/flags"
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "files": [
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/game_hosts_mission.hpp",
+    "src/game_hosts_mission.cpp",
+    "include/bsp/game_hosts_mission_frame.hpp",
+    "src/game_hosts_mission_frame.cpp"
+  ],
+  "results": {
+    "smoke": "local/ho_smoke300.log: 2 applied, 3 refusals (unit, marker, malformed), run completed",
+    "USN02": "3135 moveto Houston EscapePoint applied; movetopos toward 3.347 rad; replaced at step 3376 by the AI coordinator's attackmove (5 more later); Houston sunk 280.36 s (Hatsukaze torpedo); luaMissionFailed, primary 2 failed; not completed",
+    "USN04 identity": "no file vs empty file: pair_diff exit 0"
+  },
+  "blocker": "the AI party-0 coordinator re-tasks the player-selected Houston; whether the image exempts a player-held unit is not established"
+}
