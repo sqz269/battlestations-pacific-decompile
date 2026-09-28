@@ -93,3 +93,64 @@ These are plane-side observations from the same log, handed to the plane owners.
   under fire, halving the aim dwell should roughly double them.
 - **Deaths.** USN04's 44 deaths fall only if released Kates turn away faster than the AA kills
   them. All six released Kates in this log still die, by 214.06 s.
+
+## 5. Correction to section 3: the slow releases are dead Kates, and USN04 drops one torpedo
+
+Read after the first commit, from the same log. It supersedes section 3's first two bullets and
+section 4's plane-side prediction.
+
+- **Five of the six task "releases" come from dead aircraft.** For each releaser, the log line
+  order of its `plane death mode` row against its `release census` row shows:
+
+| Kate | died | death mode | release after death | speed at release |
+| --- | --- | --- | --- | --- |
+| #2.1\|.-3 | 127.15 s | powerlost | yes | 33.50 m/s |
+| #4.1\|.-2 | 130.40 s | explosion | yes (the delayed-explosion window) | 72.05 m/s |
+| #4.1\|.-3 | 141.35 s | powerlost | **no, released alive** | 73.05 m/s |
+| #6.1\|.-2 | 207.01 s | powerlost | yes | 35.04 m/s |
+| #6.1\|.-4 | 207.46 s | powerlost | yes | 36.36 m/s |
+| #8.1\|.-2 | 213.06 s | powerlost | yes | 28.88 m/s |
+
+- **The 29-36 m/s speeds are power-lost gliders.** #2.1\|.-3's velocity census reads 84 m/s at
+  aim tick 151 with throttle 1.00, then 41.6 m/s at tick 201 with throttle 0.00, after its death
+  at 127.15 s. docs/PLANE_DEATH_MODES.md: a power-lost aircraft glides at throttle 0 under pilot
+  steering. The aim state's throttle is not at fault.
+- **None of them spawns a torpedo.** `summary mission gunnery torpedo_drop drops=1`, and the one
+  `torpedo from` row is #4.1\|.-3's. The torpedo task's `releases=6` counts task-level releases,
+  including the dead aircraft whose rounds never spawn. docs/PLANE_DEATH_MODES.md step 6 says the
+  image refuses every release from a dead aircraft at `007CEA1C`.
+- **So USN04 at 4700/4500 puts one torpedo in the water, not six.** docs/SCENE_CONTENTS_HOSTS.md
+  27.2's "6 of them after releasing" read the task counter. The `torpedo_drop drops` line is the
+  count to use.
+- **The aim-state rules are the image's.** 009D15F0 writes no throttle: its `+2C8h` output is the
+  bank cap (docs/TORPEDO_AIM_TICK.md, correction from `cc8_plane_pose_throttle_altitude`). The
+  throttle is the planner's speed hold, with the target at `TravelSpeed * NewTravelSpeedMul`,
+  which runs a live Kate at full throttle (1.00 in the census). The release gate is the lead flag,
+  `envelope > range`, with the SPNormal 450/650 m pair and the aspect scale
+  (docs/KATE_RELEASE_CONDITION.md). SPNormal is the image's row for these Kates
+  (docs/IJN_SKILL_ROWS.md).
+- **The Kates die before range falls under the envelope.** 15 of 16 are killed at 330-930 m,
+  mostly outside 450 m, in the last seconds of an aim run of 7.5-13 s.
+
+**Plane side: nothing to bind.** Every term on the aim run that was read is the image's.
+
+## 6. The four gunnery comparisons, closed
+
+| comparison | finding | state |
+| --- | --- | --- |
+| AA gunner error weight and spread, with the ship-globals modifier | `00902B38`-`00902EF7`: SPVeteran AngleDiffErrorRatio 0 and ConstAngleError 0 (docs/FLAK_PROXIMITY_BURST.md 5). The ship-globals `AAGunnerErrorModifier` enters as the 0.05 s + 0.1 s/km time bias in the intercept (docs/AA_LEAD.md), which is bound. The +750h/+754h divisor applies to ship targets only | exact at the row USN04 sets |
+| Flak distance error at the veteran row | `008FDBE0` / `bot+60h` -> the burst's `[+290h]`: robots.lua AAFlakBot SPVeteran DistErr 0/0/0 | exact; the host's 0 is the row's value |
+| The muzzle-origin placeholder | per-barrel offsets are bound (`cc9_muzzle_offsets`). The 2084 fallback shots all come from devices with no `Mesh`: 54 (DC launcher), 80/85/87/89 (bomb racks), 93/95/98/101 (plane guns). **No ship AA mount falls back** | exact for every ship-AA kill of a Kate; the one fighter kill (category 0) uses the fallback |
+| The AA lead from the body axis | replaced by the world velocity `007BBB70` (`kAaTargetWorldVelocityBound` ON, docs/AA_LETHALITY_AUDIT.md 3) | exact |
+
+**Verdict for the packet.** USN04's Kate attrition is the image's AA, at the image's SPVeteran
+row, against Kates flying the image's aim run at the image's SPNormal release distances. No term
+is bound, and no pair is needed.
+
+**Predictions this read stands behind:**
+- **USN04 4700/4500.** Kate deaths 16, torpedo drops 1, 44 deaths and 739 hits, unchanged by
+  anything in this packet.
+- **USN13 3200/3000.** The reference log (worktree cc9-plane2, `local\RM_USN13.log`) reads task
+  `releases=2` but `torpedo_drop drops=0`. No torpedo is in the water there either.
+- **For the next owner.** The task's `releases=` counter should either skip dead aircraft or be
+  labelled task-level. It is a log-reading hazard, not a gameplay divergence.

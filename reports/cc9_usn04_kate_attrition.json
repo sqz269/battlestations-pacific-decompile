@@ -6,15 +6,16 @@
   "addresses": {
     "00902920": "AAGunnerBot tick; swinging error 00902B38-00902EF7 zero at SPVeteran (docs/FLAK_PROXIMITY_BURST.md 5)",
     "009030C0": "AAFlakBot tick; 008FDBE0 error zero at SPVeteran",
-    "009D15F0": "torpedo aim tick; aim_complete_2Ch = 0 for all 16 Kates (plane-side, handed over)"
+    "009D15F0": "torpedo aim tick; aim_complete_2Ch = 0 for all 16 Kates (plane-side, handed over)",
+    "007CEA1C": "the release stage refuses a dead aircraft (docs/PLANE_DEATH_MODES.md step 6)"
   },
   "no_ghidra_function": [],
   "calls": [],
   "substitutions_open": [
     "0085E4D0 turn-rate average not bound (zero on a straight run)",
-    "muzzle origin falls back to the shared origin for devices without a mesh path (2084 of 5482 shots)",
+    "muzzle origin falls back only for devices without a Mesh (DC launcher 54, bomb racks 80/85/87/89, plane guns 93/95/98/101); no ship AA mount",
     "flak unlocked passing rule beyond 50 m (0070C7B6-0070C806) not modelled"
   ],
-  "verdict": "read: the AA that kills USN04's Kates is the image's at SPVeteran; no gunnery term bound; attrition is aim-state dwell (7.5-13 s) at low speed, handed to the plane owners",
+  "verdict": "read: the AA that kills USN04's Kates is the image's at SPVeteran, and the aim run is the image's at SPNormal; 5 of the task's 6 releases are dead aircraft and spawn nothing (torpedo_drop drops=1; USN13 releases=2, drops=0); the four gunnery comparisons are closed; nothing bound",
   "names_added": []
 }
