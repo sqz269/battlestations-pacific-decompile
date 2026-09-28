@@ -376,7 +376,8 @@ inline constexpr bool kShipAiSubTargetSubStatesBound = true;  // ON: pairs held,
 // state's own enter 009E86C0 (selector countdown +1500h = 0, the current
 // member's vtable[4]) and exit 009E86E0 (the current member's vtable[8]) run at
 // the state switch. False: the three are records. Counted on both sides.
-inline constexpr bool kShipAiApproachEnterReseedBound = false;
+// ON (2026-09-28): USN02 and JM06 moved, LOMP06/USN01/USN04 gameplay-identical; re-seeds = approach enters, 60 draws each (section 8)
+inline constexpr bool kShipAiApproachEnterReseedBound = true;
 // Packet cc9_sub_target_entry_points, docs/SHIP_AI_OPEN_ITEMS.md section 9. The
 // three stand-ins of the submarine-target sub-states take the entry points now
 // on main. True: the lead pursuit's yaw rate is 0082ECB0 over the unit's class
@@ -386,14 +387,16 @@ inline constexpr bool kShipAiApproachEnterReseedBound = false;
 // and 009E2B60 fires the unit's Function-8 guns (GameGunneryHost::
 // fire_function_guns_now_009e2b60). False: 00811940's current yaw rate, the
 // constant 30, and a counted record.
-inline constexpr bool kShipAiSubTargetEntryPointsBound = false;
+// ON (2026-09-28): JM06 and LOMP06 fire one Function-8 salvo each (exit 3), USN01 identical (section 9)
+inline constexpr bool kShipAiSubTargetEntryPointsBound = true;
 // Packet cc9_follow_station_point (rank 2), docs/SHIP_AI_OPEN_ITEMS.md section
 // 10. True: 009DF2D0's zone set at 009DF41A is 006DFD90 on the follower
 // (zones.group_for_layer([class+560h]), as the ring probe binds it), its two
 // pushes at 009DF432 / 009DF4C5 are 00417B10 (zones.offset, margin 20, mode
 // 1), and the leader yaw rate at 009DF607 is 00811940 on the leader. False:
 // the zone set answers 0, the pushes return the point, the yaw rate is 0.
-inline constexpr bool kShipFollowStationPointBound = false;
+// ON (2026-09-28): identity on five rows, no push moved a point; the yaw half waits on the 00811940 accessor fix (section 10)
+inline constexpr bool kShipFollowStationPointBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -3011,9 +3014,9 @@ public:
     }
     void notify_siblings_009e2b60() override {
         // 009E2B60 walks [unit+48h] / +44h and calls vtable[1F0h], the immediate
-        // fire, on every kind-24h child whose [+3F4h]+80h is 8 (a Function-8
-        // gun, the depth-charge group of 009542B0). The fire belongs to the
-        // gunnery host; this process records the call and counts it.
+        // fire, on every depth-charge launcher child (kind 24h; class 27h's
+        // vtable[1F0h] is 006FDC50 = vtable[1E8h](1), the latch) whose
+        // [+3F4h]+80h is 8. The gunnery host marks those gun rows.
         ++ctl_.sub_sibling_notices;
         if (!kShipAiSubTargetEntryPointsBound || owner_.gunnery_draws == nullptr) {
             owner_.record("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
