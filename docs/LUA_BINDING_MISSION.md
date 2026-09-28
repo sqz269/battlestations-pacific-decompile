@@ -1782,3 +1782,42 @@ Worker cc9-lua2, 2026-09-28. This is item 5 of the ranking. Ghidra was read only
 
 **Verdict: `kLuaAAEnableBound = true`.** The 33 stage-init disables are applied. The first BSM01
 run that reaches the air raid measures them.
+
+### AddDamage: the flip pair's prediction, before the ON run (main `119ad0a44`)
+
+**The fresh OFF run.**
+- The log is `local/ad2_off_usn02.log`, USN02 9200/9000.
+- It reaches phase 2, and `AddDamage` is recorded `calls=4` (UNIMPLEMENTED).
+- `luaPh2MovieEnd` runs at **about mission frame 3131, 156.5 s**. That is the release block: its
+  `SetInvincible(..., false)` lines for Yudachi, Samidare, Murasame and Harusame, then DeRuyter,
+  Java, Kortenaer and Electra.
+- The four Dutch ships die in combat later: Kortenaer at 157.51 s, Electra at 175.41, Java at
+  190.46 and DeRuyter at 199.21.
+
+**Predicted ON** (`kLuaAddDamageBound` flipped only):
+- `calls=4 units=4`.
+- DeRuyter, Java, Kortenaer and Electra die together at about 156.5 s (frame 3131), with no
+  combat killer.
+- Their later combat death rows go.
+- Every other moved row lies downstream of those four removals: the FinalShips' targets, and the
+  Japanese and Allied hits and deaths after 156.5 s.
+- USN01 and USN04 are identity.
+
+### AddDamage flip pair and verdict
+
+**Setup.**
+- OFF is this tree's build of `119ad0a44` (`local/ad2_off_<mission>.log`).
+- ON is `pair_export --flip kLuaAddDamageBound=true` of the same commit (`local/ad_on`, SHA-256
+  `A851697B4EF2`, logs `local/ad2_on_<mission>.log`).
+
+| row | result | verdict |
+| --- | --- | --- |
+| USN02 9200/9000 | `calls=4 units=4`: DeRuyter, Java, Kortenaer and Electra, each `amount=1e8`, all dying at **156.60 s** (they died at 199.21, 190.46, 157.51 and 175.41 s OFF). pair_diff exit 3: deaths 22 -> 23 (John2 only ON), hit records 881 -> 747, damage 49930 -> 45340, with 23 unit rows changed downstream | held |
+| USN01 3200/3000 | exit 1 | held |
+| USN04 4700/4500 | exit 1 | held |
+
+**Failed sub-prediction.** I predicted "no combat killer". The four death rows keep each ship's
+last attacker from before the scuttle (Yudachi, Samidare, Murasame, Houston), because the routed
+damage leaves the victim's attribution block as the last hit set it.
+
+**Verdict: `kLuaAddDamageBound = true`.**

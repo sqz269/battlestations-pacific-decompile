@@ -173,7 +173,7 @@ inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LU
 // argument 1 as a number (0088E0DE) and calls entity->vtable[1ACh](amount) at 0088E15B,
 // the unit's routed damage entry 0095DA00 -> 0087D730 -> 00879070. True: the host calls
 // GameGunneryHost::apply_script_damage_0095da00 for the resolved slot. False: record.
-inline constexpr bool kLuaAddDamageBound = false;
+inline constexpr bool kLuaAddDamageBound = true;  // ON: phase-2 pair held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_lua_hit_listeners (docs/LUA_BINDING_MISSION.md, "Firing hit"). The `hit`
 // channel (dispatcher 00988510, producer 0077CE60) evaluates subscriptions (vtable

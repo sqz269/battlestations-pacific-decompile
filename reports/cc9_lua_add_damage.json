@@ -6,7 +6,7 @@
     {
       "name": "kLuaAddDamageBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF (flip on the lead call, phase-2 run)"
+      "state": "ON"
     }
   ],
   "substitutions": [
@@ -14,5 +14,17 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "USN02 killer",
+      "predicted": "no combat killer",
+      "measured": "death rows keep the last attacker",
+      "why": "the routed damage leaves the attribution block as the last hit set it"
+    }
+  ],
+  "pairs": {
+    "USN02": "exit 3, the four Dutch ships die at 156.60 s",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
+  }
 }
