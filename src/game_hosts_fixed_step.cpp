@@ -27,6 +27,7 @@
 #include "bsp/game_native_game_runtime.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/in_mission_subsystem_tick.hpp"
@@ -366,6 +367,12 @@ void GameFixedStepHost::pump_session_00778450(float step) {
         // 007784DF..007784F6: [00F8A2FC]->vtable[5Ch](step).
         log_.unimplemented("Session::global_object_step_00f8a2fc", "007784f6");
         // 007784F8 +F4h == 0: 00778542 CALL 0076C600, the loopback drain.
+        // Packet cc9_set_command_queue_delay: one drain over one vector. The
+        // after-row-9 orders were posted before anything this step posted, so
+        // they are delivered first, each with its own posts next (the drain is
+        // open around them); then the commands host delivers what this step's
+        // Lua drain, entity think and director steps posted, in post order.
+        commands_begin_loopback_drain_0076c600();
         if constexpr (kAfterRow9OrderQueueBound) {
             // Packet cc9_after_row9_order_queue: the orders posted after the
             // previous step's row 9 reach their receivers here.
@@ -373,6 +380,7 @@ void GameFixedStepHost::pump_session_00778450(float step) {
         } else {
             log_.unimplemented("Session::drain_loopback_queue_0076c600", "00778542");
         }
+        commands_finish_loopback_drain_0076c600();
         done("FixedStepFanout::pump_session", 0x00875e91u);
     } else {
         static_cast<void>(step);
