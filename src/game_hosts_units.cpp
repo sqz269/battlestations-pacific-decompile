@@ -1806,6 +1806,9 @@ struct GameUnitsHost::Impl {
     };
     std::vector<LandTaskCensus> land_census;
     unsigned long long land_retired_invalid{0};
+    // Packet cc9_unit_yaw_rate_forward_speed: the accessor's calls and non-zero answers.
+    unsigned long long yaw_rate_calls_00811940{0};
+    unsigned long long yaw_rate_nonzero_00811940{0};
     unsigned long long land_profile_calls{0};
     unsigned long long land_profile_writes{0};
     LandTaskCensus& land_census_for(const std::string& squadron);
@@ -9181,6 +9184,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         unit.index = index;
         unit.name = host.slots[index]->row.name;
         unit.object_id = static_cast<std::uint16_t>(index + 1);
+        unit.class_id = host.slots[index]->class_id;   // +C4h, for kSquadronSetCommandBound
         for (int lane = 0; lane < 3; ++lane) {
             unit.position[lane] = host.slots[index]->motion.position[lane];
         }
@@ -20206,7 +20210,14 @@ float GameUnitsHost::unit_current_yaw_rate_00811940(std::size_t index) {
     Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
     UnitRudderBinding rudder(host, *host.slots[index]);
-    return bsp::unit_current_yaw_rate_00811940(rudder);
+    if constexpr (kUnitYawRateForwardSpeedBound) {
+        // 00811940 -> 00811890 reads the body-axis speed 0092D730 for 0082ECB0.
+        rudder.forward_speed = unit_forward_speed_0092d730(index);
+    }
+    ++host.yaw_rate_calls_00811940;
+    const float rate = bsp::unit_current_yaw_rate_00811940(rudder);
+    if (rate != 0.0f) ++host.yaw_rate_nonzero_00811940;
+    return rate;
 }
 
 float GameUnitsHost::unit_class_yaw_rate_0082ecb0(std::size_t index, float rudder,
@@ -21243,6 +21254,9 @@ void GameUnitsHost::report() {
             host.rtb_arm_counts[0], host.rtb_arm_counts[1], host.rtb_arm_counts[2],
             host.rtb_arm_counts[3], host.rtb_census.size());
     }
+    host.log.notef("summary unit yaw rate 00811940 bound=%d calls=%llu nonzero=%llu "
+        "(packet cc9_unit_yaw_rate_forward_speed)", kUnitYawRateForwardSpeedBound ? 1 : 0,
+        host.yaw_rate_calls_00811940, host.yaw_rate_nonzero_00811940);
     if constexpr (kSquadronLandTaskBound) {
         unsigned long long installs = 0, kept = 0, refused = 0, empty = 0, reqs = 0, refused_states = 0;
         for (const Impl::LandTaskCensus& c : host.land_census) {
