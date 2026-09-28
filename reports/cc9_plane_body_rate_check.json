@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_plane_body_rate_check",
+  "doc": "docs/PLANE_BODY_RATES.md",
+  "code_changed": "diagnostic only: BSP_PLANE_RATE_TRACE in control_step_007da710 (src/game_hosts_units.cpp); nothing when unset",
+  "addresses": {
+    "007DA710": "rate law (body 007DA710-007DAFCD): quadratic rate, sign floor, clamp to [min(cur,tgt), max(cur,tgt)]; accel terms 007DAA7F..007DAAB3"
+  },
+  "calls": [],
+  "measurement": {
+    "log": "local/br_trace_usn04.log (USN04 4700/4500, Kate #4.1|.-3)",
+    "straight_20_60s": "|w| 0.2-1.3 deg/s, 5% of steps above 1.81",
+    "torpedo_run_80_110s": "pitch stick 0.03-0.28 (up to 1.0), pitch rate up to 0.30 rad/s, |w| mean 2.0-5.6 deg/s, 87-99% above 1.81",
+    "oscillation": "none: axis sign changes 0-2 per 5 s except roll dithering at 1e-3 rad/s"
+  },
+  "verdict": "host rate law matches the image; no binding; the gate passes on commanded pitch during the torpedo run; next check is the pilot's approach and altitude stick",
+  "no_ghidra_function": [],
+  "names_added": []
+}
