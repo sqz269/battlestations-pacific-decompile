@@ -1,0 +1,47 @@
+{
+  "packet": "cc9_torpedo_tube_turn",
+  "switch": "kTorpedoSwimThrustBound",
+  "doc": "docs/TORPEDO_FRIENDLY_CROSSING.md section 6",
+  "commits": {
+    "off_with_predictions": "c1315b447"
+  },
+  "image": {
+    "launch": "tube heading bot+60h snapped up to pi/4 (0090043D), at V0",
+    "gyro": "007311B0 heading -> record+46Ch at 00856637",
+    "entry": "008568E0 sets no speed; 006E6450 marks the swim",
+    "turn": "00857061: nose yaw clamp(e, +-HeadingTurn deg/s) * dt, only in the swim step 00857480",
+    "drag": "00857536..00857673: axial x (1 - 0.6 dt) [+474h, 00D0C5EC], lateral x (1 - 3.0 dt) [+478h, 00D0C5E8]",
+    "thrust": "008576C6..0085775D: v += nose * WaterTravelSpeed * 0.6 * dt [+470h, 0085785D]; steady speed WaterTravelSpeed",
+    "arming": "+45Ch = -1.0 from 006E2670 (00D7A260), armed from launch"
+  },
+  "host_off": "velocity snapped to 0.6 * WaterTravelSpeed at entry and rotated directly toward +46Ch",
+  "pairs": {
+    "USN04": "exit 1, steps 0",
+    "USN01": "exit 1, steps 0",
+    "USN13": "exit 1, steps 0",
+    "USN02": {
+      "off": "9 / 4597 / 3666, first hit 33.35 s, Houston 33.80 s, failed 34.70 s, torpedo hits 76/227",
+      "on": "11 / 5322 / 3910, first hit 19.20 s, Houston 22.75 s, failed 29.75 s, torpedo hits 90/229",
+      "pair_diff": 3,
+      "census": "steps 218440, kept_entry 223, mean entry speed 15.2 m/s"
+    }
+  },
+  "john1": {
+    "launch_trace": "t=273.71 John1 plat 11 class 62 tube 44.7 deg gyro -2.9 deg off -47.7 deg speed 13.0 (local/TS_JO_OFF_usn02.log, kGunImmediateFireSlotBound off)",
+    "simulation": "local/g4_john1_sim.py: host and image swims both enter Houston's hull at 2.15 s (along 52.9 / 51.4 m, across 39.4 / 39.3 m); image widest excursion 75.5 m",
+    "verdict": "the image would hit Houston too: the tube snap plus the turn, not a host defect"
+  },
+  "friendly_direct_hits": {
+    "TS_OFF_usn02": 6,
+    "TS_ON_usn02": 7,
+    "TS_JO_OFF_usn02": 4,
+    "TS_JO_ON_usn02": 11
+  },
+  "decision": "ON; every prediction held",
+  "flip_check": "local/TS_FLIP_usn02.log exit 0 against local/TS_ON_usn02.log",
+  "labelled": [
+    "the vertical stays the host's surface plane (forward.y decay and depth keeping not modelled)",
+    "the John1 hull test uses a 180 m x 20 m Northampton box"
+  ],
+  "diagnostic": "BSP_TORPEDO_TUBE_TRACE=1 logs 'gunnery: torpedo tube' per gyro launch"
+}
