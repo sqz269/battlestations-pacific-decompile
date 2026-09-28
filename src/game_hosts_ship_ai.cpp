@@ -234,6 +234,19 @@ inline constexpr bool kShipAiNeighbourCountBound = true;
 // False: no space, the start point unchanged, no hit (the stand-ins). ON: the
 // USN02 and E2 pairs held (docs/SHIP_AI_TAILS.md section 14.5).
 inline constexpr bool kShipAiRingScanProbeBound = true;
+// Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
+// gives a generated ship its brain on the same path as a loaded one: SEntity
+// InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene
+// property bag) arm calls vtable+210h = 00810DD0 at 008110BE, and 00810DF2 calls
+// 009F3F20 to allocate the brain into unit+740h. GenerateObject reaches InitAll
+// through 00874D79. True: a unit created after register_units gets the same
+// per-unit registration (the 009E4330 block, depth and navigation inputs) and
+// the brain constructor draws, before the first controller step that sees it.
+// A generated unit that is not a ship class keeps no controller work, as
+// before (00810DD0 is a ship-vtable slot). False: controllers stay sized at load.
+// ON: USN02 moved as predicted (Exeter lost at 210.81 s, the mission fails at
+// 212.91 s); USN01, USN04 and JM06 identical (docs/GENERATED_SHIP_AI.md section 5).
+inline constexpr bool kGeneratedShipAiBound = true;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h
@@ -815,6 +828,9 @@ struct GameShipAiHost::Impl {
         // blk+340h, +318h, +1B4h, +1B8h and +3E4h beside them.
         bsp::ShipAiNavBlockFields nav_block{};
         bool nav_block_built{false};
+        // A unit created after load that is not a ship class: its controller
+        // exists only to keep the vector indexed by unit, and runs nothing.
+        bool generated_non_ship{false};
         bsp::ShipAiHullGeometry hull_geometry{};
         std::uint32_t class_reference_0570{};
         bool class_depth_loaded{false};
@@ -1181,6 +1197,11 @@ struct GameShipAiHost::Impl {
         }
     }
     unsigned long long brain_seed_draws{0};
+    // Packet cc9_generated_ship_ai_registration: units the units host created
+    // after register_units (GenerateObject, SpawnNew, air-ops launches).
+    void register_generated_units();
+    std::size_t generated_registered{0};
+    std::size_t generated_ships{0};
     // 009DA1D0, whole: not a torpedo boat, not deeper than -15, blk+3ECh set
     // and the director's torpedoAvoidance +240h set.
     bool torpedo_gate_009da1d0(std::size_t index, const Controller& ctl) const {
@@ -8164,6 +8185,102 @@ private:
 
 }  // namespace
 
+namespace {
+// One unit's registration, the body register_units ran per unit. Packet
+// cc9_generated_ship_ai_registration moved it here unchanged so the generated
+// units go through the same code. Returns true when a navigation block was built.
+bool register_ship_ai_unit(GameShipAiHost::Impl& host, std::size_t index,
+                           GameMissionLuaHost& lua, std::int32_t session_mode) {
+    const GameUnitRow* row = host.units.unit_row(index);
+    host.rows[index].unit_index = index;
+    host.rows[index].unit = row != nullptr ? row->name : std::string();
+    host.rows[index].state = "none";
+    // Milestone 2r: 009F118D, the navigation block constructor, once per
+    // brain record. Its five turn fields are the inputs the arm tail and
+    // the arrival release test read; milestone 2q had them at zero.
+    const int kind = host.units.unit_class_id(index);
+    host.log.notef("unit hull input unit=%s type_id=%d kind=%d length=%.9g width=%.9g",
+        host.rows[index].unit.c_str(), row != nullptr ? row->type_id : -1, kind,
+        host.units.unit_hull_length_09c8(index), host.units.unit_half_width_09cc(index));
+    if (row != nullptr && row->class_row_found && has_ship_navigation_class(kind)) {
+        GameShipAiHost::Impl::Controller& ctl = host.controllers[index];
+        ctl.avoid_search = std::make_unique<bsp::ShipAiSearchStorage>(
+            host.zones.allocation_access());
+        GameShipDepthInput depth{};
+        std::string error;
+        if (!lua.read_ship_depth_input(row->type_id, session_mode, depth, error))
+            throw std::runtime_error("Ship depth load for " + row->name + ": " + error);
+        ctl.class_reference_0570 = depth.class_reference_0570;
+        ctl.class_depth_loaded = true;
+        if (kShipAvoidZoneEscapeBound) {
+            GameShipNavigationInput navigation{};
+            if (!lua.read_ship_navigation_input(row->type_id, session_mode, navigation, error))
+                throw std::runtime_error("Ship navigation load for " + row->name + ": " + error);
+            ctl.leaf_tuning = navigation.tuning;
+            ctl.leaf_tuning_loaded = true;
+            if (!host.layer_timing_loaded) {
+                if (!lua.read_ship_layer_timing_input(host.layer_timing, error))
+                    throw std::runtime_error("Ship layer timing load: " + error);
+                host.layer_timing_loaded = true;
+            }
+        }
+        bsp::ShipAiNavBlockUnitInputs in{};
+        in.present = row != nullptr;
+        in.handle = static_cast<std::uint32_t>(index) + 1u;
+        in.hull_length_09c8 = host.units.unit_hull_length_09c8(index);
+        in.ship_class.max_rot_angle_04f8
+            = host.units.unit_class_max_rot_angle_04f8(index);
+        in.ship_class.max_speed_0500 = host.units.unit_class_max_speed_0500(index);
+        in.ship_class.turn_radius_0520 = host.units.unit_class_turn_radius_0520(index);
+        in.ship_class.reference_0570 = ctl.class_reference_0570;
+        NavBlockCtorBinding ctor(host, index);
+        ctl.nav_block = bsp::ship_ai_nav_block_ctor_009e4330(in, ctor);
+        ctl.nav_block_built = true;
+        host.done("ShipAiNavBlock::construct_009e4330", 0x009e4330u);
+        ++host.summary.nav_blocks;
+        // The three fields the block carries into the navigation arm's own
+        // state: blk+3C8h is the look-ahead ceiling 009ED769 re-seeds
+        // blk+340h from every tick, and blk+3D0h the heading window.
+        ctl.nav.look_ahead_max_3c8 = ctl.nav_block.turn_circle_full_3c8;
+        ctl.nav.look_ahead_340 = ctl.nav_block.look_ahead_340;
+        ctl.nav.turn_window_3d0 = ctl.nav_block.yaw_rate_3d0;
+        const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
+        ctl.avoidance = request.request;
+        ctl.blk.early_out_3f5 = request.early_out_3f5;
+        host.rows[index].avoidance_enabled = ctl.avoidance.enable_3f4;
+        host.rows[index].avoidance_side = ctl.avoidance.side_filter_3f8;
+        host.rows[index].nav_turn_circle_3c8 = ctl.nav_block.turn_circle_full_3c8;
+        host.rows[index].nav_turn_circle_3cc = ctl.nav_block.turn_circle_cruise_3cc;
+        host.rows[index].nav_yaw_floor_3d0 = ctl.nav_block.yaw_rate_3d0;
+        host.rows[index].nav_stop_radius_3d4 = ctl.nav_block.stop_radius_3d4;
+        host.rows[index].nav_start_radius_3d8 = ctl.nav_block.start_radius_3d8;
+        host.rows[index].nav_hull_length_9c8 = in.hull_length_09c8;
+        host.rows[index].hull_mass_00b0 = host.units.unit_hull_mass_00b0(index);
+        host.rows[index].hull_material = host.units.unit_hull_material(index);
+        host.log.notef("ship pre-step input unit=%s type_id=%d session=%ld depth=%lu key=%s settings=%04lx source=%04lx reference_speed=%.9g width=%.9g",
+            row->name.c_str(), row->type_id, static_cast<long>(session_mode),
+            static_cast<unsigned long>(ctl.class_reference_0570), depth.class_key,
+            static_cast<unsigned long>(depth.settings_block_offset),
+            static_cast<unsigned long>(depth.scalar_source),
+            ctl.obstacle.reference_speed_3c4, host.units.unit_half_width_09cc(index));
+    } else {
+        host.rows[index].state = row != nullptr && row->class_row_found
+            ? "not_ship" : "no_class";
+    }
+    // 009F6A20 seeds the think countdown with the negation of a random draw
+    // in [0, 1) so the once-a-second thinks of different directors fall on
+    // different frames. This process has no 00BD2F10 on this path, so the
+    // phase is the unit's own index spread over the interval and is the
+    // executable's value rather than a recovered one.
+    host.controllers[index].target.think_countdown
+        = -static_cast<float>(index % 20) * 0.05f;
+    if (row != nullptr && !host.units.unit_player_controlled_0184(index)) {
+        ++host.summary.ai_owned;
+    }
+    return host.controllers[index].nav_block_built;
+}
+}  // namespace
+
 void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t session_mode) {
     Impl& host = *impl_;
     host.session_mode = session_mode;
@@ -8173,96 +8290,41 @@ void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t sessio
     host.controllers.resize(count);
     host.rows.assign(count, GameShipAiRow{});
     for (std::size_t index = 0; index < count; ++index) {
-        const GameUnitRow* row = host.units.unit_row(index);
-        host.rows[index].unit_index = index;
-        host.rows[index].unit = row != nullptr ? row->name : std::string();
-        host.rows[index].state = "none";
-        // Milestone 2r: 009F118D, the navigation block constructor, once per
-        // brain record. Its five turn fields are the inputs the arm tail and
-        // the arrival release test read; milestone 2q had them at zero.
-        const int kind = host.units.unit_class_id(index);
-        host.log.notef("unit hull input unit=%s type_id=%d kind=%d length=%.9g width=%.9g",
-            host.rows[index].unit.c_str(), row != nullptr ? row->type_id : -1, kind,
-            host.units.unit_hull_length_09c8(index), host.units.unit_half_width_09cc(index));
-        if (row != nullptr && row->class_row_found && has_ship_navigation_class(kind)) {
-            Impl::Controller& ctl = host.controllers[index];
-            ctl.avoid_search = std::make_unique<bsp::ShipAiSearchStorage>(
-                host.zones.allocation_access());
-            GameShipDepthInput depth{};
-            std::string error;
-            if (!lua.read_ship_depth_input(row->type_id, session_mode, depth, error))
-                throw std::runtime_error("Ship depth load for " + row->name + ": " + error);
-            ctl.class_reference_0570 = depth.class_reference_0570;
-            ctl.class_depth_loaded = true;
-            if (kShipAvoidZoneEscapeBound) {
-                GameShipNavigationInput navigation{};
-                if (!lua.read_ship_navigation_input(row->type_id, session_mode, navigation, error))
-                    throw std::runtime_error("Ship navigation load for " + row->name + ": " + error);
-                ctl.leaf_tuning = navigation.tuning;
-                ctl.leaf_tuning_loaded = true;
-                if (!host.layer_timing_loaded) {
-                    if (!lua.read_ship_layer_timing_input(host.layer_timing, error))
-                        throw std::runtime_error("Ship layer timing load: " + error);
-                    host.layer_timing_loaded = true;
-                }
-            }
-            bsp::ShipAiNavBlockUnitInputs in{};
-            in.present = row != nullptr;
-            in.handle = static_cast<std::uint32_t>(index) + 1u;
-            in.hull_length_09c8 = host.units.unit_hull_length_09c8(index);
-            in.ship_class.max_rot_angle_04f8
-                = host.units.unit_class_max_rot_angle_04f8(index);
-            in.ship_class.max_speed_0500 = host.units.unit_class_max_speed_0500(index);
-            in.ship_class.turn_radius_0520 = host.units.unit_class_turn_radius_0520(index);
-            in.ship_class.reference_0570 = ctl.class_reference_0570;
-            NavBlockCtorBinding ctor(host, index);
-            ctl.nav_block = bsp::ship_ai_nav_block_ctor_009e4330(in, ctor);
-            ctl.nav_block_built = true;
-            host.done("ShipAiNavBlock::construct_009e4330", 0x009e4330u);
-            ++host.summary.nav_blocks;
-            // The three fields the block carries into the navigation arm's own
-            // state: blk+3C8h is the look-ahead ceiling 009ED769 re-seeds
-            // blk+340h from every tick, and blk+3D0h the heading window.
-            ctl.nav.look_ahead_max_3c8 = ctl.nav_block.turn_circle_full_3c8;
-            ctl.nav.look_ahead_340 = ctl.nav_block.look_ahead_340;
-            ctl.nav.turn_window_3d0 = ctl.nav_block.yaw_rate_3d0;
-            const auto request = bsp::ship_ai_avoidance_request_constructed_009e468b();
-            ctl.avoidance = request.request;
-            ctl.blk.early_out_3f5 = request.early_out_3f5;
-            host.rows[index].avoidance_enabled = ctl.avoidance.enable_3f4;
-            host.rows[index].avoidance_side = ctl.avoidance.side_filter_3f8;
-            host.rows[index].nav_turn_circle_3c8 = ctl.nav_block.turn_circle_full_3c8;
-            host.rows[index].nav_turn_circle_3cc = ctl.nav_block.turn_circle_cruise_3cc;
-            host.rows[index].nav_yaw_floor_3d0 = ctl.nav_block.yaw_rate_3d0;
-            host.rows[index].nav_stop_radius_3d4 = ctl.nav_block.stop_radius_3d4;
-            host.rows[index].nav_start_radius_3d8 = ctl.nav_block.start_radius_3d8;
-            host.rows[index].nav_hull_length_9c8 = in.hull_length_09c8;
-            host.rows[index].hull_mass_00b0 = host.units.unit_hull_mass_00b0(index);
-            host.rows[index].hull_material = host.units.unit_hull_material(index);
-            host.log.notef("ship pre-step input unit=%s type_id=%d session=%ld depth=%lu key=%s settings=%04lx source=%04lx reference_speed=%.9g width=%.9g",
-                row->name.c_str(), row->type_id, static_cast<long>(session_mode),
-                static_cast<unsigned long>(ctl.class_reference_0570), depth.class_key,
-                static_cast<unsigned long>(depth.settings_block_offset),
-                static_cast<unsigned long>(depth.scalar_source),
-                ctl.obstacle.reference_speed_3c4, host.units.unit_half_width_09cc(index));
-        } else {
-            host.rows[index].state = row != nullptr && row->class_row_found
-                ? "not_ship" : "no_class";
-        }
-        // 009F6A20 seeds the think countdown with the negation of a random draw
-        // in [0, 1) so the once-a-second thinks of different directors fall on
-        // different frames. This process has no 00BD2F10 on this path, so the
-        // phase is the unit's own index spread over the interval and is the
-        // executable's value rather than a recovered one.
-        host.controllers[index].target.think_countdown
-            = -static_cast<float>(index % 20) * 0.05f;
-        if (row != nullptr && !host.units.unit_player_controlled_0184(index)) {
-            ++host.summary.ai_owned;
-        }
+        register_ship_ai_unit(host, index, lua, session_mode);
     }
     host.summary.units = count;
     host.log.notef("ship navigation controllers: %zu built for actual ship classes among %zu instances; "
         "generic command/director owners remain separate", host.summary.nav_blocks, count);
+}
+
+void GameShipAiHost::Impl::register_generated_units() {
+    const std::size_t count = units.count();
+    if (count <= controllers.size() || settings_owner == nullptr) return;
+    const std::size_t first = controllers.size();
+    controllers.resize(count);
+    rows.resize(count, GameShipAiRow{});
+    std::size_t ships = 0;
+    for (std::size_t index = first; index < count; ++index) {
+        const bool ship = register_ship_ai_unit(*this, index, *settings_owner, session_mode);
+        ++generated_registered;
+        if (ship) {
+            ++ships;
+            ++generated_ships;
+        } else {
+            controllers[index].generated_non_ship = true;
+        }
+        log.notef("ship ai generated unit registered: unit=%s index=%zu ship=%d "
+            "(00925F20 pass A -> 00810F60 -> 00810DD0 -> 009F3F20, packet "
+            "cc9_generated_ship_ai_registration)", rows[index].unit.c_str(), index,
+            ship ? 1 : 0);
+    }
+    summary.units = count;
+    // 009F1160's seven stream-1 draws run in the brain constructor, that is at
+    // generation; the seeding skips every controller already seeded.
+    if (ships != 0 && kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms
+        && gunnery_draws != nullptr) {
+        seed_brain_draws_009f1160();
+    }
 }
 
 void GameShipAiHost::Impl::deliver_pass_side_messages() {
@@ -8318,6 +8380,7 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
 void GameShipAiHost::controller_step(float seconds) {
     Impl& host = *impl_;
     if (host.controllers.empty()) return;
+    if constexpr (kGeneratedShipAiBound) host.register_generated_units();
     ++host.steps;
     // The session pump (fixed-step row 9) drains last step's queue before the
     // world entity tick runs the controllers (packet cc9_pass_side_message).
@@ -8326,6 +8389,7 @@ void GameShipAiHost::controller_step(float seconds) {
         // The routed 5Eh messages of the command paths' 00835860 calls.
         for (const GameFireTargetRequest& r : host.units.commands().take_fire_target_requests()) {
             if (r.unit >= host.controllers.size() || r.unit >= host.rows.size()) continue;
+            if (host.controllers[r.unit].generated_non_ship) continue;
             host.store_fire_target(host.controllers[r.unit], host.rows[r.unit],
                 r.target_plus_one, r.force);
             ++host.command_fire_target_requests;
@@ -8335,6 +8399,7 @@ void GameShipAiHost::controller_step(float seconds) {
         Impl::Controller& ctl = host.controllers[index];
         GameShipAiRow& row = host.rows[index];
         if (!host.units.unit_active(index)) continue;
+        if (ctl.generated_non_ship) continue;
         if (ctl.nav_block_built) {
             ControllerBinding binding(host, ctl, row, index);
             const bool ran = bsp::ship_ai_controller_step_009f50e0(ctl.timers, seconds, binding);
@@ -8550,6 +8615,7 @@ void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t ta
     // 00836240: applies when force is set, or +23Ch is clear, or +238h is null;
     // then +23Ch = force and, when the target changes, +238h = target.
     if (unit >= impl_->controllers.size() || unit >= impl_->rows.size()) return;
+    if (impl_->controllers[unit].generated_non_ship) return;
     impl_->store_fire_target(impl_->controllers[unit], impl_->rows[unit], target_plus_one,
         force);
     ++impl_->script_fire_target_sets;
@@ -8783,6 +8849,11 @@ void GameShipAiHost::report() {
         host.summary.path_follower_advances);
     // Packet cc8_ship_ai_approach_curves: what the 119-step scan at 009E71A5
     // chose once the two curve objects behind it were real.
+    if constexpr (kGeneratedShipAiBound) {
+        host.log.notef("summary mission ship ai generated units registered=%zu ships=%zu "
+            "(packet cc9_generated_ship_ai_registration)", host.generated_registered,
+            host.generated_ships);
+    }
     host.log.notef("summary mission ship ai standoff choices=%llu curve_refreshes=%llu "
         "(009e6e80 writes nested+11e4h; 0095f080 fills nested+12c0h and nested+13b0h)",
         host.summary.standoff_choices, host.summary.approach_curve_refreshes);
