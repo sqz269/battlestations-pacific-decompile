@@ -247,3 +247,47 @@ stream here, as the image does not.
 
 **Recommendation.** Bind 8.2 only after the world-rate producer `007D9C80` is published for other
 reasons. Its reach is the fighters, not the attrition this doc is about.
+
+## 9. The plane-gun muzzle origin (packet `cc9_plane_gun_mounts`, switch `kPlanePlatformAttachmentBound`, OFF)
+
+The third small term. docs/MUZZLE_OFFSETS.md section 4 left "planes" unplaced, and every one of
+USN04's 2084 fallback shots is a plane gun, bomb rack or depth charge (section 6).
+
+**The image.**
+- **The plane class runs the ship's slot pass.** `007D3E81 CALL 0095F500` sits in
+  `BSP_PlaneClass_BindModelData_Provisional` (`007D3E60`), the same routine that builds a ship's
+  platform frames from the model's `("slot", key)` point groups
+  (docs/SHIP_PLATFORM_ATTACHMENT.md 1.2).
+- **The gun takes that frame at setup.** Every gun copies it through `0072DD20` at `0072E99C`,
+  whatever class it is. A plane gun is `MRFSGun` (21h, under the base gun).
+- **Plane models carry the groups.** This installation's host already loads them: `B5N_Kate`,
+  `zero` and `D3A_Val` have 6 slot groups each, and `F4F_Wildcat` has 8
+  (`gunnery: vehicle class ... slot groups=` in `local\RA_OFF_USN04.log`).
+- **Plane guns have no device `Mesh`.** Devices 93, 95, 98 and 101 have none. So `007325A0`'s
+  list is empty, and the round leaves from the mount itself, the image's empty-list fallback.
+
+**The host until now.** A plane gun fired from the plane's origin raised by the class `Height`
+along world up (`gun_muzzle_point`'s fallback), whatever the plane's attitude.
+
+**The binding.** `kPlanePlatformAttachmentBound`, OFF, lets the existing ship mount placement
+(`gun_platform_slot_frame_0095f500`, carried to world by the unit pose) take plane units too.
+A new summary line reports `plane mounts from model=`.
+
+**Labelled.**
+- The axes are taken as for ships: model +x starboard, +y up, +z nose.
+- The store that places a gun entity at its platform is not read, as for ships.
+- The plane's own node chain is not applied.
+
+**Predictions, recorded before the pair.** Same tree, OFF against ON, RNG streams on.
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| USN04 `plane mounts from model` | 0 | between 150 and 241 (241 plane guns: devices 93/95/98/101/110 carry 70/72/32/32/35) |
+| USN04 fighter (category 0) hits | as OFF | moves by more than 5% |
+| USN04 deaths by fighters (11 in OFF) | 11 | 9 to 14 |
+| USN04 deaths | 44 | 42 to 47 |
+| USN04 Kate deaths | 16 | 16 (ship AA kills 15 of them) |
+| USN04 torpedo drops | 1 | 0 to 2 |
+| USN13 3200/3000 deaths | 27 | 25 to 29 |
+| USN02 9200/9000 | - | identical (no plane spawns) |
+| USN01 3200/3000 | 7 deaths | 7 unless a Mavis gun kill moves |

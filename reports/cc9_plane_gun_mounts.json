@@ -1,0 +1,17 @@
+{
+  "packet": "cc9_plane_gun_mounts",
+  "doc": "docs/USN04_KATE_ATTRITION.md section 9",
+  "switch": "kPlanePlatformAttachmentBound (src/game_hosts_gunnery.cpp), OFF",
+  "calls": [
+    {"address": "007D3E81", "native": "0095F500", "function": "007D3E60", "note": "the plane class runs the slot pass"},
+    {"address": "0072E99C", "native": "0072DD20", "function": "0072E6D0", "note": "every gun copies its platform frame at setup"}
+  ],
+  "no_ghidra_function": [],
+  "substitutions": [
+    "plane model axes taken as for ships: +x starboard, +y up, +z nose",
+    "the store placing the gun entity at its platform is not read (as for ships)",
+    "the plane's own node chain is not applied"
+  ],
+  "names_added": [],
+  "verdict": "pending: OFF committed, pair when runs return"
+}
