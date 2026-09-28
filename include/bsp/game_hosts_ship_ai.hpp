@@ -525,6 +525,13 @@ struct GameShipAiSummary {
     unsigned long long attackmove_state_exits{0};
     unsigned long long approach_reseeds{0};
     unsigned long long approach_reseed_draws{0};
+    // Packet cc9_follow_station_point: the zone sets resolved and pushes run
+    // (ON only), pushes that moved the point, and leader yaw-rate reads that
+    // were non-zero (both sides).
+    unsigned long long follow_zone_sets{0};
+    unsigned long long follow_pushes{0};
+    unsigned long long follow_pushes_moved{0};
+    unsigned long long follow_leader_turning{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};

@@ -377,6 +377,23 @@ inline constexpr bool kShipAiSubTargetSubStatesBound = true;  // ON: pairs held,
 // member's vtable[4]) and exit 009E86E0 (the current member's vtable[8]) run at
 // the state switch. False: the three are records. Counted on both sides.
 inline constexpr bool kShipAiApproachEnterReseedBound = false;
+// Packet cc9_sub_target_entry_points, docs/SHIP_AI_OPEN_ITEMS.md section 9. The
+// three stand-ins of the submarine-target sub-states take the entry points now
+// on main. True: the lead pursuit's yaw rate is 0082ECB0 over the unit's class
+// with (unit+984h, the forward speed, 1.0) (GameUnitsHost::
+// unit_class_yaw_rate_0082ecb0); the tangent's SubmarineLostTime is the loaded
+// ShipGlobals value (GameMissionLuaHost::sub_attack_submarine_lost_time_04d4);
+// and 009E2B60 fires the unit's Function-8 guns (GameGunneryHost::
+// fire_function_guns_now_009e2b60). False: 00811940's current yaw rate, the
+// constant 30, and a counted record.
+inline constexpr bool kShipAiSubTargetEntryPointsBound = false;
+// Packet cc9_follow_station_point (rank 2), docs/SHIP_AI_OPEN_ITEMS.md section
+// 10. True: 009DF2D0's zone set at 009DF41A is 006DFD90 on the follower
+// (zones.group_for_layer([class+560h]), as the ring probe binds it), its two
+// pushes at 009DF432 / 009DF4C5 are 00417B10 (zones.offset, margin 20, mode
+// 1), and the leader yaw rate at 009DF607 is 00811940 on the leader. False:
+// the zone set answers 0, the pushes return the point, the yaw rate is 0.
+inline constexpr bool kShipFollowStationPointBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1002,6 +1019,7 @@ struct GameShipAiHost::Impl {
         unsigned long long sub_tangent_steps{0};
         unsigned long long sub_approach_returns{0};   // back to state+8h from 14CC/14E0
         unsigned long long sub_sibling_notices{0};    // 009E2B60 calls
+        unsigned long long sub_sibling_fires{0};      // ...that marked a gun (ON)
         unsigned long long sub_lost_ends{0};          // 009F3718 0071E430 calls
         double sub_first_open_seconds{-1.0};
         float sub_min_target_y{0.0f};
@@ -2222,17 +2240,36 @@ public:
         return owner_.units.unit_hull_length_09c8(index_);
     }
     std::uint32_t zone_set_vtable_218(std::uint32_t) override {
-        owner_.record("ShipAiFollow::zone_set_218", 0x009df41au);
-        return 0u;
+        // 009DF41A, the follower's vtable[218h] = 006DFD90: ECX = [unit+538h],
+        // 0082ADA0(0) = 004120D0(manager, [class+560h]). An unready runtime
+        // keeps the stand-in, as the ring probe's 009E66EB does.
+        if (!kShipFollowStationPointBound || !owner_.zones.ready() ||
+            index_ >= owner_.controllers.size()) {
+            owner_.record("ShipAiFollow::zone_set_218", 0x009df41au);
+            return 0u;
+        }
+        owner_.done("ShipAiFollow::zone_set_218", 0x009df41au);
+        ++owner_.summary.follow_zone_sets;
+        return owner_.zones.group_for_layer(
+            owner_.controllers[index_].leaf_tuning.array[0]);   // [class+560h]
     }
-    bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t,
+    bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t zone_set,
                                                        bsp::ShipAiFollowLandXZ point,
-                                                       float) override {
-        // The same stand-in the rest of this host uses for 00417B10 (see
-        // zone_exit_point_00417b10): the body is unread, so the point comes back
-        // unchanged rather than pushed by an invented margin.
-        owner_.record("ShipAiFollow::push_out_of_zones", 0x00417b10u);
-        return point;
+                                                       float margin) override {
+        // 009DF432 / 009DF4C5: 00417B10(ECX = zone set, &out, &in, 20.0f, 1).
+        if (!kShipFollowStationPointBound || zone_set == 0u) {
+            owner_.record("ShipAiFollow::push_out_of_zones", 0x00417b10u);
+            return point;
+        }
+        owner_.done("ShipAiFollow::push_out_of_zones", 0x00417b10u);
+        const std::array<float, 2> out =
+            owner_.zones.offset(zone_set, {point.x, point.z}, margin, true);
+        ++owner_.summary.follow_pushes;
+        if (out[0] != point.x || out[1] != point.z) ++owner_.summary.follow_pushes_moved;
+        bsp::ShipAiFollowLandXZ result{};
+        result.x = out[0];
+        result.z = out[1];
+        return result;
     }
     float ship_class_turn_radius_0082e850() override {
         // 009DF44A takes it off brain+0AACh, the ship class descriptor. The units
@@ -2242,8 +2279,16 @@ public:
         return owner_.units.unit_class_turn_radius_0520(index_);
     }
     float leader_command_yaw_rate_00811940(float, float) override {
-        owner_.record("ShipAiFollow::leader_yaw_rate", 0x00811940u);
-        return 0.0f;
+        // 009DF607, 00811940 with ECX = the leader. It is RET 0 and reads no
+        // stack argument; the two pushes belong to the 009DACD0 call after it.
+        const float rate = owner_.units.unit_current_yaw_rate_00811940(leader_);
+        if (rate != 0.0f) ++owner_.summary.follow_leader_turning;
+        if (!kShipFollowStationPointBound) {
+            owner_.record("ShipAiFollow::leader_yaw_rate", 0x00811940u);
+            return 0.0f;
+        }
+        owner_.done("ShipAiFollow::leader_yaw_rate", 0x00811940u);
+        return rate;
     }
     float unit_reference_speed_0080fc30() override {
         owner_.done("ShipAiFollow::reference_speed", 0x0080fc30u);
@@ -2821,10 +2866,21 @@ public:
     float unit_forward_speed_vtable_0038() override {
         return owner_.units.unit_forward_speed_0092d730(index_);
     }
-    float unit_ordered_rudder_0984() override { return 0.0f; }
-    float yaw_rate_from_rudder_0082ecb0(float, float, float) override {
-        owner_.record("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
-        return owner_.units.unit_current_yaw_rate_00811940(index_);
+    float unit_ordered_rudder_0984() override {
+        if (!kShipAiSubTargetEntryPointsBound) return 0.0f;
+        // 009E2A6A, [unit+984h]: the ordered rudder the ring published, which
+        // the units host keeps on the unit's row (refresh_row).
+        const GameUnitRow* unit = owner_.units.unit_row(index_);
+        return unit != nullptr ? unit->ordered_rudder : 0.0f;
+    }
+    float yaw_rate_from_rudder_0082ecb0(float rudder, float speed, float efficiency) override {
+        if (!kShipAiSubTargetEntryPointsBound) {
+            owner_.record("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
+            return owner_.units.unit_current_yaw_rate_00811940(index_);
+        }
+        // 009E2A97: 0082ECB0(ECX = [unit+538h], rudder, speed, 1.0f).
+        owner_.done("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
+        return owner_.units.unit_class_yaw_rate_0082ecb0(index_, rudder, speed, efficiency);
     }
     float vector2_length_00414c60(float x, float z) override {
         return bsp::length_2d_00414c60(std::array<float, 2>{x, z});
@@ -2855,6 +2911,11 @@ public:
         // no reader of SubAttack reaches it. The value is 30 both in this
         // installation's datatables/shipglobals.lua (line 473, mtime 2024-07-13)
         // and as the loader default (0083F7A1, ship_ai_settings_block.cpp).
+        if (kShipAiSubTargetEntryPointsBound && owner_.settings_owner != nullptr) {
+            // The loaded ShipGlobals.SubAttack.SubmarineLostTime, 0 when absent
+            // (lua_tonumber), as 0083F779..0083F7A1 stores it.
+            return owner_.settings_owner->sub_attack_submarine_lost_time_04d4();
+        }
         return kSubTargetSubmarineLostTime;
     }
     std::uint32_t unit_director_vtable_0114() override {
@@ -2944,7 +3005,15 @@ public:
         // gun, the depth-charge group of 009542B0). The fire belongs to the
         // gunnery host; this process records the call and counts it.
         ++ctl_.sub_sibling_notices;
-        owner_.record("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
+        if (!kShipAiSubTargetEntryPointsBound || owner_.gunnery_draws == nullptr) {
+            owner_.record("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
+            return;
+        }
+        // 009E2B86 hard-codes Function 8, the depth-charge launcher group.
+        if (owner_.gunnery_draws->fire_function_guns_now_009e2b60(index_, 8)) {
+            ++ctl_.sub_sibling_fires;
+        }
+        owner_.done("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
     }
 
 private:
@@ -9732,13 +9801,14 @@ void GameShipAiHost::report() {
         if (c.sub_gate_calls == 0) continue;
         host.log.notef("  sub target %-20s gate=%llu open=%llu visible=%llu first_open=%.2f "
             "min_y=%.1f target=%s lead=%llu/%llu tangent=%llu/%llu returns=%llu notices=%llu "
-            "lost_ends=%llu",
+            "lost_ends=%llu fires=%llu entry_points=%d",
             host.rows[index].unit.c_str(), c.sub_gate_calls, c.sub_gate_open,
             c.sub_gate_open_visible,
             c.sub_first_open_seconds, static_cast<double>(c.sub_min_target_y),
             c.sub_last_target.c_str(), c.sub_lead_enters, c.sub_lead_steps,
             c.sub_tangent_enters, c.sub_tangent_steps, c.sub_approach_returns,
-            c.sub_sibling_notices, c.sub_lost_ends);
+            c.sub_sibling_notices, c.sub_lost_ends, c.sub_sibling_fires,
+            kShipAiSubTargetEntryPointsBound ? 1 : 0);
     }
     // Packet cc9_submarine_ai_states: one line per brain that selected sub_attack.
     host.log.notef("summary mission ship ai sub_attack select_bound=%d states_bound=%d "
@@ -10058,6 +10128,12 @@ void GameShipAiHost::report() {
         host.summary.approach_member_enters, host.summary.attackmove_state_enters,
         host.summary.attackmove_state_exits, host.summary.approach_reseeds,
         host.summary.approach_reseed_draws, kShipAiApproachEnterReseedBound ? 1 : 0);
+    host.log.notef("summary mission ship ai follow station zone_sets=%llu pushes=%llu "
+        "moved=%llu leader_turning=%llu bound=%d (009DF41A / 009DF432 / 009DF4C5 / 009DF607, "
+        "packet cc9_follow_station_point)",
+        host.summary.follow_zone_sets, host.summary.follow_pushes,
+        host.summary.follow_pushes_moved, host.summary.follow_leader_turning,
+        kShipFollowStationPointBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",
