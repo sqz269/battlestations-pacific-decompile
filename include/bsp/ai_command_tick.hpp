@@ -219,6 +219,12 @@ AiCommandTickResult ai_command_follower_pass_00a10dc0(AiCommandTickHost& host, v
 AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
                                            const AiCommandObject& command);
 
+// The leader arm every move-family tick shares: the group's first member is
+// handed 00A02020 with `point` (docs/AI_COMMAND_TICK.md). Exposed for the
+// SELLING tick 00A11FF0, whose 00A12342 is the same call.
+AiCommandTickResult ai_command_order_leader_00a02020(AiCommandTickHost& host, void* group,
+                                                     const float point[3]);
+
 // PATROLTO's tail after 00A13B60 and 00A11B80 (00A15695-00A156C8): when the
 // leader is far and 00A13B60 answered AL = 0, JMP 00A02020 with the leader
 // and the +8h point. The caller runs 00A13B60 itself when `patrol_near` is set.
