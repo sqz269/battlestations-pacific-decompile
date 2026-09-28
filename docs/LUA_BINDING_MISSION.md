@@ -1316,3 +1316,40 @@ each registered entry, which settles the rows that depend on it):
   at `0097C2C0` (80h) and `recon` at `0097A220` (4Ch), both still to be read.
 
 **Verdict: `kLuaListenersBound = true`.** Every row is identity, as predicted.
+
+### Firing `recon` (packet `cc9_lua_recon_listeners`, `kLuaReconListenersBound`, committed OFF)
+
+**The image (V, from the listings).**
+- **The subscription** is vtable `00D1B67C`, constructor `0097A220` (4Ch). Its loader `00972450`
+  reads:
+  - `callback` into `+4h`;
+  - `entity` into `+0Ch`, through `009721C0`;
+  - `oldLevel`, `newLevel` and `party` into `+1Ch`, `+2Ch` and `+3Ch`, through `009722D0`.
+- **The condition `00968470`** passes when each of the four sets is empty or holds its boxed
+  value.
+- **The dispatcher `00980E50`** is `__thiscall(manager, party, unit, old, new)`, called from
+  `0077B0C0` on a record's level change.
+  - It dispatches only a live unit: `+5Ch` set, `+5Dh`/`+5Eh`/`+60h` clear.
+  - It boxes `(unit id +174h, old, new, party)`.
+  - It calls each passing callback with `(unit, old, new, party)`.
+
+**The binding.**
+- `dispatch_recon_listeners_00980e50` runs once per new recon pass generation.
+- It compares each unit's per-party level with the last one seen and fires matching `recon`
+  entries on every change, with the four arguments.
+- The census is `summary mission script recon listeners bound=.. changes=.. fires=..` and one
+  `recon listener 00980e50:` line per call.
+
+**SUBSTITUTIONS, labelled:**
+- The comparison runs at the host's frame, once per pass, not inside `0077B0C0`.
+- The unit's own party steps `0 -> 1 -> 2`, one level per pass. That is `008065B0`'s `+1`
+  refresh, and it keeps a 0-to-2 filter from firing on own units.
+- Forced levels are not modelled.
+
+**Predictions** (same setup as the listener pairs; OFF is this tree, and ON flips this switch):
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | `usnsubListener` (entity `Mission.USNSubs`, `0 -> {1, 2}`, Japanese) fires if the Japanese detect the Narwhal; `luaJM6USNSubSighted` only starts a dialog and a hint. `fleetrecon` (entity `Mission.Cargos`, `0 -> 2`, Japanese) fires if a cargo is identified; `luaJM6FleetSpotted` then orders `Mission.IJNSubsGrp1` (all but the first) to attack a random cargo, **exit 3**. If no cargo is identified in the run, identity |
+| LOMP06 1200/1000 | `listener_SeaplaneSpotted` (any entity, `0 -> 2`, Allied) fires on each first identification, and the callback acts only on a `SmallReconPlane` (a dialog); identity |
+| USN01, USN04 | no `recon` entry is registered (`changes=0 fires=0`); identity |

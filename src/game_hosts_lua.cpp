@@ -2659,6 +2659,7 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // evaluated here, once per mission frame, for the deaths since the last
     // frame; the image evaluates it inside the kill flush (009813A0).
     if (kLuaListenersBound) dispatch_kill_listeners_009813a0();
+    if (kLuaListenersBound && kLuaReconListenersBound) dispatch_recon_listeners_00980e50();
     // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
     // the step is used only to advance the clock the interval is measured on.
     spawn_world_clock_ += step_seconds;
@@ -3894,6 +3895,9 @@ bool listener_read_entity_set(lua_State* state, int block, const char* key, std:
 }
 } // namespace
 
+// 009722D0 reads an integer set: a number, or a table of numbers.
+void listener_read_int_set_fn(lua_State* state, int block, const char* key, std::vector<int>& out);
+
 // Packet cc9_lua_listeners. 008C6760 AddListener(channel, id, block) -> 00980C10:
 // channel map (00980150), the id's slot (00978D60), the subscription 0097E360
 // builds. A re-add of the same (channel, id) replaces the slot.
@@ -3924,6 +3928,14 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             }
             ::lua_pop(state, 1);
             entry.attacker_filters_set = attacker || player_index;
+        }
+        if (listener_key_equal(entry.channel, "recon")) {
+            // 00972450: callback, entity (+0Ch, 009721C0), oldLevel, newLevel and
+            // party (+1Ch, +2Ch, +3Ch, 009722D0).
+            listener_read_entity_set(state, 3, "entity", entry.entity_ids);
+            listener_read_int_set_fn(state, 3, "oldLevel", entry.old_levels);
+            listener_read_int_set_fn(state, 3, "newLevel", entry.new_levels);
+            listener_read_int_set_fn(state, 3, "party", entry.parties);
         }
     }
     for (ListenerEntry& existing : listeners_) {
@@ -4037,6 +4049,100 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 note_error(message != nullptr ? message : std::string("(no message)"));
             }
             ::lua_settop(state_, top);
+        }
+    }
+}
+
+void listener_read_int_set_fn(lua_State* state, int block, const char* key, std::vector<int>& out) {
+    ::lua_getfield(state, block, key);
+    const int value = ::lua_gettop(state);
+    if (::lua_type(state, value) == LUA_TNUMBER) {
+        out.push_back(static_cast<int>(::lua_tonumber(state, value)));
+    } else if (::lua_type(state, value) == LUA_TTABLE) {
+        ::lua_pushnil(state);
+        while (::lua_next(state, value) != 0) {
+            if (::lua_type(state, -1) == LUA_TNUMBER) {
+                out.push_back(static_cast<int>(::lua_tonumber(state, -1)));
+            }
+            ::lua_pop(state, 1);
+        }
+    }
+    ::lua_settop(state, value - 1);
+}
+
+// Packet cc9_lua_recon_listeners. 00980E50 (from 0077B0C0 on each record's level
+// change): only a live unit (+5Ch set, +5Dh/+5Eh/+60h clear) is dispatched; the
+// four boxed values are (unit, old, new, party), matched by 00968470, and each
+// passing callback is called with (unit, old, new, party).
+// SUBSTITUTIONS (labelled): the host compares its recon pass's levels once per
+// pass generation, at the mission frame; the unit's own party steps 0 -> 1 -> 2
+// one level per pass (008065B0's +1 refresh); forced levels are not modelled.
+void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    const GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
+    if (pass.passes == recon_listener_generation_) return;
+    recon_listener_generation_ = pass.passes;
+    const std::size_t count = units_hooks_->count();
+    if (recon_listener_levels_.size() < count * 3) recon_listener_levels_.resize(count * 3, 0);
+    bool any_recon = false;
+    for (const ListenerEntry& entry : listeners_) {
+        if (listener_key_equal(entry.channel, "recon")) { any_recon = true; break; }
+    }
+    for (std::size_t u = 0; u < count; ++u) {
+        const bool dead = gunnery->unit_dead(u);
+        const int own = units_hooks_->unit_side_0054(u);
+        for (int party = 0; party < 3; ++party) {
+            int& last = recon_listener_levels_[u * 3 + static_cast<std::size_t>(party)];
+            int level = 0;
+            if (party == own) {
+                level = last < 2 ? last + 1 : 2;
+            } else if (pass.side_covered(party)) {
+                const bsp::ReconDetectionLevel detected = pass.level(party, u);
+                level = detected == bsp::ReconDetectionLevel::identified ? 2
+                    : detected == bsp::ReconDetectionLevel::blip ? 1 : 0;
+            }
+            if (level == last) continue;
+            const int old = last;
+            last = level;
+            if (dead || !any_recon) continue;   // 00980E50's live-unit gate
+            ++summary_.listener_recon_changes;
+            const int unit_id = static_cast<int>(u + 1);
+            std::vector<std::string> callbacks;
+            for (const ListenerEntry& entry : listeners_) {
+                if (!listener_key_equal(entry.channel, "recon")) continue;
+                auto holds = [](const std::vector<int>& set, int v) {
+                    return set.empty() || std::find(set.begin(), set.end(), v) != set.end();
+                };
+                if (!holds(entry.entity_ids, unit_id) || !holds(entry.old_levels, old)
+                    || !holds(entry.new_levels, level) || !holds(entry.parties, party)) {
+                    continue;
+                }
+                if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+            }
+            for (const std::string& name : callbacks) {
+                const int top = ::lua_gettop(state_);
+                lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+                if (!lua_isfunction(state_, -1)) {
+                    ::lua_settop(state_, top);
+                    continue;
+                }
+                if (!push_resolved_entity_by_id(state_, unit_id)) lua_pushnil(state_);
+                ::lua_pushnumber(state_, static_cast<lua_Number>(old));
+                ::lua_pushnumber(state_, static_cast<lua_Number>(level));
+                ::lua_pushnumber(state_, static_cast<lua_Number>(party));
+                ++summary_.listener_recon_fires;
+                const GameUnitRow* row = units_hooks_->unit_row(u);
+                log_.notef("  recon listener 00980e50: \"%s\" party %d %d -> %d -> %s() (packet "
+                    "cc9_lua_recon_listeners)", row != nullptr ? row->name.c_str() : "?", party,
+                    old, level, name.c_str());
+                if (::lua_pcall(state_, 4, 0, 0) != 0) {
+                    const char* message = lua_tolstring(state_, -1, nullptr);
+                    note_error(message != nullptr ? message : std::string("(no message)"));
+                }
+                ::lua_settop(state_, top);
+            }
         }
     }
 }
@@ -5164,6 +5270,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
         listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
+    log_.notef("summary mission script recon listeners bound=%d changes=%llu fires=%llu "
+        "(00980E50, packet cc9_lua_recon_listeners)", kLuaReconListenersBound ? 1 : 0,
+        summary_.listener_recon_changes, summary_.listener_recon_fires);
     log_.notef("summary mission script kill bound=%d calls=%llu units=%llu unresolved=%llu "
         "already_dead=%llu squadrons=%llu (008AC5C0, packet cc9_lua_kill)", kLuaKillBound ? 1 : 0,
         summary_.kill_calls, summary_.kill_units, summary_.kill_unresolved,
