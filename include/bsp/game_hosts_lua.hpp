@@ -311,6 +311,18 @@ inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched,
 // kLuaDeviceReloadEnabledBound is false.
 bool lua_device_reload_enabled_00e17bf2() noexcept;
 
+// Packet cc9_add_untouchable_unit (docs/LUA_BINDING_MISSION.md). 008AC140
+// AddUntouchableUnit(unit): argument 0 through 00888AA0 (008AC23B), then
+// [unit]->vtable[140h]() (008AC255..008AC25D, the unit's AI object) and
+// MOV byte [EAX+1D4h],1 (008AC263). No other write, no null test, no result
+// (008AC269 00B66400). The byte is what the unit-AI untouchable gate 00862440
+// reads. True: the row sets the flag below; false: the row stays unimplemented.
+inline constexpr bool kLuaAddUntouchableUnitBound = false;
+// The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
+// left it. False for every unit while kLuaAddUntouchableUnitBound is false.
+// Inert: nothing in this process reads it until the gunnery lane binds 00862440.
+bool lua_unit_untouchable_1d4(std::size_t index) noexcept;
+
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
 // (00893C00). Routed together with the air model: under kSubmarineAirBound
@@ -587,6 +599,8 @@ struct GameMissionLuaSummary {
     unsigned long long in_formation_calls{0};
     unsigned long long in_formation_true{0};
     unsigned long long formation_leader_calls{0};   // packet cc9_get_formation_leader
+    unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
+    unsigned long long untouchable_marked{0};
     unsigned long long formation_leader_found{0};
     unsigned long long formation_leader_other{0};   // the leader is not the argument
     unsigned long long leave_formation_calls{0};
@@ -1104,6 +1118,7 @@ public:
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
     int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
+    int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);

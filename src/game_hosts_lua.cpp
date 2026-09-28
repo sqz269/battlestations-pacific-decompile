@@ -364,6 +364,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_get_formation_leader.
     const bool formation_leader_row = kLuaFormationLeaderBound
         && dispatch_row.address == 0x00899af0u;
+    // Packet cc9_add_untouchable_unit.
+    const bool untouchable_row = kLuaAddUntouchableUnitBound
+        && dispatch_row.address == 0x008ac140u;
     // Packet cc9_submarine_air.
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
@@ -527,6 +530,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (formation_leader_row && !host->error_replay()) {
         return host->run_get_formation_leader_00899af0(state, argc);
+    }
+    if (untouchable_row) {
+        if (!host->error_replay()) host->run_add_untouchable_unit_008ac140(state, argc);
+        return 0;
     }
     if (border_zone_row && !host->error_replay()) {
         return host->run_get_closest_border_zone_008aecd0(state, argc);
@@ -4859,6 +4866,44 @@ bool lua_device_reload_enabled_00e17bf2() noexcept {
     return kLuaDeviceReloadEnabledBound && g_device_reload_enabled_00e17bf2;
 }
 
+namespace {
+// Packet cc9_add_untouchable_unit: the +1D4h byte per units-host index. The image
+// keeps it on each unit's AI object; nothing clears it except
+// RemoveUntouchableUnit 008AC2B0, which no reference row calls.
+std::vector<bool> g_unit_untouchable_1d4;
+}  // namespace
+
+bool lua_unit_untouchable_1d4(std::size_t index) noexcept {
+    return kLuaAddUntouchableUnitBound && index < g_unit_untouchable_1d4.size()
+        && g_unit_untouchable_1d4[index];
+}
+
+// Packet cc9_add_untouchable_unit. 008AC140 AddUntouchableUnit(unit): 00888AA0,
+// vtable[140h](), byte +1D4h = 1. SUBSTITUTION (labelled): an entity with no
+// units-host slot (a scene marker) is skipped, where the image would call its
+// vtable[140h]; the reference rows pass only units.
+int GameMissionLuaHost::run_add_untouchable_unit_008ac140(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.untouchable_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    if (valid) {
+        const std::size_t index = static_cast<std::size_t>(id - 1);
+        if (g_unit_untouchable_1d4.size() <= index) g_unit_untouchable_1d4.resize(index + 1, false);
+        g_unit_untouchable_1d4[index] = true;
+        ++summary_.untouchable_marked;
+    }
+    log_.notef("  AddUntouchableUnit 008ac140: \"%s\" (unit %d) marked=%d t=%.2f (packet "
+        "cc9_add_untouchable_unit)", row != nullptr ? row->name.c_str() : "?", id,
+        valid ? 1 : 0, static_cast<double>(spawn_world_clock_));
+    log_.implemented("MissionLuaNative::AddUntouchableUnit", "008ac140");
+    return 0;
+}
+
 // Packet cc9_device_reload_enabled. 008C1350 SetDeviceReloadEnabled(flag): argument 0
 // through 00B66250 (lua_toboolean) into the byte 00E17BF2 at 008C1458. No entity, no
 // class test, no return value.
@@ -6533,6 +6578,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "cc9_lua_formation_query)", kLuaFormationQueryBound ? 1 : 0,
         summary_.in_formation_calls, summary_.in_formation_true,
         summary_.leave_formation_calls, summary_.leave_formation_left);
+    log_.notef("summary mission script untouchable bound=%d calls=%llu marked=%llu "
+        "(008AC140 -> +1D4h, packet cc9_add_untouchable_unit)",
+        kLuaAddUntouchableUnitBound ? 1 : 0, summary_.untouchable_calls,
+        summary_.untouchable_marked);
     log_.notef("summary mission script formation leader bound=%d calls=%llu found=%llu "
         "other=%llu (00899AF0 -> 007788D0, packet cc9_get_formation_leader)",
         kLuaFormationLeaderBound ? 1 : 0, summary_.formation_leader_calls,

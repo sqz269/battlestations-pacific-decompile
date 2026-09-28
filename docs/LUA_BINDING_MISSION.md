@@ -3581,3 +3581,38 @@ are `local/l7_fl{off,on}_<row>.log` in worktree cc9-lua7, run with the reference
 
 **Verdict: `kLuaFormationLeaderBound = true`.** The mechanism matched. JM05's reads answer the
 group leader, and gameplay is identical on all three rows.
+
+## `AddUntouchableUnit`, 008AC140 (packet `cc9_add_untouchable_unit`, `kLuaAddUntouchableUnitBound`)
+
+Worker cc9-lua7, 2026-09-28. This is the units half of the sixth refresh's rank 1, a joint packet
+with cc9-gunnery8, which binds the gate.
+
+### The image (V, raw listing `008AC140`-`008AC2AB`)
+
+- `008AC23B CALL 00888AA0` resolves argument 0.
+- `008AC253..008AC25D` calls `[unit]->vtable[140h]()`, the unit's AI object. There is no null test.
+- `008AC263 MOV byte [EAX+1D4h],1` is the only write.
+- `008AC269 CALL 00B66400` returns no result.
+- The byte is the unit-AI `+1D4h` that the untouchable gate `00862440` reads (docs/AA_TARGETING.md,
+  docs/GUNNERY_TABLES.md). `008AC2B0` is RemoveUntouchableUnit; no reference row calls it.
+
+### The binding (`kLuaAddUntouchableUnitBound`, committed OFF)
+
+- The row sets a per-unit-index flag in the Lua host.
+- `bsp::game::lua_unit_untouchable_1d4(std::size_t index)` reads it. The declaration is in
+  `include/bsp/game_hosts_lua.hpp`.
+- **Why not a units-host accessor.** The lead's brief asked for
+  `GameUnitsHost::unit_untouchable_1d4`. The units host files are leased to cc9-gunnery8
+  (`cc9_periscope_out`), so the flag lives in this lane's file behind a free function instead.
+  gunnery8 can call it directly, or wrap it as that member.
+- SUBSTITUTION, labelled: an entity with no units-host slot is skipped.
+- The flag is **inert**: nothing reads it until the gate `00862440` is bound.
+
+### Predictions, written before any run
+
+- **JM05 3200/3000: exit 1.** Three calls, all at stage init. `jm05.lua` 596-599 marks the two
+  resolvable `Mission.UntouchUnits`, `PT Boat 80' Elco 01` and `PT Boat 80' Elco 02`. (The other
+  nine names are unauthored, and `table.insert(t, nil)` adds nothing.) `luaJM5InitCapPt` (4502-4509)
+  marks `Mission.CapPt`, the `Event2Pt` it has just generated. The summary reads `calls=3 marked=3`.
+  `AddUntouchableUnit` turns concrete. Gameplay is identical.
+- **USN01 3200/3000: exit 1**, the new summary line only. USN01 makes no call.
