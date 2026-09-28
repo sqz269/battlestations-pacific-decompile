@@ -1352,3 +1352,81 @@ and the torpedo swim's surface plane.
   (`008048A0`'s submerged-target branch and the `SubjectDeepUnderwater` rows, SENSOR_TABLE_DATA).
 - **Bind** the category from the hull's Y and the bands, OFF, with predictions on JM06 and LOMP06,
   and identity on USN01, USN02, USN04 and USN13, which have no submarine.
+
+## 32. The submarine's sensor category `00852B90` (packet `cc9_submarine_sensor_category`, rank 1 of section 31)
+
+### 32.1 The image
+
+`00852B90` is `__thiscall(unit+1E4h)`, so `ESI = unit` and `EDI = unit+1E4h`. docs/SENSOR_TABLES.md
+"The submarine" has the prose. The listing (live, read only):
+
+```
+00852bab: FLD [ESI+100h] ; FLD [ESI+1204h] ; FADD [ESI+1200h] ; FDIV double [00D7A2B0]=3.0
+00852bc3: FXCH ; FCOMIP ; JBE 00852bd4          ; y > (w0+w1)/3 -> 1 Surface  (quotient never stored)
+00852be4: FLD [ESI+100h] ; FLD [EDI+1020h]=[unit+1204h] ; FSUB double [00D7A370]=5.0 ; FSTP float [ESP+8]
+00852bfe: FCOMIP ; JBE 00852c4c                 ; w1-5 <= y -> 2 + ([unit+1234h] != 0): PeriscopeIn / PeriscopeOut
+00852c14: FLD [ESI+100h] ; FLD [EDI+1028h] ; FADD [EDI+1024h] ; FMUL double [00D7A280]=0.5 ; FSTP float [ESP+8]
+00852c34: FCOMIP ; JBE 00852c43                 ; (w2+w3)/2 <= y -> 4 Underwater, else 5 DeepUnderwater
+```
+
+- `unit+100h` is the hull frame's world Y. It is refreshed through `00414DB0` when `unit+C8h` is
+  clear.
+- The four words `+1200h..+120Ch` are the band table `00853630` builds at attach
+  (SUBMARINE_MODEL, "The band table"). The dive binding (`cc9_submarine_dive`) seeds exactly these
+  per boat, for example the Narwhal-class at (0, -10.2, -40, -80).
+- The three constants were read as doubles from the image: 3.0, 5.0 and 0.5.
+- An unordered compare (NaN) takes `JBE`.
+- **Precision.** The surface limit stays on the x87 stack. The other two limits are rounded
+  through a float slot.
+  - The existing `sensor_category_submarine_00852b90` rounded the first limit to float too. It now
+    compares in double, which is exact enough for a float Y.
+  - The other two limits are unchanged: float subtraction and halving round like the image's
+    stores.
+- **The periscope byte `+1234h`** (`periscopeOut`, SUBMARINE_MODEL) has no producer in this process.
+  It reads clear, so the periscope band answers PeriscopeIn. That is a labelled substitution.
+
+**Consumers.** The recon pass looks the category up in the reconclasses tables
+(`src/sensor_table_data.cpp`, SENSOR_TABLE_DATA), as the subject and as the observer.
+- **DeepUnderwater has no row** in any table, for either role. A boat in that state is seen by no
+  sensor, and it sees nothing.
+- **Underwater as the subject:** for example arcade class 3's surface observer sees it at 660 m and
+  1660 m. It sees PeriscopeIn at 1000 m and 2500 m.
+- The AutoTarget takes its candidates from the recon enemy lists (`kAutoTargetReconCandidatesBound`).
+  So the category decides who is shot at.
+
+### 32.2 The binding (committed OFF)
+
+- `GameUnitsHost::submarine_depth_bands` returns the slot's seeded bands.
+- `GunneryReconSensorPassHost::unit_sensor_category` computes the image's state for every
+  submarine, from the hull Y (`unit_position_00fc`) and those bands, and counts it.
+- `kSubmarineSensorCategoryBound` (OFF) decides whether that state is returned. OFF keeps PeriscopeIn.
+- A boat without seeded bands keeps PeriscopeIn and is counted `unseeded`.
+- The summary line is `summary mission gunnery submarine sensor category calls= surface=
+  periscope_in= periscope_out= underwater= deep= unseeded= differs= bound=`.
+
+The OFF build is gameplay-identical to reference i on JM06 and LOMP06 (`pair_diff` exit 1,
+`local\g7off_{jm06,lomp06}.log`).
+
+### 32.3 OFF counters and predictions (written before the ON runs)
+
+| row | calls | periscope_in | underwater | deep | differs |
+| --- | --- | --- | --- | --- | --- |
+| JM06 3200/3000 | 1074 | 453 | 468 | 153 | 621 |
+| LOMP06 1200/1000 | 99 | 99 | 0 | 0 | 0 |
+
+- **S1, the mechanism.** ON returns the counted state. JM06's first recon passes read the same
+  states as OFF, and the totals move only after the tracks do. `differs` = underwater + deep on
+  every row.
+- **S2, LOMP06: gameplay identical** (exit 1). The Narwhal holds -10.2 m, and the periscope band
+  (-15.2 m and above) covers it.
+- **S3, JM06: exit 3.**
+  - The Narwhal-class, at -80 m, is DeepUnderwater. Nothing detects it and it detects nothing.
+    Its torpedo damage dealt (840 OFF) falls, to 0 if it has no other source of targets. It still
+    takes 0.
+  - The underwater Japanese boats are seen at the shorter Underwater ranges. PlayerSub 03's damage
+    taken (562 OFF) and the Fletchers' hits (6 OFF) fall or hold; they do not rise.
+  - Deaths stay at 1, the Gato wreck, give or take one.
+- **S4, the missions without a submarine** (USN01, USN02, USN04, USN13): `calls=0`, and exit 1 on
+  the summary line only.
+- **The flip rule:** ON when S1, S2 and S4 hold and JM06's moves trace to the category through the
+  recon lists. A JM06 move with the opposite sign to S3 is a stop.
