@@ -7,7 +7,9 @@
     "00902920": "AAGunnerBot tick; swinging error 00902B38-00902EF7 zero at SPVeteran (docs/FLAK_PROXIMITY_BURST.md 5)",
     "009030C0": "AAFlakBot tick; 008FDBE0 error zero at SPVeteran",
     "009D15F0": "torpedo aim tick; aim_complete_2Ch = 0 for all 16 Kates (plane-side, handed over)",
-    "007CEA1C": "the release stage refuses a dead aircraft (docs/PLANE_DEATH_MODES.md step 6)"
+    "007CEA1C": "the release stage refuses a dead aircraft (docs/PLANE_DEATH_MODES.md step 6)",
+    "009D236E": "state+2Ch = 1: range - min(F0C*speed/2, speed/2) < F34, or |delta| > F0C; end of run, not a release precondition",
+    "009D31B0": "aim-complete consumer: approach+132h ? state+2Ch : false"
   },
   "no_ghidra_function": [],
   "calls": [],
@@ -17,5 +19,6 @@
     "flak unlocked passing rule beyond 50 m (0070C7B6-0070C806) not modelled"
   ],
   "verdict": "read: the AA that kills USN04's Kates is the image's at SPVeteran, and the aim run is the image's at SPNormal; 5 of the task's 6 releases are dead aircraft and spawn nothing (torpedo_drop drops=1; USN13 releases=2, drops=0); the four gunnery comparisons are closed; nothing bound",
-  "names_added": []
+  "names_added": [],
+  "aim_state_law": "no throttle or speed write in 009D15F0; live Kates at throttle 1.00 (84-98 m/s); slow releasers are power-lost gliders; aim ticks are 0.1 s thinks (kPilotThinkInterval 0.09), runs 15-26 s from ~2200 m; nothing bound"
 }
