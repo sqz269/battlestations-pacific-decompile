@@ -164,8 +164,10 @@ void ai_groups_compose_00a2e720(AiGroupThinkHost& host) {
         host.split_detached_members(cursor);
     }
 
-    // Phase 3, 00A2E835..00A2EA5A. Five world collections, one new group per
-    // collection holding every candidate that collection yields.
+    // Phase 3, 00A2E835..00A2EA5A. Five world collections. The image builds one
+    // group per admitted candidate (kAiGroupSeedPerEntityBound). The OFF arm,
+    // one group per collection holding every candidate, was a misreading
+    // (docs/AI_CAUTIOUS_ROUTE.md section 19).
     for (int collection = 0; collection < kAiGroupSeedCollectionCount; ++collection) {
         void* seeded = nullptr;
         for (void* cursor = host.first_seed_candidate(collection); cursor != nullptr;
@@ -173,6 +175,12 @@ void ai_groups_compose_00a2e720(AiGroupThinkHost& host) {
             void* entity = host.seed_candidate_entity(cursor);
             if (!ai_group_seed_candidate(host.entity_flags(entity), host.entity_has_group(entity),
                                          host.entity_team(entity))) {
+                continue;
+            }
+            if constexpr (kAiGroupSeedPerEntityBound) {
+                // 00A2E85E..00A2E881 (and the four later loops): new(5660h),
+                // 00A2DFA0(entity), one group per candidate.
+                host.create_group(entity);
                 continue;
             }
             if (seeded == nullptr) {
