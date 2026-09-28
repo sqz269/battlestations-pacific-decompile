@@ -2053,3 +2053,33 @@ set on its own.
   Strip `chr(13)` in edit scripts.
 - A census over `vehicleclasses.lua` must read each table's top-level `Type`, which comes late in
   the table. Nested `Type` keys of sub-tables misled section 13.
+
+## 24. Item 7: the AutoTarget follower gate, re-paired after the join follow-up (section 12)
+
+Worker cc9-ships9, 2026-09-28. The base is `f01935cde`, which is `agent/cc9-ships9` with main
+`e0f07c8fd` merged: `kFormationJoinFollowBound` is ON, so a successful join `0077F940` runs
+`00720CD0` and leaves `follow` in the follower's director.
+
+**OFF** (`local\ships9_h0_<row>.log`, tree build of `f01935cde`):
+
+| row | follower thinks | follow requests / joins | section 12's ON leaves (before the join follow-up) |
+| --- | --- | --- | --- |
+| USN01 | 1575 | 152 / 0 | 163 |
+| USN04 | 3616 | 676 / 0 | 7 |
+| JM06 | 1509 | 56 / 4 | 11 |
+| JM08 | 2717 | 695 / 1 | 714 |
+| USN13 | 7097 | 1313 / 0 | 1344 |
+| JM05 | 6027 | 895 / 3 | 157 |
+| LOMP10 | 1207 | 50 / 1 | 61 |
+
+### Predictions, written before any ON run
+
+1. **The leave-and-rejoin loop is gone.** On every row, `leaves` on ON is far below section 12's
+   ON value. A follower whose director holds `follow` returns at `009F5DE0` without a leave.
+2. **What leaves remain** belong to followers whose director was given a different command after
+   they joined, by the mission script or the AI. They are few per row, at most the number of
+   distinct followers times the number of times a script re-commands them.
+3. **Rows move** (exit 3) wherever a leave remains, because the unit leaves its formation. A row
+   with `leaves=0` on ON is identical apart from the gate's own counters.
+4. **No death prediction.** Section 12's loop moved USN04 and USN13 deaths. Without the loop, fewer
+   rows should move and each by less.
