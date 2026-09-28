@@ -414,8 +414,30 @@ pointers at squadron `+3D0h`..`+3E0h`, ending at the first null.
   the circle, and `+0Dh`, the side taken from the members' x sum when the mode is below 3.
   Its arc term goes through `00BF9940` with an x87 register argument, so the rest needs the
   listing.
-- `006C3F80` (`006C3F80`-`006C45B7`) is unread past its first arm. When the plane is not airborne,
-  or `+0Ch` is set, it sets `+8h` = 1.0. It is what later moves `+8h`, which gates mode 4.
+- `006C3F80` (`006C3F80`-`006C45B7`, `__thiscall(block)(rec)`) is read from the pseudocode only.
+  The argument roles below must be checked against the listing before binding. It is the spacing
+  rule that sets `+8h`, which gates mode 4.
+  - When the plane is not airborne, or `+0Ch` is set: `+8h` = 1.0.
+  - Otherwise it walks every other airborne record with `+0Ch` clear and `+4h` > 0.
+    - A mode-4 record (`own4`) considers only mode-4 records.
+    - A wingman below mode 3 on a squadron with `+3B0h` clear considers only its own squadron.
+    - Everyone else considers mode 3 and 4 records.
+    - The head skips its own squadron's members.
+  - For each considered record, g = `+4h`(other) - `+4h`(own). A record behind by more than
+    `00E08E50` is ignored, and so is one within that band that loses the tie-break. The
+    tie-break compares plane `+9D8h`, then the side `+0Dh`, then the pointers.
+  - `00E08E50` is in `.data` and holds 70.0 in the image. Its only xref is this read.
+  - For the rest it keeps the smallest `+4h` ahead and the smallest non-negative gap -g, and
+    counts them (`k`).
+  - With `k` = 0, `+8h` = 1.0 unless own is mode 4. For mode 4 it takes the launch-site object's
+    time (`00F876A4` - [block `+3Ch`]`+40h`) and the flight time `+4h` / speed (`vtable[38h]`),
+    against FollowDistTime (tuning `+504h`), through `00419010` with 0.75, 0.01, 0.25, 0.4 and
+    the site's `vtable[30h]`.
+  - With `k` > 0, the gap is turned into seconds (gap / speed) and scaled against
+    FollowDistTime x 1.2 through `00419010`:
+    - own mode 4 uses 0.7 / 1.1 x, 1.1;
+    - otherwise it uses 0.75 / 1.25 x, 2.0;
+    - either result is capped by `00419010`(-0.15, 0.01, 0.15, 2.0; the relative slack).
 - The block `vtable[10h]`, the scene rows' RunwayWidth and RunwayLength for CB4_AF, and the
   host's substitute for the parent link `+3Ch` of an airborne plane. The proposed substitute is
   null.
@@ -445,7 +467,8 @@ pointers at squadron `+3D0h`..`+3E0h`, ending at the first null.
 
 1. **The landing sequencer `006CC9F0`** is read in section 5b; it is not bound. Two bodies are
    left before the binding can be exact: `006C6020` (the record's `+4h`, whose arc term needs the
-   listing) and `006C3F80` (the record's `+8h`, which gates mode 4). The binding then needs the
+   listing) and `006C3F80` (the record's `+8h`, which gates mode 4; read from the pseudocode,
+   its argument roles unverified). The binding then needs the
    holder frame from the owner's pose, `RunwayWidth`/`RunwayLength` and block `vtable[10h]`. After
    that come `land/standby` and `land/line` for the row.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
@@ -471,7 +494,7 @@ pointers at squadron `+3D0h`..`+3E0h`, ending at the first null.
 | `006C0750`, `006BEE40`, `006BF0D0`, `006BC960`, `006BCC90`, `006BCA40`, `006BA620` | complete as a read; block `vtable[10h]` and `0085DEA0` unread |
 | `006C5E20` | partial: gates read, the heading test's argument roles unread |
 | `006C6020` | partial: `006C6038`-`006C60F0` and the tail stores read; the arc term (`00BF9940`) unread |
-| `006C3F80` | partial: the first arm (`+8h` = 1.0) only |
+| `006C3F80` | partial: read from the pseudocode; the `00419010` argument roles and `00E08E50`'s width unverified against the listing |
 | the six landing states' bodies | unread |
 
 ## ABI
