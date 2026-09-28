@@ -346,3 +346,67 @@ it can sit in `src/ai_command_tick.cpp` beside 00A14DD0.
   delivers it. It delivers at the call otherwise.
 - The switch is ON on main since cc9-gunnery6's landing, so the section 9 pairs were measured with the
   5Fh points delivered at the row-9 drain. Nothing is left to do.
+
+**Item 2 pair.** Commit `1a65d172b`. OFF is `local\s5cm_off_<m>.log` and ON (`local\s5cm_on`) is `local\s5cm_on_<m>.log`:
+- USN12 3200/3000: exit 0, and the route census is unchanged (builds=2, points=7, clears=1).
+- USN04 4700/4500: exit 0.
+
+The prediction held. **`kCautiousMoveRouteBound` is ON.** It takes effect once a creator of CAUTIOUSMOVE (00A2CCF0 or 00A13340) is bound.
+
+## 12. Handoff: the wedge binding (`00A11690` / `00A113D0`) and the state of open items 2-5
+
+Worker cc9-ships5, 2026-09-28. The branch is merged with main at `118cf99b2`. The unit-host entry point
+this binding needs is queued with cc9-lua6 and has not landed yet.
+
+**Status of the section 7 items:**
+
+| item | state | where |
+| --- | --- | --- |
+| 1. `00A11690` wedge | read whole, not bound: waits on the units-host entry point | section 10, this section |
+| 2. CAUTIOUSMOVE's `00A14DD0` (`00A152B0`) | bound, `kCautiousMoveRouteBound` ON (identity pair USN12 / USN04, exit 0; no creator bound) | section 11 |
+| 3. the out-of-map crossing `004BBDD0` in `0071FDE0` | read, not bound: no reach (`outside_map` = 0 on every run) | section 11 |
+| 4. slot `+18h` | confirmed: the follower's index delivered by message 60h (`0071CDD0` -> `0071C0B0` -> `007AE060`); the host reads the cursor index directly (LABELLED, one delivery early) | section 11 |
+| 5. 5Fh delivery | done: posted to the loopback queue under `kSetCommandQueueDelayBound` (ON on main) | section 11 |
+
+**The wedge plan.**
+1. **Sync first.** Run `python tools/bsp.py sync` once lua6's sha lands. That landing adds
+   `bool GameUnitsHost::set_formation_member_offset_0070d080(std::size_t leader, std::size_t member,
+   int column, float lateral, float axial)`, which is false without a record.
+2. **The store sites it must reproduce.**
+   - `00A11A57` writes `MOVSS [EAX+10h]` (lateral, column 0).
+   - `00A11A5C` writes `MOVSS [EAX+20h]` (axial, column 0).
+   - `EAX` is 0070D080's record for the member.
+   - The values are `-0.0 - off.x` and `-0.0 - off.z` (`00D7A208`, `SUBSS`).
+   - In the units host these are the same two fields `record.lateral[0]` / `record.axial[0]` that the
+     join decomposition writes at `src/game_hosts_units.cpp` 18790/18791.
+3. **The shape-0 rewrite.**
+   - `0070EFD0(0)` at `00A11866` first rewrites column 0 of every member, including non-ships. It
+     reads `00E08F18 + j*8` as floats (command-object pointers, so values near 0) times
+     FormationShipDist, and times 1.5 on z.
+   - The leader's record gets (0, 0) (`0070F03A`).
+   - Ask lua6 for a second entry point, or reproduce it through the first one: 0 for the leader, and
+     for non-ship members the pointer-as-float products (denormal, effectively 0; LABELLED).
+4. **The pure rule** goes in `src/ai_command_tick.cpp` as `ai_formation_wedge_00a11690` over the
+   `AiCommandTickHost`. It needs:
+   - the leader forward row `+0ECh/+0F4h`: the heading is `atan2(x, z)` (_CIatan2 with ST0 = z);
+   - the leader position;
+   - `tick_danger_cost_00a010f0` (bound);
+   - `Formation_UnitDist` (tuning `+210h`, `kAiTuningFormationUnitDist`, 500 in this installation).
+   **Keep the image's quirk.** The frame rotates `(d[0], d[1])` and `d[1]` is the zero y, so the
+   threat's z never enters. The x87 order is in section 10. `004F2F40` is
+   `BSP_Geometry_NormalizeVector2DWithCutoff`; read its cutoff before binding.
+5. **Callers.** It runs after the follower pass in CAUTIOUSATTACK (`00A15350`), CAUTIOUSMOVE
+   (`00A152CD` `JMP`) and DEFENDPOSITION (`00A15500`). One switch, `kCautiousWedgeBound`, starts OFF.
+6. **The tail.** `0077A080` / `0077C880` on the formation `+284h` is the formation-update send.
+   Record it unless lua6's entry point already raises the equivalent refresh.
+
+**Prediction to write before the ON run (USN12 3200/3000, route switches ON).**
+- The Montpelier group (12 members, a ship leader with a formation) gets a wedge on every
+  CAUTIOUSATTACK tick from 6.10 s on.
+- Ship members take rows `r = 1, 2, 3` of 3, 5 and 7 places at 500 m spacing. The 11 followers fill
+  rows 1-2 (8 places) and 3 of row 3.
+- Their station errors move and the fight moves: exit 3.
+- USN10's Atlanta-class 01 group moves the same way.
+- USN01, USN04 and USN02 hold no CAUTIOUSATTACK. Also check that no DEFENDPOSITION group there has a
+  ship leader with a formation, because those groups would run the pass too. List them from the OFF
+  census before predicting identity.
