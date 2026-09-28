@@ -2693,3 +2693,59 @@ work outside this lane's files.
 On the census rows only JM08 calls it, once: `SquadronSetTravelAlt(Mission.MovPlane, 750, true)`
 (`prcpjm08.lua` 574, this installation, 2024-08-26). The movie plane is made invincible on the next
 line. The attack waves' calls (1075, 1169, 1267) are not reached by 3000 frames.
+
+### `attackerPlayerIndex`: the fire-time producer (packet `cc9_attacker_player_index`, a read)
+
+Worker cc9-lua4, 2026-09-28. This closes item 2 of the cc9-lua3 handoff as a read. The binding
+needs gunnery-side lines, which are routed below.
+
+**The record (V).**
+- `00988510` takes `src` from `[hit+4]->vtable[108h]()`. On the projectile vtable `00CF9DF0`, slot
+  `108h` (`00CF9EF8`) is `006E7C40`, which returns `ECX + 170h`, or 0 for a null projectile.
+- `006E7B00` constructs the `ProjectileShotBase` at `+170h` (`006E7B24` `LEA EDI,[ESI+170h]`,
+  then `006E22D0`). So `src` is the shot sub-object, and `[src+1Ch]` is projectile `+18Ch`, which
+  `include/bsp/projectile_impact.hpp` already names `kProjectileOffTeamId`.
+- `006E22D0` initialises the field to -1 (`param_1[7] = 0xFFFFFFFF`).
+
+**The producers (V).**
+- **Guns: `0072BF10` BSP_Gun_CreateProjectile.** It creates the shot through the class
+  descriptor's `vtable[20h]` at `0072C006` (`006E8430` for a shell). The torpedo class's create is
+  `00856420` (`docs/PROJECTILE_KINDS.md`); whether torpedo tubes fire through this function was
+  not traced.
+  - `0072C0F2` `EAX = gun[+1ACh]`, the gun's own seat. `0072C0FB` stores it at `shot+1Ch`.
+  - The fallback applies when the seat is 8 (PLAYER_AI), `gun->vtable[5Ch](21h)` holds (the
+    `MRFSGun` family, `docs/ENTITY_CLASS_IDS.md`), and the owner `gun[+3F0h]` is non-null. Then
+    `EBX` is the owner, and when the owner is a plane (`vtable[5Ch](0Fh)`) with `+914h > 0.0`,
+    `EBX = [[owner+9D4h]+3D0h]`, the squadron's member-array head. `0072C14B` stores
+    `[EBX+1B0h]`, the unit's role-1 slot, at `shot+1Ch`.
+- **Bombs: `006E4D50` BSP_MBombPlatform_Drop.** `006E5521`-`006E5527` store
+  `[platform[+3F0h]+1B0h]`, the owning plane's role-1 slot, at `shot+1Ch`.
+- Depth charges were not traced.
+
+**The values.** This installation's scripts define `PLAYER_1 = 0`, `PLAYER_AI = 8` and
+`PLAYER_ANY = 9`. An AI gun gives 8, or the owner's role-1 slot for an `MRFSGun`. A gun seated by
+message 79h gives its holder's slot (`docs/PLAYER_GUN_SEAT.md`).
+
+**What the host lacks.**
+- `projectile_spawn_0072bf10` (`src/projectile_impact.cpp`) already carries `team_id` and
+  `shot_set_team`, but no host calls it.
+- The gunnery host builds its own `GameProjectileRow` at `src/game_hosts_gunnery.cpp` 5927-5930
+  and carries no team id to `apply_hit`. `GameGunneryHitEvent::attacker_player_index` stays -1
+  (7370).
+
+**Routed to the gunnery lane** (`include/bsp/game_hosts_gunnery.hpp`,
+`src/game_hosts_gunnery.cpp`):
+1. `GameProjectileRow`: `int team_id_1c{-1};  // shot+1Ch = projectile+18Ch (0072C0FB, 0072C14B)`.
+2. At the shot's creation (after `shot.owner_side`, 5930): `shot.team_id_1c = gun.seat_1ac;`.
+   When that is 8 and the gun is an `MRFSGun`, take the owner's role-1 slot through
+   `units.unit_current_role_slot(owner_unit, 1, out)`. For a plane owner with `+914h > 0`, take
+   the squadron head's slot instead.
+3. `apply_hit` takes the shot's `team_id_1c` (the call at 6683), and 7370 sets
+   `ev.attacker_player_index` from it.
+4. The bomb drop's shot takes the plane's role-1 slot the same way.
+
+**The Lua half, when the field lands.** Under a new switch, the `hit` entry keeps the
+`attackerPlayerIndex` set instead of counting it unmodelled, and dispatch tests the event's index
+against it. Set membership is assumed, as for the `recon` party set; the 009725B0 test itself is
+unread. The only live user is JM06's `hshit` (`{PLAYER_1}` on the hospital ship), which the idle
+runs never hit.
