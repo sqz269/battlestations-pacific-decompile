@@ -2817,7 +2817,7 @@ could differ; a degenerate chunk takes the generator's synthetic eight-point box
   **Not excluded:** an earlier branch of `00937C90` that skips all of this when `unit+360h` is null;
   the function's control flow above `0093855D` was not read.
 
-### 49.4 Plan for step 2, `cc9_hull_aabb_host` (not bound)
+### 49.4 Plan for step 2, `cc9_hull_aabb_host` (not bound; superseded by 49.7)
 
 1. **The reader.** For a hull class's `.mmod` from this installation, find each `ConvexObject` chunk
    (section 47.2's layout: name, u32 size, u32 0, u32 record count, then per record a float3 and
@@ -2831,3 +2831,124 @@ could differ; a degenerate chunk takes the generator's synthetic eight-point box
    `deruyter.mmod`; any difference beyond 0.001 means the dedup or a degenerate case acted.
 4. The binding stays step 3 (units lane, `kHullInertiaFromShapesBound`, OFF), with section 47.3's
    predictions.
+
+### 49.5 The two open pieces, closed: who fills `model+4Ch`, and which node `model+0Ch` is
+
+Section 47.4 (cc9-gunnery9) reached the same box producer independently. This subsection closes
+what 49.3 and 47.4 left open. Names are hypotheses; Ghidra was not changed.
+
+**The writer of `model+4Ch` is `0071B710` (`BSP_GameResourceInstance_PublishItem`).** Its ABI is
+`__thiscall`, with ECX the model instance, stack `(item, node)`, and `RET 8` at `0071B7FF`.
+- **Census.** `006F9A80`, the ConvexObject's static type-token accessor (`MOV EAX,[00E19A98]`), has four `CALL rel32`
+  callers: `0071406A` (`00714060`), `0071B75A` (`0071B710`), `0071BB8D` (`0071BB40`) and `009358A6`
+  (`00935540`). The token `[00E19A98]` itself is read only by the class's own slots `006F9A81`,
+  `006F9AA1`, `006F9D45` and the registration `00CCEC4A`. `0071B710` has no direct caller; it is
+  reached only through the vtable slot `00CFD8E8`.
+- **The store.** After the base publication `00B89E90` (`0071B722`), `0071B758..0071B77C` asks the
+  item's slot `+0Ch` (IsKindOf, `006F9D40`: it scans the token list `00E19A98..00E19AA0`) with
+  `006F9A80`'s token. On a match it builds `{item, node}` at `[ESP+10h]/[ESP+14h]` and appends
+  it with `0071AFC0` to `instance+4Ch`. The other four predicates fill `+3Ch`, `+5Ch`, `+6Ch` and
+  `+7Ch`. docs/NATIVE_MODEL_GRAPH_AQ.md already reconstructs this caller and gives the same table.
+- `0071BB40` is the file-level resource's own classifier: it appends the bare item pointer to
+  `resource+54h` (`0071BBB1`). It is not the 8-byte list.
+- The file hierarchy record's `+4Ch` (docs/NATIVE_RESOURCE_HIERARCHY_FIELDS.md: data, count and
+  capacity of u32 resource indices) is a different object. `model` is the runtime instance at
+  part instance `+160h`.
+
+**`model+0Ch` is the graph root: hierarchy record 0.** This is NATIVE_MODEL_GRAPH_AQ's
+graph-builder evidence. `B891A0`, reached from the model handle's slot `+8h` through `007137F0`
+(the `class+50h` `vtable[8h]()` of MODEL_REACHES_UNIT), builds one node per hierarchy record. It
+saves the first constructed node at `B894FB` and publishes it to `instance+0Ch` at
+`B89600..B89606`. Every record's items are then published with that record's own node.
+
+**The DeRuyter hull chunk is owned by the root.** The decoder is `local\g10_mmod_tree.py`, read-only on this
+installation's `models/ships/us/deruyter.mmod`, mtime 2024-07-13. The file is a tree of
+`{u32 name length, name, u32 size, payload}` chunks: `MMOD` then `BoundingSphere`, `BoundingBox`,
+`Resource` (173 items), `Hierarchy` (34 `Item`s), `Warnings` and `Errors`. Each `Item` holds
+`Name`, `Parent`, `Matrix`, `Flags` and one u32 `Resource` index per attached item.
+- Item 0, `GroupRoot_Deruyter` (no `Parent`, `Flags` 1, identity `Matrix`), lists resource 125:
+  the ConvexObject at file+`2C5AC00`. That is 47.4's hull chunk, 117 points.
+- The other nine ConvexObjects (resources 107 to 123) belong to the `smoke0N-fizika_01` and
+  `bridge0N-fizika_00` items (items 25 to 33), which are children of `De_Ruyter:hull`.
+- **So the walk's owner 2 keeps exactly the hull chunk**, and owners 1, 3 and 4 find nothing.
+
+**Across this installation's ship models** (88 `.mmod` files under `models/ships`; `local\g10_rootbox.txt`):
+
+| root record's ConvexObjects | files | examples |
+| --- | --- | --- |
+| one | 46 | `deruyter`: min (-8.23, -5.65, -96.90), max (8.23, 12.20, 77.02) |
+| more than one | 2 | `hospital_ship` (3 of 67), `california_kikotobe` (4 of 4) |
+| none | 40 | `akagi` (hull chunks on item 1 `Akagi:akagi_lod1`), `hiei` (on `FrontReduced` and `RearReduced`), `soryu`, `jap_cargo`, `i-400` |
+
+- Every root `Matrix` is identity.
+- **No item in any of the 88 files is named `firstnode`, `front` or `back`,** either whole or
+  after the colon. `0071AD50` looks the name up in a sorted map through `0071AAE0`. Its key form (the
+  full `Model:item` name or not) and its comparison (case-sensitive or not) are **not read**. If the
+  lookup is exact, owners 1, 3 and 4 never match in this installation. The 40 classes without a
+  root ConvexObject would then attach no hull shape at all.
+
+### 49.6 Open item: `00937C90` against MODEL_REACHES_UNIT
+
+Two readings, neither settled here:
+- **(a) `class+50h` has a writer the scans missed.** Then every ship that reaches the hull build has a
+  non-null `unit+360h`. `00937C90` reads `[[unit+360h]+160h]+50h` at `0093856C..00938580`, and
+  `+0Ch` at `00938F9D`, with no null exit on those paths: the `JZ` at `00938574` and `00938F89`
+  only substitute a null model, which is then dereferenced. MODEL_REACHES_UNIT's "no writer"
+  would be a vacuous scan: a block copy, a store through a register base, or a virtual.
+- **(b) An earlier guard skips the block.** A branch of `00937C90` above `0093855D`, or its caller,
+  skips all of this when `unit+360h` is null. Then natively no hull shapes attach, the body box
+  stays empty, and the inertia is zero, as it is in the host today.
+
+The discriminating read is `00937C90`'s control flow from its entry to `0093855D`, plus a census of
+`class+50h` stores that includes `REP MOVSD` block copies over the class descriptor. Under (b),
+section 47.3's step 3 changes no row.
+
+### 49.7 Plan for step 2, `cc9_hull_aabb_host`: the reader and the declaration step 3 consumes
+
+This replaces 49.4. It stays in the gunnery lane, as a new header and source, with
+`cmake/startup.cmake` taking one line. It is not bound.
+
+```cpp
+// include/bsp/mmod_hull_convex_box.hpp (proposed)
+namespace bsp {
+// The body-space box the hull body's attached convex shapes give (00C55FC0's union of
+// 00C57C40's per-shape boxes), for the shapes the walk 00938F61..0093918C keeps: the
+// ConvexObjects that hierarchy record 0 (the graph root, model+0Ch) lists. Already
+// widened by kDynConvexMeshBoundsEpsilon (0.02), so it goes straight into
+// ShipHullBodyInputs::aabb_min/aabb_max. shape_count 0 means no root ConvexObject:
+// leave the inputs at their zero default (49.5, 49.6).
+struct MmodHullConvexBox {
+    OceanVec3 min{};
+    OceanVec3 max{};
+    std::uint32_t shape_count{0};   // root-listed ConvexObjects
+    std::uint32_t point_count{0};   // their vertices, for the log line
+};
+bool read_mmod_hull_convex_box(const std::vector<std::uint8_t>& mmod_bytes,
+                               MmodHullConvexBox& out, std::string& error);
+}  // namespace bsp
+```
+
+**The reader.** It parses the chunk tree as 49.5 decodes it and takes `Hierarchy` item 0's
+`Resource` indices. It keeps the ones whose `Resource` child is named `ConvexObject`. For each, it
+follows the parse's own float sequence rather than a raw min and max:
+1. Take the point box and centre `c = (min + max) * 0.5` as `006F9EE0` computes it: min and max
+   seed at plus and minus `FLT_MAX`, the double 0.5 at `00D7A280`, stored to float.
+2. Re-centre the points, `p - c` per component in float (`006FAEA0..006FAEC7`).
+3. Build the hull with `avoid_zone_dyn_hull_replace_00c5deb0` and read `data->minimum/maximum`
+   (`00C389C0`).
+4. Take `dyn_convex_mesh_shape_bounds_00c57c40` with an identity rotation and translation `c`.
+5. Merge the shape boxes as `00C55FC0` does.
+
+For a single chunk the result is the raw point box widened by 0.02, up to float rounding. The
+first check compares the two for every root chunk of the 88 files.
+
+**What step 3 does** (the units lane, cc9-lua10; one line per field):
+- In the hull block of `game_hosts_units.cpp` (the `bsp::ShipHullBodyInputs hull{}` at about line
+  9840), behind `kHullInertiaFromShapesBound` (OFF), read the class `Mesh` string. Use
+  `lua.read_resource_file` exactly as `class_buoyancy_list_0082fe30` does, cache per `type_id`, and
+  on success with `shape_count > 0` set `hull.aabb_min = box.min`, `hull.aabb_max = box.max` and
+  `hull.shape_count = box.shape_count`.
+- Log one line per class: `shape_count`, `point_count` and the extent.
+- **DeRuyter's expected extent** is (16.50, 17.89, 173.97). 47.4 gives the inertia and the USN02
+  prediction; pair it with the roll torque OFF first, as 47.3 says.
+- If 49.6 resolves to reading (b), step 3 stays OFF for good.
