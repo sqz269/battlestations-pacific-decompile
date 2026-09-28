@@ -1871,7 +1871,7 @@ larger health pools.
 | 4 | director slot housekeeping | exact in effect (section 36) |
 | 5 | command-allowed extra tests `009229F0` / `007AC9D0` (268 calls) | read and measured: the image allows every call on reference j's rows, as the host does; recorded, not bound (section 39) |
 | 6 | recon convoy and group records | the convoy fold is counted, not placed (section 34); the squadron group-level publish stays blocked (section 22) |
-| 7 | `007788B0` controller ownership | exact while `ctl+284h` is empty or names this controller (decompile); not checked for a player-controlled unit |
+| 7 | `007788B0` controller ownership | **read in section 44**: it is the formation-follower gate; the binding is the ship-AI lane's |
 | 8 | hull roll torque `00827312` (USN02, 52 calls) | **open, unread**; reach 2 |
 
 ### 37.3 Open items found on the way
@@ -1881,6 +1881,7 @@ larger health pools.
 - **Plane rows and the forced fire target.** Since `kFireTargetObjectIdBound`, plane rows store the
   commanded target and their AutoTarget accepts it (USN04 3, USN01 5). Whether the image's plane
   gunnery reads the director fire target is unread (section 33.4). That belongs to the plane packets.
+  **Closed by section 42:** no plane-side pass reads one (`kPlaneNullFireTargetProviderBound` ON).
 - **A LandConvoy unit.** `00805680`'s group records need a `LandConvoy` entry in the units host's
   index space (section 34). That belongs to the units lane. With one, JM05 is still predicted
   identity within 3000 frames.
@@ -2051,3 +2052,388 @@ every call these rows make. A binding would change no answer, so nothing is comm
 
 The commands host holds no class ids. A binding would need the units host's `unit_is_kind_of` and
 the scene markers' classes, and a way to tell the markers from the host's unit handles.
+
+## 40. The untouchable gate `00862440` (packet `cc9_untouchable_gate`, the gunnery half of lua7's natives rank 1)
+
+### 40.1 The image
+
+- **The gate.** `00862440 BSP_Entity_UnitAiSuppressesGunnery`, `__thiscall(entity)`, body
+  `00862440-00862471`, RET 0. It calls `entity->vtable[140h]()` twice (`0086244B`, `0086245B`). It
+  answers 1 when the result is non-null and its byte `+1D4h` is set (`0086245D`), and 0 otherwise.
+  The proxy is the entity itself for a ship (`0047F320` is `mov eax, ecx`), `[plane+9D4h]` for a
+  plane, and `[fort+738h]` or the fort for a land fort (`include/bsp/gunnery_tables.hpp`).
+- **Its only caller** is `00865248` in `00864FE0 BSP_UnitGunneryAi_Tick`. A `rel32` scan of
+  `.text` finds that CALL and nothing else, and no absolute dword names `00862440`.
+  - The site walks the unit's recon list (`[..+DE8h]`, next at `+8h`, the entity at `+4h`).
+  - `00863990` scores each candidate. If it accepts (`0086523C`), the gate runs. A true gate jumps
+    to `0086542F`, the next candidate, before the visibility test `00864D90` (`0086525D`) and the
+    pick.
+  - **What it blocks:** only the unit gunnery AI's own choice of a target for its gun categories.
+    It is not in the ship AI's target choice, the attack-move or ramming paths, or a commanded fire
+    target (`00835860`).
+- **The writer.** The Lua native AddUntouchableUnit `008AC140` writes the byte through the same
+  `vtable[140h]` (`008AC263`), as lua7 read it (LUA_BINDING_MISSION). The flag therefore sits on
+  the unit's proxy, which is where the gate reads it.
+
+### 40.2 The binding (committed OFF)
+
+`kAiUntouchableGateBound` in `src/game_hosts_gunnery.cpp`. The gunnery host's
+`unit_ai_suppresses_00862440` reads `bsp::game::lua_unit_untouchable_1d4(index)` for the
+candidate's units-host index. It counts the reads, and the reads a set byte would suppress, on
+both sides. The summary line is `summary mission gunnery untouchable gate reads=... marked=...
+bound=...`, and the first six marked reads are traced.
+- **LABELLED:** the Lua host keys the flag by the unit the script passed. That unit is the proxy
+  for a ship. A plane's proxy `[plane+9D4h]` is not followed.
+
+### 40.3 OFF counters and predictions (written before the ON runs)
+
+The OFF side is this tree's build, with reference j's run parameters plus main's later landings.
+
+| row | OFF | prediction |
+| --- | --- | --- |
+| JM05 3200/3000 | AddUntouchableUnit marks units 339, 340 and 364 at t=0.00. The gate reads 2520 candidates, **none of them marked**. PT Boat 80' Elco 01 and 02 are on side 2, with no enemy nearest and no shots at them. Event2Pt is on side 0, with its nearest enemy 6829 m away, beyond every gun range | **exit 1, gameplay identical.** The summary line changes only its `bound`. No attack on the PT boats exists to disappear in this window, and the death rows are unchanged |
+| USN04 4700/4500 | no mark (`calls=0`); the gate reads candidates, none marked | exit 1, the summary line's `bound` only |
+
+- **U1, the mechanism:** `marked` is the same on both sides of each row. ON suppresses exactly the
+  marked reads.
+- **U2:** no gameplay line moves on either row.
+- The verdict rule: U1 is the mechanism. The flip follows U1 and U2.
+
+### 40.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `65c438f3e`.
+- **ON** is `pair_export --commit 65c438f3e --flip kAiUntouchableGateBound=true` (SHA-256 prefix
+  `BB13B37B37AF`).
+- The logs are `local\g8_uoff_<row>.log` and `local\g8_uon_<row>.log` in worktree cc9-gunnery8.
+
+| row | `pair_diff` | gate reads / marked, OFF = ON | against the prediction |
+| --- | --- | --- | --- |
+| JM05 3200/3000 | exit 1, gameplay identical | 2520 / 0 | held |
+| USN04 4700/4500 | exit 1, gameplay identical | 5795 / 0 | held |
+
+- **U1 held, but only vacuously.** No marked candidate reaches the gate on either row, so the
+  suppression itself is not exercised by any reference row. The binding is the listing's two
+  tests on the byte the native writes.
+- **U2 held.** Besides the summary line's `bound`, the ON logs differ only in presentation. The
+  back buffer is 640x480, and the renderer capability lines are missing. The user's session had become
+  an RDP session (`query session`: rdp-tcp Active, console Conn), the known 2026-09-23 state.
+  That is environment, not this switch.
+- **An OFF 9200/9000 JM05 run** (`g8_uoff_jm05l`), started to look for a later marked read,
+  crashed at mission frame 2744. The null read was in `set_native_renderer_render_state_00b24460`
+  (`bsp_game+25FBC5`), about 20 minutes into the run. It is renderer-side, not a gunnery path, and most
+  likely the transition into the RDP session noted above. It was not re-run, so JM05 past 3000 frames is
+  **not measured**.
+
+**Verdict: ON.** The mechanism is the image's, and both rows are identity.
+`kAiUntouchableGateBound = true`.
+
+**Still open.**
+- A row where an enemy gun reaches a marked unit. On JM05, Event2Pt is on side 0 and 6829 m from
+  its nearest enemy at 3000 frames. PT Boat 80' Elco 01 and 02 are on side 2 and are never anyone's
+  nearest.
+- A plane passed to AddUntouchableUnit: the gate reads `[plane+9D4h]`, which is not followed here.
+
+## 41. Handoff (cc9-gunnery8, 2026-09-28, at about 75% context), with the hull roll torque read
+
+This worker's packets: reference j (GAME_EXECUTABLE), the periscope byte (section 38, ON), the
+command-allowed extra tests (section 39, recorded), the entry point
+`fire_function_guns_now_009e2b60` (inert, for the ships lane) and the untouchable gate
+(section 40, ON). What remains of section 31 is rank 7 and rank 8.
+
+### 41.1 Rank 8, the hull roll torque `00827312`: read, not bound
+
+The host's `ShipHitBinding` in `src/game_hosts_gunnery.cpp` stubs the roll axis as (0, 1, 0) and
+both settings as 0. It also records `route_add_hull_torque`. The pure step
+`ship_roll_torque` (`src/ship_hit_record.cpp`) is complete, and it is reached only for a torpedo
+on a hull heavier than `kShipHitRollTorqueMassFloor` (USN02: 52 calls). Every input now has a
+known producer:
+
+| input | the image | the host source |
+| --- | --- | --- |
+| roll axis | `00C32000` is `LEA EAX,[ECX+8]` (4 bytes), so `008271B7..008271BD` read `[[unit+1018h]+2Ch]+8+18h..+20h`. That is the same matrix row `0092D730` multiplies at `+18h/+1Ch/+20h`, which the host already calls `pose_row2`, the forward axis. **`ship_hit_record.hpp:236`'s comment "`+20h`" should read `+18h..+20h`.** | `GameUnitsHost::unit_pose(index, right, up, forward)`, the `forward` row |
+| torque scale, `settings+590h` | `Physics.TorpedoForce`, `0083FE7C`, default 1.0 | `GameplayTuningSettings::physics_torpedo_force` (`src/gameplay_settings.cpp:256`). The gunnery host has no route to it yet |
+| mass root, `settings+594h` | `Physics.TorpedoForcePower`, `0083FEC8`, default 2.0 | `physics_torpedo_force_power`. Same gap |
+| the sink | `0080FFD0` packs message 93h, and `0077C2A0` routes it at `00827312` / `00827329`. `00821E80` case 93h (`00822235`) calls `0092BF30`, `JMP 00C35330` AddTorque on the controller's body | `bsp::unit_handle_add_hull_torque_00822235` (`include/bsp/unit_force_channel.hpp`) on the units host's `slot.body`. `dyn_body_add_torque_00c35330` is already used there (`game_hosts_units.cpp:5938`, `:6117`) |
+
+**The binding, for the next worker:**
+- Add `bool GameUnitsHost::add_hull_torque_message_93h(std::size_t index, const bsp::OceanVec3&)`,
+  which calls the 00822235 handler on the slot's body.
+- Give the gunnery host the two Physics floats. Find the owner that loads `GameplayTuningSettings`,
+  and read the stored load rather than a literal.
+- Fill `roll_axis`, the two settings and `route_add_hull_torque` behind `kShipHitRollTorqueBound`,
+  committed OFF.
+- **Timing to label:** the gunnery hit runs after the fixed step's force phase. Check whether
+  `slot.body`'s torque accumulator survives to the next step's integration before claiming that
+  the torque lands.
+- Pairs: USN02 9200/9000 (52 calls) and any row with torpedo hits on heavy hulls (USN04, E2,
+  USN13, JM05; count `ShipHit::add_hull_torque_00827312` in reference j's logs first).
+
+### 41.2 Rank 7, `007788B0` controller ownership: not started
+
+Section 37.2: exact while `ctl+284h` is empty or names this controller. It is not checked for a
+player-controlled unit. The host has no producer for `+284h`.
+
+### 41.3 Environment
+
+- A JM05 9200/9000 run crashed in the renderer (`set_native_renderer_render_state_00b24460`, a
+  null read) about 20 minutes in. The ON logs after it showed a 640x480 back buffer. The cause is the
+  user's session becoming RDP (rdp-tcp Active, console Conn), under which every run fails at
+  renderer init. Check `query session` before a run.
+
+### 41.4 Tools in the cc9-gunnery8 tree (`local\`)
+
+- `g8_runs.ps1 -V <export> -Only <rows>`: reference j's twelve rows on an export.
+  `g8_runs_tree.ps1 -P <prefix>` does the same on the tree's own build.
+- `g8_wait.ps1 -Glob <pattern> -Expect N`: a foreground wait on the final COM release line.
+- `g8_cmp.ps1 -A <prefix> -B <prefix> -Rows <rows>`: `pair_diff` headlines. The prefix `rb9` means
+  reference i's logs in cc9-gunnery7.
+- `g8_loo.ps1 -Specs 'v:kA,kB'`: leave-one-out exports of a commit (edit the commit inside).
+- `g8_rows.py <prefix>`: headline rows against reference i.
+- `g8_rel32.py <addr...>`: every `CALL`/`JMP rel32` and absolute dword naming an address in the
+  image on disk.
+- `g8_mapsym.py <rva> build\win32\bsp_game.map`: symbolise a host crash offset.
+- `g8_extra_check.py`: section 39's call-shape census.
+
+## 42. The plane side of the forced fire target (packet `cc9_plane_forced_target_read`, cc9-gunnery9)
+
+Section 33.4 left one question open: plane rows store the forced fire target from `008358D0`, and
+their AutoTarget accepts it, but does the image's plane side ever read that target?
+
+### 42.1 The image never stores it on a plane, and never reads one there
+
+**No plane-side object has the `+238h` fire target.** The chain is:
+
+| step | the image | evidence |
+| --- | --- | --- |
+| the director of a plane instance | vtable `[114h]` is `0047F180`, `XOR EAX,EAX; RET` | every class answering `IsKindOf(0Fh)` (vtables `00D05F20`, `00D06638`, `00D1A000`, `00D19D28`, `00D06920`, `00D00070`, `00D0BA80`, `00D00308`, `00D1A2D8`, from `src/unit_kind_query.cpp`), read at vtable `+114h` on disk |
+| the director of a squadron | vtable `[114h]` is `007ECFD0`, `[+348h]`, the `22Ch`-byte controller `0084D810` builds with vtable `00D0BD98` | `00D088D4`; `0084D849`; `docs/LUA_BINDING_MISSION.md` (cc9-lua3) |
+| the squadron's SetCommand | slot `+60h` of `00D0BD98` is `0071E6C0`, the bare slot push | `00D0BDF8`. The ship director's slot `+60h` is `008358D0` (`00D09FB8`). `008358D0` has no other reference than `00D09F20` and `00D09FB8`, the base and derived weapon director tables (`00D09EC0` and `00D09F58`, slot `+60h`) |
+| the squadron's fire-target getter | slot `+2Ch` is `0071F150`, the newest command's target (`0071EBF0`, `00521EA0`), not a stored field | `00D0BDC4` |
+| the AutoTarget selector | built only by `009F6A20`, whose one caller is `0083676A` in the ship director's constructor `008366D0`, whose one caller is `00810FA0` | rel32 census of the disk image (`local\g9_img.py refs`) |
+| the unit gunnery pass's fire-target provider | `008636A0` (one caller, `00864C18` in the attach `00864BD0`) installs the director-backed provider `00D0D324` (`00863640`, `director+238h`) only when the unit answers `IsKindOf(2)`, `vtable[114h]()` is non-null and that director answers `vtable[48h](2)`. Otherwise it installs the null provider `00D0D314` (`00861B90`, `XOR EAX,EAX`) | decompile of `008636A0` |
+
+A plane instance fails the director test, because its director is null. A squadron fails the
+`vtable[48h](2)` test, because `0084D8F0` answers true only for 0 and 1. **So every plane-side
+gunnery pass reads a null fire target.** The squadron's command reaches only `0071E6C0`, so
+`00835930` never runs for a squadron either.
+
+**Where this host differs.**
+- The commands host runs `008358D0` for every unit, a squadron included. `docs/CONSTRUCT_WORLD.md`
+  records that the host fuses the squadron with its leader plane, whose ship-style director stands
+  in for the `+348h` controller. So `kFireTargetObjectIdBound` stores a forced target on plane rows
+  (USN04 3, USN01 5), and the ship-AI host runs an AutoTarget on them. The image does neither.
+  Both are outside this lane (`src/game_hosts_commands.cpp`, `src/game_hosts_ship_ai.cpp`), and
+  are passed to the lead.
+- The gunnery host's `run_gunnery_pass` takes the ship-AI row's stored target for every unit. A
+  plane row that holds one feeds step 8.7 a fire target the image never has. **That read is in
+  this lane, and is bound below.**
+
+Uncertainty: the forts (`00743F30`), airfield (`006D0D30`) and shipyard (`00842A80`) directors
+are not followed here. The switch touches kinds `0Fh` and `18h` only.
+
+### 42.2 The binding (committed OFF)
+
+- `kPlaneNullFireTargetProviderBound` (`src/game_hosts_gunnery.cpp`): on a unit answering
+  `IsKindOf(0Fh)` or `IsKindOf(18h)`, the pass's fire target is null, as `00861B90` answers.
+- OFF keeps the read, and counts it.
+- The summary line is `summary mission gunnery plane fire target provider null_provider_ticks=
+  stored_target_reads= nulled= bound=`.
+
+### 42.3 Predictions (written before the ON runs)
+
+- **P1, the mechanism.** OFF, `stored_target_reads` is above 0 on USN04 and USN01, the rows where
+  section 33.4 saw plane rows take the target. It is 0 on USN13, whose requests all come from
+  launched squadrons. ON, `nulled` equals OFF's `stored_target_reads` until the tracks diverge.
+- **P2, USN01 3000: exit 1, gameplay identical.** A torpedo bomber's torpedo-category gun takes
+  candidates only from the two director targets. Its command target is the same ship as the
+  forced target, so the selection does not change.
+- **P3, USN04 4500: exit 1,** for the same reason.
+- **P4, USN13 3000: exit 0 or 1.** Nothing is read.
+- **The flip rule:** ON when P1 holds and every move traces to a dropped plane fire target.
+
+### 42.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `d00136644`.
+- **ON** is `pair_export --commit d00136644 --flip kPlaneNullFireTargetProviderBound=true` (SHA-256
+  prefix `A58039ACF449`).
+- The logs are `local\g9_pnoff_<row>.log` and `local\g9_pnon_<row>.log` in worktree cc9-gunnery9.
+  Both sides ran in the same session (an RDP session, whose 300-frame smoke passed renderer init).
+
+| row | `pair_diff` | plane or squadron pass ticks | stored-target reads (OFF) | nulled (ON) | against the prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1, gameplay identical | 213420 | 13317 | 13317 | P1, P3 held |
+| USN01 3200/3000 | exit 1, gameplay identical | 17592 | 12990 | 12990 | P1, P2 held |
+| USN13 3200/3000 | exit 1, gameplay identical | 233220 | 0 | 0 | P1, P4 held |
+
+**Verdict: ON.** The mechanism is the image's `008636A0` rule, and every row is identity.
+`kPlaneNullFireTargetProviderBound = true`.
+
+**Still open, outside this lane (passed to the lead):**
+- The commands host stores a forced fire target on a squadron row, where the image runs only
+  `0071E6C0`.
+- The ship-AI host runs an AutoTarget on load-time plane rows, which the image never builds.
+
+## 43. The power-up subsystem: read and plan (packet `cc9_powerup_subsystem_plan`, cc9-gunnery9, docs only)
+
+docs/SHIP_AI_OPEN_ITEMS.md section 5 names this as the prerequisite for the party brain's
+engagement pass `00A179E0`. docs/GAMEPLAY_MODIFIERS.md (cc9-ships2) already reads the grant, the
+use, the expiry and the product, and docs/POWERUP_CONFIG.md the constructor and the class loader.
+This section adds the manager's layout, `008EA0C0`'s filter, whose inventory the AI spends, and a
+packet plan. Names are hypotheses.
+
+### 43.1 What the manager holds
+
+`008EDC60` builds the `1C4h`-byte owner and publishes it at `00F88C30` (`008EDD8A`):
+
+| offset | what | evidence |
+| --- | --- | --- |
+| `+18h`, `+1Ch` | the class map (head, size), filled by the loader `008ECEC0` from `PowerupClasses.lua` | `param_1[6]`, `param_1[7]` in `008EDC60` |
+| `+20h` + slot x `0Ch` | **eight inventory lists**, one per player slot (std::list: head at `+24h`) | `_eh_vector_constructor_iterator_(this+20h, 0Ch, 8, ...)`; `008EDDC0` appends here |
+| `+80h` + category x `0Ch` | **sixteen active-modifier lists** (head at `+84h`, size at `+88h`) | the same iterator with count 10h; `008EA250` inserts, `008EB110` expires, `008E6430` reads |
+| `+140h`..`+148h` | three dwords, zeroed | `param_1[50h..52h]` |
+| `+14Ch` + slot x `0Ch` | **eight per-slot runtime maps**, keyed by the item class: the cooldown record | the iterator with count 8; `008EA12D LEA ECX,[EDI+14Ch]` before `00617030` |
+| `+1B0h`, `+1BCh` | two name-vector maps (the random-name lists) | `param_1[6Ch]`, `param_1[6Fh]` |
+
+### 43.2 How an entry is created and consumed in single player
+
+**Created only by the Lua native `AddPowerup` (`008EE410`).**
+- With one argument, it calls `008EDDC0([game+18ECh], table)`: the local player's slot, which is
+  0 in single player (docs/CONTROLLED_UNIT.md). With two, the slot is the first argument.
+- **Every call in this installation's scripts passes one table.** A grep of `scripts/**/*.lua` for
+  `AddPowerup(` finds only `AddPowerup({` bodies inside per-mission wrappers such as
+  `luaAddPowerup(type)` or `luaJM6AddPowerup(type)`, plus the checkpoint restore in
+  `global/commandhelpers.lua`. So in single player **only slot 0 ever holds items**, and the enemy
+  slot 4 never does.
+- The reference rows reach no grant. USN04 grants after its secondary or hidden objective. The
+  loose `missions/COTP-IJN/jm06.lua` (2024-07-13) grants `automatic_reloader` and
+  `improved_ship_manoeuvreability` after primary objective 1 (:864). The JM06 row loads the packed
+  `PRCPIJN\JM06.lua`, whose text is not a loose file. No log in this tree has a power-up native
+  call.
+
+**Listed for the AI by `008EA0C0(manager)(slot, &vec)`, `RET 8`.**
+- It fills `vec` only when `[00E0C978]` (`EnablePowerups`, forced to 1 in single player) is set.
+- It walks the slot's inventory list. For each node it looks the node's class key (`node+0Ch`) up
+  in the slot's runtime map (`00617030`, `ECX = manager+14Ch+slot*0Ch`). It keeps the node only
+  when the record's byte `+14h` is clear and its float `+10h` is below the clock `[00F876A4]`.
+  The reading is that the item is not active and its cooldown is over. That reading is a
+  hypothesis: `00617030`'s record is not read beyond these two fields.
+- It keeps one entry per class. A later node of a class already in `vec` replaces the earlier one.
+  Each entry is `node+8h`, so `[e+4]` is the class key.
+
+**Consumed by one of two users.**
+- The local player's HUD paths `008EB705` and `008ED601` (docs/GAMEPLAY_MODIFIERS.md).
+- **The AI party brain whose slot is 0.** `00A17A2F` passes `brain+20h`, the party slot. In single
+  player `009FFD20` gives 0 to a unit on the local player's team and 4 to the other team, and only
+  parties 0 and 4 run (docs/AI_GROUP_THINK.md). **So the allied brain lists, and fires through
+  `008EADA0` at `00A180C9`, the items granted to the player.** This answers the question
+  GAMEPLAY_MODIFIERS left open ("whether the local player's party slot runs an AI brain").
+  The enemy brain's list is always empty.
+- A use (`008EADA0`) either launches an air-support flight (`0094BFF0`) or inserts the class's
+  non-1.0 multipliers into the category lists. It then stamps the expiry and the cooldown.
+  `008EB110` expires the nodes every `Game_OnMove`.
+
+### 43.3 What this host does
+
+- The owner is never built. `004DC6A0` is a record step in `game_hosts_mission_frame.cpp`
+  ("global_subsystems"), although `src/global_subsystems.cpp` and `src/powerup_config.cpp` hold a
+  reconstructed constructor and loader.
+- `AddPowerup`, `PreparePowerup` and `GetAvailablePowerups` are bound as unimplemented natives
+  (`src/mission_lua_host.cpp:553-555`). The 38 product sites return 1.0f, which is exact while the
+  lists are empty.
+- `party_brain_plan_tail` records `00A179E0`'s tail.
+
+### 43.4 The packet plan
+
+Each packet is identity on every reference row, because no row reaches a grant. Each needs a row
+that does, or a harness grant, before a pair can test it.
+
+| order | packet | contents | lane | switch |
+| --- | --- | --- | --- | --- |
+| 1 | `cc9_powerup_owner_at_load` | build the owner at mission load with the existing `construct_powerup_config_008edc60` and `load_powerup_config_008ecec0` against the mission Lua state, and publish it where the hosts can reach it | mission frame and Lua | none; nothing reads it yet |
+| 2 | `cc9_powerup_grant` | `008EE410` and `008EDDC0` into slot `[game+18ECh]`'s inventory list, with the `useLimit` field; `008EA610` `PreparePowerup` and `008EB350` `GetAvailablePowerups` read it. The `pup_gain` sound and the `PUM1STGET` hint are records. Message 67 is multiplayer-only | Lua | OFF, predicted identity |
+| 3 | `cc9_powerup_use` | `008EADA0` (the cooldown map, `008EA250`, `008E4B00`, the use count), `008EB110` expiry, and `008E6430` with the filter `008E4680`. It replaces the 1.0f at the 38 product sites | the product sites span the units, gunnery and ship-AI hosts; one shared accessor, then one switch | OFF |
+| 4 | `cc9_ai_powerup_use` | `00A179E0`'s choice half `00A17D5A..00A180A8`. Its six callees are unread: `008E35F0`, `00A0F680`, `00A046C0`, `00A04860`, `00A04910`, and `008EA0C0` as read above | AI (`party_brain_plan_tail`) | OFF |
+
+**A test row.** Grant through the harness: one `AddPowerup` per class at load, through the
+existing Lua drain. The first measurable effect is then packet 4. The allied brain fires the item
+on its first think with a candidate pair, and a gunnery product (category 1 FIREPOWER, 7
+TARGETING_ERROR, 8 DEVICE_RELOADING) moves. USN02 has early contact, but whether its pair build finds a pair is not measured.
+
+**Coverage.** This read covers `008EDC60`'s layout and `008EA0C0` completely. `008EADA0`,
+`008EDDC0` and `008EB110` are cited from docs/GAMEPLAY_MODIFIERS.md, not re-read. `00617030` is
+read only as a lookup keyed by the class.
+
+## 44. Rank 7: `007788B0` in the AutoTarget tick is the formation-follower gate (read, cc9-gunnery9)
+
+Section 37.2 left rank 7 as "exact while `ctl+284h` is empty or names this controller; not
+checked for a player-controlled unit". The read below replaces that framing.
+
+### 44.1 The image
+
+- **`007788B0` is `BSP_Unit_IsFormationFollower`,** `__fastcall(ECX = unit)`, body
+  `007788B0..007788C7`: `g = [unit+284h]`; false when `g` is null, else `[g+14h] != unit`. It is
+  true for a member of a unit group that is not the group's leader. Player control is not read.
+- **`009F5DC1..009F5DF4` in the AutoTarget tick `009F5DA0`:** when the unit is a follower, the
+  tick never selects a target. It reads the director's first command slot `[director+54h]`:
+  - null: return (`009F5DD5`);
+  - the `follow` singleton `00E08F60`: return (`009F5DE0`);
+  - anything else: `0077C980(unit, 0)` (`009F5DEB`), then return.
+- **`0077C980(unit, 0)` is the leave.** With `[unit+284h]` set it sends message 77h with a null
+  target, which `0077FE80` arm 3 delivers to `0077BD70(unit, null)`. That is the same chain as the
+  Lua `LeaveFormation` `00899EB0` (`src/game_hosts_lua.cpp`, packet `cc9_lua_formation_query`).
+  So a follower that holds any command other than `follow` leaves its formation on its next think.
+
+### 44.2 The host
+
+`TargetBinding` in `src/game_hosts_ship_ai.cpp` answers `controller_belongs_to_another` with false,
+and records `release_controller`. So every follower runs the full selection. The pieces the
+binding needs already exist:
+- `GameUnitsHost::unit_is_formation_follower_007788b0(index)`, which is `007788B0` whole;
+- `GameUnitsHost::leave_group_on_destroy_0077bd70(index)`, which the Lua `LeaveFormation` already
+  uses for this chain, with the same labelled substitution: the leave runs at the call, not through
+  the session route;
+- `director_command_slot()`, which answers the command singleton's image address, so the
+  comparison with `00E08F60` in `src/bot_fire_target.cpp` works as written.
+
+### 44.3 Reach, from reference j's logs (`rb10_<row>.log`, worktree cc9-gunnery8)
+
+Follow joins (`summary mission ai follow ... joins=`): JM06 4, JM05 3, JM08 1 and LOMP10 1. Every
+other row has 0. LOMP06 has one scripted formation, which it leaves. A follower's own command after
+a join is not measured here. If it is `follow`, the gate only suppresses the follower's automatic
+target choice. If it is anything else, the follower also leaves the formation.
+
+### 44.4 The binding, for the ship-AI lane (not committed here)
+
+In `src/game_hosts_ship_ai.cpp`, `TargetBinding`, behind a new `kAutoTargetFollowerGateBound`,
+committed OFF:
+
+```cpp
+bool controller_belongs_to_another(void*) override {
+    if (!kAutoTargetFollowerGateBound) {
+        owner_.record("AutoTarget::controller_belongs_to_another", 0x007788b0u);
+        return false;
+    }
+    owner_.done("AutoTarget::controller_belongs_to_another", 0x007788b0u);
+    return owner_.units.unit_is_formation_follower_007788b0(index_);
+}
+void release_controller(void*, int) override {
+    // 0077C980(unit, 0) at 009F5DEB -> 77h -> 0077FE80 arm 3 -> 0077BD70(unit, null),
+    // run at the call as LeaveFormation 00899EB0 runs it (labelled).
+    if (!kAutoTargetFollowerGateBound) {
+        owner_.record("AutoTarget::release_controller", 0x0077c980u);
+        return;
+    }
+    if (owner_.units.unit_formation_group_0284(index_) >= 0) {
+        owner_.units.leave_group_on_destroy_0077bd70(index_);
+    }
+    owner_.done("AutoTarget::release_controller", 0x0077c980u);
+}
+```
+
+**Predictions for its pairs:**
+- JM06 3000 and JM05 3000: exit 3. Followers stop choosing their own fire targets. Death rows may
+  move on JM06, whose PlayerSubs and escorts fight.
+- JM08 and LOMP10: exit 1 or 3, small.
+- Every row without a join: exit 1.
+- **Mechanism check:** count follower thinks, and how many leave. A leave on a row predicts a
+  formation change that the follow summary shows.

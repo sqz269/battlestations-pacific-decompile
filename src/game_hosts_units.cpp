@@ -488,6 +488,44 @@ struct GameUnitSlot {
     unsigned long long moveto_state_changes{0};
     unsigned long long moveto_arrivals{0};
     float moveto_min_distance{-1.0f};
+    // Packet cc9_land_task_reach (kSquadronLandTaskBound): the `land` task,
+    // kind 3 (009B41C0 -> 009B3240, size 670h). The eight states sit in the
+    // approach at task+3F8h and register these names through 00411E70 in
+    // 009AF9A0 (strings 00D1FE1C..00D1FDC0), so the names are recovered, not
+    // invented: +4C4h "moveto (land)", +500h "follow (land)", +598h
+    // "land/line", +5B8h "land/standby", +5D8h "land/begin", +5F8h
+    // "land/final", +620h "land/park", +64Ch "land/abort".
+    enum class LandTaskState : int { kNone = 0, kMoveTo = 0x4C4, kFollow = 0x500,
+        kLine = 0x598, kStandby = 0x5B8, kBegin = 0x5D8, kFinal = 0x5F8,
+        kPark = 0x620, kAbort = 0x64C };
+    bool land_task_installed{false};
+    LandTaskState land_state{LandTaskState::kNone};
+    // approach+30h, the block's +7Ch owner (the land target), as a unit index + 1;
+    // approach+2Ch, the air-ops deck, as a deck index + 1 (0 = cleared by 009B34D0).
+    std::size_t land_site_plus_one{0};
+    std::size_t land_deck_plus_one{0};
+    float land_angle_54{0.0f};     // U(0.9, 1.1) * tuning+4E4h ApproachAngle, 009AFEF5
+    float land_pitch_58{0.0f};     // U(0.9, 1.1) * tuning+4E0h ApproachPitch, 009AFF25
+    float land_speed_5c{0.0f};     // class+18Ch TravelSpeed * 0.75 (00CEC9D8), 009AFF4A
+    float land_alt_60{0.0f};       // 009AFF45, the approach altitude offset
+    float land_timer_64{10.0f};    // 009AFF50, 00CE38B8
+    float land_request_ac{0.5f};   // 009AFF77, 00CE3800, the request period
+    float land_request_b0{0.0f};   // -U(0, 0.5), 009AFF84..009AFF8B
+    float land_follow_stagger_74{0.0f};  // follow state +74h, -U(0, 0.6), 009C2980
+    int land_mode_50{1};           // approach+50h, 009AFEC7; 006C54C0 writes it
+    double land_installed_at{-1.0};
+    unsigned long long land_ticks{0};
+    unsigned long long land_requests{0};
+    unsigned long long land_empty_assignments{0};
+    unsigned long long land_moveto_ticks{0};
+    unsigned long long land_follow_ticks{0};
+    unsigned long long land_follow_no_station{0};
+    unsigned long long land_state_changes{0};
+    unsigned long long land_refused_states{0};
+    float land_first_distance{-1.0f};
+    float land_min_distance{-1.0f};
+    float land_last_distance{-1.0f};
+    double land_min_distance_at{-1.0};
     bsp::DogfightState dogfight_state{bsp::DogfightState::kNone};
     int df_state_ticks[bsp::kDogfightStateCount]{};
     int df_transitions{0};
@@ -1752,6 +1790,27 @@ struct GameUnitsHost::Impl {
     std::vector<ReturnToBaseCensus> rtb_census;
     unsigned long long rtb_arm_counts[4]{};
     void record_return_to_base_007f16d0(std::size_t unit_index);
+    // Packet cc9_land_task_reach, under kSquadronLandTaskBound: one row per
+    // squadron whose members received a `returntobase` placement.
+    struct LandTaskCensus {
+        std::string squadron;
+        unsigned long long placements{0};
+        unsigned long long installs{0};
+        unsigned long long kept{0};            // 009B3560 answers 1: same land, same site
+        unsigned long long refused_arm{0};     // 007F16D0 did not answer `land at site`
+        unsigned long long refused_unread{0};  // the resolution carries an unread input
+        unsigned long long refused_ground{0};  // not airborne: land/park, unbound
+        unsigned long long refused_dead{0};
+        std::string last_refusal;
+        double first_install_at{-1.0};
+    };
+    std::vector<LandTaskCensus> land_census;
+    unsigned long long land_retired_invalid{0};
+    unsigned long long land_profile_calls{0};
+    unsigned long long land_profile_writes{0};
+    LandTaskCensus& land_census_for(const std::string& squadron);
+    void install_land_task_0099a3dd(std::size_t unit_index);
+    bool land_command_still_valid_009b34d0(const GameUnitSlot& unit) const;
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
     std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
@@ -5052,7 +5111,11 @@ struct GameUnitsHost::Impl {
                         o.torpedo_state == bsp::TorpedoState::kFollow ||
                         o.torpedo_state == bsp::TorpedoState::kPrepare ||
                         o.dive_bomb_state == bsp::DiveBombState::kFollow ||
-                        o.dive_bomb_state == bsp::DiveBombState::kPrepare;
+                        o.dive_bomb_state == bsp::DiveBombState::kPrepare ||
+                        // Packet cc9_land_task_reach: the land task's +4Ch is
+                        // 009B3750, 009BE3E0 on the follow (land) state +500h.
+                        (kSquadronLandTaskBound && o.land_task_installed &&
+                         o.land_state == GameUnitSlot::LandTaskState::kFollow);
                     const bool following =
                         answers && o.fw_step + 2 >= summary.motion_steps;
                     if (following) {
@@ -8343,7 +8406,191 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
             site.candidates_passed, note.c_str(), static_cast<double>(r.retreat_x),
             static_cast<double>(r.retreat_z), static_cast<double>(summary.simulated_seconds));
     }
+    // Packet cc9_land_task_reach: where the head is against the site when the
+    // resolution changes (a record in both switch positions).
+    if (changed && !site_name.empty()) {
+        std::size_t owner = slots.size();
+        for (std::size_t u = 0; u < slots.size(); ++u) {
+            if (slots[u]->row.name == site_name) { owner = u; break; }
+        }
+        if (owner < slots.size()) {
+            const float* hp = slots[head]->motion.position;
+            const float* op = slots[owner]->motion.position;
+            const double dx = static_cast<double>(op[0]) - hp[0];
+            const double dz = static_cast<double>(op[2]) - hp[2];
+            log.notef("returntobase 007F16D0 geometry: squadron \"%s\" head at (%.1f, %.1f, %.1f) "
+                "site %s at (%.1f, %.1f, %.1f) planar %.1f m at %.2f s (packet cc9_land_task_reach)",
+                sq->name.c_str(), static_cast<double>(hp[0]), static_cast<double>(hp[1]),
+                static_cast<double>(hp[2]), site_name.c_str(), static_cast<double>(op[0]),
+                static_cast<double>(op[1]), static_cast<double>(op[2]),
+                std::sqrt(dx * dx + dz * dz), static_cast<double>(summary.simulated_seconds));
+        }
+    }
     record("Squadron::resolve_return_to_base_007f16d0", 0x007f16d0u);
+}
+
+// Packet cc9_land_task_reach (kSquadronLandTaskBound). docs/SQUADRON_LAND_TASK.md.
+GameUnitsHost::Impl::LandTaskCensus& GameUnitsHost::Impl::land_census_for(
+    const std::string& squadron) {
+    for (LandTaskCensus& c : land_census) if (c.squadron == squadron) return c;
+    land_census.push_back(LandTaskCensus{});
+    land_census.back().squadron = squadron;
+    return land_census.back();
+}
+
+// The member plane's bot intake for the squadron's `land`. In the image the
+// squadron's 007F1940 issues the resolution (land, 00465080(site owner)) on
+// the squadron's director; each member's bot retires its attack task once the
+// task's predicate sees the command change (0099A4C0) and 0099A170 installs
+// from the current command. The host places the order on every member plane
+// (the fan-out substitution) and installs at that delivery, one bot tick early
+// (docs/SENTITY_INIT_ATTACH_ORDER.md 22.7, the standing substitution).
+//  - 0099A3DD-0099A415, the land arm: 006BCD20(target, 1) is the site's deck,
+//    then 006C4790(deck, squadron) (006C4790-006C47EC): false for a null
+//    squadron or when the squadron is on the deck's list at +B4h. LABELLED:
+//    that list's producer is unread and it is taken as empty, so the gate is true.
+//  - A squadron that already flies `land` at the same site keeps its task:
+//    009B3560 answers 1 for `land` with the same target, so 0099A4C0 never
+//    retires it and a repeated SELLING placement installs nothing.
+//  - REFUSED, counted: a resolution that carries an unread input (B-25 01's
+//    approach bit 20h), a plane that is not airborne (its task would start in
+//    land/park, 009B32BA, which is unbound), and a dead plane.
+void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
+    if (unit_index >= slots.size()) return;
+    const bsp::PlaneSquadronHostRecord* sq =
+        bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+    if (sq == nullptr) return;
+    const ReturnToBaseCensus* entry = nullptr;
+    for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
+    if (entry == nullptr) {
+        // A member placed before its leader: the squadron's intake resolves
+        // once per order, over the squadron, so resolve it now at the leader.
+        record_return_to_base_007f16d0(sq->flight_leader());
+        for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
+        if (entry == nullptr) return;
+    }
+    LandTaskCensus& c = land_census_for(sq->name);
+    ++c.placements;
+    GameUnitSlot& unit = *slots[unit_index];
+    auto refuse = [&](unsigned long long& counter, const std::string& why) {
+        ++counter;
+        if (c.last_refusal != why) {
+            c.last_refusal = why;
+            log.notef("land task REFUSED: squadron \"%s\" plane \"%s\": %s at %.2f s "
+                "(packet cc9_land_task_reach)", sq->name.c_str(), unit.row.name.c_str(),
+                why.c_str(), static_cast<double>(summary.simulated_seconds));
+        }
+    };
+    if (entry->last_arm != 2) {
+        refuse(c.refused_arm, "007F16D0 did not answer land at site");
+        return;
+    }
+    if (entry->last_note.find("-unread") != std::string::npos) {
+        refuse(c.refused_unread, "the resolution carries an unread input:" + entry->last_note);
+        return;
+    }
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    std::size_t deck = decks.size();
+    for (std::size_t i = 0; i < decks.size(); ++i) {
+        if (decks.name_at(i) == entry->last_site) { deck = i; break; }
+    }
+    std::size_t owner = slots.size();
+    for (std::size_t u = 0; u < slots.size(); ++u) {
+        if (slots[u]->row.name == entry->last_site) { owner = u; break; }
+    }
+    if (deck >= decks.size() || owner >= slots.size()) {
+        refuse(c.refused_arm, "the site has no deck or no unit row");
+        return;
+    }
+    if (unit.plane_death_c3a) {
+        refuse(c.refused_dead, "the plane is dead");
+        return;
+    }
+    if (unit.land_task_installed && unit.land_site_plus_one == owner + 1u
+        && unit.land_deck_plus_one == deck + 1u) {
+        ++c.kept;   // 009B3560: `land`, same target
+        return;
+    }
+    // 009B32AA-009B32B8: (plane+72Ch)->vtable[38h], this host's free flight.
+    if (unit.plane_control_mode_900 != 7) {
+        refuse(c.refused_ground, "not airborne: the task would start in land/park (unbound)");
+        return;
+    }
+    record("Bot::install_command_task_land_arm", 0x0099a3ddu);
+    record("AirOpsBlock::squadron_not_excluded_006c4790", 0x006c4790u);
+    // 0099A4C0's retire: the old task goes, whatever it was.
+    unit.dive_bomb_task_installed = false;
+    unit.dive_bomb_state = bsp::DiveBombState::kNone;
+    unit.dogfight_task_installed = false;
+    unit.dogfight_state = bsp::DogfightState::kNone;
+    unit.torpedo_task_installed = false;
+    unit.torpedo_state = bsp::TorpedoState::kNone;
+    unit.moveto_task_installed = false;
+    unit.moveto_state = GameUnitSlot::MoveToTaskState::kNone;
+    unit.attack_command_class = 0x00E08FA0u;        // `land`
+    unit.command_target_plus_one = owner + 1u;      // 00465080(block+7Ch, 0.0)
+    // 009B41C0 -> 009B3240 -> 009B2E50 -> 009AFE70. The draws, in order.
+    float angle = 0.20943952f, pitch = 0.10471976f;   // DEG(12), DEG(6)
+    if (lua.plane_globals_loaded()) {
+        angle = lua.plane_globals().pilot_landing_approach_angle;
+        pitch = lua.plane_globals().pilot_landing_approach_pitch;
+    }
+    const std::string& n = unit.row.name;
+    unit.land_angle_54 = release_altitude_draw_00bd2f10(n + "#l54", 0.9f, 1.1f) * angle;
+    unit.land_pitch_58 = release_altitude_draw_00bd2f10(n + "#l58", 0.9f, 1.1f) * pitch;
+    unit.land_speed_5c = static_cast<float>(static_cast<double>(unit.plane_travel_speed) * 0.75);
+    unit.land_alt_60 = 0.0f;
+    unit.land_timer_64 = 10.0f;
+    unit.land_request_ac = 0.5f;
+    unit.land_request_b0 = -release_altitude_draw_00bd2f10(n + "#lb0", 0.0f, 0.5f);
+    // 009B2EE4 009C2980, the follow state's construction draw.
+    unit.land_follow_stagger_74 = -release_altitude_draw_00bd2f10(n + "#l74", 0.0f, 0.6f);
+    unit.land_mode_50 = 1;                          // 009AFEC7
+    unit.land_site_plus_one = owner + 1u;
+    unit.land_deck_plus_one = deck + 1u;
+    unit.land_task_installed = true;
+    unit.land_installed_at = summary.simulated_seconds;
+    // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
+    // a wing member in follow (land); then the state's enter, vtable[4].
+    const bool leader = unit_is_flight_leader_007b8ad0(unit_index);
+    unit.land_state = leader ? GameUnitSlot::LandTaskState::kMoveTo
+                             : GameUnitSlot::LandTaskState::kFollow;
+    ++c.installs;
+    if (c.first_install_at < 0.0) c.first_install_at = summary.simulated_seconds;
+    const float* hp = unit.motion.position;
+    const float* op = slots[owner]->motion.position;
+    const double dx = static_cast<double>(op[0]) - hp[0];
+    const double dz = static_cast<double>(op[2]) - hp[2];
+    log.notef("land task install: plane \"%s\" squadron \"%s\" -> %s at site %s planar %.1f m "
+        "alt %.1f angle54=%.4f pitch58=%.4f b0=%.3f at %.2f s (0099A3DD -> 009B41C0, "
+        "packet cc9_land_task_reach)", n.c_str(), sq->name.c_str(),
+        leader ? "moveto (land)" : "follow (land)", entry->last_site.c_str(),
+        std::sqrt(dx * dx + dz * dz), static_cast<double>(hp[1]),
+        static_cast<double>(unit.land_angle_54), static_cast<double>(unit.land_pitch_58),
+        static_cast<double>(unit.land_request_b0),
+        static_cast<double>(summary.simulated_seconds));
+    done("BotTaskLand::construct", 0x009b3240u);
+}
+
+// 009B34D0 (009B34D0-009B3551), run first by the approach update 009B3900. The
+// site stays only while the squadron's (approach+0Ch, plane+9D4h) current
+// command, vtable[174h], is `land` (00E08FA0) whose target (vtable[178h] ->
+// 00521EA0) is approach+30h, the block's owner exists with +5Dh clear, and
+// 006C4790(block, squadron) passes; otherwise +2Ch/+30h/+34h are cleared. The
+// squadron's current command is the host's last 007F16D0 answer for it.
+// LABELLED: +5Dh is the owner's network-remote byte, clear in a single-player
+// mission, and 006C4790's list is taken as empty (above).
+bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& unit) const {
+    if (unit.land_deck_plus_one == 0 || unit.land_site_plus_one == 0) return false;
+    const bsp::PlaneSquadronHostRecord* sq =
+        bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
+    if (sq == nullptr) return false;
+    const ReturnToBaseCensus* entry = nullptr;
+    for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
+    if (entry == nullptr || entry->last_arm != 2) return false;
+    const std::size_t owner = unit.land_site_plus_one - 1u;
+    if (owner >= slots.size()) return false;
+    return slots[owner]->row.name == entry->last_site;
 }
 
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
@@ -9166,6 +9413,10 @@ const GameCommandRow* GameUnitsHost::issue_script_command(std::size_t unit_index
     }
     const GameCommandRow* row = host.commands.issue_command_object(unit_index,
         command_object, target, flags, source, target_name, slot.ring, heading);
+    // Packet cc9_land_task_reach: the member's bot installs `land` at the delivery.
+    if constexpr (kSquadronReturnToBaseResolveBound && kSquadronLandTaskBound) {
+        if (command_object == 0x00E08F98u) host.install_land_task_0099a3dd(unit_index);
+    }
     // The unit's own row keeps the token the scene authored: a scripted order is
     // a second command on the same director, not a replacement for the first,
     // and GameScriptOrdersHost reports it in its own table.
@@ -16997,6 +17248,301 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009C3950, the kind-7 task's vtable+64h, packet
                     // cc9_pilot_moveto_task part 2: 009C3570 on the approach,
                     // 009C3310, then the current state's vtable[0Ch].
+                    // Packet cc9_land_task_reach (kSquadronLandTaskBound): the land
+                    // task's vtable +64h, 009B3EB0 (009B3EB0-009B3F49, RET 4, no
+                    // Ghidra function). docs/SQUADRON_LAND_TASK.md.
+                    void land_switch_state_009b3680(GameUnitSlot::LandTaskState next) {
+                        // 009B3680: exit the old state (vtable[8]), enter the new
+                        // one (vtable[4]); nothing when it is the same state.
+                        if (next == unit_.land_state) return;
+                        ++unit_.land_state_changes;
+                        owner_.log.notef("  land task %s: state %X -> %X at %.2f s (009B3680)",
+                            unit_.row.name.c_str(), static_cast<unsigned>(unit_.land_state),
+                            static_cast<unsigned>(next),
+                            static_cast<double>(owner_.summary.simulated_seconds));
+                        unit_.land_state = next;
+                    }
+
+                    void land_refuse_state(const char* state, std::uint32_t address) {
+                        // A state the measured row does not reach: never approximated.
+                        ++unit_.land_refused_states;
+                        if (unit_.land_refused_states == 1) {
+                            owner_.log.notef("  land task %s: REFUSED entry to %s at %.2f s "
+                                "(unbound, packet cc9_land_task_reach)", unit_.row.name.c_str(),
+                                state, static_cast<double>(owner_.summary.simulated_seconds));
+                        }
+                        owner_.record("BotTaskLand::refused_state", address);
+                    }
+
+                    // 006C54C0 (006C54C0-006C5634, ECX = approach+34h, args plane and
+                    // &approach+38h, RET 8): the air-ops landing request.
+                    void land_request_006c54c0() {
+                        ++unit_.land_requests;
+                        // 006C54E2/006C54EF: 006BF060, else 006C0B50 puts the
+                        // squadron in the deck's landing queue (+98h). A record:
+                        // this host keeps no landing queue.
+                        owner_.record("AirOpsBlock::queue_squadron_006c0b50", 0x006c0b50u);
+                        // 006C5505: 006BD080 looks the plane up in the deck's
+                        // assignment vector (+A8h, 14h-byte records). Its producer
+                        // is the landing sequencer 006CC9F0 (inserting through
+                        // 006CAA10, called from 006CD240), which this host does not
+                        // build, so the lookup misses. That is the image's own
+                        // answer for a plane the sequencer has not taken yet, and
+                        // it is counted, because it is also what keeps every plane
+                        // in mode 1 here.
+                        ++unit_.land_empty_assignments;
+                        owner_.record("AirOpsBlock::find_landing_assignment_006bd080", 0x006bd080u);
+                        // 006C5534-006C5560: out+14h (approach+4Ch) = 1.0 and the
+                        // mode out+18h (approach+50h) = plane+904h ? 4 : 1.
+                        // plane+904h is the landed-after-flight byte, clear for an
+                        // airborne plane.
+                        unit_.land_mode_50 = 1;
+                        // 006C5563-006C55FC (the members' offset in the block frame
+                        // 004142E0 against block+A4h, into approach+44h), 006C3E50
+                        // (approach+48h) and 006C5380 (approach+38h..+40h): contract
+                        // unread. Only the refused landing states read them.
+                        owner_.record("AirOpsBlock::landing_point_006c5380", 0x006c5380u);
+                    }
+
+                    // 009B3CF0 (009B3CF0-009B3EAA, RET 4), the state rule.
+                    void land_state_rule_009b3cf0() {
+                        using LS = GameUnitSlot::LandTaskState;
+                        // 009B3CF4 009B3770: from moveto/follow it does nothing;
+                        // its done-state arms belong to line/standby and the rest.
+                        // 009B3D0B-009B3D3B: a plane whose +900h is 4 or 5 goes to
+                        // land/park unless it is in park or abort.
+                        if (unit_.plane_control_mode_900 == 4 || unit_.plane_control_mode_900 == 5) {
+                            land_refuse_state("land/park (+900h 4 or 5)", 0x009b3d38u);
+                            return;
+                        }
+                        if (unit_.land_state != LS::kMoveTo && unit_.land_state != LS::kFollow) {
+                            land_refuse_state("a landing state's rule arm", 0x009b3d45u);
+                            return;
+                        }
+                        // 009B3E46-009B3EA2, the moveto/follow arm, keyed on the mode.
+                        switch (unit_.land_mode_50) {
+                        case 1: {
+                            // 009B3E51 009AFA50: not airborne -> land/park; a
+                            // flight leader -> moveto (land); else follow (land).
+                            if (unit_.plane_control_mode_900 != 7) {
+                                land_refuse_state("land/park (009AFA6A)", 0x009afa6au);
+                                return;
+                            }
+                            const bool leader =
+                                owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                            land_switch_state_009b3680(leader ? LS::kMoveTo : LS::kFollow);
+                            break;
+                        }
+                        case 2:
+                            land_refuse_state("land/standby or land/line (mode 2)", 0x009b3e6du);
+                            break;
+                        case 3:
+                            land_refuse_state("land/standby (mode 3)", 0x009b3e98u);
+                            break;
+                        case 4:
+                            land_refuse_state("land/begin (mode 4)", 0x009b3e9fu);
+                            break;
+                        default:
+                            break;
+                        }
+                        owner_.done("BotTaskLand::state_rule", 0x009b3cf0u);
+                    }
+
+                    // moveto (land): 009C2AC0 built at 009B2EC9 with the block's
+                    // owner as its +2Ch target and near 100.0 (00CE3D08), far
+                    // 100.0 (00CE3D08), speed range 800.0 (00CE3950). Its tick is
+                    // 009C18C0, the same body the dive-bomb moveto runs.
+                    void run_land_moveto_tick_009c18c0() {
+                        ++unit_.land_moveto_ticks;
+                        const std::size_t ti = unit_.land_site_plus_one - 1u;
+                        const float* const tp = owner_.slots[ti]->motion.position;
+                        const double dx = static_cast<double>(tp[0]) - unit_.motion.position[0];
+                        const double dz = static_cast<double>(tp[2]) - unit_.motion.position[2];
+                        const double d2 = dx * dx + dz * dz;
+                        const float sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                        // 009C198A: the speed slot 009C1850, unconditional.
+                        unit_.plane_desired_speed_2b4 =
+                            GameUnitsHost::Impl::kMovetoSpeedBlendBound
+                                ? owner_.moveto_speed_009c1850(unit_, sep)
+                                : owner_.bot_desired_speed_007c47f0(unit_);
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+                        bsp::MoveToGlideInputs gin;
+                        gin.near_range_30 = 100.0f;
+                        gin.far_range_34 = 100.0f;
+                        gin.speed_range_38 = 800.0f;
+                        gin.target_world_y = tp[1];
+                        gin.unit_world_y = unit_.motion.position[1];
+                        gin.planar_distance = sep;
+                        const bsp::MoveToGlideCommand g = bsp::move_to_glide_009c18c0(gin);
+                        bsp::PlaneCruiseAltitudeInputs cin;
+                        cin.base_altitude = g.base;
+                        cin.range_low = g.range_low;
+                        cin.range_high = g.range_high;
+                        cin.scale = g.scale;
+                        cin.class_gain = static_cast<float>(
+                            std::tan(static_cast<double>(unit_.plane_drop_angle)));
+                        cin.has_squadron = false;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                        }
+                        const bsp::PlaneCruiseAltitudeResult c =
+                            bsp::cruise_altitude_command_009fba50(cin);
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = c.clamped_altitude;
+                        pin.reference = c.pitch_reference;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        pin.ceiling = cin.ceiling;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& gt = owner_.lua.plane_globals();
+                            pin.climb_dist = gt.pilot_general_climb_dist;
+                            pin.drop_dist = gt.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = c.clamped_altitude;
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
+                        owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        // 009C1B1C-009C1B23: 009F9E40 at the target point, the
+                        // host's pi/2 - atan2 bearing (the dive-bomb substitution).
+                        float b = static_cast<float>(bsp::dive_bomb_constant::kHalfPi -
+                                                     std::atan2(dz, dx));
+                        if (b < 0.0f) b += static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
+                        unit_.plan_heading_2c0 = b;
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = 2;
+                        owner_.record("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                    }
+
+                    // follow (land): 009C2980 built at 009B2EE4; tick 009C1FD0.
+                    void run_land_follow_tick_009c1fd0() {
+                        ++unit_.land_follow_ticks;
+                        unit_.plan_mode_26c = 2;   // 009C1FE2
+                        if (!owner_.run_follow_tick_009c1fd0(unit_)) {
+                            ++unit_.land_follow_no_station;
+                        }
+                        owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
+                    }
+
+                    // 009B3C60 (009B3C60-009B3CE5), the land task's +54h. It has
+                    // no tail call. LABELLED, as the dive profile: the per-tick
+                    // arm stands for the profile's call, the block is the
+                    // squadron's slot, and the dirty byte +3ADh is not modelled.
+                    void land_cruise_profile_009b3c60() {
+                        if (!owner_.unit_is_flight_leader_007b8ad0(unit_.process_index)) return;
+                        GameUnitSlot* sq = owner_.squadron_slot_of(unit_.process_index);
+                        if (sq == nullptr) return;
+                        float cruising = 1400.0f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            cruising = owner_.lua.plane_globals().pilot_landing_cruising_alt;
+                        }
+                        const double now = owner_.summary.simulated_seconds;
+                        if (!sq->sq_freeze_38d) {                     // 009B3C88 +38Dh
+                            if (now >= sq->sq_timer_expiry_380 && !sq->sq_lock_3a9) {
+                                sq->sq_alt_394 = cruising;             // 009B3CA7
+                                ++owner_.land_profile_writes;
+                            }
+                            sq->sq_lock_3a9 = false;                  // 009B3CAA
+                        }
+                        if (!sq->sq_freeze_38c) {                     // 009B3CBF +38Ch
+                            if (now >= sq->sq_timer_expiry_37c && !sq->sq_lock_3aa) {
+                                sq->sq_alt_398 = cruising;             // 009B3CDD
+                                ++owner_.land_profile_writes;
+                            }
+                            sq->sq_lock_3aa = false;                  // 009B3CE0
+                        }
+                        ++owner_.land_profile_calls;
+                        owner_.done("BotTaskLand::cruise_profile", 0x009b3c60u);
+                    }
+
+                    void run_land_task_tick_009b3eb0(float dt) {
+                        using LS = GameUnitSlot::LandTaskState;
+                        if (!unit_.land_task_installed) return;
+                        ++unit_.land_ticks;
+                        // 009B3EC2 task+4ACh = FFh, copied to task+2E4h at
+                        // 009B3F41: no reader in this host (a record).
+                        // 009B3EF6-009B3F09: 009B3900(onGround, dt); onGround is
+                        // begin, final, park or abort, none of which is bound.
+                        // 009B3906 009B34D0.
+                        if (!owner_.land_command_still_valid_009b34d0(unit_)) {
+                            // +2Ch/+30h/+34h cleared: 009B3900 returns at 009B390F,
+                            // 009B3F15 skips the rule and the state, and 009B3560
+                            // answers 0, so 0099A4C0 retires the task.
+                            ++owner_.land_retired_invalid;
+                            owner_.log.notef("  land task %s: retired, the squadron's command "
+                                "is no longer land at this site (009B34D0) at %.2f s",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds));
+                            unit_.land_task_installed = false;
+                            unit_.land_state = LS::kNone;
+                            unit_.land_site_plus_one = 0;
+                            unit_.land_deck_plus_one = 0;
+                            unit_.attack_command_class = 0;
+                            return;
+                        }
+                        // 009B3915-009B39AD: the squadron's command target is
+                        // approach+30h, so no re-issue. 009B39AE-009B39D9: the
+                        // position copy into approach+68h (a record).
+                        // 009B39DC: plan+268h bit 0, which this host never sets
+                        // (only ever stored 0), so the second arm runs.
+                        unit_.land_timer_64 += dt;                                 // 009B3A6D
+                        if (unit_.land_timer_64 > 6.0f && unit_.land_alt_60 > 0.0f) {  // 00CE6630
+                            const float a = static_cast<float>(
+                                static_cast<double>(unit_.land_alt_60) - static_cast<double>(dt) * 60.0);
+                            unit_.land_alt_60 = a < 0.0f ? 0.0f : a;              // 00CE3D68
+                        }
+                        // 009B3ABA plane+904h clear; 009B3AC4 onGround false.
+                        // 009B3AE6-009B3B21, the request pacing (x87 order kept).
+                        if (dt < unit_.land_request_b0) {
+                            unit_.land_request_b0 -= dt;
+                        } else {
+                            unit_.land_request_b0 = static_cast<float>(
+                                static_cast<double>(unit_.land_request_b0) +
+                                (static_cast<double>(unit_.land_request_ac) - static_cast<double>(dt)));
+                            land_request_006c54c0();
+                        }
+                        owner_.done("BotApproachLand::update", 0x009b3900u);
+                        // 009B3F0E: +424h (approach+2Ch) is set, so the rule and
+                        // the current state's vtable[0Ch](dt).
+                        land_state_rule_009b3cf0();
+                        switch (unit_.land_state) {
+                        case LS::kMoveTo: run_land_moveto_tick_009c18c0(); break;
+                        case LS::kFollow: run_land_follow_tick_009c1fd0(); break;
+                        default: land_refuse_state("a landing state's tick", 0x009b3f39u); break;
+                        }
+                        // 009998A0's cruise profile, per think (LABELLED above).
+                        land_cruise_profile_009b3c60();
+                        const std::size_t ti = unit_.land_site_plus_one - 1u;
+                        const float* const tp = owner_.slots[ti]->motion.position;
+                        const double ex = static_cast<double>(tp[0]) - unit_.motion.position[0];
+                        const double ez = static_cast<double>(tp[2]) - unit_.motion.position[2];
+                        const float d = static_cast<float>(std::sqrt(ex * ex + ez * ez));
+                        if (unit_.land_first_distance < 0.0f) unit_.land_first_distance = d;
+                        if (unit_.land_min_distance < 0.0f || d < unit_.land_min_distance) {
+                            unit_.land_min_distance = d;
+                            unit_.land_min_distance_at = owner_.summary.simulated_seconds;
+                        }
+                        unit_.land_last_distance = d;
+                        if ((unit_.land_ticks % 200) == 1) {
+                            owner_.log.notef("  land task %s: t=%.2f state=%X mode=%d d=%.1f "
+                                "alt=%.1f cmd_alt=%.1f spd=%.2f requests=%llu",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<unsigned>(unit_.land_state), unit_.land_mode_50,
+                                static_cast<double>(d),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(unit_.plane_commanded_altitude),
+                                static_cast<double>(unit_.plane_desired_speed_2b4),
+                                unit_.land_requests);
+                        }
+                        owner_.done("BotTaskLand::tick", 0x009b3eb0u);
+                    }
+
                     void run_moveto_task_tick_009c3950(float dt) {
                         if (!unit_.moveto_task_installed) return;
                         if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
@@ -17572,6 +18118,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009FC7C0, 009FD0E0, 009A17D0, then 0099D300.
                             // Only the arm is modelled here; the three
                             // sub-object updates are contracts.
+                            // Packet cc9_land_task_reach: 009998FB calls the one
+                            // installed task's vtable[64h]; a plane flying `land`
+                            // runs that arm and no attack arm.
+                            if (kSquadronLandTaskBound && unit_.land_task_installed) {
+                                run_land_task_tick_009b3eb0(elapsed);
+                            } else {
                             run_torpedo_task_arm_009d4850(elapsed);
                             run_dive_bomb_task_arm_009c8790(elapsed);
                             if constexpr (bsp::kPilotMoveToTaskBound) {
@@ -17582,6 +18134,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             if constexpr (GameUnitsHost::Impl::kDogfightTaskBound) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
+                            }
                             }
 
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
@@ -20680,6 +21233,41 @@ void GameUnitsHost::report() {
             "retreat=%llu squadrons=%zu RECORD ONLY (packet cc9_squadron_land_task)",
             host.rtb_arm_counts[0], host.rtb_arm_counts[1], host.rtb_arm_counts[2],
             host.rtb_arm_counts[3], host.rtb_census.size());
+    }
+    if constexpr (kSquadronLandTaskBound) {
+        unsigned long long installs = 0, kept = 0, refused = 0, empty = 0, reqs = 0, refused_states = 0;
+        for (const Impl::LandTaskCensus& c : host.land_census) {
+            installs += c.installs;
+            kept += c.kept;
+            refused += c.refused_arm + c.refused_unread + c.refused_ground + c.refused_dead;
+            host.log.notef("summary land task squadron \"%s\": placements=%llu installs=%llu "
+                "kept=%llu refused arm=%llu unread=%llu ground=%llu dead=%llu first_install=%.2f s "
+                "(packet cc9_land_task_reach)", c.squadron.c_str(), c.placements, c.installs, c.kept,
+                c.refused_arm, c.refused_unread, c.refused_ground, c.refused_dead,
+                c.first_install_at);
+        }
+        for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+            if (s->land_installed_at < 0.0) continue;
+            empty += s->land_empty_assignments;
+            reqs += s->land_requests;
+            refused_states += s->land_refused_states;
+            host.log.notef("summary land task plane \"%s\": installed=%.2f s now=%d state=%X "
+                "ticks=%llu moveto=%llu follow=%llu no_station=%llu changes=%llu requests=%llu "
+                "empty_assignments=%llu refused_states=%llu d first=%.1f min=%.1f at %.2f s last=%.1f "
+                "alt=%.1f dead=%d", s->row.name.c_str(), s->land_installed_at,
+                s->land_task_installed ? 1 : 0, static_cast<unsigned>(s->land_state),
+                s->land_ticks, s->land_moveto_ticks, s->land_follow_ticks,
+                s->land_follow_no_station, s->land_state_changes, s->land_requests,
+                s->land_empty_assignments, s->land_refused_states,
+                static_cast<double>(s->land_first_distance), static_cast<double>(s->land_min_distance),
+                s->land_min_distance_at, static_cast<double>(s->land_last_distance),
+                static_cast<double>(s->motion.position[1]), s->plane_death_c3a ? 1 : 0);
+        }
+        host.log.notef("summary land task installs=%llu kept=%llu refused=%llu requests=%llu "
+            "empty_assignments=%llu refused_states=%llu retired_invalid=%llu profile calls=%llu "
+            "writes=%llu (packet cc9_land_task_reach)", installs, kept, refused, reqs, empty,
+            refused_states, host.land_retired_invalid, host.land_profile_calls,
+            host.land_profile_writes);
     }
     if (host.gunnery != nullptr) host.gunnery->report();
     if (host.ai != nullptr) host.ai->report();
