@@ -2389,3 +2389,48 @@ The slot 2Ch values for `unit_class_lands_troops_vtable_2c` came from the disk i
   - Then `python tools/pair_diff.py` on each pair, check the section 5g mechanism clauses, and
     flip by verdict.
   - cc9-ships9 then re-pairs `kAutoTargetFollowerGateBound`.
+
+## Handoff (cc9-lua10, 2026-09-28)
+
+Branch `agent/cc9-lua10`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua10`.
+
+### Done
+
+| packet | commit | switch | state |
+| --- | --- | --- | --- |
+| `cc9_landing_sequencer` | `cce28dd60`, `c3b35987f` | `kLandingSequencerBound` | ON; pairs gameplay identical (docs/SQUADRON_LAND_TASK.md 5c) |
+| `cc9_formation_join_follow` | `c05ff3746` | `kFormationJoinFollowBound` | ON; the four pairs held (docs/SHIP_UNIT_GROUP_FOLLOW.md 5g) |
+| `cc9_plane_follow_law_drift` | `f9efe504d`, `3198cc88c` | `kFollowLeaderTurnRateBound` | ON; mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5) |
+| same | same | `kFollowLeaderLiveSpeedBound` | OFF; mechanism unobserved (17.5) |
+| `cc9_follow_target_dir_acos` | `1d7b7045e` | `kFollowTargetDirAcosBound` | OFF; the pair has not run |
+| `cc9_landing_approach_bit` | `5abf6e808` | `kLandingApproachBitBound` | OFF; the pair has not run |
+
+### Open, in order
+
+1. **The acos pair** (docs/PLANE_FOLLOW_LAW.md 17.4, the likely cause of the LOMP10 drift).
+   - OFF is this tree's build of `1d7b7045e`. It is `build\` only if nothing has been rebuilt since.
+     Otherwise use a clean `pair_export --commit 1d7b7045e`.
+   - ON is `local\l10_ac`.
+   - Rows: `./local/l10_run.ps1 -Prefix l10_a0` (and `-Exe local\l10_ac\... -Prefix l10_acon`) with
+     `'lomp10:LOMP10:9200:9000','usn01:USN01:3200:3000'`.
+   - Judge by the `land follow trace` lines: `desired` is cruise whenever the station is behind, and
+     the Lightning members' largest leader distance after 250 s falls below 3817 m. That is the
+     turn-rate ON value, because `1d7b7045e` predates the turn-rate flip; compare against its own
+     OFF run.
+2. **The approach-bit pair** (docs/SQUADRON_LAND_TASK.md 5d).
+   - OFF is a build of `5abf6e808`; ON is `local\l10_ab`.
+   - Expect B-25 01 to install `land` at 3.80 s, get queue n = 2, and LOMP10 to move.
+3. **Re-pair the live speed** after the acos switch has settled which arm the members fly.
+4. **The landing states** `land/standby` and `land/line`, which LOMP10 now enters. After them comes
+   `land/begin`, which also needs `006C3F80`'s launch-site arm (block `+3Ch`).
+5. **The collision-box extent binding**, when cc9-gunnery10 delivers GUNNERY_OPEN_ITEMS 47.
+
+### Working notes
+
+- In the session of 2026-09-28, runs died at renderer init (`hr=0x8876086a`, `logonui=1/1`) while
+  the RDP session was Active but locked. This is environmental; retry a 300-frame smoke every 10
+  minutes.
+- The `land follow trace` diagnostic prints every 200 `follow (land)` ticks. It carries the member's
+  station distance, its leader distance, both speeds and the leader turn rate. It is what exposed
+  the acos correction.
+- Ghidra names were sent to the lead: `007D7DA0` (the leader turn rate) and `006CA5A0` (35.0).
