@@ -113,6 +113,30 @@ struct GameCommandRow {
     std::string source{"scene"};
 };
 
+// Packet cc9_director_target_checks (docs/GUNNERY_OPEN_ITEMS.md sections 19-20).
+// Two reads of a director's command target that the host had as records:
+// - 0071D6D0's refusal at 0071D712: `CMP byte ptr [EAX+5Dh],0` on the object
+//   00521EA0 resolves, a set byte refusing the push (0071D718 XOR AL,AL).
+// - 00694A60 at 0071E78A, the observer pair (target, director+1Ch). The pair's
+//   delivery is the director observer's vtable D09EA8: slot +4 0071C1A0 jumps to
+//   slot +8 0071DDB0, which 00926390's 00925C90 (death) and 009263C0's
+//   00925C40 (removal) reach. 0071DDB0 re-targets or ends every slot whose
+//   descriptor resolves to the released entity (GameReleasedTarget below).
+// Both read the entity's +5Dh, which 00926390 / 009263C0 set at the destroy.
+// False: the refusal answers the clear byte and the observer is a record; the
+// counters still count what the bound path would do. True: both act.
+inline constexpr bool kDirectorTargetChecksBound = false;
+
+// What 0071DDB0 needs to know about the released entity. The gunnery kill
+// funnel builds it, since it is where this process takes every death.
+struct GameReleasedTarget {
+    std::size_t unit{0};
+    float position[3]{};       // the entity's +FCh/+100h/+104h (0071EF98 on)
+    bool is_plane{false};      // vtable[5Ch](0Fh), 0071EE06
+    // The unit the director step is told is player controlled, or SIZE_MAX.
+    std::size_t controlled_unit{static_cast<std::size_t>(-1)};
+};
+
 // Milestone 2m. What 00836920's stage spine did to one director in one fixed
 // simulation step. Every field is the answer of a recovered test.
 // Packet cc9_target_release. What 00836920's `attackmove` arm (00836B45..
@@ -182,6 +206,15 @@ struct GameCommandsSummary {
     unsigned long long command_events{0};    // 00984300 bodies
     unsigned long long command_event_callbacks{0};  // Lua handlers the channel matched
     unsigned long long restarts{0};          // 0071E430's arm D
+    // Packet cc9_director_target_checks. Counted in both builds; OFF counts what
+    // the bound path would have done.
+    unsigned long long target_refusals{0};      // 0071D712: pushes a released target refused
+    unsigned long long release_deliveries{0};   // 0071DDB0 bodies (one per death)
+    unsigned long long release_slot_matches{0}; // slots whose target was the released entity
+    unsigned long long release_head_ends{0};    // slot 0: 0071D810(2) at 0071DE74
+    unsigned long long release_slot_clears{0};  // slot > 0, category 1 or 2: 0071D900
+    unsigned long long release_slot_kept{0};    // slot > 0, other category: descriptor only
+    unsigned long long release_plane_matches{0};// a plane target: 0071EDD0's retarget arm
 };
 
 // Packet cc8_ship_moveonpath: what one unit's slot-0 path cursor did over a run.
@@ -369,6 +402,11 @@ public:
     // 00521ea0 BSP_CommandTarget_ResolveObject on a descriptor: the created
     // instance its +2h id names, one-based, or 0.
     std::uint32_t resolve_command_target_00521ea0(const bsp::SceneCommandTarget& target) const;
+    // Packet cc9_director_target_checks. 0071DDB0, the director observer's
+    // delivery for a released entity, run for every director (the observer set
+    // is every director whose push resolved the entity, 0071E781). Records the
+    // entity as released (+5Dh) for 0071D6D0's refusal. Returns the slots matched.
+    std::size_t release_observed_target_0071ddb0(const GameReleasedTarget& released);
     // 0071df70's first test: the float at director+40h. See GameDirector for
     // the three producers and which of them this process reaches.
     float director_target_hold_0040(std::size_t unit_index) const;
