@@ -3,12 +3,16 @@
   "doc": "docs/GENERATED_SHIP_AI.md",
   "base": "main b83cdbb90",
   "code_changed": true,
-  "switch": {"kGeneratedShipAiBound": "ON after pairs (committed OFF at d7b44375a)"},
+  "switch": {
+    "kGeneratedShipAiBound": "ON after pairs (committed OFF at d7b44375a)",
+    "kApproachTurnRadiusBound": "ON after pairs (committed OFF at 14f1cee4e, restructured abd2ab61f)"
+  },
   "addresses": {
     "00810DD0": "BSP_Ship_EnsureAiOwners, ship vtable +210h: 00810DF2 CALL 009F3F20, 00810DF7 MOV [ESI+740h],EAX; gun object at +6DCh",
     "00810F60": "BSP_Unit_InitializeDirectorAndHullDimensions, ship vtable +9Ch: descriptor kind 1 (0081107E..0081108D) or kind 3 (008110A0), not a network client ([game+1FE4h] != 2), then 008110B6 vt+210h",
     "00925F20": "SEntity_InitAll pass A [vt+9Ch] at 0092604E; reached at load by row 12 (00875EA2) and by GenerateObject through 00874D79",
-    "009F3F20": "BSP_ShipAi_AllocateBrain"
+    "009F3F20": "BSP_ShipAi_AllocateBrain",
+    "009F1D3C": "00811A30(unit, 1.0) in 009F1BC0; nested+11F0h = max(class+500h*10 (00CE3DC0), circle*1.5 (00CE3D78)) at 009F1D1E..009F1D6D, the 009E6640 probe length"
   },
   "pairs": {
     "USN02 9200/9000": "exit 3; registered 4/4; Exeter sunk 210.81 s (Ushio torpedo), mission fails 212.91 s; Houston sunk 295.95 s; deaths 23->26, hit records 797->847",
@@ -18,8 +22,12 @@
     "JM06 3200/3000": "exit 1"
   },
   "predictions": "held on mechanism, census, direction and identities; failed on spread: Exeter's loss early (torpedoes on the approach), FinalShips' gun hits stayed 0, Naka's shots fell 8->4",
-  "verdict": "flip ON",
+  "verdict": "kGeneratedShipAiBound ON; kApproachTurnRadiusBound ON",
   "calls": [],
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "pairs_part2": {
+    "USN02 9200/9000": "exit 1; probe hits 0 both",
+    "USN13 3200/3000": "exit 1; probe hits 0 both (the predicted rise failed)"
+  }
 }

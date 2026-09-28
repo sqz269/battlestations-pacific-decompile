@@ -220,14 +220,14 @@ inline constexpr bool kLuaSquadronSetSpeedBound = true;  // ON: pairs held (docs
 // the inverse class-index map 00592640 and 00506550 reset to the identity and then
 // remap one pair in. True: route the row to run_is_class_changed_008cc4b0. False:
 // unimplemented (nil, which every caller in this installation reads as false).
-inline constexpr bool kLuaIsClassChangedBound = false;
+inline constexpr bool kLuaIsClassChangedBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_set_submarine_depth_level (docs/LUA_BINDING_MISSION.md,
 // "SetSubmarineDepthLevel, 00893F40"). SetSubmarineDepthLevel(entity, level) reads the
 // level as an integer, drops a request for 1 to 0 when periscopeState +122Ch is 2
 // (broken) or the periscope node +1214h is null, then calls 008528B0. True: route the
 // row to run_set_submarine_depth_level_00893f40. False: unimplemented.
-inline constexpr bool kLuaSetSubmarineDepthLevelBound = false;
+inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
