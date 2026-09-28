@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_ship_turn_rate_check",
+  "doc": "docs/SHIP_TURN_RATE.md",
+  "switch": null,
+  "addresses": {
+    "009DA250": "rudder from heading error: -error/(class+524h*1.2) clamped; York class+524h = 0.1",
+    "0092E8C0": "steering: rudder slew dt*0.5 (00D7A280), yaw-rate slew 2*dt (0092EA75)",
+    "00811890": "yaw rate from rudder via 0082ECB0, turnEfficiency unit+9DCh (1.0 at 0082371C), 008E6430(5) gated",
+    "0082ECB0": "MaxRotAngle / d(|r|) * r * rudder * efficiency (body 0082ECB0-0082ED10)",
+    "0082E890": "TurnMultipliers curve 0.4 / 1.5 / 2.0 at r 0 / 0.5 / 1",
+    "00825DE0": "propeller turn assist, inert with zero load",
+    "008E6430": "gameplay modifier product; empty list in the host"
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "class_data": "scripts/datatables/autoload/vehicleclasses.lua, mtime 2026-05-09 21:52 (locally modified)",
+  "results": {
+    "Exeter 148-150 s": "measured 0.0485 rad/s, law 0.0512, ratio 0.95",
+    "Exeter 157-160.3 s": "measured 0.0484 rad/s, law 0.0508, ratio 0.95",
+    "Perth 200-203.6 s": "measured 0.0503 rad/s, law 0.0531, ratio 0.95",
+    "Alden 163.9-166.15 s": "0.54 of the law while the rudder slews after the override starts",
+    "York full speed": "0.0524 rad/s, 90 degrees in 30.0 s"
+  },
+  "decision": "record only: the host's yaw law is the image's"
+}
