@@ -378,3 +378,55 @@ streams and the death table were on. Every ON run reads `sub_delay=0.50 ship_del
   timer, and CanFire refused 21187 times on USN02 while a timer ran.
 - The failed row is a consequence I mispredicted, not a divergence. USN02's fight runs longer
   with the floor ON, and the staggered salvos land fewer hits per shot.
+
+## 13. The weapon director's fire target, `00835860` (packet `cc9_weapon_director_fire_target`, read)
+
+Rank 3 of section 2. Read on main `c7c55655d`, which includes cc9-ships2's `store_fire_target_00836240`
+(`2a1d54495`). No source edit; the binding follows reference g.
+
+**The image.**
+- **The setter.** `00835860` (`__thiscall(director)(target, force)`, docs/WEAPON_DIRECTOR.md) acts
+  only when `force` is set, the lock byte `+23Ch` is clear, or no target is held (`+238h` null).
+  It then builds a kind-5Eh message (`00835740`) and routes it.
+- **The receiver.** `00836240` sets `+23Ch = force`, and replaces `+238h` when the target changes.
+  So an accepted unforced call also clears the lock.
+- **The callers and their `force`**, from the pushes before each call:
+
+| call site | caller | force | target |
+| --- | --- | --- | --- |
+| `009F5F21` | `BSP_WeaponDirector_AutoTargetTick` `009F5DA0` | **0** (`009F5F1E PUSH 0`) | the chosen enemy |
+| `0089ABDC` | `BSP_LuaBinding_SetFireTarget` | 1 | the script's target |
+| `00835930` | `BSP_WeaponDirector_SetCommand` `008358D0` | 1 (`00835924 PUSH 1`) | the command's target |
+| `00744B21`, `00817072`, `008171CF`, `00843941`, `006D28FA` | order and entity-command appliers | 1 | **null**: a forced clear |
+| `004643BD` | `BSP_FireTargetHolder_Apply` | 1 | the holder's target |
+| `00744AFD`, `00816FFD`, `00835E07`, `0084391D`, `006D28C7` | order and command appliers | pushed earlier, not traced | the order's target |
+
+**The host.**
+- **The Lua path is bound.** `SetFireTarget` goes through `GameShipAiHost::store_fire_target_00836240`
+  with force 1, applying the gate and the lock.
+- **The AutoTarget path bypasses both.** `AutoTarget::set_fire_target` (`src/game_hosts_ship_ai.cpp`)
+  writes `ctl.fire_target` directly: no `force || !lock || !held` gate, and no lock clear. So
+  after a script's forced target, the host's automatic selection overrides it, where the image
+  refuses every unforced change while the lock is set and a target is held.
+- **The command paths are records only.** `WeaponDirector::set_fire_target` and
+  `EntityCommandArm::set_fire_target` (`src/game_hosts_commands.cpp`) never store a target, so a
+  command's forced target, and the orders' forced clears, never reach the director.
+- **The gunnery host reads the director's target** by name from `GameShipAiHost::rows()`
+  (`run_gunnery_pass`), so every one of these writes decides what the guns engage.
+
+**Reach** (section 2's census): `WeaponDirector::set_fire_target` 482 calls on all four reference
+missions; `AutoTarget::set_fire_target` 2235 on USN02; USN02's script makes 14 `SetFireTarget` calls.
+
+**The binding, after reference g** (switch `kWeaponDirectorFireTargetBound`, OFF):
+1. `AutoTarget::set_fire_target` goes through `store_fire_target_00836240(unit, target, false)`.
+2. The command records store through the same routine with the sites' `force` (1 for
+   `SetCommand` and the forced clears).
+3. The lines are in `src/game_hosts_ship_ai.cpp` and `src/game_hosts_commands.cpp`, not the gunnery
+   file.
+
+**Prediction sketch.**
+- **USN02:** the scripted targets hold until a forced change, so target switches fall. The
+  destroyers that SetFireTarget aims at DeRuyter keep that target, which bears on cc9-ships2's
+  `cc9_usn02_deruyter_fire`. Shots about the same; hits on DeRuyter up.
+- **USN04 and the rest:** no script fire targets, so only the command paths move; identity
+  where no command carries a target.
