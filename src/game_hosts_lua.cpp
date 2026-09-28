@@ -4155,18 +4155,32 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
         const int own = units_hooks_->unit_side_0054(u);
         for (int party = 0; party < 3; ++party) {
             int& last = recon_listener_levels_[u * 3 + static_cast<std::size_t>(party)];
-            int level = 0;
+            int published = 0;
             if (party == own) {
-                level = last < 2 ? last + 1 : 2;
+                // 008065B0 adds 1.0 to an own record each pass, which saturates the
+                // value and publishes 2; the step substitution applies only without
+                // the reset cycle.
+                published = kReconListenerResetCycleBound ? 2 : (last < 2 ? last + 1 : 2);
             } else if (pass.side_covered(party)) {
                 const bsp::ReconDetectionLevel detected = pass.level(party, u);
-                level = detected == bsp::ReconDetectionLevel::identified ? 2
+                published = detected == bsp::ReconDetectionLevel::identified ? 2
                     : detected == bsp::ReconDetectionLevel::blip ? 1 : 0;
             }
-            if (level == last) continue;
-            const int old = last;
-            last = level;
+            std::vector<std::pair<int, int>> transitions;
+            bsp::ReconDetectionLevel forced_level = bsp::ReconDetectionLevel::none;
+            const bool forced = bsp::forced_recon_level(party, u, forced_level);
+            if (kReconListenerResetCycleBound && !forced) {
+                // 00807490 -> 00805BE0: old -> 0; then 00805AF0: 0 -> new.
+                if (last != 0) transitions.emplace_back(last, 0);
+                if (published != 0) transitions.emplace_back(0, published);
+            } else if (published != last) {
+                transitions.emplace_back(last, published);
+            }
+            last = published;
             if (dead || !any_recon) continue;   // 00980E50's live-unit gate
+            for (const auto& transition : transitions) {
+            const int old = transition.first;
+            const int level = transition.second;
             ++summary_.listener_recon_changes;
             const int unit_id = static_cast<int>(u + 1);
             std::vector<std::string> callbacks;
@@ -4203,6 +4217,7 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
                 }
                 ::lua_settop(state_, top);
             }
+            }   // transitions
         }
     }
 }
