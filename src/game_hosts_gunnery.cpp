@@ -133,10 +133,10 @@ constexpr bool kAaTargetWorldVelocityBound = true;
 //    body components go in as the axis unchanged, as in the image. Applied in both
 //    host sites of 00901C20: the AA bots' lead and the flak lock. OFF: V is used
 //    as it is.
-//    Stays OFF by the pairs of 2026-09-27: the Kate prediction failed and the
-//    host's plane body-rate magnitudes are not validated (88% of USN04's tests
-//    pass the 1.8 deg/s gate). docs/USN04_KATE_ATTRITION.md section 13.
-constexpr bool kAaTargetTurnAverageBound = false;
+//    ON by the re-pair of 2026-09-28 (docs/USN04_KATE_ATTRITION.md section 15):
+//    cc9-ships2 validated the body rates against 007DA710 and the descent pitch
+//    that passes the gate is the image's (docs/PLANE_BODY_RATES.md 1-2).
+constexpr bool kAaTargetTurnAverageBound = true;
 //  * kFlakProximityBurstBound: a Flak-type round runs 0070C370's proximity fuse
 //    after the base tick's direct-strike sweep: it locks the nearest plane,
 //    torpedo boat or landing ship within min(300 m, L/2 + 2 * BlastRange) of

@@ -442,3 +442,26 @@ and the fire cooldown ON). OFF is `local\TA_OFF_<m>.log`; ON flips only `kAaTarg
 | USN13 deaths | 26 +- 2 |
 | USN01 deaths | 5 +- 1 |
 | USN02 | identical (no plane targets): pair_diff 0 or 1, `tests=0` |
+
+## 15. The turn-rate average re-pair results, and the flip (2026-09-28)
+
+OFF `local\TA_OFF_<m>.log`, ON `local\TA_ON_<m>.log`, both from `236756273`.
+
+| row | OFF | ON | prediction (section 14) | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 Kates | 16 die; live releases 0; drops 0 | 16; live 0; drops 0 | 16, no live release, drops 0 | held |
+| USN04 Kate mean death time | 167.4 s | 167.7 s | earlier | **failed**: unchanged |
+| USN04 hits / Zero deaths | 653 / 10 | 644 / 9 | both rise | **failed**: both fall slightly |
+| USN04 deaths | 41 | 40 | 41-45 | **failed** by one |
+| USN04 tests / rotations | - | 207,314 / 179,913 | - | - |
+| USN13 deaths | 26 | 24 | 26 +- 2 | held |
+| USN01 deaths | 5 | 5 | 5 +- 1 | held |
+| USN02 | - | identical (pair_diff 1), tests 0 | identical | held |
+
+**Decision: `kAaTargetTurnAverageBound` is ON.**
+- The rule is `00901C20`'s. Its input, the body rate, is now validated against `007DA710`
+  (docs/PLANE_BODY_RATES.md).
+- The descent pitch that passes the gate is the image's own.
+- The failed rows are direction and magnitude calls on a small effect (USN04 deaths 41 -> 40,
+  hits -1.4%). They are not a divergence. This follows the same ruling as section 13's
+  rest-angles flip.
