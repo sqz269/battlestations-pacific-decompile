@@ -1937,3 +1937,38 @@ kShipAiClearanceOutcomeWiringBound=true`, SHA-256 prefix `656807825A6A`
   (USN02, JM06), because request 2 is refused while an outcome is set. They rise on JM05 and USN13,
   where request 4 opens.
 - **Verdict: ON.** The path fade (section 17) now reaches the escape through this wiring.
+
+## 21. Rank 5: the group reference release `00A2B8F0` (read only)
+
+Worker cc9-ships9, 2026-09-28. **The routine maintains a per-group score list and touches no
+command.**
+
+- **`00A2B8F0`** (`00A2B8F0-00A2B94D`, `RET 4`, `__thiscall` with ECX = `group+24h`, one stack
+  argument, the emptied group), read with `disasm-raw 00A2B8F0 --length 120`.
+  - It walks `[ECX+5600h]` records of `0ACh` bytes from `ECX+0`.
+  - It finds the first record whose dword at `+0A8h` equals the argument (`00A2B921..00A2B929`).
+  - It shifts every later record down one slot with `REP MOVSD` of `2Bh` dwords
+    (`00A2B90C..00A2B91D`), then decrements the count (`00A2B941`).
+- **`00A2B950`**, its only other caller (`00A2B95F`), inserts a record into the same list.
+  - It first removes the group's old record through `00A2B8F0`.
+  - It then finds the first slot whose float at `+0` is below the new score (`00A2B976..00A2B987`).
+  - It shifts the tail up (`00A2B98B..00A2B9B4`) and writes the score and the factors from
+    `+0h` on (`00A2B9C1..`).
+  - So `group+24h` is a list of up to 128 candidate records sorted by descending score, keyed by
+    the candidate group at `+0A8h`.
+- **Writers.** `00A2B950` is called from `BSP_AiPlanner_ChooseAttackTarget` at `00A1CE93`, and from
+  `BSP_AiPlanner_CaptureThink` at `00A2A77C`, `00A2A844` and `00A2AD58`.
+  - The `00A1CE93` insert is gated at `00A1CDE0` by the stack byte `[ESP+13h]`.
+  - docs/AI_PLANNERS.md calls that insert a debug arm that prints the four factors. The gate
+    byte's writer was not traced here, because the frame moves between `00A1CBE7` and `00A1CDE0`.
+- **Readers.** None known. docs/AI_GROUP_THINK.md (the `+24h..+5623h` row) found no producer in the
+  constructor and no consumer.
+
+**What that means for the host.** `AiGroups::release_group_reference` in `src/game_hosts_ai.cpp`
+reverts a command whose target group emptied, and calls that a labelled substitution for the
+image's dangling `command+1Ch`. That label is accurate: `00A2B8F0` itself never touches a command.
+The revert is a host rule with no image counterpart at this site.
+
+**Next step, if the item is taken.** Read how the attack command tick uses `command+1Ch` after its
+group is freed (docs/AI_COMMAND_OBJECT.md), and decide whether the host's revert changes an order
+the image would issue. Until then the rank stays 5, with its reach unproven.
