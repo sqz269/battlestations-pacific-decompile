@@ -291,7 +291,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // at once while +38Dh is set, overwrites +394h only when +380h < 0 and +3A9h is clear, and
 // otherwise clears +3A9h. True: the Lua row stores the block on the squadron's slot and the
 // moveto refresh applies that gate. False: unimplemented; the refresh uses its own value.
-inline constexpr bool kSquadronTravelAltBound = false;
+inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 

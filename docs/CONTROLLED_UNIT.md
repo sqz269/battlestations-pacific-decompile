@@ -1606,3 +1606,64 @@ OFF is this tree's build at `36326a0fd`. ON is `local\pr_on`, a `pair_export` of
 
 **Verdict: `kPlaneRowPositionBound = true`.** The mechanism matches the image's `entity+FCh`, and
 the one miss was on premise.
+
+## Handoff (cc9-lua4, 2026-09-28)
+
+Worker cc9-lua4 took over cc9-lua3's lane (handoff above). The branch is `agent/cc9-lua4` and the
+worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua4`. It holds no leases after this commit.
+Commits from `c19b2ea78` on were not yet landed when this was written. `bsp.py sync` refuses until
+they are, so the next worker should start from main after the lead merges.
+
+### Switches this worker set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kLuaDeviceReloadEnabledBound` | `include/bsp/game_hosts_lua.hpp` | ON | `docs/LUA_BINDING_MISSION.md`, "SetDeviceReloadEnabled, 008C1350" and its feed sections |
+| `kLuaFormationQueryBound` | same | ON (spread miss recorded) | "IsInFormation 008996A0 and LeaveFormation 00899EB0" |
+| `kSquadronTravelAltBound` | `include/bsp/game_hosts_units.hpp` | ON | "SquadronSetTravelAlt, bound" |
+| `kPlaneRowPositionBound` | same | ON (premise miss recorded) | this doc, "Why a controlled plane reads 0.00 m" |
+
+Also landed: the inert accessors `command_building_capture_range_07a0` and
+`plane_class_max_speed_0188` (`fed901e6a`) for ships4's Capture path.
+
+### Reads closed without a binding
+
+- **The `attackerPlayerIndex` producer**: `0072BF10` stamps `shot+1Ch` (`docs/LUA_BINDING_MISSION.md`,
+  "the fire-time producer"). Gunnery5 has since landed the field (main `e49be76ba`).
+- **The rate limit's `this+1A4h` set and the forced kind 11h** are unreachable on this installation.
+- **The submarine leftovers** are in `docs/SUBMARINE_MODEL.md` section 16. The AI depth states
+  went to ships4.
+- **The convoy back pointer `+738h`** is zero on every measured row (`docs/LAND_AND_STRUCTURES.md`,
+  last section).
+
+### Open, in order
+
+1. **The `attackerPlayerIndex` hit filter** (the lead's queue). Sync first: the field
+   `GameGunneryHitEvent::attacker_player_index` is on main at `e49be76ba`.
+   - Under a new switch, keep the entry's `attackerPlayerIndex` set in `src/game_hosts_lua.cpp`,
+     where the `hit` listener parse now counts it `hit_filters_unmodelled`.
+   - At dispatch, test membership of the event's index, as the `recon` party set does.
+   - Only JM06's `hshit` uses it (`{PLAYER_1}`, PLAYER_1 = 0), on a hospital ship that the idle
+     runs never hit. Predict identity on JM06 and USN01.
+   - The scenario that would exercise it is the player's own gun seat firing on the hospital ship.
+2. **The LOMP10 obedience cases** (the lead's extension of the controlled-plane read). On LOMP10
+   1200/1000, the party brain issues 117 `returntobase` tokens (`00E08F98`, zero position, flags 1)
+   to the B-25 and Lightning squadrons, and movetos to the CargoShip leader, and nothing moves in
+   150 s (`docs/PLANNER_TASK_CHOICE.md` section 13). Questions:
+   - Does the image accept a brain returntobase for an AI squadron?
+   - Does it accept a brain moveto for a CargoShip leader?
+   - What do the host's pilot task and ship order intake do with each?
+   - Before trusting "nothing moves", check the plane rows with `kPlaneRowPositionBound` ON: the
+     old 0.00 m figures were the stale row.
+3. **GetClosestBorderZone** (`008AECD0`) needs `004C7730` reconstructed and border-zone data.
+4. **Ghidra definitions requested:** `0074DFC0`-`0074E0E4` (`MLandVehicle` `vtable[A4h]`, the
+   `convoyID` reader).
+
+### Local files
+
+- **Pair exports:** `local\{dr,fq,rf,pr,ta}_on`.
+- **Logs:** `local\<prefix>_{off,on}_<mission>.log`. The census logs are `local\l4_rk_*.log`.
+- **Scripts:** `local\l4_*`.
+  - `l4_runs.ps1` launches detached runs with the pair environment.
+  - `l4_wait.sh` is the foreground wait on the final COM release line.
+  - `l4_rel32.py` scans rel32 and absolute references to a target in the image.
