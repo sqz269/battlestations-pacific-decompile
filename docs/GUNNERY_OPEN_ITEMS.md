@@ -2437,3 +2437,44 @@ void release_controller(void*, int) override {
 - Every row without a join: exit 1.
 - **Mechanism check:** count follower thinks, and how many leave. A leave on a row predicts a
   formation change that the follow summary shows.
+
+## 45. A squadron's SetCommand is `0071E6C0` alone (packet `cc9_squadron_set_command`, cc9-gunnery9)
+
+This is section 42's first outside-lane difference, bound in this lane.
+
+### 45.1 The image
+
+- A command to a squadron reaches its controller at `[squadron+348h]` (vtable `00D0BD98`), whose
+  slot `+60h` (`00D0BDF8`) is `0071E6C0`, the bare slot push. There is no category test and no
+  forced fire target `00835930`. `008358D0` is only in the weapon-director tables (section 42.1).
+- A plane instance has no director at all (vtable `[114h]` = `0047F180`).
+- **Also different, not bound:** the slot push calls `director->vtable[14h]` at `0071E73C`. That is
+  `00836040` on a ship director and `0084DD20` on the squadron controller. `0084DD20` rewrites the
+  target of a self-targeted command (it compares with `00E08F68` and `00E08F88`). The host's push
+  uses the ship director's rule for every row. That difference is open.
+
+### 45.2 The binding (committed OFF)
+
+- `GameCommandUnit` gains `class_id` (the unit's `+C4h`), -1 when unknown.
+- `kSquadronSetCommandBound` (`src/game_hosts_commands.cpp`): a row answering `IsKindOf(0Fh)` or
+  `IsKindOf(18h)` runs `director_push_command_slot_0071e6c0` alone. The host fuses a squadron with
+  its leader plane, whose row is plane-class (USN01's `Mav1` registers with vtable `00D00308`), so
+  both kinds are tested.
+- OFF: every row runs `008358D0`. The summary line counts the plane and squadron rows and their
+  forced fire targets: `summary mission director squadron set command rows= forced_fire_targets=
+  bound=`.
+- **The field's producer is the units host** (`game_hosts_units.cpp`, where the rows are built
+  before `register_units`). Until it fills `class_id`, both counters read 0 and the switch does
+  nothing. That line is routed to the units lane.
+
+### 45.3 Predictions (written before the ON runs)
+
+- **Q1, the mechanism.** OFF, `forced_fire_targets` is above 0 on USN04, USN01 and USN13. Those are
+  the plane-row calls section 33.1 traced: 35, 7 and 60 unresolved calls, all of them planes. ON,
+  it is 0, and `fire target unresolved` drops by the same count.
+- **Q2, USN04, USN01 and USN13: exit 1, gameplay identical.** Section 33.4's ON pair added exactly
+  these stores and moved no gameplay. Section 42 already nulls the gunnery read. The ship-AI host
+  skips launched squadrons.
+- **The flip rule:** ON when Q1 holds and every row is identity. A move would have to trace to a
+  plane-row AutoTarget losing its locked target (USN04 and USN01), which section 42.1 records as a
+  host-only path the ship-AI lane is removing.
