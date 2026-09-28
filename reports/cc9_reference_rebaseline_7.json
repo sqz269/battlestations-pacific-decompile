@@ -1,0 +1,408 @@
+{
+  "packet": "cc9_reference_rebaseline_7",
+  "doc": "docs/GAME_EXECUTABLE.md, section 'Mission reference baselines, 2026-09-28 g (main b605b9eb9)'",
+  "tree": "worktree cc9-gunnery4, branch agent/cc9-gunnery4",
+  "binary": {
+    "path": "local/rb7/build/win32/Release/bsp_game.exe",
+    "sha256": "e5fd8535db9550f3e49b52f1f581e72753f1e8e60488b17ac5e7c0b9badd9220",
+    "sha256_prefix": "E5FD8535DB95",
+    "export": "tools/pair_export.py --commit b605b9eb9, no flip"
+  },
+  "run_parameters": "BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, idle player, present interval immediate, tools/run_game.ps1, --press-start-frame 30 --menu-select <mission>",
+  "predictions": "none committed before the runs; rows anchored by pair_diff against the latest landing ON logs",
+  "rows": [
+    {
+      "mission": "USN04",
+      "frames": "4700/4500",
+      "damage": 9431.2,
+      "deaths": 40,
+      "hit_records": 644,
+      "hull": 251,
+      "shots": 5333,
+      "first_hit": "92.50 s",
+      "releases": "5 of 16 / 1 of 19",
+      "water_contacts": 13,
+      "controlled": "Lexington 3411.02 m",
+      "mission_end": "none",
+      "unimplemented": 546,
+      "log": "local/rb7_usn04.log"
+    },
+    {
+      "mission": "USN01",
+      "frames": "3200/3000",
+      "damage": 2250.0,
+      "deaths": 5,
+      "hit_records": 178,
+      "hull": 73,
+      "shots": 623,
+      "first_hit": "53.75 s",
+      "releases": "3 of 5 / 2 of 2",
+      "water_contacts": 3,
+      "controlled": "ScoutDauntless 0.00",
+      "mission_end": "none",
+      "unimplemented": 526,
+      "log": "local/rb7_usn01.log"
+    },
+    {
+      "mission": "E2",
+      "frames": "9200/9000",
+      "damage": 11520.0,
+      "deaths": 51,
+      "hit_records": 755,
+      "hull": 269,
+      "shots": 6398,
+      "first_hit": "92.50 s",
+      "releases": "5 of 16 / 1 of 19",
+      "water_contacts": 19,
+      "controlled": "Lexington 5833.70 m",
+      "mission_end": "none; phase 1 only (known)",
+      "unimplemented": 547,
+      "log": "local/rb7_e2.log"
+    },
+    {
+      "mission": "USN02",
+      "frames": "9200/9000",
+      "damage": 44672.1,
+      "deaths": 23,
+      "hit_records": 797,
+      "hull": 274,
+      "shots": 1052,
+      "first_hit": "41.05 s",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "Houston 2522.72 m",
+      "mission_end": "none; phase 2 reached at 148.50 s (callback 149.55 s), neither completed nor failed",
+      "unimplemented": 529,
+      "log": "local/rb7_usn02.log"
+    },
+    {
+      "mission": "JM06",
+      "frames": "3200/3000",
+      "damage": 3808.0,
+      "deaths": 2,
+      "hit_records": 145,
+      "hull": 111,
+      "shots": 233,
+      "first_hit": "54.30 s",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "Fletcher-class 08 1233.69 m",
+      "mission_end": "none",
+      "unimplemented": 530,
+      "log": "local/rb7_jm06.log"
+    },
+    {
+      "mission": "JM08",
+      "frames": "3200/3000",
+      "damage": 1423.0,
+      "deaths": 2,
+      "hit_records": 103,
+      "hull": 63,
+      "shots": 757,
+      "first_hit": "5.35 s",
+      "releases": "-",
+      "water_contacts": 1,
+      "controlled": "Auilick 1495.61 m",
+      "mission_end": "none",
+      "unimplemented": 496,
+      "log": "local/rb7_jm08.log"
+    },
+    {
+      "mission": "USN13",
+      "frames": "3200/3000",
+      "damage": 8933.6,
+      "deaths": 24,
+      "hit_records": 720,
+      "hull": 486,
+      "shots": 6607,
+      "first_hit": "68.10 s",
+      "releases": "2 of 60 / -",
+      "water_contacts": 5,
+      "controlled": "Enterprise 1150.83 m",
+      "mission_end": "none",
+      "unimplemented": 542,
+      "log": "local/rb7_usn13.log"
+    },
+    {
+      "mission": "BSM01",
+      "frames": "3200/3000",
+      "damage": 0.0,
+      "deaths": 0,
+      "hit_records": 0,
+      "hull": 0,
+      "shots": 0,
+      "first_hit": "-",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "HenryPT 0.00",
+      "mission_end": "none",
+      "unimplemented": 475,
+      "log": "local/rb7_bsm01.log"
+    },
+    {
+      "mission": "LOMP06",
+      "frames": "1200/1000",
+      "damage": 224.8,
+      "deaths": 0,
+      "hit_records": 4,
+      "hull": 2,
+      "shots": 9,
+      "first_hit": "38.95 s",
+      "releases": "-",
+      "water_contacts": 0,
+      "controlled": "Narwhal 421.38 m",
+      "mission_end": "none",
+      "unimplemented": 494,
+      "log": "local/rb7_lomp06.log"
+    }
+  ],
+  "anchors": [
+    {
+      "mission": "USN04",
+      "log": "worktree cc9-gunnery3 local/WD_ON_USN04.log",
+      "pair_diff": 1
+    },
+    {
+      "mission": "USN01",
+      "log": "worktree cc9-gunnery3 local/WD_ON_USN01.log",
+      "pair_diff": 1
+    },
+    {
+      "mission": "JM06",
+      "log": "worktree cc9-gunnery3 local/WD_ON_JM06.log",
+      "pair_diff": 1
+    },
+    {
+      "mission": "USN13",
+      "log": "worktree cc9-gunnery3 local/TA_ON_USN13.log",
+      "pair_diff": 1
+    },
+    {
+      "mission": "LOMP06",
+      "log": "worktree cc9-lua2 local/sp_on_lomp06.log",
+      "pair_diff": 1
+    },
+    {
+      "mission": "BSM01",
+      "log": "worktree cc9-ships2 local/rb6_bsm01.log",
+      "pair_diff": "gameplay identical"
+    },
+    {
+      "mission": "USN02",
+      "log": "worktree cc9-lua2 local/ad2_on_usn02.log",
+      "pair_diff": 3,
+      "note": "AddDamage-only ON 23/747/1063; director-only ON 24/991/1164 failed 212.91 s; both (main) 23/797/1052 no end"
+    }
+  ],
+  "usn02": {
+    "phase2_blackout_request": "world frame 2970, 148.50 s",
+    "phase2_callback": "world frame 2991, 149.55 s",
+    "failure": "none in 9000 frames",
+    "end_state": {
+      "Houston": {
+        "health": 6037,
+        "taken": 900
+      },
+      "Exeter": {
+        "health": 4178,
+        "taken": 3859
+      }
+    },
+    "phase1_deaths": [
+      "Yamakaze 58.35 (Houston)",
+      "Kawakaze 66.65 (Exeter)",
+      "Minegumo 102.85 (Houston)"
+    ],
+    "phase2_deaths": [
+      "John3 152.75 (Asagumo)",
+      "Encounter 153.60 (Tokitsukaze)",
+      "DeRuyter 156.60 (AddDamage)",
+      "Java 156.60 (AddDamage)",
+      "Kortenaer 156.60 (AddDamage)",
+      "Electra 156.60 (AddDamage)",
+      "Asagumo 164.36 (Yukikaze)",
+      "Alden 166.16 (Tokitsukaze)",
+      "Yudachi 167.81 (Houston)",
+      "Tokitsukaze 173.16 (Exeter)",
+      "Samidare 196.96 (Exeter)",
+      "Perth 203.71 (Ushio)",
+      "Haguro 206.66 (Exeter)",
+      "Murasame 224.96 (Exeter)",
+      "Hatsukaze 238.16 (Witte)",
+      "Harusame 255.26 (Exeter)",
+      "Amatsukaze 260.16 (Witte)",
+      "Jintsu 266.56 (Exeter)",
+      "John2 273.31 (Yukikaze)",
+      "Yukikaze 391.33 (Houston)"
+    ]
+  },
+  "attribution_vs_f": {
+    "USN04": [
+      [
+        "spawn-new member offsets",
+        "c65d24fc3",
+        "SCENE_CONTENTS_HOSTS 22.5"
+      ],
+      [
+        "Kill",
+        "a1d0d5db7",
+        "LUA_BINDING_MISSION Kill: the pairs and the verdict"
+      ],
+      [
+        "rest angles, plane-gun mounts, line of sight",
+        "3a1d5e639",
+        "GUN_REST_ANGLES 9, GUNNERY_OPEN_ITEMS 8"
+      ],
+      [
+        "difficulty multipliers (deaths unchanged)",
+        "7e172af55",
+        "DIFFICULTY_MULTIPLIERS 6.3"
+      ],
+      [
+        "pitch mode 2: 44 -> 41",
+        "f0b87c83d",
+        "PLANE_BODY_RATES 2"
+      ],
+      [
+        "fire cooldown: 44 -> 43",
+        "8fe921cc0",
+        "GUNNERY_OPEN_ITEMS 12"
+      ],
+      [
+        "turn average: 41 -> 40",
+        "4d57fd2ca",
+        "USN04_KATE_ATTRITION 15"
+      ],
+      [
+        "director fire target: identical",
+        "edd36601b",
+        "GUNNERY_OPEN_ITEMS 15"
+      ]
+    ],
+    "USN01": [
+      [
+        "generated-entity party etc.",
+        "2ae5c52e2",
+        "CONTROLLED_UNIT"
+      ],
+      [
+        "generated wing party, squadron liveness",
+        "b3268653e, 41187ed26",
+        "PLANE_SQUADRON"
+      ],
+      [
+        "marker target",
+        "1b5f1da97",
+        "GAME_SHIP_NAVIGATION_BINDING"
+      ],
+      [
+        "pitch mode 2",
+        "f0b87c83d",
+        "PLANE_BODY_RATES 2"
+      ],
+      [
+        "difficulty multipliers",
+        "7e172af55",
+        "DIFFICULTY_MULTIPLIERS 6.3"
+      ],
+      [
+        "invincibility floor: 7 -> 5",
+        "6dc429443",
+        "GUNNERY_OPEN_ITEMS 10"
+      ],
+      [
+        "fire cooldown",
+        "8fe921cc0",
+        "GUNNERY_OPEN_ITEMS 12"
+      ],
+      [
+        "director fire target: identical",
+        "edd36601b",
+        "GUNNERY_OPEN_ITEMS 15"
+      ]
+    ],
+    "E2": "first 4500 frames = USN04 (789 -> 644); post-4500 hit records 65 -> 111 unpaired",
+    "USN02": [
+      [
+        "frame normalisation",
+        "6892a4b43",
+        "SCENE_CONTENTS_HOSTS 18.4"
+      ],
+      [
+        "marker target",
+        "1b5f1da97",
+        "GAME_SHIP_NAVIGATION_BINDING"
+      ],
+      [
+        "rest angles",
+        "3a1d5e639",
+        "GUN_REST_ANGLES 9"
+      ],
+      [
+        "difficulty multipliers: phase 2 reached",
+        "7e172af55",
+        "DIFFICULTY_MULTIPLIERS 6.3"
+      ],
+      [
+        "invincibility floor: fails in phase 1 at 385.68 s",
+        "6dc429443",
+        "GUNNERY_OPEN_ITEMS 10"
+      ],
+      [
+        "fire cooldown",
+        "8fe921cc0",
+        "GUNNERY_OPEN_ITEMS 12"
+      ],
+      [
+        "script fire target: phase 2, fails 153.50 s",
+        "50851d56a",
+        "USN02_DERUYTER_FIRE 6"
+      ],
+      [
+        "gap to the shared OFF 22/881/1083",
+        "-",
+        "not bracketed"
+      ],
+      [
+        "AddDamage: 23/747",
+        "13fd0df8b",
+        "LUA_BINDING_MISSION AddDamage flip pair and verdict"
+      ],
+      [
+        "director fire target on a base without AddDamage: failed 212.91 s",
+        "edd36601b",
+        "GUNNERY_OPEN_ITEMS 15"
+      ],
+      [
+        "both ON (main): 23/797/1052, no end",
+        "-",
+        "this section"
+      ]
+    ],
+    "JM06": "Kill, class readers, recon listeners, difficulty; director identical",
+    "JM08": "PilotMoveTo; the rest unpaired",
+    "USN13": "spawn-new member offsets, spawn-new placement, fire cooldown, turn average; 27->26 and 25->26 gaps not bracketed",
+    "BSM01": "identical",
+    "LOMP06": "first row; equals the SetShipSpeed ON run"
+  },
+  "flags": {
+    "closed": [
+      "USN13 670 plane water contacts (c65d24fc3)",
+      "f's frame-normalisation note (6892a4b43 landed)"
+    ],
+    "new": [
+      "USN02 phase-2 failure at 211.76 s is not main's: it needs the Dutch four alive, AddDamage removes them",
+      "E2 +46 hit records after frame 4500 unpaired",
+      "USN02 gap 50851d56a -> shared OFF, USN13 27->26 and 25->26 gaps not bracketed",
+      "JM08 1351 -> 757 shots unpaired beyond PilotMoveTo"
+    ],
+    "carried": [
+      "USN02 664 -> 640 bracketed to e4dbf38b2",
+      "USN02 torpedo stock on top of the throttle cut",
+      "kSetSelectedUnitBound effect not isolated",
+      "E2 594 -> 595 not isolated",
+      "E2 phase 1 only under lockstep (known)",
+      "Marshall .nav generic layer"
+    ]
+  }
+}
