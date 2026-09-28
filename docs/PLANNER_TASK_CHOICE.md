@@ -691,6 +691,48 @@ The census line is `summary mission ai defend thinks= record_fallbacks= defendpo
 **USN02 9200/9000 and USN04 4700/4500: identity, exit 0 or 1.** No planner line shows the Defend
 kind owning a group there, so the census reads `thinks=0`.
 
+### 10.4 The pairs
+
+- **OFF** is this tree's build at `4c037dc68`. **ON** is `pair_export --commit 4c037dc68 --flip
+  kAiDefendThinkBound=true` into `local\df_on`.
+- **Logs:** `local\df_{off,on}_{usn13,usn01,usn04,usn02}.log`.
+
+| mission | pair_diff | deaths | hit records (hull) | ON census |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | exit 3 | 17 -> 16 | 283 (117) -> 290 (98) | 39 thinks, 0 fallbacks, DEFENDPOSITION 1 |
+| USN01 3200/3000 | exit 3 | 5 -> 5 | 172 (80) -> 177 (74) | 37 thinks, 0 fallbacks, DEFENDPOSITION 1 |
+| USN04 4700/4500 | exit 1, identical | 28 | 491 | 58 thinks, DEFENDPOSITION 0 |
+| USN02 9200/9000 | exit 1, identical | 12 | 5166 | 112 thinks, DEFENDPOSITION 0 |
+
+**What moved.**
+- The Storage group holds DEFENDPOSITION from the first Defend think.
+- The removed `00A2CBD0` draw shifts the stream, so Enterprise's group now draws MOVETOATTACK
+  (`cautious=0`) on both missions. That is the conditional branch 10.3 named.
+- On USN13 `tick_orders` return from 25 to 514, and Enterprise moves 1845.78 m instead of 920.22 m.
+  On USN01 they rise from 0 to 51.
+
+**Predictions:**
+- **Held:** the mechanism and its census:
+  - `record_fallbacks=0` everywhere;
+  - one DEFENDPOSITION on USN13 and USN01;
+  - exit 3 on those two, exit 1 on USN02 and USN04.
+- **Failed on the census only:** `thinks=` is not 0 on USN02 and USN04. The Defend planner is ticked
+  every party think with nothing owned, and the no-record path counts that tick.
+
+**Decision: `kAiDefendThinkBound` is ON.**
+
+**The records path is next.** It is reached when a thinking party's Defend planner owns a group
+with a CommandBuilding member or a world-set member. That happens in the section 9.3 scenes with a
+thinking party that owns a CommandBuilding, and everywhere once `Objectives_Add` produces the world
+sets. What it needs, in order:
+- `00A243D0`, the Defend record score;
+- `00A28300` and `00A1C140`;
+- `BSP_AiGroup_PickAnchorEntity` and `00A186F0`;
+- the per-record assignment with `00A1A6D0`;
+- the spawn tail `00A29B8E-00A29E2A`.
+
+Its merge pass is already in `ai_planner_tails`.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

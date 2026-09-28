@@ -269,7 +269,10 @@ constexpr bool kAiSellThinkBound = true;
 // brain+0Ch. With a candidate the records path (00A243D0 scores, 00A28300,
 // the anchors, the merge pass and the spawn tail) is not reconstructed and the
 // Siege-shape stand-in runs, counted as record_fallbacks. False: the stand-in.
-constexpr bool kAiDefendThinkBound = false;
+// ON: USN13 and USN01 moved (the Storage LandFort group holds DEFENDPOSITION,
+// and the RNG shift gives Enterprise MOVETOATTACK), USN02 and USN04 identical
+// (docs/PLANNER_TASK_CHOICE.md section 10.4).
+constexpr bool kAiDefendThinkBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
