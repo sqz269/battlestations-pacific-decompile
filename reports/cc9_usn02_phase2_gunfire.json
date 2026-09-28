@@ -1,0 +1,30 @@
+{
+  "packet": "cc9_usn02_phase2_gunfire",
+  "doc": "docs/USN02_PHASE2_GUNFIRE.md",
+  "tree": "worktree cc9-gunnery4, branch agent/cc9-gunnery4",
+  "binary": "local/rb7/build/win32/Release/bsp_game.exe (pair_export of b605b9eb9, SHA-256 prefix E5FD8535DB95)",
+  "verdict": "image's own: Haguro's per-hit damage, cadence, dispersion, aim error and skill equal the image rules on this installation's tables; no switch added",
+  "premise": {
+    "houston_helm_208_26": "Haguro is the last hitter only: 9 direct hits, 473.9 applied of Houston's 4462 taken; the extra helm-route damage tracks Tokitsukaze's dealt +3988 (torpedoes), labelled from per-ship totals",
+    "exeter_211_76": "sunk by a Nachi torpedo at 6005 m (killer_cat 7) in cc9-gunnery3 WD_ON_USN02, a base without AddDamage; on main Exeter survives"
+  },
+  "haguro_166_212": {
+    "idle": {"turret_shots_at_houston": 40, "direct_hits": 10, "applied": 530.7, "blast_hits": 10, "blast_applied": 0, "houston_taken_run": 900},
+    "helm": {"turret_shots_at_houston": 19, "direct_hits": 9, "applied": 473.9, "blast_hits": 9, "blast_applied": 0, "houston_taken_run": 4462}
+  },
+  "terms": {
+    "shell": "bullet 28, DamageMin 180, DamageMax 190, Blast 90 range 80, V0 300",
+    "armour": "Houston 90",
+    "hull_formula": "00470510: (base * ownerMod - armour) * scale; applied 50.1..55.3 = (180..190 - 90) * 0.5556",
+    "reload": "device 200 ReloadTime 10, BarrelDelayTime 0.4, 2 muzzles; observed 4.34..5.01 s per platform",
+    "dispersion": "Throw 0.010001 x ArtillerySubDirectorBot SPNormal 0.9",
+    "aim_error": "006DEFF0 SPNormal MaxAngleError 5 deg, Power 1.0",
+    "skill": "DRKillers get no SetSkillLevel (usn_2_java.lua:300..315); constructor default unit+390h = 1 (0095CCCC)"
+  },
+  "not_established": [
+    "the hit fraction against the original executable (no original run)",
+    "the per-hit Tokitsukaze attribution: g4_trall_helm_usn02 crashed on a device loss (hr 0x88760868)"
+  ],
+  "logs": ["local/rb7_usn02.log", "local/g4_tr_idle_usn02.log", "local/g4_tr_helm_usn02.log", "local/g4_trall_helm_usn02.log (crashed)"],
+  "trace_identity": "pair_diff rb7_usn02 vs g4_tr_idle_usn02 exit 1, gameplay, death rows and unit rows identical"
+}
