@@ -339,6 +339,9 @@ struct GameCommandsHost::Impl {
     // Packet cc9_unresolved_fire_target: 00835930 calls whose object is not
     // one of this host's unit records, and how many of them name a unit by the
     // descriptor's object id (+2h) all the same.
+    unsigned long long building_arm_hits{0};     // cc9_attackmove_building_arm
+    unsigned long long building_arm_converts{0};
+    int building_arm_traced{0};
     unsigned long long fire_unresolved{0};
     unsigned long long fire_unresolved_by_id{0};
     int fire_unresolved_traced{0};
@@ -2762,7 +2765,28 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
             // 00836B80..00836BAD: +5Eh set or the session's own side converts the
             // command to `moveto` (00465080, 0071ECF0) and then raises stage 2.
             // The conversion is not issued here, so the branch stays a record.
-            // LABELLED: no building target reaches this arm in the measured runs.
+            // LABELLED: the arm is reached (USN13 1002, USN01 8 on reference i), but
+            // the conversion's test never holds there: every building is another
+            // party's and not destroyed, so the image keeps the attack-move too
+            // (docs/GUNNERY_OPEN_ITEMS.md section 35). A captured or destroyed
+            // building target would need the conversion, which is not issued.
+            // Packet cc9_attackmove_building_arm, diagnostic: 00836B80 converts only when
+            // +5Eh is set, or 00836B86..00836B8F finds the building's party +54h equal
+            // to the unit's ([director+34h]+54h); otherwise JNZ 00836D67 keeps it.
+            ++host.building_arm_hits;
+            const bool own_ok = host.target_facts->command_target_facts(unit_index, own);
+            const bool convert = facts.flag_05e || (own_ok && own.side_0054 == facts.side_0054);
+            if (convert) {
+                ++host.building_arm_converts;
+                if (host.building_arm_traced < 12) {
+                    ++host.building_arm_traced;
+                    host.log.notef("attackmove building arm 00836b95: unit=%zu \"%s\" target=%u "
+                        "flag_05e=%d target_side=%d own_side=%d at %.2f s (packet "
+                        "cc9_attackmove_building_arm)", unit_index,
+                        host.units[unit_index].name.c_str(), target, facts.flag_05e ? 1 : 0,
+                        facts.side_0054, own.side_0054, static_cast<double>(mission_clock));
+                }
+            }
             host.record("WeaponDirector::attackmove_arm_building_moveto_00836b95", 0x00836b95u);
         } else if (!facts.live_0043f080) {
             raise = true;                                  // 00836BC9 JE 00836BB2
@@ -3455,6 +3479,9 @@ void GameCommandsHost::report() {
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,
         host.summary.current, host.summary.latched, host.summary.moving,
         host.summary.ai_groups, host.summary.ai_forwards, host.summary.steps);
+    host.log.notef("summary mission director attackmove building arm hits=%llu converts=%llu "
+        "(00836B95, packet cc9_attackmove_building_arm)", host.building_arm_hits,
+        host.building_arm_converts);
     host.log.notef("summary mission director fire target unresolved=%llu by_object_id=%llu "
         "(00835930, packet cc9_unresolved_fire_target)", host.fire_unresolved,
         host.fire_unresolved_by_id);
