@@ -1,0 +1,20 @@
+{
+  "packet": "cc9_usn04_kate_attrition",
+  "doc": "docs/USN04_KATE_ATTRITION.md",
+  "kind": "read",
+  "log": "local/RA_OFF_USN04.log (worktree cc9-gunnery3; main 6e1a50650 + kGunIdleRestBound OFF)",
+  "addresses": {
+    "00902920": "AAGunnerBot tick; swinging error 00902B38-00902EF7 zero at SPVeteran (docs/FLAK_PROXIMITY_BURST.md 5)",
+    "009030C0": "AAFlakBot tick; 008FDBE0 error zero at SPVeteran",
+    "009D15F0": "torpedo aim tick; aim_complete_2Ch = 0 for all 16 Kates (plane-side, handed over)"
+  },
+  "no_ghidra_function": [],
+  "calls": [],
+  "substitutions_open": [
+    "0085E4D0 turn-rate average not bound (zero on a straight run)",
+    "muzzle origin falls back to the shared origin for devices without a mesh path (2084 of 5482 shots)",
+    "flak unlocked passing rule beyond 50 m (0070C7B6-0070C806) not modelled"
+  ],
+  "verdict": "read: the AA that kills USN04's Kates is the image's at SPVeteran; no gunnery term bound; attrition is aim-state dwell (7.5-13 s) at low speed, handed to the plane owners",
+  "names_added": []
+}
