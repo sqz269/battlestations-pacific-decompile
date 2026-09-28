@@ -2602,8 +2602,8 @@ struct GameUnitsHost::Impl {
         lin.latched = slot.db_in_range_d0;
         lin.planar_distance = slot.db_planar_bc;
         lin.in_range_distance = slot.db_in_range_b8;
-        lin.control_flag_369 = false;
-        lin.global_e17bf2 = false;
+        lin.control_flag_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1 (007F2D09)
+        lin.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
         // 009C7C31-009C7CFE, the spent-member arm. A bomber with no bombs left
         // that is not its flight leader has its latch ANDed with "the leader is
         // within approach+B8h of this aircraft's aim point" - a second,
@@ -2899,8 +2899,8 @@ struct GameUnitsHost::Impl {
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
         in.entry.has_bomb_ordnance_4c9 = slot.db_has_bomb_d1;
-        in.entry.control_flag_369 = false;
-        in.entry.global_e17bf2 = false;
+        in.entry.control_flag_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1 (007F2D09)
+        in.entry.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
         in.entry.in_range_latch_4c8 = slot.db_in_range_d0;
         // FED, packet cc8_follow_enter, replacing a hardcoded `true`. The field
         // name follows the ledger's misreading; 007B8AD0 is the flight-leader
@@ -3107,8 +3107,8 @@ struct GameUnitsHost::Impl {
             g.begin_altitude_ac = slot.db_begin_alt_ac;
             g.aim_point_height_50 = slot.db_aim_point_height_50;
             g.has_bomb_ordnance_d1 = slot.db_has_bomb_d1;
-            g.control_flag_369 = false;
-            g.global_e17bf2 = false;
+            g.control_flag_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1 (007F2D09)
+            g.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
             in.goaway_complete = bsp::dive_bomb_goaway_complete_009c7f00(g);
             if (in.goaway_complete) {
                 ++slot.db_goaway_complete_ticks;
@@ -10282,8 +10282,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.entry.pilot_control_mode_370 =
                                 static_cast<int>(slot_.torpedo_attack_mode_370);
                             in.entry.attack_flag_52a = slot_.torpedo_attack_flag_52a;
-                            in.entry.control_flag_369 = false;
-                            in.entry.global_e17bf2 = false;
+                            in.entry.control_flag_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1
+                            in.entry.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
                             in.entry.aim_flag_529 = slot_.torpedo_aim_flag_529;
                             // FED, packet cc8_follow_enter: 009D4082 and
                             // 009D41E4, the two `!engaged` edges of 009D4030,
@@ -10353,11 +10353,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const bool target_marked =
                                     tgt != nullptr && tgt->state != nullptr &&
                                     tgt->state->simulate != 0;
-                                // ctl+369h is clear in this host
-                                // (read_control_block), so the first refusal arm
-                                // cannot fire and the ordnance arm is the live one.
-                                const bool ctl_369 = false;
-                                const bool global_e17bf2 = false;
+                                // Packet cc9_device_reload_feeds: ctl+369h is the
+                                // squadron's ReloadEnabled (007F1FE0, default 1 at
+                                // 007F2D09) and [00E17BF2] is SetDeviceReloadEnabled's
+                                // byte; both read false while the switch is OFF, and
+                                // then the ordnance arm is the live one.
+                                const bool ctl_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1
+                                const bool global_e17bf2 = lua_device_reload_enabled_00e17bf2();
                                 const bool class_extra =
                                     !(ctl_369 && global_e17bf2) &&
                                     !(bsp::torpedo_in_attack_state_009d31d0(
@@ -10463,8 +10465,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 slot_.torpedo_goaway_distance_24;
                             gc.has_ordnance_132 =
                                 slot_.torpedo_approach.has_ordnance_132;
-                            gc.control_flag_369 = false;
-                            gc.global_e17bf2 = false;
+                            gc.control_flag_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1
+                            gc.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
                             in.goaway_done_009d3150 =
                                 bsp::torpedo_goaway_complete_009d3150(gc);
                             slot_.torpedo_goaway_done_last =
@@ -13647,9 +13649,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // advances once per step, so its parity is the step's
                         // parity up to one per-aircraft constant. STAND-IN.
                         in.step_odd = (unit_.dive_bomb_arm_ticks & 1) != 0;
-                        // ctl+369h and [00E17BF2]: false, as 009C7F00's feed has them.
-                        in.control_flag_369 = false;
-                        in.global_e17bf2 = false;
+                        // ctl+369h and [00E17BF2], as 009C7F00's feed has them
+                        // (packet cc9_device_reload_feeds).
+                        in.control_flag_369 = kLuaDeviceReloadEnabledBound;  // squadron ReloadEnabled, default 1
+                        in.global_e17bf2 = lua_device_reload_enabled_00e17bf2();
                         bsp::dive_bomb_goaway_enter_009c4950(in, unit_.db_goaway_turn);
                         // 009C7F00 completes against this same +20h, which the host
                         // had left at zero since the field was split from the

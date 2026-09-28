@@ -2782,3 +2782,42 @@ installation's runs.
   ship arm. Which ship state `+538h`'s `+510h` and `+514h` hold was not read.
 
 **Verdict:** no binding. Both are recorded as unreachable on this installation's rows.
+
+### SetDeviceReloadEnabled: the feeds (packet `cc9_device_reload_feeds`)
+
+Worker cc9-lua4, 2026-09-28. The lead gave this lane `src/game_hosts_units.cpp` for the packet.
+
+**The change.** The seven plane-task feeds now take `control_flag_369 = kLuaDeviceReloadEnabledBound`
+(the squadron's `ReloadEnabled`, default 1) and `global_e17bf2 = lua_device_reload_enabled_00e17bf2()`.
+The sites are the dive-bomb approach latch, the dive-bomb entry, the go-away completion
+(`009C7F00`), the torpedo arm entry, the torpedo class-extra refusal, the torpedo go-away, and the
+go-away turn entry (`009C4950`). With the switch OFF, both read false as before.
+
+**The one site left as a stand-in.** `009FFEB0` in `src/game_hosts_ai.cpp` 1616 belongs to another
+lease. With the byte set, the image returns false there without reading the carrier arm. The host
+already answers false on that arm, so the stand-in gives the same answer. The replacement line, for
+routing, is:
+
+```
+        if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
+```
+
+**What changes once both bytes are set** (from the readers' docs):
+- the dive-bomb entry (`009C8361`, `docs/DIVE_BOMB_TASK.md` row 2): a bomber with no bomb left
+  (`task+4C9h == 0`) no longer finishes the task at once;
+- the dive-bomb approach threshold (`docs/DIVE_BOMB_TASK.md` 169) drops the `approach+B8h + 100`
+  arm;
+- the go-away turn scales by 1.5 (`009C4A1F`), and the go-away completion by 0.9 (`009C7F00`);
+- the torpedo arm's latch and its `* 0.4` arm (`009D315C`, `docs/TORPEDO_AFTER_THE_DROP.md`).
+
+**Predictions, before the runs** (ON = the switch flipped in a `pair_export`):
+- **JM06 3200/3000: exit 1, gameplay identical.** The native sets the byte at `jm06.lua` 333. The
+  run builds one squadron, a PBY Catalina, and orders no attack (`pilot attack` reports no order),
+  so no fed task runs.
+- **JM08 3200/3000: exit 1, gameplay identical.** The byte is set at `prcpjm08.lua` 104. Nine
+  squadrons are built, but no dive-bomb or torpedo task is ordered in 3000 frames.
+- **USN13 3200/3000: exit 1, gameplay identical.** No call is made, so the byte stays 0, and the
+  conjunction stays false even with `+369h` at 1.
+- **What would move.** A row whose script calls the native and whose idle AI then flies dive-bomb or
+  torpedo attacks. None of the measured rows does: the reference rows never call it, and JM06/JM08
+  order no attack in their windows.
