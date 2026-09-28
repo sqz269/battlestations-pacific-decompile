@@ -3910,11 +3910,11 @@ struct GameUnitsHost::Impl {
     // Packet cc9_plane_follow_law_drift (docs/PLANE_FOLLOW_LAW.md section 17).
     // True: 009BFEE0's leader turn rate is 007D7DA0 (read whole) at the fly-to
     // and the hold steer point, instead of 0.0. False: 0.0.
-    static constexpr bool kFollowLeaderTurnRateBound = false;
+    static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
     // reads it. False: the leader's authored TravelSpeed.
-    static constexpr bool kFollowLeaderLiveSpeedBound = false;
+    static constexpr bool kFollowLeaderLiveSpeedBound = false;  // OFF: mechanism unobserved (docs/PLANE_FOLLOW_LAW.md 17.5)
 
     // 007D7DA0 (007D7DA0-007D7E91, __thiscall(ctl = unit+AB0h), RET, ST0).
     static float leader_turn_rate_007d7da0(const GameUnitSlot& u) {

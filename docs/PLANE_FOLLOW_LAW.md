@@ -1099,6 +1099,33 @@ build:
    - Both rows are expected to move.
    - Mechanism failure: a member within 100 m of its station whose desired speed does not change.
 
+### 17.5 The pairs for 17.1 and 17.2 (cc9-lua10, 2026-09-28)
+
+OFF is this tree's build of `f9efe504d` (`local\l10_f0_<row>.log`). Each ON run is an export of the
+same commit with one flip: `local\l10_tron_<row>.log` for the turn rate and `local\l10_lvon_<row>.log`
+for the live speed.
+
+| switch | LOMP10 9200/9000 | USN01 3200/3000 | Lightning members' largest leader distance after 250 s |
+| --- | --- | --- | --- |
+| OFF | - | - | 6442 m |
+| `kFollowLeaderTurnRateBound` | exit 1, gameplay identical, positions moved | exit 3 (hit records 474 -> 476) | 3817 m |
+| `kFollowLeaderLiveSpeedBound` | exit 1, gameplay identical, 109 of 138 trace lines moved | exit 0 | 5788 m |
+
+- **The turn rate: ON.**
+  - Mechanism held. A circling leader reports 0.05 to 0.43 rad/s in magnitude. A leader flying
+    straight reports about 0.
+  - The drift clause held: the largest leader distance fell from 6442 m to 3817 m.
+  - Spread miss, recorded: LOMP10 was predicted to move and came out gameplay-identical. Only the
+    positions moved.
+  - The sign of the rate against the heading change was not checked.
+- **The live speed: stays OFF.**
+  - The mechanism clause could not be observed. Every sampled member within 100 m of its station
+    was in the hold arm, whose speed is not this term. The fly-to samples moved slightly (for
+    example 173.33 -> 166.68 at 151 m).
+  - USN01 came out identical, against a prediction of moved.
+  - Recorded; this should be re-paired once 17.4 has changed which arm the members fly.
+- The drift is smaller under the turn rate but not gone. Section 17.4 tests the speed law.
+
 ### 17.4 The alignment ramp's endpoints are `acos` of the authored values (the drift's cause, hypothesis under test)
 
 **Measured first.** Take the OFF trace in `local\l10_f0_lomp10.log` (`land follow trace`) for
