@@ -2750,6 +2750,52 @@ against it. Set membership is assumed, as for the `recon` party set; the 009725B
 unread. The only live user is JM06's `hshit` (`{PLAYER_1}` on the hospital ship), which the idle
 runs never hit.
 
+### `attackerPlayerIndex`, bound (packet `cc9_hit_attacker_player_index`, `kLuaHitAttackerPlayerIndexBound`, committed OFF)
+
+Worker cc9-lua5, 2026-09-28. Item 1 of the cc9-lua4 handoff, after gunnery5 landed the field
+(main `e49be76ba`).
+
+**The binding.**
+- The `hit` entry keeps its `attackerPlayerIndex` set (`+4Ch`, loaded through `009722D0`, a plain
+  list of integers filled by `00971250`) instead of counting it unmodelled.
+- Dispatch tests `GameGunneryHitEvent::attacker_player_index` for membership, after the
+  targetDevice, fireCaused and leakCaused tests. An empty set holds any index.
+- The host's stamp is the gunnery host's `shot_team_id_0072c0f2`: the gun's seat `+1ACh`, or, for
+  a seat of 8 on a plane gun, the owner's role-1 slot. A bomb takes the plane's role-1 slot.
+  Torpedoes and depth charges carry -1.
+- **Assumed, not read:** set membership. The comparison behind `009725B0`'s entry is not traced,
+  as for the `recon` party set, which the same `009722D0` loads.
+- **Not part of the channel:** the `uVar14 < 8` and `piVar8[0x6B] < 8` gate in `00988510` guards
+  a network warning message (`BSP_Session_SendMessageToNonlocalPeer`), not the Lua dispatch.
+
+**The users (census of this installation's scripts).** The earlier "only `hshit`" count covered
+the entered rows only. Across `scripts/missions` there are 84 non-empty sets, all on the `hit`
+channel.
+- `{PLAYER_1}` is the common form: the IJN campaign (JM01-JM04, JM06, JM09, JM13), USN02 Cape
+  Esperance and USN03 Santa Cruz (both directories), ESMP 02 and 03, LOMP03 and LOMP05.
+- `{PLAYER_AI}`: JM03 `luaJM3CargosHit`, JM05 `luaJM5HangarHit`, JM08 `luaJM8AirfieldHitByAI` and
+  `luaJM8ShipyardHitByAI` (attacker `Mission.AirPatrol`), LOMP05.
+- `{PLAYER_AI, PLAYER_1}`: JM03 `luaJM3DeRuyterHit` and `luaJM3ExeterHit`.
+
+**Why the measured rows cannot move.** The count `unmodelled` rises only when an entry with a set
+passes every earlier filter. It is 0 on all nine rows of reference h (`rb8_*.log`, worktree
+cc9-gunnery4). So on those rows no hit reaches the new test, and ON dispatches nothing new.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 0.** `hshit` targets the hospital ship, which no idle run hits (`unmodelled=0`) |
+| USN01 3200/3000 | **exit 0.** No `attackerPlayerIndex` entry is registered |
+| JM08 3200/3000 | **exit 0.** The AirPatrol does not hit the Airfield or the shipyards in 150 s (`unmodelled=0`) |
+
+**Scenarios that would exercise it.**
+- JM06 with the player's own gun seat firing on the hospital ship: the seat gives 0, so
+  `luaJM6HospitalShipHitByPlayer` fires ON and never OFF.
+- JM08 run long enough for the AirPatrol to bomb the Airfield: `luaJM8AirfieldHitByAI` fires ON
+  only if the host's role-1 slot for an AI plane is 8. That slot is the check to make first.
+
 ### The rate limit's unmodelled bits, read and closed (cc9-lua4, 2026-09-28)
 
 Item 3 of the cc9-lua3 handoff. Both stay unmodelled, because neither has an input in this

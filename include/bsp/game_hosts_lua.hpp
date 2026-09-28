@@ -246,6 +246,15 @@ inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, o
 // of the four is counted unmodelled and never fires.
 inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_hit_attacker_player_index (docs/LUA_BINDING_MISSION.md, "attackerPlayerIndex,
+// bound"). 009725B0 loads the entry's attackerPlayerIndex into +4Ch through 009722D0
+// (a list of integers, 00971250); 00988510 passes [src+1Ch], the shot's stamped team
+// (0072C0FB / 0072C14B / 006E5527), or -1 with no ordnance. True: the entry keeps the set
+// and dispatch tests the event's GameGunneryHitEvent::attacker_player_index against it
+// (set membership, as for the recon party set; the comparison itself is unread).
+// False: an entry naming it is counted unmodelled and never fires.
+inline constexpr bool kLuaHitAttackerPlayerIndexBound = false;
+
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
 // limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
 // attacking unit). Before the channel lookup it evaluates only when the stored time
@@ -1233,6 +1242,8 @@ private:
         bool hit_device_filter{false};      // targetDevice (+1Ch), non-empty
         std::vector<float> fire_range;      // fireCaused (+68h)
         std::vector<float> leak_range;      // leakCaused (+74h)
+        // Packet cc9_hit_attacker_player_index: attackerPlayerIndex (+4Ch).
+        std::vector<int> attacker_player_indices;
     };
     std::vector<ListenerEntry> listeners_;
     // Packet cc9_hit_rate_limit: the map at 00988510's this+168h, (victim,

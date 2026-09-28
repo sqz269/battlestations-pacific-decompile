@@ -4134,6 +4134,13 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
                 for (int v : fire) entry.fire_range.push_back(static_cast<float>(v));
                 for (int v : leak) entry.leak_range.push_back(static_cast<float>(v));
             }
+            if (kLuaHitAttackerPlayerIndexBound) {
+                // Packet cc9_hit_attacker_player_index: the set is kept (+4Ch, 009722D0)
+                // and matched at dispatch, so it no longer marks the entry unmodelled.
+                entry.attacker_player_indices = player_index;
+                entry.hit_filters_unmodelled = kLuaHitFilterFieldsBound
+                    ? false : (device || !fire.empty() || !leak.empty());
+            }
         }
         if (listener_key_equal(entry.channel, "recon")) {
             // 00972450: callback, entity (+0Ch, 009721C0), oldLevel, newLevel and
@@ -4812,7 +4819,8 @@ int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_c
 // SUBSTITUTIONS (labelled): the channel is evaluated at the host's frame, for the
 // hits since the last frame; attackType compares the bullet class's `Type`
 // case-insensitively; damageCaused is matched as [min, max] on the applied damage;
-// an entry with a non-empty targetDevice, attackerPlayerIndex, fireCaused or
+// an entry with a non-empty targetDevice, attackerPlayerIndex (until
+// kLuaHitAttackerPlayerIndexBound), fireCaused or
 // leakCaused set is not matched (counted); callbacks are called with no argument.
 void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
     if (units_hooks_ == nullptr || state_ == nullptr) return;
@@ -4872,6 +4880,9 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             // fire and no leak, so fireCaused and leakCaused are 0.0 against the range
             // (the same two-value bracket damageCaused takes).
             if (entry.hit_device_filter) continue;
+            // Packet cc9_hit_attacker_player_index: [src+1Ch], the shot's stamped team
+            // (-1 with no ordnance, and for the host's torpedoes and depth charges).
+            if (!holds(entry.attacker_player_indices, hit.attacker_player_index)) continue;
             if (entry.fire_range.size() >= 2
                 && (0.0f < entry.fire_range[0] || 0.0f > entry.fire_range[1])) {
                 continue;
