@@ -534,7 +534,9 @@ struct ShipAiAttackMoveTangentHost {
     // 009F3687, [brain+0B20h]; 009F3692, 009E00A0 with ECX = sub+4h.
     virtual std::uint32_t brain_target_0b20() = 0;
     virtual void hold_heading_and_stop_009e00a0() = 0;
-    // 009F369F and 009F36E1, 00424C40 BSP_GameSettings_GetSingleton then +4D4h.
+    // 009F369F and 009F36E1, 00424C40 BSP_GameSettings_GetSingleton then +4D4h,
+    // SubAttack.SubmarineLostTime (gameplay_settings.hpp); the method name
+    // predates that identification.
     virtual float settings_weapon_release_delay_04d4() = 0;
     // 009F36C3, 009F36D9 and 009F3714, unit->vtable[114h](): the weapon
     // director, and its +30h stage compared with 2. Callee body unread.
@@ -567,7 +569,9 @@ struct ShipAiAttackMoveTangentHost {
     // 009F3869, unit->vtable[50h](); 009F3895, atan2(dx, dz) only when the
     // squared distance exceeds 1.0, otherwise the current heading is kept.
     virtual float unit_heading_vtable_0050() = 0;
-    // 009F38BA, [[unit+538h]+0A0h], the speed the switch distance uses.
+    // 009F38BA, [[unit+538h]+0A0h]: the class Length (the hull-end and sub-attack
+    // readers of the same field), which the switch distance scales by 1.5. The
+    // method name predates that identification.
     virtual float unit_armament_speed_00a0() = 0;
     // 009F390A, brain+1D0h = 1, goal arm only; 009F3920, the goal setter.
     virtual void set_brain_goal_hold_01d0(int value) = 0;
@@ -605,5 +609,49 @@ void ship_ai_attackmove_tangent_step_009f3670(ShipAiAttackMoveTangentState& stat
 // state+14F4h for state+8h before any step dispatch. This constant records that
 // the routine exists and does nothing; there is no host and no step function.
 inline constexpr std::uint32_t kAttackMoveInitialSubStateStep = 0x007b3dd0u;
+
+// ---------------------------------------------------------------------------
+// The machine's member enters and exits (packet cc9_submarine_target_substates)
+// ---------------------------------------------------------------------------
+//
+// The five members' vtable slots +4h (enter) and +8h (exit), read from the PE:
+//   approach  00D21994: enter 009F3220, exit 009E6480
+//   engage    00D2174C: enter 009DB5E0, exit 007B3DC0
+//   lead      00D2177C: enter 009DB670, exit 007B3DC0
+//   tangent   00D217AC: enter 009E2BB0, exit 009DB7D0
+//   initial   00D2171C: enter 009DB590, exit 007B3DC0
+// 007B3DC0 is a bare RET (C3, INT3 from 007B3DC1).
+
+// 009DB670-009DB689 (RET at 009DB689, INT3 from 009DB68A), __thiscall(sub):
+// sub+10h = 2.5f (00CF87C8), sub+0Ch = 1, sub+8h = 0.
+inline constexpr float kAttackMoveLeadEnterArmDistance = 2.5f; // 00CF87C8
+void ship_ai_attackmove_lead_pursuit_enter_009db670(ShipAiAttackMoveLeadPursuitState& state);
+
+// 009E2BB0-009E2C3A (RET at 009E2C3A, INT3 from 009E2C3B), __thiscall(sub).
+// Ghidra has no function here; it shows the bytes inside FUN_009E2B60.
+// sub+8h = 009DB820(sub); 009E2B60(sub) when 200.0 > sub+8h; then
+// sub+0Ch = 00BD2F10(1, 30, 40) * 00419010(500, 1, 1000, 0, sub+8h), sub+10h = 0.
+inline constexpr float kAttackMoveTangentEnterFarRange = 1000.0f;   // 00CE3804
+inline constexpr float kAttackMoveTangentEnterBudgetLow = 30.0f;    // 00CE38C8
+inline constexpr float kAttackMoveTangentEnterBudgetHigh = 40.0f;   // 00CE685C
+void ship_ai_attackmove_tangent_enter_009e2bb0(ShipAiAttackMoveTangentState& state,
+                                               ShipAiAttackMoveTangentHost& host);
+
+// 009DB7D0-009DB7D8 (RET at 009DB7D8), __thiscall(sub): sub+10h = 0.
+void ship_ai_attackmove_tangent_exit_009db7d0(ShipAiAttackMoveTangentState& state);
+
+// 009DB6C0-009DB778, __thiscall(ignored)(float point[2], float inset), RET 8.
+// ECX is not read. Clamps the pair into GGame's world box ([00E188A8]+711Ch
+// north-west x, +7124h north-west z, +7128h south-east x, +7130h south-east z),
+// inset on every side; each bound is stored as a float and the low bound is
+// tested before the high one.
+struct ShipAiWorldBoxEdges {
+    float min_x_711c{0.0f};
+    float max_z_7124{0.0f};
+    float max_x_7128{0.0f};
+    float min_z_7130{0.0f};
+};
+void ship_ai_clamp_to_world_box_009db6c0(ShipAiAttackMoveXZ& point, float inset,
+                                         const ShipAiWorldBoxEdges& box);
 
 } // namespace bsp

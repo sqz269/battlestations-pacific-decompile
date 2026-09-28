@@ -86,6 +86,7 @@
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/ship_ai_path_search.hpp"
 #include "bsp/ship_ai_goal_vector.hpp"
+#include "bsp/ship_ai_nav_circle_tangent.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
 #include "bsp/ship_ai_state_steps.hpp"
 #include "bsp/ship_ai_throttle_ring.hpp"
@@ -355,6 +356,18 @@ inline constexpr bool kShipAiSubAttackSelectBound = true;  // ON: pairs held (do
 // "approach" step 009E4B90 and the "fire" enter 009EABE0 and step 009E9EB0. False:
 // a selected sub_attack is a record with its own address (no drive).
 inline constexpr bool kShipAiSubAttackStatesBound = true;  // ON: pairs held, Narwhal timing spread miss recorded
+// Packet cc9_submarine_target_substates, docs/SHIP_AI_OPEN_ITEMS.md section 2. A
+// surface ship on attackmove against a submarine: the selector 009E86F0 asks
+// the altitude gate 00852860 at 009E873B (target y <= ([+1200h] + [+1204h]) / 3,
+// the target's dive bands 0 and 1) and, when it opens, switches the machine at
+// state+1504h to lead pursuit (state+14CCh, 009E26C0) with brain+0B28h set or to
+// the tangent circle (state+14E0h, 009F3670) with it clear, running the members'
+// exit and enter slots (007B6EE0). True: the gate answers from the bands, the
+// switch runs the exits and enters, the two steps run, and brain+0AF0h is live.
+// False: the gate is a record answering false, the machine switch stores the
+// member only, and the two steps are records. The gate's image answer is
+// counted on both sides.
+inline constexpr bool kShipAiSubTargetSubStatesBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -968,6 +981,22 @@ struct GameShipAiHost::Impl {
         float sub_attack_last_throttle{0.0f};
         int sub_attack_logs{0};
         unsigned long long sub_attack_shadow_steps{0};
+        // Packet cc9_submarine_target_substates: the lead-pursuit and tangent
+        // members (state+14CCh, state+14E0h), brain+0AF0h, and their census.
+        float speed_scale_af0{1.0f};                  // brain+0AF0h, 009F144F resets it
+        unsigned long long sub_gate_calls{0};         // 009E873B reached
+        unsigned long long sub_gate_open{0};          // the image's answer was true
+        unsigned long long sub_gate_open_visible{0};  // ... with brain+0B28h set (lead pursuit)
+        unsigned long long sub_lead_enters{0};
+        unsigned long long sub_tangent_enters{0};
+        unsigned long long sub_lead_steps{0};
+        unsigned long long sub_tangent_steps{0};
+        unsigned long long sub_approach_returns{0};   // back to state+8h from 14CC/14E0
+        unsigned long long sub_sibling_notices{0};    // 009E2B60 calls
+        unsigned long long sub_lost_ends{0};          // 009F3718 0071E430 calls
+        double sub_first_open_seconds{-1.0};
+        float sub_min_target_y{0.0f};
+        std::string sub_last_target;
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
@@ -1693,7 +1722,9 @@ struct GameShipAiHost::Impl {
         station_arm = false;
         limit_348 = 1.0f;                                     // 009F4DBC, 00D7A24C
         if (ctl.goal_vector.speed_commanded_0b38) return;     // 009F4DC1
-        const float speed_scale_af0 = 1.0f;   // brain+0AF0h: 009F144F's reset, no host writer
+        // brain+0AF0h: 009F144F's 1.0 unless a lead-pursuit or tangent step wrote it
+        // (packet cc9_submarine_target_substates; they run only with that switch).
+        const float speed_scale_af0 = ctl.speed_scale_af0;
         if (!(speed_scale_af0 > limit_344)) limit_344 = speed_scale_af0;   // 009F4DE3
         const std::int32_t group = units.unit_formation_group_0284(index);
         if (group < 0) return;
@@ -2657,6 +2688,259 @@ private:
     std::size_t index_;
 };
 
+// ---------------------------------------------------------------------------
+// Packet cc9_submarine_target_substates: the lead-pursuit (state+14CCh,
+// 009E26C0) and tangent (state+14E0h, 009F3670) members, reached from the
+// selector's kind-8 arm when the altitude gate 00852860 opens.
+// ---------------------------------------------------------------------------
+
+std::array<float, 3> neighbour_world_velocity(GameUnitsHost& units, std::size_t index);
+
+// The attackmove state object's base as AttackMoveStepBinding names it
+// (kAttackMoveStateBase, asserted equal there): the selector binding names the
+// members by the same offsets.
+constexpr std::uint32_t kSubTargetMachineBase = 0x10000000u;
+// SubAttack.SubmarineLostTime (settings+4D4h): see settings_weapon_release_delay_04d4.
+constexpr float kSubTargetSubmarineLostTime = 30.0f;
+
+// 009DB6C0 over the runtime's copy of GGame+711Ch..+7130h. An unready runtime
+// (no scene rebuild yet) leaves the point where it is, recorded.
+void sub_target_clamp_to_world_box(GameShipAiHost::Impl& owner, bsp::ShipAiAttackMoveXZ& point,
+                                   float inset) {
+    if (!owner.zones.ready()) {
+        owner.record("ShipAiAttack::world_box_clamp_009db6c0", 0x009db6c0u);
+        return;
+    }
+    const bsp::WorldMapBounds& b = owner.zones.world_bounds();
+    bsp::ShipAiWorldBoxEdges box;
+    box.min_x_711c = b.north_west[0];
+    box.max_z_7124 = b.north_west[2];
+    box.max_x_7128 = b.south_east[0];
+    box.min_z_7130 = b.south_east[2];
+    bsp::ship_ai_clamp_to_world_box_009db6c0(point, inset, box);
+    owner.done("ShipAiAttack::world_box_clamp_009db6c0", 0x009db6c0u);
+}
+
+class SubTargetLeadBinding final : public bsp::ShipAiAttackMoveLeadPursuitHost {
+public:
+    SubTargetLeadBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                         GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
+    void hold_heading_and_stop_009e00a0() override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
+        owner_.done("ShipAiLead::hold_heading_and_stop", 0x009e00a0u);
+    }
+    // The host's poses are current, so the three 00414DB0 refreshes do nothing.
+    bool unit_pose_valid_00c8() override { return true; }
+    void refresh_unit_pose_00414db0() override {}
+    bool target_pose_valid_00c8() override { return true; }
+    void refresh_target_pose_00414db0() override {}
+    void unit_position_xz_00fc(float& x, float& z) override {
+        float y = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+    }
+    void target_position_00fc(float& x, float& y, float& z) override {
+        x = y = z = 0.0f;
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if (t != 0u) owner_.units.unit_position_00fc(static_cast<std::size_t>(t - 1u), x, y, z);
+    }
+    void target_velocity_xz_vtable_0034(float& x, float& z) override {
+        // 009E2773, target->vtable[34h] = 00812090: the substitution
+        // neighbour_world_velocity names (the hull heading for the body axis).
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        const std::array<float, 3> v = t == 0u ? std::array<float, 3>{}
+            : neighbour_world_velocity(owner_.units, static_cast<std::size_t>(t - 1u));
+        x = v[0];
+        z = v[2];
+    }
+    void clamp_to_world_box_009db6c0(bsp::ShipAiAttackMoveXZ& point, float inset) override {
+        sub_target_clamp_to_world_box(owner_, point, inset);
+    }
+    float ship_class_turn_radius_0082e850() override {
+        if (kShipTurnRadiusSitesBound) return owner_.class_turn_radius_0082e850(index_);
+        return owner_.units.unit_class_turn_radius_0520(index_);
+    }
+    float unit_heading_vtable_0050() override { return owner_.units.unit_heading_radians(index_); }
+    float subtract_wrapped_angle_00438b10(float a, float b) override {
+        return bsp::wrapped_angle_subtract_00438b10(a, b);
+    }
+    float add_wrapped_angle_00438aa0(float a, float b) override {
+        return bsp::wrapped_angle_add_00438aa0(a, b);
+    }
+    void set_desired_heading_009e0040(float heading) override {
+        SetterBinding setters(owner_);
+        bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
+        owner_.done("ShipAiLead::set_desired_heading", 0x009e0040u);
+    }
+    float interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                       float x) override {
+        return bsp::clamped_interpolate_00419010(x0, y0, x1, y1, x);
+    }
+    void set_brain_speed_scale_0af0(float scale) override { ctl_.speed_scale_af0 = scale; }
+    void set_brain_goal_hold_01d0(int value) override { ctl_.blk.throttle_hold_1c8 = value; }
+    void set_navigation_goal_009de050(const bsp::ShipAiAttackMoveXZ& goal, int keep_mode,
+                                      int final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal.x, goal.z,
+                                            keep_mode != 0, final_leg != 0);
+    }
+    // 009E2A6A..009E2A97: 0082ECB0(class, [unit+984h], vtable[38h](), 1.0f).
+    // LABELLED SUBSTITUTION: the units host exposes 0082ECB0 only through
+    // 00811940, which passes the body-axis speed 0092D730 and the unit's own turn
+    // efficiency. That is what yaw_rate_from_rudder answers; the two inputs
+    // below are not used by it.
+    float unit_forward_speed_vtable_0038() override {
+        return owner_.units.unit_forward_speed_0092d730(index_);
+    }
+    float unit_ordered_rudder_0984() override { return 0.0f; }
+    float yaw_rate_from_rudder_0082ecb0(float, float, float) override {
+        owner_.record("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
+        return owner_.units.unit_current_yaw_rate_00811940(index_);
+    }
+    float vector2_length_00414c60(float x, float z) override {
+        return bsp::length_2d_00414c60(std::array<float, 2>{x, z});
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+class SubTargetTangentBinding final : public bsp::ShipAiAttackMoveTangentHost {
+public:
+    SubTargetTangentBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                            GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
+    void hold_heading_and_stop_009e00a0() override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
+        owner_.done("ShipAiTangent::hold_heading_and_stop", 0x009e00a0u);
+    }
+    float settings_weapon_release_delay_04d4() override {
+        // 00424C40()+4D4h, SubAttack.SubmarineLostTime. LABELLED SUBSTITUTION:
+        // this host's settings object holds only the ShipAvoidance block, and
+        // no reader of SubAttack reaches it. The value is 30 both in this
+        // installation's datatables/shipglobals.lua (line 473, mtime 2024-07-13)
+        // and as the loader default (0083F7A1, ship_ai_settings_block.cpp).
+        return kSubTargetSubmarineLostTime;
+    }
+    std::uint32_t unit_director_vtable_0114() override {
+        return static_cast<std::uint32_t>(index_) + 1u;
+    }
+    int director_stage_0030(std::uint32_t) override {
+        // director+30h, which 0071EB60 switches on (1 slot 0, 2 the override).
+        bsp::SceneCommandTarget target{};
+        int mode = 0;
+        owner_.units.commands().active_command_descriptor_0071eb60(index_, target, mode);
+        return mode;
+    }
+    void raise_command_stage_0071e430(std::uint32_t, std::uint32_t command, int flag) override {
+        // 009F3718, 0071E430(director, 00E08F78 attackmove, 1): the command is
+        // given up once SubmarineLostTime + 5 s have passed in this member.
+        const GameCommandCompletion done
+            = owner_.units.end_command_0071e430(index_, command, flag != 0);
+        owner_.done("ShipAiTangent::end_command", 0x0071e430u);
+        ++ctl_.sub_lost_ends;
+        ++row_.command_endings;
+        ++owner_.summary.command_endings;
+        if (done.queue_advanced) {
+            ++row_.command_completions;
+            ++owner_.summary.command_completions;
+        }
+    }
+    bool unit_pose_valid_00c8() override { return true; }
+    void refresh_unit_pose_00414db0() override {}
+    void unit_position_xz_00fc(float& x, float& z) override {
+        float y = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+    }
+    float ship_class_turn_radius_0082e850() override {
+        if (kShipTurnRadiusSitesBound) return owner_.class_turn_radius_0082e850(index_);
+        return owner_.units.unit_class_turn_radius_0520(index_);
+    }
+    float random_range_00bd2f10(float low, float high) override {
+        return draw(&owner_, index_, low, high);
+    }
+    void brain_destination_0b2c(float& x, float& z) override {
+        x = ctl_.goal_vector.goal_x_0b2c;
+        z = ctl_.goal_vector.goal_z_0b34;
+    }
+    void circle_tangent_point_009d68b0(float centre_x, float centre_z, float radius,
+                                       float unit_x, float unit_z, float min_step,
+                                       bsp::ShipAiAttackMoveXZ& out) override {
+        // 009F3829, 009D68B0(out, {cx, cz, radius}, unit position, min_step, 1).
+        const bsp::ShipAiCircleTangentCircle circle{centre_x, centre_z, radius};
+        DrawContext context{&owner_, index_};
+        bsp::ShipAiCircleGeometryHost geometry(circle, application_camera_axes_crt(),
+                                               &DrawContext::call, &context);
+        bsp::ShipAiAttackMoveXZ point{};
+        point.x = unit_x;
+        point.z = unit_z;
+        out = bsp::ship_ai_circle_tangent_009d68b0(circle, point, min_step, 1, geometry);
+        owner_.done("ShipAiTangent::circle_tangent_009d68b0", 0x009d68b0u);
+    }
+    void clamp_to_world_box_009db6c0(bsp::ShipAiAttackMoveXZ& point, float inset) override {
+        sub_target_clamp_to_world_box(owner_, point, inset);
+    }
+    float unit_heading_vtable_0050() override { return owner_.units.unit_heading_radians(index_); }
+    float unit_armament_speed_00a0() override {
+        // [[unit+538h]+0A0h], the class Length.
+        return owner_.class_number(index_, "Length");
+    }
+    void set_brain_goal_hold_01d0(int value) override { ctl_.blk.throttle_hold_1c8 = value; }
+    void set_navigation_goal_009de050(const bsp::ShipAiAttackMoveXZ& goal, int keep_mode,
+                                      int final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal.x, goal.z,
+                                            keep_mode != 0, final_leg != 0);
+    }
+    void set_brain_speed_scale_0af0(float scale) override { ctl_.speed_scale_af0 = scale; }
+    void set_desired_heading_009e0040(float heading) override {
+        SetterBinding setters(owner_);
+        bsp::ship_ai_set_desired_heading_009e0040(ctl_.blk, heading, setters);
+        owner_.done("ShipAiTangent::set_desired_heading", 0x009e0040u);
+    }
+    float range_to_destination_009db820() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        return bsp::ship_ai_goal_planar_distance_009db820(ctl_.goal_vector.goal_x_0b2c,
+                                                          ctl_.goal_vector.goal_z_0b34, x, z);
+    }
+    void notify_siblings_009e2b60() override {
+        // 009E2B60 walks [unit+48h] / +44h and calls vtable[1F0h], the immediate
+        // fire, on every kind-24h child whose [+3F4h]+80h is 8 (a Function-8
+        // gun, the depth-charge group of 009542B0). The fire belongs to the
+        // gunnery host; this process records the call and counts it.
+        ++ctl_.sub_sibling_notices;
+        owner_.record("ShipAiTangent::notify_siblings_009e2b60", 0x009e2b60u);
+    }
+
+private:
+    struct DrawContext {
+        GameShipAiHost::Impl* owner;
+        std::size_t index;
+        static float call(void* context, float low, float high) {
+            DrawContext* c = static_cast<DrawContext*>(context);
+            return draw(c->owner, c->index, low, high);
+        }
+    };
+    static float draw(GameShipAiHost::Impl* owner, std::size_t index, float low, float high) {
+        // 00BD2F10 with ECX = 1, the ship AI's stream-1 draw.
+        if (owner->gunnery_draws == nullptr) return low;
+        return owner->gunnery_draws->ship_ai_draw(index, low, high);
+    }
+
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
 class AttackMoveSelectorBinding final : public bsp::ShipAiAttackMoveSelectorHost {
 public:
     AttackMoveSelectorBinding(GameShipAiHost::Impl& owner,
@@ -2679,13 +2963,27 @@ public:
         if (target == 0u) return false;
         return owner_.units.unit_is_kind_of(static_cast<std::size_t>(target - 1u), kind);
     }
-    bool call_00852860(std::uint32_t) override {
-        // 009E873B. The routine's arithmetic is projected, but its two inputs
-        // at entity+1200h and +1204h have no producer in the ledger, so the
-        // call is a record; it is unreachable here anyway, because no target of
-        // this mission answers the kind-8 test above.
-        owner_.record("ShipAiAttack::call_00852860", 0x00852860u);
-        return false;
+    bool call_00852860(std::uint32_t target) override {
+        // 009E873B, 00852860 with ECX = the kind-8 target: world y (+100h) <=
+        // ([+1204h] + [+1200h]) / 3.0. +1200h and +1204h are the target's dive
+        // bands 0 and 1, which the units host holds since SUBMARINE_MODEL 12
+        // (submarine_band_y). A boat whose bands were never seeded keeps the
+        // defaults 00E0B578 gives a class that names no depth key (0, -20).
+        const bool open = sub_target_gate_00852860(target);
+        ++ctl_.sub_gate_calls;
+        if (open) {
+            ++ctl_.sub_gate_open;
+            if (ctl_.goal_vector.target_visible_0b28) ++ctl_.sub_gate_open_visible;
+            if (ctl_.sub_first_open_seconds < 0.0) {
+                ctl_.sub_first_open_seconds = owner_.sub_attack_clock;
+            }
+        }
+        if (!kShipAiSubTargetSubStatesBound) {
+            owner_.record("ShipAiAttack::call_00852860", 0x00852860u);
+            return false;
+        }
+        owner_.done("ShipAiAttack::call_00852860", 0x00852860u);
+        return open;
     }
     bool brain_flag_0b28() override {
         // 009E8747, brain+0B28h, the goal refresh gate 009F1420 maintains.
@@ -2698,7 +2996,19 @@ public:
         // old one and enters the new one. The reconstruction of the selector
         // calls this method only on a real change.
         owner_.done("ShipAiAttack::set_current_substate", 0x007b6ee0u);
+        if (!kShipAiSubTargetSubStatesBound) {
+            ctl_.selector.current_1508 = member;
+            return;
+        }
+        // 007B6EE0: the old member's vtable[8], the store, the new one's vtable[4].
+        if (ctl_.selector.current_1508 != 0u) member_exit(ctl_.selector.current_1508);
+        const std::uint32_t old = ctl_.selector.current_1508;
         ctl_.selector.current_1508 = member;
+        if (member == kSubTargetMachineBase + 0x0008u
+            && (old == kSubTargetMachineBase + 0x14CCu || old == kSubTargetMachineBase + 0x14E0u)) {
+            ++ctl_.sub_approach_returns;
+        }
+        member_enter(member);
     }
     bool call_009e85b0() override {
         EngageGateBinding gate(owner_, ctl_, index_);
@@ -2706,18 +3016,84 @@ public:
         owner_.done("ShipAiAttack::call_009e85b0", 0x009e85b0u);
         return open;
     }
-    void substate_exit_vtable_0008(std::uint32_t) override {
-        owner_.record_slot("ShipAiAttack::substate_exit", "00d21994+vtable08");
+    void substate_exit_vtable_0008(std::uint32_t member) override {
+        if (!kShipAiSubTargetSubStatesBound) {
+            owner_.record_slot("ShipAiAttack::substate_exit", "00d21994+vtable08");
+            return;
+        }
+        member_exit(member);
     }
-    void substate_enter_vtable_0004(std::uint32_t) override {
-        owner_.record_slot("ShipAiAttack::substate_enter", "00d21994+vtable04");
+    void substate_enter_vtable_0004(std::uint32_t member) override {
+        if (!kShipAiSubTargetSubStatesBound) {
+            owner_.record_slot("ShipAiAttack::substate_enter", "00d21994+vtable04");
+            return;
+        }
+        member_enter(member);
     }
 
 private:
+    bool sub_target_gate_00852860(std::uint32_t target) {
+        if (target == 0u) return false;
+        const std::size_t t = static_cast<std::size_t>(target - 1u);
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(t, x, y, z);   // 0085286C refresh, 00852871 +100h
+        float band0 = 0.0f;                            // [+1200h], 00E0B578 default
+        float band1 = -20.0f;                          // [+1204h], 00E0B578 default
+        owner_.units.submarine_band_y(t, 0, band0);
+        owner_.units.submarine_band_y(t, 1, band1);
+        const std::string& name = owner_.rows[t].unit;
+        if (ctl_.sub_last_target != name) ctl_.sub_last_target = name;
+        if (ctl_.sub_gate_calls == 0 || y < ctl_.sub_min_target_y) ctl_.sub_min_target_y = y;
+        return bsp::ship_ai_attackmove_altitude_gate_00852860(y, band1, band0);
+    }
+    // The five members' vtable +8h (docs/SHIP_AI_OPEN_ITEMS.md section 2).
+    void member_exit(std::uint32_t member) {
+        const std::uint32_t offset = member - kSubTargetMachineBase;
+        if (offset == 0x0008u) {
+            // 009E6480: 00863780(1) on [unit+6DCh], which stores 1 in the gunnery
+            // pass byte +7Dh and returns (its gun walk runs only for 0). The
+            // gunnery host answers that byte as its constructor's constant 1
+            // (torpedo_may_take_fire_target), so the exit changes nothing here.
+            owner_.done("ShipAiAttack::approach_exit_009e6480", 0x009e6480u);
+        } else if (offset == 0x14E0u) {
+            bsp::ship_ai_attackmove_tangent_exit_009db7d0(ctl_.tangent);
+            owner_.done("ShipAiAttack::tangent_exit_009db7d0", 0x009db7d0u);
+        } else {
+            // 007B3DC0, a bare RET, for engage, lead pursuit and the initial member.
+            owner_.done("ShipAiAttack::member_exit_007b3dc0", 0x007b3dc0u);
+        }
+    }
+    // The five members' vtable +4h.
+    void member_enter(std::uint32_t member);
+
     GameShipAiHost::Impl& owner_;
     GameShipAiHost::Impl::Controller& ctl_;
     std::size_t index_;
 };
+
+void AttackMoveSelectorBinding::member_enter(std::uint32_t member) {
+    const std::uint32_t offset = member - kSubTargetMachineBase;
+    if (offset == 0x14CCu) {
+        bsp::ship_ai_attackmove_lead_pursuit_enter_009db670(ctl_.lead_pursuit);
+        owner_.done("ShipAiAttack::lead_pursuit_enter_009db670", 0x009db670u);
+        ++ctl_.sub_lead_enters;
+    } else if (offset == 0x14E0u) {
+        SubTargetTangentBinding tangent(owner_, ctl_, owner_.rows[index_], index_);
+        bsp::ship_ai_attackmove_tangent_enter_009e2bb0(ctl_.tangent, tangent);
+        owner_.done("ShipAiAttack::tangent_enter_009e2bb0", 0x009e2bb0u);
+        ++ctl_.sub_tangent_enters;
+    } else if (offset == 0x0008u) {
+        // 009F3220: 009F30F0 on the nested object (the sixty ring records
+        // re-seeded with one stream-1 draw each, the list freed, 009F1BC0(0))
+        // and sub+14B4h = 1.0f. Not bound: this process never ran it, not even
+        // on an attackmove's first selection (docs/SHIP_AI_OPEN_ITEMS.md 2).
+        owner_.record("ShipAiAttack::approach_enter_009f3220", 0x009f3220u);
+    } else if (offset == 0x14C0u) {
+        owner_.record("ShipAiAttack::engage_enter_009db5e0", 0x009db5e0u);
+    } else {
+        owner_.record("ShipAiAttack::initial_enter_009db590", 0x009db590u);
+    }
+}
 
 // ---------------------------------------------------------------------------
 // Milestone 2p: 009F3240, the approach sub-state step at state+8h
@@ -4731,9 +5107,27 @@ public:
         if (offset == 0x14C0u) {
             owner_.record("ShipAiAttack::engage_step", 0x009e23b0u);
         } else if (offset == 0x14CCu) {
-            owner_.record("ShipAiAttack::lead_pursuit_step", 0x009e26c0u);
+            if (!kShipAiSubTargetSubStatesBound) {
+                owner_.record("ShipAiAttack::lead_pursuit_step", 0x009e26c0u);
+                return;
+            }
+            SubTargetLeadBinding lead(owner_, ctl_, row_, index_);
+            bsp::ship_ai_attackmove_lead_pursuit_step_009e26c0(ctl_.lead_pursuit, seconds, lead);
+            owner_.done("ShipAiAttack::lead_pursuit_step", 0x009e26c0u);
+            ++ctl_.sub_lead_steps;
+            ++row_.substate_concrete;
+            ++owner_.summary.substate_concrete;
         } else if (offset == 0x14E0u) {
-            owner_.record("ShipAiAttack::tangent_step", 0x009f3670u);
+            if (!kShipAiSubTargetSubStatesBound) {
+                owner_.record("ShipAiAttack::tangent_step", 0x009f3670u);
+                return;
+            }
+            SubTargetTangentBinding tangent(owner_, ctl_, row_, index_);
+            bsp::ship_ai_attackmove_tangent_step_009f3670(ctl_.tangent, seconds, tangent);
+            owner_.done("ShipAiAttack::tangent_step", 0x009f3670u);
+            ++ctl_.sub_tangent_steps;
+            ++row_.substate_concrete;
+            ++owner_.summary.substate_concrete;
         } else if (offset == 0x14F4u) {
             // 007B3DD0's whole body is `C2 04 00`, one RET 4, COMDAT-folded
             // across twenty vtables. Running it is running nothing, so the
@@ -4751,6 +5145,7 @@ private:
     // pointers, so the sub-state members are named by their offsets from an
     // arbitrary non-zero base; only their identity matters to the selector.
     static constexpr std::uint32_t kAttackMoveStateBase = 0x10000000u;
+    static_assert(kAttackMoveStateBase == kSubTargetMachineBase);
 
     GameShipAiHost::Impl& owner_;
     GameShipAiHost::Impl::Controller& ctl_;
@@ -7129,6 +7524,9 @@ public:
         // Packet cc9_station_keeping: 009F145E, MOV byte [brain+3ADh],0, beside the
         // 0B38h clear the goal refresh models. brain+3ADh is blk+3A5h.
         if (kShipStationKeepingBound) ctl_.blk.flag_3a5 = false;
+        // 009F144F, brain+0AF0h = 1.0f (00D7A24C) on every pass. Only the
+        // lead-pursuit and tangent steps below write it in this process.
+        ctl_.speed_scale_af0 = 1.0f;
         const bsp::ShipAiGoalRefreshResult result
             = bsp::ship_ai_refresh_goal_vector_009f1420(ctl_.goal_vector, ctl_.latched,
                                                         elapsed, goal);
@@ -9194,6 +9592,24 @@ void GameShipAiHost::report() {
         "movetopos=%zu other=%zu", host.summary.states_cruise, host.summary.states_stop,
         host.summary.states_attackmove, host.summary.states_movetopos,
         host.summary.states_other);
+    // Packet cc9_submarine_target_substates: one line per brain that reached 009E873B.
+    host.log.notef("summary mission ship ai sub target bound=%d (00852860 at 009E873B, "
+        "009E26C0 / 009F3670, packet cc9_submarine_target_substates)",
+        kShipAiSubTargetSubStatesBound ? 1 : 0);
+    for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
+         ++index) {
+        const Impl::Controller& c = host.controllers[index];
+        if (c.sub_gate_calls == 0) continue;
+        host.log.notef("  sub target %-20s gate=%llu open=%llu visible=%llu first_open=%.2f "
+            "min_y=%.1f target=%s lead=%llu/%llu tangent=%llu/%llu returns=%llu notices=%llu "
+            "lost_ends=%llu",
+            host.rows[index].unit.c_str(), c.sub_gate_calls, c.sub_gate_open,
+            c.sub_gate_open_visible,
+            c.sub_first_open_seconds, static_cast<double>(c.sub_min_target_y),
+            c.sub_last_target.c_str(), c.sub_lead_enters, c.sub_lead_steps,
+            c.sub_tangent_enters, c.sub_tangent_steps, c.sub_approach_returns,
+            c.sub_sibling_notices, c.sub_lost_ends);
+    }
     // Packet cc9_submarine_ai_states: one line per brain that selected sub_attack.
     host.log.notef("summary mission ship ai sub_attack select_bound=%d states_bound=%d "
         "(009F3D73 / 009EAA90, packet cc9_submarine_ai_states)",

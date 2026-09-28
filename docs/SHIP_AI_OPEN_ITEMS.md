@@ -100,3 +100,159 @@ Where a flip could move a count, the table cites a newer log as well. The two su
   opens.
 - **Bind** the gate and the two steps OFF, with predictions on JM06 3200/3000 and LOMP06 1200/1000.
   Expect identity on USN01, USN02, USN04 and USN13, which have no submarine.
+
+## 2. A surface ship attacking a submarine (packet `cc9_submarine_target_substates`, rank 1, `kShipAiSubTargetSubStatesBound`)
+
+Worker cc9-ships7, 2026-09-28. The switch is bound OFF first. The pairs and the verdict follow the
+predictions.
+
+### The image
+
+- **The selector's kind-8 arm** (`009E86F0`, docs/SHIP_AI_STATE_STEPS.md): for a submarine target
+  `009E873B` asks `00852860`. When it answers true, the member is lead pursuit (`state+14CCh`) with
+  `brain+0B28h` set, or the tangent circle (`state+14E0h`) with it clear. When it answers false,
+  the member is the approach (`state+8h`) unless the engage member holds.
+- **The gate `00852860`** (`00852860-008528AC`, complete, `ship_ai_attackmove_altitude_gate_00852860`)
+  answers `target+100h <= ([+1204h] + [+1200h]) / 3.0`. `+1200h` and `+1204h` are the target's dive
+  bands 0 and 1. The units host holds them per boat (`submarine_band_y`, default 0 and -20 from
+  `00E0B578`). A boat at periscope depth or deeper opens the gate, and a surfaced one does not.
+- **The machine switch `007B6EE0`** calls the old member's `vtable[8]` and the new one's
+  `vtable[4]`. The five members' slots, read from the PE:
+
+  | member | vtable | enter `+4h` | exit `+8h` |
+  | --- | --- | --- | --- |
+  | approach `state+8h` | `00D21994` | `009F3220` | `009E6480` |
+  | engage `state+14C0h` | `00D2174C` | `009DB5E0` | `007B3DC0` |
+  | lead pursuit `state+14CCh` | `00D2177C` | `009DB670` | `007B3DC0` |
+  | tangent `state+14E0h` | `00D217AC` | `009E2BB0` | `009DB7D0` |
+  | initial `state+14F4h` | `00D2171C` | `009DB590` | `007B3DC0` |
+
+  - `007B3DC0` is a bare `RET` (`C3`, INT3 from `007B3DC1`).
+  - `009DB670-009DB689`: `sub+10h = 2.5f` (`00CF87C8`), `sub+0Ch = 1`, `sub+8h = 0`.
+  - `009DB7D0-009DB7D8`: `sub+10h = 0`.
+  - `009E2BB0-009E2C3A` (RET at `009E2C3A`, INT3 from `009E2C3B`). Ghidra has no function here and
+    shows the bytes inside `FUN_009E2B60`.
+    - `sub+8h = 009DB820(sub)`.
+    - `009E2B60(sub)` when `200.0 > sub+8h` (`009E2BC4..009E2BCE`).
+    - `sub+0Ch = 00BD2F10(1, 30, 40) * 00419010(500, 1, 1000, 0, sub+8h)`, with the interpolation
+      first (`009E2C00`, `009E2C24`).
+    - `sub+10h = 0`.
+  - `009E6480`: `00863780(1)` on `[unit+6DCh]`. `00863780` stores its argument in the gunnery pass
+    byte `+7Dh`, and walks the guns' `BSP_Gun_ClearBotFireTarget` only for 0. So the exit sets the
+    byte to 1. The gunnery host answers that byte as its constructor's constant 1
+    (`torpedo_may_take_fire_target`), so the exit is exact in effect.
+  - `009F3220`: `009F30F0` on the nested object, then `sub+14B4h = 1.0f`. `009F30F0` re-seeds the
+    sixty ring records (one stream-1 draw each at `009F314E`), frees the list at `+14A4h` and runs
+    `009F1BC0(0)`. **The host has never run it**, not even on an attackmove's first selection
+    (initial to approach). That is a separate open item, listed below; it stays a record here.
+- **The steps** `009E26C0` and `009F3670` are complete and projected
+  (docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md). Three of their callees were open:
+  - `009DB6C0-009DB778`, read here: `__thiscall(ignored)(float point[2], float inset)`, `RET 8`.
+    - It clamps x into `[g+711Ch + inset, g+7128h - inset]` and z into `[g+7130h + inset,
+      g+7124h - inset]`, with `g = [00E188A8]`.
+    - Each bound is stored as a float, and the low bound is tested first.
+    - Those words are the NW and SE map bounds that 004D5EDE selects. The avoid-zone runtime keeps
+      its copy (`GameAvoidZoneRuntime::world_bounds`, new).
+  - `009E2B60-009E2BA3`, read here. For each child on `[unit+48h]` / `+44h` that answers
+    `vtable[5Ch](24h)` and whose `[+3F4h]+80h` is 8, it calls `vtable[1F0h]()`, the immediate fire
+    (docs/GUN_SHOT_CADENCE.md 10). Function 8 is in `009542B0`'s depth-charge group 5
+    (docs/SHIP_SCREEN_UPDATE.md 31). So the tangent fires the depth charges near the circle.
+  - `settings+4D4h` is `SubAttack.SubmarineLostTime` (`gameplay_settings.hpp`), not a release
+    delay.
+    - This installation's `shipglobals.lua` (line 473, mtime 2024-07-13) authors 30.
+    - Its comment says the hunters chase a submarine lost from sight for that long and then give up.
+    - So after 35 s in the tangent, with the director stage not 2, `0071E430(director, attackmove, 1)`
+      ends the command.
+- **`brain+0AF0h`**: 009F144F resets it to 1.0 on every pass, and `009F4DD1` in `009F4DA0` is its
+  only reader (docs/SHIP_FORMATION_SPEED.md 2). Both steps write it:
+  - the lead pursuit, an interpolation of the heading error or 1.0;
+  - the tangent, 1.0 on the goal arm and 0.5 on the heading arm.
+
+### The binding (`kShipAiSubTargetSubStatesBound`, `src/game_hosts_ship_ai.cpp`)
+
+- The gate answers from the target's position and bands. Its image answer is counted on both
+  sides, one `summary mission ship ai sub target` line per attacker.
+- The selector's switch runs the exits and enters above. The approach enter `009F3220`, the engage
+  enter `009DB5E0` and the initial enter `009DB590` stay records.
+- The two steps run through `SubTargetLeadBinding` and `SubTargetTangentBinding`.
+- `brain+0AF0h` is a controller field. The pre-pass resets it, and `009F4DA0` reads it. It stays
+  1.0 whenever the switch is off.
+- New reconstructions in `src/ship_ai_attackmove_substates.cpp`: the two enters, the tangent exit
+  and the world-box clamp.
+- Header corrections in `include/bsp/ship_ai_attackmove_substates.hpp`:
+  - `settings_weapon_release_delay_04d4` is SubmarineLostTime.
+  - `unit_armament_speed_00a0` is the class Length.
+
+**Substitutions, labelled in the code:**
+- The pursuit's `0082ECB0(class, [unit+984h], vtable[38h](), 1.0)` answers
+  `GameUnitsHost::unit_current_yaw_rate_00811940`.
+  - That routine passes the body-axis speed and the unit's own turn efficiency.
+  - It is the only door the units host has to `0082ECB0`.
+  - The value feeds only the budget-mode turn count.
+- `SubmarineLostTime` is the constant 30. This host's settings object holds only the ShipAvoidance
+  block. A reader for the SubAttack block would sit in the Lua host, which cc9-lua7 holds.
+- `009E2B60`'s immediate fire is a record with a count. The fire belongs to the gunnery host.
+- The target's velocity is `neighbour_world_velocity` (the hull heading times `0092D730`), as for
+  the sub attack.
+
+### The OFF census (`local\ships7_sh2_{jm06,lomp06}.log`, this tree's build)
+
+| mission | attacker | target | gate calls | image opens | with `brain+0B28h` | first open |
+| --- | --- | --- | --- | --- | --- | --- |
+| JM06 | USTroopTransport 01..04 | PlayerSub 03 (min y -39.4) | 145 each | 145 | 129 | 5.75 s |
+| JM06 | Fletcher-class 08 | PlayerSub 01 (min y -13.2) | 145 | 145 | 107 | 5.75 s |
+| JM06 | Fletcher-class 09 | PlayerSub 01 | 95 | 95 | 95 | 55.70 s |
+| LOMP06 | Yugiri | Narwhal (min y -10.1) | 20 | 20 | 2 | 30.95 s |
+
+Every gate call opens, because every target boat is at periscope depth or deeper. The two OFF
+runs of this build are gameplay-identical (pair_diff exit 1).
+
+### Predictions, written before any ON run
+
+The pairs are `pair_export --commit <this commit> --flip kShipAiSubTargetSubStatesBound=true`
+against this tree's OFF build, with reference i's launch lines.
+
+**JM06 3200/3000: exit 3.**
+- Each of the six attackers enters lead pursuit at its first open: 5.75 s, and 55.70 s for
+  Fletcher 09.
+- The troop transports and Fletcher 08 enter the tangent while their target is not visible. That
+  covers about 16 and 38 of their calls. Fletcher 09 never enters it.
+- No attacker returns to the approach, because every call opens.
+- `lost_ends` is 0, because no invisible stretch reaches 35 s.
+- The attackers close on the lead points, so their distances and positions move. The lead is the
+  target plus 3.9 s of its velocity for PlayerSub 03 at -39 m, and 3 s for PlayerSub 01.
+- `009E2B60` notices are counted only on a tangent entry within 200 m of the destination, or in
+  the tangent's tail.
+- Hits on PlayerSub 01 or 03 may change through the gunnery side's own depth-charge bot. That is
+  not predicted.
+
+**LOMP06 1200/1000: exit 3.**
+- Yugiri enters lead pursuit at 30.95 s, and the tangent on most of its 18 later calls.
+- `lost_ends` is 0, because the run ends 19 s after the first open.
+- Yugiri's distance moves.
+
+**USN01 3200/3000, USN02 9200/9000, USN04 4700/4500 and USN13 3200/3000: exit 0 or 1.**
+- They have no submarine target, so there is no gate call.
+- The new records, the approach and initial enters, appear only on the ON side.
+
+**Verdict rule.**
+- The mechanism is checked by three things:
+  - the lead and tangent enters match the visible and invisible opens;
+  - the steps run;
+  - the four rows without a submarine stay identical.
+- A mechanism failure keeps the switch OFF.
+
+### Found on the way (added to the ranking)
+
+- **The approach enter `009F3220` never runs in the host.**
+  - In the image it runs on every attackmove's first selection and on every return to the
+    approach.
+  - It re-seeds the sixty ring records with sixty stream-1 draws, and runs `009F1BC0(0)`.
+  - Its reach is 3 on every attackmove row (USN02 has 21 attackmove ships), and it shifts the shared
+    stream-1 draws.
+- **`ShipAiApproach::unit_depth_reference` (`unit+494h`) has a producer.**
+  - `00956C20` writes `unit+494h`, the any-weapon max range (`kUnitOffAnyWeaponMaxRange`).
+  - The host already holds it as `GameGunneryUnitRow::any_weapon_max_range`, yet the label says
+    "no producer".
+  - Its only use is the approach throttle at `brain+258h`, which has no reader in the recovered
+    chain, so its reach is low.
