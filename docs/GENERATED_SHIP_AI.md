@@ -209,3 +209,37 @@ held back for GenerateObject); no ship is generated.
 recorded above.
 
 **For reference g:** USN02 now fails in phase 2 at 212.91 s, when Exeter is lost.
+
+## 6. Part 2: the probe length at `009F1D3C`
+
+**The image.** `009F1BC0` forms `nested+11F0h` as follows:
+
+```
+009F1D1E  FLD [ECX+500h] / FMUL qword [00CE3DC0]   ; class max speed * 10.0
+009F1D37  FLD1 / FSTP [ESP] / CALL 00811A30        ; the turn circle at full helm
+009F1D41  FMUL qword [00CE3D78]                    ; * 1.5
+009F1D53  FCOMI / JBE ; 009F1D6D MOVSS [EBP+11F0h] ; the larger of the two
+```
+
+`nested+11F0h` is the length `009E6640` probes each ring slot with against the avoid zones
+(docs/SHIP_AI_RING_SCAN.md).
+
+**The host.**
+- It answered `00811A30` here with 0, a record, so the probe was `class+500h * 10`. For a
+  cruiser that is about 170 m. With the circle it is roughly 1.5 times the turn circle, often
+  above 500 m.
+- The same call in `009E6E80`'s tail (`009E6FCB`) was already answered by the units host's
+  `unit_class_turn_circle_radius_0082e960`.
+- `kApproachTurnRadiusBound`, committed OFF, answers this site the same way.
+
+**Predictions, written before the ON runs:**
+- **The unit_turn_radius census flips.** The record becomes concrete on every approach frame.
+- **USN02 9200/9000: identity, exit 0 or 1.** The fight is in open water, and OFF records
+  `ring probe casts=159600 hits=0` (`local\tr_off_usn02.log`). Hits stay 0, so every slot scores
+  1.0 as before.
+- **USN13 3200/3000, the islands.**
+  - OFF has 34 attackmove ships and `casts=52020 hits=0` (`local\tr_off_usn13.log`).
+  - ON, the longer probes reach the island zones: hits rise above 0.
+  - Blocked slots then change some ring winners: exit 3, with small moves and no predicted
+    direction on deaths.
+  - If hits stay 0, the row is identity, and the "hits rise" half of the prediction failed.
