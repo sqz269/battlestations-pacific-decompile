@@ -131,6 +131,12 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 // 006CC9F0), which this host does not build, so every request answers mode 1.
 // False: the resolution stays a record and the planes keep their attack task.
 // docs/SQUADRON_LAND_TASK.md.
+// Packet cc9_unit_yaw_rate_forward_speed. GameUnitsHost::unit_current_yaw_rate_00811940
+// built a fresh UnitRudderBinding and never set its forward_speed, so 0092D730 answered
+// 0.0f and 0082ECB0 returned 0 for every unit. True: the binding takes the unit's
+// 0092D730 speed first, as its two other users do. False: the old zero.
+// docs/UNIT_YAW_RATE_FORWARD_SPEED.md.
+inline constexpr bool kUnitYawRateForwardSpeedBound = false;
 inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
