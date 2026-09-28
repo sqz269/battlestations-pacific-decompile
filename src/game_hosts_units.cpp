@@ -19565,6 +19565,15 @@ void GameUnitsHost::role_request_0077c470(std::size_t index, std::uint32_t mask,
     }
 }
 
+bool GameUnitsHost::add_hull_torque_message_93h(std::size_t index,
+                                                const bsp::OceanVec3& torque) {
+    if (index >= impl_->slots.size()) return false;
+    GameUnitSlot& s = *impl_->slots[index];
+    if (s.body.motion == nullptr) return false;
+    const bsp::UnitHullTorqueMessage m{torque};
+    return bsp::unit_handle_add_hull_torque_00822235(m, s.body);
+}
+
 void GameUnitsHost::store_unit_command_target(std::size_t index,
                                               std::size_t target_plus_one) noexcept {
     if (index >= impl_->slots.size()) return;

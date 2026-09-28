@@ -1821,6 +1821,34 @@ bool GameMissionLuaHost::read_engine_sound_smooth_rates_0083b5e0(float (&out)[4]
     return true;
 }
 
+bool GameMissionLuaHost::read_physics_torpedo_force_0083b5e0(float& force, float& power) {
+    // 0083FE53..0083FECD of 0083B5E0 (see the header).
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, "Physics");
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int physics = ::lua_gettop(state_);
+    float f = 1.0f;   // 0083FE6C FLD1
+    float p = 2.0f;   // [00CE3958]
+    ::lua_getfield(state_, physics, "TorpedoForce");
+    if (lua_type(state_, -1) == LUA_TNUMBER) f = static_cast<float>(::lua_tonumber(state_, -1));
+    ::lua_settop(state_, physics);
+    ::lua_getfield(state_, physics, "TorpedoForcePower");
+    if (lua_type(state_, -1) == LUA_TNUMBER) p = static_cast<float>(::lua_tonumber(state_, -1));
+    ::lua_settop(state_, top);
+    force = f;
+    power = p;
+    return true;
+}
+
 bool GameMissionLuaHost::read_path_turn_ramp(ShipAiPathSearchTurnRamp& out,
     std::string& error) {
     if (state_ == nullptr) {

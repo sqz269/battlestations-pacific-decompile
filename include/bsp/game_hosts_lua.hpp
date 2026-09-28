@@ -884,6 +884,14 @@ public:
     // default 00B66330 is handed (00CE54A0). False when `Sounds` or a record
     // table is missing; `out` then keeps what it held.
     bool read_engine_sound_smooth_rates_0083b5e0(float (&out)[4]);
+    // 0083FE53..0083FECD of 0083B5E0: ShipGlobals["Physics"], TorpedoForce (key 00D0A79C)
+    // with the 1.0f default (FLD1 at 0083FE6C) and TorpedoForcePower (00D0A788) with the
+    // 2.0f default ([00CE3958]), both through 00B66330, stored at settings+590h (0083FE81)
+    // and +594h (0083FECD). A key that is not a number keeps its default. False when
+    // ShipGlobals or ShipGlobals.Physics is not a table. This installation's
+    // Scripts/datatables/shipglobals.lua (mtime 2024-07-13) sets TorpedoForce = -75 and
+    // has no TorpedoForcePower. Inert: no caller yet (for cc9-gunnery9).
+    bool read_physics_torpedo_force_0083b5e0(float& force, float& power);
 
     // Packet cc9_mission_camera. ShipGlobals["ShipCamera"], the four keys the
     // ShipCaptain camera reads from 00424C40()+450h..+45Ch: ZoomOffset,
