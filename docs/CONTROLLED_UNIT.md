@@ -2404,12 +2404,13 @@ at about 60% context.
 | `cc9_plane_follow_law_drift` | `f9efe504d`, `3198cc88c`, `97d1c44bf` | `kFollowLeaderTurnRateBound`, `kFollowLeaderLiveSpeedBound` | docs/PLANE_FOLLOW_LAW.md 17.5, 17.7 |
 | `cc9_follow_target_dir_acos` | `1d7b7045e`, `196d0c3d9` | `kFollowTargetDirAcosBound` (tuning loader) | docs/PLANE_FOLLOW_LAW.md 17.4, 17.6; LOMP10 drift 6442 m -> 131 m |
 | `cc9_landing_approach_bit` | `5abf6e808`, `8c2cc67ca` | `kLandingApproachBitBound` | docs/SQUADRON_LAND_TASK.md 5d; B-25 01 lands instead of bombing |
+| `cc9_land_standby_state` | `ac4f1d6fe`, `5f2f7bde5` | `kLandStandbyStateBound` | docs/SQUADRON_LAND_TASK.md 5e; the flight leaders fly their landing circle |
 
 ### Open, in order
 
-1. **The landing states LOMP10 now enters.** First `land/standby` and `land/line`, then
-   `land/begin`. `land/begin` also needs the launch-site arm of `006C3F80` (block `+3Ch`, its `+40h`
-   and `vtable[30h]`), which is refused and counted today. A mother-ship holder is still refused.
+1. **`land/line`**, which wing members at mode 2 now request (refused and counted), then `land/begin`.
+   `land/begin` also needs the launch-site arm of `006C3F80` (block `+3Ch`, its `+40h` and `vtable[30h]`),
+   which is refused and counted today. A mother-ship holder is still refused.
 2. **The collision-box extent binding** in ShipHullBodyInputs (GUNNERY_OPEN_ITEMS 47.3 step 3). It
    waits on cc9-gunnery10's per-class boxes.
 3. USN01 came out identical on three follow-law pairs where it was predicted to move. Its 81 fly-to
