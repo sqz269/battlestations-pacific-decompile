@@ -5889,7 +5889,20 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         const char* name = lua_tolstring(state, 1, nullptr);
         if (name == nullptr) return false;
         const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
-        if (found == scene_entity_ids_.end()) return false;
+        if (found == scene_entity_ids_.end()) {
+            // DIAGNOSTIC, env-gated (BSP_LUA_FIND_ENTITY_MISSES=1): the names
+            // FindEntity answers nil for. Prints nothing when unset.
+            static const bool trace = [] {
+                char* v = nullptr;
+                std::size_t n = 0;
+                const bool on = _dupenv_s(&v, &n, "BSP_LUA_FIND_ENTITY_MISSES") == 0
+                    && v != nullptr && v[0] == '1';
+                std::free(v);
+                return on;
+            }();
+            if (trace && !error_replay_) log_.notef("FindEntity miss: \"%s\"", name);
+            return false;
+        }
         entity_id = found->second;
     } else if (std::strcmp(binding_name, "GetSelectedUnit") == 0) {
         // Packet cc8_ship_drive. The revert above is lifted: `Party` is on the

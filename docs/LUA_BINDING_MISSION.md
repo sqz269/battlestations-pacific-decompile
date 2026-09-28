@@ -3095,3 +3095,56 @@ GetClosestBorderZone 008aecd0: (1174.14, -0.10, -6161.64) offset 500.0 -> (1174.
 - OFF is `pair_export --commit 4c9a1b2fc` with no flip (`local/bz_off`); ON is `local/bz_on`.
 - **Measured: exit 1, gameplay identical; held.** The only changed line is the summary's
   `bound 0 -> 1` (`local/bz_diff_usn04.txt`).
+
+## The unimplemented Lua natives, fifth refresh (cc9-lua6, head `2291cd778`)
+
+Worker cc9-lua6, 2026-09-28. The method and run parameters are the third refresh's. The build is
+this tree's at `2291cd778`. JM05 and LOMP10 are new rows: JM05 now has land convoys, and LOMP10
+is the controlled-plane row.
+
+| mission | frames | log (worktree cc9-lua6) | host methods unimplemented |
+| --- | --- | --- | --- |
+| USN02 | 9200/9000 | `local/l6_rk_usn02.log` | 499 |
+| JM06 | 3200/3000 | `local/l6_rk_jm06.log` | 509 |
+| LOMP06 | 1200/1000 | `local/l6_rk_lomp06.log` | 484 |
+| USN13 | 3200/3000 | `local/l6_rk_usn13.log` | 501 |
+| JM08 | 3200/3000 | `local/l6_rk_jm08.log` | 486 |
+| JM05 | 3200/3000 | `local/l6_rk_jm05.log` | 550 |
+| LOMP10 | 3200/3000 | `local/l6_rk_lomp10.log` | 492 |
+
+The scripts are this installation's:
+- `PRCPIJN/jm05.lua`, mtime 2024-07-13;
+- `USN/LOMP/10_san_jose.lua`, mtime 2024-07-13;
+- `global/timetable.lua`, mtime 2024-07-13.
+
+| rank | native | address | missions (calls) | reach |
+| --- | --- | --- | --- | --- |
+| 1 | `OverrideHP` | `008C1930` | LOMP10 (8) | **gameplay.** `10_san_jose.lua` 291-301 sets the eight San Jose ships to `Class.HP` × 1.0, 1.25 or 1.5 by `Mission.Difficulty`. This run's effective difficulty is 1 (`game+6ACh`). The unit's HP is the gunnery host's, not this lane's |
+| 2 | `SquadronSetAttackAlt` | `008A22B0` | LOMP10 (3) | **gameplay.** Lines 315 and 520 set 150 m for the first bombers. It is the sibling of the bound `SquadronSetTravelAlt`, so it needs the units host's plane-side state |
+| 3 | `SpawnNewIDIsRequested` | `00946380` | JM05 (16) | **gameplay, beyond 150 s.** `jm05.lua` 1970 re-requests a shipyard Fletcher only when no `SH2SpawnRequest` is queued. The host's queue holds two such requests unfulfilled (`fulfilled=0 still_queued=2`), which the image would answer true for. Its sibling `SpawnNewIDRemove` (`00946390`) is unreached on these rows. The queue and `00945850`/`00945A20` are this lane's `src/lua_spawn_new.cpp` |
+| 4 | `AddUntouchableUnit` | `008AC140` | JM05 (3) | the capture PT and `Mission.UntouchUnits` (`jm05.lua` 597, 4508) |
+| 5 | `GetLastCatapulted` | `00892860` | JM05 (47) | `SetSkillLevel(pete, SKILL_ELITE)` on the cruiser's last catapulted plane (5812). nil skips it, as in the image when nothing has been catapulted |
+| 6 | `GetFormationLeader` | `00899AF0` | JM05 (49) | a nil answer falls back to the table's first ship (1992, 2574, 3159). Line 2042's `GetFormationLeader(unit).ID` raises no error on these rows |
+| 7 | `NavigatorEnable`, `GetFailure`, `Countdown` | | JM05 (1, 2), LOMP10 (1) | the capture PT's navigator, a failure query, and the three-minute "operational" timer |
+| 8 | `GetCapturePercentage` | `0089B840` | JM05 (48) | presentation: the objective text. nil makes `luaJM5Sec1Score` raise "arithmetic on a nil value" at line 5216, 48 times in 150 s. The raise stops that timer before it reschedules, and `luaTimetable` retries it (`global/timetable.lua` 13-44). No gameplay |
+| - | `IsHintActive` (49), `DisplayScores`, `SetGuiName`, `PrepareClass`, `IsGUIActive`, `BlackBars`, `EnableInput`, `Loading_*`, `MissionNarrative*`, hints, `Scoring_IsUnlocked`, `Effect`, `SpawnNewIDRemove`, `LoadCheckpoint`, `CountdownCancel`, `Scoring_SetMissionCompleted`, `BannSupportmanager` | | | presentation, or the failure paths the fourth refresh listed |
+
+**`FindEntity` is listed UNIMPLEMENTED on JM05, and that is right.** Of its 146 calls, 9 answer
+nil. (`entity_resolves=139` also counts the other entity-returning natives.) The misses, traced
+with `BSP_LUA_FIND_ENTITY_MISSES=1`, are nine names `jm05.lua` asks for that the JM05 scene does
+not author:
+- `Clemson Class Damaged 01` and `02`;
+- `Landing Ship, Tank 02` and `03`;
+- `PT Boat 80' Elco 04`;
+- `US Cargo Transport 01` and `02`;
+- `US Tanker 01`;
+- `USTroopTransport 01`.
+
+The image answers nil for them too. The status comes from the host's per-call outcome.
+
+**The host's `SpawnNew` queue never fulfils on JM05:** 290 attempts, 290 requeues, 0 units. That
+is the drain `0094C490`'s placement, not a native, and it is recorded here for its owner.
+
+**Next packet: `SpawnNewIDIsRequested` and `SpawnNewIDRemove`,** the highest-ranked item this
+lane owns outright. Ranks 1 and 2 need the gunnery host's HP and the units host's plane state.
+Both of those files are leased to cc9-gunnery7 at this refresh.
