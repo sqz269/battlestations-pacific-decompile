@@ -115,7 +115,7 @@ inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/L
 // the command is placed as before and the member's bot intake still drops it,
 // because the flown `land` task 009B41C0 is not bound. True: the resolution
 // line and summary. False: nothing. docs/CONTROLLED_UNIT.md.
-inline constexpr bool kSquadronReturnToBaseResolveBound = false;
+inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record only, pairs (docs/CONTROLLED_UNIT.md)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
 class GameHostLog;
