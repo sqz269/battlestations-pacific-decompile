@@ -38,6 +38,12 @@ is ranked from its own evidence.
 | the AA bots' own fire tests | GUN_SHOT_CADENCE 10.9 | ON, `kAaBotFireTestsBound` |
 | the torpedo swim | TORPEDO_FRIENDLY_CROSSING 6 | ON, `kTorpedoSwimThrustBound` |
 | the torpedo aim | TORPEDO_SPREAD_AIM | read, the image's; nothing bound |
+| the AutoTarget candidate list `009F5D30` over `008053C0` (rank 1 on h) | AUTOTARGET_RECON_CANDIDATES 6 | ON, `kAutoTargetReconCandidatesBound` |
+| the AutoTarget's commanded-target adoption `009F5E69` / `00521EA0` / `00465080` (rank 2 on h) | section 17 | read, exact while no `WeaponDirector::queue_command` runs (none on reference i) |
+| the "death test" `0090E6C0`, the death sink `008110F0`, the award threshold `0050FC30` (ranks 6-8 on h) | section 22 | read; score only, or not on the gunfire path; the sink record removed |
+| the set-command message `0071C830` / `0077C2A0` and the stage-2 clear (rank 9 on h) | sections 25-29 | ON, `kSetCommandQueueDelayBound` and `kSetCommandClearAllMessageBound`; the two rows still print `UNIMPLEMENTED` because the host records the hops it delivers itself |
+| the projectile team id | section 26 | stamped; no switch |
+| USN04's dive-release drop 10 -> 4 | section 30 | the image's own; nothing bound |
 
 ## 2. The ranking
 
@@ -1285,3 +1291,64 @@ ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=tru
 - Under the image's timing, which is the ON host, this dive does not release. The image would have released only on a run-in that meets 009C5B43, and this one does not.
 
 **Verdict.** The release drop is recorded as the image's own consequence of the command delay: a changed dive geometry at the abort test, not a timing difference at the aim gate. Nothing is bound, and no pair is needed.
+
+## 31. The ranking refreshed on reference i (packet `cc9_gunnery_open_ranking_3`, cc9-gunnery7, 2026-09-29)
+
+**Source.** The eight reference i logs `local\rb9_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log`
+in worktree cc9-gunnery7 (main `d466d4250`, rb9 SHA-256 prefix `D119E0505144`;
+docs/GAME_EXECUTABLE.md "2026-09-29 i").
+- `local\g7_rank.py` is section 16's census, pointed at these logs.
+- `local\g7_rankdiff.py` runs the same census over h's logs as well, with the ship-AI and
+  command classes added. It prints each row's status and calls on both sides.
+- `local\g7_standins.py` prints what each remaining stand-in answers.
+
+**Closed since h** (moved to section 1's table): h's ranks 1, 2, 3, 4, 6, 7, 8 and 9, and the
+accept. The census agrees:
+- `AutoTarget::party_recon_slot`, `command_accepts_target`, `WeaponDirector::observe_target` and
+  `target_refuses_commands` (`0071D712`) now print `concrete`.
+- `threats_00814420` has a Ghidra function and prints `concrete`.
+- `EntityCommand::clear_all_commands`, `GameUnitMessage::clear_every_slot` and `drop_top_slot`
+  are concrete.
+- The death-sink row is gone.
+
+**The new ranking.** Reach is section 16's: 4 decides who is shot at or a death, 3 an order, 2 a
+count or a score, and 1 presentation. Calls are summed over the eight logs.
+
+| rank | item | image | reach | calls (i) | what the host does now |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **the submarine's sensor category** | `00852B90`: hull Y against the four depth words `unit+1200h..120Ch` and the periscope byte `+1234h` (docs/SENSOR_TABLES.md "The submarine") | 4 | 1173 (JM06 1074, LOMP06 99) | answers **PeriscopeIn for every submarine** (`game_hosts_gunnery.cpp`, `unit_sensor_category`). Its label says the depth bands are not read. **That label is stale**: since SUBMARINE_MODEL 12 the host holds each boat's bands (`submarine dive bands: ... bound=1`), and those bands are these four words (SUBMARINE_MODEL, the `+1200h` table). A boat held at -40 or -80 m is Underwater or DeepUnderwater in the image, and the recon pass that now feeds the AutoTarget reads that category |
+| 2 | the unresolved fire target | `00835930` with an object that is not one of this host's unit records | 4 | 154 (USN13 60, USN04 35, E2 35) | records and sets no fire target |
+| 3 | an attack-move on a command building converts to `moveto` | `00836B95` (`00465080`, `0071ECF0`, then stage 2) | 3 | 1010 (USN13 1002, USN01 8); h had 23328 on USN01 | records, and the attack-move stays. **Its label, "no building target reaches this arm in the measured runs", is false** on h and on i. USN13's calls follow the planner Capture path (PLANNER_TASK_CHOICE 8) |
+| 4 | the director slot housekeeping in the slot clear `00720850` | `0071FB90` path object, `006952A0` observer unregister, `00414DB0` target pose, `007208A3` trace | 3 (unconfirmed) | 6755 / 1733 / 1731 / 8298 | 0 and records. They moved from 86 calls on h because the clear-all now reaches `00720850` on every slot (sections 28-29). A target whose observer is never unregistered can still reach the release observer `0071DDB0`, 14 calls here |
+| 5 | the command-allowed extra tests | `009229F0` (command `00E08F18`), `007AC9D0` (`00E08F80`) | 3 | 268 | records; the command is allowed without the extra test |
+| 6 | the recon convoy and group-level records | `00805680`, `008069A0` | 3 | 1467 each | unchanged from section 22: needs a `unit+738h` producer and a squadron entity separate from its leader |
+| 7 | the AutoTarget's controller-ownership test | `007788B0`: `[ctl+284h] != 0` and `[[ctl+284h]+14h] != ctl` | 4 if true | 148923 | answers false. That is the image's answer whenever `+284h` is empty or names this controller; the host has no producer for `+284h`. Not checked against a player-controlled unit |
+| 8 | the hull roll torque from a hit | `00827312` | 2 | 52 (USN02) | record; the roll scale reads 0 |
+
+**Exact, and kept off the ranking:**
+- `009F5E69`, `00521EA0` and `00465080` in the AutoTarget are exact by section 17. That holds while
+  `WeaponDirector::queue_command` has no calls, and it has none on reference i.
+- `GameUnitMessage::resolve_target_object` returns the object itself.
+- `008FB530`, the torpedo-bot accuracy, answers the robots.lua table.
+- `008654AC`, the sub-entity list, is exact for every unit this host builds.
+- The set-command rows `0071C830` / `0077C2A0` still print `UNIMPLEMENTED`, but the queue and
+  clear-all switches bind their behaviour (section 1).
+
+**Not ranked, and why** (unchanged from section 16):
+- Plane-side rows: `PilotBot::*`, `BotState*`, `BotApproach*` and `TorpedoApproach::run_profile_record_14h`.
+- The player HUD rows.
+- The ship-AI host's rows: `ShipAiOrder::slot_to_order_ring`, `ShipAiFollow::*`, `ShipAiApproach::*`
+  and `ShipAiState::attack_subject_00779aa0`. They belong to the ship packets.
+
+**Labelled substitutions whose labels no longer hold:** rank 1 (the depth bands are read now) and
+rank 3 (the building arm is reached). The others section 16 listed are exact at these missions'
+rows: the bullet throw's `unit+63Ch = 1.0` and `00470440(7) = 1.0`, the flak distance error of 0,
+and the torpedo swim's surface plane.
+
+**Next packet: rank 1, `cc9_submarine_sensor_category`.**
+- **Read** `00852B90` against the host's dive bands. Confirm that the four words at
+  `+1200h..+120Ch` are the band table the dive binding holds, and what writes the periscope byte
+  `+1234h` on JM06 and LOMP06. Then find the consumers of the category in the recon pass
+  (`008048A0`'s submerged-target branch and the `SubjectDeepUnderwater` rows, SENSOR_TABLE_DATA).
+- **Bind** the category from the hull's Y and the bands, OFF, with predictions on JM06 and LOMP06,
+  and identity on USN01, USN02, USN04 and USN13, which have no submarine.
