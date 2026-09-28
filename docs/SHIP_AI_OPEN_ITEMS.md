@@ -1430,3 +1430,46 @@ No sector scan reaches its avoid-zone arm on these rows, so every call is the ar
 
 **Verdict: `kShipFollowStationPointBound` stays ON,** now with both halves live. The yaw-rate half
 is no longer blocked.
+
+## 15. Handoff (cc9-ships8, 2026-09-28, at about 78% context)
+
+**State.** No lease is held. Every packet below is committed on `agent/cc9-ships8`.
+
+| Section | Switch | State |
+| --- | --- | --- |
+| 7 | `kPlannerGroupTargetValueBound` | ON, landed |
+| 8 | `kShipAiApproachEnterReseedBound` | ON, landed |
+| 9 | `kShipAiSubTargetEntryPointsBound` | ON, landed |
+| 10 | `kShipFollowStationPointBound` | ON. The yaw-rate half was re-paired after `kUnitYawRateForwardSpeedBound` (`5350cc4d9`, unlanded at writing) |
+| 11 | `kPlaneRowAutoTargetBound` | ON, landed |
+| 12 | `kAutoTargetFollowerGateBound` | **OFF.** Waits on the units host's join follow-up |
+| 13 | rank 9 | read only. Waits on the units host's `unit_class_lands_troops_vtable_2c` |
+| 14 | `kShipAiFreeBearingBound` | ON (`d86f5b131`, unlanded at writing) |
+
+**Waiting on cc9-lua9 (the lead sends each sha):**
+1. **The join follow-up.** `formation_join_0077f940` must run the follower director's `00720CD0`
+   (`follow` on the leader). Then re-pair `kAutoTargetFollowerGateBound` on USN04, USN01, USN13,
+   JM06, JM05, JM08 and LOMP10:
+   - flip the switch in an export, OFF = the tree;
+   - the check is that `leaves` falls to the followers whose director was re-commanded after the
+     join, and that no unit leaves repeatedly.
+2. **The rank-9 accessor.** Bind `AiCommand::close_member_controller_busy`: rename it to a trait
+   name and answer the accessor, behind a new switch.
+   - Also answer the Cargo arm of `capture_weight_00a03510`: 3.0 when the trait holds. It is still
+     0 on this installation.
+   - Pair JM08, USN13, JM05, LOMP10 and USN04.
+
+**Not to redo.**
+- `local\ships8_gtv.py <log>` replays the planner's rounds from the section 7 sample lines.
+- `local\ships8_run.ps1` (`-Exe`, `-Prefix`, one `-Rows tag:MISSION:frames:mission_frames` per
+  call; `run_game.ps1` queues past three slots) and `local\ships8_wait.sh <seconds> <logs...>`.
+- `local\ships8_vt.py` reads vtable slots from the image on disk. `local\ships8_rd.py
+  f:<addr>|d:<addr>` reads float and double constants.
+
+**Traps met.**
+- `pwsh -File script.ps1 -Rows a b c` binds only the first row. Launch one row per call.
+- Python `write_text` on Windows turns LF sources into CRLF. Use `open(p, 'w', newline='')`, and
+  keep edit scripts in files: this bash tool's heredocs break on some quotes.
+- A leader-yaw effect reaches only followers within 400 m along the column (`009DACD0`'s blend).
+  Check `along` before predicting a follower move.
+- The arm final step's 009DC2E0 widths are often under 1, so its clearance pass is skipped there.
