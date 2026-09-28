@@ -419,3 +419,49 @@ USN13 4180 / 527 / 27 (shots / hits / deaths). The new line reads:
 heading turns about 0.3 degrees per second. That points at the host's rate law (pitch and roll
 hunting) rather than at the lead. Validate the body-rate magnitudes against the image first
 (`007DA710`, docs/PLANE_CONTROL_RATE_LAW.md), then re-pair.
+
+## 14. The turn-rate average re-paired (2026-09-28), predictions recorded before the ON runs
+
+Section 13 left `kAaTargetTurnAverageBound` OFF until the host's plane body rates were checked.
+cc9-ships2's docs/PLANE_BODY_RATES.md sections 1 and 2 found the rate law matches `007DA710`. What
+passes the 1.8 degrees per second gate on a Kate's run is its commanded descent at DropAngle, which
+the image flies the same way; the mode-2 arm is now bound. So the gate firing on a descending Kate
+is the image's own consequence.
+
+Both sides are this worktree at `236756273` (main, with the mode-2 arm, the floor, the multiplier
+and the fire cooldown ON). OFF is `local\TA_OFF_<m>.log`; ON flips only `kAaTargetTurnAverageBound`.
+
+**OFF on this head.** USN04: 16 Kates die, 10 Zeros die, 41 deaths, 653 hits, task releases 4
+(live 0, dead 4), drops 0. USN13: 26 deaths. USN01: 5 deaths. USN02: 11 deaths.
+
+| row | ON prediction |
+| --- | --- |
+| USN04 Kate deaths | still 16; no live release (live 0), drops stay 0. Kates die earlier on average |
+| USN04 AA | hits and plane kills rise: hits above 653, Zero deaths at least 10 |
+| USN04 deaths | 41 to 45 |
+| USN13 deaths | 26 +- 2 |
+| USN01 deaths | 5 +- 1 |
+| USN02 | identical (no plane targets): pair_diff 0 or 1, `tests=0` |
+
+## 15. The turn-rate average re-pair results, and the flip (2026-09-28)
+
+OFF `local\TA_OFF_<m>.log`, ON `local\TA_ON_<m>.log`, both from `236756273`.
+
+| row | OFF | ON | prediction (section 14) | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 Kates | 16 die; live releases 0; drops 0 | 16; live 0; drops 0 | 16, no live release, drops 0 | held |
+| USN04 Kate mean death time | 167.4 s | 167.7 s | earlier | **failed**: unchanged |
+| USN04 hits / Zero deaths | 653 / 10 | 644 / 9 | both rise | **failed**: both fall slightly |
+| USN04 deaths | 41 | 40 | 41-45 | **failed** by one |
+| USN04 tests / rotations | - | 207,314 / 179,913 | - | - |
+| USN13 deaths | 26 | 24 | 26 +- 2 | held |
+| USN01 deaths | 5 | 5 | 5 +- 1 | held |
+| USN02 | - | identical (pair_diff 1), tests 0 | identical | held |
+
+**Decision: `kAaTargetTurnAverageBound` is ON.**
+- The rule is `00901C20`'s. Its input, the body rate, is now validated against `007DA710`
+  (docs/PLANE_BODY_RATES.md).
+- The descent pitch that passes the gate is the image's own.
+- The failed rows are direction and magnitude calls on a small effect (USN04 deaths 41 -> 40,
+  hits -1.4%). They are not a divergence. This follows the same ruling as section 13's
+  rest-angles flip.
