@@ -816,3 +816,92 @@ sinks Shokaku or Zuikaku (USN04's late phase). That run should show:
 - the frozen hull (`DisablePhysics: ... controller+14h=1`);
 - the settling pose (the world's `interpolators=` field in the per-frame line);
 - `ExplodeToParts` segment lines.
+
+## The unimplemented Lua natives, ranked (packet `cc9_lua_natives_ranking`, a read)
+
+Worker cc9-lua2, 2026-09-27. Docs only.
+
+### Sources
+
+The census reads the final native table (`<name> <address> UNIMPLEMENTED calls=N`) of the latest
+completed log per mission. "Completed" means the log carries `loop_finished=1`; logs after 17:12
+crashed at renderer init under the lock screen.
+
+| mission | log (read-only) |
+| --- | --- |
+| USN01 3200/3000 | `cc9-lua2/local/sq_off_usn01.log` |
+| USN02 9200/9000 | `cc9-lua2/local/gp_on_usn02.log` |
+| USN04 4700/4500 | `cc9-gunnery3/local/RA_OFF_USN04.log` |
+| USN13 3200/3000 | `cc9-plane2/local/RM_USN13.log` |
+| JM06 3200/3000 | `cc9-lua2/local/gp_on_jm06.log` |
+| JM08 9200/9000 | `cc9-ships2/local/lo_base_jm08.log` |
+| BSM01 3200/3000 | `cc9-ships2/local/rb6_bsm01.log` |
+| LOMP06 1200/1000 | `cc9-lua2/local/gp_on_lomp06.log` |
+
+- **The script lines** come from this installation's mission files and `scripts/global`
+  (read-only).
+- **The tools:** `local/cc9-lua2-natives.py` builds the census, and `local/cc9-lua2-callsites.py`
+  finds the lines. Both are in the cc9-lua2 tree.
+- **What "neutral" means:** every UNIMPLEMENTED native returns nothing to Lua, so the script sees
+  nil.
+
+### The ranking
+
+**Scope.** Only the rows a mission script reaches through a Lua native (`MissionLuaNative::*`)
+are ranked. They are ordered by the missions that reach them, then by the calls. The other
+UNIMPLEMENTED rows whose names mention Lua or Script are host records of the load or of the
+renderer, and are left out: `MissionLoad(lua)::*`, `SceneUnit::vehicle_class_descriptor` and
+`HudMarkers::viewport_descriptor`.
+
+| native | address | missions | calls | example line | what nil does |
+| --- | --- | --- | --- | --- | --- |
+| `Kill` | `008AC5C0` | 7 (all but BSM01) | 13 | JM06.lua 212 `Kill(FindEntity("Gato-class Submarine 01"), true)` (difficulty below 2); usn_1_marshall 791 (phase 3 removes `Mission.MainAttack`); usn_19_coralus 1303/1309 (plane cleanup); commandhelpers 7830 (`Mission.CamScript`) | **the entity lives on.** On JM06 the Gato submarine the script removes at init stays in the battle; `gp_on_jm06` still lists it in the unit table |
+| `SetInvincible` | `00897A50` | 6 | 87 (BSM01 58) | usn_19_coralus 456 `SetInvincible(Mission.Town, 0.24)`; 23 lines in commandhelpers | the unit is not protected: scripted survivors can die, and a mission branch keyed on their survival moves |
+| `AddListener` / `IsListenerActive` | `008C6760` / `008C6BB0` | 7 / 6 | 17 / 10 | usn_19_coralus 1201 `AddListener("hit", "LexHitListener", {callback = "luaLexHit", target = {Mission.Lex}})`; JM06 1205.., BSM01 1897.. | **no callback ever fires.** `IsListenerActive` returns nil, which reads false |
+| `PrepareClass` | `008C8F70` | 7 | 45 | usn_1_marshall 13 and every mission's preload | none that a run shows: a class preload |
+| `EnableInput`, `MissionNarrative`, `BlackBars`, `DisplayScores`, `DisplayUnitHP`, `HideUnitHP`, `MissionNarrativeClear`, `CountdownCancel`, `Loading_Start`/`_Finish`, `ShowHint*`, `AddStoredHint`, `RemoveStoredHint` | | 1-7 | 1-28 | intro and outro presentation | presentation only for an idle player |
+| `IsGUIActive` | `008CA010` | 5 | 172 | commandhelpers 13270 `IsGUIActive("GUI_map")` (music); LOMP06 713 (`GUI_periscope`) | music selection; LOMP06 falls through to its depth test |
+| `SetGuiName`, `SetNumbering` | `008A8F90`, `0088FE30` | 4, 2 | 56, 30 | usn_19_coralus 155, 165 | display names |
+| `IsClassChanged` | `008CC4B0` | 4 | 54 | JM06 1699, LOMP06 862, commandhelpers 18741 | the class-change branch never runs |
+| `SetForcedReconLevel` | `008AA8F0` | 1 (USN13 15) | 15 | usn_13_truk 1140; commandhelpers 4201.. | the forced level is not applied. The recon pass stays on detection alone, so the AI's visibility and the reconlevel tables move |
+| `AAEnable` | `0089C740` | 1 (BSM01 33) | 33 | bsm_01 404; commandhelpers 3823 | anti-aircraft guns keep their default state where the script switches them |
+| `SetShipSpeed`, `SetShipMaxSpeed` | `00890D30`, `00890A10` | 1, 1 | 19, 2 | LOMP06 111.. (6 lines) | scripted ship speeds are ignored |
+| `SquadronSetSpeed`, `SquadronSetTravelAlt` | `0089F780`, `0089F550` | 1, 2 | 15, 3 | usn_13_truk 1641 | squadrons keep their own speed and altitude |
+| `SetAirBaseSlotCount` | `008963E0` | 2 | 5 | usn_19_coralus 212, usn_13_truk 559 | the deck keeps its authored slot count |
+| `SetFireTarget` | `0089A8B0` | 1 (USN02 14) | 14 | commandhelpers 2951 | the scripted fire target is not set |
+| `UnitGetAttackTarget`, `ForceRecon` | `008A6DE0`, `008AADF0` | 1 (LOMP06) | 6, 6 | LOMP06 696, 530 | nil target; `ForceRecon` is bound behind `kReconLevelTableBound` |
+| `SetSubmarineDepthLevel`, `SetUnlimitedAirSupply` | `00893F40`, `00893C00` | 1 (JM06) | 5, 2 | JM06 | the scripted depth is ignored; air supply is limited |
+| `PilotMoveTo`, `PilotMoveOnPath` | `008A4150`, `008A3E70` | 1, 2 | 4, 3 | JM08, JM06, BSM01 | pilots keep their own orders |
+| the rest | | 1 or 2 | 1-2 each | `SetDeviceReloadEnabled`, `UnitSetPlayerCommandsEnabled`, `Scoring_SetMissionCompleted`, `BannSupportmanager`, `GetClosestBorderZone`, `LoadCheckpoint`, `ForceEnableInput` | player or end-of-mission paths |
+
+### The top five, as proposed packets
+
+1. **`Kill`, `008AC5C0`.** It is measured on JM06 3200/3000: the Gato removal at line 212 runs
+   whenever the difficulty is below 2.
+   - **Read first:** what `Kill(entity, silent)` does. It probably reaches
+     `00926D90 BSP_MissionEntity_Kill` with a cause, which the units host already models for
+     deaths. The read must show what the second argument changes.
+   - **Prediction sketch:** JM06 loses the Gato from its unit table at the init stage. There is
+     one more death row, or a silent removal with none, and the convoy battle moves.
+   - USN01's phase-3 kill, USN04's plane cleanup and LOMP06's seaplane kill come into range only
+     if their stages are reached.
+2. **`SetInvincible`, `00897A50`.** It is measured on BSM01 (58 calls) and on USN04 (Town at
+   0.24).
+   - **Read first:** the argument (a health fraction floor or a flag), and where the damage path
+     tests it.
+   - **Prediction sketch:** on USN04, Town's health never falls below 0.24 of its maximum. Death
+     rows change only for units that died OFF.
+3. **Listeners, `008C6760` `AddListener` and `008C6BB0` `IsListenerActive`.** They are measured on
+   USN04 (`LexHitListener`) and JM06.
+   - **Prediction sketch:** callbacks such as `luaLexHit` start to fire, and the census counts
+     listener events.
+   - This is the largest of the five: event kinds, matching and callback delivery.
+4. **`SetForcedReconLevel`, `008AA8F0`.** It is measured on USN13 (15 calls).
+   - The forced level is already read into the recon record: `+8h`, used when the force byte
+     `+10h` is set (`docs/RECON_SENSOR_PASS_BINDING.md`).
+   - **Prediction sketch:** USN13's recon counters and the AI's contact lists move for the forced
+     units only.
+5. **`AAEnable`, `0089C740`.** It is measured on BSM01 (33 calls).
+   - **Prediction sketch:** BSM01's anti-aircraft shot counts change for the switched units.
+
+This packet takes item 1 next, as a read plus an OFF binding.
