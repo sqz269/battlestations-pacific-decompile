@@ -212,7 +212,10 @@ struct UnitDamageHost {
     virtual UnitSessionMode session_mode() = 0;                    // [00E188A8+1FE4h]
     virtual std::size_t difficulty_level() = 0;                    // [00E188A8+6ACh]
     virtual bool is_local_player_role(std::uint32_t entity) = 0;   // 00927F30 at 0095DA2D
-    virtual bool is_current_player_unit(std::uint32_t entity) = 0; // 0087D74C comparison
+    // 0087D74C..0087D753: the unit's party (+54h) against the local player record's
+    // +28h, [game + 18CCh + [game+18ECh]*4]. Every unit on the player's side, not
+    // only the player's own unit (docs/DIFFICULTY_MULTIPLIERS.md section 1).
+    virtual bool is_player_party_unit(std::uint32_t entity) = 0;
     virtual float unit_damage_multiplier(std::size_t level) = 0;   // config+50h at 0095DA76
     virtual float player_damage_multiplier(std::size_t level) = 0; // config+20h at 0087D79D
 

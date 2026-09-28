@@ -341,6 +341,20 @@ inline constexpr bool kShipSetTorpedoStockBound = true;
 // each tick, rest angles default to 0 and the gun spawns there.
 // ON by the pairs of 2026-09-27 (docs/GUN_REST_ANGLES.md section 9).
 inline constexpr bool kGunIdleRestBound = true;
+
+// Packet cc9_difficulty_multipliers (docs/DIFFICULTY_MULTIPLIERS.md). True: damage
+// taken follows the image's difficulty scaling. Every health write the host routes
+// as the unit's AddDamage (vtable[1ACh]: 008777D0's hull pass 008778C6 and part
+// pass 00877A37, the delayed explosions, damage control's water and fire) takes
+// 0095DA00's config+4Ch[level] (1 / PlayerCheatMultipliers) when the local player
+// holds role 0, then 0087D730's config+1Ch[level] (1 / HPMultipliers) when the
+// unit's party (+54h) is the local player's. The ship hit record's own multiply
+// at 008270AD (the failure roll and the effect count) uses the same party test and
+// +1Ch. The tables come from the loaded Globals.Difficulty at run time (0087D7B0).
+// LABELLED: the local player's party (record +28h) is taken as the controlled
+// unit's party; single player only (game+1FE4h == 0); the level is game+6ACh.
+// False: no damage is scaled, as before.
+inline constexpr bool kDifficultyMultipliersBound = false;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].

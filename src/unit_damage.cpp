@@ -235,8 +235,8 @@ void unit_add_damage_0095da00(UnitDamageHost& host, std::uint32_t entity, float 
 void scale_damage_for_player_unit_0087d730(UnitDamageHost& host, std::uint32_t entity, float amount) {
     float scaled = amount;
     // 0087D73C: multiplayer takes the multiplier unconditionally; in a campaign
-    // only the current player's own unit does.
-    if (!is_campaign(host.session_mode()) || host.is_current_player_unit(entity)) {
+    // every unit of the local player's party does (0087D753 CMP ESI,[EDX+28h]).
+    if (!is_campaign(host.session_mode()) || host.is_player_party_unit(entity)) {
         scaled = host.player_damage_multiplier(host.difficulty_level()) * scaled;
     }
     unit_apply_damage_00879070(host, entity, scaled);  // 0087D7A3

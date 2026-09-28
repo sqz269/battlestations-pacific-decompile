@@ -47,6 +47,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/camera_affine.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_angular_velocity.hpp"
@@ -1194,6 +1195,42 @@ struct GameGunneryHost::Impl {
     // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
     // (docs/GAMEPLAY_SETTINGS.md; loader defaults 0, installed 0.05 / 0.1).
     float aa_time_add_fix{0.0f};
+    // Packet cc9_difficulty_multipliers: config+1Ch and +4Ch as 0087D7B0 fills them,
+    // 1 / value (0087DB61 / 0087DD33 FDIVRP), indexed by level.
+    std::vector<float> difficulty_hp_inverse;      // config+1Ch
+    std::vector<float> difficulty_cheat_inverse;   // config+4Ch
+    unsigned long long difficulty_party_scaled{0};
+    unsigned long long difficulty_role_scaled{0};
+    std::size_t difficulty_level() const {
+        const std::int32_t level = bsp::game::game_effective_difficulty_6ac();
+        return level < 0 ? 0u : static_cast<std::size_t>(level);
+    }
+    // 0087D743..0087D753 (labelled: the local player's party is the controlled unit's).
+    bool unit_in_player_party(std::size_t unit) const {
+        const std::size_t controlled = units.controlled_index();
+        if (controlled >= units.count() || unit >= units.count()) return false;
+        return units.unit_side_0054(unit) == units.unit_side_0054(controlled);
+    }
+    // 00927F30(unit, 0): the local player (slot 0) holds role 0.
+    bool unit_role0_local(std::size_t unit) const {
+        std::int32_t holder = -1;
+        return units.unit_current_role_slot(unit, 0, holder) && holder == 0;
+    }
+    // vtable[1ACh] = 0095DA00 then 0087D730, the multiplies before 00879070.
+    float difficulty_scaled_damage(std::size_t unit, float amount) {
+        if (!kDifficultyMultipliersBound) return amount;
+        const std::size_t level = difficulty_level();
+        float scaled = amount;
+        if (level < difficulty_cheat_inverse.size() && unit_role0_local(unit)) {
+            scaled = difficulty_cheat_inverse[level] * scaled;   // 0095DA76 FLD / FMUL / FSTP
+            ++difficulty_role_scaled;
+        }
+        if (level < difficulty_hp_inverse.size() && unit_in_player_party(unit)) {
+            scaled = difficulty_hp_inverse[level] * scaled;      // 0087D78D FLD / FMUL / FSTP
+            ++difficulty_party_scaled;
+        }
+        return scaled;
+    }
     float aa_time_add_mul{0.0f};
     bool aa_time_logged{false};
     static bool env_flag(const char* name) {
@@ -2549,6 +2586,16 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  think = Globals.WeaponSystems.WeaponDirectorThinkTime\n"
         "end\n"
         "local aafix, aamul = 0, 0\n"
+        "local dhp, dpc = {}, {}\n"
+        "if type(Globals) == 'table' and type(Globals.Difficulty) == 'table' then\n"
+        "  local d = Globals.Difficulty\n"
+        "  local i = 1\n"
+        "  while type(d.HPMultipliers) == 'table' and d.HPMultipliers[i] ~= nil do\n"
+        "    dhp[i] = d.HPMultipliers[i]\n"
+        "    if type(d.PlayerCheatMultipliers) == 'table' then dpc[i] = d.PlayerCheatMultipliers[i] end\n"
+        "    i = i + 1\n"
+        "  end\n"
+        "end\n"
         "if type(ShipGlobals) == 'table' and type(ShipGlobals.AAGunnerErrorModifier) == 'table' then\n"
         "  local m = ShipGlobals.AAGunnerErrorModifier\n"
         "  if type(m.CalcTargetPosTimeAddFix) == 'number' then aafix = m.CalcTargetPosTimeAddFix end\n"
@@ -2561,6 +2608,8 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.think = num(think, 1000) or 2000\n"
         "    f.aafix = num(aafix, 100000) or 0\n"
         "    f.aamul = num(aamul, 100000) or 0\n"
+        "    f.dhpn = #dhp\n"
+        "    for k = 1, #dhp do f['dhp' .. k] = num(dhp[k], 100000); f['dpc' .. k] = num(dpc[k], 100000) end\n"
         // Packet cc9_ship_fire_flooding: 00962DBC stores 1 unless Repair is
         // present and false; the ShipGlobals damage block with 0083E1B3..
         // 0083E4AA's defaults (0, 0, 0.2, 2) when a key is absent.
@@ -2743,6 +2792,14 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  end\n"
         "end\n";
 
+    if constexpr (kDifficultyMultipliersBound) {
+        // Packet cc9_difficulty_multipliers: Globals (scripts/datatables/globals.lua)
+        // is not loaded yet when this chunk runs. The Lua host's lock-radius reader
+        // runs that script when the table is missing (0087D7B0's own source), so it
+        // is called first for its side effect; its result is not used here.
+        std::vector<float> lock_radius;
+        lua.read_lock_radius_multipliers_0087dc85(lock_radius);
+    }
     const int loaded = lua.luaL_loadbuffer(chunk.c_str(),
         static_cast<int>(chunk.size()), "bsp_gunnery_flatten");
     if (loaded != 0) {
@@ -2830,6 +2887,26 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 think_read = true;
                 aa_time_add_fix = flat_scaled(type_id, "aafix", 100000.0f, 0.0f);
                 aa_time_add_mul = flat_scaled(type_id, "aamul", 100000.0f, 0.0f);
+                {
+                    // 0087D7B0: one entry per index while HPMultipliers[index] is
+                    // not nil; each stored as 1 / value.
+                    const int n = flat(type_id, "dhpn", 0);
+                    difficulty_hp_inverse.clear();
+                    difficulty_cheat_inverse.clear();
+                    for (int k = 1; k <= n && k <= 16; ++k) {
+                        char key[16];
+                        std::snprintf(key, sizeof(key), "dhp%d", k);
+                        const float hp = flat_scaled(type_id, key, 100000.0f, 0.0f);
+                        std::snprintf(key, sizeof(key), "dpc%d", k);
+                        const float pc = flat_scaled(type_id, key, 100000.0f, 0.0f);
+                        difficulty_hp_inverse.push_back(static_cast<float>(1.0 / static_cast<double>(hp)));
+                        difficulty_cheat_inverse.push_back(static_cast<float>(1.0 / static_cast<double>(pc)));
+                    }
+                    log.notef("gunnery: Globals.Difficulty levels=%d HPMultipliers[1]=%.4f "
+                        "PlayerCheatMultipliers[1]=%.4f (0087D7B0, config+1Ch / +4Ch as 1/value)",
+                        n, n > 0 ? 1.0 / static_cast<double>(difficulty_hp_inverse[0]) : 0.0,
+                        n > 0 ? 1.0 / static_cast<double>(difficulty_cheat_inverse[0]) : 0.0);
+                }
                 if (!aa_time_logged) log.notef("gunnery: AAGunnerErrorModifier CalcTargetPosTimeAddFix=%.3f "
                     "AddMul=%.3f (settings +758h/+75Ch, 00901C20)",
                     static_cast<double>(aa_time_add_fix), static_cast<double>(aa_time_add_mul));
@@ -6541,11 +6618,20 @@ public:
     }
 
     int session_mode() override { return 0; }
-    bool unit_is_local_players() override { return false; }
-    unsigned campaign_difficulty_index() override { return 0; }
-    float difficulty_multiplier(unsigned) override {
-        owner_.record("ShipHit::difficulty_multiplier_008270ad", 0x008270adu);
-        return 1.0f;
+    // 00827065..00827075: the victim's party against the local player's.
+    bool unit_is_local_players() override {
+        return kDifficultyMultipliersBound && owner_.unit_in_player_party(victim_);
+    }
+    unsigned campaign_difficulty_index() override {
+        return static_cast<unsigned>(owner_.difficulty_level());   // 00827085 game+6ACh
+    }
+    float difficulty_multiplier(unsigned row) override {
+        if (!kDifficultyMultipliersBound || row >= owner_.difficulty_hp_inverse.size()) {
+            owner_.record("ShipHit::difficulty_multiplier_008270ad", 0x008270adu);
+            return 1.0f;
+        }
+        owner_.done("ShipHit::difficulty_multiplier_008270ad", 0x008270adu);
+        return owner_.difficulty_hp_inverse[row];                 // 008270AD +1Ch[level]
     }
 
     void apply_part_damage(int index, const float[3], float damage) override {
@@ -6648,6 +6734,7 @@ public:
         health.current_health = owner_.unit_state[victim_].health;
         health.max_health = owner_.unit_state[victim_].max_health;
         health.invincibility = owner_.invincibility_of(victim_);   // unit+150h
+        damage = owner_.difficulty_scaled_damage(victim_, damage); // vtable[1ACh]
         bsp::UnitDamageGates gates;
         const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
             damage);
@@ -7407,9 +7494,10 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             health.current_health = state.health;
             health.max_health = state.max_health;
             health.invincibility = invincibility_of(unit);   // unit+150h
+            const float scaled_amount = difficulty_scaled_damage(unit, amount);
             bsp::UnitDamageGates gates;
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
-                amount);
+                scaled_amount);
             if (!outcome.refused) {
                 note_floor(health, amount, outcome.new_health);
                 const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
@@ -7458,9 +7546,10 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             health.current_health = state.health;
             health.max_health = state.max_health;
             health.invincibility = invincibility_of(i);   // unit+150h
+            const float scaled_amount = difficulty_scaled_damage(i, amount);
             bsp::UnitDamageGates gates;
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
-                amount);
+                scaled_amount);
             if (outcome.refused) return;
             note_floor(health, amount, outcome.new_health);
             const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
@@ -8728,6 +8817,15 @@ void GameGunneryHost::report() {
             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
             kShipPlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery difficulty party_scaled=%llu role_scaled=%llu "
+            "level=%zu hp_inverse=%.4f cheat_inverse=%.4f bound=%d (0095DA00 / 0087D730 / "
+            "008270AD, packet cc9_difficulty_multipliers)", host.difficulty_party_scaled,
+            host.difficulty_role_scaled, host.difficulty_level(),
+            host.difficulty_level() < host.difficulty_hp_inverse.size()
+                ? static_cast<double>(host.difficulty_hp_inverse[host.difficulty_level()]) : 0.0,
+            host.difficulty_level() < host.difficulty_cheat_inverse.size()
+                ? static_cast<double>(host.difficulty_cheat_inverse[host.difficulty_level()]) : 0.0,
+            kDifficultyMultipliersBound ? 1 : 0);
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
