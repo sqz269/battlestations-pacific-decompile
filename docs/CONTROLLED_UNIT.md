@@ -2310,3 +2310,4 @@ about 70% context. No leases are held.
   the measurement to start from.
 - **Renderer-init outages.** 18:02 to about 18:40 UTC, the session was RDP with the desktop
   locked. Check `query session` first; `local\l8_probe.ps1` retries a smoke.
+- **`GameCommandUnit::class_id` is filled** in the `command_units` loop from the slot's `class_id` (+C4h), for cc9-gunnery9's `kSquadronSetCommandBound`. It is inert until that switch flips.
