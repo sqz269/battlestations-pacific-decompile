@@ -3193,3 +3193,48 @@ player, present interval immediate):
 | USN01 3200/3000 | exit 0 (predicted 1) | nothing. The census line prints only beside the SpawnNew summary, and USN01 makes no `SpawnNew` | held; the miss is the summary's placement |
 
 **Verdict: `kLuaSpawnNewIdQueriesBound = true`.**
+
+## SquadronSetAttackAlt, bound (packet `cc9_squadron_attack_alt`, `kSquadronAttackAltBound`, committed OFF)
+
+Worker cc9-lua6, 2026-09-28. This is rank 2 of the fifth refresh. It is the sibling of
+`SquadronSetTravelAlt` (above) on the squadron's second cruise block.
+
+**The native (V, listing `008A22B0`-`008A24Ax`).**
+- **The arguments.** Argument 0 goes through `00888AA0` (`008A23B6`); the result is not tested for
+  null. Argument 1 is read as a number (`00B66270`, `008A23E7`). Argument 2 is read as a boolean
+  (`00B66250`) only when there are exactly three arguments (`008A2409`); otherwise it is 0.
+- **The stores:**
+  - `+37Ch = 0.5` (`[00CE3800]`, countdown 0);
+  - `+38Ch =` the boolean (its freeze byte);
+  - `+398h =` the altitude;
+  - `+3AAh = 1`;
+  - `+3ADh = 0`.
+
+  It returns no result (`008A2490`).
+
+**The consumer.** Every ordnance cruise profile writes `+398h` behind the same gate (`docs/BOT_TASKS.md`
+step 5). The dive-bomb profile's gate is `009C8920`:
+- the draw `00BD2F10(0, [00CE5380]) + BeginAltRange/1` happens first, at `009C899B`, whatever
+  follows;
+- then `+38Ch` (`009C89A6`), `+37Ch < 0` (`009C89B6`) and `+3AAh` (`009C89BF`);
+- then the write (`009C89CE`), `+3ADh = 1`, and the lock clear (`009C89DD`).
+
+The approach update copies `ctl+398h` into `approach+ACh` (`009C7A96`). That value is the moveto
+state's far range and the go-away's cruise altitude.
+
+**The binding.**
+- The row stores the block on the squadron's slot, as `SquadronSetTravelAlt` does.
+- The dive-bomb approach update (`update_dive_bomb_approach`) applies the gate to
+  `db_begin_alt_ac`.
+- **LABELLED:**
+  - the per-tick copy stands for the profile's call;
+  - the profile's own value stays the tuning constant 1000, as before (its draw is not modelled);
+  - the level-bomb and strafe `+398h` have no reader in this host.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| LOMP10 3200/3000 | **exit 3.** `10_san_jose.lua` 315 calls `SquadronSetAttackAlt(unit, 150, true)` for B-25 01, Lightning 01 and Warhawk 01 in the stage init. The attack-alt lines read `alt=150.0 force=1 active=1` for all three. Lightning 01's and Warhawk 01's members read `last_begin_alt=150.0` (reads > 0); B-25 01's reads stay 0, because no reader. The dive-bomb planes' approach far range drops from 1000 to 150, so their moveto and go-away altitudes fall. The eight dive-bomb installs still print `approach+ACh=1000.0`: the install seed `009C3EA0` is the tuning value. The dive-bomb transitions and the plane paths move; deaths and hits may move through AA exposure and the shared stream |
+| USN01 3200/3000 | **exit 0.** No call, and nothing prints: the census lines exist only for a squadron the native touched |

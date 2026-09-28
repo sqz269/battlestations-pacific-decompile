@@ -347,6 +347,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_squadron_travel_alt.
     const bool travel_alt_row = kSquadronTravelAltBound
         && dispatch_row.address == 0x0089f550u;
+    // Packet cc9_squadron_attack_alt.
+    const bool attack_alt_row = kSquadronAttackAltBound
+        && dispatch_row.address == 0x008a22b0u;
     // Packet cc9_get_closest_border_zone.
     const bool border_zone_row = kLuaClosestBorderZoneBound
         && dispatch_row.address == 0x008aecd0u;
@@ -394,6 +397,7 @@ int binding_trampoline(lua_State* state) {
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || slot_count_row || device_reload_row || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
+        || attack_alt_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || spawn_id_requested_row || spawn_id_remove_row
@@ -501,6 +505,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (device_reload_row) {
         if (!host->error_replay()) host->run_set_device_reload_enabled_008c1350(state, argc);
+        return 0;
+    }
+    if (attack_alt_row) {
+        if (!host->error_replay()) host->run_squadron_set_attack_alt_008a22b0(state, argc);
         return 0;
     }
     if (travel_alt_row) {
@@ -4731,6 +4739,29 @@ int GameMissionLuaHost::run_squadron_set_travel_alt_0089f550(lua_State* state,
         "cc9_squadron_travel_alt)", row != nullptr ? row->name.c_str() : "?",
         static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
     log_.implemented("MissionLuaNative::SquadronSetTravelAlt", "0089f550");
+    return 0;
+}
+
+// Packet cc9_squadron_attack_alt. 008A22B0 SquadronSetAttackAlt(squadron, alt[, force]):
+// argument 0 through 00888AA0 (008A23B6), argument 1 through 00B66270 (008A23E7),
+// argument 2 through 00B66250 only when the count is exactly 3 (008A2409), else 0.
+// No result (008A2490).
+int GameMissionLuaHost::run_squadron_set_attack_alt_008a22b0(lua_State* state,
+    int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const float altitude = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    const bool force = argument_count == 3 && ::lua_toboolean(state, 3) != 0;
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_squadron_attack_alt_008a22b0(static_cast<std::size_t>(id - 1),
+            altitude, force);
+    }
+    const GameUnitRow* row = (stored) ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SquadronSetAttackAlt 008a22b0: \"%s\" alt=%.1f force=%d stored=%d (packet "
+        "cc9_squadron_attack_alt)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronSetAttackAlt", "008a22b0");
     return 0;
 }
 

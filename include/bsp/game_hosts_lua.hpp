@@ -1091,6 +1091,8 @@ public:
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
+    // Packet cc9_squadron_attack_alt, under kSquadronAttackAltBound.
+    int run_squadron_set_attack_alt_008a22b0(lua_State* state, int argument_count);
     // Packet cc9_get_closest_border_zone, under kLuaClosestBorderZoneBound.
     int run_get_closest_border_zone_008aecd0(lua_State* state, int argument_count);
     // Packet cc9_submarine_air, under kSubmarineAirBound.
