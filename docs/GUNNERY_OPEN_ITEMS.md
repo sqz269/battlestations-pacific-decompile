@@ -44,6 +44,7 @@ is ranked from its own evidence.
 | the set-command message `0071C830` / `0077C2A0` and the stage-2 clear (rank 9 on h) | sections 25-29 | ON, `kSetCommandQueueDelayBound` and `kSetCommandClearAllMessageBound`; the two rows still print `UNIMPLEMENTED` because the host records the hops it delivers itself |
 | the projectile team id | section 26 | stamped; no switch |
 | USN04's dive-release drop 10 -> 4 | section 30 | the image's own; nothing bound |
+| the submarine's sensor category `00852B90` (rank 1 on i) | section 32 | ON, `kSubmarineSensorCategoryBound`; the periscope byte `+1234h` stays a labelled substitution |
 
 ## 2. The ranking
 
@@ -1430,3 +1431,45 @@ The OFF build is gameplay-identical to reference i on JM06 and LOMP06 (`pair_dif
   the summary line only.
 - **The flip rule:** ON when S1, S2 and S4 hold and JM06's moves trace to the category through the
   recon lists. A JM06 move with the opposite sign to S3 is a stop.
+
+### 32.4 The pairs, and the flip (2026-09-29)
+
+- **OFF** is `pair_export --commit 93b8b8fc9` (SHA-256 prefix `F58B4755298D`).
+- **ON** is the same commit with `--flip kSubmarineSensorCategoryBound=true` (`A1DE346A1F3B`).
+- The logs are `local\sc_{off,on}_<row>.log`, and the run parameters are reference i's.
+
+| row | `pair_diff` | ON counters (calls / periscope_in / underwater / deep / differs) | what moved |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | **exit 1, gameplay identical** | 1074 / 453 / 468 / 153 / 621 | recon listener changes 1906 -> 4138 and fires 2 -> 1; `mission ship ai autotarget` mean candidates 4.38 -> 3.55; one dialog, one script entity and one timer fewer |
+| LOMP06 1200/1000 | exit 1, gameplay identical | 99 / 99 / 0 / 0 / 0 | the summary line only |
+| USN01 3200/3000 | exit 1, gameplay identical | 0 | the summary line only |
+| USN02 9200/9000 | exit 1, gameplay identical | 0 | the summary line only |
+
+**The lost listener fire.**
+- OFF, the script's recon listener hears `"Narwhal-class Submarine 01" party 1 0 -> 2 ->
+  luaJM6USNSubSighted()`, which starts a dialog and creates a script entity.
+- ON, the Narwhal-class sits at -80 m and reads DeepUnderwater. No table row sees it, party 1 never
+  detects it, and that listener never fires.
+- The fleet listener (`"US Tanker 01" ... luaJM6FleetSpotted()`) fires on both sides.
+
+**Against the predictions.**
+- **S1 held.** The ON counters equal OFF's exactly, and `differs` = underwater + deep.
+- **S2 and S4 held.**
+- **S3 missed on its gameplay half.** JM06 is exit 1, not 3, and the Narwhal-class still deals 840.
+  - Its torpedo targets do not come from its own sight. Nothing was shooting at it OFF either
+    (taken 0).
+  - The Fletchers' hits and PlayerSub 03's damage taken are unchanged, so the Underwater boats'
+    shorter detection range moves no shot within 3000 frames.
+  - The category's reach on JM06 in this window is the recon layer and the script's sighting event.
+- **No move has the opposite sign to S3.**
+
+**Verdict: ON.** The mechanism matches the image, and every move traces to the category through the
+recon lists. `kSubmarineSensorCategoryBound = true`.
+
+**Still open.**
+- **The periscope byte `+1234h`** has no producer. A boat with its periscope raised would read
+  PeriscopeOut. PeriscopeOut has its own rows in the tables, for example as an observer at 4000 m
+  against the surface (arcade class 7). The Lua property `periscopeOut` is the writer to find
+  (SUBMARINE_MODEL).
+- **JM06's reference row does not move.** Its script flow does: the sub-sighted dialog is gone.
+  Reference j should note it.
