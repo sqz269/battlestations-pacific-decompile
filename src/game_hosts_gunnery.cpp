@@ -310,7 +310,9 @@ constexpr bool kLuaOverrideHpBound = true;
 //    ship (0047F320 returns the entity); a plane's proxy [plane+9D4h] is not
 //    followed. OFF: the byte reads clear, as before, and the reads a set byte would
 //    have suppressed are counted.
-constexpr bool kAiUntouchableGateBound = false;
+//    ON by the pairs of 2026-09-28: JM05 and USN04 gameplay identical; no marked
+//    read occurs within 3000 frames (section 40.4).
+constexpr bool kAiUntouchableGateBound = true;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in

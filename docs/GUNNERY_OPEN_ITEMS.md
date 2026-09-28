@@ -2097,3 +2097,36 @@ The OFF side is this tree's build, with reference j's run parameters plus main's
   marked reads.
 - **U2:** no gameplay line moves on either row.
 - The verdict rule: U1 is the mechanism. The flip follows U1 and U2.
+
+### 40.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `65c438f3e`.
+- **ON** is `pair_export --commit 65c438f3e --flip kAiUntouchableGateBound=true` (SHA-256 prefix
+  `BB13B37B37AF`).
+- The logs are `local\g8_uoff_<row>.log` and `local\g8_uon_<row>.log` in worktree cc9-gunnery8.
+
+| row | `pair_diff` | gate reads / marked, OFF = ON | against the prediction |
+| --- | --- | --- | --- |
+| JM05 3200/3000 | exit 1, gameplay identical | 2520 / 0 | held |
+| USN04 4700/4500 | exit 1, gameplay identical | 5795 / 0 | held |
+
+- **U1 held, but only vacuously.** No marked candidate reaches the gate on either row, so the
+  suppression itself is not exercised by any reference row. The binding is the listing's two
+  tests on the byte the native writes.
+- **U2 held.** Besides the summary line's `bound`, the ON logs differ only in presentation. The
+  back buffer is 640x480, and the renderer capability lines are missing. The display slept during
+  those runs (the same state as below). That is environment, not this switch.
+- **An OFF 9200/9000 JM05 run** (`g8_uoff_jm05l`), started to look for a later marked read,
+  crashed at mission frame 2744. The null read was in `set_native_renderer_render_state_00b24460`
+  (`bsp_game+25FBC5`), about 20 minutes into the run. That is the renderer-side failure recorded
+  after the display sleeps, not a gunnery path. It was not re-run, so JM05 past 3000 frames is
+  **not measured**.
+
+**Verdict: ON.** The mechanism is the image's, and both rows are identity.
+`kAiUntouchableGateBound = true`.
+
+**Still open.**
+- A row where an enemy gun reaches a marked unit. On JM05, Event2Pt is on side 0 and 6829 m from
+  its nearest enemy at 3000 frames. PT Boat 80' Elco 01 and 02 are on side 2 and are never anyone's
+  nearest.
+- A plane passed to AddUntouchableUnit: the gate reads `[plane+9D4h]`, which is not followed here.
