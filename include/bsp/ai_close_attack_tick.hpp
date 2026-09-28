@@ -46,7 +46,7 @@ std::uint32_t ai_close_attack_order_class(bool member_is_ship_base) noexcept;
 // the 007EDA90 shape inline at 00A143F7-00A14413; anything else is served only
 // when it is a ship base whose +538h object answers false to its vtable[+2Ch].
 bool ai_close_attack_member_served(bool is_plane_squadron, bool squadron_carrier_excluded,
-                                   bool is_ship_base, bool controller_busy) noexcept;
+                                   bool is_ship_base, bool lands_troops) noexcept;
 
 // ---------------------------------------------------------------------------
 // The candidate set
@@ -98,7 +98,8 @@ struct AiCloseAttackTickHost {
     virtual bool close_member_is_ship_base(void* member) = 0;
     virtual bool close_member_is_plane_squadron(void* member) = 0;
     virtual bool close_member_squadron_excluded(void* member) = 0;
-    virtual bool close_member_controller_busy(void* member) = 0;   // +538h vtable[+2Ch]
+    // +538h vtable[+2Ch], the troop-landing trait (docs/SHIP_AI_OPEN_ITEMS.md 13).
+    virtual bool close_member_lands_troops(void* member) = 0;
     virtual bool close_member_position(void* member, float out[3]) = 0;
 
     // The collection walk at 00A13BFF: every entity of the world list the tick

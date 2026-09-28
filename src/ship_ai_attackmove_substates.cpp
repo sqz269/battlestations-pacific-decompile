@@ -243,7 +243,7 @@ void ship_ai_attackmove_approach_step_009f3240(float seconds,
                     if (member == 0) {
                         continue;
                     }
-                    if (host.member_armament_ready_vtable_002c(member) && // 009F347E
+                    if (host.member_lands_troops_vtable_002c(member) && // 009F347E
                         count < static_cast<int>(sizeof(candidates) / sizeof(candidates[0]))) {
                         candidates[count] = member; // 009F3488
                         ++count;
@@ -251,7 +251,7 @@ void ship_ai_attackmove_approach_step_009f3240(float seconds,
                 }
                 sweep = count >= 1; // 009F349F
             }
-        } else if (host.unit_armament_ready_vtable_002c()) { // 009F35E3, 009F35E7
+        } else if (host.unit_lands_troops_vtable_002c()) { // 009F35E3, 009F35E7
             candidates[0] = host.brain_unit_0aa8();          // 009F35F1
             count = 1;                                       // 009F35F5
             sweep = true;

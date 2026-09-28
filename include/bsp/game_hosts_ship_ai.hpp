@@ -547,6 +547,9 @@ struct GameShipAiSummary {
     unsigned long long clearance_heading_error_large{0};
     // Packet cc9_arm_final_area_key: 0070E450 at the arm final's 009DEEE9 / 009DEFD3.
     unsigned long long arm_final_area_keys{0};
+    // Packet cc9_close_member_class_trait: 009F347E / 009F35E3 asks, and trait holds.
+    unsigned long long approach_trait_tests{0};
+    unsigned long long approach_troop_landers{0};
     unsigned long long arm_final_area_key_differs{0};
     unsigned long long autotarget_follower_leaves{0};
     // Packet cc9_free_bearing_query: 009DC2E0 calls by site (both sides) and

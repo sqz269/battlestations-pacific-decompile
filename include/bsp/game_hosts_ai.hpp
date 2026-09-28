@@ -65,6 +65,16 @@ namespace bsp::game {
 // change on a hidden objective (kind 2) keeps its units, as 008DFE50 returns early
 // (008DFE6E CMP [EBP+18h],2). False: the kind is not recorded and every status
 // change drops the objective's units.
+// Packet cc9_close_member_class_trait (rank 2 of docs/SHIP_AI_OPEN_ITEMS.md section 16,
+// read in section 13). [unit+538h]->vtable[2Ch]() is the troop-landing trait
+// (00827FB0 on a ship class: LandingShip and LandingShipAmount both set; 00963C70 on
+// the landing-ship class: Rocketer clear), GameUnitsHost::
+// unit_class_lands_troops_vtable_2c. True: it answers at the close attack's 00A1443D
+// (a troop lander is not served), at the approach warn sweep's 009F347E / 009F35E3,
+// and in 00A03510's Cargo arm (3.0 when it holds, else 0). False: all three answer
+// false, as the records did. Counted on both sides.
+inline constexpr bool kTroopLandingTraitBound = false;
+
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 
 // game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
@@ -200,6 +210,9 @@ struct GameAiSummary {
     unsigned long long seed_candidates{0};
     unsigned long long groups_created{0};
     unsigned long long groups_destroyed{0};
+    // Packet cc9_close_member_class_trait: members and Cargo units whose trait holds.
+    unsigned long long close_troop_landers{0};
+    unsigned long long cargo_troop_landers{0};
     unsigned long long members_added{0};
     unsigned long long members_evicted{0};
     unsigned long long splits{0};
