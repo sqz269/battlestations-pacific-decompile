@@ -2030,6 +2030,24 @@ player):
 | USN13 3200/3000 | **exit 3.** There are 15 calls from `luaAttackWaveSpawned` (`usn_13_truk.lua` 1641, mtime 2024-08-13), each on a spawned squadron at 67, with 4 planes each (the forced-recon lines of cc9-lua2's `rk_usn13.log` resolve 4 members). So `planes=60`. The wave's planes start at 67 m/s instead of their spawn seeds (61.1 and 55.6 m/s in that log). Their positions move from the spawn on, so the attack-wave unit rows, the first hits on the US carriers and possibly the AA kills move. That is RNG-coupled, so per-kill attribution is not claimed |
 | USN04 4700/4500 | no call, exit 1 |
 
+### SquadronSetSpeed pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `8a64f9a18`.
+- ON is `pair_export --flip kLuaSquadronSetSpeedBound=true` (`local/ss_on`).
+- The logs are `local/ss_{off,on}_<mission>.log`. The ON USN13 run was repeated after a
+  renderer-init outage (every binary failed at `CreateDevice`, hr `0x88760868`, 22:20 to 22:46).
+
+| row | result | verdict |
+| --- | --- | --- |
+| USN13 3200/3000 | `calls=15 planes=60`, 4 per squadron, each at 67. pair_diff exit 3: deaths 24 -> 23, hit records 720 -> 572, shots 6607 -> 4265, first hit 68.10 -> 67.90 s. Every moved death row is an attack-wave plane (`bruh #1.*`), with its time, altitude, killer and range moved. Torpedo-task releases hold at 2 of 60 | held |
+| USN04 4700/4500 | no call, exit 1, native table identical | held |
+
+The attack-wave kills are coupled through the shared RNG stream and the AA engagement, so no
+single kill is attributed to the speed. The Enterprise's distance moved by 0.06 m.
+
+**Verdict: `kLuaSquadronSetSpeedBound = true`.**
+
 ## IsClassChanged, 008CC4B0 (packet `cc9_is_class_changed`, `kLuaIsClassChangedBound`, committed OFF)
 
 Worker cc9-lua3, 2026-09-28. This is item 4 of the refreshed ranking.
@@ -2066,3 +2084,48 @@ player):
 | row | prediction |
 | --- | --- |
 | LOMP06 1200/1000, JM06 3200/3000, USN13 3200/3000 | **exit 1** on each. `IsClassChanged` goes `UNIMPLEMENTED` -> concrete with the same call count, and `true=0`. Every caller's branch is unchanged, because false and nil are both falsy |
+
+## SetSubmarineDepthLevel, 00893F40 (packet `cc9_set_submarine_depth_level`, `kLuaSetSubmarineDepthLevelBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This is item 5 of the refreshed ranking.
+
+**What the landed switch covers.** `kSubmarineDepthLevelBound` (`docs/SUBMARINE_MODEL.md`
+section 11) binds only the getter `00894100` and the scene seed `00853630`. No depth writer
+was modelled, so this native is the whole gap.
+
+**The image (V).**
+- `00893F40` resolves argument 0 (`00888AA0`) and reads argument 1 as an integer.
+- A request for 1 becomes 0 when `+122Ch` (`periscopeState`) is 2, broken, or `+1214h` (the
+  periscope node) is null. Only a kamikaze class has no node.
+- Then it calls `008528B0` `BSP_SubmarineUnit_SetDepthLevel`, and it returns no value.
+- `008528B0` clamps to 0..3 (`008528CC..008528E0`). It forces 1 when class `+510h` or `+514h` is
+  above 0 (`008528E5..00852908`).
+- **Only when `+1268h` differs** (`0085290D JE`), it stores the level (`0085291E`) and posts
+  session message `A2h` with it through `0077C7B0` (`00852915..00852956`).
+- The dive that follows, the hull moving to `bands[level]`, is the submarine's own per-frame
+  work.
+
+**The binding.**
+- `GameUnitsHost::set_submarine_depth_level_008528b0` clamps with the existing
+  `submarine_clamp_depth_command_008528b0` and stores into `GameUnitRow::submarine_depth_level`
+  when it differs.
+- `GameMissionLuaHost::run_set_submarine_depth_level_00893f40` routes the row there.
+- The census is `summary mission script submarine depth set bound=.. calls=.. stored=..
+  unresolved=..`, plus one line per call.
+- **SUBSTITUTIONS, labelled.** `periscopeState` is never 2 here, and the kamikaze test reads
+  false, as in the seed. The `A2h` message is recorded, not posted.
+- **The dive is not modelled.** The host hull keeps its authored Y. So the only effect is the
+  level that `GetSubmarineDepthLevel` answers.
+
+**Callers.** JM06 runs `COTP-IJN/PRCPIJN/jm06.lua` (mtime 2024-07-13). It calls this native at
+1380 (the spawned I-400 to 3), 1439 (the I-400 to 0), 1796 (`luaJM6SubInit`, each sub to 1 before
+a `PutTo` at y = -20), 1842 (group 1 followers to 1) and 2373. Its `GetSubmarineDepthLevel` lines
+(794, 1232) are commented out.
+
+**Predictions** (written before the runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 1.** 5 calls, all resolved. `stored` counts only the calls that change a seeded submarine's level. The subs that `luaJM6SubInit` sets to 1 were most likely seeded at 1 and store nothing; a sub seeded at 0 stores. Nothing in JM06 reads the level back, and the host has no dive, so gameplay is identical |
+| LOMP06 1200/1000 | no call, exit 1 (the Narwhal's getter answers stay 1) |

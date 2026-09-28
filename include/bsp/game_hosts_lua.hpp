@@ -213,7 +213,7 @@ inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (d
 // each of the +3CCh members at +3D0h (0089F8CA..0089F8FF); on a plane that is
 // 0074E1E0 -> 007D9E80, the controller's forward-speed set. True: route the row to
 // run_squadron_set_speed_0089f780. False: unimplemented.
-inline constexpr bool kLuaSquadronSetSpeedBound = false;
+inline constexpr bool kLuaSquadronSetSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_is_class_changed (docs/LUA_BINDING_MISSION.md, "IsClassChanged, 008CC4B0").
 // IsClassChanged(id) pushes the boolean [registry+2010h+id*4] != id (008CC5CB..008CC5DA),
@@ -221,6 +221,13 @@ inline constexpr bool kLuaSquadronSetSpeedBound = false;
 // remap one pair in. True: route the row to run_is_class_changed_008cc4b0. False:
 // unimplemented (nil, which every caller in this installation reads as false).
 inline constexpr bool kLuaIsClassChangedBound = false;
+
+// Packet cc9_set_submarine_depth_level (docs/LUA_BINDING_MISSION.md,
+// "SetSubmarineDepthLevel, 00893F40"). SetSubmarineDepthLevel(entity, level) reads the
+// level as an integer, drops a request for 1 to 0 when periscopeState +122Ch is 2
+// (broken) or the periscope node +1214h is null, then calls 008528B0. True: route the
+// row to run_set_submarine_depth_level_00893f40. False: unimplemented.
+inline constexpr bool kLuaSetSubmarineDepthLevelBound = false;
 
 class GameHostLog;
 class GameVfsHost;
@@ -466,6 +473,9 @@ struct GameMissionLuaSummary {
     unsigned long long squadron_speed_unresolved{0};
     unsigned long long class_changed_calls{0};
     unsigned long long class_changed_true{0};
+    unsigned long long sub_depth_calls{0};
+    unsigned long long sub_depth_stored{0};
+    unsigned long long sub_depth_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -951,6 +961,8 @@ public:
     int run_squadron_set_speed_0089f780(lua_State* state, int argument_count);
     // Packet cc9_is_class_changed, under kLuaIsClassChangedBound.
     int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
+    // Packet cc9_set_submarine_depth_level, under kLuaSetSubmarineDepthLevelBound.
+    int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

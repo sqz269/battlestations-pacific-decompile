@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_death_modes.hpp"
@@ -8203,6 +8204,27 @@ bool GameUnitsHost::set_plane_forward_speed_007d9e80(std::size_t unit_index, flo
         slot.plane_world_velocity[0], slot.plane_world_velocity[1],
         slot.plane_world_velocity[2]};
     host.done("PlaneFlightController::set_forward_speed", 0x007d9e80u);
+    return true;
+}
+
+// Packet cc9_set_submarine_depth_level. 008528B0: clamp to 0..3 (008528CC..008528E0),
+// 1 when class+510h or +514h is above 0 (008528E5..00852908), then, only when
+// +1268h differs (0085290D JE), store it (0085291E) and post session message A2h
+// with the level through 0077C7B0 (00852915..00852956).
+// SUBSTITUTIONS (labelled): the kamikaze test reads false, as in the seed; the A2h
+// message is not posted, and the dive it leads to (the hull move to bands[level])
+// is not modelled, so only the level the getter 00894100 reads changes.
+bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, int requested) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    GameUnitRow& row = host.slots[unit_index]->row;
+    if (!row.submarine_depth_seeded) return false;
+    const int level = static_cast<int>(
+        bsp::submarine_clamp_depth_command_008528b0(requested, false));
+    host.done("SubmarineUnit::set_depth_level", 0x008528b0u);
+    if (row.submarine_depth_level == level) return false;
+    row.submarine_depth_level = level;
+    host.record("SubmarineUnit::depth_message_a2", 0x0077c7b0u);
     return true;
 }
 
