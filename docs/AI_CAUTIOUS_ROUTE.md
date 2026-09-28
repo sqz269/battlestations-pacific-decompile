@@ -184,3 +184,45 @@ Commit `1c69af06e`. OFF is `local\s5r_off3_<m>.log`. ON is `pair_export --flip k
 - The out-of-map crossing of 0071FDE0 (`outside_map` stayed 0).
 - What +18h really tracks (the listener at `+10h`).
 - The session delivery of 5Fh with `kSetCommandQueueDelayBound`.
+
+## 8. Does the image attach the path behind `cruise`? The merged head, and the re-pairs
+
+**The image does attach the path, so the section 4 premise was wrong about the image, not the host.**
+- The queued `moveonpath` ends `cruise` through the director step's pre-pass 00836941
+  (`weapon_director_step_prepass_00836941`, 00836962..00836985). When the head's stage is running
+  (1) and 0071BE60 counts more than one filled slot, or the unit is player-controlled, it raises the
+  head's stage to 2 with 0071D810.
+- That rule tests neither the head's category nor the queued command's category. So `cruise`
+  (category 3) ends as soon as the `moveonpath` (category 3) is queued behind it.
+- The first ON log shows exactly that at 6.10 s: `raise_primary_stage`, `build_clear_command` and
+  `apply_clear_command`, then "Montpelier cleared `cruise` from slot 0 ... the queue now holds
+  `moveonpath`", then `begin_user_path_0071f6a5`.
+- My section 4 test ("no director arm ends `cruise` for a queued category-3 command") looked only at the
+  per-command arms (stop, follow, attackmove, the generic arrival) and missed the pre-pass.
+- **The route arm builds waypoints the image also follows.**
+
+**The `clearorders` arm on main.** Main (`8d9b938c7`, merged here as `2d37190cf`) posts 0071D880 as a 5Dh
+every-slot message for 00816E30's clear-all at 0081733E and for 0071E5AA's drop
+(`kSetCommandClearAllMessageBound`, cc9-gunnery6). The `clearorders` arm's own 0071D880 call at 008171BD
+is still `record("EntityCommandArm::send_clear_commands")` there. So `kClearOrdersSendBound` is not
+redundant. After the merge it posts the same message through `route_clear_command`, delivered at the
+row-9 drain like the others. Section 31's rule holds: 00A14DD0 reads the director only on a later
+command tick, seconds after any delivery. Both route switches are OFF on `2d37190cf`.
+
+**Predictions for the re-pairs on `2d37190cf`, written before their ON runs.** OFF is `local\s5m_off_<m>.log`.
+- **`kCautiousRouteBound` alone (`local\s5m_route`):**
+  - USN12: one build at about 6.1 s (3 waypoints and the target). Montpelier follows the user path.
+    Once it passes the first waypoint (about 90 s), a `clearorders` on every tick leaves the path
+    attached: builds=1, clears in the twenties, no moveto.
+  - USN10: builds=1, clears=0, waits in the forties.
+  - USN01, USN04 and USN02: builds=0, identity (exit 0 or 1).
+  - **Verdict rule:** as in section 4. The switch cannot flip alone, because its clears are empty
+    without the second switch.
+- **Both switches (`local\s5m_both`):**
+  - USN12: as in section 7. The first `clearorders` empties the queue (on the drain), and the next tick
+    rebuilds with 2 waypoints: builds 2 or 3, clears 1 or 2, no moveto.
+  - USN10: as the route-alone run.
+  - The references: identity.
+  - **Verdict rule:** as in section 6.
+- Timings may differ by a step from sections 5-7. `kSetCommandQueueDelayBound` now delivers the 5Fh and
+  5Dh messages at the drain.
