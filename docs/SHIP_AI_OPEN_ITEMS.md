@@ -1167,3 +1167,23 @@ depends on one thing this packet did not read: does the image's join path also l
 
 The next read is the caller of `0077C8D0` in the AI group pass, and what it writes to
 `[director+54h]`.
+
+**The follow-up read, done in the same turn.** The image's join does leave `follow` in the slot, so
+the loop is the host's gap and not the image's behaviour:
+- `00A10DC0`, the AI follower pass, calls only `0077C8D0` for a ship follower.
+- The join `0077F940` ends at `0077FA8D..0077FAB8`: `ordered->vtable[114h]()` (the director);
+  when that is not null, `director->vtable[58h](target)`, with the target taken from `[ESP+80h]`,
+  the join's argument.
+- The director's `vtable[58h]` is `00720CD0` (docs/WEAPON_DIRECTOR.md). It clears the ten command
+  slots at `+54h` and issues `this->vtable[60h](00E08F60, block)`: a `follow` of the target.
+- So in the image, a unit that joins holds `follow` in `[director+54h]`, and the gate returns at
+  `009F5DE0` without a leave.
+- The host's `GameUnitsHost::formation_join_0077f940` does not issue it. That was noted as unread
+  in docs/SHIP_UNIT_GROUP_FOLLOW.md, line 709.
+
+**The fix is in the units host, not in this lane.** At the end of a successful
+`formation_join_0077f940(follower, leader)`, the follower's director should run `00720CD0` with
+the leader. It is already reconstructed as `bsp::issue_target_command_00720cd0` in
+`src/weapon_director.cpp` and `src/command_execution.cpp`. It went to the lead. Once it lands,
+`kAutoTargetFollowerGateBound` re-pairs on the same seven rows; the expected leaves are those
+of followers whose director was given a different command after the join.
