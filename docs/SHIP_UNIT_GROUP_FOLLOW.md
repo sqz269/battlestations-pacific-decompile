@@ -852,6 +852,32 @@ python tools/pair_diff.py local\l9_off_usn01.log local\l9_on_usn01.log   # and t
 - The launcher runs with `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1` and lockstep 0.05.
 - Flip by the section 5g verdict.
 
+#### The pairs and the verdict (cc9-lua10, 2026-09-28): ON
+
+The OFF runs used a clean export of `cce28dd60` (`local\l10_base`). The ON runs used the same commit
+with the flip (`local\l10_ff`). Both ran in worktree cc9-lua10 with reference j's parameters:
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05 and `--press-start-frame 30`. The
+logs are `local\l10_off_<row>.log` and `local\l10_ffon_<row>.log`.
+
+| row | frames | `calls` OFF / ON | `pushed` OFF / ON | issued lines ON | follow steppers OFF -> ON | deaths OFF -> ON | `pair_diff` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JM06 | 3200/3000 | 21 / 21 | 0 / 21 | 21 | 9 -> 10 | 1 -> 1, rows identical | 3 |
+| USN01 | 3200/3000 | 13 / 13 | 0 / 13 | 13 | 2 -> 3 | 5 -> 5, one row's timing | 3 |
+| JM08 | 3200/3000 | 18 / 18 | 0 / 18 | 18 | 0 -> 1 | 11 -> 11, 9 rows changed | 3 |
+| USN04 | 4700/4500 | 16 / 16 | 0 / 16 | 16 | unchanged | 39 -> 44 | 3 |
+
+- **Every predicted count held.** `calls` equals the predicted joins on each row, `pushed` equals
+  `calls` ON and is 0 OFF, and there is one issued line per call.
+- **The followers now station-keep.** The ship follow stepper count rises on three rows, and the
+  follow-station zone sets rise with it; on JM08 they go from 0 to 600.
+- **The deaths move on USN04, as allowed.** One D3A Val dies only OFF. Four Vals, one Zero and
+  Fletcher-class03 die only ON. The plane kills are ship AA, whose geometry follows the escorts'
+  stations. Damage rises from 10136.8 to 15776.6.
+- **Not checked directly:** the third clause, that no joined follower shows a non-`follow` slot 0 at
+  its first director step. No log line prints slot 0 per step. The rising stepper counts are
+  indirect evidence only.
+- **Verdict: ON.** The mechanism matched on every row.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread
