@@ -157,6 +157,26 @@ struct GameCommandsHost::Impl {
     std::vector<GameDirector> directors;
     // Packet cc9_target_release.
     const GameCommandTargetFactsSource* target_facts{nullptr};
+    // Packet cc9_director_target_checks: the entity's +5Dh as 0071D712 reads
+    // it, one byte per unit, set when 0071DDB0 is delivered for the unit.
+    // SUBSTITUTION: the image sets +5Dh at 00926390 / 009263C0 in the fixed
+    // step's destroy flush (00875EC9); this host sets it at the gunnery kill,
+    // which runs after every director step of the same fixed step and before
+    // that flush. No push reaches 0071D6D0 between the two in this process.
+    std::vector<unsigned char> released_05d;
+    // 00521EA0 on a descriptor, as GameCommandsHost::resolve_command_target_00521ea0.
+    std::uint32_t resolve_target_00521ea0(const bsp::SceneCommandTarget& target) const {
+        if (target.kind == 0 || target.object_id == 0) return 0u;
+        for (const GameCommandUnit& unit : units) {
+            if (unit.object_id == target.object_id)
+                return static_cast<std::uint32_t>(unit.index) + 1u;
+        }
+        return 0u;
+    }
+    bool target_released_05d(std::uint32_t resolved) const {
+        return resolved != 0u && resolved - 1u < released_05d.size()
+            && released_05d[resolved - 1u] != 0;
+    }
     // Milestone 2m. One navigator parameter block per unit, the 0081f283
     // allocation at *(unit+73Ch). Only the commanded-speed pair at +24h / +28h
     // has a recovered producer, and it is the pair the director's stage reset
@@ -286,6 +306,9 @@ struct GameCommandsHost::Impl {
     // Milestone 2q: 0071D810's stage-2 consequence, for both of its call sites.
     // Defined below the two bindings it needs.
     bool route_clear_command(std::size_t unit_index, bool player_controlled);
+    // The same round trip for any 5Dh message (0071D900's slot clear included).
+    bool route_clear_command(std::size_t unit_index, bool player_controlled,
+                             const bsp::ClearCommandMessage& message);
 
     // Packet cc8_ship_drive: the one-time note that says what the weighted
     // 0071D780 answers next to the unweighted walk every index site runs.
@@ -763,10 +786,18 @@ public:
             return true;
         }
         if (target.object == nullptr) return false;
-        // The resolved target's +5dh flag. Nothing in this process sets it on a
-        // created instance, so the test answers the clear byte.
-        chain_.owner.record("WeaponDirector::target_refuses_commands", 0x0071d74au);
-        return true;
+        // 0071D70B..0071D716: 00521EA0 again, then CMP byte ptr [EAX+5Dh],0;
+        // a set byte takes 0071D718 (XOR AL,AL): the push is refused. The byte
+        // is the released mirror 0071DDB0's delivery keeps (Impl::released_05d).
+        const bool released =
+            chain_.owner.target_released_05d(chain_.owner.resolve_target_00521ea0(target));
+        if (released) ++chain_.owner.summary.target_refusals;
+        if (!kDirectorTargetChecksBound) {
+            chain_.owner.record("WeaponDirector::target_refuses_commands", 0x0071d74au);
+            return true;
+        }
+        chain_.owner.done("WeaponDirector::target_refuses_commands", 0x0071d712u);
+        return !released;
     }
     bool normalize_self_target(std::uint32_t command,
         bsp::SceneCommandTarget& target) override {
@@ -793,7 +824,16 @@ public:
     }
     void observe_target(std::uint32_t target_object) override {
         static_cast<void>(target_object);
-        chain_.owner.record("WeaponDirector::observe_target", 0x00694a60u);
+        // 00694A60 adds the pair (target, director+1Ch) to the observer
+        // registry; its only effect is 0071DDB0's delivery at the target's
+        // release, which GameCommandsHost::release_observed_target_0071ddb0
+        // runs for every director (the pair set is every director whose push
+        // resolved the entity, so scanning every director's slots is the same).
+        if (!kDirectorTargetChecksBound) {
+            chain_.owner.record("WeaponDirector::observe_target", 0x00694a60u);
+            return;
+        }
+        chain_.owner.done("WeaponDirector::observe_target", 0x00694a60u);
     }
     bsp::CruiseCommandMode command_mode() override { return chain_.director.mode; }
     void set_command_mode(bsp::CruiseCommandMode mode) override {
@@ -1855,10 +1895,15 @@ private:
 bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
     bool player_controlled) {
     if (unit_index >= units.size()) return false;
-    GameDirector& director = directors[unit_index];
-    const bsp::ClearCommandMessage message
-        = bsp::clear_command_message_for_queue_stage_done();
     done("WeaponDirector::build_clear_command", 0x0071c730u);
+    return route_clear_command(unit_index, player_controlled,
+                               bsp::clear_command_message_for_queue_stage_done());
+}
+
+bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
+    bool player_controlled, const bsp::ClearCommandMessage& message) {
+    if (unit_index >= units.size()) return false;
+    GameDirector& director = directors[unit_index];
     ++summary.clear_messages;
     ++summary.clear_receives;
     done("GameUnitMessage::apply_clear_command", 0x00721a40u);
@@ -2464,6 +2509,89 @@ std::uint32_t GameCommandsHost::resolve_command_target_00521ea0(
     return 0u;
 }
 
+std::size_t GameCommandsHost::release_observed_target_0071ddb0(
+    const GameReleasedTarget& released) {
+    // 0071DDB0, body 0071DDB0-0071DEA7 (RET 4, INT3 from 0071DEAA; no Ghidra
+    // function), ECX = director+1Ch, the stack argument the released entity.
+    // Reached through the observer vtable D09EA8: slot +8 directly (00696340 from
+    // 00925C90, 00926390's death delivery) and slot +4 0071C1A0 (body
+    // 0071C1A0-0071C1A6, `MOV EAX,[ECX]; MOV EAX,[EAX+8]; JMP EAX`, no Ghidra
+    // function) from 00696330 (009263C0's removal). The second delivery finds
+    // every matching descriptor already rewritten, so it does nothing.
+    Impl& host = *impl_;
+    if (released.unit >= host.units.size()) return 0;
+    if (host.released_05d.size() != host.units.size())
+        host.released_05d.assign(host.units.size(), 0);
+    host.released_05d[released.unit] = 1;          // 00926390's +5Dh store
+    ++host.summary.release_deliveries;
+    // 0071DDC1..0071DDCD: [[00E188A8]+5D4h] >= 0Ch. The game state is 0Dh
+    // (GameStateId::kInMission) whenever a unit can die in this process.
+    // 0071DDD5..0071DE0D, the override descriptor at director+18Ch: nothing in
+    // this process writes director+188h (override_command answers 0), so no
+    // override descriptor resolves.
+    const std::uint32_t handle = static_cast<std::uint32_t>(released.unit) + 1u;
+    std::size_t matches = 0;
+    for (std::size_t d = 0; d < host.directors.size(); ++d) {
+        GameDirector& director = host.directors[d];
+        // 0071DE12..0071DE9C: i = 0..9, the command at director+54h+1Ch*i and
+        // its descriptor at +58h+1Ch*i; a null command is skipped, not a stop.
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+            if (director.slot_command[i] == 0) continue;               // 0071DE2D
+            bsp::SceneCommandTarget& target = director.slot_target[i];
+            if (host.resolve_target_00521ea0(target) != handle) continue;  // 0071DE47
+            ++matches;
+            ++host.summary.release_slot_matches;
+            if (released.is_plane) ++host.summary.release_plane_matches;
+            // 0071DE57 director vtable[70h] = 0071EDD0(descriptor, 1). For an
+            // aircraft (vtable[5Ch](0Fh)) with a squadron at +9D4h it moves the
+            // descriptor to the LAST live member among the squadron's first five
+            // (0071EEEF compares d^2 against FLT_MAX, 00D7A278, so every live
+            // member qualifies) and answers 0. Otherwise it rewrites the
+            // descriptor to the position branch at the entity's +FCh (kind 0,
+            // +1h = 1, no object) and answers 1.
+            // SUBSTITUTION: this host holds no squadron member list, so an
+            // aircraft takes the position branch; release_plane_matches counts
+            // every descriptor that would have been offered the retarget.
+            const bsp::EntityOrderCommandClass* klass = host.class_of(director.slot_command[i]);
+            const int category = klass != nullptr ? klass->category : -1;
+            if (i == 0) {
+                ++host.summary.release_head_ends;
+            } else if (category == 1 || category == 2) {   // 0071DEB0, i > 0
+                ++host.summary.release_slot_clears;
+            } else {
+                ++host.summary.release_slot_kept;
+            }
+            if (!kDirectorTargetChecksBound) continue;
+            target = bsp::SceneCommandTarget{};
+            target.kind = 0;
+            target.position_valid = 1;
+            for (int lane = 0; lane < 3; ++lane) target.position[lane] = released.position[lane];
+            host.done("WeaponDirector::release_retarget_0071edd0", 0x0071edd0u);
+            // 0071DE5D: [[00E188A8]+1FE4h] == 2 skips; this process is mode 1.
+            const bool player = released.controlled_unit == d;
+            if (i == 0) {
+                // 0071DE72 0071D810(2), monotonic, then the 5Dh round trip.
+                if (bsp::stage_raise_applies(director.stage, 2)) {
+                    director.stage = 2;
+                    ++host.summary.stage_raises;
+                    host.done("WeaponDirector::raise_primary_stage", 0x0071d810u);
+                    if (bsp::stage_raise_sends_message(2, kSessionModeSinglePlayer)) {
+                        host.done("WeaponDirector::build_clear_command", 0x0071c730u);
+                        host.route_clear_command(d, player,
+                            bsp::clear_command_message_for_queue_stage_done());
+                    }
+                }
+            } else if (category == 1 || category == 2) {
+                // 0071DE7B..0071DE91: 0071DEB0(command, i) true, 0071D900(i).
+                host.done("WeaponDirector::send_clear_command_slot", 0x0071d900u);
+                host.route_clear_command(d, player, bsp::clear_command_message_for_slot(i));
+            }
+            host.done("WeaponDirector::release_observed_target", 0x0071ddb0u);
+        }
+    }
+    return matches;
+}
+
 float GameCommandsHost::director_target_hold_0040(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return 0.0f;
@@ -2683,6 +2811,14 @@ void GameCommandsHost::report() {
         host.summary.end_commands, host.summary.stage_raises, host.summary.clear_messages,
         host.summary.clear_receives, host.summary.queue_advances, host.summary.restarts,
         host.summary.command_events, host.summary.command_event_callbacks);
+    host.log.notef("summary mission director release bound=%d deliveries=%llu "
+        "slot_matches=%llu head_ends=%llu slot_clears=%llu slot_kept=%llu "
+        "plane_matches=%llu refusals=%llu (packet cc9_director_target_checks, 0071DDB0 / "
+        "0071D712)", kDirectorTargetChecksBound ? 1 : 0,
+        host.summary.release_deliveries, host.summary.release_slot_matches,
+        host.summary.release_head_ends, host.summary.release_slot_clears,
+        host.summary.release_slot_kept, host.summary.release_plane_matches,
+        host.summary.target_refusals);
 }
 
 }  // namespace bsp::game

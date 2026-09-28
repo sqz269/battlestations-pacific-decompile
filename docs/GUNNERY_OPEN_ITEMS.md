@@ -641,3 +641,117 @@ whenever `queue_command` shows calls.
 - The reference is h (docs/GAME_EXECUTABLE.md 2026-09-29 h, main `d6fc6ee78`).
 - USN02's 29.75 s failure is the image's own for an idle player (TORPEDO_SPREAD_AIM).
 - JM06 and LOMP06 moved again with `kSubmarineDiveTeleportBound`, after h.
+
+## 19. Rank 3 read: the director's target refusal and release observer (packet `cc9_director_target_checks`)
+
+Both halves read the target entity's **+5Dh**, the byte 00926390 (death) and 009263C0 (removal)
+set in the fixed step's destroy flush (00875EC9). The host's `SceneNodeFlags::torn_down` is that
+byte.
+
+**The refusal, 0071D6D0** (body 0071D6D0-0071D772, `RET 8`). The host's record address 0071D74A
+lies inside the `JZ` at 0071D749; the test itself is:
+
+```
+0071d700: MOV ECX,EDI            ; the descriptor
+0071d702: CALL 0x00521ea0        ; resolve
+0071d707: TEST EAX,EAX
+0071d709: JZ 0x0071d718          ; nothing resolves: refuse
+0071d70b: MOV ECX,EDI
+0071d70d: CALL 0x00521ea0
+0071d712: CMP byte ptr [EAX + 0x5d],0x0
+0071d716: JZ 0x0071d71f          ; clear: on to the torpedo / moveonpath tests
+0071d718: POP EDI / XOR AL,AL / POP ESI / RET 0x8   ; set: refuse
+```
+
+A push whose target is already released is refused. The host answered the clear byte.
+
+**The observer, 00694A60 at 0071E78A.** It adds the pair (target, `director+1Ch`) to the global
+observer registry under its critical section, with a reference count. It has no other effect. The
+effect is the delivery:
+- `director+1Ch`'s table is **00D09EA8** (008363E0 at 00836410). Slot +4 is **0071C1A0**, slot +8
+  is **0071DDB0**.
+- 0071C1A0 is `MOV EAX,[ECX]; MOV EAX,[EAX+8]; JMP EAX`, so both slots end in 0071DDB0.
+- 00925C90 (from 00926390, the death) dispatches slot +8. 00925C40 (from 009263C0, the removal)
+  dispatches slot +4 through 00693550.
+
+**0071DDB0**, `__thiscall(ECX = director+1Ch)(entity)`, `RET 4`:
+1. It returns at once unless `[[00E188A8]+5D4h] >= 0Ch` (the game state; 0Dh in a mission).
+2. The override descriptor `director+18Ch`: when it resolves to the entity, `vtable[70h]`
+   (0071EDD0) with 0, then `0071D9E0(2)` unless `[[00E188A8]+1FE4h] == 2`. Nothing in this host
+   writes the override command, so this arm cannot match here.
+3. Slots i = 0..9 (command `director+54h+1Ch*i`, descriptor `+58h+1Ch*i`; a null command is
+   skipped, not a stop). When the descriptor resolves to the entity, `0071EDD0(descriptor, 1)`.
+   If that answers 1 and the world mode is not 2:
+   - slot 0: `0071D810(2)`, the queue stage raise, which in a local session is the 5Dh clear
+     round trip the host already routes;
+   - slot i > 0: `0071DEB0(command, i)`, then `0071D900(i)` (the slot clear) when it is true.
+
+**0071DEB0** (body 0071DEB0-0071DED3, `RET 8`) answers `category(command) in {1, 2} && i > 0`.
+
+**0071EDD0** (the director's `vtable[70h]`), `__thiscall(director)(descriptor, flag)`:
+- An empty descriptor answers 1.
+- An aircraft target (`vtable[5Ch](0Fh)`) with a squadron at `+9D4h`: it walks the squadron's
+  members at `+3D0h` (count `+3CCh`, the first five only). It keeps a member whose `+5Dh` is clear
+  and whose squared distance to the director's unit is below the double at 00D7A278.
+- That double is `0x47EFFFFFE0000000`, FLT_MAX. The x87 is `FLD double [00D7A278]; FCOMIP; JBE`.
+  So every live member qualifies, and the pick is the **last** live member, not the nearest.
+- With a pick, it re-registers the observer on the member (006952A0, then 00694A60), rewrites the
+  descriptor to that member (kind 1, id `+174h`) and answers 0. The command continues.
+- Otherwise it rewrites the descriptor to the position branch at the target's `+FCh`
+  (kind 0, `+1h` = 1, no object) and answers 1.
+
+**Bodies without a Ghidra function**, for the lead to define (each verified as a RET, then INT3):
+- `0071C1A0`-`0071C1A6`: a tail `JMP EAX`, INT3 from 0071C1A7.
+- `0071DDB0`-`0071DEA9`: `RET 4` at 0071DEA7, INT3 from 0071DEAA. Ghidra folds it into 0071DD30.
+- `0071DEB0`-`0071DED5`: `RET 8` at 0071DED3, INT3 from 0071DED6.
+
+**What the host did.** The refusal answered the clear byte, and the observer was a record. A
+director whose slot-0 `attackmove` target died was ended one fixed step later by the step's own
+`attackmove` arm (00836B45, "target not live"). On reference h that is 11 ends on USN02 and 1 on
+JM06, all one step after the death. No other arm ends a slot whose target died.
+
+**The binding** (commit `c67ca09e1`, `kDirectorTargetChecksBound`, OFF):
+- The gunnery kill funnel delivers 0071DDB0 to every director (`release_observed_target_0071ddb0`).
+  The observer set is every director whose push resolved the entity, so scanning every director's
+  slots is the same set.
+- **SUBSTITUTION, timing:** the image delivers at the destroy flush. This host delivers at the
+  gunnery kill. The kill runs after every director step of the same fixed step, and before the
+  flush, so no director step falls between the two.
+- **SUBSTITUTION, the retarget:** the host holds no squadron member list, so an aircraft target
+  takes the position branch. `plane_matches` counts every descriptor that would have been offered
+  the retarget.
+- The refusal reads a released mirror the delivery sets (`Impl::released_05d`).
+- The summary line `summary mission director release` counts in both builds: deliveries, slot
+  matches, slot-0 ends, slot clears, slots kept, plane matches and refusals.
+
+## 20. The director target-check pair, predictions (recorded before the ON runs)
+
+**OFF counters** (this tree's build at `c67ca09e1`, runs `local\g5off_*.log`, the reference h
+arguments):
+
+| mission | frames | deaths (deliveries) | slot matches | slot-0 ends | slot clears | planes | refusals | OFF `attackmove` arm ends |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN02 | 9000 | 10 | 13 | 13 | 0 | 0 | 0 | 11 |
+| USN04 | 4500 | 44 | 0 | 0 | 0 | 0 | 0 | 0 |
+| USN13 | 3000 | 21 | 0 | 0 | 0 | 0 | 0 | 0 |
+| USN01 | 3000 | 5 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+- **The refusal never fires** on any of the four missions: no push names a released target. It
+  is exact here either way.
+- **Only slot-0 matches occur, only on USN02, and none is an aircraft.** So the two
+  substitutions (the retarget and the category test for slots above 0) are not reached.
+
+**Predictions:**
+- **USN04, USN13, USN01: gameplay identical** (`pair_diff` exit 0 or 1). No descriptor matches,
+  so the bound path writes nothing. The deliveries still run, and only the summary line's
+  `bound=` differs.
+- **USN02, the mechanism:** `head_ends` stays 13. The step's own `attackmove` arm ends drop from
+  11 to 0, because the command is already ended at the death step.
+- **USN02, the spread:** each of those ends moves one fixed step earlier (0.05 s). The idle tail
+  00836DC9 then sees an empty queue at its own step's entry rather than after a mid-step clear.
+  - Either the re-issued default command is the same, and gameplay is identical (exit 1),
+  - or it lands one step earlier, and gameplay moves slightly (exit 3).
+  - Either way, the failure at 29.75 s (Houston, 20.85 s, a Yamakaze Long Lance) is unchanged,
+    because the first end (Minegumo, 20.90 s) follows that torpedo's launch.
+- **Flip rule:** the flip goes ahead when the mechanism matches: the arm ends drop to 0, no
+  refusals, and identity on the three missions without matches. A USN02 spread move is recorded.

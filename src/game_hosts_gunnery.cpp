@@ -8033,6 +8033,19 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     target.enabled = false;
     target.row.pass_enabled = false;
     ++summary.deaths;
+    {
+        // Packet cc9_director_target_checks: 0071DDB0, every director observer's
+        // delivery for this entity (the destroy's 00926390 / 009263C0, which the
+        // image runs in the same fixed step's flush, after every director step).
+        // The counters run in both builds; kDirectorTargetChecksBound acts.
+        GameReleasedTarget released;
+        released.unit = victim;
+        released.is_plane = units.unit_is_kind_of(victim, 0x0F);
+        units.unit_position_00fc(victim, released.position[0], released.position[1],
+                                 released.position[2]);
+        if (units.controlled_bound()) released.controlled_unit = units.controlled_index();
+        units.commands().release_observed_target_0071ddb0(released);
+    }
     if (death_table_enabled()) {
         const DeathTableRow dt = death_table.count(victim) != 0 ? death_table[victim]
                                                                 : DeathTableRow{};
