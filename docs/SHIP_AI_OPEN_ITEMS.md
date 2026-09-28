@@ -564,3 +564,65 @@ pursuit (section 2), so no approach member is entered.
 **USN04 4700/4500 and USN01 3200/3000: exit 0 or 1.** Neither has approach frames.
 
 **Mechanism check:** re-seeds > 0 on USN02, with 60 draws each; none on USN04 or USN01.
+
+## 5. The party brain's engagement pass `00A179E0` (rank 8, read only, packet `cc9_engagement_pass_read`)
+
+Worker cc9-ships7, 2026-09-28. **It is the AI party's power-up use, and it cannot be bound in
+`src/game_hosts_ai.cpp` alone.**
+
+### Why the earlier read stopped halfway
+
+- docs/AI_PLANNERS.md "`00A179E0`, the brain's engagement pass" read only the pair-building half,
+  `00A179E0..00A17D55`. Ghidra's body stops there: `ghidra disasm` lists 261 lines, ending at the
+  second `00A16B60` call.
+- The cause is the checked-iterator failure call `00BF6713` (`LIBCRT_unmatched_00bf6713`). Ghidra
+  treats it as non-returning, so the decompiler dropped 66 "unreachable" blocks. Those are not EH
+  funclet tails, as AI_PLANNERS assumed. They are the rest of the body.
+- This read uses `disasm-raw 00A179E0 --length 1974`: 555 lines, `RET` at `00A18195`.
+
+### The whole pass
+
+- **`00A17A19..00A17A2F`:** `008EA0C0(ECX = [00F88C30], party = brain+20h, &vec)`.
+  - `00F88C30` is the power-up manager (`PowerupConfigOwner`, docs for 008E9AF0 / 008ED9C0).
+  - `008EA0C0` fills `vec` only when the byte `00E0C978` is set (`008EA0F7`).
+  - That byte is `powerups_enabled`, which the single-player lobby branch forces to 1
+    (`mission_lobby_settings.hpp`, 005E2FAB).
+  - The entries come from the manager's per-party list at `manager + party*0Ch + 24h`.
+- **`00A17A34..00A17D55`:** the pair build that AI_PLANNERS records. It pairs this party's groups
+  against the enemy team's groups within 3000 units and within a factor of two in strength. Each
+  pair is a `1Ch`-byte record, with its weight at `+18h`.
+- **`00A17D5A..00A180A8`:** the choice. For each entry `e` of `vec`, with the power-up object at
+  `[e+4]`:
+  - `[obj+8] == 1` walks the pairs and their group members.
+    - Where the object's `+84h` is 1: the candidate is the member entity when
+      `008E35F0(member, obj)` accepts it. Its score is `00A0F680(pair.b, obj) * pair+18h`.
+    - Where `+84h` is 2: the other group's members, through `008E35F0` and then `00A0F680` (`00A17EDE`, `00A17EFD`).
+  - A second switch on the same word (`00A17F49..00A17FBC`) sends 1 and 2 to a member loop at `00A17FC3`, which uses `008E35F0` then `00A046C0`. Value 4 scores `00A04860(ECX = brain+20h, the party)`, and value 5 scores `00A04910(ECX = brain+24h)`.
+  - **Coverage: partial.** The arm structure and the callees are read. The operands inside `00A17D5A..00A180A8` are not all traced, and none of the six callees is read.
+  - It keeps the best score, the entry and the target (`[ESP+68h]`, `[ESP+34h]`, `[ESP+80h]`).
+- **`00A180AD..00A180C9`:** when an entry won, `008EADA0(ECX = [00F88C30], entry, party, target)`.
+  That is the use: once per party think, the best power-up is fired at the best target.
+- **`00A180CE..00A18195`:** the frees of the two snapshots and of `vec` (`00BF65AC`), then `RET`.
+
+### What the host does
+
+- `AiParties::party_brain_plan_tail` records the call. Its label reads "contract: unread".
+- The call count on reference i is 491, on all nine rows. The count is one per party think, and
+  the host's think count changes with rank 5's flip, so reference j will differ.
+- The power-up manager `00F88C30` has no model in this process. Its per-frame
+  `PowerUps::pre_pass` (`008EAC80`) and `post_pass` (`00613760`) are records, 38500 calls on the
+  reference i rows.
+- So the host neither fills `vec` nor fires a power-up. The image fires one whenever a party's
+  list holds a usable entry.
+
+### Reach and binding
+
+- **Reach:** 3 to 4 wherever an AI party holds power-ups. Whether a campaign mission gives the AI
+  party any is set by the manager's list filler, which is not read here. That filler is the first
+  question for a binding packet.
+- **Binding:** it needs the power-up manager itself: the lists, `008EA0C0`, `008E35F0`,
+  `00A0F680`, `00A046C0`, `00A04860`, `00A04910` and the use `008EADA0`. None of those sits in
+  `src/game_hosts_ai.cpp`. The AI side is one host call, `party_brain_plan_tail`, which already has
+  its seam in `ai_group_think`.
+- **The rank stays 8, with its reach column now known.** A power-up subsystem packet is the
+  prerequisite. It is the lead's to site.
