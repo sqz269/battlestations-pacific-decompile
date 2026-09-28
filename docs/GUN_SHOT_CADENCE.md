@@ -784,3 +784,19 @@ Census, ON:
 - The three requests are the listings above.
 - The rise stays within CanFire's reload timers, which are unchanged.
 - The two failed rows are small and downstream of a longer AA engagement.
+
+### 10.10 The wave order re-paired with the AA tests ON (packet `cc9_wave_order_repair`)
+
+Section 10.8 held `kGunWaveOrderBound` OFF because it halved AA fire under the host's shared
+0.1-degree gate. With `kAaBotFireTestsBound` ON (10.9), the AA guns now ask on their own 5-degree,
+1-degree and hysteresis tests. OFF is the AA-ON head: `local\AT_ON_<m>.log`, which equals this
+tree's build (`pair_diff` exits 0 on USN04). ON is
+`pair_export --flip kGunWaveOrderBound=true` of the commit that carries these predictions.
+
+**Predictions, written before the ON runs:**
+
+| row | OFF | prediction |
+| --- | --- | --- |
+| USN02 9200/9000 | 12 / 5166 / 3826, device-299 mean 77.0 | **the same as 10.8's ON run**: USN02 has no AA target, and its OFF equals 10.8's OFF (`pair_diff` against `WO_OFF_usn02` exits 1). So pair_diff against `local\WO_ON_usn02.log` exits 0 or 1: 10 / 4226 / 2621, device-299 mean 66.7 (x0.87), Houston 20.85 s (Yamakaze), failure 29.75 s |
+| USN04 4700/4500 | 44 / 803 / 10090, category 1 shots 9174 | category-1 shots within -10%..+5% (the one-step lag is small against 5 degrees); deaths 44 +- 4; hit records within +-15% |
+| USN13 3200/3000 | 19 / 400 / 4152, category 1 shots 3667 | category-1 shots within -10%..+5%; deaths 19 +- 3 |
