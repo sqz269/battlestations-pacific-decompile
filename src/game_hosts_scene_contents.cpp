@@ -1719,6 +1719,25 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             }
             ++owner.summary.start_speed_entities;
         }
+        // Packet cc9_units_capture_accessors: 006F2780 copies the `CaptureRange`
+        // record's +0Ch dword as is. An `I` value is that integer; an `F` value's
+        // dword is its float bit pattern, which the FILD at 00A03760 would read as
+        // an integer, so it is kept the same way.
+        const SceneProperty* capture_prop = bag.find("CaptureRange");
+        if (capture_prop != nullptr && !capture_prop->values.empty()) {
+            std::int32_t as_int = 0;
+            float as_float = 0.0f;
+            if (capture_prop->type_letter == "I"
+                && scene_scan_int(capture_prop->values.back(), as_int)) {
+                stored.capture_range_present = true;
+                stored.capture_range_raw = as_int;
+            } else if (scene_scan_float(capture_prop->values.back(), as_float)) {
+                std::int32_t bits = 0;
+                std::memcpy(&bits, &as_float, sizeof bits);
+                stored.capture_range_present = true;
+                stored.capture_range_raw = bits;
+            }
+        }
         // Packet cc9_submarine_depth_level: 00853630's two scene finds, kept
         // for the submarine seed in the units host. An enum symbol resolves
         // through the library (`Depth : Periscope` -> 1); an `I` value is

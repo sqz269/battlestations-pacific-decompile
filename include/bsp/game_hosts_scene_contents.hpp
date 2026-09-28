@@ -110,6 +110,11 @@ struct GameSceneEntityRecord {
     float start_speed_float{0.0f};  // record +0Ch read as float32, 008235A5
     std::int32_t start_speed_int{0};  // record +0Ch read as int, 0082359E
     bool shipyard_launch{false};    // 0082357F, the found record's +0Ch byte
+    // Packet cc9_units_capture_accessors: 006F2780's `CaptureRange` find. The image
+    // copies the found record's +0Ch dword to unit+7A0h, or 500 when absent
+    // (006F27E5). This installation authors it as `I 100` on its CommandBuildings.
+    bool capture_range_present{false};
+    std::int32_t capture_range_raw{500};
     // Packet cc9_submarine_depth_level: the two finds of 00853630's scene stage
     // (00853B18 `Dive` 00D0B6A4, 00853B94 `TargetDive` 00CFCCF0). Each is taken
     // only when found with type word 0 (00853B26 / 00853BA2); an `E` value is

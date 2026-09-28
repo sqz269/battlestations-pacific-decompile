@@ -608,6 +608,18 @@ public:
     // sector's braking distance from.
     float unit_half_width_09cc(std::size_t index) const;
     float unit_class_max_speed_0500(std::size_t index) const;
+    // Packet cc9_units_capture_accessors (for 00A03760 BSP_AiCapture_UnitArrivalValue).
+    // unit+7A0h, the CommandBuilding's CaptureRange: 006F2780 stores the scene
+    // `CaptureRange` dword, or 500 when unauthored (006F27E5); 00A03760 reads it as
+    // `(float)(int)target[+7A0h]` (00A037CF FILD). Answers 500 for a unit that is not a
+    // CommandBuilding (kind 1Ch) or has no slot.
+    float command_building_capture_range_07a0(std::size_t unit_index) const;
+    // The plane class MaxSpd, class+188h (007D238A reads the Lua key). 00A03760
+    // reads it for a PlaneSquadron (IsType 18h) as [unit+35Ch]+188h (00A03819 /
+    // 00A0381F), the
+    // squadron's plane class. A plane (kind 0Fh) answers its own class value, a
+    // squadron its first member's with a nonzero value; anything else 0.
+    float plane_class_max_speed_0188(std::size_t unit_index) const;
     // ---- milestone 2r: what 009e4330 reads to build the navigation block ----
     // [unit+538h]+4f8h, the Lua key `MaxRotAngle` 009e4574 loads for the yaw
     // floor at 009e45a9, and [unit+538h]+520h, `MaxSpeed / MaxRotAngle`, which
