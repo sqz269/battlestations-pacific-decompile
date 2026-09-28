@@ -11054,3 +11054,178 @@ One flip-off pair on E2 (USN04 9200/9000, the same run parameters):
     band.
   - "Plane releases unchanged" failed. The gate bytes also move the torpedo-task and dive-bomb-task
     releases, by one each.
+
+## Mission reference baselines, 2026-09-28 g (main b605b9eb9)
+
+Packet `cc9_reference_rebaseline_7`, worker cc9-gunnery4. **It replaces the 2026-09-28 f rows
+above.**
+
+**Run parameters:**
+- One binary: `local\rb7\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery4 (SHA-256
+  `e5fd8535db9550f3e49b52f1f581e72753f1e8e60488b17ac5e7c0b9badd9220`, prefix `E5FD8535DB95`). It
+  is a clean `tools/pair_export.py --commit b605b9eb9` export with no flip, so every switch is in
+  its landed state.
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep `--mission-frame-seconds 0.05`, no
+  frame jitter, idle player, present interval immediate, every run through `tools/run_game.ps1`,
+  each `--press-start-frame 30 --menu-select <mission>`.
+- The four reference rows: USN04 4700/4500, E2 = USN04 9200/9000, USN01 3200/3000, USN02
+  9200/9000. The smoke rows: JM06, JM08, USN13, BSM01 at 3200/3000, and **LOMP06 at 1200/1000
+  (new)**.
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb7\` and the final COM release.
+- **No predictions were committed before these runs.** Instead each row is anchored by
+  `pair_diff` against the latest landing's own ON log (the anchors table below).
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 9431.2 | 40 | 644 (251) | 5333 | 92.50 s | 5 of 16 / 1 of 19 | 13 | Lexington 3411.02 m | none | 546 | `local\rb7_usn04.log` |
+| USN01 | 3000 | 2250.0 | 5 | 178 (73) | 623 | 53.75 s | 3 of 5 / 2 of 2 | 3 | ScoutDauntless 0.00 | none | 526 | `local\rb7_usn01.log` |
+| USN04 (E2) | 9000 | 11520.0 | 51 | 755 (269) | 6398 | 92.50 s | 5 of 16 / 1 of 19 | 19 | Lexington 5833.70 m | none; phase 1 only (known) | 547 | `local\rb7_e2.log` |
+| USN02 | 9000 | 44672.1 | 23 | 797 (274) | 1052 | 41.05 s | - | 0 | Houston 2522.72 m | **none**: phase 2 reached at 148.50 s, neither completed nor failed | 529 | `local\rb7_usn02.log` |
+| JM06 (smoke) | 3000 | 3808.0 | 2 | 145 (111) | 233 | 54.30 s | - | 0 | Fletcher-class 08 1233.69 m | none | 530 | `local\rb7_jm06.log` |
+| JM08 (smoke) | 3000 | 1423.0 | 2 | 103 (63) | 757 | 5.35 s | - | 1 | Auilick 1495.61 m | none | 496 | `local\rb7_jm08.log` |
+| USN13 (smoke) | 3000 | 8933.6 | 24 | 720 (486) | 6607 | 68.10 s | 2 of 60 / - | 5 | Enterprise 1150.83 m | none | 542 | `local\rb7_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | 0 | HenryPT 0.00 | none | 475 | `local\rb7_bsm01.log` |
+| LOMP06 (smoke, new) | 1000 | 224.8 | 0 | 4 (2) | 9 | 38.95 s | - | 0 | Narwhal 421.38 m | none | 494 | `local\rb7_lomp06.log` |
+
+### Anchors: each row against the latest landing that paired it
+
+| mission | anchor log | pair_diff | reading |
+| --- | --- | --- | --- |
+| USN04 | cc9-gunnery3 `local\WD_ON_USN04.log` | exit 1 | the director fire-target ON run (GUNNERY_OPEN_ITEMS 15) |
+| USN01 | cc9-gunnery3 `local\WD_ON_USN01.log` | exit 1 | the same |
+| JM06 | cc9-gunnery3 `local\WD_ON_JM06.log` | exit 1 | the same |
+| USN13 | cc9-gunnery3 `local\TA_ON_USN13.log` | exit 1, the 24 death rows identical | the turn-average re-pair ON run (USN04_KATE_ATTRITION 15) |
+| LOMP06 | cc9-lua2 `local\sp_on_lomp06.log` | exit 1 | the SetShipSpeed ON run (LUA_BINDING_MISSION "SetShipSpeed pairs and verdict") |
+| BSM01 | reference f `local\rb6_bsm01.log` | gameplay identical | AAEnable's 33 disables change nothing in 3000 frames (LUA_BINDING_MISSION "AAEnable pairs and verdict") |
+| USN02 | cc9-lua2 `local\ad2_on_usn02.log` | exit 3 | **no landing's log carries main's USN02**; see below |
+| E2 | none | - | not paired since f |
+
+### USN02: the director failure does not happen on main
+
+The AddDamage pair and the director fire-target pair share one OFF run (22 deaths, 881 hit
+records, 1083 shots, no mission end). Each flipped one switch, and no run had both until this one.
+
+| run | deaths | hit records | shots | mission end | doc |
+| --- | --- | --- | --- | --- | --- |
+| the shared OFF (`ad2_off_usn02`, `WD_OFF_USN02`) | 22 | 881 | 1083 | none | - |
+| AddDamage ON only (`ad2_on_usn02`, cc9-lua2) | 23 | 747 | 1063 | none | LUA_BINDING_MISSION "AddDamage flip pair and verdict" |
+| director fire target ON only (`WD_ON_USN02`, cc9-gunnery3) | 24 | 991 | 1164 | **failed at 212.91 s**, Exeter sunk 211.76 s | GUNNERY_OPEN_ITEMS 15 |
+| **both ON: main, this section** | 23 | 797 | 1052 | **none** | - |
+
+- AddDamage scuttles DeRuyter, Java, Kortenaer and Electra at 156.60 s. The four Dutch ships are
+  gone before the fight that, with the director binding alone, sank Exeter.
+- On main Exeter ends with health 4178 (3859 taken) and Houston with 6037 (900 taken). Exeter
+  sinks Haguro at 206.66 s, after Haguro has dealt 2225.
+- **The phase-2 failure flagged for this rebaseline in GUNNERY_OPEN_ITEMS 15 is not main's
+  behaviour.** It belongs to the director pair's base, which lacked AddDamage.
+- Phase 2 does not complete either. With an idle player, Houston never nears `EscapePoint`, so
+  the run reaches 450 s with neither end condition met.
+
+**USN02's phases.** `Blackout(true, "luaMoveToPh2")` is requested at world frame 2970 (148.50 s)
+and its callback runs at frame 2991 (149.55 s). Nachi, Sazanami, Naka and Ushio are generated
+there.
+- **Phase 1 (3 deaths):** Yamakaze 58.35 (Houston); Kawakaze 66.65 (Exeter); Minegumo 102.85
+  (Houston).
+- **Phase 2 (20 deaths):** John3 152.75 (Asagumo); Encounter 153.60 (Tokitsukaze); DeRuyter,
+  Java, Kortenaer and Electra 156.60 (AddDamage; last attackers Yudachi, Samidare, Murasame,
+  Kortenaer); Asagumo 164.36 (Yukikaze); Alden 166.16 (Tokitsukaze); Yudachi 167.81 (Houston);
+  Tokitsukaze 173.16 (Exeter); Samidare 196.96 (Exeter); Perth 203.71 (Ushio); Haguro 206.66
+  (Exeter); Murasame 224.96 (Exeter); Hatsukaze 238.16 (Witte); Harusame 255.26 (Exeter);
+  Amatsukaze 260.16 (Witte); Jintsu 266.56 (Exeter); John2 273.31 (Yukikaze); Yukikaze 391.33
+  (Houston).
+
+### Against the 2026-09-28 f section, and what moved each row
+
+Each step is the landing's own pair as its doc records it. **The pairs ran on different bases**,
+so a step's OFF is not always the previous step's ON. Where the chain has a gap, the table says so.
+
+**USN04 (4500).** 44 / 789 / 6321 / Lexington 3433.14 became **40 / 644 / 5333 / 3411.02**:
+
+| step | recorded pair | by | doc |
+| --- | --- | --- | --- |
+| f | 44 / 789 / 6321 | - | - |
+| spawn-new member offsets | moves, 44 deaths both sides | c65d24fc3 | SCENE_CONTENTS_HOSTS 22.5 |
+| Kill | exit 3, movieval removed at 26.55 s | a1d0d5db7 | LUA_BINDING_MISSION "Kill: the pairs and the verdict" |
+| rest angles, plane-gun mounts, line of sight (on an all-off base) | rest angles 44 -> 40; mounts: fighter hits 174 -> 226; line of sight identical; the three combined: 42 deaths, 758 hits, 5543 shots | 3a1d5e639 | GUN_REST_ANGLES 9, GUNNERY_OPEN_ITEMS 8 |
+| difficulty multipliers | 44 -> 44, party-0 hit 9 -> 5 | 7e172af55 | DIFFICULTY_MULTIPLIERS 6.3 |
+| pitch mode 2 | 44 -> 41, 707 -> 670 hits, 5433 -> 4461 shots | f0b87c83d | PLANE_BODY_RATES 2, "The pairs, and the flip" |
+| invincibility floor | identical | 6dc429443 | GUNNERY_OPEN_ITEMS 10 |
+| fire cooldown | 5433 / 707 / 44 -> 5183 / 681 / 43 | 8fe921cc0 | GUNNERY_OPEN_ITEMS 12 |
+| turn average | 41 -> 40, 653 -> 644 hits | 4d57fd2ca | USN04_KATE_ATTRITION 15 |
+| director fire target = this section | 5333 / 644 / 40 both sides | edd36601b | GUNNERY_OPEN_ITEMS 15; exit 1 against `WD_ON_USN04` |
+
+**USN01 (3000).** 7 / 150 / 561 / Northampton became **5 / 178 / 623 / ScoutDauntless**:
+
+| step | recorded pair | by | doc |
+| --- | --- | --- | --- |
+| f | 7 / 150 / 561 | - | - |
+| generated-entity party, 007BB9A0 answer, squadron slot class | ScoutDauntless controlled 100.2 s to 129.85 s, combat identical | 2ae5c52e2 | CONTROLLED_UNIT |
+| generated wing party, squadron liveness | party writes 1 -> 2; control released at 135.9 s; gameplay identical | b3268653e, 41187ed26 | PLANE_SQUADRON |
+| marker target | moves (Convoy1 to ConvoyGoTo) | 1b5f1da97 | GAME_SHIP_NAVIGATION_BINDING "The pairs, and the flips (2026-09-27)" |
+| pitch mode 2 | 149 -> 148 hits, 557 -> 561 shots, 7 deaths | f0b87c83d | PLANE_BODY_RATES 2 |
+| difficulty multipliers | 7 -> 7; Dauntlesses +0.55 s, +2.85 s | 7e172af55 | DIFFICULTY_MULTIPLIERS 6.3 |
+| invincibility floor | 7 -> 5, both ScoutDauntlesses survive | 6dc429443 | GUNNERY_OPEN_ITEMS 10 |
+| fire cooldown | 652 -> 653 shots, 5 deaths | 8fe921cc0 | GUNNERY_OPEN_ITEMS 12 |
+| director fire target = this section | 623 / 178 / 5 both sides | edd36601b | GUNNERY_OPEN_ITEMS 15; exit 1 against `WD_ON_USN01` |
+
+**E2 (9000).** 51 / 854 / 7202 became **51 / 755 / 6398**. It has not been paired since f:
+- Its first 4500 frames are USN04's, which moved 789 -> 644 hit records.
+- The rest of the run moved the other way. It held 854 - 789 = 65 hit records after frame 4500 in
+  f and 755 - 644 = 111 here. That +46 is **unpaired** (flag).
+
+**USN02 (9000).** 19 / 566 / 850, failed at 39.65 s, became **23 / 797 / 1052, phase 2 reached,
+no end**:
+
+| step | recorded pair | by | doc |
+| --- | --- | --- | --- |
+| f | 19 / 566 / 850, failed 39.65 s | - | - |
+| frame normalisation | 566 -> 573, the 19 deaths reshuffled | 6892a4b43 | SCENE_CONTENTS_HOSTS 18.4 |
+| marker target | 19 -> 17 deaths, 573 -> 610 (DeRuyter to DRGoTo) | 1b5f1da97 | GAME_SHIP_NAVIGATION_BINDING "The pairs, and the flips (2026-09-27)" |
+| rest angles | swaps one dead ship | 3a1d5e639 | GUN_REST_ANGLES 9 |
+| difficulty multipliers | Exeter survives the 35.65 s torpedo; **phase 2 reached**; 19 -> 17 | 7e172af55 | DIFFICULTY_MULTIPLIERS 6.3 |
+| invincibility floor | 17 -> 12; fails in phase 1 at 385.68 s (DeRuyter held at 10%) | 6dc429443 | GUNNERY_OPEN_ITEMS 10 |
+| fire cooldown | 12 -> 11 | 8fe921cc0 | GUNNERY_OPEN_ITEMS 12 |
+| script fire target | phase 2 at about 154 s; fails at 153.50 s (Exeter torpedoed at 151.30 s) | 50851d56a | USN02_DERUYTER_FIRE 6 |
+| **gap** | the shared OFF of the next two pairs: 22 / 881 / 1083, no end | - | not bracketed: the landings between `50851d56a` and the AddDamage base |
+| AddDamage | 22 / 881 -> 23 / 747; the Dutch four die at 156.60 s | 13fd0df8b | LUA_BINDING_MISSION "AddDamage flip pair and verdict" |
+| director fire target (a pair without AddDamage) | 22 / 881 -> 24 / 991; failed at 212.91 s | edd36601b | GUNNERY_OPEN_ITEMS 15 |
+| both = this section | 23 / 797 / 1052, no end | - | this section, "USN02: the director failure does not happen on main" |
+
+**Smoke rows.**
+
+| mission | f -> g (deaths / hit records / shots) | moved by | doc |
+| --- | --- | --- | --- |
+| JM06 | 5 / 424 / 668 -> 2 / 145 / 233 | Kill (the Gato killed at 0 s); the class readers (00927AD0 reports the current command); recon listeners (three attack orders); difficulty (party 0 takes less, 5 -> 3); the director binding identical | LUA_BINDING_MISSION "Kill: the pairs and the verdict"; MISSION_LUA_GETPROPERTY 9.12; LUA_BINDING_MISSION "Recon listener pairs and verdict"; DIFFICULTY_MULTIPLIERS 6.3; GUNNERY_OPEN_ITEMS 15 |
+| JM08 | 2 / 127 / 1351 -> 2 / 103 / 757; Auilick 2723.89 -> 1495.61 m | PilotMoveTo (4 calls; Movie Mavis to MoviePoint, the Wildcats at the flagship); **the rest is unpaired** | GAME_SHIP_NAVIGATION_BINDING "The pairs, and the flips (2026-09-27)" |
+| USN13 | 34 / 204 / 2551 with 670 water contacts -> 24 / 720 / 6607 with 5 | spawn-new member offsets (34 -> 20, 670 -> 5); spawn-new placement (20 -> 27); fire cooldown (26 -> 25); turn average (26 -> 24); SetForcedReconLevel identical | SCENE_CONTENTS_HOSTS 22.5 and 23.5; GUNNERY_OPEN_ITEMS 12; USN04_KATE_ATTRITION 15. The 27 -> 26 and 25 -> 26 gaps between those bases are **not bracketed** |
+| BSM01 | identical | - | - |
+| LOMP06 | first row | SetShipSpeed's cruise path, the submarine depth level, the recon level table, the reset cycle | LUA_BINDING_MISSION "SetShipSpeed pairs and verdict" |
+
+JM08's Movie Mavis still has a death row at 40.05 s, with no first damage and no killer. She is no
+longer shot down, as the PilotMoveTo verdict says.
+
+### Flags
+
+- **Closed:**
+  - **USN13's 670 plane water contacts:** 5 now. The cause was the spawn-new member offsets
+    (`c65d24fc3`, SCENE_CONTENTS_HOSTS 22.5).
+  - **f's note on the frame normalisation:** it is landed (`6892a4b43`) and in these rows.
+- **New:**
+  - **USN02's phase-2 failure is not main's.** The director pair's 211.76 s loss of Exeter needs
+    the Dutch four alive, and AddDamage removes them at 156.60 s. Work planned on "USN02 fails at
+    about 211.76 s" should start from this section's run.
+  - **E2's +46 hit records after frame 4500:** unpaired.
+  - **The USN02 gap between `50851d56a` and the AddDamage/director shared OFF**, and USN13's
+    27 -> 26 and 25 -> 26 gaps: not bracketed.
+  - **JM08's 1351 -> 757 shots:** unpaired beyond PilotMoveTo.
+- **Carried from f:**
+  - USN02 664 -> 640, bracketed to merge `e4dbf38b2`, not paired on the e base.
+  - USN02, the torpedo stock on top of the throttle cut: open.
+  - What enabled `kSetSelectedUnitBound`'s effect between `fc14864c9` and the throttle-cut base:
+    not isolated.
+  - E2 594 -> 595 (before c): not isolated.
+  - E2 ends in phase 1 under lockstep (known).
+  - The Marshall `.nav` is the generic layer.
