@@ -1032,3 +1032,69 @@ else answers -1.
 **No pair was run for it.** In E2 no aircraft enters prepare (`prepare_entries=0`) and no Val
 spends a tick in the dive follow state (`follow>attackrun@0`), so the added states are never
 reached there.
+
+## 17. A wingman whose leader circles slowly (packet cc9_plane_follow_law_drift, cc9-lua10, 2026-09-28)
+
+On LOMP10 two Lightning wing members in `follow (land)` drift 5 to 6 km from their leader. The
+leader circles CB4_AF near 31.5 m/s, and the members fly the catch-up speed of 173.33 m/s. In
+cc9-lua8's ON log, `Lightning 01|.-2` is 3262 m from the airfield at 324 s and 4639 m at 404 s.
+The host's follow law was compared with the image for this case. Two inputs differ, and nothing
+else does. Both are bound OFF.
+
+### 17.1 The leader's turn rate, `007D7DA0` (read whole, `007D7DA0`-`007D7E91`, `RET`, ST0)
+
+`009BFEE0` calls it at `009C0109` with `ECX = leader+0AB0h`, the leader's flight controller.
+Controller `+8h` is the unit and `+0Ch` is the class. With bank b = unit `+C68h`, pitch p = unit
+`+C64h` and the live controls yaw = `+9E4h` and pitch = `+9E8h`:
+
+```
+cp = cos|p|, cb = cos b, sb = sin b                  ; each stored as a float
+X  = float(pitchCtl * PitchSpd(+1ACh) + TurnRollSpd(+1C8h) * cp)
+Y  = float(X + cp * cb * SlideRatio(+1B8h) * YawSpd(+1B0h))
+rate = float(Y * sb) + YawSpd * cb * yawCtl
+```
+
+A null unit at controller `+8h` returns 0.0. The geometry turns it into `ref = wrap(leaderHeading -
+rate x lag)` (`009C0109`-`009C0128`, section 5.2). `009C0109` is the routine's only call site.
+The host had fed 0.0 there. The same 0.0 went to the host's hold stand-in geometry, which runs only
+with `kPlaneFollowCatchupBound` off; that stand-in takes the rate as well. For a leader that is always
+banked, as a circling one is, `ref` then leads the lagged heading the image uses, and the
+member's station frame rotates ahead of where the image puts it.
+
+### 17.2 The leader's speed at `009BFC58` and `009BFCC3`
+
+Both calls are `[[state+2Ch]]+38h` on the leader. A plane's slot 38h is `007B8E60`, which is
+`FLD [ECX+0B1Ch]`. `unit+B1Ch` is flight-controller `+6Ch` (the controller is at `+AB0h`), the
+forward speed that `plane_ground_ops.hpp` names `kForwardSpeed`. So the term is the leader's
+live speed. The host fed `plane_travel_speed`, the authored `TravelSpeed`, to both.
+
+This host substitutes the live world speed |v| for `vtable[38h]`, as the hold arm already does
+(`follow_hold_attitude`). That substitution is LABELLED.
+
+This input moves only the on-station end of the distance ramp (y0), and the MaxSpd-floored
+catch-up factor when the leader is faster than MaxSpd. A member more than GoodPositionDist
+(100 m) from its station still flies Turbo x max(v, MaxSpd).
+
+### 17.3 Switches and predictions, written before any ON run
+
+- `kFollowLeaderTurnRateBound` (OFF): `007D7DA0` at `009C0109`.
+- `kFollowLeaderLiveSpeedBound` (OFF): the leader's |v| at `009BFC58`/`009BFCC3`.
+- A diagnostic line, `land follow trace`, prints every 200 `follow (land)` ticks. It shows the
+  member's station distance and arm, its distance to the leader, both speeds and both headings.
+
+Predictions for LOMP10 9000 and USN01 3200, each switch paired alone against this tree's OFF
+build:
+1. **Turn rate.** Every follower in the fly-to or hold arm moves, so both rows come out moved
+   (`pair_diff` exit 3).
+   - Mechanism: a circling Lightning or Warhawk leader reports a non-zero rate, of the same sign
+     as its heading change, between 0.05 and 0.5 rad/s.
+   - The drift hypothesis is under test. The Lightning members' largest distance to their leader
+     after 250 s is smaller ON than OFF. If it is not, the turn rate is not the drift's cause, and
+     that is recorded whatever the flip decision.
+2. **Live speed.**
+   - A member more than 100 m from its station is unchanged at the moment of the change.
+   - A member within 100 m commands a speed between the leader's |v| and Turbo x max(|v|, MaxSpd).
+     On LOMP10, with the leader near 31.5 m/s, that is well below the 120 m/s of the travel-speed
+     term.
+   - Both rows are expected to move.
+   - Mechanism failure: a member within 100 m of its station whose desired speed does not change.
