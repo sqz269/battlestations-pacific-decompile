@@ -3082,6 +3082,12 @@ GetClosestBorderZone 008aecd0: (1174.14, -0.10, -6161.64) offset 500.0 -> (1174.
 **Verdict: `kLuaClosestBorderZoneBound = true`.**
 - USN02's reference row changes after its failure. The failure itself, at 29.75 s, is unchanged.
 - The lead should re-anchor USN02 on the next re-baseline.
+- **For reference j:** USN02's row moves after 29.75 s under this flip. Alden's post-failure
+  order now targets (1174.14, -8550.00), and deaths, hits and damage after that time change.
+  Everything up to the failure at 29.75 s is unchanged.
+- Provisional ledger names: `004C71C0` BSP_World_LayoutBorderZoneRecords, `004C7150`
+  BSP_World_SetBorderZoneSide, `004C7730` BSP_World_FindClosestBorderZone, `008AECD0`
+  BSP_LuaNative_GetClosestBorderZone.
 
 **USN04 4700/4500, added at the lead's request** (prediction written before its runs):
 - **Prediction: exit 1, gameplay identical.** USN04 does not end, so nothing calls the native. The

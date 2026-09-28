@@ -1882,3 +1882,56 @@ The lead's later queue, taken after the handoff above:
 **New local files:**
 - **Pair exports:** `local\{bz_off,lc_on}`.
 - **Logs:** `local\lc_{off,on}_*.log` and `local\bz_{off,on}_usn04.log`.
+
+### The `00805680` fold lines for the gunnery host (routed by the lead)
+
+For `src/game_hosts_gunnery.cpp`, beside the `00805490` `group` lambda (about line 4778). The
+fold rule is the squadron pass's, over class 19h and the back pointer `+738h`
+(`docs/RECON_TEAM_LISTS.md`). The `m.level < 1` gate is assumed to be `008054D7`'s; it is not read
+in `00805680`.
+
+```
+        // 00805680(B[19h], B[1Ah]), packet cc9_land_convoy_members: each class-19h
+        // member with level >= 1 folds into its convoy (+738h, 00743A34); the
+        // convoy's level is its members' maximum. SUBSTITUTION, labelled: the
+        // convoy has no unit in this host, so the group is keyed by its scene
+        // name and no class-1Ah record is pushed into the triples.
+        const auto group_convoys = [&](std::map<int, std::vector<Rec>>& arr) {
+            const auto found = arr.find(0x19);
+            if (found == arr.end()) return;
+            std::map<std::string, int> convoy_level;
+            for (const Rec& m : found->second) {
+                if (m.level < 1) continue;
+                const std::string& convoy = units.unit_land_convoy_738(m.unit);
+                if (convoy.empty()) continue;                 // 00805680's +738h != 0 test
+                int& lv = convoy_level[convoy];
+                if (m.level > lv) lv = m.level;
+                ++recon_convoy_member_records;
+            }
+            recon_convoy_groups += convoy_level.size();
+        };
+```
+
+- Call it after `group(enemy)` and after `group(neutral)` under `kReconAggregatesBound`, and
+  before the own `group(own)`.
+- `recon_convoy_groups` is a new counter beside `recon_convoy_member_records`.
+- Replace the comment `// 00805680(B[19h], B[1Ah]): no convoy membership in this host.`.
+- Turn the `record(...00805680)` into a `done(...)` once it runs.
+- **Reach:** only JM05 has members, and they are Neutral, so only the neutral pass folds anything.
+  The reference rows have no members, so this is identity there.
+
+### The next plane packet: `cc9_squadron_land_task`
+
+This is the piece that lets the image's `returntobase` answer run. The read is in this doc, "`returntobase` on LOMP10
+lands the squadrons".
+1. **The flown `land` bot task** (`kLand`, factory `009B41C0`, constructor `009B3240`, approach
+   `009B2E50`, size 670h; `src/bot_tasks.cpp` table row). Not read.
+2. **`006C0840`'s site lookup.** It takes ECX = side, EDX = the head plane, and three stack
+   arguments: 0, `0047B850(head)`, 1. It ends `RET 0Ch`. The loop is at `006C0967`-`006C0AF3`.
+3. **`006BC120`**, then **`007EF8B0(land, 00465080(owner, 0.0))`**.
+4. **The squadron intake `007F1940`** for `returntobase`: resolve through `007F16D0`, clear
+   (`+21h` = 1), then issue.
+
+Predict it on LOMP10 3200/3000 with **Lightning 01** as the clean case. The controlled B-25's
+`+20h` bit-1 gate and `+5Dh` byte stay labelled until read. Identity is expected on the
+reference rows.
