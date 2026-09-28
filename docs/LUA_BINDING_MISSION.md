@@ -1766,3 +1766,19 @@ Worker cc9-lua2, 2026-09-28. This is item 5 of the ranking. Ghidra was read only
 | BSM01 3200/3000 | `calls=33`, most of them disables. They come from the stage init's loops (`bsm_01` 404..468 over the battleship-row groups and others) and the PT-boat lines (1579, 1841); the `true` lines (1632..1670) belong to a later phase. **Identity, exit 1**: the last BSM01 log (`rb6_bsm01`) has no hit, no shot and no death in 3000 frames, so no AA target is in reach. **Named risk:** the ship AI's approach reads `+221h` (`aa_12b8`) only with a raw target, and there is none |
 | USN01 3200/3000 | no call, identity |
 | USN04 4700/4500 | no call, identity |
+
+### AAEnable pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `d6d6e7d16`.
+- ON is `pair_export --flip kLuaAAEnableBound=true` (`local/aa_on`, SHA-256 `A519BA433D22`).
+- The logs are `local/aa_{off,on}_<mission>.log`.
+
+| row | ON census | pair_diff | verdict |
+| --- | --- | --- | --- |
+| BSM01 3200/3000 | `calls=33 disables=33 unresolved=0` | exit 1 | held: no AA target within 3000 frames (the OFF run has no hits) |
+| USN01 3200/3000 | `calls=0` | exit 1 | held |
+| USN04 4700/4500 | `calls=0` | exit 1 | held |
+
+**Verdict: `kLuaAAEnableBound = true`.** The 33 stage-init disables are applied. The first BSM01
+run that reaches the air raid measures them.

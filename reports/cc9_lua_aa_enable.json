@@ -6,7 +6,7 @@
     {
       "name": "kLuaAAEnableBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF"
+      "state": "ON (identity pairs)"
     }
   ],
   "substitutions": [
@@ -17,5 +17,10 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [],
+  "pairs": {
+    "BSM01": "exit 1, calls=33 disables=33",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
+  }
 }

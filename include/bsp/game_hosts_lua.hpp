@@ -189,7 +189,7 @@ inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs
 // stores at +221h (0071C246), the AA enable the gunnery stance (008624C0) and the
 // ship AI (009F2E0F) read. True: the unit's scene director entry takes the flag
 // (bsp::game::scene_director_enables_set). False: record.
-inline constexpr bool kLuaAAEnableBound = false;
+inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
