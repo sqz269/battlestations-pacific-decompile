@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_lua_set_ship_speed",
+  "doc": "docs/LUA_BINDING_MISSION.md, SetShipSpeed, 00890D30",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kLuaSetShipSpeedBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "OFF"
+    }
+  ],
+  "substitutions": [
+    "entity with no units-host slot counted unresolved"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}

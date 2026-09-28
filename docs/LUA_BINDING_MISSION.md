@@ -1850,3 +1850,30 @@ the first ranking.
 
 **Next packet: `SetShipSpeed` (`00890D30`),** measured on LOMP06 1200/1000. The convoy should
 move at its scripted speed from the stage init, so exit 3 is likely.
+
+## SetShipSpeed, 00890D30 (packet `cc9_lua_set_ship_speed`, `kLuaSetShipSpeedBound`, committed OFF)
+
+Worker cc9-lua2, 2026-09-28. This is item 1 of the refreshed ranking.
+
+**The image (V).**
+- `SetShipSpeed(entity, speed)` resolves argument 0 (`00888AA0`) and reads argument 1 as a number.
+- It stores `max(speed, 0)` at `[entity+73Ch]+24h` and the mission clock `[00F876A4]` at `+28h`
+  (`00890E6F`), with no class test.
+- That is the commanded-speed pair the cruise path divides by the reference speed
+  (`docs/UNIT_COMMANDED_SPEED.md`, `docs/CRUISE_SPEED_SETTING.md`). It also makes the weapon
+  director's idle tail choose `cruise` over `stop`.
+
+**The binding.**
+- `GameMissionLuaHost::run_set_ship_speed_00890d30` calls the existing
+  `GameUnitsHost::store_commanded_speed_00890e6f`, the same store the `--order speed=` harness
+  option makes.
+- The census is `summary mission script ship speed bound=.. calls=.. units=.. unresolved=..`,
+  plus one line per call.
+- **SUBSTITUTION, labelled:** an entity with no units-host slot is counted `unresolved`.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| row | prediction |
+| --- | --- |
+| LOMP06 1200/1000 | **exit 3 likely**. There are 20 calls: `Mission.PlayerUnit` at its class `MaxSpeed` (111); the convoy at `Mission.ConvoySpeed` (205..219); and two escorts at 20 (558, 570), if reached. The convoy's ships cruise at the scripted speed instead of their authored or default one, and every moved row should trace to their changed positions. The player's call lands on the controlled unit, which the idle player holds |
+| USN01, USN04, USN02 | no call, identity |
