@@ -2367,3 +2367,24 @@ The slot 2Ch values for `unit_class_lands_troops_vtable_2c` came from the disk i
 - `python tools/bsp.py ghidra decompile <addr> --start N --lines M` pages long bodies.
   `show` works only for exported functions.
 - **`GameCommandUnit::class_id` is filled** in the `command_units` loop from the slot's `class_id` (+C4h), for cc9-gunnery9's `kSquadronSetCommandBound`. It is inert until that switch flips.
+
+### Addendum (cc9-lua9, same day): item 3 committed OFF, pairs not run
+
+- **`ef1fdd1a6`**: `kFormationJoinFollowBound` (OFF), wired to cc9-gunnery9's
+  `issue_follow_command_00720cd0`. Predictions are in docs/SHIP_UNIT_GROUP_FOLLOW.md section 5g,
+  written before any ON run.
+- **The pairs were not run.**
+  - The four OFF runs (`local\l9_off_<row>.log`, rows jm06/usn01/jm08/usn04 via
+    `local\l9_run.ps1`) all died at startup with `_FMOD_EventSystem_Init result=61`.
+  - `query session` showed session 1 `Disc`. That is the known no-audio-endpoint environment
+    failure, not a code failure.
+- **The ON export** is `local\l9_ff` (`pair_export --commit ef1fdd1a6 --flip
+  kFormationJoinFollowBound=true`, log `local\l9_ff_export.txt`). Its build was still running at
+  handoff.
+- **Next:**
+  - Once `query session` shows session 1 active, re-run
+    `./local/l9_run.ps1 -Prefix l9_off -Rows 'jm06:JM06:3200:3000','usn01:USN01:3200:3000','jm08:JM08:3200:3000','usn04:USN04:4700:4500'`.
+  - Run the same with `-Exe local\l9_ff\build\win32\Release\bsp_game.exe -Prefix l9_on`.
+  - Then `python tools/pair_diff.py` on each pair, check the section 5g mechanism clauses, and
+    flip by verdict.
+  - cc9-ships9 then re-pairs `kAutoTargetFollowerGateBound`.
