@@ -139,6 +139,18 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 inline constexpr bool kUnitYawRateForwardSpeedBound = true;  // ON: mechanism held, reach miss recorded (docs/UNIT_YAW_RATE_FORWARD_SPEED.md)
 inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
+// Packet cc9_landing_sequencer. The deck's landing queue and sequencer for an
+// AIRFIELD owner: 006C54C0 queues the squadron (006BF060/006C0B50) and reads
+// its record through 006BD080; the queue tick 006CD240 runs 006CC9F0 (insert
+// through 006CAA10, release through 006C45C0/006C7540), the mode 006C7960, the
+// path 006C6020 and the spacing 006C3F80, over the holder frame 006C0750/
+// 006BEE40/006BC960 built from the owner's pose and the scene's RunwayWidth/
+// RunwayLength. True: a found record's mode, +8h and side reach the approach,
+// so the rule meets modes 2 to 4 (whose states stay refused). A mother-ship deck
+// and 006C3F80's k=0 mode-4 arm (the launch-site object) are REFUSED, counted.
+// False: 006BD080 misses every time and every request answers mode 1.
+// docs/SQUADRON_LAND_TASK.md section 5c.
+inline constexpr bool kLandingSequencerBound = false;
 
 class GameHostLog;
 class GameMissionLuaHost;
@@ -771,6 +783,10 @@ public:
     // curve 0082e890 over the settings singleton this host already owns, times
     // class+520h. 009e44c4 asks for 1.0f and 009e4555 for 0.9f.
     float unit_class_turn_circle_radius_0082e960(std::size_t index, float throttle);
+    // 006CD240, __thiscall(block)(float dt), RET 4: the landing queue's tick for
+    // every deck with a queue, run from 006CDC70 after 006C0DA0. Returns at once
+    // unless kLandingSequencerBound. docs/SQUADRON_LAND_TASK.md section 5c.
+    void run_landing_queue_006cd240(float dt);
     // unit+9c8h, the full hull length 0081106e / 0081fa4d produce. This process
     // builds no model box at [class+50h], so the producers' fallback applies and
     // the field is the descriptor's own +a0h `Length`.
@@ -939,6 +955,13 @@ public:
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // Packet cc9_unit_class_lands_troops. [unit+538h]->vtable[2Ch](): 00827FB0 on a
+    // ship-family class ([class+78Ch] LandingShip and [class+790h] LandingShipAmount
+    // both non-zero), 00963C70 on the landing-ship class (creator 0074BE00:
+    // [class+809h] Rocketer clear). False for a unit with no class and for the
+    // non-ship kinds, whose descriptor slot 2Ch was not read. Inert: for
+    // cc9-ships8's rank 9 (docs/SHIP_AI_OPEN_ITEMS.md section 13).
+    bool unit_class_lands_troops_vtable_2c(std::size_t index) const;
     // 00821E80 case 93h (00822235): the hull-torque message 0080FFD0 packs at 00827312
     // and 0077C2A0 routes at 00827329, applied to the unit's hull body (0092BF30 ->
     // 00C35330 AddTorque). False when the index is out of range or slot.body.motion

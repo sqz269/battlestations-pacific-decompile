@@ -331,6 +331,15 @@ public:
     // The entities 0046aab0's target lookup 00925a90 would find, and the owners
     // its records name. Called once, after the instantiate pass.
     void register_units(std::vector<GameCommandUnit> units);
+    // Packet cc9_formation_join_follow. 00720CD0 BSP_WeaponDirector_IssueTargetCommand,
+    // director vtable[58h], called DIRECTLY (no message) from the join 0077F940 at
+    // 0077FAB8. 00720CA0's clear first: 00720850 on every occupied slot, index 9 down
+    // to 0 (00720CD8..00720CF8). Then director->vtable[60h] = 008358D0 SetCommand(
+    // 00E08F60 `follow`, record) at 00720D6E. The record has has_target_entity = 1 and
+    // has_position = 0, from the 00720D2A word store. The entity id is [target+174h],
+    // so the host passes target_index + 1. The position is the three floats at
+    // 00F87574..00F8757C. Returns what 008358D0 answered. False on an index out of range.
+    bool issue_follow_command_00720cd0(std::size_t unit_index, std::size_t target_index);
     // Packet cc8_ship_follow: publish what 007788B0 / 007788D0 answer for a unit
     // once it has joined a formation, so 00836920's idle re-issue can pick the
     // `follow` command object at 00836E38 instead of the cruise/stop pair.

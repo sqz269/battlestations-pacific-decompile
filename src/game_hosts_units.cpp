@@ -65,6 +65,8 @@
 #include "bsp/unit_hull_extents.hpp"
 
 #include "bsp/camera_affine.hpp"
+#include "bsp/geometry_helpers.hpp"
+#include "bsp/vector_helpers.hpp"
 #include "bsp/camera_projection.hpp"
 #include "bsp/controlled_unit.hpp"
 #include "bsp/cruise_speed_setting.hpp"
@@ -513,6 +515,12 @@ struct GameUnitSlot {
     float land_request_b0{0.0f};   // -U(0, 0.5), 009AFF84..009AFF8B
     float land_follow_stagger_74{0.0f};  // follow state +74h, -U(0, 0.6), 009C2980
     int land_mode_50{1};           // approach+50h, 009AFEC7; 006C54C0 writes it
+    // Packet cc9_landing_sequencer: 006C54C0's found arm (006C5516-006C552C)
+    // copies the record's +8h to approach+4Ch and its side +0Dh to approach+44h
+    // (out+0Ch). No bound state reads either; they are the observable result.
+    float land_spacing_4c{1.0f};
+    bool land_side_44{false};
+    unsigned long long land_found_assignments{0};
     double land_installed_at{-1.0};
     unsigned long long land_ticks{0};
     unsigned long long land_requests{0};
@@ -1539,6 +1547,9 @@ struct GameUnitSlot {
     // unit+C4h is the most-derived instance class selected by VehicleClass.Type.
     // -1 means its identity is unresolved; it is not a native class-id stamp.
     int class_id{bsp::kVehicleClassKindUnknown};
+    // Packet cc9_unit_class_lands_troops: class+809h `Rocketer`, which only the
+    // landing-ship reader 0074C630 writes (MLandingShip); false elsewhere.
+    bool landing_ship_is_rocketer_0809{false};
     // Milestone 2p: the two load latches the middle of 009F3F80 raises with the
     // inlined bodies of 009D4FB0 (unit+102Ch) and 009D4FE0 (unit+1034h). Their
     // consumers are not in this process; the fields exist so the raise is a
@@ -1814,6 +1825,64 @@ struct GameUnitsHost::Impl {
     LandTaskCensus& land_census_for(const std::string& squadron);
     void install_land_task_0099a3dd(std::size_t unit_index);
     bool land_command_still_valid_009b34d0(const GameUnitSlot& unit) const;
+    // Packet cc9_landing_sequencer (kLandingSequencerBound): each deck's landing
+    // holder (block+80h), queue (block+98h) and assignment vector (block+A8h),
+    // indexed as bsp::air_ops_decks(). docs/SQUADRON_LAND_TASK.md section 5c.
+    struct LandingAssignment {           // 14h bytes at block+A8h
+        std::size_t plane{0};            // +0h
+        float path_4{0.0f};              // +4h, 006C6020
+        float spacing_8{1.0f};           // +8h, 006C3F80
+        bool held_0c{false};             // +0Ch, never set after the insert
+        bool side_0d{false};             // +0Dh
+        int mode_10{1};                  // +10h, 006C7960
+    };
+    struct LandingQueueEntry {           // 14h bytes at block+98h, 006C0B50
+        std::size_t squadron{0};         // +0h, the registry record index
+        int n{0};                        // +8h
+        float countdown_0c{0.0f};        // +0Ch
+        float interval_10{1.0f};         // +10h
+    };
+    struct LandingDeck {
+        bool built{false};
+        bool refused{false};             // a mother-ship deck, or no authored runway
+        std::size_t owner{0};
+        bsp::CameraMatrix frame_8{};     // holder+8h, the owner's world matrix
+        bsp::CameraMatrix inverse_48{};  // holder+48h, 0085DEA0
+        float runway_heading_88{0.0f};   // holder+88h
+        float t_a4[3]{0.0f, 0.0f, 0.0f}; // holder+A4h, 006BC960
+        float width_b0{0.0f};
+        float length_b4{0.0f};
+        std::vector<LandingQueueEntry> queue;
+        std::vector<LandingAssignment> assignments;
+        unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
+        unsigned long long hit_passes{0}, outside_passes{0}, spacing_mode4_refused{0};
+        unsigned long long slot_tail_unapplied{0}, mode_counts[5]{0, 0, 0, 0, 0};
+    };
+    std::vector<LandingDeck> landing_decks;
+    unsigned long long landing_refused_decks{0};
+    LandingDeck* landing_deck_006c0750(std::size_t deck_index, std::size_t owner);
+    bool landing_request_006c54c0(GameUnitSlot& plane);
+    float landing_sequencer_006cc9f0(LandingDeck& d, std::size_t squadron);
+    std::vector<std::size_t> landing_members(std::size_t squadron) const;
+    std::size_t landing_squadron_of(std::size_t plane) const;
+    int landing_spawn_index(std::size_t plane) const;
+    std::array<float, 3> landing_local_006bcc90(const LandingDeck& d, const float* pos) const;
+    std::array<float, 3> landing_t_world_006bca40(const LandingDeck& d) const;
+    float landing_run_length_006ba620(const LandingDeck& d) const;
+    float landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool landing_outside_standby_006c46b0(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool landing_released_006c45c0(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool landing_corridor_006c3b10(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool landing_on_circle_006c5c40(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
+    std::array<float, 3> landing_circle_point_006c5380(const LandingDeck& d,
+        const GameUnitSlot& p, bool side) const;
+    float landing_radius_006c3e50(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool landing_deck_usable_006bed60(std::size_t deck_index) const;
+    void landing_mode_006c7960(LandingDeck& d, std::size_t deck_index, LandingAssignment& rec,
+        bool leader_pass, int head_mode, float head_dist);
+    void landing_path_006c6020(LandingDeck& d, LandingAssignment& rec);
+    void landing_spacing_006c3f80(LandingDeck& d, LandingAssignment& rec);
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
     std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
@@ -1833,6 +1902,11 @@ struct GameUnitsHost::Impl {
     unsigned long long formation_joins{0};
     unsigned long long formation_creates{0};
     unsigned long long formation_rejoins{0};
+    // Packet cc9_formation_join_follow: the recursion depth of formation_join_0077f940
+    // (the follow is the top-level join's), and the follows it issued / that answered.
+    int formation_join_depth{0};
+    unsigned long long formation_join_follows{0};
+    unsigned long long formation_join_follows_pushed{0};
     // Packet cc9_dead_member_group_removal.
     unsigned long long formation_death_leaves{0};
     unsigned long long pitch_mode_two_steps{0};   // packet cc9_torpedo_run_pitch_profile
@@ -4121,6 +4195,13 @@ struct GameUnitsHost::Impl {
     // leader timer names. OFF: a record.
     // ON since the USN02 / USN04 pairs: identical; both missions gate every call.
     static constexpr bool kFormationSlotSwapBound = true;
+    // Packet cc9_formation_join_follow (docs/SHIP_UNIT_GROUP_FOLLOW.md section 5g).
+    // 0077F940's tail 0077FA81..0077FABF: once per brought unit, after 0070EF30,
+    // ordered->vtable[114h]() (the director) and, when non-null, director->vtable[58h]
+    // = 00720CD0 with [ESP+80h], the target group's leader (0077F9E6): clear the ten
+    // slots and push `follow` 00E08F60. ESI is the ORDERED unit on every pass, so the
+    // brought members get nothing. OFF: the follow-up is skipped (counted).
+    static constexpr bool kFormationJoinFollowBound = false;
     // Packet cc9_ship_motion_tail part 8c: 00826B84's unit->vtable[1ECh](dt) is
     // 008160B0 on every ship class, the repair tick whose work (0093CA20) the
     // gunnery host's run_damage_control already runs, after the projectile pass.
@@ -8596,6 +8677,678 @@ bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& 
     return slots[owner]->row.name == entry->last_site;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_landing_sequencer (kLandingSequencerBound): the deck's landing
+// holder (block+80h), queue (block+98h), assignment vector (block+A8h) and the
+// sequencer that fills it. Every body was read from the listing, and each
+// 00419010 call was traced through its pushes: docs/SQUADRON_LAND_TASK.md
+// sections 5b and 5c. The x87 intermediates are kept at the widths the listing
+// stores (float spills, double constants); the extended-precision internals of
+// a single expression are computed in double. Airfield owners only.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+std::array<float, 3> landing_xform_004142e0(const bsp::CameraMatrix& m, const float* p) {
+    std::array<float, 3> out{};
+    bsp::transform_point_004142e0(std::array<float, 3>{p[0], p[1], p[2]}, m, out);
+    return out;
+}
+
+float landing_len2_00414c60(float x, float z) {
+    return bsp::length_2d_00414c60(std::array<float, 2>{x, z});
+}
+
+bool landing_airborne(const GameUnitSlot& p) {
+    return p.plane_control_mode_900 == 7;   // (plane+72Ch)->vtable[38h], as the land task reads it
+}
+
+}  // namespace
+
+std::size_t GameUnitsHost::Impl::landing_squadron_of(std::size_t plane) const {
+    // plane+9D4h: the registry record holding the plane.
+    const bsp::PlaneSquadronRegistry& reg = bsp::plane_squadron_registry();
+    const bsp::PlaneSquadronHostRecord* r = reg.find_by_member_unit(plane);
+    if (r == nullptr || reg.records().empty()) return static_cast<std::size_t>(-1);
+    return static_cast<std::size_t>(r - reg.records().data());
+}
+
+std::vector<std::size_t> GameUnitsHost::Impl::landing_members(std::size_t squadron) const {
+    // squadron+3D0h..+3E0h in array order, ending at the fifth. Never-created
+    // entries are skipped, which is live_count()'s rule; a destroyed plane is
+    // erased from the registry list by its own path.
+    std::vector<std::size_t> out;
+    const bsp::PlaneSquadronRegistry& reg = bsp::plane_squadron_registry();
+    if (squadron >= reg.records().size()) return out;
+    for (const std::size_t m : reg.records()[squadron].member_units) {
+        if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size()) continue;
+        out.push_back(m);
+        if (out.size() == 5u) break;
+    }
+    return out;
+}
+
+int GameUnitsHost::Impl::landing_spawn_index(std::size_t plane) const {
+    // plane+9D8h, the member slot stamped at 007F4B43.
+    const bsp::PlaneSquadronHostRecord* r =
+        bsp::plane_squadron_registry().find_by_member_unit(plane);
+    if (r == nullptr) return 0;
+    for (std::size_t i = 0; i < r->member_units.size(); ++i) {
+        if (r->member_units[i] == plane) {
+            return i < r->member_spawn_index.size() ? r->member_spawn_index[i]
+                                                    : static_cast<int>(i);
+        }
+    }
+    return 0;
+}
+
+// 006C0D20 -> 006C0750 (holder C0h bytes), 006BEE40(0), 006BF0D0 and 006BC960,
+// as 006D3C10 builds them for an airfield. Built once: an airfield does not move.
+GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
+    std::size_t deck_index, std::size_t owner) {
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    if (landing_decks.size() < decks.size()) landing_decks.resize(decks.size());
+    if (deck_index >= landing_decks.size() || owner >= slots.size()) return nullptr;
+    LandingDeck& d = landing_decks[deck_index];
+    if (d.built) return d.refused ? nullptr : &d;
+    d.built = true;
+    d.owner = owner;
+    const bsp::AirOpsDeck* deck = decks.mutable_at(deck_index);
+    if (deck == nullptr || !deck->is_airfield || !deck->runway_from_scene) {
+        d.refused = true;
+        ++landing_refused_decks;
+        log.notef("landing sequencer: deck %s REFUSED (%s), packet cc9_landing_sequencer",
+            decks.name_at(deck_index).c_str(),
+            deck == nullptr ? "no deck"
+                : (!deck->is_airfield ? "a mother-ship holder is refreshed from the moving "
+                                        "ship; that refresh is unread"
+                                      : "the scene authored no RunwayWidth/RunwayLength"));
+        return nullptr;
+    }
+    d.width_b0 = deck->runway_width;     // 006BF0D0: holder+B0h
+    d.length_b4 = deck->runway_length;   // holder+B4h
+    // 006BEE40(0): +8h..+47h = the owner's world matrix (+CCh); the zero offset
+    // at +98h (006D3C10) is added to the translation row.
+    const GameUnitSlot& o = *slots[owner];
+    d.frame_8 = o.world;
+    // 0085DEA0: copy, transpose the 3x3, translation = -0.0 - (t through the
+    // transposed rotation, 0042D0D0 without normalising).
+    bsp::CameraMatrix inv = d.frame_8;
+    std::swap(inv[1], inv[4]);
+    std::swap(inv[2], inv[8]);
+    std::swap(inv[6], inv[9]);
+    const float tx = d.frame_8[12], ty = d.frame_8[13], tz = d.frame_8[14];
+    const float rx = tx * inv[0] + ty * inv[4] + tz * inv[8];
+    const float ry = tx * inv[1] + ty * inv[5] + tz * inv[9];
+    const float rz = tx * inv[2] + ty * inv[6] + tz * inv[10];
+    inv[12] = -0.0f - rx;
+    inv[13] = -0.0f - ry;
+    inv[14] = -0.0f - rz;
+    d.inverse_48 = inv;
+    // +88h = owner->vtable[50h]() = 006D2040: atan2 over local row 2 (x, z); this
+    // host's airfield is top level, so its world rows are the local rows.
+    d.runway_heading_88 = static_cast<float>(std::atan2(static_cast<double>(d.frame_8[8]),
+        static_cast<double>(d.frame_8[10])));
+    // 006BC960, the airfield arm: block vtable[10h] = 006CA5A0 = 35.0 (00CE4D90).
+    const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);  // 00D7A280
+    const float x = static_cast<float>(
+        (static_cast<double>(d.width_b0) - 35.0) * 0.5);
+    d.t_a4[0] = 0.0f > x ? 0.0f : x;
+    d.t_a4[1] = 0.5f;                                                   // 00CE3800
+    d.t_a4[2] = static_cast<float>(static_cast<double>(half_len) + 35.0);  // 00CF8608
+    const std::array<float, 3> tw = landing_t_world_006bca40(d);
+    log.notef("landing sequencer: deck %s owner %s holder built: RunwayWidth=%.2f "
+        "RunwayLength=%.2f heading=%.4f T local (%.2f, %.2f, %.2f) world (%.1f, %.1f, %.1f) "
+        "owner pos (%.1f, %.1f, %.1f) (006C0750, 006BEE40, 006BC960)",
+        decks.name_at(deck_index).c_str(), o.row.name.c_str(),
+        static_cast<double>(d.width_b0), static_cast<double>(d.length_b4),
+        static_cast<double>(d.runway_heading_88), static_cast<double>(d.t_a4[0]),
+        static_cast<double>(d.t_a4[1]), static_cast<double>(d.t_a4[2]),
+        static_cast<double>(tw[0]), static_cast<double>(tw[1]), static_cast<double>(tw[2]),
+        static_cast<double>(o.motion.position[0]), static_cast<double>(o.motion.position[1]),
+        static_cast<double>(o.motion.position[2]));
+    return &d;
+}
+
+// 006BCC90 (RET 8): the position through the inverse (+48h), less T.
+std::array<float, 3> GameUnitsHost::Impl::landing_local_006bcc90(const LandingDeck& d,
+    const float* pos) const {
+    std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, pos);
+    l[0] = l[0] - d.t_a4[0];
+    l[1] = l[1] - d.t_a4[1];
+    l[2] = l[2] - d.t_a4[2];
+    return l;
+}
+
+// 006BCA40 (RET 4): T through the holder's matrix (+8h).
+std::array<float, 3> GameUnitsHost::Impl::landing_t_world_006bca40(const LandingDeck& d) const {
+    return landing_xform_004142e0(d.frame_8, d.t_a4);
+}
+
+// 006BA620: RunwayLength x 0.4 (00CE65D0) for an airfield owner (x 0.3 on a
+// mother ship, which is refused here).
+float GameUnitsHost::Impl::landing_run_length_006ba620(const LandingDeck& d) const {
+    return static_cast<float>(static_cast<double>(d.length_b4) * 0.4000000059604645);
+}
+
+float GameUnitsHost::Impl::landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const {
+    const std::array<float, 3> tw = landing_t_world_006bca40(d);
+    return landing_len2_00414c60(p.motion.position[0] - tw[0], p.motion.position[2] - tw[2]);
+}
+
+// 006C46B0: the horizontal distance to T is above StandbyDist (tuning+500h).
+bool GameUnitsHost::Impl::landing_outside_standby_006c46b0(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    return landing_t_distance(d, p) > lua.plane_globals().pilot_landing_standby_dist;
+}
+
+// 006C45C0: airborne and above StandbyDist x 1.2 (00CEC160) from T.
+bool GameUnitsHost::Impl::landing_released_006c45c0(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    if (!landing_airborne(p)) return false;
+    return static_cast<double>(landing_t_distance(d, p)) >
+        static_cast<double>(lua.plane_globals().pilot_landing_standby_dist) * 1.2000000476837158;
+}
+
+// 006C3B10 (006C3B10-006C3E41, RET 4): the runway corridor.
+bool GameUnitsHost::Impl::landing_corridor_006c3b10(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    // +904h is clear in this host; then +900h 2 or 4 answers false.
+    if (p.plane_control_mode_900 == 2 || p.plane_control_mode_900 == 4) return false;
+    if (!landing_airborne(p)) return true;
+    // 00923810(1), the parent link of an airborne plane: null here (LABELLED),
+    // so the AirField/MotherShip parent arm never answers.
+    const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
+    const double L = landing_run_length_006ba620(d);
+    const float zp = static_cast<float>(static_cast<double>(l[2]) - L * 1.5);   // 00CE3D78
+    const double tan_a = static_cast<double>(static_cast<float>(
+        std::tan(static_cast<double>(g.pilot_landing_approach_angle))));        // 00412E20
+    if (static_cast<double>(l[1]) > 5.0 - 2.0 * (tan_a * zp)) return false;     // 00D7A370
+    const float w = static_cast<float>(static_cast<double>(d.width_b0) * 0.5);
+    float e;
+    if (l[0] > 0.0f) {
+        const float v = l[0] - w;
+        e = v > 0.0f ? v : 0.0f;                                   // 00415550 max
+    } else {
+        const float v = l[0] + w;
+        e = v < 0.0f ? v : 0.0f;                                   // 00415510 min
+    }
+    const float ev[3] = {e, l[1], zp};
+    const float over = static_cast<float>(static_cast<double>(avoid_len(ev)) - L * 1.5);
+    const float pb11 = static_cast<float>(
+        static_cast<double>(g.pilot_landing_pos_behind) * 1.100000023841858);  // 00CE3DF0
+    if (over > pb11) return false;
+    const float h = p.plane_heading_c6c;                           // plane->vtable[50h]
+    const std::array<float, 3> tw = landing_t_world_006bca40(d);
+    float b = bsp::heading_angle_00414eb0(std::array<float, 2>{
+        tw[0] - p.motion.position[0], tw[2] - p.motion.position[2]});   // 00427C90(T - pos)
+    if (std::fabs(e) < 1.0f && static_cast<double>(zp) > -2.0 * L) b = d.runway_heading_88;
+    const float d1 = std::fabs(bsp::wrapped_angle_subtract_00438b10(h, b));
+    const float d2 = std::fabs(bsp::wrapped_angle_subtract_00438b10(h, d.runway_heading_88));
+    if (!(1.5707963705062866 > static_cast<double>(d2))) return false;          // 00CE3830
+    const float thr = bsp::clamped_interpolate_00419010(0.0f, 0.5235987901687622f,
+        static_cast<float>(static_cast<double>(g.pilot_landing_pos_behind) * 1.25),  // 00CF87C0
+        1.5707963705062866f, over);
+    return thr > d1;
+}
+
+// 006C5380 (__thiscall(holder)(out, plane, side), RET 0Ch): the circle point.
+std::array<float, 3> GameUnitsHost::Impl::landing_circle_point_006c5380(const LandingDeck& d,
+    const GameUnitSlot& p, bool side) const {
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    // 006BEF70: the plane's squadron's queue n, or -1.
+    int n = -1;
+    const std::size_t sq = landing_squadron_of(p.process_index);
+    for (const LandingQueueEntry& q : d.queue) {
+        if (q.squadron == sq) { n = q.n; break; }
+    }
+    const float nf = static_cast<float>(n);
+    float n60 = static_cast<float>(60.0 * static_cast<double>(nf));    // 00CE3D68
+    const float n20 = static_cast<float>(static_cast<double>(nf) * 20.0);  // 00CE3D88
+    const float r = landing_radius_006c3e50(d, p);
+    const float sr = static_cast<float>(static_cast<double>(r) * (side ? 1 : -1));
+    if (bsp::unit_is_kind_of(p.class_id, 0x10) || bsp::unit_is_kind_of(p.class_id, 0x16)) {
+        n60 = static_cast<float>(static_cast<double>(n60) + 250.0);   // 00CF8850
+    }
+    const float local[3] = {d.t_a4[0] + sr, n20 + g.pilot_landing_pos_alt,
+                            -g.pilot_landing_pos_behind - n60};
+    return landing_xform_004142e0(d.frame_8, local);
+}
+
+// 006C3E50 (RET 4, returns ST0): f^2 x 007C6760(plane), f from the record count.
+float GameUnitsHost::Impl::landing_radius_006c3e50(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    const float f = bsp::clamped_interpolate_00419010(g.pilot_landing_radius_change_1, 1.0f,
+        g.pilot_landing_radius_change_2, 2.5f, static_cast<float>(d.assignments.size()));
+    // 007C6760: class+268h TurnCircleRadius x m.
+    const float mn = g.pilot_landing_circle_multiplier_min;
+    const float mx = g.pilot_landing_circle_multiplier_max;
+    float m = mn;
+    if (bsp::unit_is_kind_of(p.class_id, 0x10)) {
+        m = mx;
+    } else if (bsp::unit_is_kind_of(p.class_id, 0x12) || bsp::unit_is_kind_of(p.class_id, 0x14)
+               || bsp::unit_is_kind_of(p.class_id, 0x11)) {
+        m = static_cast<float>(static_cast<double>(mx) * 0.4000000059604645 +
+                               static_cast<double>(mn) * 0.6000000238418579);
+    }
+    const float turn = p.plane_turn_circle_radius * m;
+    return static_cast<float>(static_cast<double>(turn) * f * f);
+}
+
+// 006C5C40 (006C5C40-006C5E18, RET 4): on the landing circle.
+bool GameUnitsHost::Impl::landing_on_circle_006c5c40(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    // Null or landed (+904h, clear here) answers false.
+    const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
+    const bool side = l[0] > 0.0f;                               // 006C5C8F COMISS/JA
+    const std::array<float, 3> c = landing_circle_point_006c5380(d, p, side);
+    const float vx = c[0] - p.motion.position[0];
+    const float vz = c[2] - p.motion.position[2];
+    const float dd = landing_len2_00414c60(vx, vz);
+    const float r = landing_radius_006c3e50(d, p);
+    if (static_cast<double>(dd) > static_cast<double>(r) * 1.600000023841858) return false;
+    const float off = side ? 1.5707963705062866f : -1.5707963705062866f;
+    const float a = static_cast<float>(static_cast<double>(
+        bsp::heading_angle_00414eb0(std::array<float, 2>{vx, vz})) - static_cast<double>(off));
+    const float s = bsp::wrapped_angle_subtract_00438b10(a, p.plane_heading_c6c);
+    const float delta = s > 0.0f ? s : -0.0f - s;                   // 00D7A208
+    const float thr = bsp::clamped_interpolate_00419010(
+        static_cast<float>(static_cast<double>(r) * 0.25), 0.7853981852531433f,
+        static_cast<float>(static_cast<double>(r) * 0.800000011920929), 0.3490658700466156f, dd);
+    return thr > delta;
+}
+
+// 006C5E20 (RET 4): TRUE when 006C3B10 or 006C5C40 answers (006C6010); else the
+// StandbyDist gate and the heading test against the circle point.
+bool GameUnitsHost::Impl::landing_turn_in_006c5e20(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    if (landing_corridor_006c3b10(d, p) || landing_on_circle_006c5c40(d, p)) return true;
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    if (landing_t_distance(d, p) > g.pilot_landing_standby_dist) return false;
+    const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
+    const bool side = l[0] >= 0.0f;                              // 006C5EFA COMISS/JC
+    const std::array<float, 3> c = landing_circle_point_006c5380(d, p, side);
+    const float vx = c[0] - p.motion.position[0];
+    const float vz = c[2] - p.motion.position[2];
+    const float delta = std::fabs(bsp::wrapped_angle_subtract_00438b10(
+        bsp::heading_angle_00414eb0(std::array<float, 2>{vx, vz}), p.plane_heading_c6c));
+    const float thr = bsp::clamped_interpolate_00419010(g.pilot_landing_pos_behind,
+        1.3962634801864624f,                                               // 00CF8858
+        static_cast<float>(static_cast<double>(g.pilot_landing_standby_dist) * 0.6000000238418579),
+        0.5235987901687622f, landing_len2_00414c60(vx, vz));               // 00CEC724
+    return thr > delta;
+}
+
+// 006BED60: block+1Ch/+1Dh clear and the owner at +7Ch present with +5Dh
+// clear (the network-remote byte, clear in a single-player mission).
+bool GameUnitsHost::Impl::landing_deck_usable_006bed60(std::size_t deck_index) const {
+    const bsp::AirOpsDeck* deck = bsp::air_ops_decks().mutable_at(deck_index);
+    return deck != nullptr && !deck->runway_failure && !deck->hangar_failure;
+}
+
+// 006C7960 (__thiscall(block)(rec, leaderPass, headMode, headDist), RET 10h).
+void GameUnitsHost::Impl::landing_mode_006c7960(LandingDeck& d, std::size_t deck_index,
+    LandingAssignment& rec, bool leader_pass, int head_mode, float head_dist) {
+    const GameUnitSlot& p = *slots[rec.plane];
+    // +904h (landed) is clear in this host.
+    if (!landing_airborne(p) || rec.held_0c) {
+        rec.mode_10 = leader_pass ? 2 : 1;
+        rec.path_4 = 999999.0f;                                   // 00CF87D0
+        rec.spacing_8 = 1.0f;
+        return;
+    }
+    // Squadron +3B0h: only ever cleared, so false.
+    int mode = 3;
+    if (leader_pass) {
+        if (landing_corridor_006c3b10(d, p)) {
+            mode = (landing_deck_usable_006bed60(deck_index) && rec.spacing_8 > 0.0f) ? 4 : 3;
+        } else if (landing_on_circle_006c5c40(d, p)) {
+            mode = 3;
+        } else {
+            mode = landing_outside_standby_006c46b0(d, p) ? 1 : 2;
+        }
+    } else if (head_mode == 2) {
+        mode = 1;
+        if (!landing_outside_standby_006c46b0(d, p)) {
+            const std::vector<std::size_t> members =
+                landing_members(landing_squadron_of(rec.plane));
+            if (!members.empty() && landing_turn_in_006c5e20(d, *slots[members[0]])) mode = 2;
+        }
+    } else if (head_mode == 1) {
+        mode = 1;
+    } else if (head_mode == 3) {
+        mode = 3;
+    } else {
+        mode = (landing_deck_usable_006bed60(deck_index) && landing_corridor_006c3b10(d, p)
+                && rec.spacing_8 > 0.0f) ? 4 : 3;
+    }
+    rec.mode_10 = mode;
+    landing_path_006c6020(d, rec);
+    if (!leader_pass) {
+        const float floor = static_cast<float>(static_cast<double>(head_dist) + 1.0);  // 00D7A210
+        rec.path_4 = floor > rec.path_4 ? floor : rec.path_4;     // 00415550
+    }
+}
+
+// 006C6020 (006C6020-006C64A4, RET 4): the path still to fly, +4h, and the side.
+void GameUnitsHost::Impl::landing_path_006c6020(LandingDeck& d, LandingAssignment& rec) {
+    const GameUnitSlot& p = *slots[rec.plane];
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    if (!landing_airborne(p) || rec.held_0c) {
+        rec.path_4 = 999999.0f;
+        return;
+    }
+    if (rec.mode_10 == 4 || rec.mode_10 == 3) {
+        rec.side_0d = 0.0f <= landing_local_006bcc90(d, p.motion.position)[0];
+    } else {
+        float sum = 0.0f;
+        for (const std::size_t m : landing_members(landing_squadron_of(rec.plane))) {
+            if (!landing_airborne(*slots[m])) continue;
+            sum = landing_local_006bcc90(d, slots[m]->motion.position)[0] + sum;
+        }
+        rec.side_0d = !(sum <= 0.0f);
+    }
+    const bool side = rec.side_0d;
+    const float D = landing_t_distance(d, p);
+    if (rec.mode_10 == 4) {
+        rec.path_4 = D;
+        return;
+    }
+    const float r = landing_radius_006c3e50(d, p);
+    const std::array<float, 3> c = landing_circle_point_006c5380(d, p, side);
+    const float px = p.motion.position[0] - c[0];
+    const float pz = p.motion.position[2] - c[2];
+    const float dp = landing_len2_00414c60(px, pz);
+    const float m1 = dp > 1.0f ? dp : 1.0f;                        // 00415550(1.0, dP)
+    const float off = side ? -1.5707963705062866f : 1.5707963705062866f;   // 00CE3CCC / 00CE3C64
+    const float h1 = bsp::wrapped_angle_add_00438aa0(d.runway_heading_88, off);
+    const float b = bsp::heading_angle_00414eb0(std::array<float, 2>{px, pz});
+    const float ratio = static_cast<float>(static_cast<double>(r) / static_cast<double>(m1));
+    const float clamped = ratio < 1.0f ? ratio : 1.0f;             // 00415510(1.0, ratio)
+    const float a = static_cast<float>(std::acos(static_cast<double>(clamped)));  // 00BF9940
+    float bp;
+    float theta;
+    if (side) {
+        bp = bsp::wrapped_angle_add_00438aa0(b, a);
+        theta = bsp::wrapped_angle_subtract_00438b10(h1, bp);
+    } else {
+        bp = bsp::wrapped_angle_subtract_00438b10(b, a);
+        theta = bsp::wrapped_angle_subtract_00438b10(bp, h1);
+    }
+    const std::array<float, 2> dir = bsp::heading_to_direction_006bc0c0(bp);
+    if (theta < -0.0872664675116539f && !landing_corridor_006c3b10(d, p)) {   // 00CF885C
+        theta = static_cast<float>(static_cast<double>(theta) + 6.2831854820251465);
+    }
+    const float rm = r < m1 ? r : m1;                               // 00415510(r, m1)
+    const double arc = static_cast<double>(rm) * static_cast<double>(theta);
+    float path = static_cast<float>(static_cast<double>(g.pilot_landing_pos_behind) + arc);
+    if (m1 > r) {
+        const float qx = dir[0] * r + c[0];
+        const float qz = r * dir[1] + c[2];
+        const float leg = landing_len2_00414c60(p.motion.position[0] - qx,
+                                                p.motion.position[2] - qz);
+        path = static_cast<float>(static_cast<double>(leg) + static_cast<double>(path));
+    }
+    rec.path_4 = D > path ? D : path;
+}
+
+// 006C3F80 (006C3F80-006C45B7, RET 4): the spacing +8h, which gates mode 4.
+void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssignment& rec) {
+    const GameUnitSlot& p = *slots[rec.plane];
+    if (!landing_airborne(p) || rec.held_0c) {
+        rec.spacing_8 = 1.0f;
+        return;
+    }
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    const bool own4 = rec.mode_10 == 4;
+    const std::size_t sq = landing_squadron_of(rec.plane);
+    const std::vector<std::size_t> members = landing_members(sq);
+    const std::size_t head = members.empty() ? static_cast<std::size_t>(-1) : members[0];
+    const bool is_head = rec.plane == head;
+    const bool own_only = !(own4 || rec.mode_10 == 3 || (is_head && rec.mode_10 == 2));
+    const float own_path = rec.path_4;
+    const int own_spawn = landing_spawn_index(rec.plane);
+    float least = 999999.0f;
+    float gap = 999999.0f;
+    int k = 0;
+    for (const LandingAssignment& o : d.assignments) {
+        if (o.plane == rec.plane) continue;
+        const GameUnitSlot& op = *slots[o.plane];
+        if (!landing_airborne(op)) continue;
+        const std::size_t osq = landing_squadron_of(o.plane);
+        if (is_head && osq == sq) continue;
+        if (o.held_0c || !(o.path_4 > 0.0f)) continue;
+        if (own4) {
+            if (o.mode_10 != 4) continue;
+        } else if (own_only) {
+            if (osq != sq) continue;
+        } else if (o.mode_10 != 3 && o.mode_10 != 4) {
+            continue;
+        }
+        const float gdiff = o.path_4 - own_path;
+        bool count;
+        if (!is_head && o.plane == head) {
+            count = true;                                           // 006C41AF
+        } else if (-70.0f > gdiff) {                                // 00E08E50
+            count = true;
+        } else if (gdiff > 70.0f) {
+            count = false;
+        } else {
+            const int other_spawn = landing_spawn_index(o.plane);
+            if (own_spawn != other_spawn) {
+                count = own_spawn > other_spawn;                    // SETG
+            } else if (rec.side_0d != o.side_0d) {
+                count = rec.side_0d;
+            } else {
+                // SETL on the two plane pointers: the heap's order. LABELLED:
+                // this host orders by unit index.
+                count = rec.plane < o.plane;
+            }
+        }
+        if (!count) continue;
+        least = o.path_4 > least ? least : o.path_4;
+        const float ng = -gdiff;
+        const float m = ng > gap ? gap : ng;
+        gap = 0.0f > m ? 0.0f : m;
+        ++k;
+    }
+    const float fdt = g.pilot_landing_follow_dist_time;
+    if (k == 0) {
+        if (!own4) {
+            rec.spacing_8 = 1.0f;
+            return;
+        }
+        // The launch-site object at block+3Ch (its +40h time and vtable[30h]) is
+        // not in this host: REFUSED, +8h keeps its value.
+        ++d.spacing_mode4_refused;
+        if (d.spacing_mode4_refused == 1) {
+            log.notef("  landing sequencer: REFUSED 006C3F80's k=0 mode-4 arm for %s at %.2f s "
+                "(the launch-site object at block+3Ch is unread)", p.row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds));
+        }
+        return;
+    }
+    const float speed = avoid_len(p.plane_world_velocity);          // plane->vtable[38h]
+    const float F = static_cast<float>(static_cast<double>(fdt) * 1.2000000476837158);
+    const float t = static_cast<float>(static_cast<double>(gap) / static_cast<double>(speed));
+    float s;
+    if (own4) {
+        s = 0.4000000059604645 * F > static_cast<double>(t) ? 0.0f
+            : bsp::clamped_interpolate_00419010(static_cast<float>(F * 0.699999988079071),
+                  0.009999999776482582f, static_cast<float>(1.100000023841858 * F),
+                  1.100000023841858f, t);
+    } else {
+        s = 0.5 * F > static_cast<double>(t) ? 0.0f
+            : bsp::clamped_interpolate_00419010(static_cast<float>(F * 0.75),
+                  0.009999999776482582f, static_cast<float>(1.25 * F), 2.0f, t);
+    }
+    const float sum = static_cast<float>(static_cast<double>(least) +
+        static_cast<double>(F) * k * static_cast<double>(speed));
+    const float x = static_cast<float>((static_cast<double>(own_path) - sum) /
+        static_cast<double>(own_path));
+    const float last = bsp::clamped_interpolate_00419010(-0.15000000596046448f,
+        0.009999999776482582f, 0.15000000596046448f, 2.0f, x);
+    rec.spacing_8 = last > s ? s : last;
+}
+
+// 006CC9F0 (006CC9F0-006CCD77, __thiscall(block)(squadron, float), RET 8,
+// returns ST0). The float argument is not read.
+float GameUnitsHost::Impl::landing_sequencer_006cc9f0(LandingDeck& d, std::size_t squadron) {
+    const std::size_t deck_index = static_cast<std::size_t>(&d - landing_decks.data());
+    const std::vector<std::size_t> members = landing_members(squadron);
+    if (members.empty()) return 1.0f;   // squadron+3D0h null: the image would fault. LABELLED
+    const std::size_t head = members[0];
+    ++d.passes;
+    std::size_t hi = d.assignments.size();
+    for (std::size_t i = 0; i < d.assignments.size(); ++i) {
+        if (d.assignments[i].plane == head) { hi = i; break; }
+    }
+    if (hi < d.assignments.size()) {
+        ++d.hit_passes;
+        const int before = d.assignments[hi].mode_10;
+        landing_mode_006c7960(d, deck_index, d.assignments[hi], true, 4, -1.0f);
+        landing_spacing_006c3f80(d, d.assignments[hi]);
+        const int head_mode = d.assignments[hi].mode_10;
+        const float head_dist = d.assignments[hi].path_4;
+        if (landing_released_006c45c0(d, *slots[head])) {
+            // 006C7540: erase every record of the squadron.
+            std::size_t erased = 0;
+            for (std::size_t i = d.assignments.size(); i-- > 0;) {
+                if (landing_squadron_of(d.assignments[i].plane) == squadron) {
+                    d.assignments.erase(d.assignments.begin() + static_cast<std::ptrdiff_t>(i));
+                    ++erased;
+                }
+            }
+            ++d.releases;
+            log.notef("  landing sequencer: squadron head %s released at %.2f s, %zu record(s) "
+                "erased (006C45C0, 006C7540)", slots[head]->row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds), erased);
+            return 1.0f;                                                // 00D7A24C
+        }
+        if (head_mode != before) {
+            log.notef("  landing sequencer: %s (head) mode %d -> %d path=%.1f spacing=%.3f "
+                "side=%d at %.2f s (006C7960)", slots[head]->row.name.c_str(), before, head_mode,
+                static_cast<double>(head_dist), static_cast<double>(d.assignments[hi].spacing_8),
+                d.assignments[hi].side_0d ? 1 : 0, static_cast<double>(summary.simulated_seconds));
+        }
+        if (head_mode >= 0 && head_mode < 5) ++d.mode_counts[head_mode];
+        const float result = (head_mode == 3 || head_mode == 4) ? 0.25f : 1.0f;  // 00CE3868
+        for (LandingAssignment& rec : d.assignments) {
+            if (rec.plane == head) continue;
+            if (landing_squadron_of(rec.plane) != squadron) continue;
+            const int was = rec.mode_10;
+            landing_mode_006c7960(d, deck_index, rec, false, head_mode, head_dist);
+            landing_spacing_006c3f80(d, rec);
+            if (rec.mode_10 >= 0 && rec.mode_10 < 5) ++d.mode_counts[rec.mode_10];
+            if (rec.mode_10 != was) {
+                log.notef("  landing sequencer: %s mode %d -> %d path=%.1f spacing=%.3f "
+                    "at %.2f s (006C7960)", slots[rec.plane]->row.name.c_str(), was, rec.mode_10,
+                    static_cast<double>(rec.path_4), static_cast<double>(rec.spacing_8),
+                    static_cast<double>(summary.simulated_seconds));
+            }
+        }
+        return result;
+    }
+    if (landing_outside_standby_006c46b0(d, *slots[head])) {
+        ++d.outside_passes;
+        return 1.0f;
+    }
+    // 006CCC52-006CCC89: the head's x through the inverse, less T.x.
+    const bool side = 0.0f <= landing_xform_004142e0(d.inverse_48,
+        slots[head]->motion.position)[0] - d.t_a4[0];
+    const float standby = lua.plane_globals().pilot_landing_standby_dist;
+    for (const std::size_t m : members) {
+        LandingAssignment rec;
+        rec.plane = m;
+        rec.path_4 = standby;
+        rec.spacing_8 = 1.0f;
+        rec.held_0c = false;
+        rec.side_0d = side;
+        rec.mode_10 = m == head ? 3 : 1;
+        d.assignments.push_back(rec);                               // 006CAA10
+    }
+    ++d.inserts;
+    log.notef("  landing sequencer: squadron head %s inserted %zu record(s) at %.2f s, "
+        "head at %.1f m from T, side=%d (006CC9F0 miss arm, 006CAA10)",
+        slots[head]->row.name.c_str(), members.size(),
+        static_cast<double>(summary.simulated_seconds),
+        static_cast<double>(landing_t_distance(d, *slots[head])), side ? 1 : 0);
+    return 0.0f;
+}
+
+// 006C54C0's queue and lookup, bound: 006BF060/006C0B50, then 006BD080. Returns
+// true when the plane's record is found (and its +174h word is non-zero, which
+// this host takes as always true).
+bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
+    if (!lua.plane_globals_loaded()) return false;
+    if (plane.land_deck_plus_one == 0 || plane.land_site_plus_one == 0) return false;
+    const std::size_t sq = landing_squadron_of(plane.process_index);
+    if (sq == static_cast<std::size_t>(-1)) return false;           // +9D4h null
+    LandingDeck* d = landing_deck_006c0750(plane.land_deck_plus_one - 1u,
+                                           plane.land_site_plus_one - 1u);
+    if (d == nullptr) return false;
+    bool queued = false;
+    int next_n = 0;
+    for (const LandingQueueEntry& q : d->queue) {
+        if (q.squadron == sq) queued = true;
+        if (q.n + 1 > next_n) next_n = q.n + 1;
+    }
+    if (!queued) {
+        LandingQueueEntry q;
+        q.squadron = sq;
+        q.n = next_n;
+        d->queue.push_back(q);
+        // The tail's slot move to state 4 is not applied: this host's slot
+        // squadron ids are not the registry's. Counted.
+        const bsp::AirOpsDeck* deck = bsp::air_ops_decks().mutable_at(plane.land_deck_plus_one - 1u);
+        if (deck != nullptr) {
+            for (const bsp::AirOpsSlot& s : deck->slots) {
+                if (s.launched_squadron != 0u) ++d->slot_tail_unapplied;
+            }
+        }
+        log.notef("  landing sequencer: squadron %s queued n=%d at deck %s at %.2f s (006C0B50)",
+            bsp::plane_squadron_registry().records()[sq].name.c_str(), q.n,
+            bsp::air_ops_decks().name_at(plane.land_deck_plus_one - 1u).c_str(),
+            static_cast<double>(summary.simulated_seconds));
+    }
+    ++d->lookups;
+    for (const LandingAssignment& rec : d->assignments) {
+        if (rec.plane != plane.process_index) continue;
+        ++d->found;
+        plane.land_spacing_4c = rec.spacing_8;       // out+14h, approach+4Ch
+        plane.land_mode_50 = rec.mode_10;            // out+18h, approach+50h
+        plane.land_side_44 = rec.side_0d;            // out+0Ch, approach+44h
+        return true;
+    }
+    return false;
+}
+
+void GameUnitsHost::run_landing_queue_006cd240(float dt) {
+    if constexpr (!kLandingSequencerBound) {
+        (void)dt;
+        return;
+    } else {
+        Impl& h = *impl_;
+        if (!h.lua.plane_globals_loaded()) return;
+        for (Impl::LandingDeck& d : h.landing_decks) {
+            if (!d.built || d.refused) continue;
+            for (std::size_t i = 0; i < d.queue.size(); ++i) {
+                Impl::LandingQueueEntry& q = d.queue[i];
+                const float c = q.countdown_0c - dt;
+                q.countdown_0c = c;
+                if (!(0.0f > c)) continue;
+                q.countdown_0c = q.interval_10;
+                const float res = h.landing_sequencer_006cc9f0(d, q.squadron);
+                q.interval_10 = res;
+                q.countdown_0c = res > q.countdown_0c ? q.countdown_0c : res;
+            }
+        }
+        h.done("AirOps::landing_queue_tick", 0x006cd240u);
+    }
+}
+
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;
     for (const GameSceneEntityRecord& entity : entities) {
@@ -8846,6 +9599,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->fields.max_speed = lua_row.max_speed;
             slot->fields.max_rot_angle = lua_row.max_rot_angle;
             slot->fields.max_rot_angle_change_ratio = lua_row.max_rot_angle_change_ratio;
+            // Packet cc9_unit_class_lands_troops. class+78Ch holds the resolved
+            // descriptor in the image; the host keeps the id when it resolves.
+            slot->fields.landing_ship_class =
+                lua_row.landing_ship_resolves ? lua_row.landing_ship_id : 0;
+            slot->fields.landing_ship_amount = lua_row.landing_ship_amount;
+            slot->landing_ship_is_rocketer_0809 = lua_row.landing_ship_is_rocketer;
             // 00964790 maps VehicleClass.Type to a descriptor whose +28h
             // allocator constructs the instance. Its constructor stamps +C4h:
             // e.g. 006FE590 -> 006FE460, store 7 at 006FE4B3. The recovered
@@ -17282,6 +18041,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // &approach+38h, RET 8): the air-ops landing request.
                     void land_request_006c54c0() {
                         ++unit_.land_requests;
+                        if constexpr (kLandingSequencerBound) {
+                            // Packet cc9_landing_sequencer: the queue (006BF060,
+                            // 006C0B50) and 006BD080 against the vector the
+                            // sequencer fills. Found (006C5516-006C552C): the
+                            // mode, +8h and the side reach the approach.
+                            if (owner_.landing_request_006c54c0(unit_)) {
+                                ++unit_.land_found_assignments;
+                                owner_.done("AirOpsBlock::find_landing_assignment_006bd080",
+                                    0x006bd080u);
+                                return;
+                            }
+                        }
                         // 006C54E2/006C54EF: 006BF060, else 006C0B50 puts the
                         // squadron in the deck's landing queue (+98h). A record:
                         // this host keeps no landing queue.
@@ -17301,6 +18072,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // plane+904h is the landed-after-flight byte, clear for an
                         // airborne plane.
                         unit_.land_mode_50 = 1;
+                        unit_.land_spacing_4c = 1.0f;
                         // 006C5563-006C55FC (the members' offset in the block frame
                         // 004142E0 against block+A4h, into approach+44h), 006C3E50
                         // (approach+48h) and 006C5380 (approach+38h..+40h): contract
@@ -20117,8 +20889,24 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     // own leader, which is 0077F9E6's redirect.
     const std::size_t target_leader =
         host.formation_groups[static_cast<std::size_t>(group)].leader;
+    ++host.formation_join_depth;
     for (std::size_t i = 1; i < brought.size(); ++i) {
         formation_join_0077f940(brought[i], target_leader);
+    }
+    --host.formation_join_depth;
+    // Packet cc9_formation_join_follow. 0077FA8D..0077FAB8 inside the 0077FA81 loop,
+    // so it runs brought.size() times with the same unit and the same target; the
+    // recursion above models the loop's 0070EF30 calls only, so the follow belongs
+    // to the top-level call alone.
+    if (host.formation_join_depth == 0) {
+        for (std::size_t i = 0; i < brought.size(); ++i) {
+            ++host.formation_join_follows;
+            if constexpr (Impl::kFormationJoinFollowBound) {
+                if (host.commands.issue_follow_command_00720cd0(follower, target_leader)) {
+                    ++host.formation_join_follows_pushed;
+                }
+            }
+        }
     }
     return true;
 }
@@ -20885,6 +21673,35 @@ bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
     return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
 }
 
+// Packet cc9_unit_class_lands_troops. Slot 2Ch of the class descriptor vtables
+// (disk bytes, kVehicleClassDescriptorTable vtables + 2Ch): 00827FB0 in the
+// Destroyer, Cruiser, Cargo, BattleShip, Submarine, TorpedoBoat and MotherShip
+// descriptors and in the ship base at 00D1ACC4 (eight .rdata xrefs), 00963C70 in
+// MLandingShip's 00D1AD78 (the only dword 00963C70 in the image).
+//   00827FB0: cmp [ecx+78Ch],0 / jnz / xor al,al; ret / cmp [ecx+790h],0; setnz al
+//   00963C70: xor eax,eax / cmp [ecx+809h],al / sete al
+// Plane, land and building descriptors were not read at slot 2Ch; they answer
+// false here (uncertain; the known callers reach ship group members).
+bool GameUnitsHost::unit_class_lands_troops_vtable_2c(std::size_t index) const {
+    if (index >= impl_->slots.size()) return false;
+    const GameUnitSlot& slot = *impl_->slots[index];
+    switch (static_cast<bsp::VehicleClassKind>(slot.class_id)) {
+    case bsp::VehicleClassKind::ShipBase:
+    case bsp::VehicleClassKind::Destroyer:
+    case bsp::VehicleClassKind::Submarine:
+    case bsp::VehicleClassKind::MotherShip:
+    case bsp::VehicleClassKind::Cruiser:
+    case bsp::VehicleClassKind::Cargo:
+    case bsp::VehicleClassKind::BattleShip:
+    case bsp::VehicleClassKind::TorpedoBoat:
+        return slot.fields.landing_ship_class != 0 && slot.fields.landing_ship_amount != 0;
+    case bsp::VehicleClassKind::LandingShip:
+        return !slot.landing_ship_is_rocketer_0809;
+    default:
+        return false;
+    }
+}
+
 // Packet cc9_plane_in_flight_test. 007BB9A0's inputs (docs/PILOT_COMMAND_PATH.md,
 // docs/IN_GAME_INTERFACE_SCREEN_SETS.md):
 //  1. +C0Ch: its last writer on an airborne plane is 007C11E0 (the flight-state
@@ -21292,6 +22109,35 @@ void GameUnitsHost::report() {
             refused_states, host.land_retired_invalid, host.land_profile_calls,
             host.land_profile_writes);
     }
+    if constexpr (kLandingSequencerBound) {
+        const bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+        for (std::size_t i = 0; i < host.landing_decks.size(); ++i) {
+            const Impl::LandingDeck& d = host.landing_decks[i];
+            if (!d.built) continue;
+            host.log.notef("summary landing sequencer deck %s: refused=%d queue=%zu records=%zu "
+                "passes=%llu hits=%llu outside=%llu inserts=%llu releases=%llu lookups=%llu "
+                "found=%llu modes 1=%llu 2=%llu 3=%llu 4=%llu spacing_mode4_refused=%llu "
+                "slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
+                i < decks.size() ? decks.name_at(i).c_str() : "?", d.refused ? 1 : 0,
+                d.queue.size(), d.assignments.size(), d.passes, d.hit_passes, d.outside_passes,
+                d.inserts, d.releases, d.lookups, d.found, d.mode_counts[1], d.mode_counts[2],
+                d.mode_counts[3], d.mode_counts[4], d.spacing_mode4_refused,
+                d.slot_tail_unapplied);
+            for (const Impl::LandingAssignment& a : d.assignments) {
+                host.log.notef("summary landing record %s: mode=%d path=%.1f spacing=%.3f "
+                    "side=%d", host.slots[a.plane]->row.name.c_str(), a.mode_10,
+                    static_cast<double>(a.path_4), static_cast<double>(a.spacing_8),
+                    a.side_0d ? 1 : 0);
+            }
+        }
+        for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+            if (s->land_installed_at < 0.0) continue;
+            host.log.notef("summary landing plane %s: found=%llu mode=%d spacing=%.3f side=%d",
+                s->row.name.c_str(), s->land_found_assignments, s->land_mode_50,
+                static_cast<double>(s->land_spacing_4c), s->land_side_44 ? 1 : 0);
+        }
+        host.log.notef("summary landing sequencer refused decks=%llu", host.landing_refused_decks);
+    }
     if (host.gunnery != nullptr) host.gunnery->report();
     if (host.ai != nullptr) host.ai->report();
     host.log.notef("unit motion: %llu motion step(s) of %llu unit tick(s) over %.2f s of "
@@ -21329,6 +22175,10 @@ void GameUnitsHost::report() {
         "(0077BD70 / 0070D8D0 / 0070D0C0 / 0070E4C0, packet cc9_dead_member_group_removal)",
         host.formation_death_leaves, host.formation_death_handovers,
         host.formation_groups_emptied, kDeadMemberLeavesGroupBound ? 1 : 0);
+    host.log.notef("summary unit formation join follow calls=%llu pushed=%llu bound=%d "
+        "(0077FA8D -> 00720CD0, packet cc9_formation_join_follow)",
+        host.formation_join_follows, host.formation_join_follows_pushed,
+        Impl::kFormationJoinFollowBound ? 1 : 0);
     host.log.notef("summary unit formation groups=%llu joins=%llu creates=%llu rejoins=%llu "
         "clamped=%llu columns_unmeasurable=%llu (0070DB20 create, 0070EF30 join, "
         "0070ED30 column 0)",

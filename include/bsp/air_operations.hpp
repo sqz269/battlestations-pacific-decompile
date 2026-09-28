@@ -522,6 +522,16 @@ struct AirOpsDeck {
     std::vector<AssignQueueEntry> assign_queue;
     bool is_airfield{false};
     bool airfield_blocked{false};
+    // The landing holder's runway, holder+B0h and +B4h (block+80h). For an
+    // airfield scene record of kind 1, 006D3C10 hands 006BF0D0 the scene keys
+    // RunwayWidth and RunwayLength, overwriting the class values 006C0750 took
+    // from class+138h/+13Ch. 008F2260 answers null for an absent key and
+    // 006D3C10 dereferences it, so `runway_from_scene` false means the scene did
+    // not author both keys and the image would have faulted. Packet
+    // cc9_landing_sequencer, docs/SQUADRON_LAND_TASK.md section 5c.
+    float runway_width{0.0F};
+    float runway_length{0.0F};
+    bool runway_from_scene{false};
 };
 
 // 00895D20 IsReadyToSendPlanes. The whole rule: an airfield whose entity+720h

@@ -74,7 +74,7 @@ constexpr bool kFireTargetObjectIdBound = true;
 // image. The slot push itself still calls the ship director's +14h
 // (00836040) where the squadron's is 0084DD20; that difference is open.
 // OFF: every row runs 008358D0 (counted).
-constexpr bool kSquadronSetCommandBound = false;
+constexpr bool kSquadronSetCommandBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -3580,6 +3580,53 @@ void GameCommandsHost::report() {
             "0071D880, packet cc9_director_moveonpath_route)", received, queued, dropped,
             outside, kClearOrdersSendBound ? 1 : 0, host.summary.clearorders_sends);
     }
+}
+
+// Packet cc9_formation_join_follow: 00720CD0 as the join 0077F940 calls it at 0077FAB8,
+// directly, with no MT_COMMAND, no SETCMD and no 0071ECF0. The clear is
+// apply_clear_command's kClearAllSlots walk (00720CA0); the push is the same
+// director_set_command DirectorBinding runs (008358D0, so kSquadronSetCommandBound
+// applies unchanged). Inert until a caller wires it (kFormationJoinFollowBound).
+bool GameCommandsHost::issue_follow_command_00720cd0(std::size_t unit_index,
+    std::size_t target_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size() || target_index >= host.units.size()
+        || unit_index >= host.directors.size()) {
+        return false;
+    }
+    GameDirector& director = host.directors[unit_index];
+    {
+        // 00720CD8..00720CF8: 00720850 on each occupied slot from 9 down to 0.
+        bsp::CommandQueueState state = queue_state_of(director);
+        QueueClearBinding exec(host, host.units[unit_index], director, false);
+        bsp::clear_all_command_slots_00720ca0(state, exec);
+        queue_state_back(state, director);
+        host.done("WeaponDirector::issue_target_command_clear", 0x00720ca0u);
+    }
+    GameCommandRow row;
+    row.unit_index = unit_index;
+    row.unit = host.units[unit_index].name;
+    row.token = "follow";
+    row.target_token = host.units[target_index].name;
+    row.command = "follow";
+    // 00720D2A..00720D5C: kind 1 (has_target_entity), no position, the id
+    // [target+174h] (index + 1 in this host) and the zero floats at 00F87574.
+    bsp::SceneCommandTarget target{};
+    target.kind = 1u;
+    target.position_valid = 0u;
+    target.object_id = static_cast<std::uint16_t>(target_index + 1);
+    target.object = &host.units[target_index];
+    ChainState chain{host, host.units[unit_index], director, &row, nullptr, 0.0f,
+        target, bsp::kCommandFollow, 0u};
+    DirectorBinding binding(chain);
+    const bool pushed = binding.director_set_command(bsp::kCommandFollow, target);  // 00720D6E
+    row.issued = pushed;
+    row.slot_pushed = pushed;
+    host.rows.push_back(row);
+    host.log.notef("  follow issued (00720CD0, source join 0077F940): \"%s\" -> \"%s\" "
+        "pushed=%d", row.unit.c_str(), row.target_token.c_str(), pushed ? 1 : 0);
+    host.done("WeaponDirector::issue_target_command", 0x00720cd0u);
+    return pushed;
 }
 
 }  // namespace bsp::game
