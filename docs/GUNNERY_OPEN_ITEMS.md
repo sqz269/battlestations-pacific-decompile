@@ -1157,3 +1157,71 @@ The path pair (`set_path_follow_pair_0071c1b0`) takes the same route. While the 
 - 0071D880's clear-all and 0071E550's top-slot drop write in place.
 - The idle tail's 0071ECF0 make-room drop happens in the director step, not at row 9.
 - 0099A170's install is at the delivery. The image installs it one bot tick later (0099ACD0 behind `+7Ch`); that substitution predates this packet.
+
+## 28. The hop-1 clear-all and drop as messages (packet `cc9_set_command_clear_all`, cc9-gunnery6)
+
+**Switch:** `kSetCommandClearAllMessageBound`, OFF. It sits under `kSetCommandQueueDelayBound` (ON). The commits are `78895f00c` and `5c30a8101`.
+
+**The image.**
+- 00816E30 calls 0071D880 at 0081733E whenever the message flags are non-zero. That is every scripted, authored and AI-coordinator order: 1345 of 1345 deliveries on USN02.
+- 0071D880 builds MT_GAMEUNIT_CLEARCMD with `+20h = 1` and `+24h = -1` and routes it with flags 7 through 0077C2A0. It is therefore posted, and inside the drain it is inserted next.
+- 00721A40's 5Dh arm (00721BA8) passes it to 00720CA0, body 00720CA0-00720CCA, read whole:
+```
+00720ca5: MOV ESI,0x9
+00720caa: LEA EDI,[EBX + 0x150]      ; slot 9's command, director+54h+1Ch*9
+00720cb0: CMP dword ptr [EDI],0x0
+00720cb3: JZ 0x00720cbd
+00720cb8: CALL 0x00720850            ; 00720850(ESI)
+00720cbd: SUB ESI,0x1 / SUB EDI,0x1c / TEST ESI,ESI / JGE 00720cb0
+```
+- The receiver is `src/command_execution.cpp`'s `clear_all_command_slots_00720ca0`. Its last call, 00720850(0), is the head completion. It does the following:
+  - unregisters the slot-0 target's observer;
+  - records the previous command;
+  - snaps the slot to its target;
+  - sets the mode to idle when fewer than two slots are occupied;
+  - calls vtable[6Ch](1) at 00720B56, which resets the stage pair through 0071C130.
+- 0071ECF0's make-room (0071E550) then reads the queue as it was before the clear. When both the incoming command and the top slot are category 1 or 2, it posts 0071D900(count - 1) at 0071E5AA.
+- The delivery order is: the clear-all, then the drop, then the SETCMD. The drop meets an idle mode with slot 0 empty, and 00720850 returns at 007208C0..007208E5. It is a no-op in the image.
+
+**The host before this.** `DirectorBinding::clear_all_commands` zeroed the ten slots in place. It did not run 00720850, so it reset no stage, set no mode and cleared no observer. It ran before make-room, so make-room always saw an empty queue: `drops=0` on every row.
+
+**The binding.** Both writes go through `route_clear_command` and are delivered through the 5Dh arm. The every-slot action calls the 00720CA0 reconstruction. `unit+184h` for the receiver is the value the unit's last director step was given (`Impl::player_184`).
+
+### OFF counters and predictions (written before the ON runs)
+
+The OFF logs are `local\g6caoff_<row>.log`, built from `78895f00c`, whose OFF code is identical to `5c30a8101`'s. Against the section-27 ON logs they give `pair_diff` exit 1 on all four rows: only the new summary line differs.
+
+| row | clear-all | drops | 00720CA0 slot clears |
+| --- | --- | --- | --- |
+| USN02 | 1345 | 0 | 0 |
+| USN13 | 1600 | 0 | 0 |
+| USN04 | 957 | 0 | 0 |
+| USN01 | 119 | 0 | 0 |
+
+**Mechanism (decides the flip):**
+- **C1, the counts.** The clear-all count stays within a few of OFF's. `slot_clears_00720ca0` becomes non-zero on every row: one for each slot occupied when a clear-all is delivered. `drops` becomes non-zero on USN02, where the AI coordinator re-issues `attackmove` (category 2) onto an `attackmove` top. It stays 0 or near 0 on USN13 and USN01, where the planes' `moveto` is category 3. It is small on USN04, from PilotSetTarget's category-2 orders onto a category-2 top. `clear_receives` rises by the clear-alls plus the drops.
+- **C2, the queue state.** A re-issue onto a non-empty queue now leaves the mode idle and the stage pair at 0 before its SETCMD is pushed. Before, the stage and the mode were kept. Every drop is a no-op.
+
+**Spread:**
+- USN13, USN01 and USN04 are gameplay-identical (exit 1). Their re-issues replace a `moveto` or an attack order whose stage is still 0.
+- USN02 is exit 1, or exit 3 with small moves where an AI-coordinator retarget lands on a head whose stage was already raised.
+- The death counts equal OFF's on all four rows.
+
+## 29. The clear-all pairs, and the flip (2026-09-29)
+
+ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=true` (SHA-256 prefix `00CA7C47C8F8`, `local\g6caon_<row>.log`). OFF is section 28's `local\g6caoff_<row>.log`.
+
+| row | pair_diff | deaths | clear-all | drops | 00720CA0 slot clears | clear_receives OFF -> ON |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN02 9000 | 1, identical | 10 | 1345 | 1199 | 1318 | 13 -> 2557 |
+| USN13 3000 | 1, identical | 20 | 1600 | 0 | 1471 | 0 -> 1600 |
+| USN04 4500 | 1, identical | 45 | 957 | 0 | 965 | 10 -> 967 |
+| USN01 3000 | 1, identical | 5 | 119 | 2 | 107 | 2 -> 123 |
+
+- **C1 held.** The clear-all counts equal OFF's, and `slot_clears_00720ca0` is non-zero on every row. The drops are 1199 on USN02 (AI-coordinator `attackmove` onto an `attackmove` top), 0 on USN13 and USN04, and 2 on USN01. `clear_receives` = clear-alls + drops + the stage-2 clears exactly: USN02 1345 + 1199 + 13 = 2557.
+- **C2 is consistent.** Every drop is delivered after its clear-all. The idle-tail totals, `pushed` and every death row are unchanged, which is what a no-op drop and a stage reset on a stage-0 head give.
+- **Spread held**: exit 1 on all four rows.
+
+**Verdict: ON.** `kSetCommandClearAllMessageBound = true`.
+
+**Still open.** The idle tail's own 0071ECF0 make-room runs in the director step, and its drop now posts for row 9 like the others. The only remaining in-place director write in this path is 0071D810's stage store, which the image also makes directly.
