@@ -511,3 +511,214 @@ kCautiousWedgeBound=true` into `local\ships6_<row>`.
 - A mechanism failure keeps the switch OFF and is recorded. That is a wrong census on USN12's first
   line, a non-zero `u` while every cost is 0, or a USN04 call.
 - A spread miss with the mechanism matching may flip, and is recorded.
+
+## 14. The wedge pair, and the verdict
+
+The runs use commit `d12dcbd70` (main, with the units-host entry point). OFF is the tree's own build,
+`local\ships6_off_<m>.log` (bsp_game.exe SHA-256 prefix `07B3A099D1F5`). ON is `pair_export --flip
+kCautiousWedgeBound=true` into `local\ships6_on` (prefix `A1AC42A26F49`), with logs
+`local\ships6_on_<m>.log`. Both use `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep
+0.05, an idle player, present interval immediate, and `tools/run_game.ps1`. A 300-frame OFF smoke
+of USN12 (`local\ships6_smoke.log`) exited 0 with `bound=0 calls=0`.
+
+| mission | pair_diff | calls / runs / placed / no_record / zero_frame | unit table |
+| --- | --- | --- | --- |
+| USN12 3200/3000 | exit 1 (gameplay identical) | 99 / 49 / 539 / 0 / 26 | identical, Montpelier 2247.37 m both |
+| USN04 4700/4500 | exit 1 (gameplay identical) | 0 / 0 / 0 / 0 / 0 | identical (81 rows) |
+
+**The mechanism matched the prediction line for line.**
+- The first USN12 line is at 6.10 s: `samples=13 threat=(0.0 0.0 750.0) cost=0.0 u=(-0.0000 0.0000)
+  v=(0.0000 0.0000) dist=500 shape0=12 placed=11 not_ship=0 no_record=0`.
+- Its offsets are `first=(0.0 -0.0)` and `last=(-0.0 -0.0)`. The first place's lateral is +0.0
+  because `u[0]` is -0.0, so `F[0]` and `off[0]` are -0.0, and -0.0 - (-0.0) = +0.0.
+- **Corrected (the first version of this section misread the census).** The summary is
+  `calls=99 runs=49 placed=539 no_record=0 zero_frame=26`. The first 26 runs (6.10 s to 82.25 s) have a
+  zero frame and write (-0, -0), with one +0 lateral. From 84.65 s the 23 remaining runs keep
+  `threat=(750.0 0.0 -0.0)`, the eastward sample, with a cost of 0.1 rising to 0.7 by 90.75 s.
+  Montpelier is then within 4750 m of the player ships. Those runs have `u=(-0.2699 0.9629)` and
+  `v=(0.9629 0.2699)`, and the wedge writes real rows. The end-of-run formation dump shows them, for
+  example Cleveland (431.46, -252.66), Charles (862.93, -505.33) and Foote (-73.86, -1115.59). The OFF
+  dump keeps the join offsets (-13.10, 450.00) and so on.
+- So the all-zero-cost case did stack every ship member's station on Montpelier's own point
+  (offsets -0, -0) until 82.25 s. This is the image's own arithmetic (sections 10 and 13).
+  After that the stations form the threat-facing wedge.
+- **Fortress-07 did call.** `calls` exceeds `runs` by 50, which is the DEFENDPOSITION group's 50
+  ticks. Every one stopped at the first gate, because Fortress-07 is not a ship base. That is the
+  prediction's `calls > runs`. The earlier sentence here, that the group never called, was wrong.
+- USN04 made no call, as predicted.
+
+**Do the followers pile onto Montpelier? No, and the follower pass does not separate them either.
+Nothing in this host reads the new stations on USN12.**
+- The formation group is `column=0` with all 12 ships (log: `formation group 0: leader=Montpelier
+  type=6 column=0`), so the writes land in the live column.
+- The one motion consumer of column 0 is the `follow` state's station point, 0070D290 through
+  009DF2D0 (`FollowFormationPointBinding`). It is never called in either run, because no ship
+  enters `follow`. The state census has 12 `cruise`, 282 `moveonpath`, 9 `stop` and no `follow`, and
+  the director reports `follow=0`. `summary mission ai follow requests=575 available=0 refused=575`
+  (00779D50) is identical OFF and ON.
+- The only other readers are the path planner's group extents 0070D400 / 0070D5D0 (2816 calls in
+  both runs). They read each member's station `across`, which the wedge changes from about +/-500
+  to 0. The picked paths are unchanged, and `path_publishes=0` in both runs. Inference: the extents
+  feed a path that is not published on this row. That was not traced further.
+
+**Verdict: the switch is ON.** The mechanism matched. The spread miss (exit 1 against a predicted
+exit 3) comes from a consumer this host does not reach on USN12 (followers never enter `follow`),
+not from the wedge. When a follower does enter `follow` under a CAUTIOUSATTACK, CAUTIOUSMOVE or
+DEFENDPOSITION leader with no danger within 4750 m, its station will be the leader's own point, as
+in the image.
+
+**Open.**
+- Why USN12's eleven followers never take `follow`: every 00779D50 follow request is refused, and
+  `formation_requests=0`. That belongs to the follow-request packet, not this one.
+- Whether the group extents' consumer is ever published.
+- RETREAT's call at `00A156EE`, which waits on a RETREAT tick binding.
+
+## 15. Why no USN12 follower takes `follow` (packet `cc9_follow_request`): no host defect
+
+Worker cc9-ships6, 2026-09-28. The packet asked which test of `00779D50` the host fails on USN12's
+575 refused follow requests. **Every refusal is the image's own answer.** What keeps the followers out
+of `follow` is the authored `Cruise` they are placed with, and the image's director never ends it for
+a formation member. Nothing was bound, so there is no `kFollowRequestBound` and no pair.
+
+**`00779D50` BSP_Entity_MayFollowTarget, read whole this packet.**
+- ABI: `__thiscall(entity)(const char* token, entity* target)`, `RET 8`.
+- Body: `00779D50`-`00779E0F`, followed by `INT3` padding.
+- It matches `entity_may_follow_target_00779d50` in `src/ship_ai_states.cpp` test for test.
+
+| site | test | field or state read | refuses when |
+| --- | --- | --- | --- |
+| `00779D53` | follower byte | follower `+5Dh` | set |
+| `00779D68` | `00438E10(token, 00CFB52C "follow")` | the command token | not `follow` |
+| `00779D76` | target present | the argument | null |
+| `00779D83` | target `vt+5Ch(2)` | target kind | false |
+| `00779D8D`, `00779D93` | the follower's and the target's byte | `+5Dh` of each | set |
+| `00779D9F` | `00803510(follower+54h, target+54h)` | party relation | not 0 (not the same party) |
+| `00779DAB` | `00779820(target)` | the same entity, or the same non-null `+284h` group | true |
+| `00779DB4..00779DC5` | owner player | `+188h` of each | differ and target's is not 9 (skipped in the host, no producer) |
+| `00779DCC`..`00779DF9` | `vt+5Ch(6)`, `vt+5Ch(8)` of each | ship base, not kind 8 | follower or target fails |
+
+`00779820`, `__thiscall(entity)(other)`, `RET 4`, body `00779820`-`00779847`, was read whole. It
+answers 1 when `other` is the entity itself, or when `[entity+284h]` is non-null and equal to
+`[other+284h]`.
+
+**The 575 refusals on USN12, OFF and ON alike:**
+- **The eleven followers fail `00779DAB`.** Their diag lines read `ship 1/1, kind2=1, party 0/0,
+  alive 1/1`, so every earlier test passes. They are already in Montpelier's group, joined at load
+  (`formation group 0: leader=Montpelier ... members=[Montpelier,Cleveland,...]`, `joins=11`). The
+  image refuses a follow request between two members of the same group; the join already happened.
+  11 followers × 49 CAUTIOUSATTACK ticks is 539.
+- **Shigure, Samidare and Shiratsuyu fail `00779D9F`** (`party 1/0`). They are the player's ships,
+  listed in Montpelier's AI group on the first ticks (`first_group_members=15`). 575 - 539 = 36 = 3
+  ships × 12 ticks. That split is inferred from the totals, because the diag lines stop after 12.
+  Whether the image would put the player's ships in that AI group at all is a grouping question
+  outside this packet.
+
+**The producer of `follow` is not the request.** As `docs/SHIP_UNIT_GROUP_FOLLOW.md` section 4
+records, `follow` is issued by the follower's own director. The idle re-issue at `00836DC9` tests
+`007788B0` at `00836E13`, then takes `007788D0` at `00836E28` and pushes `00E08F60` at `00836E38`.
+The host models that arm (`weapon_director_idle_reissue_00836dc9`) and answers both predicates from
+the group. It is reached only when the director is idle: the stage is 2 at `00836A81`, or the
+queue is empty.
+
+**USN12's followers are never idle.**
+- Each of the twelve DestroyerGen ships is placed with the authored token `Cruise` (`authored token
+  "Cruise" x12 resolves to command class "cruise"`).
+- Their command rows read `cruise scene`. Cleveland, for example, holds `cruise` at throttle 0.598,
+  heading 1.597, 10 m/s, for the whole run and moves 1490.14 m.
+- In the image a `cruise` never ends for such a unit:
+  - `00835C70` BSP_WeaponDirector_BeginCurrentCommand raises a `cruise` or `stop` to stage 1 and
+    latches the cruise fields. It tests `007788B0` only for a `follow` command.
+  - `00836920`'s per-kind arms cover `stop` (`00836A8E`), `follow` (`00836ADC`), `attackmove`
+    (`00836B45`) and `moveonpath` (`00836BF0`). None of them is `cruise` (`00E08F70`).
+  - The started-stage terminator at `00836962..00836985` ends a stage-1 command only when a second
+    slot is filled (`0071BE60 > 1`) or the unit is player-controlled (`+184h`).
+  - The follower pass `00A10DC0` pushes no command to a ship member, only the join request.
+- So an AI formation follower placed with `Cruise` keeps cruising in the image as well. USN12's
+  followers sail straight at their cruise speed while Montpelier runs its cautious route.
+
+**Other missions do produce `follow`.** The reference-i logs (`local\rb9_<m>.log` in cc9-gunnery7)
+show the director's follow count as USN04 17, JM06 9, USN13 8, USN02 4 and USN01 2. JM08 has 0, like
+USN12. The request and producer machinery works where a follower's director goes idle.
+
+**Consequence for the wedge (section 14).** Its writes on USN12 have no motion consumer, and the
+image would have none either. The station 0070D290 is read only by the `follow` step.
+
+**Not settled.**
+- A rel32 scan of `.text` (`local\ships6_rel32.py`) finds 18 `CALL 0071D810` sites and no caller
+  outside eight functions:
+  - `00836920`: seven sites, all placed above.
+  - `00835C70`: `00835E12`.
+  - `0071DDB0`, `0071E430` EndCommand, `0071F290` CommandControllerBase_Update and `00835B40`
+    RetargetCommandSlot.
+  - `0084E010`: five sites. It is a vtable slot at `00D0BE14`, which is not the ship director's
+    table `00D09FC4`.
+  - `009B3900`.
+- `00836D12` belongs to the `moveonpath` arm.
+- **Closed in section 16.** The four generic director routines and `009B3900` were read there, and
+  none ends a `cruise` for a formation follower.
+- JM08's `follow=0` was not traced.
+
+## 16. RETREAT (`00A156E0`) is never created, and the section 15 residual read (packet `cc9_retreat_tick`)
+
+Worker cc9-ships6, 2026-09-28. **Step 1 (census) finds no row that creates RETREAT, so the tick is not
+bound (no `kRetreatTickBound`).** Step 2 reads the five residual-risk functions of section 15 instead.
+
+**Who can create a RETREAT (vtable `00D22A60`).** A scan of the image for the bytes `60 2A D2 00`
+finds four sites:
+
+| site | function | what it is |
+| --- | --- | --- |
+| `00A0FEDB` | `00A0FE90` | a type answer (`GetType` family), not a creator |
+| `00A100D7` | `00A0FF60` BSP_AiCommand_DescribeType | a type answer, not a creator |
+| `00A13770` | `00A13340` BSP_AiCommand_CreateFromLua | the inline construction at `00A1376E` |
+| `00A2BE9A` | `00A2BE70` (the RETREAT installer in docs/AI_PLANNERS.md's table) | **no caller**: no rel32 `CALL`/`JMP` and no absolute reference to `00A2BE70` anywhere in `.text` |
+
+- `00A13340`'s only caller is `00A37AD6`, inside `00A37A00` BSP_LuaBinding_AISetCommand (Lua
+  `AISetCommand`).
+- No mission script in this installation calls `AISetCommand`. That is docs/GAME_EXECUTABLE.md's
+  scan of the 299 `.lua` files, re-checked here with a case-insensitive grep of `scripts/`.
+- The `retreat` strings in the scripts are unit commands and unit properties
+  (`GetProperty(unit, "unitcommand") == "retreat"`, `unit.Retreat`), not AI group commands.
+- So in this installation the image never creates a RETREAT group command, and its tick `00A156E0`
+  (with its wedge call at `00A156EE`) is unreachable.
+
+**The census.** Every row's final group dump lists the commands its groups end on; none is RETREAT.
+
+| row (log) | groups | final group commands | RETREAT |
+| --- | --- | --- | --- |
+| USN04 (`rb9_usn04`) | 3 | CLOSEATTACK, MOVETOATTACK, NONCONTROL | 0 |
+| USN04 E2 (`rb9_e2`) | 2 | IDLE | 0 |
+| USN01 (`rb9_usn01`) | 5 | DEFENDPOSITION, MOVETOATTACK, NONCONTROL | 0 |
+| USN02 (`rb9_usn02`) | 2 | CLOSEATTACK, NONCONTROL | 0 |
+| JM06 (`rb9_jm06`) | 3 | CLOSEATTACK, NONCONTROL | 0 |
+| JM08 (`rb9_jm08`) | 5 | CAUTIOUSATTACK, DEFENDPOSITION, MOVETOATTACK, NONCONTROL | 0 |
+| USN13 (`rb9_usn13`) | 5 | DEFENDPOSITION, MOVETOATTACK, NONCONTROL | 0 |
+| BSM01 (`rb9_bsm01`) | 2 | DEFENDPOSITION, IDLE | 0 |
+| LOMP06 (`rb9_lomp06`) | 4 | CLOSEATTACK, DEFENDPOSITION, NONCONTROL | 0 |
+| USN12 (`ships6_on_usn12`) | 3 | CAUTIOUSATTACK, DEFENDPOSITION, NONCONTROL | 0 |
+
+The final dump is not a creation census. The creator analysis above is what makes zero exact: the one
+reachable creator is a Lua binding no script calls. RETREAT would run 0 ticks on every row.
+
+Beside the packet: JM08 ends with a CAUTIOUSATTACK group and USN01 with DEFENDPOSITION groups, so
+both rows reach the wedge `00A11690`. Neither was paired for it.
+
+**Step 2: the section 15 residual risk, closed.** The question was whether any stage raiser ends a
+`cruise` for a formation follower. None does.
+
+| function | ABI / read | what raises the stage | follower-specific `cruise` end? |
+| --- | --- | --- | --- |
+| `0071E430` BSP_WeaponDirector_EndCommand | `__thiscall(controller)(command, terminal)`, `RET 8`, body `0071E430-0071E4B7`, read whole | its caller says the command is done | no. Its ten rel32 callers are the ship states `moveto` (`009E5997`), `moveonpath` (`009E5C70`), `attackmove` (`009E88C1`) and its tangent sub-state (`009F3718`); the plane tasks (`009BCB0E`, `009C312E`, `009CFB47`); and the pilot-bot routines `009F7C90` (twice) and `009F83A8` in `009F8160`, which revalidate attack and ordnance commands. The ship `cruise` step `009E1170` is not a caller, and there is no absolute reference (bytes `30 E4 71 00`) |
+| `0071DDB0` | `__thiscall`, one entity argument, listing read `0071DDB0-0071DE96` | a command slot whose target resolves to the argument (an entity being removed) and whose director `vt+70h` agrees, from `[00E188A8]+5D4h >= 0Ch` | no. A `cruise` names the unit itself, so only its own removal ends it |
+| `0071F290` BSP_CommandControllerBase_Update | listing read `0071F290-0071F378` | `0071F36E`: a present, not-yet-accepted command whose `vt+78h(1)` (`00835C70`) answers false | no. `00835C70` answers 1 for `cruise` unless the base begin `0071F600` fails; it tests `007788B0` only for `follow` |
+| `00835B40` BSP_WeaponDirector_RetargetCommandSlot | listing read `00835B40-00835BC7` | a retarget onto the same object, only for `moveto` `00E08F68` or `attackmove` `00E08F78` (`00835BB9`, `00835BC0`) | no |
+| `009B3900` | listing read `009B3900-009B398B`; sole caller `009B3F09` in BSP_SquadronLandTask_Tick | the squadron's command target differs from the task's | no: a squadron path |
+
+With section 15's reading of `00836920` and `00835C70`, this covers every direct `CALL 0071D810` site
+(section 15's rel32 scan). A scan for the absolute bytes `10 D8 71 00` finds no match, so there is
+no vtable or pointer reference to it either. The same four-byte scan does find the RETREAT vtable
+above, so the negative is not vacuous.
+
+**Conclusion.** An AI formation follower placed with `Cruise` keeps cruising in the image. USN12's
+followers never taking `follow` is the image's behaviour. The wedge's stations there have no motion
+consumer in the image either.

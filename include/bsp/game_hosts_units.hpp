@@ -321,6 +321,14 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // at once while +38Dh is set, overwrites +394h only when +380h < 0 and +3A9h is clear, and
 // otherwise clears +3A9h. True: the Lua row stores the block on the squadron's slot and the
 // moveto refresh applies that gate. False: unimplemented; the refresh uses its own value.
+// Packet cc9_squadron_attack_alt (docs/LUA_BINDING_MISSION.md, "SquadronSetAttackAlt,
+// bound"). 008A22B0 stores the squadron's second cruise block: +37Ch = 0.5
+// (countdown 0), +38Ch = force (its freeze byte), +398h = the attack altitude,
+// +3AAh = 1 (the lock) and +3ADh = 0. The dive-bomb profile 009C8920 honours it
+// through the same gate as 0089F550's (009C89A6..009C89DD), and the approach
+// update 009C7A96 copies ctl+398h into approach+ACh. True: the block is kept and
+// the dive-bomb approach reads it. False: unimplemented, the tuning value.
+inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
@@ -396,6 +404,8 @@ public:
     // Packet cc9_squadron_travel_alt: 0089F550's five stores on the squadron of
     // unit_index (its registry squadron unit when it is a member). False when the
     // unit has no slot.
+    // Packet cc9_squadron_attack_alt: 008A22B0's five stores on the squadron's slot.
+    bool set_squadron_attack_alt_008a22b0(std::size_t unit_index, float altitude, bool force);
     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
