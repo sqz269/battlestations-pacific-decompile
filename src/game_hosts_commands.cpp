@@ -27,6 +27,7 @@
 #include "bsp/entity_command_arms.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_path_cursor.hpp"
+#include "bsp/unit_kind_query.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -63,6 +64,17 @@ constexpr bool kDirectorCommandArmsBound = true;
 // ON by the pairs of 2026-09-28: JM06 moves (the two PlayerSubs fire on their
 // commanded targets); USN02, USN04, USN13, USN01 and LOMP06 gameplay identical.
 constexpr bool kFireTargetObjectIdBound = true;
+
+// Packet cc9_squadron_set_command (docs/GUNNERY_OPEN_ITEMS.md section 45). True: a
+// row answering IsKindOf(0Fh) or IsKindOf(18h) takes the squadron controller's
+// SetCommand, slot +60h of 00D0BD98, which is 0071E6C0 alone: no category test and
+// no forced fire target 00835930. This host fuses a squadron with its leader plane
+// (a 0Fh row), whose ship-style director ran 008358D0; a plane instance has no
+// director at all (vtable[114h] 0047F180), so neither kind reaches 00835860 in the
+// image. The slot push itself still calls the ship director's +14h
+// (00836040) where the squadron's is 0084DD20; that difference is open.
+// OFF: every row runs 008358D0 (counted).
+constexpr bool kSquadronSetCommandBound = false;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -346,6 +358,8 @@ struct GameCommandsHost::Impl {
     unsigned long long queue_full_tests_queued_path{0};
     unsigned long long fire_unresolved{0};
     unsigned long long fire_unresolved_by_id{0};
+    unsigned long long squadron_set_commands{0};   // plane or squadron rows at 008358D0
+    unsigned long long squadron_fire_targets{0};   // their 00835930 calls (0 while ON)
     int fire_unresolved_traced{0};
     bool logged_queue_full{false};
     void note_weighted_command_count(int weighted, int unweighted) {
@@ -823,8 +837,19 @@ public:
     bool director_set_command(std::uint32_t command,
         const bsp::SceneCommandTarget& target) override {
         bsp::SceneCommandTarget local = target;
+        const bool squadron = bsp::unit_is_kind_of(chain_.unit.class_id, 0x0f)
+            || bsp::unit_is_kind_of(chain_.unit.class_id, 0x18);
+        squadron_row_ = squadron;
+        if (squadron) ++chain_.owner.squadron_set_commands;
+        if (kSquadronSetCommandBound && squadron) {
+            // 00D0BDF8: the squadron controller's slot +60h is 0071E6C0.
+            const bool pushed = bsp::director_push_command_slot_0071e6c0(*this, command, local);
+            chain_.owner.done("WeaponDirector::squadron_set_command_0071e6c0", 0x0071e6c0u);
+            return pushed;
+        }
         const bool pushed = bsp::director_set_command_008358d0(*this, command, local,
             kSessionModeSinglePlayer);
+        squadron_row_ = false;
         chain_.owner.done("WeaponDirector::set_command", 0x008358d0u);
         return pushed;
     }
@@ -841,6 +866,7 @@ public:
         return (klass != nullptr) ? klass->category : -1;
     }
     void set_fire_target(std::uint32_t target_object) override {
+        if (squadron_row_) ++chain_.owner.squadron_fire_targets;
         // 00835930, SetCommand's call with force 1 (00835924 PUSH 1). The target
         // is resolve_target_object's pointer: one of this host's unit records.
         if (!kWeaponDirectorFireTargetBound) {
@@ -1133,6 +1159,7 @@ public:
 
 private:
     ChainState& chain_;
+    bool squadron_row_{false};  // the current 008358D0 runs on a plane or squadron row
 };
 
 // ---------------------------------------------------------------------------
@@ -3505,6 +3532,10 @@ void GameCommandsHost::report() {
     host.log.notef("summary mission director fire target unresolved=%llu by_object_id=%llu "
         "(00835930, packet cc9_unresolved_fire_target)", host.fire_unresolved,
         host.fire_unresolved_by_id);
+    host.log.notef("summary mission director squadron set command rows=%llu "
+        "forced_fire_targets=%llu bound=%d (00D0BDF8 -> 0071E6C0, packet "
+        "cc9_squadron_set_command)", host.squadron_set_commands,
+        host.squadron_fire_targets, kSquadronSetCommandBound ? 1 : 0);
     host.log.notef("summary mission director steps=%llu idle_reissues=%llu stop=%zu "
         "cruise=%zu follow=%zu script_issues=%zu blocked_at_00816f7c=%zu commanded_speeds=%zu",
         host.summary.director_steps, host.summary.idle_reissues, host.summary.idle_stop,

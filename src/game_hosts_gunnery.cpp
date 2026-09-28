@@ -277,8 +277,10 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    is 00852B90's state from the hull's world Y (+100h) against the four
 //    depth words +1200h..+120Ch the dive binding seeded, so a boat held at a
 //    band reads Underwater (4) or DeepUnderwater (5) instead of PeriscopeIn.
-//    LABELLED: the periscope byte +1234h has no producer in this process and
-//    reads clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
+//    The periscope byte +1234h comes from the units host's 00854650 mast arm
+//    under kSubmarinePeriscopeOutBound (packet cc9_periscope_out,
+//    docs/GUNNERY_OPEN_ITEMS.md section 38); with that switch false it reads
+//    clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
 //    seeded keeps the stowed-periscope answer. OFF: PeriscopeIn for every boat.
 //    ON by the pairs of 2026-09-28: JM06 gameplay identical within 3000 frames,
 //    but the DeepUnderwater Narwhal-class is never sighted, so the script's
@@ -298,6 +300,19 @@ constexpr bool kSubmarineSensorCategoryBound = true;
 //    ON by the pairs of 2026-09-28: LOMP10 moves only the eight San Jose ships'
 //    health (x1.25); USN04 identity.
 constexpr bool kLuaOverrideHpBound = true;
+//  * kAiUntouchableGateBound (packet cc9_untouchable_gate, docs/GUNNERY_OPEN_ITEMS.md
+//    section 40): 00862440, called only at 00865248 in the unit gunnery AI tick
+//    00864FE0, skips a candidate that 00863990 accepted when the candidate's proxy
+//    (entity->vtable[140h]()) carries the byte +1D4h. The byte's writer is the Lua
+//    native AddUntouchableUnit 008AC140 (008AC263), through the same vtable[140h];
+//    it is read here through bsp::game::lua_unit_untouchable_1d4. LABELLED: the
+//    Lua host keys the flag by the unit the script passed, which is the proxy for a
+//    ship (0047F320 returns the entity); a plane's proxy [plane+9D4h] is not
+//    followed. OFF: the byte reads clear, as before, and the reads a set byte would
+//    have suppressed are counted.
+//    ON by the pairs of 2026-09-28: JM05 and USN04 gameplay identical; no marked
+//    read occurs within 3000 frames (section 40.4).
+constexpr bool kAiUntouchableGateBound = true;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -593,6 +608,21 @@ constexpr bool kReconAggregatesBound = true;
 //    wrote it on every hit, so a zero-damage hit could take the credit. OFF:
 //    every hit. Packet cc9_kill_credit, docs/KILL_CREDIT.md.
 constexpr bool kKillCreditDamageGateBound = true;
+//  * kPlaneNullFireTargetProviderBound: 008636A0 (called once, 00864C18, from
+//    the attach 00864BD0) installs the director-backed fire-target provider
+//    00D0D324 (slot +4h 00863640, director+238h) only when the unit answers
+//    IsKindOf(2), unit->vtable[114h]() is non-null and that director answers
+//    vtable[48h](2); otherwise the null provider 00D0D314 (00861B90, XOR EAX,EAX).
+//    A plane instance (every class answering IsKindOf(0Fh): 00D05F20, 00D06638,
+//    00D1A000, 00D19D28, 00D06920, 00D00070, 00D0BA80, 00D00308, 00D1A2D8) has
+//    vtable[114h] = 0047F180 (XOR EAX,EAX; RET), and the squadron (18h, 00D087C0)
+//    has 007ECFD0 -> [+348h], the 0084D810 controller whose slot 48h 0084D8F0
+//    answers true only for 0 and 1. So no plane-side pass ever reads a fire
+//    target. This host reads the ship-AI row's stored target for every unit,
+//    and since kFireTargetObjectIdBound a plane row can hold one. ON: kinds 0Fh
+//    and 18h take the null provider. OFF: the stored target is read (counted).
+//    Packet cc9_plane_forced_target_read, docs/GUNNERY_OPEN_ITEMS.md section 42.
+constexpr bool kPlaneNullFireTargetProviderBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -2131,6 +2161,11 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_stock_lua_sets{0};
     // Packet cc9_navigator_force_torpedo.
     unsigned long long forced_torpedo_marks{0};
+    unsigned long long untouchable_reads{0};          // 00862440, packet cc9_untouchable_gate
+    unsigned long long untouchable_marked_reads{0};
+    unsigned long long immediate_function_calls{0};   // 009E2B60
+    unsigned long long immediate_function_marks{0};
+    unsigned long long immediate_function_fires{0};
     unsigned long long forced_torpedo_fires{0};
     unsigned long long torpedo_supply_ticks{0};
     unsigned long long torpedo_supply_in_area{0};
@@ -4012,9 +4047,19 @@ public:
 
     bool unit_ai_suppresses_00862440(void* target) override {
         const std::size_t other = unit_of(target);
-        // entity+1D4h, the script-set untouchable flag. No binding in this
-        // mission sets it, so the proxy answers clear.
-        const bool untouchable = false;
+        // entity+1D4h on the proxy, the script-set untouchable flag
+        // (AddUntouchableUnit 008AC140; packet cc9_untouchable_gate).
+        const bool marked = other < owner_.units.count() && bsp::game::lua_unit_untouchable_1d4(other);
+        ++owner_.untouchable_reads;
+        if (marked) {
+            ++owner_.untouchable_marked_reads;
+            if (owner_.untouchable_marked_reads <= 6) {
+                owner_.log.notef("gunnery untouchable gate: target=%zu marked=1 bound=%d "
+                    "(00862440 at 00865248, packet cc9_untouchable_gate)", other,
+                    kAiUntouchableGateBound ? 1 : 0);
+            }
+        }
+        const bool untouchable = kAiUntouchableGateBound && marked;
         owner_.done("Gunnery::untouchable_gate_00862440", 0x00862440u);
         return bsp::entity_suppresses_gunnery_00862440(other < owner_.units.count(),
             untouchable);
@@ -4644,7 +4689,7 @@ public:
             // which is the state a submarine that nothing has raised is in.
             // Packet cc9_submarine_sensor_category: with the bands seeded (the
             // dive binding holds them), the whole state is computable; the
-            // periscope byte +1234h stays clear (no producer, LABELLED above).
+            // periscope byte +1234h is the units host's (packet cc9_periscope_out).
             const bsp::SensorCategory stowed = bsp::submarine_periscope_sensor_state(false);
             ++owner_.sub_category_calls;
             float bands[4]{};
@@ -4664,7 +4709,9 @@ public:
             depth.band_1204 = bands[1];
             depth.band_1208 = bands[2];
             depth.band_120c = bands[3];
-            depth.periscope_raised = false;
+            // Packet cc9_periscope_out: +1234h from 00854650's mast arm (false
+            // while kSubmarinePeriscopeOutBound is false).
+            depth.periscope_raised = owner_.units.submarine_periscope_out_1234(index);
             const bsp::SensorCategory image = bsp::sensor_category_submarine_00852b90(y, depth);
             const int state = static_cast<int>(image);
             if (state >= 0 && state < 6) ++owner_.sub_category_states[state];
@@ -5017,6 +5064,20 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
                 // No command-target producer is wired in this process, and this
                 // run queues no orders, so the faithful answer is "no command
                 // target" - which is what the native would return here.
+            }
+        }
+    }
+    // Packet cc9_plane_forced_target_read: 008636A0's null provider on a plane
+    // instance (IsKindOf(0Fh), director 0047F180 null) and on a squadron
+    // (IsKindOf(18h), controller slot 48h false for 2).
+    if (units.unit_is_kind_of(index, 0x0f) || units.unit_is_kind_of(index, 0x18)) {
+        ++summary.plane_null_provider_ticks;
+        if (state.fire_target != 0) {
+            ++summary.plane_fire_target_reads;
+            if (kPlaneNullFireTargetProviderBound) {
+                state.fire_target = 0;
+                ++summary.plane_fire_target_nulled;
+                done("Gunnery::null_fire_target_provider_00861b90", 0x00861b90u);
             }
         }
     }
@@ -5799,6 +5860,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             } else {
                 set_request(want_fire);
+            }
+            if (gun.immediate_fire_009e2b60) {
+                // Packet cc9_fire_function_guns_now: 009E2B99's vtable[1F0h].
+                gun.immediate_fire_009e2b60 = false;
+                ++immediate_function_fires;
+                if (turning == kTurningClassRapid) {
+                    im.immediate_4d4 = true;                             // 006FDF60
+                } else {
+                    set_request(true);                                   // 006FDC50
+                }
+                done("Gun::immediate_fire_slot_1f0_009e2b60", 0x009e2b99u);
             }
             latched = gun.fire.fire_requested;
             if (turning == kTurningClassRapid) ++immediate_guns_rapid;
@@ -9331,6 +9403,9 @@ void GameGunneryHost::report() {
                 "cc9_torpedo_supply_tick)", kTorpedoSupplyTickBound ? 1 : 0,
                 host.torpedo_supply_ticks, host.torpedo_supply_in_area,
                 host.torpedo_supply_calls, host.torpedo_barrels_unloaded);
+            host.log.notef("summary mission gunnery untouchable gate reads=%llu marked=%llu bound=%d "
+                "(00862440, packet cc9_untouchable_gate)", host.untouchable_reads,
+                host.untouchable_marked_reads, kAiUntouchableGateBound ? 1 : 0);
             host.log.notef("summary mission gunnery forced torpedo marks=%llu fires=%llu "
                 "(008A7200 -> 00730160, packet cc9_navigator_force_torpedo)",
                 host.forced_torpedo_marks, host.forced_torpedo_fires);
@@ -9707,6 +9782,10 @@ void GameGunneryHost::report() {
             "target=%zu (their only candidate source: 008651F5 cuts category 7 "
             "out of the recon sweep)", torpedo_units.size(), with_command);
     }
+        host.log.notef("summary mission gunnery plane fire target provider "
+            "null_provider_ticks=%llu stored_target_reads=%llu nulled=%llu bound=%d",
+            s.plane_null_provider_ticks, s.plane_fire_target_reads,
+            s.plane_fire_target_nulled, kPlaneNullFireTargetProviderBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo_candidates pass_ticks=%llu "
             "command_target=%llu fire_target=%llu scored=%llu accepted=%llu "
             "reject unknown=%llu liveness=%llu class=%llu rank=%llu mask=%llu range=%llu",
@@ -9915,6 +9994,28 @@ bool GameGunneryHost::group_accepts_target_008637d0(std::size_t unit_index,
         return true;                                              // 00863834
     }
     return false;
+}
+
+bool GameGunneryHost::fire_function_guns_now_009e2b60(std::size_t unit_index, int function) {
+    Impl& d = *impl_;
+    int marked = 0;
+    for (std::size_t g = 0; g < d.guns.size(); ++g) {
+        GameGunRow& gun = d.guns[g];
+        if (gun.unit_index != unit_index || gun.category != function) continue;   // 009E2B86
+        const int turning = g < d.gun_turning_class.size() ? d.gun_turning_class[g] : 0;
+        if (turning != Impl::kTurningClassRapid && turning != Impl::kTurningClassSingle) {
+            continue;                                                             // 009E2B7E
+        }
+        gun.immediate_fire_009e2b60 = true;
+        ++marked;
+        ++d.immediate_function_marks;
+    }
+    if (++d.immediate_function_calls <= 12) {
+        d.log.notef("  FireFunctionGunsNow: unit=%zu function=%d marked=%d bound=%d (009E2B60 -> "
+            "vtable[1F0h], packet cc9_fire_function_guns_now)", unit_index, function, marked,
+            kGunImmediateFireSlotBound ? 1 : 0);
+    }
+    return marked > 0;
 }
 
 int GameGunneryHost::force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only) {

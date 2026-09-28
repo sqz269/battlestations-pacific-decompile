@@ -319,6 +319,15 @@ inline constexpr bool kSubmarineDiveBound = true;  // ON: pairs held (docs/SUBMA
 // SetUnlimitedAirSupply (00893C00) is routed. False: needAir reads false, no crush.
 inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 13)
 
+// Packet cc9_periscope_out (docs/GUNNERY_OPEN_ITEMS.md section 38). True: each seeded
+// submarine with a periscope node runs 00854650's mast arm once per force step.
+// periscopeOut (+1234h) is cleared (00854B00), the mast's local Y steps toward
+// PeriscopeMoveRange + periscopeY at dt*5 while periscopeState (+122Ch) is 1 and
+// back toward periscopeY at dt*3 otherwise (0042AC60), and +1234h is set when the
+// extending mast reaches the full travel less 1.0 (00855045). 00852B90 then reads
+// PeriscopeOut. False: +1234h reads clear, as before.
+inline constexpr bool kSubmarinePeriscopeOutBound = true;  // ON: pairs held (docs/GUNNERY_OPEN_ITEMS.md section 38.4)
+
 // Packet cc9_submarine_seabed (docs/SUBMARINE_MODEL.md section 14). True: each
 // seeded submarine runs 00855420's footprint scan over the Landscape (44h) terrain
 // list, the dive law clamps its target to the published clearance (gain 1.5) for
@@ -437,6 +446,14 @@ public:
     // Packet cc9_submarine_ai_states: unit+1200h..+120Ch, bands[band] of a seeded
     // submarine (00853A90's table), and false for any other slot or band.
     bool submarine_band_y(std::size_t unit_index, int band, float& y) const;
+    // Packet cc9_periscope_out. The ship AI's store of periscopeState (+122Ch,
+    // 009E4DC1 / 009EA8FB), mirrored onto the seeded submarine's slot with the
+    // node test 00854AF8 (+1214h) and the class's PeriscopeMoveRange (+81Ch).
+    void set_submarine_periscope_state_122c(std::size_t unit_index, int state,
+                                            bool has_node, float move_range);
+    // Packet cc9_periscope_out. periscopeOut (+1234h) as 00854650 last left it;
+    // false for any other slot and while kSubmarinePeriscopeOutBound is false.
+    bool submarine_periscope_out_1234(std::size_t unit_index) const;
     // Packet cc9_submarine_air. unit+1280h, 00893C00's store. False when the slot
     // is not a seeded submarine.
     bool set_unlimited_air_00893c00(std::size_t unit_index, bool flag);

@@ -230,6 +230,9 @@ struct GameGunRow {
     // Packet cc9_navigator_force_torpedo: a pending vtable[1D8h](0, 0, 0), the
     // direct 00730160 BSP_Gun_Fire NavigatorForceTorpedo (008A7200) makes.
     bool force_fire_008a7200{false};
+    // Packet cc9_fire_function_guns_now: 009E2B60's vtable[1F0h], queued for the
+    // gun's next aim-and-fire pass.
+    bool immediate_fire_009e2b60{false};
     unsigned long long seat_handovers{0};
     unsigned long long seat_returns{0};
 };
@@ -688,6 +691,12 @@ struct GameGunnerySummary {
     // the director's command target and fire target at step 8.7. These count
     // that path on units that actually carry a torpedo-category gun, then each
     // rejection reason inside 00863990.
+    // Packet cc9_plane_forced_target_read: pass ticks on a plane or squadron
+    // (008636A0 installs the null provider 00861B90 there), how many of them
+    // found a stored ship-AI fire target, and how many the switch dropped.
+    unsigned long long plane_null_provider_ticks{0};
+    unsigned long long plane_fire_target_reads{0};
+    unsigned long long plane_fire_target_nulled{0};
     unsigned long long torpedo_cat_pass_ticks{0};
     unsigned long long torpedo_cat_with_command_target{0};
     unsigned long long torpedo_cat_with_fire_target{0};
@@ -989,6 +998,19 @@ public:
     // the bot, the fire request 0072D2C0/0072D130 or CanFire 0085A830.
     // Answers the number of guns marked.
     int force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only);
+    // Packet cc9_fire_function_guns_now. 009E2B60 (__thiscall on the ship-AI state,
+    // body 009E2B60-009E2BA4, RET 0): for each direct child of the unit
+    // ([[state+4]+AA8h]+48h, siblings at +44h) that answers IsKindOf(24h)
+    // (009E2B76) and whose weapon Function [[child+3F4h]+80h] is 8 (009E2B86), call
+    // child->vtable[1F0h]() (009E2B99): 006FDF60 sets gun+4D4h on a class-24h gun,
+    // 006FDC50 is vtable[1E8h](1) on the class-27h depth-charge launcher (its
+    // parent is 24h). The image hard-codes 8; `function` is the caller's, so the
+    // image's call is function == 8. LABELLED: the host's gun rows in build order
+    // stand for the child list, the device Type (gun_turning_class) stands for the
+    // IsKindOf(24h) test, and the slot is applied at the gun's next pass, after
+    // the gun's own request for that step. Answers whether any gun was marked.
+    // Inert until a caller exists (the ship AI's attack sub-states record it).
+    bool fire_function_guns_now_009e2b60(std::size_t unit_index, int function);
     // Packet cc9_torpedo_gate_bytes (docs/SENTITY_INIT_PASSES.md section 10).
     // 008637D0, 00863840, 00863920 and 008638B0 are one loop over the category
     // lists 00E0A510 (AA {1,5,6}), 00E0A4F8 (artillery {1,2,3,4,6}), 00E0A520

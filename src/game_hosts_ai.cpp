@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <functional>
+#include <limits>
 #include <utility>
 #include <map>
 #include <memory>
@@ -311,6 +312,17 @@ constexpr bool kSellingTickBound = true;
 // False: the 500 and 0 stand-ins. ON: USN13, USN01 and LOMP07 identical
 // (docs/PLANNER_TASK_CHOICE.md section 14.2).
 constexpr bool kCaptureAccessorsBound = true;
+
+// Packet cc9_planner_group_target_value (rank 10), docs/SHIP_AI_OPEN_ITEMS.md
+// section 7. True: the planner's candidate base term is 00A0F970's group target
+// value, (AttackSumMul * attack sum + attack maxes sum) / ReferenceWeight over
+// every (own member, candidate member) pair, with the penalties zeroed because
+// 00A1CC61 passes 0 as the first argument (00A0CE71). False: the candidate's
+// population, the stand-in this host has carried since the planner landed. The
+// census line `summary mission ai group target value` runs in both states.
+// ON (2026-09-28): the orders moved as predicted on USN02, JM06 and LOMP06
+// (exit 3); USN04 and USN01 gameplay-identical (section 7, the pairs).
+constexpr bool kPlannerGroupTargetValueBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
@@ -3687,13 +3699,254 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         (void)group;
         done("AiPlanners::clear_group_target_cache", 0x00a1cb80u);
     }
-    float candidate_base_weight(void* group) override {
-        // 00A0F970 weighs the candidate by what it holds. This process weighs
-        // it by population, which is the only member fact it can supply.
-        Group* g = group_at(group);
+    float candidate_base_weight(void* own_group, void* candidate) override {
+        // 00A0F970(ECX = the planner's group, EDX = the candidate), called at
+        // 00A1CC65 with (0, -1.0 [00D7A260], 0, 0, 1.0). The census runs in both
+        // states; the switch decides which value the planner multiplies.
+        Group* g = group_at(candidate);
+        const float value = group_target_value_00a0f970(group_at(own_group), g);
+        if (kPlannerGroupTargetValueBound) {
+            done("AiPlanners::candidate_base_weight", 0x00a0f970u);
+            return value;
+        }
+        // The stand-in: the candidate's population.
         record("AiPlanners::candidate_base_weight", 0x00a0f970u);
         return g != nullptr ? static_cast<float>(g->members.size()) : 0.0f;
     }
+
+    // ---- Packet cc9_planner_group_target_value: 00A0F970 and its callees ----
+    // docs/SHIP_AI_OPEN_ITEMS.md section 7. Every name is a hypothesis.
+
+    // The 32-byte record 00A04560 builds through 00A00020, projected onto what
+    // 00A0C330 and 00A0C3C0 read.
+    struct GroupValueRecord {
+        std::size_t member{0};   // the group member (a unit or a squadron)
+        std::size_t unit{0};     // proxy(member): the plane leader for a squadron
+        float x{0.0f};           // +4h, the pose X (00A04582, entity+FCh)
+        float z{0.0f};           // +8h, the pose Z (00A0459D, entity+104h)
+        float fix_weight{1.0f};  // +14h, 009FDF30's class weight x 00A04240
+        float spread{1.0f};      // +18h, the ValueRandomMul interpolation
+        bool third_party{false}; // +1Ch, 00A04568 CMP [entity+54h],2 / SETGE
+        // record+0h's class answers vtable[+18h](6) (a ship class, 00A0C3F5) or
+        // (0Fh) (a plane class, 00A0C51D); 0 when neither.
+        int class_query{0};
+        float class_max_speed{0.0f};  // class+500h (ship) or class+188h (plane)
+    };
+
+    // ValueRandomMul [1] and [2], tuning +50h/+54h. This installation's
+    // highlvlaiglobals.lua (2024-07-13) authors {0.95, 1.05} in the three
+    // IslandCapture tables (lines 37, 225, 411) and {0.85, 1.1} in the other
+    // four. The per-entity spread is 00419010(0, [1], 78.0 [00D21D04], [2],
+    // entity pointer mod 79) (00A0458A-00A045E5). LABELLED stand-in: this
+    // process has no stable entity addresses, so the argument is the midpoint
+    // 39, which gives every record the same spread. A constant spread scales
+    // every candidate's value by the same square, so it moves no pick; the
+    // per-entity +-5% the image draws is what is lost.
+    float group_value_spread() const {
+        const bool island = tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
+                            tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
+                            tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+        const float lo = island ? 0.95f : 0.85f;
+        const float hi = island ? 1.05f : 1.1f;
+        return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, 39.0f);
+    }
+
+    // 00A04560 BSP_Ai_EntityRecordBuild, __fastcall(ECX = out, EDX = entity),
+    // RET 4, called from 00A07E40 with 1.
+    GroupValueRecord group_value_record_00a04560(std::size_t member) {
+        GroupValueRecord r;
+        r.member = member;
+        r.unit = proxy(member);
+        float y = 0.0f;
+        units.unit_position_00fc(r.unit, r.x, y, r.z);
+        r.third_party = units.unit_side_0054(r.unit) >= 2;
+        // 00A045EE-00A04604: 009FDF30's weight for the entity's +C4h class id,
+        // times 00A04240(entity). 00A04240 multiplies the two hint-weight maps
+        // at 00F8A740 (global) and 00F8A750 + party*0Ch, default 1.0
+        // [00D7A24C]. Only the Lua native SetHintWeight (00A07F60 / 00A07F80)
+        // fills them, and in this installation only the multiplayer
+        // competitive scripts call it, so on these rows the factor is 1.0.
+        r.fix_weight = unit_class_weight(member);
+        r.spread = group_value_spread();
+        // 00A04652 IsKindOf(5) takes [entity+538h], 00A0466E IsKindOf(18h)
+        // [entity+35Ch], the squadron's plane class. LABELLED: this host asks
+        // the unit's own kind for the class's vtable[+18h] answer.
+        if (is_squadron(member) || units.unit_is_kind_of(r.unit, 0x0F)) {
+            r.class_query = 0x0F;
+            r.class_max_speed = units.plane_class_max_speed_0188(r.unit);
+        } else if (units.unit_is_kind_of(r.unit, 0x06)) {
+            r.class_query = 0x06;
+            r.class_max_speed = units.unit_class_max_speed_0500(r.unit);
+        }
+        return r;
+    }
+
+    // 00A0C3C0 BSP_AiEntityRecord_PairAttackValue, __fastcall(ECX = attacker
+    // record, EDX = target record, arg1, distance, debug, rnd flag), RET 10h,
+    // with the distance -1.0 and the rnd flag 1 on this path.
+    float group_value_pair_00a0c3c0(const GroupValueRecord& a, const GroupValueRecord& t) {
+        // 00A0C330 BSP_AiEntityRecord_PairBaseValue: 00A08460(ECX = a+0h,
+        // EDX = a+10h, t+0h, t+1Ch) x (a+18h x t+18h) x t+14h.
+        float weight = 1.0f;
+        const GameAiWeaponFacts& facts = game_ai_weapon_facts();
+        const GameAiWeaponFacts::Unit* attacker_row = facts.row(a.unit);
+        const GameAiWeaponFacts::Unit* target_row = facts.row(t.unit);
+        if (ai_weight_model_enabled() && attacker_row != nullptr && target_row != nullptr &&
+            attacker_row->inputs_complete && target_row->inputs_complete) {
+            bsp::AiTargetWeightKey key;
+            key.attacker = handle(a.unit);
+            // a+10h: 0 for a ship record (00A04650); the model reads it only
+            // as a memo key, and this binding keeps no memo.
+            key.attacker_class = units.unit_class_id(a.unit);
+            key.target = handle(t.unit);
+            key.target_is_neutral = t.third_party ? 1 : 0;
+            const bsp::AiModeTuning record = mode_tuning_record();
+            AiWeightModelBinding model(facts, record, tuning,
+                [this](std::size_t unit) { return accuracy_target_group(unit); });
+            weight = bsp::ai_target_weight_00a08460(model, key);
+            ++group_value_census.model_pairs;
+        } else {
+            // LABELLED: 00A08460 with none of its inputs, the identity the
+            // close-attack weight 00A0F810 stands in with too.
+            ++group_value_census.stand_in_pairs;
+        }
+        // 00A0C34E: an attacker record with +1Ch set whose class answers
+        // vtable[+18h](1Ch) scores 0. That query is unread here (the same slot
+        // 00A0F859 asks), so the arm never fires; it can only remove value.
+        float value = a.spread * t.spread * weight * t.fix_weight;
+        // 00A0C3F5 / 00A0C51D: the distance multiplier, ship or plane class.
+        if (a.class_query == 0x06 || a.class_query == 0x0F) {
+            const bool ship = a.class_query == 0x06;
+            // 00A0C415-00A0C439: the records' +0Ch bytes are both 1 (00A0468F),
+            // so the distance is 00414C60 over the pose delta, 0 under 1e-10.
+            const float dx = a.x - t.x;
+            const float dz = a.z - t.z;
+            const float d2 = dx * dx + dz * dz;
+            const float d = static_cast<double>(d2) > 1.0e-10
+                                ? static_cast<float>(std::sqrt(static_cast<double>(d2)))
+                                : 0.0f;
+            // 00A0C457 / 00A0C57F: less the arrive distance, +D8h or +ECh.
+            const float arrive = ship ? kGroupValueShipArriveDist : group_value_plane_arrive();
+            const float beyond = static_cast<float>(static_cast<double>(d) - arrive);
+            if (beyond > 0.0f) {
+                // 00A0C477 FDIV [class+500h] / 00A0C59F FDIV [class+188h]. A
+                // zero speed divides to +inf, which the clamp takes to [2].
+                const float time = a.class_max_speed != 0.0f
+                                       ? beyond / a.class_max_speed
+                                       : std::numeric_limits<float>::infinity();
+                // 00419010(x0 = TravelTime[1], y0 = WeightMul[1], x1 =
+                // TravelTime[2], y1 = WeightMul[2], x = time), the pushes at
+                // 00A0C4AE-00A0C4DE (+DCh, +E8h, +E0h, +E4h) and their plane
+                // twins (+F0h, +FCh, +F4h, +F8h).
+                const float mul = ship
+                    ? bsp::clamped_interpolate_00419010(60.0f, 1.0f, 300.0f, 0.1f, time)
+                    : bsp::clamped_interpolate_00419010(0.0f, 1.0f,
+                                                        group_value_plane_travel_far(), 1.0f,
+                                                        time);
+                value *= mul;
+                if (mul < 1.0f) ++group_value_census.distance_cut_pairs;
+            }
+        }
+        return value;
+    }
+
+    // ShipDistWeight_AriveDist (+D8h), 3000 in all seven mode tables of this
+    // installation's highlvlaiglobals.lua (lines 46, 234, ...); TravelTime
+    // {60, 300} and WeightMul {1.0, 0.1} likewise uniform.
+    static constexpr float kGroupValueShipArriveDist = 3000.0f;
+    // PlaneDistWeight_AriveDist (+ECh) and TravelTime[2] (+F4h): 1500 and 60 in
+    // the three IslandCapture tables, 4000 and 90 in the other four. WeightMul
+    // is {1.0, 1.0} everywhere, so a plane attacker's multiplier is 1.0 at any
+    // range.
+    float group_value_plane_arrive() const {
+        return group_value_island_mode() ? 1500.0f : 4000.0f;
+    }
+    float group_value_plane_travel_far() const {
+        return group_value_island_mode() ? 60.0f : 90.0f;
+    }
+    bool group_value_island_mode() const {
+        return tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
+               tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
+               tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+    }
+
+    // 00A0F970 BSP_AiGroup_TargetValueAgainstGroup, __fastcall(ECX = attacker
+    // group, EDX = target group, arg1, distance, debug, flag, scale), RET 14h.
+    float group_target_value_00a0f970(Group* own, Group* target) {
+        ++group_value_census.calls;
+        // 00A0F98B / 00A0F99A: either group's +5644h count at 0 answers 0.
+        if (own == nullptr || target == nullptr || own->members.empty() ||
+            target->members.empty()) {
+            ++group_value_census.empty_groups;
+            return 0.0f;
+        }
+        // 00A07E40 twice: one record per member of the +563Ch list, in order.
+        std::vector<GroupValueRecord> attackers;
+        std::vector<GroupValueRecord> targets;
+        for (const std::size_t m : own->members) attackers.push_back(group_value_record_00a04560(m));
+        for (const std::size_t m : target->members) targets.push_back(group_value_record_00a04560(m));
+        // 00A0C650 BSP_AiGroup_ComposeAttackValue. The pair loop sums every
+        // pair (attack sum) and keeps each attacker's best (00A0C8xx); the
+        // maxes vector starts at 0.0 (the 004A8F10 resize with FLDZ).
+        float attack_sum = 0.0f;
+        float maxes_sum = 0.0f;
+        for (const GroupValueRecord& a : attackers) {
+            float best = 0.0f;
+            for (const GroupValueRecord& t : targets) {
+                const float v = group_value_pair_00a0c3c0(a, t);
+                attack_sum = v + attack_sum;
+                if (best < v) best = v;
+            }
+            // 00A0CC82-00A0CC9B: the maxes are summed in attacker order.
+            maxes_sum = best + maxes_sum;
+        }
+        // 00A0CDC6-00A0CDE3: (+218h AttackSumMul x sum + maxes) / +214h
+        // ReferenceWeight, 0.33 and 5.0 in all seven tables (lines 139-140).
+        const float base = (kGroupValueAttackSumMul * attack_sum + maxes_sum) /
+                           kGroupValueReferenceWeight;
+        // 00A0CE26-00A0CE6B: the speed bonus min(+22Ch x 00A07C10(group), +228h x
+        // base). Both are authored 0 (lines 144-145), so it is 0 for any finite
+        // group speed; 00A07C10 is not called here.
+        const float speed_bonus = 0.0f;
+        // 00A0CE71: the three penalties are zeroed when arg1 is 0, which it is
+        // from 00A1CC61. Then 00A0CEB0-ish clamps a negative result to 0.
+        float result = speed_bonus + base;
+        if (result < 0.0f) result = 0.0f;
+        if (result == 0.0f) ++group_value_census.zero_results;
+        const float population = static_cast<float>(target->members.size());
+        if (group_value_census.samples < kGroupValueSampleLimit) {
+            ++group_value_census.samples;
+            // The planner's range factor for the same pair, as 00A1CB80 forms
+            // it, so a census line predicts the pick without the ON run.
+            const float leader_d2 = squared_planar_distance(own, target);
+            const float range = range_interpolation(
+                tuning.at(bsp::kAiPlannerTuningRangeNear),
+                tuning.at(bsp::kAiPlannerTuningRangeFar),
+                bsp::ai_target_scoring_distance(leader_d2, near_radius_squared()));
+            log.notef("  ai group target value own_lead=%s own_members=%zu target_lead=%s "
+                      "target_members=%zu value=%.4f population=%.0f sum=%.4f maxes=%.4f "
+                      "leader_dist=%.0f range=%.3f",
+                      unit_name(own->members.front()).c_str(), own->members.size(),
+                      unit_name(target->members.front()).c_str(), target->members.size(),
+                      static_cast<double>(result), static_cast<double>(population),
+                      static_cast<double>(attack_sum), static_cast<double>(maxes_sum),
+                      std::sqrt(static_cast<double>(leader_d2)), static_cast<double>(range));
+        }
+        return result;
+    }
+    static constexpr float kGroupValueAttackSumMul = 0.33f;
+    static constexpr float kGroupValueReferenceWeight = 5.0f;
+    static constexpr unsigned long long kGroupValueSampleLimit = 400;
+    struct GroupValueCensus {
+        unsigned long long calls{0};
+        unsigned long long empty_groups{0};
+        unsigned long long model_pairs{0};
+        unsigned long long stand_in_pairs{0};
+        unsigned long long distance_cut_pairs{0};
+        unsigned long long zero_results{0};
+        unsigned long long samples{0};
+    };
+    GroupValueCensus group_value_census{};
     float squared_planar_distance(void* a, void* b) override {
         if (group_leader_position(a) == nullptr) return 0.0f;
         if (group_leader_position(b) == nullptr) return 0.0f;
@@ -4478,6 +4731,13 @@ void GameAiCoordinatorHost::report() {
             host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
             game_ai_weapon_facts().known_units(), complete);
     }
+    host.log.notef("summary mission ai group target value bound=%d calls=%llu "
+        "empty_groups=%llu model_pairs=%llu stand_in_pairs=%llu distance_cut_pairs=%llu "
+        "zero_results=%llu (00A0F970 at 00A1CC65; packet cc9_planner_group_target_value)",
+        kPlannerGroupTargetValueBound ? 1 : 0, host.group_value_census.calls,
+        host.group_value_census.empty_groups, host.group_value_census.model_pairs,
+        host.group_value_census.stand_in_pairs, host.group_value_census.distance_cut_pairs,
+        host.group_value_census.zero_results);
     {
         // Packet cc8_ai_target_weight_zero: one line per (bullet sub-type,
         // target group) pair actually asked for. `accuracy` is what 009FE270

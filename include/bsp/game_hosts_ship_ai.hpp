@@ -517,6 +517,29 @@ struct GameShipAiSummary {
     unsigned long long ring_probe_moved_starts{0};
     unsigned long long ring_probe_casts{0};
     unsigned long long ring_probe_hits{0};
+    // Packet cc9_approach_enter_reseed: approach member enters (009F3220),
+    // attackmove state enters and exits (009E86C0 / 009E86E0), and the stream-1
+    // draws the re-seeds took. The first three count on both sides.
+    unsigned long long approach_member_enters{0};
+    unsigned long long attackmove_state_enters{0};
+    unsigned long long attackmove_state_exits{0};
+    unsigned long long approach_reseeds{0};
+    unsigned long long approach_reseed_draws{0};
+    // Packet cc9_follow_station_point: the zone sets resolved and pushes run
+    // (ON only), pushes that moved the point, and leader yaw-rate reads that
+    // were non-zero (both sides).
+    unsigned long long follow_zone_sets{0};
+    unsigned long long follow_pushes{0};
+    unsigned long long follow_pushes_moved{0};
+    unsigned long long follow_leader_turning{0};
+    // Packet cc9_plane_row_autotarget: AutoTarget ticks reaching a plane or
+    // squadron row (both sides) and the thinks they ran (OFF only).
+    unsigned long long plane_row_autotarget_ticks{0};
+    unsigned long long plane_row_autotarget_thinks{0};
+    // Packet cc9_autotarget_follower_gate: AutoTarget thinks by a formation
+    // follower (both sides) and the leaves 009F5DEB ran (ON only).
+    unsigned long long autotarget_follower_thinks{0};
+    unsigned long long autotarget_follower_leaves{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
