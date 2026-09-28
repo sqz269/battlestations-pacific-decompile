@@ -4629,7 +4629,11 @@ public:
             const bsp::SensorCategory stowed = bsp::submarine_periscope_sensor_state(false);
             ++owner_.sub_category_calls;
             float bands[4]{};
-            if (!owner_.units.submarine_depth_bands(index, bands)) {
+            bool seeded = true;
+            for (int i = 0; i < 4 && seeded; ++i) {
+                seeded = owner_.units.submarine_band_y(index, i, bands[i]);
+            }
+            if (!seeded) {
                 ++owner_.sub_category_unseeded;
                 owner_.record("Recon::submarine_sensor_state_00852b90", 0x00852b90u);
                 return stowed;
