@@ -1,12 +1,14 @@
 # Ship AI and AI command: open items, ranked
 
-Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0 009F6A20 007788B0 0077C980 00827FB0 00963C70 00416270 009D7050
+Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0 009F6A20 007788B0 0077C980 00827FB0 00963C70 00416270 009D7050 009EF910 00A2B8F0
 
 This file ranks what is still open in the ship-AI and AI-command lane, as
 docs/GUNNERY_OPEN_ITEMS.md section 31 does for gunnery and docs/LUA_BINDING_MISSION.md does for the
 Lua natives. Each later section is one packet taken from the ranking.
 
 ## 1. The first ranking (packet `cc9_ship_ai_open_ranking_1`, cc9-ships7, 2026-09-28)
+
+**Superseded by section 16**, which ranks the lane again on main `941fd197b`.
 
 **Source.** The nine reference i logs `local\rb9_{bsm01,e2,jm06,jm08,lomp06,usn01,usn02,usn04,usn13}.log`
 in worktree cc9-gunnery7. They were built at main `d466d4250` (docs/GAME_EXECUTABLE.md "2026-09-28 i").
@@ -1473,3 +1475,112 @@ is no longer blocked.
 - A leader-yaw effect reaches only followers within 400 m along the column (`009DACD0`'s blend).
   Check `along` before predicting a follower move.
 - The arm final step's 009DC2E0 widths are often under 1, so its clearance pass is skipped there.
+
+## 16. The second ranking (packet `cc9_ship_ai_open_ranking_2`, cc9-ships9, 2026-09-28)
+
+**It replaces section 1's table.** Section 1 was built on reference i; every lane flip since then
+is in this base.
+
+**Source.** Ten rows run once on `agent/cc9-ships9` at main `941fd197b`, with no flip:
+`build\win32\Release\bsp_game.exe` in that worktree (SHA-256 prefix `D69A82E0C609`).
+- The launch is reference j's: `tools/run_game.ps1`, `BSP_GUNNERY_RNG_STREAMS=1`,
+  `BSP_DEATH_TABLE=1`, lockstep 0.05, `--press-start-frame 30 --menu-select <mission>`, idle
+  player, present interval immediate. A 300-frame USN01 smoke ran first.
+- Logs: `local\ships9_b0_<row>.log` in that worktree. Every log has its milestone line, the
+  module directory under `cc9-ships9` and the final COM release.
+- `local\ships9_census.py ships9_b0 rows <regex>` sums the non-concrete host rows per mission.
+  `local\ships9_sites.py <row name>` prints the record site in `src/`.
+- `local\ships9_vsj.py ships9_b0 <rows>` diffs each row against reference j (`rb10_<row>`,
+  worktree cc9-gunnery8).
+
+**The base rows.** These are the OFF logs for this lane's next pairs. `pair_diff` against j exits 3 on all ten rows.
+On JM08, USN12 and JM05 the deaths, hit records, shots and damage are j's; the other seven moved. The moves belong to the post-j landings (the section 15 table,
+the plane-lane dead-bot think, the periscope, the yaw-rate speed and others). They are not
+attributed here.
+
+| mission | frames | deaths | hit records (hull) | shots | damage | first hit | torpedo / dive releases |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN01 | 3200/3000 | 5 | 474 (81) | 1480 | 2831.2 | 49.10 s | 0 of 5 / 2 of 2 |
+| USN02 | 9200/9000 | 13 | 3179 (442) | 2473 | 46042.5 | 18.90 s | - |
+| USN04 | 4700/4500 | 39 | 711 (128) | 9488 | 10136.8 | 101.05 s | 1 of 16 / 0 of 19 |
+| JM06 | 3200/3000 | 1 | 328 (322) | 378 | 4231.2 | 79.15 s | - |
+| JM08 | 3200/3000 | 11 | 361 (106) | 2324 | 4149.8 | 5.25 s | - |
+| USN13 | 3200/3000 | 27 | 646 (196) | 6989 | 8450.6 | 96.40 s | 0 of 60 / - |
+| LOMP06 | 1200/1000 | 1 | 3 (1) | 10 | 2400.0 | 36.90 s | - |
+| USN12 | 3200/3000 | 0 | 30 (15) | 83 | 978.1 | 8.30 s | - |
+| JM05 | 3200/3000 | 1 | 41 (24) | 100 | 2396.3 | 9.90 s | 0 of 12 / 0 of 6 |
+| LOMP10 | 3200/3000 | 2 | 94 (77) | 442 | 980.0 | 90.50 s | - / - |
+
+**The still-false switches.**
+- This lane has one: `kAutoTargetFollowerGateBound` (`src/game_hosts_ship_ai.cpp`, section 12).
+- Outside the lane: `kNavigatorForceTorpedoBound` (`include/bsp/game_hosts_script_orders.hpp`)
+  and `kSquadronSetCommandBound` (`src/game_hosts_commands.cpp`). The rest of the `= false`
+  constants in `src/` and `include/` are trace and debug switches or the image's own constants.
+
+### Closed since section 1
+
+| item | switch | where |
+| --- | --- | --- |
+| a surface ship attacking a submarine (rank 1) | `kShipAiSubTargetSubStatesBound`, `kShipAiSubTargetEntryPointsBound`, ON | sections 2 and 9 |
+| the follower's station point (rank 2) | `kShipFollowStationPointBound`, ON | section 10 |
+| the free-bearing query (rank 3) | `kShipAiFreeBearingBound`, ON | section 14 |
+| the party brain's replan flag (rank 5) | `kAiPartyReplanFlagBound`, ON | section 3 |
+| the planner candidate's group target value (rank 10) | `kPlannerGroupTargetValueBound`, ON | section 7 |
+| the approach enter re-seed | `kShipAiApproachEnterReseedBound`, ON | sections 4 and 8 |
+| no AutoTarget on plane rows | `kPlaneRowAutoTargetBound`, ON | section 11 |
+
+Section 1's "exact or closed" table still holds for the rows it lists. The AutoTarget rows
+`009F5E69`, `00521EA0`, `00465080`, `00E08F70+vtable0C` and `00CFC3D0+vtable140` are the gunnery
+lane's (docs/GUNNERY_OPEN_ITEMS.md sections 17 and 31), so they are not ranked here.
+
+### The ranking
+
+Reach as in section 1: 4 decides who is shot at, 3 an order or a movement, 2 a count, 1
+presentation. Calls are the sum over the ten base rows.
+
+| rank | item | image | host file and label | calls | reach, in one line |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **the AutoTarget follower gate** (section 12; queue item 3) | `007788B0` at `009F5DC4` | `game_hosts_ship_ai.cpp` `AutoTarget::controller_belongs_to_another`, `kAutoTargetFollowerGateBound` OFF | 252379 (JM08 56021, JM05 54205, LOMP10 47716, USN13 43186) | 4: a formation follower does not pick its own target. Waits on cc9-lua9's join follow-up |
+| 2 | **the troop-landing class trait** (section 13; queue item 2) | `[unit+538h]->vtable[2Ch]` at `00A1443D` (close attack), `009F35D8` (approach warn sweep) and the Cargo arm of `00A03510` | `game_hosts_ai.cpp` `AiCommand::close_controller_busy` (false); `game_hosts_ship_ai.cpp` `ShipAiApproach::unit_armament_ready` and `member_armament_ready_vtable_002c` (false) | 13381 close attack (JM05 7689, LOMP10 1290, USN02 1207); 460 approach (USN01 325, LOMP10 120) | 3: the close attack sends troop landers; the approach's warn sweep runs with an empty list. **The approach name "armament ready" is wrong**: it is the same slot as the close attack's. Waits on cc9-lua9's accessor |
+| 3 | **the turn clearance's path fade** | `009EFFF2..009F0072` in `009EF910`: `00778890(unit)` **or** `[[unit+738h]+54h] == 00E08F80` (`moveonpath`) fades the heading error by `00419010` over `blk+330h` and `00811A30` | `game_hosts_ship_ai.cpp` `ShipAiClearance::path_fade_00778890` answers false. Its comment reads the test as a conjunction and says neither half has a producer. The listing is `JNE 009F0022` after the leader call, so either half suffices, and the units host now answers the leader half (`unit_formation_group_0284`, `formation_leader_0014`) | 37443 on every row (USN02 12309, JM05 8573, USN04 6170, USN13 4184, JM06 3297) | 3: a formation leader, or a ship on `moveonpath`, gets a smaller heading error, so `blk+370h` = 1 (heading error large) is set less often at `009F00BF`. The approach answers the same routine false at three more sites: the sub-state step `009F3429` (`unit_is_group_leader`, 460 calls, USN01 325, with the stale label "No AI group object exists"), the standoff `009E6F6E` / `009E70A7` and the throttle limit `009E6C3C` (no calls on these rows). The arm final, the layer choice and the path corridor already answer it from the formation accessors |
+| 4 | **the AI command's avoid-zone point** | `00417B10` from the command tick's leader and follower arms | `game_hosts_ai.cpp` `AiCommand::avoid_zone_offset_point` returns the requested point ("contract: unread", stale) | 2305 (USN13 955, JM05 403, USN04 297, JM08 210) | 3: the destination the AI orders when it lies inside an avoid zone. The routine is bound for the follower station point (`zones.offset`); the AI host has to reach the ship-AI host's `GameAvoidZoneRuntime`. Read the call's margin and mode first |
+| 5 | **the group reference release** | `00A2B8F0` `__thiscall(group+24h)(emptyGroup)`, from the compose drain `00A2E784` | `game_hosts_ai.cpp` `AiGroups::release_group_reference`: reverts a command whose target group emptied, "labelled substitution", "contract: unread" | 53515 (JM05 22079, JM08 15823, USN13 10026) | 3: what a group does after the group it was ordered against empties. JM05 creates 224 groups and destroys 201 by proximity merge. The body is unread |
+| 6 | the approach frame state's unread spans (section 1 rank 12) | `009F1BC0` spans as section 1 lists; `[target+740h]` at `009F1E36`; `[unit+494h]` at `009F32A0`; the sub-heading and sub-throttle producers `009E5E90` / `009E6A90` | `ShipAiApproach::frame_state_unread_spans`, `target_zone_object_0740`, `unit_depth_reference`, `sub_heading_command`, `sub_throttle_command` | 31634 (USN02 28784, USN01 1748, LOMP10 1002) | 3 for a zone-object target and a submarine approach. USN02's mode 0 matched the image's standoff (docs/ATTACKMOVE_ENGAGEMENT_RANGE.md 1) |
+| 7 | the heading wrap after a heading store (section 1 rank 7) | `00605070` on `blk+1D8h` at `009DFF81` / `009E00FA` and on `brain+1E0h` at `009F3360` | `ShipAiControls::after_heading_stored` and `ShipAiApproach::wrap_brain_heading` record; the host interface passes the heading by value, so a binding needs a reference | 141156 + 31576 (USN13 70431, JM08 21318, USN12 13929, JM05 13641) | 0 to 3. A counter of out-of-range stores decides it cheaply; it was not added here |
+| 8 | the carrier arm of the squadron exclusion (section 1 rank 13) | `009FFEB0` | `AiCommand::squadron_excluded_009ffeb0` answers `007EDA90`'s false | 15232 (JM05 8260, USN13 2058, JM08 1528) | 3 for a carrier's squadrons in an AI group. Borders the plane lane |
+| 9 | BigLandingShip (section 1 rank 11) | `class+808h` at `00827F95` and in `00A03510` | `ShipAiNeighbour::big_landing_ship_808` answers 0 | 1705 (JM08 only) | 3 when an enemy submarine is near an LSM or LST (this installation's `vehicleclasses.lua`, mtime 2026-05-09), and in capture scoring |
+| 10 | the group's area key (section 1 rank 6) | `0070E450` (`0070E450-0070E4B3`, RET then INT3), **read here**: over the formation's `[+4F8h]` members at `+18h` stride `34h`, the maximum of `vtable[214h]()` among members that answer `vtable[5Ch](6)`, floored at 0 | `ShipAiArmFinal::group_area_key_0070e450` answers the leader's own layer | 81292 (USN02 25845, JM05 13990, USN04 8882, USN13 8792) | 3 only for a formation whose members sit on different layers, or whose leader is not kind 6. Likely exact on these rows. Cheap: `ShipAiLayer::group_layer_0070e450` already computes the whole routine, so the arm final can share it |
+| 11 | a director `stop` and the command begin (section 1 rank 16) | `009E1170`, `00835C70` | `game_hosts_commands.cpp` `CruiseCommand::stop_state_step` (cc9-gunnery9's file); `CommandController::begin_command` | 1608 / 2077 | 3: what a `stop` asks of the ship |
+| 12 | the navigator's avoidance receivers (section 1 rank 15) | `0071C1E0` from `00721A93`; setters `009DABB0` / `009DABD0` | `game_hosts_script_orders.cpp` `Navigator::avoidance_receiver_torpedo` / `_land` | 150 / 140 | 3, on few calls. Not this lane's file |
+| 13 | the follow request's OwnerPlayer arm (section 1 rank 17) | `00779DB4`, `entity+188h` | `game_hosts_ai.cpp` `owner_player_known = false` | follow requests 152 (USN01) to 916 (JM05) | 3 and rare: it can only admit a follow the image refuses between differently owned ships |
+| - | the AI party's power-up use (section 5) | `00A179E0` | `AiParties::party_brain_plan_tail` | 462 | 3 to 4. Skipped until a power-up subsystem exists (docs/GUNNERY_OPEN_ITEMS.md section 43) |
+
+**Not ranked, and why:**
+- `ShipAi::unit_weapon_director`, `drive_heading_vtable50` and `ShipAiOrder::slot_to_order_ring`
+  (978274 each) are structure, as in section 1.
+- `AiGroups::seed_collection` (35700) walks one flat collection. With `kAiGroupSeedPerEntityBound`
+  ON every admitted entity gets its own group, so the split into five collections changes only the
+  creation order. That order is not shown to matter.
+- `ShipAiFollow::refresh_world_pose` `00414DB0` (36000), `ShipAiPlanner::release_node_list`,
+  `ShipAiSearch::release_path_node` and `ShipAiApproach::scratch_00954940` are cache and memory
+  housekeeping with no gameplay reader found.
+- The random stand-ins `ShipAiApproach::traffic_random_00bd2f10`, `avoid_random_00bd2f10`,
+  `ShipAiApproachPoint::random_stream1` and `ShipAiNavBlock::uniform_00bd2f10` answer the low
+  bound. They are labelled, and binding them would couple the lane to the shared generator
+  (the RNG-stream note in docs/GUNNERY_OPEN_ITEMS.md).
+- The unread state leaves `ShipAiState::enter_vtable04`, `step_vtable0c` and `exit_vtable08`
+  (422 / 169 / 149) and `ShipAiAttack::initial_enter_009db590` (45) run on few calls; each needs its
+  own read.
+- `AiPlanners::capture_spawn_arm_00a2b400` and `defend_spawn_tail_00a29b8e` are units-host
+  quick-spawns.
+
+**Labels that no longer hold:**
+- `ShipAiClearance::path_fade_00778890`: "neither has a producer here", and the conjunction.
+- `ShipAiApproach::unit_is_group_leader`: "No AI group object exists". The formation groups exist.
+- `ShipAiApproach::unit_armament_ready`: the slot is the troop-landing trait (section 13).
+- `AiCommand::avoid_zone_offset_point`: "contract: unread" (the routine is complete).
+- `AiCommand::close_controller_busy`: the name (section 13).
+
+**Top three.** The follower gate and the troop-landing trait wait on cc9-lua9. The first packet
+free to take now is rank 3, the path fade: the leader half binds from the units host's formation
+accessors, the `moveonpath` half from the director's current command, and it reaches every row.
