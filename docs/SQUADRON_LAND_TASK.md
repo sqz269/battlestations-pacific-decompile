@@ -604,6 +604,35 @@ with `kLandingSequencerBound=true` (`local\l10_ls`). Both used reference j's par
   its head has t = G / speed below 0.5 F, so s = 0. It only gates mode 4.
 - **Verdict: ON.** Every mechanism clause matched, and gameplay is identical on both rows.
 
+## 5d. B-25 01's approach bit, block `+20h` (packet `cc9_landing_approach_bit`, cc9-lua10, 2026-09-28)
+
+`006C0840` refuses a deck for a class 10h/16h head unless bit 1 of the dword at block `+20h` is set
+(`006C09D2 MOV EAX,[EAX+20h]`, `SHR EAX,1`). The producer has been read:
+- **`006CAC00`**, the block's base constructor, stores `[ESI+20h] = 3` at `006CAC3D`, setting bits 0
+  and 1. Its two callers are the airfield constructor (`006D1C59`, `ECX = airfield+72Ch`, from
+  `006D1C4C LEA EDI,[ESI+72Ch]`) and the mother-ship constructor (`00758589`).
+- **`00758550`**, the mother-ship constructor, then stores 1 into `+11A8h`, which is its block
+  (`+1188h`) plus 20h. So a carrier's block holds 1, with bit 1 clear, and refuses level bombers and
+  large recon planes. An airfield's block keeps 3 and accepts them.
+- **No other literal store** to `+20h` was found. A grep of the exported pseudocode of `006BA000`-
+  `006D5000` for `+ 0x20) =` finds only `006D1550`'s float field, which is not the block. `006CADD0`
+  reads `[ESI+20h]` twice but never writes it. A store through a pre-offset base register would not
+  show in this search.
+
+**Bound OFF**, `kLandingApproachBitBound`. `record_return_to_base_007f16d0` gives each candidate deck
+bit 1 = (the owner is an airfield). The resolution no longer carries `approach-bit-20-unread`.
+Before, it gave every deck the bit and flagged the resolution unread whenever the head needed it.
+
+**Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before the ON run:**
+1. **B-25 01 installs `land` at CB4_AF** on its `returntobase` at 3.80 s, in place of the refusal.
+   The head starts `moveto (land)`, the wingmen `follow (land)`. The squadron retires its
+   `levelbomb`.
+2. **The sequencer queues it** with n = 2, as the third squadron. It inserts records when the head
+   comes within 3200 m of T. Its circle point adds 250 m to the `60 n` term.
+3. **LOMP10 moves** (exit 3). B-25 01 no longer bombs, so any damage or deaths it caused OFF go
+   away. USN01 has no class 10h/16h head returning to base, so it is identical (exit 0 or 1).
+- A mechanism failure is B-25 01 still refused, or a install with no queue entry.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's

@@ -3910,6 +3910,10 @@ struct GameUnitsHost::Impl {
     // Packet cc9_plane_follow_law_drift (docs/PLANE_FOLLOW_LAW.md section 17).
     // True: 009BFEE0's leader turn rate is 007D7DA0 (read whole) at the fly-to
     // and the hold steer point, instead of 0.0. False: 0.0.
+    // Packet cc9_landing_approach_bit (docs/SQUADRON_LAND_TASK.md section 5d):
+    // the block+20h bit 1 that 006C0840 tests, from its producers. False: every
+    // deck gets the bit and a class 10h/16h head's resolution is flagged unread.
+    static constexpr bool kLandingApproachBitBound = false;
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
@@ -8467,7 +8471,14 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
             && std::find(dead.begin(), dead.end(), owner) != dead.end();
         c.owner_remote_5d = false;
         c.approach_bit_20 = true;
-        if (site_in.need_approach_bit) bit_undetermined = true;
+        if constexpr (kLandingApproachBitBound) {
+            // Packet cc9_landing_approach_bit: block+20h is 3 from 006CAC00
+            // (006CAC3D) and stays 3 for an airfield; 00758550 stores 1 for a
+            // mother ship, so bit 1 is set only for an airfield owner.
+            c.approach_bit_20 = deck->is_airfield;
+        } else {
+            if (site_in.need_approach_bit) bit_undetermined = true;
+        }
         c.owner_side_54 = deck->owner_party;
         c.accepts_6bc530 = false;
         c.key_known = false;
