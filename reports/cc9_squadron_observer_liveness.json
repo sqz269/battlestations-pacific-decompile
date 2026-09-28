@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_squadron_observer_liveness",
+  "doc": "docs/PLANE_SQUADRON.md, The squadron destruction notice",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kSquadronObserverLivenessBound",
+      "file": "include/bsp/game_hosts_hud.hpp",
+      "state": "OFF"
+    }
+  ],
+  "substitutions": [
+    "the host reads the squadron record live count at the interface update; the image kills the squadron inside the last plane kill flush"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": [],
+  "read_only": [
+    "+361h map-exit flag (007F31A0) not modelled; no measured pair leaves the map"
+  ]
+}

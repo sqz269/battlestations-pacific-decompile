@@ -632,3 +632,67 @@ producer of membership. Two bounds on how much they matter. `007ED0D0` has exact
 writers, so the sorted insert is that one routine's. And the second route needs an authored `Plane`
 scene entity: USN01 registers ten scene classes and `Plane` is not among them, its twenty aircraft
 rows all being `PlaneSquadronGen`, so nothing in that mission reaches `007D5D20`'s squadron field.
+
+## The squadron's destruction notice (packet `cc9_squadron_observer_liveness`, `kSquadronObserverLivenessBound`)
+
+Worker cc9-lua2, 2026-09-27. This is item 2 of the cc9-hud3 handoff (`docs/CONTROLLED_UNIT.md`,
+"Handoff (cc9-hud3 retires after this commit)"). That doc is leased to another worker, so this
+packet is written here.
+
+### What the image does
+
+- **A squadron entity dies only with its last plane.** Every plane death reaches `007F3970
+  BSP_Squadron_RemovePlane` through the plane's `vtable[7Ch]` `007BCAA0` (`007BCAEB`). That
+  routine compacts `+3D0h` and decrements `+3CCh`. On the last plane it kills the squadron
+  (`00926D90 BSP_MissionEntity_Kill`, section 5).
+- **The HUD root observer is notified in the squadron's own on-killed dispatch.** Its notice
+  `00644A20` releases the controlled unit when the observed entity is `[00E188D8]`.
+  `007F3A60` (the squadron's `vtable[+7Ch]`) is the other release path, and it runs in the same
+  kill.
+- So a controlled squadron releases control when its **last** plane dies, not its first.
+
+### What the host does
+
+- The host fuses the squadron entity with its wing-0 plane in one slot
+  (`PlaneSquadronHostRecord::squadron_unit`).
+- The observer's notice is taken from the units host's destroyed-unit rows. So the release comes
+  at the wing-0 plane's death.
+- On USN01 (cc9-hud3's `wg_on_usn01.log`) that is `ScoutDauntless` at 129.85 s, HUD update frame
+  2596. The squadron's second plane, `ScoutDauntless|.-2`, lives until 135.95 s.
+
+### The binding
+
+- **The switch** is `kSquadronObserverLivenessBound` in `include/bsp/game_hosts_hud.hpp`,
+  committed OFF.
+- **The rule.** When the observed unit is a squadron's fused slot, the notice fires only when:
+  - the slot's own plane has died; and
+  - the squadron record's live count (`live_count()`, the `+3CCh` the image tests) is 0.
+- **The first condition** keeps a squadron whose members never became units from releasing
+  while alive.
+- **The log.** The first slot death that the squadron outlives logs one `hud root observer
+  00644A20: the fused slot died but squadron ... keeps N live plane(s)` line. A new summary line
+  counts these holds.
+- **SUBSTITUTION, labelled.** The host reads the live count at the interface update. The image
+  kills the squadron inside the last plane's kill flush.
+
+### The map-exit flag `+361h` (read only)
+
+`007F31A0` sets `+361h` when the leader leaves the map with survivors, then issues an entity
+command (section 5). The host does not model it. No measured pair has a squadron leave the map.
+It stays a record, and it needs the command payload of `00468560`/`004B4850`, which is unread.
+
+### Predictions, before any run
+
+Streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player, this tree at the OFF commit against a
+`pair_export` of it with the switch flipped.
+
+| row | prediction |
+| --- | --- |
+| USN01 3200/3000 | `holds=1`, logged at 129.85 s. The release moves from 129.85 s (HUD frame 2596) to the second plane's death, about 135.95 s. Still `notices=1 releases=1` |
+| USN01 gameplay | identical, exit 1 |
+| USN02 9200/9000 | identity, exit 1: the controlled unit is Houston, a ship; `holds=0` |
+| USN04 4700/4500 | identity, exit 1: no squadron is controlled; `holds=0` |
+
+**The named risk.** For about 6 s the controlled unit is a dead plane slot rather than none. If a
+host path reads the controlled unit specially for a plane or for its squadron, the surviving
+plane `ScoutDauntless|.-2` could move. Its death time is the row to watch.

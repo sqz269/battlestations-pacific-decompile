@@ -172,6 +172,9 @@ struct GameHudHost::Impl {
     std::size_t observed_unit{SIZE_MAX};
     unsigned long long observer_notices{0};
     unsigned long long observer_releases{0};
+    // Packet cc9_squadron_observer_liveness: slot deaths the squadron outlived.
+    unsigned long long observer_squadron_holds{0};
+    bool squadron_hold_logged{false};
     void run_root_observer_notice();
     // Packet cc9_force_select_unit: the HUD root's unit vectors and cursor.
     bsp::HudRootUnitLists root_lists{};
@@ -3715,6 +3718,9 @@ void GameHudHost::report() {
     impl.log.notef("summary mission hud root observer (packet cc9_controlled_unit_observer, "
         "00644A20): bound=%d notices=%llu releases=%llu", kControlledUnitObserverBound ? 1 : 0,
         impl.observer_notices, impl.observer_releases);
+    impl.log.notef("summary mission hud squadron observer liveness bound=%d holds=%llu (007F3970 "
+        "+3CCh -> 00926D90, packet cc9_squadron_observer_liveness)",
+        kSquadronObserverLivenessBound ? 1 : 0, impl.observer_squadron_holds);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is
@@ -3753,7 +3759,32 @@ void GameHudHost::Impl::run_root_observer_notice() {
     for (const auto& death : units->destroyed_units()) {
         if (death.first == observed_unit) { destroyed = true; break; }
     }
+    if constexpr (kSquadronObserverLivenessBound) {
+        // Packet cc9_squadron_observer_liveness. For a squadron's fused slot
+        // the observed entity is the squadron, which 007F3970 kills (00926D90)
+        // only when +3CCh reaches 0. SUBSTITUTION (labelled): the host reads
+        // the registry record's live count at the interface update; the image
+        // kills the squadron inside the last plane's kill flush.
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != observed_unit) {
+                continue;
+            }
+            const bool squadron_gone = r.live_count() <= 0;
+            if (destroyed && !squadron_gone && !squadron_hold_logged) {
+                ++observer_squadron_holds;
+                squadron_hold_logged = true;
+                log.notef("hud root observer 00644A20: the fused slot died but squadron \"%s\" "
+                    "keeps %d live plane(s) (+3CCh), so no notice (packet "
+                    "cc9_squadron_observer_liveness)", r.name.c_str(), r.live_count());
+            }
+            // Only once the fused slot's own plane has died: a record whose
+            // members never became units reads 0 while the squadron is alive.
+            destroyed = destroyed && squadron_gone;
+            break;
+        }
+    }
     if (!destroyed) return;
+    squadron_hold_logged = false;
     ++observer_notices;
     const std::size_t unit = observed_unit;
     observed_unit = SIZE_MAX;   // the entity's observer list goes with it

@@ -276,6 +276,16 @@ inline constexpr bool kUnitVtable124MapBound = true;
 // +3D0h plane at 0068AF18, the units host, gunnery) keeps the plane's class.
 inline constexpr bool kSquadronSlotClassBound = true;  // ON: re-pair with the party and 007BB9A0 switches (docs/CONTROLLED_UNIT.md)
 
+// Packet cc9_squadron_observer_liveness (docs/PLANE_SQUADRON.md, "The squadron's
+// destruction notice"). The HUD root observer's notice (00644A20) comes in the
+// observed entity's on-killed dispatch. A squadron entity is killed only when
+// 007F3970 removes its last plane (+3CCh reaches 0, then 00926D90), not when its
+// wing-0 plane dies. The host fuses the squadron with that plane in one slot.
+// True: for a squadron's fused slot the notice fires when the squadron's live
+// member count reaches 0, not when the slot's own plane dies. False: it fires
+// on the slot's death, as before.
+inline constexpr bool kSquadronObserverLivenessBound = false;
+
 // Packet cc9_plane_in_flight_test (docs/IN_GAME_INTERFACE_SCREEN_SETS.md,
 // "007BB9A0"), committed OFF with predictions. The 20h classifier's plane arm
 // (0068AE84) picks INTF_PLANE (22h) when 007BB9A0 answers true and
