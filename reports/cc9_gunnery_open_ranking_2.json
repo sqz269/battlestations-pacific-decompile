@@ -1,0 +1,98 @@
+{
+  "packet": "cc9_gunnery_open_ranking_2",
+  "doc": "docs/GUNNERY_OPEN_ITEMS.md section 16 (and section 1's closed table)",
+  "source": "local/rb8_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log; local/g4_rank.py; local/g4_standins.py",
+  "ranking": [
+    {
+      "rank": 1,
+      "item": "AutoTarget candidate list",
+      "image": "009F5D30 over [008053C0(party)]+0DE8h",
+      "reach": 4,
+      "calls": 148923,
+      "host": "every live opposing unit, detected or not"
+    },
+    {
+      "rank": 2,
+      "item": "AutoTarget commanded-target adoption",
+      "image": "0071D6D0 / 00521EA0 / 009F5E69",
+      "reach": 4,
+      "calls": "17806 / 10181 / 148923",
+      "host": "false / null / 0"
+    },
+    {
+      "rank": 3,
+      "item": "director target observation and refusal",
+      "image": "00694A60 / 0071D74A",
+      "reach": 3,
+      "calls": "3135 / 2078",
+      "host": "records; constant refusal"
+    },
+    {
+      "rank": 4,
+      "item": "torpedo standoff threat list",
+      "image": "00814420",
+      "reach": 3,
+      "calls": 12708,
+      "host": "record"
+    },
+    {
+      "rank": 5,
+      "item": "recon squadron and convoy aggregates",
+      "image": "00805680 / 008069A0",
+      "reach": 3,
+      "calls": 1467,
+      "host": "not built"
+    },
+    {
+      "rank": 6,
+      "item": "damage-control death test",
+      "image": "0090E6C0",
+      "reach": 4,
+      "calls": 766,
+      "host": "record; the host's pending_over_health decides"
+    },
+    {
+      "rank": 7,
+      "item": "death sink",
+      "image": "008110F0",
+      "reach": 2,
+      "calls": 140,
+      "host": "record"
+    },
+    {
+      "rank": 8,
+      "item": "kill award threshold",
+      "image": "0050FC30",
+      "reach": 2,
+      "calls": 266,
+      "host": "0"
+    },
+    {
+      "rank": 9,
+      "item": "set-command message",
+      "image": "0071C830 / 0077C2A0",
+      "reach": 3,
+      "calls": 8022,
+      "host": "direct store; likely exact"
+    }
+  ],
+  "closed_today": [
+    "line of sight",
+    "stop-firing hook (read)",
+    "director fire target",
+    "sub-entity list (exact)",
+    "unit fire cooldown",
+    "immediate-fire slot",
+    "wave order",
+    "AA fire tests",
+    "torpedo swim",
+    "torpedo aim (read)",
+    "difficulty multipliers",
+    "invincibility floor",
+    "rest angles",
+    "plane-gun mounts",
+    "turn average"
+  ],
+  "next_packet": "cc9_autotarget_recon_candidates (rank 1)",
+  "context_estimate": "about 60%"
+}
