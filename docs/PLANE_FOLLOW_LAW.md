@@ -1098,3 +1098,48 @@ build:
      term.
    - Both rows are expected to move.
    - Mechanism failure: a member within 100 m of its station whose desired speed does not change.
+
+### 17.4 The alignment ramp's endpoints are `acos` of the authored values (the drift's cause, hypothesis under test)
+
+**Measured first.** Take the OFF trace in `local\l10_f0_lomp10.log` (`land follow trace`) for
+`Lightning 01|.-2`. It flies west with its leader. By 63.8 s it is ahead of its station and still
+commanded 173.33 m/s, the catch-up speed. It flies 88 to 95 m/s, while its leader slows to about
+32 m/s. The station falls behind it: 404 m at 63.8 s, 1.25 km at 83.8 s and 3.48 km at 123.8 s.
+The heading command equals the member's heading, so it is steering where it is told. The speed law
+never slows a member whose station is behind it.
+
+**Correction to section 5.4.** Section 5.4 read the ramp's endpoints as the raw
+`MaxFollowSpdTargetDir`/`MinFollowSpdTargetDir`, DEG(30) and DEG(100), and called the high end
+unreachable. The loader does not store them raw:
+
+```
+007E8892  CALL 00B66270                 ; the number, MaxFollowSpdTargetDir
+007E88A1  v > 1.0          -> 0.0
+007E88B6  -1.0 (00D7A260) > v -> pi (00D7A264, 3.1415927)
+007E88C9  else CALL 00BF9940 ; acos(v)
+007E88E4  MOVSS [EBP+3A4h]
+007E891B .. 007E8970          ; the same for MinFollowSpdTargetDir into +3A8h
+```
+
+These are the loader's only two `00BF9940` calls. With this installation's
+`scripts/datatables/planeglobals.lua` (mtime 2024-10-29):
+- `+3A4h` = acos(0.5236) = 1.0197;
+- `+3A8h` = 0.0, because 1.745 > 1.
+
+`009BFD0A` interpolates from (`+3A4h`, rampD) to (`+3A8h`, cruise) over the dot product:
+- a member flying straight at its station (dot 1) gets 98% of rampD;
+- at dot 0 or below, with the station abeam or behind, it gets cruise, 0.9 x `007C47F0`.
+
+The host loaded the raw 0.5236 and 1.745. With those, every dot at or below 0.5236 got rampD,
+which is the catch-up speed when the station is behind.
+
+**Bound OFF**, `kFollowTargetDirAcosBound` (`include/bsp/game_tuning_singleton.hpp`): the loader
+applies `007E88A1`-`007E88DA` to both keys. The follow law is these fields' only reader.
+
+**Predictions for LOMP10 9000 and USN01 3200, written before the ON run:**
+1. **Mechanism.** In the ON trace, whenever a Lightning member is ahead of its station (dot at
+   most 0), its `desired` is the cruise speed, not 173.33.
+2. **The drift.** The Lightning members' largest distance to their leader from 250 s on falls well
+   below OFF's. OFF reaches 5.44 km at 423.8 s for `|.-2`. A miss here with (1) holding means the
+   drift has a second cause; it is recorded, and the switch may still flip.
+3. **Both rows move** (exit 3). Every fly-to member in every mission reads the ramp.
