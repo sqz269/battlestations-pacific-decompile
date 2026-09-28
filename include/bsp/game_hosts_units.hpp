@@ -357,6 +357,9 @@ public:
     // the level clamped to 0..3 (1 for a kamikaze class, LABELLED false here),
     // stored at +1268h only when it differs (0085290D). True when it was stored.
     bool set_submarine_depth_level_008528b0(std::size_t unit_index, int requested);
+    // Packet cc9_submarine_ai_states: unit+1200h..+120Ch, bands[band] of a seeded
+    // submarine (00853A90's table), and false for any other slot or band.
+    bool submarine_band_y(std::size_t unit_index, int band, float& y) const;
     // Packet cc9_submarine_air. unit+1280h, 00893C00's store. False when the slot
     // is not a seeded submarine.
     bool set_unlimited_air_00893c00(std::size_t unit_index, bool flag);
