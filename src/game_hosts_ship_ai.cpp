@@ -404,13 +404,16 @@ inline constexpr bool kShipFollowStationPointBound = true;
 // and a squadron's is its 0084D810 controller. So no plane or squadron row
 // ever runs 009F5DA0. True: a row answering IsKindOf(0Fh) or IsKindOf(18h)
 // skips the tick. False: it runs the ship director's AutoTarget as before.
-inline constexpr bool kPlaneRowAutoTargetBound = false;
+// ON (2026-09-28): USN04, USN01, USN13 gameplay-identical; no plane-row think (section 11).
+inline constexpr bool kPlaneRowAutoTargetBound = true;
 // Packet cc9_autotarget_follower_gate, docs/GUNNERY_OPEN_ITEMS.md section 44 and
 // docs/SHIP_AI_OPEN_ITEMS.md section 12. True: 009F5DC4's 007788B0 is the
 // formation-follower test, so a follower skips target selection, and unless
 // its first command slot is null or `follow` (00E08F60) 009F5DEB runs 0077C980
 // (unit, 0), the leave chain to 0077BD70, at the call (labelled, as the Lua
 // LeaveFormation 00899EB0 runs it). False: the gate answers false.
+// OFF, recorded (2026-09-28): the pairs move as predicted, but a follower leaves and is
+// rejoined by the AI follower pass once a second (section 12); the join's command is unread.
 inline constexpr bool kAutoTargetFollowerGateBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;

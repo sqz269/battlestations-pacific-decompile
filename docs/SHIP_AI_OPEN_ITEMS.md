@@ -1123,3 +1123,47 @@ and leaves run, ON only.
   - ON reads `follower_thinks` > 0 on every row.
   - Each leave is followed by a formation-group change for that unit.
   - After its leave a unit stops being counted as a follower.
+
+### Section 11: the pairs (OFF `local\ships8_c0_<row>.log`, this tree at `58b617200`; ON `local\ships8_c5_<row>.log`, `pair_export --commit 58b617200 --flip kPlaneRowAutoTargetBound=true`, SHA-256 prefix `6A4E92A17363`)
+
+| Row | pair_diff | Predicted | Census ON |
+| --- | --- | --- | --- |
+| USN04 | 1 | 1 or 3 | ticks 13500, thinks 0 |
+| USN01 | 1 | 1 or 3 | ticks 15000, thinks 0 |
+| USN13 | 1 | 1 | ticks 0 |
+
+**Mechanism check: passed.** The tick counts equal OFF's, and no plane-row think runs. Gameplay is
+identical, because the gunnery pass already drops a plane row's stored target. **Verdict: ON.**
+
+### Section 12: the pairs (ON `local\ships8_c7_<row>.log`, `pair_export --commit 58b617200 --flip kAutoTargetFollowerGateBound=true`, SHA-256 prefix `0549AC29D977`)
+
+| Row | pair_diff | Predicted | follower thinks ON | leaves | deaths |
+| --- | --- | --- | --- | --- | --- |
+| USN04 | 3 | 3 | 2069 | 7 | 40 to 41; 2 death rows only ON, 1 only OFF |
+| USN01 | 3 | 3 | 171 | 163 | 5, identical |
+| USN13 | 3 | 3 | 2552 | 1344 | 27 to 26 |
+| JM06 | 3 | 3 | 161 | 11 | 1, identical |
+| JM05 | 3 | 3 | 4694 | 157 | 1, identical |
+| JM08 | 3 | 3 | 714 | 714 | 11; 10 rows changed |
+| LOMP10 | 3 | 3 | 61 | 61 | 2; 2 rows changed |
+
+**Mechanism check: FAILED on its third clause.** A unit that leaves does not stay out of its
+formation:
+- On USN01, Ralph, McCall and Blue each leave 51 times: once per AutoTarget think, and they rejoin
+  in between.
+- On USN13, Monterey, Intrepid and Cowpens each leave 53 times.
+- On JM08, the transports and landing ships loop the same way.
+
+What rejoins them is the AI group's follower pass: `AiCommand::request_join_formation`,
+`0077C8D0` -> `0077F940` in `src/game_hosts_ai.cpp`, the `ai diag follow <unit> -> <leader>`
+lines. So the host now alternates leave and join about once a second.
+
+**Verdict: OFF, recorded.** The gate is the image's code. Whether the image loops the same way
+depends on one thing this packet did not read: does the image's join path also leave `follow`
+(`00E08F60`) in the follower director's first command slot?
+- If it does, the gate returns at `009F5DE0` and never leaves. The host's join is then missing
+  that command, and that is the fix.
+- If it does not, the image loops too, and the switch can flip.
+
+The next read is the caller of `0077C8D0` in the AI group pass, and what it writes to
+`[director+54h]`.
