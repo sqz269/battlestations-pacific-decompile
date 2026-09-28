@@ -47,6 +47,9 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
+#include "bsp/camera_affine.hpp"
+#include "bsp/plane_advance_pose.hpp"
+#include "bsp/plane_angular_velocity.hpp"
 #include "bsp/gun_dispersion.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/spatial_index.hpp"
@@ -120,6 +123,16 @@ constexpr bool kAaGunnerErrorBound = true;
 //    velocity (vtable[34h] = 007BBB70, unit+AC8h), not its body axis times
 //    0092D730's forward speed. Packet cc9_aa_lethality_audit.
 constexpr bool kAaTargetWorldVelocityBound = true;
+//  * kAaTargetTurnAverageBound (packet cc9_aa_turn_average,
+//    docs/USN04_KATE_ATTRITION.md sections 8.2 and 11): 00901C20's turn-rate
+//    average for a plane target, 00901CC1..00901EEE. When w, the target's BODY
+//    angular rate at unit+AF8h, has |w|^2 > 0.001 (00D7A23C), the lead velocity V
+//    is rotated by 0085E4D0(identity, w, 1.0) through 004142E0 and replaced by
+//    (V + V') * 0.5 (00D7A280), before the shooter's velocity is subtracted. The
+//    body components go in as the axis unchanged, as in the image. Applied in both
+//    host sites of 00901C20: the AA bots' lead and the flak lock. OFF: V is used
+//    as it is.
+constexpr bool kAaTargetTurnAverageBound = false;
 //  * kFlakProximityBurstBound: a Flak-type round runs 0070C370's proximity fuse
 //    after the base tick's direct-strike sweep: it locks the nearest plane,
 //    torpedo boat or landing ship within min(300 m, L/2 + 2 * BlastRange) of
@@ -1367,6 +1380,8 @@ struct GameGunneryHost::Impl {
     }
     unsigned long long mounts_from_model{0};
     unsigned long long plane_mounts_from_model{0};   // cc9_plane_gun_mounts
+    unsigned long long turn_average_tests{0};        // cc9_aa_turn_average
+    unsigned long long turn_average_rotations{0};
     unsigned long long mounts_missing{0};
     ShipModelSlots& ship_model_slots(int type_id);
     // The ship's model mesh for the shell hit test, when bound and loaded.
@@ -1377,6 +1392,42 @@ struct GameGunneryHost::Impl {
         if (type_id < 0) return nullptr;
         const ShipModelSlots& model = ship_model_slots(type_id);
         return model.has_mesh ? &model : nullptr;
+    }
+    // Packet cc9_aa_turn_average: 00901C20's turn-rate average, 00901CC1..00901EEE,
+    // on the target velocity `v` in place. See kAaTargetTurnAverageBound.
+    void aa_turn_average_00901c20(std::size_t target, float v[3]) {
+        if (!kAaTargetTurnAverageBound) return;
+        if (!units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase)) return;  // 00901CCA
+        float w[3];
+        if (!units.unit_plane_body_angular_rate(target, w)) return;   // 00901CE5..00901CFF
+        ++turn_average_tests;
+        // 00901D03..00901D1F: (x*x + y*y) + z*z on the x87 stack, stored as a float.
+        const float w2 = static_cast<float>(
+            (static_cast<double>(w[0]) * w[0] + static_cast<double>(w[1]) * w[1])
+            + static_cast<double>(w[2]) * w[2]);
+        if (!(w2 > 0.001f)) return;                  // 00901D23..00901D31, JBE skips
+        // 00901D37..00901E4C: both matrices start as the identity.
+        bsp::AdvanceMatrix identity{};
+        identity.m[0] = identity.m[5] = identity.m[10] = identity.m[15] = 1.0f;
+        bsp::AdvanceMatrix rotated = identity;
+        bsp::NativeAdvanceMatrixOps ops;
+        static const float eye_00f87574[3] = {0.0f, 0.0f, 0.0f};
+        // 00901E7A: 0085E4D0(out, identity, w, 1.0f); FLD1 at 00901D3A is the scale.
+        // Its 0085E871 exit writes nothing, which leaves `rotated` the identity.
+        bsp::rotate_about_axis_0085e4d0(rotated, identity, w, 1.0f, eye_00f87574, ops);
+        // 00901E8D: 004142E0 transforms V by the result.
+        bsp::CameraMatrix m{};
+        for (int i = 0; i < 16; ++i) m[static_cast<std::size_t>(i)] = rotated.m[i];
+        const std::array<float, 3> source{{v[0], v[1], v[2]}};
+        std::array<float, 3> turned{};
+        bsp::transform_point_004142e0(source, m, turned);
+        // 00901E92..00901EEE: each component (V + V') stored as a float, then * 0.5.
+        for (int i = 0; i < 3; ++i) {
+            const float sum = v[i] + turned[static_cast<std::size_t>(i)];
+            v[i] = static_cast<float>(static_cast<double>(sum) * 0.5);
+        }
+        ++turn_average_rotations;
+        done("GunBot::intercept_turn_average_0085e4d0", 0x0085e4d0u);
     }
     // The gun's firing point: its mount carried to world by the ship pose when
     // bound and known, otherwise the unit origin raised by the class Height.
@@ -4874,6 +4925,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     }
                 }
                 if (kGunInterceptBound && aa_v0 >= 2.0f) {
+                    aa_turn_average_00901c20(target, target_velocity);
                     // 00901C20: relative motion (the shooter's own velocity is
                     // subtracted; a ship target, IsKindOf(6), has its vertical
                     // zeroed), the closed-form time, the two settings biases,
@@ -6124,6 +6176,9 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                             float tv[3] = {0.0f, 0.0f, 0.0f};
                             if (!units.unit_linear_velocity(i, tv)) {
                                 tv[0] = tv[1] = tv[2] = 0.0f;
+                            }
+                            if (fc->muzzle_speed >= 2.0f) {   // 00901C20's speed floor first
+                                aa_turn_average_00901c20(i, tv);
                             }
                             if (units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
                                 tv[1] = 0.0f;
@@ -8524,6 +8579,10 @@ void GameGunneryHost::report() {
             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
             kShipPlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery turn average tests=%llu rotations=%llu "
+            "bound=%d (00901CC1..00901EEE / 0085E4D0, packet cc9_aa_turn_average)",
+            host.turn_average_tests, host.turn_average_rotations,
+            kAaTargetTurnAverageBound ? 1 : 0);
         host.log.notef("summary mission gunnery plane mounts from model=%llu bound=%d "
             "(007D3E81 -> 0095F500 slot frames, packet cc9_plane_gun_mounts)",
             host.plane_mounts_from_model, kPlanePlatformAttachmentBound ? 1 : 0);

@@ -18233,6 +18233,16 @@ bool GameUnitsHost::unit_linear_velocity(std::size_t index, float out[3]) const 
     return true;
 }
 
+bool GameUnitsHost::unit_plane_body_angular_rate(std::size_t index, float out[3]) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[index];
+    out[0] = slot.plane_body_angular[0];   // ctl+48h
+    out[1] = slot.plane_body_angular[1];   // ctl+4Ch
+    out[2] = slot.plane_body_angular[2];   // ctl+50h
+    return true;
+}
+
 float GameUnitsHost::unit_retardation_0508(std::size_t index) const {
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;

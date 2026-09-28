@@ -342,3 +342,30 @@ The listing says the AA lead does not use it.
 - USN04: Zero deaths move, and the category-1 and category-6 hits on Zeros change by more than 5%.
 - USN04: deaths stay within 44 +- 3.
 - USN02 is identical.
+
+## 12. The turn-rate average, bound (packet `cc9_aa_turn_average`, switch `kAaTargetTurnAverageBound`, OFF)
+
+- **The accessor.** `GameUnitsHost::unit_plane_body_angular_rate` publishes `plane_body_angular`,
+  which is `ctl+48h..+50h`, the unit+AF8h triple `00901C20` reads.
+- **The rule.** `aa_turn_average_00901c20` in `src/game_hosts_gunnery.cpp` applies section 11's
+  rule, all of it `00901CC1`..`00901EEE`:
+  - only for a plane target;
+  - `|w|^2 > 0.001`, summed in the x87 order;
+  - `rotate_about_axis_0085e4d0(out, identity, w, 1.0)`, then `transform_point_004142e0`;
+  - `(V + V') * 0.5`.
+- **Where it runs.** In both host sites of `00901C20`: the AA bots' lead, before the shooter's
+  velocity is subtracted, and the flak lock, behind the same 2 m/s speed floor.
+- **The census line.** `summary mission gunnery turn average tests= rotations= bound=`.
+
+**Predictions, recorded before the pair** (same tree, OFF against ON, RNG streams on):
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| USN04 `turn average rotations` | 0 | above 0, and below `tests` (straight flight stays under the gate) |
+| USN04 Kate deaths | 16 | 16, killers' categories unchanged, times within 1 s |
+| USN04 hits on Zeros (category 1 and 6 rows) | as OFF | move by more than 5% |
+| USN04 deaths | 44 | 41 to 47 |
+| USN04 torpedo drops | 1 | 0 to 2 |
+| USN13 3200/3000 deaths | 27 | 25 to 29 |
+| USN02 9200/9000 | - | identical (no plane targets) |
+| USN01 3200/3000 | 7 deaths | 7 unless a Mavis kill moves |
