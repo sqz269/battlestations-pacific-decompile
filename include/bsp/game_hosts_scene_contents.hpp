@@ -484,6 +484,14 @@ struct SceneTerrainHeightField {
     // Terrain slot 38h, 00ADABA0 -> slot 30h 00ADAA40: the unit normal of the
     // cell the world (x, z) truncates to.
     void normal_00adaba0(float x, float z, float out[3]) const noexcept;
+    // Packet cc9_land_convoy_movement: the local-frame slots the forwarders
+    // 0087FA20 ([+3D0h]->vtable[24h]) and 0087FB90 (vtable[34h]) reach. The
+    // vtable is 00D5D350 (xrefs 00ADD1CE, 00ADD2C9), so +24h is 00ADA160 and
+    // +34h is 00ADA1C0: (x, z) in the Landscape's frame, no node translation.
+    float local_height_00ada160(float x, float z) const noexcept;
+    void local_normal_00ada1c0(float x, float z, float out[3]) const noexcept;
+    float grid_height_00adb480(float u, float v) const noexcept;       // slot 48h
+    void cell_normal_00adaa40(int i, int j, float out[3]) const noexcept;  // slot 30h
 
     // Packet cc9_terrain_segment_quadtree: the tree 00AEA820 builds at the end
     // of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1, tile

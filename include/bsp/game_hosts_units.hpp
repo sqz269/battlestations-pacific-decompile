@@ -103,6 +103,13 @@ inline constexpr bool kDeadMemberLeavesGroupBound = true;
 // True: the load walk runs it for every generated LandConvoy (build_land_
 // convoy_roster_00743450). False: the convoy's attach stays a record.
 inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
+// Packet cc9_land_convoy_movement. The convoy element's three pose slots
+// (00CEA528: +4h 00743060, +8h 007410C0, +0Ch 007410B0) over the Path knots
+// 007AF150 derives, with 00742400 placing every member per wave-1 step through
+// 007B03C0. True: each generated convoy with a roster resolves its Path, builds
+// the knots and moves its members. False: the members stand at the convoy frame.
+// docs/LAND_AND_STRUCTURES.md, "The convoy formation, bound".
+inline constexpr bool kLandConvoyMovementBound = false;
 
 class GameHostLog;
 class GameMissionLuaHost;
@@ -817,6 +824,18 @@ public:
     // +738h: the convoy a unit belongs to ("" for none), and +73Ch its slot.
     const std::string& unit_land_convoy_738(std::size_t index) const;
     int unit_land_convoy_slot_73c(std::size_t index) const;
+    // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound. After the
+    // roster: resolve the convoy's "Path" (007420B0), derive its knots
+    // (007AF150), take the placement law (00742C70) and keep the convoy's arc
+    // state. False when the convoy has no members or its Path does not resolve.
+    bool bind_land_convoy_motion(const GameSceneEntityRecord& convoy,
+                                 const std::vector<GameSceneEntityRecord>& scene);
+    // One fixed step of the convoy element, in the waves' order: wave 1 runs
+    // +4h 00743060(step) (which calls 00742400) then +0Ch 007410B0; wave 3 runs
+    // +8h 007410C0(step).
+    void land_convoy_step_waves(float step);
+    // The interpolation wave 00875160: +4h 00743060(leftover), not committed.
+    void land_convoy_interpolation_wave(float leftover);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

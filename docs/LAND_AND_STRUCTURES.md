@@ -559,3 +559,92 @@ LandConvoy roster 00743450: "RadarStationLandConvoy 01" rows=1 columns=1 slots=1
 - **The gunnery fold `00805680`** can now read `GameUnitsHost::unit_land_convoy_738`. Those lines
   belong to the gunnery lane, and the lead routes them.
   - On JM05 the members are Neutral, so the fold changes only the neutral recon triple.
+
+## The convoy formation, bound (packet `cc9_land_convoy_movement`, `kLandConvoyMovementBound`, committed OFF)
+
+Worker cc9-lua6, 2026-09-28. This closes the first bullet of "Still open" above.
+
+**The knot producer `007AF150`** (the Path loader tail, `__fastcall(path)`, plain `RET` at
+`007AF731`; `007B34F0` calls it at `007B3708` when the built byte `+18h` is clear). Reconstructed
+as `derive_camera_path_knots_007af150` (`src/camera_path_sampler.cpp`).
+- **Fewer than two knots:** `+28h = +1Ch = 0`. A single knot gets start 0, duration 0 and the
+  triple `00F8758C..00F87594` as its direction.
+- **The closed byte `+24h`** is `|first - last|^2 < 1.0` (`007AF297`).
+- **Per knot `i`:**
+  - start `+18h` = the running total `+1Ch` (`007AF4D8`);
+  - `next` = `i + 1`, or for the last knot `closed ? 1 : 0` (`007AF4EE` `SETNZ BL`);
+  - `d = next - this` in binary32 lanes;
+  - `|d|^2` is summed as `(dy^2 + dx^2) + dz^2` (`007AF589..007AF5A3`) and stored as binary32;
+  - duration `+1Ch` = `sqrt(|d|^2)` when that exceeds the double `1e-10` at `00CE3820`, else 0;
+  - direction `+0Ch..+14h` = `d / duration`, with no zero guard (`007AF633..007AF649`);
+  - the running total takes the duration for every knot but the last (`007AF6BB`).
+- **The length `+28h`** = last start + (closed ? 0 : last duration) (`007AF6FF..007AF723`). An open
+  path therefore includes its closing segment back to the first point.
+- **`007AE330` and `007AE3E0`** are a lane-wise min and max. Their results go to stack locals
+  that nothing reads (`[ESP+2Ch]`, `[ESP+14h]`), so the per-knot bounding box is dead code.
+
+**The sample `007B03C0`** (`__thiscall(path)`, float arc, position, direction, flags): `007AFE80`
+in path space, then `(p, 1.0f)` through `[path+14h]+74h`, the Path entity's local matrix, with
+the homogeneous divide. The direction goes through `0042D0D0` with normalise 0. 00742400 passes
+flags 0. The output is in the Path's parent frame.
+
+**The terrain slots are local.** The height field vtable is `00D5D350` (xrefs `00ADD1CE`,
+`00ADD2C9`), so the forwarders reach:
+- `0087FA20` `vtable[24h]` = `00ADA160`: `u = (x - origin_x) / 9.375`, the same for `v`, then
+  slot 48h `00ADB480`;
+- `0087FB90` `vtable[34h]` = `00ADA1C0`: `_ftol` of the same `u`, `v`, then slot 30h
+  `00ADAA40`.
+
+Neither subtracts the node translation, unlike slots 28h (`00ADA900`) and 38h (`00ADABA0`).
+"Still open" above offered `height_00ada900` and `normal_00adaba0` for these two calls. Those are
+the next slot along, the world-frame pair. `local_height_00ada160` and `local_normal_00ada1c0`
+now carry the local pair.
+
+**The element and its waves.** The convoy's element vtable is `00CEA528`:
+`{004F2550, 00743060, 007410C0, 007410B0, 0042BBA0, 0042BBB0}`. The convoy is admitted to waves 1
+and 3: `007420B0` (vtable `+0A0h`) calls `0077F0E0` first, and that reaches `00923840`, which
+sets `+5Ch` and `+BDh`. So per fixed step:
+1. wave 1: `00743060(0.05)` adds `0.05 * speed * dir` to the live arc, wraps it and calls
+   `00742400`; then `007410B0` commits;
+2. wave 3: `007410C0(0.05)` sets live = committed + `0.05 * speed * dir`;
+3. the next wave 1 adds another `0.05 * speed * dir` on top of that.
+
+**The committed arc therefore advances `0.1 * Speed` per step, twice the authored speed.** This
+follows from the three bodies and the wave order (`docs/FIXED_STEP_JOB_WAVES.md`). The
+interpolation wave adds `leftover * speed * dir` and re-places without a commit. In lockstep the
+leftover is zero, so that wave does not run.
+
+**The binding** (`kLandConvoyMovementBound`, `src/game_hosts_units.cpp`):
+- after the roster, `bind_land_convoy_motion` resolves `Path` (`"Landscape 01\<leaf>"`,
+  case-insensitive, as `009251F0`'s `__strnicmp` does) against the scene records;
+- it builds the knots from the retained `Point%002i` triples with `007AF150`;
+- it takes the law from the two parents (`00742C70`) and keeps the arc state;
+- `land_convoy_step_waves` runs the three slots per fixed step, after the job waves;
+- `00742400` places the members through `LandConvoyPlacementBinding`. The terrain law composes
+  the member's local matrix with the parent's world frame into the host's pose rows.
+- **Arithmetic:** `00743060`, `007410C0` and `00742400`'s group arc now round once to binary32,
+  as their x87 chains do. They were three binary32 roundings.
+- **Labelled substitutions:**
+  - the qualified name is matched against the scene records, not walked through the registry;
+  - a convoy whose parent has no loaded height field is refused, where the native would call
+    through a null `+3D0h`;
+  - the member-death kill `007422A0` and the `+5Eh` gone byte are not modelled. On JM05 the members
+    are Neutral.
+
+**What JM05 authors** (this installation's `PRCPIJN/ijn_05_invasion_of_port_moresby.scn`, mtime
+2024-07-13). `Landscape 01` sits at `(-13800, -0.0059, -5100)`. Both convoys and both paths are
+its children, so the terrain law applies. Each convoy's frame is its path's first point.
+
+| convoy | path | points | closed | length (`007AF150`) | speed | rows |
+| --- | --- | --- | --- | --- | --- | --- |
+| `SecondaryLandConvoy 01` | `SecondaryLandConvoy01Path 01` | 77 | no | 1837.456 | 10 | 4, gap 25 |
+| `RadarStationLandConvoy 01` | `RadarStationLandconvoyPath 01` | 113 | no | 2032.570 | 5 | 1 |
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| JM05 3200/3000 | **exit 3.** `summary LandConvoy motion convoys=2 bound=1`, both `law=terrain`, knots 77 and 113, lengths 1837.456 and 2032.570 to three decimals. The five members leave the convoy frames and follow their paths. After about 3000 steps the committed arcs are near `3000 * 1.0 mod 1837.456 = 1162.5` (Secondary) and `3000 * 0.5 = 1500` (Radar), each within one step count of the first admitted step. By a linear reading of the knots, slot 0 of Secondary ends near world `(-1617, 3, -866)` and Radar's member near `(5723, 4, -2541)`, within 30 m for the cubic. Member heights follow the terrain. No range errors. Neutral party: deaths, hits, damage and shots unchanged |
+| USN01 3200/3000 | **exit 1.** No LandConvoy; only the new summary line (`convoys=0`) |
+| USN04 4700/4500 | **exit 1.** The same |

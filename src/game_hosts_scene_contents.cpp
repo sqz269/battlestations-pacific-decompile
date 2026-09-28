@@ -2608,6 +2608,21 @@ float SceneTerrainHeightField::height_00ada900(float x, float z) const noexcept 
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
     const float u = terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv);
     const float v = terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv);
+    return grid_height_00adb480(u, v);
+}
+
+// Packet cc9_land_convoy_movement. Slot 24h, 00ADA160: the same grid lookup in
+// the Landscape's LOCAL frame, u = (x - origin_x) * float(1 / cell) and v the
+// same with origin_z (00ADA161..00ADA1A8), then slot 48h 00ADB480. No node term.
+float SceneTerrainHeightField::local_height_00ada160(float x, float z) const noexcept {
+    const float inv = terrain_f32(1.0 / kTerrainCellSize);
+    const float u = terrain_f32((static_cast<double>(x) - origin_x) * inv);
+    const float v = terrain_f32((static_cast<double>(z) - origin_z) * inv);
+    return grid_height_00adb480(u, v);
+}
+
+// 00ADB480, slot 48h: the bilinear height at grid (u, v).
+float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noexcept {
     const int i = static_cast<int>(u);
     const int j = static_cast<int>(v);
     const float fu = terrain_f32(static_cast<double>(u) - i);
@@ -2630,6 +2645,22 @@ void SceneTerrainHeightField::normal_00adaba0(float x, float z, float out[3]) co
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
     const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv));
     const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv));
+    cell_normal_00adaa40(i, j, out);
+}
+
+// Packet cc9_land_convoy_movement. Slot 34h, 00ADA1C0: the LOCAL-frame normal,
+// j = _ftol((z - origin_z) * inv) and i = _ftol((x - origin_x) * inv), each
+// product stored through float first (00ADA1E7, 00ADA201), then slot 30h
+// 00ADAA40(out, i, j). No node term.
+void SceneTerrainHeightField::local_normal_00ada1c0(float x, float z, float out[3]) const noexcept {
+    const float inv = terrain_f32(1.0 / kTerrainCellSize);
+    const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - origin_z) * inv));
+    const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - origin_x) * inv));
+    cell_normal_00adaa40(i, j, out);
+}
+
+// 00ADAA40, slot 30h: the unit normal of cell (i, j).
+void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) const noexcept {
     const float fi = static_cast<float>(i);
     const float fj = static_cast<float>(j);
     const float h00 = cell_height_00adb3a0(i, j);
