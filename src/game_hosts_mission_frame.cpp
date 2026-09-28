@@ -1826,6 +1826,19 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.scene_state.script_slot,
                     host.scene_state.script_slot_forced ? 1u : 0u,
                     host.scene_state.session_mode);
+                // Packet cc9_get_closest_border_zone: the same Map block and
+                // 004D5EDE selection, handed to the Lua host for world+7134h.
+                for (const auto& block : host.scene_contents->root_properties().blocks) {
+                    if (_stricmp(block.first.c_str(), "Map") != 0) continue;
+                    bsp::WorldMapSettings settings;
+                    if (bsp::read_world_map_settings_004e6c00(block.second, settings)) {
+                        host.lua.set_world_border_zones(bsp::select_world_map_bounds_004d5ede(
+                            settings, host.scene_state.script_slot,
+                            host.scene_state.script_slot_forced ? 1u : 0u,
+                            host.scene_state.session_mode));
+                    }
+                    break;
+                }
             });
             host.done(label, step.address);
             ++host.load.concrete;
