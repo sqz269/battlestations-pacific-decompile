@@ -1182,3 +1182,70 @@ The tool is `local/cc9-lua2-parse-map.py` in the cc9-lua2 tree.
 | `0096ACE0` | `0096ADA6` | `__thiscall`, `RET 4` | two: `0096AD9C` and `0096ADA4`, INT3 after the second |
 
 All three are slots of vtable `00D1B68C`.
+
+### The `kill` subscription's keys and its condition (packet `cc9_lua_listeners`, second read)
+
+The listings were read from disk; the three slots have no Ghidra function (see above).
+
+**Slot 1, `00972520`, is the loader.** Its argument is the block's property reader.
+- `callback` (`00CE49C0`) is read into `+4h` through the reader's `vtable[10h]`
+  (`0097254B`..`00972552`).
+- The three sets are filled from their keys:
+
+| key | string | set | through |
+| --- | --- | --- | --- |
+| `entity` | `00CE5818` | `+0Ch` | `009721C0` |
+| `lastAttacker` | `00D1B0B8` | `+1Ch` | `009721C0` |
+| `lastAttackerPlayerIndex` | `00D1B0A0` | `+2Ch` | `009722D0` |
+
+- The scripts write exactly this shape, for example `usn_19_coralus.lua` 1612:
+  `AddListener("kill", "ZuikakuZeroKillListener", {callback = "luaZuikakuZeroDead", entity =
+  Mission.ZuikakuZeroes, lastAttacker = {}, lastAttackerPlayerIndex = {}})`.
+
+**Slot 3, `0096ACE0`, is the condition** `0097B8C0` calls.
+- **The parameters** are a vector of three boxed values (`params+4h`..`+8h`, bounds-checked
+  through `00BF6713`):
+  - [0] the victim;
+  - [1] the last attacker;
+  - [2] the last attacker's player index.
+- **The test.** Each value goes to its set's `vtable[0]` (`00979140`):
+
+| set | value | call site |
+| --- | --- | --- |
+| `+0Ch` | [0] | `0096AD0D` |
+| `+1Ch` | [1] | `0096AD3B` |
+| `+2Ch` | [2] | `0096AD6C` |
+
+- **A match** needs all three. The routine then logs through `004254B0` (format `00D1AF4C`, the
+  callback name, or `00F8A0C8` when it is null) and returns 1. Otherwise it returns 0.
+- **`00979140` answers 1 for an empty set,** and otherwise tests membership (`009790D0`). So `{}`
+  means any.
+
+**What a measured `kill` listener does.**
+- `luaZuikakuZeroDead` (`usn_19_coralus.lua` 1624) removes its own listener and clears
+  `Mission.ZeroOverZuikaku`. That is the flag `luaAddZuikakuZeroListener` (1610) tests before it
+  registers the listener again. `luaTownCatDead` (2518) is the same shape.
+- The callbacks take no argument, apart from `luaSeaplaneSpotted(entity)` on the `recon` channel.
+
+### The binding, concretely (slices 1 and 2)
+
+- **The registry, in the mission Lua host.**
+  - A map keyed by channel and id, both case-insensitive as `00980150` is, holds the callback
+    and, for `kill`, the three sets. The sets are read like the loader: an `entity` given as an
+    entity table or a table of them, with the attacker sets the same.
+  - `AddListener` replaces the entry, `RemoveListener` erases it, and `IsListenerActive` answers
+    from the map.
+- **Firing `kill`.**
+  - Once per mission frame, every newly destroyed units-host unit is evaluated against each `kill`
+    subscription. The source is `GameUnitsHost::destroyed_units`, the same rows the HUD observer
+    uses.
+  - The victim is tested against `entity`. The callback runs through the host's named-call path,
+    which stands in for `00887E50`.
+  - **SUBSTITUTIONS, labelled:**
+    - The dispatch runs at the host's frame, not inside the kill flush.
+    - A subscription with a non-empty `lastAttacker` or `lastAttackerPlayerIndex` set is not
+      matched, because the host's death row does not carry the attacker as an entity. No measured
+      listener sets them.
+- **The predictions are to be written with the binding.**
+  - USN04 is the measure, if one of its two `AddListener` calls is a Zero `kill` listener.
+  - The binding's own census will show which.
