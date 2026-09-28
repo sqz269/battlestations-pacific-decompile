@@ -933,3 +933,108 @@ USN01, USN02 or USN04.
 machinery and message 94h, which this host does not model, and no mission the harness runs would
 measure it. It belongs to a later landing-operations packet with a mission whose AI group holds a
 troop transport.
+
+## 9b. The landing operations scan, and the readiness and launch routines (packet `cc9_landing_operations_scan`)
+
+Worker cc9-ships2, on main `6e1a50650`. Ghidra was read-only. **No code changed: no mission this host
+runs reaches `00A11B80` with a transport and a landing site**, so the binding is not built. See the
+scan below.
+
+### The routines behind `00A11B80`
+
+**`008128E0`**, the transport's `vtable[234h]` (`__thiscall(unit, site)`, `RET 4`) answers the
+readiness question. It is true only when all of these hold:
+1. The class test `class->vtable[2Ch]` (`00827FB0`, section 9a) holds.
+2. `unit+1124h <= 0.0` (`00D7A218`). `+1124h` is the landing cooldown:
+   - message 95h `MT_SHIP_LANDINGSHIPSLAUNCHED` stores it (`00821F80`, docs/UNIT_MESSAGE_ARMS.md);
+   - `0082614B` counts it down each tick (docs/SHIP_MOTION.md).
+3. With `site == 0`, `006F2C30` finds a landing site: `ECX = &unit+FCh`, `EDX = unit+54h` (the
+   party), arguments `(2, &status)` (`0081291C`..`00812937`).
+4. `006F2A50(0)` on that site answers nonzero (`00812941`..`00812945`).
+
+**`006F2C30`**, the landing-site search (`__fastcall(const float* pos, int party, int mode, int*
+status)`):
+- It walks list 28 (`[[00E188A8]+19CCh]+16Ch`, the CommandBuilding list, docs/CONSTRUCT_WORLD.md).
+- It takes the nearest entity of **another** party whose 3-D squared distance is within the
+  squared radius picked by `mode`:
+  - 0 is `+7C8h`;
+  - 1 is `+7A0h`;
+  - 2 is `+7C4h`.
+- The status goes 3, then 2 (the list is not empty), then 1 (another party's building exists), then
+  0 (one is in range).
+
+**The CommandBuilding radii** are read by `006F2780` from the property bag (`006F27E5`..`006F28B3`),
+with their defaults:
+
+| offset | key | default |
+| --- | --- | --- |
+| `+7A0h` | `CaptureRange` (`00CFAE50`) | 500 |
+| `+7A4h` | `00CFAE40` (CaptureValue) | 1000 |
+| `+7C4h` | `LandingRange` (`00CFAE30`) | 500 |
+| `+7C8h` | `InferiorRange` (`00CFAE20`) | 200 |
+| `+7CCh` | `LandingPointRange` (`00CFAE0C`) | 500 |
+
+So `008128E0` looks for an enemy CommandBuilding within its `LandingRange`. **`00A11B80`'s move
+radius, `0.75 x anchor+7A0h`, is 0.75 times the anchor's `CaptureRange`:** it is a `FILD` then an
+`FMUL` by the double at `00CEC9D8` (0.75), at `00A11E9D`..`00A11EA3`.
+
+**`006F2A50`** is the free-landing-point check (`__thiscall(site, entity)`):
+- It returns 0 when the site's landing-point array `+794h` (count `+798h`) is empty.
+- Otherwise, under the site's lock `+764h`, it returns the first point (with `entity == 0`, the
+  call made here) whose `006AC220` answers 0. `006AC220` is `MOV EAX,[ECX+1F8h]`, the point's
+  occupant.
+- The producer of `+794h` was not read.
+
+**Message 94h `MT_SHIP_STARTLANDING` has one receiver.**
+- The ship arm table maps it (`00822400[94h-4Bh]` = 0Fh) to `00821F61`, which calls
+  `unit->vtable[238h]()`.
+- On the transport's vtable (`00CFA778`) that slot is **`008206F0`**, next to `008128E0` at `+234h`.
+- `008206F0` returns -1 unless `class+78Ch` (LandingShip) and `class+790h` (LandingShipAmount) are
+  set. It is the landing-craft launch: it is about 5 KB and builds matrices and spawn points.
+- Only its guard was read. It is also the only other caller of `006F2A50`, and the sender of 95h.
+
+**`00A11B80`'s anchor**, restated with the argument:
+- CLOSEATTACK (`00A15490`) passes the target group, `cmd+1Ch` (`00A154E8`). The anchor is that
+  group's first member answering `IsKindOf(1Ch)`, a CommandBuilding, or none.
+- DEFENDPOSITION passes 0. The anchor is the nearest list-28 entity of another party within the
+  active tuning's `+1F4h`. That is `CloseAttack_CollectDist`, which this host holds at 3000.0 (the
+  coordinator summary's `collect_dist`), measured in XZ from the group's first member.
+
+### The scan
+
+The scan read `scripts/datatables/missiontree.lua` (uncommented entries with a `sceneFile`) and each
+scene, read-only. Only VehicleClass 224 (`TroopTransJ_light`) and 234 (`TroopTransUS_light`) carry
+landing craft.
+- **Party:** only party 0 has an AI brain in campaign mode (`ai_party_ai_enabled`, slot 0 or 4), so
+  only Allied transports (the scene default party) can sit in a CLOSEATTACK or DEFENDPOSITION
+  group.
+- **Hidden units:** transports authored `Hidden = B true` are not created by this host, so they are
+  excluded.
+
+| mission | party-0 transports | nearest enemy CommandBuilding | this host |
+| --- | --- | --- | --- |
+| JM06 | 4 | none | in the CLOSEATTACK group led by Fletcher-class 08 (11 members, `rb6_jm06`); no site and no anchor: JM06 has no CommandBuilding at all |
+| JM08 | 6 | Headquarter 01, 20.9 km (Capture 500, Landing 4000) | authored `Cruise`; the transports' group (Helena's, 19) stays MOVETOATTACK to 9000 frames (`local\lo_base_jm08.log`) |
+| USN18 | 10 | Command Station 01, 12.2 km (Capture 1, Landing 2500) | smoke run `local\lo_smoke_usn18.log`: Enterprise's group (56) stays MOVETOATTACK to 9000 frames; the only CLOSEATTACK group is the four members led by RadarStation 01 |
+| PRCP03 | 13 authored; this host created none (the `USTroopTransport` entries are `Hidden`) | HQ, 4.4 km (Capture 1, Landing 5000) | smoke run `local\lo_smoke_prcp03.log`: no class-234 unit exists; the party-0 groups are Sangamon's squadron (CLOSEATTACK) and Suwannee's 3 ships |
+| USN06, USNSS, USNOS | 4, 4, 6 | 20.7, 11.5, 13.5 km | not run; farther than USN18 |
+
+**The smoke runs pass all four checks.** PRCP03 and USN18 at 9200/9000 with streams and the death
+table on, lockstep 0.05, an idle player and present interval immediate:
+- each log has its milestone line;
+- the module directory is this tree's `build\`;
+- 9000 of 9000 frames ran;
+- each ends with the final COM release.
+
+Neither has a script failure, and neither mission ends.
+
+**Result: `00A11B80` runs on JM06 only, where it can issue nothing.**
+- JM06's four transports fail `008128E0` at step 3, because the mission has no CommandBuilding.
+- With no CommandBuilding in the mission, the CLOSEATTACK target group has no `IsKindOf(1Ch)`
+  member, so there is no anchor, no move and no 94h.
+- A binding would be identity on every mission this host runs, and it would rest on:
+  - the unread producer of the landing points (`+794h`);
+  - a launch (`008206F0`) this host does not model.
+
+**The binding is parked** until a mission puts a party-0 transport group within 3000 m of an enemy
+CommandBuilding, or until hidden units are created.

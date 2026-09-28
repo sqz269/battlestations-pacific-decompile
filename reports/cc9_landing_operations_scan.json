@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_landing_operations_scan",
+  "doc": "docs/SENTITY_INIT_PASSES.md section 9b",
+  "base": "main 6e1a50650",
+  "code_changed": false,
+  "addresses": {
+    "008128E0": "transport vtable[234h] readiness: class test 00827FB0, unit+1124h <= 0 (landing cooldown, 95h stores, 0082614B counts down), 006F2C30(pos, party, 2) site, 006F2A50(0) free point",
+    "006F2C30": "landing-site search over list 28 (CommandBuilding): nearest other-party entity within +7C8h/+7A0h/+7C4h by mode (2 = LandingRange)",
+    "006F2780": "CommandBuilding property reader: +7A0h CaptureRange 500, +7A4h 1000, +7C4h LandingRange 500, +7C8h InferiorRange 200, +7CCh LandingPointRange 500",
+    "006F2A50": "free landing point: +794h array / +798h count, under +764h lock, first point with [point+1F8h] == 0 (006AC220)",
+    "00821F61": "ship arm for message 94h MT_SHIP_STARTLANDING: unit->vtable[238h]()",
+    "008206F0": "transport vtable[238h], the landing-craft launch (about 5 KB; guard class+78Ch / +790h read only)",
+    "00A11B80": "move radius is FILD anchor+7A0h (CaptureRange) x double 0.75 at 00CEC9D8 (00A11E9D..00A11EA3); CLOSEATTACK passes cmd+1Ch (00A154E8)"
+  },
+  "calls": [],
+  "scan": {
+    "JM06": "4 party-0 transports in the CLOSEATTACK group (Fletcher-class 08); no CommandBuilding in the scene, so no site and no anchor",
+    "JM08": "6 transports, authored Cruise, in Helena's MOVETOATTACK group through 9000 frames (local/lo_base_jm08.log); HQ 20.9 km",
+    "USN18": "smoke local/lo_smoke_usn18.log: 10 transports in Enterprise's MOVETOATTACK group through 9000 frames; Command Station 01 12.2 km",
+    "PRCP03": "smoke local/lo_smoke_prcp03.log: the transports are Hidden and not created by this host",
+    "others": "USN06 20.7 km, USNSS 11.5 km, USNOS 13.5 km: not run"
+  },
+  "smoke_checks": "PRCP03 and USN18 9200/9000: milestone line, module directory build\\, 9000/9000 frames, final COM release; no script failure, no mission end",
+  "verdict": "no mission this host runs reaches a transport landing approach; binding parked (would be identity everywhere)",
+  "no_ghidra_function": [],
+  "names_added": []
+}
