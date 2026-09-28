@@ -2449,9 +2449,17 @@ This is section 42's first outside-lane difference, bound in this lane.
   forced fire target `00835930`. `008358D0` is only in the weapon-director tables (section 42.1).
 - A plane instance has no director at all (vtable `[114h]` = `0047F180`).
 - **Also different, not bound:** the slot push calls `director->vtable[14h]` at `0071E73C`. That is
-  `00836040` on a ship director and `0084DD20` on the squadron controller. `0084DD20` rewrites the
-  target of a self-targeted command (it compares with `00E08F68` and `00E08F88`). The host's push
-  uses the ship director's rule for every row. That difference is open.
+  `00836040` on a ship director and `0084DD20` on the squadron controller. Both are the same
+  rewrite: when the descriptor names a target that `00521EA0` resolves to the controller's own
+  `+34h`, the descriptor becomes the empty one (kind 0, id 0, the zero vector at `00F87574`) and
+  the routine returns 1. **Only the command set differs:**
+  - `00836040` (ships) accepts `cruise` `00E08F70` and `stop` `00E08F88`;
+  - `0084DD20` (squadrons, `0084DD20..0084DD9C`, `RET 8`) accepts `moveto` `00E08F68` and `stop`
+    `00E08F88`.
+  So a squadron's self-targeted `moveto` is emptied, and its self-targeted `cruise` is kept. The
+  host's push uses the ship rule for every row. **Open:** it needs the same class test as the
+  switch. Its reach is a squadron `moveto` whose target is the squadron itself, and no reference
+  row is known to issue one.
 
 ### 45.2 The binding (committed OFF)
 
