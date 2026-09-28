@@ -373,7 +373,7 @@ inline constexpr bool kSpawnNewPlacementBound = true;   // 23.5 and 23.6
 //    first asks 0077C8D0 to join the first member's formation (009486DA,
 //    0094870E). Off, every member is made as PlaneSquadronGen.
 // ---------------------------------------------------------------------------
-inline constexpr bool kSpawnNewEntityRefPosBound = false;
+inline constexpr bool kSpawnNewEntityRefPosBound = true;   // ON by the JM05 pair (LUA_BINDING_MISSION)
 
 // A row-major 4x4: rows 0/1/2 right/up/forward, row 3 the translation, which
 // is the order BSP_Matrix_Multiply4x4 (00413920) and 00B646E0 use.
