@@ -246,8 +246,11 @@ constexpr bool kAiCaptureThinkBound = true;
 // per-group pass (00A2A263-00A2AA90), the assignment loop (00A2AAA0-00A2AF40,
 // 00A1A720 at 00A2AD77), the 00A1D010 merges (00A2B12F), the hand-off of every
 // unassigned group and the spawn arm as a record. False: that think runs the
-// Siege-shape stand-in and counts a target_fallback.
-constexpr bool kAiCaptureTargetPathBound = false;
+// Siege-shape stand-in and counts a target_fallback. ON: USN13 and USN01 moved
+// (Enterprise's group is ordered at the CommandBuilding group and draws
+// CAUTIOUSATTACK against 0.5), USN02 and USN04 identical
+// (docs/PLANNER_TASK_CHOICE.md section 8.4).
+constexpr bool kAiCaptureTargetPathBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a

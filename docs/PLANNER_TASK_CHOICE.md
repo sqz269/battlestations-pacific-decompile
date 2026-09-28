@@ -515,6 +515,62 @@ They come from `BSP_CAPTURE_DIAG=1` OFF runs of this tree (`local\s4_plan_{usn13
 **USN02 9200/9000 and USN04 4700/4500: identity, exit 0 or 1.** Their scenes hold no
 CommandBuilding, so the path never runs.
 
+### 8.4 The pairs
+
+- **OFF** is this tree's build at `8fca6d242`. **ON** is `pair_export --commit 8fca6d242 --flip
+  kAiCaptureTargetPathBound=true` into `local\ct_on`.
+- **Logs:** `local\ct_{off,on}_{usn13,usn01,usn04,usn02}.log`. Every run used
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` without `BSP_CAPTURE_DIAG`.
+
+| mission | pair_diff | deaths | hit records (hull) | ON census |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | exit 3 | 16 -> 17 | 312 (103) -> 283 (117) | 39 thinks, 38 assignments, 38 attack orders |
+| USN01 3200/3000 | exit 3 | 5 -> 5 | 177 (74) -> 172 (80) | 38 thinks, 53 assignments, 53 attack orders |
+| USN04 4700/4500 | exit 1, identical | 28 | 491 (93) | the path never runs |
+| USN02 9200/9000 | exit 1, identical | 12 | 5166 (495) | the path never runs |
+
+In both moved missions the census shows no DEFENDPOSITION or PATROLTO, no merge and no hand-off.
+
+**What moved on USN13.**
+- At t = 4.20 s Enterprise's group (51 members) is ordered at the CommandBuilding group (28 members,
+  leader CB2) instead of Agano's group. The draw exceeded 0.5, so the order is **CAUTIOUSATTACK**
+  (`ai diag order_attack ... target_leader=CB2 cautious=1`).
+- The host ticks no CAUTIOUSATTACK arm, so the group's leader gets no movetos:
+  - `tick_orders` fell from 514 to 25;
+  - the ship-AI plan requests fell from 2886 to 0;
+  - Enterprise moved 920 m instead of 2051 m.
+- The member orders now reach a building target: `WeaponDirector::attackmove_arm_building_moveto_00836b95`
+  appears, UNIMPLEMENTED, 78732 calls.
+- One more Japanese plane dies (`bruh #1.1`), and the other 16 death rows shift by seconds.
+
+**What moved on USN01.**
+- The first order goes to the same CB2 group as OFF, but its draw exceeded 0.5, so Enterprise's
+  group holds CAUTIOUSATTACK from t = 4.20 s instead of MOVETOATTACK.
+- The five Mav deaths shift by up to 1.9 s. Hull hits rise by 6.
+- From 91.35 s the ScoutDauntless group is assigned to CB2 as predicted, and it also drew
+  CAUTIOUSATTACK (`cautious=1`). It therefore stays where it was: "controlled moved 0.00" both ways.
+
+**Predictions:**
+- **Held:** every assignment and order target:
+  - USN13's switch from Agano's group to the CommandBuilding group at 4.20 s;
+  - USN01's second group ordered from 91.35 s;
+  - no merge, PATROLTO, DEFENDPOSITION or hand-off;
+  - USN02 and USN04 identical.
+- **The target choice does not rest on the weight stand-in.** Each mission has one target group:
+  USN13's three CommandBuildings share one host group, and USN01 has one CommandBuilding. Any
+  positive `00A250A0` value gives the same orders.
+- **Failed on spread:**
+  - USN01 moved from 4.20 s, not from 91 s. The prediction named this branch: the draw against 0.5
+    exceeded it.
+  - The ScoutDauntless did not leave its position, because it drew CAUTIOUSATTACK.
+
+**Decision: `kAiCaptureTargetPathBound` is ON.** The mechanism is the image's, and the failures
+are on spread.
+
+**The next gap is the CAUTIOUSATTACK tick.** Every 0.5 draw that lands on CAUTIOUSATTACK now leaves a
+group without movement. That arm (`vt+0Ch` of the CAUTIOUSATTACK class) is unread, and so is its
+`00A14DD0` path shared with CAUTIOUSMOVE. It is the most valuable follow-up for USN13 and USN01.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
