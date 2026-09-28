@@ -2564,3 +2564,21 @@ it once, with true.
 - **With the feeds routed**, the same verdicts are predicted on these rows. A mission whose idle
   AI flies dive-bomb or torpedo attacks after the call would move: the entry's break-off at
   `009C8361` holds instead of finishing an empty bomber, and the go-away turn scales by 1.5.
+
+### SetDeviceReloadEnabled: the Lua-side pairs (feeds not yet routed)
+
+OFF is this tree's build at `ed959c372`. ON is `local\dr_on`, a `pair_export` of `ed959c372` with
+`kLuaDeviceReloadEnabledBound=true` (SHA-256 prefix `167D28835E80`). Logs are
+`local\dr_{off,on}_<mission>.log`.
+
+| mission | pair_diff | reading |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 1, gameplay identical | the native fires once with true; the byte reads 1 at the end |
+| JM08 3200/3000 | exit 1, gameplay identical | the same |
+| USN13 3200/3000 | exit 1, gameplay identical | no call; the byte stays 0 |
+
+- **The USN13 prediction missed on its exit code, not its mechanism.** I predicted exit 0, but the
+  new summary line prints `bound=`, so every flipped run differs in text. Gameplay is identical,
+  as predicted.
+- **These pairs do not test the feeds.** The plane-task inputs still read constant false, so the
+  switch stays OFF until the routed feed lines land and the pairs are re-run.
