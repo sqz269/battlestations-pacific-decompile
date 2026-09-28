@@ -2130,3 +2130,63 @@ The OFF side is this tree's build, with reference j's run parameters plus main's
   its nearest enemy at 3000 frames. PT Boat 80' Elco 01 and 02 are on side 2 and are never anyone's
   nearest.
 - A plane passed to AddUntouchableUnit: the gate reads `[plane+9D4h]`, which is not followed here.
+
+## 41. Handoff (cc9-gunnery8, 2026-09-28, at about 75% context), with the hull roll torque read
+
+This worker's packets: reference j (GAME_EXECUTABLE), the periscope byte (section 38, ON), the
+command-allowed extra tests (section 39, recorded), the entry point
+`fire_function_guns_now_009e2b60` (inert, for the ships lane) and the untouchable gate
+(section 40, ON). What remains of section 31 is rank 7 and rank 8.
+
+### 41.1 Rank 8, the hull roll torque `00827312`: read, not bound
+
+The host's `ShipHitBinding` in `src/game_hosts_gunnery.cpp` stubs the roll axis as (0, 1, 0) and
+both settings as 0. It also records `route_add_hull_torque`. The pure step
+`ship_roll_torque` (`src/ship_hit_record.cpp`) is complete, and it is reached only for a torpedo
+on a hull heavier than `kShipHitRollTorqueMassFloor` (USN02: 52 calls). Every input now has a
+known producer:
+
+| input | the image | the host source |
+| --- | --- | --- |
+| roll axis | `00C32000` is `LEA EAX,[ECX+8]` (4 bytes), so `008271B7..008271BD` read `[[unit+1018h]+2Ch]+8+18h..+20h`. That is the same matrix row `0092D730` multiplies at `+18h/+1Ch/+20h`, which the host already calls `pose_row2`, the forward axis. **`ship_hit_record.hpp:236`'s comment "`+20h`" should read `+18h..+20h`.** | `GameUnitsHost::unit_pose(index, right, up, forward)`, the `forward` row |
+| torque scale, `settings+590h` | `Physics.TorpedoForce`, `0083FE7C`, default 1.0 | `GameplayTuningSettings::physics_torpedo_force` (`src/gameplay_settings.cpp:256`). The gunnery host has no route to it yet |
+| mass root, `settings+594h` | `Physics.TorpedoForcePower`, `0083FEC8`, default 2.0 | `physics_torpedo_force_power`. Same gap |
+| the sink | `0080FFD0` packs message 93h, and `0077C2A0` routes it at `00827312` / `00827329`. `00821E80` case 93h (`00822235`) calls `0092BF30`, `JMP 00C35330` AddTorque on the controller's body | `bsp::unit_handle_add_hull_torque_00822235` (`include/bsp/unit_force_channel.hpp`) on the units host's `slot.body`. `dyn_body_add_torque_00c35330` is already used there (`game_hosts_units.cpp:5938`, `:6117`) |
+
+**The binding, for the next worker:**
+- Add `bool GameUnitsHost::add_hull_torque_message_93h(std::size_t index, const bsp::OceanVec3&)`,
+  which calls the 00822235 handler on the slot's body.
+- Give the gunnery host the two Physics floats. Find the owner that loads `GameplayTuningSettings`,
+  and read the stored load rather than a literal.
+- Fill `roll_axis`, the two settings and `route_add_hull_torque` behind `kShipHitRollTorqueBound`,
+  committed OFF.
+- **Timing to label:** the gunnery hit runs after the fixed step's force phase. Check whether
+  `slot.body`'s torque accumulator survives to the next step's integration before claiming that
+  the torque lands.
+- Pairs: USN02 9200/9000 (52 calls) and any row with torpedo hits on heavy hulls (USN04, E2,
+  USN13, JM05; count `ShipHit::add_hull_torque_00827312` in reference j's logs first).
+
+### 41.2 Rank 7, `007788B0` controller ownership: not started
+
+Section 37.2: exact while `ctl+284h` is empty or names this controller. It is not checked for a
+player-controlled unit. The host has no producer for `+284h`.
+
+### 41.3 Environment
+
+- A JM05 9200/9000 run crashed in the renderer (`set_native_renderer_render_state_00b24460`, a
+  null read) about 20 minutes in. The ON logs after it showed a 640x480 back buffer. Both match the
+  display-sleep state. Wake the display before long runs.
+
+### 41.4 Tools in the cc9-gunnery8 tree (`local\`)
+
+- `g8_runs.ps1 -V <export> -Only <rows>`: reference j's twelve rows on an export.
+  `g8_runs_tree.ps1 -P <prefix>` does the same on the tree's own build.
+- `g8_wait.ps1 -Glob <pattern> -Expect N`: a foreground wait on the final COM release line.
+- `g8_cmp.ps1 -A <prefix> -B <prefix> -Rows <rows>`: `pair_diff` headlines. The prefix `rb9` means
+  reference i's logs in cc9-gunnery7.
+- `g8_loo.ps1 -Specs 'v:kA,kB'`: leave-one-out exports of a commit (edit the commit inside).
+- `g8_rows.py <prefix>`: headline rows against reference i.
+- `g8_rel32.py <addr...>`: every `CALL`/`JMP rel32` and absolute dword naming an address in the
+  image on disk.
+- `g8_mapsym.py <rva> build\win32\bsp_game.map`: symbolise a host crash offset.
+- `g8_extra_check.py`: section 39's call-shape census.
