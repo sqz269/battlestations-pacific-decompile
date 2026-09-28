@@ -824,3 +824,74 @@ predicted direction, through the predicted orders.
   (section 3). It is now the planner splitting the ABDA groups across three targets.
 
 The rank-10 row of section 1 is closed by this packet.
+
+## 8. The approach enter re-seed, bound (packet `cc9_approach_enter_reseed`, `kShipAiApproachEnterReseedBound`)
+
+Worker cc9-ships8, 2026-09-28. Section 4 is the read; this section is the binding and its pairs. The
+switch was committed OFF at `93ca747a5`, on a tree that holds main `f708c1eb2` and this worker's
+rank-10 flip (section 7). The predictions below were written before any ON run.
+
+### The binding
+
+- **`009F3220`** is `ship_ai_approach_enter_009f3220`, called from the approach branch of
+  `AttackMoveSelectorBinding::member_enter`. It runs, in the image's order:
+  - the ring is built first when the host has not yet built it, so the lazy build cannot undo the
+    re-seed;
+  - sixty records: `approach_scores[i]` cleared (+18h..+3Ch and the byte +40h), then
+    `approach_ring[i].jitter_48` = the unit's stream-1 draw in [0, 2), then `reset_44` = 1000;
+  - `traffic.clear()`, `avoid_refresh_11f4 = -1`;
+  - `ApproachUpdateBinding::frame_state_009f1bc0(0.0f)`;
+  - `retarget_timer_11d8 = 0`, `flag_11d6 = false`, `selected_bearing_11f8` and
+    `commanded_heading_120c` set to `unit_heading_11ec`, `flag_1208 = false`;
+  - `substate_ring_timer_14b4 = 1.0f`.
+- **`009E86C0`** (the state enter) runs at the state switch when the incoming state is attackmove.
+  It sets `selector.countdown_1500 = 0` and enters the current member. The constructor's member is
+  the initial one, which this host holds as 0; `member_enter` answers it with the initial record.
+- **`009E86E0`** (the state exit) runs when the outgoing state is attackmove. It exits the current
+  member; only the tangent's exit `009DB7D0` has a body.
+- **The census.** `summary mission ship ai approach enter` prints the approach member enters, the
+  state enters and exits (both sides), and the re-seeds and their draws (ON only).
+
+### The OFF census (`local\ships8_r0_<row>.log`, this tree's build at `93ca747a5`)
+
+| Row | approach member enters | attackmove state enters / exits | member records on OFF |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | 28 | 44 / 21 | no lead-pursuit or tangent member |
+| JM06 3200/3000 | 0 | 22 / 16 | lead pursuit entered 12 times, the tangent entered and exited 6 times |
+| LOMP06 1200/1000 | 0 | 1 / 0 | none |
+| USN01 3200/3000 | 3 | 5 / 2 | none |
+| USN04 4700/4500 | 0 | 0 / 0 | none |
+
+Section 4 expected USN01 to be an identity row. On this base it has three approach enters.
+
+### Predictions, written before any ON run
+
+**USN02: exit 3.**
+- There will be at least 28 re-seeds, each with 60 draws.
+- More re-seeds come from the state enters whose current member is the approach, so the re-seeds
+  can exceed 28, up to 28 plus 44.
+- The ring probes start at random phases, and each re-entered ship's first avoidance refresh
+  comes at once.
+
+**JM06: exit 1 or 3.**
+- No re-seed, because no approach member is entered.
+- Each of the 16 state exits now runs the current member's exit. The tangent's exit is the only
+  one with a body.
+- Each of the 22 state enters re-enters the current member, a lead pursuit or tangent enter.
+  The tangent enter draws from the unit's stream.
+- So JM06 moves only if a ship leaves attackmove while it holds the tangent or lead pursuit, and
+  comes back to it.
+
+**LOMP06: exit 1.**
+- One state enter, whose current member is the initial one: a record and the countdown set to 0,
+  where the constructor had seeded it negative.
+- The census line changes; nothing else does.
+
+**USN01: exit 3 or 1.**
+- It has three approach enters, and up to five re-entries, so there are three to eight re-seeds.
+- Whether a re-seeded ring changes an outcome inside 3000 frames is open.
+
+**USN04: exit 1.** Nothing is entered or left. Only the census line's `bound=` changes.
+
+**Mechanism check:** on ON, `reseeds` equals the number of approach enters, direct plus state
+re-entries, and `draws = 60 x reseeds`.

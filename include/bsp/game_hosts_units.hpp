@@ -116,6 +116,21 @@ inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/L
 // because the flown `land` task 009B41C0 is not bound. True: the resolution
 // line and summary. False: nothing. docs/CONTROLLED_UNIT.md.
 inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record only, pairs (docs/CONTROLLED_UNIT.md)
+// Packet cc9_land_task_reach. The flown `land` bot task (kind 3, factory
+// 009B41C0, constructor 009B3240, size 670h) for a squadron whose
+// `returntobase` 007F16D0 resolves to `land at site`. True: the member planes
+// retire their attack task and install `land` (0099A3DD's arm: 006BCD20, then
+// 006C4790, then 009B41C0), with the approach 009B2E50/009AFE70, the per-tick
+// 009B3EB0 (009B3900 with 009B34D0 and the 0.5 s landing request 006C54C0),
+// the state rule 009B3CF0 and the two states the row reaches, `moveto (land)`
+// (009C2AC0, tick 009C18C0) and `follow (land)` (009C2980, tick 009C1FD0), and
+// the cruise profile 009B3C60. The six landing states (land/line, standby,
+// begin, final, park, abort) are REFUSED, counted and logged: their entry
+// needs the deck's assignment record (006BD080 over the landing sequencer
+// 006CC9F0), which this host does not build, so every request answers mode 1.
+// False: the resolution stays a record and the planes keep their attack task.
+// docs/SQUADRON_LAND_TASK.md.
+inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
 class GameHostLog;
