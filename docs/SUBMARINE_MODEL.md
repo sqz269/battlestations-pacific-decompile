@@ -741,3 +741,32 @@ Narwhal goes from -20 to +0.07.
 | JM06 3200/3000 | **exit 3.** Each boat holds near its band instead of floating: the PlayerSubs near -13, the TypeBs near -40, the Narwhal-class near -80. That holds if the law's removal outpaces the host's buoyancy; if not, they still rise but more slowly. The `Gato` (sinking past -198 m) keeps sinking, because a rising target gives a negative rate, clamped to 0. Submerged boats should take fewer surface hits, so the hit and death rows may move |
 | LOMP06 1200/1000 | **exit 3.** The Narwhal holds near its periscope band, -10.2, instead of +0.07. The hits on it (`hull water Narwhal`, first hit 38.95 s) may move |
 | USN01 3200/3000 | no submarine, exit 1 |
+
+### The pairs and the flip
+
+**Setup.**
+- OFF is this tree's build of `292b20eeb`.
+- ON is `pair_export --flip kSubmarineDiveBound=true` (`local/dv_on`).
+- The logs are `local/dv_{off,on}_<mission>.log`. Streams are ON, with `BSP_DEATH_TABLE=1`,
+  lockstep 0.05 and an idle player.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | Every boat holds its band. PlayerSub 01..03 settle at -12.90 (band -13.0) within 200 steps, the TypeBs at -39.6..-40.0 (band -40.0), the Narwhal-class at -79.9 (band -80.0). The Gato leaves the trace early, as OFF. pair_diff exit 3: deaths 2 -> 1 (`PlayerSub 03`, sunk on the surface OFF, survives submerged), hit records 145 -> 231, shots 233 -> 311, first hit 54.30 -> 54.35 s | held |
+| LOMP06 1200/1000 | The Narwhal settles at -10.11 (band -10.2) by step 400 instead of floating at +0.07. pair_diff exit 3: its 4 hits (225 damage, first hit 38.95 s) are gone; the controlled distance goes 421.38 -> 407.14 m; deaths 0 both sides | held |
+| USN01 3200/3000 | no submarine, exit 0 (byte-identical) | held |
+
+In steady state `+1270h` equals the buoyant velocity gained per step and cancels it, for example
+0.443 on the LOMP06 Narwhal. That is the mechanism the rate clamp describes.
+
+The JM06 hit, shot and unit-table movements follow from the boats being under water. The
+surface escorts now fire at different targets. No single hit is attributed.
+
+**Verdict: `kSubmarineDiveBound = true`.**
+
+**Still open.**
+- The seabed scan `00855420`, and the clamp and dive planes it feeds.
+- The `Dive` teleport of the seed.
+- The ring writes at `+844h`/`+848h`.
+- `needAir` and the air model, and the catapult surfacing.
+- The ship-AI depth callers.

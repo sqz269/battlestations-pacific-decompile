@@ -255,7 +255,7 @@ struct GameUnitsSummary {
 // submarine's force callback is 00936DC0, the dive law (bsp/submarine_model.hpp,
 // submarine_dive_step_00936dc0), after the hydrodynamics 009329C0 it calls itself,
 // instead of the surface ship's 00937440. False: the ship force model, as before.
-inline constexpr bool kSubmarineDiveBound = false;
+inline constexpr bool kSubmarineDiveBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 12)
 
 class GameUnitsHost {
 public:
