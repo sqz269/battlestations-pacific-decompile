@@ -606,3 +606,56 @@ The twenty 5-inch dual-purpose mounts (device 299) on USN02 average 77 shots eac
 | USN04 | hit records down 0..10% (AA aim one step behind); deaths 28 +- 3; exit 3 |
 | USN13 | hit records down 0..10%; deaths 16 +- 3; exit 3 |
 | census | pre_steps > 0 on each ON run |
+
+### 10.8 The wave-order pair, and the verdict: OFF until the AA fire tests are bound
+
+OFF is `local\WO_OFF_<m>.log`: this tree at `1446b3f62`, copied to `local\wo_off_bin`. ON is
+`local\WO_ON_<m>.log`: `pair_export --commit 1446b3f62 --flip kGunWaveOrderBound=true`
+(`local\wo_on`). Streams and the death table were on.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 shots | 3826 | 2621 (-31%) | down 0..15% | **failed** (larger) |
+| USN02 device-299 mean shots per mount | 77.0 (max 167) | 66.7 (max 159) | 60..77 | held |
+| USN02 first hit | 19.20 s | 19.20 s | +- 0.2 s | held |
+| USN02 Houston | 22.75 s, Minegumo Long Lance | 20.85 s, **Yamakaze** Long Lance, 2439 m | Minegumo, 22.75 +- 1.5 s | **failed** on the shooter and by 0.4 s |
+| USN02 failure | 29.75 s | 29.75 s | +- 1.5 s | held |
+| USN02 deaths / hit records | 12 / 5166 | 10 / 4226 | - | - |
+| USN04 | 28 / 491 / 3656, first hit 100.85 s | 22 / 361 / 1571, first hit 117.55 s | hit records -0..10%, deaths 28 +- 3 | **failed** |
+| USN13 | 16 / 312 / 2069 | 14 / 238 / 899 | hit records -0..10%, deaths 16 +- 3 | deaths held, hit records **failed** (-24%) |
+| census | - | pre_steps > 0 on all three | > 0 | held |
+
+**Where the shots went (gun rows by category):**
+
+| mission | category | shots OFF -> ON |
+| --- | --- | --- |
+| USN04 | 1 (AA) | 3173 -> 1267 |
+| USN04 | 5 | 150 -> 101 |
+| USN04 | 6 | 333 -> 203 |
+| USN02 | 2 | 700 -> 411 |
+| USN02 | 3 | 269 -> 161 |
+| USN02 | 6 | 2647 -> 1861 |
+| USN02 | 7 | 210 -> 188 |
+
+**The answers to the two labels:**
+1. **0ADh delivery does not make the host fire earlier.** The image delivers it in the same step
+   on both paths (10.7), as the host does. Multiplier 1.
+2. **The settle order does make the host fire earlier.** It tested one aim step later than the
+   image, so a moving command could pass the host's test and fail the image's. On USN02, whose
+   guns are all artillery-bot guns, the image's order multiplies the shots by **0.69** and the
+   device-299 mounts' by **0.87**. Neither the first hit nor the 29.75 s failure moves, because
+   the failure is torpedo-driven (Houston goes to an opening-spread Long Lance either way). **The
+   USN02 early failure stands as the image's own for an idle player.**
+
+**Why the sub-switch stays OFF.**
+- The drop on USN04 and USN13 is the AA guns, and it exposes a separate host divergence. The
+  host gates **every** gun on `006DF520`'s 0.1-degree settle.
+- The image's AA bots use their own tests:
+  - `008FFA20` uses BOT_FIRE_TARGET section 3's hysteresis through the `008FEF40` debounce.
+  - `009030C0` fires within **one degree** (`0090335E` / `0090339A`, `00CE3984`) (GUN_BOT_TICKS 6.1,
+    6.2).
+- Against a one-degree window, the one-step aim lag of the image's wave order costs almost nothing.
+  Against the host's 0.1 degree, it halves the AA fire. Flipping now would add a second error to
+  the AA path.
+- **The next step is to bind the AA bots' own fire tests, then flip `kGunWaveOrderBound`.** The
+  structure is established: wave 1 before wave 2, and the salvo test after the send.
