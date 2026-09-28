@@ -2123,11 +2123,28 @@ struct GameGunneryHost::Impl {
     void publish_ai_weapon_facts();
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
         const float point[3], const float direction[3],
-        const bsp::HitRecord* blast_record = nullptr);
+        const bsp::HitRecord* blast_record = nullptr, int team_id = -1);
+    // 0072BF10's team stamp, 0072C0F2..0072C14B (packet cc9_projectile_team_id):
+    //   team = gun+1ACh (0072C0FB stores it at shot+1Ch);
+    //   if team == 8 (PLAYER_AI) and gun->vtable[5Ch](21h) (MRFSGun): owner =
+    //   gun+3F0h; an aircraft owner (vtable[5Ch](0Fh)) with +914h > 0.0 (COMISS
+    //   [00D7A218], JBE) is replaced by its squadron head [[owner+9D4h]+3D0h];
+    //   team = [owner+1B0h] (0072C145), the owner's role-1 slot.
+    // SUBSTITUTIONS, labelled: the category-0 (PLANEGUN) rows stand for the
+    // class 21h test, as in 007C2610; the host keeps no +914h, so the owner is
+    // never replaced by its squadron head.
+    int shot_team_id_0072c0f2(const GameGunRow& gun, std::size_t owner) const {
+        int team = gun.seat_1ac;
+        if (team == 8 && gun.category == 0) {
+            std::int32_t slot = team;
+            if (units.unit_current_role_slot(owner, 1, slot)) team = slot;
+        }
+        return team;
+    }
     // 0084BC60 step 7 (0084BE28..0084BEE3) and the gather behind 0084BAD0: the
     // radial burst every class with a Blast table makes on impact, and the one
     // that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
-    void apply_impact_blast(std::size_t shooter, std::size_t gun_row,
+    void apply_impact_blast(std::size_t shooter, std::size_t gun_row, int team_id,
         const float point[3], const float direction[3]);
     void kill_unit(std::size_t victim);
     // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
@@ -5928,6 +5945,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         shot.gun_row = g;
         shot.owner_unit = owner_unit + 1;
         shot.owner_side = units.unit_side_0054(owner_unit);
+        shot.team_id_1c = shot_team_id_0072c0f2(gun, owner_unit);
         shot.bullet_class = gun.bullet_class;
         float launch_speed = gun.muzzle_speed;
         if (have_target) {
@@ -6647,7 +6665,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             }
             this->record("Landscape::on_hit_0087f9a0", 0x0087f9a0u);
             round_bullet_class = shot.bullet_class;
-            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, point, direction);
+            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction);
             round_bullet_class = -1;
             shot.alive = false;
             continue;
@@ -6681,7 +6699,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                 }
             }
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
-                direction);
+                direction, nullptr, shot.team_id_1c);
             impact_shape_kind = 0x0A;
             impact_hull_segment = kDirectHitHullSegment;
             // 0084BC60 step 7: the impact also spawns the burst that carries a
@@ -6693,7 +6711,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             // bursts on this step, and this loop carries bombs and shells too.
             // apply_impact_blast returns without doing anything when the row
             // has no Blast, which is that same gate.
-            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, point, direction);
+            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, point, direction);
             round_bullet_class = -1;
             shot.alive = false;
             continue;
@@ -6800,7 +6818,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                             const float no_dir[3] = {0.0f, 0.0f, 0.0f};
                             ++flak_bursts;
                             round_bullet_class = shot.bullet_class;
-                            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, burst, no_dir);
+                            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, burst, no_dir);
                             round_bullet_class = -1;
                             done("FlakProjectile::detonate_0070c210", 0x0070c210u);
                             shot.alive = false;
@@ -7219,7 +7237,7 @@ private:
 
 void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     std::size_t victim, const float point[3], const float direction[3],
-    const bsp::HitRecord* blast_record) {
+    const bsp::HitRecord* blast_record, int team_id) {
     if (victim >= unit_state.size() || shooter >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
     if (target.dead) {
@@ -7371,6 +7389,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         ev.fire_caused = hit_event_fire;
         ev.leak_caused = hit_event_leak;
         ev.ordnance_kind = gun.bullet_sub_type;
+        ev.attacker_player_index = team_id;   // [src+1Ch], packet cc9_projectile_team_id
         hit_events.push_back(ev);
     }
     done("Hit::attribution_0077ce60", 0x0077ce60u);
@@ -7553,7 +7572,7 @@ std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index
 }
 
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
-    std::size_t gun_row, const float point[3], const float direction[3]) {
+    std::size_t gun_row, int team_id, const float point[3], const float direction[3]) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
     const GameBulletClassRow* weapon = bullet(round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class);
@@ -7665,7 +7684,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
 
         const float before = state.health;
-        apply_hit(shooter, gun_row, i, point, direction, &blast);
+        apply_hit(shooter, gun_row, i, point, direction, &blast, team_id);
         if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
         float nearest = distance;
         for (const bsp::HitPartEntry& e : element_entries) {
@@ -8791,6 +8810,8 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
     shot.owner_unit = unit_index + 1;
     shot.owner_side = h.units.unit_side_0054(unit_index);
+    // Packet cc9_projectile_team_id: the torpedo / depth-charge drop's team
+    // stamp is not traced, so team_id_1c stays -1 (labelled).
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
     for (int i = 0; i < 3; ++i) shot.position[i] = origin[i];
@@ -8943,6 +8964,13 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
     shot.owner_unit = unit_index + 1;
     shot.owner_side = h.units.unit_side_0054(unit_index);
+    {
+        // 006E4D50's bomb stamp at 006E5527: [plane+1B0h], the plane's role-1
+        // slot (packet cc9_projectile_team_id).
+        std::int32_t slot = -1;
+        h.units.unit_current_role_slot(unit_index, 1, slot);
+        shot.team_id_1c = slot;
+    }
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
     shot.is_bomb = true;

@@ -977,3 +977,36 @@ A deferred hop 2 needs these at row 9. The design:
   - rank 9 (above);
   - rank 5's convoy producer (routed to cc9-lua4);
   - rank 5's squadron detection publish, which needs a squadron entity separate from its leader.
+
+## 26. The projectile team id (packet `cc9_projectile_team_id`, no switch)
+
+The hit event's `attacker_player_index` now has a producer: the shot's `team_id_1c`
+(`[shot+1Ch]`, projectile+18Ch). docs/LUA_BINDING_MISSION.md, "attackerPlayerIndex", has the
+consumer.
+
+**How each shot is stamped:**
+- **Gunfire:** 0072BF10's stamp at 0072C0F2..0072C14B.
+  - The team is `gun+1ACh`.
+  - When that is 8 and the gun is an MRFSGun (`vtable[5Ch](21h)`), the team is the owner's
+    role-1 slot `[owner+1B0h]`.
+  - An aircraft owner with `+914h > 0.0` is first replaced by its squadron head
+    `[[owner+9D4h]+3D0h]`.
+- **Bombs:** 006E4D50 stamps `[plane+1B0h]` (006E5527).
+- **Torpedo and depth-charge drops:** untraced; they stay -1.
+
+**Labelled substitutions:**
+- the category-0 rows stand for the class 21h test (as in 007C2610);
+- there is no `+914h`, so the owner is never replaced by its squadron head.
+
+**The team reaches the hit event** through `apply_hit` and `apply_impact_blast`.
+
+**Identity check against the head's code** (`local\g5tton_*` against `local\g5team_*`):
+
+| mission | `pair_diff` | death rows |
+| --- | --- | --- |
+| USN04 4500 | exit 0 | 44 identical |
+| JM06 3000 | exit 1 (gameplay identical) | 2 identical |
+
+- Only the Lua hit filters read the field.
+- JM06's `hshit` (attackerPlayerIndex PLAYER_1) still fires 0 times: no player shot hits the
+  hospital ship on an idle run.
