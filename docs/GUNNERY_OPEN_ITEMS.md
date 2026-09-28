@@ -1285,3 +1285,76 @@ ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=tru
 - Under the image's timing, which is the ON host, this dive does not release. The image would have released only on a run-in that meets 009C5B43, and this one does not.
 
 **Verdict.** The release drop is recorded as the image's own consequence of the command delay: a changed dive geometry at the abort test, not a timing difference at the aim gate. Nothing is bound, and no pair is needed.
+
+## 31. Handoff (cc9-gunnery6, 2026-09-29, at about 72% context)
+
+Rank 9 is closed. All of this worker's commits are on main (`2ce6c92cf`, `ea62f089a`, `796d5e684`, `d466d4250`). No lease is held.
+
+### The loopback queue as it stands
+
+Two switches in `include/bsp/game_hosts_commands.hpp` are both ON:
+- `kSetCommandQueueDelayBound` (sections 26-27);
+- `kSetCommandClearAllMessageBound` (sections 28-29).
+
+**What is posted, and where** (`GameCommandsHost::Impl::post_loopback`, the image's 0076E520):
+
+| message | posted from | image site |
+| --- | --- | --- |
+| MT_COMMAND | `EntityIssueBinding::route_message`: every `issue` / `issue_command_object` (scene authored, AI coordinator, script orders, player `--order`) | 0077D7BD |
+| SETCMD | `DirectorBinding::route_set_command_message`: 0071ECF0, from MT_COMMAND's delivery or directly from the director idle tail 00836DC9 | 0071ED81 |
+| 5Dh, one slot | `Impl::route_clear_command`: 0071D810's stage 2 (`DirectorStageBinding`), `CompletionBinding` (0071E430), 0071DDB0's release path, 0071E550's drop (0071D900) | 0071C730 / 0071D900 |
+| 5Dh, every slot | `DirectorBinding::clear_all_commands`: 00816E30 at 0081733E, delivered through `clear_all_command_slots_00720ca0` | 0071D880 / 00720CA0 |
+
+**Where it is delivered.**
+- **The drain.** `GameFixedStepHost::pump_session_00778450` (fan-out row 9, 00778542) calls `commands_begin_loopback_drain_0076c600`, then the after-row-9 script-order drain, then `commands_finish_loopback_drain_0076c600`.
+- **Posts made while the drain is open** are delivered at once, together with their own posts. That covers the script orders' re-issues.
+- **Then the queue** is delivered in post order. A delivery's own posts are inserted right after it (`+258h`, 0076C639). So an MT_COMMAND's clear-all, its make-room drop and its SETCMD are all delivered in the same drain, in that order.
+- **Rows and continuations.** An issue's `GameCommandRow` is stored at post and addressed by index. The finish tail (0071BE40 current read and 00835C70's arm) runs at the end of the delivery that ends the chain.
+- **Receiver continuations** are PilotSetTarget's 0099A170 install, the squadron wingmen's installs and the path pair. They attach to the last issue's MT_COMMAND through `GameCommandsHost::after_last_issue_delivery` / `commands_after_last_issue_delivery`, and run after that chain.
+
+**What callers see.** A caller of `issue` / `issue_command_object` gets a row that describes the post: `issued` is true, and `current`, `latched`, `fields`, `projected_arm` and `blocked` are not yet set. The section 26 audit found only report readers of those fields.
+- **Rule for new code:** anything that must read the director after an order belongs in a continuation (`after_order_delivery` in the script-orders host, or `commands_after_last_issue_delivery`), never right after the issue call.
+- **A symptom to recognise:** a feature that silently does nothing under the queue, as the USN04 dive-bomb installs did (section 27), is almost always this.
+
+**Labels left, as recorded in sections 27 and 30:**
+1. **0099A170's install point.** The install runs at the order's delivery. The image installs in the bot tick, from 0099A4C0's retire path (0099AE7E, tail-jump 0099A5EB). Both give the first dive step at N+1 when the old head retires at once. The host has no per-kind retire predicates (`vtable[38h]` / `[34h]` / `[40h]`). If the image keeps the old head for some ticks, it starts the new task later than the host.
+2. **Unit+184h for the 5Dh receiver.** A clear posted from hop 1 uses `Impl::player_184`, the flag the unit's last director step was given. The image reads the unit at delivery. The two differ only across the step in which control changes.
+
+**For the units / script-orders side** (`docs/SENTITY_INIT_ATTACH_ORDER.md` 22.7, `docs/PILOT_BOT_TICK_GATES.md` "What installs a task on a command change"): read the retire predicates of the head tasks a PilotSetTarget aircraft holds, the move-to and the squadron follow task. Then move the install from the delivery continuation into the bot tick's retire path. That work belongs to the units and script-orders hosts, not to this file.
+
+### The diagnostic
+
+`BSP_LOOPBACK_TRACE=<n>` (env, read once, prints nothing when unset) logs the first n posts:
+```
+  loopback post <k>: kind=<0 MT_COMMAND | 1 SETCMD | 2 5Dh> unit=<index> row=<rows index or -1>
+      finish=<1 if the chain's finish tail travels with it> active=<1 inside a delivery>
+      open=<1 drain open, delivered at once> queue=<entries waiting> serial=<drains so far> clock=<s>
+```
+- `active=0 open=0` is a post waiting for the next row-9 drain.
+- `active=1` is an insertion after the message being delivered.
+- `open=1` is a script order's re-issue during the pump's own script-order drain.
+
+The run summary line reads:
+```
+summary mission director loopback bound=1 command_posts setcmd_posts clear_posts in_place nested queued drains
+```
+- With the queue ON, `in_place` must be 0. Anything else is a missed post path.
+- `queued` counts entries posted before the drain, and `nested` counts entries a delivery posted. On rows without a squadron fan-out, `queued` equals MT_COMMAND posts + clears + idle-tail SETCMDs.
+- **Do not read the similar totals as swapped.** `nested` equals the SETCMDs posted by deliveries, and it can equal the MT_COMMAND count by arithmetic alone.
+
+`summary mission director clear-all bound clear_all drops slot_clears_00720ca0` counts 0071D880, 0071D900 and the 00720850 bodies 00720CA0 ran. `clear_receives` in the completion line is clear-alls + drops + the stage-2 and release clears.
+
+### Tools this worker left in its tree
+
+The tree is `J:\PROG\battlestations-pacific-decompile-cc9-gunnery6\local\`, not committed.
+- `g6_queue.ps1` is the row runner. Pass `-Rows`, `-Exe` and `-Prefix`. It uses reference h's arguments and sets `BSP_GUNNERY_RNG_STREAMS` and `BSP_DEATH_TABLE`. A 9000-frame USN02 takes about 2 minutes.
+- The pair logs are `g6off2_*` / `g6on2_*` (the queue-delay pair) and `g6caoff_*` / `g6caon_*` (the clear-all pair).
+- A quick local ON check works like this: flip the constant in the working copy, build, run, and revert before committing. It is much faster than `pair_export`, and it is how the section 27 receiver misses were found. The verdict pair must still come from `pair_export`.
+
+### Next in the gunnery list
+
+These are unchanged from section 25:
+- rank 5's convoy producer, routed to cc9-lua4;
+- rank 5's squadron detection publish, which needs a squadron entity separate from its leader.
+
+Reference i (cc9-gunnery7) takes USN04's dive releases from an ON build and cites section 30.
