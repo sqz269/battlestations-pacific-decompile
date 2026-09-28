@@ -1877,3 +1877,22 @@ Worker cc9-lua2, 2026-09-28. This is item 1 of the refreshed ranking.
 | --- | --- |
 | LOMP06 1200/1000 | **exit 3 likely**. There are 20 calls: `Mission.PlayerUnit` at its class `MaxSpeed` (111); the convoy at `Mission.ConvoySpeed` (205..219); and two escorts at 20 (558, 570), if reached. The convoy's ships cruise at the scripted speed instead of their authored or default one, and every moved row should trace to their changed positions. The player's call lands on the controlled unit, which the idle player holds |
 | USN01, USN04, USN02 | no call, identity |
+
+### SetShipSpeed pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `d0a527386`.
+- ON is `pair_export --flip kLuaSetShipSpeedBound=true` (`local/sp_on`, SHA-256 `04633BE5E0C4`).
+- The logs are `local/sp_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| LOMP06 1200/1000 | `calls=20 units=20`. The convoy and escorts (Asagiri, Kitakami, Gyoraitei 1/2, the Maru freighters and the rest) take their scripted speeds; `00890E6F` stores go 3 -> 23. The cruise path runs (`CruiseState` and `ShipAiState::cruise_step` rows, 63 calls each). pair_diff exit 3: 19 unit rows moved, first hit -1 -> 38.95 s, hits 0 -> 4, shots 6 -> 9, no deaths | held |
+| USN01 3200/3000 | `calls=0`, exit 1 | held |
+| USN04 4700/4500 | `calls=0`, exit 1 | held |
+
+**Failed sub-prediction.** I said the player's call (111) lands on a controlled unit the idle
+player holds. The controlled Narwhal moved **352.61 -> 421.38 m**, so the commanded speed does
+drive the controlled submarine on this path.
+
+**Verdict: `kLuaSetShipSpeedBound = true`.**

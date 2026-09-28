@@ -6,7 +6,7 @@
     {
       "name": "kLuaSetShipSpeedBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF"
+      "state": "ON"
     }
   ],
   "substitutions": [
@@ -14,5 +14,17 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "LOMP06 player",
+      "predicted": "the controlled unit is held",
+      "measured": "Narwhal moved 352.61 -> 421.38 m",
+      "why": "the commanded speed drives the controlled submarine"
+    }
+  ],
+  "pairs": {
+    "LOMP06": "exit 3, 20 calls, 19 unit rows moved, first hit at 38.95 s",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
+  }
 }

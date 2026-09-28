@@ -196,7 +196,7 @@ inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA
 // mission clock at +28h (00890E6F), the commanded-speed pair the cruise path reads
 // (docs/UNIT_COMMANDED_SPEED.md). True: GameUnitsHost::store_commanded_speed_00890e6f
 // for the resolved slot. False: record.
-inline constexpr bool kLuaSetShipSpeedBound = false;
+inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
