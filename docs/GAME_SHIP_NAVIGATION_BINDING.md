@@ -551,3 +551,56 @@ at 39.65 s. **No host difference, no binding.**
 (`unit_is_local_players`, `difficulty_multiplier` = 1.0, `008270AD` recorded). For the player's
 own unit (Houston on USN02) the image scales incoming damage by `config->[50h][level]` and
 `[20h][level]`, and this host does not.
+
+## The `+12B8h` gate on a marker `moveto` is not a fire gate (packet `cc9_marker_moveto_gun_gate`, a read)
+
+Worker cc9-ships2, on main `bbff855ee`. Ghidra was read-only. No code changed.
+
+**What `+12B8h` is.** It is not a unit field. It is the ship AI's nested query block
+(`nested+12B8h`, docs/SENTITY_INIT_PASSES.md section 10).
+- An image-wide scan of the displacement (`b8 12 00 00`, `--limit 4000`, 14 hits) finds only
+  three sites in ship code, all writers in `009F1BC0 BSP_ShipAi_ApproachFrameState`. The other
+  hits are in unrelated routines:
+
+```
+009F2ADF  MOV AL,[EAX+221h]        ; the director's category-1 byte
+009F2AE7  MOV [EBP+12B8h],AL       ; with a raw target (EDI != 0) ...
+009F2AFE  PUSH EDI
+009F2AFF  CALL 008637D0            ; ... and the group accepts that target
+009F2B06  MOV [EBP+12B8h],AL
+009F2E05  MOVZX EAX,byte [EAX+221h]
+009F2E0F  MOV [EBP+12B8h],AL       ; without a raw target: the director's byte as it is
+```
+
+- Its readers take it as field `+3Ch` of the query block: the frame-state query `0095F080` at
+  `009F2F11`, and the ring query `009E7FC0` into `009E5DA0`.
+- Both rate bearings (`0095EB40`, docs/SHIP_AI_BEARING_RATING.md). The chain at
+  `0095EBD7`..`0095EC1E` lets category 1 (`AAMACHINEGUN`) count toward a bearing's firepower
+  only when the byte is set. `+12B9h`, `+12BAh` and `+12BBh` gate categories 2/3/4/6, 7 and 8/9
+  the same way.
+- **The ratings steer an engaging ship** (the approach curves, docs/SHIP_AI_APPROACH_CURVES.md).
+  **No gun reads them.** A gun fires by the director's own bytes (`+220h`..`+223h`, which the fire
+  natives such as `TorpedoEnable` write) and the gunnery host's target choice.
+- So the gate neither holds fire nor holds target acquisition. It only shapes where an attacking
+  ship points its broadside.
+
+**On a marker `moveto`**, the raw target `brain+0B20h` is the NavPoint in the image, as recorded
+above ("The two labels"):
+- `008637D0` refuses a NavPoint, which fails its liveness, class and rank tests, so the image
+  writes `+12B8h` = 0 (and `+12B9h`, `+12BBh` likewise).
+- The host, with the raw target 0, copies the director's bytes (1).
+- But a `movetopos` ship steers by its goal vector (`009E5770`), not by the bearing ratings.
+- **The difference changes no order, no throttle and no shot.**
+
+**The ships on marker `moveto`s fire while under way, OFF and ON alike** (unit table, shots
+column, worktree cc9-ships2 logs):
+
+| ship | mission | shots OFF (`p2_off_*`) | shots ON (`mk2_on_*`) |
+| --- | --- | --- | --- |
+| Aylwin | PRCP03 9000 | 23 | 23 |
+| Convoy1 | USN01 3000 | 32 | 42 |
+| DeRuyter | USN02 9000 | 38 | 73 |
+
+**Verdict: the image and the host behave the same.** Neither holds guns on a `moveto`, marker or
+not. There is no binding. The `+12B8h` label on the marker binding stays a documented difference
+with no effect in a `movetopos` state.
