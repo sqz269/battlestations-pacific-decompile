@@ -100,6 +100,28 @@ constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount fram
 constexpr bool kGunGravityArcBound = true;
 constexpr bool kBulletNoGravityBound = true;
 constexpr bool kGunAimErrorBound = true;
+//  * kGunImmediateFireSlotBound: packet cc9_mrtgun_immediate_fire,
+//    docs/GUN_SHOT_CADENCE.md section 10. The ArtilleryGunnerBot (006DF520,
+//    the guns artillery_bot_aims() selects) never raises the 0072D2C0 latch
+//    itself. Step 12 (006DFB8C / 006DFBB6) arms delayedFire once the gun is
+//    within 0.1 degree of both commanded angles, step 13 (006DFBD6) draws
+//    fireDelayTime = U(0, 0.1), and step 15 (006DFC37..006DFC61) counts it down
+//    in the same tick and on t < 0 calls gun->vtable[1F0h] once:
+//      - Rapid_Turning_Gun (MRTGun, 24h): 006FDF60 sets gun+4D4h. Its per-step
+//        tick 0084C5B0 (the +310h sub-object's slot 8) runs 0072D130 and then,
+//        while +4D4h is set, sends one more 0ADh (FireIfReady, 0072D860), with
+//        no settle and none of 0072D130's three gates. Only a vtable[1E8h](0)
+//        that leaves the latch clear (006FDC90) drops +4D4h.
+//      - Single_Turning_Gun (MSTGun, 27h): 006FDC50 is vtable[1E8h](1), the
+//        latch. Its tick 006FE0D0 runs 0084C5B0 and then, with the latch set,
+//        drops the request (vtable[1E8h](0), +4D8h = 0) when the barrel cursor
+//        gun+44Ch reaches the last muzzle, else sets +4D8h when the cursor is
+//        not 0; 006FDCD0 ignores a false request while +4D8h is set.
+//    OFF: every gun re-evaluates want_fire (target, acceptance, settle, window)
+//    into the latch each step. Labelled: 0ADh is taken as delivered in the same
+//    step, as the host already does for 0072D130's send.
+//    ON since the pairs (docs/GUN_SHOT_CADENCE.md 10.6).
+constexpr bool kGunImmediateFireSlotBound = true;
 // Packet cc9_aa_lead, docs/AA_LEAD.md.
 //  * kPlaneGunfireHooked: a plane's forward guns (PLANEGUN, category 0) take their
 //    trigger from the latched gunFire the plane's fixed step hands each enabled
@@ -858,6 +880,7 @@ struct GameGunneryHost::Impl {
         ranging = 15,         // 00864880 / 00862CD0, key (owner unit, target unit)
         torpedo_unload = 16,  // 0081DD85, 0081DCB0's pick, key (unit, 0)
         unit_fire_cooldown = 17, // 0072FB6A, the artillery cooldown, key (unit, 0)
+        artillery_fire_delay = 18, // 006DFBD6, fireDelayTime = U(0, 0.1), key (gun, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -882,6 +905,26 @@ struct GameGunneryHost::Impl {
         float countdown{0.0f};
     };
     std::map<std::size_t, AimErrorState> aim_error_by_gun;
+    // Packet cc9_mrtgun_immediate_fire (kGunImmediateFireSlotBound). The turning
+    // class comes from the device row's Type (the factories 00731E20 and 006FE390).
+    static constexpr int kTurningClassRapid = 0x24;   // MRTGun, Rapid_Turning_Gun
+    static constexpr int kTurningClassSingle = 0x27;  // MSTGun, Single_Turning_Gun
+    struct ImmediateFireState {
+        bool delayed_fire{false};       // bot+7Ch
+        float fire_delay_time{0.0f};    // bot+80h
+        bool immediate_4d4{false};      // gun+4D4h (MRTGun)
+        bool salvo_4d8{false};          // gun+4D8h (MSTGun)
+    };
+    std::map<std::size_t, ImmediateFireState> immediate_fire_by_gun;
+    std::vector<int> gun_turning_class;   // parallel to guns
+    unsigned long long immediate_arms{0};
+    unsigned long long immediate_slot_calls{0};
+    unsigned long long immediate_extra_sends{0};
+    unsigned long long immediate_flag_drops{0};
+    unsigned long long salvo_drops{0};
+    unsigned long long salvo_ignored_false{0};
+    unsigned long long immediate_guns_rapid{0};
+    unsigned long long immediate_guns_single{0};
     // Packet cc9_surface_gunnery_reference: 006DF520 step 4's per-bot point.
     struct ArtilleryAimPoint {
         float timer_b4{-1.0f};
@@ -2699,6 +2742,8 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            f[q .. 'key'] = k\n"
         "            f[q .. 'dev'] = p.Gun[1]\n"
         "            f[q .. 'cat'] = cat(dev.Function)\n"
+        "            f[q .. 'gcls'] = (dev.Type == 'Rapid_Turning_Gun' and 36)\n"
+        "              or (dev.Type == 'Single_Turning_Gun' and 39) or 0\n"
         "            f[q .. 'hrs'] = num(dev.HorzRotSpeed, 1000) or 0\n"
         "            f[q .. 'vrs'] = num(dev.VertRotSpeed, 1000) or 0\n"
         "            local bn = 0\n"
@@ -3336,6 +3381,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 }
             }
             guns.push_back(gun);
+            gun_turning_class.push_back(flat(type_id, make("gcls"), 0));
         }
     }
 
@@ -4926,6 +4972,29 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         UnitState& state = unit_state[owner_unit];
         if (state.dead) continue;
 
+        // kGunImmediateFireSlotBound: MSTGun's tick 006FE0D0 ends with this test
+        // on the previous step's result. It is run here, before this step's bot,
+        // which is the next reader of the latch, so the order is the image's.
+        if (kGunImmediateFireSlotBound && g < gun_turning_class.size()
+            && gun_turning_class[g] == kTurningClassSingle && gun.fire.fire_requested) {
+            ImmediateFireState& im = immediate_fire_by_gun[g];
+            const int last = std::max(1, gun.barrel_num) - 1;   // 006FE0E9..006FE11D
+            if (gun.next_fire_barrel == last) {                 // 006FE120
+                if (im.salvo_4d8) {
+                    ++salvo_ignored_false;                      // 006FDCDB
+                } else {
+                    FireRequestBinding salvo_host(*this, g);
+                    bsp::gun_set_fire_request_0072d2c0(gun.fire, salvo_host, false);
+                    if (!gun.fire.fire_requested) im.immediate_4d4 = false;
+                    ++salvo_drops;
+                }
+                im.salvo_4d8 = false;                           // 006FE13A
+            } else if (gun.next_fire_barrel != 0) {
+                im.salvo_4d8 = true;                            // 006FE149
+            }
+            done("Gun::single_turning_tick_006fe0d0", 0x006fe0d0u);
+        }
+
         // Which of the five aim bots this gun's weapon sub-type selects.
         const bsp::GunBotSlotAssignment slots
             = bsp::gun_bot_slots_for_subtype_0072c6a0(gun.category, true, false);
@@ -5401,16 +5470,79 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
 
         FireRequestBinding fire_host(*this, g);
         const bool before = gun.fire.fire_requested;
-        const bool latched = bsp::gun_set_fire_request_0072d2c0(gun.fire, fire_host,
-            want_fire);
+        const int turning = kGunImmediateFireSlotBound && g < gun_turning_class.size()
+            ? gun_turning_class[g] : 0;
+        bool latched = false;
+        if (turning == kTurningClassRapid || turning == kTurningClassSingle) {
+            // kGunImmediateFireSlotBound. The request goes through the class's
+            // vtable[1E8h]: 006FDC90 (MRTGun) or 006FDCD0 (MSTGun).
+            ImmediateFireState& im = immediate_fire_by_gun[g];
+            auto set_request = [&](bool want) {
+                if (turning == kTurningClassSingle && !want && im.salvo_4d8) {
+                    ++salvo_ignored_false;              // 006FDCDB: +4D8h holds it
+                    return;
+                }
+                bsp::gun_set_fire_request_0072d2c0(gun.fire, fire_host, want);
+                if (!gun.fire.fire_requested && im.immediate_4d4) {
+                    im.immediate_4d4 = false;           // 006FDCA6 / 006FDCF2
+                    ++immediate_flag_drops;
+                }
+            };
+            const bool artillery_bot = !player_seat && artillery_bot_aims(gun.category, target)
+                && (!have_target || dp_air_ammo(g, gun.category, target) == nullptr);
+            if (artillery_bot) {
+                if (!have_target) {
+                    // 006DF4C0: clearing the fire target calls vtable[1E8h](0).
+                    set_request(false);
+                } else {
+                    // 006DF520 steps 12, 13 and 15.
+                    if (arc_solved && accepted && settled && !im.delayed_fire) {
+                        im.fire_delay_time = draw(Draw::artillery_fire_delay, g, 0, 0.0f,
+                            0.1f);                                       // 006DFBD6
+                        im.delayed_fire = true;
+                        ++immediate_arms;
+                    }
+                    if (im.delayed_fire && !inhibited) {
+                        im.fire_delay_time -= dt;                        // 006DFC3D
+                        if (im.fire_delay_time < 0.0f) {                 // 006DFC55
+                            ++immediate_slot_calls;
+                            if (turning == kTurningClassRapid) {
+                                im.immediate_4d4 = true;                 // 006FDF60
+                            } else {
+                                set_request(true);                       // 006FDC50
+                            }
+                            im.delayed_fire = false;                     // 006DFC61
+                            done("Gun::immediate_fire_slot_1f0", 0x006fdf60u);
+                        }
+                    }
+                }
+            } else {
+                set_request(want_fire);
+            }
+            latched = gun.fire.fire_requested;
+            if (turning == kTurningClassRapid) ++immediate_guns_rapid;
+            else ++immediate_guns_single;
+        } else {
+            latched = bsp::gun_set_fire_request_0072d2c0(gun.fire, fire_host, want_fire);
+        }
         done("Gun::set_fire_request_0072d2c0", 0x0072d2c0u);
         if (latched && !before) {
             ++gun.trigger_rises;
             ++summary.trigger_rises;
         }
 
-        const bool sent = bsp::gun_fixed_step_tick_0072d130(gun.fire, fire_host, dt);
+        bool sent = bsp::gun_fixed_step_tick_0072d130(gun.fire, fire_host, dt);
         done("Gun::fixed_step_tick_0072d130", 0x0072d130u);
+        if (turning == kTurningClassRapid || turning == kTurningClassSingle) {
+            // 0084C5B0: after 0072D130, a set gun+4D4h sends one more 0ADh with
+            // none of 0072D130's gates. A second FireIfReady in a step whose first
+            // one fired is refused by the barrel delay, so one attempt stands for both.
+            if (immediate_fire_by_gun[g].immediate_4d4) {
+                if (!sent) ++immediate_extra_sends;
+                sent = true;
+                done("Gun::rapid_turning_tick_0084c5b0", 0x0084c5b0u);
+            }
+        }
         if (torpedo_gun && sent) ++summary.torpedo_gun_sent;
         // Packet cc9_navigator_force_torpedo: 008A7200's direct 00730160.
         const bool forced = gun.force_fire_008a7200;
@@ -8815,6 +8947,30 @@ void GameGunneryHost::report() {
             host.aa_direct_aims, host.artillery_arc_aims, host.aim_error_rerolls,
             host.no_gravity_shots, kGunGravityArcBound ? 1 : 0,
             kBulletNoGravityBound ? 1 : 0, kGunAimErrorBound ? 1 : 0);
+        {
+            // Packet cc9_mrtgun_immediate_fire: the census of turning classes by
+            // whether the ArtilleryGunnerBot drives the category.
+            unsigned long long rapid_art = 0, rapid_other = 0, single_art = 0, single_other = 0;
+            for (std::size_t i = 0; i < host.guns.size() && i < host.gun_turning_class.size();
+                 ++i) {
+                const int c = host.guns[i].category;
+                const bool art = c == 2 || c == 3 || c == 4 || c == 6 || c == 9;
+                if (host.gun_turning_class[i] == Impl::kTurningClassRapid) {
+                    ++(art ? rapid_art : rapid_other);
+                } else if (host.gun_turning_class[i] == Impl::kTurningClassSingle) {
+                    ++(art ? single_art : single_other);
+                }
+            }
+            host.log.notef("summary mission gunnery immediate fire bound=%d guns rapid=%llu/%llu "
+                "single=%llu/%llu (artillery-bot categories/other) arms=%llu slot_calls=%llu "
+                "extra_sends=%llu flag_drops=%llu salvo_drops=%llu salvo_ignored_false=%llu "
+                "gun_ticks rapid=%llu single=%llu (006FDF60 / 006FDC50 / 0084C5B0 / 006FE0D0, "
+                "packet cc9_mrtgun_immediate_fire)",
+                kGunImmediateFireSlotBound ? 1 : 0, rapid_art, rapid_other, single_art,
+                single_other, host.immediate_arms, host.immediate_slot_calls,
+                host.immediate_extra_sends, host.immediate_flag_drops, host.salvo_drops,
+                host.salvo_ignored_false, host.immediate_guns_rapid, host.immediate_guns_single);
+        }
         host.log.notef("summary mission gunnery plane guns trigger_ticks=%llu rounds=%llu "
             "hooked=%d intercept_solves=%llu intercept=%d dp_air_rounds=%llu dp=%d "
             "negative_halvings=%llu halving=%d (packet cc9_aa_lead)",
