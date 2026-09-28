@@ -396,7 +396,8 @@ inline constexpr bool kShipAiSubTargetEntryPointsBound = true;
 // pushes at 009DF432 / 009DF4C5 are 00417B10 (zones.offset, margin 20, mode
 // 1), and the leader yaw rate at 009DF607 is 00811940 on the leader. False:
 // the zone set answers 0, the pushes return the point, the yaw rate is 0.
-// ON (2026-09-28): identity on five rows, no push moved a point; the yaw half waits on the 00811940 accessor fix (section 10)
+// ON (2026-09-28): the zone half is identity on five rows; the yaw half, live since
+// kUnitYawRateForwardSpeedBound, moves JM06 and USN02 (section 10).
 inline constexpr bool kShipFollowStationPointBound = true;
 // Packet cc9_plane_row_autotarget, docs/SHIP_AI_OPEN_ITEMS.md section 11 (from
 // docs/GUNNERY_OPEN_ITEMS.md section 42). The image builds an AutoTarget
