@@ -1602,3 +1602,20 @@ committed OFF.
 | LOMP06 1200/1000 | `listener_SeaplaneSpotted` fires on every pass for each Allied-identified unit and each own Allied unit, so `fires` goes from 0 to hundreds. The callback returns unless the entity is a `SmallReconPlane`; if one is identified, a dialog starts and the listener is removed. **Identity (exit 1)**, since the dialog is presentation |
 | JM06 3200/3000 | `usnsubListener` and `fleetrecon` fire at or before their current times (the first pass in which a matching unit is identified after registration). If `fleetrecon` fires earlier, the group-1 submarines' attack orders move earlier and **JM06 moves (exit 3)**. If at the same pass, identity |
 | USN01, USN04 | no `recon` entry is registered; identity |
+
+#### Reset-cycle pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `477d7c758`.
+- ON is `pair_export --flip kReconListenerResetCycleBound=true` of the same commit (`local/rc_on`,
+  SHA-256 `7CC083D93298`).
+- The logs are `local/rc_{off,on}_<mission>.log`.
+
+| row | OFF census | ON census | pair_diff | verdict |
+| --- | --- | --- | --- | --- |
+| LOMP06 1200/1000 | `changes=387 fires=0` | `changes=35137 fires=2174`, for example the four `Overcast boat 0N` at `party 0 0 -> 2`, 30 passes each | exit 1 | held: the listener fires every pass, and the callback returns because no `SmallReconPlane` is identified |
+| JM06 3200/3000 | `changes=74 fires=2` | `changes=1921 fires=2`: the same two callbacks, `luaJM6USNSubSighted` and `luaJM6FleetSpotted` | exit 1 | held: both listeners remove themselves on their first fire, and it comes at the same pass |
+
+**Verdict: `kReconListenerResetCycleBound = true`.** The silent-listener failure of the recon verdict
+is explained and corrected: the host fired only net changes, while the image re-notifies every
+pass.
