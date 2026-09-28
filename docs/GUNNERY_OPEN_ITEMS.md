@@ -2637,3 +2637,36 @@ binding. Names are hypotheses.
   world inertia changes something else in `00C41550`.
 - The flip rule has to separate the shape-derived inertia from every torque it wakes. Pair it
   first with the roll torque OFF.
+
+## 48. Handoff (cc9-gunnery9, 2026-09-28, at about 70% context)
+
+### 48.1 What this worker landed or left
+
+| section | packet | state |
+| --- | --- | --- |
+| 42 | `cc9_plane_forced_target_read` | `kPlaneNullFireTargetProviderBound` ON: no plane-side gunnery pass reads a fire target |
+| 43 | `cc9_powerup_subsystem_plan` | docs: the manager layout; slot 0 is the only slot that holds items; the allied brain spends the player's items; four packets planned |
+| 44 | rank 7, `007788B0` | read: the formation-follower gate; the binding `kAutoTargetFollowerGateBound` is routed to the ship-AI lane |
+| 45 | `cc9_squadron_set_command` | `kSquadronSetCommandBound` ON: plane and squadron rows run `0071E6C0` alone. Open: the squadron's `0084DD20` self-target rule (45.1) |
+| 46 | `cc9_hull_roll_torque` (rank 8) | `kShipHitRollTorqueBound` ON; identity until the hull has an inertia |
+| 47 | `cc9_hull_inertia` | read: the missing input is the Dyn convex mesh's local box; three packets planned |
+
+### 48.2 Open items this worker found
+
+- The ship-AI host runs an AutoTarget on load-time plane rows, which the image never builds
+  (section 42.1; routed to cc9-ships8).
+- The squadron slot-push rule `0084DD20` (45.1): a self-targeted `moveto` or `stop` is emptied
+  where the host applies the ship rule (`cruise` or `stop`). No known reach.
+- The hull inertia chain (47.3), and after it USN02 as the row where the roll torques act.
+- `ship_roll_torque` takes `std::pow` where the image chains `FYL2X` and `F2XM1` (46.1), a
+  few-ULP difference to settle once torques act.
+
+### 48.3 Tools in the cc9-gunnery9 tree (`local\`)
+
+- `g9_img.py dwords|refs|pat|rtti`: dwords at an address, every `CALL/JMP rel32` and absolute
+  dword naming an address, byte patterns in `.text`. The image has no RTTI.
+- `g9_runs.ps1 -P <prefix> -Only <rows> [-Exe <path>]`: reference j's rows (plus `smoke`, 300
+  frames of USN01) with the reference run parameters. `g9_wait.ps1 -Glob -Expect`: a foreground
+  wait on the final COM release line. `g9_cmp.ps1 -A -B -Rows`: `pair_diff` headlines (`rb10`
+  means reference j's logs in cc9-gunnery8).
+- `g9_mmod.py <model> <n>`: hex and floats around the first n `ConvexObject` chunks of a `.mmod`.
