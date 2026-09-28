@@ -809,9 +809,109 @@ find a row. That scan was not done.
    wedge changes, and the path planner uses them (2816 calls on USN12). Their consumer publishes
    nothing on USN12 (`path_publishes=0`). Whether they ever feed a published path is untraced.
 2. **JM08's `follow=0`.** Presumably the same authored-`Cruise` cause; not traced.
-3. **The player's ships in Montpelier's AI group.** USN12's first ticks list the player's three
-   ships in Montpelier's AI group (`first_group_members=15`). Whether the image's grouping does the
-   same is untraced.
+3. **The player's ships in Montpelier's AI group: answered in section 19.** The image does not do
+   this. Its phase 3 seeds one group per entity (`00A2DFA0` at five sites, never `00A2D8E0`). The
+   host's lump-per-collection reading was wrong.
+   - The fix is bound OFF as `kAiGroupSeedPerEntityBound`, at `04df2a5c5` and `a1ad6a72b`.
+   - Its pairs move USN12, USN04 and JM08 (exit 3, the mechanism matching).
+   - The flip awaits a reference rebaseline. It changes every mission's AI grouping, so the wedge
+     and cautious-route rows of sections 9, 14 and 17 would need re-measuring after it.
 4. **The DEFENDPOSITION tick itself.** `00A15500` runs the wedge and then `00A13B60` with its own
    leader point. The host's DEFENDPOSITION arm calls the follower pass and the wedge, and the
    caller-side `00A13B60`, as before.
+
+## 19. The player's ships in Montpelier's AI group (packet `cc9_player_ships_in_ai_group`)
+
+Worker cc9-ships6, 2026-09-28. **The host diverges from the image.** The player's ships are put
+there by the composition pass `00A2E720`'s phase 3, which the reconstruction misread.
+
+**The host's join site.**
+- `ai_groups_compose_00a2e720` in `src/ai_group_think.cpp`, phase 3, walks the host's one seed
+  collection. That collection is every created unit (`first_seed_candidate`, collection 0, in
+  `src/game_hosts_ai.cpp`).
+- It creates one group from the first admitted candidate. It then adds **every** later admitted
+  candidate to that group through `add_group_member` (`00A2D8E0`).
+- The admission rule is `ai_group_seed_candidate`: the four flag bytes, ungrouped, and team < 2.
+  It has no party or team equality test.
+- So on USN12's first compose, Montpelier's twelve ships, the fortresses and the player's three
+  destroyers (team 1) all land in one group. The next compose's eviction `00A2DDE0`
+  (`ai_group_member_still_belongs`: party slot and team must equal the group's) removes the
+  mismatched ones: USN12 `evicted=3`.
+
+**The image's rule, read from the listing.** Phase 3 is `00A2E81A..00A2EA5A`: five loops over
+`[[00E188A8]+19CCh]` lists at `+64h`, `+13Ch`, `+160h` and so on.
+- Each loop admits a candidate on these tests, with EBP = 2:
+  - `+5Ch` set;
+  - `+5Dh`, `+60h` and `+5Eh` clear;
+  - `+16Ch` (its group) null;
+  - `+54h` below 2 (`00A2E838..00A2E85C`).
+- For each admitted candidate it calls `new(5660h)` (`00A2E863`), then the constructor `00A2DFA0`
+  with that entity (`00A2E881`).
+- The five constructor calls are `00A2E881`, `00A2E8FC`, `00A2E967`, `00A2E9D8` and `00A2EA49`.
+- A rel32 scan of `.text` for `CALL 00A2D8E0` finds no site inside `00A2E720`'s phase 3. Its sites
+  are `00A16FD6`, `00A22ACE`, `00A22B80`, `00A2DDB2`, `00A2E181`, `00A2E447` (the split),
+  `00A2E6A7` and `00A38CF6`.
+- **So the image seeds one singleton group per entity.** Groups grow only through phase 4's
+  auto-merge, which walks one party's groups at a time (`first_group_of_party`) and merges by
+  leader distance within AutoMerge_MergeDist (650). A group never holds a different-party member in
+  the image, and USN12's 36 party refusals at `00779D9F` cannot occur there.
+
+**Bound OFF: `kAiGroupSeedPerEntityBound`** in `include/bsp/ai_group_think.hpp`. True makes phase 3
+call `create_group` for each admitted candidate. The name differs from the brief's
+`kAiGroupMemberFilterBound`, because the image's rule is not a filter on the join: it has no join
+there at all.
+
+**Blast radius.** This changes how every AI group forms. Groups become distance clusters inside one
+party, instead of per-team lumps later split by groupability, so identity is not expected anywhere
+AI groups exist.
+
+**Predictions, written before any ON run.** The pairs use `pair_export --flip
+kAiGroupSeedPerEntityBound=true` against the tree's own build (OFF), with reference i's launch lines.
+
+| row | OFF census (earlier logs) | ON prediction |
+| --- | --- | --- |
+| USN12 3200/3000 | groups_created=3, auto_merges=0, evicted=3, follow requests 575 refused | `groups_created` rises to about the number of admitted units at the first compose (tens); `auto_merges` > 0; `evicted` 0 for party reasons. No request ever pairs a player ship with Montpelier, so the 36 party refusals vanish. Montpelier's group holds only ships whose group leaders came within 650 m while merging, so fewer than 12 members is likely. The CAUTIOUSATTACK assignment and the route may then go to a different or smaller group. pair_diff exit 3 |
+| USN04 4700/4500 | groups_created=12, auto_merges=0, prox_merges=9, evicted=14 | `groups_created` rises and `auto_merges` > 0; the commands and targets move; exit 3 |
+| JM08 3200/3000 | groups_created=5, auto_merges=0, evicted=41 | the same kind of move; exit 3 |
+
+**Verdict rule.**
+- The mechanism is checked by:
+  - `auto_merges > 0` on every row;
+  - no party eviction;
+  - on USN12, no `ai diag follow` line with `party 1/0`.
+- A mechanism failure keeps the switch OFF.
+- If the mechanism matches, the gameplay moves are expected and do not by themselves block a flip.
+  Because the change reaches every mission's grouping, the lead decides the flip after a reference
+  rebaseline; this packet records the pairs.
+
+**The pairs.**
+- OFF is the tree's build of `04df2a5c5`, with logs `local\ships6_goff_<m>.log`.
+- ON is `pair_export --commit a1ad6a72b --flip kAiGroupSeedPerEntityBound=true` into
+  `local\ships6_gon` (bsp_game.exe SHA-256 prefix `F1E82347D226`), with logs
+  `local\ships6_gon_<m>.log`.
+- `a1ad6a72b` only restructures the switch so that the ON value compiles under `/WX`. It had left
+  unreachable code. The OFF path is unchanged.
+
+| row | pair_diff | grouping OFF -> ON | follow requests refused | moved gameplay lines |
+| --- | --- | --- | --- | --- |
+| USN12 3200/3000 | exit 3 | created 3 -> 19, merges (`prox_merges`) 0 -> 12, evicted 3 -> 0 | 575 -> 423, no `party 1/0` line | 4 unit rows; Montpelier moves 2247.37 -> 2240.06 m; deaths, hits and damage unchanged |
+| USN04 4700/4500 | exit 3 | created 12 -> 39, merges 9 -> 28, evicted 14 -> 12 | 1274 -> 681 | deaths 43 -> 42, damage 11740.0 -> 13529.3, hit records 798 -> 760 (hull 115 -> 147), shots 9611 -> 10817, dive-bomb releases 4 -> 9 of 19, torpedo releases 7 -> 8 of 16; 66 unit rows |
+| JM08 3200/3000 | exit 3 | created 5 -> 182, merges 0 -> 161, evicted 41 -> 7 | 917 -> 699 | deaths 9 -> 11, damage 3681.8 -> 4149.8, hit records 342 -> 361, shots 2091 -> 2324; 32 unit rows |
+
+**USN12's groups ON.**
+- The player's ships are in their own party-1 groups: Shigure with 2 members, Shiratsuyu with 1.
+- Montpelier's CAUTIOUSATTACK group has 4 ships. The wedge then places 3 per run (`placed=147` over
+  49 runs).
+- The other team-0 ships form MOVETOATTACK groups: Columbia with 6, and Claxton and Foote alone.
+- Fortress-07's DEFENDPOSITION group keeps 4.
+
+**Verdict: the mechanism matched, and the switch stays OFF pending the lead's rebaseline decision.**
+- No different-party member ever joins a group. USN12's party evictions and its 36 `00779D9F`
+  refusals are gone.
+- Groups now form only through phase 4 merges. The host counts those as `prox_merges`; its
+  `auto_merges` counter stays 0 on both sides. The prediction's "`auto_merges` > 0" named the wrong
+  counter; the merges themselves happened as predicted.
+- Every row moves, as predicted. USN04 and JM08 move in their fights: more damage, more hull hits,
+  and more ordnance releases.
+- The switch is the image's arithmetic, but it reaches every mission's AI grouping. Per the rule
+  above it is recorded rather than flipped here.

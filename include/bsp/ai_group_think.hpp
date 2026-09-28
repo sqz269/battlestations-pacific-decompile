@@ -140,6 +140,15 @@ struct AiGroupCandidateFlags {
 };
 bool ai_group_entity_flags_ok(const AiGroupCandidateFlags& flags) noexcept;
 inline constexpr int kAiGroupMaxSeedTeam = 2; // CMP [ESI+54h],EBP with EBP = 2
+// Packet cc9_player_ships_in_ai_group, docs/AI_CAUTIOUS_ROUTE.md section 19.
+// True: 00A2E720's phase 3 builds ONE GROUP PER admitted entity. Each of its
+// five collection loops calls only the group constructor 00A2DFA0 (00A2E881,
+// 00A2E8FC, 00A2E967, 00A2E9D8, 00A2EA49), after new(5660h), and never the
+// member add 00A2D8E0. Groups then grow only through phase 4's per-party
+// auto-merge. False: one group per collection holding every candidate it
+// yields, as before; that lumps both teams together until the next
+// compose's eviction.
+inline constexpr bool kAiGroupSeedPerEntityBound = false;
 bool ai_group_seed_candidate(const AiGroupCandidateFlags& flags, bool already_grouped,
                              int team_id) noexcept;
 bool ai_group_member_still_belongs(const AiGroupCandidateFlags& flags, int entity_party_slot,
