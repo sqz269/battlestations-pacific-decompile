@@ -923,3 +923,14 @@ pairs.** Reference j re-measures USN12, USN04 and JM08, and the rows of sections
 rises". The host's `auto_merges` counter is never incremented on either side. The phase 4 merges
 this switch produces are counted in `prox_merges`: USN12 0 -> 12, USN04 9 -> 28, JM08 0 -> 161.
 No new pair was run for the flip, because section 19's ON binary is this configuration.
+
+**Re-measured by reference j (docs/GAME_EXECUTABLE.md, "Mission reference baselines, 2026-09-28 j").**
+The request above is met.
+- JM08 and USN12 are exactly this section's ON rows.
+- USN04 is this section's ON row plus the dive profile draw. With `kDiveProfileDrawBound` OFF,
+  reference j's USN04 is 42 / 760 / 10817, 9 of 19.
+- The seed also moves USN01 and USN13, which this section did not run. On both, the whole move is
+  the seed's.
+- The cautious-route switches (sections 9, 14 and 17) move eight rows on the seed base, and none of
+  USN01, JM08 or USN13 with the seed OFF. Reference j records the four together; they are not
+  separated.

@@ -11645,3 +11645,233 @@ queue-OFF base too. That combination is not separated further.
   - E2 594 -> 595 (before c): not isolated.
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
+
+## Mission reference baselines, 2026-09-28 j (main d384f1ef5)
+
+Packet `cc9_reference_rebaseline_10`, worker cc9-gunnery8. **It replaces the 2026-09-28 i rows
+above.** The report is `reports/cc9_reference_rebaseline_10.json`.
+
+**Run parameters:**
+- One binary: `local\rb10\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery8 (SHA-256
+  `e5be1a9906b30c02af143adc7935859cc3b4050992b33e418873da8adca901cd`, prefix `E5BE1A9906B3`). It
+  is a clean `tools/pair_export.py --commit d384f1ef5` export with no flip.
+- The run parameters are i's: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, an
+  idle player, present interval immediate, `tools/run_game.ps1`, and
+  `--press-start-frame 30 --menu-select <mission>`. A 300-frame USN01 smoke ran first.
+- **Rows:** i's nine rows at i's frame counts, plus three new rows at 3200/3000: LOMP10 (the dive
+  and OverrideHP landings), JM05 (the land convoy) and USN12 (the cautious route and the AI group
+  seed).
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb10\` and the final COM release.
+- **No predictions were committed before these runs.** Each move against i is attributed by
+  leave-one-out exports of `d384f1ef5` (the table under "Leave-one-out exports"), and by the
+  landing's own pair where one covered the row.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 13347.8 | 40 | 749 (138) | 10512 | 100.85 s | 8 of 16 / 4 of 19 | 11 | Lexington 3650.23 m | none | 517 | `local\rb10_usn04.log` |
+| USN01 | 3000 | 2833.5 | 5 | 516 (79) | 1534 | 49.10 s | 2 of 5 / 2 of 2 | 3 | ScoutDauntless 4244.02 m | none | 539 | `local\rb10_usn01.log` |
+| USN04 (E2) | 9000 | 15075.1 | 51 | 861 (165) | 12105 | 100.85 s | 8 of 16 / 6 of 19 | 19 | Lexington 6369.71 m | none; phase 1 only (known) | 522 | `local\rb10_e2.log` |
+| USN02 | 9000 | 54395.4 | 11 | 1693 (397) | 2047 | 19.30 s | - | - | Kortenaer 997.79 m | **failed at 29.75 s**, phase 1 (`MissionPhase=1`) | 507 | `local\rb10_usn02.log` |
+| JM06 (smoke) | 3000 | 4730.3 | 2 | 284 (264) | 352 | 68.60 s | - | - | Fletcher-class 08 1234.84 m | none | 518 | `local\rb10_jm06.log` |
+| JM08 (smoke) | 3000 | 4149.8 | 11 | 361 (106) | 2324 | 5.25 s | - | 3 | Auilick 1495.61 m | none | 493 | `local\rb10_jm08.log` |
+| USN13 (smoke) | 3000 | 8451.7 | 27 | 591 (200) | 6461 | 94.55 s | 1 of 60 / - | 5 | Enterprise 2032.55 m | none | 504 | `local\rb10_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 471 | `local\rb10_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 649.66 m | none | 482 | `local\rb10_lomp06.log` |
+| LOMP10 (new) | 3000 | 3500.0 | 10 | 279 (222) | 1887 | 90.50 s | - / 4 of 8 | - | none controlled; 7041.17 m | none | 494 | `local\rb10_lomp10.log` |
+| JM05 (new) | 3000 | 2396.3 | 1 | 41 (24) | 100 | 9.90 s | 0 of 12 / 0 of 6 | - | USS Phelps 2667.31 m | none | 551 | `local\rb10_jm05.log` |
+| USN12 (new) | 3000 | 978.1 | 0 | 30 (15) | 83 | 8.30 s | - | - | Montpelier 2240.06 m | none | 474 | `local\rb10_usn12.log` |
+
+The unimplemented column is the last `host methods N concrete, M unimplemented` line. It **rises**
+on most rows this time. The AI group seed and the submarine states register new host natives, and
+some are still unimplemented, for example `AiGroups::release_group_reference 00a2b8f0` and
+`AiGroups::destroy_group 00a2d8c0`.
+
+### The anchor: every move belongs to eighteen switches
+
+Eighteen switches are ON at `d384f1ef5` that were not ON at `d466d4250`:
+`kAiGroupSeedPerEntityBound`, `kCautiousRouteBound`, `kClearOrdersSendBound`,
+`kCautiousWedgeBound`, `kCautiousMoveRouteBound`, `kDiveProfileDrawBound`,
+`kFireTargetObjectIdBound`, `kSubmarineSensorCategoryBound`, `kShipAiSubAttackSelectBound`,
+`kShipAiSubAttackStatesBound`, `kLuaClosestBorderZoneBound`, `kSquadronAttackAltBound`,
+`kLuaOverrideHpBound`, `kSquadronReturnToBaseResolveBound`, `kLuaSpawnNewIdQueriesBound`,
+`kDepartedWingmanTaskBlockBound`, `kLandConvoyMembersBound` and `kLandConvoyMovementBound`.
+
+With all eighteen OFF (`rb10n0`), `d384f1ef5` is **gameplay-identical to reference i on all nine
+of i's rows** (`pair_diff` exit 1 against `rb9_<row>`). Nothing else that landed since i moves a
+reference row.
+
+### What moved each row
+
+The attribution is by leave-one-out on this base. The switches **interact**: the cautious-route
+group moves most rows only while the AI group seed is ON. The seed's column therefore carries the
+cautious code acting on the new groups.
+
+**USN04 (4500).** 43 / 798 / 9611, 7 of 16 / 4 of 19 became **40 / 749 / 10512, 8 of 16 / 4 of 19**:
+
+| step | deaths / hit records / shots, releases | by | doc |
+| --- | --- | --- | --- |
+| i | 43 / 798 / 9611, 7 of 16 / 4 of 19 | - | - |
+| dive profile draw | 42 / 777 / 9867, 1 of 19; A6M Zero #6.2 survives | 27ff8bd99 | DIVE_BOMB_TASK "The draw's pairs and verdict" |
+| AI group seed | 40 / 749 / 10512, 8 of 16 / 4 of 19; damage 11679.5 -> 13347.8 | 04d2101c8 | AI_CAUTIOUS_ROUTE 19 |
+
+- **Both steps are exact on their pairs.** With the seed OFF (`rb10ngs`) the row is the dive
+  draw's ON row: 42 / 777 / 9867, 1 of 19. With the draw OFF (`rb10ndp`) it is section 19's ON
+  row: 42 / 760 / 10817, 13529.3, 9 of 19.
+- The death rows: D3A Val #1.1|.-4, #5.1|.-2, #5.1|.-4, #7.1|.-2, A6M Zero #5.2|.-2 and #6.2 no
+  longer die. D3A Val #3.1, A6M Zero #7.2 and D3A Val #7.1|.-4 now do.
+- With the cautious group OFF on this base (`rb10ncr`) the row is 48 / 851 / 11988, 6 of 16.
+- The submarine group and the remaining group are identity here.
+
+**E2 (9000).** 51 / 863 / 10779, 7 of 19 became **51 / 861 / 12105, 6 of 19**, damage 12797.1 ->
+15075.1:
+- Seed OFF: 51 / 850 / 11073, 4 of 19, damage 12797.1. Draw OFF: 12499 shots, 10 of 19. Cautious
+  group OFF: 879 hit records, 12141 shots, 1 of 19. The remaining group is identity.
+- After frame 4500 E2 holds 11 deaths and 112 hit records, against 8 and 65 in i. The tail is
+  **still unpaired**; the seed, the draw and the cautious group all move it.
+
+**USN01 (3000).** 5 / 538 / 1498 became **5 / 516 / 1534**; damage 2250.0 -> 2833.5, first hit
+53.60 -> 49.10 s, ScoutDauntless 4582.21 -> 4244.02 m.
+- **The whole move is the AI group seed.** With only the seed OFF, the row is gameplay-identical
+  to i (`rb10ngs_usn01`, exit 1).
+- The draw, the cautious group, the border zone and the remaining group are each identity here.
+- Section 19 did not run USN01.
+
+**USN02 (9000).** 10 / 4324 / 2582 became **11 / 1693 / 2047**, and the failure at 29.75 s is
+unchanged:
+
+| step | deaths / hit records / shots | by | doc |
+| --- | --- | --- | --- |
+| i | 10 / 4324 / 2582, Kortenaer 749.27 m | - | - |
+| GetClosestBorderZone | 11 / 4914 / 2719, Kortenaer 598.88 m | 6f889dbdb (lua5's 5c15b3e2a) | LUA_BINDING_MISSION, the GetClosestBorderZone section |
+| AI group seed | 11 / 1693 / 2047, Kortenaer 997.79 m | 04d2101c8 | AI_CAUTIOUS_ROUTE 19 |
+
+- **The chain is closed.** With the seed and the border zone both OFF (`rb10ngbz`), the row is
+  gameplay-identical to i. With only the seed OFF, it is the border zone's direction from its own
+  pair: 10 -> 11 deaths and more hit records.
+- **The seed moves the opening.** Houston's first damage is 19.20 -> 19.30 s, and it sinks at
+  20.95 s instead of 20.85 s. The killer is still a Yamakaze Long Lance, now at 2432 m. The
+  mission still fails at 29.75 s in phase 1.
+- The border-zone call now starts from Alden at (1191.97, -6198.29). It answers the same south
+  zone, (1191.97, -8550.00).
+- The death rows move: Yamakaze and Tokitsukaze survive; John1, Witte and Asagumo sink. Alden sinks
+  at 43.35 s instead of 135.20 s, to Hatsukaze.
+- With the border zone alone OFF the row barely moves (1680 hit records). With the cautious group
+  OFF it is 11 / 1476 / 1877.
+
+**JM06 (3000).** 1 / 127 / 201 became **2 / 284 / 352**; damage 2720.7 -> 4730.3:
+
+| step | deaths / hit records / shots | by | doc |
+| --- | --- | --- | --- |
+| i | 1 / 127 / 201 | - | - |
+| unresolved fire target | 1 / 122, damage 2468.6 (its pair exactly) | 1a0f04564 | GUNNERY_OPEN_ITEMS 33.4 |
+| submarine sensor category and states, with the AI group seed | 2 / 284 / 352 | 380ae8828, 82b5edcd0, 04d2101c8 | GUNNERY_OPEN_ITEMS 32.4; SHIP_AI_SUB_ATTACK 9; AI_CAUTIOUS_ROUTE 19 |
+
+- With the seed and the submarine switches OFF (`rb10ngsub`), the row is i plus the fire-target
+  pair's move: 127 -> 122 hit records and 2720.7 -> 2468.6 damage, the same death row.
+- **US Cargo Transport 02 sinks again, at 140.15 s.** The submarine states do it: with them OFF
+  (`rb10nsub`) the row is 1 / 308 / 388. SHIP_AI_SUB_ATTACK 9 recorded the opposite sign on h's base,
+  where the loopback queue had not landed.
+- With the seed alone OFF the row is 1 / 107 / 173. With the fire target alone OFF it is
+  2 / 303 / 361.
+- **The sub-sighted dialog is back.** Section 32 recorded that `luaJM6USNSubSighted()` no longer
+  fires, on a base without the submarine states. Here it fires on every JM06 run of this packet. With the states ON
+  the Narwhal-class reads `periscope_in` 360 times and `deep` 102 times, against 453 and 153 with
+  them OFF. The rise to periscope depth lets party 1 see it.
+
+**JM08 (3000).** 9 / 342 / 2091 became **11 / 361 / 2324**; damage 3681.8 -> 4149.8.
+- **The whole move is the AI group seed**, exactly section 19's pair (9 -> 11, 342 -> 361,
+  2091 -> 2324, 3681.8 -> 4149.8). With the seed OFF the row is gameplay-identical to i.
+- With the cautious group OFF on this base it is 6 / 2135 shots, damage 3294.8.
+
+**USN13 (3000).** 20 / 371 / 3626 became **27 / 591 / 6461**; damage 6222.6 -> 8451.7, first hit
+96.65 -> 94.55 s, Enterprise 1845.78 -> 2032.55 m.
+- **The whole move is the AI group seed.** With the seed OFF the row is gameplay-identical to i.
+- Seven more planes die: bruh #1.4 and its three wingmen, and bruh #1.9 with its wingmen 3 and 4. The new
+  natives include `AiGroups::merge_group` (99 calls).
+- Section 19 did not run USN13. **This is new.**
+- With the cautious group OFF on this base the row is 26 / 560 / 6414.
+
+**BSM01 (3000).** Gameplay-identical to i. The unimplemented count goes 470 -> 471.
+
+**LOMP06 (1000).** 0 / 0 / 14, Narwhal 450.86 m became **0 / 0 / 6, Narwhal 649.66 m**:
+- With the seed and the submarine switches OFF (`rb10ngsub`) the row is gameplay-identical to i.
+- **The two paths replace each other.** With the seed OFF, the submarine states move the Narwhal to
+  663.09 m, their own pair's direction (SHIP_AI_SUB_ATTACK 9: 663.20 m). With the submarine
+  switches OFF, the row is j's (649.66 m). With the seed ON, the select reaches the Narwhal once
+  (`attack_subject_0b0c` 1 call) and the states never run.
+- With the cautious group OFF on this base the Narwhal moves 710.43 m.
+
+### The three new rows
+
+These rows have no i row. Each is anchored on its landing's own ON log.
+
+- **LOMP10.** With the seed OFF (`rb10ngs_lomp10`), the row is gameplay-identical to OverrideHP's ON
+  log (GUNNERY_OPEN_ITEMS 37.1, `hp_on_lomp10` in cc9-gunnery7). Its totals equal the attack-altitude
+  pair's ON row (LUA_BINDING_MISSION: 10 / 279 / 1887, 3500.0, 4 of 8).
+  - The seed moves no total. PT 02 now follows PT 01 in a formation column, and PT 01's nearest
+    enemy goes 10421 -> 8355 m.
+  - With the remaining group OFF (`rb10nrest`: attack altitude, OverrideHP and the identity
+    switches), the row is 2 of 8 and 3195 shots, the attack-altitude pair's direction.
+- **JM05.** With the seed OFF, the row is gameplay-identical to the convoy movement pair's ON log
+  (LAND_AND_STRUCTURES, `cm_on_jm05` in cc9-lua6). The seed moves USS Phelps 2568.46 -> 2667.31 m and
+  changes the one death row. The remaining group OFF gives Phelps 2658.53 m.
+- **USN12.** Gameplay-identical to section 19's ON log (`ships6_gon_usn12` in cc9-ships6). With the
+  seed OFF it equals section 19's OFF log. With the cautious group OFF, Montpelier moves
+  2426.19 m.
+
+### Leave-one-out exports
+
+Each is `pair_export --commit d384f1ef5` with only the listed switches OFF, run like the rows above
+(logs `local\rb10<v>_<row>.log`), and read with `pair_diff` against the reference log.
+
+| v | switches OFF | SHA-256 prefix | rows run | result |
+| --- | --- | --- | --- | --- |
+| n0 | all eighteen | 22D5315C8A07 | the nine i rows | gameplay-identical to i on all nine |
+| ngs | `kAiGroupSeedPerEntityBound` | 75DF63C1FAB7 | all twelve | USN01, JM08, USN13, BSM01 = i; USN04 = the draw's ON row; USN02 11 / 4914; JM06 1 / 107; LOMP06 663.09 m; LOMP10, JM05, USN12 = their landing logs |
+| ndp | `kDiveProfileDrawBound` | E6F805559F40 | USN04, E2, USN01, USN13, LOMP10 | USN04 = section 19's ON row; E2 10 of 19; the rest identical |
+| ncr | `kCautiousRouteBound`, `kClearOrdersSendBound`, `kCautiousWedgeBound`, `kCautiousMoveRouteBound` | DA9E8C62FF53 | ten rows | moves USN04, E2, USN02, JM06, JM08, USN13, LOMP06, USN12; USN01 and LOMP10 identical |
+| nf | `kFireTargetObjectIdBound` | C4DAA31EA8FD | JM06 | 2 / 303 / 361 |
+| nsub | `kSubmarineSensorCategoryBound`, `kShipAiSubAttackSelectBound`, `kShipAiSubAttackStatesBound` | B54419608DD3 | JM06, LOMP06, USN04, USN02 | JM06 1 / 308 / 388; the rest identical |
+| nbz | `kLuaClosestBorderZoneBound` | 380734EBEACE | USN02, USN01, JM06 | USN02 1680 hit records; the rest identical |
+| nrest | `kSquadronAttackAltBound`, `kLuaOverrideHpBound`, `kSquadronReturnToBaseResolveBound`, `kLuaSpawnNewIdQueriesBound`, `kDepartedWingmanTaskBlockBound`, `kLandConvoyMembersBound`, `kLandConvoyMovementBound` | 274F1B49EDBE | nine rows | identical on all seven i rows run; LOMP10 2 of 8; JM05 Phelps 2658.53 m |
+| ngsub | ngs and nsub | 5C1E3BF744B3 | LOMP06, JM06 | LOMP06 = i; JM06 = i plus the fire-target pair |
+| ngbz | ngs and nbz | F655D4D6D4D6 | USN02 | = i |
+
+### Flags
+
+- **Closed:**
+  - **AI_CAUTIOUS_ROUTE 19's re-measure request.** USN12, USN04 and JM08 are measured above. JM08 and
+    USN12 are exactly section 19's ON rows. USN04 is section 19's ON row plus the dive draw.
+  - **i's "USN02 moves again after its failure".** The border zone's pair direction holds on this
+    base with the seed OFF (10 -> 11 deaths). The seed then moves the whole row, from the opening on.
+- **New:**
+  - **The AI group seed moves USN01 and USN13**, which section 19 did not run. It moves every reference
+    row except BSM01. On USN01, JM08 and USN13 the whole move is the seed's.
+  - **The cautious-route switches act only on the seed's groups.** On their own pair bases the seed
+    was OFF, and wedge and move-route paired identity. On this base the four together move eight
+    rows. They are not separated further.
+  - **JM06's sub-sighted dialog fires again.** Section 32's note does not hold on this base: the
+    submarine states raise the Narwhal-class to periscope depth. The periscope byte `+1234h` still
+    has no producer.
+  - **US Cargo Transport 02 sinks again on JM06**, to the submarine states, at 140.15 s.
+  - **LOMP06's submarine states are displaced by the seed.** With the seed ON the Narwhal is driven
+    by the group path and the states never tick.
+  - **The unimplemented counts rise** with the natives the seed registers.
+- **Carried from i:**
+  - **E2 after frame 4500 is unpaired** (now 11 deaths and 112 hit records).
+  - The reload feed's move of USN04 and E2, recorded in i, is not bisected into the plane tasks.
+  - JM06 and JM08 were not paired against the earlier gunnery flips (immediate fire, AA tests, wave
+    order, torpedo swim).
+  - USN02's outcome depends on an opening torpedo spread against an idle Houston.
+  - The friendly torpedo hits under the image swim: recorded, not bound further.
+  - The g-era gaps: USN02 `50851d56a` -> the shared OFF, and USN13 27 -> 26 / 25 -> 26.
+  - USN02 664 -> 640, bracketed to merge `e4dbf38b2`, not paired on the e base.
+  - USN02, the torpedo stock on top of the throttle cut: open.
+  - What enabled `kSetSelectedUnitBound`'s effect between `fc14864c9` and the throttle-cut base:
+    not isolated.
+  - E2 594 -> 595 (before c): not isolated.
+  - E2 ends in phase 1 under lockstep (known).
+  - The Marshall `.nav` is the generic layer.
