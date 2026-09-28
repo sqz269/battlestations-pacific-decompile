@@ -1877,3 +1877,36 @@ Worker cc9-ships9, 2026-09-28. Read only; the first item for the next packet.
   12978, JM05 4794, USN04 1134, JM06 894, USN13 744, USN01 348, LOMP10 312.
 - **Binding.** One copy, `ctl.obstacle.escape_mode_370 = static_cast<int>(ctl.clearance.outcome_370)`,
   beside the `clearance_37c` copy, behind a new switch. Count requests 2 and 4 on both sides first.
+
+### Bound OFF (`060d3c8a7`, `kShipAiClearanceOutcomeWiringBound`) and the OFF counts
+
+The switch copies `ctl.clearance.outcome_370` into `ctl.obstacle.escape_mode_370` beside the
+`clearance_37c` copy in `drive_order_ring_009f3f80`. Both sides print
+`summary mission ship ai clearance outcome wiring`: the frames per outcome value as `009F3F80`
+would see them, and the obstacle routine's two load raises (all three sites of each). The tree has
+the path fade and the troop-landing trait ON.
+
+OFF (`local\ships9_f0_<row>.log`, tree build of `060d3c8a7`):
+
+| row | heading (1) | blocked moving (2) | blocked stopped (3) | turn-assist raises | secondary raises |
+| --- | --- | --- | --- | --- | --- |
+| USN02 | 11406 | 10362 | 6846 | 44954 | 21733 |
+| USN04 | 1092 | 3786 | 30 | 31881 | 23964 |
+| JM05 | 4668 | 3528 | 1740 | 15459 | 11399 |
+| JM06 | 48 | 3072 | 882 | 7930 | 4994 |
+| USN13 | 708 | 1638 | 114 | 4509 | 1836 |
+| LOMP06 | 0 | 460 | 24 | 1148 | 710 |
+| USN12 | 0 | 138 | 0 | 209 | 63 |
+| LOMP10 | 72 | 0 | 0 | 0 | 2 |
+| USN01 | 6 | 0 | 0 | 0 | 24 |
+| JM08 | 0 | 0 | 0 | 0 | 5 |
+
+### Predictions, written before any ON run
+
+1. **JM08 is identical** (exit 0 or 1): every frame's outcome is 0, so the reader sees what it saw.
+2. **USN02, USN04, JM05, JM06, USN13, LOMP06 and USN12 move** (exit 3). There the raises happen
+   while an outcome is set. With the wiring, request 2 is refused at `009F4999` on those frames
+   and request 4 opens at `009F4A21..009F4A44` for outcomes 1 and 3. The secondary-raise count
+   changes on each of these rows. Its direction is not predicted.
+3. **LOMP10 and USN01 are identical or move little.** Their only outcomes are heading frames (72 and
+   6) on rows with no turn-assist raise, so the escape arms are rarely reached with an outcome set.
