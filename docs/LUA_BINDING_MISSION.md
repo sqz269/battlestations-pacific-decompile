@@ -2658,3 +2658,38 @@ OFF is this tree's build at `28bcf320d`. ON is `local\fq_on`, a `pair_export` of
     run-to-run noise (handoff cc9-lua3, item 5).
 - **Verdict: `kLuaFormationQueryBound = true`.** The mechanism matches the image, and the miss is
   on spread only, which the flip rule allows when recorded.
+
+## SquadronSetTravelAlt, 0089F550 (a read; the binding needs plane-side state)
+
+Worker cc9-lua4, 2026-09-28. This is rank 4 of the third refresh.
+
+### The image (V)
+
+- **The native.** `0089F550` resolves argument 0 through `BSP_ObjectHandle_FromLuaTable`, which
+  gives the squadron. It reads argument 1 as a number. With exactly three arguments, it reads
+  argument 2 as a boolean, else 0. It then stores five fields:
+  - `+380h = 0.5` (`[00CE3800]`, bytes `00 00 00 3F`);
+  - `+38Dh =` the boolean;
+  - `+394h =` the altitude, the squadron's cruising altitude;
+  - `+3A9h = 1`;
+  - `+3ADh = 0`.
+  It returns no value.
+- **The consumer.** The cruise profile `009C3650` returns early when `+38Dh` is set. It overwrites
+  `+394h` with its own altitude, and sets `+3ADh = 1` and `+3A9h = 0`, only when `+380h` is below
+  0 and `+3A9h` is clear. The script sets `+3A9h = 1`, so the profile keeps the script's
+  altitude either way; the forced call (`true`) also skips the profile's other arms. Who clears
+  `+3A9h` or counts `+380h` down, apart from that overwrite, is unread.
+
+### Why it is not bound here
+
+The host keeps no per-squadron `+394h`. The moveto task computes its cruise altitude on each
+refresh from Small/LargePlaneTravelAlt plus 0.6 times TravelAltRandom (`src/game_hosts_units.cpp`,
+`moveto_refresh_009beba0`), and `009C3650` itself is not modelled. A binding needs these fields on
+the units host's squadron state and the profile's gate in the moveto refresh. That is plane-side
+work outside this lane's files.
+
+### Reach
+
+On the census rows only JM08 calls it, once: `SquadronSetTravelAlt(Mission.MovPlane, 750, true)`
+(`prcpjm08.lua` 574, this installation, 2024-08-26). The movie plane is made invincible on the next
+line. The attack waves' calls (1075, 1169, 1267) are not reached by 3000 frames.
