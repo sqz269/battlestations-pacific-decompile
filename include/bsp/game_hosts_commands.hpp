@@ -408,6 +408,12 @@ public:
     // is every director whose push resolved the entity, 0071E781). Records the
     // entity as released (+5Dh) for 0071D6D0's refusal. Returns the slots matched.
     std::size_t release_observed_target_0071ddb0(const GameReleasedTarget& released);
+    // 0071D6D0 for a caller outside the director chain (009F5E59): the
+    // descriptor 00465080 builds for the one-based unit handle (kind 1, the
+    // unit's +174h id, the zero vector, +1h clear), then the same tests as
+    // WeaponDirector::command_allowed. The torpedo / moveonpath extra tests
+    // (009229F0 / 007AC9D0) are records and pass.
+    bool command_accepts_target_0071d6d0(std::uint32_t command, std::uint32_t handle);
     // 0071df70's first test: the float at director+40h. See GameDirector for
     // the three producers and which of them this process reaches.
     float director_target_hold_0040(std::size_t unit_index) const;

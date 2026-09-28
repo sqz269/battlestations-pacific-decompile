@@ -2592,6 +2592,29 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
     return matches;
 }
 
+bool GameCommandsHost::command_accepts_target_0071d6d0(std::uint32_t command,
+                                                       std::uint32_t handle) {
+    Impl& host = *impl_;
+    bsp::SceneCommandTarget target{};                  // 00465080
+    if (handle != 0u && handle - 1u < host.units.size()) {
+        target.kind = 1;
+        target.object_id = host.units[handle - 1u].object_id;
+        target.object = &host.units[handle - 1u];
+    }
+    const bsp::EntityOrderCommandClass* klass = host.class_of(command);
+    if (klass == nullptr) return false;
+    if (command == 0x00e08f18u || command == 0x00e08f80u) {
+        host.record("WeaponDirector::command_allowed_extra_test",
+            (command == 0x00e08f18u) ? 0x009229f0u : 0x007ac9d0u);
+    }
+    if (!klass->requires_target) return true;          // 0071D6E5
+    if (target.position_valid != 0 && klass->category != 1 && klass->category != 2)
+        return true;                                   // 0071D6EB..0071D6FE
+    const std::uint32_t resolved = host.resolve_target_00521ea0(target);  // 0071D702
+    if (resolved == 0u) return false;                  // 0071D709
+    return !host.target_released_05d(resolved);        // 0071D712
+}
+
 float GameCommandsHost::director_target_hold_0040(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return 0.0f;

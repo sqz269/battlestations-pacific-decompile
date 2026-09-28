@@ -94,6 +94,24 @@ inline constexpr bool kScriptFireTargetBound = true;
 // ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 15).
 inline constexpr bool kWeaponDirectorFireTargetBound = true;
 
+// Packet cc9_torpedo_threat_first_node (docs/GUNNERY_OPEN_ITEMS.md sections 22-23).
+// 00814420 (ship vtable[1D4h], body 00814420-00814492) walks the world torpedo
+// list [world+220h] (count +21Ch) but never advances its node: 00814450 reads
+// ESI = [EBX+8] on every pass and only the count at [ESP+10h] moves (00814390
+// advances at 00814402 MOV EDI,[EDI+4]). 00484540 appends at the tail, so the
+// head is the oldest registered torpedo. The answer is the list count when that
+// torpedo is live ([+310h] vtable[38h]), not the target's own (+4F8h) and
+// threatening (target->vtable[1D0h] 008173E0), else 0. False: every foreign
+// threatening torpedo counted once, the host's stand-in.
+inline constexpr bool kForeignTorpedoThreatHeadBound = false;
+
+// Packet cc9_torpedo_threat_first_node, section 17's last rank-2 term. 009F5E59
+// 0071D6D0(director, attackmove 00E08F78, 00465080(current target)) when the
+// director's target is locked: true keeps the target and skips the scan and the
+// retained-score reset (009F5E62). Routed to the commands host's concrete body.
+// False: the stand-in answers false and the scan runs.
+inline constexpr bool kAutoTargetCommandAcceptBound = false;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;
@@ -419,6 +437,11 @@ struct GameShipAiRow {
 
 struct GameShipAiSummary {
     std::size_t units{0};             // controllers built
+    // Packet cc9_torpedo_threat_first_node, counted in both builds.
+    unsigned long long threat_head_calls{0};    // 00814420 answers asked for
+    unsigned long long threat_head_differs{0};  // head answer != per-torpedo count
+    unsigned long long accept_calls{0};         // 009F5E59 0071D6D0 asked
+    unsigned long long accept_true{0};          // of those, the concrete body accepts
     // Packet cc9_prcp03_phase_progress: goals taken from a scene marker.
     unsigned long long marker_goal_resolves{0};
     std::size_t ai_owned{0};          // units whose +184h is clear
