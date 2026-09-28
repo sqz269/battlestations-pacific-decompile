@@ -28,6 +28,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -292,6 +293,15 @@ constexpr bool kAiDefendRecordsPathBound = true;
 // City sent toward its CommandBuilding), LOMP10 orders only, the reference four
 // identical (docs/PLANNER_TASK_CHOICE.md section 13.4).
 constexpr bool kSellingTickBound = true;
+
+// Packet cc9_capture_accessors, docs/PLANNER_TASK_CHOICE.md section 14. True:
+// 00A03760's radius is the CommandBuilding's authored CaptureRange
+// (GameUnitsHost::command_building_capture_range_07a0, 006F2780) and a
+// squadron's speed its plane class MaxSpd (plane_class_max_speed_0188,
+// [unit+35Ch]+188h); SELLING's stop radius takes the same CaptureRange.
+// False: the 500 and 0 stand-ins. ON: USN13, USN01 and LOMP07 identical
+// (docs/PLANNER_TASK_CHOICE.md section 14.2).
+constexpr bool kCaptureAccessorsBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
@@ -1709,6 +1719,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // was not read. This process holds no carrier link, so the answer here
         // matches what 007EDA90 answers, which is false.
         record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
         return tick_squadron_excluded_007eda90(member);
     }
     bool tick_member_is_groupable_combatant(void* member) override {
@@ -2304,14 +2315,22 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             bsp::AiTailArrivalValueInputs in;
             in.capture_weight = capture_weight_00a03510(w.class_id);
             in.distance = h.unit_xz_distance(w.unit, unit_index_of(target));
-            in.capture_radius = static_cast<float>(static_cast<int>(kCaptureRangeStandIn));
+            in.capture_radius = static_cast<float>(static_cast<int>(
+                kCaptureAccessorsBound
+                    ? h.units.command_building_capture_range_07a0(unit_index_of(target))
+                    : kCaptureRangeStandIn));   // 00A037CF FILD target+7A0h
             // IsType(6): [unit+538h]+500h MaxSpeed. IsType(18h): [unit+35Ch]+188h,
             // the plane class MaxSpd. LABELLED: the units host exposes no plane
             // MaxSpd, so a squadron's speed is 0 and it counts only inside the
             // radius (contract in docs/PLANNER_TASK_CHOICE.md section 8).
-            in.speed = (w.class_id != 0x18 &&
-                        h.units.unit_is_kind_of(w.unit, bsp::kUnitGunneryKindShipBase))
-                ? h.units.unit_class_max_speed_0500(w.unit) : 0.0f;
+            if (w.class_id != 0x18 &&
+                h.units.unit_is_kind_of(w.unit, bsp::kUnitGunneryKindShipBase)) {
+                in.speed = h.units.unit_class_max_speed_0500(w.unit);
+            } else if (w.class_id == 0x18 && kCaptureAccessorsBound) {
+                in.speed = h.units.plane_class_max_speed_0188(w.unit);   // 00A03819
+            } else {
+                in.speed = 0.0f;
+            }
             in.arrive_to_range_time = t.arrive_to_range_time;
             return bsp::ai_tail_unit_arrival_value(in);
         }
@@ -3227,8 +3246,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (best == kCaptureNone) return result;
             float cb[3] = {0.0f, 0.0f, 0.0f};
             units.unit_position_00fc(best, cb[0], cb[1], cb[2]);
+            const float range = kCaptureAccessorsBound
+                ? units.command_building_capture_range_07a0(best) : kCaptureRangeStandIn;
             const float r = static_cast<float>(
-                static_cast<double>(static_cast<int>(kCaptureRangeStandIn)) * 0.8);
+                static_cast<double>(static_cast<int>(range)) * 0.8);
             const float v[3] = {cb[0] - leader[0], cb[1] - leader[1], cb[2] - leader[2]};
             const float d = bsp::ai_tail_horizontal_length(v);
             const float* point = d <= r ? leader : cb;

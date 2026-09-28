@@ -1084,6 +1084,59 @@ its groups to Sell beside an own Allied CommandBuilding (section 12.4 census: `s
 - the sell message 51h and its `005F98F0` gate;
 - `00A11070`.
 
+## 14. The two stand-ins replaced by units-host accessors (packet `cc9_capture_accessors`)
+
+**Background:** lua4's accessors landed at `d7416c783`.
+- `GameUnitsHost::command_building_capture_range_07a0` gives a CommandBuilding's authored
+  `CaptureRange`, or 500.
+- `GameUnitsHost::plane_class_max_speed_0188` gives a squadron's plane class MaxSpd.
+
+**`kCaptureAccessorsBound`, committed OFF.** When ON:
+- `00A03760`'s radius (`00A037CF FILD target+7A0h`) and SELLING's stop radius (`00A12226`) read the
+  authored value;
+- a squadron's arrival speed (`00A03819`) is its MaxSpd instead of 0.
+
+The same commit folds in lua4's reload-enabled feed: `tick_squadron_excluded_009ffeb0` answers false
+when `[00E17BF2]` is set. It is outside the switch. lua4 recorded that it gives the same answer on
+every measured row, since the byte is set only on JM06 and JM08, where the function already
+answers false.
+
+### 14.1 Predictions, written before the ON runs
+
+**USN13 3200/3000: exit 0 or 1.**
+- The three CommandBuildings' radius drops from 500 to 100.
+- Squadrons within 30 s at MaxSpd of a CommandBuilding now count, so `a` (US squadrons near Truk)
+  and `b` (Japanese squadrons) can leave 0. Totals can rise above the 0.5 floor, and prices can
+  rise above 1200.
+- **No order moves.** CB2, CB4 and CBT share one host group, so Enterprise's group is ordered at
+  the same group whichever record wins.
+
+**USN01 3200/3000: exit 0 or 1.** One CommandBuilding (CB2, radius 500 -> 100): the same target
+and the same orders.
+
+**LOMP07 3200/3000:** SELLING's stop radius becomes 0.8 x 1300 = 1040 (CB - Bering) or 0.8 x 900 =
+720 (CB - Bering2), instead of 400.
+- Exit 1 if Salt Lake City never comes within 1040 (or 720) of the nearest Allied CommandBuilding
+  in 150 s.
+- Otherwise exit 3: `holds` above 0, and Salt Lake City stops short of where OFF takes it.
+
+### 14.2 The pairs
+
+- **OFF** is this tree's build at `f30f34e52` (main `6c2c46ddf` plus the switch, OFF). **ON** is
+  `pair_export --commit f30f34e52 --flip kCaptureAccessorsBound=true` into `local\cx_on`.
+
+| mission | pair_diff | note |
+| --- | --- | --- |
+| USN13 3200/3000 | exit 0 | an ON `BSP_CAPTURE_DIAG=1` run (`local\cx_diag_usn13.log`): all 117 printed records still `a = b = 0`, `total = 0.5`, price 1200 |
+| USN01 3200/3000 | exit 0 | |
+| LOMP07 3200/3000 | exit 0 | selling 49 approaches, 0 holds: Salt Lake City never comes within 1040 / 720 |
+
+**The predictions held.** No order target depends on the radius or the squadron speed on these
+runs. On USN13 no unit is within 30 s of a CommandBuilding in 150 s, even at squadron speed.
+
+**Decision: `kCaptureAccessorsBound` is ON.** It is the image's rule, and the labelled stand-ins
+are gone.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
