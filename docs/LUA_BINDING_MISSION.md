@@ -1447,3 +1447,61 @@ this native present on both sides; USN02 9200/9000; streams ON, `BSP_DEATH_TABLE
 - **USN01.** Its calls (`usn_1_marshall.lua` 254, 412, 713) land on units that the OFF log
   should show taking damage or not. Identity is predicted unless one of them dies OFF below its
   floor. The per-call lines name them.
+
+## SetForcedReconLevel, 008AA8F0 (packet `cc9_forced_recon_level`, a read and a plan)
+
+Worker cc9-lua2, 2026-09-28. This is item 4 of the ranking. Ghidra was read only.
+
+### The image (V)
+
+- **`SetForcedReconLevel(entity, level, party)`.** It resolves argument 0 (`00888AA0`), reads
+  argument 1 as an integer (the level, `00B66290`) and argument 2 as an integer (the party).
+- It calls `00805CF0` on the entity's recon record for that party.
+  - For a squadron (`IsKindOf(18h)`) or a LandConvoy (`1Ah`), it calls it on each of the `+3CCh`
+    members instead.
+- **`00805CF0`**, `__thiscall(record, level)`:
+  - it takes the effective level before (`+8h` when the force byte `+10h` is set, else `+4h`);
+  - it sets `+10h = 1` and `+8h = level`, and drops any pending observer pair at `+28h`;
+  - when the effective level changed, it calls `[record+2Ch]->vtable[0](record+30h party, old,
+    new)`. That is `0077B0C0`, the same notify that fills `reconlevel` and fires the `recon`
+    listeners.
+- **The recon pass then publishes the forced level.** It skips the sensor test for that record
+  (`det+10h`, `00806883`).
+
+### What the host lacks
+
+- `ReconSensorPassHost::unit_detection_forced(index)` and `unit_forced_level(index)`
+  (`include/bsp/recon_sensor_pass.hpp`) are keyed by **target only**. The image's force byte is per
+  (target, observing party) record.
+- The gunnery host implements both as constant false/none (`src/game_hosts_gunnery.cpp` 4437).
+- The pass loop already has the side in hand (`src/recon_sensor_pass.cpp`, `env.slot_index =
+  side` before the target loop), so the fix is a signature change and a store.
+
+### The plan
+
+1. **`include/bsp/recon_sensor_pass.hpp` and `src/recon_sensor_pass.cpp`:**
+   - the two hooks become `unit_detection_forced(int side, std::size_t index)` and
+     `unit_forced_level(int side, std::size_t index)`;
+   - the loop passes `side`.
+2. **The gunnery host** (gunnery3's file):
+   - it keeps `std::map<std::pair<int, std::size_t>, int> forced_recon;`;
+   - it exposes `void set_forced_recon_level_00805cf0(std::size_t unit, int side, int level);`;
+   - the two overrides answer from the map (the level maps to none/blip/identified as 0/1/2).
+3. **The Lua host** (this worker): `kForcedReconLevelBound`, OFF.
+   - The native resolves the entity as `Kill` does (a squadron's fused slot to its live members)
+     and calls the setter.
+   - The recon table and listener paths already follow the pass, so they see the forced level at
+     the next pass.
+   - **SUBSTITUTION, labelled:** `00805CF0`'s immediate notify becomes the next pass's change.
+
+### Predictions sketch (USN13 3200/3000)
+
+- **The calls.** There are 15:
+  - `luaObj_AddUnit("primary", 3, unit)` then `SetForcedReconLevel(unit, 2, PARTY_ALLIED)` over
+    `Mission.TotalTrgs` (`usn_13_truk.lua` 1140);
+  - one per attack-wave squadron (1647).
+- **The effect.** Those Japanese units become identified to the Allied side from the next pass.
+  - Allied recon counters move.
+  - The ship and aircraft AI that reads the pass's levels (target choice, `luaGetShipsAround`'s
+    recon tables) can engage earlier, so **exit 3 is likely**.
+- **Elsewhere.** USN01, USN04 and USN02 make no call on the idle runs, so they are identity.
