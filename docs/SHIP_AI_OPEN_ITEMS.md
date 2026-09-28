@@ -1696,8 +1696,26 @@ Both sides count `calls` and `differs` (the whole answer against the stand-in) i
 **Uncertainty.** `vtable[214h]` is modelled as `ship_ai_unit_navigation_layer_006dfd80` on the
 member's leaf tuning, as the layer choice has it. A member without loaded tuning is skipped.
 
-**Predictions.** They follow the OFF counter runs. The rule: a row with `differs=0` on OFF is
-identical ON.
+**The OFF counters** (`local\ships9_d0_<row>.log`, tree build of `d7f56deb3`):
+
+| row | calls | differs |
+| --- | --- | --- |
+| USN02 | 25845 | 25845 |
+| USN04 | 8882 | 8882 |
+| USN01, JM06, USN13, LOMP06, USN12, JM05, LOMP10 | 2881 to 13990 | 0 |
+| JM08 | 0 | 0 |
+
+The comparison is the image's own. `009DE5FF` seeds the key from `blk+30Ch`, the travel layer after
+the layer choice's clamp and goal adjustment (`009ED067..009ED0E7`), while `0070E450` answers the
+raw largest member layer. On USN02 and USN04 the two differ on every call, so the image takes the
+"moved" path `009DEF83..009DF060` on every arm-final pass of those leaders.
+
+**Predictions, written before any ON run.**
+1. **USN01, JM06, JM08, USN13, LOMP06, USN12, JM05 and LOMP10 are identical** (exit 0 or 1):
+   `differs=0`.
+2. **USN02 and USN04 move.** Their formation leaders re-aim the heading query from the pose and
+   `blk+324h` and ask the second searcher. A leader's heading target can change, and the followers
+   follow it.
 
 ## 19. Rank 2: the troop-landing class trait (packet `cc9_close_member_class_trait`, `kTroopLandingTraitBound`)
 
@@ -1732,18 +1750,46 @@ guesses.
 (`009F3429`). The host still answers that leader query false (rank 3, section 17), so only the
 unit's own arm `009F35E3` asks. A kind other than ship answers false because its slot is unread.
 
-### Predictions, written before any ON run
+### Section 13's census was wrong: the trait holds on troop transports
 
-1. **USN04 is identical** (exit 0 or 1). It has no landing ship.
-2. **The Cargo arm moves nothing.** No Cargo class in this installation authors `LandingShip`, so
-   `cargo_landers` is 0 on every row.
-3. **The approach half moves nothing.** After the trait, the warn sweep still meets records:
+The OFF counters of the first run contradicted the static prediction that no Cargo unit answers
+true. A bounded diagnostic (`ai troop landing trait site=<close|cargo> unit=<name> class=<id>`,
+the first answer per unit and site) names the units:
+
+| row | site | units (class 0Bh, Cargo) |
+| --- | --- | --- |
+| JM06 | close attack | USTroopTransport 01 to 04 |
+| JM08 | Cargo capture weight | USTroopTransport 01 to 06 |
+| JM05 | Cargo capture weight | Japan Troop Transport 01 to 05 |
+
+- In this installation's `vehicleclasses.lua` (mtime 2026-05-09), `LandingShip` 90 / 40 with
+  `LandingShipAmount` 4 are authored on `VehicleClass[224]` "IJN Troop Transport (Strafeable)"
+  (`Type` "Cargo" at line 61360) and `VehicleClass[234]` "US Troop Transport (Strafeable)"
+  (`Type` "Cargo").
+- Section 13 took them for `LandFort` classes. An awk over the table picked up nested `Type`
+  keys of other classes. The top-level `Type` of these tables comes late in each table.
+- So the Cargo arm of `00A03510` answers 3.0 for these transports in the image, not 0.
+
+**The OFF counters** (`local\ships9_d0_<row>.log`, tree build of `d7f56deb3`):
+
+| row | close_landers | cargo_landers |
+| --- | --- | --- |
+| JM06 | 200 | 0 |
+| JM08 | 0 | 246 |
+| JM05 | 0 | 585 |
+| USN01, USN02, USN04, USN13, LOMP06, USN12, LOMP10 | 0 | 0 |
+
+### Predictions, written before any ON run (they replace the static ones)
+
+1. **USN04, USN13 and LOMP10 are identical** (exit 0 or 1). Both counters are 0 there, and the
+   approach half cannot move gameplay (point 4).
+2. **JM06 moves through the close attack.** USTroopTransport 01 to 04 stop being served by the
+   close-attack pass (`close members served` falls), so any close-attack order to them stops.
+   Whether a death or a hit moves is not predicted.
+3. **JM08 and JM05 move only if the capture or defend scoring uses the transports' weight.** In
+   those scorings (`00A03760` arrival value and the defend collect), the transports weigh 3.0
+   instead of 0. The rows are identical if no capture or defend think sums them.
+4. **The approach half moves nothing.** After the trait, the warn sweep still meets records:
    - `target_warn_radius_07c4` answers 0, so the range gate `009F3585` fails;
    - `candidate_accepts_warning_vtable_0234` answers false;
    - `route_warning_message_0077c2a0` is a record.
-4. **The close attack moves the rows whose OFF `close_landers` is positive**, and only those.
-   - Section 13's census (`vehicleclasses.lua`, this installation, mtime 2026-05-09) expects JM08
-     (LST and LSM) and USN13.
-   - JM05 and LOMP10 are open: they move exactly when their OFF `close_landers` is positive.
-   - On a moving row, `close members served` falls by the landers and the close attack's orders to
-     them stop. Those landers keep whatever order they already had.

@@ -1383,7 +1383,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A14435 MOV ECX,[ESI+538h]; 00A1443D CALL [EDX+2Ch]; a true answer skips the
         // member (00A14444 JNE 00A14D4D). The troop-landing trait.
         const bool trait = units.unit_class_lands_troops_vtable_2c(unit_index_of(member));
-        if (trait) ++summary.close_troop_landers;
+        if (trait) {
+            ++summary.close_troop_landers;
+            diag_troop_lander("close", unit_index_of(member));
+        }
         if (!bsp::game::kTroopLandingTraitBound) {
             record("AiCommand::close_member_lands_troops", 0x00a1443du);
             return false;
@@ -2502,8 +2505,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // 0Dh -> 5.0 (00CE3850); CommandBuilding 1Ch -> the Lua `CaptureWeight`,
     // GetFloatOrDefault(1.0), unauthored on this installation; any other id 0.
     // Cargo 0Bh answers 3.0 when [unit+538h]->vtable[+2Ch]() is true and 0
-    // otherwise: the troop-landing trait, behind kTroopLandingTraitBound (no Cargo
-    // class of this installation authors LandingShip, docs/SHIP_AI_OPEN_ITEMS.md 13). LandingShip 0Ch answers
+    // otherwise: the troop-landing trait, behind kTroopLandingTraitBound. The strafeable
+    // troop transports (classes 224 and 234, docs/SHIP_AI_OPEN_ITEMS.md 19) answer true. LandingShip 0Ch answers
     // 0.1 (00D7A2F0) when 00827F70 is true, which for a class-0Ch ship is the
     // BigLandingShip byte +808h being clear (its default), else 1.0; the host
     // has no reader for +808h, so the default arm 0.1 stands.
@@ -2524,8 +2527,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     bool cargo_lands_troops(int class_id, std::size_t unit) {
         if (class_id != 0x0B) return false;
         const bool trait = units.unit_class_lands_troops_vtable_2c(unit);
-        if (trait) ++summary.cargo_troop_landers;
+        if (trait) {
+            ++summary.cargo_troop_landers;
+            diag_troop_lander("cargo", unit);
+        }
         return trait;
+    }
+    // The first answer per unit and site, for the troop-landing pairs.
+    std::vector<std::pair<std::size_t, char>> troop_lander_seen;
+    void diag_troop_lander(const char* site, std::size_t unit) {
+        const std::pair<std::size_t, char> key{unit, site[0]};
+        for (const auto& k : troop_lander_seen) if (k == key) return;
+        if (troop_lander_seen.size() >= 32) return;
+        troop_lander_seen.push_back(key);
+        log.notef("ai troop landing trait site=%s unit=%s class=%d", site,
+            unit_name(unit).c_str(), units.unit_class_id(unit));
     }
 
     float unit_xz_distance(std::size_t a, std::size_t b) const {
