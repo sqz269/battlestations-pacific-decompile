@@ -1819,6 +1819,32 @@ host stand-ins went from 86 calls on h to thousands. Each was read for what its 
    sinks or dies later within 3000 frames, and USN04 identity (no call).
 4. Pair LOMP10 and USN04 with `pair_export --flip kLuaOverrideHpBound=true`, and flip by verdict.
 
+**OFF measurement** (`local\g7hp_lomp10.log`, main `400e76a72` with lua6's dispatch `3786d5641`):
+eight calls, each at full health, and each value exactly 1.25 x the maximum.
+
+| ship | value | maximum and health before |
+| --- | --- | --- |
+| Ashigara | 8750 | 7000 |
+| Oyodo | 7500 | 6000 |
+| Kiyoshimo, Asashimo | 3750 | 3000 |
+| Sugi, Kashi, Kaya | 3125 | 2500 |
+| Kasumi | 3500 | 2800 |
+
+None of the eight takes damage within 3000 frames OFF (taken 0, not sunk). The run has 10 deaths.
+
+**Predictions (written before the ON runs).**
+- **H1:** ON applies all eight (`applied=8`). Each ship's maximum and health read the value.
+- **H2, LOMP10:** only the eight health cells of the unit table move. Deaths, hit records, shots and
+  death rows are identical, because nothing damages these ships in the window. The health
+  fraction the AI reads (`+370h` / `+36Ch`) stays 1.0.
+- **H3, USN04:** `calls=0`, exit 1.
+
+**The pair commands:**
+```
+python tools/pair_export.py --commit <this commit> --out local\hp_off
+python tools/pair_export.py --commit <this commit> --flip kLuaOverrideHpBound=true --out local\hp_on
+./local/g7_pair.ps1 -Off hp_off -On hp_on -Rows 'lomp10:LOMP10:3200:3000','usn04:USN04:4700:4500'
+```
 ### 37.2 What remains of section 31
 
 | rank | item | state |
