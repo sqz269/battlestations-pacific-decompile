@@ -633,6 +633,26 @@ Before, it gave every deck the bit and flagged the resolution unread whenever th
    away. USN01 has no class 10h/16h head returning to base, so it is identical (exit 0 or 1).
 - A mechanism failure is B-25 01 still refused, or a install with no queue entry.
 
+### The pair and the verdict (cc9-lua10, 2026-09-28): ON
+
+OFF is this tree's build of `441c5cdef`, which carries the same code as `5abf6e808`
+(`local\l10_b0_<row>.log`). ON is `local\l10_ab`, a flip of `5abf6e808` (`local\l10_abon_<row>.log`).
+
+| row | `pair_diff` | deaths | damage | shots | first hit |
+| --- | --- | --- | --- | --- | --- |
+| LOMP10 9200/9000 | 3 | 3 -> 1 | 1304.4 -> 324.4 | 446 -> 4 | 90.50 s -> 306.55 s |
+| USN01 3200/3000 | 1, gameplay identical | 5 -> 5 | - | - | - |
+
+1. **Held.** B-25 01 and `|.-2` install `land` at CB4_AF at 3.80 s: `moveto (land)` and
+   `follow (land)`, with no refusal.
+2. **Held, with one detail missed.** The squadron is queued and inserts 2 records at 86.80 s, 3139 m
+   from T. Its queue n is 0, not the predicted 2: B-25 01 requests first, so it queues first. That
+   moves Lightning 01 and Warhawk 01 to n = 1 and 2, which shifts their circle points by 20 m up
+   and 60 m back per n.
+3. **Held.** LOMP10 moves. Both B-25s that died OFF (shot down on their bombing run) now survive.
+   Hits, shots and damage collapse, because the AA fire at them is gone. USN01 is gameplay-identical.
+- **Verdict: ON.**
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's

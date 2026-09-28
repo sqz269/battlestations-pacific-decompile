@@ -3913,7 +3913,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_landing_approach_bit (docs/SQUADRON_LAND_TASK.md section 5d):
     // the block+20h bit 1 that 006C0840 tests, from its producers. False: every
     // deck gets the bit and a class 10h/16h head's resolution is flagged unread.
-    static constexpr bool kLandingApproachBitBound = false;
+    static constexpr bool kLandingApproachBitBound = true;  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5d)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
