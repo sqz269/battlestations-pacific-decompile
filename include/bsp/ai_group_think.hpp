@@ -148,7 +148,7 @@ inline constexpr int kAiGroupMaxSeedTeam = 2; // CMP [ESI+54h],EBP with EBP = 2
 // auto-merge. False: one group per collection holding every candidate it
 // yields, as before; that lumps both teams together until the next
 // compose's eviction.
-inline constexpr bool kAiGroupSeedPerEntityBound = false;
+inline constexpr bool kAiGroupSeedPerEntityBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 19
 bool ai_group_seed_candidate(const AiGroupCandidateFlags& flags, bool already_grouped,
                              int team_id) noexcept;
 bool ai_group_member_still_belongs(const AiGroupCandidateFlags& flags, int entity_party_slot,

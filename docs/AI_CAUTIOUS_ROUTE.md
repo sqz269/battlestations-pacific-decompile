@@ -915,3 +915,11 @@ kAiGroupSeedPerEntityBound=true` against the tree's own build (OFF), with refere
   and more ordnance releases.
 - The switch is the image's arithmetic, but it reaches every mission's AI grouping. Per the rule
   above it is recorded rather than flipped here.
+
+**Flip: `kAiGroupSeedPerEntityBound` ON 2026-09-28, by the lead's decision on the section 19
+pairs.** Reference j re-measures USN12, USN04 and JM08, and the rows of sections 9, 14 and 17.
+
+**Counter correction.** The prediction table's "`auto_merges` > 0" should read "`prox_merges`
+rises". The host's `auto_merges` counter is never incremented on either side. The phase 4 merges
+this switch produces are counted in `prox_merges`: USN12 0 -> 12, USN04 9 -> 28, JM08 0 -> 161.
+No new pair was run for the flip, because section 19's ON binary is this configuration.
