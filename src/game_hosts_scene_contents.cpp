@@ -1731,6 +1731,25 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // the created unit up by it. docs/AIROPS_LAUNCH_TICK.md.
         deck.owner_name = stored.name;
         deck.owner_party = stored.party;
+        // 006D3C10 kind 1: RunwayWidth / RunwayLength through 008F2260 into
+        // 006BF0D0 (holder+B0h/+B4h). An integer-typed property is converted,
+        // a float one is read as is; both parse the same from the scene text.
+        if (deck.is_airfield) {
+            const SceneProperty* w = bag.find("RunwayWidth");
+            const SceneProperty* l = bag.find("RunwayLength");
+            float wv = 0.0f, lv = 0.0f;
+            if (w != nullptr && !w->values.empty() && l != nullptr && !l->values.empty()
+                && scene_scan_float(w->values.back(), wv)
+                && scene_scan_float(l->values.back(), lv)) {
+                deck.runway_width = wv;
+                deck.runway_length = lv;
+                deck.runway_from_scene = true;
+            }
+            owner.log.notef("air ops runway: unit=%s RunwayWidth=%.2f RunwayLength=%.2f "
+                "authored=%d (006d3c10 -> 006bf0d0)", stored.name.c_str(),
+                static_cast<double>(deck.runway_width), static_cast<double>(deck.runway_length),
+                deck.runway_from_scene ? 1 : 0);
+        }
         owner.log.notef("air ops deck: unit=%s class=%d NumSlots=%d MaxInAirPlanes=%d "
             "slots=%zu stock=%zu (006cadd0 mode 1)", stored.name.c_str(), klass->class_id,
             authored.num_slots, authored.max_in_air_planes, deck.slots.size(),
