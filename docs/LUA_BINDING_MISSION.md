@@ -2172,3 +2172,40 @@ player):
 **The gameplay gap that remains is the dive itself.** `A2h` is not posted, and the hull move to
 `bands[level]` is not modelled. The first run that reaches the I-400's `SetSubmarineDepthLevel(unit, 3)`
 (1380) changes the level the getter answers, but not where the hull sits.
+
+## SetAirBaseSlotCount, 008963E0 (packet `cc9_set_air_base_slot_count`, `kLuaSetAirBaseSlotCountBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This is item 6 of the refreshed ranking.
+
+**The image (V).**
+- `008963E0` resolves argument 0 (`00888AA0`) and takes its air-ops block
+  (`BSP_AirOps_GetBlock`). It reads argument 1 as an integer and calls `006C7E20(n)` on the
+  block. It returns no value.
+- `006C7E20` has one caller, this native. It resizes the `58h` slot array at `block+4Ch`, with
+  its count at `+50h`, to exactly `n`.
+- While the count is below `n` (`006C7E73 JAE`, looping back at `006C8060`), it appends a
+  default record, built at `006C7EA3..006C7F1C`: class 0, assigned 0, requested 3, class+134h
+  copy 0, no squadron, state 1, timer 0.0 and the launch request clear.
+- While the count is above `n` (`006C8069..006C8089`), it destroys the tail record through its
+  vtable.
+- The count comparison is unsigned. There is no test for an entity without a block.
+
+**The binding.**
+- `GameMissionLuaHost::run_set_air_base_slot_count_008963e0` resizes the entity's deck in
+  `bsp::air_ops_decks()` the same way.
+- The census is `summary mission script air base slot count bound=.. calls=.. resized=..
+  unresolved=..`, plus one line per call.
+- **SUBSTITUTIONS, labelled.** An entity with no deck is counted unresolved. A negative `n` is
+  ignored.
+
+**Callers.** `usn_13_truk.lua` (mtime 2024-08-13) sets its three airfields to 4 slots, or 6 on
+difficulty 2 (559, 563). It sets each US carrier to 4 (1096). `usn_19_coralus.lua` 212 is not a
+measured row.
+
+**Predictions** (written before the runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| USN13 3200/3000 | **exit 1.** The harness runs at difficulty 1 (`set_effective_difficulty game+6ACh=1`), so the airfields ask for 4. Every deck in `ss_off_usn13.log` is authored with `NumSlots=4`, so each call is a no-op (`resized=0`). The carrier loop at 1096 is a later stage and may not be reached |
+| USN04 4700/4500 | no call, exit 1 |

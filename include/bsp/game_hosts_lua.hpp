@@ -229,6 +229,13 @@ inline constexpr bool kLuaIsClassChangedBound = true;  // ON: identity pairs (do
 // row to run_set_submarine_depth_level_00893f40. False: unimplemented.
 inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_set_air_base_slot_count (docs/LUA_BINDING_MISSION.md, "SetAirBaseSlotCount,
+// 008963E0"). SetAirBaseSlotCount(entity, n) resizes the air-ops block's 58h slot array
+// (+4Ch, count +50h) to exactly n through 006C7E20: new slots are default records, a
+// shrink destroys from the tail. True: route the row to
+// run_set_air_base_slot_count_008963e0. False: unimplemented.
+inline constexpr bool kLuaSetAirBaseSlotCountBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -476,6 +483,9 @@ struct GameMissionLuaSummary {
     unsigned long long sub_depth_calls{0};
     unsigned long long sub_depth_stored{0};
     unsigned long long sub_depth_unresolved{0};
+    unsigned long long slot_count_calls{0};
+    unsigned long long slot_count_resized{0};
+    unsigned long long slot_count_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -963,6 +973,8 @@ public:
     int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
     // Packet cc9_set_submarine_depth_level, under kLuaSetSubmarineDepthLevelBound.
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
+    // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
+    int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
