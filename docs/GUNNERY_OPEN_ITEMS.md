@@ -28,6 +28,8 @@ is ranked from its own evidence.
 | the stop-firing hook `0072B4C0` (rank 2) | section 7 | read; presentation only |
 | the director fire target `00835860` (rank 3) | sections 13-15 | ON, `kWeaponDirectorFireTargetBound` |
 | the director's target refusal `0071D6D0` and release observer `00694A60` / `0071DDB0` (rank 3 on h) | sections 19-21 | ON, `kDirectorTargetChecksBound` |
+| the torpedo threat list `00814420`, head node only (rank 4 on h) | sections 22-24 | ON, `kForeignTorpedoThreatHeadBound` |
+| the AutoTarget's locked-target accept `0071D6D0` at 009F5E59 (section 17's last term) | sections 17, 23-24 | ON, `kAutoTargetCommandAcceptBound` |
 | the target's sub-entity list `008654AC` (rank 4) | section 2 | exact for every unit this host builds |
 | the unit fire cooldown (rank 6) | sections 11-12 | ON, `kUnitFireCooldownBound` |
 | the invincibility floor | sections 9-10 | ON, `kUnitInvincibilityFloorBound` |
@@ -883,3 +885,26 @@ Score only; closed.
   otherwise.
 - **Flip rule:** each switch flips when its mechanism matches. A USN02 move that is traced to the
   accept alone keeps `kAutoTargetCommandAcceptBound` OFF pending a re-read of the retained score.
+
+## 24. The threat-head and accept pairs, and the flip (2026-09-29)
+
+OFF is this tree at `b1e6667eb`. ON is `pair_export --commit b1e6667eb`, flipping both
+switches (`local\g5_tt`). The runs are `local\g5ttoff_*.log` / `local\g5tton_*.log`, with the
+reference h arguments.
+
+| mission | `pair_diff` | death rows | 00814420 calls (head differs) | accepts / calls | AutoTarget scans OFF / ON |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9000 | exit 1, gameplay identical | 10 identical | 10484 (0) | 8329 / 9216 | 10689 / 2360 |
+| JM06 3000 | exit 1 | 2 identical | 2147 (0) | 1129 / 1129 | 3839 / 2710 |
+| USN13 3000 | exit 1 | 20 identical | 0 | 0 | unchanged |
+| USN04 4500 | exit 1 | 44 identical | 0 | 0 | unchanged |
+| USN01 3000 | exit 1 | 5 identical | 0 | 0 | unchanged |
+
+- **Every prediction held.**
+- **The accept:** scans drop by exactly the accepted count, 8329 on USN02 and 1129 on JM06. The
+  locked target is kept either way, so gameplay is identical.
+- **The threat head:** it equals the per-torpedo count on every call made on these missions.
+  The two answers part only when an older foreign torpedo that does not threaten sits at the
+  head while a newer one does. That leaves 0 where the host counted one, or the whole list
+  where the host counted a subset.
+- **Both flipped ON.** The ship-AI lease is released with this commit.
