@@ -2979,3 +2979,62 @@ OFF is this tree's build at `0c48b1e44`. ON is `local\ta_on`, a `pair_export` of
   - The victims are the same nine, as predicted.
 
 **Verdict: `kSquadronTravelAltBound = true`.**
+
+## The unimplemented Lua natives, fourth refresh (cc9-lua5, head `57acc6f7f`)
+
+Worker cc9-lua5, 2026-09-28. Same method as the third refresh, same run parameters.
+
+| mission | frames | log (worktree cc9-lua5) |
+| --- | --- | --- |
+| USN02 | 9200/9000 | `local/l5_rk_usn02.log` |
+| JM06 | 3200/3000 | `local/ap_on_jm06.log` (the `583e3eee1` code) |
+| LOMP06 | 1200/1000 | `local/l5_rk_lomp06.log` |
+| USN13 | 3200/3000 | `local/l5_rk_usn13.log` |
+| JM08 | 3200/3000 | `local/ap_on_jm08.log` (the `583e3eee1` code) |
+
+Since the third refresh, `SetDeviceReloadEnabled`, `IsInFormation`, `LeaveFormation` and
+`SquadronSetTravelAlt` are bound. What is left with any gameplay reach:
+
+| rank | native | address | missions (calls) | reach |
+| --- | --- | --- | --- | --- |
+| 1 | `GetClosestBorderZone` | `008AECD0` | USN02 (1) | after the failure at 29.75 s, `commandhelpers.lua` 9577 (mtime 2024-10-29) sends the failed ship Alden to the answer with `NavigatorMoveToRange` |
+| 2 | `CountdownCancel`, `Scoring_SetMissionCompleted`, `BannSupportmanager` | | USN02 (1 each) | the failure path's timer and scoring |
+| 3 | `LoadCheckpoint` | `008ACA30` | JM06 (1) | nil means no saved checkpoint, which a fresh run has anyway |
+| - | the presentation natives of the third refresh | | | unchanged |
+
+LOMP06, USN13 and JM08 call no unimplemented native with gameplay reach.
+
+## `GetClosestBorderZone`, bound (packet `cc9_get_closest_border_zone`, `kLuaClosestBorderZoneBound`, committed OFF)
+
+Worker cc9-lua5, 2026-09-28. The image read and the zone records are in
+`docs/WORLD_MAP_BOUNDS.md`, "Border zones".
+
+**The binding.**
+- `008AECD0` reads argument 0 as a vector. The offset is 500.0 (`00CE397C`) unless there are
+  exactly two arguments and the second is a number.
+- It calls `004C7730` for any side (`EDI = -1`, `008AED36`) and answers a table with `x`, `y` and
+  `z` (`0088BA30`).
+- The answer is the nearest zone edge point, moved `offset` further:
+  - along (edge point - position), when the offset is positive, the position is inside the map
+    (`0071C4F0`) and the edge point is more than 1 away;
+  - otherwise along the zone's outward direction.
+- The mission frame hands the Lua host the map bounds at the avoid-zone load step, from the same
+  `Map` block and `004D5EDE` selection as the ship AI. The host builds the twelve records from them.
+- **Labelled substitutions:**
+  - the records are built at the avoid-zone load, not inside `004E6C00`;
+  - argument 0 goes through the host's `00888760` reader;
+  - with no records the image's outputs are unwritten stack; the host answers the position itself
+    and counts it `missing`.
+
+**What OFF does on USN02.** The neutral answer still reaches `NavigatorMoveToRange`. Alden enters
+`movetopos` at 29.75 s toward a point 6268 m away (step 600, heading target -0.1883). It is back in
+`attackmove` by step 890.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| USN02 9200/9000 | **exit 3.** One call, `found`, `missing=0`. Alden's `movetopos` target after 29.75 s moves to a point beyond the nearest map edge, so its step-600 `d32c` and heading target change, and its track and the fights it takes part in move after that. Nothing before 29.75 s changes |
+| USN01 3200/3000 | **exit 0.** No call: the mission does not end |
+| JM06 3200/3000 | **exit 0.** No call |
