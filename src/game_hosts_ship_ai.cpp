@@ -7776,13 +7776,14 @@ public:
             owner_.done("AutoTarget::set_fire_target", 0x00835860u);
             ++row_.fire_target_sets;
             ++owner_.summary.fire_target_sets;
-            return;
+        } else {
+            static_cast<void>(force);
+            owner_.record("AutoTarget::set_fire_target", 0x00835860u);
+            ctl_.fire_target = static_cast<bsp::NativeHandle>(
+                reinterpret_cast<std::uintptr_t>(entity));
+            ++row_.fire_target_sets;
+            ++owner_.summary.fire_target_sets;
         }
-        owner_.record("AutoTarget::set_fire_target", 0x00835860u);
-        ctl_.fire_target = static_cast<bsp::NativeHandle>(
-            reinterpret_cast<std::uintptr_t>(entity));
-        ++row_.fire_target_sets;
-        ++owner_.summary.fire_target_sets;
     }
     bool director_allow_move() override {
         const bsp::WeaponDirectorState defaults{};
