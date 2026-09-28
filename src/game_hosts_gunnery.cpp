@@ -2230,7 +2230,12 @@ struct GameGunneryHost::Impl {
     unsigned long long recon_group_unknown{0};
     unsigned long long recon_group_kind_ship{0};    // group units IsKindOf ship base
     unsigned long long recon_group_kind_plane{0};   // group units IsKindOf plane base
-    unsigned long long recon_convoy_members_seen{0};  // class 19h records a convoy pass would read
+    unsigned long long recon_convoy_members_seen{0};
+    // Packet cc9_convoy_detection_fold: 00805680's groups, computed but not placed
+    // in the triples (the LandConvoy is a scene entity, not a unit, in this host).
+    // [relation 0 own / 1 enemy / 2 neutral][group level 1 / 2].
+    unsigned long long recon_convoy_fold_groups[3][3]{};
+    unsigned long long recon_convoy_fold_members{0};  // class 19h records a convoy pass would read
     const ReconSlotTriples* recon_triples_for(int side) const {
         for (const ReconSlotTriples& t : recon_triples) {
             if (t.side == side) return &t;
@@ -4822,7 +4827,7 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
             }
         }
         // 00805490 over one relation array: the class-18h bucket it leaves.
-        const auto group = [&](std::map<int, std::vector<Rec>>& arr) {
+        const auto group = [&](std::map<int, std::vector<Rec>>& arr, int rel) {
             std::vector<Rec>& groups = arr[0x18];
             std::vector<std::vector<std::size_t>> members;
             for (const int cls : kSquadronMemberClasses) {
@@ -4850,11 +4855,32 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                 if (units.unit_is_kind_of(g.unit, bsp::kUnitGunneryKindPlaneBase)) ++recon_group_kind_plane;
             }
             if (groups.empty()) arr.erase(0x18);
-            // 00805680(B[19h], B[1Ah]): no convoy membership in this host.
+            // 00805680(B[19h], B[1Ah]), packet cc9_convoy_detection_fold: every member
+            // record with level >= 1 (008056B5) and a convoy at +738h joins that
+            // convoy's group record, whose level is the maximum of its members'
+            // (00805829..00805840). Counted only: the group's entity is the
+            // LandConvoy, which has no unit index here, so no triple can carry it.
+            {
+                std::map<std::string, int> convoys;
+                const auto members19 = arr.find(0x19);
+                if (members19 != arr.end()) {
+                    for (const Rec& m : members19->second) {
+                        if (m.level < 1) continue;
+                        const std::string& convoy = units.unit_land_convoy_738(m.unit);
+                        if (convoy.empty()) continue;
+                        int& lv = convoys[convoy];
+                        if (m.level > lv) lv = m.level;
+                        ++recon_convoy_fold_members;
+                    }
+                }
+                for (const auto& c : convoys) {
+                    if (c.second >= 1 && c.second <= 2) ++recon_convoy_fold_groups[rel][c.second];
+                }
+            }
         };
         if constexpr (kReconAggregatesBound) {
-            group(enemy);                                                     // step 8
-            group(neutral);                                                   // step 10
+            group(enemy, 1);                                                  // step 8
+            group(neutral, 2);                                                // step 10
         }
         // Step 6: triple 0 copies every own bucket BEFORE the own grouping.
         std::vector<int> walk(ids.begin(), ids.end());
@@ -4886,7 +4912,7 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
         }
         if constexpr (kReconAggregatesBound) {
             // Step 11: the own grouping, then triple 0 takes A[18h] and A[1Ah].
-            group(own);
+            group(own, 0);
             const auto found = own.find(0x18);
             if (found != own.end()) {
                 for (const Rec& r : found->second) {
@@ -9133,6 +9159,13 @@ void GameGunneryHost::report() {
                 host.recon_group_enemy_identified, host.recon_group_unknown,
                 host.recon_group_kind_ship, host.recon_group_kind_plane,
                 host.recon_convoy_members_seen);
+            host.log.notef("summary mission recon convoy fold members=%llu own_groups=%llu "
+                "enemy_blip=%llu enemy_identified=%llu neutral_blip=%llu neutral_identified=%llu "
+                "placed=0 (00805680, counted only: no LandConvoy unit, packet "
+                "cc9_convoy_detection_fold)", host.recon_convoy_fold_members,
+                host.recon_convoy_fold_groups[0][2], host.recon_convoy_fold_groups[1][1],
+                host.recon_convoy_fold_groups[1][2], host.recon_convoy_fold_groups[2][1],
+                host.recon_convoy_fold_groups[2][2]);
         }
         host.log.notef("summary mission recon sensor_pass passes=%llu observers=%llu "
             "targets=%llu forced=%llu no_table=%llu blip=%llu identified=%llu none=%llu "

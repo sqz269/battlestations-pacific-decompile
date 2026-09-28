@@ -1642,3 +1642,59 @@ object id (`resolve_target_00521ea0`).
 **Still open.** Plane rows hold the stored target, and their AutoTarget accepts it (`accept.true`).
 Whether the image's plane gunnery reads the director fire target is not read here. The plane
 packets own that.
+
+## 34. The convoy detection fold `00805680` (packet `cc9_convoy_detection_fold`, rank 6 of section 31, the convoy half)
+
+### 34.1 The image
+
+`00805680` is `__thiscall(slot, List* B19h, List* B1Ah)`, RET 8, body `00805680-00805864` (live
+decompile). It is the land twin of `00805490`, and `008073C0` calls it after the seven `00805490`
+calls, once per relation (`src/recon_slot_lists.cpp`). For each member record in `B[19h]` whose level
+(`+0Ch`) is above 0 and whose unit carries a convoy at `+738h`:
+1. **It finds the convoy's group record** in this order:
+   - the carry-over list `slot+F4Ch`, where the level is reset to 0 and the record is spliced out;
+   - otherwise `B[1Ah]`;
+   - otherwise a new `1Ch` record. That record gets vtable `00D08E78`, `+4h` the convoy, `+8h` the
+     convoy's sensor category (`[convoy+1E4h]->vtable[1]()`) and `+0Ch` level 0. It is appended to
+     `B[1Ah]`, and an observer pair is registered.
+2. **It appends the member** to the group's member list (`+10h`/`+14h`/`+18h`).
+3. **It sets the group level** to the maximum of the members' levels.
+
+The members stay in `B[19h]`. The group record's entity is the `LandConvoy` (class `1Ah`).
+
+### 34.2 What the host can hold
+
+- lua5's convoy roster (`974282ec7`, docs/LAND_AND_STRUCTURES.md) gives each member its convoy.
+  `GameUnitsHost::unit_land_convoy_738` returns it by name.
+- **The `LandConvoy` itself is not a unit here.** JM05 logs it as a scene marker (for example
+  `SecondaryLandConvoy 01 class=LandConvoy id=50009`). LAND_AND_STRUCTURES records `004F2700` as
+  not a unit creator.
+- The recon triples hold unit indices. So a group record has no slot, like section 22's squadron
+  group-level publish.
+- JM05's script never queries a convoy's detection. It only kills and drives the convoy
+  (`jm05.lua` 2656 and 2839, `commandhelpers.lua` 12380-12448).
+
+### 34.3 The fold, counted (no switch; nothing is placed)
+
+The recon pass's `group` step now runs `00805680`'s fold over `B[19h]` by
+`unit_land_convoy_738` and counts the groups by relation and level. The summary line is
+`summary mission recon convoy fold members= own_groups= enemy_blip= enemy_identified=
+neutral_blip= neutral_identified= placed=0`. It is gameplay-identical to the tree before it
+(`local\g7cv_jm05.log` against `local\g7cf_jm05.log`, `pair_diff` exit 1).
+
+| row | members folded | own groups | enemy groups (blip / identified) | neutral groups |
+| --- | --- | --- | --- | --- |
+| JM05 3200/3000 | 255 | 102 (two convoys, level 2, 51 passes) | 0 / 0 | 0 / 0 |
+| USN01 3200/3000 | 0 | 0 | 0 / 0 | 0 / 0 |
+| USN04 4700/4500 | 0 | 0 | 0 / 0 | 0 / 0 |
+
+**Which levels would change on JM05:** none that a target pick reads.
+- The Japanese side never detects a convoy member within 3000 frames. Its 510 member records all sit
+  at level 0, so it builds no convoy group.
+- The US side builds its two own convoys at level 2. They would join triple 0, its own list, which
+  no AutoTarget reads.
+
+**Verdict: stays a record.** There is nothing to pair: placing the groups needs a `LandConvoy` entry
+in the units host's index space, which is the units host's work. With one, JM05 is still predicted
+identity for targeting within 3000 frames. A longer JM05 run, where the Japanese side spots a
+convoy, is where the group level would first matter.
