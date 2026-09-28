@@ -130,6 +130,11 @@ inline constexpr bool kUnitRadiusBound = true;
 // (009E6170), rates its weapons against this ship through 0095EB40 (009E6240)
 // and steers away by the weighted sum. False: no candidates, as before.
 inline constexpr bool kShipAiTrafficBound = true;
+// Packet cc9_autotarget_recon_candidates, docs/AUTOTARGET_RECON_CANDIDATES.md.
+// True: the automatic target scan 009F5D30 walks the owner party's recon enemy
+// triple ([008053C0(party)]+0DE8h: identified contacts only, in bucket order).
+// False: every live unit of another party, detected or not, in unit order.
+inline constexpr bool kAutoTargetReconCandidatesBound = false;
 // Packet cc9_target_release, docs/SHIP_AI_TARGET_RELEASE.md. True: a unit whose
 // damage death has happened reads as torn down at +5Dh / +60h (00926C80 sets
 // +60h, the 009273A0 flush's 00926390 sets +5Dh), so 009F3240 takes its hold arm
@@ -945,6 +950,9 @@ struct GameShipAiHost::Impl {
         done("WeaponDirector::store_fire_target", 0x00836240u);
     }
     unsigned long long script_fire_target_releases{0};
+    unsigned long long autotarget_recon_scans{0};       // cc9_autotarget_recon_candidates
+    unsigned long long autotarget_recon_candidates{0};
+    unsigned long long autotarget_recon_unbuilt{0};
     GameShipAiSummary summary{};
     unsigned long long steps{0};
     bool logged_position{false};
@@ -7673,13 +7681,36 @@ public:
         // party and the intrusive chain at slot+0DE8h. Nothing in this process
         // fills that chain, so the executable hands the recovered scan the
         // created instances of the opposing party and records the producer.
-        owner_.record("AutoTarget::party_recon_slot", 0x008053c0u);
         owner_.record_slot("AutoTarget::candidate_owner_vtable140", "00cfc3d0+vtable140");
         const GameUnitRow* self = owner_.units.unit_row(index_);
         std::vector<bsp::AutoTargetCandidate> candidates;
         std::vector<std::size_t> candidate_index;
+        // kAutoTargetReconCandidatesBound: 009F5D3A 008053C0(party) then 009F5D4E
+        // [slot+0DE8h], the enemy triple 008073C0 publishes (level 2 only, class
+        // buckets, rebuilt every 3.0 s), walked in its own order. The gunnery host
+        // builds that triple (kReconTeamListsBound, recon_triple_units(side, 1)).
+        std::vector<std::size_t> order;
+        bool from_recon = false;
+        if (kAutoTargetReconCandidatesBound && self != nullptr && owner_.gunnery != nullptr) {
+            // Before the slot's first rebuild the chain is empty (009F5D54 JE),
+            // so the scan has no candidate at all.
+            if (!owner_.gunnery->recon_triple_units(self->party, 1, order)) {
+                order.clear();
+                ++owner_.autotarget_recon_unbuilt;
+            }
+            from_recon = true;
+        }
+        if (from_recon) {
+            owner_.done("AutoTarget::party_recon_slot", 0x008053c0u);
+            ++owner_.autotarget_recon_scans;
+            owner_.autotarget_recon_candidates += order.size();
+        } else {
+            owner_.record("AutoTarget::party_recon_slot", 0x008053c0u);
+            order.clear();
+            for (std::size_t other = 0; other < owner_.units.count(); ++other) order.push_back(other);
+        }
         if (self != nullptr) {
-            for (std::size_t other = 0; other < owner_.units.count(); ++other) {
+            for (const std::size_t other : order) {
                 if (other == index_) continue;
                 const GameUnitRow* row = owner_.units.unit_row(other);
                 if (row == nullptr || !row->active || row->party == self->party) continue;
@@ -8729,6 +8760,13 @@ void GameShipAiHost::report() {
         "(0089A8B0 / 00835860 / 00836240, packet cc9_usn02_deruyter_fire)",
         kScriptFireTargetBound ? 1 : 0, host.script_fire_target_sets,
         host.script_fire_target_releases);
+    host.log.notef("summary mission ship ai autotarget recon candidates bound=%d scans=%llu "
+        "mean_candidates=%.2f unbuilt=%llu (009F5D30 over [008053C0]+0DE8h, packet "
+        "cc9_autotarget_recon_candidates)", kAutoTargetReconCandidatesBound ? 1 : 0,
+        host.autotarget_recon_scans,
+        host.autotarget_recon_scans ? static_cast<double>(host.autotarget_recon_candidates)
+            / static_cast<double>(host.autotarget_recon_scans) : 0.0,
+        host.autotarget_recon_unbuilt);
     host.log.notef("summary mission ship ai director fire target bound=%d command_requests=%llu "
         "refusals=%llu changes=%llu (00835860 -> 00836240, packet "
         "cc9_weapon_director_fire_target)", kWeaponDirectorFireTargetBound ? 1 : 0,
