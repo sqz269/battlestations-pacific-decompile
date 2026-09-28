@@ -570,3 +570,74 @@ Calls are summed over the eight logs.
   largest count.
 
 **Context** at the time of writing: about 60% of this worker's window. A handoff is due at about 80%.
+
+## 17. Rank 2 read: the AutoTarget's commanded-target adoption is exact on these missions (packet `cc9_autotarget_command_adoption`, read)
+
+`009F5DA0`'s middle, from the listing:
+
+```
+009f5e37: cmp byte [ecx+23Ch],0 ; je 009f5e66        ; the director's target lock
+009f5e4b: call 0x465080 ; 009f5e59: call 0x71d6d0   ; attackmove (00E08F78) accepts the current target?
+009f5e62: mov edi,ebx ; jmp 009f5ebb                 ;   yes: keep it, skip the scan
+009f5e69: cmp dword [edx+30h],2 ; je 009f5e7c        ; director mode 2 (override) keeps the retained score
+009f5e77: movss [esi+3Ch],FLT_MAX                    ;   otherwise it resets it
+009f5ec4: call 0x521ea0 (director+18Ch) ; cmp edi,eax ; je return   ; already on it
+```
+
+- **`director+30h` is the command mode** (CRUISE_COMMAND): 1 is the queued slots and 2 is the
+  override descriptor at `+18Ch`.
+  - The scan `C7 ?? 30 02 00 00 00` finds one writer of mode 2 in director code:
+    `0071E8FC` in `0071E7F0` `BSP_WeaponDirector_SetOverrideCommand`. Its callers are
+    `00721890` and `00721A40`.
+  - The host reaches that as `WeaponDirector::queue_command` (a record). **No reference h log calls
+    it**, on USN02, USN04, E2, USN01, USN13, JM06, JM08 or LOMP06.
+  - So mode 2 never occurs on these missions, in the image either (as far as the host routes the
+    same messages). `director_command_state()` answering 0 has the image's effect: the retained
+    score resets on every think.
+- **`00521EA0(director+18Ch)` resolves the override descriptor.** With no override set it is a fresh
+  director's empty descriptor, so it resolves no entity. The host's null is the image's answer.
+- **`0071D6D0` runs only when the target is locked** (`director+23Ch`, set by the script's
+  SetFireTarget). The host keeps a locked target in `scan_party_list` (`kScriptFireTargetBound`,
+  `keep_locked`).
+  - The commands host already has the concrete `0071D6D0` (`WeaponDirector::command_allowed`).
+  - The AutoTarget stand-in answers false and falls through to the scan, which keeps the locked
+    target anyway.
+  - Routing the stand-in to the concrete body would change the path, not the pick. It is left as a
+    labelled record.
+- **The AutoTarget's own attack-move issue** (`0071D980`, `issue_move_flag`) is recorded
+  `attackmove_issues=0` on every reference h mission, so it cannot set mode 2 either.
+
+**Verdict:** rank 2 is exact on the reference missions, and nothing is bound. It becomes live only
+on a mission that sends override commands (`0071E7F0` reached), which the ranking should re-check
+whenever `queue_command` shows calls.
+
+## 18. Handoff (cc9-gunnery4, 2026-09-29, at about 75% context)
+
+**Where this worker stopped.** Everything is committed on `agent/cc9-gunnery4`.
+- Section 16's ranks 1 and 2 are done:
+  - Rank 1 is `kAutoTargetReconCandidatesBound` ON, identity on all five paired missions
+    (AUTOTARGET_RECON_CANDIDATES).
+  - Rank 2 is read and exact (section 17).
+- **The next item is rank 3:** the director's target observation `00694A60` (3135 calls) and
+  refusal `0071D74A` (2078; the host answers a constant).
+
+**How to start rank 3.**
+- `WeaponDirector::observe_target` and `target_refuses_commands` are records in
+  `src/game_hosts_commands.cpp` (the refusal at about line 768).
+- Read `0071D74A` from the listing: what makes a target refuse commands (it answers for the
+  command's target in `008358D0`'s path).
+- Read `00694A60`: the observer pair that releases a dead target.
+- Count, per mission, how often the refusal would differ from the host's constant, using a
+  diagnostic, before binding.
+
+**Tools this worker left in its tree** (`local\`):
+- `g4_rank.py`: the section-16 census of non-concrete gunnery rows over logs.
+- `g4_standins.py`: what each stand-in answers.
+- `g4_gunrows.py`: per-category shot and rise deltas between two logs.
+- `g4_aim_check.py`: an independent `008FB8D0` port for the torpedo aim.
+- `g4_*_queue.ps1`: the run queues. The exe and the log prefix are parameters.
+
+**Standing facts for the next reader.**
+- The reference is h (docs/GAME_EXECUTABLE.md 2026-09-29 h, main `d6fc6ee78`).
+- USN02's 29.75 s failure is the image's own for an idle player (TORPEDO_SPREAD_AIM).
+- JM06 and LOMP06 moved again with `kSubmarineDiveTeleportBound`, after h.
