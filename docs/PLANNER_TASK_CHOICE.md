@@ -1189,6 +1189,67 @@ The units host owns the director. The predictions to make then are on USN10 and 
 CAUTIOUSATTACK arm fires (section 11.4): the leaders would follow a three-leg danger-avoiding path
 before the direct movetos.
 
+## 16. Handoff: `cc9_submarine_ai_states` (read started, nothing bound)
+
+Worker cc9-ships4, near its context limit. This section starts from lua4's read,
+docs/SUBMARINE_MODEL.md section 16, and adds what this worker read. Nothing is committed in code.
+
+**The three vtables are one task: the ship brain's `sub_attack` state and its two sub-states.**
+- `009E4F90` is called from `BSP_ShipAi_BrainConstruct` `009F39C0`, right after
+  `BSP_ShipAi_AttackMoveConstruct`, so every ship brain has it.
+- It installs:
+  - the parent, vtable `00D218C0` then `00D2195C`;
+  - "approach", vtable `00D218F0` at parent+34h;
+  - "fire", vtable `00D21920` at parent+58h.
+- It registers them with `BSP_BotStateRegistry_Add("approach", +34h)` and `("fire", +58h)` (the
+  string at `00CE6798`). It sets the tick interval `+C8h` = 1.0 (`00D7A24C`) and the first countdown
+  `+CCh` = `-UniformFloat(0, 1)`, and current = approach (`+D4h`).
+- The host already names the parent: `kAiOffsetSubAttack` = `0x217C` (brain+2124h) in
+  `src/game_hosts_ship_ai.cpp`, with `step = 0`, unread.
+
+**The parent tick `009EAA90`** (`00D21968`, `vt[+0Ch]`):
+
+```
+if ([brain+B20h] != 0) {          ; a target
+    009EAA10(dt);                 ; the switch
+    current->vt[+0Ch](dt);        ; [this+D4h]
+}
+009EAA10: +CCh -= dt; on expiry +CCh += +C8h (1.0), then
+    current == approach (+34h) and 009E9D90() -> BSP_StateMachine_SetCurrentState(+58h)   ; fire
+    current == fire               and 009EA9C0() -> SetCurrentState(+34h)                  ; approach
+```
+
+**"approach" `009E4B90`** calls `BSP_SubmarineUnit_SetDepthLevel(2)`. With a target at
+`[brain+B20h]`, it stores `009E4A60()` at `this+20h` and calls
+`BSP_ShipAi_SetNavigationGoal(&{target+FCh, target+104h}, 0, 1)`. Otherwise it calls
+`BSP_ShipAi_HoldHeadingAndStop`.
+
+**"fire" `009E9EB0`** is the depth decision tick. It has no Ghidra function: body
+`009E9EB0-009EA9B7`, per lua4. It reads `brain+AB4h` and `brain+AB0h` (docs/SUBMARINE_MODEL.md
+section 16 lists its `SetDepthLevel` and periscope sites). **Not read here.**
+
+**Unread predicates:** `009E9D90` (approach -> fire), `009EA9C0` (fire -> approach) and `009E4A60`.
+
+**Why the host never runs it, the real entry condition:**
+- The brain's command-to-state map sends `attackmove` / `artillery` to `sub_attack` or
+  `kamikaze_attack` only when `[ai+0B0Ch]` (brain+AB4h) is non-null, deciding through `00779AA0`
+  (`009F3D73`; `include/bsp/attack_commands.hpp` `attack_command_bot_slot_offset`).
+- The host has no producer for brain+AB4h, so it always takes `attackmove`
+  (`src/game_hosts_ship_ai.cpp`, the `ShipAiState::attack_subject_00779aa0` record).
+- The census confirms it. JM06 3200/3000 (`local\sb_probe_jm06.log` in cc9-ships4): the Narwhal
+  has 283 `attackmove` steps, PlayerSub 02 has 174, PlayerSub 03 has 121, and no step anywhere is
+  `sub_attack`. The TypeB boats stay in `stop`. LOMP06 1200/1000 likewise.
+- **So the packet's first step is brain+AB4h's producer**, the attack subject that `009F3D73`
+  tests, together with `00779AA0`. The fire tick reads the same field. Binding only the three
+  state bodies would change nothing on JM06 or LOMP06.
+
+**Suggested order for the next worker:**
+1. Read brain+AB4h / +AB0h's writers (scan disp32 `B4 0A 00 00` / `B0 0A 00 00` with
+   `--limit 4000` in the ship-AI ranges) and `00779AA0`.
+2. Then read `009E9D90`, `009EA9C0`, `009E4A60` and `009E9EB0`.
+3. Bind the selector and the three states OFF in the ship-AI host, with predictions on JM06
+   3200/3000 and LOMP06 1200/1000, and identity on USN02 and USN04 (no submarines).
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
