@@ -307,6 +307,10 @@ public:
     // 007D9C80 rotates both into world. False (nothing written) for a slot that
     // is not a seeded plane.
     bool set_plane_forward_speed_007d9e80(std::size_t unit_index, float speed);
+    // Packet cc9_set_submarine_depth_level. 008528B0 on a seeded submarine row:
+    // the level clamped to 0..3 (1 for a kamikaze class, LABELLED false here),
+    // stored at +1268h only when it differs (0085290D). True when it was stored.
+    bool set_submarine_depth_level_008528b0(std::size_t unit_index, int requested);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
     // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The

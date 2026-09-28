@@ -327,6 +327,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_is_class_changed.
     const bool class_changed_row = kLuaIsClassChangedBound
         && dispatch_row.address == 0x008cc4b0u;
+    // Packet cc9_set_submarine_depth_level.
+    const bool sub_depth_row = kLuaSetSubmarineDepthLevelBound
+        && dispatch_row.address == 0x00893f40u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -450,6 +453,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (sub_depth_row) {
+        if (!host->error_replay()) host->run_set_submarine_depth_level_00893f40(state, argc);
+        return 0;
     }
     if (class_changed_row && !host->error_replay()) {
         return host->run_is_class_changed_008cc4b0(state, argc);
@@ -4468,6 +4475,36 @@ int GameMissionLuaHost::run_is_class_changed_008cc4b0(lua_State* state, int argu
     return 1;
 }
 
+// Packet cc9_set_submarine_depth_level. 00893F40 SetSubmarineDepthLevel(entity, level):
+// argument 0 through 00888AA0, argument 1 as an integer; a request for 1 becomes 0 when
+// +122Ch (periscopeState) is 2 or +1214h (the periscope node) is null; then 008528B0.
+// Returns no value.
+// SUBSTITUTIONS (labelled): periscopeState is never 2 here (no periscope damage is
+// modelled) and +1214h is null only for a kamikaze class, which reads false, so a
+// request for 1 passes; an entity with no units-host slot is counted unresolved.
+int GameMissionLuaHost::run_set_submarine_depth_level_00893f40(lua_State* state,
+                                                              int argument_count) {
+    ++summary_.sub_depth_calls;
+    const int level = argument_count >= 2 ? static_cast<int>(::lua_tonumber(state, 2)) : 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.sub_depth_unresolved;
+        log_.notef("  SetSubmarineDepthLevel 00893f40: entity id %d has no units-host slot "
+            "(packet cc9_set_submarine_depth_level)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    const bool stored = units->set_submarine_depth_level_008528b0(index, level);
+    if (stored) ++summary_.sub_depth_stored;
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetSubmarineDepthLevel 00893f40: \"%s\" level=%d stored=%d now=%d (packet "
+        "cc9_set_submarine_depth_level)", row != nullptr ? row->name.c_str() : "?", level,
+        stored ? 1 : 0, row != nullptr ? static_cast<int>(row->submarine_depth_level) : -1);
+    log_.implemented("MissionLuaNative::SetSubmarineDepthLevel", "00893f40");
+    return 0;
+}
+
 // Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
 // 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
 // vtable[114h] director exists, 0071E050(flag) -> director+221h.
@@ -5825,6 +5862,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "(008CC4B0, registry+2010h, packet cc9_is_class_changed)",
         kLuaIsClassChangedBound ? 1 : 0, summary_.class_changed_calls,
         summary_.class_changed_true);
+    log_.notef("summary mission script submarine depth set bound=%d calls=%llu stored=%llu "
+        "unresolved=%llu (00893F40 -> 008528B0, packet cc9_set_submarine_depth_level)",
+        kLuaSetSubmarineDepthLevelBound ? 1 : 0, summary_.sub_depth_calls,
+        summary_.sub_depth_stored, summary_.sub_depth_unresolved);
     log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
         "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
         kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,
