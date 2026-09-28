@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_planner_close_attack_choice",
+  "doc": "docs/PLANNER_TASK_CHOICE.md",
+  "code_changed": true,
+  "switch": {
+    "kAiPlannerSlotKindsBound": "ON after pairs (committed OFF at 80fab5bd4)"
+  },
+  "addresses": {
+    "00A15A70": "slots: 00A15C31 Defend->[ESI], 00A15C61 Attack->+4h, 00A15C92 Sell->+8h, 00A15CC3 Capture->+0Ch; mode 4 00A15ADA Duel->+10h",
+    "00A181A0": "claim: slot 0 (Defend) or slot 3 (Capture)",
+    "00A1A720": "Capture order: grouped target -> 00A2CBD0; else DEFENDPOSITION (00A2C600) or PATROLTO",
+    "00A02020": "moveto every command tick unless within 80 m (00D21530 = 6400.0 double); squadron test !007EDA90",
+    "007EDA90": "BSP_PlaneSquadron_LeaderIsUncommittedKamikaze: class 17h leader with +C24h clear"
+  },
+  "cases": {
+    "USN02 168.8 s": "image Capture (slot 3) reaches 00A2CBD0 for a grouped enemy, so MOVETOATTACK then CLOSEATTACK is the image's outcome too; which enemy group is decided by the unreconstructed Capture scoring",
+    "USN13 player squadrons": "repeated movetos are the image's (00A02020 each tick, no player or carrier exemption); the destination is Capture's choice"
+  },
+  "finding": "host slot table permuted (fixed, identity); every host planner runs the Siege shape where the image runs the Defend 00A28A60 / Capture 00A29FD0 thinks (not reconstructed)",
+  "pairs": {
+    "USN02": "exit 1",
+    "USN13": "exit 1",
+    "USN04": "exit 1"
+  },
+  "follow_up": "cc9_planner_defend_capture_thinks: reconstruct 00A28A60-00A29E2A and 00A29FD0-00A2B7EB and bind them for kinds Defend and Capture",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}

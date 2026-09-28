@@ -333,6 +333,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_air_base_slot_count.
     const bool slot_count_row = kLuaSetAirBaseSlotCountBound
         && dispatch_row.address == 0x008963e0u;
+    // Packet cc9_submarine_air.
+    const bool unlimited_air_row = kSubmarineAirBound
+        && dispatch_row.address == 0x00893c00u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -362,7 +365,7 @@ int binding_trampoline(lua_State* state) {
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
-        || slot_count_row
+        || slot_count_row || unlimited_air_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -458,6 +461,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (unlimited_air_row) {
+        if (!host->error_replay()) host->run_set_unlimited_air_00893c00(state, argc);
+        return 0;
     }
     if (slot_count_row) {
         if (!host->error_replay()) host->run_set_air_base_slot_count_008963e0(state, argc);
@@ -731,6 +738,8 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.sub_up_down_stop_time = number_or("UpDownStopTime", 5.0f);
             row.sub_up_speed = number_or("UpSpeed", 1.2f);
             row.sub_down_speed = number_or("DownSpeed", 1.2f);
+            row.sub_air_run_out_time = number_or("AirRunOutTime", 120.0f);
+            row.sub_air_reload_time = number_or("AirReloadTime", 5.0f);
             // 007D20C6 scales Accel in place by tuning+31Ch * tuning+320h when
             // the second is above 1.0 and leaves it raw otherwise
             // (src/plane_class_fields.cpp:207-219). The raw value is read here:
@@ -4580,6 +4589,31 @@ int GameMissionLuaHost::run_set_air_base_slot_count_008963e0(lua_State* state,
     return 0;
 }
 
+// Packet cc9_submarine_air. 00893C00 SetUnlimitedAirSupply(entity, flag): argument 0
+// through 00888AA0, argument 1 through 00B66250 (lua_toboolean), stored at unit+1280h
+// with no class test. Returns no value.
+// SUBSTITUTION (labelled): an entity with no units-host slot, or a slot that is not a
+// seeded submarine, is counted but stores nothing (the image writes the byte anyway).
+int GameMissionLuaHost::run_set_unlimited_air_00893c00(lua_State* state, int argument_count) {
+    ++summary_.unlimited_air_calls;
+    const bool flag = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_unlimited_air_00893c00(static_cast<std::size_t>(id - 1), flag);
+    }
+    if (stored) ++summary_.unlimited_air_stored;
+    const GameUnitRow* row = (units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count())
+        ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SetUnlimitedAirSupply 00893c00: \"%s\" flag=%d stored=%d (packet "
+        "cc9_submarine_air)", row != nullptr ? row->name.c_str() : "?", flag ? 1 : 0,
+        stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SetUnlimitedAirSupply", "00893c00");
+    return 0;
+}
+
 // Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
 // 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
 // vtable[114h] director exists, 0071E050(flag) -> director+221h.
@@ -5945,6 +5979,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (008963E0 -> 006C7E20, packet cc9_set_air_base_slot_count)",
         kLuaSetAirBaseSlotCountBound ? 1 : 0, summary_.slot_count_calls,
         summary_.slot_count_resized, summary_.slot_count_unresolved);
+    log_.notef("summary mission script unlimited air bound=%d calls=%llu stored=%llu "
+        "(00893C00 -> unit+1280h, packet cc9_submarine_air)", kSubmarineAirBound ? 1 : 0,
+        summary_.unlimited_air_calls, summary_.unlimited_air_stored);
     log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
         "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
         kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,

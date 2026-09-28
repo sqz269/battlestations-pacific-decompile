@@ -358,6 +358,13 @@ struct GameUnitSlot {
     float sub_pitch_398{0.0f};   // controller+398h
     unsigned long long sub_dive_steps{0};
     unsigned long long sub_trace_counter{0};
+    // Packet cc9_submarine_air: +127Ch air, +1281h needAir, +1280h unlimitedAir,
+    // +1284h the crush accumulator, and the class rates +838h/+83Ch.
+    bsp::SubmarineAirState sub_air{};
+    bsp::SubmarineAirRates sub_air_rates{};
+    float sub_crush_1284{0.0f};
+    unsigned long long sub_crush_pulses{0};
+    bool sub_drowned{false};
     // The controller's body angular velocity, ctl+48h pitch, +4Ch yaw, +50h
     // roll. 007DA710 writes these three and 007D9C80 rotates them into world
     // for 0085E4D0 to turn the pose with; plane_angular_velocity.hpp records
@@ -5939,6 +5946,7 @@ public:
         const int level = slot_.row.submarine_depth_level;
         band.commanded = static_cast<bsp::SubmarineDepthBand>(level < 0 ? 0 : (level > 3 ? 3 : level));
         band.dead = dead;
+        band.need_air = kSubmarineAirBound && slot_.sub_air.need_air;  // +1281h
         in.effective = bsp::submarine_effective_depth_band_00936dc0(band);
         const bsp::SubmarineDepthTarget target = bsp::submarine_depth_target_00936dc0(
             slot_.sub_bands[static_cast<int>(in.effective)], 0.0f, false);
@@ -5974,7 +5982,54 @@ public:
         owner_.done("SubmarineController::step_depth_physics", 0x00936dc0u);
         ++slot_.sub_dive_steps;
         trace_submarine_depth(&r);
+        if (kSubmarineAirBound) run_submarine_air_and_crush(dt, dead);
         return bsp::OceanVec3{};
+    }
+
+    // Packet cc9_submarine_air. 00855420's tail: 00855250 (0085591C) then 008551C0
+    // (0085592B), both on the unit with the step's dt.
+    // SUBSTITUTIONS (labelled): they run here, after the force callback of the same
+    // step, not after 00825F20's motion update; the warnings 00977050/009771E0/
+    // 00977370 are logged, not reported; the settings are the installed
+    // shipglobals.lua values (SubmarineDepthSettings' defaults).
+    void run_submarine_air_and_crush(float dt, bool dead) {
+        const bsp::SubmarineDepthSettings settings{};
+        const float hull_y = slot_.motion.position[1];
+        const bsp::SubmarineAirStepResult air = bsp::submarine_step_air_00855250(
+            slot_.sub_air, dt, hull_y, slot_.sub_bands[1], slot_.sub_air_rates, settings, dead);
+        const bool was_need = slot_.sub_air.need_air;
+        slot_.sub_air = air.state;
+        owner_.done("SubmarineUnit::air_step", 0x00855250u);
+        if (air.warning != bsp::SubmarineAirWarning::none || was_need != air.state.need_air) {
+            owner_.log.notef("submarine air: unit=%s air=%.3f need_air=%d warning=%s y=%.2f "
+                "(packet cc9_submarine_air)", slot_.row.name.c_str(),
+                static_cast<double>(air.state.air), air.state.need_air ? 1 : 0,
+                air.warning == bsp::SubmarineAirWarning::critical ? "critical"
+                    : air.warning == bsp::SubmarineAirWarning::low ? "low" : "none",
+                static_cast<double>(hull_y));
+        }
+        if (air.drowned && !slot_.sub_drowned && owner_.gunnery != nullptr) {
+            // 008553A1..008553B8: vtable[70h](1), 0077D1A0 -> 00926C80.
+            slot_.sub_drowned = true;
+            owner_.gunnery->kill_unit_00926d90(slot_.process_index, 1);
+            owner_.log.notef("submarine air: unit=%s drowned (vtable[70h](1), packet "
+                "cc9_submarine_air)", slot_.row.name.c_str());
+        }
+        const bsp::SubmarineCrushStepResult crush = bsp::submarine_step_crush_008551c0(
+            slot_.sub_crush_1284, dt, hull_y, settings);
+        slot_.sub_crush_1284 = crush.accumulator;
+        owner_.done("SubmarineUnit::crush_step", 0x008551c0u);
+        if (crush.damage > 0.0f && owner_.gunnery != nullptr) {
+            // vtable[1ACh] of 00D0BF80 is 0095DA00 (the dword at 00D0C12C).
+            owner_.gunnery->apply_script_damage_0095da00(slot_.process_index, crush.damage);
+            ++slot_.sub_crush_pulses;
+            if (slot_.sub_crush_pulses <= 3 || (slot_.sub_crush_pulses % 30u) == 0u) {
+                owner_.log.notef("submarine crush: unit=%s y=%.2f damage=%.2f pulses=%llu "
+                    "(008551C0 -> 0095DA00, packet cc9_submarine_air)", slot_.row.name.c_str(),
+                    static_cast<double>(hull_y), static_cast<double>(crush.damage),
+                    slot_.sub_crush_pulses);
+            }
+        }
     }
 
     // One line per submarine every 200 force steps, in both switch states, so a
@@ -5983,14 +6038,15 @@ public:
         ++slot_.sub_trace_counter;
         if ((slot_.sub_trace_counter % 200u) != 1u) return;
         owner_.log.notef("submarine depth trace: unit=%s step=%llu level=%d y=%.2f vy=%.3f "
-            "sink=%.3f pitch=%.4f rate=%.3f dir=%d bound=%d (packet cc9_submarine_dive)",
+            "sink=%.3f pitch=%.4f rate=%.3f dir=%d air=%.3f need=%d bound=%d (packet cc9_submarine_dive)",
             slot_.row.name.c_str(), slot_.sub_trace_counter,
             static_cast<int>(slot_.row.submarine_depth_level),
             static_cast<double>(slot_.motion.position[1]),
             static_cast<double>(slot_.motion.linear_velocity.y),
             static_cast<double>(slot_.sub_sink_1270), static_cast<double>(slot_.sub_pitch_398),
             r != nullptr ? static_cast<double>(r->commanded_rate) : 0.0,
-            r != nullptr ? r->direction : 0, kSubmarineDiveBound ? 1 : 0);
+            r != nullptr ? r->direction : 0, static_cast<double>(slot_.sub_air.air),
+            slot_.sub_air.need_air ? 1 : 0, kSubmarineDiveBound ? 1 : 0);
     }
 
     // 00937622, 00937440's last call. 009329C0 is slot 0 of the controller vtable
@@ -7876,17 +7932,22 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 slot->sub_down_speed = lua_row.sub_down_speed;
                 slot->sub_stop_time = lua_row.sub_up_down_stop_time;
                 slot->sub_accel = lua_row.sub_up_down_accel;
+                slot->sub_air_rates.run_out_time = lua_row.sub_air_run_out_time;
+                slot->sub_air_rates.reload_time = lua_row.sub_air_reload_time;
                 slot->sub_seed_126c = true;
                 slot->sub_sink_1270 = 0.0f;
                 slot->sub_dive_ready = true;
                 host.log.notef("submarine dive bands: unit=%s bands=(%.1f %.1f %.1f %.1f) "
-                    "up=%.2f down=%.2f stop=%.2f accel=%.2f bound=%d (packet cc9_submarine_dive)",
+                    "up=%.2f down=%.2f stop=%.2f accel=%.2f air=%.0f/%.0f bound=%d (packet cc9_submarine_dive)",
                     row.name.c_str(), static_cast<double>(bands[0]),
                     static_cast<double>(bands[1]), static_cast<double>(bands[2]),
                     static_cast<double>(bands[3]), static_cast<double>(slot->sub_up_speed),
                     static_cast<double>(slot->sub_down_speed),
                     static_cast<double>(slot->sub_stop_time),
-                    static_cast<double>(slot->sub_accel), kSubmarineDiveBound ? 1 : 0);
+                    static_cast<double>(slot->sub_accel),
+                    static_cast<double>(slot->sub_air_rates.run_out_time),
+                    static_cast<double>(slot->sub_air_rates.reload_time),
+                    kSubmarineDiveBound ? 1 : 0);
             }
             row.submarine_depth_level = 0;
             if (entity.dive_present) row.submarine_depth_level = entity.dive_level;
@@ -8348,6 +8409,17 @@ bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, i
     if (row.submarine_depth_level == level) return false;
     row.submarine_depth_level = level;
     host.record("SubmarineUnit::depth_message_a2", 0x0077c7b0u);
+    return true;
+}
+
+// Packet cc9_submarine_air. 00893C00's store at unit+1280h.
+bool GameUnitsHost::set_unlimited_air_00893c00(std::size_t unit_index, bool flag) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.sub_dive_ready) return false;
+    slot.sub_air.unlimited_air = flag;
+    host.done("SubmarineUnit::set_unlimited_air", 0x00893c00u);
     return true;
 }
 

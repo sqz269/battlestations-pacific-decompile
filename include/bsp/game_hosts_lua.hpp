@@ -236,6 +236,12 @@ inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held
 // run_set_air_base_slot_count_008963e0. False: unimplemented.
 inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, one recorded miss (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
+// SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
+// (00893C00). Routed together with the air model: under kSubmarineAirBound
+// (bsp/game_hosts_units.hpp) the row reaches GameUnitsHost::set_unlimited_air_00893c00;
+// otherwise it stays unimplemented.
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -327,6 +333,8 @@ struct GameVehicleClassRow {
     float sub_up_down_stop_time{5.0f};  // class+82Ch UpDownStopTime
     float sub_up_speed{1.2f};           // class+830h UpSpeed
     float sub_down_speed{1.2f};         // class+834h DownSpeed
+    float sub_air_run_out_time{120.0f};  // class+838h AirRunOutTime (packet cc9_submarine_air)
+    float sub_air_reload_time{5.0f};     // class+83Ch AirReloadTime
     // The four the thrust and drag accelerations are built from. 007C4990 makes
     // the drag coefficient desc+50Ch out of two of them, Accel / MaxSpd^2, which
     // is what puts a plane's equilibrium airspeed exactly on MaxSpd.
@@ -496,6 +504,8 @@ struct GameMissionLuaSummary {
     unsigned long long slot_count_calls{0};
     unsigned long long slot_count_resized{0};
     unsigned long long slot_count_unresolved{0};
+    unsigned long long unlimited_air_calls{0};
+    unsigned long long unlimited_air_stored{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -985,6 +995,8 @@ public:
     int run_set_submarine_depth_level_00893f40(lua_State* state, int argument_count);
     // Packet cc9_set_air_base_slot_count, under kLuaSetAirBaseSlotCountBound.
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
+    // Packet cc9_submarine_air, under kSubmarineAirBound.
+    int run_set_unlimited_air_00893c00(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

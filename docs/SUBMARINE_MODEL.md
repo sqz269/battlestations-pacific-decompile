@@ -770,3 +770,67 @@ surface escorts now fire at different targets. No single hit is attributed.
 - The ring writes at `+844h`/`+848h`.
 - `needAir` and the air model, and the catapult surfacing.
 - The ship-AI depth callers.
+
+## 13. Air and crush in the host (packet `cc9_submarine_air`, `kSubmarineAirBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. With the dive law ON (section 12) boats stay under water. So
+section 12's `needAir` substitution and the missing crush model now bear on gameplay.
+
+**The image.** Sections 4 and 5 hold the complete reads. In short:
+- `00855420`'s tail calls `00855250` (air, `0085591C`) and `008551C0` (crush, `0085592B`) on the
+  unit every motion tick.
+- Air drains at `dt / AirRunOutTime` while the hull is at or below the breathing line, and
+  refills at `dt / AirReloadTime` above it. `needAir` latches below 0.16 and clears above 0.5.
+- Below zero air, a live boat dies through `vtable[70h](1)` (`008553A1..008553B8`), which is
+  `0077D1A0`.
+- Crush pulses once per accumulated second below -70 m (`SubmarineDamageDepth`). Each pulse
+  deals `9 * interval` through `vtable[1ACh]`. The sub vtable `00D0BF80` holds `0095DA00` there;
+  its dword is `00D0C12C`.
+- `SetUnlimitedAirSupply` (`00893C00`) stores `lua_toboolean(arg 1)` at `+1280h`.
+
+**The binding.**
+- It uses the existing `submarine_step_air_00855250` and `submarine_step_crush_008551c0`.
+- It runs them once per force step after the dive law. `needAir` feeds the dive law's effective
+  band, so a boat short of air surfaces.
+- A drowned boat goes through `GameGunneryHost::kill_unit_00926d90(index, 1)`. A crush pulse goes
+  through `apply_script_damage_0095da00`, which is `0095DA00` with the party multiplier.
+- The class rows gain `AirRunOutTime` and `AirReloadTime`.
+- **SUBSTITUTIONS, labelled.**
+  - The two models run after the force callback, not after `00825F20`'s motion update.
+  - The three warnings are logged, not reported.
+  - The settings are `SubmarineDepthSettings`' defaults. They equal this installation's
+    `shipglobals.lua` (mtime 2024-07-13): 70.0, 9.0, 0.35, 0.16 and 0.5.
+  - The kill counter the funnel bumps is the water-depth one.
+
+**What the rows author.** Every submarine class in these missions has `AirRunOutTime` 720 (the
+Gato-class 600) and `AirReloadTime` 180 (the Gato-class 130). JM06 calls
+`SetUnlimitedAirSupply(unit, true)` on `PlayerSub 02` and `03` (`jm06.lua` 223).
+
+**Predictions** (written before the ON runs). The OFF baseline is this tree's build of the
+commit, with the dive law ON.
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 3.** Air falls to about 0.79 at worst in 150 s, so there are no warnings, no `needAir` and no drowning. The `Narwhal-class Submarine 01` holds -79.9 m, below -70 m, from the first step. So it takes about 148 crush pulses of 9, party-scaled, and its health and possibly a death row move. No other boat is below -70 m. `SetUnlimitedAirSupply`: 2 calls, 2 stored |
+| LOMP06 1200/1000 | **exit 1.** The Narwhal holds -10.1 m, so there is no crush. Its air falls to about 0.93 with no warning |
+| USN01 3200/3000 | no submarine, exit 1 (only the summary line's `bound` moves) |
+
+### Air and crush pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `40c38eea3`, with the dive law ON.
+- ON is `pair_export --flip kSubmarineAirBound=true` (`local/ar_on`).
+- The logs are `local/ar_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | Exit 3: the only gameplay change is the `Narwhal-class Submarine 01`'s health, 1500 -> 998. It takes a 9-point crush pulse every second from -77.7 m on; the loss is less than 148 x 9 because `0095DA00` scales it by the party multiplier. There are no air warnings. `SetUnlimitedAirSupply` stores 2 of 2. Deaths, hits and shots are identical | held |
+| LOMP06 1200/1000 | exit 1: no crush at -10.1 m, and air stays above 0.9 | held |
+| USN01 3200/3000 | exit 1 | held |
+
+**One miss on spread.** I wrote "no other boat is below -70 m". The `Gato-class Submarine 01`
+is an authored wreck: its death row is at t=0 and it sinks past -70 m. So it also gets crush
+pulses, which `0095DA00` ignores on a dead unit. The mechanism matches the image, which pulses
+the dead boat the same way.
+
+**Verdict: `kSubmarineAirBound = true`.**
