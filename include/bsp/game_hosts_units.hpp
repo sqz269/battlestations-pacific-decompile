@@ -328,7 +328,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // through the same gate as 0089F550's (009C89A6..009C89DD), and the approach
 // update 009C7A96 copies ctl+398h into approach+ACh. True: the block is kept and
 // the dive-bomb approach reads it. False: unimplemented, the tuning value.
-inline constexpr bool kSquadronAttackAltBound = false;
+inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)

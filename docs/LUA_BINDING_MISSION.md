@@ -3194,7 +3194,7 @@ player, present interval immediate):
 
 **Verdict: `kLuaSpawnNewIdQueriesBound = true`.**
 
-## SquadronSetAttackAlt, bound (packet `cc9_squadron_attack_alt`, `kSquadronAttackAltBound`, committed OFF)
+## SquadronSetAttackAlt, bound (packet `cc9_squadron_attack_alt`, `kSquadronAttackAltBound`, ON)
 
 Worker cc9-lua6, 2026-09-28. This is rank 2 of the fifth refresh. It is the sibling of
 `SquadronSetTravelAlt` (above) on the squadron's second cruise block.
@@ -3238,3 +3238,41 @@ player, present interval immediate):
 | --- | --- |
 | LOMP10 3200/3000 | **exit 3.** `10_san_jose.lua` 315 calls `SquadronSetAttackAlt(unit, 150, true)` for B-25 01, Lightning 01 and Warhawk 01 in the stage init. The attack-alt lines read `alt=150.0 force=1 active=1` for all three. Lightning 01's and Warhawk 01's members read `last_begin_alt=150.0` (reads > 0); B-25 01's reads stay 0, because no reader. The dive-bomb planes' approach far range drops from 1000 to 150, so their moveto and go-away altitudes fall. The eight dive-bomb installs still print `approach+ACh=1000.0`: the install seed `009C3EA0` is the tuning value. The dive-bomb transitions and the plane paths move; deaths and hits may move through AA exposure and the shared stream |
 | USN01 3200/3000 | **exit 0.** No call, and nothing prints: the census lines exist only for a squadron the native touched |
+
+### SquadronSetAttackAlt: the pairs and the verdict
+
+- OFF is this tree's build of `270e29575`.
+- ON is `pair_export --commit 270e29575 --flip kSquadronAttackAltBound=true` (`local/aa_on`).
+- The logs are `local/aa_{off,on}_<mission>.log` in worktree cc9-lua6.
+
+| row | pair_diff | verdict |
+| --- | --- | --- |
+| LOMP10 3200/3000 | exit 3, as predicted | held |
+| USN01 3200/3000 | exit 0, as predicted | held |
+
+**LOMP10, ON.**
+- **The census, as predicted.** The three calls store `alt=150.0 force=1`. Lightning 01 reads the
+  block 4976 times and Warhawk 01 4442 times, both at `last_begin_alt=150.0`. B-25 01 reads it 0
+  times. The eight installs still print `approach+ACh=1000.0`.
+- **The mechanism.** With `approach+ACh` at 150, the dive-bomb planes no longer take
+  `turndown -> aimdive`. They go from `flyabove` to `aimglide`, the low glide attack:
+  - Lightning 01's states go from `goaway/aimdive/aimglide/flyabove/turndown/attackrun` to
+    `done/aimglide/flyabove/attackrun`;
+  - no member enters `aimdive` or `turndown`.
+
+**What moved:**
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| dive-bomb-task releases | 1 of 8 | 4 of 8 (Lightning 01, and Warhawk 01 members 2, 3 and 4) |
+| deaths | 9 | 10 |
+| hit records | 340 | 279 |
+| shots | 4865 | 1887 |
+| damage | 3478.1 | 3500.0 |
+| plane water contacts | 2 | none |
+
+- **The new death** is Warhawk 01|.-4.
+- **Warhawk 01 dies earlier:** at 107.00 s instead of 122.25 s.
+- The shot count falls with the lower approach. The shared stream couples the rest.
+
+**Verdict: `kSquadronAttackAltBound = true`.**
