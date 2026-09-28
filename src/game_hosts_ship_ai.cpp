@@ -397,6 +397,14 @@ inline constexpr bool kShipAiSubTargetEntryPointsBound = true;
 // the zone set answers 0, the pushes return the point, the yaw rate is 0.
 // ON (2026-09-28): identity on five rows, no push moved a point; the yaw half waits on the 00811940 accessor fix (section 10)
 inline constexpr bool kShipFollowStationPointBound = true;
+// Packet cc9_plane_row_autotarget, docs/SHIP_AI_OPEN_ITEMS.md section 11 (from
+// docs/GUNNERY_OPEN_ITEMS.md section 42). The image builds an AutoTarget
+// selector (009F6A20) only in the ship director's constructor 008366D0; a
+// plane's fire-target provider is the null 00861B90 (vtable[114h] = 0047F180)
+// and a squadron's is its 0084D810 controller. So no plane or squadron row
+// ever runs 009F5DA0. True: a row answering IsKindOf(0Fh) or IsKindOf(18h)
+// skips the tick. False: it runs the ship director's AutoTarget as before.
+inline constexpr bool kPlaneRowAutoTargetBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -8924,6 +8932,17 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
     // 0071F395, [controller+38h]->vtable[4](dt) = 009F5DA0, the bot's own
     // fire-target think. Its countdown is what turns a per-frame call into a
     // once-a-second think.
+    const bool plane_row = owner_.units.unit_is_kind_of(index_, 0x0F) ||
+                           owner_.units.unit_is_kind_of(index_, 0x18);
+    if (plane_row) {
+        ++owner_.summary.plane_row_autotarget_ticks;
+        if (kPlaneRowAutoTargetBound) {
+            // No AutoTarget exists on this unit in the image (009F6A20 has one
+            // caller, 0083676A in the ship director's constructor).
+            owner_.done("AutoTarget::plane_row_absent", 0x009f6a20u);
+            return;
+        }
+    }
     const float before = ctl_.target.think_countdown;
     TargetBinding target(owner_, ctl_, row_, index_);
     bsp::auto_target_tick_009f5da0(target, ctl_.target, nullptr, frame_delta);
@@ -8931,6 +8950,7 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
     if (!(frame_delta < before)) {
         ++row_.target_thinks;
         ++owner_.summary.thinks;
+        if (plane_row) ++owner_.summary.plane_row_autotarget_thinks;
     }
 }
 
@@ -10147,6 +10167,11 @@ void GameShipAiHost::report() {
         host.summary.follow_zone_sets, host.summary.follow_pushes,
         host.summary.follow_pushes_moved, host.summary.follow_leader_turning,
         kShipFollowStationPointBound ? 1 : 0);
+    host.log.notef("summary mission ship ai plane row autotarget ticks=%llu thinks=%llu bound=%d "
+        "(009F5DA0 on IsKindOf 0Fh / 18h rows; the image builds none, 009F6A20; packet "
+        "cc9_plane_row_autotarget)",
+        host.summary.plane_row_autotarget_ticks, host.summary.plane_row_autotarget_thinks,
+        kPlaneRowAutoTargetBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",
