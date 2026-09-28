@@ -1137,6 +1137,58 @@ runs. On USN13 no unit is within 30 s of a CommandBuilding in 150 s, even at squ
 **Decision: `kCaptureAccessorsBound` is ON.** It is the image's rule, and the labelled stand-ins
 are gone.
 
+## 15. Handoff: the director-slot route of `00A14DD0` (read, not bound)
+
+Worker cc9-ships4. This section records the read, so that the owner of the director's moveonpath
+model can bind it. Nothing here is bound; the CAUTIOUSATTACK arm (section 11) keeps its labelled
+no-route moveto.
+
+**The slot is the leader director's path object 0.**
+- `00778860` takes the entity's `vtable[+114h]()` (the weapon director) and then `0071BFC0(0)`,
+  which reads `director+1A4h`, the first of ten 50h path objects.
+- `0071FB90` builds each one (`00720850`, `operator_new(0x50)`), with vtable `00CFDB24`, a listener
+  sub-object at `+10h` (vtable `00CFDB10`) and a point vector at `+44h..+4Ch`.
+- Every director has them, so the object exists for every AI ship leader.
+
+**Its virtuals, as `00A14DD0` uses them:**
+
+| slot | body | meaning |
+| --- | --- | --- |
+| `vt[+4h]` | `0071FC30`: `MOV AL,1 / RET` | always true |
+| `vt[+0Ch]` | `0071FC40` | `+14h` is registered and its `vt[+24h]()` returns this+40h: a path is attached |
+| `vt[+10h]` | `0071D2A0` | when attached, `this->vt[+14h]()` (`0071D2E0`, unread): a remaining count; else -1 |
+| `vt[+18h]` | `0071D340` | builds session message 5Fh `MT_GAMEUNIT_ADDUSERPATHPOINT` (`0075B430(5Fh)`, vtable `00CFDA14`, the point at `+20h..+28h`, presence byte 1) and routes it to `[[this+4h]+34h]`, the unit, with `0077C2A0(unit, msg, 7, 0)` |
+| `vt[+1Ch]` | `0071D3E0` | the same message with the zero vector and presence 0 |
+
+**The receiver:**
+- 5Fh has no unit arm: both dispatch tables (`00822400` for ships, `0095AE40`) take their default.
+- `BSP_Session_DispatchEntityMessage` `00780120` hands it to the director's
+  `BSP_WeaponDirector_ApplyGameUnitMessage` `00721A40`.
+- There, IsType(5Fh) with the presence byte set calls `007207C0` (`0071DC80`, then `0071FDE0(point,
+  0, last slot)`, or appends to a current moveonpath `00E08F80`). With the byte clear it calls
+  `0071F5D0` -> `0071F570`, which clears the points.
+
+**So the route arm is the user-path (moveonpath) mechanism:**
+- Unless the counter at `+28h` (4 from `00A109B0`) is spent, the first CAUTIOUSATTACK ticks:
+  - decrement the counter;
+  - write `counter` intermediate points along leader -> target leader into the path object's
+    vector, each the best of three candidates (on the line, and offset both ways along
+    `00CE3DC8` times a transformed unit vector) under the danger cost `00A010F0`;
+  - add the target as a user path point, and set the flag `+24h`.
+- While a path is attached and `vt[+10h] > 0`, the next tick issues `clearorders` (`00E08F08`,
+  `0077D600` at `00A14EA7`) and clears the flag. That replans with one leg fewer.
+- Once the counter reaches 0, the moveto arm that section 11 binds takes over.
+
+**What a binding needs**, none of it in this packet's files:
+- the director's moveonpath path objects (`0071FDE0`, `0071F570`, `0071D2E0`, the `+14h`
+  registration);
+- the danger cost `00A010F0`;
+- the vector transform at `00A14E54` (`0042B490(00CE3C64)` and `BSP_Vector3f_TransformProjectPoint`).
+
+The units host owns the director. The predictions to make then are on USN10 and USN12, where the
+CAUTIOUSATTACK arm fires (section 11.4): the leaders would follow a three-leg danger-avoiding path
+before the direct movetos.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
