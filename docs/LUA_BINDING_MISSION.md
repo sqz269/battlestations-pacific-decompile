@@ -2749,3 +2749,36 @@ message 79h gives its holder's slot (`docs/PLAYER_GUN_SEAT.md`).
 against it. Set membership is assumed, as for the `recon` party set; the 009725B0 test itself is
 unread. The only live user is JM06's `hshit` (`{PLAYER_1}` on the hospital ship), which the idle
 runs never hit.
+
+### The rate limit's unmodelled bits, read and closed (cc9-lua4, 2026-09-28)
+
+Item 3 of the cc9-lua3 handoff. Both stay unmodelled, because neither has an input in this
+installation's runs.
+
+**The `this+1A4h` shortcut (V).**
+- `00988510`'s `this` is the WarningManager: its constructor `0098A020` builds the member at
+  `+1A4h` (`0098A248`). `00988A0E`-`00988A56` test it after storing the 2 s or 1e-4 s stamp.
+- When the set is non-empty (`+1ACh`), `005A16F0` looks up the victim key built at `0098859B`
+  (`param_2->vtable[140h]()`, stored at `[base+34h]`). A hit on a listed victim overwrites the
+  stamp with `clock + 1e-4` (`00D7A268`, the double `0x3F1A36E2E0000000`), so its `hit` callbacks
+  are never throttled.
+- **The only writer is the Lua native `HackSensitiveUnit` (`008CBEB0`).** It reads argument 0
+  through `BSP_LuaTable_GetPtrField` and inserts it with `008CAEE0` on
+  `[00F8A0C4] + 1A4h` (`008CBFC6`-`008CBFE0`). `008CB570` is a second inserter on the same member,
+  which Ghidra shows with no callers.
+- **No script in this installation calls `HackSensitiveUnit`** (a search of every `.lua` under
+  `scripts`, excluding the `.bak` copies). The set stays empty, and the shortcut never fires.
+
+**The forced kind 11h (V).**
+- `009885EC`-`00988663` read the hit's source `[hit+4]`, not the shot record. The kind becomes 11h
+  (KAMIKAZE) and the attacker becomes the source itself in two cases:
+  - the source answers `vtable[5Ch](6)`, the ship base, and its `[+538h]` object has `+510h` or
+    `+514h` above 0.0;
+  - the source answers `vtable[5Ch](17h)`, `MPlaneKamikaze` (`docs/ENTITY_CLASS_IDS.md`).
+- Both are hits whose source is a unit, not a projectile. The host's hit events come only from
+  shells and their blasts (`apply_hit`, `src/game_hosts_gunnery.cpp` 6683 and 7668), so no host
+  event has such a source.
+- The forced kind matters only once a unit-source hit exists, such as a kamikaze crash or that
+  ship arm. Which ship state `+538h`'s `+510h` and `+514h` hold was not read.
+
+**Verdict:** no binding. Both are recorded as unreachable on this installation's rows.
