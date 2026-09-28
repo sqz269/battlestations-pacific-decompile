@@ -1,0 +1,54 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a152e0",
+    "end_address": "00a15489"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a152e0",
+    "end_address": "00a15488",
+    "bytes_disassembled": 425,
+    "message": "Successfully disassembled 425 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a152e0",
+    "disassemble_first": false,
+    "name": "BSP_AiCommand_CautiousAttack_Tick"
+   },
+   "result": {
+    "success": true,
+    "address": "00a152e0",
+    "function_name": "BSP_AiCommand_CautiousAttack_Tick",
+    "entry_point": "00a152e0",
+    "body_size": 425,
+    "message": "Function created successfully at 00a152e0",
+    "warnings": [
+     "Function name 'BSP_AiCommand_CautiousAttack_Tick' \u2014 main part 'AiCommand_CautiousAttack_Tick' is not PascalCase. Expected: AicommandCautiousattackTick",
+     "Function name 'BSP_AiCommand_CautiousAttack_Tick' \u2014 main part 'AiCommand_CautiousAttack_Tick' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_AiCommand_CautiousAttack_Tick' does not start with a recognized verb. First word 'Ai' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00a152e0",
+   "end": "00a15489",
+   "name": "BSP_AiCommand_CautiousAttack_Tick",
+   "after": "Function: BSP_AiCommand_CautiousAttack_Tick at 00a152e0\nSignature: undefined BSP_AiCommand_CautiousAttack_Tick(void)\nEntry: 00a152e0\nBody: 00a152e0 - 00a15488"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
