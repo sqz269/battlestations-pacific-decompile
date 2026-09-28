@@ -834,6 +834,24 @@ base for these numbers.
   - The ON log carries one `follow issued (00720CD0, source join 0077F940)` line per call.
   - No follower that joined shows a non-`follow` slot 0 at its first director step after the join.
 
+#### The pairs, not yet run
+
+The first attempt failed on 2026-09-28: session 1 was `Disc`, and every run died at
+`_FMOD_EventSystem_Init result=61`. Check `query session` before launching. From the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua9` (after merging main), run:
+
+```powershell
+./local/l9_run.ps1 -Prefix l9_off -Rows 'jm06:JM06:3200:3000','usn01:USN01:3200:3000','jm08:JM08:3200:3000','usn04:USN04:4700:4500'
+./local/l9_run.ps1 -Exe local\l9_ff\build\win32\Release\bsp_game.exe -Prefix l9_on -Rows 'jm06:JM06:3200:3000','usn01:USN01:3200:3000','jm08:JM08:3200:3000','usn04:USN04:4700:4500'
+python tools/pair_diff.py local\l9_off_usn01.log local\l9_on_usn01.log   # and the other rows
+```
+
+- The OFF binary is `build\win32\Release\bsp_game.exe` at `ef1fdd1a6`.
+- The ON binary is `pair_export --commit ef1fdd1a6 --flip kFormationJoinFollowBound=true --out
+  local\l9_ff`, SHA-256 prefix `F383781BD4A1`.
+- The launcher runs with `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1` and lockstep 0.05.
+- Flip by the section 5g verdict.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread
