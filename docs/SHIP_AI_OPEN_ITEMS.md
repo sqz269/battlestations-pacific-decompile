@@ -333,3 +333,19 @@ and steps. By the brief's rule it flips, with the misses recorded.
   `float GameUnitsHost::unit_class_yaw_rate_0082ecb0(std::size_t index, float rudder, float speed,
   float efficiency)`.
 - The approach enter `009F3220` (see above) is next in this lane.
+
+### Re-paired on a tree synced with main (`29e95bad6`)
+
+The lead asked for the pairs to be run on a tree synced with main, citing that tree's own OFF logs.
+Reference j is still being built.
+- **The tree:** main merged into `agent/cc9-ships7` at `29e95bad6`.
+- **OFF:** `pair_export --commit 29e95bad6 --flip kShipAiSubTargetSubStatesBound=false` into
+  `local\ships7_offj` (SHA-256 prefix `661050E5FE85`), logs `local\ships7_offj_<row>.log`.
+- **ON:** the tree's own build, logs `local\ships7_onj_<row>.log`.
+
+The results are the same as the pairs above:
+- JM06 and LOMP06 move (exit 3).
+- JM06's figures and death row are unchanged from those pairs: deaths 2 -> 1, hit records
+  284 -> 314, damage 4730.3 -> 4405.8, shots 352 -> 381, and US Cargo Transport 02 survives.
+- USN01, USN02, USN04 and USN13 are gameplay-identical (exit 1).
+- The per-attacker census is identical to the table above.
