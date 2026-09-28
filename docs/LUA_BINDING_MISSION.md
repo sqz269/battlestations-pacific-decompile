@@ -1555,3 +1555,50 @@ Worker cc9-lua2, 2026-09-28. This is item 4 of the ranking. Ghidra was read only
 - The mechanism is the image's: the forced records publish their level, and the rows the
   script names reach Allied level 2 at once.
 - The gameplay prediction overstated the spread and is recorded as failed.
+
+### Why LOMP06's seaplane listener was silent (packet `cc9_recon_level_step_check`)
+
+**The question.** Does the image's recon pass step a party's level `0 -> 1 -> 2` across passes, or
+jump `0 -> 2`? **Neither, in the listener's terms.** It re-notifies every level on every pass.
+
+**The image (V).**
+- **`008073C0` resets every record** at the start of each pass (`00807490 CALL 00805BE0`).
+- **`00805BE0 BSP_Recon_ResetDetection`:**
+  - it takes the record's effective level: `+8h` when the force byte `+10h` is set, else `+4h`;
+  - it zeroes the value `+0Ch` and the level `+4h`;
+  - it drops the observer pair at `+28h`;
+  - when the effective level changed, it calls `[+2Ch]->vtable[0](party +30h, old, new)`. That
+    is `0077B0C0`, which feeds `reconlevel` and the `recon` channel (`00980E50`).
+- **So a detected record notifies `old -> 0` at the reset,** and `00805AF0` then notifies `0 -> new`
+  when the pass publishes its level again (`00805B98`..`00805BD8`).
+- **A forced record keeps its effective level** through the reset, so it does not cycle.
+- **An own unit is refreshed with `+1.0` each pass** (`008065B0`), which saturates the value, so it
+  reads 2 from every pass.
+
+**The consequences.**
+- A listener asking for `oldLevel {0}, newLevel {2}` fires on **every pass** for every record that
+  is identified at that pass. That includes the party's own units.
+- `luaSeaplaneSpotted` guards itself for exactly this: it acts only when
+  `entity.Class.Type == "SmallReconPlane"`, then removes the listener.
+
+**What the host did.**
+- `dispatch_recon_listeners_00980e50` fired only on net changes between passes.
+- It stepped the own party `0 -> 1 -> 2`.
+- The LOMP06 pass publishes mostly blips (`blip=8229`, `identified=3787` over 99 passes).
+- So an Allied `0 -> 2` jump was rare, and none reached the listener: `fires=0`.
+
+**The correction** is `kReconListenerResetCycleBound` in `include/bsp/game_hosts_lua.hpp`,
+committed OFF.
+- Each pass, every non-forced record with a level fires `old -> 0`, then `0 -> new`.
+- A forced record (`bsp::forced_recon_level`) fires only on a net change.
+- The own party reads 2 each pass.
+- **SUBSTITUTION, labelled:** the two transitions fire together at the host's frame, not inside
+  the pass.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| row | prediction |
+| --- | --- |
+| LOMP06 1200/1000 | `listener_SeaplaneSpotted` fires on every pass for each Allied-identified unit and each own Allied unit, so `fires` goes from 0 to hundreds. The callback returns unless the entity is a `SmallReconPlane`; if one is identified, a dialog starts and the listener is removed. **Identity (exit 1)**, since the dialog is presentation |
+| JM06 3200/3000 | `usnsubListener` and `fleetrecon` fire at or before their current times (the first pass in which a matching unit is identified after registration). If `fleetrecon` fires earlier, the group-1 submarines' attack orders move earlier and **JM06 moves (exit 3)**. If at the same pass, identity |
+| USN01, USN04 | no `recon` entry is registered; identity |

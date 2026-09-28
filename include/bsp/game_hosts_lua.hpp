@@ -152,6 +152,15 @@ inline constexpr bool kLuaListenersBound = true;  // ON: identity pairs (docs/LU
 // listeners on its recon pass's level changes. False: `recon` entries never fire.
 inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_recon_level_step_check (docs/LUA_BINDING_MISSION.md, "Why LOMP06's
+// seaplane listener was silent"). 008073C0 resets every record at each pass
+// (00807490 -> 00805BE0), which notifies old -> 0 through 0077B0C0, and 00805AF0
+// then notifies 0 -> new; a forced record keeps its effective level (+8h) and does
+// not cycle. True: each pass fires both transitions for every non-forced record
+// with a level, and a unit's own party reads 2 each pass. False: only net changes
+// fire, and the own party steps 0 -> 1 -> 2.
+inline constexpr bool kReconListenerResetCycleBound = false;
+
 // Packet cc9_forced_recon_level (docs/LUA_BINDING_MISSION.md, "SetForcedReconLevel,
 // 008AA8F0"). True: SetForcedReconLevel(entity, level, party) forces the recon record
 // of each resolved unit (a squadron's fused slot: its live members) for that party
