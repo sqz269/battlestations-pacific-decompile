@@ -2486,3 +2486,246 @@ This is section 42's first outside-lane difference, bound in this lane.
 - **The flip rule:** ON when Q1 holds and every row is identity. A move would have to trace to a
   plane-row AutoTarget losing its locked target (USN04 and USN01), which section 42.1 records as a
   host-only path the ship-AI lane is removing.
+
+### 45.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of main `6adc7e80d`, where `class_id` is filled (`66598f005`).
+- **ON** is `pair_export --commit 6adc7e80d --flip kSquadronSetCommandBound=true` (SHA-256 prefix
+  `10D9C2E18F37`).
+- The logs are `local\g9_sqoff_<row>.log` and `local\g9_sqon_<row>.log` in worktree cc9-gunnery9.
+
+| row | `pair_diff` | plane or squadron rows | forced fire targets, OFF -> ON | `fire target unresolved`, OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1, gameplay identical | 840 | 47 -> 0 | 35 -> 0 |
+| USN01 3200/3000 | exit 1, gameplay identical | 56 | 9 -> 0 | 7 -> 0 |
+| USN13 3200/3000 | exit 1, gameplay identical | 1488 | 87 -> 0 | 60 -> 0 |
+
+- **Q1 held.** The forced targets exceed section 33.1's unresolved counts, because resolved calls
+  from plane rows are counted too. ON sends none. `fire target unresolved` drops to 0 on all three
+  rows, so every unresolved call came from a plane row.
+- **Q2 held.** Every row is identity.
+
+**Verdict: ON.** `kSquadronSetCommandBound = true`.
+
+## 46. Rank 8, the hull roll torque `00827312`, bound OFF (packet `cc9_hull_roll_torque`, cc9-gunnery9)
+
+Section 41.1 read the inputs. This section checks the arithmetic and the timing, and binds it.
+
+### 46.1 The listing against `ship_roll_torque`
+
+`00827126..0082730B`, read from the disk bytes:
+- **The direction.** `shot->vtable[34h]` (`00827144`). The squared length is summed as `(x*x + y*y) + z*z` and
+  stored as a float before `_CIsqrt` (`0082717E`). x and z are divided by the float root
+  (`008271A2`, `008271AA`), and y is not used again.
+- **The axis.** `00C32000` returns the body matrix (`LEA EAX,[ECX+8]`), and `+18h..+20h` is row 2 (`008271B7..008271BD`).
+- **The mass term.** `1 / [settings+594h]` (`008271D8..008271E6`). A zero `[class+0B0h]` gives 0
+  (`LAHF / TEST AH,44h / JP`). A negative mass is negated as `[00D7A208] - mass`. Otherwise it is
+  `FYL2X / F2XM1 / FSCALE`, that is `pow(|mass|, 1/root)`.
+- **The scale.** `[settings+590h] * hull_damage(0) * mass_term`, stored as a float (`00827251..0082725F`).
+- **The sign.** `axis.z*dir.x - axis.x*dir.z` (`00827263..00827277`, `FSUBP ST(2)`). It is -1 when negative, 1 when positive
+  and 0 when zero.
+- **The result.** `sign * scale` rounded to a float, times each axis component (`008272B0..008272DB`). It is
+  packed at `00827312` and routed at `00827329`.
+
+`ship_roll_torque` matches in order and rounding at the x87 precision of 24 bits that d3d9 is expected to set
+(`include/bsp/game_hosts.hpp`, milestone 2l). **Uncertain by a few ULP:** the host takes `std::pow` where the image
+chains `FYL2X` and `F2XM1`. With every hull's inertia zero (46.3), that cannot move anything.
+
+### 46.2 Timing
+
+- The image posts message 93h at row 9 of the fixed step (`00778450`, `00875E91`).
+- The Dyn world step `00C5C540` runs at `00875E0C`, before every fan-out row. The tick-element waves that run the
+  gunnery and the motion ticks (wave 2, `00875D1A..00875D89`) run before it too.
+- So a hit's torque reaches the accumulator after its own step's integration and is integrated at the next step's
+  `00875E0C`. The accumulator is cleared only at the end of the position phase (`src/rigid_body_integration.cpp`).
+- In this host, the motion pass of step n is the image's motion tick plus Dyn step of n. The gunnery step runs
+  before it (`game_hosts_units.cpp`).
+- So the binding **posts** the torque and delivers it at the start of the next gunnery step. There it joins that
+  step's motion torques and is integrated with them, as the image integrates it at step n+1.
+
+### 46.3 The binding (committed OFF)
+
+- `kShipHitRollTorqueBound` (`src/game_hosts_gunnery.cpp`). It sets:
+  - the axis from `unit_pose`'s forward row, which `publish_pose` copies from `motion.pose_row2`;
+  - the two settings from `GameMissionLuaHost::read_physics_torpedo_force_0083b5e0`. This installation's
+    `shipglobals.lua` (2024-07-13) has `TorpedoForce = -75` and no `TorpedoForcePower`, so the power is 2.0;
+  - the sink, `GameUnitsHost::add_hull_torque_message_93h`, one step later.
+- The summary line is `summary mission gunnery hull roll torque calls= posted= delivered= undelivered= max= bound=`.
+- **Caveat, and the follow-up:** every host hull body has a zero inverse inertia, because the collision AABB's
+  producer `00C5C940` (the shape attach behind `00937D3F..009399BF`) is unread (`game_hosts_units.cpp`, the
+  hull-body build). `00C41550` turns a torque into angular velocity only through that tensor, so the torque moves
+  nothing until `00C5C940` is read.
+
+### 46.4 Predictions (written before the ON runs)
+
+- **R1, the mechanism.** ON, `posted` equals OFF's `calls`, which reference j counts as
+  `ShipHit::add_hull_torque_00827312` (USN02 9000: 30). `delivered + undelivered = posted` minus at most the last
+  step's posts. `max` is non-zero.
+- **R2, USN02 9000 and JM06 3000: exit 1, gameplay identical,** because of the zero inverse inertia.
+- **The flip rule:** ON when R1 holds and both rows are identity. Any move is a failure of the inertia claim and
+  keeps the switch OFF.
+
+### 46.5 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `5cb63b252`.
+- **ON** is `pair_export --commit 5cb63b252 --flip kShipHitRollTorqueBound=true` (SHA-256 prefix
+  `128C3D8AF61C`).
+- The logs are `local\g9_rtoff_<row>.log` and `local\g9_rton_<row>.log` in worktree cc9-gunnery9.
+  Both sides ran in the same RDP session, and a 300-frame smoke passed first.
+- ON loads `Physics.TorpedoForce=-75.000 TorpedoForcePower=2.000 (loaded=1)`.
+
+| row | `pair_diff` | calls OFF | posted / delivered / undelivered ON | largest torque | against the prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9200/9000 | exit 1, gameplay identical | 26 | 26 / 26 / 0 | 4039222.0 | R1 and R2 held |
+| JM06 3200/3000 | exit 1, gameplay identical | 0 | 0 / 0 / 0 | 0 | R2 held, but vacuously: no torpedo hit lands on a hull over 500 mass |
+
+**Verdict: ON.** The mechanism is the image's, and every torque reaches the body. Nothing moves,
+because the inverse inertia is zero. `kShipHitRollTorqueBound = true`.
+
+**The follow-up** is the collision AABB producer `00C5C940`. Once a hull has a real inertia, these
+torques act, and USN02 (26 of them, up to 4.0e6) is the row to re-pair. The minus sign of this
+installation's `TorpedoForce` reverses the roll direction the axis sign gives.
+
+## 47. The hull inertia: what the image needs, and what is missing (packet `cc9_hull_inertia`, read, cc9-gunnery9)
+
+Section 46.5's follow-up. docs/SHIP_HULL_BODY.md and docs/SHIP_HULL_SHAPES.md already read the
+whole path from the shapes to the inertia. This section places the one missing input and plans the
+binding. Names are hypotheses.
+
+### 47.1 The chain, with what is already read
+
+| step | the image | state |
+| --- | --- | --- |
+| which collision records become shapes | `00938F61..0093918C` walks `model+4Ch` and keeps records owned by `firstnode`, `model+0Ch`, `front` or `back` | read (SHIP_HULL_SHAPES) |
+| the shape descriptor | type 4 (convex mesh), identity rotation, translation from the record, `desc+14h` = the address of `record+0Ch` | read |
+| the shape's own box | `00C57C40`: `mesh = *(record+0Ch)`, local box `mesh+18h..+2Ch`, expanded by 0.02, pushed through the shape transform | read, reconstructed in `bsp/ship_hull_shapes.hpp` |
+| the body's box | `00C55FC0`: the union of the shape boxes into `B+38h..+4Ch` | read, reconstructed |
+| the inertia | `00939A89..00939C05`: extent = max - min; `I = mul * (Mass/12) * (ey2+ez2, ex2+ez2, ex2+ey2)`; `00C37E70` | read, reconstructed (the host's `--hull-extent` probe input) |
+| **the convex mesh's local box `mesh+18h..+2Ch`** | the Dyn convex mesh object the model's collision record points at | **not read: its producer is unknown** |
+
+### 47.2 What this read added
+
+- **The record's `+0Ch` is a handle.** The `ConvexObject` resource (parser tables `00CFD7E8` and
+  `00CFD80C`; its parse slot `006FAF00` builds a `2Ch`-byte object through `006F9CD0`) has vtable
+  `00CFB6A4` and embeds at `+0Ch` a `{pointer, 0}` pair (`00C32D50`). So `*(record+0Ch)` is a
+  pointer to a separately built Dyn convex mesh. The parse itself (`006FAD70`: `006FA7F0`,
+  `006FA910`, `006FACE0`, `006F9B20` reading u32 lists) fills index arrays and does not write that
+  pointer. **Where the Dyn mesh is created, and how its box is computed, is unread.**
+- **The chunk layout, read from this installation's model** (`models/ships/us/deruyter.mmod`,
+  46,865,813 bytes; `local\g9_mmod.py`). After the name `ConvexObject` (length 0Ch before it)
+  come a u32 chunk size (`5EC4h`), a u32 0, and a u32 record count (`65h` = 101 in the first
+  object). Each record is a float3 position followed by three index lists, each prefixed by the
+  same count (4, 4, 4 in the first object, 3, 3, 3 in the second). The positions are vertices, so
+  the local box is most likely their min and max. **That is a hypothesis until the Dyn mesh's
+  builder is read.** A `BoundingSphere` chunk (centre and radius) precedes each object.
+
+### 47.3 The plan
+
+| order | packet | contents | owner |
+| --- | --- | --- | --- |
+| 1 | `model_collision_records` (SHIP_HULL_SHAPES' follow-up) | the producer of `model+4Ch`'s records, `record+0Ch` (the Dyn mesh) and `record+14h` (the translation); which node `model+0Ch` is; where the Dyn convex mesh is built and how `+18h..+2Ch` is filled | the model packets |
+| 2 | `cc9_hull_aabb_host` | a host reader that takes each hull class's `.mmod`, keeps the records the four owners select, and produces the body box with `dyn_convex_mesh_shape_bounds_00c57c40` and the union | gunnery or units lane, once 1 settles the inputs |
+| 3 | `cc9_hull_inertia` | feed that box to the hull build (`game_hosts_units.cpp`, where `bsp::ShipHullBodyInputs` is filled; today the extent is 0), behind `kHullInertiaFromShapesBound`, OFF | units lane (cc9-lua9) |
+
+**Predictions for 3, for when it lands.**
+- USN02 9000: exit 3. The 26 torpedo torques (up to 4.0e6) now roll the hit hulls. The
+  motion model's own AddTorque at `00937613` carries a zero vector today (its gain is
+  multiplied by `settings+588h`, which has no producer), so that site stays inert. Whether a
+  roll survives the motion tick's velocity rewrite `0092D300` on the next step is not read;
+  that decides whether the move is visible beyond the hit step.
+- JM06: exit 1, since no roll torque lands and the other torque is zero, unless the non-zero
+  world inertia changes something else in `00C41550`.
+- The flip rule has to separate the shape-derived inertia from every torque it wakes. Pair it
+  first with the roll torque OFF.
+
+### 47.4 The local box's producer, found (cc9-gunnery9, continued)
+
+- **The hull build.** The `ConvexObject` parse region calls `00C5DEB0` at `006FAECE` with
+  `ECX = resource+0Ch` (the handle) and the chunk's points. `00C5DEB0` is
+  `DYN_ConvexHull_Construct` (replacement order), reconstructed in docs/AVOID_ZONE_DYN_HULL.md.
+  Its internal record keeps the vertex minimum and maximum at `+18h` and `+24h`, written by
+  `00C389C0` from the hull's vertices. That record is `mesh+18h..+2Ch`, the box `00C57C40` reads.
+- **The offset cancels.** Before the call, `006FAEA0..006FAEC7` subtracts the resource's
+  `+14h..+1Ch` vector from every point (`FSUB [EDI+14h]`, `[EDI+18h]`, `[EDI+1Ch]`). SHIP_HULL_SHAPES
+  gives `record+14h` as the shape's translation, with an identity rotation. So a shape's box in the
+  body frame is the chunk points' own box, widened by 0.02, up to float rounding. A convex hull's
+  vertices are a subset of its points and include the extremes, unless the 4096-vertex limit cuts
+  some, so the hull's box equals the points' box.
+- **This installation's DeRuyter** (`models/ships/us/deruyter.mmod`, `local\g9_convex.py`) has ten
+  `ConvexObject` chunks. Nine are part-sized (extents of 1.3 to 16.5). One is the hull:
+
+  | chunk | points | min | max | extent |
+  | --- | --- | --- | --- | --- |
+  | file+`2C5AC04` | 117 | (-8.23, -5.65, -96.90) | (8.23, 12.20, 77.02) | (16.46, 17.85, 173.93) |
+
+  With only that shape kept, the body box is its box widened by 0.02 on each side, so
+  extent = (16.50, 17.89, 173.97). Mass 7688 (the run log) then gives `k = 7688/12 = 640.67`, and
+  `I = mul * 640.67 * (17.89^2 + 173.97^2, 16.50^2 + 173.97^2, 16.50^2 + 17.89^2)`, about
+  `mul * (19.6e6, 19.6e6, 0.38e6)`. The roll axis is row 2, so the roll inertia is the third
+  term, about `mul * 3.8e5`. USN02's largest torque of 4.0e6 then changes the roll rate by about
+  `10.5 / mul * dt` rad/s: 0.5 / `mul` rad/s over a 0.05 s step. That is large, so **the pair will
+  move**.
+- **Still unread: which records are kept.** The chunk does not name its owner node. The four
+  owners are `firstnode`, the node at `model+0Ch`, `front` and `back` (SHIP_HULL_SHAPES). The
+  DeRuyter has none of the named three, so the kept set is the records owned by `model+0Ch`. The
+  hull chunk is the obvious candidate, but that is not proven. The producer of `model+4Ch` (the
+  record list with each record's owner) and of `model+0Ch` is the model loader.
+
+**Packet 2 of 47.3, restated.** For each hull class: decode the `.mmod` hierarchy enough to know
+each `ConvexObject`'s owner and `model+0Ch`; keep the owned chunks; take the union of
+`[min - 0.02, max + 0.02]`; hand the extent to the hull build. `local\g9_convex.py` already
+decodes the point lists.
+
+## 48. Handoff (cc9-gunnery9, 2026-09-28, at about 70% context)
+
+### 48.1 What this worker landed or left
+
+| section | packet | state |
+| --- | --- | --- |
+| 42 | `cc9_plane_forced_target_read` | `kPlaneNullFireTargetProviderBound` ON: no plane-side gunnery pass reads a fire target |
+| 43 | `cc9_powerup_subsystem_plan` | docs: the manager layout; slot 0 is the only slot that holds items; the allied brain spends the player's items; four packets planned |
+| 44 | rank 7, `007788B0` | read: the formation-follower gate; the binding `kAutoTargetFollowerGateBound` is routed to the ship-AI lane |
+| 45 | `cc9_squadron_set_command` | `kSquadronSetCommandBound` ON: plane and squadron rows run `0071E6C0` alone. Open: the squadron's `0084DD20` self-target rule (45.1) |
+| 46 | `cc9_hull_roll_torque` (rank 8) | `kShipHitRollTorqueBound` ON; identity until the hull has an inertia |
+| 47 | `cc9_hull_inertia` | read: the local box is the `ConvexObject` points' box (47.4); the DeRuyter hull chunk measured; still unread: which records `model+0Ch` owns |
+
+### 48.2 Open items this worker found
+
+- The ship-AI host runs an AutoTarget on load-time plane rows, which the image never builds
+  (section 42.1; routed to cc9-ships8).
+- The squadron slot-push rule `0084DD20` (45.1): a self-targeted `moveto` or `stop` is emptied
+  where the host applies the ship rule (`cruise` or `stop`). No known reach.
+- The hull inertia chain (47.3), and after it USN02 as the row where the roll torques act.
+- `ship_roll_torque` takes `std::pow` where the image chains `FYL2X` and `F2XM1` (46.1), a
+  few-ULP difference to settle once torques act.
+
+### 48.3 Tools in the cc9-gunnery9 tree (`local\`)
+
+- `g9_img.py dwords|refs|pat|rtti`: dwords at an address, every `CALL/JMP rel32` and absolute
+  dword naming an address, byte patterns in `.text`. The image has no RTTI.
+- `g9_runs.ps1 -P <prefix> -Only <rows> [-Exe <path>]`: reference j's rows (plus `smoke`, 300
+  frames of USN01) with the reference run parameters. `g9_wait.ps1 -Glob -Expect`: a foreground
+  wait on the final COM release line. `g9_cmp.ps1 -A -B -Rows`: `pair_diff` headlines (`rb10`
+  means reference j's logs in cc9-gunnery8).
+- `g9_mmod.py <model> <n>`: hex and floats around the first n `ConvexObject` chunks of a `.mmod`.
+
+### 48.4 What remains for cc9-gunnery10
+
+- **Reference k**, when the lead calls it. It carries the flags that landed after reference j's
+  base, including this worker's `kPlaneNullFireTargetProviderBound`, `kSquadronSetCommandBound` and
+  `kShipHitRollTorqueBound`.
+- **The model trace, 47.3's three packets.**
+  1. Which records `model+0Ch` owns. This is the only unread input. 47.4 already settles the box
+     producer and measures the DeRuyter hull chunk.
+  2. A host reader for each hull class's box. `local\g9_convex.py` decodes the point lists.
+  3. The binding in `game_hosts_units.cpp` (the lua9 lane). Pair it first with the roll torque
+     OFF.
+- **The `queue_state_back` pointer defect** (section 37.3). A slot keeps its old
+  `slot_target[].object` while taking the shifted slot's parameters. Nothing reads it yet.
+- **The E2 tail.** USN04 past 9000 frames is phase 1 only (reference j), and is not examined here.
+- **The LandConvoy unit.** `00805680`'s group records need one in the units host's index space
+  (section 34).
+- **The squadron slot-push rule `0084DD20`** (45.1). A self-targeted `moveto` or `stop` on a
+  squadron is emptied. It is open, with no known reach.
+- **The follow entry point** `issue_follow_command_00720cd0` (`e50480a39`) is inert until lua9
+  wires it (`kFormationJoinFollowBound`).

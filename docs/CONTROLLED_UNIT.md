@@ -2366,3 +2366,4 @@ The slot 2Ch values for `unit_class_lands_troops_vtable_2c` came from the disk i
   `local\` files.
 - `python tools/bsp.py ghidra decompile <addr> --start N --lines M` pages long bodies.
   `show` works only for exported functions.
+- **`GameCommandUnit::class_id` is filled** in the `command_units` loop from the slot's `class_id` (+C4h), for cc9-gunnery9's `kSquadronSetCommandBound`. It is inert until that switch flips.
