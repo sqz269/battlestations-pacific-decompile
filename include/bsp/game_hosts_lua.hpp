@@ -132,7 +132,7 @@ inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling 
 // vector through 00742210, any other entity itself through 00926D90 (008AC756).
 // True: the host kills the units-host slot (a squadron's live members) through the
 // gunnery host's death funnel. False: the native stays an unimplemented record.
-inline constexpr bool kLuaKillBound = false;
+inline constexpr bool kLuaKillBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md, Kill verdict)
 
 class GameHostLog;
 class GameVfsHost;
