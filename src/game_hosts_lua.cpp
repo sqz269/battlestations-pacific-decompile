@@ -712,6 +712,25 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.y_drag = number("YDrag");
             row.max_spd = number("MaxSpd");
             row.travel_speed = number("TravelSpeed");
+            // Packet cc9_submarine_dive: 00854230's NumberOr keys, each keeping
+            // its literal default when the row does not author it.
+            const auto number_or = [&](const char* key, float fallback) -> float {
+                ::lua_getfield(state_, -1, key);
+                const float value = ::lua_type(state_, -1) == LUA_TNUMBER
+                    ? static_cast<float>(::lua_tonumber(state_, -1)) : fallback;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                return value;
+            };
+            row.sub_periscope_depth = number_or("PeriscopeDepth", -1.0f);
+            if (row.sub_periscope_depth < 0.0f) {
+                row.sub_periscope_depth = number_or("SwimDepth1", row.sub_periscope_depth);
+            }
+            row.sub_swim_depth2 = number_or("SwimDepth2", -1.0f);
+            row.sub_swim_depth3 = number_or("SwimDepth3", -1.0f);
+            row.sub_up_down_accel = number_or("UpDownAccel", 0.25f);
+            row.sub_up_down_stop_time = number_or("UpDownStopTime", 5.0f);
+            row.sub_up_speed = number_or("UpSpeed", 1.2f);
+            row.sub_down_speed = number_or("DownSpeed", 1.2f);
             // 007D20C6 scales Accel in place by tuning+31Ch * tuning+320h when
             // the second is above 1.0 and leaves it raw otherwise
             // (src/plane_class_fields.cpp:207-219). The raw value is read here:
