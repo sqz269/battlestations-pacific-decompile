@@ -2158,3 +2158,57 @@ Worker cc9-hud3, 2026-09-27, base ac9efa4ef. Ghidra was read only.
 | USN02 9200/9000 | exit 0 | identical |
 
 **Every prediction held.** **Verdict: `kGeneratedWingPartyBound = true`.**
+
+### 23.7 Who writes a unit table's `Party` and `Race` (packet `cc9_generated_party_writer`, a read)
+
+Worker cc9-lua2, 2026-09-27. This is item 6 of the cc9-hud3 handoff. The question was where on
+GenerateObject's route the image calls the `00928F50` mirror. **No call site was found. The
+census below finds no creation-route writer at all, so the image's writer stays unlocated.**
+
+**Every reference to the two keys.**
+- The image holds one copy each of `"Party"` (`00CE5804`) and `"Race"` (`00CE8EE0`).
+- Every reference to either is a `PUSH imm32`: an absolute-dword search finds no other encoding.
+- Of the pushing functions, three write an entity's Lua table:
+  - `00928100 SEntity_MirrorIdentityToThisTable`, which is pass C of the marker classes;
+  - `00928F50 BSP_MissionEntity_SetPartyRaceLuaMirror`;
+  - `00627960`, which is the objectives table's own `Party`, not an entity's.
+- The rest read or build property bags. For example, `008206F0` stores `+54h`/`+58h` into a bag
+  through `008F3710`, and `00927050`'s kind-1 arm reads the bag.
+
+**How `00928F50` is reached.**
+- It sits only in vtables, at slot `+2Ch`: 38 of them, with no rel32 caller. Its thunk `00951F30`
+  is likewise reached only through vtables.
+- A sweep of every function finds 161 register calls and 5 memory calls through a slot `+2Ch`.
+  The one found through `SetParty`, `008A8AE7`, serves as the positive control.
+- The entity-side dispatches are these:
+  - the Lua natives `008A8930` `SetParty` (`008A8AE7`), `008A8720` (`008A88DA`) and `008A8B40`
+    (`008A8D2B`);
+  - `BSP_Unit_HandleMessage` (`0095ADBE`, `0095ADF0`), whose two message arms re-apply the party
+    or the race;
+  - the base store `00923B80` itself (`00923BBE`), which passes the call down to the child entity
+    at `+48h`.
+- No slot-`+2Ch` dispatch lies in GenerateObject `00944FD0`, `0046D930`, InitAll `00925F20`,
+  the attach `00928A00` or `00927050`. `00927050` stores `+58h` (`0092709C`) and `+54h`
+  (`009270BB`) directly, and its three register calls use slots `+0Ch`, `+98h` and `+F4h`.
+
+**What this means.**
+- On the census, the image mirrors a unit's `Party`/`Race` into Lua only through `SetParty`, a
+  party or race message, or a parent's propagation.
+- That contradicts the shipped helpers' reads of `targetUnit.Party` on units that no script
+  called `SetParty` on (`commandhelpers.lua` 330).
+- So a writer exists that this census cannot see. The likeliest place is a store keyed through a
+  string built at run time, or a table the unit's Lua object inherits from. It is **not
+  located**.
+- The host's pass-A write (sections 17.3 and 23.2) stays a **labelled substitution** for an image
+  writer whose site is unknown. It is not "the mirror at an unread moment".
+
+**0046D930's bag handling, `0046DA2D`..`0046DB02`.** It is not a bag.
+- When the record's `+54h` is non-zero, it looks up an entity by the name at `+58h` (empty when
+  null, `00E18560`) through `00925A90 BSP_EntityRegistry_FindEntityByName` on `[game+19CCh]`.
+  Otherwise the result is null.
+- It then builds an identity 4x4 on the stack (`0046DA5E`..`0046DB00`, one `REP MOVSD` of 16
+  dwords).
+- It passes `[EBP]`, the caller's argument at `[ESP+0C0h]`, the entity found, `&record+14h` and
+  `record+4` to `00468660` (`0046DB1D`). The matrix is the stack block copied at `0046DB00`.
+- So `+54h`/`+58h` of the scene record are a parent flag and the parent's name. They are not the
+  entity's `+54h` Party. This packet did not read how `00468660` uses the parent.
