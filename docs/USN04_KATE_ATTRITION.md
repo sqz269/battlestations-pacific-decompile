@@ -303,3 +303,42 @@ unchanged.
 **Predictions.** Gameplay is identical on every mission. USN04 4700/4500 prints task 6, live 1,
 dead 5, with `torpedo_drop drops=1`. USN13 3200/3000 prints task 2, live 0, dead 2, with
 `drops=0`.
+
+## 11. The turn-rate average's input is the BODY rate, which the host already has (packet `cc9_plane_world_rate`, read)
+
+The plan was to publish `007D9C80`'s world angular rate as the first half of the `0085E4D0` binding.
+The listing says the AA lead does not use it.
+
+- **What `00901C20` reads.** It reads `unit+AF8h..+B00h` (`00901CE5`, `00901CEF`, `00901CF9`,
+  on the unit once `vtable[5Ch](0Fh)` answers plane). The flight controller is `unit+AB0h`
+  (docs/GAMEPLAY_LOOSE_ENDS_2.md:39), so this is `ctl+48h..50h`: the **body-frame** angular rate
+  that `007DA710`'s rate law integrates (docs/PLANE_ANGULAR_VELOCITY.md: body `ctl+48h`, world
+  `ctl+24h`). `007D9C80` writes the world copy at `ctl+24h` = `unit+AD4h`, which this path does
+  not touch.
+- **The host already integrates that rate.** `plane_body_angular` in `src/game_hosts_units.cpp`
+  carries `ctl+48h/+4Ch/+50h` and is written by the rate law near line 17173. No producer
+  needs porting. The missing piece is a `GameUnitsHost` accessor in
+  `include/bsp/game_hosts_units.hpp`, and cc9-ships2 has that header leased
+  (`cc9_prcp03_phase_progress`, until 08:42 UTC).
+- **The rest of the rule, from `00901D23`-`00901EEE`.**
+  - The gate: `|w|^2 > 0.001` (`00D7A23C`; `JBE` skips at or below).
+  - An identity matrix, then `0085E4D0(out, identity, w, 1.0)` with `FLD1` as the scale. That is
+    `rotate_about_axis_0085e4d0` in `include/bsp/plane_advance_pose.hpp`, with
+    `bsp::NativeAdvanceMatrixOps`.
+  - Then `004142E0` rotates the target velocity `V` by `out`, giving `V'` (`transform_point_004142e0`,
+    whose translation row stays zero).
+  - Then `V = (V + V') * 0.5` (`00D7A280`, double) at `00901E92`-`00901EEE`, before the shooter's
+    velocity is subtracted at `00901EF9`.
+  - The body components go in as the rotation axis unchanged, in the image as in the host
+    reconstruction. Nothing turns them into world axes first.
+- **The binding, when the header frees.**
+  - A `GameUnitsHost::unit_plane_body_angular_rate(index, out[3])` accessor.
+  - In the gunnery host's AA lead, behind `kAaTargetTurnAverageBound` (OFF): when the target is a
+    plane and `|w|^2 > 0.001`, apply the rotation-and-average above to the lead velocity.
+
+**Predictions for that pair** (section 8.2 stands).
+- USN04: the 16 Kate death rows keep their killers and categories within the RNG coupling, and
+  their death times move by under 1 s.
+- USN04: Zero deaths move, and the category-1 and category-6 hits on Zeros change by more than 5%.
+- USN04: deaths stay within 44 +- 3.
+- USN02 is identical.
