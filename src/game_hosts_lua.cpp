@@ -22,6 +22,8 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_unit_get_attack_target
+#include "bsp/entity_orders.hpp"     // packet cc9_unit_get_attack_target
 #include "bsp/game_hosts_gunnery.hpp"  // packet cc9_get_property_class_readers
 #include "bsp/recon_sensor_pass.hpp"   // packet cc9_get_property_class_readers
 #include "bsp/game_hosts_hud.hpp"
@@ -316,6 +318,9 @@ int binding_trampoline(lua_State* state) {
     const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
     const bool aa_enable_row = kLuaAAEnableBound && dispatch_row.address == 0x0089c740u;
     const bool ship_speed_row = kLuaSetShipSpeedBound && dispatch_row.address == 0x00890d30u;
+    // Packet cc9_unit_get_attack_target.
+    const bool attack_target_row = kLuaUnitGetAttackTargetBound
+        && dispatch_row.address == 0x008a6de0u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -439,6 +444,9 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (attack_target_row && !host->error_replay()) {
+        return host->run_unit_get_attack_target_008a6de0(state, argc);
     }
     if (ship_speed_row) {
         if (!host->error_replay()) host->run_set_ship_speed_00890d30(state, argc);
@@ -4293,6 +4301,84 @@ int GameMissionLuaHost::run_set_ship_speed_00890d30(lua_State* state, int argume
     return 0;
 }
 
+// Packet cc9_unit_get_attack_target. 008A6DE0 UnitGetAttackTarget(entity): argument 0
+// through 00888AA0, the director from the entity's vtable[114h] (008A6EF8), then:
+//   director->vtable[48h](2) (008A6F0D) true  -> director->vtable[2Ch]() (008A6F1A), which
+//     is 008364E0 `MOV EAX,[ECX+238h]`, the fire target, in the base (00D09EC0) and the
+//     ship (00D09F58) director vtables;
+//   false -> 0071BE40 current command (008A6F1E); its vtable[0Ch] category 1 or 2
+//     (008A6F34..008A6F3C) -> 0071EB60 then 00521EA0 (008A6F44..008A6F4B); else nil.
+// Slot 48h is a constant test on its argument: 008364B0 (base) is true for 0 and 2,
+// 00836790 (ship; no Ghidra function) true for 0, 2 and 3, 0084D8F0 (the squadron block
+// 00D0BD98 that 007F5009 stores at +348h) true for 0 and 1. So a ship's director always
+// answers its fire target and only a squadron reaches the command arm.
+// The result: non-null with +5Dh clear (008A6F58) -> thisTable[tostring(+174h)], else nil.
+// SUBSTITUTIONS (labelled): "ship director" is a units-host slot with a ship AI row, and
+// director+238h is that row's fire target, which the ship AI host holds by name; +5Dh
+// clear is GameUnitsHost::unit_active; an entity with no units-host slot answers nil.
+int GameMissionLuaHost::run_unit_get_attack_target_008a6de0(lua_State* state,
+                                                           int argument_count) {
+    (void)argument_count;
+    ++summary_.attack_target_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.attack_target_unresolved;
+        ++summary_.attack_target_nil;
+        ::lua_pushnil(state);
+        return 1;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    std::size_t target_plus_one = 0;
+    const GameShipAiRow* ship_row = nullptr;
+    if (GameShipAiHost* ai = units->ship_ai()) {
+        for (const GameShipAiRow& r : ai->rows()) {
+            if (r.unit_index == index) { ship_row = &r; break; }
+        }
+    }
+    const char* arm = "command";
+    if (ship_row != nullptr) {
+        // director->vtable[48h](2) true: the fire target, director+238h.
+        arm = "fire";
+        ++summary_.attack_target_fire_arm;
+        if (!ship_row->fire_target.empty()) {
+            for (std::size_t i = 0; i < units->count(); ++i) {
+                const GameUnitRow* candidate = units->unit_row(i);
+                if (candidate != nullptr && candidate->name == ship_row->fire_target) {
+                    target_plus_one = i + 1;
+                    break;
+                }
+            }
+        }
+    } else {
+        ++summary_.attack_target_command_arm;
+        const std::uint32_t command = units->director_current_command_0071be40(index);
+        const bsp::EntityOrderCommandClass* klass =
+            command != 0u ? bsp::entity_order_command_class_by_address(command) : nullptr;
+        if (klass != nullptr && (klass->category == 1 || klass->category == 2)) {
+            bsp::SceneCommandTarget target;
+            int mode = 0;
+            if (units->active_command_descriptor_0071eb60(index, target, mode)) {
+                target_plus_one = units->resolve_command_target_00521ea0(target);
+            }
+        }
+    }
+    const GameUnitRow* self = units->unit_row(index);
+    const GameUnitRow* hit = target_plus_one != 0 ? units->unit_row(target_plus_one - 1) : nullptr;
+    const bool live = target_plus_one != 0 && units->unit_active(target_plus_one - 1);
+    if (live && push_resolved_entity_by_id(state, static_cast<int>(target_plus_one))) {
+        ++summary_.attack_target_pushed;
+    } else {
+        ++summary_.attack_target_nil;
+        ::lua_pushnil(state);
+    }
+    log_.notef("  UnitGetAttackTarget 008a6de0: \"%s\" arm=%s target=\"%s\" pushed=%d "
+        "(packet cc9_unit_get_attack_target)", self != nullptr ? self->name.c_str() : "?", arm,
+        hit != nullptr ? hit->name.c_str() : "", live ? 1 : 0);
+    log_.implemented("MissionLuaNative::UnitGetAttackTarget", "008a6de0");
+    return 1;
+}
+
 // Packet cc9_lua_aa_enable. 0089C740 AAEnable(entity, flag): argument 0 through
 // 00888AA0, argument 1 through 00B66250 (lua_toboolean), then, when the entity's
 // vtable[114h] director exists, 0071E050(flag) -> director+221h.
@@ -5636,6 +5722,12 @@ void GameMissionLuaHost::report_mission_script_state() {
     log_.notef("summary mission script ship speed bound=%d calls=%llu units=%llu unresolved=%llu "
         "(00890D30 -> 00890E6F, packet cc9_lua_set_ship_speed)", kLuaSetShipSpeedBound ? 1 : 0,
         summary_.ship_speed_calls, summary_.ship_speed_units, summary_.ship_speed_unresolved);
+    log_.notef("summary mission script attack target bound=%d calls=%llu fire_arm=%llu "
+        "command_arm=%llu pushed=%llu nil=%llu unresolved=%llu (008A6DE0, packet "
+        "cc9_unit_get_attack_target)", kLuaUnitGetAttackTargetBound ? 1 : 0,
+        summary_.attack_target_calls, summary_.attack_target_fire_arm,
+        summary_.attack_target_command_arm, summary_.attack_target_pushed,
+        summary_.attack_target_nil, summary_.attack_target_unresolved);
     log_.notef("summary mission script aa enable bound=%d calls=%llu disables=%llu "
         "unresolved=%llu (0089C740 -> 0071E050 -> director+221h, packet cc9_lua_aa_enable)",
         kLuaAAEnableBound ? 1 : 0, summary_.aa_enable_calls, summary_.aa_enable_disables,

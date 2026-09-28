@@ -1919,3 +1919,54 @@ Worker cc9-lua2, 2026-09-28. This is item 2 of the refreshed ranking: LOMP06, 21
 - **What it would change.** LOMP06 asks on `Mission.PlayerUnit` (`06_crucial_cargo.lua` 696).
   With a live target, `luaSubC1luaReportEnemy` reaches `luaGetReconLevel` and `luaSubC1AddUnit`,
   which are objectives, so gameplay could move.
+
+### The director slots and the command kinds (packet `cc9_unit_get_attack_target`, V)
+
+Worker cc9-lua3, 2026-09-28. This closes the two open reads above.
+
+**The director is the weapon director.** For a ship, the entity's `vtable[114h]` is `0080E150`
+`MOV EAX,[ECX+738h]`. That object is built by `008366D0`, which stores the vtable `00D09F58`
+over the base's `00D09EC0` (`008363E0`). For a squadron, `vtable[114h]` is `007ECFD0`
+`MOV EAX,[ECX+348h]`, the `22Ch` block `0084D810` builds with the vtable `00D0BD98`.
+
+| vtable | slot `2Ch` | slot `48h` | `48h(2)` |
+| --- | --- | --- | --- |
+| `00D09EC0` weapon director base | `008364E0` `MOV EAX,[ECX+238h]` (the fire target) | `008364B0`: true for 0 and 2 | true |
+| `00D09F58` weapon director (ships) | `008364E0` | `00836790`: true for 0, 2 and 3 | true |
+| `00D0BD98` squadron command block | `0071F150`: `0071EBF0` then `00521EA0` | `0084D8F0`: true for 0 and 1 | false |
+
+- **Slot `48h` is a constant test on its argument.** No body reads the object. What the
+  argument means is not established; the name is left open.
+- **A ship always answers its fire target,** `director+238h`, the field `00835860` writes and
+  the gunnery host reads as `fire_target`. Only a squadron reaches the command arm.
+- **`00836790` has no Ghidra function.** Its body is `00836790..008367AE` inclusive (`RET 4` at
+  `008367AC`, `INT3` at `008367AF`). It sits inside the range Ghidra gives `008366D0`.
+
+**The command kinds.** The command's `vtable[0Ch]` is the class category in
+`kEntityOrderCommandClasses` (`src/entity_orders.cpp`). Category 1 is `settarget`,
+`artillery`, `strafe` and `dogfight`. Category 2 is `torpedo`, `divebomb`, `levelbomb`,
+`dropkamikaze`, `depthcharge`, `rocket`, `kamikaze` and `attackmove`. So the command arm answers
+the target of an attack order and nil for movement, `cleartarget` and the rest.
+
+### The binding (`kLuaUnitGetAttackTargetBound`, committed OFF)
+
+- `GameMissionLuaHost::run_unit_get_attack_target_008a6de0` takes the fire-target arm when the
+  entity has a ship AI row, and the command arm otherwise.
+- The fire-target arm resolves the ship AI row's `fire_target`, the name `00835860` last
+  stored.
+- The command arm uses the units host's `0071BE40`, the class category, `0071EB60` and
+  `00521EA0`.
+- A target that is `unit_active` is pushed as its `thisTable` slot. Anything else is nil.
+- The census is `summary mission script attack target bound=.. calls=.. fire_arm=..
+  command_arm=.. pushed=.. nil=.. unresolved=..`, plus one line per call.
+- **SUBSTITUTIONS, labelled.** "Has a ship AI row" stands in for the ship's director class.
+  `unit_active` stands in for the `+5Dh` removed byte. An entity with no units-host slot
+  answers nil.
+
+**Predictions** (written before the runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| LOMP06 1200/1000 | **exit 1.** All 21 calls take the fire arm on the Narwhal. The host already gives the Narwhal a fire target (`fire=Komaki Maru` in cc9-lua2's `sp_on_lomp06.log`), so most calls push it. `GetSubmarineDepthLevel` goes 21 -> about 42, since line 699 now runs. `GetProperty` `reconlevel` asks rise by the same number, since the seeded depth level is 1. `luaSubC1AddUnit` runs only if the target is one of the two crucial cargo ships picked by `luaPickRnd` and its allied recon level is at least 2. That would add `luaObj_AddUnit` and `MissionNarrative` calls, which are script state, not unit motion |
+| USN01, USN02, USN04 | no call, exit 1 |
