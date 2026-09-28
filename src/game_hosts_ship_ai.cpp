@@ -899,6 +899,29 @@ struct GameShipAiHost::Impl {
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
     unsigned long long script_fire_target_sets{0};      // packet cc9_usn02_deruyter_fire
+    // Packet cc9_weapon_director_fire_target.
+    unsigned long long command_fire_target_requests{0};
+    unsigned long long fire_target_store_refusals{0};
+    unsigned long long fire_target_store_changes{0};
+    // 00836240: applies when force is set, or +23Ch is clear, or +238h is null;
+    // then +23Ch = force and, when the target changes, +238h = target.
+    void store_fire_target(Controller& ctl, GameShipAiRow& row, std::size_t target_plus_one,
+                           bool force) {
+        if (!(force || !ctl.fire_target_locked || ctl.fire_target == 0)) {
+            ++fire_target_store_refusals;
+            return;
+        }
+        ctl.fire_target_locked = force;
+        const bsp::NativeHandle target = static_cast<bsp::NativeHandle>(target_plus_one);
+        if (ctl.fire_target != target) {
+            ctl.fire_target = target;
+            const GameUnitRow* unit_row = target_plus_one != 0
+                ? units.unit_row(target_plus_one - 1) : nullptr;
+            row.fire_target = unit_row != nullptr ? unit_row->name : std::string();
+            ++fire_target_store_changes;
+        }
+        done("WeaponDirector::store_fire_target", 0x00836240u);
+    }
     unsigned long long script_fire_target_releases{0};
     GameShipAiSummary summary{};
     unsigned long long steps{0};
@@ -7745,12 +7768,22 @@ public:
         ++row_.attackmove_issues;
         ++owner_.summary.attackmove_issues;
     }
-    void set_fire_target(void* entity, bool) override {
-        owner_.record("AutoTarget::set_fire_target", 0x00835860u);
-        ctl_.fire_target = static_cast<bsp::NativeHandle>(
-            reinterpret_cast<std::uintptr_t>(entity));
-        ++row_.fire_target_sets;
-        ++owner_.summary.fire_target_sets;
+    void set_fire_target(void* entity, bool force) override {
+        if constexpr (kWeaponDirectorFireTargetBound) {
+            // 009F5F21: 00835860(target, 0) -> 00836240's gate and store.
+            owner_.store_fire_target(ctl_, row_, static_cast<std::size_t>(
+                reinterpret_cast<std::uintptr_t>(entity)), force);
+            owner_.done("AutoTarget::set_fire_target", 0x00835860u);
+            ++row_.fire_target_sets;
+            ++owner_.summary.fire_target_sets;
+        } else {
+            static_cast<void>(force);
+            owner_.record("AutoTarget::set_fire_target", 0x00835860u);
+            ctl_.fire_target = static_cast<bsp::NativeHandle>(
+                reinterpret_cast<std::uintptr_t>(entity));
+            ++row_.fire_target_sets;
+            ++owner_.summary.fire_target_sets;
+        }
     }
     bool director_allow_move() override {
         const bsp::WeaponDirectorState defaults{};
@@ -8289,6 +8322,15 @@ void GameShipAiHost::controller_step(float seconds) {
     // The session pump (fixed-step row 9) drains last step's queue before the
     // world entity tick runs the controllers (packet cc9_pass_side_message).
     if (kShipPassSideMessageBound) host.deliver_pass_side_messages();
+    if constexpr (kWeaponDirectorFireTargetBound) {
+        // The routed 5Eh messages of the command paths' 00835860 calls.
+        for (const GameFireTargetRequest& r : host.units.commands().take_fire_target_requests()) {
+            if (r.unit >= host.controllers.size() || r.unit >= host.rows.size()) continue;
+            host.store_fire_target(host.controllers[r.unit], host.rows[r.unit],
+                r.target_plus_one, r.force);
+            ++host.command_fire_target_requests;
+        }
+    }
     for (std::size_t index = 0; index < host.controllers.size(); ++index) {
         Impl::Controller& ctl = host.controllers[index];
         GameShipAiRow& row = host.rows[index];
@@ -8508,16 +8550,8 @@ void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t ta
     // 00836240: applies when force is set, or +23Ch is clear, or +238h is null;
     // then +23Ch = force and, when the target changes, +238h = target.
     if (unit >= impl_->controllers.size() || unit >= impl_->rows.size()) return;
-    Impl::Controller& ctl = impl_->controllers[unit];
-    if (!(force || !ctl.fire_target_locked || ctl.fire_target == 0)) return;
-    ctl.fire_target_locked = force;
-    const bsp::NativeHandle target = static_cast<bsp::NativeHandle>(target_plus_one);
-    if (ctl.fire_target != target) {
-        ctl.fire_target = target;
-        const GameUnitRow* row = target_plus_one != 0
-            ? impl_->units.unit_row(target_plus_one - 1) : nullptr;
-        impl_->rows[unit].fire_target = row != nullptr ? row->name : std::string();
-    }
+    impl_->store_fire_target(impl_->controllers[unit], impl_->rows[unit], target_plus_one,
+        force);
     ++impl_->script_fire_target_sets;
     impl_->done("WeaponDirector::store_fire_target", 0x00836240u);
 }
@@ -8612,6 +8646,11 @@ void GameShipAiHost::report() {
         "(0089A8B0 / 00835860 / 00836240, packet cc9_usn02_deruyter_fire)",
         kScriptFireTargetBound ? 1 : 0, host.script_fire_target_sets,
         host.script_fire_target_releases);
+    host.log.notef("summary mission ship ai director fire target bound=%d command_requests=%llu "
+        "refusals=%llu changes=%llu (00835860 -> 00836240, packet "
+        "cc9_weapon_director_fire_target)", kWeaponDirectorFireTargetBound ? 1 : 0,
+        host.command_fire_target_requests, host.fire_target_store_refusals,
+        host.fire_target_store_changes);
     host.log.notef("summary mission ship ai marker goals bound=%d resolves=%llu (00521EA0 / "
         "009DBCC0 on a NavPoint, packet cc9_prcp03_phase_progress)",
         kShipAiMarkerTargetBound ? 1 : 0, host.summary.marker_goal_resolves);

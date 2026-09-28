@@ -17,6 +17,7 @@
 // include/bsp/game_hosts_commands.hpp.
 
 #include "bsp/game_hosts_commands.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"
 
 #include "bsp/game_hosts.hpp"
 
@@ -152,6 +153,7 @@ struct GameCommandsHost::Impl {
 
     GameHostLog& log;
     std::vector<GameCommandUnit> units;
+    std::vector<GameFireTargetRequest> fire_target_requests;   // cc9_weapon_director_fire_target
     std::vector<GameDirector> directors;
     // Packet cc9_target_release.
     const GameCommandTargetFactsSource* target_facts{nullptr};
@@ -667,8 +669,24 @@ public:
         return (klass != nullptr) ? klass->category : -1;
     }
     void set_fire_target(std::uint32_t target_object) override {
-        static_cast<void>(target_object);
-        chain_.owner.record("WeaponDirector::set_fire_target", 0x00835860u);
+        // 00835930, SetCommand's call with force 1 (00835924 PUSH 1). The target
+        // is resolve_target_object's pointer: one of this host's unit records.
+        if (!kWeaponDirectorFireTargetBound) {
+            chain_.owner.record("WeaponDirector::set_fire_target", 0x00835860u);
+            return;
+        }
+        std::size_t plus_one = 0;
+        const void* object = reinterpret_cast<const void*>(
+            static_cast<std::uintptr_t>(target_object));
+        for (std::size_t i = 0; i < chain_.owner.units.size(); ++i) {
+            if (&chain_.owner.units[i] == object) { plus_one = chain_.owner.units[i].index + 1; break; }
+        }
+        if (object != nullptr && plus_one == 0) {
+            chain_.owner.record("WeaponDirector::set_fire_target_unresolved", 0x00835930u);
+            return;
+        }
+        chain_.owner.fire_target_requests.push_back({chain_.unit.index, plus_one, true});
+        chain_.owner.done("WeaponDirector::set_fire_target", 0x00835860u);
     }
     int command_count() override {
         // Packet cc8_ship_drive. 0071D780 has exactly one caller in the image:
@@ -951,6 +969,8 @@ public:
         return 0u;
     }
     void set_fire_target_00835860(std::uint32_t, int) override {
+        // LABELLED (packet cc9_weapon_director_fire_target): stays a record; this
+        // arm (00816E30) is not reached on the reference runs.
         chain_.owner.record("EntityCommandArm::set_fire_target", 0x00835860u);
     }
     bool controller_belongs_to_another_007788b0() override {
@@ -1662,8 +1682,18 @@ public:
     void raise_override_stage(int) override {
         owner_.record("WeaponDirector::raise_secondary_stage", 0x0071d9e0u);
     }
-    void set_fire_target(std::uint32_t, bool) override {
-        owner_.record("WeaponDirector::set_fire_target", 0x00835860u);
+    void set_fire_target(std::uint32_t target, bool force) override {
+        // 00835E07, BeginCurrentCommand's call; `target` is a unit index + 1 here.
+        if (!kWeaponDirectorFireTargetBound) {
+            owner_.record("WeaponDirector::set_fire_target", 0x00835860u);
+            return;
+        }
+        std::size_t plus_one = 0;
+        if (target != 0u && target - 1u < owner_.units.size()) {
+            plus_one = owner_.units[target - 1u].index + 1;
+        }
+        owner_.fire_target_requests.push_back({unit_.index, plus_one, force});
+        owner_.done("WeaponDirector::set_fire_target", 0x00835860u);
     }
     std::uint32_t fire_target() override {
         owner_.record("WeaponDirector::fire_target", 0x008364e0u);
@@ -2160,6 +2190,12 @@ bool GameCommandsHost::set_path_follow_pair_0071c1b0(std::size_t unit_index,
 // join index, `advances` and `travelled` every 3.06 s. That is the whole of the
 // previous packet's "0 advances in 900 tries" and its `travelled 48.30`: 48.30 m
 // is one re-issue interval of motion, i.e. the Yorktown steaming at 15.8 m/s.
+std::vector<GameFireTargetRequest> GameCommandsHost::take_fire_target_requests() {
+    std::vector<GameFireTargetRequest> out;
+    out.swap(impl_->fire_target_requests);
+    return out;
+}
+
 bool GameCommandsHost::begin_current_command_00835c70(std::size_t unit_index,
     float unit_x, float unit_z) {
     Impl& host = *impl_;

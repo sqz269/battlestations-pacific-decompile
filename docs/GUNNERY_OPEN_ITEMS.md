@@ -430,3 +430,64 @@ missions; `AutoTarget::set_fire_target` 2235 on USN02; USN02's script makes 14 `
   `cc9_usn02_deruyter_fire`. Shots about the same; hits on DeRuyter up.
 - **USN04 and the rest:** no script fire targets, so only the command paths move; identity
   where no command carries a target.
+
+## 14. The director fire-target binding (packet `cc9_weapon_director_fire_target`, switch `kWeaponDirectorFireTargetBound`, OFF)
+
+Built on main `bf6afe7ff`, which already carries cc9-ships2's `kScriptFireTargetBound`. That
+switch makes the AutoTarget tick read the director's lock at `009F5E37` and keep a locked
+scripted target, so the tick's own override of a scripted target is closed. What this switch adds:
+
+- **The AutoTarget write goes through `00836240`.** `AutoTarget::set_fire_target` now calls
+  `Impl::store_fire_target` with the tick's `force` of 0 (`009F5F1E`): it is refused while a
+  forced target holds the lock, and it clears the lock when accepted.
+- **The command paths store their targets.**
+  - `WeaponDirector::set_fire_target` for `SetCommand` (`00835930`, force 1; the target pointer is
+    resolved against the commands host's unit records).
+  - `WeaponDirector::set_fire_target` for `BeginCurrentCommand` (`00835E07`, the caller's force;
+    the target is unit index + 1).
+  - Both queue a `GameFireTargetRequest` (`GameCommandsHost::take_fire_target_requests`), which the
+    ship-AI host applies at the top of `controller_step`, beside the session pump that delivers
+    routed messages. That stands in for the kind-5Eh message's routing.
+- **Labelled.** The entity-command arm (`00816E30`) stays a record: it is not reached on the
+  reference runs. The five order sites whose `force` was not traced stay records.
+- **The census line.** `summary mission ship ai director fire target bound= command_requests=
+  refusals= changes=`.
+
+**Reach on the OFF logs of the current head** (`TA_OFF_<m>`): `WeaponDirector::set_fire_target`
+is called 28 times on USN02, 140 on USN04, 15 on USN01 and 262 on USN13; `AutoTarget::set_fire_target`
+1146 times on USN02. JM06 is measured on its OFF run.
+
+**Predictions, recorded before the pair.**
+
+| mission | ON prediction |
+| --- | --- |
+| USN02 9200/9000 | `command_requests` about 28; target switches fall because forced command targets lock the director; the DRKillers keep DeRuyter longer; hits on DeRuyter up; deaths and hits move (exit 3) |
+| USN04 4700/4500 | `command_requests` about 140; the ships under orders hold their ordered targets. Moves (exit 3), deaths within 40 +- 3 |
+| USN01 3200/3000 | `command_requests` about 15; small moves or identity; deaths 5 +- 1 |
+| JM06 3200/3000 | identity where no command carries a target; otherwise small moves |
+
+## 15. The director fire-target pairs, and the flip (2026-09-28)
+
+OFF `local\WD_OFF_<m>.log` (`02e5661e3`, switch off); ON `local\WD_ON_<m>.log` (`pair_export
+--commit a34b68f6b --flip kWeaponDirectorFireTargetBound=true`; `a34b68f6b` only restructures a
+branch so that the ON build has no unreachable code). RNG streams and the death table were on.
+
+| mission | OFF shots / hits / deaths | ON | census | prediction | verdict |
+| --- | --- | --- | --- | --- | --- |
+| USN02 | 1083 / 881 / 22 | 1164 / 991 / 24, pair_diff 3 | 43 command requests, 84 target changes, 0 refusals | moves; the DRKillers keep DeRuyter | moved: held. DeRuyter: **failed**, she dies slightly earlier (194.76 s against 199.21 s) |
+| USN04 | 5333 / 644 / 40 | identical (pair_diff 1) | 72 requests, 72 changes | moves | **failed**: the ordered targets equal the automatic ones |
+| USN01 | 623 / 178 / 5 | identical (pair_diff 1) | 8 requests | identity or small moves | held |
+| JM06 | 233 / 145 / 2 | pair_diff 3: one unit-table value (a PBY's nearest target 8163 -> 7770) | 14 requests, 3 unresolved `SetCommand` targets | small moves | held |
+
+**USN02's outcome changes.**
+- **The fight.** With forced command targets holding the directors, Houston takes 1104 instead of
+  4095, Exeter 6316 instead of 3859.
+- **The failure.** Exeter is sunk at 211.76 s, and `usn_2_java.lua:521` ends the mission in phase 2
+  (`EndMission=true`). OFF she survives with 4178.
+
+**The three unresolved targets on JM06.** `SetCommand`'s target pointer did not match one of the
+commands host's unit records. Those calls stay records (`WeaponDirector::set_fire_target_unresolved`).
+
+**Decision: `kWeaponDirectorFireTargetBound` is ON.** The gate and store are `00836240`'s, and
+every command request was stored without a refusal. The failed rows are consequences, not
+divergences. The USN02 failure is flagged for reference g.

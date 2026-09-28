@@ -82,6 +82,18 @@ inline constexpr bool kShipAiMarkerTargetBound = true;
 // USN01, USN04 and JM06 identical.
 inline constexpr bool kScriptFireTargetBound = true;
 
+// Packet cc9_weapon_director_fire_target (docs/GUNNERY_OPEN_ITEMS.md section 14). True:
+// every 00835860 the host reproduces goes through 00836240's gate and store
+// (store_fire_target_00836240): the AutoTarget tick's call unforced (009F5F1E PUSH 0),
+// SetCommand's forced (00835924 PUSH 1), BeginCurrentCommand's with its own force
+// (00835E07). The commands host queues its two (take_fire_target_requests) and this
+// host applies them at the session pump, as the routed 5Eh message arrives. LABELLED:
+// the entity-command arm (00816E30) and the order appliers stay records; the arm is
+// not reached on the reference runs. False: the AutoTarget tick writes the target
+// directly and the command paths store nothing, as before.
+// ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 15).
+inline constexpr bool kWeaponDirectorFireTargetBound = true;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;

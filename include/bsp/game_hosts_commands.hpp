@@ -216,6 +216,14 @@ struct GameCommandCompletion {
 
 // The weapon directors this process owns, one per created unit, and the three
 // message hops between them.
+// Packet cc9_weapon_director_fire_target: one 00835860 call from a command path,
+// queued for the ship-AI host's 00836240 store. `target_plus_one` is 0 for null.
+struct GameFireTargetRequest {
+    std::size_t unit{0};
+    std::size_t target_plus_one{0};
+    bool force{false};
+};
+
 class GameCommandsHost {
 public:
     explicit GameCommandsHost(GameHostLog& log);
@@ -295,6 +303,9 @@ public:
     // arm: the path object is built when the command BEGINS, which is when it
     // reaches slot 0, and not once per 5Bh message. Answers true while slot 0
     // holds a begun `moveonpath` with points.
+    // Drains the 00835860 requests the command paths queued (packet
+    // cc9_weapon_director_fire_target).
+    std::vector<GameFireTargetRequest> take_fire_target_requests();
     bool begin_current_command_00835c70(std::size_t unit_index, float unit_x,
         float unit_z);
 
