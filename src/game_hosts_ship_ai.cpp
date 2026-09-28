@@ -4879,6 +4879,19 @@ public:
         out.y = descriptor.position[1];
         out.z = descriptor.position[2];
         out.target = owner_.units.resolve_command_target_00521ea0(descriptor);
+        if (kShipAiMarkerTargetBound && !out.has_position && out.target == 0u &&
+            descriptor.object_id != 0) {
+            // 00521EA0 would resolve the NavPoint and 009DBCC0 would place the
+            // goal at its matrix times the zero offset: its position.
+            float world[3] = {0.0f, 0.0f, 0.0f};
+            if (owner_.units.scene_marker_position(descriptor.object_id, world)) {
+                out.has_position = true;
+                out.x = world[0];
+                out.y = world[1];
+                out.z = world[2];
+                ++owner_.summary.marker_goal_resolves;
+            }
+        }
         return out;
     }
     std::uint32_t resolve_command_target_00521ea0() override {
@@ -8459,6 +8472,9 @@ void GameShipAiHost::report() {
         host.summary.units, host.summary.ai_owned, host.summary.steps, host.summary.gated,
         host.summary.replans, host.summary.state_steps_concrete,
         host.summary.state_steps_recorded, host.summary.publishes, host.summary.promotions);
+    host.log.notef("summary mission ship ai marker goals bound=%d resolves=%llu (00521EA0 / "
+        "009DBCC0 on a NavPoint, packet cc9_prcp03_phase_progress)",
+        kShipAiMarkerTargetBound ? 1 : 0, host.summary.marker_goal_resolves);
     host.log.notef("summary mission ship ai states cruise=%zu stop=%zu attackmove=%zu "
         "movetopos=%zu other=%zu", host.summary.states_cruise, host.summary.states_stop,
         host.summary.states_attackmove, host.summary.states_movetopos,

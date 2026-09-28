@@ -81,3 +81,77 @@ Main's new `unit_kind_query` core supplies native class-test behavior. Its
 GameUnitsHost consumers still need a separate binding to remove the Destroyer
 ancestry assumption and preserve unresolved class identity explicitly. Keep
 the explicit resolved ship guard until that runtime binding is complete.
+
+## A command aimed at a scene marker (packet `cc9_prcp03_phase_progress`)
+
+Worker cc9-ships2, on main `72f785ab6`. Ghidra was read-only.
+
+### Why PRCP03 never reaches phase 4
+
+`prcp_07_tarawa.lua` advances on three escort objectives. Each is a `luaGetDistance` from a ship to a
+NavPoint, and each ship is ordered there with `NavigatorMoveToRange(ship, FindEntity(point))`:
+
+| phase | ship, from | NavPoint | done within | check |
+| --- | --- | --- | --- | --- |
+| 1 | Aylwin (-7400, 7800), with CV26/CV27 in formation (`:542..544`) | CarrierPoint (-2500, 3001) | 1600 m | `CheckPrimObjective1`, `:781` |
+| 2 | Portland (-7600, -7600), generated in `PreparePhase2` (`:907`) | SupportPoint (-500, -2501), then SupportPoint2 (1250, -2501) | 1800 m | `CheckPrimObjective2`, `:1100` |
+| 3 | Schroeder (8801, -2000), generated in `PreparePhase3` (`:1166`) | DDPoint (2000, 1501) | 1200 m | `CheckPrimObjective3`, `:1280` |
+
+Phase 3's `FadeInAgain3` leads through `VictoryMovie3` and `luaIngameMovieEnd8` to `PreparePhase4`
+(`:1359`), which generates the seven Hidden troop transports.
+
+**The host gap.**
+- A `moveto` at a NavPoint carries a descriptor with an object id and no position. On PRCP03's 9000
+  run, Aylwin's is `mode=1 object id=50000`, which is CarrierPoint.
+- In the image, `00521EA0` resolves the uint16 id through the handle tables `00F89A54` /
+  `00F89AA8`, which hold every entity. `009E2FB0` latches that object, and `009DBCC0` puts the goal
+  at the object's matrix times the zero offset: the NavPoint's position.
+- This host's `00521EA0` answers units only. So nothing is latched and the goal is the zero triple,
+  the world origin. Aylwin's `d32c` runs from 10559 m to 6408.59 m over 9000 frames toward (0, 0),
+  not toward CarrierPoint (`local\lo_smoke_prcp03.log`).
+- **Phases 1 and 2 would still complete by accident.** The line to the origin passes about 252 m
+  from CarrierPoint and about 1415 m from SupportPoint.
+- **Phase 3 never completes.** Schroeder's line passes about 1908 m from DDPoint, and it stops at
+  the origin, about 2500 m away, against a 1200 m test. So PRCP03 stalls in phase 3 on this host.
+  It is a host gap, not the image's behaviour.
+
+**A budget question on top.** At Aylwin's measured 9.22 m/s (4151 m in 450 s):
+- phase 1 needs about 5260 m, so about 570 s, about 11,400 frames;
+- phase 2 needs about 7000 m for Portland's battleship formation;
+- phase 3 needs about 6300 m for Schroeder, with each phase's movies and blackouts in between.
+
+**`PreparePhase4` would need roughly 40,000 to 45,000 mission frames under lockstep 0.05, image or
+host.** PRCP03 at 9200/9000 cannot show the transports either way.
+
+### The binding
+
+`kShipAiMarkerTargetBound`, in `include/bsp/game_hosts_ship_ai.hpp`, is committed OFF.
+- The script-orders host's `register_scene_marker` now also hands each marker's authored world
+  position to the units host (`register_scene_marker_position` / `scene_marker_position`).
+- In the ship AI's `0071EB60` binding, a descriptor with no position whose object id resolves to no
+  unit but names a scene marker supplies that marker's position as the goal.
+- A new summary line counts the resolves: `summary mission ship ai marker goals`.
+
+**Labelled substitutions:**
+- The marker is handed over as a position, not as a latched object, so `raw_target_0b20` stays 0.
+  The image holds the NavPoint there, and `009F1491` filters it out as not `IsKindOf(2)`.
+- The weapon director's arrival test (`00836A6C`) and every other `00521EA0` consumer still do not
+  resolve markers.
+
+### Predictions, before any run
+
+**PRCP03 9200/9000, gameplay moves (exit 3):**
+- Aylwin's goal becomes CarrierPoint. Its heading changes by about 2 degrees (2.346 rad instead of
+  2.383).
+- It ends about 2700 m from CarrierPoint, so phase 1 is **not** completed.
+- There is no `PreparePhase2`, no generated battleship and no transport.
+- The marker-goal resolves are nonzero.
+- Deaths and hit records may shift slightly with the carrier formation's track, around the OFF
+  side's numbers.
+
+**USN01 3200/3000, gameplay moves (exit 3).** Convoy1 (`Cruise`, then `moveto` ConvoyGoTo at
+(0, -12000)) turns south toward the marker instead of east toward the origin. Its heading goes from
+about 1.556 to about 2.83 rad.
+
+**USN02 9200/9000 and USN04 4700/4500: identical (exit 0 or 1).** Neither log has a `moveto` at a
+marker id.

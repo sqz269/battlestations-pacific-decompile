@@ -427,6 +427,9 @@ void GameScriptOrdersHost::register_scene_marker(int id, const std::string& name
     marker.position[1] = world_position[1];
     marker.position[2] = world_position[2];
     markers_.push_back(marker);
+    // Packet cc9_prcp03_phase_progress: the ship AI's goal needs the same
+    // position when a command names this marker.
+    units_.register_scene_marker_position(id, world_position);
 }
 
 // Packet cc8_airops_launch_tick. 006C5050 fills a scene property bag - `Type`
