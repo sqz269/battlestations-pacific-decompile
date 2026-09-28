@@ -2585,3 +2585,55 @@ because the inverse inertia is zero. `kShipHitRollTorqueBound = true`.
 **The follow-up** is the collision AABB producer `00C5C940`. Once a hull has a real inertia, these
 torques act, and USN02 (26 of them, up to 4.0e6) is the row to re-pair. The minus sign of this
 installation's `TorpedoForce` reverses the roll direction the axis sign gives.
+
+## 47. The hull inertia: what the image needs, and what is missing (packet `cc9_hull_inertia`, read, cc9-gunnery9)
+
+Section 46.5's follow-up. docs/SHIP_HULL_BODY.md and docs/SHIP_HULL_SHAPES.md already read the
+whole path from the shapes to the inertia. This section places the one missing input and plans the
+binding. Names are hypotheses.
+
+### 47.1 The chain, with what is already read
+
+| step | the image | state |
+| --- | --- | --- |
+| which collision records become shapes | `00938F61..0093918C` walks `model+4Ch` and keeps records owned by `firstnode`, `model+0Ch`, `front` or `back` | read (SHIP_HULL_SHAPES) |
+| the shape descriptor | type 4 (convex mesh), identity rotation, translation from the record, `desc+14h` = the address of `record+0Ch` | read |
+| the shape's own box | `00C57C40`: `mesh = *(record+0Ch)`, local box `mesh+18h..+2Ch`, expanded by 0.02, pushed through the shape transform | read, reconstructed in `bsp/ship_hull_shapes.hpp` |
+| the body's box | `00C55FC0`: the union of the shape boxes into `B+38h..+4Ch` | read, reconstructed |
+| the inertia | `00939A89..00939C05`: extent = max - min; `I = mul * (Mass/12) * (ey2+ez2, ex2+ez2, ex2+ey2)`; `00C37E70` | read, reconstructed (the host's `--hull-extent` probe input) |
+| **the convex mesh's local box `mesh+18h..+2Ch`** | the Dyn convex mesh object the model's collision record points at | **not read: its producer is unknown** |
+
+### 47.2 What this read added
+
+- **The record's `+0Ch` is a handle.** The `ConvexObject` resource (parser tables `00CFD7E8` and
+  `00CFD80C`; its parse slot `006FAF00` builds a `2Ch`-byte object through `006F9CD0`) has vtable
+  `00CFB6A4` and embeds at `+0Ch` a `{pointer, 0}` pair (`00C32D50`). So `*(record+0Ch)` is a
+  pointer to a separately built Dyn convex mesh. The parse itself (`006FAD70`: `006FA7F0`,
+  `006FA910`, `006FACE0`, `006F9B20` reading u32 lists) fills index arrays and does not write that
+  pointer. **Where the Dyn mesh is created, and how its box is computed, is unread.**
+- **The chunk layout, read from this installation's model** (`models/ships/us/deruyter.mmod`,
+  46,865,813 bytes; `local\g9_mmod.py`). After the name `ConvexObject` (length 0Ch before it)
+  come a u32 chunk size (`5EC4h`), a u32 0, and a u32 record count (`65h` = 101 in the first
+  object). Each record is a float3 position followed by three index lists, each prefixed by the
+  same count (4, 4, 4 in the first object, 3, 3, 3 in the second). The positions are vertices, so
+  the local box is most likely their min and max. **That is a hypothesis until the Dyn mesh's
+  builder is read.** A `BoundingSphere` chunk (centre and radius) precedes each object.
+
+### 47.3 The plan
+
+| order | packet | contents | owner |
+| --- | --- | --- | --- |
+| 1 | `model_collision_records` (SHIP_HULL_SHAPES' follow-up) | the producer of `model+4Ch`'s records, `record+0Ch` (the Dyn mesh) and `record+14h` (the translation); which node `model+0Ch` is; where the Dyn convex mesh is built and how `+18h..+2Ch` is filled | the model packets |
+| 2 | `cc9_hull_aabb_host` | a host reader that takes each hull class's `.mmod`, keeps the records the four owners select, and produces the body box with `dyn_convex_mesh_shape_bounds_00c57c40` and the union | gunnery or units lane, once 1 settles the inputs |
+| 3 | `cc9_hull_inertia` | feed that box to the hull build (`game_hosts_units.cpp`, where `bsp::ShipHullBodyInputs` is filled; today the extent is 0), behind `kHullInertiaFromShapesBound`, OFF | units lane (cc9-lua9) |
+
+**Predictions for 3, for when it lands.**
+- USN02 9000: exit 3. The 26 torpedo torques (up to 4.0e6) now roll the hit hulls. The
+  motion model's own AddTorque at `00937613` carries a zero vector today (its gain is
+  multiplied by `settings+588h`, which has no producer), so that site stays inert. Whether a
+  roll survives the motion tick's velocity rewrite `0092D300` on the next step is not read;
+  that decides whether the move is visible beyond the hit step.
+- JM06: exit 1, since no roll torque lands and the other torque is zero, unless the non-zero
+  world inertia changes something else in `00C41550`.
+- The flip rule has to separate the shape-derived inertia from every torque it wakes. Pair it
+  first with the roll torque OFF.
