@@ -869,10 +869,6 @@ public:
     bool unit_is_kind_of(std::size_t index, int class_id) const;
     // Native instance+C4h class id, or -1 for an unresolved identity/invalid index.
     int unit_class_id(std::size_t index) const noexcept;
-    // Packet cc9_submarine_sensor_category: the four world-Y depth words
-    // +1200h..+120Ch that 00853630 builds at attach (the cc9_submarine_dive band
-    // table). False, with `bands` untouched, when the unit's bands were never seeded.
-    bool submarine_depth_bands(std::size_t index, float (&bands)[4]) const;
 
     // ---- packet cc8_ship_follow: the unit group at entity+284h -------------
     // The 508h-byte object 0070DB20 creates and 0070EF30 joins, whose leader is
