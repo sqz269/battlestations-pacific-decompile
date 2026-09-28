@@ -109,6 +109,13 @@ inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/L
 // 007B03C0. True: each generated convoy with a roster resolves its Path, builds
 // the knots and moves its members. False: the members stand at the convoy frame.
 // docs/LAND_AND_STRUCTURES.md, "The convoy formation, bound".
+// Packet cc9_squadron_land_task, first step. A `returntobase` (00E08F98)
+// placed on a squadron's flight leader runs 007F16D0 over the squadron, with
+// 006C0840 over the air-ops decks, and records the arm it takes. RECORD ONLY:
+// the command is placed as before and the member's bot intake still drops it,
+// because the flown `land` task 009B41C0 is not bound. True: the resolution
+// line and summary. False: nothing. docs/CONTROLLED_UNIT.md.
+inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record only, pairs (docs/CONTROLLED_UNIT.md)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
 class GameHostLog;
