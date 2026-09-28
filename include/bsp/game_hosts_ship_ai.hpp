@@ -545,6 +545,9 @@ struct GameShipAiSummary {
     unsigned long long path_fade_moveonpath{0};
     unsigned long long path_fade_applied{0};
     unsigned long long clearance_heading_error_large{0};
+    // Packet cc9_arm_final_area_key: 0070E450 at the arm final's 009DEEE9 / 009DEFD3.
+    unsigned long long arm_final_area_keys{0};
+    unsigned long long arm_final_area_key_differs{0};
     unsigned long long autotarget_follower_leaves{0};
     // Packet cc9_free_bearing_query: 009DC2E0 calls by site (both sides) and
     // what the bound query did (ON only).
