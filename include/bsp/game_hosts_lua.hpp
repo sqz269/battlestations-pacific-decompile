@@ -227,7 +227,7 @@ inline constexpr bool kLuaIsClassChangedBound = true;  // ON: identity pairs (do
 // level as an integer, drops a request for 1 to 0 when periscopeState +122Ch is 2
 // (broken) or the periscope node +1214h is null, then calls 008528B0. True: route the
 // row to run_set_submarine_depth_level_00893f40. False: unimplemented.
-inline constexpr bool kLuaSetSubmarineDepthLevelBound = false;
+inline constexpr bool kLuaSetSubmarineDepthLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
