@@ -309,3 +309,91 @@ The OFF side sits on a newer main than `bC_9000`: 35 deaths and 0 drops, not 37 
 
 `kPlaneDeathFlagsBound` lands ON. The bytes are the image's at the image's moment, apart from the
 flush being taken in the same step. Ships are not covered by this switch.
+
+## 7. A dead aircraft's bot stops thinking (packet `cc9_dead_plane_bot_think`, `kDeadPlaneBotThinkBound`)
+
+Worker cc9-lua7, 2026-09-28. The question comes from cc9-lua6's handoff: does the image keep
+running a dead plane's bot think and task once `007F3970` has cleared `plane+9D4h`?
+
+### 7.1 The image (V, raw listing of `0099ACD0`)
+
+`BSP_PilotBot_Tick` opens with five tests, all before its think accumulator at `0099AD0F`:
+
+```
+0099acd6: MOV ECX,[ESI+0x50]      ; the unit
+0099acd9: TEST ECX,ECX / JE 0099B19F
+0099ace1: CMP byte [ECX+0x5d],0 / JNE 0099B19F
+0099aceb: CMP byte [ECX+0x60],0 / JNE 0099B19F
+0099acf5: CMP byte [ECX+0x61],0 / JNE 0099B19F
+0099acff: MOV EAX,[ECX+0x9d4]     ; the squadron, no null test
+0099ad05: CMP byte [EAX+0x61],0 / JNE 0099B19F
+```
+
+`0099B19F` is the tick's exit. Everything else in the tick lies past those tests: the accumulator,
+the task vector's arm calls (`0099AF9B`), the planner (`009998A0`) and the command publish
+(`007B8C90`).
+
+- **A dead aircraft fails the tests from its death on.** `007D0B80`'s tail (`007D12FC`) calls
+  `vtable[70h](1)`, and `00926CD5` sets `+60h`. The destroy-list flush then sets `+5Dh` at
+  `0092639B` (section 6.1).
+- **The squadron removal comes after `+60h`.** `007BCAA0`'s `007F3970` clears `+9D4h` (`007F3A07`).
+  Gate 5 dereferences `+9D4h` with no null test, and the image never faults there, because gate 3
+  has already closed.
+- **The commit finds nothing to take.** `007BB920` (called at `007CE865` from the plane's fixed
+  step) returns when `+A14h` is clear (`007BB929`). Only `007B8C90` in the tick sets that byte. So
+  from the death on, the live control axes hold whatever was last committed.
+- **`007CAF10` still runs** (section 1, step 5). It zeroes the air brake of a powerlost or spinning
+  aircraft, and the throttle too when `C39h` is set. That is its only control write.
+
+**So a powerlost aircraft in the image glides on its controls as they were at the death**, with
+throttle and air brake zero, until the water, the ground or its 1000 s timer removes it. An
+explosion-delayed aircraft does the same for its 0.6 to 1.8 s. Section 1's phrase "glides under
+pilot steering" means those frozen axes, not a live pilot.
+
+### 7.2 The host
+
+`pilot_think_and_commit` in `src/game_hosts_units.cpp` models only gate 6, the accumulator. A dead
+aircraft keeps running its task arms, its planner and its command publish every 0.09 s. The
+powerlost glide is therefore steered, and the arms' draws on the shared stream continue after the
+death. That is where cc9-lua6's per-member draws came from.
+
+### 7.3 The binding (`kDeadPlaneBotThinkBound`, committed OFF)
+
+- With the switch on, a plane whose `+5Dh` (`state->simulate`) or `+60h`
+  (`scene_pending_destroy_0060`) is set skips the accumulator and the whole think.
+- `007BB920`'s commit still runs, and finds no pending block.
+- **Gate 4, labelled.** `+61h` has no writer in the image (`unit_flag_0061`).
+- **Gate 5, labelled.** The squadron's `+61h` is not modelled. The image cannot reach it for a
+  removed plane, as 7.1 shows.
+- The first gated tick of each plane is logged as `dead plane bot think:` with its held controls.
+  The summary line is `summary mission dead plane bot think: ticks_skipped= bound=`.
+
+### 7.4 Predictions, written before any run
+
+The death lists are from the current tree's OFF logs (LOMP10, USN01) and from `rb9_usn04.log`
+(USN04).
+
+- **USN01 3200/3000: moved, not identity.** Five Mavis die: Mav5 at 72.35 s (delayed), Mav4 at
+  73.80 s (powerlost), Mav1 at 75.50 s (delayed), Mav2 at 76.80 s (powerlost) and Mav3 at 78.10 s
+  (powerlost).
+  - All five log a gate line at their death time.
+  - The three powerlost glides change shape, so their water contacts and removals move in time.
+    The death rows themselves do not move: the death times come before the gate.
+  - Anything drawing on the shared stream after 72.35 s may move, because the dead planes' arms
+    stop drawing. Releases before 72 s are identical.
+- **USN04 4700/4500: moved from the first aircraft death.** The first is movieval at 26.60 s.
+  - The 43 plane deaths are 10 explosion, 16 delayed and 17 powerlost. The 17 powerlost planes
+    stop steering.
+  - The death count stays within +-2. Kill order and later deaths can move through the shared
+    stream.
+  - Releases stay within +-1 of 7 of 16 torpedo and 4 of 19 dive, since a dead plane releases
+    nothing either way.
+- **LOMP10 3200/3000: moved from 99.40 s**, the first death, B-25 01|.-2 (delayed).
+  - Warhawk 01, the squadron leader, dies at 107.00 s (delayed, 1.01 s). It holds its controls
+    for that second instead of flying its task.
+  - The wingmen are already out of its formation, since the removal promotes a new leader at once.
+    I expect their own paths to be unchanged until a shared-stream draw diverges.
+  - Lightning 01 (powerlost, 110.65 s) glides frozen.
+- **The verdict rule.** The mechanism check is the gate lines: every dead plane gated at its death
+  tick, and none gated before. The combat rows are shared-stream consequences, and they are
+  recorded rather than predicted exactly.

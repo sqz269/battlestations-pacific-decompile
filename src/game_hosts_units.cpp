@@ -1402,6 +1402,7 @@ struct GameUnitSlot {
     std::uint8_t scene_destroyed_005e{0};
     std::uint8_t scene_removed_005f{0};
     std::uint8_t scene_pending_destroy_0060{0};
+    bool dead_plane_bot_gate_logged{false};  // packet cc9_dead_plane_bot_think
     // Packet cc9_sunk_ship_kill_depth: sinkTime unit+828h (advanced through
     // [EDI+518h], EDI = unit+310h, at 008263CE..008263DC) and the census of a
     // wreck's hull ends against KillDepth (008265EC..00826622).
@@ -4255,6 +4256,15 @@ struct GameUnitsHost::Impl {
     // then reads the aircraft as gone. OFF: a dead aircraft keeps both bytes
     // clear. docs/PLANE_DEATH_MODES.md section 6.
     static constexpr bool kPlaneDeathFlagsBound = true;
+    // Packet cc9_dead_plane_bot_think (docs/PLANE_DEATH_MODES.md section 7).
+    // BSP_PilotBot_Tick 0099ACD0 returns before its think accumulator when the
+    // unit's +5Dh (0099ACE1), +60h (0099ACEB) or +61h (0099ACF5) byte is set,
+    // or its squadron's +61h (0099AD05, through unit+9D4h). A dead aircraft
+    // carries +60h from the destroy (00926CD5) and +5Dh from the flush
+    // (0092639B), so from its death on no task arm, planner or 007B8C90 command
+    // runs, and 007BB920 finds no pending block: the live controls hold what
+    // was last committed. OFF: a dead aircraft keeps thinking and steering.
+    static constexpr bool kDeadPlaneBotThinkBound = false;
     // Packet cc9_pilot_surface_climbout: a dead plane leaves its squadron
     // (007BCAA0 -> 007F3970), so no member is placed on a dead leader's station.
     // docs/PILOT_SURFACE_CLIMBOUT.md.
@@ -17355,7 +17365,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // the frame delta and the tick fires when it reaches
                         // 0.09 s; the value passed downstream is the accumulated
                         // interval, not `step`.
-                        unit_.pilot_think_accumulator_70 += step;
+                        // Packet cc9_dead_plane_bot_think: gates 2 and 3 of
+                        // 0099ACD0 (0099ACE1 +5Dh, 0099ACEB +60h). Gate 4 (+61h)
+                        // has no writer in the image (unit_flag_0061). Gate 5
+                        // reads the squadron through unit+9D4h with no null
+                        // test, so the image never reaches it for a removed
+                        // plane: 007BCAA0's removal follows the destroy that
+                        // set +60h. The host keeps the two bytes the death
+                        // path writes and takes gate 5 as open.
+                        bool bot_gated = false;
+                        if constexpr (GameUnitsHost::Impl::kDeadPlaneBotThinkBound) {
+                            bot_gated = (unit_.state != nullptr && unit_.state->simulate != 0) ||
+                                        unit_.scene_pending_destroy_0060 != 0;
+                            if (bot_gated) {
+                                ++owner_.summary.dead_plane_bot_ticks_skipped;
+                                if (!unit_.dead_plane_bot_gate_logged) {
+                                    unit_.dead_plane_bot_gate_logged = true;
+                                    owner_.log.notef("dead plane bot think: unit=%s t=%.2f "
+                                        "gated at 0099ACE1/0099ACEB (+5Dh=%d +60h=%d); controls "
+                                        "held at yaw=%.3f pitch=%.3f roll=%.3f thr=%.3f "
+                                        "(packet cc9_dead_plane_bot_think)",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        unit_.state != nullptr ? unit_.state->simulate : -1,
+                                        unit_.scene_pending_destroy_0060,
+                                        static_cast<double>(unit_.plane_live_controls[0]),
+                                        static_cast<double>(unit_.plane_live_controls[1]),
+                                        static_cast<double>(unit_.plane_live_controls[2]),
+                                        static_cast<double>(unit_.plane_live_throttle));
+                                }
+                            }
+                        }
+                        if (!bot_gated) unit_.pilot_think_accumulator_70 += step;
                         if constexpr (GameUnitsHost::Impl::kZeroTraceDiag) {
                             if (!unit_.plane_death_c3a &&
                                 unit_.row.name.compare(0, 3, "A6M") == 0) {
@@ -17396,7 +17437,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                         }
-                        if (unit_.pilot_think_accumulator_70 >= bsp::kPilotThinkInterval) {
+                        if (!bot_gated &&
+                            unit_.pilot_think_accumulator_70 >= bsp::kPilotThinkInterval) {
                             const float elapsed = unit_.pilot_think_accumulator_70;
                             unit_.pilot_think_accumulator_70 = 0.0f;   // 0099AD75
 
@@ -20898,6 +20940,10 @@ void GameUnitsHost::report() {
         host.log.notef("summary mission plane death flags: dead_with_5d_60=%zu bound=%d "
             "(00926C80 / 00926390, packet cc9_plane_death_flags)", flagged,
             GameUnitsHost::Impl::kPlaneDeathFlagsBound ? 1 : 0);
+        host.log.notef("summary mission dead plane bot think: ticks_skipped=%llu bound=%d "
+            "(0099ACE1 / 0099ACEB, packet cc9_dead_plane_bot_think)",
+            host.summary.dead_plane_bot_ticks_skipped,
+            GameUnitsHost::Impl::kDeadPlaneBotThinkBound ? 1 : 0);
     }
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
         "pose_right_reference=%llu pose_collapsed=%llu "
