@@ -1591,3 +1591,83 @@ presentation. Calls are the sum over the ten base rows.
 **Top three.** The follower gate and the troop-landing trait wait on cc9-lua9. The first packet
 free to take now is rank 3, the path fade: the leader half binds from the units host's formation
 accessors, the `moveonpath` half from the director's current command, and it reaches every row.
+
+## 17. Rank 3: the turn clearance's path fade (packet `cc9_clearance_path_fade`, `kShipAiClearancePathFadeBound`)
+
+Worker cc9-ships9, 2026-09-28.
+
+### The site
+
+`009EF910` (`BSP_ShipAi_RefreshTurnClearance`, body `009EF910-009F00F3`), read with
+`disasm-raw 009EFFE0 --length 290`:
+
+```
+009EFFF2  MOV ECX,[ESI+3FCh]        ; the unit
+009EFFF8  TEST ECX,ECX / JE 009F0076
+009F0000  CALL 00778890             ; the unit leads its formation
+009F0005  TEST AL,AL / JNE 009F0022 ; a leader takes the fade
+009F0009  MOV EAX,[ESI+3FCh] / MOV EAX,[EAX+738h] ; the command controller
+009F0015  TEST EAX,EAX / JE 009F0076
+009F0019  CMP [EAX+54h],00E08F80 / JNE 009F0076   ; slot 0 is `moveonpath`
+009F0022  ...                       ; error *= 00419010(1, 1, 2, 0, [blk+330h] / 00811A30(unit, 1))
+009F0076  ...                       ; |error| > settings +214h / +218h -> [blk+370h] = 1 (009F00BF)
+```
+
+- `00778890` (`00778890-007788A8`, RET then INT3): `[unit+284h]` non-null and `[[unit+284h]+14h]`
+  equal to the unit. The units host answers it from `unit_formation_group_0284` and
+  `formation_leader_0014`, as three other ship-AI bindings already do.
+- `[controller+54h]` is the command slot 0's singleton pointer (docs/COMMAND_EXECUTION.md, slot
+  layout). The units host forwards it as `director_slot_command(index, 0)`. `00E08F80` is
+  `bsp::kCommandMoveOnPath`.
+- **The gate is a disjunction.** The host's old comment read it as one predicate with no producer
+  for either half, and answered false.
+- **The effect.** The faded error falls to 0 when the remaining path `blk+330h` is at least two
+  turn lengths, so outcome 1 (`HeadingErrorLarge`) is not set. `009F3F80` reads outcome 1 at
+  `009F4A44` and `009F4A51` (`src/ship_ai_obstacle_tables.cpp`): it raises escape request 4 and the
+  turn-assist load. The fade only lowers the error, so it can only remove outcome-1 frames.
+
+**ABI.** `00778890` is `__thiscall` (ECX the unit), returns AL, plain `RET`. The host interface
+`ShipAiClearanceHost::path_fade_applies_00778890()` keeps the one-predicate shape.
+
+**Uncertainty.** `formation_leader_0014` is the host's model of `[group+14h]`. The director's
+slot 0 is the host's queue; the image's `+54h` is read without the override slot, and the host
+reads slot 0 the same way.
+
+### The binding
+
+`ClearanceBinding::path_fade_applies_00778890` in `src/game_hosts_ship_ai.cpp` answers
+`leader || moveonpath` when `kShipAiClearancePathFadeBound` is true, and false otherwise. Both
+sides count into `summary mission ship ai clearance path fade`:
+- `tests`, the calls reaching the gate;
+- `leader`, and `moveonpath` for a non-leader on `moveonpath`;
+- `applied`, ON only;
+- `heading_error_large`, the frames that end the clearance refresh with outcome 1. It counts
+  held outcomes too, so it can exceed `tests`.
+
+### The OFF counts (`local\ships9_c0_<row>.log`)
+
+Each OFF row is gameplay-identical to its section 16 base row (`pair_diff` exit 1 on all ten).
+
+| row | tests | leader | moveonpath | heading_error_large |
+| --- | --- | --- | --- | --- |
+| USN01 | 739 | 409 | 0 | 348 |
+| USN02 | 12309 | 1779 | 395 | 12978 |
+| USN04 | 6170 | 317 | 478 | 1134 |
+| JM06 | 3297 | 465 | 255 | 894 |
+| JM08 | 207 | 0 | 155 | 0 |
+| USN13 | 4184 | 384 | 1129 | 744 |
+| LOMP06 | 991 | 82 | 0 | 0 |
+| USN12 | 481 | 170 | 179 | 0 |
+| JM05 | 8573 | 1069 | 0 | 4794 |
+| LOMP10 | 389 | 157 | 0 | 312 |
+
+### Predictions, written before the ON runs
+
+1. **JM08, LOMP06 and USN12 are identical** (exit 0 or 1). OFF has no outcome-1 frame there, and
+   the fade can only remove outcome-1 frames.
+2. **`applied` is at most `leader + moveonpath`** on every row, and positive on every row.
+3. **`heading_error_large` falls on USN01, USN02, USN04, JM06, USN13, JM05 and LOMP10.** It cannot
+   rise until the rows diverge.
+4. **Movement.** Where a fade-eligible ship had outcome 1, fewer escape requests follow, so its
+   turn and speed change. The rows above may move (exit 3). How many do is not predicted: the OFF
+   counters do not split outcome-1 frames by eligibility.

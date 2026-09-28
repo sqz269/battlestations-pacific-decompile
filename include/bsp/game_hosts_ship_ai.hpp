@@ -539,6 +539,12 @@ struct GameShipAiSummary {
     // Packet cc9_autotarget_follower_gate: AutoTarget thinks by a formation
     // follower (both sides) and the leaves 009F5DEB ran (ON only).
     unsigned long long autotarget_follower_thinks{0};
+    // Packet cc9_clearance_path_fade: 009F0000's gate, counted on both sides.
+    unsigned long long path_fade_tests{0};
+    unsigned long long path_fade_leader{0};
+    unsigned long long path_fade_moveonpath{0};
+    unsigned long long path_fade_applied{0};
+    unsigned long long clearance_heading_error_large{0};
     unsigned long long autotarget_follower_leaves{0};
     // Packet cc9_free_bearing_query: 009DC2E0 calls by site (both sides) and
     // what the bound query did (ON only).
