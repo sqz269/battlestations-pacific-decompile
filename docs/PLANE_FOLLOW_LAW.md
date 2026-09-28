@@ -1170,3 +1170,26 @@ applies `007E88A1`-`007E88DA` to both keys. The follow law is these fields' only
    below OFF's. OFF reaches 5.44 km at 423.8 s for `|.-2`. A miss here with (1) holding means the
    drift has a second cause; it is recorded, and the switch may still flip.
 3. **Both rows move** (exit 3). Every fly-to member in every mission reads the ramp.
+
+### 17.6 The pair for 17.4 (cc9-lua10, 2026-09-28): ON
+
+OFF is this tree's build of `1d7b7045e`, which has the turn rate OFF (`local\l10_a0_<row>.log`). ON
+is the same commit with `kFollowTargetDirAcosBound=true` (`local\l10_ac`, `local\l10_acon_<row>.log`).
+
+| row | `pair_diff` | Lightning members' largest leader distance after 250 s |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 1, gameplay identical | 6442 m -> 131 m |
+| USN01 3200/3000 | 0, identical: its 81 fly-to ticks come out the same | - |
+
+1. **Mechanism: held, sampled indirectly.**
+   - No ON sample has a member ahead of its station: the members no longer get there.
+   - At 23.8 s, `Lightning 01|.-2` is 198 m from its station and commanded 116.44 m/s. OFF
+     commanded 173.33 m/s at the same moment, 166 m out. At over 100 m, OFF gave rampD whatever
+     the heading; ON blends toward cruise.
+2. **The drift: held.** From 60 s on, the members fly 85 to 200 m from their leader. The leader no
+   longer holds 31.5 m/s: with its wingmen close, the wingmen-wait term releases it, and it flies
+   about 88 m/s.
+3. **Spread miss:** USN01 was predicted to move and is identical. LOMP10 is gameplay-identical;
+   positions and speeds moved.
+- **Verdict: ON.** Section 5.4's reading of the ramp's endpoints is corrected by 17.4.
+- The live-speed switch (17.2) should be re-paired on top of this.
