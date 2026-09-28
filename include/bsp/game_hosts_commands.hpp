@@ -148,6 +148,19 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // tail unchanged on USN02 / USN04 / USN13 / USN01; deaths 10 / 45 / 20 / 5.
 inline constexpr bool kSetCommandQueueDelayBound = true;
 
+// Packet cc9_set_command_clear_all (docs/GUNNERY_OPEN_ITEMS.md section 28). Two
+// director writes inside hop 1 are 5Dh messages in the image too:
+// - 00816E30's clear-all at 0081733E, 0071D880: MT_GAMEUNIT_CLEARCMD with +20h = 1
+//   and +24h = -1, routed with flags 7. Its receiver, 00721A40's 5Dh arm at
+//   00721BA8, is 00720CA0 (body 00720CA0-00720CCA, read whole): for i = 9 down to
+//   0, 00720850(i) on every slot whose command at director+54h+1Ch*i is set.
+// - 0071E550's top-slot drop at 0071E5AA, 0071D900(count - 1).
+// False: both write the slots in place (the clear-all zeroes all ten, without
+// 00720850). True: both are posted through route_clear_command, so with the
+// queue bound they are delivered after the MT_COMMAND that posted them and
+// before its SETCMD, and 0071ECF0's make-room reads the queue as it was.
+inline constexpr bool kSetCommandClearAllMessageBound = false;
+
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
 struct GameReleasedTarget {
@@ -245,6 +258,10 @@ struct GameCommandsSummary {
     unsigned long long loopback_delivered_nested{0};    // posted inside a drain: next in it
     unsigned long long loopback_delivered_queued{0};    // posted before the drain began
     unsigned long long loopback_drains{0};              // 0076C600 bodies with work
+    // Packet cc9_set_command_clear_all.
+    unsigned long long clear_all_calls{0};          // 0071D880 reached (both builds)
+    unsigned long long drop_calls{0};               // 0071E5AA's drop reached (both builds)
+    unsigned long long clear_all_slot_clears{0};    // 00720850 bodies from 00720CA0
 };
 
 // Packet cc8_ship_moveonpath: what one unit's slot-0 path cursor did over a run.

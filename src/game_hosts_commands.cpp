@@ -390,6 +390,12 @@ struct GameCommandsHost::Impl {
     std::size_t last_issue_index{kNoLoopbackRow};
     std::vector<LoopbackMessage> loopback;
     std::vector<LoopbackMessage>* loopback_active{nullptr};
+    // unit+184h as the last director step of each unit was given it; what the
+    // 5Dh receiver's QueueClearBinding answers for a clear posted from hop 1.
+    std::vector<unsigned char> player_184;
+    bool player_of(std::size_t unit) const noexcept {
+        return unit < player_184.size() && player_184[unit] != 0;
+    }
     std::size_t loopback_insert{0};
     bool loopback_drain_open{false};
     unsigned long long loopback_drain_serial{0};
@@ -654,6 +660,19 @@ public:
         // 00721a40's 5Dh case takes 00720ca0 for the negative index, and that
         // body is not projected; the executable performs the "every slot" clear
         // the -1 index names and records both halves.
+        ++chain_.owner.summary.clear_all_calls;
+        if (kSetCommandClearAllMessageBound) {
+            // Packet cc9_set_command_clear_all: 0071D880's message, delivered
+            // through 00721A40's 5Dh arm into 00720CA0 (apply_clear_command).
+            chain_.owner.done("EntityCommand::clear_all_commands", 0x0071d880u);
+            if (chain_.row != nullptr) chain_.row->slots_cleared = true;
+            bsp::ClearCommandMessage every{};
+            every.arm = 1;
+            every.index = -1;
+            chain_.owner.route_clear_command(chain_.unit.index,
+                chain_.owner.player_of(chain_.unit.index), every);
+            return;
+        }
         chain_.owner.record("EntityCommand::clear_all_commands", 0x0071d880u);
         chain_.owner.record("GameUnitMessage::clear_every_slot", 0x00720ca0u);
         for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
@@ -725,7 +744,15 @@ public:
         const bool dropped = bsp::cruise_make_room_0071e550(
             (klass != nullptr) ? klass->category : -1, count,
             (top_class != nullptr) ? top_class->category : -1);
-        if (dropped && count > 0) {
+        if (dropped && count > 0) ++chain_.owner.summary.drop_calls;
+        if (dropped && count > 0 && kSetCommandClearAllMessageBound) {
+            // Packet cc9_set_command_clear_all: 0071D900(count - 1) posts the
+            // 5Dh slot clear, delivered through 00720850.
+            chain_.owner.done("EntityCommand::drop_top_slot", 0x0071d900u);
+            chain_.owner.route_clear_command(chain_.unit.index,
+                chain_.owner.player_of(chain_.unit.index),
+                bsp::clear_command_message_for_slot(count - 1));
+        } else if (dropped && count > 0) {
             // 0071d900 at 0071e5aa removes the top slot.
             chain_.owner.record("EntityCommand::drop_top_slot", 0x0071d900u);
             chain_.director.slot_command[count - 1] = 0;
@@ -2299,6 +2326,22 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
     GameDirector& director = directors[unit_index];
     ++summary.clear_receives;
     done("GameUnitMessage::apply_clear_command", 0x00721a40u);
+    if (kSetCommandClearAllMessageBound
+        && bsp::clear_command_action(message) == bsp::ClearCommandAction::kClearAllSlots) {
+        // 00721BA8 -> 00720CA0: 00720CA5 ESI = 9, 00720CAA EDI = director+150h
+        // (slot 9's command); 00720CB0 CMP [EDI],0 / JZ; 00720CB8 00720850(ESI);
+        // 00720CBD..00720CC5 down to slot 0.
+        bsp::CommandQueueState state = queue_state_of(director);
+        QueueClearBinding exec(*this, units[unit_index], director, player_controlled);
+        for (int i = bsp::kDirectorCommandSlotCount - 1; i >= 0; --i) {
+            if (state.slots[i].command == 0) continue;
+            bsp::clear_command_slot_00720850(state, i, exec);
+            ++summary.clear_all_slot_clears;
+        }
+        queue_state_back(state, director);
+        done("GameUnitMessage::clear_every_slot", 0x00720ca0u);
+        return true;
+    }
     if (bsp::clear_command_action(message) != bsp::ClearCommandAction::kClearSlot) {
         return false;
     }
@@ -2430,6 +2473,8 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
     }
 
     GameDirector& director = host.directors[unit_index];
+    if (host.player_184.size() < host.units.size()) host.player_184.resize(host.units.size(), 0);
+    host.player_184[unit_index] = player_controlled ? 1 : 0;
     GameCommandRow row;
     row.unit_index = unit_index;
     row.unit = host.units[unit_index].name;
@@ -3250,6 +3295,10 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
+    host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
+        "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
+        kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,
+        host.summary.drop_calls, host.summary.clear_all_slot_clears);
 }
 
 }  // namespace bsp::game
