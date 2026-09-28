@@ -691,6 +691,12 @@ struct GameGunnerySummary {
     // the director's command target and fire target at step 8.7. These count
     // that path on units that actually carry a torpedo-category gun, then each
     // rejection reason inside 00863990.
+    // Packet cc9_plane_forced_target_read: pass ticks on a plane or squadron
+    // (008636A0 installs the null provider 00861B90 there), how many of them
+    // found a stored ship-AI fire target, and how many the switch dropped.
+    unsigned long long plane_null_provider_ticks{0};
+    unsigned long long plane_fire_target_reads{0};
+    unsigned long long plane_fire_target_nulled{0};
     unsigned long long torpedo_cat_pass_ticks{0};
     unsigned long long torpedo_cat_with_command_target{0};
     unsigned long long torpedo_cat_with_fire_target{0};

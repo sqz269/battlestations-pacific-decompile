@@ -608,6 +608,21 @@ constexpr bool kReconAggregatesBound = true;
 //    wrote it on every hit, so a zero-damage hit could take the credit. OFF:
 //    every hit. Packet cc9_kill_credit, docs/KILL_CREDIT.md.
 constexpr bool kKillCreditDamageGateBound = true;
+//  * kPlaneNullFireTargetProviderBound: 008636A0 (called once, 00864C18, from
+//    the attach 00864BD0) installs the director-backed fire-target provider
+//    00D0D324 (slot +4h 00863640, director+238h) only when the unit answers
+//    IsKindOf(2), unit->vtable[114h]() is non-null and that director answers
+//    vtable[48h](2); otherwise the null provider 00D0D314 (00861B90, XOR EAX,EAX).
+//    A plane instance (every class answering IsKindOf(0Fh): 00D05F20, 00D06638,
+//    00D1A000, 00D19D28, 00D06920, 00D00070, 00D0BA80, 00D00308, 00D1A2D8) has
+//    vtable[114h] = 0047F180 (XOR EAX,EAX; RET), and the squadron (18h, 00D087C0)
+//    has 007ECFD0 -> [+348h], the 0084D810 controller whose slot 48h 0084D8F0
+//    answers true only for 0 and 1. So no plane-side pass ever reads a fire
+//    target. This host reads the ship-AI row's stored target for every unit,
+//    and since kFireTargetObjectIdBound a plane row can hold one. ON: kinds 0Fh
+//    and 18h take the null provider. OFF: the stored target is read (counted).
+//    Packet cc9_plane_forced_target_read, docs/GUNNERY_OPEN_ITEMS.md section 42.
+constexpr bool kPlaneNullFireTargetProviderBound = false;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -5049,6 +5064,20 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
                 // No command-target producer is wired in this process, and this
                 // run queues no orders, so the faithful answer is "no command
                 // target" - which is what the native would return here.
+            }
+        }
+    }
+    // Packet cc9_plane_forced_target_read: 008636A0's null provider on a plane
+    // instance (IsKindOf(0Fh), director 0047F180 null) and on a squadron
+    // (IsKindOf(18h), controller slot 48h false for 2).
+    if (units.unit_is_kind_of(index, 0x0f) || units.unit_is_kind_of(index, 0x18)) {
+        ++summary.plane_null_provider_ticks;
+        if (state.fire_target != 0) {
+            ++summary.plane_fire_target_reads;
+            if (kPlaneNullFireTargetProviderBound) {
+                state.fire_target = 0;
+                ++summary.plane_fire_target_nulled;
+                done("Gunnery::null_fire_target_provider_00861b90", 0x00861b90u);
             }
         }
     }
@@ -9753,6 +9782,10 @@ void GameGunneryHost::report() {
             "target=%zu (their only candidate source: 008651F5 cuts category 7 "
             "out of the recon sweep)", torpedo_units.size(), with_command);
     }
+        host.log.notef("summary mission gunnery plane fire target provider "
+            "null_provider_ticks=%llu stored_target_reads=%llu nulled=%llu bound=%d",
+            s.plane_null_provider_ticks, s.plane_fire_target_reads,
+            s.plane_fire_target_nulled, kPlaneNullFireTargetProviderBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo_candidates pass_ticks=%llu "
             "command_target=%llu fire_target=%llu scored=%llu accepted=%llu "
             "reject unknown=%llu liveness=%llu class=%llu rank=%llu mask=%llu range=%llu",
