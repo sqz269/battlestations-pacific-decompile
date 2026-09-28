@@ -50,6 +50,9 @@ public:
         const std::array<float, 2>& far_point, std::int32_t edge,
         std::int32_t near_hint, std::int32_t side_hint, float margin) const;
     bool outside(const std::array<float, 3>&) const;
+    // GGame+711Ch..+7130h as 004D5EDE selected them at the last rebuild (packet
+    // cc9_submarine_target_substates: the world-box clamp 009DB6C0 reads them).
+    const WorldMapBounds& world_bounds() const;
     std::uint32_t corner(std::uint32_t zone, std::int32_t index) const;
     void ensure_clearance(std::uint32_t zone, std::uint32_t corner);
     const ShipAiPathLateralAnchor* anchor(std::uint32_t corner);

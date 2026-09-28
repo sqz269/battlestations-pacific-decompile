@@ -11,6 +11,7 @@
 // noted in the doc's Uncertainties section.
 
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/unit_rudder.hpp"
 
 #include <cmath>
 
@@ -679,6 +680,66 @@ void ship_ai_attackmove_tangent_step_009f3670(ShipAiAttackMoveTangentState& stat
     // 009F3998 and 009F39A4 are both inside the gate.
     state.budget_0c -= seconds;
     host.notify_siblings_009e2b60();
+}
+
+// ---------------------------------------------------------------------------
+// The member enters and exits the selector's machine runs, and the world-box
+// clamp both steps call (packet cc9_submarine_target_substates)
+// ---------------------------------------------------------------------------
+
+void ship_ai_attackmove_lead_pursuit_enter_009db670(ShipAiAttackMoveLeadPursuitState& state) {
+    // 009DB670 MOVSS XMM0,[00CF87C8] / 009DB678 MOVSS [ECX+10h]: 2.5f.
+    state.arm_distance_10 = kAttackMoveLeadEnterArmDistance;
+    state.budget_mode_0c = true;  // 009DB680 MOV byte [ECX+0Ch],1
+    state.turn_budget_08 = 0.0f;  // 009DB67D XORPS, 009DB684 MOVSS [ECX+8]
+}
+
+void ship_ai_attackmove_tangent_enter_009e2bb0(ShipAiAttackMoveTangentState& state,
+                                               ShipAiAttackMoveTangentHost& host) {
+    // 009E2BB4 CALL 009DB820, 009E2BB9 FSTP float, 009E2BC1 FST [ESI+8].
+    const float range = host.range_to_destination_009db820();
+    state.dwell_timer_08 = range;
+    // 009E2BC4 FLD double 200.0 (00CE4D70), 009E2BCA FCOMIP ST1, JBE past the
+    // call: the siblings are notified when 200.0 > range.
+    if (kAttackMoveTangentReEnterRange > static_cast<double>(range)) {
+        host.notify_siblings_009e2b60(); // 009E2BD2
+    }
+    // 009E2C00, 00419010(x0 = 500 (00CE397C), y0 = 1 (FLD1), x1 = 1000
+    // (00CE3804), y1 = 0 (FLDZ), x = sub+8h), stored as a float at 009E2C05.
+    const float falloff = clamped_interpolate_00419010(
+        kAttackMoveTangentRadiusFloor, 1.0f, kAttackMoveTangentEnterFarRange, 0.0f,
+        state.dwell_timer_08);
+    // 009E2C24, 00BD2F10(ECX = stream 1, 30.0f (00CE38C8), 40.0f (00CE685C)),
+    // after the interpolation, then 009E2C29 FMUL by the stored falloff.
+    const float draw = host.random_range_00bd2f10(kAttackMoveTangentEnterBudgetLow,
+                                                  kAttackMoveTangentEnterBudgetHigh);
+    state.elapsed_10 = 0.0f;           // 009E2C30
+    state.budget_0c = draw * falloff;  // 009E2C35 FSTP float
+}
+
+void ship_ai_attackmove_tangent_exit_009db7d0(ShipAiAttackMoveTangentState& state) {
+    state.elapsed_10 = 0.0f; // 009DB7D0 XORPS, 009DB7D3 MOVSS [ECX+10h]
+}
+
+void ship_ai_clamp_to_world_box_009db6c0(ShipAiAttackMoveXZ& point, float inset,
+                                         const ShipAiWorldBoxEdges& box) {
+    // 009DB6C6..009DB6E5: hi = [g+7128h] - inset, lo = [g+711Ch] + inset, each
+    // stored as a float. The low bound is tested first (009DB6F7 FCOMIP, JBE).
+    const float hi_x = box.max_x_7128 - inset;
+    const float lo_x = box.min_x_711c + inset;
+    if (lo_x > point.x) {
+        point.x = lo_x;
+    } else if (point.x > hi_x) {
+        point.x = hi_x;
+    }
+    // 009DB726..009DB738: hi = [g+7124h] - inset, lo = [g+7130h] + inset.
+    const float hi_z = box.max_z_7124 - inset;
+    const float lo_z = box.min_z_7130 + inset;
+    if (lo_z > point.z) {
+        point.z = lo_z;
+    } else if (point.z > hi_z) {
+        point.z = hi_z;
+    }
 }
 
 } // namespace bsp

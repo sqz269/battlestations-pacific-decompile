@@ -296,6 +296,9 @@ AvoidZoneTangentCorners GameAvoidZoneRuntime::detour(std::uint32_t token,
 bool GameAvoidZoneRuntime::outside(const std::array<float, 3>& point) const {
     impl_->require_ready(); return point_outside_world_map_0071c4f0(impl_->bounds, point);
 }
+const WorldMapBounds& GameAvoidZoneRuntime::world_bounds() const {
+    impl_->require_ready(); return impl_->bounds;
+}
 std::uint32_t GameAvoidZoneRuntime::corner(std::uint32_t token, std::int32_t index) const {
     auto* value = ship_ai_lateral_record_at_00417610(impl_->zone(token).native.corners, index);
     return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(value));
