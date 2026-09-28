@@ -939,6 +939,13 @@ public:
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // Packet cc9_unit_class_lands_troops. [unit+538h]->vtable[2Ch](): 00827FB0 on a
+    // ship-family class ([class+78Ch] LandingShip and [class+790h] LandingShipAmount
+    // both non-zero), 00963C70 on the landing-ship class (creator 0074BE00:
+    // [class+809h] Rocketer clear). False for a unit with no class and for the
+    // non-ship kinds, whose descriptor slot 2Ch was not read. Inert: for
+    // cc9-ships8's rank 9 (docs/SHIP_AI_OPEN_ITEMS.md section 13).
+    bool unit_class_lands_troops_vtable_2c(std::size_t index) const;
     // 00821E80 case 93h (00822235): the hull-torque message 0080FFD0 packs at 00827312
     // and 0077C2A0 routes at 00827329, applied to the unit's hull body (0092BF30 ->
     // 00C35330 AddTorque). False when the index is out of range or slot.body.motion
