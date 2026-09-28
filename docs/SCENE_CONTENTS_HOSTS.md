@@ -2733,7 +2733,7 @@ no world and takes the first candidate.
 | USN13 member altitudes | 1200 flat | 1169.8 .. 1626.3 by row, member 1 at (-4855.5, 1169.8, -5398.7) | same, first candidate accepted |
 | USN13 deaths / hits | 20 / 460 | move, deaths within 12..30 | as the axes-only run |
 | USN13 sea crashes | 0 | 0..2 | 0..2 |
-| USN04 4700/4500 | 44 deaths, releases 6 / 8 | identical | identical: first candidates accepted, extents under fH 100 |
+| USN04 4700/4500 | 44 deaths, releases 6 / 8 (task-level; torpedo drops 1, docs/USN04_KATE_ATTRITION.md 5) | identical | identical: first candidates accepted, extents under fH 100 |
 | USN01, USN02 | - | identical | identical |
 
 ### 23.5 The axes-only pairs (flipped ON)
@@ -2965,6 +2965,11 @@ Worker cc9-plane2, 2026-09-27, on main 7ca25aa95. Ghidra was read only.
   aircraft never ran 007C0D90's issue path. The one that did had the gate open (0.95 > 0.0).
 - **They die first.** All 16 Kates die in the run (16 death rows), 6 of them after releasing. Of
   the 19 Vals, 12 die and 8 release.
+  - **Corrected, packet `cc9_torpedo_release_counter` (2026-09-27):** the 6 is the torpedo task's
+    task-level `releases=` counter. Five of those six come from Kates the gunnery host already had
+    dead (four power-lost gliders at 29-36 m/s, one in its delayed-explosion window), and a dead
+    aircraft spawns nothing. `summary mission gunnery torpedo_drop drops=1`: one torpedo, from
+    #4.1\|.-3, the only Kate that released alive. docs/USN04_KATE_ATTRITION.md sections 5 and 7.
 - **So the low release counts are an attrition question, not a gate question.** Nothing is bound
   here. Where the Kates die and to whom is in the per-entity death table; that belongs to the
   gunnery owners.
@@ -3060,7 +3065,9 @@ Reads closed: 24 (station keeping on the new spacing), 25 (the torpedo leader's 
 5. **The six remaining string-record markers** of section 28 are true records: unread bodies,
    stubs, or empty hooks. Each needs its own read before it can change.
 6. **For the gunnery owners** (27.2): USN04's 16 Kates all die, 10 before releasing. Where and to
-   whom is in the per-entity death table.
+   whom is in the per-entity death table. **Closed** by docs/USN04_KATE_ATTRITION.md: the AA and
+   the aim run are the image's, and only one Kate releases alive (one torpedo drop; the other five
+   task releases are dead aircraft).
 7. **For the plane owners** (24.3, 25.3): seat 3 of a four-plane squadron starts 281 m ahead of
    its station on the stacked spawn and never latches. This holds the leader at the midpoint
    speed. Every term read so far is the image's; the image's own spawn of seat 3 is item 1's

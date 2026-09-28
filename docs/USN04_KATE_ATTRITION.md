@@ -190,3 +190,60 @@ is set by how many Kates survive 15-26 s of closing on escorts at SPVeteran, and
 **Predictions (no switch).** USN04 4700/4500: aim ticks 150-260 per Kate, 16 Kate deaths,
 1 torpedo drop (6 task releases), 44 deaths, 739 hits, all unchanged. USN13 3200/3000: 27 deaths,
 2 task releases, 0 drops. USN02: identical.
+
+## 8. The two small open gunnery terms (packet `cc9_aa_small_terms`, read)
+
+### 8.1 The flak passing rule, `0070C7B6`-`0070C806`: unreachable, proven
+
+docs/FLAK_PROXIMITY_BURST.md step 7 left it unmodelled because "it cannot act once a lock exists".
+The listing, read from disk bytes, proves the stronger claim that its 10% burst can never fire.
+
+- **What XMM0 holds at the rule.** `0070C4B1`/`0070C4F7` seed `[ESP+20h]` = FLT_MAX (`00D7A248`)
+  before the entity search. The search's only write to it is `0070C671 MOVSS [ESP+30h],XMM0`,
+  made after four pushes, so it is `[ESP+20h]`. That write is on the lock path, right after
+  `0070C661` sets the lock byte `+288h` (`[ESI+44h]`, ESI = proj+244h). `0070C6F7` loads it into
+  XMM0. So XMM0 is the squared distance of an entity locked this tick, or FLT_MAX.
+- **The two ways in.** `0070C705` tests the lock byte:
+  - no lock: jump to `0070C7B4`, then the rule;
+  - lock with the aim point still more than one step ahead: `0070C7AD` shortens the remaining
+    distance, then `0070C7B2` jumps to the rule. When the aim point is within the step, the round
+    bursts at `0070C79B` instead.
+- **The gate.** At `0070C7B6` the rule does nothing unless `90000 > XMM0`, which needs a lock this
+  tick. The search reaches its lock for every entity it finds (`0070C611`-`0070C63D`, then
+  `0070C661`), so an unlocked tick always carries FLT_MAX.
+- **The only tick it can act on is the lock tick.** There it compares the stored `+284h`
+  (`[ESI+40h]`) with XMM0. The flak constructor `0070CAE0` seeds `+284h` = FLT_MAX
+  (`0070CAE8`, stored at `0070CB30`), and nothing else writes it before the first lock. So
+  `+284h >= d2` always holds, and the rule takes the store branch (`0070C7D0`), never the
+  receding branch with its `U(0, 100) < 10` draw at `0070C7F7`.
+- **After the lock tick,** later ticks skip the search, so `[ESP+20h]` stays FLT_MAX and the gate
+  fails.
+
+**Nothing to bind.** The host's omission is exact, and it also draws nothing from the shared
+stream here, as the image does not.
+
+### 8.2 The turn-rate average, `0085E4D0` from `00901C20`
+
+- **The rule** (docs/AA_LEAD.md 2): when the target is a plane whose world angular rate at
+  `+AF8h..+B00h` has a square above 0.001 (`00D7A23C`), about 1.8 degrees per second,
+  `0085E4D0` rotates the velocity by that rate over the flight time. `00901C20` then averages
+  it with the unrotated velocity, times 0.5. `0085E4D0` itself returns early when the rate's
+  length is below `[00D7A350]`.
+- **The host.** It keeps each plane's body angular rate (`plane_body_angular`, written by the
+  rate law near `src/game_hosts_units.cpp:17173`), but not the world-frame rate `007D9C80`
+  produces at `+AF8h`. The AA lead therefore always takes the straight branch.
+- **Reach on the Kate kills.** It is inert where 14 of the 16 Kates die. #4.1\|.-4's aim census
+  commands heading 2.4218, 2.4429, 2.4649 and 2.5033 rad on ticks 1, 51, 101 and 151, which is
+  about 0.3 degrees per second, far under the 1.8 degrees per second gate. It would act on turning
+  Zeros and on the post-release turn-away.
+- **Cost of a binding.** It needs the world-rate transform `007D9C80` published on the unit, and a
+  transcription of `0085E4D0`: a look-at and a Z-rotation matrix built from the normalised rate,
+  not yet read in full. It lives in both `src/game_hosts_units.cpp`, which
+  cc9-ships2 has leased, and `src/game_hosts_gunnery.cpp`.
+- **Predictions, if bound.** USN04: the 16 Kate death rows keep their killers and categories
+  within the RNG coupling, and Kate death times move by under 1 s. Zero deaths move, and the
+  category-1 and category-6 hits against Zeros change by more than 5%. Missions with no AA
+  engagement of a turning plane stay identical.
+
+**Recommendation.** Bind 8.2 only after the world-rate producer `007D9C80` is published for other
+reasons. Its reach is the fighters, not the attrition this doc is about.
