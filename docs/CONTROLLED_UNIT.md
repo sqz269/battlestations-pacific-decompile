@@ -1760,6 +1760,48 @@ This corrects the deferral of `GetClosestBorderZone` (handoff item 3).
 `docs/ATTACK_COMMANDS.md` ("`returntobase` and `land`") read `+35Ch` as an assigned base; it now
 carries a correction.
 
+## `returntobase` on LOMP10 lands the squadrons; it does not retreat them (cc9-lua5, a read)
+
+The lead asked for the squadron intake with the retreat arm as the resolution LOMP10 reaches. The
+listing of the fourth arm says LOMP10 reaches the **land** arm first. So no switch was added.
+
+**`007F16D0`'s nearest-site arm (V, listing `007F177E`-`007F17DF`).**
+- `006C0840` is called with ECX = the squadron's side `+54h` and EDX = the member-array head
+  `+3D0h`. Its stack arguments, in order, are:
+  - 0, the distance out-pointer, unused here;
+  - `0047B850(head)`: 1 when the plane answers class 10h or 16h;
+  - 1: `PUSH 1` at `007F1788` is `006C0840`'s third argument. `0047B850` takes none and returns
+    with a bare `RET`, and `006C0840` ends `RET 0Ch`.
+- `006C0840` (`006C0840`-`006C0B3F`):
+  - It needs the plane's `+9D4h`.
+  - It first tries the plane's own `00923810(1)` site: an airfield (45h) or mothership (9) that is
+    not dead and whose side matches.
+  - Otherwise it walks the air-ops list at `00E19948` (next at `+BCh`). A block qualifies when:
+    - its object `+4` and owner `+7Ch` exist;
+    - the owner is not dead (`+5Eh`) and not remote (`+5Dh`, because of the third argument);
+    - when the second argument is set, the block's `+20h` bit 1 is set;
+    - the owner's side is the squadron's (or at least 2 outside multiplayer).
+  - It keeps the nearest block, preferring those for which `006BC530` answers true. It returns the
+    block even when none answers true.
+- **Back in `007F16D0`:** block `+4`, then `006BC120` answers 0 when that object's `+7Ch` owner
+  exists with `+5Dh` clear. Then `007EF8B0(land, 00465080(owner, 0.0))`: **`land` at the site.**
+
+**On LOMP10.** The scene has one Allied airfield, `CB4_AF` (`MultiAirField`, party Allied(0), an
+air-ops deck of 4 slots; `local\rt_base_lomp10.log`). The B-25 and Lightning squadrons are Allied,
+so the image sends them to land at `CB4_AF`. The retreat arm is reached only when no friendly live
+airfield or carrier with a deck exists.
+- **Two qualifications from the same log.**
+  - B-25 01 is the controlled unit (`00E188D8`, instance class id 16 = 10h). So `0047B850` answers
+    1 for its head, and `CB4_AF` qualifies only if its block's `+20h` bit 1 is set, which is not
+    read.
+  - If the squadron's `+5Dh` marks player control, `007F1940` ignores the order for B-25 01
+    altogether (`007F194A`). The Lightning squadron is not controlled.
+- **Not settled:** class 16h, `006BC530`, the `+20h` bit and the meaning of `+5Dh`.
+
+**What a binding needs.** A flown `land` task (`kLand` `009B41C0`) that the host lacks, besides
+the intake `007F1940` and a reconstruction of `006C0840`. Binding the retreat arm alone would send
+LOMP10's squadrons somewhere the image does not.
+
 ## Handoff (cc9-lua5, 2026-09-28)
 
 Worker cc9-lua5 took over cc9-lua4's lane (handoff above). The branch is `agent/cc9-lua5` and the
