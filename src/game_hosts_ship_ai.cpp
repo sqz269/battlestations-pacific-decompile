@@ -387,6 +387,13 @@ inline constexpr bool kShipAiApproachEnterReseedBound = false;
 // fire_function_guns_now_009e2b60). False: 00811940's current yaw rate, the
 // constant 30, and a counted record.
 inline constexpr bool kShipAiSubTargetEntryPointsBound = false;
+// Packet cc9_follow_station_point (rank 2), docs/SHIP_AI_OPEN_ITEMS.md section
+// 10. True: 009DF2D0's zone set at 009DF41A is 006DFD90 on the follower
+// (zones.group_for_layer([class+560h]), as the ring probe binds it), its two
+// pushes at 009DF432 / 009DF4C5 are 00417B10 (zones.offset, margin 20, mode
+// 1), and the leader yaw rate at 009DF607 is 00811940 on the leader. False:
+// the zone set answers 0, the pushes return the point, the yaw rate is 0.
+inline constexpr bool kShipFollowStationPointBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -2233,17 +2240,36 @@ public:
         return owner_.units.unit_hull_length_09c8(index_);
     }
     std::uint32_t zone_set_vtable_218(std::uint32_t) override {
-        owner_.record("ShipAiFollow::zone_set_218", 0x009df41au);
-        return 0u;
+        // 009DF41A, the follower's vtable[218h] = 006DFD90: ECX = [unit+538h],
+        // 0082ADA0(0) = 004120D0(manager, [class+560h]). An unready runtime
+        // keeps the stand-in, as the ring probe's 009E66EB does.
+        if (!kShipFollowStationPointBound || !owner_.zones.ready() ||
+            index_ >= owner_.controllers.size()) {
+            owner_.record("ShipAiFollow::zone_set_218", 0x009df41au);
+            return 0u;
+        }
+        owner_.done("ShipAiFollow::zone_set_218", 0x009df41au);
+        ++owner_.summary.follow_zone_sets;
+        return owner_.zones.group_for_layer(
+            owner_.controllers[index_].leaf_tuning.array[0]);   // [class+560h]
     }
-    bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t,
+    bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t zone_set,
                                                        bsp::ShipAiFollowLandXZ point,
-                                                       float) override {
-        // The same stand-in the rest of this host uses for 00417B10 (see
-        // zone_exit_point_00417b10): the body is unread, so the point comes back
-        // unchanged rather than pushed by an invented margin.
-        owner_.record("ShipAiFollow::push_out_of_zones", 0x00417b10u);
-        return point;
+                                                       float margin) override {
+        // 009DF432 / 009DF4C5: 00417B10(ECX = zone set, &out, &in, 20.0f, 1).
+        if (!kShipFollowStationPointBound || zone_set == 0u) {
+            owner_.record("ShipAiFollow::push_out_of_zones", 0x00417b10u);
+            return point;
+        }
+        owner_.done("ShipAiFollow::push_out_of_zones", 0x00417b10u);
+        const std::array<float, 2> out =
+            owner_.zones.offset(zone_set, {point.x, point.z}, margin, true);
+        ++owner_.summary.follow_pushes;
+        if (out[0] != point.x || out[1] != point.z) ++owner_.summary.follow_pushes_moved;
+        bsp::ShipAiFollowLandXZ result{};
+        result.x = out[0];
+        result.z = out[1];
+        return result;
     }
     float ship_class_turn_radius_0082e850() override {
         // 009DF44A takes it off brain+0AACh, the ship class descriptor. The units
@@ -2253,8 +2279,16 @@ public:
         return owner_.units.unit_class_turn_radius_0520(index_);
     }
     float leader_command_yaw_rate_00811940(float, float) override {
-        owner_.record("ShipAiFollow::leader_yaw_rate", 0x00811940u);
-        return 0.0f;
+        // 009DF607, 00811940 with ECX = the leader. It is RET 0 and reads no
+        // stack argument; the two pushes belong to the 009DACD0 call after it.
+        const float rate = owner_.units.unit_current_yaw_rate_00811940(leader_);
+        if (rate != 0.0f) ++owner_.summary.follow_leader_turning;
+        if (!kShipFollowStationPointBound) {
+            owner_.record("ShipAiFollow::leader_yaw_rate", 0x00811940u);
+            return 0.0f;
+        }
+        owner_.done("ShipAiFollow::leader_yaw_rate", 0x00811940u);
+        return rate;
     }
     float unit_reference_speed_0080fc30() override {
         owner_.done("ShipAiFollow::reference_speed", 0x0080fc30u);
@@ -10094,6 +10128,12 @@ void GameShipAiHost::report() {
         host.summary.approach_member_enters, host.summary.attackmove_state_enters,
         host.summary.attackmove_state_exits, host.summary.approach_reseeds,
         host.summary.approach_reseed_draws, kShipAiApproachEnterReseedBound ? 1 : 0);
+    host.log.notef("summary mission ship ai follow station zone_sets=%llu pushes=%llu "
+        "moved=%llu leader_turning=%llu bound=%d (009DF41A / 009DF432 / 009DF4C5 / 009DF607, "
+        "packet cc9_follow_station_point)",
+        host.summary.follow_zone_sets, host.summary.follow_pushes,
+        host.summary.follow_pushes_moved, host.summary.follow_leader_turning,
+        kShipFollowStationPointBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",
