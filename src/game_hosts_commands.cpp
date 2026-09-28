@@ -1101,7 +1101,20 @@ public:
         return false;
     }
     void send_clear_commands_0071d880() override {
-        chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
+        if (!kClearOrdersSendBound) {
+            chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
+            return;
+        }
+        // 0071D880 -> 5Dh with index -1 -> 00720CA0, every slot. LABELLED as in
+        // clear_all_commands: the round trip is delivered at the call and the
+        // 00720CA0 body is not projected beyond emptying the ten slots.
+        chain_.owner.done("EntityCommandArm::send_clear_commands", 0x0071d880u);
+        chain_.owner.record("GameUnitMessage::clear_every_slot", 0x00720ca0u);
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+            chain_.director.slot_command[i] = 0;
+            chain_.director.slot_target[i] = bsp::SceneCommandTarget{};
+        }
+        ++chain_.owner.summary.clearorders_sends;
     }
     bool call_0080dc70() override {
         chain_.owner.record("EntityCommandArm::free_fire_gate", 0x0080dc70u);
@@ -3287,6 +3300,19 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
+    {
+        unsigned long long received = 0, queued = 0, dropped = 0, outside = 0;
+        for (const GameDirector& d : host.directors) {
+            received += d.user_points_received;
+            queued += d.user_paths_queued;
+            dropped += d.user_points_dropped;
+            outside += d.user_points_outside_map;
+        }
+        host.log.notef("summary mission director user path points=%llu queued=%llu "
+            "dropped=%llu outside_map=%llu clearorders_bound=%d clearorders=%llu (007207C0 / "
+            "0071D880, packet cc9_director_moveonpath_route)", received, queued, dropped,
+            outside, kClearOrdersSendBound ? 1 : 0, host.summary.clearorders_sends);
+    }
 }
 
 }  // namespace bsp::game

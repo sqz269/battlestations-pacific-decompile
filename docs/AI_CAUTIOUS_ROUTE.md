@@ -104,3 +104,49 @@ category 1 or 2. So:
 - **USN04, USN02 and USN01** hold no CAUTIOUSATTACK (section 11.4): identity (exit 0 or 1), builds=0.
 - **Verdict rule:** a build count or point count other than above, or a moved reference row, keeps the
   switch OFF.
+
+## 5. The first pair, and why the switch stayed OFF
+
+Same tree, commit `3743a0548`. OFF is `local\s5r_off2_<m>.log` and ON (`kCautiousRouteBound` alone,
+`local\s5r_on`) is `local\s5r_on_<m>.log`.
+
+| mission | pair_diff | builds | points | clears | waits | `tick_orders` OFF -> ON |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN10 3200/3000 | exit 3 | 1 | 4 | 0 | 48 | 95 -> 46 |
+| USN12 3200/3000 | exit 3 | 1 | 4 | 21 | 27 | 49 -> 0 |
+| USN01 3200/3000 | exit 1 | 0 | 0 | 0 | 0 | 74 -> 74 |
+| USN04 4700/4500 | exit 1 | 0 | 0 | 0 | 0 | 78 -> 78 |
+| USN02 9200/9000 | exit 1 | 0 | 0 | 0 | 0 | 1 -> 1 |
+
+**The mechanism prediction failed.**
+- **`cruise` did not hold the user path back.** In this host the queued `moveonpath` became the head.
+  Montpelier runs `moveonpath` from step 270 and closes on the first waypoint at about 16.5 m/s.
+  - Montpelier reached the first waypoint at 90.75 s.
+  - Atlanta-class 01 never reached its first waypoint (the leg is a quarter of 7.9 km), so it waited
+    on every tick (48 waits).
+- **`clearorders` did nothing.** From 90.75 s, Montpelier issued it on every tick, 21 times. The
+  host's `clearorders` arm (008171BD in 00816E30) reaches `0071D880` SendClearCommands, and that call
+  was only a record in this host. So the path stayed attached, and neither a rebuild nor the moveto
+  ever came.
+
+**Verdict:** `kCautiousRouteBound` stays OFF under the protocol. The reference rows are identical.
+
+**The fix.** `kClearOrdersSendBound` (`include/bsp/game_hosts_commands.hpp`) binds 0071D880 as the
+every-slot clear. That is the same body `clear_all_commands` already runs for a flagged order. No OFF
+run on USN01, USN02, USN04, USN10 or USN12 sends `clearorders` (`send_clear_commands` is absent
+from all five OFF logs), so the arm is identity there by itself.
+
+## 6. Predictions for the second pair (both switches), written before its ON runs
+
+- **USN12 3200/3000:**
+  - It is identical to the first ON run up to 90.75 s: the build at 6.10 s with 3 waypoints, then
+    the follow.
+  - At 90.75 s `clearorders` empties Montpelier's queue. The next tick (about 3 s later) builds 2
+    waypoints plus the target from the current position, and Montpelier follows the new path.
+  - By 150 s: builds 2 or 3, clears 1 or 2, no moveto (`tick_orders` 0).
+  - Against OFF it is exit 3. Against the first ON run it moves only after 90.75 s.
+- **USN10 3200/3000:** it is identical to the first ON run in gameplay, because Atlanta-class 01 never
+  passes its first waypoint. So builds=1, clears=0 and waits=48, and it is exit 3 against OFF.
+- **USN01, USN02, USN04:** identity against OFF, with builds=0 and clearorders=0.
+- **Verdict rule:** as in section 4. Also, a USN12 clear that does not end the attachment keeps both
+  switches OFF.

@@ -144,6 +144,13 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // pump_session_00778450 delivers them through begin_loopback_drain /
 // finish_loopback_drain.
 inline constexpr bool kSetCommandQueueDelayBound = false;
+// Packet cc9_director_moveonpath_route, docs/AI_CAUTIOUS_ROUTE.md section 5. True:
+// the `clearorders` arm of 00816E30 (008171BD) reaches 0071D880 SendClearCommands,
+// whose MT_GAMEUNIT_CLEARCMD (+20h = 1, +24h = -1) the 5Dh arm answers with the
+// every-slot clear 00720CA0; the same clear DirectorBinding::clear_all_commands
+// performs for a flagged command. False: 0071D880 is a record and a `clearorders`
+// order leaves the queue as it was.
+inline constexpr bool kClearOrdersSendBound = false;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
@@ -191,6 +198,7 @@ struct GameDirectorStepOutcome {
 
 struct GameCommandsSummary {
     std::size_t units{0};
+    unsigned long long clearorders_sends{0};   // 0071D880 bodies (kClearOrdersSendBound)
     // Packet cc8_ship_drive: how many times the unit table was re-registered
     // with directors already built, i.e. how many times the old `assign` wiped
     // every command queue in the mission.
