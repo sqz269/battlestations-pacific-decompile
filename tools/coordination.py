@@ -234,10 +234,35 @@ def covers(lease, address):
     return any(int(lo, 16) <= address <= int(hi, 16) for lo, hi in lease.get('ranges', []))
 
 
+def normalised_path(path):
+    """Repo-relative, forward-slash, lower-case form of a leased path (a directory has no trailing slash)."""
+    text = str(path).replace('\\', '/').strip()
+    candidate = Path(text)
+    if candidate.is_absolute():
+        try:
+            text = candidate.resolve().relative_to(ROOT).as_posix()
+        except ValueError:
+            text = candidate.as_posix()
+    while text.startswith('./'):
+        text = text[2:]
+    return text.rstrip('/').lower()
+
+
+def paths_overlap(x, y):
+    """Equal paths, or one a parent directory of the other (packet cc9_lease_path_overlap)."""
+    a, b = normalised_path(x), normalised_path(y)
+    return a == b or a.startswith(b + '/') or b.startswith(a + '/')
+
+
+def file_overlaps(a, b):
+    """The paths of lease a that overlap some path of lease b, directory-aware."""
+    return sorted({x for x in a.get('files', []) for y in b.get('files', []) if paths_overlap(x, y)})
+
+
 def overlap_detail(a, b):
     """Human-readable description of what two leases share, or '' when they do not overlap."""
     parts = []
-    files = sorted(set(a.get('files', [])) & set(b.get('files', [])))
+    files = file_overlaps(a, b)
     if files:
         parts.append('files ' + ' '.join(files[:6]) + (' ...' if len(files) > 6 else ''))
     addrs = sorted({addr for addr in a.get('addresses', []) if covers(b, int(addr, 16))}
@@ -252,7 +277,7 @@ def overlap_detail(a, b):
 
 
 def overlaps(a, b):
-    if set(a.get('files', [])) & set(b.get('files', [])):
+    if file_overlaps(a, b):
         return True
     for addr in a.get('addresses', []):
         if covers(b, int(addr, 16)):
