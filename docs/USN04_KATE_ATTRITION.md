@@ -73,13 +73,13 @@ the 16 die. No gunnery term is bound by this packet.
 
 These are plane-side observations from the same log, handed to the plane owners.
 
-- **The Kates dwell in the aim state.** The per-Kate torpedo lines show 150-260 aim ticks, or
-  7.5 to 13 s. The aim-completion flag `aim_complete_2Ch` (009D15F0) is 0 for all 16 Kates,
+- **The Kates dwell in the aim state.** The per-Kate torpedo lines show 150-260 aim ticks. These
+  are pilot think ticks of 0.1 s, not 0.05 s frames (section 7), so 15 to 26 s. The aim-completion flag `aim_complete_2Ch` (009D15F0) is 0 for all 16 Kates,
   including the six that release.
 - **They fly slowly there.** 3 of the 6 releases are at 29-36 m/s, against the class
   `TravelSpeed` 61.1 m/s and `max_spd` 69.4 m/s.
-- **Each Kate survives about 4.8 s under fire**, so an aim run of 7.5-13 s near the escorts
-  loses most of them before release.
+- **Each Kate survives about 4.8 s under fire**, so an aim run of 15-26 s that ends inside the
+  escorts' range loses most of them before release.
 - **The next reads are 009D15F0's completion clause and the aim-state throttle.** Both belong to
   the plane owners. docs/SCENE_CONTENTS_HOSTS.md section 29 items 6-7 and the throttle history in
   that doc's earlier sections are the entry points.
@@ -130,7 +130,7 @@ section 4's plane-side prediction.
   (docs/KATE_RELEASE_CONDITION.md). SPNormal is the image's row for these Kates
   (docs/IJN_SKILL_ROWS.md).
 - **The Kates die before range falls under the envelope.** 15 of 16 are killed at 330-930 m,
-  mostly outside 450 m, in the last seconds of an aim run of 7.5-13 s.
+  mostly outside 450 m, in the last seconds of an aim run of 15-26 s.
 
 **Plane side: nothing to bind.** Every term on the aim run that was read is the image's.
 
@@ -154,3 +154,39 @@ is bound, and no pair is needed.
   `releases=2` but `torpedo_drop drops=0`. No torpedo is in the water there either.
 - **For the next owner.** The task's `releases=` counter should either skip dead aircraft or be
   labelled task-level. It is a log-reading hazard, not a gameplay divergence.
+
+## 7. The aim state's law (packet `cc9_torpedo_aim_state_law`, read)
+
+The lead's four questions, answered from the same log and the landed reads of 009D15F0
+(docs/TORPEDO_AIM_TICK.md, docs/KATE_RELEASE_CONDITION.md, docs/PILOT_BOT_THROTTLE_ARM.md).
+
+- **What speed and throttle the image commands in the aim run.** 009D15F0 writes no throttle and no
+  target speed. Its `+2C8h` output is the bank cap. The planner re-seeds the target speed every
+  think to `TravelSpeed * NewTravelSpeedMul` (`0099B503`/`0099B511`), and the speed-hold arm cuts
+  the throttle only when the plane is faster than that. A live Kate therefore flies the run at full
+  throttle. The census bears this out: #2.1\|.-3 reads throttle 1.00 at 90, 93 and 98 m/s on aim
+  ticks 1, 51 and 101, and 84 m/s at tick 151.
+- **Why the host's Kates fly 29 to 36 m/s.** They are dead. The four slow releasers lost power at
+  127.15 s, 207.01 s and 207.46 s, and #8.1\|.-2 at 213.06 s. They then glide at throttle 0
+  (#2.1\|.-3: 41.6 m/s, throttle 0.00 at tick 201). No live Kate is slow.
+- **What completes the aim, and why no Kate sets the flag.** `state+2Ch` is set at `009D236E` when
+  either clause holds:
+  - the remaining range less a ramp of up to half the release distance (225 m on the 450 m slot,
+    325 m on the 650 m slot) falls under the height still to lose;
+  - the steering delta in radians exceeds the time to target.
+  It marks the end of the run, past the release point, and the release does not wait for it. The
+  one live releaser, #4.1\|.-3, went from aim to goaway without it. No Kate sets it because every
+  run ends in a death at 330-930 m, before range falls under about 250-350 m.
+- **How long the image's aim run lasts.** The aim ticks are pilot thinks: `kPilotThinkInterval` is
+  0.09 s (`include/bsp/pilot_plan_slots.hpp`), so at 0.05 s frames a think runs every second frame,
+  0.1 s. #4.1\|.-4's census shows range 2198, 1767, 1371 and 885 m at ticks 1, 51, 101 and 151,
+  about 86 m/s per 0.1 s tick. Entry is at about 2200 m. At that closing speed the 450 m lead flag
+  opens after about 20 s. That matches docs/KATE_RELEASE_CONDITION.md, where the Yorktown Kates
+  opened it 19.5-26.1 s after aim entry.
+
+**Nothing to bind.** Every term of the aim run that was read is the image's. USN04's release count
+is set by how many Kates survive 15-26 s of closing on escorts at SPVeteran, and one does.
+
+**Predictions (no switch).** USN04 4700/4500: aim ticks 150-260 per Kate, 16 Kate deaths,
+1 torpedo drop (6 task releases), 44 deaths, 739 hits, all unchanged. USN13 3200/3000: 27 deaths,
+2 task releases, 0 drops. USN02: identical.
