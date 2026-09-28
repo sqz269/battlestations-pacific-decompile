@@ -46,6 +46,7 @@ is ranked from its own evidence.
 | USN04's dive-release drop 10 -> 4 | section 30 | the image's own; nothing bound |
 | the submarine's sensor category `00852B90` (rank 1 on i) | section 32 | ON, `kSubmarineSensorCategoryBound`; the periscope byte `+1234h` stays a labelled substitution |
 | the forced fire target's handle at `00835930` (rank 2 on i) | section 33 | ON, `kFireTargetObjectIdBound`; the handle resolves by object id |
+| the attack-move arm on a command building `00836B95` (rank 3 on i) | section 35 | read; exact on the measured missions (0 conversions); the conversion is not issued |
 
 **Still open from the closed rows:** the periscope byte `+1234h` (`periscopeOut`) has no producer,
 so a raised periscope never reads PeriscopeOut (section 32.4).
@@ -1698,3 +1699,41 @@ neutral_blip= neutral_identified= placed=0`. It is gameplay-identical to the tre
 in the units host's index space, which is the units host's work. With one, JM05 is still predicted
 identity for targeting within 3000 frames. A longer JM05 run, where the Japanese side spots a
 convoy, is where the group level would first matter.
+
+## 35. The attack-move arm on a command building, `00836B95` (packet `cc9_attackmove_building_arm`, rank 3 of section 31)
+
+**The image** (`00836B45`, the director step's attack-move arm, live listing):
+
+```
+00836b76: PUSH 0x1c ; CALL [vtable+5Ch]        ; the target is a command building (kind 1Ch)
+00836b7e: JZ 00836bc0                          ;   no: the live and hostile tests
+00836b80: CMP byte [EDI+5Eh],0 ; JNZ 00836b95  ; +5Eh set: convert
+00836b86: MOV EAX,[ESI+34h] ; MOV ECX,[EDI+54h]
+00836b8c: CMP ECX,[EAX+54h] ; JNZ 00836d67     ; another party's building: nothing, the attack-move stays
+00836b95: 00465080(building, 0.0) ; 0071ECF0(moveto 00E08F68) ; 00836bb2: 0071D810(2)
+```
+
+The conversion to `moveto` and the stage-2 raise happen only when the building's `+5Eh` is set
+(the host reads it as the scene node's destroyed flag, `game_hosts_ship_ai.cpp` `flag_05e`), or when
+the building's party equals the unit's. That is a building its own side holds.
+
+**The host** recorded every building target on this arm, and it labelled the arm unreached. Both
+counts were wrong.
+- The arm is reached: USN13 1002 times, USN01 8.
+- A diagnostic now counts the image's test: `summary mission director attackmove building arm hits=
+  converts=`. The first 12 conversions are traced.
+
+| row (this tree, `local\g7ba_<row>.log`) | hits | converts |
+| --- | --- | --- |
+| USN13 3200/3000 | 1002 | 0 |
+| USN01 3200/3000 | 8 | 0 |
+| LOMP07 3200/3000 | 0 | 0 |
+
+**Verdict: exact on these missions; nothing is bound.** Every hit is another party's building that is
+not destroyed. The image's `JNZ 00836D67` keeps the attack-move, which is what the host's record
+does. The label is corrected in the source.
+
+**Still open.** The conversion itself (`00465080`, `0071ECF0 moveto`, `0071D810(2)`) is not issued.
+It would take the idle tail's route through the stage binding and the queued delivery (section 27).
+Bind it when a mission shows `converts` above 0, which needs a Capture that completes, or a building
+destroyed under an attack-move.
