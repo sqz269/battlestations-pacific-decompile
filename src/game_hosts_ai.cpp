@@ -260,6 +260,20 @@ constexpr bool kAiCaptureTargetPathBound = true;
 // and USN01 identical, no group reaches brain+8h there (section 9.4).
 constexpr bool kAiSellThinkBound = true;
 
+// Packet cc9_planner_defend_capture_thinks part 3, docs/PLANNER_TASK_CHOICE.md
+// section 10. True: the Defend kind (brain+0h) runs 00A28A60's no-record path.
+// When no owned group holds a defend candidate (00A2DEF0: a member that is
+// IsKindOf(1Ch) or in a SzurkeNyil set), the record list is empty, so every
+// owned group without a groupable combatant, or with a world-set member, gets
+// DEFENDPOSITION (00A2BE20), and every other one is released and claimed by
+// brain+0Ch. With a candidate the records path (00A243D0 scores, 00A28300,
+// the anchors, the merge pass and the spawn tail) is not reconstructed and the
+// Siege-shape stand-in runs, counted as record_fallbacks. False: the stand-in.
+// ON: USN13 and USN01 moved (the Storage LandFort group holds DEFENDPOSITION,
+// and the RNG shift gives Enterprise MOVETOATTACK), USN02 and USN04 identical
+// (docs/PLANNER_TASK_CHOICE.md section 10.4).
+constexpr bool kAiDefendThinkBound = true;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -2031,6 +2045,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 ticking_planner = nullptr;
                 return;
             }
+            if constexpr (kAiDefendThinkBound) {
+                if (p->kind == bsp::AiPlannerKind::Defend && defend_think_00a28a60(*p)) {
+                    ticking_planner = nullptr;
+                    return;
+                }
+            }
             if constexpr (kAiSellThinkBound) {
                 if (p->kind == bsp::AiPlannerKind::Sell) {
                     sell_think_00a22800(*p);
@@ -2763,6 +2783,75 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         done("AiPlanners::sell_think_00a22800", 0x00a22800u);
     }
+    // 00A28A60 BSP_AiPlanner_DefendThink, the no-record path.
+    // 00A28AE5: for each owned group, 00A2DEF0(group)(side, &list)
+    //   appends every member that answers vtable[+5Ch](1Ch) or that
+    //   BSP_SzurkeNyil_ContainsUnit finds; 00A243D0 (00A28C2F) then scores one 34h-byte
+    //   record per candidate and a record scoring <= 0 is dropped.
+    // 00A28D31 / 00A28D44 / 00A28D6E: a groupable combatant group with no world-set member
+    //   and an anchor outside the records is queued for release.
+    // 00A28E69 / 00A28E7C / 00A28EBB (records empty): each owned group without a groupable
+    //   combatant (00A2C5A0), or with a member in the brain's world set
+    //   (00A2C450), gets 00A2BE20 DEFENDPOSITION; any other is queued.
+    // 00A28F22 / 00A28F38 / 00A28F49: each queued group is released through vtable+24h and
+    //   claimed by [planner+1Ch]+0Ch, the Capture planner, unless it owns it.
+    // Then, with the records still empty, the think frees and returns before 00A290F5 (00A28300).
+    // Returns false when a candidate exists: the records path runs the stand-in.
+    bool defend_think_00a28a60(Planner& p) {
+        const int side = current_party;
+        Brain* brain = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
+            ? brains[static_cast<std::size_t>(side)].get() : nullptr;
+        if (brain == nullptr) return false;
+        for (Group* g : p.owned) {
+            if (g == nullptr || g->destroyed) continue;
+            bool candidate = group_has_member_in_world_set(g, brain->world_set);
+            for (const std::size_t unit : g->members) {
+                if (!is_squadron(unit) && units.unit_is_kind_of(unit, 0x1C)) candidate = true;
+            }
+            if (candidate) {
+                ++defend_record_fallbacks;
+                record("AiPlanners::defend_records_path_00a28b00", 0x00a28b00u);
+                return false;
+            }
+        }
+        ++defend_thinks;
+        std::vector<Group*> release;
+        const std::vector<Group*> owned = p.owned;
+        for (Group* g : owned) {
+            if (g == nullptr || g->destroyed) continue;
+            if (!group_has_groupable_combatant(g) ||
+                group_has_member_in_world_set(g, brain->world_set)) {
+                // 00A2BE20: nothing when the command already answers IsType(11).
+                if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) {
+                    continue;
+                }
+                if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+                bsp::AiCommandObject c;
+                c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
+                c.owner_group = g;
+                g->command = c;
+                ++defend_positions;
+                if (capture_diag_enabled() && diag_capture_lines < 60) {
+                    ++diag_capture_lines;
+                    std::string names;
+                    for (const std::size_t unit : g->members) {
+                        if (!names.empty()) names += ", ";
+                        names += unit_name(proxy(unit));
+                    }
+                    log.notef("  defend diag t=%.2f party=%d defendposition members=%zu [%s]",
+                        static_cast<double>(clock_seconds), side, g->members.size(), names.c_str());
+                }
+            } else {
+                release.push_back(g);
+            }
+        }
+        for (Group* g : release) capture_hand_off(p, g, brain->planners[3]);
+        done("AiPlanners::defend_think_00a28a60", 0x00a28a60u);
+        return true;
+    }
+    unsigned long long defend_thinks{0};
+    unsigned long long defend_record_fallbacks{0};
+    unsigned long long defend_positions{0};
     unsigned long long sell_thinks{0};
     unsigned long long sell_splits{0};
     unsigned long long sell_orders{0};
@@ -3596,6 +3685,11 @@ void GameAiCoordinatorHost::report() {
         host.log.notef("summary mission ai capture thinks=%llu target_fallbacks=%llu handoffs=%llu "
             "attack_thinks=%llu (packet cc9_planner_defend_capture_thinks)", host.capture_thinks,
             host.capture_target_fallbacks, host.capture_handoffs, host.attack_thinks);
+    }
+    if constexpr (kAiDefendThinkBound) {
+        host.log.notef("summary mission ai defend thinks=%llu record_fallbacks=%llu "
+            "defendposition=%llu (00A28A60 no-record path, packet cc9_planner_defend_capture_thinks)",
+            host.defend_thinks, host.defend_record_fallbacks, host.defend_positions);
     }
     if constexpr (kAiSellThinkBound) {
         host.log.notef("summary mission ai sell thinks=%llu splits=%llu selling=%llu "

@@ -631,6 +631,108 @@ and `ijn_16_ambushed_at_wake_island.scn` hold Japanese ones, for a Japanese play
 **The prediction held. Decision: `kAiSellThinkBound` is ON.** Its first gameplay effect will come
 with a mission from 9.3, and it will be limited while SELLING has no tick arm.
 
+## 10. The Defend think, part 3 (packet `cc9_planner_defend_capture_thinks`)
+
+### 10.1 The image: the no-record path
+
+`00A28A60 BSP_AiPlanner_DefendThink` is the brain+0h think, body `00A28A60-00A29E2A`.
+
+```
+00A28AE5  CALL 00A2DEF0 (group)(planner+30h, &list)   ; per owned group: defend candidates
+00A28C2F  CALL 00A243D0 (rec+4h, 0)                   ; one 34h-byte record per candidate
+00A28D31  CALL 00A2C5A0 / 00A28D44 CALL 00A2C450      ; combatant, no world-set member ...
+00A28D6E  CALL 00A186F0                               ; ... and an anchor outside the records: queue
+00A28E69  CALL 00A2C5A0 / 00A28E7C CALL 00A2C450      ; records empty: per owned group
+00A28EBB  CALL 00A2BE20                               ; no combatant, or a world-set member: DEFENDPOSITION
+00A28F22  CALL [vtable+24h]                           ; each queued group released
+00A28F38  MOV ESI,[[planner+1Ch]+0Ch]                 ; ... and claimed by brain+0Ch, Capture
+00A28F49  CALL 00A1C8B0 / 00A28F88 CALL 00694A60      ; unless already owned; observer
+```
+
+- **`00A2DEF0`** appends the members that answer `vtable[+5Ch](1Ch)` (CommandBuilding) or that
+  `BSP_SzurkeNyil_ContainsUnit` finds. A record scoring 0 or less is dropped.
+- **With no record** the think frees its lists and returns before `00A290F5` (`00A28300`).
+- **The records path** runs from `00A290F5` to the end: the sort `00A28300`, `00A1C140`, the anchors,
+  the per-record group lists, `00A1A6D0` orders, the merge pass `00A29860-00A29BE7` (docs/AI_PLANNER_TAILS.md
+  section 2), and the spawn tail. It was not reconstructed.
+
+### 10.2 The binding
+
+**`kAiDefendThinkBound`, committed OFF.** When ON, the Defend kind runs `defend_think_00a28a60`:
+- **No candidate:** when no owned group holds a CommandBuilding member or a world-set member, the
+  no-record path runs as above.
+- **Any candidate:** the records path is the Siege-shape stand-in, counted as `record_fallbacks`.
+  This is labelled: `00A243D0` is not reconstructed, so a candidate may not have yielded a record
+  in the image.
+
+The census line is `summary mission ai defend thinks= record_fallbacks= defendposition=`.
+`BSP_CAPTURE_DIAG=1` names the members of each group given DEFENDPOSITION.
+
+### 10.3 Predictions, written before the ON runs
+
+**Slot 0 is reached on the reference set, contrary to section 7.**
+- On USN13 and USN01, party 0's Defend planner owns the "Storage, 05 01" group: 8 LandFort members
+  (kind 27, creator `00747000`), no groupable combatant.
+- OFF, the Siege stand-in orders it with `00A2CBD0`. On USN13 it goes at Agano's group (it holds
+  CLOSEATTACK, `first_command=9`); on USN01 at the CB2 group.
+
+**USN13 3200/3000 and USN01 3200/3000: exit 3.**
+- **No candidate:** the group holds no CommandBuilding, and the world sets are empty. So
+  `record_fallbacks=0`.
+- **The first Defend think gives it DEFENDPOSITION.** Later thinks keep it (`00A2BE20` returns),
+  so `defendposition=1`.
+- **Its close-attack pass changes centre.** It moves from the target group's leader (factor 1.5)
+  to its own leader (1.0), so its member orders move.
+- **The shared RNG stream shifts.** The stand-in's `00A2CBD0` draw (`00BD2F10`) disappears, and
+  every later draw moves. That includes Enterprise's CAUTIOUSATTACK draw, so its class may change.
+- **Direction:** unit shots and hits by the Storage members change. If Enterprise's class flips to
+  MOVETOATTACK, its movement returns and USN13's `tick_orders` rise again.
+
+**USN02 9200/9000 and USN04 4700/4500: identity, exit 0 or 1.** No planner line shows the Defend
+kind owning a group there, so the census reads `thinks=0`.
+
+### 10.4 The pairs
+
+- **OFF** is this tree's build at `4c037dc68`. **ON** is `pair_export --commit 4c037dc68 --flip
+  kAiDefendThinkBound=true` into `local\df_on`.
+- **Logs:** `local\df_{off,on}_{usn13,usn01,usn04,usn02}.log`.
+
+| mission | pair_diff | deaths | hit records (hull) | ON census |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | exit 3 | 17 -> 16 | 283 (117) -> 290 (98) | 39 thinks, 0 fallbacks, DEFENDPOSITION 1 |
+| USN01 3200/3000 | exit 3 | 5 -> 5 | 172 (80) -> 177 (74) | 37 thinks, 0 fallbacks, DEFENDPOSITION 1 |
+| USN04 4700/4500 | exit 1, identical | 28 | 491 | 58 thinks, DEFENDPOSITION 0 |
+| USN02 9200/9000 | exit 1, identical | 12 | 5166 | 112 thinks, DEFENDPOSITION 0 |
+
+**What moved.**
+- The Storage group holds DEFENDPOSITION from the first Defend think.
+- The removed `00A2CBD0` draw shifts the stream, so Enterprise's group now draws MOVETOATTACK
+  (`cautious=0`) on both missions. That is the conditional branch 10.3 named.
+- On USN13 `tick_orders` return from 25 to 514, and Enterprise moves 1845.78 m instead of 920.22 m.
+  On USN01 they rise from 0 to 51.
+
+**Predictions:**
+- **Held:** the mechanism and its census:
+  - `record_fallbacks=0` everywhere;
+  - one DEFENDPOSITION on USN13 and USN01;
+  - exit 3 on those two, exit 1 on USN02 and USN04.
+- **Failed on the census only:** `thinks=` is not 0 on USN02 and USN04. The Defend planner is ticked
+  every party think with nothing owned, and the no-record path counts that tick.
+
+**Decision: `kAiDefendThinkBound` is ON.**
+
+**The records path is next.** It is reached when a thinking party's Defend planner owns a group
+with a CommandBuilding member or a world-set member. That happens in the section 9.3 scenes with a
+thinking party that owns a CommandBuilding, and everywhere once `Objectives_Add` produces the world
+sets. What it needs, in order:
+- `00A243D0`, the Defend record score;
+- `00A28300` and `00A1C140`;
+- `BSP_AiGroup_PickAnchorEntity` and `00A186F0`;
+- the per-record assignment with `00A1A6D0`;
+- the spawn tail `00A29B8E-00A29E2A`.
+
+Its merge pass is already in `ai_planner_tails`.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
