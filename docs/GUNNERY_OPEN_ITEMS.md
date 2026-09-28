@@ -1967,6 +1967,32 @@ s). The Narwhal-class never raises, since its target is a submarine.
   state line and **exit 0**.
 - The verdict rule: P1 and P2 are the mechanism. A P3 spread miss with P1 and P2 held may flip.
 
-### 38.4 The pairs, and the flip
+### 38.4 The pairs, and the flip (2026-09-28)
 
-(Pending.)
+- **OFF** is this tree's build of `da969c5b2`. Its JM06 and LOMP06 logs are gameplay-identical to
+  reference j's.
+- **ON** is `pair_export --commit da969c5b2 --flip kSubmarinePeriscopeOutBound=true` (SHA-256
+  prefix `57EA8E120964`).
+- The logs are `local\g8_poff_<row>.log` and `local\g8_pon_<row>.log` in worktree cc9-gunnery8,
+  with reference j's run parameters.
+
+| row | `pair_diff` | what moved | against the prediction |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | **exit 1, gameplay identical** | PlayerSub 03 raises at 116.10 s and reads out at 116.85 s; PlayerSub 02 raises at 119.60 s and reads out at 120.35 s (range 4.80, mast 4.000 against the 3.80 threshold). The recon summary goes `periscope_in` 360 -> 306 and `periscope_out` 0 -> 54, with `calls` 1074, `underwater` 612 and `deep` 102 unchanged. The recon pass shows `blip` 0 -> 7 and `identified` 874 -> 867; gunnery candidates fall 2645 -> 2601 | P1, P2 and P3 held |
+| LOMP06 1200/1000 | exit 1 | no state line and no arm call; only the movie-camera pose lines differ, by their 0.01 s clock | P4 predicted exit 0; the difference is the known presentation noise |
+
+- **P1 held.** The raises come at 116.10 and 119.60 s, not at the first fire step. `009E4D90`
+  needs periscope depth as well as the fire state. Each byte reads out 0.75 s after its raise,
+  inside the 0.76 s bound.
+- **P2 held** exactly: the 54 out samples are all taken from PeriscopeIn.
+- **P3 held.** No gameplay line moves within 3000 frames. The byte reaches the recon layer, which
+  now reports seven blips of the raised boats.
+- **P4 missed only on noise.** LOMP06 runs no arm, and the one differing kind of line is the
+  presentation noise already known on LOMP10.
+
+**Verdict: ON.** The mechanism matches the listing on both rows. `kSubmarinePeriscopeOutBound = true`.
+
+**Still open.**
+- The repair (`00854E44`) and the break (`009373C0`) have no producer in this process.
+- The auto-raise's `+1235h` is written only by the reflection setters. No reference row sets it.
+- A player-raised periscope (the periscope GUI page) is not routed.

@@ -303,7 +303,7 @@ inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMAR
 // back toward periscopeY at dt*3 otherwise (0042AC60), and +1234h is set when the
 // extending mast reaches the full travel less 1.0 (00855045). 00852B90 then reads
 // PeriscopeOut. False: +1234h reads clear, as before.
-inline constexpr bool kSubmarinePeriscopeOutBound = false;
+inline constexpr bool kSubmarinePeriscopeOutBound = true;  // ON: pairs held (docs/GUNNERY_OPEN_ITEMS.md section 38.4)
 
 // Packet cc9_submarine_seabed (docs/SUBMARINE_MODEL.md section 14). True: each
 // seeded submarine runs 00855420's footprint scan over the Landscape (44h) terrain
