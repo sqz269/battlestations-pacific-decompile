@@ -3148,3 +3148,35 @@ is the drain `0094C490`'s placement, not a native, and it is recorded here for i
 **Next packet: `SpawnNewIDIsRequested` and `SpawnNewIDRemove`,** the highest-ranked item this
 lane owns outright. Ranks 1 and 2 need the gunnery host's HP and the units host's plane state.
 Both of those files are leased to cc9-gunnery7 at this refresh.
+
+## `SpawnNewIDIsRequested` and `SpawnNewIDRemove`, bound (packet `cc9_spawn_new_id_queries`, `kLuaSpawnNewIdQueriesBound`, committed OFF)
+
+Worker cc9-lua6, 2026-09-28. This is rank 3 of the fifth refresh, and the first rank this lane
+owns.
+
+**The read (V, listings `00945850`-`00945A1x` and `00945A20`-`00945C0x`).** Both thunks pass the
+`lua_State` to the manager `*(00F89B3C)` (`docs/LUA_BINDING_SPAWN.md`).
+- **The argument.** It is Lua slot 1, read through `00B677E0(.., 0)` and `00B662B0` into a
+  NativeString (`009458F2`..`00945919`). A value that is not a string gives the empty string.
+- **The match.** The scan walks the list from `manager+4h`. A record matches when the lengths of
+  `record+B8h` and the argument are equal, and either both are empty or `00BF7FBF` **`__stricmp`**
+  returns 0 (`00945948`..`00945986`, and `00945B28`..`00945B5C` in the remove).
+  - So the match is case-insensitive.
+  - The host's `id_is_requested_00945850` and `remove_id_00945a20` compared exactly. They now go
+    through `spawn_request_id_matches`. Nothing called them before this packet.
+- **`00945850`** stops at the first match, pushes one boolean (`009459A8` `00B66450`) and returns
+  one result (`00B66400`).
+- **`00945A20`** frees every match and decrements `+8h`. This is the "twelve bytes Ghidra left
+  undisassembled" loop back to `00945B07`. It returns no result.
+
+**The binding.** The two rows run on the host's queue (`bsp::spawn_request_queue()`). A summary
+line counts the queries, the true answers and the removals. A replayed error call answers but does
+not count, and does not remove.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| JM05 3200/3000 | **exit 1.** The native row turns concrete (16 calls). `requested=16 true=0 removes=0 removed=0`. The only ids queued in 150 s are the two first `SH2SpawnRequest` Fletchers, and the one test that would see them, `jm05.lua` 1970, is not reached: the OFF run makes no third `SpawnNew`. The other tests ask for `SH1SpawnRequest`, `JapAirGrpSpawnRequest` or `ACargoSpawnRequest`, which are not queued |
+| USN01 3200/3000 | **exit 1.** No call; only the new summary line |

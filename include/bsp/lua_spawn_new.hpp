@@ -265,6 +265,9 @@ private:
 // One per process, as the singleton is.
 SpawnRequestQueue& spawn_request_queue();
 
+// The id compare both scans make: equal length, then __stricmp (00BF7FBF).
+bool spawn_request_id_matches(const std::string& record_id, const std::string& id) noexcept;
+
 // The drain needs the mission Lua host - it creates through that host's
 // script-orders host and answers through that host's `thisTable` - but the
 // frame step that runs it is the world walk, which cannot reach that host.
