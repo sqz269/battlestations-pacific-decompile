@@ -1536,3 +1536,22 @@ Worker cc9-lua2, 2026-09-28. This is item 4 of the ranking. Ghidra was read only
 | USN13 3200/3000 | `calls=15`. The Japanese primary-3 targets and the attack-wave squadrons are published as identified to the Allied side (party 0) from the next pass on. `recon sensor_pass identified` rises, and every Allied AI path that reads the pass's levels sees them sooner. **Exit 3 likely**; every moved row should trace to Allied engagement of those units |
 | USN01 3200/3000 | no call on the current OFF log (`kill_off_usn01`; the script's line 836 is not reached); identity |
 | USN04 4700/4500 | no call, identity |
+
+#### SetForcedReconLevel pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `f23f4f1d1`.
+- ON is `pair_export --flip kForcedReconLevelBound=true` of the same commit (`local/fr_on`,
+  SHA-256 `58214AE63F3E`).
+- The logs are `local/fr_{off,on}_<mission>.log`.
+
+| row | census | pair_diff | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | `calls=15 units=60`; recon pass `forced=0 -> 2254`, `identified 22993 -> 23622`, `blip 7 -> 0`, `none 13270 -> 12648` | exit 1: gameplay identical, with 27 death rows and 211 unit rows | exit 3 likely | **failed on spread**: the force is published (the pass counters move), but no AI path on this idle run acts on the earlier identification |
+| USN01 3200/3000 | `calls=0` | exit 1 | identity | held |
+| USN04 4700/4500 | `calls=0` | exit 1 | identity | held |
+
+**Verdict: `kForcedReconLevelBound = true`.**
+- The mechanism is the image's: the forced records publish their level, and the rows the
+  script names reach Allied level 2 at once.
+- The gameplay prediction overstated the spread and is recorded as failed.

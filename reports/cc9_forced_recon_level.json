@@ -6,7 +6,7 @@
     {
       "name": "kForcedReconLevelBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF"
+      "state": "ON"
     }
   ],
   "substitutions": [
@@ -17,5 +17,17 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "USN13 gameplay",
+      "predicted": "exit 3 likely",
+      "measured": "exit 1, gameplay identical",
+      "why": "no AI path on the idle run acts on the earlier identification"
+    }
+  ],
+  "pairs": {
+    "USN13": "exit 1, forced=2254, identified 22993->23622",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
+  }
 }
