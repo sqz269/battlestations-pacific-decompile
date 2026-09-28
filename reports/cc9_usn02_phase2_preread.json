@@ -1,0 +1,20 @@
+{
+  "packet": "cc9_usn02_phase2_preread",
+  "doc": "docs/USN02_PHASES.md (docs/LUA_BINDING_MISSION.md is leased to cc9-lua2)",
+  "code_changed": false,
+  "sources": ["usn_2_java.lua 493-600, 611-790", "local/hp_off_usn02.log (MissionPhase=2)", "local/p2_off_usn02.log"],
+  "transitions": {
+    "1->2": "primary 1 active and GetHpPercentage(DeRuyter) < 0.15 or EnemyDestroya all dead; Blackout(true, luaMoveToPh2)",
+    "2->complete": "first live CATable ship within 500 m of EscapePoint",
+    "fail": "Houston.Dead or Exeter.Dead"
+  },
+  "gaps_ranked": [
+    "AddDamage 0088E000 (0088E000-0088E1A3): DRGrp scuttled at luaPh2MovieEnd",
+    "SetInvincible 00897A50 (00897A50-00897CAE): with cc9-gunnery3 (cc9_set_invincible_floor)",
+    "Objectives_Completed / Objectives_Failed 008BD340 / 008BD900: scoring and display"
+  ],
+  "phase2_changes": "units 28 -> 32; DRGrp deaths with AddDamage; primary 2 cannot complete with an idle player",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
