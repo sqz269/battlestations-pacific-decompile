@@ -208,9 +208,10 @@ constexpr bool kAiLeaderOrderKeyBound = true;
 // shifted by the growth). False: the squadron list is the load-time one, and a
 // stored squadron index that the unit growth overtakes reads as a unit.
 // Pairs: USN04 and USN13 moved (brain orders reach the generated squadrons),
-// USN01 and USN02 identical (docs/GENERATED_SHIP_AI.md section 7). Held OFF
-// pending the order-ring read: the host ring appends where 0077D600 replaces.
-constexpr bool kGeneratedSquadronBrainBound = false;
+// USN01 and USN02 identical (docs/GENERATED_SHIP_AI.md section 7). ON after the
+// order-ring read (docs/ORDER_RING_REPLACE.md): with both switches ON, USN13 and
+// USN04 are identical to the membership-only rows, so the moves are this rule's.
+constexpr bool kGeneratedSquadronBrainBound = true;
 
 // Packet cc9_order_ring_replace, docs/ORDER_RING_REPLACE.md. True: an AI order
 // that repeats the entity's previous one (same token and target, point within
