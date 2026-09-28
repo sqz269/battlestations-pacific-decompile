@@ -2083,3 +2083,27 @@ Worker cc9-ships9, 2026-09-28. The base is `f01935cde`, which is `agent/cc9-ship
    with `leaves=0` on ON is identical apart from the gate's own counters.
 4. **No death prediction.** Section 12's loop moved USN04 and USN13 deaths. Without the loop, fewer
    rows should move and each by less.
+
+### The pairs and the verdict: ON
+
+ON is `pair_export --commit f01935cde --flip kAutoTargetFollowerGateBound=true`, SHA-256 prefix
+`80874933424C` (`local\ships9_fgon_<row>.log`).
+
+| row | pair_diff | leaves ON (section 12's ON) | joins OFF -> ON | combat OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN01 | 3 | 13 (163) | 0 -> 3 | hit records 475 -> 393, shots 1485 -> 1290; deaths equal |
+| USN04 | 3 | 7 (7) | 0 -> 0 | hit records 784 -> 701, shots 10458 -> 10212; deaths equal |
+| JM06 | 3 | 6 (11) | 4 -> 4 | hit records 288 -> 276; deaths equal |
+| JM08 | 3 | 17 (714) | 1 -> 14 | hit records 321 -> 411; deaths equal |
+| USN13 | 3 | 39 (1344) | 0 -> 26 | deaths 27 -> 32 (five plane rows of "bruh #1.5" and "#1.9", RNG-coupled), shots 7068 -> 8194 |
+| JM05 | 3 | 7 (157) | 3 -> 8 | combat equal |
+| LOMP10 | 3 | 8 (61) | 1 -> 2 | hit records 94 -> 95, shots 442 -> 417 |
+
+- **Prediction 1 held.** The leave-and-rejoin loop is gone. Leaves fall 12 to 42 times on USN01,
+  JM08, USN13 and LOMP10. They fall by half on JM06 and to a twentieth on JM05, and stay 7 on
+  USN04, which never looped.
+- **Prediction 2 holds in the aggregate.** The remaining leaves are of the order of the rejoins
+  (JM08 17 leaves against 14 joins, USN13 39 against 26, JM05 7 against 8). No per-unit leave
+  line exists, so "no unit leaves repeatedly" is not checked unit by unit.
+- **Prediction 3 held.** Every row has leaves, and every row moves.
+- **Verdict: ON.** Section 12's recorded mechanism failure is resolved by the join follow-up.

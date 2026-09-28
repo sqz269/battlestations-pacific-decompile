@@ -418,7 +418,9 @@ inline constexpr bool kPlaneRowAutoTargetBound = true;
 // LeaveFormation 00899EB0 runs it). False: the gate answers false.
 // OFF, recorded (2026-09-28): the pairs move as predicted, but a follower leaves and is
 // rejoined by the AI follower pass once a second (section 12); the join's command is unread.
-inline constexpr bool kAutoTargetFollowerGateBound = false;
+// ON (2026-09-28, after kFormationJoinFollowBound): the loop is gone, leaves fall to the
+// order of the rejoins; seven rows move (docs/SHIP_AI_OPEN_ITEMS.md section 24).
+inline constexpr bool kAutoTargetFollowerGateBound = true;
 // Packet cc9_free_bearing_query (rank 3), docs/SHIP_AI_OPEN_ITEMS.md section 14.
 // True: 009DC2E0 runs whole (src/ship_ai_free_bearing.cpp) at the sector scan's
 // 009EC0C1 (searcher 0) and the arm final step's 009DF0FA (searchers 1 and 2):
