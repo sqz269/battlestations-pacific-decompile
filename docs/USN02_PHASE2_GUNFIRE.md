@@ -12,7 +12,8 @@ is the image's in every bound term. **No switch was added.**
 **The premise does not hold on main.** Neither loss the packet names is a gunfire kill:
 - **Houston (helm route, 208.26 s).** Haguro is credited only as the last hitter. Her 9 direct
   hits between 166 and 213 s applied 474 of the 4462 that Houston took from all shooters. The
-  extra damage on the helm route, compared with the idle run, is a torpedo attack (section 4).
+  rest, 3988, is **one Tokitsukaze Long Lance at 168.41 s** that was fired at Exeter at about
+  126 s (section 4).
 - **Exeter (211.76 s).** She was sunk by a **Nachi torpedo** at 6005 m (`killer_cat=7`,
   `killer_gun=403`), in the director pair's ON run (cc9-gunnery3 `local\WD_ON_USN02.log`), and
   only on that pair's base. On main, with AddDamage also ON, Exeter survives (reference g).
@@ -30,6 +31,7 @@ gameplay, the 23 death rows and the 32 unit rows identical.
 | `local\g4_tr_idle_usn02.log` | idle | Haguro, Nachi, Jintsu, Naka | identical to the row above |
 | `local\g4_tr_helm_usn02.log` | `3135 takehelm Houston 1.0 EscapePoint` (cc9-ships2's file) | the same four | Houston sunk at 208.26 s, killer Haguro gun 166 at 1878 m; failed at 212.91 s |
 | `local\g4_trall_helm_usn02.log` | the same | all 18 Japanese ships | **crashed** at mission frame 795 after `present failed hr=0x88760868` (device lost); the renderer then failed at init for the rest of the session |
+| `local\g4_trall3_helm_usn02.log` | the same | all 18 Japanese ships | the rerun once the renderer recovered: `pair_diff` against `g4_tr_helm_usn02` exits 1 with gameplay, the 24 death rows and the 32 unit rows identical |
 
 ## 3. Haguro's main battery against the image
 
@@ -78,16 +80,31 @@ Haguro's fire at Houston, 166..212 s, counted from the trace lines:
 - Haguro fires at Houston alone in that window on both runs. She applies about the same damage
   in both runs, so she does not explain the 3562 difference.
 - The per-ship `dealt` column moves from idle to helm by **+3988 for Tokitsukaze** (5000 -> 8988).
-  No other Japanese ship moves by more than 153. Tokitsukaze is sunk at 173.16 s on both runs, so
-  the extra damage is from her torpedoes already running. Her class is a destroyer with torpedo
-  platforms (host categories 6, 7, 8).
-- That fits docs/SCRIPTED_HELM.md 9.3. After `takehelm`, the forced cruise keeps `009DA1D0` shut
-  and Houston stops evading torpedoes (129 overrides against 320). The route also turns her
-  across the phase-2 torpedo attack. That rule is the image's.
-- **Labelled:** the Tokitsukaze attribution is from the per-ship totals, not from a per-hit trace.
-  The run that would have traced every Japanese shooter crashed on the device loss (section 2).
-  Rerun `local\g4_trace_runs.ps1 -Which helm` with `G4_TRACE` set to every Japanese ship to
-  confirm it hit by hit.
+  No other Japanese ship moves by more than 153.
+- **Every Japanese hit on Houston, helm route** (`local\g4_trall3_helm_usn02.log`):
+
+| shooter | category | record | hits | applied | time |
+| --- | --- | --- | --- | --- | --- |
+| Tokitsukaze, gun row 345 | 7 (torpedo) | blast | 1 | 3760.6 | 168.41 s |
+| Haguro | 3 | direct | 9 | 473.9 | 166.61..207.26 s |
+| Tokitsukaze, gun row 345 | 7 (torpedo) | direct | 1 | 227.8 | 168.41 s |
+| Haguro | 3 | blast | 9 | 0.0 | 166.61..207.26 s |
+| **total** | | | | **4462.3** | = Houston's `taken` |
+
+- **The torpedo is class 67**, `24. Type 93 Mod1 Long Lance ship torpedo`: `DamageMin`/`Max` 500,
+  `Blast` 6000..8000 over 50 m, V0 13. The logged direct base is 500.0, which applies 227.8 =
+  (500 - 90) x 0.5556. The blast base is 6862.3, inside the authored range, at distance 0. It
+  applies 3760.6 through the blast record, which earlier packets bound
+  (docs/PROJECTILE_IMPACT.md, the element blast).
+- **Gun row 345 aimed both of its four-torpedo salvos at Exeter:** at 5.15..6.65 s and at
+  125.15..126.65 s (2427..2438 m). The torpedo that hit Houston at 168.41 s is from the second
+  salvo, after a run of about 42 s. Tokitsukaze herself is sunk at 173.16 s.
+- The hit takes Houston from 6305 of 6500 to 2316. It destroys hull segment 0 and starts an
+  explosion component failure. Haguro's later hits and the damage-control losses (water, fire,
+  explosion) finish her at 208.26 s. Haguro is the last hitter.
+- **Why only on the helm route:** docs/SCRIPTED_HELM.md 9.3. After `takehelm` the forced cruise
+  keeps `009DA1D0` shut, so Houston stops evading torpedoes (129 overrides against 320). The route
+  also turns her across the spread aimed at Exeter. That rule is the image's.
 
 ## 5. Consequences
 
