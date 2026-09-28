@@ -1023,7 +1023,8 @@ struct GameShipAiHost::Impl {
     // LABELLED: the torpedo's +46Ch is atan2(vx, vz) of the host round (it runs
     // straight on its launch heading, as torpedo_candidate has it), and a
     // target with no ship depth input takes class+570h = 0.
-    int torpedoes_threatening_00814390(std::size_t target, std::size_t owner_handle, bool own) {
+    int torpedoes_threatening_00814390(std::size_t target, std::size_t owner_handle, bool own,
+                                       bool head_only = false) {
         if (target >= units.count()) return 0;
         bsp::ShipAiTorpedoThreatInputs in{};
         float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -1041,7 +1042,26 @@ struct GameShipAiHost::Impl {
                 "Length", 0.0f);
         }
         int count = 0;
-        for (const GameGunneryHost::LiveTorpedo& t : live_torpedoes()) {
+        const std::vector<GameGunneryHost::LiveTorpedo>& list = live_torpedoes();
+        if (head_only) {
+            // 00814420: the head node only, tested list-count times. The head is
+            // the oldest registered torpedo (00484540 push-back): the lowest
+            // serial. Owned by the target (00814468 JE): nothing counts.
+            const GameGunneryHost::LiveTorpedo* head = nullptr;
+            for (const GameGunneryHost::LiveTorpedo& t : list) {
+                if (head == nullptr || t.serial < head->serial) head = &t;
+            }
+            if (head == nullptr || head->owner_unit == owner_handle) return 0;
+            in.torpedo_run_seconds = head->swim_seconds;
+            in.torpedo_position[0] = head->position[0];
+            in.torpedo_position[1] = head->position[1];
+            in.torpedo_position[2] = head->position[2];
+            in.torpedo_heading = static_cast<float>(std::atan2(
+                static_cast<double>(head->velocity[0]), static_cast<double>(head->velocity[2])));
+            in.water_travel_speed = head->water_travel_speed;
+            return bsp::ship_ai_torpedo_threatens_008173e0(in) ? static_cast<int>(list.size()) : 0;
+        }
+        for (const GameGunneryHost::LiveTorpedo& t : list) {
             if ((t.owner_unit == owner_handle) != own) continue;
             in.torpedo_run_seconds = t.swim_seconds;
             in.torpedo_position[0] = t.position[0];
@@ -3864,8 +3884,16 @@ public:
     int torpedoes_threatening_target_00814420() override {
         // 00CFC5A4, ship vtable[1D4h] = 00814420 (no Ghidra function,
         // 00814420-00814492): every live torpedo NOT owned by the target.
-        owner_.record("ShipAiTorpedoStandoff::threats_00814420_no_ghidra_function", 0x00814420u);
-        return owner_.torpedoes_threatening_00814390(target_, target_ + 1u, false);
+        const int per_torpedo = owner_.torpedoes_threatening_00814390(target_, target_ + 1u, false);
+        const int head = owner_.torpedoes_threatening_00814390(target_, target_ + 1u, false, true);
+        ++owner_.summary.threat_head_calls;
+        if (head != per_torpedo) ++owner_.summary.threat_head_differs;
+        if (!kForeignTorpedoThreatHeadBound) {
+            owner_.record("ShipAiTorpedoStandoff::threats_00814420", 0x00814420u);
+            return per_torpedo;
+        }
+        owner_.done("ShipAiTorpedoStandoff::threats_00814420", 0x00814420u);
+        return head;
     }
     int torpedo_device_count_03e8() override {
         const std::vector<std::size_t>* list = torpedo_list();
@@ -7657,9 +7685,21 @@ public:
         owner_.record("AutoTarget::build_command_target", 0x00465080u);
         return entity;
     }
-    bool command_accepts_target(std::uint32_t, void*) override {
-        owner_.record("AutoTarget::command_accepts_target", 0x0071d6d0u);
-        return false;
+    bool command_accepts_target(std::uint32_t command, void* target) override {
+        // The entity build_command_target carried is the director's fire-target
+        // handle (unit index + 1); 00465080 makes it a kind-1 descriptor.
+        const std::uint32_t handle =
+            static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target));
+        const bool accepts =
+            owner_.units.commands().command_accepts_target_0071d6d0(command, handle);
+        ++owner_.summary.accept_calls;
+        if (accepts) ++owner_.summary.accept_true;
+        if (!kAutoTargetCommandAcceptBound) {
+            owner_.record("AutoTarget::command_accepts_target", 0x0071d6d0u);
+            return false;
+        }
+        owner_.done("AutoTarget::command_accepts_target", 0x0071d6d0u);
+        return accepts;
     }
     bsp::AutoTargetScanResult scan_party_list() override {
         ++row_.target_scans;
@@ -9106,6 +9146,12 @@ void GameShipAiHost::report() {
         host.summary.thinks, host.summary.scans, host.summary.units_with_fire_target,
         host.summary.fire_target_sets, host.summary.attackmove_issues,
         host.summary.units_accepting_new_target);
+    host.log.notef("summary mission threat head bound=%d calls=%llu differs=%llu; "
+        "command accept bound=%d calls=%llu true=%llu (packet cc9_torpedo_threat_first_node, "
+        "00814420 / 0071D6D0)", kForeignTorpedoThreatHeadBound ? 1 : 0,
+        host.summary.threat_head_calls, host.summary.threat_head_differs,
+        kAutoTargetCommandAcceptBound ? 1 : 0, host.summary.accept_calls,
+        host.summary.accept_true);
     // Milestone 2p: what 0071DF70's two rules saw, per unit.
     host.log.notef("  %-20s %-10s %8s %10s %-12s %8s %s", "unit", "state", "gate",
         "hold+40h", "slot0", "category", "0071df70");
