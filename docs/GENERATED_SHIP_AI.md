@@ -395,7 +395,15 @@ admission is the image's live-list rule, and the index shift removes a host defe
 - Whether the brain's `moveto` churn on player squadrons matches the image depends on the
   order ring's append-versus-replace substitution. That is a follow-up worth routing.
 
-**Lead's ruling: held OFF pending the order-ring read.** USN13's halved damage runs through
-the host's order ring, which appends with a duplicate filter where `0077D600` replaces. That
-substitution must be separated before this switch can carry the verdict. The pair rows above
-stand as recorded.
+**Lead's first ruling: held OFF pending the order-ring read.** The concern was that USN13's
+halved damage might run through the host's order ring.
+
+**Now ON.** The order-ring read (docs/ORDER_RING_REPLACE.md) found that the host already
+replaced the queue.
+- **The ring is cleared as the cause.** With both switches ON, USN13 and USN04 are identical
+  (pair_diff exit 1) to the membership-only rows above. The moves are therefore this rule's
+  own.
+- **The consequence is the image's.** The brain re-tasks player-launched squadrons in the image
+  too (docs/AI_BRAIN_PLAYER_EXEMPTION.md).
+- **The lead's ruling applies the flip-on-spread rule.** No new pair was needed, and reference
+  h carries the USN13 and USN04 moves.

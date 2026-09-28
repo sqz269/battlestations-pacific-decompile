@@ -2,7 +2,9 @@
   "packet": "cc9_generated_squadron_brain_membership",
   "doc": "docs/GENERATED_SHIP_AI.md section 7",
   "code_changed": true,
-  "switch": {"kGeneratedSquadronBrainBound": "ON after pairs (committed OFF at 4376ade2a)"},
+  "switch": {
+    "kGeneratedSquadronBrainBound": "ON (lead ruling after cc9_order_ring_replace: two flips vs membership-only exit 1 on USN13 and USN04)"
+  },
   "addresses": {
     "00A2E835": "compose phase 3: walks the live entity lists off world+19CCh each pass; admits +5Ch set, +5Dh/+60h/+5Eh clear, +16Ch null, +54h < 2; 00A2E881 seeds a group via 00A2DFA0",
     "00A32350": "coordinator creation; the host built its squadron list only here"
