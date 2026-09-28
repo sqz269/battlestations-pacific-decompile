@@ -369,3 +369,53 @@ The listing says the AA lead does not use it.
 | USN13 3200/3000 deaths | 27 | 25 to 29 |
 | USN02 9200/9000 | - | identical (no plane targets) |
 | USN01 3200/3000 | 7 deaths | 7 unless a Mavis kill moves |
+
+## 13. The pairs for sections 9 and 12, and the counter check (2026-09-27)
+
+Every pair runs against the same OFF: this worktree at `b4fcb606b` with every switch OFF
+(`local\P0_OFF_<m>.log`). Each ON side is `pair_export` from `b4fcb606b` with only its switch
+flipped. RNG streams and the death table were on.
+
+**The counter split (section 10), an identity check.** The OFF logs match the pre-counter
+reference logs in gameplay: USN04 5482 / 739 / 44, USN02 863 / 573 / 19, USN01 561 / 150 / 7,
+USN13 4180 / 527 / 27 (shots / hits / deaths). The new line reads:
+
+| mission | task / live / dead | prediction | verdict |
+| --- | --- | --- | --- |
+| USN04 | 6 / 1 / 5, drops 1 | 6 / 1 / 5 | held |
+| USN13 | 2 / 0 / 2, drops 0 | 2 / 0 / 2 | held |
+| USN01 | 3 / 0 / 3, drops 0 | not predicted | - |
+
+**Plane-gun mounts, `kPlanePlatformAttachmentBound` (section 9), `local\P2_ON`.**
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 plane mounts from model | 0 | 332 | 150-241 | **failed**: every gun row on a plane is placed (bomb racks and rear guns too), not only the five gun devices counted |
+| USN04 fighter (category 0) hits | 174 | 226 | moves > 5% | held |
+| USN04 fighter kills | 11 | 14 | 9-14 | held |
+| USN04 deaths | 44 | 42 | 42-47 | held |
+| USN04 Kate deaths / drops | 16 / 1 | 16 / 1 | 16 / 0-2 | held |
+| USN13 deaths | 27 | 27 | 25-29 | held |
+| USN02 | 19 deaths | identical (pair_diff 1) | identical | held |
+| USN01 | 7 deaths | identical (pair_diff 1) | 7 | held |
+
+**Decision: ON.**
+
+**The turn-rate average, `kAaTargetTurnAverageBound` (section 12), `local\P4_ON`.**
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 tests / rotations | 0 / 0 | 261,546 / 229,151 | rotations above 0 and below tests | held, but 88% pass the gate |
+| USN04 Kate deaths | 16 | 16 | 16, same categories, within 1 s | **failed**: six move more than 1 s and three change category. #4.1\|.-3, the one live releaser, dies at 130.40 s instead of 141.35 s, before its release |
+| USN04 torpedo drops | 1 | 0 | 0-2 | held |
+| USN04 Zero deaths | 13 | 11 | move | held |
+| USN04 deaths | 44 | 42 | 41-47 | held |
+| USN13 deaths | 27 | 26 | 25-29 | held |
+| USN01 deaths | 7 | 7 (pair_diff 3) | 7 | held |
+| USN02 | 19 | identical, tests 0 | identical | held |
+
+**Decision: stays OFF.** The rule is the image's, but it depends on the host's plane body rates.
+88% of USN04's tests exceed 1.8 degrees per second, including Kates on straight runs whose commanded
+heading turns about 0.3 degrees per second. That points at the host's rate law (pitch and roll
+hunting) rather than at the lead. Validate the body-rate magnitudes against the image first
+(`007DA710`, docs/PLANE_CONTROL_RATE_LAW.md), then re-pair.

@@ -212,3 +212,31 @@ docs/RECON_SENSOR_PASS_BINDING.md flagged one check before LOMP06 becomes a refe
 
 So the ON side's LOMP06 behaviour of about 1 s of gain per forced pass after the reset is the
 image's rule, not a host artefact.
+
+## 9. The pairs, and the flip (2026-09-27)
+
+OFF is this worktree at `b4fcb606b`, with every switch OFF. ON is `pair_export --commit b4fcb606b
+--flip kGunIdleRestBound=true` (`local\P1_ON`). RNG streams and the death table were on, lockstep
+0.05, with an idle player. The logs are `local\P0_OFF_<m>.log` and `local\P1_ON_<m>.log`. Every pair
+exited 3.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 shots / hits / deaths | 863 / 573 / 19 | 891 / 567 / 19 | within 10% | held |
+| USN02 the dead ships | 19 | 19, but Witte dies and Yukikaze survives | the same 19 | **failed** (one swap) |
+| USN02 first shot | 1.40 s | 1.40 s | holds | held |
+| USN04 deaths / hits | 44 / 739 | 40 / 702 | 44-47, hits rise | **failed**: four fewer Zero kills (13 -> 9); fighter (category 0) hits 174 -> 145 |
+| USN04 first shot | 91.60 s | 91.60 s | may move | held |
+| USN04 angle sets + refusals | 2,684,620 | 270,244 | at least halves | held |
+| USN01 deaths / hits | 7 / 150 | 7 / 149 | 7, within 10% | held |
+| USN13 deaths | 27 | 27 | 27 +- 1 | held |
+| census, USN13 | - | holds 5.2 M, rests 1633, rests_unauthored 503 = spawn_seeds 503, seeds_no_arc 0 | - | consistent: each unauthored turning gun is seeded and takes its one rest at spawn |
+
+**The failed USN04 row.** The Kates (16) and Vals (12) die as before, and the Zeros survive more.
+The loss is in the fighter guns, category 0. The rule stops commanding rest angles on every
+targetless tick for them too, so a plane gun that tracked a target keeps that angle after losing it.
+The image does the same: a plane gun is `MRFSGun`, 21h, so it never takes 0085AD00, and 008FBCE0
+issues no other command. So the move is the image's, and the prediction missed it.
+
+**Decision: `kGunIdleRestBound` is ON.** The rule is the image's, and its census behaves exactly as
+bound. The two failed rows are recorded above.
