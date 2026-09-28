@@ -2114,12 +2114,13 @@ The OFF side is this tree's build, with reference j's run parameters plus main's
   suppression itself is not exercised by any reference row. The binding is the listing's two
   tests on the byte the native writes.
 - **U2 held.** Besides the summary line's `bound`, the ON logs differ only in presentation. The
-  back buffer is 640x480, and the renderer capability lines are missing. The display slept during
-  those runs (the same state as below). That is environment, not this switch.
+  back buffer is 640x480, and the renderer capability lines are missing. The user's session had become
+  an RDP session (`query session`: rdp-tcp Active, console Conn), the known 2026-09-23 state.
+  That is environment, not this switch.
 - **An OFF 9200/9000 JM05 run** (`g8_uoff_jm05l`), started to look for a later marked read,
   crashed at mission frame 2744. The null read was in `set_native_renderer_render_state_00b24460`
-  (`bsp_game+25FBC5`), about 20 minutes into the run. That is the renderer-side failure recorded
-  after the display sleeps, not a gunnery path. It was not re-run, so JM05 past 3000 frames is
+  (`bsp_game+25FBC5`), about 20 minutes into the run. It is renderer-side, not a gunnery path, and most
+  likely the transition into the RDP session noted above. It was not re-run, so JM05 past 3000 frames is
   **not measured**.
 
 **Verdict: ON.** The mechanism is the image's, and both rows are identity.
@@ -2174,8 +2175,9 @@ player-controlled unit. The host has no producer for `+284h`.
 ### 41.3 Environment
 
 - A JM05 9200/9000 run crashed in the renderer (`set_native_renderer_render_state_00b24460`, a
-  null read) about 20 minutes in. The ON logs after it showed a 640x480 back buffer. Both match the
-  display-sleep state. Wake the display before long runs.
+  null read) about 20 minutes in. The ON logs after it showed a 640x480 back buffer. The cause is the
+  user's session becoming RDP (rdp-tcp Active, console Conn), under which every run fails at
+  renderer init. Check `query session` before a run.
 
 ### 41.4 Tools in the cc9-gunnery8 tree (`local\`)
 
