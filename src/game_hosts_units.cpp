@@ -4230,7 +4230,7 @@ struct GameUnitsHost::Impl {
     // = 00720CD0 with [ESP+80h], the target group's leader (0077F9E6): clear the ten
     // slots and push `follow` 00E08F60. ESI is the ORDERED unit on every pass, so the
     // brought members get nothing. OFF: the follow-up is skipped (counted).
-    static constexpr bool kFormationJoinFollowBound = false;
+    static constexpr bool kFormationJoinFollowBound = true;  // ON: pairs held (docs/SHIP_UNIT_GROUP_FOLLOW.md 5g)
     // Packet cc9_ship_motion_tail part 8c: 00826B84's unit->vtable[1ECh](dt) is
     // 008160B0 on every ship class, the repair tick whose work (0093CA20) the
     // gunnery host's run_damage_control already runs, after the projectile pass.
