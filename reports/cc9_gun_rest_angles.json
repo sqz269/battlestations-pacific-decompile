@@ -1,0 +1,31 @@
+{
+  "packet": "cc9_gun_rest_angles",
+  "doc": "docs/GUN_REST_ANGLES.md",
+  "switch": "kGunIdleRestBound (include/bsp/game_hosts_gunnery.hpp)",
+  "addresses": {
+    "008FBCE0": "BSP_GunBot_IdleRestTimer, __thiscall(bot)(float dt, Gun* gun), body 008FBCE0-008FBDB2: bot+54h held at 0 with a target, else += dt; past [[bot+30h]+4h] with the side gate passing, pinned at FLT_MAX (00D7A248) and 0085AD00 once when IsKindOf(22h); side gate failing winds a pinned timer to limit * 0.25 (00D7A348)",
+    "0085AD00": "BSP_TurningGun_AimToRestAngles, __fastcall(gun), RET at 0085AD7A: 0085ABA0(+94h, +90h) unless +94h == FLT_MAX (00D7A278)",
+    "0085A3D0": "BSP_TurningGun_SetupFromDescriptor, gun vtable A0h: unauthored arm seeds +480h/+494h/+488h and +484h/+498h/+48Ch at the clamped midpoint of the first arc with bits 0 and 1 set, fmod 2pi (00CE3828) and wrap by 00CE3D18 / 00CE3D28",
+    "0072BBD0": "BSP_GunBot_ConstructBase: bot+54h = [00CF4888] = 999.0",
+    "00730ED0": "MRTGun (23h) class test: chain 23h 22h 20h 1Eh 4 2 1 0",
+    "006FDF20": "MSTGun (24h) class test: chain 24h 22h 20h 1Eh 4 2 1 0",
+    "006FE050": "MDepthChargeLauncher (27h) class test: chain 27h 24h 22h 20h ...",
+    "00805BE0": "BSP_Recon_ResetDetection: zeroes +0Ch and +4h unconditionally; +10h only selects the reported level. Reached from 008073C0 at 00807490 on a forced pass (008AADF0 -> 00807A50 -> 008079B0(0) -> 008073C0) as on a periodic one"
+  },
+  "no_ghidra_function": [],
+  "calls": [
+    {"address": "008FBD61", "native": "0085AD00", "function": "008FBCE0", "note": "the once-only rest call"},
+    {"address": "008FFA85", "native": "008FBCE0", "function": "008FFA20", "note": "turret bot prologue step 3"},
+    {"address": "006DF563", "native": "008FBCE0", "function": "006DF520", "note": "artillery bot prologue"},
+    {"address": "00807490", "native": "00805BE0", "function": "008073C0", "note": "the pre-pass reset, ungated"}
+  ],
+  "substitutions": [
+    "NoTargetTimeUntilRest taken as the constant 20.0 (this installation's robots.lua, all six gun-bot classes), not read from the descriptor",
+    "IsKindOf(22h) decided by category (not PLANEGUN, BOMBPLATFORM, CATAPULT); exact on this installation's arcade and realistic deviceclasses.lua",
+    "one idle timer per host gun row stands in for one per bot",
+    "the side gate is the host's slot_ai_held_00927f10(gun.seat_1ac)",
+    "a turning gun with no traverse-and-fire arc keeps (0, 0) where the image reads one record past the arc list"
+  ],
+  "names_added": [],
+  "verdict": "pending: switch OFF, pairs to follow"
+}

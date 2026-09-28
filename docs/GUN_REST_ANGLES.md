@@ -173,3 +173,42 @@ rests every targetless gun every tick. With this switch ON it is no longer subsu
 release the side gate starts passing, and the wound-back timer (5.0 s) waits about 15 s more before
 it rests the guns, where `0080E290` rests them at once. Idle-player reference runs never release,
 so no pair moves. That doc's row should be revisited when the switch flips.
+
+## 7. The binding (switch `kGunIdleRestBound`)
+
+Worker cc9-gunnery3, on main 6e1a50650. Everything below is in `src/game_hosts_gunnery.cpp`.
+
+- **The spawn seed.** After the arcs are built, a turning-kind gun (`gun_answers_turning_22h`) with
+  no `RestAngles` takes `seed_angles_from_first_arc_0085a3d0`. Summary counters `spawn_seeds` and
+  `seeds_no_arc` count them.
+- **The presence flag.** `GameGunRow::rest_authored` is true when the Lua reader wrote `rh`. The
+  reader writes `rh` only when `RestAngles` is a table.
+- **The timer.** `GameGunRow::idle_elapsed` starts at 999.0. On every tick it runs through
+  `bsp::gun_bot_idle_timer_008fbce0`. The target test is taken after the host's validity drop and
+  before the player-seat override. The side gate is `slot_ai_held_00927f10(gun.seat_1ac)`.
+- **The angle command.** On a targetless tick that is not a player seat, `0085ABA0` is called only
+  when the timer's rest arm fires and the gun's `RestAngles` were authored. Every other such tick
+  issues no command and counts as `holds`. Such a tick moves neither `angle_sets` nor `refusals`.
+- **The log line.** `summary mission gunnery idle rest bound=... holds rests rests_unauthored
+  windbacks spawn_seeds seeds_no_arc limit`.
+
+## 8. The forced recon pass zeroes the accumulator too (read for the LOMP06 row)
+
+docs/RECON_SENSOR_PASS_BINDING.md flagged one check before LOMP06 becomes a reference row: does
+`00805BE0` zero `+0Ch` on a forced pass as it does on a periodic one? **It does.**
+
+- **`00805BE0` zeroes both fields unconditionally.** `+0Ch` and `+4h` are cleared at
+  `00805BF9`/`00805BFE` with no test. The forced byte at `+10h` only selects which level, `+8h` or
+  `+4h`, the change notice compares and reports.
+- **The forced pass reaches it by the same path.** `ForceRecon` (`008AADF0`) calls `00807A50`, which
+  stores -1.0e-4 into the countdown `00F874B8` and calls `008079B0(0)`. That drops the countdown
+  below zero, so `008079B0` runs `008073C0` on each slot exactly as the periodic pass does.
+- **Nothing gates the reset inside `008073C0`.** The listing runs straight from its entry to
+  `00807490 CALL 00805BE0`. The only branch is the empty-list test at `00807476`.
+- **The dt is the measured gap.** It is taken first (`008073C1`..`008073E1`: clock minus the slot's
+  stamp at `+2Ch`, stored to `+30h`, stamp renewed). So a forced pass one second after the last one
+  accumulates one second.
+- **The countdown is pushed back.** After a forced pass it reloads to just under 3.0 s.
+
+So the ON side's LOMP06 behaviour of about 1 s of gain per forced pass after the reset is the
+image's rule, not a host artefact.
