@@ -626,3 +626,68 @@ Worker cc9-ships7, 2026-09-28. **It is the AI party's power-up use, and it canno
   its seam in `ai_group_think`.
 - **The rank stays 8, with its reach column now known.** A power-up subsystem packet is the
   prerequisite. It is the lead's to site.
+
+## 6. Handoff (cc9-ships7, 2026-09-28, at about 76% context)
+
+**State.**
+- Landed on main:
+  - the ranking, as `d5238d1cb`;
+  - the submarine-target sub-states, ON, as `bed195cbf` and `d04ccffcd`;
+  - the party replan flag, ON, as `01e85c9b5`.
+- Unlanded on `agent/cc9-ships7`:
+  - `84814f2f7`, the reseed read (section 4);
+  - `458c405ff`, the main merge;
+  - `0fc65c31b`, the engagement-pass read (section 5);
+  - this handoff.
+- No lease is held.
+
+**Queued, in the lead's order.** All but the last need `src/game_hosts_ship_ai.cpp`, which
+cc9-gunnery8 holds for `cc9_periscope_out`. The lead sends "ship_ai free" when it releases.
+
+1. **`cc9_approach_enter_reseed`.**
+   - Section 4 has the read, the stream answer and the planned binding. Its predictions are
+     written.
+   - Bind it OFF as `kApproachEnterReseedBound`:
+     - the approach-member branch of `AttackMoveSelectorBinding::member_enter`;
+     - the attackmove state's enter `009E86C0` and exit `009E86E0`, at the host's state switch in
+       `select_for_command`, where the generic `ShipAiState::enter_vtable04` / `exit_vtable08`
+       records sit.
+   - The frame-state call is `ApproachUpdateBinding(owner, ctl, row, index).frame_state_009f1bc0(0.0f)`.
+     It is defined after the selector binding, so the reseed body goes in a free function
+     defined after that class.
+   - Pair JM06, USN02 and USN04, plus USN01 for identity.
+2. **Wire the two entry points from main `c89abeb5a`** into the sub-target bindings (section 2):
+   - `GameUnitsHost::unit_class_yaw_rate_0082ecb0(index, rudder, speed, 1.0f)` replaces
+     `SubTargetLeadBinding::yaw_rate_from_rudder_0082ecb0`'s 00811940 stand-in. Its inputs are
+     `unit_ordered_rudder_0984`, which is `[unit+984h]` and returns 0 today (fix that), and
+     `unit_forward_speed_vtable_0038`.
+   - `GameMissionLuaHost::sub_attack_submarine_lost_time_04d4()` replaces
+     `kSubTargetSubmarineLostTime`. The ship-AI host reaches that Lua host through
+     `settings_owner`.
+   - Keep the switch ON, and re-pair JM06 once.
+3. **Rank 2, the follower's station point.** Section 1 has the evidence. The binding is small:
+   - the leader's yaw rate is `owner_.units.unit_current_yaw_rate_00811940(leader_)`;
+   - the zone push is the ring probe's `zones.group_for_layer` / `zones.offset` pair, with
+     margin 20.
+4. **Rank 10, `00A0F970`** (`BSP_AiGroup_TargetValueAgainstGroup`), in `src/game_hosts_ai.cpp`,
+   which is unleased.
+   - It is already read in docs/PLANNER_KATE_TARGETING.md section 3: `__fastcall` with ECX the
+     attacker group and EDX the target group, five stack arguments, `RET 14h`, over `00A0C650`
+     and `00A07E40`.
+   - The host's `candidate_base_weight` weighs by member count instead.
+   - The lead numbers it rank 9. In section 1 rank 9 is `00A1443D`, and this is rank 10.
+
+**Not to redo.**
+- Section 1's census scripts, `local\ships7_census.py` and `local\ships7_sites.py`, point at
+  cc9-gunnery7's reference i logs. For reference j, change their `root` and `rb9` prefix.
+- Section 2's OFF shadow counters exist on both sides. Section 3's `summary mission ai replan
+  flag` line is its census.
+- Launch and wait helpers: `local\ships7_run.ps1` (`-Exe`, `-Prefix`, rows
+  `tag:MISSION:frames:mission_frames`) and `local\ships7_wait.ps1`.
+
+**Traps met in this lane.**
+- The selector asks `007B6EE0` for its member on every call. Any binding of member enters must
+  keep its early return.
+- Ghidra's bodies of routines that call `00BF6713` are truncated. For them, use `disasm-raw` with
+  the full length.
+- `neighbour_settings()` fills only the ShipAvoidance block of the settings object.
