@@ -2391,3 +2391,62 @@ player):
 
 **Verdict: `kLuaHitFilterFieldsBound = true`.** It is inert on these rows, as predicted.
 `attackerPlayerIndex` and the rate limit remain open, with the accessor request above.
+
+### The hit-callback rate limit (packet `cc9_hit_rate_limit`, `kLuaHitRateLimitBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28, on gunnery4's hit-event fields (main `8eb180a29`).
+
+**The image (V, listing).**
+- `00988949` calls `009882F0` and `00988957` calls `00499030` on the map at `this+168h`. That
+  returns the float stored for the pair, 0.0 for a new pair.
+- `0098895C..00988969` (`FLD [00F876A4]`, `FLD [EBP]`, `FCOMIP`, `JBE`) evaluate only when that
+  float is at or before the clock `DAT_00F876A4`. Otherwise the channel is skipped for this hit.
+- On a pass it stores `clock + 2.0` (`00CE3958`), or `clock + 1e-4` (`00CE3C68`) for the kinds
+  8..0Fh, 12h and 13h.
+- `this+1A4h..+1ACh` shortens it to `clock + 1e-4` (`00D7A268`) when a list there is non-empty and
+  its iterator is not at the head. That list is not read.
+- **The key is the victim and the attacking unit.** In the listing, the victim half is the slot
+  `[base+34h]`: `0098859B` stores `param_2->vtable[140h]()` there, masked by the `vtable[5Ch](2)`
+  test, and `00988917` loads it into the key. The attacker half, `[base+80h]`, is `piStack_9c` in
+  the pseudocode and was not traced in the listing.
+- The limit runs on every hit before the channel lookup, whether or not any `hit` listener
+  exists.
+
+**The kind (verified).** `00988510` indexes the attack-type name table at `00E08E58` with the same
+kind, `[[src+4h]+8h]`, forcing 11h for a kamikaze shooter. Its entries are:
+
+| kind | name | kind | name |
+| --- | --- | --- | --- |
+| 0 | NONE | 0Ah | TORPEDO |
+| 1 | BULLET | 0Bh | DEPTHCHARGE |
+| 2 | MACHINEGUN | 0Ch | DUMMYTARGET |
+| 3 | AAMACHINEGUN | 0Dh | DUMMYKAMIKAZEPLANE |
+| 4 | ARTILLERY | 0Eh | DUMMYSUBMARINE |
+| 5 | LIGHTARTILLERY | 0Fh | PARATROOPER |
+| 6 | MEDIUMARTILLERY | 10h | FLAK |
+| 7 | HEAVYARTILLERY | 11h | KAMIKAZE |
+| 8 | EXTRAPOLATED | 12h | ROCKET |
+| 9 | BOMB | 13h | WATERMINE |
+
+- This is the post-`006E9890` id space: 1 becomes 2 or 3, and 4 becomes 5, 6 or 7. That is exactly
+  what gunnery4's `ordnance_kind` carries: `bullet_sub_type`, the bullet class record's `+8h`
+  after the rewrite.
+- So guns (1..7), flak and kamikaze are limited to one evaluation per 2 s per pair. Bombs,
+  torpedoes, depth charges, rockets, mines and the dummies are effectively unlimited.
+
+**The binding.** The host's hit dispatcher keeps the map as `hit_rate_limit_` and applies the test
+before its listener loop. The clock is the host's `DAT_00F876A4` (`spawn_world_clock_`). The
+census is `summary mission script hit rate limit bound=.. passed=.. throttled=.. pairs=..`.
+
+**SUBSTITUTIONS, labelled.**
+- The kind is the event's `ordnance_kind`, and a kamikaze shooter's forced 11h is not modelled.
+- The `this+1A4h` list test is not modelled.
+
+**Predictions** (written before the ON runs). The OFF logs of this tree (`local/rl_off_*.log`)
+show `fires=0` on every row. No `hit` callback fires today, so none can be suppressed.
+
+| row | OFF hit census | prediction |
+| --- | --- | --- |
+| JM06 3200/3000 | `events=320 fires=0` | **exit 1.** `throttled` counts the repeat gun hits on a pair within 2 s, and no callback changes |
+| USN01 3200/3000 | `events=538 fires=0` | **exit 1**, as above. `ConLeadListener` wants torpedo, bomb or rocket hits, which are unlimited anyway |
+| LOMP06 1200/1000 | `events=0` | **exit 1**, and `throttled=0` |
