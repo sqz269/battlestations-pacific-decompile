@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_prcp03_phase_progress",
+  "doc": "docs/GAME_SHIP_NAVIGATION_BINDING.md, A command aimed at a scene marker",
+  "switch": "kShipAiMarkerTargetBound (include/bsp/game_hosts_ship_ai.hpp)",
+  "addresses": {
+    "00521EA0": "resolves the uint16 object id through the handle tables 00F89A54 / 00F89AA8 (every entity, NavPoints included)",
+    "009E2FB0": "latches the resolved object and the descriptor triple",
+    "009DBCC0": "goal = object matrix x stored triple (the zero offset for an object target), else the triple"
+  },
+  "calls": [],
+  "stall": "phase 3: Schroeder's origin-bound goal passes about 1908 m from DDPoint and stops about 2500 m from it against a 1200 m test; phases 1 and 2 would pass by geometry",
+  "budget": "PreparePhase4 needs roughly 40000..45000 mission frames under lockstep 0.05 (phase 1 alone about 11400)",
+  "substitutions": [
+    "marker handed over as a position, not a latched object (raw_target_0b20 stays 0)",
+    "00836A6C arrival and other 00521EA0 consumers still do not resolve markers"
+  ],
+  "predictions": {
+    "PRCP03_9200_9000": "exit 3; Aylwin heads to CarrierPoint (heading about 2.346 rad, not 2.383) and ends about 2700 m short; phase 1 not completed; no transports; marker resolves > 0",
+    "USN01_3200_3000": "exit 3; Convoy1 turns toward ConvoyGoTo (0, -12000), heading about 2.83 rad, not 1.556",
+    "USN02_9200_9000": "exit 0 or 1",
+    "USN04_4700_4500": "exit 0 or 1"
+  },
+  "off_commit": "pending",
+  "results": "pending",
+  "no_ghidra_function": [],
+  "names_added": []
+}

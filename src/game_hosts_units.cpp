@@ -1625,6 +1625,8 @@ struct GameUnitsHost::Impl {
     // message hops between the authored `Command` token and its command slot.
     GameCommandsHost commands;
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
+    // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
+    std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
     // Packet cc8_ship_follow: the 508h-byte unit groups 0070DB20 allocates. A
     // unit points at one through GameUnitSlot::formation_group (unit+284h).
     struct FormationGroup {
@@ -18964,6 +18966,21 @@ bool GameUnitsHost::world_bounds_box_00e188a8(float& min_x, float& max_x, float&
 bool GameUnitsHost::active_command_descriptor_0071eb60(std::size_t index,
     bsp::SceneCommandTarget& out, int& mode) const {
     return impl_->commands.active_command_descriptor_0071eb60(index, out, mode);
+}
+
+void GameUnitsHost::register_scene_marker_position(int id, const float world[3]) {
+    if (id <= 0) return;
+    impl_->scene_marker_positions[static_cast<std::uint32_t>(id)] =
+        std::array<float, 3>{world[0], world[1], world[2]};
+}
+
+bool GameUnitsHost::scene_marker_position(std::uint32_t id, float world[3]) const {
+    const auto found = impl_->scene_marker_positions.find(id);
+    if (found == impl_->scene_marker_positions.end()) return false;
+    world[0] = found->second[0];
+    world[1] = found->second[1];
+    world[2] = found->second[2];
+    return true;
 }
 
 std::uint32_t GameUnitsHost::resolve_command_target_00521ea0(

@@ -523,6 +523,11 @@ public:
     // one-based created-instance handle, or 0 when the descriptor names no
     // object or the object is not one of this process's instances.
     std::uint32_t resolve_command_target_00521ea0(const bsp::SceneCommandTarget& target) const;
+    // Packet cc9_prcp03_phase_progress: a scene marker's authored world
+    // position by its entity id (the NavPoints the handle tables hold and this
+    // host carries as markers). False when the id names no marker.
+    void register_scene_marker_position(int id, const float world[3]);
+    bool scene_marker_position(std::uint32_t id, float world[3]) const;
     // 004142e0 BSP_Vector3f_TransformAffinePoint with the matrix at unit+0cch,
     // which is what 009dbcc0 carries the latched offset out through.
     void transform_by_unit_matrix_004142e0(std::size_t index, float in_x, float in_y,

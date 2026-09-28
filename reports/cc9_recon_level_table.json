@@ -52,8 +52,10 @@
     "flip": "ON"
   },
   "flags": [
-    "open: LOMP06 now depends on ForceRecon's cadence. A forced pass every second accumulates 1 s of gain after the per-pass reset and demotes identified contacts to blips. That is the image's rule as the host pass reconstructs it (dt = the measured gap, 008073C1..008073D6, and the 00805BE0 reset). Before LOMP06 is used as a reference, check it: whether 00805BE0 really zeroes +0Ch every pass, or whether a forced pass keeps the value",
     "next Lua-host gap: luaGetReconLevel (commandhelpers.lua:1821) does ent.reconlevel = GetProperty(ent, \"reconlevel\"); the host GetProperty (0088BF80, game_hosts_lua) does not serve the key, so the call replaces the table with nil. The image's reader 00779BB0 walks the three detection records (00779B28)"
   ],
-  "names_added": []
+  "names_added": [],
+  "closed_flags": [
+    "LOMP06 forced-pass cadence: closed by cc9-gunnery3's read. 00805BE0 zeroes the record's +0Ch unconditionally, and the forced path 008AADF0 -> 00807A50 -> 008079B0(0) -> 008073C0 -> 00807490 has no gate, so about one second of gain per forced pass, and the blips it leaves, is the image's own rule"
+  ]
 }

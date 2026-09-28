@@ -50,6 +50,21 @@ namespace bsp { class SessionParticipantPools; }
 
 namespace bsp::game {
 
+// Packet cc9_prcp03_phase_progress (docs/GAME_SHIP_NAVIGATION_BINDING.md,
+// "A command aimed at a scene marker"). 00521EA0 resolves a command's uint16
+// object id through the two handle tables 00F89A54 / 00F89AA8, which hold every
+// entity, a NavPoint included; 009E2FB0 then latches it and 009DBCC0 places the
+// goal at the object's matrix times the zero offset, the marker's position.
+// This host's 00521EA0 answers units only, so a `moveto` aimed at a NavPoint
+// (PRCP03 Aylwin -> CarrierPoint, USN01 Convoy1 -> ConvoyGoTo) latched nothing
+// and the goal fell to the zero triple: the world origin. True: an
+// unresolved object id that names a scene marker supplies the marker's authored
+// world position as the goal. LABELLED: the marker is handed over as a
+// position, not a latched object, so raw_target_0b20 stays 0 (the image would
+// hold the NavPoint there; 009F1491 filters it out as not IsKindOf(2)). The
+// weapon director's arrival test (00836A6C) still does not resolve markers.
+inline constexpr bool kShipAiMarkerTargetBound = false;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;
@@ -375,6 +390,8 @@ struct GameShipAiRow {
 
 struct GameShipAiSummary {
     std::size_t units{0};             // controllers built
+    // Packet cc9_prcp03_phase_progress: goals taken from a scene marker.
+    unsigned long long marker_goal_resolves{0};
     std::size_t ai_owned{0};          // units whose +184h is clear
     unsigned long long steps{0};      // 009F50E0 bodies run
     unsigned long long gated{0};
