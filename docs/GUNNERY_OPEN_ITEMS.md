@@ -1782,3 +1782,78 @@ host stand-ins went from 86 calls on h to thousands. Each was read for what its 
 - **A latent defect.** `queue_state_back` keeps each slot's old `object` pointer while taking the
   shifted slot's parameters. Nothing reads `slot_target[].object` today (resolution is by the object
   id), so it has no effect. It should be fixed before anything does read it.
+
+## 37. Handoff (cc9-gunnery7, 2026-09-28, at about 76% context), with the OverrideHP read
+
+### 37.1 `cc9_override_hp`: OverrideHP `008C1930`, the gunnery side committed OFF (`b854e8ee3`)
+
+**The image** (live listing):
+- Argument 0 is resolved through `00888AA0` into `ESI`, the unit.
+- Argument 1 is read as a number. `008C1A71 FSTP [ESI+36Ch]` stores it as the maximum health
+  (`+370h` over `+36Ch` is the health fraction, AI_TARGET_WEIGHT_TERMS).
+- `008C1AA8` calls `00877B90(unit, same number)`, the health setter.
+- There is no difficulty term. LOMP10's `usn\LOMP\10_san_jose.lua` calls
+  `OverrideHP(unit, unit.Class.HP * 1.0 / 1.25 / 1.5)` by `Mission.Difficulty` on the eight
+  `Mission.SanJoseForce` ships. Our runs are difficulty 1, so the factor is 1.25.
+- This host applies the party HPMultipliers to the damage (`0087D730`, DIFFICULTY_MULTIPLIERS), not
+  to the maximum, so the two stack as in the image.
+- The invincibility floor acts only in `00879070`, which this write does not use.
+- **Units:** `max_health` is the class `hp` in thousandths divided by 1000 (`flat_scaled`), which is
+  the same scale as the script's `Class.HP`.
+
+**The gunnery side.**
+- `GameGunneryHost::override_hp_008c1930(index, value)` sets `max_health`, then
+  `set_health_00877b90(value)`.
+- `kLuaOverrideHpBound` (OFF) gates the write. It is labelled: a unit this host already killed is
+  not written.
+- Calls are counted and the first 12 traced (`  OverrideHP 008c1930: ...`). The summary line is
+  `summary mission gunnery override hp calls= applied= bound=`.
+
+**What remains, in order:**
+1. The Lua dispatch in lua6's file, routed through the lead:
+   `local\g7_override_hp_dispatch.txt` in the cc9-gunnery7 tree has the exact lines. It is identity
+   while the switch is OFF.
+2. After it lands, run LOMP10 3200/3000 OFF. The trace gives each ship's value, `max_before` and
+   `health_before`.
+3. Write the predictions: each ship's new maximum (Class.HP x 1.25), whether any San Jose ship
+   sinks or dies later within 3000 frames, and USN04 identity (no call).
+4. Pair LOMP10 and USN04 with `pair_export --flip kLuaOverrideHpBound=true`, and flip by verdict.
+
+### 37.2 What remains of section 31
+
+| rank | item | state |
+| --- | --- | --- |
+| 1 | submarine sensor category | ON (section 32) |
+| 2 | forced fire target handle | ON (section 33) |
+| 3 | building attack-move arm | exact; conversion unissued until a row shows `converts` > 0 (section 35) |
+| 4 | director slot housekeeping | exact in effect (section 36) |
+| 5 | command-allowed extra tests `009229F0` / `007AC9D0` (268 calls) | **open, unread** |
+| 6 | recon convoy and group records | the convoy fold is counted, not placed (section 34); the squadron group-level publish stays blocked (section 22) |
+| 7 | `007788B0` controller ownership | exact while `ctl+284h` is empty or names this controller (decompile); not checked for a player-controlled unit |
+| 8 | hull roll torque `00827312` (USN02, 52 calls) | **open, unread**; reach 2 |
+
+### 37.3 Open items found on the way
+
+- **The periscope byte `+1234h`** (`periscopeOut`) has no producer, so a raised periscope never
+  reads PeriscopeOut (section 32.4; listed in section 1).
+- **Plane rows and the forced fire target.** Since `kFireTargetObjectIdBound`, plane rows store the
+  commanded target and their AutoTarget accepts it (USN04 3, USN01 5). Whether the image's plane
+  gunnery reads the director fire target is unread (section 33.4). That belongs to the plane packets.
+- **A LandConvoy unit.** `00805680`'s group records need a `LandConvoy` entry in the units host's
+  index space (section 34). That belongs to the units lane. With one, JM05 is still predicted
+  identity within 3000 frames.
+- **A latent defect in `queue_state_back`.** Each slot keeps its old `slot_target[].object` pointer
+  while taking the shifted slot's parameters (section 36). Nothing reads that pointer today.
+  Resolution goes by the object id. Fix it before anything reads it.
+- **The queue-full path-object hole.** A queued `moveonpath` counts as 1, not its point count. It
+  is traced by `queue full test with a queued moveonpath` (section 36). The reference rows never
+  reach the refusal.
+
+### 37.4 Tools in the cc9-gunnery7 tree (`local\`)
+
+- `g7_rank.py` and `g7_rankdiff.py`: section 31's census, and the h-against-i diff.
+- `g7_standins.py`: what each stand-in answers.
+- `g7_rows.py`: reference headline rows, h against i.
+- `g7_pair.ps1 -Off <export> -On <export> -Rows 'tag:MISSION:frames:mission_frames'`: runs
+  both sides at once, waits in the foreground, and prints the pair_diff.
+- `g7_var.ps1`: leave-one-out variants against `rb9_<row>.log`.
