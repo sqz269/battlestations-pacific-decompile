@@ -157,7 +157,7 @@ inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/L
 // of each resolved unit (a squadron's fused slot: its live members) for that party
 // through bsp::set_forced_recon_level_00805cf0, and the next recon pass publishes it.
 // False: the native stays an unimplemented record.
-inline constexpr bool kForcedReconLevelBound = false;
+inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
