@@ -814,3 +814,23 @@ commit, with the dive law ON.
 | JM06 3200/3000 | **exit 3.** Air falls to about 0.79 at worst in 150 s, so there are no warnings, no `needAir` and no drowning. The `Narwhal-class Submarine 01` holds -79.9 m, below -70 m, from the first step. So it takes about 148 crush pulses of 9, party-scaled, and its health and possibly a death row move. No other boat is below -70 m. `SetUnlimitedAirSupply`: 2 calls, 2 stored |
 | LOMP06 1200/1000 | **exit 1.** The Narwhal holds -10.1 m, so there is no crush. Its air falls to about 0.93 with no warning |
 | USN01 3200/3000 | no submarine, exit 1 (only the summary line's `bound` moves) |
+
+### Air and crush pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `40c38eea3`, with the dive law ON.
+- ON is `pair_export --flip kSubmarineAirBound=true` (`local/ar_on`).
+- The logs are `local/ar_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | Exit 3: the only gameplay change is the `Narwhal-class Submarine 01`'s health, 1500 -> 998. It takes a 9-point crush pulse every second from -77.7 m on; the loss is less than 148 x 9 because `0095DA00` scales it by the party multiplier. There are no air warnings. `SetUnlimitedAirSupply` stores 2 of 2. Deaths, hits and shots are identical | held |
+| LOMP06 1200/1000 | exit 1: no crush at -10.1 m, and air stays above 0.9 | held |
+| USN01 3200/3000 | exit 1 | held |
+
+**One miss on spread.** I wrote "no other boat is below -70 m". The `Gato-class Submarine 01`
+is an authored wreck: its death row is at t=0 and it sinks past -70 m. So it also gets crush
+pulses, which `0095DA00` ignores on a dead unit. The mechanism matches the image, which pulses
+the dead boat the same way.
+
+**Verdict: `kSubmarineAirBound = true`.**

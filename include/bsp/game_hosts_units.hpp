@@ -262,7 +262,7 @@ inline constexpr bool kSubmarineDiveBound = true;  // ON: pairs held (docs/SUBMA
 // step (the tail of 00855420 in the image), needAir feeds the dive law's effective
 // band, a drowned boat dies through 00926D90, the crush pulse applies 0095DA00, and
 // SetUnlimitedAirSupply (00893C00) is routed. False: needAir reads false, no crush.
-inline constexpr bool kSubmarineAirBound = false;
+inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 13)
 
 class GameUnitsHost {
 public:
