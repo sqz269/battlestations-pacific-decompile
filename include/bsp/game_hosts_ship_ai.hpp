@@ -549,6 +549,11 @@ struct GameShipAiSummary {
     unsigned long long arm_final_area_keys{0};
     // Packet cc9_close_member_class_trait: 009F347E / 009F35E3 asks, and trait holds.
     unsigned long long approach_trait_tests{0};
+    // Packet cc9_clearance_outcome_wiring: blk+370h as 009F3F80 sees it, per value,
+    // and the obstacle routine's load raises (all three sites of each).
+    unsigned long long clearance_outcome_frames[4]{};
+    unsigned long long obstacle_turn_assist_raises{0};
+    unsigned long long obstacle_secondary_raises{0};
     unsigned long long approach_troop_landers{0};
     unsigned long long arm_final_area_key_differs{0};
     unsigned long long autotarget_follower_leaves{0};

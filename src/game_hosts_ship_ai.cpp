@@ -447,6 +447,12 @@ inline constexpr bool kShipAiClearancePathFadeBound = true;
 // ON (2026-09-28): ten rows identical; USN02 and USN04 take the moved path, spread miss
 // recorded (docs/SHIP_AI_OPEN_ITEMS.md section 18).
 inline constexpr bool kShipAiArmFinalAreaKeyBound = true;
+// Packet cc9_clearance_outcome_wiring (docs/SHIP_AI_OPEN_ITEMS.md section 20). True:
+// 009F3F80 reads blk+370h at 009F4999 and 009F4A02 as 009EF910 left it (0 at 009EF969,
+// 1 at 009F00BF, 2 at 009EFFA5, 3 at 009EFFB8): the host's obstacle copy takes the
+// clearance outcome before the routine runs. False: the obstacle copy stays 0, as it
+// always was. Both sides count the outcome frames and the load raises.
+inline constexpr bool kShipAiClearanceOutcomeWiringBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -6213,11 +6219,13 @@ public:
     void raise_turn_assist_load_102c(float value) override {
         // 009F438C, 009F462A and 009F4A51, the inlined body of 009D4FB0.
         owner_.units.raise_turn_assist_load_102c(index_, value);
+        ++owner_.summary.obstacle_turn_assist_raises;
         owner_.done("ShipAiObstacle::raise_turn_assist_load", 0x009f438cu);
     }
     void raise_secondary_load_1034(float value) override {
         // 009F45FE, 009F4912 and 009F4AB4, the inlined body of 009D4FE0.
         owner_.units.raise_secondary_load_1034(index_, value);
+        ++owner_.summary.obstacle_secondary_raises;
         owner_.done("ShipAiObstacle::raise_secondary_load", 0x009f45feu);
     }
     float rudder_law_009da250(float heading_error) override {
@@ -9259,6 +9267,18 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     // which milestone 2r runs, so the field carries what that routine left.
     ctl.obstacle.clearance_37c = ctl.clearance.clearance_37c;
     done("ShipAiObstacle::clearance_37c_producer", 0x009ef910u);
+    // blk+370h, the same field: 009EF910 writes it one chain slot earlier and
+    // 009F3F80 reads it at 009F4999 / 009F4A02 (section 20).
+    {
+        const int outcome = static_cast<int>(ctl.clearance.outcome_370);
+        if (outcome >= 0 && outcome < 4) ++summary.clearance_outcome_frames[outcome];
+        if (kShipAiClearanceOutcomeWiringBound) {
+            ctl.obstacle.escape_mode_370 = outcome;
+            done("ShipAiObstacle::escape_mode_370_producer", 0x009ef910u);
+        } else {
+            record("ShipAiObstacle::escape_mode_370_producer", 0x009ef910u);
+        }
+    }
     // blk+344h and blk+348h. 009F4DBC stores 1.0f into blk+348h unconditionally
     // before the 009F4DC1 early out; blk+344h's own arms inside 009F4DA0,
     // 009F4DC7..009F50BA, are still the record milestone 2o left. Milestone 2q
@@ -10360,6 +10380,13 @@ void GameShipAiHost::report() {
         host.summary.path_fade_tests, host.summary.path_fade_leader,
         host.summary.path_fade_moveonpath, host.summary.path_fade_applied,
         host.summary.clearance_heading_error_large, kShipAiClearancePathFadeBound ? 1 : 0);
+    host.log.notef("summary mission ship ai clearance outcome wiring clear=%llu heading=%llu "
+        "blocked_moving=%llu blocked_stopped=%llu turn_assist_raises=%llu secondary_raises=%llu "
+        "bound=%d (blk+370h, 009EF910 -> 009F4999 / 009F4A02; packet cc9_clearance_outcome_wiring)",
+        host.summary.clearance_outcome_frames[0], host.summary.clearance_outcome_frames[1],
+        host.summary.clearance_outcome_frames[2], host.summary.clearance_outcome_frames[3],
+        host.summary.obstacle_turn_assist_raises, host.summary.obstacle_secondary_raises,
+        kShipAiClearanceOutcomeWiringBound ? 1 : 0);
     host.log.notef("summary mission ship ai arm final area key calls=%llu differs=%llu bound=%d "
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
