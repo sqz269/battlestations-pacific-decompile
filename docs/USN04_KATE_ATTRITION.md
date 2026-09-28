@@ -291,3 +291,15 @@ A new summary line reports `plane mounts from model=`.
 | USN13 3200/3000 deaths | 27 | 25 to 29 |
 | USN02 9200/9000 | - | identical (no plane spawns) |
 | USN01 3200/3000 | 7 deaths | 7 unless a Mavis gun kill moves |
+
+## 10. The release counter split (packet `cc9_torpedo_release_counter`)
+
+`src/game_hosts_units.cpp` now counts, beside the task-level `torpedo_releases`, the releases made by an
+aircraft the gunnery host already has dead (`torpedo_releases_dead`). A new line reports
+`summary mission torpedo task releases: task= live= dead=`. The task counter keeps its value,
+because the task reads it (the `1 - torpedo_releases` budget and the `< 1` test), so gameplay is
+unchanged.
+
+**Predictions.** Gameplay is identical on every mission. USN04 4700/4500 prints task 6, live 1,
+dead 5, with `torpedo_drop drops=1`. USN13 3200/3000 prints task 2, live 0, dead 2, with
+`drops=0`.
