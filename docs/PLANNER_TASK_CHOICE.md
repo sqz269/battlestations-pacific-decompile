@@ -631,6 +631,66 @@ and `ijn_16_ambushed_at_wake_island.scn` hold Japanese ones, for a Japanese play
 **The prediction held. Decision: `kAiSellThinkBound` is ON.** Its first gameplay effect will come
 with a mission from 9.3, and it will be limited while SELLING has no tick arm.
 
+## 10. The Defend think, part 3 (packet `cc9_planner_defend_capture_thinks`)
+
+### 10.1 The image: the no-record path
+
+`00A28A60 BSP_AiPlanner_DefendThink` is the brain+0h think, body `00A28A60-00A29E2A`.
+
+```
+00A28AE5  CALL 00A2DEF0 (group)(planner+30h, &list)   ; per owned group: defend candidates
+00A28C2F  CALL 00A243D0 (rec+4h, 0)                   ; one 34h-byte record per candidate
+00A28D31  CALL 00A2C5A0 / 00A28D44 CALL 00A2C450      ; combatant, no world-set member ...
+00A28D6E  CALL 00A186F0                               ; ... and an anchor outside the records: queue
+00A28E69  CALL 00A2C5A0 / 00A28E7C CALL 00A2C450      ; records empty: per owned group
+00A28EBB  CALL 00A2BE20                               ; no combatant, or a world-set member: DEFENDPOSITION
+00A28F22  CALL [vtable+24h]                           ; each queued group released
+00A28F38  MOV ESI,[[planner+1Ch]+0Ch]                 ; ... and claimed by brain+0Ch, Capture
+00A28F49  CALL 00A1C8B0 / 00A28F88 CALL 00694A60      ; unless already owned; observer
+```
+
+- **`00A2DEF0`** appends the members that answer `vtable[+5Ch](1Ch)` (CommandBuilding) or that
+  `BSP_SzurkeNyil_ContainsUnit` finds. A record scoring 0 or less is dropped.
+- **With no record** the think frees its lists and returns before `00A290F5` (`00A28300`).
+- **The records path** runs from `00A290F5` to the end: the sort `00A28300`, `00A1C140`, the anchors,
+  the per-record group lists, `00A1A6D0` orders, the merge pass `00A29860-00A29BE7` (docs/AI_PLANNER_TAILS.md
+  section 2), and the spawn tail. It was not reconstructed.
+
+### 10.2 The binding
+
+**`kAiDefendThinkBound`, committed OFF.** When ON, the Defend kind runs `defend_think_00a28a60`:
+- **No candidate:** when no owned group holds a CommandBuilding member or a world-set member, the
+  no-record path runs as above.
+- **Any candidate:** the records path is the Siege-shape stand-in, counted as `record_fallbacks`.
+  This is labelled: `00A243D0` is not reconstructed, so a candidate may not have yielded a record
+  in the image.
+
+The census line is `summary mission ai defend thinks= record_fallbacks= defendposition=`.
+`BSP_CAPTURE_DIAG=1` names the members of each group given DEFENDPOSITION.
+
+### 10.3 Predictions, written before the ON runs
+
+**Slot 0 is reached on the reference set, contrary to section 7.**
+- On USN13 and USN01, party 0's Defend planner owns the "Storage, 05 01" group: 8 LandFort members
+  (kind 27, creator `00747000`), no groupable combatant.
+- OFF, the Siege stand-in orders it with `00A2CBD0`. On USN13 it goes at Agano's group (it holds
+  CLOSEATTACK, `first_command=9`); on USN01 at the CB2 group.
+
+**USN13 3200/3000 and USN01 3200/3000: exit 3.**
+- **No candidate:** the group holds no CommandBuilding, and the world sets are empty. So
+  `record_fallbacks=0`.
+- **The first Defend think gives it DEFENDPOSITION.** Later thinks keep it (`00A2BE20` returns),
+  so `defendposition=1`.
+- **Its close-attack pass changes centre.** It moves from the target group's leader (factor 1.5)
+  to its own leader (1.0), so its member orders move.
+- **The shared RNG stream shifts.** The stand-in's `00A2CBD0` draw (`00BD2F10`) disappears, and
+  every later draw moves. That includes Enterprise's CAUTIOUSATTACK draw, so its class may change.
+- **Direction:** unit shots and hits by the Storage members change. If Enterprise's class flips to
+  MOVETOATTACK, its movement returns and USN13's `tick_orders` rise again.
+
+**USN02 9200/9000 and USN04 4700/4500: identity, exit 0 or 1.** No planner line shows the Defend
+kind owning a group there, so the census reads `thinks=0`.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
