@@ -22,6 +22,7 @@
 #include "bsp/native_render_context.hpp"
 #include "bsp/camera_plane_initialization.hpp"
 #include "bsp/game_hosts.hpp"
+#include <tlhelp32.h>
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_data_bootstrap.hpp"
 #include "bsp/game_native_vfs_application.hpp"
@@ -162,7 +163,32 @@ bool guarded_device_startup(void* renderer,const NativeRendererDeviceStartupSlot
         return false;
     }
 }
+// The input desktop's name: Default for the user's desktop, Winlogon while the secure desktop
+// (the lock or logon screen, UAC) has input; OpenInputDesktop is refused on Winlogon.
+void input_desktop_name(char (&out)[64]) noexcept {
+    std::snprintf(out,sizeof(out),"unavailable (Winlogon or another secure desktop)");
+    if(HDESK input=OpenInputDesktop(0,FALSE,DESKTOP_READOBJECTS)) {
+        DWORD needed=0;
+        if(!GetUserObjectInformationA(input,UOI_NAME,out,sizeof(out),&needed))
+            std::snprintf(out,sizeof(out),"(name unreadable)");
+        CloseDesktop(input);
+    }
+}
+// LogonUI.exe runs while the lock or logon UI is shown; LockApp.exe stays resident after an
+// unlock, so it is not evidence of a lock and is not reported.
+bool logonui_running() noexcept {
+    const HANDLE snap=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
+    if(snap==INVALID_HANDLE_VALUE) return false;
+    PROCESSENTRY32W entry{};entry.dwSize=sizeof(entry);
+    bool found=false;
+    for(BOOL more=Process32FirstW(snap,&entry);more && !found;more=Process32NextW(snap,&entry))
+        found=_wcsicmp(entry.szExeFile,L"LogonUI.exe")==0;
+    CloseHandle(snap);
+    return found;
+}
 [[noreturn]] void report_renderer_init_failure(GameHostLog& log,void* renderer) noexcept {
+    char desktop_before[64];input_desktop_name(desktop_before);
+    const bool logonui_before=logonui_running();
     auto* const d3d=get<IDirect3D9*>(renderer,0x1990);
     D3DPRESENT_PARAMETERS requested=*static_cast<const D3DPRESENT_PARAMETERS*>(
         static_cast<void*>(static_cast<unsigned char*>(renderer)+0x1a28));
@@ -182,16 +208,12 @@ bool guarded_device_startup(void* renderer,const NativeRendererDeviceStartupSlot
     DEVMODEA mode{};mode.dmSize=sizeof(mode);
     const bool have_mode=EnumDisplaySettingsA(nullptr,ENUM_CURRENT_SETTINGS,&mode)!=FALSE;
     DWORD session=0;ProcessIdToSessionId(GetCurrentProcessId(),&session);
-    char desktop[64]="unavailable (locked or secure desktop)";
-    if(HDESK input=OpenInputDesktop(0,FALSE,DESKTOP_READOBJECTS)) {
-        DWORD needed=0;
-        if(!GetUserObjectInformationA(input,UOI_NAME,desktop,sizeof(desktop),&needed))
-            std::snprintf(desktop,sizeof(desktop),"(name unreadable)");
-        CloseDesktop(input);
-    }
+    char desktop_after[64];input_desktop_name(desktop_after);
+    const bool logonui_after=logonui_running();
     log.notef("harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; "
         "retry hr=0x%08lx%s adapter=\"%s\" requested=%ux%u format=%u windowed=%d interval=0x%lx "
-        "display=%lux%lu@%luHz session=%lu console_session=%lu remote=%d input_desktop=%s; "
+        "display=%lux%lu@%luHz session=%lu console_session=%lu remote=%d "
+        "input_desktop=%s/%s logonui=%d/%d (at the failure / after the retry); "
         "exiting with code 4",
         static_cast<unsigned long>(retry),SUCCEEDED(retry) ? " (the retry succeeded: transient)" : "",
         adapter,requested.BackBufferWidth,requested.BackBufferHeight,
@@ -200,7 +222,8 @@ bool guarded_device_startup(void* renderer,const NativeRendererDeviceStartupSlot
         have_mode ? mode.dmPelsWidth : 0ul,have_mode ? mode.dmPelsHeight : 0ul,
         have_mode ? mode.dmDisplayFrequency : 0ul,static_cast<unsigned long>(session),
         static_cast<unsigned long>(WTSGetActiveConsoleSessionId()),
-        GetSystemMetrics(SM_REMOTESESSION) ? 1 : 0,desktop);
+        GetSystemMetrics(SM_REMOTESESSION) ? 1 : 0,desktop_before,desktop_after,
+        logonui_before ? 1 : 0,logonui_after ? 1 : 0);
     TerminateProcess(GetCurrentProcess(),4);
     for(;;) {}
 }
