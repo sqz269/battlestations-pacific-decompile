@@ -2796,6 +2796,22 @@ player, present interval immediate):
 - JM08 run long enough for the AirPatrol to bomb the Airfield: `luaJM8AirfieldHitByAI` fires ON
   only if the host's role-1 slot for an AI plane is 8. That slot is the check to make first.
 
+#### attackerPlayerIndex pairs and verdict
+
+- OFF is this tree's build of `196fa0ec4`.
+- ON is `pair_export --commit 196fa0ec4 --flip kLuaHitAttackerPlayerIndexBound=true` (`local/ap_on`).
+- The logs are `local/ap_{off,on}_<mission>.log` in worktree cc9-lua5.
+
+| row | pair_diff | hit listeners (both sides) | verdict |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | exit 0, gameplay identical | events=320 fires=0 unmodelled=0 | held |
+| USN01 3200/3000 | exit 0, gameplay identical | events=538 fires=0 unmodelled=0 | held |
+| JM08 3200/3000 | exit 0, gameplay identical | events=342 fires=0 unmodelled=0 | held |
+
+**Verdict: `kLuaHitAttackerPlayerIndexBound = true`.** It is inert on these rows, as predicted. No
+`hit` filter key is left unmodelled now; the rate limit's `this+1A4h` list and the forced kind 11h
+stay as recorded below.
+
 ### The rate limit's unmodelled bits, read and closed (cc9-lua4, 2026-09-28)
 
 Item 3 of the cc9-lua3 handoff. Both stay unmodelled, because neither has an input in this

@@ -253,7 +253,7 @@ inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (d
 // and dispatch tests the event's GameGunneryHitEvent::attacker_player_index against it
 // (set membership, as for the recon party set; the comparison itself is unread).
 // False: an entry naming it is counted unmodelled and never fires.
-inline constexpr bool kLuaHitAttackerPlayerIndexBound = false;
+inline constexpr bool kLuaHitAttackerPlayerIndexBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
 // limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
