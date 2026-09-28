@@ -1782,3 +1782,23 @@ Worker cc9-lua2, 2026-09-28. This is item 5 of the ranking. Ghidra was read only
 
 **Verdict: `kLuaAAEnableBound = true`.** The 33 stage-init disables are applied. The first BSM01
 run that reaches the air raid measures them.
+
+### AddDamage: the flip pair's prediction, before the ON run (main `119ad0a44`)
+
+**The fresh OFF run.**
+- The log is `local/ad2_off_usn02.log`, USN02 9200/9000.
+- It reaches phase 2, and `AddDamage` is recorded `calls=4` (UNIMPLEMENTED).
+- `luaPh2MovieEnd` runs at **about mission frame 3131, 156.5 s**. That is the release block: its
+  `SetInvincible(..., false)` lines for Yudachi, Samidare, Murasame and Harusame, then DeRuyter,
+  Java, Kortenaer and Electra.
+- The four Dutch ships die in combat later: Kortenaer at 157.51 s, Electra at 175.41, Java at
+  190.46 and DeRuyter at 199.21.
+
+**Predicted ON** (`kLuaAddDamageBound` flipped only):
+- `calls=4 units=4`.
+- DeRuyter, Java, Kortenaer and Electra die together at about 156.5 s (frame 3131), with no
+  combat killer.
+- Their later combat death rows go.
+- Every other moved row lies downstream of those four removals: the FinalShips' targets, and the
+  Japanese and Allied hits and deaths after 156.5 s.
+- USN01 and USN04 are identity.
