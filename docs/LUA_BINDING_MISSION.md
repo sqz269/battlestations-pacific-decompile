@@ -1802,3 +1802,22 @@ run that reaches the air raid measures them.
 - Every other moved row lies downstream of those four removals: the FinalShips' targets, and the
   Japanese and Allied hits and deaths after 156.5 s.
 - USN01 and USN04 are identity.
+
+### AddDamage flip pair and verdict
+
+**Setup.**
+- OFF is this tree's build of `119ad0a44` (`local/ad2_off_<mission>.log`).
+- ON is `pair_export --flip kLuaAddDamageBound=true` of the same commit (`local/ad_on`, SHA-256
+  `A851697B4EF2`, logs `local/ad2_on_<mission>.log`).
+
+| row | result | verdict |
+| --- | --- | --- |
+| USN02 9200/9000 | `calls=4 units=4`: DeRuyter, Java, Kortenaer and Electra, each `amount=1e8`, all dying at **156.60 s** (they died at 199.21, 190.46, 157.51 and 175.41 s OFF). pair_diff exit 3: deaths 22 -> 23 (John2 only ON), hit records 881 -> 747, damage 49930 -> 45340, with 23 unit rows changed downstream | held |
+| USN01 3200/3000 | exit 1 | held |
+| USN04 4700/4500 | exit 1 | held |
+
+**Failed sub-prediction.** I predicted "no combat killer". The four death rows keep each ship's
+last attacker from before the scuttle (Yudachi, Samidare, Murasame, Houston), because the routed
+damage leaves the victim's attribution block as the last hit set it.
+
+**Verdict: `kLuaAddDamageBound = true`.**
