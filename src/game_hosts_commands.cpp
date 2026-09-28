@@ -2328,16 +2328,14 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
     done("GameUnitMessage::apply_clear_command", 0x00721a40u);
     if (kSetCommandClearAllMessageBound
         && bsp::clear_command_action(message) == bsp::ClearCommandAction::kClearAllSlots) {
-        // 00721BA8 -> 00720CA0: 00720CA5 ESI = 9, 00720CAA EDI = director+150h
-        // (slot 9's command); 00720CB0 CMP [EDI],0 / JZ; 00720CB8 00720850(ESI);
-        // 00720CBD..00720CC5 down to slot 0.
+        // 00721BA8 -> 00720CA0, src/command_execution.cpp's reconstruction:
+        // 00720850 on each occupied slot from 9 down to 0.
         bsp::CommandQueueState state = queue_state_of(director);
         QueueClearBinding exec(*this, units[unit_index], director, player_controlled);
-        for (int i = bsp::kDirectorCommandSlotCount - 1; i >= 0; --i) {
-            if (state.slots[i].command == 0) continue;
-            bsp::clear_command_slot_00720850(state, i, exec);
-            ++summary.clear_all_slot_clears;
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+            if (state.slots[i].command != 0) ++summary.clear_all_slot_clears;
         }
+        bsp::clear_all_command_slots_00720ca0(state, exec);
         queue_state_back(state, director);
         done("GameUnitMessage::clear_every_slot", 0x00720ca0u);
         return true;
