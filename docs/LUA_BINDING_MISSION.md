@@ -1066,6 +1066,8 @@ move with them. The first row to check is Kortenaer, which does not die at 68.30
   - hit records 739 -> 722;
   - shots 5482 -> 5654;
   - torpedo drops 1 -> 0.
+  These moves come from removing three anti-aircraft targets at 26.55 s. They are not RNG
+  coupling: both sides ran with `BSP_GUNNERY_RNG_STREAMS=1`.
 - **Script entities:** the entity ids of 100000 and up belong to script entities with no
   units-host slot. They stay `unresolved` as labelled.
 
@@ -1144,9 +1146,9 @@ The tool is `local/cc9-lua2-parse-map.py` in the cc9-lua2 tree.
 
 | slot | address | what it is |
 | --- | --- | --- |
-| 1 | `00972520` | set operations through `009721C0` and `009722D0`; no Ghidra function |
-| 2 | `0096E850` | set operations through `0096E3A0` and `0096E460`; no Ghidra function |
-| 3 | `0096ACE0` | the condition `0097B8C0` calls; three `00BF6713` range checks and `004254B0`; no Ghidra function |
+| 1 | `00972520` | the loader (see the second read); Ghidra function since dda4de1f6 |
+| 2 | `0096E850` | set operations through `0096E3A0` and `0096E460`; Ghidra function since dda4de1f6 |
+| 3 | `0096ACE0` | the condition `0097B8C0` calls; three `00BF6713` range checks and `004254B0`; Ghidra function since dda4de1f6 |
 | 4 | `0097B390` | a destructor |
 | 5, 6, 7 | `009726D0`, `0096E9F0`, `00968710` | not read |
 
@@ -1183,9 +1185,13 @@ The tool is `local/cc9-lua2-parse-map.py` in the cc9-lua2 tree.
 
 All three are slots of vtable `00D1B68C`.
 
+**Correction.** The lead defined all three in Ghidra under `dda4de1f6`, so they are no longer
+bodies without a function. The table above keeps the extents that were reported. `00979140` is
+defined to `00979191`.
+
 ### The `kill` subscription's keys and its condition (packet `cc9_lua_listeners`, second read)
 
-The listings were read from disk; the three slots have no Ghidra function (see above).
+The listings were read from disk. The three slots are defined in Ghidra since `dda4de1f6`.
 
 **Slot 1, `00972520`, is the loader.** Its argument is the block's property reader.
 - `callback` (`00CE49C0`) is read into `+4h` through the reader's `vtable[10h]`
@@ -1377,3 +1383,16 @@ each registered entry, which settles the rows that depend on it):
 - Every moved row traces to those orders, the callback's own effect.
 
 **Verdict: `kLuaReconListenersBound = true`.**
+
+### Provisional ledger names for the listener slots
+
+These are hypotheses, not recovered symbols, with their evidence in the ledger note.
+
+| address | name |
+| --- | --- |
+| `00972520` | `BSP_KillSubscription_Load` |
+| `0096ACE0` | `BSP_KillSubscription_Matches` |
+| `00979140` | `BSP_SubscriptionSet_MatchesOrEmpty` |
+| `00972450` | `BSP_ReconSubscription_Load` |
+| `00968470` | `BSP_ReconSubscription_Matches` |
+| `00980E50` | `BSP_WarningManager_DispatchReconChannel` |
