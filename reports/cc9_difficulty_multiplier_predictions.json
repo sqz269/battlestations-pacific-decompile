@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_difficulty_multiplier_predictions",
+  "doc": "docs/DIFFICULTY_MULTIPLIERS.md sections 4 and 5",
+  "code_changed": false,
+  "addresses": {
+    "0082703E": "0092D1F0 segment damage with the raw amount (0082700E), before the 008270AD multiply",
+    "0093A4F0": "water seconds from the weapon WaterDamage, unscaled; the water damage runs through vtable[1ACh] and is scaled",
+    "0095DA00": "at +1ACh of the Dauntless (00D19D28) and PBY (00D00308) primary vtables: aircraft damage is scaled"
+  },
+  "calls": [],
+  "predictions": {
+    "USN02": "Exeter segments still destroyed; health about 2896 after the hit, about 2500 after flooding; no failure at 39.65 s; failure band about 150-280 s if a later salvo hits Exeter, else phase 2 reached; exit 3",
+    "USN04": "Fletcher-class05 1149 -> about 638, deaths 44, exit 3",
+    "USN01": "Dauntless HP 220; both still die about 2-3 s later (about 132 s and 138 s); deaths 7; exit 3",
+    "JM06": "identical"
+  },
+  "no_ghidra_function": [],
+  "names_added": []
+}
