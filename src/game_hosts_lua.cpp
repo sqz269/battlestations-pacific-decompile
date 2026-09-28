@@ -306,6 +306,10 @@ int binding_trampoline(lua_State* state) {
     const bool get_property_row = dispatch_row.address == 0x0088bf80u;
     // Packet cc9_lua_kill.
     const bool kill_row = kLuaKillBound && dispatch_row.address == 0x008ac5c0u;
+    // Packet cc9_lua_listeners.
+    const bool add_listener_row = kLuaListenersBound && dispatch_row.address == 0x008c6760u;
+    const bool remove_listener_row = kLuaListenersBound && dispatch_row.address == 0x008c6990u;
+    const bool listener_active_row = kLuaListenersBound && dispatch_row.address == 0x008c6bb0u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -332,6 +336,7 @@ int binding_trampoline(lua_State* state) {
     const bool force_select_row
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
+        || add_listener_row || remove_listener_row || listener_active_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -427,6 +432,18 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (add_listener_row) {
+        if (!host->error_replay()) host->run_add_listener_008c6760(state, argc);
+        return 0;
+    }
+    if (remove_listener_row) {
+        if (!host->error_replay()) host->run_remove_listener_008c6990(state, argc);
+        return 0;
+    }
+    if (listener_active_row) {
+        if (host->error_replay()) return 0;
+        return host->run_is_listener_active_008c6bb0(state, argc);
     }
     if (kill_row) {
         if (!host->error_replay()) host->run_kill_008ac5c0(state, argc);
@@ -2638,6 +2655,10 @@ float GameMissionLuaHost::spawn_attempt_delay_0087f800() {
 }
 
 void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
+    // Packet cc9_lua_listeners. SUBSTITUTION (labelled): the `kill` channel is
+    // evaluated here, once per mission frame, for the deaths since the last
+    // frame; the image evaluates it inside the kill flush (009813A0).
+    if (kLuaListenersBound) dispatch_kill_listeners_009813a0();
     // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
     // the step is used only to advance the clock the interval is measured on.
     spawn_world_clock_ += step_seconds;
@@ -3825,6 +3846,201 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
     return 1;
 }
 
+namespace {
+bool listener_key_equal(const std::string& a, const std::string& b) noexcept {
+    // 00980150's map compares with BSP_NativeString_LessCaseInsensitive (00443D00).
+    return a.size() == b.size() && _stricmp(a.c_str(), b.c_str()) == 0;
+}
+
+std::string listener_string_argument(lua_State* state, int slot) {
+    if (slot > ::lua_gettop(state) || ::lua_type(state, slot) != LUA_TSTRING) return std::string();
+    const char* text = ::lua_tolstring(state, slot, nullptr);
+    return text != nullptr ? std::string(text) : std::string();
+}
+
+int listener_entity_id_at(lua_State* state, int index) {
+    if (::lua_type(state, index) != LUA_TTABLE) return 0;
+    ::lua_getfield(state, index, "ID");
+    const int type = ::lua_type(state, -1);
+    const int id = (type == LUA_TNUMBER || type == LUA_TSTRING)
+        ? static_cast<int>(::lua_tonumber(state, -1)) : 0;
+    ::lua_pop(state, 1);
+    return id;
+}
+
+// 009721C0 reads a set from the block key: one entity table, or a table of them.
+// Returns false when the key is absent or holds an empty table.
+bool listener_read_entity_set(lua_State* state, int block, const char* key, std::vector<int>& out) {
+    ::lua_getfield(state, block, key);
+    const int value = ::lua_gettop(state);
+    bool any = false;
+    if (::lua_type(state, value) == LUA_TTABLE) {
+        const int single = listener_entity_id_at(state, value);
+        if (single > 0) {
+            out.push_back(single);
+            any = true;
+        } else {
+            ::lua_pushnil(state);
+            while (::lua_next(state, value) != 0) {
+                const int id = listener_entity_id_at(state, ::lua_gettop(state));
+                if (id > 0) out.push_back(id);
+                any = true;   // a non-entity member still makes the set non-empty
+                ::lua_pop(state, 1);
+            }
+        }
+    }
+    ::lua_settop(state, value - 1);
+    return any;
+}
+} // namespace
+
+// Packet cc9_lua_listeners. 008C6760 AddListener(channel, id, block) -> 00980C10:
+// channel map (00980150), the id's slot (00978D60), the subscription 0097E360
+// builds. A re-add of the same (channel, id) replaces the slot.
+int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument_count) {
+    ++summary_.listener_adds;
+    ListenerEntry entry;
+    entry.channel = listener_string_argument(state, 1);
+    entry.id = listener_string_argument(state, 2);
+    if (argument_count >= 3 && ::lua_type(state, 3) == LUA_TTABLE) {
+        ::lua_getfield(state, 3, "callback");   // 00972544, reader vtable[10h]
+        if (::lua_type(state, -1) == LUA_TSTRING) {
+            const char* text = ::lua_tolstring(state, -1, nullptr);
+            if (text != nullptr) entry.callback = text;
+        }
+        ::lua_pop(state, 1);
+        if (listener_key_equal(entry.channel, "kill")) {
+            std::vector<int> ignored;
+            listener_read_entity_set(state, 3, "entity", entry.entity_ids);   // +0Ch
+            const bool attacker = listener_read_entity_set(state, 3, "lastAttacker", ignored);
+            ::lua_getfield(state, 3, "lastAttackerPlayerIndex");              // +2Ch
+            bool player_index = false;
+            if (::lua_type(state, -1) == LUA_TTABLE) {
+                ::lua_pushnil(state);
+                if (::lua_next(state, -2) != 0) {
+                    player_index = true;
+                    ::lua_pop(state, 2);
+                }
+            }
+            ::lua_pop(state, 1);
+            entry.attacker_filters_set = attacker || player_index;
+        }
+    }
+    for (ListenerEntry& existing : listeners_) {
+        if (listener_key_equal(existing.channel, entry.channel)
+            && listener_key_equal(existing.id, entry.id)) {
+            existing = entry;
+            log_.implemented("MissionLuaNative::AddListener", "008c6760");
+            return 0;
+        }
+    }
+    log_.notef("  AddListener 008c6760: channel=\"%s\" id=\"%s\" callback=\"%s\" entities=%zu "
+        "attacker_filters=%d (packet cc9_lua_listeners)", entry.channel.c_str(), entry.id.c_str(),
+        entry.callback.c_str(), entry.entity_ids.size(), entry.attacker_filters_set ? 1 : 0);
+    listeners_.push_back(std::move(entry));
+    log_.implemented("MissionLuaNative::AddListener", "008c6760");
+    return 0;
+}
+
+int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.listener_removes;
+    const std::string channel = listener_string_argument(state, 1);
+    const std::string id = listener_string_argument(state, 2);
+    for (std::size_t i = 0; i < listeners_.size(); ++i) {
+        if (listener_key_equal(listeners_[i].channel, channel)
+            && listener_key_equal(listeners_[i].id, id)) {
+            listeners_.erase(listeners_.begin() + static_cast<std::ptrdiff_t>(i));
+            break;
+        }
+    }
+    log_.implemented("MissionLuaNative::RemoveListener", "008c6990");
+    return 0;
+}
+
+// 008C6BB0 -> 00980E00, the result pushed with 00B66450 BSP_LuaObject_PushBoolean.
+int GameMissionLuaHost::run_is_listener_active_008c6bb0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.listener_queries;
+    const std::string channel = listener_string_argument(state, 1);
+    const std::string id = listener_string_argument(state, 2);
+    bool active = false;
+    for (const ListenerEntry& entry : listeners_) {
+        if (listener_key_equal(entry.channel, channel) && listener_key_equal(entry.id, id)) {
+            active = true;
+            break;
+        }
+    }
+    ::lua_pushboolean(state, active ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsListenerActive", "008c6bb0");
+    return 1;
+}
+
+// 009813A0's `kill` channel: 0097B8C0 collects the callback of every subscription
+// whose condition (0096ACE0) holds, then each is called. The victim is the unit's
+// entity (id = index + 1).
+void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    const std::vector<std::pair<std::size_t, float>> deaths = units_hooks_->destroyed_units();
+    if (listener_death_seen_.size() < units_hooks_->count()) {
+        listener_death_seen_.resize(units_hooks_->count(), false);
+    }
+    for (const auto& death : deaths) {
+        const std::size_t unit = death.first;
+        if (unit >= listener_death_seen_.size() || listener_death_seen_[unit]) continue;
+        // A squadron entity dies only when 007F3970 removes its last plane (+3CCh
+        // reaches 0, then 00926D90). SUBSTITUTION (labelled): the host fuses the
+        // squadron with its wing-0 plane, so that slot's death is held until the
+        // registry record's live count is 0, as kSquadronObserverLivenessBound does.
+        bool squadron_alive = false;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == unit
+                && r.live_count() > 0) {
+                squadron_alive = true;
+                break;
+            }
+        }
+        if (squadron_alive) continue;
+        listener_death_seen_[unit] = true;
+        ++summary_.listener_kill_deaths;
+        const int victim = static_cast<int>(unit + 1);
+        std::vector<std::string> callbacks;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, "kill")) continue;
+            if (!entry.entity_ids.empty()
+                && std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
+                    == entry.entity_ids.end()) {
+                continue;   // 0096AD0D: the `entity` set rejects the victim
+            }
+            if (entry.attacker_filters_set) {
+                // SUBSTITUTION (labelled): the host's death row carries no
+                // attacker entity, so a non-empty lastAttacker or
+                // lastAttackerPlayerIndex set is not matched.
+                ++summary_.listener_attacker_filtered;
+                continue;
+            }
+            if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_kill_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(unit);
+            log_.notef("  kill listener 009813a0: victim \"%s\" -> %s() (packet cc9_lua_listeners)",
+                row != nullptr ? row->name.c_str() : "?", name.c_str());
+            if (::lua_pcall(state_, 0, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
+}
+
 // Packet cc9_lua_kill. 008AC5C0 Kill(entity [, hard]); returns no value (the
 // native's frame result count is 0).
 int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) {
@@ -4942,6 +5158,12 @@ void GameMissionLuaHost::report_mission_script_state() {
         "slots_rows=%llu decks=%zu", summary_.get_property_calls, summary_.get_property_served,
         summary_.get_property_unserved, summary_.get_property_slots_rows,
         bsp::air_ops_decks().size());
+    log_.notef("summary mission script listeners bound=%d adds=%llu removes=%llu queries=%llu "
+        "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "
+        "008C6990 / 008C6BB0 / 009813A0, packet cc9_lua_listeners)", kLuaListenersBound ? 1 : 0,
+        summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
+        listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
+        summary_.listener_attacker_filtered);
     log_.notef("summary mission script kill bound=%d calls=%llu units=%llu unresolved=%llu "
         "already_dead=%llu squadrons=%llu (008AC5C0, packet cc9_lua_kill)", kLuaKillBound ? 1 : 0,
         summary_.kill_calls, summary_.kill_units, summary_.kill_unresolved,
