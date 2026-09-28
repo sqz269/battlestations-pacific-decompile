@@ -1619,3 +1619,35 @@ committed OFF.
 **Verdict: `kReconListenerResetCycleBound = true`.** The silent-listener failure of the recon verdict
 is explained and corrected: the host fired only net changes, while the image re-notifies every
 pass.
+
+## AddDamage, 0088E000 (packet `cc9_lua_add_damage`, `kLuaAddDamageBound`, committed OFF)
+
+Worker cc9-lua2, 2026-09-28. The contract is `docs/USN02_PHASES.md` section 3.
+
+**The image.**
+- `AddDamage(entity, amount)`, body `0088E000`-`0088E1A3`, resolves argument 0 (`00888AA0`)
+  and reads argument 1 as a number (`0088E0DE`).
+- It calls `entity->vtable[1ACh](amount)` at `0088E15B`. That is the unit's routed damage entry,
+  `0095DA00` -> `0087D730` -> `00879070`: the party multiplier, the invincibility floor and the
+  death rule.
+- `bsp::lua_add_damage_0088e000` reconstructs the native.
+
+**The binding.**
+- `GameMissionLuaHost::run_add_damage_0088e000` resolves the entity as `Kill` does.
+- It calls `GameGunneryHost::apply_script_damage_0095da00(unit, amount)`, which is gunnery3's
+  routed path.
+- The census is `summary mission script add damage bound=.. calls=.. units=.. unresolved=..`,
+  plus one `AddDamage 0088e000:` line per call.
+- **SUBSTITUTION, labelled:** an entity with no units-host slot is counted `unresolved`.
+
+**Predictions.**
+- **The current runs** (main `32f3d4f74`, invincibility floor ON). USN02 fails in phase 1
+  (Exeter sunk at 385.68 s) and never reaches `luaPh2MovieEnd`. So USN02 9200/9000, USN01
+  3200/3000 and USN04 4700/4500 are **identity, with `calls=0`**.
+- **A phase-2 USN02 run** (kept for the flip pair).
+  - `luaPh2MovieEnd` calls `SetInvincible(unit, false)` then `AddDamage(unit, 100000000)` for
+    each DRGrp ship still alive.
+  - DeRuyter, Java, Kortenaer and Electra die at the movie's end, in the same tick, unless
+    already sunk.
+  - Deaths rise by those not yet sunk; the FinalShips' targets and the later hit rows shift.
+  - The switch stays OFF until the lead calls that pair.

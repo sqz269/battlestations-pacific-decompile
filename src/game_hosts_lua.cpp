@@ -313,6 +313,7 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_set_invincible_native.
     const bool set_invincible_row = dispatch_row.address == 0x00897a50u;
     const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
+    const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -340,7 +341,7 @@ int binding_trampoline(lua_State* state) {
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
-        || forced_recon_row
+        || forced_recon_row || add_damage_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -436,6 +437,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (add_damage_row) {
+        if (!host->error_replay()) host->run_add_damage_0088e000(state, argc);
+        return 0;
     }
     if (forced_recon_row) {
         if (!host->error_replay()) host->run_set_forced_recon_level_008aa8f0(state, argc);
@@ -4222,6 +4227,30 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     }
 }
 
+// Packet cc9_lua_add_damage. 0088E000 AddDamage(entity, amount); returns no value.
+// SUBSTITUTION (labelled): an entity with no units-host slot is not reached.
+int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_count) {
+    ++summary_.add_damage_calls;
+    const float amount = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.add_damage_unresolved;
+        log_.notef("  AddDamage 0088e000: entity id %d has no units-host slot (packet "
+            "cc9_lua_add_damage)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    units->gunnery()->apply_script_damage_0095da00(index, amount);   // 0088E15B vtable[1ACh]
+    ++summary_.add_damage_units;
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  AddDamage 0088e000: \"%s\" amount=%.1f (packet cc9_lua_add_damage)",
+        row != nullptr ? row->name.c_str() : "?", static_cast<double>(amount));
+    log_.implemented("MissionLuaNative::AddDamage", "0088e000");
+    return 0;
+}
+
 // Packet cc9_forced_recon_level. 008AA8F0 SetForcedReconLevel(entity, level,
 // party): argument 0 through 00888AA0, arguments 1 and 2 as integers (00B66290),
 // then 00805CF0(level) on the entity's record for that party; a squadron (18h) or
@@ -5435,6 +5464,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
         listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
+    log_.notef("summary mission script add damage bound=%d calls=%llu units=%llu unresolved=%llu "
+        "(0088E000 -> 0095DA00, packet cc9_lua_add_damage)", kLuaAddDamageBound ? 1 : 0,
+        summary_.add_damage_calls, summary_.add_damage_units, summary_.add_damage_unresolved);
     log_.notef("summary mission script forced recon bound=%d calls=%llu units=%llu "
         "unresolved=%llu (008AA8F0 -> 00805CF0, packet cc9_forced_recon_level)",
         kForcedReconLevelBound ? 1 : 0, summary_.forced_recon_calls,

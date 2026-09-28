@@ -168,6 +168,13 @@ inline constexpr bool kReconListenerResetCycleBound = true;  // ON: identity pai
 // False: the native stays an unimplemented record.
 inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_lua_add_damage (docs/USN02_PHASES.md section 3; docs/LUA_BINDING_MISSION.md,
+// "AddDamage, 0088E000"). AddDamage(entity, amount) resolves argument 0 (00888AA0), reads
+// argument 1 as a number (0088E0DE) and calls entity->vtable[1ACh](amount) at 0088E15B,
+// the unit's routed damage entry 0095DA00 -> 0087D730 -> 00879070. True: the host calls
+// GameGunneryHost::apply_script_damage_0095da00 for the resolved slot. False: record.
+inline constexpr bool kLuaAddDamageBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -389,6 +396,9 @@ struct GameMissionLuaSummary {
     unsigned long long forced_recon_calls{0};
     unsigned long long forced_recon_units{0};
     unsigned long long forced_recon_unresolved{0};
+    unsigned long long add_damage_calls{0};
+    unsigned long long add_damage_units{0};
+    unsigned long long add_damage_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -861,6 +871,8 @@ public:
     int run_set_invincible_00897a50(lua_State* state, int argument_count);
     // Packet cc9_forced_recon_level, under kForcedReconLevelBound.
     int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
+    // Packet cc9_lua_add_damage, under kLuaAddDamageBound.
+    int run_add_damage_0088e000(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
