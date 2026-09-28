@@ -336,6 +336,11 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_device_reload_enabled.
     const bool device_reload_row = kLuaDeviceReloadEnabledBound
         && dispatch_row.address == 0x008c1350u;
+    // Packet cc9_lua_formation_query.
+    const bool in_formation_row = kLuaFormationQueryBound
+        && dispatch_row.address == 0x008996a0u;
+    const bool leave_formation_row = kLuaFormationQueryBound
+        && dispatch_row.address == 0x00899eb0u;
     // Packet cc9_submarine_air.
     const bool unlimited_air_row = kSubmarineAirBound
         && dispatch_row.address == 0x00893c00u;
@@ -369,6 +374,7 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || slot_count_row || device_reload_row || unlimited_air_row
+        || in_formation_row || leave_formation_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -475,6 +481,13 @@ int binding_trampoline(lua_State* state) {
     }
     if (device_reload_row) {
         if (!host->error_replay()) host->run_set_device_reload_enabled_008c1350(state, argc);
+        return 0;
+    }
+    if (in_formation_row && !host->error_replay()) {
+        return host->run_is_in_formation_008996a0(state, argc);
+    }
+    if (leave_formation_row) {
+        if (!host->error_replay()) host->run_leave_formation_00899eb0(state, argc);
         return 0;
     }
     if (sub_depth_row) {
@@ -4628,6 +4641,58 @@ int GameMissionLuaHost::run_set_device_reload_enabled_008c1350(lua_State* state,
     return 0;
 }
 
+// Packet cc9_lua_formation_query. 008996A0 IsInFormation(unit): argument 0 through
+// BSP_ObjectHandle_FromLuaTable, then lua_pushboolean([unit+284h] != 0). One result.
+// SUBSTITUTION (labelled): an entity with no units-host slot answers false (the image
+// would read its +284h).
+int GameMissionLuaHost::run_is_in_formation_008996a0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.in_formation_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const std::int32_t group = valid
+        ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    const bool in_formation = group >= 0;
+    if (in_formation) ++summary_.in_formation_true;
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  IsInFormation 008996a0: \"%s\" group=%d -> %d (packet "
+        "cc9_lua_formation_query)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<int>(group), in_formation ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsInFormation", "008996a0");
+    ::lua_pushboolean(state, in_formation ? 1 : 0);
+    return 1;
+}
+
+// Packet cc9_lua_formation_query. 00899EB0 LeaveFormation(unit): argument 0 through
+// BSP_ObjectHandle_FromLuaTable, then 0077C980(unit, 0). With [unit+284h] set that sends
+// message 77h (null target), delivered by 0077FE80 arm 3 to 0077BD70(unit, null).
+// SUBSTITUTIONS (labelled): the leave runs at the call instead of through
+// BSP_Session_RouteMessage; the slot counter bump for [unit+1ACh] < 8
+// (BSP_SlotCounter_Increment) is not modelled; the host's leave counts the unit in its
+// death-leave counter and prints its destroy-path note.
+int GameMissionLuaHost::run_leave_formation_00899eb0(lua_State* state, int argument_count) {
+    static_cast<void>(argument_count);
+    ++summary_.leave_formation_calls;
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool valid = units != nullptr && id > 0
+        && static_cast<std::size_t>(id) <= units->count();
+    const std::int32_t group = valid
+        ? units->unit_formation_group_0284(static_cast<std::size_t>(id - 1)) : -1;
+    if (group >= 0) {
+        units->leave_group_on_destroy_0077bd70(static_cast<std::size_t>(id - 1));
+        ++summary_.leave_formation_left;
+    }
+    const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  LeaveFormation 00899eb0: \"%s\" group=%d left=%d (0077C980 -> 77h -> "
+        "0077BD70, packet cc9_lua_formation_query)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<int>(group), group >= 0 ? 1 : 0);
+    log_.implemented("MissionLuaNative::LeaveFormation", "00899eb0");
+    return 0;
+}
+
 // Packet cc9_submarine_air. 00893C00 SetUnlimitedAirSupply(entity, flag): argument 0
 // through 00888AA0, argument 1 through 00B66250 (lua_toboolean), stored at unit+1280h
 // with no class test. Returns no value.
@@ -6064,6 +6129,11 @@ void GameMissionLuaHost::report_mission_script_state() {
         "now=%d (008C1350 -> 00E17BF2, packet cc9_device_reload_enabled)",
         kLuaDeviceReloadEnabledBound ? 1 : 0, summary_.device_reload_calls,
         summary_.device_reload_true, lua_device_reload_enabled_00e17bf2() ? 1 : 0);
+    log_.notef("summary mission script formation query bound=%d in_formation=%llu true=%llu "
+        "leave=%llu left=%llu (008996A0 +284h; 00899EB0 -> 0077C980 -> 0077BD70, packet "
+        "cc9_lua_formation_query)", kLuaFormationQueryBound ? 1 : 0,
+        summary_.in_formation_calls, summary_.in_formation_true,
+        summary_.leave_formation_calls, summary_.leave_formation_left);
     log_.notef("summary mission script unlimited air bound=%d calls=%llu stored=%llu "
         "(00893C00 -> unit+1280h, packet cc9_submarine_air)", kSubmarineAirBound ? 1 : 0,
         summary_.unlimited_air_calls, summary_.unlimited_air_stored);
