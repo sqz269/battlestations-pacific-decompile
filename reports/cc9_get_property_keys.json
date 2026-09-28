@@ -130,11 +130,28 @@
     }
   ],
   "predictions": "docs/MISSION_LUA_GETPROPERTY.md 9.7",
-  "failed_predictions": [],
+  "failed_predictions": [
+    {
+      "row": "JM06 gameplay",
+      "predicted": "moves only through Narwhal-class Submarine 01's order stream",
+      "measured": "the whole convoy battle moved (14 unit rows, 3 death rows changed, 1 only OFF)",
+      "why": "the Narwhal keeps its authored attackmove on PlayerSub 03 instead of being re-aimed at the player 17 times; it survives, and that cascades"
+    },
+    {
+      "row": "JM06 orders",
+      "predicted": "17 -> fewer, first order still issued",
+      "measured": "17 -> 0",
+      "why": "the stage-init attackmove is already current, so :1162 never re-issues"
+    }
+  ],
   "flags": [
     "The lead's LOMP06 1200/1000 row 'reconlevel survives luaGetReconLevel' cannot be resolved on that pair: 0 GetProperty calls; luaGetReconLevel at :701 needs a player attack target"
   ],
-  "substitutions": [],
+  "substitutions": [
+    "an entity with no units-host slot gets no value",
+    "every units-host slot has a director",
+    "reconlevel from the host recon pass, forced levels not modelled, own side 2 before the first pass"
+  ],
   "no_ghidra_function": [
     {
       "start": "006E2AC0",
@@ -155,5 +172,32 @@
     "00758340 BSP_Mothership_GetProperty",
     "006D0E60 BSP_Airfield_GetProperty"
   ],
-  "ledger_names_proposed": "006E2AC0 BSP_Projectile_GetPropertyOwner, left to the lead's define"
+  "ledger_names_proposed": "006E2AC0 BSP_Projectile_GetPropertyOwner, left to the lead's define",
+  "binding": {
+    "packet": "cc9_get_property_class_readers",
+    "switch": "kGetPropertyClassReadersBound",
+    "state": "OFF, pending the lead's ruling (recommend ON)",
+    "commit_off": "6d62bcaf6",
+    "export_on": "local/gp_on SHA-256 A955AC1F04EF",
+    "bound_keys": [
+      "unitcommand",
+      "reconlevel"
+    ],
+    "not_bound": [
+      "ammoType",
+      "state",
+      "TorpedoStock",
+      "TargetIsHome",
+      "owner",
+      "LandConvoy x8"
+    ],
+    "pairs": {
+      "USN01": "exit 1, identical gameplay, 0 calls",
+      "USN02": "exit 1, identical, 0 calls",
+      "USN04": "exit 1, identical, 136/136/0",
+      "LOMP06": "exit 1, identical, 0 calls; one movie-camera pose line differs",
+      "JM06": "exit 3; served 0->18 (unitcommand, all named); NavigatorAttackMove 17->0; deaths 5->4, hits 424->405, Narwhal survives"
+    },
+    "doc": "docs/MISSION_LUA_GETPROPERTY.md 9.11-9.12"
+  }
 }
