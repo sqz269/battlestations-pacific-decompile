@@ -212,6 +212,13 @@ constexpr bool kAiLeaderOrderKeyBound = true;
 // pending the order-ring read: the host ring appends where 0077D600 replaces.
 constexpr bool kGeneratedSquadronBrainBound = false;
 
+// Packet cc9_order_ring_replace, docs/ORDER_RING_REPLACE.md. True: an AI order
+// that repeats the entity's previous one (same token and target, point within
+// a metre) is issued again, as the image issues it: 0077D600 -> 00816E30 with
+// flags 1 clears the queue at 0081733E and issues at 0081735D, so the command
+// restarts. False: the host's duplicate filter drops it.
+constexpr bool kAiOrderReissueBound = false;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -423,7 +430,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // group double-orders the same aircraft.
     std::vector<bool> unit_owned_by_squadron;
 
-    // The native 0077D600 REPLACES an entity's outstanding order; this
+    // Packet cc9_order_ring_replace (docs/ORDER_RING_REPLACE.md) corrects the
+    // premise below: this process's director queue is NOT appended to. Every
+    // AI order goes through the reconstructed 0077D600 -> 00816E30 chain with
+    // flags 1, whose tail clears the queue first, exactly as the image does. The
+    // filter is the only departure, and kAiOrderReissueBound removes it.
+    // Original note: the native 0077D600 REPLACES an entity's outstanding order; this
     // process's order ring appends, so the follower pass 00A10DC0, which calls
     // 00A02020 on every fixed step and whose only native gate is the squared
     // distance at 00A0205C, would append one order per member per step for the
@@ -451,7 +463,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                  < kOrderRepeatEpsilonSquared);
         if (same) {
             ++summary.orders_suppressed;
-            return true;
+            // kAiOrderReissueBound: the image has no duplicate filter. The
+            // re-issue goes through 0077D600 with flags 1, and 00816E30's tail
+            // clears the queue (0081733E) and issues it again (0081735D), so the
+            // command restarts. The count above then reads "re-issued".
+            if constexpr (!kAiOrderReissueBound) return true;
         }
         prev.valid = true;
         prev.token = token;
