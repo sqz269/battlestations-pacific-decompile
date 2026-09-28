@@ -805,6 +805,12 @@ public:
     const GameUnitRow* unit_row(std::size_t index) const noexcept;
     bool controlled_bound() const noexcept;
     std::size_t controlled_index() const noexcept;
+    // Packet cc9_helm_orders_helm_route (docs/SCRIPTED_HELM.md section 9):
+    // --helm-orders `takehelm`. The controlled unit takes role 1 through the
+    // BSP_PLAYER_HELM transfer (0064B9A6 -> 0077C470(unit, 2, 1), +184h set),
+    // holds `throttle` and steers toward (x, z) by 009DA250's rudder law.
+    // False, with a log line, when `index` is not the controlled unit.
+    bool helm_route_take(std::size_t index, float throttle, float x, float z);
 
     const std::vector<GameUnitRow>& units() const noexcept;
     const GameUnitsSummary& summary() const noexcept;

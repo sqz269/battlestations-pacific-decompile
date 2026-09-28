@@ -3699,6 +3699,10 @@ struct GameUnitsHost::Impl {
     bool helm_opened{false};
     float helm_lever_24{0.0f}, helm_lever_28{0.0f};   // HUD +24h thrust, +28h turn
     int helm_transfers{0}, helm_issues{0};
+    // Packet cc9_helm_orders_helm_route: --helm-orders `takehelm`.
+    bool helm_route_on{false};
+    bool helm_route_arrived{false};
+    float helm_route_x{0.0f}, helm_route_z{0.0f};
     void player_helm_prepare_0064b870();
     void set_role_availability_00927d20_impl(std::size_t index, std::uint32_t mask,
                                              std::int32_t value);
@@ -6980,7 +6984,7 @@ void GameUnitsHost::Impl::player_helm_prepare_0064b870() {
             std::free(text);
         }
     }
-    if (!helm_option_on) return;
+    if (!helm_option_on && !helm_route_on) return;
     if (!controlled_bound || controlled_index >= slots.size()) return;
     GameUnitSlot& unit = *slots[controlled_index];
     if (!helm_opened) {
@@ -7018,6 +7022,54 @@ void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
         return;
     }
     if (slot.current_roles_01ac[1] != kLocalPlayerSlot) return;   // 00927F30(unit, 1)
+    if (helm_route_on) {
+        // Packet cc9_helm_orders_helm_route. A player's hand moves the turn
+        // lever; the harness stands in for the hand with the image's own AI
+        // law, 009DA250 (rudder = -error / (class+524h * 1.2), clamped, with its
+        // low-speed ramp), on the error from the hull heading to the bearing of
+        // the point. LABELLED: the law is the AI's, not a player's; the error is
+        // wrapped to [-pi, pi] here in place of 00438B10.
+        const double dx = static_cast<double>(helm_route_x) - slot.motion.position[0];
+        const double dz = static_cast<double>(helm_route_z) - slot.motion.position[2];
+        const double distance = std::sqrt(dx * dx + dz * dz);
+        const float bearing = static_cast<float>(std::atan2(dx, dz));
+        double error = static_cast<double>(bearing) - pose_heading_radians(slot);
+        while (error > 3.141592653589793) error -= 6.283185307179586;
+        while (error < -3.141592653589793) error += 6.283185307179586;
+        struct Speed final : bsp::ShipAiRudderLawHost {
+            float v{0.0f};
+            float unit_body_axis_speed_0092d730() override { return v; }
+        } speed;
+        bsp::UnitBodyAxisSpeedInputs axis{};
+        axis.velocity[0] = slot.motion.linear_velocity.x;
+        axis.velocity[1] = slot.motion.linear_velocity.y;
+        axis.velocity[2] = slot.motion.linear_velocity.z;
+        axis.axis[0] = slot.motion.pose_row2[0];
+        axis.axis[1] = slot.motion.pose_row2[1];
+        axis.axis[2] = slot.motion.pose_row2[2];
+        speed.v = bsp::unit_forward_speed_0092d730(axis);
+        const bsp::ShipClassAiDerivedMotion derived = bsp::ship_class_ai_derived_motion_00828f20(
+            slot.fields.max_rot_angle, slot.fields.max_rot_angle_change_ratio,
+            slot.fields.max_speed);
+        helm_rudder = bsp::ship_ai_rudder_from_heading_error_009da250(
+            bsp::ShipAiThrottleDirection::Ahead, static_cast<float>(error),
+            derived.yaw_authority_0524, speed);
+        if (helm_issues % 600 == 0) {
+            log.notef("helm route \"%s\": at (%.1f, %.1f) distance %.1f m heading %.4f "
+                "bearing %.4f rudder %.3f speed %.2f", slot.row.name.c_str(),
+                static_cast<double>(slot.motion.position[0]),
+                static_cast<double>(slot.motion.position[2]), distance,
+                static_cast<double>(pose_heading_radians(slot)), static_cast<double>(bearing),
+                static_cast<double>(helm_rudder), static_cast<double>(speed.v));
+        }
+        if (!helm_route_arrived && distance < 500.0) {
+            helm_route_arrived = true;
+            log.notef("helm route arrived: \"%s\" within 500 m of (%.1f, %.1f) at %.1f m, "
+                "after %d helm issues", slot.row.name.c_str(),
+                static_cast<double>(helm_route_x), static_cast<double>(helm_route_z),
+                distance, helm_issues);
+        }
+    }
     // The input integration (0064B9C6-0064BA90) moves the levers toward the
     // held axes; the scripted helm sets them to the option's values instead,
     // clamped to [-1, 1]; the bounds of 0064BA3C/0064BA67's clamp were not
@@ -17412,7 +17464,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
             host.issue_into_ring(slot, slot.standing_throttle, slot.standing_rudder);
         }
         if constexpr (Impl::kPlayerRoleBookkeepingBound) {
-            if (host.helm_option_on) host.player_helm_issue_0064b870(slot);
+            if (host.helm_option_on || host.helm_route_on) {
+                host.player_helm_issue_0064b870(slot);
+            }
         }
         // Milestone 2n: 009e1170's AI arm is no longer run from here. It is the
         // `cruise` state's vtable +0Ch, and 009f5186 calls it on a re-plan tick
@@ -18345,6 +18399,34 @@ float GameUnitsHost::unit_retardation_0508(std::size_t index) const {
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
     return host.slots[index]->motion_class.retardation;
+}
+
+bool GameUnitsHost::helm_route_take(std::size_t index, float throttle, float x, float z) {
+    Impl& host = *impl_;
+    if constexpr (!Impl::kPlayerRoleBookkeepingBound) {
+        host.log.notef("helm route refused: the role bookkeeping is not bound, so role 1 "
+            "cannot be taken");
+        return false;
+    } else {
+        if (!host.controlled_bound || index != host.controlled_index
+            || index >= host.slots.size()) {
+            host.log.notef("helm route refused: \"%s\" is not the controlled unit (00E188D8); "
+                "a player can take only that ship's helm",
+                index < host.slots.size() ? host.slots[index]->row.name.c_str() : "?");
+            return false;
+        }
+        host.helm_route_on = true;
+        host.helm_route_arrived = false;
+        host.helm_throttle = throttle;
+        host.helm_rudder = 0.0f;
+        host.helm_route_x = x;
+        host.helm_route_z = z;
+        host.log.notef("helm route taken: \"%s\" throttle %.3f toward (%.1f, %.1f); role 1 "
+            "through 0077C470(unit, 2, 1) at the next step, then the helm every step",
+            host.slots[index]->row.name.c_str(), static_cast<double>(throttle),
+            static_cast<double>(x), static_cast<double>(z));
+        return true;
+    }
 }
 
 float GameUnitsHost::unit_heading_radians(std::size_t index) const {
