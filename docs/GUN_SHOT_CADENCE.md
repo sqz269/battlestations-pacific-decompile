@@ -750,3 +750,37 @@ cached request `bot+70h` / `+74h` against `gun+480h` / `+484h`:
 | USN01 | **moves**, against the brief's identity: its convoy fires category-1 AA at the Dauntlesses (583 shots OFF). Category-1 shots up |
 | USN02 | **identity**, pair_diff exit 0 or 1: no plane is ever a target |
 | census | gunner and flak counts above 0 on USN04, USN13 and USN01; tail above 0 wherever a plane's rear gun has a target |
+
+**The pairs** (ON: `pair_export --commit 661f3ad89 --flip kAaBotFireTestsBound=true`, `local\at_on`;
+logs `local\AT_{OFF,ON}_<m>.log`):
+
+| mission | OFF deaths / hit records / shots | ON | category 1 shots | 5 | 6 | AA hits (1 / 5 / 6) | plane deaths | pair_diff |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 28 / 491 / 3656, 100.85 s | 44 / 803 / 10090, 100.95 s | 3173 -> 9174 | 150 -> 197 | 333 -> 719 | 93/98/278 -> 128/125/535 | 29 -> 45 | 3 |
+| USN13 | 16 / 312 / 2069, 97.00 s | 19 / 400 / 4152, 96.65 s | 1815 -> 3667 | 47 -> 106 | 207 -> 379 | 115/31/166 -> 90/53/257 | 17 -> 20 | 3 |
+| USN01 | 5 / 177 / 623, 53.75 s | 5 / 441 / 1510, 53.60 s | 583 -> 1465 | 16 -> 20 | 24 -> 25 | 123/24/30 -> 391/27/23 | 6 -> 6 | 3 |
+| USN02 | 12 / 5166 / 3826 | identical | 0 | 0 | 2647 | - | - | **1** |
+
+Census, ON:
+
+| mission | gunner | flak | tail |
+| --- | --- | --- | --- |
+| USN04 | 1007689 | 173167 | 72815 |
+| USN13 | 2592000 | 158223 | 505426 |
+| USN01 | 321000 | 66019 | 30932 |
+
+| prediction | verdict |
+| --- | --- |
+| USN04 category 1 shots up at least 30% | held (+189%) |
+| USN04 category 5 and 6 up | held |
+| USN04 AA hits and plane kills up | held (kills 29 -> 45) |
+| USN04 first hit same or earlier | **failed**: 0.1 s later (100.95 s) |
+| USN13 category 1 shots up at least 30%, AA hits up | shots held (+102%); AA hits up in total (312 -> 400), but category 1 hits **fell** (115 -> 90) |
+| USN01 moves, category 1 shots up | held |
+| USN02 identity | held (exit 1) |
+| census above 0 | held |
+
+**Decision: `kAaBotFireTestsBound` is ON.**
+- The three requests are the listings above.
+- The rise stays within CanFire's reload timers, which are unchanged.
+- The two failed rows are small and downstream of a longer AA engagement.

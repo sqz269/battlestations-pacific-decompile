@@ -160,7 +160,8 @@ constexpr bool kGunWaveOrderBound = false;
 //    through the 008FEF40 debounce (0.1 s to open, 0.3 s to cease). None
 //    tests the fire window, which CanFire (0085A830) enforces. OFF: every gun
 //    asks on target, acceptance, the 0.1-degree settle and the window.
-constexpr bool kAaBotFireTestsBound = false;
+//    ON since the pairs (GUN_SHOT_CADENCE 10.9).
+constexpr bool kAaBotFireTestsBound = true;
 constexpr float kAaGunnerRangeFraction = 0.8999999761581421f;   // 00D7A390
 constexpr float kAaGunnerAngleSum = 0.0872664675116539f;        // 00CF0098, 5 degrees
 constexpr float kAaFlakAngle = 0.01745329238474369f;            // 00CE3984, 1 degree
