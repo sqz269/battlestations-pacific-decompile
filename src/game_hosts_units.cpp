@@ -919,6 +919,12 @@ struct GameUnitSlot {
     int torpedo_state_ticks[8]{0, 0, 0, 0, 0, 0, 0, 0};
     int torpedo_arm_ticks{0};
     int torpedo_releases{0};
+    // Packet cc9_torpedo_release_counter: the task-level releases above that
+    // came from an aircraft the gunnery host already has dead. Such a release
+    // spawns nothing (the image refuses it at 007CEA1C), so the drop count is
+    // `summary mission gunnery torpedo_drop drops`, not torpedo_releases.
+    // Diagnostic only: torpedo_releases keeps its value, which the task reads.
+    int torpedo_releases_dead{0};
     int torpedo_transitions{0};
     // task+424h, the manual-release budget the arm's passthrough spends.
     int torpedo_rounds_pending{0};
@@ -2158,6 +2164,12 @@ struct GameUnitsHost::Impl {
                 static_cast<double>(slot.plane_max_spd));
         }
         ++slot.torpedo_releases;
+        if (gunnery != nullptr) {
+            const std::size_t dead_index = index_of_slot(slot);
+            if (dead_index < slots.size() && gunnery->unit_dead(dead_index)) {
+                ++slot.torpedo_releases_dead;
+            }
+        }
         ++slot.torpedo_release_requests_007bbba0;
         slot.torpedo_issue_requests_c20 =
             bsp::release_request_raise_007bbc00(slot.torpedo_issue_requests_c20);
@@ -20423,12 +20435,14 @@ void GameUnitsHost::report() {
                 "goaway", "aim", "prepare", "?"};
             std::size_t tasked = 0;
             int releases_total = 0;
+            int releases_dead = 0;
             int blocked_engaged = 0;
             int blocked_arm = 0;
             for (const auto& slot : host.slots) {
                 if (!slot->torpedo_task_installed) continue;
                 ++tasked;
                 releases_total += slot->torpedo_releases;
+                releases_dead += slot->torpedo_releases_dead;
                 blocked_engaged += slot->torpedo_blocked_by_engaged;
                 blocked_arm += slot->torpedo_blocked_by_arm;
                 char states[192];
@@ -20727,6 +20741,13 @@ void GameUnitsHost::report() {
                 host.log.notef("summary mission torpedo task: aircraft=%zu "
                     "releases=%d blocked_engaged_009d3210=%d blocked_arm_009d49a0=%d",
                     tasked, releases_total, blocked_engaged, blocked_arm);
+                // Packet cc9_torpedo_release_counter: `releases` above is task-level
+                // and counts dead aircraft, which spawn nothing. The rounds in the
+                // water are the gunnery host's `torpedo_drop drops`.
+                host.log.notef("summary mission torpedo task releases: task=%d live=%d "
+                    "dead=%d (dead aircraft spawn nothing, 007CEA1C; rounds in the water are "
+                    "'gunnery torpedo_drop drops'; packet cc9_torpedo_release_counter)",
+                    releases_total, releases_total - releases_dead, releases_dead);
                 if (releases_total == 0) {
                     // With 009D3420 reconstructed the engaged pair is live, so
                     // the gate is no longer the approach update itself. Name

@@ -145,6 +145,17 @@ constexpr bool kGunBarrelCountBound = true;
 //    chain (base, barrel, yaw and elevation) and the per-barrel muzzle offsets
 //    are not applied; planes are not covered. docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kShipPlatformAttachmentBound = true;
+//  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
+//    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
+//    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
+//    BSP_PlaneClass_BindModelData) and its guns take the frame through the same
+//    0072DD20 at setup. Plane models carry 6-8 `slot` groups (B5N_Kate, zero,
+//    D3A_Val, F4F_Wildcat). Plane guns have no device `Mesh` (93, 95, 98, 101), so
+//    the muzzle-offset step keeps the mount, the image's empty-list fallback.
+//    OFF: a plane gun fires from the plane origin raised by the class Height
+//    along world up. Labelled as for ships: model +x starboard, +y up, +z nose;
+//    the store that places the gun entity at its platform is not read.
+constexpr bool kPlanePlatformAttachmentBound = false;
 //  * kAaLineOfFireBound: an AA gun (weapon kinds 1, 5, 6; 00729560 installs the
 //    predicate at gun+42Ch) refuses a target when 0072CDD0 answers blocked:
 //    the segment from the gun (+5 m) to the target (+5 m, at least y = 5)
@@ -1355,6 +1366,7 @@ struct GameGunneryHost::Impl {
             && unit_state[best_unit].row.side == unit_state[owner].row.side;
     }
     unsigned long long mounts_from_model{0};
+    unsigned long long plane_mounts_from_model{0};   // cc9_plane_gun_mounts
     unsigned long long mounts_missing{0};
     ShipModelSlots& ship_model_slots(int type_id);
     // The ship's model mesh for the shell hit test, when bound and loaded.
@@ -3102,7 +3114,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             }
             gun.fire.barrel_timers.assign(static_cast<std::size_t>(gun.barrel_num), 0.0f);
             if (kShipPlatformAttachmentBound
-                && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
+                && (units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)
+                    || (kPlanePlatformAttachmentBound
+                        && units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)))) {
                 ShipModelSlots& ship = ship_model_slots(type_id);
                 bsp::GunPlatformSlotFrame frame;
                 if (ship.loaded && bsp::gun_platform_slot_frame_0095f500(ship.items,
@@ -3112,6 +3126,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.mount_local[1] = frame.origin[1];
                     gun.mount_local[2] = frame.origin[2];
                     ++mounts_from_model;
+                    if (units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)) {
+                        ++plane_mounts_from_model;
+                    }
                     if (ship.logged_unit < 0 || ship.logged_unit == static_cast<long long>(i)) {
                         ship.logged_unit = static_cast<long long>(i);
                         log.notef("gunnery: mount %s platform %d (%s) cat=%d local=(%.2f %.2f %.2f) "
@@ -8507,6 +8524,9 @@ void GameGunneryHost::report() {
             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
             kShipPlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery plane mounts from model=%llu bound=%d "
+            "(007D3E81 -> 0095F500 slot frames, packet cc9_plane_gun_mounts)",
+            host.plane_mounts_from_model, kPlanePlatformAttachmentBound ? 1 : 0);
         for (const auto& [device, fp] : host.fire_points_by_device) {
             host.log.notef("summary mission gunnery barrel device=%d guns=%zu records=%d image=%d "
                 "loaded=%d mesh=%s", device, fp.guns, fp.records,
