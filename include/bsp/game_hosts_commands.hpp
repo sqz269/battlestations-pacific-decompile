@@ -44,6 +44,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -143,7 +144,9 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // synchronous chain). True: posts queue, and GameFixedStepHost's
 // pump_session_00778450 delivers them through begin_loopback_drain /
 // finish_loopback_drain.
-inline constexpr bool kSetCommandQueueDelayBound = false;
+// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
+// tail unchanged on USN02 / USN04 / USN13 / USN01; deaths 10 / 45 / 20 / 5.
+inline constexpr bool kSetCommandQueueDelayBound = true;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
@@ -324,6 +327,11 @@ public:
     // while kSetCommandQueueDelayBound is false. finish answers the deliveries.
     void begin_loopback_drain_0076c600();
     std::size_t finish_loopback_drain_0076c600();
+    // When the last issue's MT_COMMAND waits in the queue, `fn` is taken and
+    // run after that chain's delivery (its push and finish tail); answers
+    // false, leaving `fn`, when the order was delivered already or the switch
+    // is off.
+    bool after_last_issue_delivery(std::function<void()>& fn);
 
     const GameCommandRow* issue(std::size_t unit_index, const std::string& token,
         const std::string& target_token, const bsp::UnitOrderRing& ring,
@@ -516,5 +524,6 @@ private:
 // (GameFixedStepHost reaches the session pump, not the commands host).
 void commands_begin_loopback_drain_0076c600();
 std::size_t commands_finish_loopback_drain_0076c600();
+bool commands_after_last_issue_delivery(std::function<void()>& fn);
 
 }  // namespace bsp::game

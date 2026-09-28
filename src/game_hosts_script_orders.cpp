@@ -5,6 +5,7 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
@@ -383,6 +384,11 @@ void GameScriptOrdersHost::after_order_delivery(std::function<void()> fn) {
         }
         return;
     }
+    // Packet cc9_set_command_queue_delay: with the loopback queue bound, a
+    // direct order's MT_COMMAND waits for the session pump's drain, and the
+    // receiver side runs after its delivery there (false when it has been
+    // delivered already, or while the switch is off).
+    if (commands_after_last_issue_delivery(fn)) return;
     fn();
 }
 
@@ -1259,15 +1265,24 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
                 void* const member_handle =
                     reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
                 entity_issue_command(member_handle, chosen, target, 1);
-                ScriptOrderAttackCommandHost member_bots(units_, log_, chosen,
-                                                         target_token);
-                const std::uint32_t member_task = bsp::bot_install_command_task_0099a170(
-                    static_cast<std::uint32_t>(member + 1u), member_bots);
-                if (member_task != 0u) {
-                    units_.store_unit_attack_command_class(member, chosen);
-                    ++pilot_set_target_tasks_;
-                    ++fanned;
-                }
+                // Packet cc9_set_command_queue_delay: with the loopback queue
+                // bound, this wingman's order is delivered next in the drain,
+                // after the leader's delivery returns, so its 0099A170 reads the
+                // director then. Otherwise it runs here, as before.
+                std::function<void()> install = [this, member, chosen, target_token]() {
+                    ScriptOrderAttackCommandHost member_bots(units_, log_, chosen,
+                                                             target_token);
+                    const std::uint32_t member_task = bsp::bot_install_command_task_0099a170(
+                        static_cast<std::uint32_t>(member + 1u), member_bots);
+                    if (member_task != 0u) {
+                        units_.store_unit_attack_command_class(member, chosen);
+                        ++pilot_set_target_tasks_;
+                    }
+                };
+                if (commands_after_last_issue_delivery(install)) continue;
+                const auto before = pilot_set_target_tasks_;
+                install();
+                if (pilot_set_target_tasks_ != before) ++fanned;
             }
             if (leader_row != nullptr) {
                 leader_row->command = saved.command;
