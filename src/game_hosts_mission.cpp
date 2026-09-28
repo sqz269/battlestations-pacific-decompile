@@ -1709,9 +1709,15 @@ void GameMissionHost::Impl::finish_scene_load() {
     // installed script occupies. The record's own field is the authority and the
     // header pass does not fill it, so this derivation replaces it.
     summary.mission_script_path = summary.lua_script_path;
-    log.notef("mission script name derived from the scene path: %s -> %s (the record's "
-        "+928h script table is not filled by the header pass)", record.scene_path.c_str(),
-        summary.lua_script_path.c_str());
+    // Packet cc9_scene_script_table: the line states which source won. With
+    // kSceneStageScriptBound the record's +928h slot 8 (+968h, 004F1D70 from the
+    // header's GameStageScript / StageScript) is used whenever the header names one.
+    const bool from_header = kSceneStageScriptBound && record.script_names.size() > 8
+        && !record.script_names[8].empty();
+    log.notef("mission script name: %s -> %s (%s)", record.scene_path.c_str(),
+        summary.lua_script_path.c_str(),
+        from_header ? "record+928h slot 8, the header's GameStageScript/StageScript"
+                    : "derived from the scene path; the header names no stage script");
 
     // The previous frame and its children borrow the previous Lua owner.
     // Destroy those borrowers before replacing that owner on a later load.
