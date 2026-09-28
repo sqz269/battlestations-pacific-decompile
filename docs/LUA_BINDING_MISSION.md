@@ -1039,6 +1039,40 @@ move with them. The first row to check is Kortenaer, which does not die at 68.30
 
 **So the measuring pair is USN02, not USN04 or BSM01.** Those two resolve as identity only.
 
+### Kill: the pairs and the verdict
+
+**Setup.**
+- OFF is this tree's build of `5a63f68e2`, which carries the switch from `f9da06393` and the merges
+  of main up to `bb829bd85`.
+- ON is `pair_export --commit HEAD --flip kLuaKillBound=true` (`local/kill_on`, SHA-256
+  `49EC86544C98`).
+- Both environment options were set, at lockstep 0.05 with an idle player.
+- The logs are `local/kill_{off,on}_<mission>.log` in the cc9-lua2 tree.
+
+| row | calls / units / unresolved | pair_diff | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| JM06 3200/3000 | 1 / 1 / 0: `"Gato-class Submarine 01" cause=2` | exit 3 | Gato dies at about 0 s, deaths 4 -> 5, the convoy battle moves | **partly failed**: the Gato dies at 0.00 s and deaths go 4 -> 5, but hits (405), shots (652) and damage are **unchanged**, and the Gato's is the only unit row that changes |
+| USN01 3200/3000 | 2 / 0 / 2 (entity ids 100003, 100025) | exit 1 | identity if both are script entities | held |
+| USN02 9200/9000 | 1 / 0 / 1 (100002) | exit 1 | its victim decides | held: a script entity, identity |
+| USN04 4700/4500 | 3 / 3 / 2: `"movieval" cause=2 victims=3`, a squadron | exit 3 | exit 3 likely, the victims named by the per-call lines | held |
+| LOMP06 1200/1000 | 2 / 0 / 2 (100003, 100007) | exit 1 | identity if both are unresolved | held |
+
+**The details.**
+- **JM06:** the Gato never engages in OFF: it has no shots, no hits and no damage either way. So
+  removing it changes only its own row and the death count. The prediction overstated the spread.
+- **USN04:** `Kill(Mission.movieval, true)` (`usn_19_coralus.lua` 3248) removes the three movie
+  planes at 26.55 s. OFF shoots them down at 150.25, 154.40 and 157.81 s. The air battle moves from
+  there:
+  - hit records 739 -> 722;
+  - shots 5482 -> 5654;
+  - torpedo drops 1 -> 0.
+- **Script entities:** the entity ids of 100000 and up belong to script entities with no
+  units-host slot. They stay `unresolved` as labelled.
+
+**Verdict: `kLuaKillBound` is flipped ON.** Every mechanism prediction held. Each move is the
+named victim's removal, which is the image's behaviour. The JM06 failure is a smaller spread than
+predicted and is recorded above.
+
 ## The listener natives, first read (packet `cc9_lua_listeners`, a read)
 
 Worker cc9-lua2, 2026-09-27. This is item 3 of the ranking. Ghidra was read only, and the listings

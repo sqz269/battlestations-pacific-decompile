@@ -19,7 +19,7 @@
     {
       "name": "kLuaKillBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF, pairs pending (lock screen)"
+      "state": "ON (pairs held; JM06 spread prediction failed)"
     }
   ],
   "substitutions": [
@@ -29,5 +29,19 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "JM06 gameplay",
+      "predicted": "the convoy battle moves",
+      "measured": "only the Gato row and the death count change",
+      "why": "the Gato never engages in OFF"
+    }
+  ],
+  "pairs": {
+    "JM06": "exit 3, Gato killed at 0.00, deaths 4->5, hits/shots unchanged",
+    "USN04": "exit 3, movieval squadron removed at 26.55 s",
+    "USN01": "exit 1",
+    "USN02": "exit 1",
+    "LOMP06": "exit 1"
+  }
 }
