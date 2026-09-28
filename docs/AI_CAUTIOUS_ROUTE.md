@@ -346,3 +346,9 @@ it can sit in `src/ai_command_tick.cpp` beside 00A14DD0.
   delivers it. It delivers at the call otherwise.
 - The switch is ON on main since cc9-gunnery6's landing, so the section 9 pairs were measured with the
   5Fh points delivered at the row-9 drain. Nothing is left to do.
+
+**Item 2 pair.** Commit `1a65d172b`. OFF is `local\s5cm_off_<m>.log` and ON (`local\s5cm_on`) is `local\s5cm_on_<m>.log`:
+- USN12 3200/3000: exit 0, and the route census is unchanged (builds=2, points=7, clears=1).
+- USN04 4700/4500: exit 0.
+
+The prediction held. **`kCautiousMoveRouteBound` is ON.** It takes effect once a creator of CAUTIOUSMOVE (00A2CCF0 or 00A13340) is bound.

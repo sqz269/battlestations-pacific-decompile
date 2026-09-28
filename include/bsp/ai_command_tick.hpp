@@ -167,7 +167,7 @@ inline constexpr bool kCautiousRouteBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE
 // +8h destination before the follower pass, as CAUTIOUSATTACK does. False: the
 // follower pass alone, as before. No creator of CAUTIOUSMOVE is bound in this
 // host (00A2CCF0 from the Duel think, 00A13340 from Lua), so it has no reach yet.
-inline constexpr bool kCautiousMoveRouteBound = false;
+inline constexpr bool kCautiousMoveRouteBound = true;  // ON: identity, no creator bound (docs/AI_CAUTIOUS_ROUTE.md section 11)
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and
