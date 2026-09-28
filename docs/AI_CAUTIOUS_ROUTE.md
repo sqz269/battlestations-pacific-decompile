@@ -654,6 +654,71 @@ image would have none either. The station 0070D290 is read only by the `follow` 
     table `00D09FC4`.
   - `009B3900`.
 - `00836D12` belongs to the `moveonpath` arm.
-- The four generic director routines and `009B3900` were not read for a follower-specific `cruise`
-  terminator. That is the one remaining way the image could differ.
+- **Closed in section 16.** The four generic director routines and `009B3900` were read there, and
+  none ends a `cruise` for a formation follower.
 - JM08's `follow=0` was not traced.
+
+## 16. RETREAT (`00A156E0`) is never created, and the section 15 residual read (packet `cc9_retreat_tick`)
+
+Worker cc9-ships6, 2026-09-28. **Step 1 (census) finds no row that creates RETREAT, so the tick is not
+bound (no `kRetreatTickBound`).** Step 2 reads the five residual-risk functions of section 15 instead.
+
+**Who can create a RETREAT (vtable `00D22A60`).** A scan of the image for the bytes `60 2A D2 00`
+finds four sites:
+
+| site | function | what it is |
+| --- | --- | --- |
+| `00A0FEDB` | `00A0FE90` | a type answer (`GetType` family), not a creator |
+| `00A100D7` | `00A0FF60` BSP_AiCommand_DescribeType | a type answer, not a creator |
+| `00A13770` | `00A13340` BSP_AiCommand_CreateFromLua | the inline construction at `00A1376E` |
+| `00A2BE9A` | `00A2BE70` (the RETREAT installer in docs/AI_PLANNERS.md's table) | **no caller**: no rel32 `CALL`/`JMP` and no absolute reference to `00A2BE70` anywhere in `.text` |
+
+- `00A13340`'s only caller is `00A37AD6`, inside `00A37A00` BSP_LuaBinding_AISetCommand (Lua
+  `AISetCommand`).
+- No mission script in this installation calls `AISetCommand`. That is docs/GAME_EXECUTABLE.md's
+  scan of the 299 `.lua` files, re-checked here with a case-insensitive grep of `scripts/`.
+- The `retreat` strings in the scripts are unit commands and unit properties
+  (`GetProperty(unit, "unitcommand") == "retreat"`, `unit.Retreat`), not AI group commands.
+- So in this installation the image never creates a RETREAT group command, and its tick `00A156E0`
+  (with its wedge call at `00A156EE`) is unreachable.
+
+**The census.** Every row's final group dump lists the commands its groups end on; none is RETREAT.
+
+| row (log) | groups | final group commands | RETREAT |
+| --- | --- | --- | --- |
+| USN04 (`rb9_usn04`) | 3 | CLOSEATTACK, MOVETOATTACK, NONCONTROL | 0 |
+| USN04 E2 (`rb9_e2`) | 2 | IDLE | 0 |
+| USN01 (`rb9_usn01`) | 5 | DEFENDPOSITION, MOVETOATTACK, NONCONTROL | 0 |
+| USN02 (`rb9_usn02`) | 2 | CLOSEATTACK, NONCONTROL | 0 |
+| JM06 (`rb9_jm06`) | 3 | CLOSEATTACK, NONCONTROL | 0 |
+| JM08 (`rb9_jm08`) | 5 | CAUTIOUSATTACK, DEFENDPOSITION, MOVETOATTACK, NONCONTROL | 0 |
+| USN13 (`rb9_usn13`) | 5 | DEFENDPOSITION, MOVETOATTACK, NONCONTROL | 0 |
+| BSM01 (`rb9_bsm01`) | 2 | DEFENDPOSITION, IDLE | 0 |
+| LOMP06 (`rb9_lomp06`) | 4 | CLOSEATTACK, DEFENDPOSITION, NONCONTROL | 0 |
+| USN12 (`ships6_on_usn12`) | 3 | CAUTIOUSATTACK, DEFENDPOSITION, NONCONTROL | 0 |
+
+The final dump is not a creation census. The creator analysis above is what makes zero exact: the one
+reachable creator is a Lua binding no script calls. RETREAT would run 0 ticks on every row.
+
+Beside the packet: JM08 ends with a CAUTIOUSATTACK group and USN01 with DEFENDPOSITION groups, so
+both rows reach the wedge `00A11690`. Neither was paired for it.
+
+**Step 2: the section 15 residual risk, closed.** The question was whether any stage raiser ends a
+`cruise` for a formation follower. None does.
+
+| function | ABI / read | what raises the stage | follower-specific `cruise` end? |
+| --- | --- | --- | --- |
+| `0071E430` BSP_WeaponDirector_EndCommand | `__thiscall(controller)(command, terminal)`, `RET 8`, body `0071E430-0071E4B7`, read whole | its caller says the command is done | no. Its ten rel32 callers are the ship states `moveto` (`009E5997`), `moveonpath` (`009E5C70`), `attackmove` (`009E88C1`) and its tangent sub-state (`009F3718`); the plane tasks (`009BCB0E`, `009C312E`, `009CFB47`); and the pilot-bot routines `009F7C90` (twice) and `009F83A8` in `009F8160`, which revalidate attack and ordnance commands. The ship `cruise` step `009E1170` is not a caller, and there is no absolute reference (bytes `30 E4 71 00`) |
+| `0071DDB0` | `__thiscall`, one entity argument, listing read `0071DDB0-0071DE96` | a command slot whose target resolves to the argument (an entity being removed) and whose director `vt+70h` agrees, from `[00E188A8]+5D4h >= 0Ch` | no. A `cruise` names the unit itself, so only its own removal ends it |
+| `0071F290` BSP_CommandControllerBase_Update | listing read `0071F290-0071F378` | `0071F36E`: a present, not-yet-accepted command whose `vt+78h(1)` (`00835C70`) answers false | no. `00835C70` answers 1 for `cruise` unless the base begin `0071F600` fails; it tests `007788B0` only for `follow` |
+| `00835B40` BSP_WeaponDirector_RetargetCommandSlot | listing read `00835B40-00835BC7` | a retarget onto the same object, only for `moveto` `00E08F68` or `attackmove` `00E08F78` (`00835BB9`, `00835BC0`) | no |
+| `009B3900` | listing read `009B3900-009B398B`; sole caller `009B3F09` in BSP_SquadronLandTask_Tick | the squadron's command target differs from the task's | no: a squadron path |
+
+With section 15's reading of `00836920` and `00835C70`, this covers every direct `CALL 0071D810` site
+(section 15's rel32 scan). A scan for the absolute bytes `10 D8 71 00` finds no match, so there is
+no vtable or pointer reference to it either. The same four-byte scan does find the RETREAT vtable
+above, so the negative is not vacuous.
+
+**Conclusion.** An AI formation follower placed with `Cruise` keeps cruising in the image. USN12's
+followers never taking `follow` is the image's behaviour. The wedge's stations there have no motion
+consumer in the image either.
