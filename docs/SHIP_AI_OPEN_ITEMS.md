@@ -1,6 +1,6 @@
 # Ship AI and AI command: open items, ranked
 
-Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70
+Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40
 
 This file ranks what is still open in the ship-AI and AI-command lane, as
 docs/GUNNERY_OPEN_ITEMS.md section 31 does for gunnery and docs/LUA_BINDING_MISSION.md does for the
@@ -693,3 +693,106 @@ cc9-gunnery8 holds for `cc9_periscope_out`. The lead sends "ship_ai free" when i
 - Ghidra's bodies of routines that call `00BF6713` are truncated. For them, use `disasm-raw` with
   the full length.
 - `neighbour_settings()` fills only the ShipAvoidance block of the settings object.
+
+## 7. The planner candidate's group target value `00A0F970` (packet `cc9_planner_group_target_value`, rank 10, `kPlannerGroupTargetValueBound`)
+
+Worker cc9-ships8, 2026-09-28. Every name is a hypothesis. The switch is committed OFF at
+`743fcd622`, with the predictions below written before any ON run.
+
+### The image
+
+| Routine | ABI | What it does | Coverage |
+| --- | --- | --- | --- |
+| `00A0F970` `BSP_AiGroup_TargetValueAgainstGroup` | `__fastcall(ECX = attacker group, EDX = target group, a1, a2, a3, a4, a5)`, `RET 14h`, result in ST0 | 0 when either group's `+5644h` count is 0 (`00A0F98B`, `00A0F99A`). Otherwise it builds both groups' records with `00A07E40` and returns `00A0C650(ECX = attacker records, EDX = target records, a1..a5)`, the five arguments passed through in order (`00A0F9DF`-`00A0FA06`) | complete |
+| `00A07E40` | `__fastcall(ECX = group, EDX = out vector)`, `RET 4` | walks the member list at `group+5640h` (node `+8h` is the member) and pushes one `00A04560(member, 1)` record per member, in list order | complete |
+| `00A04560` `BSP_Ai_EntityRecordBuild` | `__fastcall(ECX = out, EDX = entity)`, `RET 4` | docs/AI_TARGET_WEIGHT_TERMS.md term 3 has the record. One correction: `record+10h` is not always 0. `00A04619`-`00A0464E` set it to `[X+C54h]` when `007B9140(X, 1)` answers true, where X is `[entity+3D0h]` for kind 18h and the entity for kind 0Fh. A ship record's `+10h` is 0 | complete |
+| `00A04240` | `__thiscall(entity)`, float | `1.0` [`00D7A24C`] times the entry for the entity in the hint-weight map at `00F8A740`, times the entry in `00F8A750 + [00E0E344]*0Ch`. Only `00A07F60` / `00A07F80` write them, the `SetHintWeight` native (docs/LUA_BINDING_AI.md). In this installation only `scripts/missions/multi/competitive*.lua` call it, so the factor is 1.0 on every reference row | complete |
+| `00A0C650` `BSP_AiGroup_ComposeAttackValue` | `__fastcall(ECX = attacker records, EDX = target records, a1 byte, a2 float, a3 debug text, a4 byte, a5 float)`, `RET 14h`; body `00A0C650`-`00A0D1C4`, checked against the INT3 run | two float vectors sized to the two counts, filled with 0 (`004A8F10` with `FLDZ`). For every attacker `i` (outer) and target `j` (inner): `v = 00A0C3C0(ECX = attacker i, EDX = target j, a1, a2, text, flag)`, where the flag is 1 unless `a4` is set and `i` is not the last attacker. `v` is scaled by `a5` only when the flag is 0. `attack sum += v`, and both vectors keep their running max. Then `maxes = sum of the attacker vector` (`00A0CC82`-`00A0CC9B`), `base = (+218h x attack sum + maxes) / +214h` (`00A0CDC6`-`00A0CDE3`), speed bonus `min(+22Ch x 00A07C10(), +228h x base)`, and three penalties. **`00A0CE71 CMP byte [EBP+8],0` zeroes all three penalties when `a1` is 0.** The result is `max(0, base + bonus - penalties)` | complete for the planner path; the penalty counts (`00A0CCB8`-`00A0CDBB`) are read but not bound, because they are zeroed here |
+| `00A0C3C0` `BSP_AiEntityRecord_PairAttackValue` | `__fastcall(ECX = attacker record, EDX = target record, a1, distance, text, flag)`, `RET 10h` | `base = 00A0C330(...)`. If the attacker record's `+0h` class answers `vtable[+18h](6)` (a ship class): a negative distance is replaced by `00414C60` over the two records' pose deltas when both `+0Ch` bytes are set (0 otherwise); `d -= +D8h`; if `d > 0`, `t = d / class+500h` and `base *= 00419010(+DCh, +E8h, +E0h, +E4h, t)`. The plane class (`vtable[+18h](0Fh)`) arm is the same over `+ECh`, `class+188h` and `+F0h, +FCh, +F4h, +F8h` (`00A0C5BD`-`00A0C609`). Anything else returns `base` | complete |
+| `00A0C330` `BSP_AiEntityRecord_PairBaseValue` | `__fastcall(ECX = attacker record, EDX = target record, text, flag)`, `RET 8` | `w = 00A08460(ECX = a+0h, EDX = a+10h, t+0h, t+1Ch)`; 0 when `a+1Ch` is set and `[a+0h]->vtable[+18h](1Ch)` answers true; `rnd = a+18h x t+18h` when the flag is set, else 1.0; returns `rnd x w x t+14h` | complete |
+
+**The planner's call.** `00A1CC4B`-`00A1CC65` pushes `a1 = 0`, `a2 = -1.0` [`00D7A260`], `a3 = 0`,
+`a4 = 0`, `a5 = 1.0`, with `ECX = EBX` (the planner's group) and `EDX = ESI` (the candidate). So on
+this path: no debug text, the flag is 1 for every pair (rnd applies, `a5` does not), the distance
+is measured from the records, and **the penalties are zero**.
+
+**The authored values.** This installation's `scripts/datatables/highlvlaiglobals.lua` (mtime
+2024-07-13, untouched bulk) authors the same values in all seven mode tables:
+`ComposeGroup_ReferenceWeight` 5.0, `ComposeGroup_AttackSumMul` 0.33, both speed-bonus keys 0,
+`ShipDistWeight_AriveDist` 3000, `ShipDistWeight_TravelTime` {60, 300} and `ShipDistWeight_WeightMul`
+{1.0, 0.1}. `PlaneDistWeight_WeightMul` is {1.0, 1.0} everywhere, so a plane attacker's multiplier
+is 1.0 at any range. `ValueRandomMul` is {0.95, 1.05} in the three IslandCapture tables and
+{0.85, 1.1} in the other four.
+
+So for the planner the value is **`(0.33 x sum over every pair + sum over attackers of the best
+pair) / 5`**. A pair is `00A08460(attacker, target) x spread(a) x spread(t) x class weight(t) x
+ship-travel multiplier`, and the multiplier falls from 1.0 when the ship arrives within 60 s to
+0.1 at 300 s, measured to 3 km short of the target.
+
+### The binding (`kPlannerGroupTargetValueBound`, `src/game_hosts_ai.cpp`)
+
+- `AiPlannerHost::candidate_base_weight` now takes the planner's group as well as the candidate
+  (`include/bsp/ai_planners.hpp`, `src/ai_planners.cpp` at `00A1CC65`).
+- `group_target_value_00a0f970`, `group_value_record_00a04560` and `group_value_pair_00a0c3c0`
+  project the routines above. A record's unit is `proxy(member)`, so a squadron answers through
+  its flight leader.
+- `00A08460` runs through the same `AiWeightModelBinding` the close-attack weight uses, when both
+  weapon-facts rows are complete; otherwise the pair takes the identity 1.0 (labelled, counted as
+  `stand_in_pairs`).
+- **Labelled stand-ins.**
+  - The spread's argument is the entity pointer modulo 79. This process has no stable entity
+    addresses, so every record takes the midpoint 39. A constant spread scales every candidate
+    alike and moves no pick; the per-entity spread of up to 10% is lost.
+  - The class query `[record+0h]->vtable[+18h]` is answered from the unit's own kind: a squadron or
+    kind 0Fh is a plane class, kind 6 a ship class.
+  - The `a+1Ch` / `vtable[+18h](1Ch)` zeroing is unread, as at `00A0F859`, and never fires.
+  - The authored tuning values are constants in the binding, because `AiTuningBlock` loads only
+    the 33-key subset.
+- **OFF** keeps the population stand-in and still computes the value, for the census line
+  `summary mission ai group target value` and up to 400 sample lines
+  `ai group target value own_lead=... value=... population=... leader_dist=... range=...`. The
+  sample lines carry the planner's own range factor, so `local\ships8_gtv.py <log>` replays each
+  planner round both ways, with the sticky 2.0 on each side's own previous pick.
+
+### The OFF census (`local\ships8_off_<row>.log`, this tree at `743fcd622`)
+
+| Row | calls | model pairs | stand-in pairs | rounds where the replayed pick differs |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 551 | 10740 | 0 | 0 of 400 sampled. Every sampled round has one candidate |
+| USN02 9200/9000 | 2316 | 11177 | 0 | 48 of 58 sampled rounds |
+| JM06 3200/3000 | 296 | 3626 | 0 | 74 of 148 |
+| LOMP06 1200/1000 | 130 | 650 | 0 | 13 of 13 |
+| USN01 3200/3000 | 0 | 0 | 0 | none; the planner never scores |
+
+`00A08460` runs for every pair on all four rows, so the stand-in 1.0 is never used.
+
+### Predictions, written before any ON run
+
+**USN02 9200/9000: exit 3.**
+- OFF sends all seven ABDA groups at Haguro (4 members).
+- ON keeps DeRuyter on Haguro. It sends Houston, John1, John2 and John3 at Yamakaze, and Exeter,
+  Encounter and Witte at Kawakaze.
+- The first `ai diag order_attack` lines change their `target_leader` accordingly.
+
+**JM06 3200/3000: exit 3.**
+- OFF sends Fletcher-class 08 (9 members) and Fletcher-class 09 (3) at PlayerSub 01.
+- ON sends both at the one-member "Static Mavis, Crashed 01" group, which scores 0.2945 against
+  0.2809 and 0.1425 against 0.1192. The sticky then holds them there.
+- The Narwhal-class Submarine 01 and PBY Catalina 01 groups keep PlayerSub 01.
+- **Knife-edge.** The margin is 5% and 20%, inside the image's per-entity spread. On the image the
+  pick could go either way. A wreck outscoring the submarine group is what the formula gives for
+  these inputs, not a judgement that the image does it.
+
+**LOMP06 1200/1000: exit 1 or 3.**
+- OFF orders the Narwhal group at "Storage - Raktar03 01" (27 members).
+- ON orders it at Yugiri: 0.0312 against the storage group's 0.0210, both at range 1.0.
+- The Narwhal is the player's controlled unit, so the order may not move it.
+
+**USN04 4700/4500: exit 1.** Every sampled round has a single candidate, so no pick can change.
+Only the host-method line for `candidate_base_weight` changes from UNIMPLEMENTED to concrete.
+
+**USN01 3200/3000: exit 0.** The planner never scores a candidate.
+
+**Mechanism check:** on the ON logs the census line reads `bound=1`, with the same `calls` and
+`model_pairs` as OFF up to the first moved order; and the first `order_attack` of each group
+matches the ON column above.
