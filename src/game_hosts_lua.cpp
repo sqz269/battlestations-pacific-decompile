@@ -3154,6 +3154,20 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             if (surface) {
                 route_push_entity(static_cast<int>(entity), record.name,
                     member.type_class_id);
+                // The member's property bag, which 009486B6 hands the entity at
+                // +C0h and pass A reads as a generated entity's: 009420A0 seeds
+                // Party = the request's party (009420AC) and Race = 2 for party 0,
+                // else 1 (009420B9..009420C1, NEG/SBB/ADD 2); 00944210's
+                // 0043D8F0 then merges the member table over it, so an authored
+                // `Race` wins. The host reads an absent `Race` as 0, so 0 takes
+                // the default (labelled: a Race of 0 authored on purpose would be
+                // replaced; no reference call site authors one).
+                if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
+                    node->party = request.party;
+                    node->race = member.race > 0 ? member.race
+                                                 : (request.party == 0 ? 2 : 1);
+                    node->generated_party = true;
+                }
             } else {
                 route_push_squadron(static_cast<int>(entity), record.name,
                     member.type_class_id, units_before);
