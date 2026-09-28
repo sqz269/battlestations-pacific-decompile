@@ -201,6 +201,8 @@ public:
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>: the labelled
     // diagnostic stand-in for the state step, engaged on --order-frame.
     void set_ai_drive(std::string unit, float throttle, float rudder);
+    // Packet cc9_scripted_helm_orders: --helm-orders <file>.
+    void set_helm_orders(std::string path);
 
     // True when --menu-select named a mission, so the run drives the path.
     bool requested() const noexcept;

@@ -422,3 +422,115 @@ reference.
 docs/SHIP_SCREEN_UPDATE.md section 21). The switch `kRoleScreenFixedStepCall` defaults to true and keeps
 today's once-per-fixed-step call. With the default, no code path changes and no row moves, so no
 pair was run. Set it to false only once the pump calls the entry point.
+
+
+## 8. Timed player orders: `--helm-orders <file>` (packet `cc9_scripted_helm_orders`)
+
+Worker cc9-ships2, on main `63d3a16b7`. This is harness code, and no image switch is involved.
+Ghidra was read-only.
+
+### 8.1 The option
+
+`--helm-orders <file>` reads one order per line. Blank lines and `#` lines are skipped:
+
+```
+<mission frame> moveto <unit name> <x> <z>
+<mission frame> moveto <unit name> <navpoint name>
+```
+
+- **Reading the file:** `GameMissionFrameHost::set_helm_orders`
+  (src/game_hosts_mission_frame.cpp) reads the file when the mission starts. It is passed along
+  the same way as `--order-unit`: game_hosts.cpp, then `GameMissionHost::set_helm_orders`.
+- **Applying an order:** each line is applied once, on the first fixed step whose mission frame
+  (`frames + 1`, the `--order-frame` convention) has reached its frame.
+- **A navpoint name** resolves against the scene markers the scene load registers, by name. The
+  position is the authored one, as `scene marker ... pos=` prints it.
+- **Log lines:** an applied order prints `helm order applied: line L frame F (at mission frame N)
+  moveto <unit> [<point>] (x, z) ...`.
+  - A missing unit prints `helm order refused: ...`, after the units host's
+    `--order-unit "<name>" names no created instance` line.
+  - A missing point or a malformed line prints `helm order refused: ...` with the line number.
+  - The run continues in every case.
+- **No file given means no change:** no line is read or printed and nothing is issued. An empty
+  file reads nothing and prints nothing (section 8.4).
+
+### 8.2 The path, against a real player's order
+
+A player's HUD moveto in the image is `005F9B20` (body `005F9B20-005F9BA2`, INT3 padding
+follows). Its caller `005FC329` hands it the entity `00927880([00E188D8])` returns:
+
+```
+005F9B3A  MOVSS XMM0,[ESI+0FCh] ... [ESI+100h] ... [ESI+104h]   ; the point: that entity's position
+005F9B42  MOV   ECX,[00E188D8]          ; the order goes to the player-controlled unit
+005F9B56  PUSH  1                       ; flags 1
+005F9B6A  PUSH  EAX                     ; the 18h-byte target descriptor on the stack
+005F9B6B  MOV   word [ESP+10h],BX       ; kind 0, id 0
+005F9B7E  MOV   byte [ESP+15h],1        ; position_valid 1
+005F9B83  MOV   [ESP+18h],EBX           ; object null
+005F9B79  PUSH  00E08F68                ; the MoveTo command object
+005F9B90  MOVSS [ESP+28h],XMM0          ; trailing 0.0
+005F9B96  CALL  0077D600                ; BSP_Entity_IssueCommand
+```
+
+`0077D600` then runs the command chain the host already binds (docs/SCRIPTED_HELM.md section 3,
+docs/SHIP_AI_HEADING_TO_RUDDER.md). That is 00816E30, 0071ECF0 and 00721A40, then the SetCommand
+family 008358D0 (00835930 is inside it) and 0071E6C0.
+
+The harness calls `GameUnitsHost::issue_player_command("moveto", "<x>,<z>", unit)`. Its point
+form (milestone 2s) builds the same descriptor, `kind 0, position_valid 1, object null, id 0,
+trailing 0`. It uses the same command object, `kCommandObjectMoveTo = 00E08F68`, and the same
+flags, `kNavigatorIssueFlags = 1`. It sends them into the same `0077D600` chain.
+NavigatorMoveToPos (`008A2BC0`) uses the identical triple, so the two image entries converge
+there.
+
+**Where the harness path differs from a real player's input (LABELLED):**
+1. **No HUD.** No HUD screen, map click, or command menu runs, and 005FC329's menu dispatch and
+   its `vtable[38h]` tests do not run.
+2. **No selection.** The image sends the order to [00E188D8], the controlled unit. The harness
+   sends it to the named unit whether or not it is controlled. On USN02 phase 2 the script
+   selects Houston (`SetSelectedUnit(Mission.Houston)`, usn_2_java.lua :767), so the Houston
+   order below matches a player's.
+3. **No camera,** and no minimap cursor.
+4. **The point.** The image's point is an entity's position, `00927880`'s answer. The harness
+   takes the point directly, an x/z pair or a marker's authored position, with y = 0.
+5. **Timing.** The order is issued in the frame host before the fixed step, not from the HUD
+   pump. In a real run it comes from input polling on some frame; here it is exactly the listed
+   mission frame.
+6. **The `player command issued` line** from the units host still names the NavigatorMoveToPos
+   builder `0088A810`, because that is the descriptor it builds. The line comes from milestone
+   2s.
+
+### 8.3 USN02 validation (9200/9000, `local\ho_usn02.log`, orders file `local\cc9-ships2-helm_usn02.txt`)
+
+The order was `3135 moveto Houston EscapePoint`. The frame comes from the phase-2 re-select,
+`SetSelectedUnit` "Houston" at about 156.6 s in `local\te_main_usn02.log`, after the
+`luaMoveToPh2` blackout at 148.55 s. EscapePoint is the marker at (0, -7500), id 50001.
+
+- **The order applied** at mission frame 3135. Houston's ship AI state became `movetopos` with a
+  heading target of 3.347 rad and 3892 m to go. It turned the short way, from -0.29 rad toward
+  -2.94 rad, at about 0.05 rad/s at full rudder.
+- **It is replaced at fixed step 3376 (about 168.8 s).** The AI coordinator's close-attack pass
+  issues `attackmove` to Houston through `GameAiCoordinatorHost::issue_named_order`, which calls
+  the same `issue_player_command`. The log line is `ai diag close member=Houston squadron_18h=0
+  excluded_007eda90=0 ship_base_6=1 busy=0 served=1`. It does so again at steps 4140, 4349, 4970
+  and 5107, the same count (6) as the no-order run.
+  - Houston never resumes the moveto. It fights, drifts north and goes astern.
+  - Houston is sunk at 280.36 s by a Hatsukaze torpedo from 2866 m.
+  - `luaMissionFailed` then runs (usn_2_java.lua :523): primary 2 ("Nav") fails, EndMission is
+    true, and the end is `luaMissionFailedNew`. The mission script state reads Distance 4.90 km.
+- **Primary 2 does not complete within 9000 frames.**
+- **What blocks it is the AI party commander re-tasking the player-selected unit.** It is not
+  Exeter's escort condition (primary 2 tests only `CATable[1]` against 500 m), and it is not
+  speed.
+  - Whether the image's party-0 brain also orders the player's selected ship is **not
+    established**. The close-attack pass `00A13B60` reads no role or player field that I found.
+    Its member gates live in the group walk, which this packet did not read.
+  - If the image exempts a player-held unit, the host needs that exemption before any
+    player-order validation can hold beyond one AI tick. That packet belongs to the AI host owner.
+
+### 8.4 Identity
+
+USN04 4700/4500 on this tree's head: no file against an empty file
+(`local\cc9-ships2-helm_empty.txt`). `pair_diff` gives **exit 0**, identical apart from noise.
+The smoke (`local\ho_smoke300.log`, USN02 300/100) exercised each refusal: an unknown unit, an
+unknown marker and a malformed line. Two good orders applied.

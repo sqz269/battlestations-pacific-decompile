@@ -652,6 +652,13 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--instance-tag needs 1 to 32 characters from [A-Za-z0-9_-]";
                 return false;
             }
+        } else if (std::strcmp(argument, "--helm-orders") == 0) {
+            // Packet cc9_scripted_helm_orders: a file of timed player orders.
+            if (index + 1 >= argc) {
+                error = "--helm-orders needs a file path";
+                return false;
+            }
+            helm_orders_path = argv[++index];
         } else if (std::strcmp(argument, "--affinity-core") == 0) {
             if (index + 1 >= argc) {
                 error = "--affinity-core needs a processor index";
@@ -2193,6 +2200,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // keeps its signature.
     if (!options_.order_unit.empty() && menu_->mission() != nullptr) {
         menu_->mission()->set_order_unit(options_.order_unit);
+    }
+    // Packet cc9_scripted_helm_orders, --helm-orders <file>, the same way.
+    if (!options_.helm_orders_path.empty() && menu_->mission() != nullptr) {
+        menu_->mission()->set_helm_orders(options_.helm_orders_path);
     }
     // Milestone 2o, --ai-drive <name>=<throttle>,<rudder>, the same way.
     if (!options_.ai_drive_unit.empty() && menu_->mission() != nullptr) {

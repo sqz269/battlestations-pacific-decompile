@@ -219,6 +219,9 @@ public:
     // diagnostic stand-in for the eight state steps that have no body. Engaged
     // on the same --order-frame as the player order.
     void set_ai_drive(std::string unit, float throttle, float rudder);
+    // Packet cc9_scripted_helm_orders: reads the file now and applies each
+    // line on its mission frame (docs/SCRIPTED_HELM.md section 8).
+    void set_helm_orders(const std::string& path);
     // Milestone 2m: --order speed=<m/s> on the same --order-frame, the store
     // luaMW_SetShipSpeed 00890d30 makes on *(unit+73Ch) +24h / +28h.
     void set_player_commanded_speed(float speed) noexcept;
