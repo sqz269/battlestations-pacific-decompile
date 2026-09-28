@@ -334,3 +334,19 @@ None is a hidden objective. In this installation the hidden IDs are `Bruh` (USN0
 The switch changes nothing measured. It is bound so that a run which adds a hidden objective with
 units (USN02 adds `Mission.HiddenTrgs` at `usn_2_java.lua` 777 on a later stage) keeps those units
 at completion, as the image does.
+
+### 9.5 Pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `5a63f68e2` (`local/kill_off_<mission>.log`).
+- ON is `pair_export --flip kObjectiveKindBound=true` of the same commit (`local/ok_on`, SHA-256
+  `D64F31EB8A1F`, logs `local/ok_on_<mission>.log`).
+- Both environment options were set, at lockstep 0.05 with an idle player.
+
+| row | prediction | measured | verdict |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | `hidden_objectives=0 hidden_status_holds=0`, identity | the same; pair_diff exit 1 | held |
+| USN02 9200/9000 | the same | the same; exit 1 | held |
+| USN04 4700/4500 | the same | the same; exit 1 | held |
+
+**Verdict: `kObjectiveKindBound = true`.** It is inert on these runs, as predicted.

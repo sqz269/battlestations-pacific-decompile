@@ -19,7 +19,7 @@
     {
       "name": "kObjectiveKindBound",
       "file": "include/bsp/game_hosts_ai.hpp",
-      "state": "OFF, pairs pending (renderer-init crash)"
+      "state": "ON (identity pairs)"
     }
   ],
   "substitutions": [
@@ -27,5 +27,10 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [],
+  "pairs": {
+    "USN01": "exit 1",
+    "USN02": "exit 1",
+    "USN04": "exit 1"
+  }
 }

@@ -65,7 +65,7 @@ namespace bsp::game {
 // change on a hidden objective (kind 2) keeps its units, as 008DFE50 returns early
 // (008DFE6E CMP [EBP+18h],2). False: the kind is not recorded and every status
 // change drops the objective's units.
-inline constexpr bool kObjectiveKindBound = false;
+inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 
 // game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
 // The world builds them at 004DF917 and only the mission Lua fills them, through
