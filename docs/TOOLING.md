@@ -397,7 +397,7 @@ the host's `create_device`.
   4**:
 
 ```
-harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; retry hr=<hr> adapter="<description>" requested=<w>x<h> format=<fmt> windowed=<0|1> interval=<interval> display=<w>x<h>@<Hz>Hz session=<id> console_session=<id> remote=<0|1> input_desktop=<name|unavailable (locked or secure desktop)>; exiting with code 4
+harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; retry hr=<hr> adapter="<description>" requested=<w>x<h> format=<fmt> windowed=<0|1> interval=<interval> display=<w>x<h>@<Hz>Hz session=<id> console_session=<id> remote=<0|1> input_desktop=<at failure>/<after retry> logonui=<0|1>/<0|1> (at the failure / after the retry); exiting with code 4
 ```
 
 - **The success path.** A successful startup runs exactly as before: the guard adds an SEH frame
@@ -419,10 +419,19 @@ harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; 
 
 - **What the line says.** `0x88760868` is `D3DERR_DEVICELOST`. The console session is active and
   local.
-- **The input desktop is not a lock signal.** The input desktop reads `Default` even with the
-  lock screen up, because `LockApp.exe` draws on the Default desktop. Only
-  `unavailable (locked or secure desktop)` means something there, and that value marks a secure
-  desktop such as a UAC prompt.
+- **Lock evidence (corrected 2026-09-28).** The evidence for a lock is the input desktop
+  (`Winlogon`, printed as `unavailable (Winlogon or another secure desktop)` because
+  `OpenInputDesktop` is refused there, against `Default`) and whether `LogonUI.exe` is running.
+  A resident `LockApp.exe` is not evidence: it stays loaded after an unlock, and it was present
+  throughout eight clean runs. This section's first version said the opposite, that the lock
+  screen draws on `Default`, and that was wrong.
+- **What the recorded failure shows.** The recorded failure read `input_desktop=Default`, sampled
+  once after the retry. By the corrected criterion the input desktop was not the secure desktop
+  at that moment, so this line does not establish the lock as the cause of the
+  `D3DERR_DEVICELOST`.
+- **What the line now prints (from `0d5f4d074`'s successor).** It samples both signals twice, at
+  the failure and after the retry, so a desktop switch during the retry is visible. The new fields
+  are build-tested only: runs have passed since 18:13, so no failure has printed them yet.
 
 **Identity on the success path: held (2026-09-27, 18:21-18:33 local).** Device creation came back
 intermittently: one smoke completed at 17:58 (cc9-ships2), every other run between 17:40 and 18:01
