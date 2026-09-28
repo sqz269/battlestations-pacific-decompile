@@ -284,6 +284,18 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    but the DeepUnderwater Narwhal-class is never sighted, so the script's
 //    luaJM6USNSubSighted listener no longer fires; LOMP06, USN01, USN02 identity.
 constexpr bool kSubmarineSensorCategoryBound = true;
+//  * kLuaOverrideHpBound (packet cc9_override_hp, docs/GUNNERY_OPEN_ITEMS.md
+//    section 37): the Lua native OverrideHP 008C1930 stores its number into the
+//    unit's maximum health +36Ch (008C1A71 FSTP [ESI+36Ch]) and then sets the
+//    current health to the same number through 00877B90 (008C1AA8). OFF: the
+//    call is counted and nothing is written. LABELLED: a unit this host already
+//    killed is not written (its death has been delivered).
+//    The difficulty's HP multiplier is not involved: this host applies it to the
+//    damage (0087D730), and the Lua script passes the product itself.
+//    The invincibility floor acts only in 00879070, which this write does not use.
+//    The call arrives from GameMissionLuaHost's dispatch (lua6's file).
+//    On 2026-09-28 it is a no-op there until that line lands.
+constexpr bool kLuaOverrideHpBound = false;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -1850,6 +1862,11 @@ struct GameGunneryHost::Impl {
     float hit_event_fire{0.0f};   // packet cc9_hit_event_fields
     float hit_event_leak{0.0f};
     unsigned long long invincibility_sets{0};
+    // Packet cc9_override_hp: OverrideHP 008C1930 calls, applied writes, and the
+    // first few (unit, value, max and health before) for the log.
+    unsigned long long override_hp_calls{0};
+    unsigned long long override_hp_applied{0};
+    int override_hp_traced{0};
     unsigned long long invincibility_floored_writes{0};
     unsigned long long invincibility_sink_refusals{0};
     float invincibility_of(std::size_t unit) const {
@@ -8808,6 +8825,36 @@ void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float
     if (bsp::unit_is_dead(after)) host.kill_unit(unit_index);   // the death funnel
 }
 
+void GameGunneryHost::override_hp_008c1930(std::size_t unit_index, float value) {
+    Impl& host = *impl_;
+    ++host.override_hp_calls;
+    if (unit_index >= host.unit_state.size()) return;
+    GameGunneryHost::Impl::UnitState& state = host.unit_state[unit_index];
+    if (host.override_hp_traced < 12) {
+        ++host.override_hp_traced;
+        host.log.notef("  OverrideHP 008c1930: \"%s\" value=%.1f max_before=%.1f health_before=%.1f "
+            "dead=%d bound=%d (packet cc9_override_hp)", state.row.name.c_str(),
+            static_cast<double>(value), static_cast<double>(state.max_health),
+            static_cast<double>(state.health), state.dead ? 1 : 0, kLuaOverrideHpBound ? 1 : 0);
+    }
+    if (!kLuaOverrideHpBound || state.dead) {
+        host.record("MissionLuaNative::OverrideHP", 0x008c1930u);
+        return;
+    }
+    state.max_health = value;                                   // 008C1A71, +36Ch
+    bsp::UnitHealth health;
+    health.current_health = state.health;
+    health.max_health = state.max_health;
+    health.invincibility = host.invincibility_of(unit_index);
+    const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health, value,
+        bsp::UnitSessionMode::campaign, 0, false);                // 008C1AA8
+    if (write.wrote) state.health = write.stored_health;
+    state.row.max_health = state.max_health;
+    state.row.health = state.health;
+    ++host.override_hp_applied;
+    host.done("MissionLuaNative::OverrideHP", 0x008c1930u);
+}
+
 void GameGunneryHost::set_unit_invincibility(std::size_t unit_index, float value) {
     // 0042ED80: store unit+150h (0042ED8F) and fan it to the children. The host's
     // children of a unit are its guns, which carry no health, so the unit's value
@@ -9454,6 +9501,9 @@ void GameGunneryHost::report() {
             host.sub_category_states[3], host.sub_category_states[4], host.sub_category_states[5],
             host.sub_category_unseeded, host.sub_category_differs,
             kSubmarineSensorCategoryBound ? 1 : 0);
+        host.log.notef("summary mission gunnery override hp calls=%llu applied=%llu bound=%d "
+            "(008C1930, packet cc9_override_hp)", host.override_hp_calls, host.override_hp_applied,
+            kLuaOverrideHpBound ? 1 : 0);
         host.log.notef("summary mission gunnery invincibility sets=%llu floored_writes=%llu "
             "sink_refusals=%llu bound=%d (00897A50 -> 0042ED80, 00879070, 008110F0, "
             "packet cc9_set_invincible_floor)", host.invincibility_sets,
