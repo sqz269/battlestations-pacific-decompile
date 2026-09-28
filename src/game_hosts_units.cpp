@@ -366,6 +366,9 @@ struct GameUnitSlot {
     // live pose. Slot state rather than locals because the native leaves the
     // heading and bank untouched when the forward axis is near vertical.
     float plane_pitch_angle_c64{0.0f};
+    // Packet cc9_torpedo_run_pitch_profile: the measured angle the last pitch
+    // demand used (diagnostic).
+    float diag_held_pitch{0.0f};
     float plane_bank_angle_c68{0.0f};
     float plane_heading_c6c{0.0f};
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
@@ -1650,6 +1653,7 @@ struct GameUnitsHost::Impl {
     unsigned long long formation_rejoins{0};
     // Packet cc9_dead_member_group_removal.
     unsigned long long formation_death_leaves{0};
+    unsigned long long pitch_mode_two_steps{0};   // packet cc9_torpedo_run_pitch_profile
     unsigned long long formation_death_handovers{0};
     unsigned long long formation_groups_emptied{0};
 
@@ -3720,6 +3724,18 @@ struct GameUnitsHost::Impl {
     // The pitch mode 009FB800 writes (cmd+2D0h = 2) at the three 009FBA50 seams
     // that left it out. Packet cc9_pitch_callers, docs/PITCH_COMMAND_CALLERS.md.
     static constexpr bool kPitchCommandCallersBound = true;
+    // Packet cc9_torpedo_run_pitch_profile (docs/PLANE_BODY_RATES.md section 2).
+    // True: 0099DC9E-0099DD5A, the planner's pitch-mode-2 arm. At a cached speed
+    // of 10 km/h ([00D1F3D8] 2.7778) or less, mode 2 demotes to 1. Otherwise the
+    // held angle is unit+C84h, the flight-path angle 007C18B0 derives from the
+    // velocity at +AE0h (atan2 of the vertical over the horizontal speed);
+    // inc = 00419010(007C4810 min control speed, DEG(5), TravelSpeed +18Ch,
+    // DEG(20), speed); when the live pitch C64h exceeds held + inc, the pitch
+    // target +2BCh becomes held + inc and the measured angle is the live pitch,
+    // else the measured angle is the flight-path angle. Mode 1 measures the live
+    // pitch. False: the live pitch in every mode, no limit, as before.
+    // ON by the pairs at b2e64ab63: USN04 and USN01 move, USN02 identical.
+    static constexpr bool kPlanePitchModeTwoBound = true;
     // The dogfight task's skeleton (packet cc9_dogfight_task): install, the
     // 009AAFA0 unengaged arm (moveto leader / follow wing), the generic follow
     // tick, and a labelled moveto stand-in. docs/DOGFIGHT_TASK.md.
@@ -16850,6 +16866,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // arm, so the measured angle is the live pitch, which is
                         // what the native's own `else` branch at 0099DD54 uses.
                         pin.held_pitch = unit_.plane_pitch_angle_c64;
+                        if constexpr (GameUnitsHost::Impl::kPlanePitchModeTwoBound) {
+                            // 0099DCB8..0099DD5A, mode 2 on a moving plane.
+                            const float* v = unit_.plane_world_velocity;
+                            const float speed = std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+                            if (unit_.plan_state.pitch_mode_2d0 == 2 && !(speed > 2.7778f)) {
+                                unit_.plan_state.pitch_mode_2d0 = 1;   // 0099DCD6
+                            }
+                            if (unit_.plan_state.pitch_mode_2d0 == 2) {
+                                const float horizontal = std::sqrt(v[0] * v[0] + v[2] * v[2]);
+                                const float path = static_cast<float>(
+                                    std::atan2(static_cast<double>(v[1]),
+                                               static_cast<double>(horizontal)));   // 007C1D05
+                                float min_control = 0.0f;
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                    min_control = bsp::plane_min_control_speed_007c4810(
+                                        bsp::tuning_min_control_multiplier_007e41df(
+                                            g.dynamics_spd_multipliers_control_range_min,
+                                            g.dynamics_spd_multipliers_control_range_max,
+                                            g.dynamics_spd_multipliers_stall_range_max,
+                                            g.dynamics_spd_multipliers_level_flight),
+                                        unit_.plane_stall_spd);
+                                }
+                                const float inc = bsp::dive_bomb_interpolate_clamped_00419010(
+                                    min_control, 0.0872664626f, unit_.plane_travel_speed,
+                                    0.349065850f, speed);                       // 0099DD35
+                                const float sum = inc + path;                  // 0099DD42
+                                if (unit_.plane_pitch_angle_c64 > sum) {       // 0099DD4C
+                                    unit_.plan_state.pitch_target_2bc = sum;   // 0099DD4E
+                                    pin.held_pitch = unit_.plane_pitch_angle_c64;
+                                } else {
+                                    pin.held_pitch = path;
+                                }
+                                ++owner_.pitch_mode_two_steps;
+                            }
+                        }
+                        unit_.diag_held_pitch = pin.held_pitch;
                         pin.pitch_target = unit_.plan_state.pitch_target_2bc;
                         pin.heading_error = term.heading_error;
                         pin.control_authority = control_authority(
@@ -17212,7 +17265,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const double mag = std::sqrt(static_cast<double>(w[0]) * w[0] +
                                 static_cast<double>(w[1]) * w[1] + static_cast<double>(w[2]) * w[2]);
                             owner_.log.notef("plane rate trace %s step=%.3f stick=(%.3f %.3f %.3f) "
-                                "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s",
+                                "target=(%.4f %.4f %.4f) w=(%.4f %.4f %.4f) |w|=%.2f deg/s "
+                                "pitch=%.4f held=%.4f pt2bc=%.4f mode=%d y=%.1f cmd_alt=%.1f",
                                 unit_.row.name.c_str(), static_cast<double>(step),
                                 static_cast<double>(unit_.plane_latched_controls[0]),
                                 static_cast<double>(unit_.plane_latched_controls[1]),
@@ -17221,7 +17275,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(gained.target[1]),
                                 static_cast<double>(gained.target[2]),
                                 static_cast<double>(w[0]), static_cast<double>(w[1]),
-                                static_cast<double>(w[2]), mag * 57.29577951308232);
+                                static_cast<double>(w[2]), mag * 57.29577951308232,
+                                static_cast<double>(unit_.plane_pitch_angle_c64),
+                                static_cast<double>(unit_.diag_held_pitch),
+                                static_cast<double>(unit_.plan_state.pitch_target_2bc),
+                                unit_.plan_state.pitch_mode_2d0,
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(unit_.plane_commanded_altitude));
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
                             // The free-flight arm (controller mode 0, flag 1) is
@@ -19594,6 +19654,9 @@ void GameUnitsHost::report() {
         host.summary.pilot_thinks,
         host.summary.pilot_commits,
         host.summary.pilot_yaw_plans);
+    host.log.notef("summary unit plane pitch mode two bound=%d steps=%llu (0099DC9E..0099DD5A, "
+        "packet cc9_torpedo_run_pitch_profile)", Impl::kPlanePitchModeTwoBound ? 1 : 0,
+        host.pitch_mode_two_steps);
     {
         // What an ordered aircraft actually did about the order. The range is
         // measured at the first think that planned for it and at the last, so a
