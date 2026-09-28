@@ -297,6 +297,13 @@ inline constexpr bool kLuaDeviceReloadEnabledBound = true;  // ON: identity pair
 // target when unit+284h is set; 0077FE80's arm 3 delivers it to 0077BD70(unit, null), the
 // leave the host models as GameUnitsHost::leave_group_on_destroy_0077bd70. True: route both
 // rows to run_is_in_formation_008996a0 / run_leave_formation_00899eb0. False: unimplemented.
+// Packet cc9_get_formation_leader (docs/LUA_BINDING_MISSION.md). 00899AF0
+// GetFormationLeader(unit): argument 0 through 00888AA0 (00899BEF), then
+// 007788D0 BSP_Unit_FormationLeader ([unit+284h] ? [group+14h] : 0, 00899C08);
+// a null leader pushes nil (00899CB4 -> 00B66430), otherwise the leader's
+// thisTable slot keyed by its +174h id (00899C15..00899C65). True: the row
+// answers from the units host's group; false: the entity arm answers nil.
+inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA_BINDING_MISSION)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
@@ -579,6 +586,9 @@ struct GameMissionLuaSummary {
     unsigned long long device_reload_true{0};
     unsigned long long in_formation_calls{0};
     unsigned long long in_formation_true{0};
+    unsigned long long formation_leader_calls{0};   // packet cc9_get_formation_leader
+    unsigned long long formation_leader_found{0};
+    unsigned long long formation_leader_other{0};   // the leader is not the argument
     unsigned long long leave_formation_calls{0};
     unsigned long long leave_formation_left{0};
     unsigned long long unlimited_air_calls{0};
@@ -1093,6 +1103,7 @@ public:
     int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
+    int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
