@@ -832,6 +832,45 @@ four missions that hold it:
 - **Direction:** hits and deaths move toward the targeted groups: Office 01's group, Zuikaku's,
   South_Tone_1's and Shigure's.
 
+### 11.4 The pairs
+
+- **OFF** is this tree's build at `0e1b3080a` (main `dcfebd652` plus the arm, OFF). **ON** is
+  `pair_export --commit 0e1b3080a --flip kCautiousAttackTickBound=true` into `local\ca_on`.
+- **Logs:** `local\ca_{off,on}_<mission>.log`.
+
+| mission | pair_diff | `tick_orders` OFF -> ON | promotions | what moved |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | exit 0 | 514 -> 514 | 0 | nothing (no CAUTIOUSATTACK) |
+| USN01 3200/3000 | exit 0 | 74 -> 74 | 0 | nothing (the ScoutDauntless drew MOVETOATTACK) |
+| USN04 4700/4500 | exit 0 | 78 -> 78 | 0 | nothing |
+| USN02 9200/9000 | exit 0 | 1 -> 1 | 0 | nothing |
+| USN07 3200/3000 | exit 1 | 0 -> 47 | 0 | orders only; the PBY Catalina 01 is the controlled unit, 0.00 m both ways |
+| USN09 3200/3000 | exit 1 | 0 -> 97 | 0 | orders only; the controlled Enterprise_sqn01 stays at 0.00 m |
+| USN10 3200/3000 | exit 3 | 46 -> 95 | 0 | hit records 23 -> 18, hull 10 -> 8, shots 68 -> 70, deaths 3 both |
+| USN12 3200/3000 | exit 3 | 0 -> 49 | 0 | Montpelier moves 2428.02 m instead of 1490.02 m toward Shigure; hits unchanged |
+
+**Predictions:**
+- **Failed on premise:** USN01 (11.3). On `dcfebd652` no reference group holds CAUTIOUSATTACK, so
+  the four reference pairs are identical and do not test the arm.
+- **Held, on the four exercising missions:**
+  - `tick_orders` rise everywhere: every command tick the cautious leader gets `00A02020`;
+  - Montpelier closes on Shigure;
+  - USN10's hits move.
+- **Failed on spread:**
+  - No group was promoted to CLOSEATTACK within 150 s.
+  - The two air leaders are the controlled planes, which the idle player's host does not move on an
+    AI moveto (0.00 m both ways, as the ScoutDauntless in section 8.4). USN07 and USN09 therefore
+    change orders only.
+
+**Decision: `kCautiousAttackTickBound` is ON.** The arm reproduces the image's no-route moveto, and
+every failure is on premise or spread. Before it, a CAUTIOUSATTACK group got no leader order at
+all.
+
+**Left open:**
+- the director-slot route of `00A14DD0`, which is its waypoint build and `clearorders` arm;
+- `00A11690`;
+- why the controlled planes ignore an AI moveto (a units-host question, not this arm's).
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
