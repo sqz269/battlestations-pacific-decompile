@@ -571,6 +571,66 @@ are on spread.
 group without movement. That arm (`vt+0Ch` of the CAUTIOUSATTACK class) is unread, and so is its
 `00A14DD0` path shared with CAUTIOUSMOVE. It is the most valuable follow-up for USN13 and USN01.
 
+## 9. Sell, part 3 (packet `cc9_planner_defend_capture_thinks`)
+
+### 9.1 The image
+
+`00A22800 BSP_AiPlanner_SellThink`, body `00A22800-00A228D2`, is the brain+8h think, read in full.
+
+```
+00A22841  CALL 00A2E4C0 (ECX = group)          ; split the air members off
+00A2284D  CALL 00A22750 (planner)(new group)   ; claim it when one was made
+00A22893  CALL 00A2BE10 (ECX = group)          ; command->vt[+8h](0Eh): already SELLING?
+00A2289E  CALL 00BF681B (8) / 00A228AD MOV [EAX],00D229B8   ; new SELLING, owner at +4h
+00A228BA  CALL 00A2BD00                        ; install it
+```
+
+- **`00A2E4C0`** collects the members that `BSP_Entity_IsPlaneOrSquadron` accepts. When there are
+  some, but fewer than the population, each leaves the group: `0077BEA0`, its `+16Ch` is cleared,
+  and `006956A0` runs. The first air member builds a new group (`BSP_AiGroup_Construct`), and the
+  rest join it (`BSP_AiGroup_AddEntity`). An emptied source group is filed on `00F8AA7C`, which
+  cannot happen here because some members stay.
+- **`00A22750`** claims the new group: it is appended to `+24h` unless `00A1C8B0` finds it there,
+  `group+5654h` is set to the planner, the observer is registered, and `planner+2Ch` is set to 1.
+  The first walk therefore reaches the new group too, and splits nothing more from it.
+- **The SELLING tick** `00A11FF0` was read only to its first block. For a group with no air member
+  it finds the nearest own-team list-28 entity (3-D) before it reaches `00A02020`.
+
+### 9.2 The binding
+
+**`kAiSellThinkBound`, committed OFF.** When ON, the Sell kind runs `sell_think_00a22800`, and a
+census line `summary mission ai sell thinks= splits= selling=` is printed.
+
+**Labelled:** the host has no SELLING tick arm, so a SELLING group is not moved.
+
+### 9.3 Predictions, written before the ON runs
+
+**USN13 3200/3000 and USN01 3200/3000: identity, exit 0 or 1.**
+- Brain+8h receives groups only from Capture's hand-off, beside an own CommandBuilding.
+- Only party 0 thinks on these missions: `ai party 1 ... ai_enabled=0 brain=0`.
+- Party 0 owns no CommandBuilding: all four are Japanese.
+- The Sell planner therefore owns nothing, and the census prints `thinks=` at the tick count with
+  `splits=0 selling=0`. The Siege stand-in it replaces also ran with no owned group.
+
+**Which mission would exercise it.** It needs a thinking party with its own CommandBuilding, whose
+Capture planner hands a group on. Of this installation's scenes, `COTP-USN/def_aleutians.scn`
+holds an Allied CommandBuilding next to a Japanese one. `COTP-IJN/ijn_08_defend_guadalcanal.scn`
+and `ijn_16_ambushed_at_wake_island.scn` hold Japanese ones, for a Japanese player party.
+
+### 9.4 The pairs
+
+- **OFF** is this tree's build at `2075be5eb`. **ON** is `pair_export --commit 2075be5eb --flip
+  kAiSellThinkBound=true` into `local\se_on`.
+- **Logs:** `local\se_{off,on}_{usn13,usn01}.log`.
+
+| mission | pair_diff | deaths | hit records | ON census |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | exit 1, identical | 17 | 283 | `sell thinks=39 splits=0 selling=0` |
+| USN01 3200/3000 | exit 1, identical | 5 | 172 | `sell thinks=38 splits=0 selling=0` |
+
+**The prediction held. Decision: `kAiSellThinkBound` is ON.** Its first gameplay effect will come
+with a mission from 9.3, and it will be limited while SELLING has no tick arm.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

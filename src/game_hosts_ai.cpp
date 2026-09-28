@@ -252,6 +252,14 @@ constexpr bool kAiCaptureThinkBound = true;
 // (docs/PLANNER_TASK_CHOICE.md section 8.4).
 constexpr bool kAiCaptureTargetPathBound = true;
 
+// Packet cc9_planner_defend_capture_thinks part 3, docs/PLANNER_TASK_CHOICE.md
+// section 9. True: the Sell kind (brain+8h) runs 00A22800: 00A2E4C0 splits the
+// air members off each owned group into a new group that 00A22750 claims, then
+// every owned group whose command is not SELLING (00A2BE10, IsType(0Eh)) gets
+// one (vtable 00D229B8, 00A2BD00). False: the Siege-shape stand-in. ON: USN13
+// and USN01 identical, no group reaches brain+8h there (section 9.4).
+constexpr bool kAiSellThinkBound = true;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -2023,6 +2031,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 ticking_planner = nullptr;
                 return;
             }
+            if constexpr (kAiSellThinkBound) {
+                if (p->kind == bsp::AiPlannerKind::Sell) {
+                    sell_think_00a22800(*p);
+                    ticking_planner = nullptr;
+                    return;
+                }
+            }
         }
         bsp::ai_mode_planner_tick(*this, in);
         ticking_planner = nullptr;
@@ -2693,6 +2708,64 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         done("AiPlanners::capture_target_path_00a29fd0", 0x00a29fd0u);
     }
+    // 00A2E4C0 BSP_AiGroup_SplitAirMembers (__fastcall group, returns the new
+    // group or 0): the members BSP_Entity_IsPlaneOrSquadron accepts, when there
+    // are some but fewer than the population, leave the group (0077BEA0, their
+    // +16Ch cleared, 006956A0) and form a new one: the first through
+    // BSP_AiGroup_Construct, the rest through BSP_AiGroup_AddEntity.
+    Group* split_air_members_00a2e4c0(Group* g) {
+        std::vector<std::size_t> air;
+        for (const std::size_t unit : g->members) {
+            if (is_squadron(unit) || units.unit_is_kind_of(unit, 0x0F) ||
+                units.unit_is_kind_of(unit, 0x18)) {
+                air.push_back(unit);
+            }
+        }
+        if (air.empty() || air.size() >= g->members.size()) return nullptr;
+        std::vector<std::size_t> kept;
+        for (const std::size_t unit : g->members) {
+            if (std::find(air.begin(), air.end(), unit) == air.end()) kept.push_back(unit);
+            else if (unit < group_of_unit.size() && group_of_unit[unit] == g) group_of_unit[unit] = nullptr;
+        }
+        g->members.swap(kept);
+        Group* made = static_cast<Group*>(create_group(handle(air.front())));
+        for (std::size_t i = 1; i < air.size(); ++i) attach(made, air[i]);
+        ++sell_splits;
+        return made;
+    }
+    // 00A22800 BSP_AiPlanner_SellThink, body 00A22800-00A228D2, read in full.
+    // The first walk claims each split group (00A2284D, 00A22750: appended to
+    // +24h, so the walk reaches it too and finds nothing more to split). The
+    // second walk installs SELLING on every owned group not already answering
+    // IsType(0Eh). LABELLED: the SELLING tick 00A11FF0 (nearest own list-28
+    // entity, then 00A02020) has no host arm, so a SELLING group is not moved.
+    void sell_think_00a22800(Planner& p) {
+        ++sell_thinks;
+        for (std::size_t i = 0; i < p.owned.size(); ++i) {
+            Group* g = p.owned[i];
+            if (g == nullptr || g->destroyed) continue;
+            Group* made = split_air_members_00a2e4c0(g);
+            if (made != nullptr &&
+                std::find(p.owned.begin(), p.owned.end(), made) == p.owned.end()) {
+                made->claimed_by = &p;
+                p.owned.push_back(made);
+            }
+        }
+        for (Group* g : p.owned) {
+            if (g == nullptr || g->destroyed) continue;
+            if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Selling)) continue;
+            if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+            bsp::AiCommandObject c;
+            c.type = bsp::AiCommandType::Selling;
+            c.owner_group = g;
+            g->command = c;
+            ++sell_orders;
+        }
+        done("AiPlanners::sell_think_00a22800", 0x00a22800u);
+    }
+    unsigned long long sell_thinks{0};
+    unsigned long long sell_splits{0};
+    unsigned long long sell_orders{0};
     unsigned long long capture_path_thinks{0};
     unsigned long long patrol_ticks{0};
     unsigned long long patrol_close_passes{0};
@@ -3523,6 +3596,11 @@ void GameAiCoordinatorHost::report() {
         host.log.notef("summary mission ai capture thinks=%llu target_fallbacks=%llu handoffs=%llu "
             "attack_thinks=%llu (packet cc9_planner_defend_capture_thinks)", host.capture_thinks,
             host.capture_target_fallbacks, host.capture_handoffs, host.attack_thinks);
+    }
+    if constexpr (kAiSellThinkBound) {
+        host.log.notef("summary mission ai sell thinks=%llu splits=%llu selling=%llu "
+            "(00A22800, packet cc9_planner_defend_capture_thinks)",
+            host.sell_thinks, host.sell_splits, host.sell_orders);
     }
     if constexpr (kAiCaptureTargetPathBound) {
         host.log.notef("summary mission ai capture path thinks=%llu assignments=%llu attack=%llu "
