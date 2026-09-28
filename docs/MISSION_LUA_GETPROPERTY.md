@@ -529,3 +529,19 @@ wrong about the mechanism.
 because `00927AD0` reports the current command name. Every identity row held. By the rule
 "flip only if the verdict holds", the stated gameplay prediction failed. The recommendation is
 ON.
+
+### 9.13 Flipped ON
+
+`kGetPropertyClassReadersBound` is ON by the lead's ruling. The JM06 move is the image's own
+consequence of `00927AD0` reporting the current command. The failed prediction (9.12) was about
+how far the move spreads, not about the mechanism, and it stays recorded.
+
+- **Still unserved, with their reasons:**
+  - `ammoType` and `state`: the squadron's member walk and `007EDAD0`'s ordnance order are not
+    reachable from the Lua host.
+  - `TorpedoStock`: the gunnery host has no spare-stock or loaded-tube reader.
+  - `TargetIsHome`, `owner`, the LandConvoy keys and the shipyard's `stock`: no measured caller.
+- **A noise observation, LOMP06.** One `movie camera pose at hud update frame 441` line differed
+  between OFF and ON, although that pair made zero GetProperty calls and so should not differ
+  there. It may be the intro-pose variance of `docs/HUD_PICK_SEGMENT_QUERY.md` 10.5 showing up on
+  another mission. It is not attributed to this switch.
