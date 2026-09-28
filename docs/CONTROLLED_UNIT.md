@@ -2053,3 +2053,18 @@ pointer is non-null, it gets 0 for an accepting best, else `sqrt(key)`.
 and flies about 9.5 km in the run. So the land task would spend most of the row in mode 1, the
 moveto. Whether it reaches mode 2 depends on when the first `returntobase` lands and on
 `009B34D0`.
+
+### The record switch `kSquadronReturnToBaseResolveBound` (cc9-lua6, part 2, committed OFF)
+
+`issue_script_command` runs the resolution when the SELLING tick places `returntobase`
+(`00E08F98`) on a squadron's flight leader. The inputs are labelled in the code
+(`record_return_to_base_007f16d0`). The command is still placed as before, so the switch is a
+record only.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| LOMP10 3200/3000 | **exit 1.** One `returntobase 007F16D0` line each for `B-25 01`, `Lightning 01` and `Warhawk 01`, all `-> land at site CB4_AF` with `sites=1 passed=1`. B-25 01's line carries `approach-bit-20-unread`, because its head is class 10h. None carries `home-arm-unread`. The summary reads `null=0 home=0 retreat=0 squadrons=3`, and `site` equals the number of leader placements. Gameplay identical |
+| USN01 3200/3000 | **exit 1.** No SELLING returntobase, so the summary line reads all zeros with `squadrons=0` |
