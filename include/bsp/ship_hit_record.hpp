@@ -233,7 +233,9 @@ struct ShipHitRecordHost {
     virtual void impact_direction(float out[3]) = 0;  // shot->vtable[34h] at 00826FF0, 00827144, 0082760D
 
     // --- the roll torque -------------------------------------------------
-    virtual void roll_axis(float out[3]) = 0;         // [[this+1018h]+2Ch]+20h via 00C32000 at 008271B2
+    // The body matrix row 00C32000 (LEA EAX,[ECX+8]) returns at 008271B2, read at
+    // 008271B7..008271BD as +18h..+20h: [[this+1018h]+2Ch]+8+18h..+20h, row 2.
+    virtual void roll_axis(float out[3]) = 0;
     virtual float settings_roll_torque_scale() = 0;   // settings+590h at 00827251
     virtual float settings_roll_mass_root() = 0;      // settings+594h at 008271D8
     virtual void route_add_hull_torque(const ShipRollTorque& torque) = 0;
