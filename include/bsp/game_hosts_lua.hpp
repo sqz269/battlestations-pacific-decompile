@@ -183,6 +183,14 @@ inline constexpr bool kLuaAddDamageBound = false;
 // `hit` entries. False: `hit` entries never fire (the queue is still drained).
 inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_lua_aa_enable (docs/LUA_BINDING_MISSION.md, "AAEnable, 0089C740").
+// AAEnable(entity, flag): director = entity->vtable[114h](); when it exists,
+// 0071E050 sends session message 5Ah sub-kind 4 with the flag, which the director
+// stores at +221h (0071C246), the AA enable the gunnery stance (008624C0) and the
+// ship AI (009F2E0F) read. True: the unit's scene director entry takes the flag
+// (bsp::game::scene_director_enables_set). False: record.
+inline constexpr bool kLuaAAEnableBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -410,6 +418,9 @@ struct GameMissionLuaSummary {
     unsigned long long add_damage_calls{0};
     unsigned long long add_damage_units{0};
     unsigned long long add_damage_unresolved{0};
+    unsigned long long aa_enable_calls{0};
+    unsigned long long aa_enable_disables{0};
+    unsigned long long aa_enable_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -885,6 +896,8 @@ public:
     int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_damage, under kLuaAddDamageBound.
     int run_add_damage_0088e000(lua_State* state, int argument_count);
+    // Packet cc9_lua_aa_enable, under kLuaAAEnableBound.
+    int run_aa_enable_0089c740(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

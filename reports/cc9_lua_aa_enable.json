@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_lua_aa_enable",
+  "doc": "docs/LUA_BINDING_MISSION.md, AAEnable, 0089C740",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kLuaAAEnableBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "ON (identity pairs)"
+    }
+  ],
+  "substitutions": [
+    "flag written at the call",
+    "every slot has a director",
+    "unresolved counted",
+    "ships only in the stance"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": [],
+  "pairs": {
+    "BSM01": "exit 1, calls=33 disables=33",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
+  }
+}
