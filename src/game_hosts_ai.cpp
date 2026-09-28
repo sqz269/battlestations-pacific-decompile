@@ -216,8 +216,10 @@ constexpr bool kGeneratedSquadronBrainBound = false;
 // that repeats the entity's previous one (same token and target, point within
 // a metre) is issued again, as the image issues it: 0077D600 -> 00816E30 with
 // flags 1 clears the queue at 0081733E and issues at 0081735D, so the command
-// restarts. False: the host's duplicate filter drops it.
-constexpr bool kAiOrderReissueBound = false;
+// restarts. False: the host's duplicate filter drops it. ON: USN13/USN04 small
+// moves alone, none on top of the squadron membership; USN01 identical; USN02
+// moved after its 212.91 s failure (docs/ORDER_RING_REPLACE.md section 4).
+constexpr bool kAiOrderReissueBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a

@@ -91,3 +91,52 @@ the filter dropped now clear and restart a command.
   - On USN02 the re-issued orders are the ships' group `moveto`s. Restarting them resets the
     navigator's stage.
   - Direction on deaths is not predicted.
+
+## 4. The pairs
+
+- **OFF** is this tree's build at `26f3fcdf4`, with both switches OFF.
+- **Two-flip ON** is `pair_export --commit 26f3fcdf4 --flip kAiOrderReissueBound=true --flip
+  kGeneratedSquadronBrainBound=true` into `local\or_on`.
+- **Ring-only ON** is the same export with only `kAiOrderReissueBound=true`, into
+  `local\or_ring`. It was added to separate the ring's own effect.
+- **Logs:** `local\or_{off,on,ring}_<mission>.log`.
+
+| mission | two flips vs OFF | ring only vs OFF | two flips vs membership only (`sq_on`) |
+| --- | --- | --- | --- |
+| USN13 3200/3000 | exit 3: deaths 24 -> 16, hit records 720 -> 294 | exit 3: deaths 24 = 24, hit records 720 -> 711 | **exit 1, identical** |
+| USN04 4700/4500 | exit 3: deaths 40 -> 29, hit records 644 -> 501 | exit 3: deaths 40 -> 41, hit records 644 -> 661, dive releases 1 -> 9 of 19, torpedo releases 5 -> 4 of 16 | **exit 1, identical** |
+| USN01 3200/3000 | exit 1, identical | - | - |
+| USN02 9200/9000 | exit 3: deaths 26 -> 24, hit records 847 -> 920 | - (no squadrons, so the two-flip row is the ring's) | - |
+
+**Orders.**
+- USN13 with both flips: squadron commands 474, member orders 1422, against 466 / 1398 with
+  the membership only.
+- USN04 with both flips: 203 / 609, against 4 / 12.
+- The re-issues go out as predicted, but on top of the membership they change no gameplay
+  number.
+
+**USN02.** Exeter's loss at 210.81 s and the 212.91 s failure are unchanged. Houston's sinking
+moves from 295.95 s to 293.75 s. The moves are after the mission has already failed.
+
+**Predictions:**
+- **Held:**
+  - the re-issues go out;
+  - USN13's and USN04's squadron commands and member orders stay at or above the
+    membership-only row;
+  - deaths and hits do not move back toward OFF;
+  - USN02 moves.
+- **Failed on spread:** USN01 is identical, not moved. Its 48 re-issues change nothing.
+- **The lead's hypothesis is refuted.** Squadron commands did not fall, and USN13 did not move
+  back toward OFF. **The membership's USN13 and USN04 moves are the membership's own.** The
+  re-issue adds nothing to them, because the host already replaced the queue.
+
+## 5. Decision
+
+- **`kAiOrderReissueBound` is ON.** It is the image's semantics, and it failed only on spread
+  (USN01). The ring-only rows are its own moves: USN04's dive releases rise from 1 to 9 of 19,
+  and USN13 moves slightly.
+- **`kGeneratedSquadronBrainBound` stays OFF,** by the lead's criterion "only the ring if the
+  membership still swamps the mission". It still halves USN13's damage.
+- This read shows that the swamping is not produced by the order path. The next question for
+  it is the membership's own consequence: the brain re-tasking the player's launched squadrons
+  (docs/AI_BRAIN_PLAYER_EXEMPTION.md). That is the lead's call.
