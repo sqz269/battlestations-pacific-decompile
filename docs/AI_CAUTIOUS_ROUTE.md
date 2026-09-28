@@ -756,3 +756,62 @@ Worker cc9-ships6, 2026-09-28. The pairs are same-tree pairs on main `4215e40de`
 
 **Verdict rule.** Identity on both rows confirms the switch's attribution. A row that moves keeps the
 switch as it is. It is then recorded as a reference-j flag with the moved lines.
+
+**The pairs.**
+- OFF is `local\ships6_woff_<m>.log`, from the export with bsp_game.exe SHA-256 prefix
+  `8F4037FD5CA0`.
+- ON is `local\ships6_won_<m>.log`, from the tree's build with prefix `C5E53ED6C6CB`.
+- Every log ends in the final COM release, and each one's module directory is its own binary's.
+
+| mission | pair_diff | ON census: calls / runs / placed | death rows | unit table | director `follow` |
+| --- | --- | --- | --- | --- | --- |
+| JM08 3200/3000 | exit 1, gameplay identical | 82 / 0 / 0 | identical (9) | identical (52) | 0 |
+| USN01 3200/3000 | exit 1, gameplay identical | 48 / 0 / 0 | identical (5) | identical (28) | 2 |
+
+**Verdict.**
+- Every prediction held. On both rows each wedge call stops at the ship gate, because no group that
+  calls it has a ship leader.
+- Neither row moves, so there is no reference-j flag. `kCautiousWedgeBound` stays ON.
+- The exit 1 rather than 0 is the wedge summary line (`bound=`, `calls=`). The host-method totals are
+  equal (JM08 973 / 486, USN01 1010 / 516), because the wedge's `done` entries fire only past the
+  gates. No gameplay line differs.
+- **Attribution.** Across USN04, USN12, JM08 and USN01, the wedge has not moved a measured row. Only
+  USN12 runs it past the gates, and there its stations have no motion consumer (sections 14-16).
+
+## 18. Handoff (cc9-ships6, at the end of four packets)
+
+**State on main** (`4215e40de` plus this branch's docs):
+- **`kCautiousWedgeBound` ON.** `ai_formation_wedge_00a11690` in `src/ai_command_tick.cpp` runs after
+  the follower pass of CAUTIOUSATTACK, CAUTIOUSMOVE and DEFENDPOSITION. Its host methods are in
+  `src/game_hosts_ai.cpp`, and it writes through
+  `GameUnitsHost::set_formation_member_offset_0070d080`.
+- **Pairs.** USN12, USN04, JM08 and USN01 are all gameplay-identical (sections 14 and 17).
+- **Ghidra names applied (provisional):** `00A11690` BSP_AiCommand_FormationWedge, `00A113D0`
+  BSP_AiCommand_WedgeThreatDirection, `00779820` BSP_Entity_SharesUnitGroup.
+
+**Settled facts, not to re-derive:**
+- The threat ring has 13 samples.
+- A zero danger cost gives a zero frame, and every station lands on the leader's point.
+- The shape-0 table holds the registered command objects, so its offsets are about 1e-38 m.
+- The replication tail (78h) has nothing to deliver in single-player.
+- USN12's refused follow requests are the image's own answers (section 15).
+- A follower placed with `Cruise` never takes `follow`, in the image as in the host (sections 15-16).
+- RETREAT is unreachable in this installation (section 16).
+
+**What would make the wedge observable.** A mission where a CAUTIOUSATTACK, CAUTIOUSMOVE or
+DEFENDPOSITION group has a ship leader, and whose followers' directors go idle into `follow`. That
+means followers not placed with `Cruise`, or a `Cruise` that ends. None of the measured rows has one.
+A scan of the authored scenes for ship groups placed without `Cruise` under such a command would
+find a row. That scan was not done.
+
+**Open, in order of value:**
+1. **The group extents.** `0070D400` / `0070D5D0` read each member's station `across`, which the
+   wedge changes, and the path planner uses them (2816 calls on USN12). Their consumer publishes
+   nothing on USN12 (`path_publishes=0`). Whether they ever feed a published path is untraced.
+2. **JM08's `follow=0`.** Presumably the same authored-`Cruise` cause; not traced.
+3. **The player's ships in Montpelier's AI group.** USN12's first ticks list the player's three
+   ships in Montpelier's AI group (`first_group_members=15`). Whether the image's grouping does the
+   same is untraced.
+4. **The DEFENDPOSITION tick itself.** `00A15500` runs the wedge and then `00A13B60` with its own
+   leader point. The host's DEFENDPOSITION arm calls the follower pass and the wedge, and the
+   caller-side `00A13B60`, as before.
