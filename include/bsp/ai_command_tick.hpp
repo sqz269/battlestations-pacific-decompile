@@ -155,6 +155,29 @@ bool ai_group_member_sorts_before_00a2d8e0(float candidate_weight,
 // dcfebd652); USN07/09/10/12 issue the leader movetos, USN10 and USN12 move
 // (docs/PLANNER_TASK_CHOICE.md section 11.4).
 inline constexpr bool kCautiousAttackTickBound = true;
+// Packet cc9_director_moveonpath_route, docs/AI_CAUTIOUS_ROUTE.md. True: 00A14DD0
+// takes its director-slot route while the +28h counter is at least 1: the
+// `clearorders` arm (00A14EA7) once the leader's followed user path has passed
+// its first point, else a new route of counter-1 waypoints scored by the danger
+// cost 00A010F0 and sent with the target as MT_GAMEUNIT_ADDUSERPATHPOINT
+// messages. False: the no-route moveto every tick, as before.
+inline constexpr bool kCautiousRouteBound = false;
+
+// 00A14E54..00A1500D: the waypoint offset is leader->target turned by
+// 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and
+// scaled by the double 0.3 at 00CE3DC8; candidates are scored by 00A010F0 from
+// the float 1.0e10 at 00CE4970 with a strict FCOMPI.
+inline constexpr float kCautiousRouteTurn = 1.5707963705062866f;   // 00CE3C64
+inline constexpr double kCautiousRouteOffset = 0.30000001192092896; // 00CE3DC8
+inline constexpr float kCautiousRouteNoCost = 1.0e10f;              // 00CE4970
+// What one pass did, for the census.
+struct AiCautiousRouteResult {
+    bool moveto{false};                // 00A1526E, the no-route arm
+    bool cleared{false};               // 00A14EA7, `clearorders`
+    bool waited{false};                // 00A14E77, flag set and +18h not above 0
+    bool built{false};                 // 00A14EB5..00A1525C
+    int points{0};                     // waypoints sent before the target
+};
 
 struct AiCommandTickResult {
     std::uint32_t orders_issued{0};      // 00A02020 reached 0077D600
@@ -170,6 +193,9 @@ struct AiCommandTickResult {
     // than CloseAttack_CollectDist * 1.5 (double 00CE3D78), squared.
     bool patrol_far{false};
     bool patrol_near{true};
+    // CAUTIOUSATTACK with kCautiousRouteBound: what 00A14DD0 did.
+    bool route_ran{false};
+    AiCautiousRouteResult route{};
 };
 
 // MOVETOATTACK's transition at 00A12B55-00A12BA8: the tick reads tuning +1F4h
@@ -209,7 +235,31 @@ struct AiCommandTickHost {
     virtual float tick_horizontal_distance(const float a[3], const float b[3]) = 0;
     // 00A2BD00 with a replacement of the given class, bound to the same target.
     virtual void tick_replace_command(void* group, AiCommandType type) = 0;
+
+    // Packet cc9_director_moveonpath_route (kCautiousRouteBound).
+    // The group's own command object (group+564Ch), for the +24h/+28h pair.
+    virtual AiCommandObject* tick_command_state(void* group) = 0;
+    virtual int tick_group_team(void* group) = 0;                         // +5638h
+    // 00778860 -> director slot 0 -> vt[+4h] 0071FC30 (`MOV AL,1`), vt[+0Ch]
+    // 0071FC40 and vt[+10h] 0071D2A0. A host without the leader's slot object
+    // answers false to the first.
+    virtual bool tick_route_slot_present(void* leader) = 0;
+    virtual bool tick_route_attached_0071fc40(void* leader) = 0;
+    virtual int tick_route_remaining_0071d2a0(void* leader) = 0;
+    // 00A14E8A..00A14EA7: 0077D600 on the leader with `clearorders` (00E08F08).
+    virtual bool tick_issue_clearorders(void* leader) = 0;
+    // 00A010F0, __fastcall(point ECX, int team EDX) -> ST0.
+    virtual float tick_danger_cost_00a010f0(const float point[3], int team) = 0;
+    // vt[+18h] 0071D340 on the leader's slot 0: the 5Fh message with the point.
+    virtual void tick_route_send_point_0071d340(void* leader, const float point[3]) = 0;
 };
+
+// 00A14DD0 BSP_AiCommand_CautiousApproachPass, __thiscall(base +20h)(group,
+// point), RET 8, body 00A14DD0-00A152A7 read whole for this packet
+// (docs/AI_CAUTIOUS_ROUTE.md). `state` carries the base's +24h flag and +28h
+// counter. The leader order and the census go through `result`.
+AiCautiousRouteResult ai_cautious_approach_pass_00a14dd0(AiCommandTickHost& host,
+    void* group, const float point[3], AiCommandObject& state, AiCommandTickResult& result);
 
 // The shared follower pass, 00A10DC0.
 AiCommandTickResult ai_command_follower_pass_00a10dc0(AiCommandTickHost& host, void* group);

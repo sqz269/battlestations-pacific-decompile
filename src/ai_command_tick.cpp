@@ -1,4 +1,5 @@
 #include "bsp/ai_command_tick.hpp"
+#include <cmath>
 
 namespace bsp {
 namespace {
@@ -279,7 +280,12 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         // build (three candidates per leg scored by 00A010F0, pushed into the
         // slot through vt[+18h]) and the `clearorders` arm (00E08F08 at
         // 00A14EA7) are not issued.
-        if (host.tick_group_population(group) != 0u) {
+        AiCommandObject* state = kCautiousRouteBound ? host.tick_command_state(group) : nullptr;
+        if (state != nullptr) {
+            result.route = ai_cautious_approach_pass_00a14dd0(host, group, target_point, *state,
+                                                             result);
+            result.route_ran = true;
+        } else if (host.tick_group_population(group) != 0u) {
             void* leader = host.tick_member_at(group, 0);
             if (leader != nullptr && host.tick_member_is_groupable_combatant(leader)) {
                 order_leader(host, group, target_point, result);
@@ -360,6 +366,97 @@ AiCommandTickResult ai_command_patrol_to_tail_00a15695(AiCommandTickHost& host,
     if (command.owner_group == nullptr) return result;
     order_leader(host, command.owner_group, command.target_position, result);
     return result;
+}
+
+}  // namespace bsp
+
+namespace bsp {
+
+AiCautiousRouteResult ai_cautious_approach_pass_00a14dd0(AiCommandTickHost& host,
+    void* group, const float point[3], AiCommandObject& state, AiCommandTickResult& result) {
+    AiCautiousRouteResult route;
+    // 00A14DF4..00A14E16: the first member of +5640h must pass 009FE080. An
+    // empty list is the CRT's invalid-iterator abort (00BF6713) in the image.
+    if (host.tick_group_population(group) == 0u) return route;
+    void* leader = host.tick_member_at(group, 0);
+    if (leader == nullptr || !host.tick_member_is_groupable_combatant(leader)) return route;
+    // 00A14E30 00778860: the leader's director slot 0; its vt[+4h] 0071FC30 is
+    // `MOV AL,1`. 00A14E4C: the counter below 1 takes the moveto.
+    if (!host.tick_route_slot_present(leader) || state.route_counter_28 < 1) {
+        route.moveto = true;
+        const float target[3] = {point[0], point[1], point[2]};
+        order_leader(host, group, target, result);          // 00A15289 00A02020
+        return route;
+    }
+    if (!host.tick_route_attached_0071fc40(leader)) state.route_flag_24 = false;  // 00A14E63
+    if (state.route_flag_24 && host.tick_route_remaining_0071d2a0(leader) <= 0) {  // 00A14E77
+        route.waited = true;
+        return route;
+    }
+    if (host.tick_route_attached_0071fc40(leader)) {           // 00A14E84
+        host.tick_issue_clearorders(leader);                   // 00A14EA7
+        state.route_flag_24 = false;                           // 00A14EAC
+        route.cleared = true;
+        return route;
+    }
+    // 00A14EB5: EDX for 00A010F0 is (group+5638h == 0).
+    const int team = host.tick_group_team(group) == 0 ? 1 : 0;
+    float lead[3] = {0.0f, 0.0f, 0.0f};
+    host.tick_leader_point(group, lead);                       // 00A14EC9 00A10C20
+    const float d[3] = {static_cast<float>(static_cast<double>(point[0]) - lead[0]),
+                        static_cast<float>(static_cast<double>(point[1]) - lead[1]),
+                        static_cast<float>(static_cast<double>(point[2]) - lead[2])};
+    // 00A14F1F..00A14F39: 0042B490 builds BSP_Matrix_BuildRotationY(-0.0 - pi/2)
+    // ([cos 0 -sin][0 1 0][sin 0 cos]) and 00439820 transforms d by it (w = 1).
+    const float angle = -0.0f - kCautiousRouteTurn;
+    const double c = static_cast<float>(std::cos(static_cast<double>(angle)));
+    const double s = static_cast<float>(std::sin(static_cast<double>(angle)));
+    const float turned[3] = {static_cast<float>(d[0] * c + d[2] * s), d[1],
+                             static_cast<float>(-(d[0] * s) + d[2] * c)};
+    // 00A14FBC..00A1500D: times the double 0.3.
+    const float off[3] = {static_cast<float>(turned[0] * kCautiousRouteOffset),
+                          static_cast<float>(turned[1] * kCautiousRouteOffset),
+                          static_cast<float>(turned[2] * kCautiousRouteOffset)};
+    const int counter = state.route_counter_28;                // 00A14F3E
+    state.route_counter_28 = counter - 1;                      // 00A14F48
+    const float n = static_cast<float>(counter);               // 00A14F90 FILD
+    const float step[3] = {static_cast<float>(d[0] / static_cast<double>(n)),
+                           static_cast<float>(d[1] / static_cast<double>(n)),
+                           static_cast<float>(d[2] / static_cast<double>(n))};
+    float chosen[8][3]{};
+    int built = 0;
+    for (int k = counter - 1; k >= 1 && built < 8; --k) {      // 00A15011..00A151C7
+        const float kf = static_cast<float>(k);
+        float base[3];
+        for (int i = 0; i < 3; ++i) {
+            const float scaled = static_cast<float>(static_cast<double>(step[i]) * kf);
+            base[i] = static_cast<float>(static_cast<double>(lead[i]) + scaled);
+        }
+        float candidate[3][3];
+        for (int i = 0; i < 3; ++i) {
+            candidate[0][i] = base[i];
+            candidate[1][i] = static_cast<float>(static_cast<double>(off[i]) + base[i]);
+            candidate[2][i] = static_cast<float>(static_cast<double>(base[i]) - off[i]);
+        }
+        int best = 0;
+        float best_cost = kCautiousRouteNoCost;                // 00A15015
+        for (int j = 0; j < 3; ++j) {
+            const float cost = host.tick_danger_cost_00a010f0(candidate[j], team);
+            if (best_cost > cost) {                            // 00A15157 JBE skips
+                best = j;
+                best_cost = cost;
+            }
+        }
+        for (int i = 0; i < 3; ++i) chosen[built][i] = candidate[best][i];
+        ++built;                                               // 00A151B4 push_back
+    }
+    // 00A151DD..00A15244: the vector is sent from its last element down.
+    for (int i = built - 1; i >= 0; --i) host.tick_route_send_point_0071d340(leader, chosen[i]);
+    host.tick_route_send_point_0071d340(leader, point);        // 00A15254
+    state.route_flag_24 = true;                                // 00A1525C
+    route.built = true;
+    route.points = built;
+    return route;
 }
 
 }  // namespace bsp

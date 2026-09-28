@@ -148,6 +148,18 @@ struct GameDirector {
     // Whether the build has already run for the begin the queue head is in.
     // Cleared as soon as slot 0 stops holding `moveonpath`.
     bool path_begun{false};
+    // Packet cc9_director_moveonpath_route: the point vector +40h..+48h of the
+    // slot object the last user `moveonpath` was queued with (0071FDE0), and
+    // whether slot 0's cursor was built over it (0071F600's descriptor-kind-0
+    // arm), which is 0071FC40's "attached". LABELLED: the host keeps one user
+    // path per director, the one the last 5Fh named; the image keeps one per
+    // slot object.
+    std::vector<std::array<float, 3>> user_points;
+    bool path_user{false};
+    unsigned long long user_points_received{0};
+    unsigned long long user_paths_queued{0};
+    unsigned long long user_points_dropped{0};
+    unsigned long long user_points_outside_map{0};
 };
 
 struct GameCommandsHost::Impl {
@@ -355,7 +367,7 @@ struct GameCommandsHost::Impl {
     // heading the caller read, and whether the chain's finish tail (the
     // current-command read and 00835C70's arm) runs at the end of this delivery.
     static constexpr std::size_t kNoLoopbackRow = static_cast<std::size_t>(-1);
-    enum class LoopbackKind { Command, SetCommand, Clear };
+    enum class LoopbackKind { Command, SetCommand, Clear, UserPathPoint };
     struct LoopbackMessage {
         LoopbackKind kind{LoopbackKind::Command};
         std::size_t unit{0};
@@ -379,6 +391,8 @@ struct GameCommandsHost::Impl {
         // (GameScriptOrdersHost::after_order_delivery): handed along with the
         // finish tail and run after it.
         std::function<void()> after_delivery;
+        float user_point[3]{0.0f, 0.0f, 0.0f};  // MT_GAMEUNIT_ADDUSERPATHPOINT +20h
+        bool user_outside_map{false};
     };
     // Where the last post went: `loopback` while it waits for the drain, or the
     // list being drained when a delivery inserted it (+258h). Null when it was
@@ -424,6 +438,9 @@ struct GameCommandsHost::Impl {
     // 00721A40's 5Dh arm on delivery, the old body of route_clear_command.
     bool apply_clear_command(std::size_t unit_index, bool player_controlled,
                              const bsp::ClearCommandMessage& message);
+    // 00721A40's 5Fh arm with the presence byte set, 007207C0.
+    void apply_user_path_point_007207c0(std::size_t unit_index, const float point[3],
+                                        bool outside_map);
 };
 
 namespace {
@@ -1703,6 +1720,10 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
     case LoopbackKind::Clear:
         apply_clear_command(message.unit, message.player, message.clear);
         break;
+    case LoopbackKind::UserPathPoint:
+        apply_user_path_point_007207c0(message.unit, message.user_point,
+                                       message.user_outside_map);
+        break;
     }
     if (chain.finish_pending) finish_issue_in_place(*this, chain);
     if (chain.after_delivery) {
@@ -1711,6 +1732,102 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         chain.after_delivery = nullptr;
         after();
     }
+}
+
+void GameCommandsHost::post_user_path_point_0071d340(std::size_t unit_index,
+    const float point[3], bool outside_map) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size() || unit_index >= host.directors.size()) return;
+    host.done("PathObject::send_user_path_point_0071d340", 0x0071d340u);
+    if (kSetCommandQueueDelayBound) {
+        Impl::LoopbackMessage message;
+        message.kind = Impl::LoopbackKind::UserPathPoint;
+        message.unit = unit_index;
+        for (int i = 0; i < 3; ++i) message.user_point[i] = point[i];
+        message.user_outside_map = outside_map;
+        host.post_loopback(message);
+        return;
+    }
+    host.apply_user_path_point_007207c0(unit_index, point, outside_map);
+}
+
+void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_index,
+    const float point[3], bool outside_map) {
+    GameDirector& director = directors[unit_index];
+    ++director.user_points_received;
+    const int count = command_count(director);
+    // 0071DC80: 1 (start a new path) for an empty queue, a last command that is
+    // not `moveonpath`, or one whose descriptor names an object of type 12h; 0
+    // (append) for a `moveonpath` with descriptor kind 0 (0071DCB4) or one whose
+    // object resolves to another type. LABELLED: a kind-1 `moveonpath` (an
+    // authored Path) is taken as a new path; its object type was not resolved.
+    bool start_new = true;
+    if (count > 0 && director.slot_command[count - 1] == 0x00e08f80u
+        && director.slot_target[count - 1].kind == 0) {
+        start_new = false;
+    }
+    std::array<float, 3> p{point[0], point[1], point[2]};
+    if (outside_map) {
+        // 0071FE9A..0071FF22: an out-of-map point also pushes the border
+        // crossing 004BBDD0 finds from the previous point. LABELLED: not
+        // reproduced, the point alone is pushed and the case is counted.
+        ++director.user_points_outside_map;
+        record("PathObject::user_point_outside_map_004bbdd0", 0x004bbdd0u);
+    }
+    ChainState chain{*this, units[unit_index], director, nullptr, nullptr, 0.0f,
+        bsp::SceneCommandTarget{}, 0u, 0u};
+    DirectorBinding binding(chain);
+    if (start_new) {
+        // 007207CC: director vtable[34h] 00835E90 must accept `moveonpath`.
+        if (!binding.command_accepted(0x00e08f80u)) {
+            record("WeaponDirector::user_path_refused_00835e90", 0x007207dcu);
+            return;
+        }
+        // 0071FDE0(point, 1, count): the slot object's vector is erased first.
+        director.user_points.clear();
+        director.user_points.push_back(p);
+        // 0071FFA5: director vtable[60h] 008358D0 with `moveonpath` and the
+        // zeroed descriptor (kind 0, no position, no object).
+        bsp::SceneCommandTarget empty{};
+        binding.director_set_command(0x00e08f80u, empty);
+        ++director.user_paths_queued;
+        done("GameUnitMessage::add_user_path_point_new_007207c0", 0x007207c0u);
+    } else {
+        // 0071FDE0(point, 0, count - 1): refused when more than 7 points already
+        // lie ahead of the slot's +18h.
+        const int ahead = static_cast<int>(director.user_points.size())
+            - (director.path_user ? director.path_cursor.index_08 : 0);
+        if (ahead > 7) {
+            ++director.user_points_dropped;
+            record("PathObject::user_point_dropped_0071fe24", 0x0071fe24u);
+            return;
+        }
+        director.user_points.push_back(p);
+        done("GameUnitMessage::add_user_path_point_append_007207c0", 0x0072081fu);
+    }
+    // 0071FF4D, 007B1FB0([slot+18h]): a followed path takes the new points.
+    if (director.path_user && director.path_begun && director.slot_command[0] == 0x00e08f80u) {
+        director.path_points = director.user_points;
+    }
+    // 0071FFBF..00720040: the session-mode echo (unit vtable[13Ch](2, 0) and a
+    // 57h message) is multiplayer bookkeeping.
+    record("PathObject::user_path_echo_57", 0x0071ffbfu);
+}
+
+bool GameCommandsHost::user_path_attached_0071fc40(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    const GameDirector& director = host.directors[unit_index];
+    return director.slot_command[0] == 0x00e08f80u && director.path_begun
+        && director.path_built && director.path_user;
+}
+
+int GameCommandsHost::user_path_remaining_0071d2a0(std::size_t unit_index) const {
+    // 0071D2A0 -> 0071D2E0: [slot+18h] when attached, else -1. LABELLED: +18h
+    // is taken as the follower's current index (the listener at +10h is how the
+    // follower reports it; its body was not read).
+    if (!user_path_attached_0071fc40(unit_index)) return -1;
+    return impl_->directors[unit_index].path_cursor.index_08;
 }
 
 void GameCommandsHost::begin_loopback_drain_0076c600() {
@@ -2697,6 +2814,21 @@ bool GameCommandsHost::begin_current_command_00835c70(std::size_t unit_index,
         return false;
     }
     if (director.path_begun) return director.path_built && !director.path_points.empty();
+    if (director.slot_target[0].kind == 0 && !director.user_points.empty()) {
+        // Packet cc9_director_moveonpath_route. 0071F6A5's descriptor-kind-0 arm:
+        // slot 0's vtable[8] resets it, BSP_EntityPathSource_CreateForSlot wraps
+        // its own point vector, and the cursor starts with the pair {1, 5}
+        // (0071F6B8/0071F6C0) instead of 0071C1B0's.
+        director.path_begun = true;
+        director.path_user = true;
+        director.pending_path_name = "<user path>";
+        director.pending_path_points = director.user_points;
+        director.path_follow_mode = 1;
+        director.path_start_mode = 5;
+        host.done("WeaponDirector::begin_user_path_0071f6a5", 0x0071f6a5u);
+        return build_path_object_0071f600(unit_index, unit_x, unit_z);
+    }
+    director.path_user = false;
     if (!director.pending_path_valid) return false;
     director.path_begun = true;
     return build_path_object_0071f600(unit_index, unit_x, unit_z);

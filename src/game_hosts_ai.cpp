@@ -19,6 +19,7 @@
 #include "bsp/ai_command_lifetime.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
+#include "bsp/unit_rudder.hpp"
 #include "bsp/ai_command_tick.hpp"
 #include "bsp/ai_group_think.hpp"
 #include "bsp/ai_planners.hpp"
@@ -1209,6 +1210,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             }
         }
         bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        if (tick.route_ran) {
+            // Packet cc9_director_moveonpath_route: the census of 00A14DD0.
+            Group* rg = group_at(cmd->owner_group);
+            const std::size_t leader = (rg != nullptr && !rg->members.empty())
+                ? proxy(rg->members.front()) : units.count();
+            if (tick.route.moveto) ++summary.cautious_route_movetos;
+            if (tick.route.waited) ++summary.cautious_route_waits;
+            if (tick.route.built) {
+                ++summary.cautious_route_builds;
+                if (leader < units.count()) {
+                    log_cautious_route(leader, "build", tick.route.points);
+                }
+            }
+        }
         if constexpr (kSellingTickBound) {
             if (cmd->type == bsp::AiCommandType::Selling) {
                 const bsp::AiCommandTickResult sell = selling_tick_00a11ff0(*cmd);
@@ -1857,6 +1872,105 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const float dz = a[2] - b[2];
         return std::sqrt(dx * dx + dz * dz);
     }
+    // ---- packet cc9_director_moveonpath_route -------------------------------
+    bsp::AiCommandObject* tick_command_state(void* group) override {
+        Group* g = group_at(group);
+        return g != nullptr ? &g->command : nullptr;
+    }
+    int tick_group_team(void* group) override {
+        Group* g = group_at(group);
+        return g != nullptr ? g->team : 0;
+    }
+    // The leader's director, 00778860. LABELLED: a squadron leader has no
+    // director in this host (its planes each have one), so it answers no slot.
+    bool route_unit(void* leader, std::size_t& unit) const {
+        if (leader == nullptr) return false;
+        unit = unit_index_of(leader);
+        return unit < units.count();
+    }
+    bool tick_route_slot_present(void* leader) override {
+        std::size_t unit = 0;
+        const bool present = route_unit(leader, unit);
+        if (!present) ++summary.cautious_route_no_slot;
+        return present;
+    }
+    bool tick_route_attached_0071fc40(void* leader) override {
+        std::size_t unit = 0;
+        if (!route_unit(leader, unit)) return false;
+        return units.commands().user_path_attached_0071fc40(unit);
+    }
+    int tick_route_remaining_0071d2a0(void* leader) override {
+        std::size_t unit = 0;
+        if (!route_unit(leader, unit)) return -1;
+        return units.commands().user_path_remaining_0071d2a0(unit);
+    }
+    bool tick_issue_clearorders(void* leader) override {
+        std::size_t unit = 0;
+        if (!route_unit(leader, unit)) return false;
+        // 00A14E8A: 004F1830(1) builds the descriptor (kind 0), then 0077D600.
+        bsp::SceneCommandTarget target{};
+        ++summary.cautious_route_clears;
+        log_cautious_route(unit, "clearorders", 0);
+        done("AiCommand::cautious_clearorders", 0x00a14ea7u);
+        return units.issue_script_command(unit, bsp::kAiSceneCommandClearOrders, target,
+            bsp::kAiSceneCommandFlags, "ai_cautious_route", unit_name(unit)) != nullptr;
+    }
+    float tick_danger_cost_00a010f0(const float point[3], int team) override {
+        // 00A010F0: over [[00E188A8]+19CCh]+58h, the entities whose +54h is
+        // `team`, the class weight 009FDF30 times 00419010(PartyPresence_
+        // DistanceMin (+190h) -> 1, PartyPresence_DistanceMax (+194h) -> 0, the
+        // x/z distance), summed when that factor is above zero. LABELLED: the
+        // list is this host's active units in index order.
+        // LABELLED SUBSTITUTION: this host's tuning block carries only the
+        // reconstructed key subset, so +190h/+194h read zero. The values are this
+        // installation's highlvlaiglobals.lua (mtime 2024-07-13), 2000 and 4000 in
+        // all seven mode tables (lines 91/92, 279/280, ..., 1130/1131).
+        const float near_distance = tuning.at(0x190) != 0.0f ? tuning.at(0x190) : 2000.0f;
+        const float far_distance = tuning.at(0x194) != 0.0f ? tuning.at(0x194) : 4000.0f;
+        float total = 0.0f;
+        for (std::size_t unit = 0; unit < units.count(); ++unit) {
+            if (!units.unit_active(unit)) continue;
+            if (units.unit_side_0054(unit) != team) continue;
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units.unit_position_00fc(unit, x, y, z);
+            const float dx = static_cast<float>(static_cast<double>(point[0]) - x);
+            const float dz = static_cast<float>(static_cast<double>(point[2]) - z);
+            const double d2 = static_cast<double>(dz) * dz + static_cast<double>(dx) * dx + 0.0;
+            const float distance = d2 <= 1.0e-10 ? 0.0f : static_cast<float>(std::sqrt(d2));
+            const float factor = bsp::clamped_interpolate_00419010(near_distance, 1.0f,
+                far_distance, 0.0f, distance);
+            if (0.0f < factor) {
+                total = static_cast<float>(static_cast<double>(unit_class_weight(unit)) * factor
+                                           + total);
+            }
+        }
+        done("AiCommand::danger_cost_00a010f0", 0x00a010f0u);
+        return total;
+    }
+    void tick_route_send_point_0071d340(void* leader, const float point[3]) override {
+        std::size_t unit = 0;
+        if (!route_unit(leader, unit)) return;
+        float min_x = 0.0f, max_x = 0.0f, min_z = 0.0f, max_z = 0.0f;
+        bool outside = false;
+        if (units.world_bounds_box_00e188a8(min_x, max_x, min_z, max_z)) {
+            outside = point[0] < min_x || point[0] > max_x || point[2] < min_z
+                || point[2] > max_z;
+        }
+        ++summary.cautious_route_points;
+        units.commands().post_user_path_point_0071d340(unit, point, outside);
+    }
+    void log_cautious_route(std::size_t unit, const char* what, int points) {
+        if (cautious_route_logs >= 60) return;
+        ++cautious_route_logs;
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        units.unit_position_00fc(unit, x, y, z);
+        log.notef("  ai cautious route: t=%.2f leader=%s %s points=%d at=(%.0f, %.0f) "
+            "(00A14DD0, packet cc9_director_moveonpath_route)", clock_seconds,
+            unit_name(unit).c_str(), what, points, static_cast<double>(x),
+            static_cast<double>(z));
+    }
+    int cautious_route_logs{0};
+
     void tick_replace_command(void* group, bsp::AiCommandType type) override {
         // 00A12C1B: new(20h) + 00A10710(group, target), vtable 00D22C44, then
         // 00A2BD00 deletes the outgoing command and stores the replacement.
@@ -4069,6 +4183,13 @@ void GameAiCoordinatorHost::report() {
         }
     }
     host.summary.units_with_task = static_cast<unsigned long long>(with_task);
+    host.log.notef("summary mission ai cautious route bound=%d builds=%llu points=%llu "
+        "clears=%llu waits=%llu movetos=%llu no_slot=%llu party_presence=%.0f/%.0f "
+        "(00A14DD0, packet cc9_director_moveonpath_route)", bsp::kCautiousRouteBound ? 1 : 0,
+        host.summary.cautious_route_builds, host.summary.cautious_route_points,
+        host.summary.cautious_route_clears, host.summary.cautious_route_waits,
+        host.summary.cautious_route_movetos, host.summary.cautious_route_no_slot,
+        static_cast<double>(host.tuning.at(0x190)), static_cast<double>(host.tuning.at(0x194)));
     host.log.notef("summary mission ai coordinator game_mode=%d compose=%llu seeds=%llu "
         "groups_created=%llu destroyed=%llu members_added=%llu evicted=%llu splits=%llu "
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
