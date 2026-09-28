@@ -206,6 +206,17 @@ inline constexpr bool kReconLevelTableBound = true;
 // the native stays an unimplemented record.
 inline constexpr bool kPilotMoveToBound = false;
 
+// Packet cc9_pilot_move_on_path (docs/GAME_SHIP_NAVIGATION_BINDING.md,
+// "PilotMoveOnPath"). True: the Lua native PilotMoveOnPath (008A3E70) is served
+// by the NavigatorMoveOnPath body without its speed half. 008A3E70 reads the
+// entity (00888AA0), the optional follow mode (argument 2, default 1) and
+// start/parameter (argument 3, default 5), then the path (argument 1, 0088A810,
+// resolved through the 00F89A54 / 00F89AA8 handle tables), and routes the same
+// 5Bh MT_GAMEUNIT_MOVEONPATH message (path id +174h at +20h, the pair at +24h /
+// +28h) through 0077C2A0; it has no argument 4 and no 00890E6F speed store.
+// False: the native stays an unimplemented record.
+inline constexpr bool kPilotMoveOnPathBound = false;
+
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo
 // (008A7200) fires the unit's torpedo guns through 00730160, all of them or
@@ -571,6 +582,9 @@ private:
     bool pilot_move_to_plain_{false};
     unsigned long long pilot_move_to_calls_{0};
     unsigned long long pilot_marker_goals_{0};
+    // Packet cc9_pilot_move_on_path: set while PilotMoveOnPath runs the body.
+    bool pilot_path_no_speed_{false};
+    unsigned long long pilot_move_on_path_calls_{0};
     int run_entity_turn_to_entity(GameScriptOrderRow& row);
     int run_unit_set_fire_stance(GameScriptOrderRow& row);
 public:

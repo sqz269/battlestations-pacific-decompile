@@ -1,0 +1,25 @@
+{
+  "packet": "cc9_pilot_move_on_path",
+  "doc": "docs/GAME_SHIP_NAVIGATION_BINDING.md, PilotMoveOnPath",
+  "switch": "kPilotMoveOnPathBound (include/bsp/game_hosts_script_orders.hpp), committed OFF",
+  "addresses": {
+    "008A3E70": "PilotMoveOnPath: entity 00888AA0, follow mode arg 2 (default 1), parameter arg 3 (default 5), path arg 1 via 0088A810 and the 00F89A54/00F89AA8 tables; message 5Bh (path id +174h at +20h, pair +24h/+28h) routed by 0077C2A0 flags 0; no speed argument or 00890E6F store",
+    "008A3600": "NavigatorMoveOnPath: the same message plus argument 4 speed and the 00890E6F store",
+    "00721A40": "director 5Bh arm 00721AA3..00721ADB: queue 00E08F80 moveonpath on the path descriptor, then 0071C1B0 pair",
+    "007CCFA0": "plane handler: msg->vtable[0Ch](62h) fails for the 5Bh class (0075AFF0 answers 5Bh/59h/49h/46h); kind switch from 7Ah, so 5Bh falls to 0095ABE0's default"
+  },
+  "calls": [],
+  "substitutions": [
+    "the plane bot's path task (0099A170's 00E08F80 arm and its follower) is not installed: the director holds the path command, the flight keeps its current task"
+  ],
+  "predictions": {
+    "JM06_3200_3000": "1 call served; the Catalina's director takes moveonpath CatalinaPatrolPath (12 points, mode 1, parameter 5); flight unchanged, exit 1 (exit 3 would mean the queued command displaced a command the controller reads)",
+    "BSM01_3200_3000": "2 calls served (P-40 pair, PATH_FM_CIRCLE); exit 1",
+    "USN01_3200_3000": "exit 0 or 1",
+    "USN02_9200_9000": "exit 0 or 1",
+    "USN04_4700_4500": "exit 0 or 1"
+  },
+  "off_commit": "pending",
+  "no_ghidra_function": [],
+  "names_added": []
+}

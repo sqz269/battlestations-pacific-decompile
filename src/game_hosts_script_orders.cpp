@@ -84,6 +84,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc9_pilot_move_to: prcpjm08.lua:573 and :722. Handled only with
     // kPilotMoveToBound.
     {"PilotMoveTo", 0x008a4150u},
+    // Packet cc9_pilot_move_on_path: jm06.lua:118 and :2392. Handled only with
+    // kPilotMoveOnPathBound.
+    {"PilotMoveOnPath", 0x008a3e70u},
     // Packet cc9_pilot_moveto_task part 1b: the same callback's turn and
     // stance. Handled only with kMissionTurnAndStanceBound.
     {"EntityTurnToEntity", 0x008a0a10u},
@@ -388,6 +391,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "PilotMoveTo") == 0) {
         return kPilotMoveToBound && bsp::kPilotMoveToTaskBound;
     }
+    if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) return kPilotMoveOnPathBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
@@ -1731,6 +1735,8 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
 // The pair at *(entity+73Ch)+24h and +28h, 008a3901 and 008a3912. The same
 // store luaMW_SetShipSpeed 00890d30 makes, which this host already owns.
 void GameScriptOrdersHost::entity_store_commanded_speed(void* entity, float speed) {
+    // 008A3E70 (PilotMoveOnPath) has no 00890E6F store.
+    if (pilot_path_no_speed_) return;
     const std::size_t index = index_of(entity);
     if (index >= units_.count()) return;
     units_.store_commanded_speed_00890e6f(index, speed);
@@ -2006,6 +2012,22 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_unit_set_fire_stance(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
+    } else if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) {
+        // 008A3E70: the NavigatorMoveOnPath message without the speed half.
+        ++pilot_move_on_path_calls_;
+        bsp::NavigatorPathOrder order{};
+        void* outer_path_entity = path_entity_for_order_;
+        const bool outer_no_speed = pilot_path_no_speed_;
+        path_entity_for_order_ = entity_from_argument(1);
+        pilot_path_no_speed_ = true;
+        results = bsp::lua_binding_navigator_move_on_path(*this, *this, order);
+        pilot_path_no_speed_ = outer_no_speed;
+        path_entity_for_order_ = outer_path_entity;
+        row.command = "moveonpath";
+        row.target = name_of(entity_from_argument(1));
+        row.path_follow_mode = order.follow_mode;
+        row.path_parameter = order.path_parameter;
+        row.path_object_id = order.path_object_id;
     } else if (std::strcmp(binding->name, "NavigatorMoveOnPath") == 0) {
         bsp::NavigatorPathOrder order{};
         void* outer_path_entity = path_entity_for_order_;
@@ -3411,6 +3433,9 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script pilot move on path bound=%d calls=%llu (008A3E70, "
+        "packet cc9_pilot_move_on_path)", kPilotMoveOnPathBound ? 1 : 0,
+        pilot_move_on_path_calls_);
     log_.notef("summary mission script pilot move to bound=%d calls=%llu marker_goals=%llu "
         "(008A4150 / 009BEBA0, packet cc9_pilot_move_to)", kPilotMoveToBound ? 1 : 0,
         pilot_move_to_calls_, pilot_marker_goals_);
