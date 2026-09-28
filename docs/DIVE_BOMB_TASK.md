@@ -5341,7 +5341,7 @@ player, present interval immediate):
 **Verdict: `kDiveProfileDrawBound = true`.** The mechanism matches the listing on all three rows.
 USN01's miss is the spread, recorded above.
 
-## Departed wingmen keep their task's squadron block (packet `cc9_air_ops_squadron_registry`, `kDepartedWingmanTaskBlockBound`, committed OFF)
+## Departed wingmen keep their task's squadron block (packet `cc9_air_ops_squadron_registry`, `kDepartedWingmanTaskBlockBound`, ON)
 
 Worker cc9-lua6, 2026-09-28.
 
@@ -5384,3 +5384,24 @@ player, present interval immediate):
 | USN04 4700/4500 | **exit 3, small.** The per-member draw lines of dead wingmen go away (`movieval|.-2`, `D3A Val #1.1|.-2/.-3/.-4`, `#3.1|.-3/.-4`, `#5.1|.-2/.-3/.-4`). Those planes now read their squadron's `+398h` instead of their own draw. `block_reads > 0`. Only dead aircraft steer differently, so deaths, releases and hits on live targets are unchanged. Crash positions, and so plane water contacts, may move |
 | LOMP10 3200/3000 | **exit 1 or small 3.** `Warhawk 01|.-3` and `|.-4` read the squadron block, which is forced at 150 m, instead of their own ~1000. The same dead-only scope applies |
 | USN01 3200/3000 | **exit 0.** No dive-bomb plane dies with a draw; `block_reads=0` beside the unchanged census |
+
+### Departed-wingman pairs and verdict
+
+- OFF is this tree's build of `bff5436ba`.
+- ON is `pair_export --commit bff5436ba --flip kDepartedWingmanTaskBlockBound=true` (`local/dw_on`).
+- The logs are `local/dw_{off,on}_<mission>.log` in worktree cc9-lua6.
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1 (predicted small 3) | `block_reads=811`. Each dead wingman's own-block draws fall from 10..218 to one | held |
+| LOMP10 3200/3000 | exit 1 (predicted 1 or small 3) | `block_reads=422`. `Warhawk 01|.-3` goes from 11 draws to 1, and `|.-4` has none | held |
+| USN01 3200/3000 | exit 1 (predicted 0) | the new summary line (`block_reads=0`); the prediction missed that it always prints | held |
+
+**The one remaining draw per dying plane** falls in its death tick. The plane has already left
+`member_units` (the removes-dead slot clear) but is not yet in `departed_units` (the compaction).
+For that one tick it resolves no record and takes its own slot. **LABELLED**, one tick per death.
+
+Gameplay is identical on all three rows. Only dead aircraft steer differently, and nothing compared
+moved.
+
+**Verdict: `kDepartedWingmanTaskBlockBound = true`.**

@@ -342,7 +342,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // True: in the dive profile, a departed plane resolves its block through the
 // squadron it left and takes 007B8AD0 from its kept +9D8h. False: it falls back
 // to its own slot and counts as a leader.
-inline constexpr bool kDepartedWingmanTaskBlockBound = false;
+inline constexpr bool kDepartedWingmanTaskBlockBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kDiveProfileDrawBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
