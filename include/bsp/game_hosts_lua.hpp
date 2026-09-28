@@ -206,7 +206,7 @@ inline constexpr bool kLuaSetShipSpeedBound = true;  // ON: pairs held (docs/LUA
 // category (vtable[0Ch]) is 1 or 2, resolved through 0071EB60 and 00521EA0. A result whose
 // +5Dh removed byte is clear is pushed as thisTable[id], anything else as nil.
 // True: route the row to run_unit_get_attack_target_008a6de0. False: unimplemented (nil).
-inline constexpr bool kLuaUnitGetAttackTargetBound = false;
+inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;

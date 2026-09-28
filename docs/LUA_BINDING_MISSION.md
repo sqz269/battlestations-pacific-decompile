@@ -1970,3 +1970,23 @@ player):
 | --- | --- |
 | LOMP06 1200/1000 | **exit 1.** All 21 calls take the fire arm on the Narwhal. The host already gives the Narwhal a fire target (`fire=Komaki Maru` in cc9-lua2's `sp_on_lomp06.log`), so most calls push it. `GetSubmarineDepthLevel` goes 21 -> about 42, since line 699 now runs. `GetProperty` `reconlevel` asks rise by the same number, since the seeded depth level is 1. `luaSubC1AddUnit` runs only if the target is one of the two crucial cargo ships picked by `luaPickRnd` and its allied recon level is at least 2. That would add `luaObj_AddUnit` and `MissionNarrative` calls, which are script state, not unit motion |
 | USN01, USN02, USN04 | no call, exit 1 |
+
+### UnitGetAttackTarget pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `8ff75c1d8`.
+- ON is `pair_export --flip kLuaUnitGetAttackTargetBound=true` (`local/ga_on`).
+- The logs are `local/ga_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| LOMP06 1200/1000 | `calls=21 fire_arm=21 pushed=21`. Every call answers the Narwhal's fire target, **Yugiri**. `GetSubmarineDepthLevel` 21 -> 42, `GetProperty` `reconlevel` 0 -> 21, `MissionNarrativeClear` appears with 21 calls. Yugiri is a destroyer, not one of the cargo candidates, so `luaSubC1AddUnit` does not run and `MissionNarrative` stays at 1. pair_diff exit 1: gameplay, deaths and the unit table identical | held |
+| USN01 3200/3000 | no call, exit 1, native table identical | held |
+| USN04 4700/4500 | no call, exit 1, native table identical | held |
+| USN02 9200/9000 | no call, exit 1, native table identical | held |
+
+**Verdict: `kLuaUnitGetAttackTargetBound = true`.** The answer depends on the ship AI host's
+fire target for the player's own submarine. The auto-target enable gate `009F5610` has no
+player test (it reads director+3Dh and the head command's category only). Whether the tick
+`009F5DA0` is reached for a player-controlled unit is the ship AI host's modelling, not
+established by this packet.
