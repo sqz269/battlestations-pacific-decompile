@@ -1225,3 +1225,63 @@ ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=tru
 **Verdict: ON.** `kSetCommandClearAllMessageBound = true`.
 
 **Still open.** The idle tail's own 0071ECF0 make-room runs in the director step, and its drop now posts for row 9 like the others. The only remaining in-place director write in this path is 0071D810's stage store, which the image also makes directly.
+
+## 30. The USN04 dive-release drop: the first dive step against the image (read, cc9-gunnery6)
+
+**Question** (reference i's flag): with the loopback queue ON, USN04's dive-bomb releases fall from 10 of 19 to 4 of 19, while installs stay at 19 of 19. Does the image's dive-bomb task take its first step, relative to the 25 m aim gate, at the same fixed step as the host now, or one step earlier or later?
+
+**The image's timing**, for a PilotSetTarget run by the Lua drain (row 2) of step N:
+1. The MT_COMMAND is posted through 0077D600 / 0077C2A0 / 0076E520 and delivered at row 9 of step N. The SETCMD follows it in the same drain, so the director holds the command from row 9 of N (sections 26-27).
+2. The task is installed by the bot tick 0099ACD0, not at delivery. `docs/PILOT_BOT_TICK_GATES.md` has the retire-then-install; `src/pilot_command_path.cpp` `run_pilot_bot_command_tick_0099acd0` reconstructs the order:
+```
+0099ae72: MOV ECX,dword ptr [ESI + 0x58]   ; head task before
+0099ae7b: PUSH EBX
+0099ae7c: MOV ECX,ESI
+0099ae7e: CALL 0x0099a4c0                  ; retire head tasks that are over
+...
+0099a5e8: mov ecx, esi                     ; list at +58h empty:
+0099a5eb: jmp 0x99a170                     ; tail-jump to BSP_Bot_InstallCommandTask
+...
+0099af1c: CALL 0x009998a0                  ; BSP_PilotBot_Update
+009998fb: CALL EAX                         ; task->vtable[64h](dt), the per-kind arm
+```
+   So a task installed in a tick takes its first arm step in that same tick. The bot tick is the pilot think in the entity think (row 7). The first bot tick after the row-9 delivery is step N+1. **The image's first dive step is therefore at N+1 at the earliest.** It is later only when 0099A4C0 does not yet retire the old head, because its `vtable[38h]` / `[34h]` / `[40h]` predicates keep it. That can delay the install; it cannot bring it forward.
+3. The aim gate itself is not timing-dependent. It is the 25 m window at `00CE3880`, read at `009C60C1` after `009C60BB COMISS XMM0,[ESI+1Ch] / 009C60BF JB 009C611C` (`docs/DIVE_BOMB_TASK.md`, "The gate now").
+
+**The host's timing:**
+- **Before the queue** (OFF, `kSetCommandQueueDelayBound = false`): the install ran inside the issue at row 2 of step N (`after_order_delivery` in place). `run_dive_bomb_task_arm_009c8790` then ran on the pilot think of step N. That is **one fixed step earlier** than the image's earliest.
+- **Now** (ON, `1a6149672` / `c25c1fe7d`): the install runs after the row-9 delivery of step N. The first arm step is the pilot think of step N+1, which is the image's earliest.
+
+**Verdict.** The ON host's first dive step matches the image's earliest, so the difference against the old host is the image's own: the old host started every ordered dive one step early. USN04's 10 -> 4 releases is that one-step start at the aim gate, a knife-edge, and it is recorded as the image's. **Nothing is bound.**
+
+**Still open.**
+- **The retire predicate.** If the old head task survives 0099A4C0 for some ticks, the image starts later still. The candidates are the move-to or squadron task a PilotSetTarget aircraft holds, and `vtable[38h]`, `should_abandon` when `+2F4h == *(+2FCh + 3D0h)` (`docs/BOT_TASKS.md`). The host has no per-kind retire predicates for those tasks. That read, and moving the install into the retire path, belongs to the units and script-orders hosts (`docs/SENTITY_INIT_ATTACH_ORDER.md` 22.7).
+- **Reference i** should take USN04's releases from an ON build and cite this section.
+
+### Addendum: the gate's place in the step, and Val #1.1|.-2's lost releases (packet `cc9_dive_release_timing`)
+
+**The gate runs before the same-step delivery.**
+- The 25 m test (`009C60BB COMISS` / `009C60BF JB` / `009C60C1`) is part of the dive task's arm `task->vtable[64h]`. The arm runs from the pilot bot tick (`0099AF1C` -> `009998FB`) in the entity think, fan-out row 7 (00875E64).
+- The order's delivery is row 9 (00875E91, 0076C600).
+- In the image, the gate of step N therefore never sees an order posted in step N. It sees it from step N+1. The ON host is the same: the install follows the row-9 delivery, and `run_dive_bomb_task_arm_009c8790` runs on the next pilot think.
+
+**Val #1.1|.-2** (`local\g6off2_usn04.log` against `local\g6on2_usn04.log`, the section-27 pair). OFF has five releases, ON has none.
+
+| | OFF (old host, one step early) | ON (image timing) |
+| --- | --- | --- |
+| hand-overs (arm tick) | flyabove>turndown 1010, turndown>aimdive 1064, aimdive>aimglide 1202 | 1009, 1063, aimdive>goaway 1221 |
+| dive entry | 875.3 m, pitch -0.419 | 878.1 m, pitch -0.419 |
+| 009C58D0 steer at exit | pitch 0.941, roll -1.000, bearing -0.711 rad | pitch 1.000, roll 0.093, bearing -0.037 rad |
+| abort 009C5B43 | fired at arm tick 1201: range 257.1 m, h14 365.3 m, d4 724.6 m | never fired |
+| aimdive exit | `alive_19` into aimglide at 358 m | `pullout_18` into goaway at 214 m |
+| aim error closest | 0.26 m at range 287.6 m, alt 397.2 m | 1.51 m at range 436.4 m, alt 505.0 m |
+| releases | 5 bomb requests, t = 144.70 s (alt 402.9 m) to 146.60 s (alt 264.7 m) | 0 |
+| impact 009C7D71 | range 412.2 m | range 583.9 m |
+
+**Reading.**
+- The five releases were not lost at the 25 m window. The ON aim error passed inside it, at 1.51 m.
+- The OFF releases come from aimglide, and aimglide is reached only through 009C5B43's abort test. ON dives with a different run-in: it is 170 m further from the impact point at the same stage, with the roll released. The abort never fires, and the pull-out ends the dive at 214 m.
+- The hand-over ticks differ by one, and the target geometry differs through the changed exchange around Lexington, a whole battle's trajectory.
+- Under the image's timing, which is the ON host, this dive does not release. The image would have released only on a run-in that meets 009C5B43, and this one does not.
+
+**Verdict.** The release drop is recorded as the image's own consequence of the command delay: a changed dive geometry at the abort test, not a timing difference at the aim gate. Nothing is bound, and no pair is needed.
