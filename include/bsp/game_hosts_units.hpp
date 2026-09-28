@@ -150,7 +150,7 @@ inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/
 // and 006C3F80's k=0 mode-4 arm (the launch-site object) are REFUSED, counted.
 // False: 006BD080 misses every time and every request answers mode 1.
 // docs/SQUADRON_LAND_TASK.md section 5c.
-inline constexpr bool kLandingSequencerBound = false;
+inline constexpr bool kLandingSequencerBound = true;  // ON: pairs held, gameplay identical (docs/SQUADRON_LAND_TASK.md 5c)
 
 class GameHostLog;
 class GameMissionLuaHost;
