@@ -686,6 +686,7 @@ struct GameShipAiHost::Impl {
         std::uint32_t active_state_ai_offset{0};  // ai+2264h
         std::uint32_t active_state_command{0};
         bsp::NativeHandle fire_target{0};       // director+238h as this process holds it
+        bool fire_target_locked{false};         // director+23Ch (packet cc9_usn02_deruyter_fire)
         std::string sample;                     // the last line log_sample emitted
         // Milestone 2o. `drive` is the labelled diagnostic stand-in of
         // --ai-drive; the two live values are the previous step's ring+148h /
@@ -897,6 +898,8 @@ struct GameShipAiHost::Impl {
     };
     std::vector<Controller> controllers;
     std::vector<GameShipAiRow> rows;
+    unsigned long long script_fire_target_sets{0};      // packet cc9_usn02_deruyter_fire
+    unsigned long long script_fire_target_releases{0};
     GameShipAiSummary summary{};
     unsigned long long steps{0};
     bool logged_position{false};
@@ -7497,10 +7500,15 @@ public:
         return reinterpret_cast<void*>(static_cast<std::uintptr_t>(ctl_.fire_target));
     }
     bool director_target_locked() override {
-        // [director+23Ch], the target-change gate 00835860 writes. Nothing in
-        // this process sets it, and its only writer is the setter itself.
-        owner_.record("AutoTarget::director_target_locked", 0x009f5e37u);
-        return false;
+        // [director+23Ch], the target-change gate 00836240 stores from the 5Eh
+        // message. Packet cc9_usn02_deruyter_fire: SetFireTarget sets it.
+        if constexpr (kScriptFireTargetBound) {
+            owner_.done("AutoTarget::director_target_locked", 0x009f5e37u);
+            return ctl_.fire_target_locked;
+        } else {
+            owner_.record("AutoTarget::director_target_locked", 0x009f5e37u);
+            return false;
+        }
     }
     int director_command_state() override {
         owner_.record("AutoTarget::director_command_state", 0x009f5e69u);
@@ -7579,7 +7587,24 @@ public:
             = bsp::auto_target_scan_009f5d30(config, candidates);
         owner_.done("AutoTarget::scan_party_list", 0x009f5d30u);
         owner_.done("AutoTarget::score_candidate", 0x009f5b70u);
-        if (scan.best != nullptr) {
+        // Packet cc9_usn02_deruyter_fire: a scripted, locked target stays the
+        // gun target; step 15 will not replace it, so the row keeps its name.
+        bool keep_locked = false;
+        if constexpr (kScriptFireTargetBound) {
+            if (ctl_.fire_target_locked && ctl_.fire_target != 0) {
+                const GameUnitRow* held = owner_.units.unit_row(
+                    static_cast<std::size_t>(ctl_.fire_target) - 1);
+                if (held == nullptr || !held->active) {
+                    // LABELLED: the observer pair releases a dead target.
+                    ctl_.fire_target = 0;
+                    row_.fire_target.clear();
+                    ++owner_.script_fire_target_releases;
+                } else {
+                    keep_locked = true;
+                }
+            }
+        }
+        if (scan.best != nullptr && !keep_locked) {
             const std::size_t chosen
                 = static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(scan.best)) - 1;
             const GameUnitRow* row = owner_.units.unit_row(chosen);
@@ -8412,6 +8437,25 @@ void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
 }
 
 const std::vector<GameShipAiRow>& GameShipAiHost::rows() const noexcept { return impl_->rows; }
+
+void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t target_plus_one,
+                                                bool force) {
+    // 00836240: applies when force is set, or +23Ch is clear, or +238h is null;
+    // then +23Ch = force and, when the target changes, +238h = target.
+    if (unit >= impl_->controllers.size() || unit >= impl_->rows.size()) return;
+    Impl::Controller& ctl = impl_->controllers[unit];
+    if (!(force || !ctl.fire_target_locked || ctl.fire_target == 0)) return;
+    ctl.fire_target_locked = force;
+    const bsp::NativeHandle target = static_cast<bsp::NativeHandle>(target_plus_one);
+    if (ctl.fire_target != target) {
+        ctl.fire_target = target;
+        const GameUnitRow* row = target_plus_one != 0
+            ? impl_->units.unit_row(target_plus_one - 1) : nullptr;
+        impl_->rows[unit].fire_target = row != nullptr ? row->name : std::string();
+    }
+    ++impl_->script_fire_target_sets;
+    impl_->done("WeaponDirector::store_fire_target", 0x00836240u);
+}
 const GameShipAiSummary& GameShipAiHost::summary() const noexcept { return impl_->summary; }
 
 void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long long interval) {
@@ -8499,6 +8543,10 @@ void GameShipAiHost::report() {
         host.summary.units, host.summary.ai_owned, host.summary.steps, host.summary.gated,
         host.summary.replans, host.summary.state_steps_concrete,
         host.summary.state_steps_recorded, host.summary.publishes, host.summary.promotions);
+    host.log.notef("summary mission ship ai script fire target bound=%d sets=%llu releases=%llu "
+        "(0089A8B0 / 00835860 / 00836240, packet cc9_usn02_deruyter_fire)",
+        kScriptFireTargetBound ? 1 : 0, host.script_fire_target_sets,
+        host.script_fire_target_releases);
     host.log.notef("summary mission ship ai marker goals bound=%d resolves=%llu (00521EA0 / "
         "009DBCC0 on a NavPoint, packet cc9_prcp03_phase_progress)",
         kShipAiMarkerTargetBound ? 1 : 0, host.summary.marker_goal_resolves);

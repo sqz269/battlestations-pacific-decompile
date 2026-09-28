@@ -1,0 +1,39 @@
+{
+  "packet": "cc9_usn02_deruyter_fire",
+  "doc": "docs/USN02_DERUYTER_FIRE.md",
+  "switch": "kScriptFireTargetBound (include/bsp/game_hosts_ship_ai.hpp)",
+  "addresses": {
+    "0089A8B0": "SetFireTarget: entity 00888AA0; target nil / entity / Vector3 dummy; director = vtable[114h]; 00835860(target, 1)",
+    "00835860": "routes kind 5Eh when force, or +23Ch clear, or +238h null",
+    "00836240": "5Eh receiver: +23Ch = force; +238h = target on change, observer pair",
+    "009F5DA0": "selector step 15 at 009F5EFD..009F5F21: skip when the director reports a target and +23Ch is set"
+  },
+  "calls": [],
+  "substitutions": [
+    "a dead locked target is released (+238h cleared), as the observer pair implies",
+    "the Vector3 dummy target is not modelled"
+  ],
+  "predictions": {
+    "USN02": "14 SetFireTarget calls; Haguro/Yudachi/Murasame on DeRuyter, Jintsu/Samidare/Harusame on Java; DeRuyter to her 10% floor; phase 1 ends at 120-330 s (frames 2400-6600) before Exeter's 385.68 s loss; exit 3",
+    "USN01": "identical (no calls)",
+    "USN04": "identical (no calls)",
+    "JM06": "identical (calls not reached in 3000 frames)"
+  },
+  "off_commit": "6c936d2d0",
+  "results": {
+    "logs": "local/ft_{off,on}_{usn02,usn01,usn04,jm06}.log",
+    "USN02": "exit 3; sets 20, releases 4; phase 2 reached (units 28 -> 32, GenerateObject at mission frame ~3089); deaths 12 -> 19; failure 386.13 -> 153.50 s (Exeter sunk 151.30 s by Tokitsukaze torpedo)",
+    "USN01": "exit 1",
+    "USN04": "exit 1",
+    "JM06": "exit 1"
+  },
+  "no_ghidra_function": [],
+  "names_added": [],
+  "verdicts": {
+    "phase1_end": "held (about 154 s, in 120-330 s)",
+    "calls": "failed: 14 predicted, 24 native calls, 20 stored; the split is not established",
+    "exeter": "lost earlier, 151.30 s, to a Tokitsukaze torpedo; attribution not proven",
+    "identity": "held on USN01, USN04, JM06"
+  },
+  "decision": "ON"
+}

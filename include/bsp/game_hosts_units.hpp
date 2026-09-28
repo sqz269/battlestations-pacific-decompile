@@ -357,6 +357,8 @@ public:
     // unit's own 84-byte order slot, which the motion's head at 00825f2c then
     // promotes. Both are the same object, so the host is attached here.
     void set_ship_ai(GameShipAiHost* ai) noexcept;
+    // Packet cc9_usn02_deruyter_fire: the ship AI the script orders reach.
+    GameShipAiHost* ship_ai() noexcept;
     // Milestone 2t: the gun chain this host owns, or null before create_units.
     GameGunneryHost* gunnery() noexcept;
     const GameGunneryHost* gunnery() const noexcept;
