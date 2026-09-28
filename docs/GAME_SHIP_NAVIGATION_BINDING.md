@@ -319,3 +319,76 @@ committed OFF:**
 
 USN01, USN02 and USN04 stay identical: none calls `PilotMoveTo`, and none issues a
 `PilotMoveToRange` at a marker.
+
+### `PilotMoveOnPath`, `008A3E70` (packet `cc9_pilot_move_on_path`)
+
+**The native.**
+- Argument 0 goes through `00888AA0` (`008A3F7A`), the entity.
+- Argument 2, when three or more arguments are given, goes into `EBP`. The default is 1
+  (`008A3F3C`), the follow mode.
+- Argument 3, when four are given, goes into `ESI`. The default is `EBP+4`, which is 5
+  (`008A3F97`), the start/parameter.
+- The path, argument 1, is read last through `0088A810` (`008A4031`). It is resolved through the
+  handle tables `00F89A54` / `00F89AA8` (`008A4055`..`008A4086`), the same tables `00521EA0`
+  reads.
+- It then builds session message **5Bh `MT_GAMEUNIT_MOVEONPATH`** (`0075B430(5Bh)` at `008A4092`,
+  message vtable `00D02E84`) with:
+  - the path's id word `+174h` at `+20h`;
+  - the follow mode at `+24h`;
+  - the parameter at `+28h`.
+- It routes the message on the entity through `0077C2A0` with flags 0 (`008A40E1`).
+
+**What differs from `NavigatorMoveOnPath` (`008A3600`, the ship body this host binds).** The
+argument order, the defaults (1, 5), the path resolution and the 5Bh message are the same. The
+differences:
+- `NavigatorMoveOnPath` reads a fifth argument, the speed, and after the message stores the class
+  (or given) speed through `00890E6F`. `PilotMoveOnPath` has neither.
+- `PilotMoveOnPath` is the same order without the speed half.
+
+**Where 5Bh lands on a plane.**
+- The plane's handler `007CCFA0` asks `msg->vtable[0Ch](62h)` first. The moveonpath message class
+  answers only 5Bh, 59h, 49h and 46h (`0075AFF0`), so that test fails.
+- Its kind switch starts at 7Ah, so 5Bh falls to `0095ABE0`, whose table sends 5Bh to its
+  default.
+- The delivery that acts is the session router's category-59h hop, `00780120` at `00780636`, to
+  the weapon director's `00721A40`, as in docs/CRUISE_COMMAND.md.
+- Its 5Bh arm (`00721AA3`..`00721ADB`) queues the `moveonpath` command class `00E08F80` with a
+  descriptor built from the path entity, then stores the mode pair through `0071C1B0`.
+- For a plane, the kind-specific follower is the plane bot's task for that class (`0099A170`'s
+  arms). This host does not install one.
+
+**The binding.** `kPilotMoveOnPathBound` in `include/bsp/game_hosts_script_orders.hpp` is
+committed OFF.
+- A `PilotMoveOnPath` row (`0x008a3e70`) runs the host's `lua_binding_navigator_move_on_path` with
+  the `00890E6F` speed store suppressed.
+- The host then routes the 5Bh order exactly as for a ship: the queued `moveonpath` command, the
+  `0071C1B0` pair, and `0071F600`'s path build from the scene path registry.
+- A new summary line counts the calls: `summary mission script pilot move on path`.
+- **Labelled:** the plane bot's path task (`0099A170`'s `00E08F80` arm and its follower) is not
+  installed. The plane's director holds the path command, but its flight is still driven by
+  whatever task it already had.
+
+**Callers on the measured missions** (read-only grep):
+
+| mission | call | reached |
+| --- | --- | --- |
+| JM06 | `PilotMoveOnPath(Mission.Catalina, FindEntity("CatalinaPatrolPath"))`, `jm06.lua:118`, in stage init | yes, 1 call in `rb6_jm06` |
+| JM06 | `PilotMoveOnPath(ent, Mission.ReconPath, PATH_FM_SIMPLE, PATH_SM_JOIN)`, `:2392`, checkpoint restore | no |
+| BSM01 | `PilotMoveOnPath(P-40 Warhawk 01 / 02, PatrolPath1 / 2, PATH_FM_CIRCLE)`, `bsm_01_stationed_at_pearl.lua:1877/1880` | yes, 2 calls in `rb6_bsm01` |
+| USN01, USN02, USN04, USN13, JM08, LOMP06 | none | - |
+
+The Catalina's call is at stage init, so the image flies CatalinaPatrolPath from the first frame.
+It is not a budget question. Flight along the path needs the plane-bot path task.
+
+### Predictions, before any run
+
+- **JM06 3200/3000:** 1 call served, UNIMPLEMENTED to concrete.
+  - The Catalina's director takes a `moveonpath` command for CatalinaPatrolPath: 12 points, follow
+    mode 1, parameter 5. `path_orders` rises by 1.
+  - Without the plane-bot path task, the Catalina's flight does not change, so gameplay is
+    identical (exit 1).
+  - If the queued command displaces an authored command the plane's controller reads, the
+    Catalina's row moves (exit 3). That would be the finding.
+- **BSM01 3200/3000:** 2 calls served (the P-40 pair, follow mode `PATH_FM_CIRCLE`), with the same
+  expectation (exit 1).
+- **USN01, USN02 and USN04: identical (exit 0 or 1).** None calls the native.
