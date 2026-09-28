@@ -101,3 +101,18 @@ Streams and the death table were on.
 **Decision: `kAutoTargetReconCandidatesBound` is ON.** The list is the image's (`009F5D4E`), the
 missions are identical, and the switch removes a stand-in. GUNNERY_OPEN_ITEMS section 16's
 rank 2, the commanded-target adoption, is next.
+
+## 7. USN01, and forced recon (the lead's two questions, after the flip)
+
+- **USN01 3200/3000.** `local\AR_OFF_usn01.log` against `local\AR_ON_usn01.log`, from the same two
+  builds: pair_diff **exit 1**, and the 5 death rows are identical. The ON census is 9362 scans,
+  a mean of 8.02 candidates and `unbuilt` 0. It is identity, like the other four missions.
+- **Forced recon entries do appear in the list.**
+  - `SetForcedReconLevel` (`kForcedReconLevelBound`, LUA_BINDING_MISSION "SetForcedReconLevel
+    pairs and verdict") raises a unit's level in the recon pass. That is the pass `008073C0`
+    publishes from.
+  - On USN13, 15 calls forced 60 units, and the pass published them (forced 2254, identified
+    22993 -> 23622).
+  - A forced enemy at level 2 lands in the enemy triple like any identified contact, so the scan
+    sees it. A forced level 1 stays a blip and does not.
+  - No pairing is needed: USN13 is identity under this switch with the forced units in.

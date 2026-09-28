@@ -11,7 +11,8 @@
     "USN02": "exit 1",
     "USN04": "exit 1",
     "USN13": "exit 1",
-    "JM08": "exit 1"
+    "JM08": "exit 1",
+    "USN01": "exit 1 (5 death rows identical); census 9362 / 8.02 / 0"
   },
   "census_on": {
     "USN02": [
@@ -40,5 +41,6 @@
     "all four missions predicted to move; all identical"
   ],
   "decision": "ON (the image's list; no gameplay change on these missions)",
-  "next": "section 16 rank 2: the commanded-target adoption (0071D6D0 / 00521EA0 / 009F5E69)"
+  "next": "section 16 rank 2: the commanded-target adoption (0071D6D0 / 00521EA0 / 009F5E69)",
+  "forced_recon": "forced level-2 enemies are published into the enemy triple and are scanned; level 1 stays a blip (LUA_BINDING_MISSION SetForcedReconLevel)"
 }
