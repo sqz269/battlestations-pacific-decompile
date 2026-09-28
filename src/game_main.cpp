@@ -488,6 +488,22 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             g_crash_dump_path[0] = '\0';
     }
     SetUnhandledExceptionFilter(harness_crash_record);
+    // Harness only (packet cc9_display_required), not the original executable's behaviour.
+    // An idle display timeout turns the display off during unattended runs, and then
+    // CreateDevice and Present fail with D3DERR_DEVICELOST (0x88760868). The run asks the
+    // system to keep the display and the machine awake while it lasts, and clears the
+    // request on every return path after this point.
+    struct DisplayRequiredScope {
+        EXECUTION_STATE previous{0};
+        explicit DisplayRequiredScope(bsp::game::GameHostLog& run_log)
+            : previous(SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED
+                  | ES_SYSTEM_REQUIRED)) {
+            run_log.notef("harness display required: SetThreadExecutionState(ES_CONTINUOUS | "
+                "ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED) previous=0x%08lx%s",
+                static_cast<unsigned long>(previous), previous == 0 ? " (call failed)" : "");
+        }
+        ~DisplayRequiredScope() { SetThreadExecutionState(ES_CONTINUOUS); }
+    } display_required_scope(log);
     if (crash_test_frame > 0) {
         bsp::game::arm_harness_crash_test(crash_test_frame);
         log.notef("harness crash test armed: null write before mission frame %ld",

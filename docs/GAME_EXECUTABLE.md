@@ -11221,6 +11221,12 @@ longer shot down, as the PilotMoveTo verdict says.
   - **The USN02 gap between `50851d56a` and the AddDamage/director shared OFF**, and USN13's
     27 -> 26 and 25 -> 26 gaps: not bracketed.
   - **JM08's 1351 -> 757 shots:** unpaired beyond PilotMoveTo.
+  - **USN02's failure moves again on the next base.** `kGeneratedShipAiBound` (`387d86314`,
+    merged as `f5863a954`) landed after this section's base. It gives the four phase-2 ships
+    (Nachi, Sazanami, Naka, Ushio) ship AI, and on that head USN02 fails at 212.91 s: an Ushio
+    torpedo sinks Exeter at 210.81 s, and Jintsu sinks Houston at 295.95 s. Deaths go 23 -> 26 and
+    hit records 797 -> 847 (docs/GENERATED_SHIP_AI.md section 5). Reference h's USN02 attribution
+    starts from that pair.
 - **Carried from f:**
   - USN02 664 -> 640, bracketed to merge `e4dbf38b2`, not paired on the e base.
   - USN02, the torpedo stock on top of the throttle cut: open.

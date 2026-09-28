@@ -1,0 +1,51 @@
+{
+  "packet": "cc9_display_required",
+  "files": [
+    "src/game_main.cpp",
+    "src/game_native_renderer_application.cpp",
+    "docs/TOOLING.md section 8.1"
+  ],
+  "change": {
+    "run_start": "SetThreadExecutionState(ES_CONTINUOUS|ES_DISPLAY_REQUIRED|ES_SYSTEM_REQUIRED) after the crash record, logged with the previous state",
+    "exit": "SetThreadExecutionState(ES_CONTINUOUS) by scope on every later return path",
+    "init_failure_only": "one SendInput zero-delta mouse move and a 2000 ms wait before the diagnostic retry; the run still exits 4",
+    "label": "harness only"
+  },
+  "tests": [
+    {
+      "log": "local/g4_dr_new.log",
+      "binary": "new build",
+      "display": "off (SC_MONITORPOWER 2), 20 s",
+      "result": "final COM release, exit 0, previous=0x80000000"
+    },
+    {
+      "log": "local/g4_dr_old.log",
+      "binary": "local/rb7 (before)",
+      "display": "off, 20 s",
+      "result": "final COM release, exit 0 (the expected exit 4 did not happen)"
+    },
+    {
+      "log": "local/g4_dr_old120.log",
+      "binary": "local/rb7",
+      "display": "off, 120 s",
+      "result": "final COM release, exit 0"
+    },
+    {
+      "log": "local/g4_dr_new2.log",
+      "binary": "new build with the nudge",
+      "display": "off, 20 s",
+      "result": "final COM release, exit 0"
+    }
+  ],
+  "not_established": [
+    "a broadcast monitor-off does not reproduce D3DERR_DEVICELOST, so neither the prevention nor whether ES_DISPLAY_REQUIRED wakes a dark display is shown",
+    "powercfg /requests needs elevation and was not run",
+    "the nudge path is unexercised"
+  ],
+  "identity": {
+    "log": "local/g4_dr_usn04.log",
+    "against": "local/rb7_usn04.log",
+    "pair_diff": 1,
+    "note": "gameplay, 40 death rows, 81 unit rows and 1645 native rows identical"
+  }
+}

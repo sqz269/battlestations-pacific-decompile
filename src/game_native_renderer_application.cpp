@@ -194,6 +194,20 @@ bool logonui_running() noexcept {
         static_cast<void*>(static_cast<unsigned char*>(renderer)+0x1a28));
     HRESULT retry=E_POINTER;
     char adapter[512]="(no IDirect3D9)";
+    // Harness only (packet cc9_display_required), not the original executable's behaviour.
+    // ES_DISPLAY_REQUIRED (game_main.cpp) keeps a lit display on but is not relied on to
+    // light a display that is already off. On this failure path only, one zero-delta mouse
+    // move is injected as user input, which does wake it, so the next queued run can create
+    // its device; the wait gives the display time to come back before the diagnostic retry.
+    {
+        INPUT nudge{};
+        nudge.type=INPUT_MOUSE;
+        nudge.mi.dwFlags=MOUSEEVENTF_MOVE;
+        const UINT sent=SendInput(1,&nudge,sizeof(nudge));
+        Sleep(2000);
+        log.notef("harness display nudge: SendInput zero-delta mouse move sent=%u, waited 2000 ms "
+            "before the diagnostic retry (harness only)",sent);
+    }
     if(d3d) {
         D3DPRESENT_PARAMETERS again=requested;
         IDirect3DDevice9* device=nullptr;
