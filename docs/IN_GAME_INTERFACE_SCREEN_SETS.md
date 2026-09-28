@@ -355,3 +355,36 @@ answers true, and the classifier picks INTF_PLANE (22h).
     does not depend on it.
 - USN04 and USN02 are identical in the combined pair.
 - **Verdict: `kPlaneInFlightTestBound = true`.**
+
+### 007BB9A0's uncarried inputs (packet `cc9_plane_gate_inputs`, a read)
+
+Worker cc9-lua2, 2026-09-27. This is item 3 of the cc9-hud3 handoff. The question is whether the
+inputs the host does not carry could change the gate's answer on any measured run.
+
+**The only measured call** is USN01's `SetSelectedUnit(ScoutDauntless)`. On main (`gp_off_usn01`,
+cc9-lua2 tree) it logs:
+
+```
+plane=1 c0c=1 aa0=0.0 chA=0/0.00 00604a20=0 5d=0 -> 1
+```
+
+No other measured mission selects a plane.
+
+| input | writers the host lacks | reached on a measured run? | effect on the USN01 call |
+| --- | --- | --- | --- |
+| `+C0Ch` | `007B8C30 BSP_Plane_SetControlEnabled`, whose one caller is `008A5BD0` = the Lua native `SetPlayerControl` | no: `SetPlayerControl` appears in none of the eight measured mission scripts | none |
+| `+C0Ch` | `007C6871` in `007C6760`, from the air-operations launch path `006C3E50` (callers `006C5380`, `006C54C0`, `006C5C40`, `006C6020`) | only for a deck-launched plane: USN04 starts 4 launches, and USN01 and JM06 start 0 | none: ScoutDauntless is a `GenerateObject` squadron spawned in the air |
+| `+C0Ch` | the ground roll, `007CC0E5` in `007CBFA0 BSP_Plane_GroundRollStep` | only on a runway | none |
+| `+904h` | not carried | read only when `+900h` is 4 | none: ScoutDauntless is at `+900h` 7 |
+| `+AA0h` | `007D5D20` (0.0, then 5.0 for a `ShipYardLaunch` bag or a kind-2 descriptor's `+12Ah`, else -1.0) and `007B83F0` | the host carries 0.0 | none: the image's value for a scene squadron is -1.0 or 0.0, and both pass `<= 0` |
+
+**Result.** None of the uncarried inputs can change the one measured answer. No binding is
+warranted until a measured run selects a deck-launched plane, a plane on the ground, or a
+shipyard launch, or calls `SetPlayerControl`. Two conditions would then need these inputs, in
+this order:
+- **USN04's carrier strike, if the player selects one of its planes.** It needs `007C6760`'s
+  `+C0Ch` write.
+- **A `SetPlayerControl` script.** It needs `007B8C30`.
+
+This read did not open `008A5BD0`'s body. Its name comes from the binding table in
+`src/mission_lua_host.cpp` (`{"SetPlayerControl", 0x008A5BD0U}`).
