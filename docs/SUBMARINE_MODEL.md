@@ -606,6 +606,10 @@ One switch, `kSubmarineDepthLevelBound`, committed OFF:
 - Stage 3 is not modelled. Every host unit that reaches the seed is scene-sourced.
 - No depth writer is modelled (`008528B0`'s seven callers, SetSubmarineDepthLevel `00893F40`), so
   the level stays at its seed.
+  **Update (packet `cc9_set_submarine_depth_level`):** the Lua writer `00893F40` now stores the
+  level through `GameUnitsHost::set_submarine_depth_level_008528b0`
+  (`kLuaSetSubmarineDepthLevelBound`, `docs/LUA_BINDING_MISSION.md`). The other six callers of
+  `008528B0` and the dive are still not modelled.
 - A unit that is not a submarine answers 0. The image would read whatever that class has at
   `+1268h`.
 

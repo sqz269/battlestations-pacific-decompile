@@ -2152,3 +2152,23 @@ player):
 | --- | --- |
 | JM06 3200/3000 | **exit 1.** 5 calls, all resolved. `stored` counts only the calls that change a seeded submarine's level. The subs that `luaJM6SubInit` sets to 1 were most likely seeded at 1 and store nothing; a sub seeded at 0 stores. Nothing in JM06 reads the level back, and the host has no dive, so gameplay is identical |
 | LOMP06 1200/1000 | no call, exit 1 (the Narwhal's getter answers stay 1) |
+
+### SetSubmarineDepthLevel pairs and verdict
+
+**Setup.**
+- OFF is a clean `pair_export` of `30a5d1615` (`local/sd_off`).
+- ON is `pair_export --flip kLuaSetSubmarineDepthLevelBound=true` (`local/sd_on`).
+- The logs are `local/sd_{off,on}_<mission>.log`.
+- Both exports predate the `handled`-list fix in `b0c027e02`, so the native table counts the
+  calls twice (5 -> 10).
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | `calls=5 stored=0`, exit 1, death rows and unit table identical. All five calls are `luaJM6SubInit`'s and the group-1 followers' requests for level 1 on `PlayerSub 01..03`, each already seeded at 1, so `008528B0` stores nothing (`0085290D JE`). The I-400 calls (to 3, then to 0) are not reached in 3000 frames | held |
+| LOMP06 1200/1000 | no call, exit 1 | held |
+
+**Verdict: `kLuaSetSubmarineDepthLevelBound = true`.** The binding stores the level only.
+
+**The gameplay gap that remains is the dive itself.** `A2h` is not posted, and the hull move to
+`bands[level]` is not modelled. The first run that reaches the I-400's `SetSubmarineDepthLevel(unit, 3)`
+(1380) changes the level the getter answers, but not where the hull sits.
