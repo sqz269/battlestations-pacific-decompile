@@ -2677,9 +2677,11 @@ public:
         if constexpr (kApproachTurnRadiusBound) {
             owner_.done("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
             return owner_.units.unit_class_turn_circle_radius_0082e960(index_, fraction);
+        } else {
+            static_cast<void>(fraction);
+            owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
+            return 0.0f;
         }
-        owner_.record("ShipAiApproachPoint::unit_turn_radius", 0x00811a30u);
-        return 0.0f;
     }
     float random_stream1_00bd2f10(float low, float) override {
         // 009F1DB4, the retarget timer's reseed in [2, 3). 00BD2F10 was not
