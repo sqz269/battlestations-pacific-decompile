@@ -68,9 +68,25 @@ SpawnNewRequest SpawnRequestQueue::erase_009439b0(std::size_t index) {
     return taken;
 }
 
+// 00945948..00945986 and 00945B28..00945B5C: the two NativeString lengths must
+// be equal, two empty strings match, and otherwise 00BF7FBF __stricmp decides.
+// So the id match is case-insensitive (packet cc9_spawn_new_id_queries; it was
+// an exact compare).
+bool spawn_request_id_matches(const std::string& record_id, const std::string& id) noexcept {
+    if (record_id.size() != id.size()) return false;
+    for (std::size_t i = 0; i < id.size(); ++i) {
+        const unsigned char a = static_cast<unsigned char>(record_id[i]);
+        const unsigned char b = static_cast<unsigned char>(id[i]);
+        const unsigned char la = (a >= 'A' && a <= 'Z') ? static_cast<unsigned char>(a + 32) : a;
+        const unsigned char lb = (b >= 'A' && b <= 'Z') ? static_cast<unsigned char>(b + 32) : b;
+        if (la != lb) return false;
+    }
+    return true;
+}
+
 bool SpawnRequestQueue::id_is_requested_00945850(const std::string& id) const noexcept {
     for (const SpawnNewRequest& request : requests_) {
-        if (request.id == id) return true;
+        if (spawn_request_id_matches(request.id, id)) return true;
     }
     return false;
 }
@@ -80,7 +96,9 @@ std::size_t SpawnRequestQueue::remove_id_00945a20(const std::string& id) {
     // undisassembled jump back into the scan at 00945B07.
     const std::size_t before = requests_.size();
     requests_.erase(std::remove_if(requests_.begin(), requests_.end(),
-                                   [&id](const SpawnNewRequest& r) { return r.id == id; }),
+                                   [&id](const SpawnNewRequest& r) {
+                                       return spawn_request_id_matches(r.id, id);
+                                   }),
                     requests_.end());
     return before - requests_.size();
 }

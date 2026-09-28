@@ -262,6 +262,13 @@ inline constexpr bool kLuaHitAttackerPlayerIndexBound = true;  // ON: identity p
 // border zone of world+7134h (004C7730, any side), built from the map bounds by
 // 004D5BD0 / 004C71C0 / 004C7150. True: the native runs on the zones the mission
 // frame hands over (set_world_border_zones). False: unimplemented, neutral.
+// Packet cc9_spawn_new_id_queries (docs/LUA_BINDING_MISSION.md, "SpawnNewIDIsRequested
+// and SpawnNewIDRemove, bound"). 00946380 -> 00945850 answers whether the
+// SpawnNew queue at *(00F89B3C) holds a record whose id (+B8h) matches argument
+// 1 (length, then __stricmp), pushing one boolean; 00946390 -> 00945A20 removes
+// every such record and pushes nothing. True: both run on the host's queue.
+// False: unimplemented, neutral.
+inline constexpr bool kLuaSpawnNewIdQueriesBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kLuaClosestBorderZoneBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate

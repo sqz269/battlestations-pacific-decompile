@@ -72,6 +72,14 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+// Packet cc9_spawn_new_id_queries: what the two id bindings answered.
+struct SpawnIdQueryCensus {
+    unsigned long long requested{0};
+    unsigned long long answered_true{0};
+    unsigned long long removes{0};
+    unsigned long long removed{0};
+};
+SpawnIdQueryCensus g_spawn_id_census;
 
 // 00885110 opens the script through [0109ceec] virtual +4h with mode 2.
 constexpr std::uint32_t kScriptReadMode = 2;
@@ -360,6 +368,11 @@ int binding_trampoline(lua_State* state) {
     // queues is drained into the units host through this host's own frame step,
     // and its callback needs this host's `thisTable`.
     const bool spawn_new_row = dispatch_row.address == 0x0094c480u;
+    // Packet cc9_spawn_new_id_queries.
+    const bool spawn_id_requested_row = kLuaSpawnNewIdQueriesBound
+        && dispatch_row.address == 0x00946380u;
+    const bool spawn_id_remove_row = kLuaSpawnNewIdQueriesBound
+        && dispatch_row.address == 0x00946390u;
     // Packet cc9_bot_scheduler_writers: Scoring_RealPlayTimeRunning (008B87F0),
     // argument 0 as a boolean (008B88EF) into 00905340 on [game+21A0h].
     const bool scoring_play_time_row
@@ -383,6 +396,7 @@ int binding_trampoline(lua_State* state) {
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
+        || spawn_id_requested_row || spawn_id_remove_row
         || select_unit_row || movie_add_row || force_select_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
@@ -564,6 +578,36 @@ int binding_trampoline(lua_State* state) {
     }
     if (spawn_new_row && !host->error_replay()) {
         return host->run_spawn_new_00949750(state, argc);
+    }
+    if (spawn_id_requested_row || spawn_id_remove_row) {
+        // 009458CF..00945923 (and 00945AD3..00945AEC): argument 0 of the
+        // binding (stack slot 1) through 00B662B0 into a NativeString. A value
+        // Lua cannot convert to a string gives the empty string, which matches
+        // a record whose id is empty.
+        std::string id;
+        if (argc >= 1 && ::lua_isstring(state, 1)) {
+            std::size_t length = 0;
+            const char* text = lua_tolstring(state, 1, &length);
+            if (text != nullptr) id.assign(text, length);
+        }
+        if (spawn_id_requested_row) {
+            // 00945943..00945999 the scan, 009459A8 00B66450 pushes the boolean,
+            // 009459B1 00B66400: one result.
+            const bool requested = bsp::spawn_request_queue().id_is_requested_00945850(id);
+            if (!host->error_replay()) {
+                ++g_spawn_id_census.requested;
+                if (requested) ++g_spawn_id_census.answered_true;
+            }
+            ::lua_pushboolean(state, requested ? 1 : 0);
+            return 1;
+        }
+        // 00945B07..00945BAE: every match is unlinked and freed (009442A0,
+        // 00BF65AC) and the count +8h decremented; 00945BB7: no result.
+        if (!host->error_replay()) {
+            ++g_spawn_id_census.removes;
+            g_spawn_id_census.removed += bsp::spawn_request_queue().remove_id_00945a20(id);
+        }
+        return 0;
     }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
@@ -3127,6 +3171,12 @@ void GameMissionLuaHost::report_spawn_queue() {
         summary_.spawn_new_callback_missing, bsp::spawn_request_queue().size(),
         static_cast<double>(spawn_attempt_delay_),
         static_cast<double>(spawn_world_clock_), summary_.wing_member_tables);
+    if constexpr (kLuaSpawnNewIdQueriesBound) {
+        log_.notef("summary SpawnNewIDIsRequested/SpawnNewIDRemove requested=%llu true=%llu "
+            "removes=%llu removed=%llu (00945850/00945A20, packet cc9_spawn_new_id_queries)",
+            g_spawn_id_census.requested, g_spawn_id_census.answered_true,
+            g_spawn_id_census.removes, g_spawn_id_census.removed);
+    }
 }
 
 std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronRequest& request) {
@@ -5889,7 +5939,20 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         const char* name = lua_tolstring(state, 1, nullptr);
         if (name == nullptr) return false;
         const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
-        if (found == scene_entity_ids_.end()) return false;
+        if (found == scene_entity_ids_.end()) {
+            // DIAGNOSTIC, env-gated (BSP_LUA_FIND_ENTITY_MISSES=1): the names
+            // FindEntity answers nil for. Prints nothing when unset.
+            static const bool trace = [] {
+                char* v = nullptr;
+                std::size_t n = 0;
+                const bool on = _dupenv_s(&v, &n, "BSP_LUA_FIND_ENTITY_MISSES") == 0
+                    && v != nullptr && v[0] == '1';
+                std::free(v);
+                return on;
+            }();
+            if (trace && !error_replay_) log_.notef("FindEntity miss: \"%s\"", name);
+            return false;
+        }
         entity_id = found->second;
     } else if (std::strcmp(binding_name, "GetSelectedUnit") == 0) {
         // Packet cc8_ship_drive. The revert above is lifted: `Party` is on the
