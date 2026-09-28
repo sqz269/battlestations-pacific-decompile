@@ -264,6 +264,14 @@ inline constexpr bool kSubmarineDiveBound = true;  // ON: pairs held (docs/SUBMA
 // SetUnlimitedAirSupply (00893C00) is routed. False: needAir reads false, no crush.
 inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 13)
 
+// Packet cc9_submarine_seabed (docs/SUBMARINE_MODEL.md section 14). True: each
+// seeded submarine runs 00855420's footprint scan over the Landscape (44h) terrain
+// list, the dive law clamps its target to the published clearance (gain 1.5) for
+// an AI-helmed boat, and the force callback's order-ring throttle bounds (2.0 /
+// -1.0, or the plane curves under the clamp) are written. False: no scan, no
+// clamp, no bounds write.
+inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06 spread miss recorded (docs/SUBMARINE_MODEL.md section 14)
+
 class GameUnitsHost {
 public:
     GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua);

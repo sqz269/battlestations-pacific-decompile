@@ -486,5 +486,106 @@ SubmarineDiveResult submarine_dive_step_00936dc0(const SubmarineDiveInputs& in) 
     return out;
 }
 
+SubmarineScanPoint submarine_scan_point_00855420(int state, float width, float length,
+                                                 float speed, float max_speed,
+                                                 float rudder) noexcept {
+    SubmarineScanPoint p;
+    // 00855498..0085553B. frac = |speed| / MaxSpeed stored as a float; the
+    // forward term -rudder * frac stored as a float; 0.6L and 2W stored as floats.
+    const float abs_speed = speed > 0.0f ? speed : (-0.0f - speed);
+    const float frac = static_cast<float>(static_cast<double>(abs_speed) / max_speed);
+    const float fwd = static_cast<float>((-static_cast<double>(rudder)) * frac);
+    const float l6 = static_cast<float>(static_cast<double>(length) * 0.6000000238418579);
+    const float w2 = static_cast<float>(static_cast<double>(width) + width);
+    const bool ahead = !(speed < 0.0f);  // 00855655 COMISS speed, 0 / JB
+    auto along = [&](double k) {
+        const double base = k * speed;
+        return static_cast<float>(ahead ? base + length : base - length);
+    };
+    switch (state) {
+    case 0: p.x = width;   p.z = l6; break;                      // 0085554E
+    case 1: p.x = -0.0f - width; p.z = l6; break;                // 0085556B
+    case 2: p.x = width;   p.z = -0.0f - l6; break;              // 00855573
+    case 3: p.x = -0.0f - width; p.z = -0.0f - l6; break;        // 00855590
+    case 4: p.x = w2;      p.z = length; break;                  // 008555B0
+    case 5: p.x = 0.0f;    p.z = length; break;                  // 008555C7
+    case 6: p.x = -0.0f - w2; p.z = length; break;               // 008555DB
+    case 7: p.x = w2;      p.z = -0.0f - length; break;          // 008555F2
+    case 8: p.x = 0.0f;    p.z = -0.0f - length; break;          // 0085560D
+    case 9: p.x = -0.0f - w2; p.z = -0.0f - length; break;       // 00855625
+    case 10:  // 00855643: 2W * (1 + 1.5*frac + 3*fwd), 9*speed +- L
+        p.x = static_cast<float>((1.0 + 1.5 * frac + 3.0 * fwd) * w2);
+        p.z = along(9.0);
+        break;
+    case 11:  // 00855680: 2W * 3*fwd, 10*speed +- L
+        p.x = static_cast<float>(3.0 * fwd * w2);
+        p.z = along(10.0);
+        break;
+    case 12:  // 008556A9: 2W * (3*fwd - (1 + 1.5*frac)), 9*speed +- L
+        p.x = static_cast<float>((3.0 * fwd - (1.0 + 1.5 * frac)) * w2);
+        p.z = along(9.0);
+        break;
+    default:  // 008556BB
+        p.reset_state = true;
+        break;
+    }
+    return p;
+}
+
+float submarine_scan_time_00855420(const SubmarineScanPoint& p, float length,
+                                   float speed) noexcept {
+    // 008556CD..008556EA: |p| over (x, z), through the float store and sqrt.
+    const float sq = static_cast<float>(static_cast<double>(p.x) * p.x
+        + static_cast<double>(p.z) * p.z);
+    const float dist = static_cast<float>(std::sqrt(static_cast<double>(sq)));
+    const float l6 = static_cast<float>(static_cast<double>(length) * 0.6000000238418579);
+    float d = static_cast<float>(static_cast<double>(dist) - l6);           // 008556FF
+    if (0.10000000149011612 > static_cast<double>(d)) d = 0.1f;             // 00855724
+    const float abs_speed = speed > 0.0f ? speed : (-0.0f - speed);
+    const float denom = (1.0f > abs_speed) ? 1.0f : abs_speed;              // 0085574A
+    return static_cast<float>(static_cast<double>(d) / denom);              // 0085576B
+}
+
+void submarine_scan_publish_00855440(SubmarineSeabedScan& scan, float deepest_band) noexcept {
+    if (scan.state != 0) return;
+    scan.clearance = scan.clearance_acc;   // 00855440
+    scan.front_rate = scan.front_acc;      // 0085544C
+    scan.front_acc = 0.0f;
+    scan.rear_rate = scan.rear_acc;        // 00855460
+    scan.rear_acc = 0.0f;
+    scan.clearance_acc = deepest_band;     // 00855474
+}
+
+void submarine_scan_sample_00855420(SubmarineSeabedScan& scan, float sample,
+                                    float class_height, float hull_y, float time) noexcept {
+    if (sample == 0.0f) return;            // 008557F8..00855800
+    const float candidate = static_cast<float>(
+        static_cast<double>(sample) + (static_cast<double>(class_height) + 3.0));
+    if (candidate > scan.clearance_acc) scan.clearance_acc = candidate;     // 00855828
+    if (scan.state >= 10) return;                                          // 00855842
+    if (!(candidate > hull_y)) return;                                     // 00855851
+    const float rate = static_cast<float>(
+        (static_cast<double>(candidate) - hull_y) / time);                  // 0085585C
+    const int s = scan.state;
+    const bool front = s < 2 || (s >= 4 && s < 7);                         // 00855859..00855870
+    float& bucket = front ? scan.front_acc : scan.rear_acc;
+    if (rate > bucket) bucket = rate;
+}
+
+void submarine_scan_advance_00855420(SubmarineSeabedScan& scan) noexcept {
+    scan.state = (scan.state < 0x0C) ? scan.state + 1 : 0;
+}
+
+SubmarineThrottleBounds submarine_throttle_bounds_00936dc0(bool clamped, float front_rate,
+                                                           float rear_rate) noexcept {
+    SubmarineThrottleBounds b;  // 2.0 (00CE3958), -1.0 (00D7A260)
+    if (clamped) {
+        b.high = submarine_interpolate_clamped_00419010(0.5f, 1.0f, 3.0f, 0.0f, front_rate);
+        b.low = -submarine_interpolate_clamped_00419010(0.5f, 1.0f, 3.0f, 0.0f, rear_rate);
+    }
+    return b;
+}
+
 }  // namespace bsp
+
 
