@@ -67,3 +67,37 @@ h's `rb8_usn04` (44 death rows).
 | USN02 | pair_diff exit 3. Enemies are almost all identified, so the change is at the start: no AutoTarget pick before the first rebuild, and the one blip drops. The opening torpedo launches are **the same time or later** than 1.45 s. Houston's fate may move either way; the failure stays torpedo-driven |
 | USN04 | exit 3 with small moves (3.3 blips leave the list); deaths 44 +- 4 |
 | USN13 and JM08 | exit 3: the neutral-party units leave the ships' candidate lists; ship-gun shots at non-enemies fall, and total shots move down |
+
+## 6. The pairs, and the flip
+
+- **OFF** is `local\AR_OFF_<m>.log`, this tree at `de4b1ca09`.
+- **ON** is `local\AR_ON_<m>.log`, from `pair_export --commit de4b1ca09 --flip
+  kAutoTargetReconCandidatesBound=true` (`local\ar_on`).
+
+Streams and the death table were on.
+
+| mission | pair_diff | census (ON) |
+| --- | --- | --- |
+| USN02 | **exit 1, gameplay identical** | scans 10689, mean candidates 10.03, unbuilt 0 |
+| USN04 | **exit 1** | 4746, 20.32, 0 |
+| USN13 | **exit 1** | 43186, 28.24, 0 |
+| JM08 | **exit 1** | 57531, 28.62, 0 |
+
+| prediction | verdict |
+| --- | --- |
+| scans above 0 | held |
+| unbuilt above 0 | **failed**: the gunnery host's first rebuild comes before the first AutoTarget scan |
+| USN02, USN04, USN13, JM08 move (exit 3) | **failed on all four**: identical |
+
+**What this means.**
+- The recon list is shorter, a mean of 10 to 29 candidates per scan, but its winner is the same
+  on every scan of these four missions.
+- The units it drops (undetected, blips and neutral party) never win `009F5B70`'s score. **Not
+  traced per scan.** The likely reasons are that a neutral matches no priority tier and that a
+  far or undetected unit loses on distance.
+- **So rank 1's reach was over-estimated.** It has 148923 calls, but it decides no pick on these
+  missions.
+
+**Decision: `kAutoTargetReconCandidatesBound` is ON.** The list is the image's (`009F5D4E`), the
+missions are identical, and the switch removes a stand-in. GUNNERY_OPEN_ITEMS section 16's
+rank 2, the commanded-target adoption, is next.

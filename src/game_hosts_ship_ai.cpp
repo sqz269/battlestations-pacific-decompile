@@ -134,7 +134,8 @@ inline constexpr bool kShipAiTrafficBound = true;
 // True: the automatic target scan 009F5D30 walks the owner party's recon enemy
 // triple ([008053C0(party)]+0DE8h: identified contacts only, in bucket order).
 // False: every live unit of another party, detected or not, in unit order.
-inline constexpr bool kAutoTargetReconCandidatesBound = false;
+// ON since the pairs (docs/AUTOTARGET_RECON_CANDIDATES.md 6).
+inline constexpr bool kAutoTargetReconCandidatesBound = true;
 // Packet cc9_target_release, docs/SHIP_AI_TARGET_RELEASE.md. True: a unit whose
 // damage death has happened reads as torn down at +5Dh / +60h (00926C80 sets
 // +60h, the 009273A0 flush's 00926390 sets +5Dh), so 009F3240 takes its hold arm

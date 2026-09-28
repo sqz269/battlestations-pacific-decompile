@@ -1,0 +1,44 @@
+{
+  "packet": "cc9_autotarget_recon_candidates",
+  "switch": "kAutoTargetReconCandidatesBound",
+  "doc": "docs/AUTOTARGET_RECON_CANDIDATES.md",
+  "commits": {
+    "off_with_predictions": "de4b1ca09"
+  },
+  "image": "009F5D30: 008053C0(party) then [slot+0DE8h], the enemy triple (identified, enemies only, bucket order); empty before the first rebuild",
+  "host_off": "every live unit of another party, unit order",
+  "pairs": {
+    "USN02": "exit 1",
+    "USN04": "exit 1",
+    "USN13": "exit 1",
+    "JM08": "exit 1"
+  },
+  "census_on": {
+    "USN02": [
+      10689,
+      10.03,
+      0
+    ],
+    "USN04": [
+      4746,
+      20.32,
+      0
+    ],
+    "USN13": [
+      43186,
+      28.24,
+      0
+    ],
+    "JM08": [
+      57531,
+      28.62,
+      0
+    ]
+  },
+  "failed": [
+    "unbuilt above 0",
+    "all four missions predicted to move; all identical"
+  ],
+  "decision": "ON (the image's list; no gameplay change on these missions)",
+  "next": "section 16 rank 2: the commanded-target adoption (0071D6D0 / 00521EA0 / 009F5E69)"
+}
