@@ -149,6 +149,26 @@ constexpr bool kTorpedoSwimThrustBound = true;
 //    command, stepped toward it and then tested settle, one aim step ahead of
 //    the image, and ran the salvo test before the bot.
 constexpr bool kGunWaveOrderBound = false;
+//  * kAaBotFireTestsBound: packet cc9_aa_bot_fire_tests, GUN_SHOT_CADENCE 10.9.
+//    The AA bots do not use 006DF520's 0.1-degree settle. AAGunnerBot 00902920
+//    (ship category 1) asks for fire while 0085ABA0 accepted, the target is
+//    inside 0.9 of the class range and |dh| + |dv| < 5 degrees; AAFlakBot
+//    009030C0 (category 5, and 6 against a plane) inside [min, max) range with
+//    each axis under 1 degree, ignoring 0085ABA0; TailGunnerBot 008FFA20 (a
+//    category-1 gun under a plane) holds a range and angle-sum hysteresis
+//    (ShootRange - 40 and 6 degrees to open, + 20 and 9 degrees to hold)
+//    through the 008FEF40 debounce (0.1 s to open, 0.3 s to cease). None
+//    tests the fire window, which CanFire (0085A830) enforces. OFF: every gun
+//    asks on target, acceptance, the 0.1-degree settle and the window.
+constexpr bool kAaBotFireTestsBound = false;
+constexpr float kAaGunnerRangeFraction = 0.8999999761581421f;   // 00D7A390
+constexpr float kAaGunnerAngleSum = 0.0872664675116539f;        // 00CF0098, 5 degrees
+constexpr float kAaFlakAngle = 0.01745329238474369f;            // 00CE3984, 1 degree
+constexpr float kTailGunnerOpenSum = 0.10471975803375244f;      // 00D18390, 6 degrees
+constexpr float kTailGunnerHoldSum = 0.15707963705062866f;      // 00D18388, 9 degrees
+// robots.lua TailGunnerBot ShootRange by skill index (Stun, SPNormal, SPVeteran,
+// MPNormal, MPVeteran, Elite), read into the bot row +18h (008FCAF8).
+constexpr float kTailGunnerShootRange[6] = {950.0f, 750.0f, 800.0f, 800.0f, 850.0f, 950.0f};
 constexpr float kTorpedoAxialDrag474 = 0.5999994277954102f;    // 00D0C5EC
 constexpr float kTorpedoLateralDrag478 = 3.0000007152557373f;  // 00D0C5E8
 // DIAGNOSTIC gate for the per-launch tube line (packet cc9_torpedo_tube_turn).
@@ -963,6 +983,16 @@ struct GameGunneryHost::Impl {
     std::map<unsigned long long, float> torpedo_nose_yaw;
     unsigned long long torpedo_thrust_steps{0};
     unsigned long long wave_order_pre_steps{0};
+    // Packet cc9_aa_bot_fire_tests: 008FFA20's +58h / +59h / +5Ch per gun.
+    struct TailGunnerFire {
+        bool act_58{false};
+        bool next_59{false};
+        float delay_5c{0.0f};
+    };
+    std::map<std::size_t, TailGunnerFire> tail_gunner_fire;
+    unsigned long long aa_test_gunner{0};
+    unsigned long long aa_test_flak{0};
+    unsigned long long aa_test_tail{0};
     unsigned long long torpedo_swims_kept_entry{0};
     double torpedo_entry_speed_sum{0.0};
     unsigned long long immediate_arms{0};
@@ -5511,6 +5541,72 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
+        if (kAaBotFireTestsBound && !player_seat
+            && (gun.category == 1 || gun.category == 5
+                || (gun.category == 6 && have_target
+                    && dp_air_ammo(g, gun.category, target) != nullptr))) {
+            // The AA bots' own requests (GUN_SHOT_CADENCE 10.9). Each compares the
+            // gun's current angles (gun+480h / +484h) with the pair it asked for.
+            float distance = 0.0f;
+            if (have_target) {
+                float tp[3];
+                unit_aim_point(target, tp);
+                const float d[3] = {tp[0] - muzzle[0], tp[1] - muzzle[1], tp[2] - muzzle[2]};
+                distance = length3(d);
+            }
+            const float dh = std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz,
+                want_horz));
+            const float dv = std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.vert,
+                want_vert));
+            const bool plane_owner = units.unit_is_kind_of(owner_unit,
+                bsp::kUnitGunneryKindPlaneBase);
+            if (gun.category == 1 && !plane_owner) {
+                // 00902920 AAGunnerBot, 00902FB0..0090306F: 0085ABA0 accepted,
+                // distance < [muzzle+60h] * 0.9 (00D7A390), |dh| + |dv| < 5 deg
+                // (00CF0098), unit+634h bit 0 clear; straight to vtable[1E8h].
+                want_fire = have_target && accepted
+                    && distance < gun.max_range * kAaGunnerRangeFraction
+                    && dh + dv < kAaGunnerAngleSum && !inhibited;
+                ++aa_test_gunner;
+            } else if (gun.category == 1) {
+                // 008FFA20 TailGunnerBot, 008FFDBE..008FFF03, then 008FEF40.
+                TailGunnerFire& tg = tail_gunner_fire[g];
+                int level = units.skill_level(owner_unit);
+                if (level < 0 || level > 5) level = 1;
+                const float shoot_range = kTailGunnerShootRange[level];   // bot+90h
+                bool request = tg.act_58;
+                if (!tg.act_58) {
+                    if (have_target && distance < shoot_range - 40.0f       // 008FFDFE
+                        && dh + dv < kTailGunnerOpenSum) request = true;   // 008FFE6C
+                } else if (!have_target || distance > shoot_range + 20.0f) { // 008FFE8D
+                    request = false;
+                } else if (dh + dv > kTailGunnerHoldSum) {                   // 008FFEFC
+                    request = false;
+                }
+                if (request != tg.next_59) {                                 // 008FEF4A
+                    tg.next_59 = request;
+                    tg.delay_5c = request ? 0.1f : 0.3f;                     // 00D17D3C / 00CE69C8
+                } else {
+                    if (tg.delay_5c >= 0.0f) tg.delay_5c -= dt;              // 008FEF7B
+                    if (!(0.0f < tg.delay_5c)) tg.act_58 = tg.next_59;       // 008FEF91
+                }
+                want_fire = tg.act_58;                                       // 008FEFC2
+                ++aa_test_tail;
+            } else {
+                // 009030C0 AAFlakBot, 0090332C..009033DB: [muzzle+58h] < distance <
+                // [muzzle+60h], |dh| < 1 deg and |dv| < 1 deg (00CE3984), bit 0
+                // clear. The 0085ABA0 answer is not tested.
+                const SecondAmmo* flak = gun.category == 6 && have_target
+                    ? dp_air_ammo(g, gun.category, target) : nullptr;
+                const float lo = flak != nullptr ? flak->min_range
+                    : (bullet_min_range.count(gun.bullet_class) != 0
+                          ? bullet_min_range[gun.bullet_class] : 0.0f);
+                const float hi = flak != nullptr ? flak->max_range : gun.max_range;
+                want_fire = have_target && lo < distance && distance < hi
+                    && dh < kAaFlakAngle && dv < kAaFlakAngle && !inhibited;
+                ++aa_test_flak;
+            }
+        }
         if (kTorpedoFriendlyCrossingBound && want_fire
             && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             // 008FFF20 0090058A..009007F6, after the settle test and vtable[1D0h].
@@ -9102,6 +9198,10 @@ void GameGunneryHost::report() {
                 single_other, host.immediate_arms, host.immediate_slot_calls,
                 host.immediate_extra_sends, host.immediate_flag_drops, host.salvo_drops,
                 host.salvo_ignored_false, host.immediate_guns_rapid, host.immediate_guns_single);
+            host.log.notef("summary mission gunnery aa bot fire tests bound=%d gunner=%llu "
+                "flak=%llu tail=%llu (00902920 / 009030C0 / 008FFA20 + 008FEF40, packet "
+                "cc9_aa_bot_fire_tests)", kAaBotFireTestsBound ? 1 : 0, host.aa_test_gunner,
+                host.aa_test_flak, host.aa_test_tail);
             host.log.notef("summary mission gunnery wave order bound=%d pre_steps=%llu "
                 "(wave 1 0085AD80 before wave 2 006DF520, packet cc9_fire_request_timing)",
                 kGunWaveOrderBound ? 1 : 0, host.wave_order_pre_steps);
