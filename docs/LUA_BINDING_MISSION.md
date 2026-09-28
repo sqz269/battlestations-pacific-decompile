@@ -3082,3 +3082,10 @@ GetClosestBorderZone 008aecd0: (1174.14, -0.10, -6161.64) offset 500.0 -> (1174.
 **Verdict: `kLuaClosestBorderZoneBound = true`.**
 - USN02's reference row changes after its failure. The failure itself, at 29.75 s, is unchanged.
 - The lead should re-anchor USN02 on the next re-baseline.
+
+**USN04 4700/4500, added at the lead's request** (prediction written before its runs):
+- **Prediction: exit 1, gameplay identical.** USN04 does not end, so nothing calls the native. The
+  summary line's `bound 0 -> 1` is the only expected difference.
+- OFF is `pair_export --commit 4c9a1b2fc` with no flip (`local/bz_off`); ON is `local/bz_on`.
+- **Measured: exit 1, gameplay identical; held.** The only changed line is the summary's
+  `bound 0 -> 1` (`local/bz_diff_usn04.txt`).
