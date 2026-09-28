@@ -126,7 +126,7 @@ struct GameCommandRow {
 // Both read the entity's +5Dh, which 00926390 / 009263C0 set at the destroy.
 // False (the old record): the refusal answers the clear byte and the observer is a record; the
 // counters still count what the bound path would do. True: both act.
-// ON 2026-09-29 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
+// ON 2026-09-28 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
 inline constexpr bool kDirectorTargetChecksBound = true;
 
 // Packet cc9_set_command_queue_delay (docs/GUNNERY_OPEN_ITEMS.md sections 25-26).
@@ -144,7 +144,7 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // synchronous chain). True: posts queue, and GameFixedStepHost's
 // pump_session_00778450 delivers them through begin_loopback_drain /
 // finish_loopback_drain.
-// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
+// ON 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
 // tail unchanged on USN02 / USN04 / USN13 / USN01; deaths 10 / 45 / 20 / 5.
 inline constexpr bool kSetCommandQueueDelayBound = true;
 
@@ -159,7 +159,7 @@ inline constexpr bool kSetCommandQueueDelayBound = true;
 // 00720850). True: both are posted through route_clear_command, so with the
 // queue bound they are delivered after the MT_COMMAND that posted them and
 // before its SETCMD, and 0071ECF0's make-room reads the queue as it was.
-// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 29): gameplay identical on
+// ON 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 29): gameplay identical on
 // USN02 / USN13 / USN04 / USN01; drops 1199 / 0 / 0 / 2, every one after the
 // clear-all.
 inline constexpr bool kSetCommandClearAllMessageBound = true;
