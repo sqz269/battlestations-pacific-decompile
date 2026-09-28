@@ -2299,3 +2299,79 @@ Item 4 of the cc9-lua2 handoff. `targetDevice`, `attackerPlayerIndex`, `fireCaus
 - **Not bound.** The producer of the record's `+1Ch` (stamped at fire time) is not read, and the
   host's hit events do not carry it. Binding the filter needs that producer and a row where the
   hospital ship is hit.
+
+### The unmodelled `hit` filters, bound (packet `cc9_hit_listener_filters`, `kLuaHitFilterFieldsBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. The lead asked for this after the census above: bind what the hit
+queue can supply.
+
+**What 00988510 hands the channel (read from the pseudocode).** There are eight parameters. The two entity boxes are taken in the loader's key order, which is
+not traced in the listing:
+
+| # | key | value | source |
+| --- | --- | --- | --- |
+| 1 | `target` | the victim | `00968060`, the victim entity |
+| 2 | `targetDevice` | the hit record's own entity `[hit+0h]`, when it is live and not the victim; else none | the dispatcher's head |
+| 3 | `attacker` | the shooting unit's id (`u16`) | boxed with vtable `00D1AF24` |
+| 4 | `attackType` | the ordnance type name | `(&PTR_DAT_00e08e58)[kind]` |
+| 5 | `attackerPlayerIndex` | `[src+1Ch]`, `src` being the ordnance's `vtable[108h]()`; -1 with no ordnance | boxed with vtable `00D1AF2C` |
+| 6 | `damageCaused` | `hit+48h` | a float, vtable `00D1AF3C` |
+| 7 | `fireCaused` | `hit+4Ch` | a float |
+| 8 | `leakCaused` | `hit+50h` | a float |
+
+**What the host can supply.**
+- **`targetDevice`:** none. This process gives a ship's devices (guns, turrets) no entity of
+  their own, and every hit lands on the unit. A non-empty `targetDevice` set therefore never
+  holds the parameter.
+- **`fireCaused` and `leakCaused`:** 0.0. No hit in this process starts a fire or a leak. The
+  leak model has no leak points (`src/game_hosts_units.cpp`, `ShipHydroBinding`), and there is no
+  fire model. A two-value range filter is tested against 0.0, the bracket `damageCaused` uses.
+- **`attackerPlayerIndex`:** left unmodelled, still counted. The fire-time producer of
+  `[src+1Ch]` is unread. The host's attribution source sets `origin_slot` from the shooter's side
+  (`src/game_hosts_gunnery.cpp`, `unit_side_0054`), which is a stand-in, not `+1Ch`. The line
+  gunnery4 would need is below.
+
+**Accessor request for gunnery4** (`include/bsp/game_hosts_gunnery.hpp`, `GameGunneryHitEvent`):
+
+```
+        int attacker_player_index{-1};   // [src+1Ch], src = ordnance vtable[108h](); -1 with no ordnance (00988510)
+        std::uint32_t device_entity{0};  // [hit+0h] when a live child other than the victim, else 0
+        float fire_caused{0.0f};         // hit+4Ch
+        float leak_caused{0.0f};         // hit+50h
+```
+
+**Also found, not bound: a rate limit.** Before evaluating the channel, `00988510` looks a key
+pair up in the map at `this+168h` (`009882F0`, `00499030`). The pair is the victim and the
+attacking unit, according to the pseudocode; the stack slots were not traced in the listing. It
+skips the evaluation unless the stored time has passed, then stores `clock + 2.0` (`00CE3958`),
+or `clock + 1e-4` (`00CE3C68`) for ordnance kinds 8..0Fh, 12h and 13h.
+- So a gun duel fires a `hit` callback at most once per 2 s per pair. Torpedoes, bombs and the
+  like are effectively unlimited.
+- The host evaluates every hit. That matters only once a `hit` listener fires on gunfire. None
+  does on the measured rows.
+- It needs the ordnance kind `[[src+4h]+8h]`, which the host's `gun.category` does not map onto
+  one to one.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 1.** The only entry with one of the four keys is `hshit` (`attackerPlayerIndex`), which stays unmodelled; the hospital ship is not hit anyway |
+| LOMP06 1200/1000 | **exit 1.** `listener_NarwhalDC` uses `target` and `attackType` only |
+| USN01 3200/3000 | **exit 1.** `ConLeadListener` uses `target` and `attackType` only |
+
+#### Hit filter pairs and verdict
+
+- OFF is this tree's build of `508502014`.
+- ON is `pair_export --flip kLuaHitFilterFieldsBound=true` (`local/hf_on`).
+- The logs are `local/hf_{off,on}_<mission>.log`.
+
+| row | pair_diff | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 0, byte-identical | held |
+| LOMP06 1200/1000 | exit 1: only the frame-441 movie camera pose (z -5961.5 -> -5961.4), the run-to-run noise recorded above | held |
+| USN01 3200/3000 | exit 0, byte-identical | held |
+
+**Verdict: `kLuaHitFilterFieldsBound = true`.** It is inert on these rows, as predicted.
+`attackerPlayerIndex` and the rate limit remain open, with the accessor request above.
