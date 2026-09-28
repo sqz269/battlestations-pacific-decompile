@@ -1,0 +1,30 @@
+{
+  "packet": "cc9_planner_defend_capture_thinks",
+  "doc": "docs/PLANNER_TASK_CHOICE.md sections 6 and 7",
+  "code_changed": true,
+  "switch": {
+    "kAiCaptureThinkBound": "ON after pairs (committed OFF at 70d02b3ad); covers the Attack think and the Capture no-target path"
+  },
+  "addresses": {
+    "00A29FD0": "Capture think: targets from list 28 (world+19CCh -> +16Ch, CommandBuilding only); assignment loop needs targets and groups; unassigned groups released and claimed by brain+4h (node+1Ch null, 00A2AFC0/00A2B1E3) or brain+8h (00A2B2AF)",
+    "00A1CF90": "Attack think: 00A1CB80 per owned group, aggressive [00F8A8D0 + party*1Ch] (00A1CFAB), reset 0 (00A1CFEE)",
+    "00A287C0": "group-record map insert; value[3] = nearest own list-28 entity"
+  },
+  "pairs": {
+    "USN02": "exit 1",
+    "USN04": "exit 1 (squadron group CLOSEATTACK, member orders 609->819)",
+    "USN13": "exit 1 (fallback)",
+    "USN01": "exit 1 (fallback)"
+  },
+  "predictions": "held except USN04 (predicted to move, identical): spread",
+  "remaining": "Capture target path (00A1E250 records, assignment loop 00A2AA..00A2AD77, merges 00A1D010, spawn arm) and the Defend think 00A28A60 are not reconstructed; see the handoff in docs/PLANNER_TASK_CHOICE.md section 7",
+  "calls": [],
+  "no_ghidra_function": [
+    {
+      "start": "00A1E210",
+      "inclusive_end": "00A1E246",
+      "evidence": "RET 4 at 00A1E244, INT3 at 00A1E247; Capture/Attack vtable +24h"
+    }
+  ],
+  "names_added": []
+}

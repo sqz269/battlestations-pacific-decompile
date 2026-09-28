@@ -245,6 +245,92 @@ back (`target_fallbacks` above 0, `handoffs=0`), and Attack owns nothing.
 
 **USN01 3200/3000: identity, exit 1**, for the same reason: its scene has CommandBuildings.
 
+### 6.4 The pairs
+
+- **OFF** is this tree's build at `70d02b3ad`. **ON** is `pair_export --commit 70d02b3ad --flip
+  kAiCaptureThinkBound=true` into `local\cp_on`.
+- **Logs:** `local\cp_{off,on}_{usn02,usn04,usn13,usn01}.log`.
+
+| mission | pair_diff | capture thinks / fallbacks / handoffs | attack orders OFF -> ON |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | exit 1, identical (12 deaths, 5166 hit records) | 112 / 0 / 1 | 1 -> 1 |
+| USN04 4700/4500 | exit 1, identical (28 deaths, 491 hit records) | 58 / 0 / 2 | 1 -> 2; commands 277 -> 346; member orders 609 -> 819 |
+| USN13 3200/3000 | exit 1, identical | 0 / 39 / 0 | 2 -> 2 |
+| USN01 3200/3000 | exit 1, identical | 0 / 38 / 0 | 2 -> 2 |
+
+**What moved on USN04.** The squadron group `Lexington-class01_sqn01` ends in CLOSEATTACK
+(target group 1) where OFF left it IDLE. Its extra orders change no gameplay number.
+
+**Predictions:**
+- **Held:** USN02, USN13 and USN01 are identical. The hand-off and fallback census is as
+  predicted. USN04's squadron group now receives an attack order.
+- **Failed on spread:** USN04 was predicted to move (exit 3, more Japanese planes engaged) and
+  is identical.
+
+**Decision: `kAiCaptureThinkBound` is ON.** The mechanism is the image's, and the failure is
+on spread only.
+
+**On this head USN02 fails at 34.70 s,** before any planner order matters. The 168.8 s
+question therefore no longer arises on the reference runs. Section 6.1 answers it for the
+image: Attack, against Haguro's group, one think after the Capture hand-off.
+
+## 7. Handoff: what is left of `cc9_planner_defend_capture_thinks`
+
+**Done and ON:**
+- the Attack think `00A1CF90`;
+- the Capture think's no-target path (release, then hand to brain+4h or brain+8h).
+
+**Left, in the order the lead set.**
+
+1. **The Capture target path.** It runs only where an enemy CommandBuilding exists, which on
+   the reference set is USN01 and USN13. The fallback counts it: USN13 `target_fallbacks=39`,
+   USN01 38. Read, with `local\s3_capture_asm.txt` as the listing and
+   `exports/bsp/functions/00a29fd0/decompiled.c` as the pseudocode:
+   - **The target records** (`00A2A120..00A2A1E7`). `00A22F60` inserts a node keyed by the
+     entity. `00A1E250(rec+4, 0)` fills six floats: `ai_planner_tails.hpp` has the reconstruction.
+     `rec+1Ch = max(tuning+19Ch * (b + d), tuning+1A0h * 00A03510())`.
+   - **The per-group pass** (decompiled lines 158..405). For each owned group: `00A2C530`
+     (value[1]), `00A1A7A0` (value[2]), and the nearest own list-28 entity (value[3]/[4]). For
+     each enemy target it computes `00A250A0(group, target)` times an interpolated weight
+     (`tuning+1ACh..+1B4h`, 100x inside 3000 falling to 1.5x at 4500). It stores
+     `w * f`, and `(1 - tuning+1BCh) * that + tuning+1BCh * rec+4h` into a per-group map
+     (`00A22D10`).
+   - **The assignment loop** (`00A2AA..00A2AD77`). It takes the best `(group, target)` by the
+     blended score above `00D7A218`, calls `00A1A720(group, target)`, subtracts the group's
+     value from `target+1Ch` (`00A2ADD7..00A2ADE4`), and erases the group. It loops while both
+     lists are non-empty.
+   - **The merge** of groups assigned to one target (`00A1D010`, decompiled lines 640..690) and
+     `00A1B360`.
+   - **The spawn arm** (decompiled 777..880). It is gated by `00946970(brain+20h) <= 0` and the
+     spawn-delay ramp, then the resource budget `(1 - [00F8A8BC + mode*4]) * 00942130() -
+     00A1C900`. The host's `quick_spawn_named_group` is a record, so this arm can stay a record.
+   - **`00A1A720` is complete** (docs/AI_PLANNER_TAILS.md 3):
+     - a CommandBuilding's `+16Ch` is normally null, so the usual order is `00A2C600(group)`,
+       which gives DEFENDPOSITION or PATROLTO to the building's position;
+     - the host has DEFENDPOSITION and PATROLTO command objects (`src/game_hosts_ai.cpp`,
+       `issue_defend_position`/`PATROLTO` paths);
+     - so USN13's player squadrons would be sent PATROLTO at an enemy CommandBuilding, not
+       MOVETOATTACK at a group.
+   - **Prediction to carry:** USN13's squadron destinations become enemy CommandBuilding
+     positions. `squadron_commands` stays high, since `00A02020` ticks PATROLTO too. Hits on the
+     CommandBuildings, not on the raids, would move.
+2. **The Defend think** `00A28A60-00A29E2A` (828 decompiled lines). It serves slot 0, which a
+   group reaches with no groupable combatant or with a member in the world set. On the reference
+   runs that is none: every group is a combatant, and world sets are empty because
+   `Objectives_Add` is unbound. It can therefore be bound with an identity prediction until the
+   world sets are produced. Its merge pass (`00A29860..00A29BE7`) is already reconstructed in
+   `ai_planner_tails`.
+3. **Sell** (brain+8h, `00A22800`) receives Capture's groups beside an own CommandBuilding. It
+   still runs the Siege stand-in. It is small and should be read before USN13's pair is judged.
+
+**Files and state:**
+- Branch `agent/cc9-ships3`. The switches in `src/game_hosts_ai.cpp` are `kAiPlannerSlotKindsBound`
+  and `kAiCaptureThinkBound`, both ON.
+- The Capture think is `capture_think_00a29fd0`. Its early `return false` on `have_target` is the
+  stand-in to replace.
+- The lease is `cc9_planner_defend_capture_thinks`, which also covers a new
+  `src/ai_planner_thinks.cpp` (not created yet; add it through `cmake/startup.cmake`).
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

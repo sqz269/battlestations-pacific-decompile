@@ -235,8 +235,9 @@ constexpr bool kAiPlannerSlotKindsBound = true;
 // aggressive ratio, reset 0) and the Capture kind runs 00A29FD0's no-target path
 // (release every owned group and hand it to brain+4h, or brain+8h beside an own
 // CommandBuilding). A Capture think that has an enemy CommandBuilding still runs
-// the Siege-shape stand-in. False: every kind runs the Siege shape.
-constexpr bool kAiCaptureThinkBound = false;
+// the Siege-shape stand-in. False: every kind runs the Siege shape. ON: USN02,
+// USN04, USN13, USN01 identical (docs/PLANNER_TASK_CHOICE.md section 6.4).
+constexpr bool kAiCaptureThinkBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
