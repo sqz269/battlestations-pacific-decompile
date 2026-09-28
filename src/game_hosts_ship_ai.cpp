@@ -435,14 +435,18 @@ inline constexpr bool kShipAiFreeBearingBound = true;
 // its +14h naming the unit) or, at 009F0009..009F0020, the director's slot-0
 // command [[unit+738h]+54h] equal to 00E08F80 (`moveonpath`); either one reaches
 // 009F0022. False: the gate answers false, as the record did. Counted on both sides.
-inline constexpr bool kShipAiClearancePathFadeBound = false;
+// ON (2026-09-28): ten rows identical, outcome-1 frames fall as predicted; the outcome has
+// no reader in this host yet (docs/SHIP_AI_OPEN_ITEMS.md sections 17 and 20).
+inline constexpr bool kShipAiClearancePathFadeBound = true;
 // Packet cc9_arm_final_area_key (rank 10 of docs/SHIP_AI_OPEN_ITEMS.md section 16).
 // True: the arm final step's 0070E450 (009DEEE9, 009DEFD3) answers the whole
 // routine, the largest vtable[214h]() travel layer over the formation's kind-6
 // members from 0, which the layer choice already answers. False: the leader's
 // own travel layer blk+30Ch, the stand-in. Both sides count the calls and how
 // often the two answers differ.
-inline constexpr bool kShipAiArmFinalAreaKeyBound = false;
+// ON (2026-09-28): ten rows identical; USN02 and USN04 take the moved path, spread miss
+// recorded (docs/SHIP_AI_OPEN_ITEMS.md section 18).
+inline constexpr bool kShipAiArmFinalAreaKeyBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

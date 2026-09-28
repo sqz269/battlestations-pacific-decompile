@@ -1672,6 +1672,37 @@ Each OFF row is gameplay-identical to its section 16 base row (`pair_diff` exit 
    turn and speed change. The rows above may move (exit 3). How many do is not predicted: the OFF
    counters do not split outcome-1 frames by eligibility.
 
+### The pairs and the verdict: ON, and the outcome has no reader in the host
+
+OFF is the tree build of `3c63148ea` (`local\ships9_e0_<row>.log`). ON is
+`pair_export --commit 3c63148ea --flip kShipAiClearancePathFadeBound=true`, SHA-256 prefix
+`79D2F46EBDCF` (`local\ships9_pfon_<row>.log`). A 300-frame USN01 smoke ran first.
+
+| row | pair_diff | applied (= leader + moveonpath) | heading_error_large OFF -> ON |
+| --- | --- | --- | --- |
+| USN01 | 1 | 409 | 348 -> 6 |
+| USN02 | 1 | 2174 | 12978 -> 11406 |
+| USN04 | 1 | 795 | 1134 -> 1092 |
+| JM06 | 1 | 720 | 894 -> 582 |
+| JM08 | 1 | 155 | 0 -> 0 |
+| USN13 | 1 | 1513 | 744 -> 708 |
+| LOMP06 | 1 | 82 | 0 -> 0 |
+| USN12 | 1 | 349 | 0 -> 0 |
+| JM05 | 1 | 1069 | 4794 -> 4668 |
+| LOMP10 | 1 | 157 | 312 -> 72 |
+
+- Predictions 1 to 3 held: the three rows without outcome-1 frames are identical, `applied` equals
+  `leader + moveonpath` on every row, and outcome-1 frames fall on all seven other rows.
+- Prediction 4's movement did not happen on any row. **The reason is a host wiring gap, not the
+  fade.** `009F3F80` reads `blk+370h` at `009F4999` (request 2 only while it is 0) and `009F4A02`
+  (request 4 for outcome 1 or 3), on the same block `009EF910` writes (both routines take ESI =
+  blk, with the unit at `+3FCh`). The host keeps the clearance outcome in
+  `ctl.clearance.outcome_370` and gives the escape reader `ctl.obstacle.escape_mode_370`. Nothing
+  writes the second, so the escape reader always sees 0. `drive_order_ring_009f3f80` copies only
+  `clearance_37c` across.
+- **Verdict: ON.** The mechanism matches as far as the host lets the outcome travel. The movement
+  waits on the `+370h` wiring, which is now the lane's next item (section 20).
+
 ## 18. Rank 10: the arm final's group area key (packet `cc9_arm_final_area_key`, `kShipAiArmFinalAreaKeyBound`)
 
 Worker cc9-ships9, 2026-09-28.
@@ -1716,6 +1747,20 @@ raw largest member layer. On USN02 and USN04 the two differ on every call, so th
 2. **USN02 and USN04 move.** Their formation leaders re-aim the heading query from the pose and
    `blk+324h` and ask the second searcher. A leader's heading target can change, and the followers
    follow it.
+
+### The pairs and the verdict: ON (spread miss recorded)
+
+ON is `pair_export --commit 3c63148ea --flip kShipAiArmFinalAreaKeyBound=true`, SHA-256 prefix
+`E5C18454A683` (`local\ships9_akon_<row>.log`), against the same OFF logs as section 17.
+
+- **All ten rows are gameplay-identical** (exit 1).
+- Prediction 1 held: the eight `differs=0` rows are identical.
+- On USN02 and USN04 the mechanism runs as read. `calls` doubles (25845 -> 51690, 8882 -> 17764)
+  because every pass now also reads the key again at `009DEFD3` on the "moved" path. The free
+  searcher's refill counter moves on USN02 (559 -> 546).
+- Prediction 2's movement did not appear: the second searcher's heading did not change a
+  gameplay line in these windows. That is a spread miss with the mechanism matching.
+- **Verdict: ON.**
 
 ## 19. Rank 2: the troop-landing class trait (packet `cc9_close_member_class_trait`, `kTroopLandingTraitBound`)
 
@@ -1813,3 +1858,22 @@ OFF is the tree build of `3c63148ea` (`local\ships9_e0_<row>.log`). ON is
   (30 hits -> 0). The Fletcher-class 08 the player controls moves 540.68 -> 75.88 m.
 - **Every prediction held and the mechanism matches exactly, so the switch is flipped ON.**
 - The approach half and the Cargo arm stay bound and inert on these rows.
+
+## 20. The clearance outcome `blk+370h` never reaches the escape reader (new, found by section 17)
+
+Worker cc9-ships9, 2026-09-28. Read only; the first item for the next packet.
+
+- **Image.** `009EF910` writes `blk+370h`: 0 at `009EF969`, 1 at `009F00BF`, 2 at `009EFFA5` and
+  3 at `009EFFB8`. `009F3F80` reads it at `009F4999` (request 2 is raised only while it is 0) and
+  at `009F4A02..009F4A51` (a non-zero outcome with a clear latch `+378h` and outcome 1 or 3, or
+  the stall time `+384h` past its threshold, raises request 4 and the turn-assist load
+  `[unit+102Ch]`). Both routines run on ESI = the same control block.
+- **Host.** `src/game_hosts_ship_ai.cpp` keeps two copies: `ctl.clearance.outcome_370` (written by
+  the reconstructed `009EF910`) and `ctl.obstacle.escape_mode_370` (read by the reconstructed
+  `009F3F80`). `drive_order_ring_009f3f80` copies `clearance_37c` from one to the other and not
+  `outcome_370`, so the reader always sees 0.
+- **Reach 3, on every row.** With the wiring, request 2 stops while an outcome is set and request 4
+  starts for outcomes 1 and 3. Section 17's OFF counts give the outcome-1 frames alone: USN02
+  12978, JM05 4794, USN04 1134, JM06 894, USN13 744, USN01 348, LOMP10 312.
+- **Binding.** One copy, `ctl.obstacle.escape_mode_370 = static_cast<int>(ctl.clearance.outcome_370)`,
+  beside the `clearance_37c` copy, behind a new switch. Count requests 2 and 4 on both sides first.
