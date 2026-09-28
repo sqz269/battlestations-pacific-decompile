@@ -283,6 +283,16 @@ constexpr bool kAiDefendThinkBound = true;
 // record was kept on any run (docs/PLANNER_TASK_CHOICE.md section 12.4).
 constexpr bool kAiDefendRecordsPathBound = true;
 
+// Packet cc9_selling_tick, docs/PLANNER_TASK_CHOICE.md section 13. True: a
+// SELLING command (the Sell think's) runs 00A11FF0 every command tick: a group
+// without an air member moves its leader to the nearest own list-28 entity (or
+// holds at its own leader point inside 0.8 x CaptureRange) and runs the
+// follower pass; an air group sends `returntobase` to each squadron. False:
+// SELLING has no arm and the group is not moved. ON: LOMP07 moved (Salt Lake
+// City sent toward its CommandBuilding), LOMP10 orders only, the reference four
+// identical (docs/PLANNER_TASK_CHOICE.md section 13.4).
+constexpr bool kSellingTickBound = true;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -1189,6 +1199,14 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             }
         }
         bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        if constexpr (kSellingTickBound) {
+            if (cmd->type == bsp::AiCommandType::Selling) {
+                const bsp::AiCommandTickResult sell = selling_tick_00a11ff0(*cmd);
+                tick.orders_issued += sell.orders_issued;
+                tick.formation_requests += sell.formation_requests;
+                tick.followers_walked += sell.followers_walked;
+            }
+        }
         if (cmd->type == bsp::AiCommandType::PatrolTo) {
             // 00A15671-00A156C8: 00A13B60(1.0, &+8h, 0, 0) when near, 00A11B80(0)
             // (not bound, as for CLOSEATTACK), then the leader moveto when far
@@ -3168,6 +3186,93 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long defend_thinks{0};
     unsigned long long defend_record_fallbacks{0};
     unsigned long long defend_positions{0};
+    // 00A11FF0, SELLING's vt+0Ch, body 00A11FF0-00A1242D, read in full.
+    // 00A1201D 00A2C660 (an air member?):
+    //  no  - 00A12109..: the nearest (3-D squared, strict <, seed 1.0e10 at
+    //        00CE4970) list-28 entity whose +54h is the group's +5638h team.
+    //        With one: R = (float)((int)entity+7A0h * 0.8) (00A12226 FILD, FMUL
+    //        double 00CE3D40); d = 009FFC10(entity+FCh - leader); 00A122EE FCOMIP
+    //        / JBE: d <= R takes 00A10C20, the group's own leader point, else the
+    //        entity's +FCh; 00A12342 00A02020(first member, point), then 00A10DC0
+    //        and 00A11070 (not read). 00A123A0..00A123F8: each member with
+    //        +308h == 0.0 that passes 005F98F0 routes session message 51h
+    //        through 0077C2A0 (a record here).
+    //  yes - 00A12087 / 00A12090: each member answering vtable[+5Ch](18h) with
+    //        +361h and +3B0h clear gets 0077D600(00E08F98 `returntobase`, a zero
+    //        position descriptor, 1) at 00A120EB.
+    // LABELLED: CaptureRange is kCaptureRangeStandIn (the authored value has no
+    // reader here); +361h and +3B0h are read as clear.
+    bsp::AiCommandTickResult selling_tick_00a11ff0(const bsp::AiCommandObject& cmd) {
+        bsp::AiCommandTickResult result;
+        Group* g = group_at(cmd.owner_group);
+        if (g == nullptr) return result;
+        ++selling_ticks;
+        if (!group_has_air(g)) {
+            float leader[3] = {0.0f, 0.0f, 0.0f};
+            tick_leader_point(g, leader);
+            std::size_t best = kCaptureNone;
+            float best_d2 = 1.0e10f;
+            for (std::size_t i = 0; i < units.world_list_size(28); ++i) {
+                const std::size_t e = units.world_list_entry(28, i);
+                if (e >= units.count() || units.unit_side_0054(e) != g->team) continue;
+                float x = 0.0f, y = 0.0f, z = 0.0f;
+                units.unit_position_00fc(e, x, y, z);
+                const float dx = leader[0] - x, dy = leader[1] - y, dz = leader[2] - z;
+                const float d2 = dz * dz + dx * dx + dy * dy;
+                if (d2 < best_d2) {
+                    best_d2 = d2;
+                    best = e;
+                }
+            }
+            if (best == kCaptureNone) return result;
+            float cb[3] = {0.0f, 0.0f, 0.0f};
+            units.unit_position_00fc(best, cb[0], cb[1], cb[2]);
+            const float r = static_cast<float>(
+                static_cast<double>(static_cast<int>(kCaptureRangeStandIn)) * 0.8);
+            const float v[3] = {cb[0] - leader[0], cb[1] - leader[1], cb[2] - leader[2]};
+            const float d = bsp::ai_tail_horizontal_length(v);
+            const float* point = d <= r ? leader : cb;
+            if (d <= r) ++selling_holds; else ++selling_approaches;
+            const bsp::AiCommandTickResult lead =
+                bsp::ai_command_order_leader_00a02020(*this, g, point);
+            result.orders_issued += lead.orders_issued;
+            const bsp::AiCommandTickResult follow = bsp::ai_command_follower_pass_00a10dc0(*this, g);
+            result.orders_issued += follow.orders_issued;
+            result.formation_requests += follow.formation_requests;
+            result.followers_walked += follow.followers_walked;
+            record("AiCommand::selling_sell_message_00a123f8", 0x00a123f8u);
+        } else {
+            for (const std::size_t unit : g->members) {
+                if (!is_squadron(unit)) continue;
+                const std::vector<std::size_t>* planes = squadron_member_units(unit);
+                if (planes == nullptr) continue;
+                bsp::SceneCommandTarget target;
+                target.kind = 0;
+                target.position_valid = 0;
+                target.object_id = 0;
+                target.object = nullptr;
+                target.position[0] = target.position[1] = target.position[2] = 0.0f;
+                target.trailing = 0.0f;
+                std::size_t placed = 0;
+                for (const std::size_t plane : *planes) {
+                    if (units.issue_script_command(plane, 0x00E08F98u, target, bsp::kAiSceneCommandFlags,
+                                                   "ai_selling_tick", unit_name(plane)) != nullptr) {
+                        ++placed;
+                    }
+                }
+                if (placed != 0) {
+                    ++selling_returns;
+                    ++result.orders_issued;
+                }
+            }
+        }
+        done("AiCommand::selling_tick", 0x00a11ff0u);
+        return result;
+    }
+    unsigned long long selling_ticks{0};
+    unsigned long long selling_holds{0};
+    unsigned long long selling_approaches{0};
+    unsigned long long selling_returns{0};
     unsigned long long sell_thinks{0};
     unsigned long long sell_splits{0};
     unsigned long long sell_orders{0};
@@ -4013,6 +4118,11 @@ void GameAiCoordinatorHost::report() {
                 host.defend_patrols, host.defend_capture_pairs, host.defend_merges,
                 host.defend_spawn_arms);
         }
+    }
+    if constexpr (kSellingTickBound) {
+        host.log.notef("summary mission ai selling ticks=%llu holds=%llu approaches=%llu "
+            "returntobase=%llu (00A11FF0, packet cc9_selling_tick)", host.selling_ticks,
+            host.selling_holds, host.selling_approaches, host.selling_returns);
     }
     if constexpr (kAiSellThinkBound) {
         host.log.notef("summary mission ai sell thinks=%llu splits=%llu selling=%llu "

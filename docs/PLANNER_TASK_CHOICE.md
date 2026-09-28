@@ -997,6 +997,93 @@ nothing.
 inside 4000 within 150 s. A longer LOMP07 or LOMP10 run, or a mission with an assault on an own
 CommandBuilding, would exercise it. Its first observable is the census `records=`.
 
+## 13. The SELLING tick (packet `cc9_selling_tick`)
+
+### 13.1 The image
+
+`00A11FF0` is SELLING's `vt+0Ch`, body `00A11FF0-00A1242D`, read in full. Section 11.1 carries the
+first read.
+
+```
+00A1201D  CALL 00A2C660                        ; any air member?
+  air:    00A12087 CMP byte [sq+361h],0 / 00A12090 CMP byte [sq+3B0h],0
+          00A120EB CALL 0077D600 (00E08F98 returntobase, zero position, 1)   ; per squadron member
+  no air: 00A12109 MOV ECX,[group+5638h]       ; own team
+          00A12121 MOVSS [00CE4970]            ; nearest list-28 entity of that team, 3-D squared, strict <
+          00A12226 FILD [e+7A0h] / 00A12242 FMUL double [00CE3D40] (0.8)   ; R = 0.8 * CaptureRange
+          00A122DD CALL 009FFC10               ; d = x/z length (e - leader)
+          00A122EE FCOMIP / JBE                ; d <= R: the group's leader point (00A10C20); else e+FCh
+          00A12342 CALL 00A02020 (first member, point)
+          00A12349 CALL 00A10DC0 / 00A12350 CALL 00A11070
+          00A123A0 [member+308h] == 0.0 and 00A123B7 005F98F0 -> 00A123F8 0077C2A0 (session message 51h)
+```
+
+### 13.2 The binding
+
+**`kSellingTickBound`**, in `src/game_hosts_ai.cpp`, is committed OFF. When ON, the command tick runs
+`selling_tick_00a11ff0` for a SELLING command. `ai_command_order_leader_00a02020` exposes the leader
+arm. The census line is `summary mission ai selling ticks= holds= approaches= returntobase=`.
+
+**Labelled substitutions:**
+- CaptureRange is the 500 stand-in. The LOMP CommandBuildings author 1300 (CB - Bering), 900
+  (CB - Bering2) and 1100 (CB4), mtime 2024-08-09. A units-host accessor would make it exact.
+- The squadron bytes `+361h` and `+3B0h` are read as clear.
+- The sell message 51h is a record.
+- `00A11070` is not read.
+
+### 13.3 Predictions, written before the ON runs
+
+**On main `56b4eec58` with this branch, SELLING groups exist only on LOMP07 and LOMP10.** Capture hands
+its groups to Sell beside an own Allied CommandBuilding (section 12.4 census: `selling=1` and `2`).
+- **LOMP07:** Salt Lake City's group (6 members, the controlled ship) holds SELLING from about 4-8 s.
+- **LOMP10:** CargoShip's group (3 after the air split) and the split air group (3 members) hold it.
+
+**LOMP07 3200/3000: exit 3.**
+- **`approaches`** rise every command tick while Salt Lake City is farther than 400 from the nearest
+  Allied CommandBuilding. `tick_orders` rise from 0.
+- **Salt Lake City's leader** is sent toward that CommandBuilding, so "controlled moved Salt Lake
+  City" (OFF 2159.95 m) changes, and the ship rows move.
+
+**LOMP10 3200/3000: exit 3.**
+- **CargoShip's group** is sent toward CB4: `approaches` above 0, `tick_orders` above 12.
+- **The air group's squadrons** get `returntobase`: `returntobase` above 0.
+- **Direction:** the planes leave the fight, and plane deaths and hits by planes change.
+
+**USN13, USN01, USN02, USN04: identity, exit 0 or 1.** No SELLING group exists there (`selling=0`).
+
+### 13.4 The pairs
+
+- **OFF** is this tree's build at `f3d5268bf`. **ON** is `pair_export --commit f3d5268bf --flip
+  kSellingTickBound=true` into `local\sl_on`.
+- **Logs:** `local\sl_{off,on}_<mission>.log`.
+
+| mission | pair_diff | selling census ON | `tick_orders` OFF -> ON | what moved |
+| --- | --- | --- | --- | --- |
+| LOMP07 3200/3000 | exit 3 | 49 ticks, 49 approaches | 0 -> 49 | Salt Lake City moves 2479.49 m instead of 2159.95 m; no shots either way |
+| LOMP10 3200/3000 | exit 1, identical | 92 ticks, 46 approaches, 117 `returntobase` | 12 -> 175 | orders only: entity command routing 62 -> 516, unit table identical |
+| USN13 3200/3000 | exit 1 | 0 ticks | | nothing |
+| USN01 3200/3000 | exit 1 | 0 ticks | | nothing |
+| USN04 4700/4500 | exit 1 | 0 ticks | | nothing |
+| USN02 9200/9000 | exit 1 | 0 ticks | | nothing |
+
+**Predictions:**
+- **Held:**
+  - the census shape: approaches on both LOMP missions, `returntobase` only on LOMP10's air group,
+    no hold inside 400;
+  - LOMP07's Salt Lake City is sent toward the nearest Allied CommandBuilding;
+  - the reference four are identical.
+- **Failed on spread (LOMP10):** the CargoShip leader's movetos and the B-25 / Lightning planes'
+  `returntobase` orders are routed (`EntityOrder::route_message` 62 -> 516), but no unit's motion,
+  shot or death changes in 150 s. Whether those units obey the two tokens is a units-host question.
+
+**Decision: `kSellingTickBound` is ON.**
+
+**Left open:**
+- the authored CaptureRange (the stop radius), from the units-host accessor;
+- the squadron bytes `+361h` / `+3B0h`;
+- the sell message 51h and its `005F98F0` gate;
+- `00A11070`.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

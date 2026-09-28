@@ -344,6 +344,13 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
     }
 }
 
+AiCommandTickResult ai_command_order_leader_00a02020(AiCommandTickHost& host, void* group,
+                                                     const float point[3]) {
+    AiCommandTickResult result;
+    if (group != nullptr) order_leader(host, group, point, result);
+    return result;
+}
+
 AiCommandTickResult ai_command_patrol_to_tail_00a15695(AiCommandTickHost& host,
                                                        const AiCommandObject& command,
                                                        bool patrol_far,
