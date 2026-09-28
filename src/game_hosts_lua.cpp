@@ -118,6 +118,17 @@ int objective_argument_int(lua_State* state, int index, bool& present) {
     return static_cast<int>(lua_tonumber(state, slot));
 }
 
+// Packet cc9_objective_kind. 008DBF40: the case-insensitive index of the
+// string in the six-entry table 00E0C948, or 6 when none matches (008DBFC5).
+int objective_kind_008dbf40(const std::string& text) {
+    static const char* const kKinds[] = {"primary", "secondary", "hidden",
+        "marker1", "marker2", "marker3"};
+    for (int i = 0; i < 6; ++i) {
+        if (_stricmp(text.c_str(), kKinds[i]) == 0) return i;
+    }
+    return 6;
+}
+
 std::string objective_argument_string(lua_State* state, int index) {
     const int slot = index + 1;
     if (slot > lua_gettop(state)) return std::string();
@@ -392,7 +403,14 @@ int binding_trampoline(lua_State* state) {
         int units_touched = 0;
         for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
             if ((mask & (1u << k)) == 0u) continue;
-            if (is_add) sets.add_objective(k, name);
+            if (is_add) {
+                if (bsp::game::kObjectiveKindBound) {
+                    sets.add_objective(k, name, objective_kind_008dbf40(
+                        objective_argument_string(state, 4)));
+                } else {
+                    sets.add_objective(k, name);
+                }
+            }
             for (int arg = first_target; arg < argc; ++arg) {
                 std::size_t unit = 0;
                 if (!objective_argument_unit(state, arg, unit)) continue;
