@@ -2724,6 +2724,7 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     // evaluated here, once per mission frame, for the deaths since the last
     // frame; the image evaluates it inside the kill flush (009813A0).
     if (kLuaListenersBound) dispatch_kill_listeners_009813a0();
+    dispatch_hit_listeners_00988510();
     if (kLuaListenersBound && kLuaReconListenersBound) dispatch_recon_listeners_00980e50();
     // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
     // the step is used only to advance the clock the interval is measured on.
@@ -3994,6 +3995,36 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             ::lua_pop(state, 1);
             entry.attacker_filters_set = attacker || player_index;
         }
+        if (listener_key_equal(entry.channel, "hit")) {
+            // 009725B0: target (+0Ch) and attacker (+2Ch) through 009721C0, attackType
+            // (+3Ch) through 00970FF0, damageCaused (+5Ch) through 0096AAD0.
+            listener_read_entity_set(state, 3, "target", entry.entity_ids);
+            listener_read_entity_set(state, 3, "attacker", entry.attacker_ids);
+            ::lua_getfield(state, 3, "attackType");
+            if (::lua_type(state, -1) == LUA_TTABLE) {
+                const int types = ::lua_gettop(state);
+                ::lua_pushnil(state);
+                while (::lua_next(state, types) != 0) {
+                    if (::lua_type(state, -1) == LUA_TSTRING) {
+                        const char* text = ::lua_tolstring(state, -1, nullptr);
+                        if (text != nullptr) entry.attack_types.emplace_back(text);
+                    }
+                    ::lua_pop(state, 1);
+                }
+            }
+            ::lua_pop(state, 1);
+            std::vector<int> ignored;
+            std::vector<int> damage;
+            listener_read_int_set_fn(state, 3, "damageCaused", damage);
+            for (int v : damage) entry.damage_range.push_back(static_cast<float>(v));
+            const bool device = listener_read_entity_set(state, 3, "targetDevice", ignored);
+            std::vector<int> player_index, fire, leak;
+            listener_read_int_set_fn(state, 3, "attackerPlayerIndex", player_index);
+            listener_read_int_set_fn(state, 3, "fireCaused", fire);
+            listener_read_int_set_fn(state, 3, "leakCaused", leak);
+            entry.hit_filters_unmodelled = device || !player_index.empty() || !fire.empty()
+                || !leak.empty();
+        }
         if (listener_key_equal(entry.channel, "recon")) {
             // 00972450: callback, entity (+0Ch, 009721C0), oldLevel, newLevel and
             // party (+1Ch, +2Ch, +3Ch, 009722D0).
@@ -4249,6 +4280,70 @@ int GameMissionLuaHost::run_add_damage_0088e000(lua_State* state, int argument_c
         row != nullptr ? row->name.c_str() : "?", static_cast<double>(amount));
     log_.implemented("MissionLuaNative::AddDamage", "0088e000");
     return 0;
+}
+
+// Packet cc9_lua_hit_listeners. 00988510, the `hit` channel, fed by 0077CE60 on
+// every applied hit. The host's hit rows come from the gunnery host's queue.
+// SUBSTITUTIONS (labelled): the channel is evaluated at the host's frame, for the
+// hits since the last frame; attackType compares the bullet class's `Type`
+// case-insensitively; damageCaused is matched as [min, max] on the applied damage;
+// an entry with a non-empty targetDevice, attackerPlayerIndex, fireCaused or
+// leakCaused set is not matched (counted); callbacks are called with no argument.
+void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    const std::vector<GameGunneryHost::GameGunneryHitEvent> events = gunnery->take_hit_events();
+    if (!kLuaListenersBound || !kLuaHitListenersBound) return;
+    for (const GameGunneryHost::GameGunneryHitEvent& hit : events) {
+        ++summary_.listener_hit_events;
+        const int victim = static_cast<int>(hit.victim + 1);
+        const int shooter = static_cast<int>(hit.shooter + 1);
+        const GameBulletClassRow* bullet = gunnery->bullet_class_row(hit.bullet_class);
+        const std::string type = bullet != nullptr ? bullet->type : std::string();
+        std::vector<std::string> callbacks;
+        for (const ListenerEntry& entry : listeners_) {
+            if (!listener_key_equal(entry.channel, "hit")) continue;
+            auto holds = [](const std::vector<int>& set, int v) {
+                return set.empty() || std::find(set.begin(), set.end(), v) != set.end();
+            };
+            if (!holds(entry.entity_ids, victim) || !holds(entry.attacker_ids, shooter)) continue;
+            if (!entry.attack_types.empty()) {
+                bool any = false;
+                for (const std::string& t : entry.attack_types) {
+                    if (listener_key_equal(t, type)) { any = true; break; }
+                }
+                if (!any) continue;
+            }
+            if (entry.damage_range.size() >= 2
+                && (hit.damage < entry.damage_range[0] || hit.damage > entry.damage_range[1])) {
+                continue;
+            }
+            if (entry.hit_filters_unmodelled) {
+                ++summary_.listener_hit_unmodelled;
+                continue;
+            }
+            if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
+        for (const std::string& name : callbacks) {
+            const int top = ::lua_gettop(state_);
+            lua_getfield(state_, LUA_GLOBALSINDEX, name.c_str());
+            if (!lua_isfunction(state_, -1)) {
+                ::lua_settop(state_, top);
+                continue;
+            }
+            ++summary_.listener_hit_fires;
+            const GameUnitRow* row = units_hooks_->unit_row(hit.victim);
+            log_.notef("  hit listener 00988510: target \"%s\" type \"%s\" damage %.1f -> %s() "
+                "(packet cc9_lua_hit_listeners)", row != nullptr ? row->name.c_str() : "?",
+                type.c_str(), static_cast<double>(hit.damage), name.c_str());
+            if (::lua_pcall(state_, 0, 0, 0) != 0) {
+                const char* message = lua_tolstring(state_, -1, nullptr);
+                note_error(message != nullptr ? message : std::string("(no message)"));
+            }
+            ::lua_settop(state_, top);
+        }
+    }
 }
 
 // Packet cc9_forced_recon_level. 008AA8F0 SetForcedReconLevel(entity, level,
@@ -5464,6 +5559,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
         listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
+    log_.notef("summary mission script hit listeners bound=%d events=%llu fires=%llu "
+        "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
+        summary_.listener_hit_events, summary_.listener_hit_fires,
+        summary_.listener_hit_unmodelled);
     log_.notef("summary mission script add damage bound=%d calls=%llu units=%llu unresolved=%llu "
         "(0088E000 -> 0095DA00, packet cc9_lua_add_damage)", kLuaAddDamageBound ? 1 : 0,
         summary_.add_damage_calls, summary_.add_damage_units, summary_.add_damage_unresolved);
