@@ -1671,3 +1671,30 @@ Each OFF row is gameplay-identical to its section 16 base row (`pair_diff` exit 
 4. **Movement.** Where a fade-eligible ship had outcome 1, fewer escape requests follow, so its
    turn and speed change. The rows above may move (exit 3). How many do is not predicted: the OFF
    counters do not split outcome-1 frames by eligibility.
+
+## 18. Rank 10: the arm final's group area key (packet `cc9_arm_final_area_key`, `kShipAiArmFinalAreaKeyBound`)
+
+Worker cc9-ships9, 2026-09-28.
+
+**The routine.** `0070E450` (`0070E450-0070E4B3`, RET then INT3, `__thiscall` with ECX the
+formation, no stack arguments), read with `disasm-raw 0070E450 --length 104`:
+- `0070E459`: the loop runs over `[group+4F8h]` members, at `group+18h` with stride `34h`.
+- `0070E478..0070E483`: a member counts only when `vtable[5Ch](6)` answers true.
+- `0070E487..0070E497`: the answer is the largest `vtable[214h]()`, starting from 0 (`0070E452`).
+
+**The two host sites.**
+- The layer choice (`ShipAiLayer::group_layer_0070e450`, `009ECA20`) already ran the whole routine.
+  Its body moves unchanged into `Impl::formation_navigation_layer_0070e450`.
+- The arm final step (`009DEEE9` and `009DEFD3`, only under the leader test `009DEE1E`) answered
+  the leader's own travel layer `blk+30Ch`. That answer never differs from the key it is compared
+  with, so the "moved" path `009DEF83..009DF060` never ran.
+
+**The switch.** `kShipAiArmFinalAreaKeyBound` true answers the whole routine at the arm final.
+Both sides count `calls` and `differs` (the whole answer against the stand-in) in
+`summary mission ship ai arm final area key`.
+
+**Uncertainty.** `vtable[214h]` is modelled as `ship_ai_unit_navigation_layer_006dfd80` on the
+member's leaf tuning, as the layer choice has it. A member without loaded tuning is skipped.
+
+**Predictions.** They follow the OFF counter runs. The rule: a row with `differs=0` on OFF is
+identical ON.
