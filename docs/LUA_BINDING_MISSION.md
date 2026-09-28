@@ -3557,3 +3557,27 @@ SUBSTITUTION, labelled: an entity with no units-host slot, such as a scene marke
   after their groups exist.
 
 **USN04, USN01 and LOMP10: identical.** None calls `GetFormationLeader` (the census above).
+
+### Pairs and verdict
+
+OFF is this tree's build at `fb297db29`. ON is
+`pair_export --commit fb297db29 --flip kLuaFormationLeaderBound=true` (`local/l7_fl`). The logs
+are `local/l7_fl{off,on}_<row>.log` in worktree cc9-lua7, run with the reference launch lines.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 1 | `GetFormationLeader` UNIMPLEMENTED -> concrete (64 calls). `found=64`, `other=0`. `JoinFormation` 332 -> 38, and `argument_entity` 953 -> 365 with it. Gameplay, deaths, units and the native table are otherwise identical |
+| USN01 3200/3000 | exit 1 | the new summary line only |
+| LOMP10 3200/3000 | exit 1 | the summary line, plus the known LOMP10 same-binary drift (minimap heading, landscape cells, movie-camera poses, the `ShipAiSectorScan` noise counters) |
+
+**Against the predictions:**
+- **The 1992 site held.** Its answers are `Clemson class 1930 #1.1`, which leads group 6.
+- **The 3159 site took neither of my two branches.** `AIUnits[1]` is `Kuma-class 01`, which already
+  *leads* the authored formation 4 (seven ships) at the first call. So ON answers it from the first
+  call on, and the `JoinFormation` loop never runs. OFF ran it on every call, 294 calls in all.
+  Those joins changed nothing, because the six ships were already Kuma's members. Gameplay is
+  identical, as predicted.
+- The "falls by about six per later call" miss is the same fact: there is no first call that joins.
+
+**Verdict: `kLuaFormationLeaderBound = true`.** The mechanism matched. JM05's reads answer the
+group leader, and gameplay is identical on all three rows.

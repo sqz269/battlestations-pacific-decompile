@@ -303,7 +303,7 @@ inline constexpr bool kLuaDeviceReloadEnabledBound = true;  // ON: identity pair
 // a null leader pushes nil (00899CB4 -> 00B66430), otherwise the leader's
 // thisTable slot keyed by its +174h id (00899C15..00899C65). True: the row
 // answers from the units host's group; false: the entity arm answers nil.
-inline constexpr bool kLuaFormationLeaderBound = false;
+inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA_BINDING_MISSION)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
