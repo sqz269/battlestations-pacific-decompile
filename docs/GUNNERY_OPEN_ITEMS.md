@@ -125,3 +125,59 @@ No change is made here.
 | BSM01 3200/3000 | identity: no unit takes damage |
 | USN02 9200/9000 | moves (exit 3). The seven floored ships (DeRuyter, Java, Kortenaer, Electra, Samidare, Murasame, Harusame) cannot die before `luaPh2MovieEnd` releases them. Kortenaer does not die at 68.30 s; `floored_writes` > 0 |
 | this commit alone (no setter caller yet) | identity everywhere, `sets=0` |
+
+## 5. The line of sight, `00864680` (packet `cc9_gunnery_line_of_sight`, switch `kGunneryLineOfSightBound`, OFF)
+
+Rank 1 of section 2. Read from the pseudocode and, for the stack slots, from disk bytes.
+
+**`00864D90`, the caller (the visibility cache).**
+- **The observer's point.** Pose `+FCh..+104h`, with y raised by class `Height` (`+538h+A8h`)
+  plus Globals `+90h` (5.0). The accumulator is seeded at `00864E29` (after a `PUSH 5`, so
+  `[ESP+14h]`), `Height` is added at `00864E96`-`00864EA0`, and y is raised at `00864EA4`-`00864EC1`.
+- **The section-span branch.** When class `+50h` exists and `00862C00` answers, the raise is
+  `sect+38h + max(5.0, (sect+38h - sect+2Ch) * [+98h])` instead. Not taken here, labelled.
+- **The call.** `00864680(record, x, y + raise, z)` at `00864ED3`.
+- **The lifetime.** The cache entry lives `U(0.8, 1.2)` (`00CE74F8`, `00CE3814`, stream 1) times
+  Globals `+A0h` (5.0) when visible, or `+A4h` (4.0) when hidden.
+
+**`00864680`, the test.**
+- **The target's point.** Refreshed every 0.5 s (`00CE3800` into `record+10h`): pose `+FCh`, with
+  y raised by `Height` plus Globals `+94h` (5.0; the seed is at `00864721`, after a `PUSH 5`).
+- **A ship target first.** For a target answering `IsKindOf(6)`, `0081DE10`'s answer goes to
+  `record+20h`, and a set byte means hidden.
+  - `0081DE10` returns 1 when `unit+1130h > 0`.
+  - Otherwise it walks the list at `[[00E188A8]+19CCh]+364h` and expands each node with
+    `00848410` (the same expander the objective sets use).
+  - It returns 1 when the ship's bow or stern point (`+-0.5 * class+A0h` along its axis) lies
+    inside an entity's footprint: `|x| < 0.6 * its class+A0h` (`00CEFF98`) and
+    `|z| < [00CEC9D8] * its class+A4h`.
+  - What that list holds, and what `unit+1130h` counts, were not identified. **Labelled: the host
+    answers 0.**
+- **The ray.** `00904400(44h, target point, observer point, hit, 0)` is
+  `BSP_SpatialIndex_QuerySegment` with kind 44h, the `Landscape` class. The target is hidden when
+  the hit lies more than 25 m from the observer's point (`00CFBC80` = 625.0, squared distance,
+  summed z, x, then y).
+
+**The host binding.**
+- `GameGunneryHost::Impl::line_of_sight_00864680` builds both points.
+- It casts through the existing `SegmentBinding` with `kind_filter = 44h`. `entity_is_kind` now
+  answers kind 44h only for the Landscape entries `kLandscapeSpatialAttachBound` adds; every
+  other kind stays true for everything, as before.
+- The cache takes the result and the image's lifetime.
+- The census line is `summary mission gunnery line of sight tests= blocked= bound=`.
+
+**Labelled.**
+- `0081DE10` answers 0.
+- The section-span raise is not taken.
+- The target point is taken at each test, not cached for 0.5 s. The test itself runs only when a
+  cache entry has expired, at least 3.2 s apart.
+
+**Predictions, recorded before the pair** (same tree, OFF against ON, RNG streams on). The
+landscape counts come from the logs' `summary scene terrain landscapes=` line.
+
+| row | landscapes | ON prediction |
+| --- | --- | --- |
+| USN02 9200/9000 | 0 | gameplay identical (pair_diff exit 1). `blocked=0`; the cache re-tests at the new lifetimes, which moves only `tests` and the visibility-TTL stream |
+| USN04 4700/4500 | 0 | gameplay identical, as USN02 |
+| USN13 3200/3000 | 12 | `blocked > 0`. Where an island hides a target, assignments and shots fall. Deaths 27 +- 2 |
+| USN01 3200/3000 | 4 | `blocked` 0 or small. Deaths 7 +- 1 |
