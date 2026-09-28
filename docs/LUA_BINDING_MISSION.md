@@ -3460,3 +3460,44 @@ with `disasm-raw`, RET then INT3):
 | `008F8680` | `008F86A5` | `BSP_SpawnRefFrame_GetMatrix` | `__thiscall -> const float*`. It returns `entity+CCh`, calling `00414DB0` first when `[entity+C8h] == 0`, or `this+18h` when there is no entity. |
 | `00944210` | `00944292` | `BSP_SpawnMember_ReadLuaTable` | `__thiscall(this, LuaTable)`, `RET 4`. It merges the table into the bag through `0043D8F0`, resolves `Type` through `00964790` into `+0h`, and copies `Name` into `+4h`. |
 | `00963B70` | `00963B95` | `MDestroyer_IsKindOf` | `__thiscall(int kind) -> bool`, `RET 4`. It accepts 7, 6, 5 and 4. The other ship leaves' `+18h` slots follow the same pattern with their own kind. |
+
+## The unimplemented Lua natives, sixth refresh (packet `cc9_natives_ranking_6`, cc9-lua7, main `c89abeb5a`)
+
+Worker cc9-lua7, 2026-09-28. The method and run parameters are the third refresh's. The build is
+this tree's at `0515d5276`, which is main `c89abeb5a` plus the unlanded doc commit `45d08b646`.
+USN01 and USN04 are added as rows. The census is `local/l7_natives.py`, which reads each log's
+`MissionLuaNative::... UNIMPLEMENTED calls=` table.
+
+| mission | frames | log (worktree cc9-lua7) | host methods unimplemented |
+| --- | --- | --- | --- |
+| USN02 | 9200/9000 | `local/l7_rk_usn02.log` | 508 |
+| USN01 | 3200/3000 | `local/l7_rk_usn01.log` | 539 |
+| USN04 | 4700/4500 | `local/l7_rk_usn04.log` | 517 |
+| JM06 | 3200/3000 | `local/l7_rk_jm06.log` | 492 |
+| LOMP06 | 1200/1000 | `local/l7_rk_lomp06.log` | 466 |
+| USN13 | 3200/3000 | `local/l7_rk_usn13.log` | 503 |
+| JM08 | 3200/3000 | `local/l7_rk_jm08.log` | 493 |
+| JM05 | 3200/3000 | `local/l7_rk_jm05.log` | 552 |
+| LOMP10 | 3200/3000 | `local/l7_rk_lomp10.log` | 496 |
+
+**What moved since the fifth refresh.**
+- `OverrideHP`, `SquadronSetAttackAlt`, `SpawnNewIDIsRequested` and `SpawnNewIDRemove` are gone
+  from the table.
+- JM05 now places its shipyard spawns. That raises `GetFormationLeader` from 49 to 64 calls and
+  reaches no new native.
+- The only Lua error on any row is the known `jm05.lua:5216` (`GetCapturePercentage`), 49 times.
+- USN04 adds one presentation native, `UnitSetPlayerCommandsEnabled`
+  (`usn_19_coralus.lua` 460 and 1947, player command flags; no effect for an idle player).
+
+| rank | native | address | missions (calls) | reach |
+| --- | --- | --- | --- | --- |
+| 1 | `AddUntouchableUnit` | `008AC140` | JM05 (3) | **gameplay if an enemy gunner would target the unit.** It sets `entity+1D4h` (GUNNERY_TABLES), which the unit-AI untouchable gate `00862440` reads. That gate is the gunnery lane's and is always false (AA_TARGETING). `jm05.lua` 597 marks `Mission.UntouchUnits`; of those, only `PT Boat 80' Elco 01`/`02` resolve on this scene. 4508 marks the capture PT. The native is this lane's; the gate is not |
+| 2 | `GetFormationLeader` | `00899AF0` | JM05 (64) | **small.** 1992, 2574 and 3159 fall back to the table's first ship on nil. That is the same unit while that ship leads its formation, and a different one once it dies or the formation re-forms. 2042 dereferences `.ID` behind `IsInFormation(unit)`; no raise on this row. The formation state is this lane's (`kLuaFormationQueryBound`) |
+| 3 | `GetLastCatapulted` | `00892860` | JM05 (47) | **small.** `SetSkillLevel(pete, SKILL_ELITE)` on the cruiser's last catapulted plane (5812). nil is also the image's answer while nothing has been catapulted |
+| 4 | `NavigatorEnable`, `GetFailure`, `Countdown` | | JM05 (1, 2), LOMP10 (1) | as in the fifth refresh |
+| - | `IsGUIActive`, `PrepareClass`, `SetGuiName`, `DisplayScores`, `IsHintActive`, `GetCapturePercentage`, `SetNumbering`, `MissionNarrative*`, `EnableInput`, `BlackBars`, `DisplayUnitHP`, `HideUnitHP`, `Loading_*`, hints, `Scoring_*`, `LoadCheckpoint`, `Effect`, `CountdownCancel`, `BannSupportmanager`, `UnitSetPlayerCommandsEnabled` | | | presentation, or the failure paths |
+
+`FindEntity`'s 146 JM05 calls are the fifth refresh's nine unauthored names.
+
+**Next packet: `GetFormationLeader`.** Rank 1's native is this lane's, but its effect is entirely
+the gunnery gate `00862440`. It is the gunnery lane's item, or a joint one routed by the lead.
