@@ -3038,3 +3038,47 @@ player, present interval immediate):
 | USN02 9200/9000 | **exit 3.** One call, `found`, `missing=0`. Alden's `movetopos` target after 29.75 s moves to a point beyond the nearest map edge, so its step-600 `d32c` and heading target change, and its track and the fights it takes part in move after that. Nothing before 29.75 s changes |
 | USN01 3200/3000 | **exit 0.** No call: the mission does not end |
 | JM06 3200/3000 | **exit 0.** No call |
+
+#### GetClosestBorderZone pairs and verdict
+
+- OFF is this tree's build of `4c9a1b2fc`.
+- ON is `pair_export --commit 4c9a1b2fc --flip kLuaClosestBorderZoneBound=true` (`local/bz_on`).
+- The logs are `local/bz_{off,on}_<mission>.log` in worktree cc9-lua5.
+- All three rows load the zones (`loaded=1`).
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | exit 3 | see below | held |
+| USN01 3200/3000 | exit 1, gameplay identical | only the new summary line's `bound 0 -> 1` | mechanism held; the exit code missed |
+| JM06 3200/3000 | exit 1, gameplay identical | the same summary line, plus the recorded ShipAiSectorScan / ShipAiClearance noise | mechanism held; the exit code missed |
+
+The two exit-code misses come from the summary line printing its own switch. That line is new in
+this packet; the prediction did not allow for it.
+
+**USN02.** There is one call and it finds a zone:
+
+```
+GetClosestBorderZone 008aecd0: (1174.14, -0.10, -6161.64) offset 500.0 -> (1174.14, -0.10, -8550.00)
+```
+
+- The nearest record is on the south edge. Its B..C line is `SE.z - 50`, and the answer is 500
+  beyond it.
+- At step 600 Alden's `movetopos` heads due south (target 3.1413, `d32c` 2392.64). OFF headed
+  -0.1883 at 6268.18.
+- Nothing before 29.75 s moves: the first hit is 19.20 s on both sides, and the step-590 rows are
+  equal.
+- Afterwards the fight moves, as predicted:
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 10 | 11 |
+| hit records | 4226 | 4899 |
+| damage | 50892.0 | 53092.0 |
+| controlled moved (Kortenaer) | 1136.82 m | 1218.80 m |
+
+- The death rows: John3 is no longer sunk. Asagumo and Encounter now are. Alden still sinks, at
+  135.25 s instead of 135.20 s.
+
+**Verdict: `kLuaClosestBorderZoneBound = true`.**
+- USN02's reference row changes after its failure. The failure itself, at 29.75 s, is unchanged.
+- The lead should re-anchor USN02 on the next re-baseline.

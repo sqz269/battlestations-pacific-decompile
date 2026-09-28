@@ -262,7 +262,7 @@ inline constexpr bool kLuaHitAttackerPlayerIndexBound = true;  // ON: identity p
 // border zone of world+7134h (004C7730, any side), built from the map bounds by
 // 004D5BD0 / 004C71C0 / 004C7150. True: the native runs on the zones the mission
 // frame hands over (set_world_border_zones). False: unimplemented, neutral.
-inline constexpr bool kLuaClosestBorderZoneBound = false;
+inline constexpr bool kLuaClosestBorderZoneBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
 // limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
