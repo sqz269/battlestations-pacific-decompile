@@ -845,7 +845,7 @@ four missions that hold it:
 | USN04 4700/4500 | exit 0 | 78 -> 78 | 0 | nothing |
 | USN02 9200/9000 | exit 0 | 1 -> 1 | 0 | nothing |
 | USN07 3200/3000 | exit 1 | 0 -> 47 | 0 | orders only; the PBY Catalina 01 is the controlled unit, 0.00 m both ways |
-| USN09 3200/3000 | exit 1 | 0 -> 97 | 0 | orders only; the controlled Enterprise_sqn01 stays at 0.00 m |
+| USN09 3200/3000 | exit 1 | 0 -> 97 | 0 | orders only; the cautious Enterprise_sqn01 stays at 0.00 m (the controlled unit is Maury, a destroyer) |
 | USN10 3200/3000 | exit 3 | 46 -> 95 | 0 | hit records 23 -> 18, hull 10 -> 8, shots 68 -> 70, deaths 3 both |
 | USN12 3200/3000 | exit 3 | 0 -> 49 | 0 | Montpelier moves 2428.02 m instead of 1490.02 m toward Shigure; hits unchanged |
 
@@ -858,9 +858,12 @@ four missions that hold it:
   - USN10's hits move.
 - **Failed on spread:**
   - No group was promoted to CLOSEATTACK within 150 s.
-  - The two air leaders are the controlled planes, which the idle player's host does not move on an
-    AI moveto (0.00 m both ways, as the ScoutDauntless in section 8.4). USN07 and USN09 therefore
-    change orders only.
+  - The two air leaders did not move on the AI movetos (0.00 m both ways, as the ScoutDauntless in
+    section 8.4), so USN07 and USN09 change orders only.
+    - Only USN07's PBY Catalina 01 is the controlled unit. On USN09 it is Maury, a destroyer.
+    - The pilot role is not the reason: the PBY has an AI pilot (roles 088888888). lua4 traced it to
+      a stale plane unit row, which lua4 is binding (docs/CONTROLLED_UNIT.md, last section, landed
+      f4e4224c0).
 
 **Decision: `kCautiousAttackTickBound` is ON.** The arm reproduces the image's no-route moveto, and
 every failure is on premise or spread. Before it, a CAUTIOUSATTACK group got no leader order at
@@ -869,7 +872,7 @@ all.
 **Left open:**
 - the director-slot route of `00A14DD0`, which is its waypoint build and `clearorders` arm;
 - `00A11690`;
-- why the controlled planes ignore an AI moveto (a units-host question, not this arm's).
+- why these planes ignore an AI moveto: the stale plane unit row lua4 is binding, not this arm.
 
 ## 12. The Defend records path (packet `cc9_defend_records_path`)
 
@@ -1136,6 +1139,119 @@ runs. On USN13 no unit is within 30 s of a CommandBuilding in 150 s, even at squ
 
 **Decision: `kCaptureAccessorsBound` is ON.** It is the image's rule, and the labelled stand-ins
 are gone.
+
+## 15. Handoff: the director-slot route of `00A14DD0` (read, not bound)
+
+Worker cc9-ships4. This section records the read, so that the owner of the director's moveonpath
+model can bind it. Nothing here is bound; the CAUTIOUSATTACK arm (section 11) keeps its labelled
+no-route moveto.
+
+**The slot is the leader director's path object 0.**
+- `00778860` takes the entity's `vtable[+114h]()` (the weapon director) and then `0071BFC0(0)`,
+  which reads `director+1A4h`, the first of ten 50h path objects.
+- `0071FB90` builds each one (`00720850`, `operator_new(0x50)`), with vtable `00CFDB24`, a listener
+  sub-object at `+10h` (vtable `00CFDB10`) and a point vector at `+44h..+4Ch`.
+- Every director has them, so the object exists for every AI ship leader.
+
+**Its virtuals, as `00A14DD0` uses them:**
+
+| slot | body | meaning |
+| --- | --- | --- |
+| `vt[+4h]` | `0071FC30`: `MOV AL,1 / RET` | always true |
+| `vt[+0Ch]` | `0071FC40` | `+14h` is registered and its `vt[+24h]()` returns this+40h: a path is attached |
+| `vt[+10h]` | `0071D2A0` | when attached, `this->vt[+14h]()` (`0071D2E0`, unread): a remaining count; else -1 |
+| `vt[+18h]` | `0071D340` | builds session message 5Fh `MT_GAMEUNIT_ADDUSERPATHPOINT` (`0075B430(5Fh)`, vtable `00CFDA14`, the point at `+20h..+28h`, presence byte 1) and routes it to `[[this+4h]+34h]`, the unit, with `0077C2A0(unit, msg, 7, 0)` |
+| `vt[+1Ch]` | `0071D3E0` | the same message with the zero vector and presence 0 |
+
+**The receiver:**
+- 5Fh has no unit arm: both dispatch tables (`00822400` for ships, `0095AE40`) take their default.
+- `BSP_Session_DispatchEntityMessage` `00780120` hands it to the director's
+  `BSP_WeaponDirector_ApplyGameUnitMessage` `00721A40`.
+- There, IsType(5Fh) with the presence byte set calls `007207C0` (`0071DC80`, then `0071FDE0(point,
+  0, last slot)`, or appends to a current moveonpath `00E08F80`). With the byte clear it calls
+  `0071F5D0` -> `0071F570`, which clears the points.
+
+**So the route arm is the user-path (moveonpath) mechanism:**
+- Unless the counter at `+28h` (4 from `00A109B0`) is spent, the first CAUTIOUSATTACK ticks:
+  - decrement the counter;
+  - write `counter` intermediate points along leader -> target leader into the path object's
+    vector, each the best of three candidates (on the line, and offset both ways along
+    `00CE3DC8` times a transformed unit vector) under the danger cost `00A010F0`;
+  - add the target as a user path point, and set the flag `+24h`.
+- While a path is attached and `vt[+10h] > 0`, the next tick issues `clearorders` (`00E08F08`,
+  `0077D600` at `00A14EA7`) and clears the flag. That replans with one leg fewer.
+- Once the counter reaches 0, the moveto arm that section 11 binds takes over.
+
+**What a binding needs**, none of it in this packet's files:
+- the director's moveonpath path objects (`0071FDE0`, `0071F570`, `0071D2E0`, the `+14h`
+  registration);
+- the danger cost `00A010F0`;
+- the vector transform at `00A14E54` (`0042B490(00CE3C64)` and `BSP_Vector3f_TransformProjectPoint`).
+
+The units host owns the director. The predictions to make then are on USN10 and USN12, where the
+CAUTIOUSATTACK arm fires (section 11.4): the leaders would follow a three-leg danger-avoiding path
+before the direct movetos.
+
+## 16. Handoff: `cc9_submarine_ai_states` (read started, nothing bound)
+
+Worker cc9-ships4, near its context limit. This section starts from lua4's read,
+docs/SUBMARINE_MODEL.md section 16, and adds what this worker read. Nothing is committed in code.
+
+**The three vtables are one task: the ship brain's `sub_attack` state and its two sub-states.**
+- `009E4F90` is called from `BSP_ShipAi_BrainConstruct` `009F39C0`, right after
+  `BSP_ShipAi_AttackMoveConstruct`, so every ship brain has it.
+- It installs:
+  - the parent, vtable `00D218C0` then `00D2195C`;
+  - "approach", vtable `00D218F0` at parent+34h;
+  - "fire", vtable `00D21920` at parent+58h.
+- It registers them with `BSP_BotStateRegistry_Add("approach", +34h)` and `("fire", +58h)` (the
+  string at `00CE6798`). It sets the tick interval `+C8h` = 1.0 (`00D7A24C`) and the first countdown
+  `+CCh` = `-UniformFloat(0, 1)`, and current = approach (`+D4h`).
+- The host already names the parent: `kAiOffsetSubAttack` = `0x217C` (brain+2124h) in
+  `src/game_hosts_ship_ai.cpp`, with `step = 0`, unread.
+
+**The parent tick `009EAA90`** (`00D21968`, `vt[+0Ch]`):
+
+```
+if ([brain+B20h] != 0) {          ; a target
+    009EAA10(dt);                 ; the switch
+    current->vt[+0Ch](dt);        ; [this+D4h]
+}
+009EAA10: +CCh -= dt; on expiry +CCh += +C8h (1.0), then
+    current == approach (+34h) and 009E9D90() -> BSP_StateMachine_SetCurrentState(+58h)   ; fire
+    current == fire               and 009EA9C0() -> SetCurrentState(+34h)                  ; approach
+```
+
+**"approach" `009E4B90`** calls `BSP_SubmarineUnit_SetDepthLevel(2)`. With a target at
+`[brain+B20h]`, it stores `009E4A60()` at `this+20h` and calls
+`BSP_ShipAi_SetNavigationGoal(&{target+FCh, target+104h}, 0, 1)`. Otherwise it calls
+`BSP_ShipAi_HoldHeadingAndStop`.
+
+**"fire" `009E9EB0`** is the depth decision tick. It has no Ghidra function: body
+`009E9EB0-009EA9B7`, per lua4. It reads `brain+AB4h` and `brain+AB0h` (docs/SUBMARINE_MODEL.md
+section 16 lists its `SetDepthLevel` and periscope sites). **Not read here.**
+
+**Unread predicates:** `009E9D90` (approach -> fire), `009EA9C0` (fire -> approach) and `009E4A60`.
+
+**Why the host never runs it, the real entry condition:**
+- The brain's command-to-state map sends `attackmove` / `artillery` to `sub_attack` or
+  `kamikaze_attack` only when `[ai+0B0Ch]` (brain+AB4h) is non-null, deciding through `00779AA0`
+  (`009F3D73`; `include/bsp/attack_commands.hpp` `attack_command_bot_slot_offset`).
+- The host has no producer for brain+AB4h, so it always takes `attackmove`
+  (`src/game_hosts_ship_ai.cpp`, the `ShipAiState::attack_subject_00779aa0` record).
+- The census confirms it. JM06 3200/3000 (`local\sb_probe_jm06.log` in cc9-ships4): the Narwhal
+  has 283 `attackmove` steps, PlayerSub 02 has 174, PlayerSub 03 has 121, and no step anywhere is
+  `sub_attack`. The TypeB boats stay in `stop`. LOMP06 1200/1000 likewise.
+- **So the packet's first step is brain+AB4h's producer**, the attack subject that `009F3D73`
+  tests, together with `00779AA0`. The fire tick reads the same field. Binding only the three
+  state bodies would change nothing on JM06 or LOMP06.
+
+**Suggested order for the next worker:**
+1. Read brain+AB4h / +AB0h's writers (scan disp32 `B4 0A 00 00` / `B0 0A 00 00` with
+   `--limit 4000` in the ship-AI ranges) and `00779AA0`.
+2. Then read `009E9D90`, `009EA9C0`, `009E4A60` and `009E9EB0`.
+3. Bind the selector and the three states OFF in the ship-AI host, with predictions on JM06
+   3200/3000 and LOMP06 1200/1000, and identity on USN02 and USN04 (no submarines).
 
 ## no_ghidra_function
 
