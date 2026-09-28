@@ -304,6 +304,8 @@ int binding_trampoline(lua_State* state) {
         || dispatch_row.address == 0x008cdd60u || dispatch_row.address == 0x008ce510u
         || objective_status_row;
     const bool get_property_row = dispatch_row.address == 0x0088bf80u;
+    // Packet cc9_lua_kill.
+    const bool kill_row = kLuaKillBound && dispatch_row.address == 0x008ac5c0u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -329,7 +331,8 @@ int binding_trampoline(lua_State* state) {
     // and calls 006485A0 on [00E198C4]+40h (008AB014..008AB01F).
     const bool force_select_row
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
-    const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
+    const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
+        || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
@@ -424,6 +427,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (kill_row) {
+        if (!host->error_replay()) host->run_kill_008ac5c0(state, argc);
+        return 0;
     }
     if (ready_row && !host->error_replay()) {
         return host->run_is_ready_to_send_planes_00895d20(state, argc);
@@ -3818,6 +3825,65 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
     return 1;
 }
 
+// Packet cc9_lua_kill. 008AC5C0 Kill(entity [, hard]); returns no value (the
+// native's frame result count is 0).
+int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) {
+    ++summary_.kill_calls;
+    // 008AC6DF..008AC71B: cause 1, or 2 when a second argument reads true
+    // (bsp::kill_cause_from_lua_008ac5c0, src/unit_damage.cpp).
+    const bool has_second = argument_count > 1;
+    const bool hard = has_second && ::lua_toboolean(state, 2) != 0;
+    const int cause = hard ? 2 : 1;
+    // 00888AA0 resolves argument 0; the host's entity id is the units-host index
+    // plus one. SUBSTITUTION (labelled): an entity with no units-host slot (a
+    // script entity such as Mission.CamScript, a path, a marker) is not killed;
+    // the image would run 00926D90 on it.
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        ++summary_.kill_unresolved;
+        log_.notef("  Kill 008ac5c0: entity id %d has no units-host slot, not killed (packet "
+            "cc9_lua_kill)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    GameGunneryHost& gunnery = *units->gunnery();
+    std::vector<std::size_t> victims;
+    // 008AC729: a squadron (IsKindOf 18h) kills its members through 007ED380.
+    // The host fuses the squadron with its wing-0 plane in one slot, so the
+    // registry record's live members stand for the +3D0h array.
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
+        ++summary_.kill_squadrons;
+        for (std::size_t member : r.member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit) victims.push_back(member);
+        }
+        break;
+    }
+    // 008AC740: a LandConvoy (1Ah) kills its vector through 00742210.
+    // SUBSTITUTION (labelled): the host keeps no convoy member vector, so the
+    // convoy's own slot stands for it.
+    if (victims.empty()) victims.push_back(index);   // 008AC756, 00926D90
+    const GameUnitRow* row = units->unit_row(index);
+    for (std::size_t unit : victims) {
+        if (gunnery.unit_dead(unit)) {
+            // 00926D90 returns when +5Fh is already set.
+            ++summary_.kill_already_dead;
+            continue;
+        }
+        // SUBSTITUTION (labelled): the gunnery host's funnel is the host's one
+        // death path. It ignores the cause (1 or 2 lands in the image's +70h)
+        // and counts the call in its water-depth census.
+        gunnery.kill_unit_00926d90(unit, cause);
+        ++summary_.kill_units;
+    }
+    log_.notef("  Kill 008ac5c0: \"%s\" cause=%d victims=%zu (packet cc9_lua_kill)",
+        row != nullptr ? row->name.c_str() : "?", cause, victims.size());
+    log_.implemented("MissionLuaNative::Kill", "008ac5c0");
+    return 0;
+}
+
 int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument_count) {
     ++summary_.get_property_calls;
     if (state == nullptr) return 0;
@@ -4876,6 +4942,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "slots_rows=%llu decks=%zu", summary_.get_property_calls, summary_.get_property_served,
         summary_.get_property_unserved, summary_.get_property_slots_rows,
         bsp::air_ops_decks().size());
+    log_.notef("summary mission script kill bound=%d calls=%llu units=%llu unresolved=%llu "
+        "already_dead=%llu squadrons=%llu (008AC5C0, packet cc9_lua_kill)", kLuaKillBound ? 1 : 0,
+        summary_.kill_calls, summary_.kill_units, summary_.kill_unresolved,
+        summary_.kill_already_dead, summary_.kill_squadrons);
     log_.notef("summary mission getproperty class readers bound=%d unitcommand=%llu named=%llu "
         "nocommand=%llu unnamed=%llu reconlevel=%llu tables=%llu (00927AD0 / 00779BB0, packet "
         "cc9_get_property_class_readers)", kGetPropertyClassReadersBound ? 1 : 0,

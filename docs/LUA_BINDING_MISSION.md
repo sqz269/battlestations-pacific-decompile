@@ -905,3 +905,73 @@ renderer, and are left out: `MissionLoad(lua)::*`, `SceneUnit::vehicle_class_des
    - **Prediction sketch:** BSM01's anti-aircraft shot counts change for the switched units.
 
 This packet takes item 1 next, as a read plus an OFF binding.
+
+## Kill, 008AC5C0 (packet `cc9_lua_kill`, `kLuaKillBound`, committed OFF)
+
+Worker cc9-lua2, 2026-09-27. This is item 1 of the ranking above. Ghidra was read only.
+
+### The image (V, `docs/UNIT_DAMAGE_AND_DEATH.md`, `src/unit_damage.cpp`)
+
+**`Kill(entity [, hard])`, body `008AC5C0`-`008AC7A5`.**
+- It resolves argument 0 through `00888AA0`.
+- The cause is 1, or 2 when a second argument reads true (`008AC6DF`..`008AC71B`,
+  `bsp::kill_cause_from_lua_008ac5c0`).
+- It then dispatches on the class:
+
+| site | class | what it calls |
+| --- | --- | --- |
+| `008AC729` | a squadron (18h) | `007ED380`, which kills the members of `+3D0h` |
+| `008AC740` | a LandConvoy (1Ah) | `00742210`, which kills its member vector (with the boolean form of the cause) |
+| `008AC756` | any other entity | `00926D90` |
+
+**`00926D90`:**
+- It returns when `+5Fh` is already set.
+- Otherwise it sets `+5Fh` and runs `vtable[70h](1)` (the destroy path) with `+70h = cause`.
+- It recurses over the children and queues the entity on the kill list, whose flush runs the
+  on-killed hook `00928C80`.
+- Lua `Kill` is the path that reaches both queues; damage reaches only the destroy list.
+- `bsp::lua_kill_008ac5c0` already reconstructs the dispatch over the abstract `UnitDamageHost`.
+  This packet binds it in the mission Lua host.
+
+### The binding
+
+- **The switch** is `kLuaKillBound` in `include/bsp/game_hosts_lua.hpp`, committed OFF.
+- **The route.** `GameMissionLuaHost::run_kill_008ac5c0` takes the row in `binding_trampoline`.
+- **Resolving.** The entity's `ID` minus one gives the units-host slot.
+- **A squadron's fused slot** (the registry record's `squadron_unit`) kills every live member.
+  This stands in for `007ED380`.
+- **Any other slot** is killed itself. An already dead unit is skipped, as `+5Fh` makes the image
+  return.
+- **The kill itself** is `GameGunneryHost::kill_unit_00926d90(unit, cause)`, the host's one death
+  funnel.
+- **The census:**
+  - `summary mission script kill bound=.. calls=.. units=.. unresolved=.. already_dead=..
+    squadrons=..`;
+  - one `Kill 008ac5c0: "<name>" cause=N victims=N` line per call.
+
+**SUBSTITUTIONS, labelled:**
+- An entity with no units-host slot is not killed: a script entity such as `Mission.CamScript`
+  (`luaCamOnTargetExt`, `commandhelpers.lua` 7830), a path or a marker. Such calls count as
+  `unresolved`.
+- A LandConvoy kills only its own slot, because the host keeps no member vector.
+- The gunnery funnel ignores the cause, so 1 and 2 die alike. It also counts the call in its
+  water-depth census (`water_depth_kills`). The gunnery files are leased to another worker, so the
+  funnel is not changed here.
+
+### Predictions, before any run
+
+Streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player. The pair is this tree at the OFF
+commit against a `pair_export` of it with the switch flipped. The measured call counts come from
+the ranking.
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | `calls=1 units=1`: `Kill 008ac5c0: "Gato-class Submarine 01" cause=2` in the stage init (`JM06.lua` 212, the difficulty-below-2 arm). The Gato, which OFF carries a scene `attackmove` to the end, dies at about 0 s: one more death row with no killer (deaths 4 -> 5). The convoy battle moves, **exit 3**. Every moved row must trace to the Gato's absence |
+| USN01 3200/3000 | `calls=2`. The first call is argc 1 in the stage init, which fits `Kill(Mission.CamScript)` and is `unresolved`. If both calls are that, the pair is identity (exit 1). If one is `usn_1_marshall.lua` 791 (phase 3, `Mission.MainAttack`), those planes die and USN01 moves. The per-call line settles which |
+| USN04 4700/4500 | `calls=3`, at `usn_19_coralus.lua` 1303/1309 (the Japanese plane cleanup, `Kill(unit, true)`) or 3248 (`Mission.movieval`). Planes that OFF keeps alive die, so exit 3 is likely. The per-call lines name them |
+| USN02 9200/9000 | `calls=1`, one line: its victim decides between identity and a move |
+| LOMP06 1200/1000 | `calls=2`: identity if both are unresolved script entities |
+
+**The risk named in advance.** A victim whose death the script later tests (`unit.Dead`) moves a
+mission branch. That is the image's behaviour, and not a failed prediction, as long as the
+victim is the one the script named.
