@@ -410,10 +410,18 @@ Worker cc9-lua4, 2026-09-28. Asked for by gunnery5's rank 5 (`docs/GUNNERY_OPEN_
 - `00744A2E` (`00744A20`) and `007459D5` (`BSP_LandFort_Construct`) are the LandFort master-fort
   field, which shares the offset. Their callers are `BSP_AirField_ReadHangarAndMarkerProperties`
   and `00849F70`.
-- `00810FA9` (`BSP_Unit_InitializeDirectorAndHullDimensions`), `0083ED4E` and the two
-  `CG_scalar_deleting_dtor` hits belong to other classes' layouts.
-- So for an `MLandVehicle`, `+738h` is zero from the constructor's `memset` until a LandConvoy
-  roster sets it. It is set nowhere else.
+- **`0074E06D`, a second producer.** It sits in `0074DFC0`, which Ghidra has no function for (the
+  body is `0074DFC0`-`0074E0E4` inclusive: `RET` at `0074E0E4`, `INT3` from `0074E0E5`). That is `MLandVehicle`'s `vtable[A4h]` (the dword at
+  `00CFFE84`). When the entity's holder `[+C0h]` has kind 3 (`0074DFEF`), it reads the table key
+  `"convoyID"` (`00CFFD74`) and stores the result at `+738h`. A scene-created vehicle's holder is
+  kind 1 (`00922E35`, as the units host records at its slot-0A0h seed), so this arm is for vehicles made
+  from a table, not from the scene.
+- `00741088` is a two-argument setter, `+738h = arg0` and `+73Ch = arg1`, then `RET 8`
+  (`00741080`-`00741094`). No rel32 call or absolute dword anywhere in the image references it.
+- `007410A0`, `00810FA9` (`BSP_Unit_InitializeDirectorAndHullDimensions`) and `0083ED4E`
+  (`BSP_GameSettings_LoadFromLuaGlobals`) were not opened.
+- So a scene-created `MLandVehicle` keeps `+738h` at zero from the constructor's `memset` unless a
+  LandConvoy roster sets it.
 
 **The reach.**
 - JM08's class-19h records come from one standalone scene vehicle, "Japanese AA truck 01"
