@@ -420,3 +420,56 @@ The runs came back while the lock screen was still listed: the 300-frame smoke
 - The move is the fix working: in the image, DeRuyter's group heads for DRGoTo, not the origin.
 
 **All three switches are ON.**
+
+### PRCP03's phase-1 shortfall is the image's own (packet `cc9_prcp03_phase1_shortfall`, a read)
+
+**Question.** With the marker goal ON, Aylwin aims at CarrierPoint and ends 2710.44 m short at
+mission frame 9000 (`local\mk2_on_prcp03.log`). Would the image arrive sooner?
+
+**The order carries no speed.**
+- `NavigatorMoveToRange` (`008A2F20`) reads the entity (`00888AA0` at `008A301F`) and the target
+  (`0088A810` at `008A3054`).
+- It then calls `0077D600` with the moveto class `00E08F68` (`008A3070`..`008A3077`) and returns.
+- There is no speed argument and no `00890E6F` store, unlike `NavigatorMoveOnPath`.
+- So the ship moves at what its brain allows.
+
+**The brain holds a formation leader at its slowest member.**
+- `prcp_07_tarawa.lua:542..544` joins CV26 (Sangamon) and CV27 (Suwannee) to Aylwin, then orders
+  Aylwin to CarrierPoint. Aylwin leads the group.
+- `009F4DA0`'s leader arm (docs/SHIP_FORMATION_SPEED.md section 3, bound by
+  `kShipFormationSpeedBound`) computes `brain+34Ch = min(brain+34Ch, min(0070D140, 0070D0F0) /
+  0080FC30)`:
+
+```
+009F4E06  CALL 00778890            ; is the unit the group's leader
+009F4E1F  CALL 0070D140            ; min published member speed
+009F4E34  CALL 0070D0F0            ; group+504h, min member class MaxSpeed (0070DA00)
+009F4E45  FCOMIP ST(1) / JBE       ; take the smaller
+009F4E6D  CALL 0080FC30            ; own speed, unit+9C0h
+009F4E72  FDIVR qword [ESP+14h]    ; limit = group speed / own speed
+```
+
+- **This installation:**
+  - the carriers' `reference_speed` is 9.26000023 (type 24, `local\p2_off_prcp03.log`);
+  - Aylwin's is 19.0344009 (Farragut, type 288);
+  - so the limit is 9.26 / 19.0344 = 0.4865, exactly the `slot_thr 0.4865` Aylwin runs at
+    every step.
+- The host's measured 4151 m in 450 s (9.22 m/s) is that speed. The image uses the same rule and
+  the same class data, so it moves Aylwin no faster.
+
+**Nothing else holds or speeds the ship.**
+- The move is on the goal vector, which is now the marker.
+- The `+12B8h` gun gate flagged for a marker `moveto` gates fire, not the throttle.
+- The phase-1 radius is the script's own `luaGetDistance(Mission.Aylwin, FindEntity("CarrierPoint"))
+  < 1600` (`prcp_07_tarawa.lua:782`), not an engine radius.
+
+**Arrival estimate, image and host alike.**
+- From spawn (-7400, 7800) to CarrierPoint (-2500.3, 3000.9) is 6858 m, so 5258 m to the 1600 m
+  circle.
+- At 9.26 m/s that is about 568 s, about 11,360 frames at lockstep 0.05.
+- On the measured track, 2710 m remain at frame 9000, which is 1110 m more, about 120 s, about
+  2,400 frames.
+- **Phase 1 completes around mission frame 11,400.** The order is issued in stage init.
+- `PreparePhase4` stays out of any 9200-frame budget (the earlier estimate: 40,000 to 45,000).
+
+**No host difference, so no binding.** The packet is closed as a read.
