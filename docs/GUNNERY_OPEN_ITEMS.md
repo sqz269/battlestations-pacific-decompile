@@ -2708,3 +2708,24 @@ decodes the point lists.
   wait on the final COM release line. `g9_cmp.ps1 -A -B -Rows`: `pair_diff` headlines (`rb10`
   means reference j's logs in cc9-gunnery8).
 - `g9_mmod.py <model> <n>`: hex and floats around the first n `ConvexObject` chunks of a `.mmod`.
+
+### 48.4 What remains for cc9-gunnery10
+
+- **Reference k**, when the lead calls it. It carries the flags that landed after reference j's
+  base, including this worker's `kPlaneNullFireTargetProviderBound`, `kSquadronSetCommandBound` and
+  `kShipHitRollTorqueBound`.
+- **The model trace, 47.3's three packets.**
+  1. Which records `model+0Ch` owns. This is the only unread input. 47.4 already settles the box
+     producer and measures the DeRuyter hull chunk.
+  2. A host reader for each hull class's box. `local\g9_convex.py` decodes the point lists.
+  3. The binding in `game_hosts_units.cpp` (the lua9 lane). Pair it first with the roll torque
+     OFF.
+- **The `queue_state_back` pointer defect** (section 37.3). A slot keeps its old
+  `slot_target[].object` while taking the shifted slot's parameters. Nothing reads it yet.
+- **The E2 tail.** USN04 past 9000 frames is phase 1 only (reference j), and is not examined here.
+- **The LandConvoy unit.** `00805680`'s group records need one in the units host's index space
+  (section 34).
+- **The squadron slot-push rule `0084DD20`** (45.1). A self-targeted `moveto` or `stop` on a
+  squadron is emptied. It is open, with no known reach.
+- **The follow entry point** `issue_follow_command_00720cd0` (`e50480a39`) is inert until lua9
+  wires it (`kFormationJoinFollowBound`).
