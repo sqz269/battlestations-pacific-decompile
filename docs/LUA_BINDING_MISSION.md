@@ -1396,3 +1396,54 @@ These are hypotheses, not recovered symbols, with their evidence in the ledger n
 | `00972450` | `BSP_ReconSubscription_Load` |
 | `00968470` | `BSP_ReconSubscription_Matches` |
 | `00980E50` | `BSP_WarningManager_DispatchReconChannel` |
+
+### SetInvincible, the native (packet `cc9_set_invincible_native`)
+
+**The binding.**
+- `GameMissionLuaHost::run_set_invincible_00897a50` takes the row in `binding_trampoline`.
+- It reads argument 1 as the image does:
+  - a boolean gives 1.0 or 0.0 (`00897B6F`);
+  - anything else is its number, so a nil or missing argument reads 0.0, the release.
+- It resolves argument 0 as `Kill` does.
+- It calls `GameGunneryHost::set_unit_invincibility` for the slot and, for a squadron's fused
+  slot, for each live member. That is `0042ED80`'s fan-out to children. The host's other children
+  are guns, which carry no health.
+- **No switch of its own.** The setter only stores `unit+150h`, and every reader (the damage
+  floor, the sink gate and the `007BC5B0` water gate) is gated on `kUnitInvincibilityFloorBound`
+  in `src/game_hosts_gunnery.cpp`. That switch is file-local, so the Lua host cannot share it.
+  Until it is on, this binding changes only the native table row and a census line.
+- **The census:**
+  - `summary mission script set invincible calls=.. units=.. unresolved=..`;
+  - one `SetInvincible 00897a50: "<name>" value=.. units=..` line per call.
+- **SUBSTITUTION, labelled:** an entity with no units-host slot counts as `unresolved`.
+
+**Predictions for the joint pair** (gunnery3 runs it: `kUnitInvincibilityFloorBound` flipped,
+this native present on both sides; USN02 9200/9000; streams ON, `BSP_DEATH_TABLE=1`, lockstep
+0.05, idle player):
+
+- **The calls.** There are 10 calls, and the per-call lines name them:
+  - `luaInit` floors DeRuyter, Java, Kortenaer and Electra at 0.1 (`usn_2_java.lua` 230);
+  - `luaInit` floors Samidare, Murasame and Harusame at 0.5 (310);
+  - the three remaining calls fit the release of Samidare, Murasame and Harusame in
+    `luaPh2MovieEnd` (755).
+- **Death rows, with the floor reading the field:**
+
+| unit | OFF (`kill_off_usn02`) | ON |
+| --- | --- | --- |
+| Kortenaer | 68.30 s | no death, unless the release has run first |
+| Electra | 108.60 s | no death, unless the release has run first |
+| DeRuyter | 176.86 s | no death, unless the release has run first |
+| Java | 184.26 s | no death, unless the release has run first |
+| Samidare, Murasame, Harusame | 161.56, 190.66, 212.81 s | no death before the release line |
+
+  - None of the seven floored ships can die to damage while its floor holds.
+  - The Dutch group's release is `SetInvincible(unit, false)` at 761, followed by
+    `AddDamage(unit, 100000000)`. If the census shows no such calls, the four Dutch ships
+    survive the run.
+  - The remaining death rows move with the battle.
+  - **Expected verdict: exit 3.**
+- **USN04 4700/4500.** One call, `Yorktown-class01` at 0.24, which takes no damage. Identity,
+  exit 1.
+- **USN01.** Its calls (`usn_1_marshall.lua` 254, 412, 713) land on units that the OFF log
+  should show taking damage or not. Identity is predicted unless one of them dies OFF below its
+  floor. The per-call lines name them.

@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_set_invincible_native",
+  "doc": "docs/LUA_BINDING_MISSION.md, SetInvincible, the native",
+  "calls": [],
+  "switches": [],
+  "note": "no switch of its own: the gunnery setter only stores unit+150h and every reader is gated on kUnitInvincibilityFloorBound (file-local in src/game_hosts_gunnery.cpp)",
+  "substitutions": [
+    "entity with no units-host slot counted unresolved"
+  ],
+  "predictions": "USN02 joint pair (gunnery3): 10 calls, the seven floored ships do not die while floored (Kortenaer 68.30, Electra 108.60, DeRuyter 176.86, Java 184.26 in OFF), exit 3; USN04 and USN01 identity",
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}
