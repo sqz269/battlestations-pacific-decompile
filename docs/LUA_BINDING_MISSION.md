@@ -2468,3 +2468,43 @@ Three quarters of the hits on these rows repeat a (victim, attacker) pair within
 before.
 
 **Verdict: `kLuaHitRateLimitBound = true`.**
+
+## The unimplemented Lua natives, third refresh (packet `cc9_lua_natives_ranking_3`, head `3287e40f1`)
+
+Worker cc9-lua4, 2026-09-28. The census reads every `MissionLuaNative::* UNIMPLEMENTED` row of the
+final host tables of these runs. All come from this tree's build at `3287e40f1`, with streams ON,
+`BSP_DEATH_TABLE=1`, lockstep 0.05, an idle player and present interval immediate.
+
+| mission | frames | log | unimplemented |
+| --- | --- | --- | --- |
+| USN02 | 9200/9000 | `local/l4_rk_usn02.log` | 510 |
+| JM06 | 3200/3000 | `local/l4_rk_jm06.log` | 527 |
+| LOMP06 | 1200/1000 | `local/l4_rk_lomp06.log` | 489 |
+| USN13 | 3200/3000 | `local/l4_rk_usn13.log` | 506 |
+| JM08 | 3200/3000 | `local/l4_rk_jm08.log` | 495 |
+
+The unimplemented totals equal reference h's on all five rows. USN02 still fails at 29.75 s in
+phase 1, so its rows are the failure path's. SetShipSpeed, UnitGetAttackTarget, SquadronSetSpeed,
+IsClassChanged, SetSubmarineDepthLevel and SetAirBaseSlotCount are bound since the second ranking.
+The scripts are this installation's, which is modded: `global/commandhelpers.lua` is dated
+2024-10-29, `jm06.lua` and `06_crucial_cargo.lua` 2024-07-13, `prcpjm08.lua` 2024-08-26.
+
+| rank | native | address | missions (calls) | reach |
+| --- | --- | --- | --- | --- |
+| 1 | `SetDeviceReloadEnabled` | `008C1350` | JM06 (1), JM08 (1) | **gameplay**: it stores its boolean in `00E17BF2`. Every reader of that byte pairs it with the squadron's `+369h`, which is the scene property `ReloadEnabled` (`007F1FE0`) over a constructor default of 1 (`007F2D09`). No scene in this installation carries `ReloadEnabled` (`FireStance` is found, as the control), so every squadron holds 1 and the pair is decided by this native. The readers are the loadout index (`007EEC00`), the break-off tests of the depth-charge, kamikaze and level-bomb tasks, the dive-bomb approach and go-away, the torpedo arm, and `009FFEB0`. The host feeds both bytes as constant false |
+| 2 | `GetClosestBorderZone` | `008AECD0` | USN02 (1) | gameplay after the failure: `commandhelpers.lua` 9577 orders the failed ship to the nearest border zone with `NavigatorMoveToRange`; nil leaves it without that order |
+| 3 | `IsInFormation` | `008996A0` | LOMP06 (1) | an order: `06_crucial_cargo.lua` 537, 554 and 566 call `LeaveFormation` or pick `JoinFormation`'s target on its answer. Neutral false skips `LeaveFormation` before `NavigatorAttackMove` |
+| 4 | `SquadronSetTravelAlt` | `0089F550` | JM08 (1) | the invincible movie plane at 750 m (`prcpjm08.lua` 574). The attack waves' calls (1075, 1169, 1267) are not reached by 3000 frames |
+| 5 | `CountdownCancel`, `Scoring_SetMissionCompleted`, `BannSupportmanager` | | USN02 (1 each) | the failure path's timer and scoring |
+| 6 | `LoadCheckpoint` | `008ACA30` | JM06 (1) | nil means no saved checkpoint (`commandhelpers.lua` 16949), which a fresh run has anyway |
+| - | `IsGUIActive` (114), `DisplayScores` (55), `SetGuiName` (34), `PrepareClass` (27), `MissionNarrativeClear` (22), `SetNumbering` (12), `EnableInput`, `BlackBars`, `MissionNarrative`, hints, `Loading_*`, `DisplayUnitHP` | | 1..4 each | presentation. `IsGUIActive`'s one live use (`commandhelpers.lua` 13270) picks the music |
+
+Outside the natives, `Entity::on_killed_lua_self_00928c80` (up to 10 calls) and
+`SceneContents::launch_class_from_lua` (up to 118) are host structure rows, not script natives.
+
+**Next packet: `SetDeviceReloadEnabled` (`008C1350`).** Its Lua side is this lane's. The feeds of
+`00E17BF2` and `+369h` sit in `src/game_hosts_units.cpp` (the dive-bomb, torpedo and go-away
+inputs) and `src/game_hosts_ai.cpp` (`009FFEB0`), so the binding exposes one host value and routes
+the feed lines. Readers without a host model (`007B58D0`, `007B6240`, `007EEC00`, `0084E010`, and
+the break-off tests at `009A6600`, `009AE1D0`, `009B7AB0`, `009B7C90`, `009B8DB0`) stay
+unmodelled.
