@@ -123,9 +123,10 @@ struct GameCommandRow {
 //   00925C40 (removal) reach. 0071DDB0 re-targets or ends every slot whose
 //   descriptor resolves to the released entity (GameReleasedTarget below).
 // Both read the entity's +5Dh, which 00926390 / 009263C0 set at the destroy.
-// False: the refusal answers the clear byte and the observer is a record; the
+// False (the old record): the refusal answers the clear byte and the observer is a record; the
 // counters still count what the bound path would do. True: both act.
-inline constexpr bool kDirectorTargetChecksBound = false;
+// ON 2026-09-29 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
+inline constexpr bool kDirectorTargetChecksBound = true;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
