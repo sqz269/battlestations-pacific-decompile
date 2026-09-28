@@ -100,3 +100,35 @@ claimed here.
   `luaSetScriptTarget` or `SetFireTarget`.
 - **JM06 3200/3000: identical.** `jm06.lua` calls `luaSetScriptTarget` at `:1021`, `:1025`,
   `:1115` and `:1196`, but none is reached in `rb6_jm06`'s 3000 frames (0 native calls).
+
+## 6. The pairs, and the flip
+
+- **Commit:** OFF is `6c936d2d0`, this tree's `build\` on main `32f3d4f74`, which carries the
+  invincibility floor ON.
+- **ON:** `tools/pair_export.py --commit 6c936d2d0 --flip kScriptFireTargetBound=true` into
+  `local\ft_on`.
+- **Logs:** `local\ft_{off,on}_{usn02,usn01,usn04,jm06}.log`, with streams and the death table on,
+  lockstep 0.05, idle. The 300-frame smoke `local\ft_smoke300.log` passed first.
+
+| mission | pair_diff | SetFireTarget sets / releases | result |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | exit 3 | 20 / 4 | **Phase 2 reached**: `MissionPhase=2`, units 28 to 32, `GenerateObject` Nachi, Sazanami, Naka and Ushio at mission frame about 3089. Deaths go from 12 to 19. The run fails at **153.50 s** instead of 386.13 s: Exeter is sunk at 151.30 s by a Tokitsukaze torpedo (range 2266). DRGrp then dies in phase 2 (DeRuyter 168.31, Kortenaer 169.46, Electra 179.01, Java 189.91) |
+| USN01 3200/3000 | exit 1 | 0 / 0 | identical |
+| USN04 4700/4500 | exit 1 | 0 / 0 | identical |
+| JM06 3200/3000 | exit 1 | 0 / 0 | identical |
+
+**Predictions:**
+- **Phase 1 ends inside the 120 to 330 s band.** It reaches phase 2 at about 154 s, as predicted.
+- **The call count failed: 14 predicted, 24 native calls measured, 20 of which stored.** The
+  log has no per-call breakdown, so the source of the extra calls is not established. The four
+  calls that did not store had an entity or target the host could not resolve.
+- **Exeter is lost earlier** (151.30 s against 385.68 s), to a Tokitsukaze torpedo. Tokitsukaze
+  is one of the EnemyDestroya scripted onto `luaPickRnd(ExeterGrp)`. The binding does not touch
+  the torpedo path, so the earlier loss comes through the changed engagement. That attribution
+  is not proven.
+- **The identity rows held.**
+
+**Decision: ON.**
+
+`AddDamage` is still UNIMPLEMENTED (4 calls). DRGrp dies in phase 2 at the times above. This
+run does not show whether the image sinks them the same way.

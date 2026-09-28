@@ -19,8 +19,21 @@
     "USN04": "identical (no calls)",
     "JM06": "identical (calls not reached in 3000 frames)"
   },
-  "off_commit": "pending",
-  "results": "pending",
+  "off_commit": "6c936d2d0",
+  "results": {
+    "logs": "local/ft_{off,on}_{usn02,usn01,usn04,jm06}.log",
+    "USN02": "exit 3; sets 20, releases 4; phase 2 reached (units 28 -> 32, GenerateObject at mission frame ~3089); deaths 12 -> 19; failure 386.13 -> 153.50 s (Exeter sunk 151.30 s by Tokitsukaze torpedo)",
+    "USN01": "exit 1",
+    "USN04": "exit 1",
+    "JM06": "exit 1"
+  },
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "verdicts": {
+    "phase1_end": "held (about 154 s, in 120-330 s)",
+    "calls": "failed: 14 predicted, 24 native calls, 20 stored; the split is not established",
+    "exeter": "lost earlier, 151.30 s, to a Tokitsukaze torpedo; attribution not proven",
+    "identity": "held on USN01, USN04, JM06"
+  },
+  "decision": "ON"
 }

@@ -78,7 +78,9 @@ inline constexpr bool kShipAiMarkerTargetBound = true;
 // LABELLED: a held target that dies is released (the observer pair 00836240
 // registers), and a Vector3 argument (a dummy target entity) is not modelled.
 // False: the native stays an unimplemented record and nothing locks.
-inline constexpr bool kScriptFireTargetBound = false;
+// ON by the pairs at 6c936d2d0: USN02 reaches phase 2 (DeRuyter below 15%);
+// USN01, USN04 and JM06 identical.
+inline constexpr bool kScriptFireTargetBound = true;
 
 class GameHostLog;
 class GameUnitsHost;
