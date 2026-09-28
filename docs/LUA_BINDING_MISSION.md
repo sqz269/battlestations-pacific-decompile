@@ -2281,3 +2281,21 @@ Neither runs a `command` listener in this build. 300-frame smokes and the missio
   some of these scenes. The scene files carry no `.lua` string to check against.
 - **So the `command` channel stays unbound.** Binding it needs either the `+928h` script table,
   or a harness option that runs a named mission script.
+
+### The unmodelled `hit` filters: no reachable test (cc9-lua3, 2026-09-28)
+
+Item 4 of the cc9-lua2 handoff. `targetDevice`, `attackerPlayerIndex`, `fireCaused` and
+`leakCaused` are still counted `unmodelled`, and nothing has reached that count on any run.
+
+- **The only live user is `hshit`.** Among the entered rows it is the only entry that uses one of
+  the four filters: JM06, `attackerPlayerIndex {PLAYER_1}` on the hospital ship, callback
+  `luaJM6HospitalShipHitByPlayer`.
+- **The hospital ship is never hit.** `unmodelled=0` on JM06 with the dive law off
+  (`local/dv_off_jm06.log`) and on (`local/dv_on_jm06.log`). The count only rises after the
+  `target` filter matches.
+- **What the image does (read, 00988510).** The attacker player index is `+1Ch` of the record the
+  ordnance's `vtable[108h]` returns, or `-1` with no ordnance. The dispatch only goes ahead when
+  that index is below 8 and the shooting unit's role-0 slot `+1ACh` is below 8.
+- **Not bound.** The producer of the record's `+1Ch` (stamped at fire time) is not read, and the
+  host's hit events do not carry it. Binding the filter needs that producer and a row where the
+  hospital ship is hit.
