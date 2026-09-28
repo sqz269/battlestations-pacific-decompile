@@ -3149,7 +3149,7 @@ is the drain `0094C490`'s placement, not a native, and it is recorded here for i
 lane owns outright. Ranks 1 and 2 need the gunnery host's HP and the units host's plane state.
 Both of those files are leased to cc9-gunnery7 at this refresh.
 
-## `SpawnNewIDIsRequested` and `SpawnNewIDRemove`, bound (packet `cc9_spawn_new_id_queries`, `kLuaSpawnNewIdQueriesBound`, committed OFF)
+## `SpawnNewIDIsRequested` and `SpawnNewIDRemove`, bound (packet `cc9_spawn_new_id_queries`, `kLuaSpawnNewIdQueriesBound`, ON)
 
 Worker cc9-lua6, 2026-09-28. This is rank 3 of the fifth refresh, and the first rank this lane
 owns.
@@ -3180,3 +3180,16 @@ player, present interval immediate):
 | --- | --- |
 | JM05 3200/3000 | **exit 1.** The native row turns concrete (16 calls). `requested=16 true=0 removes=0 removed=0`. The only ids queued in 150 s are the two first `SH2SpawnRequest` Fletchers, and the one test that would see them, `jm05.lua` 1970, is not reached: the OFF run makes no third `SpawnNew`. The other tests ask for `SH1SpawnRequest`, `JapAirGrpSpawnRequest` or `ACargoSpawnRequest`, which are not queued |
 | USN01 3200/3000 | **exit 1.** No call; only the new summary line |
+
+#### Spawn id query pairs and verdict
+
+- OFF is this tree's build of `db4547b8c`.
+- ON is `pair_export --commit db4547b8c --flip kLuaSpawnNewIdQueriesBound=true` (`local/sq_on`).
+- The logs are `local/sq_{off,on}_<mission>.log` in worktree cc9-lua6.
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| JM05 3200/3000 | exit 1 | The UNIMPLEMENTED row leaves the native table, because a handled binding is not listed there. The census line reads `requested=16 true=0 removes=0 removed=0`, as predicted | held |
+| USN01 3200/3000 | exit 0 (predicted 1) | nothing. The census line prints only beside the SpawnNew summary, and USN01 makes no `SpawnNew` | held; the miss is the summary's placement |
+
+**Verdict: `kLuaSpawnNewIdQueriesBound = true`.**

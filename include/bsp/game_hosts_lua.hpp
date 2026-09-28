@@ -268,7 +268,7 @@ inline constexpr bool kLuaHitAttackerPlayerIndexBound = true;  // ON: identity p
 // 1 (length, then __stricmp), pushing one boolean; 00946390 -> 00945A20 removes
 // every such record and pushes nothing. True: both run on the host's queue.
 // False: unimplemented, neutral.
-inline constexpr bool kLuaSpawnNewIdQueriesBound = false;
+inline constexpr bool kLuaSpawnNewIdQueriesBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kLuaClosestBorderZoneBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
