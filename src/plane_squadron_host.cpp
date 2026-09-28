@@ -194,6 +194,7 @@ bool PlaneSquadronHostRecord::remove_member_unit_007f3970(std::size_t unit,
         const auto at = static_cast<std::ptrdiff_t>(slot);
         member_units.erase(member_units.begin() + at);
         departed_units.push_back(unit);
+        departed_index_9d8.push_back(static_cast<std::int32_t>(live_seat));
         if (slot < member_names.size()) member_names.erase(member_names.begin() + at);
         if (slot < member_spawn_index.size()) {
             member_spawn_index.erase(member_spawn_index.begin() + at);

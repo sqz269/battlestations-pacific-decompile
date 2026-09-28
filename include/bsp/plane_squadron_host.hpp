@@ -159,6 +159,12 @@ struct PlaneSquadronHostRecord {
     // for the squadron pointer (the dogfight order's target) still reaches
     // the squadron the image's task keeps pointing at. Not +3D0h.
     std::vector<std::size_t> departed_units;
+    // Packet cc9_air_ops_squadron_registry: each departed member's plane+9D8h as
+    // 007F3970 leaves it. The compaction clears plane+9D4h (007F3A07) and
+    // re-indexes the members that stay (007ED260 at 007F3A11); the departed
+    // plane's own +9D8h is not rewritten, so it keeps its live index at the
+    // removal. Parallel to departed_units.
+    std::vector<std::int32_t> departed_index_9d8;
 };
 
 // Process-wide, like `air_ops_decks()`: the scene pass, the air-ops launch seam,
