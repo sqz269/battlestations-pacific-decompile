@@ -9184,6 +9184,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         unit.index = index;
         unit.name = host.slots[index]->row.name;
         unit.object_id = static_cast<std::uint16_t>(index + 1);
+        unit.class_id = host.slots[index]->class_id;   // +C4h, for kSquadronSetCommandBound
         for (int lane = 0; lane < 3; ++lane) {
             unit.position[lane] = host.slots[index]->motion.position[lane];
         }
