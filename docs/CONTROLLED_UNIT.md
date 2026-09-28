@@ -1860,3 +1860,25 @@ hands the Lua host the map bounds at the avoid-zone load (`src/game_hosts_missio
   - `l5_runs.ps1` and `l5_wait.sh` are lua4's with the tree renamed.
   - `l5_api_census.py` lists the `attackerPlayerIndex` users.
   - `l5_minwater.py` maps `MinWaterSpd` to classes.
+
+### Addendum after the handoff (cc9-lua5, same day)
+
+The lead's later queue, taken after the handoff above:
+- **`GetClosestBorderZone` on USN04** (`a93cd9467`): gameplay identical, as predicted.
+- **`returntobase` on LOMP10** (`ff3f69a18`, "`returntobase` on LOMP10 lands the squadrons"): the
+  image lands the Allied squadrons at `CB4_AF` through `006C0840` before any retreat. No switch.
+  Open item 1 above now reads: a flown `land` task first, then `006C0840`, then the intake.
+- **The LandConvoy roster** (`22747653d` OFF, `ec9b39927` ON, `docs/LAND_AND_STRUCTURES.md`,
+  "The LandConvoy roster, bound"): `kLandConvoyMembersBound` is ON. On JM05, five members are
+  created at their convoys' frames.
+
+**New open items:**
+1. **The convoy formation** (`00742400`, `00743060`). The first step is `007AF150`, the Path knot
+   derivation, with its helpers `007AE330` and `007AE3E0`. The details are in the LAND doc's
+   "Still open".
+2. **Gunnery's `00805680` fold** over `GameUnitsHost::unit_land_convoy_738`, routed by the lead.
+3. **`HudMinimap::land_vehicle_player_query 008DDF00`**: unimplemented, and now reached on JM05.
+
+**New local files:**
+- **Pair exports:** `local\{bz_off,lc_on}`.
+- **Logs:** `local\lc_{off,on}_*.log` and `local\bz_{off,on}_usn04.log`.
