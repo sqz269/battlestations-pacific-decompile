@@ -424,7 +424,18 @@ harness renderer init failed: the device is null after 00b2aeb0's CreateDevice; 
   `unavailable (locked or secure desktop)` means something there, and that value marks a secure
   desktop such as a UAC prompt.
 
-**Identity on the success path: not yet measured.** No run can create a device on this machine
-while it is in this state. The USN04 4700/4500 pair (this build against the build without the
-guard) is left for when runs complete again. Until it is run, "gameplay-neutral" rests on the
-code: the success path is the unchanged call plus an SEH frame.
+**Identity on the success path: held (2026-09-27, 18:21-18:33 local).** Device creation came back
+intermittently: one smoke completed at 17:58 (cc9-ships2), every other run between 17:40 and 18:01
+failed with `0x88760868`, and a smoke from this tree completed at 18:22. Both halves of the pair
+were run while it worked.
+- **The binaries.** They are two `tools/pair_export.py` exports that differ only by the guard:
+  `local\rg_off` is the guard's parent `cc5d8f35d` (SHA-256 `B4DC7059F53B`), and `local\rg_on` is
+  the guard commit `303acf928` (SHA-256 `8B849697DACA`).
+- **The runs.** USN04 4700/4500 through `tools/run_game.ps1`, with `BSP_GUNNERY_RNG_STREAMS=1`,
+  `BSP_DEATH_TABLE=1`, lockstep 0.05 and the default present interval (immediate). Logs are
+  `local\rg_off_usn04.log` and `local\rg_on_usn04.log`. Both reached the final COM release, in
+  34.9 s and 33.4 s.
+- **The verdict.** `python tools/pair_diff.py local\rg_off_usn04.log local\rg_on_usn04.log` exits 0,
+  identical apart from noise. That covers 44 death rows, 44 plane death modes, 81 unit rows, 1,653
+  native rows and 268 summary lines, with 0 other lines differing. The guard is gameplay-neutral on
+  the success path.
