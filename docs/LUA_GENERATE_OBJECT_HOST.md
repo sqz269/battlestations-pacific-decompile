@@ -262,3 +262,38 @@ seam is written to the same rule as the two the runs do exercise, and to nothing
 
 `docs/PLANE_SQUADRON_HOST.md` carries the design, the other two seams and the fused-leader
 substitution that makes the squadron's own unit wing 0.
+
+## Hidden rows are the only hidden units (packet `cc9_hidden_units`, a read)
+
+Worker cc9-ships2, on main `5eaf8aa81`. Ghidra was read-only. No code changed.
+
+**There is no other kind of hidden unit.**
+- The scene reader tests `Hidden` (`00CE5708`) at `0046D3B5`..`0046D3C5`, on the instantiate pass
+  and before the gate. A set flag jumps past `0046C550`, so the unit is never created at load.
+- The registration branch (`0046BF70` at `0046D531`) still enters the row in the scene database's
+  named-object map.
+- `GenerateObject` (`00944FD0`) is the only reveal. `commandhelpers.lua`'s `luaFindHidden(name)`
+  returns `{Name = name}`, and `luaGenerateObjects` walks such tables through `GenerateObject`.
+- A grep of this installation's mission and global Lua finds no unhide or show native. The only
+  `Show*`/`Hide*` calls are HUD calls: `ShowHint`, `HideScoreDisplay`, `HideUnitHP`.
+- A held-back unit has no instance at all, so it has no render, AI, collision or recon state until
+  it is generated.
+
+**This host already follows the rule** (section 1 and `src/game_hosts_scene_contents.cpp`). Held
+back and generated, from existing worktree-cc9-ships2 logs:
+
+| log | held back | generated |
+| --- | --- | --- |
+| USN01 3000 (`rb6_usn01`) | 15 | 1 |
+| USN02 9000 (`rb6_usn02`) | 4 | 0 |
+| USN04 4500 (`rb6_usn04`) | 34 | 0 |
+| JM06 3000 (`rb6_jm06`) | 20 | 0 |
+| JM08 9000 (`lo_base_jm08`) | 20 | 0 |
+| USN13 3000 (`rb6_usn13`) | 10 | 0 |
+| BSM01 3000 (`rb6_bsm01`) | 25 | 2 |
+| PRCP03 9000 (`lo_smoke_prcp03`) | 44 | 4 (Betty squadrons) |
+| USN18 9000 (`lo_smoke_usn18`) | 72 | 3 |
+
+**PRCP03's seven troop transports are Hidden rows.** The script generates them only in
+`PreparePhase4` (`prcp_07_tarawa.lua:1360..1368`), after the phase-3 victory movie. See packet
+`cc9_prcp03_phase_progress`.
