@@ -61,6 +61,11 @@ struct AiCommandObject {
     void* owner_group{nullptr};   // +4h, written by every arm of the factory
     void* target_group{nullptr};  // +1Ch, the ATTACK family only
     float target_position[3]{0.0f, 0.0f, 0.0f};  // +8h..+10h, the MOVE family only
+    // Packet cc9_director_moveonpath_route: CAUTIOUSATTACK's +20h base (vtable
+    // 00D22BE4) as 00A109B0 builds it, the byte +24h = 0 and the route counter
+    // +28h = 4. Only that class reads them.
+    bool route_flag_24{false};
+    int route_counter_28{4};
 };
 
 // The group constructor's choice at 00A2E0F1-00A2E140: an 8-byte instance with

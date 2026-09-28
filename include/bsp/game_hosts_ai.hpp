@@ -259,6 +259,13 @@ struct GameAiSummary {
     unsigned long long weight_model_runs{0};       // 00A08460 ran for real
     unsigned long long weight_class_stand_ins{0};  // the 009FDF30 fallback
     float first_command_seconds{-1.0f};
+    // Packet cc9_director_moveonpath_route (00A14DD0's director-slot route).
+    unsigned long long cautious_route_builds{0};
+    unsigned long long cautious_route_points{0};   // 5Fh messages, target included
+    unsigned long long cautious_route_clears{0};   // `clearorders` at 00A14EA7
+    unsigned long long cautious_route_waits{0};
+    unsigned long long cautious_route_movetos{0};
+    unsigned long long cautious_route_no_slot{0};  // a leader with no host slot object
 };
 
 // The coordinator for one mission run, owned for the whole run.

@@ -363,6 +363,23 @@ public:
     // 00836C2E and hands it to 007ADD70 with the cursor. Answers true when
     // 007ADD70 would answer true, which is only when its guard at 007ADFAC
     // refuses the advance - the arrival of a PATH_FM_SIMPLE path.
+    // ---- packet cc9_director_moveonpath_route: the user path -------------
+    // Path object vt[+18h] 0071D340: MT_GAMEUNIT_ADDUSERPATHPOINT (5Fh, the point
+    // at +20h..+28h, presence 1) routed to the unit with 0077C2A0(unit, msg, 7, 0).
+    // Its receiver is 00721A40's 5Fh arm, 007207C0: a new queued `moveonpath` with
+    // an empty descriptor (0071FDE0(point, 1, n) then director vtable[60h]) unless
+    // the last queued command is already such a `moveonpath`, whose slot object
+    // takes the point (0071FDE0(point, 0, n-1), at most 8 ahead of +18h).
+    // `outside_map` is 0071C4F0 on the point, computed by the caller. Delivered
+    // on the session drain when kSetCommandQueueDelayBound, else at the call.
+    void post_user_path_point_0071d340(std::size_t unit_index, const float point[3],
+        bool outside_map);
+    // Slot 0's path object: vt[+0Ch] 0071FC40 (the follower's source is this
+    // object's point vector +40h) and vt[+10h] 0071D2A0 (+18h when attached,
+    // else -1).
+    bool user_path_attached_0071fc40(std::size_t unit_index) const;
+    int user_path_remaining_0071d2a0(std::size_t unit_index) const;
+
     bool advance_path_cursor_00836bf0(std::size_t unit_index, float unit_x, float unit_z,
         float unit_radius, float turn_radius);
 

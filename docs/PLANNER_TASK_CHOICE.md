@@ -1193,6 +1193,10 @@ The units host owns the director. The predictions to make then are on USN10 and 
 CAUTIOUSATTACK arm fires (section 11.4): the leaders would follow a three-leg danger-avoiding path
 before the direct movetos.
 
+**Taken by cc9-ships5 (2026-09-28): docs/AI_CAUTIOUS_ROUTE.md.** `00A14DD0` is read whole and bound
+behind `kCautiousRouteBound`, together with the 5Fh receiver `007207C0` and the kind-0 `moveonpath`
+begin in the commands host. Pairs and verdict are in that doc.
+
 ## 16. Handoff: `cc9_submarine_ai_states` (read started, nothing bound)
 
 Worker cc9-ships4, near its context limit. This section starts from lua4's read,
