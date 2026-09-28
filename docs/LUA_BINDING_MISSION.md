@@ -2255,3 +2255,29 @@ channel firing. This is a read of this installation's scripts; nothing is bound.
   (`IngameMovieInputListenerID` -> `luaCamOnTargetExt`) or the `Launch_Airbase_Stock_N` keys.
 - Both answer to player input. The harness plays idle, so on every reference row the ON run would
   be byte-identical to the OFF run for this channel.
+
+### The `command` channel: no reachable row (cc9-lua3, 2026-09-28)
+
+The lead approved JM07 3200/3000 as the measured row for `command`, with JM02 as the fallback.
+Neither runs a `command` listener in this build. 300-frame smokes and the mission tree
+(`scripts/datatables/missiontree.lua`, mtime 2025-06-02, modded) show why:
+
+| menu id | scene | script the host runs | `command` listener |
+| --- | --- | --- | --- |
+| JM07 | `COTP-IJN/PRCPIJN/prcpijn_midway.scn` | `PRCPIJN/prcpijn_midway.lua` | none |
+| JM02 | `COTP-IJN/PRCPIJN/prcpijn_02_force_z.scn` | `PRCPIJN/prcpjm02.lua` | none |
+| JM13 | `COTP-IJN/ijn_16_ambushed_at_wake_island.scn` | `COTP-IJN/JM16.lua` | none |
+| IJN13 | `IJN/ijn_13_yorktown.scn` | `Ijn/ijn_13_yorktown.lua` | none (only the movie-skip `input`) |
+| JM06 | `COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn` | `PRCPIJN/JM06.lua` | `submove` is never registered (above) |
+
+- **The scripts that do register one** are `jm02`, `jm06`, `jm07` and `jm13` under
+  `missions/COTP-IJN/`, `jm06`, `jm07` and `prcpjm07` under `PRCPIJN/`, and four copies under
+  `missions/ijn/JM/`.
+- **No tree entry reaches them.** Under the host's script derivation, no scene in the tree maps
+  to any of those files. The `ijn_02_force_z` and `ijn_07_invasion_of_midway` scenes exist on
+  disk but no tree entry names them.
+- **Caveat on the derivation.** It is itself a host substitution: the scene record's `+928h`
+  script table is not filled by the header pass. The image might pick a different script for
+  some of these scenes. The scene files carry no `.lua` string to check against.
+- **So the `command` channel stays unbound.** Binding it needs either the `+928h` script table,
+  or a harness option that runs a named mission script.
