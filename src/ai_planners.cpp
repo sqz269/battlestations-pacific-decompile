@@ -237,7 +237,7 @@ void* ai_planner_choose_attack_target(AiPlannerHost& host, void* group, int own_
         }
 
         AiTargetScoreInputs score{};
-        score.base = host.candidate_base_weight(node);
+        score.base = host.candidate_base_weight(group, node); // 00A1CC65
         const float distance = ai_target_scoring_distance(
             host.squared_planar_distance(group, node), near_radius_squared);
         score.range = host.range_interpolation(range_near, range_far, distance);
