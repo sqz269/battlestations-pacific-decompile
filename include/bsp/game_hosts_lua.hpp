@@ -1066,6 +1066,7 @@ public:
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
     // until that switch is on. docs/LUA_BINDING_MISSION.md.
     int run_set_invincible_00897a50(lua_State* state, int argument_count);
+    int run_override_hp_008c1930(lua_State* state, int argument_count);
     // Packet cc9_forced_recon_level, under kForcedReconLevelBound.
     int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
     // Packet cc9_lua_add_damage, under kLuaAddDamageBound.
