@@ -285,3 +285,18 @@ committed OFF:**
   - None calls `PilotMoveTo`.
   - None has a `PilotMoveToRange` at a marker: USN04's two `moviefisher` orders target Zuikaku and
     Shoho, which are units.
+
+**The native alone, committed OFF** (the lead's order: the marker rule follows when
+`src/game_hosts_units.cpp` is free).
+- `kPilotMoveToBound` adds the `PilotMoveTo` row, `0x008a4150`.
+- It runs the `PilotMoveToRange` body with `+14h` forced to 0.
+- The log line names the native.
+
+**Predictions for this commit, before any run:**
+- **JM08 3200/3000:** the four calls are served (UNIMPLEMENTED to concrete, 4 calls).
+  - Without the marker rule, Movie Mavis's order at MoviePoint resolves to `target_token 0`. Its
+    task's steer point stays `{0, 0, 0}`, so it flies toward the world origin, not (2000, 7500).
+    That is the plane-side gap, now reached.
+  - The other three calls install moveto tasks at a unit.
+  - Gameplay moves (exit 3): Movie Mavis's track and the wave's.
+- **USN01, USN02 and USN04: identical (exit 0 or 1).** None calls `PilotMoveTo`.

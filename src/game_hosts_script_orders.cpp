@@ -81,6 +81,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // (luaBombersSpawnedLex, difficulty 1-2). Routed only with
     // kPilotMoveToTaskBound; otherwise it stays a named record.
     {"PilotMoveToRange", 0x008a4590u},
+    // Packet cc9_pilot_move_to: prcpjm08.lua:573 and :722. Handled only with
+    // kPilotMoveToBound.
+    {"PilotMoveTo", 0x008a4150u},
     // Packet cc9_pilot_moveto_task part 1b: the same callback's turn and
     // stance. Handled only with kMissionTurnAndStanceBound.
     {"EntityTurnToEntity", 0x008a0a10u},
@@ -382,6 +385,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     // A switch that is off leaves its native an unimplemented record, not a
     // concrete binding that does nothing.
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
+    if (std::strcmp(binding->name, "PilotMoveTo") == 0) {
+        return kPilotMoveToBound && bsp::kPilotMoveToTaskBound;
+    }
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
@@ -1303,7 +1309,10 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
     row.unit_index = index_of(unit);
     row.unit = name_of(unit);
     bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
-    target.trailing = bsp::pilot_move_to_range_008a46dc(argument_count_, argument_number(2));
+    // PilotMoveTo (008A4150) never reads argument 2: +14h keeps 0088A8C7's 0.
+    target.trailing = pilot_move_to_plain_
+        ? 0.0f
+        : bsp::pilot_move_to_range_008a46dc(argument_count_, argument_number(2));
     const std::size_t target_index = target.object != nullptr
         ? index_of(target.object)
         : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
@@ -1343,10 +1352,12 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
             }
         }
     }
-    log_.notef("  PilotMoveToRange: unit=%s target_token=%u range=%.1f -> %zu moveto task(s) "
-        "(008A4590 -> 0077D600 00E08F68 -> 0099A170 -> 009C3BE0)",
+    log_.notef("  %s: unit=%s target_token=%u range=%.1f -> %zu moveto task(s) "
+        "(%s -> 0077D600 00E08F68 -> 0099A170 -> 009C3BE0)",
+        pilot_move_to_plain_ ? "PilotMoveTo" : "PilotMoveToRange",
         row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
-        static_cast<unsigned>(target_token), static_cast<double>(target.trailing), tasks);
+        static_cast<unsigned>(target_token), static_cast<double>(target.trailing), tasks,
+        pilot_move_to_plain_ ? "008A4150" : "008A4590");
     return 0;  // the binding pushes nothing
 }
 
@@ -1962,6 +1973,13 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int results = 0;
     if (std::strcmp(binding->name, "PilotSetTarget") == 0) {
         results = run_pilot_set_target(row);
+    } else if (std::strcmp(binding->name, "PilotMoveTo") == 0) {
+        // 008A4150: the PilotMoveToRange issue without the range argument.
+        ++pilot_move_to_calls_;
+        const bool outer_plain = pilot_move_to_plain_;
+        pilot_move_to_plain_ = true;
+        results = run_pilot_move_to_range(row);
+        pilot_move_to_plain_ = outer_plain;
     } else if (std::strcmp(binding->name, "PilotMoveToRange") == 0) {
         results = run_pilot_move_to_range(row);
     } else if (std::strcmp(binding->name, "EntityTurnToEntity") == 0) {

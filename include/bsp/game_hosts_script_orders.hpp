@@ -198,6 +198,14 @@ inline constexpr bool kSubmarineDepthLevelBound = true;
 // identical (docs/RECON_SENSOR_PASS_BINDING.md).
 inline constexpr bool kReconLevelTableBound = true;
 
+// Packet cc9_pilot_move_to (docs/GAME_SHIP_NAVIGATION_BINDING.md, "PilotMoveTo").
+// True: the Lua native PilotMoveTo (008A4150) is served by the PilotMoveToRange
+// body with the descriptor's +14h range held at 0: 008A4150 issues the same
+// 0077D600(entity, 00E08F68, &target, 1) as 008A4590 but reads no third
+// argument, so +14h keeps 0088A8C7's 0, and it has no pose-refresh tail. False:
+// the native stays an unimplemented record.
+inline constexpr bool kPilotMoveToBound = false;
+
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo
 // (008A7200) fires the unit's torpedo guns through 00730160, all of them or
@@ -559,6 +567,9 @@ private:
     // it does not yet issue.
     int run_pilot_set_target(GameScriptOrderRow& row);
     int run_pilot_move_to_range(GameScriptOrderRow& row);
+    // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
+    bool pilot_move_to_plain_{false};
+    unsigned long long pilot_move_to_calls_{0};
     int run_entity_turn_to_entity(GameScriptOrderRow& row);
     int run_unit_set_fire_stance(GameScriptOrderRow& row);
 public:
