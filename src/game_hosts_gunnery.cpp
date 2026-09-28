@@ -670,6 +670,9 @@ struct GameGunneryHost::Impl {
             float ttl{0.0f};
         };
         std::vector<VisibilityEntry> visibility;
+        // Packet cc9_unit_fire_cooldown: unit+6F8h and unit+6FCh.
+        float fire_cooldown_6f8{0.0f};
+        float torpedo_cooldown_6fc{0.0f};
         // Per class descriptor, read once out of the authored row.
         float hull_length{0.0f};
         float hull_width{0.0f};
@@ -854,6 +857,7 @@ struct GameGunneryHost::Impl {
         component_failure = 14, // 0093BF98, the failure roll, key (victim unit, 0)
         ranging = 15,         // 00864880 / 00862CD0, key (owner unit, target unit)
         torpedo_unload = 16,  // 0081DD85, 0081DCB0's pick, key (unit, 0)
+        unit_fire_cooldown = 17, // 0072FB6A, the artillery cooldown, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1196,6 +1200,12 @@ struct GameGunneryHost::Impl {
     // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
     // (docs/GAMEPLAY_SETTINGS.md; loader defaults 0, installed 0.05 / 0.1).
     float aa_time_add_fix{0.0f};
+    // ShipGlobals SubTorpedoDelay / ShipTorpedoDelay (settings +764h / +768h).
+    float sub_torpedo_delay_764{0.0f};
+    float ship_torpedo_delay_768{0.0f};
+    unsigned long long fire_cooldown_sets{0};
+    unsigned long long torpedo_cooldown_sets{0};
+    unsigned long long fire_cooldown_refusals{0};
     // Packet cc9_difficulty_multipliers: config+1Ch and +4Ch as 0087D7B0 fills them,
     // 1 / value (0087DB61 / 0087DD33 FDIVRP), indexed by level.
     std::vector<float> difficulty_hp_inverse;      // config+1Ch
@@ -2588,6 +2598,11 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  think = Globals.WeaponSystems.WeaponDirectorThinkTime\n"
         "end\n"
         "local aafix, aamul = 0, 0\n"
+        "local subtd, shiptd = 0, 0\n"
+        "if type(ShipGlobals) == 'table' then\n"
+        "  if type(ShipGlobals.SubTorpedoDelay) == 'number' then subtd = ShipGlobals.SubTorpedoDelay end\n"
+        "  if type(ShipGlobals.ShipTorpedoDelay) == 'number' then shiptd = ShipGlobals.ShipTorpedoDelay end\n"
+        "end\n"
         "if type(ShipGlobals) == 'table' and type(ShipGlobals.AAGunnerErrorModifier) == 'table' then\n"
         "  local m = ShipGlobals.AAGunnerErrorModifier\n"
         "  if type(m.CalcTargetPosTimeAddFix) == 'number' then aafix = m.CalcTargetPosTimeAddFix end\n"
@@ -2600,6 +2615,8 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.think = num(think, 1000) or 2000\n"
         "    f.aafix = num(aafix, 100000) or 0\n"
         "    f.aamul = num(aamul, 100000) or 0\n"
+        "    f.subtd = num(subtd, 100000) or 0\n"
+        "    f.shiptd = num(shiptd, 100000) or 0\n"
         // Packet cc9_ship_fire_flooding: 00962DBC stores 1 unless Repair is
         // present and false; the ShipGlobals damage block with 0083E1B3..
         // 0083E4AA's defaults (0, 0, 0.2, 2) when a key is absent.
@@ -2869,6 +2886,8 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 think_read = true;
                 aa_time_add_fix = flat_scaled(type_id, "aafix", 100000.0f, 0.0f);
                 aa_time_add_mul = flat_scaled(type_id, "aamul", 100000.0f, 0.0f);
+                sub_torpedo_delay_764 = flat_scaled(type_id, "subtd", 100000.0f, 0.0f);
+                ship_torpedo_delay_768 = flat_scaled(type_id, "shiptd", 100000.0f, 0.0f);
                 if constexpr (kDifficultyMultipliersBound) {
                     // 0087D7B0: config+1Ch and +4Ch as 1/HPMultipliers[i] and
                     // 1/PlayerCheatMultipliers[i] (0087DB61 / 0087DD33), from the Lua
@@ -4893,6 +4912,13 @@ private:
 }  // namespace
 
 void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
+    if constexpr (kUnitFireCooldownBound) {
+        // 00953CC0: count unit+6F8h and unit+6FCh down by the step while positive.
+        for (UnitState& u : unit_state) {
+            if (u.fire_cooldown_6f8 > 0.0f) u.fire_cooldown_6f8 -= dt;
+            if (u.torpedo_cooldown_6fc > 0.0f) u.torpedo_cooldown_6fc -= dt;
+        }
+    }
     for (std::size_t g = 0; g < guns.size(); ++g) {
         GameGunRow& gun = guns[g];
         const std::size_t owner_unit = gun.unit_index;
@@ -5404,7 +5430,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         gate.damage_counter = 0;
         gate.barrel_delay_time = gun.fire.barrel_delay_time;
         gate.secondary_delay = gun.fire.fire_stagger;
-        gate.unit_cooldown_applies = false;
+        gate.unit_cooldown_applies = kUnitFireCooldownBound
+            && (gun.category == 2 || gun.category == 3 || gun.category == 4
+                || gun.category == 6);                          // 006D1E50
+        if (kUnitFireCooldownBound) {
+            gate.unit_fire_cooldown = state.fire_cooldown_6f8;       // unit+6F8h
+            gate.unit_torpedo_cooldown = state.torpedo_cooldown_6fc; // unit+6FCh
+        }
         gate.weapon_type_id = gun.category;
         gate.muzzle_world_y = muzzle[1];
         gate.muzzle_submerged = false;
@@ -5415,6 +5447,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             gun.angles, gate, true);
         done("Gun::can_fire_0085a830", 0x0085a830u);
         if (!can_fire && !forced) {
+            if (kUnitFireCooldownBound
+                && ((gate.unit_cooldown_applies && gate.unit_fire_cooldown > 0.0f)
+                    || (gun.category == 7 && gate.unit_torpedo_cooldown > 0.0f))) {
+                ++fire_cooldown_refusals;
+            }
             ++gun.can_fire_refusals;
             ++summary.can_fire_refusals;
             continue;
@@ -5468,6 +5505,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         ++gun.shots;
         gun.last_fire_seconds = clock_seconds;   // gun+474h
+        if constexpr (kUnitFireCooldownBound) {
+            // 0072F830: 0072FB35..0072FB78 and 0072FB7E..0072FBA9.
+            if (gun.category == 2 || gun.category == 3 || gun.category == 4
+                || gun.category == 6) {
+                state.fire_cooldown_6f8 = draw(Draw::unit_fire_cooldown, owner_unit, 0,
+                    0.075f, 0.225f);                                  // 00CEED68 / 00CFE2B4
+                ++fire_cooldown_sets;
+            }
+            if (gun.category == 7) {
+                state.torpedo_cooldown_6fc = units.unit_is_kind_of(owner_unit, 8)
+                    ? sub_torpedo_delay_764 : ship_torpedo_delay_768;   // 00836EB0
+                ++torpedo_cooldown_sets;
+            }
+        }
         ++state.row.shots;
         ++summary.shots;
         if (torpedo_gun) ++summary.torpedo_gun_shots;
@@ -8823,6 +8874,12 @@ void GameGunneryHost::report() {
             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
             kShipPlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery unit fire cooldown sets=%llu torpedo_sets=%llu "
+            "refusals=%llu sub_delay=%.2f ship_delay=%.2f bound=%d (0072F830 / 00953CC0 / "
+            "00729ADD, packet cc9_unit_fire_cooldown)", host.fire_cooldown_sets,
+            host.torpedo_cooldown_sets, host.fire_cooldown_refusals,
+            static_cast<double>(host.sub_torpedo_delay_764),
+            static_cast<double>(host.ship_torpedo_delay_768), kUnitFireCooldownBound ? 1 : 0);
         host.log.notef("summary mission gunnery difficulty party_scaled=%llu role_scaled=%llu "
             "level=%zu hp_inverse=%.4f cheat_inverse=%.4f bound=%d (0095DA00 / 0087D730 / "
             "008270AD, packet cc9_difficulty_multipliers)", host.difficulty_party_scaled,

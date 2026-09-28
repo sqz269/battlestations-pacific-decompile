@@ -301,3 +301,80 @@ df7ba20c5 --flip kUnitInvincibilityFloorBound=true`). RNG streams and the death 
 
 **Decision: `kUnitInvincibilityFloorBound` is ON**, and with it section 6's 007BC5B0 fold. Every
 floor holds at its exact fraction, and every recorded prediction held.
+
+## 11. The unit fire cooldown (packet `cc9_unit_fire_cooldown`, switch `kUnitFireCooldownBound`, OFF)
+
+Rank 6 of section 2. Read from the Ghidra listing and disk bytes. Ghidra was not written.
+
+**The writer census.** `scan-bytes` of the displacements `F8 06 00 00` (12 hits) and `FC 06 00 00`
+(19 hits) with `--limit 4000`. The hits on the unit are:
+- `0095CF50` / `0095CF58`: `BSP_UnitGameObject_Construct` seeds both to XMM0. XMM0's only write
+  before them in the listing is `0095CD7D XORPS XMM0,XMM0`, so both start at 0.
+- `0072FB78` (`FSTP [EDX+6F8h]`) and `0072FBA9` (`FSTP [EDX+6FCh]`), with `EDX = [gun+3F0h]`, in
+  `BSP_Gun_SpawnShotAndEffects` `0072F830`: the per-shot stores.
+- `00729AFB` / `00729B17` in `BSP_Gun_CanFire` `00729A80`: the reads.
+
+The rest are other structures: the settings (`0083B5E0`), the ship and plane class loaders, the
+bot-task factories (`009B9030`, `009CD300`), the path search, CRT and unwind code. `00953CC0`
+counts the fields down on the sub-object at `unit+310h`, so its displacements are `3E8h`/`3ECh`
+and do not appear in this scan. The countdown is recorded in docs/TICK_ELEMENT_OVERRIDES.md.
+
+**The rule.**
+
+| step | site | rule |
+| --- | --- | --- |
+| seed | `0095CF50`/`58` | both 0 |
+| per artillery shot | `0072FB35`..`0072FB78` | when `[gun+3F4h]+80h` is 2, 3, 4 or 6: `unit+6F8h = U(0.075, 0.225)`. The draw is `00BD2F10` on stream 1 (`ECX = 1`), with `00CEED68` = `0x3D99999A` = 0.075 and `00CFE2B4` = `0x3E666666` = 0.225, and it is stored by FSTP |
+| per torpedo shot | `0072FB7E`..`0072FBA9` | when the kind is 7: `unit+6FCh = 00836EB0(settings, unit)`. That is settings `+764h` (`SubTorpedoDelay`) when the unit answers `IsKindOf(8)`, else `+768h` (`ShipTorpedoDelay`). This installation's ShipGlobals has 0.5 for both (docs/GAMEPLAY_SETTINGS.md) |
+| every unit tick | `00953CC0` | while positive, each counts down by the step |
+| CanFire test 5 | `00729ADD`..`00729B0A` | `006D1E50(kind)` (kind in 2, 3, 4, 6) and `unit+6F8h > 0` refuse |
+| CanFire test 6 | `00729B0C`..`00729B26` | kind 7 and `unit+6FCh > 0` refuse |
+
+**The earlier reading was wrong.** docs/GUN_DISPERSION.md section 0 calls the `0072FB6A` draw "an
+effect timer". It is the unit-wide artillery fire cooldown: CanFire reads it back. So every
+artillery shot holds **every** artillery gun on that unit for 0.075-0.225 s, and every torpedo
+launch holds the unit's torpedo tubes for 0.5 s.
+
+**The host until now.** `gate.unit_cooldown_applies = false`, and both cooldown inputs are 0.
+
+**The binding.** `kUnitFireCooldownBound`, OFF.
+- Two per-unit timers, counted down at the start of the gun step.
+- The two per-shot stores. The artillery draw uses its own stream key `Draw::unit_fire_cooldown`.
+  The delays come from ShipGlobals at run time, through the flatten chunk.
+- The CanFire inputs, and a census line: `summary mission gunnery unit fire cooldown sets=
+  torpedo_sets= refusals= sub_delay= ship_delay=`.
+- **Labelled:** the countdown runs in the gun step, not in the unit's own tick.
+
+**Predictions, recorded before the pair.** A refused gun retries on the next tick, so the
+cooldown mostly delays shots rather than cancelling them.
+
+| row | ON prediction |
+| --- | --- |
+| every mission | `ship_delay=0.50`, `sub_delay=0.50`; `sets` about equal to the artillery shots |
+| USN02 9200/9000 (surface, artillery) | first shot unchanged; shots fall 1-5% (a multi-turret ship's guns that come ready together are staggered); `refusals > 0`; deaths within +-2 |
+| USN04 4700/4500 | category-6 dual-purpose AA is artillery kind 6, so its shots fall a few percent; category 1 and 5 unaffected; deaths within 44 +- 3 |
+| USN13 3200/3000 | shots fall 1-5%; deaths 27 +- 2 |
+| USN01 3200/3000 | shots fall a few percent; deaths 7 +- 1 |
+| torpedo salvos (USN02) | multi-tube launches spread over 0.5 s steps; torpedo shots unchanged or down 1-2 |
+
+## 12. The unit fire cooldown pairs, and the flip (2026-09-28)
+
+OFF `local\FC_OFF_<m>.log` (`d63d6198c`, with the floor and the multiplier ON); ON
+`local\FC_ON_<m>.log` (`pair_export --commit d63d6198c --flip kUnitFireCooldownBound=true`). RNG
+streams and the death table were on. Every ON run reads `sub_delay=0.50 ship_delay=0.50`.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 sets | - | 3052 artillery + 189 torpedo = 3241 = the ON shots | about the artillery shots | held, exactly |
+| USN02 shots | 3138 | 3241 (+3.3%) | fall 1-5% | **failed**: the stagger reshuffles the engagement; hits fall 4918 -> 4191 (-15%) |
+| USN02 first shot / deaths | 1.40 s / 12 | 1.40 s / 11 | unchanged / +-2 | held |
+| USN02 refusals by the cooldown | - | 21187 | > 0 | held |
+| USN04 shots / hits / deaths | 5433 / 707 / 44 | 5183 (-4.6%) / 681 / 43 | a few percent down (category 6); 44 +- 3 | held |
+| USN13 shots / deaths | 4440 / 26 | 4422 / 25 | down 1-5%; 27 +- 2 | held (-0.4%) |
+| USN01 shots / deaths | 652 / 5 | 653 / 5 | a few percent down; deaths within 1 | held on deaths; shots flat |
+
+**Decision: `kUnitFireCooldownBound` is ON.**
+- The per-shot stores match the image to the shot: each artillery and torpedo shot set its
+  timer, and CanFire refused 21187 times on USN02 while a timer ran.
+- The failed row is a consequence I mispredicted, not a divergence. USN02's fight runs longer
+  with the floor ON, and the staggered salvos land fewer hits per shot.
