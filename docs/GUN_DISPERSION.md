@@ -12,7 +12,8 @@ Packet `cc7_gun_dispersion`. Ghidra was read-only: no rename, comment, prototype
 The packet brief placed the per-pellet perturbation in `0072F830`
 (`BSP_Gun_SpawnShotAndEffects`) and said it reads the weapon class field `Throw`.
 It does not. `0072F830` contains exactly one call to the RNG, at `0072FB6A`, and
-that draw is an effect timer written to `gun[+3F0h]+6F8h`; the loop around
+that draw is the unit-wide artillery fire cooldown written to `gun[+3F0h]+6F8h` (corrected 2026-09-28:
+CanFire test 5 reads it back; docs/GUNNERY_OPEN_ITEMS.md section 11, not an effect timer); the loop around
 `00730042` is a **deterministic** ring (section 5). The `Throw` cone lives one
 frame up, in `BSP_Gun_Fire` `00730160`, which `0072F830`'s ledger note already
 names as its caller. Everything below reads `00730160`.
