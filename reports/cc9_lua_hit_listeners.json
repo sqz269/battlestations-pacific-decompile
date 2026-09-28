@@ -6,7 +6,7 @@
     {
       "name": "kLuaHitListenersBound",
       "file": "include/bsp/game_hosts_lua.hpp",
-      "state": "OFF"
+      "state": "ON (identity pairs)"
     }
   ],
   "substitutions": [
@@ -16,5 +16,12 @@
   ],
   "no_ghidra_function": [],
   "ledger_names_added": [],
-  "failed_predictions": []
+  "failed_predictions": [],
+  "pairs": {
+    "USN01": "exit 1, events 186",
+    "JM06": "exit 1, events 147",
+    "LOMP06": "exit 1",
+    "USN04": "exit 1",
+    "USN02": "exit 1"
+  }
 }
