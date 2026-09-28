@@ -895,3 +895,92 @@ Section 4 expected USN01 to be an identity row. On this base it has three approa
 
 **Mechanism check:** on ON, `reseeds` equals the number of approach enters, direct plus state
 re-entries, and `draws = 60 x reseeds`.
+
+## 9. The sub-target entry points (packet `cc9_sub_target_entry_points`, `kShipAiSubTargetEntryPointsBound`)
+
+Worker cc9-ships8, 2026-09-28. The switch was committed OFF at `ce6a0d253`. The OFF base for this
+pair is this tree at `dd489d6d3`, logs `local\ships8_b0_<row>.log`. `kShipAiSubTargetSubStatesBound`
+stays ON. The kind-24h filter of `009E2B60` is read as the **depth-charge launcher** filter: class
+27h `MDepthChargeLauncher` is a kind 24h, and its `vtable[1F0h]` is `006FDC50`, which is
+`vtable[1E8h](1)`, the latch.
+
+### The three stand-ins and what replaces them
+
+| Site | Before (OFF) | ON |
+| --- | --- | --- |
+| `009E2A6A` / `009E2A97`, the lead pursuit's yaw rate `0082ECB0(class, [unit+984h], vtable[38h](), 1.0)` | `00811940`'s current yaw rate. Its accessor answers 0 for every unit, because its binding's forward speed is never set: the units-host fix was sent to the lead. The rudder input was 0 | `GameUnitsHost::unit_class_yaw_rate_0082ecb0(unit, rudder, forward speed, 1.0)`. The rudder is `unit+984h` as the unit's row holds it (`GameUnitRow::ordered_rudder`, from `refresh_row`; labelled, because that row copy is the motion's `to_turn`) |
+| `009F369F` / `009F36E1`, `SubAttack.SubmarineLostTime` (`settings+4D4h`) | the constant 30 | `GameMissionLuaHost::sub_attack_submarine_lost_time_04d4()`, the loaded `ShipGlobals` value, 0 when absent |
+| `009E2B60` from the tangent step and the tangent enter (`009E2BD2`) | a counted record | `GameGunneryHost::fire_function_guns_now_009e2b60(unit, 8)`: the unit's Function-8 gun rows marked to fire at their next pass. The census adds `fires=` to each `sub target` line |
+
+### The OFF census (`local\ships8_b0_<row>.log`)
+
+| Row | sub-target brains | lead enters / steps | tangent enters / steps | 009E2B60 calls |
+| --- | --- | --- | --- | --- |
+| JM06 | four transports, Fletcher-class 08 and 09 | the transports 2 / 508 each; Fletcher-class 08 3 / 185; Fletcher-class 09 1 / 363 | the transports 1 / 80 each; Fletcher-class 08 2 / 236 | 1, Fletcher-class 08 |
+| LOMP06 | Yugiri, on the Narwhal | 1 / 8 | 1 / 69 | 1 |
+| USN02, USN04, USN01 | none | - | - | - |
+
+### Predictions, written before any ON run
+
+**JM06: exit 3.**
+- The lead pursuit now turns with a non-zero yaw rate from the ordered rudder, where it had 0.
+  Every lead step of the six brains moves.
+- The lost time stays 30 if `ShipGlobals` is loaded, so Fletcher-class 08's `lost_ends=16` holds
+  unless the path moves first.
+- Fletcher-class 08's one `009E2B60` call marks its depth-charge launchers (`fires=1`, if its rows
+  carry Function 8).
+- **Deaths can move.** A depth-charge pattern near PlayerSub 01 can now damage it, where before
+  nothing fired from this path.
+
+**LOMP06: exit 3.**
+- Yugiri's 8 lead steps move.
+- Its one `009E2B60` call fires its depth charges at the Narwhal (`fires=1`). The Narwhal can take
+  damage, and the deaths can move from 0.
+
+**USN02, USN04, USN01: exit 0.** No brain reaches the sub-target sub-states, and no census line
+changes.
+
+## 10. The follower's station point (packet `cc9_follow_station_point`, rank 2, `kShipFollowStationPointBound`)
+
+Worker cc9-ships8, 2026-09-28. The switch was committed OFF at `dd489d6d3`. Section 1's rank-2 row
+is the evidence. The contract is `bsp::ShipAiFollowFormationPointHost`
+(`include/bsp/ship_ai_formation.hpp`), and the projection is `src/ship_ai_formation.cpp`.
+
+### The binding (`FollowFormationPointBinding`, `src/game_hosts_ship_ai.cpp`)
+
+- **`009DF41A`, the zone set.** The follower's `vtable[218h]` is `006DFD90`:
+  `ECX = [unit+538h]`, then `0082ADA0(0)` = `004120D0(manager, [class+560h])`. Bound as
+  `zones.group_for_layer(leaf_tuning.array[0])`, exactly as the ring probe binds `009E66EB`. An
+  unready runtime keeps 0.
+- **`009DF432` / `009DF4C5`, the two pushes.** `00417B10(ECX = zone set, &out, &in, 20.0f, 1)` is
+  bound as `zones.offset(set, point, 20, true)`. A zero set returns the point.
+- **`009DF607`, the leader yaw rate.** `00811940` with `ECX = the leader`, `RET 0`, so it reads no
+  argument. It is bound to `GameUnitsHost::unit_current_yaw_rate_00811940(leader)`.
+  - **That accessor answers 0 for every unit** (section 9; the units-host fix is with the lead).
+  - So on this base the yaw-rate half of the binding is inert. The OFF census counts non-zero
+    answers (`leader_turning=`), and it reads 0 on every row.
+- **The census.** `summary mission ship ai follow station zone_sets= pushes= moved= leader_turning=
+  bound=`.
+
+### The OFF census (`local\ships8_b0_<row>.log`)
+
+| Row | `00417B10` push calls | `00811940` non-zero answers | ring probe moved starts, for comparison |
+| --- | --- | --- | --- |
+| USN04 | 16372 | 0 | 0 of 0 |
+| USN02 | 4002 | 0 | 0 of 185700 |
+| LOMP06 | 5744 | 0 | 0 of 0 |
+| JM06 | 1130 | 0 | 0 of 0 |
+| USN01 | 52 | 0 | 0 of 11760 |
+
+### Predictions, written before any ON run
+
+- **The yaw rate:** no effect on any row until the accessor is fixed.
+- **The pushes:** a station point moves only if it lies inside an avoid zone's outline plus 20 m.
+  Formation stations sit in open water, and the ring probe, with a margin of 3, moved no start on
+  any row.
+- **USN04, USN02, JM06, USN01: exit 1**, with `moved=0`. Only the census line and host-method
+  statuses change.
+- **LOMP06: exit 1 or 3.** Its followers work near the harbour's storage and PT hangar groups, so
+  some pushes may move a point.
+- **Mechanism check:** `zone_sets` > 0 wherever the runtime is ready, and `pushes` equals twice
+  `zone_sets`.
