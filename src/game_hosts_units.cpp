@@ -1236,6 +1236,15 @@ struct GameUnitSlot {
     double sq_timer_expiry_380{-1.0};
     bool sq_ever_set{false};
     float sq_last_cruise{0.0f};
+    // Packet cc9_squadron_attack_alt: the second block 008A22B0 writes (+37Ch
+    // countdown 0 held as its expiry clock, +38Ch freeze, +398h, +3AAh lock).
+    bool sq_attack_alt_set{false};
+    float sq_alt_398{0.0f};
+    bool sq_freeze_38c{false};
+    bool sq_lock_3aa{false};
+    double sq_timer_expiry_37c{-1.0};
+    unsigned long long sq_attack_alt_reads{0};
+    float sq_last_attack_alt{0.0f};
     // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
     // as the pitch rate; 009D1E39 divides the nose-down angle by it to shallow
     // the aim tick's dive command as the dive steepens.
@@ -2576,6 +2585,28 @@ struct GameUnitsHost::Impl {
         // 009C7A96: approach+ACh = ctl+398h, which the cruise profile 009C8920
         // holds at Pilot/DiveBomb/BeginAltRange/1.
         slot.db_begin_alt_ac = kPilotDiveBombBeginAltRange1;
+        if constexpr (kSquadronAttackAltBound) {
+            // Packet cc9_squadron_attack_alt: 009C8920's gate on the squadron's
+            // second block (009C89A6 +38Ch, 009C89B6 +37Ch < 0, 009C89BF +3AAh;
+            // the write 009C89CE and the lock clear 009C89DD). LABELLED: this
+            // per-tick copy stands for the profile's call, and the profile's
+            // own value stays the tuning constant (its 00BD2F10 draw at 009C899B
+            // is not modelled, as before).
+            GameUnitSlot* sq = squadron_slot_of(slot.process_index);
+            if (sq != nullptr && sq->sq_attack_alt_set) {
+                const double now = summary.simulated_seconds;
+                if (sq->sq_freeze_38c) {
+                    slot.db_begin_alt_ac = sq->sq_alt_398;
+                } else if (now >= sq->sq_timer_expiry_37c && !sq->sq_lock_3aa) {
+                    sq->sq_attack_alt_set = false;   // the profile overwrites +398h
+                } else {
+                    sq->sq_lock_3aa = false;         // 009C89DD
+                    slot.db_begin_alt_ac = sq->sq_alt_398;
+                }
+                ++sq->sq_attack_alt_reads;
+                sq->sq_last_attack_alt = slot.db_begin_alt_ac;
+            }
+        }
         // 009C7A9E-009C7AB4, reconstructed. ctl+39Ch is the 9999.0f at
         // 00CE4C04 the same profile writes, so the min leaves +A8h alone below
         // about 9523 and this is a ceiling, not a decay, at these altitudes.
@@ -9072,6 +9103,22 @@ bool GameUnitsHost::submarine_band_y(std::size_t unit_index, int band, float& y)
 }
 
 // Packet cc9_submarine_air. 00893C00's store at unit+1280h.
+// Packet cc9_squadron_attack_alt. 008A22B0: argument 0 through 00888AA0 (no null
+// test in the image; a unit with no squadron is refused here), 008A2456..008A2489.
+bool GameUnitsHost::set_squadron_attack_alt_008a22b0(std::size_t unit_index, float altitude,
+                                                     bool force) {
+    Impl& host = *impl_;
+    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
+    if (sq == nullptr) return false;
+    sq->sq_timer_expiry_37c = host.summary.simulated_seconds + 0.5;  // +37Ch = [00CE3800]
+    sq->sq_freeze_38c = force;                                        // +38Ch
+    sq->sq_alt_398 = altitude;                                        // +398h
+    sq->sq_lock_3aa = true;                                           // +3AAh = 1
+    sq->sq_attack_alt_set = true;                                     // +3ADh = 0
+    host.done("PlaneSquadron::set_attack_alt_008a22b0", 0x008a22b0u);
+    return true;
+}
+
 bool GameUnitsHost::set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude,
                                                      bool force) {
     Impl& host = *impl_;
@@ -20733,6 +20780,16 @@ void GameUnitsHost::report() {
             "y=%.1f", s->row.name.c_str(), static_cast<double>(s->sq_alt_394),
             s->sq_freeze_38d ? 1 : 0, s->sq_alt_set ? 1 : 0,
             static_cast<double>(s->sq_last_cruise), static_cast<double>(s->motion.position[1]));
+    }
+    if constexpr (kSquadronAttackAltBound) {
+        for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+            if (s->sq_timer_expiry_37c < 0.0) continue;
+            host.log.notef("  squadron attack alt %s: alt=%.1f force=%d active=%d reads=%llu "
+                "last_begin_alt=%.1f (008A22B0 -> 009C8920 gate, packet cc9_squadron_attack_alt)",
+                s->row.name.c_str(), static_cast<double>(s->sq_alt_398), s->sq_freeze_38c ? 1 : 0,
+                s->sq_attack_alt_set ? 1 : 0, s->sq_attack_alt_reads,
+                static_cast<double>(s->sq_last_attack_alt));
+        }
     }
     {
         // Packet cc9_plane_death_modes.
