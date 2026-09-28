@@ -937,3 +937,20 @@ set by the terrain under each boat, which no earlier run printed. The host's Lan
 | JM06 3200/3000 | **Mechanism:** every boat's `clear` in the trace moves off -80.0 once terrain lies under its footprint. It stays -80.0 over open water. The clamp engages only where `terrain + Height + 3` is above the boat's band. **Spread:** most likely **exit 1**, since the boats hold -13, -40 and -80 m in open water off Midway. If a boat clamps, it rises toward the clearance and its throttle bound drops, so its position and hits move (exit 3). The -1.0 reverse bound changes nothing unless an AI boat orders more than -1.0 reverse |
 | LOMP06 1200/1000 | **exit 1.** The Narwhal holds -10.1 m in the convoy lane, away from land |
 | USN01 3200/3000 | no submarine, exit 1 |
+
+### Seabed pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `8e6fe0fb3`, with dive and air ON.
+- ON is `pair_export --flip kSubmarineSeabedBound=true` (`local/sb_on`).
+- The logs are `local/sb_{off,on}_<mission>.log`.
+
+| row | result | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | The `Narwhal-class Submarine 01` (band -80) passes over rising ground from about step 1500 to 2400. Its published clearance goes -80.0 -> -73.08 -> -76.34 -> -76.91 -> -76.02 -> -80.0, it clamps on 962 steps, and it pulls up to between -71.2 and -76.9 before settling back at -79.9 (`rear` briefly 0.010..0.017). No other boat sees terrain: `clear` stays -80.0. **pair_diff exit 3:** deaths 1 -> 2, because `PlayerSub 03` (264 health at the end OFF) is sunk at 148.10 s by the Narwhal-class's category-6 hits. Hit records 231 -> 233 | mechanism held; **spread missed** (I said exit 1 most likely) |
+| LOMP06 1200/1000 | exit 1: gameplay identical. The only line that moves is the movie camera pose at frame 201, x 851.0 -> 850.9. A repeat OFF run (`sb_off2_lomp06.log`) reproduces 851.0, so this is the change, not noise: the camera follows the Narwhal, and the new throttle bounds or scan shift it by 0.1 m | held |
+| USN01 3200/3000 | exit 0 | held |
+
+**Verdict: `kSubmarineSeabedBound = true`, with the JM06 spread miss recorded.** The clamp, the
+publish and the trace numbers follow the traced law. Which boat crosses shallow water was the
+unknown.

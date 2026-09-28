@@ -270,7 +270,7 @@ inline constexpr bool kSubmarineAirBound = true;  // ON: pairs held (docs/SUBMAR
 // an AI-helmed boat, and the force callback's order-ring throttle bounds (2.0 /
 // -1.0, or the plane curves under the clamp) are written. False: no scan, no
 // clamp, no bounds write.
-inline constexpr bool kSubmarineSeabedBound = false;
+inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06 spread miss recorded (docs/SUBMARINE_MODEL.md section 14)
 
 class GameUnitsHost {
 public:

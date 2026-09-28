@@ -18,9 +18,21 @@
   "switch": {
     "name": "kSubmarineSeabedBound",
     "file": "include/bsp/game_hosts_units.hpp",
-    "state": "OFF, predictions written; pairs pending"
+    "state": "ON, flipped by its pairs (mechanism held; JM06 spread missed, recorded)"
   },
   "corrections": [
     "unit+844h/+848h are order-ring slot +0Ch/+10h (param_a_high/param_a_low), not dive planes (docs/SUBMARINE_MODEL.md sections 6 and 12)"
+  ],
+  "pairs": {
+    "JM06": "exit 3: Narwhal-class clamps 962 steps over ground rising to clearance -73.08, pulls up to -71.2; deaths 1 -> 2 (PlayerSub 03 sunk at 148.10 s by the Narwhal-class)",
+    "LOMP06": "exit 1: gameplay identical; frame-201 camera x 851.0 -> 850.9, reproduced OFF as 851.0 (change-caused, presentation only)",
+    "USN01": "exit 0"
+  },
+  "failed_predictions": [
+    {
+      "row": "JM06 spread",
+      "predicted": "exit 1 most likely (open water)",
+      "measured": "exit 3: the Narwhal-class crosses shallow ground"
+    }
   ]
 }
