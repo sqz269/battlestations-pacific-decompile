@@ -91,7 +91,8 @@ inline constexpr bool kScriptFireTargetBound = true;
 // the entity-command arm (00816E30) and the order appliers stay records; the arm is
 // not reached on the reference runs. False: the AutoTarget tick writes the target
 // directly and the command paths store nothing, as before.
-inline constexpr bool kWeaponDirectorFireTargetBound = false;
+// ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 15).
+inline constexpr bool kWeaponDirectorFireTargetBound = true;
 
 class GameHostLog;
 class GameUnitsHost;

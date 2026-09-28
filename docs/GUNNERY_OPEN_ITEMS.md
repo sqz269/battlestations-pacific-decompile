@@ -465,3 +465,29 @@ is called 28 times on USN02, 140 on USN04, 15 on USN01 and 262 on USN13; `AutoTa
 | USN04 4700/4500 | `command_requests` about 140; the ships under orders hold their ordered targets. Moves (exit 3), deaths within 40 +- 3 |
 | USN01 3200/3000 | `command_requests` about 15; small moves or identity; deaths 5 +- 1 |
 | JM06 3200/3000 | identity where no command carries a target; otherwise small moves |
+
+## 15. The director fire-target pairs, and the flip (2026-09-28)
+
+OFF `local\WD_OFF_<m>.log` (`02e5661e3`, switch off); ON `local\WD_ON_<m>.log` (`pair_export
+--commit a34b68f6b --flip kWeaponDirectorFireTargetBound=true`; `a34b68f6b` only restructures a
+branch so that the ON build has no unreachable code). RNG streams and the death table were on.
+
+| mission | OFF shots / hits / deaths | ON | census | prediction | verdict |
+| --- | --- | --- | --- | --- | --- |
+| USN02 | 1083 / 881 / 22 | 1164 / 991 / 24, pair_diff 3 | 43 command requests, 84 target changes, 0 refusals | moves; the DRKillers keep DeRuyter | moved: held. DeRuyter: **failed**, she dies slightly earlier (194.76 s against 199.21 s) |
+| USN04 | 5333 / 644 / 40 | identical (pair_diff 1) | 72 requests, 72 changes | moves | **failed**: the ordered targets equal the automatic ones |
+| USN01 | 623 / 178 / 5 | identical (pair_diff 1) | 8 requests | identity or small moves | held |
+| JM06 | 233 / 145 / 2 | pair_diff 3: one unit-table value (a PBY's nearest target 8163 -> 7770) | 14 requests, 3 unresolved `SetCommand` targets | small moves | held |
+
+**USN02's outcome changes.**
+- **The fight.** With forced command targets holding the directors, Houston takes 1104 instead of
+  4095, Exeter 6316 instead of 3859.
+- **The failure.** Exeter is sunk at 211.76 s, and `usn_2_java.lua:521` ends the mission in phase 2
+  (`EndMission=true`). OFF she survives with 4178.
+
+**The three unresolved targets on JM06.** `SetCommand`'s target pointer did not match one of the
+commands host's unit records. Those calls stay records (`WeaponDirector::set_fire_target_unresolved`).
+
+**Decision: `kWeaponDirectorFireTargetBound` is ON.** The gate and store are `00836240`'s, and
+every command request was stored without a refusal. The failed rows are consequences, not
+divergences. The USN02 failure is flagged for reference g.
