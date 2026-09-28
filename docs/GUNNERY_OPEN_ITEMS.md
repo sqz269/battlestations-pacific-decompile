@@ -356,3 +356,25 @@ cooldown mostly delays shots rather than cancelling them.
 | USN13 3200/3000 | shots fall 1-5%; deaths 27 +- 2 |
 | USN01 3200/3000 | shots fall a few percent; deaths 7 +- 1 |
 | torpedo salvos (USN02) | multi-tube launches spread over 0.5 s steps; torpedo shots unchanged or down 1-2 |
+
+## 12. The unit fire cooldown pairs, and the flip (2026-09-28)
+
+OFF `local\FC_OFF_<m>.log` (`d63d6198c`, with the floor and the multiplier ON); ON
+`local\FC_ON_<m>.log` (`pair_export --commit d63d6198c --flip kUnitFireCooldownBound=true`). RNG
+streams and the death table were on. Every ON run reads `sub_delay=0.50 ship_delay=0.50`.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 sets | - | 3052 artillery + 189 torpedo = 3241 = the ON shots | about the artillery shots | held, exactly |
+| USN02 shots | 3138 | 3241 (+3.3%) | fall 1-5% | **failed**: the stagger reshuffles the engagement; hits fall 4918 -> 4191 (-15%) |
+| USN02 first shot / deaths | 1.40 s / 12 | 1.40 s / 11 | unchanged / +-2 | held |
+| USN02 refusals by the cooldown | - | 21187 | > 0 | held |
+| USN04 shots / hits / deaths | 5433 / 707 / 44 | 5183 (-4.6%) / 681 / 43 | a few percent down (category 6); 44 +- 3 | held |
+| USN13 shots / deaths | 4440 / 26 | 4422 / 25 | down 1-5%; 27 +- 2 | held (-0.4%) |
+| USN01 shots / deaths | 652 / 5 | 653 / 5 | a few percent down; deaths within 1 | held on deaths; shots flat |
+
+**Decision: `kUnitFireCooldownBound` is ON.**
+- The per-shot stores match the image to the shot: each artillery and torpedo shot set its
+  timer, and CanFire refused 21187 times on USN02 while a timer ran.
+- The failed row is a consequence I mispredicted, not a divergence. USN02's fight runs longer
+  with the floor ON, and the staggered salvos land fewer hits per shot.

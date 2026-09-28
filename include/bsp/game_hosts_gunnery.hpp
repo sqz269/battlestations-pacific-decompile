@@ -367,7 +367,8 @@ inline constexpr bool kDifficultyMultipliersBound = true;
 // gun while +6FCh > 0. The constructor seeds both 0 (0095CF50/58, XORPS 0095CD7D).
 // LABELLED: the host counts down at the start of its gun step, the image in the
 // unit's own tick. False: neither test binds, as before.
-inline constexpr bool kUnitFireCooldownBound = false;
+// ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 12).
+inline constexpr bool kUnitFireCooldownBound = true;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
