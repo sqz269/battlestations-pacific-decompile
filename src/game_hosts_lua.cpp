@@ -832,6 +832,38 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.y_drag = number("YDrag");
             row.max_spd = number("MaxSpd");
             row.travel_speed = number("TravelSpeed");
+            // Packet cc9_unit_class_lands_troops (see the row declaration).
+            {
+                ::lua_getfield(state_, -1, "LandingShip");
+                row.landing_ship_id = ::lua_type(state_, -1) == LUA_TNUMBER
+                    ? static_cast<int>(::lua_tonumber(state_, -1)) : 0;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                ::lua_getfield(state_, -1, "LandingShipAmount");
+                row.landing_ship_amount = ::lua_type(state_, -1) == LUA_TNUMBER
+                    ? static_cast<int>(::lua_tonumber(state_, -1)) : 0;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                ::lua_getfield(state_, -1, "Rocketer");
+                row.landing_ship_is_rocketer = ::lua_type(state_, -1) == LUA_TBOOLEAN
+                    && ::lua_toboolean(state_, -1) != 0;
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                // 00833B98: a zero id skips the resolve and leaves +78Ch zero.
+                if (row.landing_ship_id != 0) {
+                    // Stack: VehicleClass, row. Index the class table (-2).
+                    ::lua_pushinteger(state_, row.landing_ship_id);
+                    ::lua_gettable(state_, -3);
+                    if (::lua_type(state_, -1) == LUA_TTABLE) {
+                        ::lua_getfield(state_, -1, "Type");
+                        const char* target_type = ::lua_type(state_, -1) == LUA_TSTRING
+                            ? ::lua_tolstring(state_, -1, nullptr) : nullptr;
+                        const auto* kind = target_type != nullptr
+                            ? bsp::vehicle_class_kind_row(target_type) : nullptr;
+                        row.landing_ship_resolves = kind != nullptr
+                            && kind->kind == bsp::VehicleClassKind::LandingShip;
+                        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                    }
+                    ::lua_settop(state_, ::lua_gettop(state_) - 1);
+                }
+            }
             // Packet cc9_submarine_dive: 00854230's NumberOr keys, each keeping
             // its literal default when the row does not author it.
             const auto number_or = [&](const char* key, float fallback) -> float {

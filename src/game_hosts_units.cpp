@@ -1539,6 +1539,9 @@ struct GameUnitSlot {
     // unit+C4h is the most-derived instance class selected by VehicleClass.Type.
     // -1 means its identity is unresolved; it is not a native class-id stamp.
     int class_id{bsp::kVehicleClassKindUnknown};
+    // Packet cc9_unit_class_lands_troops: class+809h `Rocketer`, which only the
+    // landing-ship reader 0074C630 writes (MLandingShip); false elsewhere.
+    bool landing_ship_is_rocketer_0809{false};
     // Milestone 2p: the two load latches the middle of 009F3F80 raises with the
     // inlined bodies of 009D4FB0 (unit+102Ch) and 009D4FE0 (unit+1034h). Their
     // consumers are not in this process; the fields exist so the raise is a
@@ -8846,6 +8849,12 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->fields.max_speed = lua_row.max_speed;
             slot->fields.max_rot_angle = lua_row.max_rot_angle;
             slot->fields.max_rot_angle_change_ratio = lua_row.max_rot_angle_change_ratio;
+            // Packet cc9_unit_class_lands_troops. class+78Ch holds the resolved
+            // descriptor in the image; the host keeps the id when it resolves.
+            slot->fields.landing_ship_class =
+                lua_row.landing_ship_resolves ? lua_row.landing_ship_id : 0;
+            slot->fields.landing_ship_amount = lua_row.landing_ship_amount;
+            slot->landing_ship_is_rocketer_0809 = lua_row.landing_ship_is_rocketer;
             // 00964790 maps VehicleClass.Type to a descriptor whose +28h
             // allocator constructs the instance. Its constructor stamps +C4h:
             // e.g. 006FE590 -> 006FE460, store 7 at 006FE4B3. The recovered
@@ -20883,6 +20892,35 @@ bool GameUnitsHost::store_pending_destroy_0060(const void* identity, bool pendin
 bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
     if (index >= impl_->slots.size()) return false;
     return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
+}
+
+// Packet cc9_unit_class_lands_troops. Slot 2Ch of the class descriptor vtables
+// (disk bytes, kVehicleClassDescriptorTable vtables + 2Ch): 00827FB0 in the
+// Destroyer, Cruiser, Cargo, BattleShip, Submarine, TorpedoBoat and MotherShip
+// descriptors and in the ship base at 00D1ACC4 (eight .rdata xrefs), 00963C70 in
+// MLandingShip's 00D1AD78 (the only dword 00963C70 in the image).
+//   00827FB0: cmp [ecx+78Ch],0 / jnz / xor al,al; ret / cmp [ecx+790h],0; setnz al
+//   00963C70: xor eax,eax / cmp [ecx+809h],al / sete al
+// Plane, land and building descriptors were not read at slot 2Ch; they answer
+// false here (uncertain; the known callers reach ship group members).
+bool GameUnitsHost::unit_class_lands_troops_vtable_2c(std::size_t index) const {
+    if (index >= impl_->slots.size()) return false;
+    const GameUnitSlot& slot = *impl_->slots[index];
+    switch (static_cast<bsp::VehicleClassKind>(slot.class_id)) {
+    case bsp::VehicleClassKind::ShipBase:
+    case bsp::VehicleClassKind::Destroyer:
+    case bsp::VehicleClassKind::Submarine:
+    case bsp::VehicleClassKind::MotherShip:
+    case bsp::VehicleClassKind::Cruiser:
+    case bsp::VehicleClassKind::Cargo:
+    case bsp::VehicleClassKind::BattleShip:
+    case bsp::VehicleClassKind::TorpedoBoat:
+        return slot.fields.landing_ship_class != 0 && slot.fields.landing_ship_amount != 0;
+    case bsp::VehicleClassKind::LandingShip:
+        return !slot.landing_ship_is_rocketer_0809;
+    default:
+        return false;
+    }
 }
 
 // Packet cc9_plane_in_flight_test. 007BB9A0's inputs (docs/PILOT_COMMAND_PATH.md,
