@@ -44,6 +44,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -143,14 +144,35 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // synchronous chain). True: posts queue, and GameFixedStepHost's
 // pump_session_00778450 delivers them through begin_loopback_drain /
 // finish_loopback_drain.
-inline constexpr bool kSetCommandQueueDelayBound = false;
+// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
+// tail unchanged on USN02 / USN04 / USN13 / USN01; deaths 10 / 45 / 20 / 5.
+inline constexpr bool kSetCommandQueueDelayBound = true;
+
+// Packet cc9_set_command_clear_all (docs/GUNNERY_OPEN_ITEMS.md section 28). Two
+// director writes inside hop 1 are 5Dh messages in the image too:
+// - 00816E30's clear-all at 0081733E, 0071D880: MT_GAMEUNIT_CLEARCMD with +20h = 1
+//   and +24h = -1, routed with flags 7. Its receiver, 00721A40's 5Dh arm at
+//   00721BA8, is 00720CA0 (body 00720CA0-00720CCA, read whole): for i = 9 down to
+//   0, 00720850(i) on every slot whose command at director+54h+1Ch*i is set.
+// - 0071E550's top-slot drop at 0071E5AA, 0071D900(count - 1).
+// False: both write the slots in place (the clear-all zeroes all ten, without
+// 00720850). True: both are posted through route_clear_command, so with the
+// queue bound they are delivered after the MT_COMMAND that posted them and
+// before its SETCMD, and 0071ECF0's make-room reads the queue as it was.
+// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 29): gameplay identical on
+// USN02 / USN13 / USN04 / USN01; drops 1199 / 0 / 0 / 2, every one after the
+// clear-all.
+inline constexpr bool kSetCommandClearAllMessageBound = true;
+
 // Packet cc9_director_moveonpath_route, docs/AI_CAUTIOUS_ROUTE.md section 5. True:
 // the `clearorders` arm of 00816E30 (008171BD) reaches 0071D880 SendClearCommands,
 // whose MT_GAMEUNIT_CLEARCMD (+20h = 1, +24h = -1) the 5Dh arm answers with the
-// every-slot clear 00720CA0; the same clear DirectorBinding::clear_all_commands
-// performs for a flagged command. False: 0071D880 is a record and a `clearorders`
-// order leaves the queue as it was.
-inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 7
+// every-slot clear 00720CA0. It posts the same message clear_all_commands posts
+// for the 0081733E site under kSetCommandClearAllMessageBound (route_clear_command,
+// delivered at the row-9 drain). That packet bound 0081733E and 0071E5AA only;
+// this arm's call at 008171BD stayed a record. False: a `clearorders` order leaves
+// the queue as it was.
+inline constexpr bool kClearOrdersSendBound = false;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
@@ -250,6 +272,10 @@ struct GameCommandsSummary {
     unsigned long long loopback_delivered_nested{0};    // posted inside a drain: next in it
     unsigned long long loopback_delivered_queued{0};    // posted before the drain began
     unsigned long long loopback_drains{0};              // 0076C600 bodies with work
+    // Packet cc9_set_command_clear_all.
+    unsigned long long clear_all_calls{0};          // 0071D880 reached (both builds)
+    unsigned long long drop_calls{0};               // 0071E5AA's drop reached (both builds)
+    unsigned long long clear_all_slot_clears{0};    // 00720850 bodies from 00720CA0
 };
 
 // Packet cc8_ship_moveonpath: what one unit's slot-0 path cursor did over a run.
@@ -332,6 +358,11 @@ public:
     // while kSetCommandQueueDelayBound is false. finish answers the deliveries.
     void begin_loopback_drain_0076c600();
     std::size_t finish_loopback_drain_0076c600();
+    // When the last issue's MT_COMMAND waits in the queue, `fn` is taken and
+    // run after that chain's delivery (its push and finish tail); answers
+    // false, leaving `fn`, when the order was delivered already or the switch
+    // is off.
+    bool after_last_issue_delivery(std::function<void()>& fn);
 
     const GameCommandRow* issue(std::size_t unit_index, const std::string& token,
         const std::string& target_token, const bsp::UnitOrderRing& ring,
@@ -541,5 +572,6 @@ private:
 // (GameFixedStepHost reaches the session pump, not the commands host).
 void commands_begin_loopback_drain_0076c600();
 std::size_t commands_finish_loopback_drain_0076c600();
+bool commands_after_last_issue_delivery(std::function<void()>& fn);
 
 }  // namespace bsp::game

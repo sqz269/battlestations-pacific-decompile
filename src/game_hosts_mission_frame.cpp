@@ -1826,6 +1826,19 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.scene_state.script_slot,
                     host.scene_state.script_slot_forced ? 1u : 0u,
                     host.scene_state.session_mode);
+                // Packet cc9_get_closest_border_zone: the same Map block and
+                // 004D5EDE selection, handed to the Lua host for world+7134h.
+                for (const auto& block : host.scene_contents->root_properties().blocks) {
+                    if (_stricmp(block.first.c_str(), "Map") != 0) continue;
+                    bsp::WorldMapSettings settings;
+                    if (bsp::read_world_map_settings_004e6c00(block.second, settings)) {
+                        host.lua.set_world_border_zones(bsp::select_world_map_bounds_004d5ede(
+                            settings, host.scene_state.script_slot,
+                            host.scene_state.script_slot_forced ? 1u : 0u,
+                            host.scene_state.session_mode));
+                    }
+                    break;
+                }
             });
             host.done(label, step.address);
             ++host.load.concrete;
@@ -2069,6 +2082,18 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.lua.attach_scene_entities_00928a00(entities);
                 }
                 if (!markers.empty()) report_scene_markers(host.log, markers);
+                if constexpr (bsp::game::kLandConvoyMembersBound) {
+                    // Packet cc9_land_convoy_members: the convoy marker's attach
+                    // 00743450, in the load walk that reaches its slot 39.
+                    std::size_t convoys = 0, members = 0;
+                    for (const GameSceneEntityRecord& record : host.scene_contents->entities()) {
+                        if (record.class_id != 0x1a || !record.generated) continue;
+                        ++convoys;
+                        members += host.units->build_land_convoy_roster_00743450(record);
+                    }
+                    host.log.notef("summary LandConvoy roster convoys=%zu members=%zu "
+                        "(00743450, packet cc9_land_convoy_members)", convoys, members);
+                }
             }
             if constexpr (kAuthoredCommandsAfterLoadWalkBound) {
                 host.units->issue_authored_commands();                  // 0046ED1E

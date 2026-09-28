@@ -2750,6 +2750,68 @@ against it. Set membership is assumed, as for the `recon` party set; the 009725B
 unread. The only live user is JM06's `hshit` (`{PLAYER_1}` on the hospital ship), which the idle
 runs never hit.
 
+### `attackerPlayerIndex`, bound (packet `cc9_hit_attacker_player_index`, `kLuaHitAttackerPlayerIndexBound`, committed OFF)
+
+Worker cc9-lua5, 2026-09-28. Item 1 of the cc9-lua4 handoff, after gunnery5 landed the field
+(main `e49be76ba`).
+
+**The binding.**
+- The `hit` entry keeps its `attackerPlayerIndex` set (`+4Ch`, loaded through `009722D0`, a plain
+  list of integers filled by `00971250`) instead of counting it unmodelled.
+- Dispatch tests `GameGunneryHitEvent::attacker_player_index` for membership, after the
+  targetDevice, fireCaused and leakCaused tests. An empty set holds any index.
+- The host's stamp is the gunnery host's `shot_team_id_0072c0f2`: the gun's seat `+1ACh`, or, for
+  a seat of 8 on a plane gun, the owner's role-1 slot. A bomb takes the plane's role-1 slot.
+  Torpedoes and depth charges carry -1.
+- **Assumed, not read:** set membership. The comparison behind `009725B0`'s entry is not traced,
+  as for the `recon` party set, which the same `009722D0` loads.
+- **Not part of the channel:** the `uVar14 < 8` and `piVar8[0x6B] < 8` gate in `00988510` guards
+  a network warning message (`BSP_Session_SendMessageToNonlocalPeer`), not the Lua dispatch.
+
+**The users (census of this installation's scripts).** The earlier "only `hshit`" count covered
+the entered rows only. Across `scripts/missions` there are 84 non-empty sets, all on the `hit`
+channel.
+- `{PLAYER_1}` is the common form: the IJN campaign (JM01-JM04, JM06, JM09, JM13), USN02 Cape
+  Esperance and USN03 Santa Cruz (both directories), ESMP 02 and 03, LOMP03 and LOMP05.
+- `{PLAYER_AI}`: JM03 `luaJM3CargosHit`, JM05 `luaJM5HangarHit`, JM08 `luaJM8AirfieldHitByAI` and
+  `luaJM8ShipyardHitByAI` (attacker `Mission.AirPatrol`), LOMP05.
+- `{PLAYER_AI, PLAYER_1}`: JM03 `luaJM3DeRuyterHit` and `luaJM3ExeterHit`.
+
+**Why the measured rows cannot move.** The count `unmodelled` rises only when an entry with a set
+passes every earlier filter. It is 0 on all nine rows of reference h (`rb8_*.log`, worktree
+cc9-gunnery4). So on those rows no hit reaches the new test, and ON dispatches nothing new.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| JM06 3200/3000 | **exit 0.** `hshit` targets the hospital ship, which no idle run hits (`unmodelled=0`) |
+| USN01 3200/3000 | **exit 0.** No `attackerPlayerIndex` entry is registered |
+| JM08 3200/3000 | **exit 0.** The AirPatrol does not hit the Airfield or the shipyards in 150 s (`unmodelled=0`) |
+
+**Scenarios that would exercise it.**
+- JM06 with the player's own gun seat firing on the hospital ship: the seat gives 0, so
+  `luaJM6HospitalShipHitByPlayer` fires ON and never OFF.
+- JM08 run long enough for the AirPatrol to bomb the Airfield: `luaJM8AirfieldHitByAI` fires ON
+  only if the host's role-1 slot for an AI plane is 8. That slot is the check to make first.
+
+#### attackerPlayerIndex pairs and verdict
+
+- OFF is this tree's build of `196fa0ec4`.
+- ON is `pair_export --commit 196fa0ec4 --flip kLuaHitAttackerPlayerIndexBound=true` (`local/ap_on`).
+- The logs are `local/ap_{off,on}_<mission>.log` in worktree cc9-lua5.
+
+| row | pair_diff | hit listeners (both sides) | verdict |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | exit 0, gameplay identical | events=320 fires=0 unmodelled=0 | held |
+| USN01 3200/3000 | exit 0, gameplay identical | events=538 fires=0 unmodelled=0 | held |
+| JM08 3200/3000 | exit 0, gameplay identical | events=342 fires=0 unmodelled=0 | held |
+
+**Verdict: `kLuaHitAttackerPlayerIndexBound = true`.** It is inert on these rows, as predicted. No
+`hit` filter key is left unmodelled now; the rate limit's `this+1A4h` list and the forced kind 11h
+stay as recorded below.
+
 ### The rate limit's unmodelled bits, read and closed (cc9-lua4, 2026-09-28)
 
 Item 3 of the cc9-lua3 handoff. Both stay unmodelled, because neither has an input in this
@@ -2892,3 +2954,138 @@ Worker cc9-lua4, 2026-09-28. The lead gave this lane `src/game_hosts_units.cpp` 
 - **USN04 4700/4500 and USN13 3200/3000: exit 1, gameplay identical.** Neither run reaches the
   native (USN04 has one call, `usn_19_coralus.lua` 2182, not reached in 4500 frames); only the
   summary's `bound=` differs.
+
+### SquadronSetTravelAlt: the pairs and the verdict
+
+OFF is this tree's build at `0c48b1e44`. ON is `local\ta_on`, a `pair_export` of `0c48b1e44` with
+`kSquadronTravelAltBound=true`. Logs are `local\ta_{off,on}_<mission>.log`.
+
+| mission | pair_diff | what moved |
+| --- | --- | --- |
+| JM08 3200/3000 | exit 3 | shots 1689 -> 2091, hit records 310 -> 342, hull hits 89 -> 86, damage 3745.4 -> 3681.8; the same 9 death rows, 8 changed |
+| USN13 3200/3000 | exit 1 | nothing (no call) |
+| USN04 4700/4500 | exit 1 | nothing (no call in the window) |
+
+- **The mechanism held.**
+  - JM08's `squadron travel alt Movie Mavis: alt=750.0 force=1 active=1 last_cruise=750.0`, with
+    121 gated refreshes.
+  - The script kills the Mavis at 40.05 s in both runs (`KillReason=harm`, no first damage). It
+    dies at 759 m instead of 1391 m.
+- **What followed.**
+  - Lower down, AA reaches the Mavis: its death row now names "Stephen Potter" at 1313 m, where
+    OFF had no killer.
+  - The extra AA fire moves the shared stream and the later raid. H6K Mavis 01, the three Gekkos
+    and the three Oscars die 1 to 3 s earlier, with other killers.
+  - The victims are the same nine, as predicted.
+
+**Verdict: `kSquadronTravelAltBound = true`.**
+
+## The unimplemented Lua natives, fourth refresh (cc9-lua5, head `57acc6f7f`)
+
+Worker cc9-lua5, 2026-09-28. Same method as the third refresh, same run parameters.
+
+| mission | frames | log (worktree cc9-lua5) |
+| --- | --- | --- |
+| USN02 | 9200/9000 | `local/l5_rk_usn02.log` |
+| JM06 | 3200/3000 | `local/ap_on_jm06.log` (the `583e3eee1` code) |
+| LOMP06 | 1200/1000 | `local/l5_rk_lomp06.log` |
+| USN13 | 3200/3000 | `local/l5_rk_usn13.log` |
+| JM08 | 3200/3000 | `local/ap_on_jm08.log` (the `583e3eee1` code) |
+
+Since the third refresh, `SetDeviceReloadEnabled`, `IsInFormation`, `LeaveFormation` and
+`SquadronSetTravelAlt` are bound. What is left with any gameplay reach:
+
+| rank | native | address | missions (calls) | reach |
+| --- | --- | --- | --- | --- |
+| 1 | `GetClosestBorderZone` | `008AECD0` | USN02 (1) | after the failure at 29.75 s, `commandhelpers.lua` 9577 (mtime 2024-10-29) sends the failed ship Alden to the answer with `NavigatorMoveToRange` |
+| 2 | `CountdownCancel`, `Scoring_SetMissionCompleted`, `BannSupportmanager` | | USN02 (1 each) | the failure path's timer and scoring |
+| 3 | `LoadCheckpoint` | `008ACA30` | JM06 (1) | nil means no saved checkpoint, which a fresh run has anyway |
+| - | the presentation natives of the third refresh | | | unchanged |
+
+LOMP06, USN13 and JM08 call no unimplemented native with gameplay reach.
+
+## `GetClosestBorderZone`, bound (packet `cc9_get_closest_border_zone`, `kLuaClosestBorderZoneBound`, committed OFF)
+
+Worker cc9-lua5, 2026-09-28. The image read and the zone records are in
+`docs/WORLD_MAP_BOUNDS.md`, "Border zones".
+
+**The binding.**
+- `008AECD0` reads argument 0 as a vector. The offset is 500.0 (`00CE397C`) unless there are
+  exactly two arguments and the second is a number.
+- It calls `004C7730` for any side (`EDI = -1`, `008AED36`) and answers a table with `x`, `y` and
+  `z` (`0088BA30`).
+- The answer is the nearest zone edge point, moved `offset` further:
+  - along (edge point - position), when the offset is positive, the position is inside the map
+    (`0071C4F0`) and the edge point is more than 1 away;
+  - otherwise along the zone's outward direction.
+- The mission frame hands the Lua host the map bounds at the avoid-zone load step, from the same
+  `Map` block and `004D5EDE` selection as the ship AI. The host builds the twelve records from them.
+- **Labelled substitutions:**
+  - the records are built at the avoid-zone load, not inside `004E6C00`;
+  - argument 0 goes through the host's `00888760` reader;
+  - with no records the image's outputs are unwritten stack; the host answers the position itself
+    and counts it `missing`.
+
+**What OFF does on USN02.** The neutral answer still reaches `NavigatorMoveToRange`. Alden enters
+`movetopos` at 29.75 s toward a point 6268 m away (step 600, heading target -0.1883). It is back in
+`attackmove` by step 890.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| USN02 9200/9000 | **exit 3.** One call, `found`, `missing=0`. Alden's `movetopos` target after 29.75 s moves to a point beyond the nearest map edge, so its step-600 `d32c` and heading target change, and its track and the fights it takes part in move after that. Nothing before 29.75 s changes |
+| USN01 3200/3000 | **exit 0.** No call: the mission does not end |
+| JM06 3200/3000 | **exit 0.** No call |
+
+#### GetClosestBorderZone pairs and verdict
+
+- OFF is this tree's build of `4c9a1b2fc`.
+- ON is `pair_export --commit 4c9a1b2fc --flip kLuaClosestBorderZoneBound=true` (`local/bz_on`).
+- The logs are `local/bz_{off,on}_<mission>.log` in worktree cc9-lua5.
+- All three rows load the zones (`loaded=1`).
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | exit 3 | see below | held |
+| USN01 3200/3000 | exit 1, gameplay identical | only the new summary line's `bound 0 -> 1` | mechanism held; the exit code missed |
+| JM06 3200/3000 | exit 1, gameplay identical | the same summary line, plus the recorded ShipAiSectorScan / ShipAiClearance noise | mechanism held; the exit code missed |
+
+The two exit-code misses come from the summary line printing its own switch. That line is new in
+this packet; the prediction did not allow for it.
+
+**USN02.** There is one call and it finds a zone:
+
+```
+GetClosestBorderZone 008aecd0: (1174.14, -0.10, -6161.64) offset 500.0 -> (1174.14, -0.10, -8550.00)
+```
+
+- The nearest record is on the south edge. Its B..C line is `SE.z - 50`, and the answer is 500
+  beyond it.
+- At step 600 Alden's `movetopos` heads due south (target 3.1413, `d32c` 2392.64). OFF headed
+  -0.1883 at 6268.18.
+- Nothing before 29.75 s moves: the first hit is 19.20 s on both sides, and the step-590 rows are
+  equal.
+- Afterwards the fight moves, as predicted:
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 10 | 11 |
+| hit records | 4226 | 4899 |
+| damage | 50892.0 | 53092.0 |
+| controlled moved (Kortenaer) | 1136.82 m | 1218.80 m |
+
+- The death rows: John3 is no longer sunk. Asagumo and Encounter now are. Alden still sinks, at
+  135.25 s instead of 135.20 s.
+
+**Verdict: `kLuaClosestBorderZoneBound = true`.**
+- USN02's reference row changes after its failure. The failure itself, at 29.75 s, is unchanged.
+- The lead should re-anchor USN02 on the next re-baseline.
+
+**USN04 4700/4500, added at the lead's request** (prediction written before its runs):
+- **Prediction: exit 1, gameplay identical.** USN04 does not end, so nothing calls the native. The
+  summary line's `bound 0 -> 1` is the only expected difference.
+- OFF is `pair_export --commit 4c9a1b2fc` with no flip (`local/bz_off`); ON is `local/bz_on`.
+- **Measured: exit 1, gameplay identical; held.** The only changed line is the summary's
+  `bound 0 -> 1` (`local/bz_diff_usn04.txt`).

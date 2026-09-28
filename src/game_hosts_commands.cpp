@@ -32,7 +32,9 @@
 #include <cmath>
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -385,11 +387,29 @@ struct GameCommandsHost::Impl {
         std::uint8_t set_flag{0};
         bool player{false};                  // the 5Dh clear (0071C730 / 0071D900)
         bsp::ClearCommandMessage clear{};
+        // The receiver side a Lua binding runs once its order is delivered
+        // (GameScriptOrdersHost::after_order_delivery): handed along with the
+        // finish tail and run after it.
+        std::function<void()> after_delivery;
         float user_point[3]{0.0f, 0.0f, 0.0f};  // MT_GAMEUNIT_ADDUSERPATHPOINT +20h
         bool user_outside_map{false};
     };
+    // Where the last post went: `loopback` while it waits for the drain, or the
+    // list being drained when a delivery inserted it (+258h). Null when it was
+    // delivered at once. The last issue's MT_COMMAND keeps the same pair; a
+    // drained list clears it when the list ends.
+    std::vector<LoopbackMessage>* last_post_list{nullptr};
+    std::size_t last_post_index{kNoLoopbackRow};
+    std::vector<LoopbackMessage>* last_issue_list{nullptr};
+    std::size_t last_issue_index{kNoLoopbackRow};
     std::vector<LoopbackMessage> loopback;
     std::vector<LoopbackMessage>* loopback_active{nullptr};
+    // unit+184h as the last director step of each unit was given it; what the
+    // 5Dh receiver's QueueClearBinding answers for a clear posted from hop 1.
+    std::vector<unsigned char> player_184;
+    bool player_of(std::size_t unit) const noexcept {
+        return unit < player_184.size() && player_184[unit] != 0;
+    }
     std::size_t loopback_insert{0};
     bool loopback_drain_open{false};
     unsigned long long loopback_drain_serial{0};
@@ -452,6 +472,11 @@ struct ChainState {
     bool script_issue{false};
     // The `loopback` index of a SETCMD this chain queued for the next drain.
     std::size_t setcmd_post{GameCommandsHost::Impl::kNoLoopbackRow};
+    // The same for the chain's MT_COMMAND, and the receiver continuation that
+    // travels with the finish tail.
+    std::vector<GameCommandsHost::Impl::LoopbackMessage>* command_list{nullptr};
+    std::size_t command_index{GameCommandsHost::Impl::kNoLoopbackRow};
+    std::function<void()> after_delivery;
 };
 
 void publish_cruise_avoidance(ChainState& chain) {
@@ -652,6 +677,19 @@ public:
         // 00721a40's 5Dh case takes 00720ca0 for the negative index, and that
         // body is not projected; the executable performs the "every slot" clear
         // the -1 index names and records both halves.
+        ++chain_.owner.summary.clear_all_calls;
+        if (kSetCommandClearAllMessageBound) {
+            // Packet cc9_set_command_clear_all: 0071D880's message, delivered
+            // through 00721A40's 5Dh arm into 00720CA0 (apply_clear_command).
+            chain_.owner.done("EntityCommand::clear_all_commands", 0x0071d880u);
+            if (chain_.row != nullptr) chain_.row->slots_cleared = true;
+            bsp::ClearCommandMessage every{};
+            every.arm = 1;
+            every.index = -1;
+            chain_.owner.route_clear_command(chain_.unit.index,
+                chain_.owner.player_of(chain_.unit.index), every);
+            return;
+        }
         chain_.owner.record("EntityCommand::clear_all_commands", 0x0071d880u);
         chain_.owner.record("GameUnitMessage::clear_every_slot", 0x00720ca0u);
         for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
@@ -723,7 +761,15 @@ public:
         const bool dropped = bsp::cruise_make_room_0071e550(
             (klass != nullptr) ? klass->category : -1, count,
             (top_class != nullptr) ? top_class->category : -1);
-        if (dropped && count > 0) {
+        if (dropped && count > 0) ++chain_.owner.summary.drop_calls;
+        if (dropped && count > 0 && kSetCommandClearAllMessageBound) {
+            // Packet cc9_set_command_clear_all: 0071D900(count - 1) posts the
+            // 5Dh slot clear, delivered through 00720850.
+            chain_.owner.done("EntityCommand::drop_top_slot", 0x0071d900u);
+            chain_.owner.route_clear_command(chain_.unit.index,
+                chain_.owner.player_of(chain_.unit.index),
+                bsp::clear_command_message_for_slot(count - 1));
+        } else if (dropped && count > 0) {
             // 0071d900 at 0071e5aa removes the top slot.
             chain_.owner.record("EntityCommand::drop_top_slot", 0x0071d900u);
             chain_.director.slot_command[count - 1] = 0;
@@ -1105,15 +1151,15 @@ public:
             chain_.owner.record("EntityCommandArm::send_clear_commands", 0x0071d880u);
             return;
         }
-        // 0071D880 -> 5Dh with index -1 -> 00720CA0, every slot. LABELLED as in
-        // clear_all_commands: the round trip is delivered at the call and the
-        // 00720CA0 body is not projected beyond emptying the ten slots.
+        // 0071D880 -> MT_GAMEUNIT_CLEARCMD (+20h = 1, +24h = -1), the message
+        // clear_all_commands posts for 0081733E: routed through
+        // route_clear_command and answered by 00721A40's 5Dh arm with 00720CA0.
         chain_.owner.done("EntityCommandArm::send_clear_commands", 0x0071d880u);
-        chain_.owner.record("GameUnitMessage::clear_every_slot", 0x00720ca0u);
-        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
-            chain_.director.slot_command[i] = 0;
-            chain_.director.slot_target[i] = bsp::SceneCommandTarget{};
-        }
+        bsp::ClearCommandMessage every{};
+        every.arm = 1;
+        every.index = -1;
+        chain_.owner.route_clear_command(chain_.unit.index,
+            chain_.owner.player_of(chain_.unit.index), every);
         ++chain_.owner.summary.clearorders_sends;
     }
     bool call_0080dc70() override {
@@ -1243,8 +1289,12 @@ void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessa
     posted.script_issue = chain_.script_issue;
     posted.target_handle = chain_.owner.unit_handle_of(message.target_object);
     posted.command = message;
+    posted.after_delivery = std::move(chain_.after_delivery);
+    chain_.after_delivery = nullptr;
     chain_.finish_pending = false;
     chain_.owner.post_loopback(posted);
+    chain_.command_list = chain_.owner.last_post_list;
+    chain_.command_index = chain_.owner.last_post_index;
 }
 
 void DirectorBinding::director_issue_command(std::uint32_t command,
@@ -1287,6 +1337,8 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
     posted.set_command = command;
     posted.set_target = target;
     posted.set_flag = flag;
+    posted.after_delivery = std::move(chain_.after_delivery);
+    chain_.after_delivery = nullptr;
     chain_.finish_pending = false;
     chain_.setcmd_post = chain_.owner.post_loopback(posted);
 }
@@ -1471,8 +1523,11 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
             const std::size_t stored = host.rows.size() - 1;
             chain.row = &host.rows[stored];
             chain.finish_pending = true;
+            host.last_issue_list = nullptr;
             resolve.issue_command(&host.units[unit_index], resolution.command->identity,
                 resolution.target, 1);
+            host.last_issue_list = chain.command_list;
+            host.last_issue_index = chain.command_index;
             resolve.clear_queue();
             host.done("SceneCommand::resolve_deferred_reference", 0x0046aab0u);
             if (chain.finish_pending) finish_issue_in_place(host, chain);
@@ -1577,14 +1632,40 @@ void finish_issue_in_place(GameCommandsHost::Impl& host, ChainState& chain) {
 
 std::size_t GameCommandsHost::Impl::post_loopback(LoopbackMessage message) {
     message.posted_before_drain = loopback_drain_serial;
+    // Env-gated: BSP_LOOPBACK_TRACE=<n> prints the first n posts with the drain
+    // state they met. Prints nothing when unset.
+    static const long trace_limit = [] {
+        char* text = nullptr;
+        std::size_t length = 0;
+        long limit = 0;
+        if (_dupenv_s(&text, &length, "BSP_LOOPBACK_TRACE") == 0 && text != nullptr) {
+            limit = std::strtol(text, nullptr, 10);
+        }
+        std::free(text);
+        return limit;
+    }();
+    static long traced = 0;
+    if (traced < trace_limit) {
+        ++traced;
+        log.notef("  loopback post %ld: kind=%d unit=%zu row=%lld finish=%d active=%d open=%d "
+            "queue=%zu serial=%llu clock=%.2f", traced, static_cast<int>(message.kind),
+            message.unit, message.row == kNoLoopbackRow ? -1LL
+                : static_cast<long long>(message.row), message.finish ? 1 : 0,
+            loopback_active != nullptr ? 1 : 0, loopback_drain_open ? 1 : 0,
+            loopback.size(), loopback_drain_serial, static_cast<double>(life_clock));
+    }
     if (loopback_active != nullptr) {
         // 0076E5F5..0076E6D0: insert at +258h and move it past the new entry.
         message.nested = true;
         loopback_active->insert(loopback_active->begin()
             + static_cast<std::ptrdiff_t>(loopback_insert), message);
+        last_post_list = loopback_active;
+        last_post_index = loopback_insert;
         ++loopback_insert;
         return kNoLoopbackRow;
     }
+    last_post_list = nullptr;
+    last_post_index = kNoLoopbackRow;
     if (loopback_drain_open) {
         // A post from the pump's own after-row-9 order delivery, which is one
         // entry of the same drain in the image: delivered now, then its posts.
@@ -1595,6 +1676,8 @@ std::size_t GameCommandsHost::Impl::post_loopback(LoopbackMessage message) {
     }
     // 0076E5D1..0076E5EC: +258h is null outside a drain, so the entry appends.
     loopback.push_back(message);
+    last_post_list = &loopback;
+    last_post_index = loopback.size() - 1;
     return loopback.size() - 1;
 }
 
@@ -1615,6 +1698,8 @@ void GameCommandsHost::Impl::run_loopback_list(std::vector<LoopbackMessage>& lis
     }
     loopback_active = outer;
     loopback_insert = outer_insert;
+    if (last_issue_list == &list) last_issue_list = nullptr;
+    if (last_post_list == &list) last_post_list = nullptr;
 }
 
 void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
@@ -1624,6 +1709,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         message.heading, bsp::SceneCommandTarget{}, 0u, 0u};
     chain.finish_pending = message.finish;
     chain.script_issue = message.script_issue;
+    chain.after_delivery = message.after_delivery;
     switch (message.kind) {
     case LoopbackKind::Command: {
         bsp::EntityOrderMessage delivered = message.command;
@@ -1653,6 +1739,12 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         break;
     }
     if (chain.finish_pending) finish_issue_in_place(*this, chain);
+    if (chain.after_delivery) {
+        // Still held: this delivery ended the chain (no post took it on).
+        std::function<void()> after = std::move(chain.after_delivery);
+        chain.after_delivery = nullptr;
+        after();
+    }
 }
 
 void GameCommandsHost::post_user_path_point_0071d340(std::size_t unit_index,
@@ -1763,6 +1855,7 @@ std::size_t GameCommandsHost::finish_loopback_drain_0076c600() {
         + host.summary.loopback_delivered_queued;
     std::vector<Impl::LoopbackMessage> batch;
     batch.swap(host.loopback);
+    host.last_issue_list = nullptr;
     if (!batch.empty()) {
         ++host.summary.loopback_drains;
         host.run_loopback_list(batch);
@@ -1772,6 +1865,32 @@ std::size_t GameCommandsHost::finish_loopback_drain_0076c600() {
     host.done("Session::drain_loopback_queue", 0x0076c600u);
     return static_cast<std::size_t>(host.summary.loopback_delivered_nested
         + host.summary.loopback_delivered_queued - before);
+}
+
+bool GameCommandsHost::after_last_issue_delivery(std::function<void()>& fn) {
+    if (!kSetCommandQueueDelayBound) return false;
+    Impl& host = *impl_;
+    if (host.last_issue_list == nullptr
+        || host.last_issue_index >= host.last_issue_list->size()) {
+        return false;
+    }
+    std::function<void()>& slot = (*host.last_issue_list)[host.last_issue_index].after_delivery;
+    if (slot) {
+        std::function<void()> first = std::move(slot);
+        slot = [first = std::move(first), next = std::move(fn)]() {
+            first();
+            next();
+        };
+    } else {
+        slot = std::move(fn);
+    }
+    fn = nullptr;
+    return true;
+}
+
+bool commands_after_last_issue_delivery(std::function<void()>& fn) {
+    GameCommandsHost* live = live_commands_host();
+    return live != nullptr && live->after_last_issue_delivery(fn);
 }
 
 void commands_begin_loopback_drain_0076c600() {
@@ -1816,9 +1935,12 @@ const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_in
         chain.row = &host.rows[stored];
         chain.finish_pending = true;
         chain.script_issue = true;
+        host.last_issue_list = nullptr;
         resolve.issue_command(&host.units[unit_index],
             reinterpret_cast<void*>(static_cast<std::uintptr_t>(command_object)), target,
             flags);
+        host.last_issue_list = chain.command_list;
+        host.last_issue_index = chain.command_index;
         ++host.summary.script_issues;
         if (chain.finish_pending) finish_issue_in_place(host, chain);
         return &host.rows[stored];
@@ -2334,6 +2456,20 @@ bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
     GameDirector& director = directors[unit_index];
     ++summary.clear_receives;
     done("GameUnitMessage::apply_clear_command", 0x00721a40u);
+    if (kSetCommandClearAllMessageBound
+        && bsp::clear_command_action(message) == bsp::ClearCommandAction::kClearAllSlots) {
+        // 00721BA8 -> 00720CA0, src/command_execution.cpp's reconstruction:
+        // 00720850 on each occupied slot from 9 down to 0.
+        bsp::CommandQueueState state = queue_state_of(director);
+        QueueClearBinding exec(*this, units[unit_index], director, player_controlled);
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+            if (state.slots[i].command != 0) ++summary.clear_all_slot_clears;
+        }
+        bsp::clear_all_command_slots_00720ca0(state, exec);
+        queue_state_back(state, director);
+        done("GameUnitMessage::clear_every_slot", 0x00720ca0u);
+        return true;
+    }
     if (bsp::clear_command_action(message) != bsp::ClearCommandAction::kClearSlot) {
         return false;
     }
@@ -2465,6 +2601,8 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
     }
 
     GameDirector& director = host.directors[unit_index];
+    if (host.player_184.size() < host.units.size()) host.player_184.resize(host.units.size(), 0);
+    host.player_184[unit_index] = player_controlled ? 1 : 0;
     GameCommandRow row;
     row.unit_index = unit_index;
     row.unit = host.units[unit_index].name;
@@ -3300,6 +3438,10 @@ void GameCommandsHost::report() {
         host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
         host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
         host.summary.loopback_delivered_queued, host.summary.loopback_drains);
+    host.log.notef("summary mission director clear-all bound=%d clear_all=%llu drops=%llu "
+        "slot_clears_00720ca0=%llu (packet cc9_set_command_clear_all, 0071D880 / 0071D900)",
+        kSetCommandClearAllMessageBound ? 1 : 0, host.summary.clear_all_calls,
+        host.summary.drop_calls, host.summary.clear_all_slot_clears);
     {
         unsigned long long received = 0, queued = 0, dropped = 0, outside = 0;
         for (const GameDirector& d : host.directors) {
