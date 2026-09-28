@@ -161,7 +161,7 @@ inline constexpr bool kCautiousAttackTickBound = true;
 // its first point, else a new route of counter-1 waypoints scored by the danger
 // cost 00A010F0 and sent with the target as MT_GAMEUNIT_ADDUSERPATHPOINT
 // messages. False: the no-route moveto every tick, as before.
-inline constexpr bool kCautiousRouteBound = false;
+inline constexpr bool kCautiousRouteBound = true;  // ON: second pair held (docs/AI_CAUTIOUS_ROUTE.md section 7)
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and

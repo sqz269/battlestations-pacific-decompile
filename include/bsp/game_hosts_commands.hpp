@@ -150,7 +150,7 @@ inline constexpr bool kSetCommandQueueDelayBound = false;
 // every-slot clear 00720CA0; the same clear DirectorBinding::clear_all_commands
 // performs for a flagged command. False: 0071D880 is a record and a `clearorders`
 // order leaves the queue as it was.
-inline constexpr bool kClearOrdersSendBound = false;
+inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 7
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.

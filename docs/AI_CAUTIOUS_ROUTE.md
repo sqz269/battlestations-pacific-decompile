@@ -150,3 +150,37 @@ from all five OFF logs), so the arm is identity there by itself.
 - **USN01, USN02, USN04:** identity against OFF, with builds=0 and clearorders=0.
 - **Verdict rule:** as in section 4. Also, a USN12 clear that does not end the attachment keeps both
   switches OFF.
+
+## 7. The second pair and the verdict
+
+Commit `1c69af06e`. OFF is `local\s5r_off3_<m>.log`. ON is `pair_export --flip kCautiousRouteBound=true
+--flip kClearOrdersSendBound=true` into `local\s5r_on2`, with logs `local\s5r_on2_<m>.log`.
+
+| mission | pair_diff | builds | points | clears | waits | `tick_orders` OFF -> ON |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN12 3200/3000 | exit 3 | 2 | 7 | 1 | 46 | 49 -> 0 |
+| USN10 3200/3000 | exit 3 | 1 | 4 | 0 | 48 | 95 -> 46 |
+| USN01 3200/3000 | exit 1 | 0 | 0 | 0 | 0 | 74 -> 74 |
+| USN04 4700/4500 | exit 1 | 0 | 0 | 0 | 0 | 78 -> 78 |
+| USN02 9200/9000 | exit 1 | 0 | 0 | 0 | 0 | 1 -> 1 |
+
+**USN12:**
+- It builds at 6.10 s with 3 waypoints.
+- It issues `clearorders` at 90.75 s. The queue empties this time.
+- It rebuilds at 93.80 s from (-1060, -4573) with 2 waypoints. Two user paths are queued and none is
+  dropped.
+- Montpelier moves 2247.71 m (OFF 2428.02).
+
+**USN10:**
+- Gameplay is identical to the first ON run: pair_diff of `s5r_on_usn10` against `s5r_on2_usn10`
+  exits 1.
+- Hit records go from 18 to 23 and damage from 10158.5 to 19077.2 against OFF.
+
+**Verdict: both switches ON.** Every prediction of section 6 held.
+
+**Left open:**
+- 00A11690.
+- CAUTIOUSMOVE's own call of 00A14DD0 (00A152B0).
+- The out-of-map crossing of 0071FDE0 (`outside_map` stayed 0).
+- What +18h really tracks (the listener at `+10h`).
+- The session delivery of 5Fh with `kSetCommandQueueDelayBound`.
