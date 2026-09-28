@@ -540,6 +540,19 @@ struct GameShipAiSummary {
     // follower (both sides) and the leaves 009F5DEB ran (ON only).
     unsigned long long autotarget_follower_thinks{0};
     unsigned long long autotarget_follower_leaves{0};
+    // Packet cc9_free_bearing_query: 009DC2E0 calls by site (both sides) and
+    // what the bound query did (ON only).
+    unsigned long long free_bearing_calls_scan{0};
+    unsigned long long free_bearing_calls_arm{0};
+    unsigned long long free_bearing_unready{0};
+    unsigned long long free_bearing_empty{0};
+    unsigned long long free_bearing_refills{0};
+    unsigned long long free_bearing_ahead_hits{0};
+    unsigned long long free_bearing_corner_fwd{0};
+    unsigned long long free_bearing_corner_back{0};
+    unsigned long long free_bearing_lateral_turns{0};
+    unsigned long long free_bearing_short_legs{0};
+    unsigned long long free_bearing_answers{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};

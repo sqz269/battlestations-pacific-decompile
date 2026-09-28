@@ -48,6 +48,7 @@
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
 #include "bsp/ship_ai_formation.hpp"
+#include "bsp/ship_ai_free_bearing.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/gamepad_force_events.hpp"
@@ -415,6 +416,16 @@ inline constexpr bool kPlaneRowAutoTargetBound = true;
 // OFF, recorded (2026-09-28): the pairs move as predicted, but a follower leaves and is
 // rejoined by the AI follower pass once a second (section 12); the join's command is unread.
 inline constexpr bool kAutoTargetFollowerGateBound = false;
+// Packet cc9_free_bearing_query (rank 3), docs/SHIP_AI_OPEN_ITEMS.md section 14.
+// True: 009DC2E0 runs whole (src/ship_ai_free_bearing.cpp) at the sector scan's
+// 009EC0C1 (searcher 0) and the arm final step's 009DF0FA (searchers 1 and 2):
+// it refreshes the searcher about the ship, looks along the query direction
+// for the outline, turns to the nearer free corner, then leans the bearing off
+// the outline within the query's widths. False: both sites answer false, as
+// the record has since the sector scan landed. Calls count on both sides.
+// ON (2026-09-28): JM06 and USN01 move through 96 corners and 257 leans; five rows identical
+// (section 14).
+inline constexpr bool kShipAiFreeBearingBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -616,6 +627,13 @@ struct NeighbourList {
 }  // namespace
 
 // ---------------------------------------------------------------------------
+
+// Packet cc9_free_bearing_query: 009DC2E0 on one of the unit's three
+// searchers. Defined after the Impl so it can reach the zones runtime.
+bool ship_ai_free_bearing_on_searcher(GameShipAiHost::Impl& owner, std::size_t index,
+                                      std::size_t searcher,
+                                      bsp::ShipAiSectorFreeBearingQuery& query,
+                                      std::int32_t layer_key);
 
 struct GameShipAiHost::Impl {
     Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in),
@@ -1581,10 +1599,18 @@ struct GameShipAiHost::Impl {
                 impl.done("ShipAiArmFinal::belongs_to_another_007788b0", 0x007788b0u);
                 return impl.units.unit_is_formation_follower_007788b0(index);
             }
-            bool avoid_zone_free_bearing_009dc2e0(int, bsp::ShipAiSectorFreeBearingQuery&,
-                                                  int) override {
-                impl.record("ShipAiArmFinal::free_bearing_009dc2e0", 0x009dc2e0u);
-                return false;
+            bool avoid_zone_free_bearing_009dc2e0(int searcher,
+                                                  bsp::ShipAiSectorFreeBearingQuery& query,
+                                                  int area_key) override {
+                ++impl.summary.free_bearing_calls_arm;
+                if (!kShipAiFreeBearingBound) {
+                    impl.record("ShipAiArmFinal::free_bearing_009dc2e0", 0x009dc2e0u);
+                    return false;
+                }
+                impl.done("ShipAiArmFinal::free_bearing_009dc2e0", 0x009dc2e0u);
+                // 009DF0FA: ECX = blk+0A24h + searcher*20h, +20h = the area key.
+                return ship_ai_free_bearing_on_searcher(impl, index,
+                    static_cast<std::size_t>(searcher), query, area_key);
             }
         } host(*this, ctl, index);
         bsp::ShipAiArmFinalStepState state{};
@@ -6018,9 +6044,17 @@ public:
         if (value > node.lifetime_78) node.lifetime_78 = value;
         owner_.done("ShipAiSectorScan::raise_node_lifetime_78", 0x009ebef7u);
     }
-    bool avoid_zone_free_bearing_009dc2e0(bsp::ShipAiSectorFreeBearingQuery&) override {
-        owner_.record("ShipAiSectorScan::free_bearing_009dc2e0", 0x009dc2e0u);
-        return false;
+    bool avoid_zone_free_bearing_009dc2e0(bsp::ShipAiSectorFreeBearingQuery& query) override {
+        ++owner_.summary.free_bearing_calls_scan;
+        if (!kShipAiFreeBearingBound) {
+            owner_.record("ShipAiSectorScan::free_bearing_009dc2e0", 0x009dc2e0u);
+            return false;
+        }
+        owner_.done("ShipAiSectorScan::free_bearing_009dc2e0", 0x009dc2e0u);
+        // 009EC0C1: ECX = blk+0A24h (searcher 0); 009EC02A copies blk+0A38h,
+        // that searcher's own layer word, into the query's +20h.
+        const std::int32_t layer = owner_.controllers[index_].avoid_search->cache(0).layer_key;
+        return ship_ai_free_bearing_on_searcher(owner_, index_, 0, query, layer);
     }
 
 private:
@@ -8980,6 +9014,48 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
     }
 }
 
+// Packet cc9_free_bearing_query. The searcher at blk+0A24h + searcher*20h is
+// this host's ShipAiSearchStorage cache/list pair `searcher`.
+bool ship_ai_free_bearing_on_searcher(GameShipAiHost::Impl& owner, std::size_t index,
+                                      std::size_t searcher,
+                                      bsp::ShipAiSectorFreeBearingQuery& query,
+                                      std::int32_t layer_key) {
+    if (index >= owner.controllers.size() || !owner.controllers[index].avoid_search ||
+        searcher >= bsp::kShipAiAvoidZoneSearcherCount || !owner.zones.ready()) {
+        ++owner.summary.free_bearing_unready;
+        return false;
+    }
+    auto& storage = *owner.controllers[index].avoid_search;
+    struct Host final : bsp::ShipAiFreeBearingHost {
+        GameShipAiHost::Impl& owner;
+        bsp::ShipAiSearchStorage& storage;
+        std::size_t searcher;
+        Host(GameShipAiHost::Impl& o, bsp::ShipAiSearchStorage& st, std::size_t sr)
+            : owner(o), storage(st), searcher(sr) {}
+        void refresh_query_009d7050(const bsp::ShipAiAvoidZoneQuery& q) override {
+            if (owner.zones.refresh_search(storage.cache(searcher), storage.list(searcher), q)) {
+                ++owner.summary.free_bearing_refills;
+            }
+        }
+        bsp::AvoidZoneSelectedSegment* selected_head() override {
+            return storage.list(searcher).head;
+        }
+        const bsp::CameraAxesCrtAccess& crt() override { return application_camera_axes_crt(); }
+    } host(owner, storage, searcher);
+    bsp::ShipAiFreeBearingOutcome outcome;
+    const bool answer = bsp::ship_ai_free_bearing_009dc2e0(
+        storage.cache(searcher).enabled, query, layer_key, host, &outcome);
+    GameShipAiSummary& s = owner.summary;
+    if (outcome.list_empty) ++s.free_bearing_empty;
+    if (outcome.ahead_hit) ++s.free_bearing_ahead_hits;
+    if (outcome.corner_side == 1) ++s.free_bearing_corner_fwd;
+    if (outcome.corner_side == 2) ++s.free_bearing_corner_back;
+    if (outcome.lateral_turn) ++s.free_bearing_lateral_turns;
+    if (outcome.short_leg) ++s.free_bearing_short_legs;
+    if (answer) ++s.free_bearing_answers;
+    return answer;
+}
+
 void GameShipAiHost::Impl::run_hull_pre_step(Controller& ctl, std::size_t index,
     bsp::ShipAiNavBlockFields& fields, std::uint32_t raw_argument) {
     if (!ctl.class_depth_loaded)
@@ -10193,6 +10269,16 @@ void GameShipAiHost::report() {
         host.summary.follow_zone_sets, host.summary.follow_pushes,
         host.summary.follow_pushes_moved, host.summary.follow_leader_turning,
         kShipFollowStationPointBound ? 1 : 0);
+    host.log.notef("summary mission ship ai free bearing scan_calls=%llu arm_calls=%llu "
+        "unready=%llu empty=%llu refills=%llu ahead_hits=%llu corner_fwd=%llu corner_back=%llu "
+        "lateral_turns=%llu short_legs=%llu answers=%llu bound=%d (009DC2E0 at 009EC0C1 / "
+        "009DF0FA, packet cc9_free_bearing_query)",
+        host.summary.free_bearing_calls_scan, host.summary.free_bearing_calls_arm,
+        host.summary.free_bearing_unready, host.summary.free_bearing_empty,
+        host.summary.free_bearing_refills, host.summary.free_bearing_ahead_hits,
+        host.summary.free_bearing_corner_fwd, host.summary.free_bearing_corner_back,
+        host.summary.free_bearing_lateral_turns, host.summary.free_bearing_short_legs,
+        host.summary.free_bearing_answers, kShipAiFreeBearingBound ? 1 : 0);
     host.log.notef("summary mission ship ai plane row autotarget ticks=%llu thinks=%llu bound=%d "
         "(009F5DA0 on IsKindOf 0Fh / 18h rows; the image builds none, 009F6A20; packet "
         "cc9_plane_row_autotarget)",
