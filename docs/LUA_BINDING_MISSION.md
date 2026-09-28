@@ -1896,3 +1896,26 @@ player holds. The controlled Narwhal moved **352.61 -> 421.38 m**, so the comman
 drive the controlled submarine on this path.
 
 **Verdict: `kLuaSetShipSpeedBound = true`.**
+
+## UnitGetAttackTarget, 008A6DE0 (packet `cc9_lua_unit_attack_target`, a read; binding open)
+
+Worker cc9-lua2, 2026-09-28. This is item 2 of the refreshed ranking: LOMP06, 21 calls.
+
+**The image (V, from the pseudocode).**
+- It resolves argument 0 (`00888AA0`) and takes the director (`vtable[114h]`).
+- **When `director->vtable[48h](2)` answers true**, the target is `director->vtable[2Ch]()`.
+- **Otherwise** it reads the current command (`0071BE40`). When that command's
+  `vtable[0Ch]()` kind is 1 or 2, the target is the resolved command target
+  (`BSP_EntityCommand_ActiveTargetDescriptor`, then `BSP_CommandTarget_ResolveObject`).
+- **The result.** A target with `+5Dh` clear is pushed as `thisTable[tostring(target+174h)]`;
+  anything else is nil.
+
+**Open before binding.**
+- The director slot `48h` and its argument 2 are unread. It is likely a role or mode test that
+  picks the player's own target over the AI command's.
+- The director's `vtable[2Ch]` is unread.
+- The command's `vtable[0Ch]` kinds 1 and 2 need mapping onto the host's command classes. The
+  commands host has `current_command_0071be40` and `active_command_descriptor_0071eb60`.
+- **What it would change.** LOMP06 asks on `Mission.PlayerUnit` (`06_crucial_cargo.lua` 696).
+  With a live target, `luaSubC1luaReportEnemy` reaches `luaGetReconLevel` and `luaSubC1AddUnit`,
+  which are objectives, so gameplay could move.

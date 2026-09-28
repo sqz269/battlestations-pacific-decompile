@@ -1409,3 +1409,52 @@ Reads closed without a switch:
 every tick. After a unit release, the idle timer waits out `NoTargetTimeUntilRest` before it rests
 the guns, where `0080E290` rests them at once. Idle-player reference runs never release a unit, so
 no reference row moves. Binding `0080E290`'s call is the fix.
+
+## Handoff (cc9-lua2, 2026-09-28)
+
+Worker cc9-lua2. The branch is `agent/cc9-lua2` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua2`. It holds no leases after this commit. Most of
+the work is in `docs/LUA_BINDING_MISSION.md`, whose sections are named below.
+
+### Switches this worker set
+
+| switch | file | state |
+| --- | --- | --- |
+| `kGetPropertyClassReadersBound` | `include/bsp/game_hosts_lua.hpp` | ON (`docs/MISSION_LUA_GETPROPERTY.md` 9) |
+| `kSquadronObserverLivenessBound` | `include/bsp/game_hosts_hud.hpp` | ON (`docs/PLANE_SQUADRON.md`) |
+| `kObjectiveKindBound` | `include/bsp/game_hosts_ai.hpp` | ON (`docs/MISSION_OBJECTIVES.md` 9) |
+| `kLuaKillBound` | game_hosts_lua.hpp | ON |
+| `kLuaListenersBound` | same | ON |
+| `kLuaReconListenersBound` | same | ON |
+| `kReconListenerResetCycleBound` | same | ON |
+| `kLuaHitListenersBound` | same | ON |
+| `kForcedReconLevelBound` | same | ON (the table is in `src/recon_sensor_pass.cpp`) |
+| `kLuaAddDamageBound` | same | ON (phase-2 USN02 pair) |
+| `kLuaAAEnableBound` | same | ON |
+| `kLuaSetShipSpeedBound` | same | ON |
+| the SetInvincible native (no switch; inert until gunnery3's `kUnitInvincibilityFloorBound`) | `src/game_hosts_lua.cpp` | bound |
+
+`read_difficulty_multipliers_0087d7b0` has no switch and is read by the gunnery host.
+
+### Open, in order
+
+1. **UnitGetAttackTarget, `008A6DE0`.** Read the director slots `48h` and `2Ch` and the command
+   kinds 1 and 2, then bind it OFF with a LOMP06 prediction. See the section "UnitGetAttackTarget,
+   008A6DE0".
+2. **The rest of the refreshed ranking,** in this order:
+   - `SquadronSetSpeed` `0089F780` (USN13, 15 calls);
+   - `IsClassChanged` `008CC4B0`;
+   - `SetSubmarineDepthLevel` `00893F40` (JM06, 5 calls);
+   - `SetAirBaseSlotCount` `008963E0` (USN13).
+3. **Listener channels still unfired:** `command`, `input` (movie skip) and the other channels
+   are registered but never call back. Measured: JM06's `submove` (`command`).
+4. **Hit-listener filters not modelled:** `targetDevice`, `attackerPlayerIndex`, `fireCaused` and
+   `leakCaused`. They need attacker player indices and the device hit on gunnery3's hit event.
+5. **Idle-run blind spots:** the hit, AA and forced-recon bindings were identity on idle runs.
+   The first run with the player or a convoy leader hit, or the BSM01 air raid, measures them.
+
+### Local files
+
+- **Pair exports:** `local\{gp,kill,sq,ok,ls,rl,rc,fr,ad,ht,aa,sp}_on`.
+- **Logs:** `local\<prefix>_{off,on}_<mission>.log`.
+- **Scripts:** `local\cc9-lua2-*`.
