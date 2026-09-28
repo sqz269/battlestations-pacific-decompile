@@ -473,3 +473,73 @@ mission frame 9000 (`local\mk2_on_prcp03.log`). Would the image arrive sooner?
 - `PreparePhase4` stays out of any 9200-frame budget (the earlier estimate: 40,000 to 45,000).
 
 **No host difference, so no binding.** The packet is closed as a read.
+
+## USN02: Exeter's loss at 35.80 s is the image's own (packet `cc9_usn02_exeter_loss`, a read)
+
+Worker cc9-ships2, on main `37ea008f8`. Ghidra was read-only. No code changed. The log is
+`local\p2_off_usn02.log` (worktree cc9-ships2).
+
+### What the log shows
+
+- **The salvo.** Tokitsukaze (`fire=Exeter` from step 10, attackmove at `d32c` about 3180 m)
+  launches eight torpedoes in pairs at t = 3.15, 3.25, 3.65, 3.75, 4.15, 4.25, 4.65 and 4.75 s
+  (`gunnery: torpedo launch`, `friendly_in_2km=3 crossed=0`).
+  - Hatsukaze fires eight of its own at Exeter in the same window.
+  - Tokitsukaze's next salvo is at 123.15 s.
+- **One torpedo hits**, at t = 35.65, 32.5 s after the first pair. The death row's
+  `killer_range=3193` is that launch range.
+  - The Type 93 swims at `WaterTravelSpeed x 0.6`, the double at `00CEFF98`, stored by
+    `00855A9A`..`00855AAB`:
+
+```
+00855A9A  FLD  dword [ESI+0E4h]     ; WaterTravelSpeed
+00855AA0  FMUL dword [ESI+54h]      ; FlyTime (the range product)
+00855AA5  FMUL qword [00CEFF98]     ; 0.6
+00855AAB  FSTP dword [ESI+60h]
+```
+
+  - In this installation's arcade table (`GameMode = 0`, docs/CLASSTABLE_SELECTION.md) that is
+    170.444 x 0.6 = 102.3 m/s, which covers about 3190 m in about 31 s.
+- **The damage.** The same shell does both steps:
+  - Before the burst, Exeter's health was 6090 (the burst took 6076.4 and left 13.6), which is 410
+    below her `HP 6500`. That matches the direct hit, `DamageMin/Max 500` against `Armour 90`. The
+    log has no line for the direct record, so this step is inferred.
+  - Then comes the burst, `impact blast bullet=67 ... base=6172.4 range=50.0 armour=90.0 took=6076.4
+    health=13.6`, with base drawn from `BlastDamageMin/Max 6000..8000`.
+  - Together that is 6486.4 of the York class's `HP 6500` (VehicleClass[21], `Armour 90`,
+    `Mass 10350`), leaving 13.6.
+  - The burst also destroys hull segments 0 and 1 (`0092D1F0` parks each slot at -10000 and routes
+    99h to `0080E440`: debris and the hull body, docs/BLAST_ELEMENT_PARTS.md section 2) and opens
+    the leaks.
+  - The damage-control pass then kills her at 35.80 s (`water_total=16`, `repaired=3`). The final
+    hull row reads water 37113 against capacity 10350.
+
+### The image's rules on that path
+
+Each is already reconstructed from the listing and bound:
+- **Direct and burst.** `008777D0`'s part pass keeps the **largest** `004705C0` result and adds
+  it once (`00877A37`), with the unit's own armour (`+368h`) for a non-underwater entry.
+  docs/UNIT_HIT_PATH.md and docs/BLAST_ELEMENT_PARTS.md section 1.
+  - `took = 6076.4` is (6172.4 - 90) scaled by the burst's falloff at 0.05 m of a 50 m range.
+- **Segments.** A single hit can empty a segment. Each of the 20 slots holds `HP` / fizika-node
+  count, and `0092D1F0` subtracts the full part damage.
+- **Difficulty scaling does not apply to Exeter.**
+  - `0095DA00` multiplies by `config->[50h][level]` only when `IsLocalPlayerRole(0)` is true
+    (`00927F30`: `unit[1ACh] == game+18ECh`).
+  - `0087D730` multiplies by `config->[20h][level]` only for the current player's unit.
+  - The idle player's unit is Houston, so neither multiplier touches Exeter, and the host's 1.0
+    is the image's answer for her.
+- **The salvo.** The torpedo standoff, gate bytes and supply tick that let Tokitsukaze fire its
+  tubes at about 3.2 km on first sight are the bound image rules of docs/SENTITY_INIT_PASSES.md
+  sections 9 and 10.
+
+### Verdict
+
+**The image sinks Exeter the same way.** One arcade Long Lance delivers 6486 of a York's 6500 HP
+and floods her. The failure test at `usn_2_java.lua:521` (`Houston.Dead or Exeter.Dead`) fires
+at 39.65 s. **No host difference, no binding.**
+
+**A side flag, not this packet:** the host answers `IsLocalPlayerRole(0)` false for every unit
+(`unit_is_local_players`, `difficulty_multiplier` = 1.0, `008270AD` recorded). For the player's
+own unit (Houston on USN02) the image scales incoming damage by `config->[50h][level]` and
+`[20h][level]`, and this host does not.

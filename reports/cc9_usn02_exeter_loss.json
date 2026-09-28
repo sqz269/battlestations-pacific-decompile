@@ -1,0 +1,17 @@
+{
+  "packet": "cc9_usn02_exeter_loss",
+  "doc": "docs/GAME_SHIP_NAVIGATION_BINDING.md, USN02: Exeter's loss at 35.80 s is the image's own",
+  "code_changed": false,
+  "log": "local/p2_off_usn02.log",
+  "evidence": {
+    "salvo": "Tokitsukaze 8 launches in pairs 3.15..4.75 s at about 3180 m (Hatsukaze 8 more); next salvo 123.15 s",
+    "hit": "one torpedo at 35.65 s, launch range 3193, swim 170.444 x 0.6 = 102.3 m/s (00855A9A..00855AAB, 00CEFF98)",
+    "damage": "health 6090 before the burst (inferred direct hit 500 - armour 90 = 410; no log line), burst base 6172.4 (6000..8000) took 6076.4; 6486.4 of HP 6500; segments 0 and 1 destroyed; damage-control death 35.80 s",
+    "difficulty": "0095DA00 / 0087D730 multipliers need IsLocalPlayerRole(0) or the player's unit; Houston is, Exeter is not"
+  },
+  "verdict": "image sinks Exeter the same way; no binding",
+  "flags": ["host answers IsLocalPlayerRole(0) false for every unit (008270AD recorded, multiplier 1.0): the player's own unit (Houston on USN02) misses config->[50h][level] and [20h][level] scaling"],
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
