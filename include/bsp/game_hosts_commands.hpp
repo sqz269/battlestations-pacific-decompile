@@ -128,6 +128,23 @@ struct GameCommandRow {
 // ON 2026-09-29 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
 inline constexpr bool kDirectorTargetChecksBound = true;
 
+// Packet cc9_set_command_queue_delay (docs/GUNNERY_OPEN_ITEMS.md sections 25-26).
+// In a local session every director message goes through 0077C2A0, whose
+// routing flags 7 with [[00E188A8]+1FE4h] == 0 take 0077C44D: 0076E520 posts it
+// on the loopback vector session+24Ch (count +250h). The session pump 00778450
+// drains it at 00778542 (0076C600), fan-out row 9 (00875E91), AFTER the entity
+// think of the same fixed step (00875E64). 0076C600 sets the insertion pointer
+// +258h to the slot after the message it delivers (0076C639), so a post made by
+// a delivery (0076E5F5..0076E6D0) is delivered next, in post order, in the same
+// drain. Three messages take that route here: MT_COMMAND (0077D600 at 0077D7BD),
+// MT_GAMEUNIT_SETCMD (0071C830 / 0071ECF0 at 0071ED81) and the 5Dh clear
+// (0071C730 from 0071D810's stage 2, 0071D900 from 0071DDB0).
+// False: each message is delivered where it is posted (the host's old
+// synchronous chain). True: posts queue, and GameFixedStepHost's
+// pump_session_00778450 delivers them through begin_loopback_drain /
+// finish_loopback_drain.
+inline constexpr bool kSetCommandQueueDelayBound = false;
+
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
 struct GameReleasedTarget {
@@ -216,6 +233,15 @@ struct GameCommandsSummary {
     unsigned long long release_slot_clears{0};  // slot > 0, category 1 or 2: 0071D900
     unsigned long long release_slot_kept{0};    // slot > 0, other category: descriptor only
     unsigned long long release_plane_matches{0};// a plane target: 0071EDD0's retarget arm
+    // Packet cc9_set_command_queue_delay. Counted in both builds; with the switch
+    // off every post is delivered where it is made (delivered_in_place).
+    unsigned long long loopback_command_posts{0};  // MT_COMMAND, 0077D7BD
+    unsigned long long loopback_setcmd_posts{0};   // MT_GAMEUNIT_SETCMD, 0071ED81
+    unsigned long long loopback_clear_posts{0};    // 5Dh, 0071C730 / 0071D900
+    unsigned long long loopback_delivered_in_place{0};  // switch off
+    unsigned long long loopback_delivered_nested{0};    // posted inside a drain: next in it
+    unsigned long long loopback_delivered_queued{0};    // posted before the drain began
+    unsigned long long loopback_drains{0};              // 0076C600 bodies with work
 };
 
 // Packet cc8_ship_moveonpath: what one unit's slot-0 path cursor did over a run.
@@ -290,6 +316,15 @@ public:
     // arm receives MT_GAMEUNIT_SETCMD, 008358d0 and 0071e6c0 push the slot, and
     // 00835c70's own arm latches when the pushed command became current.
     // `ring` is the unit's live order ring and `heading_radians` its vtable[50h].
+    // Packet cc9_set_command_queue_delay: 0076C600 at 00778542. begin opens the
+    // drain, so a post made from then on (the after-row-9 script orders the pump
+    // applies first) is delivered at once, with what it posts in turn next;
+    // finish delivers what was posted before the drain, in post order, each
+    // delivery's own posts next after it, and closes the drain. Both do nothing
+    // while kSetCommandQueueDelayBound is false. finish answers the deliveries.
+    void begin_loopback_drain_0076c600();
+    std::size_t finish_loopback_drain_0076c600();
+
     const GameCommandRow* issue(std::size_t unit_index, const std::string& token,
         const std::string& target_token, const bsp::UnitOrderRing& ring,
         float heading_radians);
@@ -476,5 +511,10 @@ private:
 
     std::unique_ptr<Impl> impl_;
 };
+
+// Packet cc9_set_command_queue_delay: the pump's calls, on the one live host
+// (GameFixedStepHost reaches the session pump, not the commands host).
+void commands_begin_loopback_drain_0076c600();
+std::size_t commands_finish_loopback_drain_0076c600();
 
 }  // namespace bsp::game

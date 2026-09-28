@@ -344,6 +344,66 @@ struct GameCommandsHost::Impl {
         }
         return index;
     }
+
+    // Packet cc9_set_command_queue_delay: the loopback vector session+24Ch
+    // (count +250h, insertion pointer +258h) and what one entry carries. The
+    // native entry is the message object itself; this host's entry adds what
+    // its chain needs at delivery: the command row by index into `rows` (the
+    // vector can grow between post and delivery), the unit's order ring and the
+    // heading the caller read, and whether the chain's finish tail (the
+    // current-command read and 00835C70's arm) runs at the end of this delivery.
+    static constexpr std::size_t kNoLoopbackRow = static_cast<std::size_t>(-1);
+    enum class LoopbackKind { Command, SetCommand, Clear };
+    struct LoopbackMessage {
+        LoopbackKind kind{LoopbackKind::Command};
+        std::size_t unit{0};
+        std::size_t row{kNoLoopbackRow};
+        const bsp::UnitOrderRing* ring{nullptr};
+        float heading{0.0f};
+        bool finish{false};
+        bool script_issue{false};
+        bool nested{false};                 // posted by a delivery: next in the drain
+        unsigned long long posted_before_drain{0};
+        // A target object is one of this host's unit records; `units` is
+        // replaced by register_units, so the entry keeps the one-based index.
+        std::size_t target_handle{0};
+        bsp::EntityOrderMessage command{};   // MT_COMMAND (0077D600)
+        std::uint32_t set_command{0};        // MT_GAMEUNIT_SETCMD (0071C830)
+        bsp::SceneCommandTarget set_target{};
+        std::uint8_t set_flag{0};
+        bool player{false};                  // the 5Dh clear (0071C730 / 0071D900)
+        bsp::ClearCommandMessage clear{};
+    };
+    std::vector<LoopbackMessage> loopback;
+    std::vector<LoopbackMessage>* loopback_active{nullptr};
+    std::size_t loopback_insert{0};
+    bool loopback_drain_open{false};
+    unsigned long long loopback_drain_serial{0};
+
+    std::size_t unit_handle_of(const void* object) const noexcept {
+        if (object == nullptr) return 0;
+        for (std::size_t i = 0; i < units.size(); ++i) {
+            if (&units[i] == object) return i + 1;
+        }
+        return 0;
+    }
+    const void* unit_object_of(std::size_t handle, const void* fallback) const noexcept {
+        if (handle == 0 || handle - 1 >= units.size()) return fallback;
+        return &units[handle - 1];
+    }
+    std::size_t row_index_of(const GameCommandRow* row) const noexcept {
+        if (row == nullptr || rows.empty()) return kNoLoopbackRow;
+        if (row < rows.data() || row >= rows.data() + rows.size()) return kNoLoopbackRow;
+        return static_cast<std::size_t>(row - rows.data());
+    }
+    // 0076E520. Answers the entry's index in `loopback` when it waits there for
+    // the next drain, kNoLoopbackRow when a drain delivers it.
+    std::size_t post_loopback(LoopbackMessage message);
+    void run_loopback_list(std::vector<LoopbackMessage>& list);
+    void deliver_loopback(const LoopbackMessage& message);
+    // 00721A40's 5Dh arm on delivery, the old body of route_clear_command.
+    bool apply_clear_command(std::size_t unit_index, bool player_controlled,
+                             const bsp::ClearCommandMessage& message);
 };
 
 namespace {
@@ -369,6 +429,12 @@ struct ChainState {
     bsp::ShipAiSetterHost* ai_setters{nullptr};
     bsp::ShipAiAvoidanceRequest* avoidance_request{nullptr};
     const bsp::ShipAiCruiseAvoidanceInputs* avoidance_inputs{nullptr};
+    // Packet cc9_set_command_queue_delay. The finish tail still owed at the end
+    // of the chain's last delivery; a post hands it to the message it posts.
+    bool finish_pending{false};
+    bool script_issue{false};
+    // The `loopback` index of a SETCMD this chain queued for the next drain.
+    std::size_t setcmd_post{GameCommandsHost::Impl::kNoLoopbackRow};
 };
 
 void publish_cruise_avoidance(ChainState& chain) {
@@ -1060,18 +1126,8 @@ private:
     ChainState& chain_;
 };
 
-void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessage& message) {
-    static_cast<void>(entity);
-    // 0077c2a0 at 0077d7bd. The router reads the default routing flags at
-    // [00e0af1c], queues a local delivery on session+24ch and 0076c600 drains
-    // it; 00780670 then widens the tick window for a category 49h message and
-    // 00780120's 58h arm at 00780607 dispatches it to the entity's own
-    // vtable[160h], which for a ship is 00816e30.
-    chain_.owner.record("EntityOrder::route_message", 0x0077c2a0u);
-    chain_.owner.record("Session::drain_local_messages", 0x0076c600u);
-    chain_.owner.record("Session::message_tick_window", 0x00780670u);
-    chain_.owner.record_slot("Session::dispatch_entity_command", "00cfc530+vtable160");
-
+// MT_COMMAND's delivery: 00780120's 58h arm to the ship's vtable[160h], 00816e30.
+void deliver_entity_command(ChainState& chain_, const bsp::EntityOrderMessage& message) {
     bsp::EntityCommandMessageView view;
     view.command_ordinal = message.command_ordinal;
     view.flags = message.flags;
@@ -1129,6 +1185,38 @@ void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessa
     chain_.owner.done("EntityCommand::apply", 0x00816e30u);
 }
 
+void EntityIssueBinding::route_message(void* entity, const bsp::EntityOrderMessage& message) {
+    static_cast<void>(entity);
+    // 0077c2a0 at 0077d7bd. The router reads the default routing flags at
+    // [00e0af1c], queues a local delivery on session+24ch and 0076c600 drains
+    // it; 00780670 then widens the tick window for a category 49h message and
+    // 00780120's 58h arm at 00780607 dispatches it to the entity's own
+    // vtable[160h], which for a ship is 00816e30.
+    chain_.owner.record("EntityOrder::route_message", 0x0077c2a0u);
+    chain_.owner.record("Session::drain_local_messages", 0x0076c600u);
+    chain_.owner.record("Session::message_tick_window", 0x00780670u);
+    chain_.owner.record_slot("Session::dispatch_entity_command", "00cfc530+vtable160");
+    ++chain_.owner.summary.loopback_command_posts;
+    if (!kSetCommandQueueDelayBound) {
+        ++chain_.owner.summary.loopback_delivered_in_place;
+        deliver_entity_command(chain_, message);
+        return;
+    }
+    // Packet cc9_set_command_queue_delay: 0077C44D CALL 0076E520.
+    GameCommandsHost::Impl::LoopbackMessage posted;
+    posted.kind = GameCommandsHost::Impl::LoopbackKind::Command;
+    posted.unit = chain_.unit.index;
+    posted.row = chain_.owner.row_index_of(chain_.row);
+    posted.ring = chain_.ring;
+    posted.heading = chain_.heading;
+    posted.finish = chain_.finish_pending;
+    posted.script_issue = chain_.script_issue;
+    posted.target_handle = chain_.owner.unit_handle_of(message.target_object);
+    posted.command = message;
+    chain_.finish_pending = false;
+    chain_.owner.post_loopback(posted);
+}
+
 void DirectorBinding::director_issue_command(std::uint32_t command,
     const bsp::SceneCommandTarget& target) {
     bsp::director_issue_command_0071ecf0(*this, command, target);
@@ -1144,11 +1232,33 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
     chain_.owner.record("WeaponDirector::build_set_command_message", 0x0071c830u);
     chain_.owner.record("WeaponDirector::route_set_command_message", 0x0077c2a0u);
     chain_.owner.record_slot("Session::dispatch_gameunit_message", "00cfc530+vtable114");
-    chain_.pending_command = command;
-    chain_.pending_target = target;
-    chain_.pending_flag = flag;
-    bsp::gameunit_apply_set_command_00721a40(*this, kSessionModeSinglePlayer, flag);
-    chain_.owner.done("GameUnitMessage::apply_set_command", 0x00721a40u);
+    ++chain_.owner.summary.loopback_setcmd_posts;
+    if (!kSetCommandQueueDelayBound) {
+        ++chain_.owner.summary.loopback_delivered_in_place;
+        chain_.pending_command = command;
+        chain_.pending_target = target;
+        chain_.pending_flag = flag;
+        bsp::gameunit_apply_set_command_00721a40(*this, kSessionModeSinglePlayer, flag);
+        chain_.owner.done("GameUnitMessage::apply_set_command", 0x00721a40u);
+        return;
+    }
+    // Packet cc9_set_command_queue_delay: 0077C44D CALL 0076E520. Inside a
+    // drain this is the +258h insertion, delivered right after the MT_COMMAND
+    // being delivered; from a director step it waits for row 9.
+    GameCommandsHost::Impl::LoopbackMessage posted;
+    posted.kind = GameCommandsHost::Impl::LoopbackKind::SetCommand;
+    posted.unit = chain_.unit.index;
+    posted.row = chain_.owner.row_index_of(chain_.row);
+    posted.ring = chain_.ring;
+    posted.heading = chain_.heading;
+    posted.finish = chain_.finish_pending;
+    posted.script_issue = chain_.script_issue;
+    posted.target_handle = chain_.owner.unit_handle_of(target.object);
+    posted.set_command = command;
+    posted.set_target = target;
+    posted.set_flag = flag;
+    chain_.finish_pending = false;
+    chain_.setcmd_post = chain_.owner.post_loopback(posted);
 }
 
 }  // namespace
@@ -1157,10 +1267,21 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
 // GameCommandsHost
 // ---------------------------------------------------------------------------
 
-GameCommandsHost::GameCommandsHost(GameHostLog& log)
-    : impl_(std::make_unique<Impl>(log)) {}
+namespace {
+GameCommandsHost*& live_commands_host() {
+    static GameCommandsHost* live = nullptr;
+    return live;
+}
+}  // namespace
 
-GameCommandsHost::~GameCommandsHost() = default;
+GameCommandsHost::GameCommandsHost(GameHostLog& log)
+    : impl_(std::make_unique<Impl>(log)) {
+    live_commands_host() = this;
+}
+
+GameCommandsHost::~GameCommandsHost() {
+    if (live_commands_host() == this) live_commands_host() = nullptr;
+}
 
 void GameCommandsHost::set_unit_formation(std::size_t index, bool follower,
                                           std::size_t leader) {
@@ -1258,6 +1379,7 @@ namespace {
 // Defined below, after the hop bindings it uses.
 const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
     GameCommandRow& row, const bsp::UnitOrderRing& ring);
+void finish_issue_in_place(GameCommandsHost::Impl& host, ChainState& chain);
 }  // namespace
 
 const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
@@ -1311,6 +1433,21 @@ const GameCommandRow* GameCommandsHost::issue(std::size_t unit_index,
     if (resolution.outcome == bsp::SceneCommandOutcome::kIssued
         && resolution.command != nullptr) {
         ++host.summary.resolved;
+        if (kSetCommandQueueDelayBound) {
+            // Packet cc9_set_command_queue_delay. The chain continues at the
+            // drain, so its row is stored now and addressed by index; what the
+            // caller copies from it on return is the post, not the push.
+            host.rows.push_back(row);
+            const std::size_t stored = host.rows.size() - 1;
+            chain.row = &host.rows[stored];
+            chain.finish_pending = true;
+            resolve.issue_command(&host.units[unit_index], resolution.command->identity,
+                resolution.target, 1);
+            resolve.clear_queue();
+            host.done("SceneCommand::resolve_deferred_reference", 0x0046aab0u);
+            if (chain.finish_pending) finish_issue_in_place(host, chain);
+            return &host.rows[stored];
+        }
         resolve.issue_command(&host.units[unit_index], resolution.command->identity,
             resolution.target, 1);
     }
@@ -1325,7 +1462,7 @@ namespace {
 // 00835c70's own arm. Extracted at milestone 2m so the navigator bindings'
 // issue, which starts at 0077d600 with a fixed command object rather than at
 // 0046aab0's registry walk, runs exactly the same hops.
-const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
+void finish_issue_tail(GameCommandsHost::Impl& host, ChainState& chain,
     GameCommandRow& row, const bsp::UnitOrderRing& ring) {
     const std::size_t unit_index = row.unit_index;
     GameDirector& director = host.directors[unit_index];
@@ -1382,12 +1519,139 @@ const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& cha
             row.slot_pushed ? "pushed" : "REFUSED");
         host.life_emit(unit_index, label, host.life_clock, director);
     }
+}
+
+const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& chain,
+    GameCommandRow& row, const bsp::UnitOrderRing& ring) {
+    finish_issue_tail(host, chain, row, ring);
     host.rows.push_back(row);
     host.summary.command_name = row.command;
     return &host.rows.back();
 }
 
+// Packet cc9_set_command_queue_delay: the same tail on a row already stored,
+// at the end of the delivery that ends the chain.
+void finish_issue_in_place(GameCommandsHost::Impl& host, ChainState& chain) {
+    chain.finish_pending = false;
+    if (chain.row == nullptr || chain.ring == nullptr) return;
+    finish_issue_tail(host, chain, *chain.row, *chain.ring);
+    host.summary.command_name = chain.row->command;
+    if (chain.script_issue && !chain.row->projected_arm) ++host.summary.script_blocked;
+}
+
 }  // namespace
+
+// ---------------------------------------------------------------------------
+// Packet cc9_set_command_queue_delay: 0076E520 and 0076C600
+// ---------------------------------------------------------------------------
+
+std::size_t GameCommandsHost::Impl::post_loopback(LoopbackMessage message) {
+    message.posted_before_drain = loopback_drain_serial;
+    if (loopback_active != nullptr) {
+        // 0076E5F5..0076E6D0: insert at +258h and move it past the new entry.
+        message.nested = true;
+        loopback_active->insert(loopback_active->begin()
+            + static_cast<std::ptrdiff_t>(loopback_insert), message);
+        ++loopback_insert;
+        return kNoLoopbackRow;
+    }
+    if (loopback_drain_open) {
+        // A post from the pump's own after-row-9 order delivery, which is one
+        // entry of the same drain in the image: delivered now, then its posts.
+        message.nested = true;
+        std::vector<LoopbackMessage> once(1, message);
+        run_loopback_list(once);
+        return kNoLoopbackRow;
+    }
+    // 0076E5D1..0076E5EC: +258h is null outside a drain, so the entry appends.
+    loopback.push_back(message);
+    return loopback.size() - 1;
+}
+
+void GameCommandsHost::Impl::run_loopback_list(std::vector<LoopbackMessage>& list) {
+    std::vector<LoopbackMessage>* const outer = loopback_active;
+    const std::size_t outer_insert = loopback_insert;
+    loopback_active = &list;
+    // 0076C634..0076C70B: the end is re-read on every pass.
+    for (std::size_t i = 0; i < list.size(); ++i) {
+        loopback_insert = i + 1;                     // 0076C639
+        const LoopbackMessage message = list[i];
+        if (message.nested) {
+            ++summary.loopback_delivered_nested;
+        } else {
+            ++summary.loopback_delivered_queued;
+        }
+        deliver_loopback(message);
+    }
+    loopback_active = outer;
+    loopback_insert = outer_insert;
+}
+
+void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
+    if (message.unit >= units.size() || message.unit >= directors.size()) return;
+    GameCommandRow* row = (message.row < rows.size()) ? &rows[message.row] : nullptr;
+    ChainState chain{*this, units[message.unit], directors[message.unit], row, message.ring,
+        message.heading, bsp::SceneCommandTarget{}, 0u, 0u};
+    chain.finish_pending = message.finish;
+    chain.script_issue = message.script_issue;
+    switch (message.kind) {
+    case LoopbackKind::Command: {
+        bsp::EntityOrderMessage delivered = message.command;
+        delivered.target_object = unit_object_of(message.target_handle,
+            delivered.target_object);
+        deliver_entity_command(chain, delivered);
+        break;
+    }
+    case LoopbackKind::SetCommand: {
+        chain.pending_command = message.set_command;
+        chain.pending_target = message.set_target;
+        chain.pending_target.object = const_cast<void*>(
+            unit_object_of(message.target_handle, message.set_target.object));
+        chain.pending_flag = message.set_flag;
+        DirectorBinding binding(chain);
+        bsp::gameunit_apply_set_command_00721a40(binding, kSessionModeSinglePlayer,
+            message.set_flag);
+        done("GameUnitMessage::apply_set_command", 0x00721a40u);
+        break;
+    }
+    case LoopbackKind::Clear:
+        apply_clear_command(message.unit, message.player, message.clear);
+        break;
+    }
+    if (chain.finish_pending) finish_issue_in_place(*this, chain);
+}
+
+void GameCommandsHost::begin_loopback_drain_0076c600() {
+    if (!kSetCommandQueueDelayBound) return;
+    impl_->loopback_drain_open = true;
+}
+
+std::size_t GameCommandsHost::finish_loopback_drain_0076c600() {
+    if (!kSetCommandQueueDelayBound) return 0;
+    Impl& host = *impl_;
+    const unsigned long long before = host.summary.loopback_delivered_nested
+        + host.summary.loopback_delivered_queued;
+    std::vector<Impl::LoopbackMessage> batch;
+    batch.swap(host.loopback);
+    if (!batch.empty()) {
+        ++host.summary.loopback_drains;
+        host.run_loopback_list(batch);
+    }
+    host.loopback_drain_open = false;
+    ++host.loopback_drain_serial;
+    host.done("Session::drain_loopback_queue", 0x0076c600u);
+    return static_cast<std::size_t>(host.summary.loopback_delivered_nested
+        + host.summary.loopback_delivered_queued - before);
+}
+
+void commands_begin_loopback_drain_0076c600() {
+    if (GameCommandsHost* live = live_commands_host()) live->begin_loopback_drain_0076c600();
+}
+
+std::size_t commands_finish_loopback_drain_0076c600() {
+    GameCommandsHost* live = live_commands_host();
+    return live != nullptr ? live->finish_loopback_drain_0076c600() : 0;
+}
 
 const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_index,
     std::uint32_t command_object, const bsp::SceneCommandTarget& target, int flags,
@@ -1415,6 +1679,20 @@ const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_in
     ChainState chain{host, host.units[unit_index], host.directors[unit_index], &row,
         &ring, heading_radians, bsp::SceneCommandTarget{}, 0u, 0u};
     SceneResolveBinding resolve(chain);
+    if (kSetCommandQueueDelayBound) {
+        // Packet cc9_set_command_queue_delay, as in issue().
+        host.rows.push_back(row);
+        const std::size_t stored = host.rows.size() - 1;
+        chain.row = &host.rows[stored];
+        chain.finish_pending = true;
+        chain.script_issue = true;
+        resolve.issue_command(&host.units[unit_index],
+            reinterpret_cast<void*>(static_cast<std::uintptr_t>(command_object)), target,
+            flags);
+        ++host.summary.script_issues;
+        if (chain.finish_pending) finish_issue_in_place(host, chain);
+        return &host.rows[stored];
+    }
     resolve.issue_command(&host.units[unit_index],
         reinterpret_cast<void*>(static_cast<std::uintptr_t>(command_object)), target, flags);
     ++host.summary.script_issues;
@@ -1903,8 +2181,27 @@ bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
 bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
     bool player_controlled, const bsp::ClearCommandMessage& message) {
     if (unit_index >= units.size()) return false;
-    GameDirector& director = directors[unit_index];
     ++summary.clear_messages;
+    ++summary.loopback_clear_posts;
+    if (!kSetCommandQueueDelayBound) {
+        ++summary.loopback_delivered_in_place;
+        return apply_clear_command(unit_index, player_controlled, message);
+    }
+    // Packet cc9_set_command_queue_delay: the 5Dh message waits for the drain,
+    // so the raising step's own later reads still see the finished command.
+    LoopbackMessage posted;
+    posted.kind = LoopbackKind::Clear;
+    posted.unit = unit_index;
+    posted.player = player_controlled;
+    posted.clear = message;
+    post_loopback(posted);
+    return false;
+}
+
+bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,
+    bool player_controlled, const bsp::ClearCommandMessage& message) {
+    if (unit_index >= units.size()) return false;
+    GameDirector& director = directors[unit_index];
     ++summary.clear_receives;
     done("GameUnitMessage::apply_clear_command", 0x00721a40u);
     if (bsp::clear_command_action(message) != bsp::ClearCommandAction::kClearSlot) {
@@ -2203,7 +2500,16 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
             row.ordinal = klass->ordinal;
             row.category = klass->category;
         }
-        finish_issue(host, chain, row, ring);
+        if (kSetCommandQueueDelayBound && chain.setcmd_post < host.loopback.size()) {
+            // Packet cc9_set_command_queue_delay. 0071ED81 queued the SETCMD for
+            // row 9, so the push and the finish tail happen at its delivery.
+            host.rows.push_back(row);
+            Impl::LoopbackMessage& posted = host.loopback[chain.setcmd_post];
+            posted.row = host.rows.size() - 1;
+            posted.finish = true;
+        } else {
+            finish_issue(host, chain, row, ring);
+        }
     }
     host.life_emit(unit_index, "idle tail 00836dc9", mission_clock, director);
     return outcome;
@@ -2842,6 +3148,13 @@ void GameCommandsHost::report() {
         host.summary.release_head_ends, host.summary.release_slot_clears,
         host.summary.release_slot_kept, host.summary.release_plane_matches,
         host.summary.target_refusals);
+    host.log.notef("summary mission director loopback bound=%d command_posts=%llu "
+        "setcmd_posts=%llu clear_posts=%llu in_place=%llu nested=%llu queued=%llu "
+        "drains=%llu (packet cc9_set_command_queue_delay, 0076E520 / 0076C600)",
+        kSetCommandQueueDelayBound ? 1 : 0, host.summary.loopback_command_posts,
+        host.summary.loopback_setcmd_posts, host.summary.loopback_clear_posts,
+        host.summary.loopback_delivered_in_place, host.summary.loopback_delivered_nested,
+        host.summary.loopback_delivered_queued, host.summary.loopback_drains);
 }
 
 }  // namespace bsp::game
