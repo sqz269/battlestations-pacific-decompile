@@ -871,6 +871,100 @@ all.
 - `00A11690`;
 - why the controlled planes ignore an AI moveto (a units-host question, not this arm's).
 
+## 12. The Defend records path (packet `cc9_defend_records_path`)
+
+### 12.1 The image
+
+**`00A243D0`, the Defend record score**, `__fastcall(ECX = own side, EDX = candidate)(out[7],
+explain)`, `RET 8`, read in full. It returns T.
+
+```
+00A2441E  FLD [tuning+1E4h]                  ; Defend_CollectEnemiesDist, R
+00A24432  world+19CCh -> [+34h]              ; world list 2
+00A24458  PUSH 1Ch / CALL [vt+5Ch]           ; CommandBuildings are skipped
+00A2446B  CALL 00A03510                      ; w, must be above 0
+          in = dx*dx + dz*dz < R*R           ; x/z, candidate minus entity
+00A2450B  PUSH 6 / 00A2451A PUSH 2 -> [cmd vt+8h]   ; own side: its group neither attacks nor moves
+          own side, in:          a += w
+          (own == 0) side, in:   b += w; c += w when +C4h == 0Eh, or 18h with 007EDAD0 in {0, 2, 3}
+          T = (b - c) - a
+00A2460F..00A24642  StrategicGain (Lua, 00D22CF8) + 1.0 (00D7A210)  ; gain
+00A24697..00A246D2  max(+1E8h * +19Ch * b, +1ECh)                   ; requirement
+out = {T, gain*T, a, b, c, gain, requirement}
+```
+
+**The call site** is `00A28C2B MOV ECX,[planner+30h] / 00A28C2F CALL 00A243D0`. The record is
+kept only when b > 0: `00A28C39 XORPS / COMISS XMM0,[ESI+10h]`.
+
+**`00A1CF10 BSP_AiGroup_PickAnchorEntity`:** a group with no groupable combatant answers its first
+member. Any other group answers the first candidate that its PATROLTO targets (`00A2C230`), or none.
+
+**The records path** (`00A290F5-00A29E2A`):
+- `00A28300` sorts the records.
+- For each owned group, `00A2919D` picks the anchor. With none:
+  - a group already patrolling to an enemy list-28 entity is queued as a Capture pair;
+  - otherwise the nearest record entity is the anchor (x/z, strict `<`, seed `1.0e10`).
+- The anchor's record `+30h` loses the group's `00A2C530`.
+- A group without a combatant gets DEFENDPOSITION (`00A2972C`); any other gets PATROLTO to the
+  anchor (`00A29723`, `00A2C310`). The group joins the anchor's list (`00A27A00`).
+- Each Capture pair is released, claimed by brain+0Ch (`00A297E2`) and ordered by `00A1A720`.
+- The merge pass (`00A29860-00A29BE7`) runs per list, then the spawn tail (`00A29B8E..`), which
+  quick-spawns `"[defend]<id>"` for the first record with a positive remainder when
+  `00946970 <= 0` and the budget is at least 1.
+
+**The Defend_ tuning** (`IslandCaptureParams_Rookie` lines 105-110; loader `+1E0h..+1F0h`, reader 4
+lower):
+
+| reader | key | value |
+| --- | --- | --- |
+| `+1DCh` | `Defend_MergeTargetDist` | 500 |
+| `+1E0h` | `Defend_MergeGroupsDist` | 300 |
+| `+1E4h` | `Defend_CollectEnemiesDist` | 4000 |
+| `+1E8h` | `Defend_AgainstEnemyResourceMul` | 1.5 |
+| `+1ECh` | `Defend_MinimalResource` | 0 |
+
+### 12.2 The binding
+
+**`kAiDefendRecordsPathBound`, committed OFF.** When ON, `defend_think_00a28a60` builds the records.
+- **With none kept**, it takes the no-record path of section 10, with pass B's queue.
+- **With some**, it runs the records path.
+
+The census line is `summary mission ai defend records thinks= records= patrolto= capture_pairs=
+merges= spawn_arms=`. `BSP_CAPTURE_DIAG=1` prints each candidate's terms OFF.
+
+**Labelled substitutions:**
+- the `00A28300` comparator is unread, so records keep their build order;
+- maps keyed by pointer are in unit-index order;
+- `007EDAD0` is answered from the leader plane's class;
+- the squadrons of list 2 are the host's squadron candidates;
+- the SzurkeNyil candidates are empty, as section 10 found;
+- the spawn tail is a record.
+
+### 12.3 Predictions, written before the ON runs
+
+The OFF diagnostics are `local\rp_plan_{LOMP07,LOMP10}.log`.
+
+**No record is kept on either mission.** Every candidate has `b = 0`, because no enemy comes within
+4000 of the CommandBuildings in 150 s. Candidates per think:
+- LOMP07: CB - Bering and CB - Bering2, in one 32-member group;
+- LOMP10: CB4, `a = 2`, `T = -2`.
+
+ON, both therefore take the no-record path.
+
+**LOMP07 3200/3000 and LOMP10 3200/3000: exit 3.**
+- **The CommandBuilding group** (CB - Bering's, CB4's; no groupable combatant) gets DEFENDPOSITION
+  on the first think. It keeps it after that: `defendposition=1`, `record_fallbacks=0`, records
+  census `thinks=0 records=0`.
+- **OFF, the stand-in orders the group with `00A2CBD0`:** at Nachi's group on LOMP07; at Ashigara's
+  and then Static Emily 01's on LOMP10. ON issues no attack order, so its RNG draws go and the
+  shared stream shifts.
+- **The group's close-attack pass** moves from the target group's leader to its own leader, so the
+  CommandBuilding groups' guns take other targets.
+
+**USN13, USN01, USN02, USN04: identity, exit 0 or 1.** Their Defend planners have no candidate
+(`record_fallbacks=0` in section 10.4), and without one the new pass A is empty and pass B queues
+nothing.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

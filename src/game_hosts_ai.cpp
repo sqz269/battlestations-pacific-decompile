@@ -274,6 +274,13 @@ constexpr bool kAiSellThinkBound = true;
 // (docs/PLANNER_TASK_CHOICE.md section 10.4).
 constexpr bool kAiDefendThinkBound = true;
 
+// Packet cc9_defend_records_path, docs/PLANNER_TASK_CHOICE.md section 12. True:
+// 00A28A60 builds its 00A243D0 records and, when one has enemy weight inside
+// Defend_CollectEnemiesDist, runs the records path (anchors, DEFENDPOSITION or
+// PATROLTO per group, the Capture pairs, the merge pass, the spawn tail as a
+// record). False: any defend candidate runs the Siege-shape stand-in.
+constexpr bool kAiDefendRecordsPathBound = false;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -2783,72 +2790,379 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         done("AiPlanners::sell_think_00a22800", 0x00a22800u);
     }
-    // 00A28A60 BSP_AiPlanner_DefendThink, the no-record path.
-    // 00A28AE5: for each owned group, 00A2DEF0(group)(side, &list)
-    //   appends every member that answers vtable[+5Ch](1Ch) or that
-    //   BSP_SzurkeNyil_ContainsUnit finds; 00A243D0 (00A28C2F) then scores one 34h-byte
-    //   record per candidate and a record scoring <= 0 is dropped.
-    // 00A28D31 / 00A28D44 / 00A28D6E: a groupable combatant group with no world-set member
-    //   and an anchor outside the records is queued for release.
-    // 00A28E69 / 00A28E7C / 00A28EBB (records empty): each owned group without a groupable
-    //   combatant (00A2C5A0), or with a member in the brain's world set
-    //   (00A2C450), gets 00A2BE20 DEFENDPOSITION; any other is queued.
-    // 00A28F22 / 00A28F38 / 00A28F49: each queued group is released through vtable+24h and
-    //   claimed by [planner+1Ch]+0Ch, the Capture planner, unless it owns it.
-    // Then, with the records still empty, the think frees and returns before 00A290F5 (00A28300).
-    // Returns false when a candidate exists: the records path runs the stand-in.
+    // ---- Packet cc9_defend_records_path (docs/PLANNER_TASK_CHOICE.md section 12) ----
+    struct DefendRecord {
+        std::size_t entity{kCaptureNone};
+        float threat{0.0f};      // out[0], T = (b - c) - a
+        float weight{0.0f};      // out[1], gain * T
+        float own_value{0.0f};   // out[2], a
+        float enemy_value{0.0f}; // out[3], b
+        float excluded{0.0f};    // out[4], c
+        float gain{0.0f};        // out[5]
+        float requirement{0.0f}; // out[6]
+        float remaining{0.0f};   // rec+30h, seeded from out[6]
+    };
+    // IslandCaptureParams_Rookie lines 105-110 (the three IslandCapture blocks
+    // author the same values): reader +1DCh Defend_MergeTargetDist 500, +1E0h
+    // Defend_MergeGroupsDist 300, +1E4h Defend_CollectEnemiesDist 4000, +1E8h
+    // Defend_AgainstEnemyResourceMul 1.5, +1ECh Defend_MinimalResource 0. The
+    // loader 00A335D0 stores them at +1E0h..+1F0h, 4 bytes above the reader.
+    static constexpr float kDefendMergeTargetDist = 500.0f;
+    static constexpr float kDefendMergeGroupsDist = 300.0f;
+    static constexpr float kDefendCollectEnemiesDist = 4000.0f;
+    static constexpr float kDefendAgainstEnemyResourceMul = 1.5f;
+    static constexpr float kDefendMinimalResource = 0.0f;
+
+    // LABELLED stand-in for 007EDAD0 BSP_PlaneSquadron_AmmoType (the first
+    // ordnance kind of the squadron's planes): the host has no ordnance
+    // reader, so the leader plane's class answers: TorpedoBomber 11h -> 2,
+    // DiveBomber 12h -> 1, LevelBomber 10h -> 5, Kamikaze 17h -> 6, any other
+    // (fighters, recon) -> 0.
+    int squadron_ammo_type_stand_in(std::size_t squadron_candidate) const {
+        const std::size_t lead = proxy(squadron_candidate);
+        if (units.unit_is_kind_of(lead, 0x11)) return 2;
+        if (units.unit_is_kind_of(lead, 0x12)) return 1;
+        if (units.unit_is_kind_of(lead, 0x10)) return 5;
+        if (units.unit_is_kind_of(lead, 0x17)) return 6;
+        return 0;
+    }
+
+    // 00A243D0(ECX = own side, EDX = candidate)(out[7], explain), RET 8, read in
+    // full. It walks world list 2 ([+34h]): an entity answering
+    // vtable[+5Ch](1Ch) is skipped (00A24458); w = 00A03510(entity) must be
+    // above 0; in = x/z distance squared < Defend_CollectEnemiesDist squared.
+    // Own side: a member of a group whose command answers neither IsType(6)
+    // nor IsType(2) (00A2450B / 00A2451A) adds w to a when in range. The other
+    // side ((own == 0), SETZ): in range, w adds to b, and to c as well for a
+    // TorpedoBoat (+C4h == 0Eh) or a squadron (18h) whose 007EDAD0 is 0, 2 or
+    // 3. T = (b - c) - a; gain = Lua StrategicGain + 1.0 (00D7A210); the
+    // requirement is max(+1E8h * +19Ch * b, +1ECh).
+    DefendRecord defend_score_00a243d0(std::size_t target, int own) {
+        DefendRecord r;
+        r.entity = target;
+        const int enemy = own == 0 ? 1 : 0;
+        const float limit2 = kDefendCollectEnemiesDist * kDefendCollectEnemiesDist;
+        float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+        units.unit_position_00fc(target, tx, ty, tz);
+        auto visit = [&](std::size_t candidate, int class_id) {
+            const std::size_t body = proxy(candidate);
+            if (class_id == 0x1C) return;
+            const float w = capture_weight_00a03510(class_id);
+            if (!(0.0f < w)) return;
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units.unit_position_00fc(body, x, y, z);
+            const float dx = tx - x;
+            const float dz = tz - z;
+            const bool in = dx * dx + dz * dz < limit2;
+            const int side = units.unit_side_0054(body);
+            if (side == own) {
+                Group* g = candidate < group_of_unit.size() ? group_of_unit[candidate] : nullptr;
+                if (g == nullptr) return;
+                const bool idle = !bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Attack) &&
+                                  !bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::Move);
+                if (idle && in) r.own_value += w;
+            } else if (side == enemy && in) {
+                r.enemy_value += w;
+                bool excluded = class_id == 0x0E;
+                if (class_id == 0x18) {
+                    const int ammo = squadron_ammo_type_stand_in(candidate);
+                    excluded = ammo == 0 || ammo == 3 || ammo == 2;
+                }
+                if (excluded) r.excluded += w;
+            }
+        };
+        // LABELLED: list 2's squadron entities are this host's squadron
+        // candidates; the planes in the list take 00A03510's default arm.
+        for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
+            const std::size_t u = units.world_list_entry(2, i);
+            if (u < units.count()) visit(u, units.unit_class_id(u));
+        }
+        for (std::size_t s = 0; s < squadrons.size(); ++s) visit(units.count() + s, 0x18);
+        r.threat = (r.enemy_value - r.excluded) - r.own_value;
+        r.gain = 0.0f + 1.0f;   // StrategicGain, unauthored, + 00D7A210
+        r.weight = r.gain * r.threat;
+        r.requirement = kDefendAgainstEnemyResourceMul * capture_tuning().point_value * r.enemy_value;
+        if (r.requirement < kDefendMinimalResource) r.requirement = kDefendMinimalResource;
+        r.remaining = r.requirement;
+        return r;
+    }
+
+    // 00A2C230 on a group: its command is PATROLTO with +8h/+10h within 1.0
+    // squared of the entity's +FCh.
+    bool group_patrols_at_00a2c230(Group* g, std::size_t entity) const {
+        if (!bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::PatrolTo)) return false;
+        float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+        units.unit_position_00fc(entity, ex, ey, ez);
+        const float dx = g->command.target_position[0] - ex;
+        const float dz = g->command.target_position[2] - ez;
+        return dz * dz + dx * dx < 1.0f;
+    }
+
+    // 00A1CF10 BSP_AiGroup_PickAnchorEntity(group, candidates): a group with no
+    // groupable combatant answers its first member; any other answers the
+    // first candidate its command patrols at, or none.
+    std::size_t defend_anchor_00a1cf10(Group* g, const std::vector<std::size_t>& candidates) {
+        if (!group_has_groupable_combatant(g)) {
+            return g->members.empty() ? kCaptureNone : proxy(g->members.front());
+        }
+        for (const std::size_t e : candidates) {
+            if (group_patrols_at_00a2c230(g, e)) return e;
+        }
+        return kCaptureNone;
+    }
+
+    // 00A28A60 BSP_AiPlanner_DefendThink, body 00A28A60-00A29E2A.
+    // Pass A (00A28AE5 00A2DEF0, 00A28C2F 00A243D0): the candidates are the
+    //   owned groups' members answering vtable[+5Ch](1Ch) or in a SzurkeNyil
+    //   set; one record per candidate, kept only when b > 0 (00A28C3C COMISS).
+    // Pass B (00A28D31 / 00A28D44 / 00A28D59): a groupable combatant group
+    //   with no world-set member whose anchor is not a record entity is queued.
+    // Pass C (records empty, 00A28E69 / 00A28E7C / 00A28EBB): a group without a
+    //   combatant, or with a world-set member, gets DEFENDPOSITION; any other
+    //   is queued.
+    // 00A28F22 / 00A28F38 / 00A28F49: each queued group is released and claimed
+    //   by brain+0Ch. Records empty: free and return.
+    // The records path (00A290F5..): 00A28300 sorts the records; for each owned
+    //   group, 00A2919D anchor; with none, the first enemy list-28 entity the
+    //   group patrols at queues a (group, entity) pair, else the nearest record
+    //   entity (x/z, strict <, seed 1.0e10) is the anchor. The anchor's record
+    //   loses the group's 00A2C530 resource; a group without a combatant gets
+    //   DEFENDPOSITION, any other PATROLTO to the anchor (00A2C310), and the
+    //   group joins the anchor's list (00A27A00). Each pair is released,
+    //   claimed by brain+0Ch and ordered through 00A1A720. The merge pass
+    //   (00A29860-00A29BE7) runs per list, then the spawn tail
+    //   (00A29B8E-00A29E2A) quick-spawns "[defend]<id>" (a record here).
+    // LABELLED: the 00A28300 comparator (00A25750 / 00A256B0) was not read,
+    // so the records keep their build order; the maps keyed by pointer are
+    // ordered by unit index.
     bool defend_think_00a28a60(Planner& p) {
         const int side = current_party;
         Brain* brain = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
             ? brains[static_cast<std::size_t>(side)].get() : nullptr;
         if (brain == nullptr) return false;
-        for (Group* g : p.owned) {
-            if (g == nullptr || g->destroyed) continue;
-            bool candidate = group_has_member_in_world_set(g, brain->world_set);
-            for (const std::size_t unit : g->members) {
-                if (!is_squadron(unit) && units.unit_is_kind_of(unit, 0x1C)) candidate = true;
-            }
-            if (candidate) {
-                ++defend_record_fallbacks;
-                record("AiPlanners::defend_records_path_00a28b00", 0x00a28b00u);
-                return false;
+        if constexpr (!kAiDefendRecordsPathBound) {
+            // The records path is not bound: any candidate runs the stand-in.
+            for (Group* g : p.owned) {
+                if (g == nullptr || g->destroyed) continue;
+                bool candidate = group_has_member_in_world_set(g, brain->world_set);
+                for (const std::size_t unit : g->members) {
+                    if (!is_squadron(unit) && units.unit_is_kind_of(unit, 0x1C)) candidate = true;
+                }
+                if (candidate) {
+                    ++defend_record_fallbacks;
+                    record("AiPlanners::defend_records_path_00a28b00", 0x00a28b00u);
+                    // BSP_CAPTURE_DIAG=1: the records the bound path would keep.
+                    if (capture_diag_enabled() && diag_capture_lines < 60) {
+                        ++diag_capture_lines;
+                        std::size_t owned_groups = 0, combatant_groups = 0;
+                        for (Group* og : p.owned) {
+                            if (og == nullptr || og->destroyed) continue;
+                            ++owned_groups;
+                            if (group_has_groupable_combatant(og)) ++combatant_groups;
+                        }
+                        log.notef("  defend diag off-plan t=%.2f party=%d owned=%zu combatant=%zu",
+                            static_cast<double>(clock_seconds), side, owned_groups, combatant_groups);
+                        for (Group* og : p.owned) {
+                            if (og == nullptr || og->destroyed) continue;
+                            for (const std::size_t unit : og->members) {
+                                if (is_squadron(unit) || !units.unit_is_kind_of(unit, 0x1C)) continue;
+                                const DefendRecord r = defend_score_00a243d0(unit, side);
+                                log.notef("    candidate %s group_leader=%s members=%zu command=%d "
+                                    "T=%.3f a=%.3f b=%.3f c=%.3f req=%.1f kept=%d",
+                                    unit_name(unit).c_str(),
+                                    og->members.empty() ? "-" : unit_name(proxy(og->members.front())).c_str(),
+                                    og->members.size(), static_cast<int>(og->command.type),
+                                    static_cast<double>(r.threat), static_cast<double>(r.own_value),
+                                    static_cast<double>(r.enemy_value), static_cast<double>(r.excluded),
+                                    static_cast<double>(r.requirement), 0.0f < r.enemy_value ? 1 : 0);
+                            }
+                        }
+                    }
+                    return false;
+                }
             }
         }
         ++defend_thinks;
+        // Pass A.
+        std::vector<std::size_t> candidates;
+        std::vector<DefendRecord> records;
+        for (Group* g : p.owned) {
+            if (g == nullptr || g->destroyed) continue;
+            for (const std::size_t unit : g->members) {
+                if (is_squadron(unit) || !units.unit_is_kind_of(unit, 0x1C)) continue;
+                candidates.push_back(unit);
+                DefendRecord r = defend_score_00a243d0(unit, side);
+                if (0.0f < r.enemy_value) records.push_back(r);
+            }
+        }
+        auto is_record_entity = [&records](std::size_t e) {
+            for (const DefendRecord& r : records) if (r.entity == e) return true;
+            return false;
+        };
+        // Pass B and, with no record, pass C.
         std::vector<Group*> release;
         const std::vector<Group*> owned = p.owned;
         for (Group* g : owned) {
             if (g == nullptr || g->destroyed) continue;
-            if (!group_has_groupable_combatant(g) ||
-                group_has_member_in_world_set(g, brain->world_set)) {
-                // 00A2BE20: nothing when the command already answers IsType(11).
-                if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) {
-                    continue;
+            if (group_has_groupable_combatant(g) &&
+                !group_has_member_in_world_set(g, brain->world_set)) {
+                const std::size_t anchor = defend_anchor_00a1cf10(g, candidates);
+                if (anchor != kCaptureNone && !is_record_entity(anchor)) release.push_back(g);
+            }
+        }
+        if (records.empty()) {
+            for (Group* g : owned) {
+                if (g == nullptr || g->destroyed) continue;
+                if (!group_has_groupable_combatant(g) ||
+                    group_has_member_in_world_set(g, brain->world_set)) {
+                    defend_issue_position_00a2be20(g, side);
+                } else {
+                    release.push_back(g);
                 }
-                if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
-                bsp::AiCommandObject c;
-                c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
-                c.owner_group = g;
-                g->command = c;
-                ++defend_positions;
-                if (capture_diag_enabled() && diag_capture_lines < 60) {
-                    ++diag_capture_lines;
-                    std::string names;
-                    for (const std::size_t unit : g->members) {
-                        if (!names.empty()) names += ", ";
-                        names += unit_name(proxy(unit));
-                    }
-                    log.notef("  defend diag t=%.2f party=%d defendposition members=%zu [%s]",
-                        static_cast<double>(clock_seconds), side, g->members.size(), names.c_str());
-                }
-            } else {
-                release.push_back(g);
             }
         }
         for (Group* g : release) capture_hand_off(p, g, brain->planners[3]);
+        if (records.empty()) {
+            done("AiPlanners::defend_think_00a28a60", 0x00a28a60u);
+            return true;
+        }
+        ++defend_record_thinks;
+        defend_records_seen += records.size();
+        if (capture_diag_enabled() && diag_capture_lines < 60) {
+            ++diag_capture_lines;
+            for (const DefendRecord& r : records) {
+                log.notef("  defend diag t=%.2f party=%d record %s T=%.3f a=%.3f b=%.3f c=%.3f req=%.1f",
+                    static_cast<double>(clock_seconds), side, unit_name(r.entity).c_str(),
+                    static_cast<double>(r.threat), static_cast<double>(r.own_value),
+                    static_cast<double>(r.enemy_value), static_cast<double>(r.excluded),
+                    static_cast<double>(r.requirement));
+            }
+        }
+        // The records path.
+        std::vector<std::pair<Group*, std::size_t>> pairs;
+        std::map<std::size_t, std::vector<Group*>> lists;
+        const std::vector<Group*> still = p.owned;
+        for (Group* g : still) {
+            if (g == nullptr || g->destroyed) continue;
+            std::size_t anchor = defend_anchor_00a1cf10(g, candidates);
+            if (anchor == kCaptureNone) {
+                bool paired = false;
+                for (std::size_t i = 0; i < units.world_list_size(28) && !paired; ++i) {
+                    const std::size_t e = units.world_list_entry(28, i);
+                    if (e >= units.count() || units.unit_side_0054(e) == side) continue;
+                    if (group_patrols_at_00a2c230(g, e)) {
+                        pairs.push_back({g, e});
+                        paired = true;
+                    }
+                }
+                if (paired) continue;
+                float leader[3] = {0.0f, 0.0f, 0.0f};
+                tick_leader_point(g, leader);
+                float best = 1.0e10f;   // 00CE4970
+                for (const DefendRecord& r : records) {
+                    float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+                    units.unit_position_00fc(r.entity, ex, ey, ez);
+                    const float dx = ex - leader[0];
+                    const float dz = ez - leader[2];
+                    const float d2 = dz * dz + dx * dx;
+                    if (d2 < best) {
+                        best = d2;
+                        anchor = r.entity;
+                    }
+                }
+                if (anchor == kCaptureNone) continue;
+            }
+            for (DefendRecord& r : records) {
+                if (r.entity == anchor) r.remaining -= kCaptureGroupResource;   // 00A2C530
+            }
+            if (!group_has_groupable_combatant(g)) {
+                defend_issue_position_00a2be20(g, side);
+            } else {
+                defend_issue_patrol_00a2c310(g, anchor);
+            }
+            lists[anchor].push_back(g);
+        }
+        for (const auto& pr : pairs) {
+            capture_hand_off(p, pr.first, brain->planners[3]);
+            order_capture_group_00a1a720(pr.first, pr.second);
+            ++defend_capture_pairs;
+        }
+        // 00A29860-00A29BE7, the merge pass.
+        for (auto& entry : lists) {
+            std::vector<Group*>& list = entry.second;
+            if (list.size() <= 1u) continue;
+            float defended[3] = {0.0f, 0.0f, 0.0f};
+            units.unit_position_00fc(entry.first, defended[0], defended[1], defended[2]);
+            for (std::size_t i = 0; i < list.size(); ++i) {
+                float a[3] = {0.0f, 0.0f, 0.0f};
+                tick_leader_point(list[i], a);
+                if (!bsp::ai_tail_defend_group_near_target(a, defended, kDefendMergeTargetDist)) continue;
+                for (std::size_t j = i + 1; j < list.size();) {
+                    float b[3] = {0.0f, 0.0f, 0.0f};
+                    tick_leader_point(list[j], b);
+                    if (bsp::ai_tail_defend_groups_mergeable(a, b, kDefendMergeGroupsDist)) {
+                        merge_group(list[i], list[j]);   // 00A2DB80
+                        list.erase(list.begin() + static_cast<std::ptrdiff_t>(j));   // 00A1D1D0
+                        ++defend_merges;
+                    } else {
+                        ++j;
+                    }
+                }
+            }
+        }
+        // 00A29B8E-00A29E2A: the first record with a positive remainder gets a
+        // "[defend]" quick-spawn when the budget allows. A record here.
+        for (const DefendRecord& r : records) {
+            if (0.0f < r.remaining) {
+                ++defend_spawn_arms;
+                record("AiPlanners::defend_spawn_tail_00a29b8e", 0x00a29b8eu);
+                break;
+            }
+        }
         done("AiPlanners::defend_think_00a28a60", 0x00a28a60u);
         return true;
     }
+    // 00A2BE20: nothing when the command already answers IsType(11).
+    void defend_issue_position_00a2be20(Group* g, int side) {
+        if (bsp::ai_command_is_type(g->command.type, bsp::AiCommandType::DefendPosition)) return;
+        if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+        bsp::AiCommandObject c;
+        c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
+        c.owner_group = g;
+        g->command = c;
+        ++defend_positions;
+        if (capture_diag_enabled() && diag_capture_lines < 60) {
+            ++diag_capture_lines;
+            std::string names;
+            for (const std::size_t unit : g->members) {
+                if (!names.empty()) names += ", ";
+                names += unit_name(proxy(unit));
+            }
+            log.notef("  defend diag t=%.2f party=%d defendposition members=%zu [%s]",
+                static_cast<double>(clock_seconds), side, g->members.size(), names.c_str());
+        }
+    }
+    // 00A2C310 with the anchor's +FCh: nothing when 00A2C230 already holds.
+    void defend_issue_patrol_00a2c310(Group* g, std::size_t anchor) {
+        if (group_patrols_at_00a2c230(g, anchor)) return;
+        float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+        units.unit_position_00fc(anchor, ex, ey, ez);
+        if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
+        bsp::AiCommandObject c;
+        c.type = bsp::AiCommandType::PatrolTo;   // vtable 00D22B3C
+        c.owner_group = g;
+        c.target_position[0] = ex;
+        c.target_position[1] = ey;
+        c.target_position[2] = ez;
+        g->command = c;
+        ++defend_patrols;
+    }
+    unsigned long long defend_record_thinks{0};
+    unsigned long long defend_records_seen{0};
+    unsigned long long defend_patrols{0};
+    unsigned long long defend_capture_pairs{0};
+    unsigned long long defend_merges{0};
+    unsigned long long defend_spawn_arms{0};
     unsigned long long defend_thinks{0};
     unsigned long long defend_record_fallbacks{0};
     unsigned long long defend_positions{0};
@@ -3690,6 +4004,13 @@ void GameAiCoordinatorHost::report() {
         host.log.notef("summary mission ai defend thinks=%llu record_fallbacks=%llu "
             "defendposition=%llu (00A28A60 no-record path, packet cc9_planner_defend_capture_thinks)",
             host.defend_thinks, host.defend_record_fallbacks, host.defend_positions);
+        if constexpr (kAiDefendRecordsPathBound) {
+            host.log.notef("summary mission ai defend records thinks=%llu records=%llu patrolto=%llu "
+                "capture_pairs=%llu merges=%llu spawn_arms=%llu (00A28A60 records path, packet "
+                "cc9_defend_records_path)", host.defend_record_thinks, host.defend_records_seen,
+                host.defend_patrols, host.defend_capture_pairs, host.defend_merges,
+                host.defend_spawn_arms);
+        }
     }
     if constexpr (kAiSellThinkBound) {
         host.log.notef("summary mission ai sell thinks=%llu splits=%llu selling=%llu "
