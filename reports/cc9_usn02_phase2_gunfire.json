@@ -79,5 +79,53 @@
       "applied": 0.0,
       "t": "166.61..207.26"
     }
-  ]
+  ],
+  "synced_head": {
+    "base": "main cf152453e merged (kGeneratedShipAiBound ON) plus the gameplay-neutral display request",
+    "logs": [
+      "local/g4_sy_helm_usn02.log",
+      "local/g4_sy_plain_usn02.log"
+    ],
+    "helm": {
+      "houston": "sunk 208.26 s, Haguro last hitter",
+      "exeter": "sunk 211.56 s, Ushio torpedo 4606 m",
+      "end": "failed 212.91 s",
+      "haguro_166_61_208_26": {
+        "shots": 19,
+        "direct_hits": 9,
+        "applied": 473.9,
+        "blast_hits": 9,
+        "blast_applied": 0
+      },
+      "houston_by_shooter": {
+        "Tokitsukaze torpedo": 3988.4,
+        "Haguro": 473.9
+      }
+    },
+    "plain": {
+      "houston": "sunk 295.95 s, Jintsu last hitter",
+      "exeter": "sunk 210.81 s, Ushio torpedo 4602 m",
+      "end": "failed 212.91 s",
+      "haguro_166_61_295_95": {
+        "shots": 40,
+        "direct_hits": 10,
+        "applied": 530.7,
+        "blast_hits": 10,
+        "blast_applied": 0
+      },
+      "houston_by_shooter": {
+        "Haguro": 530.7,
+        "Jintsu": 407.9,
+        "Murasame": 270.2,
+        "Harusame": 70.5,
+        "John1 friendly torpedoes (class 62, 276.11 and 277.01 s)": 1565.5
+      },
+      "remainder": "about 3650 of 6500 from damage control (explosion at 274.01 s, fire, flooding), not broken down"
+    },
+    "verdict": "unchanged: Haguro's fire equals rb7 to the decimal and the image chain; no USN02 loss on this head is a gunfire over-kill",
+    "open_other_packets": [
+      "John1 launched at Harusame with Houston 101 m ahead, 51 m across: the friendly-crossing gate read crossed=0",
+      "per-source damage-control losses are not logged per unit"
+    ]
+  }
 }
