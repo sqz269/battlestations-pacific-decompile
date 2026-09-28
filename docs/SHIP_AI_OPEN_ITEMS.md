@@ -37,7 +37,7 @@ Where a flip could move a count, the table cites a newer log as well. The two su
 | rank | item | image | image read | host file and label | calls (i) | differs | reach, in one line |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | **a surface ship attacking a submarine** | the altitude gate `00852860` at `009E873B`; the sub-states it opens are lead pursuit `009E26C0` (`state+14CCh`) and tangent `009F3670` (`state+14E0h`) | gate complete (`00852860-008528AC`, `ship_ai_attackmove_altitude_gate_00852860`); both steps projected (`src/ship_ai_attackmove_substates.cpp`) | `game_hosts_ship_ai.cpp`: `ShipAiAttack::call_00852860` answers false. The two steps are the records `ShipAiAttack::lead_pursuit_step` and `tangent_step` | 1014 (JM06 994, LOMP06 20); 852 / 20 with sub attack ON | yes, whenever the target submarine is below a third of `[+1200h]+[+1204h]` | 3, and 4 if the pursuit is what puts escorts over a submerged boat. The label reads "no producer for +1200h / +1204h, unreachable, no kind-8 target". Both halves are false: JM06 reaches it 852 times, and those words are the dive bands the host holds since SUBMARINE_MODEL 12 (`GameUnitsHost::submarine_band_y`, `73f4f884c`) |
-| 2 | **the follower's station point** (zone half bound ON, section 10; the yaw half waits on the 00811940 accessor fix) | `009DF2D0`: the zone set `vtable[218h]` at `009DF41A`, the push `00417B10` at `009DF432` / `009DF4C5`, the leader yaw rate `00811940` at `009DF607` | `00417B10` complete (`avoid_zone_group_offset_00417b10`, bound for the ring probe as `GameAvoidZoneRuntime::offset`); `00811940` reconstructed (`GameUnitsHost::unit_current_yaw_rate_00811940`); `vtable[218h]` = `006DFD90`, which the ring probe binds as `zones.group_for_layer` | `game_hosts_ship_ai.cpp` `FollowFormationPointBinding`: `zone_set_218` answers 0, `push_out_of_zones` returns the point, `leader_yaw_rate` answers 0 | push 105916, yaw rate 52958, zone set 52958, on all nine rows | yaw rate: yes, whenever a leader turns. Push: only near a zone, and JM06's ring probe moved no start (`moved_starts=0`) | 3: the speed blend `009DF5E4..009DF65B` takes the leader's current yaw rate, so a follower of a turning leader keeps too much speed. The push label ("the body is unread") is stale |
+| 2 | **the follower's station point** (bound ON, both halves, section 10) | `009DF2D0`: the zone set `vtable[218h]` at `009DF41A`, the push `00417B10` at `009DF432` / `009DF4C5`, the leader yaw rate `00811940` at `009DF607` | `00417B10` complete (`avoid_zone_group_offset_00417b10`, bound for the ring probe as `GameAvoidZoneRuntime::offset`); `00811940` reconstructed (`GameUnitsHost::unit_current_yaw_rate_00811940`); `vtable[218h]` = `006DFD90`, which the ring probe binds as `zones.group_for_layer` | `game_hosts_ship_ai.cpp` `FollowFormationPointBinding`: `zone_set_218` answers 0, `push_out_of_zones` returns the point, `leader_yaw_rate` answers 0 | push 105916, yaw rate 52958, zone set 52958, on all nine rows | yaw rate: yes, whenever a leader turns. Push: only near a zone, and JM06's ring probe moved no start (`moved_starts=0`) | 3: the speed blend `009DF5E4..009DF65B` takes the leader's current yaw rate, so a follower of a turning leader keeps too much speed. The push label ("the body is unread") is stale |
 | 3 | the free-bearing query (**bound ON, section 14**) | `009DC2E0` (`009DC2E0-009DCEA2`), at `009DF0FA` (the arm final step) and `009EC0C1` (the sector scan) | early outs only (docs/SHIP_NEIGHBOUR_AVOIDANCE.md 6). About 300 pseudocode lines are unread | `game_hosts_ship_ai.cpp`: `ShipAiArmFinal::free_bearing_009dc2e0` and `ShipAiSectorScan::free_bearing_009dc2e0` answer false | 450328. Zone rows: JM06 42457, LOMP06 18410, USN01 10438, USN13 6172, BSM01 6069, JM08 2886. No-zone rows (exact by the early out): E2 161339, USN02 122021, USN04 80536 | only for a ship with avoid-zone segments inside its query box; how often that happens is not counted | 3: it replaces `blk+324h`, the heading target, near land. A binding needs the runtime's segment search (`refresh_search`, `search_segment`, `search_arc`). It is the largest read here |
 | 4 | the AI command's avoid-zone point | `00417B10` from the command tick (`ai_command_tick.cpp`) | complete, as rank 2 | `game_hosts_ai.cpp`: `AiCommand::avoid_zone_offset_point` returns the requested point. Label "contract: unread", stale | 1193 (USN13 517, E2 255, JM08 160, BSM01 104, USN04 78, USN01 74) | only for a point inside a zone | 3: the destination the AI command orders. It fits in rank 2's packet as the same routine and runtime |
 | 5 | the party brain's replan flag | `00A15970`, from `00A182C0`: outside modes 4 to 7 it returns the OR of `brain+0h..+0Ch` `vtable[30h]()` (`00A159E8..00A15A6A`). For those four planners that is `00A18480`, which reads and clears the replan byte `planner+2Ch` (docs/AI_PLANNERS.md). The claim sets that byte | complete (listing read here) | `game_hosts_ai.cpp`: `AiGroups::brain_wants_immediate_think` answers false. Its comment reads only the mode 4 to 7 arms and says no planner sets a replan request; `planner_claim_group` sets no flag | 38491 (E2 8999, USN02 8999, USN04 4499, the others 2999 or 999) | yes, once after each planner claim: 1 to 3 claims per row (`ai parties claims=`) | 3: in the image a claim makes the party think again on the next call instead of 3 to 5 s later, so the first orders come earlier. Cheap: a flag set at the claim and cleared by the query. Where the claim sets `+2Ch` must be quoted from `00A22750` first |
@@ -1382,3 +1382,94 @@ No sector scan reaches its avoid-zone arm on these rows, so every call is the ar
   answer nothing. Section 1's count was the old searcher box; this query's box is larger.
 
 **Verdict: ON.** The mechanism matches, and the moves are the two predicted rows.
+
+### Section 10: the yaw-rate half, re-paired after `kUnitYawRateForwardSpeedBound` (main `5d12669e0`)
+
+- The base is this tree at `28e776eb1`: main merged, `kShipFollowStationPointBound` ON, and the
+  units fix ON.
+- **OFF** is `pair_export --commit 28e776eb1 --flip kShipFollowStationPointBound=false`, SHA-256
+  prefix `5928B1898F5C`, logs `local\ships8_y0_<row>.log`.
+- **ON** is the tree's own build, logs `local\ships8_y1_<row>.log`.
+- The zone half was identity on every row (above), so this pair measures the leader yaw rate at
+  `009DF607`.
+
+**OFF census.** `leader_turning` counts the calls whose `00811940` now answers non-zero:
+
+| Row | `00811940` calls | non-zero |
+| --- | --- | --- |
+| USN04 | 8186 | 7991 |
+| USN02 | 1496 | 1371 |
+| JM06 | 565 | 556 |
+| USN12 | 10 | 10 |
+
+**Predictions, written before the ON runs.**
+- The follower's speed blend `009DACD0` at `009DF612` now takes the leader's real yaw rate, where
+  it took 0.
+- So a follower on the outside of a turn speeds up and one on the inside slows.
+- USN04, USN02 and JM06: exit 3, with formation followers' tracks and speeds moving. Death rows may
+  move on USN04 and USN02.
+- USN12: exit 1 or 3; only 10 calls.
+- Mechanism check: `leader_turning` on ON matches OFF until the tracks diverge.
+
+**The pairs (the yaw-rate half):**
+
+| Row | pair_diff | Predicted | ON `leader_turning` | What moved |
+| --- | --- | --- | --- | --- |
+| JM06 | 3 | 3 | 556 | Deaths 2 to 1: USTroopTransport 02 survives. USTroopTransport 01 takes 61 damage instead of 1335 |
+| USN02 | 3 | 3 | 1371 | Deaths 11 to 13: Witte and Perth are sunk only ON |
+| USN04 | 1 | 3 | 7991 | none |
+| USN12 | 1 | 1 or 3 | 10 | none |
+
+**Mechanism check: passed.**
+- `leader_turning` on ON equals OFF on all four rows.
+- The USN04 miss is the blend's own geometry. `009DF61B..009DF64A` interpolates from the leader's
+  ratio at `along = 0` to the wake ratio at 400 m [`kShipAiFormationSpeedBlendDistance`]. A
+  follower 400 m or more astern takes the wake ratio alone, so the leader's yaw rate cannot reach
+  it.
+- USN04's columns keep their followers that far back. JM06's and USN02's are closer, and they move.
+
+**Verdict: `kShipFollowStationPointBound` stays ON,** now with both halves live. The yaw-rate half
+is no longer blocked.
+
+## 15. Handoff (cc9-ships8, 2026-09-28, at about 78% context)
+
+**State.** No lease is held. Every packet below is committed on `agent/cc9-ships8`.
+
+| Section | Switch | State |
+| --- | --- | --- |
+| 7 | `kPlannerGroupTargetValueBound` | ON, landed |
+| 8 | `kShipAiApproachEnterReseedBound` | ON, landed |
+| 9 | `kShipAiSubTargetEntryPointsBound` | ON, landed |
+| 10 | `kShipFollowStationPointBound` | ON. The yaw-rate half was re-paired after `kUnitYawRateForwardSpeedBound` (`5350cc4d9`, unlanded at writing) |
+| 11 | `kPlaneRowAutoTargetBound` | ON, landed |
+| 12 | `kAutoTargetFollowerGateBound` | **OFF.** Waits on the units host's join follow-up |
+| 13 | rank 9 | read only. Waits on the units host's `unit_class_lands_troops_vtable_2c` |
+| 14 | `kShipAiFreeBearingBound` | ON (`d86f5b131`, unlanded at writing) |
+
+**Waiting on cc9-lua9 (the lead sends each sha):**
+1. **The join follow-up.** `formation_join_0077f940` must run the follower director's `00720CD0`
+   (`follow` on the leader). Then re-pair `kAutoTargetFollowerGateBound` on USN04, USN01, USN13,
+   JM06, JM05, JM08 and LOMP10:
+   - flip the switch in an export, OFF = the tree;
+   - the check is that `leaves` falls to the followers whose director was re-commanded after the
+     join, and that no unit leaves repeatedly.
+2. **The rank-9 accessor.** Bind `AiCommand::close_member_controller_busy`: rename it to a trait
+   name and answer the accessor, behind a new switch.
+   - Also answer the Cargo arm of `capture_weight_00a03510`: 3.0 when the trait holds. It is still
+     0 on this installation.
+   - Pair JM08, USN13, JM05, LOMP10 and USN04.
+
+**Not to redo.**
+- `local\ships8_gtv.py <log>` replays the planner's rounds from the section 7 sample lines.
+- `local\ships8_run.ps1` (`-Exe`, `-Prefix`, one `-Rows tag:MISSION:frames:mission_frames` per
+  call; `run_game.ps1` queues past three slots) and `local\ships8_wait.sh <seconds> <logs...>`.
+- `local\ships8_vt.py` reads vtable slots from the image on disk. `local\ships8_rd.py
+  f:<addr>|d:<addr>` reads float and double constants.
+
+**Traps met.**
+- `pwsh -File script.ps1 -Rows a b c` binds only the first row. Launch one row per call.
+- Python `write_text` on Windows turns LF sources into CRLF. Use `open(p, 'w', newline='')`, and
+  keep edit scripts in files: this bash tool's heredocs break on some quotes.
+- A leader-yaw effect reaches only followers within 400 m along the column (`009DACD0`'s blend).
+  Check `along` before predicting a follower move.
+- The arm final step's 009DC2E0 widths are often under 1, so its clearance pass is skipped there.
