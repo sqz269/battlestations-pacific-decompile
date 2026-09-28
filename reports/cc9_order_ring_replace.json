@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_order_ring_replace",
+  "doc": "docs/ORDER_RING_REPLACE.md",
+  "code_changed": true,
+  "switch": {"kAiOrderReissueBound": "ON after pairs (committed OFF at 26f3fcdf4)", "kGeneratedSquadronBrainBound": "stays OFF (lead criterion: membership still swamps USN13)"},
+  "addresses": {
+    "00816EA1": "MOV BL,[ESI+21h], the MT_COMMAND flags byte",
+    "0081733E": "flags != 0: CALL 0071D880 SendClearCommands (every slot)",
+    "00817345": "flags == 0: director vtable[34h](command), room to append",
+    "0081735D": "CALL 0071ECF0 issue into the queue; no duplicate test anywhere on the path",
+    "00A02020": "the AI command tick's 0077D600 with the moveto descriptor 00E08F68, flags 1 (00A0214B..00A0216A)"
+  },
+  "finding": "the host chain already replaces (unit_apply_entity_command_00816e30 calls clear_all_commands at 0081733E); the only departure was GameAiCoordinatorHost's duplicate filter, which suppressed image re-issues (USN02 921, USN13 757, USN04 158, USN01 48)",
+  "pairs": {
+    "USN13 two flips": "exit 3 vs OFF (deaths 24->16); exit 1 vs membership-only",
+    "USN04 two flips": "exit 3 vs OFF (deaths 40->29); exit 1 vs membership-only",
+    "USN13 ring only": "exit 3: hit records 720->711, deaths equal",
+    "USN04 ring only": "exit 3: deaths 40->41, dive releases 1->9 of 19, torpedo releases 5->4 of 16",
+    "USN01 two flips": "exit 1",
+    "USN02 two flips": "exit 3: deaths 26->24, hit records 847->920; Houston 295.95->293.75 s, after the 212.91 s failure"
+  },
+  "predictions": "held: re-issues go out, squadron orders stay at or above membership-only, no move back toward OFF, USN02 moves; failed on spread: USN01 identical; the lead's append hypothesis is refuted",
+  "verdict": "kAiOrderReissueBound ON; kGeneratedSquadronBrainBound stays OFF",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
