@@ -1910,3 +1910,30 @@ OFF (`local\ships9_f0_<row>.log`, tree build of `060d3c8a7`):
    changes on each of these rows. Its direction is not predicted.
 3. **LOMP10 and USN01 are identical or move little.** Their only outcomes are heading frames (72 and
    6) on rows with no turn-assist raise, so the escape arms are rarely reached with an outcome set.
+
+### The pairs and the verdict: ON (one spread miss recorded)
+
+OFF is `local\ships9_f0_<row>.log`. ON is `pair_export --commit 060d3c8a7 --flip
+kShipAiClearanceOutcomeWiringBound=true`, SHA-256 prefix `656807825A6A`
+(`local\ships9_owon_<row>.log`).
+
+| row | pair_diff | turn-assist / secondary raises OFF -> ON | what moved |
+| --- | --- | --- | --- |
+| USN02 | 3 | 44954 / 21733 -> 35532 / 16259 | deaths 13 -> 11 (Witte and Perth survive), hit records 3179 -> 2827, shots 2473 -> 2409, damage 46042.5 -> 40763.0 |
+| USN04 | 3 | 31881 / 23964 -> 30163 / 23931 | deaths 39 -> 41, shots 9488 -> 10661, damage 10136.8 -> 10850.0. The death rows that flip are planes (D3A Val #3.1, #7.1, A6M Zero #7.2, #8.2), which the shared RNG stream couples |
+| JM06 | 3 | 7930 / 4994 -> 5604 / 2490 | hit records 247 -> 344, shots 266 -> 406, damage 4214.2 -> 4972.3; deaths equal |
+| USN13 | 3 | 4509 / 1836 -> 5358 / 2784 | shots 6989 -> 6839, one hit record; deaths equal |
+| JM05 | 3 | 15459 / 11399 -> 17371 / 15362 | USS Phelps 2567.69 -> 2348.82 m; 89 unit rows move; deaths equal |
+| LOMP06 | 3 | 1148 / 710 -> 1186 / 748 | two unit rows; combat equal |
+| USN01 | 3 | 0 / 24 -> 0 / 24 | Enterprise's nearest distance 9009 -> 9017; combat equal |
+| USN12 | 1 | 209 / 63 -> 209 / 63 | nothing |
+| LOMP10 | 1 | 0 / 2 -> 0 / 2 | nothing |
+| JM08 | 1 | 0 / 5 -> 0 / 5 | nothing |
+
+- Prediction 1 held (JM08), and prediction 3 held (LOMP10 identical, USN01 a small move).
+- Prediction 2 held on six of seven rows. **USN12 is identical: a spread miss.** Its only outcomes
+  are 138 blocked-moving frames, and none of them met an escape arm.
+- The load raises move on every moving row. They fall where heading and stopped outcomes dominate
+  (USN02, JM06), because request 2 is refused while an outcome is set. They rise on JM05 and USN13,
+  where request 4 opens.
+- **Verdict: ON.** The path fade (section 17) now reaches the escape through this wiring.

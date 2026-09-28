@@ -452,7 +452,9 @@ inline constexpr bool kShipAiArmFinalAreaKeyBound = true;
 // 1 at 009F00BF, 2 at 009EFFA5, 3 at 009EFFB8): the host's obstacle copy takes the
 // clearance outcome before the routine runs. False: the obstacle copy stays 0, as it
 // always was. Both sides count the outcome frames and the load raises.
-inline constexpr bool kShipAiClearanceOutcomeWiringBound = false;
+// ON (2026-09-28): seven rows move through the escape requests, three identical; USN12
+// spread miss recorded (docs/SHIP_AI_OPEN_ITEMS.md section 20).
+inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
