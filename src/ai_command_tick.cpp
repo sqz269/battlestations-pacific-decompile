@@ -219,12 +219,20 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         add(result, ai_command_follower_pass_00a10dc0(host, group));
         return result;
     }
-    case AiCommandType::CautiousMove:
+    case AiCommandType::CautiousMove: {
         // 00A152B0 forwards the group and the +8h destination to 00A14DD0 on
-        // the +14h sub-object, then runs 00A10DC0 and 00A11690. 00A14DD0 was
-        // not read, so only the follower pass is reproduced here.
+        // the +14h sub-object, then runs 00A10DC0 and JMP 00A11690 (not bound,
+        // docs/AI_CAUTIOUS_ROUTE.md section 10).
+        AiCommandObject* state = kCautiousMoveRouteBound ? host.tick_command_state(group)
+                                                         : nullptr;
+        if (state != nullptr) {
+            result.route = ai_cautious_approach_pass_00a14dd0(host, group,
+                command.target_position, *state, result);
+            result.route_ran = true;
+        }
         add(result, ai_command_follower_pass_00a10dc0(host, group));
         return result;
+    }
     case AiCommandType::MoveToAttack: {
         // 00A12A90. Refresh both leaders, take the horizontal distance, and
         // while the leader is a groupable combatant farther than

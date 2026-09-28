@@ -306,3 +306,43 @@ to cc9-lua6. The binding needs one units-host entry point:
 float lateral, float axial)`, false without a record. The shape-0 rewrite of 0070EFD0 would be a
 second entry point. With them, the rule above is pure arithmetic over the AI host's danger cost, so
 it can sit in `src/ai_command_tick.cpp` beside 00A14DD0.
+
+## 11. Open items 2-5
+
+**2. CAUTIOUSMOVE's call, 00A152B0 (bound OFF as `kCautiousMoveRouteBound`).**
+- 00A152B0 is `00A14DD0(this+14h)(this+4h group, this+8h destination)`, then `00A10DC0`, then
+  `JMP 00A11690`.
+- Its constructor 00A102D0 (vtable 00D22AEC, instance 20h) sets `+14h` to vtable 00D22A08 and then
+  00D22AE4, the flag `+18h` = 0, and the counter `+1Ch` = 4. That is the same base CAUTIOUSATTACK
+  keeps at `+20h`.
+- The switch runs `ai_cautious_approach_pass_00a14dd0` toward `+8h` before the follower pass.
+- **Reach: none in this host.** CAUTIOUSMOVE is built only by 00A13340 (`BSP_AiCommand_CreateFromLua`)
+  and by 00A2CCF0. 00A2CCF0 is reached from `BSP_AiPlanner_DuelThink` 00A25F70 for a non-ship leader
+  when 00A2C9F0 passes and a stream-1 fraction exceeds the argument. No script in this installation
+  names CAUTIOUSMOVE, and this host binds neither creator.
+- **Prediction, written before its ON run:** identity on USN12 and USN04 (exit 0 or 1), with the
+  cautious-route census unchanged.
+
+**3. The out-of-map crossing of 0071FDE0.** 004BBDD0 (`__thiscall(world)(from, to, out)`, read whole):
+- It clips `to` into the world box (`+711Ch`/`+7128h` in x, `+7130h`/`+7124h` in z), placing it 1 m
+  inside along the segment from `from`.
+- It keeps the original point when the clipped move is under 1.0 on either axis (00D7A24C).
+- `out` = clipped + `normalize(...) * (00CE7530 / max(min(|n.x|, |n.z|), 00D7A2F8 -> 00CE746C))`.
+- 0071FDE0 pushes the clipped point and then `out`, instead of the point.
+- **Not bound: no reach.** `outside_map` stayed 0 on every run of sections 5-9. The route's
+  candidates lie between two leaders, 0.3 of their distance off the line.
+
+**4. The slot's `+18h`: confirmed as the follower's index, delivered by message.**
+- The listener sub-object at `+10h` (vtable 00CFDB10) has slot 2 at 0071CDD0. That slot builds session
+  message 60h with its argument at `+20h` and routes it with flags 7.
+- 00721A40's 60h arm is 0071C0B0, `ECX = [director+1A4h] + 10h`, `JMP 007AE060`. It stores the
+  argument at listener `+8h` = slot `+18h` when it is at most the source's point count - 1.
+- So `+18h` is the index the follower reports, one session delivery late.
+- The host reads the cursor's own index (`path_cursor.index_08`). That is the same value without the
+  delivery delay. It stays LABELLED.
+
+**5. 5Fh delivery under `kSetCommandQueueDelayBound`.**
+- `post_user_path_point_0071d340` posts a loopback message when the switch is set, and the drain
+  delivers it. It delivers at the call otherwise.
+- The switch is ON on main since cc9-gunnery6's landing, so the section 9 pairs were measured with the
+  5Fh points delivered at the row-9 drain. Nothing is left to do.
