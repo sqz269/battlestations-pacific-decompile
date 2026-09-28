@@ -1821,3 +1821,32 @@ last attacker from before the scuttle (Yudachi, Samidare, Murasame, Houston), be
 damage leaves the victim's attribution block as the last hit set it.
 
 **Verdict: `kLuaAddDamageBound = true`.**
+
+## The unimplemented Lua natives, refreshed (packet `cc9_lua_natives_ranking`, head `13fd0df8b`)
+
+Worker cc9-lua2, 2026-09-28. The census reads the final native tables of these runs, all from
+this tree at the head (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| mission | log |
+| --- | --- |
+| USN02 9200/9000 | `local/ad2_on_usn02.log`, which reaches phase 2 |
+| JM06 3200/3000 | `local/rk_jm06.log` |
+| LOMP06 1200/1000 | `local/rk_lomp06.log` |
+| USN13 3200/3000 | `local/rk_usn13.log` |
+
+Kill, SetInvincible, the listeners, SetForcedReconLevel, AAEnable and AddDamage are bound since
+the first ranking.
+
+| native | address | missions | calls | reach |
+| --- | --- | --- | --- | --- |
+| `SetShipSpeed` | `00890D30` | LOMP06 | 20 | **gameplay**: the convoy's speed (`Mission.ConvoySpeed`, `06_crucial_cargo.lua` 205..219), two escorts at 20 (558, 570), and the player at its maximum (111) |
+| `UnitGetAttackTarget` | `008A6DE0` | LOMP06 | 21 | the report branch (696): nil returns early; a target leads to `luaGetReconLevel` and `luaSubC1AddUnit` (objectives) |
+| `SquadronSetSpeed` | `0089F780` | USN13 | 15 | gameplay: the Japanese attack waves' speed (1641) |
+| `IsClassChanged` | `008CC4B0` | USN13, JM06, LOMP06 | 47 | a script branch on the player's class change |
+| `SetSubmarineDepthLevel` | `00893F40` | JM06 | 5 | gameplay: scripted submarine depth |
+| `SetAirBaseSlotCount` | `008963E0` | USN13 | 3 | the deck slot count |
+| `IsGUIActive`, `DisplayScores`, `EnableInput`, `BlackBars`, `MissionNarrative`, `SetGuiName`, `SetNumbering`, hints, `Loading_*`, `DisplayUnitHP`/`HideUnitHP`, `PrepareClass` | | 1..4 | 1..116 | presentation |
+| `SetUnlimitedAirSupply`, `SetDeviceReloadEnabled`, `LoadCheckpoint`, `IsInFormation` | | 1 | 1..2 | small |
+
+**Next packet: `SetShipSpeed` (`00890D30`),** measured on LOMP06 1200/1000. The convoy should
+move at its scripted speed from the stage init, so exit 3 is likely.
