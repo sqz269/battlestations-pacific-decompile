@@ -975,3 +975,66 @@ the ranking.
 **The risk named in advance.** A victim whose death the script later tests (`unit.Dead`) moves a
 mission branch. That is the image's behaviour, and not a failed prediction, as long as the
 victim is the one the script named.
+
+## SetInvincible, 00897A50 (packet `cc9_set_invincible`, a read; the binding waits for the gunnery host)
+
+Worker cc9-lua2, 2026-09-27. This is item 2 of the ranking. Ghidra was read only.
+
+### The image (V, `docs/UNIT_DAMAGE_AND_DEATH.md` "The invincibility gate", `src/unit_damage.cpp`)
+
+- **The value.** `SetInvincible(entity, value)` resolves argument 0 and turns argument 1 into a
+  float:
+  - a boolean gives 1.0 or 0.0 (`00897B6F`);
+  - otherwise the number itself, a fraction of maximum health.
+- **The dispatch.** It calls the entity's `vtable[F4h]` (`00897C63`), which is `0042ED80`. That
+  routine stores the float at `+150h` and passes it to every child's `vtable[F4h]`, so turrets and
+  parts carry it too.
+- **Three readers:**
+  - **Damage, `00879070` (`008790D0`).** The amount is clamped so that health cannot fall below
+    `inv * max` (`bsp::invincibility_floor_00879070`, with the float-store rounding). A repair is
+    unaffected.
+  - **Sink, `008110F0` (`008110F9`).** Any value above 0 refuses the sink.
+  - **Query, `00897CB0`.** `IsInvincible` is `inv > 0`.
+- **`Kill` is not gated.** `008AC5C0` goes straight to `00926D90`.
+- **So `SetInvincible(Town, 0.24)`** keeps Yorktown-class01's health at or above 24% of its
+  maximum against damage. It does not protect against `Kill`.
+
+### What the host does
+
+- The three damage sites of `src/game_hosts_gunnery.cpp` build `bsp::UnitHealth` with
+  `invincibility` at its default of 0: the hull pass (`add_damage`) and the two sites near
+  `bsp::apply_damage_00879070`, at the file's 7242 and 7291 on main.
+- So the floor never applies, and the sink gate reads 0.
+- The binding needs a per-unit `+150h` in the gunnery host's unit state, set by the Lua native
+  and read at those three sites and at the sink.
+- `src/game_hosts_gunnery.cpp` is leased to cc9-gunnery3 now, so this packet commits the read and
+  the plan only.
+
+### Which calls the idle runs reach
+
+| mission | calls | the lines, and the units |
+| --- | --- | --- |
+| USN04 4700/4500 | 1 | `usn_19_coralus.lua` 456, `SetInvincible(Mission.Town, 0.24)` in the stage init. Town is `Yorktown-class01`, which **takes no damage** on the OFF run (`RA_OFF_USN04`: `taken 0`, health 8000) |
+| BSM01 3200/3000 | 58 | loops at `bsm_01` 405 (0.3), 425 (Raleigh 0.4), 998 (`true`) and the rest. **No BSM01 unit takes damage** on the idle run (`rb6_bsm01`: every row has `taken 0`) |
+| USN02 9200/9000 | 10 | `usn_2_java.lua` 230: `SetInvincible(unit, 0.1)` over `Mission.DRGrp` (DeRuyter, Java, Kortenaer, Electra) in `luaInit`. Line 310: 0.5 over `Mission.DRKillers` (Samidare, Murasame, Harusame), also in `luaInit`. Lines 755/761 release them in `luaPh2MovieEnd`, whose `DRGrp` loop then runs `AddDamage(unit, 100000000)`. The 10 fit 4 + 3 + 3; how far the release loop runs was not established |
+| USN01, USN13, JM08 | 7, 10, 1 | not examined in this read |
+
+### Predictions for the binding (switch `kUnitInvincibilityBound`, to be committed OFF)
+
+| row | prediction |
+| --- | --- |
+| USN04 4700/4500 | identity, exit 1: the floored unit takes no damage |
+| BSM01 3200/3000 | identity, exit 1: no unit takes damage |
+| USN02 9200/9000 | **moves, exit 3** |
+
+**The USN02 move.** On OFF, all seven floored ships die: Kortenaer at 68.30 s to Samidare,
+Electra at 108.60, DeRuyter at 176.86, Java at 184.26, Samidare at 161.56, Murasame at 190.66 and
+Harusame at 212.81. With the floors in force:
+- none of them can die to gunfire before `luaPh2MovieEnd` releases them;
+- a hit that would cross the floor is clamped instead;
+- a floored ship that reaches 0 would also refuse the sink.
+
+The death rows before the release disappear or move later, and the battle's hit and death counts
+move with them. The first row to check is Kortenaer, which does not die at 68.30 s.
+
+**So the measuring pair is USN02, not USN04 or BSM01.** Those two resolve as identity only.
