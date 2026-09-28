@@ -261,6 +261,53 @@ AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
         // leader point, a null target and 1.0f to 00A13B60.
         add(result, ai_command_follower_pass_00a10dc0(host, group));
         return result;
+    case AiCommandType::CautiousAttack: {
+        if constexpr (kCautiousAttackTickBound) {
+        // 00A152FC-00A15339: the target group's (+1Ch) first member's +FCh,
+        // 00F87574 when it is empty.
+        float target_point[3] = {0.0f, 0.0f, 0.0f};
+        if (command.target_group != nullptr) {
+            host.tick_leader_point(command.target_group, target_point);
+        }
+        // 00A15342: 00A14DD0(+20h)(owner, point). Its gate is the owner's first
+        // member under 009FE080. The route object is the leader's director
+        // slot 0 (00778860 -> vt[+114h] -> 0071BFC0(0), +1A4h); with that
+        // slot's vt[+4h] false, or the +28h counter (4 from 00A109B0) below 1,
+        // it issues 00A02020 with the point. LABELLED: the director slot
+        // objects and their vt[+4h]/[+0Ch]/[+10h]/[+18h] have no host
+        // counterpart, so the no-route arm is taken every tick; the waypoint
+        // build (three candidates per leg scored by 00A010F0, pushed into the
+        // slot through vt[+18h]) and the `clearorders` arm (00E08F08 at
+        // 00A14EA7) are not issued.
+        if (host.tick_group_population(group) != 0u) {
+            void* leader = host.tick_member_at(group, 0);
+            if (leader != nullptr && host.tick_member_is_groupable_combatant(leader)) {
+                order_leader(host, group, target_point, result);
+            }
+        }
+        // 00A15349 00A10DC0, then 00A11690 (not read).
+        add(result, ai_command_follower_pass_00a10dc0(host, group));
+        // 00A15355-00A15429: collect = tuning+1F4h; d2 = the x/z squared
+        // distance between the two leaders; FCOMPI of collect^2 against d2,
+        // JBE skips, so collect^2 > d2 promotes: new(20h), 00A10710(owner,
+        // target), vtables 00D22C44 / 00D22C2C (CLOSEATTACK), 00A2BD00.
+        float own_point[3] = {0.0f, 0.0f, 0.0f};
+        host.tick_leader_point(group, own_point);
+        float tgt_point[3] = {0.0f, 0.0f, 0.0f};
+        if (command.target_group != nullptr) host.tick_leader_point(command.target_group, tgt_point);
+        const float dx = tgt_point[0] - own_point[0];
+        const float dz = tgt_point[2] - own_point[2];
+        const float d2 = dx * dx + dz * dz;
+        const float collect = host.tick_tuning_field(kAiTuningCloseAttackCollectDist);
+        const float collect2 = collect * collect;
+        if (collect2 > d2) {
+            host.tick_replace_command(group, AiCommandType::CloseAttack);
+            result.promoted = true;
+            result.promoted_to = AiCommandType::CloseAttack;
+        }
+        }
+        return result;
+    }
     case AiCommandType::PatrolTo: {
         // 00A15570-00A1566A. The leader (the first +563Ch member) must pass
         // 009FE080; then the squared x/z distance from its +FCh (00F87574 for an

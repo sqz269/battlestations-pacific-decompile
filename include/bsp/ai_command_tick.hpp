@@ -145,6 +145,17 @@ bool ai_group_member_sorts_before_00a2d8e0(float candidate_weight,
 // ---------------------------------------------------------------------------
 
 // What a tick did, for the census.
+// Packet cc9_cautious_attack_tick, docs/PLANNER_TASK_CHOICE.md section 11.
+// True: CAUTIOUSATTACK's vt+0Ch (00A152E0-00A154xx) runs: the cautious approach
+// pass 00A14DD0 on the +20h base toward the target group's leader point (its
+// no-route arm, a leader moveto through 00A02020), the follower pass, and the
+// promotion to CLOSEATTACK while CloseAttack_CollectDist squared exceeds the
+// leaders' squared x/z distance. False: the class has no arm and is not moved.
+// ON: the four reference missions identical (none holds CAUTIOUSATTACK on
+// dcfebd652); USN07/09/10/12 issue the leader movetos, USN10 and USN12 move
+// (docs/PLANNER_TASK_CHOICE.md section 11.4).
+inline constexpr bool kCautiousAttackTickBound = true;
+
 struct AiCommandTickResult {
     std::uint32_t orders_issued{0};      // 00A02020 reached 0077D600
     std::uint32_t formation_requests{0}; // 0077C8D0
