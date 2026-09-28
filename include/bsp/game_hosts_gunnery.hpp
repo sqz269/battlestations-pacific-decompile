@@ -356,6 +356,18 @@ inline constexpr bool kGunIdleRestBound = true;
 // False: no damage is scaled, as before.
 // ON by the pairs of 2026-09-28 (docs/DIFFICULTY_MULTIPLIERS.md section 6.3).
 inline constexpr bool kDifficultyMultipliersBound = true;
+
+// Packet cc9_unit_fire_cooldown (docs/GUNNERY_OPEN_ITEMS.md section 11). True: the
+// two unit-wide fire cooldowns CanFire tests 5 and 6 read. 0072F830, per shot: an
+// artillery kind (2/3/4/6, 006D1E50) sets unit+6F8h = U(0.075, 0.225) on stream 1
+// (00CEED68 / 00CFE2B4, 0072FB4F..0072FB78); a torpedo (kind 7) sets unit+6FCh =
+// 00836EB0: ShipGlobals SubTorpedoDelay for a submarine (IsKindOf(8), settings
+// +764h), else ShipTorpedoDelay (+768h). 00953CC0 counts both down by the step while
+// positive. 00729ADD..00729B26: an artillery gun refuses while +6F8h > 0, a torpedo
+// gun while +6FCh > 0. The constructor seeds both 0 (0095CF50/58, XORPS 0095CD7D).
+// LABELLED: the host counts down at the start of its gun step, the image in the
+// unit's own tick. False: neither test binds, as before.
+inline constexpr bool kUnitFireCooldownBound = false;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].

@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_unit_fire_cooldown",
+  "doc": "docs/GUNNERY_OPEN_ITEMS.md section 11",
+  "switch": "kUnitFireCooldownBound (include/bsp/game_hosts_gunnery.hpp), OFF",
+  "calls": [
+    {"address": "0072FB6A", "native": "00BD2F10", "function": "0072F830", "note": "U(0.075, 0.225) on stream 1 into unit+6F8h"},
+    {"address": "0072FB9B", "native": "00836EB0", "function": "0072F830", "note": "SubTorpedoDelay / ShipTorpedoDelay into unit+6FCh"},
+    {"address": "00729AEC", "native": "006D1E50", "function": "00729A80", "note": "artillery kind test before the +6F8h read"}
+  ],
+  "writers_census": "scan-bytes 'F8 06 00 00' (12) and 'FC 06 00 00' (19) with --limit 4000: unit writers 0095CF50/58 (seed 0) and 0072FB78/0072FBA9 (per shot); 00953CC0 counts down via unit+310h (+3E8h/+3ECh)",
+  "no_ghidra_function": [],
+  "substitutions": ["the countdown runs at the start of the host's gun step, not in the unit's own tick"],
+  "corrections": ["docs/GUN_DISPERSION.md section 0 calls the 0072FB6A draw an effect timer; it is the unit-wide artillery fire cooldown"],
+  "names_added": [],
+  "verdict": "pending: OFF committed, pair next"
+}
