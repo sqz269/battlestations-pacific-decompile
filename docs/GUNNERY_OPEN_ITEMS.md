@@ -2249,3 +2249,93 @@ are not followed here. The switch touches kinds `0Fh` and `18h` only.
 - **P3, USN04 4500: exit 1,** for the same reason.
 - **P4, USN13 3000: exit 0 or 1.** Nothing is read.
 - **The flip rule:** ON when P1 holds and every move traces to a dropped plane fire target.
+
+## 43. The power-up subsystem: read and plan (packet `cc9_powerup_subsystem_plan`, cc9-gunnery9, docs only)
+
+docs/SHIP_AI_OPEN_ITEMS.md section 5 names this as the prerequisite for the party brain's
+engagement pass `00A179E0`. docs/GAMEPLAY_MODIFIERS.md (cc9-ships2) already reads the grant, the
+use, the expiry and the product, and docs/POWERUP_CONFIG.md the constructor and the class loader.
+This section adds the manager's layout, `008EA0C0`'s filter, whose inventory the AI spends, and a
+packet plan. Names are hypotheses.
+
+### 43.1 What the manager holds
+
+`008EDC60` builds the `1C4h`-byte owner and publishes it at `00F88C30` (`008EDD8A`):
+
+| offset | what | evidence |
+| --- | --- | --- |
+| `+18h`, `+1Ch` | the class map (head, size), filled by the loader `008ECEC0` from `PowerupClasses.lua` | `param_1[6]`, `param_1[7]` in `008EDC60` |
+| `+20h` + slot x `0Ch` | **eight inventory lists**, one per player slot (std::list: head at `+24h`) | `_eh_vector_constructor_iterator_(this+20h, 0Ch, 8, ...)`; `008EDDC0` appends here |
+| `+80h` + category x `0Ch` | **sixteen active-modifier lists** (head at `+84h`, size at `+88h`) | the same iterator with count 10h; `008EA250` inserts, `008EB110` expires, `008E6430` reads |
+| `+140h`..`+148h` | three dwords, zeroed | `param_1[50h..52h]` |
+| `+14Ch` + slot x `0Ch` | **eight per-slot runtime maps**, keyed by the item class: the cooldown record | the iterator with count 8; `008EA12D LEA ECX,[EDI+14Ch]` before `00617030` |
+| `+1B0h`, `+1BCh` | two name-vector maps (the random-name lists) | `param_1[6Ch]`, `param_1[6Fh]` |
+
+### 43.2 How an entry is created and consumed in single player
+
+**Created only by the Lua native `AddPowerup` (`008EE410`).**
+- With one argument, it calls `008EDDC0([game+18ECh], table)`: the local player's slot, which is
+  0 in single player (docs/CONTROLLED_UNIT.md). With two, the slot is the first argument.
+- **Every call in this installation's scripts passes one table.** A grep of `scripts/**/*.lua` for
+  `AddPowerup(` finds only `AddPowerup({` bodies inside per-mission wrappers such as
+  `luaAddPowerup(type)` or `luaJM6AddPowerup(type)`, plus the checkpoint restore in
+  `global/commandhelpers.lua`. So in single player **only slot 0 ever holds items**, and the enemy
+  slot 4 never does.
+- The reference rows reach no grant. USN04 grants after its secondary or hidden objective. The
+  loose `missions/COTP-IJN/jm06.lua` (2024-07-13) grants `automatic_reloader` and
+  `improved_ship_manoeuvreability` after primary objective 1 (:864). The JM06 row loads the packed
+  `PRCPIJN\JM06.lua`, whose text is not a loose file. No log in this tree has a power-up native
+  call.
+
+**Listed for the AI by `008EA0C0(manager)(slot, &vec)`, `RET 8`.**
+- It fills `vec` only when `[00E0C978]` (`EnablePowerups`, forced to 1 in single player) is set.
+- It walks the slot's inventory list. For each node it looks the node's class key (`node+0Ch`) up
+  in the slot's runtime map (`00617030`, `ECX = manager+14Ch+slot*0Ch`). It keeps the node only
+  when the record's byte `+14h` is clear and its float `+10h` is below the clock `[00F876A4]`.
+  The reading is that the item is not active and its cooldown is over. That reading is a
+  hypothesis: `00617030`'s record is not read beyond these two fields.
+- It keeps one entry per class. A later node of a class already in `vec` replaces the earlier one.
+  Each entry is `node+8h`, so `[e+4]` is the class key.
+
+**Consumed by one of two users.**
+- The local player's HUD paths `008EB705` and `008ED601` (docs/GAMEPLAY_MODIFIERS.md).
+- **The AI party brain whose slot is 0.** `00A17A2F` passes `brain+20h`, the party slot. In single
+  player `009FFD20` gives 0 to a unit on the local player's team and 4 to the other team, and only
+  parties 0 and 4 run (docs/AI_GROUP_THINK.md). **So the allied brain lists, and fires through
+  `008EADA0` at `00A180C9`, the items granted to the player.** This answers the question
+  GAMEPLAY_MODIFIERS left open ("whether the local player's party slot runs an AI brain").
+  The enemy brain's list is always empty.
+- A use (`008EADA0`) either launches an air-support flight (`0094BFF0`) or inserts the class's
+  non-1.0 multipliers into the category lists. It then stamps the expiry and the cooldown.
+  `008EB110` expires the nodes every `Game_OnMove`.
+
+### 43.3 What this host does
+
+- The owner is never built. `004DC6A0` is a record step in `game_hosts_mission_frame.cpp`
+  ("global_subsystems"), although `src/global_subsystems.cpp` and `src/powerup_config.cpp` hold a
+  reconstructed constructor and loader.
+- `AddPowerup`, `PreparePowerup` and `GetAvailablePowerups` are bound as unimplemented natives
+  (`src/mission_lua_host.cpp:553-555`). The 38 product sites return 1.0f, which is exact while the
+  lists are empty.
+- `party_brain_plan_tail` records `00A179E0`'s tail.
+
+### 43.4 The packet plan
+
+Each packet is identity on every reference row, because no row reaches a grant. Each needs a row
+that does, or a harness grant, before a pair can test it.
+
+| order | packet | contents | lane | switch |
+| --- | --- | --- | --- | --- |
+| 1 | `cc9_powerup_owner_at_load` | build the owner at mission load with the existing `construct_powerup_config_008edc60` and `load_powerup_config_008ecec0` against the mission Lua state, and publish it where the hosts can reach it | mission frame and Lua | none; nothing reads it yet |
+| 2 | `cc9_powerup_grant` | `008EE410` and `008EDDC0` into slot `[game+18ECh]`'s inventory list, with the `useLimit` field; `008EA610` `PreparePowerup` and `008EB350` `GetAvailablePowerups` read it. The `pup_gain` sound and the `PUM1STGET` hint are records. Message 67 is multiplayer-only | Lua | OFF, predicted identity |
+| 3 | `cc9_powerup_use` | `008EADA0` (the cooldown map, `008EA250`, `008E4B00`, the use count), `008EB110` expiry, and `008E6430` with the filter `008E4680`. It replaces the 1.0f at the 38 product sites | the product sites span the units, gunnery and ship-AI hosts; one shared accessor, then one switch | OFF |
+| 4 | `cc9_ai_powerup_use` | `00A179E0`'s choice half `00A17D5A..00A180A8`. Its six callees are unread: `008E35F0`, `00A0F680`, `00A046C0`, `00A04860`, `00A04910`, and `008EA0C0` as read above | AI (`party_brain_plan_tail`) | OFF |
+
+**A test row.** Grant through the harness: one `AddPowerup` per class at load, through the
+existing Lua drain. The first measurable effect is then packet 4. The allied brain fires the item
+on its first think with a candidate pair, and a gunnery product (category 1 FIREPOWER, 7
+TARGETING_ERROR, 8 DEVICE_RELOADING) moves. USN02 has early contact, but whether its pair build finds a pair is not measured.
+
+**Coverage.** This read covers `008EDC60`'s layout and `008EA0C0` completely. `008EADA0`,
+`008EDDC0` and `008EB110` are cited from docs/GAMEPLAY_MODIFIERS.md, not re-read. `00617030` is
+read only as a lookup keyed by the class.
