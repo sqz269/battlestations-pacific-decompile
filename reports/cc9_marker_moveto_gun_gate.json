@@ -1,0 +1,17 @@
+{
+  "packet": "cc9_marker_moveto_gun_gate",
+  "doc": "docs/GAME_SHIP_NAVIGATION_BINDING.md, The +12B8h gate on a marker moveto is not a fire gate",
+  "code_changed": false,
+  "addresses": {
+    "009F2AE9": "writer: nested+12B8h = director+221h (with a raw target)",
+    "009F2B06": "writer: nested+12B8h = 008637D0(raw target) when the byte was set",
+    "009F2E11": "writer: nested+12B8h = director+221h (no raw target)",
+    "0095EB40": "reader through the query block +3Ch: the category-1 firepower term of the bearing rating (0095EBD7..0095EC1E)"
+  },
+  "scan": "b8 12 00 00 --limit 4000: 14 hits, ship code only 009F1BC0's three writers",
+  "shots": {"Aylwin PRCP03": "23 OFF / 23 ON", "Convoy1 USN01": "32 / 42", "DeRuyter USN02": "38 / 73"},
+  "verdict": "not a fire gate: steering ratings only; guns fire on a moveto in image and host; no binding",
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}
