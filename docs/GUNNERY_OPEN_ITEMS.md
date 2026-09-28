@@ -181,3 +181,23 @@ landscape counts come from the logs' `summary scene terrain landscapes=` line.
 | USN04 4700/4500 | 0 | gameplay identical, as USN02 |
 | USN13 3200/3000 | 12 | `blocked > 0`. Where an island hides a target, assignments and shots fall. Deaths 27 +- 2 |
 | USN01 3200/3000 | 4 | `blocked` 0 or small. Deaths 7 +- 1 |
+
+## 6. 007BC5B0 answered as the listing reads (packet `cc9_water_invincible_test`, under `kUnitInvincibilityFloorBound`)
+
+This folds section 4's note. The water-surface binding in `src/game_hosts_units.cpp` now asks
+`GameGunneryHost::water_gate_007bc5b0(unit, player_held)` instead of `unit_dead()`. With the
+switch ON the gate answers true when `unit_invincibility(unit) <= 0` or the unit is player-held.
+No aircraft is player-held here, so the host passes false. With the switch OFF it keeps
+`unit_dead()`.
+
+**What it changes when ON.** The two readings differ only for a **live** aircraft.
+- A live aircraft that is not invincible now passes the gate. So a live AI aircraft of a class
+  with a non-zero `MinWaterSpd` that goes under the surface takes the water contact, where the
+  host used to ignore it and leave the aircraft in free flight.
+- A live invincible aircraft now fails the gate, as in the image.
+
+**Prediction.** Idle reference runs are identical: the `plane water contact ignored` line, which
+the old reading prints for such a live aircraft, is absent from all four logs (USN04
+`RA_OFF_USN04`, USN13 `RM_USN13`, USN01 `FP_OFF_USN01`, USN02 `FP_OFF_USN02`). Every water
+contact on them (16, 8, 3, 0) is a dead aircraft, which both readings pass. A run where a live
+AI aircraft touches water would move.

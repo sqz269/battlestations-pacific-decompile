@@ -8157,6 +8157,15 @@ void GameGunneryHost::set_unit_invincibility(std::size_t unit_index, float value
     impl_->done("Entity::set_invincible_0042ed80", 0x0042ed80u);
 }
 
+bool GameGunneryHost::water_gate_007bc5b0(std::size_t unit_index,
+    bool player_held) const noexcept {
+    if (!kUnitInvincibilityFloorBound) return unit_dead(unit_index);
+    // 007BC5DA: [unit+150h] <= 0 returns 1; then the role-slot test returns 1
+    // for a player-held unit; otherwise 0.
+    if (unit_invincibility(unit_index) <= 0.0f) return true;
+    return player_held;
+}
+
 float GameGunneryHost::unit_invincibility(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->invincibility_by_unit.size()) return 0.0f;
     return impl_->invincibility_by_unit[unit_index];

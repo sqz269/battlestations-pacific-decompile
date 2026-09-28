@@ -9079,9 +9079,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             .min_water_spd).first;
                                 }
                                 min_water_spd = found->second;
+                                // Packet cc9_water_invincible_test: 007BC5B0 tests
+                                // unit+150h, the invincibility float, not health;
+                                // the gunnery host answers it (with its switch off,
+                                // still unit_dead()). No aircraft is player-held here.
                                 dead = gun_host != nullptr
                                     && self_index < owner_.slots.size()
-                                    && gun_host->unit_dead(self_index);
+                                    && gun_host->water_gate_007bc5b0(self_index, false);
                             }
                             if (kPlaneWaterContactGateBound
                                 && unit_.motion.position[1] < line) {

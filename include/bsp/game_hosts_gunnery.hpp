@@ -850,6 +850,11 @@ public:
     // IsInvincible's `inv > 0` (00897CB0) and 007BC5B0's `unit+150h <= 0` test.
     void set_unit_invincibility(std::size_t unit_index, float value);
     float unit_invincibility(std::size_t unit_index) const noexcept;
+    // 007BC5B0's tail, past its flight-state and unit+AA0h tests: true when
+    // [unit+150h] <= 0 (not invincible) or the unit is player-held (+1ACh not 8
+    // and 00927F10 false). With kUnitInvincibilityFloorBound off it keeps the
+    // earlier substitution, unit_dead() (packet cc9_water_invincible_test).
+    bool water_gate_007bc5b0(std::size_t unit_index, bool player_held) const noexcept;
     // 007C2610 BSP_Unit_MinKind21ComponentSpeed (body 007C2610-007C2674, RET, the
     // float in ST0): the minimum round V0 [[gun+3F8h]+34h]+50h over the unit's
     // child list (unit+48h, next +44h) of components answering IsKindOf(21h),
