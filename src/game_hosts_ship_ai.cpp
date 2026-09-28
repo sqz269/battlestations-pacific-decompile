@@ -14,6 +14,7 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
+#include "bsp/command_execution.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/ship_ai_goal_vector_visibility.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
@@ -427,6 +428,13 @@ inline constexpr bool kAutoTargetFollowerGateBound = false;
 // ON (2026-09-28): JM06 and USN01 move through 96 corners and 257 leans; five rows identical
 // (section 14).
 inline constexpr bool kShipAiFreeBearingBound = true;
+// Packet cc9_clearance_path_fade (rank 3 of docs/SHIP_AI_OPEN_ITEMS.md section 16).
+// True: 009EF910's path-length fade gate answers the image's disjunction,
+// 00778890(unit) at 009F0000 (the unit leads its formation: [unit+284h] set and
+// its +14h naming the unit) or, at 009F0009..009F0020, the director's slot-0
+// command [[unit+738h]+54h] equal to 00E08F80 (`moveonpath`); either one reaches
+// 009F0022. False: the gate answers false, as the record did. Counted on both sides.
+inline constexpr bool kShipAiClearancePathFadeBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -6672,11 +6680,25 @@ public:
             const_cast<bsp::ShipAiObstacleNode&>(node(i))).unit);
     }
     bool path_fade_applies_00778890() override {
-        // 009F0000 / 009F0019: the group-leader query and the vtable identity
-        // test against 00E08F80, the `moveonpath` command object. Neither has a
-        // producer here; the same pair is recorded in the approach binding.
-        owner_.record("ShipAiClearance::path_fade_00778890", 0x00778890u);
-        return false;
+        // 009EFFF2 ECX = [blk+3FCh], the unit. 009F0000 CALL 00778890; JNE 009F0022
+        // on a leader. Otherwise 009F0009..009F0020: EAX = [unit+738h], the
+        // command controller; JE 009F0076 on null; CMP [EAX+54h], 00E08F80, the
+        // slot-0 command pointer against the `moveonpath` singleton (docs/
+        // COMMAND_EXECUTION.md, slot 0 at +54h). Either half takes the fade.
+        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+        const bool leader = group >= 0 && owner_.units.formation_leader_0014(group) == index_;
+        const bool moveonpath = !leader
+            && owner_.units.director_slot_command(index_, 0) == bsp::kCommandMoveOnPath;
+        ++owner_.summary.path_fade_tests;
+        if (leader) ++owner_.summary.path_fade_leader;
+        if (moveonpath) ++owner_.summary.path_fade_moveonpath;
+        if (!kShipAiClearancePathFadeBound) {
+            owner_.record("ShipAiClearance::path_fade_00778890", 0x00778890u);
+            return false;
+        }
+        owner_.done("ShipAiClearance::path_fade_00778890", 0x00778890u);
+        if (leader || moveonpath) ++owner_.summary.path_fade_applied;
+        return leader || moveonpath;
     }
     float class_length_unit_00811a30() override {
         // 009F0038, 00811A30(unit, 1.0f): 0082E960(class, 1.0f) divided by the
@@ -8535,6 +8557,9 @@ public:
         bsp::ship_ai_refresh_turn_clearance_009ef910(ctl_.clearance, geometry, settings,
                                                      seconds, clearance);
         owner_.done("ShipAi::refresh_turn_clearance_009ef910", 0x009ef910u);
+        if (ctl_.clearance.outcome_370 == bsp::ShipAiClearanceOutcome::HeadingErrorLarge) {
+            ++owner_.summary.clearance_heading_error_large;
+        }
         ++row_.clearance_refreshes;
         ++owner_.summary.clearance_refreshes;
         if (clearance.node_hits != 0) ++row_.clearance_node_hits;
@@ -10290,6 +10315,12 @@ void GameShipAiHost::report() {
         "cc9_autotarget_follower_gate)",
         host.summary.autotarget_follower_thinks, host.summary.autotarget_follower_leaves,
         kAutoTargetFollowerGateBound ? 1 : 0);
+    host.log.notef("summary mission ship ai clearance path fade tests=%llu leader=%llu "
+        "moveonpath=%llu applied=%llu heading_error_large=%llu bound=%d (00778890 at "
+        "009F0000, [[unit+738h]+54h] == 00E08F80 at 009F0019; packet cc9_clearance_path_fade)",
+        host.summary.path_fade_tests, host.summary.path_fade_leader,
+        host.summary.path_fade_moveonpath, host.summary.path_fade_applied,
+        host.summary.clearance_heading_error_large, kShipAiClearancePathFadeBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",
