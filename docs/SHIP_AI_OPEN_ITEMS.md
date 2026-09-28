@@ -677,6 +677,8 @@ cc9-gunnery8 holds for `cc9_periscope_out`. The lead sends "ship_ai free" when i
    - The host's `candidate_base_weight` weighs by member count instead.
    - The lead numbers it rank 9. In section 1 rank 9 is `00A1443D`, and this is rank 10.
 
+5. **Rank 9, `00A1443D`, the close attack's busy member**, which the lead queued on 2026-09-28. In `src/game_hosts_ai.cpp`, `AiCommand::close_controller_busy` answers false with "contract: unread". The site is `[member+538h]->vtable[2Ch]` inside `00A13B60` (`BSP_AiCommand_CloseAttackTargetPass`), 5991 calls on reference i. The same slot decides the Cargo capture weight in `capture_weight_00a03510`. Read the slot's target in the class descriptor's vtable first; `[unit+538h]` is the class descriptor (docs/AI_BRAIN_PLAYER_EXEMPTION.md). Then bind OFF, predict, pair and flip by verdict.
+
 **Not to redo.**
 - Section 1's census scripts, `local\ships7_census.py` and `local\ships7_sites.py`, point at
   cc9-gunnery7's reference i logs. For reference j, change their `root` and `rb9` prefix.
