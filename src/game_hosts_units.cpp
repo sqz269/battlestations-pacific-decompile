@@ -1727,6 +1727,8 @@ struct GameUnitsHost::Impl {
     GameCommandsHost commands;
     // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound.
     std::vector<LandConvoyMotionState> land_convoys;
+    // Packet cc9_air_ops_squadron_registry.
+    unsigned long long departed_block_reads{0};
     // Packet cc9_squadron_land_task, under kSquadronReturnToBaseResolveBound.
     struct ReturnToBaseCensus {
         std::string squadron;
@@ -2603,8 +2605,25 @@ struct GameUnitsHost::Impl {
             // the profile's call, and a plane with no squadron keeps the block on
             // its own slot.
             GameUnitSlot* sq = squadron_slot_of(slot.process_index);
+            bool leader = unit_is_flight_leader_007b8ad0(slot.process_index);
+            if constexpr (kDepartedWingmanTaskBlockBound) {
+                // Packet cc9_air_ops_squadron_registry: a member 007F3970 removed
+                // keeps its task's [task+404h] (the squadron) and its +9D8h.
+                const bsp::PlaneSquadronRegistry& registry = bsp::plane_squadron_registry();
+                if (registry.find_by_member_unit(slot.process_index) == nullptr) {
+                    for (const bsp::PlaneSquadronHostRecord& r : registry.records()) {
+                        for (std::size_t k = 0; k < r.departed_units.size(); ++k) {
+                            if (r.departed_units[k] != slot.process_index) continue;
+                            if (r.squadron_unit < slots.size()) sq = slots[r.squadron_unit].get();
+                            leader = k < r.departed_index_9d8.size()
+                                && r.departed_index_9d8[k] == 0;       // 007B8AD0
+                            ++departed_block_reads;
+                        }
+                    }
+                }
+            }
             GameUnitSlot& block = sq != nullptr ? *sq : slot;
-            if (unit_is_flight_leader_007b8ad0(slot.process_index)) {
+            if (leader) {
                 const float value = static_cast<float>(
                     static_cast<double>(release_altitude_draw_00bd2f10(
                         slot.row.name + "#dp", 0.0f, 15.0f))
@@ -20821,6 +20840,11 @@ void GameUnitsHost::report() {
             static_cast<double>(s->sq_last_cruise), static_cast<double>(s->motion.position[1]));
     }
     if constexpr (kDiveProfileDrawBound) {
+        if constexpr (kDepartedWingmanTaskBlockBound) {
+            host.log.notef("summary dive profile departed wingmen block_reads=%llu (007F3970 "
+                "keeps [task+404h] and +9D8h, packet cc9_air_ops_squadron_registry)",
+                host.departed_block_reads);
+        }
         for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
             if (s->sq_profile_draws == 0) continue;
             host.log.notef("  dive profile draw %s: draws=%llu writes=%llu last_398=%.3f "

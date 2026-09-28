@@ -5340,3 +5340,47 @@ player, present interval immediate):
 
 **Verdict: `kDiveProfileDrawBound = true`.** The mechanism matches the listing on all three rows.
 USN01's miss is the spread, recorded above.
+
+## Departed wingmen keep their task's squadron block (packet `cc9_air_ops_squadron_registry`, `kDepartedWingmanTaskBlockBound`, committed OFF)
+
+Worker cc9-lua6, 2026-09-28.
+
+**A correction to the draw's first "host limit" above.** USN04's live Val wing members ARE in the
+squadron registry. The pass A wing hook fills `member_units` (`staged=40 builds=20 planes=40`).
+An env-gated trace (`BSP_DIVE_DRAW_TRACE=1`, not kept) printed each (unit, block) pair's first
+draw. Every per-member block starts at that plane's **death time**, with no registry record:
+- `D3A Val #1.1|.-2` at 182.71 s;
+- `D3A Val #3.1|.-4` at 149.50 s;
+- `movieval|.-2` at 26.60 s;
+- and the others the same way.
+
+So the extra blocks are **dead planes**, which `007F3970` removed from the squadron and which go
+on flying their bot task. That is the powerlost glide under pilot steering in
+`docs/PLANE_DEATH_MODES.md`. LOMP10's `Warhawk 01|.-3` and `|.-4` are the same case.
+
+**The image, for a removed member (V, listing `007F3970`).**
+- `007F3A07 MOV [EDI+9D4h],0` clears the plane's squadron pointer.
+- `007F3A11` `007ED260` re-indexes the members that stay.
+- The removed plane's own `+9D8h` is not rewritten, so it keeps its live index.
+- Its bot task keeps `[task+404h]`, the squadron captured at construction (`009F9CE0`).
+
+So in `009C8920`, a dead wingman fails `007B8AD0` and draws nothing, and its `009C7A96` copy still
+reads the squadron's `+398h`. A dead former leader (index 0) still draws, and writes the squadron's
+block.
+
+**The binding.**
+- The registry record keeps each departed member's live index at removal (`departed_index_9d8`,
+  from the compaction's live seat).
+- The dive profile resolves a departed plane's block through the squadron it left, and its
+  `007B8AD0` through that index.
+- **LABELLED:** that the dead plane's task keeps running is the host's existing behaviour; whether
+  the image's bot think gates on `+9D4h` after the clear was not traced.
+
+**Predictions** (written before the ON runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player, present interval immediate):
+
+| row | prediction |
+| --- | --- |
+| USN04 4700/4500 | **exit 3, small.** The per-member draw lines of dead wingmen go away (`movieval|.-2`, `D3A Val #1.1|.-2/.-3/.-4`, `#3.1|.-3/.-4`, `#5.1|.-2/.-3/.-4`). Those planes now read their squadron's `+398h` instead of their own draw. `block_reads > 0`. Only dead aircraft steer differently, so deaths, releases and hits on live targets are unchanged. Crash positions, and so plane water contacts, may move |
+| LOMP10 3200/3000 | **exit 1 or small 3.** `Warhawk 01|.-3` and `|.-4` read the squadron block, which is forced at 150 m, instead of their own ~1000. The same dead-only scope applies |
+| USN01 3200/3000 | **exit 0.** No dive-bomb plane dies with a draw; `block_reads=0` beside the unchanged census |
