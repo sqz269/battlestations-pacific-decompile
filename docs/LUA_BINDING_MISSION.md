@@ -1353,3 +1353,27 @@ each registered entry, which settles the rows that depend on it):
 | JM06 3200/3000 | `usnsubListener` (entity `Mission.USNSubs`, `0 -> {1, 2}`, Japanese) fires if the Japanese detect the Narwhal; `luaJM6USNSubSighted` only starts a dialog and a hint. `fleetrecon` (entity `Mission.Cargos`, `0 -> 2`, Japanese) fires if a cargo is identified; `luaJM6FleetSpotted` then orders `Mission.IJNSubsGrp1` (all but the first) to attack a random cargo, **exit 3**. If no cargo is identified in the run, identity |
 | LOMP06 1200/1000 | `listener_SeaplaneSpotted` (any entity, `0 -> 2`, Allied) fires on each first identification, and the callback acts only on a `SmallReconPlane` (a dialog); identity |
 | USN01, USN04 | no `recon` entry is registered (`changes=0 fires=0`); identity |
+
+#### Recon listener pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `2cb5a3608`.
+- ON is `pair_export --flip kLuaReconListenersBound=true` of the same commit (`local/rl_on`,
+  SHA-256 `14A1773EB1E5`).
+- The logs are `local/rl_{off,on}_<mission>.log`.
+
+| row | census | pair_diff | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| JM06 | `changes=74 fires=2`: `"US Cargo Transport 02" party 1 0 -> 2 -> luaJM6FleetSpotted()`, `"Narwhal-class Submarine 01" party 1 0 -> 2 -> luaJM6USNSubSighted()` | exit 3 | `fleetrecon` orders the group-1 submarines at a cargo, exit 3 | held |
+| LOMP06 | `changes=387 fires=0` | exit 1 | identity; the listener fires on each first identification | identity held. **Failed sub-prediction:** nothing fired. The cause was not traced: no Allied `0 -> 2` change reached the listener while it was registered, perhaps because the Allied levels pass through 1 |
+| USN01 | `changes=0 fires=0` | exit 1 | identity | held |
+| USN04 | `changes=0 fires=0` | exit 1 | identity | held |
+
+**What moved on JM06.**
+- `luaJM6FleetSpotted` issued three `NavigatorAttackMove` orders (bindings: attackmove 0 -> 3,
+  issued 5 -> 8).
+- The battle followed: deaths 5 -> 2, hit records 405 -> 168, shots 652 -> 246, and one more
+  unit row.
+- Every moved row traces to those orders, the callback's own effect.
+
+**Verdict: `kLuaReconListenersBound = true`.**

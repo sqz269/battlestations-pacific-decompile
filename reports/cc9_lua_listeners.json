@@ -7,6 +7,11 @@
       "name": "kLuaListenersBound",
       "file": "include/bsp/game_hosts_lua.hpp",
       "state": "ON (identity pairs)"
+    },
+    {
+      "name": "kLuaReconListenersBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "ON"
     }
   ],
   "substitutions": [
@@ -30,12 +35,25 @@
     }
   ],
   "ledger_names_added": [],
-  "failed_predictions": [],
+  "failed_predictions": [
+    {
+      "row": "LOMP06 recon",
+      "predicted": "fires on each first identification",
+      "measured": "fires=0",
+      "why": "not traced; Allied levels may pass through 1"
+    }
+  ],
   "pairs": {
     "USN01": "exit 1",
     "USN02": "exit 1",
     "USN04": "exit 1 (no kill entry)",
     "JM06": "exit 1",
     "LOMP06": "exit 1"
+  },
+  "recon_pairs": {
+    "JM06": "exit 3, fleetrecon fired, 3 attack orders",
+    "LOMP06": "exit 1, fires=0",
+    "USN01": "exit 1",
+    "USN04": "exit 1"
   }
 }

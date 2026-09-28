@@ -150,7 +150,7 @@ inline constexpr bool kLuaListenersBound = true;  // ON: identity pairs (docs/LU
 // sets are each empty or hold the value (00968470); each callback is called with
 // (unit, old, new, party). True (with kLuaListenersBound): the host fires `recon`
 // listeners on its recon pass's level changes. False: `recon` entries never fire.
-inline constexpr bool kLuaReconListenersBound = false;
+inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;
