@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009b3750",
+    "end_address": "009b376a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009b3750",
+    "end_address": "009b3769",
+    "bytes_disassembled": 26,
+    "message": "Successfully disassembled 26 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009b3750",
+    "disassemble_first": false,
+    "name": "BSP_BotTaskLand_FollowWaitValue"
+   },
+   "result": {
+    "success": true,
+    "address": "009b3750",
+    "function_name": "BSP_BotTaskLand_FollowWaitValue",
+    "entry_point": "009b3750",
+    "body_size": 26,
+    "message": "Function created successfully at 009b3750",
+    "warnings": [
+     "Function name 'BSP_BotTaskLand_FollowWaitValue' \u2014 main part 'BotTaskLand_FollowWaitValue' is not PascalCase. Expected: BottasklandFollowwaitvalue",
+     "Function name 'BSP_BotTaskLand_FollowWaitValue' \u2014 main part 'BotTaskLand_FollowWaitValue' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_BotTaskLand_FollowWaitValue' does not start with a recognized verb. First word 'Bot' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "009b3750",
+   "end": "009b376a",
+   "name": "BSP_BotTaskLand_FollowWaitValue",
+   "after": "Function: BSP_BotTaskLand_FollowWaitValue at 009b3750\nSignature: undefined BSP_BotTaskLand_FollowWaitValue(void)\nEntry: 009b3750\nBody: 009b3750 - 009b3769"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
