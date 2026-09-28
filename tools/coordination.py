@@ -259,6 +259,12 @@ def file_overlaps(a, b):
     return sorted({x for x in a.get('files', []) for y in b.get('files', []) if paths_overlap(x, y)})
 
 
+def path_holders(path, rows=None):
+    """Active leases holding a file path under the same directory-aware rule as a claim refusal."""
+    rows = active_leases() if rows is None else rows
+    return [row for row in rows if any(paths_overlap(path, f) for f in row.get('files', []))]
+
+
 def overlap_detail(a, b):
     """Human-readable description of what two leases share, or '' when they do not overlap."""
     parts = []
