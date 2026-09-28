@@ -1,0 +1,44 @@
+{
+  "packet": "cc9_fire_request_timing",
+  "switch": "kGunWaveOrderBound (stays OFF)",
+  "doc": "docs/GUN_SHOT_CADENCE.md 10.7, 10.8",
+  "commits": {
+    "off_with_predictions": "1446b3f62"
+  },
+  "label_1_0ad_delivery": {
+    "answer": "same step in the image on both paths; the host matches; multiplier 1",
+    "evidence": [
+      "0077C2A0 routes to the loopback queue 0076E520 in a local session",
+      "00778450 drains it at fan-out row 9",
+      "the gun tick (+310h node +8h: 0084C5B0 / 006FE0D0) runs in wave 3, before the fan-out (00874FE0; FIXED_STEP_JOB_WAVES)"
+    ]
+  },
+  "label_2_settle_order": {
+    "answer": "the host tested settle one aim step later than the image; USN02 shots x0.69, device-299 mounts x0.87; first hit and the 29.75 s failure unchanged",
+    "evidence": [
+      "wave 1: node +4h = 0085AD80 steps toward the previous command",
+      "wave 2: 00875B90 -> 008759B0 walks the node sub-list the bots join at 008FBC8B",
+      "006DF520 tests 006DFB83 [gun+480h] / 006DFBAD [gun+484h] after 0085ABA0 at 006DFB54"
+    ]
+  },
+  "pairs": {
+    "USN02": {
+      "off": "12 / 5166 / 3826, first hit 19.20 s, Houston 22.75 s (Minegumo), failed 29.75 s",
+      "on": "10 / 4226 / 2621, first hit 19.20 s, Houston 20.85 s (Yamakaze), failed 29.75 s",
+      "pair_diff": 3
+    },
+    "USN04": {
+      "off": "28 / 491 / 3656, first hit 100.85 s",
+      "on": "22 / 361 / 1571, first hit 117.55 s",
+      "pair_diff": 3,
+      "note": "category 1 shots 3173 -> 1267"
+    },
+    "USN13": {
+      "off": "16 / 312 / 2069",
+      "on": "14 / 238 / 899",
+      "pair_diff": 3
+    }
+  },
+  "verdict": "OFF: the host gates AA guns on 006DF520's 0.1-degree settle, where the image's AA bots use the 008FEF40 hysteresis (008FFA20) and a 1-degree window (009030C0); flipping would compound that divergence. Bind the AA fire tests, then flip.",
+  "usn02_failure": "stands as the image's own for an idle player (torpedo-driven)"
+}

@@ -139,6 +139,16 @@ constexpr bool kGunImmediateFireSlotBound = true;
 //    decay and depth keeping are not modelled), as with the OFF swim.
 //    ON since the pairs (docs/TORPEDO_FRIENDLY_CROSSING.md 6.6).
 constexpr bool kTorpedoSwimThrustBound = true;
+//  * kGunWaveOrderBound: packet cc9_fire_request_timing, GUN_SHOT_CADENCE 10.7.
+//    The fixed step runs wave 1 (element +4h: 0085AD80 steps the gun toward
+//    the command set on the previous step), wave 2 (00875B90 -> 008759B0, the
+//    gun node's bot sub-list: 006DF520 sets the new command and tests settle
+//    against the stepped angles), wave 3 (element +8h: the gun tick posts 0ADh,
+//    and MSTGun's 006FE0D0 runs its salvo test), then the fan-out, whose row 9
+//    (00778450) delivers the 0ADh the same step. OFF: the host set the new
+//    command, stepped toward it and then tested settle, one aim step ahead of
+//    the image, and ran the salvo test before the bot.
+constexpr bool kGunWaveOrderBound = false;
 constexpr float kTorpedoAxialDrag474 = 0.5999994277954102f;    // 00D0C5EC
 constexpr float kTorpedoLateralDrag478 = 3.0000007152557373f;  // 00D0C5E8
 // DIAGNOSTIC gate for the per-launch tube line (packet cc9_torpedo_tube_turn).
@@ -952,6 +962,7 @@ struct GameGunneryHost::Impl {
     // torpedo's nose yaw, keyed by the shot's serial. The velocity follows it.
     std::map<unsigned long long, float> torpedo_nose_yaw;
     unsigned long long torpedo_thrust_steps{0};
+    unsigned long long wave_order_pre_steps{0};
     unsigned long long torpedo_swims_kept_entry{0};
     double torpedo_entry_speed_sum{0.0};
     unsigned long long immediate_arms{0};
@@ -5009,9 +5020,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         UnitState& state = unit_state[owner_unit];
         if (state.dead) continue;
 
-        // kGunImmediateFireSlotBound: MSTGun's tick 006FE0D0 ends with this test
-        // on the previous step's result. It is run here, before this step's bot,
-        // which is the next reader of the latch, so the order is the image's.
+        // kGunImmediateFireSlotBound: MSTGun's tick 006FE0D0 ends with this test.
+        // In the image it runs in wave 3, after the bot (wave 2) and after this
+        // step's 0ADh send, before the pump delivers it (fan-out row 9). With
+        // kGunWaveOrderBound OFF it runs here, before this step's bot.
+        auto mst_salvo_test = [&]() {
         if (kGunImmediateFireSlotBound && g < gun_turning_class.size()
             && gun_turning_class[g] == kTurningClassSingle && gun.fire.fire_requested) {
             ImmediateFireState& im = immediate_fire_by_gun[g];
@@ -5031,6 +5044,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             done("Gun::single_turning_tick_006fe0d0", 0x006fe0d0u);
         }
+        };
+        if (!kGunWaveOrderBound) mst_salvo_test();
 
         // Which of the five aim bots this gun's weapon sub-type selects.
         const bsp::GunBotSlotAssignment slots
@@ -5374,6 +5389,21 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (!command_angles) ++summary.idle_holds;
             }
         }
+        if (kGunWaveOrderBound) {
+            // Wave 1 (00875CAA.., the element's +4h slot 0085AD80) steps the
+            // gun toward the command the bot set on the previous step, before
+            // wave 2 (00875B90 -> 008759B0, the bot sub-list) sets a new one.
+            const bsp::GunArcRouteOutcome route = bsp::gun_arc_route_deltas_007f6530(arcs,
+                gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
+                gun.angles.target_vert);
+            done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
+            if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                ++gun.aim_steps;
+                ++summary.aim_steps;
+            }
+            done("Gun::step_aim_0085ad80", 0x0085ad80u);
+            ++wave_order_pre_steps;
+        }
         const bool accepted = command_angles
             && bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
                 gun.speeds, want_horz, want_vert, accepted_mark);
@@ -5408,15 +5438,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
         }
 
-        const bsp::GunArcRouteOutcome route = bsp::gun_arc_route_deltas_007f6530(arcs,
-            gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
-            gun.angles.target_vert);
-        done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
-        if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
-            ++gun.aim_steps;
-            ++summary.aim_steps;
+        if (!kGunWaveOrderBound) {
+            const bsp::GunArcRouteOutcome route = bsp::gun_arc_route_deltas_007f6530(arcs,
+                gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
+                gun.angles.target_vert);
+            done("Gun::arc_route_deltas_007f6530", 0x007f6530u);
+            if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                ++gun.aim_steps;
+                ++summary.aim_steps;
+            }
+            done("Gun::step_aim_0085ad80", 0x0085ad80u);
         }
-        done("Gun::step_aim_0085ad80", 0x0085ad80u);
 
         // 006DF520 step 12 arms the trigger through 006DEE40 against
         // *00CF9054 = 0.1 degree, not the stepper's 0.01-degree dead band that
@@ -5579,6 +5611,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 sent = true;
                 done("Gun::rapid_turning_tick_0084c5b0", 0x0084c5b0u);
             }
+        }
+        if (kGunWaveOrderBound) {
+            // 006FE0D0: after 0084C5B0's send, before the pump's FireIfReady.
+            mst_salvo_test();
         }
         if (torpedo_gun && sent) ++summary.torpedo_gun_sent;
         // Packet cc9_navigator_force_torpedo: 008A7200's direct 00730160.
@@ -9066,6 +9102,9 @@ void GameGunneryHost::report() {
                 single_other, host.immediate_arms, host.immediate_slot_calls,
                 host.immediate_extra_sends, host.immediate_flag_drops, host.salvo_drops,
                 host.salvo_ignored_false, host.immediate_guns_rapid, host.immediate_guns_single);
+            host.log.notef("summary mission gunnery wave order bound=%d pre_steps=%llu "
+                "(wave 1 0085AD80 before wave 2 006DF520, packet cc9_fire_request_timing)",
+                kGunWaveOrderBound ? 1 : 0, host.wave_order_pre_steps);
         }
         host.log.notef("summary mission gunnery plane guns trigger_ticks=%llu rounds=%llu "
             "hooked=%d intercept_solves=%llu intercept=%d dp_air_rounds=%llu dp=%d "
