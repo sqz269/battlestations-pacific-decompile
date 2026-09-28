@@ -272,6 +272,15 @@ constexpr bool kUnitInvincibilityFloorBound = true;
 //    ON by the pairs of 2026-09-27: gameplay identical on all four reference
 //    missions (docs/GUNNERY_OPEN_ITEMS.md section 8).
 constexpr bool kGunneryLineOfSightBound = true;
+//  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
+//    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
+//    is 00852B90's state from the hull's world Y (+100h) against the four
+//    depth words +1200h..+120Ch the dive binding seeded, so a boat held at a
+//    band reads Underwater (4) or DeepUnderwater (5) instead of PeriscopeIn.
+//    LABELLED: the periscope byte +1234h has no producer in this process and
+//    reads clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
+//    seeded keeps the stowed-periscope answer. OFF: PeriscopeIn for every boat.
+constexpr bool kSubmarineSensorCategoryBound = false;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -2151,6 +2160,13 @@ struct GameGunneryHost::Impl {
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
     unsigned long long los_blocked{0};
+    // Packet cc9_submarine_sensor_category: 00852B90's answers by state
+    // (index 1..5), counted whether or not the switch uses them; unseeded
+    // boats; and calls where the image's state differs from PeriscopeIn.
+    unsigned long long sub_category_calls{0};
+    unsigned long long sub_category_states[6]{0, 0, 0, 0, 0, 0};
+    unsigned long long sub_category_unseeded{0};
+    unsigned long long sub_category_differs{0};
 
     // --- rule (c), the sensor pass ------------------------------------------
     // docs/RECON_SENSOR_PASS_BINDING.md. 008073C0 runs once per tick over every
@@ -4599,8 +4615,35 @@ public:
             // bands this process does not read; the periscope half is
             // reconstructed and answers periscope_in for a stowed periscope,
             // which is the state a submarine that nothing has raised is in.
-            owner_.record("Recon::submarine_sensor_state_00852b90", 0x00852b90u);
-            return bsp::submarine_periscope_sensor_state(false);
+            // Packet cc9_submarine_sensor_category: with the bands seeded (the
+            // dive binding holds them), the whole state is computable; the
+            // periscope byte +1234h stays clear (no producer, LABELLED above).
+            const bsp::SensorCategory stowed = bsp::submarine_periscope_sensor_state(false);
+            ++owner_.sub_category_calls;
+            float bands[4]{};
+            if (!owner_.units.submarine_depth_bands(index, bands)) {
+                ++owner_.sub_category_unseeded;
+                owner_.record("Recon::submarine_sensor_state_00852b90", 0x00852b90u);
+                return stowed;
+            }
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            owner_.units.unit_position_00fc(index, x, y, z);   // +100h, the hull's world Y
+            bsp::SubmarineDepthBands depth;
+            depth.band_1200 = bands[0];
+            depth.band_1204 = bands[1];
+            depth.band_1208 = bands[2];
+            depth.band_120c = bands[3];
+            depth.periscope_raised = false;
+            const bsp::SensorCategory image = bsp::sensor_category_submarine_00852b90(y, depth);
+            const int state = static_cast<int>(image);
+            if (state >= 0 && state < 6) ++owner_.sub_category_states[state];
+            if (image != stowed) ++owner_.sub_category_differs;
+            if (!kSubmarineSensorCategoryBound) {
+                owner_.record("Recon::submarine_sensor_state_00852b90", 0x00852b90u);
+                return stowed;
+            }
+            owner_.done("Recon::submarine_sensor_state_00852b90", 0x00852b90u);
+            return image;
         }
         if (owner_.units.unit_is_kind_of(index, bsp::kUnitGunneryKindPlaneBase)) {
             return bsp::kSensorCategoryPlane_0074e190;
@@ -9364,6 +9407,13 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
+        host.log.notef("summary mission gunnery submarine sensor category calls=%llu "
+            "surface=%llu periscope_in=%llu periscope_out=%llu underwater=%llu deep=%llu "
+            "unseeded=%llu differs=%llu bound=%d (00852B90, packet cc9_submarine_sensor_category)",
+            host.sub_category_calls, host.sub_category_states[1], host.sub_category_states[2],
+            host.sub_category_states[3], host.sub_category_states[4], host.sub_category_states[5],
+            host.sub_category_unseeded, host.sub_category_differs,
+            kSubmarineSensorCategoryBound ? 1 : 0);
         host.log.notef("summary mission gunnery invincibility sets=%llu floored_writes=%llu "
             "sink_refusals=%llu bound=%d (00897A50 -> 0042ED80, 00879070, 008110F0, "
             "packet cc9_set_invincible_floor)", host.invincibility_sets,
