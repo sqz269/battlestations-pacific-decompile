@@ -975,3 +975,176 @@ the ranking.
 **The risk named in advance.** A victim whose death the script later tests (`unit.Dead`) moves a
 mission branch. That is the image's behaviour, and not a failed prediction, as long as the
 victim is the one the script named.
+
+## SetInvincible, 00897A50 (packet `cc9_set_invincible`, a read; the binding waits for the gunnery host)
+
+Worker cc9-lua2, 2026-09-27. This is item 2 of the ranking. Ghidra was read only.
+
+### The image (V, `docs/UNIT_DAMAGE_AND_DEATH.md` "The invincibility gate", `src/unit_damage.cpp`)
+
+- **The value.** `SetInvincible(entity, value)` resolves argument 0 and turns argument 1 into a
+  float:
+  - a boolean gives 1.0 or 0.0 (`00897B6F`);
+  - otherwise the number itself, a fraction of maximum health.
+- **The dispatch.** It calls the entity's `vtable[F4h]` (`00897C63`), which is `0042ED80`. That
+  routine stores the float at `+150h` and passes it to every child's `vtable[F4h]`, so turrets and
+  parts carry it too.
+- **Three readers:**
+  - **Damage, `00879070` (`008790D0`).** The amount is clamped so that health cannot fall below
+    `inv * max` (`bsp::invincibility_floor_00879070`, with the float-store rounding). A repair is
+    unaffected.
+  - **Sink, `008110F0` (`008110F9`).** Any value above 0 refuses the sink.
+  - **Query, `00897CB0`.** `IsInvincible` is `inv > 0`.
+- **`Kill` is not gated.** `008AC5C0` goes straight to `00926D90`.
+- **So `SetInvincible(Town, 0.24)`** keeps Yorktown-class01's health at or above 24% of its
+  maximum against damage. It does not protect against `Kill`.
+
+### What the host does
+
+- The three damage sites of `src/game_hosts_gunnery.cpp` build `bsp::UnitHealth` with
+  `invincibility` at its default of 0: the hull pass (`add_damage`) and the two sites near
+  `bsp::apply_damage_00879070`, at the file's 7242 and 7291 on main.
+- So the floor never applies, and the sink gate reads 0.
+- The binding needs a per-unit `+150h` in the gunnery host's unit state, set by the Lua native
+  and read at those three sites and at the sink.
+- `src/game_hosts_gunnery.cpp` is leased to cc9-gunnery3 now, so this packet commits the read and
+  the plan only.
+
+### Which calls the idle runs reach
+
+| mission | calls | the lines, and the units |
+| --- | --- | --- |
+| USN04 4700/4500 | 1 | `usn_19_coralus.lua` 456, `SetInvincible(Mission.Town, 0.24)` in the stage init. Town is `Yorktown-class01`, which **takes no damage** on the OFF run (`RA_OFF_USN04`: `taken 0`, health 8000) |
+| BSM01 3200/3000 | 58 | loops at `bsm_01` 405 (0.3), 425 (Raleigh 0.4), 998 (`true`) and the rest. **No BSM01 unit takes damage** on the idle run (`rb6_bsm01`: every row has `taken 0`) |
+| USN02 9200/9000 | 10 | `usn_2_java.lua` 230: `SetInvincible(unit, 0.1)` over `Mission.DRGrp` (DeRuyter, Java, Kortenaer, Electra) in `luaInit`. Line 310: 0.5 over `Mission.DRKillers` (Samidare, Murasame, Harusame), also in `luaInit`. Lines 755/761 release them in `luaPh2MovieEnd`, whose `DRGrp` loop then runs `AddDamage(unit, 100000000)`. The 10 fit 4 + 3 + 3; how far the release loop runs was not established |
+| USN01, USN13, JM08 | 7, 10, 1 | not examined in this read |
+
+### Predictions for the binding (switch `kUnitInvincibilityBound`, to be committed OFF)
+
+| row | prediction |
+| --- | --- |
+| USN04 4700/4500 | identity, exit 1: the floored unit takes no damage |
+| BSM01 3200/3000 | identity, exit 1: no unit takes damage |
+| USN02 9200/9000 | **moves, exit 3** |
+
+**The USN02 move.** On OFF, all seven floored ships die: Kortenaer at 68.30 s to Samidare,
+Electra at 108.60, DeRuyter at 176.86, Java at 184.26, Samidare at 161.56, Murasame at 190.66 and
+Harusame at 212.81. With the floors in force:
+- none of them can die to gunfire before `luaPh2MovieEnd` releases them;
+- a hit that would cross the floor is clamped instead;
+- a floored ship that reaches 0 would also refuse the sink.
+
+The death rows before the release disappear or move later, and the battle's hit and death counts
+move with them. The first row to check is Kortenaer, which does not die at 68.30 s.
+
+**So the measuring pair is USN02, not USN04 or BSM01.** Those two resolve as identity only.
+
+## The listener natives, first read (packet `cc9_lua_listeners`, a read)
+
+Worker cc9-lua2, 2026-09-27. This is item 3 of the ranking. Ghidra was read only, and the listings
+were read from disk.
+
+### Correction to the ranking's example
+
+The ranking gave USN04's `LexHitListener` (`usn_19_coralus.lua` 1201) as the example. It is
+registered only at the tail of the Zuikaku-sinking cinematic, which a 4500-frame idle run never
+reaches (`docs/HANDOFF_USN04_LUA_NATIVES.md` section 3). USN04's two measured `AddListener` calls
+are other listeners. The script offers the `kill` listeners at 1612/1635 (the Zeros over Zuikaku
+and Shokaku), the `recon` listener at 1932 and the helpers' `input` listeners. Which two run is
+not established.
+
+### The registry (V)
+
+- **`AddListener(channel, id, params)`, `008C6760`.** It reads arguments 0 and 1 as strings and
+  passes the table in argument 2 to `00980C10`.
+- **`00980C10`**, under the manager's lock at `+24h`:
+  - `00980150 BSP_WarningManager_ChannelIndex` selects the channel by name, with a
+    case-insensitive map;
+  - `00978D60` finds or creates the slot for `id` in that channel;
+  - the slot takes the subscription that `0097E360 BSP_WarningManager_ParseEventBlock` builds from
+    the params.
+- **The consequences.**
+  - A listener is keyed by (channel, id), and re-adding the same id replaces it.
+  - `IsListenerActive(channel, id)` (`008C6BB0`, through `00980E00`) is that lookup, pushed as a
+    boolean.
+  - `RemoveListener` (`008C6990`) erases it.
+- **Firing.** Each channel's dispatcher (`docs/MISSION_EVENTS_UPDATE.md`, "The named event
+  channels") evaluates the channel's subscriptions (`0097B8C0`: `subscription->vtable[3](params)`)
+  and calls each passing subscription's callback (`subscription+4h`) through the mission Lua
+  host.
+
+### The parser's channel table (V, from the listing of `0097E360`)
+
+- **How it tests.** Each arm compares the channel name, `__stricmp` for the first and
+  `00425850` for the rest.
+- **How it builds.** On a match it falls through to `operator new(size)` and the subscription's
+  constructor. The pairing below is read from the listing, because the pseudocode's else-chain
+  hides it.
+- **The check.** The first row matches the pseudocode's visible `recon` arm, `operator_new(0x4c)`
+  then `FUN_0097a220`.
+
+| channel | size | constructor | channel | size | constructor |
+| --- | --- | --- | --- | --- | --- |
+| `recon` | 4Ch | `0097A220` | `zone` | 3Ch | `0097C6D0` |
+| `kill` | 3Ch | `0097A450` | `command` | 4Ch | `0097C8A0` |
+| `hit` | 80h | `0097C2C0` | `target` | 2Ch | `0097AD80` |
+| `exitzone` | 2Ch | `0097A620` | `ammoType` | 2Ch | `0097AEF0` |
+| `input` | 1Ch | `0097A790` | `stock` | 3Ch | `0097B060` |
+| `surrender` | 1Ch | `0097A8B0` | `gui` | 2Ch | `0097CAD0` |
+| `failure` | 38h | `0097C560` | `generate` | 2Ch | `0097CC40` |
+| `leak` | 28h | `0097A9D0` | `player` | 2Ch | `0097CDB0` |
+| `fire` | 28h | `0097AAF0` | `musicOver` | 1Ch | `0097CF20` |
+| `repair` | 2Ch | `0097AC10` | `chat` | 3Ch | `0097D040` |
+| `entityKilled` | 2Ch | `0097D210` | `shipLanded` | 1Ch | `0097B230` |
+| `hpEvent` | 30h | `0097D380` | | | |
+
+The tool is `local/cc9-lua2-parse-map.py` in the cc9-lua2 tree.
+
+### The `kill` subscription (partial)
+
+- **The constructor `0097A450`** installs vtable `00D1B68C` and three empty sets: at `+0Ch` and
+  `+1Ch` (node factory `0096BA00`) and at `+2Ch` (`0096BA50`).
+- **The block's keys are not read in the constructor.** The three slots below push no string, so
+  the `target` and `callback` keys are read elsewhere: in `0097E360` after the constructor, or in
+  a slot not listed here. **Not read.**
+
+| slot | address | what it is |
+| --- | --- | --- |
+| 1 | `00972520` | set operations through `009721C0` and `009722D0`; no Ghidra function |
+| 2 | `0096E850` | set operations through `0096E3A0` and `0096E460`; no Ghidra function |
+| 3 | `0096ACE0` | the condition `0097B8C0` calls; three `00BF6713` range checks and `004254B0`; no Ghidra function |
+| 4 | `0097B390` | a destructor |
+| 5, 6, 7 | `009726D0`, `0096E9F0`, `00968710` | not read |
+
+### What binding them takes, in slices
+
+1. **The registry alone.**
+   - The work is `AddListener`, `RemoveListener` and `IsListenerActive` over (channel, id).
+   - Scripts test `IsListenerActive` only to add or remove, for example
+     `luaAddZuikakuZeroListener` (`usn_19_coralus.lua` 1610) and LOMP06 `luaNarwhalDC` 632.
+   - With no firing, **identity on every measured mission** is predicted: nil reads false
+     today, and true only changes whether a listener is added or removed again.
+   - This slice is the ground for the next one.
+2. **Firing `kill` and `hit`.**
+   - This needs slot 3's condition and the key reads.
+   - The producers are the host's own death and hit rows (`0077CE60` and `00959450` in the image,
+     `docs/MISSION_EVENTS_UPDATE.md`).
+   - **Measure:** USN04's Zero `kill` listeners, if one of its two calls is `ZuikakuZeroKillListener`.
+     Its callback `luaZuikakuZeroDead` runs when a listened Zero dies (Zeros die at 143.45 s and
+     after). LOMP06's `listener_NarwhalDC` (`hit`) only starts a dialog.
+3. **Firing `recon` and `command`.**
+   - The recon pass already produces the levels, and the commands host already has
+     `report_command_event_00984300`.
+   - **Measure:** JM06's `submove` command listener (1205) and `cvListener`/`usnsubListener`
+     (1582/1601), and LOMP06's `listener_SeaplaneSpotted` (328), whose callback
+     `luaSeaplaneSpotted` (638) runs on a detection.
+
+### no_ghidra_function
+
+| start | end (inclusive) | ABI | exits |
+| --- | --- | --- | --- |
+| `00972520` | `009725AC` | `__thiscall`, `RET 4`, INT3 after | one |
+| `0096E850` | `0096E8E5` | `__thiscall`, `RET 4`, INT3 after | one |
+| `0096ACE0` | `0096ADA6` | `__thiscall`, `RET 4` | two: `0096AD9C` and `0096ADA4`, INT3 after the second |
+
+All three are slots of vtable `00D1B68C`.
