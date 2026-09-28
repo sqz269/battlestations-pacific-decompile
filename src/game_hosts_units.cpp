@@ -1836,6 +1836,11 @@ struct GameUnitsHost::Impl {
     unsigned long long formation_joins{0};
     unsigned long long formation_creates{0};
     unsigned long long formation_rejoins{0};
+    // Packet cc9_formation_join_follow: the recursion depth of formation_join_0077f940
+    // (the follow is the top-level join's), and the follows it issued / that answered.
+    int formation_join_depth{0};
+    unsigned long long formation_join_follows{0};
+    unsigned long long formation_join_follows_pushed{0};
     // Packet cc9_dead_member_group_removal.
     unsigned long long formation_death_leaves{0};
     unsigned long long pitch_mode_two_steps{0};   // packet cc9_torpedo_run_pitch_profile
@@ -4124,6 +4129,13 @@ struct GameUnitsHost::Impl {
     // leader timer names. OFF: a record.
     // ON since the USN02 / USN04 pairs: identical; both missions gate every call.
     static constexpr bool kFormationSlotSwapBound = true;
+    // Packet cc9_formation_join_follow (docs/SHIP_UNIT_GROUP_FOLLOW.md section 5g).
+    // 0077F940's tail 0077FA81..0077FABF: once per brought unit, after 0070EF30,
+    // ordered->vtable[114h]() (the director) and, when non-null, director->vtable[58h]
+    // = 00720CD0 with [ESP+80h], the target group's leader (0077F9E6): clear the ten
+    // slots and push `follow` 00E08F60. ESI is the ORDERED unit on every pass, so the
+    // brought members get nothing. OFF: the follow-up is skipped (counted).
+    static constexpr bool kFormationJoinFollowBound = false;
     // Packet cc9_ship_motion_tail part 8c: 00826B84's unit->vtable[1ECh](dt) is
     // 008160B0 on every ship class, the repair tick whose work (0093CA20) the
     // gunnery host's run_damage_control already runs, after the projectile pass.
@@ -20126,8 +20138,24 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     // own leader, which is 0077F9E6's redirect.
     const std::size_t target_leader =
         host.formation_groups[static_cast<std::size_t>(group)].leader;
+    ++host.formation_join_depth;
     for (std::size_t i = 1; i < brought.size(); ++i) {
         formation_join_0077f940(brought[i], target_leader);
+    }
+    --host.formation_join_depth;
+    // Packet cc9_formation_join_follow. 0077FA8D..0077FAB8 inside the 0077FA81 loop,
+    // so it runs brought.size() times with the same unit and the same target; the
+    // recursion above models the loop's 0070EF30 calls only, so the follow belongs
+    // to the top-level call alone.
+    if (host.formation_join_depth == 0) {
+        for (std::size_t i = 0; i < brought.size(); ++i) {
+            ++host.formation_join_follows;
+            if constexpr (Impl::kFormationJoinFollowBound) {
+                if (host.commands.issue_follow_command_00720cd0(follower, target_leader)) {
+                    ++host.formation_join_follows_pushed;
+                }
+            }
+        }
     }
     return true;
 }
@@ -21367,6 +21395,10 @@ void GameUnitsHost::report() {
         "(0077BD70 / 0070D8D0 / 0070D0C0 / 0070E4C0, packet cc9_dead_member_group_removal)",
         host.formation_death_leaves, host.formation_death_handovers,
         host.formation_groups_emptied, kDeadMemberLeavesGroupBound ? 1 : 0);
+    host.log.notef("summary unit formation join follow calls=%llu pushed=%llu bound=%d "
+        "(0077FA8D -> 00720CD0, packet cc9_formation_join_follow)",
+        host.formation_join_follows, host.formation_join_follows_pushed,
+        Impl::kFormationJoinFollowBound ? 1 : 0);
     host.log.notef("summary unit formation groups=%llu joins=%llu creates=%llu rejoins=%llu "
         "clamped=%llu columns_unmeasurable=%llu (0070DB20 create, 0070EF30 join, "
         "0070ED30 column 0)",
