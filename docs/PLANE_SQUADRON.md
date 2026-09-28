@@ -696,3 +696,23 @@ Streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player, this tree at the OF
 **The named risk.** For about 6 s the controlled unit is a dead plane slot rather than none. If a
 host path reads the controlled unit specially for a plane or for its squadron, the surviving
 plane `ScoutDauntless|.-2` could move. Its death time is the row to watch.
+
+### Pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `5a63f68e2`. The logs are `local/kill_off_<mission>.log`, the same
+  build the Kill pair used, with every other switch as committed.
+- ON is `pair_export --commit HEAD(5a63f68e2) --flip kSquadronObserverLivenessBound=true`
+  (`local/sq_on`, SHA-256 `D03E3F541410`), with logs `local/sq_on_<mission>.log`.
+- Both environment options were set, at lockstep 0.05 with an idle player.
+
+| row | prediction | measured | verdict |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | `holds=1` at 129.85 s; the release moves to about 135.95 s; `notices=1 releases=1`; gameplay identical | `holds=1` (`the fused slot died but squadron "ScoutDauntless" keeps 1 live plane(s)`); the release is at HUD update frame 2718 (135.9 s) where it was 2596; `notices=1 releases=1`; pair_diff exit 1, gameplay identical | held |
+| USN04 4700/4500 | identity, `holds=0` | exit 1, `holds=0` | held |
+| USN02 9200/9000 | identity, `holds=0` | exit 1, `holds=0` | held |
+
+The named risk did not fire: the six seconds with a dead plane slot as the controlled unit moved
+nothing.
+
+**Verdict: `kSquadronObserverLivenessBound = true`.**

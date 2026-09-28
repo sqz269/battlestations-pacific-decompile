@@ -6,7 +6,7 @@
     {
       "name": "kSquadronObserverLivenessBound",
       "file": "include/bsp/game_hosts_hud.hpp",
-      "state": "OFF"
+      "state": "ON (pairs held)"
     }
   ],
   "substitutions": [
@@ -17,5 +17,10 @@
   "failed_predictions": [],
   "read_only": [
     "+361h map-exit flag (007F31A0) not modelled; no measured pair leaves the map"
-  ]
+  ],
+  "pairs": {
+    "USN01": "exit 1, holds=1, release frame 2596 -> 2718",
+    "USN04": "exit 1, holds=0",
+    "USN02": "exit 1, holds=0"
+  }
 }
