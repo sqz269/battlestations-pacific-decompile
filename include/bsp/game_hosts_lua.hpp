@@ -835,6 +835,10 @@ public:
     // 0083cc2c..0083ce3c). 0083cc2c itself is not projected; only its reads
     // run. False leaves the output untouched.
     bool read_auto_thrust_0083cc2c(ShipAiAutoThrustSettings& out);
+    // Packet cc9_ships7_entry_points: ShipGlobals.SubAttack.SubmarineLostTime as
+    // 0083B5E0 loads it into settings+4D4h (0083F779..0083F7A1), read live off
+    // the loaded ShipGlobals table; 0 when absent, as lua_tonumber gives the image.
+    float sub_attack_submarine_lost_time_04d4() const;
 
     // Packet cc9_unit_instance_step11. The EngineSoundSmoothRate of the four
     // engine-sound records 0083B5E0 fills at settings+5BCh + i*24h + 8h
