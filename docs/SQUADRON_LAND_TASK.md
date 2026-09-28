@@ -1,7 +1,9 @@
 # The squadron's `land` task (packet `cc9_land_task_reach`)
 
 Addresses: 009B41C0 009B3240 009B2E50 009AFE70 009AF9A0 009AFA50 009B3EB0 009B3900 009B34D0
-009B3560 009B3680 009B3770 009B3CF0 009B3C60 009B3750 006C54C0 006C4790 006BD080 006C0B50
+009B3560 009B3680 009B3770 009B3CF0 009B3C60 009B3750 006C54C0 006C4790 006BD080 006C0B50 006CD240
+006CC9F0 006C7960 006C3B10 006C5C40 006C5380 006C3E50 006C46B0 006C45C0 006BED60 007C6760 006C7540
+006BEF70 006C0750 006BEE40 006BC960 006BF0D0 006BA620
 0099A3DD
 
 Worker cc9-lua8, 2026-09-28. This continues `docs/CONTROLLED_UNIT.md`, "The squadron's
@@ -282,12 +284,170 @@ taken after the display came back.
 and the wingmen's spread. The ON state is the image's first half: the squadrons leave the fight
 and fly home. The second half, the landing, waits for the deck's sequencer (section 6).
 
+## 5b. The landing sequencer, read (packet `cc9_landing_sequencer`, cc9-lua9, 2026-09-28)
+
+This section is a read only. Nothing is bound. The routines below produce the assignment vector at
+block `+A8h` that `006BD080` looks up; without them every request answers mode 1, as section 3
+says. Every address was read from the Ghidra listing; the constants come from the image on disk,
+and every constant address is in `.rdata` (`00CE2000`-`00E08000`), so none has a run-time writer.
+
+### The queue at block `+98h` and its tick
+
+- **`006C0B50`** (`006C0B50`-`006C0D1C`), called from `006C54C0` unless `006BF060` finds the squadron.
+  Its 14h-byte record is {squadron, block `+80h`, `n`, countdown `+0Ch` = 0.0, interval `+10h` =
+  1.0}. `n` is one more than the largest `n` already queued, so the first squadron has `n` = 0.
+  The tail moves any launch slot (block `+4Ch`, 58h each) whose `+28h` is the squadron to state 4.
+- **`006BEF70`** (`006BEF70`-`006BEFE7`, `RET 4`): the plane's squadron's queue `n`, or -1.
+- **`006CD240`** (`006CD240`-`006CD34C`, `__thiscall(block)(float dt)`), called from `006CDC70`.
+  For each queue record: countdown -= dt. When it goes below 0, countdown = interval, interval =
+  `006CC9F0(squadron, interval)`, and countdown = min(countdown, interval). The first countdown
+  is 0.0, so the sequencer runs on the first tick after the request.
+
+### The sequencer `006CC9F0` (`006CC9F0`-`006CCD77`, `__thiscall(block)(squadron, float)`, `RET 8`, returns ST0)
+
+The float argument is not read. `head` is squadron `+3D0h`; the members are the up to five
+pointers at squadron `+3D0h`..`+3E0h`, ending at the first null.
+
+1. Walk `+A8h` for the record whose plane is `head`. On a hit: `006C7960(rec, 1, 4, -1.0)`, then
+   `006C3F80(rec)`, then read the record's mode `+10h` and float `+4h`, then `done = 006C45C0(head)`.
+2. **`done`**: `006C7540(squadron)` erases every record of the squadron. Returns 1.0 (`00D7A24C`).
+3. **Hit, not done**: the result is 0.25 (`00CE3868`) when the head's mode is 3 or 4, else 1.0.
+   Every other record whose plane's `+9D4h` is this squadron gets `006C7960(rec, 0, headMode,
+   headFloat4)` and `006C3F80(rec)`.
+4. **Miss**: when `006C46B0(head)` is true, the result is 1.0 and nothing is inserted. Otherwise
+   the result is 0.0, and one record per member is appended through `006CAA10` (a vector
+   `push_back`, `006CAA10`-`006CAAB0`) at `006CCCDD`-`006CCD27`:
+   - `+0h` the member, `+4h` StandbyDist (tuning `+500h`), `+8h` 1.0, `+0Ch` 0;
+   - `+0Dh` = (x - holder `+A4h` >= 0), where x is the head's position through the holder's
+     inverse matrix at holder `+48h` (`006CCC52`-`006CCC89`);
+   - `+10h` the mode: 3 for the head, 1 for every other member.
+- **`006C7540`** (`006C7540`-`006C7670`): erases every `+A8h` record whose plane's `+9D4h` is the
+  squadron.
+
+### The mode `006C7960` (`__thiscall(block)(rec, bool leaderPass, int headMode, float headDist)`)
+
+- Plane `+904h` set (landed): mode 4, `+4h` = -1.0, `+8h` = 1.0, return.
+- Not airborne (`(plane+72Ch)->vtable[38h]`), or `+0Ch` set: mode = leaderPass ? 2 : 1, `+4h` =
+  999999.0 (`00CF87D0`), `+8h` = 1.0, return.
+- Squadron `+3B0h` clear and not the leader pass:
+  - headMode 2: mode 2 when `006C46B0(plane)` is false and `006C5E20(head)` is true, else 1;
+  - headMode 1: mode 1;
+  - headMode 4: mode 4 when `006BED60()` and `006C3B10(plane)` answer true and `+8h` > 0.0;
+  - otherwise, and headMode 3: mode 3.
+- The leader pass, or squadron `+3B0h` set (which also sets leaderPass):
+  - `006C3B10(plane)` true: mode 4 when `006BED60()` and `+8h` > 0.0, else 3;
+  - otherwise, with squadron `+3B0h` clear: mode 3 when `006C5C40(plane)` is true, else
+    2 - `006C46B0(plane)`. So mode 2 inside StandbyDist, 1 outside;
+  - otherwise (`+3B0h` set): mode 3.
+- Then `006C6020(rec)`. After the leader pass it returns; otherwise `+4h` =
+  max(`+4h`, headDist + 1.0) (the double `00D7A210`).
+
+### The predicates, all `__thiscall` on the block, all `RET 4`, each with the plane as the argument
+
+- **`006BED60`** (fastcall on the block): block `+1Ch` and `+1Dh` clear, owner `+7Ch` non-null
+  with `+5Dh` clear. The deck can take a landing.
+- **`006C46B0`**: the plane's horizontal distance to the touchdown point T is above StandbyDist.
+  T is holder `+A4h`..`+ACh` through the holder's matrix at holder `+8h`.
+- **`006C45C0`**: airborne and that distance is above StandbyDist x 1.2 (the double `00CEC160`). This releases the squadron.
+- **`006C3B10`** (`006C3B10`-`006C3E41`): the runway corridor test.
+  - A null plane answers false. So does a plane with `+904h` clear whose `+900h` is 2 or 4.
+  - A plane that is not airborne answers true.
+  - An airborne plane whose parent (`00923810(1)`, entity `+3Ch`) is an AirField (45h) or a
+    MotherShip (9) also answers true.
+  - Otherwise (x, y, z) = `006BCC90(pos)`, the position in the holder frame relative to T.
+    Let z' = z - 1.5 L, where L = `006BA620()`, which is RunwayLength x 0.3 on a MotherShip owner
+    and x 0.4 otherwise.
+  - The test is false when y > 5.0 - 2 tan(ApproachAngle) z'.
+  - e = max(0, x - w) for x > 0, else min(0, x + w), where w = RunwayWidth x 0.5. The test is
+    false when |(e, y, z')| - 1.5 L > PosBehind x 1.1.
+  - b is the bearing from the plane to T. It becomes the runway heading (holder `+88h`) when
+    |e| < 1.0 and z' > -2L.
+  - The test is false unless |wrap(h - runwayHeading)| < pi/2, where h is `plane->vtable[50h]()`.
+  - It is true when |wrap(h - b)| < `00419010`(0, 30 deg, PosBehind x 1.25, 90 deg; |(e, y, z')| - 1.5 L).
+- **`006C5C40`** (`006C5C40`-`006C5E18`): on the landing circle.
+  - Null or landed answers false.
+  - `side` = (x > 0) of `006BCC90(pos)`. P = `006C5380(plane, side)`, and d = |P - pos| in x and z.
+  - The test is false when d > r x 1.6, with r = `006C3E50(plane)`.
+  - Otherwise delta = |wrap(bearing(P - pos) - (side ? +pi/2 : -pi/2) - h)|.
+  - It is true when delta < `00419010`(r x 0.25, 45 deg, r x 0.8, 20 deg; d).
+  - The stack was traced from the listing; the pseudocode's argument order is wrong.
+- **`006C5380`** (`__thiscall(holder)(out, plane, bool side)`, `RET 0Ch`): the circle point.
+  - It is holder-local (T.x + (side ? r : -r), PosAlt + 20 n, -PosBehind - 60 n), through the
+    holder's matrix at `+8h`, with n = `006BEF70(plane)`.
+  - A LevelBomber (10h) or LargeReconPlane (16h) adds 250.0 to the `60 n` term.
+- **`006C3E50`** (`__thiscall(block)(plane)`, returns ST0): r = f^2 x `007C6760(plane)`.
+  - f = `00419010`(RadiusChange[1], 1.0, RadiusChange[2], 2.5; the record count at `+A8h`).
+  - A null plane gives 500.0.
+- **`007C6760`** (fastcall on the plane): class `+268h` TurnCircleRadius times m.
+  - m is CircleMultiplierMax for a LevelBomber.
+  - For a DiveBomber, TorpedoBomber or ReconPlane (12h, 11h, 14h), m = Max x 0.4 + Min x 0.6.
+  - Otherwise m is CircleMultiplierMin.
+- **`006C5E20`**, partial. It is false for a null plane. When `006C3B10` or `006C5C40` answers, it
+  is false as well. Otherwise it applies a StandbyDist distance gate to T and a heading test against
+  the circle point, using `00419010`(PosBehind, 80 deg, StandbyDist x 0.6, 30 deg; distance). The
+  argument roles need the listing.
+
+### The holder at block `+80h`
+
+- **Builder `006C0750`**, reached from `006C0D20`, which allocates C0h bytes.
+  - `+4h` is the block.
+  - `+98h`..`+A0h` is the local offset. It is zero from `006D3C10`.
+  - `+B0h` and `+B4h` are descriptor `+138h` and `+13Ch`.
+  - Then it calls `006BEE40(0)` and `006BC960`.
+  - `+8Ch` = 0, `+90h` = `+88h`, and `+94h` = 100.0.
+- **`006BEE40`**: `+8h`..`+47h` is a copy of the owner's world matrix, at owner `+CCh`.
+  - The offset is added to the translation row at `+38h`.
+  - `0085DEA0` then builds the inverse at `+48h`.
+  - `+88h` = owner `vtable[50h]()`, the runway heading.
+- **`006BF0D0`** (from `006D3C10`): holder `+B0h` = RunwayWidth and `+B4h` = RunwayLength, both
+  scene keys. Then it calls `006BC960`.
+- **`006BC960`**: T = (`+A4h`, `+A8h`, `+ACh`).
+  - On a MotherShip owner: (0, 0.5, -0.5 x RunwayLength + 10).
+  - Otherwise: (max(0, (RunwayWidth - block `vtable[10h]()`) x 0.5), 0.5, -0.5 x RunwayLength + 35).
+  - The block `vtable[10h]` is unread.
+- **`006BCC90`** (`RET 8`): the holder-frame position relative to T, through `+48h`.
+- **`006BCA40`** (`RET 4`): T in world, through `+8h`.
+
+### Unread
+
+- `006C6020` (`006C6020`-`006C64A4`) is read in part. It sets `+4h`, the path still to fly to T along
+  the circle, and `+0Dh`, the side taken from the members' x sum when the mode is below 3.
+  Its arc term goes through `00BF9940` with an x87 register argument, so the rest needs the
+  listing.
+- `006C3F80` (`006C3F80`-`006C45B7`) is unread past its first arm. When the plane is not airborne,
+  or `+0Ch` is set, it sets `+8h` = 1.0. It is what later moves `+8h`, which gates mode 4.
+- The block `vtable[10h]`, the scene rows' RunwayWidth and RunwayLength for CB4_AF, and the
+  host's substitute for the parent link `+3Ch` of an airborne plane. The proposed substitute is
+  null.
+
+### What the LOMP10 row should do once this is bound (from the read, not measured)
+
+- Tuning values from this installation's `scripts/datatables/planeglobals.lua` (mtime 2024-10-29):
+  StandbyDist 3200, PosBehind 780, PosAlt 170, ApproachAngle 12 deg, RadiusChange {10, 50},
+  CircleMultiplierMin 1.1 and CircleMultiplierMax 1.05.
+- **Who gets a record.** The Lightning 01 and Warhawk 01 squadrons circle CB4_AF inside
+  3200 m. So on the first `006CD240` pass after their first request, every airborne member gets a
+  record: the head at mode 3, the wingmen at mode 1. B-25 01 is refused before its request.
+- **When the mode rises past 1.** The sequencer returns 0.0 after an insert, so the next pass is
+  one tick later. That pass gives the head 2, 3 or 4:
+  - 4 only inside the runway corridor with the deck usable;
+  - 3 on the landing circle;
+  - otherwise 2.
+  Wingmen then take 3 behind a mode-3 head, 2 or 1 behind a mode-2 head, and 4 or 3 behind a
+  mode-4 head. Their next request, paced by approach `+ACh`/`+B0h` at about 0.5 s, reads the mode.
+- **The first landing state.** The flight leader enters `land/standby` (mode 2 or 3), or
+  `land/begin` (mode 4) if it happens to be in the corridor. Wingmen enter `land/line` (mode 2) or
+  `land/standby` (mode 3). All three are refused states in this host today, so a binding of the
+  sequencer alone moves the refusal counters and leaves the flight paths as they are, unless the
+  found arm of `006C54C0` changes approach fields that moveto (land) or follow (land) read.
+
 ## 6. Open, in order
 
-1. **The landing sequencer `006CC9F0`** (from `006CD240`, inserting through `006CAA10`, updating
-   through `006C7960` and `006C3F80`). It is the only producer of the mode 2-4 answers, so no plane
-   can land until it is read. The reads with it are `006C0B50`'s queue (`+98h`), `006C3E50` and
-   `006C5380` (`PosBehind`, `PosAlt`). Then `land/standby` and `land/line` for the row.
+1. **The landing sequencer `006CC9F0`** is read in section 5b; it is not bound. Two bodies are
+   left before the binding can be exact: `006C6020` (the record's `+4h`, whose arc term needs the
+   listing) and `006C3F80` (the record's `+8h`, which gates mode 4). The binding then needs the
+   holder frame from the owner's pose, `RunwayWidth`/`RunwayLength` and block `vtable[10h]`. After
+   that come `land/standby` and `land/line` for the row.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
 3. **The follow law on a circling leader** (the Lightning members above). This belongs to the
@@ -304,8 +464,14 @@ and fly home. The second half, the landing, waits for the deck's sequencer (sect
 | `009B3900` | complete except the `onGround` arm (`009AFAF0(1)`, `0099B650`), unreachable in mode 1 |
 | `009B34D0`, `009B3560`, `009B3680`, `009AFA50`, `009B3750`, `009B3C60` | complete |
 | `009B3770`, `009B3CF0` | complete as a read; bound for moveto and follow, refusing every other state |
-| `006C54C0` | partial: the miss arm bound; `006C3E50`, `006C5380` and the frame sums unread |
+| `006C54C0` | partial: the miss arm bound; `006C3E50` and `006C5380` read (section 5b); the frame sums unread |
 | `006BD080`, `006C4790` | complete as a read; the vector and list producers unread |
+| `006CD240`, `006CC9F0`, `006C7960`, `006C0B50`, `006BEF70`, `006C7540`, `006CAA10` | complete as a read (section 5b); not bound |
+| `006C3B10`, `006C5C40`, `006C5380`, `006C3E50`, `007C6760`, `006C46B0`, `006C45C0`, `006BED60` | complete as a read; not bound |
+| `006C0750`, `006BEE40`, `006BF0D0`, `006BC960`, `006BCC90`, `006BCA40`, `006BA620` | complete as a read; block `vtable[10h]` and `0085DEA0` unread |
+| `006C5E20` | partial: gates read, the heading test's argument roles unread |
+| `006C6020` | partial: `006C6038`-`006C60F0` and the tail stores read; the arc term (`00BF9940`) unread |
+| `006C3F80` | partial: the first arm (`+8h` = 1.0) only |
 | the six landing states' bodies | unread |
 
 ## ABI
