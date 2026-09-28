@@ -11425,3 +11425,218 @@ from the same tree. A **merge** step is main's landings merged between two of th
   - E2 594 -> 595 (before c): not isolated.
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
+
+## Mission reference baselines, 2026-09-29 i (main d466d4250)
+
+Packet `cc9_reference_rebaseline_9`, worker cc9-gunnery7. **It replaces the 2026-09-29 h rows
+above.**
+
+**Run parameters:**
+- One binary: `local\rb9\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery7 (SHA-256
+  `d119e0505144c50694fd530599d1e1c58bb370330fc487f60ec1254c981939c3`, prefix `D119E0505144`). It
+  is a clean `tools/pair_export.py --commit d466d4250` export with no flip.
+- The run parameters are h's: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, an
+  idle player, present interval immediate, `tools/run_game.ps1`, and
+  `--press-start-frame 30 --menu-select <mission>`.
+- **Rows:** the reference rows are USN04 4700/4500, E2 (USN04 9200/9000), USN01 3200/3000 and
+  USN02 9200/9000. The smoke rows are JM06, JM08, USN13 and BSM01 at 3200/3000, and LOMP06 at
+  1200/1000.
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb9\` and the final COM release.
+- **No predictions were committed before these runs.** Each move against h is attributed by the
+  landing's own pair where that pair covered the row, and otherwise by a leave-one-out export of
+  `d466d4250` with only the named switches OFF (the table under "Leave-one-out exports").
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11740.0 | 43 | 798 (115) | 9611 | 101.10 s | 7 of 16 / 4 of 19 | 14 | Lexington 3631.06 m | none | 512 | `local\rb9_usn04.log` |
+| USN01 | 3000 | 2250.0 | 5 | 538 (77) | 1498 | 53.60 s | 2 of 5 / 2 of 2 | 3 | ScoutDauntless 4582.21 m | none | 515 | `local\rb9_usn01.log` |
+| USN04 (E2) | 9000 | 12797.1 | 51 | 863 (132) | 10779 | 101.10 s | 7 of 16 / 7 of 19 | 19 | Lexington 5627.93 m | none; phase 1 only (known) | 516 | `local\rb9_e2.log` |
+| USN02 | 9000 | 52340.6 | 10 | 4324 (394) | 2582 | 19.20 s | - | - | Kortenaer 749.27 m | **failed at 29.75 s**, phase 1 (`MissionPhase=1`) | 501 | `local\rb9_usn02.log` |
+| JM06 (smoke) | 3000 | 2720.7 | 1 | 127 (109) | 201 | 68.65 s | - | - | Fletcher-class 08 1227.87 m | none | 505 | `local\rb9_jm06.log` |
+| JM08 (smoke) | 3000 | 3681.8 | 9 | 342 (86) | 2091 | 5.25 s | - | 1 | Auilick 1495.61 m | none | 486 | `local\rb9_jm08.log` |
+| USN13 (smoke) | 3000 | 6222.6 | 20 | 371 (89) | 3626 | 96.65 s | 1 of 60 / - | 5 | Enterprise 1845.78 m | none | 501 | `local\rb9_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 470 | `local\rb9_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 14 | - | - | - | Narwhal 450.86 m | none | 485 | `local\rb9_lomp06.log` |
+
+The unimplemented column is the last `host methods N concrete, M unimplemented` line. It falls
+on every row as the bound natives and host methods above landed.
+
+### USN02: the failure at 29.75 s, and its cause
+
+- **Unchanged from h.** Houston is sunk at 20.85 s by a Yamakaze Long Lance at 2439 m
+  (`killer_cat=7`, first damage 19.20 s). The script's `Houston.Dead or Exeter.Dead` test
+  (`usn_2_java.lua:521`) ends the mission at 29.75 s in phase 1 (`MissionPhase=1`). It is still
+  recorded as the image's own for an idle player (GUN_SHOT_CADENCE 10.8, 10.10).
+- **The death rows:** the same ten victims and killers as h. Yamakaze dies at 142.30 -> 142.35 s
+  and John2 at 175.11 -> 175.21 s, the one-step shifts the loopback queue's pair recorded
+  (GUNNERY_OPEN_ITEMS 27, M3).
+- **Kortenaer moves 749.27 m** against h's 1136.82 m, with the same command history, as section 27
+  recorded.
+
+### JM06, JM08 and LOMP06
+
+- **JM06:** one death, the Gato wreck at 0 s (Kill), now at -9 m. **US Cargo Transport 02 no
+  longer dies**, and hit records fall 320 -> 127.
+  - h's flag expected the drop from the dive teleport. On this base it is the loopback queue's:
+    with `kSetCommandQueueDelayBound` and `kSetCommandClearAllMessageBound` OFF, `d466d4250`
+    is gameplay-identical to h's JM06 log (`rb9nqt`, `pair_diff` exit 1: 2 / 320 / 414,
+    90.35 s, teleport also OFF).
+  - The teleport's own effect on this base is small: teleport OFF gives 1 / 123 / 200, and ON gives
+    1 / 127 / 201. With the queue OFF it moves nothing but 4895.1 -> 4895.8 damage and one shot.
+- **JM08:** the whole move is SquadronSetTravelAlt's (`kSquadronTravelAltBound`, LUA_BINDING_MISSION
+  "SquadronSetTravelAlt: the pairs and the verdict"). The pair recorded exactly this row: shots
+  1689 -> 2091, hit records 310 -> 342, hull 89 -> 86, damage 3745.4 -> 3681.8, the same 9 death
+  rows. The movie plane: `squadron travel alt Movie Mavis: alt=750.0 force=1 active=1`.
+- **LOMP06:** the Narwhal's controlled distance goes 758.85 -> 450.86 m and shots 16 -> 14. Two
+  landings did it:
+  - **The dive teleport** starts the Narwhal at -10.2 m: 758.85 -> 770.88 m on h's base (the
+    rate-limit and formation pairs, `rl_*` and `fq_*`, were run on h plus the teleport), and
+    439.91 -> 450.86 m on this one. SUBMARINE_MODEL 15's 407.14 -> 421.34 m was on a base without
+    h's landings.
+  - **The CAUTIOUSATTACK tick** (`kCautiousAttackTickBound`, PLANNER_TASK_CHOICE 11) moves the
+    rest. With only that switch OFF, `d466d4250` gives 770.74 m and 16 shots. ON, the tick issues
+    15 commands from 10.45 s (`commands=0` OFF), and the Narwhal's range reads 1852 against 1500.
+    Section 11.4's pairs did not run LOMP06, so this is recorded here and is **not a verdict on
+    the tick**.
+
+### Against the 2026-09-29 h section, and what moved each row
+
+h's logs (worktree cc9-gunnery4, `local\rb8_<row>.log`) are **gameplay-identical** (`pair_diff`
+exit 1) to section 27's OFF logs on USN02, USN01 and USN04 (worktree cc9-gunnery6,
+`local\g6off2_<row>.log`). The chain on those rows therefore runs through the queue and clear-all
+pairs themselves, and then through one **merge** step: section 29's ON logs (`g6caon`) against
+this reference. That step brings in the landings missing from cc9-gunnery6's base: the plane row
+position, the capture accessors, SELLING, the reload feeds, SquadronSetTravelAlt, the projectile
+team id and attackerPlayerIndex.
+
+**USN04 (4500).** 44 / 749 / 9310, 10 of 19 dive releases became **43 / 798 / 9611, 4 of 19**:
+
+| step | deaths / hit records / shots, releases | by | doc |
+| --- | --- | --- | --- |
+| h = the queue pair's OFF | 44 / 749 / 9310, 8 of 16 / 10 of 19 | - | - |
+| loopback queue | 45 / ... , 7 of 16 / 4 of 19; B5N Kate #4.1 123.55 -> 123.80 s | a2d8a94de | GUNNERY_OPEN_ITEMS 27 |
+| clear-all | identical (45 / 801 / 10050) | 28fd2da16 | GUNNERY_OPEN_ITEMS 29 |
+| merge to `d466d4250` | 43 / 798 / 9611: D3A Val #3.1 and A6M Zero #7.2 no longer die | the reload feeds, 32581fc8a (below) | LUA_BINDING_MISSION "SetDeviceReloadEnabled: the feed pairs" |
+
+- **The dive-bomb releases 10 -> 4 are the image's own**, per GUNNERY_OPEN_ITEMS 30: the ON host's
+  first dive step is the image's earliest, and the old host started each ordered dive one step
+  early. This reference takes the ON count, 4 of 19.
+- **The merge step is the SetDeviceReloadEnabled feeds.** With `kLuaDeviceReloadEnabledBound` alone
+  OFF, `d466d4250` is gameplay-identical to section 29's ON log (`rb9nr_usn04`: 45 / 801 / 10050,
+  exit 1 against `g6caon_usn04`). The feed sets every squadron's `+369h` ReloadEnabled (default 1,
+  `007F2D09`). Its own pairs ran JM06, JM08 and USN13 only.
+- **Identity on USN04 by their own pairs:** the director target checks (GUNNERY_OPEN_ITEMS 21), the
+  threat head and accept (24), the projectile team id (26), the AutoTarget recon candidates
+  (AUTOTARGET_RECON_CANDIDATES 6), the Capture path, Defend paths, SELLING and CAUTIOUSATTACK
+  (PLANNER_TASK_CHOICE 8.4, 10.4, 11.4, 12.4, 13.4), the plane row position (CONTROLLED_UNIT) and
+  SquadronSetTravelAlt. The capture accessors are identity here by leave-one-out (`rb9nc`, exit 0).
+
+**USN01 (3000).** 5 / 538 / 1498 is unchanged; the controlled ScoutDauntless moves 0.00 -> 4582.21 m:
+
+| step | change | by | doc |
+| --- | --- | --- | --- |
+| h = the queue pair's OFF | 5 / 538 / 1498, ScoutDauntless 0.00 | - | - |
+| Capture path, Defend think | 177 -> 172 -> 177 on their base; net identity here (`rb9np`, exit 1) | 06bc3863a, 7fc52173c | PLANNER_TASK_CHOICE 8.4, 10.4 |
+| loopback queue | Mav1 dies 70.95 -> 71.00 s; the rest identical | a2d8a94de | GUNNERY_OPEN_ITEMS 27 |
+| clear-all | identical | 28fd2da16 | GUNNERY_OPEN_ITEMS 29 |
+| merge: plane row position | ScoutDauntless 0.00 -> 4582.21 m; gameplay otherwise identical | 49e2797de | CONTROLLED_UNIT "The pairs and the verdict" (`kPlaneRowPositionBound`) |
+
+**E2 (9000).** 51 / 865 / 11559 became **51 / 863 / 10779**. Its first 4500 frames are USN04's
+(749 -> 798 hit records, 44 -> 43 deaths). After frame 4500 it holds 8 deaths and 65 hit records
+here against 7 and 116 in h. The reload feed moves that tail too: OFF gives 51 / 854 / 10847
+(`rb9nr_e2`). The rest of the tail is unpaired.
+
+**USN02 (9000).** 10 / 4226 / 2621, failed at 29.75 s became **10 / 4324 / 2582, failed at 29.75 s**:
+
+| step | deaths / hit records / shots, end | by | doc |
+| --- | --- | --- | --- |
+| h = the queue pair's OFF | 10 / 4226 / 2621, failed 29.75 s | - | - |
+| director target checks; threat head and accept; AutoTarget candidates; team id | identity (exit 1) | c004ee526, 72256c4d7, 37544d670, e90106c7a | GUNNERY_OPEN_ITEMS 21, 24, 26; AUTOTARGET_RECON_CANDIDATES 6 |
+| planner paths and ticks | identity (the paths never run; 0 ticks) | - | PLANNER_TASK_CHOICE 8.4-13.4 |
+| loopback queue | 10, 5 rows moved; Kortenaer 749 m; failed 29.75 s | a2d8a94de | GUNNERY_OPEN_ITEMS 27 |
+| clear-all; merge to `d466d4250` | identical | 28fd2da16 | GUNNERY_OPEN_ITEMS 29 |
+
+**USN13 (3000).** 20 / 396 / 3903 became **20 / 371 / 3626**, first hit 96.70 -> 96.65 s:
+
+| step | deaths / hit records / shots | by | doc |
+| --- | --- | --- | --- |
+| h | 20 / 396 / 3903, Enterprise 2051.45 m | - | - |
+| Capture target path, Defend think, Defend records path | 20 / 371 / 3626, Enterprise 1845.78 m | 06bc3863a, 7fc52173c, 96ef212a3 | PLANNER_TASK_CHOICE 8.4, 10.4, 12.4 |
+| loopback queue; clear-all; merge | identical | a2d8a94de, 28fd2da16 | GUNNERY_OPEN_ITEMS 27, 29 |
+
+With those three planner switches OFF, `d466d4250` is gameplay-identical to h's USN13 log
+(`rb9np_usn13`, `pair_diff` exit 1).
+Their own pairs moved USN13 on an older base (16 -> 17 -> 16 deaths), so the direction here is
+this base's.
+
+**Smoke rows.**
+
+| mission | h -> i (deaths / hit records / shots) | moved by | doc |
+| --- | --- | --- | --- |
+| JM06 | 2 / 320 / 414 -> 1 / 127 / 201; first hit 90.35 -> 68.65 s | the loopback queue (US Cargo Transport 02 survives); the dive teleport, 123 -> 127 hit records | GUNNERY_OPEN_ITEMS 27; SUBMARINE_MODEL 15 |
+| JM08 | 9 / 310 / 1689 -> 9 / 342 / 2091 | SquadronSetTravelAlt, exactly its pair | LUA_BINDING_MISSION |
+| BSM01 | identical (unimplemented 475 -> 470) | - | - |
+| LOMP06 | 0 / 0 / 16 -> 0 / 0 / 14; Narwhal 758.85 -> 450.86 m | the dive teleport and the CAUTIOUSATTACK tick | SUBMARINE_MODEL 15; PLANNER_TASK_CHOICE 11 |
+
+**Identity on every row where their pairs or this reference looked:** the hit-callback rate limit
+and attackerPlayerIndex (LUA_BINDING_MISSION), the formation natives (`rb9nf_lomp06` exit 1), the
+SetDeviceReloadEnabled Lua side, the Sell think and SELLING tick (`rb9ns_lomp06` exit 1), and the
+director target checks and threat head with the AutoTarget accept (`rb9nd_lomp06` exit 1).
+
+### Leave-one-out exports
+
+Each is `pair_export --commit d466d4250` with only the listed switches OFF, run like the rows
+above (logs `local\rb9<v>_<row>.log`), and read with `pair_diff` against the reference log.
+
+| v | switches OFF | SHA-256 prefix | rows run | result |
+| --- | --- | --- | --- | --- |
+| nr | `kLuaDeviceReloadEnabledBound` | DF0F7FDF1FC5 | USN04, E2, LOMP06 | USN04 45 / 801 / 10050 (= `g6caon`); E2 854 hit records; LOMP06 identical |
+| nc | `kCaptureAccessorsBound` | AA74E8D7D3A8 | USN04, LOMP06 | identical |
+| np | `kAiCaptureTargetPathBound`, `kAiDefendThinkBound`, `kAiDefendRecordsPathBound` | AC165B083E7D | USN13, USN01, LOMP06 | USN13 gameplay = h; USN01 identical; LOMP06 448.72 m |
+| nt | `kSubmarineDiveTeleportBound` | A0D4F5CCA9C7 | JM06, LOMP06 | JM06 1 / 123 / 200; LOMP06 439.91 m, 9 shots |
+| nq | `kSetCommandQueueDelayBound`, `kSetCommandClearAllMessageBound` | A3707E8E15DD | USN04, JM06, LOMP06 | USN04 44 / 749 / 9041, 8 of 16 / 10 of 19; JM06 2 / 320 / 415; LOMP06 450.99 m |
+| nqt | nq and the teleport | 38F0F226CB5C | JM06, LOMP06 | JM06 gameplay = h; LOMP06 439.98 m |
+| na | `kAutoTargetReconCandidatesBound` | 01B9A5E6F829 | LOMP06 | identical |
+| nd | `kForeignTorpedoThreatHeadBound`, `kAutoTargetCommandAcceptBound`, `kDirectorTargetChecksBound` | B988D0873F99 | LOMP06 | identical |
+| nf | `kLuaFormationQueryBound` | A8AA17422C11 | LOMP06 | identical |
+| nm | CAUTIOUSATTACK, SELLING, Sell, plane row, travel alt, attackerPlayerIndex, rate limit | 17A7AD5AE1C9 | LOMP06 | 770.74 m, 16 shots |
+| nk | `kCautiousAttackTickBound` | A2F7A6ECE005 | LOMP06 | 770.74 m, 16 shots |
+| ns | `kSellingTickBound`, `kAiSellThinkBound` | F25805703B4C | LOMP06 | identical |
+
+USN04 under nq (44 / 749 / 9041, hull 134) is not h's 9310 shots: the reload feed moves it on the
+queue-OFF base too. That combination is not separated further.
+
+### Flags
+
+- **Closed:**
+  - **h's "JM06 and LOMP06 move again on the next base" (the dive teleport):** it landed. On this
+    base the teleport moves LOMP06 439.91 -> 450.86 m and JM06 123 -> 127 hit records. JM06's
+    deaths 2 -> 1 are the loopback queue's, not the teleport's.
+  - **The USN04 dive-release drop 10 -> 4:** the image's own (GUNNERY_OPEN_ITEMS 30). This
+    reference takes the ON count.
+- **New:**
+  - **The reload feed moves USN04 and E2**, which its own pairs did not run: USN04 45 -> 43 deaths
+    on the queue base. It sets `+369h` to the image's default, so the move is recorded as the
+    feed's, not bisected into the plane tasks that read it.
+  - **The CAUTIOUSATTACK tick moves LOMP06** (15 commands from 10.45 s, Narwhal 770.74 -> 450.86
+    m), which section 11.4 did not run.
+  - **JM06's US Cargo Transport 02 survives under the loopback queue.** Section 27 did not run
+    JM06.
+- **Carried from h:**
+  - **E2 after frame 4500 is unpaired** (now 116 -> 65 hit records, 7 -> 8 deaths; the reload feed
+    moves part of it).
+  - **JM06 and JM08 were not paired against the earlier gunnery flips** (immediate fire, AA tests,
+    wave order, torpedo swim). JM08's move this time is fully paired (travel alt).
+  - USN02's outcome depends on an opening torpedo spread against an idle Houston.
+  - The friendly torpedo hits under the image swim: recorded, not bound further.
+  - The g-era gaps: USN02 `50851d56a` -> the shared OFF, and USN13 27 -> 26 / 25 -> 26.
+  - USN02 664 -> 640, bracketed to merge `e4dbf38b2`, not paired on the e base.
+  - USN02, the torpedo stock on top of the throttle cut: open.
+  - What enabled `kSetSelectedUnitBound`'s effect between `fc14864c9` and the throttle-cut base:
+    not isolated.
+  - E2 594 -> 595 (before c): not isolated.
+  - E2 ends in phase 1 under lockstep (known).
+  - The Marshall `.nav` is the generic layer.
