@@ -341,6 +341,21 @@ inline constexpr bool kShipSetTorpedoStockBound = true;
 // each tick, rest angles default to 0 and the gun spawns there.
 // ON by the pairs of 2026-09-27 (docs/GUN_REST_ANGLES.md section 9).
 inline constexpr bool kGunIdleRestBound = true;
+
+// Packet cc9_difficulty_multipliers (docs/DIFFICULTY_MULTIPLIERS.md). True: damage
+// taken follows the image's difficulty scaling. Every health write the host routes
+// as the unit's AddDamage (vtable[1ACh]: 008777D0's hull pass 008778C6 and part
+// pass 00877A37, the delayed explosions, damage control's water and fire) takes
+// 0095DA00's config+4Ch[level] (1 / PlayerCheatMultipliers) when the local player
+// holds role 0, then 0087D730's config+1Ch[level] (1 / HPMultipliers) when the
+// unit's party (+54h) is the local player's. The ship hit record's own multiply
+// at 008270AD (the failure roll and the effect count) uses the same party test and
+// +1Ch. The tables come from the loaded Globals.Difficulty at run time (0087D7B0).
+// LABELLED: the local player's party (record +28h) is taken as the controlled
+// unit's party; single player only (game+1FE4h == 0); the level is game+6ACh.
+// False: no damage is scaled, as before.
+// ON by the pairs of 2026-09-28 (docs/DIFFICULTY_MULTIPLIERS.md section 6.3).
+inline constexpr bool kDifficultyMultipliersBound = true;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
@@ -840,6 +855,17 @@ public:
     // * kill_unit_00926d90(): 007CE3A7's BSP_MissionEntity_Kill(unit, 1), the
     //   plane tick's depth kill, through the same funnel a gunfire death takes.
     bool unit_dead(std::size_t unit_index) const noexcept;
+    // Packet cc9_lua_hit_listeners: one record per gunnery hit that reached the
+    // victim's health (the post-multiplier amount lost), queued at the hit dispatch
+    // after 0077CE60's attribution. take_hit_events() drains it. Nothing drains it
+    // yet, so it is gameplay-inert.
+    struct GameGunneryHitEvent {
+        std::size_t victim;
+        std::size_t shooter;
+        int bullet_class;
+        float damage;
+    };
+    std::vector<GameGunneryHitEvent> take_hit_events();
     void kill_unit_00926d90(std::size_t unit_index, int cause);
     // Packet cc9_set_invincible_floor (docs/LUA_BINDING_MISSION.md "SetInvincible,
     // 00897A50"; docs/UNIT_DAMAGE_AND_DEATH.md). unit+150h, the invincibility
@@ -850,6 +876,10 @@ public:
     // every 00879070 damage write and refuses the 008110F0 sink; the query is
     // IsInvincible's `inv > 0` (00897CB0) and 007BC5B0's `unit+150h <= 0` test.
     void set_unit_invincibility(std::size_t unit_index, float value);
+    // 0095DA00 -> 0087D730 -> 00879070 for a script-sourced amount (AddDamage,
+    // 0088E000): the party multiplier, the invincibility floor and the death funnel,
+    // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
+    void apply_script_damage_0095da00(std::size_t unit_index, float amount);
     float unit_invincibility(std::size_t unit_index) const noexcept;
     // 007BC5B0's tail, past its flight-state and unit+AA0h tests: true when
     // [unit+150h] <= 0 (not invincible) or the unit is player-held (+1ACh not 8

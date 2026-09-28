@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_difficulty_multipliers",
+  "doc": "docs/DIFFICULTY_MULTIPLIERS.md section 6",
+  "switch": "kDifficultyMultipliersBound (include/bsp/game_hosts_gunnery.hpp), OFF",
+  "calls": [
+    {"address": "008778D2", "native": "0095DA00", "function": "008777D0", "note": "hull pass AddDamage through vtable[1ACh]", "kind": "indirect"},
+    {"address": "0095DA8D", "native": "0087D730", "function": "0095DA00", "note": "AddDamage then the party multiply"},
+    {"address": "0087D7A3", "native": "00879070", "function": "0087D730", "note": "the health write"}
+  ],
+  "no_ghidra_function": [],
+  "substitutions": [
+    "the local player's party (record +28h) is the controlled unit's party",
+    "the level is game+6ACh via game_effective_difficulty_6ac; all three levels are equal in this installation",
+    "Globals is loaded first through the Lua host's lock-radius reader (side effect) when the switch is on"
+  ],
+  "names_added": [],
+  "verdict": "pending: OFF committed, pairs next"
+}

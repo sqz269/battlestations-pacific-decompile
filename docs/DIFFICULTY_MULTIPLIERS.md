@@ -191,3 +191,71 @@ damage to `0092D1F0`:
   not from the class `dcwater` value.
 - The Dauntless call assumes the same AA exposure as the OFF run. Positions shift once the fight
   changes, so the death times are a band, not a figure.
+
+## 6. The binding and its pairs (packet `cc9_difficulty_multipliers`, switch `kDifficultyMultipliersBound`)
+
+Worker cc9-gunnery3, 2026-09-28, on main 088e94d34.
+
+### 6.1 What was bound (committed OFF)
+
+- **The tables.** They come from the loaded `Globals.Difficulty`, never from header constants.
+  - The gunnery flatten chunk reads `HPMultipliers[i]` and `PlayerCheatMultipliers[i]` while
+    `HPMultipliers[i]` is not nil (0087D7B0), carries them on each class row, and stores
+    `1 / value` per level (`0087DB61` / `0087DD33` `FDIVRP`). A log line reports the levels and
+    the first values.
+  - `Globals` is not loaded yet when that chunk runs. With the switch ON the host first calls the
+    Lua host's `read_lock_radius_multipliers_0087dc85`, which runs globals.lua when the table is
+    missing. That call is used only for its side effect; with the switch OFF it is compiled out.
+- **AddDamage (`vtable[1ACh]` = `0095DA00` then `0087D730`).** It is applied at every host site
+  that writes health through `00879070`: 008777D0's hull pass (`008778C6`) and part pass
+  (`00877A37`) through `add_damage`, the delayed explosions, and damage control's water and fire.
+  - `+4Ch[level]` applies when `unit_current_role_slot(unit, 0, holder)` answers holder 0
+    (`00927F30`).
+  - Then `+1Ch[level]` applies when the unit's party equals the local player's.
+- **The ship hit record (`008270AD`).** Its party test and `+1Ch[level]` now feed its failure roll
+  and effect count.
+- **The rename.** `bsp::UnitDamageHost::is_current_player_unit` is now `is_player_party_unit`,
+  with the `0087D753` comparison in its comment.
+- **The census line.** `summary mission gunnery difficulty party_scaled= role_scaled= level=
+  hp_inverse= cheat_inverse= bound=`.
+- **Labelled.**
+  - The local player's party (the player record's `+28h`) is taken as the controlled unit's party.
+    That is party 0 on every reference run.
+  - The level is `game+6ACh` (`game_effective_difficulty_6ac`). All three levels carry the same
+    values in this installation.
+  - Single player only, which every reference run is.
+
+### 6.2 Predictions (sections 4 and 5 at `bbff855ee`, recorded before the pair)
+
+| mission | prediction |
+| --- | --- |
+| USN02 9200/9000 | Party-0 damage falls to about 0.556. **Exeter survives the 35.65 s torpedo** with about 2500 left, so there is no failure at 39.65 s. Either a failure between about 150 and 280 s if a later Long Lance hits her, or phase 2 is reached. Exit 3 |
+| USN04 4700/4500 | Fletcher-class05 takes about 638 instead of 1149. No death flips; deaths stay 44. Exit 3 |
+| USN01 3200/3000 | Both Dauntlesses still die, 2 to 3 s later; deaths stay 7. Exit 3 |
+| JM06 3200/3000 | Identical (exit 0 or 1) |
+| every mission, ON | `hp_inverse=0.5556`, `cheat_inverse=1.0000`, `party_scaled > 0` wherever party 0 takes damage |
+
+### 6.3 The pairs, and the flip
+
+OFF is this worktree at `dc783f42a` (`local\DM_OFF_<m>.log`). ON is `pair_export --commit
+dc783f42a --flip kDifficultyMultipliersBound=true` (`local\DM_ON_<m>.log`). RNG streams and the
+death table were on. Every ON run reads `levels=3`, `hp_inverse=0.5556`, `cheat_inverse=1.0000`.
+The OFF baselines are today's main, which already carries the gunnery flips of 2026-09-27. So
+some OFF rows differ from section 4's source logs.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 Exeter | sunk at 35.80 s, 6486 taken | **survives**, 3604 taken (= 0.5556 x 6486) | survives the torpedo with about 2500 left | held (health 5334 at the end, after repair) |
+| USN02 the 39.65 s failure | `MissionPhase=1 EndMission=true` | `MissionPhase=2 EndMission=nil` | no failure; a later failure or phase 2 | held: **phase 2 is reached** |
+| USN02 party-0 damage | 21903 | 16095 (x0.735) | about x0.556 | **failed as a total**: the longer fight lands more hits; per hit the factor is exact |
+| USN02 deaths | 19 | 17 (DeRuyter, Java and Exeter survive; Electra later; Hatsukaze now dies) | party-0 deaths fall, party-1 rise | held |
+| USN04 Fletcher-class05 | takes no damage on this OFF | - | 1149 -> about 638 | **vacuous**: today's baseline does not hit her |
+| USN04 party-0 damage | 9 (a Lexington fighter) | 5 | x0.556 | held, exactly |
+| USN04 deaths | 44 | 44 | 44 | held |
+| USN01 Dauntless deaths | 130.05 s, 137.55 s | 130.60 s, 140.40 s | both die, 2-3 s later | half held: +0.55 s and +2.85 s |
+| USN01 deaths | 7 | 7 | 7 | held |
+| JM06 | party 0 takes 6194, 5 deaths | 4308, 3 deaths (USTroopTransport 01 and US Tanker 01/02 hold) | identical | **failed**: section 4's OFF had party 0 untouched; today's baseline has the submarines hitting the convoy, so the multiplier bites |
+
+**Decision: `kDifficultyMultipliersBound` is ON.** Every scaled write matches `0.5556 x` the raw
+damage where one can be isolated (Exeter's torpedo, USN04's fighter). The failed rows come from the
+baseline moving under the section-4 predictions, not from the binding.
