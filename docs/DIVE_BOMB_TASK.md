@@ -5266,7 +5266,7 @@ Dive length is not it: `aimdive` runs 53-59 ticks for every squadron. `movieval`
 released nothing in 117-869 ticks. So the second bomb is not lost in the fly-over or the turndown -
 it is lost to the aimglide's own steering, the block `cc8_dive_entry` measured at `bearing` failing
 about 90 per cent of ticks, which this packet did not touch.
-## The cruise profile's begin-altitude draw (packet `cc9_dive_profile_draw`, `kDiveProfileDrawBound`, committed OFF)
+## The cruise profile's begin-altitude draw (packet `cc9_dive_profile_draw`, `kDiveProfileDrawBound`, ON)
 
 Worker cc9-lua6, 2026-09-28. This binds the draw that "Candidate 3 settled" (above) read and left
 out, and it answers where that value goes.
@@ -5315,3 +5315,28 @@ player, present interval immediate):
 | LOMP10 3200/3000 | **exit 1.** The dive squadrons, Lightning 01 and Warhawk 01, hold the script's forced 150 m. `+38Ch` shuts the gate, so the census reads `draws>0 writes=0` and nothing flies differently |
 | USN04 4700/4500 | **exit 3.** The Dauntless leaders write `+398h` in 1000..1015 on every approach update, and their members read it. The dive-entry height `(ACh + A8h) / 2` rises by up to 7.5 m where it is the larger term. The moveto far range and the go-away altitude rise by up to 15 m. Dive transitions and paths move by small amounts; releases, hits and deaths may move with them |
 | USN01 3200/3000 | **exit 3, small.** The same mechanism on its two dive-bomb releases. This is not an identity row: USN01 has dive-bomb tasks |
+
+### The draw's pairs and verdict
+
+- OFF is this tree's build of `e8577468b`.
+- ON is `pair_export --commit e8577468b --flip kDiveProfileDrawBound=true` (`local/dp_on`).
+- The logs are `local/dp_{off,on}_<mission>.log` in worktree cc9-lua6.
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| LOMP10 3200/3000 | exit 1, as predicted | the census only. Lightning 01 has `draws=1572 writes=0` and Warhawk 01 `draws=1152 writes=0`: the forced 150 m shuts the gate | held |
+| USN04 4700/4500 | exit 3, as predicted | every Val leader writes `+398h` in 1000..1015 (for example `D3A Val #1.1` 1776 writes, last 1014.853). Dive-bomb releases 4 -> 1 of 19; deaths 43 -> 42 (A6M Zero #6.2 survives); hit records 798 -> 777; shots 9611 -> 9867; 23 death rows move | held |
+| USN01 3200/3000 | exit 1 (predicted 3) | `ScoutDauntless` writes 747 times, last 1000.147; nothing compared moves | the mechanism held; the spread was overstated |
+
+**Two host limits, both older than this packet, which the census shows:**
+- **Wings without a squadron record.** On USN04 every Val wing member prints its own draw line
+  (`D3A Val #1.1|.-2`, and so on). `unit_is_flight_leader_007b8ad0` answers true, and
+  `squadron_slot_of` answers null, for a plane the squadron registry does not hold. So each member
+  runs the block on its own slot. In the image a wingman's `007B8AD0` is false, and the member reads
+  the leader's `+398h`.
+- **Members after the leader dies.** LOMP10's `Warhawk 01|.-3` and `|.-4` write at the end of the
+  run, after Warhawk 01 dies. The same null resolution makes them skip the squadron's forced block,
+  as the attack-altitude binding already did.
+
+**Verdict: `kDiveProfileDrawBound = true`.** The mechanism matches the listing on all three rows.
+USN01's miss is the spread, recorded above.

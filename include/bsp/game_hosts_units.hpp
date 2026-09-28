@@ -335,7 +335,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // into the squadron's +398h (009C89CE), which 009C7A96 copies into approach+ACh.
 // True: the draw is made on every such profile call and the squadron's members
 // read the drawn +398h. False: +398h stays BeginAltRange/1 with no draw.
-inline constexpr bool kDiveProfileDrawBound = false;
+inline constexpr bool kDiveProfileDrawBound = true;  // ON: pairs (docs/DIVE_BOMB_TASK.md)
 inline constexpr bool kSquadronAttackAltBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 inline constexpr bool kSquadronTravelAltBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
