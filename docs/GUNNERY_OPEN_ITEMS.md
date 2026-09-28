@@ -1845,6 +1845,22 @@ python tools/pair_export.py --commit <this commit> --out local\hp_off
 python tools/pair_export.py --commit <this commit> --flip kLuaOverrideHpBound=true --out local\hp_on
 ./local/g7_pair.ps1 -Off hp_off -On hp_on -Rows 'lomp10:LOMP10:3200:3000','usn04:USN04:4700:4500'
 ```
+**The pairs.**
+- OFF is `pair_export --commit a0c75d464` (SHA-256 prefix `1CB0651B8AD4`).
+- ON is the same commit with `--flip kLuaOverrideHpBound=true` (`6C9669205847`).
+- The logs are `local\hp_{off,on}_<row>.log`.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| LOMP10 3200/3000 | exit 3 | `applied` 0 -> 8. The unit table's health moves on exactly the eight ships (Ashigara 7000 -> 8750, Oyodo 6000 -> 7500, Kiyoshimo and Asashimo 3000 -> 3750, Sugi, Kashi and Kaya 2500 -> 3125, Kasumi 2800 -> 3500). The 10 death rows, hit records and shots are identical |
+| USN04 4700/4500 | exit 1 | the summary line only (`calls=0`) |
+
+- **H1, H2 and H3 held.**
+- Beside them, two summary counters moved by a hair: the minimap heading 0.4535 -> 0.4536 rad, and
+  the gunnery landscape attach cells 46835 -> 46837. They are recorded, not attributed.
+
+**Verdict: ON.** `kLuaOverrideHpBound = true`. The effect beyond 3000 frames is the San Jose ships'
+larger health pools.
 ### 37.2 What remains of section 31
 
 | rank | item | state |
