@@ -396,3 +396,41 @@ everything shipyard-specific is authored in the scene bag (`Party`, `Stock %d`, 
 - **Was:** 006D5220 walks Hangar %d sub-bags for Object, EntryPath and ExitPath into the 0xC-stride vector at +830h
   **Is:** three source branches keyed on *(airfield+0C0h)+4: the property bag (1), a compiled ushort table with stride 6 at src+13Ch counted by src+138h (2), and the Lua reader hangars/entityID/entryPathID/exitPathID (3). All three store path interfaces from 007AC9D0, not the authored entities
   **Evidence:** the three arms of 006D5220; the compiled arm's (id - DAT_00F89A60)*10h + 0Ch + DAT_00F89AA8 record-map lookup with the iVar5 += 6 stride
+
+## The convoy back pointer `+738h` on this installation's rows (packet `cc9_convoy_detection_producer`, a read)
+
+Worker cc9-lua4, 2026-09-28. Asked for by gunnery5's rank 5 (`docs/GUNNERY_OPEN_ITEMS.md` section
+22): `00805680` folds class-19h records through `unit+738h`, which the host never fills.
+
+**The writers of `+738h` (V, `scan-bytes '89 ?? 38 07 00 00'` and `'C7 ?? 38 07 00 00'`, `--limit
+4000`).**
+- `00743A34`, in `BSP_LandConvoy_AttachAndBuildRoster` (`00743450`), is rule 2c step 7 above:
+  `member+738h = convoy`.
+- `007421D5`, in `BSP_LandConvoy_DisbandAndKillMembers` (`00742180`), nulls it for each member.
+- `00744A2E` (`00744A20`) and `007459D5` (`BSP_LandFort_Construct`) are the LandFort master-fort
+  field, which shares the offset. Their callers are `BSP_AirField_ReadHangarAndMarkerProperties`
+  and `00849F70`.
+- `00810FA9` (`BSP_Unit_InitializeDirectorAndHullDimensions`), `0083ED4E` and the two
+  `CG_scalar_deleting_dtor` hits belong to other classes' layouts.
+- So for an `MLandVehicle`, `+738h` is zero from the constructor's `memset` until a LandConvoy
+  roster sets it. It is set nowhere else.
+
+**The reach.**
+- JM08's class-19h records come from one standalone scene vehicle, "Japanese AA truck 01"
+  (creator `0074DF10`, the `MLandVehicle` factory; the only such registration in the run).
+  `prcpijn_08_defend_guadalcanal.scn` (this installation, 2024-08-09) contains no `(LandConvoy)`
+  entity, so in the image their `+738h` stays zero, and `00805680` skips them at its
+  `iVar8 != 0` test.
+- The 102 "convoy member records" of reference h are that vehicle's per-pass records, not convoy
+  members.
+- Only seven scenes of this installation author a LandConvoy: `ijn_05_invasion_of_port_moresby`
+  (three copies), `usn_12_indochina` (two), `usn_16_endgame_at_kure` and `ijn_10_port`. None of them
+  is a reference or smoke row.
+
+**Verdict: no producer is bound.**
+- On every measured row the image's `+738h` is zero for every class-19h unit, as the host already
+  has it. Wiring `00805680` over a zero pointer is identity on these rows.
+- A real producer needs the LandConvoy roster `00743450`: member creation from the `TypeN` /
+  `PositionN` keys, and the per-step pose writer `00742400`. The host creates LandConvoy entities
+  (`src/scene_entity_factory.cpp`) but not their members. That is a packet of its own, measurable
+  only on the seven scenes above.
