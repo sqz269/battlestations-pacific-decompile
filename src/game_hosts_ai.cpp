@@ -197,6 +197,18 @@ constexpr int kAiMovetoDiagEvery = 0;
 // False: the leader's unit index, the previous stand-in.
 constexpr bool kAiLeaderOrderKeyBound = true;
 
+// Packet cc9_generated_squadron_brain_membership, docs/GENERATED_SHIP_AI.md
+// section 7. The image's compose phase 3 (00A2E835..00A2EA5A) walks the live
+// entity lists hung off world+19CCh on every pass, so a PlaneSquadronGen created
+// after load (SpawnNew, GenerateObject, an air-ops launch) is a seed candidate
+// from the pass after it is registered, like a loaded one. True: squadrons whose
+// flight leader was created after build_squadrons are built by the same seed
+// body, and the squadron candidates keep their identity when the unit count
+// grows (their index is units.count() + i, so every stored squadron index is
+// shifted by the growth). False: the squadron list is the load-time one, and a
+// stored squadron index that the unit growth overtakes reads as a unit.
+constexpr bool kGeneratedSquadronBrainBound = false;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -2237,6 +2249,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     bool issue_order(std::size_t member, const std::string& token,
         const std::string& target_name);
     void build_squadrons();
+    void seed_squadron_for_unit(std::size_t unit);
+    // Packet cc9_generated_squadron_brain_membership.
+    void admit_generated_squadrons();
+    std::size_t squadron_units_built{0};
+    unsigned long long generated_squadrons{0};
+    unsigned long long squadron_index_shifts{0};
 };
 
 bool GameAiCoordinatorHost::Impl::issue_named_order(std::size_t unit,
@@ -2435,6 +2453,74 @@ void GameAiCoordinatorHost::create_00a32350() {
     host.record("AiController::construct", 0x00a31730u);
 }
 
+// One unit's squadron seed, the body build_squadrons ran per unit. Packet
+// cc9_generated_squadron_brain_membership moved it here unchanged.
+void GameAiCoordinatorHost::Impl::seed_squadron_for_unit(std::size_t unit) {
+    // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
+    // planes, and nothing else in the scene produces one.
+    if (!units.unit_is_kind_of(unit, bsp::kPlaneSquadronMemberKindId)) return;
+    // Packet cc8_plane_squadron_host (15563fdf9) spawns a squadron's real
+    // WingCount wingmen, so a plane can now be a MEMBER of a squadron
+    // rather than a squadron in its own right. Seeding one squadron per
+    // member is exactly the double-order the comment on
+    // unit_owned_by_squadron forbids - "keeping both in a group
+    // double-orders the same aircraft" - and it showed as 15 AI squadrons
+    // on a USN04 that has 5. The registry's back pointer is this process's
+    // stand-in for plane+9D4h: a plane whose squadron names another unit as
+    // its flight leader is a wingman and is not a seed.
+    // The find_by_member_name fallback this carried is GONE: create_units
+    // now calls resolve_plane_squadron_members before constructing this
+    // host, so the +3D0h array is filled by the time this runs and one
+    // route answers instead of two that could disagree.
+    const bsp::PlaneSquadronHostRecord* owner =
+        bsp::plane_squadron_registry().find_by_member_unit(unit);
+    // The wing in +3D0h order, skipping slots whose plane never became a
+    // unit, which is live_count()'s rule.
+    std::vector<std::size_t> wing_units;
+    if (owner != nullptr) {
+        for (const std::size_t member : owner->member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit) wing_units.push_back(member);
+        }
+    }
+    // A record that resolves to nothing is no owner: without this the
+    // leader check would fail for every plane in it and drop them all.
+    if (wing_units.empty()) {
+        owner = nullptr;
+        wing_units.assign(1, unit);
+    }
+    // 007EDA91 reads slot 0 whatever the count: only the flight leader seeds.
+    if (wing_units.front() != unit) return;
+    Squadron s;
+    // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
+    // the registry carries when there is one; the absent-key arm 007F4735,
+    // which defaults to 3, is only right for a plane in no squadron.
+    s.entity.wing_count = owner != nullptr
+        ? owner->wing_count
+        : bsp::plane_squadron_wing_count_007f4754(false, 0);
+    // 007F4B43 is still the rule that fills +3D0h and bumps +3CCh. Only the
+    // SOURCE of the members changes: the registry's array in array order
+    // for a real squadron, and this unit alone otherwise.
+    bool attached = false;
+    for (const std::size_t plane : wing_units) {
+        int spawn_index = 0;
+        if (!bsp::plane_squadron_attach_plane_007f4b43(
+                s.entity, handle(plane), &spawn_index)) {
+            continue;
+        }
+        s.member_units.push_back(plane);
+        if (unit_owned_by_squadron.size() <= plane) {
+            unit_owned_by_squadron.resize(plane + 1u, false);
+        }
+        unit_owned_by_squadron[plane] = true;
+        ++summary.squadron_members;
+        attached = true;
+    }
+    if (!attached) return;
+    s.registry_backed = owner != nullptr;
+    squadrons.push_back(std::move(s));
+    ++summary.squadrons_built;
+}
+
 void GameAiCoordinatorHost::Impl::build_squadrons() {
     // 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen allocates the 0x414 block
     // and 007F2C60 stamps +C4h = 18h and zeroes the five member slots at
@@ -2451,70 +2537,9 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
     squadrons.clear();
     unit_owned_by_squadron.assign(units.count(), false);
     for (std::size_t unit = 0; unit < units.count(); ++unit) {
-        // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
-        // planes, and nothing else in the scene produces one.
-        if (!units.unit_is_kind_of(unit, bsp::kPlaneSquadronMemberKindId)) continue;
-        // Packet cc8_plane_squadron_host (15563fdf9) spawns a squadron's real
-        // WingCount wingmen, so a plane can now be a MEMBER of a squadron
-        // rather than a squadron in its own right. Seeding one squadron per
-        // member is exactly the double-order the comment on
-        // unit_owned_by_squadron forbids - "keeping both in a group
-        // double-orders the same aircraft" - and it showed as 15 AI squadrons
-        // on a USN04 that has 5. The registry's back pointer is this process's
-        // stand-in for plane+9D4h: a plane whose squadron names another unit as
-        // its flight leader is a wingman and is not a seed.
-        // The find_by_member_name fallback this carried is GONE: create_units
-        // now calls resolve_plane_squadron_members before constructing this
-        // host, so the +3D0h array is filled by the time this runs and one
-        // route answers instead of two that could disagree.
-        const bsp::PlaneSquadronHostRecord* owner =
-            bsp::plane_squadron_registry().find_by_member_unit(unit);
-        // The wing in +3D0h order, skipping slots whose plane never became a
-        // unit, which is live_count()'s rule.
-        std::vector<std::size_t> wing_units;
-        if (owner != nullptr) {
-            for (const std::size_t member : owner->member_units) {
-                if (member != bsp::kPlaneSquadronNoUnit) wing_units.push_back(member);
-            }
-        }
-        // A record that resolves to nothing is no owner: without this the
-        // leader check would fail for every plane in it and drop them all.
-        if (wing_units.empty()) {
-            owner = nullptr;
-            wing_units.assign(1, unit);
-        }
-        // 007EDA91 reads slot 0 whatever the count: only the flight leader seeds.
-        if (wing_units.front() != unit) continue;
-        Squadron s;
-        // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
-        // the registry carries when there is one; the absent-key arm 007F4735,
-        // which defaults to 3, is only right for a plane in no squadron.
-        s.entity.wing_count = owner != nullptr
-            ? owner->wing_count
-            : bsp::plane_squadron_wing_count_007f4754(false, 0);
-        // 007F4B43 is still the rule that fills +3D0h and bumps +3CCh. Only the
-        // SOURCE of the members changes: the registry's array in array order
-        // for a real squadron, and this unit alone otherwise.
-        bool attached = false;
-        for (const std::size_t plane : wing_units) {
-            int spawn_index = 0;
-            if (!bsp::plane_squadron_attach_plane_007f4b43(
-                    s.entity, handle(plane), &spawn_index)) {
-                continue;
-            }
-            s.member_units.push_back(plane);
-            if (unit_owned_by_squadron.size() <= plane) {
-                unit_owned_by_squadron.resize(plane + 1u, false);
-            }
-            unit_owned_by_squadron[plane] = true;
-            ++summary.squadron_members;
-            attached = true;
-        }
-        if (!attached) continue;
-        s.registry_backed = owner != nullptr;
-        squadrons.push_back(std::move(s));
-        ++summary.squadrons_built;
+        seed_squadron_for_unit(unit);
     }
+    squadron_units_built = units.count();
     if (!squadrons.empty()) {
         log.notef("ai squadrons: %llu PlaneSquadronGen objects built over %llu member "
             "planes (004F0AD0 + 007F2C60 + 007F4580's +3D0h tail); each carries class "
@@ -2580,9 +2605,64 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
     record("PlaneSquadron::attach_planes", 0x007f4580u);
 }
 
+void GameAiCoordinatorHost::Impl::admit_generated_squadrons() {
+    const std::size_t old_units = squadron_units_built;
+    const std::size_t new_units = units.count();
+    if (new_units <= old_units) return;
+    const std::size_t delta = new_units - old_units;
+    // Keep every stored squadron candidate on its squadron: indices at or past
+    // the old unit count named squadron (index - old_units) and now sit delta
+    // further on. Unit indices below it are unchanged.
+    auto shift = [&](std::size_t index) {
+        return index >= old_units ? index + delta : index;
+    };
+    for (const std::unique_ptr<Group>& g : groups) {
+        for (std::size_t& member : g->members) {
+            if (member >= old_units) {
+                member += delta;
+                ++squadron_index_shifts;
+            }
+        }
+    }
+    {
+        std::vector<Group*> moved(new_units + squadrons.size(), nullptr);
+        for (std::size_t index = 0; index < group_of_unit.size(); ++index) {
+            const std::size_t to = shift(index);
+            if (to < moved.size()) moved[to] = group_of_unit[index];
+        }
+        group_of_unit.swap(moved);
+    }
+    if (last_order.size() > old_units) {
+        last_order.insert(last_order.begin() + static_cast<std::ptrdiff_t>(old_units),
+                          delta, LastOrder{});
+    }
+    if (seed_cursor >= old_units) seed_cursor += delta;
+    squadron_units_built = new_units;
+    // Seed the squadrons whose flight leader is new, through the load-time body.
+    const std::size_t before = squadrons.size();
+    for (std::size_t unit = old_units; unit < new_units; ++unit) {
+        seed_squadron_for_unit(unit);
+    }
+    if (unit_owned_by_squadron.size() < new_units) {
+        unit_owned_by_squadron.resize(new_units, false);
+    }
+    if (group_of_unit.size() < candidate_count()) {
+        group_of_unit.resize(candidate_count(), nullptr);
+    }
+    for (std::size_t i = before; i < squadrons.size(); ++i) {
+        ++generated_squadrons;
+        const Squadron& built = squadrons[i];
+        log.notef("ai squadron generated after load: leader=%s members=%zu wing_count=%d "
+            "(00A2E835's live world lists; packet cc9_generated_squadron_brain_membership)",
+            unit_name(built.member_units.front()).c_str(), built.member_units.size(),
+            built.entity.wing_count);
+    }
+}
+
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if (!host.created) return;
+    if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
     host.clock_seconds += step_seconds;
     ++host.summary.compose_passes;
     ++host.summary.party_think_calls;
@@ -2663,6 +2743,11 @@ void GameAiCoordinatorHost::report() {
         host.summary.squadrons_built, host.summary.squadron_members,
         host.summary.squadron_group_members, host.summary.squadron_excluded,
         host.summary.squadron_commands, host.summary.squadron_member_orders);
+    if constexpr (kGeneratedSquadronBrainBound) {
+        host.log.notef("summary mission ai generated squadrons=%llu index_shifts=%llu "
+            "(packet cc9_generated_squadron_brain_membership)",
+            host.generated_squadrons, host.squadron_index_shifts);
+    }
     host.log.notef("summary mission ai order dedupe suppressed=%llu (duplicate re-issues "
         "of the same token/target/point; 0077D600 replaces, this ring appends)",
         host.summary.orders_suppressed);

@@ -266,3 +266,67 @@ recorded above.
 
 **Decision: `kApproachTurnRadiusBound` is ON.** The value is the image's, the mechanism matches,
 and the failed half was on spread with no gameplay change.
+
+## 7. Squadrons generated after load (packet `cc9_generated_squadron_brain_membership`)
+
+**The host.** `GameAiCoordinatorHost::create_00a32350` runs `build_squadrons` once, at the first
+`create_units` (`src/game_hosts_ai.cpp`).
+- **A later squadron is never a squadron candidate.** SpawnNew waves, air-ops launches and
+  GenerateObject squadrons after load all miss the list.
+- **Its planes are seedable as plain units**, but `009FE080` refuses the plane base.
+- **A second defect rides on the same growth.** A squadron's candidate index is
+  `units.count() + i`. When units are created after the build, every stored squadron index,
+  in group members, `group_of_unit` and `last_order`, silently turns into the index of a new
+  unit.
+
+**The image admits squadrons live.** Compose phase 3 walks the entity lists hung off
+`world+19CCh` on every pass (docs/AI_GROUP_THINK.md; docs/AI_COORDINATOR_TICK.md):
+
+```
+00A2E835  MOV ESI,[EDI+8]             ; the node's entity
+00A2E838  CMP byte [ESI+5Ch],0 / JE next
+00A2E83E  CMP byte [ESI+5Dh],0 / JNE next ; 00A2E844 +60h ; 00A2E84A +5Eh
+00A2E850  CMP dword [ESI+16Ch],0 / JNE next    ; not already grouped
+00A2E859  CMP [ESI+54h],EBP (2) / JGE next     ; party 0 or 1
+00A2E85E  PUSH 5660h / CALL 00BF681B ; 00A2E881 CALL 00A2DFA0   ; a new group seeded on it
+00A2E88D  MOV EDI,[EDI+4] / TEST / JNE 00A2E835                ; the next node
+```
+
+- The lists are live, and the walk has no load-time snapshot. A squadron entity is therefore
+  a candidate on the first pass after it is in the world, whatever created it.
+- Its identity is the entity pointer, which does not move when other entities are created.
+
+**The binding.** `kGeneratedSquadronBrainBound`, committed OFF. At the head of each coordinator
+fixed step, when the unit count has grown since the last build:
+- every stored squadron index is shifted by the growth: group members, `group_of_unit`,
+  `last_order` and the seed cursor;
+- `seed_squadron_for_unit` runs on each new unit. That is build_squadrons' own per-unit body,
+  moved unchanged, so a new flight leader builds its squadron from the registry;
+- two ON-only lines report it: `ai squadron generated after load: leader=...` and
+  `summary mission ai generated squadrons=N index_shifts=M`.
+
+**Predictions, written before the ON runs.** OFF is this tree's build (main `734ee35a2` plus
+the docs-only `9fc5b352a`).
+
+**USN04 4700/4500, exit 3.**
+- **What is created after the build.** The build holds one squadron (movieval). Eight SpawnNew
+  bomber waves of two, and seven air-ops launches, are created after it.
+- **Squadrons.** Generated squadrons rise above 0, and `index_shifts` is above 0 for movieval's
+  stored index.
+- **Brain orders reach them.** OFF has `squadron_commands=1 member_orders=3`, and ON both rise.
+  Groups created rise from 15.
+- **Moves.** The brain's orders compete with the script's bomber orders, so torpedo and dive
+  releases move. Direction is not predicted. Deaths move, from 40 OFF.
+
+**USN13 3200/3000, exit 3.** OFF has no squadrons (`built=0`). One SpawnNew and twelve launches
+come after the build, so generated squadrons rise above 0, squadron commands rise from 0, and
+releases and deaths move.
+
+**USN01 3200/3000.**
+- ScoutDauntless is generated after the build (log line 15373, after the build at 1686). It
+  should be one generated squadron.
+- Squadron commands rise from 0 only if the brain orders it. The prediction is exit 1 or 3,
+  with any move limited to ScoutDauntless's flight and what it spots.
+
+**USN02 9200/9000: identity, exit 0 or 1.** No squadron exists at load or after, so no growth
+touches a squadron index.
