@@ -11409,6 +11409,11 @@ from the same tree. A **merge** step is main's landings merged between two of th
     torpedo-side change moves its failure time; read GUN_SHOT_CADENCE 10.10 before predicting it.
   - **The friendly torpedo hits under the image swim** (TORPEDO_FRIENDLY_CROSSING 6.6): recorded,
     not bound further.
+  - **JM06 and LOMP06 move again on the next base.** lua3's `kSubmarineDiveTeleportBound` (merged
+    as `734a2b988`) landed after this section's base (docs/SUBMARINE_MODEL.md section 15).
+    - JM06: the TypeBs start at -40, and deaths go 2 -> 1.
+    - LOMP06: the Narwhal starts at -10.2, and the controlled distance is 421.34 m.
+    - Reference i's JM06 and LOMP06 attribution starts from that pair.
 - **Carried from g:**
   - E2 after frame 4500 is unpaired (now 111 -> 116 hit records).
   - The g-era gaps: USN02 `50851d56a` -> the shared OFF, and USN13 27 -> 26 / 25 -> 26.
