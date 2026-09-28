@@ -177,13 +177,11 @@ void ai_groups_compose_00a2e720(AiGroupThinkHost& host) {
                                          host.entity_team(entity))) {
                 continue;
             }
-            if constexpr (kAiGroupSeedPerEntityBound) {
+            if (kAiGroupSeedPerEntityBound) {
                 // 00A2E85E..00A2E881 (and the four later loops): new(5660h),
                 // 00A2DFA0(entity), one group per candidate.
                 host.create_group(entity);
-                continue;
-            }
-            if (seeded == nullptr) {
+            } else if (seeded == nullptr) {
                 seeded = host.create_group(entity);
             } else {
                 host.add_group_member(seeded, entity);
