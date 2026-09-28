@@ -123,7 +123,7 @@ inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs
 // new table with number keys 0..2 from the recon pass. The class keys the
 // host cannot source (ammoType, state, TargetIsHome, TorpedoStock, owner, the
 // LandConvoy keys) stay unserved. False: both keys return no value, as before.
-inline constexpr bool kGetPropertyClassReadersBound = false;
+inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling (docs/MISSION_LUA_GETPROPERTY.md 9.13)
 
 class GameHostLog;
 class GameVfsHost;
