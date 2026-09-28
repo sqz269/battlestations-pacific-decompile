@@ -288,8 +288,10 @@ constexpr bool kAiDefendRecordsPathBound = true;
 // without an air member moves its leader to the nearest own list-28 entity (or
 // holds at its own leader point inside 0.8 x CaptureRange) and runs the
 // follower pass; an air group sends `returntobase` to each squadron. False:
-// SELLING has no arm and the group is not moved.
-constexpr bool kSellingTickBound = false;
+// SELLING has no arm and the group is not moved. ON: LOMP07 moved (Salt Lake
+// City sent toward its CommandBuilding), LOMP10 orders only, the reference four
+// identical (docs/PLANNER_TASK_CHOICE.md section 13.4).
+constexpr bool kSellingTickBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a

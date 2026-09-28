@@ -1051,6 +1051,39 @@ its groups to Sell beside an own Allied CommandBuilding (section 12.4 census: `s
 
 **USN13, USN01, USN02, USN04: identity, exit 0 or 1.** No SELLING group exists there (`selling=0`).
 
+### 13.4 The pairs
+
+- **OFF** is this tree's build at `f3d5268bf`. **ON** is `pair_export --commit f3d5268bf --flip
+  kSellingTickBound=true` into `local\sl_on`.
+- **Logs:** `local\sl_{off,on}_<mission>.log`.
+
+| mission | pair_diff | selling census ON | `tick_orders` OFF -> ON | what moved |
+| --- | --- | --- | --- | --- |
+| LOMP07 3200/3000 | exit 3 | 49 ticks, 49 approaches | 0 -> 49 | Salt Lake City moves 2479.49 m instead of 2159.95 m; no shots either way |
+| LOMP10 3200/3000 | exit 1, identical | 92 ticks, 46 approaches, 117 `returntobase` | 12 -> 175 | orders only: entity command routing 62 -> 516, unit table identical |
+| USN13 3200/3000 | exit 1 | 0 ticks | | nothing |
+| USN01 3200/3000 | exit 1 | 0 ticks | | nothing |
+| USN04 4700/4500 | exit 1 | 0 ticks | | nothing |
+| USN02 9200/9000 | exit 1 | 0 ticks | | nothing |
+
+**Predictions:**
+- **Held:**
+  - the census shape: approaches on both LOMP missions, `returntobase` only on LOMP10's air group,
+    no hold inside 400;
+  - LOMP07's Salt Lake City is sent toward the nearest Allied CommandBuilding;
+  - the reference four are identical.
+- **Failed on spread (LOMP10):** the CargoShip leader's movetos and the B-25 / Lightning planes'
+  `returntobase` orders are routed (`EntityOrder::route_message` 62 -> 516), but no unit's motion,
+  shot or death changes in 150 s. Whether those units obey the two tokens is a units-host question.
+
+**Decision: `kSellingTickBound` is ON.**
+
+**Left open:**
+- the authored CaptureRange (the stop radius), from the units-host accessor;
+- the squadron bytes `+361h` / `+3B0h`;
+- the sell message 51h and its `005F98F0` gate;
+- `00A11070`.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
