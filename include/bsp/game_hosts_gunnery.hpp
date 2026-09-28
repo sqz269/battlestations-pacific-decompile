@@ -402,6 +402,10 @@ struct GunAimMessage79 {
 // One projectile in flight, as 006E8430 created it.
 struct GameProjectileRow {
     std::size_t gun_row{0};
+    // Packet cc9_projectile_team_id: [shot+1Ch] (projectile+18Ch,
+    // kProjectileOffTeamId), the team 0072BF10 stamps at 0072C0FB / 0072C14B
+    // and the hit event's attacker_player_index reads. -1: no stamp traced.
+    int team_id_1c{-1};
     std::size_t owner_unit{0};        // one based
     int owner_side{0};
     int bullet_class{-1};
@@ -880,7 +884,7 @@ public:
         // For the Lua hit listeners' per-(victim, attacker) rate limit (00988510).
         // Inert here: the Lua host reads them only behind its own switches.
         // [src+1Ch], src = the ordnance's vtable[108h](); -1 with no ordnance.
-        // No producer yet: the host keeps no player index at fire time.
+        // Packet cc9_projectile_team_id: the shot's GameProjectileRow::team_id_1c.
         int attacker_player_index{-1};
         // [hit+0h] when it is a live child of the victim other than the victim
         // itself; 0 otherwise. No producer yet: the host builds no device entities.
