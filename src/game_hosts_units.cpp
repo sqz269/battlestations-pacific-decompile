@@ -17698,6 +17698,14 @@ void GameUnitsHost::store_unit_moveto_target(std::size_t index,
         target_index < impl_->slots.size() ? target_index + 1u : 0u;
 }
 
+void GameUnitsHost::store_unit_moveto_point(std::size_t index,
+                                            const float world[3]) noexcept {
+    if (index >= impl_->slots.size()) return;
+    // x and z only: 009BEBDB sets the height from the cruise profile each refresh.
+    impl_->slots[index]->moveto_point[0] = world[0];
+    impl_->slots[index]->moveto_point[2] = world[2];
+}
+
 bool GameUnitsHost::set_unit_world_basis_007c9540(std::size_t index, const float right[3],
     const float up[3], const float forward[3]) noexcept {
     if (index >= impl_->slots.size()) return false;
