@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_ai_brain_player_exemption",
+  "doc": "docs/AI_BRAIN_PLAYER_EXEMPTION.md",
+  "switch": null,
+  "addresses": {
+    "009FFD20": "party slot from unit+180h: 8 -> -1, <=7 -> itself, SP -> 0/4 by team",
+    "0077F0E0": "activation: +180h = OwnerPlayer or 9 (0077F1F1)",
+    "0095ABE0": "message arm writing +180h through vtable 144h",
+    "00A2DDE0": "eviction: slot and team must match the group",
+    "00A13B60": "close attack: member gates squadron/carrier/ship/class trait (00A1443D on unit+538h, the class); issue PUSH 1 into 0077D600",
+    "008358D0": "SetCommand: no role test",
+    "0071E6C0": "PushCommandSlot: no role test"
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "evidence": {
+    "scene": "usn_2_java.scn (2024-07-13 08:27) has no OwnerPlayer bytes",
+    "vtable144_sites": "0077F1F9 0077FFC9 007800A3 00780193 0095AC28 006F50D2 006F5148 (+ GUI/renderer false hits); control 148h finds 008ABA47/008ABA69",
+    "selected_unit": "no [00E188D8] in 00A00000-00A38000; control finds 005F9597",
+    "role_queries": "no 00927F10/00927F30 call in the AI segment"
+  },
+  "decision": "record only: the image re-tasks the player's (non-helmed) ship as the host does"
+}
