@@ -2192,3 +2192,60 @@ player-controlled unit. The host has no producer for `+284h`.
   image on disk.
 - `g8_mapsym.py <rva> build\win32\bsp_game.map`: symbolise a host crash offset.
 - `g8_extra_check.py`: section 39's call-shape census.
+
+## 42. The plane side of the forced fire target (packet `cc9_plane_forced_target_read`, cc9-gunnery9)
+
+Section 33.4 left one question open: plane rows store the forced fire target from `008358D0`, and
+their AutoTarget accepts it, but does the image's plane side ever read that target?
+
+### 42.1 The image never stores it on a plane, and never reads one there
+
+**No plane-side object has the `+238h` fire target.** The chain is:
+
+| step | the image | evidence |
+| --- | --- | --- |
+| the director of a plane instance | vtable `[114h]` is `0047F180`, `XOR EAX,EAX; RET` | every class answering `IsKindOf(0Fh)` (vtables `00D05F20`, `00D06638`, `00D1A000`, `00D19D28`, `00D06920`, `00D00070`, `00D0BA80`, `00D00308`, `00D1A2D8`, from `src/unit_kind_query.cpp`), read at vtable `+114h` on disk |
+| the director of a squadron | vtable `[114h]` is `007ECFD0`, `[+348h]`, the `22Ch`-byte controller `0084D810` builds with vtable `00D0BD98` | `00D088D4`; `0084D849`; `docs/LUA_BINDING_MISSION.md` (cc9-lua3) |
+| the squadron's SetCommand | slot `+60h` of `00D0BD98` is `0071E6C0`, the bare slot push | `00D0BDF8`. The ship director's slot `+60h` is `008358D0` (`00D09FB8`). `008358D0` has no other reference than `00D09F20` and `00D09FB8`, the base and derived weapon director tables (`00D09EC0` and `00D09F58`, slot `+60h`) |
+| the squadron's fire-target getter | slot `+2Ch` is `0071F150`, the newest command's target (`0071EBF0`, `00521EA0`), not a stored field | `00D0BDC4` |
+| the AutoTarget selector | built only by `009F6A20`, whose one caller is `0083676A` in the ship director's constructor `008366D0`, whose one caller is `00810FA0` | rel32 census of the disk image (`local\g9_img.py refs`) |
+| the unit gunnery pass's fire-target provider | `008636A0` (one caller, `00864C18` in the attach `00864BD0`) installs the director-backed provider `00D0D324` (`00863640`, `director+238h`) only when the unit answers `IsKindOf(2)`, `vtable[114h]()` is non-null and that director answers `vtable[48h](2)`. Otherwise it installs the null provider `00D0D314` (`00861B90`, `XOR EAX,EAX`) | decompile of `008636A0` |
+
+A plane instance fails the director test, because its director is null. A squadron fails the
+`vtable[48h](2)` test, because `0084D8F0` answers true only for 0 and 1. **So every plane-side
+gunnery pass reads a null fire target.** The squadron's command reaches only `0071E6C0`, so
+`00835930` never runs for a squadron either.
+
+**Where this host differs.**
+- The commands host runs `008358D0` for every unit, a squadron included. `docs/CONSTRUCT_WORLD.md`
+  records that the host fuses the squadron with its leader plane, whose ship-style director stands
+  in for the `+348h` controller. So `kFireTargetObjectIdBound` stores a forced target on plane rows
+  (USN04 3, USN01 5), and the ship-AI host runs an AutoTarget on them. The image does neither.
+  Both are outside this lane (`src/game_hosts_commands.cpp`, `src/game_hosts_ship_ai.cpp`), and
+  are passed to the lead.
+- The gunnery host's `run_gunnery_pass` takes the ship-AI row's stored target for every unit. A
+  plane row that holds one feeds step 8.7 a fire target the image never has. **That read is in
+  this lane, and is bound below.**
+
+Uncertainty: the forts (`00743F30`), airfield (`006D0D30`) and shipyard (`00842A80`) directors
+are not followed here. The switch touches kinds `0Fh` and `18h` only.
+
+### 42.2 The binding (committed OFF)
+
+- `kPlaneNullFireTargetProviderBound` (`src/game_hosts_gunnery.cpp`): on a unit answering
+  `IsKindOf(0Fh)` or `IsKindOf(18h)`, the pass's fire target is null, as `00861B90` answers.
+- OFF keeps the read, and counts it.
+- The summary line is `summary mission gunnery plane fire target provider null_provider_ticks=
+  stored_target_reads= nulled= bound=`.
+
+### 42.3 Predictions (written before the ON runs)
+
+- **P1, the mechanism.** OFF, `stored_target_reads` is above 0 on USN04 and USN01, the rows where
+  section 33.4 saw plane rows take the target. It is 0 on USN13, whose requests all come from
+  launched squadrons. ON, `nulled` equals OFF's `stored_target_reads` until the tracks diverge.
+- **P2, USN01 3000: exit 1, gameplay identical.** A torpedo bomber's torpedo-category gun takes
+  candidates only from the two director targets. Its command target is the same ship as the
+  forced target, so the selection does not change.
+- **P3, USN04 4500: exit 1,** for the same reason.
+- **P4, USN13 3000: exit 0 or 1.** Nothing is read.
+- **The flip rule:** ON when P1 holds and every move traces to a dropped plane fire target.
