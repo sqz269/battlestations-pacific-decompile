@@ -68,6 +68,18 @@ namespace bsp::game {
 // identical.
 inline constexpr bool kShipAiMarkerTargetBound = true;
 
+// Packet cc9_usn02_deruyter_fire (docs/USN02_DERUYTER_FIRE.md). The Lua native
+// SetFireTarget (0089A8B0), which luaSetScriptTarget calls for every ship, takes
+// the unit's director (vtable[114h]) and calls 00835860(target, force = 1). The
+// kind 5Eh message's receiver 00836240 stores director+238h = target and
+// +23Ch = force, and the automatic selector 009F5DA0 skips its own choice at
+// 009F5EFD..009F5F21 while a target is held and +23Ch is set. True: the native
+// is bound, the lock is held, and the selector keeps the scripted target.
+// LABELLED: a held target that dies is released (the observer pair 00836240
+// registers), and a Vector3 argument (a dummy target entity) is not modelled.
+// False: the native stays an unimplemented record and nothing locks.
+inline constexpr bool kScriptFireTargetBound = false;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;
@@ -555,6 +567,10 @@ public:
     void set_ai_drive(std::size_t unit_index, float throttle, float rudder);
 
     const std::vector<GameShipAiRow>& rows() const noexcept;
+    // Packet cc9_usn02_deruyter_fire: 00836240 on the unit's director, with
+    // target_plus_one 0 for a null target.
+    void store_fire_target_00836240(std::size_t unit, std::size_t target_plus_one,
+                                    bool force);
     const GameShipAiSummary& summary() const noexcept;
 
     // The per-unit table and the one-line summaries the milestone reports.

@@ -28,6 +28,7 @@
 #include "bsp/mission_lua_host.hpp"
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
 #include "bsp/ship_ai_states.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"  // packet cc9_usn02_deruyter_fire
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include <algorithm>
@@ -84,6 +85,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // Packet cc9_pilot_move_to: prcpjm08.lua:573 and :722. Handled only with
     // kPilotMoveToBound.
     {"PilotMoveTo", 0x008a4150u},
+    // Packet cc9_usn02_deruyter_fire: luaSetScriptTarget's ship arm
+    // (commandhelpers.lua:2941). Handled only with kScriptFireTargetBound.
+    {"SetFireTarget", 0x0089a8b0u},
     // Packet cc9_pilot_move_on_path: jm06.lua:118 and :2392. Handled only with
     // kPilotMoveOnPathBound.
     {"PilotMoveOnPath", 0x008a3e70u},
@@ -392,6 +396,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kPilotMoveToBound && bsp::kPilotMoveToTaskBound;
     }
     if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) return kPilotMoveOnPathBound;
+    if (std::strcmp(binding->name, "SetFireTarget") == 0) return kScriptFireTargetBound;
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
@@ -2012,6 +2017,23 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_unit_set_fire_stance(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
+    } else if (std::strcmp(binding->name, "SetFireTarget") == 0) {
+        // 0089A8B0: argument 0 through 00888AA0; argument 1 nil -> null, an
+        // entity table -> that entity, a Vector3 -> a dummy entity (not modelled);
+        // then entity->vtable[114h]()->00835860(target, 1), whose 5Eh message
+        // 00836240 stores. No result is pushed.
+        void* entity = entity_from_argument(0);
+        void* target = entity_from_argument(1);
+        const std::size_t index = index_of(entity);
+        const std::size_t target_index = index_of(target);
+        GameShipAiHost* ai = units_.ship_ai();
+        if (entity != nullptr && index < units_.count() && ai != nullptr) {
+            const std::size_t plus_one =
+                (target != nullptr && target_index < units_.count()) ? target_index + 1 : 0;
+            ai->store_fire_target_00836240(index, plus_one, true);
+            row.target = name_of(target);
+        }
+        results = 0;
     } else if (std::strcmp(binding->name, "PilotMoveOnPath") == 0) {
         // 008A3E70: the NavigatorMoveOnPath message without the speed half.
         ++pilot_move_on_path_calls_;

@@ -17662,6 +17662,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 // Milestone 2n: what the ship AI controller reads off a unit
 // ---------------------------------------------------------------------------
 
+GameShipAiHost* GameUnitsHost::ship_ai() noexcept { return impl_->ship_ai; }
+
 void GameUnitsHost::set_ship_ai(GameShipAiHost* ai) noexcept {
     impl_->ship_ai = ai;
     if (impl_->gunnery != nullptr) impl_->gunnery->set_ship_ai(ai);
