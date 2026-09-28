@@ -3907,6 +3907,35 @@ struct GameUnitsHost::Impl {
     // arm's steer point from 009BFEE0's latched path 009BFEFC-009C0021.
     // Before: max speed x 0.9, the stall speed, and the fly-to geometry.
     static constexpr bool kPlaneFollowCatchupBound = true;
+    // Packet cc9_plane_follow_law_drift (docs/PLANE_FOLLOW_LAW.md section 17).
+    // True: 009BFEE0's leader turn rate is 007D7DA0 (read whole) at the fly-to
+    // and the hold steer point, instead of 0.0. False: 0.0.
+    static constexpr bool kFollowLeaderTurnRateBound = false;
+    // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
+    // controller's forward speed) is the leader's live |v|, as the hold arm
+    // reads it. False: the leader's authored TravelSpeed.
+    static constexpr bool kFollowLeaderLiveSpeedBound = false;
+
+    // 007D7DA0 (007D7DA0-007D7E91, __thiscall(ctl = unit+AB0h), RET, ST0).
+    static float leader_turn_rate_007d7da0(const GameUnitSlot& u) {
+        const float cp = std::cos(std::fabs(u.plane_pitch_angle_c64));
+        const float cb = std::cos(u.plane_bank_angle_c68);
+        const float sb = std::sin(u.plane_bank_angle_c68);
+        const float yaw_spd = u.plane_class.yaw_spd;                 // desc+1B0h
+        const float x = static_cast<float>(
+            static_cast<double>(u.plane_live_controls[1]) * u.plane_class.pitch_spd +  // +9E8h, +1ACh
+            static_cast<double>(u.plane_class_turn_roll_spd) * cp);                    // +1C8h
+        const float y = static_cast<float>(static_cast<double>(x) +
+            static_cast<double>(cp) * cb * u.plane_class.slide_ratio * yaw_spd);       // +1B8h
+        const float z = static_cast<float>(static_cast<double>(y) * sb);
+        return static_cast<float>(static_cast<double>(z) +
+            static_cast<double>(yaw_spd) * cb * u.plane_live_controls[0]);             // +9E4h
+    }
+    static float leader_live_speed_007b8e60(const GameUnitSlot& u) {
+        const float* v = u.plane_world_velocity;
+        return static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
+            static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]));
+    }
     // Packet cc9_wing_achieved_speed (docs/PLANE_FOLLOW_LAW.md section 16): the
     // torpedo and dive-bomb moveto speed slot 009C1850 as the image forms it,
     // 009BECD0(a = [approach+0Ch]+3A0h, b = 007C47F0, sep). squadron+3A0h is
@@ -5282,6 +5311,9 @@ struct GameUnitsHost::Impl {
             }
             gin.own_heading = unit.plane_heading_c6c;
             gin.leader_heading = leader.plane_heading_c6c;
+            if constexpr (kFollowLeaderTurnRateBound) {
+                gin.leader_turn_rate = leader_turn_rate_007d7da0(leader);
+            }
             gin.followed_point_dist = gt.pilot_follow_followed_point_dist;
             gin.leader_heading_time_1 = gt.pilot_follow_leader_heading_spd_time_1;
             gin.leader_heading_time_2 = gt.pilot_follow_leader_heading_spd_time_2;
@@ -5455,6 +5487,9 @@ struct GameUnitsHost::Impl {
         // heading, which is this law's own zero-turn-rate limit;
         // it costs the lag only while the leader is turning.
         gin.leader_turn_rate = 0.0f;
+        if constexpr (kFollowLeaderTurnRateBound) {
+            gin.leader_turn_rate = leader_turn_rate_007d7da0(leader);   // 009C0109
+        }
         gin.followed_point_dist = gt.pilot_follow_followed_point_dist;
         gin.leader_heading_time_1 =
             gt.pilot_follow_leader_heading_spd_time_1;
@@ -5498,6 +5533,9 @@ struct GameUnitsHost::Impl {
         // 009BFC58 `CALL [[state+2Ch]]+38h`, the leader-speed
         // virtual: the leader's own travel speed.
         fin.leader_speed = leader.plane_travel_speed;
+        if constexpr (kFollowLeaderLiveSpeedBound) {
+            fin.leader_speed = leader_live_speed_007b8e60(leader);       // 007B8E60, labelled |v|
+        }
         // SUBSTITUTIONS, labelled: 007C47F0
         // BSP_PlaneClass_LevelFlightSpeed (009BFC41, then
         // `FMUL double [00D7A390]` = 0.9) and the floor at
@@ -18203,6 +18241,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ++unit_.land_follow_no_station;
                         }
                         owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
+                        // DIAGNOSTIC, packet cc9_plane_follow_law_drift: the member,
+                        // its station and its leader every 200 follow ticks (10 s).
+                        if ((unit_.land_follow_ticks % 200) == 1) {
+                            const GameUnitSlot* ld = nullptr;
+                            const bsp::PlaneSquadronHostRecord* sq =
+                                bsp::plane_squadron_registry().find_by_member_unit(
+                                    unit_.process_index);
+                            if (sq != nullptr) {
+                                for (const std::size_t m : sq->member_units) {
+                                    if (m == bsp::kPlaneSquadronNoUnit) continue;
+                                    if (m < owner_.slots.size()) ld = owner_.slots[m].get();
+                                    break;
+                                }
+                            }
+                            const float* p = unit_.motion.position;
+                            const float* v = unit_.plane_world_velocity;
+                            const double vs = std::sqrt(static_cast<double>(v[0]) * v[0] +
+                                static_cast<double>(v[1]) * v[1] + static_cast<double>(v[2]) * v[2]);
+                            double lvs = 0.0, ldist = -1.0, lhead = 0.0;
+                            if (ld != nullptr) {
+                                const float* lv = ld->plane_world_velocity;
+                                lvs = std::sqrt(static_cast<double>(lv[0]) * lv[0] +
+                                    static_cast<double>(lv[1]) * lv[1] +
+                                    static_cast<double>(lv[2]) * lv[2]);
+                                const double dx = static_cast<double>(ld->motion.position[0]) - p[0];
+                                const double dz = static_cast<double>(ld->motion.position[2]) - p[2];
+                                ldist = std::sqrt(dx * dx + dz * dz);
+                                lhead = ld->plane_heading_c6c;
+                            }
+                            owner_.log.notef("  land follow trace %s t=%.2f arm=%d station_d=%.1f "
+                                "leader_d=%.1f pos=(%.1f %.1f %.1f) station=(%.1f %.1f %.1f) "
+                                "hdg=%.3f leader_hdg=%.3f spd=%.2f desired=%.2f leader_spd=%.2f "
+                                "leader_travel=%.2f heading_cmd=%.3f mode=%d leader_rate=%.4f",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                unit_.fw_arm, static_cast<double>(unit_.fw_station_dist), ldist,
+                                static_cast<double>(p[0]), static_cast<double>(p[1]),
+                                static_cast<double>(p[2]),
+                                static_cast<double>(unit_.fw_station[0]),
+                                static_cast<double>(unit_.fw_station[1]),
+                                static_cast<double>(unit_.fw_station[2]),
+                                static_cast<double>(unit_.plane_heading_c6c), lhead, vs,
+                                static_cast<double>(unit_.plane_desired_speed_2b4), lvs,
+                                ld != nullptr ? static_cast<double>(ld->plane_travel_speed) : 0.0,
+                                static_cast<double>(unit_.plan_heading_2c0),
+                                unit_.plan_heading_mode_2cc,
+                                ld != nullptr ? static_cast<double>(
+                                    GameUnitsHost::Impl::leader_turn_rate_007d7da0(*ld)) : 0.0);
+                        }
                     }
 
                     // 009B3C60 (009B3C60-009B3CE5), the land task's +54h. It has
