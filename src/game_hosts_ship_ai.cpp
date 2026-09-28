@@ -1417,10 +1417,75 @@ struct GameShipAiHost::Impl {
         }
         if (r.separation_applied) ++row.separation_turns;
         if (r.free_bearing_queried) ++arm_final_queries;
-        static_cast<void>(target_before);
+        torpedo_pose_trace(index, ctl, row, target_before, r.avoidance_override);
         done("ShipAiArmFinal::step_009de5b0", 0x009de5b0u);
     }
     unsigned long long arm_final_queries{0};
+
+    // Packet cc9_torpedo_evasion, diagnostic only: BSP_TORPEDO_TRACE=<unit name>
+    // prints, every 0.5 s and on every override step, the unit's pose, the
+    // heading target before and after 009DE5B0, the avoidance vector, and the
+    // nearest foreign torpedo's closest approach at the current velocities.
+    void torpedo_pose_trace(std::size_t index, const Controller& ctl, const GameShipAiRow& row,
+                            float target_before, bool overridden) {
+        if (!torpedo_trace_read) {
+            torpedo_trace_read = true;
+            char* text = nullptr;
+            std::size_t length = 0;
+            if (_dupenv_s(&text, &length, "BSP_TORPEDO_TRACE") == 0 && text != nullptr) {
+                torpedo_trace_unit = text;
+            }
+            std::free(text);
+        }
+        if (torpedo_trace_unit.empty() || (","  + torpedo_trace_unit + ",").find("," + row.unit + ",") == std::string::npos) return;
+        if (!overridden && steps % 10 != 0) return;
+        const float px = ctl.hull_geometry.position_184[0];
+        const float pz = ctl.hull_geometry.position_184[1];
+        const float heading = units.unit_heading_radians(index);
+        const float speed = units.unit_forward_speed_0092d730(index);
+        const float vx = speed * std::sin(heading);
+        const float vz = speed * std::cos(heading);
+        double best = 1e30;
+        double best_tca = 0.0;
+        double best_miss = 0.0;
+        unsigned long long best_serial = 0;
+        std::size_t best_owner = 0;
+        for (const GameGunneryHost::LiveTorpedo& t : live_torpedoes()) {
+            if (t.owner_unit == index + 1) continue;
+            const double dx = static_cast<double>(t.position[0]) - px;
+            const double dz = static_cast<double>(t.position[2]) - pz;
+            const double d = std::sqrt(dx * dx + dz * dz);
+            if (d >= best) continue;
+            const double rvx = static_cast<double>(t.velocity[0]) - vx;
+            const double rvz = static_cast<double>(t.velocity[2]) - vz;
+            const double rv2 = rvx * rvx + rvz * rvz;
+            double tca = rv2 > 1e-6 ? -(dx * rvx + dz * rvz) / rv2 : 0.0;
+            if (tca < 0.0) tca = 0.0;
+            const double mx = dx + rvx * tca;
+            const double mz = dz + rvz * tca;
+            best = d;
+            best_tca = tca;
+            best_miss = std::sqrt(mx * mx + mz * mz);
+            best_serial = t.serial;
+            best_owner = t.owner_unit;
+        }
+        const GameUnitRow* owner_row = best_owner != 0 ? units.unit_row(best_owner - 1) : nullptr;
+        log.notef("torpedo trace %s t=%.2f pos=(%.1f %.1f) heading=%.4f speed=%.2f "
+            "target=%.4f->%.4f override=%d gate=%d hold=%.2f avoid=(%.3f %.3f) tracks=%zu "
+            "nearest=%s#%llu d=%.1f tca=%.2f miss=%.1f",
+            row.unit.c_str(), static_cast<double>(steps) * 0.05, static_cast<double>(px),
+            static_cast<double>(pz), static_cast<double>(heading), static_cast<double>(speed),
+            static_cast<double>(target_before), static_cast<double>(ctl.blk.heading_target_324),
+            overridden ? 1 : 0,
+            torpedo_gate_009da1d0(index, ctl) ? 1 : 0,
+            static_cast<double>(ctl.throttle_profile.hold_354),
+            static_cast<double>(ctl.throttle_profile.avoid_x_34c),
+            static_cast<double>(ctl.throttle_profile.avoid_z_350), ctl.torpedo_tracks.size(),
+            owner_row != nullptr ? owner_row->name.c_str() : "-", best_serial,
+            best < 1e29 ? best : -1.0, best_tca, best_miss);
+    }
+    bool torpedo_trace_read{false};
+    std::string torpedo_trace_unit;
 
     // 009DE96C..009DEE07, section 6: the push away from every live neighbour's
     // near-box centre, turned by 009DEBB9. blk+604h is the consumers' count

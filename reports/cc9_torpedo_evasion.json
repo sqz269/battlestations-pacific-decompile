@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_torpedo_evasion",
+  "doc": "docs/TORPEDO_EVASION.md",
+  "switch": null,
+  "addresses": {
+    "009DA1D0": "torpedo gate (body 009DA1D0-009DA244)",
+    "009DE5B0": "section 5 009DE8F1..009DE96C: gate, blk+354h < 0, vector length",
+    "009E04E0": "throttle profile and avoidance vector",
+    "009F158A": "pre-pass torpedo walk 009F163F..009F1855",
+    "009F0AD0": "admission",
+    "009DC060": "track refresh",
+    "009EF350": "traffic pass: 009EF8FD stores hold 3.0 (00CE3854) into blk+354h when it writes a heading"
+  },
+  "calls": [],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "predictions": "none: no switch, so no pair",
+  "results": {
+    "main": "2a1d54495",
+    "logs": "local/te_main_usn02.log (Exeter trace, 9200/9000), local/te_main2_usn02.log (John3, Encounter, Jupiter, Perth, Alden, 4400/4200)",
+    "USN02": "Exeter survives; one torpedo at ~160.4 s; 573 overrides; phase 2 reached; MissionFailedRan=nil at 9000",
+    "John3/Encounter": "sunk without an override: the traffic pass holds blk+354h at 3.0",
+    "Alden/Perth": "sunk while overriding"
+  },
+  "decision": "record only: the image evades and the host evades the same way",
+  "diagnostic": "BSP_TORPEDO_TRACE (env-gated, src/game_hosts_ship_ai.cpp)"
+}

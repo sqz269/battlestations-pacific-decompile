@@ -120,3 +120,96 @@ The Answer's premise is wrong: the Lexington is not "player-controlled" in the +
   - Its captain role 0 is held by the human slot 0, which HUD page 27h (0067BB50) takes.
   - So cruise arm 3 stores 00521E70(unit, 0) = 0 into blk+3ECh, and 009DA1D0 stays closed.
   - The "why it is off" list above holds for a ship whose helm the player holds, not for this one.
+
+## USN02, 2026-09-27 (packet `cc9_torpedo_evasion`, second pass, worker cc9-ships2)
+
+The question was whether Exeter's loss at 151.30 s (the SetFireTarget pair's ON side, base
+`6c936d2d0`) is a missing evasion. It is not. **The image evades, and the host already evades the
+same way**, through `kShipTorpedoResponseBound` and the whole 009DE5B0 (both ON). No switch was
+added, so no pair was run. Ghidra was read-only.
+
+### The image, and which ships take it
+
+The detection, gate and consumers are the ones listed above and in docs/SHIP_TORPEDO_RESPONSE.md:
+- **Detection:** the pre-pass torpedo walk 009F163F..009F1855.
+- **Gate:** 009DA1D0.
+- **Speed change:** the throttle profile 009E04E0.
+- **Heading override:** 009DE5B0 section 5.
+
+Player-side ships that the idle player does not hold take the response. Exeter's gate is open
+(`gate_open` 64660 of its steps on main).
+
+Section 5 has a gate of its own that the host reproduces. The whole section-5 body, listed by
+address:
+
+```
+009DE8F3  CALL 009DA1D0 / TEST AL,AL / JE 009DE96C     ; the torpedo gate
+009DE8FC  XORPS XMM0,XMM0
+009DE8FF  COMISS XMM0,[ESI+354h] / JBE 009DE96C          ; needs blk+354h < 0
+009DE908  |34Ch,350h|^2 against the double at 00D7A268  ; needs a vector
+```
+
+The traffic pass 009EF350 re-arms that hold every time it writes a heading:
+
+```
+009EF8E6  MOVSS XMM0,[00CE3854]        ; 3.0
+009EF8EE  FSTP  [EDI+324h]             ; the traffic heading target
+009EF8F4  COMISS XMM0,[EDI+354h] / JBE 009EF905
+009EF8FD  MOVSS [EDI+354h],XMM0        ; hold = 3.0
+```
+
+**So a ship whose traffic pass is steering it never takes the torpedo turn.** It keeps only the
+throttle profile's speed change. That is an image rule, and the host has it: the traffic pass and
+section 5 share `ctl.blk.clamp_354` / `throttle_profile.hold_354`.
+
+### What the host did (main `2a1d54495`, `BSP_TORPEDO_TRACE`)
+
+The trace is diagnostic and env-gated. It is added at the end of the whole-009DE5B0 binding, so
+no gameplay changes. `BSP_TORPEDO_TRACE=<unit[,unit...]>` prints the following every 0.5 s and on
+every override step:
+- the pose;
+- the heading target before and after 009DE5B0, with the override flag and the gate;
+- blk+354h and the avoidance vector;
+- the nearest foreign torpedo's distance, time to closest approach and miss distance at the
+  current velocities.
+
+The `max_turn` column of the summary line is always 0.000 on the whole-routine path, because only
+the partial path updates it. It is not evidence of an untaken turn.
+
+**The premise moved.** On current main, **Exeter is not lost and USN02 does not fail inside 9000
+mission frames**. Phase 2 is reached, and `MissionFailedRan=nil` (`local\te_main_usn02.log`). The
+landings since `6c936d2d0` (cc9-lua2's and cc9-gunnery3's, among them the fire-cooldown flip)
+moved the run.
+
+**Exeter on main** took one torpedo, at about 160.4 s (Hatsukaze round #556, health 2641 after
+it), and survived:
+- It had 573 overrides, the first at 31.40 s.
+- **Heading:** from 148 s the heading target was overridden to 1.4465 or 1.4599 (the vector
+  (1.985, 0.248)). The ship turned from 0.587 to 0.893 rad by 160.2 s, about 0.025 rad/s.
+- **Speed:** the throttle profile took the speed from 17.38 m/s down to 7.79 m/s at 154.2 s,
+  and back to 16.59 m/s.
+- The round closed with a predicted miss of 16.4 m and struck.
+
+**Other player-side torpedo victims on main** (`local\te_main2_usn02.log`):
+
+| ship | sunk | override in its last 12 s | blk+354h | note |
+| --- | --- | --- | --- | --- |
+| John3 | 152.75 (Asagumo) | none | 2.95 from before 141 s to 151.5 s | the traffic pass re-armed the hold each step. The vector was (1.916, 0.574) from 147 s; speed rose from 9.1 to 24.0 m/s |
+| Encounter | 153.60 (Tokitsukaze) | none | 2.95 throughout | the same traffic-pass hold |
+| Alden | 166.16 (Tokitsukaze) | yes, from 163.90 s | -0.05 | turning about 0.03 rad/s; the miss fell from 34.9 to 32.2 m and it was struck |
+| Perth | 203.61 (Ushio, 5189 m) | yes | -0.05 | predicted miss 93 m until a new round at 203.3 s with miss 6 m |
+
+**The SetFireTarget pair's ON side**, where Exeter was lost at 151.30 s, also shows Exeter's
+response running: `gate_open` 36679, 204 overrides, the first at 28.75 s. No trace was taken on
+that base.
+
+### Verdict
+
+- **The image turns and slows AI-driven ships for torpedoes, and the host does the same.** The
+  gates are the image's: 009DA1D0, and the blk+354h hold that the traffic pass re-arms.
+- **No manoeuvre is missing, so nothing is bound.**
+- **Exeter's 151.30 s loss was the base's own outcome under the image's rules, and it is gone on
+  current main.**
+- **Open, not claimed:** whether the host's turn rate (about 0.025 to 0.03 rad/s for a cruiser
+  near 15 m/s) matches the image's. That belongs to the rudder and hydrodynamics hosts, not to
+  this response.
