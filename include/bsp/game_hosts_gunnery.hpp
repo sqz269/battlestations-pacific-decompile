@@ -907,6 +907,9 @@ public:
     // every 00879070 damage write and refuses the 008110F0 sink; the query is
     // IsInvincible's `inv > 0` (00897CB0) and 007BC5B0's `unit+150h <= 0` test.
     void set_unit_invincibility(std::size_t unit_index, float value);
+    // Packet cc9_override_hp: the Lua native OverrideHP 008C1930, unit+36Ch = value
+    // then 00877B90(value). Behind kLuaOverrideHpBound; counted either way.
+    void override_hp_008c1930(std::size_t unit_index, float value);
     // 0095DA00 -> 0087D730 -> 00879070 for a script-sourced amount (AddDamage,
     // 0088E000): the party multiplier, the invincibility floor and the death funnel,
     // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
