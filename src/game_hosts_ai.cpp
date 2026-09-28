@@ -1379,11 +1379,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             unit_name(index).c_str(), squadron ? 1 : 0, excluded ? 1 : 0, ship ? 1 : 0, 0,
             bsp::ai_close_attack_member_served(squadron, excluded, ship, false) ? 1 : 0);
     }
-    bool close_member_controller_busy(void* member) override {
-        // member+538h through its vtable[+2Ch] at 00A1443D; contract unread.
-        (void)member;
-        record("AiCommand::close_controller_busy", 0x00a1443du);
-        return false;
+    bool close_member_lands_troops(void* member) override {
+        // 00A14435 MOV ECX,[ESI+538h]; 00A1443D CALL [EDX+2Ch]; a true answer skips the
+        // member (00A14444 JNE 00A14D4D). The troop-landing trait.
+        const bool trait = units.unit_class_lands_troops_vtable_2c(unit_index_of(member));
+        if (trait) {
+            ++summary.close_troop_landers;
+            diag_troop_lander("close", unit_index_of(member));
+        }
+        if (!bsp::game::kTroopLandingTraitBound) {
+            record("AiCommand::close_member_lands_troops", 0x00a1443du);
+            return false;
+        }
+        done("AiCommand::close_member_lands_troops", 0x00a1443du);
+        return trait;
     }
     bool close_member_position(void* member, float out[3]) override {
         return tick_member_position(member, out);
@@ -2495,23 +2504,44 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // MotherShip 9 -> 3.0 (00CE3854); Cruiser 0Ah -> 4.0 (00CE3D34); BattleShip
     // 0Dh -> 5.0 (00CE3850); CommandBuilding 1Ch -> the Lua `CaptureWeight`,
     // GetFloatOrDefault(1.0), unauthored on this installation; any other id 0.
-    // LABELLED: Cargo 0Bh answers 3.0 when [unit+538h]->vtable[+2Ch]() is true
-    // and 0 otherwise; that slot was not read, so 0. LandingShip 0Ch answers
+    // Cargo 0Bh answers 3.0 when [unit+538h]->vtable[+2Ch]() is true and 0
+    // otherwise: the troop-landing trait, behind kTroopLandingTraitBound. The strafeable
+    // troop transports (classes 224 and 234, docs/SHIP_AI_OPEN_ITEMS.md 19) answer true. LandingShip 0Ch answers
     // 0.1 (00D7A2F0) when 00827F70 is true, which for a class-0Ch ship is the
     // BigLandingShip byte +808h being clear (its default), else 1.0; the host
     // has no reader for +808h, so the default arm 0.1 stands.
-    static float capture_weight_00a03510(int class_id) {
+    static float capture_weight_00a03510(int class_id, bool lands_troops = false) {
         switch (class_id) {
         case 0x07: return 2.0f;
         case 0x08: case 0x0E: case 0x18: return 1.0f;
         case 0x09: return 3.0f;
         case 0x0A: return 4.0f;
-        case 0x0B: return 0.0f;
+        case 0x0B: return (bsp::game::kTroopLandingTraitBound && lands_troops) ? 3.0f : 0.0f;
         case 0x0C: return 0.1f;
         case 0x0D: return 5.0f;
         case 0x1C: return 1.0f;
         default: return 0.0f;
         }
+    }
+
+    bool cargo_lands_troops(int class_id, std::size_t unit) {
+        if (class_id != 0x0B) return false;
+        const bool trait = units.unit_class_lands_troops_vtable_2c(unit);
+        if (trait) {
+            ++summary.cargo_troop_landers;
+            diag_troop_lander("cargo", unit);
+        }
+        return trait;
+    }
+    // The first answer per unit and site, for the troop-landing pairs.
+    std::vector<std::pair<std::size_t, char>> troop_lander_seen;
+    void diag_troop_lander(const char* site, std::size_t unit) {
+        const std::pair<std::size_t, char> key{unit, site[0]};
+        for (const auto& k : troop_lander_seen) if (k == key) return;
+        if (troop_lander_seen.size() >= 32) return;
+        troop_lander_seen.push_back(key);
+        log.notef("ai troop landing trait site=%s unit=%s class=%d", site,
+            unit_name(unit).c_str(), units.unit_class_id(unit));
     }
 
     float unit_xz_distance(std::size_t a, std::size_t b) const {
@@ -2560,7 +2590,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // 00A03760.
             const WorldUnit& w = world[static_cast<std::size_t>(i)];
             bsp::AiTailArrivalValueInputs in;
-            in.capture_weight = capture_weight_00a03510(w.class_id);
+            in.capture_weight = capture_weight_00a03510(w.class_id, h.cargo_lands_troops(w.class_id, w.unit));
             in.distance = h.unit_xz_distance(w.unit, unit_index_of(target));
             in.capture_radius = static_cast<float>(static_cast<int>(
                 kCaptureAccessorsBound
@@ -3133,7 +3163,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         auto visit = [&](std::size_t candidate, int class_id) {
             const std::size_t body = proxy(candidate);
             if (class_id == 0x1C) return;
-            const float w = capture_weight_00a03510(class_id);
+            const float w = capture_weight_00a03510(class_id, cargo_lands_troops(class_id, candidate));
             if (!(0.0f < w)) return;
             float x = 0.0f, y = 0.0f, z = 0.0f;
             units.unit_position_00fc(body, x, y, z);
@@ -4596,6 +4626,9 @@ void GameAiCoordinatorHost::report() {
         s.close_members_served, s.close_attack_move_orders, s.close_set_target_orders,
         s.close_fallback_movetos, s.close_candidates_scored,
         s.ship_members_not_ordered);
+    host.log.notef("summary mission ai troop landing trait close_landers=%llu cargo_landers=%llu "
+        "bound=%d (00A1443D, 00A03510 Cargo arm; packet cc9_close_member_class_trait)",
+        s.close_troop_landers, s.cargo_troop_landers, bsp::game::kTroopLandingTraitBound ? 1 : 0);
     // Packet cc8_ship_follow: 0077C8D0's first question, 008162B0 -> 00779D50.
     host.log.notef("summary mission ai follow requests=%llu available=%llu refused=%llu "
         "joins=%llu (00779D50: a live ship may follow a live ship of its own side; the "

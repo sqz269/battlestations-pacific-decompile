@@ -1032,3 +1032,141 @@ else answers -1.
 **No pair was run for it.** In E2 no aircraft enters prepare (`prepare_entries=0`) and no Val
 spends a tick in the dive follow state (`follow>attackrun@0`), so the added states are never
 reached there.
+
+## 17. A wingman whose leader circles slowly (packet cc9_plane_follow_law_drift, cc9-lua10, 2026-09-28)
+
+On LOMP10 two Lightning wing members in `follow (land)` drift 5 to 6 km from their leader. The
+leader circles CB4_AF near 31.5 m/s, and the members fly the catch-up speed of 173.33 m/s. In
+cc9-lua8's ON log, `Lightning 01|.-2` is 3262 m from the airfield at 324 s and 4639 m at 404 s.
+The host's follow law was compared with the image for this case. Two inputs differ, and nothing
+else does. Both are bound OFF.
+
+### 17.1 The leader's turn rate, `007D7DA0` (read whole, `007D7DA0`-`007D7E91`, `RET`, ST0)
+
+`009BFEE0` calls it at `009C0109` with `ECX = leader+0AB0h`, the leader's flight controller.
+Controller `+8h` is the unit and `+0Ch` is the class. With bank b = unit `+C68h`, pitch p = unit
+`+C64h` and the live controls yaw = `+9E4h` and pitch = `+9E8h`:
+
+```
+cp = cos|p|, cb = cos b, sb = sin b                  ; each stored as a float
+X  = float(pitchCtl * PitchSpd(+1ACh) + TurnRollSpd(+1C8h) * cp)
+Y  = float(X + cp * cb * SlideRatio(+1B8h) * YawSpd(+1B0h))
+rate = float(Y * sb) + YawSpd * cb * yawCtl
+```
+
+A null unit at controller `+8h` returns 0.0. The geometry turns it into `ref = wrap(leaderHeading -
+rate x lag)` (`009C0109`-`009C0128`, section 5.2). `009C0109` is the routine's only call site.
+The host had fed 0.0 there. The same 0.0 went to the host's hold stand-in geometry, which runs only
+with `kPlaneFollowCatchupBound` off; that stand-in takes the rate as well. For a leader that is always
+banked, as a circling one is, `ref` then leads the lagged heading the image uses, and the
+member's station frame rotates ahead of where the image puts it.
+
+### 17.2 The leader's speed at `009BFC58` and `009BFCC3`
+
+Both calls are `[[state+2Ch]]+38h` on the leader. A plane's slot 38h is `007B8E60`, which is
+`FLD [ECX+0B1Ch]`. `unit+B1Ch` is flight-controller `+6Ch` (the controller is at `+AB0h`), the
+forward speed that `plane_ground_ops.hpp` names `kForwardSpeed`. So the term is the leader's
+live speed. The host fed `plane_travel_speed`, the authored `TravelSpeed`, to both.
+
+This host substitutes the live world speed |v| for `vtable[38h]`, as the hold arm already does
+(`follow_hold_attitude`). That substitution is LABELLED.
+
+This input moves only the on-station end of the distance ramp (y0), and the MaxSpd-floored
+catch-up factor when the leader is faster than MaxSpd. A member more than GoodPositionDist
+(100 m) from its station still flies Turbo x max(v, MaxSpd).
+
+### 17.3 Switches and predictions, written before any ON run
+
+- `kFollowLeaderTurnRateBound` (OFF): `007D7DA0` at `009C0109`.
+- `kFollowLeaderLiveSpeedBound` (OFF): the leader's |v| at `009BFC58`/`009BFCC3`.
+- A diagnostic line, `land follow trace`, prints every 200 `follow (land)` ticks. It shows the
+  member's station distance and arm, its distance to the leader, both speeds and both headings.
+
+Predictions for LOMP10 9000 and USN01 3200, each switch paired alone against this tree's OFF
+build:
+1. **Turn rate.** Every follower in the fly-to or hold arm moves, so both rows come out moved
+   (`pair_diff` exit 3).
+   - Mechanism: a circling Lightning or Warhawk leader reports a non-zero rate, of the same sign
+     as its heading change, between 0.05 and 0.5 rad/s.
+   - The drift hypothesis is under test. The Lightning members' largest distance to their leader
+     after 250 s is smaller ON than OFF. If it is not, the turn rate is not the drift's cause, and
+     that is recorded whatever the flip decision.
+2. **Live speed.**
+   - A member more than 100 m from its station is unchanged at the moment of the change.
+   - A member within 100 m commands a speed between the leader's |v| and Turbo x max(|v|, MaxSpd).
+     On LOMP10, with the leader near 31.5 m/s, that is well below the 120 m/s of the travel-speed
+     term.
+   - Both rows are expected to move.
+   - Mechanism failure: a member within 100 m of its station whose desired speed does not change.
+
+### 17.5 The pairs for 17.1 and 17.2 (cc9-lua10, 2026-09-28)
+
+OFF is this tree's build of `f9efe504d` (`local\l10_f0_<row>.log`). Each ON run is an export of the
+same commit with one flip: `local\l10_tron_<row>.log` for the turn rate and `local\l10_lvon_<row>.log`
+for the live speed.
+
+| switch | LOMP10 9200/9000 | USN01 3200/3000 | Lightning members' largest leader distance after 250 s |
+| --- | --- | --- | --- |
+| OFF | - | - | 6442 m |
+| `kFollowLeaderTurnRateBound` | exit 1, gameplay identical, positions moved | exit 3 (hit records 474 -> 476) | 3817 m |
+| `kFollowLeaderLiveSpeedBound` | exit 1, gameplay identical, 109 of 138 trace lines moved | exit 0 | 5788 m |
+
+- **The turn rate: ON.**
+  - Mechanism held. A circling leader reports 0.05 to 0.43 rad/s in magnitude. A leader flying
+    straight reports about 0.
+  - The drift clause held: the largest leader distance fell from 6442 m to 3817 m.
+  - Spread miss, recorded: LOMP10 was predicted to move and came out gameplay-identical. Only the
+    positions moved.
+  - The sign of the rate against the heading change was not checked.
+- **The live speed: stays OFF.**
+  - The mechanism clause could not be observed. Every sampled member within 100 m of its station
+    was in the hold arm, whose speed is not this term. The fly-to samples moved slightly (for
+    example 173.33 -> 166.68 at 151 m).
+  - USN01 came out identical, against a prediction of moved.
+  - Recorded; this should be re-paired once 17.4 has changed which arm the members fly.
+- The drift is smaller under the turn rate but not gone. Section 17.4 tests the speed law.
+
+### 17.4 The alignment ramp's endpoints are `acos` of the authored values (the drift's cause, hypothesis under test)
+
+**Measured first.** Take the OFF trace in `local\l10_f0_lomp10.log` (`land follow trace`) for
+`Lightning 01|.-2`. It flies west with its leader. By 63.8 s it is ahead of its station and still
+commanded 173.33 m/s, the catch-up speed. It flies 88 to 95 m/s, while its leader slows to about
+32 m/s. The station falls behind it: 404 m at 63.8 s, 1.25 km at 83.8 s and 3.48 km at 123.8 s.
+The heading command equals the member's heading, so it is steering where it is told. The speed law
+never slows a member whose station is behind it.
+
+**Correction to section 5.4.** Section 5.4 read the ramp's endpoints as the raw
+`MaxFollowSpdTargetDir`/`MinFollowSpdTargetDir`, DEG(30) and DEG(100), and called the high end
+unreachable. The loader does not store them raw:
+
+```
+007E8892  CALL 00B66270                 ; the number, MaxFollowSpdTargetDir
+007E88A1  v > 1.0          -> 0.0
+007E88B6  -1.0 (00D7A260) > v -> pi (00D7A264, 3.1415927)
+007E88C9  else CALL 00BF9940 ; acos(v)
+007E88E4  MOVSS [EBP+3A4h]
+007E891B .. 007E8970          ; the same for MinFollowSpdTargetDir into +3A8h
+```
+
+These are the loader's only two `00BF9940` calls. With this installation's
+`scripts/datatables/planeglobals.lua` (mtime 2024-10-29):
+- `+3A4h` = acos(0.5236) = 1.0197;
+- `+3A8h` = 0.0, because 1.745 > 1.
+
+`009BFD0A` interpolates from (`+3A4h`, rampD) to (`+3A8h`, cruise) over the dot product:
+- a member flying straight at its station (dot 1) gets 98% of rampD;
+- at dot 0 or below, with the station abeam or behind, it gets cruise, 0.9 x `007C47F0`.
+
+The host loaded the raw 0.5236 and 1.745. With those, every dot at or below 0.5236 got rampD,
+which is the catch-up speed when the station is behind.
+
+**Bound OFF**, `kFollowTargetDirAcosBound` (`include/bsp/game_tuning_singleton.hpp`): the loader
+applies `007E88A1`-`007E88DA` to both keys. The follow law is these fields' only reader.
+
+**Predictions for LOMP10 9000 and USN01 3200, written before the ON run:**
+1. **Mechanism.** In the ON trace, whenever a Lightning member is ahead of its station (dot at
+   most 0), its `desired` is the cruise speed, not 173.33.
+2. **The drift.** The Lightning members' largest distance to their leader from 250 s on falls well
+   below OFF's. OFF reaches 5.44 km at 423.8 s for `|.-2`. A miss here with (1) holding means the
+   drift has a second cause; it is recorded, and the switch may still flip.
+3. **Both rows move** (exit 3). Every fly-to member in every mission reads the ramp.

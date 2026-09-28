@@ -14,6 +14,8 @@
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/attack_target_classify.hpp"
+#include "bsp/command_execution.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/ship_ai_goal_vector_visibility.hpp"
 #include "bsp/ship_ai_search_storage.hpp"
@@ -427,6 +429,20 @@ inline constexpr bool kAutoTargetFollowerGateBound = false;
 // ON (2026-09-28): JM06 and USN01 move through 96 corners and 257 leans; five rows identical
 // (section 14).
 inline constexpr bool kShipAiFreeBearingBound = true;
+// Packet cc9_clearance_path_fade (rank 3 of docs/SHIP_AI_OPEN_ITEMS.md section 16).
+// True: 009EF910's path-length fade gate answers the image's disjunction,
+// 00778890(unit) at 009F0000 (the unit leads its formation: [unit+284h] set and
+// its +14h naming the unit) or, at 009F0009..009F0020, the director's slot-0
+// command [[unit+738h]+54h] equal to 00E08F80 (`moveonpath`); either one reaches
+// 009F0022. False: the gate answers false, as the record did. Counted on both sides.
+inline constexpr bool kShipAiClearancePathFadeBound = false;
+// Packet cc9_arm_final_area_key (rank 10 of docs/SHIP_AI_OPEN_ITEMS.md section 16).
+// True: the arm final step's 0070E450 (009DEEE9, 009DEFD3) answers the whole
+// routine, the largest vtable[214h]() travel layer over the formation's kind-6
+// members from 0, which the layer choice already answers. False: the leader's
+// own travel layer blk+30Ch, the stand-in. Both sides count the calls and how
+// often the two answers differ.
+inline constexpr bool kShipAiArmFinalAreaKeyBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1147,6 +1163,23 @@ struct GameShipAiHost::Impl {
     // (007202FD) for a name without an entry.
     // Packet cc9_torpedo_gate_bytes: all four director bytes +220h..+223h, the
     // constructor's four 1s for a name without an entry.
+    // 0070E450 (0070E450-0070E4B3) on the unit's formation: over the [+4F8h]
+    // members at +18h stride 34h, the largest vtable[214h]() among members that
+    // answer vtable[5Ch](6), starting from 0. A unit with no formation answers 0.
+    std::int32_t formation_navigation_layer_0070e450(std::size_t index) const {
+        const std::int32_t group = units.unit_formation_group_0284(index);
+        std::uint32_t best = 0;
+        const std::int32_t count = units.formation_member_count(group);
+        for (std::int32_t i = 0; i < count; ++i) {
+            const std::size_t member = units.formation_member_unit(group, i);
+            if (member >= controllers.size()) continue;
+            if (!units.unit_is_kind_of(member, 6)) continue;
+            const auto& other = controllers[member];
+            if (!other.leaf_tuning_loaded) continue;
+            best = std::max(best, bsp::ship_ai_unit_navigation_layer_006dfd80(other.leaf_tuning));
+        }
+        return static_cast<std::int32_t>(best);
+    }
     SceneDirectorEnables director_enables_0220(std::size_t index) const {
         const GameGunneryUnitRow* row = gunnery_unit_row(index);
         if (row != nullptr) {
@@ -1590,11 +1623,19 @@ struct GameShipAiHost::Impl {
                 return extent(true);
             }
             int controller_area_key_0070e450() override {
-                // The largest member vtable[214h] over the group's ships; this
-                // host's stand-in is the leader's own travel layer, so the key
-                // equals blk+30Ch and the "moved" searcher is never chosen.
-                impl.record("ShipAiArmFinal::group_area_key_0070e450", 0x0070e450u);
-                return static_cast<int>(ctl.travel_layer_30c);
+                // 009DEEE9 / 009DEFD3, reached only under 009DEE1E's leader test.
+                // The stand-in is the leader's own travel layer blk+30Ch, which
+                // never takes the "moved" path 009DEF83.
+                const int whole = impl.formation_navigation_layer_0070e450(index);
+                const int own = static_cast<int>(ctl.travel_layer_30c);
+                ++impl.summary.arm_final_area_keys;
+                if (whole != own) ++impl.summary.arm_final_area_key_differs;
+                if (!kShipAiArmFinalAreaKeyBound) {
+                    impl.record("ShipAiArmFinal::group_area_key_0070e450", 0x0070e450u);
+                    return own;
+                }
+                impl.done("ShipAiArmFinal::group_area_key_0070e450", 0x0070e450u);
+                return whole;
             }
             bool controller_belongs_to_another_007788b0() override {
                 impl.done("ShipAiArmFinal::belongs_to_another_007788b0", 0x007788b0u);
@@ -5203,13 +5244,26 @@ public:
         return 0u;
     }
     bool member_is_kind_vtable_005c(std::uint32_t, int) override { return false; }
-    bool member_armament_ready_vtable_002c(std::uint32_t) override { return false; }
-    bool unit_armament_ready_vtable_002c() override {
-        // 009F35D8, [unit+538h]->vtable[2Ch](). The object at unit+538h has no
-        // recovered class, so the predicate is a record and false, which leaves
-        // the candidate list empty and skips the warn sweep.
-        owner_.record("ShipAiApproach::unit_armament_ready", 0x009f35d8u);
-        return false;
+    bool member_lands_troops_vtable_002c(std::uint32_t member) override {
+        // 009F3473 / 009F347E, [member+538h]->vtable[2Ch](), the troop-landing trait.
+        return lands_troops(member == 0u ? static_cast<std::size_t>(-1)
+                                         : static_cast<std::size_t>(member - 1u));
+    }
+    bool lands_troops(std::size_t unit) {
+        const bool trait = unit < owner_.units.count()
+            && owner_.units.unit_class_lands_troops_vtable_2c(unit);
+        ++owner_.summary.approach_trait_tests;
+        if (trait) ++owner_.summary.approach_troop_landers;
+        if (!bsp::game::kTroopLandingTraitBound) {
+            owner_.record("ShipAiApproach::unit_lands_troops", 0x009f35d8u);
+            return false;
+        }
+        owner_.done("ShipAiApproach::unit_lands_troops", 0x009f35d8u);
+        return trait;
+    }
+    bool unit_lands_troops_vtable_002c() override {
+        // 009F35D8 / 009F35E3, the non-leader arm: the same slot on the unit itself.
+        return lands_troops(index_);
     }
     std::uint32_t brain_unit_0aa8() override {
         return static_cast<std::uint32_t>(index_) + 1u;
@@ -6672,11 +6726,25 @@ public:
             const_cast<bsp::ShipAiObstacleNode&>(node(i))).unit);
     }
     bool path_fade_applies_00778890() override {
-        // 009F0000 / 009F0019: the group-leader query and the vtable identity
-        // test against 00E08F80, the `moveonpath` command object. Neither has a
-        // producer here; the same pair is recorded in the approach binding.
-        owner_.record("ShipAiClearance::path_fade_00778890", 0x00778890u);
-        return false;
+        // 009EFFF2 ECX = [blk+3FCh], the unit. 009F0000 CALL 00778890; JNE 009F0022
+        // on a leader. Otherwise 009F0009..009F0020: EAX = [unit+738h], the
+        // command controller; JE 009F0076 on null; CMP [EAX+54h], 00E08F80, the
+        // slot-0 command pointer against the `moveonpath` singleton (docs/
+        // COMMAND_EXECUTION.md, slot 0 at +54h). Either half takes the fade.
+        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+        const bool leader = group >= 0 && owner_.units.formation_leader_0014(group) == index_;
+        const bool moveonpath = !leader
+            && owner_.units.director_slot_command(index_, 0) == bsp::kCommandMoveOnPath;
+        ++owner_.summary.path_fade_tests;
+        if (leader) ++owner_.summary.path_fade_leader;
+        if (moveonpath) ++owner_.summary.path_fade_moveonpath;
+        if (!kShipAiClearancePathFadeBound) {
+            owner_.record("ShipAiClearance::path_fade_00778890", 0x00778890u);
+            return false;
+        }
+        owner_.done("ShipAiClearance::path_fade_00778890", 0x00778890u);
+        if (leader || moveonpath) ++owner_.summary.path_fade_applied;
+        return leader || moveonpath;
     }
     float class_length_unit_00811a30() override {
         // 009F0038, 00811A30(unit, 1.0f): 0082E960(class, 1.0f) divided by the
@@ -6745,18 +6813,7 @@ public:
         // 0070E450: the largest member->vtable[214h]() over the members that
         // answer vtable[5Ch](6), from 0.
         owner_.done("ShipAiLayer::group_layer_0070e450", 0x0070e450u);
-        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
-        std::uint32_t best = 0;
-        const std::int32_t count = owner_.units.formation_member_count(group);
-        for (std::int32_t i = 0; i < count; ++i) {
-            const std::size_t member = owner_.units.formation_member_unit(group, i);
-            if (member >= owner_.controllers.size()) continue;
-            if (!owner_.units.unit_is_kind_of(member, 6)) continue;
-            const auto& other = owner_.controllers[member];
-            if (!other.leaf_tuning_loaded) continue;
-            best = std::max(best, bsp::ship_ai_unit_navigation_layer_006dfd80(other.leaf_tuning));
-        }
-        return static_cast<std::int32_t>(best);
+        return owner_.formation_navigation_layer_0070e450(index_);
     }
     std::uint32_t unit_navigation_layer_v214() override {
         owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
@@ -8535,6 +8592,9 @@ public:
         bsp::ship_ai_refresh_turn_clearance_009ef910(ctl_.clearance, geometry, settings,
                                                      seconds, clearance);
         owner_.done("ShipAi::refresh_turn_clearance_009ef910", 0x009ef910u);
+        if (ctl_.clearance.outcome_370 == bsp::ShipAiClearanceOutcome::HeadingErrorLarge) {
+            ++owner_.summary.clearance_heading_error_large;
+        }
         ++row_.clearance_refreshes;
         ++owner_.summary.clearance_refreshes;
         if (clearance.node_hits != 0) ++row_.clearance_node_hits;
@@ -10290,6 +10350,16 @@ void GameShipAiHost::report() {
         "cc9_autotarget_follower_gate)",
         host.summary.autotarget_follower_thinks, host.summary.autotarget_follower_leaves,
         kAutoTargetFollowerGateBound ? 1 : 0);
+    host.log.notef("summary mission ship ai clearance path fade tests=%llu leader=%llu "
+        "moveonpath=%llu applied=%llu heading_error_large=%llu bound=%d (00778890 at "
+        "009F0000, [[unit+738h]+54h] == 00E08F80 at 009F0019; packet cc9_clearance_path_fade)",
+        host.summary.path_fade_tests, host.summary.path_fade_leader,
+        host.summary.path_fade_moveonpath, host.summary.path_fade_applied,
+        host.summary.clearance_heading_error_large, kShipAiClearancePathFadeBound ? 1 : 0);
+    host.log.notef("summary mission ship ai arm final area key calls=%llu differs=%llu bound=%d "
+        "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
+        host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
+        kShipAiArmFinalAreaKeyBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",

@@ -2311,3 +2311,81 @@ about 70% context. No leases are held.
 - **Renderer-init outages.** 18:02 to about 18:40 UTC, the session was RDP with the desktop
   locked. Check `query session` first; `local\l8_probe.ps1` retries a smoke.
 - **`GameCommandUnit::class_id` is filled** in the `command_units` loop from the slot's `class_id` (+C4h), for cc9-gunnery9's `kSquadronSetCommandBound`. It is inert until that switch flips.
+
+## Handoff (cc9-lua9, 2026-09-28)
+
+Branch `agent/cc9-lua9`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua9`. Written at
+about 75% context. No switch was flipped this session.
+
+### Done
+
+| packet | commit | what |
+| --- | --- | --- |
+| `cc9_command_unit_class_id` | `6cbe2462d` | the command-units loop copies the slot's `class_id` (unit `+C4h`) into `GameCommandUnit::class_id`; inert |
+| `cc9_unit_class_lands_troops` | `a24c4aa86` | `GameUnitsHost::unit_class_lands_troops_vtable_2c`; the Lua row reader now reads `LandingShip`, `LandingShipAmount` and `Rocketer`; inert |
+| `cc9_landing_sequencer` (read) | `3f8267c99`, `7635037a4` | docs/SQUADRON_LAND_TASK.md section 5b; nothing bound |
+
+The slot 2Ch values for `unit_class_lands_troops_vtable_2c` came from the disk image by a script
+(`local\l9_vt.py`, which reads the PE file):
+- `00827FB0` sits in the seven ship-leaf descriptors and the ship base `00D1ACC4`;
+- `00963C70` sits only in MLandingShip `00D1AD78`;
+- plane, land and building kinds answer false, because their slot 2Ch was not read.
+
+### Open, in order
+
+1. **`cc9_formation_join_follow` waits on one commands-host method.** The lead has the proposed
+   `GameCommandsHost::issue_follow_command_00720cd0(unit_index, target_index)` for cc9-gunnery9:
+   00720CA0's clear, then a direct 008358D0 `follow` push with no message.
+   - The image, read whole: in `0077F940`, the loop `0077FA81`..`0077FABF` runs once per brought
+     unit. It calls `0070EF30`, then `ESI->vtable[114h]()`, where ESI is always the ordered unit.
+     When that is non-null, `director->vtable[58h]([ESP+80h])` follows.
+   - `[ESP+80h]` holds the target group's leader, which `0077F9E6` stored.
+   - So only the ordered unit gets `follow`, issued `brought.size()` times with the same argument.
+     The one-level recursion over `brought[1..]` in `GameUnitsHost::formation_join_0077f940` must
+     not issue it.
+   - Once the method lands, add the call at the end of a successful top-level join behind
+     `kFormationJoinFollowBound` (OFF), and write the predictions first. Every row has
+     scene-formation followers. Scene groups are not built through `0077F940`, so only runtime
+     joins (script orders and the ship-AI follower pass) issue it.
+   - With `kAutoTargetFollowerGateBound` OFF, expect idle_follow re-issues to fall and queues to be
+     cleared at join. Pair on USN01, JM06, JM08 and USN04, then re-pair
+     `kAutoTargetFollowerGateBound` (docs/SHIP_AI_OPEN_ITEMS.md section 12).
+2. **`cc9_landing_sequencer` binding.** Before binding:
+   - confirm `006C6020`'s arc term (`00BF9940` has an x87 register argument) and `006C3F80`'s
+     `00419010` argument roles from the listing;
+   - read block `vtable[10h]`, the CB4_AF scene's `RunwayWidth`/`RunwayLength` and `0085DEA0`
+     (the inverse at holder `+48h`).
+   Then bind the holder frame from the owner's pose, the queue, the sequencer and `006C7960`
+   behind `kLandingSequencerBound`. Also bind `006C54C0`'s found arm. The predictions for the
+   LOMP10 9200/9000 row are at the end of section 5b.
+3. **`cc9_plane_follow_law_drift`** (SHIP_AI_OPEN_ITEMS queue item 6): not started.
+4. **B-25 01's approach bit**: not started.
+
+### Working notes
+
+- A Git Bash heredoc still breaks on an apostrophe. Write text with the Write tool or into
+  `local\` files.
+- `python tools/bsp.py ghidra decompile <addr> --start N --lines M` pages long bodies.
+  `show` works only for exported functions.
+- **`GameCommandUnit::class_id` is filled** in the `command_units` loop from the slot's `class_id` (+C4h), for cc9-gunnery9's `kSquadronSetCommandBound`. It is inert until that switch flips.
+
+### Addendum (cc9-lua9, same day): item 3 committed OFF, pairs not run
+
+- **`ef1fdd1a6`**: `kFormationJoinFollowBound` (OFF), wired to cc9-gunnery9's
+  `issue_follow_command_00720cd0`. Predictions are in docs/SHIP_UNIT_GROUP_FOLLOW.md section 5g,
+  written before any ON run.
+- **The pairs were not run.**
+  - The four OFF runs (`local\l9_off_<row>.log`, rows jm06/usn01/jm08/usn04 via
+    `local\l9_run.ps1`) all died at startup with `_FMOD_EventSystem_Init result=61`.
+  - `query session` showed session 1 `Disc`. That is the known no-audio-endpoint environment
+    failure, not a code failure.
+- **The ON export** is `local\l9_ff` (`pair_export --commit ef1fdd1a6 --flip
+  kFormationJoinFollowBound=true`, log `local\l9_ff_export.txt`). Its build was still running at
+  handoff.
+- **Next:**
+  - Once `query session` shows session 1 active, re-run
+    `./local/l9_run.ps1 -Prefix l9_off -Rows 'jm06:JM06:3200:3000','usn01:USN01:3200:3000','jm08:JM08:3200:3000','usn04:USN04:4700:4500'`.
+  - Run the same with `-Exe local\l9_ff\build\win32\Release\bsp_game.exe -Prefix l9_on`.
+  - Then `python tools/pair_diff.py` on each pair, check the section 5g mechanism clauses, and
+    flip by verdict.
+  - cc9-ships9 then re-pairs `kAutoTargetFollowerGateBound`.

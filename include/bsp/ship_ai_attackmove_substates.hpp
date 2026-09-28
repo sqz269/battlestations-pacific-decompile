@@ -267,15 +267,15 @@ struct ShipAiAttackMoveApproachHost {
     virtual bool unit_is_group_leader_00778890() = 0;
     // 009F343E and 009F3444, the group at unit+284h and its count at +4F8h;
     // 009F3457, 0070D060(group, i); 009F346B, member->vtable[5Ch](6);
-    // 009F347E, [member+538h]->vtable[2Ch](). Callee bodies of the two virtuals
-    // were not read.
+    // 009F347E, [member+538h]->vtable[2Ch](), the troop-landing trait
+    // (docs/SHIP_AI_OPEN_ITEMS.md sections 13 and 19).
     virtual int group_member_count_04f8() = 0;
     virtual std::uint32_t group_member_at_0070d060(int index) = 0;
     virtual bool member_is_kind_vtable_005c(std::uint32_t member, int kind) = 0;
-    virtual bool member_armament_ready_vtable_002c(std::uint32_t member) = 0;
+    virtual bool member_lands_troops_vtable_002c(std::uint32_t member) = 0;
     // 009F35D8, the non-leader arm: the same +538h vtable[2Ch] on the unit, and
     // 009F35F1 puts the unit itself into the one-entry candidate list.
-    virtual bool unit_armament_ready_vtable_002c() = 0;
+    virtual bool unit_lands_troops_vtable_002c() = 0;
     virtual std::uint32_t brain_unit_0aa8() = 0;
     // 009F34B3, 00427EB0(target) BSP_EntityPose_GetWorldPositionRefreshed; the
     // step keeps components 0 and 2.
