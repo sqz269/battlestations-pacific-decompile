@@ -366,6 +366,10 @@ struct GameMissionLuaSummary {
     unsigned long long listener_attacker_filtered{0};
     unsigned long long listener_recon_changes{0};
     unsigned long long listener_recon_fires{0};
+    // Packet cc9_set_invincible_native.
+    unsigned long long invincible_calls{0};
+    unsigned long long invincible_units{0};
+    unsigned long long invincible_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -831,6 +835,11 @@ public:
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
     void dispatch_kill_listeners_009813a0();
     void dispatch_recon_listeners_00980e50();
+    // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
+    // gunnery host's setter stores unit+150h and every reader of it is gated on
+    // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
+    // until that switch is on. docs/LUA_BINDING_MISSION.md.
+    int run_set_invincible_00897a50(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

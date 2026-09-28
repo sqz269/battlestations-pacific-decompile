@@ -310,6 +310,8 @@ int binding_trampoline(lua_State* state) {
     const bool add_listener_row = kLuaListenersBound && dispatch_row.address == 0x008c6760u;
     const bool remove_listener_row = kLuaListenersBound && dispatch_row.address == 0x008c6990u;
     const bool listener_active_row = kLuaListenersBound && dispatch_row.address == 0x008c6bb0u;
+    // Packet cc9_set_invincible_native.
+    const bool set_invincible_row = dispatch_row.address == 0x00897a50u;
     const bool ready_row = dispatch_row.address == 0x00895d20u;
     const bool launch_row = dispatch_row.address == 0x0089e3c0u;
     // Packet cc8_lua_generate_object. It is handled here rather than routed to
@@ -336,7 +338,7 @@ int binding_trampoline(lua_State* state) {
     const bool force_select_row
         = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
-        || add_listener_row || remove_listener_row || listener_active_row
+        || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -432,6 +434,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (set_invincible_row) {
+        if (!host->error_replay()) host->run_set_invincible_00897a50(state, argc);
+        return 0;
     }
     if (add_listener_row) {
         if (!host->error_replay()) host->run_add_listener_008c6760(state, argc);
@@ -4195,6 +4201,54 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
     }
 }
 
+// Packet cc9_set_invincible_native. 00897A50 SetInvincible(entity, value):
+// argument 0 through 00888AA0; argument 1 is a boolean (00897B6F) giving 1.0 or
+// 0.0, otherwise its number, a fraction of maximum health (a nil or missing
+// argument reads 0.0, the release). 00897C63 calls vtable[F4h] = 0042ED80, which
+// stores unit+150h and passes the value to every child's vtable[F4h].
+// bsp::lua_set_invincible_00897a50 (src/unit_damage.cpp) reconstructs the rule.
+int GameMissionLuaHost::run_set_invincible_00897a50(lua_State* state, int argument_count) {
+    ++summary_.invincible_calls;
+    float value = 0.0f;
+    if (argument_count >= 2 && ::lua_type(state, 2) == LUA_TBOOLEAN) {
+        value = ::lua_toboolean(state, 2) != 0 ? 1.0f : 0.0f;
+    } else if (argument_count >= 2) {
+        value = static_cast<float>(::lua_tonumber(state, 2));
+    }
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        // SUBSTITUTION (labelled): an entity with no units-host slot is not
+        // reached; the image would store its +150h too.
+        ++summary_.invincible_unresolved;
+        log_.notef("  SetInvincible 00897a50: entity id %d has no units-host slot (packet "
+            "cc9_set_invincible_native)", id);
+        return 0;
+    }
+    const std::size_t index = static_cast<std::size_t>(id - 1);
+    GameGunneryHost& gunnery = *units->gunnery();
+    std::vector<std::size_t> targets{index};
+    // 0042ED80's fan-out: a squadron's fused slot carries its live members.
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit == bsp::kPlaneSquadronNoUnit || r.squadron_unit != index) continue;
+        for (std::size_t member : r.member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit && member != index) targets.push_back(member);
+        }
+        break;
+    }
+    for (std::size_t unit : targets) {
+        gunnery.set_unit_invincibility(unit, value);
+        ++summary_.invincible_units;
+    }
+    const GameUnitRow* row = units->unit_row(index);
+    log_.notef("  SetInvincible 00897a50: \"%s\" value=%.3f units=%zu (packet "
+        "cc9_set_invincible_native)", row != nullptr ? row->name.c_str() : "?", value,
+        targets.size());
+    log_.implemented("MissionLuaNative::SetInvincible", "00897a50");
+    return 0;
+}
+
 // Packet cc9_lua_kill. 008AC5C0 Kill(entity [, hard]); returns no value (the
 // native's frame result count is 0).
 int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) {
@@ -5318,6 +5372,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.listener_adds, summary_.listener_removes, summary_.listener_queries,
         listeners_.size(), summary_.listener_kill_deaths, summary_.listener_kill_fires,
         summary_.listener_attacker_filtered);
+    log_.notef("summary mission script set invincible calls=%llu units=%llu unresolved=%llu "
+        "(00897A50 -> 0042ED80, packet cc9_set_invincible_native)", summary_.invincible_calls,
+        summary_.invincible_units, summary_.invincible_unresolved);
     log_.notef("summary mission script recon listeners bound=%d changes=%llu fires=%llu "
         "(00980E50, packet cc9_lua_recon_listeners)", kLuaReconListenersBound ? 1 : 0,
         summary_.listener_recon_changes, summary_.listener_recon_fires);
