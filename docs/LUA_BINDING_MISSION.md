@@ -2029,3 +2029,40 @@ player):
 | --- | --- |
 | USN13 3200/3000 | **exit 3.** There are 15 calls from `luaAttackWaveSpawned` (`usn_13_truk.lua` 1641, mtime 2024-08-13), each on a spawned squadron at 67, with 4 planes each (the forced-recon lines of cc9-lua2's `rk_usn13.log` resolve 4 members). So `planes=60`. The wave's planes start at 67 m/s instead of their spawn seeds (61.1 and 55.6 m/s in that log). Their positions move from the spawn on, so the attack-wave unit rows, the first hits on the US carriers and possibly the AA kills move. That is RNG-coupled, so per-kill attribution is not claimed |
 | USN04 4700/4500 | no call, exit 1 |
+
+## IsClassChanged, 008CC4B0 (packet `cc9_is_class_changed`, `kLuaIsClassChangedBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This is item 4 of the refreshed ranking.
+
+**The image (V).**
+- `IsClassChanged(id)` reads argument 0 as an integer (`00B66290`, `008CC5AF`).
+- It pushes `[registry+2010h+id*4] != id` as a boolean (`008CC5CB CMP`, `SETNZ`, `00B66450`).
+- `registry+2010h` is the inverse class-index map (`include/bsp/vehicle_class.hpp`).
+- **Only two functions write it,** `00506550` and `00592640`. Each resets all 800h pairs to the
+  identity and then stores one pair, the player's chosen ship.
+- `00592640` is the `continue` footer command. Its pair comes from the profile's record for the
+  selected mission (`007FC490` over `005806A0` `BSP_MainMenu_GetSelectedMission`).
+- `00506550` does the same from a menu list selection (`+4B0h` against `+134h`); its caller is
+  `00516010`.
+- **So the answer is true only for the class the player swapped in.**
+
+**Callers in this installation's Lua.** There are 175 lines naming it under `scripts/` (`*.lua`, one commented out). Every one is a
+truthiness test (`if IsClassChanged(unit.ClassID) then`, six `not IsClassChanged(...)`, one `and IsClassChanged(...)`).
+So nil and false read the same.
+
+**The binding.**
+- `GameMissionLuaHost::run_is_class_changed_008cc4b0` answers from a
+  `bsp::VehicleClassIndexMap` reset to the identity.
+- The census is `summary mission script class changed bound=.. calls=.. true=..`.
+- **SUBSTITUTION, labelled.** This process does not model the profile record, and the footer
+  command is recorded unimplemented (`src/game_hosts_mission.cpp`). So the map is the identity
+  and every answer is false.
+- An id outside the 800h entries answers false, where the image would read past the map.
+- A harness that selects an alternative ship would need `00592640`'s pair first.
+
+**Predictions** (written before the runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| LOMP06 1200/1000, JM06 3200/3000, USN13 3200/3000 | **exit 1** on each. `IsClassChanged` goes `UNIMPLEMENTED` -> concrete with the same call count, and `true=0`. Every caller's branch is unchanged, because false and nil are both falsy |

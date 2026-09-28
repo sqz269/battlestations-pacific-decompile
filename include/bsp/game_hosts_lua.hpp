@@ -215,6 +215,13 @@ inline constexpr bool kLuaUnitGetAttackTargetBound = true;  // ON: pairs held (d
 // run_squadron_set_speed_0089f780. False: unimplemented.
 inline constexpr bool kLuaSquadronSetSpeedBound = false;
 
+// Packet cc9_is_class_changed (docs/LUA_BINDING_MISSION.md, "IsClassChanged, 008CC4B0").
+// IsClassChanged(id) pushes the boolean [registry+2010h+id*4] != id (008CC5CB..008CC5DA),
+// the inverse class-index map 00592640 and 00506550 reset to the identity and then
+// remap one pair in. True: route the row to run_is_class_changed_008cc4b0. False:
+// unimplemented (nil, which every caller in this installation reads as false).
+inline constexpr bool kLuaIsClassChangedBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -457,6 +464,8 @@ struct GameMissionLuaSummary {
     unsigned long long squadron_speed_calls{0};
     unsigned long long squadron_speed_planes{0};
     unsigned long long squadron_speed_unresolved{0};
+    unsigned long long class_changed_calls{0};
+    unsigned long long class_changed_true{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -940,6 +949,8 @@ public:
     int run_unit_get_attack_target_008a6de0(lua_State* state, int argument_count);
     // Packet cc9_squadron_set_speed, under kLuaSquadronSetSpeedBound.
     int run_squadron_set_speed_0089f780(lua_State* state, int argument_count);
+    // Packet cc9_is_class_changed, under kLuaIsClassChangedBound.
+    int run_is_class_changed_008cc4b0(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
