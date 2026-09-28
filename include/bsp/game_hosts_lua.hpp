@@ -181,7 +181,7 @@ inline constexpr bool kLuaAddDamageBound = false;
 // attackType, attackerPlayerIndex, damageCaused, fireCaused and leakCaused. True: the
 // host drains GameGunneryHost::take_hit_events() once per frame and fires matching
 // `hit` entries. False: `hit` entries never fire (the queue is still drained).
-inline constexpr bool kLuaHitListenersBound = false;
+inline constexpr bool kLuaHitListenersBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 class GameHostLog;
 class GameVfsHost;

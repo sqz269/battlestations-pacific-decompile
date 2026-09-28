@@ -1709,3 +1709,21 @@ Worker cc9-lua2, 2026-09-28.
 | JM06 3200/3000 | `playerHit` (`target {Mission.PlayerUnit}`, all else empty); `hshit` (`attackerPlayerIndex {PLAYER_1}`) | `playerHit` fires on the first hit on the player's submarine. `luaJM6PlayerHit` removes it and starts a dialog, so identity. `hshit` is `unmodelled` and never fires |
 | LOMP06 1200/1000 | `listener_NarwhalDC` (`target {Mission.PlayerUnit}`, `attackType {DEPTHCHARGE}`) | fires only on a depth-charge hit on the player: a dialog, so identity |
 | USN02, USN04 | none | identity |
+
+### `hit` pairs and verdict
+
+**Setup.**
+- OFF is this tree's build of `aa15a4e0c`.
+- ON is `pair_export --flip kLuaHitListenersBound=true` (`local/ht_on`, SHA-256 `31CF32B31F3B`).
+- The logs are `local/ht_{off,on}_<mission>.log`.
+
+| row | ON census | pair_diff | verdict |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | `events=186 fires=0` | exit 1 | held on the no-hit branch: the convoy leader takes no torpedo, bomb or rocket hit, so `luaConLeadHit` never runs |
+| JM06 3200/3000 | `events=147 fires=0` | exit 1 | held: the player's submarine, `PlayerSub 01`, takes no hit (`taken 0`), so `playerHit` stays silent |
+| LOMP06 1200/1000 | `events=0 fires=0` | exit 1 | held |
+| USN04 4700/4500 | `events=670 fires=0` | exit 1 | held: no `hit` entry |
+| USN02 9200/9000 | `events=4918 fires=0` | exit 1 | held: no `hit` entry |
+
+**Verdict: `kLuaHitListenersBound = true`.** It is inert on these idle runs. The first run in
+which the convoy leader or the player is hit exercises it.
