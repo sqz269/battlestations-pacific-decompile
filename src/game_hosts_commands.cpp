@@ -74,7 +74,7 @@ constexpr bool kFireTargetObjectIdBound = true;
 // image. The slot push itself still calls the ship director's +14h
 // (00836040) where the squadron's is 0084DD20; that difference is open.
 // OFF: every row runs 008358D0 (counted).
-constexpr bool kSquadronSetCommandBound = false;
+constexpr bool kSquadronSetCommandBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.

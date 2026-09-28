@@ -2487,6 +2487,26 @@ This is section 42's first outside-lane difference, bound in this lane.
   plane-row AutoTarget losing its locked target (USN04 and USN01), which section 42.1 records as a
   host-only path the ship-AI lane is removing.
 
+### 45.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of main `6adc7e80d`, where `class_id` is filled (`66598f005`).
+- **ON** is `pair_export --commit 6adc7e80d --flip kSquadronSetCommandBound=true` (SHA-256 prefix
+  `10D9C2E18F37`).
+- The logs are `local\g9_sqoff_<row>.log` and `local\g9_sqon_<row>.log` in worktree cc9-gunnery9.
+
+| row | `pair_diff` | plane or squadron rows | forced fire targets, OFF -> ON | `fire target unresolved`, OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1, gameplay identical | 840 | 47 -> 0 | 35 -> 0 |
+| USN01 3200/3000 | exit 1, gameplay identical | 56 | 9 -> 0 | 7 -> 0 |
+| USN13 3200/3000 | exit 1, gameplay identical | 1488 | 87 -> 0 | 60 -> 0 |
+
+- **Q1 held.** The forced targets exceed section 33.1's unresolved counts, because resolved calls
+  from plane rows are counted too. ON sends none. `fire target unresolved` drops to 0 on all three
+  rows, so every unresolved call came from a plane row.
+- **Q2 held.** Every row is identity.
+
+**Verdict: ON.** `kSquadronSetCommandBound = true`.
+
 ## 46. Rank 8, the hull roll torque `00827312`, bound OFF (packet `cc9_hull_roll_torque`, cc9-gunnery9)
 
 Section 41.1 read the inputs. This section checks the arithmetic and the timing, and binds it.
