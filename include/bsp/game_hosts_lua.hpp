@@ -134,6 +134,16 @@ inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling 
 // gunnery host's death funnel. False: the native stays an unimplemented record.
 inline constexpr bool kLuaKillBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md, Kill verdict)
 
+// Packet cc9_lua_listeners (docs/LUA_BINDING_MISSION.md, the listener sections).
+// AddListener 008C6760 keys a subscription by (channel, id) through 00980C10;
+// RemoveListener 008C6990 erases it; IsListenerActive 008C6BB0 looks it up. The
+// `kill` channel's subscription (vtable 00D1B68C) loads callback, entity,
+// lastAttacker and lastAttackerPlayerIndex (00972520) and matches a death when
+// every set is empty or holds the value (0096ACE0, 00979140). True: the host keeps
+// the registry and fires `kill` callbacks for units-host deaths. False: all three
+// natives stay unimplemented records.
+inline constexpr bool kLuaListenersBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -339,6 +349,13 @@ struct GameMissionLuaSummary {
     unsigned long long kill_unresolved{0};
     unsigned long long kill_already_dead{0};
     unsigned long long kill_squadrons{0};
+    // Packet cc9_lua_listeners.
+    unsigned long long listener_adds{0};
+    unsigned long long listener_removes{0};
+    unsigned long long listener_queries{0};
+    unsigned long long listener_kill_deaths{0};
+    unsigned long long listener_kill_fires{0};
+    unsigned long long listener_attacker_filtered{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -793,6 +810,11 @@ public:
     int run_get_property_class_readers(lua_State* state, const char* key);
     // 008AC5C0 Kill under kLuaKillBound. docs/LUA_BINDING_MISSION.md.
     int run_kill_008ac5c0(lua_State* state, int argument_count);
+    // Packet cc9_lua_listeners, under kLuaListenersBound.
+    int run_add_listener_008c6760(lua_State* state, int argument_count);
+    int run_remove_listener_008c6990(lua_State* state, int argument_count);
+    int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
+    void dispatch_kill_listeners_009813a0();
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
@@ -950,6 +972,16 @@ private:
     // Packet cc9_squadron_pass_hooks_calls: the units host, writable, for its
     // two squadron entries (the orders host hands out a const view only).
     GameUnitsHost* units_hooks_{nullptr};
+    // Packet cc9_lua_listeners: the (channel, id) registry of 00980C10.
+    struct ListenerEntry {
+        std::string channel;
+        std::string id;
+        std::string callback;                 // subscription+4h
+        std::vector<int> entity_ids;          // the `entity` set (+0Ch)
+        bool attacker_filters_set{false};     // +1Ch or +2Ch not empty
+    };
+    std::vector<ListenerEntry> listeners_;
+    std::vector<bool> listener_death_seen_;
 public:
     void attach_units_hooks(GameUnitsHost* units) noexcept { units_hooks_ = units; }
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {

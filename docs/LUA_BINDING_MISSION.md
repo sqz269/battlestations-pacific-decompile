@@ -1249,3 +1249,43 @@ The listings were read from disk; the three slots have no Ghidra function (see a
 - **The predictions are to be written with the binding.**
   - USN04 is the measure, if one of its two `AddListener` calls is a Zero `kill` listener.
   - The binding's own census will show which.
+
+### The listener binding (`kLuaListenersBound`, committed OFF)
+
+- **The switch** is in `include/bsp/game_hosts_lua.hpp`.
+- **The natives.** `AddListener` (`008C6760`), `RemoveListener` (`008C6990`) and
+  `IsListenerActive` (`008C6BB0`) run on a case-insensitive (channel, id) registry in
+  `GameMissionLuaHost`.
+  - A `kill` entry carries the callback, the `entity` ids and whether either attacker set is
+    non-empty.
+  - `IsListenerActive` pushes a boolean.
+- **Firing `kill`.** `dispatch_kill_listeners_009813a0` runs once per mission frame, at the head of
+  the spawn-queue step.
+  - For every newly destroyed units-host unit, it collects the callback of each `kill` entry
+    whose `entity` set is empty or holds the victim, then calls each callback with no argument.
+- **The census:**
+  - `summary mission script listeners bound=.. adds=.. removes=.. queries=.. registered=..
+    kill_deaths=.. kill_fires=.. attacker_filtered=..`;
+  - one `AddListener 008c6760: channel= id= callback= entities= attacker_filters=` line per new
+    entry;
+  - one `kill listener 009813a0: victim "<name>" -> <callback>()` line per call.
+
+**SUBSTITUTIONS, labelled:**
+- `kill` is evaluated at the host's frame, not inside the kill flush.
+- An entry with a non-empty `lastAttacker` or `lastAttackerPlayerIndex` set is not matched,
+  because the host's death row has no attacker entity. Such entries count as `attacker_filtered`.
+- A squadron's fused slot counts as dead only when the registry record's live count is 0, the
+  same rule as `kSquadronObserverLivenessBound`.
+- Only `kill` fires. `hit`, `recon`, `command`, `input` and the other channels are registered
+  and answer `IsListenerActive`, but never call back.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player; the census names
+each registered entry, which settles the rows that depend on it):
+
+| row | prediction |
+| --- | --- |
+| USN01 3200/3000 | 3 adds (`ConLeadListener` is `hit`, the rest `input`), no `kill` entry, `kill_fires=0`; identity, exit 1 |
+| USN02 9200/9000 | 1 add (an `input` helper), `kill_fires=0`; identity |
+| LOMP06 1200/1000 | the adds are `hit`, `recon` and `input`, with no `kill` entry; identity |
+| JM06 3200/3000 | `kill_fires=0` unless `CVKill` (1761) is registered and its entity dies; otherwise identity |
+| USN04 4700/4500 | if a Zero `kill` entry (`ZuikakuZeroKillListener`/`ShokakuZeroKillListener`) is registered and its squadron's last plane dies, `luaZuikakuZeroDead`/`luaShokakuZeroDead` fires. That clears `Mission.ZeroOverZuikaku`, so the next launch pass (1386) may launch a fresh Zero squadron: exit 3. With no such entry, or no such death, identity |

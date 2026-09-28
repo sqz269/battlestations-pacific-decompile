@@ -1,0 +1,34 @@
+{
+  "packet": "cc9_lua_listeners",
+  "doc": "docs/LUA_BINDING_MISSION.md, the listener sections",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kLuaListenersBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "OFF"
+    }
+  ],
+  "substitutions": [
+    "kill evaluated at the host frame",
+    "non-empty attacker sets not matched",
+    "fused squadron slot dead only at live count 0",
+    "only kill fires"
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00972520",
+      "end_inclusive": "009725AC"
+    },
+    {
+      "start": "0096E850",
+      "end_inclusive": "0096E8E5"
+    },
+    {
+      "start": "0096ACE0",
+      "end_inclusive": "0096ADA6"
+    }
+  ],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}
