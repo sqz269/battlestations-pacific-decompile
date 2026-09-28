@@ -152,6 +152,13 @@ inline constexpr bool kLuaListenersBound = true;  // ON: identity pairs (docs/LU
 // listeners on its recon pass's level changes. False: `recon` entries never fire.
 inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_forced_recon_level (docs/LUA_BINDING_MISSION.md, "SetForcedReconLevel,
+// 008AA8F0"). True: SetForcedReconLevel(entity, level, party) forces the recon record
+// of each resolved unit (a squadron's fused slot: its live members) for that party
+// through bsp::set_forced_recon_level_00805cf0, and the next recon pass publishes it.
+// False: the native stays an unimplemented record.
+inline constexpr bool kForcedReconLevelBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -370,6 +377,9 @@ struct GameMissionLuaSummary {
     unsigned long long invincible_calls{0};
     unsigned long long invincible_units{0};
     unsigned long long invincible_unresolved{0};
+    unsigned long long forced_recon_calls{0};
+    unsigned long long forced_recon_units{0};
+    unsigned long long forced_recon_unresolved{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -840,6 +850,8 @@ public:
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
     // until that switch is on. docs/LUA_BINDING_MISSION.md.
     int run_set_invincible_00897a50(lua_State* state, int argument_count);
+    // Packet cc9_forced_recon_level, under kForcedReconLevelBound.
+    int run_set_forced_recon_level_008aa8f0(lua_State* state, int argument_count);
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.

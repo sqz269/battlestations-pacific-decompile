@@ -181,4 +181,14 @@ inline constexpr float kReconSensorPassRefreshPeriod = 3.0f;
 void recon_sensor_pass_step_008073c0(ReconSensorPassState& state, float dt,
                                      ReconSensorPassHost& host);
 
+// Packet cc9_forced_recon_level. 00805CF0 sets a (target, observing party) record's
+// force byte (+10h = 1) and forced level (+8h); the pass then skips the sensor test
+// for that record and publishes the forced level (det+10h, 00806883). The host's
+// ReconSensorPassHost hooks are keyed by target alone, so the per-(side, target)
+// force lives in this process-wide table, which the pass consults before them. It is
+// empty unless SetForcedReconLevel (008AA8F0, kForcedReconLevelBound) writes it.
+void set_forced_recon_level_00805cf0(std::size_t target, int side, int level);
+bool forced_recon_level(int side, std::size_t target, ReconDetectionLevel& out);
+void clear_forced_recon_levels();
+
 } // namespace bsp
