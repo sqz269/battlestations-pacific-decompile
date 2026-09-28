@@ -1,6 +1,6 @@
 # Ship AI and AI command: open items, ranked
 
-Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0 009F6A20 007788B0 0077C980
+Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0 009F6A20 007788B0 0077C980 00827FB0 00963C70
 
 This file ranks what is still open in the ship-AI and AI-command lane, as
 docs/GUNNERY_OPEN_ITEMS.md section 31 does for gunnery and docs/LUA_BINDING_MISSION.md does for the
@@ -1187,3 +1187,63 @@ the leader. It is already reconstructed as `bsp::issue_target_command_00720cd0` 
 `src/weapon_director.cpp` and `src/command_execution.cpp`. It went to the lead. Once it lands,
 `kAutoTargetFollowerGateBound` re-pairs on the same seven rows; the expected leaves are those
 of followers whose director was given a different command after the join.
+
+## 13. Rank 9: the close attack's busy member `00A1443D` (packet `cc9_close_member_class_trait`, read)
+
+Worker cc9-ships8, 2026-09-28. This is a read only; the binding waits on a units-host accessor.
+
+### The slot
+
+`00A14435 MOV ECX,[ESI+538h]` then `00A1443D CALL [EDX+2Ch]` asks the member's vehicle class
+`vtable[2Ch]`. A true answer skips the member (`00A14444 JNE 00A14D4D`). The slot was read out of
+the image on disk (`local\ships8_vt.py`) in the nine class vtables whose `+24h` is `009635D0`:
+
+| vtable | `+28h` (the unit creator) | `+2Ch` |
+| --- | --- | --- |
+| `00D1ACC4`, `00D1ACF8` (`006FE590`, `MDestroyer`), `00D1AD38`, `00D1ADBC` (`006EB290`, the Cargo class), `00D1ADF8`, `00D1AE38`, `00D1AE78`, `00D1AEBC` | various | `00827FB0` |
+| `00D1AD78` | `0074BE00`, the landing-ship class (`00963C80` answers kinds 0Ch, 6, 5) | `00963C70` |
+
+- **`00827FB0`** (`00827FB0-00827FC7`, RET then INT3) answers
+  `[class+78Ch] != 0 && [class+790h] != 0`. Those are `LandingShip`, a class pointer, and
+  `LandingShipAmount` (docs/SHIP_CLASS_FIELDS.md). So it asks whether the class **carries landing
+  craft**.
+- **`00963C70`** (`00963C70-00963C7C`) answers `[class+809h] == 0`. `+809h` is the landing ship's
+  `Rocketer` (docs/VEHICLE_CLASS_LUA_LOAD.md, `0074C754` / `0074C770`). So a landing ship that is
+  **not a rocket ship** answers true.
+
+So the slot is **"a troop-landing unit"**: a landing ship without rockets, or a class that carries
+landing ships. The close attack does not send such members; they belong to capture. The name
+`close_controller_busy` is wrong and should become a trait name.
+
+### The same slot elsewhere
+
+- `capture_weight_00a03510`: Cargo 0Bh answers 3.0 when the slot is true. The Cargo class's slot
+  is `00827FB0`. No Cargo class in this installation authors `LandingShip`, so the answer stays
+  0, and the host's 0 is right for this installation.
+- `009F347E` and `009F35E3`, the approach warn sweep (docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md).
+
+### Reach in this installation
+
+`scripts/datatables/autoload/vehicleclasses.lua` (mtime 2026-05-09, locally modified):
+- `LandingShip` with `LandingShipAmount` 4 is authored on two `LandFort` classes (lines 61063 and
+  62199).
+- `Rocketer = true` is authored once, on "LSM Rockets" (line 7754).
+- So every LST and LSM landing ship except the rocket variant answers true.
+- Those rows, JM08 (LST and LSM) and USN13, would lose their landing ships from the close attack.
+
+### What the binding needs
+
+The ship-AI and AI hosts cannot read `+78Ch`, `+790h` or `+809h`. The units host holds them:
+`ShipClassFields::landing_ship_class` and `landing_ship_amount`, and the landing-ship reader's
+`landing_ship_is_rocketer`. The proposed declaration went to the lead:
+
+```cpp
+// [unit+538h]->vtable[2Ch](): 00827FB0 on a ship-family class ([class+78Ch] LandingShip and
+// [class+790h] LandingShipAmount both non-zero), 00963C70 on the landing-ship class
+// (creator 0074BE00: [class+809h] Rocketer clear). False for a unit with no class.
+bool unit_class_lands_troops_vtable_2c(std::size_t index) const;
+```
+
+With it, `AiCommand::close_member_controller_busy` answers it behind a new switch, and
+`capture_weight_00a03510`'s Cargo arm answers `trait ? 3.0 : 0.0`. The rows to pair are JM08,
+USN13, JM05 and LOMP10 (landings), plus USN04 for identity.
