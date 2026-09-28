@@ -236,3 +236,92 @@ planar 7047.0 m (B-25 01), 7220.7 m (Lightning 01) and 6730.9 m (Warhawk 01) eas
 
 **USN01 3200/3000, ON: exit 0 or 1.** No SELLING `returntobase` exists, so the land summary reads
 `installs=0` and gameplay is identical.
+
+## 5. The pairs and the verdict
+
+OFF is this tree's build of `d5adbb900` (`local\l8_off_*.log`). ON is `local/l8_on`
+(`local\l8_on_*.log`). The diffs are `local\l8_diff_{lomp10,usn01}.txt`. The first ON launch died at
+renderer init (`D3DERR_NOTAVAILABLE`, `logonui=1`, a locked RDP desktop); the runs below were
+taken after the display came back.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| LOMP10 9200/9000 | exit 3 | deaths 11 -> 3, hits 283 -> 98 (hull 224 -> 79), damage 3799.8 -> 1279.8, shots 1891 -> 446; first hit 90.50 s both; dive-bomb-task releases 3 of 8 -> none |
+| USN01 3200/3000 | exit 1 | the land summary line, all zero; gameplay, death rows and the 35 unit rows identical |
+
+**LOMP10, against the predictions:**
+- **Installs, held.** Eight at 3.80 s. The two leaders start in `moveto (land)` and the six wing
+  members in `follow (land)`. B-25 01 is refused 69 times (`unread input`) and keeps bombing.
+  Both its planes die at 99.25 s and 102.30 s (OFF 99.40 s and 102.25 s), so its row is
+  RNG-shifted but has the same shape.
+- **Later placements, held.** 592 `kept` per fighter squadron. The SELLING tick keeps placing
+  the order on the surviving fighters.
+- **The mode, held.** `requests` = `empty_assignments` = 7150, `refused_states` = 0 and
+  `retired_invalid` = 0. No state change happens beyond the start, and no plane lands.
+- **Cruise profile, held.** 8926 calls and 0 writes (force 1 on all three squadrons).
+- **Gameplay, held.** The eight fighters survive; the three deaths are the two B-25s and PT 02,
+  which dies at 312.40 s (OFF 312.35 s).
+- **The approach time, MISSED (spread).** The leaders are first within about 65 m of CB4_AF at
+  about 183 s (Lightning 01), not 70-120 s. Two causes, both in code other than this binding:
+  - The glide `009C18C0` commands its far-distance altitude (about 1450 m at 7 km) first, so the
+    leaders climb to about 1.25 km before descending to 149.9 m near the field.
+  - The moveto speed blend holds the leaders near 31.5 m/s for long stretches. That is the
+    wingmen-wait term.
+
+  After arrival the leaders circle within about 600 m at 149.9 m, as predicted. Their minimums
+  are 0.2 m and 0.4 m at about 366 s.
+- **Not predicted: two Lightning wing members drift.** Lightning 01|.-2 and |.-3 end 5.2 km and
+  6.0 km from the field, while their leader circles it. Their commanded speed is the per-think
+  reseed, TravelSpeed x 1.6 = 173.3 m/s, against a leader at 31.5-120 m/s. The host's follow law
+  (`run_follow_tick_009c1fd0`, shared with the dive-bomb and torpedo follow) does not hold a
+  station on a slow, circling leader. The Warhawk members end 460-936 m out.
+  This is the follow law's behaviour, not the land task's. It is recorded as an open item for
+  that code.
+
+**Verdict: `kSquadronLandTaskBound = true`.** The mechanism matches; the miss is the arrival time
+and the wingmen's spread. The ON state is the image's first half: the squadrons leave the fight
+and fly home. The second half, the landing, waits for the deck's sequencer (section 6).
+
+## 6. Open, in order
+
+1. **The landing sequencer `006CC9F0`** (from `006CD240`, inserting through `006CAA10`, updating
+   through `006C7960` and `006C3F80`). It is the only producer of the mode 2-4 answers, so no plane
+   can land until it is read. The reads with it are `006C0B50`'s queue (`+98h`), `006C3E50` and
+   `006C5380` (`PosBehind`, `PosAlt`). Then `land/standby` and `land/line` for the row.
+2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
+   read, the B-25 squadron is refused and keeps bombing.
+3. **The follow law on a circling leader** (the Lightning members above). This belongs to the
+   code that owns `run_follow_law_009bfee0_009bee30`.
+4. **`006C4790`'s list at block `+B4h`**: its producer is unread; it is taken as empty.
+5. **GetLastCatapulted `00892860`** (cc9-lua7's item) is untouched.
+
+## Coverage
+
+| routine | coverage |
+| --- | --- |
+| `009B41C0`, `009B3240`, `009B2E50`, `009AFE70` | complete for the fields and draws; `009AFAF0` partial: its block-frame geometry `009AFB46`-`009AFDCC` unread |
+| `009B3EB0` | complete |
+| `009B3900` | complete except the `onGround` arm (`009AFAF0(1)`, `0099B650`), unreachable in mode 1 |
+| `009B34D0`, `009B3560`, `009B3680`, `009AFA50`, `009B3750`, `009B3C60` | complete |
+| `009B3770`, `009B3CF0` | complete as a read; bound for moveto and follow, refusing every other state |
+| `006C54C0` | partial: the miss arm bound; `006C3E50`, `006C5380` and the frame sums unread |
+| `006BD080`, `006C4790` | complete as a read; the vector and list producers unread |
+| the six landing states' bodies | unread |
+
+## ABI
+
+- `009B41C0`: `__fastcall(ECX = bot, EDX = target)`, returns the task.
+- `009B3240`: `__thiscall(this, bot, target)`, `RET 8`.
+- `009B3EB0`: `__thiscall(this, float dt)`, `RET 4`.
+- `009B3900`: `__thiscall(approach, bool onGround, float dt)`, `RET 8`.
+- `006C54C0`: `__thiscall(ECX = approach+34h, plane, out)`, `RET 8`.
+- `006BD080`: `__thiscall(block, plane, out)`, `RET 8`, returns AL.
+- `006C4790`: `__thiscall(block, squadron)`, `RET 4`, returns AL.
+- `009B3CF0` and `009B3680`: `__thiscall`, `RET 4`.
+- `009B34D0`, `009B3770`, `009AFA50`, `009B3560`, `009B3C60`: `__thiscall`, `RET`.
+
+## Uncertainty
+
+- The state names are the registered strings. The routine names in the ledger are hypotheses.
+- The land moveto shares the host's `009C18C0` substitutions: `009F9E40`'s bearing and `009BECD0`'s
+  shaping.
