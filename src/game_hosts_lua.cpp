@@ -322,6 +322,8 @@ int binding_trampoline(lua_State* state) {
     const bool listener_active_row = kLuaListenersBound && dispatch_row.address == 0x008c6bb0u;
     // Packet cc9_set_invincible_native.
     const bool set_invincible_row = dispatch_row.address == 0x00897a50u;
+    // Packet cc9_override_hp.
+    const bool override_hp_row = dispatch_row.address == 0x008c1930u;
     const bool forced_recon_row = kForcedReconLevelBound && dispatch_row.address == 0x008aa8f0u;
     const bool add_damage_row = kLuaAddDamageBound && dispatch_row.address == 0x0088e000u;
     const bool aa_enable_row = kLuaAAEnableBound && dispatch_row.address == 0x0089c740u;
@@ -394,6 +396,7 @@ int binding_trampoline(lua_State* state) {
     const bool handled = avoidance_setting || objective_row || get_property_row || kill_row
         || add_listener_row || remove_listener_row || listener_active_row || set_invincible_row
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
+        || override_hp_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || slot_count_row || device_reload_row || unlimited_air_row
         || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
@@ -553,6 +556,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (forced_recon_row) {
         if (!host->error_replay()) host->run_set_forced_recon_level_008aa8f0(state, argc);
+        return 0;
+    }
+    if (override_hp_row) {
+        if (!host->error_replay()) host->run_override_hp_008c1930(state, argc);
         return 0;
     }
     if (set_invincible_row) {
@@ -5098,6 +5105,26 @@ int GameMissionLuaHost::run_get_closest_border_zone_008aecd0(lua_State* state,
 // argument reads 0.0, the release). 00897C63 calls vtable[F4h] = 0042ED80, which
 // stores unit+150h and passes the value to every child's vtable[F4h].
 // bsp::lua_set_invincible_00897a50 (src/unit_damage.cpp) reconstructs the rule.
+// 008C1930 OverrideHP(unit, hp): argument 0 through 00888AA0 (ESI = the unit),
+// argument 1 as a number. 008C1A71 stores it at unit+36Ch (maximum health) and
+// 008C1AA8 calls 00877B90(unit, hp) with the same number. The write is the
+// gunnery host's (GameGunneryHost::override_hp_008c1930, kLuaOverrideHpBound).
+int GameMissionLuaHost::run_override_hp_008c1930(lua_State* state, int argument_count) {
+    float value = 0.0f;
+    if (argument_count >= 2) value = static_cast<float>(::lua_tonumber(state, 2));
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    if (units == nullptr || units->gunnery() == nullptr || id <= 0
+        || static_cast<std::size_t>(id) > units->count()) {
+        log_.notef("  OverrideHP 008c1930: entity id %d has no units-host slot (packet "
+            "cc9_override_hp)", id);
+        return 0;
+    }
+    units->gunnery()->override_hp_008c1930(static_cast<std::size_t>(id - 1), value);
+    log_.implemented("MissionLuaNative::OverrideHP", "008c1930");
+    return 0;
+}
+
 int GameMissionLuaHost::run_set_invincible_00897a50(lua_State* state, int argument_count) {
     ++summary_.invincible_calls;
     float value = 0.0f;
