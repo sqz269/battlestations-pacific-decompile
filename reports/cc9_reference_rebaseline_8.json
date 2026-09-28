@@ -1,0 +1,241 @@
+{
+  "packet": "cc9_reference_rebaseline_8",
+  "doc": "docs/GAME_EXECUTABLE.md, 'Mission reference baselines, 2026-09-29 h (main d6fc6ee78)'",
+  "tree": "worktree cc9-gunnery4",
+  "binary": {
+    "path": "local/rb8/build/win32/Release/bsp_game.exe",
+    "sha256": "5a2b887aa5ed1fc693c45161aba4fe953911836176b2e91b80fb4f4c0018117b",
+    "export": "tools/pair_export.py --commit d6fc6ee78, no flip"
+  },
+  "rows": [
+    {
+      "mission": "USN04",
+      "frames": "4700/4500",
+      "log": "local/rb8_usn04.log",
+      "damage": "14463.0",
+      "deaths": "44",
+      "hit records": "749",
+      "hull hits": "126",
+      "shots": "9310",
+      "first hit": "101.10 s",
+      "torpedo-task releases": "8 of 16",
+      "dive-bomb-task releases": "10 of 19",
+      "plane water contacts": "14",
+      "controlled moved": "Lexington-class01 3631.00",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "1026 / 522"
+    },
+    {
+      "mission": "E2",
+      "frames": "9200/9000",
+      "log": "local/rb8_e2.log",
+      "damage": "15557.3",
+      "deaths": "51",
+      "hit records": "865",
+      "hull hits": "131",
+      "shots": "11559",
+      "first hit": "101.10 s",
+      "torpedo-task releases": "8 of 16",
+      "dive-bomb-task releases": "11 of 19",
+      "plane water contacts": "19",
+      "controlled moved": "Lexington-class01 4920.35",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "1027 / 522"
+    },
+    {
+      "mission": "USN01",
+      "frames": "3200/3000",
+      "log": "local/rb8_usn01.log",
+      "damage": "2250.0",
+      "deaths": "5",
+      "hit records": "538",
+      "hull hits": "77",
+      "shots": "1498",
+      "first hit": "53.60 s",
+      "torpedo-task releases": "2 of 5",
+      "dive-bomb-task releases": "2 of 2",
+      "plane water contacts": "3",
+      "controlled moved": "ScoutDauntless 0.00",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "999 / 526"
+    },
+    {
+      "mission": "USN02",
+      "frames": "9200/9000",
+      "log": "local/rb8_usn02.log",
+      "damage": "50892.0",
+      "deaths": "10",
+      "hit records": "4226",
+      "hull hits": "388",
+      "shots": "2621",
+      "first hit": "19.20 s",
+      "torpedo-task releases": null,
+      "dive-bomb-task releases": null,
+      "plane water contacts": null,
+      "controlled moved": "Kortenaer 1136.82",
+      "mission end": "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)",
+      "host methods concrete/unimplemented": "1045 / 510"
+    },
+    {
+      "mission": "JM06",
+      "frames": "3200/3000",
+      "log": "local/rb8_jm06.log",
+      "damage": "4895.1",
+      "deaths": "2",
+      "hit records": "320",
+      "hull hits": "271",
+      "shots": "414",
+      "first hit": "90.35 s",
+      "torpedo-task releases": null,
+      "dive-bomb-task releases": null,
+      "plane water contacts": null,
+      "controlled moved": "Fletcher-class 08 1227.87",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "1101 / 527"
+    },
+    {
+      "mission": "JM08",
+      "frames": "3200/3000",
+      "log": "local/rb8_jm08.log",
+      "damage": "3745.4",
+      "deaths": "9",
+      "hit records": "310",
+      "hull hits": "89",
+      "shots": "1689",
+      "first hit": "5.25 s",
+      "torpedo-task releases": null,
+      "dive-bomb-task releases": null,
+      "plane water contacts": "1",
+      "controlled moved": "Auilick 1495.61",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "954 / 495"
+    },
+    {
+      "mission": "USN13",
+      "frames": "3200/3000",
+      "log": "local/rb8_usn13.log",
+      "damage": "6121.2",
+      "deaths": "20",
+      "hit records": "396",
+      "hull hits": "82",
+      "shots": "3903",
+      "first hit": "96.70 s",
+      "torpedo-task releases": "1 of 60",
+      "dive-bomb-task releases": null,
+      "plane water contacts": "5",
+      "controlled moved": "Enterprise 2051.45",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "987 / 506"
+    },
+    {
+      "mission": "BSM01",
+      "frames": "3200/3000",
+      "log": "local/rb8_bsm01.log",
+      "damage": "0.0",
+      "deaths": "0",
+      "hit records": "0",
+      "hull hits": "0",
+      "shots": "0",
+      "first hit": "-1.00 s",
+      "torpedo-task releases": null,
+      "dive-bomb-task releases": null,
+      "plane water contacts": null,
+      "controlled moved": "HenryPT 0.00",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "928 / 475"
+    },
+    {
+      "mission": "LOMP06",
+      "frames": "1200/1000",
+      "log": "local/rb8_lomp06.log",
+      "damage": "0.0",
+      "deaths": "0",
+      "hit records": "0",
+      "hull hits": "0",
+      "shots": "16",
+      "first hit": "-1.00 s",
+      "torpedo-task releases": null,
+      "dive-bomb-task releases": null,
+      "plane water contacts": null,
+      "controlled moved": "Narwhal 758.85",
+      "mission end": "none (Mission.EndMission never true)",
+      "host methods concrete/unimplemented": "1002 / 489"
+    }
+  ],
+  "anchors": {
+    "USN04": "WR_FLIP_usn04 exit 1",
+    "USN02": "WR_ON_usn02 exit 1",
+    "USN13": "WR_ON_usn13 exit 1",
+    "USN01": "WR_ON_usn01 exit 1",
+    "BSM01": "rb7_bsm01 gameplay identical"
+  },
+  "usn02": {
+    "failure": "29.75 s, phase 1",
+    "cause": "Houston sunk 20.85 s by a Yamakaze Long Lance (2439 m); usn_2_java.lua:521",
+    "status": "image's own for an idle player (GUN_SHOT_CADENCE 10.8, 10.10)"
+  },
+  "attribution_chain": {
+    "USN04": [
+      "g 40/644/5333",
+      "merge e9b3bb5ae identical",
+      "immediate fire 41/633/5345",
+      "torpedo swim identical",
+      "merge eec19cbf1 (membership, order re-issue) 28/491/3656",
+      "merge fe534a2b6 identical",
+      "AA tests 44/803/10090",
+      "wave order 44/749/9310"
+    ],
+    "USN02": [
+      "g 23/797/1052 none",
+      "merge e9b3bb5ae (generated-ship AI) 26/847/1117 failed 212.91",
+      "immediate fire 9/4597/3666 failed 34.70",
+      "torpedo swim 11/5322/3910 failed 29.75",
+      "merge eec19cbf1 12/5166/3826",
+      "AA tests identical",
+      "wave order 10/4226/2621 failed 29.75"
+    ],
+    "USN13": [
+      "g 24/720/6607",
+      "merge e9b3bb5ae (SquadronSetSpeed) 23/572/4265",
+      "immediate fire 23/552/4222",
+      "torpedo swim identical",
+      "merge eec19cbf1 (membership, re-issue) 16/312/2069",
+      "AA tests 19/400/4152",
+      "wave order 20/396/3903"
+    ],
+    "USN01": [
+      "g 5/178/623",
+      "immediate fire 5/177/623",
+      "AA tests 5/441/1510",
+      "wave order 5/538/1498"
+    ],
+    "E2": "first 4500 = USN04; after 4500 111 -> 116 hit records, unpaired",
+    "JM06": "dive, air, seabed (SUBMARINE_MODEL 12-14); gunnery flips unpaired",
+    "JM08": "7 plane kills by ship AA, consistent with the AA tests; unpaired",
+    "LOMP06": "dive (SUBMARINE_MODEL 12): Narwhal holds its band, hits 4 -> 0",
+    "BSM01": "identical"
+  },
+  "flags": {
+    "closed": [
+      "g's USN02 phase-2 failure flag (superseded: phase 1 failure at 29.75 s)",
+      "g's generated-ship-AI note (landed)",
+      "John1 friendly torpedoes (image's own)"
+    ],
+    "new": [
+      "JM06, JM08, E2 after 4500 not paired against the gunnery flips",
+      "USN02's outcome depends on the opening torpedo spread against an idle Houston",
+      "friendly torpedo hits under the image swim, recorded"
+    ],
+    "carried": [
+      "E2 after 4500 unpaired",
+      "g-era gaps (USN02 50851d56a -> shared OFF, USN13 27->26 / 25->26)",
+      "JM08 shots unpaired",
+      "USN02 664 -> 640",
+      "USN02 torpedo stock on the throttle cut",
+      "kSetSelectedUnitBound effect not isolated",
+      "E2 594 -> 595",
+      "E2 phase 1 only under lockstep",
+      "Marshall .nav generic layer"
+    ]
+  }
+}
