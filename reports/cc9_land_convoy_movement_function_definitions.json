@@ -1,0 +1,110 @@
+{
+ "events": [
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ada160",
+    "end_address": "00ada1b1"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ada160",
+    "end_address": "00ada1b0",
+    "bytes_disassembled": 81,
+    "message": "Successfully disassembled 81 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ada160",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00ada160",
+    "function_name": "FUN_00ada160",
+    "entry_point": "00ada160",
+    "body_size": 81,
+    "message": "Function created successfully at 00ada160"
+   }
+  },
+  {
+   "defined": "00ada160",
+   "end": "00ada1b1",
+   "name": null,
+   "after": "Function: FUN_00ada160 at 00ada160\nSignature: undefined FUN_00ada160(void)\nEntry: 00ada160\nBody: 00ada160 - 00ada1b0"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00ada1c0",
+    "end_address": "00ada224"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00ada1c0",
+    "end_address": "00ada223",
+    "bytes_disassembled": 100,
+    "message": "Successfully disassembled 100 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00ada1c0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00ada1c0",
+    "function_name": "FUN_00ada1c0",
+    "entry_point": "00ada1c0",
+    "body_size": 100,
+    "message": "Function created successfully at 00ada1c0"
+   }
+  },
+  {
+   "defined": "00ada1c0",
+   "end": "00ada224",
+   "name": null,
+   "after": "Function: FUN_00ada1c0 at 00ada1c0\nSignature: undefined FUN_00ada1c0(void)\nEntry: 00ada1c0\nBody: 00ada1c0 - 00ada223"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

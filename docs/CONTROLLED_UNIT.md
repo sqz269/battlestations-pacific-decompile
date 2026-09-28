@@ -1667,3 +1667,389 @@ Also landed: the inert accessors `command_building_capture_range_07a0` and
   - `l4_runs.ps1` launches detached runs with the pair environment.
   - `l4_wait.sh` is the foreground wait on the final COM release line.
   - `l4_rel32.py` scans rel32 and absolute references to a target in the image.
+
+## The LOMP10 obedience cases: `returntobase` and the CargoShip `moveto` (cc9-lua5, a read)
+
+Item 2 of the cc9-lua4 handoff. The question was why the SELLING tick's orders on LOMP10 moved
+nothing in 150 s (`docs/PLANNER_TASK_CHOICE.md` section 13.4). **No binding came out of it.** The
+image's answer needs four bodies the host does not have, listed at the end.
+
+### Re-measured on the current head
+
+- The run is LOMP10 3200/3000 on this tree's build of `583e3eee1`, with the pair environment.
+  The log is `local\rt_base_lomp10.log` in worktree cc9-lua5.
+- The SELLING census is unchanged: 92 ticks, 46 approaches, 117 `returntobase`.
+- **The ship half obeys now.** CargoShip is in `movetopos` from the first steps and moves
+  1818.89 m.
+- **The planes move, but not because of `returntobase`.** With `kPlaneRowPositionBound` ON, B-25 01
+  flies 7044.64 m and B-25 01|.-2 6919.30 m. They close 7279.4 m and 7358.7 m on their
+  `levelbomb` target from `PilotSetTarget`. The old "nothing moved" was the stale plane row.
+- The host places every `returntobase` on each member plane (`ai_selling_tick`, command 21). The
+  plane's bot intake then drops it, because the host's `resolve_return_to_base` answers 0. So the
+  squadrons keep bombing.
+
+### What the image does with a brain `returntobase` (V, from the listings)
+
+**It goes to the squadron, not to the planes.**
+- SELLING's air arm (`00A12040`-`00A12101`) walks the group's member list at `+563Ch`. Each member
+  must answer `vtable[5Ch](18h)`; a member that does not gives ECX = 0 and a null read at
+  `00A12087`. With `+361h` and `+3B0h` clear, `00A120EB` calls `0077D600` with ECX still the
+  squadron.
+- The flags argument 1 lands at message `+21h` (`007798F7`).
+- The squadron's `vtable[160h]` (vtable `00D087C0`, slot `00D08920`) is `007F1940`. Its arms:
+  - with `+5Dh` set it ignores the message (`007F194A`);
+  - with no members (`+3D0h` = 0) it ignores it (`007F1AE4`);
+  - `returntobase` goes through `007F16D0` with ECX = the squadron (`007F1AF9`), then
+    `0071DB50`;
+  - when the result is not null, it clears the squadron's commands and issues the result, because
+    `+21h` is 1. With `+21h` clear it would first ask the director's `vtable[34h]`.
+
+**`007F16D0` resolves it, in this order (V, listing checked at the head):**
+1. `[sq+35Ch]` is the **plane class descriptor**, not an assigned base. `+198h` is `MinWaterSpd`
+   (`docs/PLANE_CLASS_FIELDS.md`). `007F16F0`-`007F16FB` (`UCOMISS`, `LAHF`, `TEST AH,44h`,
+   `JNP`) take the null result when it **equals** 0.0.
+   - This installation's B-25 Mitchell (class 118) and P-38 Lightning (class 104) author 22.222221
+     (`vehicleclasses.lua`, mtime 2026-05-09), so both pass.
+2. The member-array head `+3D0h`: an `MPlaneKamikaze` (`17h`) with `+C24h` clear gives the null
+   result.
+3. With `+369h` set: `006BCD20(+404h, 1)`, the home's air-ops block, then `006C4790` and
+   `006BED30`. That gives `land` at the home through `007F1000`.
+   - **LOMP10 authors no `HomeBase`** (`summary squadron scene home base ... keys=0`), so `+404h`
+     is 0 and this arm fails.
+4. Still under `+369h`: `006C0840`, the nearest landing site. From the pseudocode it tests
+   airfields (`45h`) and carriers (`9`) and walks the air-ops list at `00E19948` by side. Its register ABI was not traced. `006BC120` must be false, and then
+   `land` goes through `007EF8B0` at the site's `+7Ch` owner.
+5. Otherwise `004C7730` on the world object, for the squadron's side `+54h`. With a zone, the result
+   is a **`retreat`** (`00E08F90`) toward a point built from the zone record's corner floats,
+   scaled by `00D7A348` (the float block is not decoded).
+6. Otherwise the result is null, and the order is dropped.
+
+**So on LOMP10 the image either lands the B-25s and Lightnings at a friendly airfield or carrier, or
+sends them to retreat. Both clear the `levelbomb`.** The host keeps them bombing. That is the
+behavioural difference. Which arm is taken depends on `006C0840` and on the border-zone records.
+
+### The border zones are reachable
+
+This corrects the deferral of `GetClosestBorderZone` (handoff item 3).
+- `004C7730` (`004C7730`-`004C7A96`) is small. It walks four lists at `world+7134h`, one per map
+  edge, each 0Ch apart. It keeps the records whose `+4` is the side (any side when the side is
+  negative), and clamps the position onto each record's edge (`+1Ch`, `+24h`, `+28h`, `+30h`). It
+  returns the nearest record, the clamped point, and a direction taken from one of two constants,
+  `00D7A24C` or `00D7A260` (values not read).
+  - With no match it returns 0 for sides 0 and 1. For any other side it retries with -1.
+- **The data is the map's own bounds.** The literal `+7134h` has six sites: the storage constructor
+  and destructor, `BSP_Game_ApplyMapBounds` (`004D61CA`), and the merge pass `004CA930`, which
+  joins adjacent records of one side.
+  - `docs/WORLD_MAP_BOUNDS.md` already reads `004E6C00`'s `BorderSizeX/Y` and the NW/SE selection.
+  - It records the rest as contracts: the twelve `004C7150` calls and the record rebuild.
+- So the zones follow from scene properties the host already parses. The next step is
+  `004C7150` and the rebuild in `004D5BD0`. No new data source is needed.
+
+### What a binding needs, in order
+
+1. The zone records: `004C7150`, the rebuild in `004D5BD0`, and the merge `004CA930`. Then
+   `004C7730`. This also unblocks `GetClosestBorderZone` (`008AECD0`) and `PilotRetreat`'s zone
+   (`docs/PILOT_ORDER_BINDINGS.md` step 3').
+2. `006C0840`, the nearest landing site, read from the listing (register arguments).
+3. The squadron intake `007F1940` for `returntobase`: resolve on the squadron, clear, issue.
+4. **A flown `retreat` and `land`.** The host has no bot task flight for either (`kRetreat`
+   `009CA2B0` and `kLand` `009B41C0` are table rows only), and `PilotRetreat` is not bound.
+   - Until one exists, an intake binding would clear the `levelbomb` and leave the squadrons
+     without a task. That changes gameplay for the wrong reason, so no switch was added.
+
+`docs/ATTACK_COMMANDS.md` ("`returntobase` and `land`") read `+35Ch` as an assigned base; it now
+carries a correction.
+
+## `returntobase` on LOMP10 lands the squadrons; it does not retreat them (cc9-lua5, a read)
+
+The lead asked for the squadron intake with the retreat arm as the resolution LOMP10 reaches. The
+listing of the fourth arm says LOMP10 reaches the **land** arm first. So no switch was added.
+
+**`007F16D0`'s nearest-site arm (V, listing `007F177E`-`007F17DF`).**
+- `006C0840` is called with ECX = the squadron's side `+54h` and EDX = the member-array head
+  `+3D0h`. Its stack arguments, in order, are:
+  - 0, the distance out-pointer, unused here;
+  - `0047B850(head)`: 1 when the plane answers class 10h or 16h;
+  - 1: `PUSH 1` at `007F1788` is `006C0840`'s third argument. `0047B850` takes none and returns
+    with a bare `RET`, and `006C0840` ends `RET 0Ch`.
+- `006C0840` (`006C0840`-`006C0B3F`):
+  - It needs the plane's `+9D4h`.
+  - It first tries the plane's own `00923810(1)` site: an airfield (45h) or mothership (9) that is
+    not dead and whose side matches.
+  - Otherwise it walks the air-ops list at `00E19948` (next at `+BCh`). A block qualifies when:
+    - its object `+4` and owner `+7Ch` exist;
+    - the owner is not dead (`+5Eh`) and not remote (`+5Dh`, because of the third argument);
+    - when the second argument is set, the block's `+20h` bit 1 is set;
+    - the owner's side is the squadron's (or at least 2 outside multiplayer).
+  - It keeps the nearest block, preferring those for which `006BC530` answers true. It returns the
+    block even when none answers true.
+- **Back in `007F16D0`:** block `+4`, then `006BC120` answers 0 when that object's `+7Ch` owner
+  exists with `+5Dh` clear. Then `007EF8B0(land, 00465080(owner, 0.0))`: **`land` at the site.**
+
+**On LOMP10.** The scene has one Allied airfield, `CB4_AF` (`MultiAirField`, party Allied(0), an
+air-ops deck of 4 slots; `local\rt_base_lomp10.log`). The B-25 and Lightning squadrons are Allied,
+so the image sends them to land at `CB4_AF`. The retreat arm is reached only when no friendly live
+airfield or carrier with a deck exists.
+- **Two qualifications from the same log.**
+  - B-25 01 is the controlled unit (`00E188D8`, instance class id 16 = 10h). So `0047B850` answers
+    1 for its head, and `CB4_AF` qualifies only if its block's `+20h` bit 1 is set, which is not
+    read.
+  - If the squadron's `+5Dh` marks player control, `007F1940` ignores the order for B-25 01
+    altogether (`007F194A`). The Lightning squadron is not controlled.
+- **Not settled:** class 16h, `006BC530`, the `+20h` bit and the meaning of `+5Dh`.
+
+**What a binding needs.** A flown `land` task (`kLand` `009B41C0`) that the host lacks, besides
+the intake `007F1940` and a reconstruction of `006C0840`. Binding the retreat arm alone would send
+LOMP10's squadrons somewhere the image does not.
+
+## Handoff (cc9-lua5, 2026-09-28)
+
+Worker cc9-lua5 took over cc9-lua4's lane (handoff above). The branch is `agent/cc9-lua5` and the
+worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua5`. It holds no leases after this commit.
+
+### Switches this worker set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kLuaHitAttackerPlayerIndexBound` | `include/bsp/game_hosts_lua.hpp` | ON | `docs/LUA_BINDING_MISSION.md`, "`attackerPlayerIndex`, bound" |
+| `kLuaClosestBorderZoneBound` | same | ON (exit-code miss recorded) | `docs/LUA_BINDING_MISSION.md`, "`GetClosestBorderZone`, bound"; `docs/WORLD_MAP_BOUNDS.md`, "Border zones" |
+
+The border-zone records and queries are new C++ in `src/world_map_bounds.cpp`. The mission frame
+hands the Lua host the map bounds at the avoid-zone load (`src/game_hosts_mission_frame.cpp`).
+
+### Reads closed
+
+- **The `hit` filters are all modelled now.** 84 `hit` listeners in this installation name an
+  `attackerPlayerIndex` set, not one. No measured row reaches the test.
+- **The LOMP10 obedience cases** (this doc, "The LOMP10 obedience cases"):
+  - the CargoShip obeys its `moveto`;
+  - the planes fly their `levelbomb`;
+  - the image would clear that and land or retreat the squadrons, and the host drops
+    `returntobase`.
+- **The fourth natives ranking** (`docs/LUA_BINDING_MISSION.md`): after `GetClosestBorderZone`, no
+  unimplemented native with gameplay reach is left on the measured rows.
+  - USN02's `CountdownCancel` cancels a countdown that was never started.
+  - `Scoring_SetMissionCompleted` and `BannSupportmanager` are the failure path's scoring.
+  - JM06's `LoadCheckpoint` answers "no checkpoint", as a fresh run would.
+
+### Open, in order
+
+1. **`returntobase` for AI squadrons.** In order:
+   - `006C0840`, the nearest landing site: read its register ABI from the listing;
+   - a flown `retreat` and `land` bot task (`009CA2B0`, `009B41C0`), which the host lacks;
+   - then the squadron intake `007F1940`: resolve through `007F16D0`, clear, issue.
+   The retreat arm's zone query is ready (`closest_border_zone_004c7730` with the squadron's side).
+   Until a flown task exists, binding the intake would strand the squadrons. It belongs with
+   whoever owns plane flight.
+2. **`PilotRetreat` (`008A4300`)** can now take its zone from `closest_border_zone_004c7730`
+   (`docs/PILOT_ORDER_BINDINGS.md` step 3'). It needs the same flown `retreat` task.
+3. **USN02's reference row moved** after its failure (`GetClosestBorderZone`). Re-anchor it at the
+   next re-baseline.
+4. **Records for the lead:** the ledger and Ghidra names and comments for `004C71C0`, `004C7150`,
+   `004C7730`, `004CA930` (unreferenced), `008AECD0`, `007F1940` (the squadron's `vtable[160h]`)
+   and the `007F16D0` correction.
+   - Ghidra was read-only for this worker.
+   - `tools/const_width_sweep.py` was not run on the new constants.
+
+### Local files
+
+- **Pair exports:** `local\{ap,bz}_on`.
+- **Logs:** `local\{ap,bz}_{off,on}_<mission>.log`, the LOMP10 re-measure `local\rt_base_lomp10.log`,
+  and the census `local\l5_rk_*.log`.
+- **Scripts:** `local\l5_*`.
+  - `l5_runs.ps1` and `l5_wait.sh` are lua4's with the tree renamed.
+  - `l5_api_census.py` lists the `attackerPlayerIndex` users.
+  - `l5_minwater.py` maps `MinWaterSpd` to classes.
+
+### Addendum after the handoff (cc9-lua5, same day)
+
+The lead's later queue, taken after the handoff above:
+- **`GetClosestBorderZone` on USN04** (`a93cd9467`): gameplay identical, as predicted.
+- **`returntobase` on LOMP10** (`ff3f69a18`, "`returntobase` on LOMP10 lands the squadrons"): the
+  image lands the Allied squadrons at `CB4_AF` through `006C0840` before any retreat. No switch.
+  Open item 1 above now reads: a flown `land` task first, then `006C0840`, then the intake.
+- **The LandConvoy roster** (`22747653d` OFF, `ec9b39927` ON, `docs/LAND_AND_STRUCTURES.md`,
+  "The LandConvoy roster, bound"): `kLandConvoyMembersBound` is ON. On JM05, five members are
+  created at their convoys' frames.
+
+**New open items:**
+1. **The convoy formation** (`00742400`, `00743060`). The first step is `007AF150`, the Path knot
+   derivation, with its helpers `007AE330` and `007AE3E0`. The details are in the LAND doc's
+   "Still open".
+2. **Gunnery's `00805680` fold** over `GameUnitsHost::unit_land_convoy_738`, routed by the lead.
+3. **`HudMinimap::land_vehicle_player_query 008DDF00`**: unimplemented, and now reached on JM05.
+
+**New local files:**
+- **Pair exports:** `local\{bz_off,lc_on}`.
+- **Logs:** `local\lc_{off,on}_*.log` and `local\bz_{off,on}_usn04.log`.
+
+### The `00805680` fold lines for the gunnery host (routed by the lead)
+
+For `src/game_hosts_gunnery.cpp`, beside the `00805490` `group` lambda (about line 4778). The
+fold rule is the squadron pass's, over class 19h and the back pointer `+738h`
+(`docs/RECON_TEAM_LISTS.md`). The `m.level < 1` gate is assumed to be `008054D7`'s; it is not read
+in `00805680`.
+
+```
+        // 00805680(B[19h], B[1Ah]), packet cc9_land_convoy_members: each class-19h
+        // member with level >= 1 folds into its convoy (+738h, 00743A34); the
+        // convoy's level is its members' maximum. SUBSTITUTION, labelled: the
+        // convoy has no unit in this host, so the group is keyed by its scene
+        // name and no class-1Ah record is pushed into the triples.
+        const auto group_convoys = [&](std::map<int, std::vector<Rec>>& arr) {
+            const auto found = arr.find(0x19);
+            if (found == arr.end()) return;
+            std::map<std::string, int> convoy_level;
+            for (const Rec& m : found->second) {
+                if (m.level < 1) continue;
+                const std::string& convoy = units.unit_land_convoy_738(m.unit);
+                if (convoy.empty()) continue;                 // 00805680's +738h != 0 test
+                int& lv = convoy_level[convoy];
+                if (m.level > lv) lv = m.level;
+                ++recon_convoy_member_records;
+            }
+            recon_convoy_groups += convoy_level.size();
+        };
+```
+
+- Call it after `group(enemy)` and after `group(neutral)` under `kReconAggregatesBound`, and
+  before the own `group(own)`.
+- `recon_convoy_groups` is a new counter beside `recon_convoy_member_records`.
+- Replace the comment `// 00805680(B[19h], B[1Ah]): no convoy membership in this host.`.
+- Turn the `record(...00805680)` into a `done(...)` once it runs.
+- **Reach:** only JM05 has members, and they are Neutral, so only the neutral pass folds anything.
+  The reference rows have no members, so this is identity there.
+
+### The next plane packet: `cc9_squadron_land_task`
+
+This is the piece that lets the image's `returntobase` answer run. The read is in this doc, "`returntobase` on LOMP10
+lands the squadrons".
+1. **The flown `land` bot task** (`kLand`, factory `009B41C0`, constructor `009B3240`, approach
+   `009B2E50`, size 670h; `src/bot_tasks.cpp` table row). Not read.
+2. **`006C0840`'s site lookup.** It takes ECX = side, EDX = the head plane, and three stack
+   arguments: 0, `0047B850(head)`, 1. It ends `RET 0Ch`. The loop is at `006C0967`-`006C0AF3`.
+3. **`006BC120`**, then **`007EF8B0(land, 00465080(owner, 0.0))`**.
+4. **The squadron intake `007F1940`** for `returntobase`: resolve through `007F16D0`, clear
+   (`+21h` = 1), then issue.
+
+Predict it on LOMP10 3200/3000 with **Lightning 01** as the clean case. The controlled B-25's
+`+20h` bit-1 gate and `+5Dh` byte stay labelled until read. Identity is expected on the
+reference rows.
+
+## The squadron's `returntobase` resolution, and the `land` task's shape (cc9-lua6, packet `cc9_squadron_land_task`, part 1)
+
+Worker cc9-lua6, 2026-09-28. This continues "`returntobase` on LOMP10 lands the squadrons" above.
+The resolution `007F16D0` and the site search `006C0840` are reconstructed in
+`src/return_to_base.cpp`. The host binding is written but not committed: `src/game_hosts_units.cpp`
+was leased to cc9-gunnery7 when it was ready. It is kept as `local\l6_rtb_units.patch` in worktree
+cc9-lua6.
+
+### `006C0840`, the nearest landing site (V, listing `006C0840`-`006C0B3C`)
+
+**The ABI.** `__fastcall`:
+- ECX = side, kept in EBX;
+- EDX = the head plane, kept in EDI;
+- stack: a distance out pointer, the "need approach bit" byte and the "local only" byte;
+- `RET 0Ch`.
+
+A null head, or a null `[head+9D4h]`, returns 0. The multiplayer flag is `00927C90(0) != 0`
+(`006C0866`, `SETE`).
+
+**The own-site branch.** `00923810(1)` is the head's scene parent `+3Ch`.
+- **An airfield:** the parent answers `vtable[5Ch](45h)`, is not dead (`+5Eh`), and its own parent
+  is null or not dead. Then:
+  - a non-null distance pointer gets 0;
+  - it returns `[site+7ACh]` when the side test passes, else 0.
+- **A carrier:** otherwise, the parent answers `vtable[5Ch](9)` under the same liveness test. It
+  returns `[site+1208h]` under the same side test, else 0.
+- **The side test** (`006C08CE`..`006C08E4`): the first compare is unsigned (`CMP EBX,1`/`JA`), so
+  any side other than 0 or 1 passes. Otherwise the site's `+54h` must equal the side, or be 2
+  outside multiplayer.
+
+**The walk.** The air-ops list is at `00E19948`, next at `node+BCh`. `node+4` is the block, and
+`block+7Ch` is its owner. A node qualifies when:
+- the block and the owner exist and the owner is not dead;
+- with "local only" set, the owner's `+5Dh` is clear;
+- with "need approach bit" set, `block+20h` bit 1 is set;
+- the side is negative, or the owner's `+54h` matches, or, outside multiplayer, the owner's side is
+  2 or more (`JL` at `006C09F8`, signed here, unlike the own-site test).
+
+**The choice.** Two values decide it:
+- **Acceptance:** `006BC530(head position, 0)`.
+- **The key:**
+  - for an accepting node, it comes from `block+88h` and `head->vtable[50h]()` through `00438B10`
+    and `0042BE90`;
+  - otherwise it is `00427E30` of `006BCC90`'s offset. That offset is the head's position in the
+    block frame `block+48h` (`004142E0`), minus `block+A4h..ACh`. Its y is scaled by `00CE3DC8`
+    below `00CE3948`.
+
+The best key starts at -1.0 (`00D7A260`). An accepting node beats a non-accepting one, and within
+a class the smaller key wins (`006C0AA3`..`006C0ADB`). It returns the **node**. When the distance
+pointer is non-null, it gets 0 for an accepting best, else `sqrt(key)`.
+- **Unread:** `006BC530`, `00438B10`, `0042BE90` and `00427E30`. With one node past the filters,
+  neither value decides.
+
+### `007F16D0`, re-read (V, listing `007F16D0`-`007F191F`)
+
+- **The null arm** (`007F18EB`) writes record `[0] = 0` and the zero position
+  `00F87574..00F8757C`.
+- **`sq+369h` is `ReloadEnabled`,** default 1 at `007F2D09` (the units host's
+  `control_flag_369`). It is not a deck flag. Both land arms need it.
+- **The site arm.** `006C0840`'s stack is `(0, 0047B850(head), 1)`, where `0047B850` is
+  `vtable[5Ch](10h) || vtable[5Ch](16h)`.
+  - From the node: `node+4` must be non-null, and `006BC120(block)` must be 0. `006BC120` answers 0
+    when `block+7Ch` exists with `+5Dh` clear.
+  - Then `007EF8B0(out, land 00E08FA0, 00465080(block+7Ch, 0.0))`.
+- **The retreat record:**
+  - `[0]` = `00E08F90`; word `+4` = 0; byte `+5` = 1;
+  - `+0Ch` = 0.25 × (0 + A.x + B.x + C.x + D.x), each sum stored as binary32, over `+10h`, `+1Ch`,
+    `+28h` and `+34h`;
+  - `+10h` = 0;
+  - `+14h` = the same over `+18h`, `+24h`, `+30h` and `+3Ch`. `00D7A348` is the double 0.25.
+
+**LOMP10, by these rules.**
+- There is one air-ops deck, `CB4_AF`, Allied, and no `HomeBase`.
+- **Lightning 01**'s head is class 13h, neither 10h nor 16h, so the approach bit is not needed.
+  `CB4_AF` passes the filters and it is **land at CB4_AF**.
+- **B-25 01**'s head is class 10h. `CB4_AF` qualifies only with `block+20h` bit 1, and that bit's
+  producer is unread.
+
+### The `land` task (`009B3240`, size 670h): what the flown task needs
+
+**The per-tick arm** is slot `+64h` = `009B3EB0` (no Ghidra function; `009B3EB0`-`009B3F49`,
+`RET 4`). It:
+1. sets `+4ACh` = FFh;
+2. calls `009B3900(approach, onGround, dt)`, where `onGround` means the current state is `+5D8h`,
+   `+5F8h`, `+620h` or `+64Ch`;
+3. when `+424h` is set, calls the state rule `009B3CF0` and then the current state's
+   `vtable[0Ch](dt)`;
+4. copies `+4ACh` to `+2E4h`.
+
+**The states.** These are whole-object offsets. The approach is at `+3F8h`.
+
+| offset | vtable | enter / exit / tick | reached when |
+| --- | --- | --- | --- |
+| `+4C4h` | moveto (`009C2AC0`) | shared | approach `+448h` = 1, through `009AFA50` |
+| `+500h` | follow | shared | the same, for a wingman |
+| `+598h` | `00D1FEA4` | `009B02E0` / `009B02F0` / `009B0300` | mode 2, wingman |
+| `+5B8h` | `00D1FEF4` | `009B0230` / `009B0240` / `009B0FE0` | mode 2 leader, mode 3, or `+66Ch` set in `+64Ch` |
+| `+5D8h` | `00D1FF14` | `009B13E0` / `009B0240` / `009B1D70` | mode 4 |
+| `+5F8h` | `00D1FF44` | `009B1E60` / `009B1E90` / `009B1ED0` | from `+5D8h` when `009B3C00` answers true |
+| `+620h` | `00D1FF60` | `009B21A0` / `009B21C0` / `009B22C0` | the plane's `+900h` is 4 or 5 (on the ground), from `+5F8h` when `009B3370` answers true, or at construction for a plane whose `(+72Ch)->vtable[38h]` is false |
+| `+64Ch` | `00D1FED4` | `009B0980` / `009B09A0` / `009B09C0` | from `+5D8h`/`+5F8h` when mode is not 4 |
+
+- **The mode `+448h`** (approach `+50h`) is written in the approach update `009B3900` and its
+  callee `009B34D0`. Those are tied to the air-ops landing request `006C54C0(plane, approach+38h)`,
+  which is paced by `+B0h`/`+ACh`.
+- **The cruise profile** `009B3C60` writes `ctl+394h` = `Pilot/Landing/CruisingAlt` (1400).
+
+**What a flown `land` needs**, beyond the moveto the pilot-moveto packet flies:
+- the landing request `006C54C0` and the mode writer `009B34D0`;
+- the six states' bodies, about 12 KB of listing from `009B0230` to `009B2C70`. `009B1420` and
+  `009B22C0` are about 2.5 KB each and x87-heavy;
+- the deck and runway side: touchdown `007CA3F0`, the slot release `006C65B0`, and the taxi.
+
+**On the measured row.** In the current LOMP10 log, Lightning 01 ends about 13 km from `CB4_AF`
+and flies about 9.5 km in the run. So the land task would spend most of the row in mode 1, the
+moveto. Whether it reaches mode 2 depends on when the first `returntobase` lands and on
+`009B34D0`.

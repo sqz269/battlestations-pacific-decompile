@@ -263,6 +263,11 @@ the target answers `IsKindOf(2)`, it sets the bot byte `+3Dh`.
 `007F16D0` resolves `returntobase` into something concrete, and is the only routine that produces
 `land` outside the Lua bindings and the controller.
 
+**Correction (cc9-lua5, 2026-09-28):** `+35Ch` is the squadron's plane class descriptor, not an assigned
+base. `+198h` is the class's `MinWaterSpd`, and the test sends a class with 0.0 to the null result.
+The home is `+404h`. The full order of the arms is in `docs/CONTROLLED_UNIT.md`, "The LOMP10
+obedience cases".
+
 * An assigned base at `+35Ch` whose `+198h` is not the sentinel `00D7A218`, plus a group that passes
   `006BCD20`, `006C4790` and `006BED30`: `007F1000(land, unit+404h)`, a `land` command at the unit's
   own base.

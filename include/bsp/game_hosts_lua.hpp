@@ -34,6 +34,7 @@
 #include <vector>
 
 #include "bsp/gameplay_settings_tail.hpp"
+#include "bsp/world_map_bounds.hpp"
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/lua_spawn_new.hpp"
@@ -254,6 +255,21 @@ inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (d
 // (set membership, as for the recon party set; the comparison itself is unread).
 // False: an entry naming it is counted unmodelled and never fires.
 inline constexpr bool kLuaHitAttackerPlayerIndexBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
+
+// Packet cc9_get_closest_border_zone (docs/WORLD_MAP_BOUNDS.md, "Border zones";
+// docs/LUA_BINDING_MISSION.md, "GetClosestBorderZone, bound"). 008AECD0
+// GetClosestBorderZone(position[, offset]) answers a point beyond the nearest
+// border zone of world+7134h (004C7730, any side), built from the map bounds by
+// 004D5BD0 / 004C71C0 / 004C7150. True: the native runs on the zones the mission
+// frame hands over (set_world_border_zones). False: unimplemented, neutral.
+// Packet cc9_spawn_new_id_queries (docs/LUA_BINDING_MISSION.md, "SpawnNewIDIsRequested
+// and SpawnNewIDRemove, bound"). 00946380 -> 00945850 answers whether the
+// SpawnNew queue at *(00F89B3C) holds a record whose id (+B8h) matches argument
+// 1 (length, then __stricmp), pushing one boolean; 00946390 -> 00945A20 removes
+// every such record and pushes nothing. True: both run on the host's queue.
+// False: unimplemented, neutral.
+inline constexpr bool kLuaSpawnNewIdQueriesBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
+inline constexpr bool kLuaClosestBorderZoneBound = true;  // ON: pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
 // limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
@@ -527,6 +543,9 @@ struct GameMissionLuaSummary {
     unsigned long long invincible_calls{0};
     unsigned long long invincible_units{0};
     unsigned long long invincible_unresolved{0};
+    // Packet cc9_get_closest_border_zone.
+    unsigned long long border_zone_calls{0};
+    unsigned long long border_zone_missing{0};
     unsigned long long forced_recon_calls{0};
     unsigned long long forced_recon_units{0};
     unsigned long long forced_recon_unresolved{0};
@@ -759,6 +778,16 @@ public:
     // leaves output unchanged. This is not a per-frame ShipGlobals lookup.
     bool read_avoid_all_ship_collision(bool& value) const noexcept;
     void set_avoid_all_ship_collision_008d0852(bool value);
+    // Packet cc9_get_closest_border_zone. The map bounds 004D5EDE selected (the
+    // avoid-zone load's inputs); the host builds world+7134h's records from them.
+    // SUBSTITUTION, labelled: the image builds them inside 004E6C00's Map read;
+    // the host takes them at the avoid-zone load step, before any script runs.
+    void set_world_border_zones(const bsp::WorldMapBounds& bounds);
+    // Packet cc9_squadron_land_task: world+7134h for 007F16D0's retreat arm,
+    // null until set_world_border_zones ran.
+    const bsp::BorderZoneSet* world_border_zones() const noexcept {
+        return border_zones_loaded_ ? &border_zones_ : nullptr;
+    }
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
     // Packet cc9_ship_neighbour_list: the ShipAvoidance block settings+190h..+1D8h,
@@ -1062,6 +1091,8 @@ public:
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
+    // Packet cc9_get_closest_border_zone, under kLuaClosestBorderZoneBound.
+    int run_get_closest_border_zone_008aecd0(lua_State* state, int argument_count);
     // Packet cc9_submarine_air, under kSubmarineAirBound.
     int run_set_unlimited_air_00893c00(lua_State* state, int argument_count);
 
@@ -1246,6 +1277,10 @@ private:
         std::vector<int> attacker_player_indices;
     };
     std::vector<ListenerEntry> listeners_;
+    // Packet cc9_get_closest_border_zone: world+711Ch..+7130h and world+7134h.
+    bool border_zones_loaded_{false};
+    bsp::WorldMapBounds border_bounds_{};
+    bsp::BorderZoneSet border_zones_{};
     // Packet cc9_hit_rate_limit: the map at 00988510's this+168h, (victim,
     // attacking unit) -> the clock at which the next hit on the pair is evaluated.
     std::map<std::pair<std::size_t, std::size_t>, float> hit_rate_limit_;

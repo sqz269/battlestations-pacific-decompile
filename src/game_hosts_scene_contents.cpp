@@ -191,6 +191,84 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     }
 }
 
+// Packet cc9_land_convoy_members. 00743450's scene reads (00743497..007437B0):
+// the eight scalars (an `F` value is read as a float, an `I` as its integer,
+// 004F.. type word test), then the slot map: every slot -1, and for n = 1..4
+// the block "Type<n>" (type tag 6; absent gives a null bag) and its enum `Type`,
+// for m = 1..4 its integer "Position<m>": 0 fills every slot with the type, a
+// positive value fills slot m-1 (the later write wins), a negative one nothing.
+// The bag here is already merged with the library group, which is what makes
+// the unauthored `Type1.Position1 = 0` of landconvoy.props apply.
+void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRecord& record,
+    const PropertyLibrary& library) {
+    const auto scalar = [&](const char* key, float fallback) {
+        const SceneProperty* prop = bag.find(key);
+        if (prop == nullptr || prop->values.empty()) return fallback;
+        float f = fallback;
+        std::int32_t i = 0;
+        if (prop->type_letter == "I" && scene_scan_int(prop->values.back(), i))
+            return static_cast<float>(i);
+        if (scene_scan_float(prop->values.back(), f)) return f;
+        if (prop->type_letter == "B") return prop->values.back() == "true" ? 1.0f : 0.0f;
+        return fallback;
+    };
+    const auto integer = [&](const ScenePropertyBlock& block, const char* key, std::int32_t fallback) {
+        const SceneProperty* prop = block.find(key);
+        std::int32_t i = fallback;
+        if (prop != nullptr && !prop->values.empty()) scene_scan_int(prop->values.back(), i);
+        return i;
+    };
+    record.land_convoy_keys = true;
+    record.convoy_rows = integer(bag, "Rows", 0);
+    record.convoy_columns = integer(bag, "Columns", 0);
+    record.convoy_row_gap = scalar("RowGap", 0.0f);
+    record.convoy_column_gap = scalar("ColumnGap", 0.0f);
+    record.convoy_hp = scalar("HP", 0.0f);
+    record.convoy_speed = scalar("Speed", 0.0f);
+    record.convoy_offset = scalar("Offset", 0.0f);
+    record.convoy_reverse = scalar("Reverse", 0.0f) != 0.0f;
+    if (const SceneProperty* path = bag.find("Path"); path != nullptr && !path->values.empty()) {
+        std::string value = path->values.back();
+        if (value.size() >= 2 && value.front() == '"' && value.back() == '"')
+            value = value.substr(1, value.size() - 2);
+        record.convoy_path = value;
+    }
+    const int slots = record.convoy_rows * record.convoy_columns;
+    record.convoy_slots.assign(slots > 0 ? static_cast<std::size_t>(slots) : 0u, -1);
+    record.convoy_slot_symbols.assign(record.convoy_slots.size(), std::string());
+    for (int n = 1; n <= 4; ++n) {
+        char key[16];
+        std::snprintf(key, sizeof(key), "Type%d", n);
+        const ScenePropertyBlock* sub = nullptr;
+        for (const auto& block : bag.blocks) {
+            if (equal_insensitive(block.first, key)) { sub = &block.second; break; }
+        }
+        if (sub == nullptr) continue;
+        int type = 0;
+        std::string symbol;
+        const SceneEnumProperty e = scene_enum_property(*sub, "Type");
+        if (e.present) {
+            symbol = e.symbol;
+            if (!library.resolve_symbol(e.table, e.symbol, type)) type = 0;
+        }
+        for (int m = 1; m <= 4; ++m) {
+            char position_key[16];
+            std::snprintf(position_key, sizeof(position_key), "Position%d", m);
+            const std::int32_t position = integer(*sub, position_key, -1);
+            if (position == 0) {
+                for (std::size_t s = 0; s < record.convoy_slots.size(); ++s) {
+                    record.convoy_slots[s] = type;
+                    record.convoy_slot_symbols[s] = symbol;
+                }
+            } else if (position > 0
+                       && static_cast<std::size_t>(position) <= record.convoy_slots.size()) {
+                record.convoy_slots[static_cast<std::size_t>(position - 1)] = type;
+                record.convoy_slot_symbols[static_cast<std::size_t>(position - 1)] = symbol;
+            }
+        }
+    }
+}
+
 // 007B352E..007B3604, only the fresh kind-1 PathPoints/Pos data projection.
 // The native asks for Point%002i using its current point count (00415870),
 // copies the three Pos lanes unchanged and appends once before the next lookup.
@@ -1462,6 +1540,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.parent_name = authored_parent.name;
     std::memcpy(record.local, entity.frame, sizeof(record.local));
     std::copy(authored_parent.world.begin(), authored_parent.world.end(), record.parent_world);
+    if (klass->class_id == 0x1a) retain_land_convoy_roster(bag, record, owner.library);
     if (klass->class_id == 0x47) {
         retain_path_points(bag, record);
         owner.log.notef("scene path retained: id=%zu parent=%zu name=%s points=%zu "
@@ -2529,6 +2608,21 @@ float SceneTerrainHeightField::height_00ada900(float x, float z) const noexcept 
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
     const float u = terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv);
     const float v = terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv);
+    return grid_height_00adb480(u, v);
+}
+
+// Packet cc9_land_convoy_movement. Slot 24h, 00ADA160: the same grid lookup in
+// the Landscape's LOCAL frame, u = (x - origin_x) * float(1 / cell) and v the
+// same with origin_z (00ADA161..00ADA1A8), then slot 48h 00ADB480. No node term.
+float SceneTerrainHeightField::local_height_00ada160(float x, float z) const noexcept {
+    const float inv = terrain_f32(1.0 / kTerrainCellSize);
+    const float u = terrain_f32((static_cast<double>(x) - origin_x) * inv);
+    const float v = terrain_f32((static_cast<double>(z) - origin_z) * inv);
+    return grid_height_00adb480(u, v);
+}
+
+// 00ADB480, slot 48h: the bilinear height at grid (u, v).
+float SceneTerrainHeightField::grid_height_00adb480(float u, float v) const noexcept {
     const int i = static_cast<int>(u);
     const int j = static_cast<int>(v);
     const float fu = terrain_f32(static_cast<double>(u) - i);
@@ -2551,6 +2645,22 @@ void SceneTerrainHeightField::normal_00adaba0(float x, float z, float out[3]) co
     const float inv = terrain_f32(1.0 / kTerrainCellSize);
     const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - node_x - origin_x) * inv));
     const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - node_z - origin_z) * inv));
+    cell_normal_00adaa40(i, j, out);
+}
+
+// Packet cc9_land_convoy_movement. Slot 34h, 00ADA1C0: the LOCAL-frame normal,
+// j = _ftol((z - origin_z) * inv) and i = _ftol((x - origin_x) * inv), each
+// product stored through float first (00ADA1E7, 00ADA201), then slot 30h
+// 00ADAA40(out, i, j). No node term.
+void SceneTerrainHeightField::local_normal_00ada1c0(float x, float z, float out[3]) const noexcept {
+    const float inv = terrain_f32(1.0 / kTerrainCellSize);
+    const int j = static_cast<int>(terrain_f32((static_cast<double>(z) - origin_z) * inv));
+    const int i = static_cast<int>(terrain_f32((static_cast<double>(x) - origin_x) * inv));
+    cell_normal_00adaa40(i, j, out);
+}
+
+// 00ADAA40, slot 30h: the unit normal of cell (i, j).
+void SceneTerrainHeightField::cell_normal_00adaa40(int i, int j, float out[3]) const noexcept {
     const float fi = static_cast<float>(i);
     const float fj = static_cast<float>(j);
     const float h00 = cell_height_00adb3a0(i, j);

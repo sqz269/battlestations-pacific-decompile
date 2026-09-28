@@ -1193,6 +1193,10 @@ The units host owns the director. The predictions to make then are on USN10 and 
 CAUTIOUSATTACK arm fires (section 11.4): the leaders would follow a three-leg danger-avoiding path
 before the direct movetos.
 
+**Taken by cc9-ships5 (2026-09-28): docs/AI_CAUTIOUS_ROUTE.md.** `00A14DD0` is read whole and bound
+behind `kCautiousRouteBound`, together with the 5Fh receiver `007207C0` and the kind-0 `moveonpath`
+begin in the commands host. Pairs and verdict are in that doc.
+
 ## 16. Handoff: `cc9_submarine_ai_states` (read started, nothing bound)
 
 Worker cc9-ships4, near its context limit. This section starts from lua4's read,
@@ -1254,8 +1258,16 @@ section 16 lists its `SetDepthLevel` and periscope sites). **Not read here.**
 3. Bind the selector and the three states OFF in the ship-AI host, with predictions on JM06
    3200/3000 and LOMP06 1200/1000, and identity on USN02 and USN04 (no submarines).
 
+**Taken by cc9-ships5 (2026-09-28): docs/SHIP_AI_SUB_ATTACK.md.** brain+0AB4h is written once, by
+009F1160 at 009F11C9, as the brain's own unit when it is a submarine, so every submarine on
+attackmove or artillery runs `sub_attack`. The selector and the states are bound and, after the pairs, ON
+(`kShipAiSubAttackSelectBound`, `kShipAiSubAttackStatesBound`); pairs and verdicts are in that doc.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
 | --- | --- | --- |
+| `009E9EB0` | `009EA9B7` | "fire" vtable `00D21920+0Ch` (`00D2192C`). `RET 4` at `009EA9B5`; `INT3` from `009EA9B8`; `009EA9C0` starts `FUN_009EA9C0` (cc9-lua4, confirmed by cc9-ships5) |
+| `009EABE0` | `009EAC9C` | "fire" vtable `00D21920+4h`. Tail `JMP 009E9E50` (5 bytes) at `009EAC98`; `INT3` at `009EAC9D`; `009EACA0` starts `BSP_ShipAi_ContactTrackConstruct_Provisional`. Ghidra shows it inside `FUN_009EAAD0` |
+| `009E50C0` | `009E50C0` | the `sub_attack` parent's enter, `00D2195C+4h`: a bare `RET` (`C3`), `INT3` from `009E50C1`. Ghidra shows it inside `FUN_009E4F90` |
 | `00A1E210` | `00A1E246` | Capture/Attack vtable `+24h` (`00D22E34+24h`, `00D22D94+24h` both read `00A1E210` from the PE). `RET 4` (`C2 04 00`) at `00A1E244`; `INT3` at `00A1E247`. `ghidra proto` finds no function |

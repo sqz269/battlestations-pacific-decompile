@@ -115,6 +115,23 @@ struct GameSceneEntityRecord {
     // (006F27E5). This installation authors it as `I 100` on its CommandBuildings.
     bool capture_range_present{false};
     std::int32_t capture_range_raw{500};
+    // Packet cc9_land_convoy_members: 00743450's reads from a LandConvoy's bag,
+    // merged with the library group (landconvoy.props). `convoy_slots` holds the
+    // Rows * Columns slot map after the Type1..4 x Position1..4 walk: the resolved
+    // `Type` enum value per slot, -1 where nothing was placed. A value below 1
+    // makes no member (00743799).
+    bool land_convoy_keys{false};
+    std::int32_t convoy_rows{0};          // +354h, "Rows"
+    std::int32_t convoy_columns{0};       // +358h, "Columns"
+    float convoy_row_gap{0.0f};           // +35Ch
+    float convoy_column_gap{0.0f};        // +360h
+    float convoy_hp{0.0f};                // +364h
+    float convoy_speed{0.0f};             // +368h
+    float convoy_offset{0.0f};            // +3ACh
+    bool convoy_reverse{false};           // +3A9h
+    std::string convoy_path;              // "Path", resolved by 007420B0
+    std::vector<int> convoy_slots;
+    std::vector<std::string> convoy_slot_symbols;
     // Packet cc9_submarine_depth_level: the two finds of 00853630's scene stage
     // (00853B18 `Dive` 00D0B6A4, 00853B94 `TargetDive` 00CFCCF0). Each is taken
     // only when found with type word 0 (00853B26 / 00853BA2); an `E` value is
@@ -467,6 +484,14 @@ struct SceneTerrainHeightField {
     // Terrain slot 38h, 00ADABA0 -> slot 30h 00ADAA40: the unit normal of the
     // cell the world (x, z) truncates to.
     void normal_00adaba0(float x, float z, float out[3]) const noexcept;
+    // Packet cc9_land_convoy_movement: the local-frame slots the forwarders
+    // 0087FA20 ([+3D0h]->vtable[24h]) and 0087FB90 (vtable[34h]) reach. The
+    // vtable is 00D5D350 (xrefs 00ADD1CE, 00ADD2C9), so +24h is 00ADA160 and
+    // +34h is 00ADA1C0: (x, z) in the Landscape's frame, no node translation.
+    float local_height_00ada160(float x, float z) const noexcept;
+    void local_normal_00ada1c0(float x, float z, float out[3]) const noexcept;
+    float grid_height_00adb480(float u, float v) const noexcept;       // slot 48h
+    void cell_normal_00adaa40(int i, int j, float out[3]) const noexcept;  // slot 30h
 
     // Packet cc9_terrain_segment_quadtree: the tree 00AEA820 builds at the end
     // of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1, tile

@@ -72,6 +72,14 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+// Packet cc9_spawn_new_id_queries: what the two id bindings answered.
+struct SpawnIdQueryCensus {
+    unsigned long long requested{0};
+    unsigned long long answered_true{0};
+    unsigned long long removes{0};
+    unsigned long long removed{0};
+};
+SpawnIdQueryCensus g_spawn_id_census;
 
 // 00885110 opens the script through [0109ceec] virtual +4h with mode 2.
 constexpr std::uint32_t kScriptReadMode = 2;
@@ -339,6 +347,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_squadron_travel_alt.
     const bool travel_alt_row = kSquadronTravelAltBound
         && dispatch_row.address == 0x0089f550u;
+    // Packet cc9_get_closest_border_zone.
+    const bool border_zone_row = kLuaClosestBorderZoneBound
+        && dispatch_row.address == 0x008aecd0u;
     // Packet cc9_lua_formation_query.
     const bool in_formation_row = kLuaFormationQueryBound
         && dispatch_row.address == 0x008996a0u;
@@ -357,6 +368,11 @@ int binding_trampoline(lua_State* state) {
     // queues is drained into the units host through this host's own frame step,
     // and its callback needs this host's `thisTable`.
     const bool spawn_new_row = dispatch_row.address == 0x0094c480u;
+    // Packet cc9_spawn_new_id_queries.
+    const bool spawn_id_requested_row = kLuaSpawnNewIdQueriesBound
+        && dispatch_row.address == 0x00946380u;
+    const bool spawn_id_remove_row = kLuaSpawnNewIdQueriesBound
+        && dispatch_row.address == 0x00946390u;
     // Packet cc9_bot_scheduler_writers: Scoring_RealPlayTimeRunning (008B87F0),
     // argument 0 as a boolean (008B88EF) into 00905340 on [game+21A0h].
     const bool scoring_play_time_row
@@ -377,9 +393,10 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || slot_count_row || device_reload_row || unlimited_air_row
-        || in_formation_row || leave_formation_row || travel_alt_row
+        || in_formation_row || leave_formation_row || travel_alt_row || border_zone_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
+        || spawn_id_requested_row || spawn_id_remove_row
         || select_unit_row || movie_add_row || force_select_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
@@ -493,6 +510,9 @@ int binding_trampoline(lua_State* state) {
     if (in_formation_row && !host->error_replay()) {
         return host->run_is_in_formation_008996a0(state, argc);
     }
+    if (border_zone_row && !host->error_replay()) {
+        return host->run_get_closest_border_zone_008aecd0(state, argc);
+    }
     if (leave_formation_row) {
         if (!host->error_replay()) host->run_leave_formation_00899eb0(state, argc);
         return 0;
@@ -558,6 +578,36 @@ int binding_trampoline(lua_State* state) {
     }
     if (spawn_new_row && !host->error_replay()) {
         return host->run_spawn_new_00949750(state, argc);
+    }
+    if (spawn_id_requested_row || spawn_id_remove_row) {
+        // 009458CF..00945923 (and 00945AD3..00945AEC): argument 0 of the
+        // binding (stack slot 1) through 00B662B0 into a NativeString. A value
+        // Lua cannot convert to a string gives the empty string, which matches
+        // a record whose id is empty.
+        std::string id;
+        if (argc >= 1 && ::lua_isstring(state, 1)) {
+            std::size_t length = 0;
+            const char* text = lua_tolstring(state, 1, &length);
+            if (text != nullptr) id.assign(text, length);
+        }
+        if (spawn_id_requested_row) {
+            // 00945943..00945999 the scan, 009459A8 00B66450 pushes the boolean,
+            // 009459B1 00B66400: one result.
+            const bool requested = bsp::spawn_request_queue().id_is_requested_00945850(id);
+            if (!host->error_replay()) {
+                ++g_spawn_id_census.requested;
+                if (requested) ++g_spawn_id_census.answered_true;
+            }
+            ::lua_pushboolean(state, requested ? 1 : 0);
+            return 1;
+        }
+        // 00945B07..00945BAE: every match is unlinked and freed (009442A0,
+        // 00BF65AC) and the count +8h decremented; 00945BB7: no result.
+        if (!host->error_replay()) {
+            ++g_spawn_id_census.removes;
+            g_spawn_id_census.removed += bsp::spawn_request_queue().remove_id_00945a20(id);
+        }
+        return 0;
     }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
@@ -3121,6 +3171,12 @@ void GameMissionLuaHost::report_spawn_queue() {
         summary_.spawn_new_callback_missing, bsp::spawn_request_queue().size(),
         static_cast<double>(spawn_attempt_delay_),
         static_cast<double>(spawn_world_clock_), summary_.wing_member_tables);
+    if constexpr (kLuaSpawnNewIdQueriesBound) {
+        log_.notef("summary SpawnNewIDIsRequested/SpawnNewIDRemove requested=%llu true=%llu "
+            "removes=%llu removed=%llu (00945850/00945A20, packet cc9_spawn_new_id_queries)",
+            g_spawn_id_census.requested, g_spawn_id_census.answered_true,
+            g_spawn_id_census.removes, g_spawn_id_census.removed);
+    }
 }
 
 std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronRequest& request) {
@@ -4960,6 +5016,51 @@ int GameMissionLuaHost::run_set_forced_recon_level_008aa8f0(lua_State* state,
     return 0;
 }
 
+void GameMissionLuaHost::set_world_border_zones(const bsp::WorldMapBounds& bounds) {
+    border_bounds_ = bounds;
+    border_zones_ = bsp::build_border_zones_004d5bd0(bounds);
+    border_zones_loaded_ = true;
+}
+
+// Packet cc9_get_closest_border_zone. 008AECD0 GetClosestBorderZone(position
+// [, offset]): argument 0 through the vector reader (008AED9B..), the offset
+// 500.0 (00CE397C) unless exactly two arguments are given and argument 1 is a
+// number (00B663F0 == 2, 008AEE2F..008AEE65); then
+// bsp::get_closest_border_zone_008aecd0 and 0088BA30's x/y/z table.
+// SUBSTITUTIONS (labelled): argument 0 is read by the host's 00888760 reader
+// (named keys x, y, z); with no zone records (the Map block lacked
+// MultiPlayMapSizes, or no load step ran) the image's outputs are unwritten
+// stack, and the host answers the position itself, counted `missing`.
+int GameMissionLuaHost::run_get_closest_border_zone_008aecd0(lua_State* state,
+    int argument_count) {
+    ++summary_.border_zone_calls;
+    float position[3] = {0.0f, 0.0f, 0.0f};
+    if (argument_count >= 1) read_vector3_00888760(state, 1, position);
+    float offset = 500.0f;
+    if (argument_count == 2 && ::lua_type(state, 2) == LUA_TNUMBER)
+        offset = static_cast<float>(::lua_tonumber(state, 2));
+    const std::array<float, 3> p{position[0], position[1], position[2]};
+    bool found = false;
+    std::array<float, 3> out = p;
+    if (border_zones_loaded_)
+        out = bsp::get_closest_border_zone_008aecd0(border_bounds_, border_zones_, p, offset, found);
+    if (!found) ++summary_.border_zone_missing;
+    lua_createtable(state, 0, 3);
+    ::lua_pushnumber(state, static_cast<lua_Number>(out[0]));
+    lua_setfield(state, -2, bsp::kPositionTableKeyX);
+    ::lua_pushnumber(state, static_cast<lua_Number>(out[1]));
+    lua_setfield(state, -2, bsp::kPositionTableKeyY);
+    ::lua_pushnumber(state, static_cast<lua_Number>(out[2]));
+    lua_setfield(state, -2, bsp::kPositionTableKeyZ);
+    log_.notef("  GetClosestBorderZone 008aecd0: (%.2f, %.2f, %.2f) offset %.1f -> (%.2f, "
+        "%.2f, %.2f)%s (packet cc9_get_closest_border_zone)", static_cast<double>(p[0]),
+        static_cast<double>(p[1]), static_cast<double>(p[2]), static_cast<double>(offset),
+        static_cast<double>(out[0]), static_cast<double>(out[1]), static_cast<double>(out[2]),
+        found ? "" : " no zone");
+    log_.implemented("MissionLuaNative::GetClosestBorderZone", "008aecd0");
+    return 1;
+}
+
 // Packet cc9_set_invincible_native. 00897A50 SetInvincible(entity, value):
 // argument 0 through 00888AA0; argument 1 is a boolean (00897B6F) giving 1.0 or
 // 0.0, otherwise its number, a fraction of maximum health (a nil or missing
@@ -5838,7 +5939,20 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         const char* name = lua_tolstring(state, 1, nullptr);
         if (name == nullptr) return false;
         const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
-        if (found == scene_entity_ids_.end()) return false;
+        if (found == scene_entity_ids_.end()) {
+            // DIAGNOSTIC, env-gated (BSP_LUA_FIND_ENTITY_MISSES=1): the names
+            // FindEntity answers nil for. Prints nothing when unset.
+            static const bool trace = [] {
+                char* v = nullptr;
+                std::size_t n = 0;
+                const bool on = _dupenv_s(&v, &n, "BSP_LUA_FIND_ENTITY_MISSES") == 0
+                    && v != nullptr && v[0] == '1';
+                std::free(v);
+                return on;
+            }();
+            if (trace && !error_replay_) log_.notef("FindEntity miss: \"%s\"", name);
+            return false;
+        }
         entity_id = found->second;
     } else if (std::strcmp(binding_name, "GetSelectedUnit") == 0) {
         // Packet cc8_ship_drive. The revert above is lifted: `Party` is on the
@@ -6189,6 +6303,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unresolved=%llu (008AA8F0 -> 00805CF0, packet cc9_forced_recon_level)",
         kForcedReconLevelBound ? 1 : 0, summary_.forced_recon_calls,
         summary_.forced_recon_units, summary_.forced_recon_unresolved);
+    log_.notef("summary mission script border zones bound=%d loaded=%d calls=%llu missing=%llu "
+        "(008AECD0 / 004C7730, packet cc9_get_closest_border_zone)",
+        kLuaClosestBorderZoneBound ? 1 : 0, border_zones_loaded_ ? 1 : 0,
+        summary_.border_zone_calls, summary_.border_zone_missing);
     log_.notef("summary mission script set invincible calls=%llu units=%llu unresolved=%llu "
         "(00897A50 -> 0042ED80, packet cc9_set_invincible_native)", summary_.invincible_calls,
         summary_.invincible_units, summary_.invincible_unresolved);

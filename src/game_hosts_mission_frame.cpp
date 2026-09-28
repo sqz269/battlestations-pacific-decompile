@@ -741,6 +741,13 @@ public:
     void run_step_job_waves(std::uint8_t run_pass) override {
         // Milestone 2g: the three waves over the five 68h groups at 00f876c0.
         owner_.fixed_step->run_job_waves_00875cc0(run_pass);
+        if constexpr (bsp::game::kLandConvoyMovementBound) {
+            // Packet cc9_land_convoy_movement: the convoy element (00CEA528)
+            // in waves 1 and 3.
+            if (owner_.units != nullptr) {
+                owner_.units->land_convoy_step_waves(bsp::kFixedSimulationStepFloat);
+            }
+        }
         if constexpr (kDeckTickInFixedStepBound) {
             // Packet cc9_deck_tick_in_step: 006CDC70 at the owner's motion
             // (0075828E / 006D254B), which the job waves reach before the
@@ -787,6 +794,11 @@ public:
     }
     void run_interpolation_wave_00875670(float leftover, std::uint8_t run_pass) override {
         owner_.fixed_step->run_interpolation_wave_00875670(leftover, run_pass);
+        if constexpr (bsp::game::kLandConvoyMovementBound) {
+            if (owner_.units != nullptr && leftover > 0.0f) {
+                owner_.units->land_convoy_interpolation_wave(leftover);
+            }
+        }
     }
 
 private:
@@ -1826,6 +1838,19 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.scene_state.script_slot,
                     host.scene_state.script_slot_forced ? 1u : 0u,
                     host.scene_state.session_mode);
+                // Packet cc9_get_closest_border_zone: the same Map block and
+                // 004D5EDE selection, handed to the Lua host for world+7134h.
+                for (const auto& block : host.scene_contents->root_properties().blocks) {
+                    if (_stricmp(block.first.c_str(), "Map") != 0) continue;
+                    bsp::WorldMapSettings settings;
+                    if (bsp::read_world_map_settings_004e6c00(block.second, settings)) {
+                        host.lua.set_world_border_zones(bsp::select_world_map_bounds_004d5ede(
+                            settings, host.scene_state.script_slot,
+                            host.scene_state.script_slot_forced ? 1u : 0u,
+                            host.scene_state.session_mode));
+                    }
+                    break;
+                }
             });
             host.done(label, step.address);
             ++host.load.concrete;
@@ -2069,6 +2094,31 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     host.lua.attach_scene_entities_00928a00(entities);
                 }
                 if (!markers.empty()) report_scene_markers(host.log, markers);
+                if constexpr (bsp::game::kLandConvoyMembersBound) {
+                    // Packet cc9_land_convoy_members: the convoy marker's attach
+                    // 00743450, in the load walk that reaches its slot 39.
+                    std::size_t convoys = 0, members = 0;
+                    for (const GameSceneEntityRecord& record : host.scene_contents->entities()) {
+                        if (record.class_id != 0x1a || !record.generated) continue;
+                        ++convoys;
+                        members += host.units->build_land_convoy_roster_00743450(record);
+                    }
+                    host.log.notef("summary LandConvoy roster convoys=%zu members=%zu "
+                        "(00743450, packet cc9_land_convoy_members)", convoys, members);
+                    if constexpr (bsp::game::kLandConvoyMovementBound) {
+                        // Packet cc9_land_convoy_movement: 007420B0's Path, the
+                        // knots 007AF150 built at the Path's load, and 00742C10.
+                        std::size_t moving = 0;
+                        for (const GameSceneEntityRecord& record : host.scene_contents->entities()) {
+                            if (record.class_id != 0x1a || !record.generated) continue;
+                            if (host.units->bind_land_convoy_motion(
+                                    record, host.scene_contents->entities())) ++moving;
+                        }
+                        host.log.notef("summary LandConvoy motion convoys=%zu bound=1 "
+                            "(007AF150, 00743060, 00742400, packet cc9_land_convoy_movement)",
+                            moving);
+                    }
+                }
             }
             if constexpr (kAuthoredCommandsAfterLoadWalkBound) {
                 host.units->issue_authored_commands();                  // 0046ED1E

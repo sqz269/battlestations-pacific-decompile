@@ -93,6 +93,24 @@ inline constexpr bool kWingConstructionInPassABound = true;
 // demand. False: a dead ship stays in its group, as before.
 inline constexpr bool kDeadMemberLeavesGroupBound = true;
 
+// Packet cc9_land_convoy_members (docs/LAND_AND_STRUCTURES.md, "The LandConvoy
+// roster, bound"). 00743450, the LandConvoy's attach (vtable +9Ch), creates one
+// member per slot of its Rows x Columns map whose type is at least 1: the
+// type's class instance (BSP_VehicleClass_GetOrCreate, vtable[28h](0)), posed
+// at the convoy's own frame (vtable[98h](convoy+3Ch, convoy+30h, convoy+74h)),
+// named "<convoy>-<slot+1>" (00742A70 on slot+1, 007438F6), with the convoy's
+// party +54h and race +58h, and the back pointer +738h = convoy, +73Ch = slot.
+// True: the load walk runs it for every generated LandConvoy (build_land_
+// convoy_roster_00743450). False: the convoy's attach stays a record.
+inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
+// Packet cc9_land_convoy_movement. The convoy element's three pose slots
+// (00CEA528: +4h 00743060, +8h 007410C0, +0Ch 007410B0) over the Path knots
+// 007AF150 derives, with 00742400 placing every member per wave-1 step through
+// 007B03C0. True: each generated convoy with a roster resolves its Path, builds
+// the knots and moves its members. False: the members stand at the convoy frame.
+// docs/LAND_AND_STRUCTURES.md, "The convoy formation, bound".
+inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
+
 class GameHostLog;
 class GameMissionLuaHost;
 class GameObserverRuntime;
@@ -113,6 +131,11 @@ struct GameUnitRow {
     int type_id{-1};          // the symbol resolved through the enum library
     int party{-1};
     std::string command;      // the authored `Command` token
+    // Packet cc9_land_convoy_members: +738h (the convoy, by its scene name; the
+    // host builds no convoy instance) and +73Ch (the slot). Empty / -1 outside
+    // a convoy, as the constructor's memset leaves them.
+    std::string land_convoy_738;
+    int land_convoy_slot_73c{-1};
     std::string command_target;  // the authored `CommandTarget`, "" when unset
     // Milestone 2l: what the recovered command path did with that token. The
     // latched triple is the weapon director's +243h / +244h / +248h after
@@ -357,6 +380,9 @@ public:
     // the level clamped to 0..3 (1 for a kamikaze class, LABELLED false here),
     // stored at +1268h only when it differs (0085290D). True when it was stored.
     bool set_submarine_depth_level_008528b0(std::size_t unit_index, int requested);
+    // Packet cc9_submarine_ai_states: unit+1200h..+120Ch, bands[band] of a seeded
+    // submarine (00853A90's table), and false for any other slot or band.
+    bool submarine_band_y(std::size_t unit_index, int band, float& y) const;
     // Packet cc9_submarine_air. unit+1280h, 00893C00's store. False when the slot
     // is not a seeded submarine.
     bool set_unlimited_air_00893c00(std::size_t unit_index, bool flag);
@@ -791,6 +817,35 @@ public:
     // this: its bag's `HomeBase` is the deck owner, which the host finds from
     // the deck slot that launched the squadron.
     void set_squadron_scene_home_base(std::size_t squadron_index, const std::string& home_base);
+    // Packet cc9_land_convoy_members, under kLandConvoyMembersBound: 00743450 for
+    // one generated LandConvoy record (its roster keys lifted by the scene pass).
+    // Appends the members through create_units and answers how many it made.
+    std::size_t build_land_convoy_roster_00743450(const GameSceneEntityRecord& convoy);
+    // +738h: the convoy a unit belongs to ("" for none), and +73Ch its slot.
+    const std::string& unit_land_convoy_738(std::size_t index) const;
+    int unit_land_convoy_slot_73c(std::size_t index) const;
+    // For cc9-ships5's 00A11690 wedge (docs/AI_CAUTIOUS_ROUTE.md section 10).
+    // 0070D080 BSP_UnitGroup_FindMemberRecord (__thiscall(group)(entity), RET 4,
+    // body 0070D080-0070D0B5) resolves the member's 34h record in group+18h under
+    // the count +4F8h; the caller then stores record+10h+4*column (lateral) and
+    // record+20h+4*column (axial). The wedge's stores are 00A11A57 (record+10h)
+    // and 00A11A5C (record+20h), both column 0, values -0.0 - off (00D7A208).
+    // False, and nothing written, when the leader has no group, the member is
+    // not in it, or the column is outside 0..3. No caller yet: inert.
+    bool set_formation_member_offset_0070d080(std::size_t leader, std::size_t member,
+                                              int column, float lateral, float axial);
+    // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound. After the
+    // roster: resolve the convoy's "Path" (007420B0), derive its knots
+    // (007AF150), take the placement law (00742C70) and keep the convoy's arc
+    // state. False when the convoy has no members or its Path does not resolve.
+    bool bind_land_convoy_motion(const GameSceneEntityRecord& convoy,
+                                 const std::vector<GameSceneEntityRecord>& scene);
+    // One fixed step of the convoy element, in the waves' order: wave 1 runs
+    // +4h 00743060(step) (which calls 00742400) then +0Ch 007410B0; wave 3 runs
+    // +8h 007410C0(step).
+    void land_convoy_step_waves(float step);
+    // The interpolation wave 00875160: +4h 00743060(leftover), not committed.
+    void land_convoy_interpolation_wave(float leftover);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

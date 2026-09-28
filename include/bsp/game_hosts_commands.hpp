@@ -126,7 +126,7 @@ struct GameCommandRow {
 // Both read the entity's +5Dh, which 00926390 / 009263C0 set at the destroy.
 // False (the old record): the refusal answers the clear byte and the observer is a record; the
 // counters still count what the bound path would do. True: both act.
-// ON 2026-09-29 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
+// ON 2026-09-28 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
 inline constexpr bool kDirectorTargetChecksBound = true;
 
 // Packet cc9_set_command_queue_delay (docs/GUNNERY_OPEN_ITEMS.md sections 25-26).
@@ -144,7 +144,7 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // synchronous chain). True: posts queue, and GameFixedStepHost's
 // pump_session_00778450 delivers them through begin_loopback_drain /
 // finish_loopback_drain.
-// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
+// ON 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
 // tail unchanged on USN02 / USN04 / USN13 / USN01; deaths 10 / 45 / 20 / 5.
 inline constexpr bool kSetCommandQueueDelayBound = true;
 
@@ -159,10 +159,20 @@ inline constexpr bool kSetCommandQueueDelayBound = true;
 // 00720850). True: both are posted through route_clear_command, so with the
 // queue bound they are delivered after the MT_COMMAND that posted them and
 // before its SETCMD, and 0071ECF0's make-room reads the queue as it was.
-// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 29): gameplay identical on
+// ON 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 29): gameplay identical on
 // USN02 / USN13 / USN04 / USN01; drops 1199 / 0 / 0 / 2, every one after the
 // clear-all.
 inline constexpr bool kSetCommandClearAllMessageBound = true;
+
+// Packet cc9_director_moveonpath_route, docs/AI_CAUTIOUS_ROUTE.md section 5. True:
+// the `clearorders` arm of 00816E30 (008171BD) reaches 0071D880 SendClearCommands,
+// whose MT_GAMEUNIT_CLEARCMD (+20h = 1, +24h = -1) the 5Dh arm answers with the
+// every-slot clear 00720CA0. It posts the same message clear_all_commands posts
+// for the 0081733E site under kSetCommandClearAllMessageBound (route_clear_command,
+// delivered at the row-9 drain). That packet bound 0081733E and 0071E5AA only;
+// this arm's call at 008171BD stayed a record. False: a `clearorders` order leaves
+// the queue as it was.
+inline constexpr bool kClearOrdersSendBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 9
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.
@@ -210,6 +220,7 @@ struct GameDirectorStepOutcome {
 
 struct GameCommandsSummary {
     std::size_t units{0};
+    unsigned long long clearorders_sends{0};   // 0071D880 bodies (kClearOrdersSendBound)
     // Packet cc8_ship_drive: how many times the unit table was re-registered
     // with directors already built, i.e. how many times the old `assign` wiped
     // every command queue in the mission.
@@ -391,6 +402,23 @@ public:
     // 00836C2E and hands it to 007ADD70 with the cursor. Answers true when
     // 007ADD70 would answer true, which is only when its guard at 007ADFAC
     // refuses the advance - the arrival of a PATH_FM_SIMPLE path.
+    // ---- packet cc9_director_moveonpath_route: the user path -------------
+    // Path object vt[+18h] 0071D340: MT_GAMEUNIT_ADDUSERPATHPOINT (5Fh, the point
+    // at +20h..+28h, presence 1) routed to the unit with 0077C2A0(unit, msg, 7, 0).
+    // Its receiver is 00721A40's 5Fh arm, 007207C0: a new queued `moveonpath` with
+    // an empty descriptor (0071FDE0(point, 1, n) then director vtable[60h]) unless
+    // the last queued command is already such a `moveonpath`, whose slot object
+    // takes the point (0071FDE0(point, 0, n-1), at most 8 ahead of +18h).
+    // `outside_map` is 0071C4F0 on the point, computed by the caller. Delivered
+    // on the session drain when kSetCommandQueueDelayBound, else at the call.
+    void post_user_path_point_0071d340(std::size_t unit_index, const float point[3],
+        bool outside_map);
+    // Slot 0's path object: vt[+0Ch] 0071FC40 (the follower's source is this
+    // object's point vector +40h) and vt[+10h] 0071D2A0 (+18h when attached,
+    // else -1).
+    bool user_path_attached_0071fc40(std::size_t unit_index) const;
+    int user_path_remaining_0071d2a0(std::size_t unit_index) const;
+
     bool advance_path_cursor_00836bf0(std::size_t unit_index, float unit_x, float unit_z,
         float unit_radius, float turn_radius);
 

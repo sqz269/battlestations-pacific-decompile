@@ -103,7 +103,7 @@ inline constexpr bool kWeaponDirectorFireTargetBound = true;
 // torpedo is live ([+310h] vtable[38h]), not the target's own (+4F8h) and
 // threatening (target->vtable[1D0h] 008173E0), else 0. False: every foreign
 // threatening torpedo counted once, the host's stand-in.
-// ON by the pairs of 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 24).
+// ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 24).
 inline constexpr bool kForeignTorpedoThreatHeadBound = true;
 
 // Packet cc9_torpedo_threat_first_node, section 17's last rank-2 term. 009F5E59
@@ -111,7 +111,7 @@ inline constexpr bool kForeignTorpedoThreatHeadBound = true;
 // director's target is locked: true keeps the target and skips the scan and the
 // retained-score reset (009F5E62). Routed to the commands host's concrete body.
 // False: the stand-in answers false and the scan runs.
-// ON by the pairs of 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 24).
+// ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 24).
 inline constexpr bool kAutoTargetCommandAcceptBound = true;
 
 class GameHostLog;
