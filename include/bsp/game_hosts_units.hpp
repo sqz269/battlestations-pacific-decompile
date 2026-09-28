@@ -228,6 +228,7 @@ struct GameUnitsSummary {
     unsigned long long plane_row_refreshes{0};  // cc9_controlled_plane_ai_moveto
     unsigned long long squadron_travel_alt_refreshes{0};  // cc9_squadron_travel_alt
     unsigned long long plane_arm_free_flight{0};
+    unsigned long long dead_plane_bot_ticks_skipped{0};  // packet cc9_dead_plane_bot_think
     unsigned long long plane_arm_ground_roll{0};
     unsigned long long plane_arm_surface{0};
     unsigned long long plane_arm_none{0};
