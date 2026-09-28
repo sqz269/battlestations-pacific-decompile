@@ -277,8 +277,10 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    is 00852B90's state from the hull's world Y (+100h) against the four
 //    depth words +1200h..+120Ch the dive binding seeded, so a boat held at a
 //    band reads Underwater (4) or DeepUnderwater (5) instead of PeriscopeIn.
-//    LABELLED: the periscope byte +1234h has no producer in this process and
-//    reads clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
+//    The periscope byte +1234h comes from the units host's 00854650 mast arm
+//    under kSubmarinePeriscopeOutBound (packet cc9_periscope_out,
+//    docs/GUNNERY_OPEN_ITEMS.md section 38); with that switch false it reads
+//    clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
 //    seeded keeps the stowed-periscope answer. OFF: PeriscopeIn for every boat.
 //    ON by the pairs of 2026-09-28: JM06 gameplay identical within 3000 frames,
 //    but the DeepUnderwater Narwhal-class is never sighted, so the script's
@@ -2131,6 +2133,9 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_stock_lua_sets{0};
     // Packet cc9_navigator_force_torpedo.
     unsigned long long forced_torpedo_marks{0};
+    unsigned long long immediate_function_calls{0};   // 009E2B60
+    unsigned long long immediate_function_marks{0};
+    unsigned long long immediate_function_fires{0};
     unsigned long long forced_torpedo_fires{0};
     unsigned long long torpedo_supply_ticks{0};
     unsigned long long torpedo_supply_in_area{0};
@@ -4644,7 +4649,7 @@ public:
             // which is the state a submarine that nothing has raised is in.
             // Packet cc9_submarine_sensor_category: with the bands seeded (the
             // dive binding holds them), the whole state is computable; the
-            // periscope byte +1234h stays clear (no producer, LABELLED above).
+            // periscope byte +1234h is the units host's (packet cc9_periscope_out).
             const bsp::SensorCategory stowed = bsp::submarine_periscope_sensor_state(false);
             ++owner_.sub_category_calls;
             float bands[4]{};
@@ -4664,7 +4669,9 @@ public:
             depth.band_1204 = bands[1];
             depth.band_1208 = bands[2];
             depth.band_120c = bands[3];
-            depth.periscope_raised = false;
+            // Packet cc9_periscope_out: +1234h from 00854650's mast arm (false
+            // while kSubmarinePeriscopeOutBound is false).
+            depth.periscope_raised = owner_.units.submarine_periscope_out_1234(index);
             const bsp::SensorCategory image = bsp::sensor_category_submarine_00852b90(y, depth);
             const int state = static_cast<int>(image);
             if (state >= 0 && state < 6) ++owner_.sub_category_states[state];
@@ -5799,6 +5806,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             } else {
                 set_request(want_fire);
+            }
+            if (gun.immediate_fire_009e2b60) {
+                // Packet cc9_fire_function_guns_now: 009E2B99's vtable[1F0h].
+                gun.immediate_fire_009e2b60 = false;
+                ++immediate_function_fires;
+                if (turning == kTurningClassRapid) {
+                    im.immediate_4d4 = true;                             // 006FDF60
+                } else {
+                    set_request(true);                                   // 006FDC50
+                }
+                done("Gun::immediate_fire_slot_1f0_009e2b60", 0x009e2b99u);
             }
             latched = gun.fire.fire_requested;
             if (turning == kTurningClassRapid) ++immediate_guns_rapid;
@@ -9915,6 +9933,28 @@ bool GameGunneryHost::group_accepts_target_008637d0(std::size_t unit_index,
         return true;                                              // 00863834
     }
     return false;
+}
+
+bool GameGunneryHost::fire_function_guns_now_009e2b60(std::size_t unit_index, int function) {
+    Impl& d = *impl_;
+    int marked = 0;
+    for (std::size_t g = 0; g < d.guns.size(); ++g) {
+        GameGunRow& gun = d.guns[g];
+        if (gun.unit_index != unit_index || gun.category != function) continue;   // 009E2B86
+        const int turning = g < d.gun_turning_class.size() ? d.gun_turning_class[g] : 0;
+        if (turning != Impl::kTurningClassRapid && turning != Impl::kTurningClassSingle) {
+            continue;                                                             // 009E2B7E
+        }
+        gun.immediate_fire_009e2b60 = true;
+        ++marked;
+        ++d.immediate_function_marks;
+    }
+    if (++d.immediate_function_calls <= 12) {
+        d.log.notef("  FireFunctionGunsNow: unit=%zu function=%d marked=%d bound=%d (009E2B60 -> "
+            "vtable[1F0h], packet cc9_fire_function_guns_now)", unit_index, function, marked,
+            kGunImmediateFireSlotBound ? 1 : 0);
+    }
+    return marked > 0;
 }
 
 int GameGunneryHost::force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only) {

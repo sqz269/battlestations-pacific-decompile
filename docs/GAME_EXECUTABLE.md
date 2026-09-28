@@ -11840,6 +11840,20 @@ Each is `pair_export --commit d384f1ef5` with only the listed switches OFF, run 
 | ngsub | ngs and nsub | 5C1E3BF744B3 | LOMP06, JM06 | LOMP06 = i; JM06 = i plus the fire-target pair |
 | ngbz | ngs and nbz | F655D4D6D4D6 | USN02 | = i |
 
+### Post-base landings (the first flags for reference k)
+
+These landed on main after `d384f1ef5` and are not in j's rows. Their numbers are from their own
+pairs, as the lead relayed them; they were not re-exported here.
+- `kShipAiSubTargetSubStatesBound` ON (`bed195cbf`, SHIP_AI_OPEN_ITEMS 2): JM06 deaths 2 -> 1
+  (US Cargo Transport 02 survives again); LOMP06 moves.
+- `kSpawnNewEntityRefPosBound` ON (`f75ac88f4`): JM05 places two serials, four ships; combat
+  identical.
+- `kDeadPlaneBotThinkBound` ON (`b0e813aed`): USN04 torpedo releases 8 -> 5 and dive 4 -> 1 with
+  deaths identical; USN01 torpedo releases 2 -> 0; LOMP10 dive 4 -> 3. The release metric used to
+  count dead planes' releases.
+- `kSubmarinePeriscopeOutBound` ON (`9ccb86fb8`, GUNNERY_OPEN_ITEMS 38): JM06's recon mix moves
+  (`periscope_in` 360 -> 306, `periscope_out` 0 -> 54); gameplay identical on its pair.
+
 ### Flags
 
 - **Closed:**

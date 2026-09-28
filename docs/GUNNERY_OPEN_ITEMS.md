@@ -1869,7 +1869,7 @@ larger health pools.
 | 2 | forced fire target handle | ON (section 33) |
 | 3 | building attack-move arm | exact; conversion unissued until a row shows `converts` > 0 (section 35) |
 | 4 | director slot housekeeping | exact in effect (section 36) |
-| 5 | command-allowed extra tests `009229F0` / `007AC9D0` (268 calls) | **open, unread** |
+| 5 | command-allowed extra tests `009229F0` / `007AC9D0` (268 calls) | read and measured: the image allows every call on reference j's rows, as the host does; recorded, not bound (section 39) |
 | 6 | recon convoy and group records | the convoy fold is counted, not placed (section 34); the squadron group-level publish stays blocked (section 22) |
 | 7 | `007788B0` controller ownership | exact while `ctl+284h` is empty or names this controller (decompile); not checked for a player-controlled unit |
 | 8 | hull roll torque `00827312` (USN02, 52 calls) | **open, unread**; reach 2 |
@@ -1877,7 +1877,7 @@ larger health pools.
 ### 37.3 Open items found on the way
 
 - **The periscope byte `+1234h`** (`periscopeOut`) has no producer, so a raised periscope never
-  reads PeriscopeOut (section 32.4; listed in section 1).
+  reads PeriscopeOut (section 32.4; listed in section 1). **Closed by section 38** (`kSubmarinePeriscopeOutBound` ON).
 - **Plane rows and the forced fire target.** Since `kFireTargetObjectIdBound`, plane rows store the
   commanded target and their AutoTarget accepts it (USN04 3, USN01 5). Whether the image's plane
   gunnery reads the director fire target is unread (section 33.4). That belongs to the plane packets.
@@ -1899,3 +1899,155 @@ larger health pools.
 - `g7_pair.ps1 -Off <export> -On <export> -Rows 'tag:MISSION:frames:mission_frames'`: runs
   both sides at once, waits in the foreground, and prints the pair_diff.
 - `g7_var.ps1`: leave-one-out variants against `rb9_<row>.log`.
+
+## 38. The periscope byte `+1234h` (packet `cc9_periscope_out`, cc9-gunnery8, 2026-09-28)
+
+The open item from sections 32.4 and 37.3: nothing in this process wrote `periscopeOut`, so a raised
+periscope never read PeriscopeOut.
+
+### 38.1 The image
+
+- **One writer.** `periscopeOut` is a reflection property (`00D0BEC8`, bound at `00853FE9`; the
+  Lua name is a property reader, not a script call). No mission script in this installation names
+  it. Its only writer is `00854650 BSP_SubmarineUnit_Update(unit, dt)`, the per-frame update
+  (SUBMARINE_MODEL "The periscope").
+- **The clear.** `00854AF8` loads the `periszkop` node `+1214h`, and `00854B00` stores 0 to
+  `+1234h` before the null test at `00854B06`. A boat without the node (a kamikaze class,
+  `00853630`) skips the whole arm with the byte clear.
+- **The mast.** From `00854F52` (read in the listing with `disasm-raw`):
+  - `periscopeState` (`+122Ch`) == 1 takes the extending arm. The mast node's local Y (from
+    `00B6DB60`, `+30h..+38h`) steps toward `[class+81Ch] + periscopeY` by `dt * 5.0` (`00D7A370`)
+    through `0042AC60 BSP_Math_StepTowards(this=&Y, target, step)`. The node takes the new pose
+    through `vtable[2Ch]`.
+  - Then `00855039..00855057`: when the new Y is at least `[class+81Ch] + periscopeY - 1.0`
+    (`00D7A210`), `+1234h` becomes 1.
+  - Any other state takes `00855063`, which steps back toward `periscopeY` at `dt * 3.0` and never
+    sets the byte.
+- **The rest position.** `periscopeY` (`+1230h`) is the node's own local Y at attach (`00853CB4`
+  `FLD [EAX+34h]`, `00853CB9` `FSTP [ESI+1230h]`), with `+122Ch` = 0 (`00853CA9`). The mast
+  therefore starts at rest and the byte is out `(range - 1.0) / 5.0` seconds after a raise.
+- **The range** is `PeriscopeMoveRange`, `class+81Ch`, NumberOr with 10.0 (`00CE38B8`). This
+  installation's `vehicleclasses.lua` (mtime 2026-05-09) authors values from 0 to 7.
+- **Who raises.** Only the ship AI's `009E4D90` (fire state, at periscope depth, with a
+  non-submarine target) stores 1. `009EA8FB` stores 0. The auto-raise at `00854ED7` needs
+  `+1235h`, which only the reflection setters `00464320` / `004649B0` write.
+
+### 38.2 The binding (committed OFF)
+
+`kSubmarinePeriscopeOutBound` in `include/bsp/game_hosts_units.hpp`:
+- The ship AI host's `set_periscope_state_122c` mirrors each store onto the seeded submarine's units
+  slot, with the node test (`has_periscope_1214`) and the class's `PeriscopeMoveRange` (default 10).
+  The mirror runs on both sides and logs `submarine periscope state:`.
+- ON, the units host runs the arm once per force step after the air step:
+  `run_submarine_periscope_00854650`. The gunnery host's `00852B90` reads the byte through
+  `submarine_periscope_out_1234`. OFF, the byte reads false, as before.
+- **SUBSTITUTIONS, labelled:** it runs in the force step, not in the unit update. The mast is held
+  as its offset above `periscopeY`, so `periscopeY` is 0 in the threshold. The node pose write and
+  the `+1210h` shape move (`00C357B0`) are not made. The repair and the auto-raise have no
+  producer here.
+
+### 38.3 Predictions (written before the ON runs)
+
+The pairs are this tree's build (OFF) against `pair_export --flip kSubmarinePeriscopeOutBound=true`,
+with reference j's run parameters. On reference j, JM06 is the only row with a submarine in
+sub_attack. PlayerSub 02 and 03 each raise once, in the fire state (first fire 102.85 and 99.35
+s). The Narwhal-class never raises, since its target is a submarine.
+
+- **P1, the mechanism (JM06).** The `submarine periscope state:` lines are the same on both sides:
+  one `state=1` each for PlayerSub 02 and 03, and none for the Narwhal-class. ON, each PlayerSub
+  prints `submarine periscope out: ... out=1` at most `(range - 1.0) / 5.0` s after its raise, and
+  at most 1.8 s after it. OFF prints none.
+- **P2, the sensor (JM06).** The recon summary's `periscope_out` rises from 0, and `periscope_in`
+  falls by the same count. `calls`, `underwater` and `deep` are unchanged, because the byte only
+  splits the PeriscopeIn state.
+- **P3, gameplay (JM06).** Nothing moves before the first `out=1` line, about 100 s in. After it,
+  the PlayerSubs see and are seen by the table's PeriscopeOut rows. **exit 1 or a small exit 3**,
+  confined to the last 50 s.
+- **P4, LOMP06 1200/1000.** No raise (the Narwhal is displaced by the seed, reference j), so no
+  state line and **exit 0**.
+- The verdict rule: P1 and P2 are the mechanism. A P3 spread miss with P1 and P2 held may flip.
+
+### 38.4 The pairs, and the flip (2026-09-28)
+
+- **OFF** is this tree's build of `da969c5b2`. Its JM06 and LOMP06 logs are gameplay-identical to
+  reference j's.
+- **ON** is `pair_export --commit da969c5b2 --flip kSubmarinePeriscopeOutBound=true` (SHA-256
+  prefix `57EA8E120964`).
+- The logs are `local\g8_poff_<row>.log` and `local\g8_pon_<row>.log` in worktree cc9-gunnery8,
+  with reference j's run parameters.
+
+| row | `pair_diff` | what moved | against the prediction |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | **exit 1, gameplay identical** | PlayerSub 03 raises at 116.10 s and reads out at 116.85 s; PlayerSub 02 raises at 119.60 s and reads out at 120.35 s (range 4.80, mast 4.000 against the 3.80 threshold). The recon summary goes `periscope_in` 360 -> 306 and `periscope_out` 0 -> 54, with `calls` 1074, `underwater` 612 and `deep` 102 unchanged. The recon pass shows `blip` 0 -> 7 and `identified` 874 -> 867; gunnery candidates fall 2645 -> 2601 | P1, P2 and P3 held |
+| LOMP06 1200/1000 | exit 1 | no state line and no arm call; only the movie-camera pose lines differ, by their 0.01 s clock | P4 predicted exit 0; the difference is the known presentation noise |
+
+- **P1 held.** The raises come at 116.10 and 119.60 s, not at the first fire step. `009E4D90`
+  needs periscope depth as well as the fire state. Each byte reads out 0.75 s after its raise,
+  inside the 0.76 s bound.
+- **P2 held** exactly: the 54 out samples are all taken from PeriscopeIn.
+- **P3 held.** No gameplay line moves within 3000 frames. The byte reaches the recon layer, which
+  now reports seven blips of the raised boats.
+- **P4 missed only on noise.** LOMP06 runs no arm, and the one differing kind of line is the
+  presentation noise already known on LOMP10.
+
+**Verdict: ON.** The mechanism matches the listing on both rows. `kSubmarinePeriscopeOutBound = true`.
+
+**Still open.**
+- The repair (`00854E44`) and the break (`009373C0`) have no producer in this process.
+- The auto-raise's `+1235h` is written only by the reflection setters. No reference row sets it.
+- A player-raised periscope (the periscope GUI page) is not routed.
+
+## 39. The command-allowed extra tests `009229F0` / `007AC9D0` (packet `cc9_command_allowed_extra`, rank 5 of section 31)
+
+Read and measured; **recorded, not bound.** The image's answer equals the host's on every call in
+reference j's twelve rows.
+
+### 39.1 The image
+
+`0071D6D0 BSP_WeaponDirector_CommandAcceptsTarget(command, descriptor)`, read in the listing:
+- **The refusal block, `0071D6D5..0071D71C`.** When `command->vtable[8]()` (requires a target) is
+  true and either the descriptor's `+1h` byte is clear or `vtable[0Ch]()` (the category) is 1 or 2,
+  the target must resolve through `00521EA0` and must not carry `+5Dh`. Otherwise the answer is
+  false.
+- **The extra tests, `0071D71F..0071D75B`.** Every path that is not refused reaches them, including
+  a command that requires no target:
+  - `torpedo` (`00E08F18`): `009229F0(resolve(descriptor), 6)` must be true. That is the class
+    test with the LandFort `FakedType` fallback (`include/bsp/attack_target_classify.hpp`). It is
+    false for an unresolved descriptor.
+  - `moveonpath` (`00E08F80`): only when the descriptor's `+0h` kind byte is set,
+    `007AC9D0(resolve(descriptor))` must be non-null. That is the path interface of a `Path`,
+    kind `48h`, kind `49h` or `CameraPath` (`docs/ENTITY_COMMAND_ARMS.md`).
+  - `00E08F78` resolves the descriptor and ignores the answer.
+- **The host** (`command_allowed` in `src/game_hosts_commands.cpp`) returns true before the extra
+  tests when no target is required or on the position branch, and it never runs them. It records
+  `WeaponDirector::command_allowed_extra_test`.
+
+### 39.2 The measurement
+
+This was a tree-local diagnostic, not committed: it logged each distinct call shape (unit,
+command, descriptor kind, `+1h`, requires-target, category, and the unit `00521EA0` resolves).
+It ran on this tree's build (reference j plus the periscope flip) over all twelve reference j
+rows. The logs are `local\g8_x_<row>.log` in worktree cc9-gunnery8, and the edit is
+`local\g8_edit_extra1.py`.
+
+| shape | rows | the image's answer |
+| --- | --- | --- |
+| `moveonpath`, kind 0 (a position) | E2, JM06, JM08, LOMP06, USN02, USN04, USN12, USN13 | the test is skipped (`0071D749`): allowed |
+| `moveonpath`, kind 1, a scene marker of class `Path` (ids 50000 and up) | BSM01, E2, JM05, JM06, LOMP06, USN04 | the path interface at `+1E4h`: allowed |
+| `torpedo`, kind 1, resolving to a unit of class `MMothership` (09h), `MCruiser` (0Ah) or `MDestroyer` (07h) | E2, JM05, USN01, USN04, USN13 | all three descend from 06h, so `009229F0` is true: allowed |
+
+- Every `moveonpath` object target on these rows is a `Path` marker. Each id was checked against its
+  own log's `scene marker` list.
+- No torpedo is issued at a position, at an unresolved object, or at a non-ship. No
+  `moveonpath` names a unit.
+- LOMP10 makes no call.
+
+**The verdict: no binding.** The host's "allowed without the extra test" is the image's answer for
+every call these rows make. A binding would change no answer, so nothing is committed.
+
+**What would make it differ, if a later row shows it:**
+- a `torpedo` aimed at a position, at an unresolved descriptor, or at a non-ship unit;
+- a `moveonpath` aimed at a unit, or at a marker that is not one of the four path kinds.
+
+The commands host holds no class ids. A binding would need the units host's `unit_is_kind_of` and
+the scene markers' classes, and a way to tell the markers from the host's unit handles.
