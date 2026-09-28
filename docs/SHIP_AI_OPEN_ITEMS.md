@@ -1473,3 +1473,10 @@ is no longer blocked.
 - A leader-yaw effect reaches only followers within 400 m along the column (`009DACD0`'s blend).
   Check `along` before predicting a follower move.
 - The arm final step's 009DC2E0 widths are often under 1, so its clearance pass is skipped there.
+
+**Also open (added at retirement).**
+- The item-7 re-pair keys on cc9-lua9's `kFormationJoinFollowBound`.
+- **Rank 8,** the power-up use in `00A179E0` (section 5), needs a power-up subsystem before it
+  can be bound.
+- Section 1's other ranks remain as ranked. Ranks 1, 2, 3, 5 and 10 and the approach re-seed are
+  done; ranks 8 and 9 are the only ones read and not bound.
