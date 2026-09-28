@@ -49,3 +49,28 @@ ON is `pair_export --commit a31730f54 --flip kUnitYawRateForwardSpeedBound=true`
   their turn rate.
 - **Mechanism check:** no row may show a zero `nonzero` while the unit table shows a ship
   turning under way.
+
+## Pairs and verdict
+
+The ON logs are `local\l8_yon_<row>.log` and the diffs `local\l8_ydiff_<row>.txt` (worktree cc9-lua8).
+
+| row | pair_diff | non-zero ON / calls | what moved |
+| --- | --- | --- | --- |
+| JM06 | exit 3 | 53935 / 54660 | hits 299 -> 298, damage 4330.6 -> 4247.8, first hit 61.40 -> 61.90 s; 19 unit rows; deaths identical |
+| USN02 | exit 3 | 30045 / 31541 | hits 397 -> 380, damage 28206.5 -> 27671.2, shots 579 -> 582; 11 unit rows; death rows identical |
+| USN04 | exit 3 | 42828 / 42958 | damage 5898.0 -> 5139.9, shots 4759 -> 4994, torpedo releases 2 -> 1 of 16; 17 death rows and 50 unit rows changed |
+| USN12 | exit 1 | 3235 / 8976 | gameplay identical |
+| USN01 | exit 1 | 2071 / 19426 | gameplay identical |
+
+- **The mechanism held.** `nonzero` rose from 0 on every row, and it stays low only where
+  units are slow or not turning.
+- **The reach MISSED on two rows.** USN12 and USN01 were predicted exit 3 and are exit 1:
+  - On USN01, the 16708 Controls calls come from units whose rate is still 0 (no speed), so the
+    Rudder-mode heading target does not move.
+  - On USN12, the non-zero neighbour predictions did not change any avoidance decision.
+- **USN04's plane rows move through the ships.** The torpedo release and the plane water contact
+  follow from changed ship tracks and AA. They are not attributable per event, because the
+  gunnery RNG streams are coupled (the shared-RNG note in the project memory).
+
+**Verdict: `kUnitYawRateForwardSpeedBound = true`.** The mechanism matches on every row; the miss
+is the reach on USN12 and USN01. cc9-ships8 can re-pair its rank 2 yaw-rate half on this.

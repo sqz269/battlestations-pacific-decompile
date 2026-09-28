@@ -136,7 +136,7 @@ inline constexpr bool kSquadronReturnToBaseResolveBound = true;  // ON: record o
 // 0.0f and 0082ECB0 returned 0 for every unit. True: the binding takes the unit's
 // 0092D730 speed first, as its two other users do. False: the old zero.
 // docs/UNIT_YAW_RATE_FORWARD_SPEED.md.
-inline constexpr bool kUnitYawRateForwardSpeedBound = false;
+inline constexpr bool kUnitYawRateForwardSpeedBound = true;  // ON: mechanism held, reach miss recorded (docs/UNIT_YAW_RATE_FORWARD_SPEED.md)
 inline constexpr bool kSquadronLandTaskBound = true;  // ON: pairs, spread miss recorded (docs/SQUADRON_LAND_TASK.md 5)
 inline constexpr bool kLandConvoyMovementBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
