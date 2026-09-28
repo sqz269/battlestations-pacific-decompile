@@ -352,8 +352,8 @@ The results are the same as the pairs above:
 
 ## 3. The party brain's replan flag (packet `cc9_party_replan_flag`, rank 5, `kAiPartyReplanFlagBound`)
 
-Worker cc9-ships7, 2026-09-28. The switch is bound OFF first. The pairs and the verdict follow the
-predictions.
+Worker cc9-ships7, 2026-09-28. The switch was bound OFF first and is now ON. The pairs and the verdict
+follow the predictions.
 
 ### The image
 
@@ -425,3 +425,45 @@ on them.
   `foreign_claims` stays 0.
 
 A mechanism failure keeps the switch OFF.
+
+### The pairs
+
+- **OFF:** this tree's build at `1f4c80280`, logs `local\ships7_rpoff_<row>.log`.
+- **ON:** `pair_export --commit 1f4c80280 --flip kAiPartyReplanFlagBound=true` into
+  `local\ships7_rpon` (SHA-256 prefix `652BE91D967D`), logs `local\ships7_rpon_<row>.log`.
+
+| row | pair_diff | thought OFF -> ON | sets | immediate | foreign | moves |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN01 3200/3000 | exit 3 | 39 -> 40 | 4 | 2 | 0 | hit records 516 -> 466, shots 1534 -> 1425 |
+| USN02 9200/9000 | exit 3 | 112 -> 115 | 7 | 1 | 0 | deaths 11 -> 12, hit records 1693 -> 3410, damage 54395.4 -> 57117.1, shots 2047 -> 2397 |
+| USN04 4700/4500 | exit 3 | 57 -> 57 | 10 | 2 | 0 | hit records 749 -> 692, damage 13347.8 -> 11673.2; four aircraft deaths only OFF |
+| USN13 3200/3000 | exit 1 | 37 -> 38 | 20 | 1 | 0 | gameplay identical |
+| JM08 3200/3000 | exit 1 | 38 -> 41 | 8 | 2 | 0 | gameplay identical |
+| JM06 3200/3000 | exit 3 | 38 -> 38 | 4 | 1 | 0 | hit records 314 -> 299, damage 4405.8 -> 4330.6 |
+
+**USN02's death rows:**
+- **Houston sinks at 313.30 s against 20.95 s.** Her killer changes from Yamakaze at 2432 m to
+  Tokitsukaze at 4861 m.
+- Yamakaze, Minegumo and Encounter die only in ON. John3 and Asagumo die only in OFF.
+- The mission's end state is the same on both sides: `MissionPhase=1`, `EndMission=true`, and
+  `MissionFailedRan=nil`.
+- The OFF numbers are this tree's, not reference i's. The tree includes the submarine switch and
+  main's later commits.
+
+**Predictions:**
+- **Held:**
+  - `immediate` > 0 on every row and never above `sets` (1 or 2 against 4..20);
+  - `foreign_claims` 0 on every row;
+  - the moves on USN01, USN02, USN04 and JM06.
+- **Failed on spread:**
+  - USN13 and JM08 are gameplay-identical, where exit 3 was predicted. Their extra thinks
+    (38 against 37, 41 against 38) issue nothing that changes the fight.
+  - `thought` does not rise on USN04 or JM06. The earlier thinks move the later timer draws, and
+    the count inside the window comes out equal.
+
+**Verdict: `kAiPartyReplanFlagBound` ON.**
+- The mechanism matched on all six rows. The misses are on spread.
+- The switch is the image's query and the image's flag.
+- **Flagged for the lead: USN02 moves a long way.** Houston lives about 290 s longer. This comes
+  through the party's think timing and the shared AI stream it draws from. The next reference
+  rebaseline will carry it.

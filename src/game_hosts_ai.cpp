@@ -222,7 +222,7 @@ constexpr bool kGeneratedSquadronBrainBound = true;
 // 00A18480 over brain+0h..+0Ch, which reads and clears it. True: the byte and
 // its query are live, so a claim makes the party think again on the next call.
 // False: 00A15970 answers false (the previous stand-in).
-constexpr bool kAiPartyReplanFlagBound = false;
+constexpr bool kAiPartyReplanFlagBound = true;  // ON: pairs held, spread misses recorded (docs/SHIP_AI_OPEN_ITEMS.md section 3)
 
 // Packet cc9_order_ring_replace, docs/ORDER_RING_REPLACE.md. True: an AI order
 // that repeats the entity's previous one (same token and target, point within
