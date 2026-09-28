@@ -2360,3 +2360,18 @@ player):
 | JM06 3200/3000 | **exit 1.** The only entry with one of the four keys is `hshit` (`attackerPlayerIndex`), which stays unmodelled; the hospital ship is not hit anyway |
 | LOMP06 1200/1000 | **exit 1.** `listener_NarwhalDC` uses `target` and `attackType` only |
 | USN01 3200/3000 | **exit 1.** `ConLeadListener` uses `target` and `attackType` only |
+
+#### Hit filter pairs and verdict
+
+- OFF is this tree's build of `508502014`.
+- ON is `pair_export --flip kLuaHitFilterFieldsBound=true` (`local/hf_on`).
+- The logs are `local/hf_{off,on}_<mission>.log`.
+
+| row | pair_diff | verdict |
+| --- | --- | --- |
+| JM06 3200/3000 | exit 0, byte-identical | held |
+| LOMP06 1200/1000 | exit 1: only the frame-441 movie camera pose (z -5961.5 -> -5961.4), the run-to-run noise recorded above | held |
+| USN01 3200/3000 | exit 0, byte-identical | held |
+
+**Verdict: `kLuaHitFilterFieldsBound = true`.** It is inert on these rows, as predicted.
+`attackerPlayerIndex` and the rate limit remain open, with the accessor request above.

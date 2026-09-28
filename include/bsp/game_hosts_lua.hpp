@@ -244,7 +244,7 @@ inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, o
 // leakCaused are matched against what this process's hits carry (no device entity, no
 // fire, no leak: 0.0); attackerPlayerIndex stays unmodelled. False: an entry naming any
 // of the four is counted unmodelled and never fires.
-inline constexpr bool kLuaHitFilterFieldsBound = false;
+inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
