@@ -144,6 +144,14 @@ inline constexpr bool kLuaKillBound = true;  // ON: pairs held (docs/LUA_BINDING
 // natives stay unimplemented records.
 inline constexpr bool kLuaListenersBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_lua_recon_listeners. The `recon` channel (00980E50, from 0077B0C0 on a
+// recon level change) boxes (unit, old, new, party) and a subscription (vtable
+// 00D1B67C, loader 00972450) matches when its entity, oldLevel, newLevel and party
+// sets are each empty or hold the value (00968470); each callback is called with
+// (unit, old, new, party). True (with kLuaListenersBound): the host fires `recon`
+// listeners on its recon pass's level changes. False: `recon` entries never fire.
+inline constexpr bool kLuaReconListenersBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -356,6 +364,8 @@ struct GameMissionLuaSummary {
     unsigned long long listener_kill_deaths{0};
     unsigned long long listener_kill_fires{0};
     unsigned long long listener_attacker_filtered{0};
+    unsigned long long listener_recon_changes{0};
+    unsigned long long listener_recon_fires{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -815,6 +825,7 @@ public:
     int run_remove_listener_008c6990(lua_State* state, int argument_count);
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
     void dispatch_kill_listeners_009813a0();
+    void dispatch_recon_listeners_00980e50();
 
     // 00895D20 IsReadyToSendPlanes and 0089E3C0 LaunchSquadron, the two gates
     // between the carrier deck and the mission script's launch line.
@@ -979,9 +990,17 @@ private:
         std::string callback;                 // subscription+4h
         std::vector<int> entity_ids;          // the `entity` set (+0Ch)
         bool attacker_filters_set{false};     // +1Ch or +2Ch not empty
+        // `recon` (00972450): oldLevel +1Ch, newLevel +2Ch, party +3Ch.
+        std::vector<int> old_levels;
+        std::vector<int> new_levels;
+        std::vector<int> parties;
     };
     std::vector<ListenerEntry> listeners_;
     std::vector<bool> listener_death_seen_;
+    // Packet cc9_lua_recon_listeners: the last level per unit and party, and the
+    // recon pass generation they were taken at.
+    std::vector<int> recon_listener_levels_;
+    unsigned long long recon_listener_generation_{0};
 public:
     void attach_units_hooks(GameUnitsHost* units) noexcept { units_hooks_ = units; }
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {
