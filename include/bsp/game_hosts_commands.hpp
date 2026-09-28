@@ -144,7 +144,9 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 // synchronous chain). True: posts queue, and GameFixedStepHost's
 // pump_session_00778450 delivers them through begin_loopback_drain /
 // finish_loopback_drain.
-inline constexpr bool kSetCommandQueueDelayBound = false;
+// ON 2026-09-29 (docs/GUNNERY_OPEN_ITEMS.md section 27): in_place=0 and the idle
+// tail unchanged on USN02 / USN04 / USN13 / USN01; deaths 10 / 45 / 20 / 5.
+inline constexpr bool kSetCommandQueueDelayBound = true;
 
 // What 0071DDB0 needs to know about the released entity. The gunnery kill
 // funnel builds it, since it is where this process takes every death.

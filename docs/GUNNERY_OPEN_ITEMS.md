@@ -1074,3 +1074,53 @@ The OFF runs use this tree's build of `f49312ad3` (`local\g6off_<row>.log`). The
 - **USN04:** exit 3. The plane paths start one step late, so task releases and the kills that follow move by steps. The death count is 44 ± 3, and the first hit is 101.10 s ± 0.5 s.
 - **USN13:** exit 3. The death count is 20 ± 2, and the first hit is 96.65 s ± 0.5 s.
 - **USN01:** exit 3 with small moves. The death count is 5, and the first hit is 53.60 s ± 0.2 s.
+
+## 27. The loopback-queue pairs, and the flip (cc9-gunnery6, 2026-09-29)
+
+**The first ON pair failed on a receiver, not on the queue.** It was run on `f49312ad3` (logs `local\g6on_<row>.log`), and USN04 fell from 44 deaths to 19. PilotSetTarget's continuation runs 0099A170, the bot task install that reads the command the director holds. It ran right after the issue, before the order's row-9 delivery, so only 3 of 19 dive-bomb tasks installed. Two commits fixed it:
+- `1a6149672`: `after_order_delivery` attaches the continuation to the last issue's queued MT_COMMAND (`GameCommandsHost::after_last_issue_delivery`). The continuation now runs after that chain's push and finish tail.
+- `c25c1fe7d`: the squadron fan-out's wingman installs go to each wingman's own delivery. The wingman orders are inserted next in the drain (`+258h`).
+
+The path pair (`set_path_follow_pair_0071c1b0`) takes the same route. While the switch is off, all of these run in place as before. `BSP_LOOPBACK_TRACE=<n>` prints the first n posts with the drain state they met.
+
+**The pairs.** OFF is this tree's build of `c25c1fe7d` (`local\g6off2_<row>.log`). It is `pair_diff` exit 0 against `f49312ad3`'s OFF on all four rows. ON is `pair_export --commit c25c1fe7d --flip kSetCommandQueueDelayBound=true` (SHA-256 prefix `66956500BEE8`, `local\g6on2_<row>.log`).
+
+| row | pair_diff | deaths | first hit | loopback ON (in_place / nested / queued / drains) | idle reissues OFF = ON |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9000 | 3 | 10 = 10, 5 rows moved | 19.20 = 19.20 s | 0 / 1345 / 1372 / 164 | 11 (7 stop, 4 follow) |
+| USN04 4500 | 3 | 44 -> 45 | 101.10 = 101.10 s | 0 / 1058 / 1118 / 223 | 21 |
+| USN13 3000 | **1** | 20 = 20, identical | 96.65 = 96.65 s | 0 / 1645 / 1799 / 56 | 244 |
+| USN01 3000 | 3 | 5 = 5, 2 rows moved | 53.60 = 53.60 s | 0 / 127 / 167 / 78 | 52 |
+
+**The mechanism, against the predictions.**
+- **M1 held.** Every row has `in_place=0`. On the rows without a fan-out, `queued` equals the MT_COMMAND posts plus the clears plus the idle-tail SETCMDs:
+
+  | row | MT_COMMAND | clears | idle-tail SETCMDs | queued |
+  | --- | --- | --- | --- | --- |
+  | USN02 | 1345 | 13 | 14 | 1372 |
+  | USN01 | 119 | 2 | 46 | 167 |
+
+  `nested` is the SETCMDs posted by an MT_COMMAND's delivery. On USN04 and USN13 it also counts the wingman MT_COMMANDs issued inside a delivery, together with their SETCMDs.
+- **M2 held.** The idle-tail totals (`idle_reissues`, `stop`, `follow`) are identical OFF and ON on all four rows.
+- **M3 is consistent.** The moved death rows shift by one or a few fixed steps. For example:
+  - USN02: Yamakaze dies at 142.30 -> 142.35 s and John2 at 175.11 -> 175.21 s.
+  - USN01: Mav1 dies at 70.95 -> 71.00 s.
+  - USN04: B5N Kate #4.1 dies at 123.55 -> 123.80 s.
+
+  Command histories are unchanged. USN02's Kortenaer has the same 145 `attackmove` rows and one `follow`, though it moves 749 m against 1137 m through the changed exchange.
+
+**The spread.**
+- **USN02** matches: exit 3, the first hit is unchanged, Houston's opening Long Lance is unchanged, and the mission still fails at 29.75 s.
+- **USN01** matches.
+- **USN04** matches on deaths (45, predicted 44 ± 3) and on the first hit. Dive-bomb releases fall from 10 of 19 to 4 of 19, which the prediction did not cover:
+  - The installs are 19 of 19 on both sides. The per-aircraft state tables show the same states, with arm ticks a few apart.
+  - The whole difference is in single dives at the 25 m aim gate: `D3A Val #1.1|.-2` goes from 5 releases to 0, and `#3.1|.-4` from 1 to 0.
+  - This is recorded as the dive-release knife-edge, not a mechanism miss.
+- **USN13 missed the prediction.** It is gameplay-identical (exit 1), where exit 3 was predicted. The delay moves no USN13 death, hit or shot within 3000 frames.
+
+**Verdict: ON.** M1 and M2 held and M3 is consistent. The misses are on spread only: USN13 identical, and USN04's release count. `kSetCommandQueueDelayBound = true`.
+
+**Still open.**
+- 0071D880's clear-all and 0071E550's top-slot drop write in place.
+- The idle tail's 0071ECF0 make-room drop happens in the director step, not at row 9.
+- 0099A170's install is at the delivery. The image installs it one bot tick later (0099ACD0 behind `+7Ch`); that substitution predates this packet.
