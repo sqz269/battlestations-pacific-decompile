@@ -3918,7 +3918,7 @@ struct GameUnitsHost::Impl {
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
     // reads it. False: the leader's authored TravelSpeed.
-    static constexpr bool kFollowLeaderLiveSpeedBound = false;  // OFF: mechanism unobserved (docs/PLANE_FOLLOW_LAW.md 17.5)
+    static constexpr bool kFollowLeaderLiveSpeedBound = true;  // ON: re-paired on HEAD (docs/PLANE_FOLLOW_LAW.md 17.7)
 
     // 007D7DA0 (007D7DA0-007D7E91, __thiscall(ctl = unit+AB0h), RET, ST0).
     static float leader_turn_rate_007d7da0(const GameUnitSlot& u) {

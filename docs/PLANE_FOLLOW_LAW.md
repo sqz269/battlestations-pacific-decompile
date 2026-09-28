@@ -1193,3 +1193,22 @@ is the same commit with `kFollowTargetDirAcosBound=true` (`local\l10_ac`, `local
    positions and speeds moved.
 - **Verdict: ON.** Section 5.4's reading of the ramp's endpoints is corrected by 17.4.
 - The live-speed switch (17.2) should be re-paired on top of this.
+
+### 17.7 The live speed re-paired on top of 17.4 and the turn rate (cc9-lua10, 2026-09-28): ON
+
+OFF is this tree's build of `8c2cc67ca`, which has the acos, the turn rate and the approach bit ON
+(`local\l10_h0_<row>.log`). ON is the same commit with `kFollowLeaderLiveSpeedBound=true`
+(`local\l10_lv2`, `local\l10_lv2on_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (1); B-25 01's path moves: 7340 m travelled OFF, 6691 m ON |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+- **Mechanism: held, but weakly.** In the ON run, `B-25 01|.-2` flies the fly-to arm 59.2 m from its
+  station at 263.8 s. It is commanded 94.86 m/s against its leader's live 60.51 m/s: between |v| and
+  the catch-up end, as 17.3 (2) predicted. OFF was in the hold arm at that moment, so there is no
+  same-tick OFF fly-to value to set against it.
+- **Spread miss:** USN01 was predicted to move and is identical.
+- **Verdict: ON.** The input is the image's (`007B8E60`, `unit+B1Ch`); the host's |v| stands in for
+  the controller's forward speed, LABELLED.
