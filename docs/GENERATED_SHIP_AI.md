@@ -330,3 +330,67 @@ releases and deaths move.
 
 **USN02 9200/9000: identity, exit 0 or 1.** No squadron exists at load or after, so no growth
 touches a squadron index.
+
+**The pairs.**
+- **OFF** is this tree's build. **ON** is `pair_export --commit 4376ade2a --flip
+  kGeneratedSquadronBrainBound=true` into `local\sq_on`.
+- **Logs:** `local\sq_{off,on}_{usn04,usn13,usn01,usn02}.log`.
+
+| mission | pair_diff | generated / index shifts | groups created | squadron commands / member orders |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 3 | 20 / 93 | 15 -> 12 | 1 / 3 -> 4 / 12 |
+| USN13 3200/3000 | exit 3 | 24 / 9 | 5 -> 5 | 0 / 0 -> 466 / 1398 |
+| USN01 3200/3000 | exit 1, identical | 1 / 0 | 5 -> 5 | 0 / 0 -> 0 / 0 |
+| USN02 9200/9000 | exit 1, identical | 0 / 0 | 3 -> 3 | 0 -> 0 |
+
+**USN04, OFF -> ON:**
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 40 | 29 |
+| hit records | 644 | 501 |
+| shots | 5333 | 3751 |
+| torpedo-task releases | 5 of 16 | 10 of 16 |
+| dive-bomb-task releases | 1 of 19 | 6 of 19 |
+| torpedo drops | 0 | 8 |
+| first hit | 92.50 s | 100.85 s |
+
+- **Deaths.** The eleven deaths only OFF has are Japanese planes: nine A6M Zeros, a D3A Val and
+  a B5N Kate.
+- **Why they survive.** The player's launched fighters (`Lexington-class01_sqn01` and the
+  others) are now brain-tasked and no longer meet the raids early.
+
+**USN13, OFF -> ON:**
+
+| measure | OFF | ON |
+| --- | --- | --- |
+| deaths | 24 | 16 |
+| hit records | 720 | 294 |
+| shots | 6607 | 2090 |
+| first hit | 68.10 s | 97.05 s |
+
+- **Deaths.** The eight deaths only OFF has are `bruh` attackers. The early kills by
+  `Yorktown_sqn02` and `Enterprise_sqn01` are gone.
+- **What the squadrons now do.** The player-launched squadrons receive repeated brain `moveto`
+  orders (`ai_command_tick`), about 20 per squadron.
+- **This is the image's rule.** docs/AI_BRAIN_PLAYER_EXEMPTION.md establishes that the image's
+  brain has no player exemption on its order path.
+- **One labelled host substitution sits on that path.** The host appends to the order ring
+  where `0077D600` replaces, with a duplicate filter. That may amplify the churn, and it is
+  not separated here.
+
+**Predictions:**
+- **Held:**
+  - generated squadrons and index shifts above 0 on USN04;
+  - brain orders reaching them on USN04 and USN13;
+  - releases and deaths moving;
+  - USN01 at one generated squadron and exit 1;
+  - USN02's identity.
+- **Failed on spread:** groups created fell on USN04, 15 -> 12, where I predicted a rise. The
+  size of the USN13 moves was not anticipated.
+
+**Decision: `kGeneratedSquadronBrainBound` is ON.** The failure is on spread only. The
+admission is the image's live-list rule, and the index shift removes a host defect.
+- **Flagged for reference g and the lead:** USN13's damage roughly halves.
+- Whether the brain's `moveto` churn on player squadrons matches the image depends on the
+  order ring's append-versus-replace substitution. That is a follow-up worth routing.
