@@ -2230,3 +2230,26 @@ what the script asks, and Yorktown's deck is never used for a launch on these ro
 **Verdict: `kLuaSetAirBaseSlotCountBound = true`, recorded.** `luaZuikakuMovieEnd` (1949)
 restores Yorktown to 4 slots. Those slots are default records (class 0, requested 3), as in the
 image, so the first run that reaches that stage may launch differently from Yorktown.
+
+## The unfired `command` and `input` channels, a census (cc9-lua3, 2026-09-28)
+
+Item 3 of the cc9-lua2 handoff. Before binding, I checked which measured row could show either
+channel firing. This is a read of this installation's scripts; nothing is bound.
+
+**`command`: no measured mission registers one.**
+- **Correction.** The handoff and the plan above name JM06's `submove` (`jm06.lua` 1205) as the
+  measure. It is registered only inside `luaJM6SubPathListener`, and no script in this
+  installation calls that function (its only occurrence under `scripts/` is the definition). So
+  JM06 never registers a `command` listener.
+- The registrations that do run are in JM02 (`BettyRetreat` 1561, `NellRetreat` 1601), JM07
+  (`fleet1move` 1435, `atlantamove` 2495) and JM13 (`junklistener` 2146), under
+  `missions/COTP-IJN/`. None of these is a reference row.
+- Binding `command` therefore needs one of those missions as its measured row. `submove`'s keys
+  (`command = {"moveonpath"}`, `status = {"finish"}`) show that the channel reports a command's
+  start or finish per entity.
+
+**`input`: an idle player cannot fire it.**
+- Every registration comes from `global/commandhelpers.lua`. It is either the in-game movie skip
+  (`IngameMovieInputListenerID` -> `luaCamOnTargetExt`) or the `Launch_Airbase_Stock_N` keys.
+- Both answer to player input. The harness plays idle, so on every reference row the ON run would
+  be byte-identical to the OFF run for this channel.
