@@ -840,6 +840,16 @@ public:
     //   plane tick's depth kill, through the same funnel a gunfire death takes.
     bool unit_dead(std::size_t unit_index) const noexcept;
     void kill_unit_00926d90(std::size_t unit_index, int cause);
+    // Packet cc9_set_invincible_floor (docs/LUA_BINDING_MISSION.md "SetInvincible,
+    // 00897A50"; docs/UNIT_DAMAGE_AND_DEATH.md). unit+150h, the invincibility
+    // float 0042ED80 (vtable[F4h]) stores and fans to the unit's children. The
+    // Lua host calls the setter for SetInvincible; a fraction of maximum health,
+    // 1.0 for `true`, 0.0 to release. Kept per unit index before and after the
+    // unit's gunnery row exists. With kUnitInvincibilityFloorBound it floors
+    // every 00879070 damage write and refuses the 008110F0 sink; the query is
+    // IsInvincible's `inv > 0` (00897CB0) and 007BC5B0's `unit+150h <= 0` test.
+    void set_unit_invincibility(std::size_t unit_index, float value);
+    float unit_invincibility(std::size_t unit_index) const noexcept;
     // 007C2610 BSP_Unit_MinKind21ComponentSpeed (body 007C2610-007C2674, RET, the
     // float in ST0): the minimum round V0 [[gun+3F8h]+34h]+50h over the unit's
     // child list (unit+48h, next +44h) of components answering IsKindOf(21h),
