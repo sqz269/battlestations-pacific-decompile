@@ -283,7 +283,7 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // ship-motion loop, so a plane's row keeps its spawn position while the plane flies.
 // True: after 007CE040's fixed step, a plane's row takes its motion position, and its
 // moved distance follows. False: the row stays at the spawn position.
-inline constexpr bool kPlaneRowPositionBound = false;
+inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
 inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 15)
 

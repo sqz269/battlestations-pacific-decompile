@@ -1544,8 +1544,8 @@ So a plane whose pilot role a player holds ignores every task, AI moveto include
   holds role 0, and the pilot role 1 is 8. The gate therefore lets the moveto through, in the image
   as in the host. The host installs the script's own `PilotMoveTo` task on it (`009C3000`), and
   every one of the 3000 plane steps is a free-flight step.
-- **USN09.** The controlled unit is `Maury`, a destroyer, not `Enterprise_sqn01`. The 0.00 m there
-  belongs to the air group, not to the controlled unit.
+- **USN09.** The controlled unit is first `Maury`, a destroyer, and ends as `Enterprise_sqn01`,
+  which the summary reports. (This read first took the earlier line; the pairs below correct it.)
 - **The cause is the host's row, not the plane.** `refresh_row` (`src/game_hosts_units.cpp`)
   copies `motion.position` into the unit row. It runs only at the end of the ship-motion loop, and
   the plane branch `continue`s before it. A plane's row therefore keeps its spawn position. On
@@ -1581,3 +1581,28 @@ plane's row takes its motion position, and its moved distance follows. The ship-
 - **USN04 4700/4500, USN13 3200/3000: exit 1, gameplay identical.** Their controlled units are
   ships. USN04 makes 8 `GetPosition` calls and USN13 27 (reference h). If any of them names an
   aircraft, that value moves, and the pair shows it as exit 3.
+
+### The pairs and the verdict
+
+OFF is this tree's build at `36326a0fd`. ON is `local\pr_on`, a `pair_export` of `36326a0fd` with
+`kPlaneRowPositionBound=true`. Logs are `local\pr_{off,on}_<mission>.log`.
+
+| mission | pair_diff | controlled moved OFF -> ON | death rows / unit table |
+| --- | --- | --- | --- |
+| USN07 3200/3000 | exit 3 | PBY Catalina 01 0.00 -> 9866.80 | identical (0 / 7) |
+| USN09 3200/3000 | exit 3 | Enterprise_sqn01 0.00 -> 10176.60 | identical (0 / 31) |
+| USN01 3200/3000 | exit 3 | ScoutDauntless 0.00 -> 4582.21 | identical (5 / 28) |
+| USN13 3200/3000 | exit 1 | Enterprise, unchanged | identical (20 / 211) |
+| USN04 4700/4500 | exit 1 | Lexington-class01, unchanged | identical (44 / 81) |
+
+- **The mechanism held.** The controlled planes do fly: the PBY is 9866.80 m from its spawn, and
+  the Dauntless 4582.21 m. Only the row that reports them moved.
+- **The USN09 prediction failed on its premise.** I predicted exit 1 because I took Maury as the
+  controlled unit. It ends as Enterprise_sqn01, whose row now follows it, as on USN07.
+- **No `GetPosition` value moved any gameplay on these rows.** Every death row and unit-table row is
+  identical.
+- **Consequence for `docs/PLANNER_TASK_CHOICE.md` 11.4.** The "0.00 m both ways" of the two air
+  leaders was the stale row. The leaders were moving.
+
+**Verdict: `kPlaneRowPositionBound = true`.** The mechanism matches the image's `entity+FCh`, and
+the one miss was on premise.
