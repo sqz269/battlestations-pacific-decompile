@@ -2005,3 +2005,51 @@ changes a result by float rounding only. One direct copy exists, `blk+324h = blk
 pass the heading by reference through `after_heading_stored_00605070` and
 `wrap_brain_heading_00605070`, and wrap it with the recovered `00605070`. It is not worth a pair
 set on its own.
+
+## 23. Handoff (cc9-ships9, 2026-09-28, at about 76% context)
+
+**State.** No lease is held. Every commit below is on `agent/cc9-ships9`. `e67503663` and
+`ed050fcab` landed on main as `a24903f07` and `514770df9`.
+
+| Section | Switch | State |
+| --- | --- | --- |
+| 16 | - | the second ranking (docs) |
+| 17 | `kShipAiClearancePathFadeBound` | ON (`3edbe26f0`) |
+| 18 | `kShipAiArmFinalAreaKeyBound` | ON (`3edbe26f0`), spread miss recorded |
+| 19 | `kTroopLandingTraitBound` (`include/bsp/game_hosts_ai.hpp`) | ON (`4fbfd759d`). Section 13's census was corrected: the troop transports carry the trait |
+| 20 | `kShipAiClearanceOutcomeWiringBound` | ON (`72c09257e`). It moves USN02 (deaths 13 -> 11) and USN04 (39 -> 41, plane rows) |
+| 21 | - | rank 5 read (`bbae7f3e2`) |
+| 22 | - | rank 7 census (`4e50a3aa2`); reach 1 |
+| 12 | `kAutoTargetFollowerGateBound` | **OFF.** It waits on cc9-lua10's verdict for lua9's `kFormationJoinFollowBound` (main `f515961f3`) |
+
+**What remains, by section 16's ranking.**
+1. **Item 7, the follower gate re-pair** (section 12). Once the join follow-up is ON:
+   - pair `kAutoTargetFollowerGateBound` on USN01, JM06, JM08, USN13, JM05, LOMP10 and USN04;
+   - write the predictions first; the leave counts should fall to the join counts.
+2. **Rank 4, the AI command's avoid-zone point.**
+   - The call is `00A020F0` in `00A02020`, and only for a kind-6 member.
+   - Zone set: `0082ADA0(class, 0)`, which is `group_for_layer([class+560h])`.
+   - Margin 30.0 (`00CE38C8`), mode 1.
+   - The AI host cannot reach the ship-AI host's `GameAvoidZoneRuntime`. It needs a cross-host query
+     and startup wiring outside this lane's files. Send the lead the declaration.
+3. **Rank 6, the approach frame state's unread spans.** USN02 carries 28784 calls. It is large.
+4. Rank 5's next step (section 21) and ranks 8, 9, 11 to 13 of section 16, unchanged.
+
+**Not to redo.**
+- `local\ships9_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames`, one row per
+  call. `local\ships9_wait.sh <s> <logs>` waits for the final COM release.
+- `local\ships9_census.py <prefix> rows <regex>` sums the non-concrete host rows.
+  `local\ships9_sites.py <row>` prints a record site.
+- `local\ships9_vsj.py <prefix> <rows>` diffs against reference j.
+- OFF logs of the current tree: `ships9_g0_*` (all four switches ON, with the census counters).
+
+**Traps met.**
+- An RDP session fails runs in two ways. A **Disc** session dies at FMOD init (result 61). An
+  **Active** rdp-tcp session fails renderer init (`hr=0x8876086a`) only intermittently: 7 of 16
+  runs once, then none. Relaunch the failed rows only.
+- `pair_diff` returns exit 2 (`Permission denied`) when a log is still held open for a second
+  after its final COM release. Retry.
+- `Add-Content` writes CRLF into an LF doc; the index normalises it, the working copy does not.
+  Strip `chr(13)` in edit scripts.
+- A census over `vehicleclasses.lua` must read each table's top-level `Type`, which comes late in
+  the table. Nested `Type` keys of sub-tables misled section 13.
