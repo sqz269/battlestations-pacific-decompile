@@ -653,6 +653,64 @@ OFF is this tree's build of `441c5cdef`, which carries the same code as `5abf6e8
    Hits, shots and damage collapse, because the AA fire at them is gone. USN01 is gameplay-identical.
 - **Verdict: ON.**
 
+## 5e. The first landing state, `land/standby` (packet `cc9_land_standby_state`, cc9-lua10, 2026-09-28)
+
+State vtable `00D1FEF4` (task `+5B8h`, approach `+1C0h`). All three bodies were read whole from the
+listing.
+
+- **Enter `009B0230`** and **exit `009B0240`** (`__thiscall(state)`, `RET`):
+  - enter: `+18h` (the done byte) = 0 and `+1Ch` = 0.0;
+  - exit: `+18h` = 0.
+  - The tick never sets the done byte, so standby is left only through the rule's mode arm.
+- **Tick `009B0FE0`** (`009B0FE0`-`009B1243`, `__thiscall(state)(float dt)`, `RET 4`; dt is not read).
+  With `a` = the approach (`[state+4]`):
+  1. `d = 009FBB20(&(a+38h, a+40h), r = a+48h, side = a+44h, 0)` (`009B1019`). This is the circle
+     steer the moveto circle state already runs: heading command `+2C0h` and mode 2 toward the
+     landing circle, returning |dist - r|.
+  2. `f = max(0, float(d - 100.0))` (double `00D7A220`).
+     `h = max(float(float(DropAngle(class+1F0h) x f) x 0.5), a+60h)`.
+     `A = float(h + a+3Ch)`.
+  3. The target altitude is `max(min(A, posY), a+3Ch)` (`009B10C1`-`009B10FB`). The plane only
+     ever descends, and never below the circle point's height.
+  4. `k = (posY - target) / (65.0` (`00D1FF10`), or `40.0` (`00CE685C`) for class 10h/16h`)`,
+     clamped to [0.8, 1.6] (`00CE3D40`/`00CE3D48`; the stored values are `00CE74F8`/`00D06BB4`).
+     `009FB800(target, k)` then commands the pitch (`009B11BF`).
+  5. `+2B4h = lvl + a+4Ch x (class+190h - lvl)`, with lvl = `007C47F0`, class+190h =
+     TravelSpeed x NewTravelSpeedMul, and a+4Ch = the record's spacing `+8h`. Also `+2B0h` = 0 and
+     `+2D8h` = 1.
+  6. Direction `+40h` = tuning `+66Ch`, then `009FABE0(009A1A20(0099B630()))`. This is the direction
+     object this host does not model; it is a record, as in the moveto states.
+- **The inputs come from `006C54C0`'s common tail** (`006C55FF`-`006C562A`), run on both arms:
+  approach `+48h` = `006C3E50(plane)` (r), and `+38h..+40h` = `006C5380(side = a+44h)` (the circle
+  point). On the miss arm, `+44h` is (sum of the airborne members' x in the block frame >= 0.0)
+  (`006C55DC`-`006C55FC`). Both are bound with this state.
+- **The rule from standby** (`009B3CF0`), bound together with it:
+  - `009B3770` does nothing, since the done byte is never set.
+  - `+900h` 4 or 5 sends the plane to park, which stays refused.
+  - The mode arm: mode 1 goes to `009AFA50` (leader `moveto (land)`, wing `follow (land)`); mode 2
+    goes to standby for the flight leader and to `land/line` (refused) otherwise; mode 3 goes to
+    standby; mode 4 goes to `land/begin` (refused).
+  - A refused transition leaves the plane in its current state.
+
+**Bound OFF**, `kLandStandbyStateBound` (`GameUnitsHost::Impl`). It needs `kLandingSequencerBound`.
+
+**Predictions for LOMP10 9200/9000 and USN01 3200/3000, against this tree's build with the switch
+off. The OFF sequencer history comes from `local\l10_h0_lomp10.log`.**
+1. **Entries.** The flight leaders enter `land/standby` at their first request after their head's
+   mode 2: Warhawk 01 just after 70.85 s, Lightning 01 just after 72.85 s and B-25 01 just after
+   84.85 s, each within 0.5 s. Up to 70.85 s the pair is identical.
+2. **Wingmen.** They stay in `follow (land)` while their mode is 1 or 2 (`land/line` is refused).
+   They enter standby when their mode reaches 3. OFF, that first happens to Warhawk 01's wingmen at
+   120.9 s; ON the time will move with the heads' new paths.
+3. **Flight in standby.** A head flies the landing circle: its distance to its circle point
+   settles toward r, with f = 1.0 for 10 records or fewer, so r = TurnCircleRadius x
+   CircleMultiplierMin 1.1. It descends toward the circle point's height: the airfield's frame
+   height plus PosAlt 170 m plus 20 m per queue index (`006C5380` builds the local y without T). Its commanded speed is TravelSpeed x NewTravelSpeedMul at spacing 1.0.
+4. **LOMP10 moves** (exit 3). USN01 has no land task and comes out identical (exit 0 or 1).
+5. `land/line`, `land/begin`, `land/park` and `land/abort` stay refused and counted.
+- A mechanism failure is any of: no standby entry, a head whose circle distance diverges, or a
+  state entered other than standby, moveto or follow.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
