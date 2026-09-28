@@ -4696,6 +4696,29 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
     if (!kLuaListenersBound || !kLuaHitListenersBound) return;
     for (const GameGunneryHost::GameGunneryHitEvent& hit : events) {
         ++summary_.listener_hit_events;
+        if (kLuaHitRateLimitBound) {
+            // Packet cc9_hit_rate_limit. 00988949 (009882F0) and 00988957 (00499030) look the pair up
+            // (the stored float, 0.0 for a new pair); 00988964..00988969 FCOMIP / JBE
+            // compare it with DAT_00F876A4 and skip the whole evaluation when it
+            // is still ahead; otherwise it stores clock + 2.0 (00CE3958), or clock
+            // + 1e-4 (00CE3C68) for the kinds 8..0Fh, 12h and 13h.
+            // SUBSTITUTIONS (labelled): the kind is the event's ordnance_kind, the
+            // fired class's bullet_sub_type (the id space the attack-type name
+            // table 00E08E58 indexes; a kamikaze shooter's forced 11h is not
+            // modelled); the list test at this+1A4h..+1ACh that also shortens the
+            // interval to 1e-4 is not modelled.
+            const auto key = std::make_pair(hit.victim, hit.shooter);
+            float& next = hit_rate_limit_[key];
+            const float clock = static_cast<float>(spawn_world_clock_);
+            if (!(next <= clock)) {
+                ++summary_.listener_hit_throttled;
+                continue;
+            }
+            const int kind = hit.ordnance_kind;
+            const bool quick = (kind >= 0x08 && kind <= 0x0F) || kind == 0x12 || kind == 0x13;
+            next = static_cast<float>(clock + (quick ? 9.99999974737875e-05 : 2.0));
+            ++summary_.listener_hit_throttle_passed;
+        }
         const int victim = static_cast<int>(hit.victim + 1);
         const int shooter = static_cast<int>(hit.shooter + 1);
         const GameBulletClassRow* bullet = gunnery->bullet_class_row(hit.bullet_class);
@@ -5975,6 +5998,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "unmodelled=%llu (00988510, packet cc9_lua_hit_listeners)", kLuaHitListenersBound ? 1 : 0,
         summary_.listener_hit_events, summary_.listener_hit_fires,
         summary_.listener_hit_unmodelled);
+    log_.notef("summary mission script hit rate limit bound=%d passed=%llu throttled=%llu "
+        "pairs=%zu (00988510 this+168h, packet cc9_hit_rate_limit)", kLuaHitRateLimitBound ? 1 : 0,
+        summary_.listener_hit_throttle_passed, summary_.listener_hit_throttled,
+        hit_rate_limit_.size());
     log_.notef("summary mission script ship speed bound=%d calls=%llu units=%llu unresolved=%llu "
         "(00890D30 -> 00890E6F, packet cc9_lua_set_ship_speed)", kLuaSetShipSpeedBound ? 1 : 0,
         summary_.ship_speed_calls, summary_.ship_speed_units, summary_.ship_speed_unresolved);

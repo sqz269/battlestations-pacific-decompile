@@ -246,6 +246,15 @@ inline constexpr bool kLuaSetAirBaseSlotCountBound = true;  // ON: pairs held, o
 // of the four is counted unmodelled and never fires.
 inline constexpr bool kLuaHitFilterFieldsBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_hit_rate_limit (docs/LUA_BINDING_MISSION.md, "The hit-callback rate
+// limit"). 00988510 keys a map at this+168h (009882F0 / 00499030) by (victim,
+// attacking unit). Before the channel lookup it evaluates only when the stored time
+// is at or before the clock DAT_00F876A4, then stores clock + 2.0 (00CE3958), or
+// clock + 1e-4 (00CE3C68) for ordnance kinds 8..0Fh, 12h and 13h. True: the host's
+// hit dispatcher applies it, the kind being GameGunneryHitEvent::ordnance_kind.
+// False: every hit is evaluated.
+inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs/LUA_BINDING_MISSION.md)
+
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
 // (00893C00). Routed together with the air model: under kSubmarineAirBound
@@ -516,6 +525,8 @@ struct GameMissionLuaSummary {
     unsigned long long slot_count_unresolved{0};
     unsigned long long unlimited_air_calls{0};
     unsigned long long unlimited_air_stored{0};
+    unsigned long long listener_hit_throttled{0};   // packet cc9_hit_rate_limit
+    unsigned long long listener_hit_throttle_passed{0};
     // 00895D20 and 0089E3C0. docs/AIROPS_LAUNCH_GATES.md.
     unsigned long long air_ops_ready_calls{0};
     unsigned long long air_ops_ready_true{0};
@@ -1187,6 +1198,9 @@ private:
         std::vector<float> leak_range;      // leakCaused (+74h)
     };
     std::vector<ListenerEntry> listeners_;
+    // Packet cc9_hit_rate_limit: the map at 00988510's this+168h, (victim,
+    // attacking unit) -> the clock at which the next hit on the pair is evaluated.
+    std::map<std::pair<std::size_t, std::size_t>, float> hit_rate_limit_;
     std::vector<bool> listener_death_seen_;
     // Packet cc9_lua_recon_listeners: the last level per unit and party, and the
     // recon pass generation they were taken at.
