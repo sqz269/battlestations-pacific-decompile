@@ -29,6 +29,13 @@ struct GameTuningKey {
 
 inline constexpr std::size_t kGameTuningBlockSize = 0x6D0;
 inline constexpr std::size_t kGameTuningKeyCount = 439;
+// Packet cc9_follow_target_dir_acos (docs/PLANE_FOLLOW_LAW.md section 17.4).
+// 007E2A20 stores Pilot/Follow/MaxFollowSpdTargetDir (+3A4h) and
+// MinFollowSpdTargetDir (+3A8h) as acos of the authored number: above 1.0 gives
+// 0.0, below -1.0 gives pi (00D7A264), else 00BF9940 (007E88A1-007E88E4 and
+// 007E892A-007E8970, the loader's only two acos calls). True: this loader does
+// the same. False: the raw number.
+inline constexpr bool kFollowTargetDirAcosBound = false;
 extern const GameTuningKey kGameTuningKeys[kGameTuningKeyCount];
 
 // The object. Every offset below is a store 007E2A20 makes; the trailing
