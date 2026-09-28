@@ -511,3 +511,58 @@ kCautiousWedgeBound=true` into `local\ships6_<row>`.
 - A mechanism failure keeps the switch OFF and is recorded. That is a wrong census on USN12's first
   line, a non-zero `u` while every cost is 0, or a USN04 call.
 - A spread miss with the mechanism matching may flip, and is recorded.
+
+## 14. The wedge pair, and the verdict
+
+The runs use commit `d12dcbd70` (main, with the units-host entry point). OFF is the tree's own build,
+`local\ships6_off_<m>.log` (bsp_game.exe SHA-256 prefix `07B3A099D1F5`). ON is `pair_export --flip
+kCautiousWedgeBound=true` into `local\ships6_on` (prefix `A1AC42A26F49`), with logs
+`local\ships6_on_<m>.log`. Both use `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep
+0.05, an idle player, present interval immediate, and `tools/run_game.ps1`. A 300-frame OFF smoke
+of USN12 (`local\ships6_smoke.log`) exited 0 with `bound=0 calls=0`.
+
+| mission | pair_diff | calls / runs / placed / no_record / zero_frame | unit table |
+| --- | --- | --- | --- |
+| USN12 3200/3000 | exit 1 (gameplay identical) | 49 / 49 / 539 / 0 / 49 | identical, Montpelier 2247.37 m both |
+| USN04 4700/4500 | exit 1 (gameplay identical) | 0 / 0 / 0 / 0 / 0 | identical (81 rows) |
+
+**The mechanism matched the prediction line for line.**
+- The first USN12 line is at 6.10 s: `samples=13 threat=(0.0 0.0 750.0) cost=0.0 u=(-0.0000 0.0000)
+  v=(0.0000 0.0000) dist=500 shape0=12 placed=11 not_ship=0 no_record=0`.
+- Its offsets are `first=(0.0 -0.0)` and `last=(-0.0 -0.0)`. The first place's lateral is +0.0
+  because `u[0]` is -0.0, so `F[0]` and `off[0]` are -0.0, and -0.0 - (-0.0) = +0.0.
+- Every one of the 49 runs has a zero frame. Montpelier never came within 4750 m of a player ship.
+- The all-zero-cost case therefore wrote (-0, -0) (one +0 lateral) into every follower's column 0.
+  The stations of all eleven ship members sit on Montpelier's own point. This is the image's own
+  arithmetic (sections 10 and 13).
+- Fortress-07's DEFENDPOSITION group made no call, so `calls` equals `runs`. The prediction said
+  `calls > runs`. Its tick evidently does not reach `ai_command_tick_vt000c`'s DEFENDPOSITION arm in
+  these frames; that path was not traced. Either way its leader fails the ship gate, so this is a
+  census detail, not a mechanism miss.
+- USN04 made no call, as predicted.
+
+**Do the followers pile onto Montpelier? No, and the follower pass does not separate them either.
+Nothing in this host reads the new stations on USN12.**
+- The formation group is `column=0` with all 12 ships (log: `formation group 0: leader=Montpelier
+  type=6 column=0`), so the writes land in the live column.
+- The one motion consumer of column 0 is the `follow` state's station point, 0070D290 through
+  009DF2D0 (`FollowFormationPointBinding`). It is never called in either run, because no ship
+  enters `follow`. The state census has 12 `cruise`, 282 `moveonpath`, 9 `stop` and no `follow`, and
+  the director reports `follow=0`. `summary mission ai follow requests=575 available=0 refused=575`
+  (00779D50) is identical OFF and ON.
+- The only other readers are the path planner's group extents 0070D400 / 0070D5D0 (2816 calls in
+  both runs). They read each member's station `across`, which the wedge changes from about +/-500
+  to 0. The picked paths are unchanged, and `path_publishes=0` in both runs. Inference: the extents
+  feed a path that is not published on this row. That was not traced further.
+
+**Verdict: the switch is ON.** The mechanism matched. The spread miss (exit 1 against a predicted
+exit 3) comes from a consumer this host does not reach on USN12 (followers never enter `follow`),
+not from the wedge. When a follower does enter `follow` under a CAUTIOUSATTACK, CAUTIOUSMOVE or
+DEFENDPOSITION leader with no danger within 4750 m, its station will be the leader's own point, as
+in the image.
+
+**Open.**
+- Why USN12's eleven followers never take `follow`: every 00779D50 follow request is refused, and
+  `formation_requests=0`. That belongs to the follow-request packet, not this one.
+- Whether the group extents' consumer is ever published.
+- RETREAT's call at `00A156EE`, which waits on a RETREAT tick binding.

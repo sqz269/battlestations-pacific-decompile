@@ -179,7 +179,7 @@ inline constexpr bool kCautiousMoveRouteBound = true;  // ON: identity, no creat
 // Formation_UnitDist, writing each one's column-0 lateral and axial offsets
 // (00A11A57 / 00A11A5C). False: not run, as before. RETREAT's tick 00A156E0
 // also calls it (00A156EE); that tick is not bound in this host.
-inline constexpr bool kCautiousWedgeBound = false;
+inline constexpr bool kCautiousWedgeBound = true;  // ON: docs/AI_CAUTIOUS_ROUTE.md section 14
 
 // 00A14E54..00A1500D: the waypoint offset is leader->target turned by
 // 0042B490(00CE3C64 = pi/2), i.e. BSP_Matrix_BuildRotationY(-0.0 - pi/2), and
