@@ -1,0 +1,20 @@
+{
+  "packet": "cc9_aa_turn_average",
+  "doc": "docs/USN04_KATE_ATTRITION.md sections 8.2, 11 and 12",
+  "switch": "kAaTargetTurnAverageBound (src/game_hosts_gunnery.cpp), OFF",
+  "addresses": {
+    "00901CE5": "FLD [EAX+0AF8h]: the plane target's body angular rate, ctl+48h (ctl = unit+AB0h)",
+    "00901D23": "gate |w|^2 > 0.001 (00D7A23C)",
+    "00901EB6": "(V + V') * 0.5 (00D7A280, double)"
+  },
+  "calls": [
+    {"address": "00901E7A", "native": "0085E4D0", "function": "00901C20", "note": "rotate_about_axis_0085e4d0(out, identity, w, 1.0)"},
+    {"address": "00901E8D", "native": "004142E0", "function": "00901C20", "note": "transform_point_004142e0(V, out)"}
+  ],
+  "no_ghidra_function": [],
+  "substitutions": [
+    "the body rate is the host's integrated plane_body_angular (the rate law 007DA710), published through GameUnitsHost::unit_plane_body_angular_rate"
+  ],
+  "names_added": [],
+  "verdict": "pending: OFF committed, pair when runs return"
+}
