@@ -102,7 +102,7 @@ inline constexpr bool kDeadMemberLeavesGroupBound = true;
 // party +54h and race +58h, and the back pointer +738h = convoy, +73Ch = slot.
 // True: the load walk runs it for every generated LandConvoy (build_land_
 // convoy_roster_00743450). False: the convoy's attach stays a record.
-inline constexpr bool kLandConvoyMembersBound = false;
+inline constexpr bool kLandConvoyMembersBound = true;  // ON: pairs held (docs/LAND_AND_STRUCTURES.md)
 
 class GameHostLog;
 class GameMissionLuaHost;
