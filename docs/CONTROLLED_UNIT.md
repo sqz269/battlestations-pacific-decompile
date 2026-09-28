@@ -2293,3 +2293,20 @@ about 70% context. No leases are held.
   `local\` (`l8_ins.py` inserts at a unique anchor).
 - A locked RDP desktop (`logonui=1`) fails renderer init with `0x8876086A`.
   `local\l8_probe.ps1` retries a 300-frame smoke until it passes.
+
+### Addendum (cc9-lua8, same day, after the lead's reorder)
+
+- **Inert accessors for cc9-gunnery9** (`0b535255d`): `GameUnitsHost::add_hull_torque_message_93h`
+  and `GameMissionLuaHost::read_physics_torpedo_force_0083b5e0`. No caller yet.
+- **`kUnitYawRateForwardSpeedBound` ON** (`docs/UNIT_YAW_RATE_FORWARD_SPEED.md`).
+  `unit_current_yaw_rate_00811940` now sets the binding's forward speed.
+  - JM06, USN02 and USN04 move; USN12 and USN01 are identical.
+  - cc9-ships8 can re-pair its rank 2 yaw-rate half on it.
+- **Not started: packet `cc9_landing_sequencer`.** Read `006CD240` -> `006CC9F0` whole, find what
+  creates a sequencer entry, and find what fills the assignment vector at block `+A8h` (inserting
+  via `006CAA10`) and when. Then bind it OFF behind `kLandingSequencerBound`, predict on LOMP10
+  9200/9000 (which plane gets an assignment, when the mode rises past 1, the first landing state
+  entered), pair and flip by verdict. The land task's refusal counters in the LOMP10 summary are
+  the measurement to start from.
+- **Renderer-init outages.** 18:02 to about 18:40 UTC, the session was RDP with the desktop
+  locked. Check `query session` first; `local\l8_probe.ps1` retries a smoke.
