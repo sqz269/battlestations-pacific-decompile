@@ -222,6 +222,13 @@ constexpr bool kGeneratedSquadronBrainBound = true;
 // moved after its 212.91 s failure (docs/ORDER_RING_REPLACE.md section 4).
 constexpr bool kAiOrderReissueBound = true;
 
+// Packet cc9_planner_close_attack_choice, docs/PLANNER_TASK_CHOICE.md. True:
+// brain slot i holds planner kind i, as 00A15A70 builds it: 00A15C31 Defend ->
+// [ESI], 00A15C61 Attack -> +4h, 00A15C92 Sell -> +8h, 00A15CC3 Capture -> +0Ch,
+// 00A15ADA Duel -> +10h (mode 4), then Escort, Siege, Competitive. False: the
+// permuted table (Attack, Defend, Capture, Duel, Escort, Siege, Competitive).
+constexpr bool kAiPlannerSlotKindsBound = false;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -2166,14 +2173,22 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     static bsp::AiPlannerKind planner_kind_for_slot(int slot) {
-        switch (slot) {
-        case 0: return bsp::AiPlannerKind::Attack;
-        case 1: return bsp::AiPlannerKind::Defend;
-        case 2: return bsp::AiPlannerKind::Capture;
-        case 3: return bsp::AiPlannerKind::Duel;
-        case 4: return bsp::AiPlannerKind::Escort;
-        case 5: return bsp::AiPlannerKind::Siege;
-        default: return bsp::AiPlannerKind::Competitive;
+        if constexpr (kAiPlannerSlotKindsBound) {
+            // AiPlannerKind is declared in brain-slot order (src/ai_planners.cpp's
+            // table carries the offsets 00h..1Ch).
+            if (slot >= 0 && slot < bsp::kAiPlannerKindCount)
+                return static_cast<bsp::AiPlannerKind>(slot);
+            return bsp::AiPlannerKind::Competitive;
+        } else {
+            switch (slot) {
+            case 0: return bsp::AiPlannerKind::Attack;
+            case 1: return bsp::AiPlannerKind::Defend;
+            case 2: return bsp::AiPlannerKind::Capture;
+            case 3: return bsp::AiPlannerKind::Duel;
+            case 4: return bsp::AiPlannerKind::Escort;
+            case 5: return bsp::AiPlannerKind::Siege;
+            default: return bsp::AiPlannerKind::Competitive;
+            }
         }
     }
 
