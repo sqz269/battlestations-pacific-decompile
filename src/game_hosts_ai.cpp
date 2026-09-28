@@ -320,7 +320,9 @@ constexpr bool kCaptureAccessorsBound = true;
 // 00A1CC61 passes 0 as the first argument (00A0CE71). False: the candidate's
 // population, the stand-in this host has carried since the planner landed. The
 // census line `summary mission ai group target value` runs in both states.
-constexpr bool kPlannerGroupTargetValueBound = false;
+// ON (2026-09-28): the orders moved as predicted on USN02, JM06 and LOMP06
+// (exit 3); USN04 and USN01 gameplay-identical (section 7, the pairs).
+constexpr bool kPlannerGroupTargetValueBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
