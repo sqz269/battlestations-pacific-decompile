@@ -265,6 +265,14 @@ inline constexpr bool kLuaHitRateLimitBound = true;  // ON: identity pairs (docs
 // False: unimplemented, and the accessor reports false as before.
 inline constexpr bool kLuaDeviceReloadEnabledBound = false;
 
+// Packet cc9_lua_formation_query (docs/LUA_BINDING_MISSION.md, "IsInFormation 008996A0 and
+// LeaveFormation 00899EB0"). IsInFormation(unit) pushes unit+284h != 0 (008996A0).
+// LeaveFormation(unit) calls 0077C980(unit, 0), which sends session message 77h with a null
+// target when unit+284h is set; 0077FE80's arm 3 delivers it to 0077BD70(unit, null), the
+// leave the host models as GameUnitsHost::leave_group_on_destroy_0077bd70. True: route both
+// rows to run_is_in_formation_008996a0 / run_leave_formation_00899eb0. False: unimplemented.
+inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
+
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
 // are published and written by SetDeviceReloadEnabled. It answers false while
 // kLuaDeviceReloadEnabledBound is false.
@@ -540,6 +548,10 @@ struct GameMissionLuaSummary {
     unsigned long long slot_count_unresolved{0};
     unsigned long long device_reload_calls{0};
     unsigned long long device_reload_true{0};
+    unsigned long long in_formation_calls{0};
+    unsigned long long in_formation_true{0};
+    unsigned long long leave_formation_calls{0};
+    unsigned long long leave_formation_left{0};
     unsigned long long unlimited_air_calls{0};
     unsigned long long unlimited_air_stored{0};
     unsigned long long listener_hit_throttled{0};   // packet cc9_hit_rate_limit
@@ -1035,6 +1047,9 @@ public:
     int run_set_air_base_slot_count_008963e0(lua_State* state, int argument_count);
     // Packet cc9_device_reload_enabled, under kLuaDeviceReloadEnabledBound.
     int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
+    // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
+    int run_is_in_formation_008996a0(lua_State* state, int argument_count);
+    int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_submarine_air, under kSubmarineAirBound.
     int run_set_unlimited_air_00893c00(lua_State* state, int argument_count);
 

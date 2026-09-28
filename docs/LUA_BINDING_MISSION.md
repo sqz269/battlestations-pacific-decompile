@@ -2582,3 +2582,114 @@ OFF is this tree's build at `ed959c372`. ON is `local\dr_on`, a `pair_export` of
   as predicted.
 - **These pairs do not test the feeds.** The plane-task inputs still read constant false, so the
   switch stays OFF until the routed feed lines land and the pairs are re-run.
+
+## IsInFormation 008996A0 and LeaveFormation 00899EB0 (packet `cc9_lua_formation_query`, `kLuaFormationQueryBound`, committed OFF)
+
+Worker cc9-lua4, 2026-09-28. Taken ahead of `GetClosestBorderZone` (rank 2), whose answer needs
+`004C7730`. That body is unreconstructed, and the host holds no border-zone data
+(`docs/PILOT_ORDER_BINDINGS.md`, `PilotRetreat`). It is left as its own packet.
+
+### The image (V)
+
+- **IsInFormation.** `008996A0` resolves argument 0 through `BSP_ObjectHandle_FromLuaTable` and
+  pushes `[unit+284h] != 0`, the unit's formation group. One result.
+- **LeaveFormation.** `00899EB0` resolves argument 0 the same way and calls `0077C980(unit, 0)`.
+  With `unit+284h` set and a null second argument, `0077C980` bumps
+  `BSP_SlotCounter_Increment([unit+1ACh])` for a slot below 8 and routes session message 77h with
+  target 0 (`BSP_Session_RouteMessage(msg, 7, 0)`, vtable `00D02D44`).
+- **The delivery.** `0077FE80` maps kind 77h to arm 3, which calls `0077BD70(unit, null)`, the
+  leave (`docs/SHIP_AI_FORMATION.md`, "The read: the image removes a dead unit at its destroy").
+  The host models that leave as `GameUnitsHost::leave_group_on_destroy_0077bd70`.
+
+### The binding
+
+- `run_is_in_formation_008996a0` answers `unit_formation_group_0284(index) >= 0`.
+- `run_leave_formation_00899eb0` calls `leave_group_on_destroy_0077bd70(index)` when the unit is
+  in a group.
+- **SUBSTITUTIONS (labelled).**
+  - The leave runs at the call, not through the session route.
+  - The slot counter bump is not modelled.
+  - The host's leave counts the unit in its death-leave counter, and its note names the destroy
+    path.
+  - An entity with no units-host slot answers false and leaves nothing.
+
+### The script reach
+
+`06_crucial_cargo.lua` (this installation, 2024-07-13) has the calls at 537, 554, 555, 566 and
+567, inside `SubC1Attack`. `jm06.lua` has four, which the 3000-frame JM06 run does not reach. No
+reference row's script calls either native. In the LOMP06 census the one call is
+`IsInFormation(Yugiri)` at frame 617 (30.85 s), from line 554 or 566. Yugiri is an escort in
+group 0 (leader Mikuma), per the host's formation table.
+
+### Predictions, before any run
+
+- **LOMP06 1200/1000: exit 3.**
+  - `IsInFormation(Yugiri)` answers true.
+  - The script then calls `LeaveFormation(Yugiri)`, so the native table gains one LeaveFormation
+    call.
+  - Yugiri leaves group 0 at 30.85 s, and the group's member list compacts past it. Mikuma stays
+    leader.
+  - `SetShipSpeed(Yugiri, 20)` and the attack move follow as before.
+  - Yugiri's and the later group-0 followers' tracks should move after 30.85 s. The mission's
+    idle damage is 0, so the death and hit tables should stay empty.
+- **USN02, USN13, JM06, JM08: exit 1, gameplay identical.** No call is reached. The text differs
+  only in the new summary line's `bound=`.
+
+### IsInFormation and LeaveFormation: the pairs and the verdict
+
+OFF is this tree's build at `28bcf320d`. ON is `local\fq_on`, a `pair_export` of `28bcf320d` with
+`kLuaFormationQueryBound=true`. Logs are `local\fq_{off,on}_<mission>.log`.
+
+| mission | pair_diff | reading |
+| --- | --- | --- |
+| LOMP06 1200/1000 | exit 1, gameplay identical | the mechanism fires as predicted; the tracks do not move |
+| JM06 3200/3000 | exit 1, gameplay identical | no call |
+| USN13 3200/3000 | exit 1, gameplay identical | no call |
+
+- **The mechanism matched.** `IsInFormation(Yugiri)` answered true (group 0). The script then
+  called `LeaveFormation(Yugiri)`, and Yugiri left group 0 at 30.90 s. Mikuma stayed leader with
+  17 members. The native table gained the LeaveFormation row.
+- **The spread prediction failed.** I predicted exit 3, with Yugiri's and the later followers'
+  tracks moving. Every `ship ai step` line and all 22 unit-table rows are identical.
+  - Yugiri was already in the attack move on both sides, which does not steer by the group.
+  - The remaining followers keep their stations after the compaction.
+  - What moved is bookkeeping: one more ship-AI plan seed and path swap, and two fewer
+    motion-tail pairs. The frame-441 movie camera pose moved by 0.1 m, which is the known
+    run-to-run noise (handoff cc9-lua3, item 5).
+- **Verdict: `kLuaFormationQueryBound = true`.** The mechanism matches the image, and the miss is
+  on spread only, which the flip rule allows when recorded.
+
+## SquadronSetTravelAlt, 0089F550 (a read; the binding needs plane-side state)
+
+Worker cc9-lua4, 2026-09-28. This is rank 4 of the third refresh.
+
+### The image (V)
+
+- **The native.** `0089F550` resolves argument 0 through `BSP_ObjectHandle_FromLuaTable`, which
+  gives the squadron. It reads argument 1 as a number. With exactly three arguments, it reads
+  argument 2 as a boolean, else 0. It then stores five fields:
+  - `+380h = 0.5` (`[00CE3800]`, bytes `00 00 00 3F`);
+  - `+38Dh =` the boolean;
+  - `+394h =` the altitude, the squadron's cruising altitude;
+  - `+3A9h = 1`;
+  - `+3ADh = 0`.
+  It returns no value.
+- **The consumer.** The cruise profile `009C3650` returns early when `+38Dh` is set. It overwrites
+  `+394h` with its own altitude, and sets `+3ADh = 1` and `+3A9h = 0`, only when `+380h` is below
+  0 and `+3A9h` is clear. The script sets `+3A9h = 1`, so the profile keeps the script's
+  altitude either way; the forced call (`true`) also skips the profile's other arms. Who clears
+  `+3A9h` or counts `+380h` down, apart from that overwrite, is unread.
+
+### Why it is not bound here
+
+The host keeps no per-squadron `+394h`. The moveto task computes its cruise altitude on each
+refresh from Small/LargePlaneTravelAlt plus 0.6 times TravelAltRandom (`src/game_hosts_units.cpp`,
+`moveto_refresh_009beba0`), and `009C3650` itself is not modelled. A binding needs these fields on
+the units host's squadron state and the profile's gate in the moveto refresh. That is plane-side
+work outside this lane's files.
+
+### Reach
+
+On the census rows only JM08 calls it, once: `SquadronSetTravelAlt(Mission.MovPlane, 750, true)`
+(`prcpjm08.lua` 574, this installation, 2024-08-26). The movie plane is made invincible on the next
+line. The attack waves' calls (1075, 1169, 1267) are not reached by 3000 frames.
