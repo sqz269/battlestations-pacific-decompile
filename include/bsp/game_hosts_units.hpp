@@ -65,6 +65,7 @@
 #include "bsp/native_unit_observer_endpoint.hpp"
 #include "bsp/native_scene_lifecycle_notify.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
+#include "bsp/unit_force_channel.hpp"
 
 namespace bsp::game {
 
@@ -915,6 +916,11 @@ public:
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
     bool unit_is_kind_of(std::size_t index, int class_id) const;
+    // 00821E80 case 93h (00822235): the hull-torque message 0080FFD0 packs at 00827312
+    // and 0077C2A0 routes at 00827329, applied to the unit's hull body (0092BF30 ->
+    // 00C35330 AddTorque). False when the index is out of range or slot.body.motion
+    // is null. Inert: no caller yet (for cc9-gunnery9).
+    bool add_hull_torque_message_93h(std::size_t index, const bsp::OceanVec3& torque);
     // Native instance+C4h class id, or -1 for an unresolved identity/invalid index.
     int unit_class_id(std::size_t index) const noexcept;
 
