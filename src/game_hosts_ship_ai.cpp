@@ -423,7 +423,9 @@ inline constexpr bool kAutoTargetFollowerGateBound = false;
 // for the outline, turns to the nearer free corner, then leans the bearing off
 // the outline within the query's widths. False: both sites answer false, as
 // the record has since the sector scan landed. Calls count on both sides.
-inline constexpr bool kShipAiFreeBearingBound = false;
+// ON (2026-09-28): JM06 and USN01 move through 96 corners and 257 leans; five rows identical
+// (section 14).
+inline constexpr bool kShipAiFreeBearingBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
