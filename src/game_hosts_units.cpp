@@ -1221,6 +1221,16 @@ struct GameUnitSlot {
     // Packet cc9_units_capture_accessors: unit+7A0h CaptureRange as 006F2780 stores
     // it (the scene record's dword, 500 when unauthored).
     std::int32_t capture_range_7a0{500};
+    // Packet cc9_squadron_travel_alt: the squadron cruise block 0089F550 writes, kept on
+    // the squadron's slot. The countdown +380h is held as the clock at which it goes
+    // below zero (0.5 s after the call); -1.0 at construction means already expired.
+    bool sq_alt_set{false};          // +394h holds a script altitude
+    float sq_alt_394{0.0f};          // +394h
+    bool sq_freeze_38d{false};       // +38Dh, countdown 1's freeze byte
+    bool sq_lock_3a9{false};         // +3A9h
+    double sq_timer_expiry_380{-1.0};
+    bool sq_ever_set{false};
+    float sq_last_cruise{0.0f};
     // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
     // as the pitch rate; 009D1E39 divides the nose-down angle by it to shallow
     // the aim tick's dive command as the dive steepens.
@@ -3485,6 +3495,17 @@ struct GameUnitsHost::Impl {
     }
 
     void record_slot(const char* method, const char* text) { log.unimplemented(method, text); }
+
+    // Packet cc9_squadron_travel_alt: the slot holding a plane's squadron block, the
+    // registry squadron unit (the fused leader), else the plane's own slot.
+    GameUnitSlot* squadron_slot_of(std::size_t unit) {
+        if (unit >= slots.size()) return nullptr;
+        if (const bsp::PlaneSquadronHostRecord* r =
+                bsp::plane_squadron_registry().find_by_member_unit(unit)) {
+            if (r->squadron_unit < slots.size()) return slots[r->squadron_unit].get();
+        }
+        return slots[unit].get();
+    }
 
     bool is_controlled(const GameUnitSlot& slot) const {
         return controlled_bound && controlled_index < slots.size()
@@ -8510,6 +8531,21 @@ bool GameUnitsHost::set_submarine_depth_level_008528b0(std::size_t unit_index, i
 }
 
 // Packet cc9_submarine_air. 00893C00's store at unit+1280h.
+bool GameUnitsHost::set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude,
+                                                     bool force) {
+    Impl& host = *impl_;
+    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
+    if (sq == nullptr) return false;
+    sq->sq_timer_expiry_380 = host.summary.simulated_seconds + 0.5;  // +380h = [00CE3800]
+    sq->sq_freeze_38d = force;                                        // +38Dh
+    sq->sq_alt_394 = altitude;                                        // +394h
+    sq->sq_lock_3a9 = true;                                           // +3A9h = 1
+    sq->sq_alt_set = true;                                            // +3ADh = 0
+    sq->sq_ever_set = true;
+    host.done("PlaneSquadron::set_travel_alt_0089f550", 0x0089f550u);
+    return true;
+}
+
 bool GameUnitsHost::set_unlimited_air_00893c00(std::size_t unit_index, bool flag) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size()) return false;
@@ -16183,7 +16219,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const bool large = bsp::unit_is_kind_of(unit_.class_id, 0x10) ||
                                            bsp::unit_is_kind_of(unit_.class_id, 0x16);
-                        const float cruise = (large ? large_alt : small_alt) + 0.6f * rnd;
+                        float cruise = (large ? large_alt : small_alt) + 0.6f * rnd;
+                        if constexpr (kSquadronTravelAltBound) {
+                            // Packet cc9_squadron_travel_alt: 009C3650's gate on the
+                            // squadron block, taking this 0.5 s refresh as the profile's
+                            // call (LABELLED) and the value above as its arm's value.
+                            GameUnitSlot* sq = owner_.squadron_slot_of(unit_.process_index);
+                            if (sq != nullptr && sq->sq_alt_set) {
+                                const double now = owner_.summary.simulated_seconds;
+                                const bool below_zero = !sq->sq_freeze_38d
+                                    && now >= sq->sq_timer_expiry_380;
+                                if (sq->sq_freeze_38d) {
+                                    cruise = sq->sq_alt_394;             // 009C372A JNZ, return
+                                } else if (below_zero && !sq->sq_lock_3a9) {
+                                    sq->sq_alt_set = false;             // the profile overwrites
+                                } else {
+                                    sq->sq_lock_3a9 = false;            // 009C3943
+                                    cruise = sq->sq_alt_394;
+                                }
+                                ++owner_.summary.squadron_travel_alt_refreshes;
+                                sq->sq_last_cruise = cruise;
+                            }
+                        }
                         unit_.moveto_point[1] = cruise - unit_.moveto_alt_offset_2c;
                         const float dx = unit_.moveto_point[0] - unit_.motion.position[0];
                         const float dz = unit_.moveto_point[2] - unit_.motion.position[2];
@@ -20090,6 +20147,16 @@ void GameUnitsHost::report() {
     host.log.notef("summary mission plane row position bound=%d refreshes=%llu (entity+FCh "
         "copy for 008A7C3C, packet cc9_controlled_plane_ai_moveto)",
         kPlaneRowPositionBound ? 1 : 0, host.summary.plane_row_refreshes);
+    host.log.notef("summary mission squadron travel alt bound=%d gated_refreshes=%llu "
+        "(0089F550 -> 009C3650 gate, packet cc9_squadron_travel_alt)",
+        kSquadronTravelAltBound ? 1 : 0, host.summary.squadron_travel_alt_refreshes);
+    for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+        if (!s->sq_ever_set) continue;
+        host.log.notef("  squadron travel alt %s: alt=%.1f force=%d active=%d last_cruise=%.1f "
+            "y=%.1f", s->row.name.c_str(), static_cast<double>(s->sq_alt_394),
+            s->sq_freeze_38d ? 1 : 0, s->sq_alt_set ? 1 : 0,
+            static_cast<double>(s->sq_last_cruise), static_cast<double>(s->motion.position[1]));
+    }
     {
         // Packet cc9_plane_death_modes.
         std::size_t modes[6] = {0, 0, 0, 0, 0, 0};

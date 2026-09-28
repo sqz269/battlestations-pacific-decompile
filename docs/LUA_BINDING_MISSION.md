@@ -2837,3 +2837,58 @@ All three match the predictions. No fed plane task runs after the call on these 
 
 **Verdict: `kLuaDeviceReloadEnabledBound = true`.** The `009FFEB0` line in `src/game_hosts_ai.cpp`
 stays a labelled stand-in until it is routed. It gives the same answer, false, either way.
+
+### SquadronSetTravelAlt, bound (packet `cc9_squadron_travel_alt`, `kSquadronTravelAltBound`, committed OFF)
+
+Worker cc9-lua4, 2026-09-28. The lead gave this lane `src/game_hosts_units.cpp` for it.
+
+**The image, term by term (V, listing).**
+- **The block.** `007F2BD0` (`BSP_PlaneSquadron_InitTimerBlock`, from the constructor at
+  `007F2D2B`) makes `squadron+37Ch..+388h` four countdowns, all `[00D7A260]` = -1.0, and
+  `+38Ch..+38Fh` their freeze bytes, all 0. `+3A9h` starts at 0.
+- **The tick.** `007F3BA0` subtracts the step from each countdown whose freeze byte is clear
+  (`squadron_tick_advance_sim_007f3ba0`).
+- **The native.** `0089F550` stores `+380h = 0.5` (countdown 1), `+38Dh = force` (its freeze
+  byte), `+394h = altitude`, `+3A9h = 1` and `+3ADh = 0`. The scan for `+380h` stores finds only
+  this native and the tick, plus the ship AI's own `+380h` at `009F3FDB`/`009F47A7`, which is a
+  different class.
+- **The profile `009C3650`** is a task's `vtable[54h]` (`00D20BBC`, `00D20C34`). Every ordnance
+  arm and both fighter arms end the same way on the block `[task+404h]+37Ch`:
+  - `CMP [+38Dh],0 / JNZ` returns at once;
+  - `COMISS 0,[+380h] / JBE` skips the write unless `+380h < 0`;
+  - `CMP [+3A9h],0 / JNZ` skips it while the lock is set;
+  - otherwise it writes `+394h` (for example `009C3757` `FSTP [ESI+18h]`) and sets `+3ADh = 1`;
+  - every skip lands on `009C3943`, which clears `+3A9h`.
+- **So:**
+  - with `force`, the script's altitude holds for good;
+  - without it, the altitude holds until the countdown passes zero, 0.5 s after the call, and
+    the profile has run once to clear the lock; the next profile call replaces it.
+
+**The binding.**
+- The Lua row routes to `run_squadron_set_travel_alt_0089f550`, which calls
+  `GameUnitsHost::set_squadron_travel_alt_0089f550`.
+- That stores the block on the squadron's slot: the registry squadron unit, which is the fused
+  leader. The countdown is kept as the clock at which it goes below zero.
+- The moveto refresh (`moveto_refresh_009beba0`) applies the profile's gate to the value it
+  already computes, SmallPlaneTravelAlt / LargePlaneTravelAlt plus 0.6 times TravelAltRandom.
+- **SUBSTITUTIONS (labelled).**
+  - The host's 0.5 s moveto refresh stands for the profile's call. When `009C3650` itself runs
+    was not traced; its callers are task vtables.
+  - The other `+394h` readers (the torpedo go-away's `squadron_cruising_alt_394`) keep their
+    tuning value.
+- The census is `summary mission squadron travel alt`, with one line per squadron the native
+  touched.
+
+**Predictions, before any run.**
+- **JM08 3200/3000: exit 3.**
+  - `prcpjm08.lua` 574 calls `SquadronSetTravelAlt(Mission.MovPlane, 750, true)` in the stage init
+    on "Movie Mavis", a large recon flying boat. Its moveto to MoviePoint currently steers at
+    LargePlaneTravelAlt 1400 + 0.6 * 50 = 1430 m (`planeglobals.lua` 461-463).
+  - With the binding and `force` it steers at 750 m (less its +2Ch offset) for the whole run.
+    `last_cruise` should read 750.0, and its altitude `y` should end well below the OFF run's.
+  - The Mavis is invincible. What else moves depends on who can reach it lower down: more AA
+    shots at it, and through the shared stream, other draws. The deaths may shift. They should
+    not change in kind.
+- **USN04 4700/4500 and USN13 3200/3000: exit 1, gameplay identical.** Neither run reaches the
+  native (USN04 has one call, `usn_19_coralus.lua` 2182, not reached in 4500 frames); only the
+  summary's `bound=` differs.

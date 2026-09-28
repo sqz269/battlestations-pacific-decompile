@@ -196,6 +196,7 @@ struct GameUnitsSummary {
     // 007C6481 sets to 7. docs/PLANE_FLIGHT_CORE_LAW.md.
     unsigned long long plane_steps{0};
     unsigned long long plane_row_refreshes{0};  // cc9_controlled_plane_ai_moveto
+    unsigned long long squadron_travel_alt_refreshes{0};  // cc9_squadron_travel_alt
     unsigned long long plane_arm_free_flight{0};
     unsigned long long plane_arm_ground_roll{0};
     unsigned long long plane_arm_surface{0};
@@ -283,6 +284,15 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // ship-motion loop, so a plane's row keeps its spawn position while the plane flies.
 // True: after 007CE040's fixed step, a plane's row takes its motion position, and its
 // moved distance follows. False: the row stays at the spawn position.
+// Packet cc9_squadron_travel_alt (docs/LUA_BINDING_MISSION.md, "SquadronSetTravelAlt,
+// bound"). 0089F550 writes the squadron's cruise block: +380h (countdown 1 of the
+// 007F2BD0 timer block, init -1.0) = 0.5, +38Dh (its freeze byte) = force, +394h = the
+// altitude, +3A9h = 1, +3ADh = 0. The cruise profile 009C3650 (task vtable +54h) returns
+// at once while +38Dh is set, overwrites +394h only when +380h < 0 and +3A9h is clear, and
+// otherwise clears +3A9h. True: the Lua row stores the block on the squadron's slot and the
+// moveto refresh applies that gate. False: unimplemented; the refresh uses its own value.
+inline constexpr bool kSquadronTravelAltBound = false;
+
 inline constexpr bool kPlaneRowPositionBound = true;  // ON: mechanism held, one premise miss (docs/CONTROLLED_UNIT.md)
 
 inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 15)
@@ -350,6 +360,10 @@ public:
     // Packet cc9_submarine_air. unit+1280h, 00893C00's store. False when the slot
     // is not a seeded submarine.
     bool set_unlimited_air_00893c00(std::size_t unit_index, bool flag);
+    // Packet cc9_squadron_travel_alt: 0089F550's five stores on the squadron of
+    // unit_index (its registry squadron unit when it is a member). False when the
+    // unit has no slot.
+    bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
 
     // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
     // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The

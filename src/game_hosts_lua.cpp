@@ -336,6 +336,9 @@ int binding_trampoline(lua_State* state) {
     // Packet cc9_device_reload_enabled.
     const bool device_reload_row = kLuaDeviceReloadEnabledBound
         && dispatch_row.address == 0x008c1350u;
+    // Packet cc9_squadron_travel_alt.
+    const bool travel_alt_row = kSquadronTravelAltBound
+        && dispatch_row.address == 0x0089f550u;
     // Packet cc9_lua_formation_query.
     const bool in_formation_row = kLuaFormationQueryBound
         && dispatch_row.address == 0x008996a0u;
@@ -374,7 +377,7 @@ int binding_trampoline(lua_State* state) {
         || forced_recon_row || add_damage_row || aa_enable_row || ship_speed_row
         || attack_target_row || squadron_speed_row || class_changed_row || sub_depth_row
         || slot_count_row || device_reload_row || unlimited_air_row
-        || in_formation_row || leave_formation_row
+        || in_formation_row || leave_formation_row || travel_alt_row
         || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || select_unit_row || movie_add_row || force_select_row
@@ -481,6 +484,10 @@ int binding_trampoline(lua_State* state) {
     }
     if (device_reload_row) {
         if (!host->error_replay()) host->run_set_device_reload_enabled_008c1350(state, argc);
+        return 0;
+    }
+    if (travel_alt_row) {
+        if (!host->error_replay()) host->run_squadron_set_travel_alt_0089f550(state, argc);
         return 0;
     }
     if (in_formation_row && !host->error_replay()) {
@@ -4638,6 +4645,29 @@ int GameMissionLuaHost::run_set_device_reload_enabled_008c1350(lua_State* state,
     log_.notef("  SetDeviceReloadEnabled 008c1350: flag=%d -> 00E17BF2 (packet "
         "cc9_device_reload_enabled)", flag ? 1 : 0);
     log_.implemented("MissionLuaNative::SetDeviceReloadEnabled", "008c1350");
+    return 0;
+}
+
+// Packet cc9_squadron_travel_alt. 0089F550 SquadronSetTravelAlt(squadron, alt [, force]):
+// argument 0 through BSP_ObjectHandle_FromLuaTable, argument 1 as a number, and argument 2
+// as a boolean only when exactly three arguments are passed (TRIV_body_00b663f0 == 3),
+// else false. No result.
+int GameMissionLuaHost::run_squadron_set_travel_alt_0089f550(lua_State* state,
+    int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const float altitude = argument_count >= 2 ? static_cast<float>(::lua_tonumber(state, 2)) : 0.0f;
+    const bool force = argument_count == 3 && ::lua_toboolean(state, 3) != 0;
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_squadron_travel_alt_0089f550(static_cast<std::size_t>(id - 1),
+            altitude, force);
+    }
+    const GameUnitRow* row = (stored) ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SquadronSetTravelAlt 0089f550: \"%s\" alt=%.1f force=%d stored=%d (packet "
+        "cc9_squadron_travel_alt)", row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(altitude), force ? 1 : 0, stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronSetTravelAlt", "0089f550");
     return 0;
 }
 
