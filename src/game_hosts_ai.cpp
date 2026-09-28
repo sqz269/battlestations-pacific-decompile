@@ -230,6 +230,15 @@ constexpr bool kAiOrderReissueBound = true;
 // ON: USN02, USN13 and USN04 identical (docs/PLANNER_TASK_CHOICE.md section 4).
 constexpr bool kAiPlannerSlotKindsBound = true;
 
+// Packet cc9_planner_defend_capture_thinks, docs/PLANNER_TASK_CHOICE.md section 6.
+// True: the Attack kind runs 00A1CF90 (00A1CB80 per owned group with the party's
+// aggressive ratio, reset 0) and the Capture kind runs 00A29FD0's no-target path
+// (release every owned group and hand it to brain+4h, or brain+8h beside an own
+// CommandBuilding). A Capture think that has an enemy CommandBuilding still runs
+// the Siege-shape stand-in. False: every kind runs the Siege shape. ON: USN02,
+// USN04, USN13, USN01 identical (docs/PLANNER_TASK_CHOICE.md section 6.4).
+constexpr bool kAiCaptureThinkBound = true;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -1962,9 +1971,96 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 first == nullptr ? -1 : static_cast<int>(first->command.type),
                 enemy_team_group_count(bsp::ai_enemy_team_index(current_party)));
         }
+        if constexpr (kAiCaptureThinkBound && kAiPlannerSlotKindsBound) {
+            if (p->kind == bsp::AiPlannerKind::Attack) {
+                attack_think_00a1cf90(*p);
+                ticking_planner = nullptr;
+                return;
+            }
+            if (p->kind == bsp::AiPlannerKind::Capture && capture_think_00a29fd0(*p)) {
+                ticking_planner = nullptr;
+                return;
+            }
+        }
         bsp::ai_mode_planner_tick(*this, in);
         ticking_planner = nullptr;
         record("AiPlanners::planner_tick", 0x00a26510u);
+    }
+
+    unsigned long long attack_thinks{0};
+    unsigned long long capture_thinks{0};
+    unsigned long long capture_target_fallbacks{0};
+    unsigned long long capture_handoffs{0};
+    // 00CE3800, the value 00A32F29 resets every party's aggressive ratio to.
+    static constexpr float kPartyAggressiveRatio = 0.5f;
+    // Packet cc9_planner_defend_capture_thinks. 00A1CF90, body 00A1CF90-00A1D00F:
+    // for every owned group, 00A1CB80(group, [00F8A8D0 + party*1Ch], 0)
+    // (00A1CFAB MOVSS the party's aggressive ratio; 00A1CFEE PUSH 0; 00A1CFF7).
+    // The ratio has no host store (the AIEnable table branch is unbound and no
+    // installed mission script sets aggressiveRatio), so the reset value
+    // 00A32F29 writes, 0.5 at 00CE3800, stands.
+    void attack_think_00a1cf90(Planner& p) {
+        ++attack_thinks;
+        const std::vector<Group*> owned = p.owned;
+        for (Group* g : owned) {
+            if (g == nullptr || g->destroyed) continue;
+            bsp::ai_planner_choose_attack_target(*this, g, current_party,
+                bsp::ai_enemy_team_index(current_party), kPartyAggressiveRatio, false);
+        }
+        done("AiPlanners::attack_think_00a1cf90", 0x00a1cf90u);
+    }
+    // 00A29FD0, the Capture think. Its targets are list 28 (world+19CCh -> +16Ch,
+    // the CommandBuilding list, docs/UNIT_WORLD_REGISTRATION.md) entities not on
+    // the planner's side (00A2A13B CMP [e+54h],[planner+30h]). The assignment
+    // loop runs only while both the target and the group records are non-empty
+    // (`while (targets != 0 && groups != 0)`), so with no enemy CommandBuilding
+    // no 00A1A720 order is issued. Every group left unassigned is then released
+    // through vtable+24h (00A1E210: observer unregister, erase from +20h,
+    // group+5654h = 0) and claimed by brain+4h, Attack, when its record's
+    // nearest own list-28 entity (node+1Ch) is null (00A2AFC0), or by brain+8h
+    // when it is set (00A2B1CF / 00A2B2AF). With no target the think then frees
+    // and returns (local_17c == 0) before the spawn arm.
+    // Returns false when an enemy CommandBuilding exists: the target path
+    // (00A1E250 scoring, the assignment loop, the merges and the spawn arm) is
+    // not reconstructed yet and the previous Siege-shape stand-in runs.
+    bool capture_think_00a29fd0(Planner& p) {
+        const int side = current_party;
+        bool have_target = false;
+        bool own_building = false;
+        for (std::size_t unit = 0; unit < units.count(); ++unit) {
+            if (!units.unit_is_kind_of(unit, 0x1C)) continue;          // MCommandBuilding
+            if (!units.unit_active(unit)) continue;
+            if (units.unit_side_0054(unit) != side) have_target = true;
+            else own_building = true;
+        }
+        if (have_target) {
+            ++capture_target_fallbacks;
+            record("AiPlanners::capture_target_path_00a2a130", 0x00a2a130u);
+            return false;
+        }
+        ++capture_thinks;
+        Brain* brain = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
+            ? brains[static_cast<std::size_t>(side)].get() : nullptr;
+        if (brain == nullptr) return true;
+        const std::vector<Group*> owned = p.owned;
+        for (Group* g : owned) {
+            if (g == nullptr || g->destroyed) continue;
+            // 00A1E210: release from the Capture planner.
+            p.owned.erase(std::remove(p.owned.begin(), p.owned.end(), g), p.owned.end());
+            if (g->claimed_by == &p) g->claimed_by = nullptr;
+            // node+1Ch: the nearest own-side list-28 entity. With own buildings
+            // present the record takes one; the host does not rank them, and a
+            // group with an own building nearby goes to brain+8h.
+            const int to_slot = own_building ? 2 : 1;
+            Planner& next = brain->planners[static_cast<std::size_t>(to_slot)];
+            if (g->claimed_by == nullptr) {
+                g->claimed_by = &next;
+                next.owned.push_back(g);
+                ++capture_handoffs;
+            }
+        }
+        done("AiPlanners::capture_think_00a29fd0", 0x00a29fd0u);
+        return true;
     }
     void* first_group_of_party(int party_slot) override {
         if (party_slot < 0 || party_slot >= static_cast<int>(by_team.size())) return nullptr;
@@ -2781,6 +2877,11 @@ void GameAiCoordinatorHost::report() {
         host.summary.squadrons_built, host.summary.squadron_members,
         host.summary.squadron_group_members, host.summary.squadron_excluded,
         host.summary.squadron_commands, host.summary.squadron_member_orders);
+    if constexpr (kAiCaptureThinkBound) {
+        host.log.notef("summary mission ai capture thinks=%llu target_fallbacks=%llu handoffs=%llu "
+            "attack_thinks=%llu (packet cc9_planner_defend_capture_thinks)", host.capture_thinks,
+            host.capture_target_fallbacks, host.capture_handoffs, host.attack_thinks);
+    }
     if constexpr (kGeneratedSquadronBrainBound) {
         host.log.notef("summary mission ai generated squadrons=%llu index_shifts=%llu "
             "(packet cc9_generated_squadron_brain_membership)",
