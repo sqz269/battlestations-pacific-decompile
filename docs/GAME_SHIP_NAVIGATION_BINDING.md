@@ -155,3 +155,46 @@ about 1.556 to about 2.83 rad.
 
 **USN02 9200/9000 and USN04 4700/4500: identical (exit 0 or 1).** Neither log has a `moveto` at a
 marker id.
+
+### The two labels, read (follow-up plan)
+
+**`00836A6C` is not what stops a ship at the point.** It is the weapon director's generic arrival
+arm (docs/COMMAND_EXECUTION.md). It runs only when:
+- more than one command is queued;
+- the stage is below 1;
+- the head is not category 1 or 2;
+- the last queued command is category 1 or 2.
+
+It then raises stage 2 within 2000 units, the double `4000000.0` at `00D09FE8`.
+
+PRCP03's orders are single `NavigatorMoveToRange` commands, so the arm never runs for them in the
+image either. The stop at the point is the ship AI's `movetopos` state, which measures against
+the goal vector. With the goal at the marker, the host now measures against the same point the
+image does. **No follow-up is needed for arrival.** A queued `moveto` behind another command would
+need the arm to resolve the marker too. That is small: `resolve_command_target_00521ea0` plus
+`command_target_facts` for a marker id. It stays out of this packet because no measured mission
+queues one.
+
+**`raw_target_0b20` does matter in one place.** In the image it holds the NavPoint (the
+`00521EA0` object).
+- Every consumer that asks a kind question drops a NavPoint:
+  - `009F1491` filters `vtable[5Ch](2)`, so `+0B24h` is 0;
+  - `009E5E00` asks `vtable[5Ch](1Ch)`;
+  - `009E1A8C` asks `1Ch`;
+  - `009F2F3C` asks `5`.
+- The visibility gate at `009F1513` reads it only when the filtered target is nonzero.
+- **But `009F2AC9` tests the raw pointer alone** (`TEST EDI,EDI`, `JE 009F2DF7`). With a NavPoint
+  the image takes the **with-target** arm of the query block (section 10 of
+  docs/SENTITY_INIT_PASSES.md):
+  - `+12B8h = [director+221h] && 008637D0(NavPoint)`;
+  - the torpedo half runs with `EBX = 0`, because a NavPoint fails `vtable[5Ch](5)`, so the gate
+    stays set and `+12B4h` stays 0.
+- The host, with `raw_target_0b20 = 0`, takes the no-target arm and copies the director's four
+  bytes as they are.
+
+So on a `moveto` to a marker, the image's `+12B8h` can differ: it is cleared when `008637D0`
+refuses the NavPoint. The follow-up is to carry the marker id as `raw_target_0b20`, with a marker
+answering every kind test false and `008637D0` answered for it. It is small, but it touches
+`009F2AC9`'s host (the gate-bytes binding in `src/game_hosts_ship_ai.cpp`) and `008637D0`'s
+target model. It is planned to go into the flip commit only if the pairs show the `+12B8h` gun gate
+matters on a marker `moveto`. Otherwise it gets its own packet.
