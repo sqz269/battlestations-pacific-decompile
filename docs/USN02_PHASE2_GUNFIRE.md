@@ -18,6 +18,10 @@ is the image's in every bound term. **No switch was added.**
   `killer_gun=403`), in the director pair's ON run (cc9-gunnery3 `local\WD_ON_USN02.log`), and
   only on that pair's base. On main, with AddDamage also ON, Exeter survives (reference g).
 
+**On the synced head** (main `cf152453e`, with `kGeneratedShipAiBound`), section 6 repeats the
+measurements. Haguro's counts are identical to the decimal. The helm-route loss is still the
+Tokitsukaze torpedo, and Exeter now falls to an Ushio torpedo.
+
 ## 2. The runs
 
 All four runs use `local\rb7\build\win32\Release\bsp_game.exe`, USN02 9200/9000, streams and the
@@ -115,3 +119,60 @@ Haguro's fire at Houston, 166..212 s, counted from the trace lines:
   not gunfire.
 - GUNNERY_OPEN_ITEMS 15's "Exeter is sunk at 211.76 s" was a Nachi torpedo on a base without
   AddDamage. Reference g (docs/GAME_EXECUTABLE.md, 2026-09-28 g) records that main does not fail.
+
+## 6. On the synced head (main `cf152453e`, with `kGeneratedShipAiBound`)
+
+The lead asked for the measurements on a head that carries ships3's `kGeneratedShipAiBound`
+(`f5863a954`). This tree merged main `cf152453e`. Its `build\` adds only the display request of
+`cc9_display_required`, which is gameplay-neutral (docs/TOOLING.md 8.1). Both runs trace all 18
+Japanese ships, with streams, the death table and lockstep 0.05.
+
+| log | player | Houston | Exeter | mission end |
+| --- | --- | --- | --- | --- |
+| `local\g4_sy_helm_usn02.log` | `3135 takehelm Houston 1.0 EscapePoint` | sunk 208.26 s, credited to Haguro (gun 166, 1878 m) | sunk 211.56 s by an Ushio torpedo at 4606 m | failed 212.91 s |
+| `local\g4_sy_plain_usn02.log` | idle | sunk 295.95 s, credited to Jintsu (category 2, 1040 m) | sunk 210.81 s by an Ushio torpedo at 4602 m | failed 212.91 s |
+
+**Haguro against Houston, from Houston's first damage (166.61 s) to her sinking:**
+
+| run | window | Haguro shots at Houston | direct hits | applied | blast hits (applied) | Haguro sunk |
+| --- | --- | --- | --- | --- | --- | --- |
+| helm | 166.61..208.26 s | 19 | 9 | 473.9 | 9 (0) | 206.76 s, by Exeter |
+| plain | 166.61..295.95 s | 40 | 10 | 530.7 | 10 (0) | 206.81 s, by Exeter |
+
+These equal the rb7 numbers in sections 3 and 4 to the decimal. Every term of section 3 holds on
+this head: bases 180.1..189.5, armour 90, 50.1..55.3 applied per direct hit, 0 per blast, a mean
+interval of 4.34..5.01 s per platform.
+
+**Everything that damaged Houston, by shooter** (`local\g4_onhouston.py` over the trace lines):
+
+| run | shooter | category | record | hits | applied |
+| --- | --- | --- | --- | --- | --- |
+| helm | Tokitsukaze | 7 (torpedo) | blast + direct | 2 | 3988.4 |
+| helm | Haguro | 3 | direct | 9 | 473.9 |
+| helm | Nachi | 7 | direct | 1 | 0.0 (after the sinking) |
+| plain | Haguro | 3 | direct | 10 | 530.7 |
+| plain | Jintsu | 2 | direct | 12 | 407.9 |
+| plain | Murasame | 6 | direct | 8 | 270.2 |
+| plain | Harusame | 6 | direct | 2 | 70.5 |
+| plain | **John1 (party 0, friendly)** | torpedo, class 62 | blast | 2 | 1565.5 (782.9 + 782.6) |
+
+- **Helm route.** It is the same as on rb7. One Tokitsukaze Long Lance, from the salvo she aimed
+  at Exeter, does 3988 of Houston's 4462. Haguro only finishes her.
+- **Plain run.** All Japanese gunfire together applies 1279.3 to Houston over 129 s, and Haguro's
+  share is 530.7.
+  - Two torpedoes from the US destroyer John1 hit Houston at 276.11 and 277.01 s. They were
+    launched at 273.71 s at Harusame, with Houston 101 m away along the run (87 m along, 51 m
+    across). Each blast applied about 783.
+  - John1's launch-gate line reads `friendly_in_2km=4 crossed=0 closest=-`.
+  - A component-failure explosion at 274.01 s and the fire and flooding losses take the rest.
+- **So no USN02 loss on this head is a gunfire over-kill.** Houston's helm-route loss is a
+  torpedo that her idle path would have evaded. Exeter's loss is Ushio's torpedo
+  (GENERATED_SHIP_AI 5). Houston's plain-run loss comes mostly from friendly torpedoes and damage
+  control.
+
+**Open, for other packets (not gunfire):**
+- **John1's friendly launch.** `kTorpedoFriendlyCrossingBound` (008FFF20's gate,
+  `0090058A..009007F6`) let a spread go with Houston 51 m off the run line at 101 m. Whether the
+  image's gate would hold that launch is not established here.
+- **Houston's damage-control losses on the plain run** (about 3650 of 6500) are not broken down
+  per source. The log has no per-unit fire or flood line.
