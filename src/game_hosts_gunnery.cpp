@@ -166,6 +166,20 @@ constexpr bool kShipPlatformAttachmentBound = true;
 //    The host's sink is a record only, so the refusal changes no state. OFF:
 //    every site passes 0, as before. The floor itself is stored either way.
 constexpr bool kUnitInvincibilityFloorBound = false;
+//  * kGunneryLineOfSightBound (packet cc9_gunnery_line_of_sight,
+//    docs/GUNNERY_OPEN_ITEMS.md section 5): 00864D90's visibility test runs
+//    00864680 instead of answering visible. The target's point is its pose raised
+//    by class Height + Globals +94h (5.0) (008646C0..008647B6); the observer's by
+//    Height + Globals +90h (5.0) (00864E17..00864EAE). 00904400 casts the segment
+//    target -> observer through 0098ADD0 with kind 44h (Landscape); a hit more than
+//    25 m (00CFBC80 = 625.0, squared) from the observer hides the target. The
+//    cache entry then lives U(0.8, 1.2) (00CE74F8, 00CE3814) times Globals +A0h
+//    (5.0, visible) or +A4h (4.0, hidden). LABELLED: 0081DE10 (the ship-in-
+//    another-entity's-footprint test over [[00E188A8]+19CCh]+364h, and unit+1130h)
+//    answers 0 here; the section-span raise branch (class+50h and 00862C00) is
+//    not taken; 00864680's 0.5 s point cache is not kept, the point is taken at
+//    each test. OFF: every test answers visible and the entry lives U(0, 5.0).
+constexpr bool kGunneryLineOfSightBound = false;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -1936,6 +1950,10 @@ struct GameGunneryHost::Impl {
     void apply_impact_blast(std::size_t shooter, std::size_t gun_row,
         const float point[3], const float direction[3]);
     void kill_unit(std::size_t victim);
+    // Packet cc9_gunnery_line_of_sight: 00864680 for (observer, target).
+    bool line_of_sight_00864680(std::size_t observer, std::size_t target);
+    unsigned long long los_tests{0};
+    unsigned long long los_blocked{0};
 
     // --- rule (c), the sensor pass ------------------------------------------
     // docs/RECON_SENSOR_PASS_BINDING.md. 008073C0 runs once per tick over every
@@ -3745,18 +3763,26 @@ public:
         for (const auto& entry : state_.visibility) {
             if (entry.target == other) return entry.visible;
         }
-        // 00864680, the line-of-sight test itself, is contract: unread. Over
-        // open water with no terrain in this process the answer is yes.
-        owner_.record("Gunnery::line_of_sight_00864680", 0x00864680u);
         GameGunneryHost::Impl::UnitState::VisibilityEntry entry;
         entry.target = other;
-        entry.visible = true;
-        entry.ttl = owner_.draw(GameGunneryHost::Impl::Draw::visibility_ttl, unit_, other,
-            0.0f,
-            bsp::kInstalledLosVisibleTimeOut);
+        if (kGunneryLineOfSightBound) {
+            entry.visible = owner_.line_of_sight_00864680(unit_, other);
+            // 00864EDE..00864F0x: U(0.8, 1.2) on stream 1 times +A0h or +A4h.
+            const float scale = entry.visible ? bsp::kInstalledLosVisibleTimeOut
+                                              : bsp::kInstalledLosInvisibleTimeOut;
+            entry.ttl = owner_.draw(GameGunneryHost::Impl::Draw::visibility_ttl, unit_, other,
+                0.8f, 1.2f) * scale;
+        } else {
+            // OFF: 00864680 unread; over open water the answer is yes.
+            owner_.record("Gunnery::line_of_sight_00864680", 0x00864680u);
+            entry.visible = true;
+            entry.ttl = owner_.draw(GameGunneryHost::Impl::Draw::visibility_ttl, unit_, other,
+                0.0f,
+                bsp::kInstalledLosVisibleTimeOut);
+        }
         state_.visibility.push_back(entry);
         owner_.done("Gunnery::visibility_cache_append_00864d90", 0x00864d90u);
-        return true;
+        return entry.visible;
     }
 
     int target_rank(int category, void* target) override {
@@ -5616,7 +5642,13 @@ public:
         return reinterpret_cast<const void*>(static_cast<std::size_t>(slot) + 1);
     }
     const void* entity_owner(const void* entity) override { return entity; }
-    bool entity_is_kind(const void*, int) override { return true; }
+    // Kind 44h is the Landscape class (docs/ENTITY_CLASS_IDS.md); only the
+    // Landscape entries answer it. Every other kind a caller passes stays true
+    // for every entity, as before (packet cc9_gunnery_line_of_sight).
+    bool entity_is_kind(const void* entity, int kind) override {
+        if (kind != 0x44) return true;
+        return landscape_entry(reinterpret_cast<std::size_t>(entity) - 1) >= 0;
+    }
     bsp::HitQueryBounds entity_bounds(const void* entity) override {
         bsp::HitQueryBounds bounds;
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
@@ -5922,6 +5954,46 @@ bool query_segment_units_impl(GameGunneryHost::Impl& host, const float from[3],
 }
 
 }  // namespace
+
+bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::size_t target) {
+    ++los_tests;
+    // 00864680: the target's cached point, pose +FCh raised by Height + [+94h].
+    float r[3], u[3], f[3], tp[3], op[3];
+    unit_pose(target, r, u, f, tp);
+    const float target_height = target < unit_state.size() ? unit_state[target].hull_height : 0.0f;
+    tp[1] = tp[1] + (target_height + bsp::kInstalledLosViewerHeightAdd);   // config +94h
+    // 0081DE10 for a ship target: not modelled, answers 0 (labelled).
+    // 00864D90: the observer's point, pose +FCh raised by Height + [+90h].
+    unit_pose(observer, r, u, f, op);
+    const float observer_height = observer < unit_state.size() ? unit_state[observer].hull_height : 0.0f;
+    op[1] = op[1] + (observer_height + bsp::kInstalledLosTargetHeightAdd);  // config +90h
+    // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0.
+    const unsigned long long mesh_hits = shell_mesh_hits;
+    const unsigned long long box_hits = narrowphase_box_0085cdb0;
+    SegmentBinding query(*this, static_cast<std::size_t>(-1));
+    bsp::SegmentQueryArgs args;
+    args.from = bsp::HitQueryPoint{tp[0], tp[1], tp[2]};
+    args.to = bsp::HitQueryPoint{op[0], op[1], op[2]};
+    args.exclude_entity = nullptr;
+    args.kind_filter = 0x44;
+    bsp::HitRecordFill record;
+    bsp::hit_record_reset_00470470(record);
+    const bool hit = bsp::query_segment_0098add0(query, args, record);
+    shell_mesh_hits = mesh_hits;
+    narrowphase_box_0085cdb0 = box_hits;
+    done("Gunnery::line_of_sight_00864680", 0x00864680u);
+    if (!hit) return true;
+    // 00864680 tail: blocked when |observer - hit|^2 > 625 (00CFBC80).
+    const float dz = op[2] - record.position.z;
+    const float dy = op[1] - record.position.y;
+    const float dx = op[0] - record.position.x;
+    const float d2 = dz * dz + dx * dx + dy * dy;   // 008648xx: (z, x) then y
+    if (625.0f < d2) {
+        ++los_blocked;
+        return false;
+    }
+    return true;
+}
 
 bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
     std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
@@ -8631,6 +8703,9 @@ void GameGunneryHost::report() {
             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
             kShipPlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
+            "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
+            host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
         host.log.notef("summary mission gunnery invincibility sets=%llu floored_writes=%llu "
             "sink_refusals=%llu bound=%d (00897A50 -> 0042ED80, 00879070, 008110F0, "
             "packet cc9_set_invincible_floor)", host.invincibility_sets,

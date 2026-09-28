@@ -1,0 +1,22 @@
+{
+  "packet": "cc9_gunnery_line_of_sight",
+  "doc": "docs/GUNNERY_OPEN_ITEMS.md section 5",
+  "switch": "kGunneryLineOfSightBound (src/game_hosts_gunnery.cpp), OFF",
+  "calls": [
+    {"address": "00864ED3", "native": "00864680", "function": "00864D90", "note": "the visibility cache's line-of-sight test"},
+    {"address": "00864E48", "native": "00862C00", "function": "00864D90", "note": "the section-span raise branch (not taken, labelled)"}
+  ],
+  "addresses": {
+    "00864680": "line of sight: target point raised by Height + Globals+94h; 0081DE10 for a ship; 00904400(44h) ray; hidden if hit farther than 25 m from the observer",
+    "0081DE10": "ship-in-footprint test over [[00E188A8]+19CCh]+364h and unit+1130h; answers 0 in the host (labelled)",
+    "00904400": "wrapper: BSP_SpatialIndex_QuerySegment(from, to, exclude, hit, kind)"
+  },
+  "no_ghidra_function": [],
+  "substitutions": [
+    "0081DE10 answers 0 (its list and unit+1130h are unidentified)",
+    "the section-span raise branch (class+50h, 00862C00) is not taken",
+    "the target point is taken at each test, not cached for 0.5 s"
+  ],
+  "names_added": [],
+  "verdict": "pending: OFF committed, pair when runs return"
+}
