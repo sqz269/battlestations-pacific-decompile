@@ -1,0 +1,54 @@
+{
+  "packet": "cc9_torpedo_spread_aim",
+  "doc": "docs/TORPEDO_SPREAD_AIM.md",
+  "verdict": "the host aim matches the image term by term; nothing bound; the USN02 29.75 s failure stands as the image's own for an idle player",
+  "log": "local/SA_usn02.log (gameplay-identical to rb8_usn02, exit 1)",
+  "recompute": "local/g4_aim_check.py (008FB8D0/008FBB00 from GUN_BOT_REMAINDER 2)",
+  "opening_spreads": [
+    {
+      "t": 1.5,
+      "shooter": "Minegumo",
+      "tube": 10,
+      "target": "Houston",
+      "range_m": 3162,
+      "intercept_s": 18.3,
+      "bare_deg": -114.34,
+      "host_run_deg": -113.96,
+      "jitter_deg": 0.0,
+      "tube_deg": -138.6,
+      "gyro_deg": -114.0
+    },
+    {
+      "t": 1.55,
+      "shooter": "Yamakaze",
+      "tube": 12,
+      "target": "Alden",
+      "range_m": 3046,
+      "intercept_s": 17.5,
+      "bare_deg": -127.45,
+      "host_run_deg": -127.37,
+      "jitter_deg": 9.02,
+      "tube_deg": -138.7,
+      "gyro_deg": -118.3
+    },
+    {
+      "t": 3.2,
+      "shooter": "Tokitsukaze",
+      "tube": 10,
+      "target": "Exeter",
+      "range_m": 3175,
+      "intercept_s": 18.4,
+      "bare_deg": 113.77,
+      "host_run_deg": 113.04,
+      "jitter_deg": -5.38,
+      "tube_deg": 147.9,
+      "gyro_deg": 107.7
+    }
+  ],
+  "notes": [
+    "run line starts at gun + 2 x snap_deg x tube axis (00900476..00900583): the 0.1..0.7 deg offset from the bare lead",
+    "the Long Lance that sinks Houston at 20.85 s is from Yamakaze's spread aimed at Alden",
+    "the solver assumes WaterTravelSpeed; the image round starts at V0 and lags about 1.6 s"
+  ],
+  "diagnostic": "BSP_TORPEDO_TUBE_TRACE=1 now also logs 'gunnery: torpedo aim' with the solver inputs"
+}

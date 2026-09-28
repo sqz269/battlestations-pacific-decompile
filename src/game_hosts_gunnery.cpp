@@ -6041,6 +6041,30 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         static_cast<double>(std::sqrt(shot.flight.velocity.x
                             * shot.flight.velocity.x + shot.flight.velocity.z
                             * shot.flight.velocity.z)));
+                    // DIAGNOSTIC, packet cc9_torpedo_spread_aim: the 008FBB00 inputs
+                    // (the gun point, the target origin and velocity), the lead the
+                    // solver and the spread gave, and the jitter, so the heading can
+                    // be recomputed outside the host.
+                    if (have_target && target < unit_state.size()) {
+                        float tr[3], tu[3], tf[3], to[3], tv[3];
+                        unit_pose(target, tr, tu, tf, to);
+                        unit_velocity(target, tv);
+                        log.notef("gunnery: torpedo aim t=%.2f shooter=%s plat=%d target=%s "
+                            "gun=(%.2f %.2f) target=(%.2f %.2f) target_v=(%.3f %.3f) "
+                            "target_fwd=(%.4f %.4f) lead=(%.2f %.2f) wts=%.3f jitter_deg=%.3f "
+                            "run_deg=%.3f",
+                            static_cast<double>(clock_seconds), state.row.name.c_str(),
+                            gun.platform_key, unit_state[target].row.name.c_str(),
+                            static_cast<double>(muzzle[0]), static_cast<double>(muzzle[2]),
+                            static_cast<double>(to[0]), static_cast<double>(to[2]),
+                            static_cast<double>(tv[0]), static_cast<double>(tv[2]),
+                            static_cast<double>(tf[0]), static_cast<double>(tf[2]),
+                            static_cast<double>(torpedo_lead_xz[0]),
+                            static_cast<double>(torpedo_lead_xz[1]),
+                            static_cast<double>(gun.water_travel_speed),
+                            static_cast<double>(sign * magnitude),
+                            std::atan2(dx, dz) * 57.2957795);
+                    }
                 }
             }
         }
