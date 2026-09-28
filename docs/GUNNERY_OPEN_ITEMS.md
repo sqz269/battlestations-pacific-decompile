@@ -514,7 +514,7 @@ commands host's unit records. Those calls stay records (`WeaponDirector::set_fir
 every command request was stored without a refusal. The failed rows are consequences, not
 divergences. The USN02 failure is flagged for reference g.
 
-## 16. The ranking refreshed on reference h (packet `cc9_gunnery_open_ranking_2`, 2026-09-29)
+## 16. The ranking refreshed on reference h (packet `cc9_gunnery_open_ranking_2`, 2026-09-28)
 
 **Source.** The eight reference h logs `local\rb8_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log`
 in worktree cc9-gunnery4 (main `d6fc6ee78`, rb8 SHA-256 prefix `5A2B887AA5ED`).
@@ -621,7 +621,7 @@ Calls are summed over the eight logs.
 on a mission that sends override commands (`0071E7F0` reached), which the ranking should re-check
 whenever `queue_command` shows calls.
 
-## 18. Handoff (cc9-gunnery4, 2026-09-29, at about 75% context)
+## 18. Handoff (cc9-gunnery4, 2026-09-28, at about 75% context)
 
 **Where this worker stopped.** Everything is committed on `agent/cc9-gunnery4`.
 - Section 16's ranks 1 and 2 are done:
@@ -648,7 +648,7 @@ whenever `queue_command` shows calls.
 - `g4_*_queue.ps1`: the run queues. The exe and the log prefix are parameters.
 
 **Standing facts for the next reader.**
-- The reference is h (docs/GAME_EXECUTABLE.md 2026-09-29 h, main `d6fc6ee78`).
+- The reference is h (docs/GAME_EXECUTABLE.md 2026-09-28 h, main `d6fc6ee78`).
 - USN02's 29.75 s failure is the image's own for an idle player (TORPEDO_SPREAD_AIM).
 - JM06 and LOMP06 moved again with `kSubmarineDiveTeleportBound`, after h.
 
@@ -766,7 +766,7 @@ arguments):
 - **Flip rule:** the flip goes ahead when the mechanism matches: the arm ends drop to 0, no
   refusals, and identity on the three missions without matches. A USN02 spread move is recorded.
 
-## 21. The director target-check pairs, and the flip (2026-09-29)
+## 21. The director target-check pairs, and the flip (2026-09-28)
 
 OFF is this tree's build at `c67ca09e1`. ON is `pair_export --commit c67ca09e1 --flip
 kDirectorTargetChecksBound=true` (`local\g5_dtc`). The runs are `local\g5off_*.log` and
@@ -791,7 +791,7 @@ kDirectorTargetChecksBound=true` (`local\g5_dtc`). The runs are `local\g5off_*.l
   They are re-checked when a mission queues more than one targeted command or targets an
   aircraft.
 
-## 22. Ranks 4 to 9 read (cc9-gunnery5, 2026-09-29)
+## 22. Ranks 4 to 9 read (cc9-gunnery5, 2026-09-28)
 
 **Rank 4, the torpedo threat list `00814420`** (now named `BSP_Ship_CountForeignTorpedoThreats`,
 body 00814420-00814492, `RET`). **Its loop never advances its node.**
@@ -893,7 +893,7 @@ Score only; closed.
 - **Flip rule:** each switch flips when its mechanism matches. A USN02 move that is traced to the
   accept alone keeps `kAutoTargetCommandAcceptBound` OFF pending a re-read of the retained score.
 
-## 24. The threat-head and accept pairs, and the flip (2026-09-29)
+## 24. The threat-head and accept pairs, and the flip (2026-09-28)
 
 OFF is this tree at `b1e6667eb`. ON is `pair_export --commit b1e6667eb`, flipping both
 switches (`local\g5_tt`). The runs are `local\g5ttoff_*.log` / `local\g5tton_*.log`, with the
@@ -916,7 +916,7 @@ reference h arguments.
   where the host counted a subset.
 - **Both flipped ON.** The ship-AI lease is released with this commit.
 
-## 25. Rank 9 scoped, and handoff (cc9-gunnery5, 2026-09-29, at about 62% context)
+## 25. Rank 9 scoped, and handoff (cc9-gunnery5, 2026-09-28, at about 62% context)
 
 **Packet `cc9_set_command_queue_delay`** is approved (the commands host plus the fixed-step
 pump). It is **not started**; this section is its design.
@@ -1115,7 +1115,7 @@ The OFF runs use this tree's build of `f49312ad3` (`local\g6off_<row>.log`). The
 - **USN13:** exit 3. The death count is 20 ± 2, and the first hit is 96.65 s ± 0.5 s.
 - **USN01:** exit 3 with small moves. The death count is 5, and the first hit is 53.60 s ± 0.2 s.
 
-## 27. The loopback-queue pairs, and the flip (cc9-gunnery6, 2026-09-29)
+## 27. The loopback-queue pairs, and the flip (cc9-gunnery6, 2026-09-28)
 
 **The first ON pair failed on a receiver, not on the queue.** It was run on `f49312ad3` (logs `local\g6on_<row>.log`), and USN04 fell from 44 deaths to 19. PilotSetTarget's continuation runs 0099A170, the bot task install that reads the command the director holds. It ran right after the issue, before the order's row-9 delivery, so only 3 of 19 dive-bomb tasks installed. Two commits fixed it:
 - `1a6149672`: `after_order_delivery` attaches the continuation to the last issue's queued MT_COMMAND (`GameCommandsHost::after_last_issue_delivery`). The continuation now runs after that chain's push and finish tail.
@@ -1214,7 +1214,7 @@ The OFF logs are `local\g6caoff_<row>.log`, built from `78895f00c`, whose OFF co
 - USN02 is exit 1, or exit 3 with small moves where an AI-coordinator retarget lands on a head whose stage was already raised.
 - The death counts equal OFF's on all four rows.
 
-## 29. The clear-all pairs, and the flip (2026-09-29)
+## 29. The clear-all pairs, and the flip (2026-09-28)
 
 ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=true` (SHA-256 prefix `00CA7C47C8F8`, `local\g6caon_<row>.log`). OFF is section 28's `local\g6caoff_<row>.log`.
 
@@ -1293,11 +1293,11 @@ ON is `pair_export --commit 5c30a8101 --flip kSetCommandClearAllMessageBound=tru
 
 **Verdict.** The release drop is recorded as the image's own consequence of the command delay: a changed dive geometry at the abort test, not a timing difference at the aim gate. Nothing is bound, and no pair is needed.
 
-## 31. The ranking refreshed on reference i (packet `cc9_gunnery_open_ranking_3`, cc9-gunnery7, 2026-09-29)
+## 31. The ranking refreshed on reference i (packet `cc9_gunnery_open_ranking_3`, cc9-gunnery7, 2026-09-28)
 
 **Source.** The eight reference i logs `local\rb9_{usn04,e2,usn01,usn02,jm06,jm08,usn13,lomp06}.log`
 in worktree cc9-gunnery7 (main `d466d4250`, rb9 SHA-256 prefix `D119E0505144`;
-docs/GAME_EXECUTABLE.md "2026-09-29 i").
+docs/GAME_EXECUTABLE.md "2026-09-28 i").
 - `local\g7_rank.py` is section 16's census, pointed at these logs.
 - `local\g7_rankdiff.py` runs the same census over h's logs as well, with the ship-AI and
   command classes added. It prints each row's status and calls on both sides.
@@ -1432,7 +1432,7 @@ The OFF build is gameplay-identical to reference i on JM06 and LOMP06 (`pair_dif
 - **The flip rule:** ON when S1, S2 and S4 hold and JM06's moves trace to the category through the
   recon lists. A JM06 move with the opposite sign to S3 is a stop.
 
-### 32.4 The pairs, and the flip (2026-09-29)
+### 32.4 The pairs, and the flip (2026-09-28)
 
 - **OFF** is `pair_export --commit 93b8b8fc9` (SHA-256 prefix `F58B4755298D`).
 - **ON** is the same commit with `--flip kSubmarineSensorCategoryBound=true` (`A1DE346A1F3B`).

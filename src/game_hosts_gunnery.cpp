@@ -280,7 +280,7 @@ constexpr bool kGunneryLineOfSightBound = true;
 //    LABELLED: the periscope byte +1234h has no producer in this process and
 //    reads clear (PeriscopeIn, not PeriscopeOut). A boat whose bands were never
 //    seeded keeps the stowed-periscope answer. OFF: PeriscopeIn for every boat.
-//    ON by the pairs of 2026-09-29: JM06 gameplay identical within 3000 frames,
+//    ON by the pairs of 2026-09-28: JM06 gameplay identical within 3000 frames,
 //    but the DeepUnderwater Narwhal-class is never sighted, so the script's
 //    luaJM6USNSubSighted listener no longer fires; LOMP06, USN01, USN02 identity.
 constexpr bool kSubmarineSensorCategoryBound = true;
