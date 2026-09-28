@@ -1020,6 +1020,9 @@ struct GameShipAiHost::Impl {
         unsigned long long sub_approach_returns{0};   // back to state+8h from 14CC/14E0
         unsigned long long sub_sibling_notices{0};    // 009E2B60 calls
         unsigned long long sub_sibling_fires{0};      // ...that marked a gun (ON)
+        // The largest |0082ECB0| the lead pursuit's budget step would take with
+        // the class yaw rate over (unit+984h, speed, 1.0), shadowed on both sides.
+        float sub_lead_yaw_max{0.0f};
         unsigned long long sub_lost_ends{0};          // 009F3718 0071E430 calls
         double sub_first_open_seconds{-1.0};
         float sub_min_target_y{0.0f};
@@ -2874,6 +2877,13 @@ public:
         return unit != nullptr ? unit->ordered_rudder : 0.0f;
     }
     float yaw_rate_from_rudder_0082ecb0(float rudder, float speed, float efficiency) override {
+        {
+            const GameUnitRow* unit = owner_.units.unit_row(index_);
+            const float shadow = owner_.units.unit_class_yaw_rate_0082ecb0(
+                index_, unit != nullptr ? unit->ordered_rudder : 0.0f, speed, efficiency);
+            const float magnitude = shadow < 0.0f ? -shadow : shadow;
+            if (magnitude > ctl_.sub_lead_yaw_max) ctl_.sub_lead_yaw_max = magnitude;
+        }
         if (!kShipAiSubTargetEntryPointsBound) {
             owner_.record("ShipAiLead::yaw_rate_from_rudder_0082ecb0", 0x0082ecb0u);
             return owner_.units.unit_current_yaw_rate_00811940(index_);
@@ -9801,14 +9811,14 @@ void GameShipAiHost::report() {
         if (c.sub_gate_calls == 0) continue;
         host.log.notef("  sub target %-20s gate=%llu open=%llu visible=%llu first_open=%.2f "
             "min_y=%.1f target=%s lead=%llu/%llu tangent=%llu/%llu returns=%llu notices=%llu "
-            "lost_ends=%llu fires=%llu entry_points=%d",
+            "lost_ends=%llu fires=%llu yaw_max=%.4f entry_points=%d",
             host.rows[index].unit.c_str(), c.sub_gate_calls, c.sub_gate_open,
             c.sub_gate_open_visible,
             c.sub_first_open_seconds, static_cast<double>(c.sub_min_target_y),
             c.sub_last_target.c_str(), c.sub_lead_enters, c.sub_lead_steps,
             c.sub_tangent_enters, c.sub_tangent_steps, c.sub_approach_returns,
             c.sub_sibling_notices, c.sub_lost_ends, c.sub_sibling_fires,
-            kShipAiSubTargetEntryPointsBound ? 1 : 0);
+            static_cast<double>(c.sub_lead_yaw_max), kShipAiSubTargetEntryPointsBound ? 1 : 0);
     }
     // Packet cc9_submarine_ai_states: one line per brain that selected sub_attack.
     host.log.notef("summary mission ship ai sub_attack select_bound=%d states_bound=%d "
