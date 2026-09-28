@@ -300,6 +300,19 @@ constexpr bool kSubmarineSensorCategoryBound = true;
 //    ON by the pairs of 2026-09-28: LOMP10 moves only the eight San Jose ships'
 //    health (x1.25); USN04 identity.
 constexpr bool kLuaOverrideHpBound = true;
+//  * kAiUntouchableGateBound (packet cc9_untouchable_gate, docs/GUNNERY_OPEN_ITEMS.md
+//    section 40): 00862440, called only at 00865248 in the unit gunnery AI tick
+//    00864FE0, skips a candidate that 00863990 accepted when the candidate's proxy
+//    (entity->vtable[140h]()) carries the byte +1D4h. The byte's writer is the Lua
+//    native AddUntouchableUnit 008AC140 (008AC263), through the same vtable[140h];
+//    it is read here through bsp::game::lua_unit_untouchable_1d4. LABELLED: the
+//    Lua host keys the flag by the unit the script passed, which is the proxy for a
+//    ship (0047F320 returns the entity); a plane's proxy [plane+9D4h] is not
+//    followed. OFF: the byte reads clear, as before, and the reads a set byte would
+//    have suppressed are counted.
+//    ON by the pairs of 2026-09-28: JM05 and USN04 gameplay identical; no marked
+//    read occurs within 3000 frames (section 40.4).
+constexpr bool kAiUntouchableGateBound = true;
 //  * kPlanePlatformAttachmentBound (packet cc9_plane_gun_mounts,
 //    docs/USN04_KATE_ATTRITION.md section 9): the same mount for a PLANE's guns.
 //    The plane class runs the same slot pass (007D3E81 CALL 0095F500 in
@@ -2133,6 +2146,8 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_stock_lua_sets{0};
     // Packet cc9_navigator_force_torpedo.
     unsigned long long forced_torpedo_marks{0};
+    unsigned long long untouchable_reads{0};          // 00862440, packet cc9_untouchable_gate
+    unsigned long long untouchable_marked_reads{0};
     unsigned long long immediate_function_calls{0};   // 009E2B60
     unsigned long long immediate_function_marks{0};
     unsigned long long immediate_function_fires{0};
@@ -4017,9 +4032,19 @@ public:
 
     bool unit_ai_suppresses_00862440(void* target) override {
         const std::size_t other = unit_of(target);
-        // entity+1D4h, the script-set untouchable flag. No binding in this
-        // mission sets it, so the proxy answers clear.
-        const bool untouchable = false;
+        // entity+1D4h on the proxy, the script-set untouchable flag
+        // (AddUntouchableUnit 008AC140; packet cc9_untouchable_gate).
+        const bool marked = other < owner_.units.count() && bsp::game::lua_unit_untouchable_1d4(other);
+        ++owner_.untouchable_reads;
+        if (marked) {
+            ++owner_.untouchable_marked_reads;
+            if (owner_.untouchable_marked_reads <= 6) {
+                owner_.log.notef("gunnery untouchable gate: target=%zu marked=1 bound=%d "
+                    "(00862440 at 00865248, packet cc9_untouchable_gate)", other,
+                    kAiUntouchableGateBound ? 1 : 0);
+            }
+        }
+        const bool untouchable = kAiUntouchableGateBound && marked;
         owner_.done("Gunnery::untouchable_gate_00862440", 0x00862440u);
         return bsp::entity_suppresses_gunnery_00862440(other < owner_.units.count(),
             untouchable);
@@ -9349,6 +9374,9 @@ void GameGunneryHost::report() {
                 "cc9_torpedo_supply_tick)", kTorpedoSupplyTickBound ? 1 : 0,
                 host.torpedo_supply_ticks, host.torpedo_supply_in_area,
                 host.torpedo_supply_calls, host.torpedo_barrels_unloaded);
+            host.log.notef("summary mission gunnery untouchable gate reads=%llu marked=%llu bound=%d "
+                "(00862440, packet cc9_untouchable_gate)", host.untouchable_reads,
+                host.untouchable_marked_reads, kAiUntouchableGateBound ? 1 : 0);
             host.log.notef("summary mission gunnery forced torpedo marks=%llu fires=%llu "
                 "(008A7200 -> 00730160, packet cc9_navigator_force_torpedo)",
                 host.forced_torpedo_marks, host.forced_torpedo_fires);
