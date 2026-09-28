@@ -86,6 +86,11 @@ python tools/bsp.py lease list [-v] | check <address|file>... | release [--packe
 
 - A claim is refused when it overlaps another owner's active lease (addresses, ranges or
   files). Claiming the same packet again extends your own lease.
+- File overlap is directory-aware (packet `cc9_lease_path_overlap`): two paths overlap when they
+  are equal or one is a parent directory of the other. They are compared repo-relative, with
+  forward slashes and case-insensitively, so a lease on `src/game` blocks another owner's claim
+  on `src\Game\hosts.cpp` and the reverse, while `src/gameplay.cpp` stays free. Overlap with
+  your own leases is still allowed.
 - Your owned files are the packet's output files plus any ledger shard your `ledger add-*`
   calls created or modified; a brand-new shard appears untracked, a modified one shows as
   changed, and both are staged by path. `ledger add-*` refuses to overwrite an existing record

@@ -171,6 +171,18 @@ class LeaseTransactionTests(unittest.TestCase):
                             process.kill()
                         process.communicate(timeout=10)
 
+    def test_directory_lease_overlaps_paths_beneath_it(self):
+        with tempfile.TemporaryDirectory(prefix='bsp-lease-paths-') as temporary:
+            with patch.dict(os.environ, {'BSP_COORDINATION_DIR': temporary}):
+                coordination.claim('dir', files=['src/game'], owner='first')
+                with self.assertRaises(coordination.LeaseConflict):   # a file under a leased directory
+                    coordination.claim('file', files=['SRC\\Game\\hosts.cpp'], owner='second')
+                coordination.claim('file', files=['tools/x.py'], owner='second')
+                with self.assertRaises(coordination.LeaseConflict):   # a directory above a leased file
+                    coordination.claim('parent', files=['tools/'], owner='third')
+                coordination.claim('sibling', files=['src/gameplay.cpp'], owner='third')  # a prefix, not a parent
+                coordination.claim('dir', files=['src/game/hosts.cpp'], owner='first')  # same owner stays allowed
+
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == '--worker':
