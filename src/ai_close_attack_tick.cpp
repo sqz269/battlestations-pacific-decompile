@@ -138,6 +138,7 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
         }
 
         if (chosen != nullptr) {
+            result.candidate_found = true;   // 00A149F3
             // 00A149DF CMP [ESP+40h],0 then the 0077D600 at 00A14A6E.
             const std::uint32_t command_class =
                 ai_close_attack_order_class(host.close_member_is_ship_base(member));

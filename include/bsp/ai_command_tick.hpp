@@ -152,6 +152,13 @@ struct AiCommandTickResult {
     bool leader_ordered{false};
     bool promoted{false};                // the command replaced itself
     AiCommandType promoted_to{AiCommandType::CloseAttack};
+    // PATROLTO (00A15570) only: [ESP+0Eh] and BL, the two tests its caller-side
+    // tail needs. `patrol_far`: the leader is a groupable combatant farther
+    // than sqrt(202500) = 450 (float 00D22C98, JA) from the +8h point.
+    // `patrol_near`: 1 unless the leader is a groupable combatant not closer
+    // than CloseAttack_CollectDist * 1.5 (double 00CE3D78), squared.
+    bool patrol_far{false};
+    bool patrol_near{true};
 };
 
 // MOVETOATTACK's transition at 00A12B55-00A12BA8: the tick reads tuning +1F4h
@@ -200,5 +207,13 @@ AiCommandTickResult ai_command_follower_pass_00a10dc0(AiCommandTickHost& host, v
 // an empty result, because its body was not read.
 AiCommandTickResult ai_command_tick_vt000c(AiCommandTickHost& host,
                                            const AiCommandObject& command);
+
+// PATROLTO's tail after 00A13B60 and 00A11B80 (00A15695-00A156C8): when the
+// leader is far and 00A13B60 answered AL = 0, JMP 00A02020 with the leader
+// and the +8h point. The caller runs 00A13B60 itself when `patrol_near` is set.
+AiCommandTickResult ai_command_patrol_to_tail_00a15695(AiCommandTickHost& host,
+                                                       const AiCommandObject& command,
+                                                       bool patrol_far,
+                                                       bool close_pass_found_target);
 
 }  // namespace bsp
