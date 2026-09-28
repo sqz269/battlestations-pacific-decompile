@@ -19577,17 +19577,6 @@ void GameUnitsHost::unit_position_00fc(std::size_t index, float& x, float& y,
     z = motion.position[2];
 }
 
-bool GameUnitsHost::submarine_depth_bands(std::size_t index, float (&bands)[4]) const {
-    // Packet cc9_submarine_sensor_category: the slot's copy of +1200h..+120Ch,
-    // seeded once at attach by the 00853A90 loop (packet cc9_submarine_dive).
-    const Impl& host = *impl_;
-    if (index >= host.slots.size()) return false;
-    const auto& slot = *host.slots[index];
-    if (!slot.sub_dive_ready) return false;
-    for (int i = 0; i < 4; ++i) bands[i] = slot.sub_bands[i];
-    return true;
-}
-
 std::size_t GameUnitsHost::unit_part_descriptor_count(std::size_t index) const {
     // (unit+34Ch - unit+348h) >> 2: the class's Damage.Sections count (see
     // Impl::damage_section_count). 0 for an index past the end.
