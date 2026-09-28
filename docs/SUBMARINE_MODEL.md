@@ -1017,3 +1017,56 @@ was flipped came from the Narwhal's 10 m vertical transient from its authored -2
 teleport removes that transient, as the image does.
 
 **Verdict: `kSubmarineDiveTeleportBound = true`.**
+
+
+## 16. The leftovers: the ship-AI depth callers, the `A2h` echo, and the periscope tick (cc9-lua4, a read)
+
+Worker cc9-lua4, 2026-09-28. This is item 4 of the cc9-lua3 handoff. None of the three is bound.
+
+### The ship-AI depth callers (V)
+
+- **They are two slots of submarine ship-AI states.** `009E4F90` references three sibling state
+  vtables, `00D218C0`, `00D218F0` and `00D21920`. The constructors that install the first two are
+  `009E48A0` (`009E48EB`) and `009E4920` (`009E49A4`).
+- **`009E4B90` is `vtable[0Ch]` of `00D218F0`** (the dword at `00D218FC`). It calls
+  `SetDepthLevel(2)`. With a target at `brain+4 -> +B20h`, it stores `009E4A60()` at `this+20h`
+  and steers to the target's x/z (`+FCh`, `+104h`) through `BSP_ShipAi_SetNavigationGoal(&xz, 0,
+  1)`. Without one it calls `BSP_ShipAi_HoldHeadingAndStop`.
+- **`009E9EB0` is `vtable[0Ch]` of `00D21920`** (the dword at `00D2192C`). Ghidra has no function
+  there, so `009E9E50` shows a body ending at `009E9EAE`. **The lead should define it:** body
+  `009E9EB0`-`009EA9B7` inclusive, where the `RET 4` at `009EA9B5` is followed by `INT3` from
+  `009EA9B8` and `009EA9C0` starts `FUN_009EA9C0`.
+  - It is the depth decision tick. It reads the unit at `brain+AB4h` and a record at
+    `brain+AB0h`.
+  - `009EA8C4`-`009EA8DE` call `SetDepthLevel(3)` when `[AB0h]+20h` is set, else `SetDepthLevel(2)`.
+  - `009EA93F`-`009EA949` and `009EA99F`-`009EA9A9` call `SetDepthLevel(2)`.
+  - `009EA8BD` and `009EA987` call `009E4EE0`, the periscope gate (section 3). `009EA8B6` calls
+    `009E4C70` instead, and `009EA990` follows with `009E4D90(1)`.
+  - On one exit (`009EA8FB`) it clears `unit+122Ch`, the periscope state, unless that state is 2.
+- **In the host.** The host's ship AI has none of these three states, so AI submarines change depth
+  only through the Lua writer. Binding them is ship-AI work: the states, their construction by
+  `009E4F90`, and the dispatch of `vtable[0Ch]`.
+- **Reach on the census rows.** Only JM06 (PlayerSub 01..03) and LOMP06 (the Narwhal) carry
+  submarines. Whether their AI brains ever build these states was not traced.
+
+### The `A2h` echo
+
+`008528B0` posts `A2h` only when the level changes, and the handler applies `SetDepthLevel(payload)`.
+With one change per delivery window, the echo arrives at the level already set, and the command
+returns without posting. So leaving the echo out is identity in that case. Two changes inside one
+window would differ: the first echo reverts the second change and posts again. The host applies
+each change at the call, and no census row makes two changes on one unit in one frame.
+
+### The periscope tick, `00852970`
+
+`__thiscall(obj, float dt)`, called from `BSP_SubmarineUnit_Update` (`00854650`), body
+`00852970`-`00852B49`. `obj` is the `6Ch` object at `+1224h`.
+- In state 0 (`obj+10h`) it copies the owner's world matrix and stores the vector its own
+  `vtable[34h]` returns at `+14h..+1Ch`, the velocity the next state uses.
+- In state 1 it integrates a free body. The position `+5Ch..+64h` advances by the velocity, the
+  spin `+20h..+28h` turns the part through `0085E880`, and the owner's `vtable[34h]` is called
+  with `obj+2Ch`. The velocity loses `[00CE3DE0]` in y per step (gravity), and both it and the spin
+  decay by `[00CF1748]` and `[00D0BEB0]`.
+- That is a detached periscope falling away, which is presentation. No gameplay field is written.
+- The decompiler shows the decay's `dt` as `unaff_retaddr`, which is x87 register flow. The assembly
+  was not read, because the arm is visual.
