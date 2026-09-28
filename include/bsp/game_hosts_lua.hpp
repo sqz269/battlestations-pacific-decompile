@@ -297,12 +297,31 @@ inline constexpr bool kLuaDeviceReloadEnabledBound = true;  // ON: identity pair
 // target when unit+284h is set; 0077FE80's arm 3 delivers it to 0077BD70(unit, null), the
 // leave the host models as GameUnitsHost::leave_group_on_destroy_0077bd70. True: route both
 // rows to run_is_in_formation_008996a0 / run_leave_formation_00899eb0. False: unimplemented.
+// Packet cc9_get_formation_leader (docs/LUA_BINDING_MISSION.md). 00899AF0
+// GetFormationLeader(unit): argument 0 through 00888AA0 (00899BEF), then
+// 007788D0 BSP_Unit_FormationLeader ([unit+284h] ? [group+14h] : 0, 00899C08);
+// a null leader pushes nil (00899CB4 -> 00B66430), otherwise the leader's
+// thisTable slot keyed by its +174h id (00899C15..00899C65). True: the row
+// answers from the units host's group; false: the entity arm answers nil.
+inline constexpr bool kLuaFormationLeaderBound = true;   // ON by its pairs (LUA_BINDING_MISSION)
 inline constexpr bool kLuaFormationQueryBound = true;  // ON: mechanism matched, spread miss recorded (docs/LUA_BINDING_MISSION.md)
 
 // The process-wide 00E17BF2. It is reset from the lobby flags when a mission's settings
 // are published and written by SetDeviceReloadEnabled. It answers false while
 // kLuaDeviceReloadEnabledBound is false.
 bool lua_device_reload_enabled_00e17bf2() noexcept;
+
+// Packet cc9_add_untouchable_unit (docs/LUA_BINDING_MISSION.md). 008AC140
+// AddUntouchableUnit(unit): argument 0 through 00888AA0 (008AC23B), then
+// [unit]->vtable[140h]() (008AC255..008AC25D, the unit's AI object) and
+// MOV byte [EAX+1D4h],1 (008AC263). No other write, no null test, no result
+// (008AC269 00B66400). The byte is what the unit-AI untouchable gate 00862440
+// reads. True: the row sets the flag below; false: the row stays unimplemented.
+inline constexpr bool kLuaAddUntouchableUnitBound = true;   // ON on identity (LUA_BINDING_MISSION)
+// The +1D4h byte of units-host index `index`'s AI object, as AddUntouchableUnit
+// left it. False for every unit while kLuaAddUntouchableUnitBound is false.
+// Inert: nothing in this process reads it until the gunnery lane binds 00862440.
+bool lua_unit_untouchable_1d4(std::size_t index) noexcept;
 
 // Packet cc9_submarine_air (docs/SUBMARINE_MODEL.md section 13).
 // SetUnlimitedAirSupply(entity, flag) stores lua_toboolean(argument 1) at unit+1280h
@@ -579,6 +598,11 @@ struct GameMissionLuaSummary {
     unsigned long long device_reload_true{0};
     unsigned long long in_formation_calls{0};
     unsigned long long in_formation_true{0};
+    unsigned long long formation_leader_calls{0};   // packet cc9_get_formation_leader
+    unsigned long long untouchable_calls{0};        // packet cc9_add_untouchable_unit
+    unsigned long long untouchable_marked{0};
+    unsigned long long formation_leader_found{0};
+    unsigned long long formation_leader_other{0};   // the leader is not the argument
     unsigned long long leave_formation_calls{0};
     unsigned long long leave_formation_left{0};
     unsigned long long unlimited_air_calls{0};
@@ -835,6 +859,10 @@ public:
     // 0083cc2c..0083ce3c). 0083cc2c itself is not projected; only its reads
     // run. False leaves the output untouched.
     bool read_auto_thrust_0083cc2c(ShipAiAutoThrustSettings& out);
+    // Packet cc9_ships7_entry_points: ShipGlobals.SubAttack.SubmarineLostTime as
+    // 0083B5E0 loads it into settings+4D4h (0083F779..0083F7A1), read live off
+    // the loaded ShipGlobals table; 0 when absent, as lua_tonumber gives the image.
+    float sub_attack_submarine_lost_time_04d4() const;
 
     // Packet cc9_unit_instance_step11. The EngineSoundSmoothRate of the four
     // engine-sound records 0083B5E0 fills at settings+5BCh + i*24h + 8h
@@ -1089,6 +1117,8 @@ public:
     int run_set_device_reload_enabled_008c1350(lua_State* state, int argument_count);
     // Packet cc9_lua_formation_query, under kLuaFormationQueryBound.
     int run_is_in_formation_008996a0(lua_State* state, int argument_count);
+    int run_get_formation_leader_00899af0(lua_State* state, int argument_count);
+    int run_add_untouchable_unit_008ac140(lua_State* state, int argument_count);
     int run_leave_formation_00899eb0(lua_State* state, int argument_count);
     // Packet cc9_squadron_travel_alt, under kSquadronTravelAltBound.
     int run_squadron_set_travel_alt_0089f550(lua_State* state, int argument_count);
@@ -1209,6 +1239,10 @@ private:
     // 0094A140 -> 00949300 -> 009483D0: build the frame, create every member,
     // set record+C0h. 0094C777: the completion walk over record+CCh.
     void fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request);
+    // Packet cc9_spawn_new_shipyard. 008F8680's +14h arm: the world matrix at
+    // entity+CCh of the entity numbered `entity_id` (a unit's pose, or a scene
+    // marker's authored frame). False when the id names neither.
+    bool spawn_ref_entity_frame_008f8680(std::int32_t entity_id, float frame[16]) const;
     void complete_spawn_request_0094c777(const bsp::SpawnNewRequest& request);
     // globalConfig+2DCh, read once from Globals["SpawnAttemptDelay"].
     float spawn_attempt_delay_0087f800();

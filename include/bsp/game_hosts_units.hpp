@@ -228,6 +228,7 @@ struct GameUnitsSummary {
     unsigned long long plane_row_refreshes{0};  // cc9_controlled_plane_ai_moveto
     unsigned long long squadron_travel_alt_refreshes{0};  // cc9_squadron_travel_alt
     unsigned long long plane_arm_free_flight{0};
+    unsigned long long dead_plane_bot_ticks_skipped{0};  // packet cc9_dead_plane_bot_think
     unsigned long long plane_arm_ground_roll{0};
     unsigned long long plane_arm_surface{0};
     unsigned long long plane_arm_none{0};
@@ -611,6 +612,17 @@ public:
     // 00811940 on the unit's live rudder state, the yaw rate 009ed9c1 folds into
     // the heading target.
     float unit_current_yaw_rate_00811940(std::size_t index);
+    // 0082ECB0 BSP_ShipClass_ComputeYawRateFromRudder on the unit's class
+    // ([unit+538h]): ECX = the class, stack (rudder, forward speed, turn
+    // efficiency), RET 0Ch, result in ST0. r = speed / class+500h (MaxSpd),
+    // base = class+4F8h (MaxRotAngle) / 0082E890(|r|), result =
+    // base * r * rudder * efficiency (0082ECF4..0082ECFF), each step rounded
+    // to float where the listing stores it. The caller supplies all three
+    // arguments, as 009E26C0 does; 00811890 is the caller that takes them from
+    // the unit's own state. Returns 0 for an index with no slot.
+    // Packet cc9_ships7_entry_points, for cc9-ships7's lead pursuit 009E26C0.
+    float unit_class_yaw_rate_0082ecb0(std::size_t index, float rudder, float speed,
+        float efficiency);
     // 009e1170's AI arm for one unit, with the three desired-value setters
     // 009dbf90 / 009dffb0 / 009e0040 writing the control block the caller owns.
     // False when the unit holds no current `cruise`, or when it is the player's.
@@ -680,6 +692,11 @@ public:
     // host carries as markers). False when the id names no marker.
     void register_scene_marker_position(int id, const float world[3]);
     bool scene_marker_position(std::uint32_t id, float world[3]) const;
+    // Packet cc9_spawn_new_shipyard. A marker's whole authored world matrix
+    // (entity+CCh, rows 0..2 the basis and row 3 the translation), which
+    // 008F8680 hands SpawnNew when `refPos` is that marker.
+    void register_scene_marker_frame(int id, const float world[16]);
+    bool scene_marker_frame(std::uint32_t id, float world[16]) const;
     // 004142e0 BSP_Vector3f_TransformAffinePoint with the matrix at unit+0cch,
     // which is what 009dbcc0 carries the latched offset out through.
     void transform_by_unit_matrix_004142e0(std::size_t index, float in_x, float in_y,

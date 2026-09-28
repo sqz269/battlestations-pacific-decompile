@@ -200,6 +200,16 @@ struct SpawnNewRequest {
 
     bool has_ref_pos{false};
     float ref_pos[3]{0.0f, 0.0f, 0.0f};  // `area.refPos`
+    // Packet cc9_spawn_new_shipyard (kSpawnNewEntityRefPosBound). `refPos` was an
+    // entity table (00949B60 008889C0 answered yes): the record keeps the entity
+    // (008F8530 stores it at ref+14h) and 008F8680 hands out that entity's own
+    // world matrix at +CCh whenever the frame is asked for. `ref_entity_id` is
+    // this process's entity number for it; `ref_frame` is the pose the drain
+    // resolved (rows 0..2 the basis, row 3 the translation), used while
+    // `ref_frame_valid`.
+    std::int32_t ref_entity_id{0};
+    bool ref_frame_valid{false};
+    float ref_frame[16]{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
     bool has_angle_range{false};
     float angle_low{0.0f};       // `area.angleRange[1]`, radians
     float angle_high{0.0f};      // `area.angleRange[2]`, radians
@@ -344,6 +354,26 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
 // through 00941D30 with 0094A140's retry. Off, section 22's frame runs.
 // ---------------------------------------------------------------------------
 inline constexpr bool kSpawnNewPlacementBound = true;   // 23.5 and 23.6
+
+// ---------------------------------------------------------------------------
+// Packet cc9_spawn_new_shipyard (docs/LUA_BINDING_MISSION.md, "SpawnNew with an
+// entity refPos and a surface group"). Two image rules the drain lacked, which
+// together are why JM05's shipyard requests never placed:
+//  - `refPos` as an entity: 00949B60 CALL 008889C0 (a table whose `Ptr` is an
+//    entity, [Ptr]->vtable+5Ch(1)) takes 00949B70 CALL 00888AA0 and 00949B7D
+//    CALL 008F8530, which keeps the entity at ref+14h; 008F8680 then returns
+//    entity+CCh (after 00414DB0 when the +C8h clean byte is clear), the
+//    entity's world matrix, as the reference frame 0094A140 rotates. Off, the
+//    host reads `refPos` only as an {x,y,z} table and an entity refPos leaves
+//    the record without one, so the drain requeues it forever.
+//  - the surface arm of 009483D0: a member whose class answers
+//    vtable+18h(6) (the eight ship leaves, 00963B70 Destroyer .. 00963F10
+//    MotherShip, all compare 6) is made by the class's own vtable+28h(0)
+//    (00948529), not as a plane squadron, and a surface member after the
+//    first asks 0077C8D0 to join the first member's formation (009486DA,
+//    0094870E). Off, every member is made as PlaneSquadronGen.
+// ---------------------------------------------------------------------------
+inline constexpr bool kSpawnNewEntityRefPosBound = true;   // ON by the JM05 pair (LUA_BINDING_MISSION)
 
 // A row-major 4x4: rows 0/1/2 right/up/forward, row 3 the translation, which
 // is the order BSP_Matrix_Multiply4x4 (00413920) and 00B646E0 use.

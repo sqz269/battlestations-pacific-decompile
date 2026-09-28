@@ -2102,3 +2102,152 @@ Those LOMP10 variances are not yet in the deterministic-noise list.
 
 **Verdict: `kSquadronReturnToBaseResolveBound = true`.** It stays a record. The issue waits for
 the flown `land` task, which is parked (the land-task section above).
+
+## Handoff (cc9-lua6, 2026-09-28)
+
+Worker cc9-lua6 took over cc9-lua5's lane (handoff above). The branch is `agent/cc9-lua6` and the
+worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua6`. Everything is landed on main at
+`d384f1ef5`. The worker holds no leases.
+
+### Switches this worker set (all ON)
+
+| switch | file | doc |
+| --- | --- | --- |
+| `kLandConvoyMovementBound` | `include/bsp/game_hosts_units.hpp` | `docs/LAND_AND_STRUCTURES.md`, "The convoy formation, bound" |
+| `kSquadronReturnToBaseResolveBound` (record only) | same | this doc, "The squadron's `returntobase` resolution, and the `land` task's shape" |
+| `kLuaSpawnNewIdQueriesBound` | `include/bsp/game_hosts_lua.hpp` | `docs/LUA_BINDING_MISSION.md`, "`SpawnNewIDIsRequested` and `SpawnNewIDRemove`, bound" |
+| `kSquadronAttackAltBound` | `include/bsp/game_hosts_units.hpp` | `docs/LUA_BINDING_MISSION.md`, "SquadronSetAttackAlt, bound" |
+| `kDiveProfileDrawBound` | same | `docs/DIVE_BOMB_TASK.md`, "The cruise profile's begin-altitude draw" |
+| `kDepartedWingmanTaskBlockBound` | same | `docs/DIVE_BOMB_TASK.md`, "Departed wingmen keep their task's squadron block" |
+
+**Other commits:**
+- the inert `GameUnitsHost::set_formation_member_offset_0070d080`, for the ships lane's wedge;
+- the OverrideHP dispatch in the Lua host, gunnery7's lines;
+- the deletion of `submarine_depth_bands`;
+- `007F16D0`/`006C0840` in `src/return_to_base.cpp`;
+- `007AF150` in `src/camera_path_sampler.cpp`;
+- the Landscape's local height and normal slots (`00ADA160`, `00ADA1C0`) in the scene-contents
+  host.
+
+### The natives ranking after these packets
+
+This is the fifth refresh (`docs/LUA_BINDING_MISSION.md`, head `2291cd778`) with its outcomes:
+- **Rank 1, `OverrideHP` `008C1930` (LOMP10):** the gunnery lane's (`cc9_override_hp`). The Lua
+  dispatch is on main; the gunnery side is behind `kLuaOverrideHpBound`, and cc9-gunnery7 was
+  measuring it.
+- **Rank 2, `SquadronSetAttackAlt`:** ON. On LOMP10 the dive planes glide-bomb from 150 m.
+- **Rank 3, `SpawnNewIDIsRequested`/`SpawnNewIDRemove`:** ON; identity on the measured rows.
+- **Ranks 4-7 have small reach:**
+  - `AddUntouchableUnit` (JM05, 3);
+  - `GetLastCatapulted` (JM05, 47; nil also means "nothing catapulted");
+  - `GetFormationLeader` (JM05, 49; nil falls back to the first ship);
+  - `NavigatorEnable`, `GetFailure`, `Countdown`.
+- **Everything else is presentation:**
+  - `GetCapturePercentage`: nil raises "arithmetic on a nil value" at `jm05.lua` 5216, 48 times per
+    150 s, inside an objective-text timer that `luaTimetable` retries; no gameplay;
+  - `IsHintActive`, `DisplayScores`, `SetGuiName`, `PrepareClass`, `IsGUIActive`, and so on;
+  - the failure-path scoring natives.
+- **JM05's `FindEntity` UNIMPLEMENTED status is correct.** Its nine misses are names the scene does
+  not author (`BSP_LUA_FIND_ENTITY_MISSES=1` lists them).
+
+### Open, in order
+
+1. **The SpawnNew queue never places on JM05** (for cc9-lua7). The brief is in
+   `docs/LUA_BINDING_MISSION.md`, "Unowned: the SpawnNew queue never places on JM05".
+   - **Measured:** `summary SpawnNew 0094c480 ... attempts=290 fulfilled=0 requeued=290 units=0
+     still_queued=2` (`local/l6_rk_jm05.log`).
+   - **The queue:** the two stage-init `SH2SpawnRequest` Fletchers (`luaJM5Shipyard2Spawned`,
+     `refPos ABSENT`, `angleRange given`) are the only records. The drain takes one per 0.5 s
+     (`SpawnAttemptDelay`) and requeues it every time.
+   - **The drain** is `run_spawn_queue_0094c490` (`src/game_hosts_lua.cpp`, over
+     `src/lua_spawn_new.cpp`). Its placement is `0094A140` (`spawn_reference_frame_0094a140` /
+     `spawn_candidate_frame_0094a140`), then the fulfil test.
+   - **Not yet found:** which test refuses every candidate. I did not trace it. Start with the
+     reference frame for a request with no `refPos`, and with the `SpawnPlacementWorld` answer for
+     a shipyard's water.
+2. **The death-tick own-block draw (LABELLED)** in `kDepartedWingmanTaskBlockBound`.
+   - A dying plane has left `member_units` (the removes-dead clear) but is not yet in
+     `departed_units` (the `007F3970` compaction). For that one tick it resolves no record and
+     draws once on its own slot.
+   - Fix it by filling `departed_units` at the clear, or by resolving through `member_names`.
+3. **Untraced: whether the image's bot think stops after `007F3A07` clears `plane+9D4h`.** The
+   host keeps a dead plane's task running (the powerlost glide under pilot steering,
+   `docs/PLANE_DEATH_MODES.md`). The task's `[task+404h]` is a construction-time copy, so it still
+   reaches the squadron. Whether `0099ACD0` or the arm gates on `+9D4h` is unread.
+4. **LandConvoy as a unit for the `00805680` fold (gunnery lane, routed by the lead).**
+   - The members exist and move (`kLandConvoyMembersBound`, `kLandConvoyMovementBound`), and
+     `GameUnitsHost::unit_land_convoy_738` answers their convoy by name.
+   - The convoy itself has no unit slot: it is a scene record, and `+738h` holds its name.
+   - The fold's convoy side needs either a unit-like convoy object or the fold keyed on the name.
+   - `HudMinimap::land_vehicle_player_query 008DDF00` is still unimplemented and is now asked on
+     JM05.
+   - Also still open for the convoy: the member-death kill `007422A0` and the convoy's `+5Eh`.
+5. **The flown `land` task is PARKED.**
+   - The brief is this doc's section "The squadron's `returntobase` resolution, and the `land`
+     task's shape": eight states, the rule `009B3CF0`, the per-tick `009B3EB0`, the mode writer
+     `009B34D0`, and the landing request `006C54C0`.
+   - The measured LOMP10 row cannot judge it: Lightning 01 ends about 13 km short of `CB4_AF`.
+   - **What is bound:** `007F16D0`/`006C0840` resolve the squadron to `land at site CB4_AF` from
+     8.65 s, as a record only.
+   - **Unread:** B-25 01's `block+20h` bit, and `006C0840`'s ordering key when two sites pass.
+6. **Found, not modelled:** the other ordnance profiles (`docs/BOT_TASKS.md` step 5 table) likely
+   draw before their gates as the dive-bomb profile does. Only `009C8920` was read.
+
+### Local files
+
+- **Scripts:** `local\l6_*`.
+  - `l6_runs.ps1` and `l6_wait.sh` are lua5's with the tree renamed.
+  - `l6_paths.py` measures scene paths. It reads points in file order; use the numeric order,
+    the note in `docs/LAND_AND_STRUCTURES.md`.
+- **Pair exports:** `local\{cm,sq,rtb,aa,dp,dw}_on`.
+- **Logs:** `local\{cm,sq,rtb,aa,dp,dw}_{off,on}_<mission>.log`, the census `local\l6_rk_*.log`,
+  and the traces `local\l6_fe_jm05.log` and `local\dt_usn04.log`.
+
+## Handoff (cc9-lua7, 2026-09-28)
+
+This is written at about 80% context. Branch `agent/cc9-lua7`, worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-lua7`.
+
+### Done this session (all switches ON unless stated)
+
+| packet | switch | record |
+| --- | --- | --- |
+| `cc9_spawn_new_shipyard` | `kSpawnNewEntityRefPosBound` | LUA_BINDING_MISSION "SpawnNew with an entity refPos and a surface group" |
+| `cc9_land_convoy_unit_plan` | none (plan, PARKED) | LAND_AND_STRUCTURES, the last section |
+| `cc9_dead_plane_bot_think` | `kDeadPlaneBotThinkBound` | PLANE_DEATH_MODES section 7 |
+| `cc9_death_tick_draw_recheck` | closed, no switch | DIVE_BOMB_TASK, beside cc9-lua6's labelled note |
+| `cc9_ships7_entry_points` | none (inert accessors) | `GameUnitsHost::unit_class_yaw_rate_0082ecb0`, `GameMissionLuaHost::sub_attack_submarine_lost_time_04d4` |
+| `cc9_natives_ranking_6` | none (a read) | LUA_BINDING_MISSION "sixth refresh" |
+| `cc9_get_formation_leader` | `kLuaFormationLeaderBound` | LUA_BINDING_MISSION "GetFormationLeader, 00899AF0" |
+| `cc9_add_untouchable_unit` | `kLuaAddUntouchableUnitBound` (inert) | LUA_BINDING_MISSION "AddUntouchableUnit, 008AC140" |
+
+**Unlanded at this handoff:** `fb297db29` and `b5bc97bd1` (GetFormationLeader), `11bad8895` and
+`38d8d14db` (AddUntouchableUnit), this handoff, and the main merges between them.
+
+### Open, in order
+
+1. **The untouchable gate `00862440` (gunnery lane, cc9-gunnery8).**
+   - The flag is `bsp::game::lua_unit_untouchable_1d4(std::size_t index)`
+     (`include/bsp/game_hosts_lua.hpp`).
+   - The lead's brief asked for `GameUnitsHost::unit_untouchable_1d4`. The units host files were
+     leased to cc9-gunnery8 (`cc9_periscope_out`), so the flag lives in the Lua host instead.
+     gunnery8 can wrap it as that member.
+   - JM05 marks `PT Boat 80' Elco 01`/`02` and `Event2Pt` at stage init. USN01, USN04 and LOMP10
+     mark nothing.
+2. **`GetLastCatapulted` `00892860`** (JM05, 47 calls), rank 3 of the sixth refresh. Small reach:
+   it sets an elite skill on the catapult plane at 5812. First read whether the host catapults
+   anything at all.
+3. **The LandConvoy handle** is PARKED, because no reader in this host consumes a placed convoy.
+   The plan names two open reads: the convoy's `+1E4h` sensor category, and when its detection
+   record is created.
+4. **Known noise worth adding to the deterministic list:** LOMP10's minimap heading, landscape
+   attach cells, movie-camera poses and `ShipAiSectorScan` counters. They drifted between
+   same-binary LOMP10 runs in every pair this session.
+
+### Working notes
+
+- In the Git Bash tool, a heredoc or `printf` that contains an apostrophe (`80'`, `lua6's`) breaks
+  the whole command. Write such text with the Write tool and `git commit -F`.
+- `pair_export --out` needs `local/<name>` with a forward slash in bash. `local\\name` lost its
+  backslash and created `locall7_on` at the tree root.
+- The units host files (`game_hosts_units.*`) were leased to cc9-gunnery8 at this handoff.

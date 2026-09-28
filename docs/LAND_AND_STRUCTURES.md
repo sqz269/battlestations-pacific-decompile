@@ -695,3 +695,99 @@ two misses are the diff's scope and the prediction's own arithmetic, recorded ab
 - the member-death kill `007422A0` and the convoy's `+5Eh`;
 - the gunnery fold `00805680` (the lead routes it);
 - `HudMinimap::land_vehicle_player_query 008DDF00`.
+
+## The LandConvoy as an index-space entity: read and plan (packet `cc9_land_convoy_unit_plan`, no code)
+
+Worker cc9-lua7, 2026-09-28. This is a read-and-plan packet for the follow-up that
+docs/GUNNERY_OPEN_ITEMS.md section 34 names. There `00805680`'s convoy groups are counted but not
+placed, because the group record's entity is the `LandConvoy`, which has no index in the units
+host. Nothing here is bound.
+
+### What the image says about the convoy as an entity (V, raw listings)
+
+- **World lists.** `LandConvoy`'s vtable `00CEA570` slot `+130h` is `004F25D0`. It calls
+  `00928560` and then appends the convoy to two world-registry lists: `[this+30h]+30h`
+  (`004F25DC`) and `[this+30h]+150h` (`004F25E8`). The registry lists sit at
+  `+18h + id * 0Ch`, the same arithmetic the ship rows follow; Cruiser's `+90h` is id `0Ah`. So the
+  convoy is in list 2, which every unit shares, and in list `1Ah`, its own.
+- **Kind.** `+5Ch` is `004F2560`, which accepts `1Ah`, 2, 1, 0 and the id at `+C4h`. It answers no
+  to 6 (ship base), `0Fh` (plane base) and 5 (the vehicle base).
+- **The recon scan never reads list `1Ah`.** `kReconScannedClassIds` (from `00806480`) holds 22 ids
+  without `18h` or `1Ah`. A convoy enters a slot's triples only through `00805680`'s group record
+  in `A|B|C[1Ah]`. Triples 1 and 2 then take it in step 9 or 10 if its level is 2, `unknown`
+  takes it if its level is 1, and triple 0 takes `A[1Ah]` in step 11. `00806A60` writes the stored
+  level to the convoy's own detection record, so the convoy needs a detection-record home.
+
+### Who would see a placed convoy in this host
+
+| reader | what it does with a convoy entry | effect |
+| --- | --- | --- |
+| AutoTarget, `recon_triple_units(side, 1)` in `game_hosts_ship_ai.cpp` | the candidate gate is `IsKindOf(6)` (`009F5B81`), and the convoy answers no | no target change |
+| the gunnery contact count `008053C0` in `game_hosts_gunnery.cpp` | rejects anything that is neither ship base nor plane base | no change |
+| the minimap union walk `005C1610`, triple 4, in `game_hosts_hud_world.cpp` | after the `+5Ch`/`+5Dh`/`+60h`/`+5Eh` byte tests, `005C165D PUSH 5 / CALL [vtable+5Ch]` asks `IsKindOf(5)`, and `004F2560` answers no | no icon; the entry is skipped at `005C1665` |
+| the 00806A60 level write | needs a per-slot detection record for the convoy | new state, no current reader |
+
+On JM05 the Japanese side still builds no convoy group within 3000 frames. All 510 of its member
+records sit at level 0 (section 34.3). So the predicted gameplay move is none. The minimap walk skips a convoy too (`IsKindOf(5)` at
+`005C165D`, read after the plan's first draft), so **no reader in this host consumes a placed
+convoy entry**. Binding the placement would move only the recon counters and the new level store.
+The follow-up is therefore low value until a reader that accepts kind `1Ah` is bound; that is why
+this packet stops at the plan.
+
+### The choice: a unit row, or a handle outside the unit rows
+
+- **A unit row (class `1Ah`).** It matches the image's identity best, because the convoy becomes
+  just another entity in lists 2 and `1Ah`. But the host has about 430 walks over
+  `units.count()` or the slot vector:
+  - `game_hosts_units.cpp` 231;
+  - `game_hosts_script_orders.cpp` 54;
+  - `game_hosts_lua.cpp` 32;
+  - `game_hosts_ai.cpp` 30;
+  - `game_hosts_gunnery.cpp` 29;
+  - `game_hosts_ship_ai.cpp` 21;
+  - the rest 34.
+
+  Each of those walks means "every unit" where the image walks some narrower list. A convoy row
+  would reach motion dispatch, hull, the gunnery rows, the pose ring, the minimap icons and the
+  death table unless every site is audited. It also moves the convoy's `thisTable` id from its
+  marker id (for example `SecondaryLandConvoy 01` is 50009 on JM05) to `index + 1`. So every
+  SpawnNew or air-ops unit created later would shift by the number of convoys.
+- **A handle outside the rows (recommended).** The units host already keeps the convoy's state:
+  - the roster and `+738h` (`build_land_convoy_roster_00743450`, `unit_land_convoy_738`);
+  - the motion (`bind_land_convoy_motion`);
+  - the marker id and frame (packet `cc9_spawn_new_shipyard` added `scene_marker_frame`).
+
+  Give it a world-list membership without a row:
+  1. `world_list_size(0x1A)` / `world_list_entry(0x1A, k)` answer the convoys as handles
+     `>= units.count()`. The recon scan already skips `u >= count` (`publish_recon_triples_008073c0`),
+     and list `1Ah` is not scanned, so nothing else changes.
+  2. `unit_is_kind_of(handle, k)` answers `004F2560`'s set, and `unit_side_0054(handle)` gives the
+     convoy's party (the `landconvoy.props` `Party`, default Neutral).
+  3. `00805680` places the group record with the handle as its unit, in the order `00805680`
+     keeps: the carry-over list `slot+F4Ch` first, then `B[1Ah]`, then a new record.
+  4. `00806A60` gets a small per-slot level store keyed by handle.
+  5. The triple readers above already filter by kind. The minimap walk is the one reader that
+     must turn a handle into a position and an icon; it takes the convoy's frame from the motion
+     binding.
+
+### The packet this plan sizes
+
+- **Scope:**
+  - `game_hosts_units.*`: the handle, the list answers, the kind and side answers.
+  - `game_hosts_gunnery.cpp`: the placement in the `group` lambda, and `00806A60`. This file is
+    the gunnery lane's, so the lines are routed through the lead.
+  - The minimap reader: `game_hosts_hud_world.cpp`.
+- **One switch**, OFF, with predictions written first:
+  - **JM05 3200/3000:** gameplay identical, and the local player's triple 0 grows by two convoy
+    handles. The minimap union walk sees them and skips them at `005C1665`, so
+    no icon line moves.
+  - **USN01, USN04 and LOMP10:** identical. None authors a LandConvoy; seven scenes of this
+    installation do: `ijn_05`, `usn_12`, `usn_16` and `ijn_10`.
+  - **A JM05 9000-frame row**, to reach a Japanese detection of a convoy member. There the enemy
+    group level first matters, and even then no target pick changes, because the convoy fails
+    `IsKindOf(6)`.
+- **Still to read before coding:**
+  - which `+1E4h` sensor category a convoy carries (`[convoy+1E4h]->vtable[1]`), because the
+    group record stores it at `+8h`;
+  - whether the convoy's detection record exists before its first group fold. `00806A60` writes
+    it, and nothing else creates one.

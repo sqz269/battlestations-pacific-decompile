@@ -3286,3 +3286,358 @@ player, present interval immediate):
   in `src/lua_spawn_new.cpp` / `run_spawn_queue_0094c490`. Find which test refuses every
   candidate for a shipyard request whose `refPos` is absent. Pair on JM05, where a fulfilled
   request spawns ships and fires `luaJM5Shipyard2Spawned`.
+
+## SpawnNew with an entity refPos and a surface group (packet `cc9_spawn_new_shipyard`, `kSpawnNewEntityRefPosBound`)
+
+Worker cc9-lua7, 2026-09-28. This answers the "Unowned: the SpawnNew queue never places on JM05"
+brief above. The lead's brief named the switch `kSpawnNewPlacementBound`. That name is already
+taken (docs/SCENE_CONTENTS_HOSTS.md section 23, ON), so this packet's switch is
+`kSpawnNewEntityRefPosBound` in `include/bsp/lua_spawn_new.hpp`.
+
+### Why every JM05 attempt requeued
+
+- **The request never had a reference point.** `luaJM5SpawnShipyardShip` passes
+  `area.refPos = Mission.ShipyardSpawnPoint[2]` (this installation's `PRCPIJN/jm05.lua:2159`, mtime
+  2024-07-13). That value is `FindEntity("MainShipyard 02 Navpoint 01")` (`jm05.lua:674`), an
+  entity table, not an `{x,y,z}` table. The host read `refPos` only through its `00888760`
+  stand-in, which answers false for a table with no `x`/`y`/`z`. So the log printed
+  `refPos ABSENT`, and `fulfil_spawn_request_009483d0` returned at its `has_ref_pos` test on every
+  one of the 290 attempts. No placement test ran at all.
+- **The image asks the entity question first.** At `00949B60` it calls `008889C0`. That answers
+  yes for a table whose `Ptr` field (`00CFAD08` "Ptr", pushed at `00888A32`) is non-nil and whose
+  object answers `vtable+5Ch(1)` (`00888A6E`). Yes takes `00949B70 CALL 00888AA0` and
+  `00949B7D CALL 008F8530`, which stores the entity at `ref+14h` (`008F856D`). No takes
+  `00949BA2 CALL 00888760` and builds the identity basis at that point (`00949BC7..00949C5F`,
+  `008F84D0`).
+- **The frame is the entity's own world matrix.** `008F8680` returns `entity+CCh` when `ref+14h` is
+  set, first calling `00414DB0` when the byte at `entity+C8h` is clear (`008F8681..008F869F`).
+  Otherwise it returns `ref+18h`. `0094A140` rotates that frame, so an entity `refPos` brings the
+  navpoint's authored basis, not the identity. The `lookAt` arm (`00949E7D..00949EE0`) starts from
+  the same `008F8680` frame and writes `lookAt - origin` into row 2.
+- **A second gap waits behind the first.** Both members of every JM05 shipyard request are
+  destroyers. `VehicleClass[25]` is Clemson class 1930 and `[23]` is Fletcher class 1943, both
+  `Type = "Destroyer"` (this installation's `vehicleclasses.lua`, mtime 2026-05-09). `009483D0`
+  asks the class `vtable+18h(6)` at `00948519` and branches at `0094851B TEST AL,AL /
+  0094851D JZ`. The eight ship leaves answer yes: `00963B70` Destroyer, `00963BF0` Cruiser,
+  `00963C80` LandingShip, `00963D00` Cargo, `00963D80` BattleShip, `00963E10` Submarine,
+  `00963E90` TorpedoBoat and `00963F10` MotherShip each compare 6 before returning 1. No plane or
+  land leaf does. A yes is made by the class's own `vtable+28h(0)` at `00948529`. The host made
+  every member as a `PlaneSquadronGen`, so a destroyer would have spawned as a squadron.
+- **A surface member after the first joins the first.** `009486DA` repeats the kind-6 test. When
+  the member index at `[ESP+10h]` is positive, `0094870E CALL 0077C8D0` runs with ECX = this
+  member and the first entity of `record+CCh` as the leader.
+
+### The binding
+
+With the switch on:
+
+- The `SpawnNew` reader asks for an entity first. Its stand-in for `008889C0`/`00888AA0` is the
+  `ID` field that every other `00888AA0` site in this host uses. An id that names a unit or a scene
+  marker makes the request keep that entity. Anything else falls back to the `{x,y,z}` read.
+- The drain re-resolves the entity's frame on every attempt, because `008F8680` reads `+CCh` each
+  time. A unit gives its pose rows and position. A scene marker gives its authored world matrix,
+  which the mission frame now registers with the units host (unconditionally; nothing else reads
+  it).
+- `spawn_reference_frame_0094a140` starts from that frame instead of the identity at `refPos`.
+- A member whose class kind is 7 to 0Eh is made through a `DestroyerGen` (07h) record and pushed
+  as a plain entity rather than a squadron. SUBSTITUTION, labelled: the image calls
+  `vtable+28h(0)` with no scene creator between. `004F0520` is this process's route to the same
+  allocation, and the units host keys the class on `type_id`.
+- A surface member after the first calls `bsp::entity_join_formation` with the first member as
+  the leader.
+
+### Predictions, written before any run
+
+**JM05 3200/3000, ON against OFF:**
+
+- Two requests are queued at stage init, as OFF. Serial 1 is `[25, 25 or 23]` and serial 2 is
+  `[23, 23]`. The second member is 23 on a `random(1,100) <= 15` draw, else the call's own class.
+- **Both place, two units each, four units in all.** Serial 1 places on the drain's first attempt.
+  Its first candidate is the mid angle of 100 degrees, the mean of `luaJM5RAD(45)` and
+  `luaJM5RAD(155)`, at 200 m in the navpoint's frame. Nothing stands near the navpoint.
+- Serial 2 places on the next attempt, 0.5 s later. Its first candidate is refused, because
+  serial 1's members stand at the same spot within `ownHorizontal` 50 m. It lands at the next
+  distance step, 450 m on the same bearing.
+- The two members of a group stand 127.5 m either side of the group frame, from `00948CC0` with
+  `formationHorizontal` 100.
+- The summary reads `fulfilled=2 units=4 callbacks=2 still_queued=0`. `attempts` drops from 290
+  to 2 or 3.
+- `luaJM5Shipyard2Spawned` runs twice, once per request. Any native it reaches that is still
+  unimplemented shows up in the census, not as a Lua error.
+- No further requests are made. `Shiyard2SpawnInterval` is 700 s or more (`jm05.lua:648..664`),
+  longer than the 150 s run.
+- Each follower's join call is logged with its outcome.
+- **Uncertain: the height.** The navpoint's authored translation is `y = -250`
+  (`scene marker MainShipyard 02 Navpoint 01 ... pos=(418.7,-250.0,6312.1)`). The members are
+  created at that height unless the ship motion lifts them.
+- **Combat rows.** The shipyard is about 20 km from the controlled USS Phelps at (-7995, -8600).
+  The four new allied destroyers add gunnery aim work (`angle_sets`, `steps`). Shots, hits and
+  deaths move only if an enemy comes within gun range of the shipyard in 150 s. I expect the aim
+  counters to move while shots, damage and deaths stay within a few percent. The verdict rests
+  on the placement lines, not on the combat rows.
+
+**USN01 3000 and LOMP10 3000: identical.** Neither mission calls `SpawnNew` in 3000 frames:
+`rb9_usn01.log` and `hp_off_lomp10.log` in worktree cc9-gunnery7 carry no
+`SpawnNew 0094c480: serial` line. So `pair_diff` should exit 0 on both.
+
+### The pairs and the verdict
+
+**The binaries.** OFF is this tree's build at `c57ecd1de` (SHA-256 prefix `0154C44D6C9A`). ON is
+`pair_export --commit c57ecd1de --flip kSpawnNewEntityRefPosBound=true` (prefix `66F6CA235210`).
+The launch lines are the reference ones: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+lockstep 0.05, an idle player, present interval immediate, `--press-start-frame 30`. The logs are
+`local/l7_off2_<row>.log` and `local/l7_on2_<row>.log` in worktree cc9-lua7. A 300-frame JM05
+smoke on the first ON export came first (`local/l7_smoke_jm05.log`).
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 3 | four new units, the placement lines, 0.36 m on USS Phelps |
+| USN01 3200/3000 | exit 0 | nothing |
+| LOMP10 3200/3000 | exit 1 | the minimap heading, the landscape attach cells and 64 movie-camera pose lines; gameplay, deaths, units and the native table identical |
+
+The LOMP10 lines are the same-binary drift cc9-lua6 recorded for LOMP10 at the end of
+docs/CONTROLLED_UNIT.md. LOMP10 makes no `SpawnNew` call.
+
+**A first pair found a gap, now closed.** The pair at `9e1475097` placed the same four units, but
+`luaJM5Shipyard` then raised 47 times at `commandhelpers.lua:330`. That line indexes
+`recon[targetUnit.Party]`, and the spawned leader's `thisTable` slot had no `Party`. In the image
+the member's property bag carries it. `009420A0` seeds `Party` with the request's party at
+`009420AC` and `Race` at `009420C1` (2 for party 0, else 1). `00944210` merges the member table
+over the bag through `0043D8F0`. `009486B6` hands the bag to `entity+C0h`, which pass A reads.
+`c57ecd1de` writes those two fields at pass A for a surface member. On the rerun the only Lua
+failure left is the pre-existing `jm05.lua:5216`, 49 times on both sides.
+
+**JM05, ON against the predictions:**
+
+| prediction | measured | |
+| --- | --- | --- |
+| two requests, serial 1 `[25, 25 or 23]`, serial 2 `[23, 23]` | `[25, 25]` and `[23, 23]` | hit |
+| serial 1 on its first attempt at 100 degrees, 200 m | mission frame 10: `candidates 1 accepted 1 angle 1.7453 distance 200.0` | hit |
+| serial 2 on the next attempt at 450 m on the same bearing | mission frame 20: `candidates 3 ... angle 2.3009 distance 450.0` | distance hit, bearing miss |
+| members 127.5 m either side of the group frame | `(743.2, 6346.8)` and `(488.2, 6346.8)` | hit |
+| `fulfilled=2 units=4 callbacks=2 still_queued=0`, attempts 2 or 3 | the same, `attempts=2` | hit |
+| each follower's join logged | `outcome 1` for both followers | hit |
+| created at `y = -250` | `-250.0` on all four | hit |
+| aim counters move, shots, damage and deaths within a few percent | shots 100, hits 41, damage 2396.3 and deaths 1, all identical | hit |
+
+- **The bearing miss.** At 450 m on the mid bearing, one of serial 2's members stands 44 m from
+  serial 1's first member. That is inside `ownHorizontal` 50 m, so the arc-0 candidate is refused.
+  The accepted candidate is arc 250 m on the plus side: 100 degrees + 250/450 rad, which is 2.3009
+  rad. The prediction ignored the members' lateral spread. The solver's own rule produced the
+  answer.
+- **The navpoint's basis is the reverse of the identity.** The group centre lands at +197 m in x
+  and +34.7 m in z from the navpoint. That is `-200 * (sin 100 deg, cos 100 deg)`, so rows 0 and 2
+  of "MainShipyard 02 Navpoint 01" point along -x and -z. The identity basis would have placed
+  the group on the other side of the navpoint.
+- **The new ships are real ships.** They take creator `006FE590` with coverage
+  `direct_ship_body`, the `ai group team=0` leader is `Clemson class 1930 #1.1`, and formation 6
+  holds all four. `Clemson class 1930 #1.1` travels 1572.98 m and `Fletcher class 1943 #2.1`
+  1440.61 m in 150 s. None fires: no enemy comes within gun range of the shipyard.
+- **The rest of the JM05 move is the four units.** Two world unit lists grow by 4, as do the InitAll
+  pushes, the recon tables (394 -> 398) and the generated-entity writes (1 -> 5). Nine scene
+  units' nearest-unit distances move by 1 to 41 m. USS Phelps moves 0.36 m further.
+
+**Verdict: `kSpawnNewEntityRefPosBound = true`.** The mechanism matches on every placement line.
+The one miss is a prediction that ignored the lateral spread, and the solver's own rule explains
+it. The two reference rows are identical in gameplay.
+
+**Still open:**
+- A `Race` of 0 authored on purpose in a member table is replaced by the default. No reference
+  call site authors one.
+- A `lookAt` with an entity `refPos` is frozen at request time in the image, because `00949EFB`
+  replaces the entity reference with a copied matrix. This process re-reads the entity at every
+  attempt. No reference call site passes both.
+- The plane arm still takes no bag `Party`/`Race` at pass A. This packet left the aircraft path
+  untouched, to keep USN04's SpawnNew squadrons unchanged.
+
+**Names for the lead** (Ghidra is read-only for this worker; ends are exclusive and were checked
+with `disasm-raw`, RET then INT3):
+
+| address | end | proposed name | ABI and evidence |
+| --- | --- | --- | --- |
+| `008889C0` | `00888A9F` | `BSP_LuaValue_IsEntityHandle` | `__thiscall(LuaValue*) -> bool`. It asks `00B661B0` first, then that the `Ptr` field (`00CFAD08`) is non-nil, then that `[Ptr]->vtable+5Ch(1)` holds. |
+| `008F8530` | `008F8605` | `BSP_SpawnRefFrame_ConstructFromEntity` | `__thiscall(this, Entity*)`, `RET 4`. It writes vtable `00D16AA4` and stores the entity at `+14h` (`008F856D`). |
+| `008F8680` | `008F86A5` | `BSP_SpawnRefFrame_GetMatrix` | `__thiscall -> const float*`. It returns `entity+CCh`, calling `00414DB0` first when `[entity+C8h] == 0`, or `this+18h` when there is no entity. |
+| `00944210` | `00944292` | `BSP_SpawnMember_ReadLuaTable` | `__thiscall(this, LuaTable)`, `RET 4`. It merges the table into the bag through `0043D8F0`, resolves `Type` through `00964790` into `+0h`, and copies `Name` into `+4h`. |
+| `00963B70` | `00963B95` | `MDestroyer_IsKindOf` | `__thiscall(int kind) -> bool`, `RET 4`. It accepts 7, 6, 5 and 4. The other ship leaves' `+18h` slots follow the same pattern with their own kind. |
+
+## The unimplemented Lua natives, sixth refresh (packet `cc9_natives_ranking_6`, cc9-lua7, main `c89abeb5a`)
+
+Worker cc9-lua7, 2026-09-28. The method and run parameters are the third refresh's. The build is
+this tree's at `0515d5276`, which is main `c89abeb5a` plus the unlanded doc commit `45d08b646`.
+USN01 and USN04 are added as rows. The census is `local/l7_natives.py`, which reads each log's
+`MissionLuaNative::... UNIMPLEMENTED calls=` table.
+
+| mission | frames | log (worktree cc9-lua7) | host methods unimplemented |
+| --- | --- | --- | --- |
+| USN02 | 9200/9000 | `local/l7_rk_usn02.log` | 508 |
+| USN01 | 3200/3000 | `local/l7_rk_usn01.log` | 539 |
+| USN04 | 4700/4500 | `local/l7_rk_usn04.log` | 517 |
+| JM06 | 3200/3000 | `local/l7_rk_jm06.log` | 492 |
+| LOMP06 | 1200/1000 | `local/l7_rk_lomp06.log` | 466 |
+| USN13 | 3200/3000 | `local/l7_rk_usn13.log` | 503 |
+| JM08 | 3200/3000 | `local/l7_rk_jm08.log` | 493 |
+| JM05 | 3200/3000 | `local/l7_rk_jm05.log` | 552 |
+| LOMP10 | 3200/3000 | `local/l7_rk_lomp10.log` | 496 |
+
+**What moved since the fifth refresh.**
+- `OverrideHP`, `SquadronSetAttackAlt`, `SpawnNewIDIsRequested` and `SpawnNewIDRemove` are gone
+  from the table.
+- JM05 now places its shipyard spawns. That raises `GetFormationLeader` from 49 to 64 calls and
+  reaches no new native.
+- The only Lua error on any row is the known `jm05.lua:5216` (`GetCapturePercentage`), 49 times.
+- USN04 adds one presentation native, `UnitSetPlayerCommandsEnabled`
+  (`usn_19_coralus.lua` 460 and 1947, player command flags; no effect for an idle player).
+
+| rank | native | address | missions (calls) | reach |
+| --- | --- | --- | --- | --- |
+| 1 | `AddUntouchableUnit` | `008AC140` | JM05 (3) | **gameplay if an enemy gunner would target the unit.** It sets `entity+1D4h` (GUNNERY_TABLES), which the unit-AI untouchable gate `00862440` reads. That gate is the gunnery lane's and is always false (AA_TARGETING). `jm05.lua` 597 marks `Mission.UntouchUnits`; of those, only `PT Boat 80' Elco 01`/`02` resolve on this scene. 4508 marks the capture PT. The native is this lane's; the gate is not |
+| 2 | `GetFormationLeader` | `00899AF0` | JM05 (64) | **small.** 1992, 2574 and 3159 fall back to the table's first ship on nil. That is the same unit while that ship leads its formation, and a different one once it dies or the formation re-forms. 2042 dereferences `.ID` behind `IsInFormation(unit)`; no raise on this row. The formation state is this lane's (`kLuaFormationQueryBound`) |
+| 3 | `GetLastCatapulted` | `00892860` | JM05 (47) | **small.** `SetSkillLevel(pete, SKILL_ELITE)` on the cruiser's last catapulted plane (5812). nil is also the image's answer while nothing has been catapulted |
+| 4 | `NavigatorEnable`, `GetFailure`, `Countdown` | | JM05 (1, 2), LOMP10 (1) | as in the fifth refresh |
+| - | `IsGUIActive`, `PrepareClass`, `SetGuiName`, `DisplayScores`, `IsHintActive`, `GetCapturePercentage`, `SetNumbering`, `MissionNarrative*`, `EnableInput`, `BlackBars`, `DisplayUnitHP`, `HideUnitHP`, `Loading_*`, hints, `Scoring_*`, `LoadCheckpoint`, `Effect`, `CountdownCancel`, `BannSupportmanager`, `UnitSetPlayerCommandsEnabled` | | | presentation, or the failure paths |
+
+`FindEntity`'s 146 JM05 calls are the fifth refresh's nine unauthored names.
+
+**Next packet: `GetFormationLeader`.** Rank 1's native is this lane's, but its effect is entirely
+the gunnery gate `00862440`. It is the gunnery lane's item, or a joint one routed by the lead.
+
+## `GetFormationLeader`, 00899AF0 (packet `cc9_get_formation_leader`, `kLuaFormationLeaderBound`)
+
+Worker cc9-lua7, 2026-09-28. This is rank 2 of the sixth refresh and the top item this lane owns.
+
+### The image (V, raw listing `00899AF0`..`00899CC6`)
+
+- `00899BEF CALL 00888AA0` resolves argument 0 to the entity.
+- `00899C08 CALL 007788D0` is BSP_Unit_FormationLeader: `[unit+284h]`, and when that is set, the
+  group's `+14h` (`007788D0..007788DE`).
+- A null leader takes `00899CB4 CALL 00B66430`, which pushes nil.
+- Otherwise `00899C15` reads the leader's `+174h` id. `00899C2B` pushes the table name at
+  `00CE7494`, and `00B67910`/`00B678E0`/`00B663D0` push that table's slot for the id: the entity
+  tail every entity-returning native uses.
+- One result. A unit that is not in a group answers nil. A group's leader answers itself.
+
+### The host
+
+The row fell into the entity-returning arm (`mission_binding_returns_entity`). That arm resolves
+no entity for it, so every call answered nil and was counted UNIMPLEMENTED (JM05, 64 calls).
+
+### The binding (`kLuaFormationLeaderBound`, committed OFF)
+
+`run_get_formation_leader_00899af0` does the following:
+- takes the `ID` as the other `00888AA0` sites do;
+- reads `unit_formation_group_0284` and `formation_leader_0014`, the host's `+284h` and
+  `group+14h`, which `IsInFormation` already reads;
+- pushes the leader's `thisTable` slot through `push_resolved_entity_by_id`, or nil.
+
+SUBSTITUTION, labelled: an entity with no units-host slot, such as a scene marker, answers nil.
+
+### Predictions, written before any run
+
+**JM05 3200/3000 (the only row that calls it; 64 calls):**
+- `jm05.lua` 1992 asks for `Mission.Shipyard2Ships[1]`, the spawned `Clemson class 1930 #1.1`.
+  It leads formation 6, so it answers itself, which is the unit the nil fallback already chose.
+  **No change from that site.**
+- `jm05.lua` 3159 asks for `Mission.AIUnits[1]` (`JapUnits.Cruisers[2]`, lines 867-874).
+  - OFF answers nil every time. So every call re-runs the `JoinFormation(unit, AIUnits[1])` loop
+    over the other six `AIUnits` (3163-3171).
+  - ON answers once `AIUnits[1]` is in a group. After the first call's joins it leads that group
+    and answers itself. The loop is skipped from then on.
+  - **Prediction:** the `JoinFormation` census (332 calls OFF) falls by about six per later call,
+    and gameplay stays identical, on the assumption, not verified in the listing, that re-joining a member of its own
+    group changes nothing.
+  - **The risk to that:** if `AIUnits[1]` is already a *follower* in a scene formation at the first
+    call, ON answers that formation's leader instead. The loop is then never run, and the
+    `AIUnits` keep their authored formations. That would move the Japanese fleet's paths and
+    possibly the combat rows. The log line marks such an answer `(not the argument)`.
+- 2574 (`AlliedFleet[1]`) is not reached in 150 s. The fleet's `SpawnNew` is not among the two
+  requests.
+- 2042 dereferences `.ID` and stays unreached.
+- The summary line reads `calls=64` with `found` equal to the number of 1992 and 3159 calls made
+  after their groups exist.
+
+**USN04, USN01 and LOMP10: identical.** None calls `GetFormationLeader` (the census above).
+
+### Pairs and verdict
+
+OFF is this tree's build at `fb297db29`. ON is
+`pair_export --commit fb297db29 --flip kLuaFormationLeaderBound=true` (`local/l7_fl`). The logs
+are `local/l7_fl{off,on}_<row>.log` in worktree cc9-lua7, run with the reference launch lines.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 1 | `GetFormationLeader` UNIMPLEMENTED -> concrete (64 calls). `found=64`, `other=0`. `JoinFormation` 332 -> 38, and `argument_entity` 953 -> 365 with it. Gameplay, deaths, units and the native table are otherwise identical |
+| USN01 3200/3000 | exit 1 | the new summary line only |
+| LOMP10 3200/3000 | exit 1 | the summary line, plus the known LOMP10 same-binary drift (minimap heading, landscape cells, movie-camera poses, the `ShipAiSectorScan` noise counters) |
+
+**Against the predictions:**
+- **The 1992 site held.** Its answers are `Clemson class 1930 #1.1`, which leads group 6.
+- **The 3159 site took neither of my two branches.** `AIUnits[1]` is `Kuma-class 01`, which already
+  *leads* the authored formation 4 (seven ships) at the first call. So ON answers it from the first
+  call on, and the `JoinFormation` loop never runs. OFF ran it on every call, 294 calls in all.
+  Those joins changed nothing, because the six ships were already Kuma's members. Gameplay is
+  identical, as predicted.
+- The "falls by about six per later call" miss is the same fact: there is no first call that joins.
+
+**Verdict: `kLuaFormationLeaderBound = true`.** The mechanism matched. JM05's reads answer the
+group leader, and gameplay is identical on all three rows.
+
+## `AddUntouchableUnit`, 008AC140 (packet `cc9_add_untouchable_unit`, `kLuaAddUntouchableUnitBound`)
+
+Worker cc9-lua7, 2026-09-28. This is the units half of the sixth refresh's rank 1, a joint packet
+with cc9-gunnery8, which binds the gate.
+
+### The image (V, raw listing `008AC140`-`008AC2AB`)
+
+- `008AC23B CALL 00888AA0` resolves argument 0.
+- `008AC253..008AC25D` calls `[unit]->vtable[140h]()`, the unit's AI object. There is no null test.
+- `008AC263 MOV byte [EAX+1D4h],1` is the only write.
+- `008AC269 CALL 00B66400` returns no result.
+- The byte is the unit-AI `+1D4h` that the untouchable gate `00862440` reads (docs/AA_TARGETING.md,
+  docs/GUNNERY_TABLES.md). `008AC2B0` is RemoveUntouchableUnit; no reference row calls it.
+
+### The binding (`kLuaAddUntouchableUnitBound`, committed OFF)
+
+- The row sets a per-unit-index flag in the Lua host.
+- `bsp::game::lua_unit_untouchable_1d4(std::size_t index)` reads it. The declaration is in
+  `include/bsp/game_hosts_lua.hpp`.
+- **Why not a units-host accessor.** The lead's brief asked for
+  `GameUnitsHost::unit_untouchable_1d4`. The units host files are leased to cc9-gunnery8
+  (`cc9_periscope_out`), so the flag lives in this lane's file behind a free function instead.
+  gunnery8 can call it directly, or wrap it as that member.
+- SUBSTITUTION, labelled: an entity with no units-host slot is skipped.
+- The flag is **inert**: nothing reads it until the gate `00862440` is bound.
+
+### Predictions, written before any run
+
+- **JM05 3200/3000: exit 1.** Three calls, all at stage init. `jm05.lua` 596-599 marks the two
+  resolvable `Mission.UntouchUnits`, `PT Boat 80' Elco 01` and `PT Boat 80' Elco 02`. (The other
+  nine names are unauthored, and `table.insert(t, nil)` adds nothing.) `luaJM5InitCapPt` (4502-4509)
+  marks `Mission.CapPt`, the `Event2Pt` it has just generated. The summary reads `calls=3 marked=3`.
+  `AddUntouchableUnit` turns concrete. Gameplay is identical.
+- **USN01 3200/3000: exit 1**, the new summary line only. USN01 makes no call.
+
+### Pairs and verdict
+
+OFF is this tree's build at `11bad8895`. The first ON was
+`pair_export --commit 11bad8895 --flip kLuaAddUntouchableUnitBound=true` (`local/l7_fl`). The logs
+are `local/l7_ut{off,on}_<row>.log` in worktree cc9-lua7, with the reference launch lines.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| JM05 3200/3000 | exit 1 | the three census lines and the summary (`calls=3 marked=3`); gameplay identical |
+| USN01 3200/3000 | exit 1 | the summary line only |
+
+**The census**, as predicted. All three calls come at stage init (`t=0.00`):
+- `PT Boat 80' Elco 01` (unit 339);
+- `PT Boat 80' Elco 02` (unit 340);
+- `Event2Pt` (unit 364), the generated capture PT.
+
+**One bookkeeping fix before the flip.** The first ON export still listed the native as
+UNIMPLEMENTED with its calls counted twice (3 -> 6), because the row was missing from the dispatch's
+`handled` set. The flip commit adds it. A rerun of the flipped tree
+(`local/l7_uton2_jm05.log`) lists `AddUntouchableUnit` as `concrete calls=3`, and `pair_diff` against
+the OFF log is exit 1.
+
+**Verdict: `kLuaAddUntouchableUnitBound = true` on identity.** The flag stays inert until the gate
+`00862440` reads `lua_unit_untouchable_1d4`.
