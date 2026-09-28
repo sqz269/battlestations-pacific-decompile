@@ -505,3 +505,57 @@ player, present interval immediate):
 | JM05 3200/3000 | **exit 3.** `summary LandConvoy roster convoys=2 members=5`. The members are `SecondaryLandConvoy 01-1` Us_truck, `-2` Us_ambulance, `-3` Us_apc and `-4` Us_jeep, and `RadarStationLandConvoy 01-1` Us_jeep. Each stands at its convoy's frame, and they do not move (no formation yet). The unit table grows by 5. Neutral party, so no side targets them: deaths, hits and damage unchanged. The gunnery fold is unwired, so `convoy_member_records` stays 0 |
 | USN01 3200/3000 | **exit 1.** No LandConvoy; only the new summary line (`convoys=0 members=0`) |
 | USN04 4700/4500 | **exit 1.** The same |
+
+#### LandConvoy roster pairs and verdict
+
+- OFF is this tree's build of `22747653d`.
+- ON is `pair_export --commit 22747653d --flip kLandConvoyMembersBound=true` (`local/lc_on`).
+- The logs are `local/lc_{off,on}_<mission>.log` in worktree cc9-lua5.
+
+| row | pair_diff | what moved | verdict |
+| --- | --- | --- | --- |
+| JM05 3200/3000 | exit 3 | units 389 -> 394 and the roster lines only | held |
+| USN01 3200/3000 | exit 1 | the new summary line only | held |
+| USN04 4700/4500 | exit 1 | the same | held |
+
+**JM05, ON:**
+
+```
+LandConvoy roster 00743450: "SecondaryLandConvoy 01" rows=4 columns=1 slots=4 members=4
+  member SecondaryLandConvoy 01-1 type Us_truck (464) slot 0 pos=(-1157.8, 3.2, -830.1)
+  member SecondaryLandConvoy 01-2 type Us_ambulance (465) slot 1
+  member SecondaryLandConvoy 01-3 type Us_apc (471) slot 2
+  member SecondaryLandConvoy 01-4 type Us_jeep (466) slot 3
+LandConvoy roster 00743450: "RadarStationLandConvoy 01" rows=1 columns=1 slots=1 members=1
+  member RadarStationLandConvoy 01-1 type Us_jeep (466) slot 0 pos=(5552.3, 41.8, -2556.8)
+```
+
+- Deaths, hits, damage, shots, the first hit and the unit table's 150 compared rows are identical.
+- The new native rows are the land vehicles' world registration `0074DE10` (5), the roster
+  (2) and `HudMinimap::land_vehicle_player_query 008DDF00`. The last is unimplemented and is now
+  asked 21920 times, because land vehicles exist.
+
+**Verdict: `kLandConvoyMembersBound = true`.**
+
+### Still open: the formation and the back-pointer consumer
+
+- **The per-step pose (`00742400`, `00743060`).** The members stand at their convoy's frame.
+  - `land_convoy_place_members_00742400` (`src/land_and_structures.cpp`) is complete behind
+    `LandConvoyPlacementHost`. It needs a host.
+  - The path sample `007B03C0` is `BSP_CameraPath_SampleLocalCubic` (`007AFE80`, reconstructed as
+    `sample_camera_path_local_007afe80`), then the path entity's local matrix `+74h` with the
+    homogeneous divide.
+  - The sampler reads knot records: XYZ, direction `+0Ch`, start `+18h` and duration `+1Ch`. The
+    path length is `+28h`. Their producer is `007AF150`, the tail of
+    `BSP_ScenePath_LoadSourceHolder` `007B34F0`. It sets the closed flag `+24h` when the first and
+    last points are less than 1 apart, and walks the points through `007AE330` and `007AE3E0`
+    (not read), writing each knot's `+18h` from the running `+1Ch`.
+  - The host's path retention keeps the points only (`path_points_local`, and world points in the
+    registry). `007AF150` has to be reconstructed first.
+  - The terrain snap law (`+3C8h` = 0, same parent) needs `0087FA20` and `0087FB90`: the host has
+    `SceneTerrainHeightField::height_00ada900` and `normal_00adaba0`. It also needs
+    `0085DAD0`/`0085DC80` (`src/plane_advance_pose.cpp`, `src/hud_movie_camera.cpp`) and a
+    units-host member pose writer.
+- **The gunnery fold `00805680`** can now read `GameUnitsHost::unit_land_convoy_738`. Those lines
+  belong to the gunnery lane, and the lead routes them.
+  - On JM05 the members are Neutral, so the fold changes only the neutral recon triple.
