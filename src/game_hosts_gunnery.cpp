@@ -2133,6 +2133,9 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_stock_lua_sets{0};
     // Packet cc9_navigator_force_torpedo.
     unsigned long long forced_torpedo_marks{0};
+    unsigned long long immediate_function_calls{0};   // 009E2B60
+    unsigned long long immediate_function_marks{0};
+    unsigned long long immediate_function_fires{0};
     unsigned long long forced_torpedo_fires{0};
     unsigned long long torpedo_supply_ticks{0};
     unsigned long long torpedo_supply_in_area{0};
@@ -5803,6 +5806,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             } else {
                 set_request(want_fire);
+            }
+            if (gun.immediate_fire_009e2b60) {
+                // Packet cc9_fire_function_guns_now: 009E2B99's vtable[1F0h].
+                gun.immediate_fire_009e2b60 = false;
+                ++immediate_function_fires;
+                if (turning == kTurningClassRapid) {
+                    im.immediate_4d4 = true;                             // 006FDF60
+                } else {
+                    set_request(true);                                   // 006FDC50
+                }
+                done("Gun::immediate_fire_slot_1f0_009e2b60", 0x009e2b99u);
             }
             latched = gun.fire.fire_requested;
             if (turning == kTurningClassRapid) ++immediate_guns_rapid;
@@ -9919,6 +9933,28 @@ bool GameGunneryHost::group_accepts_target_008637d0(std::size_t unit_index,
         return true;                                              // 00863834
     }
     return false;
+}
+
+bool GameGunneryHost::fire_function_guns_now_009e2b60(std::size_t unit_index, int function) {
+    Impl& d = *impl_;
+    int marked = 0;
+    for (std::size_t g = 0; g < d.guns.size(); ++g) {
+        GameGunRow& gun = d.guns[g];
+        if (gun.unit_index != unit_index || gun.category != function) continue;   // 009E2B86
+        const int turning = g < d.gun_turning_class.size() ? d.gun_turning_class[g] : 0;
+        if (turning != Impl::kTurningClassRapid && turning != Impl::kTurningClassSingle) {
+            continue;                                                             // 009E2B7E
+        }
+        gun.immediate_fire_009e2b60 = true;
+        ++marked;
+        ++d.immediate_function_marks;
+    }
+    if (++d.immediate_function_calls <= 12) {
+        d.log.notef("  FireFunctionGunsNow: unit=%zu function=%d marked=%d bound=%d (009E2B60 -> "
+            "vtable[1F0h], packet cc9_fire_function_guns_now)", unit_index, function, marked,
+            kGunImmediateFireSlotBound ? 1 : 0);
+    }
+    return marked > 0;
 }
 
 int GameGunneryHost::force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only) {
