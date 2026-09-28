@@ -195,6 +195,7 @@ struct GameUnitsSummary {
     // chose. All three inputs derive from unit+900h, which 007CFD20 zeroes and
     // 007C6481 sets to 7. docs/PLANE_FLIGHT_CORE_LAW.md.
     unsigned long long plane_steps{0};
+    unsigned long long plane_row_refreshes{0};  // cc9_controlled_plane_ai_moveto
     unsigned long long plane_arm_free_flight{0};
     unsigned long long plane_arm_ground_roll{0};
     unsigned long long plane_arm_surface{0};
@@ -276,6 +277,14 @@ inline constexpr bool kSubmarineSeabedBound = true;  // ON: mechanism held, JM06
 // submarine whose scene row authors `Dive` is placed at bands[Dive] at attach
 // (00853B2B..00853B86: local Y +A8h, X and Z kept), before its hull body is built.
 // False: the hull keeps its authored Y.
+// Packet cc9_controlled_plane_ai_moveto (docs/CONTROLLED_UNIT.md, "Why a controlled plane
+// reads 0.00 m"). The unit row's position is the host's copy of entity+FCh, the world
+// translation row that 008A7C3C (GetPosition) reads. refresh_row runs only in the
+// ship-motion loop, so a plane's row keeps its spawn position while the plane flies.
+// True: after 007CE040's fixed step, a plane's row takes its motion position, and its
+// moved distance follows. False: the row stays at the spawn position.
+inline constexpr bool kPlaneRowPositionBound = false;
+
 inline constexpr bool kSubmarineDiveTeleportBound = true;  // ON: pairs held (docs/SUBMARINE_MODEL.md section 15)
 
 class GameUnitsHost {
