@@ -547,3 +547,62 @@ equals the head without the switch: `pair_diff` against `local\g4_dr_usn04.log` 
   - the same-step `0ADh` delivery;
   - the host evaluates settle after stepping the gun, where `006DF520` compares the angles before
     the gun's own step.
+
+### 10.7 The two timing labels (packet `cc9_fire_request_timing`, sub-switch `kGunWaveOrderBound`)
+
+Section 10.6 left two labels that set the fire rate directly. Both were read against the fixed-step
+structure.
+
+**(1) 0ADh delivery: same step in the image, as in the host. No change.**
+- Both sends go through `0077C2A0` `BSP_Session_RouteMessage`. The latch path's is `0072D290`
+  inside `0072D130`. MRTGun's extra one is `0084C625 CALL 0x0077c2a0`.
+- **In a local session the only destination is the loopback queue `0076E520`.** It is drained by
+  `00778450` `BSP_Session_PumpStep`, fan-out row 9 (docs/UNIT_STATE_MESSAGE.md "cc2-session-dispatch",
+  docs/SHIP_NEIGHBOUR_AVOIDANCE.md "route" / "drain").
+- **The gun's tick runs before that pump.** It is the gun node's `+8h` slot (`0084C5B0` /
+  `006FE0D0`, the `+310h` vtables `00CFBF10` / `00CFC14C` at index 2). Wave 3 of the job waves calls
+  it (`00874FE0`: `element->vtable[+8h](0.05f)`), and "waves 1-3 run inside the step loop, before
+  the subsystem fan-out" (docs/FIXED_STEP_JOB_WAVES.md).
+- **So a 0ADh posted by either path is delivered to FireIfReady (`0072D860`) at row 9 of the same
+  step.** The two paths do not differ. The host's same-step FireIfReady is the image's.
+
+**(2) Settle order: the host was one aim step ahead of the image. Corrected under the sub-switch.**
+- Wave 1 calls the element's `+4h` slot, which for a turning gun is `0085AD80` (index 1 of the same
+  `+310h` vtables). It steps the angles toward the command the bot set on the previous step.
+- Wave 2 (`00875B90` -> `008759B0`) walks the node's sub-list. The bots are linked into it at attach
+  (`008FBC8B`: `00876020(gun+310h, bot)`, GUN_BOT_TICKS). `006DF520` there sets the new command
+  (`006DFB54`, `0085ABA0`) and compares the **already stepped** `gun+480h` / `+484h` with it (`006DFB83
+  FLD [ECX+480h]`, `006DFBAD FLD [EDX+484h]`, `006DEE40`).
+- **The host** called `0085ABA0` first, stepped toward the new command, and only then tested settle.
+  So it tested one aim step later, against a gun that had already moved toward the new command.
+- The same order puts MSTGun's salvo test (`006FE0D0`, wave 3) **after** the bot and after the
+  step's send. The host ran it before the bot.
+- **Per settle event:** the host's test passed as soon as the gun could reach the new command within
+  one step. The image's passes only when the command moved less than 0.1 degree since the last
+  step. The shot-count effect is measured by the pair below.
+- `kGunWaveOrderBound` (OFF in `src/game_hosts_gunnery.cpp`) moves the aim step ahead of `0085ABA0`,
+  for every gun as wave 1 does, and runs the salvo test after the send and before FireIfReady. The
+  census line is `summary mission gunnery wave order ... pre_steps=`.
+
+**OFF, this tree (`local\WO_OFF_<m>.log`, main `eec19cbf1` synced, with the torpedo swim ON):**
+
+| mission | deaths / hit records / shots | first hit | end |
+| --- | --- | --- | --- |
+| USN02 9200/9000 | 12 / 5166 / 3826 | 19.20 s | failed 29.75 s; Houston sunk 22.75 s (Minegumo Long Lance) |
+| USN04 4700/4500 | 28 / 491 / 3656 | 100.85 s | none |
+| USN13 3200/3000 | 16 / 312 / 2069 | 97.00 s | none |
+
+The twenty 5-inch dual-purpose mounts (device 299) on USN02 average 77 shots each (maximum 167).
+
+**Predictions, written before the ON runs:**
+
+| row | prediction |
+| --- | --- |
+| USN02 shots | down, 0..15% (fewer arms and later re-arms; the aim lags one step) |
+| USN02 shots per device-299 mount | mean 77 -> 60..77 |
+| USN02 first hit | 19.20 s +- 0.2 s (a torpedo; the tube trains one step later) |
+| USN02 Houston | still sunk by an opening-spread Minegumo Long Lance, 22.75 s +- 1.5 s |
+| USN02 failure | 29.75 s +- 1.5 s |
+| USN04 | hit records down 0..10% (AA aim one step behind); deaths 28 +- 3; exit 3 |
+| USN13 | hit records down 0..10%; deaths 16 +- 3; exit 3 |
+| census | pre_steps > 0 on each ON run |
