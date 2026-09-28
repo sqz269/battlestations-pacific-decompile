@@ -1990,3 +1990,42 @@ fire target for the player's own submarine. The auto-target enable gate `009F561
 player test (it reads director+3Dh and the head command's category only). Whether the tick
 `009F5DA0` is reached for a player-controlled unit is the ship AI host's modelling, not
 established by this packet.
+
+## SquadronSetSpeed, 0089F780 (packet `cc9_squadron_set_speed`, `kLuaSquadronSetSpeedBound`, committed OFF)
+
+Worker cc9-lua3, 2026-09-28. This is item 3 of the refreshed ranking.
+
+**The image (V).**
+- `SquadronSetSpeed(squadron, speed)` resolves argument 0 (`00888AA0`, `0089F880`) and reads
+  argument 1 as a number (`00B66270`, `0089F8B1`).
+- For `i` below `[entity+3CCh]` it takes `member = i < 5 ? [entity+3D0h+4i] : null` and calls
+  `member->vtable[3Ch](speed)` (`0089F8CA..0089F8FF`). There is no class test. It returns no
+  value.
+- On all nine plane vtables, `vtable[3Ch]` is `0074E1E0` (the nine `.rdata` hits of its
+  address, for example `00D19D64` = `00D19D28+3Ch`). That body calls `007D9E80` on
+  `unit+AB0h`, the flight controller.
+- **`007D9E80` sets the controller's velocity outright.** The body linear velocity becomes
+  `(0, 0, speed)` at `ctl+3Ch..44h`. The body angular velocity at `ctl+48h..50h` becomes the
+  zero vector at `00F87574`. Then `007D9C80` rotates both into world, and the world linear
+  velocity is copied to `ctl+30h..38h`.
+- So the speed is a one-shot airspeed along the plane's own forward axis, not a held setting.
+
+**The binding.**
+- `GameUnitsHost::set_plane_forward_speed_007d9e80` writes `plane_world_velocity` as the pose's
+  forward row times the speed, mirrors it into the body's linear velocity and zeroes
+  `plane_body_angular`. The spawn seed builds the same vector.
+- `GameMissionLuaHost::run_squadron_set_speed_0089f780` walks the squadron registry's active
+  `member_units`, at most five, as `SetForcedReconLevel` does.
+- The census is `summary mission script squadron speed bound=.. calls=.. planes=..
+  unresolved=..`, plus one line per call.
+- **SUBSTITUTIONS, labelled.** The registry's active members stand in for the compacted
+  `+3D0h` array. The `ctl+30h..38h` copy has no host field. An entity with no squadron record
+  is counted unresolved.
+
+**Predictions** (written before the runs; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle
+player):
+
+| row | prediction |
+| --- | --- |
+| USN13 3200/3000 | **exit 3.** There are 15 calls from `luaAttackWaveSpawned` (`usn_13_truk.lua` 1641, mtime 2024-08-13), each on a spawned squadron at 67, with 4 planes each (the forced-recon lines of cc9-lua2's `rk_usn13.log` resolve 4 members). So `planes=60`. The wave's planes start at 67 m/s instead of their spawn seeds (61.1 and 55.6 m/s in that log). Their positions move from the spawn on, so the attack-wave unit rows, the first hits on the US carriers and possibly the AA kills move. That is RNG-coupled, so per-kill attribution is not claimed |
+| USN04 4700/4500 | no call, exit 1 |
