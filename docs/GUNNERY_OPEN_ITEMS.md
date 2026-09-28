@@ -201,3 +201,29 @@ the old reading prints for such a live aircraft, is absent from all four logs (U
 `RA_OFF_USN04`, USN13 `RM_USN13`, USN01 `FP_OFF_USN01`, USN02 `FP_OFF_USN02`). Every water
 contact on them (16, 8, 3, 0) is a dead aircraft, which both readings pass. A run where a live
 AI aircraft touches water would move.
+
+## 7. The stop-firing hook, `0072B4C0` (packet `cc9_gun_stop_firing_hook`, read; marker made concrete)
+
+Rank 2 of section 2. Read from disk bytes: `0072B4C0`-`0072B534` (plain `RET`, INT3 after it),
+`00731EF0` and `0072F830`'s `0072F9DD`-`0072FA26`.
+
+- **The body.** It stops the gun's own muzzle point effect at `gun+47Ch` (`00867B10`, then byte +9
+  set and the refcount released through `[00CE2220]`) and clears the pointer.
+- **The class's looping effect.** When `gun+470h` is set, it calls `00731EF0` with
+  `ECX = [gun+3F8h]` (the weapon class record) and the gun pushed. That removes the gun from the
+  record's set (`+3Ch`..`+44h`), and when the set is empty it stops the shared effect at record
+  `+38h`. Then it clears `gun+470h`.
+- **The flag's meaning.** `gun+470h` is 1 while the gun is in its class's looping-effect set.
+  `0072F830`, the shot spawner, registers it with `00732210` and unregisters it with `00731EF0` when
+  the class record carries an effect resource at `+18h`.
+- **The census, and its limit.** The ESI- and EBP-based scans of `+470h` found only these gun
+  routines, plus `007AC000` and `007AB8C0`, which are not gun routines. Other base registers were
+  not scanned.
+- **No fire state is written.** None of the fire request `+450h`, `+454h` or `+478h`, the barrel
+  timers or the trigger.
+
+**The marker is now concrete.** `Gun::stop_firing_0072b4c0` calls `done` instead of `record`. This
+host builds no point effects, so there is nothing to store.
+
+**Prediction.** Gameplay is identical on all four reference missions (pair_diff exit 1). The
+`host methods` table moves by one row from unimplemented to concrete.

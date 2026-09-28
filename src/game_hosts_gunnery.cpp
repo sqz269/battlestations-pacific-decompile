@@ -4783,7 +4783,17 @@ public:
         return owner_.draw(GameGunneryHost::Impl::Draw::fire_stagger, gun_, 0, lo, hi);
     }
     void stop_firing_0072b4c0() override {
-        owner_.record("Gun::stop_firing_0072b4c0", 0x0072b4c0u);
+        // Packet cc9_gun_stop_firing_hook (docs/GUNNERY_OPEN_ITEMS.md section 7).
+        // 0072B4C0 __thiscall(gun), plain RET at 0072B534: stop and release the
+        // gun's muzzle point effect at gun+47Ch (00867B10, the refcount release
+        // through [00CE2220]), then, when gun+470h is set, 00731EF0(gun) on
+        // ECX = [gun+3F8h]: take the gun out of its weapon class's looping-effect
+        // set (+3Ch..+44h) and stop the shared effect at +38h when the set empties;
+        // then clear gun+470h. The other gun-side writer found is 0072F830's
+        // register/unregister pair (0072F9F8..0072FA1F, 00732210 / 00731EF0). No fire
+        // request, barrel timer or trigger is written. This host builds no point
+        // effects, so the whole body is presentation and there is nothing to store.
+        owner_.done("Gun::stop_firing_0072b4c0", 0x0072b4c0u);
     }
     void release_effect_ref() override {}
     // 0072D18C, the first thing the gun does each step: age the list at
