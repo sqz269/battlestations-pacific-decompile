@@ -215,6 +215,14 @@ constexpr bool kAiLeaderOrderKeyBound = true;
 // order-ring read (docs/ORDER_RING_REPLACE.md): with both switches ON, USN13 and
 // USN04 are identical to the membership-only rows, so the moves are this rule's.
 constexpr bool kGeneratedSquadronBrainBound = true;
+// Packet cc9_party_replan_flag, docs/SHIP_AI_OPEN_ITEMS.md section 3. The
+// planner's replan byte +2Ch: the claim 00A22750 sets it at 00A227A9 when
+// 00A1C8B0 finds the group not yet in the planner's own list, and 00A15970
+// (from 00A182C0) answers, outside effective game modes 4..7, the OR of
+// 00A18480 over brain+0h..+0Ch, which reads and clears it. True: the byte and
+// its query are live, so a claim makes the party think again on the next call.
+// False: 00A15970 answers false (the previous stand-in).
+constexpr bool kAiPartyReplanFlagBound = false;
 
 // Packet cc9_order_ring_replace, docs/ORDER_RING_REPLACE.md. True: an AI order
 // that repeats the entity's previous one (same token and target, point within
@@ -473,6 +481,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         float age_0038{0.0f};
         float since_spawn_003c{0.0f};
         float last_clock_0040{-1.0f};
+        // +2Ch, the replan byte: set by the claim 00A22750 (00A227A9), read and
+        // cleared by 00A18480. Packet cc9_party_replan_flag.
+        bool replan_002c{false};
     };
 
     struct Brain {
@@ -494,6 +505,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     float clock_seconds{0.0f};       // 00F876A4
     std::uint32_t rng{0x2545F491u};  // 00BD2F10's stream, one per run
     bool created{false};
+    // Packet cc9_party_replan_flag: the census of the replan byte, on both sides.
+    unsigned long long replan_sets{0};         // claims that set +2Ch (image rule)
+    unsigned long long replan_immediate{0};    // 00A15970 answers true
+    unsigned long long replan_foreign_claims{0};  // the group held another planner
 
     // Which group holds a unit, so entity_has_group answers entity+16Ch.
     std::vector<Group*> group_of_unit;
@@ -2199,11 +2214,35 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return party_record[static_cast<std::size_t>(party_slot)];
     }
     bool brain_wants_immediate_think(void* brain) override {
-        // 00A15970's four mode arms read brain+10h..+1Ch vtable[+30h], the
-        // replan virtuals. No planner in this process sets a replan request.
-        (void)brain;
-        record("AiGroups::brain_wants_immediate_think", 0x00a15970u);
-        return false;
+        // 00A15970. Effective game modes 4..7 ask the one mode planner at
+        // brain+10h..+1Ch through vtable[+30h] (00A1D110..00A1D1A0); every other
+        // mode calls vtable[+30h] on all four of brain+0h..+0Ch in order
+        // (00A159E8..00A15A44) and answers their OR (00A15A46..00A15A6A). For
+        // those four planners the slot is 00A18480, which reads and clears +2Ch.
+        // CORRECTION (packet cc9_party_replan_flag): the earlier comment read
+        // only the mode arms, and a claim does set the byte.
+        if (!kAiPartyReplanFlagBound) {
+            record("AiGroups::brain_wants_immediate_think", 0x00a15970u);
+            return false;
+        }
+        Brain* b = static_cast<Brain*>(brain);
+        const int mode = game_mode();
+        if (b == nullptr || (mode >= 4 && mode <= 7)) {
+            // The mode planners' +30h bodies are not bound in this process,
+            // which runs the campaign's mode 0.
+            record("AiGroups::brain_wants_immediate_think", 0x00a15970u);
+            return false;
+        }
+        bool any = false;
+        for (int slot = 0; slot < 4; ++slot) {
+            Planner& p = b->planners[static_cast<std::size_t>(slot)];
+            const bool flag = p.replan_002c;  // 00A18480 MOV AL,[ECX+2Ch]
+            p.replan_002c = false;            // 00A18483 MOV byte [ECX+2Ch],0
+            any = any || flag;
+        }
+        done("AiGroups::brain_wants_immediate_think", 0x00a15970u);
+        if (any) ++replan_immediate;
+        return any;
     }
     void* create_party_brain(int party_slot) override {
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return nullptr;
@@ -3589,7 +3628,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void planner_claim_group(void* planner, void* group) override {
         Planner* p = static_cast<Planner*>(planner);
         Group* g = group_at(group);
-        if (p == nullptr || g == nullptr || g->claimed_by != nullptr) return;
+        if (p == nullptr || g == nullptr) return;
+        // 00A22762, 00A1C8B0: the planner's own list already holds the group,
+        // and the claim returns without touching +2Ch. Otherwise 00A227A9 sets
+        // it after the push. The image does not test group+5654h first; this
+        // host still refuses a group another planner holds (below), so that
+        // case is counted and its ownership transfer is not modelled.
+        const bool owned = std::find(p->owned.begin(), p->owned.end(), g) != p->owned.end();
+        if (!owned) {
+            ++replan_sets;
+            if (kAiPartyReplanFlagBound) p->replan_002c = true;
+            if (g->claimed_by != nullptr && g->claimed_by != p) ++replan_foreign_claims;
+        }
+        if (g->claimed_by != nullptr) return;
         g->claimed_by = p;
         p->owned.push_back(g);
         ++summary.planner_claims;
@@ -4313,6 +4364,10 @@ void GameAiCoordinatorHost::report() {
         s.planner_spawn_arms, s.attack_orders, s.attack_cautious, s.attack_movetoattack,
         s.commands_issued, s.commands_refused, s.units_with_task,
         static_cast<double>(s.first_command_seconds));
+    host.log.notef("summary mission ai replan flag bound=%d sets=%llu immediate=%llu "
+        "foreign_claims=%llu (00A22750 +2Ch, 00A15970 / 00A18480, packet cc9_party_replan_flag)",
+        kAiPartyReplanFlagBound ? 1 : 0, host.replan_sets, host.replan_immediate,
+        host.replan_foreign_claims);
     {
         // How many group members are squadrons, counted over the live registry.
         unsigned long long squadron_group_members = 0;

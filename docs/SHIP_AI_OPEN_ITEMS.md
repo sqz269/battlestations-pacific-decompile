@@ -349,3 +349,79 @@ The results are the same as the pairs above:
   284 -> 314, damage 4730.3 -> 4405.8, shots 352 -> 381, and US Cargo Transport 02 survives.
 - USN01, USN02, USN04 and USN13 are gameplay-identical (exit 1).
 - The per-attacker census is identical to the table above.
+
+## 3. The party brain's replan flag (packet `cc9_party_replan_flag`, rank 5, `kAiPartyReplanFlagBound`)
+
+Worker cc9-ships7, 2026-09-28. The switch is bound OFF first. The pairs and the verdict follow the
+predictions.
+
+### The image
+
+- **`00A15970`** (`BSP_AiPartyBrain_WantsImmediateThink`), called from `00A182C0` before each party's
+  think timer is tested.
+  - In effective game modes 4 to 7 it asks the one mode planner at `brain+10h..+1Ch` through
+    `vtable[+30h]` (`00A15984..00A159E6`).
+  - Every other mode calls `vtable[+30h]` on all four of `brain+0h..+0Ch` in order, with no short
+    circuit (`00A159E8`, `00A15A0E`, `00A15A2A`, `00A15A40`). A null slot answers 0. It returns
+    their OR (`00A15A46..00A15A6A`).
+- **`00A18480`** (`BSP_AiPlanner_TakeReplanFlag`) is the `+30h` slot of those four planners
+  (docs/AI_PLANNERS.md): `MOV AL,[ECX+2Ch]; MOV byte [ECX+2Ch],0; RET`.
+- **The claim `00A22750`** (`__thiscall(planner)(group)`, `RET 4`):
+  - It calls `00A2C600(group)` and discards the answer.
+  - It then asks `00A1C8B0` (`BSP_AiPlanner_OwnsGroup`) whether the planner's own list at `+20h`
+    already holds the group, and returns if it does.
+  - Otherwise it pushes the group, stores the planner at `group+5654h`, registers the observer
+    (`00694A60`), and sets `+2Ch = 1` at `00A227A9`.
+  - It does not test `group+5654h` before the push.
+- **So a claim makes the party think again on the next call to `00A182C0`,** instead of waiting for
+  its 3 to 5 s timer. The immediate think also draws a new interval and reschedules.
+
+### The host before this packet
+
+- `AiGroups::brain_wants_immediate_think` answered false. Its comment read only the mode 4 to 7 arms
+  and said no planner sets a replan request.
+- `planner_claim_group` refuses a group that any planner holds. The image only skips a group the
+  claiming planner already holds.
+
+### The binding (`kAiPartyReplanFlagBound`, `src/game_hosts_ai.cpp`)
+
+- `Planner::replan_002c` is set on the claim when the planner's own list lacks the group, which is
+  `00A1C8B0`'s test.
+- `brain_wants_immediate_think` reads and clears the flag on planners 0 to 3 and answers their OR,
+  outside modes 4 to 7. The campaign runs in mode 0.
+- The census is printed on both sides as `summary mission ai replan flag`: `sets` counts the
+  claims that set the byte under the image's rule, `immediate` counts the true answers, and
+  `foreign_claims` counts the claims of a group another planner held.
+
+**Substitution, labelled:** the host still refuses a group another planner holds, and does not model
+the image's transfer. `foreign_claims` is 0 on all six OFF rows below, so that case does not arise
+on them.
+
+### The OFF census (this tree at `88e8c713a` plus this packet, `local\ships7_rpoff_<row>.log`)
+
+| row | party thinks | claims = sets | foreign claims |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | 39 | 4 | 0 |
+| USN02 9200/9000 | 112 | 7 | 0 |
+| USN04 4700/4500 | 57 | 10 | 0 |
+| USN13 3200/3000 | 37 | 20 | 0 |
+| JM08 3200/3000 | 38 | 8 | 0 |
+| JM06 3200/3000 | 38 | 4 | 0 |
+
+### Predictions, written before any ON run
+
+**Every row: exit 3.**
+- `immediate` is between 1 and `sets` on each row. Several claims made in one think set flags that
+  one query clears together.
+- `thought` rises by about `immediate`.
+- Each immediate think draws one more think interval from the AI stream and reschedules the party.
+  So every later think time moves, and with it the planner orders and the combat.
+- The first commands do not move: the first think is not preceded by a claim.
+
+**Mechanism checks:**
+- `immediate` > 0 on every row;
+- `immediate` <= `sets`;
+- `sets` and `foreign_claims` stay at the OFF values until the first immediate think, and
+  `foreign_claims` stays 0.
+
+A mechanism failure keeps the switch OFF.
