@@ -198,3 +198,44 @@ answering every kind test false and `008637D0` answered for it. It is small, but
 `009F2AC9`'s host (the gate-bytes binding in `src/game_hosts_ship_ai.cpp`) and `008637D0`'s
 target model. It is planned to go into the flip commit only if the pairs show the `+12B8h` gun gate
 matters on a marker `moveto`. Otherwise it gets its own packet.
+
+### The plane side has the same gap (read, packet `cc9_prcp03_phase_progress`)
+
+**The image resolves a marker for a plane order too.**
+- `PilotMoveToRange` (`008A4590`) takes its target the same way the ship orders do: `00888AA0`
+  for the entity, and the command target through the handle tables `00521EA0` reads.
+- The kind-7 moveto task's approach refresh `009BEBA0` reads the object at `approach+44h`
+  (`009BEBBC`). When it is set, it refreshes that object's pose (`00414DB0`) and copies its world
+  `+FCh`/`+100h` into the steer point `+48h`/`+4Ch` (`009BEBD3`..`009BEBE2`).
+- There is no kind test, so a NavPoint's authored position is the steer point.
+
+**This host drops the marker.**
+- `GameScriptOrdersHost::run_pilot_move_to_range` turns the target into a unit index. A marker id
+  (50000 and up) is past `units_.count()`, so `target_token` is 0.
+- `store_unit_moveto_target` then leaves `moveto_target_plus_one` at 0.
+- `moveto_refresh_009beba0` never writes the steer point, which keeps its initial `{0, 0, 0}`. The
+  plane flies to the world origin, exactly like the ship goal did.
+
+**Plane orders at a marker in the six missions**, from a read-only grep of this installation's
+scripts, with the targets classed from the scenes:
+
+| mission | order | target | reached on this host |
+| --- | --- | --- | --- |
+| JM06 | `PilotMoveToRange(Catalina2, FindEntity("IJNSubSpawn"))`, `jm06.lua:1423`, in `luaJM6CatalinaSpawned` | NavPoint, id 50042 at (1615, -662) | no: the Catalina spawn is not reached in `rb6_jm06`'s 3000 frames |
+| JM06 | `PilotMoveOnPath(Catalina, FindEntity("CatalinaPatrolPath"))`, `:118` | Path (a marker, id 50032) | the native `008A3E70` has no host (UNIMPLEMENTED) |
+| JM08 | `PilotMoveTo(MovPlane, FindEntity("MoviePoint"))`, `prcpjm08.lua:573` | NavPoint, id 50093 at (2000, 750, 7500) | the native `008A4150` has no host (UNIMPLEMENTED, 4 calls in `lo_base_jm08`) |
+| USN13 | `PilotSetTarget(unit, FindEntity("CB4"/"CB2"))`, `usn_13_truk.lua:1667/1671` | CommandBuildings, created units, not markers | not a marker order |
+| USN01, USN02, USN04 | every plane order targets a unit | - | - |
+
+**Binding plan.** It comes after the marker-target pairs, as its own switch.
+- In `run_pilot_move_to_range`, an unresolved target whose object id names a scene marker stores
+  the marker's authored position as the task's steer point, through a new units-host setter.
+- `moveto_refresh_009beba0` keeps that point while `moveto_target_plus_one` is 0.
+- `PilotMoveTo` and `PilotMoveOnPath` are unbound natives and are their own packets. They should
+  take the same marker rule when they are bound.
+
+**Predictions for that binding:**
+- Identity on USN01, USN02, USN04, USN13 and JM08, which have no bound plane order at a marker.
+- Identity on JM06 at 3200/3000, where the Catalina spawn is not reached.
+- A mission reaching `luaJM6CatalinaSpawned` would show the Catalina flying to IJNSubSpawn instead
+  of the origin. JM06's frame budget for that callback was not measured.
