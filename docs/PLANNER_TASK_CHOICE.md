@@ -965,6 +965,38 @@ ON, both therefore take the no-record path.
 (`record_fallbacks=0` in section 10.4), and without one the new pass A is empty and pass B queues
 nothing.
 
+### 12.4 The pairs
+
+- **OFF** is this tree's build at `3be3ea32c` (main `56b4eec58` plus the path, OFF). **ON** is
+  `pair_export --commit 3be3ea32c --flip kAiDefendRecordsPathBound=true` into `local\rp_on`.
+- **Logs:** `local\rp_{off,on}_<mission>.log`.
+
+| mission | pair_diff | defend census ON | records census ON | what moved |
+| --- | --- | --- | --- | --- |
+| LOMP07 3200/3000 | exit 3 | 39 thinks, 0 fallbacks (OFF 37), DEFENDPOSITION 1 | 0 records | unit table only: CB - Bering's range 1500 -> 0, nearest 19138 -> 0; deaths, hits, shots 0 both |
+| LOMP10 3200/3000 | exit 1, identical | 38 thinks, 0 fallbacks (OFF 39), DEFENDPOSITION 1 | 0 records | `attack_orders` 2 -> 0; 9 deaths, 340 hit records both |
+| USN13 3200/3000 | exit 1 | DEFENDPOSITION 1 | 0 records | nothing |
+| USN01 3200/3000 | exit 1 | DEFENDPOSITION 1 | 0 records | nothing |
+| USN04 4700/4500 | exit 1 | DEFENDPOSITION 0 | 0 records | nothing |
+| USN02 9200/9000 | exit 1 | DEFENDPOSITION 0 | 0 records | nothing |
+
+**Predictions:**
+- **Held:** the mechanism:
+  - LOMP07's and LOMP10's CommandBuilding groups take DEFENDPOSITION instead of the stand-in's
+    attack orders;
+  - no record is kept anywhere;
+  - `record_fallbacks` falls to 0;
+  - the reference four are identical.
+- **Failed on spread:**
+  - LOMP10 is identical, although the stand-in's two attack orders and their draws are gone;
+  - LOMP07 moves only in its unit table: the CommandBuilding group loses its CLOSEATTACK target.
+
+**Decision: `kAiDefendRecordsPathBound` is ON.**
+
+**The records path itself is still untested.** On these runs no Allied CommandBuilding has an enemy
+inside 4000 within 150 s. A longer LOMP07 or LOMP10 run, or a mission with an assault on an own
+CommandBuilding, would exercise it. Its first observable is the census `records=`.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |

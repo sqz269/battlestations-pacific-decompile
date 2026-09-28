@@ -278,8 +278,10 @@ constexpr bool kAiDefendThinkBound = true;
 // 00A28A60 builds its 00A243D0 records and, when one has enemy weight inside
 // Defend_CollectEnemiesDist, runs the records path (anchors, DEFENDPOSITION or
 // PATROLTO per group, the Capture pairs, the merge pass, the spawn tail as a
-// record). False: any defend candidate runs the Siege-shape stand-in.
-constexpr bool kAiDefendRecordsPathBound = false;
+// record). False: any defend candidate runs the Siege-shape stand-in. ON:
+// LOMP07 moved in its unit table, LOMP10 and the reference four identical; no
+// record was kept on any run (docs/PLANNER_TASK_CHOICE.md section 12.4).
+constexpr bool kAiDefendRecordsPathBound = true;
 
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
