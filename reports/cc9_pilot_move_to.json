@@ -8,14 +8,18 @@
     "009BEBA0": "the kind-7 approach steers to [approach+44h]'s world +FCh/+104h, any entity"
   },
   "calls": [],
-  "status": "native bound alone (lead's call); the plane-marker steer point follows under the same switch when src/game_hosts_units.cpp is free",
+  "status": "native and plane-marker steer point bound under kPilotMoveToBound, committed OFF",
   "predictions": {
-    "JM08_3200_3000": "the four PilotMoveTo calls served (UNIMPLEMENTED -> concrete, calls 4); Movie Mavis's order at MoviePoint (id 50093) resolves to target_token 0, so without the marker rule its steer point stays {0, 0, 0} and it flies toward the world origin, not (2000, 7500); the other three calls (presumably the wave from luaF4FWaveSpawned at the flagship) install moveto tasks at a unit; exit 3 (Movie Mavis's track and the wave's move)",
+    "JM08_3200_3000": "the four PilotMoveTo calls served (UNIMPLEMENTED -> concrete, calls 4); marker_goals 1: Movie Mavis's moveto task steers to MoviePoint (2000, 7500) at its cruise height, not the origin; the other three (presumably the luaF4FWaveSpawned wave at the flagship) install moveto tasks at a unit; exit 3",
     "USN01_3200_3000": "exit 0 or 1 (no PilotMoveTo)",
     "USN02_9200_9000": "exit 0 or 1 (no PilotMoveTo)",
-    "USN04_4700_4500": "exit 0 or 1 (no PilotMoveTo)"
+    "USN04_4700_4500": "exit 0 or 1 (no PilotMoveTo)",
+    "PilotMoveToRange_markers": "the marker rule also serves PilotMoveToRange under this switch; no measured mission reaches one (JM06's IJNSubSpawn order is past 3000 frames)"
   },
   "off_commit": "pending",
   "no_ghidra_function": [],
-  "names_added": []
+  "names_added": [],
+  "substitutions": [
+    "the marker's authored position is stored once as the steer point x/z (the image re-reads the NavPoint's pose each refresh; a NavPoint does not move)"
+  ]
 }

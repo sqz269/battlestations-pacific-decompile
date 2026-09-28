@@ -1319,6 +1319,23 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
                                 : ~static_cast<std::size_t>(0));
     const std::uint32_t target_token = target_index < units_.count()
         ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+    // Packet cc9_pilot_move_to: a target that is no unit but a scene marker
+    // (a NavPoint) steers the task to the marker's authored position, which is
+    // what 009BEBA0 reads off [approach+44h] in the image.
+    bool marker_goal = false;
+    float marker_world[3] = {0.0f, 0.0f, 0.0f};
+    if (kPilotMoveToBound && target_token == 0u) {
+        const int marker_id = target.object != nullptr
+            ? static_cast<int>(reinterpret_cast<std::uintptr_t>(target.object))
+            : static_cast<int>(target.object_id);
+        if (const SceneMarker* marker = marker_for_id(marker_id)) {
+            marker_goal = true;
+            marker_world[0] = marker->position[0];
+            marker_world[1] = marker->position[1];
+            marker_world[2] = marker->position[2];
+            ++pilot_marker_goals_;
+        }
+    }
     const std::uint32_t cls = bsp::kPilotOrderClassMoveTo;
     std::size_t tasks = 0;
     auto order_one = [&](std::size_t index, void* handle) {
@@ -1328,7 +1345,7 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
         // counts only the installs made before this binding returns.
         std::size_t* const now_tasks = last_issue_deferred_ ? nullptr : &tasks;
         after_order_delivery([this, index, cls, target, target_index, target_token,
-                              now_tasks]() {
+                              now_tasks, marker_goal, marker_world]() {
             ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
             const std::uint32_t task = bsp::bot_install_command_task_0099a170(
                 static_cast<std::uint32_t>(index + 1u), bot_host);
@@ -1336,6 +1353,7 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
                 units_.store_unit_attack_command_class(index, cls);
                 units_.store_unit_moveto_range(index, target.trailing);
                 units_.store_unit_moveto_target(index, target_index);
+                if (marker_goal) units_.store_unit_moveto_point(index, marker_world);
                 if (now_tasks != nullptr) ++*now_tasks;
             }
         });
@@ -3393,6 +3411,9 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script pilot move to bound=%d calls=%llu marker_goals=%llu "
+        "(008A4150 / 009BEBA0, packet cc9_pilot_move_to)", kPilotMoveToBound ? 1 : 0,
+        pilot_move_to_calls_, pilot_marker_goals_);
     log_.notef("summary mission script recon level table bound=%d syncs=%llu tables=%llu "
         "writes=%llu force_recon=%llu (0077FAD0 / 0077B0C0 / 008AADF0, packet "
         "cc9_recon_level_table)", kReconLevelTableBound ? 1 : 0, recon_syncs_,

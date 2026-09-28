@@ -435,6 +435,11 @@ public:
     // approach reads at +44h (009C1C30 from the descriptor, 009BEBA0 each
     // refresh). `target_index` past the unit count clears it.
     void store_unit_moveto_target(std::size_t index, std::size_t target_index) noexcept;
+    // Packet cc9_pilot_move_to: 009BEBA0 copies [approach+44h]'s world x/z into
+    // the steer point +48h/+50h for any entity, a NavPoint included. A marker is
+    // not a slot here, so its authored position is stored once and kept while
+    // moveto_target_plus_one is 0.
+    void store_unit_moveto_point(std::size_t index, const float world[3]) noexcept;
     // Packet cc9_pilot_moveto_task part 1b: plane vtable[88h] = 007C9540, the
     // world-matrix setter EntityTurnToEntity's squadron arm calls per member
     // (008A0DD4). Rows 0..2 replace the pose; the position is the member's own

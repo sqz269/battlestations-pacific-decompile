@@ -300,3 +300,22 @@ committed OFF:**
   - The other three calls install moveto tasks at a unit.
   - Gameplay moves (exit 3): Movie Mavis's track and the wave's.
 - **USN01, USN02 and USN04: identical (exit 0 or 1).** None calls `PilotMoveTo`.
+
+**The plane-marker steer point, under the same switch.**
+- `GameUnitsHost::store_unit_moveto_point` writes the task's steer point x/z.
+- When `run_pilot_move_to_range` finds a target that is no unit but a scene marker, it stores the
+  marker's authored position there after the task is installed. It does this for both natives.
+- `moveto_refresh_009beba0` keeps the point, because `moveto_target_plus_one` is 0. The height
+  still comes from the cruise profile.
+- A new summary line counts the resolves: `summary mission script pilot move to`.
+- **Labelled:** the image re-reads the NavPoint's pose on every refresh. Here the position is
+  stored once, which is the same for a NavPoint because it does not move.
+
+**Prediction, replacing the native-alone one for JM08:**
+- `marker_goals=1`.
+- Movie Mavis's task steers to MoviePoint (2000, 7500) at its cruise height, not the origin.
+- The other three calls install moveto tasks at a unit.
+- Exit 3.
+
+USN01, USN02 and USN04 stay identical: none calls `PilotMoveTo`, and none issues a
+`PilotMoveToRange` at a marker.

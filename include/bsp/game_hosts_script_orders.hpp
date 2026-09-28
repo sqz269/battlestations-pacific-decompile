@@ -570,6 +570,7 @@ private:
     // Packet cc9_pilot_move_to: set while PilotMoveTo runs the shared body.
     bool pilot_move_to_plain_{false};
     unsigned long long pilot_move_to_calls_{0};
+    unsigned long long pilot_marker_goals_{0};
     int run_entity_turn_to_entity(GameScriptOrderRow& row);
     int run_unit_set_fire_stance(GameScriptOrderRow& row);
 public:
