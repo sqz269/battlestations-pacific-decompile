@@ -1651,3 +1651,61 @@ Worker cc9-lua2, 2026-09-28. The contract is `docs/USN02_PHASES.md` section 3.
     already sunk.
   - Deaths rise by those not yet sunk; the FinalShips' targets and the later hit rows shift.
   - The switch stays OFF until the lead calls that pair.
+
+### AddDamage identity pairs
+
+**Setup.**
+- OFF is this tree's build of `330419917`.
+- ON is `pair_export --flip kLuaAddDamageBound=true` (`local/ad_on`, SHA-256 `DE070BDEB689`).
+- The logs are `local/ad_{off,on}_<mission>.log`.
+
+**Result.** USN01 3200/3000, USN04 4700/4500 and USN02 9200/9000 are each pair_diff exit 1
+(gameplay identical), and the ON census reads `bound=1 calls=0 units=0 unresolved=0` on all
+three. That is as predicted: USN02 fails in phase 1 and never reaches `luaPh2MovieEnd`.
+
+**The switch stays OFF.** The flip pair waits for a phase-2 USN02 run, on the lead's call.
+
+## Firing `hit` (packet `cc9_lua_hit_listeners`, `kLuaHitListenersBound`, committed OFF)
+
+Worker cc9-lua2, 2026-09-28.
+
+**The image (V, from the listings).**
+- The subscription is vtable `00D1B740`, constructor `0097C2C0` (80h), loader `009725B0`. The
+  loader reads:
+  - `callback` into `+4h`;
+  - `target` into `+0Ch`, `targetDevice` into `+1Ch` and `attacker` into `+2Ch`, through
+    `009721C0`;
+  - `attackType` into `+3Ch`, through `00970FF0`;
+  - `attackerPlayerIndex` into `+4Ch`, through `009722D0`;
+  - `damageCaused` into `+5Ch`, `fireCaused` into `+68h` and `leakCaused` into `+74h`, through
+    `0096AAD0`.
+- The dispatcher is `00988510`, whose producer is `0077CE60`, the attribution step of every
+  applied hit.
+
+**The binding.**
+- `dispatch_hit_listeners_00988510` drains `GameGunneryHost::take_hit_events()` once per frame.
+  gunnery3's queue is pushed after `0077CE60`'s attribution.
+  - It drains even with the switch off, so the queue cannot grow.
+- For each hit, it fires each `hit` entry that meets all of these:
+  - `target` is empty or holds the victim;
+  - `attacker` is empty or holds the shooter;
+  - `attackType` is empty or holds the bullet class's `Type`, compared case-insensitively;
+  - `damageCaused`, if it has two values, brackets the applied damage.
+- **The census:**
+  - `summary mission script hit listeners bound=.. events=.. fires=.. unmodelled=..`;
+  - one `hit listener 00988510:` line per call.
+
+**SUBSTITUTIONS, labelled:**
+- The channel is evaluated at the host's frame.
+- An entry with a non-empty `targetDevice`, `attackerPlayerIndex`, `fireCaused` or `leakCaused`
+  is not matched; it is counted `unmodelled`.
+- Callbacks are called with no argument. The measured callbacks take none.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+
+| row | registered `hit` entries (from the listener census) | prediction |
+| --- | --- | --- |
+| USN01 3200/3000 | `ConLeadListener`: `target {Mission.ConLeader}`, `attackType {TORPEDO, BOMB, ROCKET}` | fires only if the convoy leader takes a torpedo, bomb or rocket hit. `luaConLeadHit` then `GenerateObject`s six attack planes (ConTBD1..3, ConSBD1..3), so **USN01 moves (exit 3)**. With no such hit, identity |
+| JM06 3200/3000 | `playerHit` (`target {Mission.PlayerUnit}`, all else empty); `hshit` (`attackerPlayerIndex {PLAYER_1}`) | `playerHit` fires on the first hit on the player's submarine. `luaJM6PlayerHit` removes it and starts a dialog, so identity. `hshit` is `unmodelled` and never fires |
+| LOMP06 1200/1000 | `listener_NarwhalDC` (`target {Mission.PlayerUnit}`, `attackType {DEPTHCHARGE}`) | fires only on a depth-charge hit on the player: a dialog, so identity |
+| USN02, USN04 | none | identity |

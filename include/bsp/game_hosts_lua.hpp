@@ -175,6 +175,14 @@ inline constexpr bool kForcedReconLevelBound = true;  // ON: pairs held (docs/LU
 // GameGunneryHost::apply_script_damage_0095da00 for the resolved slot. False: record.
 inline constexpr bool kLuaAddDamageBound = false;
 
+// Packet cc9_lua_hit_listeners (docs/LUA_BINDING_MISSION.md, "Firing hit"). The `hit`
+// channel (dispatcher 00988510, producer 0077CE60) evaluates subscriptions (vtable
+// 00D1B740, loader 009725B0) whose keys are target, targetDevice, attacker,
+// attackType, attackerPlayerIndex, damageCaused, fireCaused and leakCaused. True: the
+// host drains GameGunneryHost::take_hit_events() once per frame and fires matching
+// `hit` entries. False: `hit` entries never fire (the queue is still drained).
+inline constexpr bool kLuaHitListenersBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -389,6 +397,9 @@ struct GameMissionLuaSummary {
     unsigned long long listener_attacker_filtered{0};
     unsigned long long listener_recon_changes{0};
     unsigned long long listener_recon_fires{0};
+    unsigned long long listener_hit_events{0};
+    unsigned long long listener_hit_fires{0};
+    unsigned long long listener_hit_unmodelled{0};
     // Packet cc9_set_invincible_native.
     unsigned long long invincible_calls{0};
     unsigned long long invincible_units{0};
@@ -864,6 +875,7 @@ public:
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
     void dispatch_kill_listeners_009813a0();
     void dispatch_recon_listeners_00980e50();
+    void dispatch_hit_listeners_00988510();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
     // kUnitInvincibilityFloorBound (src/game_hosts_gunnery.cpp), so this is inert
@@ -1041,6 +1053,12 @@ private:
         std::vector<int> old_levels;
         std::vector<int> new_levels;
         std::vector<int> parties;
+        // `hit` (009725B0): target +0Ch, attacker +2Ch, attackType +3Ch (strings),
+        // damageCaused +5Ch as a [min, max] pair; the other keys only as non-empty flags.
+        std::vector<int> attacker_ids;
+        std::vector<std::string> attack_types;
+        std::vector<float> damage_range;
+        bool hit_filters_unmodelled{false};
     };
     std::vector<ListenerEntry> listeners_;
     std::vector<bool> listener_death_seen_;

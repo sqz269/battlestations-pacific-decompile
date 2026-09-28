@@ -1,0 +1,20 @@
+{
+  "packet": "cc9_lua_hit_listeners",
+  "doc": "docs/LUA_BINDING_MISSION.md, Firing hit",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kLuaHitListenersBound",
+      "file": "include/bsp/game_hosts_lua.hpp",
+      "state": "OFF"
+    }
+  ],
+  "substitutions": [
+    "host frame",
+    "targetDevice/attackerPlayerIndex/fireCaused/leakCaused not matched when non-empty",
+    "callbacks with no argument"
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "failed_predictions": []
+}
