@@ -733,6 +733,81 @@ sets. What it needs, in order:
 
 Its merge pass is already in `ai_planner_tails`.
 
+## 11. The CAUTIOUSATTACK tick (packet `cc9_cautious_attack_tick`)
+
+### 11.1 The image
+
+**`vt+0Ch` of CAUTIOUSATTACK**, `00A152E0` (no Ghidra function; the listing is `disasm-raw`):
+
+```
+00A152FC  MOV EAX,[EDI+1Ch] / CMP [EAX+5644h],0      ; the target group's first member +FCh,
+00A15308  MOV EAX,00F87574                           ;   or the zero vector when it is empty
+00A1533F  LEA ECX,[EDI+20h] / CALL 00A14DD0          ; the cautious approach pass (owner, point)
+00A15349  CALL 00A10DC0 / 00A15350 CALL 00A11690     ; followers, then an unread pass
+00A1535A  MOVSS XMM0,[tuning+1F4h]                   ; CloseAttack_CollectDist
+00A153E2..00A15421  d2 = (own - target) x/z squared; collect^2
+00A15425  FCOMPI / JBE 00A15478                      ; collect^2 > d2 promotes
+00A1542D  new(20h) / 00A15451 CALL 00A10710 / MOV [ESI],00D22C44   ; CLOSEATTACK
+00A15473  CALL 00A2BD00
+```
+
+**`00A109B0`**, the CAUTIOUSATTACK constructor (instance 2Ch), sets up the `+20h` base as
+`00D22BE4`, with the byte `+24h` = 0 and the counter `+28h` = 4.
+
+**`00A14DD0 BSP_AiCommand_CautiousApproachPass`**, `__thiscall(base)(group, point)`:
+- **The gate:** it returns unless the group's first member passes `009FE080`.
+- **The route object** is the leader's director slot 0 (`00778860`: `vt[+114h]()`, then
+  `0071BFC0(0)`, which reads `+1A4h`).
+- **With the slot's `vt[+4h]` false, or the counter below 1,** it issues `00A02020(leader, point)`,
+  a moveto.
+- **Otherwise**, while the flag `+4h` is clear or `vt[+10h]` is above 0:
+  - **with the slot's `vt[+0Ch]` false:** it decrements the counter and builds that many waypoints.
+    Each leg is split into thirds of `leader -> point`, and each waypoint takes the best of three
+    candidates scored by `00A010F0`, pushed with `MSVC_Vector12_PushBack`. Then comes
+    `vt[+18h](point)`, and the flag is set;
+  - **with it true:** it issues `clearorders` (`00E08F08`, `0077D600` at `00A14EA7`) and clears the
+    flag.
+
+**The SELLING tick `00A11FF0`**, read here, does not share this shape:
+- **A group without an air member** walks to the nearest own-team list-28 entity (3-D). It takes
+  the leader point when within `CaptureRange` (`+7A0h`) times the double `00CE3D40`, else the
+  entity's position, through `00A02020`. Then `00A10DC0` and `00A11070` run, and each member with
+  `+308h == 0` that passes `005F98F0` routes session message 51h.
+- **An air group** issues `00E08F98` with the zero vector to every squadron member whose
+  `+361h` and `+3B0h` bytes are clear.
+
+It stays unbound, and a SELLING group is still not moved (section 9.2).
+
+### 11.2 The binding
+
+**`kCautiousAttackTickBound`** is in `include/bsp/ai_command_tick.hpp`, committed OFF. When ON,
+`ai_command_tick_vt000c` gains the CAUTIOUSATTACK arm:
+- the target group's leader point;
+- `00A14DD0`'s no-route arm, a leader moveto through `00A02020`;
+- the follower pass;
+- the promotion to CLOSEATTACK.
+
+**Labelled:** the director slot objects have no host counterpart, so the no-route arm is taken every
+tick. The waypoint build and the `clearorders` arm are not issued, and `00A11690` is not read.
+
+### 11.3 Predictions, written before the ON runs
+
+On main `dcfebd652` the census `cautious=` is 0 on USN13, USN02 and USN04. On USN01 it is 1: the
+ScoutDauntless squadron group, ordered at the CB2 group from 91.35 s.
+
+**USN13 3200/3000, USN02 9200/9000, USN04 4700/4500: identity, exit 0 or 1.** No group holds
+CAUTIOUSATTACK there.
+
+**USN01 3200/3000: exit 3, from about 91 s.**
+- **The ScoutDauntless group** gets a leader moveto at the CB2 group's leader every command tick.
+  It is a groupable combatant, and `007EDA90` is false for a non-kamikaze leader. `tick_orders`
+  rise above 51.
+- **The squadron flies toward CB2,** so "controlled moved ScoutDauntless" rises above 0.00.
+- **Once inside 3000 it is promoted to CLOSEATTACK** (`ai command promote ... leader=ScoutDauntless`),
+  and the close-attack pass orders it at candidates around CB2.
+- **Direction:** the ScoutDauntless may take AA fire near CB2: one more plane death or later hits.
+  Nothing before 91 s moves.
+
 ## no_ghidra_function
 
 | start | inclusive end | evidence |
