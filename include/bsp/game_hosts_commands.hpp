@@ -82,6 +82,9 @@ struct GameCommandUnit {
     // route to the unit group itself.
     bool formation_follower{false};        // 007788B0
     std::size_t formation_leader{0};       // 007788D0, valid while `follower`
+    // Packet cc9_squadron_set_command: the unit's class id (+C4h), which the
+    // units host fills. -1 when unknown; bsp::unit_is_kind_of answers false.
+    int class_id{-1};
 };
 
 // What one issued command did, end to end. Every flag is the answer of a
