@@ -467,3 +467,100 @@ A mechanism failure keeps the switch OFF.
 - **Flagged for the lead: USN02 moves a long way.** Houston lives about 290 s longer. This comes
   through the party's think timing and the shared AI stream it draws from. The next reference
   rebaseline will carry it.
+
+## 4. The approach enter `009F3220` (packet `cc9_approach_enter_reseed`, read; binding waits on the file lease)
+
+Worker cc9-ships7, 2026-09-28. The read is complete. The binding needs `src/game_hosts_ship_ai.cpp`,
+which cc9-gunnery8 holds until 2026-09-29T00:40Z for `cc9_periscope_out`, so nothing is bound yet.
+
+### The image
+
+- **`009F3220`**, the approach member's `vtable[4]` (`00D21994+4h`), is `__thiscall(sub)`, `RET`.
+  It calls `009F30F0` with `ECX = sub+8h`, the nested object, and then sets `sub+14B4h = 1.0f`
+  (`00D7A24C`, `009F322B`).
+- **`009F30F0-009F3212`** (`__thiscall(nested)`, `RET` at `009F3212`, INT3 from `009F3213`):
+  - **The ring loop** (`009F30F6..009F3169`) runs sixty times, with `ESI` stepping `4Ch` from
+    `nested+2Ch`, which is record `+28h`. For each record it:
+    - zeroes `+18h..+3Ch`, which is the host's `ShipAiApproachSlotScore` except its byte;
+    - clears the byte `+40h` (`blocked_40`);
+    - calls `00BD2F10(ECX = 1, 0.0, [00CE3958] = 2.0f)` at `009F314E` and stores the draw in
+      `+48h`, the ring probe's re-probe timer (`jitter_48`);
+    - stores `[00CE3804] = 1000.0f` in `+44h`, the probe's clear distance (`reset_44`).
+
+    This is `009E5530`'s first pass again (docs/SHIP_AI_ATTACKMOVE_SUBSTATES.md), with the draw
+    before the 1000 store.
+  - **The traffic list.** `009F316B..009F31A3` frees every node of the list at `nested+14A4h` and
+    zeroes its count at `+14A8h`. That is the host's `Controller::traffic`, the list at
+    `nested+14A0h`.
+  - **`009F31A7..009F31B5`:** `nested+11F4h = [00D7A260] = -1.0f`, the avoidance refresh timer. So
+    the next pass refreshes the avoidance at once.
+  - **`009F31BD`:** `009F1BC0(nested, 0.0f)`, the frame state with zero seconds. It writes
+    `nested+11ECh`, the unit's heading, among its other outputs.
+  - **`009F31C2..009F31ED`:**
+    - `nested+11D8h = 0`, the retarget timer;
+    - the byte `+11D6h` cleared;
+    - `nested+11F8h` and `nested+120Ch` = `nested+11ECh`, so the selected bearing and the
+      commanded heading restart from the current heading;
+    - the byte `+1208h` cleared.
+  - **`009F31F3..009F3207`:** `+1208h = unit->vtable[22Ch]()`. In both ship vtables read
+    (`00CFC3D0`, the destroyer, and `00D09678`, the ship base), the slot `+22Ch` is `006DFDB0`:
+    `XOR AL,AL; RET`. So the byte stays 0, which the host's `flag_1208` already holds.
+- **When it runs.** Every switch to the approach member through `007B6EE0` runs it, and so does the
+  attackmove state's own enter.
+  - `009E86C0` (`00D219D0+4h`): `state+1500h = 0`, then the current member's `vtable[4]`, a
+    tail jump.
+  - `009E86E0` (`00D219D0+8h`): the current member's `vtable[8]`.
+  - So each entry into the attackmove state, with the approach as the current member, re-seeds
+    the ring, and zeroes the selector countdown so the selector runs on the first step.
+- **The host today.**
+  - The approach enter is a record (`ShipAiAttack::approach_enter_009f3220`, since
+    section 2's binding).
+  - The attackmove state's enter and exit are the generic records `ShipAiState::enter_vtable04` and
+    `exit_vtable08`.
+  - The construction pass's own sixty draws (`009E55A1`) are not modelled either:
+    `ship_ai_attackmove_ring_slot_009e5530` stores 0.
+
+### The random stream
+
+`00BD2F10` with `ECX = 1` is stream 1. In this host every ship-AI stream-1 draw goes through
+`GameGunneryHost::ship_ai_draw`:
+- With `BSP_GUNNERY_RNG_STREAMS=1`, which every reference and pair run uses, that is the unit's own
+  `ship_ai_torpedo` generator, keyed by unit index. The sixty draws per re-seed shift only that
+  unit's later ship-AI draws: its torpedo response, its sub-attack switch and its tangent enter.
+- Without the variable it is the shared generator, where they would shift every later draw in the
+  process.
+
+### The planned binding (`kApproachEnterReseedBound`, OFF)
+
+- **`009F3220`** in `AttackMoveSelectorBinding::member_enter`:
+  - `approach_scores[i] = {}`, `approach_ring[i].reset_44 = 1000.0f` and
+    `approach_ring[i].jitter_48 = ship_ai_draw(unit, 0, 2)` for i = 0..59, in that order;
+  - `traffic.clear()`;
+  - `approach.avoid_refresh_11f4 = -1.0f`;
+  - `ApproachUpdateBinding::frame_state_009f1bc0(0.0f)`;
+  - `retarget_timer_11d8 = 0`, `flag_11d6 = false`,
+    `selected_bearing_11f8 = commanded_heading_120c = unit_heading_11ec`, `flag_1208 = false`;
+  - `substate_ring_timer_14b4 = 1.0f`.
+- **`009E86C0` / `009E86E0`** at the host's state switch (`select_for_command`):
+  - entering attackmove zeroes `selector.countdown_1500` and re-enters the current member;
+  - leaving it exits the current member.
+- **Census:** re-seeds per unit and their draws, printed on both sides.
+
+### Predictions, written before any ON run
+
+The rows with approach frames on reference i are USN02 (29287 frames), JM06 (4603) and LOMP06 (236).
+
+**USN02 9200/9000: exit 3.**
+- Each of its attackmove ships re-seeds once at its first selection, and again at each re-entry
+  into attackmove.
+- Its ring probes start from random phases in [0, 2) s instead of 0.
+- Its first avoidance refresh comes one pass earlier.
+
+**LOMP06 1200/1000: exit 3 or 1.** Its approach runs only 236 frames.
+
+**JM06 3200/3000: exit 1.** Its six attackmove ships target submarines and go straight to lead
+pursuit (section 2), so no approach member is entered.
+
+**USN04 4700/4500 and USN01 3200/3000: exit 0 or 1.** Neither has approach frames.
+
+**Mechanism check:** re-seeds > 0 on USN02, with 60 draws each; none on USN04 or USN01.
