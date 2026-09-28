@@ -1700,6 +1700,7 @@ struct GameGunneryHost::Impl {
     std::vector<std::pair<std::size_t, float>> pending_explosions;
     // Packet cc9_set_invincible_floor: unit+150h by unit index.
     std::vector<float> invincibility_by_unit;
+    std::vector<GameGunneryHost::GameGunneryHitEvent> hit_events;   // cc9_lua_hit_listeners
     unsigned long long invincibility_sets{0};
     unsigned long long invincibility_floored_writes{0};
     unsigned long long invincibility_sink_refusals{0};
@@ -6958,6 +6959,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         target.last_attacker = shooter + 1;
     }
     ++summary.attributions;
+    hit_events.push_back({victim, shooter, gun.bullet_class, applied});   // cc9_lua_hit_listeners
     done("Hit::attribution_0077ce60", 0x0077ce60u);
 
     bsp::UnitHealth health;
@@ -7499,7 +7501,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
                 scaled_amount);
             if (!outcome.refused) {
-                note_floor(health, amount, outcome.new_health);
+                note_floor(health, scaled_amount, outcome.new_health);
                 const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
                     outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
                 if (write.wrote) {
@@ -7551,7 +7553,7 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
                 scaled_amount);
             if (outcome.refused) return;
-            note_floor(health, amount, outcome.new_health);
+            note_floor(health, scaled_amount, outcome.new_health);
             const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
                 outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
             if (write.wrote) state.health = write.stored_health;
@@ -8248,6 +8250,39 @@ float GameGunneryHost::min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_inde
         if (!(gun.muzzle_speed > lowest)) lowest = gun.muzzle_speed;
     }
     return lowest;
+}
+
+std::vector<GameGunneryHost::GameGunneryHitEvent> GameGunneryHost::take_hit_events() {
+    std::vector<GameGunneryHitEvent> out;
+    out.swap(impl_->hit_events);
+    return out;
+}
+
+void GameGunneryHost::apply_script_damage_0095da00(std::size_t unit_index, float amount) {
+    GameGunneryHost::Impl& host = *impl_;
+    if (unit_index >= host.unit_state.size()) return;
+    GameGunneryHost::Impl::UnitState& state = host.unit_state[unit_index];
+    if (state.dead) return;
+    bsp::UnitHealth health;
+    health.current_health = state.health;
+    health.max_health = state.max_health;
+    health.invincibility = host.invincibility_of(unit_index);   // unit+150h
+    // 0095DA00 then 0087D730 (under kDifficultyMultipliersBound).
+    const float scaled = host.difficulty_scaled_damage(unit_index, amount);
+    bsp::UnitDamageGates gates;
+    const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates, scaled);
+    if (!outcome.refused) {
+        host.note_floor(health, scaled, outcome.new_health);
+        const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
+            outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+        if (write.wrote) state.health = write.stored_health;
+    }
+    state.row.health = state.health;
+    host.done("Unit::add_damage_0095da00", 0x0095da00u);
+    bsp::UnitHealth after;
+    after.current_health = state.health;
+    after.max_health = state.max_health;
+    if (bsp::unit_is_dead(after)) host.kill_unit(unit_index);   // the death funnel
 }
 
 void GameGunneryHost::set_unit_invincibility(std::size_t unit_index, float value) {
