@@ -2993,14 +2993,19 @@ public:
     void set_current_substate_007b6ee0(std::uint32_t member) override {
         // 007B6EE0's body was read by packet ship_ai_state_steps: it returns at
         // once when the machine already holds the member, otherwise exits the
-        // old one and enters the new one. The reconstruction of the selector
-        // calls this method only on a real change.
+        // old one and enters the new one. CORRECTION (packet
+        // cc9_submarine_target_substates): the selector's kind-8 arm calls it on
+        // every open, not only on a real change, so the early return matters.
         owner_.done("ShipAiAttack::set_current_substate", 0x007b6ee0u);
         if (!kShipAiSubTargetSubStatesBound) {
             ctl_.selector.current_1508 = member;
             return;
         }
-        // 007B6EE0: the old member's vtable[8], the store, the new one's vtable[4].
+        // 007B6EE0: return at once when machine+4h already holds the member (the
+        // selector's kind-8 arm asks for its member on every open, not only on a
+        // change); otherwise the old member's vtable[8], the store, the new
+        // one's vtable[4].
+        if (ctl_.selector.current_1508 == member) return;
         if (ctl_.selector.current_1508 != 0u) member_exit(ctl_.selector.current_1508);
         const std::uint32_t old = ctl_.selector.current_1508;
         ctl_.selector.current_1508 = member;
