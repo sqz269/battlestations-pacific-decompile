@@ -1,6 +1,6 @@
 # Ship AI and AI command: open items, ranked
 
-Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0
+Addresses: 00852860 009E873B 009E26C0 009F3670 00417B10 00811940 009DF41A 009DF432 009DF4C5 009DF607 009DC2E0 00A15970 0070E450 00605070 00A179E0 00A1443D 00827F95 009F1BC0 009FFEB0 00778890 00A0F970 0071C1E0 009E1170 00835C70 00A0C650 00A0C3C0 00A0C330 00A04560 00A04240 00A07E40 009F3220 009F30F0 009E86C0 009E86E0 009E2B60 009DF2D0 009F6A20 007788B0 0077C980
 
 This file ranks what is still open in the ship-AI and AI-command lane, as
 docs/GUNNERY_OPEN_ITEMS.md section 31 does for gunnery and docs/LUA_BINDING_MISSION.md does for the
@@ -1049,3 +1049,141 @@ loaded value being the 30 this installation authors.
 - The yaw-rate half becomes live when `GameUnitsHost::unit_current_yaw_rate_00811940` sets its
   binding's forward speed. The one-line fix is with the lead. **That landing will move every row
   with a turning formation leader, and needs its own pair.**
+
+## 11. No AutoTarget on plane rows (packet `cc9_plane_row_autotarget`, queue item 5, `kPlaneRowAutoTargetBound`)
+
+Worker cc9-ships8, 2026-09-28. The read is cc9-gunnery9's (docs/GUNNERY_OPEN_ITEMS.md section 42):
+- `009F6A20` builds the AutoTarget selector. Its one caller is `0083676A`, in the ship director's
+  constructor `008366D0`.
+- A plane's fire-target provider is `vtable[114h]` = `0047F180`, which answers null. A squadron's
+  is `007ECFD0`, which answers `[+348h]`, the `0084D810` controller.
+- So no plane or squadron runs `009F5DA0`.
+
+**The host.** `ControllerUpdateBinding::step_auto_target` ran the ship director's AutoTarget on
+every ship-AI row, the load-time plane rows included.
+
+**The binding.**
+- ON, a row answering `IsKindOf(0Fh)` or `IsKindOf(18h)` returns before the tick.
+- The census line is `summary mission ship ai plane row autotarget ticks= thinks= bound=`. It counts
+  the plane-row ticks on both sides and their thinks on OFF.
+- The gunnery side (`kPlaneNullFireTargetProviderBound`, ON on main) already drops a plane row's
+  stored target in the pass. This packet removes the producer too.
+
+### The OFF census (`local\ships8_c0_<row>.log`, this tree at `58b617200`)
+
+| Row | plane-row ticks | thinks |
+| --- | --- | --- |
+| USN04 4700/4500 | 13500 | 678 |
+| USN01 3200/3000 | 15000 | 755 |
+| USN13 3200/3000 | 0 | 0 |
+| JM06 / JM05 / JM08 / LOMP10 | 3000 / 27000 / 30000 / 30000 | 151 / 1359 / 1510 / 1510 |
+
+### Predictions, written before any ON run
+
+- **USN04 and USN01: exit 1 or 3.**
+  - The gunnery pass already ignores these rows' stored targets.
+  - What remains is the tick's own side effects: its stream-1 draws and the row's think counters.
+    With per-unit streams, a draw moves only that plane's later draws.
+- **USN13: exit 1.** No plane row ticks. Only the census line changes.
+- **Mechanism check:** ON reads `ticks` equal to OFF's until the tracks diverge, and no plane-row
+  think is run.
+
+## 12. The AutoTarget follower gate (packet `cc9_autotarget_follower_gate`, queue item 7, `kAutoTargetFollowerGateBound`)
+
+Worker cc9-ships8, 2026-09-28. The read is cc9-gunnery9's (docs/GUNNERY_OPEN_ITEMS.md section 44).
+The binding is 44.4's code as written, with two counters added: follower thinks, on both sides,
+and leaves run, ON only.
+
+### The OFF census (`local\ships8_c0_<row>.log`)
+
+| Row | follower thinks |
+| --- | --- |
+| USN04 | 3616 |
+| USN01 | 1575 |
+| USN13 | 7097 |
+| JM06 | 1509 |
+| JM05 | 6027 |
+| JM08 | 2717 |
+| LOMP10 | 1207 |
+
+**Correction to 44.3 and 44.4.**
+- 44.3 counted the Lua follow joins. The scene's own formation groups make many more followers:
+  every row above has formation followers, USN04 included.
+- So 44.4's "USN04 identity" does not hold on this base.
+
+### Predictions, written before any ON run
+
+- **Every row above: exit 3.**
+  - A follower no longer picks its own fire target. Its guns take targets only from its
+    director's commands.
+  - A follower whose current command is neither null nor `follow` leaves its formation
+    (`leaves` > 0). Its group then loses a member, and the follow and formation summaries move.
+  - Death rows can move on the fighting rows (JM06, JM05, USN04, USN13).
+- **Mechanism check:**
+  - ON reads `follower_thinks` > 0 on every row.
+  - Each leave is followed by a formation-group change for that unit.
+  - After its leave a unit stops being counted as a follower.
+
+### Section 11: the pairs (OFF `local\ships8_c0_<row>.log`, this tree at `58b617200`; ON `local\ships8_c5_<row>.log`, `pair_export --commit 58b617200 --flip kPlaneRowAutoTargetBound=true`, SHA-256 prefix `6A4E92A17363`)
+
+| Row | pair_diff | Predicted | Census ON |
+| --- | --- | --- | --- |
+| USN04 | 1 | 1 or 3 | ticks 13500, thinks 0 |
+| USN01 | 1 | 1 or 3 | ticks 15000, thinks 0 |
+| USN13 | 1 | 1 | ticks 0 |
+
+**Mechanism check: passed.** The tick counts equal OFF's, and no plane-row think runs. Gameplay is
+identical, because the gunnery pass already drops a plane row's stored target. **Verdict: ON.**
+
+### Section 12: the pairs (ON `local\ships8_c7_<row>.log`, `pair_export --commit 58b617200 --flip kAutoTargetFollowerGateBound=true`, SHA-256 prefix `0549AC29D977`)
+
+| Row | pair_diff | Predicted | follower thinks ON | leaves | deaths |
+| --- | --- | --- | --- | --- | --- |
+| USN04 | 3 | 3 | 2069 | 7 | 40 to 41; 2 death rows only ON, 1 only OFF |
+| USN01 | 3 | 3 | 171 | 163 | 5, identical |
+| USN13 | 3 | 3 | 2552 | 1344 | 27 to 26 |
+| JM06 | 3 | 3 | 161 | 11 | 1, identical |
+| JM05 | 3 | 3 | 4694 | 157 | 1, identical |
+| JM08 | 3 | 3 | 714 | 714 | 11; 10 rows changed |
+| LOMP10 | 3 | 3 | 61 | 61 | 2; 2 rows changed |
+
+**Mechanism check: FAILED on its third clause.** A unit that leaves does not stay out of its
+formation:
+- On USN01, Ralph, McCall and Blue each leave 51 times: once per AutoTarget think, and they rejoin
+  in between.
+- On USN13, Monterey, Intrepid and Cowpens each leave 53 times.
+- On JM08, the transports and landing ships loop the same way.
+
+What rejoins them is the AI group's follower pass: `AiCommand::request_join_formation`,
+`0077C8D0` -> `0077F940` in `src/game_hosts_ai.cpp`, the `ai diag follow <unit> -> <leader>`
+lines. So the host now alternates leave and join about once a second.
+
+**Verdict: OFF, recorded.** The gate is the image's code. Whether the image loops the same way
+depends on one thing this packet did not read: does the image's join path also leave `follow`
+(`00E08F60`) in the follower director's first command slot?
+- If it does, the gate returns at `009F5DE0` and never leaves. The host's join is then missing
+  that command, and that is the fix.
+- If it does not, the image loops too, and the switch can flip.
+
+The next read is the caller of `0077C8D0` in the AI group pass, and what it writes to
+`[director+54h]`.
+
+**The follow-up read, done in the same turn.** The image's join does leave `follow` in the slot, so
+the loop is the host's gap and not the image's behaviour:
+- `00A10DC0`, the AI follower pass, calls only `0077C8D0` for a ship follower.
+- The join `0077F940` ends at `0077FA8D..0077FAB8`: `ordered->vtable[114h]()` (the director);
+  when that is not null, `director->vtable[58h](target)`, with the target taken from `[ESP+80h]`,
+  the join's argument.
+- The director's `vtable[58h]` is `00720CD0` (docs/WEAPON_DIRECTOR.md). It clears the ten command
+  slots at `+54h` and issues `this->vtable[60h](00E08F60, block)`: a `follow` of the target.
+- So in the image, a unit that joins holds `follow` in `[director+54h]`, and the gate returns at
+  `009F5DE0` without a leave.
+- The host's `GameUnitsHost::formation_join_0077f940` does not issue it. That was noted as unread
+  in docs/SHIP_UNIT_GROUP_FOLLOW.md, line 709.
+
+**The fix is in the units host, not in this lane.** At the end of a successful
+`formation_join_0077f940(follower, leader)`, the follower's director should run `00720CD0` with
+the leader. It is already reconstructed as `bsp::issue_target_command_00720cd0` in
+`src/weapon_director.cpp` and `src/command_execution.cpp`. It went to the lead. Once it lands,
+`kAutoTargetFollowerGateBound` re-pairs on the same seven rows; the expected leaves are those
+of followers whose director was given a different command after the join.
