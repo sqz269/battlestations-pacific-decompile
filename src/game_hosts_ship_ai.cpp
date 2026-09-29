@@ -4164,6 +4164,24 @@ public:
                 static_cast<std::size_t>(target - 1u));
             ++owner_.summary.sight_target_tests;
             if (!seen) ++owner_.summary.sight_target_hidden;
+            // Packet cc9_usn01_ridge_audit diagnostic, only with BSP_SIGHT_POS_LOG=1:
+            // the two positions of every tenth hidden answer, for an offline
+            // terrain profile. No behaviour.
+            static const bool pos_log = [] {
+                char* text = nullptr;
+                std::size_t length = 0;
+                const bool on = _dupenv_s(&text, &length, "BSP_SIGHT_POS_LOG") == 0 &&
+                    text != nullptr && text[0] == '1';
+                std::free(text);
+                return on;
+            }();
+            if (pos_log && !seen && owner_.summary.sight_target_hidden % 10u == 1u) {
+                float ux = 0.0f, uy = 0.0f, uz = 0.0f, tx = 0.0f, ty = 0.0f, tz = 0.0f;
+                owner_.units.unit_position_00fc(index_, ux, uy, uz);
+                owner_.units.unit_position_00fc(static_cast<std::size_t>(target - 1u), tx, ty, tz);
+                owner_.log.notef("  sight hidden diag unit=%zu target=%u unit_pos=(%.1f,%.1f,%.1f) "
+                    "target_pos=(%.1f,%.1f,%.1f)", index_, target, ux, uy, uz, tx, ty, tz);
+            }
             owner_.done("ShipAiApproach::zone_allows_target_00864680", 0x00864680u);
             return seen;
         }
