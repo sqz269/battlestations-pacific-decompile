@@ -10375,6 +10375,12 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
     }
 }
 
+// Packet cc9_scene_unit_skill (docs/SCENE_UNIT_SKILL.md): a scene-placed unit
+// starts at its bag skill instead of 1. ON: the USN04, USN01, USN13 and JM05
+// 9200/9000 pairs are gameplay-identical; the only live values in reach are
+// JM05's two carriers (2), which do not fire in the row.
+constexpr bool kSceneUnitSkillBound = true;
+
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;
     for (const GameSceneEntityRecord& entity : entities) {
@@ -10962,6 +10968,23 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->world_parent_0030 = &host.world_lists;
         host.register_in_world_lists(*slot);
         Impl::publish_pose(*slot);
+        // Packet cc9_scene_unit_skill: each creator hands 00927A80's bag skill to
+        // vtable[128h] (00822C20 at 008238C1..008238CB for the kind-1 scene arm,
+        // 006D3CF0, 00748383, 007D65AA, 00849D71), which stores unit+390h. This
+        // host kept the constructor's 1 (0095CCCC) until a script call. The line
+        // prints in both builds for every unit whose bag gives other than 1.
+        if (entity.bag_skill != 1) {
+            host.log.notef("scene skill: unit=%zu name=%s class=%s source=%s level=%d "
+                           "applied=%d (00927A80, packet cc9_scene_unit_skill)",
+                           slot->process_index, entity.name.c_str(),
+                           entity.class_name.c_str(), entity.bag_skill_source.c_str(),
+                           entity.bag_skill, kSceneUnitSkillBound ? 1 : 0);
+        }
+        if constexpr (kSceneUnitSkillBound) {
+            if (entity.bag_skill >= 0 && entity.bag_skill <= 5) {
+                slot->pilot_skill_index = entity.bag_skill;
+            }
+        }
         host.slots.push_back(std::move(slot));
         if constexpr (kSceneHomeBaseContractBound) {
             // Packet cc9_scene_home_base_contract: a squadron built from a

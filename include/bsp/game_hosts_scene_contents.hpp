@@ -64,6 +64,13 @@ struct GameSceneEntityRecord {
     // so every entity whose group derives from Common has one; -1 when the bag
     // has none.
     int race{-1};
+    // Packet cc9_scene_unit_skill: 00927A80 over the merged bag. `Skill` (00CF8838,
+    // group defaults included: Ship, LandFort, LandConvoy, PlaneSquadronWNavpoint
+    // declare SPNormal), else `Crew` (00D19264) through 006E6210, else 1. The
+    // creators hand it to vtable[128h] (00822C20 at 008238C1..008238CB, 006D3CF0,
+    // 00748383, 007D65AA, 00849D71). `bag_skill_source` names the arm taken.
+    int bag_skill{1};
+    std::string bag_skill_source{"fallback"};
     bool generated{false};     // 0046c550 returned AL != 0
     std::string gate_rule;     // which rule of the gate produced that answer
     // Packet cc9_scene_home_base_contract: a PlaneSquadronGen row's `HomeBase`

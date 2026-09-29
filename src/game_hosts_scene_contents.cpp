@@ -1520,6 +1520,33 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.party_symbol = party.symbol;
     record.party = party_id;
     record.race = race_id;
+    {
+        // Packet cc9_scene_unit_skill: 00927A80. Both finds go through 008F2260
+        // and read the record's +0Ch integer, so an enum symbol resolves through
+        // the library and an `I` value is its own integer.
+        const auto bag_int = [&](const char* key, int& out) -> bool {
+            const SceneProperty* prop = bag.find(key);
+            if (prop == nullptr || prop->values.empty()) return false;
+            if (prop->type_letter == "I") {
+                std::int32_t v = 0;
+                if (!scene_scan_int(prop->values.back(), v)) return false;
+                out = static_cast<int>(v);
+                return true;
+            }
+            const SceneEnumProperty e = scene_enum_property(bag, key);
+            return e.present && owner.library.resolve_symbol(e.table, e.symbol, out);
+        };
+        int v = 0;
+        if (bag_int("Skill", v)) {                     // 00CF8838, 00927A97
+            record.bag_skill = v;
+            record.bag_skill_source = "Skill";
+        } else if (bag_int("Crew", v)) {               // 00D19264, 00927AB4
+            // 006E6210 with game+1FE4h == 0 (single player, this host's only
+            // mode): 0, 1, 2 map to themselves, 3 to Elite 5, anything else 1.
+            record.bag_skill = v == 0 ? 0 : v == 1 ? 1 : v == 2 ? 2 : v == 3 ? 5 : 1;
+            record.bag_skill_source = "Crew";
+        }
+    }
     if (klass->class_id == 0x18) {
         // Packet cc9_scene_home_base_contract: 007F4C43 reads `HomeBase` from the
         // squadron's bag at pass C; carried on the record for the units host.
