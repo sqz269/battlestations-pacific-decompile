@@ -2393,7 +2393,7 @@ The slot 2Ch values for `unit_class_lands_troops_vtable_2c` came from the disk i
 ## Handoff (cc9-lua10, 2026-09-28)
 
 Branch `agent/cc9-lua10`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua10`. Final state
-at about 60% context.
+at about 72% context; `land/standby` is ON and `land/line` is read in part.
 
 ### Done (every switch below is ON)
 
@@ -2408,9 +2408,13 @@ at about 60% context.
 
 ### Open, in order
 
-1. **`land/line`**, which wing members at mode 2 now request (refused and counted), then `land/begin`.
-   `land/begin` also needs the launch-site arm of `006C3F80` (block `+3Ch`, its `+40h` and `vtable[30h]`),
-   which is refused and counted today. A mother-ship holder is still refused.
+1. **`land/line`**: read in part, in docs/SQUADRON_LAND_TASK.md section 5f.
+   - Its tick `009B0300` has no Ghidra function. Continue the raw listing from `009B04D9`.
+   - Then bind it OFF behind `kLandLineStateBound`. The template is standby's binding: search
+     `run_land_standby_tick_009b0fe0` and `land_enter_standby_009b0230` in src/game_hosts_units.cpp.
+   - Write LOMP10 predictions for the wing members at mode 2, pair it, and flip by verdict.
+   - Then `land/begin`, which also needs the launch-site arm of `006C3F80` (block `+3Ch`, its
+     `+40h` and `vtable[30h]`). A mother-ship holder is still refused.
 2. **The collision-box extent binding** in ShipHullBodyInputs (GUNNERY_OPEN_ITEMS 47.3 step 3). It
    waits on cc9-gunnery10's per-class boxes.
 3. USN01 came out identical on three follow-law pairs where it was predicted to move. Its 81 fly-to
