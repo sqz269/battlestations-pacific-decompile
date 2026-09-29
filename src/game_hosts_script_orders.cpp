@@ -1194,6 +1194,31 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
     in.has_drop_kamikaze_ordnance = bsp::ordnance_has_drop_kamikaze_2fh(set);
     in.has_torpedo_ordnance = bsp::ordnance_has_torpedo_2bh(set);
+    // Packet cc9_kamikaze_ship_blocked: 007EEB64..007EEB8A. 00827F70 on the
+    // target's class, then 00604A50 on the slot-0 plane (the ordered unit, as
+    // the self queries above take it): kind 17h with PilotFires clear.
+    if (tf.present && in.self_is_kamikaze_capable && in.target_is_kamikaze_ship) {
+        GameShipAiHost* ship_ai = units_.ship_ai();
+        const bool big = kShipAiBigLandingShipBound && ship_ai != nullptr &&
+            ship_ai->unit_big_landing_ship_0808(target_index);
+        const bool small_target = units_.unit_is_kind_of(target_index, 0x0e) ||
+            (units_.unit_is_kind_of(target_index, 0x0c) && !big);
+        if (small_target) {
+            ++kamikaze_small_targets_;
+            // 00604A58 (17h, held above), 00604A60 [plane+C24h]. LABELLED: the
+            // units host's PilotFires reader is routed (lua14); until it lands
+            // the byte reads as set, so the plane is not an uncommitted kamikaze.
+            record_unimplemented("Plane::pilot_fires_0c24", "00604a60");
+            const bool uncommitted_kamikaze = false;
+            const bool blocked = !uncommitted_kamikaze;
+            if (blocked) ++kamikaze_blocked_;
+            log_.notef("  PilotSetTarget kamikaze small-ship test: target class %d small, "
+                "00604A50=%d, blocked=%d bound=%d (007EEB74, packet cc9_kamikaze_ship_blocked)",
+                target_class, uncommitted_kamikaze ? 1 : 0, blocked ? 1 : 0,
+                kKamikazeShipBlockedBound ? 1 : 0);
+            if (kKamikazeShipBlockedBound) in.kamikaze_ship_blocked = blocked;
+        }
+    }
     const std::uint32_t chosen =
         bsp::attack_command_choose(in, flags.prefer_ordnance, flags.allow_guns);
     log_.notef("  PilotSetTarget choose: 007EEC50 -> %08lx  (weapon_controller=%d "
@@ -3474,6 +3499,9 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script kamikaze small-ship test bound=%d small_targets=%llu "
+        "blocked=%llu (007EEB74, packet cc9_kamikaze_ship_blocked)",
+        kKamikazeShipBlockedBound ? 1 : 0, kamikaze_small_targets_, kamikaze_blocked_);
     log_.notef("summary mission script pilot move on path bound=%d calls=%llu (008A3E70, "
         "packet cc9_pilot_move_on_path)", kPilotMoveOnPathBound ? 1 : 0,
         pilot_move_on_path_calls_);
