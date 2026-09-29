@@ -146,6 +146,14 @@ struct ApproachTargetRefState {
     bool tracking = false;
     // True once the death path at 009FADAE-009FAE18 has run.
     bool frozen = false;
+    // sub+44h "projtime", 0.0 at 009FB25F. The approach writes it after its
+    // own 009FADA0 call (torpedo approach+F8h, dive approach+74h).
+    float projtime_44 = 0.0f;
+    // HOST-ONLY: the projtime 009FADA0's tail read this tick. The image adds
+    // the lead once, into sub+1Ch, at the 009FADA0 call; this host recomputes
+    // the point at every consumer, so it keeps the value that call would
+    // have seen and every consumer in the tick uses it.
+    float lead_projtime = 0.0f;
 };
 
 // 009FB200. `first_timer_draw` is the Uniform(0, 2.0) at 009FB2E7.
@@ -220,6 +228,18 @@ void approach_target_ref_lead_tail_009faf05(ApproachTargetRefState& state,
 //
 // On the nine classes vtable[34h] is 00812090 (body axis unit+94h..9Ch times
 // 0092D730) and vtable[38h] is 0080E0F0 (0092D730 alone).
+// 009C7D61-009C7E85, the dive-bomb approach's projtime write (approach+74h =
+// sub+44h). Outside the impact arm (before the dive and before the range
+// latch, the 009C7D27 raw-position arm) it stores 0.0 at 009C7D65. In the
+// impact arm 009C7E3C-009C7E46 forms approach+C8h + tf, where tf is
+// 009C7D71's 007BCC80(...) + 0.1 kept in the argument slot [ESP+38h]; a
+// negative sum jumps back to the 0.0 store (009C7E56), a sum above the double
+// 30.0 [00CE7630] stores the float 30.0 [00CE38C8] (009C7E72), else the sum
+// (009C7E85). approach+C8h is 009C3DA0's Uniform(-row+2Ch, row+2Ch) at
+// 009C3E8C, drawn at the task seed and at every fly-over enter.
+float dive_bomb_projtime_009c7e3c(bool impact_arm, float fall_time,
+                                  float aim_time_error_c8) noexcept;
+
 struct ShipPredictInputs {
     std::array<float, 3> position{};  // unit+FCh/+100h/+104h after 00414DB0
     std::array<float, 3> velocity{};  // vtable[34h]

@@ -20,6 +20,9 @@ constexpr double kShipPredictMinTurn = 0.10000000149011612;   // 00D7A3A0
 constexpr double kShipPredictMinSpeed = 0.8333333730697632;   // 00D09450
 constexpr float kShipPredictTurnLo = -1.0f;                   // 00D7A260
 constexpr float kShipPredictTurnHi = 1.0f;                    // 00D7A24C
+// The projtime cap: double 30.0 [00CE7630] compared, float 30.0 [00CE38C8]
+// stored; the same pair the torpedo estimate uses at 009D3D3C/009D3D4A.
+constexpr double kProjtimeCap = 30.0;
 
 }  // namespace
 
@@ -161,6 +164,17 @@ void approach_target_ref_lead_tail_009faf05(ApproachTargetRefState& state,
         state.world_point_1c[i] = static_cast<float>(
             static_cast<double>(state.world_point_1c[i]) + static_cast<double>(delta));
     }
+}
+
+float dive_bomb_projtime_009c7e3c(bool impact_arm, float fall_time,
+                                  float aim_time_error_c8) noexcept {
+    if (!impact_arm) return 0.0f;  // 009C7D61-009C7D65
+    // 009C7E3C FLD [ESI+C8h], FADD [ESP+38h], FSTP float.
+    const float t = static_cast<float>(static_cast<double>(aim_time_error_c8) +
+                                       static_cast<double>(fall_time));
+    if (0.0f > t) return 0.0f;                                        // 009C7E50
+    if (static_cast<double>(t) > kProjtimeCap) return static_cast<float>(kProjtimeCap);  // 009C7E63
+    return t;                                                         // 009C7E85
 }
 
 std::array<float, 3> ship_predict_position_008120e0(const ShipPredictInputs& in,
