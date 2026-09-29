@@ -4341,3 +4341,30 @@ binaries.
   - a set counted on a row other than USN01;
   - a stance-0 row whose `+3Ch` stays 1 in the bridge pass after the set, seen as
     `fire_forbidden_pushes` = 0 while a bridge pass ran between init and the first think.
+
+### 61.5 The pairs and the verdict: ON
+
+**The callers.** ships15's ship-arm callers are on main (`f2b75abbd`):
+- `UnitSetFireStance` / `UnitHoldFire` -> `set_director_fire_stance_0071be80`;
+- `selection_enabled` -> `director_allow_move_3d`;
+- the `0083622B` fire-target drop is skipped and labelled.
+
+**The binaries.** Same-tree exports of `185d5e8fc`:
+- `local\ctl` (control, `D9F51B79A945`);
+- `local\ston` (`kShipFireStanceBound = true`, `685CD10E9477`).
+
+A 300-frame USN01 smoke ran clean first. Every run presented its full frame count.
+
+| row | pair_diff | census (ON) |
+| --- | --- | --- |
+| USN01 3200/3000 | **1** (gameplay identical) | `sets=9 (stance 0/1/2/3 3/0/6/0) fire_forbidden_pushes=6 move_forbidden_reads=4`. Units 43, 44 and 45 take stance 0 at init, then stance 2 twice |
+| USN04 4700/4500 (control) | **1** | `sets=0` |
+
+**Against 61.4:**
+- **P1, the census: held**, exactly (9 sets, 3/0/6/0, none on USN04).
+- **P2 and P3: held**, both gameplay-identical.
+- **The mechanism acted.** Six bridge passes ran with `+3Ch` = 0 and four auto-target gate reads
+  saw `+3Dh` = 0, all between init and the first think, before any target was in range.
+- **Mechanism failure: not met.**
+
+**Verdict: ON.**
