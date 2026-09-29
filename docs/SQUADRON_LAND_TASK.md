@@ -3177,3 +3177,81 @@ both sides, plus the flip:
 2. So the park <-> abort loop stops. Park entries per plane drop from hundreds to single digits,
    and `done_why contact` falls with them.
 3. Mechanism test: the drift distance after the hangar entry, from the `land park trace` lines.
+
+### 5y.1 Measured, and the verdict
+
+The binaries are exports of `1a756bc16`:
+
+| export | flips | SHA-256 prefix |
+| --- | --- | --- |
+| `l17_a0` | none | `5DAD87554945` |
+| `l17_a1` | levelling | `82EC6E1805B6` |
+| `l17_b0` | park, abort ground arm | `31A6D6F0B5E6` |
+| `l17_b1` | park, abort ground arm, levelling | `D8EED8A0C333` |
+
+All runs used n's launch form with `BSP_PLANE_GROUND_TRACE=B-25 01`. A 300-frame smoke of `a1`
+ran clean. The logs are `local\l17_<export>_<row>.log`.
+
+**Pair A (park OFF), LOMP10 9200/9000: `pair_diff` 3, every prediction held.**
+1. **Identical before the first touchdown.** The early lines that moved are LOMP10's known
+   movie-camera and minimap noise.
+2. **The B-25s stay on the strip.**
+   - `min_bfc` is 1.514 and 1.470 (OFF: -953.9 and -1777.7).
+   - There is no `ground contact lost` line (OFF: 306.90 s and 342.14 s at local x = -10.0).
+   - Rolls are 24.3 and 22.0 m (OFF: 41.5 and 53.6, creep included).
+   - After the stop the trace holds `vb = (0, 0, 0)`, `a1c = (0.000, -14.713, -0.257)`. The
+     -0.257 is 14.71 x sin(0.017453), the B-25's `GroundPitch` (vehicleclasses.lua, this
+     installation, mtime 2026-05-09).
+3. **Every landed plane levels** (`level_steps` = `arm_steps`). The fighters' rolls move by at
+   most 1.2 m.
+4. **Deaths are identical** (0 rows); the 34-row unit table is identical.
+
+The same pair on the other rows:
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| USN04 4700/4500 | 1 | the avoidance refill counter only |
+| USN01 3200/3000 | 1 | the avoidance refill counter only |
+| JM05 3200/3000 | 1 | the avoidance refill counter only |
+| USN13 3200/3000 | 0 | nothing |
+
+**`kPlaneGroundLevellingBound` flips ON.**
+
+**Pair B (park and the abort ground arm ON on both sides), LOMP10 9200/9000: prediction 1 held
+for half the planes, and prediction 2 missed.**
+
+| plane | park entries OFF -> ON | end state ON |
+| --- | --- | --- |
+| B-25 01 | 798 -> 1 | state 5 at (42.5, -25.5) |
+| B-25 01\|.-2 | 740 -> 1 | state 5 at (37.8, -20.9) |
+| Lightning 01\|.-3 | 902 -> 1 | state 5 at (47.1, -21.1) |
+| Lightning 01\|.-4 | 1127 -> 1 | state 5 at (38.6, -25.3) |
+| Warhawk 01\|.-3 | 946 -> 1 | state 5 at (37.5, -17.1) |
+| Lightning 01 | 1247 -> 547 | loops |
+| Lightning 01\|.-2 | 1002 -> 301 | loops |
+| Warhawk 01 | 1 -> 785 | loops |
+| Warhawk 01\|.-2 | 1059 -> 549 | loops |
+| Warhawk 01\|.-4 | 1180 -> 653 | loops |
+
+The drift of 5x is gone: every plane now stays within about 8 m of the hangar point for a
+minute or more. The loop that remains is a different mechanism. Warhawk 01's trace from 269 s to
+291 s shows it:
+- The target sits **behind** the plane (`err` 2.5 to 2.6 rad).
+- `v` pulses between 0 and 1.2 m/s against the command of 0.69.
+- The commanded yaw is 0.1 to 0.48, cut by the `(5 - f18) x 0.2` deadband.
+- The heading hardly moves. In the pulses where `v` is near 0, the rate law's flat floor of
+  0.6 (5u) holds the yaw rate at 0.
+- The plane crawls 12 m away, `dz` passes `qd`, and the path drops to state 4 at 293.3 s. The
+  abort ground arm then drives it off at up to 37 m/s. That is where the planes' `last x` of
+  several kilometres comes from, in `b0` as well.
+
+Both the image's rule (the deadband, `009B2AE1`-`009B2C1B`) and the floor were read and match. So
+the open question is whether the image's plane can turn round at 0.69 m/s, which the host's
+stop-and-go speed hold (the throttle demand arm integrating by `dt`) prevents.
+
+`kLandParkStateBound` and `kLandAbortGroundArmBound` stay OFF. The next items are:
+- the stop-and-go at the 0.69 command;
+- the abort ground arm's 37 m/s taxi.
+
+The hangar hide (`007B96C0`) was not bound: it only detaches and hides (5x), so it moves
+nothing that a log can check.

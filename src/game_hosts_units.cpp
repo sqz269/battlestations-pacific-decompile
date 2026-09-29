@@ -4342,7 +4342,9 @@ struct GameUnitsHost::Impl {
     // - axis x M), then 0085DAD0 re-orthonormalises up first. False: the pose keeps
     // whatever roll and pitch the touchdown left, and gravity's body-x share pushes
     // a stopped plane sideways (the B-25 creep).
-    static constexpr bool kPlaneGroundLevellingBound = false;
+    // ON (5y.1): LOMP10 9200/9000 moved as predicted, the B-25s stay on the strip
+    // (min_bfc 1.5 against -954 / -1778); USN04, USN01, JM05, USN13 gameplay-identical.
+    static constexpr bool kPlaneGroundLevellingBound = true;
     // Packet cc9_land_park_taxi (docs/SQUADRON_LAND_TASK.md section 5s): land/park.
     // The rule's arms into it (009B3D38 for +900h 4 or 5, 009B3E38 from abort's
     // +66Dh) and out of it (009B3770, the done byte -> abort), its enter/exit
