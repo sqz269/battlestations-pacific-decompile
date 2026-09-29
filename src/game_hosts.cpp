@@ -975,6 +975,20 @@ bool GameDeviceHost::clear_and_present() {
     }
     log_.implemented("RendererHost::clear_and_present", "00b2b200/00b21430/00b2f4a0");
     renderer_.begin_frame(kMilestoneClearColor);
+    // Packet cc9_d3d_recreate_holders. The renderer's 00B29670 fallback can
+    // replace the device inside begin_frame; this bridge follows it. The sprite
+    // bridge's textures (the frontend and font hosts) were created on the old
+    // device and are not rebuilt, so the overlay is retired rather than drawn
+    // with foreign textures (a d3d9 access violation, docs/D3D_DEVICE_LOST.md 6).
+    if (IDirect3DDevice9* const current = renderer_.device(); current != device_) {
+        device_ = current;
+        if (overlay_) {
+            overlay_ = nullptr;
+            log_.note("sprite bridge retired: the device was recreated and its textures "
+                      "belong to the previous device");
+        }
+        if (device_ == nullptr) return false;
+    }
     if (overlay_) overlay_(*device_);
     // Diagnostic frontend capture before native EndFrame. Later native debug,
     // XLive and clear-request work can change the finally presented pixels.

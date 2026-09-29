@@ -105,6 +105,7 @@ struct FakeLoss {
     long first{-1};
     long count{0};
     bool create_fail{false};
+    bool reset_fail{false};
     long calls{0};
 };
 FakeLoss& fake_loss() noexcept {
@@ -116,7 +117,10 @@ FakeLoss& fake_loss() noexcept {
             char* end = nullptr;
             f.first = std::strtol(text, &end, 10);
             if (end != nullptr && *end == ',') f.count = std::strtol(end + 1, &end, 10);
-            if (end != nullptr && *end == ',') f.create_fail = std::strstr(end, "createfail") != nullptr;
+            if (end != nullptr && *end == ',') {
+                f.create_fail = std::strstr(end, "createfail") != nullptr;
+                f.reset_fail = std::strstr(end, "resetfail") != nullptr;
+            }
             if (f.first < 0 || f.count < 0) f.first = -1;
         }
         std::free(text);
@@ -190,7 +194,9 @@ void process_current_request(void* renderer, NativeRendererResetProcessContext& 
         void* const parameters = pointer(reinterpret_cast<Word>(renderer) + 0x1a28u);
         using Reset = HRESULT (WINAPI*)(void*, void*);
         const auto reset = reinterpret_cast<Reset>(word(table, 0x40));
-        const bool reset_ok = reset(device, parameters) == 0;
+        // DIAGNOSTIC (BSP_RENDERER_FAKE_LOST ...,resetfail): the faked DEVICENOTRESET
+        // skips Reset and takes the failure branch, whose fallback is 00B29670.
+        const bool reset_ok = !(fake_not_reset && fake.reset_fail) && reset(device, parameters) == 0;
         if (reset_ok) ++stats.resets; else ++stats.reset_failures;
         if (reset_ok) {
             put_byte(renderer, 0x1d8a, 0);
