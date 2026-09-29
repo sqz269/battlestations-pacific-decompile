@@ -3663,3 +3663,131 @@ height field, as the host has it. CB2's class height (the raised point y 32) was
 **Section 42 closed (cc9-ships13, 2026-09-29).** `GameUnitsHost::plane_pilot_fires_0c24` landed on main (`9ff636740`,
 merge `ea5775f9b`). It replaced the stand-in, and `kKamikazeShipBlockedBound` is ON by section 42's verdict: USN19 is
 gameplay identical with zero reach. The build passes. Section 44's pending item is done.
+## 45. The kamikaze_attack step `009E2020` (packet `cc9_kamikaze_attack_step`, `kShipAiKamikazeAttackStepBound`)
+
+Worker cc9-ships14, 2026-09-29 (11:57 UTC). This is GAMEPLAY_GAP_RANKING rank 3.
+
+### 45.1 The image
+
+**`009E2020` `BSP_ShipAi_KamikazeAttackStateStep`** (a hypothesis name).
+- ABI: `__thiscall(state)(float seconds)`, `RET 4`. `seconds` is never read.
+- Body: `009E2020`-`009E23A6` exclusive, read whole from the listing. `RET 4` is at `009E23A3` and
+  INT3 starts at `009E23A6`. The name ledger's end `009E23AD` is 7 bytes long. The reconstruction
+  ledger now carries the verified end.
+- Place: vtable `00D216B8` slot `+0Ch`. The state object is `brain+2254h`.
+- The vtable's other slots:
+  - enter `+4h` = `009DB320` (body `009DB320`-`009DB343`): `blk+234h = blk+29Ch = 1225.0f`
+    (`00D216E8`) and `state+8h = 0`. This is the engage member's enter `009DB5E0` again.
+  - exit `+8h` = `007B3DC0`, a bare `RET`.
+
+**With a target at `[brain+0B20h]`** (`009E203A`..`009E2326`), the body is `009E23B0`'s (the
+attackmove engage sub-state) **instruction for instruction**:
+- the same pose guards;
+- the same range with its `1e-10` epsilon (`00CE3820`);
+- the same run-latch exit at 300 (`00CE3AE8`);
+- the closing speed with the same 0.4 floor (`00CE65D0` / `00CE7804`);
+- the lead `range/closing - 2.0` (`00D7A308`), clamped to [0, 12] (`00CEB4B8`);
+- the intercept at `target + lead * target velocity`;
+- `brain+3F8h = [unit+54h]`;
+- the close arm: `brain+3FCh = 1`, `009DE050(blk, &intercept, 0, 0)`, and `009DA610`, which latches
+  when the range is under 250 (`00CF8850`);
+- the run arm: `brain+3FCh = 0`, the heading from `atan2(dz, dx)` through `00CE3830` / `00CE3828`,
+  `009DFF40`, and `brain+0AF0h = 1.0f` (`00D7A24C`).
+
+**The null-target arm** (`009E2329`..`009E239C`) is `009DFF40` inlined with the unit's own heading
+(`unit->vtable[50h]()`), followed by `brain+0AF0h = 1.0f`. `009E23B0` takes `009E00A0` here
+instead, which also zeroes `blk+1C8h` and `blk+1D0h`. This arm does not.
+
+### 45.2 The reconstruction
+
+- `src/ship_ai_kamikaze_attack.cpp` holds `ship_ai_kamikaze_attack_step_009e2020`.
+  - Its null arm is its own.
+  - Its target arm calls `ship_ai_attackmove_engage_step_009e23b0`.
+- The host binding: `EngageStepBinding` became the template `EngageStepBindingT`, and
+  `KamikazeStepBinding` adds only the unit heading.
+- The latch lives in `Controller::kamikaze`. The enter clears it.
+- With the switch OFF, the step and the enter are records, as before.
+- Diagnostics: one summary line per boat,
+  `summary mission ship ai kamikaze attack <unit>: steps= run_steps= null_target= min_range= latch=`,
+  plus `summary mission ship ai kamikaze attack bound=`.
+
+### 45.3 Predictions (written before the pair)
+
+**The only reach is USNOS.** The six boats `unit #3.1`..`#3.6` hold the state:
+- they are **Kaiten**, not Shinyo: `models/ships/japan/Kaiten.mmod`, submarine creator `008531A0`;
+- `state=kamikaze_attack` is reached at step 820;
+- their fire targets are TroopTrans5 (#3.1-#3.3), TroopTrans4 (#3.4) and TroopTrans1 (#3.5).
+
+OFF, they sit at `throttle 0.000 dir=stopped` and do not move.
+
+**USNOS 3200/3000:**
+- **P1.** Every one of the six boats prints a kamikaze line with `steps` about 437 (2622/6) and
+  `null_target=0`. `009E2020` UNIMPLEMENTED disappears from the table.
+- **P2.** The boats now steer at the intercept through `009DE050`, so each boat's position moves. The
+  ship AI table shows `mode=navigate`, not `rudder/stopped`. `min_range` falls well below the
+  starting range.
+- **P3.** The close arm latches only under 250 m. Some boats may reach the run arm (`run_steps > 0`)
+  in 150 s. The prediction is uncertain because the Kaiten's speed and starting range are not in the
+  log.
+- **P4.** Deaths stay at 6. The six scripted movie deaths at 29.60 s are unchanged. A Kaiten's
+  contact detonation is not modelled here: the collision path that would spend KamikazeDamage has
+  no host. So no transport takes ramming damage, and the damage and hit totals move only through
+  AA and gun fire at the now-moving boats.
+
+**USNOS 9200/9000:**
+- **P5.** On m, the six Kaiten die at 160.81 s with no damage (`first_damage=-1`, no killer). Their
+  air runs down (depth trace: `air=0.917` at step 201) with `air=120/40`, so this is taken to be
+  air exhaustion. The death time should not move unless the steering changes the depth.
+- **P6.** If a boat is shot before 160.81 s it dies earlier, with a killer. With the boats moving,
+  this is possible. The remaining 15 death rows (the `#2.x` group from 168.61 s on) are expected to
+  stay the same, unless the moving Kaiten pull the escorts' fire.
+
+**Verdict rule.** The switch flips ON if P1 and P2 hold (the mechanism) on both rows. Spread misses
+in P3 to P6 are recorded.
+
+### 45.4 The pair and the verdict: ON
+
+**Setup.**
+- Binaries: `f975ff9d8`, OFF `AD9B3C51053C`, ON (flip) `4D66ECD8BE94`, built with
+  `tools/pair_export.py` in the cc9-ships14 tree.
+- The reference environment, the console session, and a 300-frame USNOS smoke (ON) first.
+- Logs: `local\s14koff_usnos{,l}.log` and `local\s14kon_usnos{,l}.log`. `pair_diff` exits 3 on both
+  rows.
+
+**USNOS 3200/3000.**
+- P1 holds. Every boat prints `steps=437 null_target=0`, and `009E2020` leaves the UNIMPLEMENTED
+  table (521 -> 520).
+- P2 holds:
+  - The boats go from `mode=rudder dir=stopped throttle 0.000` to `mode=navigate dir=ahead`.
+  - Throttle is `-0.625` on the entry step (step 820), then `1.000`.
+  - `d32c` falls about 7.7 m per 10 steps, which is the class's 15.43 m/s.
+  - `min_range` is 2659 to 3468 m at 150 s, from about 5500 m at step 820.
+- P3 misses. `run_steps=0`: no boat gets under 250 m of its transport in 150 s.
+- P4 holds. The death rows are identical (6). The fire at the moving boats moves the counters:
+  - shots 2316 -> 4968;
+  - hit records 800 -> 862;
+  - hull hits 79 -> 84;
+  - damage 1675.3 -> 2039.7.
+
+**USNOS 9200/9000.**
+- P5 holds for four boats. `#3.3` to `#3.6` still die at 160.81 s with no damage. They are now much
+  closer to the fleet: `#3.3` dies 154 m from Gear13, which was 1633 m OFF.
+- P6 happens:
+  - `#3.1` is killed at 154.25 s and `#3.2` at 159.11 s, both by NH (a gun category 6 kill, and
+    killer_blast 1 for #3.1), instead of the 160.81 s air death;
+  - the moved fire reshuffles the `#2.x` group's deaths: the same nine victims, the times 3.7 to
+    29 s apart, and the killers reassigned among NH, Portland2 and Gear15/16.
+- Deaths are 21 -> 21 with the same victims; 15 rows changed. `run_steps=0` again: the transports
+  keep their distance (`min_range` 2363 to 3166 m) and the Kaiten close on the escorts instead.
+
+**Verdict: ON.** The mechanism (P1, P2) holds on both rows. P3 is a spread miss: nobody reaches the
+run arm, so `009E2020`'s run arm stays unexercised, as `009E23B0`'s already was. The death-row moves
+are the boats being shot while they move. `kShipAiKamikazeAttackStepBound` is now `true`.
+
+**Still open.**
+- A Kaiten's contact detonation (the KamikazeDamage / KamikazeBlastDamage spend on collision) has no
+  host. A boat that reached its target would pass through it.
+- The air model kills the four unshot boats at 160.81 s, whatever the steering does.
+- Reference n will see USNOS 3000 and 9000 move.
+- For the lead to apply in Ghidra: the name ledger's evidence for `009E2020` still says
+  `Body 009E2020-009E23AD` and "NOT projected".
