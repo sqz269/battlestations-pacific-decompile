@@ -1390,6 +1390,11 @@ struct GameUnitSlot {
     // stay because the report and 009D3150 read them; this carries +18h, +1Ch,
     // +20h, +28h, +30h and +34h, which only the tick uses.
     bsp::TorpedoGoAwayRuntime torpedo_goaway_runtime{};
+    // Packet cc9_fly_to_obstacles: 009FD570's cache on each goaway state.
+    // [0] the torpedo goaway (009D0C54), [1] the dive-bomb goaway (009C4810).
+    // The countdown starts at 0, as 009C74E8 leaves the dive state's +8h.
+    int fly_to_countdown[2]{0, 0};
+    std::vector<bsp::FlyToObstacle> fly_to_cache[2];
     int torpedo_goaway_ticks{0};
     int torpedo_goaway_arm_ticks[5]{0, 0, 0, 0, 0};  // index 1..4 = the four arms
     int torpedo_goaway_heading_ticks{0};             // arms that publish +2C0h
@@ -1841,7 +1846,23 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // 009D3420 before the state tick at 009D48F6). ON: the goaway asks
 // aim_point_009fada0 for it, as approach_target_point does. OFF: the ordered
 // target's origin.
-constexpr bool kTorpedoGoAwayAimPointBound = true;   // ON: TORPEDO_AIM_LEAD 15.4
+constexpr bool kTorpedoGoAwayAimPointBound = true;
+// Packet cc9_fly_to_obstacles (docs/TORPEDO_AIM_LEAD.md section 16): 009FD570's
+// obstacle cache (cache = the calling state; +8h countdown, +0Ch list). Every
+// 21st call (009FD5FF ADD [EDI+8],-1 / JNS / MOV [EDI+8],14h) it walks
+// [[00E188A8]+19CCh]+64h, world list 6, the ships, and keeps each unit whose
+// team +54h differs from the flyer's (009FD656) and whose XZ distance to the
+// lead point is under max(unit+434h, +444h, +448h) + 100 (009FD66F-009FD6F9):
+// the longest AAMACHINEGUN / FLAK / LIGHTARTILLERYFLAK range (00956C20's
+// unit+430h + cat*4). The weight is unit+464h + +474h + +478h, the same three
+// categories' 00956C20 damage sums (unit+460h + cat*4). So the goaway steers
+// round enemy AA envelopes. SUBSTITUTIONS, labelled: +460h is rebuilt here
+// from the gunnery host's gun rows (mean of the bullet class's DamageMin and
+// DamageMax per gun with a bullet class), without 00956C20's
+// kind-6-in-category-6 second ammo record (+48h); the cache lives on the unit
+// slot, one per goaway state, so it is not reset when a new task is built.
+// OFF: the empty list, as before.
+constexpr bool kFlyToObstacleListBound = false;   // ON: TORPEDO_AIM_LEAD 15.4
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
@@ -6415,6 +6436,68 @@ struct GameUnitsHost::Impl {
     // Packet cc9_torpedo_goaway_aim: goaway ticks that took 009D0670's point,
     // and how far it sat from the target's origin (XZ).
     unsigned long long goaway_aim_points_{0};
+    // Packet cc9_fly_to_obstacles.
+    unsigned long long fly_to_rebuilds_[2]{0, 0};
+    unsigned long long fly_to_kept_[2]{0, 0};
+    unsigned long long fly_to_avoid_ticks_[2]{0, 0};
+    unsigned long long fly_to_side_flips_[2]{0, 0};
+    // 00956C20's unit+460h + cat*4 for one unit, from the gunnery host's rows.
+    float unit_category_damage_460(std::size_t unit_index, int category) const {
+        if (gunnery == nullptr) return 0.0f;
+        const std::vector<std::size_t>* list =
+            gunnery->unit_category_guns(unit_index, category);
+        if (list == nullptr) return 0.0f;
+        const auto& guns = gunnery->guns();
+        float sum = 0.0f;
+        for (std::size_t g : *list) {
+            if (g >= guns.size()) continue;
+            const GameBulletClassRow* b = gunnery->bullet_class_row(guns[g].bullet_class);
+            if (b == nullptr || !b->found) continue;
+            sum += (b->damage_max + b->damage_min) * 0.5f;   // 00956E94..00956E9B
+        }
+        return sum;
+    }
+    // 009FD5FF-009FD743 for the cache `k` of `flyer`, with `lead` the solver's
+    // lead point (unit+FCh + 3.0 * vtable[34h]).
+    const std::vector<bsp::FlyToObstacle>& fly_to_obstacles_009fd63c(
+            GameUnitSlot& flyer, int k, const float lead[3]) {
+        if (--flyer.fly_to_countdown[k] >= 0) return flyer.fly_to_cache[k];  // JNS
+        flyer.fly_to_countdown[k] = 20;                                      // 009FD630
+        std::vector<bsp::FlyToObstacle>& out = flyer.fly_to_cache[k];
+        out.clear();                                                         // 007B4500(0)
+        ++fly_to_rebuilds_[k];
+        if (gunnery == nullptr) return out;
+        const auto& gunnery_rows = gunnery->unit_rows();
+        for (const GameUnitWorldNode* node = world_lists.entries[6].head; node != nullptr;
+             node = node->next) {
+            const GameUnitSlot* u = node->unit;
+            if (u == nullptr || u->row.party == flyer.row.party) continue;  // 009FD656
+            const std::size_t idx = u->process_index;
+            const GameGunneryUnitRow* row = nullptr;
+            for (const auto& r : gunnery_rows) {
+                if (r.unit_index == idx) { row = &r; break; }
+            }
+            if (row == nullptr) continue;
+            const float dx = lead[0] - u->motion.position[0];
+            const float dz = lead[2] - u->motion.position[2];
+            const float d2 = dx * dx + 0.0f * 0.0f + dz * dz;               // 009FD6A3 FLDZ
+            // 009FD6B1-009FD6D3: max(+448h, +444h) then against +434h.
+            float m = std::max(row->category_ranges[6], row->category_ranges[5]);
+            m = std::max(row->category_ranges[1], m);
+            const float r = static_cast<float>(static_cast<double>(m) + 100.0);  // 00D7A220
+            if (!(r * r > d2)) continue;                                     // 009FD6F9 JBE
+            bsp::FlyToObstacle o;
+            o.position[0] = u->motion.position[0];
+            o.position[1] = u->motion.position[1];
+            o.position[2] = u->motion.position[2];
+            o.extent_max = m;
+            o.extent_sum = unit_category_damage_460(idx, 5)
+                + unit_category_damage_460(idx, 1) + unit_category_damage_460(idx, 6);
+            out.push_back(o);
+            ++fly_to_kept_[k];
+        }
+        return out;
+    }
     double goaway_aim_offset_sum_{0.0};
     double goaway_aim_offset_max_{0.0};
 
@@ -17322,9 +17405,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // target itself may be an obstacle the image steers round.
                         fin.obstacles = nullptr;
                         fin.obstacle_count = 0;
+                        if constexpr (kFlyToObstacleListBound) {
+                            float lead[3];
+                            for (int i = 0; i < 3; ++i) {
+                                // 009FD5A8-009FD61F, as the solver forms it.
+                                lead[i] = fin.unit_position[i] + static_cast<float>(
+                                    static_cast<double>(fin.unit_lead_vector[i]) *
+                                    static_cast<double>(bsp::fly_to_solver::kLeadSeconds));
+                            }
+                            const auto& obs = owner_.fly_to_obstacles_009fd63c(unit_, 1, lead);
+                            fin.obstacles = obs.empty() ? nullptr : obs.data();
+                            fin.obstacle_count = obs.size();
+                        }
                         fin.world_edge.near_edge = false;
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, gt.side_18);
+                        if (fr.avoidance_ran) ++owner_.fly_to_avoid_ticks_[1];
+                        if (fr.side_written) ++owner_.fly_to_side_flips_[1];
                         if (fr.side != gt.side_18) ++unit_.db_goaway_side_writes;
                         gt.side_18 = fr.side;  // arg4 IN AND OUT, 009FDC48
                         bsp::TorpedoGoAwayGeometryInputs geo;
@@ -19495,6 +19592,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // point, and it is reported rather than assumed.
                         fin.obstacles = nullptr;
                         fin.obstacle_count = 0;
+                        if constexpr (kFlyToObstacleListBound) {
+                            float lead[3];
+                            for (int i = 0; i < 3; ++i) {
+                                // 009FD5A8-009FD61F, as the solver forms it.
+                                lead[i] = fin.unit_position[i] + static_cast<float>(
+                                    static_cast<double>(fin.unit_lead_vector[i]) *
+                                    static_cast<double>(bsp::fly_to_solver::kLeadSeconds));
+                            }
+                            const auto& obs = owner_.fly_to_obstacles_009fd63c(unit_, 0, lead);
+                            fin.obstacles = obs.empty() ? nullptr : obs.data();
+                            fin.obstacle_count = obs.size();
+                        }
                         // 00681F40 / 009FA510 over GGame+711Ch..7130h: the world
                         // bounds are unmodelled, and USN01's aircraft are in
                         // open ocean rather than against a map edge.
@@ -19502,6 +19611,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, g.side_2c);
+                        if (fr.avoidance_ran) ++owner_.fly_to_avoid_ticks_[0];
+                        if (fr.side_written) ++owner_.fly_to_side_flips_[0];
                         g.side_2c = fr.side;
 
                         bsp::TorpedoGoAwayGeometryInputs geo;
@@ -26615,6 +26726,13 @@ void GameUnitsHost::report() {
             g_section_picks[0], g_section_picks[1], g_section_picks[2],
             g_section_chance_box_picks, g_section_unavailable_picks,
             host.section_points_by_class_.size());
+        host.log.notef("summary mission fly-to obstacles bound=%d torpedo_goaway "
+            "rebuilds=%llu kept=%llu avoid_ticks=%llu side_writes=%llu | dive_goaway "
+            "rebuilds=%llu kept=%llu avoid_ticks=%llu side_writes=%llu (009FD570 cache, "
+            "packet cc9_fly_to_obstacles)", kFlyToObstacleListBound ? 1 : 0,
+            host.fly_to_rebuilds_[0], host.fly_to_kept_[0], host.fly_to_avoid_ticks_[0],
+            host.fly_to_side_flips_[0], host.fly_to_rebuilds_[1], host.fly_to_kept_[1],
+            host.fly_to_avoid_ticks_[1], host.fly_to_side_flips_[1]);
         host.log.notef("summary mission torpedo goaway aim point bound=%d ticks=%llu "
             "mean_off_origin=%.1f m max_off_origin=%.1f m (009D0670 via 009D0C10, packet "
             "cc9_torpedo_goaway_aim)", kTorpedoGoAwayAimPointBound ? 1 : 0,
