@@ -1704,3 +1704,55 @@ and the runs finished at 22:05 UTC.
 reached the release range, no value is out of range, and no row lost more than one release. The
 switch **flips ON**. The two misses are recorded: the done site is unexercised here, and USN01
 moved without a release change.
+
+## 22. Handoff queue (cc9-planes3, about 75% context)
+
+Stamped 2026-09-29 22:06 UTC.
+
+**This session's switches, all in src/game_hosts_units.cpp:**
+- `kFlyToObstacleListBound` is ON (16.1).
+- `kTorpedoResetDrawsBound` and `kTorpedoResetRunTimeSeedBound` are ON (19.6). The draws carry
+  `ctl+398h = max(TorpReleaseAlt, 5)` (19.5).
+- `kTorpedoRunTimeUpdateBound` is ON (21.4).
+- The done/prepare `009D27D1` call site was moved to the committed branch, unswitched (21.1).
+
+**Environment:** runs worked from 21:07 to 22:05 UTC. The 20:17 and 20:56 batches failed at
+renderer init (`hr 0x8876086a`, `logonui=1`); one smoke run 10 minutes later passed each time.
+
+1. **The reset's last two draws (next).** Both are in `009D0380`, with the constants read as bytes
+   in 19.1.
+   - **`+88h`** is `U(1.25, 1.5) * desc+268h + +80h`. The draw uses lo `00CF29A8` 1.25f and hi
+     `00CE380C` 1.5f on stream 1. The field is `param_1[0x22]` in the pseudocode.
+     - The same value times `[00D21298]` then goes into `+8Ch` (the engage range, later clamped by
+       `009D4AC4`) and `+90h`. Read those stores whole in the listing (after `009D047D`) before
+       binding.
+     - The host sets `scan_radius_seed_88` to the engage range instead.
+     - `desc+268h` is unread. Start with `rg -n "268h" docs include/bsp`.
+   - **`+12Ch`** is `-U(0, 1)` (`009D0581`-`009D0590`, `FCHS`), where the host holds 0
+     (`replan_timer_12c`). It shifts the first replan.
+   - Bind both OFF with predictions and pair on the six rows of 19.5. Use the keyed stand-in
+     streams `#t88` and `#t12c`.
+2. **The script attack altitude on the torpedo path (section 20).**
+   - `008A22B0 SquadronSetAttackAlt` sets the squadron block's `+398h`, and `009D4A70` step 5 keeps
+     it, gated by `+38Ch`/`+37Ch`/`+3AAh` as `009C8920` is for the dive.
+   - The host's torpedo `read_control_block` ignores `sq_alt_398`.
+   - It is inert on every reference row. Bind it when a row with a scripted torpedo squadron is
+     found: 81 scripts in this installation call it, so search them for a torpedo-task squadron.
+3. **The done/prepare site is unexercised.**
+   - No row starts the committed countdown: `drop_timer_98` stays -1 and `prepare_entries` is 0 on
+     all 109 aircraft lines (21.4).
+   - The 21.1 call-site fix and the `009D27D1` update need a row where a torpedo task enters
+     prepare. The attack-mode census names its blockers (`blocked_0099af53`).
+4. **Leftovers from sections 13 and 18.**
+   - The FlyToObstacle fields `extent_max`/`extent_sum` are the AA range and the AA damage sum
+     (section 16). Renaming them touches `include/bsp/plane_fly_to_solver.hpp`.
+   - The `speed_late_7c`/`speed_early_80` names are distances (the header says so; the rename is
+     still due).
+   - The substitutions in section 13.
+
+**Scripts** are in the cc9-planes3 tree's `local\`, with the `p3_` prefix:
+- `p3_runs.ps1` is the launcher (`-Variants`, `-Rows`; rows are usn04, e2, jm05, usn01, usn13,
+  jm08, usn12, jm06).
+- `p3_edit_units*.py` are the applied edits, each taking an optional path for a dry run.
+- `p3_diff*_<row>.txt` are the pair diffs.
+- `p3_scan398.txt` is the section 20 census.
