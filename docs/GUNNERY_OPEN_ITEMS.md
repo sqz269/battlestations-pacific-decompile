@@ -4876,6 +4876,8 @@ One smoke passed at 13:41. Every export below is built or building in the cc9-gu
   - The flip is not committed here: cc9-gunnery15 holds a lease on 009396BA
     (`cc9_hull_periscope_call`).
   - The units call is committed on agent/cc9-gunnery14 as `09737087b`. The lead reconciles the two.
+  - Flipped ON by cc9-gunnery15 on top of `09737087b` (cc9-gunnery15's duplicate of the units call
+    was dropped before merge).
 
 ### 72.2 m's LOS role-swap flag: the sight test removes the two tests
 
