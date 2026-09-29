@@ -1819,7 +1819,37 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
         if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
         rtb_exclusion_census(member);
-        return tick_squadron_excluded_007eda90(member);
+        const bool stand_in = tick_squadron_excluded_007eda90(member);
+        if (stand_in) ++rtb_exclusion_stand_in_true;
+        if (!kAiSquadronRtbExclusionBound) return stand_in;
+        return rtb_exclusion_arm(member);
+    }
+    // Packet cc9_squadron_rtb_exclusion_bind: 009FFEC6..009FFF16 with the
+    // units host's 007EDAD0 and 007F16D0 + 0077D600 entries.
+    bool rtb_exclusion_arm(void* member) {
+        if (member == nullptr) return false;
+        const std::size_t index = unit_index_of(member);
+        const Squadron* s = squadron_of(index);
+        if (s == nullptr) return false;
+        const std::size_t head = lead_member(*s);                  // [sq+3D0h]
+        if (head == bsp::kPlaneSquadronNoUnit) return false;
+        const int cls = units.unit_class_id(head);                  // 009FFECD +0C4h
+        // The units host keys squadrons by a member plane; this host's squadron
+        // index lies past units.count(), so the head plane names the record.
+        if (units.squadron_ammo_type_007edad0(head) != 0) return false;   // 009FFED3
+        if (cls != 0x10 && cls != 0x11 && cls != 0x12) return false;      // 009FFEDC..
+        done("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
+        const std::size_t placed =
+            units.issue_return_to_base_007f16d0(head, "ai squadron rtb exclusion 009FFF09");
+        ++rtb_exclusion_issues;
+        if (placed == 0u) return false;   // 009FFEF9, null descriptor: answers 0
+        ++rtb_exclusion_excluded;
+        if (rtb_exclusion_excluded <= 8u) {
+            log.notef("  ai rtb exclusion: squadron %s head class %02Xh spent, returntobase "
+                "placed on %zu planes (009FFF09, packet cc9_squadron_rtb_exclusion_bind)",
+                unit_name(index).c_str(), cls, placed);
+        }
+        return true;
     }
     // Packet cc9_squadron_rtb_exclusion census, no behaviour: 009FFEC6..
     // 009FFF16 read. With [00E17BF2] clear the arm takes the head plane's class
@@ -3675,6 +3705,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long rtb_exclusion_squadron_calls{0};   // packet cc9_squadron_rtb_exclusion
     unsigned long long rtb_exclusion_bomber_calls{0};
     unsigned long long rtb_exclusion_spent_calls{0};
+    unsigned long long rtb_exclusion_stand_in_true{0};   // packet cc9_squadron_rtb_exclusion_bind
+    unsigned long long rtb_exclusion_issues{0};
+    unsigned long long rtb_exclusion_excluded{0};
     unsigned long long sell_thinks{0};
     unsigned long long sell_splits{0};
     unsigned long long sell_orders{0};
@@ -4803,6 +4836,10 @@ void GameAiCoordinatorHost::report() {
         "bomber_calls=%llu spent_calls=%llu (009FFEB0 census, packet cc9_squadron_rtb_exclusion)",
         host.rtb_exclusion_squadron_calls, host.rtb_exclusion_bomber_calls,
         host.rtb_exclusion_spent_calls);
+    host.log.notef("summary mission ai squadron rtb exclusion bind stand_in_true=%llu issues=%llu "
+        "excluded=%llu bound=%d (009FFF09, packet cc9_squadron_rtb_exclusion_bind)",
+        host.rtb_exclusion_stand_in_true, host.rtb_exclusion_issues, host.rtb_exclusion_excluded,
+        kAiSquadronRtbExclusionBound ? 1 : 0);
     host.log.notef("summary mission ai big landing ship reads=%llu bound=%d (00827F95 via "
         "009FE2D4.. and 00A0360B, packet cc9_big_landing_ship)", host.big_landing_ship_reads,
         kShipAiBigLandingShipBound ? 1 : 0);
