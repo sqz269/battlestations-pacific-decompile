@@ -1500,3 +1500,46 @@ supplies `ctl+398h = max(TorpReleaseAlt row, 5.0)`. The row is stored on the slo
     appears with `+9Ch` above -3 (a zero the floor cannot explain). Otherwise flip it.
 - **A' verdict:** keep it OFF if releases collapse to 0 again, or if `min_alt` differs from OFF by
   more than 5 m. Otherwise flip it.
+
+### 19.6 The re-run, measured: A' and B' both flip
+
+**Binaries** are `pair_export.py --commit ac16e89ac`: s0 has no flip (`1889CDC9C4D6`), sa flips the
+draws (`9BE233F9F054`) and sb flips the draws and the seed (`A52B1E3189FC`). The rows and the
+launch form are 19.5's. All 18 logs are complete, and the runs finished at 21:40 UTC.
+
+| row | A' (s0 -> sa) | torpedo-task releases | deaths | B' (sa -> sb) | torpedo-task releases | deaths |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 5 -> 5 of 16 | 45 -> 44 (1 only-OFF Zero) | 3 | 5 -> 8 of 16 | 44 -> 48 (4 only-ON, among them a Zero and two Vals) |
+| E2 9200/9000 | 3 | 5 -> 5 | 51 -> 51, none one-sided | 3 | 5 -> 8 | 51 -> 51, none one-sided |
+| USN13 3200/3000 | 3 | 3 -> 3 of 60 | 31 -> 31 | 3 | 3 -> 4 | 31 -> 31 |
+| USN01 3200/3000 | 3 | 0 -> 0 of 5 | 5 -> 5 | 3 | 0 -> 0 | 5 -> 5 |
+| JM05 3200/3000 | 1 | 0 of 12 | identical | 1 | 0 | identical |
+| JM08 3200/3000 (control) | 1 | - | identical | 1 | - | identical |
+
+**A', against the restated predictions:**
+- **The band held.** Per aircraft, `min_alt` moved by -3.9 to +3.2 m on USN04 (16 aircraft) and
+  by -1.7 to +4.5 m on USN13 (4 aircraft). That is inside the 5 m rule, against a prediction of
+  +0 to 3.
+- **The releases did not collapse**; they are unchanged.
+- **The control is identical.**
+- **Verdict: flip.**
+
+**B', against the restated predictions:**
+- **The seed line counts match.** `seeds` equals `draws` on every row (16 / 12 / 5 / 60 / 0), and
+  the means are unchanged (8.90 s on USN04).
+- **The seed-line rule held.** Of 73 seed lines, two are 0.000:
+  - USN01 Mav2 with `+9Ch` = -8.52;
+  - one with `+9Ch` = -9.50.
+  Both are floors that `+9Ch` below -3 explains. No line is NaN, inf or above 30.
+- **Torpedo releases rose.** They went from 5 to 8 of 16 on USN04 and E2, and from 3 to 4 on USN13.
+  - This is the lead at the drop that 19.4 predicted: `+F8h` no longer falls to about 0 at release.
+  - Damage on USN04 rose from 13514 to 16652, and on E2 from 14409 to 17174.
+- **Deaths.**
+  - USN04's 4500-frame window gains four deaths at its end.
+  - E2, the same mission run to 9000 frames, has no one-sided row.
+  - So those four are timing inside the shorter window, not new kills.
+- **Verdict: flip.**
+
+**Still standing:**
+- The seed is never refreshed (`009D1360` is unbound). It is the next packet.
+- `+88h` and `+12Ch` are not drawn.

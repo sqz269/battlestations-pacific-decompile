@@ -1876,14 +1876,14 @@ constexpr bool kFlyToObstacleListBound = true;    // ON: TORPEDO_AIM_LEAD 16.1
 // their gap (009D05ED, 009D0625). SUBSTITUTION, labelled: every draw has its
 // own keyed stand-in stream (name#t70, #t78, #t7c, #t80), so the draws the
 // host already makes keep their sequence. OFF: the row values, as before.
-constexpr bool kTorpedoResetDrawsBound = false;
+constexpr bool kTorpedoResetDrawsBound = true;          // ON: TORPEDO_AIM_LEAD 19.6
 // Packet cc9_torpedo_reset_draws: 009D0160, called at 009D0632 after the aim
 // error draw, seeds +98h, which the engagement estimate adds into +F8h, the
 // torpedo projtime. The host binds no other +98h writer (009D1360 at 009D19A4
 // and 009D27D1 is a counter here), so the seed stands for the whole task.
 // It reads +70h, +78h and +7Ch, so it is meant to run with the draws ON.
 // OFF: +98h stays 0.
-constexpr bool kTorpedoResetRunTimeSeedBound = false;
+constexpr bool kTorpedoResetRunTimeSeedBound = true;    // ON: TORPEDO_AIM_LEAD 19.6
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
