@@ -12435,7 +12435,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     "a1c=(%.3f %.3f %.3f) r04=(%.3f %.3f %.3f) r40=(%.3f %.3f %.3f) "
                                     "out=(%.3f %.3f %.3f) thr=%.4f ab=%.4f thr_slot=(%.4f %.4f %d) "
                                     "ab_slot=(%.4f %.4f %d) want=%.2f mode2d8=%d brake=%.3f fric=%.3f "
-                                    "thrust=%.3f pitch=%.4f pen=%.3f",
+                                    "thrust=%.3f pitch=%.4f pen=%.3f ctl=(%.3f %.3f %.3f) yaw_slot=(%.3f %.3f %d) ang=(%.4f %.4f %.4f)",
                                     unit_.row.name.c_str(),
                                     static_cast<double>(owner_.summary.simulated_seconds),
                                     unit_.plane_control_mode_900,
@@ -12460,7 +12460,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(unit_.ground_last_brake),
                                     static_cast<double>(unit_.ground_last_friction),
                                     static_cast<double>(state.thrust_accel),
-                                    static_cast<double>(state.pitch), static_cast<double>(pen));
+                                    static_cast<double>(state.pitch), static_cast<double>(pen),
+                                    static_cast<double>(unit_.plane_latched_controls[0]),
+                                    static_cast<double>(unit_.plane_latched_controls[1]),
+                                    static_cast<double>(unit_.plane_latched_controls[2]),
+                                    static_cast<double>(unit_.plan_slots[bsp::kPilotSlotYaw].current),
+                                    static_cast<double>(unit_.plan_slots[bsp::kPilotSlotYaw].desired),
+                                    unit_.plan_slots[bsp::kPilotSlotYaw].active,
+                                    static_cast<double>(unit_.plane_body_angular[0]),
+                                    static_cast<double>(unit_.plane_body_angular[1]),
+                                    static_cast<double>(unit_.plane_body_angular[2]));
                             }
                             if constexpr (GameUnitsHost::Impl::kPlaneDirectionHoldBound) {
                                 // 007D81B0's clear on GGame+1FE4h == 2 is taken as

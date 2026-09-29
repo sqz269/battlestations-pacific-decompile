@@ -3255,3 +3255,92 @@ stop-and-go speed hold (the throttle demand arm integrating by `dt`) prevents.
 
 The hangar hide (`007B96C0`) was not bound: it only detaches and hides (5x), so it moves
 nothing that a log can check.
+
+## 5z. The stop-and-go at the 0.69 command reads as the image's own laws (packet `cc9_park_stop_and_go`, cc9-lua17, 2026-09-29)
+
+**Runs.**
+- `local\l17_c0_lomp10l.log`: an export of `126b71042` with park and the abort ground arm
+  flipped.
+- `local\l17_d_lomp10l.log`: the same flips as a local build, with the trace extended by the
+  latched controls, the yaw slot and the body angular rate.
+
+Both are LOMP10 9200/9000 with `BSP_PLANE_GROUND_TRACE=Warhawk 01`.
+
+### The cycle, measured
+
+Warhawk 01 after its hangar entry, sampled every 0.5 s. It repeats with a period of about 3 s:
+
+| t | latched throttle | brake | body vz |
+| --- | --- | --- | --- |
+| 173.66 | 0.0315 | 0 | 0 |
+| 174.66 | 0.110 | 0 | 0.35 |
+| 175.16 | 0.126 (the slot's peak) | 0 | 0.71 |
+| 175.66 | 0.102 | 0 | 1.06 |
+| 176.16 | 0.0315 | 0 | 1.22 |
+| 179.16 | 0.0157 | 15.24 | 1.22, then 0 |
+
+The last row is where the throttle falls through 0.023: `brake = WheelBrake 80 x (0.6 - 26 x
+0.0157)`.
+
+The terms against the listing:
+- **The demand arm (`0099D924`-`0099DC6B`), read again whole from disk bytes.**
+  - `err = 2B4h - measured`, less `(vtable[38h]() - 0042B2F0(unit+AE0h)) x [00CE3D88] x dt`.
+  - `increment = 00419010(-6.944, -2, 6.944, 2, err)`, x 0.6 when positive, x the slot `[ESP+6Ch]`
+    (dt).
+  - `demand = seed + increment`, clamped to [-1, 1].
+  - Throttle = `max(demand, 0.001)`, air brake = `max(-demand, 0)`.
+
+  This is the host's `pilot_plan_throttle_0099d300`.
+- **The dead band.** The increment is skipped only when all four hold: `|err| <= [00D09450]`,
+  `measured >= 1.0`, and `0.5 <= 2B4h/|measured| <= 1.5` (`0099DB1F`-`0099DB56`). At a 0.69
+  command, `measured < 1.0` forces the increment every think, so the host's
+  `dead_band_skips = false` is exact here.
+- **Measured speed.** It is `007D99C0(unit+AB0h)` (the body forward speed plus the carrier term)
+  divided by `plan+2B8h`, and less the carrier's speed on a class-6 holder (`0099D99E`-
+  `0099DA48`). `plan+2B8h` only decays toward 1.0 from above (`0099D75C`-`0099D79A`), and
+  `0099D924` raises it only when `+2B0h` is clear, which park sets. The host uses `|world v|`.
+  After the levelling (5y), body x is below 0.17 m/s in these cycles, so the difference is small.
+  LABELLED, not changed.
+- **The brake cliff.** It is the ground band `007DBEB3`-`007DBF0C` (`0.6 - throttle x 26`, 5q),
+  unchanged.
+
+So the pulse is the integral demand arm hunting against the ground band's brake cliff at
+throttle 0.023. No host substitution on this path produces it.
+
+### Why the plane cannot come round
+
+The yaw slot carries park's desired yaw, 0.37 to 0.47, the deadband having cut it from 1.1
+(`009B2AE1`-`009B2C1B`, `f18` = `|dx|` below 3 m). The latched yaw follows it. The body yaw rate
+is -0.13 to -0.21 rad/s while `v` is above about 0.5, and 0 in every stop. That follows from:
+- the mode-1 yaw factor `outB` (0 below `b` = about 0.3 m/s at throttle 0.1, full above `a` =
+  1.67 m/s);
+- the flat floor of 5u.
+
+The result is a turning circle of about 7 m, traversed about a third of the time. From 271 s to
+291 s the heading turns about 0.65 rad while the bearing to the target (behind, `err` 2.3 to 2.6)
+turns with the motion. The plane crawls from (46.1, -21.6) to (42.6, -31.9), `dz` passes `qd`, and
+it leaves the path at 293.2 s.
+
+**Reading.** Every law in this loop matches the listing. The host has no divergence left here
+that a switch could carry:
+- the park tick and its deadband;
+- the demand arm;
+- the ground band;
+- the mode-1 yaw factor and the floor;
+- the path test.
+
+After `007B96C0` the image's plane is hidden but still ticking (5x). Nothing found so far ends
+park for it:
+- state 5 skips the done test (`009B21E4`);
+- `+C00h` has no reader, and the SIB-form scans `80/8A/0FB6/38 ?? ?? 00 0C 00 00` are also empty.
+
+So the image may well loop the same way, invisibly. That cannot be settled from the host.
+
+**Open.**
+- The one term left unmatched is the measured speed (`007D99C0` forward speed against
+  `|world v|`); a switch for it is cheap but would not change the turning circle.
+- Is there an image routine that retires a landed, hidden plane (the air-ops holder's occupant
+  list `+34h`, the squadron's landing record)? That decides whether flipping park can ever be
+  gameplay-neutral.
+
+`kLandParkStateBound` and `kLandAbortGroundArmBound` stay OFF.
