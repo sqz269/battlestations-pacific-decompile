@@ -1487,6 +1487,10 @@ struct GameUnitSlot {
     float plane_pitch_spd{0.0f};
     // desc+18Ch TravelSpeed, the airspeed 007C6340 seeds a plane with.
     float plane_travel_speed{0.0f};
+    // record+0h TorpReleaseAlt of the torpedo task's robots row, which
+    // 009D4A70 reads through *(task+40Ch) = approach+14h. Packet
+    // cc9_torpedo_reset_draws.
+    float torpedo_release_alt_row{0.0f};
     float plane_bomb_delay_1f4{1.0f};   // class+1F4h BombDelay
     // desc+164h Accel, desc+208h GlideRate, desc+1D4h DragPitchRatio and
     // desc+1DCh AirBrakeDrag: the four authored fields the thrust 007D9050 and
@@ -14060,6 +14064,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::TorpedoApproachControl ctl;
                             ctl.second_altitude_398 =
                                 bsp::kPilotTorpedoCruisingAltDefault;
+                            if constexpr (kTorpedoResetDrawsBound) {
+                                // 009D4A70 step 5: +398h = *(task+40Ch), the
+                                // run profile record's +0h TorpReleaseAlt
+                                // (task+40Ch = approach+14h), replaced by 5.0f
+                                // (00CE3850) below the double 5.0 (00D7A370).
+                                // Under 100 (00D7A220), so 009D3489 stores it
+                                // into +74h over the reset's 67.0. The
+                                // CruisingAlt stand-in above is 500 and made
+                                // 009D3489 skip the store, which left +74h at
+                                // the reset's 67 once the draws set it.
+                                const float alt = slot_.torpedo_release_alt_row;
+                                ctl.second_altitude_398 =
+                                    static_cast<double>(alt) < 5.0 ? 5.0f : alt;
+                            }
                             ctl.speed_ceiling_39c =
                                 bsp::kPilotTorpedoSpeedCeiling_00ce4c04;
                             ctl.profile_dirty_3ad = 1;
@@ -18672,6 +18690,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // interpolation at 009D1FED equal and the release
                             // gate inert. docs/TORPEDO_RELEASE_GATE.md.
                             ap.aspect_scale_84 = kTorpRows[torp_row][3];
+                            unit_.torpedo_release_alt_row = kTorpRows[torp_row][0];
                             if constexpr (kTorpedoResetDrawsBound) {
                                 // 009D03D9-009D0475 and 009D0581-009D0625.
                                 const std::string& n = unit_.row.name;
