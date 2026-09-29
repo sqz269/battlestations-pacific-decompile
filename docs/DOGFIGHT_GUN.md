@@ -295,3 +295,62 @@ the reference rows.
   it is in this installation. The code tests `pilot_auto_strafe_angle_angle_prepare == 0` and
   records otherwise.
 - The moveto `009FABE0` records (Angle_MoveTo 2 degrees) stay recorded; that cone is the open gap.
+
+## 9. The states' cones outside dogfight, and the untasked planes (packet `cc9_task_gun_cones`, cc9-lua18, 2026-09-29)
+
+**Every store to the cone in the bot segment.** A displacement scan of `00996000`-`00A00000` for
+the four tuning fields, `+66Ch` to `+678h`, found these sites. Each `FLD` is followed within
+16 bytes by `FSTP [reg+40h]` through `[approach]+1Ch`, checked with `disasm-raw`.
+
+| site | state (Ghidra function) | value | host |
+| --- | --- | --- | --- |
+| `009C1B2D` | moveto `009C18C0`, the with-target arm | Angle_MoveTo | torpedo, dive-bomb and land moveto ticks |
+| `009C2584` | moveto task `009C2430` | MoveTo | moveto task tick |
+| `009C2831` | moveto circle `009C26D0` | MoveTo | moveto task circle |
+| `009BFD2B` | follow `009BEE30`, the fly-to arm | MoveTo | `run_follow_tick_009c1fd0`'s fly-to arm |
+| `009BF9D7` | follow, the hold arm | Prepare | not delivered (0; exact while Prepare is 0) |
+| `009C4443` | dive-bomb attackrun `009C4220` | MoveTo | dive attackrun tick |
+| `009C4E2C` | dive-bomb goaway `009C4A40` | GoAway | dive goaway tick |
+| `009D0AD4` | torpedo attackrun `009D07B0` | MoveTo | torpedo attackrun dispatch |
+| `009D1121` | torpedo goaway `009D0F10`, the window arms | GoAway | goaway arms 1, 2 |
+| `009D11BA` | torpedo goaway, after the window, high | MoveTo | goaway arm 3 (arm 4 stores nothing) |
+| `009C7032`, `009D2AD4`, `009B1212`, `009B08C3` | flyabove, torpedo done-prepare, land standby, land line | Prepare | not delivered (0) |
+
+Branch checks, from the listings:
+- `009D07B0` and `009C4220` have one `RET` each, and no jump targets an address past their store
+  (the last targets are `009D0A1F` and `009C438B`). The store is on every path.
+- `009C18C0`'s store is only in the with-target arm; each host tick sets it after its target
+  guard.
+
+The sites outside the host's modelled tasks, `009A38CE` (depth charge), `009A744E` and `009A7952`
+(dogfight attackrun and aim), `009CAC37` (strafe) and the rest, are not delivered. The dogfight
+arm keeps its own path, which covers aim only; its attackrun MoveTo cone stays a gap.
+
+**The consumer.** `009FC7C0` reads the cone at `009FC8B5` (the finder cone
+`max(0.4, 1.25 x +40h)`) and at `009FCCA4` (the steer gate). The host now gives both the state's
+value outside dogfight, and the gun tail zeroes it (`009FCE69`) every think.
+- SUBSTITUTION, labelled: the steer gate measures the lead against the unit's forward, not against
+  `009FABE0`'s `+68h` (the commanded heading and pitch).
+
+**Untasked planes.** `0099A170` builds a task for every command class, `009C3C40` for none
+(docs/ATTACK_COMMANDS.md). So every AI bot has a task, and `009998A0` ticks its gun.
+`kTaskGunUntaskedPlanesBound` gives the tick, with cone 0, to an eligible plane whose command has
+no host task (for example `returntobase` when the land task was refused). The census counts
+those planes' thinks in both builds.
+
+**Switches:** `kTaskGunConeBound` and `kTaskGunUntaskedPlanesBound`, both OFF when committed. The
+patch compiles with both ON (a scratch export of the tree at `02d593a6e`).
+
+**Predictions (written before the pairs):**
+- **Values:** Angle_MoveTo = 2 degrees = 0.0349 rad, so the steer gate opens only when
+  `1 - cos(lead) < 0.0349`, a lead within about 15 degrees of the nose. Angle_GoAway = 10 degrees
+  opens it within about 34 degrees. The finder cone stays 0.4 in every state (1.25 x 0.1745 < 0.4).
+- **Cone ticks:** `cone_ticks` > 0 on every row with a PilotFires plane in moveto, attackrun or
+  goaway: JM05, USN04, USN13, LOMP10, JM08.
+- **Steer ticks:** the steer needs a target from the finder, that is, an enemy aircraft within
+  1200 m and ahead. Section 8 found the list non-empty only on USN04 (690 ticks) and JM08 (420),
+  with no enemy ever inside the fire envelope. Expect `steer_ticks` 0 on all rows, or a handful
+  on USN04 or JM08; in either case `pair_diff` 1.
+- **Untasked:** `untasked_planes` counts the refused-RTB and unmodelled-command planes (JM05 has
+  the refused SecondaryAirfieldEntity 01 returns). With the switch on, they tick with cone 0 and
+  the same finder. Expect no bursts, so `pair_diff` 1.
