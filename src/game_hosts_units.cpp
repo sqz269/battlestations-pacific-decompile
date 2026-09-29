@@ -18459,7 +18459,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B08BC-009B08E7: direction +40h = tuning+66Ch, then
                         // 009FABE0(heading, 0099B630()); no direction object here.
                         owner_.record("BotStateLandLine::direction_009fabe0", 0x009fabe0u);
-                        if ((unit_.land_line_ticks % 200) == 1) {
+                        if ((unit_.land_line_ticks % 10) == 1) {   // DIAGNOSTIC: every 10 line ticks (1 s)
                             owner_.log.notef("  land line trace %s t=%.2f head_d=%.1f delta=%.3f "
                                 "thr=%.1f far=%d hdg_cmd=%.3f alt=%.1f band=(%.1f %.1f) target=%.1f "
                                 "spd_cmd=%.2f spacing=%.3f mode=%d",

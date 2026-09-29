@@ -824,7 +824,7 @@ squadron mates inside a 70 x 50 x 80 m box.
   src/game_hosts_units.cpp. It needs `kLandStandbyStateBound`.
 - The probe is the host's `nf_probe_squadron_007f0280` (`kNearFieldProbeBound`, ON), with that
   binding's reach prefilter.
-- A new trace line, `land line trace`, prints every 200 line ticks. The `summary landing plane` line
+- A new trace line, `land line trace`, prints every 10 line ticks (1 s at the 10 Hz think). The `summary landing plane` line
   gains `line entries=`, `ticks=` and `last_head_d=`.
 - The x87 order is kept: every float store in the listing is a float cast in the host.
 
