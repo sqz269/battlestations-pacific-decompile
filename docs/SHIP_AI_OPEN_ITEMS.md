@@ -2250,3 +2250,40 @@ a building of its own side or a troop lander on a building.
    holds. The four rows above are identical apart from the record counts (`pair_diff` 0 or 1).
 2. **What the rows do reach is the retarget arm**, not the latch: USN01's 1631 and LOMP10's 601
    frames against an enemy building fall to `009F2124` in mode 0. That arm is the next read.
+
+### The pairs and the verdict: ON
+
+ON is `pair_export --commit 5a5cfd3b4 --flip kShipAiApproachModeLatchBound=true`, SHA-256 prefix
+`B730F06BED3D` (`local\ships10_b1_<row>.log`).
+
+| row | pair_diff | modes ON |
+| --- | --- | --- |
+| USN02 | 1 | 27786/0/0/0/0 |
+| USN01 | 1 | 1748/0/0/0/0 |
+| LOMP10 | 1 | 619/0/0/0/0 |
+| JM05 | 1 | 13/0/0/0/0 |
+
+- **Prediction 1 held.** All four rows are gameplay-identical.
+- **Verdict: ON**, with the reach recorded: no reference row exercises modes 1 to 4, so the pairs
+  test only that mode 0 is the latch's answer on these rows. A submarine hunt (mode 1) or a troop
+  landing on a building (modes 3 and 4) needs its own row before its readers can be judged.
+
+### What rank 6 still holds: the retarget arm `009F2124-009F272D`
+
+It is what USN01 (1631 frames) and LOMP10 (601) reach: an attackmove against an enemy command
+building, mode 0. Today the host copies the goal (the building) into the approach point on every
+frame, so the ship steers at the building itself. The image does something else:
+- `009F2124`: only when `nested+11D6h` is clear, which `009F1DAA` does every 2 to 3 s. It sets the
+  byte and raises `nested+11D8h` to at least 1.0 (`00D7A24C`).
+- Mode 3 (`009F21A0..009F2338`): `006F2DE0` / `006F2E60` on the building, `006AC5D0` for the
+  point, and when in range `0x749D90` and `0077C2A0` issue a command (the landing). Not reached.
+- Mode 4 (`009F2342..009F2395`): the point is `006F3AF0(building)(&out, unit+FCh, [class+570h])`.
+  Not reached.
+- Modes 0 and 2 (`009F239A..009F272D`): the point is the goal (`009F23B5`); then, when the goal
+  lies in a zone of the unit's `0082ADC0` group (`004178F0`, `009F23E8`), a 60-slot loop over the
+  ring directions at `nested+18h` (stride `4Ch`) casts from a point near the target
+  (`009E6120`, `008FE120`) through `00416DD0` against that zone and through `00904400(44h)`, the
+  Landscape segment query the gunnery host runs for line of sight, and keeps the last slot whose
+  clearances pass (`00414C60` twice) as the approach point (`009F26F0`). This is x87-dense and
+  needs `009E6120` and `008FE120` read first; it also needs a public Landscape segment query on
+  the gunnery host (a line outside this lane).

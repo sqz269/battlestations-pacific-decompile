@@ -1055,6 +1055,8 @@ ShipAiApproachLatchResult ship_ai_approach_mode_latch_009f1f47(
 // True: the frame state stores the latch (mode, the mode-1 clamp of +11F0h, the
 // retarget reset). False: nested+1234h stays 0 (mode 0 on every frame), as it
 // has been. The latch is computed and counted on both sides.
-inline constexpr bool kShipAiApproachModeLatchBound = false;
+// ON (2026-09-28): four identical pairs; every measured frame latches mode 0, so
+// modes 1 to 4 are not exercised by any reference row (section 26).
+inline constexpr bool kShipAiApproachModeLatchBound = true;
 
 } // namespace bsp
