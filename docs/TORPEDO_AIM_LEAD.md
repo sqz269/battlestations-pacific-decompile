@@ -1668,3 +1668,39 @@ cc9-planes3. The predictions below were written before any ON run.
   - any update prints NaN, inf, or a `+98h` above 30 s;
   - torpedo releases fall by more than 3 on any row.
 - **Otherwise flip.**
+
+### 21.4 The pair, measured: `kTorpedoRunTimeUpdateBound` ON
+
+**Binaries** are `pair_export.py --commit 0794659c8`: t0 has no flip (`5F1254E19E8D`) and t1 flips
+the switch (`D06194F4DDD1`). The rows and the launch form are 19.5's. All 12 logs are complete,
+and the runs finished at 22:05 UTC.
+
+| row | pair_diff | aim updates | done updates | mean `+98h` at the aim | mean `+A0h` at the aim | torpedo-task releases | deaths |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 437 | 0 | 9.92 s | 104.7 m | 8 -> 9 of 16 | 48 -> 48, none one-sided |
+| E2 9200/9000 | 3 | 437 | 0 | 9.92 s | 104.7 m | 8 -> 9 | 51 -> 51, none one-sided |
+| USN13 3200/3000 | 3 | 243 | 0 | 10.46 s | 186.3 m | 4 -> 3 of 60 | 31 -> 31, none one-sided |
+| USN01 3200/3000 | 3 | 49 | 0 | 3.49 s | 268.1 m | 0 -> 0 of 5 | 5 -> 5, 3 re-timed |
+| JM05 3200/3000 | 1 | 0 | 0 | - | - | 0 of 12 | identical |
+| JM08 3200/3000 (control) | 1 | 0 | 0 | - | - | - | identical |
+
+**Against the predictions:**
+- **Mean `+98h` 7-11 s: held** on USN04, E2 and USN13. USN01's Mavises reach the update higher
+  (their mean `+A0h` is 268 m), so their fall lead eats most of the leg and the mean is 3.5 s.
+  Across all updates `+98h` ranged from 2.93 to 16.36 s, with no NaN, inf or value above 30.
+- **`+A0h` of 80-90 m: close.** It is 105 m on USN04 and 186 m on USN13, because the updates happen
+  higher than the 12-15 m band. The lead gate did not stop a release; releases moved by one.
+- **Done-site updates greater than 0: missed.** They are 0 on every row. The cause is not the
+  binding. No committed countdown runs on these rows: every aircraft's `drop_timer_98` stays -1
+  and `prepare_entries` is 0 (the `orders` and `attack mode` census lines). The releases come
+  from the aim state, so `009D27D1` is never reached. The 21.1 call-site fix therefore remains
+  untested at run time.
+- **Releases within plus or minus 2: held** (+1, +1, -1).
+- **USN01 identical: missed.** Its aim ticks do reach the update, so the lead and the flight path
+  move. No release changed on it, and no death became one-sided.
+- **JM05 and JM08 identical: held.**
+
+**Verdict:** none of the three keep-OFF conditions holds. The aim site ran wherever aim ticks
+reached the release range, no value is out of range, and no row lost more than one release. The
+switch **flips ON**. The two misses are recorded: the done site is unexercised here, and USN01
+moved without a release change.

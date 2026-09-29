@@ -1890,7 +1890,7 @@ constexpr bool kTorpedoResetRunTimeSeedBound = true;    // ON: TORPEDO_AIM_LEAD 
 // aim release gate 009D2052) and +98h (the run time the engagement estimate
 // adds into +F8h). The reset stores +A0h = 10.0 (009D04E9). OFF: +A0h stays
 // 0 and +98h keeps the reset seed.
-constexpr bool kTorpedoRunTimeUpdateBound = false;
+constexpr bool kTorpedoRunTimeUpdateBound = true;   // ON: TORPEDO_AIM_LEAD 21.4
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
