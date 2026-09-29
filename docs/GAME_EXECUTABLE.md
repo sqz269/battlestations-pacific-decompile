@@ -12388,3 +12388,134 @@ in l's rows. They were not exported here.
   - USN02's outcome depends on an opening torpedo spread against an idle Houston.
   - The periscope byte `+1234h` still has no producer.
   - E2 ends in phase 1 under lockstep (known). The Marshall `.nav` is the generic layer.
+
+## Mission reference baselines, 2026-09-29 m (main b234f20ac)
+
+Packet `cc9_reference_rebaseline_13`, worker cc9-gunnery11. **It replaces the 2026-09-29 l rows
+above.** The report is `reports/cc9_reference_rebaseline_13.json`.
+
+**Run parameters:**
+- One binary: `local\rb13\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery11 (SHA-256
+  `490d03c8a285a84bad21d85a75aba81f3e40b67da5a2f3fcd9dee9cdc865dc3e`, prefix `490D03C8A285`). It is
+  a clean `tools/pair_export.py --commit b234f20ac` export with no flip. `b234f20ac` contains
+  `91987c230`.
+- The run parameters are l's, with l's thirteen rows at l's frame counts, plus three new rows. All
+  three use the same launch form, `--frames F --press-start-frame 30 --menu-select M
+  --mission-frames N --mission-frame-seconds 0.05`:
+  - **USNOS 3200/3000** and **USNOS 9200/9000**, the kamikaze-boat rows of SHIP_AI_OPEN_ITEMS 29.
+    USNOS is a bonus mission in this installation's modded `missiontree.lua`.
+  - **IJN01 3200/3000**, the no-ship-frame row of SHIP_AI_OPEN_ITEMS 35.
+- A 300-frame USN01 smoke ran first. Every log shows its milestone line with the right mission and
+  frames, `present interval immediate`, a module directory under `local\rb13` and the final COM
+  release. The session stayed on the console and no run failed.
+- No predictions were written for this rebaseline. Each switch's own pair recorded its expected
+  rows, and the attribution below is checked against those.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11326.8 | 43 | 729 (122) | 10762 | 100.35 s | 2 of 16 / 0 of 19 | 15 | Lexington 3605.27 m | none | 502 | `local\rb13_usn04.log` |
+| USN01 | 3000 | 2833.0 | 5 | 390 (81) | 1266 | 49.10 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 3872.50 m | none | 530 | `local\rb13_usn01.log` |
+| USN04 (E2) | 9000 | 12797.4 | 51 | 820 (145) | 11927 | 100.35 s | 2 of 16 / 0 of 19 | 19 | Lexington 7250.24 m | none; phase 1 only (known) | 505 | `local\rb13_e2.log` |
+| USN02 | 9000 | 39395.6 | 10 | 2271 (423) | 2316 | 18.90 s | - | - | Kortenaer 484.55 m | **failed at 29.75 s**, phase 1 (unchanged) | 493 | `local\rb13_usn02.log` |
+| JM06 (smoke) | 3000 | 4340.0 | 1 | 276 (263) | 334 | 72.55 s | - | - | Fletcher-class 08 391.19 m | none | 481 | `local\rb13_jm06.log` |
+| JM08 (smoke) | 3000 | 4149.8 | 11 | 395 (122) | 2390 | 5.25 s | - | 4 | Auilick 2509.11 m | none | 491 | `local\rb13_jm08.log` |
+| USN13 (smoke) | 3000 | 9680.0 | 32 | 658 (204) | 7323 | 93.80 s | 0 of 60 / - | 7 | Enterprise 1859.00 m | none | 495 | `local\rb13_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 554.05 m | none | 465 | `local\rb13_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 673.48 m | none | 466 | `local\rb13_lomp06.log` |
+| LOMP10 | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 4893.32 m | none | 486 | `local\rb13_lomp10.log` |
+| JM05 | 3000 | 2396.3 | 1 | 41 (24) | 100 | 9.90 s | 0 of 12 / 0 of 6 | - | USS Phelps 2533.74 m | none | 536 | `local\rb13_jm05.log` |
+| USN12 | 3000 | 978.1 | 0 | 30 (15) | 83 | 8.30 s | - | - | Montpelier 2089.94 m | none | 472 | `local\rb13_usn12.log` |
+| LOMP10 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 6207.20 m | none | 489 | `local\rb13_lomp10l.log` |
+| **USNOS (new)** | 3000 | 1840.0 | 6 | 932 (79) | 2362 | 10.80 s | - | 1 | NH 1911.48 m | none | 522 | `local\rb13_usnos.log` |
+| **USNOS (new, long)** | 9000 | 4138.4 | 21 | 2683 (113) | 20455 | 10.80 s | - | 1 | NH 4827.88 m | none | 528 | `local\rb13_usnosl.log` |
+| **IJN01 (new)** | 3000 | 7772.6 | 23 | 329 (301) | 2028 | 85.95 s | - | 9 | Downes 786.53 m | none | 501 | `local\rb13_ijn01.log` |
+
+**Twelve of l's thirteen rows are gameplay-identical to l** (`pair_diff` exit 1; only the
+unimplemented counts move). **USN01 moves**: 393 / 1290 became 390 / 1266, with the deaths, damage
+and death set unchanged.
+
+### The anchor: eight switches
+
+A value diff of every `constexpr bool k...Bound` declaration between `3f1499210` and `b234f20ac`
+(`local\g11_switches.py`) finds eight switches newly ON:
+
+| switch | flip commit | its pair recorded |
+| --- | --- | --- |
+| `kAiTargetGroupDestroyedIdleBound` | `ff434772b` | USN02 and JM08 identical |
+| `kGunneryLosRoleSwapBound` | `2a684d17a` | USN01 moves (Coastal Gun 01 fires 2 shots at Dunlap); JM05, USN12, USN02, JM06 identical |
+| `kPlaneTouchdownBound` | `257d94741` | identical alone on LOMP10 and USN01 |
+| `kShipAiApproachNoShipHoldBound` | `72b701b9b` | IJN01 moves, deaths 24 -> 23 (A7M_1\|.-5 survives); USNOS identical |
+| `kShipAiApproachSightTestBound` | `093e73fe2` | USN01 moves (1542 tests, 345 hidden) |
+| `kShipAiEngageKamikazeGateBound`, `kShipAiEngageSubStateBound` | `c3b1aff23` | USNOS 9000 moves (one Shinyo dies 9.5 s earlier); USNOS 3000 identical |
+| `kSquadronOrdnanceReaderBound` | `e52c36714` | identical (no consumer yet) |
+
+The last one is not in the integrator's list. It is a census reader with no consumer, and it is
+inert here too.
+
+With all eight OFF (`n0`), `b234f20ac` is **gameplay-identical to reference l on all thirteen of
+l's rows** (exit 1 against `rb12_<row>` in this tree). Nothing else that landed since l moves a
+reference row.
+
+### What moved each row
+
+Seven leave-one-out exports ran USN01, USNOS, USNOS long, IJN01, USN02 and LOMP10. Each is read
+with `pair_diff` against m:
+
+| variant (OFF) | rows that move against m |
+| --- | --- |
+| `ngdi` group-destroyed idle | none |
+| `nlos` LOS role swap | none |
+| `ntd` touchdown | none |
+| `nnsh` no-ship hold | USN01 (390 -> 393 hit records, shots 1266 -> 1267), IJN01 |
+| `nsight` approach sight test | USN01 (390 -> 392 hit records, 81 -> 82 hull, damage 2833.0 -> 2868.7, shots 1266 -> 1291) |
+| `neng` engage kamikaze gate and sub-state | USNOS long |
+| `nord` squadron ordnance reader | none |
+
+- **IJN01 (new).** No l row exists; `n0` gives 24 / 334 / 2073, 7424.0.
+  - **The no-ship hold alone:** OFF gives 24 deaths, and A7M_1|.-5 dies. That is its pair's
+    24 -> 23, exactly, with 17 other plane rows moved.
+- **USNOS long (new).** `n0` gives 21 / 2993 / 21914, 4267.6, NH 5029.85 m.
+  - **The engage gate and sub-state alone.** The same 21 death rows. One changes: Shinyo `unit #2.7`
+    dies at 304.15 s instead of 313.70 s, 1193 m from its killer instead of 1496, and 121 m from
+    Portland2. That is the pair's "one Shinyo dies 9.5 s earlier", exactly.
+- **USNOS 3000 (new).** Identical in every variant, as every pair recorded.
+- **USN01.** The no-ship hold and the sight test interact.
+  - Each OFF alone moves the row to a different place; both OFF (`n0`) is l.
+  - The sight test OFF alone gives damage 2868.7, which neither l nor m has.
+  - The death set is unchanged throughout.
+- **The LOS role swap moves no row here.** Its own pair recorded two Coastal Gun 01 shots at Dunlap on
+  USN01. On this base, `nlos` is identical to m on USN01. The sight test (flipped after the role
+  swap, on a base with it ON) and the no-ship hold are also ON here, but why the shots do not recur
+  is not separated.
+- **USN02 and LOMP10 do not move.** The integrator's note expected the no-ship hold to move USN01,
+  LOMP10 and USN02. Only USN01 moves; `nnsh` is identical to m on USN02 9000 and LOMP10 3000.
+
+### Leave-one-out exports
+
+| v | switches OFF | SHA-256 prefix | rows run |
+| --- | --- | --- | --- |
+| n0 | all eight | 7121822F73D0 | all sixteen; the thirteen l rows equal l |
+| ngdi | group-destroyed idle | 710A3045820B | USN01, USNOS, USNOS long, IJN01, USN02, LOMP10 |
+| nlos | LOS role swap | 887670616B34 | the same six |
+| ntd | touchdown | 5983E39D7835 | the same six |
+| nnsh | no-ship hold | CB36B849AEFD | the same six |
+| nsight | approach sight test | 67567A6C97D7 | the same six |
+| neng | engage kamikaze gate, engage sub-state | 639E15541985 | the same six |
+| nord | squadron ordnance reader | F0B75D29E09A | the same six |
+
+### Post-base landings (the first flags for reference n)
+
+`kShipAiBigLandingShipBound` went ON after `b234f20ac` (main `b95bb6d9a` when this was written).
+It is not in m's rows.
+
+### Flags
+
+- **Closed:** every post-l switch is attributed, and each pair's recorded effect reproduces exactly
+  where its pair moved a row (IJN01, USNOS long).
+- **New:**
+  - The no-ship hold does not move USN02 or LOMP10 on this base.
+  - The LOS role swap's USN01 shots are not visible on m.
+  - The no-ship hold and the sight test interact on USN01.
+- **Carried from l:** all of l's carried flags, and 54's corrections to l's two flags.

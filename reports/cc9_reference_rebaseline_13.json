@@ -1,0 +1,555 @@
+{
+ "packet": "cc9_reference_rebaseline_13",
+ "doc": "docs/GAME_EXECUTABLE.md, 'Mission reference baselines, 2026-09-29 m (main b234f20ac)'",
+ "tree": "worktree cc9-gunnery11",
+ "binary": {
+  "path": "local/rb13/build/win32/Release/bsp_game.exe",
+  "sha256": "490D03C8A285A84BAD21D85A75ABA81F3E40B67DA5A2F3FCD9DEE9CDC865DC3E",
+  "export": "tools/pair_export.py --commit b234f20ac, no flip"
+ },
+ "env": {
+  "BSP_GUNNERY_RNG_STREAMS": "1",
+  "BSP_DEATH_TABLE": "1",
+  "lockstep": 0.05,
+  "player": "idle",
+  "present": "immediate"
+ },
+ "anchor": "8 switches newly ON between 3f1499210 and b234f20ac (local/g11_switches.py); n0 is gameplay-identical to reference l on all 13 l rows",
+ "rows": [
+  {
+   "mission": "USN04",
+   "frames": "4700/4500",
+   "log": "local/rb13_usn04.log",
+   "pair_diff_vs_l": 1,
+   "damage": "11326.8",
+   "deaths": "43",
+   "hit records": "729",
+   "hull hits": "122",
+   "shots": "10762",
+   "first hit": "100.35 s",
+   "torpedo-task releases": "2 of 16",
+   "dive-bomb-task releases": "0 of 19",
+   "plane water contacts": "15",
+   "controlled moved": "Lexington-class01 3605.27",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "502",
+   "l": {}
+  },
+  {
+   "mission": "USN01",
+   "frames": "3200/3000",
+   "log": "local/rb13_usn01.log",
+   "pair_diff_vs_l": 3,
+   "damage": "2833.0",
+   "deaths": "5",
+   "hit records": "390",
+   "hull hits": "81",
+   "shots": "1266",
+   "first hit": "49.10 s",
+   "torpedo-task releases": "0 of 5",
+   "dive-bomb-task releases": "2 of 2",
+   "plane water contacts": "3",
+   "controlled moved": "ScoutDauntless 3872.50",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "530",
+   "l": {
+    "hit records": "393",
+    "shots": "1290",
+    "unimplemented": "531"
+   }
+  },
+  {
+   "mission": "USN04 (E2)",
+   "frames": "9200/9000",
+   "log": "local/rb13_e2.log",
+   "pair_diff_vs_l": 1,
+   "damage": "12797.4",
+   "deaths": "51",
+   "hit records": "820",
+   "hull hits": "145",
+   "shots": "11927",
+   "first hit": "100.35 s",
+   "torpedo-task releases": "2 of 16",
+   "dive-bomb-task releases": "0 of 19",
+   "plane water contacts": "19",
+   "controlled moved": "Lexington-class01 7250.24",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "505",
+   "l": {}
+  },
+  {
+   "mission": "USN02",
+   "frames": "9200/9000",
+   "log": "local/rb13_usn02.log",
+   "pair_diff_vs_l": 1,
+   "damage": "39395.6",
+   "deaths": "10",
+   "hit records": "2271",
+   "hull hits": "423",
+   "shots": "2316",
+   "first hit": "18.90 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Kortenaer 484.55",
+   "mission end": "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)",
+   "unimplemented": "493",
+   "l": {
+    "unimplemented": "494"
+   }
+  },
+  {
+   "mission": "JM06",
+   "frames": "3200/3000",
+   "log": "local/rb13_jm06.log",
+   "pair_diff_vs_l": 1,
+   "damage": "4340.0",
+   "deaths": "1",
+   "hit records": "276",
+   "hull hits": "263",
+   "shots": "334",
+   "first hit": "72.55 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Fletcher-class 08 391.19",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "481",
+   "l": {}
+  },
+  {
+   "mission": "JM08",
+   "frames": "3200/3000",
+   "log": "local/rb13_jm08.log",
+   "pair_diff_vs_l": 1,
+   "damage": "4149.8",
+   "deaths": "11",
+   "hit records": "395",
+   "hull hits": "122",
+   "shots": "2390",
+   "first hit": "5.25 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "4",
+   "controlled moved": "Auilick 2509.11",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "491",
+   "l": {}
+  },
+  {
+   "mission": "USN13",
+   "frames": "3200/3000",
+   "log": "local/rb13_usn13.log",
+   "pair_diff_vs_l": 1,
+   "damage": "9680.0",
+   "deaths": "32",
+   "hit records": "658",
+   "hull hits": "204",
+   "shots": "7323",
+   "first hit": "93.80 s",
+   "torpedo-task releases": "0 of 60",
+   "dive-bomb-task releases": null,
+   "plane water contacts": "7",
+   "controlled moved": "Enterprise 1859.00",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "495",
+   "l": {}
+  },
+  {
+   "mission": "BSM01",
+   "frames": "3200/3000",
+   "log": "local/rb13_bsm01.log",
+   "pair_diff_vs_l": 1,
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "HenryPT 554.05",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "465",
+   "l": {}
+  },
+  {
+   "mission": "LOMP06",
+   "frames": "1200/1000",
+   "log": "local/rb13_lomp06.log",
+   "pair_diff_vs_l": 1,
+   "damage": "2400.0",
+   "deaths": "1",
+   "hit records": "3",
+   "hull hits": "1",
+   "shots": "10",
+   "first hit": "36.90 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Narwhal 673.48",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "466",
+   "l": {}
+  },
+  {
+   "mission": "LOMP10",
+   "frames": "3200/3000",
+   "log": "local/rb13_lomp10.log",
+   "pair_diff_vs_l": 1,
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "B-25 01 4893.32",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "486",
+   "l": {}
+  },
+  {
+   "mission": "JM05",
+   "frames": "3200/3000",
+   "log": "local/rb13_jm05.log",
+   "pair_diff_vs_l": 1,
+   "damage": "2396.3",
+   "deaths": "1",
+   "hit records": "41",
+   "hull hits": "24",
+   "shots": "100",
+   "first hit": "9.90 s",
+   "torpedo-task releases": "0 of 12",
+   "dive-bomb-task releases": "0 of 6",
+   "plane water contacts": null,
+   "controlled moved": "USS Phelps 2533.74",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "536",
+   "l": {
+    "unimplemented": "537"
+   }
+  },
+  {
+   "mission": "USN12",
+   "frames": "3200/3000",
+   "log": "local/rb13_usn12.log",
+   "pair_diff_vs_l": 1,
+   "damage": "978.1",
+   "deaths": "0",
+   "hit records": "30",
+   "hull hits": "15",
+   "shots": "83",
+   "first hit": "8.30 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Montpelier 2089.94",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "472",
+   "l": {}
+  },
+  {
+   "mission": "LOMP10 (long)",
+   "frames": "9200/9000",
+   "log": "local/rb13_lomp10l.log",
+   "pair_diff_vs_l": 1,
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "B-25 01 6207.20",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "489",
+   "l": {
+    "unimplemented": "490"
+   }
+  },
+  {
+   "mission": "USNOS",
+   "frames": "3200/3000",
+   "log": "local/rb13_usnos.log",
+   "pair_diff_vs_l": null,
+   "damage": "1840.0",
+   "deaths": "6",
+   "hit records": "932",
+   "hull hits": "79",
+   "shots": "2362",
+   "first hit": "10.80 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "1",
+   "controlled moved": "NH 1911.48",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "522",
+   "l": "new row"
+  },
+  {
+   "mission": "USNOS (long)",
+   "frames": "9200/9000",
+   "log": "local/rb13_usnosl.log",
+   "pair_diff_vs_l": null,
+   "damage": "4138.4",
+   "deaths": "21",
+   "hit records": "2683",
+   "hull hits": "113",
+   "shots": "20455",
+   "first hit": "10.80 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "1",
+   "controlled moved": "NH 4827.88",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "528",
+   "l": "new row"
+  },
+  {
+   "mission": "IJN01",
+   "frames": "3200/3000",
+   "log": "local/rb13_ijn01.log",
+   "pair_diff_vs_l": null,
+   "damage": "7772.6",
+   "deaths": "23",
+   "hit records": "329",
+   "hull hits": "301",
+   "shots": "2028",
+   "first hit": "85.95 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "9",
+   "controlled moved": "Downes 786.53",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "501",
+   "l": "new row"
+  }
+ ],
+ "leave_one_out": {
+  "n0": {
+   "switches_off": [
+    "kAiTargetGroupDestroyedIdleBound",
+    "kGunneryLosRoleSwapBound",
+    "kPlaneTouchdownBound",
+    "kShipAiApproachNoShipHoldBound",
+    "kShipAiApproachSightTestBound",
+    "kShipAiEngageKamikazeGateBound",
+    "kShipAiEngageSubStateBound",
+    "kSquadronOrdnanceReaderBound"
+   ],
+   "sha256": "7121822F73D085359AD1A11E6E33045E44E4F9EF012241D11A103CD2F70D0266",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn04": 1,
+    "usn01": 3,
+    "e2": 1,
+    "usn02": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "bsm01": 1,
+    "lomp06": 1,
+    "lomp10": 1,
+    "jm05": 1,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 3,
+    "ijn01": 3
+   },
+   "pair_diff_vs_l": {
+    "usn04": 1,
+    "usn01": 1,
+    "e2": 1,
+    "usn02": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "bsm01": 1,
+    "lomp06": 1,
+    "lomp10": 1,
+    "jm05": 1,
+    "usn12": 1,
+    "lomp10l": 1
+   }
+  },
+  "ngdi": {
+   "switches_off": [
+    "kAiTargetGroupDestroyedIdleBound"
+   ],
+   "sha256": "710A3045820B510BF66CAD7251512ECB269EE5681D590205ED33AB24B9DB0620",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 1,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1
+   }
+  },
+  "nlos": {
+   "switches_off": [
+    "kGunneryLosRoleSwapBound"
+   ],
+   "sha256": "887670616B34FD7C350B1A992C61D3FCA53B7BAEB6640C19A55DBBABB6250D72",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 1,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1
+   }
+  },
+  "ntd": {
+   "switches_off": [
+    "kPlaneTouchdownBound"
+   ],
+   "sha256": "5983E39D78353B0C8F3DA7F5605E262D6D845389ACF828335B311C08983C2992",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 1,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1
+   }
+  },
+  "nnsh": {
+   "switches_off": [
+    "kShipAiApproachNoShipHoldBound"
+   ],
+   "sha256": "CB36B849AEFDCA5C51C46884DA03B35EBC6FF704C1BC189DB8E1B794EEBC8AA5",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 3,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 3
+   }
+  },
+  "nsight": {
+   "switches_off": [
+    "kShipAiApproachSightTestBound"
+   ],
+   "sha256": "67567A6C97D73AE4CDF965CE065D916F80BE79E1C8117C8E6297632F3BE9E506",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 3,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1
+   }
+  },
+  "neng": {
+   "switches_off": [
+    "kShipAiEngageKamikazeGateBound",
+    "kShipAiEngageSubStateBound"
+   ],
+   "sha256": "639E15541985F54FA4D28AF2404A87F24990798C67C64180A9A810F038F03847",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 1,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 3,
+    "ijn01": 1
+   }
+  },
+  "nord": {
+   "switches_off": [
+    "kSquadronOrdnanceReaderBound"
+   ],
+   "sha256": "F0B75D29E09A8BAECCC222D58AE1EEA74116A6AE60E1109217B2CBD82BFCDE1B",
+   "rows_run": [
+    "usn01",
+    "usn02",
+    "lomp10",
+    "usnos",
+    "usnosl",
+    "ijn01"
+   ],
+   "pair_diff_vs_m": {
+    "usn01": 1,
+    "usn02": 1,
+    "lomp10": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1
+   }
+  }
+ }
+}
