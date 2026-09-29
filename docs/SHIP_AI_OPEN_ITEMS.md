@@ -3878,3 +3878,37 @@ identical) on both. `min_gap` is tens to hundreds of metres.
 - Identical with zero reach: the switch may flip ON, recorded as zero reach, as sections 39 and 42
   did.
 - Moved: judge the mechanism by P2.
+
+### 46.4 The pair and the verdict: ON, zero reach
+
+**Setup.**
+- Binaries: `2ebb264f1`, OFF and ON (flip), built with `tools/pair_export.py` in the cc9-ships14
+  tree.
+- The reference environment, the console session, and a 300-frame USNOS smoke (ON) first.
+- Logs: `local\s14doff_usnos{,l}.log` and `local\s14don_usnos{,l}.log`.
+
+**P1 holds.** `pair_diff` reports `GAMEPLAY: identical` on both rows.
+
+| row | contacts | detonations | min_gap |
+| --- | --- | --- | --- |
+| USNOS 3000 | 0 | 0 | 249.2 m at 150.00 s |
+| USNOS 9000 | 0 | 0 | 110.5 m at 159.51 s |
+
+On the 9000 row the 110.5 m is a Kaiten, a second before the 160.81 s air deaths. **No kamikaze
+touches a hostile hull on any reference row.** There are no false contacts either: `hostile_refused`
+is 0 and `contacts` is 0, so no spawn overlap trips the hull-box stand-in.
+
+**Verdict: ON, recorded as zero reach**, as sections 39 and 42 were. The chain `008145B0` ->
+`00819A20` is therefore unexercised in any run: P2 (the self-kill by the own blast, the struck
+ship's damage) is unverified.
+
+**What would give it reach.**
+1. A Kaiten that lives past 160.81 s. The air model (SUBMARINE_MODEL) kills them first on USNOS.
+2. A Shinyo that survives the escorts' fire to under 50 m.
+3. A mission where they start closer.
+
+**Still open.**
+- `00915F20`, the direct arm's delivery, is read only to its entry gates. Its record would carry
+  `+28h = +514h` with no part entries, so what it applies needs the body.
+- The contact gates `0092CE70` and `unit+6B8h` / `00779AD0`, and the slower-body test, are not
+  modelled.

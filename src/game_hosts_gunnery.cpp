@@ -555,7 +555,9 @@ constexpr bool kWreckHitDeliveryBound = true;
 // message 70h -> 00819A20, whose blast 0084BAD0 (centre unit+FCh, radius
 // +518h, damage +514h, no source entity) reaches every hull in range,
 // the kamikaze's own included. False: nothing detonates, as before.
-constexpr bool kKamikazeContactDetonationBound = false;
+// ON (2026-09-29) with zero reach: USNOS 3000 and 9000 identical, no contact
+// (closest bow 110.5 m; section 46.4).
+constexpr bool kKamikazeContactDetonationBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
