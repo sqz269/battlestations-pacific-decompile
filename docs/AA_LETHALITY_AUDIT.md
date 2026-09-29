@@ -525,3 +525,28 @@ TorpReleaseAlt 5 m. That is plane-side (the descent), and it is recorded for lua
 
 **Verdict: ON.** The mechanism is the image's and acts as the image's comment says; P2's size is
 recorded as a miss. No death row appears or disappears on either row.
+
+### 8.6 The dive clock (`kDiveHitClockBound`, lua16), predictions written before its pair
+
+**The switch.** lua16's `kDiveHitClockBound` (`src/game_hosts_units.cpp`, merge `09c85d682`)
+makes `009C4AA4` read the carried approach+C4h instead of the 3600.0 floor. The hit notice
+(`009C7900`, through 8.5's caller) zeroes it.
+- **Effect in the image:** for one second after a hit, the goaway timer arm forces its countdown
+  (`dive_bomb_goaway_timers_009c4a6d`) when its clock is past its window plus 6 s. That re-rolls
+  the jink.
+- **The pair:**
+  - both sides carry 8.5's notice ON;
+  - the flip side sets `kDiveHitClockBound = true`;
+  - the rows are USN04 4700/4500 (the Vals) and JM05 9200/9000.
+
+**Predictions:**
+- **P1, mechanism.** The summed `rerolls=` over the `divebomb ... goaway turn` lines rises on
+  USN04 against the control. The notice's `taken` count includes dive tasks on both sides, since
+  the reset is made whether or not the clock is read.
+- **P2, USN04.**
+  - Dive-bomb-task releases stay within ±1 of the control (1 of 19 in reference n): the jink runs
+    in the goaway after release and in the approach timers, not in the release gate.
+  - Val death times move by seconds. The Val death count moves by at most 2.
+  - The Kates' torpedo rows move only by coupling.
+- **P3, JM05.** Dive-bomb releases stay 0. The rows move by coupling only.
+- **Mechanism failure:** no rise in rerolls with dive-task notices taken.
