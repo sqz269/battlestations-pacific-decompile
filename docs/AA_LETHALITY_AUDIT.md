@@ -163,3 +163,105 @@ unchanged in kind: they die to the same perfect SPVeteran fire, a fraction of a 
 - **Evidence:** the earlier grep ran on the wrapper, not on the class table.
   `classtables/arcade/deviceclasses.lua` row 12 (Atlanta 5'' 2X DP) has
   `"models/devices/us/atlanta_turret.mmod"`.
+
+## 7. SPNormal shooters: the AA bots' own errors are missing (packet `cc9_aa_lethality_audit`, cc9-gunnery12, 2026-09-29)
+
+Sections 1-4 found the host's AA faithful **at SPVeteran**, the row USN04's script sets on its US
+ships. Two image terms were left out as "zero at this row":
+- the AAGunnerBot swinging error;
+- the AAFlakBot roll `008FDBE0`.
+
+Neither is zero at any other row.
+
+### 7.1 Census: who shoots the attackers down, at which skill
+
+| row | shooters | their skill | how it is set |
+| --- | --- | --- | --- |
+| USN04 | Lexington, Yorktown and the US escorts | 2 SPVeteran | `Mission.SkillLevelOwn` (18 `SetSkillLevel` calls) |
+| USN13 | the US fleet against the Japanese strikers | 2 SPVeteran | `usn_13_truk.lua` 250-254 at difficulty 1 |
+| USN13 | the Japanese escape and Katori groups against US planes | 1 SPNormal | `Mission.SkillLevel` (lines 486, 515) |
+| JM05 | Arike, Haguro, Shigure, Ushio, Yugure and the other IJN ships | **1 SPNormal** | no call (`skills=0`); the scene entity has neither `Skill` nor `Crew`, so `00927A80` falls back to 1 (`00822C20` at `008238C1`, `[unit+C0h]+4 == 1`) |
+
+- **JM05 9200/9000** is lua15's `l15_rin_jm05l.log`: 0 of 24 torpedo-task releases, 29 deaths.
+- **Every torpedo plane lost there dies at 30 to 76 m, 775 to 1089 m from its killer, to
+  category 1** (AAGunnerBot, 13 to 15 hits of about 15 each) or to a category 6 blast.
+- USN04's SPVeteran shooters are the image's (section 2). **The divergence is on the SPNormal
+  rows.**
+
+**The scene path the host does not take.** `00822C20` sets a scene-placed unit's skill from its bag
+at `008238B1..008238CB`: `Skill`, else `Crew` through `006E6210` (Rookie 0 -> Stun 0, Regular 1,
+Veteran 2, Elite 3 -> 5), else 1. The host keeps 1 until a script call.
+- In JM05 this reaches only land forts and convoys (50 `Crew = Rookie`, so **Stun** in the image)
+  and the two carriers (`Skill = SPVeteran`), not the AA ships.
+- It is **a separate host gap**, recorded here and not bound. It changes the forts' guns from row
+  1 to row 0.
+
+### 7.2 The two errors, from the listing
+
+**AAGunnerBot, `00902920`, `00902AE1..00902F5D`.** `R = [00E19998] + skill * 10h` holds
+`AngleDiffErrorRatio` at +0Ch and `ConstAngleError` at +14h.
+1. **The period.** `bot+60h -= dt`. When it goes negative it reloads with
+   `U(3, 8) * InterpolateClamped(0, 1, 6.0 (00CE6630), 0.2 (00CE54A0), skill)` (`00419010` at
+   `00902B38`). That is 0.6 to 1.6 s at SPNormal and 18 to 48 s at Stun.
+2. **The spread.**
+   - `e = R+0Ch * AddWrapped(dh, dv)`, where dh and dv are the angle gaps between the target's
+     `vtable[100h]` hull-box point and the solved lead aim (`00902BFD..00902CD5`).
+   - Plus `U(0, R+14h)` degrees (`00902CF0`).
+   - A ship target divides `e` by settings +750h (2.0, AI slot) or +754h (1.2).
+3. **The new offsets.** They are two Gaussian draws `N(0, e)`: `00BD2F90` is polar Box-Muller,
+   `00BF0DF0`. The rates `bot+6Ch/+70h` are `(new - current) / period`.
+4. **Every tick.** The offsets step by `rate * dt`. The clamp is `25 / distance` (`00CE3880`,
+   25 m at the target). An offset past it is clamped (`00415690`), the timer is set to 1.0, and
+   both rates become `-0.5 * offset` (`00902E56..00902EA9`, `00902EE0..00902F2B`).
+5. **The offsets are added to the solved angles** (`00438AA0`, `00902F3E` / `00902F58`), before
+   the negative-vertical halving `00902F62`.
+6. **At SPNormal** (ratio 5, constant 4 degrees) against a plane at 1000 m, the lead gap alone is
+   about 5 degrees. So `e` is about 25 to 30 degrees, and nearly every draw is clamped. **The MG
+   aim point wanders about 25 m off the lead point in each axis.**
+
+**AAFlakBot, `009030C0` and `008FDBE0`.** Row `[00E1999C] + skill * 20h`.
+- **The angles** are solved plus `bot+58h` / `bot+5Ch` (`00903280..00903293`).
+- **The reroll.** After a shot (`bot+64h < gun+474h`, `0090330A..0090331B`), `008FDBE0` rolls
+  again:
+  - with `U(0, 100) < GoodRatio * 100` each value takes `U(Min, Max)`, otherwise `U(Max, Bad)`;
+  - each has a random sign;
+  - the angles are converted from degrees.
+- **The distance** is handed to the next round as `"distErr"` (`00730F70`, the string at
+  `00CFD51C`). That is the `+290h` which `0070C6C6` adds, unscaled, to the burst distance.
+- **At SPNormal:** GoodRatio 0.4, angle 0 to 2 or 2 to 4.5 degrees (35 to 78 m at 1000 m, against
+  a 35 m blast), distance 0.4 to 3 m.
+
+### 7.3 The bindings, prepared but not landed
+
+The two switches are `kAaGunnerSwingErrorBound` and `kAaFlakAimErrorBound`, committed OFF with
+the rows from this installation's `robots.lua` (2025-06-01) and `shipglobals.lua` (2024-07-13).
+- They are written in `src/game_hosts_gunnery.cpp`, with one field in its header.
+- **These files are leased to cc9-ships14** (`cc9_kaiten_contact_detonation`, until 20:38 UTC).
+- The patch is `local\g12_aa_patch.diff` in the cc9-gunnery12 tree, and it lands when the lease
+  frees.
+- **Substitutions:**
+  - the target point is the host's aim point, not the hull-box draw;
+  - the clamp distance is the muzzle-to-lead distance.
+- **Census counters:** a `summary mission gunnery aa bot error` line gives the rolls by level,
+  the clamps and the mean miss distance.
+
+### 7.4 Predictions (written before any ON run)
+
+The pairs are same-tree exports with the inertia switch as on main, the two switches flipped
+together on the ON side. The rows are JM05 9200/9000, USN13 9200/9000 and USN04 E2 9200/9000, with
+the RNG option on.
+- **P1, the census.** On every row the rolls by level show skill 1 for the SPNormal shooters. On
+  USN04 and USN13 the US ships roll at level 2 with zero spread. Their offsets stay 0.
+- **P2, JM05.**
+  - Torpedo-task releases rise from 0 of 24 to at least 6.
+  - Category 1 hits on aircraft fall by at least 40%.
+  - Aircraft deaths below 150 m fall by at least a third.
+  - The gunner's mean miss is 15 to 25 m (the clamp).
+- **P3, USN04 E2.** The Kates attacking the Lexington still die to SPVeteran fire: their death
+  times move only by coupling, and there are no Lexington torpedo drops. Only fire from the IJN
+  ships (SPNormal) against US aircraft becomes less lethal.
+- **P4, USN13 9000.** The Japanese strikers' losses to the US fleet are unchanged in kind. US
+  aircraft losses to the Japanese escape groups fall.
+- **Mechanism failure:**
+  - any SPVeteran-row gun with a non-zero offset;
+  - JM05 torpedo releases staying at 0 while category 1 hits on aircraft fall by less than 20%.
