@@ -304,6 +304,7 @@ struct PlaneOrdnanceRack {
     int class_id{0};
     bool multi{false};
     int single_index{-1};
+    int authored_ammo{-1};   // Equipments[DefaultEquipment][key].Ammo, -1 absent
 };
 
 struct GameUnitSlot {
@@ -2841,6 +2842,9 @@ struct GameUnitsHost::Impl {
                                               : std::string();
             PlaneOrdnanceRack r;
             r.class_id = read_device_bullet_class_id(dev);
+            std::snprintf(key, sizeof(key), "p%d_key", p);
+            r.authored_ammo = read_equipment_ammo(type_id,
+                lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1));
             if (type == "BombPlatform") {
                 r.single_index = singles++;
             } else if (type == "MultiBombPlatform") {
@@ -2856,19 +2860,19 @@ struct GameUnitsHost::Impl {
     // slot->vtable[220h](1): 006E4060 (single) answers the hanging child's
     // descriptor while a round is attached; with [00E17BF2] clear (single
     // player) there is no loadout arm, so an empty rack answers null. 006E4640
-    // (multi) also answers its +514h entries. LABELLED: a single rack holds a
-    // round while its ammo +484h (rack_ammo_per_rack, else rack_ammo, else the
-    // authored Ammo) is above 0, an unauthored one always; a multi rack's
-    // entries are not modelled, so it always answers.
+    // (multi) also answers its +514h entries. LABELLED: a rack holds a round
+    // while its ammo +484h is above 0 - for a single rack the host's own count
+    // (rack_ammo_per_rack, else rack_ammo) once the issue has seeded it, before
+    // that the default equipment's authored Ammo; a rack the default equipment
+    // does not load (no entry) holds none. A multi rack's +514h entries are not
+    // modelled, so it answers its authored Ammo.
     bool rack_holds_round(const GameUnitSlot& s, const PlaneOrdnanceRack& r) const {
-        if (r.multi) return true;
-        const std::size_t i = static_cast<std::size_t>(r.single_index);
-        if (i < s.rack_ammo_per_rack.size()) return s.rack_ammo_per_rack[i] > 0;
-        if (s.rack_ammo >= 0 && s.rack_single_count <= 1) return s.rack_ammo > 0;
-        if (i < s.rack_authored_per_rack.size() && s.rack_authored_per_rack[i] >= 0) {
-            return s.rack_authored_per_rack[i] > 0;
+        if (!r.multi) {
+            const std::size_t i = static_cast<std::size_t>(r.single_index);
+            if (i < s.rack_ammo_per_rack.size()) return s.rack_ammo_per_rack[i] > 0;
+            if (s.rack_ammo >= 0 && s.rack_single_count <= 1) return s.rack_ammo > 0;
         }
-        return true;
+        return r.authored_ammo > 0;
     }
 
     // 007EDAD0 BSP_PlaneSquadron_AmmoType (007EDAD0-007EDB7C, __fastcall(squadron),
