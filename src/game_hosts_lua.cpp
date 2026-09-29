@@ -195,6 +195,14 @@ constexpr bool kWingConstructionLuaActive =
 // reads through owner->vtable[12Ch](). ON: JM05 9200/9000 moves (14 US
 // squadrons at 2), USN04 and USN13 are gameplay-identical.
 constexpr bool kCarrierLaunchSkillBound = true;
+// Packet cc9_lua_kill_script_entity, docs/SHIP_AI_OPEN_ITEMS.md section 57.
+// True: Kill (008AC5C0) on a script entity (a CreateScript record, id from
+// 100000) runs 00926D90 through GameScriptOrdersHost::entity_kill_00926d90.
+// Every miss on the reference rows is luaCamOnTargetExt's
+// Kill(Mission.CamScript), the luaDelay timetable calling it. False: the
+// entity is not killed and the call counts as unresolved, as before.
+// ON: pairs held, six rows gameplay identical (section 57.1).
+constexpr bool kLuaKillScriptEntityBound = true;
 
 // Packet cc9_find_entity_case (docs/CONTROLLED_UNIT.md, "FindEntity matches
 // names case-insensitively"). 00925A90 hands each registry entry to 009251F0,
@@ -5563,6 +5571,22 @@ int GameMissionLuaHost::run_kill_008ac5c0(lua_State* state, int argument_count) 
     const int id = air_ops_entity_id(state);
     if (units == nullptr || units->gunnery() == nullptr || id <= 0
         || static_cast<std::size_t>(id) > units->count()) {
+        // Packet cc9_lua_kill_script_entity: a script entity's `Ptr` is its
+        // GameScriptEntity; 008AC756's 00926D90 runs on it through the script
+        // orders host (Dead set, think lists dropped, self table rebuilt).
+        if (kLuaKillScriptEntityBound && script_orders_ != nullptr
+            && ::lua_type(state, 1) == LUA_TTABLE) {
+            ::lua_getfield(state, 1, "Ptr");
+            void* const ptr = ::lua_touserdata(state, -1);
+            ::lua_pop(state, 1);
+            if (ptr != nullptr && script_orders_->is_script_entity(ptr)) {
+                script_orders_->kill_script_entity(ptr, cause);
+                log_.notef("  Kill 008ac5c0: script entity id %d killed (00926D90, packet "
+                    "cc9_lua_kill_script_entity)", id);
+                log_.implemented("MissionLuaNative::Kill", "008ac5c0");
+                return 0;
+            }
+        }
         ++summary_.kill_unresolved;
         log_.notef("  Kill 008ac5c0: entity id %d has no units-host slot, not killed (packet "
             "cc9_lua_kill)", id);

@@ -617,6 +617,10 @@ public:
     // so the bytes live here; absent means the constructor's defaults
     // (0084D862-0084D8A2).
     struct SquadronPermissions { bool allow_fire{false}; bool allow_move{false}; };
+    // Packet cc9_lua_kill_script_entity: whether a `Ptr` is one of this host's
+    // script entities (a CreateScript record), for Kill's 00926D90 route.
+    bool is_script_entity(void* handle) const noexcept { return script_entity(handle) != nullptr; }
+    void kill_script_entity(void* handle, int cause) { entity_kill_00926d90(handle, cause); }
 private:
     std::map<std::string, SquadronPermissions> squadron_permissions_;
     std::size_t index_of(void* entity) const noexcept;

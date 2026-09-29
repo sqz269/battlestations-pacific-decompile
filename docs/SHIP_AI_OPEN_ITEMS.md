@@ -4589,3 +4589,111 @@ the attackmove is not how the host stores `land`.
   another push. The squadron's own generated order is the likely source; the commands lane should
   dump `slot_command[]` for units 330 and 332 at 68.20..68.25 s.
 - The arm only raises stage 2 on a friendly target; it does not disturb the land tasks here.
+
+## 57. Lua `Kill` on script entities (packet `cc9_lua_kill_script_entity`, ranking 14)
+
+Worker cc9-ships16, 2026-09-29 (stamped 16:21 UTC). The lead granted `src/game_hosts_lua.cpp` for
+this packet.
+
+**What the misses are.** `run_kill_008ac5c0` (`src/game_hosts_lua.cpp`) resolves only units, and
+counts anything else as `unresolved`. Every miss on the fresh rows is a script entity:
+- The counts are IJN01 2, USN01 2, JM05 1, USNOS 3 and LOMP10 1; the logs are `local\s16*` in the
+  cc9-ships16 tree.
+- The id is 100000 or above (`kScriptEntityIdBase`), and the entity was `created_for=luaDoTimeTable
+  think=luaTimetable`.
+- The first miss on each row follows `IsListenerActive` and `RemoveListener`. That is
+  `luaCamOnTargetExt` (scripts/global/commandhelpers.lua:7830, this installation, mtime
+  2024-10-29): `if Mission.CamScript.Dead == false then Kill(Mission.CamScript)`.
+- The binding trace lists only first calls, so the later misses are attributed to the same site by
+  their shape (timetable entities), not by a trace.
+
+**What the timetable is.** `Mission.CamScript` is `luaCamIngameMovieAuto`'s return value (7785,
+7813):
+```
+luaDelay(luaCamOnTargetExt, callbackTime, ...)
+  = CreateScript("luaDoTimeTable", {{false, t}, {luaCamOnTargetExt, 0}}, params)
+```
+So the Kill is normally the timetable killing itself from its own second entry.
+- In the image, 00926D90 sets Dead. `luaTimetable` (scripts/global/timetable.lua, mtime
+  2024-07-13) returns at `if this.Dead`.
+- In the host, Dead stays false, so `luaTimetable` reaches `ttt[idx][2] == 0` and calls
+  `DeleteScript(this)` in the same think.
+- The end state is the same (dead, off the think lists), and the rest of `luaCamOnTargetExt` runs
+  identically either way.
+- **The grep for mission work after the Kill point:** a luaDelay timetable has no entry after the
+  callback, so no timetable entry runs after the Kill.
+- The one other route is the player skip (`IC_ENDMOVIEPLAY` calls `luaCamOnTargetExt` with no
+  table while the timetable waits). There the host leaves the timetable alive and the callback
+  fires a second time. An idle player never skips.
+
+**The binding.** Under `kLuaKillScriptEntityBound`, committed OFF, a Kill whose argument's `Ptr`
+is a script entity runs `GameScriptOrdersHost::entity_kill_00926d90`. That call already exists and
+is reached from other paths; it sets Dead and `+5Eh`, erases the entity from both think lists and
+rebuilds the self table.
+
+**Predictions (written before the pairs).**
+- `unresolved` goes from 1..3 to 0 on every row, with the same count of `script entity id N
+  killed` lines.
+- Gameplay identical (exit 0 or 1) on USN04 4700/4500, USN13, JM05, USNOS, IJN01 and LOMP10
+  3200/3000.
+- DeleteScript's own count may drop by the same number, because the timetable now returns
+  before it.
+- No movie-camera pose change is expected, because the end state is reached in the same think.
+
+### 57.1 The pairs and the verdict: ON
+
+Same-tree pair on `de409e8e3`. The OFF binary is this tree's build; the ON binary is
+`local\s16_kl` (`--flip kLuaKillScriptEntityBound=true`, SHA-256 prefix `1612520D7C82`). Logs are
+`local\s16kl{off,on}_<row>.log`, and the diffs are `local\s16_kldiff_<row>.txt`.
+
+| row | pair_diff | unresolved | death rows |
+| --- | --- | --- | --- |
+| USN04 4700/4500 | 1 | 2 -> 0 | identical (46) |
+| USN13 3200/3000 | 1 | 2 -> 0 | identical (31) |
+| JM05 3200/3000 | 1 | 1 -> 0 | identical (0) |
+| USNOS 3200/3000 | 1 | 3 -> 0 | identical (6) |
+| IJN01 3200/3000 | 1 | 2 -> 0 | identical (9) |
+| LOMP10 3200/3000 | 1 | 1 -> 0 | identical (0) |
+
+**Against the predictions.**
+- Every miss becomes a `script entity id N killed` line, and every row is gameplay identical.
+- No movie-camera pose line moves outside LOMP10's known presentation noise.
+- Beyond the Kill lines, the only moves are the known ship-avoidance refill counter and the LOMP10
+  minimap heading.
+
+**Verdict: ON.** Ranking row 14 is closed.
+
+## 58. Handoff (cc9-ships16, 2026-09-29 16:38 UTC, at about 78% context)
+
+**State.** Branch `agent/cc9-ships16`. Sections 54 to 57 are this worker's. This commit adds the
+57.1 flip and this handoff. No lease is held after this commit.
+
+**Switches this worker added:**
+
+| switch | file | state | section |
+| --- | --- | --- | --- |
+| `kSubmarinePeriscopePrepassBound` (`009DB8F0`) | `src/game_hosts_ship_ai.cpp` | ON | 54 |
+| `kCommandTargetKeepUnauthoredBound` (0071EBF0 refresh) | `src/game_hosts_gunnery.cpp` | ON | 56 |
+| `kPilotLandNativeBound` (flipped; the switch was cc9-ships15's) | `src/game_hosts_script_orders.cpp` | ON | 56.1 |
+| `kLuaKillScriptEntityBound` (Kill -> 00926D90 on script entities) | `src/game_hosts_lua.cpp` | ON | 57 |
+
+**Open items this worker leaves:**
+- **Attackmove after land.** At 68.25 s on IJN01, the director's attackmove arm `00836B45` runs
+  for B-17 01/02 (units 330/332) with `target=2`. The commands host stores `land` as given
+  (56.1), so the attackmove in `slot_command[0]` comes from another push. This is the commands
+  lane's item.
+- **The now-reached land internals.** `006C0B50`, `006BD080`, `006C5380`, `009C1850`, `009C18C0`,
+  `006C4790` and the `0099A3DD` arm. The lead passed these to lua17.
+- **The periscope's broken state 2 and the repair/auto-raise arm** (`009327F7`, `009373E7`,
+  `00854E44..00854ECF`). These are lua-lane items.
+- **Parked from 53:** `Scoring_SetMissionCompleted`, and the planner spawn (it needs a stock scene).
+
+**Useful files in the cc9-ships16 tree (`local\`):**
+- `s16_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames` launches in the
+  background with the reference environment.
+- `s16_wait.ps1 -Logs <names>` is the foreground wait on the final COM release.
+- `s16_disp_ctx.py <scan-bytes output> <disp hex>` decodes the instruction around each
+  displacement hit.
+- `s16_vslot.py <slot hex> <vtables...>` reads a vtable slot from the PE on disk.
+- Pair logs: `s16{off,on}_*` (54), `s16pl{off,on}_*` (55), `s16{koff,k1,k2}_*` (56) and
+  `s16kl{off,on}_*` (57).
