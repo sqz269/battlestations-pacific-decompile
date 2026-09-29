@@ -1205,11 +1205,9 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
             (units_.unit_is_kind_of(target_index, 0x0c) && !big);
         if (small_target) {
             ++kamikaze_small_targets_;
-            // 00604A58 (17h, held above), 00604A60 [plane+C24h]. LABELLED: the
-            // units host's PilotFires reader is routed (lua14); until it lands
-            // the byte reads as set, so the plane is not an uncommitted kamikaze.
-            record_unimplemented("Plane::pilot_fires_0c24", "00604a60");
-            const bool uncommitted_kamikaze = false;
+            // 00604A58 (17h, held above), 00604A60 [plane+C24h] == 0.
+            const bool uncommitted_kamikaze =
+                !units_.plane_pilot_fires_0c24(row.unit_index);
             const bool blocked = !uncommitted_kamikaze;
             if (blocked) ++kamikaze_blocked_;
             log_.notef("  PilotSetTarget kamikaze small-ship test: target class %d small, "

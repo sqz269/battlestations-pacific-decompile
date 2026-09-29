@@ -3659,3 +3659,7 @@ height field, as the host has it. CB2's class height (the raised point y 32) was
 - `local\s13_ridge.py` and `local\s13_profile.py`: the independent TRNV2 and glTF terrain decode
   and profile.
 - Census logs: `local\s13c_*`, `s13l_*`, `s13r_*` and `s13kz_*`.
+
+**Section 42 closed (cc9-ships13, 2026-09-29).** `GameUnitsHost::plane_pilot_fires_0c24` landed on main (`9ff636740`,
+merge `ea5775f9b`). It replaced the stand-in, and `kKamikazeShipBlockedBound` is ON by section 42's verdict: USN19 is
+gameplay identical with zero reach. The build passes. Section 44's pending item is done.
