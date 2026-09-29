@@ -1147,6 +1147,66 @@ site at block `+3Ch` (docs/AIRFIELD_TAXI.md 2).
   - The deck line went from `spacing_mode4_refused=227 site=0` to `spacing_mode4_refused=0
     site=227`: the same calls, with no gameplay change.
 
+
+## 5j. `land/final`, read and bound OFF for its airborne half (packet `cc9_land_final_state`, cc9-lua11, 2026-09-28)
+
+State vtable `00D1FF44` (task `+5F8h`). Every body below was read whole from the listing.
+
+- **Enter `009B1E60`** (`009B1E60`-`009B1E8B`): clears the done byte `+18h`, sets `+1Ch` = 0.0, clears
+  the touched latch `+20h`, sets `+24h` = plane `+9F0h` and sets plane `+844h` = 0.
+  **Exit `009B1E90`** (`009B1E90`-`009B1E9E`): plane `+844h` = 1. Plane `+9F0h` and `+844h` are
+  not modelled.
+- **Tick `009B1ED0`** (`009B1ED0`-`009B211F`, `RET 4`):
+  1. `approach+B4h` = 0 and `[approach+1Ch]+40h` = 0.
+  2. When `(plane+72Ch)->vtable[38h]` is false (the plane is not airborne), `+20h` = 1.
+  3. **Airborne** (`+20h` clear, `009B1F1D`-`009B1FE5`): begin's steer `009B1420`, then
+     `+2B4h = r + a+4Ch x (s - r)` with `r = 009B1300` and
+     `s = 00419010(a+24h x ApproachDist, r, a+24h x PosBehind x 0.4, (r + a+5Ch)/2, A8)`, and
+     `+2B0h = 1`, `+2D8h = 1`.
+  4. **On the ground** (`009B1FEA`-`009B207A`): the ground-roll controls (`+29Ch`, `+2A0h`, `+2D0h`,
+     `+2C4h`, `+2CCh`, `+278h`, `+27Ch`, `+2A8h` = 1.0 on a class-9 owner or 0.2 (`00CE54A0`),
+     `+2ACh`, `+2D8h`).
+  5. **With ground contact** (plane `+BF8h` and `+BF4h`, and `007B8D70` false): `006BC530` gives a
+     height. The done byte is set when that height is above 2 x WheelHeight (class `+1FCh`), or
+     when `+94h` is below `[00CFBC84]`.
+- **`009B3370`** (`009B3370`-`009B339A`), final to park: `+20h` set and the plane not airborne.
+- **The rule's final arm** (`009B3DB2`-`009B3DF7`): mode not 4 goes to abort; mode 4 with `009B3370`
+  goes to park. `009B3770` sends final to abort when the done byte is set.
+
+**Bound OFF**, `kLandFinalStateBound`:
+- Bound: the enter, the airborne half, the rule's begin -> final transition (`009B3DA7`) and its
+  final arm, and the approach update's onGround arm for final.
+- Refused and counted: the on-ground half, park and abort. **This host has no touchdown**: nothing
+  models plane `+BF8h`/`+BF4h` or `007CA3F0`, and the control mode stays 7 in flight. So the
+  on-ground half, park and the ground-contact done tests are unreachable here.
+- The owner velocity in `009B1300` is 0 for the static airfield (labelled).
+
+### Predictions for the joint pair (begin and final both ON) on LOMP10 9200/9000 and USN01
+
+OFF is this tree's build with both switches off. ON flips `kLandBeginStateBound` and
+`kLandFinalStateBound`.
+
+1. **Begin lasts one tick.** Each head enters begin at its OFF refusal time (Warhawk 01 132.90 s)
+   and final at the next rule tick. `begin ticks` equals `begin entries`.
+2. **The approach up to T matches the begin-only run**, clause for clause, because it uses the same
+   steer. The one difference is the speed command.
+   - `a+24h x ApproachDist` is at least 210 m, and on entry A8 is about 800 m.
+   - While A8 is above `a+24h x 312` the command is `(r + a+5Ch)/2`. Below `a+24h x 210` it is `r`,
+     which is `max(LevelFlight x StallSpd, min control speed)`, about 32 m/s for the fighters.
+   - So the planes fly the glide more slowly than in the begin-only run (58-62 m/s), and mode 1
+     (ApproachPitch) takes over earlier.
+3. **No touchdown.** `touched=0` and `ground_refused=0` on every plane. Past T, final keeps flying
+   the steer, as begin did, and the done byte sends it to a refused abort.
+4. **LOMP10 moves** (exit 3); USN01 comes out identical.
+- A mechanism failure is any of:
+  - no final entry;
+  - begin lasting more than one tick per entry;
+  - a speed command that does not follow the formula at the traced A8;
+  - any of the begin-only run's four approach clauses failing.
+- **Flip rule for this pair:** both flip only if the mechanism holds **and** no plane flies on past
+  T for more than 10 s. Without a touchdown the second test is expected to fail. If it does, both
+  stay OFF, and the touchdown (`007CA3F0`, ground contact `+BF4h`) is the missing piece.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
