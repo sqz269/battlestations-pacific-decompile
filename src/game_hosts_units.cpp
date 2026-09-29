@@ -3965,7 +3965,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_land_begin_state: 006C3F80's k=0 mode-4 arm (006C42E9-006C4405)
     // over the airfield's launch site at block+3Ch. False: the arm is refused and
     // +8h keeps its value. docs/SQUADRON_LAND_TASK.md section 5i.
-    static constexpr bool kLandingSiteSpacingBound = false;
+    static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm

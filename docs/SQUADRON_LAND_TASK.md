@@ -1140,6 +1140,12 @@ site at block `+3Ch` (docs/AIRFIELD_TAXI.md 2).
     is 1.0.
   - Both rows come out gameplay identical (exit 0 or 1).
   - A mode-4 record whose prior `+8h` was not 1.0 would move LOMP10. The log would name it.
+- **The pair (cc9-lua11, 2026-09-28): ON.** OFF is this tree's build of `87895cada`
+  (`local\l11_stoff_<row>.log`). ON is the same commit with `kLandingSiteSpacingBound=true`
+  (`local\l11_ston_<row>.log`).
+  - `pair_diff` gives 1 (gameplay identical) on both LOMP10 9200/9000 and USN01 3200/3000.
+  - The deck line went from `spacing_mode4_refused=227 site=0` to `spacing_mode4_refused=0
+    site=227`: the same calls, with no gameplay change.
 
 ## 6. Open, in order
 
