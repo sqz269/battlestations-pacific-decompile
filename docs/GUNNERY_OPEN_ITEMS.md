@@ -3789,3 +3789,70 @@ JM06 has one torque: USTroopTransport 01 at 109.20 s, 4.5e5.
   read here.
 - Measuring this cleanly waits for 56.3's rows fix, because the flooding moment on John1 is wrong
   until then.
+
+### 56.5 The re-pair after the rows fix: 56.2 holds except P5's time window; verdict ON
+
+**The pair.** Both sides are exports of `5e139bd73`, which carries main `c12ba1d8f`: cc9-lua13's
+`rows[12]` fix `9029526f9`. OFF is a clean export and ON flips `kHullInertiaFromShapesBound`. All
+three traces are on (flooding, attitude, roll torque), on USN02 9200/9000 and JM06 3200/3000
+(`local\g11c2<side>_<row>.log`). The switches newly ON since 56.3's base are the plane ground roll
+and the ship-AI standoff target kind; both sides have them.
+
+**Gameplay:**
+- USN02: exit 3. Deaths 10 -> 11: John2 dies at 197.31 s, to John3's blast (friendly, category 7,
+  12 hits). Hit records 2271 -> 2009, shots 2316 -> 2133, damage 39395.6 -> 38828.3.
+- JM06: exit 3. The death row is identical. Hit records 276 -> 220, damage 4340.0 -> 4399.2.
+- 52.3's hit-record rise (2271 -> 3963 / 4203) was the rows bug's rolled hulls. It is gone.
+
+**Scored against 56.2 as written** (`local\g11_capeval.py` on the ON logs):
+- **P6, the heel before loss: held.**
+  - Every living flooded hull on USN02 is within 3 degrees of the model heel at 100% of its samples.
+    The only exception is Yudachi, at 809 of 816.
+  - Examples, max and final roll: DeRuyter 3.5 / -2.4, Java 5.0 / 2.9, Kortenaer 2.7 / -0.2,
+    Haguro 3.8 / -1.4, Murasame 5.8 / -4.2.
+  - On JM06: Fletcher-class 08 3.2 / 3.1, USTroopTransport 01 9.5 (125 of 156 within 3 degrees).
+  - The wrecks are within 8 degrees at 50 to 100% of their samples before loss. Houston is lowest
+    (17 of 63; it floods at the bow and pitch is not modelled), then Amatsukaze and Hatsukaze
+    (overdamped lag).
+- **P7, the sign: held.** No living hull rolls against the model. John1 has 6 samples against
+  while wrecked.
+- **P5, the wreck onset: 7 of 11 held.** Held for John1, Yamakaze, Minegumo, Yukikaze, Kawakaze,
+  Amatsukaze and Hatsukaze.
+  - **All four misses are late, never early:**
+
+    | wreck | after the model's loss | water ratio |
+    | --- | --- | --- |
+    | Houston | 51 s | 2.63 |
+    | Asagumo | 33.5 s | 1.85 |
+    | Tokitsukaze | 26.5 s | 1.62 |
+    | John2 | 27 s | 1.86 |
+
+  - Every wreck passes 60 degrees at 1.6 to 2.6 times its loss water, and none below 0.8.
+  - So the 25 s window was too tight for an overdamped wreck (zeta 2.4 to 6). The mechanism, a
+    bounded flat-arm moment against an unbounded one-sided leak moment, holds.
+- **New: every wreck now comes to rest at about 90 degrees** (Yamakaze, Minegumo, Yukikaze and
+  others end at 90.0) instead of rolling to 180 as in 52.3.
+  - At 90 degrees both roll moments carry `cos(phi) = 0`, the element arms and the leak arms
+    alike. So a wreck lies on its side and sinks.
+  - The 180-degree capsizes of 52.3 came from the rows bug's longitudinal lever, which does not
+    vanish at 90 degrees.
+- **P1 (52.2), the living hulls: held.**
+  - Undamaged hulls stay at 0 (Alden 0.3, John3 1.1, USTroopTransport 03 1.4).
+  - Damaged living hulls stay within 6 degrees, apart from USTroopTransport 01 at 9.5, and follow
+    their flooding quasi-statically.
+
+**Mechanism-failure criteria (56.2): none met.**
+- No wreck passes 60 degrees below 0.8 times its loss water.
+- No living hull rolls against the model by more than 2 degrees.
+
+**Verdict: ON**, with the spread miss recorded (P5's 25 s window: four wrecks late by 26.5 to 51 s).
+The switch lives in the units host (src/game_hosts_units.cpp, `static constexpr bool
+kHullInertiaFromShapesBound`). The flip is routed through the integrator.
+
+**What moves with the flip:**
+- Every hull whose class has a box now has inertia. Since 55, that is every class model except
+  saratoga.
+- Damaged hulls list toward their flooded side.
+- Wrecks roll onto their side as they sink.
+- The reference rows' plane and ship deaths move with the changed hull poses (USN02 gains John2's
+  death). The next reference rebaseline has to absorb this.
