@@ -3394,3 +3394,53 @@ mechanism failure.
 - **P2.** Trace the targets of the 93h roll torques.
 - The flooding list on living hulls matches the listing's two moments and needs no change. It is
   the first place in the rebuild where a damaged ship visibly lists.
+
+## 53. The name lookup `0071AD50`: an exact match on a Note's name (cc9-gunnery11, 2026-09-29)
+
+This closes 50.2's first item, read from the listing and checked against this installation's models
+(`local\g11_notes.py`, `local\g11_keys.py` in the cc9-gunnery11 tree).
+
+**The lookup is a linear search, not a sorted map:**
+- `0071AD50(model, const char* key)` is `__thiscall` with `RET 4`. It builds a `std::string` from
+  the key (`00408720`, the whole string, no split) and passes it by value.
+- `0071AAE0` receives the model's 8-byte-element vector at `model+7Ch` (begin `+80h`, end `+84h`).
+  It copies the key into a predicate and calls `00719FA0`.
+- `00719FA0` is a `find_if`: it steps 8 bytes at a time until the predicate `00718C70` answers true.
+- `00718C70` copies `element[0]+8`, the item's name, through `00711C30`. It then calls `004BEB60`,
+  which is `name.compare(0, name.size(), key, key.size())`, and returns `compare == 0`. That is an
+  **exact, case-sensitive, whole-length equality**.
+- The first match wins. `0071AD50` returns `element[1]` (the node `0071B710` stored beside the
+  item), or 0 when nothing matches.
+
+**The `+7Ch` list holds the model's Note items.** `0071B710` appends `{item, node}` to five typed
+lists at `+3Ch`..`+7Ch`, and `+7Ch` is the fifth, the `E19B54` token. The evidence that these are
+Notes: every literal key passed to `0071AD50` exists verbatim as the name of a `Note` chunk
+(`u32 4, "Note", u32 size, u32 n, name`) in the models that use it. None of them is a
+hierarchy-item name:
+
+| call site | key | where it is a Note name |
+| --- | --- | --- |
+| `0072E9E9`, `0072EA15` (gun setup) | `base`, `barrel` | every turret in `models\devices` sampled (140_turret: Notes `base`, `damage1`, `barrel`, `barrelfront_1`; its items are `140mm:base`, `140mm:barrels`, ...) |
+| `0050774B`, `0050776E` (planes) | `rotor_still`, `rotor_still_dam` | 99 of 150 plane models |
+| `00938DB9` (hull shapes) | `front` | 58 of 239 ship models; `back` in 37 |
+| `009396D8` (periscope) | `periszkop` | 12 submarine models: I-54, I-56, I-58, i-400, kaiten, minisub, type7, type_b, U-69, Cachalot, gato, narwhal |
+
+**Consequences:**
+- **`firstnode` matches nothing.** No ship model has a Note named `firstnode`.
+- **`front` and `back` match in 58 and 37 ship models.** Among them are zero-root classes from
+  49.5: akagi (`front`), yamato, super_yamato and i-400 (`front`, `back`), and porter, renown and
+  us_troop_transporter (`front`, `back`).
+- **49.5's census was of the wrong names.** It searched the hierarchy items for `front`, `back` and
+  `firstnode` and found none. The lookup never reads the item names.
+- **So the "zero box" of 49.10 is not settled for these classes.** Their `front` or `back` Note
+  resolves to a node. If that node owns ConvexObjects in `model+4Ch`, `00938F61..0093918C` keeps
+  them.
+  - The next step is to take each Note's node (the `node` `0071B710` pairs with it) from the file,
+    and re-run the root-box census over the ConvexObjects that node owns.
+  - That is a change to `read_mmod_hull_convex_box`'s owner set, and it waits for that census.
+- **The periscope shape attaches for the 12 submarine models listed above** (49.10's question). The
+  suffix ` nolod` belongs to the hierarchy item's name, which the lookup does not read.
+- **Uncertainty:**
+  - The `E19B54` token is identified with the Note type by this match evidence, not by reading
+    the token's string.
+  - The node a Note pairs with (its parent item, or a node of its own) is not read here.
