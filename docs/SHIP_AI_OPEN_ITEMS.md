@@ -4507,3 +4507,36 @@ itself works; the task dies to the host's refresh. The fix is outside this lane.
 - Routed through the lead to cc9-gunnery13 (the gunnery host) and cc9-lua17 (the units host).
 - Re-pair IJN01 after that change. The expected result is B-17 tracks bending toward AirField 02
   after 68.20 s.
+
+## 56. The command-target refresh keeps unauthored targets (packet `cc9_command_target_refresh_keep`)
+
+Worker cc9-ships16, 2026-09-29 (stamped 15:55 UTC). It follows
+55.1.
+
+**The binding.** `refresh_command_targets()` (`src/game_hosts_gunnery.cpp`, 0071EBF0's rule)
+resolves a target only from a unit's current category 1/2 command row. For every other unit it
+writes 0 into the units host's `command_target_plus_one`.
+- That field also stands for the current command's own target (`vtable[178h]` -> `00521EA0`).
+  `land_at_site_0099a3dd` stores PilotLand's site there, and `009B34D0` reads it.
+- Under `kCommandTargetKeepUnauthoredBound`, committed OFF, a unit with no accepted row (no
+  current category 1/2 row) is left unwritten.
+- A unit whose accepted row names nothing is still written 0. That is the image's rule, because
+  the accepted slot's target is returned whatever it holds.
+- A summary line counts the skipped stores.
+- LABELLED risk: a unit whose last category 1/2 row goes stale, with no replacement, keeps its old
+  target where the image's 0071EBF0 would answer the neutral record. The USN01 and JM05 pairs
+  test for it.
+
+**Predictions (written before the pairs).**
+- **Pair A, keep ON alone (PilotLand OFF).**
+  - **USN01 3000 and JM05 3000:** gameplay identical (exit 0 or 1). No authored-row unit
+    changes, because nothing but the land paths writes the field non-zero, and a unit keeps a
+    target only if its last authored row went stale.
+  - **IJN01 3200/3000:** identical. Without PilotLand the B-17s never get a non-zero target.
+- **Pair B, keep ON plus `kPilotLandNativeBound` ON, against keep ON alone.**
+  - **IJN01:** the four land tasks install at 68.20 s and are **not** retired at 68.30 s.
+  - The B-17s then fly the land task's moveto/follow toward AirField 02, so their tracks bend
+    after 68.20 s (exit 3 on their unit-table rows).
+  - AA contacts may move deaths through the shared RNG stream; judge from the per-entity table.
+  - The attackmove-after-land observation (55.1) stays open and may still appear.
+  - **LOMP10 9200/9000:** no PilotLand call; identical.

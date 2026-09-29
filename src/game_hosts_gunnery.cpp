@@ -99,6 +99,13 @@ constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount fram
 //  * kGunAimErrorBound: the ArtilleryGunnerBot's aim-error envelope 006DEFF0 /
 //    006DF5A0 / 006DFB0B, on the row units.skill_level() selects.
 constexpr bool kGunGravityArcBound = true;
+// Packet cc9_command_target_refresh_keep, docs/SHIP_AI_OPEN_ITEMS.md section 56.
+// True: refresh_command_targets() (0071EBF0's rule) leaves the units host's
+// command target alone for a unit with no current category 1/2 row, instead of
+// writing 0 over it; that field also carries the current command's own target
+// (vtable[178h] -> 00521EA0), which PilotLand's land site sets and 009B34D0
+// reads. False: every unit is written, as before.
+constexpr bool kCommandTargetKeepUnauthoredBound = false;
 constexpr bool kBulletNoGravityBound = true;
 constexpr bool kGunAimErrorBound = true;
 //  * kGunImmediateFireSlotBound: packet cc9_mrtgun_immediate_fire,
@@ -2399,6 +2406,7 @@ struct GameGunneryHost::Impl {
     // vector growing has to re-resolve too. See refresh_command_targets.
     std::size_t command_rows_current{static_cast<std::size_t>(-1)};
     std::size_t command_targets_resolved{0};
+    unsigned long long command_target_keeps{0};  // packet cc9_command_target_refresh_keep
     void run_gun_aim_and_fire(float dt);
     void run_projectiles(float dt);
     // Publishes the rows 00A08460 reads into the process-wide table the AI
@@ -4784,6 +4792,15 @@ void GameGunneryHost::Impl::refresh_command_targets() {
     command_targets_resolved = 0;
     for (std::size_t i = 0; i < command_target_by_unit.size(); ++i) {
         if (command_target_by_unit[i] != 0) ++command_targets_resolved;
+        // Packet cc9_command_target_refresh_keep: a unit with no category 1/2
+        // row has no 0071EBF0 answer to publish. The units host's field also
+        // stands for the current command's own target (vtable[178h] -> 00521EA0,
+        // which 009B34D0 reads for an explicit land site), so the zero is not
+        // written over what a script order stored there.
+        if (kCommandTargetKeepUnauthoredBound && accepted[i] == nullptr) {
+            ++command_target_keeps;
+            continue;
+        }
         // The plane's control path needs the same answer, and taking it from
         // here rather than resolving names again is what keeps the two from
         // drifting apart.
@@ -10116,6 +10133,10 @@ void GameGunneryHost::report() {
     host.log.notef("summary mission gunnery command_targets units_with=%zu "
         "(0071EBF0's answer, step 8.7's first arm; 0 means that arm never runs)",
         host.command_targets_resolved);
+    host.log.notef("summary mission gunnery command_target keep bound=%d keeps=%llu "
+        "(units with no category 1/2 row left unwritten, packet "
+        "cc9_command_target_refresh_keep)", kCommandTargetKeepUnauthoredBound ? 1 : 0,
+        host.command_target_keeps);
     host.log.notef("summary mission gunnery torpedo_ranges_derived=%llu "
         "swims_started=%llu snaps=%llu bullet_ranges_derived=%llu "
         "base_tick_timers_live=%llu expired=%llu",
