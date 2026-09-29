@@ -1108,6 +1108,39 @@ the ON build ran clean.
   - `land/final` (vtable `00D1FF44`, then `009B3370` to park) is read next. Begin will be re-paired
     with it.
 
+
+## 5i. `006C3F80`'s launch-site arm (packet `cc9_land_begin_state`, cc9-lua11, 2026-09-28)
+
+The k=0 mode-4 arm, `006C42E9`-`006C4405`, was read whole from the listing. It needs the launch
+site at block `+3Ch` (docs/AIRFIELD_TAXI.md 2).
+
+- `tp = own +4h / plane->vtable[38h]` (`006C42F6`-`006C430C`).
+- `site = max(0, [00F876A4] - site+40h)` (`006C4310`-`006C4334`).
+- `+8h = 00419010(0.75 FDT, 0.01, FDT, 1.0, site + tp)`, where FDT = FollowDistTime (`+504h`), 0.75 is
+  at `00CEC9D8` and the call is at `006C4389`.
+- `+8h` is zeroed when `tp < 0.25 FDT` (`00D7A348`) and either `site < 0.4 FDT` (`00CE65D0`) or
+  `site->vtable[30h]` is false.
+  - The airfield site's `vtable[30h]` is `006CF3F0`, which returns true.
+- **`site+40h`** has two writers:
+  - The site constructor `006CF100` stamps `[00F876A4] - 99999.0` (`00CF89D0`) at `006CF166`.
+  - `site->vtable[48h]` = `006CE230` stamps the clock.
+- Its one caller found is `007CB5F0` at `007CB75D`, through `(unit+BF4h)->+4h->+3Ch`. That is a
+  plane flight-state routine that this host does not run.
+  - The caller search swept `006B0000`-`00A00000` for a `+3Ch` load followed by a `vtable+48h` call.
+- No plane takes off from or lands at CB4_AF on LOMP10 in this host.
+- **Binding**, behind `kLandingSiteSpacingBound` (committed OFF):
+  - The stamp is the constructor's value at mission start (labelled), so `site` = 99999 s plus the
+    mission clock.
+  - `+8h` is then exactly 1.0 whenever the arm runs.
+  - A new `site=` count sits on the `summary landing sequencer deck` line.
+- **Prediction for LOMP10 9200/9000 and USN01:**
+  - OFF, every refused k=0 mode-4 record kept its prior value. For the three heads that value was
+    1.000 (the `mode 3 -> 4` lines).
+  - ON, `site=` counts the same calls that `spacing_mode4_refused=` counts OFF, and every `+8h`
+    is 1.0.
+  - Both rows come out gameplay identical (exit 0 or 1).
+  - A mode-4 record whose prior `+8h` was not 1.0 would move LOMP10. The log would name it.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's

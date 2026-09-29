@@ -1887,6 +1887,7 @@ struct GameUnitsHost::Impl {
         std::vector<LandingAssignment> assignments;
         unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
         unsigned long long hit_passes{0}, outside_passes{0}, spacing_mode4_refused{0};
+        unsigned long long spacing_mode4_site{0};
         unsigned long long slot_tail_unapplied{0}, mode_counts[5]{0, 0, 0, 0, 0};
     };
     std::vector<LandingDeck> landing_decks;
@@ -3961,6 +3962,10 @@ struct GameUnitsHost::Impl {
     // approach update's onGround arm. final and abort stay refused. Needs
     // kLandLineStateBound. False: every entry to land/begin is refused.
     static constexpr bool kLandBeginStateBound = false;
+    // Packet cc9_land_begin_state: 006C3F80's k=0 mode-4 arm (006C42E9-006C4405)
+    // over the airfield's launch site at block+3Ch. False: the arm is refused and
+    // +8h keeps its value. docs/SQUADRON_LAND_TASK.md section 5i.
+    static constexpr bool kLandingSiteSpacingBound = false;
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
@@ -9254,6 +9259,37 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
     if (k == 0) {
         if (!own4) {
             rec.spacing_8 = 1.0f;
+            return;
+        }
+        if constexpr (kLandingSiteSpacingBound) {
+            // 006C42F4-006C4405. tp = own +4h / plane->vtable[38h]; site =
+            // max(0, [00F876A4] - site+40h); +8h = 00419010(0.75 FDT (00CEC9D8),
+            // 0.01, FDT, 1.0, site + tp), zeroed when tp < 0.25 FDT (00D7A348)
+            // and (site < 0.4 FDT (00CE65D0) or site->vtable[30h] is false).
+            // The airfield site's vtable[30h] is 006CF3F0, RET true.
+            // site+40h: the site constructor 006CF100 stamps now - 99999.0
+            // (00CF89D0); the one restamp, site->vtable[48h] = 006CE230 (now),
+            // is called from 007CB5F0 at 007CB75D, the plane flight-state
+            // routine, which this host does not run. SUBSTITUTION, labelled: the
+            // stamp is the mission-start value -99999.0, so site is 99999 s plus
+            // the mission clock.
+            const float speed = avoid_len(p.plane_world_velocity);      // plane->vtable[38h]
+            const float tp = static_cast<float>(static_cast<double>(rec.path_4) /
+                static_cast<double>(speed));
+            float site = static_cast<float>(static_cast<double>(
+                static_cast<float>(summary.simulated_seconds)) - (-99999.0));
+            if (0.0f > site) site = 0.0f;
+            rec.spacing_8 = bsp::clamped_interpolate_00419010(
+                static_cast<float>(static_cast<double>(fdt) * 0.75), 0.009999999776482582f,
+                fdt, 1.0f, static_cast<float>(static_cast<double>(site) + tp));
+            if (!(static_cast<double>(fdt) * 0.25 <= static_cast<double>(tp))) {
+                const bool site_ready = true;                            // 006CF3F0
+                if (static_cast<double>(fdt) * 0.4000000059604645 > static_cast<double>(site)
+                    || !site_ready) {
+                    rec.spacing_8 = 0.0f;
+                }
+            }
+            ++d.spacing_mode4_site;
             return;
         }
         // The launch-site object at block+3Ch (its +40h time and vtable[30h]) is
@@ -23032,12 +23068,12 @@ void GameUnitsHost::report() {
             if (!d.built) continue;
             host.log.notef("summary landing sequencer deck %s: refused=%d queue=%zu records=%zu "
                 "passes=%llu hits=%llu outside=%llu inserts=%llu releases=%llu lookups=%llu "
-                "found=%llu modes 1=%llu 2=%llu 3=%llu 4=%llu spacing_mode4_refused=%llu "
+                "found=%llu modes 1=%llu 2=%llu 3=%llu 4=%llu spacing_mode4_refused=%llu site=%llu "
                 "slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
                 i < decks.size() ? decks.name_at(i).c_str() : "?", d.refused ? 1 : 0,
                 d.queue.size(), d.assignments.size(), d.passes, d.hit_passes, d.outside_passes,
                 d.inserts, d.releases, d.lookups, d.found, d.mode_counts[1], d.mode_counts[2],
-                d.mode_counts[3], d.mode_counts[4], d.spacing_mode4_refused,
+                d.mode_counts[3], d.mode_counts[4], d.spacing_mode4_refused, d.spacing_mode4_site,
                 d.slot_tail_unapplied);
             for (const Impl::LandingAssignment& a : d.assignments) {
                 host.log.notef("summary landing record %s: mode=%d path=%.1f spacing=%.3f "
