@@ -3450,7 +3450,7 @@ All seven records the lead listed are also reached on LOMP10, so none is new wit
 
 | record | IJN01 calls | note |
 | --- | --- | --- |
-| `009B1EED` land/final direction_40 | 10809 | |
+| `009B1EED` land/final direction_40 | 10809 | **relabelled done**: a store of the value already there (5ac) |
 | `009B3D38` BotTaskLand::refused_state | 10207 | park, OFF by design (5aa) |
 | `009FABE0` land/standby direction | 2560 | |
 | `0099B650` BotApproachLand::set_owner | 908 | |
@@ -3502,3 +3502,12 @@ begin's first tick after standby or line, whose cone is `tuning+66Ch` (`Angle_Pr
 matters where the gun controller runs, which this host does not do for the land task. The same
 holds for standby's and line's `009FABE0` direction records: they are inputs to a gun controller
 that the host runs only in dogfight.
+
+**Pairs (OFF `fdc4709f3` tree build, ON its export with the flip; `local\l18_a0_*`, `local\l18_a1_*`).**
+
+| row | pair_diff | the record | other |
+| --- | --- | --- | --- |
+| IJN01 9200/9000 | 1, gameplay identical | 10809 calls, UNIMPLEMENTED -> concrete | the ship avoidance refill counter (known noise) |
+| LOMP10 9200/9000 | 1, gameplay identical | 26213 calls, UNIMPLEMENTED -> concrete | the LOMP10 movie-camera presentation lines only |
+
+The predictions held. **Verdict: `kLandFinalDirection40Bound` ON.**

@@ -4298,7 +4298,7 @@ struct GameUnitsHost::Impl {
     // [approach+1Ch]+40h = 0.0 (009B1EED) stores the value the gun controller's cone
     // already holds (begin's 009B1DDA and 009FC7C0's tail 009FCE69 store only 0.0, and
     // 009B3DA7 is the only switch into final). True: the record is performed (done).
-    static constexpr bool kLandFinalDirection40Bound = false;
+    static constexpr bool kLandFinalDirection40Bound = true;  // ON: 5ac
     // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
     // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
     // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
