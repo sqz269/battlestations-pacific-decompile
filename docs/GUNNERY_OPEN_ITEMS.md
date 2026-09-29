@@ -4411,3 +4411,55 @@ No lookup misses at all, so the switch cannot move any reference row, and no pai
 - The rule is the image's.
 - It is post-o: it is on no reference-o binary. It is attributed in reference p, alongside
   `kFindEntityCaseInsensitiveBound`.
+
+## 63. USNOS long: why the inertia flip raised damage while hit records fell (60.2 item 3, cc9-gunnery13, 2026-09-29)
+
+**The question** (60.2 item 3, from reference n). On USNOS long, the hull-inertia flip
+(`kHullInertiaFromShapesBound`, `091cea5cf`) moved:
+- damage from 4138.4 to 10900.7;
+- hit records from 2683 to 1112;
+- the 21 victims not at all.
+
+Reference o has 10635.1 and 1101.
+
+**Where the damage lands** (`pair_diff` of reference m `rb13_usnosl` against o `rb15_usnosl`, the
+unit table):
+- **The ships.**
+  - Portland1 takes 160 -> 2490 and Portland2 129 -> 3915.
+  - NH takes 160 -> 237 while its hits taken fall from 1049 to 25, and it deals 434 -> 6035.
+- **Damage control.** Water damage rises from 2493 to 7384, and element hits fall from 1666 to 199.
+- **Geometry.** Each ship's nearest-unit distance goes from 39 m (NH), 130 m and 78 m (the
+  Portlands) to about 600 m. Without inertia the three ships bunch; with it they keep station.
+
+**Who hits whom.** Two traced runs of USNOS long cover all IJN ships, coastal guns, NH, the Portlands
+and the `unit #2.x/#3.x` attackers (`BSP_AA_TRACE_UNIT`, names in `local\g13_trace_names.txt`). The
+tally is `local\g13_ff.py`.
+
+| run | NH -> Portlands | Portlands -> each other and NH |
+| --- | --- | --- |
+| o (`local\g13_trO_usnosl.log`, gameplay-identical to `rb15_usnosl`, exit 1) | **cat 4: 18 hits, 5408.4 applied** (Portland2 3519.8, Portland1 1888.6; the first at 227.76 s) | cat 3: 55 hits, 1233.6 applied |
+| o with inertia OFF (`local\o_nhi`, `local\g13_trNhi_usnosl.log`) | cat 4: none. NH's cat 1 hits Portland2 276 times for 0.0 (armour) | 52 hits, 363.6 applied |
+
+**The mechanism.**
+- **The guns.** NH's category 4 mounts are device row 521, `Yamato_1945 18'' 3X`, HEAVYARTILLERY,
+  in this installation's arcade `deviceclasses.lua`. Their second Bullet record is class 23 (V0
+  300).
+- **The targets.** NH fires them at the low attackers: 78 cat-4 shots, 30 at `unit #3.1` and 14 at
+  `unit #2.4`, at 1100-1200 m with the barrels about 3 degrees up.
+- **Friendly fire.** With the ships at station-keeping distance, the Portlands lie on those flat
+  trajectories. The blasts and direct hits land on them and then flood them.
+- **Why hit records fall.** The bunched fleet of the no-inertia run traded a thousand zero-damage
+  MG hits among close neighbours.
+
+**Is the friendly fire the image's?** As far as read, yes.
+- **The line-of-fire predicate `0072CDD0`** is installed only for weapon kinds 1, 5 and 6
+  (`00729560`, `00729588..00729595`; the host's `kAaLineOfFireBound` follows it). A HEAVYARTILLERY
+  gun has no friendly line-of-fire test in the image.
+- **The plane admission.** `008633D0` admits a plane when mask bit 0 is set, and the category
+  masks start at 3 (`00862632`). Only the AA/flak list's bit 0 is rewritten, from `+221h`, so a
+  category 4 gun may take a plane.
+- **Unread:** whether the artillery sub-director's own pick admits aircraft. The host's cat-4 plane
+  shots come from the same pass, so this is the one open link.
+
+**Verdict:** no host divergence found. The damage rise is the correct inertia geometry exposing an
+image rule (no friendly-fire check for heavy artillery) to a flat-firing mount. Nothing is bound.
