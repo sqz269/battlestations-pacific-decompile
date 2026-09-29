@@ -4322,6 +4322,14 @@ struct GameUnitsHost::Impl {
     // already holds (begin's 009B1DDA and 009FC7C0's tail 009FCE69 store only 0.0, and
     // 009B3DA7 is the only switch into final). True: the record is performed (done).
     static constexpr bool kLandFinalDirection40Bound = true;  // ON: 5ac
+    // Packet cc9_torpedo_flight_lead (docs/TORPEDO_RELEASE_ORDERS.md 9): 0099B740's
+    // leader test (0099B757 CMP EAX,[ECX+3D0h]) is per squadron, and ctl+370h lives
+    // on that squadron's pilot control block. True: each torpedo task is its
+    // squadron's leader when it is element 0 of its own squadron, re-read every
+    // think, and the leader's mode reaches its own squadron only. False: the first
+    // torpedo task installed in the mission leads, and its mode reaches every
+    // torpedo task.
+    static constexpr bool kTorpedoFlightLeadPerSquadronBound = false;
     // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
     // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
@@ -18701,6 +18709,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
 
                     void run_attack_mode_tick_0099b740() {
+                        const bsp::PlaneSquadronHostRecord* own_sqn = nullptr;
+                        if constexpr (GameUnitsHost::Impl::kTorpedoFlightLeadPerSquadronBound) {
+                            // 0099B757: this unit against ctl+3D0h[0], the
+                            // squadron's element 0, on every think.
+                            own_sqn = bsp::plane_squadron_registry().find_by_member_unit(
+                                unit_.process_index);
+                            unit_.torpedo_is_flight_lead = false;
+                            if (own_sqn != nullptr) {
+                                for (const std::size_t member : own_sqn->member_units) {
+                                    if (member == bsp::kPlaneSquadronNoUnit) continue;
+                                    unit_.torpedo_is_flight_lead =
+                                        (member == unit_.process_index);
+                                    break;
+                                }
+                            }
+                        }
                         bsp::PilotAttackModeInputs in;
                         in.has_control_block_2fc = true;
                         in.has_unit_2f4 = true;
@@ -18721,7 +18745,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // The mode lives on the pilot control block, which the
                         // whole flight shares, so the leader's value is what
                         // every aircraft of the flight reads.
-                        if (unit_.torpedo_is_flight_lead) {
+                        if constexpr (GameUnitsHost::Impl::kTorpedoFlightLeadPerSquadronBound) {
+                            if (unit_.torpedo_is_flight_lead && own_sqn != nullptr) {
+                                for (const std::size_t member : own_sqn->member_units) {
+                                    if (member == bsp::kPlaneSquadronNoUnit) continue;
+                                    if (member >= owner_.slots.size()) continue;
+                                    owner_.slots[member]->torpedo_attack_mode_370 =
+                                        unit_.torpedo_attack_mode_370;
+                                }
+                            }
+                        } else if (unit_.torpedo_is_flight_lead) {
                             for (const auto& s : owner_.slots) {
                                 if (!s->torpedo_task_installed) continue;
                                 s->torpedo_attack_mode_370 =
