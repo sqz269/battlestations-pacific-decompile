@@ -2855,3 +2855,50 @@ cc9-lua16 tree).
   bombers whose `ammoType` is 0 and whose `unitcommand` is not `"land"` to `Mission.Airfield`.
   The `unitcommand` read then needs to answer `"land"` for the placed command, or the script
   re-issues it every pass. The same-target keep (`009B3560`) makes that harmless.
+
+## 5v. `land/abort` on the ground: the runway-axis hold (packet `cc9_land_abort_ground_arm`, cc9-lua16, 2026-09-29)
+
+**The listing, read whole: `009B0E74`-`009B0F93`**, then INT3 at `009B0F96`.
+- **How the arm is reached.** `009B0A5C JE`, when `(plane+72Ch)->vtable[38h]()` answers 0 (not
+  airborne). Registers at that point, from the tick head:
+  - `EBX = 1` (`009B09E7`) and `EBP = 0` (`009B0A14`);
+  - `EDI` = the state (`009B09D4`) and `ESI` = `&state+4` (`009B09E4`).
+
+  Nothing reassigns them before the branch; every later `MOV` to them is on the airborne path
+  after `009B0A64`.
+- **The arm, step by step:**
+  1. `009B0E76`: `+21h` = 1.
+  2. `009B0E7C`-`009B0E91`: `ctl+2BCh = class+1ECh x 0.5` (`00D7A280`, a double), and
+     `ctl+2D0h` = 1. This is a pitch hold at half the climb angle.
+  3. `009B0E9E`-`009B0EC8`: `e = 00438B10(plane->vtable[50h](), holder+88h)`, the heading error
+     to the runway.
+  4. `009B0ED9`-`009B0F17`: when `|e| > pi/2` (`00CE3830`, a double), `e` becomes `e - pi` if
+     `e > 0` (`00D7A218` = 0.0), else `e + pi` (`00CE3D28`). The plane is held on the runway
+     **axis**, in whichever direction it already faces.
+  5. `009B0F1B`-`009B0F75`: `00419010(-ys/2, -1.1 (00D06BB0), ys/2, 1.1 (00CE6448), e)`, with
+     `ys = class+1B0h`. That is the same yaw law park uses at `009B2AE1`-`009B2C1B` (section 5s).
+  6. `009B0F7A`-`009B0F86`: `ctl+284h` = the yaw, `ctl+288h` = 1, and `ctl+2D4h = EBP` = 0.
+- **Unchanged.** The head's throttle 1.0, air brake 0.0 and bank 0.0 (`009B09D6`-`009B0A19`)
+  still apply on the ground. The rule's abort arm (`009B3E08`) still sends `+21h` to park.
+
+**The binding.** `kLandAbortGroundArmBound`, committed OFF. The arm is refused, as before, when
+the deck holder is not found. That holder refusal is a host guard, because the image
+dereferences `holder+88h` without a test.
+
+**Reach.** With park OFF (the default), no plane enters abort: the LOMP10 9200/9000 default run
+has no `summary land abort` line. So the default build is unchanged by construction. The pair is
+therefore taken with `kLandParkStateBound=true` on **both** sides. The flipped switch is the only
+difference.
+
+### 5v.1 Predictions, written before the runs (LOMP10 9200/9000, both sides with park ON)
+
+1. **Mechanism.** ON: `ground_refused` goes to 0 and `ground_ticks` equals the OFF side's
+   `ground_refused` count, give or take the moved path.
+2. **The loop stays.** The arm sets `+21h` exactly as the refusal did, and the head's throttle
+   1.0 is untouched. So the park <-> abort loop of 5s (`from_abort`) persists on both sides, with
+   hundreds of loops per plane. This packet does not close park.
+3. **The heading.** Abort ticks now yaw toward the runway axis instead of leaving the yaw to
+   park's last request. So the planes that 5s saw leave the 20 m strip sideways stay nearer the
+   axis. Measured on the park trace's local `x`: the largest `|x|` per plane falls on most
+   planes, and the throttle pulses carry them **along** the strip, not across it.
+4. **Mechanism failure:** a plane whose heading error to the axis grows during abort ticks.
