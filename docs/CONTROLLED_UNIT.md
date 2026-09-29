@@ -2584,3 +2584,53 @@ The stale leak comment gunnery11 routed is fixed in `534019cd6`
   - `squadron ordnance` (reader ON, on change).
 - Bash heredocs holding an apostrophe fail in this harness: write scripts and messages with the
   Write tool.
+
+## Handoff (cc9-lua13, 2026-09-29)
+
+Branch `agent/cc9-lua13`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua13`. The lease
+`cc9_plane_ground_roll` is released with this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_landing_descent_2` | `546fe663d`, `4229cb934` | `kPlaneDirectionHoldBound`, with `kLandBeginStateBound`, `kLandFinalStateBound`, `kLandAbortStateBound` | ON: the heads land | docs/SQUADRON_LAND_TASK.md 5n (second pass), 5o |
+| `cc9_land_begin_w` | `ec607a509` | none | W is the bot's age; the saturation is exact | 5p |
+| `cc9_gear_channel_scope` | `88e341d87` | none | gates and final's done test only | 6 |
+| `cc9_plane_ground_roll`, stage A | `33b530f29`, `638ff834f` | `kPlaneGroundRollBound` | ON: landed heads brake and stop | 5q |
+
+### Open, in order
+
+1. **Stage B of the ground roll: why the followers abort, then park.**
+   - The abort is decided by the landing sequencer, not by runway occupancy. `006C7960` gives a
+     follower mode 4 only with `rec.spacing_8 > 0`. `006C3F80`'s k = 0 site arm
+     (`landing_spacing` code around `006C42F4`-`006C4405` in `src/game_hosts_units.cpp`) zeroes
+     it when `tp < 0.25 x FollowDistTime` (9 s) and the time since the site's last touchdown
+     stamp (`006CE230`, at the leader's touchdown) is under `0.4 x FollowDistTime`.
+   - Lightning 01|.-4 aborted at 165.41 s, 0.25 s after Lightning 01's touchdown, at A8 708 m and
+     68 m/s. Check which arm its record took (k and `tp = path_4 / speed`) before assuming the
+     occupancy vector matters. `site_occupants_34` is only appended to (`006CED90`); no reader was
+     found in this host.
+   - Park: vtable `00D1FF60`, tick `009B22C0`-`009B2C68`. Its taxi math is unread (docs/AIRFIELD_TAXI.md 6
+     and 8). So are the site calls `006CF420` (taxi target, the last point of the hangar exit
+     path), `006CF520` (queue origin) and `006CF5B0` (vtable `34h`). The host carries no hangar
+     paths yet.
+   - The rule's first arm (`009B3D38`, `+900h` 4 or 5) is what refuses park today.
+2. **Lightning 01's approach moves when Warhawk 01 stops** (5q verdict, 4). Some planner term
+   reads the stopped plane's position or velocity; it was not identified.
+3. **The ground laws not carried** (5q): the runway steering band `007DA380`, the rate law's
+   ground arm `007DA542`, the ground pose (`ctl+80h..8Ch`, `007D9C80`, `007D80C0`), the wire
+   (class-9 holders), and the lift-off message `007C7110`.
+4. **The direction hold's launch arm** `007C705C` (0.8 s at BeginFlying), not bound (5o).
+
+### Working notes
+
+- `local\l13_run.ps1 -Exe <exe> -Prefix <p> -Rows 'tag:MISSION:frames:mission_frames'` launches
+  rows with the reference options (a copy of cc9-lua12's `l12_run.ps1`).
+- `local\l13_calls.py <addr>...` finds rel32 and absolute references (from `l12_calls.py`).
+- Listings saved in `local\`: `l13_core.txt` (`007DB680` whole), `l13_d8470.txt` (`007D8470`
+  whole), `l13_final.txt` (`009B1ED0` onward).
+- Diagnostics:
+  - `summary plane direction hold` and `summary plane ground roll`, one per landing plane;
+  - `hold=` in `land final trace`.
+- Pair logs: `local\l13_off_*`/`l13_jon_*` (5o) and `local\l13_goff_*`/`l13_gon_*` (5q).
