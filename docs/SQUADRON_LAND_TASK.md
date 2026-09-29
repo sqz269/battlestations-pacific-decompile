@@ -740,6 +740,32 @@ commit with `kLandStandbyStateBound=true` (`local\l10_sbon_<row>.log`).
 5. **Held.** `land/line` and the rest stay refused.
 - **Verdict: ON.** `land/line` (wing members at mode 2) is the next state.
 
+## 5f. `land/line`, read in part (packet `cc9_land_line_state`, cc9-lua10, 2026-09-28)
+
+State vtable `00D1FEA4` (task `+598h`, approach `+1A0h`). Nothing is bound yet; the rule still
+refuses the entry at `009B3E6D` (mode 2, not the flight leader).
+
+- **Enter `009B02E0`**: `+18h` = 0 and `+1Ch` = 0.0. **Exit `009B02F0`**: `+18h` = 0. Both match
+  standby's pair.
+- **Tick `009B0300`** (`009B0300`-`009B08F5`, `RET 4`, then INT3). Ghidra has **no function**
+  here: read it with `python tools/bsp.py disasm-raw 009B0300 --length 3000`, whose line 398 is the
+  `RET 4`. Its calls are:
+  - `00414DB0` x6, `00BF701A` (`_CIatan2`) x2, `00BF7030` (`sqrt`);
+  - `00438B10`, `00438AA0`, `00419010`, `007F0280` (unread), `009FB800`, `007C47F0`;
+  - `0042E740`, `0099B630`, `009FABE0`.
+- **Read so far** (`009B0300`-`009B04D9`). With `a` = the approach, `p` = the plane (`a+4`) and
+  `H` = the squadron's head (`[a+0Ch]+3D0h`):
+  - v = H.pos - p.pos, in x and z;
+  - m = wrap0(pi/2 - H->vtable[50h]()), where wrap0 adds 2pi once when the value is negative;
+  - Q = H.pos + 100.0 (`00D7A220`) x (cos m, sin m): a point 100 m ahead of the head along its
+    heading;
+  - bearings through `_CIatan2` in the heading convention, pi/2 - atan2(z, x), wrapped to [0, 2pi):
+    b1 to the head, b2 to Q;
+  - delta = |wrap(b1 - p->vtable[50h]())|, stored at `[ESP+14h]`.
+- **Unread:** `009B04D9`-`009B08F5`, which covers the `00419010` term, `007F0280`, the heading add
+  `00438AA0`, the pitch (`009FB800`), the speed (`007C47F0`) and the direction (`009FABE0`).
+- **What a pair needs:** LOMP10's wing members reach mode 2 from about 73 s (5e).
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
