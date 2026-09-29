@@ -2587,3 +2587,43 @@ took 0 damage instead of 125, NH fired 3345 shots instead of 3761. No death flip
 The gate's avoid-zone conjunct is still the stand-in that answers no zone
 (`ShipAiEngageGate::avoid_zone_list`); section 27 found `[class+570h]` = 0 in single player, whose
 key-0 group has no zones, so the stand-in agrees with the image there.
+
+## 30. Rank 3 of section 28: what replaces an attack on a destroyed group (packet `cc9_group_release_idle`, `kAiTargetGroupDestroyedIdleBound`)
+
+Worker cc9-ships11, 2026-09-29. Section 21's next step: what the image does with a command whose
+target group is freed.
+
+**The image never leaves `command+1Ch` dangling.**
+- `00A10710` (the ATTACK base constructor) stores the target at `+1Ch` and registers the command's
+  observer sub-object `+8h` on that group: `MOV ECX,[ESP+1Ch]` (the target), `EDX = ESI+8`, `CALL
+  00694A60` (BSP_Observer_RegisterPair, ECX = endpoint, EDX = callback owner) at `00A10767`.
+- The four observer vtables are the base's `00D22B64` and the derived `00D22BA4` (MoveToAttack,
+  `00A108AA`), `00D22BEC` (CautiousAttack, `00A109DC`), `00D22C2C` (CloseAttack, `00A10AFA`). Each
+  has slot `+4h` = `00A10040` (disk bytes).
+- `00A10040`, `__thiscall(observer)(subject)`, `RET 4`: when the subject equals `[observer+14h]`
+  (`command+1Ch`), `new(8)`, `+4h = [observer-4]` (the command's group), vtable `00D229E0` (IDLE),
+  then `00A2BD00` on that group (`00A2BD00` deletes the old command through its vtable slot 0 with
+  1 and stores the new one at `group+564Ch`).
+- The notifier is the group destructor: `00A2D8C0` -> `00A2D440` -> `00696330`
+  (BSP_ObserverEndpoint_NotifySlot04). `ai_groups_compose_00a2e720` calls the host's
+  `destroy_group` right after the release loop, so the timing is the same pass.
+
+**The host rule it replaces.** `AiGroups::release_group_reference` reverted such a command to its
+group's birth class (`initial_command_for`: NONCONTROL or IDLE). The image always installs IDLE.
+The two differ only for a group whose birth class is NONCONTROL (an AI-disabled or negative party
+slot). ON, `destroy_group` installs IDLE on every registry group whose command aims at the
+destroyed group (`AiCommand::attack_target_destroyed_00a10040`), and the release loop only counts.
+`00A2B8F0` itself stays a record (section 21: a score-list removal with no reader).
+
+**OFF census** (`local\s11_goff_<row>.log`, this branch with the switch OFF): `target_releases` /
+`target_releases_non_idle_birth` are 0 / 0 on JM05, JM08, USN13 (3200/3000), USN04 (4700/4500) and
+USN01 (3200/3000), and 6 / 0 on USN02 (9200/9000).
+
+### Predictions, written before any ON run
+
+1. **Every row is gameplay-identical.** No measured release has a non-IDLE birth class, so ON
+   installs the same IDLE command the OFF rule did, in the same compose pass.
+2. **USN02 9000 is identical in its summary lines too**, apart from the switch field and a new done
+   row (six `attack_target_destroyed_00a10040` calls).
+3. **Reach**: a player-side or AI-disabled group given an ATTACK command whose target dies. No
+   reference row has one, so the change is exact and unexercised.

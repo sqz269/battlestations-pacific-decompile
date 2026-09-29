@@ -87,6 +87,16 @@ inline constexpr bool kTroopLandingTraitBound = true;
 // are pushed 436 to 934 m out of them; four rows move (docs/SHIP_AI_OPEN_ITEMS.md
 // section 25).
 inline constexpr bool kAiCommandAvoidZonePointBound = true;
+// Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
+// ATTACK-family command registers its observer (+8h) on the target group
+// (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,
+// 00D22BEC, 00D22C2C) share slot +4h = 00A10040: when the notified subject is
+// +1Ch it installs a new IDLE command (vtable 00D229E0) through 00A2BD00. The
+// group destructor's unregister 00A2D440 notifies (00696330). True: destroying
+// a group turns every command aimed at it into IDLE. False: the release loop
+// reverts such a command to its group's birth class (NONCONTROL or IDLE), the
+// earlier host rule.
+inline constexpr bool kAiTargetGroupDestroyedIdleBound = false;
 
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 
@@ -223,6 +233,10 @@ struct GameAiSummary {
     unsigned long long seed_candidates{0};
     unsigned long long groups_created{0};
     unsigned long long groups_destroyed{0};
+    // Packet cc9_group_release_idle: commands aimed at a destroyed group, and
+    // those whose group's birth class is not IDLE (where the two rules differ).
+    unsigned long long target_group_releases{0};
+    unsigned long long target_group_releases_non_idle_birth{0};
     // Packet cc9_close_member_class_trait: members and Cargo units whose trait holds.
     unsigned long long close_troop_landers{0};
     unsigned long long cargo_troop_landers{0};
