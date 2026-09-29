@@ -4349,7 +4349,7 @@ a record because the census of `+122Ch` writers was incomplete.
 - readers: `00852E45`, `00650785`, `0089408B`, `0069265B`, `009E4EED`.
 - The `009F1EAF..009F26FA` hits are `ebp+122Ch` on the approach frame's own object, not a unit.
 
-**`009DB8F0`, read whole (`009DB8F0`-`009DB9FA`, RET 4 then INT3).** `__thiscall(holder,
+**`009DB8F0`, read whole (`009DB8F0`-`009DB9FC` exclusive: RET 4 at `009DB9F9` is 3 bytes, INT3 at `009DB9FC`; named `BSP_ShipAi_SubmarinePeriscopePrepass` by the lead, bdcc793eb).** `__thiscall(holder,
 float seconds)`; ECX is `brain+0AC4h`, a 4-byte holder of `[brain+0AB4h]` (the unit). The float
 is never read. `009F11DD..009F11F7` allocate the holder only when `unit->vtable[5Ch](8)` is
 true at construction, so only a submarine has it. `009F1B57..009F1B70` call it after the
@@ -4443,3 +4443,67 @@ identical on all three.
   those are the units/damage lanes.
 - The repair and auto-raise arm at `00854E44..00854ECF`, in the units host.
 - The HUD's player writes.
+
+## 55. The PilotLand flip, re-paired with FindEntity case-insensitive (packet `cc9_pilot_land_flip`)
+
+Worker cc9-ships16, 2026-09-29 (stamped 15:33 UTC). It continues 50.2. The tree carries main's
+merge `c6d14ae2f` (`kFindEntityCaseInsensitiveBound` ON), so `Mission.AF2 = FindEntity("Airfield
+02")` now resolves to AirField 02.
+
+**Predictions (written before the pair).**
+- **IJN01 3200/3000.** Both `PilotLand` calls resolve (`-> AirField 02`). Each routes its B-17
+  squadron through `land_at_site_0099a3dd`, so land tasks are installed on the members, unless
+  lua16's install core refuses a plane that is not airborne; any refusal is logged. The B-17
+  tracks change, and AA kills may move through the shared RNG stream. Judge from the per-entity
+  death table.
+- **LOMP10 9200/9000.** No `PilotLand` call on the n reference, so identical (exit 0 or 1) unless
+  `10_san_jose.lua:605` is reached.
+
+### 55.1 The pairs and the verdict: stays OFF (a host clobber, not a PilotLand defect)
+
+Same-tree pair on `cdb0b0542` (main merged, `c6d14ae2f` included). The OFF binary is this
+tree's build, and the ON binary is `local\s16_pl` (SHA-256 prefix `8747823ED741`). Logs are
+`local\s16pl{off,on}_{ijn01,lomp10l}.log`; the diffs are `local\s16_pldiff_<row>.txt`.
+
+| row | pair_diff | result |
+| --- | --- | --- |
+| IJN01 3200/3000 | 1 | Gameplay identical; the death rows (9), the plane death modes and the unit table are identical. |
+| LOMP10 9200/9000 | 1 | No `PilotLand` call; only GuiText counts and the known LOMP10 noise move. As predicted. |
+
+**IJN01, the mechanism.** The first half matches the prediction:
+- Both calls now resolve: `PilotLand: B-17 0n -> AirField 02 (target object=1 id=2)`.
+- `land_at_site_0099a3dd` installs 2 tasks per squadron at 68.20 s: moveto (land) on the leader
+  and follow (land) on the wingman.
+- The source is recorded as `explicit land command`.
+
+**The failure.** All four tasks retire at 68.30 s with `the squadron's command is no longer land
+at this site (009B34D0)`.
+- For an explicit site, `land_command_still_valid_009b34d0` (`src/game_hosts_units.cpp`) requires
+  `attack_command_class == 00E08FA0` and `command_target_plus_one == land site`.
+- `land_at_site_0099a3dd` writes both. Between the install and the retire, the gunnery host's
+  command-target refresh (`src/game_hosts_gunnery.cpp`, the `0071EBF0` block) runs again. That
+  refresh runs 468 times in the run, and here it follows the squadrons' generation.
+- The refresh then calls `units.store_unit_command_target(i, command_target_by_unit[i])` for
+  **every** unit.
+- `command_target_by_unit` is resolved only from authored command rows (categories 1 and 2, by
+  target name). The B-17s have no such row, so their target is overwritten with 0 and the check
+  fails.
+- **Second observation, not traced (ON only).** At 68.25 s the director's attackmove arm `00836B45`
+  runs for the new squadrons (units 330 and 332) with `target=2` (AirField 02), logs `target not
+  hostile`, and raises stage 2.
+  - So `director.slot_command[0]` reads `kCommandAttackMove` after the land order is delivered.
+  - OFF has no such line.
+  - Whether the commands host stores the `land` class 00E08FA0 as attackmove is unread; it belongs
+    to the commands lane.
+
+In the image the target is read live from the plane's current command (`vtable[178h]` ->
+`00521EA0`), so nothing clears it.
+
+**Verdict: `kPilotLandNativeBound` stays OFF (mechanism failure, recorded).** The land install
+itself works; the task dies to the host's refresh. The fix is outside this lane.
+- The gunnery host's refresh should not overwrite a unit whose command came from a script order.
+  One way: store only non-zero resolutions. Another: keep the script-order target in its own
+  field and have 009B34D0 read that.
+- Routed through the lead to cc9-gunnery13 (the gunnery host) and cc9-lua17 (the units host).
+- Re-pair IJN01 after that change. The expected result is B-17 tracks bending toward AirField 02
+  after 68.20 s.
