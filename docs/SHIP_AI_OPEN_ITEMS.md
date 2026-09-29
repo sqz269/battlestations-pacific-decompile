@@ -5053,3 +5053,64 @@ Still LABELLED:
 - `OwnerPlayer "AI control"` on 14 authored entries.
 
 The switch stays OFF for the lead's decision after reference q.
+
+## 61. Ranking #5: the group score-list release `00A2B8F0` (packet `cc9_group_score_list_release`, cc9-ships17, 2026-09-29)
+
+This is GAMEPLAY_GAP_RANKING #5 (6 of 6 rows, 58583 calls). Section 21 read the body. This packet
+answers what was left open there: does anything read the list?
+
+### 61.1 The image
+
+**The list lives in the group object.**
+- The records are at `group+24h..+5623h`: up to 128 records of `0ACh` bytes. The key (the
+  candidate group) is at `+0A8h` and a mark byte at `+0A4h`.
+- The count is at `group+5624h`, and `+5608h`/`+560Ch` of the sub-object (`group+562Ch`/`+5630h`)
+  hold its state.
+
+**The census.** `scan-bytes` covers every disp32 of `5600h`, `5608h`, `560Ch` (sub-object
+relative), `5624h`, `5628h`, `562Ch` and `5630h` (group relative); `local\s17_rel32.py` covers
+callers.
+
+| site | role |
+| --- | --- |
+| `00A2B8F0` | removal (compose drain `00A2E784`, and `00A2B950`'s first step) |
+| `00A2B950` | sorted insert, from `00A1CE93` (ChooseAttackTarget's gated arm) and `00A2A77C`, `00A2A844`, `00A2AD58` (CaptureThink) |
+| `00A2BCC0` | marks `+0A4h` = 1 on the record for a candidate, from `00A1CEFF` and `00A2AD61` |
+| `00A1CB9C`, `00A2A148`, `00A2A29B` | the planners clear the count (and set `+5628h` = -1) |
+| `00A2DFFF`, `00A2B8A4` | the constructor and the sub-object initialiser |
+| `00A2CDD0` | **the only reader of the records**. It walks them (`00A2CF77..00A2D321`) and builds " -- " text |
+
+**The reader is never reached.**
+- `00A2CDD0` is called only from `00A2D580` (`00A2D87D`).
+- `00A2D580` is called only from `00A3109E`.
+- That call is inside the body starting `00A31000`, which runs only when the interface
+  manager's `[[00E198C4]+54h]+5` byte is set (`00A31015..00A31025`).
+- `00A31000` has **no rel32 caller and no abs32 occurrence** in the image. The previous function
+  ends with `RET 4` at `00A30FFD`, so this is a function start, and nothing references it: an
+  unreached debug overlay.
+
+**Verdict.** The list has no gameplay reader. The 58583 calls of `release_group_reference` are
+the removal from a list this process has no reason to keep. The ranking's "groups are not
+released" is wrong: groups are released by the host's `destroy_group`, and commands aimed at
+them are re-installed as IDLE (`kAiTargetGroupDestroyedIdleBound`, section 24).
+
+**A lead for the AI lane, not this packet.** `group+5628h`, next to the count, is read by gameplay.
+- `00A2DB50` is the group's observer slot (vtable entry `00D23078`), `RET 0Ch`. On event 6, with an
+  argument different from `group+5628h`, it removes the notifying entity through
+  `00A2D9D0 BSP_AiGroup_RemoveEntity`.
+- The planners write `+5628h`: -1 at `00A1CBA6` and `00A2A14E`, and 8 at `00A2A786` after a
+  Capture insert.
+- Whether the host models that event-6 removal was not checked here.
+
+### 61.2 The binding
+
+- `kAiGroupScoreListReleaseBound` (`src/game_hosts_ai.cpp`), committed OFF.
+- ON: `release_group_reference` reports `00A2B8F0` as concrete. It keeps no list, since nothing
+  reads one. The command-target census it already carried is unchanged.
+
+### 61.3 Predictions, written before any ON run
+
+- Every row is **exit 0**, byte-identical gameplay.
+- The only difference is the native table: `AiGroups::release_group_reference 00a2b8f0` moves
+  from UNIMPLEMENTED to concrete with the same call count, and the unimplemented total falls by one.
+- Pairs: JM05 and USN13 3200/3000, the two largest callers.
