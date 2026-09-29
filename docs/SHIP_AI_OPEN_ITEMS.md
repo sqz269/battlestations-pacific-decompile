@@ -2782,3 +2782,106 @@ the real ordnance state, plus a public `issue_return_to_base_007f16d0(squadron)`
 places the command the way the Lua `returntobase` path does. Then this host's
 `tick_squadron_excluded_009ffeb0` can bind the arm behind its own switch, with predictions on the
 rows with carrier strikes (JM05, USN13, JM08, which make 15560 calls between them per section 28).
+
+## 33. The line-of-sight role swap (packet `cc9_los_role_swap`, `kGunneryLosRoleSwapBound`)
+
+Worker cc9-ships12, 2026-09-29. Item 1 of section 32. The switch lives in `src/game_hosts_gunnery.cpp`.
+
+**The image, re-read from the listing.**
+- `00864D90` (`this` = the pass's visibility cache, argument = the target unit, `RET 4`): on a cache
+  miss it copies the TARGET's pose +FCh..+104h (`00864DE8..00864E0C`), reads Globals +90h
+  (`00864E17`), and when `vtable[5Ch](5)` (the unit base, ships and planes) and `[unit+538h]` are
+  set adds class +A8h (`00864E96`; the section-span branch `00864E3F..00864E94` is labelled not
+  taken). `00864EA4..00864ECE` push (x, y + raise, z) by value and call `00864680` (`00864ED3`).
+- `00864680` (`this` = the same cache, three floats by value, `RET 0Ch`): `[cache+0]` is the
+  cache OWNER, the observer. When the 0.5 s point cache (`[cache+10h]`, reset from `00CE3800`
+  = 0.5 at `008647A4..008647B0`) has run out it stores the owner's pose +FCh..+104h at cache
+  +14h..+1Ch (`008646F0..00864708`) and raises the y by Globals +94h, plus class +A8h under the
+  same unit-base test (`00864710..008647B6`).
+- `008647C3..008647F4`: `00904400(44h, &cache+14h, &passed point, &record, 0)`, callee-cleaned
+  (no `ADD ESP` after `008647F4`). The segment runs OBSERVER -> TARGET.
+- `008647FD..00864852`: (passed point - record point), squared and summed, against `00CFBC80`
+  (625.0); greater hides. The 25 m is measured from the TARGET.
+
+The host's `line_of_sight_00864680(observer, target)` did the reverse: target raised by +94h,
+observer by +90h, cast target -> observer, 25 m from the observer. Both adds are 5.0 in this
+installation (`kInstalledLosTargetHeightAdd`, `kInstalledLosViewerHeightAdd`), so ON changes
+only the cast direction and the end the 25 m is measured from. Still labelled on both sides:
+`0081DE10` (answers 0), the section-span raise, and the 0.5 s owner point cache (the host takes
+the point at every test).
+
+**The census.** `BSP_LOS_CENSUS=1` adds `summary mission gunnery line of sight landscape hits=`
+and the first 24 hit lines (`  los landscape hit observer= target= from= to= hit= d_from= d_to=`).
+It changes no gameplay line and is off unless set.
+
+**OFF census** (this tree at the commit that adds the switch, `local\s12_off_<row>.log`, run with
+the census on):
+
+| row | tests | blocked | hits | where the logged hits lie |
+| --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 190 | 36 | 36 | Dunlap -> CB2: 318..359 m from CB2, 627..964 m from Dunlap |
+| JM05 3200/3000 | 874 | 42 | 42 | coastal gun US 01 -> Mogami-class 01: 244..277 m from the gun, 1028..1218 m from the ship |
+| USN12 3200/3000 | 283 | 87 | 87 | Fortress-07 -> Shigure / Samidare / Shiratsuyu: 30.9..37.8 m from the fortress, 1060..1248 m from the ships |
+
+Every hit blocks, and every logged hit is terrain well inside the segment: more than 25 m from
+both ends.
+
+### Predictions, written before any ON run
+
+1. **USN01, JM05, USN12: blocked ON = blocked OFF, gameplay identical (exit 1).** The terrain is
+   a height field, so a segment that crosses it one way crosses it the other way. ON reports the
+   observer-side crossing, which is still far more than 25 m from the target.
+2. **The ON hit lines move toward the observer:** the same observer/target pairs, with the hit
+   point on the observer's side of the same terrain (for USN12 within about 40 m of the fortress,
+   now measured from the ship, 1000+ m: still blocked).
+3. **USN02 9200/9000 and JM06 3200/3000: hits 0 both sides, identical.**
+4. **Mechanism failure:** a row where ON reports hits that OFF does not (or the reverse), or
+   blocked changes on any row. That would mean the host's terrain march is one-sided (a start
+   point below the surface), which is a trace property, not the image's sight test; the switch
+   would then stay OFF and the march would be the next item.
+
+If 1 to 3 hold, the switch flips ON: gameplay-identical and faithful to the listing, and the
+ship AI's `unit_sees_unit_00864d90` (section 31) then asks the image's direction.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+OFF is this tree's build of `b89663ad5`; ON is `pair_export --commit b89663ad5 --flip
+kGunneryLosRoleSwapBound=true --out local\s12_los` (bsp_game SHA-256 prefix `8119FA3EB6E2`). Logs are
+`local\s12_off_<row>.log` and `local\s12_on_<row>.log`, both with `BSP_LOS_CENSUS=1`.
+
+| row | tests OFF / ON | blocked OFF / ON | hits OFF / ON | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 190 / 190 | 36 / 34 | 36 / 34 | 3, moved | 1 **missed** |
+| JM05 3200/3000 | 874 / 874 | 42 / 42 | 42 / 42 | 1, gameplay identical | 1 held |
+| USN12 3200/3000 | 283 / 283 | 87 / 87 | 87 / 87 | 1, gameplay identical | 1 held |
+| USN02 9200/9000 | 3781 / 3781 | 0 / 0 | 0 / 0 | 1, gameplay identical | 3 held |
+| JM06 3200/3000 | 432 / 432 | 0 / 0 | 0 / 0 | 1, gameplay identical | 3 held |
+
+- **Prediction 2 held.** The ON hit lines are the same pairs with the hit on the observer's side:
+  the OFF ray CB2 -> Dunlap (cast from Dunlap, hit 358.7 m from it) reappears ON as observer CB2,
+  target Dunlap with the same 358.7 / 964.1 m, and Dunlap -> CB2 now hits 135..768 m from Dunlap.
+  The only other summary moves on the identical rows are the landscape attach leaf and cell counts
+  (the walk visits different cells when it starts from the other end) and the ship avoidance
+  refill counter (known noise).
+- **USN01 moved: Coastal Gun 01 fires 2 shots at Dunlap (36 damage, Dunlap 2400 -> 2311).** The
+  death table is identical (5 rows, same times), and so is the plane death-mode table.
+- **Why.** A census build of this tree (`local\s12_cen_usn01.log`, OFF, with the reverse cast
+  asked alongside each test and not used) finds exactly two tests whose verdicts differ between
+  the two conventions, both observer Coastal Gun 01, target Dunlap: cast from Dunlap the walk hits
+  terrain 256.7 / 258.1 m from the gun (blocked), cast from the gun it hits nothing (visible). That
+  is the cell test's one-sidedness: 00ADEB80 is Ericson's `IntersectLineQuad` form (scalar-triple
+  signs, docs/SCENE_CONTENTS_HOSTS.md section 10.1), which only meets a quad from one side, and it
+  is the image's own walk (`kTerrainSegmentQuadtreeBound` ON). So the image, casting gun ->
+  Dunlap, sees Dunlap on those two tests.
+- **Prediction 1's premise was wrong,** and so was prediction 4's rule: it assumed the host march
+  was symmetric and that any asymmetry would be a host property. The asymmetric walk is the
+  image's, reached through the listing's own cast direction.
+
+**Verdict: ON.** The mechanism is the listing's (both points, the cast direction and the measured
+end), four rows are gameplay-identical, and the one move is two tests the image's one-sided cell
+test answers in the image's direction; no death flips. Recorded as a spread miss with the
+mechanism matching. The census diagnostic stays in the code (`BSP_LOS_CENSUS=1`: the hit count,
+the count of tests whose reverse cast would answer differently, and the first 24 of those).
+
+**Still labelled on both sides:** `0081DE10` answers 0, the section-span raise is not taken, and
+the 0.5 s owner point cache is not kept.
