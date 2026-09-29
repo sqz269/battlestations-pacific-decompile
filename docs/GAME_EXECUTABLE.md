@@ -12372,9 +12372,12 @@ in l's rows. They were not exported here.
   - **USN02 falls to 10 deaths**: Alden, John3, Witte and Perth survive, Minegumo sinks. Perth needs
     clearance together with the formation pair.
   - **The acos switch's USN04 44 -> 40** is not reproduced on this base; the follow law moves USN04's
-    damage and shots but no death row.
-  - **JM05's USS Phelps path**: the follower gate and clearance interact (gate OFF alone moves it to
-    1317.50 m, both OFF restore k).
+    damage and shots but no death row. Explained in GUNNERY_OPEN_ITEMS 54: the pair's base lacked
+    the follower gate and clearance, and the switch's death change flips sign with the base.
+  - **JM05's USS Phelps path** (corrected in GUNNERY_OPEN_ITEMS 54): the interaction is the follower
+    gate with formation join, not with clearance. Gate OFF alone gives 1317.50 m, gate and join OFF
+    2383.93 m, and all three with clearance give k's 2567.69 m (other details still moved). Clearance
+    OFF alone moves it by 0.01 m.
 - **Carried from k:**
   - JM06's US Cargo Transport 02 survival, redundant inside k's ship-AI group; the identity group's
     move of PBY Catalina 01 on JM06; the JM05 and USN12 path moves inside k's ship-AI group. l adds
