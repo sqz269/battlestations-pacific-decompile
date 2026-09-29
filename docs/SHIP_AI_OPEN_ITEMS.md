@@ -4327,3 +4327,68 @@ So on every reference row each site's class list is empty, and `00A0D1D0` has no
   - `s15{off2,on2}_*`: section 50;
   - `s15p_jm02`, `s15p_ijn11`: section 52.
 - `s15_a23980.c` / `s15_a23980.asm`: the repaired `00A23980`.
+
+## 54. The periscope sub-state: the pre-pass writer `009DB8F0` (packet `cc9_submarine_periscope_substate`)
+
+Worker cc9-ships16, 2026-09-29 (stamped 15:05 UTC). Ranking item 11. Ghidra read-only.
+
+**What the ranking row was.** `ShipAiSubAttack::periscope_state_122c [009e4dc1]` counted as
+UNIMPLEMENTED (JM06 128 on reference n, USNOS 61). The store itself, `009E4D90`, was already
+reconstructed (`src/ship_ai_sub_attack.cpp`) and has been mirrored into the units host's mast
+(`00854650`, `kSubmarinePeriscopeOutBound`, ON) since packet `cc9_periscope_out`. The row stayed
+a record because the census of `+122Ch` writers was incomplete.
+
+**The writer census.** `local\s16_disp_ctx.py` decodes every `2C 12 00 00` hit on disk (56 hits):
+- ship AI: `009E4DDA` (`009E4D90`, the fire step's raise), `009EA8FB` (the fire step's lower) and
+  **`009DB9AC` / `009DB9D4` / `009DB9EC` in `009DB8F0`**, which this process never ran;
+- the broken state 2: `009327F7` (`BSP_SubmarineUnit_BreakPeriscope`) and `009373E7`
+  (`BSP_UnitController_ClearShapeCollisionBits`); units/damage lane, not modelled;
+- the unit: `00853CA9` (SEntityInit), `00853FA1` (serialize), `00854ECF` (the repair or
+  auto-raise arm of `00854650`);
+- the player HUD: `00650402`, `00651799`, `00651D07`, `00651F36`, `00652467`;
+- readers: `00852E45`, `00650785`, `0089408B`, `0069265B`, `009E4EED`.
+- The `009F1EAF..009F26FA` hits are `ebp+122Ch` on the approach frame's own object, not a unit.
+
+**`009DB8F0`, read whole (`009DB8F0`-`009DB9FA`, RET 4 then INT3).** `__thiscall(holder,
+float seconds)`; ECX is `brain+0AC4h`, a 4-byte holder of `[brain+0AB4h]` (the unit). The float
+is never read. `009F11DD..009F11F7` allocate the holder only when `unit->vtable[5Ch](8)` is
+true at construction, so only a submarine has it. `009F1B57..009F1B70` call it after the
+neighbour walk and before the avoidance request, on every pre-pass.
+1. `009DB8F6`: `depthLevel [unit+1268h] != 1` -> the lower arm.
+2. `009DB916..009DB96C`: world Y `[unit+100h]` (after `00414DB0`) outside
+   `float(bands[1] + 2.5)` / `float(bands[1] - 2.5)` (`00CE3DE0` = 2.5 double; JA, so unordered
+   stays in) -> the lower arm.
+3. `009DB96E..009DB981`: role 1 (`[unit+1B0h]`) must be 8 or `00927F10`-AI-held, else return
+   with no write.
+4. `009DB985..009DB9AC`: `[ai+2264h]` non-null and `vtable[20h]()` true -> `+122Ch = 1` unless 2.
+   Slot `20h` is `009DAA80` (XOR AL,AL) for cruise, stop, follow, land, movetopos, moveonpath and
+   attackmove (`00D21598..00D219D0`), `009E4910` (MOV AL,1) for sub_attack (`00D2195C`) and
+   `009DB310` (MOV AL,1) for kamikaze_attack (`00D216B8`).
+5. `009DB9BB..009DB9D4`: else `00521E70(0)` (role 0 AI-held) -> `+122Ch = 0` unless 2; else no
+   write.
+6. The lower arm `009DB9E3..009DB9EC`: `+122Ch = 0` unless 2.
+
+**The binding.** `bsp::ship_ai_periscope_prepass_009db8f0` (`src/ship_ai_sub_attack.cpp`), run
+from the controller's `replan_prepare_009f1420` for `unit_is_kind_of(8)`, behind
+`kSubmarinePeriscopePrepassBound` (`src/game_hosts_ship_ai.cpp`), committed OFF. Both writers
+share one store helper, so the units host's mast sees each write. With the switch ON the
+`009E4DC1` row reports concrete. A new summary block, `periscope prepass`, lists calls, raises,
+lowers and the arm census per submarine; a note line marks each state change.
+- LABELLED: role answers the host cannot give (`unit_current_role_slot` or `00927F10`
+  unavailable) make no write and are counted as `role_unavailable`; the pose refresh
+  `00414DB0` is the host's position; the state-2 guard never fires (no producer).
+
+**Predictions (written before the pair).**
+- **JM06 3200/3000.** `PlayerSub 03` raised its periscope once, at 142.10 s, through the fire
+  step. ON: the pre-pass raises it on the first pre-pass where the boat is in sub_attack at
+  depthLevel 1 within 2.5 of bands[1], so at or before 142.10 s, and lowers it when the fire step
+  dives it (level 2/3), so at least one `out=0` line appears. The sensor answer moves from
+  PeriscopeIn toward PeriscopeOut for those windows. Any other submarine in cruise at level 1
+  already holds 0, so it shows only `lowered` arms with no transition. Deaths: no change
+  expected (low confidence; detection of the boat is the only route). Verdict expected: exit 1
+  or 3 on sensor counters; flip unless the mechanism misbehaves.
+- **USNOS 3200/3000.** `Gato` raised at 8.80 s. ON: raised at or before 8.80 s, lowered when it
+  dives. Same death expectation.
+- **LOMP06 1200/1000.** The Narwhal is the player's unit, so role 1 is not AI-held: every
+  in-band call takes `player_role1` with no write; out of band it writes 0 over 0. Expect
+  gameplay identical (exit 0 or 1).
