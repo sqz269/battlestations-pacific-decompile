@@ -468,3 +468,117 @@ side.
   - no reset counted; or
   - releases unchanged with resets counted. That would mean the altitude gate blocks the release,
     not the distance: the planes die at 18-40 m against TorpReleaseAlt 5 m.
+
+### 8.5 The pairs and the verdict: ON, with P2's size recorded as a miss
+
+**The binding.** lua16's `GameUnitsHost::plane_hit_task_notify_00999aa0` is on main (merge
+`ecb37cd13`). The gunnery host calls it for every hit record dispatched to a plane victim (class
+0Fh), damaging or not. The call sites are:
+- `apply_hit` (the direct and blast records);
+- `apply_gunless_blast_hit`.
+
+Both run before `00826F10`, as `007BBCF0` calls `00999AA0` before `008777D0`. The binding is
+`kPlaneHitTaskNotifyBound`, committed OFF in `d688b9119`. The census line is
+`summary mission gunnery plane hit notice records / sent / taken`.
+
+**The pairs.**
+- **Binaries:** same-tree exports of `d688b9119`:
+  - `local\phoff` (control, `5E494DCB2897`);
+  - `local\phon` (the flip, `873A8EC1DD6A`).
+- **Launch:** the reference form, with the RNG option and the death table on.
+- **Smoke:** a 300-frame USN01 smoke ran clean first.
+- **Logs:** `local\g13_ph{off,on}_{jm05l,e2}.log`.
+
+| row | pair_diff | census (ON) | releases OFF -> ON | death rows |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 3 | 406 plane hit records, 406 sent, **250 taken** (torpedo tasks) | torpedo-task 3 of 21 -> 3 of 24; drops 3 -> 3 | 27 -> 27, none only ON or only OFF, 21 changed |
+| E2 9200/9000 | 3 | 793 records, 793 sent, **167 taken** | torpedo-task 5 -> 6 of 16; drops 5 -> 6 | 51 -> 51, none only ON or only OFF, 37 changed |
+
+**Where the drops moved** (`local\g13_drops.py`, first trace time and spawn point):
+- **JM05:** the same three droppers release earlier and farther out on their run.
+  - `Lexington_sqn07|.-2`: 249.61 s at x 7380 -> 247.61 s at x 7244.
+  - `Lexington_sqn05|.-3`: 251.81 s at x 7459 -> 248.71 s at x 7238.
+  - `Lexington_sqn07|.-3`: 254.61 s at x 7494 -> 252.61 s at x 7352.
+- **E2:**
+  - `B5N Kate #2.1|.-3` releases at 126.20 s instead of 127.80 s.
+  - The `#6.1` Kates release about 1.5 s earlier.
+  - `#4.1|.-3` gets a drop it did not have.
+
+**Against 8.4:**
+- **P1, mechanism: held.** Resets are counted on both rows, and only torpedo tasks take them
+  (lua16's method returns true only then).
+- **P2, JM05: missed in size.**
+  - The release count stays at 3.
+  - The three releases come 2 to 3 s earlier, 140 to 220 m farther back along the run. That is the
+    far distance acting.
+  - The planes that die still die before any release: 16 low deaths on both sides, killer ranges
+    229-1057 -> 299-1077 m.
+- **P3, E2: held in kind.** One extra drop, and earlier drops.
+  - Its "0 -> at least 1 Lexington drop" premise was stale: on main, OFF already has the `#2.1` and
+    `#6.1` Lexington drops.
+- **8.4's second failure clause** ("releases unchanged with resets counted") fired on the JM05
+  count. It was written to catch a reset that changes nothing, and that did not happen: the same
+  releases moved outward, which is the image's far-distance rule working.
+
+**What still stops the rest is not the distance.** The dying planes are at 18-40 m against
+TorpReleaseAlt 5 m. That is plane-side (the descent), and it is recorded for lua16.
+
+**Verdict: ON.** The mechanism is the image's and acts as the image's comment says; P2's size is
+recorded as a miss. No death row appears or disappears on either row.
+
+### 8.6 The dive clock (`kDiveHitClockBound`, lua16), predictions written before its pair
+
+**The switch.** lua16's `kDiveHitClockBound` (`src/game_hosts_units.cpp`, merge `09c85d682`)
+makes `009C4AA4` read the carried approach+C4h instead of the 3600.0 floor. The hit notice
+(`009C7900`, through 8.5's caller) zeroes it.
+- **Effect in the image:** for one second after a hit, the goaway timer arm forces its countdown
+  (`dive_bomb_goaway_timers_009c4a6d`) when its clock is past its window plus 6 s. That re-rolls
+  the jink.
+- **The pair:**
+  - both sides carry 8.5's notice ON;
+  - the flip side sets `kDiveHitClockBound = true`;
+  - the rows are USN04 4700/4500 (the Vals) and JM05 9200/9000.
+
+**Predictions:**
+- **P1, mechanism.** The summed `rerolls=` over the `divebomb ... goaway turn` lines rises on
+  USN04 against the control. The notice's `taken` count includes dive tasks on both sides, since
+  the reset is made whether or not the clock is read.
+- **P2, USN04.**
+  - Dive-bomb-task releases stay within ±1 of the control (1 of 19 in reference n): the jink runs
+    in the goaway after release and in the approach timers, not in the release gate.
+  - Val death times move by seconds. The Val death count moves by at most 2.
+  - The Kates' torpedo rows move only by coupling.
+- **P3, JM05.** Dive-bomb releases stay 0. The rows move by coupling only.
+- **Mechanism failure:** no rise in rerolls with dive-task notices taken.
+
+### 8.7 The dive clock pair: mechanism failure by 8.6's rule, kept OFF
+
+**The binaries.** Same-tree exports of `185d5e8fc`, both with 8.5's notice ON:
+- `local\ctl` (`D9F51B79A945`);
+- `local\dvon` (`kDiveHitClockBound = true`, `2A9518609E6A`).
+
+A 300-frame smoke ran first. `local\g13_dive.py` sums the per-Val goaway census lines.
+
+| row | pair_diff | goaway lines / countdown ticks / rerolls, control -> flip | notices taken | releases | deaths |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 3 / 735 / **3** -> 3 / 736 / **3** | 374 -> 382 | dive 0 of 19 both; torpedo 6 of 16 both | 46 -> 46, no row only ON or only OFF; 10 changed by 0.05-1.15 s (Val #5.1's first damage 203.91 -> 200.16 s is the earliest move) |
+| JM05 9200/9000 | **1** | 4 / 81 / 0 both | 406 both | dive 0 of 21 both | identical |
+
+**Against 8.6:**
+- **P1: failed.** The rerolls stay at 3 with dive-task notices taken. That is 8.6's
+  mechanism-failure clause.
+- **P2 and P3: held**: releases are unchanged and the rows move by coupling only.
+
+**Why the rerolls do not rise.**
+- Only 3 Vals ever run the goaway timers in this row (3 goaway census lines).
+- Every other Val dies in its dive (0 of 19 dive-task releases), so the one-second forced window
+  after a hit almost never meets a running goaway clock that is past its window plus 6 s.
+- The small USN04 movement shows the clock is read somewhere. The re-roll it exists for is not
+  observed.
+
+**Verdict: OFF (lua16's switch, `src/game_hosts_units.cpp`)**, recorded. The switch becomes
+testable once Vals survive their dives. Neither side's releases depend on it today.
+
+A note for lua16: with the dive notice in, JM05's notices taken rose from 250 to 406 of 406. Every
+hit on a plane now finds a torpedo or dive task. That matches the image's walk of the task list:
+the first task that answers true takes the hit.

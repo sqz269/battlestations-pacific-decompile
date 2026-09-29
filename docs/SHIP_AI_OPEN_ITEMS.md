@@ -4134,3 +4134,196 @@ defect, but it means the land install was never exercised.
 - `kScriptedOrderNatives2Bound` (SetShipMaxSpeed) is flipped **ON**.
 - PilotLand moves to its own switch, `kPilotLandNativeBound`, which stays **OFF**. Re-pair IJN01
   once FindEntity matches case-insensitively.
+
+## 51. The AI planner spawn, gates read (packet `cc9_ai_planner_spawn`, continued from 47)
+
+Worker cc9-ships15, 2026-09-29 14:41 UTC. Ghidra was read-only. The call sites come from byte
+censuses (`tools/callsite_census.py`), not from `ghidra callers`.
+
+### 51.1 Correction to section 47: the single-player spawn does not pass through `00A25B90`
+
+| routine | rel32 callers |
+| --- | --- |
+| `00A25B90` (the `[00F8AB6A]` gate) | only the mode planners: Duel `00A25FBE`, Escort `00A26255`, Siege `00A26554`, Competitive `00A26634` |
+| `00A25A30` | `00A25C3E` (in `00A25B90`), DefendThink `00A29DAA`, CaptureThink `00A2B758` |
+| `00A23980` | `00A25B0B` only (in `00A25A30`) |
+
+So Capture and Defend, which are the planners the single-player rows run, call `00A25A30`
+directly and never read `[00F8AB6A]`. Its writers are `00A32DF0` (clears it; referenced only from
+the table at `00D23240`) and `00A38DA0` (`__fastcall`, CL = the value: `00A38DCF` stores 1 and
+`00A39009` stores 0). `00A38DA0` is called from `00778180`, `0088C838` and `0088C9C8`. None of these
+decides the single-player path.
+
+### 51.2 The Capture spawn arm `00A2B477-00A2B7A6`, gate by gate (V, listing)
+
+1. **`00946970([00F89B3C], team) == 0.0`**, at `00A2B488` / `00A2B491`. `00946970` sums, over the
+   spawn manager's request lists, `00946870`. That is the `ResourceUsage` property (`00CFACAC`) of
+   each queued record whose `OwnerPlayer` (`00CF882C`) is the team. The gate is **"no spawn request
+   of this team is queued"**. On these rows the queue holds only what `SpawnNew` put there.
+2. **`[ESP+4Fh]`, the ramp** (`00A2A0B3` / `00A2A0C1`, the host's `ai_tail_capture_spawn_due`).
+3. **The budget** (`00A2B4A6-00A2B4EE`), w =
+   `(1 - [00F8A8BC + 4*009FFC80()]) * 00942130(team) - 00A1C900(planner)`. It spawns only when
+   w >= 1.0.
+   - `00942130`: `[00E0CFB4]` (2400.0 in `.data`, rewritten from the lobby by `005E3273`) times
+     the double `[00D7A280]` = 0.5, divided by the number of the eight slot records (`game+18CCh`)
+     that have `+8h` set, `+9h` clear or `+0Ah` set, and `+28h` equal to `slot[team]+28h`. It is 0
+     only when that count is 0.
+   - `004C6890` sets `+8h` = 1 on every slot below the scene's `MaxPlayerNum`. The logs show
+     `max_players=8 authored=1` on JM05 and IJN01. So `slot[team]` counts itself, the count is at
+     least 1, and the budget is 1200 / count.
+   - With the defend percent at its 0.35 default and no group resources (`ResourceUsage` is
+     unauthored), w = 780 / count >= 97.5. **The budget passes.**
+4. **The best target**: the loop `00A2B5D5-00A2B65B` over the plan's targets (`+2Ch` > `[00D7A218]`,
+   the largest `+14h`). Then:
+   - `00A24870` fills the vector with the entity records within tuning `+1A4h` of the target
+     (`00A07D40`), or one default record from `BSP_Ai_EntityRecordBuild(1)` when there are none;
+   - `00A25A30(planner)(target pos, min(w, rec+1Ch), &vector, "[capture]"+id, 0)`.
+5. **The sources, `00A25A30` -> `0066E590`**:
+   - `0066DD00` walks world list 28 (`[[00E188A8]+19CCh]+16Ch`, the CommandBuildings) for those
+     with `+78Ch` != 0. That is the size of the `+784h` list `006F5CC0
+     BSP_CommandBuilding_AdoptNearbyGarrison` fills with the forts (1Bh), airfields (45h) and
+     shipyards (46h) near the building.
+   - `0066E2B0` keeps the ones of the team (`+54h`), and `0066E590` drops the entries whose
+     `+14h` is 0.
+6. **`00A23980`** (body `00A23980-00A243C7`, `RET 18h`) prices and places the force, through
+   `VehicleClass_GetOrCreate`, `00942130` and `00A21D90`. **Ghidra's listing drops
+   `00A2410C-00A243AC`**, after the `_free` at `00A24107` (the CALL_RETURN problem;
+   `ghidra flow` would show it). The dropped block is where the request goes out:
+   - `00A24328 MOV ECX,[00F89B3C]`, then `00A24337 CALL 0094C830`;
+   - `0094C830` builds the request (`00947BC0`) and, in session mode 0 or 1, calls `0094B600`,
+     which validates and enqueues through **`BSP_SpawnManager_EnqueueRequest` `00949530`**. That
+     is the queue `SpawnNew` feeds, and the host already drains it (`src/game_hosts_lua.cpp`,
+     `spawn_request_queue`).
+
+### 51.3 Verdict so far
+
+In single player the gates **pass** wherever the team owns a CommandBuilding with an adopted
+airfield, shipyard or fort, and the spawn then **creates units** through the SpawnNew queue.
+- AI_PLANNERS.md's "the spawn arm is unreachable in this process" describes this host, not the
+  image.
+- Section 47's `[00F8AB6A]` question does not apply to single player.
+
+This is ranking item 8, and it is real. Not yet read:
+- `00A23980` (with the dropped tail from the disk bytes), `00A236F0`, `00A21D90`, `00A24870`'s
+  visitor `00A07D40`, `00947BC0` and `0094B600`;
+- the Defend arm `00A29B8E-00A29E2A` (its gate is at `00A29BF8` and its call at `00A29DAA`; its
+  gate order was not read).
+
+Binding needs those bodies and a host route from the planner into `spawn_request_queue()`.
+**Next step:** a Ghidra flow repair of `00A23980` by the lead (`tools/ghidra_flow_repair.py`), then
+read it whole.
+
+## 52. The AI planner spawn, closed for these rows (packet `cc9_ai_planner_spawn`)
+
+Worker cc9-ships15, 2026-09-29. This packet followed the lead's flow repair of `00A23980`
+(`b67893b0a`: three gaps after `_free`, 0 left). Ghidra was read-only.
+
+### 52.1 `00A23980` (body `00A23980-00A243C7`, `RET 18h`), read whole from the repaired decompile
+
+`__thiscall(planner)(pos, sources, weight, threats, tag, flag)`. For each source site, in the
+order `00A236F0` sorted them:
+1. **`0084D560(site)(&list, team, 0)`** (ECX = the site, set at `00A23A47`) builds the classes this
+   site can supply. Each is resolved through `BSP_VehicleClass_GetOrCreate` (`00A23A7B`).
+2. **The budget** is `00942130(team)`. When `004BCA50` < 4, `00A0D1D0(classes, budget, threats,
+   site+FCh, 0, flag, -1.0)` scores the site and fills the chosen composition (32-byte entries).
+   The mode 4+ arm uses `00A07D40` / `00A06260` instead.
+3. **A site with a non-empty composition is weighted.** The weight is 1.0 with one source.
+   Otherwise it is `00419010` over tuning `+100h..+10Ch` of distance / `00A07C10()`, times the
+   score. The best site's composition is kept through `00A21D90`.
+4. **After the loop, with a best site**, it builds three dword vectors from the composition:
+   - the class;
+   - entry `+10h`;
+   - `0084CF80(class)`, which overwrites the `vt[18h](0Fh)` / `(14h)` 1-or-3 value in the same
+     slot.
+   Then **`0094C830(team, &classes, site, [slot[team]]+2Ch, &values, &kinds, 0, flag)`** at
+   `00A24337`, and the result is 1.
+
+### 52.2 The deciding input: the site's stock list
+
+`0084D560` copies the site's `+328h` list (team 0) or `+31Ch` list (any other team). It then
+filters that list with `006F4A00(46h/45h)` and the class `vt[18h]`. **It adds nothing of its
+own.** Both lists are filled only by `0084D170` (the site's activation, which reads `maxPlanes`,
+`maxShips`, `SPActive` and `Angle`):
+- the `JapanList` / `AlliedList` property sub-bags;
+- one entry per `"Stock %d"` sub-bag, with `Count` != 0 (and `SquadSize`, default 3).
+
+**Which scenes author a stock list.** A byte search of this installation's mission scenes (mtimes
+2024-07-13) finds `JapanList` / `AlliedList` outside `multi\` in only four files:
+- `ijn\ijn_11_operation_to.scn` (136 `Stock N` strings);
+- three copies of `ijn_02_force_z.scn` (600).
+No reference row's scene authors one:
+
+| row | scene |
+| --- | --- |
+| USN01 | `usn_1_marshall` |
+| USN02 | `usn_2_java` |
+| JM05 | `ijn_05_invasion_of_port_moresby` |
+| IJN01 | `ijn_1_pearl` |
+| BSM01 | `bsm_01_stationed_at_pearl` |
+| LOMP10 | `10_san_jose` |
+| USN13, USNOS, JM06, JM08, USN12, LOMP06 | none of them are in the four files |
+
+So on every reference row each site's class list is empty, and `00A0D1D0` has nothing to buy.
+- **Uncertain:** `00A0D1D0` was read only at its head. That an empty class list gives an empty
+  composition is inferred from its inputs, not traced.
+
+**The two authored scenes, checked in the host (3000 frames, main-equivalent build):**
+- **JM02** (`local\s15p_jm02.log`): `--menu-select JM02` loads
+  `COTP-IJN/PRCPIJN/prcpijn_02_force_z.scn`, which is **not** one of the four files, and every
+  Capture and Defend summary reads `thinks=0`.
+- **IJN11** (`local\s15p_ijn11.log`): 40 capture thinks and 40 defend thinks, but the capture
+  target path (the arm that holds the spawn) runs 0 times (`spawn_due=0`), and the defend records
+  path runs 0 times (`spawn_arms=0`).
+
+### 52.3 Verdict: closed for these rows, with no binding
+
+- The single-player gates pass (section 51), but the spawn buys only from authored stock lists,
+  and no reference row has one. So the image spawns nothing on these rows either, and the host's
+  record is the right model there.
+- **AI_PLANNERS.md's "unreachable in this process" is right in effect for these rows, for a
+  different reason:** no stock, rather than no unit creation.
+- **If a stock scene is ever paired:** the route is `0094C830` -> `00947BC0` -> `0094B600` ->
+  `00949530`, the SpawnNew queue the host already drains (`spawn_request_queue()`,
+  `src/game_hosts_lua.cpp`).
+  - **Still unread** on that route: `00A0D1D0`, `00A236F0`, `00A21D90`, `00947BC0` and `0094B600`,
+    plus the Defend arm `00A29B8E-00A29E2A`.
+
+## 53. Handoff (cc9-ships15, 2026-09-29 14:47 UTC, at about 72% context)
+
+**State.** Branch `agent/cc9-ships15`.
+- On main: 9273d482b, b454cf885, 18b5e6710, 968d6218f, f2b75abbd and 2d84eaf4c.
+- This commit adds sections 52 and 53.
+- No lease is held after this commit.
+
+**Switches this worker added:**
+
+| switch | file | state | section |
+| --- | --- | --- | --- |
+| `kScriptedOrderNativesBound` (NavigatorEnable, UnitHoldFire squadron arm, EntityTurnToEntity ship arm) | `src/game_hosts_script_orders.cpp` | ON | 49 |
+| `kScriptedOrderNatives2Bound` (SetShipMaxSpeed) | same | ON | 50 |
+| `kPilotLandNativeBound` (PilotLand -> `land_at_site_0099a3dd`) | same | **OFF** | 50.2 |
+
+**Queue for the successor:**
+1. **Flip `kPilotLandNativeBound`** once cc9-lua17's case-insensitive `FindEntity` is on main
+   (the lead sends the sha).
+   - Pair IJN01 3000: expect `PilotLand: B-17 0n -> AirField 02` and land tasks installed.
+   - Pair LOMP10 9200/9000: no call on the n reference; `unitcommand` must answer `land` if
+     line 605 is reached.
+2. **The periscope sub-state `009E4DC1`** (ranking 11): the `ShipAiSubAttack` `+122Ch` state arm;
+   reach is JM06 132 and USNOS 61.
+3. **Parked:**
+   - `Scoring_SetMissionCompleted`: score only; route it through the mission-frame result host
+     if it is ever needed.
+   - The planner spawn, which needs a stock scene (section 52).
+   - The UnitSetFireStance / UnitHoldFire ship arms: gunnery13 pairs them behind
+     `kShipFireStanceBound`, and the callers are in (f2b75abbd).
+
+**Useful files in the cc9-ships15 tree (`local\`):**
+- `s15_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames` launches in the
+  background with the reference environment.
+- `s15_wait.ps1 -Logs <names>` is the foreground wait on the final COM release.
+- Pair logs:
+  - `s15{off,on}_*`: section 49;
+  - `s15{off2,on2}_*`: section 50;
+  - `s15p_jm02`, `s15p_ijn11`: section 52.
+- `s15_a23980.c` / `s15_a23980.asm`: the repaired `00A23980`.

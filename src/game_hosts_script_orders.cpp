@@ -1615,6 +1615,15 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
         if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 0x0f)) {
             log_.implemented("Plane::weapon_director_0047f180 (null, 0071BE80 returns)",
                              "0047f180");
+        } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
+                   && units_.gunnery() != nullptr) {
+            // Packet cc9_ship_fire_stance (routed from gunnery13): the ship's
+            // director predicates 0071D560 / 0071D580, stored by the gunnery host.
+            // NOT DONE, labelled: the director fire-target release when a stance
+            // forbids fire (00836210 at 0083622B, kWeaponDirectorFireTarget).
+            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+            log_.implemented("MissionLuaNative::UnitSetFireStance ship arm (0071BE80)",
+                             "0071be80");
         } else {
             log_.unimplemented("MissionLuaNative::UnitSetFireStance non-squadron arm",
                                "0071be80");
@@ -1663,6 +1672,12 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
         ++hold_fire_null_director_;
         log_.notef("  UnitHoldFire: plane %s: vtable[114h] 0047F180 is null; the image "
             "faults at 0071BED6 (recorded, nothing done)", row.unit.c_str());
+    } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
+               && units_.gunnery() != nullptr) {
+        // Packet cc9_ship_fire_stance (routed from gunnery13): 0071BED0 is
+        // 0071BE80 with stance 0 on the ship's director.
+        units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
+        log_.implemented("MissionLuaNative::UnitHoldFire ship arm (0071BED0)", "0071bed0");
     } else {
         log_.unimplemented("MissionLuaNative::UnitHoldFire director arm (0071DA50 5Ah)",
                            "0071bed0");
