@@ -663,3 +663,80 @@ Predictions, each against the same-tree OFF run with the torpedo switch at its v
   AA and the fly-over tolerance (ranking #1). They stay within +-2. Any release that happens
   scores a smaller along-course error.
 - **Rows with no dive-bomb task:** identical apart from the known noise.
+
+### 11.3 The torpedo pair, measured: `kTorpedoAimLeadBound` ON
+
+cc9-planes1, 2026-09-29. Both builds are exports of `1dc0d4bf8`: the OFF build (`70E1BAABA0EB`)
+flips nothing, and the ON build (`E28985CFC860`) flips `kTorpedoAimLeadBound=true`. The runs are
+reference-o launches with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, and a 300-frame
+USN01 smoke ran first. The logs are `local\p1_{off,ton}_<row>.log` in the cc9-planes1 tree.
+
+**Mechanism: holds.**
+- The `aim lead` lines appear on every torpedo row: 39 samples on USN04, 121 on JM05 9000.
+- Every projtime lies in `[0, 30]`. It sits at the 30 s cap while the range is long, then falls
+  on the run-in: Kate #6.1|.-4 on Lexington reads 28.86, 23.48, 15.86, then Kate #6.1|.-2
+  reads 4.99.
+- The lead is `projtime x speed` along the target's course: 16.19 m/s x 15.86 s = 257 m, logged
+  as (181.5, 181.9).
+- The arc arm is rare, because `|yaw x t|` stays under 0.1 on these straight-running carriers.
+
+**Outcome: moved in both directions.**
+
+| row | releases OFF -> ON | aerial torpedo impacts | deaths | damage |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 6 of 16 -> 2 of 16 | 6 (Lexington 3, Yorktown 3) -> 2 (Lexington 2) | 46 -> 46, 42 rows changed | 15008.9 -> 12050.6 |
+| E2 (USN04 9000) | 6 -> 2 of 16; dive 1 -> 0 of 19 | 6 -> 2 | 51 -> 51, 47 changed | 15802.4 -> 12797.5 |
+| JM05 9000 | 3 of 24 -> 6 of 24 | Zuikaku 3 -> Shokaku 3 + Zuikaku 3 | 27 -> 30: Shokaku, Zuikaku and Japan Troop Transport 04 sink only ON | 29057.2 -> 31543.8 |
+| USN13 3000 | 0 of 60 -> 4 of 60 | 0 -> 4 | 31 -> 31, 31 changed | 9130.0 -> 10941.9 |
+| USN01 3000 | 0 of 5 both | - | 5 -> 5 | 2786.4 both |
+
+**Why USN04 loses releases.** Every released torpedo hits, on both sides. The loss is in
+survival. The per-entity death table shows each Kate dying 1-4 s EARLIER and FARTHER out:
+- #4.1: 791 -> 1116 m;
+- #2.1: 658 -> 822 m;
+- two kills move from Lexington's guns to `Northampton-class02`.
+
+Aiming 300-480 m ahead of the carrier moves the run-in off the carrier's own bearing and across
+the escort screen. The Yorktown group (#4.x) is now shot down before release, so Yorktown takes
+0 damage (was 1916).
+
+**Against the predictions (11.1).** The mechanism prediction held. The spread predictions missed:
+- USN04's releases fell by 4, outside +-3, and its aerial impacts fell with them.
+- JM05 at 9000 released 3 more instead of staying near 0. The prediction came from the
+  3000-frame row; at 9000 frames there are releases on both sides.
+
+The contract's rule is that a spread miss with the mechanism holding may flip, recorded. The
+listing is unambiguous that the image leads (section 11). **The switch goes ON.** The
+AA-lethality finding (ranking #1) now applies to a strike that aims ahead, as the image's does.
+
+### 11.4 The dive pair, measured: `kDiveAimLeadBound` ON
+
+The OFF side is the torpedo-ON export (`E28985CFC860`, logs `local\p1_ton_<row>.log`). The ON side
+flips both switches (`E9AB45EF5DA9`, `local\p1_don_<row>.log`).
+
+**Mechanism: holds.** The dive bombers' `aim lead` lines show projtime falling through the dive:
+- USN01 ScoutDauntless on Convoy1 at 13.74 m/s: 13.24, 10.35, 7.76, then 4.44 s near release.
+- USN04 Vals: 15.24 to 12.55 s.
+
+The lead is along the course, 58-183 m. At release the projtime equals the bomb's 4.3-4.5 s fall
+time, as `tf + 0` should. Prediction 11.2's projtime band of 3-12 s was slightly low at its top
+(15.2 s early in the dive), because the fall time is long from the dive's entry height.
+
+**Outcome.**
+
+| row | dive releases | deaths | other |
+| --- | --- | --- | --- |
+| USN01 3000 | 2 of 2 -> 2 of 2 | 5 -> 5, death table identical | Both bombs still miss. "vs target at release" rises 62.2 -> 114.1 m and 77.0 -> 119.7 m, by about the lead. At release the bomb is now aimed where the convoy will be after the fall, not where it is. The impact-time target position is not logged, so the along-course closure is inferred, not measured. |
+| USN04 4500 | 0 -> 0 of 19 | 46 -> 46; D3A Val #7.1 survives, D3A Val #5.1\|.-2 dies | torpedo releases 2 -> 1 (the AA picture moves with the Vals' tracks) |
+| E2 | 0 -> 1 of 19 | 51 -> 51 | torpedo 2 -> 1 |
+| JM05 9000 | 0 -> 0 | 30 -> 30, 16 rows changed | - |
+| USN13 3000 | - | identical | no dive task: GAMEPLAY identical |
+
+The prediction's spread held: releases within +-2, USN01 keeps 2 of 2, and rows without a dive
+task are identical. **The switch goes ON.**
+
+Open, recorded:
+- `approach+C8h` is substituted by its mean, 0.
+- A re-target zeroes projtime for one tick.
+- The torpedo goaway tick (`009D0F10`) still reads the target's origin.
+- The lead uses the hull's heading for `00812090`'s body axis.
