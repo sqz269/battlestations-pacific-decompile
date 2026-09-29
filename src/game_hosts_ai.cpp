@@ -1834,11 +1834,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::size_t head = lead_member(*s);                  // [sq+3D0h]
         if (head == bsp::kPlaneSquadronNoUnit) return false;
         const int cls = units.unit_class_id(head);                  // 009FFECD +0C4h
-        if (units.squadron_ammo_type_007edad0(index) != 0) return false;  // 009FFED3
+        // The units host keys squadrons by a member plane; this host's squadron
+        // index lies past units.count(), so the head plane names the record.
+        if (units.squadron_ammo_type_007edad0(head) != 0) return false;   // 009FFED3
         if (cls != 0x10 && cls != 0x11 && cls != 0x12) return false;      // 009FFEDC..
         done("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
         const std::size_t placed =
-            units.issue_return_to_base_007f16d0(index, "ai squadron rtb exclusion 009FFF09");
+            units.issue_return_to_base_007f16d0(head, "ai squadron rtb exclusion 009FFF09");
         ++rtb_exclusion_issues;
         if (placed == 0u) return false;   // 009FFEF9, null descriptor: answers 0
         ++rtb_exclusion_excluded;

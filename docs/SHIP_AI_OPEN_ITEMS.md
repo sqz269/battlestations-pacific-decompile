@@ -3368,3 +3368,17 @@ an AI group: USN04 and JM16 make no squadron call at all. So no row reaches the 
     a squadron (`18h`), a plane (`0Fh`) or a small ship (kind 6 and `00827F70` on `[+538h]`), then
     compares the event name through `0096AA40`.
   - Nothing reconstructs it and no lane owns it. It is a warning-event filter.
+
+### First pair: a mechanism failure in the binding (cc9-ships13, 2026-09-29)
+
+ON was `pair_export --commit 6ddde4cc6 --flip kAiSquadronRtbExclusionBound=true --out local\s13_r`,
+logged to `local\s13ron_<row>.log`. OFF was `local\s13r_<row>.log`.
+- USN13 and IJN01 were both gameplay identical (exit 1).
+- But `issues=576` on USN13 and `issues=17` on IJN01, one per bomber call, with `excluded=0`.
+- The arm had passed the AI host's squadron index to the units host. That index lies past
+  `units.count()` (`squadron_of`), while the units host keys a squadron by its registry unit or a
+  member plane (`squadron_record_of`). So the ordnance reader found no record and answered 0 on
+  every call, and the issue found none either.
+- Prediction 2 caught it. The fix passes the head plane `[sq+3D0h]`, which `009FFECD` reads
+  anyway.
+- The OFF side needs no rerun: OFF never calls the arm.
