@@ -253,6 +253,12 @@ inline constexpr bool kShipAiRingScanProbeBound = true;
 // 00831A0A / 00831A4F). False: both answer 0.0, which fails the gate's first
 // conjunct for every class.
 inline constexpr bool kShipAiEngageKamikazeGateBound = false;
+// Packet cc9_engage_kamikaze_gate, docs/SHIP_AI_OPEN_ITEMS.md section 29. True:
+// the engage member state+14C0h runs its enter 009DB5E0 (sub+8h cleared) and its
+// step 009E23B0 (ship_ai_attackmove_engage_step_009e23b0: the intercept point,
+// the close arm through 009DE050 and the run arm through 009DFF40). False: both
+// are records, so a unit the gate hands to the member stops being steered.
+inline constexpr bool kShipAiEngageSubStateBound = false;
 // Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
 // gives a generated ship its brain on the same path as a loaded one: SEntity
 // InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene
@@ -3031,6 +3037,81 @@ private:
     std::size_t index_;
 };
 
+// Packet cc9_engage_kamikaze_gate: bsp::ShipAiAttackMoveEngageHost, the calls
+// of 009E23B0 (the engage member's step, state+14C0h vtable +0Ch).
+class EngageStepBinding final : public bsp::ShipAiAttackMoveEngageHost {
+public:
+    EngageStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                      GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
+    void hold_heading_and_stop_009e00a0() override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
+        owner_.done("ShipAiEngage::hold_heading_and_stop", 0x009e00a0u);
+    }
+    // The host's poses are current, so the two 00414DB0 refreshes do nothing.
+    bool target_pose_valid_00c8() override { return true; }
+    void refresh_target_pose_00414db0() override {}
+    bool unit_pose_valid_00c8() override { return true; }
+    void refresh_unit_pose_00414db0() override {}
+    void target_position_xz_00fc(float& x, float& z) override {
+        float y = 0.0f;
+        x = z = 0.0f;
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        if (t != 0u) owner_.units.unit_position_00fc(static_cast<std::size_t>(t - 1u), x, y, z);
+    }
+    void unit_position_xz_00fc(float& x, float& z) override {
+        float y = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+    }
+    void target_velocity_xz_vtable_0034(float& x, float& z) override {
+        // 009E24CA / 009E2562, target->vtable[34h]: the substitution the lead
+        // pursuit binding uses (neighbour_world_velocity).
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        const std::array<float, 3> v = t == 0u ? std::array<float, 3>{}
+            : neighbour_world_velocity(owner_.units, static_cast<std::size_t>(t - 1u));
+        x = v[0];
+        z = v[2];
+    }
+    void unit_velocity_xz_vtable_0034(float& x, float& z) override {
+        // 009E24DB, unit->vtable[34h], the same substitution for the unit.
+        const std::array<float, 3> v = neighbour_world_velocity(owner_.units, index_);
+        x = v[0];
+        z = v[2];
+    }
+    std::int32_t unit_side_0054() override { return owner_.units.unit_side_0054(index_); }
+    void set_avoidance_side_03f8(std::int32_t side) override {
+        ctl_.avoidance.side_filter_3f8 = side;  // 009E2588, brain+3F8h
+    }
+    void set_avoidance_flag_03fc(bool enable) override {
+        ctl_.avoidance.flag_3fc = enable;  // 009E25CC / 009E2669, brain+3FCh
+    }
+    void set_navigation_goal_009de050(const bsp::ShipAiAttackMoveXZ& goal, int keep_mode,
+                                      int final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal.x, goal.z,
+                                            keep_mode != 0, final_leg != 0);
+    }
+    bool plan_accepts_goal_009da610(const bsp::ShipAiAttackMoveXZ& goal) override {
+        owner_.done("ShipAiEngage::goal_already_reached", 0x009da610u);
+        return bsp::ship_ai_nav_goal_already_reached_009da610(ctl_.goal,
+            bsp::ShipAiFollowLandXZ{goal.x, goal.z});
+    }
+    void set_heading_and_drop_path_009dff40(float heading) override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_set_heading_drop_path_009dff40(ctl_.blk, heading, hold);
+        owner_.done("ShipAiEngage::set_heading_and_drop_path", 0x009dff40u);
+    }
+    void set_brain_speed_scale_0af0(float scale) override { ctl_.speed_scale_af0 = scale; }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
 class SubTargetTangentBinding final : public bsp::ShipAiAttackMoveTangentHost {
 public:
     SubTargetTangentBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -3373,7 +3454,16 @@ void AttackMoveSelectorBinding::member_enter(std::uint32_t member) {
             owner_.done("ShipAiAttack::approach_enter_009f3220", 0x009f3220u);
         }
     } else if (offset == 0x14C0u) {
-        owner_.record("ShipAiAttack::engage_enter_009db5e0", 0x009db5e0u);
+        ++owner_.summary.engage_member_enters;
+        if (!kShipAiEngageSubStateBound) {
+            owner_.record("ShipAiAttack::engage_enter_009db5e0", 0x009db5e0u);
+            return;
+        }
+        // 009DB5E0..009DB602: blk+234h = blk+29Ch = 1225.0f (00D216E8, 35 m
+        // squared, the pair 009D5CD0 writes as r*r) and sub+8h = 0. No reader of
+        // the two blk floats is modelled here (LABELLED: stored nowhere).
+        ctl_.engage.attack_run_08 = false;
+        owner_.done("ShipAiAttack::engage_enter_009db5e0", 0x009db5e0u);
     } else {
         owner_.record("ShipAiAttack::initial_enter_009db590", 0x009db590u);
     }
@@ -5654,7 +5744,18 @@ public:
         // which is the arm that pins the machine to state+8h, and the engage
         // gate 009E85B0 fails on the two unrecovered readiness floats.
         if (offset == 0x14C0u) {
-            owner_.record("ShipAiAttack::engage_step", 0x009e23b0u);
+            ++owner_.summary.engage_member_steps;
+            if (!kShipAiEngageSubStateBound) {
+                owner_.record("ShipAiAttack::engage_step", 0x009e23b0u);
+                return;
+            }
+            EngageStepBinding engage(owner_, ctl_, row_, index_);
+            if (bsp::ship_ai_attackmove_engage_step_009e23b0(ctl_.engage, engage)) {
+                ++owner_.summary.engage_member_run_steps;
+            }
+            owner_.done("ShipAiAttack::engage_step", 0x009e23b0u);
+            ++row_.substate_concrete;
+            ++owner_.summary.substate_concrete;
         } else if (offset == 0x14CCu) {
             if (!kShipAiSubTargetSubStatesBound) {
                 owner_.record("ShipAiAttack::lead_pursuit_step", 0x009e26c0u);
@@ -10640,6 +10741,10 @@ void GameShipAiHost::report() {
         "bound=%d (009E85CD, packet cc9_engage_kamikaze_gate)",
         host.summary.engage_kamikaze_reads, host.summary.engage_kamikaze_classes,
         kShipAiEngageKamikazeGateBound ? 1 : 0);
+    host.log.notef("summary mission ship ai engage member enters=%llu steps=%llu "
+        "run_steps=%llu bound=%d (009DB5E0 / 009E23B0, packet cc9_engage_kamikaze_gate)",
+        host.summary.engage_member_enters, host.summary.engage_member_steps,
+        host.summary.engage_member_run_steps, kShipAiEngageSubStateBound ? 1 : 0);
     host.log.notef("summary mission ship ai command zone points answered=%llu moved=%llu "
         "(00A020BE / 00A020F0, packet cc9_ai_command_avoid_zone_point)",
         host.summary.ai_command_zone_points, host.summary.ai_command_zone_points_moved);
