@@ -591,3 +591,35 @@ same sign.
 
 **What this does not change.** Section 1's bearing is still a pure `atan2` of (aim point - own
 position); the lead lives in the aim point, not in the bearing.
+
+### 11.1 The switch and its predictions, written before any ON run
+
+`kTorpedoAimLeadBound`, to be committed OFF in `src/game_hosts_units.cpp`. The exact edit is
+`local\p1_units_edit.txt` in the cc9-planes1 tree. It sits in
+`TorpedoApproachBinding::approach_target_point`, after `hull_aim_world_point`. For a target that
+samples its hull, it takes the previous tick's `torpedo_approach.eta_f8` as projtime and adds
+`ship_predict_position_008120e0(target, projtime) - origin`.
+
+It carries two labelled substitutions:
+- `00812090`'s body axis is replaced by the hull's heading direction, the same substitution
+  `neighbour_world_velocity` makes.
+- The torpedo goaway tick (`009D0F10`) still reads the origin. Its own aim-point gap is not
+  part of this switch.
+
+Predictions, each against the same-tree OFF run:
+- **Mechanism, on every torpedo row.** The `torpedo aim lead` lines show a projtime of 5-30 s at the
+  2200 m entry, falling toward 1-5 s at release. The lead lies along the target's course and is
+  roughly `projtime x speed` (Lexington about 16 m/s).
+- **USN04 4500, and E2 (USN04 at 9200/9000).**
+  - The Kates' aim and run-in tracks shift ahead of the carrier.
+  - Releases: 6 of 16, +-3.
+  - Deaths among the 16 Kates move by up to +-3, because the AA exposure changes with the
+    geometry.
+  - Aerial torpedo impacts on the ordered carriers do not fall.
+  - Ships' own torpedo traces are unchanged except by RNG coupling.
+- **JM05 9200/9000.** The torpedo planes are still shot down before release, so releases stay
+  at or near 0 and the deaths move by at most a few.
+- **Rows with no torpedo task:** identical apart from the known noise.
+
+The verdict rule is the contract's. A mechanism failure (no lead lines, or a projtime outside
+0-30) keeps the switch OFF. A spread miss while the mechanism matches may flip, recorded.
