@@ -1708,6 +1708,17 @@ laws read so far, the image's flare climbs as the host's does. That leaves three
 
 The host cannot settle which without the original running, which the rules forbid.
 
+**The blend does not give the sink (checked in `local\l12_diag_lomp10.log`).** In every mode-1
+hold the final trace's speed command is `r` itself:
+- Warhawk 01: 32.00 in all 238 held samples;
+- Lightning 01: 31.50 in 236;
+- B-25 01: 37.00 in 123.
+
+The blend `009B1F2C`-`009B1FDF` only ever raises the command. `a+5Ch` (TravelSpeed x 0.75) is above
+`r`: Warhawk 01 entered final at 45.96 = (32.0 + 59.9) / 2, and Lightning 01 at 33.78 and 35.84
+on the way in. And the blend reaches `r` below `a+24h x 210` m, before the hold begins. So the
+command never falls below q = 1.
+
 **Not bound.** With no host substitution identified there is no switch to commit, and begin, final
 and abort stay OFF. The diagnostic line stays: it is read-only and prints only while final is
 bound.

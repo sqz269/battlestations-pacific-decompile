@@ -6422,8 +6422,8 @@ public:
         if (GameUnitsHost::Impl::kShipSinkDescentBound && slot_.leak_ready) {
             // Packet cc9_ship_sink_descent: the six leaks. The health 00923BE0
             // is read only by the cap, which +5Dh suppresses; a live hull's rates
-            // are zero here (no 90h leak is bound), so its water stays zero and
-            // the health does not matter: 1.0 is passed, labelled.
+            // come from the 90h leaks cc9_live_hull_leak adds (0074F440); the
+            // health is read only by the cap.
             const bool gate_5d = slot_.state != nullptr && slot_.state->simulate != 0;
             // Packet cc9_live_hull_repair: 00923BE0 under its switch, else 1.0.
             const float health = GameUnitsHost::Impl::kLiveHullRepairBound
