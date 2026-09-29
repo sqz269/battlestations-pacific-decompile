@@ -87,6 +87,16 @@ inline constexpr bool kTroopLandingTraitBound = true;
 // are pushed 436 to 934 m out of them; four rows move (docs/SHIP_AI_OPEN_ITEMS.md
 // section 25).
 inline constexpr bool kAiCommandAvoidZonePointBound = true;
+// Packet cc9_squadron_rtb_exclusion_bind (docs/SHIP_AI_OPEN_ITEMS.md section 40).
+// 009FFEB0..009FFF1D, read whole (section 36): with [00E17BF2] clear, a squadron
+// whose head plane is a bomber leaf (class id 10h, 11h or 12h, 009FFEDC..009FFEE9)
+// and whose 007EDAD0 answers 0 has its `returntobase` resolved by 007F16D0 and
+// issued through 0077D600(desc, &record+4, 1) (009FFF09); the routine answers 1.
+// Every other call answers 0. True: that arm runs through the units host
+// (squadron_ammo_type_007edad0, issue_return_to_base_007f16d0; excluded when an
+// order was placed) and nothing else excludes. False: the host answers
+// 007EDA90's value in its place, as before.
+inline constexpr bool kAiSquadronRtbExclusionBound = false;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,

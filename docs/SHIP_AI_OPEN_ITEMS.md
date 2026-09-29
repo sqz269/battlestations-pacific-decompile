@@ -3290,3 +3290,81 @@ and keeps the OFF answer, so ON is never further from the image than OFF. Both r
 identical and the reach is zero, as predicted. When the units lane lands
 `command_building_landing_range_07c4`, drop the mode-4 guard in `StandoffBinding` and re-pair on a
 row with a lander (none is known yet).
+
+## 40. Rank 4, bound: the squadron exclusion `009FFEB0` (packet `cc9_squadron_rtb_exclusion_bind`, `kAiSquadronRtbExclusionBound`)
+
+Worker cc9-ships13, 2026-09-29. The switch is in `include/bsp/game_hosts_ai.hpp`. Section 36 read
+the body whole (`009FFEB0..009FFF1D`).
+
+**The binding.** It uses the units-host entries from main `2eb7e0a9c`
+(docs/SQUADRON_ORDNANCE_STATE.md):
+- `squadron_ammo_type_007edad0(index)` answers `007EDAD0`, 0 when nothing is carried.
+- `issue_return_to_base_007f16d0(index, source)` places `returntobase` (`00E08F98`) on each member
+  plane through the path a Lua `returntobase` takes. That path is `007F16D0`'s resolution and
+  `0077D600`'s delivery with flags 1.
+
+ON, `tick_squadron_excluded_009ffeb0` runs the arm:
+- It applies to a squadron whose head plane's class id is `10h`, `11h` or `12h` and whose ammo
+  type is 0.
+- It issues `returntobase` and answers true when an order was placed. That is `009FFF09`; a null
+  descriptor answers 0.
+- Every other call answers false.
+
+OFF, it answers `007EDA90`'s value, the stand-in used before. The census counts run in both
+states: `summary mission ai squadron rtb exclusion bind stand_in_true= issues= excluded=`, next to
+section 36's `squadron_calls= bomber_calls= spent_calls=`.
+
+**The two ways ON differs from OFF:**
+- The arm, where a spent bomber squadron follows a leader.
+- Calls where the `007EDA90` stand-in answered true: ON they answer false, as the image does.
+  They are counted as `stand_in_true`.
+
+### The census (this tree, OFF, 9200/9000)
+
+`local\s13r_<row>.log`, plus `local\s13l_usn06.log` from section 39's census:
+
+| row | squadron calls | bomber calls | spent | stand-in true |
+| --- | --- | --- | --- | --- |
+| USN13 | 2037 | 576 | 0 | 0 |
+| USN06 | 971 | 800 | 0 | 0 |
+| IJN01 | 17 | 17 | 0 | 0 |
+| IJN10 | 2 | 2 | 0 | 0 |
+| USN04 | 0 | 0 | 0 | 0 |
+
+The ordnance reader's census (`squadron ordnance <name>: ammo type N -> 0`) finds four spent
+squadrons: USN04's B5N Kate #2.1 and #6.1 at 127.80 s and 207.41 s, and JM16's Bogue-class 04
+sqn12 and sqn18 at 247.06 s and 247.86 s (`local\s13l_jm16.log`). None of them follows a leader in
+an AI group: USN04 and JM16 make no squadron call at all. So no row reaches the arm.
+
+### Predictions, written before any ON run
+
+1. **USN13 and IJN01 at 9200/9000 are gameplay identical** (exit 0 or 1), with `issues=0`,
+   `excluded=0` and `stand_in_true=0` on both sides.
+2. **Mechanism failure** keeps the switch OFF: a nonzero `stand_in_true` or `issues`, or any move.
+3. If both are identical, the binding may flip as exact with zero reach. The body is read whole,
+   and both of its answers match the image.
+
+### Section 38 item 2: the other `00827F70` callers, read (no edit in this lane)
+
+- **`007EEB74`** is in `BSP_Unit_AttackCommandApplies` (`007EE8F0..007EEBFD`), in the kamikaze
+  arm `007EEB36..007EEB91`:
+  - ECX is `[target+538h]`, the target's class.
+  - When the target is a ship (`vtable[5Ch](6)`, `007EEB64`) and `00827F70` answers small,
+    `00604A50([unit+3D0h])` must answer true, or the arm rejects (`007EEB8A JE 007EEBF6`, `XOR AL,AL`).
+  - `00604A50` (`00604A50..00604A74`, `RET` then `INT3`) is `vtable[5Ch](17h) && byte [+C24h] == 0`:
+    a kamikaze plane whose authored `PilotFires` is clear. That is `007EDA90`'s shape.
+  - In the reconstruction this is `AttackFeasibilityInputs::kamikaze_ship_blocked`
+    (`include/bsp/attack_commands.hpp`). `src/game_hosts_script_orders.cpp` never sets it, so the
+    kamikaze arm never rejects a small ship.
+  - The edit belongs to the script-orders lane: `blocked = small(target) && !(slot-0 plane kind
+    17h && !PilotFires)`, where small is kind `0Eh`, or kind `0Ch` without BigLandingShip.
+- **`0081639D`** is in `BSP_Entity_CommandAvailableAgainstTarget` (`008162B0..00816408`). Its
+  reconstruction, `src/ship_ai_states.cpp` (`host.call_00827f70()`), has no game-host
+  implementation: the routine is not bound in the executable, so there is nothing to edit yet.
+- **`0096ACB4`** is in an unnamed method `0096AC60..0096ACD3` (`__thiscall`, `RET 4`):
+  - It is slot 5 of the vtable at `00D1B2CC`. The object is built by `009766D0`, which is called
+    by `BSP_WarningManager_LoadEventTable` (`00980380`).
+  - For an event whose `vtable[10h]()` answers 3, it takes the entity at `[event+6Ch]`. It admits
+    a squadron (`18h`), a plane (`0Fh`) or a small ship (kind 6 and `00827F70` on `[+538h]`), then
+    compares the event name through `0096AA40`.
+  - Nothing reconstructs it and no lane owns it. It is a warning-event filter.
