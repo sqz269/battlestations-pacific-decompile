@@ -3879,8 +3879,8 @@ kHullInertiaFromShapesBound`). The flip is routed through the integrator.
   - USN02 gains John2's death;
   - the hit records fall on USN02 and JM06;
   - `kShipAiBigLandingShipBound` and later switches are also post-m.
-- **P5's time window.** Four wrecks go over 26.5 to 51 s later than the quasi-static loss. A
-  dynamic model would need:
+- **P5's time window** (closed as explained in 58: no missing pitch term). Four wrecks go over
+  26.5 to 51 s later than the quasi-static loss. A dynamic model would need:
   - the overdamped roll (wreck damping 2.5, inertia x2);
   - pitch, for Houston's bow flooding.
 - **P2's kick size.** John1's 1.36e6 torque gives about 6 degrees against 52.2's formula of about
@@ -3923,3 +3923,101 @@ kHullInertiaFromShapesBound`). The flip is routed through the integrator.
   - `g11_notes.py <dir> <names>` scans Note names.
   - `g11_notebox.py [models]` is the shape owner census (`g11_notebox.txt`).
   - `g11_keys.py <call sites>` gives the literal keys passed to `0071AD50`.
+
+## 58. The late wrecks and pitch: no missing term; P5's four misses explained (packet `cc9_wreck_pitch`, cc9-gunnery12, 2026-09-29)
+
+This packet takes 57.2's item "the late wrecks need a dynamic model with pitch". It adds no
+switch, so it has no pair: the host already carries every pitch term the image has. The four late
+misses are explained from 56.5's verdict run (`local\g11c2on_usn02.log` in the cc9-gunnery11
+tree, both traces on). Tools: `local\g12_pitch.py <log>` (per hull: the leak moments'
+lateral and longitudinal parts, max pitch) and `local\g12_pitchat.py <log> ship:t,...` in the
+cc9-gunnery12 tree.
+
+### 58.1 The image's pitch terms, and the host's
+
+Pitch is the rotation about row 0 (the lateral axis). The image has three sources of pitch
+moment, and the host reproduces each:
+- **The element buoyancy.** `00932D02` flattens only the element's local y before the arm is
+  taken (`00932D07`), so the arm keeps the station's z. `arm x (0, B, 0)` (`009339A7`) therefore
+  pitches the hull by `z B`. This is the pitch stiffness `k_p` of 52.1. Host:
+  `ship_hydro_apply_forces_009329c0` (src/ship_hydro_forces.cpp) takes the same flattened point.
+- **The leak weights.** `0074F2E0` reads each leak point `p` as y (`[ECX+4]`), x, z
+  (`0074F387..0074F39D`), and the cached world rows at unit+CCh at columns 0 and 2
+  (`[EAX]`, `[EAX+10h]`, `[EAX+20h]` and `[EAX+8]`, `[EAX+18h]`, `[EAX+28h]`). Its out.x is
+  `10 w r.z`, the bow/stern lever. This is `r x (0, -10w, 0)` complete: the y column is not needed.
+  Host: `unit_leak_torque_0074f2e0` (src/unit_forces.cpp), with 56.3's `rows[12]` fix.
+- **The inertia.** `00939A8E`'s box gives `I_x = mul.x M / 12 (H^2 + L^2)` with `mul.x = 1`. The
+  wreck block `00824FE5` doubles all three axes and sets the angular damping to 2.5 for every axis.
+  Host: `ship_hull_inertia_00939a8e` (src/ship_hull_body.cpp) and
+  `ship_wreck_sink_block_00824fe5` (src/game_hosts_units.cpp).
+
+**No other pitch terms.** `009329C0` has two more that act on pitch, and neither applies to a
+destroyer or cruiser:
+- the planing torque `0093380A`, for material TBoat only;
+- `0092E8C0`'s pitch righting `0092E9E1`, for units answering IsKindOf(0Eh) (TorpedoBoat) only.
+
+The steering routine keeps the row-0 rate for every other hull (52.1). Nothing in the wreck path
+after `00824FE5` scripts a plunge: `sinkTime +828h` only times the 60 s kill-depth rule.
+
+**So the image trims and plunges a bow-flooded hull through the same torques the host has.**
+Uncertainty: this is read from the listing, not from the image at run time (the original exe is
+not run).
+
+### 58.2 Houston was not bow flooded in the verdict run
+
+56.1's "Houston floods at the bow" came from the OFF run `g11cpoff`. There, its leak moment was
+`sum(w z) / water = +56` m of a 90 m half-length.
+
+In 56.5's ON run Houston floods amidships:
+- at 60 s, leak #4 (+16, 0, 0) holds 7803 of its 8086 water;
+- `sum(w z) / water = +0.46` m;
+- it never pitches past 0.1 degrees.
+
+Its 51 s lag is the overdamped roll alone. With the equilibrium lost, the wreck's roll rate is
+`tau_net / (5.34 * 2 I_z)`, the 52.1 damping rate against the doubled 56.4 inertia
+(`I_z = 5.05e6`). `tau_net` comes from `g11_capdbg.py` at the observed pose:
+
+| t | roll | tau_net (N m) | predicted rate | observed rate (t +/- 1 s) |
+| --- | --- | --- | --- | --- |
+| 50.5 | -10.6 | -5.57e5 | 0.59 deg/s | 0.55 deg/s |
+| 75.0 | -27.5 | -9.42e5 | 1.00 deg/s | 1.00 deg/s |
+| 90.0 | -45.6 | -1.23e6 | 1.31 deg/s | 1.30 deg/s |
+
+Houston has the largest roll inertia and the lowest roll stiffness of the USN02 classes
+(omega 0.61, wreck zeta 6.18 in 52.1). That is why it creeps longest: from 10.6 to 60 degrees
+takes 51 s at 0.6 to 1.3 degrees a second.
+
+### 58.3 The other three late wrecks are bow plungers
+
+The pitch column is `asin(row2.y)` from `BSP_HULL_ATTITUDE_TRACE`; negative is bow down.
+
+| wreck | P5 | `sum(w z)/water` (half-length) | at the model's loss: pitch, y | at roll 60: pitch, y |
+| --- | --- | --- | --- | --- |
+| John2 | late 27 s | +40.6 (48) | -10.0, -6.4 | -44.8, -53.9 |
+| Asagumo | late 33.5 s | +44.3 (59) | -14.8, -12.0 | -64.7, -118.1 |
+| Tokitsukaze | late 26.5 s | +57.0 (59) | -20.5, -13.7 | -64.3, -71.6 |
+| Yukikaze | held | +46.2 (59) | -3.9, -2.4 | -16.1, -10.9 |
+| John1 | held | -23.8 (48) | +1.7, -1.5 | +13.1, -13.6 |
+| Hatsukaze | held | +33.4 (59) | -1.9, -1.5 | -6.0, -3.2 |
+| Yamakaze, Minegumo, Kawakaze, Amatsukaze | held | +20 or less | -0.9 or less, -2.3 or more | -2.8 or less |
+
+- **Every late plunger was already 10 to 20 degrees down by the bow, and 6 to 14 m under, at
+  the model's loss time.** Every held wreck was within 4 degrees and 2.5 m.
+- By the time their roll reaches 60 degrees they stand 45 to 65 degrees on their bows and are
+  54 to 118 m deep. P5's "roll passes 60 degrees" is then a rotation about a near-vertical long
+  axis, not a capsize at the surface.
+- Their lateral leak moment is small (`|sum(w x)| / water` 1.0 to 1.6 m, against leak points at
+  +/-9 to 10 m), so the
+  flooding goes into pitch first. The roll-only model (56.1) has no term for that.
+
+### 58.4 Verdict and what changes
+
+- **No host term is missing, and no switch is bound.** The late misses are the mechanism the host
+  shares with the image:
+  - an overdamped heavy wreck that creeps, matched to 0.05 degrees a second;
+  - bow plungers whose roll grows only after they are under.
+- **P5 is closed as explained.** 56.5's ON verdict stands.
+- A future capsize prediction should:
+  - integrate the first-order roll `dphi/dt = tau_net / (5.34 * 2 I_z)` from the loss time
+    instead of a fixed 25 s window;
+  - exclude hulls whose `|sum(w z)| / water` exceeds half the half-length, or score them on pitch.
