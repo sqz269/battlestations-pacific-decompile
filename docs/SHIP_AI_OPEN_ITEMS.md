@@ -3120,3 +3120,48 @@ OFF is `local\s12_blsoff_<row>.log`, ON `local\s12_blson_<row>.log`.
 all three rows, and its mechanism is reached at the admission site. The four other callers of
 `00827F70` (`007EEB74`, `0081639D`, `0096ACB4`, and the standoff `009E6F11` behind rank 7's
 target-kind stub) still answer "small" for a big landing ship.
+
+## 38. Handoff (cc9-ships12, 2026-09-29, at about 70% context)
+
+**State of the lane.** Branch `agent/cc9-ships12`; no leases held. Switches this worker touched:
+
+| switch | state | section |
+| --- | --- | --- |
+| `kGunneryLosRoleSwapBound` (`src/game_hosts_gunnery.cpp`) | ON (USN01 moves by two one-sided cell tests; four rows identical) | 33 |
+| `kShipAiApproachSightTestBound` | ON (re-paired; USN01 moves as in section 31, three rows identical) | 34 |
+| `kShipAiApproachNoShipHoldBound` | ON (IJN01 moves, one plane death flip; USNOS and IJN05 identical) | 35 |
+| `kShipAiBigLandingShipBound` | ON (identical on JM08, IJN01 and JM06) | 37 |
+| rank 4, `009FFEB0` | read and counted, not bound: the arm is not reached on six rows | 36 |
+
+**Expect reference moves** from 33, 34 and 35: USN01 (the sight test and the hold, as in sections
+27 and 31), IJN01 (the hold), and LOMP10/USN02 wherever the hold reaches.
+
+**Diagnostics left in the code:**
+- `BSP_LOS_CENSUS=1`: landscape hits, the count of tests whose reverse cast would answer
+  differently, and the first 24 of those.
+- `summary mission ship ai approach no-ship hold`.
+- `summary mission ai squadron rtb exclusion`.
+- `summary mission ai big landing ship reads`.
+- `unit big landing ship` at load.
+
+**Open, in order:**
+1. **Rank 7 and a wider stub in the same host.** `StandoffBinding::target_is_kind_vtable_005c`
+   (`009E6E80`) answers false for EVERY kind, not only kind 8, so the building (`1Ch`) arms of
+   modes 4 and 2 (`009E6F29..`, `009E700B..`) never take the target's `+7C4h` / `+7A0h`. Those two
+   reads (`target_radius_07c4`, `target_gun_range_07a0`) are records answering 0 as well. Binding
+   kind 8 alone has no reach on any row counted: no row has a submarine target. The `1Ch` arms
+   need modes 2 or 4. The latch census shows mode 0 on every row counted, except USN01's buildings
+   of the other side, which are mode 0 too. So find a row with modes 2 or 4 before binding.
+2. **The other `00827F70` callers** (`007EEB74`, `0081639D`, `0096ACB4`) still class a big landing
+   ship as small. They belong to the units, commands and script-order lanes.
+3. **Rank 4's binding**, if a row with a spent bomber squadron in an AI group turns up. It needs a
+   units-host entry for `007F16D0` plus issue (section 36).
+4. **The terrain in front of CB2 on USN01** (section 34): a ridge about 25 m high, about 320 m out,
+   hides Dunlap's target. Check it against the island's height field if USN01's stand-off
+   distances look wrong.
+5. From section 32, still open: the engage gate's avoid-zone conjunct, and `[class+570h]` in
+   multiplayer.
+
+**Useful files** in the cc9-ships12 tree: `local\s12_run.ps1 -Exe <exe> -Prefix <p> -Row
+tag:MISSION:frames:mission_frames`. It launches in the background with `BSP_LOS_CENSUS=1` as well
+as the reference variables; wait on the log's final COM release line. The logs are `local\s12_*`.
