@@ -191,3 +191,107 @@ now visible per fighter.
 * Section 2's "no weapon reader" still holds after a wider search: the latched block
   `+BB0h`-`+BCAh`, the command buffer and the gun vtable slot `+1DCh`. See
   `docs/PLANE_GUNFIRE.md` section 2.
+
+## 8. The gun controller in every task (packet `cc9_task_gun_controller_all_tasks`, cc9-lua18, 2026-09-29)
+
+**The image.** `BSP_PilotBot_Update` `009998A0`, read from the listing:
+- **Head** (`009998A4`-`009998C6`): with `bot+270h == 2` and the published byte of `bot+274h` set,
+  it skips everything.
+- **Fast path:** `0099C270` (body `0099C270`-`0099C293`) returns
+  `unit[word[00F876B8]*8 + 9C2h] != 0`. That byte is the previous step's published copy of
+  `unit+520h` (`007CDC70`, at `007CDCD0`). A set `+520h` means the plane is not AI-flown; the host
+  holds it as `generic_suppress_520`, and `009A17F8` reads "clear" as "an AI plane".
+  - When the test is true, the task arm runs at `009998FB` (with `+2E4h = 0`), then `0099D300`:
+    no `0099B740` and no gun tick.
+- **Slow path:** the `+308h`/`+304h` accumulator gates only `0099B740` (`0099993C`). Then:
+  - the task arm runs at `0099995A` (with `+2E4h = FFh`);
+  - **`009FC7C0(task+314h)` runs at `00999979` whenever `unit+C24h` is set** (`00999962`), for
+    every task class;
+  - then comes the `+38Ch` sub-object (`00999983`, unread).
+- `unit+C24h` is `PilotFires` (docs/ATTACK_GATE_TAILS.md). This installation's
+  `vehicleclasses.lua` (mtime 2026-05-09, modded) authors `PilotFires = true` on 201 platform
+  rows and `false` on 50.
+
+**The cone.** The host passes `+40h` directly rather than storing it:
+- The target cone is `max(+2Ch 0.4, 1.25 x +40h)`. Every authored cone is below 0.32 rad
+  (`planeglobals.lua`, mtime 2024-10-29: Prepare 0, MoveTo 2, GoAway 10, Strafe 15 degrees), so
+  the finder's cone is 0.4 in every state.
+- Only the fine-aim steer gate (`009FCCA4`) depends on `+40h`.
+- This binding delivers no non-dogfight cone. So outside dogfight the steer never runs.
+  - That is exact for Prepare and the land states, whose authored cone is 0.
+  - It is a labelled gap for moveto (2 degrees, `009C1B2D`, `009C282C`, `009C257F`) and goaway
+    (10 degrees, `009C4E27`, `009D111C`).
+
+**Item c, whether a bomber strafes its ship target: no.** `009FC7C0`'s target is the finder
+`007E2090`, which scores only the `+50h` list (docs/PLANE_GUNFIRE.md). `007E11D0` fills that list
+with aircraft (`vtable[5Ch](0Fh)`) of another party within the enemy radius. So a bomber's
+forward guns fire only at enemy aircraft ahead of it, never at its ship.
+
+**The binding** (`kTaskGunControllerAllTasksBound`, OFF when committed) calls the existing
+`df_gun_tick_009fc7c0` after the task arms. It runs only for a plane that meets all of these:
+- no dogfight task (the dogfight arm already runs the tick);
+- a modelled torpedo, dive-bomb, moveto or land task;
+- `generic_suppress_520` clear;
+- `PilotFires` set.
+
+The fire request feeds `plane_gun_fire_bc9`, which the gunnery host turns into rounds and the
+evasion scan turns into the firing list.
+
+Labelled substitutions:
+- the fast-path test reads the current `+520h`, not the previous step's published copy;
+- a plane with no modelled task gets no tick;
+- the non-dogfight cones are not delivered.
+
+**Predictions (written before the pairs):**
+- **Every row with enemy aircraft crossing ahead of AI bombers or escorts** (JM05, USN04, USN13,
+  IJN01):
+  - `summary mission task gun (all tasks)` shows ticks on every PilotFires plane with a task, and
+    bursts > 0 on some;
+  - `trigger_rises` grows;
+  - the gunnery host's plane-gun shots grow;
+  - the firing-list evasion (`summary mission gunfire avoidance ... flagged`) becomes non-zero
+    for the first time.
+- **Deaths:** new aircraft kills with a plane as the killer are possible; `pair_diff` 3.
+  - Through the shared generator, ship AA draws shift, so aircraft deaths move in time and
+    identity. Judge the per-entity table, not the totals.
+- **No ship takes forward-gun damage from a bomber** (item c).
+- **USN01** (five Mav torpedo aircraft, no enemy aircraft): 0 bursts; `pair_diff` 1 unless the
+  RNG draw count moves.
+
+**Pairs** (OFF = `b0322e072` tree build, ON = its export with the flip; `local\l18_f0_*`,
+`local\l18_f1_*`):
+
+| row | pair_diff | task gun census (ON) |
+| --- | --- | --- |
+| JM05 9200/9000 | 1, gameplay identical | 45 planes, 85973 ticks, 0 bursts |
+| USN04 9200/9000 | 1 | 51 planes, 52177 ticks, 0 bursts |
+| USN13 3200/3000 | 1 | 24 planes, 24061 ticks, 0 bursts |
+| IJN01 3200/3000 | 1 | no eligible plane |
+| USN01 3200/3000 | 1 | 2 planes, 1296 ticks, 0 bursts |
+
+**Reach census** (ON only, `e845cbb01`, which adds `enemy_list_ticks`, the ticks with a non-empty
+`+50h` list; `local\l18_f2_*`):
+
+| row | planes | ticks | ticks with enemy aircraft listed | bursts |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 45 | 85973 | 0 | 0 |
+| USN04 9200/9000 | 51 | 52177 | 690 | 0 |
+| USN13 3200/3000 | 24 | 24061 | 0 | 0 |
+| JM08 3200/3000 | 9 | 9801 | 420 | 0 |
+| LOMP10 3200/3000 | 10 | 14926 | 0 | 0 |
+| USN02, JM06, BSM01, LOMP06, USN12, USNOS | 0 | 0 | 0 | 0 |
+
+**Verdict.** The mechanism matches: the tick runs on every eligible plane, and the enemy list fills
+on USN04 and JM08 when enemy aircraft come within 1200 m. The prediction of bursts on the mixed-air
+rows is a **spread miss**. No listed enemy ever enters the fire envelope
+(`lateral < 0.09 d`, `1 < z < 850`), so no row fires, and the firing list stays empty (`flagged=0`).
+Every pair is gameplay identical. **`kTaskGunControllerAllTasksBound` ON**, recorded as inert on
+the reference rows.
+
+**The land-state records, relabelled with the switch on:**
+- `009B1DDA` (begin's `direction_40`): **done**. It stores a literal 0.0, and the host's tick
+  delivers cone 0 outside dogfight.
+- `009FABE0` in standby and line: **done only while the authored `Angle_Prepare` is 0**, which
+  it is in this installation. The code tests `pilot_auto_strafe_angle_angle_prepare == 0` and
+  records otherwise.
+- The moveto `009FABE0` records (Angle_MoveTo 2 degrees) stay recorded; that cone is the open gap.
