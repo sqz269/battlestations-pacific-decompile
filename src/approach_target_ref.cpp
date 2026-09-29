@@ -166,6 +166,22 @@ void approach_target_ref_lead_tail_009faf05(ApproachTargetRefState& state,
     }
 }
 
+void approach_target_ref_apply_aim_error(ApproachTargetRefState& state,
+                                         const ApproachAimErrorRow& row,
+                                         float h_draw, float v_draw) noexcept {
+    // 009FA380: bias = (d_h, 0.0, d_v), dirty = 1 (009FA395).
+    state.bias_34 = {h_draw, 0.0f, v_draw};
+    // 009C3E2E-009C3E38 / 009D032C-009D033B: one row value on all three axes.
+    state.spread_48 = {row.select_prec, row.select_prec, row.select_prec};
+    state.dirty_41 = true;  // 009C3E3D / 009D0348
+    if (row.sets_sections) {
+        state.section_chance_64 = row.section_chance;  // 009C3E56
+        state.weight_68 = row.engine_room_weight;      // 009C3E59
+        state.weight_6c = row.magazine_weight;         // 009C3E66
+        state.weight_70 = row.fuel_tank_weight;        // 009C3E6B
+    }
+}
+
 float dive_bomb_projtime_009c7e3c(bool impact_arm, float fall_time,
                                   float aim_time_error_c8) noexcept {
     if (!impact_arm) return 0.0f;  // 009C7D61-009C7D65
