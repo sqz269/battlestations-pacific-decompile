@@ -2852,3 +2852,32 @@ the count of tests whose reverse cast would answer differently, and the first 24
 
 **Still labelled on both sides:** `0081DE10` answers 0, the section-span raise is not taken, and
 the 0.5 s owner point cache is not kept.
+
+## 34. Section 31 re-paired on top of the role-swap fix (`kShipAiApproachSightTestBound`)
+
+Worker cc9-ships12, 2026-09-29. Item 2 of the cc9-ships12 queue. The base is `2a684d17a`
+(`kGunneryLosRoleSwapBound` ON). OFF is this tree's build. ON flips only
+`kShipAiApproachSightTestBound`. Both sides run with `BSP_LOS_CENSUS=1`. Logs are
+`local\s12_soff_<row>.log` and `local\s12_son_<row>.log`.
+
+**What the census already shows about these rows** (section 33, gunnery-pass tests, now in the
+image's direction). USN01 has terrain between Dunlap and CB2, and between Coastal Gun 01 and
+Dunlap. JM05 has terrain 244..277 m in front of coastal gun US 01 toward Mogami-class 01. USN12 has
+terrain 31..38 m in front of Fortress-07 toward three destroyers. Casting from a ship toward any
+of those land units reaches that terrain more than 25 m from the land unit's point, so the answer
+is hidden.
+
+### Predictions, written before any ON run
+
+1. **USN01 3200/3000 moves (exit 3).** `target_tests` is near 1542. `target_hidden` is above 0
+   and **below section 31's 345**. The old cast started at the building's point; a start near or
+   under the terrain surface counted the terrain beside the building as a block. From the ship,
+   the one-sided cell test (section 33) meets that surface within 25 m of the building. What stays
+   hidden is terrain that really lies between the two. The stand-off move of section 31 (CB2 and
+   Dunlap 759 -> 954 m) shrinks.
+2. **USN02 9200/9000 is gameplay-identical (exit 1)** with `target_hidden` 0, as in section 31.
+3. **JM05 and USN12 move (exit 3) if their ships ask 009E7FC0 about the land units**, with
+   `target_hidden` > 0 (the terrain above). If `target_tests` is 0 there, they stay identical.
+4. **`point_tests` stays 0** on all four rows.
+5. **Mechanism failure** keeps the switch OFF: `target_tests` is 0 on USN01, or a row moves where
+   `target_tests` is 0.
