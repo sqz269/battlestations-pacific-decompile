@@ -115,6 +115,11 @@ struct GameSceneEntityRecord {
     // (006F27E5). This installation authors it as `I 100` on its CommandBuildings.
     bool capture_range_present{false};
     std::int32_t capture_range_raw{500};
+    // Routed from cc9-ships13: 006F2780's `LandingRange` find (key 00CFAE30,
+    // 006F2847), read like CaptureRange: the found record's +0Ch dword, or 500
+    // (1F4h) when absent, stored at unit+7C4h (006F285F).
+    bool landing_range_present{false};
+    std::int32_t landing_range_raw{500};   // 006F2847 LandingRange -> unit+7C4h
     // Packet cc9_land_convoy_members: 00743450's reads from a LandConvoy's bag,
     // merged with the library group (landconvoy.props). `convoy_slots` holds the
     // Rows * Columns slot map after the Type1..4 x Position1..4 walk: the resolved
