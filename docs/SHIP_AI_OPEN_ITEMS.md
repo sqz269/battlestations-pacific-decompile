@@ -5320,3 +5320,48 @@ notification into the AI group's membership), not in the AI planner. That is a u
 (`src/game_hosts_units.cpp`), and its first row with reach would be a USN04 run long enough to reach
 `luaAddFinalObj`, or a mission that changes a grouped unit's side mid-run. Ghidra: `00A2DB50` has no
 function; its definition is `00A2DB50..00A2DB75` (`RET 0Ch` at `00A2DB72`, INT3 from `00A2DB75`).
+
+## 64. The retarget ring re-checked with the party gate ON (packet `cc9_approach_retarget_ring_recheck`, cc9-ships18, 2026-09-30)
+
+Ranking #4 (docs/GAMEPLAY_GAP_RANKING.md). Section 27 kept `kShipAiApproachRetargetRingBound` OFF
+because the class group's zone lookup never found a zone on USN01, LOMP10 or USN02. Since then the
+hold is its own switch (`kShipAiApproachNoShipHoldBound`, ON, section 35), and the party gate
+(section 60, ON) changes which side's ships are planned. This packet takes the reach from gate-ON
+logs and re-pairs the ring. No code changes: the binding and its counters are section 27's.
+
+### 64.1 Reach on a gate-ON build
+
+From the 60.7 pair's ON logs (`cc9-ships17\local\s17_on_<row>.log`, gate ON, ring OFF, hold ON).
+`off_zone_frames` counts arm-reachable frames whose goal lies in a zone of the unit's class group,
+which is exactly where the ring can move the point.
+
+| row | latch frames | targets | retarget reachable | entries | `off_zone_frames` |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 0 | - | 0 | 0 | 0 |
+| USN01 3200/3000 | 0 | - | 0 | 0 | 0 |
+| USN13 3200/3000 | 1178 | 1178 other | 1178 | 134 | 0 |
+| JM05 3200/3000 | 14 | 14 ship | 0 | 0 | 0 |
+| IJN01 3200/3000 | 6214 | 11 ship, 6203 other | 6203 | 723 | **4126** |
+| LOMP10 3200/3000 | 1383 | 782 ship, 601 building | 601 | 68 | 0 |
+
+**IJN01 is the first row where the ring's zone lookup succeeds.** The goals are the A7M fighters
+(section 35) over Oahu. USN01 no longer reaches the arm at all with the gate ON.
+
+### 64.2 Predictions, written before any ON run
+
+OFF is `pair_export --commit <base>` and ON the same with `--flip kShipAiApproachRetargetRingBound=true`,
+both from this branch. Rows: the six above in the reference launch form, plus JM05 9200/9000
+(GAMEPLAY_GAP_RANKING's 3845 reachable frames).
+1. **USN04, USN01, JM05 3000 are identical ON** (exit 0 or 1): no frame reaches the arm.
+2. **USN13 and LOMP10 are gameplay identical ON** (exit 1). The ON path runs the head and stores the
+   goal (`009F23B5`) exactly as the hold path does, and the zone lookup then fails (`zone_runs` = 0,
+   `moved_runs` = 0), so the point is the same.
+3. **IJN01 moves ON (exit 3).** `zone_runs` > 0, about two thirds of the arm runs (4126 of 6203
+   frames). `moved_runs` > 0: the attacking US ships steer for a point 10 m off the coast on the
+   bearing nearest them instead of the A7M's position. Downstream, the per-unit approach points,
+   the ships' paths and their AA engagement of the A7Ms move. A death-table move is possible; its
+   direction is not predicted.
+4. **JM05 9000:** ON moves iff the OFF log's `off_zone_frames` > 0; otherwise it is gameplay
+   identical like prediction 2.
+5. **Mechanism failure** keeps the switch OFF: IJN01 with `zone_runs` = 0, or `moved_runs` = 0
+   (every slot a Landscape hit or out of reach), or a move on a row whose `zone_runs` is 0.
