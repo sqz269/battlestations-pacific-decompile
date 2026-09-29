@@ -1144,6 +1144,51 @@ cc9-planes2, read-only while the session was locked. The edit is prepared as
 - The torpedo goaway stays inert until a heading arm runs.
 - Deaths move by up to 3 through the shared stream.
 
+### 16.1 The pair, measured: `kFlyToObstacleListBound` ON (cc9-planes3)
+
+**Binaries:** `pair_export.py --commit dad065393`, OFF `local\p3_off` (SHA-256 prefix
+`87BED43FA2AE`) and ON `local\p3_obs_on` (`--flip kFlyToObstacleListBound=true`). Rows were run in
+14.4's launch form with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`. A USN01 300-frame
+smoke passed first, at 20:35 UTC, after the renderer-init failures had cleared. Every log has
+`present interval immediate`, `frames_presented` equal to the frame count minus one, and the
+final COM release.
+
+**Mechanism census** (the same on USN04 and E2, because E2's first 4500 frames are USN04's):
+
+| cache | rebuilds | kept | avoid_ticks | side_writes |
+| --- | --- | --- | --- | --- |
+| dive goaway | 28 | 139 | 510 | 0 |
+| torpedo goaway | 11 | 76 | 168 | 0 |
+
+**Results per row:**
+
+| row | pair_diff | deaths OFF -> ON | per-entity death rows | torpedo-task releases | dive-bomb-task releases | shots |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 45 -> 45 | 1 only-OFF (Val #7.1\|.-4), 1 only-ON (Val #5.1\|.-3), 21 re-timed | 3 -> 5 of 16 | 0 -> 1 of 19 | 8656 -> 9619 |
+| E2 9200/9000 | 3 | 51 -> 51 | none only one side, 28 re-timed | 3 -> 5 of 16 | 2 -> 1 of 19 | 9450 -> 10265 |
+| JM08 3200/3000 (control) | 1 | 10 -> 10 | identical | - | - | 2867 -> 2867 |
+| USN12 3200/3000 (control) | 1 | identical | identical | - | - | identical |
+
+**Against the predictions:**
+- **The Vals' goaway turns change: held.** 139 obstacles were kept and the avoid term ran on 510
+  dive-goaway ticks. The first death row to move is a Zero at 161 s.
+- **Side flips: missed.** `side_writes` is 0. The avoid term ran without ever writing the side at
+  `009FDC48`. This is a spread miss: the mechanism ran.
+- **The torpedo goaway stays inert: held.** Every `goaway 009D0F10` line still has
+  `heading_ticks=0`. The ON torpedo goaway ran more ticks (goaway aim ticks 112 -> 168) because two
+  more Kates released and reached it.
+  - Those two extra releases come through coupling: the Vals now fly different paths, so the AA
+    fire and the Zeros' fights move with them. This is not a torpedo-side mechanism. The AA RNG streams are decoupled, but
+    the targets and ranges are not.
+- **Deaths move by up to 3: held.** Both aggregates are equal. On USN04, one Val death moved from
+  one Val to another; E2 has no one-sided row.
+- **Rows with no goaway do not move: held.** JM08 and USN12 are gameplay-identical (exit 1).
+
+**Verdict:** the mechanism matched, the only miss was the side-flip spread, and no control row
+moved, so the switch **flips ON**. The flip is one line in src/game_hosts_units.cpp, applied under
+the shared-file rule. Logs: `local\p3_{off,obs_on}_{usn04,e2,jm08,usn12}.log`; diffs:
+`local\p3_diff_obs_*.txt` in the cc9-planes3 tree.
+
 ## 17. `009D0160`, the reset's run-time seed, and two reset fields the host is missing
 
 **`009D0160`** has no Ghidra function. Its body is `009D0160`-`009D0292`: `RET` at `009D0291`,
