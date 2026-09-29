@@ -10376,8 +10376,10 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
 }
 
 // Packet cc9_scene_unit_skill (docs/SCENE_UNIT_SKILL.md): a scene-placed unit
-// starts at its bag skill instead of 1. OFF until paired.
-constexpr bool kSceneUnitSkillBound = false;
+// starts at its bag skill instead of 1. ON: the USN04, USN01, USN13 and JM05
+// 9200/9000 pairs are gameplay-identical; the only live values in reach are
+// JM05's two carriers (2), which do not fire in the row.
+constexpr bool kSceneUnitSkillBound = true;
 
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;

@@ -104,3 +104,36 @@ Same-binary OFF/ON pairs, reference environment.
    coupling: no fort, convoy or airfield changes skill.
 5. **Mechanism failure:** a `scene skill` line on a fort, convoy or airfield in JM05, or a level
    that differs from the census.
+
+## 5. Measured, and the verdict
+
+The pair is one commit, `ff4ac4806`, exported twice by `tools/pair_export.py`: OFF `E28973BC78BF`,
+and ON `B384DA1A95EF` with `kSceneUnitSkillBound=true`. Both ran in the reference environment. A
+300-frame JM05 smoke of the ON binary came first and printed exactly the two carrier lines.
+The logs are `local\l16_s{off,on}_{usn04,usn01,usn13,jm05l}.log` in the cc9-lua16 tree.
+
+| row | `scene skill` lines | pair_diff | deaths |
+| --- | --- | --- | --- |
+| USN04 4700/4500 | 0 | 1, gameplay identical | 45, identical rows |
+| USN01 3200/3000 | 6, all MPNormal 3 | 1 | 5, identical |
+| USN13 3200/3000 | 33, all MPNormal 3 | 1 | 32, identical |
+| JM05 9200/9000 | 2: USS Lexington and USS Yorktown, `Skill` 2 | 1 | 29, identical |
+
+Each prediction against the result:
+1. **USN04: held.** The run printed no `scene skill` lines.
+2. **USN01: held.** The script re-skills all six ships to 2 before any gunnery tick reads the value.
+3. **USN13: held, trivially.** Only 33 of the 45 MPNormal entities are created in 3000 frames.
+   Iowa, NJ, Mnp, NO and DD_22..25, which the script would not re-skill, are among the 12 that
+   are not created. Every created one is re-skilled.
+4. **JM05: held for the mechanism, and the effect is null.** The two carriers start at 2. Neither
+   carrier appears in any death row or moved line, because no attacker reaches them in 9000
+   frames with an idle player.
+5. **Mechanism: held.** No fort, convoy or airfield printed a line. The levels match the census
+   exactly.
+
+**Verdict: `kSceneUnitSkillBound` flips ON.** The mechanism matches the image, and the
+switch changes no gameplay in any reference row today. It matters once:
+- a carrier fights, as in the JM05 carrier strike or a player-driven run;
+- or MPNormal ships are created without a script re-skill;
+- or the launch inheritance of section 3 is bound. The JM05 carriers' planes would then fly the
+  SPVeteran pilot rows.
