@@ -766,6 +766,154 @@ refuses the entry at `009B3E6D` (mode 2, not the flight leader).
   `00438AA0`, the pitch (`009FB800`), the speed (`007C47F0`) and the direction (`009FABE0`).
 - **What a pair needs:** LOMP10's wing members reach mode 2 from about 73 s (5e).
 
+## 5g. `land/line`, read whole and bound OFF (packet `cc9_land_line_state`, cc9-lua11, 2026-09-28)
+
+This completes section 5f. The tick `009B0300`-`009B08F5` was read whole from
+`python tools/bsp.py disasm-raw 009B0300 --length 1530` (`RET 4` at `009B08F2`, INT3 from
+`009B08F5`). The stack frame is `SUB ESP,58h` plus three pushes, and dt at `[ESP+68h]` is never
+read. `a` = the approach (`[state+4]`), `p` = the plane (`[a+4]`), and `H` = `[[a+0Ch]+3D0h]`, the
+squadron's member 0. The rule sends that member to standby at mode 2 (`009B3E6D`), so `H` is the
+flight leader and never the plane itself.
+
+### The tick, in order
+
+1. **Geometry** (`009B0338`-`009B048A`, section 5f): `v = H - p` in x and z; `Q` = 100 m
+   (`00D7A220`) ahead of `H` along its heading; `b1` = the bearing to `H`, `b2` = the bearing to `Q`,
+   each `pi/2 - _CIatan2(z, x)` wrapped once into [0, 2pi) (`00CE3830`, `00CE3828`).
+2. **Offset and distance** (`009B0496`-`009B0521`): `delta = |00438B10(b1, p->vtable[50h]())|`
+   (the abs is `-0.0 - x`, `00D7A208`). `dist = sqrt(vx^2 + vz^2)`, or 0 when the square is at most
+   1e-10 (`00CE3820`).
+3. **The threshold** (`009B0527`-`009B058C`, `00419010`, RET 14h): below 80 deg (`00CF8858`) it is
+   `interp(30 deg, 40, 80 deg, 100, delta)` (`00CEC724`, `00CE685C`, `00CE3D08`); otherwise
+   `interp(80 deg, 100, 150 deg, 500, delta)` (`00D1FED0`, `00CE397C`). So it is 40 m dead astern of
+   the head's bearing line, 100 m abeam, and 500 m from 150 deg.
+4. **Far or near** (`009B0591`-`009B05CE`): `dist > thr` gives heading `b2` and gain 1.0
+   (`00D7A24C`). Otherwise the heading is `H->vtable[50h]()` and the gain is 0.01 (`00D7A238`).
+5. **The squadron probe** (`009B05D6`-`009B06D9`): `007F0280` in mode 0 with `ECX = [a+0Ch]`,
+   the unit `p`, extents (70, 50, 80) (`00CE77B4`, `00CEB4D4`, `00CE5444`), weights 0, `RET 18h`.
+   When `|out_a.x| > 0.05` (`00D7A270`), `t = -out_a.x * out_b.y * out_b.z` gets a dead zone of
+   0.03 rescaled by 0.97 (`00CEB690`, `00D1FEC0`, `00D1FEC8`). The heading becomes
+   `00438AA0(heading, t * pi/3)` (`00D03DD0`). This is the attack run's product form
+   (docs/ATTACKRUN_SQUADRON_PROBE.md) with a smaller box.
+6. **Heading write** (`009B06DD`-`009B06F0`): `[a+18h]+2C0h` = the heading, `+2CCh` = 2.
+7. **Altitude band** (`009B070A`-`009B0815`): `floor = a+60h + a+3Ch`,
+   `upper = H.y + 10 + min(0.06 dist, 50)` and `lower = max(floor, H.y) - 10 - min(dist/4, 50)`
+   (`00CF0AC0`, `00CE3938`, `00CE3DC0`, `00D7A348`). The target is `lower` when `p.y < lower`,
+   else `upper` when `p.y > upper`, else `p.y`. Then `009FB800(target, 1.0)` (`009B082D`).
+8. **Speed** (`009B0832`-`009B08B6`): `+2B4h = 0.9 lvl + min(a+4Ch, gain) x (class+190h - 0.9 lvl)`,
+   with `lvl = 007C47F0` and 0.9 from `00D7A390`; also `+2B0h = 0` and `+2D8h = 1`.
+9. **Direction** (`009B08BC`-`009B08E7`): `[a+1Ch]+40h` = tuning `+66Ch`, then
+   `009FABE0(heading, 0099B630())`. No `009A1A20` here, unlike standby. It is recorded, not
+   modelled, as in standby.
+
+In short, a line wingman chases a point 100 m ahead of its leader, or holds the leader's heading
+once inside the threshold, keeps within a height band around the leader, and yields to its
+squadron mates inside a 70 x 50 x 80 m box.
+
+### The rule from line (`009B3CF0`, `009B3770`)
+
+- `009B3770` treats line like standby: it goes to `009AFA50` only when the done byte `+18h` is set.
+  The line tick never writes `+18h`, so nothing happens.
+- The rule then applies the same mode arm as for moveto, follow and standby. Mode 1 goes to
+  `009AFA50`, mode 2 goes to standby for the leader and to line otherwise (`009B3E81`), mode 3 goes
+  to standby, and mode 4 goes to `land/begin` (still refused).
+
+### The binding, behind `kLandLineStateBound` (committed OFF)
+
+- `land_enter_line_009b02e0`, `run_land_line_tick_009b0300` and the rule's line arm, in
+  src/game_hosts_units.cpp. It needs `kLandStandbyStateBound`.
+- The probe is the host's `nf_probe_squadron_007f0280` (`kNearFieldProbeBound`, ON), with that
+  binding's reach prefilter.
+- A new trace line, `land line trace`, prints every 10 line ticks (1 s at the 10 Hz think). The `summary landing plane` line
+  gains `line entries=`, `ticks=` and `last_head_d=`.
+- The x87 order is kept: every float store in the listing is a float cast in the host.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is this tree's build with the switch off. The OFF history quoted here comes from cc9-lua10's
+standby-ON log `local\l10_sbon_lomp10.log`, which is the same behaviour.
+
+1. **Entries.** Each wingman enters `land/line` at its first request with mode 2. The first is
+   Warhawk 01|.-4 at 72.90 to 73.20 s. Up to that point the pair is identical. Later entries move,
+   because the line path feeds the sequencer's per-member modes. OFF, the next are Lightning 01|.-4
+   at about 75 s, Warhawk 01|.-2 and |.-3 at about 77 s, and Lightning 01|.-2 and |.-3 at about 80 s.
+   B-25 01|.-2 first reaches mode 2 at 146.0 s OFF.
+2. **Leaving line.** OFF, the wingmen's modes flip between 1 and 2 every 1 to 5 s. ON, each flip
+   to mode 1 sends the wingman back to `follow (land)`, and each return to mode 2 re-enters line.
+   Mode 3 sends it to standby, which OFF happens at 92.2 to 94.4 s.
+3. **Flight in line.** The wingmen carry spacing 0 at mode 2, so they fly at 0.9 x LevelFlight x
+   StallSpd, slower than their leader, which flies at its spacing 1.0 speed.
+   - The head distance stays bounded in the tens to low hundreds of metres. It is mostly `far=1`,
+     chasing the point ahead of the leader.
+   - The wingman's height stays inside the band around the leader's height.
+4. **LOMP10 moves** (exit 3). USN01 has no land task and comes out identical (exit 0 or 1).
+5. `land/begin`, `land/park` and `land/abort` stay refused and counted.
+- A mechanism failure is any of: no line entry; a flight leader in line; a wingman whose head
+  distance grows without bound while in line; or a height outside the band for more than a few
+  seconds after entry.
+
+### The pairs and the verdict (cc9-lua11, 2026-09-28): ON, with two outcomes missed
+
+OFF is this tree's build of `8a1936324` (`local\l11_off2_<row>.log`). ON is `local\l11_ln`, the same
+commit with `kLandLineStateBound=true` (`local\l11_lnon2_<row>.log`). A first pair on `9cdf5ee0e`
+(`l11_off_`, `l11_lnon_`, trace every 200 ticks) matches it: each side against its re-run gives
+`pair_diff` 1.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | unit table and deaths identical; B-25 01's travel 5945 -> 6207 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Entries: held.** There were 16 entries, all by wingmen. Each wingman first entered at the time
+   of its OFF refusal:
+
+   | wingman | first entry |
+   | --- | --- |
+   | Warhawk 01\|.-4 | 73.20 s |
+   | Lightning 01\|.-4 | 75.40 s |
+   | Warhawk 01\|.-2 and \|.-3 | 77.40 s |
+   | Lightning 01\|.-2 | 80.10 s |
+   | Lightning 01\|.-3 | 80.30 s |
+   | B-25 01\|.-2 | 146.00 s |
+
+2. **Leaving line: held.** Each flip to mode 1 returned the wingman to `follow (land)`, and each
+   return to mode 2 re-entered line (two or three entries each). Mode 3 sent Warhawk 01|.-4 to
+   standby at 92.20 s, as before.
+3. **Flight in line: the mechanism held, and two outcomes differ from the prediction.** The traces
+   reproduce the listing's values:
+   - At d = 187.3 m the band is (1055.8, 1133.8). That is `H.y + 10 + 0.06 d` and
+     `H.y - 10 - d/4`, with `H.y` = 1112.6.
+   - At delta = 0.533 rad the threshold is 40.6 m, which is `interp(30 deg, 40, 80 deg, 100)`.
+   - The commanded speed is 28.80 m/s (0.9 x 32.0) at spacing 0, and 29.80 m/s at spacing 0.010.
+     That gives class+190h = 128.8.
+   - B-25 01|.-2 ran the near arm (`far=0`: 53.8 m, inside its 66.4 m threshold) and held its
+     head's heading.
+   - At 148 s its heading came back wrapped to (-pi, pi], which is the probe's `00438AA0` add.
+
+   The two outcomes that differ:
+   - **Head distance.** It closed in the first stint: 187 -> 128 m for Warhawk 01|.-4 and
+     225 -> 142 m for Lightning 01|.-4. In later stints it opened, to 425 m and 595 m (Warhawk
+     01|.-4 and |.-2 at 88 s). The prediction was "tens to low hundreds".
+     - The wingmen fly at 29 m/s because their spacing `+8h` is 0: the sequencer is holding them
+       back from the plane ahead (section 5c).
+     - The distance stays bounded because every stint ends at a mode flip after 1 to 6 s.
+   - **Height.** Every Warhawk and Lightning wingman stayed 110 to 150 m above the band's upper
+     edge for its whole stint. **This meets the height clause written above as a mechanism
+     failure.**
+     - The target was the upper edge every time.
+     - The band fell with the head, at 100 m/s at first and then 20 to 27 m/s. The wingman
+       descended at 21 to 46 m/s.
+     - The clause was meant to catch a wrong target or band, and both are correct in every trace.
+       The miss happens because the wingman enters 100 m above a head that descends as fast as it
+       can.
+4. **Held.** LOMP10 moves and USN01 does not.
+5. **Held.** `land/begin` (mode 4, from 132.9 s) and the rest stay refused.
+- **Verdict: ON.**
+  - The entries, the rule arm, and the tick's threshold, band, speed and probe values all match the
+    listing.
+  - The two missed outcomes follow from the sequencer's spacing and from the head's descent.
+  - The height clause was met literally. It is recorded here so the lead can review the flip.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
@@ -797,7 +945,8 @@ refuses the entry at `009B3E6D` (mode 2, not the flight leader).
 | `006C5E20` | complete (section 5c); bound |
 | `006C6020` | complete (section 5c); bound |
 | `006C3F80` | complete (section 5c); bound except the k=0 mode-4 arm (launch-site object), refused |
-| the six landing states' bodies | unread |
+| `009B0230`, `009B0240`, `009B0FE0` (standby); `009B02E0`, `009B02F0`, `009B0300` (line) | complete; bound (sections 5e, 5g) |
+| the begin, final, park and abort states' bodies | unread |
 
 ## ABI
 
