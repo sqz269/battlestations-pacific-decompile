@@ -35,6 +35,15 @@ the closed list at the end. Read-only: no switch, no Ghidra write.
   counters. An UNIMPLEMENTED count was taken as a gap only where the recorded answer differs from
   what the image would do on a live path.
 
+**The reruns, 2026-09-29 (after about 20:40 UTC).** The six missing rows were run on the same
+binary. USN01, JM08, E2 and LOMP10 9000 ran clean. USN13 9000 and IJN01 9000 lost the device again
+but simulated every frame. What they add to the table below:
+- **#2, moveto arrivals:** E2 14 and JM08 9.
+- **#3, carrier decks refused:** E2 2, USN13 9000 9, USN01 1, IJN01 9000 1.
+- **#4, retarget-reachable frames:** IJN01 9000 6242, LOMP10 9000 1801, USN01 1745.
+- **Land tasks:** LOMP10 9000 installs 10 and IJN01 9000 installs 4. Both rows have a single site,
+  so #1 does not apply.
+
 ## Top 15 new gaps
 
 Reach is from the runs above (calls or units per row). "Mine" means the units / landing / air-ops

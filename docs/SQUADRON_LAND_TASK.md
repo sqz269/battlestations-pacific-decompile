@@ -3586,3 +3586,53 @@ LABELLED:
   - Plane paths, deaths and damage move (exit 3).
 - **The other rows are gameplay-identical** (exit 0/1). USN04, USN13 and IJN01 resolve no
   return-to-base on main, and LOMP10 has one site, where the key never decides.
+
+### 5ad.1 Measured (pairs on `b8c3b26c7`)
+
+**The pair.** OFF is `local\l19_rtb0` (SHA-256 prefix `BD8901D4B3C6`). ON is `local\l19_rtb1`
+(`EAA5AD182E06`) with the flip. Both use reference p's launch form, and the logs are
+`local\l19_rtb{0,1}_<row>.log`.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | nothing |
+| LOMP10 3000 | 1, gameplay identical | nothing |
+| IJN01 3000 | 1, gameplay identical | nothing |
+| JM05 3000 | 3 | release counts only. Deaths, hits and damage are identical; installs 0 -> 108 |
+| JM05 9000 | 3 | deaths 29 -> 3, damage 32265 -> 17337, torpedo drops 8 -> 0; installs 0 -> 117 |
+
+**The mechanism held.**
+- Every resolution now carries a key: 15084 keys at 9000 frames, 10056 of them carrier keys, and
+  none missing.
+- `site-key-unread` is gone, and `refused=` is 0.
+- The carrier frame read `runwaycenter` for Lexington (-0.231, 17.401, 0.002), Yorktown and
+  Zuikaku.
+- Each squadron resolves to its nearest US site. USS Yorktown_sqn06 (planar 21.6 m) resolves to
+  its own carrier, where it was the airfield before.
+
+**The spread missed.**
+- The predicted `ground` refusals did not happen: the JM05 squadrons are airborne at their first
+  placement.
+- **The consequence is larger than predicted.** The placements come from the AI SELLING tick
+  (`00A11FF0`, `kSellingTickBound` ON). The Sell think (`00A22800`) gives SELLING to the US carrier
+  groups (Lexington and Yorktown, 6 members each). Each command tick then sends `returntobase` to
+  every squadron of an air group; the image's own gates `+361h` / `+3B0h` are clear, as
+  CONTROLLED_UNIT establishes.
+- From 6.45 s, the freshly launched strike squadrons get `land` at their own carrier. The
+  carrier deck is refused (ranking #3), so they circle over it. None of the JM05 9000 air strikes
+  happens: the 24 plane deaths and 8 drops of OFF are gone.
+- **What OFF had been doing.** The `returntobase` command was on each director too, but the
+  install was refused. So each plane kept the torpedo task that the script's `PilotSetTarget` had
+  given it, and flew a task its own command no longer backed.
+
+### 5ad.2 Verdict: kept OFF
+
+- The key is faithful, and it is what makes the land intake consistent with the command.
+- Flipping it would remove JM05's air strikes on the strength of an upstream question this packet
+  did not read: does the image's Sell think really give SELLING to a carrier group that holds
+  squadrons it has just launched? That covers the group membership through the coordinator's
+  splits and the `00A2C660` air-member test.
+- That question belongs to the AI lane. Until it is answered, and until ranking #3 lets a carrier
+  land its planes, `kReturnToBaseSiteKeyBound` stays OFF.
+- It can flip once the SELLING assignment is shown to be the image's, with the pair above as its
+  evidence.
