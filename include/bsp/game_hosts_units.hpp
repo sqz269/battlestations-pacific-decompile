@@ -494,6 +494,9 @@ public:
     // slot's plane squadron, 007ECF80's fan-out. Default 1, 0095CCCC.
     void set_skill_level_007b8ae0(std::size_t unit_index, int level);
     int skill_level(std::size_t unit_index) const;
+    // 00890A10 SetShipMaxSpeed: 00890B51 FSTP [unit+9C0h]. The slot's
+    // motion.max_speed is unit+9C0h (00822C20 seeds it from the class).
+    bool set_unit_max_speed_09c0(std::size_t unit_index, float value) noexcept;
 
     // Packet cc9_entity_dead. The units whose damage death has happened: a
     // health <= 0 hit reaches vtable[70h] (0077D1A0 -> 00926C80, cause 1), which

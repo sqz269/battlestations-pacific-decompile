@@ -11454,6 +11454,13 @@ void GameUnitsHost::set_skill_level_007b8ae0(std::size_t unit_index, int level) 
     }
 }
 
+bool GameUnitsHost::set_unit_max_speed_09c0(std::size_t unit_index, float value) noexcept {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || host.slots[unit_index] == nullptr) return false;
+    host.slots[unit_index]->motion.max_speed = value;  // 00890B51, unit+9C0h
+    return true;
+}
+
 int GameUnitsHost::skill_level(std::size_t unit_index) const {
     const Impl& host = *impl_;
     return unit_index < host.slots.size() ? host.slots[unit_index]->pilot_skill_index : 1;
