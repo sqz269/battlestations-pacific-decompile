@@ -4909,5 +4909,5 @@ changed times, killers and ranges:
 - Both switches act on the same approach goals: the hold keeps the goal on no-ship frames, and the
   sight test decides which targets are hidden. So their effects on the approach path are not
   additive.
-- Each was paired alone (SHIP_AI 56 and 45 respectively), and both mechanisms match the image.
+- Each was paired alone (SHIP_AI_OPEN_ITEMS 35 for the hold, 31 and 34 for the sight test), and both mechanisms match the image.
 - The interaction is two faithful mechanisms meeting, not a defect. **Closed.**
