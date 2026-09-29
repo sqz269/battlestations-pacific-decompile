@@ -2809,3 +2809,46 @@ both ends.
 
 If 1 to 3 hold, the switch flips ON: gameplay-identical and faithful to the listing, and the
 ship AI's `unit_sees_unit_00864d90` (section 31) then asks the image's direction.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+OFF is this tree's build of `b89663ad5`; ON is `pair_export --commit b89663ad5 --flip
+kGunneryLosRoleSwapBound=true --out local\s12_los` (bsp_game SHA-256 prefix `8119FA3EB6E2`). Logs are
+`local\s12_off_<row>.log` and `local\s12_on_<row>.log`, both with `BSP_LOS_CENSUS=1`.
+
+| row | tests OFF / ON | blocked OFF / ON | hits OFF / ON | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 190 / 190 | 36 / 34 | 36 / 34 | 3, moved | 1 **missed** |
+| JM05 3200/3000 | 874 / 874 | 42 / 42 | 42 / 42 | 1, gameplay identical | 1 held |
+| USN12 3200/3000 | 283 / 283 | 87 / 87 | 87 / 87 | 1, gameplay identical | 1 held |
+| USN02 9200/9000 | 3781 / 3781 | 0 / 0 | 0 / 0 | 1, gameplay identical | 3 held |
+| JM06 3200/3000 | 432 / 432 | 0 / 0 | 0 / 0 | 1, gameplay identical | 3 held |
+
+- **Prediction 2 held.** The ON hit lines are the same pairs with the hit on the observer's side:
+  the OFF ray CB2 -> Dunlap (cast from Dunlap, hit 358.7 m from it) reappears ON as observer CB2,
+  target Dunlap with the same 358.7 / 964.1 m, and Dunlap -> CB2 now hits 135..768 m from Dunlap.
+  The only other summary moves on the identical rows are the landscape attach leaf and cell counts
+  (the walk visits different cells when it starts from the other end) and the ship avoidance
+  refill counter (known noise).
+- **USN01 moved: Coastal Gun 01 fires 2 shots at Dunlap (36 damage, Dunlap 2400 -> 2311).** The
+  death table is identical (5 rows, same times), and so is the plane death-mode table.
+- **Why.** A census build of this tree (`local\s12_cen_usn01.log`, OFF, with the reverse cast
+  asked alongside each test and not used) finds exactly two tests whose verdicts differ between
+  the two conventions, both observer Coastal Gun 01, target Dunlap: cast from Dunlap the walk hits
+  terrain 256.7 / 258.1 m from the gun (blocked), cast from the gun it hits nothing (visible). That
+  is the cell test's one-sidedness: 00ADEB80 is Ericson's `IntersectLineQuad` form (scalar-triple
+  signs, docs/SCENE_CONTENTS_HOSTS.md section 10.1), which only meets a quad from one side, and it
+  is the image's own walk (`kTerrainSegmentQuadtreeBound` ON). So the image, casting gun ->
+  Dunlap, sees Dunlap on those two tests.
+- **Prediction 1's premise was wrong,** and so was prediction 4's rule: it assumed the host march
+  was symmetric and that any asymmetry would be a host property. The asymmetric walk is the
+  image's, reached through the listing's own cast direction.
+
+**Verdict: ON.** The mechanism is the listing's (both points, the cast direction and the measured
+end), four rows are gameplay-identical, and the one move is two tests the image's one-sided cell
+test answers in the image's direction; no death flips. Recorded as a spread miss with the
+mechanism matching. The census diagnostic stays in the code (`BSP_LOS_CENSUS=1`: the hit count,
+the count of tests whose reverse cast would answer differently, and the first 24 of those).
+
+**Still labelled on both sides:** `0081DE10` answers 0, the section-span raise is not taken, and
+the 0.5 s owner point cache is not kept.
