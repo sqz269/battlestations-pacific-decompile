@@ -4800,7 +4800,7 @@ struct GameUnitsHost::Impl {
     // box, which is the native result (49.10). The periscope shape
     // (009396BA..009399BF) is not added. OFF: the box stays zero, so the hull
     // body has zero inertia and never rotates under a torque.
-    static constexpr bool kHullInertiaFromShapesBound = false;
+    static constexpr bool kHullInertiaFromShapesBound = true;  // ON: capsize re-pair held (GUNNERY_OPEN_ITEMS 56.5)
     struct ClassHullBox {
         bool ok{false};
         std::string reason;
