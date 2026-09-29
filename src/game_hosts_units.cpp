@@ -1758,7 +1758,13 @@ bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
 // not restore the releases. The loss scales with the horizontal offset (1% and
 // 10% of it: 23 releases, 50%: 16, 100%: 8) and not with its height, so it
 // stays OFF. With it on, `hull_aim draw` and `hull_aim inrange` lines print.
-constexpr bool kHullAimOffsetEnabled = false;
+//
+// Packet cc9_dive_aim_hull_point: ON. Those losses were measured before the
+// rest of the dive was bound. Re-paired on the faithful dive set (USN04
+// 4700/4500, USN01, USN13): one draw per attacker, inside 0.45 x Length/Width,
+// and the releases hold (USN04 dive 1 -> 1, torpedo 4 -> 5; USN01 2 -> 2 with
+// identical damage). docs/HULL_AIM_POINT.md section 9.
+constexpr bool kHullAimOffsetEnabled = true;
 // Packet cc9_hull_turndown: the per-tick turndown/aimdive/aimglide trace in
 // update_dive_bomb_approach. Diagnostic only; off in the default build.
 constexpr bool kHullAimTrace = false;

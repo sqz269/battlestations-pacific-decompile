@@ -5505,3 +5505,5 @@ image aims at a body-frame hull point chosen by `target->vtable[+100h]` (docs/HA
 (b)). On a 0.2-degree margin that substitution can decide which wingmen leave. So the leavers are
 not evidence of a missing rule. `+19h`'s persistence (read, not applied) plays no part: `ready` is
 0 on every leaver tick before the leave.
+
+**Follow-up (cc9-lua16, packet `cc9_dive_aim_hull_point`).** The aim-point substitution is gone: `kHullAimOffsetEnabled` is ON. With it the leaver set changes (#1.1|.-3, #1.1|.-4 and #5.1|.-2), and the count stays at three. docs/HULL_AIM_POINT.md section 9.
