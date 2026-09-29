@@ -3000,3 +3000,49 @@ the goal, and nothing on rows without such frames. The misses are spread: the ar
 a plane death flip my prediction ruled out. Both are recorded. The hold is the listing's
 behaviour (`009F1E30 JE 009F2003`). The death flip is a plane surviving AA whose ships steer at a
 point up to one arm period old, which is what the image does on that path.
+
+## 36. Rank 4 of section 28: the squadron exclusion `009FFEB0`, read and counted (packet `cc9_squadron_rtb_exclusion`)
+
+Worker cc9-ships12, 2026-09-29. No switch: the arm is not reached on any row counted.
+
+**The image** (`009FFEB0..009FFF1D`, `__thiscall`, ECX = the squadron, plain `RET`). The whole
+body was read:
+- `009FFEB3`: `[00E17BF2]` set returns 0. It is 0 in the image.
+- `009FFECD`: EDI = `[[sq+3D0h]+0C4h]`, the head plane's most-derived class id.
+- `009FFED3`: `007EDAD0(sq)` (BSP_PlaneSquadron_AmmoType). It walks the `+3CCh` planes at
+  `+3D0h`, and on each one tests through the weapon controller `007B91C0(kind, 1)`: `2Bh` -> 2,
+  `2Ch` -> 3, `33h` -> 4, `31h` -> 5, `2Fh` -> 6, and `007B9320` (the general bomb) -> 1. It
+  answers the first kind found, else 0 (`007EDB43`).
+- Only when that answer is 0 AND the head's id is `10h`, `11h` or `12h` (the bomber leaves,
+  `009FFEDC..009FFEE9`): `007F16D0(sq, &record)` resolves the squadron's `returntobase`
+  (`include/bsp/return_to_base.hpp`).
+- A non-null descriptor in `[record]` is issued as `0077D600(desc, &record+4, 1)` at `009FFF09`, and
+  the routine answers 1: the member is excluded from the leader's moveto. Otherwise it answers 0.
+
+So the "carrier arm" in section 28's label is a **return-to-base arm for a bomber squadron with
+no ordnance left**. The host answers `007EDA90`'s value in its place.
+
+**The census** (`src/game_hosts_ai.cpp`, `rtb_exclusion_census`, no behaviour). It counts the
+calls that name a squadron, those whose head is a bomber leaf, and those where the ordnance test
+answers 0. The test is `GameUnitsHost::unit_ordnance` over the planes still listed, a union mask
+that drops clear, and it is labelled. The summary line is
+`summary mission ai squadron rtb exclusion squadron_calls= bomber_calls= spent_calls=`. Rows at
+3200/3000 are `local\s12_rc_<row>.log`:
+
+| row | squadron calls | bomber calls | spent |
+| --- | --- | --- | --- |
+| USN13 | 416 | 0 | 0 |
+| LOMP10 | 2 | 0 | 0 |
+| JM05, JM08, USN04, USN01 | 0 | 0 | 0 |
+
+Section 28's call counts (JM05 8428, USN13 2079, JM08 1541) are inflated: the host evaluates
+`tick_squadron_excluded_009ffeb0` for every follower, ships included, while the image asks only
+after the squadron test. On these rows every squadron that follows a leader is a fighter group.
+
+**Decision: not bound.** A binding needs three things:
+- the ordnance reader above;
+- a units-host entry that resolves `007F16D0` for a squadron and places the resolved command
+  (the units lane: `record_return_to_base_007f16d0` / `rtb_census` exist but are private);
+- a row where an AI group's bomber squadron spends its load while following a leader.
+
+None of the counted rows has one.
