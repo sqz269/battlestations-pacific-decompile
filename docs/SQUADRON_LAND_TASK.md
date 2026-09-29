@@ -2941,3 +2941,56 @@ closed. The loop is the thing to fix: park declares done at once.
 
 **Next.** `00951F40`'s hangar hide (`007B96C0`), then why park's done test `009B21D0` fires on
 its first tick (5s). The loop, not the arm, is what drives the planes off.
+
+## 5w. Why park is done at once: the contact arm of `009B21D0` (packet `cc9_land_park_done_test`, cc9-lua16, 2026-09-29)
+
+**The census.** Commit `7d66ee047` adds print-only counters that record which arm of `009B21D0`
+sets done, shown as `done_why` on the `summary land park` line. The run is LOMP10 9200/9000 with
+`kLandParkStateBound=true`, `local\l16_diag_lomp10l.log` (cc9-lua16 tree).
+- On all nine looping planes, **every** done comes from the contact arm: `+BF8h` clear. The
+  counts are 798, 1247, 740, 1002, 902, 1127, 1059, 946 and 1180, equal to their park entries.
+- The timer (`0 > +28h`), deck (`+BF4h`), behind (`t.z < pz`) and heading arms fire 0 times.
+- Warhawk 01, which enters park once and never loops, sets none.
+
+**The first park episode is fine.**
+- Each plane enters park on the runway: B-25 01 at local (1.0, -161.2), Lightning 01 at
+  (0.5, -147.1), Warhawk 01|.-2 at (0.6, -151.7).
+- It is not done for tens of ticks: the traces two seconds later still show `done=0`.
+- It then turns toward the taxi target (44.4, -20.6). Once `|x|` passes the runway's half width,
+  done fires, and from then on every re-entry is done at once.
+
+**Where the target is.**
+- In this installation's `10_san_jose.scn` (USN/LOMP, mtime 2024-08-09), the airfield `CB4_AF` is
+  at (1072.4, 542.9). Its x axis is (0.9659, 0, -0.2588).
+- Its hangar `CB4_AF_Hangar` is at (1124.0, 505.9). In the airfield frame that is about
+  (59.4, -22.4), roughly 50 m beside the 20 m by 400 m runway (`RunwayWidth`/`RunwayLength`).
+- The target is `CB4_AF_exitpath1`'s last point. `006CF420` indexes it as `count - 1`
+  (`006CF472`-`006CF48B`), as the host does.
+
+**Every input was read again from the listing, and each matches the host.**
+- **`009B21D0` (`009B21D0`-`009B22B0`):**
+  - `009B21F4` makes the timer arm `0 > +28h`;
+  - `009B21FE`/`009B220B` test `+BF8h` and `+BF4h`;
+  - `009B221F` tests `pz > t.z`, then `009B1E30` and the holder's `vtable[3Ch]`;
+  - `009B2286` is the `00438B10` heading test against pi/2.
+- **`006BC530`, read whole (`006BC530`-`006BC5CE`).** It is the runway rectangle:
+  `|l.x| < holder+B0h x 0.5` and `|l.z| < holder+B4h x 0.5`, with `l` from `004142E0` by
+  `holder+48h`. The height goes to the out pointer.
+- **`007C5AC0`'s every-step tail (`007C5F0A`-`007C5F57`).** It sets `+BF8h = 006BC530(pos)` while
+  `+C02h` and `+BF4h` hold. `pos` is the pose-refreshed position (`007C5B01`).
+- **Park's enter (`009B21A0`).** It seeds `+28h` = 3.0 (`00CE3854`), and the airfield arm never
+  lowers it.
+
+**What this leaves.**
+- On the reading as it stands, a plane taxiing to an off-runway hangar loses `+BF8h` and is done.
+  The image would be too, unless a term this host lacks keeps it: park's rule sends done to
+  abort (`009B3770`), and abort's on-ground arm sets `+21h` back to park (5v).
+- So the loop is **not** a mis-transcribed done test. The candidates, in order:
+  1. The probe's position after `007C71E0`'s re-parent to the airfield (5k). `007C5B01` refreshes
+     the pose. If the image's pose is parent-relative there, `006BC530` would transform an
+     airfield-local point again. This host keeps world positions throughout (the labelled 5k
+     substitution).
+  2. Whether the ground-roll arm reaches `007C5AC0` at all once `+900h` is 4 or 5 and the plane is
+     parented. The host calls it at `007CBFC3` unconditionally.
+  3. The park rule's done edge `009B3770` and its conditions, which are not re-read here.
+- The counters stay, print-only. `kLandParkStateBound` stays OFF.

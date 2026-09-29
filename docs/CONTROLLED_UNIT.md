@@ -2749,3 +2749,54 @@ The host passed it true, and its `idle_floor` held a mis-converted 0.15.
 - The build directory was last built with `kHullAimTrace` = true (a local trace build, reverted
   in the source). Rebuild before any run.
 - JM05 at 3000 frames is too short for either strike; use 9200/9000.
+
+## Handoff (cc9-lua16, 2026-09-29)
+
+Branch `agent/cc9-lua16`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua16`. No lease
+is held after this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_dive_aim_hull_point` | `25236960b`, `76f652c3f` | `kHullAimOffsetEnabled` | ON: re-paired on the faithful dive set; releases hold | docs/HULL_AIM_POINT.md 9 |
+| `cc9_scene_unit_skill` | `ff4ac4806`, `dfeb8dd02` | `kSceneUnitSkillBound` | ON, inert in today's rows. Group defaults hold `Skill`, so `Crew = Rookie` never reaches `006E6210` in JM05 | docs/SCENE_UNIT_SKILL.md 1-5 |
+| `cc9_carrier_launch_skill` | `0ced7aed7`, `9fb31e4a8` | `kCarrierLaunchSkillBound` | ON: JM05's 14 US squadrons fly SPVeteran; torpedo drops still 0, lost to AA below the 5 m release altitude | docs/SCENE_UNIT_SKILL.md 6 |
+| routed setter | `d7b093d01` | none | `set_unit_max_speed_09c0` (00890B51) for ships15 | - |
+| `cc9_pilot_land_native` (entry) | `49cb3ae26`, `a66b53f82` | none | `land_at_site_0099a3dd`; ships15 binds 008A47B0 | docs/SQUADRON_LAND_TASK.md, the PilotLand section |
+| `cc9_land_abort_ground_arm` | `f288ab040`, `902396866` | `kLandAbortGroundArmBound` | OFF: faithful, sign included; its yaw has the opposite sense to park's and rests at pi/2 under the loop | docs/SQUADRON_LAND_TASK.md 5v |
+| routed method | `45b5b1acb` | none | `plane_hit_task_notify_00999aa0` (torpedo `009D3270`) for gunnery13 | - |
+| `cc9_land_park_done_test` | `7d66ee047`, `ae5b172f5` | none (print-only `done_why`) | every loop done is the contact arm, `+BF8h` clear off the runway | docs/SQUADRON_LAND_TASK.md 5w |
+
+### Open, in order
+
+1. **The park loop (5w).** The done test, `006BC530` and the probe tail all match the listing.
+   The next reads are:
+   - (i) the probe position after `007C71E0`'s re-parent: is `007C5B01`'s pose parent-relative
+     there?
+   - (ii) whether the ground-roll arm reaches `007C5AC0` while parented;
+   - (iii) park's rule edge `009B3770`.
+
+   Then `00951F40`'s hangar hide (`007B96C0`), and re-pair park together with
+   `kLandAbortGroundArmBound`.
+2. **The dive approach+C4h clock.** `009C7900` zeroes it on a hit, so the goaway's forced re-roll
+   (`009C4AA4`, `1.0 > C4h`) is reachable. docs/DIVE_BOMB_GOAWAY_TURN.md says it cannot fire.
+   Carry it as a slot field: seeded 3600, `+= dt` at `009C7A8C`, zeroed by
+   `plane_hit_task_notify_00999aa0`, and fed to `tin.approach_clock_c4`. Do this once gunnery13
+   calls the notify.
+3. JM05 `blocked_engaged_009d3210` = 38505 (from the lead).
+4. The B-25 forward creep and the dive overshoot, both from cc9-lua15's queue.
+5. Catapult single-plane launches (`006EC98D`) do not carry the owner skill. The host has no
+   caller of that path.
+
+### Working notes
+
+- `local\l16_run.ps1 -Exe <exe> -Prefix <p> -Rows 'tag:MISSION:frames:mission_frames'` launches
+  runs with the reference environment.
+- `local\l16_skill_census.py <scn>` gives the per-entity skill following `00927A80` over the
+  merged bag.
+- `local\l16_parkx.py <log>` gives the park trace per plane: max `|x|`, the last local point and
+  the error.
+- The pair to use for park is LOMP10 9200/9000 with `--flip kLandParkStateBound=true` on both
+  sides. With park off, nothing reaches abort.
+- cc9-lua15's `local\l15_dive.py` and `local\l15_torp.py` read these logs unchanged.
