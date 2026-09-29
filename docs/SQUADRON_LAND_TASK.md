@@ -1993,6 +1993,108 @@ runs on a task younger than 10 s, and every head in `local\l13_jon_lomp10.log` s
 the host uses. A plane that begins a landing within 10 s of its own spawn would differ. None does on
 LOMP10 or USN01. Nothing is bound and there is no pair; the source comment now cites this.
 
+## 5q. The ground roll, stage A: the landed plane thinks, brakes and stops (packet `cc9_plane_ground_roll`, cc9-lua13, 2026-09-29)
+
+**Why a landed plane froze.** The host ran the pilot think only inside the free-flight arm
+(`pilot_think_and_commit` from `free_flight_007cc2f0`). Its ground-roll arm only counted. The
+image's gate 8 (`0099AE5F`, `0074E230`) admits `unit+900h` 4 to 7, so a landed plane's bot keeps
+thinking. That is why Warhawk 01's land task stopped at 1494 ticks in 5o.
+
+**Read for stage A** (disk listing):
+- **`007DB6D1`-`007DB73E`, the core law's mode-1 head.**
+  - With the second argument 0.0 (the state is Locked), the law is skipped (`007DB6F7`).
+  - Otherwise `dyn+98h..A0h = (0, 1, 0)` and `dyn+94h = WheelHeight - BFCh`.
+- **`007DBEAA`-`007DC200`, the ground band** (mode 1 only; mode 0 takes the ceiling and mode 2
+  the water band at `007DC205`). Frame slots:
+  - `[F+24h]` is the latched throttle `unit+BBCh` (`007DB755`);
+  - `[F+3Ch]` is the latched block `unit+BB0h` and `[F+40h]` the command block `unit+9E4h`
+    (`007DB6CD`, `007DB6E4`, one push earlier). This also settles the doubt 5n's second pass
+    left on `007D9140`'s arguments: the first pass's reading stands;
+  - `[F+18h]` is the world speed (`007DBA88`, zero at `007DBC61`).
+
+  The band:
+  - `brake = classDesc+1E0h WheelBrake x max(unit+BC0h, 0.6 - throttle x 26.0)` (`00CEFF98`,
+    `00D06880`);
+  - the arrestor wire `ctl+ACh`, only with `unit+904h` set and above 0.1. Its only seeders are
+    the constructor, `007DB2C0` and `007DB630`, the class-9 wire block of `007C71E0`;
+  - `f = clamp(ctl+68h, WheelFrictionAccel/1, /2)` (`00415620`). `ctl+68h` is `dyn+84h`, the
+    previous step's body forward acceleration `(v - dyn+70h) / step` (`007D8F18`, copied at
+    `007DC756`);
+  - a surface factor from the parent's velocity (`007DC0A2`-`007DC131`): 0.35 -> 1.0 over
+    -5.56 -> 0 m/s, and 1.0 -> 1.3 over 1.39 -> 6.94 m/s. It is 1.0 for a static parent;
+  - `friction = f x interp(StallSpd x WheelFrictionSpeed/1 -> WheelFriction,
+    StallSpd x /2 -> 0, speed)`;
+  - `dyn+48h += friction + brake`, `dyn+40h += |2 x ctl+3Ch|`, `dyn+0Ch -= wire`.
+
+  `dyn+40h..48h` is the third resisting fold, which `007D8611` applies as `|q| x step` against
+  the motion.
+- **`007D87F6`-`007D8838`, `007D8CE9`-`007D8E1B` and `007D8E28`-`007D8F0E` in the integrator.**
+  - While below the wheels, body vy is zeroed when `|vz| < 1e-5`.
+  - The landed hold-down: with `dyn+C4h` (the latched `unit+904h`) and world vy >= -0.001, above
+    3 m/s body vy -= 0.1 x speed, renormalised to the speed.
+  - The contact projection: while below the wheels, the world velocity's downward component into
+    `(0, 1, 0)` is removed, and the body velocity is rebuilt.
+- **`007CBFA0` and `007DCCF0`:** as docs/PLANE_GROUND_OPS.md 3 and 4. Without contact and off a
+  path, the ground arm runs the free-flight step. The lift-off request needs
+  `BFCh - WheelHeight > 0.1` and world vy > 0.1.
+- **Final's on-ground half, `009B1FEA`-`009B207A`**, with `EBX` = 1 (`009B1F0B`) and `EDI` = 0
+  (`009B1EDF`):
+  - pitch 0.0 active, with `+2D0h` = 0;
+  - bank 0.0, with `+2CCh` = 1;
+  - throttle 0.0 active;
+  - air brake 1.0 when `approach+30h` answers `vtable[5Ch](9)`, else 0.2, active, with
+    `+2D8h` = 0;
+  - the done tests at `009B2080`, which need `007B8D70` false.
+
+**The binding, behind `kPlaneGroundRollBound` (committed OFF).**
+- `ground_roll_007cbfa0` runs, in order:
+  - the pilot pass (labelled position: the arm's head, as in free flight);
+  - the probe `007C5AC0`;
+  - `007DCCF0`, with the core law in mode 1.
+- The core law and its integrator are now one method, `run_core_law_007db680(step, ground)`, shared
+  with the free-flight arm. Free flight passes `ground = false`, and the result is unchanged there:
+  the new fold is zero and the acceleration store is only read by the band.
+- `ground_band_007dbeb3` is in `src/plane_flight.cpp`.
+- Final's on-ground half is bound under the same switch.
+- **Not carried, labelled:**
+  - the wire (no class-9 holder in this host);
+  - the surface factor (1.0 for the static airfield);
+  - the class-9 brake of 1.0;
+  - steps 2 to 5 of `007CBFA0`;
+  - the lift-off message (counted);
+  - the runway steering band `007DA380` and the rate law's ground arm `007DA542`: the planner and
+    rate law run their free-flight arms;
+  - the ground pose `ctl+80h..8Ch`, `007D9C80` and `007D80C0`;
+  - park, which stays refused. That is stage B.
+- Diagnostic: `summary plane ground roll` per landing plane.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is the committed tree: 5o's state, with the ground roll OFF. ON flips `kPlaneGroundRollBound`.
+1. **The landed heads think again.** Warhawk 01, Lightning 01 and B-25 01 run final's on-ground
+   half (`land_final_ground_ticks > 0`, `ground_refused = 0`). The rule asks for park on every think
+   (`park_refused > 0`); park stays refused.
+2. **They brake and stop on the runway.**
+   - `law_steps > 0` and `band_steps > 0`.
+   - `stop_t` falls within 6 s of each touchdown, with a roll of 10 to 150 m.
+   - The brake is `WheelBrake x 0.6` once the latched throttle is below 0.02, and
+     `WheelBrake x 0.2` before that.
+   - `hold_down > 0` and `contact > 0`, with no lift-off request (`liftoff_req = 0`).
+   - The planes stay on the runway: `free_steps = 0`.
+3. **The followers still abort.** A stopped plane still occupies the site: nothing releases the
+   occupancy until park and the taxi run. Lightning 01|.-4 and B-25 01|.-2 abort as in 5o.
+4. **Everything else is 5o's.** Deaths are identical. LOMP10 moves (exit 3) only in the landed
+   planes' positions and whatever reads them. USN01 is gameplay identical (exit 1).
+- **Refactor check:** the committed OFF log against 5o's ON log (`local\l13_jon_lomp10.log`, the
+  same switches before the refactor) is gameplay identical.
+- **Mechanism failure:** any of:
+  - a landed head still moving at 32 m/s 10 s after touchdown;
+  - a lift-off request;
+  - a landed plane sinking below its wheel height by more than 1 m (`min_bfc`);
+  - `free_steps > 0` on a stopped plane.
+- **Flip rule:** ON if the heads stop on the runway without a mechanism failure. Stage B (park and
+  the occupancy release) follows either way.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
