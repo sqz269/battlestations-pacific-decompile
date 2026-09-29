@@ -5566,6 +5566,28 @@ struct GameUnitsHost::Impl {
             // 007C75A0 from 007CC345). The host's gunFire byte +BC9h stands in
             // for +C35h, labelled.
             if (&s == &u || !s.plane_gun_fire_bc9) continue;
+            // DIAGNOSTIC, env-gated (BSP_GUN_LIST_TRACE=1): a killed plane (C3Ah) that
+            // still holds the gunFire stand-in, once per shooter, and whether the
+            // +5Dh test below drops it. Prints nothing when unset.
+            static const bool gun_list_trace = [] {
+                char* v = nullptr;
+                std::size_t n = 0;
+                const bool on = _dupenv_s(&v, &n, "BSP_GUN_LIST_TRACE") == 0 && v != nullptr;
+                std::free(v);
+                return on;
+            }();
+            if (gun_list_trace && s.plane_death_c3a) {
+                static std::vector<const GameUnitSlot*> traced;
+                if (std::find(traced.begin(), traced.end(), &s) == traced.end()) {
+                    traced.push_back(&s);
+                    log.notef("  gun list trace %s: killed at %.2f s, gunFire set, "
+                        "+5Dh=%d (%s) at %.2f s", s.row.name.c_str(),
+                        static_cast<double>(s.plane_death_seconds),
+                        s.state != nullptr ? static_cast<int>(s.state->simulate) : -1,
+                        (s.state == nullptr || s.state->simulate != 0) ? "dropped" : "COUNTED",
+                        static_cast<double>(summary.simulated_seconds));
+                }
+            }
             if (s.state == nullptr || s.state->simulate != 0) continue;
             // 0099EC73: own squadron skipped (+9D4h).
             if (own_sq != nullptr &&
