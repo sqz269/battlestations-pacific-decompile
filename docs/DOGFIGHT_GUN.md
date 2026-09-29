@@ -354,3 +354,27 @@ patch compiles with both ON (a scratch export of the tree at `02d593a6e`).
 - **Untasked:** `untasked_planes` counts the refused-RTB and unmodelled-command planes (JM05 has
   the refused SecondaryAirfieldEntity 01 returns). With the switch on, they tick with cone 0 and
   the same finder. Expect no bursts, so `pair_diff` 1.
+
+**Pairs** (OFF = `9c97d35a7` tree build on main `960b6baec`; ON = its export with both flips;
+`local\l18_h0_*`, `local\l18_h1_*`). Every pair is `pair_diff` 1, gameplay identical, with
+identical death tables.
+
+| row | ON: planes ticking / ticks | cone ticks | steer ticks | untasked planes / thinks | enemy-list ticks | bursts |
+| --- | --- | --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 66 / 154184 | 61540 | 0 | 21 / 68272 | 0 | 0 |
+| USN04 9200/9000 | 63 / 104687 | 37326 | 0 | 15 / 50658 | 2490 | 0 |
+| USN13 3200/3000 | 51 / 64520 | 20887 | 0 | 27 / 40500 | 0 | 0 |
+| JM08 3200/3000 | 15 / 17355 | 7435 | 0 | 6 / 7554 | 690 | 0 |
+| LOMP10 3200/3000 | 10 / 15000 | 8547 | 0 | 2 / 74 | 0 | 0 |
+
+The OFF build counts the same untasked planes and thinks, which shows the census does not depend
+on the flip. The predictions held on every row: cones are delivered, no steer happens, and there
+are no bursts. The untasked planes raise USN04's enemy-list ticks from 690 to 2490 and JM08's from
+420 to 690, but no enemy ever enters the fire envelope.
+
+**Verdict: `kTaskGunConeBound` and `kTaskGunUntaskedPlanesBound` ON**, recorded as inert on the
+reference rows. The remaining gaps are:
+- the `+68h` direction (forward stands in);
+- the dogfight attackrun cone;
+- the cones of classes the host does not model (depth charge, strafe, level bomb and others);
+  their planes tick with cone 0.

@@ -4428,11 +4428,11 @@ struct GameUnitsHost::Impl {
     // 009C2584, 009C2831, 009BFD2B, 009C4443, 009D0AD4, 009D11BA; Angle_GoAway at
     // 009C4E2C, 009D1121. The gun tail zeroes it (009FCE69). True: the cone feeds the
     // finder and the fine-aim steer gate. False: 0 outside dogfight.
-    static constexpr bool kTaskGunConeBound = false;
+    static constexpr bool kTaskGunConeBound = true;  // ON: DOGFIGHT_GUN 9
     // Same packet: 0099A170 builds a task for every command class (009C3C40 for none),
     // so every AI PilotFires plane's bot ticks 009FC7C0. True: planes with no modelled
     // task tick it too, with cone 0. False: only the modelled tasks.
-    static constexpr bool kTaskGunUntaskedPlanesBound = false;
+    static constexpr bool kTaskGunUntaskedPlanesBound = true;  // ON: DOGFIGHT_GUN 9
     // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
     // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds

@@ -2923,3 +2923,52 @@ is held after this addendum.
 - **Park work, if it is ever reopened:** export with `--flip kLandParkStateBound=true --flip
   kLandAbortGroundArmBound=true`. Five of ten LOMP10 planes hold at the hangar now; the rest loop
   as the image would, invisibly (5z, 5aa).
+
+## Handoff (cc9-lua18, 2026-09-29)
+
+Branch `agent/cc9-lua18`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua18`. No lease
+is held after this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_land_final_direction_40` | `fdc4709f3`, `e1cb1ddfb` | `kLandFinalDirection40Bound` | ON: the store repeats a value already there; a relabel | SQUADRON_LAND_TASK.md 5ac |
+| routed planes1 edits | `29ab38651` | `kDiveBombMoveToOriginBound` | OFF: no reference row ticks the dive-bomb moveto | DIVE_BOMB_APPROACH.md 19 (planes1) |
+| `cc9_gun_list_at_kill` | `aa1b33146` | none | the +5Dh test already drops a killed shooter; reach is nil | ATTACKER_EVASION.md 7 |
+| JM05 queue items 2 and 3 | `a42dd2c17` | none | sqn12/13/15 are cut by the run end; sqn18 dies to AA | TORPEDO_RELEASE_ORDERS.md (9) |
+| `cc9_torpedo_flight_lead` | `fdb2c36b5`, `86f6927cc` | `kTorpedoFlightLeadPerSquadronBound` | ON: the leader is per squadron; JM05 sqn18 attacks | TORPEDO_RELEASE_ORDERS.md (9) |
+| `cc9_task_gun_controller_all_tasks` | `b0322e072`, `e845cbb01`, `02d593a6e` | `kTaskGunControllerAllTasksBound` | ON, inert: 0 bursts on every row | DOGFIGHT_GUN.md 8 |
+| `cc9_task_gun_cones` | `082f26fd5`, `9c97d35a7`, `3d6aee4b2` | `kTaskGunConeBound`, `kTaskGunUntaskedPlanesBound` | ON, inert: cones delivered, no steer | DOGFIGHT_GUN.md 9 |
+
+With the gun switches on, three sets of land records are relabelled done:
+- `009B1DDA`, unconditionally;
+- standby and line `009FABE0`, only while the authored `Angle_Prepare` is 0 (a runtime test).
+
+### Open, in order
+
+1. **Catapult single-plane launches (`006EC98D`)** do not carry the owner skill. Carried from
+   cc9-lua16 and not read here.
+2. **The gun controller has no reach on any reference row.** No enemy aircraft ever enters the
+   fire envelope (USN04 2490 and JM08 690 enemy-list ticks, 0 bursts). A row with fighters
+   escorting through enemy aircraft would exercise it. The labelled gaps:
+   - `009FABE0`'s `+68h` direction (the steer gate measures against forward);
+   - the dogfight attackrun cone (`009A744E`, Angle_MoveTo);
+   - the cones of the unmodelled task classes.
+3. **Lexington_sqn15 on JM05** never engages before the run ends on the merged tree (1889 thinks
+   in moveto). A longer row would show whether it attacks.
+4. The B-25 dive overshoot was dropped by the lead unless a cheap lead appears.
+
+### Working notes
+
+- `local\l18_runs.ps1 -V <prefix> -Only <rows> -Exe <path>` and `local\l18_wait.ps1 -Logs a,b
+  -Max 560`: copies of lua17's scripts with this tree's root.
+- `local\l18_disp_scan.py <disp> <lo> <hi>` lists every instruction with that memory displacement
+  in the range. It decodes backwards from the disp32 bytes, so it catches all opcodes, not just
+  stores. It was used for the `+354h`, `+5F8h` and tuning-cone censuses.
+- Diagnostics, env-gated: `BSP_GUN_LIST_TRACE=1` prints a killed shooter still holding the
+  gunFire stand-in.
+- The census lines are `summary mission task gun (all tasks)` and `summary mission task gun
+  cones`.
+- Python edit scripts must write bytes (`write_bytes`). `write_text` on Windows turns
+  `game_hosts_units.cpp` into CRLF.
