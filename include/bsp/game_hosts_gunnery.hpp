@@ -806,6 +806,25 @@ public:
     // trace counters are restored. No caller is bound yet.
     bool landscape_segment_hit_00904400(const float from[3], const float to[3]) const;
 
+    // Packet cc9_unit_sight_queries, for the ship AI's 009E7FC0.
+    // 009E8116 CALL 00864FD0 (MOV ECX,[ECX+68h]; JMP 00864D90) on [unit+6DCh]:
+    // unit `unit`'s own gunnery-pass visibility cache asked about `target`. It is
+    // GunneryPassBinding::visible_00864d90 itself, so a miss appends the same
+    // cache entry with the same TTL draw the pass would, and it follows the same
+    // OFF arm under kGunneryLineOfSightBound. False for an index out of range.
+    bool unit_sees_unit_00864d90(std::size_t unit, std::size_t target);
+    // 009E8130 CALL 00864BA0 on [unit+6DCh]: MOV ECX,[ECX+68h], the three floats
+    // copied to a local, CALL 00864680, RET 0Ch; no cache entry. 00864680 raises
+    // the cache OWNER ([cache+0] = [pass+50h], the unit, stored at 00864C12..0F):
+    // pose +FCh..+104h (008646F0..00864708) plus class+A8h and Globals+94h
+    // (00864793..008647B6). The passed point is used as given. 00904400(44h,
+    // &owner point, &point, record, 0) at 008647F4; a hit farther than 25 m
+    // (00CFBC80 = 625.0 squared) from the PASSED point (008647FD..00864852) hides
+    // it. LABELLED as line_of_sight_00864680 does: 0081DE10 answers 0, the
+    // section-span raise branch is not taken, the 0.5 s owner-point cache
+    // (cache+10h, 00CE3800) is not kept. Read-only.
+    bool unit_sees_point_00864680(std::size_t unit, const float point[3]) const;
+
     // Packet cc9_component_failures: true while unit `unit_index` carries an active
     // failure of that name in its repair task (task+18h), started by 0093BED0 and
     // retired by 0093C520. "SteeringJam" and "EngineJam" are the ones 008198A0
