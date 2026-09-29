@@ -627,6 +627,7 @@ struct GameUnitSlot {
     bool land_abort_park_21{false};
     unsigned long long land_abort_entries{0}, land_abort_ticks{0}, land_abort_to_standby{0};
     unsigned long long land_abort_ground_refused{0}, land_abort_park_refused{0};
+    unsigned long long land_abort_ground_ticks{0};   // 009B0E74's arm run (packet cc9_land_abort_ground_arm)
     // Packet cc9_land_park_taxi: land/park (+620h, vtable 00D1FF60) and the plane
     // bytes its tick writes. docs/SQUADRON_LAND_TASK.md 5s.
     float land_park_1c{0.0f};             // park +1Ch, 009B21A0
@@ -4325,6 +4326,12 @@ struct GameUnitsHost::Impl {
     // calls 006CF420/006CF520/006CF5B0 with 006CE610/006CDF70, the transitions
     // 007C16F0/007C1680 and 007B96C0/007B9000. False: park is refused as before.
     static constexpr bool kLandParkStateBound = false;  // OFF: mechanism failure, the park <-> abort loop (5s)
+    // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
+    // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
+    // False: the arm is refused and only +21h acts. OFF: paired with park on, its
+    // yaw (heading - runway, opposite to park's sense) rests at pi/2 under the
+    // host's park <-> abort loop; re-pair with park (docs/SQUADRON_LAND_TASK.md 5v.2).
+    static constexpr bool kLandAbortGroundArmBound = false;
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -20709,11 +20716,48 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         unit_.land_abort_standby_20 = false;                         // 009B0A42
                         if (unit_.plane_control_mode_900 != 7) {
-                            // 009B0E74-009B0F93: +21h = 1 and the ground heading and
-                            // pitch; REFUSED, the host does not run the ground roll.
-                            unit_.land_abort_park_21 = true;
-                            ++unit_.land_abort_ground_refused;
-                            land_refuse_state("land/abort on-ground arm", 0x009b0e74u);
+                            // 009B0E74-009B0F93, reached at 009B0A5C when (plane+72Ch)
+                            // ->vtable[38h] answers 0. EBX = 1, EBP = 0 from the head.
+                            unit_.land_abort_park_21 = true;                         // 009B0E76
+                            GameUnitsHost::Impl::LandingDeck* gd = nullptr;
+                            if (GameUnitsHost::Impl::kLandAbortGroundArmBound
+                                && unit_.land_deck_plus_one != 0 && unit_.land_site_plus_one != 0) {
+                                gd = owner_.landing_deck_006c0750(unit_.land_deck_plus_one - 1u,
+                                    unit_.land_site_plus_one - 1u);
+                            }
+                            if (gd == nullptr) {
+                                ++unit_.land_abort_ground_refused;
+                                land_refuse_state("land/abort on-ground arm", 0x009b0e74u);
+                                return;
+                            }
+                            // 009B0E7C-009B0E91: +2BCh = class+1ECh x 0.5 (00D7A280),
+                            // +2D0h = 1.
+                            unit_.plan_state.pitch_target_2bc = static_cast<float>(
+                                static_cast<double>(unit_.plane_climb_angle_1ec) * 0.5);
+                            unit_.plan_state.pitch_mode_2d0 = 1;
+                            // 009B0E9E-009B0EC8: e = 00438B10(vtable[50h] heading,
+                            // holder+88h); past pi/2 (00CE3830) it is taken against the
+                            // reversed axis, e -/+ pi (00CE3D28), so either runway
+                            // direction is held.
+                            float e = bsp::wrapped_angle_subtract_00438b10(
+                                unit_.plane_heading_c6c, gd->runway_heading_88);
+                            if (std::fabs(e) > 1.5707963705062866f) {
+                                e = static_cast<float>(e > 0.0f
+                                    ? static_cast<double>(e) - 3.1415927410125732
+                                    : static_cast<double>(e) + 3.1415927410125732);
+                            }
+                            // 009B0F1B-009B0F86: yaw = 00419010(-ys/2, -1.1 (00D06BB0),
+                            // ys/2, 1.1 (00CE6448), e), ys = class+1B0h; +284h/+288h
+                            // desired/active, +2D4h = 0.
+                            const float ys = unit_.plane_class.yaw_spd;
+                            const float half = static_cast<float>(static_cast<double>(ys) * 0.5);
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired =
+                                bsp::clamped_interpolate_00419010(-half, -1.100000023841858f,
+                                    half, 1.100000023841858f, e);
+                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            unit_.gl_yaw_mode_2d4_zero = true;
+                            ++unit_.land_abort_ground_ticks;
+                            owner_.done("BotStateLandAbort::on_ground_arm", 0x009b0e74u);
                             return;
                         }
                         GameUnitsHost::Impl::LandingDeck* d = unit_.land_deck_plus_one == 0 ? nullptr
@@ -25362,9 +25406,10 @@ void GameUnitsHost::report() {
         for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
             if (s->land_abort_entries == 0) continue;
             host.log.notef("summary land abort %s: entries=%llu ticks=%llu to_standby=%llu "
-                "ground_refused=%llu park_refused=%llu standby entries=%llu",
+                "ground_refused=%llu ground_ticks=%llu park_refused=%llu standby entries=%llu",
                 s->row.name.c_str(), s->land_abort_entries, s->land_abort_ticks,
                 s->land_abort_to_standby, s->land_abort_ground_refused,
+                s->land_abort_ground_ticks,
                 s->land_abort_park_refused, s->land_standby_entries);
         }
     }
