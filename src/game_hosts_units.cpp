@@ -778,6 +778,7 @@ struct GameUnitSlot {
     int df_early_asks{0};
     bool plane_gun_fire_bc9{false};    // unit+BC9h, the latched gunFire
     int pg_trigger_ticks{0};
+    int tg_ticks{0};    // census: 009FC7C0 ticks outside the dogfight arm
     int pg_trigger_rises{0};
     int df_head_on_ticks{0};
     int pc_air_brake_overrides{0};
@@ -4330,6 +4331,13 @@ struct GameUnitsHost::Impl {
     // torpedo task installed in the mission leads, and its mode reaches every
     // torpedo task.
     static constexpr bool kTorpedoFlightLeadPerSquadronBound = true;  // ON: TORPEDO_RELEASE_ORDERS 9
+    // Packet cc9_task_gun_controller_all_tasks (docs/DOGFIGHT_GUN.md 8): 009998A0's
+    // slow path ticks the task gun controller 009FC7C0 (task+314h) at 00999979 after
+    // EVERY task arm while unit+C24h (PilotFires) is set, not only the dogfight's.
+    // The fast path (0099C270: the published unit+520h, not an AI plane) skips it.
+    // True: every AI PilotFires plane flying a modelled non-dogfight task runs it.
+    // False: only the dogfight arm does.
+    static constexpr bool kTaskGunControllerAllTasksBound = false;
     // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
     // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
@@ -22301,6 +22309,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
                             }
                             }
+                            // 0099995C-00999979: after the task arm, 009FC7C0 on
+                            // task+314h while unit+C24h. The dogfight arm already
+                            // ticks it. SUBSTITUTIONS, labelled: the fast-path test
+                            // reads generic_suppress_520 now, not the previous step's
+                            // published copy; a plane with no modelled task has no
+                            // arm here and no gun tick; the non-dogfight states' cones
+                            // (Angle_MoveTo, Angle_GoAway at +40h) are not delivered,
+                            // so the fine-aim steer never runs outside dogfight.
+                            if constexpr (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound) {
+                                const bool has_task = unit_.torpedo_task_installed ||
+                                    unit_.dive_bomb_task_installed ||
+                                    unit_.moveto_task_installed ||
+                                    (kSquadronLandTaskBound && unit_.land_task_installed);
+                                if (!unit_.dogfight_task_installed && has_task &&
+                                    !unit_.generic_suppress_520 &&
+                                    (!GameUnitsHost::Impl::kPilotFiresBound ||
+                                     unit_.plane_pilot_fires_c24)) {
+                                    ++unit_.tg_ticks;
+                                    df_gun_tick_009fc7c0(elapsed);
+                                }
+                            }
 
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 // 009A17D0, before 0099D300.
@@ -26727,6 +26756,26 @@ void GameUnitsHost::report() {
                         }
                         host.log.notef("summary mission near field probe: calls=%d hits=%d "
                             "attackrun_weaves=%d flyover_slot_writes=%d", calls, hits, weaves, slots);
+                    }
+                    if constexpr (Impl::kTaskGunControllerAllTasksBound) {
+                        int planes = 0, ticks = 0, tb = 0, tf = 0, rises = 0;
+                        for (const auto& slot : host.slots) {
+                            if (slot->dogfight_task_installed || slot->tg_ticks == 0) continue;
+                            ++planes;
+                            ticks += slot->tg_ticks;
+                            tb += slot->df_gun.bursts;
+                            tf += slot->df_gun.fire_ticks;
+                            rises += slot->pg_trigger_rises;
+                            if (slot->df_gun.bursts == 0) continue;
+                            host.log.notef("  task gun %-12s ticks=%d bursts=%d fire_ticks=%d "
+                                "trigger_rises=%d finder_scans=%d", slot->row.name.c_str(),
+                                slot->tg_ticks, slot->df_gun.bursts, slot->df_gun.fire_ticks,
+                                slot->pg_trigger_rises, slot->nb_scans);
+                        }
+                        host.log.notef("summary mission task gun (all tasks): planes=%d "
+                            "ticks=%d bursts=%d fire_ticks=%d trigger_rises=%d "
+                            "(00999979 -> 009FC7C0, packet cc9_task_gun_controller_all_tasks)",
+                            planes, ticks, tb, tf, rises);
                     }
                     int bursts = 0, fire_ticks = 0;
                     for (const auto& slot : host.slots) {
