@@ -2627,6 +2627,117 @@ pose `ctl+80h..8Ch`, `007D9C80` and `007D80C0` (5q, not carried) and the attache
 **Verdict.** `kPlaneGroundSteeringBound` stays OFF, recorded as a mechanism failure. The reading
 of `007DA542`-`007DA6E3` stands. The ground pose has to come first, then this pair, then park (5s).
 
+## 5u. What stops a stopped plane turning: the rate law's flat floor (packet `cc9_plane_ground_pose`, cc9-lua15, 2026-09-29)
+
+**The answer is in the rate law, not in the pose.** `007DA380` returns one byte (`[ESP+0Bh]` at
+the call `007DA728`), which `007DA9EF` loads into `BL`. `BL` is tested four times:
+- at `007DA9F3`, the slide term and bank-yaw coupling (5t binds this);
+- at `007DABB0`, `007DAD46` and `007DAECE`, the floor of each of the three axis steps.
+
+With `BL` = 0 each axis takes the flat floor `rate = max(rate, XMM5)`. `XMM5` is loaded at
+`007DABBC` from `00CE3D30` = `3F19999Ah` = **0.6** (read from the PE on disk). It is not the
+sign-guarded `1.5 x |current|` floor of free flight. Two host defects hid this:
+- `control_step_007da710` passed the flag `true` for every axis, even with the 5t binding ON;
+- `PlaneRotationFactors::idle_floor` held 0.15, a mis-conversion of `3F19999Ah`. Nothing reached
+  it before now.
+
+**Mode 1 below `b`.** `outB` = 0, so the yaw target `-(YawSpd x latched x BC4h x outB)` is 0 and
+the yaw accel term is 0. The polynomial is then 0 and the floor makes the rate 0.6. The body yaw
+rate `ctl+4Ch` therefore decays to 0 at 0.6 rad/s^2. In 5t the host kept the accel-0 rate
+unchanged, which is why stopped planes spun. Pitch and roll take the same floor: the roll target
+is 0 in mode 1, and pitch goes toward `PitchSpd x outA x latched`.
+
+**The other candidates, read and not the answer:**
+- `007D80C0` (`__thiscall(dyn, step)`):
+  - step != 0: `dyn+78h = (dyn+44h - dyn+7Ch) / step`, `dyn+7Ch = dyn+44h`;
+  - step 0: it resets those two and copies `[00F87574..7C]` into `dyn+54h..68h`.
+
+  That is a finite difference over the velocity. It holds no attitude.
+- `007D9C80`: the body-to-world copy of `ctl+3Ch`/`+48h` (the ledger). The host already carries it
+  (`body_to_world_007d9c80`).
+- The up levelling in `007D9F60` (`007DA11C`-`007DA20C`): `ctl+80h..8Ch` = `(0, cos GroundPitch,
+  sin GroundPitch, RunwaySmoothStrength)` from `007DCD97`-`007DCDBD`.
+  - It lerps pose row 1 toward world up at `min(+8Ch x step, 1)`. That holds pitch and roll, not
+    the heading.
+  - Only `007DCCF0` and the water law (`007DD84F`) store `+8Ch`, in the exported `007Cxxxx` and
+    `007Dxxxx` functions. The constructor was not checked.
+  - Not carried: this host's pose advance has neither the levelling nor the bank-yaw rotation.
+- The attached branch of `007D9F60`, `007DA2B1`-`007DA338`, read whole (disk bytes). It needs
+  `ctl+FCh == 1`, `unit+BF4h` and a parent `unit+3Ch`:
+  - the position goes into the parent's frame (`00414D10` with `parent+CCh`, after `00414DB0`
+    when `parent+C8h` is clear);
+  - `006BC530(holder, &local, &y)` supplies the local height. Its over-runway return is ignored;
+  - `h = y - (class+1FCh WheelHeight + 0.01)` (`00D7A358`, a double);
+  - when `h < 0`: `p.y -= h` and `007D7D70(ctl+10h)`, which stores `dyn+98h..A0h = (0, 1, 0)`
+    and `dyn+A4h = 1`.
+
+  So it is a wheel-height lift onto a parent's deck. It does not touch the heading. Not carried.
+
+**Binding.** The flag passed to `plane_control_axis_step_007da710` is now the byte, i.e. the
+same `coupling` value 5t computes. It is false only under `kPlaneGroundSteeringBound` in the
+ground law. OFF behaviour is unchanged, because the switch stays committed OFF. This packet
+completes 5t's binding of `007DA542`-`007DA6E3`, so the pair re-pairs `kPlaneGroundSteeringBound`.
+
+The ground-steering summary now also prints `yaw_rate` (`ctl+4Ch`) and the final `x`/`z`.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000 (park OFF), written before any ON run
+
+1. **Identical up to Warhawk 01's touchdown (153.15 s).** USN01 is gameplay identical (exit 1).
+   LOMP10 moves (exit 3).
+2. **No stopped plane leaves the strip:**
+   - no `plane ground contact lost` line from a plane that has stopped;
+   - `|yaw_rate| < 0.01` for every landed plane at the end;
+   - `min_bfc > -2` for every plane.
+3. **Heading error of stopped planes.** Each final heading is within 0.15 rad of the heading at
+   its stop. The rolls are within 20 m of OFF's.
+4. **B-25 01|.-2 stays on the runway:** no contact loss and no sink. The 5r sink is also in OFF
+   (steering OFF), so it may persist if its cause is a push from B-25 01's body. If it does, it is
+   recorded as a separate failure. It is not a failure of this mechanism unless the plane's
+   heading turns.
+5. **Deaths identical** (the per-entity table).
+
+- **Mechanism failure:** any of:
+  - a stopped plane whose heading moves more than 0.15 rad after its stop;
+  - a nonzero final yaw rate;
+  - a contact loss by a plane that is turning.
+- **Flip rule:** ON when predictions 1 to 3 and 5 hold. Prediction 4 is recorded either way.
+
+### The pair and the verdict (cc9-lua15, 2026-09-29): steering flips ON, with a recorded miss
+
+- OFF is `106dabf9b` as committed (`local\l15_goff_<row>.log`). It is built on `ea5775f9b`, so
+  hull inertia is ON.
+- ON is the same commit exported with `kPlaneGroundSteeringBound` true (`local\l15_gon`,
+  `local\l15_gon_<row>.log`).
+- USN01 is gameplay identical (exit 1).
+- LOMP10 moves (exit 3). The death and unit tables are identical.
+
+**The predictions, one by one.**
+1. **Held.** All ten touchdown times are identical to OFF, from 153.15 s to 267.41 s. 5t's
+   0.05 s misses are gone.
+2. **Held for eight planes, missed for the two B-25s.**
+   - The eight fighters end with `yaw_rate` 0.00000, their final heading equal to their stop
+     heading to four digits, no contact loss and `min_bfc > -0.2`.
+   - B-25 01|.-2 loses contact at 309.55 s (OFF 325.94 s). B-25 01 now loses contact too, at
+     352.44 s (it does not in OFF). Both sink (`min_bfc` -1717 and -829).
+3. **Held while on the ground.** Each loss happens at exactly the stop heading: 0.7267 and
+   0.7282, against stop headings 0.7267 and 0.7282. The later heading changes are free flight
+   under the ground. Rolls: B-25 01 40.2 m (OFF 25.2), B-25 01|.-2 52.1 m (OFF 40.1), the
+   fighters within 1.2 m.
+4. **Missed, and it is not this mechanism.**
+   - The two B-25s leave through the strip's side (`local x = -10.0`) at 0.2 to 0.5 m/s with the
+     heading constant.
+   - They stopped about 0.47 rad off the runway's 0.26, so a forward creep along that heading
+     exits through the side after about 130 m.
+   - They are the only planes with `WheelBrake` 10 (brake 6.0 against the fighters' 48.0).
+   - The creep is forward motion that the band's brake does not hold. It is not a rotation.
+     Its source is still unidentified (5r).
+5. **Held.** Deaths are identical (0 rows either side).
+
+**Verdict.** The mechanism matches: no stopped plane on the ground turns, and every final yaw
+rate on the ground is 0. The one miss is the B-25 forward creep, a separate open item that the
+switch makes visible for B-25 01. So this is a spread miss with the mechanism matching, and
+`kPlaneGroundSteeringBound` flips **ON**. The B-25 creep goes on the open list.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
@@ -2635,8 +2746,10 @@ of `007DA542`-`007DA6E3` stands. The ground pose has to come first, then this pa
      followers no longer abort: they were aborted by the missing landed arm of `006C7960`, not by
      occupancy (5r, ON). All ten LOMP10 planes now land and stop on the runway;
    - stage B: park is read and bound OFF (5s). It failed on what lies under it:
-     - the ground steering, read and bound OFF in 5t, which fails until the ground pose
-       (`ctl+80h..8Ch`, `007D9C80`, `007D80C0`, `007DA2B1`) holds a stopped plane's attitude;
+     - the ground steering (5t) is ON since 5u: the rate law's flat floor 0.6 stops a stopped
+       plane's yaw rate. The up levelling and `007DA2B1`'s deck lift are read and not carried;
+     - the B-25s' forward creep after stopping (5u, prediction 4): the brake of 6.0 does not
+       hold them, and both leave the strip;
      - abort's on-ground arm `009B0E74`-`009B0F93` (the park <-> abort loop);
      - `00951F40`'s hide of a plane in the hangar;
    - a landed plane that creeps off the 20 m strip (B-25 01|.-2 at 325.94 s, 5r) loses contact

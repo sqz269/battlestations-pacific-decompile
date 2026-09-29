@@ -82,18 +82,19 @@ namespace {
 constexpr float kMillisecondsPerSecond = 1000.0f;
 
 // DIAGNOSTIC, packet cc9_ship_motion_hydro: BSP_HULL_ATTITUDE_TRACE=1 turns on
-// the per-ship "hull attitude" lines after each tenth motion step.
-bool hull_attitude_trace() {
-    static const bool on = [] {
+// the per-ship "hull attitude" lines after each tenth motion step; =2 after every
+// motion step (packet cc9_hull_kick_size). Returns the interval, 0 when off.
+unsigned hull_attitude_trace_interval() {
+    static const unsigned interval = [] {
         char* text = nullptr;
         std::size_t bytes = 0;
-        bool value = false;
+        unsigned value = 0;
         if (_dupenv_s(&text, &bytes, "BSP_HULL_ATTITUDE_TRACE") == 0 && text != nullptr)
-            value = text[0] == '1';
+            value = text[0] == '1' ? 10u : (text[0] == '2' ? 1u : 0u);
         std::free(text);
         return value;
     }();
-    return on;
+    return interval;
 }
 
 // The two profiler slots the in-mission frame brackets itself with are held at
@@ -802,7 +803,8 @@ public:
                 }
             }
             owner_.units->motion_step_00825f20(step);
-            if (hull_attitude_trace() && (owner_.units->summary().motion_steps % 10u) == 0u) {
+            if (hull_attitude_trace_interval() != 0u
+                && (owner_.units->summary().motion_steps % hull_attitude_trace_interval()) == 0u) {
                 // DIAGNOSTIC, packet cc9_ship_motion_hydro (BSP_HULL_ATTITUDE_TRACE=1):
                 // every ship's attitude each 10 motion steps. It reads the pose
                 // the motion step published and changes nothing.

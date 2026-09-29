@@ -36,7 +36,7 @@ namespace bsp {
 //
 //   delta = target - current                                007DAB52..007DAB75
 //   rate  = (A*delta^2 + B*|delta| + C) * |accel|            007DABB2..007DABE0
-//   if (!flag)                     rate = max(rate, 0.15)    007DAC48..007DAC53
+//   if (!flag)                     rate = max(rate, 0.6)     007DAC48..007DAC53
 //   else if (!same_sign(delta, current))
 //                                  rate = max(rate, 1.5*|current|)
 //                                                           007DABEA..007DAC28
@@ -48,9 +48,12 @@ namespace bsp {
 // BSP_PlaneFlight_ControllerModeFactors, which switches on the controller mode
 // at `ctl+FCh`. That field is zeroed every step at 007DC841, so **a plane in
 // free flight always takes mode 0**, whose arm (007DA6E6, ten instructions)
-// sets the flag to 1. The 0.15 idle floor therefore never applies in the air;
+// sets the flag to 1. The 0.6 idle floor therefore never applies in the air;
 // only the sign-guarded floor does. Callers that are modelling free flight
-// should pass `flag = true`.
+// should pass `flag = true`. The ground law's mode-1 arm 007DA542-007DA6E3
+// stores the flag 0, so there all three axes take the flat floor (packet
+// cc9_plane_ground_pose, docs/SQUADRON_LAND_TASK.md 5u). The one byte is
+// tested at 007DA9F3 (the coupling), 007DABB0, 007DAD46 and 007DAECE.
 
 // Dynamics/RotationFactors, mirrored into 00F872FC/00F87300/00F87304 by the
 // REP MOVSD at 007EAAE1. The defaults are this installation's
@@ -66,8 +69,11 @@ struct PlaneRotationFactors {
     float b = 1.5f;  // Dynamics/RotationFactors/B, class block +220h
     float c = 0.1f;  // Dynamics/RotationFactors/C, class block +224h
 
-    // 00CE3D30 = 3F19999Ah, in .rdata and therefore a real compiled constant.
-    float idle_floor = 0.15f;
+    // 00CE3D30 = 3F19999Ah = 0.6f, in .rdata and therefore a real compiled
+    // constant, loaded into XMM5 at 007DABBC. It read 0.15f until packet
+    // cc9_plane_ground_pose, a mis-conversion nothing reached: every caller
+    // passed the flag true.
+    float idle_floor = 0.6f;
     // 00CE3D78 = 1.5 as a double, likewise .rdata.
     float crossing_gain = 1.5f;
 };

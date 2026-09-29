@@ -395,3 +395,82 @@ So the sentence "`009A2810` … is the only route back down to `0`" is wrong. Th
 second route, and the only one that does not need a `closetoship` task. Section (4) is otherwise
 confirmed, including that `009A2810` arms only from mode `2` and belongs to the `closetoship`
 task's vtable `+64h` arm.
+
+## (6) `unit+C58h` is not the blocker on the ranking rows (packet `cc9_torpedo_release_orders`, cc9-lua15, 2026-09-29)
+
+docs/GAMEPLAY_GAP_RANKING.md item 1 says `unit+C58h` has no host raiser. That is not so. The
+raiser is reached, but only after a first release, and that is the image's own order:
+
+- The first drop of an AI torpedo bomber is budget-free. The aim tick's five-flag chain arms the
+  release timer at `009D2287`. `009FA3A0` then calls `007BBBA0` behind the one guard `007BB110`,
+  with no `unit+C58h` test (docs/TORPEDO_FIRST_RELEASE.md).
+- `007BBBA0` raises `unit+C20h`. The fixed step's issue stage (`007CEA82`) then calls `007C0D90`
+  -> `007EEF30` -> `007BCBE0`, which writes 999.
+- So `blocked_0099af53` equals the arm ticks on every aircraft that never released. That is the
+  expected reading, not the cause.
+- Measured on USN04 4700/4500 (`local\l15_tdiag_usn04.log`, this tree, main `100112f31` merged):
+  each of the four releasing Kates shows `requests_007BBBA0=1 issues=1 raised=1 peak_C58h=999
+  arm_offers=27`.
+
+**What does stop the releases.** A per-aircraft census of the aim chain (new line
+`aim gates:`, the aim ticks on which each flag was true) shows the following.
+
+- **USN04 (16 Kates, all reach aim).**
+  - The lead flag opens only inside about 315 m (`envelope > F14`). Each of the four releases
+    arms at `F14` = 309 to 316 m, 13.6 m up.
+  - The other twelve are shot down in `aim` with `F14` at its minimum, 410 to 790 m. All 16
+    have death rows (21 to 62 m altitude), and the killers are Lexington-class01,
+    Yorktown-class01 and Northampton-class02.
+- **USN13 (60 aircraft, 28 reach aim).**
+  - They enter `aim` at 2200 m and are still high there. The lowest altitude each reaches in
+    `aim` is 58 to 731 m, 25 of them above 200 m. They dive at `unit+C64h` = -0.5 to -0.96 rad.
+  - The altitude flag never opens (it needs 25 to 40 m). The lead flag opens on 5 ticks of one
+    aircraft.
+  - 27 of the 28 are shot down in `aim`, at 65 to 736 m altitude, by fifteen different ships.
+    bruh #1.5|.-4 is alive at the end.
+  - The glide census shows the flights still at 1250 to 1450 m at 5 km. The run-in descent (the
+    attackrun's altitude command `009FBA50`, the glide law) does not bring them down in time.
+    That is the open item.
+- **JM05 (12 aircraft).** No aircraft is refused. The row ends with the flight still closing at
+  7.7 km (`min = last` range): 3000 frames is too short for this strike.
+
+So the next packets are the USN13 run-in altitude and the AA lethality at 300 to 800 m (gunnery
+lane). The release chain is not one of them. Nothing was bound; the diagnostic is observation
+only.
+
+## (7) The USN13 run-in is the image's glide slope; the aircraft die in `aim` (packet `cc9_torpedo_runin_descent`, cc9-lua15, 2026-09-29)
+
+Section 6 left open whether the attackrun's descent is why USN13's aircraft are still high in
+`aim`. It is not. The host flies the law of docs/TORPEDO_DESCENT_LAW.md section 1, and that law
+does not put an aircraft near the release altitude before `aim`:
+
+- The commanded altitude is `A = base + max(R - low, 0) x s x tan(DropAngle)`, capped at the
+  cruise altitude. For these aircraft `base` = 12, `low` = 450, `tan(DropAngle)` = 0.6249, and
+  `s` = 0.5 while the aircraft is above 1000 m (margin 400 / denom 2000).
+- At the `aim` entry range, `approach+8Ch` = 2200 m, that gives `A` = 12 + 1750 x 0.5 x 0.6249 =
+  **559 m**. Entering `aim` 500 to 700 m up is the image's profile, not a host lag.
+- Check against a logged tick (USN13 bruh #1.1, descent census n=151): `R` = 3462.2 m and `s` =
+  0.4908 give 12 + 3012.2 x 0.4908 x 0.6249 = 935.8 m, against the logged `commanded=935.86`. The
+  live altitude, 1012.2 m, lags by 76 m.
+- The glide census shows the moveto leg leaving the 1450 m cruise at about 6.9 km, where
+  `A_raw` = 12 + 6450 x 0.35 x 0.625 falls below it. It is the same law.
+- USN04's Kates fly the identical profile (Kate #2.1, n=251: `R` 2441.8 m, commanded 634.3 m,
+  live 807.1 m) and still reach 13 to 33 m inside `aim`. `aim`'s own pitch command, clamped to
+  [-80, +50] degrees, is what takes them down the rest of the way.
+
+**What differs is how long they live in `aim`.**
+- USN04's Kates spend 150 to 204 aim ticks there.
+- USN13's spend 5 to 206, 24 of the 28 under 100, and 27 of the 28 are shot down there, most
+  still high.
+- **JM05 at 9200/9000** (`local\l15_rin_jm05l.log`; lead's request) settles it:
+  - all 12 torpedo aircraft reach `aim` and descend to 21.6 to 69.4 m (the altitude flag opens on
+    up to 8 ticks);
+  - all 12 are shot down at 890 to 1264 m range, 30 to 76 m up, before the lead flag's ~315 m.
+    The killers are Arike, Haguro, Shigure, Ushio and Yugure;
+  - in the same row the nine dive bombers with death rows are all shot down between 558 and
+    920 m up.
+
+**Verdict.** There is no host divergence in the run-in descent, so nothing is bound and nothing
+is paired. The prediction the packet was framed on ("the flights reach 25 to 40 m before `aim`")
+is not what the image's law does. On all three rows the releases are lost to anti-aircraft fire
+while the aircraft are in `aim`: USN04, JM05 9000 and USN13. That is the gunnery lane's question.

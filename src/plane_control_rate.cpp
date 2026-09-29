@@ -53,7 +53,8 @@ float plane_control_axis_step_007da710(const PlaneRotationFactors& factors,
 
     if (!floor_from_deflection) {
         // 007DAC48..007DAC53. COMISS then JA, so the floor is taken on
-        // `!(rate > idle_floor)` - equality keeps the floor's value, which is
+        // `!(rate > idle_floor)` (XMM5, 0.6 from 00CE3D30 at 007DABBC) -
+        // equality keeps the floor's value, which is
         // the same number either way.
         if (!(rate > factors.idle_floor)) {
             rate = factors.idle_floor;
