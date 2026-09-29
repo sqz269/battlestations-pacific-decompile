@@ -517,6 +517,7 @@ struct GameUnitSlot {
     // moveto; 009C3636 in 009C3570 sets it later.
     enum class MoveToTaskState : int { kNone = 0, kMoveTo = 0x47C, kFollow = 0x494, kCircle = 0x52C };
     bool moveto_task_installed{false};
+    bool moveto_stage_logged{false};   // cc9_moveto_arrival_end_command, one note per member
     MoveToTaskState moveto_state{MoveToTaskState::kNone};
     bool moveto_arrived_454{false};        // task+454h, cleared by 009C1D0A
     float moveto_range{0.0f};              // the order's descriptor +14h
@@ -2140,10 +2141,11 @@ struct GameUnitsHost::Impl {
     // answers non-zero, the squadron's moveto (00E08F68) ends through 0071E430
     // (terminal 0), and each member's 0099A4C0 retires its kind-7 task. False:
     // the call is a record and the flight keeps its moveto task.
-    static constexpr bool kMoveToArrivalEndCommandBound = false;
+    static constexpr bool kMoveToArrivalEndCommandBound = true;  // ON: stage-only, six rows identical (docs/PILOT_MOVETO_TASK.md)
     void moveto_arrival_end_command_009c3100(GameUnitSlot& unit);
     unsigned long long moveto_end_calls{0}, moveto_end_no_squadron{0}, moveto_end_not_moveto{0};
     unsigned long long moveto_end_commands{0}, moveto_end_retired{0}, moveto_end_promoted{0};
+    unsigned long long moveto_end_stage_only{0};
     bool install_land_task_core_009b41c0(std::size_t unit_index,
         const bsp::PlaneSquadronHostRecord& sq, std::size_t owner, std::size_t deck,
         const std::string& site_name, bool explicit_site);
@@ -10281,9 +10283,11 @@ bool GameUnitsHost::Impl::landing_site_key_006c09fe(std::size_t deck_index, std:
 // 00521EA0) is task+43Ch (approach+44h, the task's target) or, with no object,
 // its point (006F7DD0) lies within 100 m (planar, [00CE3D64] = 10000.0) of the
 // task's point (vtable[0Ch]); 0 otherwise. 0099A4C0, run when the command
-// changes, keeps a single task only while its vtable[40h] answers 1, so the
-// ended moveto retires the kind-7 task on every member and 0099A170 installs
-// from the command the block now holds. LABELLED:
+// changes, keeps a single task only while its vtable[40h] answers 1. With
+// terminal 0 the pairs show 0071E430 taking its queue-stage arm: the stage is
+// raised and the moveto STAYS in slot 0, so 009C31B0 still answers 1 and the
+// task is kept. Only a completion that leaves another command (or none) in
+// slot 0 retires the kind-7 task. LABELLED:
 //  - the block is this host's per-member command rows (the fan-out stand-in), so
 //    009C31B0 is "the member's command class is still moveto": the task and the
 //    command share their target by construction, and a re-issued moveto
@@ -10315,6 +10319,19 @@ void GameUnitsHost::Impl::moveto_arrival_end_command_009c3100(GameUnitSlot& unit
         const GameCommandCompletion completion = commands.end_command_0071e430(m,
             bsp::kPilotOrderClassMoveTo, false, player, member.ring,
             pose_heading_radians(member));
+        if (completion.promoted_command == bsp::kPilotOrderClassMoveTo) {
+            // The stage arm: the command stays, 009C31B0 still answers 1.
+            ++moveto_end_stage_only;
+            if (!member.moveto_stage_logged) {
+                member.moveto_stage_logged = true;
+                log.notef("  moveto task %s: the arrival of %s raised squadron \"%s\"'s moveto "
+                    "stage (009C3100 -> 0071E430 arm %s, stage %d); the command stays and so "
+                    "does the task, at %.2f s", member.row.name.c_str(), unit.row.name.c_str(),
+                    sq->name.c_str(), completion.arm.c_str(), completion.stage_after,
+                    static_cast<double>(summary.simulated_seconds));
+            }
+            continue;
+        }
         // 0099A4C0: 009C31B0 now answers 0, so the kind-7 task goes.
         member.moveto_task_installed = false;
         member.moveto_state = GameUnitSlot::MoveToTaskState::kNone;
@@ -26556,10 +26573,11 @@ void GameUnitsHost::report() {
             host.rtb_arm_counts[0], host.rtb_arm_counts[1], host.rtb_arm_counts[2],
             host.rtb_arm_counts[3], host.rtb_census.size());
         host.log.notef("summary moveto arrival end command calls=%llu no_squadron=%llu "
-            "not_moveto=%llu commands_ended=%llu tasks_retired=%llu next_promoted=%llu "
-            "bound=%d (009C3100, packet cc9_moveto_arrival_end_command)", host.moveto_end_calls,
-            host.moveto_end_no_squadron, host.moveto_end_not_moveto, host.moveto_end_commands,
-            host.moveto_end_retired, host.moveto_end_promoted,
+            "not_moveto=%llu commands_ended=%llu stage_only=%llu tasks_retired=%llu "
+            "next_promoted=%llu bound=%d (009C3100, packet cc9_moveto_arrival_end_command)",
+            host.moveto_end_calls, host.moveto_end_no_squadron, host.moveto_end_not_moveto,
+            host.moveto_end_commands, host.moveto_end_stage_only, host.moveto_end_retired,
+            host.moveto_end_promoted,
             Impl::kMoveToArrivalEndCommandBound ? 1 : 0);
         host.log.notef("summary squadron returntobase site keys computed=%llu carrier=%llu "
             "missing=%llu bound=%d (006C09FE, packet cc9_rtb_site_key)", host.rtb_site_keys,
