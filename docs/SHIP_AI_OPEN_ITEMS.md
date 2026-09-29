@@ -2391,3 +2391,26 @@ Reach as in section 1. Calls are the sum over the ten base rows.
 **Top item.** Rank 1 is section 27, in progress; it waits on the gunnery host's Landscape
 query. Rank 2 is the next free packet once a gunnery-host visibility query exists; rank 5 is
 free now but exact on every reference row.
+
+## 29. Rank 5 of section 28: the engage gate's kamikaze fields (packet `cc9_engage_kamikaze_gate`, `kShipAiEngageKamikazeGateBound`)
+
+Worker cc9-ships10, 2026-09-28, taken while section 27 waits on the gunnery host.
+
+**The image.** `009E85B0`'s first conjunct reads `[class+510h]` and `[class+514h]` at `009E85CD`
+and `009E85DD` and fails the gate when both are at most 0.0 (docs/ATTACKMOVE_ENGAGEMENT_RANGE.md
+2.1). `BSP_ShipClass_ReadLuaFields` (`00831840`) stores them from the class table:
+`KamikazeDamage` at `00831A22` and `KamikazeBlastDamage` at `00831A67`, each read through
+`00B66330` with the default 0.0 (`FLDZ` at `00831A0A` and `00831A4F`).
+
+**The binding.** `ShipAiEngageGate::armament_readiness` (the name is wrong and kept for the
+interface) answers the two numbers from the unit's class row through the host's
+`class_number`. Coverage: complete for the two reads. In this installation's
+`vehicleclasses.lua` (mtime 2026-05-09) only Kaiten (`VehicleClass[4]`, 3000 / 3000) and Shinyo
+(`[43]`, 3000 / 1500) carry them.
+
+### Predictions, written before any ON run
+
+1. **Every reference row is identical.** No base log names a Kaiten or a Shinyo, so
+   `kamikaze_classes` is 0 on both sides and the gate fails as before.
+2. **The reach is unmeasured.** A row with a Kaiten or a Shinyo under AI attackmove is needed to
+   see the gate pass. None of the ten base rows is one.
