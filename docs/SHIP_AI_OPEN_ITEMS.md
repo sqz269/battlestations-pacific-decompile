@@ -4697,3 +4697,98 @@ Same-tree pair on `de409e8e3`. The OFF binary is this tree's build; the ON binar
 - `s16_vslot.py <slot hex> <vtables...>` reads a vtable slot from the PE on disk.
 - Pair logs: `s16{off,on}_*` (54), `s16pl{off,on}_*` (55), `s16{koff,k1,k2}_*` (56) and
   `s16kl{off,on}_*` (57).
+
+## 59. Does the Sell think really recall JM05's carrier strikes? (packet `cc9_sell_think_carrier_groups`, cc9-ships17, 2026-09-29)
+
+The question is SQUADRON_LAND_TASK 5ad.2's: on JM05, `kReturnToBaseSiteKeyBound` ON removes the US
+carrier strikes, because the SELLING tick `00A11FF0` sends `returntobase` to the freshly launched
+squadrons from 6.45 s. Is that SELLING assignment the image's? Read-only; no switch is bound.
+
+### 59.1 Answer: yes on JM05, and the carrier groups are not where the squadrons are
+
+**The carrier groups hold no squadrons.** From cc9-lua19's OFF log (`l19_rtb0_jm05l.log`, 9000 frames):
+- `USS Lexington` and `USS Yorktown` lead groups of 6: the carrier and the five escorts that the
+  `ai diag follow` lines attach to it. `sell ... splits=0`, so `00A2E4C0` never found an air member
+  in an owned group at a Sell think.
+- **All 17 squadrons sit in one all-air SELLING group led by `F4F Wildcat 01`.** That is the 7
+  scene squadrons plus the 10 launched ones (`ai squadron generated after load` x10). Every
+  `ai_selling_tick` returntobase row names a member of this group.
+- **The image can never put a squadron in a carrier's group.** `00A2C8D0` refuses to merge a group
+  with a ship into one with an air member, and the reverse (AI_GROUP_THINK section 2). The Sell
+  think's split (`00A22841` -> `00A2E4C0`, then the claim at `00A2284D`) exists to move air members
+  out of a mixed group, so that they get their own SELLING.
+
+**Every link from launch to `returntobase` is the image's.**
+
+| link | image | host |
+| --- | --- | --- |
+| seed | phase 3 walks world list 24, the squadron list (`00A2E8A0 MOV EDI,[EDX+13Ch]`, GAMEPLAY_LOOSE_ENDS_1 section 2). A launched squadron is a candidate on the next pass. | `kGeneratedSquadronBrainBound` |
+| join | phase 4 `00A2C8D0`. The absorbed group's command decides: a new group is IDLE, and `00A12450` merges it within `AutoMerge_MergeDist` (650.0, Rookie) of the SELLING air group. An unmerged group is claimed through `00A181A0`; the squadron is groupable (`009FE080`'s 18h arm), so Capture claims it. | same (`auto_merges` is never incremented; all 210 merges print as `prox_merges`) |
+| Capture | no enemy list-28 entity: the assignment loop never runs, and each group whose record `[3]` holds an own list-28 entity goes to brain+8h (`00A2AFC0` / `00A2B2AF`). `[4]` is seeded 1.0e10 (`00CE4970`), so any own CommandBuilding qualifies. JM05's three CommandBuildings are all Allied. | `capture_think_00a29fd0`, `handoffs=9` |
+| Sell | `00A22800`, read in full here (`00A22800-00A228D2`): SELLING (`00D229B8`) on every owned group without one. | matches |
+| air test | `00A2C660` -> `009FE0F0`: `vtable[5Ch](0Fh)`, then `(18h)`. | matches |
+| tick | `00A11FF0`'s air arm: `0077D600(returntobase)` per squadron when `+361h` and `+3B0h` are clear. CONTROLLED_UNIT establishes both clear (the byte-store scans are not vacuous). | `ai_selling_tick` |
+
+**JM05's US side does have a brain in the image**, but not for the reason the host gives (59.2):
+- `ijn_05_invasion_of_port_moresby.scn` (this installation, mtime 2024-07-13) authors `Player1`
+  `Party = Japanese` and `Player5` `Party = Allied`. The mission tree enables only the Japanese side.
+- So the local player is Japanese. `009FFD20` gives the US units slot 4, and `009FFE50` admits slot
+  4 (59.2).
+- The slot-4 brain's `brain+24h` is `[[game+18CCh]+4*4]+28h` (`00A15A90 CALL 009FFD60`), Player5's
+  Allied, team 0.
+
+**Verdict.** On JM05, SELLING on the US air group, and `returntobase` to every launched US squadron
+on each command tick, is the image's rule. `kReturnToBaseSiteKeyBound`'s JM05 9000 move (US strikes
+gone, deaths 29 -> 3) is what the image predicts from these inputs. The flip is not blocked by this
+question; ranking #3 (the carrier deck) still decides where the recalled planes go.
+
+LABELLED, not established here:
+- In retail, jm05.lua's airstrike managers (`commandhelpers.lua`, mtime 2024-10-29 in this
+  installation) re-issue `PilotSetTarget`, and SELLING re-issues `returntobase` every command tick.
+  The outcome of that tug is not predicted here.
+- `00A12450`'s distance and strength tests are taken from their earlier reads (`ai_command_can_merge_with`).
+
+### 59.2 New gap: the host gives the brain to the wrong side in single player
+
+`009FFE50 BSP_Ai_IsPartyAiEnabled`, `__fastcall(slot)`. Its second arm is read here for the first
+time; AI_GROUP_THINK's host table had it as "unread, contract: partial":
+
+```
+009FFE59  CMP byte [game+61Ch],0 / JE 009FFE84     ; the forced-mode byte
+009FFE62  CALL 004BCA50 / CMP EAX,3 / JA -> 1      ; forced: modes 4..: every slot
+009FFE6C  slot == 0 or slot == 4 -> 1, else 0      ; forced: modes 0..3
+009FFE84  CMP dword [game+1FE4h],0 / JNE 009FFE96  ; not forced, single player:
+009FFE8D  XOR EAX,EAX / TEST ESI,ESI / SETNE AL     ;   slot != 0
+009FFE96  slot <= 7: JMP 004B5510([game+18CCh+4*slot])   ; multiplayer: the slot record
+```
+
+- **`game+61Ch` is 0 in a campaign.** Its writers are `004BC890 BSP_Game_SetGameMode`
+  (`004BC894`) and the game constructor (`004DDFB7`); `scan-bytes 88 ?? 1c 06 00 00` finds those
+  two, and no `C6` form exists.
+  - `004BC890`'s `forced` is 1 only from the command-line switches in `004E27E0`
+    (`CL_duel`, `escort`, `competitive`, ...).
+  - `BSP_Session_SetMode` pushes `EBX`, which is 0 from `0076FC97` onward.
+  - The in-mission call `004D548A` pushes 0.
+- **So in single player `004BCA50` is 8, and the brain runs for every slot except 0.**
+  - `009FFD20` puts the local player's team in slot 0 and the other team in slot 4 (AI_BRAIN_PLAYER_EXEMPTION).
+  - **The player's own side is never planned for; the enemy side is.**
+  - The group constructor asks the same gate (`00A2E124`): NONCONTROL (`00D22990`) for slot 0,
+    IDLE (`00D229E0`) for slot 4.
+- **The host uses `kCampaignGameMode = 0` (a labelled substitution) and the forced arm, with
+  `party = team`** (`game_hosts_ai.cpp`, `create_group`: "files a group under its own team"). So
+  team 0 gets the brain and team 1 gets NONCONTROL, on every row:
+  - JM05 and IJN01, where the player is Japanese: the image's slot-4 brain is the US brain, as
+    in the host.
+  - USN04, USN13, USN01 and USN02, where the player is US (LOMP10 not checked): **the image commands the
+    Japanese and leaves the US alone.** The host commands the US and leaves the Japanese NONCONTROL.
+- **Corrections.**
+  - AI_BRAIN_PLAYER_EXEMPTION's "no player exemption" is wrong in single player. The exemption is
+    the party gate itself, which covers the player's whole side, not only the helm.
+  - AI_COORDINATOR_TICK's "only side 0 gets a brain ... the shipped rule" was measured on the host.
+- **Open before binding:**
+  1. USN04's `usn_19_coralus.scn` authors `Player5` `Party = Allied`. The slot-4 brain would then
+     carry `brain+24h` = Allied while commanding Japanese groups, unless slot 4's record `+28h`
+     is written from somewhere else in single player (`004BB440`, `004C6890`).
+  2. `004BCA50` = 8 also gates phase 5 (skipped above mode 3) and every other mode read in the AI.
+- This belongs at or near the top of GAMEPLAY_GAP_RANKING. It decides which side's ships the
+  whole AI lane moves.
