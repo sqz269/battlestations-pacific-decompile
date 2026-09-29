@@ -5167,3 +5167,71 @@ together with section 61's score-list flip, which has no gameplay effect.
 - The slot-4 brain's thinks, claims and commands are the same as 60.4's on every row.
 
 **Flipped ON.** These death tables are the expected movement of the next reference against q.
+
+### 60.8 The re-pair stands on main `1a3978da3`, and the `+5628h` lead
+
+- **The re-pair stands.** Main `1a3978da3` (section 61 landed) is merged into this branch as
+  `c4e158756`. Against the 60.7 pair tree `0baeaad27`, the only `src`/`include`/`cmake` change is
+  the flip itself (`src/game_hosts_ai.cpp`, 2 lines). So 60.7's six pairs and death tables are
+  the pair for this main, and no re-run was needed.
+- **The `group+5628h` lead (61.1).** The host does not model it:
+  - `src` has no reference to `00A2DB50`, `00A2D9D0` or `+5628h`.
+  - The only nearby host method is `clear_group_target_cache`, a `done()` with no state.
+- **The image.** The group's observer sub-object at `group+10h` (vtable `00D2306C`: `00A2D570`,
+  `00A2DA60`, `00A2BD40`, `00A2DB50`, `0042B140`) is registered on every member by
+  `00A2D8E0` (`00A2D906`). Its slot `+0Ch`, `00A2DB50` (`RET 0Ch`), handles an event 6 whose value
+  differs from `group+5628h` by removing the notifying member from the group:
+  `00A2D9D0(member, 1)`, with ECX = the group.
+- **The planners set `+5628h`:** -1 at `00A1CBA6` and `00A2A14E`, 8 at `00A2A786`.
+- **Not found:** who notifies slot `+0Ch` with event 6. The slot-04 and slot-08 selectors
+  `00696330`/`00696340` are documented (OBSERVER_EVENT_PRODUCER); no slot-0C selector was found
+  in this pass.
+- **Why it matters.** If event 6 is "a new order reached this unit" and the value is the order's
+  source, a scripted order (for example JM05's `PilotSetTarget`) would take a squadron out of its
+  AI group. Section 59's SELLING recall would then stop reaching it. That is a hypothesis to test,
+  not a finding.
+
+## 62. Handoff (cc9-ships17, 2026-09-29, at about 78% context)
+
+**Landed on main:** 59, 60 (the party gate, OFF), 60.6, 61 (the score list). **Unlanded on
+`agent/cc9-ships17`:**
+- `d17310fda`: `kAiPartyGateUnforcedBound` flipped ON (60.7), pair on `0baeaad27`;
+- `c4e158756`: main `1a3978da3` merged;
+- this section.
+
+**State of the lane:**
+- **Section 59.** JM05's SELLING recall of the US strikes is the image's rule, provided the
+  squadrons stay in the SELLING air group. `kReturnToBaseSiteKeyBound` is not blocked by it.
+  The 60.8 lead could change the membership premise.
+- **Section 60 (the party gate).** In single player the image plans slot 4 (the non-local side,
+  under Player5's Party) and never slot 0. It is ON in the unlanded `d17310fda`. The expected
+  movement against reference q is the 60.7 death table.
+- **Section 61 (ranking #5).** Retired: `00A2B8F0` maintains a debug-only list.
+
+**Queue for the next ships worker:**
+1. **The `+5628h` event-6 removal** (60.8). Find the notifier of group observer slot `+0Ch`: scan
+   for callers that load an observer table entry at `+0Ch` with three pushes and `RET 0Ch`
+   callees, and look for a slot-0C twin of `00696330`/`00696340`.
+   - Decide what event 6 and its value are.
+   - Bind the removal OFF if the host lacks it.
+   - Predict JM05, USN13 and IJN01 first: they are the rows with scripted orders to AI-group
+     members.
+2. **The approach retarget arm `009F2124-009F272D`** (ranking #4). SHIP_AI 27 kept it OFF because
+   the zone key was 0 in single player.
+   - It now has reach: IJN01 6071 of 6100 frames, JM05 9000 3845.
+   - Re-check that verdict against the new reach. Note that the party gate (60) changes which
+     side's ships receive brain orders on the US rows, so take the reach from an ON-gate build.
+3. **Section 60's labelled links**, if the flip is ever questioned:
+   - the Party ordinals come from `luamw_init.lua`;
+   - `OwnerPlayer "AI control"` (14 authored entries, -1) is not modelled;
+   - how the self-pairing plays out (60.6).
+
+**Tools** (all in `J:\PROG\battlestations-pacific-decompile-cc9-ships17\local\`, `s17_` prefix):
+- `s17_rel32.py <hex>...`: every E8/E9 rel32 caller and abs32 occurrence from the PE on disk.
+- `s17_slotwrites.py`: a capstone linear sweep of `.text` for stores by disp32, and via a
+  `[..+18CCh]` load. Adapt the target set.
+- `s17_peek.py <addr> [n]`: dwords, with string pointers resolved.
+- `s17_scnparty.py <scene paths>`: the Player1..8 Party and OwnerPlayer counts of a scene.
+- `s17_runs.ps1 -V <export> [-Only rows]` and `s17_wait.ps1`: the six-row launcher and the
+  foreground wait.
+- Pair logs: `s17_{off,on}_<row>.log`. The last set is the 60.7 pair.
