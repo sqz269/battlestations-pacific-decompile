@@ -3213,7 +3213,7 @@ turn the hulls.
 51.1 kept `kHullInertiaFromShapesBound` OFF because the flip wakes `009329C0`'s own AddTorque
 (`00933B38`), which acts on every hull on every step. This section predicts that torque's effect from
 the listing (as reconstructed in `src/ship_hydro_forces.cpp`, semantic_build_tested). The predictions
-were written before any run of this packet. The pair follows in 52.4.
+were written before any run of this packet. The pair follows in 52.3.
 
 **Diagnostic.** `BSP_HULL_ATTITUDE_TRACE=1` makes the mission frame log one `hull attitude:` line
 per ship each 10 motion steps (0.5 s): roll `atan2(row0.y, row1.y)`, pitch `asin(row2.y)`, tilt
@@ -3322,3 +3322,75 @@ roll rate by `tau * 0.05 / I_z` (the last column). The peak roll is about kick /
 - a wreck passing 60 degrees while its y is still above the threshold.
 
 Either would mean the torque, the arm or the inertia differs from the reading above.
+
+### 52.3 The pairs and the verdict: OFF, P3 and P4 failed
+
+Four exports of `a46b58312`, run with `BSP_HULL_ATTITUDE_TRACE=1` (logs `local\g11<pair><side>_<row>.log`
+in the cc9-gunnery11 tree):
+- pair A: the hit roll torque OFF on both sides;
+- pair B: the hit roll torque as landed.
+
+ON flips `kHullInertiaFromShapesBound`. The gameplay numbers reproduce 51.1's exactly:
+- USN02, hit records 2271 -> 3963 (A) and 4203 (B), damage 39395.6 -> 36181.5 (A);
+- JM06, 276 -> 289 hit records, 4340.0 -> 5802.7 damage, deaths identical.
+
+`local\g11_att.py` summarises the trace.
+
+**P1 held in its dynamics, but its premise was wrong.**
+- **No hull oscillates.** Kortenaer's largest heel on USN02 (pair A) rises smoothly from 5.9 to
+  23.2 degrees between 248 and 258 s, then falls back to 3.8 degrees by 275 s, with no swing at the
+  predicted 4.1 s period. Every living hull behaves like this: quasi-static, following a slowly
+  changing moment.
+- **Every undamaged hull stays at 0.0 degrees:** Alden, Exeter, Perth, Encounter, Jupiter and Witte
+  (damage taken 0 in the unit table).
+- **Every damaged living hull lists.** Examples, with max and final roll: Kortenaer 23.2 / 0.4,
+  John2 23.9 / 3.3, DeRuyter 16.6 / 6.0, Yudachi 17.1 / 1.8, Jintsu 7.0 / 6.4. On JM06,
+  Fletcher-class 08 ends at 10.4 degrees and PlayerSub 03 at 20.6.
+- **The moment is the live flooding.** The premise "a live hull's leak rates are zero" came from
+  the `leak_tick` comment in the units host, and it is stale. Packet `cc9_live_hull_leak` is bound
+  (`summary live hull leak ... applied=2759` on USN02), so a hit hull takes water at its leak
+  points, and `0074F2E0` turns that water into a heeling moment.
+- The heel is the flooding moment over the band stiffness, and it falls as the repair pumps the
+  water out (`repaired=23685`). Pitch stays under 2 degrees on every living hull (P1 held).
+
+**P2 is not settled.**
+- Pair B's 19 hit torques (max 4.04e6 N m) did not produce the large destroyer kicks predicted.
+  Pair B's living maxima are of the same order as pair A's (Haguro 27.0, John2 23.9, Yudachi 17.1).
+- The torques' targets were not traced, so whether they fell on cruisers or on wrecks is unread.
+
+**P3 failed as written.**
+- Every wreck passed 60 degrees while its y was still near the surface: John1 at y = -2.0,
+  Asagumo -2.3, Minegumo -3.1, Amatsukaze and Yukikaze -3.6.
+- The prediction had tilt below 30 degrees until the deck stations were under water (about 3 m for
+  the destroyers). John1 passes 30 degrees at y = -0.5, 11.5 s after its death.
+- The mechanism the trace shows instead: the wreck's flooding moment grows past the most the
+  flat-arm buoyancy can return. That maximum is one side of the band fully dry and the other fully
+  under, so the restoring moment is bounded while the leak moment is not. The hull goes over while
+  it still floats.
+- The prediction took the saturation to come from sinking alone and missed saturation by heel.
+- The capsize itself is consistent with the listing, but its onset was mispredicted, so it counts as
+  a failed prediction.
+
+**P4 failed.**
+- The wreck hits fell: `summary mission gunnery wreck hits` delivered 22 -> 18.
+- The rise is in entity impacts (993 -> 1297), shots (2316 -> 2588), shell mesh hits (994 -> 1345)
+  and hit records per impact (2.29 -> 3.06). Damage-control element hits follow the impacts
+  (993 -> 1297).
+- Where the extra records per impact come from (heeled hull segment boxes, or blast shapes) is not
+  read.
+
+**Verdict: `kHullInertiaFromShapesBound` stays OFF.** By this section's own criteria, P3 is a
+mechanism failure.
+
+**What the next packet needs:**
+- **The wreck capsize, predicted quantitatively.** For each wreck on USN02, take from the host:
+  - the leak water at `unit+10FCh`;
+  - the leak points and weights that `0074F2E0` reads;
+  - the band's bounded restoring moment `sum((W/2) * (B_full - B_dry))`.
+  Then predict the heel at which the leak moment wins. The data exists in the units host (lua12's
+  lane); a trace there would settle it.
+- **P4.** Read what a hit record is queued per, in the impact path from `0081F980` / `00723AA0` to
+  the hit queue, and whether it uses the hull's rotated pose.
+- **P2.** Trace the targets of the 93h roll torques.
+- The flooding list on living hulls matches the listing's two moments and needs no change. It is
+  the first place in the rebuild where a damaged ship visibly lists.
