@@ -550,3 +550,35 @@ makes `009C4AA4` read the carried approach+C4h instead of the 3600.0 floor. The 
   - The Kates' torpedo rows move only by coupling.
 - **P3, JM05.** Dive-bomb releases stay 0. The rows move by coupling only.
 - **Mechanism failure:** no rise in rerolls with dive-task notices taken.
+
+### 8.7 The dive clock pair: mechanism failure by 8.6's rule, kept OFF
+
+**The binaries.** Same-tree exports of `185d5e8fc`, both with 8.5's notice ON:
+- `local\ctl` (`D9F51B79A945`);
+- `local\dvon` (`kDiveHitClockBound = true`, `2A9518609E6A`).
+
+A 300-frame smoke ran first. `local\g13_dive.py` sums the per-Val goaway census lines.
+
+| row | pair_diff | goaway lines / countdown ticks / rerolls, control -> flip | notices taken | releases | deaths |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 3 / 735 / **3** -> 3 / 736 / **3** | 374 -> 382 | dive 0 of 19 both; torpedo 6 of 16 both | 46 -> 46, no row only ON or only OFF; 10 changed by 0.05-1.15 s (Val #5.1's first damage 203.91 -> 200.16 s is the earliest move) |
+| JM05 9200/9000 | **1** | 4 / 81 / 0 both | 406 both | dive 0 of 21 both | identical |
+
+**Against 8.6:**
+- **P1: failed.** The rerolls stay at 3 with dive-task notices taken. That is 8.6's
+  mechanism-failure clause.
+- **P2 and P3: held**: releases are unchanged and the rows move by coupling only.
+
+**Why the rerolls do not rise.**
+- Only 3 Vals ever run the goaway timers in this row (3 goaway census lines).
+- Every other Val dies in its dive (0 of 19 dive-task releases), so the one-second forced window
+  after a hit almost never meets a running goaway clock that is past its window plus 6 s.
+- The small USN04 movement shows the clock is read somewhere. The re-roll it exists for is not
+  observed.
+
+**Verdict: OFF (lua16's switch, `src/game_hosts_units.cpp`)**, recorded. The switch becomes
+testable once Vals survive their dives. Neither side's releases depend on it today.
+
+A note for lua16: with the dive notice in, JM05's notices taken rose from 250 to 406 of 406. Every
+hit on a plane now finds a torpedo or dive task. That matches the image's walk of the task list:
+the first task that answers true takes the hit.
