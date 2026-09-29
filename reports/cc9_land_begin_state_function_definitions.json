@@ -1,0 +1,92 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009b13e0",
+    "end_address": "009b13f7"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009b13e0",
+    "end_address": "009b13f6",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009b13e0",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "009b13e0",
+    "function_name": "FUN_009b13e0",
+    "entry_point": "009b13e0",
+    "body_size": 23,
+    "message": "Function created successfully at 009b13e0"
+   }
+  },
+  {
+   "defined": "009b13e0",
+   "end": "009b13f7",
+   "name": null,
+   "after": "Function: FUN_009b13e0 at 009b13e0\nSignature: undefined FUN_009b13e0(void)\nEntry: 009b13e0\nBody: 009b13e0 - 009b13f6"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009b1d70",
+    "end_address": "009b1de3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009b1d70",
+    "end_address": "009b1de2",
+    "bytes_disassembled": 115,
+    "message": "Successfully disassembled 115 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009b1d70",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "009b1d70",
+    "function_name": "FUN_009b1d70",
+    "entry_point": "009b1d70",
+    "body_size": 115,
+    "message": "Function created successfully at 009b1d70"
+   }
+  },
+  {
+   "defined": "009b1d70",
+   "end": "009b1de3",
+   "name": null,
+   "after": "Function: FUN_009b1d70 at 009b1d70\nSignature: undefined FUN_009b1d70(void)\nEntry: 009b1d70\nBody: 009b1d70 - 009b1de2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
