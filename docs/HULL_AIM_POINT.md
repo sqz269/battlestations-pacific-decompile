@@ -295,3 +295,51 @@ USN04 4700/4500, reference environment, same-binary OFF/ON pair.
    hits ON, give or take the ship's motion over the fall.
 6. **Torpedoes.** The torpedo `approach_target_point` is fed from the same point; the 2 of 16
    torpedo releases may move by one either way.
+
+### 9.2 Measured, and the verdict
+
+One commit, `25236960b`, exported twice by `tools/pair_export.py` (OFF `4EA0C9D0FEEC`, ON with
+`kHullAimOffsetEnabled=true` `96394B734AE6`). Reference environment
+(`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, lockstep 0.05, `--press-start-frame 30`). A 300-frame
+USN04 smoke of the ON binary ran first and finished clean. Logs `local\l16_{off,on}_{usn04,usn01,usn13}.log`
+in the cc9-lua16 tree; the per-aircraft census is cc9-lua15's `local\l15_dive.py`.
+
+| row | pair_diff | deaths | dive-bomb releases | torpedo releases | damage |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 46 -> 45 | 1 of 19 -> 1 of 19 | 4 of 16 -> 5 of 16 | 13297.8 -> 14292.0 |
+| USN01 3200/3000 | 3 | 5 -> 5, same set | 2 of 2 -> 2 of 2 | 0 of 5 -> 0 of 5 | 2786.4 -> 2786.4 |
+| USN13 3200/3000 | 3 | 31 -> 32 (+ Kate `bruh #1.5|.-4`) | - | 0 of 60 -> 0 of 60 | 9669.9 -> 9680.0 |
+
+Against the predictions:
+
+1. **Mechanism: held.** USN04 prints 19 `hull_aim draw` lines, exactly one per (Val, target) pair,
+   none repeated. Both targets are 250 x 30 m hulls (Lexington-class01, Yorktown-class01). The
+   along-hull offsets run from -111.8 to +109.0 m, inside the 112.5 m bound (`0.45 x 250`). The
+   across offsets run from -12.9 to +12.0 m, inside 13.5 m. OFF prints none.
+2. **The leaver set: held.** OFF leavers are #1.1|.-2, #1.1|.-4 and #5.1|.-4, the same three
+   cc9-lua15 found. ON leavers are #1.1|.-3, #1.1|.-4 and #5.1|.-2. The count stays three, with two
+   of the three changed. The miss margin of the ON leavers was not measured, because it needs the
+   `kHullAimTrace` build.
+3. **Overshoot: missed, and in the favourable direction.** The two OFF overshooters, #3.1 (final
+   error 116.0 m) and #3.1|.-2 (64.6 m), end ON at -18.3 m and -15.3 m, inside the 25 m gate. They
+   are then shot down above the drop floor, at 439 m and 550 m.
+4. **Releases: held, no collapse.** USN04 still has one dive release, from a different aircraft
+   (#3.1|.-3 OFF, #7.1 ON). The earlier 23 -> 8 and 29 -> 0 collapses do not recur on the bound
+   dive.
+5. **Hits: unresolved on USN04, held on USN01.**
+   - On USN04, the OFF bomb lands at the sea surface 45.3 m from York-class02, so it misses. The
+     ON bomb is released late in the row (its drop line is log line 62075 of about 64,600) and
+     no impact line follows before the row ends, so neither side hits.
+   - USN01's two releases give identical damage in both builds.
+6. **Torpedoes: held.** USN04 torpedo releases go from 4 to 5, and the other rows do not move.
+
+The moved death rows are timing and killer changes on aircraft whose paths changed. The only
+set changes are the ones that follow from the leaver swap:
+- #5.1|.-2 leaves the fly-over ON and survives;
+- #5.1|.-4 dives ON and is shot down;
+- Zero #7.2 is shot down OFF only.
+
+**Verdict: `kHullAimOffsetEnabled` flips ON.** The mechanism matches the image. The one missed
+prediction (3) is a spread effect, not a failure of the mechanism. The origin feed was the last
+labelled divergence on the dive path, apart from the labelled draw substitute (6.1). That
+substitute stays.
