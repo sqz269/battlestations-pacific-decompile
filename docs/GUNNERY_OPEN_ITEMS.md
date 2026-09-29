@@ -4250,3 +4250,94 @@ plus 0.3 s, the window 59.3's timing clause allows. This choice was made after s
   is ON, and the Rookie -> Stun effect on JM05's forts is refuted: the library's group default
   `Skill = SPNormal` wins.
 - **Reference o** also has to absorb these two switches.
+
+## 61. The ship arm of UnitSetFireStance / UnitHoldFire (packet `cc9_ship_fire_stance`, cc9-gunnery13, 2026-09-29)
+
+This is the ship arm left open by SHIP_AI_OPEN_ITEMS 49 (cc9-ships15). It is bound as
+`kShipFireStanceBound` in `src/game_hosts_gunnery.cpp`, committed OFF. Ghidra was read, not
+written. The names are hypotheses.
+
+### 61.1 The image
+
+- **The natives.** `UnitSetFireStance` `008A6490` and `UnitHoldFire` `008A6AC0` (stance 0) call
+  `unit->vtable[114h]`. For a ship that is `0080E150`, the weapon director at `unit+738h`
+  (`docs/WEAPON_DIRECTOR.md`). They then call `0071BE80` on it.
+- **`0071BE80`** (disasm-raw, `0071BE80..`) asks two predicates before sending either message:
+  - `vtable[24h]` at `0071BE8F`: the fire answer;
+  - `vtable[28h]` at `0071BE9D`: the move answer.
+
+  It then calls `vtable[40h]` with the fire answer and `vtable[44h]` with the move answer.
+- **The ship director's slots.** The derived vtable `00D09F58` holds (read from the image):
+
+  | slot | function | role |
+  | --- | --- | --- |
+  | `+24h` | `0071D560` | fire: true for stance 1 or 2 (`CMP 1 / CMP 2`, `RET 4`) |
+  | `+28h` | `0071D580` | move: true for stance 2 or 3 (`CMP 3 / CMP 2`) |
+  | `+40h` | `0071DA50` | 5Ah message, sub-kind 0 |
+  | `+44h` | `0071DAD0` | 5Ah message, sub-kind 1 |
+  | `+64h` | `00836210` | receiver for sub-kind 0: stores `+3Ch`; when fire is forbidden it drops the fire target (`0083622B`) |
+  | `+68h` | `0071D5E0` | receiver for sub-kind 1: stores `+3Dh` |
+
+- **The ship and squadron move predicates differ.**
+  - The ship predicate answers move for stances **2 and 3**, so stance 0 holds a ship's move.
+  - The squadron block's `0084D930` answers move for 0, 2 or 3.
+- **The readers:**
+  - the gunnery bridge `008624C0`: `+3Ch` sets every category except 7 and 8, and `+3Dh` goes to
+    `this+7Ch` (`src/unit_gunnery_pass.cpp`);
+  - the ship AI's auto-target gate `009F5610` (`[director+3Dh]` at `009F5614`).
+
+### 61.2 The binding
+
+**The gunnery host** (this packet, `src/game_hosts_gunnery.cpp` and its header):
+- `set_director_fire_stance_0071be80(unit, stance)` stores the two answers per unit and always
+  counts them.
+- `director_allow_fire_3c(unit)` and `director_allow_move_3d(unit)` answer the stored values when
+  bound, and 1 otherwise (`008363E0`'s default).
+- With the switch ON, the bridge pass pushes `+3Ch` / `+3Dh` from the stored row.
+- **Census:** `summary mission gunnery director stance sets=... (stance 0/1/2/3 ...)
+  fire_forbidden_pushes=... move_forbidden_reads=... bound=...`.
+- **Substitutions, labelled:**
+  - the message takes effect at the unit's next bridge pass, not at the session's delivery row;
+  - the `0083622B` fire-target drop belongs to the ship AI host's director fire target, and is
+    routed.
+
+**Routed to cc9-ships15** (through the lead):
+1. **`src/game_hosts_script_orders.cpp`**, in `run_unit_set_fire_stance`'s non-squadron branch and
+   `run_unit_hold_fire`'s last branch: for a ship,
+   `units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance)`, with stance 0 for
+   HoldFire. It replaces the `0071be80` / `0071bed0` unimplemented records.
+2. **`src/game_hosts_ship_ai.cpp`**, in `selection_enabled()`: answer `[director+3Dh]` with
+   `owner_.gunnery_draws->director_allow_move_3d(index_)` instead of `defaults.allow_move`, when the
+   pointer is set.
+3. **The `0083622B` drop:** when a stance forbids fire, release the director fire target
+   (`kWeaponDirectorFireTarget`).
+
+### 61.3 Where the reference rows call it
+
+The census comes from the reference n logs (the `rb14_*` logs in the cc9-gunnery12 tree):
+- **USN01** is the only row whose `UnitSetFireStance` reaches a non-squadron unit: 9 calls, all
+  unimplemented.
+- **USN04, E2 and USNOS** call it on squadrons only: 8, 8 and 1 calls, with no non-squadron record.
+- **No row** reaches `UnitHoldFire`'s director arm.
+
+**USN01's script.** This installation's `usn_1_marshall.lua` (2024-07-13):
+- sets stance 0 at init on `Mission.BmdGroup` (Northampton, SaltLakeCity, Dunlap; line 296);
+- sets stance 2 in `luaIntroMovie` (line 611), which the first think calls (`Mission.Started`,
+  line 440);
+- sets stance 2 again 3 s later in `secNarr` (line 640).
+
+### 61.4 Predictions (written before any ON run)
+
+The pairs are same-tree, with the switch flipped on the ON side and the routed edits in both
+binaries.
+- **P1, census.** USN01: `sets=9`, stances `3/0/6/0`. No other row counts a set.
+- **P2, USN01 3200/3000.**
+  - The three bombardment ships hold fire and move only from init to the first think, and no
+    target is in range then (the first hit is at 51.45 s in reference n).
+  - So the row is **gameplay-identical** (exit 0 or 1).
+  - `fire_forbidden_pushes` is small (at most a few bridge passes) or 0.
+- **P3, control (USN04 4700/4500).** Identical (exit 0 or 1).
+- **Mechanism failure:**
+  - a set counted on a row other than USN01;
+  - a stance-0 row whose `+3Ch` stays 1 in the bridge pass after the set, seen as
+    `fire_forbidden_pushes` = 0 while a bridge pass ran between init and the first think.
