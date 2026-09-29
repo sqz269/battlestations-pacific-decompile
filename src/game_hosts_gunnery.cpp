@@ -6696,6 +6696,42 @@ bool GameGunneryHost::query_segment_units(const float from[3], const float to[3]
     return hit;
 }
 
+bool GameGunneryHost::unit_sees_unit_00864d90(std::size_t unit, std::size_t target) const {
+    Impl& host = *impl_;
+    if (unit >= host.unit_state.size() || target >= host.units.count()) return false;
+    GunneryPassBinding binding(host, unit);
+    return binding.visible_00864d90(reinterpret_cast<void*>(target + 1));
+}
+
+bool GameGunneryHost::unit_sees_point_00864680(std::size_t unit, const float point[3]) const {
+    Impl& host = *impl_;
+    if (unit >= host.unit_state.size()) return false;
+    float r[3], u[3], f[3], own[3];
+    host.unit_pose(unit, r, u, f, own);
+    own[1] = own[1] + (host.unit_state[unit].hull_height + bsp::kInstalledLosViewerHeightAdd);
+    const unsigned long long mesh_hits = host.shell_mesh_hits;
+    const unsigned long long box_hits = host.narrowphase_box_0085cdb0;
+    SegmentBinding query(host, static_cast<std::size_t>(-1));
+    bsp::SegmentQueryArgs args;
+    args.from = bsp::HitQueryPoint{own[0], own[1], own[2]};
+    args.to = bsp::HitQueryPoint{point[0], point[1], point[2]};
+    args.exclude_entity = nullptr;
+    args.kind_filter = 0x44;
+    bsp::HitRecordFill record;
+    bsp::hit_record_reset_00470470(record);
+    const bool hit = bsp::query_segment_0098add0(query, args, record);
+    host.shell_mesh_hits = mesh_hits;
+    host.narrowphase_box_0085cdb0 = box_hits;
+    host.done("Gunnery::point_line_of_sight_00864680", 0x00864680u);
+    if (!hit) return true;
+    // 008647FD..00864852: (passed - hit), summed (z, x) then y, against 625.0.
+    const float dx = point[0] - record.position.x;
+    const float dy = point[1] - record.position.y;
+    const float dz = point[2] - record.position.z;
+    const float d2 = dz * dz + dx * dx + dy * dy;
+    return !(625.0f < d2);
+}
+
 bool GameGunneryHost::landscape_segment_hit_00904400(const float from[3],
     const float to[3]) const {
     // 00904400: entity 0 -> 0098ADD0(from, to, 0, record, 44h); AL is the answer.

@@ -540,6 +540,17 @@ struct GameShipAiSummary {
     // carries a positive KamikazeDamage or KamikazeBlastDamage (both sides).
     unsigned long long engage_kamikaze_reads{0};
     unsigned long long engage_kamikaze_classes{0};
+    // Packet cc9_engage_kamikaze_gate: the engage member state+14C0h, its enters
+    // and steps (both sides) and the steps that left the run latch set (ON only).
+    unsigned long long engage_member_enters{0};
+    unsigned long long engage_member_steps{0};
+    unsigned long long engage_member_run_steps{0};
+    // Packet cc9_approach_sight_test: 009E7FC0's two sight tests. Target tests
+    // run ON only (they write the pass cache); point tests run on both sides.
+    unsigned long long sight_target_tests{0};
+    unsigned long long sight_target_hidden{0};
+    unsigned long long sight_point_tests{0};
+    unsigned long long sight_point_hidden{0};
     // Packet cc9_approach_mode_latch: 009F1BC0's latch computed on every
     // frame-state pass (both sides), by target class and by the mode it chose.
     unsigned long long latch_frames{0};
@@ -555,6 +566,16 @@ struct GameShipAiSummary {
     unsigned long long latch_resets{0};          // 009F20DE..009F20ED
     unsigned long long latch_retarget_reachable{0}; // no ship target: 009F2124 follows
     unsigned long long latch_retarget_entries{0};   // ... and nested+11D6h was clear
+    // Packet cc9_approach_retarget_ring (ON only): arm runs past 009F2124, runs
+    // whose goal lay in a zone, runs that left the point off the goal, and the
+    // per-slot Landscape queries, hits and reach failures.
+    unsigned long long retarget_off_zone_frames{0};  // OFF: arm frames, goal in a zone
+    unsigned long long retarget_runs{0};
+    unsigned long long retarget_zone_runs{0};
+    unsigned long long retarget_moved_runs{0};
+    unsigned long long retarget_landscape_queries{0};
+    unsigned long long retarget_landscape_hits{0};
+    unsigned long long retarget_out_of_reach{0};
     unsigned long long ai_command_zone_points_moved{0};
     // Packet cc9_plane_row_autotarget: AutoTarget ticks reaching a plane or
     // squadron row (both sides) and the thinks they ran (OFF only).

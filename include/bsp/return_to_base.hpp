@@ -58,6 +58,10 @@ struct NearestLandingSiteResult {
     bool from_own_site{false};
     int candidates_passed{0};        // nodes past the filters
     bool key_unknown{false};         // two or more passed and a key was missing
+    // The winner's key and class (006C0ACF-006C0ADB). 006C0AFF-006C0B2A turn them
+    // into the stack-1 output: 0.0 for an accepting winner, else sqrt(key).
+    float best_key{-1.0f};
+    bool best_accepts{false};
 };
 
 // 006C0840. The walk keeps the best node: an accepting (006BC530) node beats a

@@ -1231,6 +1231,105 @@ ShipAiApproachLatchResult ship_ai_approach_mode_latch_009f1f47(
 }
 
 // ---------------------------------------------------------------------------
+// Packet cc9_approach_retarget_ring (docs/SHIP_AI_OPEN_ITEMS.md section 27)
+// ---------------------------------------------------------------------------
+
+bool ship_ai_approach_retarget_head_009f2124(ShipAiApproachState& state) noexcept {
+    if (state.flag_11d6) return false;  // 009F2124 CMP, JNE 009F272D
+    state.flag_11d6 = true;             // 009F2131
+    // 009F2142 FLD timer, FLD1, FCOMI ST(1), JBE keeps the timer.
+    if (1.0f > state.retarget_timer_11d8) {
+        state.retarget_timer_11d8 = kApproachRetargetReset;  // 009F214E
+    }
+    return true;
+}
+
+ShipAiApproachRetargetResult ship_ai_approach_retarget_ring_009f239a(
+    ShipAiApproachState& state, const ShipAiAttackMoveRingSlot* ring,
+    const ShipAiApproachRetargetInputs& in, ShipAiApproachRetargetHost& host) {
+    ShipAiApproachRetargetResult out;
+    const ShipAiApproachPoint goal = in.goal;
+    state.point_1228 = goal;  // 009F23B5..009F23C5
+    out.zone = host.goal_zone_004178f0(goal.x, goal.z);
+    if (!out.zone) return out;  // 009F23F1
+
+    // 009F245E 00415550(ECX = &50.0f, EDX = &h): 50 only when 50 > h. Then
+    // 009F2479 FADD the goal's y, 009F248F FSTP.
+    const float floor = (kApproachRetargetHeightFloor > in.target_height_00a8)
+        ? kApproachRetargetHeightFloor : in.target_height_00a8;
+    const float origin[3] = {goal.x,
+        static_cast<float>(static_cast<double>(floor) + goal.y), goal.z};
+    const float from[2] = {goal.x, goal.z};  // [ESP+44h], [ESP+48h]
+
+    // [ESP+3Ch]: one running point for the whole loop. The image leaves it as
+    // stack contents until 00416DD0 first passes its AABB test; the goal lies in
+    // the zone, so that test passes from slot 0 on (see the host binding).
+    float hit[2] = {goal.x, goal.z};
+    float best = kApproachRetargetBestStart;  // 009F2416, [ESP+20h]
+    for (int i = 0; i < kAttackMoveRingSlotCount; ++i) {
+        const ShipAiAttackMoveRingSlot& slot = ring[i];
+        // 009F24B6..009F24F4: R, re-read from [unit+490h] on every slot.
+        const float art = in.artillery_max_range_0490;
+        const float scaled = static_cast<float>(static_cast<double>(art) *
+                                                kApproachRetargetRangeScale);
+        const float less = static_cast<float>(static_cast<double>(art) -
+                                              kApproachRetargetRangeMargin);
+        float reach = (less > scaled) ? less : scaled;  // 009F24DA FCOMI, JBE
+        if (in.building_mode_2) {
+            reach = static_cast<float>(static_cast<double>(in.building_capture_range_07a0) -
+                                       kApproachRetargetRangeMargin);  // 009F2505
+        }
+        // 009F2517..009F2579: P = goal + dir * 100000.0, each term stored.
+        const float far_x = static_cast<float>(static_cast<double>(slot.dir_x_0c) *
+                                               kApproachRetargetProbeReach);
+        const float far_z = static_cast<float>(static_cast<double>(slot.dir_z_14) *
+                                               kApproachRetargetProbeReach);
+        const float toward[2] = {
+            static_cast<float>(static_cast<double>(far_x) + from[0]),
+            static_cast<float>(static_cast<double>(far_z) + from[1])};
+        host.zone_crossing_00416dd0(toward, from, hit);  // 009F2580
+        // 009F2585..009F25C5: Q = (hit.x + dx*100, 60, hit.z + dz*100).
+        const float sea_x = static_cast<float>(static_cast<double>(slot.dir_x_0c) *
+                                               kApproachRetargetSeaward);
+        const float sea_z = static_cast<float>(static_cast<double>(slot.dir_z_14) *
+                                               kApproachRetargetSeaward);
+        const float probe[3] = {
+            static_cast<float>(static_cast<double>(sea_x) + hit[0]),
+            kApproachRetargetProbeY,
+            static_cast<float>(static_cast<double>(hit[1]) + sea_z)};
+        if (host.landscape_hit_00904400(origin, probe)) {  // 009F25FA, JNE 009F270A
+            ++out.landscape_hits;
+            continue;
+        }
+        // 009F2607..009F2651: 00414C60 on (Q - goal), R > it or skip.
+        const float to_goal = ship_ai_approach_goal_range_009f1bc0(
+            probe[0], probe[2], goal.x, goal.z);
+        if (!(reach > to_goal)) {
+            ++out.out_of_reach;
+            continue;
+        }
+        // 009F2657..009F2698: 00414C60 on (Q - unit), best > it or skip.
+        const float to_unit = ship_ai_approach_goal_range_009f1bc0(
+            probe[0], probe[2], in.unit_x, in.unit_z);
+        if (!(best > to_unit)) continue;
+        best = to_unit;  // 009F26A9
+        // 009F269A..009F2704: hit + dir * 10, y = dy * 10 + 0.0.
+        const float off_x = static_cast<float>(static_cast<double>(slot.dir_x_0c) *
+                                               kApproachRetargetOffshore);
+        const float off_y = static_cast<float>(static_cast<double>(slot.dir_y_10) *
+                                               kApproachRetargetOffshore);
+        const float off_z = static_cast<float>(static_cast<double>(slot.dir_z_14) *
+                                               kApproachRetargetOffshore);
+        state.point_1228.x = static_cast<float>(static_cast<double>(off_x) + hit[0]);
+        state.point_1228.y = static_cast<float>(static_cast<double>(off_y) +
+                                                kApproachRetargetPointY);
+        state.point_1228.z = static_cast<float>(static_cast<double>(hit[1]) + off_z);
+        ++out.improvements;
+    }
+    return out;
+}
+
+// ---------------------------------------------------------------------------
 // Packet cc9_torpedo_standoff (docs/SENTITY_INIT_PASSES.md section 9)
 // ---------------------------------------------------------------------------
 

@@ -878,10 +878,15 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         Group* h = group_at(holder);
         Group* g = group_at(group);
         if (h != nullptr && h->command.target_group == static_cast<void*>(g)) {
-            // Natively the released group leaves a dangling command+1Ch. This
-            // process cannot hold one, so the command reverts to the class the
-            // constructor installed. Labelled substitution, not a native rule.
-            h->command = initial_command_for(h);
+            ++summary.target_group_releases;
+            const bsp::AiCommandObject birth = initial_command_for(h);
+            if (birth.type != bsp::AiCommandType::Idle) {
+                ++summary.target_group_releases_non_idle_birth;
+            }
+            // OFF: the earlier host rule, the command reverts to the class the
+            // constructor installed. ON: destroy_group replaces it with IDLE,
+            // as 00A10040 does when 00A2D440 notifies (kAiTargetGroupDestroyedIdleBound).
+            if (!kAiTargetGroupDestroyedIdleBound) h->command = birth;
         }
         record("AiGroups::release_group_reference", 0x00a2b8f0u);
     }
@@ -896,6 +901,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         Group* g = group_at(group);
         if (g == nullptr || g->destroyed) return;
         g->destroyed = true;
+        if (kAiTargetGroupDestroyedIdleBound) {
+            // 00A2D440 -> 00696330: each ATTACK command observing g runs 00A10040,
+            // which builds IDLE (new(8), vtable 00D229E0, +4h = its own group) and
+            // installs it with 00A2BD00, deleting the attack command.
+            for (Group* h : registry) {
+                if (h == nullptr || h == g) continue;
+                if (h->command.target_group != static_cast<void*>(g)) continue;
+                bsp::AiCommandObject idle;
+                idle.type = bsp::AiCommandType::Idle;
+                idle.owner_group = h;
+                h->command = idle;
+                done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
+            }
+        }
         registry.erase(std::remove(registry.begin(), registry.end(), g), registry.end());
         for (std::vector<Group*>& list : by_team) {
             list.erase(std::remove(list.begin(), list.end(), g), list.end());
@@ -4638,7 +4657,8 @@ void GameAiCoordinatorHost::report() {
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
         "tick_orders=%llu tick_followers=%llu formation_requests=%llu promotions=%llu "
         "collect_dist=%.1f served=%llu attackmove=%llu settarget=%llu fallback=%llu "
-        "scored=%llu ship_members_not_ordered=%llu",
+        "scored=%llu ship_members_not_ordered=%llu target_releases=%llu "
+        "target_releases_non_idle_birth=%llu release_idle_bound=%d",
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
         s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes,
@@ -4647,7 +4667,8 @@ void GameAiCoordinatorHost::report() {
         static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
         s.close_members_served, s.close_attack_move_orders, s.close_set_target_orders,
         s.close_fallback_movetos, s.close_candidates_scored,
-        s.ship_members_not_ordered);
+        s.ship_members_not_ordered, s.target_group_releases,
+        s.target_group_releases_non_idle_birth, kAiTargetGroupDestroyedIdleBound ? 1 : 0);
     host.log.notef("summary mission ai troop landing trait close_landers=%llu cargo_landers=%llu "
         "bound=%d (00A1443D, 00A03510 Cargo arm; packet cc9_close_member_class_trait)",
         s.close_troop_landers, s.cargo_troop_landers, bsp::game::kTroopLandingTraitBound ? 1 : 0);

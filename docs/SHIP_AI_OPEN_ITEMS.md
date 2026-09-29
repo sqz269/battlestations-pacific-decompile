@@ -2347,6 +2347,101 @@ The Landscape cast needs a public query on the gunnery host, requested from the 
 2026-09-28 (`GameGunneryHost::landscape_segment_hit_00904400`). Until it lands this section has
 no committed code.
 
+**Re-read by cc9-ships11 (2026-09-29).** The listing agrees with the reading above; five points
+it did not state:
+- **The stack slots.** `[ESP+58h..60h]` is the unit's `+0FCh..+104h` stored at `009F1C53..009F1C66`
+  on this frame, `[ESP+70h]`/`+74h` the goal's x, z stored at `009F1CF6`, `[ESP+28h]` the kind-1Ch
+  target of `009F1E04` (else 0). `009E6120` copies `[brain+0B2Ch..0B34h]`, so the origin is the goal.
+  `0082ADC0` is `004218E0` then `004120D0([class+570h])`. `00414C60` is the 2-D length with the
+  `1e-10` cutoff (`00CE3820`), the idiom `ship_ai_approach_goal_range_009f1bc0` already has.
+- **The 0.6 is 0.6f widened** (`00CEFF98` = `3FE3333340000000`).
+- **`00416DD0` writes `running` only past its AABB test** (`00416DE9`, copy at `00416DFB`), so a
+  rejected slot keeps the previous slot's crossing. The goal is inside the zone, so the test
+  passes from slot 0 on; the binding copies first and says so.
+- **Mode 1 never reaches the arm** (`retarget_arm_reachable` is false for a ship target), so the
+  arm is modes 0 and 2 plus the unread 3 and 4.
+- **The point holds between arm runs.** The no-ship path skips the per-frame goal copy, and the
+  arm re-runs only when `009F1DAA` clears `nested+11D6h` (every 2.0 s here: the reseed stand-in
+  takes the low end). The host used to copy the goal every frame; ON restores the frame's
+  starting point on that path before the head.
+
+**The binding** (committed OFF). `ship_ai_approach_retarget_head_009f2124` and
+`ship_ai_approach_retarget_ring_009f239a` in `src/ship_ai_approach_update.cpp`; the host is
+`RetargetRingBinding` and `run_retarget_arm` in `src/game_hosts_ship_ai.cpp`: the zone from
+`GameAvoidZoneRuntime::table()` with `004120D0` / `004178F0` on `class_reference_0570`, the crossing
+from `avoid_zone_segment_hit_00416dd0`, the Landscape cast from the gunnery host, `unit+490h` from
+the gunnery row, `[class+0A8h]` from `unit_class_extents` when the target answers kind 5, and
+`[building+7A0h]` from `command_building_capture_range_07a0`. Coverage: partial, modes 3 and 4
+(`009F21A0-009F2395`) unread and recorded as `ShipAiApproach::retarget_modes_3_4`. OFF counts
+`off_zone_frames` (arm frames whose goal lies in a zone of the class's group); ON logs
+`summary mission ship ai approach retarget` and the first sixteen zone runs as `retarget diag`.
+
+### Predictions, written before any ON run
+
+Base: section 28's latch census (`local\ships10_b0_*.log` in cc9-ships10): the arm is reachable on
+USN01 (1743 frames: 1631 building, 112 other), LOMP10 (601, all building, mode 0) and USN02 (5,
+no target), and on no other row.
+1. **OFF is identical** to its own base on every row (a summary line and record rows only).
+2. **JM05, JM06, JM08, LOMP06, USN04, USN12, USN13 are identical ON** (exit 0 or 1): no frame
+   reaches the arm.
+3. **USN02 is gameplay-identical ON.** Five no-target frames run the arm once per unit at most,
+   and a no-target goal lies at sea (no zone), so the point stays the goal.
+4. **USN01 and LOMP10 move ON (exit 3).** A command building stands on an island, so the goal
+   lies in a zone and `zone_runs` > 0; with artillery reach `max(0.6r, r - 600)` of several km
+   and a 50 m origin over the building, most bearings pass the Landscape cast and one lands
+   inside reach, so `moved_runs` > 0 and the attacking ships steer for a point 10 m off the
+   coast instead of the building. Expected downstream: different approach points in the
+   per-unit rows, different paths, and first-hit / damage numbers that move. A death-table move
+   is possible but not predicted.
+5. **Mechanism failure** would be `zone_runs` = 0 on USN01 and LOMP10 (the building's goal is not
+   inside the class group's zones, or the group key selects a different layer) or `moved_runs` = 0
+   with every slot a Landscape hit; either keeps the switch OFF.
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `agent/cc9-ships11` at `8d4f73dce` (main `b6a9d2ece` plus the binding), built in the tree;
+ON is `python tools/pair_export.py --commit 8d4f73dce --flip kShipAiApproachRetargetRingBound=true
+--out local\s11_rt1` (exe `CBD6D40E79F7`). Launch as the reference rows (`local\s11_run.ps1`:
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, `--press-start-frame 30 --menu-select <row>
+--mission-frame-seconds 0.05`). A 300-frame USN01 smoke ran first. Logs `local\s11_off_<row>.log`
+and `local\s11_on_<row>.log`.
+
+| row | frames | arm runs ON | zone runs | moved runs | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN01 | 3200/3000 | 200 | 0 | 0 | 3, moved | 4 missed on the mechanism |
+| LOMP10 | 3200/3000 | 68 | 0 | 0 | 1, gameplay identical | 4 missed |
+| USN02 | 9200/9000 | 5 | 0 | 0 | 1, gameplay identical | 3 held |
+
+OFF counts `off_zone_frames=0` on all three. JM05, JM06, JM08, LOMP06, USN04, USN12 and USN13 were
+not run: `run_retarget_arm` returns before anything on a frame the latch does not mark reachable,
+and their base latch census has none.
+
+**Why no zone: `[class+570h]` is 0 in single player.** A diagnostic build (not committed) logged
+Northampton, Dunlap and the other USN01 attackers with `class_reference_0570 = 0`; `004120D0(0)`
+selects the key-0 group, which holds no zones (six groups; the goal at (3973.4, -3182.2) lies in a
+zone of the key-1 group). docs/GAME_SHIP_DEPTH_INPUT.md has the source: every ship leaf's scalar is
+0 in this installation's single-player record and 1 or 3 in the multiplayer one (`settings+F0h`).
+So the ring part of the arm is exact and unreachable in single-player missions; the 0.6 / 600 m
+reach, the crossings and the Landscape cast are unexercised.
+
+**What moved USN01: the point hold.** The first moved line is Northampton at step 1000: OFF steers
+at a new goal 2470 m away, ON still at the previous one (`d32c` 1583 m) until the arm re-runs at
+step 1020. The attackers target Mavis flying boats there (`other` in the latch census, 112 frames),
+whose goal moves every frame. Per entity: the same five Mavis deaths on both sides, Mav2 at 74.15 ->
+74.20 s, killer guns and hit splits shifted; Northampton dealt 1838 -> 1797, Salt Lake City 901 ->
+942. No death flips. The known ship-avoidance refill counter also moved on LOMP10 and USN02.
+
+**Verdict: OFF, recorded.** Prediction 4 named the retarget as the mechanism and it never fired;
+the move came from the hold, which the section describes but did not predict. The contract keeps a
+mechanism miss OFF. The binding stays in place: the hold is the image's behaviour (009F1E30 JE
+009F2003) and the ring is exact.
+
+**Open item (the lead, 2026-09-29): the no-ship hold of `nested+1228h` as its own switch.** Split
+the hold (keep the frame's starting point on the no-ship path between arm runs) out of
+`kShipAiApproachRetargetRingBound`, and judge it with predictions written first, on rows the ring
+pair did not use (a mission where AI ships attack planes or buildings other than USN01, LOMP10 and
+USN02). No multiplayer row.
+
 ## 28. The third ranking (packet `cc9_ship_ai_open_ranking_3`, cc9-ships10, 2026-09-28)
 
 **It replaces section 16's table.** Every lane switch named in sections 17 to 27 is in this base.
@@ -2372,8 +2467,8 @@ section 16's ten, which include USN12 and JM05.
 | the AI command's avoid-zone point (rank 4) | `kAiCommandAvoidZonePointBound`, ON (spread miss recorded) | section 25 |
 | the approach mode latch (part of rank 6) | `kShipAiApproachModeLatchBound`, ON (modes 1 to 4 unexercised) | section 26 |
 
-Every switch in this lane is ON except `kShipAiApproachRetargetRingBound` (section 27, in
-progress).
+Every switch in this lane is ON except `kShipAiApproachRetargetRingBound` (section 27, OFF by
+verdict).
 
 ### The ranking
 
@@ -2431,3 +2526,259 @@ interface) answers the two numbers from the unit's class row through the host's
    `kamikaze_classes` is 0 on both sides and the gate fails as before.
 2. **The reach is unmeasured.** A row with a Kaiten or a Shinyo under AI attackmove is needed to
    see the gate pass. None of the ten base rows is one.
+
+### The row, and a second switch (cc9-ships11, 2026-09-29)
+
+**USNOS.** This installation's `scripts/datatables/missiontree.lua` (mtime 2025-06-02, modded) has
+the bonus mission `USNOS` ("New - Battle of the Osumi Islands", `COTP-USN/us_osumi.scn`); its
+`scripts/missions/COTP-USN/us_osumi.lua` (mtime 2024-10-29) `PrepareClass(43)` / `PrepareClass(4)`
+and `luaSpawnAttackers` (line 1338), run when phase 1's attacker list is empty, spawns nine
+`Type 43` (Shinyo) 6300 m and six `Type 4` (Kaiten) 6100 m from the first troop ship, each told
+`NavigatorAttackMove(unit, luaPickRnd(Mission.Troops))` (`luaShinyoSpawned`, `luaSubSpawned`, line
+1593). A base run at main `3f1499210` (`local\s11_base_usnos.log`, `--frames 3200
+--press-start-frame 30 --menu-select USNOS --mission-frames 3000 --mission-frame-seconds 0.05`)
+logs the three `SpawnNew` groups and `engage kamikaze reads=990 kamikaze_classes=990`.
+
+**The gate alone would stop the boats.** When `009E85B0` opens, `009E87E3` moves the selector to
+the engage member `state+14C0h`, whose enter `009DB5E0` and step `009E23B0` were records: a boat
+handed to it would no longer be steered by anyone. So the member is bound too, behind
+`kShipAiEngageSubStateBound` (committed OFF): the enter clears `sub+8h` and stores 1225.0f
+(`00D216E8`, 35 m squared) at `blk+234h` and `blk+29Ch`, which no modelled reader consumes
+(labelled); the step is the existing `ship_ai_attackmove_engage_step_009e23b0` with
+`EngageStepBinding` (velocities through the lead pursuit's `neighbour_world_velocity`
+substitution, `009DE050` through `run_navigation_goal_009de050`, `009DA610` and `009DFF40` through
+their reconstructions). Counters: `summary mission ship ai engage member enters / steps /
+run_steps`. The two switches are paired together.
+
+### Predictions for USNOS, written before any ON run
+
+Rows: USNOS at 3200/3000 and 9200/9000 (the boats start about 6 km out; a Shinyo needs minutes to
+come within the gate's 2000 m of its troop ship).
+1. **OFF is identical to the base** apart from the new summary line and record rows.
+2. **3000 frames: probably gameplay-identical.** The boats are unlikely to reach 2000 m of the
+   troop ship in the 150 s; if `enters` is 0 the row is identical.
+3. **9000 frames: the gate opens and the row moves (exit 3).** `enters` > 0 for Shinyo and Kaiten
+   within 2000 m of their destination, `steps` > 0, and `run_steps` > 0 once a boat is within
+   250 m with a latched goal (the run arm steers straight at the intercept point). The boats'
+   paths change near the troop ships; which deaths change is not predicted.
+4. **Mechanism failure:** `enters` = 0 on the 9000-frame row with a boat's nearest approach under
+   2000 m, or boats that enter and then stop (the step not steering), keeps both switches OFF.
+5. **Every other reference row is identical** (`kamikaze_classes` 0: no gate pass, no member).
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `86801174c` built in the tree; ON is `pair_export --commit 86801174c --flip
+kShipAiEngageKamikazeGateBound=true --flip kShipAiEngageSubStateBound=true --out local\s11_kami`.
+Logs `local\s11_koff_<row>.log` / `local\s11_kon_<row>.log`.
+
+| row | frames | kamikaze reads | enters | steps | run steps | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USNOS | 3200/3000 | 990 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+| USNOS long | 9200/9000 | 1776 OFF, 1762 ON | 1 | 20 | 0 | 3, moved | 3 held except the run arm |
+
+OFF against the `3f1499210` base run is gameplay-identical (prediction 1).
+
+**What moved.** One Shinyo, `unit #2.7`, came within 2000 m of TroopTrans4 (`d32c` 1797 m at
+step 6040), entered the member and stepped it twenty times on the close arm (`009DA610` answered
+false, so the run latch never set): throttle 1.0 and a live rudder, so it was steered, not
+stopped. OFF it kept the approach member (`navigate_astern`). Per entity: the same 21 deaths on
+both sides; `unit #2.7` died at 304.15 s instead of 313.70 s (killer Gear13 both sides, killer
+range 1496 -> 1193 m, nearest Portland2 at 121 m instead of Portland1). Downstream: TroopTrans1
+took 0 damage instead of 125, NH fired 3345 shots instead of 3761. No death flips.
+
+**Verdict: both ON**, with a spread miss recorded: the run arm (`009E25BC..009E262F`, within
+250 m and a latched goal) is unexercised, because the one boat that entered died at about 1.2 km.
+The gate's avoid-zone conjunct is still the stand-in that answers no zone
+(`ShipAiEngageGate::avoid_zone_list`); section 27 found `[class+570h]` = 0 in single player, whose
+key-0 group has no zones, so the stand-in agrees with the image there.
+
+## 30. Rank 3 of section 28: what replaces an attack on a destroyed group (packet `cc9_group_release_idle`, `kAiTargetGroupDestroyedIdleBound`)
+
+Worker cc9-ships11, 2026-09-29. Section 21's next step: what the image does with a command whose
+target group is freed.
+
+**The image never leaves `command+1Ch` dangling.**
+- `00A10710` (the ATTACK base constructor) stores the target at `+1Ch` and registers the command's
+  observer sub-object `+8h` on that group: `MOV ECX,[ESP+1Ch]` (the target), `EDX = ESI+8`, `CALL
+  00694A60` (BSP_Observer_RegisterPair, ECX = endpoint, EDX = callback owner) at `00A10767`.
+- The four observer vtables are the base's `00D22B64` and the derived `00D22BA4` (MoveToAttack,
+  `00A108AA`), `00D22BEC` (CautiousAttack, `00A109DC`), `00D22C2C` (CloseAttack, `00A10AFA`). Each
+  has slot `+4h` = `00A10040` (disk bytes).
+- `00A10040`, `__thiscall(observer)(subject)`, `RET 4`: when the subject equals `[observer+14h]`
+  (`command+1Ch`), `new(8)`, `+4h = [observer-4]` (the command's group), vtable `00D229E0` (IDLE),
+  then `00A2BD00` on that group (`00A2BD00` deletes the old command through its vtable slot 0 with
+  1 and stores the new one at `group+564Ch`).
+- The notifier is the group destructor: `00A2D8C0` -> `00A2D440` -> `00696330`
+  (BSP_ObserverEndpoint_NotifySlot04). `ai_groups_compose_00a2e720` calls the host's
+  `destroy_group` right after the release loop, so the timing is the same pass.
+
+**The host rule it replaces.** `AiGroups::release_group_reference` reverted such a command to its
+group's birth class (`initial_command_for`: NONCONTROL or IDLE). The image always installs IDLE.
+The two differ only for a group whose birth class is NONCONTROL (an AI-disabled or negative party
+slot). ON, `destroy_group` installs IDLE on every registry group whose command aims at the
+destroyed group (`AiCommand::attack_target_destroyed_00a10040`), and the release loop only counts.
+`00A2B8F0` itself stays a record (section 21: a score-list removal with no reader).
+
+**OFF census** (`local\s11_goff_<row>.log`, this branch with the switch OFF): `target_releases` /
+`target_releases_non_idle_birth` are 0 / 0 on JM05, JM08, USN13 (3200/3000), USN04 (4700/4500) and
+USN01 (3200/3000), and 6 / 0 on USN02 (9200/9000).
+
+### Predictions, written before any ON run
+
+1. **Every row is gameplay-identical.** No measured release has a non-IDLE birth class, so ON
+   installs the same IDLE command the OFF rule did, in the same compose pass.
+2. **USN02 9000 is identical in its summary lines too**, apart from the switch field and a new done
+   row (six `attack_target_destroyed_00a10040` calls).
+3. **Reach**: a player-side or AI-disabled group given an ATTACK command whose target dies. No
+   reference row has one, so the change is exact and unexercised.
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF `08aaaf7db` in the tree, ON `pair_export --commit 08aaaf7db --flip
+kAiTargetGroupDestroyedIdleBound=true` (exe `69709265C0AC`); logs `local\s11_goff_<row>.log` /
+`local\s11_gon_<row>.log`. USN02 9200/9000: exit 1, with the six `attack_target_destroyed_00a10040`
+calls and the ship avoidance refill counter (known noise). JM08 3200/3000: exit 1, JM08's known
+noise only. Predictions 1 and 2 held. **Verdict: ON.**
+
+### Section 29 addendum: each flip alone (cc9-ships11, 2026-09-29)
+
+- **The engage member alone** is identical by construction: `009E87E3` is the only way into
+  `state+14C0h`, and it is reached only when `009E85B0` opens, which the gate switch keeps shut.
+- **The gate alone** (`pair_export --commit 86801174c --flip kShipAiEngageKamikazeGateBound=true`,
+  `local\s11_kgate_usnosl.log`, USNOS 9200/9000 against `local\s11_koff_usnosl.log`): exit 3.
+  `enters=1 steps=161`, and every step is a record, so `unit #2.7` sits unsteered from about
+  1.8 km (`navigate_astern`, throttle -0.625 to 0.5 in the step lines). Deaths go from 21 to 22:
+  **TroopTrans1 dies only in this variant**. Damage goes from 4267.6 to 8330.2, and NH deals 2550
+  instead of 434. That is why the two switches landed together.
+
+## 31. Rank 2 of section 28: the approach ring's sight test (packet `cc9_approach_sight_test`, `kShipAiApproachSightTestBound`)
+
+Worker cc9-ships11, 2026-09-29.
+
+**The image.** `009E7FC0` has passed its range gates (`009E80DF`, `009E80FF`). Then:
+- With a target (`ESI = [brain+0B20h]`, `009E810B`): `MOV ECX,[ECX+6DCh]; PUSH ESI; CALL 00864FD0`
+  (`009E8116`). `00864FD0` is `MOV ECX,[ECX+68h]; JMP 00864D90`, the unit's own gunnery-pass
+  visibility cache.
+- Without one: `009E6120` copies the goal (`[brain+0B2Ch..0B34h]`) and `00864BA0` (`009E8130`)
+  passes it by value to `00864680` on the same cache.
+- `009E8137`: a false answer jumps to `009E82F1`, so no slot is scored this frame.
+
+**The binding.** The host used to answer the target test true and the point test false (the goal
+was a zero point). ON asks `GameGunneryHost::unit_sees_unit_00864d90`, which shares the pass's own
+cache entry and TTL draw, and `unit_sees_point_00864680` with the goal (commits `264493a00`,
+`739f19aae`). The point test is read-only, so it is asked on both sides. The target test writes
+the cache, so it runs ON only.
+
+**OFF census** (`local\s11_soff_<row>.log`): `point_tests` is 0 on USN02 9200/9000 and USN01
+3200/3000. The no-target arm is not reached on either row: USN02's five no-target latch frames
+leave `009E7FC0` at an earlier gate.
+
+### Predictions, written before any ON run
+
+1. **USN02 9200/9000 moves (exit 3).** `target_tests` is near section 28's 23525. `target_hidden`
+   is above 0, because ships in the line screen each other and the query answers over units. Each
+   hidden frame skips the ring scoring. The shared cache also changes when the TTL draws of the
+   ship-target entries are taken.
+2. **USN01 3200/3000 moves (exit 3)** through the shared cache: its attackers' targets (Mavis) are
+   gunnery targets too. `target_tests` is near 1542.
+3. **`point_tests` stays 0 on both rows.**
+4. **Mechanism failure:** `target_tests` = 0 ON, or a move on a row where the ship AI never asked
+   (tests 0). Either keeps the switch OFF.
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `a6b00c4b2` in the tree. ON is `pair_export --commit a6b00c4b2 --flip
+kShipAiApproachSightTestBound=true --out local\s11_rt1`. Logs are `local\s11_soff_<row>.log` and
+`local\s11_son_<row>.log`.
+
+| row | target tests | hidden | point tests | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9200/9000 | 23525 | 0 | 0 | 1, gameplay identical | 1 missed |
+| USN01 3200/3000 | 1542 | 345 | 0 | 3, moved | 2 held on the outcome, not on the cause |
+
+- **USN02.** No ship target is ever hidden. The shared cache takes 77 more appends
+  (`visibility_cache_append_00864d90` 3781 -> 3858), and no gameplay line moves. Prediction 1 said
+  it would move.
+- **USN01.** 345 of 1542 tests answer hidden, so the attackers skip the ring scoring on those
+  frames and stand further off: CB2 and Dunlap's nearest approach goes 759 -> 954 m, the coastal
+  guns' 1443..1493 -> 1737..1796 m, and shots go 1290 -> 1267. The same five deaths, no flips. The
+  targets on those frames are the coastal buildings (1631 building latch frames).
+- **Prediction 3 held** (`point_tests` 0 on both).
+
+**Why the hidden answers are suspect.** `line_of_sight_00864680` swaps the image's roles (commit
+`264493a00`): it casts from the target's raised point toward the observer and hides the target
+when the first hit lies more than 25 m from the OBSERVER. The image casts from the observer's
+raised point (`cache+14h`) toward the target's and measures the 25 m from the TARGET's point. The
+host's segment query answers over units, so a cast that starts at a large building can hit the
+building itself, far from the observer: hidden under the swap, visible in the image. So the one
+move this pair shows may come from that swap and not from the image's sight test.
+
+**Verdict: OFF, recorded.** Prediction 1 missed, and prediction 2's move has a different cause from
+the one written. Next step: fix the role swap in the gunnery lane (its own pairs, since the gunnery
+pass uses the same routine), then re-pair this switch on USN01 and USN02 with new predictions.
+
+## 32. Handoff (cc9-ships11, 2026-09-29, at about 70% context)
+
+**State of the lane.** Branch `agent/cc9-ships11`; no leases held. Switches:
+
+| switch | state | section |
+| --- | --- | --- |
+| `kShipAiApproachRetargetRingBound` | OFF by verdict (the ring is exact but unreachable in single player: `[class+570h]` = 0) | 27 |
+| `kShipAiEngageKamikazeGateBound` + `kShipAiEngageSubStateBound` | ON (paired together; the gate alone flips a death) | 29 |
+| `kAiTargetGroupDestroyedIdleBound` | ON (`src/game_hosts_ai.cpp`) | 30 |
+| `kShipAiApproachSightTestBound` | OFF by verdict | 31 |
+
+**New gunnery-host queries** (commits `264493a00`, `739f19aae`):
+`GameGunneryHost::unit_sees_unit_00864d90` and `unit_sees_point_00864680`.
+
+**Open, in order:**
+1. **The line-of-sight role swap** (gunnery lane). `line_of_sight_00864680` casts target ->
+   observer and measures the 25 m from the observer. The image casts observer (cache owner,
+   `[pass+50h]`, raised by Globals+94h) -> target (raised by +90h in `00864D90`) and measures from
+   the target. Evidence is in commit `264493a00`. After the fix, re-pair section 31 on USN01 and
+   USN02 with new predictions.
+2. **The no-ship hold of `nested+1228h`** as its own switch (section 27 open item).
+3. **Section 28 ranks 4, 6 and 7:** the carrier squadron exclusion `009FFEB0` (borders the plane
+   lane, so ask the lead), BigLandingShip `class+808h` at `00827F95` (JM08), and a submarine target
+   in the standoff choice.
+4. **Stand-ins that agree with the image only in single player:** the engage gate's avoid-zone
+   conjunct (`ShipAiEngageGate::avoid_zone_list` answers no zone), and the `[class+570h]` key
+   generally.
+
+**Useful files** in the cc9-ships11 tree: `local\s11_run.ps1 -Exe <exe> -Prefix <p> -Row
+tag:MISSION:frames:mission_frames` (launches in the background; wait on the log's final COM
+release line); logs `local\s11_*`. The new pair row is USNOS (section 29; launch line and mtimes
+there).
+
+### Rank 4 read (cc9-ships11, 2026-09-29): the carrier arm of `009FFEB0`, not bound
+
+`009FFEB0-009FFF1D`, `__thiscall(squadron)`, plain `RET`, read whole from the disk bytes:
+- `[00E17BF2]` set -> false (`009FFEB3`), as the host already has.
+- `EDI = [[squadron+3D0h]+0C4h]`, the lead plane's class id (`009FFEC6`).
+- `007EDAD0` (BSP_PlaneSquadron_AmmoType, ECX = the squadron) nonzero -> false (`009FFED8`): a
+  squadron still carrying ordnance is never excluded.
+- Otherwise the class id must be `10h`, `12h` or `11h` (`009FFEDC..009FFEE9`), i.e. level, dive or
+  torpedo bomber; anything else -> false.
+- `007F16D0(&out)` (BSP_Plane_ResolveReturnToBase, ECX = the squadron) at `009FFEF2`. A null
+  `out` -> false. Otherwise `0077D600(squadron, out, &[ESP+10h], 1)` (BSP_Entity_IssueCommand,
+  `009FFF09`) and true (`009FFF0F`).
+
+So the arm sends a bomber squadron that has spent its ordnance home (the resolved `returntobase`
+command) and keeps it out of the AI command's member orders.
+
+**Why it is not bound in this lane:**
+1. The host has no ordnance state. `squadron_ammo_type_stand_in` (`src/game_hosts_ai.cpp`) answers
+   by class: 10h -> 5, 11h -> 2, 12h -> 1. So for exactly the three classes the arm admits,
+   `007EDAD0` is never 0 and the arm cannot fire. A faithful binding needs a real "first ordnance
+   kind still carried" reader over the squadron's planes (the release tasks know when a torpedo
+   or bomb has dropped). That is plane-lane state.
+2. The resolve (`record_return_to_base_007f16d0`, `bsp::resolve_return_to_base_007f16d0`) and the
+   command issue live in `src/game_hosts_units.cpp`. The flown `land` task behind a resolved
+   `returntobase` is bound only as far as docs/SQUADRON_LAND_TASK.md records (the landing states
+   are refused).
+
+**Next step:** a units/plane-lane packet exposing `squadron_ammo_type_007edad0(squadron)` from
+the real ordnance state, plus a public `issue_return_to_base_007f16d0(squadron)` that resolves and
+places the command the way the Lua `returntobase` path does. Then this host's
+`tick_squadron_excluded_009ffeb0` can bind the arm behind its own switch, with predictions on the
+rows with carrier strikes (JM05, USN13, JM08, which make 15560 calls between them per section 28).
