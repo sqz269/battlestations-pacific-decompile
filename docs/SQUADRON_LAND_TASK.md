@@ -3809,3 +3809,114 @@ Also part of the carrier path:
 - The four JM05 holders build, and the US decks sequence and land 13 planes (5ae.1).
 - The failure to fix: Yorktown_sqn04 touches down at 218.56 s (deck local (-0.9, -53.2)) and
   loses contact at 234.26 s at local z 124.49, because it is held at its world point.
+
+## 5ag. Carrier landing decks, part 2: the deck carries the landed plane (packet `cc9_carrier_landing_deck_part2`, cc9-lua20, 2026-09-29)
+
+`kCarrierDeckParentBound` (`src/game_hosts_units.cpp`, `GameUnitsHost::Impl`) is committed
+**OFF**. It can only be reached through `kCarrierLandingDeckBound`, because a mother-ship deck must
+exist first.
+
+### The image (read for this packet)
+
+- **The re-parent**, `007C71E0` (`007C71E0`-`007C742F`, `__fastcall(plane)`, `RET`). After the
+  gates the host already models (`+C49h`, `classDesc+198h`, `+BF4h`, the gear), the holder's owner
+  `(+BF4h)+4 -> +7Ch` is compared with the plane's scene parent `00923810(1)` (`unit+3Ch`,
+  `007C725F`). When they differ:
+  - `007D9CE0(owner)` runs on the controller `unit+AB0h` (`007C7277`). The velocity `ctl+18h`
+    becomes `R_owner^-1 (v - owner vtable[34h])`: the owner-relative velocity in owner axes.
+    `ctl+24h` is turned the same way, and `ctl+30h` copies `ctl+18h`.
+  - `007BA020(00414E10(owner))` runs on `unit+74h` (`007C7287`): the local pose becomes the owner's
+    inverse times the world pose. `vtable[ACh](owner)` (`007C72B1`) sets the parent, and
+    `007D9C10` rebuilds the body frame (`007C72C5`).
+  - `007C72D3`: when the owner answers `IsKindOf(9)` (a ship), the **arrestor seed** runs. Its
+    three gates:
+    - `|(ctl+3Ch, ctl+44h)|` (`00414C60`) > 3.3333 (`00D05B48`);
+    - `|00438B10(plane vtable[50h], 006BCA80(holder, t 0).w)|` < 1.0472 (`00D05AAC`, 60 degrees);
+    - the holder-local-less-T z (`006BCC90`) < `006BA620()` x 2.8 (`00D05A38`).
+
+    When all three pass, it calls `007DB630(ctl, clamp(z - 2.0, 1.0, 16.0) x 0.5)` (`00D7A308`,
+    `00D7A24C`, `00CE6454`, `00415620`, `00D7A280`).
+  - `007DB630` (`__thiscall(ctl, float)`, `RET 4`) sets `ctl+ACh = min(arg, tuning+51Ch
+    MaxWireRope)`.
+  - Then `007C1570(4, 0)` runs as before.
+- **The wire band**, `007DB680` at `007DBEEE`-`007DC088`.
+  - The frame: ESP there is the frame base - 4. So `[ESP+13h]` is `[base+0Fh]`, which is
+    `unit+904h` as stored at `007DB6DA`, and `[ESP+5Ch]` is the step.
+  - `+904h` clear: `ctl+ACh = 0` (`007DC085`).
+  - `ctl+ACh <= 0.1` (`00D7A3A0`): left alone.
+  - Otherwise, the reference heading is `006049F0(unit)+88h` (the holder heading) when the plane
+    has contact and a holder, and the plane's own `vtable[50h]` otherwise.
+  - When `|00438B10(heading, ref)|` < 60 degrees and the body `|(vx, vz)|` > 6.9444 (`00D06878`):
+    - `ctl+ACh += |(vx, vz)| x step x tuning+518h WireRope`;
+    - then `min(tuning+51Ch)` (`00415510`);
+    - then, with a contact holder, `x 00419010(160, 1.4, 250, 1.0, holder+B4h)`.
+
+    Otherwise `ctl+ACh = 0`.
+  - **The consumer**, `007DC1A7`-`007DC1C0` (read for this packet): when `ctl+ACh > 0`,
+    `dyn+0Ch -= ctl+ACh`. That is a deceleration on the body-forward damping accumulator, which
+    the integrator applies only against the motion.
+- **The surface factor**, `007DC0A2`-`007DC131`. With a scene parent, take the parent's velocity in
+  the plane's body frame (`vtable[34h]`, `0042D0D0` through `00414E10`); call its z component `v`.
+  The wheel friction is scaled by:
+  - `00419010(-5.5556, 0.35, 0, 1.0, v)` when `v < 0` (`00D06870`, `00CF6560`);
+  - `00419010(1.3889, 1.0, 6.9444, 1.3, v)` otherwise (`00CF8AAC`, `00D0686C`, `00CEB4B4`).
+- **`007CC264`**, in the ground roll `007CBFA0`. A state-4 plane that lost contact while its
+  holder's owner is a ship sends the takeoff message (`00762A00` -> `0077C2A0`), so a plane that
+  rolls off the deck edge flies. The takeoff `007C7110` is not bound, so this is counted, not sent.
+- **Read and left alone:**
+  - `007CB7B7` (`007CB5F0`) gates only the scoring call `0090F6C0(plane, 1)` (own-side carrier,
+    kind 17h, the player's own squadron).
+  - `007B3C1D` is inside `007B3C00`, a kind classifier with no plane state: 6, then 9 or Dh -> 0;
+    Bh or Ah -> 1; else 2.
+  - `007C6EBD` (`007C6E90`) re-runs the site probe `007C5AC0(-1.0)` when an observed 45h or 9 unit
+    changes.
+  - `009B23E4` (`009B22C0`) is the carrier arm of the taxi/park step. It belongs with the elevator
+    (5aa).
+
+### The binding
+
+With the switch ON, at a touchdown on a mother-ship deck:
+- the plane is parented to the carrier (`unit+3Ch`);
+- its velocity becomes carrier-relative (`007D9CE0`);
+- its position and pose rows are kept in carrier-local form;
+- the arrestor seed runs (`007C72D3`, `007DB630`).
+
+On every ground-roll step of a parented plane:
+- The world pose is rebuilt from the carrier's current world matrix and the stored local pose
+  before the arm runs, and the local pose is re-taken after it. The image integrates `unit+74h`
+  under the parent; this host integrates world rows, so it re-expresses them around the step.
+- The velocity stays carrier-relative and turns with the carrier.
+- The wire band, its consumer and the surface factor run on it.
+
+LABELLED:
+- The carrier's velocity is its `motion.linear_velocity` (vtable[34h]).
+- Only a mother-ship deck re-parents. An airfield's re-parent is to a static owner and changes
+  nothing in this host.
+- A parented plane's `plane_world_velocity` holds the owner-relative velocity in world axes, as the
+  image's `ctl+18h` holds it in owner axes. A reader that wants a world velocity gets the relative
+  one.
+- The deck-edge takeoff (`007CC264`) is counted, not sent.
+
+The census line is `summary carrier deck parent ...`.
+
+### Predictions, written before any ON run
+
+The pairs are JM05 at 3000 and 9000 frames, and USN04, USN13 and LOMP10 at 3000. The OFF side flips
+`kReturnToBaseSiteKeyBound` and `kCarrierLandingDeckBound`; the ON side adds
+`kCarrierDeckParentBound`.
+
+- **Controls** (USN04, USN13, LOMP10): gameplay identical (exit 0/1). No mother-ship deck gets a
+  touchdown, and every term is gated on a parented plane.
+- **JM05:**
+  - Every carrier touchdown re-parents. `parented` equals the carrier touchdowns: 13 on 9000 in
+    5ae.1, if the order holds.
+  - Most touchdowns seed the wire, since the plane is aligned and fast.
+  - The wire stops each plane within tens of metres, so a landed plane stays on its deck:
+    - no `plane ground contact lost` line for a carrier plane, and Yorktown_sqn04's loss at
+      234.26 s goes away;
+    - plane water contacts return to 3 (the fourth in 5ae.1 was that plane);
+    - `deck-edge takeoff requests` = 0.
+  - Deaths stay 3, with the same victims.
+  - Plane paths after the first carrier touchdown move (exit 3).
+- **Both switches against neither** (the flip evidence): JM05 moves (recall and recovery). The
+  controls stay gameplay identical.

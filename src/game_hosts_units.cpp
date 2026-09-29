@@ -17,6 +17,7 @@
 #include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
+#include "bsp/plane_ground_ops.hpp"
 #include "bsp/plane_death_modes.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/plane_pose_commit.hpp"
@@ -398,6 +399,19 @@ struct GameUnitSlot {
     unsigned long long td_refused_airborne{0}, td_refused_vy{0}, td_touchdowns{0};
     float td_min_height{1000.0f};
     double td_at{-1.0};
+    // Packet cc9_carrier_landing_deck_part2 (kCarrierDeckParentBound): the scene
+    // parent unit+3Ch after 007C71E0's re-parent to a carrier (slot index + 1,
+    // 0 = none), and the pose kept in the carrier's frame between steps
+    // (unit+74h under the parent): position, the three pose rows, and the
+    // carrier-relative velocity (ctl+18h after 007D9CE0), all in carrier axes.
+    std::size_t deck_parent_plus_one{0};
+    float deck_local_pos[3]{0.0f, 0.0f, 0.0f};
+    float deck_local_rows[9]{};
+    float deck_local_vel[3]{0.0f, 0.0f, 0.0f};
+    bool deck_stop_logged{false};
+    // ctl+ACh (unit+B5Ch), the arrestor wire: seeded by 007DB630 at a carrier
+    // touchdown, stepped by 007DBEEE-007DC088, consumed at 007DC1A7.
+    float plane_wire_ac{0.0f};
     // Free-flight motion. 007DB680 is an ACCUMULATOR pass, not an integrator:
     // it leaves four accumulators for 007D8470 to fold, and the caller applies
     // the result. The integration below is therefore the host's, not a
@@ -2208,6 +2222,23 @@ struct GameUnitsHost::Impl {
     // RunwayLength x 0.3 on it. False: a mother-ship deck is refused.
     static constexpr bool kCarrierLandingDeckBound = false;
     unsigned long long carrier_decks_built{0}, carrier_deck_refreshes{0};
+    // Packet cc9_carrier_landing_deck_part2 (docs/SQUADRON_LAND_TASK.md 5ag).
+    // True: a touchdown on a mother-ship deck re-parents the plane to the
+    // carrier as 007C71E0 does (007D9CE0's relative velocity, the local pose,
+    // the 007C72D3 arrestor seed through 007DB630); the ground roll carries
+    // the parented plane with the carrier, runs the wire band 007DBEEE and its
+    // consumer 007DC1A7, and scales the wheel friction by the parent's
+    // velocity (007DC0A2). False: the plane stays at its world touchdown
+    // point and the wire and surface factor are 0 and 1.0.
+    static constexpr bool kCarrierDeckParentBound = false;
+    void carrier_deck_reparent_007c71e0(GameUnitSlot& p, const LandingDeck& d);
+    void carrier_deck_carry_in(GameUnitSlot& p);
+    void carrier_deck_capture(GameUnitSlot& p);
+    unsigned long long carrier_deck_parented{0}, carrier_deck_wire_seeded{0};
+    unsigned long long carrier_deck_carry_steps{0}, carrier_deck_wire_steps{0};
+    unsigned long long carrier_deck_wire_resets{0}, carrier_deck_edge_takeoffs{0};
+    unsigned long long carrier_deck_stops{0};
+    float carrier_deck_wire_max{0.0f};
     // 00759120 (MMothership model bind, 00759237-00759265): class+814h..+81Ch =
     // the first point of the model's ("runwaycenter", 0) Aux group; 00759590:
     // class+820h RunwayWidth, +824h RunwayLength. One entry per class.
@@ -10696,6 +10727,15 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
     // 007C71E0 (007C71E6-007C721A).
     if (p.plane_min_water_spd_198 == 0.0f || p.plane_contact_deck_bf4 == 0) return false;
     LandingDeck& d = landing_decks[p.plane_contact_deck_bf4 - 1u];
+    if constexpr (kCarrierDeckParentBound) {
+        // 007C7244-007C7266: the holder's owner is not the scene parent. Only
+        // a mother-ship owner is re-parented here (LABELLED: an airfield is a
+        // static owner and its re-parent changes nothing in this host).
+        if (d.mother_ship && d.owner < slots.size() && slots[d.owner]
+            && p.deck_parent_plus_one != d.owner + 1u) {
+            carrier_deck_reparent_007c71e0(p, d);
+        }
+    }
     // 007CB5F0, the authority arm (007CB6A6-007CB75D).
     const float airborne = p.plane_airborne_908;
     p.plane_control_mode_900 = 4;
@@ -10722,6 +10762,121 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
         static_cast<double>(airborne), p.plane_landed_904 ? 1 : 0);
     record("Plane::touchdown_007cb5f0", 0x007cb5f0u);
     return true;
+}
+
+// Packet cc9_carrier_landing_deck_part2 (kCarrierDeckParentBound), 5ag.
+// The carrier's world matrix: point = l0 R0 + l1 R1 + l2 R2 + T, rows at
+// [0..2], [4..6], [8..10], T at [12..14] (publish_pose's layout).
+namespace {
+void deck_to_local(const bsp::CameraMatrix& w, const float* v, bool point, float* out) {
+    float d[3] = {v[0], v[1], v[2]};
+    if (point) {
+        d[0] -= w[12];
+        d[1] -= w[13];
+        d[2] -= w[14];
+    }
+    for (int i = 0; i < 3; ++i) {
+        const std::size_t r = static_cast<std::size_t>(4 * i);
+        out[i] = w[r] * d[0] + w[r + 1] * d[1] + w[r + 2] * d[2];
+    }
+}
+void deck_to_world(const bsp::CameraMatrix& w, const float* l, bool point, float* out) {
+    for (int c = 0; c < 3; ++c) {
+        const std::size_t k = static_cast<std::size_t>(c);
+        out[c] = l[0] * w[k] + l[1] * w[4 + k] + l[2] * w[8 + k] + (point ? w[12 + k] : 0.0f);
+    }
+}
+}  // namespace
+
+// The local pose (unit+74h under the parent) from the world pose.
+void GameUnitsHost::Impl::carrier_deck_capture(GameUnitSlot& p) {
+    if (p.deck_parent_plus_one == 0 || p.deck_parent_plus_one > slots.size()) return;
+    const GameUnitSlot* o = slots[p.deck_parent_plus_one - 1u].get();
+    if (o == nullptr) return;
+    deck_to_local(o->world, p.motion.position, true, p.deck_local_pos);
+    deck_to_local(o->world, p.motion.pose_row0, false, p.deck_local_rows + 0);
+    deck_to_local(o->world, p.motion.pose_row1, false, p.deck_local_rows + 3);
+    deck_to_local(o->world, p.motion.pose_row2, false, p.deck_local_rows + 6);
+    deck_to_local(o->world, p.plane_world_velocity, false, p.deck_local_vel);
+}
+
+// The world pose from the local pose and the carrier's current world matrix:
+// what the image's derived pose (00414E10, parent x local) gives at the step.
+void GameUnitsHost::Impl::carrier_deck_carry_in(GameUnitSlot& p) {
+    if (p.deck_parent_plus_one == 0 || p.deck_parent_plus_one > slots.size()) return;
+    const GameUnitSlot* o = slots[p.deck_parent_plus_one - 1u].get();
+    if (o == nullptr) return;
+    deck_to_world(o->world, p.deck_local_pos, true, p.motion.position);
+    deck_to_world(o->world, p.deck_local_rows + 0, false, p.motion.pose_row0);
+    deck_to_world(o->world, p.deck_local_rows + 3, false, p.motion.pose_row1);
+    deck_to_world(o->world, p.deck_local_rows + 6, false, p.motion.pose_row2);
+    deck_to_world(o->world, p.deck_local_vel, false, p.plane_world_velocity);
+    ++carrier_deck_carry_steps;
+}
+
+// 007C71E0 (007C71E0-007C742F), the re-parent arm (007C726C-007C72C5) and the
+// ship arm (007C72D3-007C7417), for a mother-ship holder.
+void GameUnitsHost::Impl::carrier_deck_reparent_007c71e0(GameUnitSlot& p, const LandingDeck& d) {
+    const GameUnitSlot& o = *slots[d.owner];
+    // 007D9CE0 (007C7277): ctl+18h -= owner vtable[34h]. LABELLED: the owner's
+    // velocity is its motion.linear_velocity; the host keeps it in world axes.
+    const float vw[3] = {p.plane_world_velocity[0], p.plane_world_velocity[1],
+        p.plane_world_velocity[2]};
+    p.plane_world_velocity[0] -= o.motion.linear_velocity.x;
+    p.plane_world_velocity[1] -= o.motion.linear_velocity.y;
+    p.plane_world_velocity[2] -= o.motion.linear_velocity.z;
+    // 007BA020 / vtable[ACh] (007C7287-007C72B1): the parent and the local pose.
+    p.deck_parent_plus_one = d.owner + 1u;
+    p.deck_stop_logged = false;
+    carrier_deck_capture(p);
+    ++carrier_deck_parented;
+    // 007C72D3: the owner answers IsKindOf(9). 007C72DD-007C730E: the body
+    // (ctl+3Ch, ctl+44h) after 007D9C10, above 3.3333 (00D05B48, a double).
+    const float* const v = p.plane_world_velocity;
+    const float bx = p.motion.pose_row0[0] * v[0] + p.motion.pose_row0[1] * v[1]
+        + p.motion.pose_row0[2] * v[2];
+    const float bz = p.motion.pose_row2[0] * v[0] + p.motion.pose_row2[1] * v[1]
+        + p.motion.pose_row2[2] * v[2];
+    const float spd = landing_len2_00414c60(bx, bz);
+    bool seeded = false;
+    float diff = 0.0f, z = 0.0f, arg = 0.0f;
+    if (static_cast<double>(spd) > 3.3333332538604736) {
+        // 007C7314-007C7378: 006BCA80(holder, t 0).w = wrap(+88h + 0), against
+        // plane vtable[50h] through 00438B10(heading, w); |.| < 1.0472 (00D05AAC).
+        const float w = bsp::wrapped_angle_add_00438aa0(d.runway_heading_88, 0.0f);
+        diff = std::fabs(bsp::wrapped_angle_subtract_00438b10(p.plane_heading_c6c, w));
+        if (1.0471976f > diff) {
+            // 007C737E-007C73C5: 006BCC90's z < 006BA620() x 2.8 (00D05A38).
+            const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
+            z = l[2];
+            const double L = landing_run_length_006ba620(d);
+            if (L * 2.799999952316284 > static_cast<double>(z)) {
+                // 007C73C7-007C7417: 00415620 clamps z - 2.0 (00D7A308) into
+                // [1.0, 16.0] (00D7A24C, 00CE6454); x 0.5 (00D7A280) -> 007DB630.
+                float c = static_cast<float>(static_cast<double>(z) - 2.0);
+                if (1.0f > c) c = 1.0f;
+                else if (c > 16.0f) c = 16.0f;
+                arg = static_cast<float>(static_cast<double>(c) * 0.5);
+                // 007DB630: ctl+ACh = min(arg, tuning+51Ch MaxWireRope).
+                const float max_wire = lua.plane_globals_loaded()
+                    ? lua.plane_globals().pilot_landing_max_wire_rope : 100.0f;
+                p.plane_wire_ac = max_wire < arg ? max_wire : arg;
+                seeded = true;
+                ++carrier_deck_wire_seeded;
+            }
+        }
+    }
+    log.notef("carrier deck parent: unit=%s carrier=%s t=%.2f world v=(%.2f %.2f %.2f) relative "
+        "v=(%.2f %.2f %.2f) body |(vx,vz)|=%.2f local=(%.2f %.2f %.2f) heading diff=%.4f "
+        "z-less-T=%.2f wire seed=%d wire=%.3f (007C71E0 007D9CE0 007C72D3 007DB630; packet "
+        "cc9_carrier_landing_deck_part2)", p.row.name.c_str(), o.row.name.c_str(),
+        summary.simulated_seconds, static_cast<double>(vw[0]), static_cast<double>(vw[1]),
+        static_cast<double>(vw[2]), static_cast<double>(v[0]), static_cast<double>(v[1]),
+        static_cast<double>(v[2]), static_cast<double>(spd),
+        static_cast<double>(p.deck_local_pos[0]), static_cast<double>(p.deck_local_pos[1]),
+        static_cast<double>(p.deck_local_pos[2]), static_cast<double>(diff),
+        static_cast<double>(z), seeded ? 1 : 0, static_cast<double>(p.plane_wire_ac));
+    record("Plane::touchdown_reparent_007c71e0", 0x007c71e0u);
 }
 
 // 006BCA40 (RET 4): T through the holder's matrix (+8h).
@@ -13084,15 +13239,79 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             gi.stall_spd = cls.stall_spd;
                             gi.world_speed = static_cast<double>(gv2) > 1.0e-10 ? std::sqrt(gv2) : 0.0f;
                             gi.body_vx = state.body_velocity[0];
-                            // SUBSTITUTION, labelled: ctl+ACh, the arrestor wire, is
-                            // seeded only by 007DB630 for a class-9 (ship) owner,
-                            // and this host refuses mother-ship holders, so it is 0.
+                            // SUBSTITUTION, labelled (switch OFF): ctl+ACh, the
+                            // arrestor wire, is seeded only by 007DB630 for a
+                            // class-9 (ship) owner, so it is 0 without the re-parent.
                             gi.wire = 0.0f;
-                            // SUBSTITUTION, labelled: 007DC0A2-007DC131's surface
-                            // factor reads the parent (unit+3Ch) velocity, which is
+                            // SUBSTITUTION, labelled (switch OFF): 007DC0A2-007DC131's
+                            // surface factor reads the parent (unit+3Ch) velocity,
                             // zero for a static airfield: interp(1.389 -> 1.0,
                             // 6.944 -> 1.3, 0) = 1.0.
                             gi.surface_factor = 1.0f;
+                            if constexpr (GameUnitsHost::Impl::kCarrierDeckParentBound) {
+                                // 007DBEEE-007DC088, the wire band. The flag is
+                                // unit+904h ([base+0Fh], 007DB6DA).
+                                float& wire = unit_.plane_wire_ac;
+                                if (!unit_.plane_landed_904) {
+                                    wire = 0.0f;                                  // 007DC085
+                                } else if (wire > bsp::kPlaneGroundLiftOffEpsilon) {  // 007DBF22
+                                    // 007DBF28-007DBFAE: the holder heading (+88h of
+                                    // 006049F0) with contact, else the plane's own.
+                                    const float h = unit_.plane_heading_c6c;
+                                    const bool contact = unit_.plane_ground_contact_bf8
+                                        && unit_.plane_contact_deck_bf4 != 0;
+                                    const GameUnitsHost::Impl::LandingDeck* hd = contact
+                                        ? &owner_.landing_decks[unit_.plane_contact_deck_bf4 - 1u]
+                                        : nullptr;
+                                    const float ref = hd != nullptr ? hd->runway_heading_88 : h;
+                                    const float diff = std::fabs(
+                                        bsp::wrapped_angle_subtract_00438b10(h, ref));
+                                    const float sxz = landing_len2_00414c60(
+                                        state.body_velocity[0], state.body_velocity[2]);
+                                    if (1.0471976f > diff                          // 00D05AAC
+                                        && static_cast<double>(sxz) > 6.944444179534912) {  // 00D06878
+                                        bsp::PlaneWireRopeInputs wi;
+                                        wi.brake_flag = true;
+                                        wi.accumulator = wire;
+                                        wi.ground_speed_xz = sxz;
+                                        wi.scale = step;                           // [base+58h]
+                                        wi.tuning_wire_rope = 7.25f;
+                                        wi.tuning_max_wire_rope = 100.0f;
+                                        if (owner_.lua.plane_globals_loaded()) {
+                                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                            wi.tuning_wire_rope = g.pilot_landing_wire_rope;
+                                            wi.tuning_max_wire_rope = g.pilot_landing_max_wire_rope;
+                                        }
+                                        wi.has_ground_contact_owner = hd != nullptr;
+                                        wi.owner_deck_length = hd != nullptr ? hd->length_b4 : 0.0f;
+                                        wire = bsp::wire_rope_band_007dbeee(wi).accumulator;
+                                        ++owner_.carrier_deck_wire_steps;
+                                        if (wire > owner_.carrier_deck_wire_max) {
+                                            owner_.carrier_deck_wire_max = wire;
+                                        }
+                                    } else {
+                                        wire = 0.0f;                              // 007DC085
+                                        ++owner_.carrier_deck_wire_resets;
+                                    }
+                                }
+                                gi.wire = wire;
+                                // 007DC0A2-007DC131: with a scene parent, its velocity
+                                // (vtable[34h]) in the body frame (0042D0D0 through
+                                // 00414E10), z component.
+                                if (unit_.deck_parent_plus_one != 0
+                                    && unit_.deck_parent_plus_one <= owner_.slots.size()
+                                    && owner_.slots[unit_.deck_parent_plus_one - 1u]) {
+                                    const bsp::OceanVec3& pv =
+                                        owner_.slots[unit_.deck_parent_plus_one - 1u]->motion.linear_velocity;
+                                    const float* const r2 = unit_.motion.pose_row2;
+                                    const float pz = r2[0] * pv.x + r2[1] * pv.y + r2[2] * pv.z;
+                                    gi.surface_factor = 0.0f > pz
+                                        ? bsp::clamped_interpolate_00419010(
+                                            -5.5555553f, 0.35f, 0.0f, 1.0f, pz)   // 00D06870, 00CF6560
+                                        : bsp::clamped_interpolate_00419010(
+                                            1.3888888f, 1.0f, 6.9444442f, 1.3f, pz);  // 00CF8AAC, 00D0686C, 00CEB4B4
+                                }
+                            }
                             if (owner_.lua.plane_globals_loaded()) {
                                 const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
                                 gi.wheel_friction = g.dynamics_wheel_friction;
@@ -13104,6 +13323,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const bsp::PlaneGroundBand gb = bsp::ground_band_007dbeb3(gi);
                             acc.body_resist_40[2] += gb.friction + gb.brake;   // 007DC199-007DC1A4
                             acc.body_resist_40[0] += gb.lateral;               // 007DC1F0-007DC1FD
+                            if constexpr (GameUnitsHost::Impl::kCarrierDeckParentBound) {
+                                // 007DC1A7-007DC1C0: dyn+0Ch -= ctl+ACh when positive.
+                                if (gi.wire > 0.0f) acc.body_damping[2] -= gi.wire;
+                            }
                             ++unit_.ground_band_steps;
                             unit_.ground_last_brake = gb.brake;
                             unit_.ground_last_friction = gb.friction;
@@ -24334,6 +24557,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // admits unit+900h 4..7, so a landed plane's bot keeps
                         // thinking; this host runs it at the arm's head as the
                         // free-flight arm does (the image's 007BB920 site, 007CE865).
+                        if constexpr (GameUnitsHost::Impl::kCarrierDeckParentBound) {
+                            // The parented plane moves with its carrier: the world
+                            // pose is the carrier's current matrix times the local
+                            // pose (packet cc9_carrier_landing_deck_part2).
+                            owner_.carrier_deck_carry_in(unit_);
+                        }
                         refresh_attitude_007c1900();
                         pilot_think_and_commit(step);
                         // Step 1, 007CBFC3: the pre-pass 007C5AC0.
@@ -24363,6 +24592,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_contact_height_bfc - unit_.plane_wheel_height_1fc > 0.1f &&
                             unit_.plane_world_velocity[1] > 0.1f) {
                             ++unit_.ground_liftoff_requests;
+                        } else if (GameUnitsHost::Impl::kCarrierDeckParentBound && !on_path
+                            && !unit_.plane_ground_contact_bf8 && unit_.plane_contact_deck_bf4 != 0
+                            && owner_.landing_decks[unit_.plane_contact_deck_bf4 - 1u].mother_ship) {
+                            // 007CC23E-007CC27E: contact lost with a ship holder
+                            // owner (IsKindOf(9) at 007CC264) sends the takeoff
+                            // message. Counted, not sent: 007C7110 is not bound.
+                            ++owner_.carrier_deck_edge_takeoffs;
                         }
                         if (unit_.plane_ground_contact_bf8 &&
                             unit_.ground_min_bfc > unit_.plane_contact_height_bfc) {
@@ -24374,6 +24610,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.ground_stop_time =
                                 static_cast<float>(owner_.summary.simulated_seconds);
                             unit_.ground_stop_heading = unit_.plane_heading_c6c;
+                        }
+                        if constexpr (GameUnitsHost::Impl::kCarrierDeckParentBound) {
+                            if (unit_.deck_parent_plus_one != 0) {
+                                owner_.carrier_deck_capture(unit_);
+                                if (!unit_.deck_stop_logged && unit_.ground_stop_time >= 0.0f) {
+                                    unit_.deck_stop_logged = true;
+                                    ++owner_.carrier_deck_stops;
+                                    owner_.log.notef("carrier deck stop: unit=%s t=%.2f local=(%.2f %.2f %.2f) "
+                                        "contact=%d wire=%.3f (packet cc9_carrier_landing_deck_part2)",
+                                        unit_.row.name.c_str(),
+                                        owner_.summary.simulated_seconds,
+                                        static_cast<double>(unit_.deck_local_pos[0]),
+                                        static_cast<double>(unit_.deck_local_pos[1]),
+                                        static_cast<double>(unit_.deck_local_pos[2]),
+                                        unit_.plane_ground_contact_bf8 ? 1 : 0,
+                                        static_cast<double>(unit_.plane_wire_ac));
+                                }
+                            }
                         }
                         }   // kPlaneGroundRollBound
                     }
@@ -26624,6 +26878,14 @@ void GameUnitsHost::report() {
             "(007593D0 / 006BEE40 / 006BA620, packet cc9_carrier_landing_deck)",
             host.carrier_decks_built, host.carrier_deck_refreshes,
             Impl::kCarrierLandingDeckBound ? 1 : 0);
+        host.log.notef("summary carrier deck parent parented=%llu wire_seeded=%llu carry_steps=%llu "
+            "wire_steps=%llu wire_resets=%llu wire_max=%.2f stops=%llu edge_takeoff_requests=%llu "
+            "bound=%d (007C71E0 / 007DB630 / 007DBEEE / 007DC0A2 / 007CC264, packet "
+            "cc9_carrier_landing_deck_part2)", host.carrier_deck_parented,
+            host.carrier_deck_wire_seeded, host.carrier_deck_carry_steps,
+            host.carrier_deck_wire_steps, host.carrier_deck_wire_resets,
+            static_cast<double>(host.carrier_deck_wire_max), host.carrier_deck_stops,
+            host.carrier_deck_edge_takeoffs, Impl::kCarrierDeckParentBound ? 1 : 0);
         host.log.notef("summary squadron returntobase site keys computed=%llu carrier=%llu "
             "missing=%llu bound=%d (006C09FE, packet cc9_rtb_site_key)", host.rtb_site_keys,
             host.rtb_site_keys_carrier, host.rtb_site_keys_missing,
