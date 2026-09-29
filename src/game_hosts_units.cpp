@@ -4294,6 +4294,11 @@ struct GameUnitsHost::Impl {
     // and the rule's begin -> final and final arms. The on-ground half, park
     // and abort stay refused. Needs kLandBeginStateBound. False: final refused.
     static constexpr bool kLandFinalStateBound = true;  // ON: 5o
+    // Packet cc9_land_final_direction_40 (docs/SQUADRON_LAND_TASK.md 5ac): land/final's
+    // [approach+1Ch]+40h = 0.0 (009B1EED) stores the value the gun controller's cone
+    // already holds (begin's 009B1DDA and 009FC7C0's tail 009FCE69 store only 0.0, and
+    // 009B3DA7 is the only switch into final). True: the record is performed (done).
+    static constexpr bool kLandFinalDirection40Bound = true;  // ON: 5ac
     // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
     // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
     // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
@@ -20390,7 +20395,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_land_final_tick_009b1ed0() {
                         ++unit_.land_final_ticks;
                         // 009B1EDF-009B1EED: approach+B4h = 0, [approach+1Ch]+40h = 0.0.
-                        owner_.record("BotStateLandFinal::direction_40", 0x009b1eedu);
+                        // The cone is already 0.0 here (5ac), so the store changes nothing.
+                        if constexpr (GameUnitsHost::Impl::kLandFinalDirection40Bound) {
+                            owner_.done("BotStateLandFinal::direction_40", 0x009b1eedu);
+                        } else {
+                            owner_.record("BotStateLandFinal::direction_40", 0x009b1eedu);
+                        }
                         // 009B1EF2-009B1F10: (plane+72Ch)->vtable[38h] false -> +20h = 1.
                         if (unit_.plane_control_mode_900 != 7) unit_.land_touched_20 = true;
                         if (unit_.land_touched_20) {
