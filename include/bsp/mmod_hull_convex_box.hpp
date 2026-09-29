@@ -57,8 +57,9 @@ struct MmodHullConvexBox {
 
 // Packet cc9_hull_periscope_shape. ON: the units host adds the periscope shape to the hull
 // box through mmod_hull_convex_box_add_periscope. OFF: the box is the root/Note-owner union
-// alone. docs/GUNNERY_OPEN_ITEMS.md section 68.
-inline constexpr bool kHullPeriscopeShapeBound = false;
+// alone. docs/GUNNERY_OPEN_ITEMS.md section 68; ON after the prioff/prion pair (72.1:
+// JM06, LOMP06, USNOS and USNOS long gameplay-identical, mechanism as predicted).
+inline constexpr bool kHullPeriscopeShapeBound = true;
 
 // 009396DD..00939714 then 009399B8: with class+510h (KamikazeDamage) <= 0, class+514h
 // (KamikazeBlastDamage) <= 0 and the shape read, the shape's box joins the body union
