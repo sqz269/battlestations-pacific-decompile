@@ -1295,6 +1295,10 @@ struct GameUnitSlot {
     bool torpedo_issue_gate_open{false};
     // The approach object embedded at task+3F8h.
     bsp::TorpedoApproachState torpedo_approach{};
+    // Packet cc9_aim_error_draw: set once 009C3DA0 / 009D02A0 have written the
+    // sub-object; dive approach+C8h, the projtime time error.
+    bool aim_error_drawn{false};
+    float db_aim_time_error_c8{0.0f};
     // Packet cc9_planner_heading_writes: the torpedo attackrun state's +18h,
     // +1Ch and +20h. 009D06D0 seeds +1Ch = -U(0,1); the midpoint, as every
     // other draw in this host. 009D0790 resets +18h and +20h on each entry.
@@ -1804,6 +1808,11 @@ constexpr bool kHullAimTrace = false;
 // approach as approach+74h (009C7E3C). One switch per writer; both paired ON.
 constexpr bool kTorpedoAimLeadBound = true;   // ON: TORPEDO_AIM_LEAD 11.3
 constexpr bool kDiveAimLeadBound = true;      // ON: TORPEDO_AIM_LEAD 11.4
+// Packet cc9_aim_error_draw (docs/TORPEDO_AIM_LEAD.md section 12): 009C3DA0 and
+// 009D02A0 draw the aim error from the robots row - the body-frame bias, the
+// hull-point spread, the dive's section chance and weights, and the time error
+// on projtime (dive approach+C8h, torpedo approach+9Ch). OFF until paired.
+constexpr bool kAimErrorDrawBound = false;
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
 // OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off
@@ -1888,8 +1897,22 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
                           GameHostLog* log = nullptr) {
     if (shooter.hull_aim_target_plus_one != target_plus_one) {
         // A new ordered target means a new sub-object: 009FB200.
+        // kAimErrorDrawBound: the image builds the sub-object once, in the
+        // approach constructor, and 009C3DA0/009D02A0 write into it; this host
+        // builds it on the first query, so the drawn fields are carried over.
+        const bsp::ApproachTargetRefState before = shooter.hull_aim_ref;
         shooter.hull_aim_ref =
             bsp::approach_target_ref_construct_009fb200(0.0f);
+        if (kAimErrorDrawBound && shooter.aim_error_drawn) {
+            bsp::ApproachTargetRefState& st = shooter.hull_aim_ref;
+            st.bias_34 = before.bias_34;
+            st.spread_48 = before.spread_48;
+            st.section_chance_64 = before.section_chance_64;
+            st.weight_68 = before.weight_68;
+            st.weight_6c = before.weight_6c;
+            st.weight_70 = before.weight_70;
+            st.projtime_44 = before.projtime_44;
+        }
         shooter.hull_aim_target_plus_one = target_plus_one;
         shooter.hull_aim_seed = ++g_hull_aim_pick_counter;
     }
@@ -2708,6 +2731,10 @@ struct GameUnitsHost::Impl {
                   "row 1 is the SPNormal row the host used before the binding");
     // The captured row. Switch off: SPNormal, the old behaviour. An index
     // outside 0..5 would read past the native's array; the host takes row 1.
+    static int dive_bomb_row_index(const GameUnitSlot& slot) noexcept {
+        const int i = slot.db_skill_row_14;
+        return (!kSkillLevelBound || i < 0 || i > 5) ? 1 : i;
+    }
     static const PilotDiveBombRow& dive_bomb_row(const GameUnitSlot& slot) noexcept {
         const int i = slot.db_skill_row_14;
         if (!kSkillLevelBound || i < 0 || i > 5) return kPilotDiveBombRows[1];
@@ -3349,7 +3376,8 @@ struct GameUnitsHost::Impl {
             // A re-target re-constructs hull_aim_ref and zeroes it; the image
             // keeps the sub-object, so a re-target leads one tick late here.
             slot.hull_aim_ref.projtime_44 = bsp::dive_bomb_projtime_009c7e3c(
-                diving || slot.db_in_range_d0, slot.db_impact_fall_time, 0.0f);
+                diving || slot.db_in_range_d0, slot.db_impact_fall_time,
+                kAimErrorDrawBound ? slot.db_aim_time_error_c8 : 0.0f);
         }
         // 009C5950/009C5960 then 009C5A40 and 009C5AF1: the aim error's range
         // and bearing are taken from that point, not from the aircraft.
@@ -6269,6 +6297,32 @@ struct GameUnitsHost::Impl {
                             std::size_t target_plus_one, float out[3],
                             GameHostLog* log_out = nullptr);
     unsigned long long aim_lead_applied_{0};
+
+    // Packet cc9_aim_error_draw: 009C3DA0 (dive) / 009D02A0 (torpedo). The
+    // three draws go through release_altitude_draw_00bd2f10, the stream-1
+    // stand-in the approach constructor's draws already use. Returns the time
+    // error, which the caller stores on its approach (+C8h or +9Ch).
+    float redraw_aim_error(GameUnitSlot& slot, const bsp::ApproachAimErrorRow& row) {
+        const float h = release_altitude_draw_00bd2f10(slot.row.name, -row.h_error, row.h_error);
+        const float v = release_altitude_draw_00bd2f10(slot.row.name, -row.v_error, row.v_error);
+        bsp::approach_target_ref_apply_aim_error(slot.hull_aim_ref, row, h, v);
+        // The pick 009FA260 re-runs on the dirty byte; a fresh stand-in seed
+        // gives it fresh box draws, as the image's stream would.
+        slot.hull_aim_seed = ++g_hull_aim_pick_counter;
+        slot.aim_error_drawn = true;
+        const float t = release_altitude_draw_00bd2f10(slot.row.name, -row.time_error,
+                                                       row.time_error);
+        ++aim_error_draws_;
+        if (aim_error_draws_ <= 40) {
+            log.notef("aim error draw %s: bias=(%.2f 0 %.2f) spread=%.2f section=%.2f "
+                      "time=%.2f", slot.row.name.c_str(), static_cast<double>(h),
+                      static_cast<double>(v), static_cast<double>(row.select_prec),
+                      static_cast<double>(row.sets_sections ? row.section_chance : -1.0f),
+                      static_cast<double>(t));
+        }
+        return t;
+    }
+    unsigned long long aim_error_draws_{0};
 
     static float pose_heading_radians(const GameUnitSlot& slot) {
         return static_cast<float>(std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
@@ -16121,6 +16175,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_release_range_d4 =
                                 bsp::dive_bomb_dive_entry_height_009c4045(
                                     unit_.db_dive_alt_a8, unit_.db_begin_alt_ac);
+                            if constexpr (kAimErrorDrawBound) {
+                                // 009C4083: the constructor's tail call 009C3DA0.
+                                unit_.db_aim_time_error_c8 = owner_.redraw_aim_error(
+                                    unit_, bsp::kDiveBombAimErrorRows[
+                                        GameUnitsHost::Impl::dive_bomb_row_index(unit_)]);
+                            }
                             // SUBSTITUTION, labelled: approach+50h and the two
                             // interpolation endpoints (approach+14h)->+5Ch/+60h
                             // have no producer read. Zero leaves the lead at 0
@@ -16338,6 +16398,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // are recomputed every tick by the state feed.
                                 unit_.db_flyabove_bank_latch_1c = false;
                                 unit_.db_flyabove_latch_tick = -1;
+                                if constexpr (kAimErrorDrawBound) {
+                                    // 009C6276: every fly-over enter re-draws.
+                                    unit_.db_aim_time_error_c8 = owner_.redraw_aim_error(
+                                        unit_, bsp::kDiveBombAimErrorRows[
+                                            GameUnitsHost::Impl::dive_bomb_row_index(unit_)]);
+                                }
                             }
                             run_dive_bomb_flyabove_tick_009c62b0();
                         }
@@ -18047,6 +18113,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // interpolation at 009D1FED equal and the release
                             // gate inert. docs/TORPEDO_RELEASE_GATE.md.
                             ap.aspect_scale_84 = kTorpRows[torp_row][3];
+                            if constexpr (kAimErrorDrawBound) {
+                                // 009D062B: the reset's call of 009D02A0.
+                                // approach+9Ch is the run-time bias 009D1360
+                                // adds into +98h, and so into the projtime.
+                                ap.run_time_bias_9c = owner_.redraw_aim_error(
+                                    unit_, bsp::kTorpedoAimErrorRows[torp_row]);
+                            }
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
                             bool lead_taken = false;
@@ -18109,6 +18182,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // target plus the turn offset the approach update's
                         // sector scan chose. docs/TORPEDO_APPROACH_UPDATE.md.
                         if (ctx.current == bsp::TorpedoState::kAim) {
+                            if constexpr (kAimErrorDrawBound) {
+                                if (before_state != bsp::TorpedoState::kAim) {
+                                    // 009D15D6: the aim enter re-draws.
+                                    const int row = (kSkillLevelBound
+                                        && unit_.pilot_skill_index >= 0
+                                        && unit_.pilot_skill_index <= 5)
+                                        ? unit_.pilot_skill_index : 1;
+                                    unit_.torpedo_approach.run_time_bias_9c =
+                                        owner_.redraw_aim_error(
+                                            unit_, bsp::kTorpedoAimErrorRows[row]);
+                                }
+                            }
                             run_torpedo_aim_tick_009d15f0(dt);
                         } else if (ctx.current == bsp::TorpedoState::kGoAway) {
                             // 009D0F10. Until this packet the goaway state ran
