@@ -19422,7 +19422,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // bot's lifetime seconds (bot+80h, copied at 0099B198).
                         // SUBSTITUTION, labelled: this host keeps no bot lifetime; W is
                         // taken as saturated (>= 10 s), and a land task younger than 10 s
-                        // is counted.
+                        // is counted. Read (packet cc9_land_begin_w, 5p): W is the slot
+                        // record's +18h, which 0099B198 fills from bot+80h, the sum of
+                        // think dt (0099AD7E) since the bot's constructor 0099A880 at the
+                        // plane's spawn (007CA2AE, 007D66E7, 007D71FE). The land task is
+                        // installed on an existing bot, so a task at least 10 s old means
+                        // W >= 10 and the saturation is exact; young_bot counts the rest.
                         if (owner_.summary.simulated_seconds - unit_.land_installed_at < 10.0) {
                             ++unit_.land_begin_young_bot;
                         }

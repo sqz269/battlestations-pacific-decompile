@@ -1964,6 +1964,35 @@ rectangle.
 `kLandAbortStateBound` flip ON together. The misses are recorded above and none of them is in the
 mechanism.
 
+## 5p. Begin's W is the pilot bot's age; the saturation is exact (packet `cc9_land_begin_w`, cc9-lua13, 2026-09-29)
+
+`009B155A`-`009B15A9` reads `W = [(unit+DF4h) + 9Ch + [00F876B8] x 1Ch]` and uses it in
+`interp(5 -> 0.01, 10 -> 1, W)`, the gain on `c1`. The later speed test uses
+`interp(3 -> 1.1, 6 -> 2.5, W)` in the same way. The host takes both at `W >= 10`.
+
+**What W is, from the listing.**
+- `bot+84h` is an array of 1Ch-byte records, one per double-buffer index. `+14h` is a counted
+  reference and `+18h` is a float.
+- `0099A9E0` copies `+18h` and the reference from the previous record into the current one on
+  the tick's non-think path (`0099AD2B`-`0099AD65`).
+- `0099B181`-`0099B198`, at the end of every think, stores `bot+80h` into the current record's
+  `+18h` (`[bot + idx x 1Ch + 9Ch]`, `idx = [00E0B6CC]`). Begin reads the same field through the
+  previous index `[00F876B8]`, so W is at most one think old.
+- `bot+80h` has two writers in `0099xxxx`:
+  - the constructor `0099A880` (`0099A90E`), zeroing it;
+  - `0099AD7E`, which adds each think's accumulated dt.
+
+  So W is the pilot bot's age in seconds, as of its last think.
+- `0099A880` is called from `007CA2AE`, `007D66E7` and `007D71FE` (rel32 scan), in the plane's
+  init (`007C9770`) and property-bag reader (`007D5D20`). So the bot is as old as the plane.
+
+**The substitution is exact on every row measured.** A land task is installed on the plane's
+existing bot, so the bot is at least as old as the task. The host counts `young_bot` whenever begin
+runs on a task younger than 10 s, and every head in `local\l13_jon_lomp10.log` shows
+`young_bot=0`. Where `young_bot` is 0, W >= 10 and both interpolations are saturated, which is what
+the host uses. A plane that begins a landing within 10 s of its own spawn would differ. None does on
+LOMP10 or USN01. Nothing is bound and there is no pair; the source comment now cites this.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
