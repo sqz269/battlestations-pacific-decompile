@@ -252,13 +252,16 @@ inline constexpr bool kShipAiRingScanProbeBound = true;
 // (00831A22) and KamikazeBlastDamage (00831A67), each defaulting to 0.0 (FLDZ at
 // 00831A0A / 00831A4F). False: both answer 0.0, which fails the gate's first
 // conjunct for every class.
-inline constexpr bool kShipAiEngageKamikazeGateBound = false;
+// ON (2026-09-29) with kShipAiEngageSubStateBound: USNOS 3000 identical, USNOS
+// 9000 moved through one Shinyo entering the engage member (section 29).
+inline constexpr bool kShipAiEngageKamikazeGateBound = true;
 // Packet cc9_engage_kamikaze_gate, docs/SHIP_AI_OPEN_ITEMS.md section 29. True:
 // the engage member state+14C0h runs its enter 009DB5E0 (sub+8h cleared) and its
 // step 009E23B0 (ship_ai_attackmove_engage_step_009e23b0: the intercept point,
 // the close arm through 009DE050 and the run arm through 009DFF40). False: both
 // are records, so a unit the gate hands to the member stops being steered.
-inline constexpr bool kShipAiEngageSubStateBound = false;
+// ON (2026-09-29): paired with the gate; the run arm (009E25BC) is unexercised.
+inline constexpr bool kShipAiEngageSubStateBound = true;
 // Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
 // gives a generated ship its brain on the same path as a loaded one: SEntity
 // InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene

@@ -2560,3 +2560,30 @@ come within the gate's 2000 m of its troop ship).
 4. **Mechanism failure:** `enters` = 0 on the 9000-frame row with a boat's nearest approach under
    2000 m, or boats that enter and then stop (the step not steering), keeps both switches OFF.
 5. **Every other reference row is identical** (`kamikaze_classes` 0: no gate pass, no member).
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `86801174c` built in the tree; ON is `pair_export --commit 86801174c --flip
+kShipAiEngageKamikazeGateBound=true --flip kShipAiEngageSubStateBound=true --out local\s11_kami`.
+Logs `local\s11_koff_<row>.log` / `local\s11_kon_<row>.log`.
+
+| row | frames | kamikaze reads | enters | steps | run steps | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USNOS | 3200/3000 | 990 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+| USNOS long | 9200/9000 | 1776 OFF, 1762 ON | 1 | 20 | 0 | 3, moved | 3 held except the run arm |
+
+OFF against the `3f1499210` base run is gameplay-identical (prediction 1).
+
+**What moved.** One Shinyo, `unit #2.7`, came within 2000 m of TroopTrans4 (`d32c` 1797 m at
+step 6040), entered the member and stepped it twenty times on the close arm (`009DA610` answered
+false, so the run latch never set): throttle 1.0 and a live rudder, so it was steered, not
+stopped. OFF it kept the approach member (`navigate_astern`). Per entity: the same 21 deaths on
+both sides; `unit #2.7` died at 304.15 s instead of 313.70 s (killer Gear13 both sides, killer
+range 1496 -> 1193 m, nearest Portland2 at 121 m instead of Portland1). Downstream: TroopTrans1
+took 0 damage instead of 125, NH fired 3345 shots instead of 3761. No death flips.
+
+**Verdict: both ON**, with a spread miss recorded: the run arm (`009E25BC..009E262F`, within
+250 m and a latched goal) is unexercised, because the one boat that entered died at about 1.2 km.
+The gate's avoid-zone conjunct is still the stand-in that answers no zone
+(`ShipAiEngageGate::avoid_zone_list`); section 27 found `[class+570h]` = 0 in single player, whose
+key-0 group has no zones, so the stand-in agrees with the image there.
