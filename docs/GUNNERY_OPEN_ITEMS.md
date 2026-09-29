@@ -4463,3 +4463,132 @@ tally is `local\g13_ff.py`.
 
 **Verdict:** no host divergence found. The damage rise is the correct inertia geometry exposing an
 image rule (no friendly-fire check for heavy artillery) to a flat-firing mount. Nothing is bound.
+
+## 64. The kill handlers: what they do beyond the physics (ranking #12, cc9-gunnery13, 2026-09-29)
+
+**Sources.** Ghidra was read, not written. The disasm-raw bodies are the disk bytes.
+- **Host site:** `flush_unit_kills_00903670` (`src/game_hosts_mission_frame.cpp`) records the
+  `vt[84h]` dispatch as `Entities::kill_vtable84` (`00923010`).
+- **The wreck handler** `00824B60` is `EntityQueues::wreck_handler_vtable7c`
+  (`src/game_hosts_ready.cpp`). Its reference o calls: USN02 11, USNOS long 16, and JM06, JM08,
+  LOMP06 and USNOS 1 each.
+
+**The ship `vt[84h]`: `00819880`** (body `00819880-0081989D`).
+- **Three steps, `__thiscall(ship)`:**
+  1. `0092BD30(ECX = [ship+1018h])` clears the hull-shape fields (the physics the host does);
+  2. `00818970(ship)`;
+  3. a tail JMP to `0095D400(ship)`.
+- **`00818970`**, the effect teardown. It walks the live effect handles, calls
+  `BSP_PointEffect_StopChildren` (`00867B10`) on each, sets `+9 = 1` and releases each one:
+  - `+BA4h/+BB4h`, `+BA8h`, `+BACh/+BBCh`, `+BB0h/+BC0h`;
+  - `+9E8h..+9F4h`;
+  - the lists at `+A00h`, `+A14h`, `+B44h`, `+B54h`;
+  - the vector at `+1118h`.
+- **`0095D400`**, the unit base teardown:
+  - it stops and releases the effect at `+670h`;
+  - it empties the 44h-record vector at `+660h` (`0095BE70` with 0, `LEA ECX,[EBX+660h]` at
+    `0095D474`);
+  - it calls `BSP_UnitInstance_ReleaseDamageStateInstance` (`008797B0`).
+- **It sends nothing:** no session message and no score or report.
+
+**The plane `vt[84h]`: `007CC580`.**
+- **Slot:** plane vtable `00D05F20` holds `007CC580` at `+84h`.
+- **Body:** `007CC580-007CC7A0` exclusive. The last instruction is `JMP 0095D400` at `007CC79B`, and
+  `007CC7A0` is `BSP_Plane_EnterFlightStateTwo`. Ghidra has no function here: the address sits
+  inside the candidate `007CC2F0`. **For the lead to define.**
+- **Steps:**
+  1. `vtable[10h]`, which is `0042E950` (the name getter; the result is discarded);
+  2. **`007C75A0` `BSP_Plane_UnregisterFiringGuns`: removes the plane from the firing-plane list
+     `[00F87278]`;**
+  3. it stops and releases the effect vectors at `+A3Ch` and `+A4Ch`, the `class+5A0h` effect slots
+     at `+A5Ch` (stride 10h), and the handles counted at `+A34h`;
+  4. the tail `0095D400` above.
+- **The one gameplay effect is step 2.** `[00F87278]` is the list the attacker-evasion scan reads.
+  The host stands in for it with `plane_gun_fire_bc9` (`src/game_hosts_units.cpp`, the
+  `[00F87278]` comment near the evasion scan).
+  - Its only writer is the dogfight gun tick, which sets it every tick while the plane fights.
+  - Nothing clears it on death.
+  - A plane killed mid-burst keeps the flag set. It is still counted as a firing attacker unless
+    that scan's `state == nullptr || state->simulate != 0` test excludes dead planes, which is
+    **unverified**.
+  - **Routed to lua16:** clear `plane_gun_fire_bc9` at the kill (`007C75A0`), or confirm the state
+    test excludes the dead.
+
+**The ship wreck handler: `00824B60`** (slot `7Ch`; `docs/UNIT_DEATH_MESSAGE_AND_SINK.md` has the
+sink block). Beyond the physics (inertia x2, damping 2.5 / 0.5, `+828h/+82Ch` = 0):
+- **Effects and sounds:** `004D1100` / `008674C0` / `00484620` teardown, and `00818970`.
+- **`0074EC50(&unit+10D4h)`:** the leak manager is reset.
+- **`[unit+BC8h] = U(cfg+64Ch, cfg+650h)`:** the bubble timer (GAME_EXECUTABLE line 3051: it
+  advances in the sinking pass). Presentation.
+- **The five-point scatter at `+B68h`:** the wreck's burst points. Presentation.
+- **`004A5AA0(manager, unit)`:** breakup pieces from the wreck class, when the class has them.
+  Debris.
+- **`00959450` `BSP_Unit_OnDestroyed`:** the kill report through `009813A0` (the warning manager's
+  loss report, which the host already carries: `loss_reports` in the warning-manager census).
+
+**Summary for ranking #12:**
+- **`00819880`:** effect and damage-state teardown only. Nothing is sent.
+- **`00824B60`:** presentation (effects, bubbles, scatter, debris) plus the leak reset. Its only
+  message is the loss report, which is modelled.
+- **`007CC580`:** effect teardown, plus one gameplay write: the firing-list removal. That is routed.
+
+Nothing here is bound. The row can drop to "presentation, plus the `[00F87278]` removal".
+
+## 65. Handoff (cc9-gunnery13, 2026-09-29, at about 70% context)
+
+### 65.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| AA_LETHALITY_AUDIT 8.1-8.4 | `cc9_aa_jm05_repair` | JM05 re-paired on main (the AA errors stay ON). Three AA terms checked and found faithful: barrels/rate, damage, aim point. The plane-hit gap was found |
+| AA_LETHALITY_AUDIT 8.5 | `cc9_plane_hit_task_notify` | `kPlaneHitTaskNotifyBound` **ON**: releases move outward. P2's count missed; the override was accepted by the lead |
+| AA_LETHALITY_AUDIT 8.6-8.7 | `cc9_dive_hit_clock_pair` | lua16's `kDiveHitClockBound` **kept OFF**: the rerolls stay 3 -> 3 (mechanism-failure clause) |
+| 61 | `cc9_ship_fire_stance` | `kShipFireStanceBound` **ON**: USN01 and USN04 are identical, and the census held |
+| GAME_EXECUTABLE reference o, `reports/cc9_reference_rebaseline_15.json` | `cc9_reference_rebaseline_15` | 16 rows on `3194cea39`. 12 switches attributed; the all-OFF anchor is identical to n |
+| 62 | `cc9_scene_command_find_case` | `kSceneCommandFindCaseInsensitiveBound` **ON** by census (every lookup is exact). It is post-o |
+| 63 | 60.2 item 3 | USNOS long's damage under inertia is NH's heavy-artillery friendly fire on the Portlands. That is the image's rule, as read; nothing bound |
+| 64 | ranking #12 | the kill handlers: presentation, plus `007CC580`'s firing-list removal (routed to lua16) |
+
+### 65.2 Open items, in order
+
+1. **Ranking #7, the player gun-seat group arm** (`00959C91..00959F6D` of `00959C20`).
+   - Bind the in-window arm alone, and pair on USN01 and USN04.
+   - It is not started.
+2. **60.2 item 4:**
+   - the periscope shape in the hull box (57.2);
+   - m's flags (57.2).
+3. **Section 63's one unread link:** does the artillery sub-director's own target pick admit
+   aircraft? If it does not, NH's cat-4 plane shots are a host divergence.
+4. **Section 64's routed item** (lua16): `plane_gun_fire_bc9` is never cleared at a plane's kill.
+   - The image's `007CC580` removes the plane from `[00F87278]` through `007C75A0`.
+   - The lead should also define `007CC580` in Ghidra (`007CC580-007CC7A0`, exclusive; tail
+     `JMP 0095D400` at `007CC79B`).
+5. **Reference p** must attribute the post-o switches:
+   - `kCommandTargetKeepUnauthoredBound`;
+   - `kPilotLandNativeBound` (now ON);
+   - `kFindEntityCaseInsensitiveBound`;
+   - `kPlaneGroundLevellingBound`;
+   - `kSubmarinePeriscopePrepassBound`;
+   - `kSceneCommandFindCaseInsensitiveBound`;
+   - anything later.
+
+   Take the list from `local\g13_switches2.py 3194cea39 <main>`. That script also catches names
+   that do not end in `Bound`.
+
+### 65.3 Tools in the cc9-gunnery13 tree (`local\`)
+
+- **Exports:** `g13_exp.ps1 -Commit <sha> -Specs 'name:kA=false,...'` runs detached `pair_export`s.
+- **Runs:**
+  - `g13_runs.ps1 -V <variant> [-Only rows]` (the reference rows);
+  - `g13_batch.ps1 -V <variant> -Only rows` (the same, with a foreground wait);
+  - `g13_run1.ps1` (one run, optional `-Trace` names);
+  - `g13_census.ps1` (the rows on the tree's own build).
+- **Reference tables:**
+  - `g13_vs.py <off> <on> [rows]` (prefix `rb14` = reference n in cc9-gunnery12);
+  - `g13_rows.py`, `g13_table.py`, `g13_members.py`, `g13_report.py`.
+- **Analysis:**
+  - `g13_aacount.py` (low aircraft deaths);
+  - `g13_drops.py` (torpedo drops);
+  - `g13_dive.py` (the dive census);
+  - `g13_ff.py <log> <victims>` (traced hits by shooter/category/victim);
+  - `g13_devrow.py <index>` (compact arcade device rows).
