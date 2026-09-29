@@ -3763,3 +3763,49 @@ On JM05 9000, deaths (3, the same victims), hits and damage are all identical.
 - `009B1E30` (`009B1E40`), land/final `009B1ED0` (`009B202F`) and the approach base step
   `009B22C0` (`009B23E4`);
 - the elevator retirement of 5aa.
+
+## 5af. Handoff: carrier landing decks, part 2 (cc9-lua19, 2026-09-29, stamped 22:42 UTC)
+
+**Where the three switches stand.** All are OFF on main `57b499145`.
+
+| switch | section | state | what gates it |
+| --- | --- | --- | --- |
+| `kReturnToBaseSiteKeyBound` | 5ad | OFF | only carrier decks part 2, below. The SELLING question of 5ad.2 is answered: cc9-ships17, SHIP_AI_OPEN_ITEMS 59, found the JM05 recall of the fresh strike squadrons faithful |
+| `kCarrierLandingDeckBound` | 5ae | OFF | part 2 |
+| `kMoveToArrivalEndCommandBound` | PILOT_MOVETO_TASK, "The arrival ends the command" | **ON** | nothing; it is stage-only |
+
+**Part 2, to do.** Carry a landed plane on the moving deck, then flip both switches together.
+- Pair them on JM05 3000 and 9000, with USN04, USN13 and LOMP10 as controls.
+- Take the OFF side from `kReturnToBaseSiteKeyBound=true` alone, as in 5ae.1: that isolates the
+  deck.
+- Also take a pair with both switches against neither: that is the flip's own evidence.
+
+The part 2 sites are `IsKindOf(9)` tests, from `local\l19_kind9.py <lo> <hi>` in the cc9-lua19
+tree. They were found by linear capstone, so check each one's containing function.
+
+| site | routine | what it gates |
+| --- | --- | --- |
+| `007C72D3` | `007C71E0` `BSP_Plane_TouchdownAttachToSite` | re-parenting to the site. The host labels it "not carried (a static airfield)", and that stand-in is what leaves the plane hanging |
+| `007CB7B7` | `007CB5F0` `BSP_Plane_OnTouchdownFromFlight` | the touchdown's authority arm |
+| `007CC264` | `007CBFA0` `BSP_Plane_GroundRollStep` | the ground roll, which this host does not run after state 4 |
+| `007B3C1D` | `007B3C00` | unread |
+| `007C6EBD` | `007C6E90` `BSP_Plane_ObservedUnitCallback` | unread |
+| `009B1E40` | `009B1E30` | land/final's enter side |
+| `009B202F` | `009B1ED0` `BSP_BotStateLandFinal_Tick` | land/final |
+| `009B23E4` | `009B22C0` `BSP_PlaneBot_ApproachBaseStep` | the approach step. The host has the airfield arm only (see the comment near `kLandingLandedArmBound`) |
+| `006C3B98` | `006C3B10`, the corridor | the plane's parent test. It answers once the re-parent exists |
+
+Also part of the carrier path:
+- **5aa, the carrier elevator.** It retires and relaunches a landed plane (mother-ship holders
+  only).
+- **`006BA5E0`.** The runway half width: `B0h` whole on a carrier, x 0.5 otherwise. No caller has
+  been found by xref or dword scan yet. Find one before part 2 uses the carrier width.
+
+**Measured facts to keep.**
+- The carrier holder and its re-frame: 5ad and 5ae. The runwaycenter points are:
+  - Lexington (-0.231, 17.401, 0.002);
+  - Yorktown (0.019, 15.401, 1.952);
+  - Zuikaku / Shokaku (-0.231, 17.291, 0.002).
+- The four JM05 holders build, and the US decks sequence and land 13 planes (5ae.1).
+- The failure to fix: Yorktown_sqn04 touches down at 218.56 s (deck local (-0.9, -53.2)) and
+  loses contact at 234.26 s at local z 124.49, because it is held at its world point.
