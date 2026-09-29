@@ -1483,6 +1483,23 @@ is no longer blocked.
 - Section 1's other ranks remain as ranked. Ranks 1, 2, 3, 5 and 10 and the approach re-seed are
   done; ranks 8 and 9 are the only ones read and not bound.
 
+**Reference k (cc9-gunnery10, added after this handoff).** Reference k (docs/GAME_EXECUTABLE.md,
+"Mission reference baselines, 2026-09-28 k (main 5aaa4948a)", `reports/cc9_reference_rebaseline_11.json`)
+replaces j. On it:
+- USN02's 13 deaths need six landings, each ON: the sub-target pair, the party replan, the group
+  target value, the approach reseed, follow station point and the yaw-rate forward speed.
+- JM06's US Cargo Transport 02 survival is redundant inside the ship-AI group.
+- LOMP06's Ryujin Maru sinking needs the sub-target pair and the group target value.
+
+k's rows do not contain these switches, which went ON later:
+- this document's sections 17 to 24: `kShipAiClearancePathFadeBound`, `kShipAiClearanceOutcomeWiringBound`,
+  `kShipAiArmFinalAreaKeyBound`, `kTroopLandingTraitBound` and `kAutoTargetFollowerGateBound`;
+- cc9-lua10's follow-law and landing switches: `kFormationJoinFollowBound`,
+  `kFollowLeaderTurnRateBound`, `kFollowLeaderLiveSpeedBound`, `kFollowTargetDirAcosBound`,
+  `kLandingSequencerBound`, `kLandingApproachBitBound` and `kLandStandbyStateBound`.
+
+These are reference l's first flags.
+
 ## 16. The second ranking (packet `cc9_ship_ai_open_ranking_2`, cc9-ships9, 2026-09-28)
 
 **It replaces section 1's table.** Section 1 was built on reference i; every lane flip since then
