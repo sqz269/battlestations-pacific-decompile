@@ -6486,10 +6486,13 @@ public:
     // 00933A52, over the same empty list, so the heeling torque is the zero the
     // routine's own out vector starts at.
     bsp::OceanVec3 leak_heel_torque_0074f2e0() override {
-        float rows[9] = {
-            slot_.motion.pose_row0[0], slot_.motion.pose_row0[1], slot_.motion.pose_row0[2],
-            slot_.motion.pose_row1[0], slot_.motion.pose_row1[1], slot_.motion.pose_row1[2],
-            slot_.motion.pose_row2[0], slot_.motion.pose_row2[1], slot_.motion.pose_row2[2]};
+        // The image's pose block at unit+CCh is four floats per row;
+        // unit_leak_torque_0074f2e0 reads indices 0, 2, 4, 6, 8, 10 on that stride
+        // (0074F35D), so the rows are padded to four (GUNNERY_OPEN_ITEMS 56.3).
+        float rows[12] = {
+            slot_.motion.pose_row0[0], slot_.motion.pose_row0[1], slot_.motion.pose_row0[2], 0.0f,
+            slot_.motion.pose_row1[0], slot_.motion.pose_row1[1], slot_.motion.pose_row1[2], 0.0f,
+            slot_.motion.pose_row2[0], slot_.motion.pose_row2[1], slot_.motion.pose_row2[2], 0.0f};
         const bool leaks = GameUnitsHost::Impl::kShipSinkDescentBound && slot_.leak_ready;
         const bsp::OceanVec3 torque = bsp::unit_leak_torque_0074f2e0(
             leaks ? slot_.leaks.data() : nullptr,
