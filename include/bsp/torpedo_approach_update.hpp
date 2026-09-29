@@ -330,6 +330,9 @@ float torpedo_reset_attack_speed_009d03d9(float travel_speed_18c, float min_hit_
 // approach update. 009D0451-009D0475: +78h = U(0, 0.25) * record+0h
 // TorpReleaseAlt (lo FLDZ, hi 00CE3868).
 inline constexpr float kTorpedoResetAltFloor_00d212a0 = 67.0f;
+// 009D04E9: the reset stores +A0h, the fall lead 009D1360 rewrites, as 10.0f
+// (00CE38B8). Packet cc9_torpedo_run_time_update.
+inline constexpr float kTorpedoResetFallLead_00ce38b8 = 10.0f;
 inline constexpr float kTorpedoResetAltDrawHi_00ce3868 = 0.25f;
 // 009D05A5-009D0625: +7Ch += U(-0.1, 0.5) * (+80h - +7Ch), then
 // +80h -= U(-0.1, 0.5) * (+80h - new +7Ch) (lo 00CE3CB4, hi 00CE3800). The old

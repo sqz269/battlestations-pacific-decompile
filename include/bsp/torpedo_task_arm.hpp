@@ -270,6 +270,10 @@ struct TorpedoDoneTickResult {
     bool consumed_round = false;  // approach->+2Ch -= 1
     float drop_timer_98 = -1.0f;  // the value left in state->+98h
     bool wrote_committed_command = false;  // weapon select 3 and throttle 0.3
+    // 009D27C9-009D27D1: with the countdown still above zero after the step,
+    // the committed branch calls 009D1360 (ECX = approach) before any target
+    // test. Packet cc9_torpedo_run_time_update.
+    bool run_time_updated = false;
 };
 TorpedoDoneTickResult torpedo_done_prepare_tick_009d2720(
     const TorpedoDoneTickInputs& in) noexcept;
