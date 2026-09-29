@@ -1126,4 +1126,19 @@ inline constexpr float kApproachRetargetBestStart = 3.40282347e+38f; // 00D7A248
 // through the hold alone, which the predictions had not named (section 27).
 inline constexpr bool kShipAiApproachRetargetRingBound = false;
 
+// Packet cc9_approach_no_ship_hold (docs/SHIP_AI_OPEN_ITEMS.md section 35), the
+// hold alone, with the ring OFF. 009F1DC2..009F1DDB keep [brain+0B20h] in ESI only
+// when it answers kind 6 (a ship); 009F1E30 JE 009F2003 then skips the goal copy
+// 009F1F10..009F1F3D, so on the no-ship path nested+1228h is written only by the
+// retarget arm: 009F2124's head runs it every 2 to 3 s and 009F23B5 stores the
+// goal before the zone lookup (the key-0 group has no zone in single player, so
+// 009F23F1 ends it there). True: modes 0 and 2 keep the frame's starting point,
+// the head runs, and an arm run stores the goal. Modes 3 and 4 (009F21A0..
+// 009F2395, unread) still copy the goal every frame, labelled. False: the goal
+// is copied every frame. Ignored when kShipAiApproachRetargetRingBound is on,
+// which carries the same hold.
+// ON by the pairs of 2026-09-29 (section 35): IJN01 moves through the hold
+// (709 arm runs, 5119 held frames), USNOS and IJN05 identical.
+inline constexpr bool kShipAiApproachNoShipHoldBound = true;
+
 } // namespace bsp

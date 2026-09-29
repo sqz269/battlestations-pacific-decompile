@@ -2948,3 +2948,88 @@ local\s12_sgt` (bsp_game SHA-256 prefix `D4A31E9E3430`).
 **Verdict: ON.** The mechanism matches, three rows are identical, and the USN01 move is the
 image's answer to terrain the image's own cast direction sees. No death flips. Prediction 1's
 magnitude missed and is recorded. Section 31's reason for keeping it OFF (the role swap) is gone.
+
+## 35. The no-ship hold of `nested+1228h` on its own switch (packet `cc9_approach_no_ship_hold`, `kShipAiApproachNoShipHoldBound`)
+
+Worker cc9-ships12, 2026-09-29. This is section 27's open item. The switch is in
+`include/bsp/ship_ai_approach_update.hpp` and the host is `run_retarget_arm` in
+`src/game_hosts_ship_ai.cpp`.
+
+**The image, re-read.**
+- `009F1DC2..009F1DDB`: ESI = `[brain+0B20h]`, kept only when `vtable[5Ch](6)` answers (a ship),
+  else 0.
+- `009F1E30 JE 009F2003`: with no ship target the frame skips both writers of `nested+1228h` on
+  the ship path. Those are the zone point at `009F1EA2..009F1EB5` and the goal copy at
+  `009F1F10..009F1F3D`.
+- So on the no-ship path the point is written only by the retarget arm. `009F2124`'s head runs
+  when `nested+11D6h` is clear and sets it; `009F1DAA` clears it when the `+11D8h` timer runs out.
+  `009F23B5..009F23C5` store the goal before the zone lookup, and in single player the zone
+  lookup ends the arm at `009F23F1` (section 27: `[class+570h]` = 0, the key-0 group has no
+  zone).
+
+**The binding.** ON, with the ring OFF, applies to no-ship frames in modes 0 and 2. The point
+restores the frame's starting value, then the head runs:
+- when it passes, the point is the goal (`hold_arm_runs`);
+- otherwise the point holds (`hold_frames`; `frames_differ` counts held frames whose point is not
+  the goal the host copied).
+
+Still labelled: modes 3 and 4 (`009F21A0..009F2395`, unread) copy the goal every frame.
+`kShipAiApproachRetargetRingBound` ON carries the same hold and overrides this switch. OFF copies
+the goal every frame, as before. The summary line is
+`summary mission ship ai approach no-ship hold arm_runs= frames= frames_differ= bound=`.
+
+**Row census** (this tree at the commit below, 3200/3000, `local\s12_lc_<row>.log`). It looks for
+rows where the arm is reachable, other than USN01, LOMP10 and USN02:
+
+| row | latch frames | reachable (no-ship) | target kinds |
+| --- | --- | --- | --- |
+| IJN01 | 5930 | 5872 | 58 ship, 5872 other (the A7M fighters; PTs, LST1 and Curtiss shoot them down) |
+| USNOS | 3960 | 0 | all ship |
+| IJN05 | 24 | 0 | all ship |
+| USN03, USN05, USN22, IJN02, IJN03, IJN08 | 0 | 0 | - |
+
+### Predictions, written before any ON run
+
+1. **IJN01 3200/3000 moves (exit 3).**
+   - `arm_runs` is roughly reachable / 40 per unit-run: the head re-arms when the 2.0 s timer runs
+     out. The expected count is between 100 and 300.
+   - `frames` is the rest of the 5872, and `frames_differ` is most of them, because an aircraft
+     goal moves every frame.
+   - The ships steer for a point up to 2 s stale, so paths, AA ranges and hit splits move.
+   - As on USN01 (section 27), I expect no death flip. A small change in plane death times and
+     killers is likely, because the shared RNG couples them.
+2. **USNOS 3200/3000 and IJN05 3200/3000 are identical** (exit 0 or 1): no no-ship frame. `frames`
+   is 0 and `arm_runs` is 0.
+3. **Mechanism failure** keeps the switch OFF. That is `arm_runs` = 0 on IJN01, `frames_differ` = 0
+   with a move, or any move on USNOS or IJN05.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+ON is `pair_export --commit 85211f323 --flip kShipAiApproachNoShipHoldBound=true --out
+local\s12_hold`. OFF is this tree's build of `85211f323`: `local\s12_hoff_ijn01.log`, and the
+census logs `local\s12_lc_usnos.log` and `local\s12_lc_ijn05.log` (same build). ON is
+`local\s12_hon_<row>.log`.
+
+| row | arm runs | held frames | differ | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| IJN01 3200/3000 | 709 | 5119 | 5119 | 3, moved | 1: the move held; the arm-run range and "no death flip" **missed** |
+| USNOS 3200/3000 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+| IJN05 3200/3000 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+
+- **IJN01.** Every held frame differs from the goal copy: the A7M goals move every frame.
+  - The latch's `retarget_entries` equals the arm runs (709 of 5828 reachable frames). OFF
+    counts 5872 entries of 5872, because OFF never sets `nested+11D6h`.
+  - 709 is above my 100..300. The flag is cleared more often than the 2..3 s timer alone would
+    clear it; the likely clear is the attackmove enter reseed (`009F31C2..009F31ED` clears
+    `+11D6h` and `+11D8h`) when a ship switches plane targets. That is not isolated. Also, the
+    head's `009F214E` write (timer raised to 1.0) changes when `009F1DB4` draws from stream 1.
+- **Deaths 24 -> 23: one flip.** A7M_1|.-5, killed OFF, survives ON. 17 more death rows move in
+  time or killer, for example A7M_5|.-5 at 97.85 -> 107.20 s (PT3 -> Zeilin) and A7M_5|.-3 at
+  102.45 -> 111.90 s (PT4 -> Curtiss). The ships steer for points up to one arm period stale, so AA
+  ranges change (Downes moves 814 -> 787 m). No ship death moves.
+
+**Verdict: ON.** The mechanism is the one named: a hold on no-ship frames only, arm runs storing
+the goal, and nothing on rows without such frames. The misses are spread: the arm-run count, and
+a plane death flip my prediction ruled out. Both are recorded. The hold is the listing's
+behaviour (`009F1E30 JE 009F2003`). The death flip is a plane surviving AA whose ships steer at a
+point up to one arm period old, which is what the image does on that path.
