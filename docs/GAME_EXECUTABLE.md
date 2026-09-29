@@ -12880,3 +12880,160 @@ moved rows. Exit 3 means the switch moves that row.
       `kPilotLandNativeBound` and `kFindEntityCaseInsensitiveBound`.
 - **The periscope pre-pass also runs on IJN01** (`SubmarineUnit::periscope_out_00855045`, 6000
   calls), and IJN01 stays gameplay-identical with it OFF (Tautog and Cachalot: 601 calls each, no raise or lower).
+
+## Mission reference baselines, 2026-09-29 q (main 83b528811)
+
+Packet `cc9_reference_rebaseline_17`, worker cc9-gunnery15. **It replaces the 2026-09-29 p rows
+above.** The report is `reports/cc9_reference_rebaseline_17.json`.
+
+### Predictions (written before any run)
+
+**The switch diff:**
+- A value diff of every `constexpr bool k...` declaration between `a4f9d6c76` and `83b528811`
+  (`local\g15_switches.py`) finds **seventeen switches newly ON**.
+- None of the seventeen existed at p; each was added OFF and later flipped.
+- Four new switches are still OFF and stay out of scope: `kDiveBombMoveToOriginBound`,
+  `kGunBarrelMeshlessOneBound`, `kMoveToArrivalEndCommandBound` and `kReturnToBaseSiteKeyBound`.
+- The flip commits come from `local\g15_flipcommits.py`.
+
+| switch | flip commit | its pair recorded | predicted rows moved against p |
+| --- | --- | --- | --- |
+| `kTorpedoAimLeadBound` | `db5276810` | TORPEDO_AIM_LEAD 11.3 (spread miss: USN04, JM05 long, USN13 releases) | USN04, E2, USN13, JM05 |
+| `kDiveAimLeadBound` | `db5276810` | TORPEDO_AIM_LEAD 11.4 (USN13 identical) | dive rows: USN01, JM05 at most |
+| `kAimErrorDrawBound` | `af1bac88f` | TORPEDO_AIM_LEAD 12.2 (USN04/E2, JM05, USN13 releases move) | USN04, E2, JM05, USN13 |
+| `kApproachSectionPointsBound` | `d3c1e05f8` | TORPEDO_AIM_LEAD 14.4 (JM05 exit 3; USN04, E2 exit 1) | JM05 |
+| `kTorpedoGoAwayAimPointBound` | `0a543af35` | TORPEDO_AIM_LEAD 15.4 (USN01, USN04, JM05 exit 1) | none |
+| `kFlyToObstacleListBound` | `deeb6573b` | TORPEDO_AIM_LEAD 16.1 (USN04, E2 move; JM08, USN12 identical) | USN04, E2 |
+| `kTorpedoResetDrawsBound` | `3586c81d5` | TORPEDO_AIM_LEAD 19.6 (releases 5 -> 8 on USN04/E2, 3 -> 4 on USN13; JM08 identical) | USN04, E2, USN13 |
+| `kTorpedoResetRunTimeSeedBound` | `3586c81d5` | TORPEDO_AIM_LEAD 19.6 (with the draws) | with the draws |
+| `kTorpedoFlightLeadPerSquadronBound` | `86f6927cc` | TORPEDO_RELEASE_ORDERS 9 (JM05 long, USN01 exit 3; USN13, USN04 exit 1) | USN01, JM05 |
+| `kTaskGunControllerAllTasksBound` | `02d593a6e` | DOGFIGHT_GUN 8 (all rows exit 1) | none |
+| `kTaskGunConeBound` | `3d6aee4b2` | DOGFIGHT_GUN 9 (all rows exit 1) | none |
+| `kTaskGunUntaskedPlanesBound` | `3d6aee4b2` | DOGFIGHT_GUN 9 | none |
+| `kLandFinalDirection40Bound` | `e1cb1ddfb` | SQUADRON_LAND_TASK 5ac (IJN01, LOMP10 long exit 1) | none |
+| `kPlayerGunSeatArtilleryBound` | `dce10ae24` | PLAYER_GUN_SEAT 7.4 (JM06, USNOS long move) | JM06, USNOS long |
+| `kHullPeriscopeShapeBound` | `9c4a77c6f` | GUNNERY_OPEN_ITEMS 72.1 (JM06, LOMP06, USNOS, USNOS long exit 0/1) | none |
+| `kCommandExtraTestsBound` | `3d6d3d1c2` | GUNNERY_OPEN_ITEMS 73.1 (six rows exit 1, no refusal) | none |
+| `kRendererLostDeviceHoldBound` | `1ae1711a0` | D3D_DEVICE_LOST (presentation robustness; no lost device on a reference run) | none |
+
+- **Predicted moved rows against p:** USN04, E2, USN01, JM05, USN13, JM06 and USNOS long.
+- **Predicted identical rows (exit 0 or 1 against `rb16_<row>`):** USN02, JM08, BSM01, LOMP06,
+  LOMP10, USN12, LOMP10 long, USNOS and IJN01.
+  - JM08 and LOMP10 carry aircraft, so they are the least certain of these.
+- **All-OFF anchor:** with the seventeen OFF, `83b528811` is gameplay-identical to p on all sixteen
+  rows.
+- **Leave-one-out:**
+  - the torpedo switches (aim lead, aim error, reset draws/seed, fly-to obstacles) attribute
+    USN04, E2 and USN13;
+  - the section points, aim error, flight lead and aim lead attribute JM05;
+  - the flight lead and the dive aim lead attribute USN01;
+  - the gun seat attributes JM06 and USNOS long;
+  - the other seven attribute nothing.
+  - The torpedo switches interact through the shared release path, so a row may need several of
+    them rather than one.
+
+**Run parameters:**
+- **One binary:** `local\g15_rq\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery15.
+  - SHA-256 `7EC67ABBAACE6BB06FF85EB8C4ECDE452984123FF6DCA73B17E423A8B02A7CC7`.
+  - It is a clean `tools/pair_export.py --commit 83b528811` export with no flip.
+- **Rows:** p's sixteen, at p's frame counts and in p's launch form (`local\g15_runs.ps1`), with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+- **Checks:** a 300-frame USN01 smoke ran first. Every log ends with the final COM release.
+- **Timing:** the q and anchor rows finished by 22:17 UTC and the leave-one-out lanes by 23:16 UTC
+  (log and progress-file mtimes).
+- **Environment:** no renderer or audio failure in this batch.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 16652.1 | 48 | 783 (153) | 9655 | 100.35 s | 8 of 16 / 0 of 19 | 13 | Lexington-class01 3538.39 | none | 499 | `local\g15_rq_usn04.log` |
+| USN01 | 3000 | 2786.4 | 5 | 153 (85) | 1263 | 51.45 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 4159.12 | none | 524 | `local\g15_rq_usn01.log` |
+| USN04 (E2) | 9000 | 17173.9 | 51 | 808 (165) | 9861 | 100.35 s | 8 of 16 / 0 of 19 | 19 | Lexington-class01 7125.57 | none | 499 | `local\g15_rq_e2.log` |
+| USN02 | 9000 | 38828.3 | 11 | 2009 (412) | 2133 | 18.95 s | - | - | Kortenaer 548.61 | **failed at 29.75 s**, phase 1 (unchanged) | 492 | `local\g15_rq_usn02.log` |
+| JM06 (smoke) | 3000 | 4239.2 | 1 | 201 (186) | 281 | 68.10 s | - | - | Fletcher-class 08 339.55 | none | 484 | `local\g15_rq_jm06.log` |
+| JM08 (smoke) | 3000 | 4023.3 | 10 | 300 (124) | 2867 | 5.25 s | - | 3 | Auilick 2520.47 | none | 485 | `local\g15_rq_jm08.log` |
+| USN13 (smoke) | 3000 | 9211.2 | 31 | 700 (207) | 8373 | 89.90 s | 4 of 60 / - | 6 | Enterprise 1853.23 | none | 498 | `local\g15_rq_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 603.30 | none | 463 | `local\g15_rq_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 658.24 | none | 466 | `local\g15_rq_lomp06.log` |
+| LOMP10 | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | B-25 01 4892.32 | none | 478 | `local\g15_rq_lomp10.log` |
+| JM05 | 3000 | 2130.8 | 0 | 39 (23) | 98 | 9.95 s | 0 of 12 / 0 of 6 | - | USS Phelps 2567.65 | none | 519 | `local\g15_rq_jm05.log` |
+| USN12 | 3000 | 1046.5 | 0 | 32 (16) | 83 | 8.30 s | - | - | Montpelier 2084.21 | none | 471 | `local\g15_rq_usn12.log` |
+| LOMP10 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | B-25 01 7014.38 | none | 483 | `local\g15_rq_lomp10l.log` |
+| USNOS | 3000 | 2004.5 | 6 | 860 (82) | 4968 | 10.80 s | - | 1 | NH 1912.73 | none | 518 | `local\g15_rq_usnos.log` |
+| USNOS (long) | 9000 | 9964.0 | 21 | 1096 (113) | 17570 | 10.80 s | - | 1 | NH 4879.87 | none | 526 | `local\g15_rq_usnosl.log` |
+| IJN01 | 3000 | 3515.1 | 9 | 179 (169) | 3298 | 80.15 s | - | 1 | Downes 739.58 | none | 505 | `local\g15_rq_ijn01.log` |
+
+**Against p** (`pair_diff` against `rb16_<row>` in the cc9-gunnery14 tree):
+- **Eight rows are gameplay-identical** (exit 1): USN02, JM08, BSM01, LOMP06, LOMP10, USN12,
+  USNOS and IJN01.
+- **Eight rows move** (exit 3): USN04, E2, USN01, JM06, USN13, JM05, LOMP10 long and USNOS long.
+- **Death tables:**
+  - USN04 gains two plane kills: `D3A Val #5.1|.-2` and `A6M Zero #8.2` die only in q.
+  - E2, USN01 and USN13 keep the same victims, with times, killers and ranges changed.
+  - USNOS long changes one row.
+  - JM06, JM05 and LOMP10 long have identical death tables.
+  - No ship sinking is added or lost on any row.
+- **Headlines:**
+  - Torpedo-task releases go from 6 to 8 of 16 on USN04 and E2, and from 0 to 4 of 60 on USN13.
+  - JM06 damage goes 4112.8 -> 4239.2.
+  - USNOS long damage goes 10635.1 -> 9964.0.
+  - JM05 moves only in five squadron nearest-distance rows (by 1 to 12 m).
+  - LOMP10 long moves only in B-25 01's distance (7014.54 -> 7014.38 m).
+
+### The anchor: seventeen switches
+
+With all seventeen OFF (`g15_rq0`, SHA-256 prefix `8CFA6965C7FB`), `83b528811` is
+**gameplay-identical to reference p on all sixteen rows** (exit 1 against `rb16_<row>`). Nothing
+else that landed since p moves a reference row.
+
+### What moved each row
+
+Each switch was turned OFF alone (leave-one-out) and read with `pair_diff` against q on the eight
+moved rows. Exit 3 means the switch moves that row.
+- Builds are the lane exports `local\g15_lane_{a,b,c}` with incremental rebuilds; the SHA-256
+  prefix of each is in the report.
+- Logs are `local\g15_q_<v>_<row>.log`.
+
+| variant (OFF) | switch | rows that move against q |
+| --- | --- | --- |
+| `tal` | `kTorpedoAimLeadBound` | USN04, E2, USN01, USN13 |
+| `dal` | `kDiveAimLeadBound` | USN04, E2, USN01 |
+| `aed` | `kAimErrorDrawBound` | USN04, E2, USN01, USN13, JM05, LOMP10 long |
+| `asp` | `kApproachSectionPointsBound` | JM05 |
+| `gap` | `kTorpedoGoAwayAimPointBound` | none |
+| `fto` | `kFlyToObstacleListBound` | USN04, E2 |
+| `trd` | `kTorpedoResetDrawsBound` | USN04, E2, USN01, USN13 |
+| `trs` | `kTorpedoResetRunTimeSeedBound` | USN04, E2, USN01, USN13 |
+| `fls` | `kTorpedoFlightLeadPerSquadronBound` | USN01 |
+| `tgc` | `kTaskGunControllerAllTasksBound` | none |
+| `tgk` | `kTaskGunConeBound` | none |
+| `tgu` | `kTaskGunUntaskedPlanesBound` | none |
+| `lfd` | `kLandFinalDirection40Bound` | none |
+| `pgs` | `kPlayerGunSeatArtilleryBound` | JM06, USN13, USNOS long |
+| `hps` | `kHullPeriscopeShapeBound` | none |
+| `cxt` | `kCommandExtraTestsBound` | none |
+| `rdh` | `kRendererLostDeviceHoldBound` | none |
+
+- **Every moved row has at least one attributing switch.**
+- **The seven switches predicted inert are inert:** go-away aim point, the three task-gun
+  switches, land final direction, periscope shape, extra tests and the renderer hold.
+- **Prediction check:** the moved set held for seven of eight rows.
+
+**Misses:**
+- **LOMP10 long moves (predicted identical).**
+  - Only the aim-error draw attributes it: B-25 01's distance changes by 0.16 m, and the
+    land-task minima of the B-25, Lightning and Warhawk change by tenths of a metre.
+  - LOMP10 long has no torpedo or dive task. Read it as coupling through the process-wide
+    generator 00BD2F10 (the draws shift later consumers), not as an aim-error effect on the
+    B-25s. That reading is provisional.
+- **USN01 moves under all four torpedo switches** (aim lead, aim error, reset draws, reset seed),
+  although it has 0 of 5 torpedo releases.
+  - Its torpedo planes still fly the approach, and the draws and seeds change the shared stream.
+  - The same coupling, labelled as such.
+- **The dive aim lead moves USN04 and E2, not JM05** (predicted USN01 and JM05 at most). USN04's
+  dive bombers carry it.
+- **The flight lead moves USN01 only.** Its JM05 move in TORPEDO_RELEASE_ORDERS 9 was on the
+  9200-frame row, which q does not run.
+- **The gun seat also moves USN13.** One death row changes: `bruh #1.3|.-4` is killed by DD_4
+  instead of Santa, with hit records 700 vs 701.
