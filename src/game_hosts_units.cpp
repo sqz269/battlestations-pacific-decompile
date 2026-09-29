@@ -800,6 +800,11 @@ struct GameUnitSlot {
     // The approach fields 009C7A80 and the seed 009C3EA0 produce, mirrored so
     // the arm, the two release rules and the census read one set.
     float db_dive_alt_a8{0.0f};      // approach+A8h, the release floor
+    // Packet cc9_dive_hit_clock: approach+C4h (task+4BCh), seeded 3600.0
+    // (00CFDEB0) at 009C3FD2, advanced += dt at 009C7A8C, zeroed by the hit
+    // notice 009C7900. 009C4AA4 reads it (1.0 > C4h: the forced goaway re-roll).
+    float db_approach_clock_c4{3600.0f};
+    unsigned long long db_hit_clock_resets{0};
     // Packet cc9_difficulty. pilot_skill_index is unit+390h and the pilot bot's
     // bot+34h (0095CCCC's default 1; 009565A0 / 007B8AE0 set it). The approach
     // captures it once, at 009F9D22, as its PilotBot row: db_skill_row_14 is
@@ -3066,7 +3071,9 @@ struct GameUnitsHost::Impl {
     // outputs only, so this is a PARTIAL binding of the rules that were read.
     void update_dive_bomb_approach(GameUnitSlot& slot, float dt,
                                    bool diving = false) {
-        (void)dt;
+        // 009C7A83-009C7A96: approach+C4h = dt + approach+C4h (FLD, FADD, FSTP).
+        slot.db_approach_clock_c4 = static_cast<float>(
+            static_cast<double>(dt) + static_cast<double>(slot.db_approach_clock_c4));
         // 009C7AFE: approach+D1h = BSP_WeaponController_HasGeneralBombOrdnance.
         const bsp::OrdnanceKindSet set{slot.ordnance_mask};
         slot.db_has_bomb_d1 = bsp::ordnance_has_general_bomb_2ah(set) &&
@@ -4331,6 +4338,10 @@ struct GameUnitsHost::Impl {
     // refused with the mother-ship holders), the done test 009B21D0, the site
     // calls 006CF420/006CF520/006CF5B0 with 006CE610/006CDF70, the transitions
     // 007C16F0/007C1680 and 007B96C0/007B9000. False: park is refused as before.
+    // Packet cc9_dive_hit_clock: 009C4AA4 reads the carried approach+C4h instead
+    // of the 3600.0 floor, so a hit (009C7900) arms the forced goaway re-roll for
+    // one second. OFF until paired with the hit notice's caller.
+    static constexpr bool kDiveHitClockBound = false;
     static constexpr bool kLandParkStateBound = false;  // OFF: mechanism failure, the park <-> abort loop (5s)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
@@ -11569,9 +11580,8 @@ bool GameUnitsHost::set_unit_max_speed_09c0(std::size_t unit_index, float value)
 // true. The slots read from disk bytes:
 //  - torpedo (vtable 00D213C8) 009D3270: task+52Ch = approach+134h = 0.0, true.
 //    That clock selects DistFar over DistNear once it passes 15 s.
-//  - divebomb 009C7900: task+4BCh = approach+C4h = 0.0, true. GAP: this host
-//    does not carry approach+C4h (it feeds the 3600.0 floor to 009C4AA4), so
-//    the forced goaway re-roll a hit would arm is not reached.
+//  - divebomb 009C7900: task+4BCh = approach+C4h = 0.0, true. Carried as
+//    db_approach_clock_c4; 009C4AA4 reads it under kDiveHitClockBound.
 //  - strafe 009CC400: task+43Ch = 0.0, true. GAP: no strafe task in this host.
 //  - levelbomb and retreat answer false.
 // Returns true when a task took the notice.
@@ -11583,6 +11593,12 @@ bool GameUnitsHost::plane_hit_task_notify_00999aa0(std::size_t plane_index) {
         unit.torpedo_approach.elapsed_134 = 0.0f;   // 009D3273
         ++unit.torpedo_hit_clock_resets;
         host.record("Bot::hit_task_notify_torpedo_009d3270", 0x009d3270u);
+        return true;
+    }
+    if (unit.dive_bomb_task_installed) {
+        unit.db_approach_clock_c4 = 0.0f;           // 009C7903, task+4BCh
+        ++unit.db_hit_clock_resets;
+        host.record("Bot::hit_task_notify_divebomb_009c7900", 0x009c7900u);
         return true;
     }
     return false;
@@ -15775,6 +15791,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // tuning+4CCh Pilot/DiveBomb/BeginAltRange/1 and
                             // approach+B0h is tuning+4D0h - tuning+4CCh.
                             unit_.db_begin_alt_ac = GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
+                            // 009C3FD2: approach+C4h = 3600.0 (00CFDEB0). LABELLED:
+                            // 009C8A74's re-seed in the cruise profile (task slot
+                            // +54h) is not carried; its call cadence is unread.
+                            unit_.db_approach_clock_c4 = 3600.0f;
                             unit_.db_alt_span_b0 =
                                 GameUnitsHost::Impl::kPilotDiveBombBeginAltRange2 - GameUnitsHost::Impl::kPilotDiveBombBeginAltRange1;
                             // PRODUCER NOW READ, packet cc8_approach_base_ctor.
@@ -16659,12 +16679,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::DiveBombGoAwayTimerInputs tin;
                             tin.dt = dt;                                    // [ESP+18h]
                             tin.planar_distance_bc = unit_.db_planar_bc;    // 009C4A6D
-                            // approach+C4h is seeded 3600.0 (00CFDEB0) at 009C3FD2
-                            // and 009C8A74 and only ever advanced `+= dt` at
-                            // 009C7A8C. This host does not carry the clock; its
-                            // floor already answers the one test that reads it
-                            // (009C4AA4, 1.0 > C4h), which is false.
-                            tin.approach_clock_c4 = 3600.0f;
+                            // approach+C4h: seeded 3600.0 (00CFDEB0) at 009C3FD2
+                            // and 009C8A74, advanced `+= dt` at 009C7A8C, and
+                            // zeroed by the hit notice 009C7900 (packet
+                            // cc9_dive_hit_clock). OFF feeds the 3600.0 floor.
+                            tin.approach_clock_c4 = GameUnitsHost::Impl::kDiveHitClockBound
+                                ? unit_.db_approach_clock_c4 : 3600.0f;
                             const bsp::DiveBombGoAwayTimerReport tr =
                                 bsp::dive_bomb_goaway_timers_009c4a6d(tin, gt);
                             if (tr.counted_down) ++unit_.db_goaway_countdown_ticks;

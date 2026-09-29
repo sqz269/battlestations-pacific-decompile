@@ -301,3 +301,16 @@ only one or two ticks in `flyabove`.
   the end of the run. Only the first half is established: their goaway counts (146, 58, 131) are
   exactly the arm ticks from their goaway entry to the end of the run. The heading at the end was not
   traced.
+
+**Correction (cc9-lua16, packet `cc9_dive_hit_clock`, 2026-09-29).** The search above missed one
+writer of `approach+C4h`.
+- **The writer.** The dive-bomb task's hit slot `009C7900` (task `vtable[2Ch]`). It is reached
+  through the pilot bot's hit notice `00999AA0`, which the plane hit handler `007BBCF0` calls.
+  Its body is `XORPS; MOVSS [ECX+4BCh], XMM0; MOV AL,1; RET 4`, and `task+4BCh` is `approach+C4h`.
+- **The consequence.** For one second after a hit, `1.0 > approach+C4h` holds at `009C4AA4`, so
+  the forced re-roll **can** fire on a dive bomber.
+- **The host now carries the clock** as `db_approach_clock_c4`: seeded at install, `+= dt` at
+  `009C7A8C`, zeroed by `plane_hit_task_notify_00999aa0`.
+- **The switch.** `kDiveHitClockBound` feeds the clock to `009C4AA4`. It is OFF until the hit
+  notice has a caller.
+- **Not carried.** The `009C8A74` re-seed (task slot `+54h`), because its call cadence is unread.
