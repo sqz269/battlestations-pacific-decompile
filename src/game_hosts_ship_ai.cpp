@@ -9931,6 +9931,15 @@ bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const fl
         impl_->zones.offset(group, {in_xz[0], in_xz[1]}, margin, true);
     ++impl_->summary.ai_command_zone_points;
     if (out[0] != in_xz[0] || out[1] != in_xz[1]) ++impl_->summary.ai_command_zone_points_moved;
+    if (impl_->summary.ai_command_zone_points <= 16u) {
+        impl_->log.notef("  ship ai command zone point diag unit=%u layer=%d group=%u "
+            "in=(%.2f, %.2f) out=(%.2f, %.2f) shift=%.2f",
+            static_cast<unsigned>(unit),
+            static_cast<int>(impl_->controllers[unit].leaf_tuning.array[0]),
+            static_cast<unsigned>(group), in_xz[0], in_xz[1], out[0], out[1],
+            std::sqrt((out[0] - in_xz[0]) * (out[0] - in_xz[0]) +
+                      (out[1] - in_xz[1]) * (out[1] - in_xz[1])));
+    }
     out_xz[0] = out[0];
     out_xz[1] = out[1];
     impl_->done("AiCommand::avoid_zone_offset_point", 0x00417b10u);
