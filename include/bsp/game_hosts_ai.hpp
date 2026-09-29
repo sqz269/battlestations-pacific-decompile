@@ -83,7 +83,10 @@ inline constexpr bool kTroopLandingTraitBound = true;
 // ship ordered to a point inside an avoid zone is sent to the pushed-out point
 // (GameShipAiHost::avoid_zone_offset_point_00a020f0). False: the requested point
 // itself. Asked on both sides only where the image reaches 00A020F0.
-inline constexpr bool kAiCommandAvoidZonePointBound = false;
+// ON (2026-09-28): the AI orders its groups at points inside avoid zones, and they
+// are pushed 436 to 934 m out of them; four rows move (docs/SHIP_AI_OPEN_ITEMS.md
+// section 25).
+inline constexpr bool kAiCommandAvoidZonePointBound = true;
 
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 

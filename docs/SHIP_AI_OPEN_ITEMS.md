@@ -2180,3 +2180,37 @@ section 16's, one row per `local\ships10_run.ps1` call):
 3. **A row with moved = 0 is identical** apart from the new counters (`pair_diff` 0 or 1). A row
    with moved > 0 moves (exit 3): the ship steers for a different point.
 4. **No death prediction.**
+
+### The pairs and the verdict: ON
+
+ON is `pair_export --commit 4e4a7f989 --flip kAiCommandAvoidZonePointBound=true`, SHA-256 prefix
+`C0F43BC7CE0A` (`local\ships10_a1_<row>.log`). The diagnostic lines come from a second export of
+`c513fab40` (`local\ships10_a2_<row>.log`, USN13, JM05 and LOMP10), which adds only a log line.
+
+| row | pair_diff | asks OFF / ON | answered / moved | combat OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN13 | 3 | 493 / 493 | 493 / 493 | hit records 653 -> 658, shots 7287 -> 7323; deaths 32 equal, all 32 death rows changed in time or killer |
+| JM05 | 3 | 393 / 393 | 393 / 393 | combat equal; the controlled ship's path moves by 0.01 m |
+| JM08 | 3 | 99 / 99 | 99 / 99 | hit records 411 -> 395, shots 2248 -> 2390; deaths 11 equal, 9 rows changed |
+| USN01 | 3 | 49 / 49 | 49 / 49 | combat and death rows equal |
+| LOMP10 | 1 | 91 / 91 | 91 / 48 | identical |
+| USN04 | 1 | 295 / 295 | 295 / 0 | identical |
+| JM06 | 1 | 19 / 19 | 19 / 0 | identical |
+
+- **Prediction 1 held.** Asks are equal on both sides, and every ask was answered.
+- **Prediction 2 failed on its premise.** The AI does not order its groups at sea points on these
+  rows. Every point on USN13, JM05, JM08 and USN01 lies inside an avoid-zone polygon (land or shoal; the zones were not named), and so
+  do 48 of LOMP10's 91. The diagnostic lines show one point per order wave, shared by the whole
+  group: all sixteen logged USN13 asks, from ten ships, carry (2973.4, -2182.2), and the push moves it 475.5 m for layer-11
+  hulls. JM05's point (-1087.1, -817.3) moves 663.5 m for layer 11 and 436.6 m for layer 5, because
+  each hull's `[class+560h]` picks its own group. LOMP10's layer-5 hull keeps its point, which is
+  outside the layer-5 polygons.
+- **Prediction 3 held.** The three rows with nothing moved, or with moves that change no order
+  the executable carries out (LOMP10), are gameplay-identical. The four rows with moved points
+  move.
+- **Verdict: ON.** The mechanism is the image's: 00A02020 pushes a point inside a zone out of the
+  hull's layer group before it issues `moveto`. The miss is in the spread, not the mechanism.
+- **Open.** Why the AI's order points sit inside zones is not read here. They are the planners'
+  points (00A124E0, 00A12A90, 00A15490's leader arms); a planner that targets an enemy base would
+  explain it. The LOMP10 row moves 48 points and no gameplay line; its ordered ship was not
+  followed further.
