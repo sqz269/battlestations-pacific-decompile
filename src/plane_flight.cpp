@@ -379,6 +379,9 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
         acc.body_damping[1] = bound;
     }
 
+    // 007DBE0E TEST / JNE: the ceiling below is mode 0 only; mode 1 takes the
+    // ground band (ground_band_007dbeb3, applied by the caller).
+    if (state.controller_mode != 0) return acc;
     // 007DBE0E..007DBEA8, free flight only (ctl+FCh == 0, which this arm is).
     // 007DBE2E subtracts Ceiling from unit+100h and 007DBE42 multiplies by
     // -CeilingForce, so the push exists only above the ceiling.
@@ -519,6 +522,33 @@ float commit_direction_hold_007dc6c5(float seconds, bool owner_present, bool hol
         return seconds;
     }
     return 0.0f;
+}
+
+PlaneGroundBand ground_band_007dbeb3(const PlaneGroundBandInputs& in) noexcept {
+    PlaneGroundBand out;
+    // 007DBEB3-007DBEC7: 0.6 (00CEFF98, a widened float) - throttle * 26.0 (00D06880).
+    const float open = static_cast<float>(0.6000000238418579 -
+        static_cast<double>(in.latched_throttle) * 26.0);
+    // 007DBECB-007DBEE8: the larger of the latched air brake and that.
+    const float brake_in = in.latched_air_brake > open ? in.latched_air_brake : open;
+    out.brake = in.wheel_brake * brake_in;                          // 007DBEF6-007DBF0C
+    // 007DC08C-007DC099: 00415620 clamps ctl+68h into [accel_1, accel_2].
+    float f = in.prev_body_accel_z;
+    if (in.wheel_friction_accel_1 > f) {
+        f = in.wheel_friction_accel_1;
+    } else if (f > in.wheel_friction_accel_2) {
+        f = in.wheel_friction_accel_2;
+    }
+    f *= in.surface_factor;                                         // 007DC12D
+    // 007DC135-007DC18E.
+    const float ramp = interp_clamped_00419010(
+        in.stall_spd * in.wheel_friction_speed_1, in.wheel_friction,
+        in.stall_spd * in.wheel_friction_speed_2, 0.0f, in.world_speed);
+    out.friction = ramp * f;
+    // 007DC1C3-007DC1ED: |2 vx|, the -0.0f idiom for the negative side.
+    const float two = in.body_vx + in.body_vx;
+    out.lateral = two > 0.0f ? two : (-0.0f - two);
+    return out;
 }
 
 void blend_direction_hold_007d88cb(float velocity[3], const float direction_body[3],

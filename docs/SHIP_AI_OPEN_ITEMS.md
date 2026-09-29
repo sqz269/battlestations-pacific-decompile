@@ -3227,3 +3227,95 @@ target-kind stub) still answer "small" for a big landing ship.
 **Useful files** in the cc9-ships12 tree: `local\s12_run.ps1 -Exe <exe> -Prefix <p> -Row
 tag:MISSION:frames:mission_frames`. It launches in the background with `BSP_LOS_CENSUS=1` as well
 as the reference variables; wait on the log's final COM release line. The logs are `local\s12_*`.
+
+## 39. Section 38 item 1: the standoff's target kind (packet `cc9_standoff_target_kind`, `kShipAiStandoffTargetKindBound`)
+
+Worker cc9-ships13, 2026-09-29. The switch is in `include/bsp/game_hosts_ship_ai.hpp`.
+
+**The image** (`009E6E80`, read at `009E6EF0..009E7095` with `disasm-raw`):
+- `009E6EF2` loads the target, `[brain+0B20h]`; a null target skips every kind query.
+- `009E6F01` asks `vtable[5Ch](8)`. When that is true, `009E6F11` calls `00827F70` with ECX =
+  `[brain+0AACh]`, the unit's own class, the same ECX as the latch's call at `009F1F76`. A false
+  answer (not small) disables the standoff (`JE 009E6EA6`).
+- Mode 4 (`009E6F29`): `vtable[5Ch](1Ch)` at `009E6F3A`; true takes `FILD [target+7C4h]` minus
+  300.0 (`009E6F4E`, `00CE3CA8`), else 1000.0 (`00CE47A0`).
+- Mode 2 (`009E700B`): `vtable[5Ch](1Ch)` at `009E701C`; true takes `00419010(...)` times
+  `FIMUL [target+7A0h]` (`009E706F`) and `FILD [target+7A0h]` times the high factor (`009E7087`).
+- `1Ch` is MCommandBuilding. `006F2780` fills `+7A0h` from `CaptureRange` and `+7C4h` from
+  `LandingRange` (key `00CFAE30`, `006F2847..006F285F`), both with the default 500
+  (docs/SENTITY_INIT_PASSES.md). In this installation `universe/library/commandbuilding.props`
+  (mtime 2024-07-13) has `LandingRange = I 500`, and `ijn_07_invasion_of_midway.scn` authors
+  `I 2000` and `I 2100`.
+
+**The binding.** ON:
+- The three kind queries answer the target's kinds (`unit_is_kind_of` on `raw_target_0b20 - 1`).
+- `00827F70` answers the latch's expression: kind `0Eh`, or kind `0Ch` without BigLandingShip.
+- Mode 2 reads `command_building_capture_range_07a0`.
+- LABELLED: the units host has no `LandingRange` field. So while the latched mode is 4, the `1Ch`
+  query still answers false and the arm keeps 1000.0. It is counted as `building_mode4_deferred`.
+  The accessor is routed to the units lane (`command_building_landing_range_07c4`, the same shape
+  as the capture accessor).
+
+OFF, every kind answers false, as before. The census counters run in both states. The summary
+line is `summary mission ship ai standoff target kind calls= kind_08= building_mode2=
+building_mode4_deferred= small_class=`.
+
+**Other stubs in the same binding, not changed:** `unit_is_group_leader_00778890` answers false,
+`unit_cruise_speed_0490` answers 0, and `random_stream1_00bd2f10` answers `low` (the draw is not
+made, so the shared stream is not advanced).
+
+### The census: no row reaches modes 2 or 4
+
+The latch summary (`summary mission ship ai approach latch`, section 26) counted on this tree's
+OFF build (`local\s13c_<row>.log` at 3200/3000, `local\s13l_<row>.log` at 9200/9000). Launch
+lines are the reference rows' (`--press-start-frame 30 --menu-select <M> --frames F
+--mission-frames MF --mission-frame-seconds 0.05`, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`).
+The candidates are this installation's landing and invasion missions (`missiontree.lua`, mtime
+2025-06-02):
+
+| row | frames | latch frames | ship / building / other target | modes 0/1/2/3/4 |
+| --- | --- | --- | --- | --- |
+| JM07 (Invasion of Midway) | 3000 | 0 | - | 0/0/0/0/0 |
+| JM12 (Seizing the Fijis) | 3000 | 41 | 41 / 0 / 0 | 41/0/0/0/0 |
+| JM13 (Wake Island) | 3000 | 0 | - | 0/0/0/0/0 |
+| IJN10 (Port Moresby) | 3000 | 27 | 27 / 0 / 0 | 27/0/0/0/0 |
+| IJN17 (Guadalcanal) | 3000 | 80 | 80 / 0 / 0 | 80/0/0/0/0 |
+| USN06 (Attack on Guadalcanal) | 9000 | 0 | - | 0/0/0/0/0 |
+| USN20 (Invading Iwo Jima) | 3000 | 0 | - | 0/0/0/0/0 |
+| JM05 (Invasion of Port Moresby) | 9000 | 13 | 13 / 0 / 0 | 13/0/0/0/0 |
+| IJN05 (Andaman Islands) | 9000 | 24 | 24 / 0 / 0 | 24/0/0/0/0 |
+| JM16 (Invasion of Hawaii) | 9000 | 24455 | 21543 / 0 / 2896 | 24455/0/0/0/0 |
+
+Every existing latch line in the other trees' logs (387 logs, sections 26 to 38 rows) is mode 0
+too. The only building targets are USN01's, of the other side, with no lander. No row has a
+submarine target either, so the kind-8 arm has no reach. The landers on the invasion rows never
+enter the approach with a building target: the approach is not where this host lands troops.
+
+### Predictions, written before any ON run
+
+1. **Zero reach on every row counted:** `kind_08`, `building_mode2` and
+   `building_mode4_deferred` are 0 on both sides of every pair.
+2. **USN01 3200/3000 is gameplay identical** (exit 0 or 1). Its building targets are enemy
+   buildings and the unit is no lander, so the latch gives mode 0 and neither `1Ch` arm runs.
+3. **JM16 3200/3000 is gameplay identical**: ship and other targets only.
+4. **Mechanism failure** keeps the switch OFF: any nonzero reach counter, or a move on either row.
+
+### The pairs (cc9-ships13, 2026-09-29)
+
+OFF is this tree at `f72fb98a5` (`local\s13koff_<row>.log`); ON is `pair_export --commit f72fb98a5
+--flip kShipAiStandoffTargetKindBound=true --out local\s13_k` (`local\s13kon_<row>.log`). A
+300-frame USN01 smoke ran first (`local\s13koff_smoke.log`, final COM release).
+
+| row | kind calls | kind_08 / building_mode2 / building_mode4_deferred / small_class | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 3784 both | 0 / 0 / 0 / 0 both | 1, gameplay identical | 1, 2 held |
+| JM16 3200/3000 | 1740 both | 0 / 0 / 0 / 0 both | 1, gameplay identical | 1, 3 held |
+
+The only moved lines are the switch's own `bound=` field and the ship avoidance refill counter
+(known noise: 107 -> 100 on USN01, 1222 -> 1236 on JM16).
+
+**Verdict: ON.** The binding is read whole except the mode-4 `+7C4h` read, which stays deferred
+and keeps the OFF answer, so ON is never further from the image than OFF. Both rows are gameplay
+identical and the reach is zero, as predicted. When the units lane lands
+`command_building_landing_range_07c4`, drop the mode-4 guard in `StandoffBinding` and re-pair on a
+row with a lander (none is known yet).
