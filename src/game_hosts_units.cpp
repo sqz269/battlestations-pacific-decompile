@@ -5095,7 +5095,8 @@ struct GameUnitsHost::Impl {
     // into the inertia block 00939A80..00939C10. read_mmod_hull_convex_box over
     // the class Mesh model, cached per type_id. shape_count 0 leaves the zero
     // box, which is the native result (49.10). The periscope shape
-    // (009396BA..009399BF) is not added. OFF: the box stays zero, so the hull
+    // (009396BA..009399BF) is added behind bsp::kHullPeriscopeShapeBound, which
+    // is ON (GUNNERY_OPEN_ITEMS 72.1). OFF: the box stays zero, so the hull
     // body has zero inertia and never rotates under a torque.
     static constexpr bool kHullInertiaFromShapesBound = true;  // ON: capsize re-pair held (GUNNERY_OPEN_ITEMS 56.5)
     struct ClassHullBox {
