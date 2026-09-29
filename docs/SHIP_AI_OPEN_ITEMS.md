@@ -3988,7 +3988,7 @@ candidates for `[00F8AB6A]`.
 **Open from sections 45 and 46:**
 - the direct-hit delivery `00915F20` of `00819A20`;
 - the contact gates `0092CE70` and `unit+6B8h` / `00779AD0`;
-- the Kaiten air deaths at 160.81 s, which keep every kamikaze short of a hull on USNOS.
+- the Kaiten air deaths at 160.81 s, which keep every kamikaze short of a hull on USNOS. The run arm of `009E2020` / `009E23B0` (latch under 250 m, `009DFF40` heading, `brain+0AF0h`) is still unexercised on every row.
 
 **Useful files in the cc9-ships14 tree (`local\`):**
 - `s14_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames` launches in the
