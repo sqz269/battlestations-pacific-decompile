@@ -1830,7 +1830,7 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // ShipGlobals.Failures names of those kinds (EngineJam / Explosion / Fire),
 // which is the same answer while 0093BED0 (id = kind) is the host's only
 // producer of those names. OFF: empty records, the hull box every time.
-constexpr bool kApproachSectionPointsBound = false;
+constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
 // OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off

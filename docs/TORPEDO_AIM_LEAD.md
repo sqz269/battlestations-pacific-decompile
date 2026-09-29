@@ -941,3 +941,33 @@ The rows come from cc9-planes1's 12.2 logs.
 **Mechanism test:** the `section aim` lines name skill-2 dive bombers against ship targets with a
 body point equal to the class's section point plus the bias (0 for SPVeteran). **Verdict rule:**
 if USN04 or E2 move, or JM05 shows no section picks, the mechanism failed and the switch stays OFF.
+
+### 14.4 The pair, measured: `kApproachSectionPointsBound` ON
+
+cc9-planes2, 2026-09-29. Both sides are exports of `fc93ff307`: OFF `BB7A09434752`, ON
+`C1DCB3AF7C34`. The logs are `local\p2_{off,on}_<row>.log`, launched through
+`local\p2_runs.ps1` in o's launch form with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+A 300-frame USN01 smoke of the ON binary ran first (exit 0, final COM release). Every log shows
+`present interval immediate`, its own module directory and the final COM release.
+
+**Mechanism: holds.**
+- JM05 builds one class, 257 `models/ships/japan/Zuikaku.mmod`, which both carriers use. The
+  engine room is at (0.4, 8.8, -24.0), the magazine at (1.6, 9.0, 69.7) and the fuel tank at
+  (0.1, 8.6, -79.7), in model space: magazine forward, fuel tank aft, engine room amidships.
+- The picks: `engine_room=66 magazine=111 fuel_tank=133` (21 / 36 / 43 %, against a predicted
+  20 / 40 / 40), `chance_to_box=0` and `with_unavailable=0`. The 310 picks are every re-pick of the
+  Lexington `sqn09` and Yorktown `sqn10` / `sqn12` Dauntlesses against Shokaku and Zuikaku.
+- Each `section aim` line's body point is the section point exactly, because SPVeteran's bias
+  is 0.
+- `0093A570` never removed a section in this row: no failure of those three kinds was active
+  at a pick. That arm stays unexercised.
+
+| row | `pair_diff` | measured | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1 | gameplay identical; only the summary line's `bound=` differs; 0 picks, 0 classes | identical | held |
+| E2 9200/9000 | exit 1 | the same | identical | held |
+| JM05 9200/9000 | exit 3 | deaths 29 -> 29, with 0 only-ON and 0 only-OFF rows and 14 rows moved in time or killer (the US aircraft over the carriers, 246-275 s); dive releases 0 -> 0 of 33; torpedo 8 -> 8 of 18; hull hits 776 -> 776; shots 8476 -> 8133; damage 32230 -> 32265; Shokaku sinks at 257.61 -> 257.51 s, Zuikaku at 279.56 -> 279.16 s | releases 0, deaths +-3, a sinking may flip | held; no flip |
+
+The JM05 movement is the Dauntlesses' new aim points: their paths change, and so does the AA
+fire at them, which draws on the shared stream. None of their bombs is released on either side,
+so no section hit is measured yet. **The switch goes ON.**
