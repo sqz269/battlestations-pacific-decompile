@@ -66,6 +66,24 @@ struct ScriptOrderBinding {
 //    health is above 0.
 // ON since the BSM01 / USN01 / USN04 / USN02 pairs: identical (no call reached on
 // any of them), so all three are bound but unexercised.
+// Packet cc9_scripted_order_natives (docs/SHIP_AI_OPEN_ITEMS.md section 49).
+// True binds three scripted orders; false leaves each one as it was.
+//  * NavigatorEnable 008A7060: [unit+740h]+11h = argument 1, the enabled byte
+//    of the ship AI controller's tick sub-node, so 008759C4 skips 009F50E0
+//    (GameShipAiHost::set_navigator_enabled_0011). When false, it is an
+//    unimplemented record.
+//  * UnitHoldFire 008A6AC0: unit vtable[114h], then 0071BED0 (stance 0) with
+//    no null check (008A6BE4). A squadron's +348h block takes the 0084D910 /
+//    0084D930 answers for stance 0. A plane's vtable[114h] is 0047F180
+//    (XOR EAX,EAX), so the image dereferences null at 0071BED6: counted, and
+//    nothing is done. A ship's director stays a record, because its 5Ah
+//    message consumer is the gunnery host's. When false, it is an
+//    unimplemented record.
+//  * EntityTurnToEntity 008A0A10, the arms after the squadron arm. For kind 6,
+//    008A0DE9..008A0E68 sets translation = entity+FCh, then vtable[88h]
+//    (006E00A0) and the physics body pose 00C56CF0. Otherwise, vtable[88h]
+//    alone (a plane: 007C9540). When false, it is the old record at 008a0d1c.
+inline constexpr bool kScriptedOrderNativesBound = false;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
 constexpr bool kExplodeToPartsBound = true;
@@ -96,6 +114,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // stance. Handled only with kMissionTurnAndStanceBound.
     {"EntityTurnToEntity", 0x008a0a10u},
     {"UnitSetFireStance", 0x008a6490u},
+    // Packet cc9_scripted_order_natives: handled only with
+    // kScriptedOrderNativesBound.
+    {"UnitHoldFire", 0x008a6ac0u},
+    {"NavigatorEnable", 0x008a7060u},
     // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
     // out, with its two per-unit companions: 98, 18 and 18 calls on USN04, and
     // the eight script sites are the Lexington and the Town being told to circle
@@ -425,6 +447,10 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
         std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         return bsp::kMissionTurnAndStanceBound;
+    }
+    if (std::strcmp(binding->name, "UnitHoldFire") == 0 ||
+        std::strcmp(binding->name, "NavigatorEnable") == 0) {
+        return kScriptedOrderNativesBound;
     }
     return true;
 }
@@ -1457,7 +1483,10 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
     const std::size_t target_index = index_of(target);
     bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
         ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
-    if (squadron == nullptr || target_index >= units_.count()) {
+    const bool other_arm = squadron == nullptr && row.unit_index < units_.count()
+        && target_index < units_.count();
+    if (target_index >= units_.count() || (squadron == nullptr &&
+        (!kScriptedOrderNativesBound || !other_arm))) {
         log_.unimplemented("MissionLuaNative::EntityTurnToEntity non-squadron arm", "008a0d1c");
         return 0;
     }
@@ -1470,6 +1499,38 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
                    tx - ex, keep_pitch ? ty - ey : 0.0f, tz - ez, 0.0f,
                    0.0f, 0.0f, 0.0f, 1.0f};
     bsp::orthonormalize_pose_matrix_0085dc80(m);
+    if (squadron == nullptr) {
+        // Packet cc9_scripted_order_natives. 008A0DE9: vtable[5Ch](6), the ship
+        // family. Both arms refresh +FCh (00414DB0 when +C8h is clear), put it
+        // in the translation row (esp+64h..6Ch = m[12..14]) and call
+        // vtable[88h] with the matrix. The ship arm then builds a transform
+        // (00C336C0) and poses the physics body [0080E490()+2Ch] through
+        // 00C56CF0. SUBSTITUTION, labelled: this host's ship pose and physics
+        // state are one motion state, so 006E00A0's store covers both; the
+        // body's velocity is not touched, as the image leaves it.
+        m[12] = ex;
+        m[13] = ey;
+        m[14] = ez;
+        const bool ship = units_.unit_is_kind_of(row.unit_index, 6);
+        bool posed = false;
+        if (ship) {
+            posed = units_.set_local_matrix_006e00a0(row.unit_index, m);   // vtable[88h]
+            if (posed) ++turn_ship_arm_posed_;
+            log_.implemented("EntityTurnToEntity::ship_body_pose_00c56cf0", "00c56cf0");
+        } else if (units_.unit_is_kind_of(row.unit_index, 0x0f)) {
+            posed = units_.set_unit_world_basis_007c9540(row.unit_index, &m[0], &m[4],
+                                                         &m[8]);
+        } else {
+            log_.unimplemented("MissionLuaNative::EntityTurnToEntity vtable[88h] arm",
+                               "008a0eb8");
+        }
+        log_.notef("  EntityTurnToEntity: %s %s -> %s: posed=%d forward (%.3f %.3f %.3f) "
+            "(008A0A10 %s, packet cc9_scripted_order_natives)",
+            ship ? "ship" : "entity", row.unit.c_str(), name_of(target).c_str(), posed ? 1 : 0,
+            static_cast<double>(m[8]), static_cast<double>(m[9]), static_cast<double>(m[10]),
+            ship ? "008A0DE9 -> 006E00A0 + 00C56CF0" : "008A0E6F -> vtable[88h]");
+        return 0;
+    }
     std::size_t posed = 0;
     std::size_t seat = 0;
     for (const std::size_t member : squadron->member_units) {
@@ -1549,6 +1610,57 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
         squadron->name.c_str(), stance, before.allow_fire ? 1 : 0, after.allow_fire ? 1 : 0,
         before.allow_move ? 1 : 0, after.allow_move ? 1 : 0,
         static_cast<int>(squadron->behaviour), fighter ? 1 : 0);
+    return 0;
+}
+
+// 008A6AC0 `UnitHoldFire(unit)`, packet cc9_scripted_order_natives. Argument 0
+// through 00888AA0, then vtable[114h] and 0071BED0 on the answer (008A6BD6-
+// 008A6BE4, no null check). 0071BED0 is 0071BE80 with the literal stance 0
+// (0071BEDB / 0071BEEA). No result is pushed.
+int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
+        ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
+    if (squadron != nullptr) {
+        // 007ECFD0 +348h: 0084D910 (stance 1 or 2) and 0084D930 (0, 2 or 3).
+        squadron_permissions_[squadron->name] = SquadronPermissions{false, true};
+        log_.notef("  UnitHoldFire: squadron %s allowFire 0 allowMove 1 "
+            "(008A6AC0 -> 007ECFD0 +348h -> 0071BED0)", squadron->name.c_str());
+    } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 0x0f)) {
+        // 0047F180 answers null, and 0071BED6 (MOV EAX,[ESI]) reads through it.
+        // This host cannot reproduce the fault, so it records it and does nothing.
+        ++hold_fire_null_director_;
+        log_.notef("  UnitHoldFire: plane %s: vtable[114h] 0047F180 is null; the image "
+            "faults at 0071BED6 (recorded, nothing done)", row.unit.c_str());
+    } else {
+        log_.unimplemented("MissionLuaNative::UnitHoldFire director arm (0071DA50 5Ah)",
+                           "0071bed0");
+    }
+    return 0;
+}
+
+// 008A7060 `NavigatorEnable(unit, enable)`, packet cc9_scripted_order_natives.
+// Argument 0 through 00888AA0 with no kind check, then [unit+740h] and
+// MOV [EAX+11h],AL with argument 1 as a boolean. No result is pushed.
+int GameScriptOrdersHost::run_navigator_enable(GameScriptOrderRow& row) {
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    const bool enable = argument_boolean(1);
+    GameShipAiHost* ship_ai = units_.ship_ai();
+    const bool stored = ship_ai != nullptr && row.unit_index < units_.count()
+        && units_.unit_is_kind_of(row.unit_index, 6);
+    if (stored) ship_ai->set_navigator_enabled_0011(row.unit_index, enable);
+    log_.notef("  NavigatorEnable: %s enable=%d stored=%d (008A7060 [unit+740h]+11h, "
+        "008759C4 gate)", row.unit.c_str(), enable ? 1 : 0, stored ? 1 : 0);
+    if (!stored) {
+        log_.unimplemented("MissionLuaNative::NavigatorEnable non-ship", "008a7060");
+    }
     return 0;
 }
 
@@ -2057,6 +2169,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_entity_turn_to_entity(row);
     } else if (std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         results = run_unit_set_fire_stance(row);
+    } else if (std::strcmp(binding->name, "UnitHoldFire") == 0) {
+        results = run_unit_hold_fire(row);
+    } else if (std::strcmp(binding->name, "NavigatorEnable") == 0) {
+        results = run_navigator_enable(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
     } else if (std::strcmp(binding->name, "SetFireTarget") == 0) {
