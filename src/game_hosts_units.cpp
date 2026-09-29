@@ -4299,6 +4299,12 @@ struct GameUnitsHost::Impl {
     // already holds (begin's 009B1DDA and 009FC7C0's tail 009FCE69 store only 0.0, and
     // 009B3DA7 is the only switch into final). True: the record is performed (done).
     static constexpr bool kLandFinalDirection40Bound = true;  // ON: 5ac
+    // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
+    // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
+    // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
+    // that separation to 009C1850 and the glide, and heads with 009F9E40's law.
+    // False: db_planar_bc and db_bearing_c0 stand in.
+    static constexpr bool kDiveBombMoveToOriginBound = false;
     // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
     // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
     // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
@@ -5855,7 +5861,7 @@ struct GameUnitsHost::Impl {
         in.gains.pwr_back_meter = gt.pilot_follow_pwr_back_meter;
         in.gains.pwr_spd_meter_per_sec = gt.pilot_follow_pwr_spd_meter_per_sec;
         const bsp::PlaneFollowHoldCommand c = bsp::plane_follow_hold_command_009bee56(in);
-        record("BotStateFollow::hold_arm", 0x009bee56u);
+        done("BotStateFollow::hold_arm", 0x009bee56u);
         if (c.locked) return;   // 009BF0B8-009BF0E8, never for an AI leader
         // 009BF6F4-009BF70B: pitch desired, slot 3 active, plan+2D0h = 0.
         unit.plan_slots[bsp::kPilotSlotPitch].desired = c.pitch_29c;
@@ -6026,7 +6032,7 @@ struct GameUnitsHost::Impl {
         const bsp::PlaneFollowGeometry geo =
             bsp::plane_follow_geometry_009bfee0(
                 gin, bsp::PlaneFollowRegime::kLeadPursuit);
-        record("BotStateFollow::steer_point", 0x009bfee0u);
+        done("BotStateFollow::steer_point", 0x009bfee0u);
 
         bsp::PlaneFollowFlyToInputs fin;
         for (int i = 0; i < 3; ++i) {
@@ -6077,14 +6083,14 @@ struct GameUnitsHost::Impl {
 
         // 009BF9EA-009BF9F0: the pilot is steered at the steer
         // point.  Same mode-2 pair the moveto and attackrun
-        // ticks write; 009F9E40's body is unread, so the bearing
-        // is this host's own heading_command_009f9e40.
+        // ticks write; 009F9E40 read whole; heading_command_009f9e40
+        // is its law (PLANE_FLIGHT, cc9_wingman_heading_to_point).
         unit.plan_heading_2c0 = bsp::heading_command_009f9e40(
             geo.steer_point[0], geo.steer_point[2],
             unit.motion.position[0], unit.motion.position[2]);
         unit.plan_heading_2c0_written = true;
         unit.plan_heading_mode_2cc = 2;
-        record("BotStateFollow::steer_to_point", 0x009f9e40u);
+        done("BotStateFollow::steer_to_point", 0x009f9e40u);
 
         // 009BFC0C CALL 009F9ED0(cmdAlt - ownY, dist).  That
         // body is unread, so the commanded altitude is turned
@@ -6122,7 +6128,7 @@ struct GameUnitsHost::Impl {
             unit.plane_trg_speed_corr_off_2b0 = 0;   // 009BFD15, byte
             unit.plane_air_brake_mode_2d8 = 1;       // 009BFD1C, dword
         }
-        record("BotStateFollow::command_step", 0x009bee30u);
+        done("BotStateFollow::command_step", 0x009bee30u);
 
         if ((unit.db_follow_tick_ticks % 400) == 1) {
             log.notef("  follow law %-12s n=%d R=%.1f D=%.1f "
@@ -16364,6 +16370,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // docs/DIVE_BOMB_APPROACH.md.
                     void run_dive_bomb_move_to_tick_009c18c0() {
                         ++unit_.db_moveto_tick_ticks;
+                        // 009C18EC-009C1913: sqrt(dx^2 + dz^2) from the target's
+                        // origin to the unit, 0 at or below double [00CE3820].
+                        const GameUnitSlot* origin_tgt = nullptr;
+                        if (unit_.command_target_plus_one != 0 &&
+                            unit_.command_target_plus_one - 1 < owner_.slots.size()) {
+                            origin_tgt = owner_.slots[unit_.command_target_plus_one - 1].get();
+                        }
+                        float sep = unit_.db_planar_bc;
+                        if (GameUnitsHost::Impl::kDiveBombMoveToOriginBound &&
+                            origin_tgt != nullptr) {
+                            const double dx = static_cast<double>(origin_tgt->motion.position[0]) -
+                                unit_.motion.position[0];
+                            const double dz = static_cast<double>(origin_tgt->motion.position[2]) -
+                                unit_.motion.position[2];
+                            const double d2 = dx * dx + dz * dz;
+                            sep = d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;
+                        }
                         // 009C198A-009C1999: the +1Ch speed slot is called with
                         // the separation UNCONDITIONALLY, before either early
                         // return. 00D20AEC+1Ch is 009C1850, which writes
@@ -16377,7 +16400,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // speed itself is 007C47F0's LevelFlight * StallSpd.
                         unit_.plane_desired_speed_2b4 =
                             GameUnitsHost::Impl::kMovetoSpeedBlendBound
-                                ? owner_.moveto_speed_009c1850(unit_, unit_.db_planar_bc)
+                                ? owner_.moveto_speed_009c1850(unit_, sep)
                                 : owner_.bot_desired_speed_007c47f0(unit_);
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
@@ -16404,7 +16427,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C1950's own sqrt; db_planar_bc is the same
                         // quantity, built by 009C7B4F from the same two poses
                         // with the same 00CE3820 epsilon.
-                        gin.planar_distance = unit_.db_planar_bc;
+                        gin.planar_distance = sep;
                         const bsp::MoveToGlideCommand g =
                             bsp::move_to_glide_009c18c0(gin);
 
@@ -16452,10 +16475,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // db_bearing_c0, the pi/2 - atan2 convention 009C7B8A
                         // was read for, through the same mode-2 pair the
                         // attackrun and flyabove ticks use.
-                        unit_.plan_heading_2c0 = unit_.db_bearing_c0;
+                        // kDiveBombMoveToOriginBound: 009F9E40 read whole, its law
+                        // heading_command_009f9e40 at the target's origin.
+                        if constexpr (GameUnitsHost::Impl::kDiveBombMoveToOriginBound) {
+                            unit_.plan_heading_2c0 = bsp::heading_command_009f9e40(
+                                tp[0], tp[2], unit_.motion.position[0],
+                                unit_.motion.position[2]);
+                        } else {
+                            unit_.plan_heading_2c0 = unit_.db_bearing_c0;
+                        }
                         unit_.plan_heading_2c0_written = true;
                         unit_.plan_heading_mode_2cc = 2;
-                        owner_.record("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                        if constexpr (GameUnitsHost::Impl::kDiveBombMoveToOriginBound) {
+                            owner_.done("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                        } else {
+                            owner_.record("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                        }
                         if ((unit_.db_moveto_tick_ticks % 200) == 1) {
                             owner_.log.notef("  db moveto %-12s n=%d range=%.1f "
                                 "base=%.1f low=%.1f scale=%.3f gain=%.3f "
@@ -21295,7 +21330,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_2c0 = b;
                         unit_.plan_heading_2c0_written = true;
                         unit_.plan_heading_mode_2cc = 2;
-                        owner_.record("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                        owner_.done("BotStateMoveTo::steer_to_point", 0x009f9e40u);
                     }
 
                     // follow (land): 009C2980 built at 009B2EE4; tick 009C1FD0.
