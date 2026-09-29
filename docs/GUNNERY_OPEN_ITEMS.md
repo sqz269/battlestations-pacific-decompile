@@ -4233,3 +4233,20 @@ plus 0.3 s, the window 59.3's timing clause allows. This choice was made after s
 - **Hulls:**
   - `g12_pitch.py` and `g12_pitchat.py` give the leak moments and pitch;
   - `g12_kick.py` (`--wide` for the 4 s window) and `g12_john2.py` score the 93h kicks.
+
+### 60.4 Status update (cc9-gunnery12, later on 2026-09-29)
+
+- **60.2 item 1 is done.** The AA bot errors are committed OFF in `a3da8863f` (the patch applied
+  cleanly on main `da90b8653`). The period uses the existing
+  `gun_bot_lead_error_span_00902920`; 7.2's 0.6-1.6 s was wrong and is corrected in 7.5.
+  - The 7.4 pairs ran, and the verdict is ON for both switches (AA_LETHALITY_AUDIT 7.5):
+    - E2 is identical;
+    - USN13's low aircraft losses fall from 33 to 14;
+    - JM05 gets 2 torpedo-task releases, but its low losses stay at 12. That is P2's size miss.
+  - **The next AA question** is why JM05's escorts still kill every torpedo plane. Candidates: the
+    `vtable[100h]` hull-box point substitution, plane HP and armour against the MG class, and the
+    IJN MG barrel counts.
+- **60.2 item 2 is superseded** by lua16's `docs/SCENE_UNIT_SKILL.md` (main `da90b8653`). The binding
+  is ON, and the Rookie -> Stun effect on JM05's forts is refuted: the library's group default
+  `Skill = SPNormal` wins.
+- **Reference o** also has to absorb these two switches.
