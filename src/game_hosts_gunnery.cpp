@@ -354,6 +354,14 @@ constexpr bool kAiUntouchableGateBound = true;
 //    the store that places the gun entity at its platform is not read.
 //    ON by the pairs of 2026-09-27 (docs/USN04_KATE_ATTRITION.md section 13).
 constexpr bool kPlanePlatformAttachmentBound = true;
+//  * kLandPlatformAttachmentBound (packet cc9_muzzle_no_mount, docs/GUN_BARREL_COUNT.md
+//    section 9): the same mount for a gun on any other vehicle class (forts, bunkers,
+//    command buildings, airfields, land vehicles). Each class's slot +20h is 0095F500
+//    or calls it, so the gun takes its ("slot", key) frame, or the identity frame the
+//    platform constructor 007F7110 stores, through 0072DD20. OFF: the gun fires from
+//    the unit origin raised by the class Height (the `no_mount` fallback). Same
+//    labelled simplification as ships: only the frame's origin is carried.
+constexpr bool kLandPlatformAttachmentBound = false;
 //  * kAaLineOfFireBound: an AA gun (weapon kinds 1, 5, 6; 00729560 installs the
 //    predicate at gun+42Ch) refuses a target when 0072CDD0 answers blocked:
 //    the segment from the gun (+5 m) to the target (+5 m, at least y = 5)
@@ -1814,6 +1822,8 @@ struct GameGunneryHost::Impl {
     }
     unsigned long long mounts_from_model{0};
     unsigned long long plane_mounts_from_model{0};   // cc9_plane_gun_mounts
+    unsigned long long land_mounts_from_slot{0};     // cc9_muzzle_no_mount
+    unsigned long long land_mounts_identity{0};
     unsigned long long turn_average_tests{0};        // cc9_aa_turn_average
     unsigned long long turn_average_rotations{0};
     unsigned long long mounts_missing{0};
@@ -3838,6 +3848,59 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 } else {
                     ++mounts_missing;
                 }
+            } else if (kShipPlatformAttachmentBound) {
+                // Packet cc9_muzzle_no_mount: every other vehicle class runs the same
+                // slot pass. LandFort (vtable 00CFF790), CommandBuilding (00D1A538),
+                // AirField, Shipyard and DummyTarget carry 0095F500 itself in slot
+                // +20h; LandVehicle's 0074DA10 calls it at 0074DA2E. A platform with
+                // no ("slot", key) group keeps the identity frame its constructor
+                // 007F7110 stores at platform+4Ch (007F7193 / 007F7201), so 0072DD20
+                // mounts the gun at the unit origin. Counted on both sides.
+                ShipModelSlots& land = ship_model_slots(type_id);
+                bsp::GunPlatformSlotFrame frame;
+                const bool slot = land.loaded
+                    && bsp::gun_platform_slot_frame_0095f500(land.items, gun.platform_key, frame);
+                ++(slot ? land_mounts_from_slot : land_mounts_identity);
+                if (land.logged_unit < 0 || land.logged_unit == static_cast<long long>(i)) {
+                    land.logged_unit = static_cast<long long>(i);
+                    log.notef("gunnery: land mount %s platform %d cat=%d dev=%d %s local=(%.2f %.2f %.2f) "
+                        "forward=(%.2f %.2f %.2f) (0095F500 slot pass / 007F7110 identity)",
+                        state.row.name.c_str(), gun.platform_key, gun.category, gun.device_class,
+                        slot ? "slot" : "identity",
+                        static_cast<double>(slot ? frame.origin[0] : 0.0f),
+                        static_cast<double>(slot ? frame.origin[1] : 0.0f),
+                        static_cast<double>(slot ? frame.origin[2] : 0.0f),
+                        static_cast<double>(slot ? frame.forward[0] : 0.0f),
+                        static_cast<double>(slot ? frame.forward[1] : 0.0f),
+                        static_cast<double>(slot ? frame.forward[2] : 1.0f));
+                }
+                if constexpr (kLandPlatformAttachmentBound) {
+                    gun.mount_known = true;
+                    for (int k = 0; k < 3; ++k) gun.mount_local[k] = slot ? frame.origin[k] : 0.0f;
+                    done("VehicleClass::bind_slot_frames_0095f500", 0x0095f500u);
+                }
+            }
+            // Packet cc9_muzzle_no_mount: why a gun has no platform attachment
+            // (the `no_mount` muzzle fallback), one line per gun. Diagnostic only.
+            static const bool mount_census = [] {
+                char* text = nullptr;
+                std::size_t length = 0;
+                const bool set = _dupenv_s(&text, &length, "BSP_MOUNT_CENSUS") == 0
+                    && text != nullptr && text[0] != '\0' && text[0] != '0';
+                std::free(text);
+                return set;
+            }();
+            if (mount_census && !gun.mount_known) {
+                const bool ship_kind = units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
+                const bool plane_kind = units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase);
+                const char* why = "not a ship or plane kind";
+                if (ship_kind || (kPlanePlatformAttachmentBound && plane_kind)) {
+                    const ShipModelSlots& ship = ship_model_slots(type_id);
+                    why = ship.loaded ? "0095F500 has no slot for the key" : "class model not loaded";
+                }
+                log.notef("gunnery: mount census %s (type %d) platform %d dev=%d cat=%d ship=%d plane=%d: %s",
+                    state.row.name.c_str(), type_id, gun.platform_key, gun.device_class, gun.category,
+                    ship_kind ? 1 : 0, plane_kind ? 1 : 0, why);
             }
             guns.push_back(gun);
             gun_turning_class.push_back(flat(type_id, make("gcls"), 0));
@@ -10629,6 +10692,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery plane mounts from model=%llu bound=%d "
             "(007D3E81 -> 0095F500 slot frames, packet cc9_plane_gun_mounts)",
             host.plane_mounts_from_model, kPlanePlatformAttachmentBound ? 1 : 0);
+        host.log.notef("summary mission gunnery land mounts slot=%llu identity=%llu bound=%d "
+            "(0095F500 slot frames / 007F7110 identity, packet cc9_muzzle_no_mount)",
+            host.land_mounts_from_slot, host.land_mounts_identity,
+            kLandPlatformAttachmentBound ? 1 : 0);
         for (const auto& [device, fp] : host.fire_points_by_device) {
             host.log.notef("summary mission gunnery barrel device=%d guns=%zu records=%d image=%d "
                 "loaded=%d mesh=%s", device, fp.guns, fp.records,

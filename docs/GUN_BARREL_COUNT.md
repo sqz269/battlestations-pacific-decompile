@@ -305,3 +305,72 @@ The same line splits `muzzle offsets fallbacks` by cause, with shots by device:
 - **`other`:** a loaded model without offsets or nodes.
 
 Nothing is bound for #11 until the census shows a `no_mount` or `other` share.
+
+## 9. The `no_mount` muzzle fallback is the land classes' mount (packet `cc9_muzzle_no_mount`, cc9-gunnery15)
+
+Ranking #11. In reference q, `no_mount` carries shots on four rows:
+
+| row | shots | device classes (arcade `deviceclasses.lua`) |
+| --- | ---: | --- |
+| JM08 | 1000 | 52 (7.7 mm machine gun) |
+| JM05 | 98 | 37 (Jap deck gun) 40, 52 (7.7 mm machine gun) 10, 84 (ghost casemate gun) 48 |
+| USN12 | 83 | 37 |
+| USN01 | 5 | 117 |
+
+- The other twelve rows have 0.
+- JM05 long has 1311.
+
+### 9.1 Who has no mount
+
+**The census.** An env-gated census line (`BSP_MOUNT_CENSUS=1`, `gunnery: mount census ...`)
+shows that every JM05 gun without a mount belongs to a unit that is neither a ship nor a plane:
+- coastal guns (types 89, 460, 645);
+- concrete bunkers (403);
+- fortress elements and fortresses (79);
+- heavy and light AA emplacements (461, 462, 629);
+- command buildings (6, 408).
+
+**Why they have no mount.** The host attached a platform frame only for kinds 06h (ship) and 0Fh
+(plane).
+
+### 9.2 The image
+
+- **Every vehicle class runs the slot pass.** `BSP_VehicleClass_BindModelData` 0095F500 is the
+  class vtable's slot `+20h` entry in six vtables, found by scanning absolute dwords for
+  `00 F5 95 00`:
+  - `00CFF7B0`: LandFort, vtable `00CFF790`;
+  - `00D1A558`: CommandBuilding, `00D1A538`;
+  - `00D1A9C0`: AirField, `00D1A9A0`;
+  - `00D1A9FC`: Shipyard, `00D1A9DC`;
+  - `00D1AA78`: DummyTarget, `00D1AA58`;
+  - `00CFF7EC`: the base vtable.
+  - LandVehicle's slot `+20h` (`00D1AA38`) is `0074DA10`, which calls 0095F500 at `0074DA2E`.
+  - Ships (`0082FE51`) and planes (`007D3E81`) call it from their own binders.
+  - So a fort's gun platforms get their `("slot", key)` frames exactly as a ship's do.
+- **A platform without a slot group keeps the identity frame.** The platform constructor 007F7110
+  (called from `BSP_VehicleClass_ReadLuaFields` 00960230):
+  - builds a 4x4 with 1.0 (`00D7A24C`) on the diagonal;
+  - copies it to `platform+4Ch` (`lea ecx,[esi+4Ch]` at 007F7193, `call 004134F0` at 007F7201).
+- **The gun takes that frame.** `0072DD20` copies `platform+4Ch` for every gun, whatever the
+  unit's kind.
+  - The kind 46h / 44h re-expression applies only to a gun whose parent is a Shipyard.
+  - So a slotless land gun is mounted at the unit origin, not raised by `Height`.
+
+### 9.3 The binding (`kLandPlatformAttachmentBound`, committed OFF)
+
+- **Where:** the gun setup in `src/game_hosts_gunnery.cpp`.
+- **What:** for a unit that is neither ship nor plane, the class model's `("slot", key)` frame
+  origin if it has one, else the identity origin (0, 0, 0).
+- **Counted on both sides:** `summary mission gunnery land mounts slot=.. identity=..`.
+- **Logged:** one `gunnery: land mount` line per class, with the frame's forward.
+- **Simplification (the ships' label):** only the origin is carried. A land slot whose frame is
+  rotated has its rotation dropped. The logged forward shows whether any is.
+- **OFF:** the placeholder, the unit origin raised by the class `Height`.
+
+**Predictions:**
+- ON moves JM05, JM08, USN12 and USN01 (exit 3): the ground guns' shots start from their mounts,
+  which changes their flight and hits.
+- The other twelve rows are gameplay-identical.
+- `no_mount` goes to 0 on every row, and `muzzle offsets` counts the shots instead.
+- Whether a mission's ground guns hit more or less is not predicted; that depends on each model's
+  slot heights.
