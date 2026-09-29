@@ -3751,3 +3751,41 @@ float rows[12] = {
   - re-run this pair on the fixed build;
   - re-evaluate with `g11_capeval.py`.
   56.2's predictions stand as written for that re-run.
+
+### 56.4 P2 scoped: where the hit roll torques land (cc9-gunnery11, 2026-09-29)
+
+This packet adds a diagnostic, `BSP_HULL_ROLL_TORQUE_TRACE=1` (`9e9703392`, gunnery host), which logs
+each posted 93h torque. The run is `local\g11rt_<row>.log`: `9e9703392` with the inertia flip, the
+attitude trace on, and the rows bug of 56.3 still present.
+
+**USN02 has 19 torques.** 7 of them, and every one above 5e5, fall on Houston and John1:
+
+| t | victim | dead | size |
+| --- | --- | --- | --- |
+| 18.95, 20.60 | Houston | alive | 4.04e6 each |
+| 21.65, 22.40, 38.40 | Houston | dead | 4.04e6 each |
+| 26.05 | John1 | alive (dies at 26.5) | 1.36e6 |
+| 32.90 | John1 | dead | 1.36e6 |
+| 100.75, 136.25, 137.85, 138.40 | Yudachi | alive | 1.4e5 to 1.6e5 |
+| 127.85, 129.20 | Yamakaze | alive, then dead | 1.4e5 |
+| 142.30 | Haguro | alive | 4.8e5 |
+| 196.06 | Yukikaze | dead | 1.9e6 (the friendly torpedo) |
+| 396.13 to 397.93 | Samidare | alive (4 torques) | 1.5e5 to 1.7e5 |
+
+JM06 has one torque: USTroopTransport 01 at 109.20 s, 4.5e5.
+
+**Why 52.2's large destroyer kicks did not appear:**
+- The 4e6 torques all fall on Houston. Its roll inertia (mul.z 2, Mass 11602, box 20.95 x 46.62)
+  is 5.05e6, a kick of only 0.04 rad/s.
+- The destroyer that takes a big one is John1, 0.45 s before it dies. Its roll steps from 0 to
+  +5.9 degrees by the next sample, and +4.4 more at the 32.90 s torque. This is the early start of
+  John1's capsize in 56.3.
+- The living destroyers take only 1.4e5 to 1.7e5 torques.
+
+**The size of John1's kick is not settled.**
+- 52.2's formula (`tau * 0.05 / I_z` with I_z = 48,200, peak about kick / omega / 2) gives about
+  25 degrees. The trace shows about 6.
+- The 93h delivery (`0092BF30` -> `00C35330`, one step) or the damping may scale it. That is not
+  read here.
+- Measuring this cleanly waits for 56.3's rows fix, because the flooding moment on John1 is wrong
+  until then.
