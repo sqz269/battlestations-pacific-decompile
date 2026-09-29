@@ -12519,3 +12519,135 @@ It is not in m's rows.
   - The LOS role swap's USN01 shots are not visible on m.
   - The no-ship hold and the sight test interact on USN01.
 - **Carried from l:** all of l's carried flags, and 54's corrections to l's two flags.
+
+## Mission reference baselines, 2026-09-29 n (main eb1226215)
+
+Packet `cc9_reference_rebaseline_14`, worker cc9-gunnery12. **It replaces the 2026-09-29 m rows
+above.** The report is `reports/cc9_reference_rebaseline_14.json`.
+
+**Run parameters:**
+- **One binary:** `local\rb14\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery12.
+  - SHA-256 `2acddfaf621ef5383146d4502c212d3dde4f1fe32d3641cc4fca90c277bee957`, prefix
+    `2ACDDFAF621E`.
+  - It is a clean `tools/pair_export.py --commit eb1226215` export with no flip.
+  - `eb1226215` contains the inertia flip `091cea5cf` (merge `ea5775f9b`) and the kamikaze flip
+    (merge `f314ba9d2`).
+- **Rows:** m's sixteen, at m's frame counts and in m's launch form, `--frames F
+  --press-start-frame 30 --menu-select M --mission-frames N --mission-frame-seconds 0.05`, with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+- **Checks:** a 300-frame USN01 smoke ran first. Every log shows:
+  - its milestone line with the right mission and frames;
+  - `present interval immediate`;
+  - a module directory under `local\rb14`;
+  - `frames_presented` equal to the frame count minus one;
+  - the final COM release.
+  The session stayed on the console and no run failed.
+- **Predictions:** none were written for this rebaseline. Each switch's own pair recorded its
+  expected rows, and the attribution below is checked against those.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 13297.8 | 46 | 793 (122) | 9748 | 100.35 s | 4 of 16 / 1 of 19 | 14 | Lexington-class01 3574.58 m | none | 505 | `local\rb14_usn04.log` |
+| USN01 | 3000 | 2786.4 | 5 | 378 (69) | 1250 | 51.45 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 3874.72 m | none | 529 | `local\rb14_usn01.log` |
+| USN04 (E2) | 9000 | 13964.1 | 51 | 822 (136) | 9995 | 100.35 s | 4 of 16 / 1 of 19 | 19 | Lexington-class01 7159.07 m | none; phase 1 only (known) | 505 | `local\rb14_e2.log` |
+| USN02 | 9000 | 38828.3 | 11 | 2009 (412) | 2133 | 18.95 s | - | - | Kortenaer 548.61 m | **failed at 29.75 s**, phase 1 (unchanged) | 493 | `local\rb14_usn02.log` |
+| JM06 (smoke) | 3000 | 4399.2 | 1 | 220 (206) | 279 | 68.10 s | - | - | Fletcher-class 08 339.55 m | none | 485 | `local\rb14_jm06.log` |
+| JM08 (smoke) | 3000 | 4149.8 | 11 | 407 (121) | 2359 | 5.25 s | - | 4 | Auilick 2520.47 m | none | 490 | `local\rb14_jm08.log` |
+| USN13 (smoke) | 3000 | 9669.9 | 31 | 705 (240) | 7850 | 92.05 s | 0 of 60 / - | 7 | Enterprise 1873.79 m | none | 495 | `local\rb14_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 596.41 m | none | 464 | `local\rb14_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 658.24 m | none | 467 | `local\rb14_lomp06.log` |
+| LOMP10 | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 4893.21 m | none | 489 | `local\rb14_lomp10.log` |
+| JM05 | 3000 | 2118.3 | 0 | 38 (22) | 99 | 9.95 s | 0 of 12 / 0 of 6 | - | USS Phelps 2567.65 m | none | 526 | `local\rb14_jm05.log` |
+| USN12 | 3000 | 1046.5 | 0 | 32 (16) | 83 | 8.30 s | - | - | Montpelier 2084.21 m | none | 472 | `local\rb14_usn12.log` |
+| LOMP10 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 7019.11 m | none | 494 | `local\rb14_lomp10l.log` |
+| USNOS | 3000 | 1675.3 | 6 | 800 (79) | 2316 | 10.80 s | - | 1 | NH 1912.55 m | none | 521 | `local\rb14_usnos.log` |
+| USNOS (long) | 9000 | 10900.7 | 21 | 1112 (101) | 13120 | 10.80 s | - | 1 | NH 4600.38 m | none | 528 | `local\rb14_usnosl.log` |
+| IJN01 | 3000 | 8086.1 | 28 | 367 (343) | 2811 | 79.65 s | - | 10 | Downes 570.41 m | none | 502 | `local\rb14_ijn01.log` |
+
+**Every one of m's sixteen rows moves** (`pair_diff` exit 3 against `rb13_<row>` in the
+cc9-gunnery11 tree). The inertia flip accounts for fourteen of them, and the landing descent for
+LOMP10 and LOMP10 long.
+
+Death-row membership against m (`local\g12_deaths.py rb13 rb14`):
+- **USN04:** +4 and -1, 43 -> 46.
+  - Added: D3A Val #3.1|.-2, A6M Zero #7.2, A6M Zero #7.2|.-2 and D3A Val #7.1|.-4.
+  - D3A Val #5.1|.-4 survives.
+- **USN02:** John2 dies at 197.31 s, to John3's blast (category 7). This is 56.5's
+  prediction, exactly.
+- **USN13:** bruh #1.5|.-4 survives, 32 -> 31.
+- **JM05:** Mogami-class 01 survives, 1 -> 0.
+- **IJN01:** five A7M rows are added, 23 -> 28: A7M_1|.-4, A7M_1|.-5, A7M_2|.-5, A7M_6|.-5 and
+  A7M_8|.-4.
+- **E2, USN01, JM08, LOMP06, USNOS and USNOS long:** the same victims, with changed times and
+  killers.
+- **JM06, BSM01, LOMP10, USN12 and LOMP10 long:** the death rows are identical.
+
+### The anchor: eleven switches
+
+A value diff of every `constexpr bool k...Bound` declaration between `b234f20ac` and `eb1226215`
+(`local\g11_switches.py`, cc9-gunnery11 tree) finds eleven switches newly ON. Two more are new
+and OFF: `kLandParkStateBound` and `kPlaneGroundSteeringBound`.
+
+| switch | flip commit | its pair recorded |
+| --- | --- | --- |
+| `kHullInertiaFromShapesBound` | `091cea5cf` | USN02 moves (John2 dies), JM06 moves (hit records 276 -> 220), 56.5 |
+| `kPlaneDirectionHoldBound`, `kLandBeginStateBound`, `kLandFinalStateBound`, `kLandAbortStateBound` | `4229cb934` | LOMP10 9000 moves (B-25 01 lands at 251 s), USN01 identical |
+| `kLandingLandedArmBound` | `057bc636d` | LOMP10 9000 moves (all ten planes land), USN01 identical |
+| `kPlaneGroundRollBound` | `638ff834f` | LOMP10 9000 moves (heads stop on the runway), USN01 identical |
+| `kShipAiBigLandingShipBound` | `f977105ab` | JM08, IJN01, JM06 identical |
+| `kShipAiStandoffTargetKindBound` | `330a872b7` | USN01, JM16 identical |
+| `kAiSquadronRtbExclusionBound` | `9938314b8` | USN13, IJN01 identical |
+| `kKamikazeShipBlockedBound` | `2f72038eb` | USN19 identical |
+
+With all eleven OFF (`n0`), `eb1226215` is **gameplay-identical to reference m on all sixteen
+rows** (exit 1 against `rb13_<row>`). Nothing else that landed since m moves a reference row.
+
+### What moved each row
+
+Each leave-one-out export is read with `pair_diff` against n:
+
+| variant (OFF) | rows run | rows that move against n |
+| --- | --- | --- |
+| `nhi` hull inertia | all sixteen | all sixteen (exit 3); on LOMP10 and LOMP10 long only outside the headline (see below) |
+| `nlds` direction hold, land begin, final, abort | LOMP10, LOMP10 long, USN01 | LOMP10 and LOMP10 long: B-25 01 4893.21 -> 4893.32 and 7019.11 -> 6207.20, m's values; USN01 identical |
+| `narm` landed arm | the same three | LOMP10 long only (B-25 01 7019.11 -> 7017.44) |
+| `ngr` ground roll | the same three | LOMP10 long only (B-25 01 7019.11 -> 7026.22); USN01 exit 0 |
+| `n4` big landing ship, standoff target kind, squadron RTB exclusion, kamikaze ship blocked | all sixteen | none (exit 1 on every row) |
+
+- **The inertia flip alone moves fourteen rows.** `nhi` is gameplay-identical to m on every row
+  but LOMP10 and LOMP10 long, and those two move only by the landing group's B-25 01 distance.
+  On LOMP10 the flip still moves the ships' positions by about 3 m (the unit table's `nearest`
+  column, `nlds` against m), outside the headline.
+- **The landing group is LOMP10's.**
+  - With the descent group OFF, B-25 01's distance returns to m's values on both LOMP10 rows.
+  - The landed arm and the ground roll move only the 9000-frame row, as their pairs recorded.
+- **The four inert switches** are identical together on all sixteen rows, as every one of their
+  pairs recorded.
+
+### Leave-one-out exports
+
+| v | switches OFF | SHA-256 prefix | rows run |
+| --- | --- | --- | --- |
+| n0 | all eleven | D8298414F363 | all sixteen; all equal m |
+| nhi | hull inertia | 685B138C88CA | all sixteen |
+| nlds | direction hold, begin, final, abort | DE8A1AD5687A | LOMP10, LOMP10 long, USN01 |
+| narm | landed arm | 167DF0A2235C | the same three |
+| ngr | ground roll | 1A183A1FBFC9 | the same three |
+| n4 | big landing ship, standoff target kind, RTB exclusion, kamikaze ship blocked | A519B492C882 | all sixteen |
+
+### Flags
+
+- **Closed:**
+  - every post-m switch is attributed;
+  - the inertia flip's two recorded effects reproduce exactly: USN02's John2 death at 197.31 s,
+    and JM06's hit records 276 -> 220 with an identical death row.
+- **New:**
+  - **The inertia flip reaches far beyond its pair's two rows.** It moves every ship row.
+  - **USNOS long moves most.** Damage rises 4138.4 -> 10900.7 while hit records fall 2683 -> 1112
+    and shots 20455 -> 13120, with the same 21 victims. What converts fewer hits into more damage
+    is not separated here.
+  - **USN04 and E2** gain torpedo-task releases (2 -> 4 of 16) and one dive-bomb release (0 -> 1
+    of 19).
+- **Carried from m:** all of m's carried and new flags.
