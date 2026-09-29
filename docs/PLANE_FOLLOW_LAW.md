@@ -1170,3 +1170,49 @@ applies `007E88A1`-`007E88DA` to both keys. The follow law is these fields' only
    below OFF's. OFF reaches 5.44 km at 423.8 s for `|.-2`. A miss here with (1) holding means the
    drift has a second cause; it is recorded, and the switch may still flip.
 3. **Both rows move** (exit 3). Every fly-to member in every mission reads the ramp.
+
+### 17.6 The pair for 17.4 (cc9-lua10, 2026-09-28): ON
+
+OFF is this tree's build of `1d7b7045e`, which has the turn rate OFF (`local\l10_a0_<row>.log`). ON
+is the same commit with `kFollowTargetDirAcosBound=true` (`local\l10_ac`, `local\l10_acon_<row>.log`).
+
+| row | `pair_diff` | Lightning members' largest leader distance after 250 s |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 1, gameplay identical | 6442 m -> 131 m |
+| USN01 3200/3000 | 0, identical: its 81 fly-to ticks come out the same | - |
+
+1. **Mechanism: held, sampled indirectly.**
+   - No ON sample has a member ahead of its station: the members no longer get there.
+   - At 23.8 s, `Lightning 01|.-2` is 198 m from its station and commanded 116.44 m/s. OFF
+     commanded 173.33 m/s at the same moment, 166 m out. At over 100 m, OFF gave rampD whatever
+     the heading; ON blends toward cruise.
+2. **The drift: held.** From 60 s on, the members fly 85 to 200 m from their leader. The leader no
+   longer holds 31.5 m/s: with its wingmen close, the wingmen-wait term releases it, and it flies
+   about 88 m/s.
+3. **Spread miss:** USN01 was predicted to move and is identical. LOMP10 is gameplay-identical;
+   positions and speeds moved.
+- **Verdict: ON.** Section 5.4's reading of the ramp's endpoints is corrected by 17.4.
+- The live-speed switch (17.2) should be re-paired on top of this.
+- **USN04 4700/4500, added afterwards:** exit 3. OFF is a clean export of `1d7b7045e`
+  (`local\l10_acbase`) and ON is `local\l10_ac`. Deaths go from 44 to 40, torpedo releases from 6 to
+  5 and damage from 15776.6 to 13914.3. The torpedo wings fly the fly-to arm, so this is
+  prediction 3 holding on a row with follow wings. The row is not an identity row for this switch.
+
+### 17.7 The live speed re-paired on top of 17.4 and the turn rate (cc9-lua10, 2026-09-28): ON
+
+OFF is this tree's build of `8c2cc67ca`, which has the acos, the turn rate and the approach bit ON
+(`local\l10_h0_<row>.log`). ON is the same commit with `kFollowLeaderLiveSpeedBound=true`
+(`local\l10_lv2`, `local\l10_lv2on_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (1); B-25 01's path moves: 7340 m travelled OFF, 6691 m ON |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+- **Mechanism: held, but weakly.** In the ON run, `B-25 01|.-2` flies the fly-to arm 59.2 m from its
+  station at 263.8 s. It is commanded 94.86 m/s against its leader's live 60.51 m/s: between |v| and
+  the catch-up end, as 17.3 (2) predicted. OFF was in the hold arm at that moment, so there is no
+  same-tick OFF fly-to value to set against it.
+- **Spread miss:** USN01 was predicted to move and is identical.
+- **Verdict: ON.** The input is the image's (`007B8E60`, `unit+B1Ch`); the host's |v| stands in for
+  the controller's forward speed, LABELLED.

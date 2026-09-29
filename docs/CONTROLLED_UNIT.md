@@ -2389,3 +2389,40 @@ The slot 2Ch values for `unit_class_lands_troops_vtable_2c` came from the disk i
   - Then `python tools/pair_diff.py` on each pair, check the section 5g mechanism clauses, and
     flip by verdict.
   - cc9-ships9 then re-pairs `kAutoTargetFollowerGateBound`.
+
+## Handoff (cc9-lua10, 2026-09-28)
+
+Branch `agent/cc9-lua10`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua10`. Final state
+at about 60% context.
+
+### Done (every switch below is ON)
+
+| packet | commits | switch | evidence |
+| --- | --- | --- | --- |
+| `cc9_landing_sequencer` | `cce28dd60`, `c3b35987f` | `kLandingSequencerBound` | docs/SQUADRON_LAND_TASK.md 5c; pairs gameplay identical |
+| `cc9_formation_join_follow` | `c05ff3746` | `kFormationJoinFollowBound` | docs/SHIP_UNIT_GROUP_FOLLOW.md 5g; four pairs held |
+| `cc9_plane_follow_law_drift` | `f9efe504d`, `3198cc88c`, `97d1c44bf` | `kFollowLeaderTurnRateBound`, `kFollowLeaderLiveSpeedBound` | docs/PLANE_FOLLOW_LAW.md 17.5, 17.7 |
+| `cc9_follow_target_dir_acos` | `1d7b7045e`, `196d0c3d9` | `kFollowTargetDirAcosBound` (tuning loader) | docs/PLANE_FOLLOW_LAW.md 17.4, 17.6; LOMP10 drift 6442 m -> 131 m |
+| `cc9_landing_approach_bit` | `5abf6e808`, `8c2cc67ca` | `kLandingApproachBitBound` | docs/SQUADRON_LAND_TASK.md 5d; B-25 01 lands instead of bombing |
+| `cc9_land_standby_state` | `ac4f1d6fe`, `5f2f7bde5` | `kLandStandbyStateBound` | docs/SQUADRON_LAND_TASK.md 5e; the flight leaders fly their landing circle |
+
+### Open, in order
+
+1. **`land/line`**, which wing members at mode 2 now request (refused and counted), then `land/begin`.
+   `land/begin` also needs the launch-site arm of `006C3F80` (block `+3Ch`, its `+40h` and `vtable[30h]`),
+   which is refused and counted today. A mother-ship holder is still refused.
+2. **The collision-box extent binding** in ShipHullBodyInputs (GUNNERY_OPEN_ITEMS 47.3 step 3). It
+   waits on cc9-gunnery10's per-class boxes.
+3. USN01 came out identical on three follow-law pairs where it was predicted to move. Its 81 fly-to
+   ticks are all dive-bomb done-law ticks. A row with torpedo-follow wings would test the follow law
+   more widely.
+
+### Working notes
+
+- Runs died at renderer init (`hr=0x8876086a`, `logonui=1/1`) whenever the RDP session was locked.
+  They came back at 15:28 on their own.
+- The `land follow trace` diagnostic prints every 200 `follow (land)` ticks. It exposed the acos
+  correction.
+- Ghidra names were sent to the lead: `007D7DA0` (the leader turn rate) and `006CA5A0` (35.0).
+- In Git Bash, a heredoc or a `-m` argument with an apostrophe breaks. Put scripts and messages in
+  `local\` files.

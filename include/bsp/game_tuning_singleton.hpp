@@ -35,7 +35,7 @@ inline constexpr std::size_t kGameTuningKeyCount = 439;
 // 0.0, below -1.0 gives pi (00D7A264), else 00BF9940 (007E88A1-007E88E4 and
 // 007E892A-007E8970, the loader's only two acos calls). True: this loader does
 // the same. False: the raw number.
-inline constexpr bool kFollowTargetDirAcosBound = false;
+inline constexpr bool kFollowTargetDirAcosBound = true;  // ON: LOMP10 drift 6442 -> 131 m (docs/PLANE_FOLLOW_LAW.md 17.6)
 extern const GameTuningKey kGameTuningKeys[kGameTuningKeyCount];
 
 // The object. Every offset below is a store 007E2A20 makes; the trailing

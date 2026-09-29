@@ -520,6 +520,14 @@ struct GameUnitSlot {
     // (out+0Ch). No bound state reads either; they are the observable result.
     float land_spacing_4c{1.0f};
     bool land_side_44{false};
+    // Packet cc9_land_standby_state: 006C54C0's common tail (006C55FF-006C562A),
+    // approach+38h..+40h the circle point 006C5380 and +48h the radius 006C3E50,
+    // and the standby state's counters.
+    float land_circle_38[3]{0.0f, 0.0f, 0.0f};
+    float land_radius_48{1.0f};
+    unsigned long long land_standby_ticks{0};
+    unsigned long long land_standby_entries{0};
+    float land_standby_last_d{-1.0f};
     unsigned long long land_found_assignments{0};
     double land_installed_at{-1.0};
     unsigned long long land_ticks{0};
@@ -3910,11 +3918,20 @@ struct GameUnitsHost::Impl {
     // Packet cc9_plane_follow_law_drift (docs/PLANE_FOLLOW_LAW.md section 17).
     // True: 009BFEE0's leader turn rate is 007D7DA0 (read whole) at the fly-to
     // and the hold steer point, instead of 0.0. False: 0.0.
+    // Packet cc9_landing_approach_bit (docs/SQUADRON_LAND_TASK.md section 5d):
+    // the block+20h bit 1 that 006C0840 tests, from its producers. False: every
+    // deck gets the bit and a class 10h/16h head's resolution is flagged unread.
+    static constexpr bool kLandingApproachBitBound = true;
+    // Packet cc9_land_standby_state (docs/SQUADRON_LAND_TASK.md section 5e):
+    // land/standby's enter/tick/exit (009B0230/009B0FE0/009B0240), the rule's
+    // standby arm and 006C54C0's common tail (circle point and radius). Needs
+    // kLandingSequencerBound. False: every entry to standby is refused.
+    static constexpr bool kLandStandbyStateBound = true;  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5e)  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5d)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
     // reads it. False: the leader's authored TravelSpeed.
-    static constexpr bool kFollowLeaderLiveSpeedBound = false;  // OFF: mechanism unobserved (docs/PLANE_FOLLOW_LAW.md 17.5)
+    static constexpr bool kFollowLeaderLiveSpeedBound = true;  // ON: re-paired on HEAD (docs/PLANE_FOLLOW_LAW.md 17.7)
 
     // 007D7DA0 (007D7DA0-007D7E91, __thiscall(ctl = unit+AB0h), RET, ST0).
     static float leader_turn_rate_007d7da0(const GameUnitSlot& u) {
@@ -8467,7 +8484,14 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
             && std::find(dead.begin(), dead.end(), owner) != dead.end();
         c.owner_remote_5d = false;
         c.approach_bit_20 = true;
-        if (site_in.need_approach_bit) bit_undetermined = true;
+        if constexpr (kLandingApproachBitBound) {
+            // Packet cc9_landing_approach_bit: block+20h is 3 from 006CAC00
+            // (006CAC3D) and stays 3 for an airfield; 00758550 stores 1 for a
+            // mother ship, so bit 1 is set only for an airfield owner.
+            c.approach_bit_20 = deck->is_airfield;
+        } else {
+            if (site_in.need_approach_bit) bit_undetermined = true;
+        }
         c.owner_side_54 = deck->owner_party;
         c.accepts_6bc530 = false;
         c.key_known = false;
@@ -9352,15 +9376,37 @@ bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
             static_cast<double>(summary.simulated_seconds));
     }
     ++d->lookups;
+    bool found = false;
     for (const LandingAssignment& rec : d->assignments) {
         if (rec.plane != plane.process_index) continue;
         ++d->found;
         plane.land_spacing_4c = rec.spacing_8;       // out+14h, approach+4Ch
         plane.land_mode_50 = rec.mode_10;            // out+18h, approach+50h
         plane.land_side_44 = rec.side_0d;            // out+0Ch, approach+44h
-        return true;
+        found = true;
+        break;
     }
-    return false;
+    if constexpr (kLandStandbyStateBound) {
+        if (!found) {
+            // 006C5563-006C55FC: out+0Ch = (sum of the airborne members' x
+            // through holder+48h, less holder+A4h) >= 0.0 (006C55DC JC).
+            float sum = 0.0f;
+            for (const std::size_t m : landing_members(sq)) {
+                if (!landing_airborne(*slots[m])) continue;
+                const std::array<float, 3> l =
+                    landing_xform_004142e0(d->inverse_48, slots[m]->motion.position);
+                sum = static_cast<float>(static_cast<double>(l[0] - d->t_a4[0]) + sum);
+            }
+            plane.land_side_44 = !(0.0f > sum);
+        }
+        // 006C55FF-006C562A, both arms: +48h = 006C3E50(plane), +38h..+40h =
+        // 006C5380(side = out+0Ch).
+        plane.land_radius_48 = landing_radius_006c3e50(*d, plane);
+        const std::array<float, 3> c =
+            landing_circle_point_006c5380(*d, plane, plane.land_side_44);
+        for (int i = 0; i < 3; ++i) plane.land_circle_38[i] = c[i];
+    }
+    return found;
 }
 
 void GameUnitsHost::run_landing_queue_006cd240(float dt) {
@@ -18119,6 +18165,119 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
 
                     // 009B3CF0 (009B3CF0-009B3EAA, RET 4), the state rule.
+                    // 009B0230, land/standby's enter (vtable 00D1FEF4 +4): the done
+                    // byte +18h and +1Ch cleared; 009B3680 runs the old state's exit
+                    // first (009B0240 for standby, nothing modelled for moveto/follow).
+                    void land_enter_standby_009b0230() {
+                        using LS = GameUnitSlot::LandTaskState;
+                        if (unit_.land_state == LS::kStandby) return;
+                        ++unit_.land_standby_entries;
+                        owner_.log.notef("  land task %s: enters land/standby (mode %d) circle "
+                            "(%.1f %.1f %.1f) r=%.1f side=%d spacing=%.3f at %.2f s (009B0230)",
+                            unit_.row.name.c_str(), unit_.land_mode_50,
+                            static_cast<double>(unit_.land_circle_38[0]),
+                            static_cast<double>(unit_.land_circle_38[1]),
+                            static_cast<double>(unit_.land_circle_38[2]),
+                            static_cast<double>(unit_.land_radius_48), unit_.land_side_44 ? 1 : 0,
+                            static_cast<double>(unit_.land_spacing_4c),
+                            static_cast<double>(owner_.summary.simulated_seconds));
+                        land_switch_state_009b3680(LS::kStandby);
+                    }
+
+                    // 009B0FE0 (009B0FE0-009B1243, RET 4), land/standby's tick.
+                    // docs/SQUADRON_LAND_TASK.md section 5e.
+                    void run_land_standby_tick_009b0fe0() {
+                        ++unit_.land_standby_ticks;
+                        float min_angle = 0.0f, max_angle = 0.0f, followed = 0.0f;
+                        float travel_mul = 1.6f;
+                        const bsp::GameTuningBlock* g = owner_.lua.plane_globals_loaded()
+                            ? &owner_.lua.plane_globals() : nullptr;
+                        if (g != nullptr) {
+                            min_angle = g->pilot_general_move_circle_min_angle;
+                            max_angle = g->pilot_general_move_circle_max_angle;
+                            followed = g->pilot_general_move_circle_followed_dist;
+                            travel_mul = g->dynamics_spd_multipliers_new_travel_speed_mul;
+                        }
+                        // 009B1019: 009FBB20(&(a+38h, a+40h), a+48h, a+44h, 0).
+                        // SUBSTITUTION, labelled: unit+340h (CheatTurbo) is 0.
+                        const float pos[2] = {unit_.motion.position[0], unit_.motion.position[2]};
+                        const float point_xz[2] = {unit_.land_circle_38[0], unit_.land_circle_38[2]};
+                        const CircleSteer009fbb20 st = circle_steer_009fbb20(pos, point_xz,
+                            unit_.land_radius_48, unit_.land_side_44, 0.0f, min_angle, max_angle,
+                            followed);
+                        if (st.heading_written) {
+                            unit_.plan_heading_2c0 = st.heading_2c0;
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = 2;
+                        }
+                        unit_.land_standby_last_d = st.dist;
+                        // 009B101E-009B1073: f = max(0, d - 100.0), h = DropAngle x f x 0.5.
+                        float f = static_cast<float>(static_cast<double>(st.result) - 100.0);
+                        if (0.0f > f) f = 0.0f;
+                        float h = static_cast<float>(static_cast<double>(
+                            unit_.plane_drop_angle * f) * 0.5);
+                        if (unit_.land_alt_60 > h) h = unit_.land_alt_60;   // 009B1086
+                        const float cy = unit_.land_circle_38[1];
+                        const float a = h + cy;                              // 009B10A4
+                        const float py = unit_.motion.position[1];
+                        float target = py > a ? a : py;                      // 009B10D3
+                        if (cy > target) target = cy;                        // 009B10F5
+                        const bool large = bsp::unit_is_kind_of(unit_.class_id, 0x10)
+                            || bsp::unit_is_kind_of(unit_.class_id, 0x16);
+                        const float div = large ? 40.0f : 65.0f;             // 00CE685C / 00D1FF10
+                        const float ratio = (py - target) / div;
+                        float k;
+                        if (0.800000011920929 > static_cast<double>(ratio)) {
+                            k = 0.800000011920929f;                          // 00CE74F8
+                        } else if (static_cast<double>(ratio) > 1.600000023841858) {
+                            k = 1.600000023841858f;                          // 00D06BB4
+                        } else {
+                            k = ratio;
+                        }
+                        // 009B11BF: 009FB800(target, k).
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = target;
+                        pin.reference = k;
+                        pin.unit_world_y = py;
+                        if (g != nullptr) {
+                            pin.ceiling = g->dynamics_ceiling;
+                            pin.climb_dist = g->pilot_general_climb_dist;
+                            pin.drop_dist = g->pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = target;
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
+                        // 009B11C4-009B1205: +2B4h = lvl + a+4Ch x (class+190h - lvl).
+                        const float lvl = owner_.bot_desired_speed_007c47f0(unit_);
+                        const float c190 = unit_.plane_travel_speed * travel_mul;
+                        unit_.plane_desired_speed_2b4 = static_cast<float>(
+                            static_cast<double>(lvl) +
+                            static_cast<double>(unit_.land_spacing_4c) * (c190 - lvl));
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        // 009B120B-009B1239: direction +40h = tuning+66Ch, then
+                        // 009FABE0(009A1A20(0099B630())); no direction object here.
+                        owner_.record("BotStateLandStandby::direction_009fabe0", 0x009fabe0u);
+                        if ((unit_.land_standby_ticks % 200) == 1) {
+                            owner_.log.notef("  land standby trace %s t=%.2f circle_d=%.1f r=%.1f "
+                                "alt=%.1f target=%.1f spd_cmd=%.2f spacing=%.3f mode=%d",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<double>(st.dist),
+                                static_cast<double>(unit_.land_radius_48),
+                                static_cast<double>(py), static_cast<double>(target),
+                                static_cast<double>(unit_.plane_desired_speed_2b4),
+                                static_cast<double>(unit_.land_spacing_4c), unit_.land_mode_50);
+                        }
+                        owner_.done("BotStateLandStandby::tick", 0x009b0fe0u);
+                    }
+
                     void land_state_rule_009b3cf0() {
                         using LS = GameUnitSlot::LandTaskState;
                         // 009B3CF4 009B3770: from moveto/follow it does nothing;
@@ -18129,10 +18288,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             land_refuse_state("land/park (+900h 4 or 5)", 0x009b3d38u);
                             return;
                         }
-                        if (unit_.land_state != LS::kMoveTo && unit_.land_state != LS::kFollow) {
+                        const bool standby_arm = GameUnitsHost::Impl::kLandStandbyStateBound
+                            && unit_.land_state == LS::kStandby;
+                        if (unit_.land_state != LS::kMoveTo && unit_.land_state != LS::kFollow
+                            && !standby_arm) {
                             land_refuse_state("a landing state's rule arm", 0x009b3d45u);
                             return;
                         }
+                        // From standby, 009B3770 finds the done byte +18h clear
+                        // (only enter/exit write it) and does nothing.
                         // 009B3E46-009B3EA2, the moveto/follow arm, keyed on the mode.
                         switch (unit_.land_mode_50) {
                         case 1: {
@@ -18148,10 +18312,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             break;
                         }
                         case 2:
-                            land_refuse_state("land/standby or land/line (mode 2)", 0x009b3e6du);
+                            if constexpr (GameUnitsHost::Impl::kLandStandbyStateBound) {
+                                // 009B3E6D: squadron+3D0h == plane -> standby, else line.
+                                if (owner_.unit_is_flight_leader_007b8ad0(unit_.process_index)) {
+                                    land_enter_standby_009b0230();
+                                } else {
+                                    land_refuse_state("land/line (mode 2)", 0x009b3e6du);
+                                }
+                            } else {
+                                land_refuse_state("land/standby or land/line (mode 2)", 0x009b3e6du);
+                            }
                             break;
                         case 3:
-                            land_refuse_state("land/standby (mode 3)", 0x009b3e98u);
+                            if constexpr (GameUnitsHost::Impl::kLandStandbyStateBound) {
+                                land_enter_standby_009b0230();
+                            } else {
+                                land_refuse_state("land/standby (mode 3)", 0x009b3e98u);
+                            }
                             break;
                         case 4:
                             land_refuse_state("land/begin (mode 4)", 0x009b3e9fu);
@@ -18376,6 +18553,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         switch (unit_.land_state) {
                         case LS::kMoveTo: run_land_moveto_tick_009c18c0(); break;
                         case LS::kFollow: run_land_follow_tick_009c1fd0(); break;
+                        case LS::kStandby:
+                            if constexpr (GameUnitsHost::Impl::kLandStandbyStateBound) {
+                                run_land_standby_tick_009b0fe0();
+                                break;
+                            }
+                            land_refuse_state("a landing state's tick", 0x009b3f39u);
+                            break;
                         default: land_refuse_state("a landing state's tick", 0x009b3f39u); break;
                         }
                         // 009998A0's cruise profile, per think (LABELLED above).
@@ -22219,9 +22403,13 @@ void GameUnitsHost::report() {
         }
         for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
             if (s->land_installed_at < 0.0) continue;
-            host.log.notef("summary landing plane %s: found=%llu mode=%d spacing=%.3f side=%d",
+            host.log.notef("summary landing plane %s: found=%llu mode=%d spacing=%.3f side=%d "
+                "standby entries=%llu ticks=%llu last_circle_d=%.1f r=%.1f",
                 s->row.name.c_str(), s->land_found_assignments, s->land_mode_50,
-                static_cast<double>(s->land_spacing_4c), s->land_side_44 ? 1 : 0);
+                static_cast<double>(s->land_spacing_4c), s->land_side_44 ? 1 : 0,
+                s->land_standby_entries, s->land_standby_ticks,
+                static_cast<double>(s->land_standby_last_d),
+                static_cast<double>(s->land_radius_48));
         }
         host.log.notef("summary landing sequencer refused decks=%llu", host.landing_refused_decks);
     }
