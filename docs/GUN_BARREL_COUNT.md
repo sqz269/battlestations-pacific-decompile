@@ -269,3 +269,39 @@ What is missing, in dependency order:
 
 Until item 3 is read, the offsets can only be applied relative to the unit origin, which would
 be a placeholder of its own. So nothing is wired.
+
+## 8. The fallbacks by cause (packet `cc9_gun_fallbacks`, cc9-gunnery14)
+
+Ranking #10 and #11 (lua19's refreshed ranking).
+
+### 8.1 Barrel count
+
+**Which devices take the fallback.** In reference p's USN04, JM05, USN13 and USNOS logs, every
+device that takes it logs `barrel count not read from the model: no Mesh string`. Those devices
+are listed below by `local\g14_devices.py`, from this installation's arcade `deviceclasses.lua`
+(mtime 2026-05-09, modded; `gamemode.lua` selects the arcade table):
+- depth-charge launchers 54, 55, 57 and 154;
+- torpedo catapults 61 and 66;
+- bomb platforms 75, 78..80, 85..89, 92 and 122;
+- plane guns 93, 95, 96, 98 and 101.
+
+**The image's count is 1** (7.1): no `Mesh` means no model, so 007325A0 never runs and 0072AB80
+answers 1. The host kept the platform's `barrels`, which is also 1 wherever section 6 looked.
+
+**`kGunBarrelMeshlessOneBound` (committed OFF).** ON sets 1 for a `Mesh`-less device. The new summary
+line `summary mission gunnery fallbacks ...` counts, on both sides:
+- the `Mesh`-less guns;
+- the ones whose platform `barrels` is not 1, by device.
+
+**Prediction:** the switch moves a row only where `meshless_changed > 0`.
+
+### 8.2 Muzzle offsets
+
+The same line splits `muzzle offsets fallbacks` by cause, with shots by device:
+- **`no_mount`:** no platform attachment. The shot starts at the unit origin raised by `Height`,
+  the labelled placeholder.
+- **`meshless`:** the image's own empty-list fallback 00730899 (the root translation, the mount
+  point). The host matches it already.
+- **`other`:** a loaded model without offsets or nodes.
+
+Nothing is bound for #11 until the census shows a `no_mount` or `other` share.
