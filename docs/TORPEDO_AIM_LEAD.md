@@ -623,3 +623,43 @@ Predictions, each against the same-tree OFF run:
 
 The verdict rule is the contract's. A mechanism failure (no lead lines, or a projtime outside
 0-30) keeps the switch OFF. A spread miss while the mechanism matches may flip, recorded.
+
+### 11.2 The dive-bomb side: the second switch, and its predictions (written before any ON run)
+
+The pure writer is `bsp::dive_bomb_projtime_009c7e3c(impact_arm, tf, c8)` in
+`src/approach_target_ref.cpp`, build-tested only.
+- Outside the impact arm it stores 0 (`009C7D65`).
+- Inside the impact arm it stores `clamp(approach+C8h + tf, 0, 30)`.
+
+`tf` is `009C7D71`'s fall time: `007BCC80(...) + 0.1`, kept in the argument slot `[ESP+38h]`. The
+host already carries it as `db_impact_fall_time`.
+
+`approach+C8h` is `009C3DA0`'s `Uniform(-row+2Ch, +row+2Ch)` at `009C3E8C`. It is drawn at the
+task seed and at every fly-over enter.
+- **SUBSTITUTION, labelled:** the host draws none of `009C3DA0`, so the switch uses the draw's
+  mean, 0. The row base `[approach+14h]` is unread (FOLLOWER_ATTACK_HANDOVER section 6).
+- The two readings of `row+2Ch` are `torp_targetv_error_02c` and, under the `+0Ch` shift,
+  `dive_bomb_calc_target_pos_error_038`. The name "calc target pos error" fits a jitter on the
+  target-prediction time, which leans toward the shift.
+
+The binding is `kDiveAimLeadBound`, committed OFF, in `local\p1_units_edit.txt` edits 4 and 6. It
+carries three edits:
+- The snapshot at the host's `009C7A9F`.
+- The writer after the impact-point block.
+- Every dive consumer of the fed aim point routed through `aim_point_009fada0`. Those are the
+  approach update, the fly-over lead point, the aimdive and aimglide heights, the goaway turn and
+  the aimdive tail.
+
+Predictions, each against the same-tree OFF run with the torpedo switch at its verdict value:
+- **Mechanism.**
+  - The `aim lead` lines for dive bombers show a projtime of about 3-12 s. That is the fall time
+    from the dive's release height, 0 before the dive and the range latch.
+  - The lead lies along the target's course: roughly `tf x speed`, 50-200 m against a
+    15-16 m/s ship and 0 against a stopped one.
+- **USN01 3000.** ScoutDauntless keeps its 2 of 2 releases. The recorded aimglide lead window
+  (`-117.4..-5.0 m`) sees the aim point move ahead by the lead, so the bomb's along-course miss
+  against a moving target falls. That is DIVE_BOMB_AIM_POINT's "no-lead signature" closing.
+- **USN04 4500 and E2.** Dive-bomb releases are 0 of 19 and 1 of 19 in reference o, held back by
+  AA and the fly-over tolerance (ranking #1). They stay within +-2. Any release that happens
+  scores a smaller along-course error.
+- **Rows with no dive-bomb task:** identical apart from the known noise.
