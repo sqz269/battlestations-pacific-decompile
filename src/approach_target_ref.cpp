@@ -1,6 +1,10 @@
 #include "bsp/approach_target_ref.hpp"
 
 #include <cmath>
+#include <cstddef>
+
+#include "bsp/ship_ai_throttle_ring.hpp"  // heading_to_direction_006bc0c0
+#include "bsp/unit_rudder.hpp"            // wrapped_angle_subtract_00438b10
 
 // Packet cc8_hull_aim_point. See include/bsp/approach_target_ref.hpp for the
 // addresses, the ABI and what is proved versus substituted.
@@ -10,6 +14,15 @@ namespace {
 
 // 009FB2E7: the first timer value is drawn over [0, 2.0).
 constexpr float kFirstTimerLo = 0.0f;
+
+// 008120E0's constants. The two doubles are float values widened.
+constexpr double kShipPredictMinTurn = 0.10000000149011612;   // 00D7A3A0
+constexpr double kShipPredictMinSpeed = 0.8333333730697632;   // 00D09450
+constexpr float kShipPredictTurnLo = -1.0f;                   // 00D7A260
+constexpr float kShipPredictTurnHi = 1.0f;                    // 00D7A24C
+// The projtime cap: double 30.0 [00CE7630] compared, float 30.0 [00CE38C8]
+// stored; the same pair the torpedo estimate uses at 009D3D3C/009D3D4A.
+constexpr double kProjtimeCap = 30.0;
 
 }  // namespace
 
@@ -136,6 +149,76 @@ std::array<float, 4> approach_target_ref_unit_draws_substitute(
         h ^= h >> 16;
         // [0,1) from the top 24 bits.
         out[i] = static_cast<float>(h >> 8) * (1.0f / 16777216.0f);
+    }
+    return out;
+}
+
+void approach_target_ref_lead_tail_009faf05(ApproachTargetRefState& state,
+                                            const std::array<float, 3>& predicted,
+                                            const std::array<float, 3>& origin) noexcept {
+    for (std::size_t i = 0; i < 3; ++i) {
+        // 009FAF3C-009FAF5E: FSUB the pose origin, FSTP float.
+        const float delta = static_cast<float>(static_cast<double>(predicted[i]) -
+                                               static_cast<double>(origin[i]));
+        // 009FAF62-009FAF7D: FADD into sub+1Ch..24h, FSTP float.
+        state.world_point_1c[i] = static_cast<float>(
+            static_cast<double>(state.world_point_1c[i]) + static_cast<double>(delta));
+    }
+}
+
+float dive_bomb_projtime_009c7e3c(bool impact_arm, float fall_time,
+                                  float aim_time_error_c8) noexcept {
+    if (!impact_arm) return 0.0f;  // 009C7D61-009C7D65
+    // 009C7E3C FLD [ESI+C8h], FADD [ESP+38h], FSTP float.
+    const float t = static_cast<float>(static_cast<double>(aim_time_error_c8) +
+                                       static_cast<double>(fall_time));
+    if (0.0f > t) return 0.0f;                                        // 009C7E50
+    if (static_cast<double>(t) > kProjtimeCap) return static_cast<float>(kProjtimeCap);  // 009C7E63
+    return t;                                                         // 009C7E85
+}
+
+std::array<float, 3> ship_predict_position_008120e0(const ShipPredictInputs& in,
+                                                    float t) noexcept {
+    const double td = static_cast<double>(t);
+    // 008120F8-00812101: the turn over t, rounded to [ESP+4].
+    float turn = static_cast<float>(static_cast<double>(in.yaw_rate) * td);
+    // 00812105-00812121: |turn|, the negative arm as -0.0 - turn.
+    const float magnitude = (turn > 0.0f) ? turn : -turn;
+    if (static_cast<double>(magnitude) > kShipPredictMinTurn &&
+        static_cast<double>(in.speed) > kShipPredictMinSpeed) {
+        // 00812185 ClampInPlace: lo first, then hi.
+        if (kShipPredictTurnLo > turn) {
+            turn = kShipPredictTurnLo;
+        } else if (turn > kShipPredictTurnHi) {
+            turn = kShipPredictTurnHi;
+        }
+        // 0081219D-008121C8: the velocity's heading, y = v.z and x = v.x as
+        // 009F9E40 hands them to the library.
+        float heading = static_cast<float>(
+            kHeadingBasisQuarterTurn -
+            static_cast<double>(static_cast<float>(std::atan2(
+                static_cast<double>(in.velocity[2]), static_cast<double>(in.velocity[0])))));
+        if (0.0f > heading) {
+            heading = static_cast<float>(static_cast<double>(heading) + kHeadingBasisFullTurn);
+        }
+        const float half_turn = static_cast<float>(static_cast<double>(turn) * 0.5);
+        const float mean = wrapped_angle_subtract_00438b10(heading, half_turn);  // 008121E8
+        const std::array<float, 2> dir = heading_to_direction_006bc0c0(mean);    // 008121FD
+        const double s = static_cast<double>(in.speed);                          // 00812209
+        const float sx = static_cast<float>(static_cast<double>(dir[0]) * s);    // 00812224
+        const float sz = static_cast<float>(static_cast<double>(dir[1]) * s);    // 0081222C
+        const float dx = static_cast<float>(static_cast<double>(sx) * td);       // 0081223E
+        const float dz = static_cast<float>(static_cast<double>(sz) * td);       // 00812246
+        return {static_cast<float>(static_cast<double>(in.position[0]) + dx),
+                static_cast<float>(static_cast<double>(in.position[1]) + 0.0),   // 00D7A258
+                static_cast<float>(static_cast<double>(in.position[2]) + dz)};
+    }
+    // 0081229E-00812304, the straight arm.
+    std::array<float, 3> out{};
+    for (std::size_t i = 0; i < 3; ++i) {
+        const float step = static_cast<float>(static_cast<double>(in.velocity[i]) * td);
+        out[i] = static_cast<float>(static_cast<double>(in.position[i]) +
+                                    static_cast<double>(step));
     }
     return out;
 }

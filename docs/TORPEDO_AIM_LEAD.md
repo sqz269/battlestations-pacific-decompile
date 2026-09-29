@@ -528,3 +528,138 @@ What this changes in this document, and what it does not:
   `cc8_hull_aim_point` in `docs/HANDOFF_DIVE_BOMB_AIM.md`; an offset of tens of metres on a
   180-270 m hull has the shape of section 7's unexplained +37.8 to +49.6 m under-prediction on the
   misses, which stays unmeasured until that packet binds the point.
+
+## 11. Correction: the aim point DOES lead, through `sub+44h` "projtime" (packet `cc9_approach_target_lead`)
+
+cc9-planes1, 2026-09-29 (stamped 17:10 UTC). This section retracts the title of this document, and
+the "no lead" conclusions of section 10, `DIVE_BOMB_AIM_POINT.md` section 1 and the header of
+`include/bsp/approach_target_ref.hpp`. All of them read `009FADA0` up to `009FAF00` and set aside
+its tail as "off until something sets `sub+44h`". Two things set it.
+
+**The tail, `009FAF05`-`009FAF7D`** (disk bytes; `009FADA0` runs to `009FAF88` exclusive, `RET 4`
+at `009FAF85`, then INT3):
+
+```
+009faf05  movss  xmm0,[esi+44h]
+009faf0a  comiss xmm0,[00D7A218]        ; 0.0
+009faf11  jbe    009FAF80               ; projtime <= 0: no lead
+009faf26  mov    ecx,[esi+18h]          ; the target
+009faf29  fld    [esi+44h]
+009faf2e  mov    edx,[edx+48h]          ; target->vtable[48h]
+009faf31  push ecx / fstp [esp]         ; t = projtime
+009faf39  push eax                      ; &tmp
+009faf3a  call   edx                    ; __thiscall(out, t), RET 8
+009faf3c  tmp - target+FCh/+100h/+104h  ; the predicted displacement
+009faf62  sub+1Ch/+20h/+24h += it       ; added to the hull point just stored
+```
+
+**The name.** `009FB3E0` (the second constructor, four approach classes) registers the
+sub-object's fields through `[arg]->vtable[10h]`: `+48h` "precision", `+54h` "bullpos", `+34h`
+"error", **`+44h` "projtime"** (`009FB516 LEA EDX,[ESI+44h]`, name at `00D21C8C`), and "vehicle".
+
+**The writers**, found by scanning the approach code for stores at the embedded displacement, the
+scan the earlier censuses did not run:
+- **Torpedo**, sub at `approach+B4h`, so `sub+44h = approach+F8h`. It is written at `009D3D2F`,
+  `009D3D52` and `009D3D65`, and these are the three arms of the engagement estimate already
+  reconstructed as `torpedo_engagement_eta_009d3c93` (TORPEDO_APPROACH_UPDATE): `clamp(+98h +
+  2*max(+90h - speed, 0) / (unit speed + +70h), 0, 30)` seconds. The host keeps it as
+  `torpedo_approach.eta_f8` and feeds it nowhere.
+- **Dive bomb**, sub at `approach+30h`, so `sub+44h = approach+74h`. It is written at `009C7D65`
+  (0) and `009C7E72`/`009C7E85`: `clamp(tf + approach+C8h, 0, 30)`, where `tf` is the
+  `007BCC80(...) + 0.1` fall time of the predicted impact point, kept in the second argument slot
+  `[ESP+38h]`. `approach+C8h` is a construct-time jitter, `009C3E8C` `Uniform(-row+2Ch,
+  +row+2Ch)` on stream 1.
+
+Both writes come after the approach's own `009FADA0` call (`009D34BB`, `009C7A9F`), so each tick
+leads by the previous tick's estimate.
+
+**`target->vtable[48h]`** is `008120E0` on all nine hull-sampling vtables. I read each from
+`.rdata` at `vtable+48h`; the plane's `00D05F20` carries `00954650`. Its slot `+34h` is `00812090`
+and its `+38h` is `0080E0F0`, on all nine. Read whole (`008120E0`-`0081230D`, `RET 8` twice):
+- It takes a turning arc when `|00811890(unit+984h) x t| > 0.1` and speed `> 0.8333`. The chord is
+  `s x t` long, along `heading(v) - A/2`, where `A = yaw x t` clamped to `+-1` rad.
+- Otherwise it is straight: `pos + v x t`.
+
+Reconstructed as `bsp::ship_predict_position_008120e0` and
+`bsp::approach_target_ref_lead_tail_009faf05` (`src/approach_target_ref.cpp`), build-tested only.
+
+**The size.** At the aim entry (about 2200 m) the estimate is tens of seconds, clamped at 30. A
+Lexington at about 16 m/s (reference o's USN04: 3572 m in 225 s) moves 300-480 m in that time.
+So the image's Kates aim well ahead of the carrier, and the host's aim at the hull point itself
+is a lost lead of that size. Section 7's along-course under-prediction on the misses has the
+same sign.
+
+**What this does not change.** Section 1's bearing is still a pure `atan2` of (aim point - own
+position); the lead lives in the aim point, not in the bearing.
+
+### 11.1 The switch and its predictions, written before any ON run
+
+`kTorpedoAimLeadBound`, to be committed OFF in `src/game_hosts_units.cpp`. The exact edit is
+`local\p1_units_edit.txt` in the cc9-planes1 tree. It sits in
+`TorpedoApproachBinding::approach_target_point`, after `hull_aim_world_point`. For a target that
+samples its hull, it takes the previous tick's `torpedo_approach.eta_f8` as projtime and adds
+`ship_predict_position_008120e0(target, projtime) - origin`.
+
+It carries two labelled substitutions:
+- `00812090`'s body axis is replaced by the hull's heading direction, the same substitution
+  `neighbour_world_velocity` makes.
+- The torpedo goaway tick (`009D0F10`) still reads the origin. Its own aim-point gap is not
+  part of this switch.
+
+Predictions, each against the same-tree OFF run:
+- **Mechanism, on every torpedo row.** The `torpedo aim lead` lines show a projtime of 5-30 s at the
+  2200 m entry, falling toward 1-5 s at release. The lead lies along the target's course and is
+  roughly `projtime x speed` (Lexington about 16 m/s).
+- **USN04 4500, and E2 (USN04 at 9200/9000).**
+  - The Kates' aim and run-in tracks shift ahead of the carrier.
+  - Releases: 6 of 16, +-3.
+  - Deaths among the 16 Kates move by up to +-3, because the AA exposure changes with the
+    geometry.
+  - Aerial torpedo impacts on the ordered carriers do not fall.
+  - Ships' own torpedo traces are unchanged except by RNG coupling.
+- **JM05 9200/9000.** The torpedo planes are still shot down before release, so releases stay
+  at or near 0 and the deaths move by at most a few.
+- **Rows with no torpedo task:** identical apart from the known noise.
+
+The verdict rule is the contract's. A mechanism failure (no lead lines, or a projtime outside
+0-30) keeps the switch OFF. A spread miss while the mechanism matches may flip, recorded.
+
+### 11.2 The dive-bomb side: the second switch, and its predictions (written before any ON run)
+
+The pure writer is `bsp::dive_bomb_projtime_009c7e3c(impact_arm, tf, c8)` in
+`src/approach_target_ref.cpp`, build-tested only.
+- Outside the impact arm it stores 0 (`009C7D65`).
+- Inside the impact arm it stores `clamp(approach+C8h + tf, 0, 30)`.
+
+`tf` is `009C7D71`'s fall time: `007BCC80(...) + 0.1`, kept in the argument slot `[ESP+38h]`. The
+host already carries it as `db_impact_fall_time`.
+
+`approach+C8h` is `009C3DA0`'s `Uniform(-row+2Ch, +row+2Ch)` at `009C3E8C`. It is drawn at the
+task seed and at every fly-over enter.
+- **SUBSTITUTION, labelled:** the host draws none of `009C3DA0`, so the switch uses the draw's
+  mean, 0. The row base `[approach+14h]` is unread (FOLLOWER_ATTACK_HANDOVER section 6).
+- The two readings of `row+2Ch` are `torp_targetv_error_02c` and, under the `+0Ch` shift,
+  `dive_bomb_calc_target_pos_error_038`. The name "calc target pos error" fits a jitter on the
+  target-prediction time, which leans toward the shift.
+
+The binding is `kDiveAimLeadBound`, committed OFF, in `local\p1_units_edit.txt` edits 4 and 6. It
+carries three edits:
+- The snapshot at the host's `009C7A9F`.
+- The writer after the impact-point block.
+- Every dive consumer of the fed aim point routed through `aim_point_009fada0`. Those are the
+  approach update, the fly-over lead point, the aimdive and aimglide heights, the goaway turn and
+  the aimdive tail.
+
+Predictions, each against the same-tree OFF run with the torpedo switch at its verdict value:
+- **Mechanism.**
+  - The `aim lead` lines for dive bombers show a projtime of about 3-12 s. That is the fall time
+    from the dive's release height, 0 before the dive and the range latch.
+  - The lead lies along the target's course: roughly `tf x speed`, 50-200 m against a
+    15-16 m/s ship and 0 against a stopped one.
+- **USN01 3000.** ScoutDauntless keeps its 2 of 2 releases. The recorded aimglide lead window
+  (`-117.4..-5.0 m`) sees the aim point move ahead by the lead, so the bomb's along-course miss
+  against a moving target falls. That is DIVE_BOMB_AIM_POINT's "no-lead signature" closing.
+- **USN04 4500 and E2.** Dive-bomb releases are 0 of 19 and 1 of 19 in reference o, held back by
+  AA and the fly-over tolerance (ranking #1). They stay within +-2. Any release that happens
+  scores a smaller along-course error.
+- **Rows with no dive-bomb task:** identical apart from the known noise.

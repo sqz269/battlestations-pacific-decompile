@@ -76,8 +76,10 @@
 // Uncertainty
 // ---------------------------------------------------------------------------
 //  * sub+44h gates a tail block at 009FAF0A against 0.0 (00D7A218) and is
-//    initialised 0.0 at 009FB25F. What writes it is unread, so that tail is not
-//    modelled here.
+//    initialised 0.0 at 009FB25F. CORRECTED by packet cc9_approach_target_lead:
+//    it is "projtime", written by the torpedo and dive-bomb approaches, and the
+//    tail is a lead. See approach_target_ref_lead_tail_009faf05 below; the "NO
+//    lead term" sentence at the top holds only while projtime is 0.
 //  * The named-section path inside 00816650 is live code but dead under this
 //    seed (section_chance = -1.0), so nothing here exercises it.
 //  * The centre and the bias are both seeded from 00F87574/78/7C, which is
@@ -144,6 +146,14 @@ struct ApproachTargetRefState {
     bool tracking = false;
     // True once the death path at 009FADAE-009FAE18 has run.
     bool frozen = false;
+    // sub+44h "projtime", 0.0 at 009FB25F. The approach writes it after its
+    // own 009FADA0 call (torpedo approach+F8h, dive approach+74h).
+    float projtime_44 = 0.0f;
+    // HOST-ONLY: the projtime 009FADA0's tail read this tick. The image adds
+    // the lead once, into sub+1Ch, at the 009FADA0 call; this host recomputes
+    // the point at every consumer, so it keeps the value that call would
+    // have seen and every consumer in the tick uses it.
+    float lead_projtime = 0.0f;
 };
 
 // 009FB200. `first_timer_draw` is the Uniform(0, 2.0) at 009FB2E7.
@@ -177,6 +187,67 @@ void approach_target_ref_freeze_009fadae(ApproachTargetRefState& state,
 // matrix (target+CCh) and store it as the aim point.
 void approach_target_ref_store_world_point_009faeea(
     ApproachTargetRefState& state, const CameraMatrix& matrix) noexcept;
+
+// ---------------------------------------------------------------------------
+// The lead: sub+44h "projtime" and the tail 009FAF05-009FAF7D
+// ---------------------------------------------------------------------------
+// Packet cc9_approach_target_lead. CORRECTS "Uncertainty" above: sub+44h has
+// writers, and the tail is live. 009FB3E0 registers the field under the name
+// "projtime" (00D21C8C, type 2, LEA EDX,[ESI+44h] at 009FB516). The torpedo
+// approach writes it as approach+F8h (B4h + 44h), the engagement estimate
+// clamped to [0, 30] s (009D3D2F/009D3D52/009D3D65, torpedo_engagement_eta_009d3c93),
+// and the dive-bomb approach as approach+74h (30h + 44h) at 009C7D65/7E72/7E85.
+// Both writes land after the approach's own 009FADA0 call, so a tick leads by
+// the previous tick's estimate.
+//
+// 009FAF05 COMISS [sub+44h], 00D7A218 (0.0); JBE skips. Otherwise
+// 009FAF3A calls target->vtable[48h](&tmp, projtime) (__thiscall, RET 8, EAX =
+// &tmp) and adds (tmp - target pose origin +FCh/+100h/+104h) to sub+1Ch..24h,
+// the hull point 009FAEEA-009FAF00 has just stored. Each component is rounded
+// to float at 009FAF44/51/5E and again at 009FAF69/73/7D.
+void approach_target_ref_lead_tail_009faf05(ApproachTargetRefState& state,
+                                            const std::array<float, 3>& predicted,
+                                            const std::array<float, 3>& origin) noexcept;
+
+// 008120E0, slot +48h of all nine hull-sampling vtables (00CF90B0, 00CFA778,
+// 00CFB738, 00CFC3D0, 00CFFA30, 00D01630, 00D09678, 00D0BF80, 00D0C648, each
+// read from .rdata). __thiscall(out, t), RET 8 at 0081229B/0081230A, body
+// 008120E0-0081230D. The plane class carries 00954650 there instead.
+//
+//   A = (float)(00811890(unit, unit+984h) * t)                 008120F8-00812101
+//   if |A| > 0.1 [00D7A3A0] and vtable[38h]() > 0.8333 [00D09450]:   the arc
+//     A = ClampInPlace(A, -1 [00D7A260], 1 [00D7A24C])         00812185
+//     v = vtable[34h](); h = pi/2 - atan2(v.z, v.x), +2pi if < 0   0081219D
+//     m = 00438B10(h, (float)(A * 0.5 [00D7A280]))             008121E8
+//     d = 006BC0C0(m)  (x = sin m, z = cos m)                  008121FD
+//     s = vtable[38h]()                                        00812209
+//     out = (x + (float)((float)(s*d.x) * t), y + 0.0 [00D7A258],
+//            z + (float)((float)(s*d.z) * t))
+//   else, the straight arm 0081229E:
+//     v = vtable[34h](); out = pos + (float)(v * t) per component
+//
+// On the nine classes vtable[34h] is 00812090 (body axis unit+94h..9Ch times
+// 0092D730) and vtable[38h] is 0080E0F0 (0092D730 alone).
+// 009C7D61-009C7E85, the dive-bomb approach's projtime write (approach+74h =
+// sub+44h). Outside the impact arm (before the dive and before the range
+// latch, the 009C7D27 raw-position arm) it stores 0.0 at 009C7D65. In the
+// impact arm 009C7E3C-009C7E46 forms approach+C8h + tf, where tf is
+// 009C7D71's 007BCC80(...) + 0.1 kept in the argument slot [ESP+38h]; a
+// negative sum jumps back to the 0.0 store (009C7E56), a sum above the double
+// 30.0 [00CE7630] stores the float 30.0 [00CE38C8] (009C7E72), else the sum
+// (009C7E85). approach+C8h is 009C3DA0's Uniform(-row+2Ch, row+2Ch) at
+// 009C3E8C, drawn at the task seed and at every fly-over enter.
+float dive_bomb_projtime_009c7e3c(bool impact_arm, float fall_time,
+                                  float aim_time_error_c8) noexcept;
+
+struct ShipPredictInputs {
+    std::array<float, 3> position{};  // unit+FCh/+100h/+104h after 00414DB0
+    std::array<float, 3> velocity{};  // vtable[34h]
+    float speed = 0.0f;               // vtable[38h]
+    float yaw_rate = 0.0f;            // 00811890(unit, unit+984h)
+};
+std::array<float, 3> ship_predict_position_008120e0(const ShipPredictInputs& in,
+                                                    float t) noexcept;
 
 // ---------------------------------------------------------------------------
 // A deterministic stand-in for the four draws

@@ -617,3 +617,37 @@ a working re-arm looks like. **B' loses no releases in any state** — the two f
 water contacts and `movieval`'s `approach_returns = 0`, and section 17 traces both: the ditchers
 are the `done`-state descent and the dive aim, and the `done` park is the `approach+B8h` = 2080
 hysteresis, not a release gate.
+
+## 19. The dive-bomb moveto steers at the hull aim point; the image steers at the target origin (packet `cc9_wingman_heading_to_point`)
+
+cc9-planes1, 2026-09-29 (stamped 16:44 UTC). Docs only: `src/game_hosts_units.cpp` was leased to
+cc9-lua17, so the switch below is a proposal handed to the lead, not yet in code.
+
+**The image.** `009C18C0` BSP_BotStateMoveTo_Tick copies the `+2Ch` entity's pose origin
+(`+FCh/+100h/+104h`, after the `00414DB0` refresh) to `[F+1Ch..24h]` at `009C18EC`-`009C1913`,
+where `F` is `ESP` after the three pushes. It then uses that point three times:
+- `009C192C`-`009C1984`: the planar separation `sqrt(dx*dx + dz*dz)` (zero at or below the
+  `[00CE3820]` epsilon) into `[F+0Ch]`, which `009C1999` hands to the `+1Ch` speed slot;
+- `009C19F4`: the target's Y into the glide-slope altitude;
+- `009C1B1C` `LEA ECX,[ESP+1Ch]`: `009F9E40` steers at it. The `ESP` there is `F` again:
+  `009C1ABD SUB ESP,14h` is consumed by `00419010`'s `RET 14h`, and `009C1AF8 SUB ESP,10h` by
+  `009FBA50`'s `RET 10h`.
+
+Nothing between `009C1913` and `009C1B1C` writes `[F+1Ch]` (the one other reference, `009C1B01
+FLD [ESP+1Ch]`, is `[F+0Ch]` at `ESP = F-10h`).
+
+**The host** (`run_dive_bomb_move_to_tick_009c18c0`) takes the target's Y from the origin, but
+takes the separation from `db_planar_bc` and the heading from `db_bearing_c0`. Since packet
+`cc8_hull_aim_point` (`kHullAimOffsetEnabled`, ON) both of those are measured to the hull aim point
+that `009FADA0` stores on `approach+30h`, not to the origin. The comment at the site that calls them
+"the same quantity, built from the same two poses" predates that packet.
+
+**The proposed switch**, `kDiveBombMoveToOriginBound`, committed OFF. When ON, the tick computes the
+planar separation and `heading_command_009f9e40` from `tp` (the origin) and the unit, and feeds that
+separation to both the speed slot and the glide.
+
+**Prediction, written before any run:** identical on every reference row. No row ticks this state:
+USN04, E2 and JM05 hand over `moveto>attackrun@0`, and USN01's ScoutDauntless never enters it.
+`BotStateMoveTo::steer_to_point` appears only on LOMP10, where it is the land moveto. A pair would
+be a null test of reach, not of the law, so the switch may flip on the listing alone once a row
+reaches the state.

@@ -4411,3 +4411,223 @@ No lookup misses at all, so the switch cannot move any reference row, and no pai
 - The rule is the image's.
 - It is post-o: it is on no reference-o binary. It is attributed in reference p, alongside
   `kFindEntityCaseInsensitiveBound`.
+
+## 63. USNOS long: why the inertia flip raised damage while hit records fell (60.2 item 3, cc9-gunnery13, 2026-09-29)
+
+**The question** (60.2 item 3, from reference n). On USNOS long, the hull-inertia flip
+(`kHullInertiaFromShapesBound`, `091cea5cf`) moved:
+- damage from 4138.4 to 10900.7;
+- hit records from 2683 to 1112;
+- the 21 victims not at all.
+
+Reference o has 10635.1 and 1101.
+
+**Where the damage lands** (`pair_diff` of reference m `rb13_usnosl` against o `rb15_usnosl`, the
+unit table):
+- **The ships.**
+  - Portland1 takes 160 -> 2490 and Portland2 129 -> 3915.
+  - NH takes 160 -> 237 while its hits taken fall from 1049 to 25, and it deals 434 -> 6035.
+- **Damage control.** Water damage rises from 2493 to 7384, and element hits fall from 1666 to 199.
+- **Geometry.** Each ship's nearest-unit distance goes from 39 m (NH), 130 m and 78 m (the
+  Portlands) to about 600 m. Without inertia the three ships bunch; with it they keep station.
+
+**Who hits whom.** Two traced runs of USNOS long cover all IJN ships, coastal guns, NH, the Portlands
+and the `unit #2.x/#3.x` attackers (`BSP_AA_TRACE_UNIT`, names in `local\g13_trace_names.txt`). The
+tally is `local\g13_ff.py`.
+
+| run | NH -> Portlands | Portlands -> each other and NH |
+| --- | --- | --- |
+| o (`local\g13_trO_usnosl.log`, gameplay-identical to `rb15_usnosl`, exit 1) | **cat 4: 18 hits, 5408.4 applied** (Portland2 3519.8, Portland1 1888.6; the first at 227.76 s) | cat 3: 55 hits, 1233.6 applied |
+| o with inertia OFF (`local\o_nhi`, `local\g13_trNhi_usnosl.log`) | cat 4: none. NH's cat 1 hits Portland2 276 times for 0.0 (armour) | 52 hits, 363.6 applied |
+
+**The mechanism.**
+- **The guns.** NH's category 4 mounts are device row 521, `Yamato_1945 18'' 3X`, HEAVYARTILLERY,
+  in this installation's arcade `deviceclasses.lua`. Their second Bullet record is class 23 (V0
+  300).
+- **The targets.** NH fires them at the low attackers: 78 cat-4 shots, 30 at `unit #3.1` and 14 at
+  `unit #2.4`, at 1100-1200 m with the barrels about 3 degrees up.
+- **Friendly fire.** With the ships at station-keeping distance, the Portlands lie on those flat
+  trajectories. The blasts and direct hits land on them and then flood them.
+- **Why hit records fall.** The bunched fleet of the no-inertia run traded a thousand zero-damage
+  MG hits among close neighbours.
+
+**Is the friendly fire the image's?** As far as read, yes.
+- **The line-of-fire predicate `0072CDD0`** is installed only for weapon kinds 1, 5 and 6
+  (`00729560`, `00729588..00729595`; the host's `kAaLineOfFireBound` follows it). A HEAVYARTILLERY
+  gun has no friendly line-of-fire test in the image.
+- **The plane admission.** `008633D0` admits a plane when mask bit 0 is set, and the category
+  masks start at 3 (`00862632`). Only the AA/flak list's bit 0 is rewritten, from `+221h`, so a
+  category 4 gun may take a plane.
+- **Unread:** whether the artillery sub-director's own pick admits aircraft. The host's cat-4 plane
+  shots come from the same pass, so this is the one open link.
+
+**Verdict:** no host divergence found. The damage rise is the correct inertia geometry exposing an
+image rule (no friendly-fire check for heavy artillery) to a flat-firing mount. Nothing is bound.
+
+**The unread link, answered (section 66).**
+- **The image's pick never admits aircraft to a HEAVYARTILLERY gun.** Its preference row
+  `00E098D8` holds no plane class (10h-17h).
+- **NH was not firing at aircraft.** Its targets were the suicide boats (0Eh, `unit #2.x`) and the
+  submarines (08h, `unit #3.x`), which that row admits.
+- **So there is no divergence, and no binding is queued.**
+
+## 64. The kill handlers: what they do beyond the physics (ranking #12, cc9-gunnery13, 2026-09-29)
+
+**Sources.** Ghidra was read, not written. The disasm-raw bodies are the disk bytes.
+- **Host site:** `flush_unit_kills_00903670` (`src/game_hosts_mission_frame.cpp`) records the
+  `vt[84h]` dispatch as `Entities::kill_vtable84` (`00923010`).
+- **The wreck handler** `00824B60` is `EntityQueues::wreck_handler_vtable7c`
+  (`src/game_hosts_ready.cpp`). Its reference o calls: USN02 11, USNOS long 16, and JM06, JM08,
+  LOMP06 and USNOS 1 each.
+
+**The ship `vt[84h]`: `00819880`** (body `00819880-0081989D`).
+- **Three steps, `__thiscall(ship)`:**
+  1. `0092BD30(ECX = [ship+1018h])` clears the hull-shape fields (the physics the host does);
+  2. `00818970(ship)`;
+  3. a tail JMP to `0095D400(ship)`.
+- **`00818970`**, the effect teardown. It walks the live effect handles, calls
+  `BSP_PointEffect_StopChildren` (`00867B10`) on each, sets `+9 = 1` and releases each one:
+  - `+BA4h/+BB4h`, `+BA8h`, `+BACh/+BBCh`, `+BB0h/+BC0h`;
+  - `+9E8h..+9F4h`;
+  - the lists at `+A00h`, `+A14h`, `+B44h`, `+B54h`;
+  - the vector at `+1118h`.
+- **`0095D400`**, the unit base teardown:
+  - it stops and releases the effect at `+670h`;
+  - it empties the 44h-record vector at `+660h` (`0095BE70` with 0, `LEA ECX,[EBX+660h]` at
+    `0095D474`);
+  - it calls `BSP_UnitInstance_ReleaseDamageStateInstance` (`008797B0`).
+- **It sends nothing:** no session message and no score or report.
+
+**The plane `vt[84h]`: `007CC580`.**
+- **Slot:** plane vtable `00D05F20` holds `007CC580` at `+84h`.
+- **Body:** `007CC580-007CC7A0` exclusive. The last instruction is `JMP 0095D400` at `007CC79B`, and
+  `007CC7A0` is `BSP_Plane_EnterFlightStateTwo`. Ghidra has no function here: the address sits
+  inside the candidate `007CC2F0`. **For the lead to define.**
+- **Steps:**
+  1. `vtable[10h]`, which is `0042E950` (the name getter; the result is discarded);
+  2. **`007C75A0` `BSP_Plane_UnregisterFiringGuns`: removes the plane from the firing-plane list
+     `[00F87278]`;**
+  3. it stops and releases the effect vectors at `+A3Ch` and `+A4Ch`, the `class+5A0h` effect slots
+     at `+A5Ch` (stride 10h), and the handles counted at `+A34h`;
+  4. the tail `0095D400` above.
+- **The one gameplay effect is step 2.** `[00F87278]` is the list the attacker-evasion scan reads.
+  The host stands in for it with `plane_gun_fire_bc9` (`src/game_hosts_units.cpp`, the
+  `[00F87278]` comment near the evasion scan).
+  - Its only writer is the dogfight gun tick, which sets it every tick while the plane fights.
+  - Nothing clears it on death.
+  - A plane killed mid-burst keeps the flag set. It is still counted as a firing attacker unless
+    that scan's `state == nullptr || state->simulate != 0` test excludes dead planes, which is
+    **unverified**.
+  - **Routed to lua16:** clear `plane_gun_fire_bc9` at the kill (`007C75A0`), or confirm the state
+    test excludes the dead.
+
+**The ship wreck handler: `00824B60`** (slot `7Ch`; `docs/UNIT_DEATH_MESSAGE_AND_SINK.md` has the
+sink block). Beyond the physics (inertia x2, damping 2.5 / 0.5, `+828h/+82Ch` = 0):
+- **Effects and sounds:** `004D1100` / `008674C0` / `00484620` teardown, and `00818970`.
+- **`0074EC50(&unit+10D4h)`:** the leak manager is reset.
+- **`[unit+BC8h] = U(cfg+64Ch, cfg+650h)`:** the bubble timer (GAME_EXECUTABLE line 3051: it
+  advances in the sinking pass). Presentation.
+- **The five-point scatter at `+B68h`:** the wreck's burst points. Presentation.
+- **`004A5AA0(manager, unit)`:** breakup pieces from the wreck class, when the class has them.
+  Debris.
+- **`00959450` `BSP_Unit_OnDestroyed`:** the kill report through `009813A0` (the warning manager's
+  loss report, which the host already carries: `loss_reports` in the warning-manager census).
+
+**Summary for ranking #12:**
+- **`00819880`:** effect and damage-state teardown only. Nothing is sent.
+- **`00824B60`:** presentation (effects, bubbles, scatter, debris) plus the leak reset. Its only
+  message is the loss report, which is modelled.
+- **`007CC580`:** effect teardown, plus one gameplay write: the firing-list removal. That is routed.
+
+Nothing here is bound. The row can drop to "presentation, plus the `[00F87278]` removal".
+
+## 65. Handoff (cc9-gunnery13, 2026-09-29, at about 70% context)
+
+### 65.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| AA_LETHALITY_AUDIT 8.1-8.4 | `cc9_aa_jm05_repair` | JM05 re-paired on main (the AA errors stay ON). Three AA terms checked and found faithful: barrels/rate, damage, aim point. The plane-hit gap was found |
+| AA_LETHALITY_AUDIT 8.5 | `cc9_plane_hit_task_notify` | `kPlaneHitTaskNotifyBound` **ON**: releases move outward. P2's count missed; the override was accepted by the lead |
+| AA_LETHALITY_AUDIT 8.6-8.7 | `cc9_dive_hit_clock_pair` | lua16's `kDiveHitClockBound` **kept OFF**: the rerolls stay 3 -> 3 (mechanism-failure clause) |
+| 61 | `cc9_ship_fire_stance` | `kShipFireStanceBound` **ON**: USN01 and USN04 are identical, and the census held |
+| GAME_EXECUTABLE reference o, `reports/cc9_reference_rebaseline_15.json` | `cc9_reference_rebaseline_15` | 16 rows on `3194cea39`. 12 switches attributed; the all-OFF anchor is identical to n |
+| 62 | `cc9_scene_command_find_case` | `kSceneCommandFindCaseInsensitiveBound` **ON** by census (every lookup is exact). It is post-o |
+| 63 | 60.2 item 3 | USNOS long's damage under inertia is NH's heavy-artillery friendly fire on the Portlands. That is the image's rule, as read; nothing bound |
+| 64 | ranking #12 | the kill handlers: presentation, plus `007CC580`'s firing-list removal (routed to lua16) |
+
+### 65.2 Open items, in order
+
+1. **Ranking #7, the player gun-seat group arm** (`00959C91..00959F6D` of `00959C20`).
+   - Bind the in-window arm alone, and pair on USN01 and USN04.
+   - It is not started.
+2. **60.2 item 4:**
+   - the periscope shape in the hull box (57.2);
+   - m's flags (57.2).
+3. **Section 63's one unread link:** does the artillery sub-director's own target pick admit
+   aircraft? If it does not, NH's cat-4 plane shots are a host divergence.
+4. **Section 64's routed item** (lua16): `plane_gun_fire_bc9` is never cleared at a plane's kill.
+   - The image's `007CC580` removes the plane from `[00F87278]` through `007C75A0`.
+   - The lead should also define `007CC580` in Ghidra (`007CC580-007CC7A0`, exclusive; tail
+     `JMP 0095D400` at `007CC79B`).
+5. **Reference p** must attribute the post-o switches:
+   - `kCommandTargetKeepUnauthoredBound`;
+   - `kPilotLandNativeBound` (now ON);
+   - `kFindEntityCaseInsensitiveBound`;
+   - `kPlaneGroundLevellingBound`;
+   - `kSubmarinePeriscopePrepassBound`;
+   - `kSceneCommandFindCaseInsensitiveBound`;
+   - anything later.
+
+   Take the list from `local\g13_switches2.py 3194cea39 <main>`. That script also catches names
+   that do not end in `Bound`.
+
+### 65.3 Tools in the cc9-gunnery13 tree (`local\`)
+
+- **Exports:** `g13_exp.ps1 -Commit <sha> -Specs 'name:kA=false,...'` runs detached `pair_export`s.
+- **Runs:**
+  - `g13_runs.ps1 -V <variant> [-Only rows]` (the reference rows);
+  - `g13_batch.ps1 -V <variant> -Only rows` (the same, with a foreground wait);
+  - `g13_run1.ps1` (one run, optional `-Trace` names);
+  - `g13_census.ps1` (the rows on the tree's own build).
+- **Reference tables:**
+  - `g13_vs.py <off> <on> [rows]` (prefix `rb14` = reference n in cc9-gunnery12);
+  - `g13_rows.py`, `g13_table.py`, `g13_members.py`, `g13_report.py`.
+- **Analysis:**
+  - `g13_aacount.py` (low aircraft deaths);
+  - `g13_drops.py` (torpedo drops);
+  - `g13_dive.py` (the dive census);
+  - `g13_ff.py <log> <victims>` (traced hits by shooter/category/victim);
+  - `g13_devrow.py <index>` (compact arcade device rows).
+
+## 66. Correction to 63: NH's 18-inch targets are boats and submarines, and the image's row admits them (cc9-gunnery13, 2026-09-29)
+
+**Was (63).** "NH fires them at the low attackers ... with the barrels about 3 degrees up". 63 read
+this as heavy artillery engaging aircraft, and left open whether the artillery pick admits planes.
+
+**Is.** The targets are not aircraft.
+- **The 30 shots at `unit #3.1`, and the others at `unit #3.x`:** `unit hull input ... type_id=4
+  kind=8`. These are submarines, class 08h.
+- **The shots at `unit #2.x`, such as `unit #2.4`:** `type_id=43 kind=14`, TBoat vtable
+  `00D0C648`, length 9.5 m. These are torpedo boats, class 0Eh: the suicide boats.
+- **Evidence:** `local\rb15_usnosl.log`.
+- **Why the barrels were at 3 degrees:** flat fire at a surface target 1100-1200 m out.
+
+**The image's rule.** The category pick is `score_candidate_00863990`. Its rank test
+(`gunnery_rank`, the table `00727BD0` builds) reads the HEAVYARTILLERY preference row at
+`00E098D8` (`src/gunnery_tables.cpp`, transcribed from the image):
+
+`0D, 0A, 07, 09, 0C, 0B, 08, 0E, 1C, 1B, 45, 46, 19, 41`
+
+- **Submarine (08h) and torpedo boat (0Eh)** are the 7th and 8th entries.
+- **No plane class (10h-17h) appears.** So the image never lets a category 4 gun take an aircraft
+  through this pick. The host uses the same table, so it cannot either.
+
+**So the unread link is closed, and there is no divergence.**
+- NH's 18-inch rounds are aimed at suicide boats and surfaced submarines, as the image's
+  preference row allows.
+- HEAVYARTILLERY carries no line-of-fire predicate (`00729560`, 63).
+- At station-keeping distance the rounds cross the Portlands.
+
+63's verdict stands (faithful, nothing bound); only its reason is corrected. 65.2 item 3 is
+closed.
