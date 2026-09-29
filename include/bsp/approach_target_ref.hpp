@@ -88,6 +88,7 @@
 
 #include <array>
 #include <cstdint>
+#include <vector>
 
 #include "bsp/camera_affine.hpp"
 #include "bsp/gun_bot_remainder.hpp"
@@ -164,9 +165,36 @@ ApproachTargetRefState approach_target_ref_construct_009fb200(
 // clears the dirty byte. `hull` is [target+538h]+A0h/+A4h/+A8h, the authored
 // vehicle-class Length/Width/Height; pass a zeroed `hull` for a target whose
 // vtable slot +100h is 0042D810, which yields exactly the bias.
+// Packet cc9_ship_section_points. What 00816650 reads off the TARGET ship when
+// 009FA2A0 calls it: the three section records ship+A88h / +A68h / +A78h with
+// their bytes +A94h / +A74h / +A84h, and 0093A570(ship+A20h, id) negated per
+// section (ids 5, 8 and 6). Passing null to the pick keeps the empty records.
+struct ApproachTargetSections {
+    ShipLeadSections sections{};
+    bool engine_room_available = true;  // !0093A570(ship+A20h, 5), 008166B4
+    bool magazine_available = true;     // !0093A570(ship+A20h, 8), 008166F6
+    bool fuel_tank_available = true;    // !0093A570(ship+A20h, 6), 00816742
+};
+
 std::array<float, 3> approach_target_ref_pick_009fa260(
     ApproachTargetRefState& state, const LeadAimHullExtents& hull,
-    const ShipLeadRandomDraws& draws, bool target_is_hull_sampler) noexcept;
+    const ShipLeadRandomDraws& draws, bool target_is_hull_sampler,
+    const ApproachTargetSections* sections = nullptr) noexcept;
+
+// 0081F980's section pass over the ship model's GeomMesh list: each element of
+// kind 8 fills the magazine record (00820566), kind 5 the engine room
+// (008205D7) and kind 6 the fuel tank (00820648); the last element of a kind
+// wins, and the point is 00723030's midpoint of the element's root box.
+// LABELLED, as in the gunnery host's copy (docs/SURFACE_GUNNERY_REFERENCE.md
+// 8.1): the root box is taken as the element's triangles' bounding box in
+// model space; the producer of element+20h/+24h is unread.
+ShipLeadSections ship_section_points_0081f980(
+    const std::vector<struct GeomMeshResourcePayload>& meshes);
+
+// 0081668F..00816769: the weight total 00816650 draws its pick over, zero when
+// the chance is not positive or no section survives its three tests.
+float approach_target_ref_section_total(const ApproachTargetRefState& state,
+                                        const ApproachTargetSections& sections) noexcept;
 
 // 009FADA0's cadence, without the transform. Advances the timer, re-arms it on
 // expiry, and answers whether 009FA260 must run this tick. `rearm_draw` is the
@@ -349,7 +377,11 @@ std::array<float, 4> approach_target_ref_unit_draws_substitute(
     std::uint32_t seed) noexcept;
 
 // Map the four unit draws onto the ranges 00816650 draws over, given `spread`.
+// `section_total` is approach_target_ref_section_total's answer; the pick is
+// drawn over [0, total - 1e-4) from unit[0] (00816796), a stand-in index: the
+// image draws the pick INSTEAD of the three box draws, from one stream.
 ShipLeadRandomDraws approach_target_ref_draws_from_unit(
-    const std::array<float, 4>& unit, const std::array<float, 3>& spread) noexcept;
+    const std::array<float, 4>& unit, const std::array<float, 3>& spread,
+    float section_total = 0.0f) noexcept;
 
 }  // namespace bsp
