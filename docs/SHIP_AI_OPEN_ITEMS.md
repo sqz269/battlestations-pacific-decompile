@@ -4134,3 +4134,81 @@ defect, but it means the land install was never exercised.
 - `kScriptedOrderNatives2Bound` (SetShipMaxSpeed) is flipped **ON**.
 - PilotLand moves to its own switch, `kPilotLandNativeBound`, which stays **OFF**. Re-pair IJN01
   once FindEntity matches case-insensitively.
+
+## 51. The AI planner spawn, gates read (packet `cc9_ai_planner_spawn`, continued from 47)
+
+Worker cc9-ships15, 2026-09-29 14:41 UTC. Ghidra was read-only. The call sites come from byte
+censuses (`tools/callsite_census.py`), not from `ghidra callers`.
+
+### 51.1 Correction to section 47: the single-player spawn does not pass through `00A25B90`
+
+| routine | rel32 callers |
+| --- | --- |
+| `00A25B90` (the `[00F8AB6A]` gate) | only the mode planners: Duel `00A25FBE`, Escort `00A26255`, Siege `00A26554`, Competitive `00A26634` |
+| `00A25A30` | `00A25C3E` (in `00A25B90`), DefendThink `00A29DAA`, CaptureThink `00A2B758` |
+| `00A23980` | `00A25B0B` only (in `00A25A30`) |
+
+So Capture and Defend, which are the planners the single-player rows run, call `00A25A30`
+directly and never read `[00F8AB6A]`. Its writers are `00A32DF0` (clears it; referenced only from
+the table at `00D23240`) and `00A38DA0` (`__fastcall`, CL = the value: `00A38DCF` stores 1 and
+`00A39009` stores 0). `00A38DA0` is called from `00778180`, `0088C838` and `0088C9C8`. None of these
+decides the single-player path.
+
+### 51.2 The Capture spawn arm `00A2B477-00A2B7A6`, gate by gate (V, listing)
+
+1. **`00946970([00F89B3C], team) == 0.0`**, at `00A2B488` / `00A2B491`. `00946970` sums, over the
+   spawn manager's request lists, `00946870`. That is the `ResourceUsage` property (`00CFACAC`) of
+   each queued record whose `OwnerPlayer` (`00CF882C`) is the team. The gate is **"no spawn request
+   of this team is queued"**. On these rows the queue holds only what `SpawnNew` put there.
+2. **`[ESP+4Fh]`, the ramp** (`00A2A0B3` / `00A2A0C1`, the host's `ai_tail_capture_spawn_due`).
+3. **The budget** (`00A2B4A6-00A2B4EE`), w =
+   `(1 - [00F8A8BC + 4*009FFC80()]) * 00942130(team) - 00A1C900(planner)`. It spawns only when
+   w >= 1.0.
+   - `00942130`: `[00E0CFB4]` (2400.0 in `.data`, rewritten from the lobby by `005E3273`) times
+     the double `[00D7A280]` = 0.5, divided by the number of the eight slot records (`game+18CCh`)
+     that have `+8h` set, `+9h` clear or `+0Ah` set, and `+28h` equal to `slot[team]+28h`. It is 0
+     only when that count is 0.
+   - `004C6890` sets `+8h` = 1 on every slot below the scene's `MaxPlayerNum`. The logs show
+     `max_players=8 authored=1` on JM05 and IJN01. So `slot[team]` counts itself, the count is at
+     least 1, and the budget is 1200 / count.
+   - With the defend percent at its 0.35 default and no group resources (`ResourceUsage` is
+     unauthored), w = 780 / count >= 97.5. **The budget passes.**
+4. **The best target**: the loop `00A2B5D5-00A2B65B` over the plan's targets (`+2Ch` > `[00D7A218]`,
+   the largest `+14h`). Then:
+   - `00A24870` fills the vector with the entity records within tuning `+1A4h` of the target
+     (`00A07D40`), or one default record from `BSP_Ai_EntityRecordBuild(1)` when there are none;
+   - `00A25A30(planner)(target pos, min(w, rec+1Ch), &vector, "[capture]"+id, 0)`.
+5. **The sources, `00A25A30` -> `0066E590`**:
+   - `0066DD00` walks world list 28 (`[[00E188A8]+19CCh]+16Ch`, the CommandBuildings) for those
+     with `+78Ch` != 0. That is the size of the `+784h` list `006F5CC0
+     BSP_CommandBuilding_AdoptNearbyGarrison` fills with the forts (1Bh), airfields (45h) and
+     shipyards (46h) near the building.
+   - `0066E2B0` keeps the ones of the team (`+54h`), and `0066E590` drops the entries whose
+     `+14h` is 0.
+6. **`00A23980`** (body `00A23980-00A243C7`, `RET 18h`) prices and places the force, through
+   `VehicleClass_GetOrCreate`, `00942130` and `00A21D90`. **Ghidra's listing drops
+   `00A2410C-00A243AC`**, after the `_free` at `00A24107` (the CALL_RETURN problem;
+   `ghidra flow` would show it). The dropped block is where the request goes out:
+   - `00A24328 MOV ECX,[00F89B3C]`, then `00A24337 CALL 0094C830`;
+   - `0094C830` builds the request (`00947BC0`) and, in session mode 0 or 1, calls `0094B600`,
+     which validates and enqueues through **`BSP_SpawnManager_EnqueueRequest` `00949530`**. That
+     is the queue `SpawnNew` feeds, and the host already drains it (`src/game_hosts_lua.cpp`,
+     `spawn_request_queue`).
+
+### 51.3 Verdict so far
+
+In single player the gates **pass** wherever the team owns a CommandBuilding with an adopted
+airfield, shipyard or fort, and the spawn then **creates units** through the SpawnNew queue.
+- AI_PLANNERS.md's "the spawn arm is unreachable in this process" describes this host, not the
+  image.
+- Section 47's `[00F8AB6A]` question does not apply to single player.
+
+This is ranking item 8, and it is real. Not yet read:
+- `00A23980` (with the dropped tail from the disk bytes), `00A236F0`, `00A21D90`, `00A24870`'s
+  visitor `00A07D40`, `00947BC0` and `0094B600`;
+- the Defend arm `00A29B8E-00A29E2A` (its gate is at `00A29BF8` and its call at `00A29DAA`; its
+  gate order was not read).
+
+Binding needs those bodies and a host route from the planner into `spawn_request_queue()`.
+**Next step:** a Ghidra flow repair of `00A23980` by the lead (`tools/ghidra_flow_repair.py`), then
+read it whole.
