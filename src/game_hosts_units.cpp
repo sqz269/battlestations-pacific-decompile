@@ -1862,7 +1862,7 @@ constexpr bool kTorpedoGoAwayAimPointBound = true;
 // kind-6-in-category-6 second ammo record (+48h); the cache lives on the unit
 // slot, one per goaway state, so it is not reset when a new task is built.
 // OFF: the empty list, as before.
-constexpr bool kFlyToObstacleListBound = false;   // ON: TORPEDO_AIM_LEAD 15.4
+constexpr bool kFlyToObstacleListBound = true;    // ON: TORPEDO_AIM_LEAD 16.1
 // Packet cc9_torpedo_reset_draws (docs/TORPEDO_AIM_LEAD.md section 19): the
 // reset 009D0380's stream-1 draws, which this host held as row values or 0.
 // +70h = U(0.9, 1.1) * min(desc+18Ch TravelSpeed, 0.75 * 007BCE20) (009D0449),
