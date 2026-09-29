@@ -3521,3 +3521,73 @@ Phelps is the controlled (idle) unit, and the column is the distance it moved:
 - Clearance moves Phelps only on the gate-and-join-OFF base (2383.93 -> 2567.69 m).
 - Both are ship-AI formation effects on an idle player unit. Neither needs a fix.
 - Reference l's flag line is corrected in place.
+
+## 55. The hull shape owners through the Note lookup (packet `cc9_note_owner_shapes`, cc9-gunnery11, 2026-09-29)
+
+This follows up 53. **The owner test, read at `00938F61..0093918C`.** A pair `{item, node}` from
+`model+4Ch` is kept when `node` equals one of four nodes:
+- `[ESP+3Ch]`, the `firstnode` lookup at `00938F4E` (string `00D1968C`), compared at `00939026`;
+- `[ESP+8Ch]`, `model+0Ch` (the root), at `00939039`;
+- `controller+370h`, `0071AD50(model, "front")` (`00D196A0`) at `00938DB9`, compared at
+  `00939053`;
+- `controller+374h`, `0071AD50(model, "back")` (`00D19698`) at `00938DE2`, compared at `0093906C`.
+
+`0071AD50` returns the node a Note of that exact name was published with. B891A0 publishes each
+hierarchy record's items with that record's own node (NATIVE_MODEL_GRAPH_AQ, section 49.3), so:
+
+**the kept shapes are the ConvexObjects of record 0 and of every record that lists a Note named
+`firstnode`, `front` or `back`.**
+
+- The loop at `00938E04..00938F17` is not an owner. It looks up `hajobelso` (`00CEB8F4`) through
+  `0071BA20` and moves each match; it does not take part in the walk's test.
+
+**The census** is `local\g11_notebox.py`, read-only on this installation's ship models; its output
+is `local\g11_notebox.txt`.
+- No model has a `firstnode` Note.
+- Of the 40 class models whose record 0 lists no ConvexObject (49.5), **39 get shapes through their
+  `front`/`back` records.** The `eleje` (front) and `hatulja` (back) items carry the hull.
+  Examples, with shapes and raw extent:
+
+  | model | shapes | extent |
+  | --- | --- | --- |
+  | akagi | 2 | 30.07 x 43.75 x 261.82 |
+  | yamato | 6 | 37.12 x 44.37 x 254.48 |
+  | i-400 | 4 | 13.49 x 17.85 x 126.80 |
+  | porter | 10 | 11.45 x 32.62 x 113.09 |
+  | us_troop_transporter | 2 | 27.20 x 42.58 x 181.50 |
+  | soryu | 4 | 33.33 x 26.95 x 225.40 |
+  | jap_tanker | 5 | 23.35 x 29.70 x 167.88 |
+  | lst_mark5 | 3 | 14.93 x 15.82 x 97.89 |
+
+- **Only saratoga keeps the empty set,** and so the zero box of 49.10.
+- **Five models with a root shape also gain Note-owned shapes,** which widens their box:
+  hospital_ship (3 + 4), jap_troop_transporter (1 + 5), dzsunka-big, dzsunka-little and
+  pt_boat_camo (1 + 1 each).
+- Every owner record's composed matrix leaves the box unchanged. The posed box equals the raw box
+  in all 239 ship files.
+
+**The reader** (`read_mmod_hull_convex_box`, `fd2e7ccd1`) now keeps record 0 plus every record
+listing such a Note, and counts the latter in `note_owner_records`.
+- DeRuyter's fixture box is unchanged: it has no front or back Note, and the existing test passes.
+- A 300-frame check with `kHullInertiaFromShapesBound` flipped (`local\g11nb_*`, not committed)
+  logs the census's boxes plus the 0.02 widening on each side:
+  - Oglala (us_troop_transporter): shapes=2, 27.24 x 42.62 x 181.54;
+  - Convoy1 (jap_troop_transporter): 6 shapes;
+  - Hospital Ship 01: 7 shapes;
+  - PT1: 2 shapes;
+  - LST8 (lst_mark5): 3 shapes;
+  - MovieCargo (jap_cargo): 4 shapes.
+- The units host's `hull shapes` line still says "root ConvexObjects". That wording is in the units
+  host (lua12's lane) and is now inexact.
+
+**Consequence for the inertia switch (still OFF).**
+- 52.3's pairs gave zero inertia to every zero-root class. On JM06 that is the transports and
+  tankers, and on USN02 none of the listed classes.
+- With this reader they get a box. A re-pair of 52's USN02 and JM06 rows would move JM06's
+  transports, which 51.1 recorded as unmoved.
+- This does not change 52.3's verdict. The capsize prediction is still the blocker.
+
+**Uncertainty.**
+- The shape's node transform is not modelled. It is identity for every owner record here.
+- The periscope shape (49.10) is still not added. It is a separate `0071AD50("periszkop")` at
+  `009396D8`, and 53 shows it matches 12 submarine models.
