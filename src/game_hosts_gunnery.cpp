@@ -6696,6 +6696,26 @@ bool GameGunneryHost::query_segment_units(const float from[3], const float to[3]
     return hit;
 }
 
+bool GameGunneryHost::landscape_segment_hit_00904400(const float from[3],
+    const float to[3]) const {
+    // 00904400: entity 0 -> 0098ADD0(from, to, 0, record, 44h); AL is the answer.
+    Impl& host = *impl_;
+    const unsigned long long mesh_hits = host.shell_mesh_hits;
+    const unsigned long long box_hits = host.narrowphase_box_0085cdb0;
+    SegmentBinding query(host, static_cast<std::size_t>(-1));
+    bsp::SegmentQueryArgs args;
+    args.from = bsp::HitQueryPoint{from[0], from[1], from[2]};
+    args.to = bsp::HitQueryPoint{to[0], to[1], to[2]};
+    args.exclude_entity = nullptr;
+    args.kind_filter = 0x44;
+    bsp::HitRecordFill record;
+    bsp::hit_record_reset_00470470(record);
+    const bool hit = bsp::query_segment_0098add0(query, args, record);
+    host.shell_mesh_hits = mesh_hits;
+    host.narrowphase_box_0085cdb0 = box_hits;
+    return hit;
+}
+
 void GameGunneryHost::Impl::run_projectiles(float dt) {
     for (GameProjectileRow& shot : shots) {
         if (!shot.alive) continue;
