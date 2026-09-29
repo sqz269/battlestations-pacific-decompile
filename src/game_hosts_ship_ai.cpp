@@ -269,7 +269,9 @@ inline constexpr bool kShipAiEngageSubStateBound = true;
 // cleared) and its step 009E2020 (ship_ai_kamikaze_attack_step_009e2020: the
 // engage step's intercept with its own null-target arm). False: both are
 // records, and a boat in the state keeps whatever drive the previous state left.
-inline constexpr bool kShipAiKamikazeAttackStepBound = false;
+// ON (2026-09-29): USNOS 3000 and 9000 move; the Kaiten steer at their targets
+// (section 45.4).
+inline constexpr bool kShipAiKamikazeAttackStepBound = true;
 // Packet cc9_approach_sight_test, docs/SHIP_AI_OPEN_ITEMS.md section 31. True:
 // 009E7FC0's gate asks the unit's own gunnery pass. With a target, 009E8116
 // 00864FD0 -> 00864D90 (GameGunneryHost::unit_sees_unit_00864d90, the pass's

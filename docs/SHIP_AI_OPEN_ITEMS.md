@@ -3744,3 +3744,50 @@ OFF, they sit at `throttle 0.000 dir=stopped` and do not move.
 
 **Verdict rule.** The switch flips ON if P1 and P2 hold (the mechanism) on both rows. Spread misses
 in P3 to P6 are recorded.
+
+### 45.4 The pair and the verdict: ON
+
+**Setup.**
+- Binaries: `f975ff9d8`, OFF `AD9B3C51053C`, ON (flip) `4D66ECD8BE94`, built with
+  `tools/pair_export.py` in the cc9-ships14 tree.
+- The reference environment, the console session, and a 300-frame USNOS smoke (ON) first.
+- Logs: `local\s14koff_usnos{,l}.log` and `local\s14kon_usnos{,l}.log`. `pair_diff` exits 3 on both
+  rows.
+
+**USNOS 3200/3000.**
+- P1 holds. Every boat prints `steps=437 null_target=0`, and `009E2020` leaves the UNIMPLEMENTED
+  table (521 -> 520).
+- P2 holds:
+  - The boats go from `mode=rudder dir=stopped throttle 0.000` to `mode=navigate dir=ahead`.
+  - Throttle is `-0.625` on the entry step (step 820), then `1.000`.
+  - `d32c` falls about 7.7 m per 10 steps, which is the class's 15.43 m/s.
+  - `min_range` is 2659 to 3468 m at 150 s, from about 5500 m at step 820.
+- P3 misses. `run_steps=0`: no boat gets under 250 m of its transport in 150 s.
+- P4 holds. The death rows are identical (6). The fire at the moving boats moves the counters:
+  - shots 2316 -> 4968;
+  - hit records 800 -> 862;
+  - hull hits 79 -> 84;
+  - damage 1675.3 -> 2039.7.
+
+**USNOS 9200/9000.**
+- P5 holds for four boats. `#3.3` to `#3.6` still die at 160.81 s with no damage. They are now much
+  closer to the fleet: `#3.3` dies 154 m from Gear13, which was 1633 m OFF.
+- P6 happens:
+  - `#3.1` is killed at 154.25 s and `#3.2` at 159.11 s, both by NH (a gun category 6 kill, and
+    killer_blast 1 for #3.1), instead of the 160.81 s air death;
+  - the moved fire reshuffles the `#2.x` group's deaths: the same nine victims, the times 3.7 to
+    29 s apart, and the killers reassigned among NH, Portland2 and Gear15/16.
+- Deaths are 21 -> 21 with the same victims; 15 rows changed. `run_steps=0` again: the transports
+  keep their distance (`min_range` 2363 to 3166 m) and the Kaiten close on the escorts instead.
+
+**Verdict: ON.** The mechanism (P1, P2) holds on both rows. P3 is a spread miss: nobody reaches the
+run arm, so `009E2020`'s run arm stays unexercised, as `009E23B0`'s already was. The death-row moves
+are the boats being shot while they move. `kShipAiKamikazeAttackStepBound` is now `true`.
+
+**Still open.**
+- A Kaiten's contact detonation (the KamikazeDamage / KamikazeBlastDamage spend on collision) has no
+  host. A boat that reached its target would pass through it.
+- The air model kills the four unshot boats at 160.81 s, whatever the steering does.
+- Reference n will see USNOS 3000 and 9000 move.
+- For the lead to apply in Ghidra: the name ledger's evidence for `009E2020` still says
+  `Body 009E2020-009E23AD` and "NOT projected".
