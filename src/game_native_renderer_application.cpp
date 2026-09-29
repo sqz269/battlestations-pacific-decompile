@@ -294,6 +294,7 @@ struct GameNativeRendererApplication::Impl {
     Phase phase{Phase::prepared};
     IDirect3D9* retained_api{};
     IDirect3DDevice9* retained_device{};
+    unsigned long device_generation{};  // packet cc9_d3d_recreate_holders
     HANDLE observed_worker{};
 
     Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
@@ -544,6 +545,19 @@ void GameNativeRendererApplication::begin_frame(U clear_color) {
     try {
         NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
         (void)begin_native_renderer_frame_00b2b200(p.renderer,p.frames->begin);
+        // Packet cc9_d3d_recreate_holders. HOST-SIDE, no native counterpart: the
+        // image holds no extra device reference. 00B2ABD0's fallback 00B29670
+        // (reached from 00B2B200) replaces +1A10h; the retained reference follows,
+        // or teardown releases a stale device (c0000374, docs/D3D_DEVICE_LOST.md 6).
+        if(auto* const current=get<IDirect3DDevice9*>(p.renderer,0x1a10);
+           current!=nullptr && current!=p.retained_device) {
+            current->AddRef();
+            if(p.retained_device) p.retained_device->Release();
+            p.retained_device=current;
+            ++p.device_generation;
+            p.log.notef("native renderer device replaced by 00B29670: generation=%lu",
+                static_cast<unsigned long>(p.device_generation));
+        }
         clear_native_renderer_00b21430(p.renderer,&p.frames->clear,0,nullptr,
             D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL,&clear_color,1.0f,0);
     } catch(...) {p.phase=Impl::Phase::failed;throw;}
