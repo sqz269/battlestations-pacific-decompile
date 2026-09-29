@@ -268,7 +268,9 @@ inline constexpr bool kShipAiEngageSubStateBound = true;
 // cache itself); without one, 009E8129 009E6120 (the goal, brain+0B2Ch..0B34h)
 // and 009E8130 00864BA0 -> 00864680 (unit_sees_point_00864680). False: a target
 // is always visible and the no-target arm always fails, as before.
-inline constexpr bool kShipAiApproachSightTestBound = false;
+// ON (2026-09-29, section 34): re-paired on kGunneryLosRoleSwapBound; USN01's
+// 345 hidden answers are terrain between Dunlap and CB2 in both cast directions.
+inline constexpr bool kShipAiApproachSightTestBound = true;
 // Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
 // gives a generated ship its brain on the same path as a loaded one: SEntity
 // InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene

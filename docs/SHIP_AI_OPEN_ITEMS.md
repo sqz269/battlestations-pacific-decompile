@@ -2881,3 +2881,37 @@ is hidden.
 4. **`point_tests` stays 0** on all four rows.
 5. **Mechanism failure** keeps the switch OFF: `target_tests` is 0 on USN01, or a row moves where
    `target_tests` is 0.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+ON is `pair_export --commit faab22ed4 --flip kShipAiApproachSightTestBound=true --out
+local\s12_sgt` (bsp_game SHA-256 prefix `D4A31E9E3430`).
+
+| row | target tests | hidden | point tests | LOS tests OFF / ON | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 1542 | 345 | 0 | 190 / 192 | 3, moved | 1: the move held; "below 345" and "shrinks" **missed** |
+| USN02 9200/9000 | 23525 | 0 | 0 | 3781 / 3858 | 1, gameplay identical | 2 held |
+| JM05 3200/3000 | 0 | 0 | 0 | - | 1, gameplay identical | 3 held (no tests) |
+| USN12 3200/3000 | 0 | 0 | 0 | - | 1, gameplay identical | 3 held (no tests) |
+
+- **USN01 moves exactly as in section 31.** CB2 and Dunlap's nearest approach goes 759 -> 954 m, and
+  Coastal Guns 01..03 go 1443..1493 -> 1737..1796 m. Dunlap fires 26 -> 11 shots and CB2 15 -> 7.
+  Section 33's two Coastal Gun 01 shots on Dunlap go away again. The death rows and plane death
+  modes are identical (5 rows each).
+- **The swap was not the cause.** The hidden count is 345 with the listing's cast direction, the
+  same as with the old one. The ship AI adds only 2 line-of-sight computations (190 -> 192); the
+  other answers are cache entries from the gunnery pass. Dunlap's target is CB2
+  (`command target 0071EBF0: unit=Dunlap token="CB2"`). CB2 is static at (3973.4, 32.0, -3182.2)
+  in the raised frame. The census puts terrain between the two:
+  - in the image's direction the first hit is 135..768 m from Dunlap and 555..964 m from CB2;
+  - `reverse_verdict_differs=0` on the ON run, so both directions agree on every test.
+
+  Section 31's suspicion that the old direction started inside the building does not apply.
+- **Uncertainty.** A ridge about 25 m high, about 320 m in front of CB2, is the host's terrain:
+  the height field, the island placement and the height of CB2's class. Those belong to their
+  own packets. The sight test's mechanism is the listing's: `009E8116` asks the unit's own cache
+  through `00864FD0`, and a hidden answer skips the ring scoring at `009E8137`.
+
+**Verdict: ON.** The mechanism matches, three rows are identical, and the USN01 move is the
+image's answer to terrain the image's own cast direction sees. No death flips. Prediction 1's
+magnitude missed and is recorded. Section 31's reason for keeping it OFF (the role swap) is gone.
