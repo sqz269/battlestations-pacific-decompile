@@ -4720,3 +4720,26 @@ list a ConvexObject:
     Kaiten, gated.
   - Where the switch would act: the classes on `i-400`, `minisub`, `type7`, `type_b` and `narwhal`
     models. Their vertical extent grows by 2.2 to 5.4 m, so their roll and pitch inertia rises.
+
+## 69. Reference m's flags (57.2, 60.2 item 4's second half; cc9-gunnery14)
+
+### 69.1 The no-ship hold moves neither USN02 nor LOMP10: closed from the counters
+
+The hold's summary line (`summary mission ship ai approach no-ship hold`, 009F1E30 `JE 009F2003`)
+in reference p's logs answers it. The hold changes a goal only on frames where the held point
+differs from the one the goal copy would write (`frames_differ`):
+
+| row | arm runs | hold frames | frames that differ |
+| --- | ---: | ---: | ---: |
+| USN01 | 201 | 1548 | 104 |
+| IJN01 | 718 | 5353 | 5353 |
+| USN02 | 3 | 0 | 0 |
+| LOMP10 | 68 | 533 | 0 |
+| LOMP10 long | 201 | 1600 | 0 |
+| USNOS, JM06 | 0 | 0 | 0 |
+
+- On USN02 the no-ship path is never held.
+- On LOMP10 every held frame keeps the same point the copy would have written.
+- So the hold cannot move either row. The integrator's expectation assumed reach where the
+  counters show none. This is the same shape as reference m's `nnsh` runs, which were identical on
+  both rows.
