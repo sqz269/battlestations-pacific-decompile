@@ -549,6 +549,15 @@ constexpr bool kComponentFailureBound = true;
 // the same step. OFF: apply_hit returns for a dead victim, as before.
 // ON since the USN02 / USN04 pairs (affb843c3): 90 wreck hits on USN02.
 constexpr bool kWreckHitDeliveryBound = true;
+// Packet cc9_kaiten_contact_detonation, docs/SHIP_AI_OPEN_ITEMS.md section 46.
+// True: a kamikaze class (KamikazeDamage +510h or KamikazeBlastDamage +514h
+// above 0) that touches a hostile ship detonates: 009377E0 -> 008145B0 ->
+// message 70h -> 00819A20, whose blast 0084BAD0 (centre unit+FCh, radius
+// +518h, damage +514h, no source entity) reaches every hull in range,
+// the kamikaze's own included. False: nothing detonates, as before.
+// ON (2026-09-29) with zero reach: USNOS 3000 and 9000 identical, no contact
+// (closest bow 110.5 m; section 46.4).
+constexpr bool kKamikazeContactDetonationBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
@@ -2247,6 +2256,29 @@ struct GameGunneryHost::Impl {
     void apply_hit(std::size_t shooter, std::size_t gun_row, std::size_t victim,
         const float point[3], const float direction[3],
         const bsp::HitRecord* blast_record = nullptr, int team_id = -1);
+    // Packet cc9_kaiten_contact_detonation.
+    void run_kamikaze_contacts(float dt);
+    void kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
+        const float contact[3]);
+    void apply_gunless_blast_hit(std::size_t source, std::size_t victim,
+        const float point[3], const bsp::HitRecord& record);
+    struct KamikazeRow {
+        bool read{false};
+        float damage_510{0.0f};
+        float blast_514{0.0f};
+        float range_518{0.0f};
+    };
+    std::vector<KamikazeRow> kamikaze_rows;
+    unsigned long long kz_contacts{0};
+    unsigned long long kz_hostile_refused{0};
+    unsigned long long kz_detonations{0};
+    unsigned long long kz_direct_arms{0};
+    unsigned long long kz_blast_records{0};
+    unsigned long long kz_self_records{0};
+    double kz_blast_damage{0.0};
+    // DIAGNOSTIC: the closest any live kamikaze bow came to a hostile hull box.
+    float kz_min_gap{-1.0f};
+    double kz_min_gap_t{-1.0};
     // 0072BF10's team stamp, 0072C0F2..0072C14B (packet cc9_projectile_team_id):
     //   team = gun+1ACh (0072C0FB stores it at shot+1Ch);
     //   if team == 8 (PLAYER_AI) and gun->vtable[5Ch](21h) (MRFSGun): owner =
@@ -7761,6 +7793,214 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     if (bsp::unit_is_dead(health)) kill_unit(victim);
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_kaiten_contact_detonation (docs/SHIP_AI_OPEN_ITEMS.md section 46).
+//
+// The image: the unit controller's contact callback 009377E0 (slot 0 of
+// 00D1961C, called by the physics library for a body contact) runs the damage
+// gate when either party's class has +510h > 0 or +514h > 0, and calls
+// 008145B0 (__thiscall(unit)(contact point, magnitude, other, 0), RET 10h)
+// for the slower of the two bodies at the contact point. 008145B0 needs a
+// single-player session (game+1FE4h != 2), a non-null other and
+// 00803510(unit+54h, other+54h) == 1 (enemy); then, for each party that is
+// alive (+5Dh..+60h clear) and a kamikaze (00779AA0), it routes message 70h to
+// that party with the other as the target. The message arm 0082217D calls
+// 00819A20 (body 00819A20-00819CB7):
+//   unit+100Ah = 1;
+//   direct arm, when the target is live and +510h > 0: a record with
+//     +14h = unit->vtable[54h]() (0042B8D0, FLDZ: 0), +24h = +518h,
+//     +28h = +514h, a 1000x segment trace against the target's node, and
+//     00915F20(target, record) - RECORDED here, not delivered (below);
+//   blast arm, when +514h > 0: 0084BAD0(centre unit+FCh, radius +518h,
+//     damage +514h, ignore 0, shot 0, source 0) - with no source entity the
+//     burst reaches the kamikaze's own hull too (docs/EXPLOSION_RADIAL_DAMAGE.md);
+//   a point effect from +51Ch (not modelled).
+//
+// SUBSTITUTIONS, labelled:
+//  * the contact: this host has no body contacts, so a kamikaze touches a
+//    ship when its bow point (origin + forward * length/2) or its centre lies
+//    inside that ship's hull box; the contact point is the bow point. The
+//    slower-body test and 009377E0's two cancels (unit+6B8h >= 0 younger than
+//    3.0 s, 0092CE70 on the other) are not modelled; every unit here is
+//    scene-placed.
+//  * the blast gather is over the hull boxes, as the host's projectile burst
+//    does, with one entry per hull at its box distance.
+//  * the direct arm's delivery 00915F20 is unread: it is counted as a record.
+// ---------------------------------------------------------------------------
+void GameGunneryHost::Impl::run_kamikaze_contacts(float dt) {
+    static_cast<void>(dt);
+    if (kamikaze_rows.size() != unit_state.size()) kamikaze_rows.assign(unit_state.size(), {});
+    for (std::size_t k = 0; k < unit_state.size(); ++k) {
+        if (unit_state[k].dead) continue;
+        KamikazeRow& kr = kamikaze_rows[k];
+        if (!kr.read) {
+            kr.read = true;
+            const int type_id = unit_state[k].row.type_id;
+            if (type_id >= 0) {
+                kr.damage_510 = lua.read_vehicle_class_number(type_id, "KamikazeDamage", 0.0f);
+                kr.blast_514 = lua.read_vehicle_class_number(type_id, "KamikazeBlastDamage", 0.0f);
+                kr.range_518 = lua.read_vehicle_class_number(type_id, "KamikazeBlastRange", 0.0f);
+            }
+        }
+        if (!(kr.damage_510 > 0.0f) && !(kr.blast_514 > 0.0f)) continue;  // 00779AA0
+        if (!units.unit_is_kind_of(k, bsp::kUnitGunneryKindShipBase)) continue;
+        float kr_right[3], kr_up[3], kr_forward[3], kr_origin[3];
+        unit_pose(k, kr_right, kr_up, kr_forward, kr_origin);
+        const float half = unit_state[k].hull_length * 0.5f;
+        const float bow[3] = {kr_origin[0] + kr_forward[0] * half,
+            kr_origin[1] + kr_forward[1] * half, kr_origin[2] + kr_forward[2] * half};
+        for (std::size_t o = 0; o < unit_state.size(); ++o) {
+            if (o == k || unit_state[o].dead) continue;
+            if (!units.unit_is_kind_of(o, bsp::kUnitGunneryKindShipBase)) continue;  // IsKindOf(6)
+            const UnitState& os = unit_state[o];
+            const float ext[3] = {os.hull_width * 0.5f, os.hull_height * 0.5f,
+                os.hull_length * 0.5f};
+            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
+            float r[3], u[3], f[3], c[3];
+            unit_pose(o, r, u, f, c);
+            const float* axes[3] = {r, u, f};
+            auto box_gap = [&](const float pt[3]) {
+                const float rel[3] = {pt[0] - c[0], pt[1] - c[1], pt[2] - c[2]};
+                float outside = 0.0f;
+                for (int a = 0; a < 3; ++a) {
+                    const float excess = std::fabs(dot3(rel, axes[a])) - ext[a];
+                    if (excess > 0.0f) outside += excess * excess;
+                }
+                return std::sqrt(outside);
+            };
+            const bool hostile = bsp::scoring_relative_party_00803510(units.unit_side_0054(k),
+                units.unit_side_0054(o)) == bsp::kScoringPartyEnemy;
+            const float gap = box_gap(bow);
+            if (hostile && (kz_min_gap < 0.0f || gap < kz_min_gap)) {
+                kz_min_gap = gap;
+                kz_min_gap_t = clock_seconds;
+            }
+            if (gap > 0.0f && box_gap(kr_origin) > 0.0f) continue;
+            ++kz_contacts;
+            // 008145ED..008145FB: 00803510(unit+54h, other+54h) == 1.
+            if (!hostile) {
+                ++kz_hostile_refused;
+                continue;
+            }
+            kamikaze_detonate_00819a20(k, o, bow);
+            break;
+        }
+    }
+}
+
+void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
+    const float contact[3]) {
+    const KamikazeRow& kr = kamikaze_rows[unit];
+    ++kz_detonations;
+    float right[3], up[3], forward[3], centre[3];
+    unit_pose(unit, right, up, forward, centre);
+    // 00819A51..00819A8E: the direct arm's gates.
+    if (!unit_state[target].dead && kr.damage_510 > 0.0f) {
+        ++kz_direct_arms;
+        record("KamikazeDetonate::direct_hit_00915f20", 0x00915f20u);
+    }
+    // 00819BDA..00819C14: the blast arm.
+    std::vector<std::size_t> reached;
+    if (kr.blast_514 > 0.0f) {
+        for (std::size_t i = 0; i < unit_state.size(); ++i) {
+            if (unit_state[i].dead) continue;  // 009239A6 refuses +5Eh/+5Fh; wrecks are skipped here
+            const UnitState& st = unit_state[i];
+            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
+                st.hull_length * 0.5f};
+            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
+            float r[3], u[3], f[3], c[3];
+            unit_pose(i, r, u, f, c);
+            const float rel[3] = {centre[0] - c[0], centre[1] - c[1], centre[2] - c[2]};
+            const float* axes[3] = {r, u, f};
+            float outside = 0.0f;
+            for (int a = 0; a < 3; ++a) {
+                const float excess = std::fabs(dot3(rel, axes[a])) - ext[a];
+                if (excess > 0.0f) outside += excess * excess;
+            }
+            const float distance = std::sqrt(outside);
+            if (distance > kr.range_518) continue;
+            bsp::HitPartEntry entry;
+            entry.kind = 0;
+            entry.part_index = 0;
+            entry.distance = distance;
+            bsp::HitRecord blast;
+            blast.hull_damage_base = 0.0f;
+            blast.part_damage_base = kr.blast_514;
+            blast.falloff_range = kr.range_518;
+            blast.ignore_falloff = false;
+            blast.armour_selector = 0.0f;
+            blast.hull_segment = kDirectHitHullSegment;
+            blast.weapon_scale = 1.0f;   // shot 0: no weapon scale
+            blast.owner_modifier = 1.0f;
+            blast.part_hits = &entry;
+            blast.part_hit_count = 1;
+            ++kz_blast_records;
+            if (i == unit) ++kz_self_records;
+            const float before = unit_state[i].health;
+            apply_gunless_blast_hit(unit, i, contact, blast);
+            kz_blast_damage += before - unit_state[i].health;
+            reached.push_back(i);
+        }
+    }
+    log.notef("kamikaze detonation: unit=%s target=%s t=%.2f contact=(%.1f %.1f %.1f) "
+        "damage=%.0f blast=%.0f range=%.0f reached=%zu health: unit=%.1f target=%.1f "
+        "(00819A20, packet cc9_kaiten_contact_detonation)",
+        unit_state[unit].row.name.c_str(), unit_state[target].row.name.c_str(),
+        static_cast<double>(clock_seconds), static_cast<double>(contact[0]),
+        static_cast<double>(contact[1]), static_cast<double>(contact[2]),
+        static_cast<double>(kr.damage_510), static_cast<double>(kr.blast_514),
+        static_cast<double>(kr.range_518), reached.size(),
+        static_cast<double>(unit_state[unit].health),
+        static_cast<double>(unit_state[target].health));
+}
+
+// The tail of apply_hit for a record with no gun and no shot (0084BAD0 with
+// shot 0): the queue, the dispatch 00826F10, the health write and the death.
+// No attribution: with shot 0 the record's +4h is null and 0077CE60's source
+// record does not resolve. The kamikaze stands in as the ShipHitBinding's
+// shooter only for the shooter position.
+void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::size_t victim,
+    const float point[3], const bsp::HitRecord& record) {
+    if (victim >= unit_state.size() || source >= unit_state.size()) return;
+    UnitState& target = unit_state[victim];
+    if (target.dead) return;
+    ++summary.queued_hits;
+    done("Projectile::queue_hit_00926e80", 0x00926e80u);
+    bsp::HitRecord hit = record;
+    bsp::ShipHitRecordView view;
+    view.segment_kind = 0x0A;
+    for (int i = 0; i < 3; ++i) view.impact_point[i] = point[i];
+    view.shot_present = false;
+    view.shot_is_depth_charge = false;
+    view.shot_is_torpedo = false;
+    view.weapon_present = false;
+    hit_event_fire = 0.0f;
+    hit_event_leak = 0.0f;
+    const float direction[3] = {0.0f, 1.0f, 0.0f};
+    ShipHitBinding binding(*this, victim, source, nullptr, direction);
+    binding.set_hit(hit);
+    const float before = target.health;
+    bsp::apply_ship_hit_record_00826f10(binding, hit, view);
+    ++summary.ship_hit_records;
+    ++summary.dispatched_hits;
+    done("ShipHit::apply_hit_record_00826f10", 0x00826f10u);
+    const float applied = before - target.health;
+    if (death_table_enabled() && applied > 0.0f) {
+        DeathTableRow& dt = death_table[victim];
+        if (dt.first_damage < 0.0f) dt.first_damage = clock_seconds;
+        dt.last_blast = true;
+    }
+    target.row.hits_taken += 1;
+    target.row.damage_taken += applied;
+    target.row.health = target.health;
+    summary.damage_total += applied;
+    if (summary.first_hit_seconds < 0.0f) summary.first_hit_seconds = clock_seconds;
+    bsp::UnitHealth health;
+    health.current_health = target.health;
+    health.max_health = target.max_health;
+    if (bsp::unit_is_dead(health)) kill_unit(victim);
+}
+
 // 0084BC60 step 7, read from the listing at 0084BE25..0084BEE3.
 //
 //   MOV EAX,[ESI+8]            ; the projectile's weapon class descriptor
@@ -8880,6 +9120,9 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
+    if constexpr (kKamikazeContactDetonationBound) {
+        host.run_kamikaze_contacts(step_seconds);
+    }
     if constexpr (kShipDamageControlTickBound || kShipHullRepairBound
                   || kComponentFailureBound) {
         host.run_damage_control(step_seconds);
@@ -10041,6 +10284,13 @@ void GameGunneryHost::report() {
         "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu",
         s.projectiles, s.projectile_steps, s.sweeps, s.impacts_entity, s.water_crossings,
         s.expired, host.shots.size());
+    host.log.notef("summary mission gunnery kamikaze contacts=%llu hostile_refused=%llu "
+        "detonations=%llu direct_arms=%llu blast_records=%llu self_records=%llu "
+        "blast_damage=%.1f min_gap=%.1f at %.2f s bound=%d (009377E0 / 008145B0 / 00819A20, "
+        "packet cc9_kaiten_contact_detonation)", host.kz_contacts, host.kz_hostile_refused,
+        host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
+        host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
+        kKamikazeContactDetonationBound ? 1 : 0);
     host.log.notef("summary mission gunnery damage queued_hits=%llu dispatched=%llu "
         "hit_records=%llu hull=%llu part=%llu fires=%llu floods=%llu attributions=%llu "
         "deaths=%llu kill_credits=%llu total_damage=%.1f first_hit=%.2f s",
