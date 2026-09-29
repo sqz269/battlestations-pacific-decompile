@@ -139,8 +139,9 @@ inline constexpr bool kDirectorTargetChecksBound = true;
 //     a null entity refuses.
 //   moveonpath (00E08F80): with an object descriptor (+0h != 0), 007AC9D0(entity) must be
 //     non-null: the entity is a path kind (47h Path, 48h, 49h, 4Ah CameraPath).
-// OFF: both are records and the command is accepted.
-inline constexpr bool kCommandExtraTestsBound = false;
+// OFF: both are records and the command is accepted. ON after the g15_base/g15_xton pair
+// (docs/GUNNERY_OPEN_ITEMS.md 73.1: six rows gameplay-identical, no refusal on any row).
+inline constexpr bool kCommandExtraTestsBound = true;
 
 // Packet cc9_set_command_queue_delay (docs/GUNNERY_OPEN_ITEMS.md sections 25-26).
 // In a local session every director message goes through 0077C2A0, whose
