@@ -1,0 +1,1684 @@
+{
+ "packet": "cc9_reference_rebaseline_12",
+ "doc": "docs/GAME_EXECUTABLE.md, 'Mission reference baselines, 2026-09-29 l (main 3f1499210)'",
+ "tree": "worktree cc9-gunnery11",
+ "binary": {
+  "path": "local/rb12/build/win32/Release/bsp_game.exe",
+  "sha256": "AAB079902CE38596030584953E366993D813BB2AABA69DFDB04802F9AF7EA4DA",
+  "export": "tools/pair_export.py --commit 3f1499210, no flip"
+ },
+ "env": {
+  "BSP_GUNNERY_RNG_STREAMS": "1",
+  "BSP_DEATH_TABLE": "1",
+  "lockstep": 0.05,
+  "player": "idle",
+  "present": "immediate",
+  "launch": "tools/run_game.ps1 -Exe <binary> -Log <log> -- --frames F --press-start-frame 30 --menu-select M --mission-frames N --mission-frame-seconds 0.05"
+ },
+ "session_interruptions": [],
+ "anchor": "16 switches newly ON between 5aaa4948a and 3f1499210 (value diff of constexpr bool k...Bound declarations, local/g11_switches.py); n0 (all 16 OFF) is gameplay-identical to reference k on all twelve rows run (pair_diff exit 1)",
+ "rows": [
+  {
+   "mission": "USN04",
+   "frames": "4700/4500",
+   "log": "local/rb12_usn04.log",
+   "pair_diff_vs_k": 3,
+   "damage": "11326.8",
+   "deaths": "43",
+   "hit records": "729",
+   "hull hits": "122",
+   "shots": "10762",
+   "first hit": "100.35 s",
+   "torpedo-task releases": "2 of 16",
+   "dive-bomb-task releases": "0 of 19",
+   "plane water contacts": "15",
+   "controlled moved": "Lexington-class01 3605.27",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "502",
+   "k": {
+    "damage": "10136.8",
+    "deaths": "39",
+    "hit records": "711",
+    "hull hits": "128",
+    "shots": "9488",
+    "first hit": "101.05 s",
+    "torpedo-task releases": "1 of 16",
+    "controlled moved": "Lexington-class01 3635.25",
+    "unimplemented": "506"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "44",
+     "hit records": "792",
+     "shots": "11155",
+     "damage": "16923.6",
+     "controlled moved": "Lexington-class01 3632.10"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "43",
+     "hit records": "731",
+     "shots": "10118",
+     "damage": "11214.0",
+     "controlled moved": "Lexington-class01 3602.36"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "44",
+     "hit records": "739",
+     "shots": "9828",
+     "damage": "11535.3",
+     "controlled moved": "Lexington-class01 3594.11"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "41",
+     "hit records": "717",
+     "shots": "9918",
+     "damage": "10324.9",
+     "controlled moved": "Lexington-class01 3603.81"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "43",
+     "hit records": "714",
+     "shots": "10111",
+     "damage": "11746.6",
+     "controlled moved": "Lexington-class01 3624.40"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "39",
+     "hit records": "681",
+     "shots": "9223",
+     "damage": "12070.6",
+     "controlled moved": "Lexington-class01 3635.26"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "39",
+     "hit records": "681",
+     "shots": "9223",
+     "damage": "12070.6",
+     "controlled moved": "Lexington-class01 3635.26"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "39",
+     "hit records": "711",
+     "shots": "9488",
+     "damage": "10136.8",
+     "controlled moved": "Lexington-class01 3635.25"
+    }
+   }
+  },
+  {
+   "mission": "USN01",
+   "frames": "3200/3000",
+   "log": "local/rb12_usn01.log",
+   "pair_diff_vs_k": 3,
+   "damage": "2833.0",
+   "deaths": "5",
+   "hit records": "393",
+   "hull hits": "81",
+   "shots": "1290",
+   "first hit": "49.10 s",
+   "torpedo-task releases": "0 of 5",
+   "dive-bomb-task releases": "2 of 2",
+   "plane water contacts": "3",
+   "controlled moved": "ScoutDauntless 3872.50",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "531",
+   "k": {
+    "damage": "2831.2",
+    "hit records": "474",
+    "shots": "1480",
+    "controlled moved": "ScoutDauntless 3904.93",
+    "unimplemented": "534"
+   },
+   "variants_moving_against_l": {
+    "nzone": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "393",
+     "shots": "1290",
+     "damage": "2833.0",
+     "controlled moved": "ScoutDauntless 3872.50"
+    },
+    "nafg": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "475",
+     "shots": "1485",
+     "damage": "2830.7",
+     "controlled moved": "ScoutDauntless 3904.93"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "394",
+     "shots": "1290",
+     "damage": "2833.0",
+     "controlled moved": "ScoutDauntless 3872.50"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "393",
+     "shots": "1282",
+     "damage": "2833.5",
+     "controlled moved": "ScoutDauntless 3872.50"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "393",
+     "shots": "1290",
+     "damage": "2833.0",
+     "controlled moved": "ScoutDauntless 3872.50"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "476",
+     "shots": "1480",
+     "damage": "2831.2",
+     "controlled moved": "ScoutDauntless 3904.93"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "476",
+     "shots": "1480",
+     "damage": "2831.2",
+     "controlled moved": "ScoutDauntless 3904.93"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "476",
+     "shots": "1480",
+     "damage": "2831.2",
+     "controlled moved": "ScoutDauntless 3904.93"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "5",
+     "hit records": "474",
+     "shots": "1480",
+     "damage": "2831.2",
+     "controlled moved": "ScoutDauntless 3904.93"
+    }
+   }
+  },
+  {
+   "mission": "USN04 (E2)",
+   "frames": "9200/9000",
+   "log": "local/rb12_e2.log",
+   "pair_diff_vs_k": 3,
+   "damage": "12797.4",
+   "deaths": "51",
+   "hit records": "820",
+   "hull hits": "145",
+   "shots": "11927",
+   "first hit": "100.35 s",
+   "torpedo-task releases": "2 of 16",
+   "dive-bomb-task releases": "0 of 19",
+   "plane water contacts": "19",
+   "controlled moved": "Lexington-class01 7250.24",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "505",
+   "k": {
+    "damage": "12158.7",
+    "hit records": "860",
+    "hull hits": "159",
+    "shots": "11455",
+    "first hit": "101.05 s",
+    "torpedo-task releases": "1 of 16",
+    "controlled moved": "Lexington-class01 7285.28",
+    "unimplemented": "510"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "884",
+     "shots": "11915",
+     "damage": "17979.0",
+     "controlled moved": "Lexington-class01 6957.31"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "867",
+     "shots": "12663",
+     "damage": "12797.4",
+     "controlled moved": "Lexington-class01 7247.33"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "815",
+     "shots": "10600",
+     "damage": "12797.4",
+     "controlled moved": "Lexington-class01 7239.51"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "857",
+     "shots": "11121",
+     "damage": "12158.7",
+     "controlled moved": "Lexington-class01 7247.12"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "861",
+     "shots": "11609",
+     "damage": "13436.2",
+     "controlled moved": "Lexington-class01 7235.02"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "902",
+     "shots": "11637",
+     "damage": "14201.4",
+     "controlled moved": "Lexington-class01 7299.54"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "902",
+     "shots": "11637",
+     "damage": "14201.4",
+     "controlled moved": "Lexington-class01 7299.54"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "51",
+     "hit records": "860",
+     "shots": "11455",
+     "damage": "12158.7",
+     "controlled moved": "Lexington-class01 7285.28"
+    }
+   }
+  },
+  {
+   "mission": "USN02",
+   "frames": "9200/9000",
+   "log": "local/rb12_usn02.log",
+   "pair_diff_vs_k": 3,
+   "damage": "39395.6",
+   "deaths": "10",
+   "hit records": "2271",
+   "hull hits": "423",
+   "shots": "2316",
+   "first hit": "18.90 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Kortenaer 484.55",
+   "mission end": "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)",
+   "unimplemented": "494",
+   "k": {
+    "damage": "46042.5",
+    "deaths": "13",
+    "hit records": "3179",
+    "hull hits": "442",
+    "shots": "2473",
+    "controlled moved": "Kortenaer 771.70",
+    "unimplemented": "501"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "12",
+     "hit records": "3314",
+     "shots": "2698",
+     "damage": "45960.3",
+     "controlled moved": "Kortenaer 1542.68"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "12",
+     "hit records": "2762",
+     "shots": "2536",
+     "damage": "48348.2",
+     "controlled moved": "Kortenaer 1431.04"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "3585",
+     "shots": "2435",
+     "damage": "43460.5",
+     "controlled moved": "Kortenaer 806.26"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "2827",
+     "shots": "2409",
+     "damage": "40763.0",
+     "controlled moved": "Kortenaer 721.64"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "13",
+     "hit records": "3179",
+     "shots": "2473",
+     "damage": "46042.5",
+     "controlled moved": "Kortenaer 771.70"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "13",
+     "hit records": "3179",
+     "shots": "2473",
+     "damage": "46042.5",
+     "controlled moved": "Kortenaer 771.70"
+    }
+   }
+  },
+  {
+   "mission": "JM06",
+   "frames": "3200/3000",
+   "log": "local/rb12_jm06.log",
+   "pair_diff_vs_k": 3,
+   "damage": "4340.0",
+   "deaths": "1",
+   "hit records": "276",
+   "hull hits": "263",
+   "shots": "334",
+   "first hit": "72.55 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Fletcher-class 08 391.19",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "481",
+   "k": {
+    "damage": "4231.2",
+    "hit records": "328",
+    "hull hits": "322",
+    "shots": "378",
+    "first hit": "79.15 s",
+    "controlled moved": "Fletcher-class 08 540.68",
+    "unimplemented": "485"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "288",
+     "shots": "331",
+     "damage": "4694.3",
+     "controlled moved": "Fletcher-class 08 262.78"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "283",
+     "shots": "341",
+     "damage": "5274.9",
+     "controlled moved": "Fletcher-class 08 423.49"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "184",
+     "shots": "248",
+     "damage": "3474.1",
+     "controlled moved": "Fletcher-class 08 400.70"
+    },
+    "ntr": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "221",
+     "shots": "310",
+     "damage": "3066.1",
+     "controlled moved": "Fletcher-class 08 2146.65"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "344",
+     "shots": "406",
+     "damage": "4972.3",
+     "controlled moved": "Fletcher-class 08 295.40"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "247",
+     "shots": "266",
+     "damage": "4214.2",
+     "controlled moved": "Fletcher-class 08 75.88"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "328",
+     "shots": "378",
+     "damage": "4231.2",
+     "controlled moved": "Fletcher-class 08 540.68"
+    }
+   }
+  },
+  {
+   "mission": "JM08",
+   "frames": "3200/3000",
+   "log": "local/rb12_jm08.log",
+   "pair_diff_vs_k": 3,
+   "damage": "4149.8",
+   "deaths": "11",
+   "hit records": "395",
+   "hull hits": "122",
+   "shots": "2390",
+   "first hit": "5.25 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": "4",
+   "controlled moved": "Auilick 2509.11",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "491",
+   "k": {
+    "hit records": "361",
+    "hull hits": "106",
+    "shots": "2324",
+    "controlled moved": "Auilick 1495.61"
+   },
+   "variants_moving_against_l": {
+    "nzone": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "411",
+     "shots": "2248",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 2508.57"
+    },
+    "nafg": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "321",
+     "shots": "2223",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 1495.61"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "395",
+     "shots": "2390",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 2509.11"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "363",
+     "shots": "2252",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 1495.61"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "394",
+     "shots": "2437",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 2509.11"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "361",
+     "shots": "2325",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 1495.61"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "361",
+     "shots": "2325",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 1495.61"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "361",
+     "shots": "2324",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 1495.61"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "11",
+     "hit records": "361",
+     "shots": "2324",
+     "damage": "4149.8",
+     "controlled moved": "Auilick 1495.61"
+    }
+   }
+  },
+  {
+   "mission": "USN13",
+   "frames": "3200/3000",
+   "log": "local/rb12_usn13.log",
+   "pair_diff_vs_k": 3,
+   "damage": "9680.0",
+   "deaths": "32",
+   "hit records": "658",
+   "hull hits": "204",
+   "shots": "7323",
+   "first hit": "93.80 s",
+   "torpedo-task releases": "0 of 60",
+   "dive-bomb-task releases": null,
+   "plane water contacts": "7",
+   "controlled moved": "Enterprise 1859.00",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "495",
+   "k": {
+    "damage": "8450.6",
+    "deaths": "27",
+    "hit records": "646",
+    "hull hits": "196",
+    "shots": "6989",
+    "first hit": "96.40 s",
+    "plane water contacts": "5",
+    "controlled moved": "Enterprise 2034.34",
+    "unimplemented": "498"
+   },
+   "variants_moving_against_l": {
+    "nzone": {
+     "exit": 3,
+     "deaths": "32",
+     "hit records": "653",
+     "shots": "7287",
+     "damage": "9680.0",
+     "controlled moved": "Enterprise 1869.75"
+    },
+    "nafg": {
+     "exit": 3,
+     "deaths": "27",
+     "hit records": "644",
+     "shots": "7237",
+     "damage": "8476.3",
+     "controlled moved": "Enterprise 2034.81"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "32",
+     "hit records": "652",
+     "shots": "7740",
+     "damage": "9680.0",
+     "controlled moved": "Enterprise 1859.00"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "27",
+     "hit records": "627",
+     "shots": "8688",
+     "damage": "8338.7",
+     "controlled moved": "Enterprise 2327.84"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "31",
+     "hit records": "650",
+     "shots": "7823",
+     "damage": "9459.9",
+     "controlled moved": "Enterprise 1859.93"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "27",
+     "hit records": "644",
+     "shots": "7237",
+     "damage": "8476.3",
+     "controlled moved": "Enterprise 2034.81"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "27",
+     "hit records": "653",
+     "shots": "7213",
+     "damage": "8471.7",
+     "controlled moved": "Enterprise 2033.84"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "27",
+     "hit records": "652",
+     "shots": "7286",
+     "damage": "8434.0",
+     "controlled moved": "Enterprise 2034.34"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "27",
+     "hit records": "646",
+     "shots": "6989",
+     "damage": "8450.6",
+     "controlled moved": "Enterprise 2034.34"
+    }
+   }
+  },
+  {
+   "mission": "BSM01",
+   "frames": "3200/3000",
+   "log": "local/rb12_bsm01.log",
+   "pair_diff_vs_k": 3,
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "HenryPT 554.05",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "465",
+   "k": {
+    "controlled moved": "HenryPT 0.00",
+    "unimplemented": "466"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 554.09"
+    },
+    "nfl": {
+     "exit": 0,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 554.05"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 0.00"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 558.26"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 0.00"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 0.00"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 0.00"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "HenryPT 0.00"
+    }
+   }
+  },
+  {
+   "mission": "LOMP06",
+   "frames": "1200/1000",
+   "log": "local/rb12_lomp06.log",
+   "pair_diff_vs_k": 3,
+   "damage": "2400.0",
+   "deaths": "1",
+   "hit records": "3",
+   "hull hits": "1",
+   "shots": "10",
+   "first hit": "36.90 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Narwhal 673.48",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "466",
+   "k": {
+    "unimplemented": "470"
+   },
+   "variants_moving_against_l": {
+    "nclr": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "3",
+     "shots": "10",
+     "damage": "2400.0",
+     "controlled moved": "Narwhal 673.48"
+    }
+   }
+  },
+  {
+   "mission": "LOMP10",
+   "frames": "3200/3000",
+   "log": "local/rb12_lomp10.log",
+   "pair_diff_vs_k": 3,
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "B-25 01 4893.32",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "486",
+   "k": {
+    "damage": "980.0",
+    "deaths": "2",
+    "hit records": "94",
+    "hull hits": "77",
+    "shots": "442",
+    "first hit": "90.50 s",
+    "controlled moved": "(none) 7044.64",
+    "unimplemented": "494"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "B-25 01 4893.32"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "B-25 01 5022.76"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "B-25 01 4893.32"
+    },
+    "nland": {
+     "exit": 3,
+     "deaths": "2",
+     "hit records": "95",
+     "shots": "417",
+     "damage": "980.0",
+     "controlled moved": "(none) 7044.64"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "B-25 01 5022.76"
+    },
+    "nlp": {
+     "exit": 3,
+     "deaths": "2",
+     "hit records": "94",
+     "shots": "442",
+     "damage": "980.0",
+     "controlled moved": "(none) 7044.64"
+    }
+   }
+  },
+  {
+   "mission": "JM05",
+   "frames": "3200/3000",
+   "log": "local/rb12_jm05.log",
+   "pair_diff_vs_k": 3,
+   "damage": "2396.3",
+   "deaths": "1",
+   "hit records": "41",
+   "hull hits": "24",
+   "shots": "100",
+   "first hit": "9.90 s",
+   "torpedo-task releases": "0 of 12",
+   "dive-bomb-task releases": "0 of 6",
+   "plane water contacts": null,
+   "controlled moved": "USS Phelps 2533.74",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "537",
+   "k": {
+    "controlled moved": "USS Phelps 2567.69",
+    "unimplemented": "543"
+   },
+   "variants_moving_against_l": {
+    "nzone": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2533.73"
+    },
+    "nafg": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 1317.50"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2533.74"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2529.03"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2533.75"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2383.93"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2567.69"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2567.69"
+    },
+    "nshfl": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "41",
+     "shots": "100",
+     "damage": "2396.3",
+     "controlled moved": "USS Phelps 2567.69"
+    }
+   }
+  },
+  {
+   "mission": "USN12",
+   "frames": "3200/3000",
+   "log": "local/rb12_usn12.log",
+   "pair_diff_vs_k": 3,
+   "damage": "978.1",
+   "deaths": "0",
+   "hit records": "30",
+   "hull hits": "15",
+   "shots": "83",
+   "first hit": "8.30 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "Montpelier 2089.94",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "472",
+   "k": {
+    "controlled moved": "Montpelier 2244.01",
+    "unimplemented": "473"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "30",
+     "shots": "83",
+     "damage": "978.1",
+     "controlled moved": "Montpelier 2244.01"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "30",
+     "shots": "83",
+     "damage": "978.1",
+     "controlled moved": "Montpelier 2259.38"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "30",
+     "shots": "83",
+     "damage": "978.1",
+     "controlled moved": "Montpelier 2093.47"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "30",
+     "shots": "83",
+     "damage": "978.1",
+     "controlled moved": "Montpelier 2244.01"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "30",
+     "shots": "83",
+     "damage": "978.1",
+     "controlled moved": "Montpelier 2244.01"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "30",
+     "shots": "83",
+     "damage": "978.1",
+     "controlled moved": "Montpelier 2244.01"
+    }
+   }
+  },
+  {
+   "mission": "LOMP10 (long)",
+   "frames": "9200/9000",
+   "log": "local/rb12_lomp10l.log",
+   "pair_diff_vs_k": 3,
+   "damage": "0.0",
+   "deaths": "0",
+   "hit records": "0",
+   "hull hits": "0",
+   "shots": "0",
+   "first hit": "-1.00 s",
+   "torpedo-task releases": null,
+   "dive-bomb-task releases": null,
+   "plane water contacts": null,
+   "controlled moved": "B-25 01 6207.20",
+   "mission end": "none (Mission.EndMission never true)",
+   "unimplemented": "490",
+   "k": {
+    "damage": "1279.8",
+    "deaths": "3",
+    "hit records": "98",
+    "hull hits": "79",
+    "shots": "446",
+    "first hit": "90.50 s",
+    "controlled moved": "(none) 7044.64",
+    "unimplemented": "512"
+   },
+   "variants_moving_against_l": {
+    "nafg": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "5",
+     "shots": "4",
+     "damage": "324.4",
+     "controlled moved": "B-25 01 6207.20"
+    },
+    "nfl": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "B-25 01 5871.20"
+    },
+    "nfj": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "4",
+     "shots": "4",
+     "damage": "299.8",
+     "controlled moved": "B-25 01 6207.20"
+    },
+    "nland": {
+     "exit": 3,
+     "deaths": "2",
+     "hit records": "95",
+     "shots": "417",
+     "damage": "980.0",
+     "controlled moved": "(none) 7044.64"
+    },
+    "nclr": {
+     "exit": 3,
+     "deaths": "0",
+     "hit records": "0",
+     "shots": "0",
+     "damage": "0.0",
+     "controlled moved": "B-25 01 6207.20"
+    },
+    "nfjg": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "4",
+     "shots": "4",
+     "damage": "299.8",
+     "controlled moved": "B-25 01 6207.20"
+    },
+    "nfjgc": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "4",
+     "shots": "4",
+     "damage": "299.8",
+     "controlled moved": "B-25 01 6207.20"
+    },
+    "nsh": {
+     "exit": 3,
+     "deaths": "1",
+     "hit records": "4",
+     "shots": "4",
+     "damage": "299.8",
+     "controlled moved": "B-25 01 6207.20"
+    },
+    "nlp": {
+     "exit": 3,
+     "deaths": "3",
+     "hit records": "98",
+     "shots": "446",
+     "damage": "1279.8",
+     "controlled moved": "(none) 7044.64"
+    }
+   }
+  }
+ ],
+ "leave_one_out": {
+  "n0": {
+   "switches_off": [
+    "kAiCommandAvoidZonePointBound",
+    "kAutoTargetFollowerGateBound",
+    "kFollowLeaderLiveSpeedBound",
+    "kFollowLeaderTurnRateBound",
+    "kFollowTargetDirAcosBound",
+    "kFormationJoinFollowBound",
+    "kLandLineStateBound",
+    "kLandStandbyStateBound",
+    "kLandingApproachBitBound",
+    "kLandingSequencerBound",
+    "kLandingSiteSpacingBound",
+    "kShipAiApproachModeLatchBound",
+    "kShipAiArmFinalAreaKeyBound",
+    "kShipAiClearanceOutcomeWiringBound",
+    "kShipAiClearancePathFadeBound",
+    "kTroopLandingTraitBound"
+   ],
+   "sha256": "2B96202BF49CABF1B26A6FE7BE7FB89A4A75F1BDF7073E4C25094BFFBDEEF976",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 1,
+    "usn01": 1,
+    "e2": 1,
+    "usn02": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "lomp06": 1,
+    "lomp10": 1,
+    "jm05": 1,
+    "usn12": 1,
+    "lomp10l": 1
+   }
+  },
+  "nzone": {
+   "switches_off": [
+    "kAiCommandAvoidZonePointBound"
+   ],
+   "sha256": "2A591AE09F20A43CB718D43EAC478DE1ED5138D3FE9980B90DACBF2D867906C5",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nafg": {
+   "switches_off": [
+    "kAutoTargetFollowerGateBound"
+   ],
+   "sha256": "60AEF29D45226B286702DBCE2EC7D0005382404E96CE6E6EBDD7A9AEC68B82E9",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 3
+   }
+  },
+  "nfl": {
+   "switches_off": [
+    "kFollowLeaderLiveSpeedBound",
+    "kFollowLeaderTurnRateBound",
+    "kFollowTargetDirAcosBound"
+   ],
+   "sha256": "D650105CA5DD7825F2F06F9828F5E68FBAF5F4C8B5E3DC9577FAA7EDDCFB3F29",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nfj": {
+   "switches_off": [
+    "kFormationJoinFollowBound"
+   ],
+   "sha256": "322C243951513877B2FC47D94E4C662920A08347AAB0A75DC7CE57F98B87BD4C",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 1,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nland": {
+   "switches_off": [
+    "kLandLineStateBound",
+    "kLandStandbyStateBound",
+    "kLandingApproachBitBound",
+    "kLandingSequencerBound",
+    "kLandingSiteSpacingBound"
+   ],
+   "sha256": "D017A2D81069EF6C686D7914FF4C653A472D752E4661B9FDD766FE70E02C9F91",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nml": {
+   "switches_off": [
+    "kShipAiApproachModeLatchBound"
+   ],
+   "sha256": "3CBE070E17451C685EA35CCEE3F09603B47956C2C3A00B147B4CA6E77A5A730B",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nfak": {
+   "switches_off": [
+    "kShipAiArmFinalAreaKeyBound"
+   ],
+   "sha256": "154AB6508FD24A36CB36F5A3C500BAE986B0C896D00EB21B07E2FB91C40AC362",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nclr": {
+   "switches_off": [
+    "kShipAiClearanceOutcomeWiringBound",
+    "kShipAiClearancePathFadeBound"
+   ],
+   "sha256": "E1097C85A85691AE3597D511B0758E9D2592078D21A0471D05E1821D5C05CAA8",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 1,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "ntr": {
+   "switches_off": [
+    "kTroopLandingTraitBound"
+   ],
+   "sha256": "F4C43868A1765B917685D6BA452E771E0F073B134190B92A69909AFFB97360BC",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp06",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 3,
+    "lomp06": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3
+   }
+  },
+  "nfjg": {
+   "switches_off": [
+    "kFormationJoinFollowBound",
+    "kAutoTargetFollowerGateBound"
+   ],
+   "sha256": "F411F6C5C38CBE8B51B911C90F27221CBC64D32D605BBC3240BB4F0F59232C5A",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 3
+   }
+  },
+  "nfjgc": {
+   "switches_off": [
+    "kFormationJoinFollowBound",
+    "kAutoTargetFollowerGateBound",
+    "kShipAiClearanceOutcomeWiringBound",
+    "kShipAiClearancePathFadeBound"
+   ],
+   "sha256": "9D26711F07CB0309B1D35874CF0A946472AB1B73C8C77573D2656662FDCDAD8E",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 1,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 3
+   }
+  },
+  "nsh": {
+   "switches_off": [
+    "kFormationJoinFollowBound",
+    "kAutoTargetFollowerGateBound",
+    "kShipAiClearanceOutcomeWiringBound",
+    "kShipAiClearancePathFadeBound",
+    "kAiCommandAvoidZonePointBound",
+    "kTroopLandingTraitBound"
+   ],
+   "sha256": "DBBF1960BE50566DB987CB7D8AB2A392D38C12BB525D0A91A7EDDAE5148D6ABC",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "usn02",
+    "jm06",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "jm05",
+    "usn12",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 3,
+    "usn01": 3,
+    "e2": 3,
+    "usn02": 1,
+    "jm06": 1,
+    "jm08": 3,
+    "usn13": 3,
+    "bsm01": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 3
+   }
+  },
+  "nshfl": {
+   "switches_off": [
+    "kFormationJoinFollowBound",
+    "kAutoTargetFollowerGateBound",
+    "kShipAiClearanceOutcomeWiringBound",
+    "kShipAiClearancePathFadeBound",
+    "kAiCommandAvoidZonePointBound",
+    "kTroopLandingTraitBound",
+    "kFollowLeaderLiveSpeedBound",
+    "kFollowLeaderTurnRateBound",
+    "kFollowTargetDirAcosBound"
+   ],
+   "sha256": "ADC4DBA5B23953DACE3E9ABCF834A472C969C4D643B898A0070E1D695140C913",
+   "rows_run": [
+    "usn04",
+    "usn01",
+    "e2",
+    "jm08",
+    "usn13",
+    "bsm01",
+    "lomp10",
+    "jm05"
+   ],
+   "pair_diff_vs_k": {
+    "usn04": 1,
+    "usn01": 1,
+    "e2": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "bsm01": 1,
+    "lomp10": 3,
+    "jm05": 1
+   }
+  },
+  "nlp": {
+   "switches_off": [
+    "kLandLineStateBound",
+    "kLandStandbyStateBound",
+    "kLandingApproachBitBound",
+    "kLandingSequencerBound",
+    "kLandingSiteSpacingBound",
+    "kFollowLeaderLiveSpeedBound",
+    "kFollowLeaderTurnRateBound",
+    "kFollowTargetDirAcosBound",
+    "kFormationJoinFollowBound",
+    "kAutoTargetFollowerGateBound"
+   ],
+   "sha256": "97F888F04D37E1370390ABA3EB27E8563F5F7656D4E0280B983C4EA8C2B56FB4",
+   "rows_run": [
+    "lomp10",
+    "lomp10l"
+   ],
+   "pair_diff_vs_k": {
+    "lomp10": 1,
+    "lomp10l": 1
+   }
+  }
+ }
+}
