@@ -4463,3 +4463,73 @@ tally is `local\g13_ff.py`.
 
 **Verdict:** no host divergence found. The damage rise is the correct inertia geometry exposing an
 image rule (no friendly-fire check for heavy artillery) to a flat-firing mount. Nothing is bound.
+
+## 64. The kill handlers: what they do beyond the physics (ranking #12, cc9-gunnery13, 2026-09-29)
+
+**Sources.** Ghidra was read, not written. The disasm-raw bodies are the disk bytes.
+- **Host site:** `flush_unit_kills_00903670` (`src/game_hosts_mission_frame.cpp`) records the
+  `vt[84h]` dispatch as `Entities::kill_vtable84` (`00923010`).
+- **The wreck handler** `00824B60` is `EntityQueues::wreck_handler_vtable7c`
+  (`src/game_hosts_ready.cpp`). Its reference o calls: USN02 11, USNOS long 16, and JM06, JM08,
+  LOMP06 and USNOS 1 each.
+
+**The ship `vt[84h]`: `00819880`** (body `00819880-0081989D`).
+- **Three steps, `__thiscall(ship)`:**
+  1. `0092BD30(ECX = [ship+1018h])` clears the hull-shape fields (the physics the host does);
+  2. `00818970(ship)`;
+  3. a tail JMP to `0095D400(ship)`.
+- **`00818970`**, the effect teardown. It walks the live effect handles, calls
+  `BSP_PointEffect_StopChildren` (`00867B10`) on each, sets `+9 = 1` and releases each one:
+  - `+BA4h/+BB4h`, `+BA8h`, `+BACh/+BBCh`, `+BB0h/+BC0h`;
+  - `+9E8h..+9F4h`;
+  - the lists at `+A00h`, `+A14h`, `+B44h`, `+B54h`;
+  - the vector at `+1118h`.
+- **`0095D400`**, the unit base teardown:
+  - it stops and releases the effect at `+670h`;
+  - it empties the 44h-record vector at `+660h` (`0095BE70` with 0, `LEA ECX,[EBX+660h]` at
+    `0095D474`);
+  - it calls `BSP_UnitInstance_ReleaseDamageStateInstance` (`008797B0`).
+- **It sends nothing:** no session message and no score or report.
+
+**The plane `vt[84h]`: `007CC580`.**
+- **Slot:** plane vtable `00D05F20` holds `007CC580` at `+84h`.
+- **Body:** `007CC580-007CC7A0` exclusive. The last instruction is `JMP 0095D400` at `007CC79B`, and
+  `007CC7A0` is `BSP_Plane_EnterFlightStateTwo`. Ghidra has no function here: the address sits
+  inside the candidate `007CC2F0`. **For the lead to define.**
+- **Steps:**
+  1. `vtable[10h]`, which is `0042E950` (the name getter; the result is discarded);
+  2. **`007C75A0` `BSP_Plane_UnregisterFiringGuns`: removes the plane from the firing-plane list
+     `[00F87278]`;**
+  3. it stops and releases the effect vectors at `+A3Ch` and `+A4Ch`, the `class+5A0h` effect slots
+     at `+A5Ch` (stride 10h), and the handles counted at `+A34h`;
+  4. the tail `0095D400` above.
+- **The one gameplay effect is step 2.** `[00F87278]` is the list the attacker-evasion scan reads.
+  The host stands in for it with `plane_gun_fire_bc9` (`src/game_hosts_units.cpp`, the
+  `[00F87278]` comment near the evasion scan).
+  - Its only writer is the dogfight gun tick, which sets it every tick while the plane fights.
+  - Nothing clears it on death.
+  - A plane killed mid-burst keeps the flag set. It is still counted as a firing attacker unless
+    that scan's `state == nullptr || state->simulate != 0` test excludes dead planes, which is
+    **unverified**.
+  - **Routed to lua16:** clear `plane_gun_fire_bc9` at the kill (`007C75A0`), or confirm the state
+    test excludes the dead.
+
+**The ship wreck handler: `00824B60`** (slot `7Ch`; `docs/UNIT_DEATH_MESSAGE_AND_SINK.md` has the
+sink block). Beyond the physics (inertia x2, damping 2.5 / 0.5, `+828h/+82Ch` = 0):
+- **Effects and sounds:** `004D1100` / `008674C0` / `00484620` teardown, and `00818970`.
+- **`0074EC50(&unit+10D4h)`:** the leak manager is reset.
+- **`[unit+BC8h] = U(cfg+64Ch, cfg+650h)`:** the bubble timer (GAME_EXECUTABLE line 3051: it
+  advances in the sinking pass). Presentation.
+- **The five-point scatter at `+B68h`:** the wreck's burst points. Presentation.
+- **`004A5AA0(manager, unit)`:** breakup pieces from the wreck class, when the class has them.
+  Debris.
+- **`00959450` `BSP_Unit_OnDestroyed`:** the kill report through `009813A0` (the warning manager's
+  loss report, which the host already carries: `loss_reports` in the warning-manager census).
+
+**Summary for ranking #12:**
+- **`00819880`:** effect and damage-state teardown only. Nothing is sent.
+- **`00824B60`:** presentation (effects, bubbles, scatter, debris) plus the leak reset. Its only
+  message is the loss report, which is modelled.
+- **`007CC580`:** effect teardown, plus one gameplay write: the firing-list removal. That is routed.
+
+Nothing here is bound. The row can drop to "presentation, plus the `[00F87278]` removal".
