@@ -4904,3 +4904,72 @@ With `kAiPartyGateUnforcedBound` ON:
     ordering moves and so do deaths (then exit 3, with the mechanism unchanged).
 - **LOMP10: exit 1 or 3.** There is no combat on the reference row. Whether its three US
   squadrons (the controlled `B-25 01`) move depends on the brain orders they got OFF.
+
+### 60.4 Measured (same-tree pairs on `e90151156`)
+
+- **The builds.** OFF is `local\s17_off` (`pair_export --flip kAiPartyGateUnforcedBound=false`,
+  SHA-256 prefix `5864662509BB`). ON is `local\s17_on` (`C948E5DDB894`).
+- **The launch.** Reference p's form, with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`
+  (`local\s17_runs.ps1`).
+- **The smoke** (USN01, 300 frames, ON) passed renderer init.
+
+| row | pair_diff | deaths | damage | first hit |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 48 -> 50 | 16260.6 -> 11938.8 | 100.35 -> 98.70 s |
+| USN01 3200/3000 | 3 | 5 -> 5 | 2786.4 -> 3885.8 | 51.45 -> 53.65 s |
+| USN13 3200/3000 | 3 | 31 -> 22 | 9241.9 -> 6740.5 | 89.90 -> 98.70 s |
+| JM05 3200/3000 | 3 | 0 -> 0 | identical | identical |
+| IJN01 3200/3000 | 3 | 9 -> 6 | 3515.1 -> 3324.0 | 80.15 -> 83.25 s |
+| LOMP10 3200/3000 | 3 | 0 -> 10 | 0.0 -> 3500.0 | - -> 90.50 s |
+
+**The mechanism, from the ON census. It holds on every row.**
+- **The gate.** `game_mode=8`. `ai party 0 ... ai_enabled=0 brain=0` and `ai party 4 ...
+  ai_enabled=1 brain=1` on all six rows. `local_team` is 0 on the US rows and 1 on JM05 and
+  IJN01; `slot4_team` is 0 everywhere.
+- **US-player rows: the player's side is left alone.**
+  - Every US group is `party=0 command=NONCONTROL claimed=0`, including USN04's Lexington and
+    Yorktown groups, USN01's Enterprise and Northampton, and LOMP10's CB4.
+  - The Japanese groups are `party=4` and claimed:
+    - USN01: CB2 and the coastal guns DEFENDPOSITION; Convoy1 MOVETOATTACK; Convoy3 and Katori
+      CAUTIOUSATTACK.
+    - USN13: the CBs DEFENDPOSITION; the Maru groups MOVETOATTACK, CAUTIOUSATTACK or
+      CLOSEATTACK.
+    - LOMP10: Ashigara, Oyodo and the destroyers SELLING (own CB4 present, no enemy CB).
+- **The Allied-team slot-4 brain acts as predicted.** On USN04 every `ai group target value`
+  line pairs a Japanese group with itself (`D3A Val #1.1 -> D3A Val #1.1` x26, `#5.1` x15,
+  `movieval` x7). Attack's candidates are team 1, the brain's own groups.
+- **JM05 and IJN01 (Japanese player): the same side is planned.** The US groups are now party 4
+  under team 0, and the Japanese groups are party 0 NONCONTROL, as they were as party 1.
+  - JM05's combat is identical: deaths 0, the 39 hits, the damage and the first hit. Only paths
+    move (USS Phelps 2567.65 -> 2561.04 m). Section 59's SELLING table is unchanged apart from
+    the party column.
+  - IJN01 moves through the brain's cadence: `thinks` 38 -> 39, because slot 4 keeps its own
+    think timer and draws its interval at a different place in the party pass. Five A7M deaths
+    re-time, and four A7M_1 deaths become one A7M_5 death.
+  - This is the RNG and timing risk named in 60.3, not a change of side.
+- **LOMP10.** The US squadrons (B-25 01, Warhawk 01, Lightning 01) no longer get brain orders.
+  They fly their script tasks into the Japanese force, which shoots down ten of them from 99.4 s
+  (killers Kiyoshimo, Asashimo, Ashigara).
+
+**Spread against 60.3.** USN04, USN01 and USN13 moved as predicted. JM05 and IJN01 moved on
+timing only, the named risk; JM05 combat is identical. LOMP10 moved (exit 3, as allowed).
+
+### 60.5 Verdict: flipped ON
+
+- The mechanism matches the image reading on every row. That covers the gate arm, the slot
+  mapping, the brain's team, and the NONCONTROL birth of the local side's groups.
+- **What the flip does to the baseline.** On every US-player row the brain stops commanding the
+  player's own ships and squadrons. The Japanese side is planned instead, under a brain whose
+  team is Player5's `Party`.
+- **The link to re-check if the result looks wrong in play: the slot-4 brain's team.** Every
+  US-player reference scene authors Player5 = Allied, so that brain plans Japanese groups
+  against Japanese groups. The chain is:
+  - `00A15A90 CALL 009FFD60` gives `[game+18CCh+4*slot]+28h`;
+  - `004BB160` points slot 4 at slot record 4;
+  - `004C6890` copies Player5's side block `+0h` into its `+28h`.
+- **LABELLED:**
+  - the Party ordinals come from `luamw_init.lua`;
+  - the local index is taken as 0;
+  - `OwnerPlayer "AI control"` is not modelled.
+- **Unchanged:** the host's controlled unit (JM05 still controls USS Phelps). The gate does not
+  read it.
