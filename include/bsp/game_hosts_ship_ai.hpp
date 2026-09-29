@@ -555,6 +555,16 @@ struct GameShipAiSummary {
     unsigned long long latch_resets{0};          // 009F20DE..009F20ED
     unsigned long long latch_retarget_reachable{0}; // no ship target: 009F2124 follows
     unsigned long long latch_retarget_entries{0};   // ... and nested+11D6h was clear
+    // Packet cc9_approach_retarget_ring (ON only): arm runs past 009F2124, runs
+    // whose goal lay in a zone, runs that left the point off the goal, and the
+    // per-slot Landscape queries, hits and reach failures.
+    unsigned long long retarget_off_zone_frames{0};  // OFF: arm frames, goal in a zone
+    unsigned long long retarget_runs{0};
+    unsigned long long retarget_zone_runs{0};
+    unsigned long long retarget_moved_runs{0};
+    unsigned long long retarget_landscape_queries{0};
+    unsigned long long retarget_landscape_hits{0};
+    unsigned long long retarget_out_of_reach{0};
     unsigned long long ai_command_zone_points_moved{0};
     // Packet cc9_plane_row_autotarget: AutoTarget ticks reaching a plane or
     // squadron row (both sides) and the thinks they ran (OFF only).
