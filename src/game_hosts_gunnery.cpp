@@ -1517,6 +1517,13 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_segment_casts{0};
     unsigned long long seat_segment_hits{0};
     unsigned long long seat_segment_aims{0};
+    // Packet cc9_player_gun_seat_artillery.
+    unsigned long long seat_group_messages[6]{0, 0, 0, 0, 0, 0};
+    unsigned long long seat_artillery_guns{0};      // accepted guns, every message
+    unsigned long long seat_artillery_unsolved{0};  // 00955630 returned false
+    unsigned long long seat_artillery_hits{0};      // 00957740 took the segment hit
+    unsigned long long seat_artillery_turns{0};     // pending pairs a gun tick applied
+    unsigned long long seat_artillery_refusals{0};  // of those, 0085ABA0 refused
     // Packet cc9_unit_death_route.
     unsigned long long death_route_calls{0};
     unsigned long long death_route_destroys{0};   // packet cc9_death_route_destroy
@@ -1527,6 +1534,7 @@ struct GameGunneryHost::Impl {
     unsigned long long loss_report_calls{0};         // every 009813A0 call
     unsigned long long limbo_pages{0};
     void apply_gun_aim_message(std::size_t unit, const GunAimMessage79& message);
+    void apply_gun_aim_message_group3(std::size_t unit, const GunAimMessage79& message);
     // ShipGlobals.AAGunnerErrorModifier.CalcTargetPosTimeAddFix / AddMul, the
     // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
     // (docs/GAMEPLAY_SETTINGS.md; loader defaults 0, installed 0.05 / 0.1).
@@ -5967,6 +5975,21 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (!command_angles) ++summary.idle_holds;
             }
         }
+        if (kPlayerGunSeatArtilleryBound && gun.seat_cmd_pending) {
+            // Packet cc9_player_gun_seat_artillery: message 79h's group 3
+            // 0085ABA0 (0095A0EF) ran from the drain after the previous
+            // step's waves, so it is the command this step's wave 1 follows.
+            // A player-held gun already takes the pair through seat_horz.
+            gun.seat_cmd_pending = false;
+            if (!player_seat) {
+                float seat_mark = 0.0f;
+                ++seat_artillery_turns;
+                if (!bsp::gun_set_target_angles_0085aba0(gun.angles, arcs, gun.speeds,
+                        gun.seat_cmd_horz, gun.seat_cmd_vert, seat_mark)) {
+                    ++seat_artillery_refusals;
+                }
+            }
+        }
         if (kGunWaveOrderBound) {
             // Wave 1 (00875CAA.., the element's +4h slot 0085AD80) steps the
             // gun toward the command the bot set on the previous step, before
@@ -9164,6 +9187,24 @@ void GameGunneryHost::Impl::refresh_build_summary() {
 void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
                                                   const GunAimMessage79& m) {
     ++seat_messages;
+    if (m.group >= 0 && m.group < 6) ++seat_group_messages[m.group];
+    // 00959C69..00959C8A: kind - 1 above 4 leaves; the table at 0095A5C0.
+    if (m.group == 3) {                                            // 00959F72
+        if (kPlayerGunSeatArtilleryBound) {
+            apply_gun_aim_message_group3(unit, m);
+        } else {
+            record("PlayerGunSeat::message_group3", 0x00959f72u);
+        }
+        return;
+    }
+    if (m.group == 4) {                                            // 0095A1CC
+        record("PlayerGunSeat::message_group4", 0x0095a1ccu);
+        return;
+    }
+    if (m.group == 5) {                                            // 0095A441
+        record("PlayerGunSeat::message_group5", 0x0095a441u);
+        return;
+    }
     if (m.group != 1 && m.group != 2) {
         record("PlayerGunSeat::message_other_group", 0x00959c20u);
         return;
@@ -9297,6 +9338,128 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         gun.seat_trigger = m.held_34 && (gun.category == 1 || within_band);
     }
     done("PlayerGunSeat::apply_message_00959c20", 0x00959c20u);
+}
+
+// Packet cc9_player_gun_seat_artillery: the group 3 arm of 00959C20
+// (00959F72..0095A1C7) for one unit. docs/PLAYER_GUN_SEAT.md section 7.
+void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
+                                                         const GunAimMessage79& m) {
+    if (unit >= unit_state.size() || unit_state[unit].dead) return;
+    // 00959F72..00959F83: [ESP+11h] = held (+34h) or pressed (+35h). The
+    // hand-over below needs it with two more flags: [ESP+12h], the world's
+    // +1FE4h == 1 and +218Ch == 0 (00959F88..00959FA4), and [ESP+13h], the
+    // unit's own [unit+1ACh] not 8, not an AI slot and 00927F30(0) false.
+    const bool fire_input = m.held_34 || m.pressed_35;
+    // 00959FD5..00959FEB: 004B4D80(pitch +30h, yaw +2Ch). The message carries
+    // the mover's forward row; the pitch clamp is 00954A10's (+/-1.57).
+    const float fy = std::max(-1.0f, std::min(1.0f, m.forward[1]));
+    const float pitch = std::max(-1.57f, std::min(1.57f, std::asin(fy)));
+    const float yaw = std::atan2(m.forward[0], m.forward[2]);
+    const float dir[3] = {std::sin(yaw) * std::cos(pitch), std::sin(pitch),
+                          std::cos(yaw) * std::cos(pitch)};
+    float right[3], up[3], forward[3], origin[3];
+    unit_pose(unit, right, up, forward, origin);
+    UnitState& state = unit_state[unit];
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit) continue;
+        // 00954210(3, dev): operational (00729F10) and 005459B0, the weapon
+        // Function [[dev+3F4h]+80h] in {2, 3, 4, 6}.
+        if (!(gun.category == 2 || gun.category == 3 || gun.category == 4
+              || gun.category == 6)) {
+            continue;
+        }
+        ++seat_artillery_guns;
+        const bool seat_ai = slot_ai_held_00927f10(gun.seat_1ac);   // 00521E70(dev, 0)
+        // 0095A026..0095A05B: with all three flags and an AI-held seat,
+        // vtable[154h](0, [unit+1BCh]), the role-3 holder. Not modelled; an
+        // idle player never has fire input.
+        if (fire_input && seat_ai) record("PlayerGunSeat::artillery_handover", 0x0095a05bu);
+        // 00957740(ECX unit, EDX camera +20h, dir, out, dev), body
+        // 00957740..00957BCC, RET 0Ch.
+        float aim[3] = {m.camera[0], m.camera[1], m.camera[2]};
+        if (!(0.0f > m.camera[1])) {                               // 00957777
+            float t = gun.max_range;                               // [[dev+3F8h]+34h]+60h
+            if (0.0f > dir[1]) {                                   // 009577D5..009577FA
+                const float t0 = -m.camera[1] / dir[1];
+                if (!(t0 > t)) t = t0;
+            }
+            const float end[3] = {m.camera[0] + dir[0] * t, m.camera[1] + dir[1] * t,
+                                  m.camera[2] + dir[2] * t};
+            // 0095787E: 0098ADD0 over the segment, filtered by the unit's
+            // vtable[20h]. SUBSTITUTION as in 00957DA0: this host's units
+            // (no islands) plus the land query; the unit is the excluded one.
+            std::size_t hit_unit = 0;
+            float hit[3] = {0.0f, 0.0f, 0.0f};
+            bool land = false;
+            const bool any = query_segment_units_impl(*this, m.camera, end, unit + 1,
+                                                      hit_unit, hit, &land);
+            if ((any || land) && hit[1] > 0.0f) {                 // 00957883..00957898
+                aim[0] = hit[0];
+                aim[1] = hit[1];
+                aim[2] = hit[2];
+                ++seat_artillery_hits;
+                // 009578C3..00957A50: with [dev+3FCh] == 0 and a hit entity,
+                // the entity's lead at the round's speed (00902290 for kind 6,
+                // 00901C20 otherwise) is added. Not modelled: the raw point.
+                if (any) record("PlayerGunSeat::artillery_hit_lead", 0x009578c3u);
+            } else if (!(0.0f > dir[1])) {                         // 00957A55..00957ABF
+                // 0042B260 normalises (dir.x, 0, dir.z); 00CE3CB8 = 20000.0.
+                const float h = std::sqrt(dir[0] * dir[0] + dir[2] * dir[2]);
+                const float nx = h > 0.0f ? dir[0] / h : 0.0f;
+                const float nz = h > 0.0f ? dir[2] / h : 0.0f;
+                aim[0] = m.camera[0] + nx * 20000.0f;
+                aim[1] = m.camera[1];
+                aim[2] = m.camera[2] + nz * 20000.0f;
+            } else {                                               // 00957AC1..00957B19
+                const float s = m.camera[1] / dir[1];
+                aim[0] = m.camera[0] - s * dir[0];
+                aim[1] = m.camera[1] - s * dir[1];
+                aim[2] = m.camera[2] - s * dir[2];
+            }
+        }
+        for (float& c : aim) c = std::max(-99999.0f, std::min(99999.0f, c));  // 00957B3D..00957B9E
+        // 0095A08C..0095A0AA: 00955630(ECX unit, EDX aim, dev+0FCh, the
+        // speed [[dev+3F8h]+34h]+50h, &vert, &horz), in this host's
+        // convention: the world-frame solve (mount NULL) turned into the
+        // hull-relative pair as the bot's 006DFAD4 path does.
+        float muzzle[3];
+        gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
+        bsp::GunGravityArcQuery q;
+        q.aim_point = {aim[0], aim[1], aim[2]};
+        q.muzzle_position = {muzzle[0], muzzle[1], muzzle[2]};
+        q.muzzle_speed = gun.muzzle_speed;
+        q.mount_frame = nullptr;
+        const bsp::GunGravityArcSolution arc = bsp::solve_gun_gravity_arc_00955630(q);
+        if (!arc.solved) ++seat_artillery_unsolved;
+        const float d[3] = {aim[0] - muzzle[0], aim[1] - muzzle[1], aim[2] - muzzle[2]};
+        const float len = length3(d);
+        if (len <= 0.0f) continue;
+        const float direct = std::atan2(d[1], std::sqrt(d[0] * d[0] + d[2] * d[2]));
+        const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+        const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+        const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))))
+            + (arc.angles.vert - direct);
+        // 0095A0EF: 0085ABA0(horz, vert), applied by the gun's next tick
+        // before its wave-1 step (the drain runs after the waves).
+        gun.seat_cmd_pending = true;
+        gun.seat_cmd_horz = horz;
+        gun.seat_cmd_vert = vert;
+        // 0095A0FA..0095A1C2: the trigger, skipped for an AI-held seat (and
+        // on a world +1FE4h of 2). A player-held gun takes the pair and fires
+        // with +34h when the solve held and both axes are within 2 degrees
+        // (00D0C26C) of it; 0085ABA0's own refusal is not folded in here.
+        if (!seat_ai) {
+            gun.seat_horz = horz;
+            gun.seat_vert = vert;
+            const float band = 0.0349065848f;
+            const bool within = std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                                    gun.angles.vert, vert)) <= band
+                && std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz, horz)) <= band;
+            gun.seat_trigger = m.held_34 && arc.solved && within;
+        }
+    }
+    done("PlayerGunSeat::artillery_arm_00959f72", 0x00959f72u);
 }
 
 void GameGunneryHost::apply_gun_aim_message_00959c20(std::size_t unit_index,
@@ -10163,6 +10326,14 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery player seat groups 0..5=%llu/%llu/%llu/%llu/%llu/%llu "
+            "artillery guns=%llu unsolved=%llu hits=%llu turns=%llu refusals=%llu bound=%d "
+            "(00959F72, packet cc9_player_gun_seat_artillery)",
+            host.seat_group_messages[0], host.seat_group_messages[1], host.seat_group_messages[2],
+            host.seat_group_messages[3], host.seat_group_messages[4], host.seat_group_messages[5],
+            host.seat_artillery_guns, host.seat_artillery_unsolved, host.seat_artillery_hits,
+            host.seat_artillery_turns, host.seat_artillery_refusals,
+            kPlayerGunSeatArtilleryBound ? 1 : 0);
         host.log.notef("summary mission gunnery death route calls=%llu reported=%llu "
             "child_triggers=%llu loss_report_calls=%llu loss_reports side0=%llu side1=%llu "
             "limbo_pages=%llu bound=%d (00959450, packet cc9_unit_death_route)",
