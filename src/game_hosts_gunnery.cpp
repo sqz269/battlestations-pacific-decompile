@@ -530,7 +530,9 @@ constexpr bool kAaFlakAimErrorBound = true;
 //    session's delivery row; the 0083622B target drop is the ship AI host's
 //    (its director fire target) and is not made here. OFF: every director keeps
 //    008363E0's 1/1 whatever the script says (the stance is recorded, counted).
-constexpr bool kShipFireStanceBound = false;
+//    ON by the verdict (GUNNERY_OPEN_ITEMS 61.5): USN01 gameplay-identical with
+//    the 3/0/6/0 census and 6 forbidden bridge pushes, USN04 identical.
+constexpr bool kShipFireStanceBound = true;
 //  * kPlaneHitTaskNotifyBound: packet cc9_plane_hit_task_notify
 //    (docs/AA_LETHALITY_AUDIT.md section 8). A plane's hit handler is 007BBCF0
 //    (vtable[ECh] of class 0Fh and its eight plane classes), which calls
