@@ -58,10 +58,12 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/world_ocean.hpp"
+#include "bsp/unit_gunnery_pass.hpp"
 
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <string>
@@ -78,6 +80,21 @@ namespace {
 // 004e53ad's argument: the global clock in milliseconds, 00f876a4 times the
 // double 1000.0 at 00ce47a0.
 constexpr float kMillisecondsPerSecond = 1000.0f;
+
+// DIAGNOSTIC, packet cc9_ship_motion_hydro: BSP_HULL_ATTITUDE_TRACE=1 turns on
+// the per-ship "hull attitude" lines after each tenth motion step.
+bool hull_attitude_trace() {
+    static const bool on = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        bool value = false;
+        if (_dupenv_s(&text, &bytes, "BSP_HULL_ATTITUDE_TRACE") == 0 && text != nullptr)
+            value = text[0] == '1';
+        std::free(text);
+        return value;
+    }();
+    return on;
+}
 
 // The two profiler slots the in-mission frame brackets itself with are held at
 // 0109db08 and 0109db14, both filled at run time by the counter registration
@@ -785,6 +802,29 @@ public:
                 }
             }
             owner_.units->motion_step_00825f20(step);
+            if (hull_attitude_trace() && (owner_.units->summary().motion_steps % 10u) == 0u) {
+                // DIAGNOSTIC, packet cc9_ship_motion_hydro (BSP_HULL_ATTITUDE_TRACE=1):
+                // every ship's attitude each 10 motion steps. It reads the pose
+                // the motion step published and changes nothing.
+                const double deg = 180.0 / 3.14159265358979323846;
+                const std::vector<GameUnitRow>& rows = owner_.units->units();
+                for (std::size_t i = 0; i < rows.size(); ++i) {
+                    if (!owner_.units->unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) continue;
+                    float r[3], u[3], f[3], p[3];
+                    if (!owner_.units->unit_pose(i, r, u, f, p)) continue;
+                    const auto clamp1 = [](float v) {
+                        return v > 1.0f ? 1.0 : (v < -1.0f ? -1.0 : static_cast<double>(v));
+                    };
+                    owner_.log.notef("hull attitude: t=%.2f unit=%s roll=%.2f pitch=%.2f "
+                        "tilt=%.2f y=%.2f alive=%d",
+                        static_cast<double>(owner_.units->summary().simulated_seconds),
+                        rows[i].name.c_str(),
+                        std::atan2(static_cast<double>(r[1]), static_cast<double>(u[1])) * deg,
+                        std::asin(clamp1(f[1])) * deg, std::acos(clamp1(u[1])) * deg,
+                        static_cast<double>(p[1]),
+                        owner_.units->unit_alive_and_visible(i) ? 1 : 0);
+                }
+            }
             if (owner_.trajectory_csv.is_open()) {
                 const GameUnitsSummary& units = owner_.units->summary();
                 owner_.trajectory_csv.append_step(units.motion_steps,

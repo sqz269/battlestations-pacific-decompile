@@ -272,6 +272,21 @@ constexpr bool kUnitInvincibilityFloorBound = true;
 //    ON by the pairs of 2026-09-27: gameplay identical on all four reference
 //    missions (docs/GUNNERY_OPEN_ITEMS.md section 8).
 constexpr bool kGunneryLineOfSightBound = true;
+//  * kGunneryLosRoleSwapBound (packet cc9_los_role_swap,
+//    docs/SHIP_AI_OPEN_ITEMS.md section 33): the roles above are swapped. In the
+//    image 00864D90 raises its ARGUMENT (the target) by class+A8h + Globals +90h
+//    (00864E17..00864EA0) and passes it to 00864680, whose own point is the cache
+//    OWNER's (the observer, [cache+0]; pose +FCh..+104h at 008646F0..00864708,
+//    raised by class+A8h + Globals +94h at 00864710..008647B6). 008647F4 casts
+//    00904400(44h, owner point, passed point, record, 0), so observer -> target,
+//    and 008647FD..00864852 measure the 25 m from the PASSED point (the target).
+//    ON: observer raised by +94h, target by +90h, cast observer -> target, the
+//    25 m from the target. OFF: the arm above (target -> observer, 25 m from the
+//    observer). Both adds are 5.0, so only the cast direction and the measured
+//    end differ. ON by the pairs of 2026-09-29 (section 33): identical on JM05,
+//    USN12, USN02 and JM06; USN01 moves by two tests the one-sided cell test
+//    00ADEB80 answers differently in the two directions.
+constexpr bool kGunneryLosRoleSwapBound = true;
 //  * kSubmarineSensorCategoryBound (packet cc9_submarine_sensor_category,
 //    docs/GUNNERY_OPEN_ITEMS.md section 32): a submarine's sensor category
 //    is 00852B90's state from the hull's world Y (+100h) against the four
@@ -2254,6 +2269,9 @@ struct GameGunneryHost::Impl {
     bool line_of_sight_00864680(std::size_t observer, std::size_t target);
     unsigned long long los_tests{0};
     unsigned long long los_blocked{0};
+    unsigned long long los_hits{0};   // packet cc9_los_role_swap: a Landscape hit, either verdict
+    unsigned long long los_verdict_disagree{0};   // BSP_LOS_CENSUS=1 only
+    unsigned los_hits_logged{0};      // BSP_LOS_CENSUS=1: the first 24 disagreements
     // Packet cc9_submarine_sensor_category: 00852B90's answers by state
     // (index 1..5), counted whether or not the switch uses them; unseeded
     // boats; and calls where the image's state differs from PeriscopeIn.
@@ -6642,19 +6660,26 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
     float r[3], u[3], f[3], tp[3], op[3];
     unit_pose(target, r, u, f, tp);
     const float target_height = target < unit_state.size() ? unit_state[target].hull_height : 0.0f;
-    tp[1] = tp[1] + (target_height + bsp::kInstalledLosViewerHeightAdd);   // config +94h
+    // ON (kGunneryLosRoleSwapBound): 00864D90 raises the target by +90h at 00864E17.
+    tp[1] = tp[1] + (target_height + (kGunneryLosRoleSwapBound
+        ? bsp::kInstalledLosTargetHeightAdd : bsp::kInstalledLosViewerHeightAdd));
     // 0081DE10 for a ship target: not modelled, answers 0 (labelled).
     // 00864D90: the observer's point, pose +FCh raised by Height + [+90h].
     unit_pose(observer, r, u, f, op);
     const float observer_height = observer < unit_state.size() ? unit_state[observer].hull_height : 0.0f;
-    op[1] = op[1] + (observer_height + bsp::kInstalledLosTargetHeightAdd);  // config +90h
-    // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0.
+    // ON: 00864680 raises its cache owner (the observer) by +94h at 00864710.
+    op[1] = op[1] + (observer_height + (kGunneryLosRoleSwapBound
+        ? bsp::kInstalledLosViewerHeightAdd : bsp::kInstalledLosTargetHeightAdd));
+    // 00904400(44h, target point, observer point, hit, 0) -> 0098ADD0; ON:
+    // 008647F4 casts (owner point, passed point), observer -> target.
+    const float* from = kGunneryLosRoleSwapBound ? op : tp;
+    const float* to = kGunneryLosRoleSwapBound ? tp : op;
     const unsigned long long mesh_hits = shell_mesh_hits;
     const unsigned long long box_hits = narrowphase_box_0085cdb0;
     SegmentBinding query(*this, static_cast<std::size_t>(-1));
     bsp::SegmentQueryArgs args;
-    args.from = bsp::HitQueryPoint{tp[0], tp[1], tp[2]};
-    args.to = bsp::HitQueryPoint{op[0], op[1], op[2]};
+    args.from = bsp::HitQueryPoint{from[0], from[1], from[2]};
+    args.to = bsp::HitQueryPoint{to[0], to[1], to[2]};
     args.exclude_entity = nullptr;
     args.kind_filter = 0x44;
     bsp::HitRecordFill record;
@@ -6663,11 +6688,52 @@ bool GameGunneryHost::Impl::line_of_sight_00864680(std::size_t observer, std::si
     shell_mesh_hits = mesh_hits;
     narrowphase_box_0085cdb0 = box_hits;
     done("Gunnery::line_of_sight_00864680", 0x00864680u);
+    static const bool los_census = aa_env("BSP_LOS_CENSUS") == "1";
+    if (los_census) {
+        // Diagnostic only: the other convention's verdict (cast to -> from, 25 m
+        // from `from`), compared with this one. Restores the trace counters.
+        const unsigned long long traces = landscape_traces;
+        SegmentBinding back_query(*this, static_cast<std::size_t>(-1));
+        bsp::SegmentQueryArgs back;
+        back.from = args.to;
+        back.to = args.from;
+        back.exclude_entity = nullptr;
+        back.kind_filter = 0x44;
+        bsp::HitRecordFill back_record;
+        bsp::hit_record_reset_00470470(back_record);
+        const bool back_hit = bsp::query_segment_0098add0(back_query, back, back_record);
+        shell_mesh_hits = mesh_hits;
+        narrowphase_box_0085cdb0 = box_hits;
+        landscape_traces = traces;
+        auto dist = [](const float* a, const bsp::HitQueryPoint& b) {
+            const float x = a[0] - b.x, y = a[1] - b.y, z = a[2] - b.z;
+            return std::sqrt(x * x + y * y + z * z);
+        };
+        const float d_this = hit ? dist(to, record.position) : 0.0f;
+        const float d_back = back_hit ? dist(from, back_record.position) : 0.0f;
+        const bool blocked_this = hit && 25.0f < d_this;
+        const bool blocked_back = back_hit && 25.0f < d_back;
+        if (blocked_this != blocked_back) {
+            ++los_verdict_disagree;
+            if (los_hits_logged < 24) {
+                ++los_hits_logged;
+                log.notef("  los verdicts differ observer=%s target=%s role_swap=%d "
+                    "from=(%.1f,%.1f,%.1f) to=(%.1f,%.1f,%.1f) this: hit=%d d=%.1f blocked=%d "
+                    "reverse: hit=%d d=%.1f blocked=%d",
+                    unit_name_or_index(observer + 1).c_str(),
+                    unit_name_or_index(target + 1).c_str(), kGunneryLosRoleSwapBound ? 1 : 0,
+                    from[0], from[1], from[2], to[0], to[1], to[2], hit ? 1 : 0, d_this,
+                    blocked_this ? 1 : 0, back_hit ? 1 : 0, d_back, blocked_back ? 1 : 0);
+            }
+        }
+    }
     if (!hit) return true;
-    // 00864680 tail: blocked when |observer - hit|^2 > 625 (00CFBC80).
-    const float dz = op[2] - record.position.z;
-    const float dy = op[1] - record.position.y;
-    const float dx = op[0] - record.position.x;
+    ++los_hits;
+    // 00864680 tail: blocked when |to - hit|^2 > 625 (00CFBC80); ON: the passed
+    // point, the target (008647FD..00864852).
+    const float dz = to[2] - record.position.z;
+    const float dy = to[1] - record.position.y;
+    const float dx = to[0] - record.position.x;
     const float d2 = dz * dz + dx * dx + dy * dy;   // 008648xx: (z, x) then y
     if (625.0f < d2) {
         ++los_blocked;
@@ -9699,6 +9765,13 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery line of sight tests=%llu blocked=%llu bound=%d "
             "(00864680 / 00904400 kind 44h, packet cc9_gunnery_line_of_sight)",
             host.los_tests, host.los_blocked, kGunneryLineOfSightBound ? 1 : 0);
+        // Packet cc9_los_role_swap diagnostic, only with BSP_LOS_CENSUS=1.
+        static const bool los_census = aa_env("BSP_LOS_CENSUS") == "1";
+        if (los_census) {
+            host.log.notef("summary mission gunnery line of sight landscape hits=%llu "
+                "reverse_verdict_differs=%llu role_swap=%d (packet cc9_los_role_swap)",
+                host.los_hits, host.los_verdict_disagree, kGunneryLosRoleSwapBound ? 1 : 0);
+        }
         host.log.notef("summary mission gunnery submarine sensor category calls=%llu "
             "surface=%llu periscope_in=%llu periscope_out=%llu underwater=%llu deep=%llu "
             "unseeded=%llu differs=%llu bound=%d (00852B90, packet cc9_submarine_sensor_category)",

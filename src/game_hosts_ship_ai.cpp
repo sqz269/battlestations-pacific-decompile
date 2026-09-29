@@ -268,7 +268,9 @@ inline constexpr bool kShipAiEngageSubStateBound = true;
 // cache itself); without one, 009E8129 009E6120 (the goal, brain+0B2Ch..0B34h)
 // and 009E8130 00864BA0 -> 00864680 (unit_sees_point_00864680). False: a target
 // is always visible and the no-target arm always fails, as before.
-inline constexpr bool kShipAiApproachSightTestBound = false;
+// ON (2026-09-29, section 34): re-paired on kGunneryLosRoleSwapBound; USN01's
+// 345 hidden answers are terrain between Dunlap and CB2 in both cast directions.
+inline constexpr bool kShipAiApproachSightTestBound = true;
 // Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
 // gives a generated ship its brain on the same path as a loaded one: SEntity
 // InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene
@@ -4983,6 +4985,25 @@ public:
             return;
         }
         if (!bsp::kShipAiApproachRetargetRingBound) {
+            if (bsp::kShipAiApproachNoShipHoldBound) {
+                // Packet cc9_approach_no_ship_hold: the hold, and the arm run
+                // up to 009F23B5 (the goal) without the ring.
+                const bsp::ShipAiApproachPoint copied = ctl_.approach.point_1228;
+                ctl_.approach.point_1228 = before;
+                if (bsp::ship_ai_approach_retarget_head_009f2124(ctl_.approach)) {
+                    ++s.hold_arm_runs;
+                    ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{
+                        ctl_.goal_vector.goal_x_0b2c, ctl_.goal_vector.goal_y_0b30,
+                        ctl_.goal_vector.goal_z_0b34};   // 009F23B5..009F23C5
+                    owner_.done("ShipAiApproach::retarget_head_009f2124", 0x009f2124u);
+                } else {
+                    ++s.hold_frames;
+                    if (ctl_.approach.point_1228.x != copied.x ||
+                        ctl_.approach.point_1228.z != copied.z) {
+                        ++s.hold_frames_differ;
+                    }
+                }
+            }
             owner_.record("ShipAiApproach::retarget_ring", 0x009f239au);
             RetargetRingBinding probe(owner_, ctl_);
             if (probe.goal_zone_004178f0(ctl_.goal_vector.goal_x_0b2c,
@@ -10777,6 +10798,10 @@ void GameShipAiHost::report() {
         host.summary.retarget_moved_runs, host.summary.retarget_landscape_queries,
         host.summary.retarget_landscape_hits, host.summary.retarget_out_of_reach,
         bsp::kShipAiApproachRetargetRingBound ? 1 : 0);
+    host.log.notef("summary mission ship ai approach no-ship hold arm_runs=%llu frames=%llu "
+        "frames_differ=%llu bound=%d (009F1E30 JE 009F2003, packet cc9_approach_no_ship_hold)",
+        host.summary.hold_arm_runs, host.summary.hold_frames, host.summary.hold_frames_differ,
+        bsp::kShipAiApproachNoShipHoldBound ? 1 : 0);
     host.log.notef("summary mission ship ai engage kamikaze reads=%llu kamikaze_classes=%llu "
         "bound=%d (009E85CD, packet cc9_engage_kamikaze_gate)",
         host.summary.engage_kamikaze_reads, host.summary.engage_kamikaze_classes,
