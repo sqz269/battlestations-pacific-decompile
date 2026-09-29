@@ -3432,3 +3432,27 @@ image: the arm, and 0 for every other call. The reach is zero on every row count
 on those rows has the `007EDA90` stand-in answering true. The arm's first reach needs a bomber
 squadron that follows a leader in an AI group and spends its load. USN13 has 576 bomber calls
 whose squadrons never spend it.
+
+## 41. Section 39's mode-4 arm bound: LandingRange `[target+7C4h]` (packet `cc9_standoff_landing_range`)
+
+Worker cc9-ships13, 2026-09-29. It lands under the switch that is already ON,
+`kShipAiStandoffTargetKindBound`.
+
+- The units lane landed `GameUnitsHost::command_building_landing_range_07c4` (main `a19a551ba`,
+  merge `52f5a0f71`). It answers `006F2780`'s `LandingRange` store at `006F285F`, and 500.0 for a
+  unit that is not kind `1Ch`.
+- `StandoffBinding` no longer answers false for the `1Ch` query in mode 4.
+- `target_radius_07c4` (`009E6F4E` `FILD`) returns that accessor's value truncated to `int`. The
+  field is an authored integer: `I 500` in `commandbuilding.props`, `I 2000` / `I 2100` in
+  `ijn_07_invasion_of_midway.scn`.
+- Mode 4's base is now `LandingRange - 300.0` for a building target, as the listing has it.
+- The summary field `building_mode4_deferred=` is renamed `building_mode4=`.
+
+**Evidence of no move.** Section 39's census found no mode 4 frame on any of its ten landing and
+invasion rows, or in 387 earlier logs. So the arm has zero reach, and section 39's pairs stand as
+they are. The lead accepted a build plus those pairs.
+- The build passes.
+- A 300-frame USN01 smoke (`local\s13m4_smoke.log`) reaches the final COM release.
+
+The latch's own `+7C4h` read (`009F20A4`, mode 3 vs 4) is not bound. It needs `006F2D90`, the
+free-landing-spot test, as well, and it has the same zero reach.
