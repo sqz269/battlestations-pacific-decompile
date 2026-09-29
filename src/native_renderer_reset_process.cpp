@@ -161,12 +161,12 @@ void process_current_request(void* renderer, NativeRendererResetProcessContext& 
                 // DIVERGENCE (packet cc9_d3d_device_lost): no 00B29670 from the
                 // lost branch; the device is kept and polled until DEVICENOTRESET.
                 ++stats.lost_holds;
-                return;
+            } else {
+                const void* const platform = context.actual_platform_0109cf04;
+                if (!captured_platform_is_focused(platform)) return;
+                context.actual_retries_0108d4c4 = 0;
+                recreate_native_renderer_device_00b29670(renderer, recreation);
             }
-            const void* const platform = context.actual_platform_0109cf04;
-            if (!captured_platform_is_focused(platform)) return;
-            context.actual_retries_0108d4c4 = 0;
-            recreate_native_renderer_device_00b29670(renderer, recreation);
             return;
         }
     }
