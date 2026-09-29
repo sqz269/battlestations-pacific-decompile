@@ -4533,3 +4533,62 @@ sink block). Beyond the physics (inertia x2, damping 2.5 / 0.5, `+828h/+82Ch` = 
 - **`007CC580`:** effect teardown, plus one gameplay write: the firing-list removal. That is routed.
 
 Nothing here is bound. The row can drop to "presentation, plus the `[00F87278]` removal".
+
+## 65. Handoff (cc9-gunnery13, 2026-09-29, at about 70% context)
+
+### 65.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| AA_LETHALITY_AUDIT 8.1-8.4 | `cc9_aa_jm05_repair` | JM05 re-paired on main (the AA errors stay ON). Three AA terms checked and found faithful: barrels/rate, damage, aim point. The plane-hit gap was found |
+| AA_LETHALITY_AUDIT 8.5 | `cc9_plane_hit_task_notify` | `kPlaneHitTaskNotifyBound` **ON**: releases move outward. P2's count missed; the override was accepted by the lead |
+| AA_LETHALITY_AUDIT 8.6-8.7 | `cc9_dive_hit_clock_pair` | lua16's `kDiveHitClockBound` **kept OFF**: the rerolls stay 3 -> 3 (mechanism-failure clause) |
+| 61 | `cc9_ship_fire_stance` | `kShipFireStanceBound` **ON**: USN01 and USN04 are identical, and the census held |
+| GAME_EXECUTABLE reference o, `reports/cc9_reference_rebaseline_15.json` | `cc9_reference_rebaseline_15` | 16 rows on `3194cea39`. 12 switches attributed; the all-OFF anchor is identical to n |
+| 62 | `cc9_scene_command_find_case` | `kSceneCommandFindCaseInsensitiveBound` **ON** by census (every lookup is exact). It is post-o |
+| 63 | 60.2 item 3 | USNOS long's damage under inertia is NH's heavy-artillery friendly fire on the Portlands. That is the image's rule, as read; nothing bound |
+| 64 | ranking #12 | the kill handlers: presentation, plus `007CC580`'s firing-list removal (routed to lua16) |
+
+### 65.2 Open items, in order
+
+1. **Ranking #7, the player gun-seat group arm** (`00959C91..00959F6D` of `00959C20`).
+   - Bind the in-window arm alone, and pair on USN01 and USN04.
+   - It is not started.
+2. **60.2 item 4:**
+   - the periscope shape in the hull box (57.2);
+   - m's flags (57.2).
+3. **Section 63's one unread link:** does the artillery sub-director's own target pick admit
+   aircraft? If it does not, NH's cat-4 plane shots are a host divergence.
+4. **Section 64's routed item** (lua16): `plane_gun_fire_bc9` is never cleared at a plane's kill.
+   - The image's `007CC580` removes the plane from `[00F87278]` through `007C75A0`.
+   - The lead should also define `007CC580` in Ghidra (`007CC580-007CC7A0`, exclusive; tail
+     `JMP 0095D400` at `007CC79B`).
+5. **Reference p** must attribute the post-o switches:
+   - `kCommandTargetKeepUnauthoredBound`;
+   - `kPilotLandNativeBound` (now ON);
+   - `kFindEntityCaseInsensitiveBound`;
+   - `kPlaneGroundLevellingBound`;
+   - `kSubmarinePeriscopePrepassBound`;
+   - `kSceneCommandFindCaseInsensitiveBound`;
+   - anything later.
+
+   Take the list from `local\g13_switches2.py 3194cea39 <main>`. That script also catches names
+   that do not end in `Bound`.
+
+### 65.3 Tools in the cc9-gunnery13 tree (`local\`)
+
+- **Exports:** `g13_exp.ps1 -Commit <sha> -Specs 'name:kA=false,...'` runs detached `pair_export`s.
+- **Runs:**
+  - `g13_runs.ps1 -V <variant> [-Only rows]` (the reference rows);
+  - `g13_batch.ps1 -V <variant> -Only rows` (the same, with a foreground wait);
+  - `g13_run1.ps1` (one run, optional `-Trace` names);
+  - `g13_census.ps1` (the rows on the tree's own build).
+- **Reference tables:**
+  - `g13_vs.py <off> <on> [rows]` (prefix `rb14` = reference n in cc9-gunnery12);
+  - `g13_rows.py`, `g13_table.py`, `g13_members.py`, `g13_report.py`.
+- **Analysis:**
+  - `g13_aacount.py` (low aircraft deaths);
+  - `g13_drops.py` (torpedo drops);
+  - `g13_dive.py` (the dive census);
+  - `g13_ff.py <log> <victims>` (traced hits by shooter/category/victim);
+  - `g13_devrow.py <index>` (compact arcade device rows).
