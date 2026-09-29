@@ -379,6 +379,9 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
         acc.body_damping[1] = bound;
     }
 
+    // 007DBE0E TEST / JNE: the ceiling below is mode 0 only; mode 1 takes the
+    // ground band (ground_band_007dbeb3, applied by the caller).
+    if (state.controller_mode != 0) return acc;
     // 007DBE0E..007DBEA8, free flight only (ctl+FCh == 0, which this arm is).
     // 007DBE2E subtracts Ceiling from unit+100h and 007DBE42 multiplies by
     // -CeilingForce, so the push exists only above the ceiling.
@@ -519,6 +522,63 @@ float commit_direction_hold_007dc6c5(float seconds, bool owner_present, bool hol
         return seconds;
     }
     return 0.0f;
+}
+
+PlaneGroundBand ground_band_007dbeb3(const PlaneGroundBandInputs& in) noexcept {
+    PlaneGroundBand out;
+    // 007DBEB3-007DBEC7: 0.6 (00CEFF98, a widened float) - throttle * 26.0 (00D06880).
+    const float open = static_cast<float>(0.6000000238418579 -
+        static_cast<double>(in.latched_throttle) * 26.0);
+    // 007DBECB-007DBEE8: the larger of the latched air brake and that.
+    const float brake_in = in.latched_air_brake > open ? in.latched_air_brake : open;
+    out.brake = in.wheel_brake * brake_in;                          // 007DBEF6-007DBF0C
+    // 007DC08C-007DC099: 00415620 clamps ctl+68h into [accel_1, accel_2].
+    float f = in.prev_body_accel_z;
+    if (in.wheel_friction_accel_1 > f) {
+        f = in.wheel_friction_accel_1;
+    } else if (f > in.wheel_friction_accel_2) {
+        f = in.wheel_friction_accel_2;
+    }
+    f *= in.surface_factor;                                         // 007DC12D
+    // 007DC135-007DC18E.
+    const float ramp = interp_clamped_00419010(
+        in.stall_spd * in.wheel_friction_speed_1, in.wheel_friction,
+        in.stall_spd * in.wheel_friction_speed_2, 0.0f, in.world_speed);
+    out.friction = ramp * f;
+    // 007DC1C3-007DC1ED: |2 vx|, the -0.0f idiom for the negative side.
+    const float two = in.body_vx + in.body_vx;
+    out.lateral = two > 0.0f ? two : (-0.0f - two);
+    return out;
+}
+
+void blend_direction_hold_007d88cb(float velocity[3], const float direction_body[3],
+                                   float seconds) noexcept {
+    // 007D88E0..007D8927: the speed, sqrt only above 1e-10 (00CE3820).
+    const float v2 = velocity[0] * velocity[0] + velocity[1] * velocity[1] +
+                     velocity[2] * velocity[2];
+    const float speed = static_cast<double>(v2) > 1.0e-10 ? std::sqrt(v2) : 0.0f;
+    // 007D8951..007D8A0F: the direction, normalised (1/|d| only when |d| > 0).
+    const float dl = std::sqrt(direction_body[0] * direction_body[0] +
+                               direction_body[1] * direction_body[1] +
+                               direction_body[2] * direction_body[2]);
+    const float di = dl > 0.0f ? 1.0f / dl : 0.0f;
+    const float d[3] = {direction_body[0] * di, direction_body[1] * di, direction_body[2] * di};
+    // 007D8A13..007D8AB6: the velocity normalised the same way, stored in place.
+    const float vl = std::sqrt(v2);
+    const float vi = vl > 0.0f ? 1.0f / vl : 0.0f;
+    // 007D8AB9..007D8B35: s * d + (1 - s) * v.
+    const float s = seconds;
+    float b[3];
+    for (int i = 0; i < 3; ++i) b[i] = s * d[i] + (1.0f - s) * (velocity[i] * vi);
+    // 007D8B39..007D8BDE: normalised, then 007D8BE1..007D8C12 times the speed.
+    const float bl = std::sqrt(b[0] * b[0] + b[1] * b[1] + b[2] * b[2]);
+    const float bi = bl > 0.0f ? 1.0f / bl : 0.0f;
+    for (int i = 0; i < 3; ++i) {
+        velocity[i] = b[i] * bi * speed;
+        // 007D8C15..007D8C5E: FABS against 00D7A238 = 0.01f, equality kept.
+        const float m = velocity[i] < 0.0f ? -velocity[i] : velocity[i];
+        if (0.01f > m) velocity[i] = 0.0f;
+    }
 }
 
 float gate_direction_hold_007d81c7(float seconds, bool game_state_is_two) {

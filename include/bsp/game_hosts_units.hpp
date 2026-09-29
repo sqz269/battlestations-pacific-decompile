@@ -776,6 +776,11 @@ public:
     // `(float)(int)target[+7A0h]` (00A037CF FILD). Answers 500 for a unit that is not a
     // CommandBuilding (kind 1Ch) or has no slot.
     float command_building_capture_range_07a0(std::size_t unit_index) const;
+    // Routed from cc9-ships13: unit+7C4h, the CommandBuilding's LandingRange, which
+    // 006F2780 stores from the scene (006F2847 find, 006F285F store; 500 when
+    // unauthored). 009E6E80's mode-4 arm (009E6F4E FILD) and the latch 009F20A4 read
+    // it. Answers 500 for a unit that is not a CommandBuilding (kind 1Ch) or has no slot.
+    float command_building_landing_range_07c4(std::size_t unit_index) const;
     // The plane class MaxSpd, class+188h (007D238A reads the Lua key). 00A03760
     // reads it for a PlaneSquadron (IsType 18h) as [unit+35Ch]+188h (00A03819 /
     // 00A0381F), the

@@ -3521,3 +3521,405 @@ Phelps is the controlled (idle) unit, and the column is the distance it moved:
 - Clearance moves Phelps only on the gate-and-join-OFF base (2383.93 -> 2567.69 m).
 - Both are ship-AI formation effects on an idle player unit. Neither needs a fix.
 - Reference l's flag line is corrected in place.
+
+## 55. The hull shape owners through the Note lookup (packet `cc9_note_owner_shapes`, cc9-gunnery11, 2026-09-29)
+
+This follows up 53. **The owner test, read at `00938F61..0093918C`.** A pair `{item, node}` from
+`model+4Ch` is kept when `node` equals one of four nodes:
+- `[ESP+3Ch]`, the `firstnode` lookup at `00938F4E` (string `00D1968C`), compared at `00939026`;
+- `[ESP+8Ch]`, `model+0Ch` (the root), at `00939039`;
+- `controller+370h`, `0071AD50(model, "front")` (`00D196A0`) at `00938DB9`, compared at
+  `00939053`;
+- `controller+374h`, `0071AD50(model, "back")` (`00D19698`) at `00938DE2`, compared at `0093906C`.
+
+`0071AD50` returns the node a Note of that exact name was published with. B891A0 publishes each
+hierarchy record's items with that record's own node (NATIVE_MODEL_GRAPH_AQ, section 49.3), so:
+
+**the kept shapes are the ConvexObjects of record 0 and of every record that lists a Note named
+`firstnode`, `front` or `back`.**
+
+- The loop at `00938E04..00938F17` is not an owner. It looks up `hajobelso` (`00CEB8F4`) through
+  `0071BA20` and moves each match; it does not take part in the walk's test.
+
+**The census** is `local\g11_notebox.py`, read-only on this installation's ship models; its output
+is `local\g11_notebox.txt`.
+- No model has a `firstnode` Note.
+- Of the 40 class models whose record 0 lists no ConvexObject (49.5), **39 get shapes through their
+  `front`/`back` records.** The `eleje` (front) and `hatulja` (back) items carry the hull.
+  Examples, with shapes and raw extent:
+
+  | model | shapes | extent |
+  | --- | --- | --- |
+  | akagi | 2 | 30.07 x 43.75 x 261.82 |
+  | yamato | 6 | 37.12 x 44.37 x 254.48 |
+  | i-400 | 4 | 13.49 x 17.85 x 126.80 |
+  | porter | 10 | 11.45 x 32.62 x 113.09 |
+  | us_troop_transporter | 2 | 27.20 x 42.58 x 181.50 |
+  | soryu | 4 | 33.33 x 26.95 x 225.40 |
+  | jap_tanker | 5 | 23.35 x 29.70 x 167.88 |
+  | lst_mark5 | 3 | 14.93 x 15.82 x 97.89 |
+
+- **Only saratoga keeps the empty set,** and so the zero box of 49.10.
+- **Five models with a root shape also gain Note-owned shapes,** which widens their box:
+  hospital_ship (3 + 4), jap_troop_transporter (1 + 5), dzsunka-big, dzsunka-little and
+  pt_boat_camo (1 + 1 each).
+- Every owner record's composed matrix leaves the box unchanged. The posed box equals the raw box
+  in all 239 ship files.
+
+**The reader** (`read_mmod_hull_convex_box`, `fd2e7ccd1`) now keeps record 0 plus every record
+listing such a Note, and counts the latter in `note_owner_records`.
+- DeRuyter's fixture box is unchanged: it has no front or back Note, and the existing test passes.
+- A 300-frame check with `kHullInertiaFromShapesBound` flipped (`local\g11nb_*`, not committed)
+  logs the census's boxes plus the 0.02 widening on each side:
+  - Oglala (us_troop_transporter): shapes=2, 27.24 x 42.62 x 181.54;
+  - Convoy1 (jap_troop_transporter): 6 shapes;
+  - Hospital Ship 01: 7 shapes;
+  - PT1: 2 shapes;
+  - LST8 (lst_mark5): 3 shapes;
+  - MovieCargo (jap_cargo): 4 shapes.
+- The units host's `hull shapes` line still says "root ConvexObjects". That wording is in the units
+  host (lua12's lane) and is now inexact.
+
+**Consequence for the inertia switch (still OFF).**
+- 52.3's pairs gave zero inertia to every zero-root class. On JM06 that is the transports and
+  tankers, and on USN02 none of the listed classes.
+- With this reader they get a box. A re-pair of 52's USN02 and JM06 rows would move JM06's
+  transports, which 51.1 recorded as unmoved.
+- This does not change 52.3's verdict. The capsize prediction is still the blocker.
+
+**Uncertainty.**
+- The shape's node transform is not modelled. It is identity for every owner record here.
+- The periscope shape (49.10) is still not added. It is a separate `0071AD50("periszkop")` at
+  `009396D8`, and 53 shows it matches 12 submarine models.
+
+## 56. The wreck capsize, predicted from the flooding trace (packet `cc9_hull_capsize`, cc9-gunnery11, 2026-09-29)
+
+This is 52.3's next step. The inputs are cc9-lua12's `BSP_HULL_FLOODING_TRACE=1` (`9ff6f59a8`: each 0.5 s
+per ship, the leak water `unit+10FCh`, and each leak's hull-space point and water). It was run
+together with `BSP_HULL_ATTITUDE_TRACE=1` on this tree's `86e458a5e` with the inertia switch OFF,
+on USN02 9200/9000 and JM06 3200/3000 (`local\g11cpoff_<row>.log`). The predictions below were
+written before any ON run of this packet.
+
+### 56.1 The model
+
+`local\g11_capsize.py` is a quasi-static roll balance per trace sample:
+- **Elements.** Built from 52.1's reading and the `buoyancy elements` class line: `2 * Segments`
+  elements at x = +/-W/2, each with `c = 5 M / (Segments * D)`.
+  - The deck point is at local y = S - D, with `S = D / (1 - WaterLineRatio)`, the deck-to-keel
+    span.
+  - Every station gets the same deck and keel. This is an approximation; DeRuyter's stations
+    differ by 0.3 m.
+  - The depth is `d = S - clamp(h, 0, S)`, and `B = c d (0.5 d / D + 0.5)`.
+- **Heave.** For a heel phi, the heave solves `sum(B) = 10 (M + water)`.
+- **Moments.** The roll moment is the flat-arm buoyancy term `sum(x cos(phi) B)` plus `0074F2E0`'s
+  leak term, `-10 sum(w (x cos(phi) - y sin(phi)))`.
+- **Solve.** The heel is scanned from 0 toward the leak's side in 0.5-degree steps. The first zero
+  crossing is the equilibrium. **No crossing within 90 degrees means capsize:** the flooding moment
+  exceeds anything the bounded buoyancy moment can return.
+- **What the trace adds** to 52.3's reading:
+  - Every leak point in these rows is at local y = 0, so the `y sin(phi)` term is zero.
+  - **The leak points sit at x = +/-Width**, twice the elements' lever arm (for example John1's
+    leaks at x = -9.00 on a 9 m hull).
+  - So the flooding moment grows as 10 * w * W, while the buoyancy moment is bounded by
+    (W/2) * sum of one side's full buoyancy.
+- **Not modelled:**
+  - pitch: Houston floods at the bow, `+z`;
+  - waves;
+  - the hit roll torques;
+  - dynamics. The wreck is overdamped (zeta 2.4 to 6, 52.1), so its roll lags the equilibrium.
+- The submarines have a buoyancy mix of 0 and `mul` (1, 1, 1). The model uses the Ship material,
+  so the submarine rows are indicative only.
+
+### 56.2 Predictions from the OFF run (inputs only; OFF itself never heels)
+
+USN02:
+
+| wreck | wreck at | phi_eq passes 30 deg (t, water) | balance lost (t, water) | lost - wreck |
+| --- | --- | --- | --- | --- |
+| Houston | 21.0 | - | 39.5, 6188 | 18.5 s |
+| John1 | 26.5 | - | 48.0, 882 | 21.5 s |
+| Kawakaze | 51.0 | 60.5, 841 | 62.5, 958 | 11.5 s |
+| Tokitsukaze | 95.0 | - | 124.0, 2416 | 29.0 s |
+| Yamakaze | 120.0 | - | 136.5, 1360 | 16.5 s |
+| Amatsukaze | 125.5 | 141.5, 1200 | 148.5, 1527 | 23.0 s |
+| Asagumo | 139.5 | 152.5, 1248 | 156.5, 1541 | 17.0 s |
+| Hatsukaze | 150.5 | - | 193.5, 4371 | 43.0 s |
+| Yukikaze | 160.0 | - | 180.5, 2723 | 20.5 s |
+| Minegumo | 185.5 | 201.0, 1203 | 207.0, 1529 | 21.5 s |
+
+- **Flooded living hulls hold small, steady heels.** The heel direction is toward their leaks'
+  side:
+  - DeRuyter -2.5 to -4.0 degrees;
+  - Java +4.0 to +5.5;
+  - Samidare +3.5 to +4.0;
+  - Kortenaer, Electra, Haguro, Yudachi, Murasame and Harusame within 2.5 degrees.
+- On JM06:
+  - Fletcher-class 08 settles at +2.5 to +3.0 degrees;
+  - USTroopTransport 02 reaches -5.5;
+  - the other transports stay within 2 degrees;
+  - the Gato wreck (a submarine, indicative only) loses balance at 36.5 s.
+
+**The predictions for the ON pair** (`kHullInertiaFromShapesBound` flipped on the same commit,
+both traces on). The model is re-evaluated on the ON run's own flooding inputs, because heel
+changes the hits and so the water:
+- **P5, wreck capsize onset.**
+  - Every USN02 wreck passes 60 degrees of roll only after its ON water reaches 0.8 times the water
+    at which the model loses balance on that run's own samples.
+  - It does so within 25 s of the model's loss time.
+  - The roll goes to the side the leak moment drives.
+- **P6, the heel before loss.**
+  - While the model has a balance, a wreck's roll stays within 8 degrees of the model heel at 90%
+    of its samples. The margin allows for the overdamped lag.
+  - On living flooded hulls, the roll stays within 3 degrees of the model heel at 90% of the
+    samples with water above 0. The hit roll torques are ON as landed, and their transients are
+    what the 10% allows.
+- **P7, the sign.** Every hull whose model heel exceeds 2 degrees rolls to the same side.
+- **Mechanism failure:**
+  - a wreck passing 60 degrees below 0.8 times its loss water;
+  - a living hull rolling against the model's side by more than 2 degrees for more than 5 s.
+- **Uncertainty:**
+  - uniform stations;
+  - no pitch coupling. Houston's bow flooding could pitch it instead of rolling it.
+
+### 56.3 The ON pair: the predictions miss, and the cause is a host layout bug in the leak moment
+
+**The pair.** ON is `local\g11cpon_<row>.log` (`kHullInertiaFromShapesBound` flipped on `86e458a5e`, both
+traces on, the hit roll torque ON as landed). The USN02 gameplay numbers repeat 52.3's pair B:
+hit records 2271 -> 4203, damage 39395.6 -> 34679.6, and ten death rows, all changed.
+`local\g11_capeval.py` re-runs the 56.1 model on the ON run's own flooding samples.
+
+**P5, wreck onset: 6 of 10 held.**
+- **Held:** Yamakaze, Minegumo, Yukikaze, Tokitsukaze, Amatsukaze and Hatsukaze. Each passes
+  60 degrees at 1.4 to 2.4 times the model's loss water, 12 to 22 s after the model's loss.
+- **Missed late:** Houston (2.63 times the loss water, 51 s after) and Kawakaze (2.81 times, 39 s
+  after).
+- **Missed early:** John1 (0.68 times the loss water, 7 s before) and Asagumo (0.57 times, 19.5 s
+  before).
+
+**P6, the heel before loss: failed.** The living flooded hulls sit far beyond the model heel:
+
+| hull | samples within 3 degrees | model heel | observed |
+| --- | --- | --- | --- |
+| DeRuyter | 45 of 760 | about -2 to -4 degrees | -16.6 max, -9.3 at the end |
+| Haguro | 120 of 668 | - | 27.0 max |
+| John2 | 25 of 664 | - | 23.9 max |
+
+**P7, the sign: failed** on Kortenaer (90 samples against), Electra (209), Jintsu (233),
+Fletcher-class 08 on JM06 (84), and on the wrecks John1, Asagumo and Tokitsukaze.
+
+**Mechanism failure, by 56.2's own criteria.** The static check (`local\g11_capdbg.py`) pins it down.
+DeRuyter at 439.97 s is steady at roll -9.37 degrees and y = -0.58, with 1691 water in six leaks.
+At that pose the model's moments do not balance:
+- the buoyancy moment is +253,897 (+x side depth 7.04, -x side 4.44);
+- the leak moment is -102,078.
+Something adds about -1.5e5 that the model does not have.
+
+**The cause: the units host hands `0074F2E0` a 3x3 array where it reads a 4x4 block.**
+- `unit_leak_torque_0074f2e0` (src/unit_forces.cpp) reads the pose rows with the image's stride of
+  16 bytes. It reads indices 0, 2, 4, 6, 8 and 10 as +CCh, +D4h, +DCh, +E4h, +ECh and +F4h: the
+  x and z columns of rows 0, 1 and 2.
+- The host (`leak_heel_torque_0074f2e0` in src/game_hosts_units.cpp, about line 6465) passes
+  `float rows[9]`, packed three per row. So the routine reads:
+  - "row1.x" as row1.y (about 1 on an upright hull);
+  - "row1.z" as row2.x;
+  - "row2.x" as row2.z;
+  - "row2.z" from `rows[10]`, **past the end of the array** (undefined behaviour, stack contents).
+- The roll-producing term becomes `-10 w (p.x row0.x + p.y row1.y + p.z row2.z)`. **The leak's
+  longitudinal position (+/-85.5 m on DeRuyter) now acts as a lateral lever.**
+- On DeRuyter at 440 s, `sum(w z)` is +25,300 against `sum(w x)` = +10,350. The spurious term is
+  about 2.4 times the real one, the size of the missing moment.
+- Bow and stern flooding therefore rolls a hull, which is why the sign fails on hulls whose
+  bow/stern imbalance opposes their side imbalance.
+- **With the inertia switch OFF this has no gameplay effect**: a zero inverse inertia discards
+  every torque. It has been there since `ceed0a6ec`.
+
+**The fix is in the units host** (cc9-lua12's lane), sent to the integrator. It passes the
+image's layout:
+
+```
+float rows[12] = {
+    slot_.motion.pose_row0[0], slot_.motion.pose_row0[1], slot_.motion.pose_row0[2], 0.0f,
+    slot_.motion.pose_row1[0], slot_.motion.pose_row1[1], slot_.motion.pose_row1[2], 0.0f,
+    slot_.motion.pose_row2[0], slot_.motion.pose_row2[1], slot_.motion.pose_row2[2], 0.0f};
+```
+
+**Verdict: `kHullInertiaFromShapesBound` stays OFF.**
+- The capsize model is not refuted. It could not be tested against a host whose leak moment is
+  wrong, and the P5 rows that held include wrecks flooding mainly on one side.
+- **Next:**
+  - land the layout fix; it is inert while the switch is OFF;
+  - re-run this pair on the fixed build;
+  - re-evaluate with `g11_capeval.py`.
+  56.2's predictions stand as written for that re-run.
+
+### 56.4 P2 scoped: where the hit roll torques land (cc9-gunnery11, 2026-09-29)
+
+This packet adds a diagnostic, `BSP_HULL_ROLL_TORQUE_TRACE=1` (`9e9703392`, gunnery host), which logs
+each posted 93h torque. The run is `local\g11rt_<row>.log`: `9e9703392` with the inertia flip, the
+attitude trace on, and the rows bug of 56.3 still present.
+
+**USN02 has 19 torques.** 7 of them, and every one above 5e5, fall on Houston and John1:
+
+| t | victim | dead | size |
+| --- | --- | --- | --- |
+| 18.95, 20.60 | Houston | alive | 4.04e6 each |
+| 21.65, 22.40, 38.40 | Houston | dead | 4.04e6 each |
+| 26.05 | John1 | alive (dies at 26.5) | 1.36e6 |
+| 32.90 | John1 | dead | 1.36e6 |
+| 100.75, 136.25, 137.85, 138.40 | Yudachi | alive | 1.4e5 to 1.6e5 |
+| 127.85, 129.20 | Yamakaze | alive, then dead | 1.4e5 |
+| 142.30 | Haguro | alive | 4.8e5 |
+| 196.06 | Yukikaze | dead | 1.9e6 (the friendly torpedo) |
+| 396.13 to 397.93 | Samidare | alive (4 torques) | 1.5e5 to 1.7e5 |
+
+JM06 has one torque: USTroopTransport 01 at 109.20 s, 4.5e5.
+
+**Why 52.2's large destroyer kicks did not appear:**
+- The 4e6 torques all fall on Houston. Its roll inertia (mul.z 2, Mass 11602, box 20.95 x 46.62)
+  is 5.05e6, a kick of only 0.04 rad/s.
+- The destroyer that takes a big one is John1, 0.45 s before it dies. Its roll steps from 0 to
+  +5.9 degrees by the next sample, and +4.4 more at the 32.90 s torque. This is the early start of
+  John1's capsize in 56.3.
+- The living destroyers take only 1.4e5 to 1.7e5 torques.
+
+**The size of John1's kick is not settled.**
+- 52.2's formula (`tau * 0.05 / I_z` with I_z = 48,200, peak about kick / omega / 2) gives about
+  25 degrees. The trace shows about 6.
+- The 93h delivery (`0092BF30` -> `00C35330`, one step) or the damping may scale it. That is not
+  read here.
+- Measuring this cleanly waits for 56.3's rows fix, because the flooding moment on John1 is wrong
+  until then.
+
+### 56.5 The re-pair after the rows fix: 56.2 holds except P5's time window; verdict ON
+
+**The pair.** Both sides are exports of `5e139bd73`, which carries main `c12ba1d8f`: cc9-lua13's
+`rows[12]` fix `9029526f9`. OFF is a clean export and ON flips `kHullInertiaFromShapesBound`. All
+three traces are on (flooding, attitude, roll torque), on USN02 9200/9000 and JM06 3200/3000
+(`local\g11c2<side>_<row>.log`). The switches newly ON since 56.3's base are the plane ground roll
+and the ship-AI standoff target kind; both sides have them.
+
+**Gameplay:**
+- USN02: exit 3. Deaths 10 -> 11: John2 dies at 197.31 s, to John3's blast (friendly, category 7,
+  12 hits). Hit records 2271 -> 2009, shots 2316 -> 2133, damage 39395.6 -> 38828.3.
+- JM06: exit 3. The death row is identical. Hit records 276 -> 220, damage 4340.0 -> 4399.2.
+- 52.3's hit-record rise (2271 -> 3963 / 4203) was the rows bug's rolled hulls. It is gone.
+
+**Scored against 56.2 as written** (`local\g11_capeval.py` on the ON logs):
+- **P6, the heel before loss: held.**
+  - Every living flooded hull on USN02 is within 3 degrees of the model heel at 100% of its samples.
+    The only exception is Yudachi, at 809 of 816.
+  - Examples, max and final roll: DeRuyter 3.5 / -2.4, Java 5.0 / 2.9, Kortenaer 2.7 / -0.2,
+    Haguro 3.8 / -1.4, Murasame 5.8 / -4.2.
+  - On JM06: Fletcher-class 08 3.2 / 3.1, USTroopTransport 01 9.5 (125 of 156 within 3 degrees).
+  - The wrecks are within 8 degrees at 50 to 100% of their samples before loss. Houston is lowest
+    (17 of 63; it floods at the bow and pitch is not modelled), then Amatsukaze and Hatsukaze
+    (overdamped lag).
+- **P7, the sign: held.** No living hull rolls against the model. John1 has 6 samples against
+  while wrecked.
+- **P5, the wreck onset: 7 of 11 held.** Held for John1, Yamakaze, Minegumo, Yukikaze, Kawakaze,
+  Amatsukaze and Hatsukaze.
+  - **All four misses are late, never early:**
+
+    | wreck | after the model's loss | water ratio |
+    | --- | --- | --- |
+    | Houston | 51 s | 2.63 |
+    | Asagumo | 33.5 s | 1.85 |
+    | Tokitsukaze | 26.5 s | 1.62 |
+    | John2 | 27 s | 1.86 |
+
+  - Every wreck passes 60 degrees at 1.6 to 2.6 times its loss water, and none below 0.8.
+  - So the 25 s window was too tight for an overdamped wreck (zeta 2.4 to 6). The mechanism, a
+    bounded flat-arm moment against an unbounded one-sided leak moment, holds.
+- **New: every wreck now comes to rest at about 90 degrees** (Yamakaze, Minegumo, Yukikaze and
+  others end at 90.0) instead of rolling to 180 as in 52.3.
+  - At 90 degrees both roll moments carry `cos(phi) = 0`, the element arms and the leak arms
+    alike. So a wreck lies on its side and sinks.
+  - The 180-degree capsizes of 52.3 came from the rows bug's longitudinal lever, which does not
+    vanish at 90 degrees.
+- **P1 (52.2), the living hulls: held.**
+  - Undamaged hulls stay at 0 (Alden 0.3, John3 1.1, USTroopTransport 03 1.4).
+  - Damaged living hulls stay within 6 degrees, apart from USTroopTransport 01 at 9.5, and follow
+    their flooding quasi-statically.
+
+**Mechanism-failure criteria (56.2): none met.**
+- No wreck passes 60 degrees below 0.8 times its loss water.
+- No living hull rolls against the model by more than 2 degrees.
+
+**Verdict: ON**, with the spread miss recorded (P5's 25 s window: four wrecks late by 26.5 to 51 s).
+The switch lives in the units host (src/game_hosts_units.cpp, `static constexpr bool
+kHullInertiaFromShapesBound`). The flip is routed through the integrator.
+
+**What moves with the flip:**
+- Every hull whose class has a box now has inertia. Since 55, that is every class model except
+  saratoga.
+- Damaged hulls list toward their flooded side.
+- Wrecks roll onto their side as they sink.
+- The reference rows' plane and ship deaths move with the changed hull poses (USN02 gains John2's
+  death). The next reference rebaseline has to absorb this.
+
+## 57. Handoff (cc9-gunnery11, 2026-09-29, at about 70% context)
+
+### 57.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| `GameGunneryHost::landscape_segment_hit_00904400` | `cc9_landscape_segment_query` | added (`e3ec96283`); used by cc9-ships11's retarget arm |
+| GAME_EXECUTABLE reference l, `reports/cc9_reference_rebaseline_12.json` | `cc9_reference_rebaseline_12` | 13 rows on `3f1499210`; 16 switches attributed |
+| GAME_EXECUTABLE reference m, `reports/cc9_reference_rebaseline_13.json` | `cc9_reference_rebaseline_13` | 16 rows on `b234f20ac`; 8 switches attributed |
+| 52 | `cc9_ship_motion_hydro` | the hydro torque read; first pair OFF (the flooding list found) |
+| 53, 55 | `cc9_name_lookup_key_form`, `cc9_note_owner_shapes` | `0071AD50` matches Note names; the reader keeps the front/back Note records (`fd2e7ccd1`) |
+| 54 | - | reference l's two flags explained |
+| 56, 56.3 to 56.5 | `cc9_hull_capsize` | the capsize model; the leak rows bug (fixed by lua13 in `9029526f9`); re-pair **verdict ON**, flip routed |
+| diagnostics | - | `BSP_HULL_ATTITUDE_TRACE` (mission frame), `BSP_HULL_ROLL_TORQUE_TRACE` (gunnery host) |
+
+### 57.2 Open items
+
+- **The flip of `kHullInertiaFromShapesBound`** (56.5) is routed to the units host's owner.
+  Reference n has to absorb it:
+  - USN02 gains John2's death;
+  - the hit records fall on USN02 and JM06;
+  - `kShipAiBigLandingShipBound` and later switches are also post-m.
+- **P5's time window.** Four wrecks go over 26.5 to 51 s later than the quasi-static loss. A
+  dynamic model would need:
+  - the overdamped roll (wreck damping 2.5, inertia x2);
+  - pitch, for Houston's bow flooding.
+- **P2's kick size.** John1's 1.36e6 torque gives about 6 degrees against 52.2's formula of about
+  25 (56.4). Read the 93h delivery (`0092BF30` -> `00C35330`) and re-measure on a flipped build.
+- **P4: closed as moot** (integrator, 2026-09-29). 52.3's hit-record rise was the rows bug, and no packet is planned. On the fixed pair, hit records FALL
+  (2271 -> 2009, 276 -> 220). How a heeled hull's segment boxes change the impacts is still not read.
+- **The periscope shape** (49.10, 53). `0071AD50("periszkop")` at `009396D8` matches 12 submarine
+  models. It is not added to the hull box.
+- **Reference m's flags:**
+  - the no-ship hold moves neither USN02 nor LOMP10 on m;
+  - the LOS role swap's USN01 shots are not visible on m;
+  - the no-ship hold and the sight test interact on USN01.
+- **The units host's `hull shapes ... root ConvexObjects` log wording** is inexact since 55. It is
+  routed.
+
+### 57.3 Tools in the cc9-gunnery11 tree (`local\`)
+
+- **Runs:**
+  - `g11_runs.ps1 -V <prefix> -Only <rows>` runs the reference rows. They include `usnos`, `usnosl`
+    and `ijn01`, plus `smoke`. The binary is `local\<prefix>\build\...`.
+  - `g11_wait.ps1`, `g11_waitv.ps1` and `g11_waitm.ps1` are foreground waits on the final COM
+    release.
+- **Exports:**
+  - `g11_exp.ps1 -Commit <sha> -Specs 'name:kA=true,kB=false'` builds a pair export;
+    `g11_loo.ps1 -Specs` is the same with switches OFF against a fixed base.
+  - `g11_wexp.ps1 -V <names>` waits for those builds.
+- **Reference tables:**
+  - `g11_switches.py <base> <head>` gives the switch value diff.
+  - `g11_vs.py`, `g11_vsk.py`, `g11_matrix.py`, `g11_deaths.py` and `g11_sumdiff.py` are
+    `pair_diff` views: headlines, the death-row membership, and the summary lines.
+  - `g11_rows.py`, `g11_table*.py` and `g11_report2.py` / `g11_report3.py` build the reference
+    tables and reports.
+- **Hulls:**
+  - `g11_att.py <log>` summarises the attitude trace.
+  - `g11_pred.py` gives the per-class roll and pitch omega and zeta.
+  - `g11_capsize.py <flood log>` is the quasi-static capsize model.
+  - `g11_capeval.py <ON log>` scores 56.2.
+  - `g11_capdbg.py <log> <ship> <t>` gives the moments at an observed pose.
+- **Models:**
+  - `g11_notes.py <dir> <names>` scans Note names.
+  - `g11_notebox.py [models]` is the shape owner census (`g11_notebox.txt`).
+  - `g11_keys.py <call sites>` gives the literal keys passed to `0071AD50`.
