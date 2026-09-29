@@ -1136,6 +1136,8 @@ struct GameUnitSlot {
     // per-slot state the arm 009D4850 reads and writes.
     bool torpedo_task_installed{false};
     bsp::TorpedoState torpedo_state{bsp::TorpedoState::kNone};
+    // 00999AA0 -> 009D3270 resets of approach+134h (packet cc9_plane_hit_task_notify).
+    unsigned long long torpedo_hit_clock_resets{0};
     int torpedo_state_ticks[8]{0, 0, 0, 0, 0, 0, 0, 0};
     int torpedo_arm_ticks{0};
     int torpedo_releases{0};
@@ -11555,6 +11557,31 @@ bool GameUnitsHost::set_unit_max_speed_09c0(std::size_t unit_index, float value)
     if (unit_index >= host.slots.size() || host.slots[unit_index] == nullptr) return false;
     host.slots[unit_index]->motion.max_speed = value;  // 00890B51, unit+9C0h
     return true;
+}
+
+// 00999AA0 (00999AA0-00999ADB): the pilot bot's hit notice, which the plane hit
+// handler 007BBCF0 (vtable[ECh]) calls on [unit+DF4h] before 008777D0. It walks
+// the task list bot+58h/+5Ch and calls task->vtable[2Ch](hit) until one answers
+// true. The slots read from disk bytes:
+//  - torpedo (vtable 00D213C8) 009D3270: task+52Ch = approach+134h = 0.0, true.
+//    That clock selects DistFar over DistNear once it passes 15 s.
+//  - divebomb 009C7900: task+4BCh = approach+C4h = 0.0, true. GAP: this host
+//    does not carry approach+C4h (it feeds the 3600.0 floor to 009C4AA4), so
+//    the forced goaway re-roll a hit would arm is not reached.
+//  - strafe 009CC400: task+43Ch = 0.0, true. GAP: no strafe task in this host.
+//  - levelbomb and retreat answer false.
+// Returns true when a task took the notice.
+bool GameUnitsHost::plane_hit_task_notify_00999aa0(std::size_t plane_index) {
+    Impl& host = *impl_;
+    if (plane_index >= host.slots.size() || host.slots[plane_index] == nullptr) return false;
+    GameUnitSlot& unit = *host.slots[plane_index];
+    if (unit.torpedo_task_installed) {
+        unit.torpedo_approach.elapsed_134 = 0.0f;   // 009D3273
+        ++unit.torpedo_hit_clock_resets;
+        host.record("Bot::hit_task_notify_torpedo_009d3270", 0x009d3270u);
+        return true;
+    }
+    return false;
 }
 
 int GameUnitsHost::skill_level(std::size_t unit_index) const {

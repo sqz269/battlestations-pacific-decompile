@@ -505,6 +505,11 @@ public:
     // member) or a lone wing plane; `site_index` the target unit (carrier or
     // airfield). Returns the number of land tasks installed.
     std::size_t land_at_site_0099a3dd(std::size_t unit_index, std::size_t site_index);
+    // 00999AA0, the pilot bot's hit notice (from the plane hit handler 007BBCF0
+    // before 008777D0): the first task whose vtable[2Ch] answers true takes it.
+    // Bound here: the torpedo task's 009D3270, approach+134h = 0. The divebomb
+    // (009C7900, approach+C4h) and strafe (009CC400) slots are labelled gaps.
+    bool plane_hit_task_notify_00999aa0(std::size_t plane_index);
 
     // Packet cc9_entity_dead. The units whose damage death has happened: a
     // health <= 0 hit reaches vtable[70h] (0077D1A0 -> 00926C80, cause 1), which
