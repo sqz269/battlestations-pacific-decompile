@@ -5131,3 +5131,39 @@ them are re-installed as IDLE (`kAiTargetGroupDestroyedIdleBound`, section 24).
   known same-binary `ship ai free` / `refills` counters. The mechanism matches.
 - **Flipped ON.** GAMEPLAY_GAP_RANKING #5 can be retired: the routine was a removal from a list
   that has no gameplay reader, and group release itself was already the host's.
+
+### 60.7 Re-paired after reference q, and flipped ON (packet `cc9_ai_party_gate_flip`, cc9-ships17, 2026-09-29)
+
+**The tree.** `0baeaad27` is main `560d11765` (reference q landed) merged into this branch,
+together with section 61's score-list flip, which has no gameplay effect.
+- OFF is `local\s17_off` (`4CC72D010B94`) and ON is `local\s17_on` (`D0E2A3BB0C5E`).
+- The launch form is reference q's, which is p's (`local\s17_runs.ps1`). Every log has the
+  module directory of its export and the final COM release, and none shows a renderer or present
+  failure.
+
+**OFF against reference q** (`local\g15_rq_<row>.log`, main `83b528811`):
+- JM05, IJN01 and LOMP10 are exit 1.
+- USN04, USN01 and USN13 are exit 3. They move because of main's own commits after
+  `83b528811` in `src/game_hosts_units.cpp` and `src/torpedo_task_arm.cpp`
+  (`kTorpedoRunTimeUpdateBound` and `kMoveToArrivalEndCommandBound` ON, and cc9-lua19's deck
+  part 1 OFF), not because of this branch: its two switches are OFF (60) and gameplay-neutral (61).
+- So the flip's expected movement below is measured against this OFF, not against the q rows
+  directly.
+
+**The pairs repeat 60.4 number for number.** Every OFF and ON value equals section 60.4's.
+
+| row | pair_diff | deaths | damage | death table OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 48 -> 50 | 16260.6 -> 11938.8 | 48 changed (re-timed), plus A6M Zero #7.2 and D3A Val #7.1\|.-3 only ON |
+| USN01 3200/3000 | 3 | 5 -> 5 | 2786.4 -> 3885.8 | five rows change victim: OFF loses Airfield2, Multi Hangar, the Containers and Oil Tank group; ON loses ConTBD1 and ConTBD2 with their wingmen |
+| USN13 3200/3000 | 3 | 31 -> 22 | 9241.9 -> 6740.5 | nine `bruh` Kate deaths (#1.4 x4, #1.5 x3, #1.9 x2) only OFF; 22 re-timed |
+| JM05 3200/3000 | 3 | 0 -> 0 | identical | identical (paths only) |
+| IJN01 3200/3000 | 3 | 9 -> 6 | 3515.1 -> 3324.0 | A7M_1 x4 only OFF, A7M_5\|.-4 only ON, five A7M_7 re-timed |
+| LOMP10 3200/3000 | 3 | 0 -> 10 | 0.0 -> 3500.0 | ten only ON: B-25 01 x2, Warhawk 01 x4, Lightning 01 x4 (killers Kiyoshimo, Asashimo, Ashigara) |
+
+**The mechanism matches 60.4-60.6.**
+- Every ON row reads `ai party 0 ... ai_enabled=0 brain=0` and `ai party 4 ... brain=1`.
+- `local_team` is 0 on the US rows and 1 on JM05 and IJN01. `slot4_team` is 0 everywhere.
+- The slot-4 brain's thinks, claims and commands are the same as 60.4's on every row.
+
+**Flipped ON.** These death tables are the expected movement of the next reference against q.

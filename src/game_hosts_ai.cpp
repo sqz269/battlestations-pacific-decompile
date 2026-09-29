@@ -449,8 +449,8 @@ constexpr int kCampaignGameMode = 0;
 // team 1 is NONCONTROL. LABELLED: every unit's +180h is taken as 9 (the few
 // OwnerPlayer "AI control" entries some scenes author are not modelled), and
 // the local slot index game+18ECh is 0. Flipped ON in 60.5, reverted to OFF
-// pending section 60.6 (the brain team chain).
-constexpr bool kAiPartyGateUnforcedBound = false;
+// for the section 60.6 re-read, flipped ON again after reference q (60.7).
+constexpr bool kAiPartyGateUnforcedBound = true;
 
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
