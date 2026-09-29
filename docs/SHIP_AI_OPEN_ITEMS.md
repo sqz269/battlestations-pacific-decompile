@@ -2522,3 +2522,68 @@ interface) answers the two numbers from the unit's class row through the host's
    `kamikaze_classes` is 0 on both sides and the gate fails as before.
 2. **The reach is unmeasured.** A row with a Kaiten or a Shinyo under AI attackmove is needed to
    see the gate pass. None of the ten base rows is one.
+
+### The row, and a second switch (cc9-ships11, 2026-09-29)
+
+**USNOS.** This installation's `scripts/datatables/missiontree.lua` (mtime 2025-06-02, modded) has
+the bonus mission `USNOS` ("New - Battle of the Osumi Islands", `COTP-USN/us_osumi.scn`); its
+`scripts/missions/COTP-USN/us_osumi.lua` (mtime 2024-10-29) `PrepareClass(43)` / `PrepareClass(4)`
+and `luaSpawnAttackers` (line 1338), run when phase 1's attacker list is empty, spawns nine
+`Type 43` (Shinyo) 6300 m and six `Type 4` (Kaiten) 6100 m from the first troop ship, each told
+`NavigatorAttackMove(unit, luaPickRnd(Mission.Troops))` (`luaShinyoSpawned`, `luaSubSpawned`, line
+1593). A base run at main `3f1499210` (`local\s11_base_usnos.log`, `--frames 3200
+--press-start-frame 30 --menu-select USNOS --mission-frames 3000 --mission-frame-seconds 0.05`)
+logs the three `SpawnNew` groups and `engage kamikaze reads=990 kamikaze_classes=990`.
+
+**The gate alone would stop the boats.** When `009E85B0` opens, `009E87E3` moves the selector to
+the engage member `state+14C0h`, whose enter `009DB5E0` and step `009E23B0` were records: a boat
+handed to it would no longer be steered by anyone. So the member is bound too, behind
+`kShipAiEngageSubStateBound` (committed OFF): the enter clears `sub+8h` and stores 1225.0f
+(`00D216E8`, 35 m squared) at `blk+234h` and `blk+29Ch`, which no modelled reader consumes
+(labelled); the step is the existing `ship_ai_attackmove_engage_step_009e23b0` with
+`EngageStepBinding` (velocities through the lead pursuit's `neighbour_world_velocity`
+substitution, `009DE050` through `run_navigation_goal_009de050`, `009DA610` and `009DFF40` through
+their reconstructions). Counters: `summary mission ship ai engage member enters / steps /
+run_steps`. The two switches are paired together.
+
+### Predictions for USNOS, written before any ON run
+
+Rows: USNOS at 3200/3000 and 9200/9000 (the boats start about 6 km out; a Shinyo needs minutes to
+come within the gate's 2000 m of its troop ship).
+1. **OFF is identical to the base** apart from the new summary line and record rows.
+2. **3000 frames: probably gameplay-identical.** The boats are unlikely to reach 2000 m of the
+   troop ship in the 150 s; if `enters` is 0 the row is identical.
+3. **9000 frames: the gate opens and the row moves (exit 3).** `enters` > 0 for Shinyo and Kaiten
+   within 2000 m of their destination, `steps` > 0, and `run_steps` > 0 once a boat is within
+   250 m with a latched goal (the run arm steers straight at the intercept point). The boats'
+   paths change near the troop ships; which deaths change is not predicted.
+4. **Mechanism failure:** `enters` = 0 on the 9000-frame row with a boat's nearest approach under
+   2000 m, or boats that enter and then stop (the step not steering), keeps both switches OFF.
+5. **Every other reference row is identical** (`kamikaze_classes` 0: no gate pass, no member).
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `86801174c` built in the tree; ON is `pair_export --commit 86801174c --flip
+kShipAiEngageKamikazeGateBound=true --flip kShipAiEngageSubStateBound=true --out local\s11_kami`.
+Logs `local\s11_koff_<row>.log` / `local\s11_kon_<row>.log`.
+
+| row | frames | kamikaze reads | enters | steps | run steps | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USNOS | 3200/3000 | 990 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+| USNOS long | 9200/9000 | 1776 OFF, 1762 ON | 1 | 20 | 0 | 3, moved | 3 held except the run arm |
+
+OFF against the `3f1499210` base run is gameplay-identical (prediction 1).
+
+**What moved.** One Shinyo, `unit #2.7`, came within 2000 m of TroopTrans4 (`d32c` 1797 m at
+step 6040), entered the member and stepped it twenty times on the close arm (`009DA610` answered
+false, so the run latch never set): throttle 1.0 and a live rudder, so it was steered, not
+stopped. OFF it kept the approach member (`navigate_astern`). Per entity: the same 21 deaths on
+both sides; `unit #2.7` died at 304.15 s instead of 313.70 s (killer Gear13 both sides, killer
+range 1496 -> 1193 m, nearest Portland2 at 121 m instead of Portland1). Downstream: TroopTrans1
+took 0 damage instead of 125, NH fired 3345 shots instead of 3761. No death flips.
+
+**Verdict: both ON**, with a spread miss recorded: the run arm (`009E25BC..009E262F`, within
+250 m and a latched goal) is unexercised, because the one boat that entered died at about 1.2 km.
+The gate's avoid-zone conjunct is still the stand-in that answers no zone
+(`ShipAiEngageGate::avoid_zone_list`); section 27 found `[class+570h]` = 0 in single player, whose
+key-0 group has no zones, so the stand-in agrees with the image there.

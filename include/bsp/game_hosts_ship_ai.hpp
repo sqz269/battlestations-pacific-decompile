@@ -540,6 +540,11 @@ struct GameShipAiSummary {
     // carries a positive KamikazeDamage or KamikazeBlastDamage (both sides).
     unsigned long long engage_kamikaze_reads{0};
     unsigned long long engage_kamikaze_classes{0};
+    // Packet cc9_engage_kamikaze_gate: the engage member state+14C0h, its enters
+    // and steps (both sides) and the steps that left the run latch set (ON only).
+    unsigned long long engage_member_enters{0};
+    unsigned long long engage_member_steps{0};
+    unsigned long long engage_member_run_steps{0};
     // Packet cc9_approach_mode_latch: 009F1BC0's latch computed on every
     // frame-state pass (both sides), by target class and by the mode it chose.
     unsigned long long latch_frames{0};
