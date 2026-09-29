@@ -297,6 +297,15 @@ struct GameUnitWorldLists {
     }
 };
 
+// Packet cc9_squadron_ordnance_state: one bomb platform of an aircraft, in
+// BSPGun order: the projectile class id it carries (0 when not a bomb-family
+// type), single or multi, and its index among the single racks.
+struct PlaneOrdnanceRack {
+    int class_id{0};
+    bool multi{false};
+    int single_index{-1};
+};
+
 struct GameUnitSlot {
     GameUnitSlot() {
         // Partial projections of the two actual bases, not a whole unit ctor.
@@ -1127,6 +1136,9 @@ struct GameUnitSlot {
     bool rack_dropping{false};         // dropBombs +498h
     float rack_to_repeat{0.0f};        // toRepeatTime +494h
     int rack_ammo{-1};                 // ammo +484h, -1 until the census
+    // Packet cc9_squadron_ordnance_state: the racks 007EDAD0 walks, read once.
+    bool ordnance_racks_read{false};
+    std::vector<PlaneOrdnanceRack> ordnance_racks;
     int rack_drops{0};                 // 006E4D50 drops (host spawns)
     int rack_gate_refused{0};          // 007CC8E0 / 007C7600 said no
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
@@ -2777,6 +2789,162 @@ struct GameUnitsHost::Impl {
         return value;
     }
 
+    // Packet cc9_squadron_ordnance_state (kSquadronOrdnanceReaderBound). The
+    // projectile class a rack carries: DeviceClass[dev].Bullet[1].Bullet ->
+    // Bullets[b].Type, as the entity class id the descriptor answers
+    // vtable[8] with (docs/ORDNANCE_KIND_IDENTITY.md, docs/ENTITY_CLASS_IDS.md):
+    // Bomb 2Ah, Torpedo 2Bh, Depthcharge 2Ch, DummyKamikazePlane 2Fh,
+    // Paratrooper 31h, Rocket 33h. Any other type answers 0.
+    int read_device_bullet_class_id(int device) {
+        if (device < 0) return 0;
+        char chunk[512];
+        std::snprintf(chunk, sizeof(chunk),
+            "local d = type(DeviceClass) == 'table' and DeviceClass[%d] or nil\n"
+            "if type(d) ~= 'table' or type(d.Bullet) ~= 'table' or type(d.Bullet[1]) ~= 'table' then return '' end\n"
+            "local b = type(Bullets) == 'table' and Bullets[d.Bullet[1].Bullet] or nil\n"
+            "if type(b) ~= 'table' then return '' end\n"
+            "return tostring(b.Type or '')\n", device);
+        const int top = lua.lua_gettop();
+        std::string type;
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_device_bullet_type") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            type = lua.lua_tolstring_at_top();
+        }
+        lua.lua_settop(top);
+        if (type == "Bomb") return 0x2A;
+        if (type == "Torpedo") return 0x2B;
+        if (type == "Depthcharge") return 0x2C;
+        if (type == "DummyKamikazePlane") return 0x2F;
+        if (type == "Paratrooper") return 0x31;
+        if (type == "Rocket") return 0x33;
+        return 0;
+    }
+
+    // The racks of one aircraft in BSPGun order, the order the census walks:
+    // the class id each carries, single or multi, and its index among the
+    // single racks (rack_ammo_per_rack's index).
+    const std::vector<PlaneOrdnanceRack>& ordnance_racks(GameUnitSlot& s) {
+        if (s.ordnance_racks_read) return s.ordnance_racks;
+        s.ordnance_racks_read = true;
+        const int type_id = s.row.type_id;
+        const int platforms = lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
+        int singles = 0;
+        for (int p = 1; p <= platforms && p <= 64; ++p) {
+            char key[32];
+            std::snprintf(key, sizeof(key), "p%d_cat", p);
+            if (lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1)
+                != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
+            std::snprintf(key, sizeof(key), "p%d_dev", p);
+            const int dev = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
+            const std::string type = dev >= 0 ? lua.read_device_class_string(dev, "Type")
+                                              : std::string();
+            PlaneOrdnanceRack r;
+            r.class_id = read_device_bullet_class_id(dev);
+            if (type == "BombPlatform") {
+                r.single_index = singles++;
+            } else if (type == "MultiBombPlatform") {
+                r.multi = true;
+            } else {
+                continue;
+            }
+            s.ordnance_racks.push_back(r);
+        }
+        return s.ordnance_racks;
+    }
+
+    // slot->vtable[220h](1): 006E4060 (single) answers the hanging child's
+    // descriptor while a round is attached; with [00E17BF2] clear (single
+    // player) there is no loadout arm, so an empty rack answers null. 006E4640
+    // (multi) also answers its +514h entries. LABELLED: a single rack holds a
+    // round while its ammo +484h (rack_ammo_per_rack, else rack_ammo, else the
+    // authored Ammo) is above 0, an unauthored one always; a multi rack's
+    // entries are not modelled, so it always answers.
+    bool rack_holds_round(const GameUnitSlot& s, const PlaneOrdnanceRack& r) const {
+        if (r.multi) return true;
+        const std::size_t i = static_cast<std::size_t>(r.single_index);
+        if (i < s.rack_ammo_per_rack.size()) return s.rack_ammo_per_rack[i] > 0;
+        if (s.rack_ammo >= 0 && s.rack_single_count <= 1) return s.rack_ammo > 0;
+        if (i < s.rack_authored_per_rack.size() && s.rack_authored_per_rack[i] >= 0) {
+            return s.rack_authored_per_rack[i] > 0;
+        }
+        return true;
+    }
+
+    // 007EDAD0 BSP_PlaneSquadron_AmmoType (007EDAD0-007EDB7C, __fastcall(squadron),
+    // RET): for each of the +3CCh planes at +3D0h, in turn 007B93F0 (2Bh) -> 2,
+    // 007B94F0 (2Ch) -> 3, 007B9400 (33h) -> 4, 007B9500 (31h) -> 5, 007B93E0
+    // (2Fh) -> 6, 007B9320 (2Ah and none of 2Ch, 31h, 2Bh, 33h, 2Dh) -> 1; each
+    // is 007B91C0's walk of the plane's +994h racks at +974h with loadout 1.
+    // No plane answering: 0.
+    int squadron_ammo_type_007edad0(const bsp::PlaneSquadronHostRecord& sq) {
+        auto ancestry_has = [](int id, int kind) {
+            if (id == kind) return true;
+            if (kind == 0x2A) return id == 0x2B || id == 0x2C || id == 0x31 || id == 0x33;
+            if (kind == 0x2D) return id == 0x2F;
+            return false;
+        };
+        for (const std::size_t m : sq.member_units) {
+            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size()) continue;
+            GameUnitSlot& s = *slots[m];
+            const std::vector<PlaneOrdnanceRack>& racks = ordnance_racks(s);
+            auto has = [&](int kind) {
+                for (const PlaneOrdnanceRack& r : racks) {
+                    if (r.class_id != 0 && rack_holds_round(s, r) && ancestry_has(r.class_id, kind)) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+            if (has(0x2B)) return 2;
+            if (has(0x2C)) return 3;
+            if (has(0x33)) return 4;
+            if (has(0x31)) return 5;
+            if (has(0x2F)) return 6;
+            for (const PlaneOrdnanceRack& r : racks) {
+                if (r.class_id == 0 || !rack_holds_round(s, r)) continue;
+                const int id = r.class_id;
+                if (ancestry_has(id, 0x2A) && !ancestry_has(id, 0x2C) && !ancestry_has(id, 0x31)
+                    && !ancestry_has(id, 0x2B) && !ancestry_has(id, 0x33)
+                    && !ancestry_has(id, 0x2D)) {
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
+
+    // The class stand-in the AI host used before this reader (its
+    // squadron_ammo_type_stand_in): TorpedoBomber 11h -> 2, DiveBomber 12h -> 1,
+    // LevelBomber 10h -> 5, Kamikaze 17h -> 6, anything else 0, from the leader.
+    int squadron_ammo_type_stand_in(const bsp::PlaneSquadronHostRecord& sq) const {
+        const std::size_t lead = sq.flight_leader();
+        if (lead >= slots.size()) return 0;
+        const int c = slots[lead]->class_id;
+        if (bsp::unit_is_kind_of(c, 0x11)) return 2;
+        if (bsp::unit_is_kind_of(c, 0x12)) return 1;
+        if (bsp::unit_is_kind_of(c, 0x10)) return 5;
+        if (bsp::unit_is_kind_of(c, 0x17)) return 6;
+        return 0;
+    }
+
+    // DIAGNOSTIC census: each squadron's 007EDAD0 answer, logged when it changes.
+    std::vector<int> ordnance_census_last;
+    void squadron_ordnance_census() {
+        const auto& recs = bsp::plane_squadron_registry().records();
+        if (ordnance_census_last.size() < recs.size()) ordnance_census_last.resize(recs.size(), -1);
+        for (std::size_t i = 0; i < recs.size(); ++i) {
+            if (recs[i].member_units.empty()) continue;
+            const int a = squadron_ammo_type_007edad0(recs[i]);
+            if (a == ordnance_census_last[i]) continue;
+            log.notef("squadron ordnance %s: ammo type %d -> %d (stand-in %d) at %.2f s "
+                "(007EDAD0, packet cc9_squadron_ordnance_state)", recs[i].name.c_str(),
+                ordnance_census_last[i], a, squadron_ammo_type_stand_in(recs[i]),
+                static_cast<double>(summary.simulated_seconds));
+            ordnance_census_last[i] = a;
+        }
+    }
+
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
     // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
     // count here is the aircraft's bomb platforms, one round each, minus what
@@ -4032,6 +4200,11 @@ struct GameUnitsHost::Impl {
     // arm), the rule's abort arm (+66Ch -> standby) and the begin/final -> abort
     // edges. Reached only with kLandBeginStateBound. False: entries refused.
     static constexpr bool kLandAbortStateBound = false;
+    // Packet cc9_squadron_ordnance_state: squadron_ammo_type_007edad0 answers
+    // 007EDAD0 from the planes' racks (the kind each carries, rounds left), and
+    // a census logs every change. False: it answers the leader-class stand-in
+    // the AI host used, and nothing is logged.
+    static constexpr bool kSquadronOrdnanceReaderBound = false;
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -10669,6 +10842,53 @@ const GameCommandRow* GameUnitsHost::issue_script_command(std::size_t unit_index
     return row;
 }
 
+namespace {
+const bsp::PlaneSquadronHostRecord* squadron_record_of(std::size_t unit_index) {
+    bsp::PlaneSquadronRegistry& reg = bsp::plane_squadron_registry();
+    for (const bsp::PlaneSquadronHostRecord& r : reg.records()) {
+        if (r.squadron_unit == unit_index) return &r;
+    }
+    return reg.find_by_member_unit(unit_index);
+}
+}  // namespace
+
+int GameUnitsHost::squadron_ammo_type_007edad0(std::size_t unit_index) {
+    Impl& host = *impl_;
+    const bsp::PlaneSquadronHostRecord* sq = squadron_record_of(unit_index);
+    if (sq == nullptr) return 0;
+    if constexpr (Impl::kSquadronOrdnanceReaderBound) {
+        host.done("PlaneSquadron::ammo_type_007edad0", 0x007edad0u);
+        return host.squadron_ammo_type_007edad0(*sq);
+    } else {
+        host.record("PlaneSquadron::ammo_type_007edad0", 0x007edad0u);
+        return host.squadron_ammo_type_stand_in(*sq);
+    }
+}
+
+std::size_t GameUnitsHost::issue_return_to_base_007f16d0(std::size_t unit_index,
+    const std::string& source) {
+    Impl& host = *impl_;
+    const bsp::PlaneSquadronHostRecord* sq = squadron_record_of(unit_index);
+    if (sq == nullptr) return 0;
+    const std::vector<std::size_t> members = sq->member_units;   // the issue may edit the record
+    bsp::SceneCommandTarget target;
+    target.kind = 0;
+    target.position_valid = 0;
+    target.object_id = 0;
+    target.object = nullptr;
+    target.position[0] = target.position[1] = target.position[2] = 0.0f;
+    target.trailing = 0.0f;
+    std::size_t placed = 0;
+    for (const std::size_t plane : members) {
+        if (plane == bsp::kPlaneSquadronNoUnit || plane >= host.slots.size()) continue;
+        if (issue_script_command(plane, 0x00E08F98u, target, 1 /* 0077D600 flags */, source,
+                                 host.slots[plane]->row.name) != nullptr) {
+            ++placed;
+        }
+    }
+    return placed;
+}
+
 void GameUnitsHost::store_commanded_speed_00890e6f(std::size_t unit_index, float speed) {
     Impl& host = *impl_;
     host.commands.store_commanded_speed_00890e6f(unit_index, speed,
@@ -10976,6 +11196,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
         host.squadron_leave_on_death_007bcaa0();
+        if constexpr (Impl::kSquadronOrdnanceReaderBound) host.squadron_ordnance_census();
     }
     if constexpr (Impl::kWingTraceEvery > 0) {
         if ((host.summary.motion_steps % Impl::kWingTraceEvery) == 0) {
