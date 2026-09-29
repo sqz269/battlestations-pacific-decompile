@@ -4875,8 +4875,9 @@ void GameAiCoordinatorHost::report() {
         static_cast<unsigned long long>(game_objective_sets().total_units());
     host.log.notef("summary mission ai world sets queries=%llu hits=%llu objective_units=%llu "
         "(00A2C450 over game+21A4h..+21C0h, the eight per-player-slot SzurkeNyil objective "
-        "sets; their producer 008CD440 Objectives_Add is unimplemented here, so every set is "
-        "empty and the native's 00A2C4B4 arm is the answer)",
+        "sets; their producers 008CD440 Objectives_Add, 008CDD60 Objectives_AddUnit and "
+        "008CE510 Objectives_RemoveUnit are bound (src/game_hosts_lua.cpp); objective_units "
+        "is what the sets hold at the end, and 00A2C4B4 answers for an empty set)",
         host.summary.world_set_queries, host.summary.world_set_hits,
         host.summary.objective_set_units);
     {
