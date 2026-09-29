@@ -784,10 +784,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // Packet cc9_big_landing_ship: class+808h through the ship AI host, which
     // read it at load; false when the switch is off.
     bool big_landing_ship_0808(std::size_t unit) {
-        if (!kShipAiBigLandingShipBound) return false;
         GameShipAiHost* ship_ai = units.ship_ai();
-        return ship_ai != nullptr && ship_ai->unit_big_landing_ship_0808(unit);
+        const bool big = ship_ai != nullptr && ship_ai->unit_big_landing_ship_0808(unit);
+        if (big) ++big_landing_ship_reads;   // counted on both sides
+        return kShipAiBigLandingShipBound && big;
     }
+    unsigned long long big_landing_ship_reads{0};
 
     bsp::AiAccuracyTargetGroup accuracy_target_group(std::size_t unit) {
         if (units.unit_is_kind_of(unit, 0x0F)) {
@@ -4801,6 +4803,9 @@ void GameAiCoordinatorHost::report() {
         "bomber_calls=%llu spent_calls=%llu (009FFEB0 census, packet cc9_squadron_rtb_exclusion)",
         host.rtb_exclusion_squadron_calls, host.rtb_exclusion_bomber_calls,
         host.rtb_exclusion_spent_calls);
+    host.log.notef("summary mission ai big landing ship reads=%llu bound=%d (00827F95 via "
+        "009FE2D4.. and 00A0360B, packet cc9_big_landing_ship)", host.big_landing_ship_reads,
+        kShipAiBigLandingShipBound ? 1 : 0);
     if constexpr (kSellingTickBound) {
         host.log.notef("summary mission ai selling ticks=%llu holds=%llu approaches=%llu "
             "returntobase=%llu (00A11FF0, packet cc9_selling_tick)", host.selling_ticks,

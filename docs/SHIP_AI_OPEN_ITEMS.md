@@ -3094,3 +3094,29 @@ it: the AI host reaches it through `units.ship_ai()`. OFF, every landing ship is
 4. **JM06 3200/3000 and USN12 3200/3000 are identical** (exit 0 or 1): no landing ship.
 5. **Mechanism failure** keeps the switch OFF: no `unit big landing ship` line on JM08, or any
    move on JM06 or USN12.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+ON is `pair_export --commit b03cddfbc --flip kShipAiBigLandingShipBound=true --out local\s12_bls`.
+OFF is `local\s12_blsoff_<row>.log`, ON `local\s12_blson_<row>.log`.
+
+| row | admission reads (`big_landing_ship_808`) | AI-site big reads | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- |
+| JM08 3200/3000 | 1550, concrete ON | 0 | 1, gameplay identical | 1 **missed** |
+| IJN01 3200/3000 | 4588, concrete ON | 200 | 1, gameplay identical | 2 **missed** |
+| JM06 3200/3000 | 0 | 0 | 1, gameplay identical | 4 held |
+
+- **The admission is reached, and prediction 3 held.** ON, each landing ship's admission runs the
+  enemy-submarine test that small ships skip (`unit_is_kind_vtable5c` 3972 -> 5522 on JM08, 16923
+  -> 21511 on IJN01). No submarine exists, so no node changes.
+- **The AI sites.** Counted afterwards with `summary mission ai big landing ship reads=` in a
+  census build of the same tree (`local\s12_blscen_<row>.log`, gameplay-identical to the OFF
+  logs). JM08 asks 0 times: no AI accuracy or capture read names its landing ships. IJN01 asks 200
+  times, and the ON run still chooses and fires identically. So a 1.0 capture weight and the
+  big-ship accuracy group do not change a choice on that row.
+- Predictions 1 and 2 expected those reads to move the rows; they missed.
+
+**Verdict: ON.** It is exact to the listing (`00827F95` on the Lua byte), gameplay-identical on
+all three rows, and its mechanism is reached at the admission site. The four other callers of
+`00827F70` (`007EEB74`, `0081639D`, `0096ACB4`, and the standoff `009E6F11` behind rank 7's
+target-kind stub) still answer "small" for a big landing ship.

@@ -123,7 +123,9 @@ inline constexpr bool kAutoTargetCommandAcceptBound = true;
 // this lane owns read it - the neighbour admission 009F0D82, the approach mode
 // latch 009F1F76, the AI bullet accuracy group 009FE2D4.. and the capture
 // weight 00A0360B. False: every landing ship is small, as before.
-inline constexpr bool kShipAiBigLandingShipBound = false;
+// ON by the pairs of 2026-09-29 (section 37): gameplay identical on JM08, IJN01
+// and JM06; the admission reads it 1550 / 4588 times, the AI sites 0 / 200.
+inline constexpr bool kShipAiBigLandingShipBound = true;
 
 class GameHostLog;
 class GameUnitsHost;
