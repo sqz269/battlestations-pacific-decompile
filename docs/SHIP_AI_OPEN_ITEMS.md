@@ -3382,3 +3382,24 @@ logged to `local\s13ron_<row>.log`. OFF was `local\s13r_<row>.log`.
 - Prediction 2 caught it. The fix passes the head plane `[sq+3D0h]`, which `009FFECD` reads
   anyway.
 - The OFF side needs no rerun: OFF never calls the arm.
+
+### Second pair (cc9-ships13, 2026-09-29)
+
+ON is `pair_export --commit d009efe4e --flip kAiSquadronRtbExclusionBound=true --out local\s13_r2`
+(`local\s13ron2_<row>.log`). OFF is still `local\s13r_<row>.log`.
+
+| row | bomber calls | stand_in_true / issues / excluded (ON) | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- |
+| USN13 9200/9000 | 576 both | 0 / 0 / 0 | 1, gameplay identical | 1 held |
+| IJN01 9200/9000 | 17 both | 0 / 0 / 0 | 1, gameplay identical | 1 held |
+
+The only moved lines are the switch's `bound=` field and, on IJN01, the free-bearing scan's
+`empty=` / `refills=` pair (0 -> 817, 58 -> 57). That pair is the ship avoidance refill noise:
+every other counter on the line is equal, and it moves the same way on two same-source OFF logs
+in the cc9-ships12 tree (`empty=0` on three IJN01 logs, `empty=137` on four).
+
+**Verdict: ON, exact with zero reach.** The body is read whole (section 36). Both answers match the
+image: the arm, and 0 for every other call. The reach is zero on every row counted, and no call
+on those rows has the `007EDA90` stand-in answering true. The arm's first reach needs a bomber
+squadron that follows a leader in an AI group and spends its load. USN13 has 576 bomber calls
+whose squadrons never spend it.

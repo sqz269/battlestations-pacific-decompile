@@ -96,7 +96,9 @@ inline constexpr bool kAiCommandAvoidZonePointBound = true;
 // (squadron_ammo_type_007edad0, issue_return_to_base_007f16d0; excluded when an
 // order was placed) and nothing else excludes. False: the host answers
 // 007EDA90's value in its place, as before.
-inline constexpr bool kAiSquadronRtbExclusionBound = false;
+// ON by the pairs of 2026-09-29 (section 40): exact, read whole, zero reach on
+// USN13 and IJN01 at 9000 frames, gameplay identical.
+inline constexpr bool kAiSquadronRtbExclusionBound = true;
 // Packet cc9_group_release_idle (docs/SHIP_AI_OPEN_ITEMS.md section 30). Every
 // ATTACK-family command registers its observer (+8h) on the target group
 // (00A10767, 00694A60), and all four observer vtables (00D22B64, 00D22BA4,
