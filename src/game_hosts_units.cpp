@@ -1799,9 +1799,9 @@ constexpr bool kHullAimTrace = false;
 // 009FADA0's tail 009FAF05-009FAF7D adds target->vtable[48h](projtime) minus
 // the origin to the hull point. projtime (sub+44h) is written by the torpedo
 // approach as approach+F8h (its engagement estimate) and by the dive-bomb
-// approach as approach+74h (009C7E3C). One switch per writer; OFF until paired.
-constexpr bool kTorpedoAimLeadBound = false;
-constexpr bool kDiveAimLeadBound = false;
+// approach as approach+74h (009C7E3C). One switch per writer; both paired ON.
+constexpr bool kTorpedoAimLeadBound = true;   // ON: TORPEDO_AIM_LEAD 11.3
+constexpr bool kDiveAimLeadBound = true;      // ON: TORPEDO_AIM_LEAD 11.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
 // OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off
