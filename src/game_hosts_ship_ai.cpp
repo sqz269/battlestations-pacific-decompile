@@ -4292,12 +4292,6 @@ public:
             owner_.record("ShipAiApproach::target_kind_005c", 0x009e6efcu);
             return false;
         }
-        // LABELLED: the mode-4 arm (009E6F3A) would FILD [target+7C4h], the
-        // LandingRange, which no units-host field holds yet; it keeps 1000.0.
-        if (kind == 0x1c && mode == bsp::ShipAiApproachMode::standoff_4) {
-            owner_.record("ShipAiApproach::target_landing_range_07c4", 0x009e6f4eu);
-            return false;
-        }
         owner_.done("ShipAiApproach::target_kind_005c", 0x009e6efcu);
         return answer;
     }
@@ -4316,8 +4310,16 @@ public:
         return small_class;
     }
     std::int32_t target_radius_07c4() override {
-        owner_.record("ShipAiApproach::target_radius_07c4", 0x009e6f4eu);
-        return 0;
+        if (!kShipAiStandoffTargetKindBound) {
+            owner_.record("ShipAiApproach::target_radius_07c4", 0x009e6f4eu);
+            return 0;
+        }
+        // Reached only after the mode-4 1Ch query answered true: 006F2780's
+        // LandingRange (006F285F), the dword 009E6F4E FILDs.
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        owner_.done("ShipAiApproach::target_radius_07c4", 0x009e6f4eu);
+        return static_cast<std::int32_t>(owner_.units.command_building_landing_range_07c4(
+            static_cast<std::size_t>(t - 1u)));
     }
     std::int32_t target_gun_range_07a0() override {
         if (!kShipAiStandoffTargetKindBound) {
@@ -10868,7 +10870,7 @@ void GameShipAiHost::report() {
         host.summary.latch_retarget_reachable, host.summary.latch_retarget_entries,
         bsp::kShipAiApproachModeLatchBound ? 1 : 0);
     host.log.notef("summary mission ship ai standoff target kind calls=%llu kind_08=%llu "
-        "building_mode2=%llu building_mode4_deferred=%llu small_class=%llu bound=%d "
+        "building_mode2=%llu building_mode4=%llu small_class=%llu bound=%d "
         "(009E6F01 / 009E6F3A / 009E701C / 009E6F11, packet cc9_standoff_target_kind)",
         host.summary.standoff_kind_calls, host.summary.standoff_kind_08,
         host.summary.standoff_kind_1c_mode2, host.summary.standoff_kind_1c_mode4,

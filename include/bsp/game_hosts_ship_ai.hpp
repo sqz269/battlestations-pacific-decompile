@@ -133,12 +133,13 @@ inline constexpr bool kShipAiBigLandingShipBound = true;
 // 009E6F11 calls 00827F70 on [brain+0AACh], the unit's own class. True: the
 // kind queries answer the target's kinds, 00827F70 answers as the mode latch
 // does, and mode 2 reads the CommandBuilding's CaptureRange [target+7A0h]
-// (006F2780, FIMUL at 009E706F, FILD at 009E7087). LABELLED: mode 4's
-// [target+7C4h] LandingRange (FILD at 009E6F4E) has no units-host field yet, so
-// ON the 1Ch query answers false while the latched mode is 4 and that arm keeps
-// its 1000.0 fallback, counted. False: every kind answers false, as before.
+// (006F2780, FIMUL at 009E706F, FILD at 009E7087), and mode 4 its LandingRange
+// [target+7C4h] (006F285F, FILD at 009E6F4E; GameUnitsHost::
+// command_building_landing_range_07c4, main a19a551ba). False: every kind
+// answers false, as before.
 // ON by the pairs of 2026-09-29 (section 39): gameplay identical on USN01 and
-// JM16, zero reach on both; the mode-4 arm stays deferred as labelled.
+// JM16, zero reach on both. The mode-4 arm, deferred then, is bound since
+// section 41 with the same zero reach.
 inline constexpr bool kShipAiStandoffTargetKindBound = true;
 
 class GameHostLog;
@@ -593,7 +594,7 @@ struct GameShipAiSummary {
     unsigned long long standoff_kind_calls{0};
     unsigned long long standoff_kind_08{0};
     unsigned long long standoff_kind_1c_mode2{0};
-    unsigned long long standoff_kind_1c_mode4{0};  // deferred: no +7C4h field
+    unsigned long long standoff_kind_1c_mode4{0};
     unsigned long long standoff_small_class{0};    // 00827F70 true at 009E6F11
     unsigned long long latch_modes[5]{};
     unsigned long long latch_clamps{0};          // mode-1 arm lowered +11F0h
