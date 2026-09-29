@@ -500,6 +500,9 @@ struct PlaneFreeFlightState {
     // Supplied by the host, not reconstructed here: see the doc's coverage table.
     float thrust_accel{0.0f};  // 007D9050 * unit+0CC8h * the 008E6430 multiplier
     float drag_accel{0.0f};    // 007D9140 * the 007DBB23 pitch ramp; negative forward
+    // ctl+FCh, the controller mode: 0 free flight (007DC841), 1 the ground law
+    // (007DCD24). 007DBE0E runs the ceiling only for 0 and the ground band for 1.
+    int controller_mode{0};
 };
 
 // The four accumulators free flight writes, in the order 007D7C00 clears them.
@@ -508,6 +511,7 @@ struct PlaneDynAccumulators {
     float world_drag[3]{};     // dyn+10h..18h
     float body_lift[3]{};      // dyn+1Ch..24h
     float world_gravity[3]{};  // dyn+28h..30h
+    float body_resist_40[3]{}; // dyn+40h..48h, the ground band's third fold (body frame)
 };
 
 // What 007D8470's first two folds leave in the body accumulators, and their sum.
@@ -655,6 +659,36 @@ float gate_direction_hold_007d81c7(float seconds, bool game_state_is_two);
 // decay by one step; a false predicate then parks the timer at the -1.0f
 // sentinel from 00D7A260. Non-positive values are left untouched.
 float tick_contact_timer_007d81b0(float seconds, float step, bool hold);
+
+// 007DBEB3..007DC200, the ground law's band inside 007DB680 (ctl+FCh == 1;
+// packet cc9_plane_ground_roll, docs/SQUADRON_LAND_TASK.md 5q). Frame slots
+// from the listing: [F+24h] the latched throttle unit+BBCh (007DB755), [F+3Ch]
+// the latched block unit+BB0h (007DB6E4), [F+18h] the world speed (007DBA88).
+struct PlaneGroundBandInputs {
+    float latched_throttle{0.0f};    // unit+BBCh
+    float latched_air_brake{0.0f};   // unit+BC0h, [unit+BB0h]+10h (007DBECB)
+    float wheel_brake{0.0f};         // classDesc+1E0h WheelBrake (007DBEF6)
+    float prev_body_accel_z{0.0f};   // ctl+68h = dyn+84h of the previous step (007DC756)
+    float stall_spd{0.0f};           // classDesc+184h (007DC138)
+    float world_speed{0.0f};         // [F+18h], |ctl+18h| or 0 below 0.001
+    float body_vx{0.0f};             // ctl+3Ch (EBX, 007DBEAE)
+    float wire{0.0f};                // ctl+ACh, the arrestor accumulator
+    float wheel_friction{0.75f};     // tuning+290h, mirror 00F87370
+    float wheel_friction_speed_1{1.0f};  // tuning+294h, 00F87374
+    float wheel_friction_speed_2{1.4f};  // tuning+298h, 00F87378
+    float wheel_friction_accel_1{0.0f};  // tuning+29Ch, 00F8737C
+    float wheel_friction_accel_2{8.0f};  // tuning+2A0h, 00F87380
+    float surface_factor{1.0f};      // 007DC0A2-007DC131, 1.0 without a moving parent
+};
+struct PlaneGroundBand {
+    float brake{0.0f};     // [F+60h] after 007DBF0C, into dyn+48h
+    float friction{0.0f};  // [F+64h] after 007DC195, into dyn+48h
+    float lateral{0.0f};   // |2 ctl+3Ch|, into dyn+40h (007DC1C3-007DC1FD)
+};
+// brake = WheelBrake * max(latched air brake, 0.6 - throttle * 26.0) (00CEFF98,
+// 00D06880); friction = clamp(ctl+68h, accel_1, accel_2) (00415620) * surface *
+// interp(StallSpd * speed_1 -> WheelFriction, StallSpd * speed_2 -> 0, speed).
+PlaneGroundBand ground_band_007dbeb3(const PlaneGroundBandInputs& in) noexcept;
 
 // 007D88CB..007D8C5E, the hold's consumer inside 007D8470 (packet
 // cc9_landing_descent_2, docs/SQUADRON_LAND_TASK.md 5o). It runs after the
