@@ -4592,3 +4592,35 @@ Nothing here is bound. The row can drop to "presentation, plus the `[00F87278]` 
   - `g13_dive.py` (the dive census);
   - `g13_ff.py <log> <victims>` (traced hits by shooter/category/victim);
   - `g13_devrow.py <index>` (compact arcade device rows).
+
+## 66. Correction to 63: NH's 18-inch targets are boats and submarines, and the image's row admits them (cc9-gunnery13, 2026-09-29)
+
+**Was (63).** "NH fires them at the low attackers ... with the barrels about 3 degrees up". 63 read
+this as heavy artillery engaging aircraft, and left open whether the artillery pick admits planes.
+
+**Is.** The targets are not aircraft.
+- **The 30 shots at `unit #3.1`, and the others at `unit #3.x`:** `unit hull input ... type_id=4
+  kind=8`. These are submarines, class 08h.
+- **The shots at `unit #2.x`, such as `unit #2.4`:** `type_id=43 kind=14`, TBoat vtable
+  `00D0C648`, length 9.5 m. These are torpedo boats, class 0Eh: the suicide boats.
+- **Evidence:** `local\rb15_usnosl.log`.
+- **Why the barrels were at 3 degrees:** flat fire at a surface target 1100-1200 m out.
+
+**The image's rule.** The category pick is `score_candidate_00863990`. Its rank test
+(`gunnery_rank`, the table `00727BD0` builds) reads the HEAVYARTILLERY preference row at
+`00E098D8` (`src/gunnery_tables.cpp`, transcribed from the image):
+
+`0D, 0A, 07, 09, 0C, 0B, 08, 0E, 1C, 1B, 45, 46, 19, 41`
+
+- **Submarine (08h) and torpedo boat (0Eh)** are the 7th and 8th entries.
+- **No plane class (10h-17h) appears.** So the image never lets a category 4 gun take an aircraft
+  through this pick. The host uses the same table, so it cannot either.
+
+**So the unread link is closed, and there is no divergence.**
+- NH's 18-inch rounds are aimed at suicide boats and surfaced submarines, as the image's
+  preference row allows.
+- HEAVYARTILLERY carries no line-of-fire predicate (`00729560`, 63).
+- At station-keeping distance the rounds cross the Portlands.
+
+63's verdict stands (faithful, nothing bound); only its reason is corrected. 65.2 item 3 is
+closed.
