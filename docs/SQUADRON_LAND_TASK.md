@@ -3707,3 +3707,59 @@ planes circle over them.
 - Deaths should stay near 5ad's ON side (3), since the strikes were already recalled there.
 
 **Controls.** USN04, USN13 and LOMP10 are gameplay-identical (exit 0/1).
+
+### 5ae.1 Measured (pairs on `cc00545ef`)
+
+**The pair.** Both sides flip `kReturnToBaseSiteKeyBound=true`.
+- OFF is `local\l19_cd0`, SHA-256 prefix `8E54C57F5727`.
+- ON adds `kCarrierLandingDeckBound=true`: `local\l19_cd1`, prefix `80846B49F94F`.
+- The logs are `local\l19_cd{0,1}_<row>.log`, and every run is clean.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | nothing |
+| USN13 3000 | 1, gameplay identical | nothing |
+| LOMP10 3000 | 1, gameplay identical | nothing |
+| JM05 3000 | 3 | plane paths |
+| JM05 9000 | 3 | 18 unit rows (plane paths); plane water contacts 3 -> 4 |
+
+On JM05 9000, deaths (3, the same victims), hits and damage are all identical.
+
+**The mechanism held.**
+- Carrier holders were built and re-framed 486039 times. For Lexington: RunwayWidth 40,
+  RunwayLength 279, T local (0, 0.5, -129.5), heading 1.5708.
+- The US carrier decks now run the sequencer:
+
+  | deck | inserts | passes | hits | landed-arm hits | modes 1 / 2 / 3 / 4 |
+  | --- | --- | --- | --- | --- | --- |
+  | USS Lexington | 15 | 7395 | 6569 | 1461 | 3063 / 794 / 13133 / 2690 |
+  | USS Yorktown | 6 | 3533 | 2339 | 4044 | 540 / 282 / 1787 / 4396 |
+
+- **13 carrier planes touch down on their deck** (touchdowns 15 -> 28), from USS Lexington_sqn03,
+  sqn05 and sqn07 and USS Yorktown_sqn04 and sqn06. For example, Yorktown_sqn04 touches down at
+  218.56 s, deck local (-0.9, -53.2), vy -5.04.
+
+**Spread misses.**
+- Four decks were built, not two: Shokaku and Zuikaku too. The plane-side site probe
+  (`007C5AC0` -> `006C0840`) looks up every deck.
+- **The held plane leaves its deck, as predicted.** The landed plane is held at its world
+  touchdown point. Yorktown_sqn04's contact is lost at 234.26 s at deck local z = 124.49 against a
+  half length of 124: the carrier has steamed out from under it. The one extra water contact
+  belongs to this.
+
+### 5ae.2 Verdict: kept OFF
+
+- Part 1's mechanism is the image's, and carriers now recover planes.
+- It leaves a landed plane hanging where the deck was. The re-parent to the moving deck
+  (`007C71E0` at `007C72D3`) and the ground roll on it (`007CC264`) are part 2.
+- It is also measured only on top of `kReturnToBaseSiteKeyBound`, which is itself OFF pending the
+  SELLING question (5ad.2).
+- So `kCarrierLandingDeckBound` stays OFF until part 2 carries the plane with the deck.
+
+**Part 2, the queue.** Each is an `IsKindOf(9)` site from `local\l19_kind9.py`:
+- `007C71E0` (the touchdown attach, re-parent at `007C72D3`);
+- `007CB5F0` (`007CB7B7`) and the ground roll `007CBFA0` (`007CC264`);
+- `007B3C1D` and `007C6EBD` (the plane's parent and its observed-unit callback);
+- `009B1E30` (`009B1E40`), land/final `009B1ED0` (`009B202F`) and the approach base step
+  `009B22C0` (`009B23E4`);
+- the elevator retirement of 5aa.
