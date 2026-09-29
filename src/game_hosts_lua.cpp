@@ -190,6 +190,12 @@ GameMissionLuaHost* host_from_upvalue(lua_State* state) {
 constexpr bool kWingConstructionLuaActive =
     kWingConstructionLuaBound && kWingConstructionInPassABound;
 
+// Packet cc9_carrier_launch_skill (docs/SCENE_UNIT_SKILL.md section 6): an
+// air-ops squadron starts at its owner's live skill, the bag `Skill` 006C5050
+// reads through owner->vtable[12Ch](). ON: JM05 9200/9000 moves (14 US
+// squadrons at 2), USN04 and USN13 are gameplay-identical.
+constexpr bool kCarrierLaunchSkillBound = true;
+
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
 // reads but the host does not model are listed in `unsupported_keys` when
@@ -3435,6 +3441,23 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
         // LaunchSquadron call started it, row 12 of the step otherwise.
         route_push_squadron(static_cast<int>(entity), name,
             static_cast<int>(request.type), units_before);
+        // 006C5101..006C5113: `Skill` = owner->vtable[12Ch](), the owner's
+        // unit+390h at this moment. The owner is the unit `HomeBase` names.
+        int owner_skill = -1;
+        const GameUnitsHost& units = script_orders_->units();
+        for (std::size_t i = 0; i < units.count(); ++i) {
+            const GameUnitRow* row = units.unit_row(i);
+            if (row != nullptr && row->name == request.home_base) {
+                owner_skill = units.skill_level(i);
+                break;
+            }
+        }
+        if (PendingEntity* node = find_pending(static_cast<int>(entity))) {
+            node->launch_skill = owner_skill;
+        }
+        log_.notef("air ops launch skill: squadron=%s owner=%s skill=%d applied=%d "
+            "(006C5101, packet cc9_carrier_launch_skill)", name.c_str(),
+            request.home_base.c_str(), owner_skill, kCarrierLaunchSkillBound ? 1 : 0);
         ++summary_.air_ops_squadrons_created;
         return entity;
     }
@@ -3696,6 +3719,22 @@ public:
     }
     void entity_init_second_vcall_a0(void* entity) override {
         host_.log_.unimplemented("SEntity::InitAll pass B init_slot_a0", "00926110");
+        if constexpr (kCarrierLaunchSkillBound) {
+            // Packet cc9_carrier_launch_skill: 007F1FE0's kind-1 arm reads the
+            // bag skill at 007F211B and ends with vtable[128h](skill) at
+            // 007F226E; the squadron's 007ECF80 re-skills every wing member.
+            const GameMissionLuaHost::PendingEntity& node = at(entity);
+            if (node.squadron && node.launch_skill >= 0 && node.launch_skill <= 5
+                && host_.units_hooks_ != nullptr && node.entity_id > 0) {
+                host_.units_hooks_->set_skill_level_007b8ae0(
+                    static_cast<std::size_t>(node.entity_id - 1), node.launch_skill);
+                const bsp::PlaneSquadronHostRecord* sqn = bsp::plane_squadron_registry()
+                    .find_by_member_unit(static_cast<std::size_t>(node.entity_id - 1));
+                host_.log_.notef("air ops launch skill applied: squadron=%s skill=%d "
+                    "members=%zu (007F226E)", node.name.c_str(), node.launch_skill,
+                    sqn != nullptr ? sqn->member_units.size() : static_cast<std::size_t>(0));
+            }
+        }
         if constexpr (kSEntityInitThisTableStepsBound) {
             // Packet cc9_init_attach_order. Every class this process pushes
             // reaches 009292B0 in its pass B: the squadron 007F1FE0 at 007F218E
