@@ -201,7 +201,9 @@ constexpr bool kCarrierLaunchSkillBound = true;
 // whose first test (0092521E) is 00438E10, a null-guarded CRT _stricmp
 // (00BF7FBF) over the whole name. True answers an exact miss with the first
 // entry that compares equal ignoring ASCII case; false keeps the exact map.
-constexpr bool kFindEntityCaseInsensitiveBound = false;
+// ON: IJN01 resolves "Airfield 02" -> "AirField 02" (entity_resolves 78 -> 79)
+// and is gameplay-identical while PilotLand stays a record; JM05 identical.
+constexpr bool kFindEntityCaseInsensitiveBound = true;
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
