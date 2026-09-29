@@ -5465,3 +5465,43 @@ frames.
   these three and not the heads is unread.
 
 The torpedo counterpart is docs/TORPEDO_RELEASE_ORDERS.md section 6.
+
+### The fly-over leavers miss a 20-degree tolerance by about 0.2 degrees (packet `cc9_dive_flyabove_leavers`, cc9-lua15, 2026-09-29)
+
+This follows up the census above: three Vals leave the fly-over for `goaway` (#1.1|.-2, #1.1|.-4,
+#5.1|.-4). A USN04 4700/4500 run with `kHullAimTrace` switched on locally (not committed;
+`local\l15_fa_usn04.log`) prints the fly-over inputs every tick.
+
+**No aircraft turns during the fly-over.**
+- Each Val's heading changes by only 0.005 to 0.015 rad over its 140 to 170 fly-over ticks,
+  heads included. Examples: Val #1.1 goes from 2.9299 to 2.9247; #1.1|.-2 from 2.9024 to
+  2.8873 before it leaves.
+- Meanwhile the three-second lead bearing drifts by 0.2 to 0.35 rad, because the target moves at
+  16 m/s (`tv = (11.44, 11.46)`).
+- The cause is the dead band `T` of `009C6A37`. With `BL` set (`009C6530`, on every fly-over tick
+  here), `009C6857` makes `T = 00419010(0, 100 deg, classDesc+268h, 10 deg, R)`. This was read
+  again from the disk bytes: the stores at `009C6906`, `009C6902`, `009C68F8`, `009C68EE` and
+  `009C68DD` are `x0 = 0`, `y0 = 100 deg (00CEDD00)`, `x1 = +268h`, `y1 = 10 deg (00CE3990)` and
+  `x = R`.
+- `+268h` is `TurnCircleRadius` (`007D297F`), 1300 m for these Vals.
+  - Beyond 1300 m, `T` is 10 degrees and the error is under 10 degrees.
+  - Inside 1300 m, `T` grows faster than the error.
+  - So the dead-banded error, and with it the slew, stays exactly 0 for the whole leg.
+
+**The leave is a margin, not a gate that never passes.**
+- At `span` 0 every aircraft is between 0.11 and 0.35 rad off. The heads take the roll-in first,
+  because `009C67B0`'s `span <= 0` arm is read before the leave.
+- The three leavers reach `span` 8 to 29 m with `|error|` = 0.3506 to 0.3525 rad (20.09 to 20.20
+  degrees). The `009C66E3` tolerance there is `00419010(0, 20 deg, B4h x 0.8 - S, pi, span)`, only
+  just above 20 degrees. So each misses it by about 0.1 to 0.2 degrees, one or two ticks before its
+  span would reach 0.
+- They are wingmen, flying formation offsets beside their leader, so their error at a given span
+  is a few degrees larger than the leader's.
+
+**Verdict: the host matches the image here, and nothing is bound.** The dead band, the tolerance
+and the roll-in order are each transcribed and re-read. The one host divergence that feeds this
+geometry is the labelled aim-point substitution: the host aims at the target's origin, while the
+image aims at a body-frame hull point chosen by `target->vtable[+100h]` (docs/HANDOFF_DIVE_BOMB_AIM.md
+(b)). On a 0.2-degree margin that substitution can decide which wingmen leave. So the leavers are
+not evidence of a missing rule. `+19h`'s persistence (read, not applied) plays no part: `ready` is
+0 on every leaver tick before the leave.
