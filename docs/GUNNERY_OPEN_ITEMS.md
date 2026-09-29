@@ -3207,3 +3207,118 @@ turn the hulls.
   - how the hit records respond to a tilted hull.
 - The roll-torque question of 47.3 is secondary: pair B differs from pair A on USN02 only by the
   26 hit torques (hit records 3963 -> 4203).
+
+## 52. The hydrodynamic torque on a hull with inertia: predictions before the re-pair (packet `cc9_ship_motion_hydro`, cc9-gunnery11, 2026-09-29)
+
+51.1 kept `kHullInertiaFromShapesBound` OFF because the flip wakes `009329C0`'s own AddTorque
+(`00933B38`), which acts on every hull on every step. This section predicts that torque's effect from
+the listing (as reconstructed in `src/ship_hydro_forces.cpp`, semantic_build_tested). The predictions
+were written before any run of this packet. The pair follows in 52.4.
+
+**Diagnostic.** `BSP_HULL_ATTITUDE_TRACE=1` makes the mission frame log one `hull attitude:` line
+per ship each 10 motion steps (0.5 s): roll `atan2(row0.y, row1.y)`, pitch `asin(row2.y)`, tilt
+`acos(row1.y)` (51.1's quantity), y and alive. The variable changes no state.
+
+### 52.1 The torque, from the listing
+
+- Per element, `00932CBF` transforms the element point, and `00932D02` transforms the same point with
+  its local y set to 0. The lever arm (`00932D07`) is the flattened point minus the body position.
+  **The arm has no vertical component in the hull frame.** A vertical force at an element therefore
+  gives a moment only through the element's lateral (x) and longitudinal (z) offsets. There is no
+  metacentric term: stability does not depend on how high the hull stands.
+- The element force is the clamped drag plus the buoyancy on world y (`00933780`). The torque adds
+  `arm x force` (`009339A7`), then the leak moment `0074F2E0` (`00933A52`, `00933AA7`).
+- The buoyancy is `B = c * d * (0.5 * d / draught + 0.5)`, where `d = span - clamp(h, 0, span)`,
+  span is the deck line minus the keel, and h is the deck point's height above the water. So
+  `dB/dd = c * (d / draught + 0.5)`, which is `1.5 c` at the resting depth `d = draught`. An
+  element that is fully under (`h <= 0`) or fully clear (`h >= span`) adds no stiffness.
+- **The restoring moments.** The elements sit at x = +/- Width/2 and at `Hull.Segments` stations
+  evenly over the Length (SHIP_BUOYANCY_ELEMENTS), and `sum(c * draught) = 10 * Mass`:
+  - roll: `k_r = 1.5 * (W/2)^2 * sum(c)`;
+  - pitch: `k_p = 1.5 * sum(c * z^2)`.
+- **The inertia** is `00939A8E`'s box, `mul * Mass / 12 * (a^2 + b^2)`, with the Ship material's
+  `mul = (1, 1, 2)`. Roll is about row 2 and uses `mul.z = 2`; pitch uses `mul.x = 1`.
+- **The damping.** The live angular damping is 1.0, applied in both phases of the host's one 0.05 s
+  substep: a rate of 2.05/s. The wreck block `00824FE5` doubles the inertia and sets the damping to
+  2.5: 5.34/s. The vertical drag adds a little more, about 0.3/s on a DeRuyter, which is ignored
+  below.
+- **The steering routine keeps both rates.** `0092E8C0` rewrites only the row-1 (yaw) component of
+  the angular velocity and carries the row-0 and row-2 components through (`0092E96F..0092EB8B`).
+  The pitch righting at `0092E9E1` runs only for `IsKindOf(0Eh)` units. So a roll or pitch rate
+  that a torque creates survives the next motion tick. `0092D300` writes only the linear axial
+  component.
+
+`local\g11_pred.py` over the classes 51.1's USN02 and JM06 logs list (the Ship material is assumed
+for every row):
+
+| class | W | Mass | draught | roll omega (period) | roll zeta | pitch omega (period) | pitch zeta | wreck roll zeta | roll kick per 1e6 N m hit |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| DeRuyter | 16 | 7688 | 5.08 | 1.38 (4.5 s) | 0.74 | 2.06 (3.1 s) | 0.50 | 2.73 | 0.066 rad/s |
+| Houston | 16 | 11602 | 5.91 | 0.61 (10.3 s) | 1.68 | 1.95 (3.2 s) | 0.53 | 6.18 | 0.010 rad/s |
+| Exeter | 16 | 10350 | 6.67 | 1.16 (5.4 s) | 0.88 | 1.90 (3.3 s) | 0.54 | 3.26 | 0.045 rad/s |
+| Perth | 16 | 14357 | 6.17 | 1.26 (5.0 s) | 0.81 | 2.09 (3.0 s) | 0.49 | 2.99 | 0.036 rad/s |
+| Alden | 9 | 1308 | 3.35 | 1.57 (4.0 s) | 0.65 | 2.56 (2.5 s) | 0.40 | 2.41 | 1.038 rad/s |
+| Kortenaer | 10 | 1800 | 3.62 | 1.55 (4.1 s) | 0.66 | 2.35 (2.7 s) | 0.44 | 2.44 | 0.643 rad/s |
+| Minegumo | 10 | 2500 | 4.50 | 1.12 (5.6 s) | 0.92 | 2.19 (2.9 s) | 0.47 | 3.38 | 0.299 rad/s |
+| Yudachi | 10 | 1712 | 4.47 | 1.41 (4.4 s) | 0.73 | 2.38 (2.6 s) | 0.43 | 2.67 | 0.696 rad/s |
+| Jintsu | 16 | 5925 | 5.88 | 1.56 (4.0 s) | 0.66 | 2.04 (3.1 s) | 0.50 | 2.41 | 0.126 rad/s |
+| Fletcher-class 08 | 9 | 1308 | 5.26 | 0.89 (7.1 s) | 1.15 | 1.86 (3.4 s) | 0.55 | 4.25 | 0.523 rad/s |
+
+- For the submarines the Submarine material has `mul = (1, 1, 1)` and a buoyancy mix of 0
+  (`dB/dd = c`). Their roll omega is therefore about 1.15 times the Ship-material figure
+  (sqrt(2/1.5)).
+
+### 52.2 Predictions
+
+**P1, living hulls, without hit torques** (roll torque OFF on both sides, as 51.1's pair A):
+- **Near-critical.** Every class has a roll zeta between 0.65 and 1.7 and a pitch zeta between 0.4
+  and 0.55. A disturbance decays within about 2 s, and the trace shows no roll oscillation that
+  keeps its amplitude for more than two periods.
+- **No forcing means no lasting tilt.** An undamaged hull feels no steady moment:
+  - the lateral and forward drag act along row 0 and row 2, and with a flat arm they give yaw only;
+  - the live leak moment is zero, because a live hull's leak rates are zero (`leak_tick`).
+- So an undamaged living hull's roll stays within 2 degrees, and its final tilt is under 1 degree.
+  The only forcing left is the sea surface under the elements, which enters through
+  `water_height_0078cf20`.
+- **Pitch** stays within 2 degrees on a hull at speed. A large pitch on a living hull would need a
+  bow or stern element to leave its band, which a 2 m wave cannot do on a 5 m draught.
+
+**P2, living hulls with the hit torques** (roll torque ON, as landed): a hit of `tau` N m kicks the
+roll rate by `tau * 0.05 / I_z` (the last column). The peak roll is about kick / omega * 0.5.
+- A 1e6 N m hit on a Kortenaer gives about 12 degrees.
+- A 4e6 N m hit on an Alden-sized hull passes 45 degrees, beyond the band's linear range (on
+  Alden, h reaches 0 or span at about 40 degrees).
+- Large transient rolls on the destroyers are therefore expected only in pair B, and each should
+  settle within about 3 s.
+
+**P3, wrecks.**
+- While a wreck still floats inside the band (its deck line above the water at some station), it is
+  overdamped (zeta 2.4 to 6). It heels to `tau_leak / k_r` and does not oscillate.
+- `0074F2E0` is the water weight at each leak point. Its horizontal lever arm comes through the pose
+  rows, so it includes the point's height: a heeled hull with water above its centre gets a moment
+  that grows with the heel. The buoyancy's flat arm does not grow.
+- **Once every element is submerged** (the deck point under water at every station), the stiffness is
+  zero and nothing opposes the leak moment. The wreck then rolls steadily at about
+  `tau_leak / (5.34 * 2 I_z)`.
+- Predicted: **a wreck's tilt stays under 30 degrees until its y has fallen by about the deck
+  height above the waterline** (Height * (1 - ratio) plus the waterline offset; about 5 to 6 m for
+  the cruisers, about 3 m for the destroyers). After that it grows monotonically. Past 90 degrees it
+  keeps rolling, because nothing restores it.
+- **The ten wrecks of 51.1 all rolled past 60 degrees.** The prediction is that each did so only
+  after this y threshold, and never while it still floated in its band.
+
+**P4, hit records.**
+- A tilted hull moves the hull segment boxes the shells test against. The extra hit records come
+  from the wrecks, which stay on the surface for a time as rolled hulls: the rise is in hit records
+  after each victim's death time.
+- Hit records on upright living hulls move by less than 10%.
+- Damage falls because shells spent on wrecks do not reach the living hulls.
+- This is the weakest prediction here. The segment test's use of the rotated pose is not re-read in
+  this packet.
+
+**Mechanism failure:**
+- any living hull whose roll oscillates without decaying;
+- an undamaged living hull with a final tilt over 3 degrees and no hit in its last 10 s;
+- a wreck passing 60 degrees while its y is still above the threshold.
+
+Either would mean the torque, the arm or the inertia differs from the reading above.
