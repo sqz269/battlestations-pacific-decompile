@@ -2397,6 +2397,47 @@ no target), and on no other row.
    inside the class group's zones, or the group key selects a different layer) or `moved_runs` = 0
    with every slot a Landscape hit; either keeps the switch OFF.
 
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `agent/cc9-ships11` at `8d4f73dce` (main `b6a9d2ece` plus the binding), built in the tree;
+ON is `python tools/pair_export.py --commit 8d4f73dce --flip kShipAiApproachRetargetRingBound=true
+--out local\s11_rt1` (exe `CBD6D40E79F7`). Launch as the reference rows (`local\s11_run.ps1`:
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, `--press-start-frame 30 --menu-select <row>
+--mission-frame-seconds 0.05`). A 300-frame USN01 smoke ran first. Logs `local\s11_off_<row>.log`
+and `local\s11_on_<row>.log`.
+
+| row | frames | arm runs ON | zone runs | moved runs | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN01 | 3200/3000 | 200 | 0 | 0 | 3, moved | 4 missed on the mechanism |
+| LOMP10 | 3200/3000 | 68 | 0 | 0 | 1, gameplay identical | 4 missed |
+| USN02 | 9200/9000 | 5 | 0 | 0 | 1, gameplay identical | 3 held |
+
+OFF counts `off_zone_frames=0` on all three. JM05, JM06, JM08, LOMP06, USN04, USN12 and USN13 were
+not run: `run_retarget_arm` returns before anything on a frame the latch does not mark reachable,
+and their base latch census has none.
+
+**Why no zone: `[class+570h]` is 0 in single player.** A diagnostic build (not committed) logged
+Northampton, Dunlap and the other USN01 attackers with `class_reference_0570 = 0`; `004120D0(0)`
+selects the key-0 group, which holds no zones (six groups; the goal at (3973.4, -3182.2) lies in a
+zone of the key-1 group). docs/GAME_SHIP_DEPTH_INPUT.md has the source: every ship leaf's scalar is
+0 in this installation's single-player record and 1 or 3 in the multiplayer one (`settings+F0h`).
+So the ring part of the arm is exact and unreachable in single-player missions; the 0.6 / 600 m
+reach, the crossings and the Landscape cast are unexercised.
+
+**What moved USN01: the point hold.** The first moved line is Northampton at step 1000: OFF steers
+at a new goal 2470 m away, ON still at the previous one (`d32c` 1583 m) until the arm re-runs at
+step 1020. The attackers target Mavis flying boats there (`other` in the latch census, 112 frames),
+whose goal moves every frame. Per entity: the same five Mavis deaths on both sides, Mav2 at 74.15 ->
+74.20 s, killer guns and hit splits shifted; Northampton dealt 1838 -> 1797, Salt Lake City 901 ->
+942. No death flips. The known ship-avoidance refill counter also moved on LOMP10 and USN02.
+
+**Verdict: OFF, recorded.** Prediction 4 named the retarget as the mechanism and it never fired;
+the move came from the hold, which the section describes but did not predict. The contract keeps a
+mechanism miss OFF. The binding stays in place: the hold is the image's behaviour (009F1E30 JE
+009F2003) and the ring is exact. The next step is a separate switch for the hold with its own
+predictions on rows that have not been run (any mission where AI ships attack planes or buildings),
+or a multiplayer-session row where `[class+570h]` is 1 or 3.
+
 ## 28. The third ranking (packet `cc9_ship_ai_open_ranking_3`, cc9-ships10, 2026-09-28)
 
 **It replaces section 16's table.** Every lane switch named in sections 17 to 27 is in this base.
@@ -2422,8 +2463,8 @@ section 16's ten, which include USN12 and JM05.
 | the AI command's avoid-zone point (rank 4) | `kAiCommandAvoidZonePointBound`, ON (spread miss recorded) | section 25 |
 | the approach mode latch (part of rank 6) | `kShipAiApproachModeLatchBound`, ON (modes 1 to 4 unexercised) | section 26 |
 
-Every switch in this lane is ON except `kShipAiApproachRetargetRingBound` (section 27, in
-progress).
+Every switch in this lane is ON except `kShipAiApproachRetargetRingBound` (section 27, OFF by
+verdict).
 
 ### The ranking
 

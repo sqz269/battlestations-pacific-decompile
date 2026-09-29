@@ -1121,6 +1121,9 @@ inline constexpr float kApproachRetargetBestStart = 3.40282347e+38f; // 00D7A248
 // on the no-ship path nested+1228h keeps its value between arm runs (009F1E30
 // JE 009F2003 skips the goal copy at 009F1F0D). False: the point is the goal
 // copied every frame and the arm is only counted.
+// OFF by verdict (2026-09-29): [class+570h] is 0 for every ship leaf in single
+// player, so the key-0 group (no zones) ends the arm on every row; USN01 moved
+// through the hold alone, which the predictions had not named (section 27).
 inline constexpr bool kShipAiApproachRetargetRingBound = false;
 
 } // namespace bsp
