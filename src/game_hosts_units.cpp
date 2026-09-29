@@ -1966,7 +1966,7 @@ struct GameUnitsHost::Impl {
         std::vector<LandingAssignment> assignments;
         unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
         unsigned long long hit_passes{0}, outside_passes{0}, spacing_mode4_refused{0};
-        unsigned long long spacing_mode4_site{0};
+        unsigned long long spacing_mode4_site{0}, landed_arm_hits{0};
         unsigned long long slot_tail_unapplied{0}, mode_counts[5]{0, 0, 0, 0, 0};
     };
     std::vector<LandingDeck> landing_decks;
@@ -4253,6 +4253,13 @@ struct GameUnitsHost::Impl {
     // the AI host used, and nothing is logged.
     static constexpr bool kSquadronOrdnanceReaderBound = true;  // ON: census held, gameplay identical (docs/SQUADRON_ORDNANCE_STATE.md 4)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
+    // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
+    // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
+    // +4h = -1.0 (00D7A260), +8h = 1.0, before the airborne test), 006C3B10's
+    // 2-or-4 refusal only while it is clear, 006C5C40 false for a landed plane,
+    // and 006C5534's lookup-miss mode 904h ? 4 : 1. False: the byte is taken
+    // clear there, so a landed head gets mode 2 and its followers mode 1.
+    static constexpr bool kLandingLandedArmBound = false;
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
@@ -9530,8 +9537,9 @@ bool GameUnitsHost::Impl::landing_released_006c45c0(const LandingDeck& d,
 bool GameUnitsHost::Impl::landing_corridor_006c3b10(const LandingDeck& d,
     const GameUnitSlot& p) const {
     const bsp::GameTuningBlock& g = lua.plane_globals();
-    // +904h is clear in this host; then +900h 2 or 4 answers false.
-    if (p.plane_control_mode_900 == 2 || p.plane_control_mode_900 == 4) return false;
+    // +904h clear and +900h 2 or 4 answers false.
+    if (!(kLandingLandedArmBound && p.plane_landed_904)
+        && (p.plane_control_mode_900 == 2 || p.plane_control_mode_900 == 4)) return false;
     if (!landing_airborne(p)) return true;
     // 00923810(1), the parent link of an airborne plane: null here (LABELLED),
     // so the AirField/MotherShip parent arm never answers.
@@ -9616,7 +9624,8 @@ float GameUnitsHost::Impl::landing_radius_006c3e50(const LandingDeck& d,
 // 006C5C40 (006C5C40-006C5E18, RET 4): on the landing circle.
 bool GameUnitsHost::Impl::landing_on_circle_006c5c40(const LandingDeck& d,
     const GameUnitSlot& p) const {
-    // Null or landed (+904h, clear here) answers false.
+    // Null or landed (+904h) answers false.
+    if (kLandingLandedArmBound && p.plane_landed_904) return false;
     const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
     const bool side = l[0] > 0.0f;                               // 006C5C8F COMISS/JA
     const std::array<float, 3> c = landing_circle_point_006c5380(d, p, side);
@@ -9668,7 +9677,14 @@ bool GameUnitsHost::Impl::landing_deck_usable_006bed60(std::size_t deck_index) c
 void GameUnitsHost::Impl::landing_mode_006c7960(LandingDeck& d, std::size_t deck_index,
     LandingAssignment& rec, bool leader_pass, int head_mode, float head_dist) {
     const GameUnitSlot& p = *slots[rec.plane];
-    // +904h (landed) is clear in this host.
+    // 006C7970-006C798A: +904h (landed) first, on both passes.
+    if (kLandingLandedArmBound && p.plane_landed_904) {
+        rec.mode_10 = 4;
+        rec.path_4 = -1.0f;                                       // 00D7A260
+        rec.spacing_8 = 1.0f;                                     // 00D7A24C
+        ++d.landed_arm_hits;
+        return;
+    }
     if (!landing_airborne(p) || rec.held_0c) {
         rec.mode_10 = leader_pass ? 2 : 1;
         rec.path_4 = 999999.0f;                                   // 00CF87D0
@@ -19024,7 +19040,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // mode out+18h (approach+50h) = plane+904h ? 4 : 1.
                         // plane+904h is the landed-after-flight byte, clear for an
                         // airborne plane.
-                        unit_.land_mode_50 = 1;
+                        unit_.land_mode_50 =
+                            (GameUnitsHost::Impl::kLandingLandedArmBound && unit_.plane_landed_904) ? 4 : 1;
                         unit_.land_spacing_4c = 1.0f;
                         // 006C5563-006C55FC (the members' offset in the block frame
                         // 004142E0 against block+A4h, into approach+44h), 006C3E50
@@ -24423,12 +24440,12 @@ void GameUnitsHost::report() {
             host.log.notef("summary landing sequencer deck %s: refused=%d queue=%zu records=%zu "
                 "passes=%llu hits=%llu outside=%llu inserts=%llu releases=%llu lookups=%llu "
                 "found=%llu modes 1=%llu 2=%llu 3=%llu 4=%llu spacing_mode4_refused=%llu site=%llu "
-                "slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
+                "landed=%llu slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
                 i < decks.size() ? decks.name_at(i).c_str() : "?", d.refused ? 1 : 0,
                 d.queue.size(), d.assignments.size(), d.passes, d.hit_passes, d.outside_passes,
                 d.inserts, d.releases, d.lookups, d.found, d.mode_counts[1], d.mode_counts[2],
                 d.mode_counts[3], d.mode_counts[4], d.spacing_mode4_refused, d.spacing_mode4_site,
-                d.slot_tail_unapplied);
+                d.landed_arm_hits, d.slot_tail_unapplied);
             for (const Impl::LandingAssignment& a : d.assignments) {
                 host.log.notef("summary landing record %s: mode=%d path=%.1f spacing=%.3f "
                     "side=%d", host.slots[a.plane]->row.name.c_str(), a.mode_10,

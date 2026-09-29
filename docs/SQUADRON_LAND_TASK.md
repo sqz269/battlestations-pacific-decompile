@@ -2149,6 +2149,108 @@ plane sinks more than 0.16 m below its wheels, and there are no free-flight step
 with the site calls `006CF420`/`006CF520`/`006CF5B0`, and whatever empties the site's occupancy
 vector so the followers are not aborted.
 
+## 5r. The followers abort because the host drops the landed arm of `006C7960` (packet `cc9_landing_follower_spacing`, cc9-lua14, 2026-09-29)
+
+### Which arm took Lightning 01|.-4: not the spacing arm
+
+The ON log of 5q (`local\l13_gon_lomp10.log` in cc9-lua13) shows the sequence at the leader's
+touchdown:
+
+- `plane touchdown: unit=Lightning 01 t=165.16 ... landed904=1`.
+- 165.31 s: `Lightning 01 (head) mode 4 -> 2 path=999999.0 spacing=1.000`.
+- 165.31 s: `Lightning 01|.-4 mode 4 -> 1 path=1000000.0 spacing=0.000`, and its siblings `.-2` and
+  `.-3` go from mode 3 to mode 1 on the same pass.
+- 165.41 s: `.-4` enters land/abort.
+
+The follower's mode 1 does not come from its spacing. It comes from `006C7960`'s `headMode == 2`
+arm: the head's record was given mode 2 because the host treated the landed head as "not airborne,
+leader pass". Warhawk 01's followers at 153.40 s and B-25 01|.-2 at 251.71 s show the same pattern.
+The spacing of 0 printed with it is `006C3F80`'s answer after the mode had already dropped to 1.
+(The k = 0 site arm would have given `.-4` about 1.0: tp = 708 / 68 = 10.4 s, over 0.25 x 9 s.)
+
+### `006C7960`'s first arm, read from the live decompile
+
+```
+if (plane+904h != 0) { rec+10h = 4; rec+4h = [00D7A260] (-1.0); rec+8h = [00D7A24C] (1.0); return; }
+if (!(plane+72Ch)->vtable[38h]() || rec+0Ch) { rec+10h = leaderPass + 1; rec+4h = 999999.0; rec+8h = 1.0; return; }
+```
+
+- The landed byte `plane+904h` is tested **before** the airborne test, on both passes. A plane that
+  has landed keeps mode 4, with a path of -1.0 and a spacing of 1.0.
+- The host's version (`landing_mode_006c7960`) carried the comment "+904h (landed) is clear in this
+  host". That was true until `kPlaneTouchdownBound` went ON: `007CB5F0`'s port now sets
+  `plane_landed_904` at every touchdown.
+- Consequences in the image, on the head's touchdown:
+  - The head's record says mode 4 and path -1. On the follower pass, `headMode` is 4 and
+    `headDist + 1.0` is 0, so the followers take the last arm: mode 4 when the deck is usable, the
+    follower is in the corridor and its previous spacing is positive; otherwise mode 3. Nobody drops
+    to mode 1.
+  - In `006C3F80` the landed head is not counted. It fails the airborne test at
+    `006C412C`-`006C413F`, and its path of -1.0 would also fail the `+4h > 0` test at
+    `006C4167`-`006C4178`. A follower in mode 4 with no other mode-4 record ahead takes the k = 0
+    site arm, over the stamp `006CE230` set at the head's touchdown. This is where the image's own
+    spacing rule applies: the follower is zeroed only when tp < 2.25 s and less than 3.6 s have
+    passed since the last touchdown (FollowDistTime 9, this installation's tuning).
+- The same byte gates two helpers the host also took as clear:
+  - The corridor `006C3B10`: the `+900h` 2-or-4 refusal applies only while `+904h` is clear. A
+    landed plane (`+900h` 4) falls through to the not-airborne answer, true.
+  - The circle test `006C5C40`: a landed plane answers false.
+  - The lookup-miss arm of the land task's approach update (`006C5534`-`006C5560`): the mode is
+    `+904h ? 4 : 1`.
+
+### Site occupancy (`site+34h`/`+38h`)
+
+- The vector is appended by `006CED90` (vtable `+24h`) at the touchdown.
+- Its readers in the airfield site's vtable `00CF89F8` (21 slots, all decompiled and searched for
+  `+34h`/`+38h`) are only two:
+  - `006CF5B0` (`+34h`, the taxi spot test). It refuses when another plane **with `+904h` clear**
+    is within 30 units, so landed planes never block one another.
+  - `006CF2A0` (`+10h`), a visitor that walks the vector (the save or serialise pass).
+- No slot removes an occupant. The occupancy therefore plays no part in a follower's abort or in its
+  landing clearance. The host keeps it append-only without a reader, and that stays correct until
+  park's taxi (`006CF5B0`) is bound.
+
+### The binding, behind `kLandingLandedArmBound` (committed OFF)
+
+When the switch is on:
+
+- `landing_mode_006c7960` takes the landed arm first.
+- `landing_corridor_006c3b10` skips the 2-or-4 refusal for a landed plane.
+- `landing_on_circle_006c5c40` answers false for a landed plane.
+- The approach update's lookup-miss arm writes mode 4 for a landed plane.
+
+Nothing clears `plane_landed_904` in this host (the image's clear, at a relaunch, is not read). This
+is labelled: a relaunched plane would keep the byte set. No plane relaunches in the reference rows.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is the committed tree. ON flips `kLandingLandedArmBound`.
+
+1. **Heads keep mode 4.** At each touchdown (Warhawk 01 about 153 s, Lightning 01 about 165 s,
+   B-25 01 about 252 s) the head logs no `mode 4 -> 2` line; its summary ends with mode 4. Its land
+   task is unchanged: the rule's first arm (`+900h` 4) still refuses park, and the roll and stop
+   times match OFF.
+2. **No follower drops to mode 1 at its head's touchdown.**
+   - Lightning 01|.-4 (mode 4, about 708 m out) does not abort at 165.41 s. It lands about 9 to 14 s
+     after its head (touchdown at 174 to 180 s), on the runway where Lightning 01 stands.
+   - B-25 01|.-2 (mode 4 since 241.5 s) does not abort at 252.01 s. It lands about 5 to 12 s after
+     B-25 01 (257 to 264 s).
+   - This host has no plane-to-plane contact on the ground, so a follower rolling through a stopped
+     head is expected and is not a failure. The image would have taxied the head off in park,
+     which stays refused.
+3. **The mode-3 followers keep mode 3.** These are Warhawk 01|.-2/.-3/.-4 and Lightning 01|.-2/.-3.
+   They fly the approach line and enter mode 4 when they reach the corridor. At least one more
+   follower touches down before 450 s. The order and times are not predicted.
+4. **Deaths identical (none on LOMP10); USN01 gameplay identical (exit 1)**, with no touchdown in
+   that row. LOMP10 moves (exit 3) in the followers' paths and anything that reads them, including
+   whatever moved Lightning 01's approach in 5q.
+- **Mechanism failure:** any of:
+  - a follower in mode 1 or 2 on the pass right after its head's touchdown;
+  - a landed plane whose record is not mode 4 / path -1.0;
+  - a follower in mode 4 whose spacing is zeroed while tp is at least 2.25 s.
+- **Flip rule:** ON if predictions 1 and 2 hold without a mechanism failure. A spread miss on the
+  touchdown times is recorded and does not block.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
