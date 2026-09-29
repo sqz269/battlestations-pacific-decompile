@@ -2867,3 +2867,59 @@ kFindEntityCaseInsensitiveBound=true` `local\l17_on` (`7D513C6A88BF`), n's launc
 The prediction held on both rows: **flipped ON**. `PilotLand` still runs as a record twice in
 IJN01 (`calls=2`, argc 2, `luaStageInit`), now with a live `Mission.AF2`; cc9-ships15 flips
 `kPilotLandNativeBound` next and pairs the land install.
+
+## Handoff (cc9-lua17, 2026-09-29)
+
+Branch `agent/cc9-lua17`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua17`. No lease
+is held after this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_find_entity_case` | `d52148141`, `a6a1bdf5d` | `kFindEntityCaseInsensitiveBound` | ON: `009251F0`'s `_stricmp` over the whole name; IJN01 resolves `Airfield 02`, gameplay identical | this doc, "FindEntity matches names case-insensitively" |
+| `cc9_land_park_loop_reads` | `f77a8cf0a` | none | the three reads match; the loop starts after the hangar entry | SQUADRON_LAND_TASK.md 5x |
+| `cc9_ground_speed_hold` | `1a756bc16`, `eaa4444a7` | `kPlaneGroundLevellingBound` | ON: `007D9F60`'s up levelling; the B-25s stay on the strip | SQUADRON_LAND_TASK.md 5y, 5y.1 |
+| `cc9_park_stop_and_go` | `905373fbb` | none | the stop-and-go is the demand arm against the brake cliff; the image's laws | SQUADRON_LAND_TASK.md 5z |
+| `cc9_landed_plane_retirement` | `7df2c8086` | none | only the carrier elevator (`006D0600`) retires a landed plane; park stays OFF, and the line ends | SQUADRON_LAND_TASK.md 5aa |
+| `cc9_land_internal_records` | `3589295b0` | none | IJN01 land internals ranked; `006BD080`, `006C0B50` and `006C5380` relabelled done | SQUADRON_LAND_TASK.md 5ab |
+| `cc9_jm05_blocked_engaged` | `a1011cd31` | none (print-only clause split) | the count is approach time: member 31538, range 13367 | TORPEDO_RELEASE_ORDERS.md (8) |
+
+### Open, in order
+
+1. **`009B1EED` land/final `direction_40`** (10809 records on IJN01 9200/9000; also the biggest
+   live land-state gap on LOMP10). Read the final state's direction arm whole, bind it OFF with
+   predictions, and pair LOMP10 9200/9000 and IJN01 9200/9000. `009FABE0` (standby direction,
+   2560) is next by reach.
+2. **Yorktown_sqn12 and Yorktown_sqn13 on JM05 9200/9000.**
+   - All three aircraft of each squadron end the torpedo task on the same tick: `arm_ticks`
+     2129 and 2099.
+   - Their leaders never close below 4059 m, spending 89 and 59 ticks in `attackrun`; the
+     members stay in `follow`.
+   - Decide whether this is death (the death table, `BSP_DEATH_TABLE=1`) or the task retiring
+     (the pilot-bot retire path).
+3. **Lexington_sqn15 and SecondaryAirfieldEntity 01_sqn18 on JM05 end in `prepare`** (432 and 435
+   ticks, leaders at 1874-1961 m). Find what holds them there: `009D4030`'s prepare arm and
+   `ctl+370h`.
+4. Carried from cc9-lua16, not touched: the B-25 dive overshoot, and catapult single-plane
+   launches (`006EC98D`), which do not carry the owner skill.
+
+`009F9E40` (steer to point) belongs to cc9-planes1; do not touch it.
+
+### Working notes
+
+- **`local\l17_runs.ps1 -V <prefix> [-Only rows] [-Exe path]`** launches the reference rows in
+  n's form. The rows are `ijn01l` and `jm05l` at 9200/9000, `lomp10l`, and the rest. It sets
+  `BSP_LUA_FIND_ENTITY_MISSES=1`.
+- **`local\l17_wait.ps1 -Logs a,b -Max 560`** is the foreground wait.
+- **Launch only after the export prints `build: ok`.** A launch that starts before the exe exists
+  fails silently.
+- **Diagnostics, env-gated:**
+  - `BSP_PLANE_GROUND_TRACE=<name prefix>` prints `007D8611`'s body-frame terms, the throttle and
+    air-brake slots, the latched controls, the yaw slot and the body angular rate, every tenth
+    ground-band step.
+  - `BSP_LUA_FIND_ENTITY_MISSES=1` prints FindEntity misses and case-folded hits.
+- **`local\l17_scn_names.py <scn> <names...>`** gives the exact spelling of names in a `.scn`.
+- **Park work, if it is ever reopened:** export with `--flip kLandParkStateBound=true --flip
+  kLandAbortGroundArmBound=true`. Five of ten LOMP10 planes hold at the hangar now; the rest loop
+  as the image would, invisibly (5z, 5aa).
