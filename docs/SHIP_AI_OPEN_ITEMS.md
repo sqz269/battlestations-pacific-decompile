@@ -1672,6 +1672,37 @@ Each OFF row is gameplay-identical to its section 16 base row (`pair_diff` exit 
    turn and speed change. The rows above may move (exit 3). How many do is not predicted: the OFF
    counters do not split outcome-1 frames by eligibility.
 
+### The pairs and the verdict: ON, and the outcome has no reader in the host
+
+OFF is the tree build of `3c63148ea` (`local\ships9_e0_<row>.log`). ON is
+`pair_export --commit 3c63148ea --flip kShipAiClearancePathFadeBound=true`, SHA-256 prefix
+`79D2F46EBDCF` (`local\ships9_pfon_<row>.log`). A 300-frame USN01 smoke ran first.
+
+| row | pair_diff | applied (= leader + moveonpath) | heading_error_large OFF -> ON |
+| --- | --- | --- | --- |
+| USN01 | 1 | 409 | 348 -> 6 |
+| USN02 | 1 | 2174 | 12978 -> 11406 |
+| USN04 | 1 | 795 | 1134 -> 1092 |
+| JM06 | 1 | 720 | 894 -> 582 |
+| JM08 | 1 | 155 | 0 -> 0 |
+| USN13 | 1 | 1513 | 744 -> 708 |
+| LOMP06 | 1 | 82 | 0 -> 0 |
+| USN12 | 1 | 349 | 0 -> 0 |
+| JM05 | 1 | 1069 | 4794 -> 4668 |
+| LOMP10 | 1 | 157 | 312 -> 72 |
+
+- Predictions 1 to 3 held: the three rows without outcome-1 frames are identical, `applied` equals
+  `leader + moveonpath` on every row, and outcome-1 frames fall on all seven other rows.
+- Prediction 4's movement did not happen on any row. **The reason is a host wiring gap, not the
+  fade.** `009F3F80` reads `blk+370h` at `009F4999` (request 2 only while it is 0) and `009F4A02`
+  (request 4 for outcome 1 or 3), on the same block `009EF910` writes (both routines take ESI =
+  blk, with the unit at `+3FCh`). The host keeps the clearance outcome in
+  `ctl.clearance.outcome_370` and gives the escape reader `ctl.obstacle.escape_mode_370`. Nothing
+  writes the second, so the escape reader always sees 0. `drive_order_ring_009f3f80` copies only
+  `clearance_37c` across.
+- **Verdict: ON.** The mechanism matches as far as the host lets the outcome travel. The movement
+  waits on the `+370h` wiring, which is now the lane's next item (section 20).
+
 ## 18. Rank 10: the arm final's group area key (packet `cc9_arm_final_area_key`, `kShipAiArmFinalAreaKeyBound`)
 
 Worker cc9-ships9, 2026-09-28.
@@ -1716,6 +1747,20 @@ raw largest member layer. On USN02 and USN04 the two differ on every call, so th
 2. **USN02 and USN04 move.** Their formation leaders re-aim the heading query from the pose and
    `blk+324h` and ask the second searcher. A leader's heading target can change, and the followers
    follow it.
+
+### The pairs and the verdict: ON (spread miss recorded)
+
+ON is `pair_export --commit 3c63148ea --flip kShipAiArmFinalAreaKeyBound=true`, SHA-256 prefix
+`E5C18454A683` (`local\ships9_akon_<row>.log`), against the same OFF logs as section 17.
+
+- **All ten rows are gameplay-identical** (exit 1).
+- Prediction 1 held: the eight `differs=0` rows are identical.
+- On USN02 and USN04 the mechanism runs as read. `calls` doubles (25845 -> 51690, 8882 -> 17764)
+  because every pass now also reads the key again at `009DEFD3` on the "moved" path. The free
+  searcher's refill counter moves on USN02 (559 -> 546).
+- Prediction 2's movement did not appear: the second searcher's heading did not change a
+  gameplay line in these windows. That is a spread miss with the mechanism matching.
+- **Verdict: ON.**
 
 ## 19. Rank 2: the troop-landing class trait (packet `cc9_close_member_class_trait`, `kTroopLandingTraitBound`)
 
@@ -1793,3 +1838,272 @@ the first answer per unit and site) names the units:
    - `target_warn_radius_07c4` answers 0, so the range gate `009F3585` fails;
    - `candidate_accepts_warning_vtable_0234` answers false;
    - `route_warning_message_0077c2a0` is a record.
+
+### The pairs and the verdict: ON
+
+OFF is the tree build of `3c63148ea` (`local\ships9_e0_<row>.log`). ON is
+`pair_export --commit 3c63148ea --flip kTroopLandingTraitBound=true`, SHA-256 prefix `E2841412EE4B`
+(`local\ships9_tton_<row>.log`).
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 | 1 | nothing (prediction 1) |
+| USN13 | 1 | nothing (prediction 1) |
+| LOMP10 | 1 | nothing (prediction 1) |
+| JM08 | 1 | nothing. The transports' 3.0 is summed by no capture or defend think in the window (prediction 3) |
+| JM05 | 1 | nothing, as JM08 (prediction 3) |
+| JM06 | 3 | the close attack: `served` 566 -> 366, exactly the 200 lander asks; `attackmove` 304 -> 104; scored 3606 -> 1406. Hit records 328 -> 247, shots 378 -> 266, first hit 79.15 -> 74.65 s, deaths 1 -> 1 (prediction 2) |
+
+- On JM06, USTroopTransport 01 to 03 take more or fewer hits, and US Tanker 01 is no longer hit
+  (30 hits -> 0). The Fletcher-class 08 the player controls moves 540.68 -> 75.88 m.
+- **Every prediction held and the mechanism matches exactly, so the switch is flipped ON.**
+- The approach half and the Cargo arm stay bound and inert on these rows.
+
+## 20. The clearance outcome `blk+370h` never reaches the escape reader (new, found by section 17)
+
+Worker cc9-ships9, 2026-09-28. Read only; the first item for the next packet.
+
+- **Image.** `009EF910` writes `blk+370h`: 0 at `009EF969`, 1 at `009F00BF`, 2 at `009EFFA5` and
+  3 at `009EFFB8`. `009F3F80` reads it at `009F4999` (request 2 is raised only while it is 0) and
+  at `009F4A02..009F4A51` (a non-zero outcome with a clear latch `+378h` and outcome 1 or 3, or
+  the stall time `+384h` past its threshold, raises request 4 and the turn-assist load
+  `[unit+102Ch]`). Both routines run on ESI = the same control block.
+- **Host.** `src/game_hosts_ship_ai.cpp` keeps two copies: `ctl.clearance.outcome_370` (written by
+  the reconstructed `009EF910`) and `ctl.obstacle.escape_mode_370` (read by the reconstructed
+  `009F3F80`). `drive_order_ring_009f3f80` copies `clearance_37c` from one to the other and not
+  `outcome_370`, so the reader always sees 0.
+- **Reach 3, on every row.** With the wiring, request 2 stops while an outcome is set and request 4
+  starts for outcomes 1 and 3. Section 17's OFF counts give the outcome-1 frames alone: USN02
+  12978, JM05 4794, USN04 1134, JM06 894, USN13 744, USN01 348, LOMP10 312.
+- **Binding.** One copy, `ctl.obstacle.escape_mode_370 = static_cast<int>(ctl.clearance.outcome_370)`,
+  beside the `clearance_37c` copy, behind a new switch. Count requests 2 and 4 on both sides first.
+
+### Bound OFF (`060d3c8a7`, `kShipAiClearanceOutcomeWiringBound`) and the OFF counts
+
+The switch copies `ctl.clearance.outcome_370` into `ctl.obstacle.escape_mode_370` beside the
+`clearance_37c` copy in `drive_order_ring_009f3f80`. Both sides print
+`summary mission ship ai clearance outcome wiring`: the frames per outcome value as `009F3F80`
+would see them, and the obstacle routine's two load raises (all three sites of each). The tree has
+the path fade and the troop-landing trait ON.
+
+OFF (`local\ships9_f0_<row>.log`, tree build of `060d3c8a7`):
+
+| row | heading (1) | blocked moving (2) | blocked stopped (3) | turn-assist raises | secondary raises |
+| --- | --- | --- | --- | --- | --- |
+| USN02 | 11406 | 10362 | 6846 | 44954 | 21733 |
+| USN04 | 1092 | 3786 | 30 | 31881 | 23964 |
+| JM05 | 4668 | 3528 | 1740 | 15459 | 11399 |
+| JM06 | 48 | 3072 | 882 | 7930 | 4994 |
+| USN13 | 708 | 1638 | 114 | 4509 | 1836 |
+| LOMP06 | 0 | 460 | 24 | 1148 | 710 |
+| USN12 | 0 | 138 | 0 | 209 | 63 |
+| LOMP10 | 72 | 0 | 0 | 0 | 2 |
+| USN01 | 6 | 0 | 0 | 0 | 24 |
+| JM08 | 0 | 0 | 0 | 0 | 5 |
+
+### Predictions, written before any ON run
+
+1. **JM08 is identical** (exit 0 or 1): every frame's outcome is 0, so the reader sees what it saw.
+2. **USN02, USN04, JM05, JM06, USN13, LOMP06 and USN12 move** (exit 3). There the raises happen
+   while an outcome is set. With the wiring, request 2 is refused at `009F4999` on those frames
+   and request 4 opens at `009F4A21..009F4A44` for outcomes 1 and 3. The secondary-raise count
+   changes on each of these rows. Its direction is not predicted.
+3. **LOMP10 and USN01 are identical or move little.** Their only outcomes are heading frames (72 and
+   6) on rows with no turn-assist raise, so the escape arms are rarely reached with an outcome set.
+
+### The pairs and the verdict: ON (one spread miss recorded)
+
+OFF is `local\ships9_f0_<row>.log`. ON is `pair_export --commit 060d3c8a7 --flip
+kShipAiClearanceOutcomeWiringBound=true`, SHA-256 prefix `656807825A6A`
+(`local\ships9_owon_<row>.log`).
+
+| row | pair_diff | turn-assist / secondary raises OFF -> ON | what moved |
+| --- | --- | --- | --- |
+| USN02 | 3 | 44954 / 21733 -> 35532 / 16259 | deaths 13 -> 11 (Witte and Perth survive), hit records 3179 -> 2827, shots 2473 -> 2409, damage 46042.5 -> 40763.0 |
+| USN04 | 3 | 31881 / 23964 -> 30163 / 23931 | deaths 39 -> 41, shots 9488 -> 10661, damage 10136.8 -> 10850.0. The death rows that flip are planes (D3A Val #3.1, #7.1, A6M Zero #7.2, #8.2), which the shared RNG stream couples |
+| JM06 | 3 | 7930 / 4994 -> 5604 / 2490 | hit records 247 -> 344, shots 266 -> 406, damage 4214.2 -> 4972.3; deaths equal |
+| USN13 | 3 | 4509 / 1836 -> 5358 / 2784 | shots 6989 -> 6839, one hit record; deaths equal |
+| JM05 | 3 | 15459 / 11399 -> 17371 / 15362 | USS Phelps 2567.69 -> 2348.82 m; 89 unit rows move; deaths equal |
+| LOMP06 | 3 | 1148 / 710 -> 1186 / 748 | two unit rows; combat equal |
+| USN01 | 3 | 0 / 24 -> 0 / 24 | Enterprise's nearest distance 9009 -> 9017; combat equal |
+| USN12 | 1 | 209 / 63 -> 209 / 63 | nothing |
+| LOMP10 | 1 | 0 / 2 -> 0 / 2 | nothing |
+| JM08 | 1 | 0 / 5 -> 0 / 5 | nothing |
+
+- Prediction 1 held (JM08), and prediction 3 held (LOMP10 identical, USN01 a small move).
+- Prediction 2 held on six of seven rows. **USN12 is identical: a spread miss.** Its only outcomes
+  are 138 blocked-moving frames, and none of them met an escape arm.
+- The load raises move on every moving row. They fall where heading and stopped outcomes dominate
+  (USN02, JM06), because request 2 is refused while an outcome is set. They rise on JM05 and USN13,
+  where request 4 opens.
+- **Verdict: ON.** The path fade (section 17) now reaches the escape through this wiring.
+
+## 21. Rank 5: the group reference release `00A2B8F0` (read only)
+
+Worker cc9-ships9, 2026-09-28. **The routine maintains a per-group score list and touches no
+command.**
+
+- **`00A2B8F0`** (`00A2B8F0-00A2B94D`, `RET 4`, `__thiscall` with ECX = `group+24h`, one stack
+  argument, the emptied group), read with `disasm-raw 00A2B8F0 --length 120`.
+  - It walks `[ECX+5600h]` records of `0ACh` bytes from `ECX+0`.
+  - It finds the first record whose dword at `+0A8h` equals the argument (`00A2B921..00A2B929`).
+  - It shifts every later record down one slot with `REP MOVSD` of `2Bh` dwords
+    (`00A2B90C..00A2B91D`), then decrements the count (`00A2B941`).
+- **`00A2B950`**, its only other caller (`00A2B95F`), inserts a record into the same list.
+  - It first removes the group's old record through `00A2B8F0`.
+  - It then finds the first slot whose float at `+0` is below the new score (`00A2B976..00A2B987`).
+  - It shifts the tail up (`00A2B98B..00A2B9B4`) and writes the score and the factors from
+    `+0h` on (`00A2B9C1..`).
+  - So `group+24h` is a list of up to 128 candidate records sorted by descending score, keyed by
+    the candidate group at `+0A8h`.
+- **Writers.** `00A2B950` is called from `BSP_AiPlanner_ChooseAttackTarget` at `00A1CE93`, and from
+  `BSP_AiPlanner_CaptureThink` at `00A2A77C`, `00A2A844` and `00A2AD58`.
+  - The `00A1CE93` insert is gated at `00A1CDE0` by the stack byte `[ESP+13h]`.
+  - docs/AI_PLANNERS.md calls that insert a debug arm that prints the four factors. The gate
+    byte's writer was not traced here, because the frame moves between `00A1CBE7` and `00A1CDE0`.
+- **Readers.** None known. docs/AI_GROUP_THINK.md (the `+24h..+5623h` row) found no producer in the
+  constructor and no consumer.
+
+**What that means for the host.** `AiGroups::release_group_reference` in `src/game_hosts_ai.cpp`
+reverts a command whose target group emptied, and calls that a labelled substitution for the
+image's dangling `command+1Ch`. That label is accurate: `00A2B8F0` itself never touches a command.
+The revert is a host rule with no image counterpart at this site.
+
+**Next step, if the item is taken.** Read how the attack command tick uses `command+1Ch` after its
+group is freed (docs/AI_COMMAND_OBJECT.md), and decide whether the host's revert changes an order
+the image would issue. Until then the rank stays 5, with its reach unproven.
+
+## 22. Rank 7: the heading wrap `00605070`, census (packet `cc9_heading_wrap_census`)
+
+Worker cc9-ships9, 2026-09-28. This is a census only, with no switch.
+
+**Counter.** `summary mission ship ai heading wrap` counts the heading values the host stores
+where the image wraps them in place with `00605070`: `009DFF81`, `009E00FA`, the setter
+`009DFFB0` and the approach `009F3360`. It also counts the values outside (-pi, pi] and the
+largest magnitude. Logs: `local\ships9_g0_<row>.log`, tree build with sections 17 to 20 ON.
+
+| row | stores | out of range | max magnitude |
+| --- | --- | --- | --- |
+| JM06 | 2595 | **79** | 6.2785 |
+| USN13 | 70431 | 0 | 1.5970 |
+| USN02 | 31891 | 0 | 3.1416 |
+| JM08 | 21318 | 0 | 3.1416 |
+| USN12 | 13929 | 0 | 1.8588 |
+| JM05 | 13651 | 0 | 3.1416 |
+| LOMP10 | 11720 | 0 | 3.1416 |
+| USN01 | 6878 | 0 | 2.8274 |
+| USN04 | 59 | 0 | 1.3351 |
+| LOMP06 | 28 | 0 | 1.6494 |
+
+**Reach.** Only JM06 stores unwrapped headings, near 2pi. Their readers go through
+`wrapped_angle_subtract_00438b10` and `wrapped_angle_add_00438aa0`. Those loop by 2pi until the
+result lies in (-pi, pi] (`00438AB0..00438B0B`, `00438B20..00438B7B`), so an unwrapped input
+changes a result by float rounding only. One direct copy exists, `blk+324h = blk+1D8h` at
+`009ED947`, and its readers use the same helpers.
+
+**Rank 7 drops to reach 1**, a rounding difference on JM06's 79 stores. A faithful binding would
+pass the heading by reference through `after_heading_stored_00605070` and
+`wrap_brain_heading_00605070`, and wrap it with the recovered `00605070`. It is not worth a pair
+set on its own.
+
+## 23. Handoff (cc9-ships9, 2026-09-28, at about 76% context)
+
+**State.** No lease is held. Every commit below is on `agent/cc9-ships9`. `e67503663` and
+`ed050fcab` landed on main as `a24903f07` and `514770df9`.
+
+| Section | Switch | State |
+| --- | --- | --- |
+| 16 | - | the second ranking (docs) |
+| 17 | `kShipAiClearancePathFadeBound` | ON (`3edbe26f0`) |
+| 18 | `kShipAiArmFinalAreaKeyBound` | ON (`3edbe26f0`), spread miss recorded |
+| 19 | `kTroopLandingTraitBound` (`include/bsp/game_hosts_ai.hpp`) | ON (`4fbfd759d`). Section 13's census was corrected: the troop transports carry the trait |
+| 20 | `kShipAiClearanceOutcomeWiringBound` | ON (`72c09257e`). It moves USN02 (deaths 13 -> 11) and USN04 (39 -> 41, plane rows) |
+| 21 | - | rank 5 read (`bbae7f3e2`) |
+| 22 | - | rank 7 census (`4e50a3aa2`); reach 1 |
+| 12 | `kAutoTargetFollowerGateBound` | **OFF.** It waits on cc9-lua10's verdict for lua9's `kFormationJoinFollowBound` (main `f515961f3`) |
+
+**What remains, by section 16's ranking.**
+1. **Item 7, the follower gate re-pair** (section 12). Once the join follow-up is ON:
+   - pair `kAutoTargetFollowerGateBound` on USN01, JM06, JM08, USN13, JM05, LOMP10 and USN04;
+   - write the predictions first; the leave counts should fall to the join counts.
+2. **Rank 4, the AI command's avoid-zone point.**
+   - The call is `00A020F0` in `00A02020`, and only for a kind-6 member.
+   - Zone set: `0082ADA0(class, 0)`, which is `group_for_layer([class+560h])`.
+   - Margin 30.0 (`00CE38C8`), mode 1.
+   - The AI host cannot reach the ship-AI host's `GameAvoidZoneRuntime`. It needs a cross-host query
+     and startup wiring outside this lane's files. Send the lead the declaration.
+3. **Rank 6, the approach frame state's unread spans.** USN02 carries 28784 calls. It is large.
+4. Rank 5's next step (section 21) and ranks 8, 9, 11 to 13 of section 16, unchanged.
+
+**Not to redo.**
+- `local\ships9_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames`, one row per
+  call. `local\ships9_wait.sh <s> <logs>` waits for the final COM release.
+- `local\ships9_census.py <prefix> rows <regex>` sums the non-concrete host rows.
+  `local\ships9_sites.py <row>` prints a record site.
+- `local\ships9_vsj.py <prefix> <rows>` diffs against reference j.
+- OFF logs of the current tree: `ships9_g0_*` (all four switches ON, with the census counters).
+
+**Traps met.**
+- An RDP session fails runs in two ways. A **Disc** session dies at FMOD init (result 61). An
+  **Active** rdp-tcp session fails renderer init (`hr=0x8876086a`) only intermittently: 7 of 16
+  runs once, then none. Relaunch the failed rows only.
+- `pair_diff` returns exit 2 (`Permission denied`) when a log is still held open for a second
+  after its final COM release. Retry.
+- `Add-Content` writes CRLF into an LF doc; the index normalises it, the working copy does not.
+  Strip `chr(13)` in edit scripts.
+- A census over `vehicleclasses.lua` must read each table's top-level `Type`, which comes late in
+  the table. Nested `Type` keys of sub-tables misled section 13.
+
+## 24. Item 7: the AutoTarget follower gate, re-paired after the join follow-up (section 12)
+
+Worker cc9-ships9, 2026-09-28. The base is `f01935cde`, which is `agent/cc9-ships9` with main
+`e0f07c8fd` merged: `kFormationJoinFollowBound` is ON, so a successful join `0077F940` runs
+`00720CD0` and leaves `follow` in the follower's director.
+
+**OFF** (`local\ships9_h0_<row>.log`, tree build of `f01935cde`):
+
+| row | follower thinks | follow requests / joins | section 12's ON leaves (before the join follow-up) |
+| --- | --- | --- | --- |
+| USN01 | 1575 | 152 / 0 | 163 |
+| USN04 | 3616 | 676 / 0 | 7 |
+| JM06 | 1509 | 56 / 4 | 11 |
+| JM08 | 2717 | 695 / 1 | 714 |
+| USN13 | 7097 | 1313 / 0 | 1344 |
+| JM05 | 6027 | 895 / 3 | 157 |
+| LOMP10 | 1207 | 50 / 1 | 61 |
+
+### Predictions, written before any ON run
+
+1. **The leave-and-rejoin loop is gone.** On every row, `leaves` on ON is far below section 12's
+   ON value. A follower whose director holds `follow` returns at `009F5DE0` without a leave.
+2. **What leaves remain** belong to followers whose director was given a different command after
+   they joined, by the mission script or the AI. They are few per row, at most the number of
+   distinct followers times the number of times a script re-commands them.
+3. **Rows move** (exit 3) wherever a leave remains, because the unit leaves its formation. A row
+   with `leaves=0` on ON is identical apart from the gate's own counters.
+4. **No death prediction.** Section 12's loop moved USN04 and USN13 deaths. Without the loop, fewer
+   rows should move and each by less.
+
+### The pairs and the verdict: ON
+
+ON is `pair_export --commit f01935cde --flip kAutoTargetFollowerGateBound=true`, SHA-256 prefix
+`80874933424C` (`local\ships9_fgon_<row>.log`).
+
+| row | pair_diff | leaves ON (section 12's ON) | joins OFF -> ON | combat OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN01 | 3 | 13 (163) | 0 -> 3 | hit records 475 -> 393, shots 1485 -> 1290; deaths equal |
+| USN04 | 3 | 7 (7) | 0 -> 0 | hit records 784 -> 701, shots 10458 -> 10212; deaths equal |
+| JM06 | 3 | 6 (11) | 4 -> 4 | hit records 288 -> 276; deaths equal |
+| JM08 | 3 | 17 (714) | 1 -> 14 | hit records 321 -> 411; deaths equal |
+| USN13 | 3 | 39 (1344) | 0 -> 26 | deaths 27 -> 32 (five plane rows of "bruh #1.5" and "#1.9", RNG-coupled), shots 7068 -> 8194 |
+| JM05 | 3 | 7 (157) | 3 -> 8 | combat equal |
+| LOMP10 | 3 | 8 (61) | 1 -> 2 | hit records 94 -> 95, shots 442 -> 417 |
+
+- **Prediction 1 held.** The leave-and-rejoin loop is gone. Leaves fall 12 to 42 times on USN01,
+  JM08, USN13 and LOMP10. They fall by half on JM06 and to a twentieth on JM05, and stay 7 on
+  USN04, which never looped.
+- **Prediction 2 holds in the aggregate.** The remaining leaves are of the order of the rejoins
+  (JM08 17 leaves against 14 joins, USN13 39 against 26, JM05 7 against 8). No per-unit leave
+  line exists, so "no unit leaves repeatedly" is not checked unit by unit.
+- **Prediction 3 held.** Every row has leaves, and every row moves.
+- **Verdict: ON.** Section 12's recorded mechanism failure is resolved by the join follow-up.

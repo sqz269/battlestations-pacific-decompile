@@ -418,7 +418,9 @@ inline constexpr bool kPlaneRowAutoTargetBound = true;
 // LeaveFormation 00899EB0 runs it). False: the gate answers false.
 // OFF, recorded (2026-09-28): the pairs move as predicted, but a follower leaves and is
 // rejoined by the AI follower pass once a second (section 12); the join's command is unread.
-inline constexpr bool kAutoTargetFollowerGateBound = false;
+// ON (2026-09-28, after kFormationJoinFollowBound): the loop is gone, leaves fall to the
+// order of the rejoins; seven rows move (docs/SHIP_AI_OPEN_ITEMS.md section 24).
+inline constexpr bool kAutoTargetFollowerGateBound = true;
 // Packet cc9_free_bearing_query (rank 3), docs/SHIP_AI_OPEN_ITEMS.md section 14.
 // True: 009DC2E0 runs whole (src/ship_ai_free_bearing.cpp) at the sector scan's
 // 009EC0C1 (searcher 0) and the arm final step's 009DF0FA (searchers 1 and 2):
@@ -435,14 +437,26 @@ inline constexpr bool kShipAiFreeBearingBound = true;
 // its +14h naming the unit) or, at 009F0009..009F0020, the director's slot-0
 // command [[unit+738h]+54h] equal to 00E08F80 (`moveonpath`); either one reaches
 // 009F0022. False: the gate answers false, as the record did. Counted on both sides.
-inline constexpr bool kShipAiClearancePathFadeBound = false;
+// ON (2026-09-28): ten rows identical, outcome-1 frames fall as predicted; the outcome has
+// no reader in this host yet (docs/SHIP_AI_OPEN_ITEMS.md sections 17 and 20).
+inline constexpr bool kShipAiClearancePathFadeBound = true;
 // Packet cc9_arm_final_area_key (rank 10 of docs/SHIP_AI_OPEN_ITEMS.md section 16).
 // True: the arm final step's 0070E450 (009DEEE9, 009DEFD3) answers the whole
 // routine, the largest vtable[214h]() travel layer over the formation's kind-6
 // members from 0, which the layer choice already answers. False: the leader's
 // own travel layer blk+30Ch, the stand-in. Both sides count the calls and how
 // often the two answers differ.
-inline constexpr bool kShipAiArmFinalAreaKeyBound = false;
+// ON (2026-09-28): ten rows identical; USN02 and USN04 take the moved path, spread miss
+// recorded (docs/SHIP_AI_OPEN_ITEMS.md section 18).
+inline constexpr bool kShipAiArmFinalAreaKeyBound = true;
+// Packet cc9_clearance_outcome_wiring (docs/SHIP_AI_OPEN_ITEMS.md section 20). True:
+// 009F3F80 reads blk+370h at 009F4999 and 009F4A02 as 009EF910 left it (0 at 009EF969,
+// 1 at 009F00BF, 2 at 009EFFA5, 3 at 009EFFB8): the host's obstacle copy takes the
+// clearance outcome before the routine runs. False: the obstacle copy stays 0, as it
+// always was. Both sides count the outcome frames and the load raises.
+// ON (2026-09-28): seven rows move through the escape requests, three identical; USN12
+// spread miss recorded (docs/SHIP_AI_OPEN_ITEMS.md section 20).
+inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1179,6 +1193,13 @@ struct GameShipAiHost::Impl {
             best = std::max(best, bsp::ship_ai_unit_navigation_layer_006dfd80(other.leaf_tuning));
         }
         return static_cast<std::int32_t>(best);
+    }
+    // Packet cc9_heading_wrap_census: 00605070 leaves a value in (-pi, pi] alone.
+    void count_heading_wrap_store(float heading) {
+        ++summary.heading_wrap_stores;
+        const float a = std::fabs(heading);
+        if (heading > 3.14159265f || heading <= -3.14159265f) ++summary.heading_wrap_out_of_range;
+        if (a > summary.heading_wrap_max_abs) summary.heading_wrap_max_abs = a;
     }
     SceneDirectorEnables director_enables_0220(std::size_t index) const {
         const GameGunneryUnitRow* row = gunnery_unit_row(index);
@@ -2159,7 +2180,8 @@ public:
     void on_steering_mode_change_009da4e0() override {
         owner_.record("ShipAiControls::steering_mode_changed", 0x009da4e0u);
     }
-    void after_heading_stored_00605070(float) override {
+    void after_heading_stored_00605070(float heading) override {
+        owner_.count_heading_wrap_store(heading);
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -2231,7 +2253,8 @@ public:
         bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
         owner_.done("ShipAiHold::clear_path_plan", 0x009da4e0u);
     }
-    void after_heading_stored_00605070(float) override {
+    void after_heading_stored_00605070(float heading) override {
+        owner_.count_heading_wrap_store(heading);
         owner_.record("ShipAiControls::after_heading_stored", 0x00605070u);
     }
 
@@ -5189,6 +5212,7 @@ public:
         owner_.done("ShipAiApproach::clear_turn_accumulators", 0x009f3348u);
     }
     void set_brain_heading_01e0(float heading) override {
+        owner_.count_heading_wrap_store(heading);  // 009F3360 wraps this store
         ctl_.blk.desired_heading = heading;
         owner_.done("ShipAiApproach::set_brain_heading", 0x009f335cu);
     }
@@ -6209,11 +6233,13 @@ public:
     void raise_turn_assist_load_102c(float value) override {
         // 009F438C, 009F462A and 009F4A51, the inlined body of 009D4FB0.
         owner_.units.raise_turn_assist_load_102c(index_, value);
+        ++owner_.summary.obstacle_turn_assist_raises;
         owner_.done("ShipAiObstacle::raise_turn_assist_load", 0x009f438cu);
     }
     void raise_secondary_load_1034(float value) override {
         // 009F45FE, 009F4912 and 009F4AB4, the inlined body of 009D4FE0.
         owner_.units.raise_secondary_load_1034(index_, value);
+        ++owner_.summary.obstacle_secondary_raises;
         owner_.done("ShipAiObstacle::raise_secondary_load", 0x009f45feu);
     }
     float rudder_law_009da250(float heading_error) override {
@@ -9255,6 +9281,18 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     // which milestone 2r runs, so the field carries what that routine left.
     ctl.obstacle.clearance_37c = ctl.clearance.clearance_37c;
     done("ShipAiObstacle::clearance_37c_producer", 0x009ef910u);
+    // blk+370h, the same field: 009EF910 writes it one chain slot earlier and
+    // 009F3F80 reads it at 009F4999 / 009F4A02 (section 20).
+    {
+        const int outcome = static_cast<int>(ctl.clearance.outcome_370);
+        if (outcome >= 0 && outcome < 4) ++summary.clearance_outcome_frames[outcome];
+        if (kShipAiClearanceOutcomeWiringBound) {
+            ctl.obstacle.escape_mode_370 = outcome;
+            done("ShipAiObstacle::escape_mode_370_producer", 0x009ef910u);
+        } else {
+            record("ShipAiObstacle::escape_mode_370_producer", 0x009ef910u);
+        }
+    }
     // blk+344h and blk+348h. 009F4DBC stores 1.0f into blk+348h unconditionally
     // before the 009F4DC1 early out; blk+344h's own arms inside 009F4DA0,
     // 009F4DC7..009F50BA, are still the record milestone 2o left. Milestone 2q
@@ -10356,6 +10394,17 @@ void GameShipAiHost::report() {
         host.summary.path_fade_tests, host.summary.path_fade_leader,
         host.summary.path_fade_moveonpath, host.summary.path_fade_applied,
         host.summary.clearance_heading_error_large, kShipAiClearancePathFadeBound ? 1 : 0);
+    host.log.notef("summary mission ship ai clearance outcome wiring clear=%llu heading=%llu "
+        "blocked_moving=%llu blocked_stopped=%llu turn_assist_raises=%llu secondary_raises=%llu "
+        "bound=%d (blk+370h, 009EF910 -> 009F4999 / 009F4A02; packet cc9_clearance_outcome_wiring)",
+        host.summary.clearance_outcome_frames[0], host.summary.clearance_outcome_frames[1],
+        host.summary.clearance_outcome_frames[2], host.summary.clearance_outcome_frames[3],
+        host.summary.obstacle_turn_assist_raises, host.summary.obstacle_secondary_raises,
+        kShipAiClearanceOutcomeWiringBound ? 1 : 0);
+    host.log.notef("summary mission ship ai heading wrap stores=%llu out_of_range=%llu "
+        "max_abs=%.4f (00605070 at 009DFF81 / 009E00FA / 009DFFB0 / 009F3360; packet "
+        "cc9_heading_wrap_census)", host.summary.heading_wrap_stores,
+        host.summary.heading_wrap_out_of_range, static_cast<double>(host.summary.heading_wrap_max_abs));
     host.log.notef("summary mission ship ai arm final area key calls=%llu differs=%llu bound=%d "
         "(0070E450 at 009DEEE9 / 009DEFD3; packet cc9_arm_final_area_key)",
         host.summary.arm_final_area_keys, host.summary.arm_final_area_key_differs,
