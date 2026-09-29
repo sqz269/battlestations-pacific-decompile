@@ -656,4 +656,18 @@ float gate_direction_hold_007d81c7(float seconds, bool game_state_is_two);
 // sentinel from 00D7A260. Non-positive values are left untouched.
 float tick_contact_timer_007d81b0(float seconds, float step, bool hold);
 
+// 007D88CB..007D8C5E, the hold's consumer inside 007D8470 (packet
+// cc9_landing_descent_2, docs/SQUADRON_LAND_TASK.md 5o). It runs after the
+// velocity step's 0.01f deadband and before 007D8C6B rotates the body velocity
+// back to world, only while dyn+C0h > 0.0f (007D88D3 COMISS against the zero
+// the deadband left in XMM0). With s = dyn+C0h, not clamped:
+//   speed = |v| when |v|^2 > 1e-10 (00CE3820), else 0
+//   d = 0042D0D0(dyn+B4h, ctl+0B0h, 0), the direction in the body frame
+//   v' = normalise(s * normalise(d) + (1 - s) * normalise(v)) * speed
+// where each normalise multiplies by 1/|x| when |x| > 0 and by 0 otherwise,
+// then the 0.01f deadband (00D7A238) again on each component. `velocity` is
+// dyn+64h (body frame) in place; `direction_body` is d before normalising.
+void blend_direction_hold_007d88cb(float velocity[3], const float direction_body[3],
+                                   float seconds) noexcept;
+
 }  // namespace bsp
