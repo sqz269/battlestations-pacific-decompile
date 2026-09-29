@@ -4212,3 +4212,118 @@ This is ranking item 8, and it is real. Not yet read:
 Binding needs those bodies and a host route from the planner into `spawn_request_queue()`.
 **Next step:** a Ghidra flow repair of `00A23980` by the lead (`tools/ghidra_flow_repair.py`), then
 read it whole.
+
+## 52. The AI planner spawn, closed for these rows (packet `cc9_ai_planner_spawn`)
+
+Worker cc9-ships15, 2026-09-29. This packet followed the lead's flow repair of `00A23980`
+(`b67893b0a`: three gaps after `_free`, 0 left). Ghidra was read-only.
+
+### 52.1 `00A23980` (body `00A23980-00A243C7`, `RET 18h`), read whole from the repaired decompile
+
+`__thiscall(planner)(pos, sources, weight, threats, tag, flag)`. For each source site, in the
+order `00A236F0` sorted them:
+1. **`0084D560(site)(&list, team, 0)`** (ECX = the site, set at `00A23A47`) builds the classes this
+   site can supply. Each is resolved through `BSP_VehicleClass_GetOrCreate` (`00A23A7B`).
+2. **The budget** is `00942130(team)`. When `004BCA50` < 4, `00A0D1D0(classes, budget, threats,
+   site+FCh, 0, flag, -1.0)` scores the site and fills the chosen composition (32-byte entries).
+   The mode 4+ arm uses `00A07D40` / `00A06260` instead.
+3. **A site with a non-empty composition is weighted.** The weight is 1.0 with one source.
+   Otherwise it is `00419010` over tuning `+100h..+10Ch` of distance / `00A07C10()`, times the
+   score. The best site's composition is kept through `00A21D90`.
+4. **After the loop, with a best site**, it builds three dword vectors from the composition:
+   - the class;
+   - entry `+10h`;
+   - `0084CF80(class)`, which overwrites the `vt[18h](0Fh)` / `(14h)` 1-or-3 value in the same
+     slot.
+   Then **`0094C830(team, &classes, site, [slot[team]]+2Ch, &values, &kinds, 0, flag)`** at
+   `00A24337`, and the result is 1.
+
+### 52.2 The deciding input: the site's stock list
+
+`0084D560` copies the site's `+328h` list (team 0) or `+31Ch` list (any other team). It then
+filters that list with `006F4A00(46h/45h)` and the class `vt[18h]`. **It adds nothing of its
+own.** Both lists are filled only by `0084D170` (the site's activation, which reads `maxPlanes`,
+`maxShips`, `SPActive` and `Angle`):
+- the `JapanList` / `AlliedList` property sub-bags;
+- one entry per `"Stock %d"` sub-bag, with `Count` != 0 (and `SquadSize`, default 3).
+
+**Which scenes author a stock list.** A byte search of this installation's mission scenes (mtimes
+2024-07-13) finds `JapanList` / `AlliedList` outside `multi\` in only four files:
+- `ijn\ijn_11_operation_to.scn` (136 `Stock N` strings);
+- three copies of `ijn_02_force_z.scn` (600).
+No reference row's scene authors one:
+
+| row | scene |
+| --- | --- |
+| USN01 | `usn_1_marshall` |
+| USN02 | `usn_2_java` |
+| JM05 | `ijn_05_invasion_of_port_moresby` |
+| IJN01 | `ijn_1_pearl` |
+| BSM01 | `bsm_01_stationed_at_pearl` |
+| LOMP10 | `10_san_jose` |
+| USN13, USNOS, JM06, JM08, USN12, LOMP06 | none of them are in the four files |
+
+So on every reference row each site's class list is empty, and `00A0D1D0` has nothing to buy.
+- **Uncertain:** `00A0D1D0` was read only at its head. That an empty class list gives an empty
+  composition is inferred from its inputs, not traced.
+
+**The two authored scenes, checked in the host (3000 frames, main-equivalent build):**
+- **JM02** (`local\s15p_jm02.log`): `--menu-select JM02` loads
+  `COTP-IJN/PRCPIJN/prcpijn_02_force_z.scn`, which is **not** one of the four files, and every
+  Capture and Defend summary reads `thinks=0`.
+- **IJN11** (`local\s15p_ijn11.log`): 40 capture thinks and 40 defend thinks, but the capture
+  target path (the arm that holds the spawn) runs 0 times (`spawn_due=0`), and the defend records
+  path runs 0 times (`spawn_arms=0`).
+
+### 52.3 Verdict: closed for these rows, with no binding
+
+- The single-player gates pass (section 51), but the spawn buys only from authored stock lists,
+  and no reference row has one. So the image spawns nothing on these rows either, and the host's
+  record is the right model there.
+- **AI_PLANNERS.md's "unreachable in this process" is right in effect for these rows, for a
+  different reason:** no stock, rather than no unit creation.
+- **If a stock scene is ever paired:** the route is `0094C830` -> `00947BC0` -> `0094B600` ->
+  `00949530`, the SpawnNew queue the host already drains (`spawn_request_queue()`,
+  `src/game_hosts_lua.cpp`).
+  - **Still unread** on that route: `00A0D1D0`, `00A236F0`, `00A21D90`, `00947BC0` and `0094B600`,
+    plus the Defend arm `00A29B8E-00A29E2A`.
+
+## 53. Handoff (cc9-ships15, 2026-09-29 14:47 UTC, at about 72% context)
+
+**State.** Branch `agent/cc9-ships15`.
+- On main: 9273d482b, b454cf885, 18b5e6710, 968d6218f, f2b75abbd and 2d84eaf4c.
+- This commit adds sections 52 and 53.
+- No lease is held after this commit.
+
+**Switches this worker added:**
+
+| switch | file | state | section |
+| --- | --- | --- | --- |
+| `kScriptedOrderNativesBound` (NavigatorEnable, UnitHoldFire squadron arm, EntityTurnToEntity ship arm) | `src/game_hosts_script_orders.cpp` | ON | 49 |
+| `kScriptedOrderNatives2Bound` (SetShipMaxSpeed) | same | ON | 50 |
+| `kPilotLandNativeBound` (PilotLand -> `land_at_site_0099a3dd`) | same | **OFF** | 50.2 |
+
+**Queue for the successor:**
+1. **Flip `kPilotLandNativeBound`** once cc9-lua17's case-insensitive `FindEntity` is on main
+   (the lead sends the sha).
+   - Pair IJN01 3000: expect `PilotLand: B-17 0n -> AirField 02` and land tasks installed.
+   - Pair LOMP10 9200/9000: no call on the n reference; `unitcommand` must answer `land` if
+     line 605 is reached.
+2. **The periscope sub-state `009E4DC1`** (ranking 11): the `ShipAiSubAttack` `+122Ch` state arm;
+   reach is JM06 132 and USNOS 61.
+3. **Parked:**
+   - `Scoring_SetMissionCompleted`: score only; route it through the mission-frame result host
+     if it is ever needed.
+   - The planner spawn, which needs a stock scene (section 52).
+   - The UnitSetFireStance / UnitHoldFire ship arms: gunnery13 pairs them behind
+     `kShipFireStanceBound`, and the callers are in (f2b75abbd).
+
+**Useful files in the cc9-ships15 tree (`local\`):**
+- `s15_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames` launches in the
+  background with the reference environment.
+- `s15_wait.ps1 -Logs <names>` is the foreground wait on the final COM release.
+- Pair logs:
+  - `s15{off,on}_*`: section 49;
+  - `s15{off2,on2}_*`: section 50;
+  - `s15p_jm02`, `s15p_ijn11`: section 52.
+- `s15_a23980.c` / `s15_a23980.asm`: the repaired `00A23980`.
