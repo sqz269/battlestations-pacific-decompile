@@ -437,3 +437,40 @@ raiser is reached, but only after a first release, and that is the image's own o
 So the next packets are the USN13 run-in altitude and the AA lethality at 300 to 800 m (gunnery
 lane). The release chain is not one of them. Nothing was bound; the diagnostic is observation
 only.
+
+## (7) The USN13 run-in is the image's glide slope; the aircraft die in `aim` (packet `cc9_torpedo_runin_descent`, cc9-lua15, 2026-09-29)
+
+Section 6 left open whether the attackrun's descent is why USN13's aircraft are still high in
+`aim`. It is not. The host flies the law of docs/TORPEDO_DESCENT_LAW.md section 1, and that law
+does not put an aircraft near the release altitude before `aim`:
+
+- The commanded altitude is `A = base + max(R - low, 0) x s x tan(DropAngle)`, capped at the
+  cruise altitude. For these aircraft `base` = 12, `low` = 450, `tan(DropAngle)` = 0.6249, and
+  `s` = 0.5 while the aircraft is above 1000 m (margin 400 / denom 2000).
+- At the `aim` entry range, `approach+8Ch` = 2200 m, that gives `A` = 12 + 1750 x 0.5 x 0.6249 =
+  **559 m**. Entering `aim` 500 to 700 m up is the image's profile, not a host lag.
+- Check against a logged tick (USN13 bruh #1.1, descent census n=151): `R` = 3462.2 m and `s` =
+  0.4908 give 12 + 3012.2 x 0.4908 x 0.6249 = 935.8 m, against the logged `commanded=935.86`. The
+  live altitude, 1012.2 m, lags by 76 m.
+- The glide census shows the moveto leg leaving the 1450 m cruise at about 6.9 km, where
+  `A_raw` = 12 + 6450 x 0.35 x 0.625 falls below it. It is the same law.
+- USN04's Kates fly the identical profile (Kate #2.1, n=251: `R` 2441.8 m, commanded 634.3 m,
+  live 807.1 m) and still reach 13 to 33 m inside `aim`. `aim`'s own pitch command, clamped to
+  [-80, +50] degrees, is what takes them down the rest of the way.
+
+**What differs is how long they live in `aim`.**
+- USN04's Kates spend 150 to 204 aim ticks there.
+- USN13's spend 5 to 206, 24 of the 28 under 100, and 27 of the 28 are shot down there, most
+  still high.
+- **JM05 at 9200/9000** (`local\l15_rin_jm05l.log`; lead's request) settles it:
+  - all 12 torpedo aircraft reach `aim` and descend to 21.6 to 69.4 m (the altitude flag opens on
+    up to 8 ticks);
+  - all 12 are shot down at 890 to 1264 m range, 30 to 76 m up, before the lead flag's ~315 m.
+    The killers are Arike, Haguro, Shigure, Ushio and Yugure;
+  - in the same row the nine dive bombers with death rows are all shot down between 558 and
+    920 m up.
+
+**Verdict.** There is no host divergence in the run-in descent, so nothing is bound and nothing
+is paired. The prediction the packet was framed on ("the flights reach 25 to 40 m before `aim`")
+is not what the image's law does. On all three rows the releases are lost to anti-aircraft fire
+while the aircraft are in `aim`: USN04, JM05 9000 and USN13. That is the gunnery lane's question.
