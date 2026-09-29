@@ -3885,7 +3885,7 @@ kHullInertiaFromShapesBound`). The flip is routed through the integrator.
   - pitch, for Houston's bow flooding.
 - **P2's kick size.** John1's 1.36e6 torque gives about 6 degrees against 52.2's formula of about
   25 (56.4). Read the 93h delivery (`0092BF30` -> `00C35330`) and re-measure on a flipped build.
-- **P4.** 52.3's hit-record rise was the rows bug. On the fixed pair, hit records FALL
+- **P4: closed as moot** (integrator, 2026-09-29). 52.3's hit-record rise was the rows bug, and no packet is planned. On the fixed pair, hit records FALL
   (2271 -> 2009, 276 -> 220). How a heeled hull's segment boxes change the impacts is still not read.
 - **The periscope shape** (49.10, 53). `0071AD50("periszkop")` at `009396D8` matches 12 submarine
   models. It is not added to the hull box.
