@@ -12795,3 +12795,88 @@ in `Bound`) finds **seven switches newly ON** and no new OFF switch:
   rows (exit 0 or 1 against `rb15_<row>`).
 - **Leave-one-out:** IJN01 moves with PilotLand OFF and with FindEntity folding OFF; USNOS and
   USNOS long move with the periscope pre-pass OFF; nothing else attributes.
+
+**Run parameters:**
+- **One binary:** `local\rb16\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery14.
+  - SHA-256 `EBF6D7B15DF14558E2C8A2E6A599EC8F09F7454873F52F239E1E5B2A6C3CEEEA`, prefix `EBF6D7B15DF1`.
+  - It is a clean `tools/pair_export.py --commit a4f9d6c76` export with no flip.
+- **Rows:** o's sixteen, at o's frame counts and in o's launch form, `--frames F
+  --press-start-frame 30 --menu-select M --mission-frames N --mission-frame-seconds 0.05`, with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` (`local\g14_runs.ps1`).
+- **Checks:** a 300-frame USN01 smoke ran first. Every log shows `present interval immediate`, a
+  module directory under `local\rb16`, `frames_presented` equal to the frame count minus one, and
+  the final COM release.
+- **Environment:** the first batch lost the audio endpoint at 10:23 local (Pacific): the queued runs
+  failed at startup on `sound/gui/error.fsb`, and three in-flight runs (rb16 IJN01, rb16 USNOS,
+  rb16n0 IJN01) died with c0000005 at `bsp_game.exe+280635` in the same second. Every affected run
+  was relaunched once the session had audio again, and each completed. No code change came between
+  the two launches, and the relaunched logs are the ones cited.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 15008.9 | 46 | 753 (147) | 9862 | 100.35 s | 6 of 16 / 0 of 19 | 14 | Lexington-class01 3572.57 m | none | 504 | `local\rb16_usn04.log` |
+| USN01 | 3000 | 2786.4 | 5 | 171 (88) | 1183 | 51.45 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 3875.05 m | none | 530 | `local\rb16_usn01.log` |
+| USN04 (E2) | 9000 | 15802.4 | 51 | 809 (160) | 10444 | 100.35 s | 6 of 16 / 1 of 19 | 19 | Lexington-class01 7196.71 m | none; phase 1 only (known) | 507 | `local\rb16_e2.log` |
+| USN02 | 9000 | 38828.3 | 11 | 2009 (412) | 2133 | 18.95 s | - | - | Kortenaer 548.61 m | **failed at 29.75 s**, phase 1 (unchanged) | 493 | `local\rb16_usn02.log` |
+| JM06 (smoke) | 3000 | 4112.8 | 1 | 197 (183) | 283 | 68.10 s | - | - | Fletcher-class 08 339.55 m | none | 484 | `local\rb16_jm06.log` |
+| JM08 (smoke) | 3000 | 4023.3 | 10 | 300 (124) | 2867 | 5.25 s | - | 3 | Auilick 2520.47 m | none | 490 | `local\rb16_jm08.log` |
+| USN13 (smoke) | 3000 | 9130.0 | 31 | 677 (198) | 8377 | 92.05 s | 0 of 60 / - | 7 | Enterprise 1873.38 m | none | 496 | `local\rb16_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 603.30 m | none | 463 | `local\rb16_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 658.24 m | none | 467 | `local\rb16_lomp06.log` |
+| LOMP10 | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 4892.32 m | none | 486 | `local\rb16_lomp10.log` |
+| JM05 | 3000 | 2130.8 | 0 | 39 (23) | 98 | 9.95 s | 0 of 12 / 0 of 6 | - | USS Phelps 2567.65 m | none | 525 | `local\rb16_jm05.log` |
+| USN12 | 3000 | 1046.5 | 0 | 32 (16) | 83 | 8.30 s | - | - | Montpelier 2084.21 m | none | 472 | `local\rb16_usn12.log` |
+| LOMP10 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 **7014.54 m** | none | 491 | `local\rb16_lomp10l.log` |
+| USNOS | 3000 | 2004.5 | 6 | 860 (82) | 4968 | 10.80 s | - | 1 | NH 1912.73 m | none | 519 | `local\rb16_usnos.log` |
+| USNOS (long) | 9000 | 10635.1 | 21 | 1101 (114) | 17571 | 10.80 s | - | 1 | NH 4851.28 m | none | 526 | `local\rb16_usnosl.log` |
+| IJN01 | 3000 | 3515.1 | 9 | 179 (169) | 3298 | 80.15 s | - | 1 | Downes 739.58 m | none | 513 | `local\rb16_ijn01.log` |
+
+**Against o** (`pair_diff` against `rb15_<row>` in the cc9-gunnery13 tree):
+- **Twelve rows are gameplay-identical** (exit 1): USN04, USN01, E2, USN02, JM06, JM08, USN13,
+  BSM01, LOMP06, LOMP10, JM05, USN12.
+- **Four rows move** (exit 3): LOMP10 long, USNOS, USNOS long, IJN01.
+- **Every death row is identical** on all sixteen (same victims, times and killers); no headline
+  number moves except LOMP10 long's B-25 01 distance (7026.71 -> 7014.54 m).
+- What the four moves are:
+  - **IJN01:** the four B-17 rows fly toward AirField 02 (nearest 5378 -> 2496, 5378 -> 2560,
+    6026 -> 2965, 6026 -> 2823 m); `PilotLand` installs four land tasks through
+    `Bot::install_command_task_land_arm 0099A3DD`.
+  - **USNOS and USNOS long:** the Gato's periscope pre-pass `009DB8F0` runs (2709 and 2935
+    calls); seventeen and nine unit rows move their nearest distance by 1 m.
+  - **LOMP10 long:** the two landed B-25s level on the strip (land-task altitude -904.0 -> 51.4
+    and -1743.9 -> 51.4), and B-25 01's distance drops by 12.17 m.
+
+### The anchor: seven switches
+
+With all seven OFF (`rb16n0`, SHA-256 prefix `F5AA7AC4BF8A`), `a4f9d6c76` is **gameplay-identical to
+reference o on all sixteen rows** (exit 1 against `rb15_<row>`). Nothing else that landed since o
+moves a reference row.
+
+### What moved each row
+
+Each switch was turned OFF alone (leave-one-out) and read with `pair_diff` against p on the four
+moved rows. Exit 3 means the switch moves that row.
+
+| variant (OFF) | rows that move against p |
+| --- | --- |
+| `p_per`: the periscope pre-pass | USNOS, USNOS long |
+| `p_lev`: ground levelling | LOMP10 long (B-25 01 7014.54 -> 7026.71 m, the o value) |
+| `p_pln`: the PilotLand native | IJN01 (the four B-17 rows return to o) |
+| `p_fe`: FindEntity case folding | IJN01 (`PilotLand` resolves no unit for "Airfield 02"; no task) |
+| `p_ctk`: command target keep | IJN01 (the four B-17 rows return to o) |
+| `p_kil`: the Kill native on a script entity | none (Kill unresolved 1 -> 0 on LOMP10 long; gameplay-identical) |
+| `p_sc`: scene command find folding | none |
+
+- **Every moved row has at least one attributing switch.**
+- **Prediction check:**
+  - USNOS, USNOS long and IJN01 held.
+  - LOMP10 long moved as the "at most" allowed.
+  - **One miss:** the command-target keep, predicted to move nothing, is also needed on IJN01.
+    - Its own pair A ran keep alone, without PilotLand, and was gameplay-identical.
+    - With PilotLand ON, dropping the keep undoes the B-17 land tasks.
+    - So IJN01's move needs all three: `kCommandTargetKeepUnauthoredBound`,
+      `kPilotLandNativeBound` and `kFindEntityCaseInsensitiveBound`.
+- **The periscope pre-pass also runs on IJN01** (`SubmarineUnit::periscope_out_00855045`, 6000
+  calls), and IJN01 stays gameplay-identical with it OFF (Tautog and Cachalot: 601 calls each, no raise or lower).
