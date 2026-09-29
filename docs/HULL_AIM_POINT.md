@@ -343,3 +343,15 @@ set changes are the ones that follow from the leaver swap:
 prediction (3) is a spread effect, not a failure of the mechanism. The origin feed was the last
 labelled divergence on the dive path, apart from the labelled draw substitute (6.1). That
 substitute stays.
+
+## Correction from packet `cc9_approach_target_lead`: `sub+44h` is "projtime", and the point leads
+
+cc9-planes1, 2026-09-29. This document's `sub+44h = 0.0` row (seeded at `009FB25F`) is true only at
+construction.
+- `009FB3E0` registers the field as "projtime".
+- The torpedo approach writes it as `approach+F8h`, its engagement estimate (`009D3D2F`/`52`/`65`).
+- The dive-bomb approach writes it as `approach+74h`, `tf + approach+C8h` (`009C7D65`/`7E72`/`7E85`).
+
+When it is positive, `009FADA0`'s tail (`009FAF05`-`009FAF7D`) adds the target's predicted
+displacement, `008120E0` over projtime, to the hull point. So the aim point is the hull point plus a
+lead. The details and the switch are in `docs/TORPEDO_AIM_LEAD.md` section 11.
