@@ -2902,3 +2902,42 @@ difference.
    axis. Measured on the park trace's local `x`: the largest `|x|` per plane falls on most
    planes, and the throttle pulses carry them **along** the strip, not across it.
 4. **Mechanism failure:** a plane whose heading error to the axis grows during abort ticks.
+
+### 5v.2 Measured, and the verdict
+
+The pair is one commit, `f288ab040`, exported twice by `tools/pair_export.py`, both sides with
+`kLandParkStateBound=true`. The ON side adds `kLandAbortGroundArmBound=true`. The run was
+LOMP10 9200/9000 in the reference environment, after a 300-frame LOMP10 smoke of the ON binary.
+The logs are `local\l16_g{off,on}_lomp10l.log` (cc9-lua16 tree), pair_diff 3, and
+`local\l16_parkx.py` tabulates the park trace per plane.
+
+1. **Mechanism: held.**
+   - The abort entries per plane are identical on both sides (797, 1247, 739, 1001, 902, 1127,
+     1059, 946, 1180).
+   - ON turns every `ground_refused` into `ground_ticks`, one for one.
+2. **The loop stays: held.** Every abort entry is a park <-> abort loop turn, on both sides.
+3. **The heading: missed, in a way the listing explains.**
+   - ON, nine of the ten planes end with park's heading error at exactly 1.571 (pi/2). Their
+     local `z` stays within 72-423 m, while `x` runs to 8.0-10.3 km. OFF, they end at errors of
+     1.86-2.27, 3.2-8.4 km out in `z` and 8.7-18.5 km in `x`.
+   - So they now drive **across** the runway axis in a straight line, not along it.
+   - Warhawk 01, which never loops, is identical on both sides.
+4. **Why: the image's own sign.**
+   - `00438B10` is `a - b` (`00438B10 FLD [ESP+4]; FSUB [ESP+8]`, then the wrap).
+   - The arm's error is `heading - runway`: `vtable[50h]` is `0074E260`, `FLD [ECX+C6Ch]`, the
+     same compass heading `007C1900` writes.
+   - Park's is `desired - current` (`009B2A1A`, with `desired` pushed first).
+   - Both feed the same `00419010(-ys/2, -1.1, ys/2, 1.1, .)` yaw into `+284h`. So the abort
+     arm's yaw has the **opposite sense** to park's: it pushes the heading away from the axis
+     until `|e|` reaches pi/2, where its reversal at `009B0EF0` makes pi/2 the resting point.
+   - In the image, abort on the ground is presumably a single tick before park takes over.
+     Under this host's every-tick park <-> abort loop, the arm acts on half the ticks and wins.
+
+**Verdict: `kLandAbortGroundArmBound` stays OFF**, recorded under the prediction's own failure
+clause (the heading error grows during abort ticks). The transcription is checked against the
+listing, including the sign, and is kept behind the switch. It cannot move a default row: with
+park OFF no plane enters abort. It should be re-paired together with park once the loop is
+closed. The loop is the thing to fix: park declares done at once.
+
+**Next.** `00951F40`'s hangar hide (`007B96C0`), then why park's done test `009B21D0` fires on
+its first tick (5s). The loop, not the arm, is what drives the planes off.

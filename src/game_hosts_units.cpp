@@ -4327,8 +4327,10 @@ struct GameUnitsHost::Impl {
     // 007C16F0/007C1680 and 007B96C0/007B9000. False: park is refused as before.
     static constexpr bool kLandParkStateBound = false;  // OFF: mechanism failure, the park <-> abort loop (5s)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
-    // (+21h = 1, the pitch hold class+1ECh x 0.5, the yaw toward the runway axis).
-    // False: the arm is refused and only +21h acts (docs/SQUADRON_LAND_TASK.md 5v).
+    // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
+    // False: the arm is refused and only +21h acts. OFF: paired with park on, its
+    // yaw (heading - runway, opposite to park's sense) rests at pi/2 under the
+    // host's park <-> abort loop; re-pair with park (docs/SQUADRON_LAND_TASK.md 5v.2).
     static constexpr bool kLandAbortGroundArmBound = false;
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
