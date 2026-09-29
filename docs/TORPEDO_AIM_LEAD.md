@@ -1019,3 +1019,32 @@ bombers and whatever it kills.
 **Mechanism test:** `ticks` > 0 on every row with a drop, and a positive `mean_off_origin`.
 **Verdict rule:** keep OFF only if the census shows the point is not reached, or if a row
 without torpedo goaways moves.
+
+### 15.4 The pair, measured: `kTorpedoGoAwayAimPointBound` ON
+
+cc9-planes2, 2026-09-29. Both sides are exports of `03e2e91e8` (main `31de7f88a` merged): OFF
+`893038836610`, ON `2A02089C4FFE`. The logs are `local\p2_{off,on}_<row>.log`, in the same launch
+form as 14.4. A 300-frame USN01 smoke of the ON binary ran first (exit 0, final COM release).
+
+**Mechanism: reached, and inert on these rows.**
+- The goaway takes 009D0670's point on USN04 (112 ticks, mean 65.3 m and max 77.3 m off the
+  origin) and on JM05 (268 ticks, 52.0 / 79.7 m).
+- Every sampled `goaway aim` line shows projtime 0.00. `approach+F8h` is zero once the torpedo is
+  gone, so the offset is the hull point alone, with no lead.
+- The point only reaches gameplay through `state+18h`, the break-off heading. **No arm consumed
+  it**: `heading_ticks=0` on every torpedo aircraft of all three rows.
+  - The aircraft ran only the window's high arm and the post-window low arm. The host's own
+    `heading_ticks` counter shows that neither commands a heading.
+  - The heading arms (`cmd+2CCh = 2`, docs/TORPEDO_AFTER_THE_DROP.md 4) never ran.
+- The side `state+2Ch` could also move, but only through the solver's avoid term, and this host
+  passes an empty obstacle list.
+
+| row | `pair_diff` | measured | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay identical, death rows identical (5); **0 goaway ticks** on every aircraft | the Mavs' goaways, deaths +-2 | missed: no torpedo aircraft reaches the goaway on this row now |
+| USN04 4700/4500 | exit 1 | gameplay identical, death rows identical (45); 112 goaway ticks, heading_ticks 0 | releases +-2, deaths +-3 | held on the mechanism; smaller than predicted, because no heading is consumed |
+| JM05 9200/9000 | exit 1 | gameplay identical, death rows identical (29); 268 goaway ticks, heading_ticks 0 | releases 8 +-2, deaths +-3 | the same |
+
+The prediction assumed the break-off heading was consumed; it is not, on any of these rows. The
+mechanism matches the image (the point is 009D0670's), and nothing moved on rows without a goaway.
+**The switch goes ON**, recorded as gameplay-inert until an aircraft reaches a heading arm.

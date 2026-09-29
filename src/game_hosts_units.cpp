@@ -1841,7 +1841,7 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // 009D3420 before the state tick at 009D48F6). ON: the goaway asks
 // aim_point_009fada0 for it, as approach_target_point does. OFF: the ordered
 // target's origin.
-constexpr bool kTorpedoGoAwayAimPointBound = false;
+constexpr bool kTorpedoGoAwayAimPointBound = true;   // ON: TORPEDO_AIM_LEAD 15.4
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
