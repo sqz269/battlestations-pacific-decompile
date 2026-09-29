@@ -1,7 +1,14 @@
 # Stock Lua matches the version label in the executable, not its private ABI.
 include(FetchContent)
+# A copy under %USERPROFILE%/.bsp/deps is used when present (lua.org times out on
+# some runs); URL_HASH still verifies it.
+file(TO_CMAKE_PATH "$ENV{USERPROFILE}/.bsp/deps/lua-5.1.1.tar.gz" lua511_mirror)
+set(lua511_url https://www.lua.org/ftp/lua-5.1.1.tar.gz)
+if(EXISTS "${lua511_mirror}")
+  set(lua511_url "${lua511_mirror}")
+endif()
 FetchContent_Declare(lua511
-  URL https://www.lua.org/ftp/lua-5.1.1.tar.gz
+  URL ${lua511_url}
   URL_HASH SHA256=c5daeed0a75d8e4dd2328b7c7a69888247868154acbda69110e97d4a6e17d1f0
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_MakeAvailable(lua511)

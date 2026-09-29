@@ -1,7 +1,13 @@
 # Stock source version identified in the game; not a binary/ABI replacement.
 include(FetchContent)
+# A copy under %USERPROFILE%/.bsp/deps is used when present; URL_HASH still verifies it.
+file(TO_CMAKE_PATH "$ENV{USERPROFILE}/.bsp/deps/zlib-1.2.1.tar.gz" zlib121_mirror)
+set(zlib121_url https://zlib.net/fossils/zlib-1.2.1.tar.gz)
+if(EXISTS "${zlib121_mirror}")
+  set(zlib121_url "${zlib121_mirror}")
+endif()
 FetchContent_Declare(zlib121
-  URL https://zlib.net/fossils/zlib-1.2.1.tar.gz
+  URL ${zlib121_url}
   URL_HASH SHA256=94ded52040ee9dd1c70cc3b9f01da283803c28c1194a5a40659e8cf7545990e3
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_MakeAvailable(zlib121)
