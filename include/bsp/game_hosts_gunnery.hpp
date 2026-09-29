@@ -965,6 +965,14 @@ public:
     // as a hit's damage takes them. No caller yet (packet cc9_difficulty_multipliers).
     void apply_script_damage_0095da00(std::size_t unit_index, float amount);
     float unit_invincibility(std::size_t unit_index) const noexcept;
+    // Packet cc9_ship_fire_stance: the weapon director arm of UnitSetFireStance
+    // 008A6490 / UnitHoldFire 008A6AC0 (stance 0) for a ship: 0071BE80, whose
+    // 5Ah messages leave director+3Ch = 0071D560(stance) and +3Dh =
+    // 0071D580(stance). Always recorded; the two readers answer the stored
+    // values only with kShipFireStanceBound, else 008363E0's default true.
+    void set_director_fire_stance_0071be80(std::size_t unit_index, int stance);
+    bool director_allow_fire_3c(std::size_t unit_index) const noexcept;
+    bool director_allow_move_3d(std::size_t unit_index) const noexcept;   // 009F5614's read
     // 007BC5B0's tail, past its flight-state and unit+AA0h tests: true when
     // [unit+150h] <= 0 (not invincible) or the unit is player-held (+1ACh not 8
     // and 00927F10 false). With kUnitInvincibilityFloorBound off it keeps the
