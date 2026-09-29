@@ -3791,3 +3791,90 @@ are the boats being shot while they move. `kShipAiKamikazeAttackStepBound` is no
 - Reference n will see USNOS 3000 and 9000 move.
 - For the lead to apply in Ghidra: the name ledger's evidence for `009E2020` still says
   `Body 009E2020-009E23AD` and "NOT projected".
+
+## 46. Kamikaze contact detonation (packet `cc9_kaiten_contact_detonation`, `kKamikazeContactDetonationBound`)
+
+Worker cc9-ships14, 2026-09-29. The switch lives in `src/game_hosts_gunnery.cpp`, a gunnery12 file
+claimed for this packet by the lead's leave.
+
+### 46.1 The image
+
+The chain is **physics contact -> `009377E0` -> `008145B0` -> message 70h -> `00819A20`**.
+
+- **`009377E0` `BSP_UnitController_OnCollisionContact`** (docs/UNIT_CONTROLLER_UPDATE.md).
+  - It is slot 0 of `00D1961C`, called by the physics library for a body contact.
+  - The damage gate opens when either party's class has `+510h > 0` or `+514h > 0`.
+  - Two cancels:
+    - `unit+6B8h >= 0` and `00779AD0()` (the frames since `unit+294h`, times 0.05) below 3.0
+      (`00CE3854`);
+    - `0092CE70` non-zero on the other.
+  - It then compares the contact-point speeds (`v + w x r`, both bodies) and calls `008145B0` for the
+    body with the smaller one.
+- **`008145B0`**, read whole from the listing.
+  - ABI: `__thiscall(unit)(const float3* contact, float magnitude, entity* other, int)`, `RET 10h`.
+    Body `008145B0`-`008146DB`. `magnitude` and the last argument are unread.
+  - It requires `game+1FE4h != 2`, a non-null other, and `00803510(unit+54h, other+54h) == 1`
+    (enemy).
+  - Then, for each party that is live (`+5Dh`, `+5Eh`, `+5Fh`, `+60h` clear) and a kamikaze
+    (**`00779AA0`**: `[class+510h] > 0 || [class+514h] > 0`), it builds message 70h with the other
+    as the target (`0080FF30`, with `00427C90(contact, 00427EB0(party))`). It routes it through
+    `0077C2A0` route 7.
+- **`00819A20` `BSP_UnitInstance_KamikazeDetonate`**, the 70h arm at `0082217D`. Read from the
+  listing to the effect call.
+  1. `unit+100Ah = 1`. The only reader is the getter `00951A90`.
+  2. **The direct arm** (`00819A51..00819BCF`) needs a target with `+5Ch` set, `+5Dh`/`+60h`/`+5Eh`
+     clear, and `+510h > 0.0` (`00D7A218`).
+     - The record is `+14h = unit->vtable[54h]()`, which is `0042B8D0` = `FLDZ; RET`, so 0.
+     - `+18h..+20h = unit+FCh`, `+24h = +518h`, `+28h = +514h`.
+     - A trace from `unit+FCh` along the message point times 1000.0 (`00CE47A0`), against
+       `target->vtable[B0h]` / `0098AC20`.
+     - On a hit: `00926E80` and **`00915F20(target, record)`**.
+  3. **The blast arm** (`00819BDA..00819C14`): when `+514h > 0`, `0084BAD0` with centre `unit+FCh`,
+     radius `&[class+518h]`, damage `&[class+514h]`, and ignore, shot and source all 0. With no
+     source entity, no gathered record is skipped, so **the burst reaches the kamikaze's own hull**
+     (docs/EXPLOSION_RADIAL_DAMAGE.md, the `sourceEntity == 0` consequence).
+  4. A point effect from `[class+51Ch]`.
+
+  The kamikaze's own death is its blast, not a Kill. This installation's `vehicleclasses.lua` (mtime
+  2026-05-09, modded) gives the Kaiten and the Shinyo `KamikazeBlastRange = 50`.
+
+### 46.2 The binding (committed OFF)
+
+`GameGunneryHost::Impl::run_kamikaze_contacts` runs once per gunnery step, after the projectiles.
+Its substitutions are labelled in the code:
+- **The contact.** The host has no body contacts. A kamikaze touches a ship when its bow point or
+  its centre is inside that ship's hull box. The contact point is the bow point.
+- **Gates not modelled:** the slower-body test and `009377E0`'s two cancels. Every unit here is
+  scene-placed.
+- **The blast.** It is gathered over the hull boxes, as the projectile burst is, at the box
+  distance. Records go through `apply_gunless_blast_hit`, which is `apply_hit`'s tail with no gun and
+  no shot, and so has no attribution.
+- **The direct arm's delivery `00915F20`** is unread. It is a record,
+  `KamikazeDetonate::direct_hit_00915f20`.
+
+Diagnostic: `summary mission gunnery kamikaze contacts= hostile_refused= detonations= direct_arms=
+blast_records= self_records= blast_damage= min_gap= at bound=`. `min_gap` is the closest any live
+kamikaze bow came to a hostile hull box.
+
+### 46.3 Predictions (written before the pair)
+
+**Reach is probably zero.**
+- On section 45's ON 9000 row, no kamikaze got within 146 m of any ship. The distances at death:
+  - Kaiten: 146 to 1023 m;
+  - Shinyo `#2.x` (`Suicide_boat.mmod`): 283 to 1394 m, all shot first.
+- USNOS is the only reference row with kamikaze classes (the engage gate's `kamikaze_classes`
+  counter).
+
+**P1.** USNOS 3200/3000 and 9200/9000 print `detonations=0`. `pair_diff` exits 1 (gameplay
+identical) on both. `min_gap` is tens to hundreds of metres.
+
+**P2.** If a boat does touch, then:
+- one `kamikaze detonation` line appears;
+- the kamikaze dies from its own blast in the same step, with `self_records >= 1`;
+- the struck ship takes up to 3000 (Kaiten) or 1500 (Shinyo) blast damage;
+- that ship's death row moves.
+
+**Verdict rule.**
+- Identical with zero reach: the switch may flip ON, recorded as zero reach, as sections 39 and 42
+  did.
+- Moved: judge the mechanism by P2.
