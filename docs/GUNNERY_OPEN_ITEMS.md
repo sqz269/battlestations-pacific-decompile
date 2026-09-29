@@ -3591,3 +3591,163 @@ listing such a Note, and counts the latter in `note_owner_records`.
 - The shape's node transform is not modelled. It is identity for every owner record here.
 - The periscope shape (49.10) is still not added. It is a separate `0071AD50("periszkop")` at
   `009396D8`, and 53 shows it matches 12 submarine models.
+
+## 56. The wreck capsize, predicted from the flooding trace (packet `cc9_hull_capsize`, cc9-gunnery11, 2026-09-29)
+
+This is 52.3's next step. The inputs are cc9-lua12's `BSP_HULL_FLOODING_TRACE=1` (`9ff6f59a8`: each 0.5 s
+per ship, the leak water `unit+10FCh`, and each leak's hull-space point and water). It was run
+together with `BSP_HULL_ATTITUDE_TRACE=1` on this tree's `86e458a5e` with the inertia switch OFF,
+on USN02 9200/9000 and JM06 3200/3000 (`local\g11cpoff_<row>.log`). The predictions below were
+written before any ON run of this packet.
+
+### 56.1 The model
+
+`local\g11_capsize.py` is a quasi-static roll balance per trace sample:
+- **Elements.** Built from 52.1's reading and the `buoyancy elements` class line: `2 * Segments`
+  elements at x = +/-W/2, each with `c = 5 M / (Segments * D)`.
+  - The deck point is at local y = S - D, with `S = D / (1 - WaterLineRatio)`, the deck-to-keel
+    span.
+  - Every station gets the same deck and keel. This is an approximation; DeRuyter's stations
+    differ by 0.3 m.
+  - The depth is `d = S - clamp(h, 0, S)`, and `B = c d (0.5 d / D + 0.5)`.
+- **Heave.** For a heel phi, the heave solves `sum(B) = 10 (M + water)`.
+- **Moments.** The roll moment is the flat-arm buoyancy term `sum(x cos(phi) B)` plus `0074F2E0`'s
+  leak term, `-10 sum(w (x cos(phi) - y sin(phi)))`.
+- **Solve.** The heel is scanned from 0 toward the leak's side in 0.5-degree steps. The first zero
+  crossing is the equilibrium. **No crossing within 90 degrees means capsize:** the flooding moment
+  exceeds anything the bounded buoyancy moment can return.
+- **What the trace adds** to 52.3's reading:
+  - Every leak point in these rows is at local y = 0, so the `y sin(phi)` term is zero.
+  - **The leak points sit at x = +/-Width**, twice the elements' lever arm (for example John1's
+    leaks at x = -9.00 on a 9 m hull).
+  - So the flooding moment grows as 10 * w * W, while the buoyancy moment is bounded by
+    (W/2) * sum of one side's full buoyancy.
+- **Not modelled:**
+  - pitch: Houston floods at the bow, `+z`;
+  - waves;
+  - the hit roll torques;
+  - dynamics. The wreck is overdamped (zeta 2.4 to 6, 52.1), so its roll lags the equilibrium.
+- The submarines have a buoyancy mix of 0 and `mul` (1, 1, 1). The model uses the Ship material,
+  so the submarine rows are indicative only.
+
+### 56.2 Predictions from the OFF run (inputs only; OFF itself never heels)
+
+USN02:
+
+| wreck | wreck at | phi_eq passes 30 deg (t, water) | balance lost (t, water) | lost - wreck |
+| --- | --- | --- | --- | --- |
+| Houston | 21.0 | - | 39.5, 6188 | 18.5 s |
+| John1 | 26.5 | - | 48.0, 882 | 21.5 s |
+| Kawakaze | 51.0 | 60.5, 841 | 62.5, 958 | 11.5 s |
+| Tokitsukaze | 95.0 | - | 124.0, 2416 | 29.0 s |
+| Yamakaze | 120.0 | - | 136.5, 1360 | 16.5 s |
+| Amatsukaze | 125.5 | 141.5, 1200 | 148.5, 1527 | 23.0 s |
+| Asagumo | 139.5 | 152.5, 1248 | 156.5, 1541 | 17.0 s |
+| Hatsukaze | 150.5 | - | 193.5, 4371 | 43.0 s |
+| Yukikaze | 160.0 | - | 180.5, 2723 | 20.5 s |
+| Minegumo | 185.5 | 201.0, 1203 | 207.0, 1529 | 21.5 s |
+
+- **Flooded living hulls hold small, steady heels.** The heel direction is toward their leaks'
+  side:
+  - DeRuyter -2.5 to -4.0 degrees;
+  - Java +4.0 to +5.5;
+  - Samidare +3.5 to +4.0;
+  - Kortenaer, Electra, Haguro, Yudachi, Murasame and Harusame within 2.5 degrees.
+- On JM06:
+  - Fletcher-class 08 settles at +2.5 to +3.0 degrees;
+  - USTroopTransport 02 reaches -5.5;
+  - the other transports stay within 2 degrees;
+  - the Gato wreck (a submarine, indicative only) loses balance at 36.5 s.
+
+**The predictions for the ON pair** (`kHullInertiaFromShapesBound` flipped on the same commit,
+both traces on). The model is re-evaluated on the ON run's own flooding inputs, because heel
+changes the hits and so the water:
+- **P5, wreck capsize onset.**
+  - Every USN02 wreck passes 60 degrees of roll only after its ON water reaches 0.8 times the water
+    at which the model loses balance on that run's own samples.
+  - It does so within 25 s of the model's loss time.
+  - The roll goes to the side the leak moment drives.
+- **P6, the heel before loss.**
+  - While the model has a balance, a wreck's roll stays within 8 degrees of the model heel at 90%
+    of its samples. The margin allows for the overdamped lag.
+  - On living flooded hulls, the roll stays within 3 degrees of the model heel at 90% of the
+    samples with water above 0. The hit roll torques are ON as landed, and their transients are
+    what the 10% allows.
+- **P7, the sign.** Every hull whose model heel exceeds 2 degrees rolls to the same side.
+- **Mechanism failure:**
+  - a wreck passing 60 degrees below 0.8 times its loss water;
+  - a living hull rolling against the model's side by more than 2 degrees for more than 5 s.
+- **Uncertainty:**
+  - uniform stations;
+  - no pitch coupling. Houston's bow flooding could pitch it instead of rolling it.
+
+### 56.3 The ON pair: the predictions miss, and the cause is a host layout bug in the leak moment
+
+**The pair.** ON is `local\g11cpon_<row>.log` (`kHullInertiaFromShapesBound` flipped on `86e458a5e`, both
+traces on, the hit roll torque ON as landed). The USN02 gameplay numbers repeat 52.3's pair B:
+hit records 2271 -> 4203, damage 39395.6 -> 34679.6, and ten death rows, all changed.
+`local\g11_capeval.py` re-runs the 56.1 model on the ON run's own flooding samples.
+
+**P5, wreck onset: 6 of 10 held.**
+- **Held:** Yamakaze, Minegumo, Yukikaze, Tokitsukaze, Amatsukaze and Hatsukaze. Each passes
+  60 degrees at 1.4 to 2.4 times the model's loss water, 12 to 22 s after the model's loss.
+- **Missed late:** Houston (2.63 times the loss water, 51 s after) and Kawakaze (2.81 times, 39 s
+  after).
+- **Missed early:** John1 (0.68 times the loss water, 7 s before) and Asagumo (0.57 times, 19.5 s
+  before).
+
+**P6, the heel before loss: failed.** The living flooded hulls sit far beyond the model heel:
+
+| hull | samples within 3 degrees | model heel | observed |
+| --- | --- | --- | --- |
+| DeRuyter | 45 of 760 | about -2 to -4 degrees | -16.6 max, -9.3 at the end |
+| Haguro | 120 of 668 | - | 27.0 max |
+| John2 | 25 of 664 | - | 23.9 max |
+
+**P7, the sign: failed** on Kortenaer (90 samples against), Electra (209), Jintsu (233),
+Fletcher-class 08 on JM06 (84), and on the wrecks John1, Asagumo and Tokitsukaze.
+
+**Mechanism failure, by 56.2's own criteria.** The static check (`local\g11_capdbg.py`) pins it down.
+DeRuyter at 439.97 s is steady at roll -9.37 degrees and y = -0.58, with 1691 water in six leaks.
+At that pose the model's moments do not balance:
+- the buoyancy moment is +253,897 (+x side depth 7.04, -x side 4.44);
+- the leak moment is -102,078.
+Something adds about -1.5e5 that the model does not have.
+
+**The cause: the units host hands `0074F2E0` a 3x3 array where it reads a 4x4 block.**
+- `unit_leak_torque_0074f2e0` (src/unit_forces.cpp) reads the pose rows with the image's stride of
+  16 bytes. It reads indices 0, 2, 4, 6, 8 and 10 as +CCh, +D4h, +DCh, +E4h, +ECh and +F4h: the
+  x and z columns of rows 0, 1 and 2.
+- The host (`leak_heel_torque_0074f2e0` in src/game_hosts_units.cpp, about line 6465) passes
+  `float rows[9]`, packed three per row. So the routine reads:
+  - "row1.x" as row1.y (about 1 on an upright hull);
+  - "row1.z" as row2.x;
+  - "row2.x" as row2.z;
+  - "row2.z" from `rows[10]`, **past the end of the array** (undefined behaviour, stack contents).
+- The roll-producing term becomes `-10 w (p.x row0.x + p.y row1.y + p.z row2.z)`. **The leak's
+  longitudinal position (+/-85.5 m on DeRuyter) now acts as a lateral lever.**
+- On DeRuyter at 440 s, `sum(w z)` is +25,300 against `sum(w x)` = +10,350. The spurious term is
+  about 2.4 times the real one, the size of the missing moment.
+- Bow and stern flooding therefore rolls a hull, which is why the sign fails on hulls whose
+  bow/stern imbalance opposes their side imbalance.
+- **With the inertia switch OFF this has no gameplay effect**: a zero inverse inertia discards
+  every torque. It has been there since `ceed0a6ec`.
+
+**The fix is in the units host** (cc9-lua12's lane), sent to the integrator. It passes the
+image's layout:
+
+```
+float rows[12] = {
+    slot_.motion.pose_row0[0], slot_.motion.pose_row0[1], slot_.motion.pose_row0[2], 0.0f,
+    slot_.motion.pose_row1[0], slot_.motion.pose_row1[1], slot_.motion.pose_row1[2], 0.0f,
+    slot_.motion.pose_row2[0], slot_.motion.pose_row2[1], slot_.motion.pose_row2[2], 0.0f};
+```
+
+**Verdict: `kHullInertiaFromShapesBound` stays OFF.**
+- The capsize model is not refuted. It could not be tested against a host whose leak moment is
+  wrong, and the P5 rows that held include wrecks flooding mainly on one side.
+- **Next:**
+  - land the layout fix; it is inert while the switch is OFF;
+  - re-run this pair on the fixed build;
+  - re-evaluate with `g11_capeval.py`.
+  56.2's predictions stand as written for that re-run.
