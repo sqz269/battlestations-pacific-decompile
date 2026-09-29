@@ -2634,3 +2634,67 @@ Branch `agent/cc9-lua13`, worktree `J:\PROG\battlestations-pacific-decompile-cc9
   - `summary plane direction hold` and `summary plane ground roll`, one per landing plane;
   - `hold=` in `land final trace`.
 - Pair logs: `local\l13_off_*`/`l13_jon_*` (5o) and `local\l13_goff_*`/`l13_gon_*` (5q).
+
+## Handoff (cc9-lua14, 2026-09-29)
+
+Branch `agent/cc9-lua14`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua14`. The
+leases `cc9_land_park_taxi` and `cc9_plane_ground_steering` are released with this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_landing_follower_spacing` | `fc783360c`, `057bc636d` | `kLandingLandedArmBound` | ON: all ten LOMP10 planes land | docs/SQUADRON_LAND_TASK.md 5r |
+| `cc9_land_park_taxi` | `a2551c4a3`, `7d89f84cf` | `kLandParkStateBound` | OFF: mechanism failure (park <-> abort loop) | 5s |
+| `cc9_plane_ground_steering` | `f187ab8b1` and the verdict commit | `kPlaneGroundSteeringBound` | OFF: mechanism failure (stopped planes keep turning) | 5t |
+
+The followers' abort was never the spacing rule. `006C7960` tests `plane+904h` before the airborne
+test, which gives a landed head mode 4 and path -1. The host had assumed the byte was clear.
+
+Park's tick, its done test, the site calls, `006CE610`/`006CDF70` and the scene hangars are all
+read and kept behind the switch. The airfield site's occupancy has no remover, and only
+`006CF5B0` reads it (5r).
+
+### Open, in order
+
+1. **The ground pose.** The candidates are `ctl+80h..8Ch`, `007D9C80` and `007D80C0` (5q, not
+   carried), and the attached branch `007DA2B1` of `007D9F60`. Find what holds a stopped plane's
+   attitude and yaw rate. Then:
+   - re-pair `kPlaneGroundSteeringBound` (5t): with it ON, the mode-1 yaw factor is 0 below
+     1.7 m/s and the axis step's yaw acceleration goes with it;
+   - look at the one sink that happens even with steering OFF: B-25 01|.-2 creeps sideways
+     after stopping on top of B-25 01 and sinks at 325.94 s (5r).
+2. **Abort's on-ground arm** `009B0E74`-`009B0F93`: `+21h` = 1, pitch `class+1ECh x 0.5`, and
+   a ground heading. Park's done test sends a plane to abort, and without this arm the plane
+   loops park <-> abort under abort's throttle 1.0 (5s).
+3. **`00951F40(0)`**: the hangar's detach and hide (`007B96C0`). A plane that reaches the hangar
+   must stop being simulated or stop moving.
+4. Then **re-pair park** (5s), with predictions carried over. Warhawk 01 already reaches the
+   hangar test at 225.11 s with the free-flight yaw.
+5. The handoff items still open from cc9-lua13:
+   - Lightning 01's approach moving when a plane stands on the runway (some planner term reads
+     the stopped plane);
+   - the lift-off message `007C7110`;
+   - the direction hold's launch arm `007C705C`.
+
+### Working notes
+
+- `local\l14_run.ps1 -Exe <exe> -Prefix <p> -Rows 'tag:MISSION:frames:mission_frames'` launches
+  rows with the reference options.
+- `local\l14_consts.py <addr>f|d ...` reads floats and doubles from the PE on disk.
+- Listings saved in `local\`:
+  - `l14_park.txt` (`009B22C0` whole);
+  - `l14_df70.txt` (`006CDF70`);
+  - `l14_f5b0.txt` (`006CF5B0`);
+  - `l14_da380.txt` (`007DA380` whole);
+  - `l14_d5220.txt` (`006D5220`'s decompile).
+- Diagnostics:
+  - `plane ground contact lost` (one-shot per plane);
+  - `land park trace` / `summary land park`;
+  - `summary plane ground steering`;
+  - `air ops hangar`;
+  - `landed=` on the sequencer deck line.
+- Pair logs:
+  - 5r: `local\l14_loff_*`/`l14_lon_*`;
+  - 5s: `local\l14_poff_*`/`l14_pon_*`;
+  - 5t: `local\l14_soff_*`/`l14_son_*`.

@@ -135,7 +135,9 @@ inline constexpr bool kMissionEndBound = true;
 // ([plane+C24h]) clear (007EEB83..007EEB8A). True: PilotSetTarget sets
 // AttackFeasibilityInputs::kamikaze_ship_blocked from that. False: it stays
 // false, as before. The census counts run in both states.
-inline constexpr bool kKamikazeShipBlockedBound = false;
+// ON (2026-09-29, section 42): USN19 gameplay identical with zero reach; the
+// PilotFires stand-in is replaced by GameUnitsHost::plane_pilot_fires_0c24.
+inline constexpr bool kKamikazeShipBlockedBound = true;
 
 // Packet cc9_fill_path_points (docs/LUA_BINDING_MISSION.md, "FillPathPoints").
 // True: the Lua native FillPathPoints (0089A190) answers a new table whose
