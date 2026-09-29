@@ -820,3 +820,50 @@ The OFF side is `db5276810` plus this packet with the switch OFF. The ON side fl
   - Hit or miss: still expected to miss, at under 1-in-3 odds of a hit.
 - **USN13:** GAMEPLAY moves only where a torpedo task runs (4 of 60 releases on the ON side of
   11.3); +-2.
+
+### 12.2 The pair, measured: `kAimErrorDrawBound` ON
+
+cc9-planes1, 2026-09-29. Both sides are exports of `ec176d648`: OFF `DB644D545010`, ON `F179E3072D4B`.
+The logs are `local\p1_{off,ton}_<row>.log`, and a 300-frame USN01 smoke ran first.
+
+**Mechanism: holds, with one correction to the prediction.** The `aim error draw` lines appear on
+every attacking row.
+- The JM05 carrier squadrons draw the skill-2 torpedo row: bias 0, spread 0.25, time within +-1 s
+  (-0.06, 0.62, 0.83, -0.67).
+- USN04's dive bombers (`movieval`, the Vals) draw the SPNormal dive row, spread 0.80 with
+  errors up to 6.3 m and 6.6 s, not the skill-2 row the prediction assumed. Their
+  `db_skill_row_14` is level 1. The launch-skill lines name the torpedo squadrons, not these.
+- USN01's torpedo bombers `Mav1`-`Mav4` draw SPNormal: bias up to 11 m, time up to +-9.5 s.
+
+| row | OFF -> ON | predicted | verdict |
+| --- | --- | --- | --- |
+| USN04 4500 | torpedo releases 1 -> 3 of 16, impacts 1 -> 3 (every drop hits); deaths 46 -> 45 (D3A Val #5.1\|.-3 survives); dive 0 -> 0 | releases 2 +-2, deaths +-3 | held |
+| E2 | torpedo 1 -> 3, dive 1 -> 2 of 19; deaths 51 -> 51 | +-2 | held |
+| JM05 9000 | torpedo releases 6 -> 8; Shokaku 3 -> 6 impacts, Zuikaku 3 -> 2; deaths 30 -> 29 (Kuma-class 01 survives); both carriers sink on both sides | 6 +-3, sinkings may flip | held; no flip |
+| USN01 3000 | ScoutDauntless 2 of 2 on both sides; "vs target at release" 114.1 -> 84.9 m and 119.7 -> 56.8 m; both miss | 2 of 2, move up to about 140 m, still miss | held |
+| USN13 3000 | torpedo 4 -> 3 of 60 | +-2 | held |
+
+The OFF column here is `db5276810`'s ON side, and it moved against 11.3 and 11.4 (for example
+USN04's torpedo releases 2 -> 1). That comes from lua18's gun-controller change merged in
+between, not from this switch. **The switch goes ON.**
+
+## 13. Handoff queue (cc9-planes1, about 75% context)
+
+1. **Ship section points for the dive bombers (next).**
+   - `00816650`'s named-section path needs `ship+A68h..A94h`, the engine room, magazine and fuel
+     tank points with their flag bytes. It also needs `0093A570`'s section-id vector at
+     `ship+A20h`.
+   - Skill 2-5 rows carry a section chance of 0.5-1.0 (`kDiveBombAimErrorRows`), so in the image
+     most veteran dive bombers aim at a section, not a random hull point.
+   - The units host carries none of it. `approach_target_ref_pick_009fa260` passes empty
+     sections, so the chance falls through to the box.
+   - Find the writers of `ship+A68h`/`+A78h`/`+A88h` (the ship constructor or its section
+     loader), bind the points behind a switch OFF, and pair on a row with skill-2 dive bombers.
+2. **The torpedo goaway aim** (`009D0F10`): it still reads the target's origin, not
+   `aim_point_009fada0`.
+3. **`009D0160`**, the torpedo reset's own `+98h` seed from `+9Ch`. It is unmodelled; the host
+   starts `+98h` at 0 until `009D1360` runs.
+4. **Recorded substitutions:**
+   - the stream-1 draws use `release_altitude_draw_00bd2f10`'s stand-in;
+   - a re-target zeroes projtime for one tick;
+   - the lead uses the hull's heading in place of `00812090`'s body axis.

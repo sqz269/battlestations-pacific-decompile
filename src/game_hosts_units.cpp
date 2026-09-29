@@ -1811,8 +1811,8 @@ constexpr bool kDiveAimLeadBound = true;      // ON: TORPEDO_AIM_LEAD 11.4
 // Packet cc9_aim_error_draw (docs/TORPEDO_AIM_LEAD.md section 12): 009C3DA0 and
 // 009D02A0 draw the aim error from the robots row - the body-frame bias, the
 // hull-point spread, the dive's section chance and weights, and the time error
-// on projtime (dive approach+C8h, torpedo approach+9Ch). OFF until paired.
-constexpr bool kAimErrorDrawBound = false;
+// on projtime (dive approach+C8h, torpedo approach+9Ch). Paired ON.
+constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
 // OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off
