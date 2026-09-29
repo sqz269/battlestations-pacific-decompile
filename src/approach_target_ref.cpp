@@ -1,8 +1,10 @@
 #include "bsp/approach_target_ref.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 
+#include "bsp/geom_mesh_resource.hpp"      // GeomMeshResourcePayload
 #include "bsp/ship_ai_throttle_ring.hpp"  // heading_to_direction_006bc0c0
 #include "bsp/unit_rudder.hpp"            // wrapped_angle_subtract_00438b10
 
@@ -55,7 +57,8 @@ ApproachTargetRefState approach_target_ref_construct_009fb200(
 
 std::array<float, 3> approach_target_ref_pick_009fa260(
     ApproachTargetRefState& state, const LeadAimHullExtents& hull,
-    const ShipLeadRandomDraws& draws, bool target_is_hull_sampler) noexcept {
+    const ShipLeadRandomDraws& draws, bool target_is_hull_sampler,
+    const ApproachTargetSections* sections) noexcept {
     // 009FA266/009FA26B: with no target the body only clears the dirty byte.
     if (!state.tracking) {
         state.dirty_41 = false;  // 009FA2CE
@@ -64,17 +67,21 @@ std::array<float, 3> approach_target_ref_pick_009fa260(
 
     std::array<float, 3> pick{{0.0f, 0.0f, 0.0f}};
     if (target_is_hull_sampler) {
-        // 009FA2A0 CALL EAX with slot +100h == 00816650.
+        // 009FA2A0 CALL EAX with slot +100h == 00816650, `this` the target.
         //
-        // The named-section path is unreachable under this seed
-        // (section_chance = -1.0 fails 00816659), so the three section records
-        // are passed empty and unavailable: nothing here can read them. They
-        // stay in the call so the shape of the original is visible.
-        const ShipLeadSections sections{};
+        // Under the constructor's seed (section_chance = -1.0 fails 00816659)
+        // the records are never read; 009C3DA0's dive rows store 0.0 to 1.0
+        // there (009C3E56). With no records passed they stay empty and
+        // unavailable, which is the host's shape before packet
+        // cc9_ship_section_points.
+        const ApproachTargetSections none{};
+        const ApproachTargetSections& s = sections != nullptr ? *sections : none;
+        const bool live = sections != nullptr;
         pick = ship_lead_point_00816650(
-            sections, hull, state.spread_48, state.centre_54,
+            s.sections, hull, state.spread_48, state.centre_54,
             state.section_chance_64, state.weight_68, state.weight_6c,
-            state.weight_70, draws, false, false, false);
+            state.weight_70, draws, live && s.engine_room_available,
+            live && s.magazine_available, live && s.fuel_tank_available);
     } else {
         // slot +100h == 0042D810: the origin, whatever the arguments are.
         pick = entity_lead_point_0042d810();
@@ -241,17 +248,70 @@ std::array<float, 3> ship_predict_position_008120e0(const ShipPredictInputs& in,
 
 ShipLeadRandomDraws approach_target_ref_draws_from_unit(
     const std::array<float, 4>& unit,
-    const std::array<float, 3>& spread) noexcept {
+    const std::array<float, 3>& spread, float section_total) noexcept {
     ShipLeadRandomDraws draws;
-    // The section path is dead under this seed, so the roll and the pick only
-    // have to be well formed. 00816883/008168A0/008168D5 give the three ranges:
-    // x and z are two sided over the spread, y is one sided from zero.
+    // 0081667C: the roll over [0, 1). 00816796: the pick over
+    // [0, total - 1e-4); it only matters when the roll lands under a positive
+    // chance and some section survives. 00816883/008168A0/008168D5 give the
+    // three box ranges: x and z are two sided over the spread, y is one sided
+    // from zero.
     draws.section_roll = unit[3];
-    draws.pick = 0.0f;
+    const float span = section_total - static_cast<float>(kInterceptCoefficientEpsilon);
+    draws.pick = span > 0.0f ? unit[0] * span : 0.0f;
     draws.box_x = (unit[0] * 2.0f - 1.0f) * spread[0];
     draws.box_y = unit[1] * spread[1];
     draws.box_z = (unit[2] * 2.0f - 1.0f) * spread[2];
     return draws;
+}
+
+ShipLeadSections ship_section_points_0081f980(
+    const std::vector<GeomMeshResourcePayload>& meshes) {
+    ShipLeadSections out;
+    out.engine_room.id = 5;
+    out.magazine.id = 8;
+    out.fuel_tank.id = 6;
+    for (const GeomMeshResourcePayload& mesh : meshes) {
+        for (const GeomMeshElement& el : mesh.elements) {
+            // 00820566 (8), 008205D7 (5), 00820648 (6).
+            ShipLeadSection* slot = el.kind == 5 ? &out.engine_room
+                : el.kind == 8 ? &out.magazine : el.kind == 6 ? &out.fuel_tank : nullptr;
+            if (slot == nullptr) continue;
+            float lo[3] = {1e30f, 1e30f, 1e30f};
+            float hi[3] = {-1e30f, -1e30f, -1e30f};
+            bool any = false;
+            for (std::uint16_t ord : el.triangle_ordinals) {
+                if (ord >= mesh.triangles.size()) continue;
+                const GeomMeshTriangle& t = mesh.triangles[ord];
+                for (std::uint16_t vi : {t.v0, t.v1, t.v2}) {
+                    if (vi >= mesh.vertices.size()) continue;
+                    any = true;
+                    for (int k = 0; k < 3; ++k) {
+                        lo[k] = std::min(lo[k], mesh.vertices[vi][k]);
+                        hi[k] = std::max(hi[k], mesh.vertices[vi][k]);
+                    }
+                }
+            }
+            if (!any) continue;
+            slot->present = true;  // +A74h / +A94h / +A84h
+            for (int k = 0; k < 3; ++k) {
+                slot->point[static_cast<std::size_t>(k)] = (lo[k] + hi[k]) * 0.5f;  // 00723030
+            }
+        }
+    }
+    return out;
+}
+
+float approach_target_ref_section_total(const ApproachTargetRefState& state,
+                                        const ApproachTargetSections& s) noexcept {
+    if (!(state.section_chance_64 > 0.0f)) return 0.0f;  // 00816659
+    float total = 0.0f;
+    if (state.weight_68 > 0.0f && s.sections.engine_room.present && s.engine_room_available)
+        total += state.weight_68;
+    if (state.weight_6c > 0.0f && s.sections.magazine.present && s.magazine_available)
+        total += state.weight_6c;
+    if (state.weight_70 > 0.0f && s.sections.fuel_tank.present && s.fuel_tank_available)
+        total += state.weight_70;
+    return total;
 }
 
 }  // namespace bsp

@@ -867,3 +867,107 @@ between, not from this switch. **The switch goes ON.**
    - the stream-1 draws use `release_altitude_draw_00bd2f10`'s stand-in;
    - a re-target zeroes projtime for one tick;
    - the lead uses the hull's heading in place of `00812090`'s body axis.
+
+## 14. The ship section points in the pick (packet `cc9_ship_section_points`, cc9-planes2)
+
+### 14.1 What the image does
+
+- **The pick's callee reads the target.** `009FA2A0` calls `target->vtable[+100h]`, which is
+  `00816650` for the nine hull-sampling ship vtables. `this` is the TARGET ship, so the three
+  section records it reads are the target's own:
+  - engine room: point `ship+A88h`, byte `+A94h`, id 5;
+  - magazine: point `+A68h`, byte `+A74h`, id 8;
+  - fuel tank: point `+A78h`, byte `+A84h`, id 6.
+- **The producer is the ship loader `0081F980`.** It is already read in
+  docs/SURFACE_GUNNERY_REFERENCE.md 8.1 (packet `cc9_hull_sections`).
+  - It clears the three bytes, then walks the model instance's GeomMesh elements.
+  - Kind 8 goes to `+A68h` (`00820566`), kind 5 to `+A88h` (`008205D7`) and kind 6 to `+A78h`
+    (`00820648`). The last element of a kind wins.
+  - The point is `00723030(element)`, the midpoint of the element's root box, in the model's
+    frame. The pick then adds the bias `sub+34h` (`009FA2B3`) and `009FAEEA` poses the sum, as it
+    does for a box point.
+- **The id vector is the repair task's failure list.** `ship+A20h` is the damage-control task
+  (docs/UNIT_FIRE_AND_REPAIR.md). `0093A570` scans its `10h`-byte records `[task+18h, task+1Ch)` for
+  `+00h == id`, which closes the open question in docs/GUN_BOT_REMAINDER.md section 10.
+  - `0093BED0` pushes `{hit+30h, name, duration}`, and `hit+30h` is the element kind the hull trace
+    hit. So a section drops out of the draw while its failure is active: EngineJam for 20 s,
+    Explosion (the magazine) for its 240 s cooldown, Fire (the fuel tank) for 15 s
+    (docs/COMPONENT_FAILURES.md 1).
+  - `0093C300`'s random pick pushes id `-2` instead, and the Lua `EngineJam` binding `0093BD80`
+    pushes id 5.
+- **Only dive rows reach it.** `009C3DA0` stores the dive row's chance and weights into
+  `sub+64h..+70h` (`009C3E56`..`009C3E6B`). Torpedo rows leave the constructor's -1.0.
+  - Skill 1 (SPNormal) has chance 0.0 and never rolls.
+  - SPVeteran and Elite have chance 1.0 with weights 0.5 / 1.0 / 1.0. That gives the engine
+    room 20 %, the magazine 40 % and the fuel tank 40 %.
+- **Why a section matters for damage.** A bomb whose segment reaches a section element's triangles
+  carries that kind in `hit+30h`. `0093BED0` then rolls `p = damage / 100` (FailureChance 100,
+  threshold 100), so any bomb of 100 damage or more starts that section's failure:
+  - magazine: Explosion, 35 % of health (`0083E379`);
+  - fuel tank: Fire, 400 points over 10 s;
+  - engine room: EngineJam.
+
+### 14.2 The binding: `kApproachSectionPointsBound` (src/game_hosts_units.cpp), committed OFF
+
+- `bsp::ship_section_points_0081f980` (src/approach_target_ref.cpp) builds the records from the
+  class's `Mesh` model. It runs once per class, as the gunnery host's copy does.
+- `approach_target_sections` adds 0093A570's answer per section. It only runs when the shooter's
+  `sub+64h` is positive.
+- `approach_target_ref_pick_009fa260` passes both to `00816650`. The pick draw is the stand-in's
+  `unit[0] * (total - 1e-4)`.
+- **Labelled substitutions:**
+  - The element root box is taken as its triangles' bounding box in model space, as in 8.1.
+  - `0093A570` is answered by `GameGunneryHost::unit_failure_active` under the kinds' Failures
+    names (EngineJam / Explosion / Fire), not by id. This is the same answer while `0093BED0` is
+    the host's only producer of those names; `0093C300` is not called by the game host.
+  - The pick draw comes from the hash stand-in (section 12's stream-1 substitution), not from a
+    second draw on the image's stream.
+- **Census:** a `section points class` line per class, up to 40 `section aim` lines, and the
+  `summary mission approach section points` line.
+
+### 14.3 Predictions (written before any run)
+
+The rows come from cc9-planes1's 12.2 logs.
+- USN04 and E2: every dive draw is SPNormal, chance 0.0, and every torpedo draw is -1.0.
+- JM05: the 13 skill-2 dive draws (the Lexington `sqn09`, Yorktown `sqn10` and `sqn12`
+  squadrons) have chance 1.0. JM05's dive task released 0 bombs of 33 aircraft on that side.
+
+| row | prediction |
+| --- | --- |
+| USN04 4700/4500 | identical, exit 0 or 1: no pick has a positive chance; the summary line reads 0 picks and 0 classes |
+| E2 9200/9000 | identical, exit 0 or 1, for the same reason |
+| JM05 9200/9000 | section picks near 13 per aim draw, split about 20/40/40, no unavailable section; the aim points move, so plane paths move. Dive releases stay 0, and deaths move by at most 3 through the shared RNG stream (memory: shared RNG couples pairs). A carrier sinking may flip. |
+
+**Mechanism test:** the `section aim` lines name skill-2 dive bombers against ship targets with a
+body point equal to the class's section point plus the bias (0 for SPVeteran). **Verdict rule:**
+if USN04 or E2 move, or JM05 shows no section picks, the mechanism failed and the switch stays OFF.
+
+### 14.4 The pair, measured: `kApproachSectionPointsBound` ON
+
+cc9-planes2, 2026-09-29. Both sides are exports of `fc93ff307`: OFF `BB7A09434752`, ON
+`C1DCB3AF7C34`. The logs are `local\p2_{off,on}_<row>.log`, launched through
+`local\p2_runs.ps1` in o's launch form with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+A 300-frame USN01 smoke of the ON binary ran first (exit 0, final COM release). Every log shows
+`present interval immediate`, its own module directory and the final COM release.
+
+**Mechanism: holds.**
+- JM05 builds one class, 257 `models/ships/japan/Zuikaku.mmod`, which both carriers use. The
+  engine room is at (0.4, 8.8, -24.0), the magazine at (1.6, 9.0, 69.7) and the fuel tank at
+  (0.1, 8.6, -79.7), in model space: magazine forward, fuel tank aft, engine room amidships.
+- The picks: `engine_room=66 magazine=111 fuel_tank=133` (21 / 36 / 43 %, against a predicted
+  20 / 40 / 40), `chance_to_box=0` and `with_unavailable=0`. The 310 picks are every re-pick of the
+  Lexington `sqn09` and Yorktown `sqn10` / `sqn12` Dauntlesses against Shokaku and Zuikaku.
+- Each `section aim` line's body point is the section point exactly, because SPVeteran's bias
+  is 0.
+- `0093A570` never removed a section in this row: no failure of those three kinds was active
+  at a pick. That arm stays unexercised.
+
+| row | `pair_diff` | measured | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 | exit 1 | gameplay identical; only the summary line's `bound=` differs; 0 picks, 0 classes | identical | held |
+| E2 9200/9000 | exit 1 | the same | identical | held |
+| JM05 9200/9000 | exit 3 | deaths 29 -> 29, with 0 only-ON and 0 only-OFF rows and 14 rows moved in time or killer (the US aircraft over the carriers, 246-275 s); dive releases 0 -> 0 of 33; torpedo 8 -> 8 of 18; hull hits 776 -> 776; shots 8476 -> 8133; damage 32230 -> 32265; Shokaku sinks at 257.61 -> 257.51 s, Zuikaku at 279.56 -> 279.16 s | releases 0, deaths +-3, a sinking may flip | held; no flip |
+
+The JM05 movement is the Dauntlesses' new aim points: their paths change, and so does the AA
+fire at them, which draws on the shared stream. None of their bombs is released on either side,
+so no section hit is measured yet. **The switch goes ON.**

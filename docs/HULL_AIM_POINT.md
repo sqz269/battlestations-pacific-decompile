@@ -80,6 +80,12 @@ This path is **live code but dead under the seed**: `009FB2F9` stores
 `00D7A260` = **-1.0** into `sub+64h`, so `00816659` sends every call straight
 past it.
 
+Correction (packet `cc9_ship_section_points`, docs/TORPEDO_AIM_LEAD.md section 14): the seed is
+not the only writer. `009C3DA0` stores the dive row's chance into `sub+64h`, 1.0 for skill 2
+and Elite, so veteran dive bombers do take this path. The points come from `0081F980` (the
+model's GeomMesh elements of kinds 8, 6 and 5), and the vector at `unit+A20h` is the repair
+task's failure list.
+
 **(b) The fallback, `00816820`-`00816985` — the path that actually runs.**
 `ESI` becomes `[unit+538h]`, the authored vehicle class descriptor. With
 `c = *centre`, `s = *spread`:
