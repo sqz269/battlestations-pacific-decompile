@@ -4163,3 +4163,73 @@ plus 0.3 s, the window 59.3's timing clause allows. This choice was made after s
   - `00821E80`'s 93h arm has no re-read dead-unit gate;
   - the drag damping is inferred from the ratio and the early peaks, not computed;
   - the baseline is a linear fit and cannot separate overlapping torques (see John2).
+
+## 60. Handoff (cc9-gunnery12, 2026-09-29, at about 75% context)
+
+### 60.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| 58 | `cc9_wreck_pitch` | no missing pitch term; P5's four late wrecks explained (Houston's roll creep, three bow plungers) |
+| 59 | `cc9_hull_kick_size` | the 93h delivery adds the torque unscaled; John1's kick landed on its wreck; living hulls respond at about 0.67 of the reduced model. `BSP_HULL_ATTITUDE_TRACE=2` (every motion step) |
+| GAME_EXECUTABLE reference n, `reports/cc9_reference_rebaseline_14.json` | `cc9_reference_rebaseline_14` | 16 rows on `eb1226215`; 11 switches attributed (inertia: all 16 rows; landing group: LOMP10) |
+| AA_LETHALITY_AUDIT 7 | `cc9_aa_lethality_audit` | census, listing read, predictions 7.4; **binding not landed** (see 60.2) |
+
+### 60.2 Open items, in order
+
+1. **Land the AA bot errors** (`cc9_aa_lethality_audit`, AA_LETHALITY_AUDIT 7.3 / 7.4).
+   - The patch is `local\g12_aa_patch.diff` in the cc9-gunnery12 tree (288 lines, against
+     `src/game_hosts_gunnery.cpp` and `include/bsp/game_hosts_gunnery.hpp`). It is not built.
+     - It adds `kAaGunnerSwingErrorBound` and `kAaFlakAimErrorBound`, both OFF.
+     - It adds the robots.lua rows and the `draw_normal` Box-Muller helper.
+     - It adds the per-gun state, the flak `distErr` on the round (`GameProjectileRow::flak_dist_err`,
+       added in the lock's remaining distance) and the `summary mission gunnery aa bot error` line.
+   - Those files were leased to cc9-ships14 (`cc9_kaiten_contact_detonation`, until 20:38 UTC). The
+     patch was written before a claim and reverted when the claim was refused. **Claim first,
+     check the result, then `git apply`** (merge main first, then resolve any context drift by
+     hand).
+   - **Then:**
+     - build (`scripts/build.ps1`) and run `tools/const_width_sweep.py --all --load-sites`;
+     - commit OFF and run one 300-frame smoke;
+     - run the 7.4 pairs: JM05, USN13 and USN04 E2 at 9200/9000, both switches ON on the ON side,
+       RNG option on;
+     - score P1-P4 and flip by verdict.
+   - **Check while testing:**
+     - `role_ai_held_00521e70(target, 0)` stands in for the image's `00521E70` on the target's
+       slot;
+     - `pitch` is taken off `want_vert` for the lead-gap term.
+2. **Scene units' skill from `Skill` / `Crew`** (its own item, not bound).
+   - `00822C20` at `008238B1..008238CB`: when `[unit+C0h]+4 == 1` (a scene-placed unit),
+     `00927A80` reads the bag's `Skill`, else `Crew` through `006E6210`, else 1. It then calls
+     `unit->vtable[128h](skill)`.
+   - `006E6210` maps Crew (the `CrewXPLevels` enum in `universe/library/global.enums`: Rookie 0,
+     Regular 1, Veteran 2, Elite 3) to SkillLevels. In single player: 0 -> 0 Stun, 1 -> 1,
+     2 -> 2, 3 -> 5.
+   - The host leaves `pilot_skill_index` at 1 until a `SetSkillLevel` call.
+   - In JM05's scene, 42 land forts and 6 convoys are `Crew = Rookie` (Stun in the image), and
+     the two US carriers are `Skill = SPVeteran`. `local\g12_scncrew.py <scn> [filter]` lists a
+     scene's Crew / Skill.
+   - It belongs in the units host (the skill store). The gunnery host only reads
+     `units.skill_level`.
+3. **USNOS long, from reference n's flags.** Damage 4138.4 -> 10900.7 while hit records fall
+   2683 -> 1112, with the same 21 victims, all from the inertia flip. Not separated.
+4. **The periscope shape in the hull box** (57.2), and **reference m's flags** (57.2).
+5. **Reference o** will need `kPlaneGroundSteeringBound` and `kShipAiKamikazeAttackStepBound`,
+   both ON after `eb1226215`, and whatever lands later.
+
+### 60.3 Tools in the cc9-gunnery12 tree (`local\`)
+
+- **Runs:**
+  - `g12_runs.ps1 -V <prefix> [-Only rows]` launches the reference rows (plus `smoke`);
+  - `g12_run.ps1` launches one traced USN02 run;
+  - `g12_wait.ps1 -Logs <names>` is the foreground wait.
+- **Exports:** `g12_exp.ps1 -Commit <sha> -Specs 'name:kA=false,...'` runs detached
+  `pair_export`s.
+- **Reference tables:**
+  - `g12_vs.py <off> <on> [rows]` gives the `pair_diff` headlines (prefix `rb13` = reference m in
+    cc9-gunnery11);
+  - `g12_rows.py`, `g12_table.py`, `g12_deaths.py` and `g12_report.py` build the reference n
+    rows, table, death-row diffs and JSON.
+- **Hulls:**
+  - `g12_pitch.py` and `g12_pitchat.py` give the leak moments and pitch;
+  - `g12_kick.py` (`--wide` for the 4 s window) and `g12_john2.py` score the 93h kicks.
