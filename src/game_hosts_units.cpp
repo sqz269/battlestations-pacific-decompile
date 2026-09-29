@@ -4232,7 +4232,7 @@ struct GameUnitsHost::Impl {
     // with dyn+94h, the ground band 007DBEB3-007DC200, the landed hold-down
     // 007D8CE9 and the contact projection 007D8E28. False: a landed plane is
     // held where it touched down and its land task stops ticking.
-    static constexpr bool kPlaneGroundRollBound = false;
+    static constexpr bool kPlaneGroundRollBound = true;  // ON: stops on the runway (5q)
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and

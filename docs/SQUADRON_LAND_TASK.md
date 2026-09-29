@@ -2095,14 +2095,67 @@ OFF is the committed tree: 5o's state, with the ground roll OFF. ON flips `kPlan
 - **Flip rule:** ON if the heads stop on the runway without a mechanism failure. Stage B (park and
   the occupancy release) follows either way.
 
+### The pair and the verdict (cc9-lua13, 2026-09-29): stage A flips ON
+
+OFF is `33b530f29` as committed (`local\l13_goff_<row>.log`). ON is the same commit exported with
+`kPlaneGroundRollBound` true (`local\l13_gon`, `local\l13_gon_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0); B-25 01 7026.66 -> 7017.44 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+| refactor check: 5o's ON log against this OFF | 1, gameplay identical | only LOMP10 presentation noise moves |
+
+`summary plane ground roll`:
+
+| head | touchdown | stop | roll | WheelBrake / last brake | min BFCh / wheel | hold-down, contact steps |
+| --- | --- | --- | --- | --- | --- | --- |
+| Warhawk 01 | 153.15 s | 154.00 s | 15.1 m | 80 / 48.0 | -0.164 / 0.00 | 5, 16 |
+| Lightning 01 | 165.16 s | 166.26 s | 4.5 m | 80 / 48.0 | -0.029 / 0.00 | 4, 20 |
+| B-25 01 | 251.66 s | 254.41 s | 24.4 m | 10 / 6.0 | 1.393 / 1.52 | 0, 1511 |
+
+All three show `law_steps = arm_steps` (3967 to 5937), `free_steps = 0` and `liftoff_req = 0`.
+They stay in state 4 with the land task in final (`land_state` `5F8h`, 2144 to 3155 final ticks,
+`touched=1`, `ground_refused=0`).
+
+**The predictions, one by one.**
+1. **The landed heads think again: held.** Final's on-ground half runs, with `ground_refused = 0`.
+   The prediction named the wrong counter for the park request: the rule's first arm
+   (`009B3D38`, `+900h` 4 or 5) refuses park before the final arm is reached, so
+   `park_refused` stays 0 and the refusal is counted in `land_refused_states`.
+2. **They brake and stop on the runway: held.**
+   - Each stops within 2.8 s of its touchdown, with no free-flight step and no lift-off request.
+   - The brakes are `WheelBrake x 0.6`, as predicted once the throttle is closed.
+   - The deepest point is 0.16 m below the wheels.
+   - Spread miss: Lightning 01 rolled 4.5 m, under the predicted 10 to 150 m. It touched down at
+     20.7 m/s instead of 5o's 32.3 (see below).
+3. **The followers still abort: held.** Lightning 01|.-4 and B-25 01|.-2 abort to standby as in 5o.
+4. **Deaths identical, USN01 gameplay identical: held.**
+   - LOMP10 moves in the landed planes and in **Lightning 01's approach**: its lines are identical
+     to OFF up to 160.61 s and differ from 161.61 s.
+   - At 161.61 s the pitch is -0.28 against -0.10, with a sideslip of 1.69 m/s. Lightning 01 is
+     then 81 m short of T, approaching the runway on which Warhawk 01 now stands at rest, 15 m
+     further on than in OFF.
+   - OFF holds Warhawk 01 frozen, with its velocity left at 32.4 m/s (the follow trace's
+     `leader_spd`); ON rolls it to a stop at 0.0.
+   - So the one input that differs is the stopped plane's position and velocity. The term that
+     reads it (a neighbour or avoidance term in the planner) was not identified here. Lightning
+     01 still lands on the runway 3.5 s later, at 20.7 m/s.
+
+No mechanism failure: nothing still rolls at speed after 10 s, there is no lift-off request, no
+plane sinks more than 0.16 m below its wheels, and there are no free-flight steps.
+
+**Verdict.** `kPlaneGroundRollBound` flips ON. Stage B is park's taxi (`009B22C0`-`009B2C68`)
+with the site calls `006CF420`/`006CF520`/`006CF5B0`, and whatever empties the site's occupancy
+vector so the followers are not aborted.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
    touchdown and the direction hold are ON (5e, 5g, 5i, 5k, 5o). The heads now land (5o). Open:
-   - the pilot pass for a state-4 plane: the land task stops ticking at the touchdown, so
-     final's on-ground half (`009B1FEA`-`009B207A`) and park are never reached;
-   - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still, so it
-     blocks the runway and its followers abort to standby);
+   - stage A of the ground roll is ON (5q): a landed plane thinks, brakes and stops. The
+     stopped plane still occupies the site, so its followers abort to standby;
+   - stage B: park's taxi, the site calls and the occupancy release (5q verdict);
    - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
    - the gear channel `(+DECh)+28h` with `+C1Ch` (5k). Scoped by cc9-lua13, 2026-09-29, and
      not bound:
