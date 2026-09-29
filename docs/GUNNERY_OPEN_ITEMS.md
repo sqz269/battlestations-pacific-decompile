@@ -3450,3 +3450,74 @@ hierarchy-item name:
 `MOV [EBP+50h],EAX` at `00879768` (disk bytes re-read for this note). See the correction at the end
 of docs/MODEL_REACHES_UNIT.md and docs/NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md. 49.9's "still not
 located" and 50.2's open item predate that record.
+
+## 54. Reference l's two flags: the acos USN04 deaths and the JM05 Phelps path (cc9-gunnery11, 2026-09-29)
+
+These are reads of existing and new exports of `3f1499210`, the reference l base. No switch
+changes.
+
+### 54.1 Why the acos pair's USN04 44 -> 40 does not reproduce on l
+
+The pair (PLANE_FOLLOW_LAW 17.6) was taken on `1d7b7045e`. Its logs are `l10_a0_usn04` (OFF)
+and `l10_acon_usn04` (ON) in cc9-lua10's tree.
+- That base is reference k plus `kFormationJoinFollowBound` and `kLandingSequencerBound`.
+- Thirteen more switches went ON between it and l, among them:
+  - the follower gate;
+  - clearance;
+  - the follow-law turn rate and live speed;
+  - avoid zone and the land sub-states.
+
+**What the pair changed there.** Deaths went from 44 to 40:
+- Five OFF-only rows: **Fletcher-class03**, which sinks at 210.61 s, then D3A Val #5.1|.-2 and
+  #5.1|.-4, and A6M Zero #6.2|.-2 and #8.2.
+- One ON-only row: D3A Val #1.1|.-4.
+
+**On l.** Fletcher-class03 does not sink in k, in l, or in any l variant run:
+- with acos OFF alone (`nacos`);
+- with the follower gate OFF (`nafg`).
+Its sinking belonged to the formation-join-without-gate state of the pair's base.
+
+**The acos switch alone on l.** `nacos` against l:
+- the 43 USN04 death rows are identical in membership, with 34 changed in time or killer;
+- damage is 11286.2 -> 11326.8;
+- E2 has the same death set.
+
+**The switch's death change flips sign with the base.** Two more exports toggle the acos switch with
+one other landing already OFF (USN04):
+
+| base | acos OFF -> ON | notes |
+| --- | --- | --- |
+| l | 43 -> 43, same rows | damage 11286.2 -> 11326.8 |
+| l, follower gate OFF (`nafgacos` -> `nafg`) | **41 -> 44** | + D3A Val #1.1|.-4, #5.1|.-2, A6M Zero #6.2; torpedo releases 3 -> 7 of 16; damage 12345.8 -> 16923.6 |
+| l, clearance OFF (`nclracos` -> `nclr`) | 41 -> 41, one swap | torpedo releases 2 -> 1 of 16 |
+| `1d7b7045e` (the pair) | **44 -> 40** | - |
+
+- **Conclusion.** The acos switch moves which strike planes die, and how many torpedoes are released,
+  on every base. The direction and size of that change depend on the ship AI's formation state.
+- The 44 -> 40 was a property of the pair's base. It holds no claim about the switch alone, and
+  nothing on l is unexplained.
+- The switch's own mechanism (the fly-to arm, 17.6) is not in question.
+- These plane rows are RNG- and geometry-coupled, like every USN04 plane-death change.
+
+### 54.2 JM05's USS Phelps: the gate interacts with formation join, not with clearance
+
+Reference l's flag said "the follower gate and clearance interact". The variants say otherwise.
+Phelps is the controlled (idle) unit, and the column is the distance it moved:
+
+| export (switches OFF) | Phelps moved |
+| --- | --- |
+| l | 2533.74 m |
+| clearance OFF | 2533.75 m |
+| formation join OFF | 2529.03 m |
+| **follower gate OFF** | **1317.50 m** |
+| gate and join OFF (`nfjg`) | 2383.93 m |
+| gate, join and clearance OFF (`nfjgc`) | 2567.69 m (k's distance; other details still moved) |
+
+- **The large move is the gate with formation join ON.** With the gate OFF, the JM05 AI follow
+  pass joins 3 followers instead of 8:
+  - `summary mission ai follow ... joins=3` against `joins=8`;
+  - the gate's `leaves=0` against `leaves=7`.
+  The Phelps group forms differently.
+- Clearance moves Phelps only on the gate-and-join-OFF base (2383.93 -> 2567.69 m).
+- Both are ship-AI formation effects on an idle player unit. Neither needs a fix.
+- Reference l's flag line is corrected in place.
