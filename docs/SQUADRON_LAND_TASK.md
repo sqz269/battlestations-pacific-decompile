@@ -1065,6 +1065,49 @@ KMH(140), PosBehind 780.
   - a mode-2 pitch outside [-DropAngle, ClimbAngle];
   - A8 that does not fall during the first 10 s in begin.
 
+
+### The pairs and the verdict (cc9-lua11, 2026-09-28): OFF until `land/final` is bound
+
+OFF is this tree's build of `8abe8cee0` (`local\l11_bgoff_<row>.log`). ON is `local\l11_bg`, the same
+commit with `kLandBeginStateBound=true` (`local\l11_bgon_<row>.log`). A 300-frame USN01 smoke of
+the ON build ran clean.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0); eight IJN ships gain an engagement range; B-25 01's travel 6207 -> 9107 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Entries: held.** Warhawk 01 entered at 132.90 s (its OFF refusal time), Lightning 01 at
+   142.30 s (141.80 s OFF) and B-25 01 at 228.81 s (226.31 s OFF). Two wingmen also reached mode 4
+   and entered: Lightning 01|.-4 at 162.41 s and B-25 01|.-2 at 240.51 s.
+   - On entry, A8 was 786 to 834 m and the height above T was 168 to 208 m.
+2. **Final at once: held.** `009B3C00` answered true from the first rule tick after each entry.
+   Warhawk 01 counted 143 refused finals, one for each tick from 133.0 s until its done byte was
+   set. **So in the image begin lasts one tick on this row, and final flies the approach.**
+3. **Flight: the mechanism held.** These are Warhawk 01's traces, one per second:
+   - X fell 19.6 -> 0.7 m in 10 s, and the heading command went 0.159 -> 0.2618.
+   - A8 fell 786 -> 17 m in 13 s, and the height fell 208 -> 9 m. The pitch stayed in mode 2,
+     inside [-DropAngle, ClimbAngle]; the clamp -0.698 was hit at 153.9 s.
+   - Mode 1 (ApproachPitch 0.1047) took over at 144.9 s, once the plane was slow, near and low.
+     The bank limit fell 1.5 -> 0.1 between 143.9 and 145.9 s.
+   - The commanded speed was 0.75 TravelSpeed.
+   - All four clauses were met.
+4. **Done byte: missed.** No head arrived high. The done byte was set only after T, at 148.9 s for
+   Warhawk 01, when Z had gone negative and the glide height went below ground.
+5. **Held.** LOMP10 moves; USN01 does not.
+- **After T** (the reason this stays OFF):
+  - With final refused, the plane stays in begin past T. The geometry then gives A8 = 1 and
+    Z = -max(z, 1).
+  - The plane skims on at 7 to 19 m and 58 to 77 m/s along the runway heading, alternating between
+    the dive clamp and ApproachPitch, for the rest of the run.
+  - It crosses toward the IJN ships, which is why their engagement ranges change.
+- **Verdict: OFF.**
+  - The begin tick matches the listing clause for clause.
+  - On this row, though, the image leaves begin after one tick. Bound alone, begin would stand in
+    for final's whole approach and for everything after touchdown.
+  - `land/final` (vtable `00D1FF44`, then `009B3370` to park) is read next. Begin will be re-paired
+    with it.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
