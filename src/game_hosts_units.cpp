@@ -1834,6 +1834,14 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // ShipGlobals.Failures names of those kinds (EngineJam / Explosion / Fire),
 // which is the same answer while 0093BED0 (id = kind) is the host's only
 // producer of those names. OFF: empty records, the hull box every time.
+// Packet cc9_torpedo_goaway_aim (docs/TORPEDO_AIM_LEAD.md section 15): the
+// goaway geometry 009D0C10 takes its break-off point from approach->vtable[0],
+// 009D0670, which copies approach+D0h = sub+1Ch: the hull point plus the lead
+// that 009FADA0 wrote at 009D34BB earlier in the same arm tick (009D486F runs
+// 009D3420 before the state tick at 009D48F6). ON: the goaway asks
+// aim_point_009fada0 for it, as approach_target_point does. OFF: the ordered
+// target's origin.
+constexpr bool kTorpedoGoAwayAimPointBound = false;
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
@@ -6404,6 +6412,11 @@ struct GameUnitsHost::Impl {
         return t;
     }
     unsigned long long aim_error_draws_{0};
+    // Packet cc9_torpedo_goaway_aim: goaway ticks that took 009D0670's point,
+    // and how far it sat from the target's origin (XZ).
+    unsigned long long goaway_aim_points_{0};
+    double goaway_aim_offset_sum_{0.0};
+    double goaway_aim_offset_max_{0.0};
 
     // Packet cc9_ship_section_points: 0081F980's section records per vehicle
     // class, from the class's Mesh model (the same read the buoyancy list and
@@ -19414,10 +19427,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         // --- 009D0F46, the geometry update, which runs first.
                         bsp::FlyToSolverInputs fin;
-                        // arg1, approach->vtable[0](): the target point. The
-                        // torpedo class's slot 0 body is still a contract, and
-                        // the ordered target's world position stands in for it
-                        // exactly as approach_target_point already does.
+                        // arg1, approach->vtable[0]() = 009D0670: approach+D0h,
+                        // the point 009FADA0 left this tick. With
+                        // kTorpedoGoAwayAimPointBound OFF, the ordered
+                        // target's world position.
                         bool have_point = false;
                         {
                             float p[3] = {0.0f, 0.0f, 0.0f};
@@ -19426,6 +19439,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 p[1] = t->motion.position[1];
                                 p[2] = t->motion.position[2];
                                 have_point = true;
+                                if constexpr (kTorpedoGoAwayAimPointBound) {
+                                    owner_.aim_point_009fada0(unit_, *t,
+                                        unit_.command_target_plus_one, p);
+                                    const double dx = static_cast<double>(p[0])
+                                        - t->motion.position[0];
+                                    const double dz = static_cast<double>(p[2])
+                                        - t->motion.position[2];
+                                    const double off = std::sqrt(dx * dx + dz * dz);
+                                    ++owner_.goaway_aim_points_;
+                                    owner_.goaway_aim_offset_sum_ += off;
+                                    if (off > owner_.goaway_aim_offset_max_) {
+                                        owner_.goaway_aim_offset_max_ = off;
+                                    }
+                                    if ((owner_.goaway_aim_points_ % 200) == 1) {
+                                        owner_.log.notef("goaway aim %s -> %s: point "
+                                            "(%.1f %.1f %.1f) off origin %.1f m projtime "
+                                            "%.2f (009D0670, packet cc9_torpedo_goaway_aim)",
+                                            unit_.row.name.c_str(), t->row.name.c_str(),
+                                            static_cast<double>(p[0]),
+                                            static_cast<double>(p[1]),
+                                            static_cast<double>(p[2]), off,
+                                            static_cast<double>(
+                                                unit_.hull_aim_ref.lead_projtime));
+                                    }
+                                }
                             }
                             fin.point[0] = p[0];
                             fin.point[1] = p[1];
@@ -26577,6 +26615,14 @@ void GameUnitsHost::report() {
             g_section_picks[0], g_section_picks[1], g_section_picks[2],
             g_section_chance_box_picks, g_section_unavailable_picks,
             host.section_points_by_class_.size());
+        host.log.notef("summary mission torpedo goaway aim point bound=%d ticks=%llu "
+            "mean_off_origin=%.1f m max_off_origin=%.1f m (009D0670 via 009D0C10, packet "
+            "cc9_torpedo_goaway_aim)", kTorpedoGoAwayAimPointBound ? 1 : 0,
+            host.goaway_aim_points_,
+            host.goaway_aim_points_ > 0
+                ? host.goaway_aim_offset_sum_ / static_cast<double>(host.goaway_aim_points_)
+                : 0.0,
+            host.goaway_aim_offset_max_);
 
 
         // The torpedo task census: per ordered aircraft the states its arm
