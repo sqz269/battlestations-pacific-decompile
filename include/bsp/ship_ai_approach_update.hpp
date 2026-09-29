@@ -1059,4 +1059,68 @@ ShipAiApproachLatchResult ship_ai_approach_mode_latch_009f1f47(
 // modes 1 to 4 are not exercised by any reference row (section 26).
 inline constexpr bool kShipAiApproachModeLatchBound = true;
 
+// Packet cc9_approach_retarget_ring (docs/SHIP_AI_OPEN_ITEMS.md section 27).
+// 009F2124..009F2161, the arm's head, complete: true when nested+11D6h was
+// clear, in which case it is set and nested+11D8h is raised to 1.0f (00D7A24C;
+// FLD1, FCOMI, JBE keeps the timer, unordered included).
+bool ship_ai_approach_retarget_head_009f2124(ShipAiApproachState& state) noexcept;
+
+// 009F239A..009F272D, modes 0 and 2 (the path 009F233D sends every mode but 3
+// and 4 down). Modes 3 and 4 (009F21A0..009F2395) are not covered.
+struct ShipAiApproachRetargetInputs {
+    ShipAiApproachPoint goal{};  // [brain+0B2Ch..0B34h], 009F239D and 009E6120
+    float unit_x{0.0f};          // [ESP+58h], unit+0FCh stored at 009F1C53
+    float unit_z{0.0f};          // [ESP+60h], unit+104h stored at 009F1C66
+    // [[t+538h]+0A8h] when 008FE120(target) answers kind 5, else 0.0 (009F2443).
+    float target_height_00a8{0.0f};
+    float artillery_max_range_0490{0.0f};  // [unit+490h], 009F24B6
+    // [ESP+28h] (the kind-1Ch target 009F1E04 kept) and nested+1234h == 2.
+    bool building_mode_2{false};
+    std::int32_t building_capture_range_07a0{0};  // FILD [building+7A0h], 009F2505
+};
+
+class ShipAiApproachRetargetHost {
+public:
+    virtual ~ShipAiApproachRetargetHost() = default;
+    // 009F23D6 0082ADC0([unit+538h]): 004120D0 on [class+570h]; then 009F23E8
+    // 004178F0(group, &{goal.x, goal.z}) ([ESP+70h], stored at 009F1CF6). False
+    // is the null zone that ends the arm at 009F23F1.
+    virtual bool goal_zone_004178f0(float x, float z) = 0;
+    // 009F2580 00416DD0(zone)(&toward, &from, &running, &edge). `running` is
+    // written only past the AABB test at 00416DE9; the answer is not tested.
+    virtual void zone_crossing_00416dd0(const float toward[2], const float from[2],
+                                        float running[2]) = 0;
+    // 009F25FA 00904400(44h, &origin, &probe, &record, 0) on [[00E188A8]+19CCh].
+    virtual bool landscape_hit_00904400(const float from[3], const float to[3]) = 0;
+};
+
+struct ShipAiApproachRetargetResult {
+    bool zone{false};          // 004178F0 found a zone holding the goal
+    int landscape_hits{0};     // slots skipped at 009F2601
+    int out_of_reach{0};       // slots skipped at 009F2651 (R <= |Q - goal|)
+    int improvements{0};       // slots stored at 009F26F0..009F2704
+};
+
+// Writes nested+1228h..1230h: the goal at 009F23B5, then, per ring slot that
+// passes, the point 10 m past the coast crossing on that slot's bearing.
+ShipAiApproachRetargetResult ship_ai_approach_retarget_ring_009f239a(
+    ShipAiApproachState& state, const ShipAiAttackMoveRingSlot* ring,
+    const ShipAiApproachRetargetInputs& in, ShipAiApproachRetargetHost& host);
+
+inline constexpr float kApproachRetargetHeightFloor = 50.0f;     // 00CEB4D4
+inline constexpr double kApproachRetargetRangeScale = 0.6000000238418579; // 00CEFF98 (0.6f widened)
+inline constexpr double kApproachRetargetRangeMargin = 600.0;   // 00D20198
+inline constexpr double kApproachRetargetProbeReach = 100000.0; // 00CF81F0
+inline constexpr double kApproachRetargetSeaward = 100.0;       // 00D7A220
+inline constexpr float kApproachRetargetProbeY = 60.0f;         // 00CEB4B0
+inline constexpr double kApproachRetargetOffshore = 10.0;       // 00CE3DC0
+inline constexpr double kApproachRetargetPointY = 0.0;          // 00D7A258
+inline constexpr float kApproachRetargetBestStart = 3.40282347e+38f; // 00D7A248, FLT_MAX
+
+// True: 009F2124's head and 009F239A's modes 0 and 2 run after the latch, and
+// on the no-ship path nested+1228h keeps its value between arm runs (009F1E30
+// JE 009F2003 skips the goal copy at 009F1F0D). False: the point is the goal
+// copied every frame and the arm is only counted.
+inline constexpr bool kShipAiApproachRetargetRingBound = false;
+
 } // namespace bsp

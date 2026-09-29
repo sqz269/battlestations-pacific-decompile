@@ -4709,6 +4709,60 @@ private:
     bsp::ShipAiFirepowerQuery target_block_;
 };
 
+// Packet cc9_approach_retarget_ring: bsp::ShipAiApproachRetargetHost, the three
+// calls of 009F239A..009F272D (docs/SHIP_AI_OPEN_ITEMS.md section 27).
+class RetargetRingBinding final : public bsp::ShipAiApproachRetargetHost {
+public:
+    RetargetRingBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl)
+        : owner_(owner), ctl_(ctl) {}
+
+    bool goal_zone_004178f0(float x, float z) override {
+        // 0082ADC0 is 004218E0 then 004120D0([class+570h]); 004178F0 walks that
+        // group. An empty table has no group: the image would read slot 0 of
+        // it (004120D0 never checks the count), this answers no zone.
+        if (!owner_.zones.ready()) {
+            owner_.record("ShipAiApproach::retarget_zone_manager", 0x0082adc0u);
+            return false;
+        }
+        const bsp::AvoidZoneTable& table = owner_.zones.table();
+        const std::int32_t group = bsp::avoid_zone_group_for_layer_004120d0(
+            table, static_cast<std::int32_t>(ctl_.class_reference_0570));
+        if (group < 0) return false;
+        const bsp::AvoidZoneLayerGroup& g = table.groups[static_cast<std::size_t>(group)];
+        const std::int32_t zone = bsp::avoid_zone_first_containing_004178f0(g, {x, z});
+        if (zone < 0) return false;
+        zone_ = &g.zones[static_cast<std::size_t>(zone)];
+        return true;
+    }
+    void zone_crossing_00416dd0(const float toward[2], const float from[2],
+                                float running[2]) override {
+        // 00416DFB copies `from` into `running` only past the AABB test at
+        // 00416DE9. `from` is the goal, which 004178F0 has just found inside
+        // this zone and so inside its bounds; the reject is not reachable here
+        // and the copy is made first.
+        std::array<float, 2> r{{from[0], from[1]}};
+        std::int32_t edge = -1;
+        bsp::avoid_zone_segment_hit_00416dd0(*zone_, {toward[0], toward[1]}, r, edge);
+        running[0] = r[0];
+        running[1] = r[1];
+    }
+    bool landscape_hit_00904400(const float from[3], const float to[3]) override {
+        ++landscape_queries;
+        if (owner_.gunnery == nullptr) {
+            owner_.record("ShipAiApproach::retarget_landscape_00904400", 0x009f25fau);
+            return false;
+        }
+        return owner_.gunnery->landscape_segment_hit_00904400(from, to);
+    }
+
+    unsigned long long landscape_queries{0};
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    const bsp::AvoidZonePolygon* zone_{nullptr};
+};
+
 // bsp::ShipAiApproachUpdateHost, the seven calls of 009F3090 in their fixed
 // order. Only the first is run: it is the one that produces the approach point
 // and the goal range, and the other six need the 60-slot ring the four unread
@@ -4725,7 +4779,7 @@ public:
     // the neighbour binding does and reads BigLandingShip (class+808h) as 0,
     // 006F2D90 (a free landing spot on the building, [target+794h] list) is
     // false and [target+7C4h] is 0. So a lander is always in mode 4.
-    void run_mode_latch() {
+    bsp::ShipAiApproachLatchResult run_mode_latch() {
         GameShipAiSummary& s = owner_.summary;
         ++s.latch_frames;
         bsp::ShipAiApproachLatchInputs in;
@@ -4770,7 +4824,7 @@ public:
         }
         if (!bsp::kShipAiApproachModeLatchBound) {
             owner_.record("ShipAiApproach::mode_latch", 0x009f1f47u);
-            return;
+            return r;
         }
         owner_.done("ShipAiApproach::mode_latch", 0x009f1f47u);
         ctl_.approach.mode_1234 = r.mode;
@@ -4779,6 +4833,90 @@ public:
             ctl_.approach.flag_11d6 = false;
             ctl_.approach.retarget_timer_11d8 = bsp::kApproachRetargetReset;
             ctl_.approach.timer_121c = bsp::kApproachRetargetReset;
+        }
+        return r;
+    }
+
+    // Packet cc9_approach_retarget_ring, 009F2124..009F272D for modes 0 and 2
+    // (docs/SHIP_AI_OPEN_ITEMS.md section 27). `before` is nested+1228h as the
+    // frame began: on the no-ship path 009F1E30 JE 009F2003 skips the goal copy
+    // at 009F1F0D, so the image keeps the point between arm runs.
+    void run_retarget_arm(const bsp::ShipAiApproachLatchResult& r,
+                          const bsp::ShipAiApproachPoint& before) {
+        if (!r.retarget_arm_reachable) return;
+        GameShipAiSummary& s = owner_.summary;
+        const bsp::ShipAiApproachMode mode = ctl_.approach.mode_1234;
+        if (mode == bsp::ShipAiApproachMode::inside_3 ||
+            mode == bsp::ShipAiApproachMode::standoff_4) {
+            // 009F21A0..009F2395, not read by this packet.
+            owner_.record("ShipAiApproach::retarget_modes_3_4", 0x009f21a0u);
+            return;
+        }
+        if (!bsp::kShipAiApproachRetargetRingBound) {
+            owner_.record("ShipAiApproach::retarget_ring", 0x009f239au);
+            RetargetRingBinding probe(owner_, ctl_);
+            if (probe.goal_zone_004178f0(ctl_.goal_vector.goal_x_0b2c,
+                                         ctl_.goal_vector.goal_z_0b34)) {
+                ++s.retarget_off_zone_frames;
+            }
+            return;
+        }
+        ctl_.approach.point_1228 = before;
+        if (!bsp::ship_ai_approach_retarget_head_009f2124(ctl_.approach)) return;
+        ++s.retarget_runs;
+        owner_.ensure_approach_ring(ctl_, index_);
+        bsp::ShipAiApproachRetargetInputs in;
+        in.goal.x = ctl_.goal_vector.goal_x_0b2c;
+        in.goal.y = ctl_.goal_vector.goal_y_0b30;
+        in.goal.z = ctl_.goal_vector.goal_z_0b34;
+        float unit_y = 0.0f;
+        owner_.units.unit_position_00fc(index_, in.unit_x, unit_y, in.unit_z);
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        const bool target_known = t != 0u && t - 1u < owner_.units.count();
+        const std::size_t target = target_known ? static_cast<std::size_t>(t - 1u) : 0u;
+        if (target_known && owner_.units.unit_is_kind_of(target, 5)) {
+            // 008FE120 answers the target; [[t+538h]+0A8h] is the class's
+            // hull height (bsp::ShipMotionClass), zero on this installation's ships.
+            float forward = 0.0f;
+            float right = 0.0f;
+            owner_.units.unit_class_extents(target, forward, right, in.target_height_00a8);
+        }
+        const GameGunneryUnitRow* row = owner_.gunnery_unit_row(index_);
+        if (row != nullptr) {
+            in.artillery_max_range_0490 = row->artillery_max_range;
+        } else {
+            owner_.record("ShipAiApproach::retarget_artillery_range_0490", 0x009f24b6u);
+        }
+        if (target_known && mode == bsp::ShipAiApproachMode::unassigned_2 &&
+            owner_.units.unit_is_kind_of(target, 0x1c)) {
+            in.building_mode_2 = true;
+            in.building_capture_range_07a0 = static_cast<std::int32_t>(
+                owner_.units.command_building_capture_range_07a0(target));
+        }
+        RetargetRingBinding host(owner_, ctl_);
+        const bsp::ShipAiApproachPoint goal = in.goal;
+        const bsp::ShipAiApproachRetargetResult out =
+            bsp::ship_ai_approach_retarget_ring_009f239a(ctl_.approach,
+                ctl_.approach_ring, in, host);
+        owner_.done("ShipAiApproach::retarget_ring", 0x009f239au);
+        s.retarget_landscape_queries += host.landscape_queries;
+        s.retarget_landscape_hits += static_cast<unsigned long long>(out.landscape_hits);
+        s.retarget_out_of_reach += static_cast<unsigned long long>(out.out_of_reach);
+        if (out.zone) ++s.retarget_zone_runs;
+        const bool moved = ctl_.approach.point_1228.x != goal.x ||
+            ctl_.approach.point_1228.z != goal.z;
+        if (moved) ++s.retarget_moved_runs;
+        if (out.zone && s.retarget_zone_runs <= 16u) {
+            owner_.log.notef("  ship ai approach retarget diag unit=%u target=%u mode=%d "
+                "goal=(%.2f, %.2f, %.2f) unit=(%.2f, %.2f) reach_0490=%.2f h=%.2f "
+                "building=%d land_hits=%d out_of_reach=%d improvements=%d "
+                "point=(%.2f, %.2f, %.2f)",
+                static_cast<unsigned>(index_), static_cast<unsigned>(t),
+                static_cast<int>(mode), goal.x, goal.y, goal.z, in.unit_x, in.unit_z,
+                in.artillery_max_range_0490, in.target_height_00a8,
+                in.building_mode_2 ? 1 : 0, out.landscape_hits, out.out_of_reach,
+                out.improvements, ctl_.approach.point_1228.x, ctl_.approach.point_1228.y,
+                ctl_.approach.point_1228.z);
         }
     }
 
@@ -4794,9 +4932,10 @@ public:
         // this process, so the displacement arm at 009F1E94 is never taken.
         owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
         const int committed_before = ctl_.approach.committed_slot_11e8;
+        const bsp::ShipAiApproachPoint point_before = ctl_.approach.point_1228;
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
                                                    seconds, point);
-        run_mode_latch();
+        run_retarget_arm(run_mode_latch(), point_before);
         // Packet cc8_ship_ai_committed_slot: 009F28F1, the one per-frame writer
         // of nested+11E8h. Counted here because the store is the last act of
         // the projection.
@@ -10489,6 +10628,14 @@ void GameShipAiHost::report() {
         host.summary.latch_modes[4], host.summary.latch_clamps, host.summary.latch_resets,
         host.summary.latch_retarget_reachable, host.summary.latch_retarget_entries,
         bsp::kShipAiApproachModeLatchBound ? 1 : 0);
+    host.log.notef("summary mission ship ai approach retarget off_zone_frames=%llu "
+        "runs=%llu zone_runs=%llu moved_runs=%llu landscape_queries=%llu landscape_hits=%llu out_of_reach=%llu "
+        "bound=%d (009F2124..009F272D, packet cc9_approach_retarget_ring)",
+        host.summary.retarget_off_zone_frames,
+        host.summary.retarget_runs, host.summary.retarget_zone_runs,
+        host.summary.retarget_moved_runs, host.summary.retarget_landscape_queries,
+        host.summary.retarget_landscape_hits, host.summary.retarget_out_of_reach,
+        bsp::kShipAiApproachRetargetRingBound ? 1 : 0);
     host.log.notef("summary mission ship ai engage kamikaze reads=%llu kamikaze_classes=%llu "
         "bound=%d (009E85CD, packet cc9_engage_kamikaze_gate)",
         host.summary.engage_kamikaze_reads, host.summary.engage_kamikaze_classes,
