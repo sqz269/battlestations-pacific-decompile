@@ -127,6 +127,18 @@ inline constexpr bool kAutoTargetCommandAcceptBound = true;
 // and JM06; the admission reads it 1550 / 4588 times, the AI sites 0 / 200.
 inline constexpr bool kShipAiBigLandingShipBound = true;
 
+// Packet cc9_standoff_target_kind (docs/SHIP_AI_OPEN_ITEMS.md section 39). The
+// standoff choice 009E6E80 asks the target [brain+0B20h] vtable[5Ch](8) at
+// 009E6F01 and vtable[5Ch](1Ch) at 009E6F3A (mode 4) and 009E701C (mode 2), and
+// 009E6F11 calls 00827F70 on [brain+0AACh], the unit's own class. True: the
+// kind queries answer the target's kinds, 00827F70 answers as the mode latch
+// does, and mode 2 reads the CommandBuilding's CaptureRange [target+7A0h]
+// (006F2780, FIMUL at 009E706F, FILD at 009E7087). LABELLED: mode 4's
+// [target+7C4h] LandingRange (FILD at 009E6F4E) has no units-host field yet, so
+// ON the 1Ch query answers false while the latched mode is 4 and that arm keeps
+// its 1000.0 fallback, counted. False: every kind answers false, as before.
+inline constexpr bool kShipAiStandoffTargetKindBound = false;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;
@@ -574,6 +586,13 @@ struct GameShipAiSummary {
     unsigned long long latch_building_same_side{0};
     unsigned long long latch_building_lander{0};
     unsigned long long latch_other_target{0};
+    // Packet cc9_standoff_target_kind (either state): 009E6E80's kind queries
+    // that the target answers true, and the building arms they open.
+    unsigned long long standoff_kind_calls{0};
+    unsigned long long standoff_kind_08{0};
+    unsigned long long standoff_kind_1c_mode2{0};
+    unsigned long long standoff_kind_1c_mode4{0};  // deferred: no +7C4h field
+    unsigned long long standoff_small_class{0};    // 00827F70 true at 009E6F11
     unsigned long long latch_modes[5]{};
     unsigned long long latch_clamps{0};          // mode-1 arm lowered +11F0h
     unsigned long long latch_resets{0};          // 009F20DE..009F20ED

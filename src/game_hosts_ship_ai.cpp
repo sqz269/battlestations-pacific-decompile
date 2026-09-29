@@ -4270,21 +4270,66 @@ public:
         // host guessed this value before the block was read; it is now sourced.
         return owner_.tune.range_override; // tune+1Ch
     }
-    bool target_is_kind_vtable_005c(int) override {
-        owner_.record("ShipAiApproach::target_kind_005c", 0x009e6efcu);
-        return false;
+    // Packet cc9_standoff_target_kind (docs/SHIP_AI_OPEN_ITEMS.md section 39).
+    // The image asks the object at [brain+0B20h]; the host holds it as a unit
+    // index plus one. The census counts run in either switch state.
+    bool target_is_kind_vtable_005c(int kind) override {
+        GameShipAiSummary& s = owner_.summary;
+        ++s.standoff_kind_calls;
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        const bool known = t != 0u && t - 1u < owner_.units.count();
+        const bool answer = known &&
+            owner_.units.unit_is_kind_of(static_cast<std::size_t>(t - 1u), kind);
+        const bsp::ShipAiApproachMode mode = ctl_.approach.mode_1234;
+        if (answer && kind == 8) ++s.standoff_kind_08;
+        if (answer && kind == 0x1c && mode == bsp::ShipAiApproachMode::unassigned_2) {
+            ++s.standoff_kind_1c_mode2;
+        }
+        if (answer && kind == 0x1c && mode == bsp::ShipAiApproachMode::standoff_4) {
+            ++s.standoff_kind_1c_mode4;
+        }
+        if (!kShipAiStandoffTargetKindBound) {
+            owner_.record("ShipAiApproach::target_kind_005c", 0x009e6efcu);
+            return false;
+        }
+        // LABELLED: the mode-4 arm (009E6F3A) would FILD [target+7C4h], the
+        // LandingRange, which no units-host field holds yet; it keeps 1000.0.
+        if (kind == 0x1c && mode == bsp::ShipAiApproachMode::standoff_4) {
+            owner_.record("ShipAiApproach::target_landing_range_07c4", 0x009e6f4eu);
+            return false;
+        }
+        owner_.done("ShipAiApproach::target_kind_005c", 0x009e6efcu);
+        return answer;
     }
     bool shipclass_allows_close_00827f70() override {
-        owner_.record("ShipAiApproach::shipclass_allows_close_00827f70", 0x00827f70u);
-        return false;
+        // 009E6F09 MOV ECX,[brain+0AACh], the unit's own class, as at the latch
+        // 009F1F76: TorpedoBoat 0Eh, or LandingShip 0Ch without BigLandingShip.
+        const bool small_class = owner_.units.unit_is_kind_of(index_, 0x0e) ||
+            (owner_.units.unit_is_kind_of(index_, 0x0c) &&
+             !(kShipAiBigLandingShipBound && owner_.big_landing_ship_of(index_)));
+        if (small_class) ++owner_.summary.standoff_small_class;
+        if (!kShipAiStandoffTargetKindBound) {
+            owner_.record("ShipAiApproach::shipclass_allows_close_00827f70", 0x00827f70u);
+            return false;
+        }
+        owner_.done("ShipAiApproach::shipclass_allows_close_00827f70", 0x00827f70u);
+        return small_class;
     }
     std::int32_t target_radius_07c4() override {
         owner_.record("ShipAiApproach::target_radius_07c4", 0x009e6f4eu);
         return 0;
     }
     std::int32_t target_gun_range_07a0() override {
-        owner_.record("ShipAiApproach::target_gun_range_07a0", 0x009e706fu);
-        return 0;
+        if (!kShipAiStandoffTargetKindBound) {
+            owner_.record("ShipAiApproach::target_gun_range_07a0", 0x009e706fu);
+            return 0;
+        }
+        // Reached only after the 1Ch query answered true: 006F2780's
+        // CaptureRange, the dword 009E706F FIMULs and 009E7087 FILDs.
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        owner_.done("ShipAiApproach::target_gun_range_07a0", 0x009e706fu);
+        return static_cast<std::int32_t>(owner_.units.command_building_capture_range_07a0(
+            static_cast<std::size_t>(t - 1u)));
     }
     bool unit_is_group_leader_00778890() override {
         owner_.record("ShipAiApproach::unit_is_group_leader_00778890", 0x00778890u);
@@ -10822,6 +10867,12 @@ void GameShipAiHost::report() {
         host.summary.latch_modes[4], host.summary.latch_clamps, host.summary.latch_resets,
         host.summary.latch_retarget_reachable, host.summary.latch_retarget_entries,
         bsp::kShipAiApproachModeLatchBound ? 1 : 0);
+    host.log.notef("summary mission ship ai standoff target kind calls=%llu kind_08=%llu "
+        "building_mode2=%llu building_mode4_deferred=%llu small_class=%llu bound=%d "
+        "(009E6F01 / 009E6F3A / 009E701C / 009E6F11, packet cc9_standoff_target_kind)",
+        host.summary.standoff_kind_calls, host.summary.standoff_kind_08,
+        host.summary.standoff_kind_1c_mode2, host.summary.standoff_kind_1c_mode4,
+        host.summary.standoff_small_class, kShipAiStandoffTargetKindBound ? 1 : 0);
     host.log.notef("summary mission ship ai approach retarget off_zone_frames=%llu "
         "runs=%llu zone_runs=%llu moved_runs=%llu landscape_queries=%llu landscape_hits=%llu out_of_reach=%llu "
         "bound=%d (009F2124..009F272D, packet cc9_approach_retarget_ring)",
