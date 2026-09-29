@@ -511,9 +511,10 @@ constexpr float kBulletThrowMul[kThrowSeatCount][6] = {
 //    (00BA2C20 bit 0); the angles are degrees -> radians. The distance goes to
 //    the next round's "distErr" (00730F70, 00CFD51C), the +290h 0070C6C6 adds
 //    to the burst distance, in metres as authored.
-// OFF: no AA bot error at any skill (the rows below unread).
-constexpr bool kAaGunnerSwingErrorBound = false;
-constexpr bool kAaFlakAimErrorBound = false;
+// OFF: no AA bot error at any skill (the rows below unread). ON by the verdict
+// (AA_LETHALITY_AUDIT 7.5): E2 identical, USN13 low losses 33 -> 14, JM05 2 releases.
+constexpr bool kAaGunnerSwingErrorBound = true;
+constexpr bool kAaFlakAimErrorBound = true;
 // This installation's robots.lua (2025-06-01), AAGunnerBot, by skill index:
 // {AngleDiffErrorRatio (+0Ch), ConstAngleError (+14h), degrees}.
 constexpr float kAaGunnerErrorRows[6][2] = {

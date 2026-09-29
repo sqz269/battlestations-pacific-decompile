@@ -265,3 +265,59 @@ the RNG option on.
 - **Mechanism failure:**
   - any SPVeteran-row gun with a non-zero offset;
   - JM05 torpedo releases staying at 0 while category 1 hits on aircraft fall by less than 20%.
+
+### 7.5 The pairs and the verdict: ON, with P2's size recorded as a miss
+
+**Corrections to 7.1 and 7.2, made before the pairs were scored:**
+- **The period.** `00419010` takes (x0, y0, x1, y1, x). `00902B38` pushes (0, 1.0, 6.0, 0.2, skill),
+  so the multiplier is 1.0 at Stun and 0.867 at SPNormal. The existing
+  `gun_bot_lead_error_span_00902920` (src/gun_bot_ticks.cpp) has it right, and the binding calls
+  it.
+  - The SPNormal period is **2.6 to 6.9 s**, not 0.6 to 1.6 s.
+  - The 25 m clamp is `gun_bot_lead_error_limit_00902920`.
+- **The scene skill (lua16, `docs/SCENE_UNIT_SKILL.md`, main `da90b8653`).**
+  - The binding is ON and faithful.
+  - 7.1's "50 Rookie forts become Stun" is **refuted**. `00927A80` reads the merged bag, and this
+    installation's library gives Ship, LandFort, LandConvoy and PlaneSquadronWNavpoint a group
+    default `Skill = SPNormal`, so they resolve to 1.
+  - The SPNormal premise for JM05's IJN ships stands.
+
+**The pairs.** Same-tree exports of `a3da8863f` (both switches committed OFF), with the ON side
+flipping both. Main's inertia switch is on in both. RNG option on. Logs are
+`local\aa<off|on>_<row>.log`. A 300-frame USN01 smoke ran first.
+
+| row | exit | census (ON) | headline OFF -> ON |
+| --- | --- | --- | --- |
+| E2 9000 | **1** | gunner rolls 880, all level 2; flak rolls 851, all level 2; mean miss 0.00 m | gameplay identical |
+| JM05 9000 | 3 | gunner rolls 1372, all level 1; clamps 1377; mean miss 18.45 m; flak rolls 159 (mean 2.38 deg, distErr 1.79 m) | deaths 29 -> 27 (Japan Troop Transports 04 and 05 survive), hit records 1326 -> 1059, torpedo-task releases 0 -> 2 of 24 |
+| USN13 9000 | 3 | gunner rolls 5906 at level 1 and 2186 at level 2; flak rolls 370 / 2131 | deaths 142 -> 123, hit records 4557 -> 4405, shots 26345 -> 32856, dive-bomb releases 0 -> 1 of 50 |
+
+Aircraft deaths below 150 m (`local\g12_aacount.py`):
+
+| row | OFF: deaths, killers, category 1 hits, killer range | ON |
+| --- | --- | --- |
+| JM05 | 12; category 1 ×10, category 6 ×2; 146; 705-1269 m | 12; category 1 ×11, category 6 ×1; 162; 200-1190 m |
+| USN13 | 33; category 1 ×30, category 6 ×3; 450 | 14; category 1 ×14; 234 (-48%) |
+
+**Against 7.4:**
+- **P1, the census: held.** Only level-1 guns get offsets, and every level-2 gun keeps 0 (E2
+  mean miss 0.00 m).
+- **P3, E2: held.** The row is gameplay-identical.
+- **P4, USN13: held.** Low aircraft losses fall from 33 to 14 and category 1 hits by 48%. Losses to
+  the SPVeteran US fleet stay.
+- **P2, JM05: missed in size.**
+  - The gunner's miss is 18.45 m, inside the predicted 15-25 m, and nearly every roll is clamped.
+  - Some torpedo planes now get to 200 m, and two releases happen.
+  - But the low deaths stay at 12, category 1 hits on them do not fall (146 -> 162), and the
+    releases reach 2 against the predicted 6 or more.
+  - JM05's shooters are close-in escorts, with 13 to 15 MG hits per kill from many barrels. A 25 m
+    wander at 700-1200 m still lands enough of them.
+- **Mechanism failure (7.4): not met.** No level-2 offset appeared. JM05's releases did not stay
+  at 0.
+
+**Verdict: ON** (both switches), with P2's size recorded as a miss. The mechanism is the image's
+and acts only where the image's rows say it should. What still kills JM05's torpedo planes
+before release is a separate question. Next candidates:
+- the image's `vtable[100h]` hull-box point, which the binding substitutes with the aim point;
+- plane HP and armour against the MG bullet class;
+- the barrel counts of the IJN destroyers' MG mounts.
