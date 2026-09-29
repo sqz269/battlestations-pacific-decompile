@@ -3936,7 +3936,7 @@ struct GameUnitsHost::Impl {
     // land/line's enter/tick/exit (009B02E0/009B0300/009B02F0) and the rule's
     // line arm (a wing member at mode 2, 009B3E81). Needs kLandStandbyStateBound.
     // False: every entry to land/line is refused.
-    static constexpr bool kLandLineStateBound = false;  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5e)  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5d)
+    static constexpr bool kLandLineStateBound = true;  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5g)  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5e)  // ON: pairs held (docs/SQUADRON_LAND_TASK.md 5d)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm

@@ -852,6 +852,68 @@ standby-ON log `local\l10_sbon_lomp10.log`, which is the same behaviour.
   distance grows without bound while in line; or a height outside the band for more than a few
   seconds after entry.
 
+### The pairs and the verdict (cc9-lua11, 2026-09-28): ON, with two outcomes missed
+
+OFF is this tree's build of `8a1936324` (`local\l11_off2_<row>.log`). ON is `local\l11_ln`, the same
+commit with `kLandLineStateBound=true` (`local\l11_lnon2_<row>.log`). A first pair on `9cdf5ee0e`
+(`l11_off_`, `l11_lnon_`, trace every 200 ticks) matches it: each side against its re-run gives
+`pair_diff` 1.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | unit table and deaths identical; B-25 01's travel 5945 -> 6207 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Entries: held.** There were 16 entries, all by wingmen. Each wingman first entered at the time
+   of its OFF refusal:
+
+   | wingman | first entry |
+   | --- | --- |
+   | Warhawk 01\|.-4 | 73.20 s |
+   | Lightning 01\|.-4 | 75.40 s |
+   | Warhawk 01\|.-2 and \|.-3 | 77.40 s |
+   | Lightning 01\|.-2 | 80.10 s |
+   | Lightning 01\|.-3 | 80.30 s |
+   | B-25 01\|.-2 | 146.00 s |
+
+2. **Leaving line: held.** Each flip to mode 1 returned the wingman to `follow (land)`, and each
+   return to mode 2 re-entered line (two or three entries each). Mode 3 sent Warhawk 01|.-4 to
+   standby at 92.20 s, as before.
+3. **Flight in line: the mechanism held, and two outcomes differ from the prediction.** The traces
+   reproduce the listing's values:
+   - At d = 187.3 m the band is (1055.8, 1133.8). That is `H.y + 10 + 0.06 d` and
+     `H.y - 10 - d/4`, with `H.y` = 1112.6.
+   - At delta = 0.533 rad the threshold is 40.6 m, which is `interp(30 deg, 40, 80 deg, 100)`.
+   - The commanded speed is 28.80 m/s (0.9 x 32.0) at spacing 0, and 29.80 m/s at spacing 0.010.
+     That gives class+190h = 128.8.
+   - B-25 01|.-2 ran the near arm (`far=0`: 53.8 m, inside its 66.4 m threshold) and held its
+     head's heading.
+   - At 148 s its heading came back wrapped to (-pi, pi], which is the probe's `00438AA0` add.
+
+   The two outcomes that differ:
+   - **Head distance.** It closed in the first stint: 187 -> 128 m for Warhawk 01|.-4 and
+     225 -> 142 m for Lightning 01|.-4. In later stints it opened, to 425 m and 595 m (Warhawk
+     01|.-4 and |.-2 at 88 s). The prediction was "tens to low hundreds".
+     - The wingmen fly at 29 m/s because their spacing `+8h` is 0: the sequencer is holding them
+       back from the plane ahead (section 5c).
+     - The distance stays bounded because every stint ends at a mode flip after 1 to 6 s.
+   - **Height.** Every Warhawk and Lightning wingman stayed 110 to 150 m above the band's upper
+     edge for its whole stint. **This meets the height clause written above as a mechanism
+     failure.**
+     - The target was the upper edge every time.
+     - The band fell with the head, at 100 m/s at first and then 20 to 27 m/s. The wingman
+       descended at 21 to 46 m/s.
+     - The clause was meant to catch a wrong target or band, and both are correct in every trace.
+       The miss happens because the wingman enters 100 m above a head that descends as fast as it
+       can.
+4. **Held.** LOMP10 moves and USN01 does not.
+5. **Held.** `land/begin` (mode 4, from 132.9 s) and the rest stay refused.
+- **Verdict: ON.**
+  - The entries, the rule arm, and the tick's threshold, band, speed and probe values all match the
+    listing.
+  - The two missed outcomes follow from the sequencer's spacing and from the head's descent.
+  - The height clause was met literally. It is recorded here so the lead can review the flip.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
