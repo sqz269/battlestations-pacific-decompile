@@ -12768,3 +12768,30 @@ moved rows. Exit 3 means the group moves that row.
 - `kFindEntityCaseInsensitiveBound`, ON (cc9-lua17);
 - `kPlaneGroundLevellingBound`, ON (`eaa4444a7`);
 - `kSubmarinePeriscopePrepassBound`, ON.
+
+
+## Mission reference baselines, 2026-09-29 p (main a4f9d6c76)
+
+Packet `cc9_reference_rebaseline_16`, worker cc9-gunnery14. **It replaces the 2026-09-29 o rows
+above.** The report is `reports/cc9_reference_rebaseline_16.json`.
+
+### Predictions (written before any run)
+
+A value diff of every `constexpr bool k...` declaration between `3194cea39` and `a4f9d6c76`
+(`local\g14_switches2.py`, which catches `inline` and `static` declarations and names not ending
+in `Bound`) finds **seven switches newly ON** and no new OFF switch:
+
+| switch | flip commit | its pair recorded | predicted rows moved against o |
+| --- | --- | --- | --- |
+| `kFindEntityCaseInsensitiveBound` | `a6a1bdf5d` | CONTROLLED_UNIT (IJN01, JM05 exit 1) | none alone; IJN01 through PilotLand (below) |
+| `kSubmarinePeriscopePrepassBound` | `65c065b23` | SHIP_AI 54.1 (USNOS exit 3; JM06, LOMP06 exit 1) | USNOS, USNOS long |
+| `kPlaneGroundLevellingBound` | `eaa4444a7` | SQUADRON_LAND_TASK 5y.1 (USN04, USN01, JM05 exit 1; USN13 0) | LOMP10 long at most (landed B-25s) |
+| `kCommandTargetKeepUnauthoredBound` | `b08b40900` | SHIP_AI 56.1 pair A (USN01, JM05, IJN01 exit 1) | none |
+| `kPilotLandNativeBound` | `b08b40900` | SHIP_AI 56.1 pair B (IJN01 exit 3, four B-17 land tasks) | IJN01 (needs FindEntity folding to resolve "Airfield 02") |
+| `kLuaKillScriptEntityBound` | `ce7fa8504` | SHIP_AI 57.1 (six rows exit 1) | none |
+| `kSceneCommandFindCaseInsensitiveBound` | `486b19aa4` | GUNNERY_OPEN_ITEMS 62 census (every o lookup exact) | none |
+
+- **All-OFF anchor:** with the seven OFF, `a4f9d6c76` is gameplay-identical to o on all sixteen
+  rows (exit 0 or 1 against `rb15_<row>`).
+- **Leave-one-out:** IJN01 moves with PilotLand OFF and with FindEntity folding OFF; USNOS and
+  USNOS long move with the periscope pre-pass OFF; nothing else attributes.
