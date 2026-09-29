@@ -639,6 +639,10 @@ struct GameUnitSlot {
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
     unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
     unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
+    // Packet cc9_land_park_done_test: which arm of 009B21D0 set done - the timer
+    // (0 > +28h), no contact (+BF8h), no deck (+BF4h), the target behind
+    // (t.z < pz), the heading past pi/2. Print-only.
+    unsigned long long land_park_done_why[5]{0, 0, 0, 0, 0};
     unsigned long long land_park_hangar{0}, land_park_no_hangar{0}, land_park_from_abort{0};
     unsigned long long land_park_retarget{0};
     double land_park_hangar_at{-1.0};
@@ -20462,11 +20466,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             && unit_.plane_contact_deck_bf4 != 0) {
                             if (unit_.land_park_target_24 < pz) {
                                 unit_.land_done_18 = true;              // 009B1E30 false
+                                ++unit_.land_park_done_why[3];
                                 return;
                             }
                             const float e = bsp::wrapped_angle_subtract_00438b10(
                                 unit_.plane_heading_c6c, d.runway_heading_88);
                             if (static_cast<double>(std::fabs(e)) <= 1.5707963705062866) return;
+                            ++unit_.land_park_done_why[4];
+                        } else {
+                            ++unit_.land_park_done_why[!(0.0f <= unit_.land_park_timer_28) ? 0
+                                : !unit_.plane_ground_contact_bf8 ? 1 : 2];
                         }
                         unit_.land_done_18 = true;
                     }
@@ -25402,7 +25411,8 @@ void GameUnitsHost::report() {
                 host.log.notef("summary land park %s: entries=%llu from_abort=%llu ticks=%llu "
                     "done=%llu joins=%llu leaves=%llu spot_refused=%llu retarget=%llu "
                     "no_hangar=%llu hangar=%llu hangar_at=%.2f q910=%d c00=%d last x=%.1f z=%.1f "
-                    "spd=%.2f yaw=%.3f state=%d (packet cc9_land_park_taxi)", s->row.name.c_str(),
+                    "spd=%.2f yaw=%.3f state=%d done_why timer=%llu contact=%llu deck=%llu "
+                    "behind=%llu heading=%llu (packet cc9_land_park_taxi)", s->row.name.c_str(),
                     s->land_park_entries, s->land_park_from_abort, s->land_park_ticks,
                     s->land_park_done, s->land_park_joins, s->land_park_leaves,
                     s->land_park_spot_refused, s->land_park_retarget, s->land_park_no_hangar,
@@ -25411,7 +25421,9 @@ void GameUnitsHost::report() {
                     static_cast<double>(s->land_park_last[0]),
                     static_cast<double>(s->land_park_last[1]),
                     static_cast<double>(s->land_park_last[2]),
-                    static_cast<double>(s->land_park_last[3]), s->plane_control_mode_900);
+                    static_cast<double>(s->land_park_last[3]), s->plane_control_mode_900,
+                    s->land_park_done_why[0], s->land_park_done_why[1], s->land_park_done_why[2],
+                    s->land_park_done_why[3], s->land_park_done_why[4]);
             }
         }
         host.log.notef("summary landing sequencer refused decks=%llu", host.landing_refused_decks);
