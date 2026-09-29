@@ -7,7 +7,9 @@ Addresses:
 - `0070C370` (flak projectile tick);
 - `007BBB70` (the plane's `vtable[34h]`);
 - `00901C20`;
-- `007325A0` and `00718870` (section 5).
+- `007325A0` and `00718870` (section 5);
+- `007BBCF0` (the plane's `vtable[ECh]` hit handler), `00999AA0` (its task walk) and the task
+  `+2Ch` slots `009D3270`, `009C7900`, `009CC400` (section 8).
 
 Packet `cc9_aa_lethality_audit`, 2026-09-23. Ghidra was read, not written. All names are
 hypotheses. Nothing here is ABI-compatible or game-validated.
@@ -321,3 +323,148 @@ before release is a separate question. Next candidates:
 - the image's `vtable[100h]` hull-box point, which the binding substitutes with the aim point;
 - plane HP and armour against the MG bullet class;
 - the barrel counts of the IJN destroyers' MG mounts.
+
+## 8. JM05 re-paired on main, and what still kills the torpedo planes (packet `cc9_aa_jm05_repair`, cc9-gunnery13, 2026-09-29)
+
+### 8.1 The pair on main `8e584de55`
+
+**Setup:**
+- **Binaries.** Two same-tree exports of `8e584de55`:
+  - `local\aoff` flips both AA switches OFF (binary prefix `6CEB3866BCF9`);
+  - `local\aon` is the control export (`790D19C109DD`).
+- **Skill.** Both carry the carrier launch skill, so the US squadrons are SPVeteran: TorpReleaseAlt
+  5 m, DistNear 800 m, DistFar 1200 m.
+- **Runs.** JM05 9200/9000 in the reference launch form, with the RNG option and the death table on.
+  A 300-frame USN01 smoke ran first.
+- **Logs.** `local\g13_aoff_jm05l.log` and `local\g13_aon_jm05l.log` in the cc9-gunnery13 tree.
+
+`pair_diff` exits **3**.
+
+| quantity | OFF | ON |
+| --- | --- | --- |
+| deaths | 29 | 27 (Japan Troop Transports 04 and 05 survive, as in 7.5) |
+| hit records (hull) | 1315 (989) | 1079 (795) |
+| shots | 7355 | 7761 |
+| torpedo-task releases | 0 of 27 | **3 of 21** (3 torpedo drops) |
+| dive-bomb-task releases | 0 of 18 | 0 of 24 |
+| aircraft deaths below 150 m | 12: category 1 ×10, category 6 ×2; 151 category 1 hits; killer range 739-1192 m | 16: category 1 ×13, category 6 ×3; 215; **229-1057 m** |
+| AA bot error census | none | gunner rolls 1463 (all level 1), clamps 1469, mean miss 18.51 m; flak rolls 179 (level 1), mean 2.41 deg, distErr 1.80 m |
+
+**What moved.** The errors let the torpedo planes close further:
+- the low deaths move from 739-1192 m to 229-1057 m from their killers;
+- more planes reach the low run (12 -> 16 low deaths).
+
+They still die before release. 7.5's verdict (ON) stands on main.
+
+### 8.2 Three AA terms checked against the image: all faithful
+
+A third run, `local\g13_aont_jm05l.log`, used the ON binary with
+`BSP_AA_TRACE_UNIT=Ushio,Yugure,Akebono,Shokaku,Haguro`. It is gameplay-identical to the ON run
+(`pair_diff` exit 1).
+
+1. **Barrel count and rate of the IJN MG mounts.**
+   - **The rows.** Ushio's category 1 mounts are device rows 47 (`AA 25mm Triple JP`) and 46
+     (`AA 25mm Single JP`) of this installation's `classtables/arcade/deviceclasses.lua`
+     (2026-05-09, modded).
+     - Row 47: `Bullet[1]` = bullet class 46, ReloadTime 0.5, BarrelDelayTime 0.16, Throw 0.006981.
+     - The host's barrel census reads the image rule (`007325A0`, fire points): device 47 image=3
+       and device 46 image=1, from `25mm_triple_aa.mmod` and `25mm_aa.mmod`.
+   - **The rate.** Ushio gun 660 (row 47) fires every 0.20 s from 221.71 s to 267.81 s (170 shots).
+     That is BarrelDelayTime 0.16 s rounded up to the 0.05 s lockstep.
+     - The image at 60 fps would fire every 0.167 s.
+     - So the host is **slightly less** lethal here, and the cause is the test clock, not a rule
+       (GUN_SHOT_CADENCE).
+2. **Plane health and armour against the MG class.**
+   - **The data:**
+     - TBD Devastator (`VehicleClass[112]`, this installation's `vehicleclasses.lua`, 2026-05-09):
+       HP 220, Armour 6.
+     - Bullet class 46 (`25mm/60 AA`, arcade `bulletclasses.lua`): DamageMin 30, DamageMax 35.
+   - **Traced:** `base=31.8 applied=14.3 armour=6.0`, that is (31.8 - 6) x 0.5556.
+   - **The 0.5556** is 1/HPMultipliers (1.8). The US planes are the local player's party, because the
+     idle player holds USS Phelps. `docs/DIFFICULTY_MULTIPLIERS.md` section 4 established that
+     aircraft damage reaches `0087D730` through `vtable[1ACh]` in the image.
+   - **Faithful.** It makes the planes tougher, not weaker: about 15 hits per kill instead of about 8.
+3. **The AA aim point** (`vtable[100h]` hull-box point, substituted with the host's aim point).
+   - **The spread.** The point only enters the spread `e = 5 x (lead gap) + U(0, 4) deg`.
+     - At 700-1200 m, the lead gap against a 70-84 m/s plane is about 5-6 deg.
+     - So `e` is about 25-30 deg, against a clamp of 25 / distance = 1.2-2.0 deg.
+   - **The substitution's size.** A hull-box draw moves the point by a few metres (box 0.8 / 0.5 /
+     0.8 of a plane). That is well under 1 deg of gap, and times 5 it is a few degrees of `e`.
+   - **Every draw is still clamped:** the census has **clamps 1469 >= rolls 1463**. The substitution
+     cannot move the miss. **Not worth binding.**
+
+### 8.3 The divergence found: a hit never reaches the plane's bot tasks
+
+**The image.**
+- **The handler.** A plane's hit handler is `007BBCF0`, `vtable[ECh]` of class 0Fh and the eight
+  plane classes. The slot was read from six plane vtables, for example `00D0015C`.
+- **The task walk.** Before `008777D0`, it calls `00999AA0` on the pilot bot `[unit+DF4h]` (when
+  non-null).
+  - `00999AA0` walks the bot's task vector (`bot+58h`, count `bot+5Ch`).
+  - It calls each task's `vtable[2Ch](hit)` and stops at the first that returns true.
+- **The `+2Ch` slots:**
+
+| task | vtable | `+2Ch` | effect |
+| --- | --- | --- | --- |
+| torpedo (kind Eh) | `00D213C8` | `009D3270` | `task+52Ch = 0.0`, return 1. The approach object is `task+3F8h` (`009D3080 LEA EDI,[ESI+3F8h]`), so this is **approach+134h = 0** |
+| divebomb (8) | `00D20E18` | `009C7900` | `task+4BCh = 0.0`, return 1 |
+| strafe (Ah) | `00D210E0` | `009CC400` | `task+43Ch = 0.0`, return 1 |
+| levelbomb (4), retreat (9) | `00D20210`, `00D20F60` | `007B4110` | `XOR AL,AL; RET 4`: nothing |
+
+The three bodies are four instructions each: `XORPS; MOVSS [ECX+off]; MOV AL,1; RET 4`
+(`disasm-raw`).
+
+**What approach+134h does.**
+- **The clock.** It is the torpedo approach's clock: reset to 0 at `009D0579..009D05C1`, advanced
+  at `009D3E28`.
+- **The release distance.** The release arm `009D48CF` takes approach+7Ch (TorpReleaseDistNear)
+  when approach+134h >= 15.0 (`00CF3F20`), and approach+80h (TorpReleaseDistFar) otherwise.
+- **The authored rule.** This installation's robots.lua comments the two rows:
+  - Near is "the brave release distance";
+  - Far is "the cowardly release distance: **if they hit it during the attack, it releases from
+    here**".
+
+  The reset is that rule: a plane that is hit goes back to the far distance for 15 s.
+- **Other readers.** The same clock also drives `009D3C99`'s commanded speed and the goaway
+  re-seed test (`009D0F84`, clock < 1.0).
+
+**The host.**
+- **The path.** Every hit on a plane goes through `apply_ship_hit_record_00826f10`
+  (`src/game_hosts_gunnery.cpp`, the direct hit and the blast path), never through `007BBCF0`.
+- **The missing reset.** Nothing resets `torpedo_approach.elapsed_134` after the approach reset.
+  So after 15 s of run, a host torpedo plane keeps the 800 m Near distance however much it is hit.
+- **In the ON run** each of the 16 low aircraft deaths takes its first damage 2.8 to 16.2 s before
+  it dies (median about 5 s). The range at the first hit is not in the death row and is not
+  measured here.
+
+**The binding** is `kPlaneHitTaskNotifyBound`, OFF. It is not landed: the reset lives in the units
+host, which is cc9-lua16's lane.
+- **Gunnery side:**
+  - covers every hit record dispatched to a plane victim, on both the direct and the blast paths;
+  - applies whether or not the hit did damage, as `007BBCF0` calls `00999AA0` before `008777D0`;
+  - calls a new units-host method that stands for `00999AA0`.
+- **Units side:** that method resets the active attack task's clock.
+  - For the torpedo task it sets `torpedo_approach.elapsed_134 = 0` (`009D3270`).
+  - The divebomb `+4BCh` and strafe `+43Ch` fields still need their host names. They are a
+    labelled gap until mapped.
+
+### 8.4 Predictions for the binding (written before any ON run)
+
+The rows are JM05 9200/9000 and USN04 E2 9200/9000, same tree, with the switch flipped on the ON
+side.
+- **P1, mechanism.** A census counter shows resets > 0 on both rows, and only on planes with a
+  torpedo task.
+- **P2, JM05.**
+  - Some torpedo planes release from beyond 800 m: torpedo-task releases rise from 3 of 21 to at
+    least 5.
+  - The extra drops come before the plane enters the 800 m ring.
+  - Low deaths move outward: the median killer range goes up.
+- **P3, USN04 E2.**
+  - The Kates attacking the Lexington take their first hits at 1000-1500 m, so some release
+    earlier.
+  - Lexington torpedo drops can go from 0 to at least 1.
+  - The US planes' side of the row moves only by coupling.
+- **Mechanism failure:**
+  - no reset counted; or
+  - releases unchanged with resets counted. That would mean the altitude gate blocks the release,
+    not the distance: the planes die at 18-40 m against TorpReleaseAlt 5 m.
