@@ -4639,3 +4639,61 @@ rebuilds the self table.
 - DeleteScript's own count may drop by the same number, because the timetable now returns
   before it.
 - No movie-camera pose change is expected, because the end state is reached in the same think.
+
+### 57.1 The pairs and the verdict: ON
+
+Same-tree pair on `de409e8e3`. The OFF binary is this tree's build; the ON binary is
+`local\s16_kl` (`--flip kLuaKillScriptEntityBound=true`, SHA-256 prefix `1612520D7C82`). Logs are
+`local\s16kl{off,on}_<row>.log`, and the diffs are `local\s16_kldiff_<row>.txt`.
+
+| row | pair_diff | unresolved | death rows |
+| --- | --- | --- | --- |
+| USN04 4700/4500 | 1 | 2 -> 0 | identical (46) |
+| USN13 3200/3000 | 1 | 2 -> 0 | identical (31) |
+| JM05 3200/3000 | 1 | 1 -> 0 | identical (0) |
+| USNOS 3200/3000 | 1 | 3 -> 0 | identical (6) |
+| IJN01 3200/3000 | 1 | 2 -> 0 | identical (9) |
+| LOMP10 3200/3000 | 1 | 1 -> 0 | identical (0) |
+
+**Against the predictions.**
+- Every miss becomes a `script entity id N killed` line, and every row is gameplay identical.
+- No movie-camera pose line moves outside LOMP10's known presentation noise.
+- Beyond the Kill lines, the only moves are the known ship-avoidance refill counter and the LOMP10
+  minimap heading.
+
+**Verdict: ON.** Ranking row 14 is closed.
+
+## 58. Handoff (cc9-ships16, 2026-09-29 16:38 UTC, at about 78% context)
+
+**State.** Branch `agent/cc9-ships16`. Sections 54 to 57 are this worker's. This commit adds the
+57.1 flip and this handoff. No lease is held after this commit.
+
+**Switches this worker added:**
+
+| switch | file | state | section |
+| --- | --- | --- | --- |
+| `kSubmarinePeriscopePrepassBound` (`009DB8F0`) | `src/game_hosts_ship_ai.cpp` | ON | 54 |
+| `kCommandTargetKeepUnauthoredBound` (0071EBF0 refresh) | `src/game_hosts_gunnery.cpp` | ON | 56 |
+| `kPilotLandNativeBound` (flipped; the switch was cc9-ships15's) | `src/game_hosts_script_orders.cpp` | ON | 56.1 |
+| `kLuaKillScriptEntityBound` (Kill -> 00926D90 on script entities) | `src/game_hosts_lua.cpp` | ON | 57 |
+
+**Open items this worker leaves:**
+- **Attackmove after land.** At 68.25 s on IJN01, the director's attackmove arm `00836B45` runs
+  for B-17 01/02 (units 330/332) with `target=2`. The commands host stores `land` as given
+  (56.1), so the attackmove in `slot_command[0]` comes from another push. This is the commands
+  lane's item.
+- **The now-reached land internals.** `006C0B50`, `006BD080`, `006C5380`, `009C1850`, `009C18C0`,
+  `006C4790` and the `0099A3DD` arm. The lead passed these to lua17.
+- **The periscope's broken state 2 and the repair/auto-raise arm** (`009327F7`, `009373E7`,
+  `00854E44..00854ECF`). These are lua-lane items.
+- **Parked from 53:** `Scoring_SetMissionCompleted`, and the planner spawn (it needs a stock scene).
+
+**Useful files in the cc9-ships16 tree (`local\`):**
+- `s16_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames` launches in the
+  background with the reference environment.
+- `s16_wait.ps1 -Logs <names>` is the foreground wait on the final COM release.
+- `s16_disp_ctx.py <scan-bytes output> <disp hex>` decodes the instruction around each
+  displacement hit.
+- `s16_vslot.py <slot hex> <vtables...>` reads a vtable slot from the PE on disk.
+- Pair logs: `s16{off,on}_*` (54), `s16pl{off,on}_*` (55), `s16{koff,k1,k2}_*` (56) and
+  `s16kl{off,on}_*` (57).

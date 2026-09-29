@@ -201,7 +201,8 @@ constexpr bool kCarrierLaunchSkillBound = true;
 // Every miss on the reference rows is luaCamOnTargetExt's
 // Kill(Mission.CamScript), the luaDelay timetable calling it. False: the
 // entity is not killed and the call counts as unresolved, as before.
-constexpr bool kLuaKillScriptEntityBound = false;
+// ON: pairs held, six rows gameplay identical (section 57.1).
+constexpr bool kLuaKillScriptEntityBound = true;
 
 // Packet cc9_find_entity_case (docs/CONTROLLED_UNIT.md, "FindEntity matches
 // names case-insensitively"). 00925A90 hands each registry entry to 009251F0,
