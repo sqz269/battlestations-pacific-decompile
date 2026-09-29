@@ -1195,3 +1195,64 @@ t     = L < 0       ? fall
 1. A reset packet binds `+70h` and `+78h` with their stream-1 draws. These are `units.cpp` hunks
    and change the torpedo descent and release on every torpedo row.
 2. Then `009D0160` seeds `+98h` from them.
+
+## 18. Handoff queue (cc9-planes2, about 75% context)
+
+This session's switches:
+- `kApproachSectionPointsBound` is ON (14.4).
+- `kTorpedoGoAwayAimPointBound` is ON and gameplay-inert on the reference rows (15.4).
+- `kFlyToObstacleListBound` is committed OFF and not yet paired (`a9a1a4051`, section 16).
+- USN01 no longer reaches the goaway, and that is recorded as not a regression (15.5).
+
+**Environment at handoff:** runs fail at renderer start (`CreateDevice` hr `0x8876086a`,
+`logonui=1`). Check `query session` and run one 300-frame smoke before any pair.
+
+1. **The obstacle-list pair (next).**
+   - Run `python tools/pair_export.py --commit <tip> --flip kFlyToObstacleListBound=true` on a
+     synced tree.
+   - Rows: USN04 4700/4500 and E2 (USN04 9200/9000), in 14.4's launch form. JM05 is optional; its
+     torpedo goaways are inert.
+   - **Mechanism census:** the `summary mission fly-to obstacles` line. Expect dive_goaway
+     `rebuilds` > 0 and `kept` > 0 near the enemy ships. `avoid_ticks` > 0 means the avoid term ran,
+     and `side_writes` counts `009FDC48`.
+   - **Predictions (section 16):**
+     - The Vals' goaway turns change, with some side flips.
+     - The torpedo goaway stays inert (heading_ticks 0).
+     - Deaths move by up to 3 through the shared stream. Diff the per-entity death table.
+   - **Verdict rule:**
+     - Keep it OFF if `kept` = 0 on rows whose Vals break off beside an enemy ship, or if a row
+       with no goaway moves.
+     - Otherwise flip it. The flip is one line in src/game_hosts_units.cpp, so claim that file for
+       it alone.
+2. **Torpedo reset draws** (units.cpp hunks; section 17 has the reading).
+   - `+70h` at `009D0449`: `U(0.9, 1.1)` on stream 1, times
+     `min(desc+18Ch TravelSpeed, 0.75 * 007BCE20(unit))`.
+     - `007BCE20` is the minimum `bullet+DCh` over the unit's devices whose bullet kind is 0Ah.
+       Read `+DCh`'s authored key first.
+     - The host holds `closing_speed_bias_70 = 0`, and the engagement estimate adds `+70h` to the
+       closing speed (src/torpedo_approach_update.cpp:119). So this also moves `+F8h` and the torpedo
+       lead's projtime.
+   - `+78h` at `009D0451`-`009D0475`: `U(0.0, 0.25)` on stream 1, times `record+0h` TorpReleaseAlt.
+     The host stores the full row value.
+   - **Then `009D0160`** seeds `+98h = max(0, t + +9Ch)` with section 17's formula, called after
+     `009D02A0` in the reset (`009D0632`).
+     - **Get a second reader for the x87 stack**: the deceleration distance is subtracted twice
+       (`009D01EC`-`009D01F6`, then `009D0227`), and `dt` is not floored.
+     - `009D0160` has no Ghidra function. Its body is `009D0160`-`009D0292` (RET at `009D0291`,
+       then INT3); send the definition to the integrator.
+   - **Predict before running.** The draws change descent, release altitude and time on every
+     torpedo row: USN04, E2, JM05, USN13.
+3. **Carried over from section 13:**
+   - the stream-1 stand-in draws (`release_altitude_draw_00bd2f10`);
+   - a re-target zeroes projtime for one tick;
+   - the lead uses the hull heading in place of `00812090`.
+4. **Recorded, not queued:**
+   - `0093A570` has never removed a section in a run (14.4).
+   - The artillery draw's "never destroyed" is routed to gunnery.
+   - `FlyToObstacle`'s field names `extent_max` / `extent_sum` in
+     include/bsp/plane_fly_to_solver.hpp should be `aa_range_max` / `aa_damage_sum` (section 16).
+
+Scripts in the cc9-planes2 tree's `local\`:
+- `p2_runs.ps1`: the launcher (`-Variants`, `-Rows`, `-Tag`);
+- `p2_edit_obstacles.py`: the applied edit, with an optional root argument;
+- `p2_{off,on}_*` logs.
