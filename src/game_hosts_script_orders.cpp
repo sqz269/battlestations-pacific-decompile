@@ -95,7 +95,15 @@ inline constexpr bool kScriptedOrderNativesBound = true;
 //    at 008A4907. The planes' bots take it through 0099A3DD, with the site
 //    from the command target (GameUnitsHost::land_at_site_0099a3dd, after the
 //    delivery, as run_pilot_move_to_range does).
-inline constexpr bool kScriptedOrderNatives2Bound = false;
+// kScriptedOrderNatives2Bound gates SetShipMaxSpeed. ON (section 50.2): BSM01
+// moved as predicted (Whitney 494 -> 315 m, Tautog 187 -> 150 m, no death).
+// kPilotLandNativeBound stays OFF (section 50.2). IJN01's target
+// FindEntity("Airfield 02") answers nil in this host, which matches names
+// case-sensitively, while the image's 009251F0 matches case-insensitively
+// (the unit is "AirField 02"). So the IJN01 pair could not exercise the land
+// install. Re-pair once FindEntity is fixed.
+inline constexpr bool kScriptedOrderNatives2Bound = true;
+inline constexpr bool kPilotLandNativeBound = false;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
 constexpr bool kExplodeToPartsBound = true;
@@ -130,8 +138,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // kScriptedOrderNativesBound.
     {"UnitHoldFire", 0x008a6ac0u},
     {"NavigatorEnable", 0x008a7060u},
-    // Packet cc9_scripted_order_natives part 2: handled only with
-    // kScriptedOrderNatives2Bound.
+    // Packet cc9_scripted_order_natives part 2: SetShipMaxSpeed is handled only
+    // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
     {"SetShipMaxSpeed", 0x00890a10u},
     {"PilotLand", 0x008a47b0u},
     // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
@@ -468,10 +476,8 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "NavigatorEnable") == 0) {
         return kScriptedOrderNativesBound;
     }
-    if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0 ||
-        std::strcmp(binding->name, "PilotLand") == 0) {
-        return kScriptedOrderNatives2Bound;
-    }
+    if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
+    if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
     return true;
 }
 
@@ -1696,9 +1702,11 @@ int GameScriptOrdersHost::run_pilot_land(GameScriptOrderRow& row) {
         }
         pilot_land_tasks_ += units_.land_at_site_0099a3dd(leader, site_index);
     });
-    log_.notef("  PilotLand: %s -> %s (008A47B0 -> 0077D600 00E08FA0 -> 0099A3DD)",
-        name.c_str(), site_index < units_.count() ? units_.unit_row(site_index)->name.c_str()
-                                                  : "(no unit)");
+    log_.notef("  PilotLand: %s -> %s (target object=%d id=%d position=%d; 008A47B0 -> "
+        "0077D600 00E08FA0 -> 0099A3DD)", name.c_str(),
+        site_index < units_.count() ? units_.unit_row(site_index)->name.c_str() : "(no unit)",
+        target.object != nullptr ? 1 : 0, static_cast<int>(target.object_id),
+        static_cast<int>(target.position_valid));
     return 0;  // the binding pushes nothing
 }
 

@@ -4109,3 +4109,28 @@ targets are squadrons).
     so the death rows may move. Judge from the per-entity table.
 - **LOMP10 (9000 long).** The n reference has no `PilotLand` call on this row, so identical is
   expected unless the fighter-bomber landing check at `10_san_jose.lua:605` is reached.
+
+### 50.2 The pairs (`18b5e6710`, `local\s15_off2` / `local\s15_on2`; logs `local\s15{off2,on2}_<row>.log`)
+
+| row | pair_diff | result | against the prediction |
+| --- | --- | --- | --- |
+| BSM01 3000 | 3 | `SetShipMaxSpeed: Whitney unit+9C0h = 6.0000 stored=1`, and Tautog the same. Whitney ends at (2002.4, -1947.1) -> (2137.7, -2091.3), 494.11 -> 314.97 m; Tautog 187.19 -> 150.43 m. HenryPT (the controlled PT, AI-driven while the player is idle) moves 596.41 -> 603.30 m. Death rows identical (0); the unit table is otherwise identical. | as predicted |
+| IJN01 3000 | 1 | Two `PilotLand` calls, and both targets are unresolved (`-> (no unit)`), so no land task is installed. The two land commands still go through `0077D600` with a position target. Gameplay identical; the 9 death rows are identical. | **the mechanism was not exercised**; see below |
+| LOMP10 9000 | 1 | no call; only the known LOMP10 camera noise and the refill counter | as predicted |
+
+**Why IJN01's target is nil.** `Mission.AF2 = FindEntity("Airfield 02")` (`ijn_1_pearl.lua:526`),
+but the unit is "AirField 02". The two FindEntity implementations match names differently:
+- **The image matches case-insensitively.** `BSP_EntityRegistry_FindEntityByName` `00925A90`
+  delegates to `009251F0`, which compares the whole name through `00438E10`
+  (`BSP_CString_CompareInsensitive`) and path prefixes through `__strnicmp` at `00925273`.
+- **This host matches case-sensitively.** `FindEntity` looks the name up in a `std::map<std::string,
+  int>` (`src/game_hosts_lua.cpp`, `scene_entity_ids_.find(name)`).
+
+So in the original, AF2 is the airfield and the B-17s are ordered to land. This host answers nil.
+This is a units/Lua host gap (lua16's file), routed through the lead. It is not a PilotLand
+defect, but it means the land install was never exercised.
+
+**Switches.**
+- `kScriptedOrderNatives2Bound` (SetShipMaxSpeed) is flipped **ON**.
+- PilotLand moves to its own switch, `kPilotLandNativeBound`, which stays **OFF**. Re-pair IJN01
+  once FindEntity matches case-insensitively.
