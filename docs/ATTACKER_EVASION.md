@@ -548,3 +548,35 @@ behaviour over islands waits on the avoid-zone layer and ground height, which th
 with the sea.
 
 **Re-run on merged main, 2026-09-23.** After merging main 90bd82542 and a clean 120-frame probe, the pair was re-run as `local\VU0_9000.log` and `local\VU1_9000.log`. It matches V0 and V1 on every row above. Both switches stay ON.
+
+## 7. A killed shooter and the firing list (packet `cc9_gun_list_at_kill`, cc9-lua18, 2026-09-29)
+
+Routed from GUNNERY_OPEN_ITEMS 64: the host's stand-in for `[00F87278]` membership, the gunFire
+byte `plane_gun_fire_bc9`, is never cleared at the kill, while the image's `007CC580`
+(`BSP_Plane_OnKilled`, plane `vt[84h]`) removes the plane through `007C75A0`.
+
+**When the image drops a killed plane from the list.**
+- `0099EC40` itself does not test the shooter's state. Its only per-shooter skip before the
+  geometry is the own-squadron compare at `0099EC74`-`0099EC80` (`+9D4h` against `pilot+2FCh`).
+- `007CC580` is the plane's `vt[84h]`, which `00922FD0` tail-jumps in the world post-tick after
+  the removal has set `+5Eh` (docs/CONSTRUCT_WORLD.md, the death steps 5-6). `007CC2F0` also clears
+  `+C35h` at `007CC33E` once `+5Eh` is set, and its compare at `007CC345` unregisters.
+- So the image keeps a killed plane on the list until `+5Eh`, **unless** `lastGunState` `+C35h`
+  follows gunFire, which `007BB6E0` forces to 0 once `+5Dh` is set at the kill. The `+C35h` setter
+  is the unread property write (docs/PLANE_SUBSTITUTION_SWEEP.md), so which of the two holds is
+  **open**.
+
+**What the host does.** The scan's `state == nullptr || state->simulate != 0` test drops the
+shooter from the kill step on. `state->simulate` is `+5Dh`, and the kill stores it at `0092639B`
+under `kPlaneDeathFlagsBound` (ON), whenever the slot has scene flags (`motion_dispatch.creator`).
+So a stale `plane_gun_fire_bc9` is never counted after the kill. The host is either exact (the
+gunFire reading) or drops the dead shooter early (the `+5Eh` reading); it never counts one late.
+**No clear at the kill is added**: it would change nothing the scan reads.
+
+**Reach.** `plane_gun_fire_bc9`'s only writer is the dogfight gun tick, and no reference row installs
+a dogfight task: `summary mission gunfire avoidance ... flagged=0` on IJN01 3200/3000, USN13
+3200/3000 and USN04 9200/9000 (`local\l18_c0_*`, cc9-lua18 tree `29ab38651` plus the diagnostic),
+on IJN01 and LOMP10 9200/9000, and on every row of lua17's `l17_off_*` set. No "fighter gun" line
+prints in any of them. The env-gated diagnostic `BSP_GUN_LIST_TRACE=1` prints a killed shooter
+that still holds the byte, and whether the `+5Dh` test drops it; it printed nothing on the three
+`l18_c0` rows, as the reach predicts (vacuous there, not evidence of the test).
