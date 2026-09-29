@@ -2716,3 +2716,36 @@ move this pair shows may come from that swap and not from the image's sight test
 **Verdict: OFF, recorded.** Prediction 1 missed, and prediction 2's move has a different cause from
 the one written. Next step: fix the role swap in the gunnery lane (its own pairs, since the gunnery
 pass uses the same routine), then re-pair this switch on USN01 and USN02 with new predictions.
+
+## 32. Handoff (cc9-ships11, 2026-09-29, at about 70% context)
+
+**State of the lane.** Branch `agent/cc9-ships11`; no leases held. Switches:
+
+| switch | state | section |
+| --- | --- | --- |
+| `kShipAiApproachRetargetRingBound` | OFF by verdict (the ring is exact but unreachable in single player: `[class+570h]` = 0) | 27 |
+| `kShipAiEngageKamikazeGateBound` + `kShipAiEngageSubStateBound` | ON (paired together; the gate alone flips a death) | 29 |
+| `kAiTargetGroupDestroyedIdleBound` | ON (`src/game_hosts_ai.cpp`) | 30 |
+| `kShipAiApproachSightTestBound` | OFF by verdict | 31 |
+
+**New gunnery-host queries** (commits `264493a00`, `739f19aae`):
+`GameGunneryHost::unit_sees_unit_00864d90` and `unit_sees_point_00864680`.
+
+**Open, in order:**
+1. **The line-of-sight role swap** (gunnery lane). `line_of_sight_00864680` casts target ->
+   observer and measures the 25 m from the observer. The image casts observer (cache owner,
+   `[pass+50h]`, raised by Globals+94h) -> target (raised by +90h in `00864D90`) and measures from
+   the target. Evidence is in commit `264493a00`. After the fix, re-pair section 31 on USN01 and
+   USN02 with new predictions.
+2. **The no-ship hold of `nested+1228h`** as its own switch (section 27 open item).
+3. **Section 28 ranks 4, 6 and 7:** the carrier squadron exclusion `009FFEB0` (borders the plane
+   lane, so ask the lead), BigLandingShip `class+808h` at `00827F95` (JM08), and a submarine target
+   in the standoff choice.
+4. **Stand-ins that agree with the image only in single player:** the engage gate's avoid-zone
+   conjunct (`ShipAiEngageGate::avoid_zone_list` answers no zone), and the `[class+570h]` key
+   generally.
+
+**Useful files** in the cc9-ships11 tree: `local\s11_run.ps1 -Exe <exe> -Prefix <p> -Row
+tag:MISSION:frames:mission_frames` (launches in the background; wait on the log's final COM
+release line); logs `local\s11_*`. The new pair row is USNOS (section 29; launch line and mtimes
+there).
