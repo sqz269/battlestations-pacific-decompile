@@ -4349,7 +4349,7 @@ a record because the census of `+122Ch` writers was incomplete.
 - readers: `00852E45`, `00650785`, `0089408B`, `0069265B`, `009E4EED`.
 - The `009F1EAF..009F26FA` hits are `ebp+122Ch` on the approach frame's own object, not a unit.
 
-**`009DB8F0`, read whole (`009DB8F0`-`009DB9FA`, RET 4 then INT3).** `__thiscall(holder,
+**`009DB8F0`, read whole (`009DB8F0`-`009DB9FC` exclusive: RET 4 at `009DB9F9` is 3 bytes, INT3 at `009DB9FC`; named `BSP_ShipAi_SubmarinePeriscopePrepass` by the lead, bdcc793eb).** `__thiscall(holder,
 float seconds)`; ECX is `brain+0AC4h`, a 4-byte holder of `[brain+0AB4h]` (the unit). The float
 is never read. `009F11DD..009F11F7` allocate the holder only when `unit->vtable[5Ch](8)` is
 true at construction, so only a submarine has it. `009F1B57..009F1B70` call it after the
