@@ -93,3 +93,35 @@ releases and 0 dive-bomb releases on JM05 and USN13, and no bomber task row on J
 answer holds from the first census to the end. The rows where the reader and the stand-in
 disagree are USN13's type-167 squadrons and JM08's type-174 squadron. The switch changes no
 gameplay by itself: its consumer (`009FFEB0`) is not bound.
+
+## 4. The runs and the verdict (cc9-lua12, 2026-09-29): ON
+
+OFF is this tree's build of `fd28a0931` (`local\l12_ordoff_<row>.log`). ON flips
+`kSquadronOrdnanceReaderBound`.
+
+**The first ON run (`fd28a0931`) was a mechanism failure.** Every fighter squadron answered 1: 21
+squadrons across JM05, USN13 and JM08, against a stand-in of 0.
+- **Cause:** their bomb platforms have no entry in `Equipments[DefaultEquipment]`. F4F (`[101]`),
+  F6F (`[26]`) and F2A (`[133]`) author `DefaultEquipment = 0`, so the rack is not loaded. The
+  reader had taken a rack without an authored Ammo as loaded.
+- **Fix (`0fdb01ab3`):** each rack now carries its default equipment's Ammo, and a rack with no
+  entry holds nothing.
+- Those first-run logs were overwritten; the table above is from the run's own census lines.
+
+**The corrected run (`0fdb01ab3`, `local\l12_ordon2_<row>.log`):**
+
+| row | `pair_diff` | census |
+| --- | --- | --- |
+| JM05 | 1, gameplay identical | fighters 0; SB2C and the carriers' dive squadrons 1; TBD squadrons 2. Every answer equals the stand-in |
+| USN13 | 1, gameplay identical | nine fighter squadrons 0; fifteen `bruh` squadrons 2, nine of them over a stand-in of 5 (type 167) |
+| JM08 | 1, gameplay identical | fighters 0; four H6K Mavis squadrons 2 over a stand-in of 0 |
+
+- **Held:** the fighters, JM05 and USN13's type 167 (2 where the stand-in says 5).
+- **Missed: JM08's Mavis.** It answers 2 (torpedo), not the predicted 1: its rack carries a
+  torpedo (Mavis rack drops, docs/RELEASE_ISSUE_STAGE.md).
+- **Held: nobody runs dry.** No squadron's answer changes after its first census on any row.
+- **Verdict: ON.**
+  - The mechanism holds on the corrected build.
+  - Gameplay is identical because nothing consumes the answer yet.
+  - The stand-in is wrong for the type-167 and Mavis squadrons.
+  - The ships worker's `009FFEB0` binding is where the answer starts to matter.

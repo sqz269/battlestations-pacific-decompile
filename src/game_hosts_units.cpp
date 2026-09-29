@@ -4208,7 +4208,7 @@ struct GameUnitsHost::Impl {
     // 007EDAD0 from the planes' racks (the kind each carries, rounds left), and
     // a census logs every change. False: it answers the leader-class stand-in
     // the AI host used, and nothing is logged.
-    static constexpr bool kSquadronOrdnanceReaderBound = false;
+    static constexpr bool kSquadronOrdnanceReaderBound = true;  // ON: census held, gameplay identical (docs/SQUADRON_ORDNANCE_STATE.md 4)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
