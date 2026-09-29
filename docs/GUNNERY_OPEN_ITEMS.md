@@ -2952,3 +2952,31 @@ first check compares the two for every root chunk of the 88 files.
 - **DeRuyter's expected extent** is (16.50, 17.89, 173.97). 47.4 gives the inertia and the USN02
   prediction; pair it with the roll torque OFF first, as 47.3 says.
 - If 49.6 resolves to reading (b), step 3 stays OFF for good.
+
+### 49.8 Step 2 implemented (packet `cc9_mmod_hull_convex_box`)
+
+`include/bsp/mmod_hull_convex_box.hpp` and `src/mmod_hull_convex_box.cpp` implement 49.7's
+declaration. The build is registered in `cmake/startup.cmake`. The reader:
+- walks the model with the recovered StructuredReader, as `read_mmod_aux_point_items_0071b3e0` does;
+- reads every `ConvexObject` entry's points (006FAD70's front half: the `+8h` word when at least
+  0Ch bytes remain, then `006FA7F0`'s count and records);
+- takes the first `Hierarchy` `Item`'s `Resource` positions;
+- makes one shape per listed ConvexObject, as `0071B710` appends them.
+
+**Simplification.** The box is the raw vertex min/max widened by 0.02, not 49.7's float sequence
+through `00C5DEB0`. The two are equal up to float rounding, since every extreme vertex is on the
+hull. The hull's 0.001 dedup and its 4096-vertex limit are not reproduced.
+
+**Verification.** The Win32 Release build passes, and so do both CTests. One check was added to
+`tests/math_tests.cpp` (`reconstructed_math`). It reads this installation's
+`models/ships/us/deruyter.mmod` (mtime 2024-07-13 11:25:14 -0700) through `config/target.json`'s
+`binary` path, and skips rather than fails when the file is absent. It ran here with this result:
+
+| field | value |
+| --- | --- |
+| shape_count | 1 |
+| point_count | 117 |
+| extent | 16.5039 x 17.8909 x 173.9681 |
+| min.z | -96.92411 |
+
+Status: build-tested and fixture-tested on one model. Not bound; step 3 is the units lane.

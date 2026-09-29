@@ -1,4 +1,5 @@
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/land_and_structures.hpp"
@@ -123,6 +124,8 @@
 #include <limits>
 #include <vector>
 #include <string>
+#include <filesystem>
+#include <fstream>
 
 namespace {
 int failures = 0;
@@ -3584,6 +3587,48 @@ int main() {
               "unit+C20h and calls 007C0D90 on a countdown that has gone "
               "negative, and parks unit+C28h at 00CE69D0 even when a device "
               "answers vtable +1FCh true, because 007CEAEE precedes 007CEB00");
+    }
+
+    {
+        // cc9_mmod_hull_convex_box (docs/GUNNERY_OPEN_ITEMS.md 49.5-49.7): the hull body's box
+        // from this installation's models/ships/us/deruyter.mmod (mtime 2024-07-13 11:25:14
+        // -0700, 46,865,813 bytes). Hierarchy record 0 (GroupRoot_Deruyter, the node at
+        // instance+0Ch) lists one ConvexObject, resource 125 at file+2C5AC00, 117 points,
+        // raw box (-8.23195, -5.65156, -96.90411)..(8.23195, 12.19929, 77.02396); widened
+        // by 0.02 (00C57C40) the extent is 16.50 x 17.89 x 173.97. The game installation is
+        // outside the repository: the path comes from config/target.json's `binary`, and the
+        // check is skipped, not failed, when that file is absent.
+        std::filesystem::path model;
+        {
+            const std::filesystem::path config =
+                std::filesystem::path(__FILE__).parent_path().parent_path() / "config" / "target.json";
+            std::ifstream in(config);
+            const std::string config_text((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
+            const std::size_t key = config_text.find("\"binary\"");
+            const std::size_t open = key == std::string::npos ? key : config_text.find('"', config_text.find(':', key));
+            const std::size_t close = open == std::string::npos ? open : config_text.find('"', open + 1);
+            if (close != std::string::npos) {
+                model = std::filesystem::path(config_text.substr(open + 1, close - open - 1)).parent_path() /
+                        "models" / "ships" / "us" / "deruyter.mmod";
+            }
+        }
+        std::ifstream file(model, std::ios::binary);
+        if (!file) {
+            std::cout << "skipped: deruyter.mmod not found (" << model.string() << ")\n";
+        } else {
+            const std::vector<std::uint8_t> bytes((std::istreambuf_iterator<char>(file)),
+                                                  std::istreambuf_iterator<char>());
+            bsp::MmodHullConvexBox box;
+            std::string error;
+            const bool ok = bsp::read_mmod_hull_convex_box(bytes, box, error);
+            check(ok && box.shape_count == 1 && box.point_count == 117 &&
+                      std::fabs((box.max.x - box.min.x) - 16.5039f) < 1e-3f &&
+                      std::fabs((box.max.y - box.min.y) - 17.8909f) < 1e-3f &&
+                      std::fabs((box.max.z - box.min.z) - 173.9681f) < 1e-3f &&
+                      std::fabs(box.min.z + 96.92411f) < 1e-3f,
+                  "0071B710/00938F61: deruyter.mmod keeps only record 0's hull ConvexObject, "
+                  "box widened by 0.02 per 00C57C40");
+        }
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
