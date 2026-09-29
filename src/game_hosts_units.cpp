@@ -781,6 +781,10 @@ struct GameUnitSlot {
     int pg_trigger_ticks{0};
     int tg_ticks{0};    // census: 009FC7C0 ticks outside the dogfight arm
     int tg_enemy_ticks{0};   // census: of those, ticks with a non-empty +50h list
+    int tg_untasked_ticks{0};   // census: eligible thinks with no modelled task
+    int tg_cone_ticks{0};       // census: gun ticks with a non-zero cone
+    int tg_steer_ticks{0};      // census: fine-aim steers outside dogfight
+    float gun_cone_40{0.0f};    // (approach+1Ch)+40h outside dogfight, this think
     int pg_trigger_rises{0};
     int df_head_on_ticks{0};
     int pc_air_brake_overrides{0};
@@ -4419,6 +4423,16 @@ struct GameUnitsHost::Impl {
     // True: every AI PilotFires plane flying a modelled non-dogfight task runs it.
     // False: only the dogfight arm does.
     static constexpr bool kTaskGunControllerAllTasksBound = true;  // ON: DOGFIGHT_GUN 8
+    // Packet cc9_task_gun_cones (docs/DOGFIGHT_GUN.md 9): the states' stores to the gun
+    // controller's cone (approach+1Ch)+40h outside dogfight: Angle_MoveTo at 009C1B2D,
+    // 009C2584, 009C2831, 009BFD2B, 009C4443, 009D0AD4, 009D11BA; Angle_GoAway at
+    // 009C4E2C, 009D1121. The gun tail zeroes it (009FCE69). True: the cone feeds the
+    // finder and the fine-aim steer gate. False: 0 outside dogfight.
+    static constexpr bool kTaskGunConeBound = false;
+    // Same packet: 0099A170 builds a task for every command class (009C3C40 for none),
+    // so every AI PilotFires plane's bot ticks 009FC7C0. True: planes with no modelled
+    // task tick it too, with cone 0. False: only the modelled tasks.
+    static constexpr bool kTaskGunUntaskedPlanesBound = false;
     // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
     // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
@@ -5500,6 +5514,17 @@ struct GameUnitsHost::Impl {
     // arm already reads at 007DB760. docs/BOT_SPEED_CLASS_ROWS.md.
     // Packet cc9_dogfight_moveto: VehicleClass[id].BSPPilotFires = 1 when any
     // platform with at least one gun authors PilotFires = true, else 0.
+    // tuning+66Ch..678h, Pilot/AutoStrafeAngle (radians), 0 without the globals.
+    float strafe_cone_tuning(int off) const {
+        if (!lua.plane_globals_loaded()) return 0.0f;
+        const bsp::GameTuningBlock& g = lua.plane_globals();
+        switch (off) {
+            case 0x66C: return g.pilot_auto_strafe_angle_angle_prepare;
+            case 0x670: return g.pilot_auto_strafe_angle_angle_move_to;
+            case 0x674: return g.pilot_auto_strafe_angle_angle_go_away;
+            default: return g.pilot_auto_strafe_angle_angle_strafe;
+        }
+    }
     bool pilot_fires_flattened{false};
     void ensure_pilot_fires_flattened() {
         if (pilot_fires_flattened) return;
@@ -6271,6 +6296,10 @@ struct GameUnitsHost::Impl {
             unit.plane_air_brake_mode_2d8 = 1;       // 009BFD1C, dword
         }
         done("BotStateFollow::command_step", 0x009bee30u);
+        if constexpr (kTaskGunConeBound) {
+            // 009BFD2B-009BFD36: the fly-to arm's cone = Angle_MoveTo.
+            unit.gun_cone_40 = strafe_cone_tuning(0x670);
+        }
 
         if ((unit.db_follow_tick_ticks % 400) == 1) {
             log.notef("  follow law %-12s n=%d R=%.1f D=%.1f "
@@ -15325,9 +15354,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.lua.plane_globals_loaded()) {
                             strafe = owner_.lua.plane_globals().pilot_auto_strafe_angle_angle_strafe;
                         }
+                        // Outside dogfight, the state's cone (kTaskGunConeBound).
+                        // SUBSTITUTION, labelled: the gate compares the lead with
+                        // the unit's forward, not with 009FABE0's +68h direction.
+                        const bool task_cone = GameUnitsHost::Impl::kTaskGunConeBound &&
+                            !unit_.dogfight_task_installed;
+                        if (task_cone) strafe = unit_.gun_cone_40;
                         const float cone = 1.0f - z / d;
                         if (!(strafe > cone)) return false;              // 009FCCAB
                         if (unit_.df_gun.hold_4c > 0.0f) return false;   // 009FCCB4
+                        if (task_cone) ++unit_.tg_steer_ticks;
                         float e_h = x / d, e_v = y / d;
                         AimTermsState& terms = aim_terms_state();
                         // 009FCCD7: 009FA7E0 on gun+4h, then 009FCCDC-009FCD8A add its
@@ -15692,6 +15728,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.lua.plane_globals_loaded()) {
                                 angle_strafe = owner_.lua.plane_globals()
                                     .pilot_auto_strafe_angle_angle_strafe;
+                            }
+                            if (GameUnitsHost::Impl::kTaskGunConeBound &&
+                                !unit_.dogfight_task_installed) {
+                                angle_strafe = unit_.gun_cone_40;
                             }
                             fp.cone_b8 = (0.4f > angle_strafe * 1.25f) ? 0.4f : angle_strafe * 1.25f;
                             fp.inner_c0 = gi.lateral_cap_38;
@@ -16772,6 +16812,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_state.pitch_mode_2d0 = 2;
                         }
                         owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                        }
 
                         // 009C1B1C-009C1B23: `LEA ECX,[ESP+1Ch]` is the target
                         // world position step 1 parked there, so 009F9E40
@@ -17032,6 +17076,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // throttle this state commands is the literal 1.0 at
                         // 009C4413, already modelled above.
                         unit_.plane_air_brake_mode_2d8 = 0;   // 009C4434
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009C4443-009C444E: cone = Angle_MoveTo.
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                        }
                     }
 
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
@@ -17215,7 +17263,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // normalised (cos, tan(pitch), sin) of the compass heading
                         // to (approach+1Ch)+68h..70h. 0099B630 returns cmd+2BCh
                         // while cmd+2D0h is set (it is, 009C4BE8). This host models
-                        // no approach+1Ch object.
+                        // no approach+1Ch object; kTaskGunConeBound delivers the cone.
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);
+                        }
                     }
 
                     // 009C47D0, `void __thiscall(goaway state)`, no stack argument,
@@ -18324,6 +18375,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                    ctx.current == bsp::TorpedoState::kFollow) {
                             run_move_to_tick_009c18c0();
                         } else if (ctx.current == bsp::TorpedoState::kAttackRun) {
+                            if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                                // 009D0AD4-009D0ADF: cone = Angle_MoveTo, on every
+                                // path of 009D07B0 (no branch passes it).
+                                unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                            }
                             if constexpr (GameUnitsHost::Impl::kPilotStateHeadingWritesBound) {
                                 run_torpedo_attackrun_heading_009d07b0(
                                     dt, before_state != bsp::TorpedoState::kAttackRun);
@@ -19298,6 +19354,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_state.pitch_mode_2d0 = 2;
                         }
                         owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                        }
                         if constexpr (GameUnitsHost::Impl::kPilotStateHeadingWritesBound) {
                             // 009C1B1C-009C1B23: 009F9E40 at the +2Ch target's
                             // world position (009C18EC-009C1913). The +2Ch
@@ -19432,6 +19492,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.torpedo_goaway_ticks;
                         if (r.arm >= 1 && r.arm <= 4) {
                             ++unit_.torpedo_goaway_arm_ticks[r.arm];
+                        }
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009D111C-009D112C (the window) and 009D11B5-009D11C5
+                            // (after it, high); the low arm stores nothing.
+                            if (r.arm == 1 || r.arm == 2) {
+                                unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);
+                            } else if (r.arm == 3) {
+                                unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                            }
                         }
 
                         // 009FB800(altitude, 1.0). The altitude command is the
@@ -21695,6 +21764,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_state.pitch_mode_2d0 = 2;
                         }
                         owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                        }
                         // 009C1B1C-009C1B23: 009F9E40 at the target point, the
                         // host's pi/2 - atan2 bearing (the dive-bomb substitution).
                         float b = static_cast<float>(bsp::dive_bomb_constant::kHalfPi -
@@ -22318,6 +22391,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         // 009C282C-009C285F: dir+40h = Angle_MoveTo tuning+670h, then
                         // 009FABE0(009A1A20(0099B630())); no direction object here.
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                        }
                         owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
                         owner_.done("BotStateMoveToCircle::tick", 0x009c26d0u);
                     }
@@ -22371,6 +22448,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_mode_2cc = 2;   // 009F9EC1
                         // 009C257F-009C25AD: dir+40h = Angle_MoveTo, then 009FABE0;
                         // this host models no approach+1Ch direction object.
+                        if constexpr (GameUnitsHost::Impl::kTaskGunConeBound) {
+                            // 009C1B2D: (approach+1Ch)+40h = Angle_MoveTo (tuning+670h).
+                            unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x670);
+                        }
                         owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
                         owner_.done("BotStateMoveToTask::tick", 0x009c2430u);
                     }
@@ -22543,14 +22624,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.dive_bomb_task_installed ||
                                     unit_.moveto_task_installed ||
                                     (kSquadronLandTaskBound && unit_.land_task_installed);
-                                if (!unit_.dogfight_task_installed && has_task &&
+                                const bool eligible = !unit_.dogfight_task_installed &&
                                     !unit_.generic_suppress_520 &&
                                     (!GameUnitsHost::Impl::kPilotFiresBound ||
-                                     unit_.plane_pilot_fires_c24)) {
+                                     unit_.plane_pilot_fires_c24);
+                                if (eligible && !has_task) ++unit_.tg_untasked_ticks;
+                                if (eligible && (has_task ||
+                                    GameUnitsHost::Impl::kTaskGunUntaskedPlanesBound)) {
                                     ++unit_.tg_ticks;
+                                    if (unit_.gun_cone_40 != 0.0f) ++unit_.tg_cone_ticks;
                                     df_gun_tick_009fc7c0(elapsed);
                                     if (!unit_.nb_enemy_50.empty()) ++unit_.tg_enemy_ticks;
                                 }
+                                // 009FCE69: the tail zeroes the cone every tick.
+                                unit_.gun_cone_40 = 0.0f;
                             }
 
                             if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
@@ -26988,7 +27075,12 @@ void GameUnitsHost::report() {
                     }
                     if constexpr (Impl::kTaskGunControllerAllTasksBound) {
                         int planes = 0, ticks = 0, tb = 0, tf = 0, rises = 0, enemy = 0;
+                        int untasked = 0, untasked_planes = 0, cone_ticks = 0, steer_ticks = 0;
                         for (const auto& slot : host.slots) {
+                            untasked += slot->tg_untasked_ticks;
+                            if (slot->tg_untasked_ticks > 0) ++untasked_planes;
+                            cone_ticks += slot->tg_cone_ticks;
+                            steer_ticks += slot->tg_steer_ticks;
                             if (slot->dogfight_task_installed || slot->tg_ticks == 0) continue;
                             ++planes;
                             ticks += slot->tg_ticks;
@@ -26998,14 +27090,20 @@ void GameUnitsHost::report() {
                             enemy += slot->tg_enemy_ticks;
                             if (slot->df_gun.bursts == 0) continue;
                             host.log.notef("  task gun %-12s ticks=%d bursts=%d fire_ticks=%d "
-                                "trigger_rises=%d finder_scans=%d", slot->row.name.c_str(),
+                                "trigger_rises=%d finder_scans=%d cone_ticks=%d steer_ticks=%d",
+                                slot->row.name.c_str(),
                                 slot->tg_ticks, slot->df_gun.bursts, slot->df_gun.fire_ticks,
-                                slot->pg_trigger_rises, slot->nb_scans);
+                                slot->pg_trigger_rises, slot->nb_scans, slot->tg_cone_ticks,
+                                slot->tg_steer_ticks);
                         }
                         host.log.notef("summary mission task gun (all tasks): planes=%d "
                             "ticks=%d enemy_list_ticks=%d bursts=%d fire_ticks=%d trigger_rises=%d "
                             "(00999979 -> 009FC7C0, packet cc9_task_gun_controller_all_tasks)",
                             planes, ticks, enemy, tb, tf, rises);
+                        host.log.notef("summary mission task gun cones: cone_ticks=%d "
+                            "steer_ticks=%d untasked_planes=%d untasked_ticks=%d "
+                            "(packet cc9_task_gun_cones)", cone_ticks, steer_ticks,
+                            untasked_planes, untasked);
                     }
                     int bursts = 0, fire_ticks = 0;
                     for (const auto& slot : host.slots) {
