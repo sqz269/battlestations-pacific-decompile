@@ -532,6 +532,20 @@ struct AirOpsDeck {
     float runway_width{0.0F};
     float runway_length{0.0F};
     bool runway_from_scene{false};
+    // 006D5220 kind 1 (the scene property bag): the "Hangar %d" (00CF8F08)
+    // sub-bags, i = 1..10, with `Object`, `EntryPath` (00CF8EF4) and `ExitPath`
+    // (00CF8EE8). The image appends a record (airfield+830h, stride 0Ch) only
+    // when the object reference names an entity; the two paths go through
+    // 007AC9D0 into path interfaces. This process keeps the authored names (the
+    // last path component of each reference) and resolves them when a plane asks,
+    // because the path entities are loaded after the airfield. Packet
+    // cc9_land_park_taxi, docs/AIRFIELD_TAXI.md 3.
+    struct HangarNames {
+        std::string object;
+        std::string entry_path;
+        std::string exit_path;
+    };
+    std::vector<HangarNames> hangars;
 };
 
 // 00895D20 IsReadyToSendPlanes. The whole rule: an airfield whose entity+720h

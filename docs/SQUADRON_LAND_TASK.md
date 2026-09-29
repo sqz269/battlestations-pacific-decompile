@@ -2320,6 +2320,277 @@ here). From then on it takes free-flight steps (`free_steps=1658`) with no floor
 **Verdict.** `kLandingLandedArmBound` flips ON. Park's taxi (packet `cc9_land_park_taxi`) is next.
 The sinking of a plane that leaves the strip is recorded in section 6.
 
+## 5s. `land/park`: the taxi to the hangar (packet `cc9_land_park_taxi`, cc9-lua14, 2026-09-29)
+
+### What was read (disk listing, whole)
+
+- **The rule** `009B3CF0`.
+  - Head arm `009B3D0B`-`009B3D3B`: `+900h` 4 or 5 while the state is neither park (`+620h`) nor
+    abort (`+64Ch`) enters park.
+  - In park the rule has no arm (`009B3E02` -> `009B3EA7`).
+  - `009B3770`'s arm for "any other state": park's done byte enters abort (`009B37A7`).
+  - Abort's `+66Dh` enters park (`009B3E3B`).
+- **Enter `009B21A0`**: `+1Ch` = 0.0, `+18h` = 0, `+28h` = 3.0. **Exit `009B21C0`**: `+18h` = 0.
+- **The tick `009B22C0`-`009B2C68`** (`__thiscall(park, dt)`, `RET 4`). The ESP offsets were
+  tracked from `SUB ESP,3Ch` and the four pushes; the arguments of `00419010` were taken from its
+  pushes.
+  - `[approach+1Ch]+40h` = 0.0.
+  - **Done when attached with the owner gone:** attached means `+BF8h` and `+BF4h`; gone means
+    the owner null or `+5Dh` set (`009B22DC`).
+  - `approach+B4h` = 0. Bank 0 with `+2CCh` = 1. Pitch 0 active with `+2D0h` = 0.
+  - **The two site calls:**
+    - `q` = `006CF520`: point 0 of `006D2780`'s entry path, in the airfield frame. Only its z is
+      kept.
+    - `t` = `006CF420`: the last point of `006D2640`'s exit path, or the plane's **world** position
+      when no hangar qualifies.
+  - `(px, pz)` = plane `+A4h`/`+ACh`. After `007C71E0`'s re-parent (5k) these are the position in
+    the airfield frame.
+  - **The carrier flag** is `approach+30h vtable[5Ch](9)`. This section covers the airfield arm
+    (flag clear).
+  - **Retarget:** when not attached and the target moved more than 10 m (`|task+20h/+24h - t|^2 >
+    100`, `00D7A220`), call `007B9000` (`+C01h` = 2), then `007C1680`. Then `task+20h/+24h = t`.
+  - `009B21D0`, the done test:
+    - it is skipped on the path (`+900h` 5) and when the byte is already set;
+    - unless `+28h >= 0` and the plane is attached, it sets done;
+    - otherwise it sets done when `t.z < pz` (`009B1E30` is false for an airfield), or when
+      `|00438B10(heading, holder+88h)| > pi/2`.
+  - `dx = t.x - px`, `dz = t.z - pz`, `v = vtable[38h]` (the speed).
+    `base = AirField/MoveSpd` (`+184h`, KMH 35).
+  - **The speed request:**
+    - `hi = max(base, 007C4830 x 0.6)`, where `007C4830` is StallRangeMax x StallSpd;
+    - `spd = 00419010(5 base, base, 10 base, hi, dz)`;
+    - beyond `dz > 100` it is `max(spd, 0.85 v)`.
+  - **`plane+910h` = 1** when `q.z - pz` is under 20, or under 28 for a class 10h/16h plane
+    (`00D1FF80`).
+  - **Slow** means `v <= 1.5 base`. When slow:
+    - `rate = max(RunwayYawTurnSpdMul x class+1B0h YawSpd, AirField/MinTurnSpd)`;
+    - `qd = (1.5 / rate) x RunwayYawTurnSpdLimit/1`;
+    - when `dz < qd + 30`, `spd` is set to RunwayYawTurnSpdLimit/1;
+    - when also `dz <= qd`, the plane is on the path.
+  - **Joining and leaving the path:** `007C16F0` (4 -> 5) or `007C1680` (5 -> 4) whenever
+    `+900h == 5` disagrees with that.
+  - **The steer vector `(sx, sz)` and the distance `f18`:**
+    - Not slow: `(0, dz)`, with `f18 = dz`.
+    - Slow and on the path: `(clamp(dx, +-15), dz)`, with `f18 = |dx|` (`00415690`). When
+      `|dx| < 3`, `007B96C0` sets `+C00h` = 1 and calls `00951F40(0)`, which detaches the spatial
+      node and hides it: the plane is in the hangar.
+    - Slow and off the path: `w = (holder+B0h - class+A4h Width) / 2`,
+      `e = max(|px| - w, 0)` signed toward the centre line, and `(e, min(dz, max(3, 18 - |e|)))`,
+      with `f18 = dz`.
+  - **The spot test:** off the path with `+910h` clear, `006CF5B0(plane, 1, t.x, t.z)`. A false
+    answer zeroes `spd`.
+  - **Heading:** `des = wrap(pi/2 - atan2(sz, sx))`, and the plane's own heading comes from
+    `+94h`/`+9Ch` in the same form. `err = 00438B10(des, cur)`.
+  - **The speed scale:** `a = min(|sx| x 5 + 30, 80)` degrees and
+    `spd *= 00419010(3 deg, 1.0, a, 0.1, |err|)`.
+  - **The yaw:**
+    - It is computed on the path, or when `f18 > 0.5` and (`spd > 0` or `v > 1.389`):
+      `00419010(-YawSpd/2, -1.1, YawSpd/2, 1.1, err)`.
+    - It is then shrunk toward 0 by a deadband `max((5 - f18) x 0.2, 0.1)`.
+    - Otherwise the yaw is 0.
+  - **Outputs:** yaw desired and active with `+2D4h` = 0; speed `+2B4h` with `+2B0h` = 1 and
+    `+2D8h` = 1.
+- **`006CF5B0`** (`RET 10h`):
+  - With the enable byte, `+904h` set and `+910h` clear, a plane 15 to 35 + v m short of the target
+    z is refused when an occupant with `+904h` clear (an arrival) is within 30 m of that z.
+  - **Every other path ends in `006CE610`.**
+- **`006CE610`:** for each occupant `o` with `006CDF70(plane, o)`:
+  - it answers false if `006CDF70(o, plane)` is false;
+  - otherwise it takes the holder-frame `z' = L/2 - l.z` and `x' = -l.x` (`006BEFF0`), and
+    answers false when `o.z' < plane.z' - 1.5`, or when `o.z'` is within 1.5 with `|o.x'| <=
+    |plane.x'|`.
+- **`006CDF70(a, b)`** (`__stdcall`, `RET 8`) answers "b is in a's way". It is false when a is
+  airborne and b has landed. Otherwise:
+  - `D = max(h, g x max(f, |v_a| - 4.1667)) + a.Length / 2`, where:
+    - `f` = 1.8 when b is a 10h/16h class, else 0;
+    - `g` = 5 for a 10h/16h class, else 2;
+    - `h` = 12 for a 10h/16h class, else 2.
+  - `l` = b in a's frame, and `R = D + b.Length / 2`.
+  - `z = l.z`, forced to -1 for a squadron mate with a higher `+9D8h` when `0 <= z < 1`.
+  - For b landed, a not, and a off any holder: `R = z + 10` and `x = max(0, |l.x - 10|)`. The zero
+    guard reads a denormal double at `00CF8918`, so it never fires.
+  - The answer is `z >= 0 && R > z && |x| < b.Width x 0.8 + a.Width / 2`.
+- **`007C16F0`/`007C1680`:** `+900h` 4 <-> 5, `+C04h` = -1.0, and with `classDesc+198h`,
+  `+904h = +908h > 5` and `+C18h` = 3. `007C11E0(0)` is not carried.
+- **The hangars:** `006D5220` kind 1 reads `"Hangar 1".."Hangar 10"` sub-bags.
+  - This installation's LOMP10 scene (`universe/scenes/missions/usn/LOMP/10_san_jose.scn`, mtime
+    2024-08-09) authors one hangar on CB4_AF:
+    - `CB4_AF_Hangar`, with `CB4_AF_entrypath1` and `CB4_AF_exitpath1`;
+    - three points each.
+  - By hand from the scene frames, the airfield-frame points are:
+    - the exit path's last point at about (44.4, -20.6);
+    - the entry path's point 0 at about (44.3, -20.0).
+  - The runway runs along +z with |z| < 200, and the planes stop at z = -125 to -150.
+
+### The binding, behind `kLandParkStateBound` (committed OFF)
+
+- **Bound:**
+  - the rule's three arms, the enter and the exit;
+  - the tick's airfield arm, with `009B21D0`;
+  - `006CF420`/`006CF520` over the scene's hangars;
+  - `006CF5B0`, `006CE610` and `006CDF70`;
+  - `007C16F0`/`007C1680`;
+  - `+910h`, `+C00h`, `+C01h`.
+- **Not carried, labelled:**
+  - The carrier arm.
+  - `00951F40`'s hide: `+C00h` is set and counted, and the plane stays visible and simulated.
+  - Hangar `object+370h > 0` is read as "the hangar unit is not dead".
+  - The re-parent: positions and headings go through the airfield frame.
+  - Abort's on-ground arm stays refused. It still sets `+21h`, which now leads back to park.
+  - The ground steering laws: the runway steering band `007DA380` and the rate law's ground arm
+    `007DA542`. The yaw request reaches the free-flight rate law, as in 5q.
+- **New lines:**
+  - `land park trace` every 20 park ticks;
+  - `summary land park` per plane;
+  - `air ops hangar` at scene load.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is the committed tree. ON flips `kLandParkStateBound`.
+
+1. **Every landed plane enters park at the think after its touchdown.** That is all ten on CB4_AF,
+   with `no_hangar=0`.
+2. **The heads no longer stop at 154/166/257 s.**
+   - They keep rolling, at up to `hi` while more than about 97 m short of z = -20.6. The request
+     then falls to MoveSpd (9.7 m/s), and to RunwayYawTurnSpdLimit/1 (6.9 m/s) within 35 m.
+   - They join the path (`joins >= 1`) about 5 m short, near local z = -25.
+3. **On the path they turn right toward x = 44 and taxi into the hangar** (`hangar > 0`, `c00=1`),
+   each within 60 s of its touchdown.
+   - This depends on the yaw request turning a plane on the ground through the free-flight rate
+     law. That law is not the image's ground law.
+   - If the planes do not turn (they creep straight at the scaled speed of about 0.7 m/s), that is
+     recorded as the missing ground steering, not as a misreading of park.
+4. **Followers queue behind a plane still on the runway ahead.** `spot_refused > 0` for at least
+   one follower. None of them runs through a plane ahead.
+5. **B-25 01|.-2 no longer stops on top of B-25 01**, so its 325.94 s contact loss and sink
+   (5r) do not happen.
+6. **Deaths identical (0); USN01 gameplay identical (exit 1).** LOMP10 moves (exit 3).
+
+- **Mechanism failure:** any of:
+  - a plane in park with `no_hangar > 0`;
+  - a park <-> abort loop (`from_abort > 5`);
+  - a lift-off request or a sink below the wheels by more than 1 m;
+  - a plane passing the target z in state 4 (`done > 0`).
+- **Flip rule:**
+  - ON when 1 and 2 hold and at least the heads reach the path without a mechanism failure.
+  - If the turn fails only for lack of the ground steering, park stays OFF and the ground laws
+    come next.
+
+### The pair and the verdict (cc9-lua14, 2026-09-29): mechanism failure, park stays OFF
+
+- OFF is `a2551c4a3` as committed (`local\l14_poff_<row>.log`).
+- ON is the same commit exported with `kLandParkStateBound` true (`local\l14_pon`,
+  `local\l14_pon_<row>.log`).
+- **Refactor check:** 5r's ON log against this OFF is gameplay identical (exit 1). Only the new
+  `air ops hangar` line moves.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0) |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+The scene's hangar is found: `air ops hangar: unit=CB4_AF Hangar 1 object=CB4_AF_Hangar
+entry=CB4_AF_entrypath1 exit=CB4_AF_exitpath1`. The target and the queue origin come out at
+(44.4, -20.6) and z = -20.0, as computed by hand.
+
+**The predictions, one by one.**
+1. **Held.** All ten planes enter park at the think after their touchdown, with `no_hangar=0`.
+   The logged lengths and widths are:
+   - P-40: 10.6 by 12.0;
+   - P-38: 11.6 by 12.0;
+   - B-25: 17 by 21.
+2. **Held for Warhawk 01, failed for the others.**
+   - Warhawk 01 rolls on from -141.5, at 27.6 m/s requested. It slows to the 6.94 m/s request
+     inside 35 m, sets `+910h` at z = -36.6 and joins the path at z = -27.2 (165.21 s).
+   - Lightning 01 enters park with a heading error of 0.236 rad. It gets full right yaw (1.0), yet
+     drifts left: x = -1.7, -6.7, then -11.0 at 171.71 s, with the error growing to 0.73.
+   - It then leaves the 20 m strip, loses contact, and `009B21D0` sets done.
+3. **Mechanism failure.**
+   - On the path Warhawk 01 turns very slowly: its error stays at 1.3 to 1.4 rad for 60 s. It
+     reaches `|dx| < 3` at 225.11 s at local (41.5, -1.0) (`007B96C0`).
+   - It is still simulated, so it drives on (x = 51 at 243 s), leaves the path and falls into the
+     loop below.
+4. **Queueing held.** `spot_refused` is 2 and 5 for two followers.
+5. **Moot.** Every plane leaves the strip.
+
+**The mechanism failure is the park <-> abort loop.**
+- Done sends the plane to abort. Abort's tick head requests throttle 1.0, and its on-ground arm
+  (refused) sets `+21h`, which sends it back to park. Park is done again at once.
+- The planes accumulate 750 to 1400 loops each (`from_abort`). The loops' throttle pulses drive
+  them off the airfield at up to 74 m/s: Lightning 01 is at local z = 700 by 191.7 s and at
+  22 km by the end.
+- There are lift-off requests (111 and 144 on two planes), and one sinks to `min_bfc = -45`.
+
+**Why.** The park reading is not the part that fails. The failure is in what this host lacks
+underneath it:
+1. **The ground steering.** The yaw request reaches the free-flight rate law, because the runway
+   steering band `007DA380` and the rate law's ground arm `007DA542` are not carried (5q). There
+   it does not hold a heading on the ground, and on Lightning 01 it turns the wrong way.
+2. **Abort's on-ground arm** (`009B0E74`-`009B0F93`: pitch `class+1ECh x 0.5` and a ground
+   heading) is refused. Only its throttle 1.0 and `+21h` act.
+3. **`00951F40(0)`**, the hangar's detach and hide, is not carried. A plane in the hangar keeps
+   driving.
+
+**Verdict.** `kLandParkStateBound` stays OFF, recorded as a mechanism failure. The reading
+(the tick, `009B21D0`, the site calls and the scene's hangars) stands and is kept behind the
+switch. Next, in order: the ground laws `007DA380`/`007DA542`, abort's on-ground arm, and
+`00951F40`'s effect on a hidden plane. Then re-pair park.
+
+## 5t. The ground steering: the rate law in controller mode 1 (packet `cc9_plane_ground_steering`, cc9-lua14, 2026-09-29)
+
+**The tag.** `ctl+FCh` is written by each law's entry, not by a selector
+(docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md): `007DCD24` in the ground law `007DCCF0` stores 1.
+This host ran the rate law with mode 0 under the ground law too (5q), and that has three
+consequences:
+- the roll term survives, where `007DA8D9` zeroes it in mode 1;
+- the bank-yaw coupling stays on, where `007DA380`'s byte is 0 in mode 1;
+- the yaw factor is the free-flight authority.
+
+**`007DA380`'s mode-1 arm, `007DA542`-`007DA6E3`**, read whole from the disk listing. The frame
+was tracked through the three `00419010` calls, which are `RET 14h`:
+
+- **The first two outputs:** `*outA` = the authority (`007D9A70`); `*outB` = 1.0.
+- **Below the band** (`ctl+6Ch v < [00F8738C]`, tuning `+2ACh`, which holds
+  RunwayYawTurnSpdLimit/1 in this build):
+  - `r = max(YawSpd x RunwayYawTurnSpdMul, 0.87266 (00D057E0) / YawSpd)`;
+  - `r` is halved for a 10h/16h class with `+904h` set (`007DA5D8`);
+  - `blend = 00419010(Limit/1, r, Limit, 1.0, v)`;
+  - `a = 00419010(0.01, 15.0, 0.1, 6.0, thr) / 3.6` and
+    `b = 00419010(0.001, 6.0, 0.1, 1.0, thr) / 3.6`, where `thr` is `unit+9F0h` and 3.6 at
+    `00D06588` converts km/h to m/s;
+  - `*outB = blend x 00419010(b, 0, a, 1.0, v)`. There is no steering authority below `b`
+    (1.7 m/s with the throttle closed) and full authority above `a` (4.2 m/s closed).
+- **The byte:** `*outByte` = 0.
+
+`outB` is the yaw factor at `007DA95B` (the turbo path's overwrite at `007DA7ED` needs
+`unit+5Dh`).
+
+**Binding, behind `kPlaneGroundSteeringBound` (committed OFF).** Under the ground law
+(`run_core_law_007db680(step, true)`), `control_step_007da710` passes:
+- controller mode 1;
+- `outB` as the second factor;
+- no coupling.
+
+The diagnostic is `summary plane ground steering`.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000 (park OFF), written before any ON run
+
+1. **Identical up to Warhawk 01's touchdown (153.15 s).** The switch acts only under the ground
+   law. All ten landed planes then show `steps > 0`.
+2. **The roll-outs still stop on the runway.**
+   - Each stop is within 1 s and 10 m of OFF's stop.
+   - No landed plane leaves the strip. There is no `plane ground contact lost` line.
+   - B-25 01|.-2's creep stops, and with it the 325.94 s sink of 5r: `min_bfc > -2` for every
+     plane.
+3. **Deaths identical; USN01 gameplay identical (exit 1).** LOMP10 moves (exit 3) after the
+   first touchdown.
+
+- **Mechanism failure:** any of:
+  - a landed plane rolling more than 20 m after its OFF stop, or off the strip;
+  - a lift-off request;
+  - a sink below the wheels of more than 1 m.
+- **Flip rule:** ON if predictions 1 and 2 hold.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
@@ -2327,8 +2598,9 @@ The sinking of a plane that leaves the strip is recorded in section 6.
    - stage A of the ground roll is ON (5q): a landed plane thinks, brakes and stops. The
      followers no longer abort: they were aborted by the missing landed arm of `006C7960`, not by
      occupancy (5r, ON). All ten LOMP10 planes now land and stop on the runway;
-   - stage B: park's taxi and the site calls (5r: the occupancy has no remover and matters
-     only to `006CF5B0`'s spot test);
+   - stage B: park is read and bound OFF (5s). It failed on what lies under it: the ground
+     steering laws `007DA380`/`007DA542`, abort's on-ground arm `009B0E74`-`009B0F93` (the
+     park <-> abort loop), and `00951F40`'s hide of a plane in the hangar;
    - a landed plane that creeps off the 20 m strip (B-25 01|.-2 at 325.94 s, 5r) loses contact
      and sinks through the ground in free flight: the airfield ground surface (`006CF180`) is not
      modelled, and what pushes a stopped plane sideways is unidentified;

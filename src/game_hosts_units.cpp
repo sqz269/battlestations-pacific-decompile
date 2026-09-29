@@ -14,6 +14,7 @@
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
+#include "bsp/airfield_taxi.hpp"                 // packet cc9_land_park_taxi
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_death_modes.hpp"
@@ -380,6 +381,8 @@ struct GameUnitSlot {
     float ground_last_brake{0.0f};
     float ground_last_friction{0.0f};
     float ground_first_pos[3]{0.0f, 0.0f, 0.0f};
+    unsigned long long ground_steer_steps{0};   // cc9_plane_ground_steering
+    float ground_steer_last_f2{0.0f};
     float ground_stop_time{-1.0f};
     float ground_min_bfc{1000.0f};
     std::int32_t plane_c18{5};
@@ -619,6 +622,21 @@ struct GameUnitSlot {
     bool land_abort_park_21{false};
     unsigned long long land_abort_entries{0}, land_abort_ticks{0}, land_abort_to_standby{0};
     unsigned long long land_abort_ground_refused{0}, land_abort_park_refused{0};
+    // Packet cc9_land_park_taxi: land/park (+620h, vtable 00D1FF60) and the plane
+    // bytes its tick writes. docs/SQUADRON_LAND_TASK.md 5s.
+    float land_park_1c{0.0f};             // park +1Ch, 009B21A0
+    float land_park_target_20{0.0f};      // park +20h: the taxi target x (airfield frame)
+    float land_park_target_24{0.0f};      // park +24h: the taxi target z
+    float land_park_timer_28{0.0f};       // park +28h, 3.0 at the enter (the carrier arm's clock)
+    bool plane_taxi_queue_910{false};     // plane+910h: inside the hangar queue band
+    bool plane_in_hangar_c00{false};      // plane+C00h, 007B96C0
+    std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
+    unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
+    unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
+    unsigned long long land_park_hangar{0}, land_park_no_hangar{0}, land_park_from_abort{0};
+    unsigned long long land_park_retarget{0};
+    double land_park_hangar_at{-1.0};
+    float land_park_last[4]{0.0f, 0.0f, 0.0f, 0.0f};   // x, z, speed request, yaw request
     unsigned long long land_found_assignments{0};
     double land_installed_at{-1.0};
     unsigned long long land_ticks{0};
@@ -1999,6 +2017,15 @@ struct GameUnitsHost::Impl {
         bool leader_pass, int head_mode, float head_dist);
     void landing_path_006c6020(LandingDeck& d, LandingAssignment& rec);
     void landing_spacing_006c3f80(LandingDeck& d, LandingAssignment& rec);
+    // Packet cc9_land_park_taxi: the airfield launch-site calls land/park makes.
+    bool landing_hangar_point_006cf420_006cf520(const LandingDeck& d, bool entry,
+        std::array<float, 3>& out) const;
+    bool landing_blocks_006cdf70(const GameUnitSlot& a, const GameUnitSlot& b) const;
+    bool landing_queue_clear_006ce610(const LandingDeck& d, const GameUnitSlot& a) const;
+    bool landing_spot_clear_006cf5b0(const LandingDeck& d, const GameUnitSlot& p, bool enable,
+        float x, float z) const;
+    void plane_four_to_five_007c16f0(GameUnitSlot& p);
+    void plane_five_to_four_007c1680(GameUnitSlot& p);
     void log_ground_contact_loss(const GameUnitSlot& p);
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
@@ -4260,6 +4287,20 @@ struct GameUnitsHost::Impl {
     // 2-or-4 refusal only while it is clear, 006C5C40 false for a landed plane,
     // and 006C5534's lookup-miss mode 904h ? 4 : 1. False: the byte is taken
     // clear there, so a landed head gets mode 2 and its followers mode 1.
+    // Packet cc9_plane_ground_steering (docs/SQUADRON_LAND_TASK.md section 5t): the
+    // rate law in controller mode 1 under the ground law 007DCCF0 (ctl+FCh = 1 at
+    // 007DCD24): the roll term zeroed (007DA8D9), no bank-yaw coupling, and
+    // 007DA380's mode-1 factors 007DA542-007DA6E3. False: the ground law runs the
+    // rate law's free-flight arm.
+    static constexpr bool kPlaneGroundSteeringBound = false;
+    // Packet cc9_land_park_taxi (docs/SQUADRON_LAND_TASK.md section 5s): land/park.
+    // The rule's arms into it (009B3D38 for +900h 4 or 5, 009B3E38 from abort's
+    // +66Dh) and out of it (009B3770, the done byte -> abort), its enter/exit
+    // 009B21A0/009B21C0 and tick 009B22C0 (the airfield arm; the carrier arm is
+    // refused with the mother-ship holders), the done test 009B21D0, the site
+    // calls 006CF420/006CF520/006CF5B0 with 006CE610/006CDF70, the transitions
+    // 007C16F0/007C1680 and 007B96C0/007B9000. False: park is refused as before.
+    static constexpr bool kLandParkStateBound = false;  // OFF: mechanism failure, the park <-> abort loop (5s)
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -9387,6 +9428,202 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
     return static_cast<std::size_t>(r.node);
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_land_park_taxi (kLandParkStateBound), docs/SQUADRON_LAND_TASK.md
+// section 5s. Every body below was read from the listing.
+// ---------------------------------------------------------------------------
+
+// 006CF420 (site vtable +2Ch, RET 8) and 006CF520 (+44h, RET 4): the last point
+// of 006D2640's exit path (the hangar with the least airfield-frame Z among those
+// whose object+370h > 0) or point 0 of 006D2780's entry path (the greatest Z, no
+// condition gate), each through 007AF800 and the airfield's inverse (+110h, the
+// same matrix as the holder's +48h here: the holder frame is the airfield's).
+// Returns false when no hangar qualifies: 006CF420 then answers the plane's WORLD
+// position (plane+FCh, not transformed; the caller handles it) and 006CF520 has
+// no fallback (the image would read through a null path). SUBSTITUTIONS,
+// labelled: object+370h > 0 is taken as "the hangar unit is not dead"; a path is
+// the scene path registry's world points for the authored name.
+bool GameUnitsHost::Impl::landing_hangar_point_006cf420_006cf520(const LandingDeck& d,
+    bool entry, std::array<float, 3>& out) const {
+    const bsp::AirOpsDeck* deck = bsp::air_ops_decks().mutable_at(
+        static_cast<std::size_t>(&d - landing_decks.data()));
+    if (deck == nullptr || deck->hangars.empty()) return false;
+    std::vector<bsp::AirfieldHangarCandidate> cands(deck->hangars.size());
+    std::vector<const bsp::game::ScenePathEntry*> paths(deck->hangars.size() * 2u, nullptr);
+    for (std::size_t i = 0; i < deck->hangars.size(); ++i) {
+        const bsp::AirOpsDeck::HangarNames& h = deck->hangars[i];
+        std::size_t obj = slots.size();
+        for (std::size_t u = 0; u < slots.size(); ++u) {
+            if (slots[u]->row.name == h.object) { obj = u; break; }
+        }
+        bsp::AirfieldHangarCandidate& c = cands[i];
+        if (obj >= slots.size()) continue;
+        paths[2u * i] = bsp::game::scene_path_registry().find(h.entry_path);
+        paths[2u * i + 1u] = bsp::game::scene_path_registry().find(h.exit_path);
+        c.object_present = true;
+        c.record.object = slots[obj].get();
+        c.record.entry_path = paths[2u * i];
+        c.record.exit_path = paths[2u * i + 1u];
+        c.condition = (gunnery != nullptr && gunnery->unit_dead(obj)) ? 0.0f : 1.0f;
+        c.local_z = landing_xform_004142e0(d.inverse_48, slots[obj]->motion.position)[2];
+    }
+    const bsp::HangarPathPick pick = bsp::pick_hangar_path_006d2780_006d2640(cands.data(),
+        cands.size(), entry ? bsp::HangarPathKind::Entry : bsp::HangarPathKind::Exit);
+    if (!pick.found || pick.path == nullptr) return false;
+    const bsp::game::ScenePathEntry* path = static_cast<const bsp::game::ScenePathEntry*>(pick.path);
+    if (path->points_world.empty()) return false;
+    const std::array<float, 3>& w = entry ? path->points_world.front()
+                                          : path->points_world.back();
+    out = landing_xform_004142e0(d.inverse_48, w.data());
+    return true;
+}
+
+namespace {
+
+// 0047B850: vtable[5Ch](10h) or vtable[5Ch](16h).
+bool park_bomber_class_0047b850(const GameUnitSlot& u) {
+    return bsp::unit_is_kind_of(u.class_id, 0x10) || bsp::unit_is_kind_of(u.class_id, 0x16);
+}
+
+// The entity's derived affine inverse (00414E10) applied to a world point: the
+// point in the unit's own frame, the world rows being its basis.
+std::array<float, 3> park_point_in_frame(const GameUnitSlot& u, const float* w) {
+    const float d[3] = {w[0] - u.motion.position[0], w[1] - u.motion.position[1],
+                        w[2] - u.motion.position[2]};
+    const float* r[3] = {u.motion.pose_row0, u.motion.pose_row1, u.motion.pose_row2};
+    std::array<float, 3> l{};
+    for (int i = 0; i < 3; ++i) l[i] = r[i][0] * d[0] + r[i][1] * d[1] + r[i][2] * d[2];
+    return l;
+}
+
+}  // namespace
+
+// 006CDF70 (006CDF70-006CE223, __stdcall(a, b), RET 8): true when b stands in
+// a's way. A plane with +904h clear never yields to one with it set.
+//   D = max(bomber(b) ? 12 : 2, (bomber(b) ? 5 : 2) x max(bomber(b) ? 1.8 : 0,
+//       |v_a| - 4.1666667 (00CF8920))) + a.Length x 0.5
+//   l = b's position in a's frame; R = D + b.Length x 0.5; z = l.z, forced to -1.0
+//   when 0 <= z < 1 and a and b share a squadron with a's +9D8h below b's.
+//   b landed, a not, a off any holder (006049F0): R = z + 10, x = max(0, |l.x - 10|)
+//   (the zero guard 006CE16C compares against the double at 00CF8918, which is
+//   a denormal ~5e-315, so it never takes the -1.0 arm).
+//   true when z >= 0, R > z and |x| < b.Width x 0.8 + a.Width x 0.5.
+// Length is class+A0h (motion_class.hull_length), Width class+A4h.
+bool GameUnitsHost::Impl::landing_blocks_006cdf70(const GameUnitSlot& a,
+    const GameUnitSlot& b) const {
+    if (&a == &b) return false;
+    if (!a.plane_landed_904 && b.plane_landed_904) return false;
+    const float va = avoid_len(a.plane_world_velocity);                // vtable[38h]
+    const float s1 = static_cast<float>(static_cast<double>(va) - 4.1666669845581055);
+    const bool bb = park_bomber_class_0047b850(b);
+    const float f = bb ? 1.7999999523162842f : 0.0f;                   // 00CF4848
+    const float m = f > s1 ? f : s1;                                   // 00415550
+    const float g = bb ? 5.0f : 2.0f;                                  // 00CE3850 / 00CE3958
+    const float gm = g * m;
+    const float h = bb ? 12.0f : 2.0f;                                 // 00CEB4B8 / 00CE3958
+    const float mx = h > gm ? h : gm;
+    const float D = static_cast<float>(static_cast<double>(mx) +
+        static_cast<double>(a.motion_class.hull_length) * 0.5);
+    const float hwa = static_cast<float>(0.5 * static_cast<double>(a.class_width_00a4));
+    const std::array<float, 3> l = park_point_in_frame(a, b.motion.position);
+    float R = static_cast<float>(static_cast<double>(b.motion_class.hull_length) * 0.5 +
+        static_cast<double>(D));
+    float z = l[2];
+    float x = l[0];
+    if (0.0f <= z && z < 1.0f && landing_squadron_of(a.process_index) ==
+            landing_squadron_of(b.process_index)
+        && landing_spawn_index(a.process_index) < landing_spawn_index(b.process_index)) {
+        z = -1.0f;                                                     // 00D7A260
+    }
+    if (b.plane_landed_904 && !a.plane_landed_904 && a.plane_contact_deck_bf4 == 0) {
+        R = static_cast<float>(static_cast<double>(z) + 10.0);
+        const float e = std::fabs(static_cast<float>(static_cast<double>(l[0]) - 10.0));
+        x = 0.0f > e ? 0.0f : e;
+    }
+    if (!(z >= 0.0f) || !(R > z)) return false;
+    return static_cast<double>(b.class_width_00a4) * 0.800000011920929 +
+        static_cast<double>(hwa) > static_cast<double>(std::fabs(x));
+}
+
+// 006CE610 (006CE610-006CE795, __thiscall(site, plane, ...)): false when an
+// occupant o blocks the plane (006CDF70(plane, o)) and either does not yield
+// back, or, when both block, o is ahead: its z' = L/2 - l.z (006BEFF0, the holder
+// frame through +48h) is below the plane's by more than 1.5, or within 1.5 with
+// |x'| no larger.
+bool GameUnitsHost::Impl::landing_queue_clear_006ce610(const LandingDeck& d,
+    const GameUnitSlot& a) const {
+    const auto primed = [&](const float* w) {
+        const std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, w);
+        return std::array<float, 2>{static_cast<float>(0.0 - l[0]),
+            static_cast<float>(static_cast<double>(d.length_b4) * 0.5 - l[2])};
+    };
+    for (const std::size_t oi : d.site_occupants_34) {
+        if (oi >= slots.size()) continue;
+        const GameUnitSlot& o = *slots[oi];
+        if (!landing_blocks_006cdf70(a, o)) continue;
+        if (!landing_blocks_006cdf70(o, a)) return false;
+        const std::array<float, 2> pa = primed(a.motion.position);
+        const std::array<float, 2> po = primed(o.motion.position);
+        if (po[1] < static_cast<float>(static_cast<double>(pa[1]) - 1.5)) return false;
+        if (po[1] <= static_cast<float>(1.5 + static_cast<double>(pa[1]))
+            && std::fabs(po[0]) <= std::fabs(pa[0])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// 006CF5B0 (006CF5B0-006CF728, site vtable +34h, RET 10h): with the enable byte,
+// +904h set and +910h clear, a plane 15 to 35 + speed metres short of (x, z) in
+// the airfield frame is refused when an occupant with +904h clear is within 30 m
+// of z (the arrival traffic). Every other path ends in 006CE610.
+bool GameUnitsHost::Impl::landing_spot_clear_006cf5b0(const LandingDeck& d,
+    const GameUnitSlot& p, bool enable, float x, float z) const {
+    (void)x;
+    if (enable && p.plane_landed_904 && !p.plane_taxi_queue_910) {
+        const std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, p.motion.position);
+        const float dz = l[2] - z;
+        const float s = static_cast<float>(-35.0 - static_cast<double>(
+            avoid_len(p.plane_world_velocity)));                    // 00CF8A50
+        if (-15.0 > static_cast<double>(dz) && dz > s) {             // 00CE3D58
+            for (const std::size_t oi : d.site_occupants_34) {
+                if (oi >= slots.size() || oi == p.process_index) continue;
+                const GameUnitSlot& o = *slots[oi];
+                if (o.plane_landed_904) continue;
+                const std::array<float, 3> ol =
+                    landing_xform_004142e0(d.inverse_48, o.motion.position);
+                if (30.0 > std::fabs(static_cast<double>(ol[2] - z))) return false;   // 00CE7630
+            }
+        }
+    }
+    return landing_queue_clear_006ce610(d, p);
+}
+
+// 007C16F0 / 007C1680: 4 -> 5 and 5 -> 4, +C04h = -1.0, and with classDesc+198h
+// non-zero +904h = +908h > 5.0 and +C18h = 3. 007C11E0(0) (the actuator targets)
+// and 007C16F0's 0090F6C0 scoring arm are not carried.
+void GameUnitsHost::Impl::plane_four_to_five_007c16f0(GameUnitSlot& p) {
+    if (p.plane_control_mode_900 != 4) return;
+    p.plane_control_mode_900 = 5;
+    p.plane_site_timer_c04 = -1.0f;
+    if (p.plane_min_water_spd_198 != 0.0f) {
+        p.plane_landed_904 = p.plane_airborne_908 > 5.0f;
+        p.plane_c18 = 3;
+    }
+    record("Plane::four_to_five_007c16f0", 0x007c16f0u);
+}
+
+void GameUnitsHost::Impl::plane_five_to_four_007c1680(GameUnitSlot& p) {
+    if (p.plane_control_mode_900 != 5) return;
+    p.plane_control_mode_900 = 4;
+    p.plane_site_timer_c04 = -1.0f;
+    if (p.plane_min_water_spd_198 != 0.0f) {
+        p.plane_landed_904 = p.plane_airborne_908 > 5.0f;
+        p.plane_c18 = 3;
+    }
+    record("Plane::five_to_four_007c1680", 0x007c1680u);
+}
+
 // Diagnostic only (packet cc9_landing_follower_spacing): the first free-flight
 // step of a plane in the ground-roll arm, with its runway-frame position against
 // 006BC530's half extents and the deck the probe last chose.
@@ -12085,7 +12322,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float* const wv = unit_.plane_world_velocity;
                         owner_.summary.plane_distance_moved +=
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
-                        control_step_007da710(step, state.forward_speed);
+                        control_step_007da710(step, state.forward_speed, ground);
                         advance_pose_0085e4d0(step);
                     }
 
@@ -20000,6 +20237,303 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         land_set_held_006bcd80(false);
                     }
 
+                    // 009B21A0 (009B21A0-009B21BA), land/park's enter: +1Ch = 0.0,
+                    // the done byte +18h = 0, +28h = 3.0 (00CE3854). 009B3680 runs the
+                    // old state's exit first; abort's (009B09A0) is the one modelled.
+                    void land_enter_park_009b21a0() {
+                        using LS = GameUnitSlot::LandTaskState;
+                        if (unit_.land_state == LS::kPark) return;
+                        if (unit_.land_state == LS::kAbort) {
+                            land_exit_abort_009b09a0();
+                            ++unit_.land_park_from_abort;
+                        }
+                        land_switch_state_009b3680(LS::kPark);
+                        unit_.land_park_1c = 0.0f;
+                        unit_.land_done_18 = false;
+                        unit_.land_park_timer_28 = 3.0f;
+                        ++unit_.land_park_entries;
+                        if (unit_.land_park_entries == 1) {
+                            owner_.log.notef("  land task %s: enters land/park at %.2f s state=%d "
+                                "length=%.2f width=%.2f (009B21A0)", unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                unit_.plane_control_mode_900,
+                                static_cast<double>(unit_.motion_class.hull_length),
+                                static_cast<double>(unit_.class_width_00a4));
+                        }
+                    }
+
+                    // 009B21D0 (__thiscall(park, float* planeXZ), RET 4), the done
+                    // test, off the path (+900h != 5) and with the byte clear: done
+                    // unless +28h >= 0 and the plane rests on a holder (+BF8h, +BF4h);
+                    // then done when the target's z is behind the plane (and 009B1E30,
+                    // the class-9 target, is false: an airfield), or when the plane
+                    // heads more than pi/2 (00CE3830) away from holder+88h.
+                    void land_park_done_009b21d0(const GameUnitsHost::Impl::LandingDeck& d,
+                        float pz) {
+                        if (unit_.land_done_18) return;
+                        if (unit_.plane_control_mode_900 == 5) return;
+                        if (0.0f <= unit_.land_park_timer_28 && unit_.plane_ground_contact_bf8
+                            && unit_.plane_contact_deck_bf4 != 0) {
+                            if (unit_.land_park_target_24 < pz) {
+                                unit_.land_done_18 = true;              // 009B1E30 false
+                                return;
+                            }
+                            const float e = bsp::wrapped_angle_subtract_00438b10(
+                                unit_.plane_heading_c6c, d.runway_heading_88);
+                            if (static_cast<double>(std::fabs(e)) <= 1.5707963705062866) return;
+                        }
+                        unit_.land_done_18 = true;
+                    }
+
+                    // 009B22C0 (009B22C0-009B2C68, __thiscall(park, float dt), RET 4),
+                    // land/park's tick, read whole from the listing. The carrier arm
+                    // (approach+30h vtable[5Ch](9)) is not reached: mother-ship holders
+                    // are refused. coverage: the airfield arm complete.
+                    // SUBSTITUTIONS, labelled: plane+A4h/+ACh (the parent-relative
+                    // position after 007C71E0's re-parent to the airfield) and +94h/
+                    // +9Ch (the local forward) are the world position and heading
+                    // through the airfield frame; [approach+1Ch]+40h and approach+B4h
+                    // (both zeroed at the head) are not carried.
+                    void run_land_park_tick_009b22c0() {
+                        GameUnitsHost::Impl::LandingDeck* d = unit_.land_deck_plus_one == 0 ? nullptr
+                            : owner_.landing_deck_006c0750(unit_.land_deck_plus_one - 1u,
+                                unit_.land_site_plus_one - 1u);
+                        if (d == nullptr) {
+                            land_refuse_state("land/park on a refused holder", 0x009b22c0u);
+                            return;
+                        }
+                        ++unit_.land_park_ticks;
+                        // 009B22DC-009B2313: resting on a holder with the owner gone.
+                        const std::size_t owner = unit_.land_site_plus_one - 1u;
+                        if (unit_.plane_ground_contact_bf8 && unit_.plane_contact_deck_bf4 != 0
+                            && owner_.gunnery != nullptr && owner_.gunnery->unit_dead(owner)) {
+                            unit_.land_done_18 = true;
+                            return;
+                        }
+                        // 009B2324-009B234B: bank 0.0 with +2CCh = 1; pitch 0.0 active,
+                        // +2D0h = 0.
+                        unit_.plan_state.bank_target_2c4 = 0.0f;
+                        unit_.plan_heading_mode_2cc = 1;
+                        unit_.plan_heading_2c0_written = false;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired = 0.0f;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                        unit_.plan_state.pitch_mode_2d0 = 0;
+                        // 009B2351-009B2388: 006CF520, the queue origin; its z only.
+                        std::array<float, 3> q{};
+                        if (!owner_.landing_hangar_point_006cf420_006cf520(*d, true, q)) {
+                            ++unit_.land_park_no_hangar;
+                            land_refuse_state("land/park without an entry path (006CF520)",
+                                0x009b2367u);
+                            return;
+                        }
+                        // 009B236E-009B239A: 006CF420, the taxi target; its fallback is
+                        // the plane's world position, used as is.
+                        std::array<float, 3> t{};
+                        if (!owner_.landing_hangar_point_006cf420_006cf520(*d, false, t)) {
+                            t = {unit_.motion.position[0], unit_.motion.position[1],
+                                 unit_.motion.position[2]};
+                        }
+                        const std::array<float, 3> pl =
+                            landing_xform_004142e0(d->inverse_48, unit_.motion.position);
+                        const float px = pl[0];
+                        const float pz = pl[2];
+                        const bool attached = unit_.plane_ground_contact_bf8
+                            && unit_.plane_contact_deck_bf4 != 0;
+                        // 009B23F1-009B2454: off a holder and the target moved by more
+                        // than 10 m (100.0, 00D7A220): 007B9000 then 007C1680.
+                        if (!attached) {
+                            const float ex = unit_.land_park_target_20 - t[0];
+                            const float ez = unit_.land_park_target_24 - t[2];
+                            const float e2 = static_cast<float>(static_cast<double>(ex) * ex +
+                                static_cast<double>(ez) * ez);
+                            if (static_cast<double>(e2) > 100.0) {
+                                unit_.plane_c01 = 2;                          // 007B9000
+                                owner_.plane_five_to_four_007c1680(unit_);
+                                ++unit_.land_park_retarget;
+                            }
+                        }
+                        unit_.land_park_target_20 = t[0];
+                        unit_.land_park_target_24 = t[2];
+                        land_park_done_009b21d0(*d, pz);                      // 009B2476
+                        const float dx = unit_.land_park_target_20 - px;
+                        const float dz = unit_.land_park_target_24 - pz;
+                        const float v = avoid_len(unit_.plane_world_velocity);   // vtable[38h]
+                        const bsp::GameTuningBlock* g = owner_.lua.plane_globals_loaded()
+                            ? &owner_.lua.plane_globals() : nullptr;
+                        if (g == nullptr) {
+                            land_refuse_state("land/park without the tuning block", 0x009b24beu);
+                            return;
+                        }
+                        // 009B24D1: AirField/MoveSpd (+184h).
+                        const float base = g->air_field_move_spd;
+                        // 009B24F3-009B256B: hi = max(base, 007C4830 x 0.6);
+                        // speed = 00419010(base x 5, base, base x 10, hi, dz).
+                        const float srs = static_cast<float>(static_cast<double>(
+                            g->dynamics_spd_multipliers_stall_range_max * unit_.plane_stall_spd) *
+                            0.6000000238418579);
+                        const float hi = base > srs ? base : srs;
+                        float spd = bsp::clamped_interpolate_00419010(
+                            static_cast<float>(static_cast<double>(base) * 5.0), base,
+                            static_cast<float>(10.0 * static_cast<double>(base)), hi, dz);
+                        // 009B256F-009B25A1: beyond 100 m keep 0.85 x the speed.
+                        if (static_cast<double>(dz) > 100.0) {
+                            const float keep = static_cast<float>(static_cast<double>(v) *
+                                0.8500000238418579);
+                            if (!(spd > keep)) spd = keep;
+                        }
+                        // 009B25A7-009B2603: +910h once the queue origin's z is less
+                        // than 20 (28 for a 10h/16h class, 00D1FF80) ahead.
+                        const float lim = park_bomber_class_0047b850(unit_) ? 28.0f : 20.0f;
+                        if (lim > q[2] - pz) unit_.plane_taxi_queue_910 = true;
+                        // 009B2634-009B270D: slow at or below 1.5 x base; then the path
+                        // test against the turn distance.
+                        const bool slow = static_cast<double>(v) <= static_cast<double>(base) * 1.5;
+                        bool path = false;
+                        if (slow) {
+                            const float want = g->dynamics_runway_yaw_turn_spd_mul *
+                                unit_.plane_class.yaw_spd;
+                            const float rate = want > g->air_field_min_turn_spd ? want
+                                : g->air_field_min_turn_spd;
+                            const float qd = static_cast<float>(static_cast<float>(
+                                1.5 / static_cast<double>(rate)) *
+                                g->dynamics_runway_yaw_turn_spd_limit_1);
+                            if (static_cast<double>(qd) + 30.0 > static_cast<double>(dz)) {
+                                spd = g->dynamics_runway_yaw_turn_spd_limit_1;
+                                if (!(qd < dz)) path = true;
+                            }
+                        }
+                        // 009B270F-009B2735: join or leave the path.
+                        if ((unit_.plane_control_mode_900 == 5) != path) {
+                            if (path) {
+                                owner_.plane_four_to_five_007c16f0(unit_);
+                                ++unit_.land_park_joins;
+                            } else {
+                                owner_.plane_five_to_four_007c1680(unit_);
+                                ++unit_.land_park_leaves;
+                            }
+                        }
+                        // 009B273A-009B28C2: the steer vector (sx, sz) and the
+                        // deadband distance f18.
+                        float sx = 0.0f;
+                        float sz = dz;
+                        float f18 = dz;
+                        if (slow) {
+                            if (unit_.plane_control_mode_900 == 5) {
+                                // 009B2857-009B28BD: |dx|, x clamped to +-15 (00415690).
+                                f18 = std::fabs(dx);
+                                sx = dx < -15.0f ? -15.0f : (dx > 15.0f ? 15.0f : dx);
+                                if (3.0f > f18) {
+                                    // 007B96C0: plane+C00h = 1 and 00951F40(0), the spatial
+                                    // node detached and hidden. Not carried: counted.
+                                    if (!unit_.plane_in_hangar_c00) {
+                                        unit_.land_park_hangar_at = owner_.summary.simulated_seconds;
+                                        owner_.log.notef("  land task %s: taxied into the hangar "
+                                            "at %.2f s local (%.1f, %.1f) (007B96C0)",
+                                            unit_.row.name.c_str(),
+                                            static_cast<double>(owner_.summary.simulated_seconds),
+                                            static_cast<double>(px), static_cast<double>(pz));
+                                    }
+                                    unit_.plane_in_hangar_c00 = true;
+                                    ++unit_.land_park_hangar;
+                                }
+                            } else {
+                                // 009B276A-009B2851: the runway band, half of the runway
+                                // width less the class Width; e the excess outside it.
+                                const float w = static_cast<float>((static_cast<double>(
+                                    d->width_b0) - static_cast<double>(unit_.class_width_00a4)) * 0.5);
+                                float e;
+                                if (px > w) {
+                                    e = w - px;
+                                } else if (-w > px) {
+                                    e = static_cast<float>(-(static_cast<double>(px) + w));
+                                } else {
+                                    e = 0.0f;
+                                }
+                                sx = e;
+                                const float ae = e > 0.0f ? e : -0.0f - e;
+                                const float ahead = static_cast<float>(18.0 - static_cast<double>(ae));
+                                const float mx = 3.0f > ahead ? 3.0f : ahead;       // 00415550
+                                sz = dz < mx ? dz : mx;                              // 00415510
+                            }
+                        }
+                        // 009B28C8-009B2916: 006CF5B0 off the path and outside the queue
+                        // band; a refusal stops the plane.
+                        if (unit_.plane_control_mode_900 != 5 && !unit_.plane_taxi_queue_910) {
+                            if (!owner_.landing_spot_clear_006cf5b0(*d, unit_, true,
+                                    unit_.land_park_target_20, unit_.land_park_target_24)) {
+                                spd = 0.0f;
+                                ++unit_.land_park_spot_refused;
+                            }
+                        }
+                        // 009B2993-009B2A42: the heading of (sx, sz) and the plane's,
+                        // both pi/2 - atan2(z, x) wrapped into [0, 2pi).
+                        float des = static_cast<float>(1.5707963705062866 -
+                            std::atan2(static_cast<double>(sz), static_cast<double>(sx)));
+                        if (0.0f > des) des = static_cast<float>(static_cast<double>(des) + 6.2831854820251465);
+                        float cur = bsp::wrapped_angle_subtract_00438b10(unit_.plane_heading_c6c,
+                            d->runway_heading_88);
+                        if (0.0f > cur) cur = static_cast<float>(static_cast<double>(cur) + 6.2831854820251465);
+                        const float err = bsp::wrapped_angle_subtract_00438b10(des, cur);
+                        const float aerr = std::fabs(err);
+                        // 009B2A1F-009B2AED: the speed scale over the heading error.
+                        const float asx = sx > 0.0f ? sx : -0.0f - sx;
+                        float a = static_cast<float>(static_cast<double>(asx) * 5.0 + 30.0);
+                        if (80.0 < static_cast<double>(a)) a = 80.0f;
+                        const float ang = static_cast<float>(static_cast<double>(a) *
+                            3.1415927410125732 / 180.0);
+                        const float scale = bsp::clamped_interpolate_00419010(0.05235987901687622f,
+                            1.0f, ang, 0.10000000149011612f, aerr);
+                        spd = scale * spd;
+                        // 009B2AE1-009B2C1B: the yaw, with a deadband that grows as f18
+                        // falls below 5 m.
+                        float yaw = 0.0f;
+                        const bool steer = unit_.plane_control_mode_900 == 5
+                            || (f18 > 0.5f && (spd > 0.0f || v > 1.388888955116272f));
+                        if (steer) {
+                            const float ys = unit_.plane_class.yaw_spd;               // class+1B0h
+                            const float r = bsp::clamped_interpolate_00419010(
+                                static_cast<float>(-ys * 0.5), -1.100000023841858f,
+                                static_cast<float>(static_cast<double>(ys) * 0.5), 1.100000023841858f,
+                                err);
+                            float db = static_cast<float>((5.0 - static_cast<double>(f18)) *
+                                0.20000000298023224);
+                            if (0.10000000149011612 > static_cast<double>(db)) db = 0.1f;
+                            if (0.0f > r) {
+                                const float s = r + db;
+                                yaw = s > 0.0f ? 0.0f : s;
+                            } else {
+                                const float s = r - db;
+                                yaw = 0.0f > s ? 0.0f : s;
+                            }
+                        }
+                        // 009B2C1E-009B2C58: yaw desired and active with +2D4h = 0; the
+                        // speed +2B4h with +2B0h = 1 and +2D8h = 1.
+                        unit_.plan_slots[bsp::kPilotSlotYaw].desired = yaw;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                        unit_.gl_yaw_mode_2d4_zero = true;
+                        unit_.plane_desired_speed_2b4 = spd;
+                        unit_.plane_trg_speed_corr_off_2b0 = 1;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        unit_.land_park_last[0] = px;
+                        unit_.land_park_last[1] = pz;
+                        unit_.land_park_last[2] = spd;
+                        unit_.land_park_last[3] = yaw;
+                        if ((unit_.land_park_ticks % 20) == 1) {
+                            owner_.log.notef("  land park trace %s t=%.2f state=%d local=(%.1f %.1f) "
+                                "target=(%.1f %.1f) queue_z=%.1f v=%.2f spd=%.2f yaw=%.3f err=%.3f "
+                                "slow=%d q910=%d done=%d", unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                unit_.plane_control_mode_900, static_cast<double>(px),
+                                static_cast<double>(pz), static_cast<double>(t[0]),
+                                static_cast<double>(t[2]), static_cast<double>(q[2]),
+                                static_cast<double>(v), static_cast<double>(spd),
+                                static_cast<double>(yaw), static_cast<double>(err), slow ? 1 : 0,
+                                unit_.plane_taxi_queue_910 ? 1 : 0, unit_.land_done_18 ? 1 : 0);
+                        }
+                        owner_.done("BotStateLandPark::tick", 0x009b22c0u);
+                    }
+
                     // 009B09C0 (009B09C0-009B0F96, __thiscall(state, float dt), RET 4),
                     // land/abort's tick; dt is not read. docs/SQUADRON_LAND_TASK.md 5m.
                     // coverage: partial, the on-ground arm 009B0E74-009B0F93 refused.
@@ -20165,8 +20699,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // land/park unless it is in park or abort.
                         const bool in_abort = GameUnitsHost::Impl::kLandAbortStateBound
                             && unit_.land_state == LS::kAbort;
+                        if constexpr (GameUnitsHost::Impl::kLandParkStateBound) {
+                            if (unit_.land_state == LS::kPark) {
+                                // 009B3770's park arm: the done byte -> land/abort (009B37A7).
+                                // Park itself has no rule arm (009B3E02 -> 009B3EA7).
+                                if (unit_.land_done_18) {
+                                    ++unit_.land_park_done;
+                                    land_enter_abort_009b0980();
+                                }
+                                owner_.done("BotTaskLand::state_rule", 0x009b3cf0u);
+                                return;
+                            }
+                        }
                         if ((unit_.plane_control_mode_900 == 4 || unit_.plane_control_mode_900 == 5)
                             && !in_abort) {
+                            if constexpr (GameUnitsHost::Impl::kLandParkStateBound) {
+                                land_enter_park_009b21a0();                  // 009B3D3B
+                                owner_.done("BotTaskLand::state_rule", 0x009b3cf0u);
+                                return;
+                            }
                             land_refuse_state("land/park (+900h 4 or 5)", 0x009b3d38u);
                             return;
                         }
@@ -20178,8 +20729,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.land_abort_to_standby;
                                 land_enter_standby_009b0230();
                             } else if (unit_.land_abort_park_21) {
-                                ++unit_.land_abort_park_refused;
-                                land_refuse_state("land/park (abort +66Dh)", 0x009b3e3bu);
+                                if constexpr (GameUnitsHost::Impl::kLandParkStateBound) {
+                                    land_enter_park_009b21a0();              // 009B3E3B
+                                } else {
+                                    ++unit_.land_abort_park_refused;
+                                    land_refuse_state("land/park (abort +66Dh)", 0x009b3e3bu);
+                                }
                             }
                             owner_.done("BotTaskLand::state_rule", 0x009b3cf0u);
                             return;
@@ -20570,6 +21125,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         case LS::kAbort:
                             if constexpr (GameUnitsHost::Impl::kLandAbortStateBound) {
                                 run_land_abort_tick_009b09c0();
+                                break;
+                            }
+                            land_refuse_state("a landing state's tick", 0x009b3f39u);
+                            break;
+                        case LS::kPark:
+                            if constexpr (GameUnitsHost::Impl::kLandParkStateBound) {
+                                run_land_park_tick_009b22c0();
                                 break;
                             }
                             land_refuse_state("a landing state's tick", 0x009b3f39u);
@@ -22018,7 +22580,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // is zero. The rate law then holds each axis at zero, which
                     // is the correct behaviour for a plane with a centred stick
                     // and is why nothing turns yet.
-                    void control_step_007da710(float step, float forward_speed) {
+                    void control_step_007da710(float step, float forward_speed,
+                        bool ground = false) {
                         // 007B9783 / 007B979C / 007B97A8: the previous-step
                         // snapshot, +9E4h -> +BB0h and so on.
                         for (int i = 0; i < 3; ++i) {
@@ -22050,9 +22613,62 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float m = control_authority(forward_speed);
                         // Free flight takes 007DA380's mode-0 arm, which writes
                         // the same scalar to both outputs and sets the flag to 1.
+                        float f2 = m;
+                        bool coupling = true;
+                        if (GameUnitsHost::Impl::kPlaneGroundSteeringBound && ground) {
+                            // Packet cc9_plane_ground_steering (docs/SQUADRON_LAND_TASK.md
+                            // 5t): 007DCD24 tags ctl+FCh = 1, so 007DA8D9 zeroes the roll
+                            // term and 007DA380 takes its mode-1 arm 007DA542-007DA6E3:
+                            // outA = the authority, the byte 0 (no bank-yaw coupling),
+                            // outB = 1.0 unless ctl+6Ch < [00F8738C]; then
+                            // r = max(YawSpd x Mul (+2B0h), DEG 50 (00D057E0) / YawSpd),
+                            // halved for a 10h/16h class with +904h (00D7A280);
+                            // outB = 00419010(Limit/1, r, Limit (+2ACh), 1.0, v) x
+                            // 00419010(b / 3.6, 0, a / 3.6, 1.0, v) with, over the live
+                            // throttle unit+9F0h, a = 00419010(0.01, 15.0, 0.1, 6.0, thr)
+                            // and b = 00419010(0.001, 6.0, 0.1, 1.0, thr) (00D06588 3.6,
+                            // KMH to m/s). The +2ACh slot holds Limit/1 in this build
+                            // (docs/GAME_TUNING_SINGLETON.md), so the pair is read twice.
+                            state.controller_mode_fc = 1;
+                            coupling = false;
+                            f2 = 1.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                const float lim = g.dynamics_runway_yaw_turn_spd_limit_1;
+                                const float v = forward_speed;
+                                if (lim > v) {
+                                    const float ys = unit_.plane_class.yaw_spd;
+                                    const float inv = static_cast<float>(
+                                        0.8726646304130554 / static_cast<double>(ys));
+                                    const float sc = ys * g.dynamics_runway_yaw_turn_spd_mul;
+                                    float r = sc > inv ? sc : inv;
+                                    if ((bsp::unit_is_kind_of(unit_.class_id, 0x10)
+                                            || bsp::unit_is_kind_of(unit_.class_id, 0x16))
+                                        && unit_.plane_landed_904) {
+                                        r = static_cast<float>(static_cast<double>(r) * 0.5);
+                                    }
+                                    const float blend = bsp::clamped_interpolate_00419010(
+                                        lim, r, lim, 1.0f, v);
+                                    const float thr = unit_.plane_live_throttle;
+                                    const float a = static_cast<float>(static_cast<double>(
+                                        bsp::clamped_interpolate_00419010(0.009999999776482582f,
+                                            15.0f, 0.10000000149011612f, 6.0f, thr)) /
+                                        3.5999999046325684);
+                                    const float b = static_cast<float>(static_cast<double>(
+                                        bsp::clamped_interpolate_00419010(0.0010000000474974513f,
+                                            6.0f, 0.10000000149011612f, 1.0f, thr)) /
+                                        3.5999999046325684);
+                                    const float c = bsp::clamped_interpolate_00419010(b, 0.0f,
+                                        a, 1.0f, v);
+                                    f2 = c * blend;
+                                }
+                            }
+                            ++unit_.ground_steer_steps;
+                            unit_.ground_steer_last_f2 = f2;
+                        }
                         const bsp::PlaneControlTargets targets =
                             bsp::plane_control_targets_007da710(
-                                unit_.plane_class, state, m, m, true);
+                                unit_.plane_class, state, m, f2, coupling);
 
                         bsp::PlaneRotationFactors factors;
                         if (owner_.lua.plane_globals_loaded()) {
@@ -24528,6 +25144,27 @@ void GameUnitsHost::report() {
                     s->ground_arm_steps > 0 ? static_cast<double>(std::sqrt(dx * dx + dz * dz)) : 0.0,
                     static_cast<double>(s->ground_min_bfc),
                     s->plane_control_mode_900, static_cast<int>(s->land_state));
+            }
+            if (s->ground_steer_steps > 0) {
+                host.log.notef("summary plane ground steering %s: steps=%llu last_f2=%.4f "
+                    "heading=%.4f (packet cc9_plane_ground_steering)", s->row.name.c_str(),
+                    s->ground_steer_steps, static_cast<double>(s->ground_steer_last_f2),
+                    static_cast<double>(s->plane_heading_c6c));
+            }
+            if (s->land_park_entries > 0) {
+                host.log.notef("summary land park %s: entries=%llu from_abort=%llu ticks=%llu "
+                    "done=%llu joins=%llu leaves=%llu spot_refused=%llu retarget=%llu "
+                    "no_hangar=%llu hangar=%llu hangar_at=%.2f q910=%d c00=%d last x=%.1f z=%.1f "
+                    "spd=%.2f yaw=%.3f state=%d (packet cc9_land_park_taxi)", s->row.name.c_str(),
+                    s->land_park_entries, s->land_park_from_abort, s->land_park_ticks,
+                    s->land_park_done, s->land_park_joins, s->land_park_leaves,
+                    s->land_park_spot_refused, s->land_park_retarget, s->land_park_no_hangar,
+                    s->land_park_hangar, s->land_park_hangar_at,
+                    s->plane_taxi_queue_910 ? 1 : 0, s->plane_in_hangar_c00 ? 1 : 0,
+                    static_cast<double>(s->land_park_last[0]),
+                    static_cast<double>(s->land_park_last[1]),
+                    static_cast<double>(s->land_park_last[2]),
+                    static_cast<double>(s->land_park_last[3]), s->plane_control_mode_900);
             }
         }
         host.log.notef("summary landing sequencer refused decks=%llu", host.landing_refused_decks);
