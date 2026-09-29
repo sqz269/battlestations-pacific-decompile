@@ -4856,3 +4856,58 @@ One smoke passed at 13:41. Every export below is built or building in the cc9-gu
   `g14_table.py`, `g14_report16.py`, `g14_members.py`, `g14_switches2.py`.
 - **Crash dumps:** `g14_dmp.py <dmp> <map>` (a stack scan of a minidump) and `g14_sym.py`.
 - **Census:** `g14_pericensus.py` (the periscope census) and `g14_devices.py` (DeviceClass rows).
+
+## 72. Results after the renderer came back (cc9-gunnery14)
+
+### 72.1 The periscope pair (68.3's prediction held)
+
+**Setup.**
+- Builds `local\prioff` (SHA-256 prefix `38D225949D00`) and `local\prion` (prefix
+  `EAE1E8E9CFC2`), both from `c8c2ea5f3`: the units-host call plus the reader, the same code as
+  `09737087b` on the agent branch.
+- Reference-row launch form, logs `local\prio{off,on}_<row>.log`.
+
+**Result.**
+- **Every row is gameplay-identical:** JM06 exit 1, LOMP06 exit 0, USNOS exit 1, USNOS long exit 1.
+- **The `hull periscope` lines are exactly as predicted:**
+  - Gato, Narwhal (Cachalot model) and PlayerSub 01 (I-54 model) give `shape=0 merged=0`;
+  - Kaiten (`unit #3.1`) gives `shape=1 merged=0 points=24` with `kamikaze=3000.0/3000.0`.
+- **Verdict: mechanism held, zero reach on the reference rows; flip ON.**
+  - The flip is not committed here: cc9-gunnery15 holds a lease on 009396BA
+    (`cc9_hull_periscope_call`).
+  - The units call is committed on agent/cc9-gunnery14 as `09737087b`. The lead reconciles the two.
+
+### 72.2 m's LOS role-swap flag: the sight test removes the two tests
+
+The builds are exported at `ef44bb755`; USN01 ran with `BSP_LOS_CENSUS=1`, and the logs are
+`local\<v>_usn01.log`.
+
+| variant (OFF) | landscape hits | reverse verdict differs | against `mbase` |
+| --- | ---: | ---: | --- |
+| `mbase` (all ON) | 41 | 0 | - |
+| `m_los` role swap | 41 | 0 | exit 1 |
+| `m_nsh` no-ship hold | 42 | 0 | exit 3 |
+| `m_sig` sight test | 36 | **2** (Coastal Gun 01 -> Dunlap) | exit 3 |
+| `m_ns2` hold and sight test | 37 | **2** (the same pair) | exit 3 |
+
+- The two tests the role swap answers differently, Coastal Gun 01 observing Dunlap, occur only
+  with the approach sight test OFF.
+- With it ON, Dunlap's approach no longer brings it into those two sightlines. The role swap then
+  has nothing to change on USN01, which is why m showed no move. **Closed.**
+
+### 72.3 m's hold and sight-test interaction on USN01: measured, not a divergence
+
+Against `mbase`, each switch OFF moves USN01 differently. The victims are the same throughout, with
+changed times, killers and ranges:
+
+| OFF | shots | hit records | damage |
+| --- | --- | --- | --- |
+| `m_nsh` (the hold) | 1267 -> 1273 | 163 -> 163 | 2786.4 |
+| `m_sig` (the sight test) | 1267 -> 1291 | 163 -> 165 | 2822.0 |
+| `m_ns2` (both) | 1267 -> 1296 | 163 -> 166 | 2822.0 |
+
+- Both switches act on the same approach goals: the hold keeps the goal on no-ship frames, and the
+  sight test decides which targets are hidden. So their effects on the approach path are not
+  additive.
+- Each was paired alone (SHIP_AI_OPEN_ITEMS 35 for the hold, 31 and 34 for the sight test), and both mechanisms match the image.
+- The interaction is two faithful mechanisms meeting, not a defect. **Closed.**
