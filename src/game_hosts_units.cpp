@@ -370,6 +370,9 @@ struct GameUnitSlot {
     // Packet cc9_plane_ground_roll: classDesc+1E0h WheelBrake, dyn+7Ch..84h (the
     // body acceleration the core law copies to ctl+60h..68h), and counters.
     float plane_wheel_brake_1e0{0.0f};
+    // classDesc+200h GroundPitch, written with WheelHeight (007D29B8-007D2AC6).
+    float plane_ground_pitch_200{0.0f};
+    unsigned long long ground_level_steps{0};
     float plane_body_accel_7c[3]{0.0f, 0.0f, 0.0f};
     unsigned long long ground_arm_steps{0};
     unsigned long long ground_law_steps{0};
@@ -4331,6 +4334,17 @@ struct GameUnitsHost::Impl {
     // ON since packet cc9_plane_ground_pose (5u): with the flat floor carried, stopped
     // planes hold their heading.
     static constexpr bool kPlaneGroundSteeringBound = true;
+    // Packet cc9_ground_speed_hold (docs/SQUADRON_LAND_TASK.md 5y): 007D9F60's up
+    // levelling 007DA11C-007DA20C in the pose advance. 007DCCF0 stores ctl+80h..8Ch
+    // = (0, cos GroundPitch, sin GroundPitch, RunwaySmoothStrength) on every ground
+    // step and the free-flight step 007DC830 zeroes +8Ch (007DCCD3), so the rate is
+    // live only under the ground law. Row 1 moves by min(rate x step, 1) x (world up
+    // - axis x M), then 0085DAD0 re-orthonormalises up first. False: the pose keeps
+    // whatever roll and pitch the touchdown left, and gravity's body-x share pushes
+    // a stopped plane sideways (the B-25 creep).
+    // ON (5y.1): LOMP10 9200/9000 moved as predicted, the B-25s stay on the strip
+    // (min_bfc 1.5 against -954 / -1778); USN04, USN01, JM05, USN13 gameplay-identical.
+    static constexpr bool kPlaneGroundLevellingBound = true;
     // Packet cc9_land_park_taxi (docs/SQUADRON_LAND_TASK.md section 5s): land/park.
     // The rule's arms into it (009B3D38 for +900h 4 or 5, 009B3E38 from abort's
     // +66Dh) and out of it (009B3770, the done byte -> abort), its enter/exit
@@ -10625,6 +10639,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 const float wh = host.lua.read_vehicle_class_number(row.type_id, "WheelHeight", kAbsent);
                 const float gp = host.lua.read_vehicle_class_number(row.type_id, "GroundPitch", kAbsent);
                 slot->plane_wheel_height_1fc = (wh != kAbsent && gp != kAbsent) ? wh : 0.0f;
+                slot->plane_ground_pitch_200 = (wh != kAbsent && gp != kAbsent) ? gp : 0.0f;
                 // classDesc+1E0h WheelBrake, read by 007D22A6 (docs/PLANE_CLASS_FIELDS.md).
                 slot->plane_wheel_brake_1e0 =
                     host.lua.read_vehicle_class_number(row.type_id, "WheelBrake", 0.0f);
@@ -12401,6 +12416,52 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     ? vs.velocity[2] : (-0.0f - vs.velocity[2]);
                                 if (1.0e-5 > static_cast<double>(avz)) vs.velocity[1] = 0.0f;
                             }
+                            // DIAGNOSTIC, env-gated (BSP_PLANE_GROUND_TRACE=<unit name
+                            // prefix>): the body-frame terms of 007D8611 on the ground,
+                            // every tenth band step. Prints nothing when unset.
+                            static const std::string ground_trace = [] {
+                                char* v = nullptr;
+                                std::size_t n = 0;
+                                std::string s;
+                                if (_dupenv_s(&v, &n, "BSP_PLANE_GROUND_TRACE") == 0 && v != nullptr) s = v;
+                                std::free(v);
+                                return s;
+                            }();
+                            if (ground && !ground_trace.empty() && (unit_.ground_band_steps % 10) == 1 &&
+                                unit_.row.name.rfind(ground_trace, 0) == 0) {
+                                const bsp::PilotPlanSlot& th = unit_.plan_slots[bsp::kPilotSlotThrottle];
+                                const bsp::PilotPlanSlot& ab = unit_.plan_slots[bsp::kPilotSlotAirBrake];
+                                owner_.log.notef("  ground trace %s t=%.2f st=%d vb=(%.3f %.3f %.3f) "
+                                    "a1c=(%.3f %.3f %.3f) r04=(%.3f %.3f %.3f) r40=(%.3f %.3f %.3f) "
+                                    "out=(%.3f %.3f %.3f) thr=%.4f ab=%.4f thr_slot=(%.4f %.4f %d) "
+                                    "ab_slot=(%.4f %.4f %d) want=%.2f mode2d8=%d brake=%.3f fric=%.3f "
+                                    "thrust=%.3f pitch=%.4f pen=%.3f",
+                                    unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    unit_.plane_control_mode_900,
+                                    static_cast<double>(vb[0]), static_cast<double>(vb[1]),
+                                    static_cast<double>(vb[2]),
+                                    static_cast<double>(body.pair_1c[0]), static_cast<double>(body.pair_1c[1]),
+                                    static_cast<double>(body.pair_1c[2]),
+                                    static_cast<double>(body.pair_04[0]), static_cast<double>(body.pair_04[1]),
+                                    static_cast<double>(body.pair_04[2]),
+                                    static_cast<double>(acc.body_resist_40[0]),
+                                    static_cast<double>(acc.body_resist_40[1]),
+                                    static_cast<double>(acc.body_resist_40[2]),
+                                    static_cast<double>(vs.velocity[0]), static_cast<double>(vs.velocity[1]),
+                                    static_cast<double>(vs.velocity[2]),
+                                    static_cast<double>(unit_.plane_latched_throttle),
+                                    static_cast<double>(unit_.plane_latched_air_brake),
+                                    static_cast<double>(th.current), static_cast<double>(th.desired),
+                                    th.active, static_cast<double>(ab.current),
+                                    static_cast<double>(ab.desired), ab.active,
+                                    static_cast<double>(unit_.plane_desired_speed_2b4),
+                                    unit_.plane_air_brake_mode_2d8,
+                                    static_cast<double>(unit_.ground_last_brake),
+                                    static_cast<double>(unit_.ground_last_friction),
+                                    static_cast<double>(state.thrust_accel),
+                                    static_cast<double>(state.pitch), static_cast<double>(pen));
+                            }
                             if constexpr (GameUnitsHost::Impl::kPlaneDirectionHoldBound) {
                                 // 007D81B0's clear on GGame+1FE4h == 2 is taken as
                                 // false (a single-player host), labelled. 007DC6C5:
@@ -12513,7 +12574,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.summary.plane_distance_moved +=
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
                         control_step_007da710(step, state.forward_speed, ground);
-                        advance_pose_0085e4d0(step);
+                        advance_pose_0085e4d0(step, ground);
                     }
 
                     void free_flight_007cc2f0(float step) override {
@@ -22718,7 +22779,46 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return true;
                     }
 
-                    void advance_pose_0085e4d0(float step) {
+                    void advance_pose_0085e4d0(float step, bool ground) {
+                        rotate_pose_0085e4d0(step);
+                        if constexpr (GameUnitsHost::Impl::kPlaneGroundLevellingBound) {
+                            // 007DA11C-007DA20C, after the rotation (the bank-yaw
+                            // 007DA080-007DA117 between them is not carried). The
+                            // rate is ctl+8Ch: RunwaySmoothStrength while the ground
+                            // law runs (007DCDBD), 0 after a free-flight step
+                            // (007DCCD3). SUBSTITUTION, labelled: the water law's
+                            // store (007DD84F) is not modelled here, and the image
+                            // runs this in the +4h tick element after the fixed
+                            // step, which this host folds into the same step.
+                            const float rate = ground && owner_.lua.plane_globals_loaded()
+                                ? owner_.lua.plane_globals().dynamics_runway_smooth_strength
+                                : 0.0f;
+                            if (rate > 0.0f) {
+                                const float gp = unit_.plane_ground_pitch_200;
+                                const float axis[3] = {0.0f,
+                                    static_cast<float>(std::cos(static_cast<double>(gp))),
+                                    static_cast<float>(std::sin(static_cast<double>(gp)))};
+                                bsp::AdvanceMatrix live{};
+                                float* const rows[3] = {unit_.motion.pose_row0,
+                                    unit_.motion.pose_row1, unit_.motion.pose_row2};
+                                for (int r = 0; r < 3; ++r) {
+                                    for (int c = 0; c < 3; ++c) live.m[r * 4 + c] = rows[r][c];
+                                }
+                                live.m[15] = 1.0f;
+                                bsp::NativeAdvanceMatrixOps ops;
+                                float transformed[3];
+                                ops.transform_direction_0042d0d0(transformed, axis, live);
+                                bsp::apply_up_levelling_007da14d(live, transformed,
+                                    bsp::level_blend_007da179(rate, step));
+                                for (int r = 0; r < 3; ++r) {
+                                    for (int c = 0; c < 3; ++c) rows[r][c] = live.m[r * 4 + c];
+                                }
+                                ++unit_.ground_level_steps;
+                            }
+                        }
+                    }
+
+                    void rotate_pose_0085e4d0(float step) {
                         bsp::AdvanceMatrix live{};
                         const float* const rows[3] = {unit_.motion.pose_row0,
                             unit_.motion.pose_row1, unit_.motion.pose_row2};
@@ -25405,7 +25505,7 @@ void GameUnitsHost::report() {
                 host.log.notef("summary plane ground roll %s: arm_steps=%llu law_steps=%llu "
                     "free_steps=%llu band_steps=%llu hold_down=%llu contact=%llu liftoff_req=%llu "
                     "wheel_brake=%.2f last_brake=%.2f last_friction=%.3f stop_t=%.2f roll=%.1f min_bfc=%.3f "
-                    "state=%d land_state=%d (packet cc9_plane_ground_roll)", s->row.name.c_str(),
+                    "state=%d land_state=%d level_steps=%llu (packet cc9_plane_ground_roll)", s->row.name.c_str(),
                     s->ground_arm_steps, s->ground_law_steps, s->ground_free_steps,
                     s->ground_band_steps, s->ground_hold_down_steps, s->ground_contact_steps,
                     s->ground_liftoff_requests, static_cast<double>(s->plane_wheel_brake_1e0),
@@ -25414,7 +25514,7 @@ void GameUnitsHost::report() {
                     static_cast<double>(s->ground_stop_time),
                     s->ground_arm_steps > 0 ? static_cast<double>(std::sqrt(dx * dx + dz * dz)) : 0.0,
                     static_cast<double>(s->ground_min_bfc),
-                    s->plane_control_mode_900, static_cast<int>(s->land_state));
+                    s->plane_control_mode_900, static_cast<int>(s->land_state), s->ground_level_steps);
             }
             if (s->ground_steer_steps > 0) {
                 host.log.notef("summary plane ground steering %s: steps=%llu last_f2=%.4f "

@@ -3091,3 +3091,167 @@ B-25 01's trace (`land park trace`, every 20 ticks):
 3. After (1), re-pair park together with `kLandAbortGroundArmBound`.
 
 `kLandParkStateBound` stays OFF.
+
+## 5y. The ground creep is gravity through an unlevelled pose (packet `cc9_ground_speed_hold`, cc9-lua17, 2026-09-29)
+
+### The measurement
+
+`BSP_PLANE_GROUND_TRACE=<name prefix>` is a new env-gated diagnostic. It prints `007D8611`'s
+body-frame terms every tenth ground-band step. Run: LOMP10 9200/9000, park OFF, current tree,
+`local\l17_gt_lomp10l.log` (cc9-lua17 tree).
+
+B-25 01 stops at 256.9 s. From 258 s on it holds exactly:
+- body velocity `vb = (-0.235, 0.010, 0.004)`: the motion is **sideways** (body x), not forward;
+- driving term `a1c` (`body.pair_1c`) = `(-0.701, -13.584, -5.615)`;
+- resisting fold `r04` = `(0.219, -0.010, -0.004)`;
+- ground band `r40` = `(0.470, 0, 6.000)`: the lateral `|2 vx|`, and the wheel brake 10 x 0.6;
+- latched throttle 0, `thrust` 0, `pitch` 0.3915 rad.
+
+Along z, the brake (6.0) exceeds the driving term (5.6), so the forward motion is clamped at 0.
+Along x there is no brake. The lateral term `|2 vx|` only balances `-0.701` at
+`|vx| = (0.701 - 0.219) / 2 = 0.24`, which is the measured creep.
+
+`a1c` is gravity (with the DeadMeat/extra terms) expressed in a body frame that the touchdown
+left pitched 0.39 rad and slightly rolled: the x share -0.70 is a roll of about 3 degrees. The
+park drift of 5x is the same effect. For example Lightning 01 moves at a constant 0.84 m/s along
+-z while its heading error stays at -1.4 rad, which is sideways motion.
+
+### What the image has and this host lacks
+
+`007D9F60`'s up levelling, `007DA11C`-`007DA20C`, read whole (disk bytes):
+
+- **The rate.** It runs only for `ctl+8Ch > 0` (`007DA11C` COMISS / `007DA131` JBE). The stores
+  to `ctl+8Ch`, by scan of `f3 0f 11 ?? 8c 00 00 00` and `d9 ?? 8c 00 00 00` in `007B`-`007D`:
+  - the constructor `007D7F0B`/`007D7F55`;
+  - `007D7BC9`;
+  - the ground roll law, `007DCDBD`: `[00F87384]` = tuning+2A4h `Dynamics/RunwaySmoothStrength`,
+    4.0 in this installation;
+  - the free-flight step, `007DCCD3`: the zero from `007DCCD0` XORPS;
+  - the water law, `007DD84F`.
+
+  So the levelling is live exactly while the ground law runs.
+- **The axis.** `ctl+80h..88h` = `(0, cos GroundPitch, sin GroundPitch)`, with `GroundPitch` =
+  desc+200h (`007DCD6C`-`007DCDAD`).
+- **The update.**
+  - `0042D0D0(out, ctl+80h, M, 0)` puts the axis through the working pose `M` (`[ESP+38h]`, rows
+    at `+38h`/`+48h`/`+58h`) in the row-vector convention: `out = v x M`, into world.
+  - The delta is `(0 - t.x, 1 - t.y, 0 - t.z)`. The bytes are `DE E2` = FSUBRP `ST(2) = ST(0) -
+    ST(2)` at `007DA155`/`007DA165`, and `DE EA` = FSUBP at `007DA171`.
+  - The factor is `min(+8Ch x step, 1)` (`007DA17D`-`007DA19C`).
+  - Row 1 (`[ESP+48h..50h]`) takes the scaled delta (`007DA1D0`-`007DA208`).
+  - Then `0085DAD0` (`007DA20C`) renormalises row 1, removes row 1 from row 2, renormalises row
+    2 and sets row 0 = row 1 x row 2. The pose ends pitched by `GroundPitch` with no roll.
+
+`src/plane_advance_pose.cpp` already reconstructs this (`apply_up_levelling_007da14d`,
+`level_blend_007da179`). The host's pose advance (`advance_pose_0085e4d0`) never called it
+(5u: "not carried").
+
+**Binding.** Under `kPlaneGroundLevellingBound`, `advance_pose_0085e4d0(step, ground)` now:
+1. rotates as before;
+2. while the core law runs in ground mode, applies the levelling at `RunwaySmoothStrength` with
+   the slot's `GroundPitch`. That is desc+200h, written only when `WheelHeight` and
+   `GroundPitch` are both authored (`007D29B8`-`007D2AC6`); B-25: 0.017453, fighters: 0.
+
+Labelled:
+- the bank-yaw rotation `007DA080`-`007DA117` between the two is still not carried;
+- the water law's store is not modelled;
+- the image runs this in the `+4h` tick element, which this host folds into the fixed step.
+
+The ground-roll summary gains `level_steps`.
+
+### Predictions, written before any ON run
+
+**Pair A.** LOMP10 9200/9000, park OFF on both sides, `--flip kPlaneGroundLevellingBound=true`:
+1. Identical until the first touchdown, because the levelling needs the ground law.
+2. B-25 01 and B-25 01|.-2 stop and **stay** on the strip:
+   - no `plane ground contact lost` line;
+   - `min_bfc` above -2 (OFF: about -950 and -1780);
+   - the lateral creep gone (`vb.x` about 0 after the stop).
+3. Every landed plane has `level_steps > 0`. The fighters' rolls stay within a few metres.
+4. Deaths identical (0 rows).
+
+**Pair B.** LOMP10 9200/9000, `kLandParkStateBound=true` and `kLandAbortGroundArmBound=true` on
+both sides, plus the flip:
+1. The post-hangar sideways drift of 5x goes away. Planes that reach the hangar stay within a
+   few metres of the target in state 5.
+2. So the park <-> abort loop stops. Park entries per plane drop from hundreds to single digits,
+   and `done_why contact` falls with them.
+3. Mechanism test: the drift distance after the hangar entry, from the `land park trace` lines.
+
+### 5y.1 Measured, and the verdict
+
+The binaries are exports of `1a756bc16`:
+
+| export | flips | SHA-256 prefix |
+| --- | --- | --- |
+| `l17_a0` | none | `5DAD87554945` |
+| `l17_a1` | levelling | `82EC6E1805B6` |
+| `l17_b0` | park, abort ground arm | `31A6D6F0B5E6` |
+| `l17_b1` | park, abort ground arm, levelling | `D8EED8A0C333` |
+
+All runs used n's launch form with `BSP_PLANE_GROUND_TRACE=B-25 01`. A 300-frame smoke of `a1`
+ran clean. The logs are `local\l17_<export>_<row>.log`.
+
+**Pair A (park OFF), LOMP10 9200/9000: `pair_diff` 3, every prediction held.**
+1. **Identical before the first touchdown.** The early lines that moved are LOMP10's known
+   movie-camera and minimap noise.
+2. **The B-25s stay on the strip.**
+   - `min_bfc` is 1.514 and 1.470 (OFF: -953.9 and -1777.7).
+   - There is no `ground contact lost` line (OFF: 306.90 s and 342.14 s at local x = -10.0).
+   - Rolls are 24.3 and 22.0 m (OFF: 41.5 and 53.6, creep included).
+   - After the stop the trace holds `vb = (0, 0, 0)`, `a1c = (0.000, -14.713, -0.257)`. The
+     -0.257 is 14.71 x sin(0.017453), the B-25's `GroundPitch` (vehicleclasses.lua, this
+     installation, mtime 2026-05-09).
+3. **Every landed plane levels** (`level_steps` = `arm_steps`). The fighters' rolls move by at
+   most 1.2 m.
+4. **Deaths are identical** (0 rows); the 34-row unit table is identical.
+
+The same pair on the other rows:
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| USN04 4700/4500 | 1 | the avoidance refill counter only |
+| USN01 3200/3000 | 1 | the avoidance refill counter only |
+| JM05 3200/3000 | 1 | the avoidance refill counter only |
+| USN13 3200/3000 | 0 | nothing |
+
+**`kPlaneGroundLevellingBound` flips ON.**
+
+**Pair B (park and the abort ground arm ON on both sides), LOMP10 9200/9000: prediction 1 held
+for half the planes, and prediction 2 missed.**
+
+| plane | park entries OFF -> ON | end state ON |
+| --- | --- | --- |
+| B-25 01 | 798 -> 1 | state 5 at (42.5, -25.5) |
+| B-25 01\|.-2 | 740 -> 1 | state 5 at (37.8, -20.9) |
+| Lightning 01\|.-3 | 902 -> 1 | state 5 at (47.1, -21.1) |
+| Lightning 01\|.-4 | 1127 -> 1 | state 5 at (38.6, -25.3) |
+| Warhawk 01\|.-3 | 946 -> 1 | state 5 at (37.5, -17.1) |
+| Lightning 01 | 1247 -> 547 | loops |
+| Lightning 01\|.-2 | 1002 -> 301 | loops |
+| Warhawk 01 | 1 -> 785 | loops |
+| Warhawk 01\|.-2 | 1059 -> 549 | loops |
+| Warhawk 01\|.-4 | 1180 -> 653 | loops |
+
+The drift of 5x is gone: every plane now stays within about 8 m of the hangar point for a
+minute or more. The loop that remains is a different mechanism. Warhawk 01's trace from 269 s to
+291 s shows it:
+- The target sits **behind** the plane (`err` 2.5 to 2.6 rad).
+- `v` pulses between 0 and 1.2 m/s against the command of 0.69.
+- The commanded yaw is 0.1 to 0.48, cut by the `(5 - f18) x 0.2` deadband.
+- The heading hardly moves. In the pulses where `v` is near 0, the rate law's flat floor of
+  0.6 (5u) holds the yaw rate at 0.
+- The plane crawls 12 m away, `dz` passes `qd`, and the path drops to state 4 at 293.3 s. The
+  abort ground arm then drives it off at up to 37 m/s. That is where the planes' `last x` of
+  several kilometres comes from, in `b0` as well.
+
+Both the image's rule (the deadband, `009B2AE1`-`009B2C1B`) and the floor were read and match. So
+the open question is whether the image's plane can turn round at 0.69 m/s, which the host's
+stop-and-go speed hold (the throttle demand arm integrating by `dt`) prevents.
+
+`kLandParkStateBound` and `kLandAbortGroundArmBound` stay OFF. The next items are:
+- the stop-and-go at the 0.69 command;
+- the abort ground arm's 37 m/s taxi.
+
+The hangar hide (`007B96C0`) was not bound: it only detaches and hides (5x), so it moves
+nothing that a log can check.
