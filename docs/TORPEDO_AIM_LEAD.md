@@ -1091,3 +1091,107 @@ aircraft's bot no longer thinks.**
 - **Recorded, not a defect in my lane.** The goaway, its aim point (15.4) and the dead-plane
   suppression all match the image. USN01 has stopped being a goaway row. The rows that still
   exercise the goaway are USN04 and JM05.
+
+## 16. The fly-to solver's obstacle list is the enemy AA envelopes (packet `cc9_fly_to_obstacles`, read)
+
+cc9-planes2, read-only while the session was locked. The edit is prepared as
+`local\p2_edit_obstacles.py` in the cc9-planes2 tree, for sequencing on src/game_hosts_units.cpp.
+
+**The rebuild, `009FD5FF`-`009FD743`, read from the raw listing.**
+- The cache is the calling state. `009FD5FF ADD [EDI+8],-1` / `JNS 009FD7D9` reuses the list.
+  Otherwise `MOV [EDI+8],14h` (`009FD630`) and `007B4500(0)` clear it.
+  - So the walk runs on the first call and then every 21st call.
+  - The dive goaway's state starts with `+8h` = 0 (`009C74E8`, EBX = 0).
+- **The walk.** `[[00E188A8]+19CCh]+64h` is world list 6, the ships, with `{+4h next, +8h unit}`
+  nodes.
+- **The team test.** `EBX` is the flyer's `unit+54h`, loaded at `009FD5E3`. `009FD656 CMP
+  [ESI+54h],EBX / JE` skips its own team.
+- **The range test** (`009FD66F`-`009FD6F9`). The distance to the lead point is taken in XZ,
+  with `FLDZ / FMUL ST0` for y. The radius is `max(+448h, +444h)`, then that against `+434h`,
+  plus 100.0 (`00D7A220`, `FADD qword`). The unit is kept when radius^2 > distance^2.
+- **What those fields are** (docs/GUNNERY_TABLES.md, `00956C20` step 11):
+  - `unit+430h + cat*4` is the longest live gun range of category `cat`, floored at 10.
+  - `unit+460h + cat*4` is the sum over that category's guns of (DamageMin + DamageMax) / 2
+    (`00956E94`..`00956E9B`).
+  - The categories read are 1 AAMACHINEGUN (`+434h` / `+464h`), 5 FLAK (`+444h` / `+474h`) and
+    6 LIGHTARTILLERYFLAK (`+448h` / `+478h`).
+  - So each obstacle is an **enemy ship's AA envelope**: its radius is the longest AA range plus
+    100, and its weight is the AA damage sum. The solver pushes the steer away from it
+    (docs/TORPEDO_FLY_TO_SOLVER.md 4).
+  - `include/bsp/plane_fly_to_solver.hpp` calls the two fields `extent_max` and `extent_sum`.
+    They are AA range and AA damage, not geometric extents.
+- **Where it matters.** Two goaways feed the solver, and so both steer round enemy AA:
+  - the torpedo goaway (`009D0C54`), whose heading no aircraft consumed in 15.4;
+  - the dive-bomb goaway (`009C4810`), which does command its heading (the USN04 Vals log 212
+    heading ticks).
+  The host passes an empty list at both sites.
+
+**The prepared binding (`kFlyToObstacleListBound`, to be committed OFF).**
+- One cache per goaway state on the unit slot, with a countdown starting at 0. It walks
+  `world_lists.entries[6]` with `row.party` as `+54h`.
+- The ranges come from the gunnery host's `category_ranges`. The damage sums are rebuilt from its
+  gun rows and bullet classes.
+- It adds a summary census line.
+- **Labelled substitutions:**
+  - It omits `00956C20`'s second ammunition record for a kind-6 gun in category 6 (`+48h`).
+  - It takes every gun with a bullet class as live (`desc+78h > 0` is unread here).
+  - The cache is not reset when a task is rebuilt.
+- **Uncertain:** whether list 6 drops a sunk ship. The rebuild itself does not test for death.
+
+**Predictions** (to be committed with the binding):
+- The dive-bomb goaway turns change on every row with dive bombers near enemy ships (USN04, E2).
+  The side can flip (`side_writes` > 0).
+- The torpedo goaway stays inert until a heading arm runs.
+- Deaths move by up to 3 through the shared stream.
+
+## 17. `009D0160`, the reset's run-time seed, and two reset fields the host is missing
+
+**`009D0160`** has no Ghidra function. Its body is `009D0160`-`009D0292`: `RET` at `009D0291`,
+then `INT3`. It is `__thiscall(approach)`, and its only caller is `009D0632` in
+`009D0380 BSP_BotApproachTorpedo_Reset`, right after the aim-error draw `009D02A0`
+(`009D062B`).
+- It is `009D1360`'s run-time arithmetic with different inputs, traced through the x87 stack:
+
+```
+fall  = 007BCC80(unit, +78h + +74h)          fall time from the planned release altitude
+lead  = fall * +70h                           (009D01DA-009D01E4)
+dt    = (+70h - run) / 80.0                   run = 007BCFA0(unit); 00CF1440 qword; NO floor
+dd    = dt * (+70h + run) * 0.5               00D7A280 qword
+L     = +7Ch - (lead + dd)                    009D01EC-009D01F6: FADDP then FSUBR [ESI+7Ch]
+t     = L < 0       ? fall
+      : dd <= L     ? fall + dt + (L - dd) / run
+      :               fall + dt * L / dd
++98h  = max(0, t + +9Ch)                      009D0255-009D0285
+```
+
+- It differs from `009D1360` (`torpedo_run_time_009d1360`) in four places:
+  - it uses `+70h` in place of the unit speed;
+  - its fall height is `+74h + +78h`, not the unit altitude;
+  - its leg is `+7Ch` (TorpReleaseDistNear) rather than `min(range, +7Ch)`;
+  - it has no floor on `dt`.
+- `dd` is subtracted from the leg twice (in `L`, then in `L - dd`). That is taken as the image's
+  own arithmetic, not a misreading. It is worth a second reader, because it is x87 stack work.
+- docs/TORPEDO_AFTER_THE_DROP.md section 5's census names only `009D14E7` as a `+98h` store. It
+  missed `009D0272` and `009D0285` (`MOVSS [ESI+98h]`), which sit in a body Ghidra has no
+  function for.
+
+**Why it is not bound yet:** two of its inputs are wrong in the host's reset.
+- **`+70h` is not read-only** (TorpedoApproachState calls it `closing_speed_bias_70`, "read
+  only", and holds 0).
+  - `009D0449` stores `U(0.9, 1.1) * min(desc+18Ch TravelSpeed, 0.75 * 007BCE20(unit))`. The
+    draw is stream 1: lo `00CE3860` 0.9f, hi `00CE6448` 1.1f. The 0.75 is `00CEC9D8`, a double.
+  - `007BCE20` is the minimum of `bullet+DCh` over the unit's devices whose bullet kind `+8h` is
+    0Ah; `+DCh` is unread.
+  - So `+70h` is a planned attack speed. The engagement estimate adds it to the closing speed
+    (`torpedo_approach_update.cpp:119`), so it also moves `+F8h` and the torpedo lead's projtime.
+- **`+78h` is a draw, not the row value.** `009D0451`-`009D0475` store
+  `U(0.0, 0.25) * record+0h` (TorpReleaseAlt). The draw is stream 1: lo from `FLDZ`, hi
+  `00CE3868` 0.25f. The host stores the full TorpReleaseAlt (12 m for SPNormal), where the image
+  gives 0-3 m.
+  - `+74h` gets 67.0f (`00D212A0`) here. The host takes it from `009D3489` later, which is
+    unchanged.
+
+**Proposed order:**
+1. A reset packet binds `+70h` and `+78h` with their stream-1 draws. These are `units.cpp` hunks
+   and change the torpedo descent and release on every torpedo row.
+2. Then `009D0160` seeds `+98h` from them.
