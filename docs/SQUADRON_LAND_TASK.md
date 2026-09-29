@@ -3344,3 +3344,80 @@ So the image may well loop the same way, invisibly. That cannot be settled from 
   gameplay-neutral.
 
 `kLandParkStateBound` and `kLandAbortGroundArmBound` stay OFF.
+
+## 5aa. What retires a landed plane: the carrier's elevator, never an airfield (packet `cc9_landed_plane_retirement`, cc9-lua17, 2026-09-29)
+
+This is a time-boxed census for the question 5z left open: does anything end park for a landed,
+hidden plane? Disk bytes and Ghidra were read only; no code changed.
+
+### The carrier elevator retires and relaunches (mother-ship holders only)
+
+The site class `00CF89F8` (`006CF3C0`/`006CFABC`, AIRFIELD_TAXI.md 2) has a subclass with vtable
+`00CF8A58`:
+- Its constructor `006CFAF0` stores `00CF8A58` at `006CFB24`, and `006D0470` stores it at
+  `006D0490`.
+- The constructor reads `MotherShip.ElevatorSpeed` (GAMEPLAY_SETTINGS.md).
+- The string `elevator` follows the table at `00CF8AB0`.
+- Its slot `+4h` is **`006D0600`-`006D07A4`**: `RET 4` at `006D07A1`, then INT3 padding. Ghidra
+  has no function there.
+
+It is `__thiscall(site, float dt)` and does two jobs:
+
+1. **Intake, `006D06A5`-`006D0722`.** It walks the occupant vector `+34h`/`+38h` for a plane
+   that meets all four of:
+   - `+904h` is set (landed);
+   - `site->vtable[3Ch](plane)` is true (`006CFF70`, not read);
+   - `vtable[38h]` speed < `[00CF8AAC]` = `3FB1C71Dh` = 1.389 m/s;
+   - `007B8D40` is true (the byte at `[plane+DECh]+44h` clear, or the float at `+48h` zero).
+
+   With a candidate, or when `+18h` is set and `006D02F0` (not read) answers false, it calls `006CFFF0(0, plane)`. That builds message
+   `00758B90` and routes it through `0077C2A0` with 5. The handler `006D0050` (slot `+50h`,
+   `00CF8AA8`) sends a plane with flag 0 to `006FC720`, which:
+   - takes the plane onto the platform `+34h`;
+   - calls **`007C2090`**, which requests flight state **2** (message `C3h`, new state 2, routed
+     with 7) unless the plane is already in 2;
+   - starts the lift (`+50h` = 2).
+2. **The lift, `006D0729`-`006D07A1`.** At the bottom it calls `007B96C0` (the hide) and
+   `006FC250`. After `tuning+510h`, with the platform empty, it calls `006CFFF0(1,
+   readyPlane +18h)`, which is the relaunch through `007C5F60`.
+
+So on a carrier a landed plane leaves the land task's world: it goes to flight state 2 and into
+the hangar, and the ready plane comes back up.
+
+### An airfield has no such path
+
+- **The airfield site's tick** (slot `+4h` of `00CF89F8` = `006CF980`, read whole to `RET 4` at
+  `006CF9DB`) only routes the ready-plane launch (`+18h` -> `0077C2A0` with 5). No slot of the 21
+  removes an occupant (AIRFIELD_TAXI.md, "Site occupancy").
+- **The hide `007B96C0`** has three callers. The other callers of `00951F40` are the elevator
+  platform (`006FC0D0`/`006FC250`/`006FC6B0`/`006FC810`), the spawn-state helper `007BC550`, and
+  the Lua `luaMW_SetVisibility` (`008A13D0`). None retires a plane.
+- **`+C00h` has no reader.** The byte scans in 5x plus the SIB forms
+  `80/8A/0FB6/38 ?? ?? 00 0C 00 00` all come back empty.
+- **The state-5 census** (`83 ?? 00 09 00 00 05`) finds these functions, none of them a
+  retirement:
+  - the done test `009B21D0` and the ground roll;
+  - the 4/5 transitions;
+  - `0099D300`;
+  - the taxi step `009CD540`;
+  - `007EFB60`, which promotes the squadron's next member when the leader is landed on the path;
+  - `009CF8E0`, the taxi task constructor;
+  - `007B83F0`/`007C7430` (message handlers).
+- **The taxi task** (`009CFF40`, created at `0099B10B` by the bot tick) needs the current task's
+  `vtable[30h]` true. For the land task that is `009B3730`, false in park and final
+  (`00D1FFA0`+30h), so a parked plane never gets it.
+
+### Verdict
+
+Nothing retires a landed plane at an airfield. The image's airfield plane, hidden at the hangar
+point, keeps running park. So the image most likely loops the way the host does (5z), invisibly.
+**Park stays OFF, and the park-loop line of work ends here for now.**
+
+The carrier elevator path is real. It belongs to the mother-ship holders the host refuses, and
+it becomes the model if those are ever bound.
+
+### For the lead (Ghidra, read-only here)
+
+Define `006D0600`-`006D07A4` (exclusive, `RET 4` at `006D07A1` then INT3), provisional name
+`BSP_AirOpsElevatorSite_Tick`: the mother-ship site's `+4h` slot, which runs the landed-plane
+intake and the elevator relaunch.
