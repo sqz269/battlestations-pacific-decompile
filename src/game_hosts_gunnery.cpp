@@ -104,8 +104,8 @@ constexpr bool kGunGravityArcBound = true;
 // command target alone for a unit with no current category 1/2 row, instead of
 // writing 0 over it; that field also carries the current command's own target
 // (vtable[178h] -> 00521EA0), which PilotLand's land site sets and 009B34D0
-// reads. False: every unit is written, as before.
-constexpr bool kCommandTargetKeepUnauthoredBound = false;
+// reads. False: every unit is written, as before. ON: pairs held (section 56.1).
+constexpr bool kCommandTargetKeepUnauthoredBound = true;
 constexpr bool kBulletNoGravityBound = true;
 constexpr bool kGunAimErrorBound = true;
 //  * kGunImmediateFireSlotBound: packet cc9_mrtgun_immediate_fire,

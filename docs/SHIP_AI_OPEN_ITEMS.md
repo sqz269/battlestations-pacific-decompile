@@ -4540,3 +4540,52 @@ writes 0 into the units host's `command_target_plus_one`.
   - AA contacts may move deaths through the shared RNG stream; judge from the per-entity table.
   - The attackmove-after-land observation (55.1) stays open and may still appear.
   - **LOMP10 9200/9000:** no PilotLand call; identical.
+
+### 56.1 The pairs and the verdict: both ON
+
+Committed-OFF base `e6831c321`. The OFF binary is this tree's build.
+- **K1** is `--flip kCommandTargetKeepUnauthoredBound=true` (`local\s16_k1`, `CF7E7E3AB121`).
+- **K2** adds `--flip kPilotLandNativeBound=true` (`local\s16_k2`, `2B0BAFCBFE27`).
+
+The logs are `local\s16{koff,k1,k2}_<row>.log`, and the diffs are `local\s16_kdiff_<row>.txt`.
+
+| pair | row | pair_diff | result |
+| --- | --- | --- | --- |
+| A: OFF vs K1 | USN01 3200/3000 | 1 | identical; only the ship-AI refill counter (known noise) and the new keep count (12766) move |
+| A: OFF vs K1 | JM05 3200/3000 | 1 | identical; keeps 308725 |
+| A: OFF vs K1 | IJN01 3200/3000 | 1 | identical; keeps 157765 |
+| B: K1 vs K2 | IJN01 3200/3000 | 3 | four land tasks install at 68.20 s and **none retires** (`retired_invalid=0`) |
+| B: K1 vs K2 | LOMP10 9200/9000 | 1 | no call; GuiText counts and known LOMP10 presentation noise only |
+
+**Pair A, as predicted.** No authored-row unit changes on USN01, JM05 or IJN01. The skipped stores
+only avoid writing 0 over 0 there.
+
+**Pair B, IJN01, as predicted.**
+- The B-17 leaders fly the land moveto from 4153.6 m (B-17 01) and 4828.7 m (B-17 02).
+- By 88.30 s B-17 01 is at 3256 m and descending (alt 1200 -> 988). By 128.30 s it is in mode 3
+  at 188 m altitude. At 148.30 s it is 1360 m out.
+- Unit-table nearest distances: B-17 01 5378 -> 2496 m, B-17 02 6026 -> 2965 m, and the wingmen
+  alike.
+- The death rows (9) are identical.
+- The `settarget` player commands that reach the B-17s after fixed step 1382 do not displace the land command.
+- The land path's own unimplemented rows now run and are recorded: `006C0B50`, `006BD080`,
+  `006C5380`, `009C1850`, `009C18C0`, `006C4790`, and the `0099A3DD` arm record. These are
+  landing-sequencer and moveto internals on the lua17 side.
+
+**Verdict: `kCommandTargetKeepUnauthoredBound` ON, and `kPilotLandNativeBound` ON on top of it.**
+
+**Open: the attackmove after the land order.** Still seen with both ON:
+`attackmove arm 00836b45: unit=330/332 target=2 target not hostile ... stage 2` at 68.25 s.
+
+**A read of the commands host (unmodified).** The row and the slot both keep the land class, so
+the attackmove is not how the host stores `land`.
+- `issue_script_command` (`src/game_hosts_units.cpp:11370`) calls
+  `GameCommandsHost::issue_command_object` (`src/game_hosts_commands.cpp:1996`).
+- That builds the row from `class_of(00E08FA0)`, which is `entity_orders.cpp`'s
+  `{22, 00E08FA0, 00CFB600, "land", category 3}`.
+- It runs the arm chain, and the director's `store_slot` (`src/game_hosts_commands.cpp:1033`,
+  0071E764) stores the command object **as given** into `slot_command[slot]`.
+- So `slot_command[0] == kCommandAttackMove (00E08F78)` on those two units at 68.25 s comes from
+  another push. The squadron's own generated order is the likely source; the commands lane should
+  dump `slot_command[]` for units 330 and 332 at 68.20..68.25 s.
+- The arm only raises stage 2 on a friendly target; it does not disturb the land tasks here.
