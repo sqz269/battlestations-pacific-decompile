@@ -1749,6 +1749,34 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 "authored=%d (006d3c10 -> 006bf0d0)", stored.name.c_str(),
                 static_cast<double>(deck.runway_width), static_cast<double>(deck.runway_length),
                 deck.runway_from_scene ? 1 : 0);
+            // 006D5220 kind 1, 006D5C00-006D5DD6: "Hangar 1" .. "Hangar 10".
+            // A reference is kept by its last path component (the authored
+            // `Landscape <name>\<entity>` form); an empty `Object` adds nothing.
+            const auto reference_name = [](const SceneProperty* p) {
+                if (p == nullptr || p->values.empty()) return std::string();
+                std::string v = p->values.back();
+                if (v.size() >= 2 && v.front() == '"' && v.back() == '"') {
+                    v = v.substr(1, v.size() - 2);
+                }
+                const std::size_t cut = v.find_last_of('\\');
+                return cut == std::string::npos ? v : v.substr(cut + 1);
+            };
+            for (int i = 1; i <= 10; ++i) {
+                const std::string key = "Hangar " + std::to_string(i);
+                for (const auto& block : bag.blocks) {
+                    if (block.first != key) continue;
+                    bsp::AirOpsDeck::HangarNames h;
+                    h.object = reference_name(block.second.find("Object"));
+                    h.entry_path = reference_name(block.second.find("EntryPath"));
+                    h.exit_path = reference_name(block.second.find("ExitPath"));
+                    if (h.object.empty()) break;
+                    owner.log.notef("air ops hangar: unit=%s %s object=%s entry=%s exit=%s "
+                        "(006d5220 kind 1)", stored.name.c_str(), key.c_str(),
+                        h.object.c_str(), h.entry_path.c_str(), h.exit_path.c_str());
+                    deck.hangars.push_back(std::move(h));
+                    break;
+                }
+            }
         }
         owner.log.notef("air ops deck: unit=%s class=%d NumSlots=%d MaxInAirPlanes=%d "
             "slots=%zu stock=%zu (006cadd0 mode 1)", stored.name.c_str(), klass->class_id,
