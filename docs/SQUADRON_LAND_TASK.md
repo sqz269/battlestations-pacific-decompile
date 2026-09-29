@@ -2002,7 +2002,18 @@ LOMP10 or USN01. Nothing is bound and there is no pair; the source comment now c
    - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still, so it
      blocks the runway and its followers abort to standby);
    - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
-   - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
+   - the gear channel `(+DECh)+28h` with `+C1Ch` (5k). Scoped by cc9-lua13, 2026-09-29, and
+     not bound:
+     - loads of `unit+DECh` (`8B ?? EC 0D 00 00`, whole `.text`) are all in `007B0000`-`007E0000`;
+     - the only rel32 caller of `BSP_Plane_GearIsDown` `007B8D70` is final's done test
+       `009B209B`;
+     - the ground task `009CE2C0` uses channel `+44h` (`007B8D10`, `007B8DC0`), not the gear.
+
+     So the gear reaches gameplay only through the two touchdown gates (`007CC476`, `007C71E0`)
+     and final's done test. The host passes all three because the channel is not carried. The
+     image's gear is requested inside the approach cone (`007C5CF8`-`007C5EE6`). Whether its
+     actuator has reached 1.0 by the contact is the one open timing question: its travel rate is
+     unread;
    - the direction hold's launch arm `007C705C` (0.8 s at BeginFlying), not bound;
    - a mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
