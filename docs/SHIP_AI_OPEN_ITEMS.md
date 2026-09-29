@@ -2627,3 +2627,11 @@ USN01 (3200/3000), and 6 / 0 on USN02 (9200/9000).
    row (six `attack_target_destroyed_00a10040` calls).
 3. **Reach**: a player-side or AI-disabled group given an ATTACK command whose target dies. No
    reference row has one, so the change is exact and unexercised.
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF `08aaaf7db` in the tree, ON `pair_export --commit 08aaaf7db --flip
+kAiTargetGroupDestroyedIdleBound=true` (exe `69709265C0AC`); logs `local\s11_goff_<row>.log` /
+`local\s11_gon_<row>.log`. USN02 9200/9000: exit 1, with the six `attack_target_destroyed_00a10040`
+calls and the ship avoidance refill counter (known noise). JM08 3200/3000: exit 1, JM08's known
+noise only. Predictions 1 and 2 held. **Verdict: ON.**

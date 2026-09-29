@@ -96,7 +96,9 @@ inline constexpr bool kAiCommandAvoidZonePointBound = true;
 // a group turns every command aimed at it into IDLE. False: the release loop
 // reverts such a command to its group's birth class (NONCONTROL or IDLE), the
 // earlier host rule.
-inline constexpr bool kAiTargetGroupDestroyedIdleBound = false;
+// ON (2026-09-29): USN02 9000 and JM08 3000 gameplay-identical, six IDLE installs
+// on USN02, none with a non-IDLE birth class (section 30).
+inline constexpr bool kAiTargetGroupDestroyedIdleBound = true;
 
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 
