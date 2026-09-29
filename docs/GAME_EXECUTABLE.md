@@ -12651,3 +12651,120 @@ Each leave-one-out export is read with `pair_diff` against n:
   - **USN04 and E2** gain torpedo-task releases (2 -> 4 of 16) and one dive-bomb release (0 -> 1
     of 19).
 - **Carried from m:** all of m's carried and new flags.
+
+## Mission reference baselines, 2026-09-29 o (main 3194cea39)
+
+Packet `cc9_reference_rebaseline_15`, worker cc9-gunnery13. **It replaces the 2026-09-29 n rows
+above.** The report is `reports/cc9_reference_rebaseline_15.json`.
+
+**Run parameters:**
+- **One binary:** `local\rb15\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery13.
+  - SHA-256 `9935F18AB72E4C6CB599EC477B7BAFF07BA881B6D30971E47736A9C4154771DC`, prefix
+    `9935F18AB72E`.
+  - It is a clean `tools/pair_export.py --commit 3194cea39` export with no flip.
+- **Rows:** n's sixteen, at n's frame counts and in n's launch form, `--frames F
+  --press-start-frame 30 --menu-select M --mission-frames N --mission-frame-seconds 0.05`, with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+- **Checks:** a 300-frame USN01 smoke ran first. Every log shows:
+  - `present interval immediate`;
+  - a module directory under `local\rb15`;
+  - `frames_presented` equal to the frame count minus one;
+  - the final COM release.
+
+  The session stayed on the console, and no run failed.
+- **Predictions:** none were written for this rebaseline. Each switch's own pair recorded its
+  expected rows, and the attribution below is checked against those.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 15008.9 | 46 | 753 (147) | 9862 | 100.35 s | 6 of 16 / 0 of 19 | 14 | Lexington-class01 3572.57 m | none | 504 | `local\rb15_usn04.log` |
+| USN01 | 3000 | 2786.4 | 5 | 171 (88) | 1183 | 51.45 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 3875.05 m | none | 530 | `local\rb15_usn01.log` |
+| USN04 (E2) | 9000 | 15802.4 | 51 | 809 (160) | 10444 | 100.35 s | 6 of 16 / 1 of 19 | 19 | Lexington-class01 7196.71 m | none; phase 1 only (known) | 507 | `local\rb15_e2.log` |
+| USN02 | 9000 | 38828.3 | 11 | 2009 (412) | 2133 | 18.95 s | - | - | Kortenaer 548.61 m | **failed at 29.75 s**, phase 1 (unchanged) | 493 | `local\rb15_usn02.log` |
+| JM06 (smoke) | 3000 | 4112.8 | 1 | 197 (183) | 283 | 68.10 s | - | - | Fletcher-class 08 339.55 m | none | 485 | `local\rb15_jm06.log` |
+| JM08 (smoke) | 3000 | 4023.3 | 10 | 300 (124) | 2867 | 5.25 s | - | 3 | Auilick 2520.47 m | none | 490 | `local\rb15_jm08.log` |
+| USN13 (smoke) | 3000 | 9130.0 | 31 | 677 (198) | 8377 | 92.05 s | 0 of 60 / - | 7 | Enterprise 1873.38 m | none | 496 | `local\rb15_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 603.30 m | none | 463 | `local\rb15_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 658.24 m | none | 467 | `local\rb15_lomp06.log` |
+| LOMP10 | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 4892.32 m | none | 489 | `local\rb15_lomp10.log` |
+| JM05 | 3000 | 2130.8 | 0 | 39 (23) | 98 | 9.95 s | 0 of 12 / 0 of 6 | - | USS Phelps 2567.65 m | none | 525 | `local\rb15_jm05.log` |
+| USN12 | 3000 | 1046.5 | 0 | 32 (16) | 83 | 8.30 s | - | - | Montpelier 2084.21 m | none | 472 | `local\rb15_usn12.log` |
+| LOMP10 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 7026.71 m | none | 494 | `local\rb15_lomp10l.log` |
+| USNOS | 3000 | 2004.5 | 6 | 860 (82) | 4968 | 10.80 s | - | 1 | NH 1912.73 m | none | 520 | `local\rb15_usnos.log` |
+| USNOS (long) | 9000 | 10635.1 | 21 | 1101 (114) | 17571 | 10.80 s | - | 1 | NH 4851.28 m | none | 527 | `local\rb15_usnosl.log` |
+| IJN01 | 3000 | 3515.1 | 9 | 179 (169) | 3298 | 80.15 s | - | 1 | Downes 739.58 m | none | 501 | `local\rb15_ijn01.log` |
+
+**Against n** (`pair_diff` against `rb14_<row>` in the cc9-gunnery12 tree):
+- **Thirteen rows move** (exit 3).
+- **USN02, LOMP06 and USN12 are gameplay-identical** (exit 1).
+
+Death-row membership against n (`local\g13_members.py rb14 rb15`):
+- **USN04:** 46 -> 46.
+  - Added: D3A Val #5.1|.-4 and D3A Val #7.1.
+  - D3A Val #5.1|.-2 and A6M Zero #7.2 survive.
+- **JM08:** 11 -> 10. H6K Mavis 02 survives.
+- **USN13:** 31 -> 31. bruh #1.5|.-4 dies, and bruh #1.9|.-3 survives.
+- **IJN01:** 28 -> 9. Nineteen A7M rows survive, including A7M_1|.-5, A7M_2, every A7M_3 and every
+  A7M_5.
+- **E2, USN01 and USNOS long:** the same victims, with changed times and killers.
+- **The other rows:** identical death rows.
+
+### The anchor: twelve switches
+
+A value diff of every `constexpr bool k...` declaration between `eb1226215` and `3194cea39`
+(`local\g13_switches2.py`, which also catches names not ending in `Bound`) finds **twelve switches
+newly ON**. Three more are new and OFF: `kDiveHitClockBound`, `kLandAbortGroundArmBound` and
+`kPilotLandNativeBound`.
+
+| switch | flip commit | its pair recorded |
+| --- | --- | --- |
+| `kPlaneGroundSteeringBound` | `ff48657e0` | the landing rows (lua15, 5u) |
+| `kShipAiKamikazeAttackStepBound` | `04e56970d` | SHIP_AI 45.4 |
+| `kHullAimOffsetEnabled` | `76f652c3f` | the dive-bomb aim set |
+| `kSceneUnitSkillBound` | `dfeb8dd02` | four gameplay-identical pairs |
+| `kKamikazeContactDetonationBound` | `eccebd3ca` | zero reach (46.4) |
+| `kCarrierLaunchSkillBound` | `9fb31e4a8` | JM05 long |
+| `kAaGunnerSwingErrorBound`, `kAaFlakAimErrorBound` | `7059be570` | AA_LETHALITY_AUDIT 7.5 |
+| `kScriptedOrderNativesBound` | `b454cf885` | SHIP_AI 49.3 |
+| `kScriptedOrderNatives2Bound` | `968d6218f` | SHIP_AI 50.2 |
+| `kPlaneHitTaskNotifyBound` | `f262e60a8` | AA_LETHALITY_AUDIT 8.5 |
+| `kShipFireStanceBound` | `21831d9ca` | GUNNERY_OPEN_ITEMS 61.5 (USN01 and USN04 identical) |
+
+With all twelve OFF (`rb15n0`), `3194cea39` is **gameplay-identical to reference n on all sixteen
+rows** (exit 1 against `rb14_<row>`). Nothing else that landed since n moves a reference row.
+
+### What moved each row
+
+Each group was turned OFF alone (leave-one-out) and read with `pair_diff` against o on the thirteen
+moved rows. Exit 3 means the group moves that row.
+
+| variant (OFF) | rows that move against o |
+| --- | --- |
+| `o_aa`: the two AA bot errors | USN01, JM06, JM08 (H6K Mavis 02 survives), JM05, USNOS, USNOS long, **IJN01 (all 19 surviving A7Ms, 28 -> 9)** |
+| `o_ham`: the hull aim offset | USN04, E2, USN01, USN13, LOMP10, JM05, LOMP10 long |
+| `o_hit`: the plane hit notice | USN04 (D3A Val #7.1 dies only with it, 45 -> 46), E2 (torpedo-task releases 5 -> 6), USN13 (bruh #1.9|.-3 survives only with it, 32 -> 31) |
+| `o_kam`: kamikaze contact detonation and attack step | USNOS and USNOS long (shots 2316 -> 4968 and 13120 -> 17571) |
+| `o_sco`: the two scripted-order native sets | BSM01 (HenryPT 596.41 -> 603.30 m), LOMP10, JM05 and LOMP10 long (death rows identical; the PT poses and JM05's Event2Pt freeze, as SHIP_AI 49.3 recorded) |
+| `o_gst`: ground steering | LOMP10 long only (B-25 01 7020.37 -> 7026.71 m) |
+| `o_cls`: carrier launch skill | none |
+| `o_skl`: scene unit skill | none |
+
+- **Fire stance** was not run alone. Its own pair (61.5) is gameplay-identical on USN01 and USN04,
+  and no other row reaches the ship arm.
+- **Carrier launch skill and scene unit skill** move none of the sixteen rows. The carrier skill's
+  effect is on JM05 long, which is not a reference row.
+- **Every moved row has at least one attributing group.**
+- **The hull aim offset reaches the most rows.**
+  - On LOMP10 and LOMP10 long it moves only B-25 01's distance, by under 1 m.
+  - Whether its own pair set covered those rows is not checked here.
+
+### Post-o (landed on main while o ran; attribute in reference p)
+
+`local\g13_switches2.py 3194cea39 main`:
+- `kCommandTargetKeepUnauthoredBound`, ON (`b08b40900`);
+- `kPilotLandNativeBound`, false -> true (`b08b40900`);
+- `kFindEntityCaseInsensitiveBound`, ON (cc9-lua17);
+- `kPlaneGroundLevellingBound`, ON (`eaa4444a7`);
+- `kSubmarinePeriscopePrepassBound`, ON.
