@@ -1494,6 +1494,11 @@ struct GameGunneryHost::Impl {
         static const bool on = env_flag("BSP_AA_NO_SHOOTER_VEL");
         return on;
     }
+    // DIAGNOSTIC: BSP_HULL_ROLL_TORQUE_TRACE=1 logs each posted hit roll torque; no state.
+    static bool roll_torque_trace() {
+        static const bool on = env_flag("BSP_HULL_ROLL_TORQUE_TRACE");
+        return on;
+    }
     unsigned long long intercept_solves{0};
     // Packet cc9_aa_lead: Bullet[2] of a sub-type 6 gun, by gun index.
     struct SecondAmmo {
@@ -7419,6 +7424,15 @@ public:
         const double m = std::sqrt(static_cast<double>(torque.x) * torque.x
             + static_cast<double>(torque.y) * torque.y + static_cast<double>(torque.z) * torque.z);
         if (m > owner_.summary.roll_torque_max_magnitude) owner_.summary.roll_torque_max_magnitude = m;
+        if (GameGunneryHost::Impl::roll_torque_trace()) {
+            // DIAGNOSTIC (GUNNERY_OPEN_ITEMS 52.3 P2): each posted 93h torque's target.
+            const GameUnitRow* row = owner_.units.unit_row(victim_);
+            owner_.log.notef("hull roll torque: t=%.2f victim=%s dead=%d torque=(%.0f %.0f %.0f) |t|=%.0f",
+                owner_.clock_seconds, row != nullptr ? row->name.c_str() : "?",
+                victim_ < owner_.unit_state.size() && owner_.unit_state[victim_].dead ? 1 : 0,
+                static_cast<double>(torque.x), static_cast<double>(torque.y),
+                static_cast<double>(torque.z), m);
+        }
         owner_.done("ShipHit::add_hull_torque_00827312", 0x00827312u);
     }
 
