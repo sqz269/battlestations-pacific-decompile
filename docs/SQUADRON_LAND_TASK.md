@@ -1403,6 +1403,69 @@ their entries are refused.
   changes nothing. The real test is the joint pair with begin and final (packet
   `cc9_land_begin_final_repair`).
 
+
+### The pair and the verdict (cc9-lua12, 2026-09-29): gameplay identical, contact unexercised
+
+OFF is this tree's build of `6369a63c4` (`local\l12_tdoff_<row>.log`). ON is the same commit with
+`kPlaneTouchdownBound=true` (`local\l12_tdon_<row>.log`). A 300-frame LOMP10 smoke of the ON build
+ran first and ended cleanly.
+
+| row | `pair_diff` | touchdown summary |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 1, gameplay identical | 10 planes, 428 to 1004 probes each, `contact_steps=0`, `touchdowns=0` |
+| USN01 3200/3000 | 1, gameplay identical | 7 planes (Airfield2 is the holder; Enterprise is refused), `contact_steps=0`, `touchdowns=0` |
+
+1. **Held.** The probe runs on every flying plane and finds CB4_AF on LOMP10.
+2. **Held, and more strongly than predicted.** No plane in the line pattern ever crossed the
+   20 x 400 m rectangle, so `contact_steps` is 0 rather than a few high passes.
+3. **Held.** Both rows are gameplay identical. The ON log differs only by the summary lines and by
+   the deck build line, which the probe now prints earlier (LOMP10: log line 4275 instead of
+   5399).
+
+**Verdict: the switch stays OFF for now.** The flip rule is met, but `006BC530`'s contact path
+never ran, so this pair does not test it. The joint pair with begin and final (section 5l) flies
+the heads over the runway past T. It decides the switch together with begin and final.
+
+
+## 5l. The joint re-pair of begin, final and the touchdown (packet `cc9_land_begin_final_repair`, cc9-lua12, 2026-09-29)
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is `local\l12_tdoff_<row>.log`, with all three switches off. ON flips `kLandBeginStateBound`,
+`kLandFinalStateBound` and `kPlaneTouchdownBound`. The base is section 5j's joint pair (begin and
+final ON, `local\l11_fnon_lomp10.log` in cc9-lua11). Its final traces put the heads past T at
+local heights of 3.4 to 16 m over T:
+- Warhawk 01: minimum Y 3.4 m;
+- Lightning 01: 3.7 m;
+- Lightning 01|.-4: 5.8 m;
+- B-25 01: 11.3 m;
+- B-25 01|.-2: 10.8 m.
+
+1. **Contact is exercised.** Every head that reaches final (Warhawk 01, Lightning 01,
+   Lightning 01|.-4, B-25 01, B-25 01|.-2) shows `contact_steps > 0` once it flies along the
+   runway inside 10 m of the centre line.
+   - `min_height` is Y + 0.5 at the lowest point over the rectangle: about 4 m for the fighters
+     and 11 m for the B-25s.
+   - The line-only wingmen show 0.
+2. **No touchdown.** `touchdowns=0` everywhere. The P-40s and P-38s need `+BFCh <= 0.0` and
+   the B-25s need 1.52, and nothing in 5j's traces comes that low.
+3. **Everything else is 5j's joint pair.**
+   - With no touchdown nothing restamps the site. `009AFAF0`'s onGround gate changes nothing on
+     a static holder: past T the arm is never reached, and before T only the 1.0 floor could move.
+   - Begin lasts 1.2 to 6.6 s per head.
+   - Final flies on past T, sets its done byte and goes to a refused abort.
+   - LOMP10 moves (exit 3, the same moves as 5j: deaths identical, B-25 01 6207 -> 8414 m).
+   - USN01 is gameplay identical (exit 1).
+- **Mechanism failure:** any of:
+  - a touchdown with `+BFCh` above the wheel height;
+  - `contact_steps > 0` with a local |x| or |z| outside the rectangle, checked on the first
+    contact of Warhawk 01 from the final trace;
+  - begin or final departing from 5j.
+- **Flip rule (5j's):** the three flip together only if a head touches down **and** no head flies
+  on past T for more than 10 s. It is expected to fail on both counts, so all three stay OFF. The
+  blocker would then be the descent: the heads float 3.5 to 16 m over the runway, where the image
+  needs the wheel height.
+
 ## 6. Open, in order
 
 1. **The touchdown.** Standby and line are ON (sections 5e and 5g), and the launch-site arm is ON

@@ -9174,7 +9174,15 @@ void GameUnitsHost::Impl::plane_site_probe_007c5ac0(GameUnitSlot& p, float step)
 // host, so the plane is held where it touched down.
 bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
     if (!p.plane_ground_contact_bf8) return false;
-    ++p.td_contact_steps;
+    if (++p.td_contact_steps == 1 && p.plane_contact_deck_bf4 != 0) {
+        const std::array<float, 3> fl = landing_xform_004142e0(
+            landing_decks[p.plane_contact_deck_bf4 - 1u].inverse_48, p.motion.position);
+        log.notef("  plane ground contact first %s t=%.2f local x=%.2f y=%.2f z=%.2f vy=%.2f "
+            "(006BC530, packet cc9_plane_touchdown)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), static_cast<double>(fl[0]),
+            static_cast<double>(fl[1]), static_cast<double>(fl[2]),
+            static_cast<double>(p.plane_world_velocity[1]));
+    }
     if (p.plane_contact_height_bfc < p.td_min_height) p.td_min_height = p.plane_contact_height_bfc;
     if (!(p.plane_wheel_height_1fc >= p.plane_contact_height_bfc)) return false;   // 007CC463 JB
     ++p.td_low_steps;
