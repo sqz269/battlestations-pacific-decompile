@@ -1,65 +1,111 @@
 # Gameplay gap ranking
 
-Addresses: 0099AF53, 007BCBE0, 007D681E, 009C8790, 009C5C9B, 009E2020, 009F9E40, 009BEE30, 009BFEE0,
-009FADA0, 00959C20, 00A2B400, 00A25B90, 00A25A30, 00758090, 00819880, 00824B60, 009E4DC1, 008A6AC0,
-008A47B0, 00890A10, 008A7060, 008B8AD0, 0089B840
+Addresses: 007F16D0, 006C0840, 009C3647, 009C3100, 0071E430, 006C0750, 00758270, 009F2124, 00A2B8F0,
+009FFEB0, 009C359F, 009C23B0, 009229F0, 007AC9D0, 007325A0, 00730762, 008AD4CD, 0071C1E0, 009C207C,
+006D2510, 006D40F0, 00846320
 
-Packet `cc9_gameplay_gap_ranking`, worker cc9-ships14, 2026-09-29 (stamped 11:29 UTC). Read-only;
-no switch, no Ghidra write.
+Packet `cc9_gameplay_gap_ranking_2`, worker cc9-lua19, 2026-09-29 (stamped 20:06 UTC). It refreshes
+the first ranking (packet `cc9_gameplay_gap_ranking`, cc9-ships14, 11:29 UTC), whose rows are now
+the closed list at the end. Read-only: no switch, no Ghidra write.
 
 ## Sources
 
-- **Reference m.** The sixteen `local\rb13_*.log` in the cc9-gunnery11 tree, on binary `490D03C8A285`
-  (`b234f20ac`).
-- **Fresh runs on current main.** A no-flip `pair_export` of `f314ba9d2`, run with the reference
-  environment. The logs are `local\s14m_<row>.log` in the cc9-ships14 tree: USN04 4700/4500, USN13,
-  JM05, USNOS, IJN01 and LOMP10 at 3200/3000.
-  - Deaths on the fresh runs: USN04 46 (m: 43), IJN01 28 (23), JM05 0 (1), USN13 31 (32), USNOS 6 (6).
-    Those moves are the post-m switches (reference n's business). They do not change the ranking.
-- **The census tool.** `local\s14_gap.py` parses every `UNIMPLEMENTED calls=` row of the host-method
-  table and every `summary` line with a refusal-type counter.
-  - Reference m has 627 UNIMPLEMENTED rows. After the presentation classes are removed, 378 remain.
-  - Current main has 609 rows.
+- **One binary.** A no-flip `tools/pair_export.py --commit 31de7f88a` export of main,
+  `local\l19_main\build\win32\Release\bsp_game.exe` in the cc9-lua19 tree, SHA-256 prefix
+  `CAB704E1D6E3`.
+- **Launch form.** Reference p's: `--frames F --press-start-frame 30 --menu-select M --mission-frames N
+  --mission-frame-seconds 0.05`, with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`
+  (`local\l19_runs.ps1`). The logs are `local\l19_main_<row>.log`.
+- **Rows that ran.** USN04, USN13, JM05, IJN01 and LOMP10 at 3200/3000, and JM05 at 9200/9000.
+- **Rows that did not run.** USN01, JM08, E2 (USN04 9000), USN13 9000, LOMP10 9000 and IJN01 9000.
+  - They died at renderer init. `CreateDevice` returned null with hr `0x8876086A`, and the log shows
+    `logonui=1/1`.
+  - This is the environment, not the code: the 300-frame USN01 smoke fails the same way.
+  - The first batch lost its device mid-run. USN13, IJN01 and JM05 9000 then logged `present failed
+    hr=0x88760868` (D3DERR_DEVICELOST). Each one still simulated every mission frame (`ran=N
+    simulated=N`), so its gameplay counters are used here, but it is not a reference row.
+- **Census tools.**
+  - `local\l19_gap.py` is ships14's `s14_gap.py`. It lists the UNIMPLEMENTED host-method rows.
+  - `local\l19_nz.py` lists every nonzero refusal-type counter of a `summary` line
+    (refus/unbound/stand-in/missing/unresolved/fallback/unread/skipped), and every line that labels
+    a substitution or stand-in.
+  - `local\l19_site.py` prints the source lines before each record site.
+- **The totals.** 598 UNIMPLEMENTED rows over the six logs, and 36 nonzero refusal-type counters.
+- **Method.** Each candidate was checked against its record site's comment and the row's outcome
+  counters. An UNIMPLEMENTED count was taken as a gap only where the recorded answer differs from
+  what the image would do on a live path.
 
-**The UNIMPLEMENTED census is a poor guide by itself.** Most of the high-count rows are counters on
-paths the host already models:
-- the labelled substitutions `NearFieldProbe::probe`, `ShipAiTorpedoStandoff::torpedo_bot_accuracy`,
-  `LeakManager::route_ship_sink_92h` and `Unit::can_release_007bb110`;
-- diagnostics such as the attackmove building arm `00836B95`;
-- structure, such as `ShipAiOrder::slot_to_order_ring` (section 1 of SHIP_AI_OPEN_ITEMS).
+## Top 15 new gaps
 
-So each entry below was checked against the host's comment at the record site, the row's outcome
-counters and, where the summary names one, its blocker.
-
-## Top 15
+Reach is from the runs above (calls or units per row). "Mine" means the units / landing / air-ops
+lane (cc9-lua19).
 
 | # | gap (address) | reach | gameplay consequence | lane | suggested packet |
 | --- | --- | --- | --- | --- | --- |
-| 1 | **AA lethality at 300-800 m (CORRECTED twice; takes in the torpedo and dive-bomb rows).** This is where the air strikes fail.<br>- **Torpedo planes.** The unit+C58h reading was a misdiagnosis (lua15, `f260985db`). The run-in altitude is faithful too (lua15, `65f041420`): the image's law A = 12 + max(R-450,0) x s x tan(DropAngle) commands about 559 m at the 2200 m aim entry. On JM05 9200/9000 all 12 torpedo planes descend to 22-69 m and are shot down before release. On USN04, 12 of 16 Kates are shot down in aim.<br>- **Dive bombers** (lua15, `9b2693f83`). All 16 USN04 Vals pass the latch and the turndown. Then 7 are shot down in the dive at 542-851 m, 2 overshoot, 3 fail the fly-over tolerance (a separate lua15 item), 3 are still diving at the end, and 1 releases.<br>- JM05 needs 9200/9000 to show attacks. | USN04, JM05 at 9000, USN13 | the air strikes die before release: damage and deaths | gunnery (gunnery12); fly-over tolerance: lua15 | gunnery12's AA-lethality binding (JM05's SPNormal AA runs error-free in the host) |
-| 2 | (folded into 1) | | | | |
-| 3 | **DONE: ON in section 45; contact detonation ON with zero reach in section 46. Kamikaze boat attack step `009E2020`.** `BSP_ShipAi_KamikazeAttackStateStep`, vtable `00D216B8` +0Ch. The body runs to `009E23A6` exclusive (`RET 4` at `009E23A3`, then INT3), and the ledger's `009E23AD` is off by 7. It is not projected, so the six Shinyo boats sit at `throttle 0.000 dir=stopped` while their fire target is a transport. | USNOS 3000 and 9000: 2622 and 2880 calls from 6 boats. No other row reaches it. | movement, ramming damage and deaths on the kamikaze rows | ship AI (**this lane**) | `cc9_kamikaze_attack_step`: project the step, bind it behind `kShipAiKamikazeAttackStepBound`, pair on USNOS 3000 and 9000 |
-| 4 | **Touchdown and the landing chain (CORRECTED).** At 3000 frames every touchdown line reads `touchdowns=0`, but **that is expected** and not evidence of a gap. LOMP10's first touchdown is at about 153 s (frame about 3060), and all ten land by 267 s on the 9000-frame rows (SQUADRON_LAND_TASK 5o/5r). The one open question is the `unread=48..141` land-task arm rows. | the 9000-frame rows only | small: landing works on the long rows | planes/units (lua15) | none from this ranking. Re-check `unread=` on a 9000-frame row before planning a packet |
-| 5 | **CLOSED, no gap (cc9-planes1, PLANE_FLIGHT "Correction from packet `cc9_wingman_heading_to_point`"):** `009F9E40` was read whole in cc2 and again now (`009F9E40`-`009F9ECF`, 39 instructions, `RET 4`); the host's `heading_command_009f9e40` is that law, and on Win32 UCRT's `atan2f` is `(float)atan2(double)`, the image's own call. `009BFEE0`, `009BEE30` and the hold arm are bound behind `kPlaneFollowLawBound` (ON). The 85066 calls are `record()` labels on bound code, not unimplemented work. The one real divergence among the eight callers is the dive-bomb moveto (`009C18C0` on the hull aim point instead of the target origin), which no reference row ticks. Original entry: **The wingman steering.** `009F9E40` `BSP_PilotBot_CommandHeadingToPoint` is unread, and the host flies its own `heading_command_009f9e40`. With it `009BEE30` command_step and `009BFEE0` steer_point. | m: 8 rows, 85066 calls each. fresh: 4 rows, 63978. | how every formation flies, and so when the escorts and strike planes arrive | planes/units (lua15) | read `009F9E40` whole; replace the host heading behind a switch; pair on USN04 and USN13 |
-| 6 | **DONE, ON (cc9-planes1, TORPEDO_AIM_LEAD 11-11.4):** the image leads. `009FADA0`'s tail adds `008120E0`'s prediction over `sub+44h` "projtime" (the torpedo engagement estimate, the dive fall time). `kTorpedoAimLeadBound` and `kDiveAimLeadBound` are ON. USN04: torpedo releases 6 -> 2 (the Kates die farther out on an aim-ahead run-in). JM05 9000: 3 -> 6, and Shokaku and Zuikaku sink. USN13: 0 -> 4. Original entry: **The approach target point.** `009FADA0` `BSP_BotApproachTargetRef_Update`: the host aims at the target's own position, not at a lead. | m: 5 rows, 121210 calls. | torpedo and bomb aim, once #1 and #2 open | planes/units (lua15) | read `009FADA0` and the torpedo approach's vtable slot 0 |
-| 7 | **DONE (docs/PLAYER_GUN_SEAT.md section 7, `kPlayerGunSeatArtilleryBound` ON):** the 47371 calls were the other-group record, and every one is group 3 (the ship group, 00959F72..0095A1C7), now bound; the pair moved JM06 and USNOS long through the group unit's own artillery. Groups 4 and 5 carry no message on the reference rows. The original row: **The player gun seat, group 1/2 arm** (`00959C91..00959F6D` of `00959C20`), recorded whole. It covers the hand-over to the role-2 holder, the turn `0085ABA0` and the trigger. | m: 9 rows, 47371 calls | the Function 1/5/6 mounts of the controlled ship. Uncertain for an idle player: the AI-held seats are handed back, so the effect may be small. | gunnery (gunnery12) | bind the in-window arm alone; pair on USN01 and USN04 |
-| 8 | **CLOSED FOR THE REFERENCE ROWS (section 52).** `00A23980` buys only from the site's authored stock list: `0084D560` reads `+328h` / `+31Ch`, which `0084D170` fills from the `JapanList` / `AlliedList` `"Stock N"` bags. No reference scene authors one; only `ijn_11_operation_to` and the three `ijn_02_force_z` scenes do. So the image spawns nothing on these rows. What section 51 found, kept for reference: **CONFIRMED REAL (SHIP_AI_OPEN_ITEMS section 51):** in single player, Capture and Defend call `00A25A30` directly, never through `00A25B90`'s `[00F8AB6A]` gate. The budget `00942130` is 1200 / count, so it passes. The request goes out at `00A24337` -> `0094C830` -> `0094B600` -> `00949530`, the SpawnNew queue, so it creates units. Still to read: `00A23980` whole (Ghidra drops `00A2410C-00A243AC`) and its helpers. The original row: **The AI planner spawn arm.** The `[capture]` / `[defend]` quick-spawns at `00A2B400` and `00A29B8E`, through `00A25B90` -> `00A25A30` (`contract: unread`). AI_PLANNERS calls it "unreachable in this process", but it is **due** 23 to 98 times per row. | m: USN13, USNOS, USNOSL, JM08, USN01 | whether the AI party's capture and defend planners get groups to order. Uncertain: `00A25A30` may create a group only, not units. | AI (**this lane**, `game_hosts_ai.cpp`) | read `00A25A30` whole; decide whether it creates units, then bind or close it |
-| 9 | **PARTLY DONE (SHIP_AI_OPEN_ITEMS section 49, `kScriptedOrderNativesBound` ON).** Now bound: `NavigatorEnable` (JM05: Event2Pt holds its spawn), the `EntityTurnToEntity` ship arm (LOMP10: the PTs are posed) and the `UnitHoldFire` squadron arm (IJN01, gameplay identical). `SetShipMaxSpeed` is ON too (section 50.2: on BSM01, Whitney and Tautog are held to 6). Still open: `PilotLand`, bound but OFF because this host's case-sensitive `FindEntity` answers nil for IJN01's `"Airfield 02"` (the image's `009251F0` is case-insensitive); the ship arms of `UnitSetFireStance` / `UnitHoldFire` (gunnery), and `Scoring_SetMissionCompleted` (no route to the result host). The original row: **Scripted-order natives still unimplemented:** `UnitHoldFire` `008A6AC0`, `PilotLand` `008A47B0`, `SetShipMaxSpeed` `00890A10`, `NavigatorEnable` `008A7060`, `Scoring_SetMissionCompleted` `008B8AD0`, and the non-squadron arms of `EntityTurnToEntity` (`008A0D1C`) and `UnitSetFireStance` (`0071BE80`). | one or two rows each, 1 to 9 calls: IJN01, BSM01, JM05, USN02, LOMP10, USN01 | targeting and movement orders the script gives and the host drops | lua (lua15) | one packet binding the five small natives |
-| 10 | **The carrier motion remainder** `00758090` (`+EF8h` gate). It filters the carrier's turn rate into `+88h..+94h`. | m: 8 rows (144000 calls of the base fragment). fresh: 5 rows. | a deck-motion input to the landing (#4) | units/ship motion | read the readers of `carrier+8Ch` before binding |
-| 11 | **CLOSED (SHIP_AI_OPEN_ITEMS section 54):** the missing writer was the pre-pass helper `009DB8F0`, now bound ON (`kSubmarinePeriscopePrepassBound`); `009E4DC1` reports concrete. The broken state 2 (`009327F7`, `009373E7`) stays with the units/damage lanes. The original row: **Submarine periscope sub-state** `009E4DC1` (`ShipAiSubAttack`, `+122Ch`) | JM06 132, USNOS 61 | how the submarine attack surfaces and fires | ship AI (**this lane**) | read the `+122Ch` state arm |
-| 12 | **The kill handlers**: the ship vt[84h] `00819880`, the plane `007CC580` and the ship wreck handler `00824B60`. The host's death route does the physics writes. | m: 4 to 7 rows, at most 31 calls | effects and any post-death messages the handlers send. The deaths themselves are modelled. | gunnery (gunnery12) | read `00819880` to list what it sends beyond the physics |
-| 13 | **CLOSED, no gap on these rows (section 49.1).** `006F1F90` returns \|[cb+7A8h] / [cb+7A4h]\|, and `006F2780` seeds `+7A8h` = 0, so the image also answers 0 until the unmodelled capture tick `006F6760` moves it. The original row: **`GetCapturePercentage` `0089B840`**, neutral 0 | JM05, 48 calls | JM05 uses it for the score text only (`jm05.lua:5178..5216`, this installation, mtime 2024-07-13). Capture progress reads 0. | lua (lua15) | fold into #9 |
-| 14 | **CLOSED (SHIP_AI_OPEN_ITEMS section 57):** every miss was `luaCamOnTargetExt`'s `Kill(Mission.CamScript)` on a luaDelay timetable (a script entity); `kLuaKillScriptEntityBound` ON routes it to 00926D90, gameplay identical on six rows. The original row: **The Lua `Kill` misses:** `unresolved=1..3` on all six fresh rows (`008AC5C0`) | 6 of 6 fresh rows | a scripted kill of a name the host cannot resolve does not happen | lua (lua15) | log the unresolved names; they may be squadron members |
-| 15 | **The approach sub-throttle and sub-heading producers** `009E6A90` / `009E5E90`. The host answers 0 instead of the 9999 sentinel. | m: 8 rows, 48718 calls | none today: SHIP_AI_OPEN_ITEMS section 26 counts no submarine approach. It opens if a submarine takes the approach. | ship AI (**this lane**) | park until a row reaches it |
+| 1 | **The squadron return-to-base site key is never computed.** The record path `record_return_to_base_007f16d0` builds 006C0840's candidates with `key_known = false` (`game_hosts_units.cpp` near line 9357). So with two or more sites past the filters, `nearest_landing_site_006c0840` flags `site-key-unread`, and `cc9_land_task_reach` refuses every land task ("the resolution carries an unread input"). The plane-side caller `plane_landing_site_006c0840` (near line 9855) already computes the key: 006C09FE-006C0A9B, through `landing_deck_006c0750`, `006BC530` and `006BCC90`. | JM05: every squadron with a placement, 16 at 3000 frames (`refused=1680`) and 25 at 9000 (`5493`); placements 148-441 per squadron, installs 0. | Squadrons ordered home never get a land task, so they never land, rearm or relaunch on JM05. | units (mine) | `cc9_rtb_site_key`: compute the key in the record path with the plane-side helpers. Bind behind a switch; pair on JM05 3000 and 9000. |
+| 2 | **Reaching a moveto point never ends the command.** Once `approach+5Ch` is set at `009C3636`, `009C3647` calls approach `vtable[8]` = `009C3100` every tick. That routine tests task `vtable[40h]` (`009C31B0`, the squadron's current command through `+404h`), then ends the moveto (`00E08F68`) through the control block's `vtable[114h]` and `BSP_WeaponDirector_EndCommand 0071E430`. The host records the call (`BotApproachMoveTo::arrived_vtable8`) and the flight circles at the point. | USN04: 7 escorts arrive (A6M Zero #1.2-#4.2, 1616 calls). JM05 9000: 18 US planes (Lexington sqn14/16/17, Yorktown sqn12 and others, 27723 calls). | What the flight does after arriving. PILOT_MOVETO_TASK records that E2's `IJNFightersLex` escorts orbit inside the carrier group's AA and all die by 240 s, which ends phase 1. With the command ended, the squadron goes back to its planner or script. | units (mine) | `cc9_moveto_arrival_end_command`: read 009C3100 and 009C31B0 whole, bind the end-command, pair on USN04 3000, E2 and JM05 9000 |
+| 3 | **Carrier decks refuse landings.** `landing_deck_006c0750` returns null for a mother-ship holder ("refreshed from the moving ship; that refresh is unread"). Every carrier's sequencer row reads `refused=1`. The refresh lives in the carrier motion remainder `00758270`, the first ranking's #10, which still records its override remainder. | USN04: 2 carriers. USN13: 8 (Essex, Intrepid, Yorktown, Cabot, Cowpens, Monterey, Hill, Wood). JM05: 4. `00758270` records 3000-12000 calls per row. | No aircraft can land on a carrier. Once #1 opens, JM05's carrier squadrons meet this next. | units (mine) | `cc9_carrier_deck_refresh`: read the `+88h..+94h` / deck-pose refresh in `00758270` and bind the carrier holder |
+| 4 | **The approach retarget arm** `009F2124-009F272D` (`kShipAiApproachRetargetRingBound` OFF by verdict, SHIP_AI_OPEN_ITEMS 27). The goal is copied every frame instead. | IJN01 now reaches it: `retarget_reachable=6071` of 6100 approach frames, 718 entries. JM05 9000: 3845; LOMP10: 601. | A ship attacking a coastal target steers at the building rather than a point off the coast. | ship AI | re-pair section 27 on IJN01, a new reach |
+| 5 | **The AI group reference release** `00A2B8F0` from `00A2E784` (SHIP_AI_OPEN_ITEMS rank 3). | 6 of 6 rows, 58583 calls | group lifetime: groups are not released, which touches regrouping and orders | ship AI / AI | section 21's next step |
+| 6 | **The carrier arm of the squadron exclusion** `009FFEB0`. The host answers `007EDA90`'s false. | 6 of 6 rows, 38351 calls | whether a carrier's squadrons in an AI group take group orders | AI, bordering planes | read the carrier arm |
+| 7 | **The squadron's `+348h` command block** (`009C359F`, `approach+6Ch`). 0 stands in, so the moveto circle radius is TurnCircleRadius; a mission-authored radius is lost (PILOT_MOVETO_TASK "Substitutions"). | USN04 12064, JM05 9000 30222 | the moveto orbit radius and the arrival ring | units (mine) | model the `+348h` block's `+6Ch` from the moveto command, with #2 |
+| 8 | **The moveto target-speed override** `009C23B0`: within TurnCircleRadius + 50 m and faster than `007C47F0`, the image lowers the desired speed; the host records it. | USN04 6284, JM05 9000 10074 | the speed on the final approach to a moveto point, and so the arrival time (#2) | units (mine) | read `009C23B0`; bind with #2 |
+| 9 | **The command acceptance extra tests.** `WeaponDirector::command_allowed_extra_test` records `009229F0` (torpedo) and `007AC9D0` (moveonpath), whose bodies are unread; the host accepts. | 5 rows, 1744 calls (JM05 572, JM05 9000 981, USN04 114) | torpedo and path orders the image may refuse are carried out | commands (gunnery14) | read both bodies; bind the refusals |
+| 10 | **The gun barrel count fallback.** `cc9_gun_barrel_count` takes the muzzle count from the device model (`007325A0` / `0072AB80`). When the model's fire points did not load, the Lua `barrels` value stays. | USN04: 315 of 726 guns. JM05 9000: 397 of 1312. | Fire volume per mount. Uncertain: the fallback guns may be aircraft devices whose count is exact anyway. | gunnery | list the fallback devices by class; decide whether any is a ship mount |
+| 11 | **The muzzle offset fallback** (`cc9_muzzle_offsets`, `00730762` / `00859550`). A shot without a loaded offset fires from the mount origin. | JM05: 98 of the shots; JM05 9000: 1311 of 6822. USN04: 0. | shot origin: a few metres on hit geometry and line of fire | gunnery | same census as #10, JM05's classes |
+| 12 | **`RepairEnable` on a ship is dropped.** Every ship answers `IsKindOf(6)`, so `008AD330` routes the 9Fh message (`008AD4CD`, `Session::route_repair_enable_message`). The host writes `row.repair`, which nothing reads. Damage control keeps `hull_repair_enabled = true` (`game_hosts_gunnery.cpp` near line 3424). | USN13 52, USN04 18, LOMP10 10 calls. usn_13_truk.lua (this installation) sets true on difficulty 0/1 and false on 2. | None at difficulty 0/1, where the host's default matches. At difficulty 2 the player's ships repair when the script says they must not. | gunnery (damage control) / lua | route the flag into the damage-control task's `+45h` |
+| 13 | **The navigator evasion setters** `NavigatorSetTorpedoEvasion` / `NavigatorSetAvoidLandCollision` reach `0071C1E0` (`Navigator::avoidance_receiver_torpedo` / `_land`). The host counts them. | USN13 52 + 52, USN04 18 + 18, JM05 2 + 2 | Probably none. The consumer `blk+3ECh` and its setters `009DABB0` / `009DABD0` have no caller found (`ship_ai_avoidance_request.hpp` marks them Unused). | ship AI | a caller census of `blk+3ECh`, then close or bind |
+| 14 | **The follow trail arm** `009C207C-009C211C` (`+85h`, `unit+844h/+840h`). `+85h` is raised by `009BFD70` when a follower is in position (BOMBER_AFTER_TASK). | USN04 5780, JM05 9000 20148 calls | formation keeping of in-position wingmen | units (mine) | read the arm; bind behind a switch |
+| 15 | **The airfield per-step slot** `006D2510`. The host runs its air-ops block elsewhere (AIROPS_LAUNCH_TICK, "A deviation of position"), but not its destruction slot `006D40F0`. When no hangar at `+830h` has hp `[+370h] > 0`, that slot kills the airfield (`vtable[70h](0)`), or plays `"InferiorFailure"` for a child airfield. | 0 on these rows: no hangar died on JM05 9000, which has five hangar forts. | an airfield whose hangars are all destroyed stays alive | units (mine) | park until a row destroys a hangar |
+
+## Still open from the first ranking
+
+- **AA lethality at 300-800 m (first #1).** Gunnery: AA_LETHALITY_AUDIT 8.x;
+  `kPlaneHitTaskNotifyBound` is ON, and `kDiveHitClockBound` stays OFF.
+- **The approach sub-throttle and sub-heading producers (first #15).** Parked. The IJN01 calls
+  (6055) are the approach reading the fields on every frame, not a submarine approach
+  (SHIP_AI_OPEN_ITEMS, "Not ranked").
+- **The carrier motion remainder (first #10)** is now part of #3.
+
+## Closed (first ranking)
+
+- **#3**, the kamikaze boat attack step: ON.
+- **#4**, touchdown at 3000 frames: expected. The land-task `unread` rows are #1 above.
+- **#5**, the wingman heading law: no gap.
+- **#6**, the approach lead: ON.
+- **#7**, the player gun seat: groups 1-3 ON; groups 4 and 5 have no reach.
+- **#8**, the planner spawn: no authored stock on these rows. The shipyard tick `00846320` spawns
+  only from the same `+790h` build orders, so it is inert here too.
+- **#9**, the scripted-order natives: all bound. The ship fire-stance arm is ON (GUNNERY 61).
+  `Scoring_SetMissionCompleted` is still open.
+- **#11**, the periscope: ON.
+- **#12**, the kill handlers: presentation, plus the firing-list removal routed to lua16 (GUNNERY 64).
+- **#13**, `GetCapturePercentage`: faithful 0.
+- **#14**, `Kill` of a script entity: ON.
 
 ## Checked and not gaps
 
 - **`ai follow refused=`** (every row) is the image's own answer. AI_CAUTIOUS_ROUTE shows `00779D50`
   refusing members of the same group and ships of the other party.
-- **`ai world sets ... Objectives_Add is unimplemented`**: the summary wording was stale. `008CD440` is bound, and the sets are empty because the scripts pass no targets (AI_WORLD_SETS, the correction to section 2). The log line in `src/game_hosts_ai.cpp` is corrected in the same commit as this note.
-  bound, and the sets are empty because the scripts pass no targets (AI_WORLD_SETS, the correction to
-  section 2). The log text should be fixed; that is lua15's call.
-- **`FindEntity` UNIMPLEMENTED on JM05** is the first-call status only: 139 of 146 calls resolve.
+- **`ai world sets ... Objectives_Add is unimplemented`**: the summary wording was stale. `008CD440`
+  is bound, and the sets are empty because the scripts pass no targets (AI_WORLD_SETS, the
+  correction to section 2).
+- **`FindEntity` UNIMPLEMENTED on JM05** is the first-call status only.
 - **`DamageControl::pending_exceeds_health_0090e6c0`**: `0090E6C0` is tagged `stl_probable`.
 - **USN02's failure at 29.75 s** is the image's own for an idle player (GAME_EXECUTABLE, reference i).
-- **The `MissionFrame::*`, `Hud*`, `Gui*`, `FrontEnd*`, `MissionLoad(*)` and `Title*` rows** are
-  presentation or load plumbing.
+- **`AutoTarget::director_command_state`** (320430 calls): exact while no
+  `WeaponDirector::queue_command` runs (GUNNERY_OPEN_ITEMS 17).
+- **`ShipMotion::rigid_body_substep_schedule`**: its log text still says "the box inertia is zero".
+  The inertia is ON through `kHullInertiaFromShapesBound`.
+- **`PilotBot::plan_controls`, `BotTaskGun::tick`, `UnitInstance::smooth_intensity`** are
+  routine-level labels on transcribed or visual code (UNIMPLEMENTED_RANKING_3).
+- **The AI coordinator's `fallback=`** (USN04 152) counts `00A13B60`'s own moveto fallbacks.
+- **The `gunnery aim` / `targeted` / `unit fire` / `aa line` refusals** are the image's gates,
+  counted.
+- **`GetLastCatapulted` answers nil on JM05.** The launch is the player's: jm05.lua polls the
+  player cruiser's last catapulted plane, and an idle player launches none.
+- **`dead plane bot ticks_skipped`** and **`ship ai navigator skipped_steps`** are bound
+  behaviour (`cc9_dead_plane_bot_think`, and `NavigatorEnable` holding JM05's Event2Pt).
+- **Presentation and load plumbing:** the `MissionFrame::*`, `Hud*`, `Gui*`, `FrontEnd*`,
+  `MissionLoad(*)`, `Title*`, `MissionDetail*`, `MainMenu*`, `UnitPickScreen*` and
+  `InGameInterfaceUpdate::*` rows.
