@@ -2887,7 +2887,7 @@ installation's `models/ships/us/deruyter.mmod`, mtime 2024-07-13. The file is a 
   lookup is exact, owners 1, 3 and 4 never match in this installation. The 40 classes without a
   root ConvexObject would then attach no hull shape at all.
 
-### 49.6 Open item: `00937C90` against MODEL_REACHES_UNIT
+### 49.6 Open item: `00937C90` against MODEL_REACHES_UNIT (settled in 49.9: reading (a))
 
 Two readings, neither settled here:
 - **(a) `class+50h` has a writer the scans missed.** Then every ship that reaches the hull build has a
@@ -2980,3 +2980,42 @@ hull. The hull's 0.001 dedup and its 4096-vertex limit are not reproduced.
 | min.z | -96.92411 |
 
 Status: build-tested and fixture-tested on one model. Not bound; step 3 is the units lane.
+
+### 49.9 Section 49.6 settled: no path builds the hull body without the model (reading (a))
+
+This is the discriminating read 49.6 named, done on the disk bytes and the Ghidra listing of `00937C90`
+(`local/output/ghidra-disasm-00937c90-lines-2200-*.txt` in cc9-gunnery10).
+
+**No guard inside `00937C90`.** Every conditional or unconditional jump in the function was listed with
+its source and target:
+- **Before `0093856C`.** No jump reaches past the first model read (`0093856C`) or the walk
+  (`00938F28`), except two kinds. One is `009381AC JMP 00938D5D`, the entry jump of a rotated loop
+  whose body is `009381B1..00938D5C` (the disk bytes confirm it). The others are two loop exits,
+  `009384A6 JZ` and `009384B7 JNC` to `0093873C`, which land before the walk.
+- **Between the first model read and the walk.** No jump from `0093856C..00938F28` goes past
+  `00938FB9`.
+- **Before `0093856C` generally.** No instruction reads `+354h`, `+360h`, `+160h` or a model `+50h`.
+- **Consequence.** The walk (`00938F1C..0093918C`) is on every path to the hull-body tail
+  (`009399C0..`). With `[unit+360h]` null it takes `00938F93 XOR ECX,ECX` and then reads
+  `[0Ch]` at `00938F9D`. The function has an unwind frame and no catch, so that is an access violation.
+
+**No guard in the callers.**
+- **The controller constructor.** `00937C90` has one caller, `CALL 00939E2A`, in the controller
+  constructor `00939CB0` (body `00939CB0..00939E43`), which contains no jump at all.
+- **Who reaches the constructor.** `00939CB0` is called by `0080DEF9`
+  (`BSP_UnitInstance_CreateMotionController 0080DEC0`, whose only test is the `operator new(390h)`
+  result at `0080DEEA`) and by the variant constructors `00939E72`, `00939F28` and `00939F48`.
+- **Dispatch.** `0080DEC0` is reached only through six vtable slots (`00CF92E0`, `00CFA9A8`,
+  `00CFB968`, `00CFC600`, `00D01860`, `00D098A8`).
+
+**Conclusion.** In the image, every unit whose motion controller is constructed builds its hull body
+after reading a non-null model at `[unit+360h]+160h`. So the native hull body always has the
+record-0 shapes that `0071B710` published. Reading (b) is refuted. Reading (a) holds:
+`class+50h`, or `unit+360h` by some other path, has a writer that MODEL_REACHES_UNIT's scans did not
+find. **That writer is still not located**, and it is not needed for step 3.
+
+**For step 3 this means:**
+- binding the shape box is faithful for every hull class with a root ConvexObject;
+- for the 40 classes without one (49.5), the native body box is the union over an empty shape set.
+  How `00939A89` and `00C37E70` treat that seed (`+FLT_MAX`/`-FLT_MAX`) is not read, so leaving
+  those inputs at zero is a host choice, and it is flagged.
