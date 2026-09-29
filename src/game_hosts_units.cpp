@@ -80,6 +80,7 @@
 #include "bsp/ship_buoyancy_elements.hpp"
 #include "bsp/unit_death_sink.hpp"
 #include "bsp/gun_fire_points.hpp"
+#include "bsp/geom_mesh_resource.hpp"  // GeomMeshResourcePayload, cc9_ship_section_points
 #include <array>
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -1737,6 +1738,12 @@ struct GameUnitSlot {
 // draw, the way each approach sub-object gets its own in the image. It is
 // deterministic because the order in which targets are assigned is.
 std::uint32_t g_hull_aim_pick_counter = 0;
+// Packet cc9_ship_section_points: picks 00816650 answered with a section
+// (engine room, magazine, fuel tank), picks that had a positive chance and fell
+// to the box, and picks whose target had a section taken out by 0093A570.
+unsigned long long g_section_picks[3] = {0, 0, 0};
+unsigned long long g_section_chance_box_picks = 0;
+unsigned long long g_section_unavailable_picks = 0;
 
 // 00816650 is reached only through the nine unit vtables that carry it; the
 // plane, land-vehicle and land-fort classes carry 0042D810, the origin.
@@ -1813,6 +1820,17 @@ constexpr bool kDiveAimLeadBound = true;      // ON: TORPEDO_AIM_LEAD 11.4
 // hull-point spread, the dive's section chance and weights, and the time error
 // on projtime (dive approach+C8h, torpedo approach+9Ch). Paired ON.
 constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
+// Packet cc9_ship_section_points (docs/TORPEDO_AIM_LEAD.md section 14): the pick
+// 009FA260 hands 00816650 the TARGET ship's section records, the engine room /
+// magazine / fuel tank points 0081F980 builds from the model's GeomMesh
+// elements of kinds 5 / 8 / 6, and 0093A570's answer on the repair task's
+// failure vector (ids 5 / 8 / 6). Only the dive rows 009C3DA0 stores (skill 2-5,
+// chance 0.5-1.0) reach them. SUBSTITUTION, labelled: 0093A570 matches the
+// record id; this host asks GameGunneryHost::unit_failure_active by the
+// ShipGlobals.Failures names of those kinds (EngineJam / Explosion / Fire),
+// which is the same answer while 0093BED0 (id = kind) is the host's only
+// producer of those names. OFF: empty records, the hull box every time.
+constexpr bool kApproachSectionPointsBound = false;
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
 // OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off
@@ -1894,7 +1912,9 @@ void hull_aim_print(GameHostLog& log, const char* why, const GameUnitSlot& shoot
 // target supplies no hull, in which case the caller keeps the origin it had.
 bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
                           std::size_t target_plus_one, float out[3],
-                          GameHostLog* log = nullptr) {
+                          GameHostLog* log = nullptr,
+                          const bsp::ApproachTargetSections* sections = nullptr,
+                          GameHostLog* section_log = nullptr) {
     if (shooter.hull_aim_target_plus_one != target_plus_one) {
         // A new ordered target means a new sub-object: 009FB200.
         // kAimErrorDrawBound: the image builds the sub-object once, in the
@@ -1926,9 +1946,41 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
         hull.height = target.motion_class.hull_height;  // class+A8h `Height`
         const std::array<float, 4> unit =
             bsp::approach_target_ref_unit_draws_substitute(shooter.hull_aim_seed);
+        const float section_total = (samples && sections != nullptr)
+            ? bsp::approach_target_ref_section_total(st, *sections) : 0.0f;
         const bsp::ShipLeadRandomDraws draws =
-            bsp::approach_target_ref_draws_from_unit(unit, st.spread_48);
-        bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples);
+            bsp::approach_target_ref_draws_from_unit(unit, st.spread_48, section_total);
+        bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples,
+                                               samples ? sections : nullptr);
+        if (samples && sections != nullptr && st.section_chance_64 > draws.section_roll) {
+            // The census of 0081667C..008167EB's outcome, recomputed.
+            const bsp::ApproachTargetSections& sc = *sections;
+            if (!sc.engine_room_available || !sc.magazine_available
+                || !sc.fuel_tank_available) {
+                ++g_section_unavailable_picks;
+            }
+            if (section_total > bsp::kInterceptCoefficientEpsilon) {
+                const float w0 = (st.weight_68 > 0.0f && sc.sections.engine_room.present
+                    && sc.engine_room_available) ? st.weight_68 : 0.0f;
+                const float w1 = (st.weight_6c > 0.0f && sc.sections.magazine.present
+                    && sc.magazine_available) ? st.weight_6c : 0.0f;
+                const int which = w0 > draws.pick ? 0 : (w0 + w1) > draws.pick ? 1 : 2;
+                ++g_section_picks[which];
+                if (section_log != nullptr && g_section_picks[0] + g_section_picks[1]
+                        + g_section_picks[2] <= 40) {
+                    static const char* const kNames[3] = {"engine_room", "magazine",
+                                                          "fuel_tank"};
+                    section_log->notef("section aim %s -> %s: %s body=(%.1f %.1f %.1f) "
+                        "(00816650, packet cc9_ship_section_points)",
+                        shooter.row.name.c_str(), target.row.name.c_str(), kNames[which],
+                        static_cast<double>(st.body_offset_28[0]),
+                        static_cast<double>(st.body_offset_28[1]),
+                        static_cast<double>(st.body_offset_28[2]));
+                }
+            } else {
+                ++g_section_chance_box_picks;
+            }
+        }
         if (kHullAimOffsetEnabled && samples && log != nullptr) {
             // Packet cc9_hull_axis: one line per draw, so a re-draw shows up
             // as a second line for the same (attacker, target).
@@ -6324,6 +6376,55 @@ struct GameUnitsHost::Impl {
     }
     unsigned long long aim_error_draws_{0};
 
+    // Packet cc9_ship_section_points: 0081F980's section records per vehicle
+    // class, from the class's Mesh model (the same read the buoyancy list and
+    // the gunnery host's section points make).
+    std::map<int, bsp::ShipLeadSections> section_points_by_class_;
+    const bsp::ShipLeadSections& class_section_points_0081f980(int type_id) {
+        auto found = section_points_by_class_.find(type_id);
+        if (found != section_points_by_class_.end()) return found->second;
+        bsp::ShipLeadSections& entry = section_points_by_class_[type_id];
+        entry.engine_room.id = 5;
+        entry.magazine.id = 8;
+        entry.fuel_tank.id = 6;
+        const std::string mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+        std::vector<std::uint8_t> bytes;
+        if (mesh.empty() || !lua.read_resource_file(mesh, bytes)) return entry;
+        std::vector<bsp::GeomMeshResourcePayload> meshes;
+        std::string error;
+        bsp::read_mmod_geom_meshes(bytes, meshes, error);
+        entry = bsp::ship_section_points_0081f980(meshes);
+        log.notef("section points class %d %s: engine_room %d (%.1f %.1f %.1f) "
+            "magazine %d (%.1f %.1f %.1f) fuel_tank %d (%.1f %.1f %.1f) (0081F980)",
+            type_id, mesh.c_str(),
+            entry.engine_room.present ? 1 : 0,
+            static_cast<double>(entry.engine_room.point[0]),
+            static_cast<double>(entry.engine_room.point[1]),
+            static_cast<double>(entry.engine_room.point[2]),
+            entry.magazine.present ? 1 : 0,
+            static_cast<double>(entry.magazine.point[0]),
+            static_cast<double>(entry.magazine.point[1]),
+            static_cast<double>(entry.magazine.point[2]),
+            entry.fuel_tank.present ? 1 : 0,
+            static_cast<double>(entry.fuel_tank.point[0]),
+            static_cast<double>(entry.fuel_tank.point[1]),
+            static_cast<double>(entry.fuel_tank.point[2]));
+        return entry;
+    }
+    // The target's records plus 0093A570 per section. See
+    // kApproachSectionPointsBound for the name substitution.
+    bsp::ApproachTargetSections approach_target_sections(std::size_t target_index,
+                                                         const GameUnitSlot& target) {
+        bsp::ApproachTargetSections out;
+        out.sections = class_section_points_0081f980(target.row.type_id);
+        if (gunnery != nullptr) {
+            out.engine_room_available = !gunnery->unit_failure_active(target_index, "EngineJam");
+            out.magazine_available = !gunnery->unit_failure_active(target_index, "Explosion");
+            out.fuel_tank_available = !gunnery->unit_failure_active(target_index, "Fire");
+        }
+        return out;
+    }
+
     static float pose_heading_radians(const GameUnitSlot& slot) {
         return static_cast<float>(std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
             static_cast<double>(slot.motion.pose_row2[2])));
@@ -7478,7 +7579,18 @@ bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
                                              const GameUnitSlot& target,
                                              std::size_t target_plus_one,
                                              float out[3], GameHostLog* log_out) {
-    const bool hull = hull_aim_world_point(shooter, target, target_plus_one, out, log_out);
+    bsp::ApproachTargetSections sections;
+    const bsp::ApproachTargetSections* sections_in = nullptr;
+    // Only a positive sub+64h reads the records (00816659), so a class model
+    // is opened only for a shooter whose dive row set one.
+    if (kApproachSectionPointsBound && shooter.hull_aim_ref.section_chance_64 > 0.0f
+        && hull_aim_target_samples_hull(target)
+        && target_plus_one != 0 && target_plus_one - 1 < slots.size()) {
+        sections = approach_target_sections(target_plus_one - 1, target);
+        sections_in = &sections;
+    }
+    const bool hull = hull_aim_world_point(shooter, target, target_plus_one, out, log_out,
+                                           sections_in, &log);
     const float projtime = shooter.hull_aim_ref.lead_projtime;
     // 009FAF05-009FAF11: JBE past the tail unless projtime > 0.0. The nine
     // hull-sampling vtables carry 008120E0 at +48h; every other target class
@@ -26371,6 +26483,13 @@ void GameUnitsHost::report() {
             host.log.notef("summary mission pilot attack: no unit was ever ordered "
                 "at a target the yaw arm could plan for");
         }
+        host.log.notef("summary mission approach section points bound=%d "
+            "engine_room=%llu magazine=%llu fuel_tank=%llu chance_to_box=%llu "
+            "with_unavailable=%llu classes=%zu (00816650 via 009FA260, packet "
+            "cc9_ship_section_points)", kApproachSectionPointsBound ? 1 : 0,
+            g_section_picks[0], g_section_picks[1], g_section_picks[2],
+            g_section_chance_box_picks, g_section_unavailable_picks,
+            host.section_points_by_class_.size());
 
 
         // The torpedo task census: per ordered aircraft the states its arm
