@@ -752,6 +752,9 @@ public:
     // unit+BC9h, the latched gunFire (packet cc9_plane_gun_pass). The gunnery
     // host's plane-gun hook reads it; docs/PLANE_GUN_PASS.md.
     bool plane_gun_trigger_bc9(std::size_t index) const;
+    // unit+C24h PilotFires as 007CD930 stores it (00604A60 CMP byte [ESI+C24h],0);
+    // true when the unit is not a plane slot.
+    bool plane_pilot_fires_0c24(std::size_t unit_index) const;
     // 0071df70's two inputs on the unit's own director, forwarded.
     float director_target_hold_0040(std::size_t index) const;
     int director_leading_slot_categories_0071df83(std::size_t index, int* out,

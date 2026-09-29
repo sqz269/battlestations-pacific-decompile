@@ -24800,6 +24800,15 @@ bool GameUnitsHost::plane_gun_trigger_bc9(std::size_t index) const {
     return impl_->slots[index]->plane_gun_fire_bc9;
 }
 
+// unit+C24h PilotFires as 007CD930 stores it (00604A60 CMP byte [ESI+C24h],0);
+// true when the unit is not a plane slot. The field defaults to true and is set
+// only in the plane arm of the class read (motion entry 007CE040), so a
+// non-plane slot answers true.
+bool GameUnitsHost::plane_pilot_fires_0c24(std::size_t unit_index) const {
+    if (unit_index >= impl_->slots.size()) return true;
+    return impl_->slots[unit_index]->plane_pilot_fires_c24;
+}
+
 int GameUnitsHost::unit_side_0054(std::size_t index) const {
     if (index >= impl_->slots.size()) return -1;
     // unit+54h is the party the scene record authored, which milestone 2h's
