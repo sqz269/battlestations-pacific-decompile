@@ -27,7 +27,7 @@ void process_native_renderer_device_reset_00b2abd0(void* actual_renderer,
 // session) that is a null dereference, in the image as here. ON holds the lost
 // branch at "mark lost, wait": no recreation from it, so recovery comes from
 // DEVICENOTRESET and the image's own Reset path. docs/D3D_DEVICE_LOST.md.
-inline constexpr bool kRendererLostDeviceHoldBound = false;
+inline constexpr bool kRendererLostDeviceHoldBound = true;
 // DIAGNOSTIC, env-gated (BSP_RENDERER_FAKE_LOST=<first>,<count>[,createfail]):
 // from the <first>th call of 00B2ABD0's request body, <count> calls see
 // TestCooperativeLevel as DEVICELOST, the next one as DEVICENOTRESET, with the

@@ -38,7 +38,7 @@ Background: docs/DEVICE_RESET_SCHEDULER.md (the decision table of 00B2ABD0).
 3. **The host matches.** `src/native_renderer_device_recreation_actual.cpp` reproduces that order,
    with the comment "Native does not ... branch on HRESULT". It is not a host divergence.
 
-## 3. The switch (a deliberate divergence, committed OFF)
+## 3. The switch (a deliberate divergence, ON since section 5)
 
 `kRendererLostDeviceHoldBound` (`include/bsp/native_renderer_reset_process.hpp`):
 - **ON:** the DEVICELOST branch still counts and marks the renderer lost, but never calls 00B29670.
@@ -97,3 +97,11 @@ the process then dies at teardown with STATUS_HEAP_CORRUPTION.
 - a real DEVICENOTRESET after a real loss;
 - the image's behaviour at runtime (the crash is inferred from the listing, not observed in the
   original executable).
+
+## 5. The flip
+
+`kRendererLostDeviceHoldBound` is **ON**, approved by the lead as a labelled robustness divergence:
+- Without a loss it is gameplay-identical (section 4).
+- On a loss, the image's own behaviour when CreateDevice fails is a null dereference. The hold keeps
+  the device and recovers through the image's Reset path instead.
+- The image's recreation 00B29670 stays reachable only as the Reset-failure fallback (section 6).
