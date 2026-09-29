@@ -90,6 +90,7 @@
 #include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
+#include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ship_motion.hpp"
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
@@ -4468,6 +4469,50 @@ struct GameUnitsHost::Impl {
     unsigned long long scene_home_queue_pushes = 0;
     std::map<int, ClassBuoyancyList> class_buoyancy_lists;
     unsigned long long buoyancy_lists_image = 0;
+    // Packet cc9_hull_inertia (docs/GUNNERY_OPEN_ITEMS.md 47.3 step 3, 49.7, 49.10):
+    // the hull body's collision box, the union 00C55FC0 of the root-listed
+    // ConvexObjects' boxes (00C57C40, widened by 0.02), which 00939A89 reads back
+    // into the inertia block 00939A80..00939C10. read_mmod_hull_convex_box over
+    // the class Mesh model, cached per type_id. shape_count 0 leaves the zero
+    // box, which is the native result (49.10). The periscope shape
+    // (009396BA..009399BF) is not added. OFF: the box stays zero, so the hull
+    // body has zero inertia and never rotates under a torque.
+    static constexpr bool kHullInertiaFromShapesBound = false;
+    struct ClassHullBox {
+        bool ok{false};
+        std::string reason;
+        bsp::MmodHullConvexBox box{};
+    };
+    std::map<int, ClassHullBox> class_hull_boxes;
+    const ClassHullBox& class_hull_box(const GameUnitSlot& s) {
+        const int type_id = s.row.type_id;
+        auto found = class_hull_boxes.find(type_id);
+        if (found != class_hull_boxes.end()) return found->second;
+        ClassHullBox& entry = class_hull_boxes[type_id];
+        const std::string mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+        std::vector<std::uint8_t> bytes;
+        std::string error;
+        if (mesh.empty()) {
+            entry.reason = "no Mesh string";
+        } else if (!lua.read_resource_file(mesh, bytes)) {
+            entry.reason = "model did not open";
+        } else if (!bsp::read_mmod_hull_convex_box(bytes, entry.box, error)) {
+            entry.reason = "hull box read failed: " + error;
+        } else {
+            entry.ok = true;
+            entry.reason = entry.box.shape_count > 0 ? "root ConvexObjects" : "no root ConvexObject";
+        }
+        log.notef("hull shapes %s (type %d, %s): %s shapes=%u points=%u extent=(%.2f %.2f %.2f) "
+            "min=(%.3f %.3f %.3f) (cc9_hull_inertia, 00938F61..0093918C)",
+            s.row.name.c_str(), type_id, mesh.c_str(), entry.reason.c_str(),
+            static_cast<unsigned>(entry.box.shape_count), static_cast<unsigned>(entry.box.point_count),
+            static_cast<double>(entry.box.max.x - entry.box.min.x),
+            static_cast<double>(entry.box.max.y - entry.box.min.y),
+            static_cast<double>(entry.box.max.z - entry.box.min.z),
+            static_cast<double>(entry.box.min.x), static_cast<double>(entry.box.min.y),
+            static_cast<double>(entry.box.min.z));
+        return entry;
+    }
     unsigned long long buoyancy_lists_stand_in = 0;
     unsigned long long buoyancy_lists_fallbacks = 0;
     unsigned long long leak_models_built = 0;
@@ -9977,6 +10022,14 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 hull.row1[i] = slot->motion.pose_row1[i];
                 hull.row2[i] = slot->motion.pose_row2[i];
                 hull.position[i] = slot->motion.position[i];
+            }
+            if constexpr (Impl::kHullInertiaFromShapesBound) {
+                const Impl::ClassHullBox& hb = host.class_hull_box(*slot);
+                if (hb.ok && hb.box.shape_count > 0) {
+                    hull.aabb_min = hb.box.min;
+                    hull.aabb_max = hb.box.max;
+                    hull.shape_count = hb.box.shape_count;
+                }
             }
             bsp::ship_hull_body_create_00937c90(hull, slot->body, slot->motion_state);
             slot->hull_material = bsp::ship_hull_material_00937cf1(hull.unit_category_8,

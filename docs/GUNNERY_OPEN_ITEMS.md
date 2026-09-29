@@ -3109,3 +3109,55 @@ alone, which is small and gives a non-zero inertia. That is left as a flag for s
 - **`g10_mmod_tree.py <model> top|at|hier|rootbox|convex`.** The `.mmod` chunk tree, the hierarchy
   items with their ConvexObjects, and the root box census (`g10_rootbox.txt`).
 - **`g10_str.py <strings>`.** The VA of an ASCII string in the installed executable.
+
+## 51. Step 3 of 47.3, the hull extent binding, bound OFF (packet `cc9_hull_inertia`, cc9-lua11, 2026-09-28)
+
+**The binding**, in src/game_hosts_units.cpp, behind `kHullInertiaFromShapesBound` (committed OFF):
+- `Impl::class_hull_box` reads the class `Mesh` string and opens it through
+  `lua.read_resource_file`, as `class_buoyancy_list_0082fe30` does. It runs
+  `read_mmod_hull_convex_box`, caches the result per `type_id`, and logs one `hull shapes` line per
+  class: `shapes=`, `points=`, the extent and the minimum.
+- In the hull block, before `ship_hull_body_create_00937c90`, `hull.aabb_min`, `aabb_max` and
+  `shape_count` are set from the box. This happens only when the read succeeded and
+  `shape_count > 0`.
+  - With no root ConvexObject, the zero default stays, which is the native result (49.10).
+- The periscope shape (49.10) is not added.
+- The file is read only ON, so the OFF log is unchanged.
+
+**Evidence the box is the right input:**
+- 49.8 fixture-tested the reader on this installation's DeRuyter: 1 shape, 117 points, extent
+  16.5039 x 17.8909 x 173.9681.
+- cc9-gunnery10's census (`local\g10_rootbox.txt` in that tree) finds a root ConvexObject in 48 of
+  the 88 ship models. The other 40, including akagi, soryu, yamato, saratoga and porter, keep a
+  zero box, and so keep zero inertia.
+
+### Predictions, written before any ON run
+
+Two pairs, as 47.3 asks: first the inertia alone, then with the roll torque.
+
+**Pair A: the roll torque OFF on both sides.** Both sides are exports of this commit with
+`kShipHitRollTorqueBound=false`; ON also flips `kHullInertiaFromShapesBound`.
+- USN02 9200/9000 and JM06 3200/3000 come out gameplay identical (exit 0 or 1).
+- The motion model's own AddTorque at `00937613` carries a zero vector (47.3). So no torque acts,
+  and a non-zero inertia changes no motion.
+- The only new lines are the `hull shapes` class lines. Every hull class with a root ConvexObject
+  logs `shapes>=1`, and a DeRuyter row, if the mission has one, logs extent (16.50, 17.89, 173.97).
+- A moved gameplay number here would mean the inertia reaches something else in `00C41550`. That
+  would be recorded as a finding, not as a failure.
+
+**Pair B: the roll torque ON, as landed.** OFF is this tree's build; ON flips
+`kHullInertiaFromShapesBound` only.
+- USN02 moves (exit 3). The 26 roll torques, up to 4.0e6, reach hull bodies with a real inertia.
+  47.4 estimates a roll-rate change of about 0.5/`mul` rad/s per 0.05 s step for a DeRuyter-sized
+  hull.
+  - Whether a roll survives the motion tick's velocity rewrite `0092D300` on the next step is not
+    read. If it does not, the move shows only as small pose differences after each hit.
+- The moved units are the torpedo-hit hulls whose class has a root ConvexObject. A hit hull
+  without one (a zero box) does not move.
+- JM06 comes out exit 1: no roll torque lands there (46.5).
+
+**Mechanism failure:**
+- a `hull shapes` line reporting `shapes=0` for a class that the census lists with a root
+  ConvexObject;
+- a DeRuyter extent other than (16.50, 17.89, 173.97) +/- 0.01;
+- pair A moving.
