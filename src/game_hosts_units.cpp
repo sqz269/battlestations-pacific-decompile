@@ -575,6 +575,9 @@ struct GameUnitSlot {
     float land_request_b0{0.0f};   // -U(0, 0.5), 009AFF84..009AFF8B
     float land_follow_stagger_74{0.0f};  // follow state +74h, -U(0, 0.6), 009C2980
     int land_mode_50{1};           // approach+50h, 009AFEC7; 006C54C0 writes it
+    // Packet cc9_land_internal_records: 006C54C0's queue, lookup and tail ran
+    // on a built deck this request (landing_request_006c54c0 past its guards).
+    bool land_request_ran{false};
     // Packet cc9_landing_sequencer: 006C54C0's found arm (006C5516-006C552C)
     // copies the record's +8h to approach+4Ch and its side +0Dh to approach+44h
     // (out+0Ch). No bound state reads either; they are the observable result.
@@ -1172,6 +1175,10 @@ struct GameUnitSlot {
     float torpedo_engage_range_8c{0.0f};  // task+484h == approach+8Ch
     float torpedo_engage_limit_90{0.0f};  // task+488h == approach+90h
     int torpedo_blocked_by_engaged{0};
+    // Packet cc9_jm05_blocked_engaged: which clause of 009D3210 refused, print-only:
+    // [0] no engage target (009D3222), [1] a wing member while the mode is not 2
+    // (009D3245), [2] the leader's range test 009D325B.
+    int torpedo_blocked_clause[3]{0, 0, 0};
     int torpedo_blocked_by_arm{0};
     // unit+C58h, the queued release-order count BSP_PilotBot_Tick 0099ACD0
     // spends at 0099AF81 by offering it to each task's vtable +24h. Its raiser
@@ -10413,6 +10420,7 @@ float GameUnitsHost::Impl::landing_sequencer_006cc9f0(LandingDeck& d, std::size_
 // true when the plane's record is found (and its +174h word is non-zero, which
 // this host takes as always true).
 bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
+    plane.land_request_ran = false;
     if (!lua.plane_globals_loaded()) return false;
     if (plane.land_deck_plus_one == 0 || plane.land_site_plus_one == 0) return false;
     const std::size_t sq = landing_squadron_of(plane.process_index);
@@ -10420,6 +10428,7 @@ bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
     LandingDeck* d = landing_deck_006c0750(plane.land_deck_plus_one - 1u,
                                            plane.land_site_plus_one - 1u);
     if (d == nullptr) return false;
+    plane.land_request_ran = true;
     bool queued = false;
     int next_n = 0;
     for (const LandingQueueEntry& q : d->queue) {
@@ -18091,6 +18100,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             binding.read_transition_inputs(&unit_).engaged;
                         if (!bsp::torpedo_engaged_009d3210(eng)) {
                             ++unit_.torpedo_blocked_by_engaged;
+                            ++unit_.torpedo_blocked_clause[!eng.has_engage_target_4c4 ? 0
+                                : !eng.unit_has_no_follow_target ? 1 : 2];
                         } else if (!unit_.torpedo_attack_flag_52a) {
                             ++unit_.torpedo_blocked_by_arm;
                         }
@@ -19567,9 +19578,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         // 006C54E2/006C54EF: 006BF060, else 006C0B50 puts the
-                        // squadron in the deck's landing queue (+98h). A record:
-                        // this host keeps no landing queue.
-                        owner_.record("AirOpsBlock::queue_squadron_006c0b50", 0x006c0b50u);
+                        // squadron in the deck's landing queue (+98h). Packet
+                        // cc9_land_internal_records: with the sequencer bound,
+                        // landing_request_006c54c0 has already queued it (the
+                        // LandingDeck::queue push) and run the lookup and the
+                        // common tail below, so these were stale records.
+                        if (kLandingSequencerBound && unit_.land_request_ran) {
+                            owner_.done("AirOpsBlock::queue_squadron_006c0b50", 0x006c0b50u);
+                        } else {
+                            owner_.record("AirOpsBlock::queue_squadron_006c0b50", 0x006c0b50u);
+                        }
                         // 006C5505: 006BD080 looks the plane up in the deck's
                         // assignment vector (+A8h, 14h-byte records). Its producer
                         // is the landing sequencer 006CC9F0 (inserting through
@@ -19579,7 +19597,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // it is counted, because it is also what keeps every plane
                         // in mode 1 here.
                         ++unit_.land_empty_assignments;
-                        owner_.record("AirOpsBlock::find_landing_assignment_006bd080", 0x006bd080u);
+                        if (kLandingSequencerBound && unit_.land_request_ran) {
+                            // The lookup ran against the sequencer's vector and
+                            // missed: the image's own answer, not an unread body.
+                            owner_.done("AirOpsBlock::find_landing_assignment_006bd080", 0x006bd080u);
+                        } else {
+                            owner_.record("AirOpsBlock::find_landing_assignment_006bd080", 0x006bd080u);
+                        }
                         // 006C5534-006C5560: out+14h (approach+4Ch) = 1.0 and the
                         // mode out+18h (approach+50h) = plane+904h ? 4 : 1.
                         // plane+904h is the landed-after-flight byte, clear for an
@@ -19589,9 +19613,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.land_spacing_4c = 1.0f;
                         // 006C5563-006C55FC (the members' offset in the block frame
                         // 004142E0 against block+A4h, into approach+44h), 006C3E50
-                        // (approach+48h) and 006C5380 (approach+38h..+40h): contract
-                        // unread. Only the refused landing states read them.
-                        owner_.record("AirOpsBlock::landing_point_006c5380", 0x006c5380u);
+                        // (approach+48h) and 006C5380 (approach+38h..+40h). With the
+                        // sequencer and standby bound, landing_request_006c54c0 runs
+                        // the side sum, 006C3E50 and 006C5380 in both arms
+                        // (land_side_44, land_radius_48, land_circle_38).
+                        if (kLandingSequencerBound && GameUnitsHost::Impl::kLandStandbyStateBound
+                            && unit_.land_request_ran) {
+                            owner_.done("AirOpsBlock::landing_point_006c5380", 0x006c5380u);
+                        } else {
+                            owner_.record("AirOpsBlock::landing_point_006c5380", 0x006c5380u);
+                        }
                     }
 
                     // 009B3CF0 (009B3CF0-009B3EAA, RET 4), the state rule.
@@ -26856,12 +26887,14 @@ void GameUnitsHost::report() {
             int releases_dead = 0;
             int blocked_engaged = 0;
             int blocked_arm = 0;
+            int blocked_clause[3] = {0, 0, 0};
             for (const auto& slot : host.slots) {
                 if (!slot->torpedo_task_installed) continue;
                 ++tasked;
                 releases_total += slot->torpedo_releases;
                 releases_dead += slot->torpedo_releases_dead;
                 blocked_engaged += slot->torpedo_blocked_by_engaged;
+                for (int k = 0; k < 3; ++k) blocked_clause[k] += slot->torpedo_blocked_clause[k];
                 blocked_arm += slot->torpedo_blocked_by_arm;
                 char states[192];
                 int used = 0;
@@ -27170,8 +27203,10 @@ void GameUnitsHost::report() {
             }
             if (tasked > 0) {
                 host.log.notef("summary mission torpedo task: aircraft=%zu "
-                    "releases=%d blocked_engaged_009d3210=%d blocked_arm_009d49a0=%d",
-                    tasked, releases_total, blocked_engaged, blocked_arm);
+                    "releases=%d blocked_engaged_009d3210=%d blocked_arm_009d49a0=%d "
+                    "engaged_refusals no_target=%d member=%d range=%d",
+                    tasked, releases_total, blocked_engaged, blocked_arm,
+                    blocked_clause[0], blocked_clause[1], blocked_clause[2]);
                 // Packet cc9_torpedo_release_counter: `releases` above is task-level
                 // and counts dead aircraft, which spawn nothing. The rounds in the
                 // water are the gunnery host's `torpedo_drop drops`.

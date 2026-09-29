@@ -602,3 +602,49 @@ at the top of the move-to ramp (`00D06BB4`) is the same `1.6` as the cap scale a
 
 The `009FB800` section that follows already names the parameter `reference` and clamps `t` to it;
 only its provenance was wrong.
+
+## Correction from packet `cc9_wingman_heading_to_point`: `009F9E40` is faithful in the host; the gap was a counter label
+
+cc9-planes1, 2026-09-29 (stamped 16:44 UTC). Docs only; no switch, no Ghidra write. It answers
+GAMEPLAY_GAP_RANKING #5, which called `009F9E40` unread.
+
+**The body, re-read whole** (`python tools/bsp.py ghidra disasm 009F9E40`, 39 instructions,
+`009F9E40`-`009F9ECF` exclusive, `RET 4` at `009F9ECC`). It matches the section above in every
+step: the pose refresh at `009F9E49`-`009F9E54`, `dz` rounded to float at `009F9E66` and `dx` at
+`009F9E76`, `CALL 00BF701A` (CRT `atan2`, double), `FSUBR double [00CE3830]` (pi/2, the
+float-rounded value widened), and the wrap `009F9E99`-`009F9EA5` (add `[00CE3828]` 2pi only when
+`0 > h`; `FCOMIP` with `JBE`, so `h == 0` is kept). The stores are `cmd+2C0h = h` at `009F9EB9` and
+`cmd+2CCh = 2` at `009F9EC1`, with `cmd = [approach]+18h`.
+
+**The host's `bsp::heading_command_009f9e40` (`src/plane_flight.cpp`) is the same arithmetic.**
+`std::atan2(float, float)` is `atan2f`, and on Win32 the UCRT defines `atan2f` inline as
+`(float)atan2(_Y, _X)` (`corecrt_math.h`, SDK 10.0.26100.0, the `#else` arm of the
+`_M_X64 || _M_ARM ...` test). So the host also calls the double library routine on the float
+differences and rounds the result to float. Two residues remain, both at the rounding level:
+- The image subtracts in x87 at the process's precision control and rounds once to float. The host
+  subtracts two floats in SSE. The results can differ only on double-rounding ties.
+- The CRT `atan2` implementations differ (the image's x87 CRT against the UCRT), at most in the
+  last double ulp before the float rounding.
+
+Neither is a behaviour, and neither is worth a switch.
+
+**The eight callers** (a rel32 scan of `.text` on disk, `local\p1_callscan.py` in the cc9-planes1
+tree; Ghidra's xrefs list the same eight):
+
+| call site | function | host |
+| --- | --- | --- |
+| `009BF9F0` | `009BEE30` follow command step, target `state+44h` (the steer point) | `heading_command_009f9e40` at `geo.steer_point`, behind `kPlaneFollowLawBound` (ON) |
+| `009C1B23` | `009C18C0` moveto tick, target = the `+2Ch` entity's pose origin (`009C18EC`-`009C1913`) | torpedo moveto: faithful (`BotStateMoveTo::heading`, concrete). Land moveto: faithful (`tp` = the site's origin). **Dive-bomb moveto: aims at the hull aim point** (DIVE_BOMB_APPROACH section 19) |
+| `009C257A` | `009C2430` moveto-task tick | `heading_command_009f9e40` at the steer point |
+| `009A7864` | `009A76E0` dogfight aim | `src/dogfight_task.cpp` |
+| `009D29B7` | `009D2720` torpedo prepare, target = `approach->vtable[0]` | a record-only stub (`steer_toward_target_009f9e40`). It is unreached: `prepare_entries=0` on every reference-o torpedo row. It belongs with the approach target point (ranking #6) |
+| `007B5471` | `007B5430` (no direct callers; a vtable slot) | not modelled |
+| `009CB1EF` | `009CB1B0` (no direct callers; reads `Pilot/AutoStrafeAngle`) | not modelled |
+| `009BC944` | no Ghidra function; enclosing candidate `009BC890` | not modelled |
+
+**Why the ranking counted it.** `BotStateFollow::steer_to_point`, `steer_point`, `command_step`
+and `hold_arm` are emitted with `record()`, which prints `UNIMPLEMENTED`, at lines that run only
+under `kPlaneFollowLawBound` (ON). Reference o's USN04 shows 10530 calls of each of the first
+three, all on bound code. The fix is log-only: `done()` in place of `record()` at those four sites
+and at the land moveto's `BotStateMoveTo::steer_to_point`. `src/game_hosts_units.cpp` was leased
+to cc9-lua17, so the edit went to the lead.

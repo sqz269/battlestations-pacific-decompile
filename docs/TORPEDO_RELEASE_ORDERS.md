@@ -474,3 +474,38 @@ does not put an aircraft near the release altitude before `aim`:
 is paired. The prediction the packet was framed on ("the flights reach 25 to 40 m before `aim`")
 is not what the image's law does. On all three rows the releases are lost to anti-aircraft fire
 while the aircraft are in `aim`: USN04, JM05 9000 and USN13. That is the gunnery lane's question.
+
+## (8) JM05's `blocked_engaged_009d3210` is the approach phase, not a gate (packet `cc9_jm05_blocked_engaged`, cc9-lua17, 2026-09-29)
+
+**The counter.** `torpedo_blocked_by_engaged` counts every arm tick on which `009D3210` answers
+false, whatever the state. The summary now also splits it by the clause that refused (print-only,
+`torpedo_blocked_clause`):
+- `no_target`: `009D3222`, no engage target;
+- `member`: `009D3245`, a wing member while the squadron's mode `ctl+370h` is not 2;
+- `range`: `009D325B`, the leader's `+484h x 2.2 <= +488h`.
+
+**JM05 9200/9000, current tree** (`local\l17_g_jm05l.log`, cc9-lua17 tree; gameplay-identical to
+the run before the counters, `pair_diff` 1):
+- `blocked_engaged_009d3210=44905`, split as `no_target=0`, `member=31538`, `range=13367`.
+- `range` equals the leaders' moveto ticks: the `009C1850` speed-slot count on the same run is
+  also 13367. A leader flies moveto while it is farther than 2.2 x 2200 m.
+- `member` is the members' `follow` ticks before the squadron's mode reaches 2 (per plane,
+  `follow` = 1009 to 2225 ticks).
+
+So the count is the time spent approaching, and each clause is the image's own gate. **Nothing
+to bind.**
+
+**What actually limits JM05's releases** (3 of 24 aircraft) is visible in the per-plane lines:
+- **Nine aircraft reach `aim` and die there without a release.** For each, `range 90h` last =
+  min, at 657 to 1175 m. That is the USN13 pattern of (7), losses to AA in the run-in. The nine
+  are Lexington_sqn05 and |.-2, Lexington_sqn07, Yorktown_sqn06 and |.-2/.-3, and Yorktown_sqn08
+  and |.-2/.-3.
+- **Yorktown_sqn12 and _sqn13 (six aircraft) never close below 4059 m.** Their leaders spend 89
+  or 59 ticks in `attackrun`; the members stay in `follow`. Each squadron's three `arm_ticks` are
+  equal (2129, 2099), so the task ended for all three at once. Whether by death or by the task
+  retiring was not checked.
+- **Lexington_sqn15 and SecondaryAirfieldEntity 01_sqn18 end in `prepare`** (432 and 435 ticks),
+  at 1874 to 1961 m for the leaders.
+
+The first is the open run-in item of (7). The second and third are new candidates for a
+torpedo-lane packet: why two squadrons stall far out, and why two stop in `prepare`.
