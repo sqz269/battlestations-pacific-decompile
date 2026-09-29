@@ -30,6 +30,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_squadron_entity.hpp"
@@ -1908,11 +1909,27 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return available;
     }
     bool tick_avoid_zone_point(void* member, const float target[3], float out[2]) override {
-        // 00417B10 BSP_AvoidZoneGroup_OffsetPointSequential, contract: unread.
-        // Without it a ship is sent at the requested point itself.
-        (void)member;
+        // 00A020BE / 00A020F0: 0082ADA0([unit+538h], 0) then 00417B10(group, &out,
+        // &{x, z}, 30.0f, 1). The ticks call this only where the image reaches
+        // 00A020F0. The runtime is the ship-AI host's (packet
+        // cc9_ai_command_avoid_zone_point). OFF, or with no runtime or no group,
+        // the ship is sent at the requested point itself.
+        ++avoid_zone_asks;
         out[0] = target[0];
         out[1] = target[2];
+        if (kAiCommandAvoidZonePointBound) {
+            GameShipAiHost* ship_ai = units.ship_ai();
+            const std::size_t unit = unit_index_of(member);
+            const float in[2] = {target[0], target[2]};
+            if (ship_ai != nullptr && unit < units.count() &&
+                ship_ai->avoid_zone_offset_point_00a020f0(unit, in,
+                    bsp::kAiOrderAvoidZoneMargin, out)) {
+                ++avoid_zone_answers;
+                if (out[0] != in[0] || out[1] != in[1]) ++avoid_zone_moved;
+                done("AiCommand::avoid_zone_offset_point", 0x00417b10u);
+                return true;
+            }
+        }
         record("AiCommand::avoid_zone_offset_point", 0x00417b10u);
         return false;
     }
@@ -2172,6 +2189,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long formation_requests_available{0};
     unsigned long long formation_requests_refused{0};
     unsigned long long formation_joins_made{0};
+    // Packet cc9_ai_command_avoid_zone_point: 00A020F0 reached (both sides), and
+    // answered by the ship-AI host's runtime / with a moved point (ON only).
+    unsigned long long avoid_zone_asks{0};
+    unsigned long long avoid_zone_answers{0};
+    unsigned long long avoid_zone_moved{0};
 
     bsp::AiGroupCandidateFlags entity_flags(void* entity) override {
         return unit_flags(unit_index_of(entity));
@@ -4635,6 +4657,10 @@ void GameAiCoordinatorHost::report() {
         "+188h OwnerPlayer arm is skipped, this process has no producer for it)",
         host.formation_requests_seen, host.formation_requests_available,
         host.formation_requests_refused, host.formation_joins_made);
+    host.log.notef("summary mission ai command zone point asks=%llu answers=%llu moved=%llu "
+        "bound=%d (00A020BE / 00A020F0, margin 30.0, packet cc9_ai_command_avoid_zone_point)",
+        host.avoid_zone_asks, host.avoid_zone_answers, host.avoid_zone_moved,
+        bsp::game::kAiCommandAvoidZonePointBound ? 1 : 0);
     host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
         "near=%.1f far=%.1f sticky=%.2f",
         s.tuning_mode, bsp::ai_tuning_mode_table_name(
