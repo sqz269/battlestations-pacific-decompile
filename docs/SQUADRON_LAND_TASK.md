@@ -1648,6 +1648,70 @@ Ten aborts, eight from final and two from begin (Warhawk 01|.-4 at 158.71 s, Lig
 - **Verdict: `kLandAbortStateBound` stays OFF.** It is reached only through begin and final, which
   stay OFF until the descent is fixed (5l). When they are re-paired, abort flips with them.
 
+
+## 5n. Why the heads float over the runway (packet `cc9_landing_descent`, cc9-lua12, 2026-09-29): no host substitution found
+
+A diagnostic line `land final flight` (every 10 final ticks, commit `046998bd5`) was added and one
+LOMP10 9200/9000 run made with begin and final ON (`local\l12_diag_lomp10.log`). Warhawk 01 over
+the runway, 150.6 to 164.6 s:
+- the pitch follows the command: +0.090 to +0.104 at the flare hold of 0.1047;
+- q (007D99C0 / StallSpd / LevelFlight) is 0.92 to 1.05;
+- the angle of attack is 0.000 to 0.050;
+- the throttle cycles 0 to 0.62 around the speed command 32.0;
+- vy is -0.5 to +3.4 m/s in the hold.
+
+B-25 01 (flare threshold 1.4 x 17 = 23.8 m) shows the same at q 0.97 to 1.03, climbing at 3.3
+to 3.9 m/s. Both climb in the hold.
+
+**The reconstructed image laws give this result.**
+- **Lift** (`007DB875`): `(1 + aoa) x min(q, 1)^2 x AccelCheatMul x 9.81` against gravity
+  `AccelCheatMul x 9.81`. At q >= 1 lift balances weight at aoa = 0, and the body damping
+  (`007DBD37`, YDrag at DragRange 1.0-2.0, `DragFuncPower` 1.8) keeps the velocity on the nose.
+  So the path angle equals the pitch.
+  - The installation's planeglobals.lua says the same of `LevelFlight`: above that fraction of
+    StallSpd the lift is maximal and there is no sink in level flight. Its comment on
+    `DragFuncPower` calls it the flare's characteristic.
+- **The command** in final is `r = max(007C47F0, 007C4810)`, with `007C47F0 = LevelFlight x
+  StallSpd` (32.0 for the P-40 and 37.0 for the B-25). That is exactly q = 1. Both sides of q use
+  the same StallSpd, so this holds whatever the class row says.
+- **The hold** is ApproachPitch, `tuning+4E0h` copied at `009B1439`-`009B144B` and stored at
+  `009B1AB3` when not fast, not far out and Y < 1.4 x `class+A0h` Length (`00D045F0`). At q = 1
+  it climbs at the pitch; to sink it needs q below about 0.93.
+- **Nothing in final lowers the speed below r.** Past T, `s = r` and `+2B4h = r`. The throttle law
+  `0099D300` holds it:
+  - `+2B0h` = 1 skips the divisor raise at `0099D924`;
+  - `+2B8h` decays to 1.0 at `0099D75C`-`0099D79A`.
+- So under these laws the flare climbs until Y reaches the threshold, the glide arm dives back, and
+  the plane porpoises. The host reproduces the laws; I found no substitution that turns a descent
+  into a climb.
+
+Substitutions checked on this path, none of them systematic:
+- `+2B8h` held at 1.0: equal to the image in final, since the raise is skipped.
+- The measured speed is `|v|` instead of `007D99C0 / +2B8h`: within 0.1 m/s here.
+- **`0099DAC8`'s correction, taken as 0.** Its inputs do have writers, which corrects the host's
+  label "no displacement writer anywhere": `unit+B1Ch` is `ctl+6Ch` (`007D87F1`, `007DB382`) and
+  `unit+AE0h` is `ctl+30h`, a low-pass copy of a velocity (`007DC792`-`007DC80B`).
+  The term is `(forward speed - |smoothed velocity|) x 20.0 (00CE3D88) x dt`. That is a lag term:
+  it damps the throttle oscillation but has no sign bias.
+- Thrust's TurboMultiplier, `desc+604h`, `unit+0CC8h` and `008E6430` are 1.0 or off: no effect on
+  a hold at q = 1.
+
+**Gear and ground effect, checked.** A sweep of 007B0000-007F8000 for loads of `unit+DECh`
+followed by `+28h`/`+2Ch` finds only the gear gates (`007B8D70`, `007C7220`, `007CC476`) and
+the two setters (`007C619E`, `007C6B6C`), so the gear channel adds no drag in the flight law. The
+core law reads `+BFCh` only in the ground mode (`007DB702`), so there is no ground effect. By the
+laws read so far, the image's flare climbs as the host's does. That leaves three possibilities:
+- the image's heads also porpoise on this installation. With WheelHeight 0.0 for the P-40 and
+  P-38 that is plausible;
+- the speed in the image's flare falls below q = 1 for a reason outside these laws;
+- a law not yet read acts in the flare.
+
+The host cannot settle which without the original running, which the rules forbid.
+
+**Not bound.** With no host substitution identified there is no switch to commit, and begin, final
+and abort stay OFF. The diagnostic line stays: it is read-only and prints only while final is
+bound.
+
 ## 6. Open, in order
 
 1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON

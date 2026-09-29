@@ -19315,6 +19315,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // cc9_plane_touchdown, labelled), so 007B8D70 answers true and the
                         // tests never run, with or without kPlaneTouchdownBound.
                         if ((unit_.land_final_ticks % 10) == 1) {
+                            // DIAGNOSTIC (packet cc9_landing_descent): the airframe
+                            // terms the flare reads: the latched throttle and air
+                            // brake, their desired slots, the body velocity, the
+                            // lift's q and angle of attack (007DB875), the live pitch.
+                            const float* rw[3] = {unit_.motion.pose_row0,
+                                unit_.motion.pose_row1, unit_.motion.pose_row2};
+                            const float* wv = unit_.plane_world_velocity;
+                            float bv[3];
+                            for (int r = 0; r < 3; ++r) {
+                                bv[r] = rw[r][0] * wv[0] + rw[r][1] * wv[1] + rw[r][2] * wv[2];
+                            }
+                            const float lvl = owner_.lua.plane_globals_loaded()
+                                ? owner_.lua.plane_globals().dynamics_spd_multipliers_level_flight : 1.0f;
+                            const float qd = static_cast<float>(static_cast<double>(bv[2])
+                                / unit_.plane_stall_spd / lvl);
+                            const float aoa = std::fabs(bv[2]) >= 0.1f ? -bv[1] / bv[2] : 0.0f;
+                            owner_.log.notef("  land final flight %s t=%.2f thr=%.3f thr_des=%.3f "
+                                "brk=%.3f brk_des=%.3f vb=(%.2f %.2f %.2f) vy=%.2f q=%.3f aoa=%.4f "
+                                "pitch=%.4f cmd=%.4f mode2d8=%d stall=%.2f lvl=%.3f",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<double>(unit_.plane_latched_throttle),
+                                static_cast<double>(unit_.plan_slots[bsp::kPilotSlotThrottle].desired),
+                                static_cast<double>(unit_.plane_latched_air_brake),
+                                static_cast<double>(unit_.plan_slots[bsp::kPilotSlotAirBrake].desired),
+                                static_cast<double>(bv[0]), static_cast<double>(bv[1]),
+                                static_cast<double>(bv[2]), static_cast<double>(wv[1]),
+                                static_cast<double>(qd), static_cast<double>(aoa),
+                                static_cast<double>(unit_.plane_pitch_angle_c64),
+                                static_cast<double>(unit_.plan_state.pitch_target_2bc),
+                                unit_.plane_air_brake_mode_2d8,
+                                static_cast<double>(unit_.plane_stall_spd),
+                                static_cast<double>(lvl));
                             owner_.log.notef("  land final trace %s t=%.2f A8=%.1f Y=%.1f Z=%.1f "
                                 "spd_cmd=%.2f spd=%.1f pitch=%.4f mode=%d done=%d",
                                 unit_.row.name.c_str(),
