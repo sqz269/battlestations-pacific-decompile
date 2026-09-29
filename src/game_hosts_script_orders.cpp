@@ -83,7 +83,10 @@ struct ScriptOrderBinding {
 //    008A0DE9..008A0E68 sets translation = entity+FCh, then vtable[88h]
 //    (006E00A0) and the physics body pose 00C56CF0. Otherwise, vtable[88h]
 //    alone (a plane: 007C9540). When false, it is the old record at 008a0d1c.
-inline constexpr bool kScriptedOrderNativesBound = false;
+// ON (2026-09-29, section 49.3): JM05 moved as predicted (Event2Pt stays at its
+// spawn, 3000 steps skipped) and LOMP10 3000/9000 moved (PT 01 and 02 posed).
+// IJN01 is gameplay identical and BSM01 identical. No death row moved.
+inline constexpr bool kScriptedOrderNativesBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
 constexpr bool kExplodeToPartsBound = true;
@@ -1516,7 +1519,8 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
         if (ship) {
             posed = units_.set_local_matrix_006e00a0(row.unit_index, m);   // vtable[88h]
             if (posed) ++turn_ship_arm_posed_;
-            log_.implemented("EntityTurnToEntity::ship_body_pose_00c56cf0", "00c56cf0");
+            log_.implemented("EntityTurnToEntity::ship_body_pose_00c56cf0 (the motion state)",
+                             "00c56cf0");
         } else if (units_.unit_is_kind_of(row.unit_index, 0x0f)) {
             posed = units_.set_unit_world_basis_007c9540(row.unit_index, &m[0], &m[4],
                                                          &m[8]);
