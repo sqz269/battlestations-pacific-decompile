@@ -93,6 +93,16 @@ float ai_party_next_think_time(float now, float random_interval) noexcept;
 // is enabled. The caller has already established that world+61Ch is set.
 bool ai_party_ai_enabled(int game_mode, int party_slot) noexcept;
 
+// 009FFE50 BSP_Ai_IsPartyAiEnabled, __fastcall(slot), body 009FFE50-009FFEAB,
+// both arms (packet cc9_ai_party_gate, docs/SHIP_AI_OPEN_ITEMS.md section 60).
+// 009FFE59 tests the forced-mode byte game+61Ch: set, it is the arm above
+// (ai_party_ai_enabled). Clear, 009FFE84 tests the session game+1FE4h: in
+// single player 009FFE8D..009FFE91 answer slot != 0, so the local player's
+// slot never gets a brain. The multiplayer arm 009FFE96 asks the slot record
+// through 004B5510, which this function does not model (it answers false).
+bool ai_party_ai_enabled_009ffe50(bool mode_forced, bool multiplayer, int game_mode,
+                                  int party_slot) noexcept;
+
 // 00A181A0's mode dispatch. Modes 4 through 7 tick one mode-specific planner
 // and skip the group walk entirely; anything else runs the group walk.
 enum class AiPartyThinkMode {
@@ -192,6 +202,7 @@ struct AiGroupThinkHost {
     virtual void group_member_pass(void* group) = 0;               // 00A2C790
     virtual float auto_merge_dist() = 0;                           // 00A371A0()->+208h
     virtual int game_mode() = 0;                                   // 004BCA50
+    virtual bool party_ai_enabled(int party_slot) = 0;             // 009FFE50
 
     // Phase 3 seeding, 00A2E835..00A2EA5A
     virtual void* first_seed_candidate(int collection) = 0;        // world+19CCh block

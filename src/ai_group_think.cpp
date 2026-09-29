@@ -48,6 +48,15 @@ bool ai_party_ai_enabled(int game_mode, int party_slot) noexcept {
     return party_slot == 0 || party_slot == 4;
 }
 
+bool ai_party_ai_enabled_009ffe50(bool mode_forced, bool multiplayer, int game_mode,
+                                  int party_slot) noexcept {
+    if (mode_forced) return ai_party_ai_enabled(game_mode, party_slot);
+    // 009FFE84 CMP [game+1FE4h],0 / JNE 009FFE96: the multiplayer arm.
+    if (multiplayer) return false;
+    // 009FFE8D XOR EAX,EAX / TEST ESI,ESI / SETNE AL.
+    return party_slot != 0;
+}
+
 AiPartyThinkMode ai_party_think_mode(int game_mode) noexcept {
     switch (game_mode) {
     case 4: return AiPartyThinkMode::ModeSpecific4;
@@ -271,8 +280,7 @@ int ai_parties_think_00a182c0(AiGroupThinkHost& host) {
             host.random_think_interval(kAiGroupThinkIntervalMin, kAiGroupThinkIntervalMax);
         host.store_next_think_time(party, ai_party_next_think_time(now, interval));
 
-        const bool enabled = host.party_record_enabled(party) &&
-                             ai_party_ai_enabled(host.game_mode(), party);
+        const bool enabled = host.party_record_enabled(party) && host.party_ai_enabled(party);
         if (!enabled) {
             // 00A183B2..00A183CD: destroy and clear. The clear at 00A183CD sits
             // in a run Ghidra's listing omits after the free.

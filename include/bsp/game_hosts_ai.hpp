@@ -51,6 +51,7 @@
 // Evidence: docs/AI_COORDINATOR_TICK.md, docs/AI_GROUP_THINK.md,
 // docs/AI_PLANNERS.md, docs/ENTITY_LUA_ORDER_PATH.md.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
@@ -323,6 +324,14 @@ struct GameAiSummary {
 };
 
 // The coordinator for one mission run, owned for the whole run.
+// Packet cc9_ai_party_gate (docs/SHIP_AI_OPEN_ITEMS.md section 60). The eight
+// player-slot parties 004C6890 copies from the scene's MultiPlay.PlayerN side
+// blocks into slot record +28h (side block +0h, the Party ordinal: this
+// installation's PARTY_ALLIED 0, PARTY_JAPANESE 1, PARTY_NEUTRAL 2; -1 when the
+// block authors no Party). The mission host publishes them after its header
+// pass; the coordinator reads them when kAiPartyGateUnforcedBound is set.
+void ai_publish_scene_slot_parties(const std::array<int, 8>& parties);
+
 class GameAiCoordinatorHost {
 public:
     GameAiCoordinatorHost(GameHostLog& log, GameUnitsHost& units);

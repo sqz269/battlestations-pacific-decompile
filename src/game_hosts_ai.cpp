@@ -433,6 +433,31 @@ private:
 // labelled substitution: the world singleton's +614h has no producer here.
 constexpr int kCampaignGameMode = 0;
 
+// Packet cc9_ai_party_gate, docs/SHIP_AI_OPEN_ITEMS.md section 60. True: the
+// single-player rule of the image. game+61Ch, the forced-mode byte, is 0 in a
+// campaign (its writers are 004BC890, forced only by the 004E27E0 command-line
+// switches, and the constructor 004DDFB7), so 004BCA50 answers 8 and
+// 009FFE50 takes its unforced arm: in single player every party slot except 0
+// is planned for (009FFE8D..009FFE91, slot != 0). 009FFD20 files a unit whose
+// +180h is unauthored (9) under slot 0 when its +54h is the local player's
+// team ([game+18CCh + 4*[game+18ECh]]+28h, Player1's Party) and under slot 4
+// otherwise, and a brain's team (brain+24h, 00A15A90 CALL 009FFD60) is its
+// slot record's +28h, PlayerN's Party with N = slot + 1. So the local side's
+// groups get NONCONTROL (00A2E124) and no brain, and the other side is
+// planned by the slot-4 brain under Player5's Party. False: the forced arm
+// in mode 0 with party = team, the earlier substitution: team 0 is planned,
+// team 1 is NONCONTROL. LABELLED: every unit's +180h is taken as 9 (the few
+// OwnerPlayer "AI control" entries some scenes author are not modelled), and
+// the local slot index game+18ECh is 0. Flipped ON in 60.5, reverted to OFF
+// pending section 60.6 (the brain team chain).
+constexpr bool kAiPartyGateUnforcedBound = false;
+// 004BCA50 in a single-player campaign: not forced, no session, and a mode
+// other than 8 or 9 becomes 8 (004BCA72).
+constexpr int kSinglePlayerEffectiveGameMode = 8;
+
+std::array<int, 8> g_scene_slot_parties{-1, -1, -1, -1, -1, -1, -1, -1};
+bool g_scene_slot_parties_published = false;
+
 // 00A2C790's per-member chain reaches the member's own weapon director through
 // the ENTITY's vtable[+114h] and reports its state back to the group's AI
 // command, whose vt+24h (00A0FC90) discards it. Neither 00A10890 nor 00A109B0
@@ -441,6 +466,11 @@ constexpr int kCampaignGameMode = 0;
 // per-class tick at vt+0Ch, which was not read.
 
 }  // namespace
+
+void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {
+    g_scene_slot_parties = parties;
+    g_scene_slot_parties_published = true;
+}
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                                      public bsp::AiPlannerHost,
@@ -511,11 +541,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     std::vector<std::unique_ptr<Group>> groups;
     std::vector<Group*> registry;                  // 00F8AA70, every live group
     std::array<std::vector<Group*>, 3> by_team;    // g_aiGroupsByTeam, 00F8AA48 + t*0Ch
+    // g_aiGroupsByParty, 00F8A9E8 + p*0Ch (00A2E06E), keyed by group+5634h.
+    // Read only with kAiPartyGateUnforcedBound; OFF walks by_team as before.
+    std::array<std::vector<Group*>, bsp::kAiGroupPartySlotCount> by_party;
     std::vector<Group*> emptied;                   // 00F8AA7C / 00F8AA80
     std::array<std::unique_ptr<Brain>, bsp::kAiGroupPartySlotCount> brains{};
     std::array<float, bsp::kAiGroupPartySlotCount> next_think{};
     std::array<bool, bsp::kAiGroupPartySlotCount> party_record{};
     int current_party{-1};           // 00E0E344
+    // The ticking brain's team, brain+24h (planner +30h). OFF: the party slot.
+    int current_team{-1};
+    // Packet cc9_ai_party_gate census.
+    unsigned long long party_gate_local_groups{0};
+    unsigned long long party_gate_other_groups{0};
     float clock_seconds{0.0f};       // 00F876A4
     std::uint32_t rng{0x2545F491u};  // 00BD2F10's stream, one per run
     bool created{false};
@@ -931,6 +969,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         for (std::vector<Group*>& list : by_team) {
             list.erase(std::remove(list.begin(), list.end(), g), list.end());
         }
+        for (std::vector<Group*>& list : by_party) {
+            list.erase(std::remove(list.begin(), list.end(), g), list.end());
+        }
         for (const std::unique_ptr<Brain>& brain : brains) {
             if (brain == nullptr) continue;
             for (Planner& planner : brain->planners) {
@@ -956,7 +997,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         for (const std::size_t unit : g->members) {
             bsp::AiGroupCandidateFlags flags = unit_flags(unit);
             const int side = units.unit_side_0054(proxy(unit));
-            if (bsp::ai_group_member_still_belongs(flags, side, g->party, side, g->team)) {
+            if (bsp::ai_group_member_still_belongs(flags, party_slot_of_team(side), g->party,
+                                                   side, g->team)) {
                 kept.push_back(unit);
             } else if (unit < group_of_unit.size()) {
                 group_of_unit[unit] = nullptr;
@@ -1014,11 +1056,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         Group* g = groups.back().get();
         g->team = units.unit_side_0054(proxy(unit));
         if (g->team < 0 || g->team > bsp::kAiGroupMaxSeedTeam) g->team = 0;
-        g->party = g->team;   // this process files a group under its own team
+        // OFF: this process files a group under its own team. ON: group+5634h
+        // is 009FFD20 of the first member (00A2DFA0).
+        g->party = party_slot_of_team(g->team);
+        if constexpr (kAiPartyGateUnforcedBound) {
+            if (g->party == 0) ++party_gate_local_groups; else ++party_gate_other_groups;
+        }
         registry.push_back(g);
         // 00A2E086-00A2E0BD: every group appends itself to
         // g_aiGroupsByTeam[group+5638h] unconditionally.
         by_team[static_cast<std::size_t>(g->team)].push_back(g);
+        if (g->party >= 0 && g->party < bsp::kAiGroupPartySlotCount) {
+            by_party[static_cast<std::size_t>(g->party)].push_back(g);
+        }
         // group+564Ch, the eight-byte NONCONTROL or IDLE instance the
         // constructor installs before the first member is added.
         g->command = initial_command_for(g);
@@ -1035,13 +1085,38 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         done("AiGroups::add_group_member", 0x00a2d8e0u);
     }
 
+    // Packet cc9_ai_party_gate. A slot record's +28h (009FFD60): PlayerN's
+    // Party, N = slot + 1. Unpublished or unauthored, the slot itself stands
+    // in (the OFF identity).
+    int slot_team(int slot) const {
+        if (slot < 0 || slot >= 8) return slot;
+        const int party = g_scene_slot_parties[static_cast<std::size_t>(slot)];
+        return (g_scene_slot_parties_published && party >= 0) ? party : slot;
+    }
+    // 009FFD20 for a unit whose +180h is 9, in single player: 0 on the local
+    // player's team, else 4 (009FFD4B SUB / NEG / SBB / AND EAX,4).
+    int party_slot_of_team(int team) const {
+        if constexpr (kAiPartyGateUnforcedBound) {
+            return team == slot_team(0) ? 0 : 4;
+        } else {
+            return team;
+        }
+    }
+    bool party_admitted(int slot) const {
+        if constexpr (kAiPartyGateUnforcedBound) {
+            return bsp::ai_party_ai_enabled_009ffe50(false, false,
+                kSinglePlayerEffectiveGameMode, slot);
+        } else {
+            return bsp::ai_party_ai_enabled(kCampaignGameMode, slot);
+        }
+    }
+
     // The group constructor's install at group+564Ch. 009FFE50 admits party
     // slots 0 and 4 in campaign mode, which ai_party_think_mode already knows.
     bsp::AiCommandObject initial_command_for(Group* g) const {
         bsp::AiCommandObject cmd;
         const int slot = g->party;
-        cmd.type = bsp::ai_command_initial_type(
-            slot, bsp::ai_party_ai_enabled(kCampaignGameMode, slot));
+        cmd.type = bsp::ai_command_initial_type(slot, party_admitted(slot));
         cmd.owner_group = g;
         return cmd;
     }
@@ -2259,7 +2334,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
     }
 
-    int game_mode() override { return kCampaignGameMode; }
+    int game_mode() override {
+        return kAiPartyGateUnforcedBound ? kSinglePlayerEffectiveGameMode : kCampaignGameMode;
+    }
+    bool party_ai_enabled(int party_slot) override { return party_admitted(party_slot); }
 
     // Phase 3's five world collections. This process has one flat unit list, so
     // collection 0 yields every created unit and 1 to 4 are empty.
@@ -2396,7 +2474,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return nullptr;
         auto brain = std::make_unique<Brain>();
         brain->party_slot = party_slot;
-        brain->world_set = party_slot;
+        brain->world_set = kAiPartyGateUnforcedBound ? slot_team(party_slot) : party_slot;
         for (int slot = 0; slot < 8; ++slot) {
             brain->planners[static_cast<std::size_t>(slot)].slot = slot;
             brain->planners[static_cast<std::size_t>(slot)].kind = planner_kind_for_slot(slot);
@@ -2411,7 +2489,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         (void)brain;
         record("AiGroups::destroy_party_brain", 0x00a16490u);
     }
-    void set_current_party(int party_slot) override { current_party = party_slot; }
+    void set_current_party(int party_slot) override {
+        current_party = party_slot;
+        current_team = (kAiPartyGateUnforcedBound && party_slot >= 0) ? slot_team(party_slot)
+                                                                     : party_slot;
+    }
     void party_brain_think(void* brain) override {
         ++summary.parties_thought;
         Brain* b = static_cast<Brain*>(brain);
@@ -2442,7 +2524,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         in.kind = p->kind;
         in.owned_group_count = static_cast<std::uint32_t>(p->owned.size());
         in.first_owned_group = p->owned.empty() ? nullptr : static_cast<void*>(p->owned.front());
-        in.own_team = current_party;
+        in.own_team = current_team;
         ticking_planner = p;
         if (diag_planner_lines < 24) {
             ++diag_planner_lines;
@@ -2454,7 +2536,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 (first == nullptr || first->members.empty())
                     ? "" : unit_name(first->members.front()).c_str(),
                 first == nullptr ? -1 : static_cast<int>(first->command.type),
-                enemy_team_group_count(bsp::ai_enemy_team_index(current_party)));
+                enemy_team_group_count(bsp::ai_enemy_team_index(current_team)));
         }
         if constexpr (kAiCaptureThinkBound && kAiPlannerSlotKindsBound) {
             if (p->kind == bsp::AiPlannerKind::Attack) {
@@ -2502,8 +2584,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::vector<Group*> owned = p.owned;
         for (Group* g : owned) {
             if (g == nullptr || g->destroyed) continue;
-            bsp::ai_planner_choose_attack_target(*this, g, current_party,
-                bsp::ai_enemy_team_index(current_party), kPartyAggressiveRatio, false);
+            bsp::ai_planner_choose_attack_target(*this, g, current_team,
+                bsp::ai_enemy_team_index(current_team), kPartyAggressiveRatio, false);
         }
         done("AiPlanners::attack_think_00a1cf90", 0x00a1cf90u);
     }
@@ -2522,7 +2604,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // (00A1E250 scoring, the assignment loop, the merges and the spawn arm) is
     // not reconstructed yet and the previous Siege-shape stand-in runs.
     bool capture_think_00a29fd0(Planner& p) {
-        const int side = current_party;
+        const int side = current_team;
+        const int slot = current_party;
         bool have_target = false;
         bool own_building = false;
         for (std::size_t unit = 0; unit < units.count(); ++unit) {
@@ -2533,8 +2616,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         if (have_target) {
             if constexpr (kAiCaptureTargetPathBound) {
-                Brain* owner = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
-                    ? brains[static_cast<std::size_t>(side)].get() : nullptr;
+                Brain* owner = (slot >= 0 && slot < bsp::kAiGroupPartySlotCount)
+                    ? brains[static_cast<std::size_t>(slot)].get() : nullptr;
                 capture_target_path_00a29fd0(p, side, owner);
                 return true;
             }
@@ -2546,8 +2629,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             return false;
         }
         ++capture_thinks;
-        Brain* brain = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
-            ? brains[static_cast<std::size_t>(side)].get() : nullptr;
+        Brain* brain = (slot >= 0 && slot < bsp::kAiGroupPartySlotCount)
+            ? brains[static_cast<std::size_t>(slot)].get() : nullptr;
         if (brain == nullptr) return true;
         const std::vector<Group*> owned = p.owned;
         for (Group* g : owned) {
@@ -3383,9 +3466,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // so the records keep their build order; the maps keyed by pointer are
     // ordered by unit index.
     bool defend_think_00a28a60(Planner& p) {
-        const int side = current_party;
-        Brain* brain = (side >= 0 && side < bsp::kAiGroupPartySlotCount)
-            ? brains[static_cast<std::size_t>(side)].get() : nullptr;
+        const int side = current_team;
+        Brain* brain = (current_party >= 0 && current_party < bsp::kAiGroupPartySlotCount)
+            ? brains[static_cast<std::size_t>(current_party)].get() : nullptr;
         if (brain == nullptr) return false;
         if constexpr (!kAiDefendRecordsPathBound) {
             // The records path is not bound: any candidate runs the stand-in.
@@ -3723,8 +3806,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long capture_spawn_due{0};
     int diag_capture_lines{0};
     void* first_group_of_party(int party_slot) override {
-        if (party_slot < 0 || party_slot >= static_cast<int>(by_team.size())) return nullptr;
-        return open(by_team[static_cast<std::size_t>(party_slot)]);
+        if constexpr (kAiPartyGateUnforcedBound) {
+            if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return nullptr;
+            return open(by_party[static_cast<std::size_t>(party_slot)]);
+        } else {
+            if (party_slot < 0 || party_slot >= static_cast<int>(by_team.size())) return nullptr;
+            return open(by_team[static_cast<std::size_t>(party_slot)]);
+        }
     }
     void* next_group(void* cursor) override {
         Group* g = group_at(cursor);
@@ -4467,11 +4555,20 @@ void GameAiCoordinatorHost::create_00a32350() {
     // created unit carries that side. record +0h is the native gate.
     for (std::size_t i = 0; i < host.units.count(); ++i) {
         const int side = host.units.unit_side_0054(i);
-        if (side >= 0 && side < bsp::kAiGroupPartySlotCount) {
-            host.party_record[static_cast<std::size_t>(side)] = true;
+        // ON: the slot 009FFD20 files the unit under (cc9_ai_party_gate).
+        const int slot = side >= 0 ? host.party_slot_of_team(side) : side;
+        if (slot >= 0 && slot < bsp::kAiGroupPartySlotCount) {
+            host.party_record[static_cast<std::size_t>(slot)] = true;
         }
     }
     host.summary.game_mode = host.game_mode();
+    host.log.notef("ai party gate bound=%d published=%d local_team=%d slot_teams=%d,%d,%d,%d,%d,%d,%d,%d "
+        "game_mode=%d (009FFE50 unforced single-player arm, 009FFD20, 009FFD60; packet "
+        "cc9_ai_party_gate)", kAiPartyGateUnforcedBound ? 1 : 0,
+        g_scene_slot_parties_published ? 1 : 0, host.slot_team(0),
+        g_scene_slot_parties[0], g_scene_slot_parties[1], g_scene_slot_parties[2],
+        g_scene_slot_parties[3], g_scene_slot_parties[4], g_scene_slot_parties[5],
+        g_scene_slot_parties[6], g_scene_slot_parties[7], host.game_mode());
     // 00A335D0. 009FFC80 picks the record: an effective game mode of 0 takes
     // the 009FFC9E arm, which clamps 00A15950's difficulty into the three
     // IslandCapture records. Nothing in this process produces a difficulty, so
@@ -4494,7 +4591,7 @@ void GameAiCoordinatorHost::create_00a32350() {
         row.record_enabled = true;
         // 009FFE50 BSP_Ai_IsPartyAiEnabled: in game modes 0 to 3 only slots 0
         // and 4 are enabled; above 3 every slot is.
-        row.ai_enabled = bsp::ai_party_ai_enabled(host.game_mode(), party);
+        row.ai_enabled = host.party_admitted(party);
     }
     host.record("AiController::create", 0x00a32350u);
     host.record("AiController::construct", 0x00a31730u);
@@ -4994,6 +5091,10 @@ void GameAiCoordinatorHost::report() {
             }
         }
     }
+    host.log.notef("summary mission ai party gate bound=%d local_team=%d slot4_team=%d "
+        "local_slot_groups=%llu other_slot_groups=%llu (009FFE50 unforced arm, packet "
+        "cc9_ai_party_gate)", kAiPartyGateUnforcedBound ? 1 : 0, host.slot_team(0),
+        host.slot_team(4), host.party_gate_local_groups, host.party_gate_other_groups);
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",

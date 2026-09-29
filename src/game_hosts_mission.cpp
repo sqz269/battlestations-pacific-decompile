@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2e: from the main menu to the mission load request.
 // See include/bsp/game_hosts_mission.hpp for the address list and the evidence.
 #include "bsp/game_hosts_mission.hpp"
+#include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
@@ -1235,6 +1236,24 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
             }
         }
         participant_scene_counts.emplace(scene_path, table.max_player_num);
+        // Packet cc9_ai_party_gate: 004C6890 copies each side block's +0h
+        // (Party) into slot record +28h. The ordinal is this installation's
+        // PARTY_ALLIED 0 / PARTY_JAPANESE 1 / PARTY_NEUTRAL 2 (luamw_init.lua
+        // 73-75); the native enum table was not read (labelled).
+        {
+            std::array<int, 8> parties{};
+            for (std::size_t i = 0; i < parties.size(); ++i) {
+                const bsp::SceneSlotEnumValue& party = table.blocks[i].party;
+                int ordinal = -1;
+                if (table.blocks[i].present && party.present) {
+                    if (party.symbol == "Allied") ordinal = 0;
+                    else if (party.symbol == "Japanese") ordinal = 1;
+                    else if (party.symbol == "Neutral") ordinal = 2;
+                }
+                parties[i] = ordinal;
+            }
+            ai_publish_scene_slot_parties(parties);
+        }
         log.notef("scene participant scalar: path=%s available=1 max_players=%d "
             "authored=%d", scene_path.c_str(), table.max_player_num,
             table.max_player_num_authored ? 1 : 0);
