@@ -1862,7 +1862,24 @@ constexpr bool kTorpedoGoAwayAimPointBound = true;
 // kind-6-in-category-6 second ammo record (+48h); the cache lives on the unit
 // slot, one per goaway state, so it is not reset when a new task is built.
 // OFF: the empty list, as before.
-constexpr bool kFlyToObstacleListBound = false;   // ON: TORPEDO_AIM_LEAD 15.4
+constexpr bool kFlyToObstacleListBound = true;    // ON: TORPEDO_AIM_LEAD 16.1
+// Packet cc9_torpedo_reset_draws (docs/TORPEDO_AIM_LEAD.md section 19): the
+// reset 009D0380's stream-1 draws, which this host held as row values or 0.
+// +70h = U(0.9, 1.1) * min(desc+18Ch TravelSpeed, 0.75 * 007BCE20) (009D0449),
+// the planned attack speed the engagement estimate adds to the closing speed;
+// +74h = 67.0 (009D0457); +78h = U(0, 0.25) * TorpReleaseAlt (009D0475), where
+// the host stored the whole row value; +7Ch/+80h each moved by U(-0.1, 0.5) of
+// their gap (009D05ED, 009D0625). SUBSTITUTION, labelled: every draw has its
+// own keyed stand-in stream (name#t70, #t78, #t7c, #t80), so the draws the
+// host already makes keep their sequence. OFF: the row values, as before.
+constexpr bool kTorpedoResetDrawsBound = false;
+// Packet cc9_torpedo_reset_draws: 009D0160, called at 009D0632 after the aim
+// error draw, seeds +98h, which the engagement estimate adds into +F8h, the
+// torpedo projtime. The host binds no other +98h writer (009D1360 at 009D19A4
+// and 009D27D1 is a counter here), so the seed stands for the whole task.
+// It reads +70h, +78h and +7Ch, so it is meant to run with the draws ON.
+// OFF: +98h stays 0.
+constexpr bool kTorpedoResetRunTimeSeedBound = false;
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
@@ -6504,6 +6521,25 @@ struct GameUnitsHost::Impl {
         }
         return sum;
     }
+    // 007BCE20 (MaxWaterHitVel, class +DCh) and 007BCFA0 (WaterTravelSpeed,
+    // class +E4h): the minimum over the unit's devices (unit+974h, count
+    // +994h) whose bullet class +8h is 0Ah, the torpedo, and FLT_MAX
+    // (00D7A248) when none is. The devices are the gunnery host's gun rows.
+    float torpedo_device_min_007bce20(const GameUnitSlot& slot, bool water_travel) const {
+        float best = FLT_MAX;
+        if (gunnery == nullptr) return best;
+        for (const auto& g : gunnery->guns()) {
+            if (g.unit_index != slot.process_index || g.bullet_sub_type != 0x0A) continue;
+            const GameBulletClassRow* b = gunnery->bullet_class_row(g.bullet_class);
+            if (b == nullptr || !b->found) continue;
+            const float v = water_travel ? b->water_travel_speed : b->max_water_hit_vel;
+            if (v <= best) best = v;                                 // FCOMI / JA
+        }
+        return best;
+    }
+    unsigned long long torpedo_reset_draws_{0};
+    unsigned long long torpedo_reset_seeds_{0};
+    double torpedo_reset_seed_sum_{0.0};
     // 009FD5FF-009FD743 for the cache `k` of `flyer`, with `lead` the solver's
     // lead point (unit+FCh + 3.0 * vtable[34h]).
     const std::vector<bsp::FlyToObstacle>& fly_to_obstacles_009fd63c(
@@ -18565,12 +18601,79 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // interpolation at 009D1FED equal and the release
                             // gate inert. docs/TORPEDO_RELEASE_GATE.md.
                             ap.aspect_scale_84 = kTorpRows[torp_row][3];
+                            if constexpr (kTorpedoResetDrawsBound) {
+                                // 009D03D9-009D0475 and 009D0581-009D0625.
+                                const std::string& n = unit_.row.name;
+                                const float hit_vel =
+                                    owner_.torpedo_device_min_007bce20(unit_, false);
+                                ap.closing_speed_bias_70 =
+                                    bsp::torpedo_reset_attack_speed_009d03d9(
+                                        unit_.plane_travel_speed, hit_vel,
+                                        owner_.release_altitude_draw_00bd2f10(n + "#t70",
+                                            bsp::kTorpedoResetSpeedDrawLo_00ce3860,
+                                            bsp::kTorpedoResetSpeedDrawHi_00ce6448));
+                                ap.alt_floor_74 = bsp::kTorpedoResetAltFloor_00d212a0;
+                                ap.alt_margin_78 = static_cast<float>(static_cast<double>(
+                                    owner_.release_altitude_draw_00bd2f10(n + "#t78", 0.0f,
+                                        bsp::kTorpedoResetAltDrawHi_00ce3868)) *
+                                    kTorpRows[torp_row][0]);                // 009D046A
+                                ap.speed_late_7c = bsp::torpedo_reset_near_leg_009d05ed(
+                                    ap.speed_late_7c, ap.speed_early_80,
+                                    owner_.release_altitude_draw_00bd2f10(n + "#t7c",
+                                        bsp::kTorpedoResetLegDrawLo_00ce3cb4,
+                                        bsp::kTorpedoResetLegDrawHi_00ce3800));
+                                ap.speed_early_80 = bsp::torpedo_reset_far_leg_009d0625(
+                                    ap.speed_late_7c, ap.speed_early_80,
+                                    owner_.release_altitude_draw_00bd2f10(n + "#t80",
+                                        bsp::kTorpedoResetLegDrawLo_00ce3cb4,
+                                        bsp::kTorpedoResetLegDrawHi_00ce3800));
+                                ++owner_.torpedo_reset_draws_;
+                                if (owner_.torpedo_reset_draws_ <= 24) {
+                                    owner_.log.notef("torpedo reset draws %s: travel=%.2f "
+                                        "hit_vel_min=%.2f +70h=%.2f +74h=%.1f +78h=%.2f "
+                                        "+7Ch=%.1f +80h=%.1f (009D0380)", n.c_str(),
+                                        static_cast<double>(unit_.plane_travel_speed),
+                                        static_cast<double>(hit_vel),
+                                        static_cast<double>(ap.closing_speed_bias_70),
+                                        static_cast<double>(ap.alt_floor_74),
+                                        static_cast<double>(ap.alt_margin_78),
+                                        static_cast<double>(ap.speed_late_7c),
+                                        static_cast<double>(ap.speed_early_80));
+                                }
+                            }
                             if constexpr (kAimErrorDrawBound) {
                                 // 009D062B: the reset's call of 009D02A0.
                                 // approach+9Ch is the run-time bias 009D1360
                                 // adds into +98h, and so into the projtime.
                                 ap.run_time_bias_9c = owner_.redraw_aim_error(
                                     unit_, bsp::kTorpedoAimErrorRows[torp_row]);
+                            }
+                            if constexpr (kTorpedoResetRunTimeSeedBound) {
+                                // 009D0632: 009D0160. The height is +78h + +74h with
+                                // +74h the reset's 67.0 (009D0457), which 009D3489
+                                // has not yet replaced at this point in the image.
+                                const float h = static_cast<float>(
+                                    static_cast<double>(ap.alt_margin_78) +
+                                    bsp::kTorpedoResetAltFloor_00d212a0);   // 009D0170
+                                const float fall = bsp::weapon_fall_time_007bcc80(
+                                    h, unit_.motion.linear_velocity.y);    // 009D017B
+                                const float run =
+                                    owner_.torpedo_device_min_007bce20(unit_, true);
+                                ap.run_time_98 =
+                                    bsp::torpedo_reset_run_time_009d0160(ap, fall, run);
+                                ++owner_.torpedo_reset_seeds_;
+                                owner_.torpedo_reset_seed_sum_ += ap.run_time_98;
+                                if (owner_.torpedo_reset_seeds_ <= 24) {
+                                    owner_.log.notef("torpedo reset seed %s: h=%.2f "
+                                        "fall=%.3f run=%.2f +70h=%.2f +7Ch=%.1f +9Ch=%.2f "
+                                        "+98h=%.3f (009D0160)", unit_.row.name.c_str(),
+                                        static_cast<double>(h), static_cast<double>(fall),
+                                        static_cast<double>(run),
+                                        static_cast<double>(ap.closing_speed_bias_70),
+                                        static_cast<double>(ap.speed_late_7c),
+                                        static_cast<double>(ap.run_time_bias_9c),
+                                        static_cast<double>(ap.run_time_98));
+                                }
                             }
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
@@ -26916,6 +27019,14 @@ void GameUnitsHost::report() {
             host.fly_to_rebuilds_[0], host.fly_to_kept_[0], host.fly_to_avoid_ticks_[0],
             host.fly_to_side_flips_[0], host.fly_to_rebuilds_[1], host.fly_to_kept_[1],
             host.fly_to_avoid_ticks_[1], host.fly_to_side_flips_[1]);
+        host.log.notef("summary mission torpedo reset draws bound=%d seed_bound=%d "
+            "draws=%llu seeds=%llu mean_run_time_98=%.3f s (009D0380, 009D0160, packet "
+            "cc9_torpedo_reset_draws)", kTorpedoResetDrawsBound ? 1 : 0,
+            kTorpedoResetRunTimeSeedBound ? 1 : 0, host.torpedo_reset_draws_,
+            host.torpedo_reset_seeds_,
+            host.torpedo_reset_seeds_ > 0
+                ? host.torpedo_reset_seed_sum_ / static_cast<double>(host.torpedo_reset_seeds_)
+                : 0.0);
         host.log.notef("summary mission torpedo goaway aim point bound=%d ticks=%llu "
             "mean_off_origin=%.1f m max_off_origin=%.1f m (009D0670 via 009D0C10, packet "
             "cc9_torpedo_goaway_aim)", kTorpedoGoAwayAimPointBound ? 1 : 0,

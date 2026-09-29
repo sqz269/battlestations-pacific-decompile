@@ -1431,3 +1431,72 @@ WaterTravelSpeed 51.5):
 - **Pair B.**
   - Keep it OFF if `+98h` is 0, negative, NaN or above 30 on any seed line.
   - Otherwise flip it.
+
+### 19.5 First pair, measured: a mechanism failure caused by a host stand-in, now fixed
+
+**Binaries** are `pair_export.py --commit deeb6573b`: r0 has no flip (`0640FFC4D188`), ra flips
+the draws (`BF4DE40209C7`) and rb flips the draws and the seed (`91222581FD35`). The rows were
+USN04 4700/4500, E2 9200/9000, JM05, USN01, USN13 and JM08, each 3200/3000, in the reference
+launch form. All 18 logs are complete.
+
+**The draws matched their reading.**
+- `draws` equals the number of torpedo task installs (16 / 16 / 12 / 5 / 60 / 0).
+- `hit_vel_min` is 100.0 on every line, so the device mapping works.
+- `+70h` equals `U(0.9, 1.1)` times TravelSpeed (61.11 for the Kates and the TBDs, 66.67 for the
+  USN01 Mavises), because 75 is above every TravelSpeed.
+- `+78h` lies in 0.05-2.96, and `+7Ch`/`+80h` are jittered within their gap.
+- The seed ran on every task. `mean_run_time_98` is 8.90 s on USN04 (predicted 7-10), 16.19 on
+  JM05, 6.40 on USN01 and 9.71 on USN13. The lines range from 0.0 to 18.5 s.
+
+**The gameplay failed.**
+- In pair A, torpedo-task releases fell to 0 on every row that had any: USN04 5 -> 0, E2 5 -> 0,
+  USN13 3 -> 0.
+- The aim census shows why:
+  - The altitude gate never opened (`alt=0` on every aim line).
+  - `min_alt` rose from about 12 m to 68-71 m.
+- The E2 death table agrees: the Kates die at 78-83 m instead of 20-25 m.
+
+**Cause: this host's stand-in for the pilot control block.**
+- `009D3489` copies `ctl+398h` into `+74h` only when it is below 100.
+- The host's `read_control_block` supplied `ctl+398h` = Pilot/Torpedo/CruisingAlt = 500, so the
+  store never ran.
+- With the draws OFF, `+74h` stayed at the host's default 0, and the band was 0 + 12. With the
+  draws ON, the reset's 67.0 stood.
+- The image's producer is `009D4A70` step 5 (docs/BOT_TASKS.md): `+398h = *(task+40Ch)`, with 5.0f
+  (`00CE3850`) replacing any value below the double 5.0 (`00D7A370`). `task+40Ch` is
+  `approach+14h`, the run-profile record pointer, so this is **record+0h TorpReleaseAlt**.
+  - For SPNormal that is 12, which is below 100, so the image's `+74h` is 12.
+  - The image's band is therefore `12 + U(0, 3)`. The host's old `0 + 12` was right only by
+    accident.
+
+**Verdicts:**
+- **Pair A: keep OFF (mechanism failure), recorded.** A reported "the commanded release altitude
+  drops by about 10 m", and it rose by 57 m. That prediction was wrong because it assumed the host's
+  `+74h` came from the image.
+- **Pair B is void**, because it stacked on the broken A. For the record, its seed lines were sound.
+  - One line is `+98h = 0.000`: USN01 Mav2, where `+9Ch` = -8.52 against t of about 8.3. That is the
+    image's own `max(0, ...)` floor.
+  - My 19.4 rule ("keep OFF if `+98h` is 0 on any line") was mis-specified: it should have excluded
+    a zero produced by the floor. I restate it before the re-run instead of applying it after the
+    fact.
+
+**The fix (committed with this section).** Under `kTorpedoResetDrawsBound`, `read_control_block`
+supplies `ctl+398h = max(TorpReleaseAlt row, 5.0)`. The row is stored on the slot at the reset as
+`torpedo_release_alt_row`.
+
+**Predictions for the re-run** (pairs A' and B', from one new commit):
+- **A'.**
+  - The band becomes `+74h` 12 plus `U(0, 3)` on SPNormal, so the commanded altitude rises 0-3 m
+    over OFF. `min_alt` on the aim lines lies within about 3 m of OFF's.
+  - Torpedo-task releases move by a few in either direction, but do not collapse to 0 on USN04, E2
+    or USN13.
+  - JM08 is gameplay-identical.
+  - Deaths move by a few at most.
+- **B'.**
+  - `seeds` equals `draws`, and the means are as before (the seed does not read `+74h` from the
+    control block).
+  - Torpedo hit records move on USN04 and E2.
+  - Keep B' OFF if a seed line prints NaN or inf, if a line above 30 s appears, or if a `+98h` of 0
+    appears with `+9Ch` above -3 (a zero the floor cannot explain). Otherwise flip it.
+- **A' verdict:** keep it OFF if releases collapse to 0 again, or if `min_alt` differs from OFF by
+  more than 5 m. Otherwise flip it.
