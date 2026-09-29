@@ -497,6 +497,14 @@ public:
     // 00890A10 SetShipMaxSpeed: 00890B51 FSTP [unit+9C0h]. The slot's
     // motion.max_speed is unit+9C0h (00822C20 seeds it from the class).
     bool set_unit_max_speed_09c0(std::size_t unit_index, float value) noexcept;
+    // Packet cc9_pilot_land_native: an explicit `land` command at a site owner
+    // (PilotLand 008A47B0 -> 0077D600(entity, land 00E08FA0, target, 1)), taken
+    // by each plane's bot land arm 0099A3DD with the site from the COMMAND
+    // TARGET: 006BCD20(target, 1) must give a deck and 006C4790(deck, plane+9D4h)
+    // a squadron. `unit_index` is a squadron (its fused flight leader: every
+    // member) or a lone wing plane; `site_index` the target unit (carrier or
+    // airfield). Returns the number of land tasks installed.
+    std::size_t land_at_site_0099a3dd(std::size_t unit_index, std::size_t site_index);
 
     // Packet cc9_entity_dead. The units whose damage death has happened: a
     // health <= 0 hit reaches vtable[70h] (0077D1A0 -> 00926C80, cause 1), which

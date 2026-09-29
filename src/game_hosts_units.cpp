@@ -559,6 +559,10 @@ struct GameUnitSlot {
     // approach+2Ch, the air-ops deck, as a deck index + 1 (0 = cleared by 009B34D0).
     std::size_t land_site_plus_one{0};
     std::size_t land_deck_plus_one{0};
+    // Packet cc9_pilot_land_native: the task came from an explicit `land`
+    // command (PilotLand 008A47B0 -> 0077D600), not from 007F16D0's answer, so
+    // 009B34D0 checks the plane's own command rather than rtb_census.
+    bool land_explicit_site{false};
     float land_angle_54{0.0f};     // U(0.9, 1.1) * tuning+4E4h ApproachAngle, 009AFEF5
     float land_pitch_58{0.0f};     // U(0.9, 1.1) * tuning+4E0h ApproachPitch, 009AFF25
     float land_speed_5c{0.0f};     // class+18Ch TravelSpeed * 0.75 (00CEC9D8), 009AFF4A
@@ -1962,6 +1966,9 @@ struct GameUnitsHost::Impl {
     unsigned long long land_profile_writes{0};
     LandTaskCensus& land_census_for(const std::string& squadron);
     void install_land_task_0099a3dd(std::size_t unit_index);
+    bool install_land_task_core_009b41c0(std::size_t unit_index,
+        const bsp::PlaneSquadronHostRecord& sq, std::size_t owner, std::size_t deck,
+        const std::string& site_name, bool explicit_site);
     bool land_command_still_valid_009b34d0(const GameUnitSlot& unit) const;
     // Packet cc9_landing_sequencer (kLandingSequencerBound): each deck's landing
     // holder (block+80h), queue (block+98h) and assignment vector (block+A8h),
@@ -9131,19 +9138,41 @@ void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
         refuse(c.refused_arm, "the site has no deck or no unit row");
         return;
     }
+    install_land_task_core_009b41c0(unit_index, *sq, owner, deck, entry->last_site, false);
+}
+
+// The part of the land arm after the site is known: the host refusals, the
+// same-target keep (009B3560), 0099A4C0's retire and 009B41C0's construction.
+// Shared by the 007F16D0 intake above and the explicit PilotLand entry.
+bool GameUnitsHost::Impl::install_land_task_core_009b41c0(std::size_t unit_index,
+    const bsp::PlaneSquadronHostRecord& sq_ref, std::size_t owner, std::size_t deck,
+    const std::string& site_name, bool explicit_site) {
+    const bsp::PlaneSquadronHostRecord* sq = &sq_ref;
+    LandTaskCensus& c = land_census_for(sq->name);
+    GameUnitSlot& unit = *slots[unit_index];
+    auto refuse = [&](unsigned long long& counter, const std::string& why) {
+        ++counter;
+        if (c.last_refusal != why) {
+            c.last_refusal = why;
+            log.notef("land task REFUSED: squadron \"%s\" plane \"%s\": %s at %.2f s "
+                "(packet cc9_land_task_reach)", sq->name.c_str(), unit.row.name.c_str(),
+                why.c_str(), static_cast<double>(summary.simulated_seconds));
+        }
+    };
     if (unit.plane_death_c3a) {
         refuse(c.refused_dead, "the plane is dead");
-        return;
+        return false;
     }
     if (unit.land_task_installed && unit.land_site_plus_one == owner + 1u
         && unit.land_deck_plus_one == deck + 1u) {
         ++c.kept;   // 009B3560: `land`, same target
-        return;
+        unit.land_explicit_site = explicit_site;
+        return false;
     }
     // 009B32AA-009B32B8: (plane+72Ch)->vtable[38h], this host's free flight.
     if (unit.plane_control_mode_900 != 7) {
         refuse(c.refused_ground, "not airborne: the task would start in land/park (unbound)");
-        return;
+        return false;
     }
     record("Bot::install_command_task_land_arm", 0x0099a3ddu);
     record("AirOpsBlock::squadron_not_excluded_006c4790", 0x006c4790u);
@@ -9177,6 +9206,7 @@ void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
     unit.land_mode_50 = 1;                          // 009AFEC7
     unit.land_site_plus_one = owner + 1u;
     unit.land_deck_plus_one = deck + 1u;
+    unit.land_explicit_site = explicit_site;
     unit.land_task_installed = true;
     unit.land_installed_at = summary.simulated_seconds;
     // 009B32C2-009B32DD: a flight leader (007B8AD0) starts in moveto (land),
@@ -9193,12 +9223,15 @@ void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
     log.notef("land task install: plane \"%s\" squadron \"%s\" -> %s at site %s planar %.1f m "
         "alt %.1f angle54=%.4f pitch58=%.4f b0=%.3f at %.2f s (0099A3DD -> 009B41C0, "
         "packet cc9_land_task_reach)", n.c_str(), sq->name.c_str(),
-        leader ? "moveto (land)" : "follow (land)", entry->last_site.c_str(),
+        leader ? "moveto (land)" : "follow (land)", site_name.c_str(),
         std::sqrt(dx * dx + dz * dz), static_cast<double>(hp[1]),
         static_cast<double>(unit.land_angle_54), static_cast<double>(unit.land_pitch_58),
         static_cast<double>(unit.land_request_b0),
         static_cast<double>(summary.simulated_seconds));
+    if (explicit_site) log.notef("  land task install source: explicit `land` command "
+        "(PilotLand 008A47B0, packet cc9_pilot_land_native)");
     done("BotTaskLand::construct", 0x009b3240u);
+    return true;
 }
 
 // 009B34D0 (009B34D0-009B3551), run first by the approach update 009B3900. The
@@ -9213,13 +9246,69 @@ bool GameUnitsHost::Impl::land_command_still_valid_009b34d0(const GameUnitSlot& 
     if (unit.land_deck_plus_one == 0 || unit.land_site_plus_one == 0) return false;
     const bsp::PlaneSquadronHostRecord* sq =
         bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
-    if (sq == nullptr) return false;
+    if (sq == nullptr) return false;   // 006C4790: false for a null squadron
+    if (unit.land_explicit_site) {
+        // The plane's current command is still `land` with this site as its
+        // target (vtable[174h] / vtable[178h] -> 00521EA0).
+        return unit.land_site_plus_one - 1u < slots.size()
+            && unit.attack_command_class == 0x00E08FA0u
+            && unit.command_target_plus_one == unit.land_site_plus_one;
+    }
     const ReturnToBaseCensus* entry = nullptr;
     for (const ReturnToBaseCensus& e : rtb_census) if (e.squadron == sq->name) entry = &e;
     if (entry == nullptr || entry->last_arm != 2) return false;
     const std::size_t owner = unit.land_site_plus_one - 1u;
     if (owner >= slots.size()) return false;
     return slots[owner]->row.name == entry->last_site;
+}
+
+std::size_t GameUnitsHost::land_at_site_0099a3dd(std::size_t unit_index,
+                                                 std::size_t site_index) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || site_index >= host.slots.size()) return 0;
+    const std::string& site_name = host.slots[site_index]->row.name;
+    // 0099A3E9 006BCD20(target, 1): the command target's deck. No deck, no task.
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    std::size_t deck = decks.size();
+    for (std::size_t i = 0; i < decks.size(); ++i) {
+        if (decks.name_at(i) == site_name) { deck = i; break; }
+    }
+    // 0099A404 006C4790(deck, plane+9D4h): false for a null squadron.
+    const bsp::PlaneSquadronHostRecord* sq =
+        bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+    if (deck >= decks.size() || sq == nullptr) {
+        host.log.notef("land command: unit \"%s\" -> \"%s\": %s; no task (0099A3F2 / "
+            "0099A40B, packet cc9_pilot_land_native)",
+            host.slots[unit_index]->row.name.c_str(), site_name.c_str(),
+            deck >= decks.size() ? "the target has no deck" : "the plane has no squadron");
+        return 0;
+    }
+    // The command reaches the planes: a squadron (this host fuses it with its
+    // flight leader) through its director's fan-out to every member, a wing
+    // plane alone through its own. Each member's bot then takes 0099A3DD.
+    std::vector<std::size_t> planes;
+    if (unit_index == sq->flight_leader()) {
+        for (const std::size_t m : sq->member_units) {
+            if (m != bsp::kPlaneSquadronNoUnit && m < host.slots.size()) planes.push_back(m);
+        }
+    } else {
+        planes.push_back(unit_index);
+    }
+    std::size_t installed = 0;
+    for (const std::size_t m : planes) {
+        GameUnitSlot& plane = *host.slots[m];
+        plane.attack_command_class = 0x00E08FA0u;          // `land`
+        plane.command_target_plus_one = site_index + 1u;   // the command target
+        ++host.land_census_for(sq->name).placements;
+        if (host.install_land_task_core_009b41c0(m, *sq, site_index, deck, site_name, true)) {
+            ++installed;
+        }
+    }
+    host.log.notef("land command: unit \"%s\" -> \"%s\": %zu plane(s), %zu task(s) "
+        "installed (008A47B0 -> 0099A3DD, packet cc9_pilot_land_native)",
+        host.slots[unit_index]->row.name.c_str(), site_name.c_str(), planes.size(),
+        installed);
+    return installed;
 }
 
 // ---------------------------------------------------------------------------
