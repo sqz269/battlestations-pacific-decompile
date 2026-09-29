@@ -409,6 +409,7 @@ struct GameVehicleClassRow {
     float plane_stall_spd{0.0f};      // desc+184h, 007D2351
     float turn_roll_spd{0.0f};        // desc+1C8h, 007D25DB
     float turn_roll{0.0f};            // desc+25Ch, 007D289B - the bank normaliser
+    float turn_roll_leader{0.0f};     // desc+260h, 007D28D4 (packet cc9_land_begin_state)
     // The three aerodynamic keys 007D1F70 also reads, in the spellings
     // src/plane_class_fields.cpp:279-292 records against their writers.
     // 007DBD3A pairs XDrag with the body lateral velocity ctl+3Ch and

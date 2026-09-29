@@ -823,6 +823,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.plane_stall_spd = number("StallSpd");
             row.turn_roll_spd = number("TurnRollSpd");
             row.turn_roll = number("TurnRoll");
+            row.turn_roll_leader = number("TurnRollLeader");
             // The aerodynamic trio. XDrag and YDrag are the body-frame damping
             // 007DBD37-007DBE0D applies, TravelSpeed is the airspeed 007C6340
             // seeds a plane with, and MaxSpd is the numerator of the run

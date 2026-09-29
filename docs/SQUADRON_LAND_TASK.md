@@ -914,6 +914,200 @@ commit with `kLandLineStateBound=true` (`local\l11_lnon2_<row>.log`). A first pa
   - The two missed outcomes follow from the sequencer's spacing and from the head's descent.
   - The height clause was met literally. It is recorded here so the lead can review the flip.
 
+## 5h. `land/begin`, read and bound OFF (packet `cc9_land_begin_state`, cc9-lua11, 2026-09-28)
+
+State vtable `00D1FF14` (task `+5D8h`): enter `009B13E0`, exit `009B0240` (standby's), tick
+`009B1D70`. Every body below was read whole from the raw listing. Ghidra's decompile of `009B1420`
+drops the x87 glide block.
+
+### The rule and the approach update in begin
+
+- **`009B3EB0`** passes `onGround` = 1 to `009B3900` while the state is begin, final, park or
+  abort. So in begin the approach update runs `009AFAF0(1)` and `0099B650(owner)` every tick,
+  before the rule. `0099B650` stores the owner pointer at `[approach+18h]+25Ch` and is recorded,
+  not modelled.
+- **`009B3770`**: begin with the done byte `+18h` set goes to `land/abort`.
+- **`009B3CF0`'s begin arm** (`009B3D45`-`009B3DAF`): mode not 4 goes to abort. Mode 4 with
+  `009B3C00` true goes to `land/final` (`+5F8h`).
+- **The mode arm** sends mode 4 from moveto, follow, line or standby to begin (`009B3E9F`).
+- **`009B3C00`** (`009B3C00`-`009B3C56`): true when `A8 < a+24h x PosBehind x 0.4` (`00CE65D0`), or
+  when `(plane+72Ch)->vtable[38h]` is false (this host's control mode not 7).
+  - `a+24h` is `009F9CE0`'s `max(1, MaxSpd / Pilot/Landing/ReferenceSpeed)`.
+
+### `009AFAF0`, the geometry (`009AFAF0`-`009AFE65`, `__thiscall(approach, bool onGround)`, `RET 4`)
+
+- `+68h..+70h` = the plane position. `006BCA80(&a+98h, t = 0)` writes the path point P at
+  `+98h..+A0h` and its heading at `+A4h`.
+- `006BCC90` puts the plane in the runway frame less T.
+  - When the local z is above 0 (past T): `+8Ch` = x, `+90h` = y, `+94h` = `-max(z, 1)`,
+    `A8` = 1.0, and it returns.
+- Otherwise `d = P - p`, and `A8 = sqrt(dx^2 + dz^2)`, or 0 at 1e-10 or below.
+- **onGround arm** (`009AFC58`-`009AFDC4`), unless plane `+BF8h` is set and `+BF4h` is non-zero
+  (that gate is not modelled):
+  - A lead time `t = min((A8 + min(0.5 TurnCircleRadius |dh|, 0.18 A8)) / speed, 10)` (`00D7A280`,
+    `00D05AA0`, `00CE38B8`).
+  - Then `P = 006BCA80(t)` and `A8 = max(len2d(P - p), 1.0)` (`00414C60`).
+- **The tail** (`009AFDCC`-`009AFE59`): `+90h = -dy`, the height above P; `b` = the bearing to P;
+  `e = 00438B10(A4, b)`; `+8Ch = A8 sin e` (lateral) and `+94h = A8 cos e` (along track).
+- **`006BCA80`** (`006BCA80`-`006BCC8A`, `ECX` = holder, `out[4]`, `float t`, `RET 8`):
+  - The point is T (holder `+A4h..+ACh`) turned by `holder+8Ch x t` about the holder origin,
+    through the holder frame `+8h`, plus `owner->vtable[34h]` velocity x t.
+  - `out[3] = 00438AA0(holder+88h, holder+8Ch x t)`.
+  - It also clamps holder `+ACh` to at most -20.0 (`00CF180C`), after taking its copy.
+  - `holder+8Ch` is written only at construction, as 0.0 (`006C07F5`, `006CACAF`). A sweep of
+    `006B9000`-`006CE000` finds no other store. The mother-ship refresh stays refused.
+  - So for the airfield holder, P is T in world at any t, and the heading is wrap(`+88h`).
+  - The owner velocity is taken as 0 for the static airfield (labelled). The lead time therefore
+    changes nothing except the 1.0 floor.
+
+### The tick `009B1D70` and its steer `009B1420`
+
+`009B1D70` (`009B1D70`-`009B1DE3`, `RET 4`) runs these steps:
+1. `approach+B4h` = 2 (not modelled).
+2. `009B1420(dt)`.
+3. `+2B4h = mc + a+4Ch x (a+5Ch - mc)`, with `mc` = `007C4810`, the minimum control speed, and
+   `a+5Ch` = 0.75 TravelSpeed.
+4. `+2B0h` = 1, `+2D8h` = 1, and `[a+1Ch]+40h` = 0.
+
+`009B1420` (`009B1420`-`009B1D60`, `RET 4`, dt unread) copies tuning `+4E0h..+52Fh` and computes:
+
+1. **Slopes.** `T1 = tan(min(DropAngle/2, ApproachAngle))` and `T2 = tan(0.6 ApproachAngle)`, both
+   through `00412E20`.
+2. **The lateral gain.**
+   - `c1 = interp(80, 0.8, 260, 0, A8)`, softened below 0.8 to `(1 - (0.8 - c1) x 0.3) x c1`.
+   - `c2 = interp(5, 0.01, 10, 1, W) x c1`. W is `[unit+DF4h]+9Ch+[00F876B8]*1Ch`, the pilot bot's
+     lifetime in seconds: `BSP_PilotBot_Tick` copies `bot+80h` there at `0099B198`, and
+     docs/PILOT_BOT_TICK_GATES.md shows the `bot+80h` accumulator.
+3. **The lateral correction** (`009B15C0`-`009B179A`):
+   - `k = max(A8 tan 16 deg, 4) x min(c2/0.64, 1)`.
+   - X is moved toward 0 by k to give xn, stopping at 0.
+   - When `xn != 0`: `corr = 1.25 asin(min(|xn| / den, 0.95))`, negated for `xn > 0`, where
+     `den = (1.1 - 0.5 interp(ApproachDist, 1, 0.8 PosBehind, 0, A8/a+24h)) x class+26Ch`.
+4. **Heading** (`009B17BB`): `+2C0h = 00438AA0(A4, corr)`, mode 2. `+2C8h`, the bank limit, is
+   `interp(60, 0.1, 150, 1.5, A8)`.
+5. **The glide height** (`009B1842`-`009B1929`), with Z the along-track distance:
+   - `m = max(Z/2, 100)` and `zm = Z - m`.
+   - `H = 0.5 + zm T2`. When `zm > 100`, `H = 0.5 + 100 T2 + (zm - 100) T1` instead.
+   - When `Z > 20` and `G = (Z - 10) T2` is above Y: `H += (G - Y) m / max(Z/4, 20)`.
+6. **Pitch.**
+   - `P = -atan2(Y - H, m)`.
+   - The done byte is set when `P < -max(1.8 DropAngle, 1.0)`.
+   - It is also set when `Z < ApproachDist` and `Y - 0.5 > (0.4 RunwayLength x 1.4 + Z) T1 + 2`
+     (`006BA620`).
+7. **The pitch arm.**
+   - When `speed <= lvl x interp(3, 1.1, 6, 2.5, W)`, `Z <= 3 speed` and `Y <= 1.4 class+A0h`
+     (Length): `+2BCh` = ApproachPitch with `+2D0h` = 1.
+   - Otherwise `+2BCh` = P clamped to [-DropAngle, ClimbAngle] with `+2D0h` = 2.
+8. **The hold.** When `c2 > 0`, `007C07A0(plane, (cos, tan P, sin), c2)` arms `007D83D0`'s timed
+   direction hold on `unit+AB0h`, with the strength scaled by heading misalignment
+   (`interp(15 deg, 1, 60 deg, 0.4)`). This host has no consumer for that hold
+   (docs/PLANE_DYN_TIMED_HOLD.md 6), so the call is counted.
+9. **Dead code.** The speed block `009B1C7E`-`009B1D52` is a dead store: `009B1D70` rewrites `+2B4h`.
+   It uses `009B1300` (`009B1300`-`009B13D9`, `RET`, no stack arguments), which returns
+   `max(lvl + owner velocity along the plane's heading, mc)`.
+
+**`class+26Ch`** is `007DB4D0` (`007DB4D0`-`007DB62F`, `RET`), called from
+`BSP_PlaneClass_DeriveFlightConstants` at `007C4C1A`.
+- `rate = TurnRollSpd sR + c cR + PitchSpd min(e, 0.6) sR`, stored at `+270h`.
+  - `sR, cR` = sin, cos of TurnRollLeader (`+260h`).
+  - `c = (SlideRatio sR + 0.2 interp(YawTurnRollRange1, 1, YawTurnRollRange2, 0, TurnRollLeader)) x YawSpd`.
+  - `e = sR c / (cR PitchSpd)`.
+- `class+26Ch = TravelSpeed / rate`.
+- When e is above 0.6, the image also rewrites `+260h` as `_CIatan(0.6 PitchSpd / c)` (`00BF8490`).
+  The host does not keep that write.
+- TurnRollLeader is now loaded (`desc+260h`, `007D28D4`).
+
+### The binding, behind `kLandBeginStateBound` (committed OFF)
+
+- In src/game_hosts_units.cpp:
+  - `land_geometry_009afaf0` and `land_path_point_006bca80`;
+  - `land_enter_begin_009b13e0`, `land_begin_steer_009b1420` and `run_land_begin_tick_009b1d70`;
+  - `land_begin_done_009b3c00` and `class_turn_radius_26c_007db4d0`;
+  - the rule's begin and mode-4 arms, and the approach update's onGround arm.
+- `land/final` and `land/abort` stay refused and counted. A refused transition leaves the plane in
+  begin, flying the begin tick.
+- **Substitutions, labelled:**
+  - **W** is taken as saturated (at least 10 s). A land task younger than 10 s is counted
+    (`young_bot=`).
+  - The **speed getter** `vtable[38h]` is the live |v|, as in the follow law.
+  - The **owner velocity** is 0 for the static airfield.
+- A trace line, `land begin trace`, prints every 10 begin ticks. The `summary landing plane` line
+  gains `begin entries=`, `ticks=`, `abort_refused=`, `final_refused=`, `hold_unapplied=`,
+  `young_bot=` and `last_a8=`.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+The authored tuning comes from this installation's scripts/datatables/planeglobals.lua (mtime
+2024-10-29): ApproachDist 210, ApproachPitch 6 deg, ApproachAngle 12 deg, ReferenceSpeed
+KMH(140), PosBehind 780.
+
+1. **Entries.** Warhawk 01 enters begin at its first request after its mode 4, at 132.90 s (its OFF
+   refusal). The pair is identical up to then. Lightning 01 (141.8 s OFF) and B-25 01 (226.3 s OFF)
+   follow, possibly moved by the sequencer's coupling.
+2. **Final at once.** On entry A8 is about 800 m. The final threshold `312 x a+24h` is above 1 km for
+   every head, because a+24h is at least 1. So `009B3C00` answers true from the first rule tick,
+   and `land/final` is refused on every begin tick. The plane stays in begin.
+3. **Flight in begin.**
+   - The heading command converges on the runway heading 0.2618 as the lateral offset X is taken
+     out.
+   - The bank limit falls from 1.5 rad to 0.1 as A8 closes from 150 m to 60 m.
+   - The commanded speed is 0.75 TravelSpeed at spacing 1.
+   - The pitch runs in mode 2 while the plane is fast or far (`Z > 3 speed`), clamped to
+     [-DropAngle, ClimbAngle]. The height falls toward the glide height H.
+   - A8 falls steadily through the first 10 s in begin.
+4. **The done byte** is likely set inside 210 m of T. The heads reach begin from their standby
+   circle about 200 m above T, and the done test there allows only about 50 m. `land/abort` is then
+   refused and counted.
+5. **LOMP10 moves** (exit 3). USN01 has no land task and comes out identical (exit 0 or 1).
+- A mechanism failure is any of:
+  - no begin entry;
+  - a heading command that does not settle toward the runway heading within 10 s;
+  - a mode-2 pitch outside [-DropAngle, ClimbAngle];
+  - A8 that does not fall during the first 10 s in begin.
+
+
+### The pairs and the verdict (cc9-lua11, 2026-09-28): OFF until `land/final` is bound
+
+OFF is this tree's build of `8abe8cee0` (`local\l11_bgoff_<row>.log`). ON is `local\l11_bg`, the same
+commit with `kLandBeginStateBound=true` (`local\l11_bgon_<row>.log`). A 300-frame USN01 smoke of
+the ON build ran clean.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0); eight IJN ships gain an engagement range; B-25 01's travel 6207 -> 9107 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Entries: held.** Warhawk 01 entered at 132.90 s (its OFF refusal time), Lightning 01 at
+   142.30 s (141.80 s OFF) and B-25 01 at 228.81 s (226.31 s OFF). Two wingmen also reached mode 4
+   and entered: Lightning 01|.-4 at 162.41 s and B-25 01|.-2 at 240.51 s.
+   - On entry, A8 was 786 to 834 m and the height above T was 168 to 208 m.
+2. **Final at once: held.** `009B3C00` answered true from the first rule tick after each entry.
+   Warhawk 01 counted 143 refused finals, one for each tick from 133.0 s until its done byte was
+   set. **So in the image begin lasts one tick on this row, and final flies the approach.**
+3. **Flight: the mechanism held.** These are Warhawk 01's traces, one per second:
+   - X fell 19.6 -> 0.7 m in 10 s, and the heading command went 0.159 -> 0.2618.
+   - A8 fell 786 -> 17 m in 13 s, and the height fell 208 -> 9 m. The pitch stayed in mode 2,
+     inside [-DropAngle, ClimbAngle]; the clamp -0.698 was hit at 153.9 s.
+   - Mode 1 (ApproachPitch 0.1047) took over at 144.9 s, once the plane was slow, near and low.
+     The bank limit fell 1.5 -> 0.1 between 143.9 and 145.9 s.
+   - The commanded speed was 0.75 TravelSpeed.
+   - All four clauses were met.
+4. **Done byte: missed.** No head arrived high. The done byte was set only after T, at 148.9 s for
+   Warhawk 01, when Z had gone negative and the glide height went below ground.
+5. **Held.** LOMP10 moves; USN01 does not.
+- **After T** (the reason this stays OFF):
+  - With final refused, the plane stays in begin past T. The geometry then gives A8 = 1 and
+    Z = -max(z, 1).
+  - The plane skims on at 7 to 19 m and 58 to 77 m/s along the runway heading, alternating between
+    the dive clamp and ApproachPitch, for the rest of the run.
+  - It crosses toward the IJN ships, which is why their engagement ranges change.
+- **Verdict: OFF.**
+  - The begin tick matches the listing clause for clause.
+  - On this row, though, the image leaves begin after one tick. Bound alone, begin would stand in
+    for final's whole approach and for everything after touchdown.
+  - `land/final` (vtable `00D1FF44`, then `009B3370` to park) is read next. Begin will be re-paired
+    with it.
+
 ## 6. Open, in order
 
 1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
