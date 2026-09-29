@@ -1794,6 +1794,14 @@ constexpr bool kHullAimOffsetEnabled = true;
 // Packet cc9_hull_turndown: the per-tick turndown/aimdive/aimglide trace in
 // update_dive_bomb_approach. Diagnostic only; off in the default build.
 constexpr bool kHullAimTrace = false;
+
+// Packet cc9_approach_target_lead (docs/TORPEDO_AIM_LEAD.md section 11):
+// 009FADA0's tail 009FAF05-009FAF7D adds target->vtable[48h](projtime) minus
+// the origin to the hull point. projtime (sub+44h) is written by the torpedo
+// approach as approach+F8h (its engagement estimate) and by the dive-bomb
+// approach as approach+74h (009C7E3C). One switch per writer; OFF until paired.
+constexpr bool kTorpedoAimLeadBound = false;
+constexpr bool kDiveAimLeadBound = false;
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
 // OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off
@@ -3084,6 +3092,11 @@ struct GameUnitsHost::Impl {
         // 009C7A83-009C7A96: approach+C4h = dt + approach+C4h (FLD, FADD, FSTP).
         slot.db_approach_clock_c4 = static_cast<float>(
             static_cast<double>(dt) + static_cast<double>(slot.db_approach_clock_c4));
+        if constexpr (kDiveAimLeadBound) {
+            // 009C7A9F: 009FADA0 on approach+30h reads sub+44h = approach+74h,
+            // last tick's 009C7E3C store.
+            slot.hull_aim_ref.lead_projtime = slot.hull_aim_ref.projtime_44;
+        }
         // 009C7AFE: approach+D1h = BSP_WeaponController_HasGeneralBombOrdnance.
         const bsp::OrdnanceKindSet set{slot.ordnance_mask};
         slot.db_has_bomb_d1 = bsp::ordnance_has_general_bomb_2ah(set) &&
@@ -3197,7 +3210,7 @@ struct GameUnitsHost::Impl {
         float tp_hull[3] = {slots[ti]->motion.position[0],
                             slots[ti]->motion.position[1],
                             slots[ti]->motion.position[2]};
-        hull_aim_world_point(slot, *slots[ti], ti + 1, tp_hull, &log);
+        aim_point_009fada0(slot, *slots[ti], ti + 1, tp_hull, &log);
         const float* const tp = tp_hull;
         // Packet cc9_flyover_speed: approach+50h is sub+20h, the aim point's
         // height that 009FADA0 stores at 009FAEF5 every tick. The enter-time
@@ -3325,6 +3338,16 @@ struct GameUnitsHost::Impl {
             slot.db_run_in_origin[1] = r.point[1];
             slot.db_run_in_origin[2] = r.point[2];
             slot.db_impact_fall_time = r.fall_time;
+        }
+        if constexpr (kDiveAimLeadBound) {
+            // 009C7D65 / 009C7E3C-009C7E85: approach+74h. approach+C8h is
+            // 009C3DA0's Uniform(-row+2Ch, row+2Ch); this host draws none of
+            // 009C3DA0 (FOLLOWER_ATTACK_HANDOVER section 6: the [approach+14h]
+            // base is unread), so SUBSTITUTION, labelled: the draw's mean, 0.
+            // A re-target re-constructs hull_aim_ref and zeroes it; the image
+            // keeps the sub-object, so a re-target leads one tick late here.
+            slot.hull_aim_ref.projtime_44 = bsp::dive_bomb_projtime_009c7e3c(
+                diving || slot.db_in_range_d0, slot.db_impact_fall_time, 0.0f);
         }
         // 009C5950/009C5960 then 009C5A40 and 009C5AF1: the aim error's range
         // and bearing are taken from that point, not from the aircraft.
@@ -3611,7 +3634,7 @@ struct GameUnitsHost::Impl {
                     // 009C6342: the fly-over lead point starts from approach->vtable[0],
                     // the fed aim point (the origin while kHullAimOffsetEnabled is
                     // false). Packet cc9_hull_turndown.
-                    hull_aim_world_point(slot, tgt, ti + 1, target_p);
+                    aim_point_009fada0(slot, tgt, ti + 1, target_p);
                     // 009FA2E0 reaches vtable[34h] on the object at
                     // approach+44h, else approach+48h; a plane slot carries its
                     // world velocity separately from the rigid body.
@@ -3798,7 +3821,7 @@ struct GameUnitsHost::Impl {
                 float hp[3] = {slots[ti]->motion.position[0],
                                slots[ti]->motion.position[1],
                                slots[ti]->motion.position[2]};
-                hull_aim_world_point(slot, *slots[ti], ti + 1, hp);
+                aim_point_009fada0(slot, *slots[ti], ti + 1, hp);
                 target_y = hp[1];
             }
         }
@@ -3978,7 +4001,7 @@ struct GameUnitsHost::Impl {
                     float hp[3] = {slots[ti]->motion.position[0],
                                    slots[ti]->motion.position[1],
                                    slots[ti]->motion.position[2]};
-                    hull_aim_world_point(slot, *slots[ti], ti + 1, hp);
+                    aim_point_009fada0(slot, *slots[ti], ti + 1, hp);
                     target_y = hp[1];
                 }
             }
@@ -6222,6 +6245,14 @@ struct GameUnitsHost::Impl {
         }
     }
 
+    // 009FADA0 with its tail: hull_aim_world_point, then the lead when the
+    // shooter's sub-object carries a positive projtime. Defined after
+    // UnitRudderBinding. docs/TORPEDO_AIM_LEAD.md section 11.
+    bool aim_point_009fada0(GameUnitSlot& shooter, const GameUnitSlot& target,
+                            std::size_t target_plus_one, float out[3],
+                            GameHostLog* log_out = nullptr);
+    unsigned long long aim_lead_applied_{0};
+
     static float pose_heading_radians(const GameUnitSlot& slot) {
         return static_cast<float>(std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
             static_cast<double>(slot.motion.pose_row2[2])));
@@ -7370,6 +7401,55 @@ float avoid_interp(float x0, float y0, float x1, float y1, float x) {   // 00419
 }
 
 }  // namespace
+
+// Packet cc9_approach_target_lead: 009FADA0's tail 009FAF05-009FAF7D.
+bool GameUnitsHost::Impl::aim_point_009fada0(GameUnitSlot& shooter,
+                                             const GameUnitSlot& target,
+                                             std::size_t target_plus_one,
+                                             float out[3], GameHostLog* log_out) {
+    const bool hull = hull_aim_world_point(shooter, target, target_plus_one, out, log_out);
+    const float projtime = shooter.hull_aim_ref.lead_projtime;
+    // 009FAF05-009FAF11: JBE past the tail unless projtime > 0.0. The nine
+    // hull-sampling vtables carry 008120E0 at +48h; every other target class
+    // (00954650 for planes) is left unled here.
+    if (!(projtime > 0.0f) || !hull_aim_target_samples_hull(target)) return hull;
+    if (target_plus_one == 0 || target_plus_one - 1 >= slots.size()) return hull;
+    GameUnitSlot& ts = *slots[target_plus_one - 1];
+    bsp::ShipPredictInputs pin;
+    for (int i = 0; i < 3; ++i) pin.position[i] = ts.motion.position[i];
+    // vtable[38h] = 0080E0F0 -> 0092D730 on +1018h.
+    bsp::UnitBodyAxisSpeedInputs axis{};
+    axis.velocity[0] = ts.motion.linear_velocity.x;
+    axis.velocity[1] = ts.motion.linear_velocity.y;
+    axis.velocity[2] = ts.motion.linear_velocity.z;
+    for (int i = 0; i < 3; ++i) axis.axis[i] = ts.motion.pose_row2[i];
+    pin.speed = bsp::unit_forward_speed_0092d730(axis);
+    // vtable[34h] = 00812090: the body axis +94h..9Ch times that speed.
+    // SUBSTITUTION, labelled, the one neighbour_world_velocity makes: the
+    // hull's heading direction, level.
+    const double hd = static_cast<double>(pose_heading_radians(ts));
+    pin.velocity = {static_cast<float>(std::sin(hd)) * pin.speed, 0.0f,
+                    static_cast<float>(std::cos(hd)) * pin.speed};
+    // 008120F8: 00811890(unit, unit+984h), which is 00811940.
+    UnitRudderBinding rudder(*this, ts);
+    if constexpr (kUnitYawRateForwardSpeedBound) rudder.forward_speed = pin.speed;
+    pin.yaw_rate = bsp::unit_current_yaw_rate_00811940(rudder);
+    const std::array<float, 3> predicted =
+        bsp::ship_predict_position_008120e0(pin, projtime);
+    bsp::ApproachTargetRefState lead{};
+    lead.world_point_1c = {out[0], out[1], out[2]};
+    bsp::approach_target_ref_lead_tail_009faf05(lead, predicted, pin.position);
+    if ((++aim_lead_applied_ % 400) == 1) {
+        log.notef("aim lead %s -> %s projtime=%.2f lead=(%.1f %.1f) yaw=%.4f v=%.2f",
+                  shooter.row.name.c_str(), ts.row.name.c_str(),
+                  static_cast<double>(projtime),
+                  static_cast<double>(lead.world_point_1c[0] - out[0]),
+                  static_cast<double>(lead.world_point_1c[2] - out[2]),
+                  static_cast<double>(pin.yaw_rate), static_cast<double>(pin.speed));
+    }
+    for (int i = 0; i < 3; ++i) out[i] = lead.world_point_1c[i];
+    return hull;
+}
 
 bool GameUnitsHost::Impl::avoid_in_dive(const GameUnitSlot& u) {
     using S = bsp::DiveBombState;
@@ -13254,8 +13334,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         void tick_approach_subobject_009fada0(float) override {
                             // approach+B4h, shared by all ten approach classes.
-                            owner_.log.unimplemented(
-                                "BotApproach::subobject_tick", "009fada0");
+                            if constexpr (kTorpedoAimLeadBound) {
+                                // 009D34BB: 009FADA0's tail reads sub+44h =
+                                // approach+F8h now, before this tick's estimate
+                                // is written at 009D3D2F-009D3D65. The point
+                                // itself is recomputed at each consumer.
+                                slot_.hull_aim_ref.lead_projtime = slot_.torpedo_approach.eta_f8;
+                                owner_.done("BotApproach::subobject_tick", 0x009fada0u);
+                            } else {
+                                owner_.log.unimplemented(
+                                    "BotApproach::subobject_tick", "009fada0");
+                            }
                         }
                         bool unit_has_torpedo_ordnance_007b93f0() override {
                             // 009D34C5. The kind 2Bh test 0099A170 already made
@@ -13293,7 +13382,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             out_point[0] = t->motion.position[0];
                             out_point[1] = t->motion.position[1];
                             out_point[2] = t->motion.position[2];
-                            hull_aim_world_point(slot_, *t,
+                            owner_.aim_point_009fada0(slot_, *t,
                                                  slot_.command_target_plus_one,
                                                  out_point);
                             return true;
@@ -16955,7 +17044,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // kHullAimOffsetEnabled is false).
                         float p[3] = {tgt.motion.position[0], tgt.motion.position[1],
                                       tgt.motion.position[2]};
-                        hull_aim_world_point(unit_, tgt, ti + 1, p);
+                        owner_.aim_point_009fada0(unit_, tgt, ti + 1, p);
                         for (int i = 0; i < 3; ++i) {
                             fin.point[i] = p[i];
                             fin.unit_position[i] = unit_.motion.position[i];
@@ -17554,7 +17643,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             float ap[3] = {owner_.slots[ti]->motion.position[0],
                                            owner_.slots[ti]->motion.position[1],
                                            owner_.slots[ti]->motion.position[2]};
-                            hull_aim_world_point(unit_, *owner_.slots[ti], ti + 1, ap);
+                            owner_.aim_point_009fada0(unit_, *owner_.slots[ti], ti + 1, ap);
                             // 009C5DE0 00B63D50 then 009C5E01 004142E0: the
                             // orthogonal scaled inverse of the pose at +CCh,
                             // i.e. (p - t) . row_j / |row_j|^2.
