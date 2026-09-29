@@ -1606,6 +1606,48 @@ also flips `kLandAbortStateBound`. OFF reproduces `local\l12_jon_*`.
   whatever the pair shows; the pair records whether its mechanism holds for the day the descent
   is fixed.
 
+
+### The pair and the verdict (cc9-lua12, 2026-09-29): the mechanism holds, abort stays OFF with begin and final
+
+OFF is `aa541a3e1` with begin and final flipped (`local\l12_aboff_<row>.log`). ON also flips
+`kLandAbortStateBound` (`local\l12_abon_<row>.log`). A 300-frame USN01 smoke of the ON build ended
+cleanly.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | B-25 01 8414.00 -> 7360.32 m. The eight IJN ships' engagement ranges go back to the all-OFF values. Deaths are identical (0 on both) |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+Ten aborts, eight from final and two from begin (Warhawk 01|.-4 at 158.71 s, Lightning 01|.-4 at
+386.38 s):
+
+| head | aborts | ticks | to standby |
+| --- | --- | --- | --- |
+| Warhawk 01 | 3 | 131 | 3 |
+| Lightning 01 | 3 | 134 | 3 |
+| B-25 01 | 1 | 26 | 1 |
+| B-25 01\|.-2 | 1 | 56 | 1 |
+| Lightning 01\|.-4 | 1 | 60 | 1 |
+| Warhawk 01\|.-4 | 1 | 56 | 1 |
+
+1. **One abort at the done time: held.** Warhawk 01 went to abort at 158.21 s, 12.6 m over T and
+   185 m past it, against the predicted "about 158.6 s, Y 14".
+2. **Short and back to standby: held.** `to_standby` equals `entries` for every head, and the
+   longest abort is 60 ticks (3 s). Warhawk 01's first abort:
+   - arm B holds the runway heading while z < 200;
+   - past 200 m the look-ahead turn takes over (heading 0.30 -> 1.40 rad);
+   - the plane climbs from 12.6 to 34 m while the speed rises from 33 to 57 m/s at full throttle;
+   - the standby flag is set above 40 m, 4.5 s after entry.
+3. **The circuit repeats: partly held.** Warhawk 01 and Lightning 01 fly three circuits each. The
+   B-25s and the fourth planes abort once and spend the rest of the run in standby: 14 and 15
+   standby entries for the B-25s, from the standby/line mode arm. There is still no touchdown.
+4. **Held.** LOMP10 moves, USN01 is gameplay identical, and the 15307 final refusals (`009B3DCE`)
+   are gone.
+- **No mechanism failure.** Every abort ends in standby within 60 s, and every entry comes from
+  begin or final.
+- **Verdict: `kLandAbortStateBound` stays OFF.** It is reached only through begin and final, which
+  stay OFF until the descent is fixed (5l). When they are re-paired, abort flips with them.
+
 ## 6. Open, in order
 
 1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON
@@ -1620,7 +1662,7 @@ also flips `kLandAbortStateBound`. OFF reproduces `local\l12_jon_*`.
      - final's on-ground half (`009B1FEA`-`009B207A`);
      - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
      - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
-     - `land/abort` (`+64Ch`).
+     - `land/abort` is bound OFF and its mechanism holds (5m); it flips with begin and final.
    - A mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
