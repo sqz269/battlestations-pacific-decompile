@@ -1519,6 +1519,93 @@ OFF is `local\l12_tdoff_<row>.log`. ON is `6ad4b7fcd` with the three switches tr
     right lateral offsets. On its own it changes no gameplay until something brings a plane down
     to its wheel height.
 
+
+## 5m. `land/park` read at its head, `land/abort` read and bound OFF (packets `cc9_land_park_state`, `cc9_land_abort_state`, cc9-lua12, 2026-09-29)
+
+### `land/park`: not reached on LOMP10
+
+Vtable `00D1FF60`:
+- **Enter `009B21A0`** (`009B21A0`-`009B21BA`): `+1Ch` = 0.0, `+18h` = 0, `+28h` = 3.0
+  (`00CE3854`).
+- **Exit `009B21C0`** (`009B21C0`-`009B21C5`): `+18h` = 0.
+- **Tick `009B22C0`** (`009B22C0`-`009B2C68`, `RET 4`; ledger name
+  `BSP_PlaneBot_ApproachBaseStep`, docs/AIRFIELD_TAXI.md). Its head, `009B22C0`-`009B2313`:
+  `[approach+1Ch]+40h` = 0.0. Then, when the plane has ground contact (`+BF8h`, `+BF4h`), a holder
+  at `approach+34h`, and the holder's owner absent or with `+5Dh` set, the done byte is set and it
+  returns. Otherwise the ground taxi runs: the controls `+2C4h`/`+2CCh` and the `4 <-> 5`
+  transitions `007C1680`/`007C16F0`.
+
+The rule sends a plane to park only when `+900h` is 4 or 5 or `009B3370` answers. Both need a
+touchdown, which no LOMP10 plane makes (5l). Every output of the tick feeds the ground-roll arm,
+which this host does not run. **Park is left unbound.** It follows the descent, the ground roll and
+final's on-ground half.
+
+### `land/abort` (vtable `00D1FED4`), read whole from the listing
+
+- **Enter `009B0980`** (`009B0980`-`009B0998`): `+20h` = `+21h` = 0 (task `+66Ch`/`+66Dh`), then
+  `006BCD80(approach+2Ch, plane)`. `006BCD80` works under the block lock: it sets `+0Ch` (held) on
+  the plane's record in the vector at `block+A8h` (`006BCE32`).
+- **Exit `009B09A0`** (`009B09A0`-`009B09B6`): with `approach+2Ch`, `006BCE60(block, plane)`
+  clears the same byte (`006BCF12`).
+- **Tick `009B09C0`** (`009B09C0`-`009B0F96`, `RET 4`; dt is not read):
+  1. Bank 0.0 with `+2CCh` = 1, throttle 1.0 and air brake 0.0 with their bytes, `+2D8h` = 0,
+     then `007C07A0(plane, (0, 1, 0), 0.0)`. `+20h` = 0.
+  2. **On the ground** (`009B0E74`-`009B0F93`): `+21h` = 1, pitch `class+1ECh x 0.5`, and a
+     ground heading. Refused and counted.
+  3. **Airborne**: `l = 006BCC90(position)`, the runway frame less T;
+     `e = 00438B10(plane heading, holder+88h)`.
+     - `l.y < 5.0` (`00CE3850`): no heading command.
+     - `5 <= l.y < 25` (`00CE3880`): when `l.z < 200` (`00CE4D70`),
+       `|l.x| < holder+B0h` (the whole width) and `|e| < 30 degrees` (`00CEC724`), hold the
+       runway heading (`+2C0h` = `holder+88h`, `+2CCh` = 2). Otherwise take the look-ahead turn:
+       - the point 100 m ahead (`007BA2E0` x 100, `00D7A220`) goes into `006BCC90`;
+       - `+2C0h` = heading + 0.5 when its x >= 0, else heading - 0.5, with `+2CCh` = 2.
+     - Both lower arms end at `009B0C5C` with a pitch hold (`+2D0h` = 1):
+       `+2BCh = 00419010(007C47F0, 3 degrees (00D0CBA0), class+18Ch, class+1ECh, 007D99C0)`.
+     - `l.y >= 25`:
+       - above 40 m (`00CE685C`), `+20h` = 1 when `|e| > pi/2`, `l.z > 10` (`00CE38B8`) or
+         `l.z < -1200` (`00D1FEF0`);
+       - then the look-ahead turn and `009FB800(approach+3Ch, 1.0)`: climb toward the circle
+         point's height.
+- **The rule's abort arm** (`009B3E08`-`009B3E43`): `+66Ch` goes to standby, else `+66Dh` goes
+  to park. Abort is entered from begin or final, on the done byte (`009B3770`) or on mode not 4
+  (`009B3D7A`, `009B3DCE`).
+
+So abort is the go-around: full throttle, climb by speed below 25 m, and back to standby once
+above 40 m past T. The held byte keeps the plane's record out of the sequencer's spacing
+(`006C3F80` skips held records) until it leaves abort.
+
+**Bound OFF, `kLandAbortStateBound`:** the enter, exit, airborne tick, the rule's abort arm and
+the four begin/final edges. The on-ground arm and park are refused. This commit also makes the
+approach update honour `+904h` (`009B3ABA`: a touchdown ends the update before the geometry and
+the request pacing).
+
+### Predictions for the pair on LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF flips `kLandBeginStateBound` and `kLandFinalStateBound` (the touchdown is ON by default). ON
+also flips `kLandAbortStateBound`. OFF reproduces `local\l12_jon_*`.
+1. **Every head that sets its done byte in final enters abort once at that time.** In 5l that is
+   Warhawk 01 at about 158.6 s, 198 m past T at Y 14 m. The other heads take the same route.
+2. **Abort is short and ends in standby.**
+   - Arm B holds the runway heading at full throttle with a climbing pitch (about 3 degrees at
+     the level-flight speed).
+   - Above 25 m, `009FB800` climbs toward the circle height.
+   - Above 40 m the plane is past T by more than 10 m, so `+20h` is set.
+   - Prediction: `to_standby` = `entries`, and each abort lasts under 20 s.
+3. **The heads fly the circuit again.** Standby -> line or begin -> final -> abort. Each head gets
+   two to four aborts in 450 s. There is still no touchdown (`touchdowns=0`), because the descent
+   is unchanged.
+4. **LOMP10 moves (exit 3) and USN01 is gameplay identical.** The final refusals of 5l
+   (`abort_refused` 1926 to 2919 per head) drop to 0.
+- **Mechanism failure:** any of:
+  - an abort longer than 60 s;
+  - an abort that ends anywhere but standby;
+  - an entry from a state other than begin or final;
+  - a plane left held after it leaves abort (the sequencer's census).
+- **Flip rule:** abort is reachable only with begin and final, which stay OFF (5l). It stays OFF
+  whatever the pair shows; the pair records whether its mechanism holds for the day the descent
+  is fixed.
+
 ## 6. Open, in order
 
 1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON

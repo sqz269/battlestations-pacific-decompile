@@ -579,6 +579,11 @@ struct GameUnitSlot {
     unsigned long long land_final_abort_refused{0};
     unsigned long long land_final_park_refused{0};
     unsigned long long land_final_ground_refused{0};
+    // Packet cc9_land_abort_state: land/abort +20h (to standby) and +21h (to park).
+    bool land_abort_standby_20{false};
+    bool land_abort_park_21{false};
+    unsigned long long land_abort_entries{0}, land_abort_ticks{0}, land_abort_to_standby{0};
+    unsigned long long land_abort_ground_refused{0}, land_abort_park_refused{0};
     unsigned long long land_found_assignments{0};
     double land_installed_at{-1.0};
     unsigned long long land_ticks{0};
@@ -4022,6 +4027,11 @@ struct GameUnitsHost::Impl {
     // with the site's occupancy add 006CED90 and restamp 006CE230. False: no
     // probe, plane+BF8h stays clear and a plane never leaves state 7 by landing.
     static constexpr bool kPlaneTouchdownBound = true;  // ON: gameplay identical, contact exercised (docs/SQUADRON_LAND_TASK.md 5k, 5l)
+    // Packet cc9_land_abort_state (docs/SQUADRON_LAND_TASK.md section 5m):
+    // land/abort's enter/exit/tick (009B0980/009B09A0/009B09C0, the airborne
+    // arm), the rule's abort arm (+66Ch -> standby) and the begin/final -> abort
+    // edges. Reached only with kLandBeginStateBound. False: entries refused.
+    static constexpr bool kLandAbortStateBound = false;
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -19320,6 +19330,175 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("BotStateLandFinal::tick", 0x009b1ed0u);
                     }
 
+                    // 006BCD80 / 006BCE60 (__thiscall(block, plane), RET 4): under the
+                    // block lock, the plane's record in the vector at block+A8h gets
+                    // +0Ch = 1 / 0 (006BCE32, 006BCF12).
+                    void land_set_held_006bcd80(bool held) {
+                        if (unit_.land_deck_plus_one == 0) return;
+                        const std::size_t di = unit_.land_deck_plus_one - 1u;
+                        if (di >= owner_.landing_decks.size()) return;
+                        for (GameUnitsHost::Impl::LandingAssignment& a :
+                             owner_.landing_decks[di].assignments) {
+                            if (a.plane == unit_.process_index) a.held_0c = held;
+                        }
+                    }
+
+                    // 009B0980 (009B0980-009B0998, RET), land/abort's enter (vtable
+                    // 00D1FED4 +4): +20h = +21h = 0, 006BCD80(approach+2Ch, plane).
+                    void land_enter_abort_009b0980() {
+                        using LS = GameUnitSlot::LandTaskState;
+                        if (unit_.land_state == LS::kAbort) return;
+                        ++unit_.land_abort_entries;
+                        land_switch_state_009b3680(LS::kAbort);
+                        unit_.land_done_18 = false;
+                        unit_.land_abort_standby_20 = false;
+                        unit_.land_abort_park_21 = false;
+                        land_set_held_006bcd80(true);
+                        owner_.log.notef("  land task %s: enters land/abort at %.2f s "
+                            "height=%.1f (009B0980)", unit_.row.name.c_str(),
+                            static_cast<double>(owner_.summary.simulated_seconds),
+                            static_cast<double>(unit_.land_geo_8c[1]));
+                    }
+
+                    // 009B09A0 (009B09A0-009B09B6, RET), land/abort's exit: with
+                    // approach+2Ch, 006BCE60(block, plane).
+                    void land_exit_abort_009b09a0() {
+                        land_set_held_006bcd80(false);
+                    }
+
+                    // 009B09C0 (009B09C0-009B0F96, __thiscall(state, float dt), RET 4),
+                    // land/abort's tick; dt is not read. docs/SQUADRON_LAND_TASK.md 5m.
+                    // coverage: partial, the on-ground arm 009B0E74-009B0F93 refused.
+                    void run_land_abort_tick_009b09c0() {
+                        ++unit_.land_abort_ticks;
+                        // 009B09D6-009B0A19: bank 0.0 with +2CCh = 1, throttle 1.0 and
+                        // air brake 0.0 with their bytes, +2D8h = 0.
+                        unit_.plan_state.bank_target_2c4 = 0.0f;
+                        unit_.plan_heading_mode_2cc = 1;
+                        unit_.plan_heading_2c0_written = false;
+                        unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 1.0f;
+                        unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                        unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;
+                        unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                        unit_.plane_air_brake_mode_2d8 = 0;
+                        // 009B0A3B: 007C07A0(plane, (0, 1, 0), 0.0), the direction hold.
+                        owner_.record("BotStateLandAbort::direction_hold_007c07a0", 0x007c07a0u);
+                        unit_.land_abort_standby_20 = false;                         // 009B0A42
+                        if (unit_.plane_control_mode_900 != 7) {
+                            // 009B0E74-009B0F93: +21h = 1 and the ground heading and
+                            // pitch; REFUSED, the host does not run the ground roll.
+                            unit_.land_abort_park_21 = true;
+                            ++unit_.land_abort_ground_refused;
+                            land_refuse_state("land/abort on-ground arm", 0x009b0e74u);
+                            return;
+                        }
+                        GameUnitsHost::Impl::LandingDeck* d = unit_.land_deck_plus_one == 0 ? nullptr
+                            : owner_.landing_deck_006c0750(unit_.land_deck_plus_one - 1u,
+                                unit_.land_site_plus_one - 1u);
+                        if (d == nullptr) {
+                            land_refuse_state("land/abort on a refused holder", 0x009b0a88u);
+                            return;
+                        }
+                        const float* const pos = unit_.motion.position;
+                        const std::array<float, 3> l = owner_.landing_local_006bcc90(*d, pos);
+                        const float heading = unit_.plane_heading_c6c;                 // vtable[50h]
+                        // The 100 m look-ahead turn (009B0B67-009B0C52, 009B0D5D-009B0E4C):
+                        // 007BA2E0(heading) x 100 (00D7A220) added to the position, into
+                        // 006BCC90; heading + 0.5 when its x >= 0, else - 0.5.
+                        auto look_ahead = [&]() {
+                            float a = static_cast<float>(1.5707963705062866 - static_cast<double>(heading));
+                            if (0.0f > a) a = static_cast<float>(static_cast<double>(a) + 6.2831854820251465);
+                            const float dx = static_cast<float>(std::cos(static_cast<double>(a)));
+                            const float dz = static_cast<float>(std::sin(static_cast<double>(a)));
+                            const float q[3] = {
+                                static_cast<float>(static_cast<double>(pos[0]) +
+                                    static_cast<float>(static_cast<double>(dx) * 100.0)),
+                                static_cast<float>(static_cast<double>(pos[1]) + 0.0),
+                                static_cast<float>(static_cast<double>(pos[2]) +
+                                    static_cast<float>(static_cast<double>(dz) * 100.0))};
+                            const std::array<float, 3> lq = owner_.landing_local_006bcc90(*d, q);
+                            unit_.plan_heading_2c0 = static_cast<float>(lq[0] >= 0.0f
+                                ? static_cast<double>(heading) + 0.5 : static_cast<double>(heading) - 0.5);
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = 2;
+                        };
+                        const float h = l[1];
+                        if ((unit_.land_abort_ticks % 10) == 1) {
+                            owner_.log.notef("  land abort trace %s t=%.2f local x=%.1f y=%.1f "
+                                "z=%.1f hdg=%.3f rwy=%.3f spd=%.1f", unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<double>(l[0]), static_cast<double>(h),
+                                static_cast<double>(l[2]), static_cast<double>(heading),
+                                static_cast<double>(d->runway_heading_88),
+                                static_cast<double>(avoid_len(unit_.plane_world_velocity)));
+                        }
+                        if (!(5.0f > h)) {                                             // 009B0A8D
+                            // e = 00438B10(plane heading, holder+88h).
+                            const float e = bsp::wrapped_angle_subtract_00438b10(heading,
+                                d->runway_heading_88);
+                            const float ae = e > 0.0f ? e : -0.0f - e;
+                            if (25.0 > static_cast<double>(h)) {                       // 00CE3880
+                                // 009B0AEE-009B0B62: inside 200 m (00CE4D70) of T, within
+                                // the runway width of the centre line and 30 degrees
+                                // (00CEC724) of its heading: hold the runway heading.
+                                bool aligned = false;
+                                if (200.0 > static_cast<double>(l[2])) {
+                                    const float ax = l[0] > 0.0f ? l[0] : -0.0f - l[0];
+                                    aligned = d->width_b0 > ax && 0.5235987901687622f > ae;
+                                }
+                                if (aligned) {
+                                    unit_.plan_heading_2c0 = d->runway_heading_88;
+                                    unit_.plan_heading_2c0_written = true;
+                                    unit_.plan_heading_mode_2cc = 2;
+                                } else {
+                                    look_ahead();
+                                }
+                            } else {
+                                // 009B0CF2-009B0D5A: above 40 m (00CE685C), +20h when the
+                                // heading is off by more than pi/2, or the plane is past T
+                                // by 10 m (00CE38B8) or more than 1200 m short (00D1FEF0).
+                                if (h > 40.0f && (static_cast<double>(ae) > 1.5707963705062866
+                                    || l[2] > 10.0f || -1200.0f > l[2])) {
+                                    unit_.land_abort_standby_20 = true;
+                                }
+                                look_ahead();
+                                // 009B0E52-009B0E65: 009FB800(approach+3Ch, 1.0).
+                                const bsp::GameTuningBlock* g = owner_.lua.plane_globals_loaded()
+                                    ? &owner_.lua.plane_globals() : nullptr;
+                                bsp::PlanePitchCommandInputs pin;
+                                pin.desired_altitude = unit_.land_circle_38[1];
+                                pin.reference = 1.0f;
+                                pin.unit_world_y = pos[1];
+                                if (g != nullptr) {
+                                    pin.ceiling = g->dynamics_ceiling;
+                                    pin.climb_dist = g->pilot_general_climb_dist;
+                                    pin.drop_dist = g->pilot_general_drop_dist;
+                                }
+                                pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                                pin.class_drop_angle = unit_.plane_drop_angle;
+                                unit_.plane_commanded_altitude = unit_.land_circle_38[1];
+                                unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                                unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                                if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                                    unit_.plan_state.pitch_mode_2d0 = 2;
+                                }
+                                owner_.done("BotStateLandAbort::tick", 0x009b09c0u);
+                                return;
+                            }
+                        }
+                        // 009B0C5C-009B0CAD: +2BCh = 00419010(007C47F0, 3 degrees
+                        // (00D0CBA0), class+18Ch, class+1ECh, 007D99C0 forward speed),
+                        // +2D0h = 1.
+                        const float* fr = unit_.world.data() + 8;
+                        const float* v = unit_.plane_world_velocity;
+                        const float fwd = v[0] * fr[0] + v[1] * fr[1] + v[2] * fr[2];   // 007D99C0
+                        unit_.plan_state.pitch_target_2bc = bsp::clamped_interpolate_00419010(
+                            owner_.bot_desired_speed_007c47f0(unit_), 0.05235987901687622f,
+                            unit_.plane_travel_speed, unit_.plane_climb_angle_1ec, fwd);
+                        unit_.plan_state.pitch_mode_2d0 = 1;
+                        owner_.done("BotStateLandAbort::tick", 0x009b09c0u);
+                    }
+
                     // 009B1300 (009B1300-009B13D9, __thiscall(approach), RET, ST0):
                     // max(007C47F0 + owner velocity . plane direction, 007C4810). The
                     // owner is the static airfield: velocity 0 (labelled).
@@ -19346,8 +19525,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // its done-state arms belong to line/standby and the rest.
                         // 009B3D0B-009B3D3B: a plane whose +900h is 4 or 5 goes to
                         // land/park unless it is in park or abort.
-                        if (unit_.plane_control_mode_900 == 4 || unit_.plane_control_mode_900 == 5) {
+                        const bool in_abort = GameUnitsHost::Impl::kLandAbortStateBound
+                            && unit_.land_state == LS::kAbort;
+                        if ((unit_.plane_control_mode_900 == 4 || unit_.plane_control_mode_900 == 5)
+                            && !in_abort) {
                             land_refuse_state("land/park (+900h 4 or 5)", 0x009b3d38u);
+                            return;
+                        }
+                        if (in_abort) {
+                            // 009B3E08-009B3E43: +66Ch -> standby (009B3680 runs the
+                            // abort exit 009B09A0 first); else +66Dh -> park (refused).
+                            if (unit_.land_abort_standby_20) {
+                                land_exit_abort_009b09a0();
+                                ++unit_.land_abort_to_standby;
+                                land_enter_standby_009b0230();
+                            } else if (unit_.land_abort_park_21) {
+                                ++unit_.land_abort_park_refused;
+                                land_refuse_state("land/park (abort +66Dh)", 0x009b3e3bu);
+                            }
+                            owner_.done("BotTaskLand::state_rule", 0x009b3cf0u);
                             return;
                         }
                         const bool standby_arm = GameUnitsHost::Impl::kLandStandbyStateBound
@@ -19361,8 +19557,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009B3770 (009B37A1): begin with the done byte set goes
                             // to land/abort. Refused: the plane stays in begin.
                             if (unit_.land_done_18) {
-                                ++unit_.land_begin_abort_refused;
-                                land_refuse_state("land/abort (begin done byte)", 0x009b37a7u);
+                                if constexpr (GameUnitsHost::Impl::kLandAbortStateBound) {
+                                    land_enter_abort_009b0980();
+                                } else {
+                                    ++unit_.land_begin_abort_refused;
+                                    land_refuse_state("land/abort (begin done byte)", 0x009b37a7u);
+                                }
                                 return;
                             }
                         }
@@ -19370,15 +19570,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             && unit_.land_state == LS::kFinal) {
                             // 009B3770 (009B37A1): final with the done byte set -> abort.
                             if (unit_.land_done_18) {
-                                ++unit_.land_final_abort_refused;
-                                land_refuse_state("land/abort (final done byte)", 0x009b37a7u);
+                                if constexpr (GameUnitsHost::Impl::kLandAbortStateBound) {
+                                    land_enter_abort_009b0980();
+                                } else {
+                                    ++unit_.land_final_abort_refused;
+                                    land_refuse_state("land/abort (final done byte)", 0x009b37a7u);
+                                }
                                 return;
                             }
                             // 009B3DB2-009B3DF7: mode not 4 -> abort; mode 4 and
                             // 009B3370 -> park. Both refused.
                             if (unit_.land_mode_50 != 4) {
-                                ++unit_.land_final_abort_refused;
-                                land_refuse_state("land/abort (final, mode not 4)", 0x009b3dceu);
+                                if constexpr (GameUnitsHost::Impl::kLandAbortStateBound) {
+                                    land_enter_abort_009b0980();
+                                } else {
+                                    ++unit_.land_final_abort_refused;
+                                    land_refuse_state("land/abort (final, mode not 4)", 0x009b3dceu);
+                                }
                             } else if (unit_.land_touched_20 && unit_.plane_control_mode_900 != 7) {
                                 ++unit_.land_final_park_refused;
                                 land_refuse_state("land/park (009B3370)", 0x009b3defu);
@@ -19391,8 +19599,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009B3D45-009B3DAF: mode not 4 -> abort; mode 4 and
                             // 009B3C00 -> final. Both refused.
                             if (unit_.land_mode_50 != 4) {
-                                ++unit_.land_begin_abort_refused;
-                                land_refuse_state("land/abort (begin, mode not 4)", 0x009b3d7au);
+                                if constexpr (GameUnitsHost::Impl::kLandAbortStateBound) {
+                                    land_enter_abort_009b0980();
+                                } else {
+                                    ++unit_.land_begin_abort_refused;
+                                    land_refuse_state("land/abort (begin, mode not 4)", 0x009b3d7au);
+                                }
                             } else if (land_begin_done_009b3c00()) {
                                 if constexpr (GameUnitsHost::Impl::kLandFinalStateBound) {
                                     land_enter_final_009b1e60();              // 009B3DA7
@@ -19659,9 +19871,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B3ABA plane+904h clear. 009B3AC4: onGround is set by
                         // 009B3EB0 for begin, final, park and abort; only begin is
                         // bound, and it runs 009AFAF0(1) and 0099B650(owner).
+                        // 009B3ABA: with plane+904h set (a landing touchdown,
+                        // kPlaneTouchdownBound) 009B3900 returns here: no geometry
+                        // and no request pacing.
+                        if (!unit_.plane_landed_904) {
                         if (GameUnitsHost::Impl::kLandBeginStateBound
                             && (unit_.land_state == GameUnitSlot::LandTaskState::kBegin
-                                || unit_.land_state == GameUnitSlot::LandTaskState::kFinal)) {
+                                || unit_.land_state == GameUnitSlot::LandTaskState::kFinal
+                                || (GameUnitsHost::Impl::kLandAbortStateBound
+                                    && unit_.land_state == GameUnitSlot::LandTaskState::kAbort))) {
                             land_geometry_009afaf0(true);
                             // 0099B650: [approach+18h]+25Ch = the owner (a pointer). Not modelled.
                             owner_.record("BotApproachLand::set_owner_0099b650", 0x0099b650u);
@@ -19674,6 +19892,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.land_request_b0) +
                                 (static_cast<double>(unit_.land_request_ac) - static_cast<double>(dt)));
                             land_request_006c54c0();
+                        }
                         }
                         owner_.done("BotApproachLand::update", 0x009b3900u);
                         // 009B3F0E: +424h (approach+2Ch) is set, so the rule and
@@ -19706,6 +19925,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         case LS::kFinal:
                             if constexpr (GameUnitsHost::Impl::kLandFinalStateBound) {
                                 run_land_final_tick_009b1ed0();
+                                break;
+                            }
+                            land_refuse_state("a landing state's tick", 0x009b3f39u);
+                            break;
+                        case LS::kAbort:
+                            if constexpr (GameUnitsHost::Impl::kLandAbortStateBound) {
+                                run_land_abort_tick_009b09c0();
                                 break;
                             }
                             land_refuse_state("a landing state's tick", 0x009b3f39u);
@@ -23587,6 +23813,16 @@ void GameUnitsHost::report() {
                 static_cast<double>(s->plane_wheel_height_1fc), s->td_low_steps,
                 s->td_refused_airborne, s->td_refused_vy, s->td_touchdowns, s->td_at,
                 s->plane_control_mode_900, s->plane_landed_904 ? 1 : 0);
+        }
+    }
+    if constexpr (Impl::kLandAbortStateBound) {
+        for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+            if (s->land_abort_entries == 0) continue;
+            host.log.notef("summary land abort %s: entries=%llu ticks=%llu to_standby=%llu "
+                "ground_refused=%llu park_refused=%llu standby entries=%llu",
+                s->row.name.c_str(), s->land_abort_entries, s->land_abort_ticks,
+                s->land_abort_to_standby, s->land_abort_ground_refused,
+                s->land_abort_park_refused, s->land_standby_entries);
         }
     }
     if (host.gunnery != nullptr) host.gunnery->report();
