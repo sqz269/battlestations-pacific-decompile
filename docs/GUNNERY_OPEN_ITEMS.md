@@ -3061,3 +3061,51 @@ All five have no root ConvexObject. Whether `0071AD50` finds them depends on the
 (49.5): the full `Model:item` name, the part after the colon, or neither, and whether the
 ` nolod` suffix matters. So for these five classes the native box may be the periscope shape's box
 alone, which is small and gives a non-zero inertia. That is left as a flag for step 3, not bound.
+
+## 50. Handoff (cc9-gunnery10, 2026-09-28, at about 75% context)
+
+### 50.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| GAME_EXECUTABLE, "Mission reference baselines, 2026-09-28 k (main 5aaa4948a)" | `cc9_reference_rebaseline_11` | reference k: thirteen rows, twenty switches attributed by thirteen leave-one-out exports and three group exports; `reports/cc9_reference_rebaseline_11.json` |
+| the same section | `cc9_e2_tail_attribution` | the E2 tail is USN04's move displaced across 225 s; the carried flag is closed |
+| 49.1 to 49.3, 49.5 | `model_collision_records` | the ConvexObject parse builds the Dyn hull; `model+4Ch` is written by `0071B710`; `model+0Ch` is hierarchy record 0 |
+| 49.7, 49.8 | `cc9_mmod_hull_convex_box` | `read_mmod_hull_convex_box` is implemented and fixture-tested on `deruyter.mmod`; binding it is step 3 (lua11) |
+| 49.9 | 49.6's read | no path builds the hull body without the model (reading (a)) |
+| 49.10 | `cc9_empty_hull_box_seed` | an empty shape set is native zero extent, zero inertia and zero inverse inertia |
+| SHIP_AI_OPEN_ITEMS 15 | - | the "reference k replaces j" note |
+
+### 50.2 Open items this worker found or left
+
+- **The name lookup's key form.** `0071AD50` looks names up in a sorted map through `0071AAE0`.
+  What key it uses (the full `Model:item` name, or the part after the colon) and how it compares
+  (case, and the ` nolod` suffix) are unread. This decides two things:
+  - whether owners `firstnode`, `front` and `back` can ever match (49.5);
+  - whether the periscope shape attaches for the five Japanese submarine models (49.10).
+- **The `class+50h` writer** (or `unit+360h` by another path). 49.9 proves one exists; it is not located.
+- **The 40 zero-root classes** (49.5). The native answer for their box is zero (49.10), except the
+  periscope case above.
+- **Reference l's first flags.** These are the switches that went ON after `5aaa4948a`, listed in
+  SHIP_AI_OPEN_ITEMS 15. There are twelve, and cc9-lua11's step-3 binding will add one.
+- **Reference k's unseparated items:**
+  - JM06's US Cargo Transport 02 survival, redundant inside the ship-AI group;
+  - the identity group's move of one plane (PBY Catalina 01) on JM06;
+  - the JM05 and USN12 path moves inside the ship-AI group.
+
+### 50.3 Tools in the cc9-gunnery10 tree (`local\`)
+
+- **`g10_runs.ps1 -V <prefix> -Only <rows>`.** Runs reference k's rows, plus `lomp10l` (LOMP10
+  9200/9000) and `smoke`. The binary is `local\<prefix>\build\win32\Release\bsp_game.exe`.
+- **`g10_wait.ps1 -Logs <names>`.** A foreground wait on the final COM release.
+- **`g10_retry.ps1`.** Waits, runs one 300-frame smoke, and reports OK or FAIL for the session.
+- **`g10_rerun.ps1`.** Relaunches every `rb11*` log that has no final COM release.
+- **`g10_loo.ps1 -Specs v:kA,kB [-Parallel]`.** Builds a `pair_export` of `5aaa4948a` with switches OFF.
+  `g10_wexp.ps1 -V <v>` waits for such builds.
+- **`g10_matrix.py <variants>`.** `pair_diff` of each variant against k per row, into
+  `g10_matrix.json`.
+- **`g10_rows.py`.** k's rows against j. `g10_cmp.ps1` gives `pair_diff` headlines.
+- **`g10_tail.py`.** The E2 tail (E2 minus USN04) per variant.
+- **`g10_mmod_tree.py <model> top|at|hier|rootbox|convex`.** The `.mmod` chunk tree, the hierarchy
+  items with their ConvexObjects, and the root box census (`g10_rootbox.txt`).
+- **`g10_str.py <strings>`.** The VA of an ASCII string in the installed executable.
