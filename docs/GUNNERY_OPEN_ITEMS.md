@@ -4368,3 +4368,46 @@ A 300-frame USN01 smoke ran clean first. Every run presented its full frame coun
 - **Mechanism failure: not met.**
 
 **Verdict: ON.**
+
+## 62. The scene command's name lookup folds case (packet `cc9_scene_command_find_case`, cc9-gunnery13, 2026-09-29)
+
+This was routed from cc9-lua17, whose finding is on main at `c6d14ae2f`.
+
+**The image.**
+- `SceneCommand::find_entity_by_name` (`src/game_hosts_commands.cpp`) stands for `0046AB48` ->
+  `00925A90`.
+- `00925A90` hands each registry entry to `009251F0` (`BSP_SceneNode_FindByQualifiedName`).
+- That routine's name test at `0092521E` is `CALL 00438E10`, the null-guarded CRT `_stricmp` over
+  the whole name (disasm-raw `00925216..00925223`). This is the same rule that
+  `kFindEntityCaseInsensitiveBound` binds for the Lua `FindEntity`.
+
+**The host** compared `unit.name == name`.
+
+**The binding** is `kSceneCommandFindCaseInsensitiveBound`:
+- an exact hit wins, as before;
+- otherwise the first unit whose name matches under `_stricmp` answers, in unit order (the
+  registry's walk order is not modelled, labelled).
+
+The census line is
+`summary mission scene command find lookups / exact / case_only`.
+
+**Census.** The reference o rows were run on this tree's build with the switch OFF (logs
+`local\fc_<row>.log`). On every row `lookups == exact` and `case_only = 0`:
+- IJN01: 753;
+- USN02: 1006;
+- USN01: 149;
+- JM06: 99;
+- USN13: 27;
+- USNOS and USNOS long: 17 each;
+- LOMP06: 15;
+- USN04 and E2: 12 each;
+- JM08: 9;
+- JM05: 3;
+- BSM01, LOMP10, LOMP10 long and USN12: none.
+
+No lookup misses at all, so the switch cannot move any reference row, and no pair was run.
+
+**Verdict: ON.**
+- The rule is the image's.
+- It is post-o: it is on no reference-o binary. It is attributed in reference p, alongside
+  `kFindEntityCaseInsensitiveBound`.

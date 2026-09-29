@@ -75,6 +75,15 @@ constexpr bool kFireTargetObjectIdBound = true;
 // (00836040) where the squadron's is 0084DD20; that difference is open.
 // OFF: every row runs 008358D0 (counted).
 constexpr bool kSquadronSetCommandBound = true;
+// Packet cc9_scene_command_find_case (routed from cc9-lua17, main c6d14ae2f): the
+// scene command's name lookup 0046AB48 -> 00925A90 compares through 009251F0's
+// 00438E10 (_stricmp) as the Lua FindEntity does (kFindEntityCaseInsensitiveBound
+// in src/game_hosts_lua.cpp). True: an exact miss answers the first unit whose
+// name matches ignoring ASCII case. False: exact names only (the case-only
+// matches are still counted). ON by the census (GUNNERY_OPEN_ITEMS 62): on the
+// sixteen reference-o rows every lookup is an exact hit (case_only=0, no miss), so
+// no row can move; the switch only matters where a scene names a unit in other case.
+constexpr bool kSceneCommandFindCaseInsensitiveBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -352,6 +361,11 @@ struct GameCommandsHost::Impl {
     // one of this host's unit records, and how many of them name a unit by the
     // descriptor's object id (+2h) all the same.
     unsigned long long building_arm_hits{0};     // cc9_attackmove_building_arm
+    // cc9_scene_command_find_case: 00925A90 lookups, exact hits, and misses that
+    // only a case-folded (_stricmp) comparison matches.
+    unsigned long long find_lookups{0};
+    unsigned long long find_exact{0};
+    unsigned long long find_case_only{0};
     unsigned long long building_arm_converts{0};
     int building_arm_traced{0};
     unsigned long long queue_full_tests{0};             // cc9_director_slot_housekeeping
@@ -567,8 +581,24 @@ public:
     // routine is recorded.
     void* find_entity_by_name(const std::string& name) override {
         chain_.owner.record("SceneCommand::find_entity_by_name", 0x00925a90u);
+        ++chain_.owner.find_lookups;
         for (GameCommandUnit& unit : chain_.owner.units) {
-            if (unit.name == name) return &unit;
+            if (unit.name == name) {
+                ++chain_.owner.find_exact;
+                return &unit;
+            }
+        }
+        // 00925A90 hands each registry entry to 009251F0, whose name test
+        // (0092521E) is 00438E10, a null-guarded CRT _stricmp over the whole name,
+        // the same rule kFindEntityCaseInsensitiveBound binds for the Lua
+        // FindEntity. LABELLED: the registry's walk order is not modelled; an
+        // exact hit wins, then the first case-folded match in unit order.
+        for (GameCommandUnit& unit : chain_.owner.units) {
+            if (_stricmp(unit.name.c_str(), name.c_str()) == 0) {
+                ++chain_.owner.find_case_only;
+                if (kSceneCommandFindCaseInsensitiveBound) return &unit;
+                break;
+            }
         }
         return nullptr;
     }
@@ -3523,6 +3553,10 @@ void GameCommandsHost::report() {
         host.summary.units, host.summary.resolved, host.summary.issued, host.summary.pushed,
         host.summary.current, host.summary.latched, host.summary.moving,
         host.summary.ai_groups, host.summary.ai_forwards, host.summary.steps);
+    host.log.notef("summary mission scene command find lookups=%llu exact=%llu case_only=%llu "
+        "bound=%d (0046AB48 -> 00925A90 -> 009251F0 _stricmp, packet cc9_scene_command_find_case)",
+        host.find_lookups, host.find_exact, host.find_case_only,
+        kSceneCommandFindCaseInsensitiveBound ? 1 : 0);
     host.log.notef("summary mission director attackmove building arm hits=%llu converts=%llu "
         "(00836B95, packet cc9_attackmove_building_arm)", host.building_arm_hits,
         host.building_arm_converts);
