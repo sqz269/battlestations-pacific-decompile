@@ -2124,3 +2124,59 @@ ON is `pair_export --commit f01935cde --flip kAutoTargetFollowerGateBound=true`,
   line exists, so "no unit leaves repeatedly" is not checked unit by unit.
 - **Prediction 3 held.** Every row has leaves, and every row moves.
 - **Verdict: ON.** Section 12's recorded mechanism failure is resolved by the join follow-up.
+
+## 25. Rank 4: the AI command's avoid-zone point (packet `cc9_ai_command_avoid_zone_point`, `kAiCommandAvoidZonePointBound`)
+
+Worker cc9-ships10, 2026-09-28.
+
+**The image.** `00A02020` (`BSP_AiCommand_IssueMoveToMember`, `__fastcall(member, point)`,
+body `00A02020-00A02175`) reaches `00417B10` only on its ship arm:
+- `00A0204E XOR EBX,EBX`; no later write to EBX before `00A020BD` (listing filtered for EBX).
+- `00A020A2 JA 00A0216F` skips everything when the squared planar distance is below the double
+  at `00D21530` (6400.0). `00A020B1` asks `vtable[+5Ch](6)` again; a non-ship takes the point as
+  given at `00A0211C`.
+- `00A020B7 MOV ECX,[ESI+538h]`, `00A020BD PUSH EBX`, `00A020BE CALL 0082ADA0`: `0082ADA0` reads
+  `[class+EBX*4+560h]` and tail-jumps to `004120D0` (the group for that layer or the nearest
+  below). So the set is the group of `[class+560h]`, the same one the follower's `009DF41A`
+  resolves.
+- `00A020C3 FLD [00CE38C8]` (`00 00 F0 41`, 30.0f) is the margin, `00A020CD PUSH 1` the
+  containment test, and the input is `{point.x, point.z}` (`00A020C9`, `00A020E2`).
+  `00A020F5..00A02113` store the answer's two floats in x and z and zero y.
+
+**The binding.** `GameShipAiHost::avoid_zone_offset_point_00a020f0` answers from the host's
+`GameAvoidZoneRuntime` (`group_for_layer`, then `offset(group, xz, 30.0, true)`). The AI host
+reaches it through `GameUnitsHost::ship_ai()`, which the mission frame already sets, so no
+construction site changed. The ticks now ask for the point only where the image reaches
+`00A020F0` (`ai_order_bridge_takes_zone_point_00a02020`); before, the stand-in was recorded on
+every leader order, squadrons and near members included, which is why section 16's 2305 calls
+overstate the reach. Answers fall back to the requested point when the runtime is not ready,
+the unit has no ship controller or no group answers the layer. Coverage: complete for
+`00A020B7..00A02113`.
+
+**Counters.** `summary mission ai command zone point asks / answers / moved` (AI host; asks on
+both sides) and `summary mission ship ai command zone points answered / moved` (ship-AI host, ON
+only).
+
+**OFF** (`local\ships10_a0_<row>.log`, the tree build of `4e4a7f989`, main `9dcf7f537`; launch as
+section 16's, one row per `local\ships10_run.ps1` call):
+
+| row | frames | asks (00A020F0 reached) |
+| --- | --- | --- |
+| USN13 | 3200/3000 | 493 |
+| JM05 | 3200/3000 | 393 |
+| USN04 | 4700/4500 | 295 |
+| JM08 | 3200/3000 | 99 |
+| LOMP10 | 3200/3000 | 91 |
+| USN01 | 3200/3000 | 49 |
+| JM06 | 3200/3000 | 19 |
+
+### Predictions, written before any ON run
+
+1. **Asks equal on both sides**, and every ask is answered on ON (a ship class always has a
+   `[class+560h]` layer and every mission here loads the avoid-zone table).
+2. **Moved is rare.** An AI group is ordered at an enemy group's position or a planner point, both
+   at sea; only a point inside an island's avoid polygon (or within 30 m of it) moves. Expect
+   moved = 0 on most rows and a handful at most on the island-heavy rows (USN13, JM05, JM08).
+3. **A row with moved = 0 is identical** apart from the new counters (`pair_diff` 0 or 1). A row
+   with moved > 0 moves (exit 3): the ship steers for a different point.
+4. **No death prediction.**

@@ -9916,6 +9916,26 @@ void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t ta
     impl_->done("WeaponDirector::store_fire_target", 0x00836240u);
 }
 const GameShipAiSummary& GameShipAiHost::summary() const noexcept { return impl_->summary; }
+bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const float in_xz[2],
+                                                     float margin, float out_xz[2]) {
+    // 00A020B7 ECX = [unit+538h]; 00A020BD PUSH EBX, which is 0 from 00A0204E;
+    // 0082ADA0 reads [class+EBX*4+560h] and tail-jumps to 004120D0. The class
+    // field is the controller's leaf_tuning[0], as the follower's 009DF41A reads.
+    if (!impl_->zones.ready() || unit >= impl_->controllers.size()) return false;
+    if (impl_->controllers[unit].generated_non_ship) return false;
+    const std::uint32_t group =
+        impl_->zones.group_for_layer(impl_->controllers[unit].leaf_tuning.array[0]);
+    if (group == 0u) return false;
+    // 00A020CD PUSH 1 (the containment test), 00A020D0 the margin from 00CE38C8.
+    const std::array<float, 2> out =
+        impl_->zones.offset(group, {in_xz[0], in_xz[1]}, margin, true);
+    ++impl_->summary.ai_command_zone_points;
+    if (out[0] != in_xz[0] || out[1] != in_xz[1]) ++impl_->summary.ai_command_zone_points_moved;
+    out_xz[0] = out[0];
+    out_xz[1] = out[1];
+    impl_->done("AiCommand::avoid_zone_offset_point", 0x00417b10u);
+    return true;
+}
 
 void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long long interval) {
     Impl& host = *impl_;
@@ -10368,6 +10388,9 @@ void GameShipAiHost::report() {
         host.summary.follow_zone_sets, host.summary.follow_pushes,
         host.summary.follow_pushes_moved, host.summary.follow_leader_turning,
         kShipFollowStationPointBound ? 1 : 0);
+    host.log.notef("summary mission ship ai command zone points answered=%llu moved=%llu "
+        "(00A020BE / 00A020F0, packet cc9_ai_command_avoid_zone_point)",
+        host.summary.ai_command_zone_points, host.summary.ai_command_zone_points_moved);
     host.log.notef("summary mission ship ai free bearing scan_calls=%llu arm_calls=%llu "
         "unready=%llu empty=%llu refills=%llu ahead_hits=%llu corner_fwd=%llu corner_back=%llu "
         "lateral_turns=%llu short_legs=%llu answers=%llu bound=%d (009DC2E0 at 009EC0C1 / "

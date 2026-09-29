@@ -532,6 +532,11 @@ struct GameShipAiSummary {
     unsigned long long follow_pushes{0};
     unsigned long long follow_pushes_moved{0};
     unsigned long long follow_leader_turning{0};
+    // Packet cc9_ai_command_avoid_zone_point: the AI command's 00417B10 at
+    // 00A020F0, asked through avoid_zone_offset_point_00a020f0 (ON only): the
+    // queries answered with a zone set, and those whose point moved.
+    unsigned long long ai_command_zone_points{0};
+    unsigned long long ai_command_zone_points_moved{0};
     // Packet cc9_plane_row_autotarget: AutoTarget ticks reaching a plane or
     // squadron row (both sides) and the thinks they ran (OFF only).
     unsigned long long plane_row_autotarget_ticks{0};
@@ -670,6 +675,15 @@ public:
     void store_fire_target_00836240(std::size_t unit, std::size_t target_plus_one,
                                     bool force);
     const GameShipAiSummary& summary() const noexcept;
+
+    // Packet cc9_ai_command_avoid_zone_point. 00A02020's ship arm for the AI
+    // host: 00A020BE 0082ADA0(ECX = [unit+538h], 0) = 004120D0(manager,
+    // [class+560h]), then 00A020F0 00417B10(ECX = that group, &out, &in {x, z},
+    // margin, 1). Returns false, leaving `out` alone, when the avoid-zone runtime
+    // is not ready, the unit has no ship controller or no group answers the
+    // layer; the caller then keeps the requested point.
+    bool avoid_zone_offset_point_00a020f0(std::size_t unit, const float in_xz[2],
+                                          float margin, float out_xz[2]);
 
     // The per-unit table and the one-line summaries the milestone reports.
     void report();

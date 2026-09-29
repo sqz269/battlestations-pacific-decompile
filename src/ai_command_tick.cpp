@@ -26,6 +26,19 @@ AiOrderBridgePoint ai_order_bridge_point_00a02020(bool is_ship_base) noexcept {
     return is_ship_base ? AiOrderBridgePoint::AvoidZoneOffset : AiOrderBridgePoint::Direct;
 }
 
+bool ai_order_bridge_takes_zone_point_00a02020(bool is_plane_squadron,
+                                               bool squadron_excluded, bool is_ship_base,
+                                               const float member_position[3],
+                                               const float target[3]) noexcept {
+    if (!ai_order_bridge_accepts_00a02020(is_plane_squadron, squadron_excluded, is_ship_base)) {
+        return false;
+    }
+    const float dx = member_position[0] - target[0];
+    const float dz = member_position[2] - target[2];
+    if (dx * dx + dz * dz < kAiOrderIssueDistanceSquared) return false;
+    return ai_order_bridge_point_00a02020(is_ship_base) == AiOrderBridgePoint::AvoidZoneOffset;
+}
+
 AiOrderBridgeResult ai_order_bridge_00a02020(bool is_plane_squadron, bool squadron_excluded,
                                              bool is_ship_base, const float member_position[3],
                                              const float target[3],
@@ -158,10 +171,14 @@ AiCommandTickResult ai_command_follower_pass_00a10dc0(AiCommandTickHost& host, v
             float position[3] = {0.0f, 0.0f, 0.0f};
             if (!host.tick_member_position(member, position)) continue;
             float avoid[2] = {leader_point[0], leader_point[2]};
-            host.tick_avoid_zone_point(member, leader_point, avoid);
+            const bool excluded = host.tick_squadron_excluded_007eda90(member);
+            const bool ship = host.tick_member_is_ship_base(member);
+            if (ai_order_bridge_takes_zone_point_00a02020(true, excluded, ship, position,
+                                                          leader_point)) {
+                host.tick_avoid_zone_point(member, leader_point, avoid);
+            }
             const AiOrderBridgeResult bridge = ai_order_bridge_00a02020(
-                true, host.tick_squadron_excluded_007eda90(member),
-                host.tick_member_is_ship_base(member), position, leader_point, avoid);
+                true, excluded, ship, position, leader_point, avoid);
             if (bridge.issued && host.tick_issue_moveto(member, bridge.position)) {
                 ++result.orders_issued;
             }
@@ -182,11 +199,14 @@ bool order_leader(AiCommandTickHost& host, void* group, const float point[3],
     float position[3] = {0.0f, 0.0f, 0.0f};
     if (!host.tick_member_position(leader, position)) return false;
     float avoid[2] = {point[0], point[2]};
-    host.tick_avoid_zone_point(leader, point, avoid);
+    const bool squadron = host.tick_member_is_plane_squadron(leader);
+    const bool excluded = host.tick_squadron_excluded_007eda90(leader);
+    const bool ship = host.tick_member_is_ship_base(leader);
+    if (ai_order_bridge_takes_zone_point_00a02020(squadron, excluded, ship, position, point)) {
+        host.tick_avoid_zone_point(leader, point, avoid);
+    }
     const AiOrderBridgeResult bridge = ai_order_bridge_00a02020(
-        host.tick_member_is_plane_squadron(leader),
-        host.tick_squadron_excluded_007eda90(leader),
-        host.tick_member_is_ship_base(leader), position, point, avoid);
+        squadron, excluded, ship, position, point, avoid);
     if (!bridge.issued) return false;
     if (!host.tick_issue_moveto(leader, bridge.position)) return false;
     ++result.orders_issued;
