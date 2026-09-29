@@ -4292,7 +4292,7 @@ struct GameUnitsHost::Impl {
     // 007DCD24): the roll term zeroed (007DA8D9), no bank-yaw coupling, and
     // 007DA380's mode-1 factors 007DA542-007DA6E3. False: the ground law runs the
     // rate law's free-flight arm.
-    static constexpr bool kPlaneGroundSteeringBound = false;
+    static constexpr bool kPlaneGroundSteeringBound = false;  // OFF: stopped planes keep turning (5t)
     // Packet cc9_land_park_taxi (docs/SQUADRON_LAND_TASK.md section 5s): land/park.
     // The rule's arms into it (009B3D38 for +900h 4 or 5, 009B3E38 from abort's
     // +66Dh) and out of it (009B3770, the done byte -> abort), its enter/exit

@@ -2591,6 +2591,42 @@ The diagnostic is `summary plane ground steering`.
   - a sink below the wheels of more than 1 m.
 - **Flip rule:** ON if predictions 1 and 2 hold.
 
+### The pair and the verdict (cc9-lua14, 2026-09-29): mechanism failure, stays OFF
+
+- OFF is `f187ab8b1` as committed (`local\l14_soff_<row>.log`).
+- ON is the same commit exported with `kPlaneGroundSteeringBound` true (`local\l14_son`,
+  `local\l14_son_<row>.log`).
+- USN01 is gameplay identical (exit 1).
+- LOMP10 moves (exit 3), with deaths identical (0).
+
+**The predictions, one by one.**
+1. **Held, with a small miss.** All ten landed planes run the mode-1 rate law, with `steps` equal
+   to their law steps. Warhawk 01|.-3 and B-25 01 touch down 0.05 s off OFF's times: a stopped
+   plane's position reaches the approach planner, as in 5q verdict 4.
+2. **Failed.** The heads and three followers stop as before (rolls of 3.8 to 15 m). But five
+   stopped planes now lose contact, against one in OFF:
+   - B-25 01|.-2 at 309.20 s;
+   - Lightning 01|.-2 at 315.35 s;
+   - Warhawk 01|.-2 at 324.24 s;
+   - Lightning 01|.-3 at 329.39 s;
+   - B-25 01 at 365.88 s.
+
+   Each drifts out through the side of the strip at 0.1 to 0.5 m/s. Their final headings are up
+   to 0.8 rad off the runway's 0.26: Warhawk 01|.-2 ends at 1.10 and Lightning 01|.-3 at -0.53.
+   They then take free-flight steps; B-25 01|.-2 sinks to `min_bfc = -1978`.
+
+**Why.** The mode-1 yaw factor goes to 0 below `b` (1.7 m/s with the throttle closed). So does
+the yaw acceleration the axis step uses, since the host's targets take `accel[1] = YawAccel x
+-outB`. A plane that stops while it still has a yaw rate keeps that rate indefinitely and turns in
+place. The free-flight arm (OFF) damped it through the free-flight authority.
+
+In the image something else must hold a stopped plane's attitude. The candidates are the ground
+pose `ctl+80h..8Ch`, `007D9C80` and `007D80C0` (5q, not carried) and the attached branch of
+`007D9F60` (`007DA2B1`, the wheel-height lift). Both are unread.
+
+**Verdict.** `kPlaneGroundSteeringBound` stays OFF, recorded as a mechanism failure. The reading
+of `007DA542`-`007DA6E3` stands. The ground pose has to come first, then this pair, then park (5s).
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
@@ -2598,9 +2634,11 @@ The diagnostic is `summary plane ground steering`.
    - stage A of the ground roll is ON (5q): a landed plane thinks, brakes and stops. The
      followers no longer abort: they were aborted by the missing landed arm of `006C7960`, not by
      occupancy (5r, ON). All ten LOMP10 planes now land and stop on the runway;
-   - stage B: park is read and bound OFF (5s). It failed on what lies under it: the ground
-     steering laws `007DA380`/`007DA542`, abort's on-ground arm `009B0E74`-`009B0F93` (the
-     park <-> abort loop), and `00951F40`'s hide of a plane in the hangar;
+   - stage B: park is read and bound OFF (5s). It failed on what lies under it:
+     - the ground steering, read and bound OFF in 5t, which fails until the ground pose
+       (`ctl+80h..8Ch`, `007D9C80`, `007D80C0`, `007DA2B1`) holds a stopped plane's attitude;
+     - abort's on-ground arm `009B0E74`-`009B0F93` (the park <-> abort loop);
+     - `00951F40`'s hide of a plane in the hangar;
    - a landed plane that creeps off the 20 m strip (B-25 01|.-2 at 325.94 s, 5r) loses contact
      and sinks through the ground in free flight: the airfield ground surface (`006CF180`) is not
      modelled, and what pushes a stopped plane sideways is unidentified;
