@@ -182,6 +182,9 @@ TorpedoDoneTickResult torpedo_done_prepare_tick_009d2720(
             return out;
         }
         out.drop_timer_98 = timer;
+        // 009D27BE-009D27D1: the countdown is still above zero, so 009D1360
+        // runs before the target test.
+        out.run_time_updated = true;
 
         // 009D27C9: with the countdown still running, steer or release.
         if (!in.has_target) {
@@ -309,6 +312,11 @@ TorpedoArmTickResult torpedo_task_arm_009d4850(TorpedoTaskHost& host,
             host.write_command_float(ctx.command_block, pilot_command_off::kInterp2C8,
                                      torpedo_constant::kCommittedThrottle);
         }
+        // 009D27D1, the one call of 009D1360 in 009D2720. It used to be made
+        // below on the idle outcome with the countdown at or under zero, which
+        // is the disarmed branch 009D29E0 and never reaches 009D27D1. Packet
+        // cc9_torpedo_run_time_update.
+        if (r.run_time_updated) host.approach_committed_hook_009d1360(ctx.approach);
         if (r.outcome == TorpedoDoneTickOutcome::kHoldHeading) {
             host.write_command_float(ctx.command_block, pilot_command_off::kWord2BC, 0.0f);
             host.write_command_word(ctx.command_block, pilot_command_off::kMode2D0, 2);
@@ -318,8 +326,6 @@ TorpedoArmTickResult torpedo_task_arm_009d4850(TorpedoTaskHost& host,
             host.write_command_float(ctx.command_block, pilot_command_off::kWord2BC, 0.0f);
             host.write_command_word(ctx.command_block, pilot_command_off::kMode2D0, 2);
             host.steer_toward_target_009f9e40(ctx.approach);
-        } else if (r.outcome == TorpedoDoneTickOutcome::kIdle && tick.drop_timer_98 <= 0.0f) {
-            host.approach_committed_hook_009d1360(ctx.approach);
         }
         host.write_drop_timer(state, r.drop_timer_98);
         if (r.released) {

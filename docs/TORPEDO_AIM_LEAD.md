@@ -1588,3 +1588,119 @@ pilot control block is reached as `approach+0Ch` or `task+404h`. The hits on it 
     attack altitude is found.
 
 **No binding change comes out of this audit.**
+
+## 21. `009D1360` bound: the run time and fall lead refreshed (packet `cc9_torpedo_run_time_update`)
+
+cc9-planes3. The predictions below were written before any ON run.
+
+### 21.1 The reading
+
+- **Callers.** `009D1360` has exactly two callers (`ghidra xrefs`):
+  - `009D19A4` in the aim tick `009D15F0`, when `turn_room > f14_range` at `009D19A0` (already
+    ported as `update_run_time_009d1360`);
+  - `009D27D1` in the done/prepare tick `009D2720`.
+- **The done/prepare call site was ported to the wrong branch.**
+  - The image's structure:
+    - `009D2753 JBE` sends a disarmed countdown (`state+98h <= 0`) to `009D29E0`.
+    - The committed branch steps the countdown down (`009D2782`-`009D2794`).
+    - It releases through `009D25A0` when the countdown reaches zero, then stores `[00D7A260]`.
+    - `009D27BE`-`009D27C9` re-tests the countdown, and `009D27D1` calls `009D1360` while it is
+      still above zero, before any target test.
+  - `torpedo_task_arm.cpp` called the hook on the idle outcome with the countdown at or under
+    zero. That is the disarmed branch, which never reaches `009D27D1`.
+  - The fix: `TorpedoDoneTickResult::run_time_updated` is set right after the countdown step, and
+    the arm calls the hook on that flag.
+  - The fix is unswitched. Today the hook only counts (`record`), so the only change it makes to
+    an OFF run is the unimplemented-call count.
+- **The body, re-traced on the x87 stack** (opcode bytes checked: `009D13D7 DE EA`,
+  `009D148C DE F2`, `009D149A DE E9`, `009D149C DE F2`). It agrees with
+  `torpedo_run_time_009d1360`:
+  - `fall = 007BCC80(unit, unit+100h)` (the altitude) and `lead = fall x speed`, stored at `+A0h`.
+  - `dt = max((speed - run) / 80, 0)` and `dd = dt x (speed + run) / 2`.
+  - `L = min(+90h, +7Ch or +80h by the 15 s switch at 00CF3F20) - lead`.
+  - `t` is `fall` when L < 0, `fall + dt + (L - dd)/run` when dd <= L, and `fall + dt x L/dd`
+    otherwise.
+  - `+98h = max(0, t + +9Ch)`.
+  - Unlike `009D0160`, dd is subtracted only once.
+- **The reset.** `009D04E9` stores `+A0h = 10.0f` (`00CE38B8`), and the host had 0.
+
+### 21.2 The binding: `kTorpedoRunTimeUpdateBound`, committed OFF
+
+- `GameUnitsHost::Impl::torpedo_run_time_009d1360(slot, site)` supplies the inputs:
+  - the speed as `unit_speed_vtable38` computes it (the length of the live velocity);
+  - the fall time from `weapon_fall_time_007bcc80(position.y, velocity.y)`;
+  - the run speed from `torpedo_device_min_007bce20(slot, true)` (`007BCFA0`).
+- It writes `+A0h` and `+98h`.
+- It is called from the aim-tick override (site 0) and from the done/prepare hook (site 1).
+- Under the switch, the reset also stores `+A0h = 10`.
+- There is a census line, `summary mission torpedo run time`.
+
+### 21.3 Predictions
+
+**`+98h`.**
+- At the aim updates a Kate flies at about 12-15 m and about 61 m/s, so `fall` is about 1.3-1.5 s
+  and `lead` is about 80-90 m.
+- `L` is about 350-500 m less the lead, so `t` is about 7-10 s. The mean `+98h` over updates is
+  therefore **7-11 s**, close to the reset seed's 8.9 s on USN04.
+- So `+F8h`, and the lead, move by about a second at most on the Kates that reach the update.
+
+**`+A0h`.**
+- It is 10 from the reset and about 80-90 m after an update.
+- It feeds the aim release gate at `009D2052`: `f14_range + 80 > +A0h`. That fails only when
+  `f14_range` is under about 10 m.
+- So **the lead gate should not change a release** on these rows.
+
+**Counts.**
+- Aim-site updates are greater than 0 on USN04, E2 and USN13 (the rows with aim ticks near the
+  release range).
+- Done-site updates are greater than 0 where a committed countdown ran, which is every row with a
+  release.
+
+**Gameplay.**
+- USN04, E2 and USN13 move a little, through the lead: torpedo-task releases within plus or minus
+  2 of 8 / 8 / 4.
+- JM05, USN01 and JM08 stay gameplay-identical, because they have no torpedo release.
+- Deaths move by a few at most. The per-entity table is the one to read.
+
+**Verdict rule.**
+- **Keep OFF** if any of these holds:
+  - the aim-site updates are 0 on a row whose aim census has ticks near the release range;
+  - any update prints NaN, inf, or a `+98h` above 30 s;
+  - torpedo releases fall by more than 3 on any row.
+- **Otherwise flip.**
+
+### 21.4 The pair, measured: `kTorpedoRunTimeUpdateBound` ON
+
+**Binaries** are `pair_export.py --commit 0794659c8`: t0 has no flip (`5F1254E19E8D`) and t1 flips
+the switch (`D06194F4DDD1`). The rows and the launch form are 19.5's. All 12 logs are complete,
+and the runs finished at 22:05 UTC.
+
+| row | pair_diff | aim updates | done updates | mean `+98h` at the aim | mean `+A0h` at the aim | torpedo-task releases | deaths |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 3 | 437 | 0 | 9.92 s | 104.7 m | 8 -> 9 of 16 | 48 -> 48, none one-sided |
+| E2 9200/9000 | 3 | 437 | 0 | 9.92 s | 104.7 m | 8 -> 9 | 51 -> 51, none one-sided |
+| USN13 3200/3000 | 3 | 243 | 0 | 10.46 s | 186.3 m | 4 -> 3 of 60 | 31 -> 31, none one-sided |
+| USN01 3200/3000 | 3 | 49 | 0 | 3.49 s | 268.1 m | 0 -> 0 of 5 | 5 -> 5, 3 re-timed |
+| JM05 3200/3000 | 1 | 0 | 0 | - | - | 0 of 12 | identical |
+| JM08 3200/3000 (control) | 1 | 0 | 0 | - | - | - | identical |
+
+**Against the predictions:**
+- **Mean `+98h` 7-11 s: held** on USN04, E2 and USN13. USN01's Mavises reach the update higher
+  (their mean `+A0h` is 268 m), so their fall lead eats most of the leg and the mean is 3.5 s.
+  Across all updates `+98h` ranged from 2.93 to 16.36 s, with no NaN, inf or value above 30.
+- **`+A0h` of 80-90 m: close.** It is 105 m on USN04 and 186 m on USN13, because the updates happen
+  higher than the 12-15 m band. The lead gate did not stop a release; releases moved by one.
+- **Done-site updates greater than 0: missed.** They are 0 on every row. The cause is not the
+  binding. No committed countdown runs on these rows: every aircraft's `drop_timer_98` stays -1
+  and `prepare_entries` is 0 (the `orders` and `attack mode` census lines). The releases come
+  from the aim state, so `009D27D1` is never reached. The 21.1 call-site fix therefore remains
+  untested at run time.
+- **Releases within plus or minus 2: held** (+1, +1, -1).
+- **USN01 identical: missed.** Its aim ticks do reach the update, so the lead and the flight path
+  move. No release changed on it, and no death became one-sided.
+- **JM05 and JM08 identical: held.**
+
+**Verdict:** none of the three keep-OFF conditions holds. The aim site ran wherever aim ticks
+reached the release range, no value is out of range, and no row lost more than one release. The
+switch **flips ON**. The two misses are recorded: the done site is unexercised here, and USN01
+moved without a release change.
