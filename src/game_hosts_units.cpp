@@ -1966,7 +1966,7 @@ struct GameUnitsHost::Impl {
         std::vector<LandingAssignment> assignments;
         unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
         unsigned long long hit_passes{0}, outside_passes{0}, spacing_mode4_refused{0};
-        unsigned long long spacing_mode4_site{0};
+        unsigned long long spacing_mode4_site{0}, landed_arm_hits{0};
         unsigned long long slot_tail_unapplied{0}, mode_counts[5]{0, 0, 0, 0, 0};
     };
     std::vector<LandingDeck> landing_decks;
@@ -1999,6 +1999,7 @@ struct GameUnitsHost::Impl {
         bool leader_pass, int head_mode, float head_dist);
     void landing_path_006c6020(LandingDeck& d, LandingAssignment& rec);
     void landing_spacing_006c3f80(LandingDeck& d, LandingAssignment& rec);
+    void log_ground_contact_loss(const GameUnitSlot& p);
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
     // Packet cc9_prcp03_phase_progress: scene marker id -> authored position.
     std::map<std::uint32_t, std::array<float, 3>> scene_marker_positions;
@@ -4253,6 +4254,13 @@ struct GameUnitsHost::Impl {
     // the AI host used, and nothing is logged.
     static constexpr bool kSquadronOrdnanceReaderBound = true;  // ON: census held, gameplay identical (docs/SQUADRON_ORDNANCE_STATE.md 4)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
+    // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
+    // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
+    // +4h = -1.0 (00D7A260), +8h = 1.0, before the airborne test), 006C3B10's
+    // 2-or-4 refusal only while it is clear, 006C5C40 false for a landed plane,
+    // and 006C5534's lookup-miss mode 904h ? 4 : 1. False: the byte is taken
+    // clear there, so a landed head gets mode 2 and its followers mode 1.
+    static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
     // controller's forward speed) is the leader's live |v|, as the hold arm
@@ -9379,6 +9387,32 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
     return static_cast<std::size_t>(r.node);
 }
 
+// Diagnostic only (packet cc9_landing_follower_spacing): the first free-flight
+// step of a plane in the ground-roll arm, with its runway-frame position against
+// 006BC530's half extents and the deck the probe last chose.
+void GameUnitsHost::Impl::log_ground_contact_loss(const GameUnitSlot& p) {
+    const std::size_t deck = p.plane_contact_deck_bf4;
+    float lx = 0.0f, ly = 0.0f, lz = 0.0f, hw = 0.0f, hl = 0.0f;
+    if (deck != 0 && deck <= landing_decks.size()) {
+        const LandingDeck& d = landing_decks[deck - 1u];
+        const std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, p.motion.position);
+        lx = l[0];
+        ly = l[1];
+        lz = l[2];
+        hw = static_cast<float>(static_cast<double>(d.width_b0) * 0.5);
+        hl = static_cast<float>(static_cast<double>(d.length_b4) * 0.5);
+    }
+    const double v = std::sqrt(static_cast<double>(p.plane_world_velocity[0]) * p.plane_world_velocity[0]
+        + static_cast<double>(p.plane_world_velocity[1]) * p.plane_world_velocity[1]
+        + static_cast<double>(p.plane_world_velocity[2]) * p.plane_world_velocity[2]);
+    log.notef("plane ground contact lost %s t=%.2f deck=%zu near=%d local=(%.2f %.2f %.2f) "
+        "half=(%.2f %.2f) |v|=%.2f heading=%.4f state=%d (007C5F0A, 006BC530)",
+        p.row.name.c_str(), static_cast<double>(summary.simulated_seconds), deck,
+        p.plane_near_site_c02 ? 1 : 0, static_cast<double>(lx), static_cast<double>(ly),
+        static_cast<double>(lz), static_cast<double>(hw), static_cast<double>(hl), v,
+        static_cast<double>(p.plane_heading_c6c), p.plane_control_mode_900);
+}
+
 // 007C5AC0 (007C5AC0-007C5F5E, __thiscall(plane, float step), RET 4), the probe
 // both motion arms run first. Coverage: complete except the +C1Ch gear request
 // (007C5C11-007C5EEF, mission state 0Dh), which feeds the gear channel (+DECh
@@ -9530,8 +9564,9 @@ bool GameUnitsHost::Impl::landing_released_006c45c0(const LandingDeck& d,
 bool GameUnitsHost::Impl::landing_corridor_006c3b10(const LandingDeck& d,
     const GameUnitSlot& p) const {
     const bsp::GameTuningBlock& g = lua.plane_globals();
-    // +904h is clear in this host; then +900h 2 or 4 answers false.
-    if (p.plane_control_mode_900 == 2 || p.plane_control_mode_900 == 4) return false;
+    // +904h clear and +900h 2 or 4 answers false.
+    if (!(kLandingLandedArmBound && p.plane_landed_904)
+        && (p.plane_control_mode_900 == 2 || p.plane_control_mode_900 == 4)) return false;
     if (!landing_airborne(p)) return true;
     // 00923810(1), the parent link of an airborne plane: null here (LABELLED),
     // so the AirField/MotherShip parent arm never answers.
@@ -9616,7 +9651,8 @@ float GameUnitsHost::Impl::landing_radius_006c3e50(const LandingDeck& d,
 // 006C5C40 (006C5C40-006C5E18, RET 4): on the landing circle.
 bool GameUnitsHost::Impl::landing_on_circle_006c5c40(const LandingDeck& d,
     const GameUnitSlot& p) const {
-    // Null or landed (+904h, clear here) answers false.
+    // Null or landed (+904h) answers false.
+    if (kLandingLandedArmBound && p.plane_landed_904) return false;
     const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
     const bool side = l[0] > 0.0f;                               // 006C5C8F COMISS/JA
     const std::array<float, 3> c = landing_circle_point_006c5380(d, p, side);
@@ -9668,7 +9704,14 @@ bool GameUnitsHost::Impl::landing_deck_usable_006bed60(std::size_t deck_index) c
 void GameUnitsHost::Impl::landing_mode_006c7960(LandingDeck& d, std::size_t deck_index,
     LandingAssignment& rec, bool leader_pass, int head_mode, float head_dist) {
     const GameUnitSlot& p = *slots[rec.plane];
-    // +904h (landed) is clear in this host.
+    // 006C7970-006C798A: +904h (landed) first, on both passes.
+    if (kLandingLandedArmBound && p.plane_landed_904) {
+        rec.mode_10 = 4;
+        rec.path_4 = -1.0f;                                       // 00D7A260
+        rec.spacing_8 = 1.0f;                                     // 00D7A24C
+        ++d.landed_arm_hits;
+        return;
+    }
     if (!landing_airborne(p) || rec.held_0c) {
         rec.mode_10 = leader_pass ? 2 : 1;
         rec.path_4 = 999999.0f;                                   // 00CF87D0
@@ -19024,7 +19067,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // mode out+18h (approach+50h) = plane+904h ? 4 : 1.
                         // plane+904h is the landed-after-flight byte, clear for an
                         // airborne plane.
-                        unit_.land_mode_50 = 1;
+                        unit_.land_mode_50 =
+                            (GameUnitsHost::Impl::kLandingLandedArmBound && unit_.plane_landed_904) ? 4 : 1;
                         unit_.land_spacing_4c = 1.0f;
                         // 006C5563-006C55FC (the members' offset in the block frame
                         // 004142E0 against block+A4h, into approach+44h), 006C3E50
@@ -22124,6 +22168,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool on_path = unit_.plane_control_mode_900 == 5;
                         if (!unit_.plane_ground_contact_bf8 && !on_path) {
                             ++unit_.ground_free_steps;
+                            if (unit_.ground_free_steps == 1) {
+                                // Diagnostic: where a landed plane loses contact.
+                                owner_.log_ground_contact_loss(unit_);
+                            }
                             run_core_law_007db680(step, false);
                         } else {
                             ++unit_.ground_law_steps;
@@ -24423,12 +24471,12 @@ void GameUnitsHost::report() {
             host.log.notef("summary landing sequencer deck %s: refused=%d queue=%zu records=%zu "
                 "passes=%llu hits=%llu outside=%llu inserts=%llu releases=%llu lookups=%llu "
                 "found=%llu modes 1=%llu 2=%llu 3=%llu 4=%llu spacing_mode4_refused=%llu site=%llu "
-                "slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
+                "landed=%llu slot_tail_unapplied=%llu (packet cc9_landing_sequencer)",
                 i < decks.size() ? decks.name_at(i).c_str() : "?", d.refused ? 1 : 0,
                 d.queue.size(), d.assignments.size(), d.passes, d.hit_passes, d.outside_passes,
                 d.inserts, d.releases, d.lookups, d.found, d.mode_counts[1], d.mode_counts[2],
                 d.mode_counts[3], d.mode_counts[4], d.spacing_mode4_refused, d.spacing_mode4_site,
-                d.slot_tail_unapplied);
+                d.landed_arm_hits, d.slot_tail_unapplied);
             for (const Impl::LandingAssignment& a : d.assignments) {
                 host.log.notef("summary landing record %s: mode=%d path=%.1f spacing=%.3f "
                     "side=%d", host.slots[a.plane]->row.name.c_str(), a.mode_10,
