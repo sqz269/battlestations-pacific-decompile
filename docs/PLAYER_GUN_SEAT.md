@@ -274,3 +274,120 @@ Logs: `local\seg_{off,on}_{e2,usn02}.log`.
 
 **Verdict: held, every prediction.** `casts` equals `messages`, `aims` = 0, nothing else moved,
 and USN02 is identical. `kPlayerGunSeatSegmentQueryBound` is ON.
+
+## 7. The group 3 arm (packet `cc9_player_gun_seat_artillery`)
+
+Worker cc9-gunnery14. Ranking #7 names the group 1/2 arm, but that arm has been bound and ON since
+section 5. The row's reach (reference m: 9 rows, 47371 calls) is the `message_other_group` record.
+It sums exactly over the nine rows whose controlled unit selects another group: USN01 2763, JM06
+6158, JM08 6156, USN13 160, JM05 5478, USN12 5436, USNOS 4530, USNOS long 16530, IJN01 160
+(reference p logs). A ship that is kind 6 and neither 8 nor 0Eh selects group 3 when it becomes the
+group unit (`mission_camera.cpp`, 00549328..0054936F), so this packet binds **group 3**. Groups 4
+and 5 are now separate records.
+
+### 7.1 What the image does (00959F72..0095A1C7, `JMP 00959FF3` loop, exit to 0095A42C)
+
+The kind is `[msg+1Ch]` itself: 00959C69 `ADD EAX,-1`, `CMP EAX,4`, table 0095A5C0.
+
+1. **Flags.** 00959F72..00959FD0 set three flags for the hand-over:
+   - `[ESP+11h]`: held (+34h) or pressed (+35h).
+   - `[ESP+12h]`: the world `[00E188A8]+1FE4h == 1` and `+218Ch == 0`.
+   - `[ESP+13h]`: `[unit+1ACh]` is not 8, not an AI slot (00927F10), and `00927F30(unit, 0)` is false.
+2. **The direction.** 00959FEB `004B4D80(pitch = +30h, yaw = +2Ch)`.
+3. **The device walk.**
+   - The list is `[unit+48h]`, advanced by `[dev+44h]`.
+   - Filter: `vtable[5Ch](20h)`, then `00954210(3, dev)`, which is operational and 005459B0.
+   - 005459B0 (body 005459B0..005459D9) accepts a Function `[[dev+3F4h]+80h]` of 2, 3, 4 or 6.
+4. **The hand-over** (0095A026..0095A05B): with all three flags and an AI-held seat
+   (00521E70(dev, 0)), `vtable[154h](0, [unit+1BCh])`, the role-3 holder.
+5. **The aim point** 0095A06E: `00957740(ECX unit, EDX &camera, &dir, &out, dev)`. Body
+   00957740..00957BCC, `RET 0Ch`, now read whole:
+   - A camera below y 0 returns the camera.
+   - Otherwise the ray runs to `t = [[dev+3F8h]+34h]+60h`, the range. With `dir.y < 0`, `t` is
+     `min(-cam.y / dir.y, range)`. `0098ADD0` queries the segment, filtered by the unit's
+     `vtable[20h]`.
+   - A hit with `y > 0` (00D7A218 is 0.0) is the point. With `[dev+3FCh] == 0` and a hit entity,
+     the entity's lead is added at `[[dev+3F8h]+34h]+5Ch * +50h`: 00902290 for kind 6, else 00901C20.
+   - No usable hit: with `dir.y >= 0`, it is `cam + normalise(dir.x, 0, dir.z) * 20000.0`
+     (00CE3CB8, double). Otherwise it is the y = 0 crossing `cam - dir * cam.y / dir.y`. This is
+     not clamped to the range.
+   - Every component is clamped to [-99999, 99999] (00D1A648 / 00D119AC).
+6. **The solve** 0095A0AA: `00955630(ECX unit, EDX &aim, dev+0FCh, [[dev+3F8h]+34h]+50h, &vert,
+   &horz)`. AL goes to BL. `dev+408h..410h` takes the aim point.
+7. **The turn** 0095A0EF: `0085ABA0(dev, horz, vert)`. A refusal clears BL.
+8. **The trigger** (0095A0FA..0095A1C2):
+   - It is skipped when the world `+1FE4h == 2`, and **skipped for an AI-held seat**.
+   - Otherwise, with BL set and both `|00438B10(dev+484h, vert)|` and `|00438B10(dev+480h, horz)|`
+     within 2 degrees (00D0C26C, 0.0349066f), `vtable[1E8h](+34h)`; else `vtable[1E8h](0)`.
+
+**What it means for an idle player.** There is no hand-over, since there is no fire input. But
+every accepted gun is turned toward the camera solution, the AI-held ones included. The message is
+queued by 0077C2A0 and drained by 0076C600 from the session pump (fan-out row 9, 00875E91). That
+runs after the gun waves (00875CDD, 00875D4D, 00875DBD) of the same fixed step. So the camera pair
+is the last command before the next wave-1 step:
+- the bot's own 0085ABA0 in wave 2 only moves `+494h/+498h` until the drain overwrites it;
+- the bot's settle test still compares the gun against the bot's solution.
+
+The player's ship's Function 2/3/4/6 guns therefore follow the view, and the AI fires them only
+when its solution happens to match.
+
+### 7.2 The binding (switch `kPlayerGunSeatArtilleryBound`, committed OFF in `729e87697`)
+
+- **`apply_gun_aim_message_group3`** (`src/game_hosts_gunnery.cpp`):
+  - It computes the aim point and the solve per accepted gun.
+  - It stores the pair in `GameGunRow::seat_cmd_*`.
+  - A player-held gun also takes `seat_horz/seat_vert` and the 2-degree trigger.
+- **The gun tick** applies a pending pair with `gun_set_target_angles_0085aba0` just before the
+  wave-1 step, for a gun that is not player-held. That is the drain's position in the image.
+- **Substitutions:**
+  - The segment query is this host's units plus the land query.
+  - The solve is the world-frame (mount NULL) path, turned hull-relative as the bot's 006DFAD4 is.
+  - The hit lead (009578C3) is a record.
+  - The hand-over (0095A05B) is a record.
+  - The world `+1FE4h` flags are taken as a single-player 1.
+- **Summary line:** `player seat groups 0..5=... artillery guns= unsolved= hits= turns=
+  refusals=`, printed on both sides.
+
+### 7.3 Predictions, written before the ON runs
+
+**The OFF census.** The OFF build is `a3off`, exported from `729e87697` with no flip. Against
+reference p it is gameplay-identical on all ten rows run (exit 1); only the record names moved.
+Every other-group message is group 3:
+
+| row | group 2 | group 3 |
+| --- | ---: | ---: |
+| USN04 | 7997 | 0 |
+| USN01 | 0 | 2763 |
+| JM06 | 0 | 5997 |
+| JM08 | 0 | 5995 |
+| USN13 | 4647 | 160 |
+| JM05 | 0 | 5317 |
+| USN12 | 0 | 5275 |
+| USNOS | 605 | 4369 |
+| USNOS long | 605 | 16369 |
+| IJN01 | 0 | 160 |
+
+The 300-frame ON smoke on USN01 (`a3on_smoke`) gives, per 160 messages, 800 accepted guns, 400
+applied turns and 320 refusals, so most camera pairs fall outside the mounts' arcs.
+
+**Predictions.**
+1. **Mechanism:**
+   - The group census is unchanged.
+   - `artillery guns` > 0 on every row with group-3 messages, and 0 on USN04.
+   - `turns` > 0, with a large share of `refusals`.
+   - `hits` is 0 or small (the idle view's segment rarely meets a unit above y 0).
+2. **USN04 (E2 not run):** gameplay-identical (exit 0 or 1). There are no group-3 messages.
+3. **Rows with group-3 messages all mission long** (USN01, JM06, JM08, JM05, USN12, USNOS, USNOS
+   long):
+   - they move (exit 3);
+   - the group unit's Function 2/3/4/6 guns hold the camera pair wherever the arcs allow;
+   - its artillery shots and damage fall;
+   - death rows involving that unit's fire may change.
+   - Direction only; the size depends on how often the bot's solution lies inside the refused set.
+4. **USN13 and IJN01** (160 messages, the first seconds only): gameplay-identical or a small move.
+   Any move is limited to the first seconds' artillery and what follows from it through the shared
+   RNG stream.
+
+A move that is not the group unit's own artillery (another unit's targeting, plane paths) would be
+a mechanism failure, apart from RNG coupling through changed shot counts
+(`shared-rng-stream` noise, which `BSP_GUNNERY_RNG_STREAMS=1` limits to the gunnery streams).
