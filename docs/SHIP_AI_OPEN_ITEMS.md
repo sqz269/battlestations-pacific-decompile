@@ -3613,3 +3613,49 @@ there, and the host's hit points at y 24..26 lie on that slope.
 **What stays open.** The mesh here is the render mesh. The image also attaches a collision node
 (`+1E4h`, `0098BA10`), which the host does not build; the segment query's terrain answer is the
 height field, as the host has it. CB2's class height (the raised point y 32) was not re-audited.
+
+## 44. Handoff (cc9-ships13, 2026-09-29, at about 65% context)
+
+**State of the lane.** Branch `agent/cc9-ships13`. The one lease still held is
+`cc9_kamikaze_ship_blocked`, on `src/game_hosts_script_orders.cpp`/`.hpp` and
+`src/attack_commands.cpp`/`.hpp`. Switches this worker touched:
+
+| switch | state | section |
+| --- | --- | --- |
+| `kShipAiStandoffTargetKindBound` (`include/bsp/game_hosts_ship_ai.hpp`) | ON: kind queries, `00827F70`, mode-2 CaptureRange, mode-4 LandingRange; zero reach | 39, 41 |
+| `kAiSquadronRtbExclusionBound` (`include/bsp/game_hosts_ai.hpp`) | ON: read whole, zero reach on USN13 and IJN01 at 9000 frames | 40 |
+| `kKamikazeShipBlockedBound` (`include/bsp/game_hosts_script_orders.hpp`) | OFF, **pending** `GameUnitsHost::plane_pilot_fires_0c24` (units lane, lua14) | 42 |
+
+**Pending: the kamikaze flip.** When the reader lands:
+1. Merge main.
+2. In `game_hosts_script_orders.cpp`, replace the labelled stand-in (`record_unimplemented("Plane::pilot_fires_0c24", ...)` and `uncommitted_kamikaze = false`) with `!units_.plane_pilot_fires_0c24(row.unit_index)`.
+3. Set the switch true.
+4. Build and commit. The USN19 pair already shows zero reach, and no single-player scene puts kamikaze planes beside US small ships.
+
+**Diagnostics left in the code:**
+- `summary mission ship ai standoff target kind calls= kind_08= building_mode2= building_mode4= small_class=`.
+- `summary mission ai squadron rtb exclusion bind stand_in_true= issues= excluded=`.
+- `summary mission script kamikaze small-ship test bound= small_targets= blocked=`.
+- `BSP_SIGHT_POS_LOG=1`: the unit and target positions of every tenth hidden approach sight test.
+
+**Open, in order:**
+1. **CB2's class height on USN01** (section 43). The raised sight point sits at y 32 on a building
+   whose ground is y 3.0. It was not re-audited against CB2's class (`type_id=6`, kind `1Ch`).
+2. **The image's island collision node.** `+1E4h` is attached as a static root at `0098BA10`
+   (`00884078`), and the host does not build it. The segment query's terrain answer is the height
+   field. Whether the image's cast also meets the collision mesh was not read.
+3. **Landers never enter the approach with a building target** (section 39). No row reaches modes
+   2, 3 or 4. The latch's own `+7C4h` read (`009F20A4`) and `006F2D90` (the free-landing-spot
+   test, mode 3) are unbound for that reason.
+4. **`0081639D`** (section 42). The remainder of `008162B0` past `00779D50` is unbound in both
+   host copies. It is reached only for a submarine follower.
+5. **`0096ACB4`** (section 40) is an unowned, unreconstructed warning-event filter.
+6. The standoff binding's other stand-ins: `unit_is_group_leader_00778890` answers false,
+   `unit_cruise_speed_0490` answers 0, and `random_stream1_00bd2f10` answers `low` without drawing.
+
+**Useful files** in the cc9-ships13 tree:
+- `local\s13_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames`. It launches
+  in the background with the reference environment; wait on the log's final COM release line.
+- `local\s13_ridge.py` and `local\s13_profile.py`: the independent TRNV2 and glTF terrain decode
+  and profile.
+- Census logs: `local\s13c_*`, `s13l_*`, `s13r_*` and `s13kz_*`.
