@@ -448,8 +448,9 @@ constexpr int kCampaignGameMode = 0;
 // in mode 0 with party = team, the earlier substitution: team 0 is planned,
 // team 1 is NONCONTROL. LABELLED: every unit's +180h is taken as 9 (the few
 // OwnerPlayer "AI control" entries some scenes author are not modelled), and
-// the local slot index game+18ECh is 0. Flipped ON in section 60.5.
-constexpr bool kAiPartyGateUnforcedBound = true;
+// the local slot index game+18ECh is 0. Flipped ON in 60.5, reverted to OFF
+// pending section 60.6 (the brain team chain).
+constexpr bool kAiPartyGateUnforcedBound = false;
 // 004BCA50 in a single-player campaign: not forced, no session, and a mode
 // other than 8 or 9 becomes 8 (004BCA72).
 constexpr int kSinglePlayerEffectiveGameMode = 8;
