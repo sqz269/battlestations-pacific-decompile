@@ -570,3 +570,21 @@ leader dies; the removal path is not read here.
 - **USN13 3200/3000 and USN04 9200/9000** (60 and 16 torpedo tasks, all at mode 1 at the end):
   members of each squadron still read their leader's 1. Expect only first-think `hold` counters to
   move, `pair_diff` 1 or 3 through one-think state timing.
+
+**Pairs (OFF = `fdb2c36b5` tree build, on main `b01cd712b` with the torpedo aim lead ON; ON = its
+export with the flip; `local\l18_e0_*`, `local\l18_e1_*`).**
+
+| row | pair_diff | mechanism | deaths |
+| --- | --- | --- | --- |
+| JM05 9200/9000 | 3 | sqn15 and sqn18 read mode 1 from their first think (`hold=0`); sqn18's leader goes `moveto` -> `attackrun` -> `aim`, and its members go `follow` -> `aim` | sqn18's three deaths move from 913-934 m in `prepare` (395.7-409.5 s) to 23-36 m in `aim` (390.4-397.9 s); no releases; the other 27 death rows are identical |
+| USN01 3200/3000 | 3 | Mav2-Mav5 lose their one-think `prepare` (`transitions` 3 -> 2) | the same five deaths, 0.2-0.45 s earlier or at the same time, with metre-scale moves |
+| USN13 3200/3000 | 1 | all squadrons already read 1 | identical |
+| USN04 4700/4500 | 1 | the same | identical |
+
+On this merged tree, Lexington_sqn15 never engages before the run ends: it spends all 1889
+thinks in `moveto` on both sides. So its mode change (0 -> 1) has no state to act on here. That
+is a spread miss against the prediction ("leaves `prepare`"); the mechanism, the mode, matches.
+sqn18 dies in `aim` without releasing, like the USN13 aircraft in section (7).
+
+**Verdict: `kTorpedoFlightLeadPerSquadronBound` ON.** The mechanism matched on every row, and the
+moves are confined to the aircraft the bug held back and to the one-think `prepare` entry.

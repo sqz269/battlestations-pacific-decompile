@@ -4329,7 +4329,7 @@ struct GameUnitsHost::Impl {
     // think, and the leader's mode reaches its own squadron only. False: the first
     // torpedo task installed in the mission leads, and its mode reaches every
     // torpedo task.
-    static constexpr bool kTorpedoFlightLeadPerSquadronBound = false;
+    static constexpr bool kTorpedoFlightLeadPerSquadronBound = true;  // ON: TORPEDO_RELEASE_ORDERS 9
     // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
     // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
