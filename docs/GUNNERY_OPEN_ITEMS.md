@@ -2887,7 +2887,7 @@ installation's `models/ships/us/deruyter.mmod`, mtime 2024-07-13. The file is a 
   lookup is exact, owners 1, 3 and 4 never match in this installation. The 40 classes without a
   root ConvexObject would then attach no hull shape at all.
 
-### 49.6 Open item: `00937C90` against MODEL_REACHES_UNIT
+### 49.6 Open item: `00937C90` against MODEL_REACHES_UNIT (settled in 49.9: reading (a))
 
 Two readings, neither settled here:
 - **(a) `class+50h` has a writer the scans missed.** Then every ship that reaches the hull build has a
@@ -2952,3 +2952,160 @@ first check compares the two for every root chunk of the 88 files.
 - **DeRuyter's expected extent** is (16.50, 17.89, 173.97). 47.4 gives the inertia and the USN02
   prediction; pair it with the roll torque OFF first, as 47.3 says.
 - If 49.6 resolves to reading (b), step 3 stays OFF for good.
+
+### 49.8 Step 2 implemented (packet `cc9_mmod_hull_convex_box`)
+
+`include/bsp/mmod_hull_convex_box.hpp` and `src/mmod_hull_convex_box.cpp` implement 49.7's
+declaration. The build is registered in `cmake/startup.cmake`. The reader:
+- walks the model with the recovered StructuredReader, as `read_mmod_aux_point_items_0071b3e0` does;
+- reads every `ConvexObject` entry's points (006FAD70's front half: the `+8h` word when at least
+  0Ch bytes remain, then `006FA7F0`'s count and records);
+- takes the first `Hierarchy` `Item`'s `Resource` positions;
+- makes one shape per listed ConvexObject, as `0071B710` appends them.
+
+**Simplification.** The box is the raw vertex min/max widened by 0.02, not 49.7's float sequence
+through `00C5DEB0`. The two are equal up to float rounding, since every extreme vertex is on the
+hull. The hull's 0.001 dedup and its 4096-vertex limit are not reproduced.
+
+**Verification.** The Win32 Release build passes, and so do both CTests. One check was added to
+`tests/math_tests.cpp` (`reconstructed_math`). It reads this installation's
+`models/ships/us/deruyter.mmod` (mtime 2024-07-13 11:25:14 -0700) through `config/target.json`'s
+`binary` path, and skips rather than fails when the file is absent. It ran here with this result:
+
+| field | value |
+| --- | --- |
+| shape_count | 1 |
+| point_count | 117 |
+| extent | 16.5039 x 17.8909 x 173.9681 |
+| min.z | -96.92411 |
+
+Status: build-tested and fixture-tested on one model. Not bound; step 3 is the units lane.
+
+### 49.9 Section 49.6 settled: no path builds the hull body without the model (reading (a))
+
+This is the discriminating read 49.6 named, done on the disk bytes and the Ghidra listing of `00937C90`
+(`local/output/ghidra-disasm-00937c90-lines-2200-*.txt` in cc9-gunnery10).
+
+**No guard inside `00937C90`.** Every conditional or unconditional jump in the function was listed with
+its source and target:
+- **Before `0093856C`.** No jump reaches past the first model read (`0093856C`) or the walk
+  (`00938F28`), except two kinds. One is `009381AC JMP 00938D5D`, the entry jump of a rotated loop
+  whose body is `009381B1..00938D5C` (the disk bytes confirm it). The others are two loop exits,
+  `009384A6 JZ` and `009384B7 JNC` to `0093873C`, which land before the walk.
+- **Between the first model read and the walk.** No jump from `0093856C..00938F28` goes past
+  `00938FB9`.
+- **Before `0093856C` generally.** No instruction reads `+354h`, `+360h`, `+160h` or a model `+50h`.
+- **Consequence.** The walk (`00938F1C..0093918C`) is on every path to the hull-body tail
+  (`009399C0..`). With `[unit+360h]` null it takes `00938F93 XOR ECX,ECX` and then reads
+  `[0Ch]` at `00938F9D`. The function has an unwind frame and no catch, so that is an access violation.
+
+**No guard in the callers.**
+- **The controller constructor.** `00937C90` has one caller, `CALL 00939E2A`, in the controller
+  constructor `00939CB0` (body `00939CB0..00939E43`), which contains no jump at all.
+- **Who reaches the constructor.** `00939CB0` is called by `0080DEF9`
+  (`BSP_UnitInstance_CreateMotionController 0080DEC0`, whose only test is the `operator new(390h)`
+  result at `0080DEEA`) and by the variant constructors `00939E72`, `00939F28` and `00939F48`.
+- **Dispatch.** `0080DEC0` is reached only through six vtable slots (`00CF92E0`, `00CFA9A8`,
+  `00CFB968`, `00CFC600`, `00D01860`, `00D098A8`).
+
+**Conclusion.** In the image, every unit whose motion controller is constructed builds its hull body
+after reading a non-null model at `[unit+360h]+160h`. So the native hull body always has the
+record-0 shapes that `0071B710` published. Reading (b) is refuted. Reading (a) holds:
+`class+50h`, or `unit+360h` by some other path, has a writer that MODEL_REACHES_UNIT's scans did not
+find. **That writer is still not located**, and it is not needed for step 3.
+
+**For step 3 this means:**
+- binding the shape box is faithful for every hull class with a root ConvexObject;
+- for the 40 classes without one (49.5), the native body box is the union over an empty shape set.
+  How `00939A89` and `00C37E70` treat that seed (`+FLT_MAX`/`-FLT_MAX`) is not read, so leaving
+  those inputs at zero is a host choice, and it is flagged.
+
+### 49.10 The empty shape set: zero extent, zero inertia, zero inverse (packet `cc9_empty_hull_box_seed`)
+
+**The `FLT_MAX` seed is never what an empty body keeps.** SHIP_HULL_SHAPES had read that a body with
+no shape never reaches the union `00C55FC0`: all six of its callers run with a shape already linked.
+This packet confirms what the body holds instead, and what the inertia path does with it.
+- **The box is exactly zero.** The body initialiser `00C43CA0` (`Dyn_Body_InitFromDescriptor`) zeroes
+  XMM0 at its entry (`00C43CA1 XORPS XMM0,XMM0`). Filtering its listing for XMM0 shows no later
+  write, only stores and `COMISS` reads. So `B+38h..+40h` and `B+44h..+4Ch` are stored as `0.0f` at
+  `00C43D22..00C43D41` and again at `00C43E5E..00C43E77`.
+- **No early out in the inertia block.** `00939A80..00939C10` contains three calls: `00C31F90` at
+  `00939A89` (the box read-back), `00424C40` at `00939B27` (the settings singleton, for `mul`) and
+  `00C37E70` at `00939C05`. It contains no conditional jump. With a zero box the extent is (0, 0, 0)
+  and every inertia component is `mul * Mass/12 * 0 = 0`.
+- **Zero maps to zero.** `00C37E70` (`Dyn_Body_SetInertia`, `__thiscall(body, const float[3])`,
+  `RET 4`) stores `0.0f` for any component that compares equal to zero (the `UCOMISS` and `JNP`
+  pair) and `1/x` otherwise. So the inverse inertia at `M+54h..+5Ch` is (0, 0, 0): the hull never
+  rotates under a torque.
+
+**The rule for lua11's step 3.** When `read_mmod_hull_convex_box` returns `shape_count == 0`, leave
+`aabb_min`, `aabb_max` and `shape_count` at their zero defaults. That is the native result, not a host
+choice; the flag in 49.9 is withdrawn.
+
+**One exception the reader does not cover: the periscope shape.** `009396BA..009399BF` adds one more
+shape to the same body under three conditions: `class+510h <= 0`, `class+514h <= 0`, and a node found by
+the name `periszkop` (`00D0C1F0`, `0071AD50` at `009396D8`). Its geometry is the `model+4Ch` pair whose
+node is that node (`00939843`: `[pair+4] == [ESP+18h]`). It is placed by the node's local matrix, with
+a real rotation (SHIP_HULL_SHAPES, "The periscope shape"). In this installation five models have such an
+item, and each owns a ConvexObject:
+
+| model | item |
+| --- | --- |
+| `i-400` | `i-400:periszkop nolod` |
+| `kaiten` | `kaiten:periszkop` |
+| `minisub` | `minisub:periszkop nolod` |
+| `type7` | `type7:periszkop nolod` |
+| `type_b` | `type_B:periszkop` |
+
+All five have no root ConvexObject. Whether `0071AD50` finds them depends on the unread name key form
+(49.5): the full `Model:item` name, the part after the colon, or neither, and whether the
+` nolod` suffix matters. So for these five classes the native box may be the periscope shape's box
+alone, which is small and gives a non-zero inertia. That is left as a flag for step 3, not bound.
+
+## 50. Handoff (cc9-gunnery10, 2026-09-28, at about 75% context)
+
+### 50.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| GAME_EXECUTABLE, "Mission reference baselines, 2026-09-28 k (main 5aaa4948a)" | `cc9_reference_rebaseline_11` | reference k: thirteen rows, twenty switches attributed by thirteen leave-one-out exports and three group exports; `reports/cc9_reference_rebaseline_11.json` |
+| the same section | `cc9_e2_tail_attribution` | the E2 tail is USN04's move displaced across 225 s; the carried flag is closed |
+| 49.1 to 49.3, 49.5 | `model_collision_records` | the ConvexObject parse builds the Dyn hull; `model+4Ch` is written by `0071B710`; `model+0Ch` is hierarchy record 0 |
+| 49.7, 49.8 | `cc9_mmod_hull_convex_box` | `read_mmod_hull_convex_box` is implemented and fixture-tested on `deruyter.mmod`; binding it is step 3 (lua11) |
+| 49.9 | 49.6's read | no path builds the hull body without the model (reading (a)) |
+| 49.10 | `cc9_empty_hull_box_seed` | an empty shape set is native zero extent, zero inertia and zero inverse inertia |
+| SHIP_AI_OPEN_ITEMS 15 | - | the "reference k replaces j" note |
+
+### 50.2 Open items this worker found or left
+
+- **The name lookup's key form.** `0071AD50` looks names up in a sorted map through `0071AAE0`.
+  What key it uses (the full `Model:item` name, or the part after the colon) and how it compares
+  (case, and the ` nolod` suffix) are unread. This decides two things:
+  - whether owners `firstnode`, `front` and `back` can ever match (49.5);
+  - whether the periscope shape attaches for the five Japanese submarine models (49.10).
+- **The `class+50h` writer** (or `unit+360h` by another path). 49.9 proves one exists; it is not located.
+- **The 40 zero-root classes** (49.5). The native answer for their box is zero (49.10), except the
+  periscope case above.
+- **Reference l's first flags.** These are the switches that went ON after `5aaa4948a`, listed in
+  SHIP_AI_OPEN_ITEMS 15. There are twelve, and cc9-lua11's step-3 binding will add one.
+- **Reference k's unseparated items:**
+  - JM06's US Cargo Transport 02 survival, redundant inside the ship-AI group;
+  - the identity group's move of one plane (PBY Catalina 01) on JM06;
+  - the JM05 and USN12 path moves inside the ship-AI group.
+
+### 50.3 Tools in the cc9-gunnery10 tree (`local\`)
+
+- **`g10_runs.ps1 -V <prefix> -Only <rows>`.** Runs reference k's rows, plus `lomp10l` (LOMP10
+  9200/9000) and `smoke`. The binary is `local\<prefix>\build\win32\Release\bsp_game.exe`.
+- **`g10_wait.ps1 -Logs <names>`.** A foreground wait on the final COM release.
+- **`g10_retry.ps1`.** Waits, runs one 300-frame smoke, and reports OK or FAIL for the session.
+- **`g10_rerun.ps1`.** Relaunches every `rb11*` log that has no final COM release.
+- **`g10_loo.ps1 -Specs v:kA,kB [-Parallel]`.** Builds a `pair_export` of `5aaa4948a` with switches OFF.
+  `g10_wexp.ps1 -V <v>` waits for such builds.
+- **`g10_matrix.py <variants>`.** `pair_diff` of each variant against k per row, into
+  `g10_matrix.json`.
+- **`g10_rows.py`.** k's rows against j. `g10_cmp.ps1` gives `pair_diff` headlines.
+- **`g10_tail.py`.** The E2 tail (E2 minus USN04) per variant.
+- **`g10_mmod_tree.py <model> top|at|hier|rootbox|convex`.** The `.mmod` chunk tree, the hierarchy
+  items with their ConvexObjects, and the root box census (`g10_rootbox.txt`).
+- **`g10_str.py <strings>`.** The VA of an ASCII string in the installed executable.

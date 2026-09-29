@@ -989,4 +989,74 @@ struct ShipAiQueryGateBytes {
 ShipAiQueryGateBytes ship_ai_query_gate_bytes_009f2ac9(const ShipAiTorpedoStandoffInputs& in,
                                                        ShipAiQueryGateHost& host);
 
+// ---------------------------------------------------------------------------
+// The mode latch nested+1234h (packet cc9_approach_mode_latch)
+// ---------------------------------------------------------------------------
+//
+// docs/SHIP_AI_OPEN_ITEMS.md section 26. 009F1DBF..009F2124 of 009F1BC0, read
+// whole. 009F1DBF-009F1E12 split the raw target brain+0B20h: ESI = the target
+// when it answers vtable[5Ch](6) (a ship), else 0; EBX = the target when it
+// answers vtable[5Ch](1Ch) (a command building), else 0. 009F1E25 loads EDI = 2
+// before 009F1E30 JE 009F2003 takes the no-ship path, so 009F2022 and 009F2112
+// store mode 2 (the approach doc's "value 2 is never assigned" was wrong).
+//
+// Ship target (ESI != 0), after the approach point (009F1E36..009F1F45):
+//   009F1F47..009F1F7D: the unit does not answer kind 8 (saved at 009F1D0F),
+//   the target does, the point was not displaced (BL, 009F1F09 / 009F1F45) and
+//   00827F70(brain+0AACh) answers false; then 009F1FC3 00811A30(unit, 1.0) *
+//   (2.1f 00D0B3C8 when the mode already is 1, else 1.9f 00D21A94) against
+//   nested+11E0h, FCOMIP then JBE: mode 1 and nested+11F0h =
+//   00415510(&11F0h, &11E0h) when the product is greater, else mode 0. Both
+//   jump to 009F272D: the retarget arm 009F2124 does not run.
+// No ship target (ESI == 0):
+//   no building target: mode 0 (009F2005 -> 009F211A);
+//   the building on the unit's side ([unit+54h] == [target+54h], 009F201D):
+//     mode 2;
+//   otherwise when [brain+0AACh]->vtable[2Ch]() (the troop-landing trait,
+//   009F2037): R = 00415550(&300.0f 00CE3AE8, &(2 * 00811A30(unit, 1.0)));
+//     mode 3 when the unit answers kind 0Ch, 006F2D90(target) holds and
+//     (double)[target+7C4h] + R >= nested+11E0h (009F20AE FCOMIP, JB -> 4),
+//     else mode 4; then when 0.0 > nested+121Ch (009F20CD COMISS, JBE skips)
+//     nested+11D6h = 0 and nested+11D8h = nested+121Ch = 1.0f (00D7A24C);
+//   otherwise mode 2 when [target+54h] == 2 (009F210E CMP ECX,EDI), else 0.
+//   Then 009F2124: the retarget arm runs when nested+11D6h is clear.
+struct ShipAiApproachLatchInputs {
+    bool target_is_ship_06{false};       // 009F1DD5
+    bool target_is_building_1c{false};   // 009F1DF5
+    bool unit_is_kind_08{false};         // 009F1D0F, [ESP+2Fh]
+    bool target_is_kind_08{false};       // 009F1F5B
+    bool point_displaced{false};         // BL
+    bool class_small_surface_00827f70{false}; // 009F1F76
+    float turn_radius_00811a30{0.0f};    // 00811A30(unit, 1.0), 009F1FC3 / 009F2053
+    int unit_side_0054{0};
+    int target_side_0054{0};
+    bool class_lands_troops_vtable_2c{false};  // 009F203A
+    bool unit_is_kind_0c{false};         // 009F208D
+    bool target_free_landing_spot_006f2d90{false}; // 009F2095
+    std::int32_t target_radius_07c4{0};  // 009F20A4 FILD
+};
+
+struct ShipAiApproachLatchResult {
+    ShipAiApproachMode mode{ShipAiApproachMode::free_0};
+    float turn_radius_11f0{0.0f};  // unchanged unless the mode-1 arm clamps it
+    bool retarget_reset{false};    // 009F20DE..009F20ED
+    bool retarget_arm_reachable{false};  // the path falls to 009F2124
+};
+
+inline constexpr float kApproachSubHoldScaleHeld = 2.1f;     // 00D0B3C8
+inline constexpr float kApproachSubHoldScaleEnter = 1.9f;    // 00D21A94
+inline constexpr float kApproachLandingReachFloor = 300.0f;  // 00CE3AE8
+inline constexpr float kApproachRetargetReset = 1.0f;        // 00D7A24C
+
+// Reads nested+1234h, +11E0h, +11F0h and +121Ch; writes nothing.
+ShipAiApproachLatchResult ship_ai_approach_mode_latch_009f1f47(
+    const ShipAiApproachState& state, const ShipAiApproachLatchInputs& in) noexcept;
+
+// True: the frame state stores the latch (mode, the mode-1 clamp of +11F0h, the
+// retarget reset). False: nested+1234h stays 0 (mode 0 on every frame), as it
+// has been. The latch is computed and counted on both sides.
+// ON (2026-09-28): four identical pairs; every measured frame latches mode 0, so
+// modes 1 to 4 are not exercised by any reference row (section 26).
+inline constexpr bool kShipAiApproachModeLatchBound = true;
+
 } // namespace bsp

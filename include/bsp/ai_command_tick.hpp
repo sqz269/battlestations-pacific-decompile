@@ -59,6 +59,11 @@ inline constexpr int kAiSceneCommandFlags = 1;
 inline constexpr std::uint32_t kAiOrderIssueDistanceSquaredAddress = 0x00D21530u;
 inline constexpr float kAiOrderIssueDistanceSquared = 6400.0f;  // 80 m squared
 
+// 00A020C3 FLD [00CE38C8] (00 00 F0 41), pushed as 00417B10's margin at
+// 00A020D0; 00A020CD PUSH 1 is its containment-test flag.
+inline constexpr std::uint32_t kAiOrderAvoidZoneMarginAddress = 0x00CE38C8u;
+inline constexpr float kAiOrderAvoidZoneMargin = 30.0f;
+
 // The tuning fields the ticks read live in bsp/ai_tuning_globals.hpp, which
 // packet cc8_ai_command_inputs taught the loader to fill:
 // kAiTuningCautionMoveDist (+1F0h) and kAiTuningCloseAttackCollectDist (+1F4h).
@@ -78,6 +83,15 @@ bool ai_order_bridge_accepts_00a02020(bool is_plane_squadron, bool squadron_excl
 // forced to zero; anything else goes straight to the requested point.
 enum class AiOrderBridgePoint { Direct, AvoidZoneOffset };
 AiOrderBridgePoint ai_order_bridge_point_00a02020(bool is_ship_base) noexcept;
+
+// Whether 00A02020 reaches its 00417B10 call at 00A020F0: the class gate
+// passed, the member is at least 80 m from the point (00A020A2 JA skips the
+// order) and 00A020B1's second vtable[+5Ch](6) answered a ship. The ticks ask
+// the avoid-zone point only then, as the image does.
+bool ai_order_bridge_takes_zone_point_00a02020(bool is_plane_squadron,
+                                               bool squadron_excluded, bool is_ship_base,
+                                               const float member_position[3],
+                                               const float target[3]) noexcept;
 
 // The descriptor 00A02020 builds: kind 0 (a position), position_valid 1,
 // object_id 0, object null, trailing 0, and the point above.

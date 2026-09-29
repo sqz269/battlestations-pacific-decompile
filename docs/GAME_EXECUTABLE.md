@@ -11983,7 +11983,33 @@ on that row.
 - Dead-plane OFF: 863 / 11650, 4 of 16 / 5 of 19. Party replan OFF: 877 / 12662, 11520.0, 0 / 0.
   Yaw-rate OFF: 858 / 11234, 14461.2, 3 of 16. Follow station point OFF moves only the Lexington
   (7289.31 m).
-- The tail after frame 4500 is still unpaired (carried from i and j).
+- **The tail after frame 4500 is attributed** (packet `cc9_e2_tail_attribution`, added after the
+  runs). The runs are deterministic, and E2's death rows before 225 s equal USN04's for the same
+  binary, for both k and n0. So E2 minus USN04 is the tail. Here is its change from j to k:
+
+  | frames 4500 to 9000 | deaths | hit records | hull hits | shots | damage | dive-bomb releases | plane water contacts |
+  | --- | --- | --- | --- | --- | --- | --- | --- |
+  | j | 11 | 112 | 27 | 1593 | 1727.3 | 2 | 8 |
+  | k | 12 | 149 | 31 | 1967 | 2021.9 | 0 | 4 |
+
+  - **Most of it is USN04's move, displaced across the 225 s boundary.** The four planes that k no
+    longer kills before 225 s die in the tail instead, between 236 and 295 s: D3A Val #3.1|.-2 and
+    .-3, A6M Zero #7.2 and D3A Val #7.1|.-4. The three that k now kills early leave it: D3A Val
+    #1.1|.-4, A6M Zero #8.2|.-2 and #5.2|.-2. Over the whole run E2 keeps j's 51 deaths, and its hit
+    records go only 861 -> 860. The 38 fewer first-half hit records reappear as 37 more in the tail.
+  - **What genuinely moves over the whole run** is the plane attacks. Shots are 12105 -> 11455. Damage
+    is 15075.1 -> 12158.7, as the torpedo and dive releases fall to 1 of 16 and 0 of 19. These belong
+    to the three landings named for USN04: dead-plane think, party replan and yaw-rate.
+  - **No landing owns the tail alone.** Single leave-one-out variants give 151 to 163 hit records.
+    The two group exports interact:
+
+    | export | switches ON | tail deaths / hit records / shots |
+    | --- | --- | --- |
+    | `nsai` | the rest only | 10 / 114 / 1555 |
+    | `ncomp` (`616C32269265`) | the ship-AI group only | 11 / 165 / 2052 |
+    | k | both | 12 / 149 / 1967 |
+
+    Either group alone removes the tail's two dive releases.
 
 **USN01 (3000).** 5 / 516 / 1534, 2833.5, 2 of 5 torpedo releases, ScoutDauntless 4244.02 m became
 **5 / 474 / 1480, 2831.2, 0 of 5, 3904.93 m**. Three landings split it:
@@ -12123,7 +12149,8 @@ in k's rows. They were not exported here.
   - **The LOMP10 dive-bomb task row disappears** under the land task: k has no dive-bomb task line.
   - **The unimplemented counts fall** on eleven of twelve j rows.
 - **Carried from j:**
-  - **E2 after frame 4500 is unpaired.**
+  - **E2 after frame 4500 is attributed** (above): the tail's move is USN04's first-half move
+    displaced across 225 s, and the full run keeps j's deaths. It is no longer a flag for l.
   - The reload feed's move of USN04 and E2, recorded in i, is not bisected into the plane tasks.
   - JM06 and JM08 were not paired against the earlier gunnery flips (immediate fire, AA tests, wave
     order, torpedo swim).

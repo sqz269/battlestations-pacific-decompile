@@ -4703,6 +4703,69 @@ public:
                           GameShipAiRow& row, std::size_t index)
         : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
 
+    // Packet cc9_approach_mode_latch, 009F1DBF..009F2124. The inputs the host
+    // cannot produce are LABELLED: the point is never displaced (no target zone
+    // object, 009F1E36), 00827F70 asks the unit's own kinds 0Eh / 0Ch the way
+    // the neighbour binding does and reads BigLandingShip (class+808h) as 0,
+    // 006F2D90 (a free landing spot on the building, [target+794h] list) is
+    // false and [target+7C4h] is 0. So a lander is always in mode 4.
+    void run_mode_latch() {
+        GameShipAiSummary& s = owner_.summary;
+        ++s.latch_frames;
+        bsp::ShipAiApproachLatchInputs in;
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        const bool target_known = t != 0u && t - 1u < owner_.units.count();
+        const std::size_t target = target_known ? static_cast<std::size_t>(t - 1u) : 0u;
+        if (target_known) {
+            in.target_is_ship_06 = owner_.units.unit_is_kind_of(target, 6);
+            in.target_is_building_1c = owner_.units.unit_is_kind_of(target, 0x1c);
+            in.target_is_kind_08 = owner_.units.unit_is_kind_of(target, 8);
+            in.target_side_0054 = owner_.units.unit_side_0054(target);
+        }
+        in.unit_is_kind_08 = owner_.units.unit_is_kind_of(index_, 8);
+        in.unit_is_kind_0c = owner_.units.unit_is_kind_of(index_, 0x0c);
+        in.unit_side_0054 = owner_.units.unit_side_0054(index_);
+        in.class_small_surface_00827f70 = owner_.units.unit_is_kind_of(index_, 0x0e) ||
+            owner_.units.unit_is_kind_of(index_, 0x0c);
+        in.class_lands_troops_vtable_2c = owner_.units.unit_class_lands_troops_vtable_2c(index_);
+        if (kApproachTurnRadiusBound) {
+            in.turn_radius_00811a30 =
+                owner_.units.unit_class_turn_circle_radius_0082e960(index_, 1.0f);
+        }
+        const bsp::ShipAiApproachLatchResult r =
+            bsp::ship_ai_approach_mode_latch_009f1f47(ctl_.approach, in);
+        if (!target_known) ++s.latch_no_target;
+        else if (in.target_is_ship_06) ++s.latch_ship_target;
+        else if (in.target_is_building_1c) ++s.latch_building_target;
+        else ++s.latch_other_target;
+        if (in.target_is_ship_06 && in.target_is_kind_08 && !in.unit_is_kind_08) {
+            ++s.latch_sub_target;
+        }
+        if (!in.target_is_ship_06 && in.target_is_building_1c) {
+            if (in.unit_side_0054 == in.target_side_0054) ++s.latch_building_same_side;
+            else if (in.class_lands_troops_vtable_2c) ++s.latch_building_lander;
+        }
+        ++s.latch_modes[static_cast<int>(r.mode)];
+        if (r.turn_radius_11f0 != ctl_.approach.turn_radius_11f0) ++s.latch_clamps;
+        if (r.retarget_reset) ++s.latch_resets;
+        if (r.retarget_arm_reachable) {
+            ++s.latch_retarget_reachable;
+            if (!(r.retarget_reset ? false : ctl_.approach.flag_11d6)) ++s.latch_retarget_entries;
+        }
+        if (!bsp::kShipAiApproachModeLatchBound) {
+            owner_.record("ShipAiApproach::mode_latch", 0x009f1f47u);
+            return;
+        }
+        owner_.done("ShipAiApproach::mode_latch", 0x009f1f47u);
+        ctl_.approach.mode_1234 = r.mode;
+        ctl_.approach.turn_radius_11f0 = r.turn_radius_11f0;
+        if (r.retarget_reset) {
+            ctl_.approach.flag_11d6 = false;
+            ctl_.approach.retarget_timer_11d8 = bsp::kApproachRetargetReset;
+            ctl_.approach.timer_121c = bsp::kApproachRetargetReset;
+        }
+    }
+
     void frame_state_009f1bc0(float seconds) override {
         // 009F309B. The projection covers 009F1BC0-009F1DBF and
         // 009F1E60-009F1F47: the frame timers, the planar range to the
@@ -4717,6 +4780,7 @@ public:
         const int committed_before = ctl_.approach.committed_slot_11e8;
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
                                                    seconds, point);
+        run_mode_latch();
         // Packet cc8_ship_ai_committed_slot: 009F28F1, the one per-frame writer
         // of nested+11E8h. Counted here because the store is the last act of
         // the projection.
@@ -9916,6 +9980,35 @@ void GameShipAiHost::store_fire_target_00836240(std::size_t unit, std::size_t ta
     impl_->done("WeaponDirector::store_fire_target", 0x00836240u);
 }
 const GameShipAiSummary& GameShipAiHost::summary() const noexcept { return impl_->summary; }
+bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const float in_xz[2],
+                                                     float margin, float out_xz[2]) {
+    // 00A020B7 ECX = [unit+538h]; 00A020BD PUSH EBX, which is 0 from 00A0204E;
+    // 0082ADA0 reads [class+EBX*4+560h] and tail-jumps to 004120D0. The class
+    // field is the controller's leaf_tuning[0], as the follower's 009DF41A reads.
+    if (!impl_->zones.ready() || unit >= impl_->controllers.size()) return false;
+    if (impl_->controllers[unit].generated_non_ship) return false;
+    const std::uint32_t group =
+        impl_->zones.group_for_layer(impl_->controllers[unit].leaf_tuning.array[0]);
+    if (group == 0u) return false;
+    // 00A020CD PUSH 1 (the containment test), 00A020D0 the margin from 00CE38C8.
+    const std::array<float, 2> out =
+        impl_->zones.offset(group, {in_xz[0], in_xz[1]}, margin, true);
+    ++impl_->summary.ai_command_zone_points;
+    if (out[0] != in_xz[0] || out[1] != in_xz[1]) ++impl_->summary.ai_command_zone_points_moved;
+    if (impl_->summary.ai_command_zone_points <= 16u) {
+        impl_->log.notef("  ship ai command zone point diag unit=%u layer=%d group=%u "
+            "in=(%.2f, %.2f) out=(%.2f, %.2f) shift=%.2f",
+            static_cast<unsigned>(unit),
+            static_cast<int>(impl_->controllers[unit].leaf_tuning.array[0]),
+            static_cast<unsigned>(group), in_xz[0], in_xz[1], out[0], out[1],
+            std::sqrt((out[0] - in_xz[0]) * (out[0] - in_xz[0]) +
+                      (out[1] - in_xz[1]) * (out[1] - in_xz[1])));
+    }
+    out_xz[0] = out[0];
+    out_xz[1] = out[1];
+    impl_->done("AiCommand::avoid_zone_offset_point", 0x00417b10u);
+    return true;
+}
 
 void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long long interval) {
     Impl& host = *impl_;
@@ -10368,6 +10461,21 @@ void GameShipAiHost::report() {
         host.summary.follow_zone_sets, host.summary.follow_pushes,
         host.summary.follow_pushes_moved, host.summary.follow_leader_turning,
         kShipFollowStationPointBound ? 1 : 0);
+    host.log.notef("summary mission ship ai approach latch frames=%llu no_target=%llu "
+        "ship=%llu sub=%llu building=%llu same_side=%llu lander=%llu other=%llu "
+        "modes=%llu/%llu/%llu/%llu/%llu clamps=%llu resets=%llu retarget_reachable=%llu "
+        "retarget_entries=%llu bound=%d (009F1DBF..009F2124, packet cc9_approach_mode_latch)",
+        host.summary.latch_frames, host.summary.latch_no_target, host.summary.latch_ship_target,
+        host.summary.latch_sub_target, host.summary.latch_building_target,
+        host.summary.latch_building_same_side, host.summary.latch_building_lander,
+        host.summary.latch_other_target, host.summary.latch_modes[0],
+        host.summary.latch_modes[1], host.summary.latch_modes[2], host.summary.latch_modes[3],
+        host.summary.latch_modes[4], host.summary.latch_clamps, host.summary.latch_resets,
+        host.summary.latch_retarget_reachable, host.summary.latch_retarget_entries,
+        bsp::kShipAiApproachModeLatchBound ? 1 : 0);
+    host.log.notef("summary mission ship ai command zone points answered=%llu moved=%llu "
+        "(00A020BE / 00A020F0, packet cc9_ai_command_avoid_zone_point)",
+        host.summary.ai_command_zone_points, host.summary.ai_command_zone_points_moved);
     host.log.notef("summary mission ship ai free bearing scan_calls=%llu arm_calls=%llu "
         "unready=%llu empty=%llu refills=%llu ahead_hits=%llu corner_fwd=%llu corner_back=%llu "
         "lateral_turns=%llu short_legs=%llu answers=%llu bound=%d (009DC2E0 at 009EC0C1 / "

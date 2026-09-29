@@ -76,6 +76,18 @@ namespace bsp::game {
 // ON (2026-09-28): JM06 moves by the 200 lander asks; five rows identical (section 19).
 inline constexpr bool kTroopLandingTraitBound = true;
 
+// Packet cc9_ai_command_avoid_zone_point (rank 4 of docs/SHIP_AI_OPEN_ITEMS.md
+// section 16). True: 00A02020's ship arm asks the ship-AI host's avoid-zone runtime,
+// 0082ADA0([unit+538h], 0) at 00A020BE for the group of [class+560h] and 00417B10
+// at 00A020F0 with margin 30.0 (00CE38C8) and the containment test (PUSH 1), so a
+// ship ordered to a point inside an avoid zone is sent to the pushed-out point
+// (GameShipAiHost::avoid_zone_offset_point_00a020f0). False: the requested point
+// itself. Asked on both sides only where the image reaches 00A020F0.
+// ON (2026-09-28): the AI orders its groups at points inside avoid zones, and they
+// are pushed 436 to 934 m out of them; four rows move (docs/SHIP_AI_OPEN_ITEMS.md
+// section 25).
+inline constexpr bool kAiCommandAvoidZonePointBound = true;
+
 inline constexpr bool kObjectiveKindBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 9.5)
 
 // game+21A4h..+21C0h: the eight per-player-slot objective sets 00A2C450 walks.
