@@ -132,6 +132,16 @@ struct GameCommandRow {
 // ON 2026-09-28 (section 21): gameplay identical on USN02, USN04, USN13, USN01, JM06.
 inline constexpr bool kDirectorTargetChecksBound = true;
 
+// Packet cc9_command_extra_tests (docs/GUNNERY_OPEN_ITEMS.md section 70). 0071D6D0's tail
+// 0071D71F..0071D76C, reached after the target checks and on the no-target returns:
+//   torpedo (00E08F18): 009229F0(00521EA0(target), 6) must hold: the entity is kind 6, or
+//     kind 1Bh with a FakedType (class+178h) of 7, 8, 0Ah, 0Bh, 0Dh or 0Eh (00922990);
+//     a null entity refuses.
+//   moveonpath (00E08F80): with an object descriptor (+0h != 0), 007AC9D0(entity) must be
+//     non-null: the entity is a path kind (47h Path, 48h, 49h, 4Ah CameraPath).
+// OFF: both are records and the command is accepted.
+inline constexpr bool kCommandExtraTestsBound = false;
+
 // Packet cc9_set_command_queue_delay (docs/GUNNERY_OPEN_ITEMS.md sections 25-26).
 // In a local session every director message goes through 0077C2A0, whose
 // routing flags 7 with [[00E188A8]+1FE4h] == 0 take 0077C44D: 0076E520 posts it
@@ -260,6 +270,15 @@ struct GameCommandsSummary {
     // Packet cc9_director_target_checks. Counted in both builds; OFF counts what
     // the bound path would have done.
     unsigned long long target_refusals{0};      // 0071D712: pushes a released target refused
+    // Packet cc9_command_extra_tests; counted on both sides of the switch.
+    unsigned long long torpedo_tests{0};
+    unsigned long long torpedo_refused_null{0};      // no entity (a position or unresolved)
+    unsigned long long torpedo_refused_kind{0};      // an entity neither kind 6 nor a ship-faked fort
+    unsigned long long torpedo_fort_unread{0};       // kind 1Bh: FakedType not held here
+    unsigned long long torpedo_class_unknown{0};     // class id -1: accepted, labelled
+    unsigned long long path_tests{0};
+    unsigned long long path_refused_unit{0};         // the object is a unit, never a path kind
+    unsigned long long path_non_unit{0};             // not a unit: taken as a path, labelled
     unsigned long long release_deliveries{0};   // 0071DDB0 bodies (one per death)
     unsigned long long release_slot_matches{0}; // slots whose target was the released entity
     unsigned long long release_head_ends{0};    // slot 0: 0071D810(2) at 0071DE74

@@ -221,6 +221,57 @@ struct GameCommandsHost::Impl {
         return resolved != 0u && resolved - 1u < released_05d.size()
             && released_05d[resolved - 1u] != 0;
     }
+    // Packet cc9_command_extra_tests: 0071D71F..0071D76C, the answer 0071D6D0 gives
+    // once the target checks passed (or were not required).
+    bool command_extra_test_0071d71f(std::uint32_t command,
+                                     const bsp::SceneCommandTarget& target) {
+        if (command == 0x00e08f18u) {                                 // 0071D71F
+            ++summary.torpedo_tests;
+            // 0071D729 00521EA0, then 009229F0(entity, 6).
+            const std::uint32_t resolved = resolve_target_00521ea0(target);
+            bool accept = false;
+            if (resolved == 0u || resolved - 1u >= units.size()) {
+                ++summary.torpedo_refused_null;                       // 009229F8
+            } else {
+                const int class_id = units[resolved - 1u].class_id;
+                if (class_id < 0) {
+                    // LABELLED: no class id to test; accepted and counted.
+                    ++summary.torpedo_class_unknown;
+                    accept = true;
+                } else if (bsp::unit_is_kind_of(class_id, 6)) {      // 00922A00
+                    accept = true;
+                } else if (bsp::unit_is_kind_of(class_id, 0x1b)) {   // 00922A14
+                    // 00922990([class+178h] FakedType, 6). LABELLED: this host holds no
+                    // FakedType; the authored default 1Bh is outside the set, so refused.
+                    ++summary.torpedo_fort_unread;
+                } else {
+                    ++summary.torpedo_refused_kind;
+                }
+            }
+            if (!kCommandExtraTestsBound) {
+                record("WeaponDirector::command_extra_test_torpedo", 0x009229f0u);
+                return true;
+            }
+            done("WeaponDirector::command_extra_test_torpedo", 0x009229f0u);
+            return accept;
+        }
+        if (command == 0x00e08f80u && target.kind != 0) {             // 0071D73E..0071D749
+            ++summary.path_tests;
+            // 0071D74D 00521EA0, then 007AC9D0: a path kind (47h..4Ah). SUBSTITUTION: this
+            // host resolves units only, and no unit is a path kind; a descriptor that names
+            // no unit is taken as the authored Path it carries.
+            const std::uint32_t resolved = resolve_target_00521ea0(target);
+            const bool accept = resolved == 0u;
+            if (accept) ++summary.path_non_unit; else ++summary.path_refused_unit;
+            if (!kCommandExtraTestsBound) {
+                record("WeaponDirector::command_extra_test_path", 0x007ac9d0u);
+                return true;
+            }
+            done("WeaponDirector::command_extra_test_path", 0x007ac9d0u);
+            return accept;
+        }
+        return true;                                                   // 0071D76D
+    }
     // Milestone 2m. One navigator parameter block per unit, the 0081f283
     // allocation at *(unit+73Ch). Only the commanded-speed pair at +24h / +28h
     // has a recovered producer, and it is the pair the director's stage reset
@@ -1026,13 +1077,11 @@ public:
         const bsp::EntityOrderCommandClass* klass = chain_.owner.class_of(command);
         chain_.owner.done("WeaponDirector::command_allowed", 0x0071d6d0u);
         if (klass == nullptr) return false;
-        if (command == 0x00e08f18u || command == 0x00e08f80u) {
-            chain_.owner.record("WeaponDirector::command_allowed_extra_test",
-                (command == 0x00e08f18u) ? 0x009229f0u : 0x007ac9d0u);
+        if (!klass->requires_target) {
+            return chain_.owner.command_extra_test_0071d71f(command, target);  // 0071D6E5
         }
-        if (!klass->requires_target) return true;
         if (target.position_valid != 0 && klass->category != 1 && klass->category != 2) {
-            return true;
+            return chain_.owner.command_extra_test_0071d71f(command, target);  // 0071D6FE
         }
         if (target.object == nullptr) return false;
         // 0071D70B..0071D716: 00521EA0 again, then CMP byte ptr [EAX+5Dh],0;
@@ -1043,10 +1092,11 @@ public:
         if (released) ++chain_.owner.summary.target_refusals;
         if (!kDirectorTargetChecksBound) {
             chain_.owner.record("WeaponDirector::target_refuses_commands", 0x0071d74au);
-            return true;
+            return chain_.owner.command_extra_test_0071d71f(command, target);
         }
         chain_.owner.done("WeaponDirector::target_refuses_commands", 0x0071d712u);
-        return !released;
+        if (released) return false;                                    // 0071D718
+        return chain_.owner.command_extra_test_0071d71f(command, target);
     }
     bool normalize_self_target(std::uint32_t command,
         bsp::SceneCommandTarget& target) override {
@@ -3334,16 +3384,14 @@ bool GameCommandsHost::command_accepts_target_0071d6d0(std::uint32_t command,
     }
     const bsp::EntityOrderCommandClass* klass = host.class_of(command);
     if (klass == nullptr) return false;
-    if (command == 0x00e08f18u || command == 0x00e08f80u) {
-        host.record("WeaponDirector::command_allowed_extra_test",
-            (command == 0x00e08f18u) ? 0x009229f0u : 0x007ac9d0u);
-    }
-    if (!klass->requires_target) return true;          // 0071D6E5
+    if (!klass->requires_target)                       // 0071D6E5
+        return host.command_extra_test_0071d71f(command, target);
     if (target.position_valid != 0 && klass->category != 1 && klass->category != 2)
-        return true;                                   // 0071D6EB..0071D6FE
+        return host.command_extra_test_0071d71f(command, target);  // 0071D6EB..0071D6FE
     const std::uint32_t resolved = host.resolve_target_00521ea0(target);  // 0071D702
     if (resolved == 0u) return false;                  // 0071D709
-    return !host.target_released_05d(resolved);        // 0071D712
+    if (host.target_released_05d(resolved)) return false;  // 0071D712
+    return host.command_extra_test_0071d71f(command, target);
 }
 
 float GameCommandsHost::director_target_hold_0040(std::size_t unit_index) const {
@@ -3590,6 +3638,13 @@ void GameCommandsHost::report() {
         host.summary.release_head_ends, host.summary.release_slot_clears,
         host.summary.release_slot_kept, host.summary.release_plane_matches,
         host.summary.target_refusals);
+    host.log.notef("summary mission director extra tests bound=%d torpedo=%llu null=%llu kind=%llu "
+        "fort_unread=%llu class_unknown=%llu path=%llu path_unit=%llu path_non_unit=%llu "
+        "(0071D71F, 009229F0 / 007AC9D0, packet cc9_command_extra_tests)",
+        kCommandExtraTestsBound ? 1 : 0, host.summary.torpedo_tests,
+        host.summary.torpedo_refused_null, host.summary.torpedo_refused_kind,
+        host.summary.torpedo_fort_unread, host.summary.torpedo_class_unknown,
+        host.summary.path_tests, host.summary.path_refused_unit, host.summary.path_non_unit);
     host.log.notef("summary mission director loopback bound=%d command_posts=%llu "
         "setcmd_posts=%llu clear_posts=%llu in_place=%llu nested=%llu queued=%llu "
         "drains=%llu (packet cc9_set_command_queue_delay, 0076E520 / 0076C600)",

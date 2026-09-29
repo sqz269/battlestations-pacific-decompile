@@ -4743,3 +4743,116 @@ differs from the one the goal copy would write (`frames_differ`):
 - So the hold cannot move either row. The integrator's expectation assumed reach where the
   counters show none. This is the same shape as reference m's `nnsh` runs, which were identical on
   both rows.
+
+## 70. The command acceptance extra tests 009229F0 / 007AC9D0 (packet `cc9_command_extra_tests`, cc9-gunnery14)
+
+Ranking #9 (lua19's refreshed ranking).
+
+### 70.1 The image
+
+**0071D6D0** (body 0071D6D0..0071D772, `RET 8`):
+- The target checks come first: `vtable[8]` needs a target, then position byte `+1h` or category 1/2,
+  then `00521EA0` non-null and `+5Dh` clear.
+- Only after those does it reach 0071D71F. The two "no target needed" branches (0071D6E5 and
+  0071D6FE) also jump there.
+- The host had returned `true` on those two branches before the extra tests ran. This binding
+  corrects that order.
+
+**Torpedo** (00E08F18, 0071D71F..0071D73C) requires `009229F0(00521EA0(target), 6)`:
+- `009229F0`: `__fastcall(ECX entity, EDX kind)`, `RET 0`, body 009229F0..00922A34.
+  - A null entity returns false.
+  - `vtable[5Ch](6)` (a ship) returns true.
+  - `vtable[5Ch](1Bh)` (MLandFort) tail-calls `00922990([[entity+538h]+178h], 6)`.
+  - Anything else returns false.
+- `00922990` (body 00922990..009229EF, `RET 0`), for kind 6, accepts the class's `FakedType`
+  (`class+178h`, docs/ATTACK_GATE_TAILS.md) when it is 7, 8, 0Ah, 0Bh, 0Dh or 0Eh. For kind 0Fh it
+  accepts 10h..17h.
+- **So a torpedo order at a position (kind 0) is refused**, because 00521EA0 gives null.
+
+**Moveonpath** (00E08F80, 0071D73E..0071D75B):
+- It runs only when the descriptor names an object (`+0h != 0`), and requires `007AC9D0(entity)`
+  non-zero.
+- That is the entity being a path kind: 47h Path, 48h, 49h, 4Ah CameraPath (docs/ENTITY_CLASS_IDS.md).
+- User path points (a kind-0 descriptor, `007207CC`) never reach it.
+
+`00E08F78` (0071D75D..0071D767) only calls 00521EA0 and accepts.
+
+### 70.2 The binding (`kCommandExtraTestsBound`, committed OFF)
+
+- **`command_extra_test_0071d71f`** in the commands host's Impl runs at every return of both
+  0071D6D0 sites that the image routes through 0071D71F.
+- **Torpedo:** the target is resolved to a host unit and tested with `unit_is_kind_of(class, 6)`.
+  - **Labelled:** a kind-1Bh fort is refused, because this host holds no FakedType and the authored
+    default 1Bh is outside the set.
+  - **Labelled:** a unit whose class id is unknown is accepted.
+- **Moveonpath with an object descriptor:**
+  - refused when the object is a host unit, since no unit is a path kind;
+  - otherwise taken as the authored Path it names. **Substitution:** this host resolves units only.
+- **Summary line:** `summary mission director extra tests ...`, printed on both sides. It counts
+  tests, refusals by reason, and the labelled cases.
+
+## 71. Handoff (cc9-gunnery14, 2026-09-29, at about 80% context)
+
+### 71.1 Landed or committed
+
+| item | commit | state |
+| --- | --- | --- |
+| Reference p (main a4f9d6c76) | `795bb9a80` | on main; docs/GAME_EXECUTABLE.md "2026-09-29 p" |
+| Ranking #7: the group 3 gun-seat arm | `729e87697`, `dce10ae24` | `kPlayerGunSeatArtilleryBound` ON (PLAYER_GUN_SEAT 7) |
+| Lost D3D device: hold, recreation holders | `412b594c4`..`50ee0c2d8` | `kRendererLostDeviceHoldBound` ON; docs/D3D_DEVICE_LOST.md |
+| The periscope shape (68) | `ef44bb755` | `kHullPeriscopeShapeBound` OFF; the units-host call needs lua18's file (patch below) |
+| m's no-ship hold flag (69.1) | `7425320ba` | closed from the counters |
+| Ranking #9: the command extra tests (70) | `623f8057e` | `kCommandExtraTestsBound` OFF |
+| Ranking #10/#11: the gun fallbacks | `7f42db823` | `kGunBarrelMeshlessOneBound` OFF; GUN_BARREL_COUNT 8 |
+
+### 71.2 Waiting for runs
+
+Game runs failed at renderer init (CreateDevice 0x8876086A) for every worker from about 12:49 local.
+One smoke passed at 13:41. Every export below is built or building in the cc9-gunnery14 tree
+(`local\<v>\build\win32\Release\bsp_game.exe`). Launch through `local\g14_runs.ps1 -V <v> -Only
+<rows>`, wait with `local\g14_wait.ps1`, and compare with `local\g14_vs.py <off> <on> <rows>`.
+
+1. **The periscope pair** (`prioff` / `prion`, exported from `c8c2ea5f3` on the local branch
+   `g14-peri-test`, which carries the units-host call; not for merge):
+   - rows JM06, LOMP06, USNOS and USNOS long;
+   - prediction: all gameplay-identical;
+   - the `hull periscope` lines show `merged=0`: gato, Cachalot and I-54 have `shape=0`, and
+     Kaiten has `shape=1`, gated by KamikazeDamage 3000.
+   - Flip after the lead applies `local\g14_units_periscope.patch` to src/game_hosts_units.cpp.
+2. **m's two open flags** (exports at `ef44bb755`: `mbase`, `m_los`, `m_nsh`, `m_sig`, `m_ns2`):
+   - USN01 with `BSP_LOS_CENSUS=1` set in the launching shell;
+   - read the Coastal Gun 01 -> Dunlap census lines and the hit records, pairwise against `mbase`.
+3. **The extra tests** (`xtoff` / `xton`, `623f8057e`):
+   - rows USN04, E2, JM05, USN13, IJN01 and USN01;
+   - read `summary mission director extra tests`;
+   - prediction: torpedo refusals only where `null` or `kind` > 0 (USN01's 5 tests).
+4. **The fallbacks** (`fboff` / `fbon`, `7f42db823`):
+   - rows USN04, JM05, JM05 long (`jm05l`), USN13 and USNOS;
+   - read `summary mission gunnery fallbacks`;
+   - flip only if `meshless_changed > 0` and the mechanism matches.
+   - For #11, bind something only if `no_mount` or `other` carries shots.
+
+### 71.3 Open items, not started
+
+- **The sprite bridge** (a host scaffold) is retired after a device recreation instead of rebuilt
+  (D3D_DEVICE_LOST 6). The lead accepted this as an open item.
+- **The group 3 arm's records:**
+  - the hit lead 009578C3;
+  - the hand-over 0095A05B;
+  - the `dev+408h` aim-point store.
+  - Groups 4 and 5 carry no reference message.
+- **Why group 3's `turns` is half of `guns`** (PLAYER_GUN_SEAT 7.4) is not separated.
+- **The torpedo test on a kind-1Bh fort** needs the class `FakedType`.
+
+### 71.4 Tools (`local\` in the cc9-gunnery14 tree)
+
+- **Runs:**
+  - `g14_runs.ps1`, `g14_batch.ps1`, `g14_wait.ps1` (the reference rows);
+  - `g14_run1.ps1` (one run, `-FakeLost`);
+  - `g14_dlruns.ps1` (a few runs with a wait and the key lines);
+  - `g14_retry.ps1` (a smoke retry loop).
+- **Exports:** `g14_exp.ps1`, `g14_expwait.ps1`.
+- **Reference tables:** `g14_vs.py` (prefix `rb15` = o in cc9-gunnery13), `g14_rows.py`,
+  `g14_table.py`, `g14_report16.py`, `g14_members.py`, `g14_switches2.py`.
+- **Crash dumps:** `g14_dmp.py <dmp> <map>` (a stack scan of a minidump) and `g14_sym.py`.
+- **Census:** `g14_pericensus.py` (the periscope census) and `g14_devices.py` (DeviceClass rows).

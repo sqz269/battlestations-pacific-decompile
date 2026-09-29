@@ -245,6 +245,12 @@ constexpr bool kFlakProximityBurstBound = true;
 //    absent or unreadable keeps the record count and is counted in the
 //    summary. Packet cc9_gun_barrel_count, docs/GUN_BARREL_COUNT.md.
 constexpr bool kGunBarrelCountBound = true;
+//  * kGunBarrelMeshlessOneBound: a device row with no `Mesh` never loads a
+//    model (00879590 returns at 008795AB), so 007325A0 never runs and
+//    0072AB80 answers 1 on the empty class+98h (0072ABA5; GUN_BARREL_COUNT
+//    7.1). ON: those guns get 1. OFF: they keep the platform's `barrels`.
+//    Packet cc9_gun_fallbacks.
+constexpr bool kGunBarrelMeshlessOneBound = false;
 //  * kShipPlatformAttachmentBound: a ship gun fires from its own mount, the
 //    platform frame's origin p0 of the ship model's ("slot", platform key)
 //    group (0095F500's slot pass into platform+4Ch; 0072DD20 hands that frame
@@ -1640,6 +1646,14 @@ struct GameGunneryHost::Impl {
     unsigned long long barrel_guns_from_model{0};
     unsigned long long barrel_guns_changed{0};
     unsigned long long barrel_guns_fallback{0};
+    // Packet cc9_gun_fallbacks: the barrel and muzzle fallbacks by cause.
+    unsigned long long barrel_guns_meshless{0};
+    unsigned long long barrel_guns_meshless_changed{0};    // platform `barrels` != 1
+    unsigned long long muzzle_fallback_no_mount{0};        // no platform attachment
+    unsigned long long muzzle_fallback_meshless{0};        // the device row has no Mesh
+    unsigned long long muzzle_fallback_other{0};           // loaded, but no offsets or nodes
+    std::map<int, unsigned long long> muzzle_fallback_by_device;   // device class -> shots
+    std::map<int, int> barrel_meshless_values;                     // device class -> platform barrels
     // DIAGNOSTIC, read-only, packet cc9_e2_zero_ordnance: with BSP_DEATH_TABLE
     // set, every death prints one "death row" line (damaging hits by category,
     // the killer and ranges). No gameplay term reads these fields.
@@ -3512,6 +3526,15 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     done("GunClass::load_fire_node_muzzle_offsets_007325a0", 0x007325a0u);
                 } else {
                     ++barrel_guns_fallback;
+                    if (fp.mesh.empty()) {
+                        // Packet cc9_gun_fallbacks: no Mesh, no model, 0072AB80 = 1.
+                        ++barrel_guns_meshless;
+                        if (gun.barrel_num != 1) {
+                            ++barrel_guns_meshless_changed;
+                            barrel_meshless_values[gun.device_class] = gun.barrel_num;
+                            if (kGunBarrelMeshlessOneBound) gun.barrel_num = 1;
+                        }
+                    }
                 }
             }
             gun.bullet_class = flat(type_id, make("bullet"), -1);
@@ -6572,6 +6595,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
             } else {
                 ++muzzle_offset_fallbacks;
+                ++muzzle_fallback_by_device[gun.device_class];
+                const auto fpf = fire_points_by_device.find(gun.device_class);
+                if (!gun.mount_known) {
+                    ++muzzle_fallback_no_mount;
+                } else if (fpf == fire_points_by_device.end() || fpf->second.mesh.empty()) {
+                    ++muzzle_fallback_meshless;
+                } else {
+                    ++muzzle_fallback_other;
+                }
             }
         }
         for (int i = 0; i < 3; ++i) shot.position[i] = spawn[i];
@@ -10483,6 +10515,20 @@ void GameGunneryHost::report() {
             "fallback=%llu devices=%zu bound=%d (007325A0/0072AB80, packet cc9_gun_barrel_count)",
             host.barrel_guns_from_model, host.barrel_guns_changed, host.barrel_guns_fallback,
             host.fire_points_by_device.size(), kGunBarrelCountBound ? 1 : 0);
+        {
+            // Packet cc9_gun_fallbacks.
+            std::string barrels, shots;
+            for (const auto& [device, value] : host.barrel_meshless_values)
+                barrels += " " + std::to_string(device) + ":" + std::to_string(value);
+            for (const auto& [device, count] : host.muzzle_fallback_by_device)
+                shots += " " + std::to_string(device) + ":" + std::to_string(count);
+            host.log.notef("summary mission gunnery fallbacks meshless_guns=%llu meshless_changed=%llu "
+                "barrels{%s } muzzle no_mount=%llu meshless=%llu other=%llu by_device{%s } "
+                "bound=%d (0072AB80 null begin / 00730899, packet cc9_gun_fallbacks)",
+                host.barrel_guns_meshless, host.barrel_guns_meshless_changed, barrels.c_str(),
+                host.muzzle_fallback_no_mount, host.muzzle_fallback_meshless,
+                host.muzzle_fallback_other, shots.c_str(), kGunBarrelMeshlessOneBound ? 1 : 0);
+        }
         host.log.notef("summary mission gunnery artillery aim points drawn=%llu bound=%d "
             "(006DF520 step 4 / 00816650, packet cc9_surface_gunnery_reference)",
             host.artillery_aim_points, kArtilleryAimPointBound ? 1 : 0);
