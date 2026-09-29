@@ -275,3 +275,19 @@ batches are logged at lines 19567-19570 and the first bomb drop at line 27436, s
 impact row falls after the last batch and the measured table in section 5 is not thinned by a
 boundary. The 23 drops against 20 impacts is the three rounds still in flight at mission end, which
 the summary reports on its own line, not a loss.
+
+## 7. Follow-up: the hull point is read and bound, and the switch is ON (cc9-lua16, 2026-09-29)
+
+Section 2 left `target->vtable[+100h]` unread. `docs/HULL_AIM_POINT.md` (packet `cc8_hull_aim_point`)
+reads it. Ships take `00816650`, which samples a tapered hull within `0.45 x Length` along and
+`0.45 x Width` across. Other targets take `0042D810`. Every hull-sampling vtable has `0042BB20`
+(`MOV AL,1; RET 0Ch`) at `+104h`, so the 1.5-2.5 s timer in section 2 never forces a re-pick,
+and the point is drawn once per approach.
+
+The binding is `include/bsp/approach_target_ref.hpp`, behind `kHullAimOffsetEnabled` in
+`src/game_hosts_units.cpp`. Section 4's defect, the host aiming at the target's origin, is closed
+by packet `cc9_dive_aim_hull_point`, which re-paired the switch on the faithful dive set and
+flipped it ON. The pairs and the verdict are in `docs/HULL_AIM_POINT.md` section 9.
+
+The finding of section 1 stands: there is no lead term, so a bomb aimed at the hull point still
+lands about one fall time behind a moving ship.
