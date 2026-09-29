@@ -866,3 +866,40 @@ The census line is `summary moveto arrival end command ...`.
 - **JM08 3000 and JM05 9000, ON.** 9 and 18 arrivals: those flights' movetos end and their tasks
   retire; exit 3.
 - **USN01, LOMP10, IJN01 and JM05 3000** have no arrival on main, so they are gameplay-identical.
+
+### Measured, and a correction to the binding
+
+**First pair.** Commit `f52db1c2c`, OFF `B1B362FDB15B`, ON `4FDD02CD0500`, logs
+`local\l19_mv{0,1}_<row>.log`. This was a **mechanism failure**.
+- Every completion took `0071E430`'s arm `queue_stage_by_category` and left `next 00e08f68`: the
+  moveto itself is still in slot 0.
+- `terminal` is 0 at `009C3100`, so `0071E430` raises the command's stage and does not remove it.
+  `009C31B0` then still answers 1, and `0099A4C0` keeps the task.
+- The binding retired the task anyway (USN04: 4 commands, 8 tasks retired), so it moved USN04,
+  E2, JM08 and JM05 9000 (exit 3) on a behaviour the image does not have.
+- The prediction "the escorts fly without a task" was wrong for the same reason.
+
+**The correction** (`49f5ece1a`). A completion that leaves the moveto in slot 0 is counted as
+`stage_only`, and the task stays. Only a completion that leaves another command, or none, retires
+the task.
+
+**Second pair.** Commit `49f5ece1a`, OFF `8A8E66EDF874`, ON `F4B84196223A`, logs
+`local\l19_mw{0,1}_<row>.log`. Every run is clean (`frames_presented` = F - 1, exit 0).
+
+| row | pair_diff | `009C3100` calls / stage raises / retired |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | 1637 / 2796 / 0 |
+| E2 (USN04 9000) | 1 | 3002 / 4803 / 0 |
+| JM08 3000 | 1 | 7786 / 23358 / 0 |
+| JM05 9000 | 1 | 0: no arrival on this merged tree |
+| USN01 3000 | 1 | 0 |
+| LOMP10 3000 | 1 | 0 |
+
+- The stage raise reaches no script on these rows, and no command leaves slot 0 (`next_promoted`
+  = 0 everywhere).
+- So what the image does at a moveto arrival is a stage change on the command, not an end to the
+  flight's task. Ranking #2's "consequence" (the circling flight) is the image's own behaviour.
+
+**Verdict: `kMoveToArrivalEndCommandBound` ON.** It is gameplay-identical on six rows, and the
+mechanism matches the image as read. The record `BotApproachMoveTo::arrived_vtable8` becomes the
+concrete `009C3100`.

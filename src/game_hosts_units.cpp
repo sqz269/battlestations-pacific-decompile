@@ -2134,7 +2134,7 @@ struct GameUnitsHost::Impl {
     // answers non-zero, the squadron's moveto (00E08F68) ends through 0071E430
     // (terminal 0), and each member's 0099A4C0 retires its kind-7 task. False:
     // the call is a record and the flight keeps its moveto task.
-    static constexpr bool kMoveToArrivalEndCommandBound = false;
+    static constexpr bool kMoveToArrivalEndCommandBound = true;  // ON: stage-only, six rows identical (docs/PILOT_MOVETO_TASK.md)
     void moveto_arrival_end_command_009c3100(GameUnitSlot& unit);
     unsigned long long moveto_end_calls{0}, moveto_end_no_squadron{0}, moveto_end_not_moveto{0};
     unsigned long long moveto_end_commands{0}, moveto_end_retired{0}, moveto_end_promoted{0};
