@@ -4913,3 +4913,66 @@ changed times, killers and ranges:
   additive.
 - Each was paired alone (SHIP_AI_OPEN_ITEMS 35 for the hold, 31 and 34 for the sight test), and both mechanisms match the image.
 - The interaction is two faithful mechanisms meeting, not a defect. **Closed.**
+
+## 73. The extra-tests and fallback pairs (cc9-gunnery15)
+
+**Setup.**
+- cc9-gunnery14's `xtoff`/`xton` and `fboff`/`fbon` exports were built before
+  `kFlyToObstacleListBound` and `kHullPeriscopeShapeBound` went ON, so all three were re-exported
+  from `9c4a77c6f`, which has main's switch state plus the periscope flip:
+  - `local\g15_base`, a control export with no flip (SHA-256 prefix `11EFA93C8F4E`);
+  - `local\g15_xton`, which flips `kCommandExtraTestsBound` (`7CA4E2881BA6`);
+  - `local\g15_fbon`, which flips `kGunBarrelMeshlessOneBound` (`86ABA73378FC`).
+  - `g15_base` is the OFF side of both pairs.
+- Rows use the reference launch form (`local\g15_runs.ps1`, copied from `g14_runs.ps1`), with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+  - Logs are `local\<v>_<row>.log`.
+  - Every log shows `present interval immediate`, its own module directory, and
+    `frames_presented` equal to frames minus one.
+- A 300-frame USN01 smoke passed first: renderer up, 100 mission frames, final COM release.
+- The runs finished by 21:48 UTC (log mtimes).
+
+### 73.1 `kCommandExtraTestsBound` (70): zero reach, flip ON
+
+- **pair_diff:** USN04, E2, JM05, USN13, IJN01 and USN01 are each exit 1 (gameplay-identical).
+- **`summary mission director extra tests`** reads the same test counts on both sides:
+
+  | row | torpedo tests | moveonpath tests (all non-unit) |
+  | --- | ---: | ---: |
+  | USN04 | 16 | 136 |
+  | E2 | 16 | 157 |
+  | JM05 | 570 | 2 |
+  | USN13 | 60 | 0 |
+  | IJN01 | 0 | 4 |
+  | USN01 | 5 | 0 |
+
+  - Every other counter is 0 on every row: `null`, `kind`, `fort_unread`, `class_unknown` and
+    `path_unit`.
+- **Result:** no command is refused, as 71.2 item 3 predicted. A refusal needs a null target or a
+  non-kind-6 target, and no row has one.
+- The ON side runs the tests with `bound=1`.
+- **Verdict: the mechanism is consistent, with zero reach on the reference rows; flip ON.**
+
+### 73.2 `kGunBarrelMeshlessOneBound` (#10): no reach, stays OFF
+
+- **pair_diff:** USN04, JM05, JM05 long, USN13 and USNOS are each exit 1.
+- **`summary mission gunnery fallbacks`:** `meshless_changed=0` on every row.
+  - `meshless_guns` is 315, 280, 397, 396 and 223; no Mesh-less device counts a barrel
+    differently.
+- **Verdict:** 71.2 item 4 flips only when `meshless_changed > 0`, so the switch **stays OFF**,
+  untested rather than refuted. A row with a Mesh-less multi-barrel device would be needed.
+
+### 73.3 #11: `no_mount` carries shots on JM05
+
+- On both sides of JM05, the muzzle fallback reports `no_mount=98`, split by device class as
+  `37:40 52:10 84:48`.
+- JM05 long reports `no_mount=1311` (`37:123 52:1083 84:105`).
+- `meshless` and `other` are 0; USN04, USN13 and USNOS have none.
+- By 71.2's rule ("bind something only if `no_mount` or `other` carries shots"), **#11 is live
+  on JM05**:
+  - device classes 37, 52 and 84 fire through the no-mount muzzle fallback;
+  - the keys are decimal (`std::to_string` at `src/game_hosts_gunnery.cpp:10524`);
+  - `by_device` counts every muzzle fallback, but with `meshless` and `other` at 0 these are all
+    `no_mount`.
+  - Read the DeviceClass rows with `g14_devices.py` before binding.
+  - **Open; not started.**
