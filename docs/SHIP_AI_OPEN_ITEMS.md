@@ -4973,3 +4973,83 @@ timing only, the named risk; JM05 combat is identical. LOMP10 moved (exit 3, as 
   - `OwnerPlayer "AI control"` is not modelled.
 - **Unchanged:** the host's controlled unit (JM05 still controls USS Phelps). The gate does not
   read it.
+
+### 60.6 The brain-team chain, re-read (packet `cc9_ai_party_team_chain`, cc9-ships17, 2026-09-29)
+
+The lead held the flip. The concern: an Allied-team brain planning the Japanese groups against
+each other would break every US campaign mission. The switch is back OFF in `1b2660639`, and
+60.1-60.5 stand as the record.
+
+**The census method.** Each writer set below comes from a linear capstone sweep of `.text` in the
+PE on disk (`local\s17_slotwrites.py`) plus a rel32 and abs32 scan (`local\s17_rel32.py`), not
+from Ghidra xrefs. The sweep reports:
+- stores whose disp32 is a mission record's `+28h` (`game+1030h + i*118h`), a player record's
+  `+28h` (`game+770h + i*118h`), a slot pointer (`game+18CCh..18E8h`) or `game+18ECh`;
+- stores to `[r+28h]` or `[r+24h]` within 40 instructions of `r` being loaded from `[..+18CCh]`.
+
+The loop writers, which go through an interior cursor, come from the reset and copy bodies read
+in full (SESSION_PARTICIPANT_AI_FLAG, SCENE_RECORD_SIDE_BLOCKS).
+
+**`game+18ECh`, the local slot.** It has four writers:
+
+| writer | effect | reached in single player |
+| --- | --- | --- |
+| `004DDFB7`/`004DE0DB` game constructor | initial | yes |
+| `004BB32A` in `004BB160` reset | -1 | yes, from `004DFD18` |
+| `004DFD77` in `004DFB70` | `EBX` | yes. `EBX` is zeroed at `004DFB91`; on the SP branch (`004DFC13 CMP [game+1FE4h],EBX / JZ 004DFD16`) it is only compared and pushed before `004DFD77`. The only rewrite, `004DFCD4 MOV EBX,EAX`, is on the session branch, which re-zeroes it at `004DFD0F`. **The local slot is 0, now read, not assumed.** |
+| `004B4744` setter `004B4740` | argument | only from `0076C915`/`0076C98E` (`0076C840`) and `00770609`/`007706E7` (`007705A0`). Those are session join and leave routines reached from `00777850`, which the pump calls only in session modes 1 and 2 (SESSION_MESSAGE_DISPATCH), and from the multiplayer lobby screens (`005D580E`, `005D9E71`) |
+
+**A record's `+28h` (Party), and the slot pointers.**
+
+| writer | effect | reached in single player |
+| --- | --- | --- |
+| `004BB160` reset, first loop | each mission record `i < MaxPlayerNum`: `+8h`/`+9h`/`+0Ah` = 1, and `+24h`/`+28h` from `MultiPlay.PlayerN` | yes (`004DFD18`) |
+| `004C6890` | the same side-block copy | yes (scene selection) |
+| `004BB160` pointers `004BB175..004BB1C3` | slot `i` -> mission record `i` | yes |
+| `004DFD5C..004DFD74` | slot 0 -> the claimed player record 0, whose `+28h` = `game+1030h` (mission record 0's Party) | yes |
+| `004BB630` bind / `004BB660` restore | repoint a slot, and write the new record's `+28h` | callers `0076C92C`, `007706D3` / `0076C8B3`, `00770637`, `007734BB`: session paths only, as above |
+| `004BC890` SetGameMode, `004BC8DF..004BCA08` | every record's `+28h` = 0 or CompetitiveModeParty | only when `game+1FE4h != 0` (docs/MISSION_SCENE_CONTENTS) |
+| `006EDB40` (`006EDB65`) | the local record's `+28h` toggled 0 <-> 1, then the unit lists rebuilt | only from `006EF12C`: game state 0Dh, input action 0Dh pressed (`004C43C0`). A debug side swap |
+| `008C8560` (`008C87E8`, `008C882F`) | the local record's `+28h` written | the Lua `class_enumeration` entry in the table at `00E0C860`, next to `debugtrap`. A debug console command |
+
+Nothing on the single-player load or in the mission tick overwrites `+28h` from the campaign
+side, the chosen nation or the mission tree's side blocks:
+- the IJN missions' `japanese enabled=1` reaches the game only through `Player1 = Japanese` in
+  their scenes;
+- no installed script calls `AIEnable` (`rg -i AIEnable scripts/` finds nothing).
+
+**The enable byte agrees.** `00A32DF0` (a vtable method, `00D23240`) sets each party record's
+enable byte `[00F8A8C8 + p*1Ch]` to `slot record +8h && +9h && +0Ah` (`00A32F36..00A32F53`).
+- In single player slot 0 is the player record, whose AI byte `+9h` is 0 after the reset.
+- Slots 1..7 are mission records with 1.
+- So the image refuses slot 0 twice: through this byte, and through `009FFE50`.
+
+**Enemy-ness in the target choice.** `00A1CB80` walks `g_aiGroupsByTeam[planner+34h]`
+(`00A1CBF5 MOV EAX,[ESI+34h]`, list `00F8AA48 + t*0Ch`):
+- `00A1EE50` stores `planner+30h = brain+24h` (`00A1EEA6`) and `planner+34h = (brain+24h == 0)`
+  (`00A1EEB2..00A1EEC1`);
+- a group's `+5638h` is its first member's `+54h` (`00A2E042..00A2E045`), and `+5634h` is
+  `009FFD20` (`00A2E03C`);
+- the head of the candidate loop (`00A1CC3B..00A1CC65`) has no own-group, party or `IsEnemy`
+  filter before `00A0F970` scores the candidate.
+
+So on a US-player row, the slot-4 brain's candidate list is team 1, its own groups.
+
+**Verdict: the chain is confirmed.** No writer on the single-player path replaces Player5's
+Party in the slot-4 record, the local slot is 0 by the listing, and the target choice takes
+enemy-ness only from `brain+24h`. The 60.4 mechanism, Japanese groups scored against Japanese
+groups on USN04, is the image's rule as far as the listings go.
+
+What the self-pairing does in play, not established here:
+- A CLOSEATTACK or ATTACK aimed at a friendly group ends in `attackmove` orders whose fire is
+  refused by the gunnery side tests.
+- The enemy ships of the US campaign are largely driven by their mission scripts (`NavigatorMove*`,
+  `PilotSetTarget`), which the brain's orders then contend with.
+- "Trivially broken" is therefore a play-level claim this packet cannot settle from the listings.
+  The remaining cross-check is an original-exe observation, which this lane may not run.
+
+Still LABELLED:
+- the Party ordinals (`luamw_init.lua`);
+- `OwnerPlayer "AI control"` on 14 authored entries.
+
+The switch stays OFF for the lead's decision after reference q.
