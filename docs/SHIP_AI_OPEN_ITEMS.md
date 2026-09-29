@@ -4392,3 +4392,54 @@ lowers and the arm census per submarine; a note line marks each state change.
 - **LOMP06 1200/1000.** The Narwhal is the player's unit, so role 1 is not AI-held: every
   in-band call takes `player_role1` with no write; out of band it writes 0 over 0. Expect
   gameplay identical (exit 0 or 1).
+
+### 54.1 The pairs and the verdict: ON
+
+Same-tree pair on `5ce677984`: the OFF binary is this tree's build and the ON binary is
+`local\s16_peri` (`pair_export --flip kSubmarinePeriscopePrepassBound=true`, SHA-256 prefix
+`B8759AA30F83`). Reference environment, lockstep 0.05, console session. A 300-frame USN01 smoke
+on the ON binary was clean. Logs are `local\s16{off,on}_{jm06,usnos,lomp06}.log` and the diffs
+are `local\s16_diff_<row>.txt` in the cc9-ships16 tree.
+
+| row | pair_diff | death rows | what moved |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | 1 | identical (1) | `009E4DC1` concrete; `009DB8F0` 4211 calls; `00855045` 638 -> 21000 |
+| USNOS 3200/3000 | 3 | identical (6) | Gato's periscope goes down at 23.30 s; recon `identified` 18883 -> 18879; 17 unit-table `nearest` values move by 1 to 31 m; gunnery candidate counts move a little |
+| LOMP06 1200/1000 | 1 | identical (1) | `009DB8F0` 218 calls; `00855045` 0 -> 1000 |
+
+**The mechanism against the predictions.**
+- **JM06: matches.**
+  - `PlayerSub 03` and `PlayerSub 02` enter sub_attack at 51.10 s. The pre-pass raises both at
+    once (0 -> 1, level 1) and lowers both at 51.35 s, when the boats reach level 2.
+  - From 140.85 s the fire step's `009EA8FB` lowers `PlayerSub 03` and the next pre-pass raises it
+    again (the notes repeat 0 -> 1). The mast still comes out at 142.10 s, as on OFF.
+  - The four other boats (`Narwhal-class Submarine 01` and the two TypeB boats, plus
+    `PlayerSub 01`) only write 0 over 0.
+  - The `00855045` count grows because each boat's mast arm now runs from its first store. On
+    OFF it ran only from the first fire-step store, and in the image every non-kamikaze boat has
+    `+1214h` from construction. The lowering arm moves a mast from 0 toward 0, so nothing is
+    visible.
+- **USNOS: matches, with one correction.**
+  - The Gato is raised by the pre-pass at 8.30 s (OFF: the mast is out at 8.80 s from the fire
+    step; ON: out at 8.80 s too).
+  - Six times from 10.05 s the pre-pass takes the out-of-band arm at level 1. The boat is above
+    `bands[1] + 2.5`, a height that `009E4D00` still accepts (`y > bands[1] - 2.0`). The fire step
+    re-raises each time until 23.30 s, when it does not, and the mast goes in (`out=0`).
+  - On OFF the mast stayed out to the end.
+  - The prediction said "lowered when it dives"; it is lowered when it rides above the band.
+  - The moved counters all follow from a submerged periscope: the recon pass identifies the boat
+    four fewer times, and targeting and the unit-table nearest distances shift with it.
+  - Deaths, damage, hits and shots are identical.
+- **LOMP06: gameplay identical; the arm prediction was wrong.**
+  - The Narwhal is AI-held on role 1 before the player takes it. It selects sub_attack from
+    cruise at 2.85 s, is raised at 2.85 s and lowered at 3.10 s (level 2).
+  - Later in-band calls take `player_role0` (27) with no write.
+
+**Verdict: flipped ON.** The mechanism matches the image on every row, and the death table is
+identical on all three.
+
+**Still open:**
+- The broken state 2. `009327F7` (`BSP_SubmarineUnit_BreakPeriscope`) and `009373E7` write it;
+  those are the units/damage lanes.
+- The repair and auto-raise arm at `00854E44..00854ECF`, in the units host.
+- The HUD's player writes.

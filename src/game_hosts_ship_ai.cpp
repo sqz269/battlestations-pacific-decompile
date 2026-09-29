@@ -361,8 +361,8 @@ inline constexpr bool kShipNeighbourListBound = true;
 // (depthLevel != 1 or world Y outside bands[1] +/- 2.5) it lowers the periscope;
 // in the band, for an AI-held role 1, the sub_attack and kamikaze_attack states
 // raise it and the others lower it when role 0 is AI-held. False: only the
-// sub_attack fire step writes +122Ch, as before.
-inline constexpr bool kSubmarinePeriscopePrepassBound = false;
+// sub_attack fire step writes +122Ch, as before. ON: pairs held (section 54).
+inline constexpr bool kSubmarinePeriscopePrepassBound = true;
 // True: the consumers see that list (blk+604h / +608h): the sector scan 009EB660,
 // 009DE5B0 section 6, the traffic pass 009EF350 and the clearance count. False:
 // they are handed an empty list and a zero count, so the list lands alone.
