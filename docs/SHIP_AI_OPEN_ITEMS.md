@@ -5114,3 +5114,20 @@ them are re-installed as IDLE (`kAiTargetGroupDestroyedIdleBound`, section 24).
 - The only difference is the native table: `AiGroups::release_group_reference 00a2b8f0` moves
   from UNIMPLEMENTED to concrete with the same call count, and the unimplemented total falls by one.
 - Pairs: JM05 and USN13 3200/3000, the two largest callers.
+
+### 61.4 Measured and verdict: flipped ON
+
+- **The pair.** OFF is `local\s17_off` (`15FFE787E6C2`) and ON is `local\s17_on` (`E062363F4075`),
+  both exported from `b4c2d4cc1`, in reference p's launch form.
+- **A lost run.** The session locked at about 16:21 local. The first OFF JM05, OFF USN13 and ON
+  JM05 died at renderer init (`hr=0x8876086a`, `logonui=1`), and the first ON USN13 lost its
+  presents from frame 1974. All four were re-run once a 300-frame smoke passed, and the cited logs
+  are the re-runs.
+- **JM05 3200/3000: exit 1, gameplay identical.** The native table changes one status,
+  `AiGroups::release_group_reference 00a2b8f0 UNIMPLEMENTED -> concrete`, with calls 22079 on
+  both sides.
+- **USN13 3200/3000: exit 1, gameplay identical.** The same status change, with 10026 calls.
+- **Against 61.3.** 61.3 predicted exit 0; the rows are exit 1. The only other moved lines are the
+  known same-binary `ship ai free` / `refills` counters. The mechanism matches.
+- **Flipped ON.** GAMEPLAY_GAP_RANKING #5 can be retired: the routine was a removal from a list
+  that has no gameplay reader, and group release itself was already the host's.

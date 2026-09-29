@@ -462,7 +462,7 @@ constexpr bool kAiPartyGateUnforcedBound = false;
 // gated on [[00E198C4]+54h]+5 that no rel32 or abs32 in the image reaches.
 // No gameplay decision reads it, so this process keeps no list. True: the
 // removal is the release loop's concrete no-op. False: it stays a record.
-constexpr bool kAiGroupScoreListReleaseBound = false;
+constexpr bool kAiGroupScoreListReleaseBound = true;
 // 004BCA50 in a single-player campaign: not forced, no session, and a mode
 // other than 8 or 9 becomes 8 (004BCA72).
 constexpr int kSinglePlayerEffectiveGameMode = 8;
