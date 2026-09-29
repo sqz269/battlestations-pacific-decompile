@@ -4790,3 +4790,69 @@ Ranking #9 (lua19's refreshed ranking).
   - otherwise taken as the authored Path it names. **Substitution:** this host resolves units only.
 - **Summary line:** `summary mission director extra tests ...`, printed on both sides. It counts
   tests, refusals by reason, and the labelled cases.
+
+## 71. Handoff (cc9-gunnery14, 2026-09-29, at about 80% context)
+
+### 71.1 Landed or committed
+
+| item | commit | state |
+| --- | --- | --- |
+| Reference p (main a4f9d6c76) | `795bb9a80` | on main; docs/GAME_EXECUTABLE.md "2026-09-29 p" |
+| Ranking #7: the group 3 gun-seat arm | `729e87697`, `dce10ae24` | `kPlayerGunSeatArtilleryBound` ON (PLAYER_GUN_SEAT 7) |
+| Lost D3D device: hold, recreation holders | `412b594c4`..`50ee0c2d8` | `kRendererLostDeviceHoldBound` ON; docs/D3D_DEVICE_LOST.md |
+| The periscope shape (68) | `ef44bb755` | `kHullPeriscopeShapeBound` OFF; the units-host call needs lua18's file (patch below) |
+| m's no-ship hold flag (69.1) | `7425320ba` | closed from the counters |
+| Ranking #9: the command extra tests (70) | `623f8057e` | `kCommandExtraTestsBound` OFF |
+| Ranking #10/#11: the gun fallbacks | `7f42db823` | `kGunBarrelMeshlessOneBound` OFF; GUN_BARREL_COUNT 8 |
+
+### 71.2 Waiting for runs
+
+Game runs failed at renderer init (CreateDevice 0x8876086A) for every worker from about 12:49 local.
+One smoke passed at 13:41. Every export below is built or building in the cc9-gunnery14 tree
+(`local\<v>\build\win32\Release\bsp_game.exe`). Launch through `local\g14_runs.ps1 -V <v> -Only
+<rows>`, wait with `local\g14_wait.ps1`, and compare with `local\g14_vs.py <off> <on> <rows>`.
+
+1. **The periscope pair** (`prioff` / `prion`, exported from `c8c2ea5f3` on the local branch
+   `g14-peri-test`, which carries the units-host call; not for merge):
+   - rows JM06, LOMP06, USNOS and USNOS long;
+   - prediction: all gameplay-identical;
+   - the `hull periscope` lines show `merged=0`: gato, Cachalot and I-54 have `shape=0`, and
+     Kaiten has `shape=1`, gated by KamikazeDamage 3000.
+   - Flip after the lead applies `local\g14_units_periscope.patch` to src/game_hosts_units.cpp.
+2. **m's two open flags** (exports at `ef44bb755`: `mbase`, `m_los`, `m_nsh`, `m_sig`, `m_ns2`):
+   - USN01 with `BSP_LOS_CENSUS=1` set in the launching shell;
+   - read the Coastal Gun 01 -> Dunlap census lines and the hit records, pairwise against `mbase`.
+3. **The extra tests** (`xtoff` / `xton`, `623f8057e`):
+   - rows USN04, E2, JM05, USN13, IJN01 and USN01;
+   - read `summary mission director extra tests`;
+   - prediction: torpedo refusals only where `null` or `kind` > 0 (USN01's 5 tests).
+4. **The fallbacks** (`fboff` / `fbon`, `7f42db823`):
+   - rows USN04, JM05, JM05 long (`jm05l`), USN13 and USNOS;
+   - read `summary mission gunnery fallbacks`;
+   - flip only if `meshless_changed > 0` and the mechanism matches.
+   - For #11, bind something only if `no_mount` or `other` carries shots.
+
+### 71.3 Open items, not started
+
+- **The sprite bridge** (a host scaffold) is retired after a device recreation instead of rebuilt
+  (D3D_DEVICE_LOST 6). The lead accepted this as an open item.
+- **The group 3 arm's records:**
+  - the hit lead 009578C3;
+  - the hand-over 0095A05B;
+  - the `dev+408h` aim-point store.
+  - Groups 4 and 5 carry no reference message.
+- **Why group 3's `turns` is half of `guns`** (PLAYER_GUN_SEAT 7.4) is not separated.
+- **The torpedo test on a kind-1Bh fort** needs the class `FakedType`.
+
+### 71.4 Tools (`local\` in the cc9-gunnery14 tree)
+
+- **Runs:**
+  - `g14_runs.ps1`, `g14_batch.ps1`, `g14_wait.ps1` (the reference rows);
+  - `g14_run1.ps1` (one run, `-FakeLost`);
+  - `g14_dlruns.ps1` (a few runs with a wait and the key lines);
+  - `g14_retry.ps1` (a smoke retry loop).
+- **Exports:** `g14_exp.ps1`, `g14_expwait.ps1`.
+- **Reference tables:** `g14_vs.py` (prefix `rb15` = o in cc9-gunnery13), `g14_rows.py`,
+  `g14_table.py`, `g14_report16.py`, `g14_members.py`, `g14_switches2.py`.
+- **Crash dumps:** `g14_dmp.py <dmp> <map>` (a stack scan of a minidump) and `g14_sym.py`.
+- **Census:** `g14_pericensus.py` (the periscope census) and `g14_devices.py` (DeviceClass rows).
