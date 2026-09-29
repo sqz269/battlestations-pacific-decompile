@@ -12880,3 +12880,54 @@ moved rows. Exit 3 means the switch moves that row.
       `kPilotLandNativeBound` and `kFindEntityCaseInsensitiveBound`.
 - **The periscope pre-pass also runs on IJN01** (`SubmarineUnit::periscope_out_00855045`, 6000
   calls), and IJN01 stays gameplay-identical with it OFF (Tautog and Cachalot: 601 calls each, no raise or lower).
+
+## Mission reference baselines, 2026-09-29 q (main 83b528811)
+
+Packet `cc9_reference_rebaseline_17`, worker cc9-gunnery15. **It replaces the 2026-09-29 p rows
+above** once the runs below are filled in. The report is `reports/cc9_reference_rebaseline_17.json`.
+
+### Predictions (written before any run)
+
+**The switch diff:**
+- A value diff of every `constexpr bool k...` declaration between `a4f9d6c76` and `83b528811`
+  (`local\g15_switches.py`) finds **seventeen switches newly ON**.
+- None of the seventeen existed at p; each was added OFF and later flipped.
+- Four new switches are still OFF and stay out of scope: `kDiveBombMoveToOriginBound`,
+  `kGunBarrelMeshlessOneBound`, `kMoveToArrivalEndCommandBound` and `kReturnToBaseSiteKeyBound`.
+- The flip commits come from `local\g15_flipcommits.py`.
+
+| switch | flip commit | its pair recorded | predicted rows moved against p |
+| --- | --- | --- | --- |
+| `kTorpedoAimLeadBound` | `db5276810` | TORPEDO_AIM_LEAD 11.3 (spread miss: USN04, JM05 long, USN13 releases) | USN04, E2, USN13, JM05 |
+| `kDiveAimLeadBound` | `db5276810` | TORPEDO_AIM_LEAD 11.4 (USN13 identical) | dive rows: USN01, JM05 at most |
+| `kAimErrorDrawBound` | `af1bac88f` | TORPEDO_AIM_LEAD 12.2 (USN04/E2, JM05, USN13 releases move) | USN04, E2, JM05, USN13 |
+| `kApproachSectionPointsBound` | `d3c1e05f8` | TORPEDO_AIM_LEAD 14.4 (JM05 exit 3; USN04, E2 exit 1) | JM05 |
+| `kTorpedoGoAwayAimPointBound` | `0a543af35` | TORPEDO_AIM_LEAD 15.4 (USN01, USN04, JM05 exit 1) | none |
+| `kFlyToObstacleListBound` | `deeb6573b` | TORPEDO_AIM_LEAD 16.1 (USN04, E2 move; JM08, USN12 identical) | USN04, E2 |
+| `kTorpedoResetDrawsBound` | `3586c81d5` | TORPEDO_AIM_LEAD 19.6 (releases 5 -> 8 on USN04/E2, 3 -> 4 on USN13; JM08 identical) | USN04, E2, USN13 |
+| `kTorpedoResetRunTimeSeedBound` | `3586c81d5` | TORPEDO_AIM_LEAD 19.6 (with the draws) | with the draws |
+| `kTorpedoFlightLeadPerSquadronBound` | `86f6927cc` | TORPEDO_RELEASE_ORDERS 9 (JM05 long, USN01 exit 3; USN13, USN04 exit 1) | USN01, JM05 |
+| `kTaskGunControllerAllTasksBound` | `02d593a6e` | DOGFIGHT_GUN 8 (all rows exit 1) | none |
+| `kTaskGunConeBound` | `3d6aee4b2` | DOGFIGHT_GUN 9 (all rows exit 1) | none |
+| `kTaskGunUntaskedPlanesBound` | `3d6aee4b2` | DOGFIGHT_GUN 9 | none |
+| `kLandFinalDirection40Bound` | `e1cb1ddfb` | SQUADRON_LAND_TASK 5ac (IJN01, LOMP10 long exit 1) | none |
+| `kPlayerGunSeatArtilleryBound` | `dce10ae24` | PLAYER_GUN_SEAT 7.4 (JM06, USNOS long move) | JM06, USNOS long |
+| `kHullPeriscopeShapeBound` | `9c4a77c6f` | GUNNERY_OPEN_ITEMS 72.1 (JM06, LOMP06, USNOS, USNOS long exit 0/1) | none |
+| `kCommandExtraTestsBound` | `3d6d3d1c2` | GUNNERY_OPEN_ITEMS 73.1 (six rows exit 1, no refusal) | none |
+| `kRendererLostDeviceHoldBound` | `1ae1711a0` | D3D_DEVICE_LOST (presentation robustness; no lost device on a reference run) | none |
+
+- **Predicted moved rows against p:** USN04, E2, USN01, JM05, USN13, JM06 and USNOS long.
+- **Predicted identical rows (exit 0 or 1 against `rb16_<row>`):** USN02, JM08, BSM01, LOMP06,
+  LOMP10, USN12, LOMP10 long, USNOS and IJN01.
+  - JM08 and LOMP10 carry aircraft, so they are the least certain of these.
+- **All-OFF anchor:** with the seventeen OFF, `83b528811` is gameplay-identical to p on all sixteen
+  rows.
+- **Leave-one-out:**
+  - the torpedo switches (aim lead, aim error, reset draws/seed, fly-to obstacles) attribute
+    USN04, E2 and USN13;
+  - the section points, aim error, flight lead and aim lead attribute JM05;
+  - the flight lead and the dive aim lead attribute USN01;
+  - the gun seat attributes JM06 and USNOS long;
+  - the other seven attribute nothing.
+  - The torpedo switches interact through the shared release path, so a row may need several of
+    them rather than one.
