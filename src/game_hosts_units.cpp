@@ -580,6 +580,14 @@ struct GameUnitSlot {
     unsigned long long land_begin_abort_refused{0};
     unsigned long long land_begin_final_refused{0};
     unsigned long long land_begin_hold_unapplied{0};
+    // Packet cc9_landing_descent_2: the timed direction hold dyn+B4h/+C0h
+    // (docs/PLANE_DYN_TIMED_HOLD.md, docs/SQUADRON_LAND_TASK.md 5o), world
+    // direction as 007C07A0 normalised it, and its counters.
+    float plane_dir_hold[3]{0.0f, 0.0f, 0.0f};
+    float plane_dir_hold_seconds{0.0f};
+    unsigned long long dir_hold_arms{0};
+    unsigned long long dir_hold_blend_steps{0};
+    float dir_hold_max_seconds{0.0f};
     unsigned long long land_begin_young_bot{0};
     float land_begin_last_a8{-1.0f};
     // Packet cc9_land_final_state: land/final's touched latch +20h and counters.
@@ -1560,6 +1568,7 @@ struct GameUnitSlot {
     // and +04h (Length / 3.0, 0074F4F6), the three fields 0074F090 reads.
     float leak_damage_to_death_38{200.0f};
     float leak_total_rate_2c{0.0f};
+    float flood_trace_timer{0.0f};    // DIAGNOSTIC, packet cc9_hull_flooding_trace
     float leak_station_04{0.0f};
     // Packet cc9_live_hull_repair: set by the gunnery host every step.
     float leak_health_fraction{1.0f};  // 00923BE0
@@ -4183,7 +4192,7 @@ struct GameUnitsHost::Impl {
     // mode-4 arm and its begin arm, 009AFAF0's geometry (both arms) and the
     // approach update's onGround arm. final and abort stay refused. Needs
     // kLandLineStateBound. False: every entry to land/begin is refused.
-    static constexpr bool kLandBeginStateBound = false;
+    static constexpr bool kLandBeginStateBound = true;  // ON: joint pair with the direction hold (docs/SQUADRON_LAND_TASK.md 5o)
     // Packet cc9_land_begin_state: 006C3F80's k=0 mode-4 arm (006C42E9-006C4405)
     // over the airfield's launch site at block+3Ch. False: the arm is refused and
     // +8h keeps its value. docs/SQUADRON_LAND_TASK.md section 5i.
@@ -4191,7 +4200,15 @@ struct GameUnitsHost::Impl {
     // land/final's enter (009B1E60), its airborne tick (009B1ED0 to 009B1FE5)
     // and the rule's begin -> final and final arms. The on-ground half, park
     // and abort stay refused. Needs kLandBeginStateBound. False: final refused.
-    static constexpr bool kLandFinalStateBound = false;
+    static constexpr bool kLandFinalStateBound = true;  // ON: 5o
+    // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
+    // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
+    // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
+    // 007DC6C5 on (plane+72Ch)->vtable[38h] (unit+900h == 7); the consumer
+    // 007D88CB-007D8C5E in 007D8470; the decay 007D902F; and the 0.6 x seconds
+    // term 007D9AFC in the control authority. The launch arm 007C705C (0.8 s at
+    // BeginFlying) is NOT bound. False: the arms are counted and the field stays 0.
+    static constexpr bool kPlaneDirectionHoldBound = true;  // ON: 5o
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
@@ -4203,7 +4220,7 @@ struct GameUnitsHost::Impl {
     // land/abort's enter/exit/tick (009B0980/009B09A0/009B09C0, the airborne
     // arm), the rule's abort arm (+66Ch -> standby) and the begin/final -> abort
     // edges. Reached only with kLandBeginStateBound. False: entries refused.
-    static constexpr bool kLandAbortStateBound = false;
+    static constexpr bool kLandAbortStateBound = true;  // ON: 5o
     // Packet cc9_squadron_ordnance_state: squadron_ammo_type_007edad0 answers
     // 007EDAD0 from the planes' racks (the kind each carries, rounds left), and
     // a census logs every change. False: it answers the leader-class stand-in
@@ -6908,6 +6925,49 @@ public:
             = bsp::ship_hydro_apply_forces_009329c0(in, dt, hydro_host);
         owner_.done("ShipMotion::hydrodynamics", 0x009329c0u);
         slot_.leak_water_mass_10fc = hydro_host.leak_water_mass_10fc;
+        // DIAGNOSTIC (packet cc9_hull_flooding_trace, BSP_HULL_FLOODING_TRACE=1):
+        // every 0.5 s per ship, the leak water unit+10FCh, the total rate +2Ch,
+        // alive or wreck (+5Dh), the hull's world height and up row, and each
+        // 0074F2E0 leak with a rate or water (its hull-space point). Read-only.
+        {
+            static const bool trace = [] {
+                char* v = nullptr;
+                std::size_t n = 0;
+                const bool on = _dupenv_s(&v, &n, "BSP_HULL_FLOODING_TRACE") == 0
+                    && v != nullptr && v[0] == '1';
+                std::free(v);
+                return on;
+            }();
+            if (trace) {
+                slot_.flood_trace_timer -= dt;
+                if (slot_.flood_trace_timer <= 0.0f) {
+                    slot_.flood_trace_timer += 0.5f;
+                    if (slot_.flood_trace_timer <= 0.0f) slot_.flood_trace_timer = 0.5f;
+                    const bool wreck = slot_.state != nullptr && slot_.state->simulate != 0;
+                    const float* up = slot_.motion.pose_row1;
+                    owner_.log.notef("hull flooding %s t=%.2f %s water=%.3f rate=%.4f leak_ready=%d "
+                        "y=%.2f up=(%.4f %.4f %.4f) height=%.2f",
+                        slot_.row.name.c_str(),
+                        static_cast<double>(owner_.summary.simulated_seconds),
+                        wreck ? "wreck" : "alive",
+                        static_cast<double>(slot_.leak_water_mass_10fc),
+                        static_cast<double>(slot_.leak_total_rate_2c), slot_.leak_ready ? 1 : 0,
+                        static_cast<double>(slot_.motion.position[1]),
+                        static_cast<double>(up[0]), static_cast<double>(up[1]),
+                        static_cast<double>(up[2]),
+                        static_cast<double>(slot_.motion_class.hull_height));
+                    for (std::size_t i = 0; i < slot_.leaks.size(); ++i) {
+                        const bsp::UnitLeakEntry& e = slot_.leaks[i];
+                        if (!(e.rate > 0.0f) && !(e.water > 0.0f)) continue;
+                        owner_.log.notef("  hull leak %s #%zu local=(%.2f %.2f %.2f) rate=%.4f "
+                            "water=%.3f", slot_.row.name.c_str(), i,
+                            static_cast<double>(e.point.x), static_cast<double>(e.point.y),
+                            static_cast<double>(e.point.z), static_cast<double>(e.rate),
+                            static_cast<double>(e.water));
+                    }
+                }
+            }
+        }
         ++slot_.row.hydro_calls;
         ++owner_.summary.hydro_calls;
         owner_.summary.hydro_element_steps
@@ -11856,9 +11916,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             const float none[3] = {0.0f, 0.0f, 0.0f};   // dyn+40h, empty in free flight
-                            const bsp::PlaneBodyVelocityStep vs =
+                            bsp::PlaneBodyVelocityStep vs =
                                 bsp::integrate_body_velocity_007d8611(
                                     vb, body.pair_1c, body.pair_04, none, step);
+                            if constexpr (GameUnitsHost::Impl::kPlaneDirectionHoldBound) {
+                                // 007D81B0's clear on GGame+1FE4h == 2 is taken as
+                                // false (a single-player host), labelled. 007DC6C5:
+                                // the commit keeps the seconds only in free flight,
+                                // (plane+72Ch)->vtable[38h] = 0074E210, unit+900h == 7.
+                                float& secs = unit_.plane_dir_hold_seconds;
+                                secs = bsp::gate_direction_hold_007d81c7(secs, false);
+                                secs = bsp::commit_direction_hold_007dc6c5(
+                                    secs, true, unit_.plane_control_mode_900 == 7);
+                                // 007D88CB: the consumer, on the body velocity, with
+                                // the direction taken into the body frame by ctl+0B0h
+                                // (007D892E-007D8938, 0042D0D0 with 0).
+                                if (secs > 0.0f) {
+                                    float db[3] = {0.0f, 0.0f, 0.0f};
+                                    for (int r = 0; r < 3; ++r) {
+                                        for (int c = 0; c < 3; ++c) {
+                                            db[r] += rows[r][c] * unit_.plane_dir_hold[c];
+                                        }
+                                    }
+                                    bsp::blend_direction_hold_007d88cb(vs.velocity, db, secs);
+                                    ++unit_.dir_hold_blend_steps;
+                                }
+                                // 007D8FFE-007D902F, the integrator's tail.
+                                secs = bsp::decay_direction_hold_007d902f(secs, step);
+                            }
                             for (int c = 0; c < 3; ++c) {
                                 float w = 0.0f;
                                 for (int r = 0; r < 3; ++r) w += rows[r][c] * vs.velocity[r];
@@ -19270,6 +19355,40 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // unread), read whole from the listing. Its speed block
                     // (009B1C7E-009B1D52) is a dead store: 009B1D70 rewrites +2B4h, +2B0h
                     // and +2D8h after it returns, so it is not modelled.
+                    // 007C07A0 (007C07A0-007C0904, __thiscall(plane, const float* dir,
+                    // float seconds), RET 8): normalise dir (00419440; 1/len only when
+                    // len > 0); when |nz| + |nx| > 0.1 (007C082A, the double 00D7A3A0)
+                    // scale the seconds by interp(15deg -> 1.0, 60deg -> 0.4) of
+                    // |00438B10(pi/2 - atan2(nz, nx) wrapped to [0, 2pi), vtable[50h])|
+                    // (007C083E _CIatan2 with ST1 = nz, ST0 = nx; 00D05AA8, 00D05AAC,
+                    // 00CE7804); then 007D83D0 stores both. vtable[50h] is the host's
+                    // plane_heading_c6c, labelled as elsewhere in this file.
+                    void arm_direction_hold_007c07a0(const float dir[3], float seconds) {
+                        ++unit_.dir_hold_arms;
+                        const float len = std::sqrt(dir[0] * dir[0] + dir[1] * dir[1] +
+                                                    dir[2] * dir[2]);
+                        const float inv = len > 0.0f ? 1.0f / len : 0.0f;
+                        const float n[3] = {inv * dir[0], dir[1] * inv, inv * dir[2]};
+                        if (static_cast<double>(std::fabs(n[2]) + std::fabs(n[0])) >
+                            static_cast<double>(0.1f)) {
+                            float h = static_cast<float>(1.5707963705062866 -
+                                std::atan2(static_cast<double>(n[2]), static_cast<double>(n[0])));
+                            if (0.0f > h) h = static_cast<float>(static_cast<double>(h) +
+                                6.2831854820251465);                                   // 00CE3828
+                            const float diff = bsp::wrapped_angle_subtract_00438b10(
+                                h, unit_.plane_heading_c6c);
+                            seconds = bsp::clamped_interpolate_00419010(
+                                0.261799395f, 1.0f, 1.04719758f, 0.4f, std::fabs(diff)) * seconds;
+                        }
+                        const bsp::PlaneTimedDirectionHold hold =
+                            bsp::arm_timed_direction_hold_007d83d0(n, seconds);
+                        for (int i = 0; i < 3; ++i) unit_.plane_dir_hold[i] = hold.direction[i];
+                        unit_.plane_dir_hold_seconds = hold.seconds;
+                        if (hold.seconds > unit_.dir_hold_max_seconds) {
+                            unit_.dir_hold_max_seconds = hold.seconds;
+                        }
+                    }
+
                     void land_begin_steer_009b1420() {
                         const bsp::GameTuningBlock* g = owner_.lua.plane_globals_loaded()
                             ? &owner_.lua.plane_globals() : nullptr;
@@ -19303,7 +19422,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // bot's lifetime seconds (bot+80h, copied at 0099B198).
                         // SUBSTITUTION, labelled: this host keeps no bot lifetime; W is
                         // taken as saturated (>= 10 s), and a land task younger than 10 s
-                        // is counted.
+                        // is counted. Read (packet cc9_land_begin_w, 5p): W is the slot
+                        // record's +18h, which 0099B198 fills from bot+80h, the sum of
+                        // think dt (0099AD7E) since the bot's constructor 0099A880 at the
+                        // plane's spawn (007CA2AE, 007D66E7, 007D71FE). The land task is
+                        // installed on an existing bot, so a task at least 10 s old means
+                        // W >= 10 and the saturation is exact; young_bot counts the rest.
                         if (owner_.summary.simulated_seconds - unit_.land_installed_at < 10.0) {
                             ++unit_.land_begin_young_bot;
                         }
@@ -19422,8 +19546,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 007D83D0 direction hold on unit+AB0h. The host has no consumer
                         // for that hold (docs/PLANE_DYN_TIMED_HOLD.md 6), so it is counted.
                         if (c2 > 0.0f) {
-                            ++unit_.land_begin_hold_unapplied;
                             owner_.record("BotStateLandBegin::direction_hold_007c07a0", 0x007c07a0u);
+                            if constexpr (GameUnitsHost::Impl::kPlaneDirectionHoldBound) {
+                                // 009B1B36-009B1B84: lat = -X x 1.25 (00CF87C0) x
+                                // interp(1.0 -> 0, 4.0 (00CE3D34) -> 1, |X|).
+                                const float u = bsp::clamped_interpolate_00419010(
+                                    1.0f, 0.0f, 4.0f, 1.0f, ax);
+                                const float lat = static_cast<float>(
+                                    -static_cast<double>(X) * 1.25 * static_cast<double>(u));
+                                // 009B1B88-009B1BAE: fwd = max(Z, 2|X|).
+                                const float two = ax + ax;
+                                const float fwd = Z > two ? Z : two;
+                                // 009B1BB4-009B1BE7: pi/2 - atan2(fwd, lat), wrapped up.
+                                float off = static_cast<float>(1.5707963705062866 - static_cast<float>(
+                                    std::atan2(static_cast<double>(fwd), static_cast<double>(lat))));
+                                if (0.0f > off) off = static_cast<float>(
+                                    static_cast<double>(off) + 6.2831854820251465);
+                                // 009B1BEB-009B1C1E: pi/2 - (A4 + off), wrapped up.
+                                const float hd = bsp::wrapped_angle_add_00438aa0(
+                                    unit_.land_heading_a4, off);
+                                float ang = static_cast<float>(1.5707963705062866 -
+                                    static_cast<double>(hd));
+                                if (0.0f > ang) ang = static_cast<float>(
+                                    static_cast<double>(ang) + 6.2831854820251465);
+                                // 009B1C20-009B1C62: (cos, tan P (00412E20), sin).
+                                const float dir[3] = {
+                                    static_cast<float>(std::cos(static_cast<double>(ang))),
+                                    tanf_412e20(P),
+                                    static_cast<float>(std::sin(static_cast<double>(ang)))};
+                                arm_direction_hold_007c07a0(dir, c2);          // 009B1C79
+                            } else {
+                                ++unit_.land_begin_hold_unapplied;
+                            }
                         }
                         unit_.land_begin_last_a8 = a8;
                         if ((unit_.land_begin_ticks % 10) == 1) {
@@ -19574,7 +19728,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.plane_stall_spd),
                                 static_cast<double>(lvl));
                             owner_.log.notef("  land final trace %s t=%.2f A8=%.1f Y=%.1f Z=%.1f "
-                                "spd_cmd=%.2f spd=%.1f pitch=%.4f mode=%d done=%d",
+                                "spd_cmd=%.2f spd=%.1f pitch=%.4f mode=%d done=%d hold=%.3f",
                                 unit_.row.name.c_str(),
                                 static_cast<double>(owner_.summary.simulated_seconds),
                                 static_cast<double>(unit_.land_dist_a8),
@@ -19583,7 +19737,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.plane_desired_speed_2b4),
                                 static_cast<double>(GameUnitsHost::Impl::leader_live_speed_007b8e60(unit_)),
                                 static_cast<double>(unit_.plan_state.pitch_target_2bc),
-                                unit_.plan_state.pitch_mode_2d0, unit_.land_done_18 ? 1 : 0);
+                                unit_.plan_state.pitch_mode_2d0, unit_.land_done_18 ? 1 : 0,
+                                static_cast<double>(unit_.plane_dir_hold_seconds));
                         }
                         owner_.done("BotStateLandFinal::tick", 0x009b1ed0u);
                     }
@@ -19641,6 +19796,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_air_brake_mode_2d8 = 0;
                         // 009B0A3B: 007C07A0(plane, (0, 1, 0), 0.0), the direction hold.
                         owner_.record("BotStateLandAbort::direction_hold_007c07a0", 0x007c07a0u);
+                        if constexpr (GameUnitsHost::Impl::kPlaneDirectionHoldBound) {
+                            const float up[3] = {0.0f, 1.0f, 0.0f};
+                            arm_direction_hold_007c07a0(up, 0.0f);   // clears the seconds
+                        }
                         unit_.land_abort_standby_20 = false;                         // 009B0A42
                         if (unit_.plane_control_mode_900 != 7) {
                             // 009B0E74-009B0F93: +21h = 1 and the ground heading and
@@ -21610,7 +21769,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const float r = bsp::clamped_interpolate_00419010(
                             range_min, 0.0f, range_max, 1.0f, s);
-                        const float b = r;   // + (ctl+10h)->+0C0h * 0.6, unmodelled
+                        // 007D9AFC-007D9B0C: + (ctl+10h)->+0C0h * 0.6 (00CEFF98, a
+                        // double), the timed direction hold's remaining seconds.
+                        const float b = GameUnitsHost::Impl::kPlaneDirectionHoldBound
+                            ? static_cast<float>(static_cast<double>(unit_.plane_dir_hold_seconds)
+                                * 0.6000000238418579 + static_cast<double>(r))
+                            : r;
                         // 007D9B10..007D9B6E, the literal three-way pick.
                         float t = 0.0f;
                         if (a > b) {
@@ -24057,6 +24221,12 @@ void GameUnitsHost::report() {
                 s->land_final_entries, s->land_final_ticks, s->land_final_abort_refused,
                 s->land_final_park_refused, s->land_final_ground_refused,
                 s->land_touched_20 ? 1 : 0);
+            if constexpr (Impl::kPlaneDirectionHoldBound) {
+                host.log.notef("summary plane direction hold %s: arms=%llu blend_steps=%llu "
+                    "max_seconds=%.3f (packet cc9_landing_descent_2)", s->row.name.c_str(),
+                    s->dir_hold_arms, s->dir_hold_blend_steps,
+                    static_cast<double>(s->dir_hold_max_seconds));
+            }
         }
         host.log.notef("summary landing sequencer refused decks=%llu", host.landing_refused_decks);
     }

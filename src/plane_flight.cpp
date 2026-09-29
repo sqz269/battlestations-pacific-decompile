@@ -521,6 +521,36 @@ float commit_direction_hold_007dc6c5(float seconds, bool owner_present, bool hol
     return 0.0f;
 }
 
+void blend_direction_hold_007d88cb(float velocity[3], const float direction_body[3],
+                                   float seconds) noexcept {
+    // 007D88E0..007D8927: the speed, sqrt only above 1e-10 (00CE3820).
+    const float v2 = velocity[0] * velocity[0] + velocity[1] * velocity[1] +
+                     velocity[2] * velocity[2];
+    const float speed = static_cast<double>(v2) > 1.0e-10 ? std::sqrt(v2) : 0.0f;
+    // 007D8951..007D8A0F: the direction, normalised (1/|d| only when |d| > 0).
+    const float dl = std::sqrt(direction_body[0] * direction_body[0] +
+                               direction_body[1] * direction_body[1] +
+                               direction_body[2] * direction_body[2]);
+    const float di = dl > 0.0f ? 1.0f / dl : 0.0f;
+    const float d[3] = {direction_body[0] * di, direction_body[1] * di, direction_body[2] * di};
+    // 007D8A13..007D8AB6: the velocity normalised the same way, stored in place.
+    const float vl = std::sqrt(v2);
+    const float vi = vl > 0.0f ? 1.0f / vl : 0.0f;
+    // 007D8AB9..007D8B35: s * d + (1 - s) * v.
+    const float s = seconds;
+    float b[3];
+    for (int i = 0; i < 3; ++i) b[i] = s * d[i] + (1.0f - s) * (velocity[i] * vi);
+    // 007D8B39..007D8BDE: normalised, then 007D8BE1..007D8C12 times the speed.
+    const float bl = std::sqrt(b[0] * b[0] + b[1] * b[1] + b[2] * b[2]);
+    const float bi = bl > 0.0f ? 1.0f / bl : 0.0f;
+    for (int i = 0; i < 3; ++i) {
+        velocity[i] = b[i] * bi * speed;
+        // 007D8C15..007D8C5E: FABS against 00D7A238 = 0.01f, equality kept.
+        const float m = velocity[i] < 0.0f ? -velocity[i] : velocity[i];
+        if (0.01f > m) velocity[i] = 0.0f;
+    }
+}
+
 float gate_direction_hold_007d81c7(float seconds, bool game_state_is_two) {
     // 007D81B5 CMP ... ,2 / 007D81C2 JNZ: the clear is on the equal path only.
     return game_state_is_two ? 0.0f : seconds;
