@@ -2536,6 +2536,61 @@ underneath it:
 switch. Next, in order: the ground laws `007DA380`/`007DA542`, abort's on-ground arm, and
 `00951F40`'s effect on a hidden plane. Then re-pair park.
 
+## 5t. The ground steering: the rate law in controller mode 1 (packet `cc9_plane_ground_steering`, cc9-lua14, 2026-09-29)
+
+**The tag.** `ctl+FCh` is written by each law's entry, not by a selector
+(docs/PLANE_ALTITUDE_HOLD_AND_SURFACE.md): `007DCD24` in the ground law `007DCCF0` stores 1.
+This host ran the rate law with mode 0 under the ground law too (5q), and that has three
+consequences:
+- the roll term survives, where `007DA8D9` zeroes it in mode 1;
+- the bank-yaw coupling stays on, where `007DA380`'s byte is 0 in mode 1;
+- the yaw factor is the free-flight authority.
+
+**`007DA380`'s mode-1 arm, `007DA542`-`007DA6E3`**, read whole from the disk listing. The frame
+was tracked through the three `00419010` calls, which are `RET 14h`:
+
+- **The first two outputs:** `*outA` = the authority (`007D9A70`); `*outB` = 1.0.
+- **Below the band** (`ctl+6Ch v < [00F8738C]`, tuning `+2ACh`, which holds
+  RunwayYawTurnSpdLimit/1 in this build):
+  - `r = max(YawSpd x RunwayYawTurnSpdMul, 0.87266 (00D057E0) / YawSpd)`;
+  - `r` is halved for a 10h/16h class with `+904h` set (`007DA5D8`);
+  - `blend = 00419010(Limit/1, r, Limit, 1.0, v)`;
+  - `a = 00419010(0.01, 15.0, 0.1, 6.0, thr) / 3.6` and
+    `b = 00419010(0.001, 6.0, 0.1, 1.0, thr) / 3.6`, where `thr` is `unit+9F0h` and 3.6 at
+    `00D06588` converts km/h to m/s;
+  - `*outB = blend x 00419010(b, 0, a, 1.0, v)`. There is no steering authority below `b`
+    (1.7 m/s with the throttle closed) and full authority above `a` (4.2 m/s closed).
+- **The byte:** `*outByte` = 0.
+
+`outB` is the yaw factor at `007DA95B` (the turbo path's overwrite at `007DA7ED` needs
+`unit+5Dh`).
+
+**Binding, behind `kPlaneGroundSteeringBound` (committed OFF).** Under the ground law
+(`run_core_law_007db680(step, true)`), `control_step_007da710` passes:
+- controller mode 1;
+- `outB` as the second factor;
+- no coupling.
+
+The diagnostic is `summary plane ground steering`.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000 (park OFF), written before any ON run
+
+1. **Identical up to Warhawk 01's touchdown (153.15 s).** The switch acts only under the ground
+   law. All ten landed planes then show `steps > 0`.
+2. **The roll-outs still stop on the runway.**
+   - Each stop is within 1 s and 10 m of OFF's stop.
+   - No landed plane leaves the strip. There is no `plane ground contact lost` line.
+   - B-25 01|.-2's creep stops, and with it the 325.94 s sink of 5r: `min_bfc > -2` for every
+     plane.
+3. **Deaths identical; USN01 gameplay identical (exit 1).** LOMP10 moves (exit 3) after the
+   first touchdown.
+
+- **Mechanism failure:** any of:
+  - a landed plane rolling more than 20 m after its OFF stop, or off the strip;
+  - a lift-off request;
+  - a sink below the wheels of more than 1 m.
+- **Flip rule:** ON if predictions 1 and 2 hold.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the

@@ -381,6 +381,8 @@ struct GameUnitSlot {
     float ground_last_brake{0.0f};
     float ground_last_friction{0.0f};
     float ground_first_pos[3]{0.0f, 0.0f, 0.0f};
+    unsigned long long ground_steer_steps{0};   // cc9_plane_ground_steering
+    float ground_steer_last_f2{0.0f};
     float ground_stop_time{-1.0f};
     float ground_min_bfc{1000.0f};
     std::int32_t plane_c18{5};
@@ -4285,6 +4287,12 @@ struct GameUnitsHost::Impl {
     // 2-or-4 refusal only while it is clear, 006C5C40 false for a landed plane,
     // and 006C5534's lookup-miss mode 904h ? 4 : 1. False: the byte is taken
     // clear there, so a landed head gets mode 2 and its followers mode 1.
+    // Packet cc9_plane_ground_steering (docs/SQUADRON_LAND_TASK.md section 5t): the
+    // rate law in controller mode 1 under the ground law 007DCCF0 (ctl+FCh = 1 at
+    // 007DCD24): the roll term zeroed (007DA8D9), no bank-yaw coupling, and
+    // 007DA380's mode-1 factors 007DA542-007DA6E3. False: the ground law runs the
+    // rate law's free-flight arm.
+    static constexpr bool kPlaneGroundSteeringBound = false;
     // Packet cc9_land_park_taxi (docs/SQUADRON_LAND_TASK.md section 5s): land/park.
     // The rule's arms into it (009B3D38 for +900h 4 or 5, 009B3E38 from abort's
     // +66Dh) and out of it (009B3770, the done byte -> abort), its enter/exit
@@ -12314,7 +12322,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float* const wv = unit_.plane_world_velocity;
                         owner_.summary.plane_distance_moved +=
                             std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2]) * step;
-                        control_step_007da710(step, state.forward_speed);
+                        control_step_007da710(step, state.forward_speed, ground);
                         advance_pose_0085e4d0(step);
                     }
 
@@ -22572,7 +22580,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // is zero. The rate law then holds each axis at zero, which
                     // is the correct behaviour for a plane with a centred stick
                     // and is why nothing turns yet.
-                    void control_step_007da710(float step, float forward_speed) {
+                    void control_step_007da710(float step, float forward_speed,
+                        bool ground = false) {
                         // 007B9783 / 007B979C / 007B97A8: the previous-step
                         // snapshot, +9E4h -> +BB0h and so on.
                         for (int i = 0; i < 3; ++i) {
@@ -22604,9 +22613,62 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const float m = control_authority(forward_speed);
                         // Free flight takes 007DA380's mode-0 arm, which writes
                         // the same scalar to both outputs and sets the flag to 1.
+                        float f2 = m;
+                        bool coupling = true;
+                        if (GameUnitsHost::Impl::kPlaneGroundSteeringBound && ground) {
+                            // Packet cc9_plane_ground_steering (docs/SQUADRON_LAND_TASK.md
+                            // 5t): 007DCD24 tags ctl+FCh = 1, so 007DA8D9 zeroes the roll
+                            // term and 007DA380 takes its mode-1 arm 007DA542-007DA6E3:
+                            // outA = the authority, the byte 0 (no bank-yaw coupling),
+                            // outB = 1.0 unless ctl+6Ch < [00F8738C]; then
+                            // r = max(YawSpd x Mul (+2B0h), DEG 50 (00D057E0) / YawSpd),
+                            // halved for a 10h/16h class with +904h (00D7A280);
+                            // outB = 00419010(Limit/1, r, Limit (+2ACh), 1.0, v) x
+                            // 00419010(b / 3.6, 0, a / 3.6, 1.0, v) with, over the live
+                            // throttle unit+9F0h, a = 00419010(0.01, 15.0, 0.1, 6.0, thr)
+                            // and b = 00419010(0.001, 6.0, 0.1, 1.0, thr) (00D06588 3.6,
+                            // KMH to m/s). The +2ACh slot holds Limit/1 in this build
+                            // (docs/GAME_TUNING_SINGLETON.md), so the pair is read twice.
+                            state.controller_mode_fc = 1;
+                            coupling = false;
+                            f2 = 1.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                const float lim = g.dynamics_runway_yaw_turn_spd_limit_1;
+                                const float v = forward_speed;
+                                if (lim > v) {
+                                    const float ys = unit_.plane_class.yaw_spd;
+                                    const float inv = static_cast<float>(
+                                        0.8726646304130554 / static_cast<double>(ys));
+                                    const float sc = ys * g.dynamics_runway_yaw_turn_spd_mul;
+                                    float r = sc > inv ? sc : inv;
+                                    if ((bsp::unit_is_kind_of(unit_.class_id, 0x10)
+                                            || bsp::unit_is_kind_of(unit_.class_id, 0x16))
+                                        && unit_.plane_landed_904) {
+                                        r = static_cast<float>(static_cast<double>(r) * 0.5);
+                                    }
+                                    const float blend = bsp::clamped_interpolate_00419010(
+                                        lim, r, lim, 1.0f, v);
+                                    const float thr = unit_.plane_live_throttle;
+                                    const float a = static_cast<float>(static_cast<double>(
+                                        bsp::clamped_interpolate_00419010(0.009999999776482582f,
+                                            15.0f, 0.10000000149011612f, 6.0f, thr)) /
+                                        3.5999999046325684);
+                                    const float b = static_cast<float>(static_cast<double>(
+                                        bsp::clamped_interpolate_00419010(0.0010000000474974513f,
+                                            6.0f, 0.10000000149011612f, 1.0f, thr)) /
+                                        3.5999999046325684);
+                                    const float c = bsp::clamped_interpolate_00419010(b, 0.0f,
+                                        a, 1.0f, v);
+                                    f2 = c * blend;
+                                }
+                            }
+                            ++unit_.ground_steer_steps;
+                            unit_.ground_steer_last_f2 = f2;
+                        }
                         const bsp::PlaneControlTargets targets =
                             bsp::plane_control_targets_007da710(
-                                unit_.plane_class, state, m, m, true);
+                                unit_.plane_class, state, m, f2, coupling);
 
                         bsp::PlaneRotationFactors factors;
                         if (owner_.lua.plane_globals_loaded()) {
@@ -25082,6 +25144,12 @@ void GameUnitsHost::report() {
                     s->ground_arm_steps > 0 ? static_cast<double>(std::sqrt(dx * dx + dz * dz)) : 0.0,
                     static_cast<double>(s->ground_min_bfc),
                     s->plane_control_mode_900, static_cast<int>(s->land_state));
+            }
+            if (s->ground_steer_steps > 0) {
+                host.log.notef("summary plane ground steering %s: steps=%llu last_f2=%.4f "
+                    "heading=%.4f (packet cc9_plane_ground_steering)", s->row.name.c_str(),
+                    s->ground_steer_steps, static_cast<double>(s->ground_steer_last_f2),
+                    static_cast<double>(s->plane_heading_c6c));
             }
             if (s->land_park_entries > 0) {
                 host.log.notef("summary land park %s: entries=%llu from_abort=%llu ticks=%llu "
