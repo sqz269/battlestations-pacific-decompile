@@ -69,6 +69,8 @@ NearestLandingSiteResult nearest_landing_site_006c0840(const NearestLandingSiteI
     // makes the answer the host's, not the image's.
     out.key_unknown = out.candidates_passed >= 2 && any_key_unknown;
     out.node = best_node;
+    out.best_key = best;
+    out.best_accepts = best_accepts;
     return out;
 }
 

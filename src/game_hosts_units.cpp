@@ -347,6 +347,23 @@ struct GameUnitSlot {
     std::int32_t plane_control_mode_900{0};
     float plane_airborne_908{0.0f};
     bool plane_airborne_frozen_9e0{false};
+    // Packet cc9_plane_touchdown (kPlaneTouchdownBound). 007CFD20 leaves +C04h
+    // 0.0 (007D0006, XORPS at 007CFF94), +BF4h null, +BF8h/+C02h clear (007D01A7-
+    // 007D01B3), +BFCh 1000.0 (007D01EB, 00CE3804) and +C18h 5 (007D000E).
+    float plane_site_timer_c04{0.0f};         // the 006C0840 re-probe countdown
+    std::size_t plane_contact_deck_bf4{0};    // the holder, as a landing deck index + 1
+    bool plane_ground_contact_bf8{false};     // 006BC530: over the runway rectangle
+    float plane_contact_height_bfc{1000.0f};  // 006BC530's local height
+    bool plane_near_site_c02{false};          // the site key below 1000.0
+    bool plane_landed_904{false};             // 007CB6xx: airborne clock above 5.0
+    std::int32_t plane_c18{5};
+    float plane_wheel_height_1fc{0.0f};       // classDesc+1FCh WheelHeight
+    float plane_min_water_spd_198{0.0f};      // classDesc+198h MinWaterSpd
+    // DIAGNOSTIC counters for the probe and the touchdown test.
+    unsigned long long td_probes{0}, td_contact_steps{0}, td_low_steps{0};
+    unsigned long long td_refused_airborne{0}, td_refused_vy{0}, td_touchdowns{0};
+    float td_min_height{1000.0f};
+    double td_at{-1.0};
     // Free-flight motion. 007DB680 is an ACCUMULATOR pass, not an integrator:
     // it leaves four accumulators for 007D8470 to fold, and the caller applies
     // the result. The integration below is therefore the host's, not a
@@ -1894,6 +1911,11 @@ struct GameUnitsHost::Impl {
         float t_a4[3]{0.0f, 0.0f, 0.0f}; // holder+A4h, 006BC960
         float width_b0{0.0f};
         float length_b4{0.0f};
+        // The launch site at block+3Ch (packet cc9_plane_touchdown): +40h, which
+        // 006CF100 stamps now - 99999.0 (00CF89D0) and 006CE230 restamps, and the
+        // occupancy vector +34h/+38h that 006CED90 appends to.
+        float site_stamp_40{-99999.0f};
+        std::vector<std::size_t> site_occupants_34;
         std::vector<LandingQueueEntry> queue;
         std::vector<LandingAssignment> assignments;
         unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
@@ -1910,6 +1932,11 @@ struct GameUnitsHost::Impl {
     std::size_t landing_squadron_of(std::size_t plane) const;
     int landing_spawn_index(std::size_t plane) const;
     std::array<float, 3> landing_local_006bcc90(const LandingDeck& d, const float* pos) const;
+    // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k).
+    bool landing_over_runway_006bc530(const LandingDeck& d, const float* pos, float* height) const;
+    std::size_t plane_landing_site_006c0840(const GameUnitSlot& p, float& dist);
+    void plane_site_probe_007c5ac0(GameUnitSlot& p, float step);
+    bool plane_touchdown_007cc440(GameUnitSlot& p);
     std::array<float, 3> landing_t_world_006bca40(const LandingDeck& d) const;
     float landing_run_length_006ba620(const LandingDeck& d) const;
     float landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -3988,6 +4015,13 @@ struct GameUnitsHost::Impl {
     // and the rule's begin -> final and final arms. The on-ground half, park
     // and abort stay refused. Needs kLandBeginStateBound. False: final refused.
     static constexpr bool kLandFinalStateBound = false;
+    // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
+    // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
+    // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
+    // the C5h -> 007C71E0 -> 007C1570(4) -> C3h -> 007CB5F0 chain into state 4,
+    // with the site's occupancy add 006CED90 and restamp 006CE230. False: no
+    // probe, plane+BF8h stays clear and a plane never leaves state 7 by landing.
+    static constexpr bool kPlaneTouchdownBound = true;  // ON: gameplay identical, contact exercised (docs/SQUADRON_LAND_TASK.md 5k, 5l)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the
@@ -8988,6 +9022,203 @@ std::array<float, 3> GameUnitsHost::Impl::landing_local_006bcc90(const LandingDe
     return l;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc9_plane_touchdown (kPlaneTouchdownBound), docs/SQUADRON_LAND_TASK.md
+// section 5k. Every body below was read from the listing.
+// ---------------------------------------------------------------------------
+
+// 006BC530 (006BC530-006BC5CE, __thiscall(holder, pos, float* height), RET 8):
+// the position through the inverse (+48h), NOT less T; *height = local y; true
+// when |x| < float(B0h x 0.5) and |z| < float(B4h x 0.5) (the double 0.5 at
+// 00D7A280, each product stored as a float before the compare).
+bool GameUnitsHost::Impl::landing_over_runway_006bc530(const LandingDeck& d, const float* pos,
+    float* height) const {
+    const float hw = static_cast<float>(static_cast<double>(d.width_b0) * 0.5);
+    const float hl = static_cast<float>(static_cast<double>(d.length_b4) * 0.5);
+    const std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, pos);
+    if (height != nullptr) *height = l[1];
+    return std::fabs(l[0]) < hw && std::fabs(l[2]) < hl;
+}
+
+// 006C0840 as 007C5AC0 calls it (007C5BAD-007C5BB9): ECX = plane+54h, EDX = the
+// plane, stack (&dist, 0, airborne or on the water). The key, 006C09FE-006C0A9B:
+// l = 006BCC90(pos) with y zeroed; an accepting holder (006BC530) keys on
+// |00438B10(holder+88h, plane vtable[50h])| (0042BE90); any other on
+// 00427E30(l) with l.z x 0.3 (00CE3DC8) when -1500 < l.z < 800 (00CF86A8,
+// 00CE3948). 006C0AFF-006C0B2A: *dist = 0.0 for an accepting winner, else
+// sqrt(key) (00BF7030); no winner leaves *dist alone. LABELLED: the plane's
+// scene parent is not carried, so a flying plane never takes the own-site arm;
+// a mother-ship holder is refused (landing_deck_006c0750); vtable[50h] is
+// plane_heading_c6c.
+std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot& p, float& dist) {
+    bsp::NearestLandingSiteInputs in;
+    in.side = p.row.party;
+    in.head_present = true;
+    in.head_control_9d4 =
+        bsp::plane_squadron_registry().find_by_member_unit(p.process_index) != nullptr;
+    in.multiplayer_927c90 = false;
+    in.need_approach_bit = false;
+    in.local_only = p.plane_control_mode_900 == 7 || p.plane_control_mode_900 == 6;
+    std::vector<bsp::LandingSiteCandidate> list;
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    for (std::size_t i = 0; i < decks.size(); ++i) {
+        std::size_t owner = slots.size();
+        for (std::size_t u = 0; u < slots.size(); ++u) {
+            if (slots[u]->row.name == decks.name_at(i)) { owner = u; break; }
+        }
+        if (owner >= slots.size()) continue;
+        const LandingDeck* d = landing_deck_006c0750(i, owner);
+        if (d == nullptr) continue;
+        const bsp::AirOpsDeck* deck = decks.mutable_at(i);
+        bsp::LandingSiteCandidate c;
+        c.node = i + 1u;
+        c.block_present = true;
+        c.owner_present = deck->owner_present;
+        c.owner_dead_5e = gunnery != nullptr && gunnery->unit_dead(owner);
+        c.owner_remote_5d = false;
+        c.approach_bit_20 = deck->is_airfield;
+        c.owner_side_54 = deck->owner_party;
+        c.accepts_6bc530 = landing_over_runway_006bc530(*d, p.motion.position, nullptr);
+        c.key_known = true;
+        if (c.accepts_6bc530) {
+            c.key = std::fabs(bsp::wrapped_angle_subtract_00438b10(d->runway_heading_88,
+                p.plane_heading_c6c));
+        } else {
+            std::array<float, 3> l = landing_local_006bcc90(*d, p.motion.position);
+            l[1] = 0.0f;
+            if (l[2] > -1500.0f && 800.0 > static_cast<double>(l[2])) {
+                l[2] = static_cast<float>(static_cast<double>(l[2]) * 0.30000001192092896);
+            }
+            c.key = static_cast<float>(static_cast<double>(l[0]) * l[0]
+                + static_cast<double>(l[1]) * l[1] + static_cast<double>(l[2]) * l[2]);
+        }
+        list.push_back(c);
+    }
+    const bsp::NearestLandingSiteResult r = bsp::nearest_landing_site_006c0840(in, list);
+    if (r.node != 0) {
+        dist = r.best_accepts ? 0.0f
+            : static_cast<float>(std::sqrt(static_cast<double>(r.best_key)));
+    }
+    return static_cast<std::size_t>(r.node);
+}
+
+// 007C5AC0 (007C5AC0-007C5F5E, __thiscall(plane, float step), RET 4), the probe
+// both motion arms run first. Coverage: complete except the +C1Ch gear request
+// (007C5C11-007C5EEF, mission state 0Dh), which feeds the gear channel (+DECh
+// +28h) this host does not carry; see plane_touchdown_007cc440.
+void GameUnitsHost::Impl::plane_site_probe_007c5ac0(GameUnitSlot& p, float step) {
+    // 007C5AC0-007C5AF1: +C04h -= min(step, 0.5); a negative step sets -1.0.
+    if (step > 0.5f) {
+        p.plane_site_timer_c04 = static_cast<float>(
+            static_cast<double>(p.plane_site_timer_c04) - 0.5);
+    } else if (0.0f > step) {
+        p.plane_site_timer_c04 = -1.0f;
+    } else {
+        p.plane_site_timer_c04 = static_cast<float>(
+            static_cast<double>(p.plane_site_timer_c04) - static_cast<double>(step));
+    }
+    const float pos[3] = {p.motion.position[0], p.motion.position[1], p.motion.position[2]};
+    // 007C5B09-007C5B5E: only when +C04h < 0 and the unit is present (+5Ch) with
+    // +5Dh, +60h and +5Eh clear (this host: not dead).
+    const bool dead = p.plane_death_c3a || p.plane_death_removed ||
+        (gunnery != nullptr && gunnery->unit_dead(p.process_index));
+    if (0.0f > p.plane_site_timer_c04 && !dead) {
+        ++p.td_probes;
+        float dist = 0.0f;                                          // 007C5B73
+        const std::size_t deck = plane_landing_site_006c0840(p, dist);
+        p.plane_contact_deck_bf4 = deck;                            // 007B8E80
+        if (deck != 0) {
+            // 007C5BCE-007C5BF3: +C02h = 1000.0 (00CE47A0, double) > dist.
+            p.plane_near_site_c02 = 1000.0 > static_cast<double>(dist);
+        } else {
+            // 007C5BF5-007C5C09.
+            p.plane_ground_contact_bf8 = false;
+            p.plane_near_site_c02 = false;
+            p.plane_contact_height_bfc = 999.0f;                    // 00CF4888
+        }
+        // 007C5EF3-007C5F04: +C04h = (dist - 200.0) x 0.004 (00CE4D70, 00CEB160).
+        p.plane_site_timer_c04 = static_cast<float>(
+            (static_cast<double>(dist) - 200.0) * 0.004000000189989805);
+    }
+    // 007C5F0A-007C5F57, every step.
+    if (p.plane_near_site_c02 && p.plane_contact_deck_bf4 != 0) {
+        const LandingDeck& d = landing_decks[p.plane_contact_deck_bf4 - 1u];
+        p.plane_ground_contact_bf8 =
+            landing_over_runway_006bc530(d, pos, &p.plane_contact_height_bfc);
+        return;
+    }
+    p.plane_near_site_c02 = false;
+    p.plane_ground_contact_bf8 = false;
+    p.plane_contact_height_bfc = 1000.0f;                           // 00CE3804
+}
+
+// 007CC440-007CC4CA, the live arm of 007CC2F0 after the probe, and what the C5h
+// message does. Returns true when the plane touched down (the native returns at
+// 007CC4CF and skips the water test).
+//   gate: +BF8h, classDesc+1FCh >= +BFCh (007CC463 JB), +908h > 10.0
+//   (00CE38B8), gear (+DECh)+28h clear or its value 1.0, and vtable[34h]
+//   (007BBB70, the world velocity) y > -6.0 (00D05E30).
+//   00762A60 builds C5h; 0077C2A0 routes it; 007CCFA0 (jump table 007CD1AC,
+//   kind C5h) calls 007C71E0: +C49h clear, classDesc+198h != 0.0, +BF4h, the
+//   gear again, the holder's owner not the scene parent -> re-parent,
+//   007C1570(4, 0) -> C3h (current 7, requested 4) -> 007CCFA0 sub-kind 4 with
+//   current 7 -> 007CB5F0: state 4, +C04h = -1.0, +904h = +908h > 5.0 and +C18h
+//   = 3 (classDesc+198h != 0), 007C11E0(0), site vtable[24h] 006CED90 (append to
+//   the occupancy vector unless present) and vtable[48h] 006CE230 (+40h = now).
+// SUBSTITUTIONS, labelled: the gear channel (+DECh)+28h is not carried (its
+// enable is the model's class+5D4h), so both gear gates pass; +C49h is taken
+// clear; both messages are delivered at once (the image drains the loopback
+// queue at row 9 of the same fixed step); the re-parent is not carried (a
+// static airfield); 0090F6C0 (scoring) and 007C11E0(0)'s actuator targets are
+// contracts. After state 4 the ground-roll arm 007CBFA0 does not run in this
+// host, so the plane is held where it touched down.
+bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
+    if (!p.plane_ground_contact_bf8) return false;
+    if (++p.td_contact_steps == 1 && p.plane_contact_deck_bf4 != 0) {
+        const std::array<float, 3> fl = landing_xform_004142e0(
+            landing_decks[p.plane_contact_deck_bf4 - 1u].inverse_48, p.motion.position);
+        log.notef("  plane ground contact first %s t=%.2f local x=%.2f y=%.2f z=%.2f vy=%.2f "
+            "(006BC530, packet cc9_plane_touchdown)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), static_cast<double>(fl[0]),
+            static_cast<double>(fl[1]), static_cast<double>(fl[2]),
+            static_cast<double>(p.plane_world_velocity[1]));
+    }
+    if (p.plane_contact_height_bfc < p.td_min_height) p.td_min_height = p.plane_contact_height_bfc;
+    if (!(p.plane_wheel_height_1fc >= p.plane_contact_height_bfc)) return false;   // 007CC463 JB
+    ++p.td_low_steps;
+    if (!(p.plane_airborne_908 > 10.0f)) { ++p.td_refused_airborne; return false; }
+    if (!(p.plane_world_velocity[1] > -6.0f)) { ++p.td_refused_vy; return false; }
+    // 007C71E0 (007C71E6-007C721A).
+    if (p.plane_min_water_spd_198 == 0.0f || p.plane_contact_deck_bf4 == 0) return false;
+    LandingDeck& d = landing_decks[p.plane_contact_deck_bf4 - 1u];
+    // 007CB5F0, the authority arm (007CB6A6-007CB75D).
+    const float airborne = p.plane_airborne_908;
+    p.plane_control_mode_900 = 4;
+    p.plane_site_timer_c04 = -1.0f;
+    p.plane_landed_904 = airborne > 5.0f;                            // 00CE3850
+    p.plane_c18 = 3;
+    if (std::find(d.site_occupants_34.begin(), d.site_occupants_34.end(), p.process_index)
+        == d.site_occupants_34.end()) {
+        d.site_occupants_34.push_back(p.process_index);              // 006CED90
+    }
+    d.site_stamp_40 = static_cast<float>(summary.simulated_seconds);   // 006CE230
+    ++p.td_touchdowns;
+    p.td_at = summary.simulated_seconds;
+    const std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, p.motion.position);
+    log.notef("plane touchdown: unit=%s t=%.2f height=%.3f wheel=%.2f vy=%.2f |v|=%.2f "
+        "local x=%.1f z=%.1f airborne=%.1f landed904=%d state 7 -> 4 (007CC4B6 C5h -> "
+        "007C71E0 -> 007C1570(4) -> C3h -> 007CB5F0; packet cc9_plane_touchdown)",
+        p.row.name.c_str(), summary.simulated_seconds,
+        static_cast<double>(p.plane_contact_height_bfc),
+        static_cast<double>(p.plane_wheel_height_1fc),
+        static_cast<double>(p.plane_world_velocity[1]),
+        static_cast<double>(avoid_len(p.plane_world_velocity)),
+        static_cast<double>(l[0]), static_cast<double>(l[2]),
+        static_cast<double>(airborne), p.plane_landed_904 ? 1 : 0);
+    record("Plane::touchdown_007cb5f0", 0x007cb5f0u);
+    return true;
+}
+
 // 006BCA40 (RET 4): T through the holder's matrix (+8h).
 std::array<float, 3> GameUnitsHost::Impl::landing_t_world_006bca40(const LandingDeck& d) const {
     return landing_xform_004142e0(d.frame_8, d.t_a4);
@@ -9336,15 +9567,15 @@ void GameUnitsHost::Impl::landing_spacing_006c3f80(LandingDeck& d, LandingAssign
             // The airfield site's vtable[30h] is 006CF3F0, RET true.
             // site+40h: the site constructor 006CF100 stamps now - 99999.0
             // (00CF89D0); the one restamp, site->vtable[48h] = 006CE230 (now),
-            // is called from 007CB5F0 at 007CB75D, the plane flight-state
-            // routine, which this host does not run. SUBSTITUTION, labelled: the
-            // stamp is the mission-start value -99999.0, so site is 99999 s plus
-            // the mission clock.
+            // is called from 007CB5F0 at 007CB75D, the touchdown. Without
+            // kPlaneTouchdownBound nothing restamps it and the stamp stays the
+            // mission-start value -99999.0 (labelled: the site's construction
+            // time is taken as 0), so site is 99999 s plus the mission clock.
             const float speed = avoid_len(p.plane_world_velocity);      // plane->vtable[38h]
             const float tp = static_cast<float>(static_cast<double>(rec.path_4) /
                 static_cast<double>(speed));
             float site = static_cast<float>(static_cast<double>(
-                static_cast<float>(summary.simulated_seconds)) - (-99999.0));
+                static_cast<float>(summary.simulated_seconds)) - static_cast<double>(d.site_stamp_40));
             if (0.0f > site) site = 0.0f;
             rec.spacing_8 = bsp::clamped_interpolate_00419010(
                 static_cast<float>(static_cast<double>(fdt) * 0.75), 0.009999999776482582f,
@@ -9690,6 +9921,18 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             // "TurnCircleRadius"); only the copy onto the slot was missing.
             slot->plane_turn_circle_radius = lua_row.turn_circle_radius;
             slot->plane_swim_height = lua_row.swim_height;
+            // Packet cc9_plane_touchdown. desc+198h, and desc+1FCh WheelHeight:
+            // 007D29B8-007D2AC6 write it only when WheelHeight and GroundPitch are
+            // both present; otherwise the descriptor keeps the zero of
+            // BSP_Memory_AllocZeroed (00470B80). This installation authors neither
+            // for the P-40 or the P-38.
+            slot->plane_min_water_spd_198 = lua_row.min_water_spd;
+            if constexpr (Impl::kPlaneTouchdownBound) {
+                constexpr float kAbsent = -1.0e30f;
+                const float wh = host.lua.read_vehicle_class_number(row.type_id, "WheelHeight", kAbsent);
+                const float gp = host.lua.read_vehicle_class_number(row.type_id, "GroundPitch", kAbsent);
+                slot->plane_wheel_height_1fc = (wh != kAbsent && gp != kAbsent) ? wh : 0.0f;
+            }
             // 007C4BC5-007C4C14. The probe speed of the first call is
             // tuning+24Ch LevelFlight times desc+184h StallSpd, which is the
             // same product the lift term caps its q at, and 007C4C0E scales the
@@ -11451,6 +11694,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // never be applied at all. docs/PLANE_FORMATION.md
                         // section 6 states this as a scheduling hole.
                         owner_.place_wing_member_on_station_007f23a0(unit_, true);
+                        // Packet cc9_plane_touchdown: 007CC431-007CC4CF, the live
+                        // arm's probe 007C5AC0 and the touchdown test, before the
+                        // water test. A touchdown leaves state 7, so the water
+                        // test below is skipped as the native's return skips it.
+                        if constexpr (GameUnitsHost::Impl::kPlaneTouchdownBound) {
+                            const bool dead_5d = unit_.plane_death_c3a || unit_.plane_death_removed
+                                || (owner_.gunnery != nullptr
+                                    && owner_.gunnery->unit_dead(unit_.process_index));
+                            if (!dead_5d) {
+                                owner_.plane_site_probe_007c5ac0(unit_, step);
+                                owner_.plane_touchdown_007cc440(unit_);
+                            }
+                        }
                         // 007CC523-007CC562, the free-flight arm own water
                         // test, and the answer to why a plane here could fly to
                         // -400 m. The arm samples the sea under the aircraft and
@@ -18669,10 +18925,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             static_cast<double>(dz) * dz);
                         unit_.land_dist_a8 = static_cast<double>(s2) > 1e-10
                             ? static_cast<float>(std::sqrt(static_cast<double>(s2))) : 0.0f;
-                        if (on_ground) {
-                            // 009AFC58-009AFDC4. The gate (plane+BF8h set and +BF4h
-                            // non-zero skips it) is not modelled. The lead time t only
-                            // moves the point with a moving owner; with the static
+                        // 009AFC58-009AFDC4. The gate: plane+BF8h set and +BF4h
+                        // non-zero skips it (with kPlaneTouchdownBound; without
+                        // it the host has no ground contact).
+                        const bool contact = GameUnitsHost::Impl::kPlaneTouchdownBound
+                            && unit_.plane_ground_contact_bf8 && unit_.plane_contact_deck_bf4 != 0;
+                        if (on_ground && !contact) {
+                            // The lead time t only moves the point with a moving owner; with the static
                             // holder the point is T again (009AFD52), so only the
                             // floor of 1.0 on the distance (009AFDA4) remains.
                             land_path_point_006bca80(*d);
@@ -19039,9 +19298,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_air_brake_mode_2d8 = 1;
                             ++unit_.plane_speed_commands;
                         }
-                        // 009B2080-009B2114: with ground contact (plane+BF8h and +BF4h), the
-                        // wheel-height and Z < [00CFBC84] done tests. This host has no ground
-                        // contact, so they never run.
+                        // 009B2080-009B2114: with ground contact (plane+BF8h and +BF4h) and
+                        // 007B8D70 false (the gear channel (+DECh)+28h present and not at
+                        // 1.0), done = 006BC530 height < 2 x WheelHeight, or Z < -5.0
+                        // ([00CFBC84]). The gear channel is not carried (packet
+                        // cc9_plane_touchdown, labelled), so 007B8D70 answers true and the
+                        // tests never run, with or without kPlaneTouchdownBound.
                         if ((unit_.land_final_ticks % 10) == 1) {
                             owner_.log.notef("  land final trace %s t=%.2f A8=%.1f Y=%.1f Z=%.1f "
                                 "spd_cmd=%.2f spd=%.1f pitch=%.4f mode=%d done=%d",
@@ -23313,6 +23575,19 @@ void GameUnitsHost::report() {
                 s->land_touched_20 ? 1 : 0);
         }
         host.log.notef("summary landing sequencer refused decks=%llu", host.landing_refused_decks);
+    }
+    if constexpr (Impl::kPlaneTouchdownBound) {
+        for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+            if (s->td_probes == 0) continue;
+            host.log.notef("summary plane touchdown %s: probes=%llu contact_steps=%llu "
+                "min_height=%.2f wheel=%.2f low_steps=%llu refused_airborne=%llu "
+                "refused_vy=%llu touchdowns=%llu at=%.2f state=%d landed904=%d",
+                s->row.name.c_str(), s->td_probes, s->td_contact_steps,
+                static_cast<double>(s->td_min_height),
+                static_cast<double>(s->plane_wheel_height_1fc), s->td_low_steps,
+                s->td_refused_airborne, s->td_refused_vy, s->td_touchdowns, s->td_at,
+                s->plane_control_mode_900, s->plane_landed_904 ? 1 : 0);
+        }
     }
     if (host.gunnery != nullptr) host.gunnery->report();
     if (host.ai != nullptr) host.ai->report();
