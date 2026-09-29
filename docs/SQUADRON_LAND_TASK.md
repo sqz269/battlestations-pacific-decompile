@@ -3458,3 +3458,47 @@ All seven records the lead listed are also reached on LOMP10, so none is new wit
 | `009B1DDA` land/begin direction_40 | 310 | |
 
 After park, `009B1EED` and `009FABE0` are the biggest live gaps in the land states.
+
+## 5ac. land/final's `direction_40` is a store of the value already there (packet `cc9_land_final_direction_40`, cc9-lua18, 2026-09-29)
+
+`009B1EDF`-`009B1EF2`, in `BSP_BotStateLandFinal_Tick` (`009B1ED0`-`009B211F`, `RET 4`), read from
+the listing: `EDI` = 0 (`009B1EDF`), `approach+B4h` = `EDI` (`009B1EE1`), then `XMM0` (zeroed by the
+first instruction, `009B1ED0`) goes to `[approach+1Ch]+40h` (`009B1EED`). The store is
+unconditional; nothing else in the tick touches `approach+1Ch`.
+
+**What the field is.** `approach+1Ch` is the task's auto-strafe gun controller (`task+314h`,
+docs/DOGFIGHT_GUN.md section 1), and `+40h` is its strafe cone. Its reader is `009FC7C0`
+(`009FC8B5`, the target cone `max(+2Ch, +40h x 1.25)`, and `009FCCA4`, the steer gate
+`1 - cos(lead, +68h) < +40h`), which the PilotBot update runs after the task arm. `009FC7C0`
+stores `XMM0` = 0.0 to `+40h` at `009FCE69` on its tail (every path reaches `009FCE26` or
+`009FCE49` with `XMM0` zeroed at `009FCE07`, `009FCE23` or `009FCDA6`), so the cone is a one-tick
+input.
+
+**Why the store is a no-op.** Two facts, both from the listing:
+1. The only switch into land/final is `009B3DA7` (`PUSH task+5F8h; CALL 009B3680`, in
+   `BSP_BotTaskLand_StateRule`, after `009B3C00` on land/begin). The other disp32 `+5F8h`
+   references in `00996000`-`009F7000` are membership compares (`009B347E`, `009B36D0`,
+   `009B3DB2`, `009B3ECE`) or unrelated stack slots.
+2. land/begin's tick stores 0.0 to the same field every tick (`009B1DDA`), and `009FC7C0`
+   stores only 0.0 there. So the field is 0.0 when final is entered, and final keeps it 0.0.
+
+Uncertainty: a writer of the cone outside the task states (through a second pointer to
+`task+354h`) is not excluded by census; the disp32 `+354h` hits in `00990000`-`00A10000` belong
+to other classes' timers. No such writer is documented.
+
+**The host.** It has no gun controller outside the dogfight arm, so the store has no object.
+`kLandFinalDirection40Bound` relabels the record as performed (`owner_.done`) instead of
+recorded. No state is written.
+
+**Predictions (written before the pairs).** On IJN01 9200/9000 and LOMP10 9200/9000, OFF against
+ON on the same tree:
+- `pair_diff` 1 (gameplay identical), or 3 only through the host-call table.
+- `BotStateLandFinal::direction_40 009b1eed` leaves the UNIMPLEMENTED list; the same call count
+  (10809 on IJN01 at lua17's `l17_f`, give or take the gunnery13 merge) appears as done.
+- The per-entity death table, the touchdown lines and the land/final entry lines do not move.
+
+**Not changed:** land/begin's `009B1DDA` (310 calls). Its store is not a no-op in the image on
+begin's first tick after standby or line, whose cone is `tuning+66Ch` (`Angle_Prepare`); it only
+matters where the gun controller runs, which this host does not do for the land task. The same
+holds for standby's and line's `009FABE0` direction records: they are inputs to a gun controller
+that the host runs only in dogfight.
