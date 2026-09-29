@@ -384,6 +384,7 @@ struct GameUnitSlot {
     unsigned long long ground_steer_steps{0};   // cc9_plane_ground_steering
     float ground_steer_last_f2{0.0f};
     float ground_stop_time{-1.0f};
+    float ground_stop_heading{0.0f};            // cc9_plane_ground_pose
     float ground_min_bfc{1000.0f};
     std::int32_t plane_c18{5};
     float plane_wheel_height_1fc{0.0f};       // classDesc+1FCh WheelHeight
@@ -4292,7 +4293,9 @@ struct GameUnitsHost::Impl {
     // 007DCD24): the roll term zeroed (007DA8D9), no bank-yaw coupling, and
     // 007DA380's mode-1 factors 007DA542-007DA6E3. False: the ground law runs the
     // rate law's free-flight arm.
-    static constexpr bool kPlaneGroundSteeringBound = false;  // OFF: stopped planes keep turning (5t)
+    // ON since packet cc9_plane_ground_pose (5u): with the flat floor carried, stopped
+    // planes hold their heading.
+    static constexpr bool kPlaneGroundSteeringBound = true;
     // Packet cc9_land_park_taxi (docs/SQUADRON_LAND_TASK.md section 5s): land/park.
     // The rule's arms into it (009B3D38 for +900h 4 or 5, 009B3E38 from abort's
     // +66Dh) and out of it (009B3770, the done byte -> abort), its enter/exit
@@ -22697,13 +22700,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                         }
+                        // Packet cc9_plane_ground_pose (docs/SQUADRON_LAND_TASK.md 5u): the
+                        // byte 007DA380 returns is BL, and BL gates the axis floors at
+                        // 007DABB0, 007DAD46 and 007DAECE as well as the coupling at
+                        // 007DA9F3. Mode 1 stores it 0, so every axis takes the flat
+                        // floor 0.6 (00CE3D30, XMM5 at 007DABBC): a stopped plane's
+                        // yaw target is 0 with outB, and its yaw rate decays at
+                        // 0.6 rad/s^2 instead of keeping the accel-0 rate.
+                        const bool floor_from_deflection = coupling;
                         for (int axis = 0; axis < 3; ++axis) {
                             bsp::PlaneControlAxisState in;
                             in.current = unit_.plane_body_angular[axis];
                             in.target = gained.target[axis];
                             in.accel = targets.accel[axis];
                             unit_.plane_body_angular[axis] =
-                                bsp::plane_control_axis_step_007da710(factors, in, true, step);
+                                bsp::plane_control_axis_step_007da710(factors, in,
+                                    floor_from_deflection, step);
                         }
                         // Packet cc9_plane_body_rate_check: a diagnostic only.
                         // BSP_PLANE_RATE_TRACE names one plane; each step prints
@@ -22810,6 +22822,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2] < 0.25f) {
                             unit_.ground_stop_time =
                                 static_cast<float>(owner_.summary.simulated_seconds);
+                            unit_.ground_stop_heading = unit_.plane_heading_c6c;
                         }
                         }   // kPlaneGroundRollBound
                     }
@@ -25156,9 +25169,14 @@ void GameUnitsHost::report() {
             }
             if (s->ground_steer_steps > 0) {
                 host.log.notef("summary plane ground steering %s: steps=%llu last_f2=%.4f "
-                    "heading=%.4f (packet cc9_plane_ground_steering)", s->row.name.c_str(),
+                    "heading=%.4f stop_heading=%.4f yaw_rate=%.5f x=%.1f z=%.1f (packets cc9_plane_ground_steering, "
+                    "cc9_plane_ground_pose)", s->row.name.c_str(),
                     s->ground_steer_steps, static_cast<double>(s->ground_steer_last_f2),
-                    static_cast<double>(s->plane_heading_c6c));
+                    static_cast<double>(s->plane_heading_c6c),
+                    static_cast<double>(s->ground_stop_heading),
+                    static_cast<double>(s->plane_body_angular[1]),
+                    static_cast<double>(s->motion.position[0]),
+                    static_cast<double>(s->motion.position[2]));
             }
             if (s->land_park_entries > 0) {
                 host.log.notef("summary land park %s: entries=%llu from_abort=%llu ticks=%llu "
