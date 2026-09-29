@@ -796,6 +796,16 @@ public:
     bool query_segment_units(const float from[3], const float to[3], std::size_t exclude,
         std::size_t& hit_unit, float hit_point[3]) const;
 
+    // Packet cc9_landscape_segment_query: 00904400(kind, from, to, record, entity),
+    // RET 14h, ECX set by callers but unread. Every caller (007C255E,
+    // 008647F4, 009F25FA) passes kind 44h (Landscape) and entity 0, so the
+    // 0098ADD0 exclude is 0 (a non-null entity would give entity->vtable[B0h]).
+    // True when the segment from -> to hits the kind-44h filter; this host has
+    // no islands or terrain, so it answers over its own units, as
+    // line_of_sight_00864680 does. Read-only: the binding's mesh and 0085CDB0
+    // trace counters are restored. No caller is bound yet.
+    bool landscape_segment_hit_00904400(const float from[3], const float to[3]) const;
+
     // Packet cc9_component_failures: true while unit `unit_index` carries an active
     // failure of that name in its repair task (task+18h), started by 0093BED0 and
     // retired by 0093C520. "SteeringJam" and "EngineJam" are the ones 008198A0
