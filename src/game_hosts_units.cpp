@@ -5091,6 +5091,30 @@ struct GameUnitsHost::Impl {
             entry.ok = true;
             entry.reason = entry.box.shape_count > 0 ? "root and Note-owner ConvexObjects"
                                                      : "no root or Note-owner ConvexObject";
+            // Packet cc9_hull_periscope_shape (GUNNERY_OPEN_ITEMS 68): 009396BA..009399BF
+            // adds the `periszkop` node's ConvexObject when the class is not a kamikaze
+            // (+510h KamikazeDamage, +514h KamikazeBlastDamage both <= 0).
+            if constexpr (bsp::kHullPeriscopeShapeBound) {
+                bsp::mmod_hull_convex_box_add_periscope(entry.box,
+                    lua.read_vehicle_class_number(type_id, "KamikazeDamage", 0.0f),
+                    lua.read_vehicle_class_number(type_id, "KamikazeBlastDamage", 0.0f));
+            }
+            if (entry.box.periscope_node) {
+                log.notef("hull periscope %s (type %d): shape=%d merged=%d points=%u "
+                    "min=(%.3f %.3f %.3f) max=(%.3f %.3f %.3f) kamikaze=%.1f/%.1f "
+                    "(cc9_hull_periscope_shape, 009396BA..009399BF)",
+                    s.row.name.c_str(), type_id, entry.box.periscope_shape ? 1 : 0,
+                    entry.box.periscope_merged ? 1 : 0,
+                    static_cast<unsigned>(entry.box.periscope_points),
+                    static_cast<double>(entry.box.periscope_min.x),
+                    static_cast<double>(entry.box.periscope_min.y),
+                    static_cast<double>(entry.box.periscope_min.z),
+                    static_cast<double>(entry.box.periscope_max.x),
+                    static_cast<double>(entry.box.periscope_max.y),
+                    static_cast<double>(entry.box.periscope_max.z),
+                    static_cast<double>(lua.read_vehicle_class_number(type_id, "KamikazeDamage", 0.0f)),
+                    static_cast<double>(lua.read_vehicle_class_number(type_id, "KamikazeBlastDamage", 0.0f)));
+            }
         }
         log.notef("hull shapes %s (type %d, %s): %s shapes=%u points=%u extent=(%.2f %.2f %.2f) "
             "min=(%.3f %.3f %.3f) (cc9_hull_inertia, 00938F61..0093918C)",
