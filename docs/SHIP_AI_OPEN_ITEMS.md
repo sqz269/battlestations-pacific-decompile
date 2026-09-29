@@ -3565,3 +3565,51 @@ When `plane_pilot_fires_0c24` lands:
 - replace the stand-in with it;
 - flip the switch. A build is enough: this pair already shows zero reach, and the reader is
   consulted only when a target is small.
+
+## 43. Section 34's open item: the ridge in front of CB2 on USN01, audited (packet `cc9_usn01_ridge_audit`)
+
+Worker cc9-ships13, 2026-09-29. Read-only against this installation's data. **Closed: the host's
+terrain matches the data, and there is no substitution to fix.**
+
+**What the host loads.** CB2 stands on `Landscape 03`, FilePath `islands/m07_a`. The host takes the
+height field from `terrain/islands/m07_a_heightmap.tdt` (mtime 2024-07-13; byte-identical to
+`models/terrain/islands/m07_a_heightmap.tdt`) through `load_terrain_height_field_00adda60`. It
+logs `tiles=11x12 blocks=75 origin=(-900.0,-1200.0) node=(3000.0,0.0,-4000.0)`. The origin comes
+from the `m07_a.mmod` BoundingBox minimum (-599.68, -711.07), a labelled substitution for
+`00ADA420`'s box (docs/SCENE_CONTENTS_HOSTS.md 6). The segment query runs `0098ADD0` -> `0087FF80`
+-> `00ADA240` (`landscape_entry_segment_hit`).
+
+**The independent check** (`local\s13_ridge.py`, `local\s13_profile.py`). Neither script uses host
+code:
+- A fresh decode of the TRNV2 file. Each chunk is a u32 tag length, the tag, and a u32 size. There
+  are 75 `NODE` tiles, each a `U16` chunk of `offset, scale` and 33 x 33 samples, rows along z. The
+  height is `s / scale + offset` and 65535 is a hole.
+- The island's render mesh, taken from the model_dump glTF of `m07_a.mmod` in this installation
+  (44142 triangles, y range -119.41..90.60; the field's range is -119.413..90.548).
+- **Placement.** On 35 random points on land, the field matches the mesh with a median |dh| of
+  0.08 m and a p90 of 0.62 m, but only with the host's origin (-900, -1200) and z-row layout. Every
+  other 300 m origin is off by a median of 27 to 90 m. So the host's BoundingBox origin is the one
+  that puts the field on the island's own mesh.
+- **CB2** is at (3973.4, 3.0, -3182.2). The field there is 2.99 m, so the building sits on the
+  sampled ground.
+
+**The segments.** A diagnostic in this tree, env-gated `BSP_SIGHT_POS_LOG=1` in
+`zone_allows_target_00864fd0` with no behaviour, logs every tenth hidden answer
+(`local\s13rg_usn01.log`, USN01 3200/3000, 369 hidden of 1542). All the hidden tests are Dunlap
+(unit 44) against CB2, with Dunlap at sea 954..1320 m out to the north-east. Along every logged
+segment, the field and the mesh agree within about 1 m:
+
+| Dunlap at | length | highest ground on the line | 300..370 m from CB2 |
+| --- | --- | --- | --- |
+| (5003, -2356) | 1320 m | 47.9 m at 505 m (mesh 48.1) | 34.1 (mesh 34.5) |
+| (4520, -2298) | 1040 m | 72.3 m at 705 m (mesh 72.7) | 33.3 (33.4) |
+| (4437, -2294) | 1002 m | 90.1 m at 695 m (mesh 90.1) | 25.7 (25.7) |
+| (4304, -2287) | 954 m | 76.5 m at 680 m (mesh 77.4) | 28.5 (29.3) |
+
+So the "ridge about 25 m high about 320 m out" is the island's own ground rising inland of CB2. It
+climbs to hills of 48 to 90 m between CB2 and the sea where Dunlap sails. The data puts the hill
+there, and the host's hit points at y 24..26 lie on that slope.
+
+**What stays open.** The mesh here is the render mesh. The image also attaches a collision node
+(`+1E4h`, `0098BA10`), which the host does not build; the segment query's terrain answer is the
+height field, as the host has it. CB2's class height (the raised point y 32) was not re-audited.
