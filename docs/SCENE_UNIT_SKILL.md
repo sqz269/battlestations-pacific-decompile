@@ -137,3 +137,61 @@ switch changes no gameplay in any reference row today. It matters once:
 - or MPNormal ships are created without a script re-skill;
 - or the launch inheritance of section 3 is bound. The JM05 carriers' planes would then fly the
   SPVeteran pilot rows.
+
+## 6. The carrier launch skill (packet `cc9_carrier_launch_skill`, switch `kCarrierLaunchSkillBound`)
+
+### 6.1 The read
+
+- **`006C5050`, `006C50FC`-`006C5113`.** `ECX = block+7Ch`, the owning entity. `CALL [vtable+12Ch]`
+  (`006C5107`) is the owner's unit+390h getter. `PUSH EAX` and `PUSH 00CF8838` (`Skill`) then store
+  it into the squadron's bag through `008F3710`. So a launched squadron's bag `Skill` is the
+  carrier's (or airfield's) **live** skill at the moment of launch, including any script
+  `SetSkillLevel` that ran before it.
+- **`007F1FE0`, the squadron's pass B (kind-1 arm `007F2101`).** `007F211B CALL 00927A80` reads
+  that bag skill into `[ESP+8]`. The tail, `007F225E`-`007F226E`, is `PUSH [ESP+8]; CALL
+  [vtable+128h]`. For a squadron that slot is `007ECF80`, the fan-out to every member's
+  `vtable[128h]` (docs/PILOT_SKILL_LEVEL.md section 2). The wing exists by then, because pass A
+  (`007F4580`) builds it first.
+- **This host before the packet.** `AirOpsDeck::owner_skill` is never written and
+  `AirOpsSquadronRequest::skill` is never read. Every launched squadron keeps the constructor's 1
+  until a script call.
+
+**The binding.**
+- `GameMissionLuaHost::create_squadron` reads the owner's live `skill_level`, looking the owner up
+  by the `HomeBase` name, into the pending node.
+- Pass B (`entity_init_second_vcall_a0`) calls `set_skill_level_007b8ae0` on the squadron, which
+  fans out through the plane-squadron registry.
+- Both builds print `air ops launch skill: squadron=... owner=... skill=... applied=...`. The ON
+  build adds `air ops launch skill applied: ... members=N`.
+- The catapult path (`006EC98D`, a single launched plane) is not bound. This host has no caller of
+  `catapult_spawn_properties_006ec8e0`.
+
+### 6.2 What the row changes (the tables the level selects)
+
+| reader | SPNormal (1) | SPVeteran (2) |
+| --- | --- | --- |
+| torpedo run-in row, `[[unit+DF4h]+34h]` (`TorpReleaseAlt`, `DistNear`, `DistFar`, `DropCloserMul`) | 12 m, 450 m, 650 m, 0.7 | 5 m, 800 m, 1200 m, 0.5 |
+| dive-bomb approach row (`009F9D22`, `kPilotDiveBombRows`) | row 1 | row 2 |
+| tail gunner shoot range, fixed-gun and AA throw rows (`game_hosts_gunnery.cpp`) | row 1 | row 2 |
+
+### 6.3 Predictions, written before the runs
+
+1. **JM05 9200/9000.**
+   - 14 `air ops launch skill` lines at `skill=2`: the 7 USS Lexington and 7 USS Yorktown
+     squadrons. 5 lines at `skill=1`, from the two airfields, which author SPNormal.
+   - ON: 14 `applied` lines, each with its full wing count.
+   - The US torpedo aircraft take the SPVeteran run-in: release window 800-1200 m instead of
+     450-650 m, at 5 m. docs/TORPEDO_RELEASE_ORDERS.md 7 has them shot down at 0.9-1.3 km with
+     0 of 24 releases, so **torpedo-task releases rise above 0**.
+   - US dive-bomb and fighter rows move.
+   - pair_diff 3.
+2. **USN04 4700/4500.** The US carriers' squadrons (two from Lexington-class01, two from
+   Yorktown-class01) print `skill=2`, because the script set their carriers to SkillLevelOwn 2
+   before the launch. The IJN strike aircraft are not air-ops launches in this row and do not
+   move. The US fighters' and bombers' rows move, and the IJN strike losses to US fighters move.
+   pair_diff 3.
+3. **USN13 3200/3000.** The nine US carriers' single squadrons print `skill=2`, and those
+   squadrons' rows move.
+4. **Mechanism failure.** A `skill=` value that differs from the owner's `SetSkillLevel` or scene
+   value. `members=` below the wing count, which would mean pass B ran before pass A's wing.
+   A moved row on a squadron whose line says `skill=1`.
