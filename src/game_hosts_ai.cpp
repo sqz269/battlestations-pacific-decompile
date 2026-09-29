@@ -781,6 +781,14 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
     }
 
+    // Packet cc9_big_landing_ship: class+808h through the ship AI host, which
+    // read it at load; false when the switch is off.
+    bool big_landing_ship_0808(std::size_t unit) {
+        if (!kShipAiBigLandingShipBound) return false;
+        GameShipAiHost* ship_ai = units.ship_ai();
+        return ship_ai != nullptr && ship_ai->unit_big_landing_ship_0808(unit);
+    }
+
     bsp::AiAccuracyTargetGroup accuracy_target_group(std::size_t unit) {
         if (units.unit_is_kind_of(unit, 0x0F)) {
             return bsp::AiAccuracyTargetGroup::Plane;
@@ -795,8 +803,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // exact; the +808h byte is the one thing this host does not hold,
             // so a BIG landing ship is classed small here where the native
             // would class it big. Labelled.
+            // Packet cc9_big_landing_ship: ON reads +808h from the ship AI host.
             if (units.unit_is_kind_of(unit, 0x0E) ||
-                units.unit_is_kind_of(unit, 0x0C)) {
+                (units.unit_is_kind_of(unit, 0x0C) && !big_landing_ship_0808(unit))) {
                 return bsp::AiAccuracyTargetGroup::SmallShip;
             }
             return bsp::AiAccuracyTargetGroup::BigShip;
@@ -2594,16 +2603,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // otherwise: the troop-landing trait, behind kTroopLandingTraitBound. The strafeable
     // troop transports (classes 224 and 234, docs/SHIP_AI_OPEN_ITEMS.md 19) answer true. LandingShip 0Ch answers
     // 0.1 (00D7A2F0) when 00827F70 is true, which for a class-0Ch ship is the
-    // BigLandingShip byte +808h being clear (its default), else 1.0; the host
-    // has no reader for +808h, so the default arm 0.1 stands.
-    static float capture_weight_00a03510(int class_id, bool lands_troops = false) {
+    // BigLandingShip byte +808h being clear (its default), else 1.0 (00A0360B
+    // CALL 00827F70, JZ 00A03636). `big` is +808h (packet cc9_big_landing_ship,
+    // false with the switch off, so the 0.1 arm stands as before).
+    static float capture_weight_00a03510(int class_id, bool lands_troops = false,
+                                         bool big = false) {
         switch (class_id) {
         case 0x07: return 2.0f;
         case 0x08: case 0x0E: case 0x18: return 1.0f;
         case 0x09: return 3.0f;
         case 0x0A: return 4.0f;
         case 0x0B: return (bsp::game::kTroopLandingTraitBound && lands_troops) ? 3.0f : 0.0f;
-        case 0x0C: return 0.1f;
+        case 0x0C: return big ? 1.0f : 0.1f;
         case 0x0D: return 5.0f;
         case 0x1C: return 1.0f;
         default: return 0.0f;
@@ -2676,7 +2687,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // 00A03760.
             const WorldUnit& w = world[static_cast<std::size_t>(i)];
             bsp::AiTailArrivalValueInputs in;
-            in.capture_weight = capture_weight_00a03510(w.class_id, h.cargo_lands_troops(w.class_id, w.unit));
+            in.capture_weight = capture_weight_00a03510(w.class_id,
+                h.cargo_lands_troops(w.class_id, w.unit), h.big_landing_ship_0808(w.unit));
             in.distance = h.unit_xz_distance(w.unit, unit_index_of(target));
             in.capture_radius = static_cast<float>(static_cast<int>(
                 kCaptureAccessorsBound
@@ -3249,7 +3261,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         auto visit = [&](std::size_t candidate, int class_id) {
             const std::size_t body = proxy(candidate);
             if (class_id == 0x1C) return;
-            const float w = capture_weight_00a03510(class_id, cargo_lands_troops(class_id, candidate));
+            const float w = capture_weight_00a03510(class_id,
+                cargo_lands_troops(class_id, candidate), big_landing_ship_0808(candidate));
             if (!(0.0f < w)) return;
             float x = 0.0f, y = 0.0f, z = 0.0f;
             units.unit_position_00fc(body, x, y, z);

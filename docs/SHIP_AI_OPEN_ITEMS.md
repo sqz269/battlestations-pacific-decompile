@@ -3046,3 +3046,51 @@ after the squadron test. On these rows every squadron that follows a leader is a
 - a row where an AI group's bomber squadron spends its load while following a leader.
 
 None of the counted rows has one.
+
+## 37. Rank 6 of section 28: BigLandingShip, `class+808h` (packet `cc9_big_landing_ship`, `kShipAiBigLandingShipBound`)
+
+Worker cc9-ships12, 2026-09-29. The switch is in `include/bsp/game_hosts_ship_ai.hpp`.
+
+**The image.** `00827F70` is a class method:
+- TorpedoBoat `0Eh` answers small.
+- LandingShip `0Ch` answers small only when the byte at `class+808h` is 0 (`00827F95`).
+- Everything else answers not small.
+
+The byte is `VehicleClass[type].BigLandingShip`, read exact-Boolean-or-false by the LandingShip
+leaf (`0074C630`). The same boolean picks that leaf's tuning pair (`"BigLandingShip true"`, scalar
+source `20h`, `src/vehicle_class_lua_load.cpp`). In this installation's `vehicleclasses.lua`
+(mtime 2026-05-09) it is true for `VehicleClass[12]` (LSM), `[41]` (US LST), `[91]` (IJN LST) and
+`[345]` (US LST, strafeable).
+
+`00827F70` has fourteen call sites (`ghidra xrefs`). This lane owns four:
+- the neighbour admission `009F0D82` (a small ship admits an enemy submarine as an obstacle);
+- the approach mode latch `009F1F76` (a small ship holds against a submarine target);
+- the AI bullet accuracy group `009FE2D4..009FE67C` (small ship or big ship);
+- the capture weight `00A0360B` (0.1 when small, else 1.0, `JZ 00A03636`).
+
+Not bound here: `007EEB74` (BSP_Unit_AttackCommandApplies), `0081639D`
+(BSP_Entity_CommandAvailableAgainstTarget), `0096ACB4`, and the standoff choice `009E6F11`
+(rank 7, behind a target-kind stub).
+
+**The binding.** The ship AI host records the byte at load, when the depth reader selects the
+"BigLandingShip true" pair for a class-`0Ch` unit. It logs `unit big landing ship unit= type_id=`
+and serves the byte through `GameShipAiHost::unit_big_landing_ship_0808`. ON, the four sites read
+it: the AI host reaches it through `units.ship_ai()`. OFF, every landing ship is small, as before.
+
+**OFF census** (this tree, `local\s12_blsoff_<row>.log`):
+- JM08 has five big landing ships: LSM 01, LSM 02 (type 12) and LST 01..03 (type 41).
+- IJN01 has eleven of type 345.
+- JM08 has no submarine, and IJN01's latch counts 0 submarine targets.
+
+### Predictions, written before any ON run
+
+1. **JM08 3200/3000 moves (exit 3).** The Japanese AI's accuracy against the five landing ships
+   switches from the small-ship to the big-ship offsets. Their capture weight rises 0.1 -> 1.0,
+   which changes the planner's arrival values and group targets. Hits on the LSTs and LSMs move;
+   a death flip among them is possible.
+2. **IJN01 3200/3000 moves (exit 3)** the same way, through the A7Ms' accuracy against the eleven
+   US LSTs and their capture weight.
+3. **The admission and latch sites change nothing on either row**: there is no submarine.
+4. **JM06 3200/3000 and USN12 3200/3000 are identical** (exit 0 or 1): no landing ship.
+5. **Mechanism failure** keeps the switch OFF: no `unit big landing ship` line on JM08, or any
+   move on JM06 or USN12.
