@@ -3421,3 +3421,40 @@ it becomes the model if those are ever bound.
 Define `006D0600`-`006D07A4` (exclusive, `RET 4` at `006D07A1` then INT3), provisional name
 `BSP_AirOpsElevatorSite_Tick`: the mother-ship site's `+4h` slot, which runs the landed-plane
 intake and the elevator relaunch.
+
+## 5ab. The land internals PilotLand reaches on IJN01, ranked by reach (packet `cc9_land_internal_records`, cc9-lua17, 2026-09-29)
+
+**Runs.** IJN01 9200/9000 on main `bacecf5de`, in the reference launch form: `local\l17_e_ijn01l.log`
+before the relabel, `local\l17_f_ijn01l.log` after it (cc9-lua17 tree). The two are
+gameplay-identical (`pair_diff` 1): concrete/unimplemented 1180/524 -> 1183/521, 3 status
+changes, no count moved.
+
+All seven records the lead listed are also reached on LOMP10, so none is new with PilotLand:
+- `006BD080` 4090 on LOMP10;
+- `006C0B50`/`006C5380` 1503 each;
+- `009C1850`/`009C18C0` 2511 each;
+- `0099A3DD`/`006C4790` 10 each.
+
+| rank | record | IJN01 calls | what it is | action |
+| --- | --- | --- | --- | --- |
+| 1 | `006BD080` find_landing_assignment | 1017 | The miss arm after `landing_request_006c54c0` ran the lookup against the sequencer's vector. A miss is the image's own answer for a plane the sequencer has not taken (5c). | **relabelled done** when the request ran on a built deck (`land_request_ran`) |
+| 2 | `009C1850` set_desired_speed | 539 | `moveto_speed_009c1850`, bound by `kMovetoSpeedBlendBound`. It keeps a labelled stand-in: the unit's own class row for the squadron's `+35Ch` class. | record kept |
+| 2 | `009C18C0` glide_slope | 539 | `move_to_glide_009c18c0` plus the cruise altitude. `cin.has_squadron = false` is a substitution. | record kept |
+| 2 | `009F9E40` steer_to_point | 539 | The bearing is the host's `pi/2 - atan2` stand-in, not `009F9E40`. | record kept; a real gap |
+| 3 | `006C0B50` queue_squadron | 206 | Already performed by `landing_request_006c54c0` (the `LandingDeck::queue` push, 5c). | **relabelled done** when the request ran |
+| 3 | `006C5380` landing_point | 206 | Already performed in both arms by `landing_request_006c54c0`: the side sum, `006C3E50` into `land_radius_48`, and `006C5380` into `land_circle_38` (5e). | **relabelled done** when the request ran, with the standby state bound |
+| 4 | `0099A3DD` land arm | 4 | The install-time records in `install_land_task_core_009b41c0`. | not read here |
+| 4 | `006C4790` squadron_not_excluded | 4 | Same as above. | not read here |
+
+**The larger land records on the same IJN01 run** (not on the lead's list, ranked by calls):
+
+| record | IJN01 calls | note |
+| --- | --- | --- |
+| `009B1EED` land/final direction_40 | 10809 | |
+| `009B3D38` BotTaskLand::refused_state | 10207 | park, OFF by design (5aa) |
+| `009FABE0` land/standby direction | 2560 | |
+| `0099B650` BotApproachLand::set_owner | 908 | |
+| `007C07A0` land/begin direction hold | 320 | |
+| `009B1DDA` land/begin direction_40 | 310 | |
+
+After park, `009B1EED` and `009FABE0` are the biggest live gaps in the land states.
