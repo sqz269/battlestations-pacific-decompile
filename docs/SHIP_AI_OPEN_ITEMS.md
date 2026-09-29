@@ -3542,3 +3542,26 @@ answers false, both answer false.
   to reach it, so it is left recorded.
 
 `0096ACB4` (section 40) stays unowned and unreconstructed.
+
+### The pair (cc9-ships13, 2026-09-29)
+
+- OFF is this tree at `908e8b8b3` (`local\s13zoff_usn19.log`).
+- ON is `pair_export --commit 908e8b8b3 --flip kKamikazeShipBlockedBound=true --out local\s13_z`
+  (`local\s13zon_usn19.log`).
+- The export's configure could not download `lua-5.1.1.tar.gz` (lua.org timed out twice). The
+  tarball was copied from this tree's own `build\win32\_deps` and the export's `build.ps1` was
+  re-run.
+
+| row | kamikaze PilotSetTarget calls | small_targets / blocked | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- |
+| USN19 3200/3000 | 33 both | 0 / 0 both | 1, gameplay identical | 1 held |
+
+The only moved lines are the switch's `bound=` field and the free-bearing scan's `empty=`
+(225938 -> 228879), which is refill noise (section 40).
+
+**Verdict: stays OFF until the PilotFires reader lands, then flips.** The mechanism matches and has
+zero reach, but ON currently reads PilotFires as set, a labelled stand-in, so ON is not yet exact.
+When `plane_pilot_fires_0c24` lands:
+- replace the stand-in with it;
+- flip the switch. A build is enough: this pair already shows zero reach, and the reader is
+  consulted only when a target is small.
