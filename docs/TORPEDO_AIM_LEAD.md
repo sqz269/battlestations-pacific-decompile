@@ -971,3 +971,51 @@ A 300-frame USN01 smoke of the ON binary ran first (exit 0, final COM release). 
 The JM05 movement is the Dauntlesses' new aim points: their paths change, and so does the AA
 fire at them, which draws on the shared stream. None of their bombs is released on either side,
 so no section hit is measured yet. **The switch goes ON.**
+
+## 15. The torpedo goaway's break-off point (packet `cc9_torpedo_goaway_aim`, cc9-planes2)
+
+### 15.1 What the image does
+
+- **The goaway tick reads the stored aim point.** Each arm tick `009D4850` runs the approach update
+  `009D3420` first (`009D486F`), then the state tick through `state->vtable[0Ch]` (`009D48F6`).
+  - `009D3420` calls `009FADA0` on `approach+B4h` at `009D34BB` every time it runs
+    (docs/TORPEDO_APPROACH_UPDATE.md, the host table).
+  - That call leaves the hull point plus the lead in `sub+1Ch`, which is `approach+D0h`.
+- **The goaway reads that point through the approach's slot 0.** The goaway tick `009D0F10`
+  calls the geometry `009D0C10` at `009D0F46`, and `009D0C10` calls `approach->vtable[0]`
+  (`009D0C46`-`009D0C4F`). That slot is `009D0670 BSP_BotApproachTorpedo_GetAimPoint`, 31 bytes,
+  which copies `approach+D0h..D8h` into the return buffer.
+- **So the fly-to solver `009FD570` is fed this tick's aim point**, the same point the approach
+  states steer at. It is not the target's origin. The standoff and the side then turn that point
+  into the break-off bearing (docs/TORPEDO_FLY_TO_SOLVER.md 3).
+- **The projtime of that lead.** It is `approach+F8h` (section 11), read before this tick's
+  estimate is written. It keeps being refreshed after the drop, because the approach update runs
+  on every arm tick.
+
+### 15.2 The binding: `kTorpedoGoAwayAimPointBound`, committed OFF
+
+`run_goaway_tick_009d0f10` asks `aim_point_009fada0` for the solver's `point`, exactly as
+`TorpedoApproachBinding::approach_target_point` does for `009D3517` / `009D36E4` / `009D3DC8`.
+The host recomputes the point at each consumer rather than storing it once per tick. The inputs
+are the same within one tick, so the answer is the same.
+
+Census:
+- a `goaway aim` line every 200th tick;
+- `summary mission torpedo goaway aim point`, giving the ticks and the mean and max XZ offset
+  from the origin.
+
+### 15.3 Predictions (written before any run)
+
+The goaway only starts after the drop, so no torpedo release or hit can change directly. What
+moves is the climb-away bearing. Through the shared RNG stream, that moves the AA fire at the
+bombers and whatever it kills.
+
+| row | prediction |
+| --- | --- |
+| USN01 3200/3000 | The Mav torpedo bombers, each with a goaway lasting several hundred ticks. The point sits 10-200 m off the origin: the hull offset (up to half the length) plus the lead at the target's speed. Goaway ticks on every Mav. Torpedo releases the same on both sides. Deaths +-2; the surviving Mavs may flip. |
+| USN04 4700/4500 | Torpedo goaways for the 1-3 droppers; releases unchanged +-2, deaths +-3 |
+| JM05 9200/9000 | About 8 goaways; releases 8 +-2; deaths +-3; a carrier sinking may flip only through the RNG coupling |
+
+**Mechanism test:** `ticks` > 0 on every row with a drop, and a positive `mean_off_origin`.
+**Verdict rule:** keep OFF only if the census shows the point is not reached, or if a row
+without torpedo goaways moves.
