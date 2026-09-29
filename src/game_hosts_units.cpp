@@ -2177,6 +2177,9 @@ struct GameUnitsHost::Impl {
         float t_a4[3]{0.0f, 0.0f, 0.0f}; // holder+A4h, 006BC960
         float width_b0{0.0f};
         float length_b4{0.0f};
+        // Packet cc9_carrier_landing_deck: a mother-ship holder (007593D0's),
+        // re-framed from the moving ship at each use (00758E80 -> 006BEE40).
+        bool mother_ship{false};
         // The launch site at block+3Ch (packet cc9_plane_touchdown): +40h, which
         // 006CF100 stamps now - 99999.0 (00CF89D0) and 006CE230 restamps, and the
         // occupancy vector +34h/+38h that 006CED90 appends to.
@@ -2198,6 +2201,13 @@ struct GameUnitsHost::Impl {
     // refresh leaves it (006BEE40 on 007593D0's holder). False: every key is
     // unknown, and two or more candidates make the resolution `site-key-unread`.
     static constexpr bool kReturnToBaseSiteKeyBound = false;
+    // Packet cc9_carrier_landing_deck, part 1 (docs/SQUADRON_LAND_TASK.md 5ae).
+    // True: landing_deck_006c0750 builds a mother-ship deck's holder as
+    // 007593D0 -> 006C0D20 -> 006C0750 does and re-frames it from the carrier's
+    // pose at each use (00758E80's per-update 006BEE40), and 006BA620 answers
+    // RunwayLength x 0.3 on it. False: a mother-ship deck is refused.
+    static constexpr bool kCarrierLandingDeckBound = false;
+    unsigned long long carrier_decks_built{0}, carrier_deck_refreshes{0};
     // 00759120 (MMothership model bind, 00759237-00759265): class+814h..+81Ch =
     // the first point of the model's ("runwaycenter", 0) Aux group; 00759590:
     // class+820h RunwayWidth, +824h RunwayLength. One entry per class.
@@ -9993,10 +10003,37 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     if (landing_decks.size() < decks.size()) landing_decks.resize(decks.size());
     if (deck_index >= landing_decks.size() || owner >= slots.size()) return nullptr;
     LandingDeck& d = landing_decks[deck_index];
-    if (d.built) return d.refused ? nullptr : &d;
+    if (d.built) {
+        if constexpr (kCarrierLandingDeckBound) {
+            // 00758E80: the carrier's update re-frames its holder (006BEE40).
+            if (d.mother_ship && !d.refused && carrier_holder_frame_006bee40(d.owner, d)) {
+                ++carrier_deck_refreshes;
+            }
+        }
+        return d.refused ? nullptr : &d;
+    }
     d.built = true;
     d.owner = owner;
     const bsp::AirOpsDeck* deck = decks.mutable_at(deck_index);
+    if constexpr (kCarrierLandingDeckBound) {
+        // 007593D0 (007593F1-00759493): 006C0D20(&class+814h, +820h, +824h) ->
+        // 006C0750, then 006BEE40 and 006BC960's MotherShip arm.
+        if (deck != nullptr && !deck->is_airfield && carrier_holder_frame_006bee40(owner, d)) {
+            d.mother_ship = true;
+            ++carrier_decks_built;
+            const std::array<float, 3> tw = landing_t_world_006bca40(d);
+            log.notef("landing sequencer: deck %s owner %s MOTHER-SHIP holder built: "
+                "RunwayWidth=%.2f RunwayLength=%.2f heading=%.4f T local (%.2f, %.2f, %.2f) "
+                "world (%.1f, %.1f, %.1f) (007593D0, 006C0750, 006BEE40, 006BC960; packet "
+                "cc9_carrier_landing_deck)", decks.name_at(deck_index).c_str(),
+                slots[owner]->row.name.c_str(), static_cast<double>(d.width_b0),
+                static_cast<double>(d.length_b4), static_cast<double>(d.runway_heading_88),
+                static_cast<double>(d.t_a4[0]), static_cast<double>(d.t_a4[1]),
+                static_cast<double>(d.t_a4[2]), static_cast<double>(tw[0]),
+                static_cast<double>(tw[1]), static_cast<double>(tw[2]));
+            return &d;
+        }
+    }
     if (deck == nullptr || !deck->is_airfield || !deck->runway_from_scene) {
         d.refused = true;
         ++landing_refused_decks;
@@ -10692,9 +10729,13 @@ std::array<float, 3> GameUnitsHost::Impl::landing_t_world_006bca40(const Landing
     return landing_xform_004142e0(d.frame_8, d.t_a4);
 }
 
-// 006BA620: RunwayLength x 0.4 (00CE65D0) for an airfield owner (x 0.3 on a
-// mother ship, which is refused here).
+// 006BA620 (006BA620-006BA65A, RET): RunwayLength x 0.4 (00CE65D0) for an
+// airfield owner, x 0.3 (00CE3DC8) when the owner answers IsKindOf(9)
+// (006BA62F-006BA63D); both through a float store.
 float GameUnitsHost::Impl::landing_run_length_006ba620(const LandingDeck& d) const {
+    if (d.mother_ship) {
+        return static_cast<float>(static_cast<double>(d.length_b4) * 0.30000001192092896);
+    }
     return static_cast<float>(static_cast<double>(d.length_b4) * 0.4000000059604645);
 }
 
@@ -26579,6 +26620,10 @@ void GameUnitsHost::report() {
             host.moveto_end_commands, host.moveto_end_stage_only, host.moveto_end_retired,
             host.moveto_end_promoted,
             Impl::kMoveToArrivalEndCommandBound ? 1 : 0);
+        host.log.notef("summary carrier landing decks built=%llu refreshes=%llu bound=%d "
+            "(007593D0 / 006BEE40 / 006BA620, packet cc9_carrier_landing_deck)",
+            host.carrier_decks_built, host.carrier_deck_refreshes,
+            Impl::kCarrierLandingDeckBound ? 1 : 0);
         host.log.notef("summary squadron returntobase site keys computed=%llu carrier=%llu "
             "missing=%llu bound=%d (006C09FE, packet cc9_rtb_site_key)", host.rtb_site_keys,
             host.rtb_site_keys_carrier, host.rtb_site_keys_missing,
