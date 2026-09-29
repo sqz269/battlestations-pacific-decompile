@@ -2994,3 +2994,100 @@ sets done, shown as `done_why` on the `summary land park` line. The run is LOMP1
      parented. The host calls it at `007CBFC3` unconditionally.
   3. The park rule's done edge `009B3770` and its conditions, which are not re-read here.
 - The counters stay, print-only. `kLandParkStateBound` stays OFF.
+
+## 5x. The park loop: the three reads, and the loop starts after the hangar (packet `cc9_land_park_loop_reads`, cc9-lua17, 2026-09-29)
+
+This packet makes the three reads that 5w left open. It also re-reads the 5w census log
+(`local\l16_diag_lomp10l.log`, cc9-lua16 tree, LOMP10 9200/9000 with `kLandParkStateBound=true`).
+No code changed.
+
+### (i) The probe position after `007C71E0`'s re-parent: world, so no double transform
+
+- `007C5B01` calls `00414DB0` with `ECX` = the plane, only while `+C8h` is clear.
+  - `00414DB0` (`BSP_EntityPose_RefreshWorld`, `00414DB0`-`00414E09`) rebuilds the world matrix at
+    `+CCh`: `local +74h x parent(+3Ch)+CCh` through `00413920`, or `+74h` alone for a root. Its
+    copy is `004134F0`.
+  - It then sets `+C8h` = 1.
+- `007C5B10`-`007C5B34` read `+FCh`/`+100h`/`+104h`, the translation row of that world matrix. This
+  is the row `00427EB0` returns. The values go to `[ESP+28h..30h]`.
+- The tail passes `[ESP+2Ch]` (after one push; the same slot) to `006BC530` at `007C5F28`, with
+  `ECX` = `+BF4h`, the holder.
+- `007C71E0` re-parents through `vtable+ACh(site)`; before that it calls `00414E10` and
+  `007BA020`, which are not re-read here. Whatever they do to the local pose `+74h`, `00414DB0`
+  composes `+CCh`/`+FCh` from `+74h` and the parent, so `+FCh` is the world position.
+- `006BC530` therefore gets a **world** point and transforms it once by `holder+48h`. The host's
+  world-position substitution (5k) matches here, and candidate 1 of 5w is closed.
+
+### (ii) Is `007C5AC0` reached while parented? Yes, on every fixed step
+
+`BSP_PlaneTickElement_FixedStep` (`007CE040`, `ESI` = unit+310h) dispatches at `007CEC30`:
+- `(unit+72Ch)->vtable[38h]` true: `007CC2F0`, which calls `007C5AC0` at `007CC43B`.
+- Otherwise, with `+900h` 4 or 5 (`007CEC7B`-`007CEC83`): `007CBFA0`, which calls it first
+  (`007CBFC3`).
+
+Neither arm tests the parent. The only earlier exits are:
+- `unit+5Eh` set (`007CE856`, to `007CF0D3`);
+- `unit+520h` set (`007CE86A`, to `007CECF6`); both are clear for an AI plane.
+
+The host's unconditional call at `007CBFC3` matches. Candidate 2 of 5w is closed.
+
+### (iii) The rule's done edge `009B3770`: matches
+
+- `009B3CF0` calls `009B3770` first, on every call (`009B3CF4`).
+- `009B3770`:
+  - does nothing in moveto (`+4C4h`) or follow (`+500h`);
+  - sends a done line or standby (`+598h`/`+5B8h`) to `009AFA50`'s cruise pick;
+  - sends **any other** done state to abort (`+64Ch`, `009B37A7`). That includes park.
+- The rule then continues in the same call. In abort, `+66Ch` leads to standby (`009B3E1B`) and
+  `+66Dh` to park (`009B3E38`, `ECX` = task+620h from `009B3DFA`).
+- The host's order is the same. Candidate 3 of 5w is closed.
+
+### The correction: every loop starts 13 to 16 s after the plane's hangar entry
+
+The first `state 620 -> 64C` per plane in the census log, against its hangar line (`007B96C0`):
+
+| plane | hangar (local) | first park done |
+| --- | --- | --- |
+| Lightning 01 | 186.71 s (41.9, -21.1) | 200.81 s |
+| Warhawk 01\|.-4 | 199.21 s | 214.21 s |
+| Lightning 01\|.-4 | 211.61 s | 224.81 s |
+| Warhawk 01\|.-2 | 224.81 s | 238.41 s |
+| Lightning 01\|.-2 | 233.91 s | 249.91 s |
+| Warhawk 01\|.-3 | 245.01 s | 261.01 s |
+| Lightning 01\|.-3 | 254.81 s | 269.81 s |
+| B-25 01 | 275.41 s (41.9, -19.9) | 290.70 s |
+| B-25 01\|.-2 | 288.20 s | 302.30 s |
+| Warhawk 01 | 172.51 s (41.5, -20.4) | never (ends in state 5 at (49.6, -25.5)) |
+
+So 5w's "done once `|x|` passes the runway half width" is the second episode, not the first. The
+first episode taxis on the path (`+900h` = 5) all the way to the hangar. `009B21E4` skips the whole
+done test in state 5, and the host does the same (`land_park_done_009b21d0`).
+
+B-25 01's trace (`land park trace`, every 20 ticks):
+- **272.5-276.5 s:** it arrives at about 7 m/s and overshoots to (46.9, -20.7).
+- **After that:** `spd` = 0.69 (`AirField/MoveSpd` 6.94 x the 0.1 heading-error scale), while
+  `v` holds at 0.92.
+- **276.5-288.5 s:** `err` goes from -2.9 to -1.8. The yaw is -0.1 to -0.5, cut by the deadband
+  `(5 - f18) x 0.2`. The plane drifts to (43.1, -32.6).
+- **290.5 s:** `dz` = 12 passes the turn distance `qd`. The path test drops it to state 4
+  (`leaves=1`), the contact arm fires because the plane is off the strip, and the loop starts.
+
+### What this leaves (in order)
+
+1. **Does the image's plane hold still at the hangar point?** The commanded speed is never 0 in
+   the listing (`00419010` floors at `base`, then the heading scale floors at 0.1). The host's `v`
+   stays at 0.92 against a command of 0.69. This is the forward creep of 5u and 6, and its brake
+   is the first suspect. If the image's plane settles near the target, `dz` stays under `qd` and
+   state 5 holds.
+2. **The hangar hide `007B96C0`.** The listing (`007B96C0`-`007B96CF`) does two things:
+   - it sets `+C00h` = 1. The only writers are `007B96C2` and the constructor clear at
+     `007D0110`. Byte scans for `80`/`38`/`3A`/`84`/`8A`/`0FB6`/`0FBE`/`F6`/`83`/`8B` on
+     displacement `C00h` find no reader, and the `C02h` control scan does hit `007BB2C3`.
+   - it calls `00951F40(0)`, which does `00710B80` (detach from the spatial index), then
+     visibility 0.
+
+   Neither stops the tick. So the hide alone cannot end the loop. Any loop the image has after
+   the hide is invisible, because the plane is hidden.
+3. After (1), re-pair park together with `kLandAbortGroundArmBound`.
+
+`kLandParkStateBound` stays OFF.
