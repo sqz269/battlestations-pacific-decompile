@@ -4464,6 +4464,13 @@ tally is `local\g13_ff.py`.
 **Verdict:** no host divergence found. The damage rise is the correct inertia geometry exposing an
 image rule (no friendly-fire check for heavy artillery) to a flat-firing mount. Nothing is bound.
 
+**The unread link, answered (section 66).**
+- **The image's pick never admits aircraft to a HEAVYARTILLERY gun.** Its preference row
+  `00E098D8` holds no plane class (10h-17h).
+- **NH was not firing at aircraft.** Its targets were the suicide boats (0Eh, `unit #2.x`) and the
+  submarines (08h, `unit #3.x`), which that row admits.
+- **So there is no divergence, and no binding is queued.**
+
 ## 64. The kill handlers: what they do beyond the physics (ranking #12, cc9-gunnery13, 2026-09-29)
 
 **Sources.** Ghidra was read, not written. The disasm-raw bodies are the disk bytes.
