@@ -3444,3 +3444,9 @@ hierarchy-item name:
   - The `E19B54` token is identified with the Note type by this match evidence, not by reading
     the token's string.
   - The node a Note pairs with (its parent item, or a node of its own) is not read here.
+
+**50.2's second item, the `class+50h` writer, is already located.** `00879590`
+(`BSP_DamageableClass_LoadModelResource`) stores the `007188A0` game-resource result with
+`MOV [EBP+50h],EAX` at `00879768` (disk bytes re-read for this note). See the correction at the end
+of docs/MODEL_REACHES_UNIT.md and docs/NATIVE_DAMAGEABLE_CLASS_MODEL_BE.md. 49.9's "still not
+located" and 50.2's open item predate that record.
