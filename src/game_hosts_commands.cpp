@@ -83,7 +83,7 @@ constexpr bool kSquadronSetCommandBound = true;
 // matches are still counted). ON by the census (GUNNERY_OPEN_ITEMS 62): on the
 // sixteen reference-o rows every lookup is an exact hit (case_only=0, no miss), so
 // no row can move; the switch only matters where a scene names a unit in other case.
-constexpr bool kSceneCommandFindCaseInsensitiveBound = false;
+constexpr bool kSceneCommandFindCaseInsensitiveBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
