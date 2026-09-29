@@ -312,6 +312,53 @@ struct TorpedoRunTimeResult {
 TorpedoRunTimeResult torpedo_run_time_009d1360(const TorpedoApproachState& s,
                                                const TorpedoRunTimeInputs& in) noexcept;
 
+// Packet cc9_torpedo_reset_draws (docs/TORPEDO_AIM_LEAD.md section 19). The
+// reset's stream-1 draws, 009D03D9-009D0475 and 009D0581-009D0625. `draw` is
+// 00BD2F10's answer on the bounds named at each function.
+//
+// 009D03D9-009D0449: +70h = U(0.9, 1.1) * min(desc+18Ch TravelSpeed,
+// 0.75 * 007BCE20(unit)). 007BCE20 is the minimum MaxWaterHitVel (bullet
+// class +DCh) over the unit's devices whose class +8h is 0Ah, the torpedo, and
+// FLT_MAX (00D7A248) with none. 0.75 is the double at 00CEC9D8; the product is
+// stored to a float at 009D03E7 before the compare.
+inline constexpr float kTorpedoResetSpeedDrawLo_00ce3860 = 0.9f;
+inline constexpr float kTorpedoResetSpeedDrawHi_00ce6448 = 1.1f;
+inline constexpr double kTorpedoResetHitVelFactor_00cec9d8 = 0.75;
+float torpedo_reset_attack_speed_009d03d9(float travel_speed_18c, float min_hit_vel,
+                                          float draw) noexcept;
+// 009D0457: +74h = 67.0f (00D212A0), overwritten by 009D3489 on the first
+// approach update. 009D0451-009D0475: +78h = U(0, 0.25) * record+0h
+// TorpReleaseAlt (lo FLDZ, hi 00CE3868).
+inline constexpr float kTorpedoResetAltFloor_00d212a0 = 67.0f;
+inline constexpr float kTorpedoResetAltDrawHi_00ce3868 = 0.25f;
+// 009D05A5-009D0625: +7Ch += U(-0.1, 0.5) * (+80h - +7Ch), then
+// +80h -= U(-0.1, 0.5) * (+80h - new +7Ch) (lo 00CE3CB4, hi 00CE3800). The old
+// +80h is carried as a double (009D05F6 FSTP qword).
+inline constexpr float kTorpedoResetLegDrawLo_00ce3cb4 = -0.1f;
+inline constexpr float kTorpedoResetLegDrawHi_00ce3800 = 0.5f;
+float torpedo_reset_near_leg_009d05ed(float near_7c, float far_80, float draw) noexcept;
+float torpedo_reset_far_leg_009d0625(float near_7c, float far_80, float draw) noexcept;
+
+// 009D0160-009D0292 (no Ghidra function; RET at 009D0291 then INT3),
+// __thiscall(approach), called once at 009D0632 in 009D0380 after the aim
+// error draw 009D02A0. It is 009D1360's run time with the reset's inputs:
+//   fall = 007BCC80(unit, +78h + +74h)      the planned release height
+//   lead = fall * +70h                        (009D01DA-009D01E4)
+//   dt   = (+70h - run) / 80.0                run = 007BCFA0(unit), NO floor
+//   dd   = dt * (+70h + run) * 0.5
+//   L    = +7Ch - (lead + dd)                 009D01EC-009D01F6
+//   t    = L < 0 ? fall : dd <= L ? fall + dt + (L - dd) / run
+//                                 : fall + dt * L / dd
+//   +98h = max(0, t + +9Ch)                   009D0255-009D0285
+// dd is subtracted twice on the middle arm (009D01F6, then 009D0227 FSUBP
+// DE EA); read twice from the x87 stack, the second time by cc9-planes3, and
+// taken as the image's arithmetic. `fall_time` is 007BCC80's answer and
+// `run_speed` 007BCFA0's: the minimum WaterTravelSpeed (class +E4h) over the
+// torpedo devices. The divide by run is guarded here as 009D1360's port
+// guards it; the image divides unguarded.
+float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_time,
+                                      float run_speed) noexcept;
+
 // 009D4AC4: the +54h cruise profile's attack-distance clamp, the one producer
 // of engage_range_8c in the image.
 float torpedo_engage_range_009d4ac4(float current_8c, float attack_dist_tuning,

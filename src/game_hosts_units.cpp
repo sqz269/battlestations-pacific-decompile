@@ -1390,6 +1390,11 @@ struct GameUnitSlot {
     // stay because the report and 009D3150 read them; this carries +18h, +1Ch,
     // +20h, +28h, +30h and +34h, which only the tick uses.
     bsp::TorpedoGoAwayRuntime torpedo_goaway_runtime{};
+    // Packet cc9_fly_to_obstacles: 009FD570's cache on each goaway state.
+    // [0] the torpedo goaway (009D0C54), [1] the dive-bomb goaway (009C4810).
+    // The countdown starts at 0, as 009C74E8 leaves the dive state's +8h.
+    int fly_to_countdown[2]{0, 0};
+    std::vector<bsp::FlyToObstacle> fly_to_cache[2];
     int torpedo_goaway_ticks{0};
     int torpedo_goaway_arm_ticks[5]{0, 0, 0, 0, 0};  // index 1..4 = the four arms
     int torpedo_goaway_heading_ticks{0};             // arms that publish +2C0h
@@ -1841,7 +1846,23 @@ constexpr bool kAimErrorDrawBound = true;     // ON: TORPEDO_AIM_LEAD 12.2
 // 009D3420 before the state tick at 009D48F6). ON: the goaway asks
 // aim_point_009fada0 for it, as approach_target_point does. OFF: the ordered
 // target's origin.
-constexpr bool kTorpedoGoAwayAimPointBound = true;   // ON: TORPEDO_AIM_LEAD 15.4
+constexpr bool kTorpedoGoAwayAimPointBound = true;
+// Packet cc9_fly_to_obstacles (docs/TORPEDO_AIM_LEAD.md section 16): 009FD570's
+// obstacle cache (cache = the calling state; +8h countdown, +0Ch list). Every
+// 21st call (009FD5FF ADD [EDI+8],-1 / JNS / MOV [EDI+8],14h) it walks
+// [[00E188A8]+19CCh]+64h, world list 6, the ships, and keeps each unit whose
+// team +54h differs from the flyer's (009FD656) and whose XZ distance to the
+// lead point is under max(unit+434h, +444h, +448h) + 100 (009FD66F-009FD6F9):
+// the longest AAMACHINEGUN / FLAK / LIGHTARTILLERYFLAK range (00956C20's
+// unit+430h + cat*4). The weight is unit+464h + +474h + +478h, the same three
+// categories' 00956C20 damage sums (unit+460h + cat*4). So the goaway steers
+// round enemy AA envelopes. SUBSTITUTIONS, labelled: +460h is rebuilt here
+// from the gunnery host's gun rows (mean of the bullet class's DamageMin and
+// DamageMax per gun with a bullet class), without 00956C20's
+// kind-6-in-category-6 second ammo record (+48h); the cache lives on the unit
+// slot, one per goaway state, so it is not reset when a new task is built.
+// OFF: the empty list, as before.
+constexpr bool kFlyToObstacleListBound = false;   // ON: TORPEDO_AIM_LEAD 15.4
 constexpr bool kApproachSectionPointsBound = true;   // ON: TORPEDO_AIM_LEAD 14.4
 // Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
 // tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
@@ -2130,6 +2151,29 @@ struct GameUnitsHost::Impl {
     };
     std::vector<LandingDeck> landing_decks;
     unsigned long long landing_refused_decks{0};
+    // Packet cc9_rtb_site_key (docs/SQUADRON_LAND_TASK.md 5ad). True: the
+    // 007F16D0 record path gives each 006C0840 candidate its ordering key
+    // (006C09FE-006C0A9B) from the head plane, through the airfield holder
+    // (landing_deck_006c0750) or a carrier holder frame built as 00758E80's
+    // refresh leaves it (006BEE40 on 007593D0's holder). False: every key is
+    // unknown, and two or more candidates make the resolution `site-key-unread`.
+    static constexpr bool kReturnToBaseSiteKeyBound = false;
+    // 00759120 (MMothership model bind, 00759237-00759265): class+814h..+81Ch =
+    // the first point of the model's ("runwaycenter", 0) Aux group; 00759590:
+    // class+820h RunwayWidth, +824h RunwayLength. One entry per class.
+    struct CarrierRunwayClass {
+        bool ok{false};
+        std::string reason;
+        float center[3]{0.0f, 0.0f, 0.0f};
+        float width{0.0f};
+        float length{0.0f};
+    };
+    std::map<int, CarrierRunwayClass> carrier_runway_classes;
+    const CarrierRunwayClass& carrier_runway_class_00759120(const GameUnitSlot& s);
+    bool carrier_holder_frame_006bee40(std::size_t owner, LandingDeck& d);
+    bool landing_site_key_006c09fe(std::size_t deck_index, std::size_t owner,
+        const GameUnitSlot& head, bsp::LandingSiteCandidate& c);
+    unsigned long long rtb_site_keys{0}, rtb_site_keys_carrier{0}, rtb_site_keys_missing{0};
     LandingDeck* landing_deck_006c0750(std::size_t deck_index, std::size_t owner);
     bool landing_request_006c54c0(GameUnitSlot& plane);
     float landing_sequencer_006cc9f0(LandingDeck& d, std::size_t squadron);
@@ -6415,6 +6459,68 @@ struct GameUnitsHost::Impl {
     // Packet cc9_torpedo_goaway_aim: goaway ticks that took 009D0670's point,
     // and how far it sat from the target's origin (XZ).
     unsigned long long goaway_aim_points_{0};
+    // Packet cc9_fly_to_obstacles.
+    unsigned long long fly_to_rebuilds_[2]{0, 0};
+    unsigned long long fly_to_kept_[2]{0, 0};
+    unsigned long long fly_to_avoid_ticks_[2]{0, 0};
+    unsigned long long fly_to_side_flips_[2]{0, 0};
+    // 00956C20's unit+460h + cat*4 for one unit, from the gunnery host's rows.
+    float unit_category_damage_460(std::size_t unit_index, int category) const {
+        if (gunnery == nullptr) return 0.0f;
+        const std::vector<std::size_t>* list =
+            gunnery->unit_category_guns(unit_index, category);
+        if (list == nullptr) return 0.0f;
+        const auto& guns = gunnery->guns();
+        float sum = 0.0f;
+        for (std::size_t g : *list) {
+            if (g >= guns.size()) continue;
+            const GameBulletClassRow* b = gunnery->bullet_class_row(guns[g].bullet_class);
+            if (b == nullptr || !b->found) continue;
+            sum += (b->damage_max + b->damage_min) * 0.5f;   // 00956E94..00956E9B
+        }
+        return sum;
+    }
+    // 009FD5FF-009FD743 for the cache `k` of `flyer`, with `lead` the solver's
+    // lead point (unit+FCh + 3.0 * vtable[34h]).
+    const std::vector<bsp::FlyToObstacle>& fly_to_obstacles_009fd63c(
+            GameUnitSlot& flyer, int k, const float lead[3]) {
+        if (--flyer.fly_to_countdown[k] >= 0) return flyer.fly_to_cache[k];  // JNS
+        flyer.fly_to_countdown[k] = 20;                                      // 009FD630
+        std::vector<bsp::FlyToObstacle>& out = flyer.fly_to_cache[k];
+        out.clear();                                                         // 007B4500(0)
+        ++fly_to_rebuilds_[k];
+        if (gunnery == nullptr) return out;
+        const auto& gunnery_rows = gunnery->unit_rows();
+        for (const GameUnitWorldNode* node = world_lists.entries[6].head; node != nullptr;
+             node = node->next) {
+            const GameUnitSlot* u = node->unit;
+            if (u == nullptr || u->row.party == flyer.row.party) continue;  // 009FD656
+            const std::size_t idx = u->process_index;
+            const GameGunneryUnitRow* row = nullptr;
+            for (const auto& r : gunnery_rows) {
+                if (r.unit_index == idx) { row = &r; break; }
+            }
+            if (row == nullptr) continue;
+            const float dx = lead[0] - u->motion.position[0];
+            const float dz = lead[2] - u->motion.position[2];
+            const float d2 = dx * dx + 0.0f * 0.0f + dz * dz;               // 009FD6A3 FLDZ
+            // 009FD6B1-009FD6D3: max(+448h, +444h) then against +434h.
+            float m = std::max(row->category_ranges[6], row->category_ranges[5]);
+            m = std::max(row->category_ranges[1], m);
+            const float r = static_cast<float>(static_cast<double>(m) + 100.0);  // 00D7A220
+            if (!(r * r > d2)) continue;                                     // 009FD6F9 JBE
+            bsp::FlyToObstacle o;
+            o.position[0] = u->motion.position[0];
+            o.position[1] = u->motion.position[1];
+            o.position[2] = u->motion.position[2];
+            o.extent_max = m;
+            o.extent_sum = unit_category_damage_460(idx, 5)
+                + unit_category_damage_460(idx, 1) + unit_category_damage_460(idx, 6);
+            out.push_back(o);
+            ++fly_to_kept_[k];
+        }
+        return out;
+    }
     double goaway_aim_offset_sum_{0.0};
     double goaway_aim_offset_max_{0.0};
 
@@ -9368,6 +9474,9 @@ void GameUnitsHost::Impl::record_return_to_base_007f16d0(std::size_t unit_index)
         c.owner_side_54 = deck->owner_party;
         c.accepts_6bc530 = false;
         c.key_known = false;
+        if constexpr (kReturnToBaseSiteKeyBound) {
+            if (owner < slots.size()) landing_site_key_006c09fe(i, owner, *slots[head], c);
+        }
         list.push_back(c);
     }
     const bsp::NearestLandingSiteResult site = bsp::nearest_landing_site_006c0840(site_in, list);
@@ -9915,6 +10024,135 @@ std::size_t GameUnitsHost::Impl::plane_landing_site_006c0840(const GameUnitSlot&
             : static_cast<float>(std::sqrt(static_cast<double>(r.best_key)));
     }
     return static_cast<std::size_t>(r.node);
+}
+
+// Packet cc9_rtb_site_key. 00759120 at 00759237-00759265 takes the FIRST point
+// of the LAST Aux group named "runwaycenter" with index 0 (00718000); an empty
+// group is the image's invalid-parameter path (00BF6713), refused here.
+const GameUnitsHost::Impl::CarrierRunwayClass& GameUnitsHost::Impl::carrier_runway_class_00759120(
+    const GameUnitSlot& s) {
+    const int type_id = s.row.type_id;
+    auto found = carrier_runway_classes.find(type_id);
+    if (found != carrier_runway_classes.end()) return found->second;
+    CarrierRunwayClass& e = carrier_runway_classes[type_id];
+    e.width = lua.read_vehicle_class_number(type_id, "RunwayWidth", 0.0f);    // +820h
+    e.length = lua.read_vehicle_class_number(type_id, "RunwayLength", 0.0f);  // +824h
+    const std::string mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+    std::vector<std::uint8_t> bytes;
+    std::vector<bsp::GunFirePointItem> items;
+    std::string error;
+    if (mesh.empty()) {
+        e.reason = "no Mesh string";
+    } else if (!lua.read_resource_file(mesh, bytes)) {
+        e.reason = "model did not open";
+    } else if (!bsp::read_mmod_aux_point_items_0071b3e0(bytes, items, error) && items.empty()) {
+        e.reason = "model Aux read failed: " + error;
+    } else {
+        const bsp::GunFirePointItem* item =
+            bsp::find_named_point_group_00718870(items, "runwaycenter", 0u);
+        if (item == nullptr || item->points.empty()) {
+            e.reason = "no runwaycenter point";
+        } else {
+            for (int k = 0; k < 3; ++k) e.center[k] = item->points.front()[static_cast<std::size_t>(k)];
+            e.ok = true;
+            e.reason = "runwaycenter";
+        }
+    }
+    log.notef("carrier runway class %d \"%s\" mesh=%s: %s center=(%.3f, %.3f, %.3f) "
+        "RunwayWidth=%.2f RunwayLength=%.2f (00759120 / 00759590, packet cc9_rtb_site_key)",
+        type_id, s.row.name.c_str(), mesh.c_str(), e.reason.c_str(),
+        static_cast<double>(e.center[0]), static_cast<double>(e.center[1]),
+        static_cast<double>(e.center[2]), static_cast<double>(e.width),
+        static_cast<double>(e.length));
+    return e;
+}
+
+// The carrier holder at [unit+EF8h] as 00758E80 leaves it every update:
+// 006BEE40 (006BEE40-006BEEBC, __thiscall, one unused float, RET 4) copies the
+// owner's world matrix (+CCh) to +8h, adds 0042D0D0(offset +98h, frame, 0) -
+// the offset through the frame's rotation rows, not normalised - to the
+// translation (+38h..+40h), builds the inverse at +48h (0085DEA0) and stores
+// owner vtable[50h] = 006DFD60, FLD [unit+1050h], at +88h. 006C0750 took
+// +98h = class+814h.. and +B0h/+B4h = class+820h/+824h (007593D0 at
+// 007593F1-00759493); 006BC960's MotherShip arm (IsKindOf(9) at 006BC985)
+// sets T = (0, 0.5 [00CE3800], float(float(-B4h x 0.5 [00D7A280]) + 10.0
+// [00CE3DC0])). The x87 sums are taken in double here (LABELLED: not
+// extended precision).
+bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, LandingDeck& d) {
+    if (owner >= slots.size()) return false;
+    const GameUnitSlot& o = *slots[owner];
+    const CarrierRunwayClass& cls = carrier_runway_class_00759120(o);
+    if (!cls.ok) return false;
+    d.width_b0 = cls.width;
+    d.length_b4 = cls.length;
+    d.frame_8 = o.world;
+    const bsp::CameraMatrix& m = d.frame_8;
+    const double ox = cls.center[0], oy = cls.center[1], oz = cls.center[2];
+    const float wx = static_cast<float>(m[4] * oy + m[0] * ox + m[8] * oz);
+    const float wy = static_cast<float>(m[5] * oy + m[1] * ox + m[9] * oz);
+    const float wz = static_cast<float>(m[6] * oy + m[2] * ox + m[10] * oz);
+    d.frame_8[12] = static_cast<float>(static_cast<double>(d.frame_8[12]) + wx);
+    d.frame_8[13] = static_cast<float>(static_cast<double>(wy) + d.frame_8[13]);
+    d.frame_8[14] = static_cast<float>(static_cast<double>(wz) + d.frame_8[14]);
+    // 0085DEA0, as landing_deck_006c0750 builds it for an airfield.
+    bsp::CameraMatrix inv = d.frame_8;
+    std::swap(inv[1], inv[4]);
+    std::swap(inv[2], inv[8]);
+    std::swap(inv[6], inv[9]);
+    const float tx = d.frame_8[12], ty = d.frame_8[13], tz = d.frame_8[14];
+    const float rx = tx * inv[0] + ty * inv[4] + tz * inv[8];
+    const float ry = tx * inv[1] + ty * inv[5] + tz * inv[9];
+    const float rz = tx * inv[2] + ty * inv[6] + tz * inv[10];
+    inv[12] = -0.0f - rx;
+    inv[13] = -0.0f - ry;
+    inv[14] = -0.0f - rz;
+    d.inverse_48 = inv;
+    d.runway_heading_88 = o.hull_heading_1050;
+    const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
+    d.t_a4[0] = 0.0f;
+    d.t_a4[1] = 0.5f;
+    d.t_a4[2] = static_cast<float>(static_cast<double>(half_len) + 10.0);
+    return true;
+}
+
+// 006C09FE-006C0A9B for one candidate, with the record path's head plane:
+// an accepting holder (006BC530 over the runway) keys on
+// |00438B10(holder+88h, head vtable[50h])|; any other on the squared
+// holder-local offset from T with y zeroed and z x 0.3 (00CE3DC8) inside
+// (-1500, 800) (00CF86A8, 00CE3948), as plane_landing_site_006c0840 does.
+// A candidate whose holder cannot be built keeps key_known = false.
+bool GameUnitsHost::Impl::landing_site_key_006c09fe(std::size_t deck_index, std::size_t owner,
+    const GameUnitSlot& head, bsp::LandingSiteCandidate& c) {
+    const bsp::AirOpsDeck* deck = bsp::air_ops_decks().mutable_at(deck_index);
+    if (deck == nullptr) return false;
+    LandingDeck carrier;
+    const LandingDeck* d = nullptr;
+    if (deck->is_airfield) {
+        d = landing_deck_006c0750(deck_index, owner);
+    } else if (carrier_holder_frame_006bee40(owner, carrier)) {
+        d = &carrier;
+        ++rtb_site_keys_carrier;
+    }
+    if (d == nullptr) {
+        ++rtb_site_keys_missing;
+        return false;
+    }
+    c.accepts_6bc530 = landing_over_runway_006bc530(*d, head.motion.position, nullptr);
+    c.key_known = true;
+    if (c.accepts_6bc530) {
+        c.key = std::fabs(bsp::wrapped_angle_subtract_00438b10(d->runway_heading_88,
+            head.plane_heading_c6c));
+    } else {
+        std::array<float, 3> l = landing_local_006bcc90(*d, head.motion.position);
+        l[1] = 0.0f;
+        if (l[2] > -1500.0f && 800.0 > static_cast<double>(l[2])) {
+            l[2] = static_cast<float>(static_cast<double>(l[2]) * 0.30000001192092896);
+        }
+        c.key = static_cast<float>(static_cast<double>(l[0]) * l[0]
+            + static_cast<double>(l[1]) * l[1] + static_cast<double>(l[2]) * l[2]);
+    }
+    ++rtb_site_keys;
+    return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -17322,9 +17560,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // target itself may be an obstacle the image steers round.
                         fin.obstacles = nullptr;
                         fin.obstacle_count = 0;
+                        if constexpr (kFlyToObstacleListBound) {
+                            float lead[3];
+                            for (int i = 0; i < 3; ++i) {
+                                // 009FD5A8-009FD61F, as the solver forms it.
+                                lead[i] = fin.unit_position[i] + static_cast<float>(
+                                    static_cast<double>(fin.unit_lead_vector[i]) *
+                                    static_cast<double>(bsp::fly_to_solver::kLeadSeconds));
+                            }
+                            const auto& obs = owner_.fly_to_obstacles_009fd63c(unit_, 1, lead);
+                            fin.obstacles = obs.empty() ? nullptr : obs.data();
+                            fin.obstacle_count = obs.size();
+                        }
                         fin.world_edge.near_edge = false;
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, gt.side_18);
+                        if (fr.avoidance_ran) ++owner_.fly_to_avoid_ticks_[1];
+                        if (fr.side_written) ++owner_.fly_to_side_flips_[1];
                         if (fr.side != gt.side_18) ++unit_.db_goaway_side_writes;
                         gt.side_18 = fr.side;  // arg4 IN AND OUT, 009FDC48
                         bsp::TorpedoGoAwayGeometryInputs geo;
@@ -19495,6 +19747,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // point, and it is reported rather than assumed.
                         fin.obstacles = nullptr;
                         fin.obstacle_count = 0;
+                        if constexpr (kFlyToObstacleListBound) {
+                            float lead[3];
+                            for (int i = 0; i < 3; ++i) {
+                                // 009FD5A8-009FD61F, as the solver forms it.
+                                lead[i] = fin.unit_position[i] + static_cast<float>(
+                                    static_cast<double>(fin.unit_lead_vector[i]) *
+                                    static_cast<double>(bsp::fly_to_solver::kLeadSeconds));
+                            }
+                            const auto& obs = owner_.fly_to_obstacles_009fd63c(unit_, 0, lead);
+                            fin.obstacles = obs.empty() ? nullptr : obs.data();
+                            fin.obstacle_count = obs.size();
+                        }
                         // 00681F40 / 009FA510 over GGame+711Ch..7130h: the world
                         // bounds are unmodelled, and USN01's aircraft are in
                         // open ocean rather than against a map edge.
@@ -19502,6 +19766,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         const bsp::FlyToSolverResult fr =
                             bsp::fly_to_point_heading_009fd570(fin, g.side_2c);
+                        if (fr.avoidance_ran) ++owner_.fly_to_avoid_ticks_[0];
+                        if (fr.side_written) ++owner_.fly_to_side_flips_[0];
                         g.side_2c = fr.side;
 
                         bsp::TorpedoGoAwayGeometryInputs geo;
@@ -26016,6 +26282,10 @@ void GameUnitsHost::report() {
             "retreat=%llu squadrons=%zu RECORD ONLY (packet cc9_squadron_land_task)",
             host.rtb_arm_counts[0], host.rtb_arm_counts[1], host.rtb_arm_counts[2],
             host.rtb_arm_counts[3], host.rtb_census.size());
+        host.log.notef("summary squadron returntobase site keys computed=%llu carrier=%llu "
+            "missing=%llu bound=%d (006C09FE, packet cc9_rtb_site_key)", host.rtb_site_keys,
+            host.rtb_site_keys_carrier, host.rtb_site_keys_missing,
+            Impl::kReturnToBaseSiteKeyBound ? 1 : 0);
     }
     host.log.notef("summary unit yaw rate 00811940 bound=%d calls=%llu nonzero=%llu "
         "(packet cc9_unit_yaw_rate_forward_speed)", kUnitYawRateForwardSpeedBound ? 1 : 0,
@@ -26615,6 +26885,13 @@ void GameUnitsHost::report() {
             g_section_picks[0], g_section_picks[1], g_section_picks[2],
             g_section_chance_box_picks, g_section_unavailable_picks,
             host.section_points_by_class_.size());
+        host.log.notef("summary mission fly-to obstacles bound=%d torpedo_goaway "
+            "rebuilds=%llu kept=%llu avoid_ticks=%llu side_writes=%llu | dive_goaway "
+            "rebuilds=%llu kept=%llu avoid_ticks=%llu side_writes=%llu (009FD570 cache, "
+            "packet cc9_fly_to_obstacles)", kFlyToObstacleListBound ? 1 : 0,
+            host.fly_to_rebuilds_[0], host.fly_to_kept_[0], host.fly_to_avoid_ticks_[0],
+            host.fly_to_side_flips_[0], host.fly_to_rebuilds_[1], host.fly_to_kept_[1],
+            host.fly_to_avoid_ticks_[1], host.fly_to_side_flips_[1]);
         host.log.notef("summary mission torpedo goaway aim point bound=%d ticks=%llu "
             "mean_off_origin=%.1f m max_off_origin=%.1f m (009D0670 via 009D0C10, packet "
             "cc9_torpedo_goaway_aim)", kTorpedoGoAwayAimPointBound ? 1 : 0,

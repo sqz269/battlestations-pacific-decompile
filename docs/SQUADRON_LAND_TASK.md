@@ -3511,3 +3511,78 @@ that the host runs only in dogfight.
 | LOMP10 9200/9000 | 1, gameplay identical | 26213 calls, UNIMPLEMENTED -> concrete | the LOMP10 movie-camera presentation lines only |
 
 The predictions held. **Verdict: `kLandFinalDirection40Bound` ON.**
+
+## 5ad. The return-to-base site key (packet `cc9_rtb_site_key`, cc9-lua19, 2026-09-29)
+
+GAMEPLAY_GAP_RANKING (refresh) #1. `kReturnToBaseSiteKeyBound` (`src/game_hosts_units.cpp`, in
+`GameUnitsHost::Impl`) is committed **OFF**.
+
+### The gap
+
+`record_return_to_base_007f16d0` asks `006C0840` for the nearest site the way `007F16D0` does, but
+it gave every candidate `key_known = false`. With two or more candidates past the filters,
+`nearest_landing_site_006c0840` then flags `site-key-unread`, and `install_land_task_0099a3dd`
+refuses every land task. On main `31de7f88a` (`local\l19_main_jm05*.log`):
+- JM05 3000: 16 squadrons, 1680 refusals, 0 installs;
+- JM05 9000: 25 squadrons, 5493 refusals, 0 installs.
+
+The candidate list has `sites=6 passed=4`: the two US airfields and USS Lexington and Yorktown.
+The plane-side caller `plane_landing_site_006c0840` already computed the key, but only for
+airfields, because `landing_deck_006c0750` refuses a mother-ship holder.
+
+### The image (read for this packet)
+
+- **The key**, `006C09FE-006C0A9B`, is as `plane_landing_site_006c0840` documents it. An accepting
+  holder (`006BC530`, head over the runway) keys on `|00438B10(holder+88h, head vtable[50h])|`.
+  Any other holder keys on the squared holder-local offset from T (`006BCC90`), with y zeroed and
+  z x 0.3 inside (-1500, 800).
+- **The carrier holder** is built by `007593D0` (`007593F1-00759493`):
+  - `006C0D20(&class+814h, class+820h, class+824h)`, and then `006C0750`;
+  - `+98h..+A0h` is the offset, `+B0h` = class `+820h`, `+B4h` = class `+824h`.
+- **`00759590` (MMothership class reader):** `+820h` is `RunwayWidth` and `+824h` is `RunwayLength`.
+- **`00759120` (MMothership model bind), `00759237-00759265`:** `+814h..+81Ch` is the first point of
+  the model's last `("runwaycenter", 0)` Aux group, looked up through `00718000`. This
+  installation's LexingtonCV, yorktown and Zuikaku models each carry a `runwaycenter` item.
+- **The refresh, `00758E80`** (carrier update, vtable entry at `00D015EC`): it calls
+  `00811AB0(dt)`, then `006BEE40` on `[unit+EF8h]`.
+- **`006BEE40`** (`006BEE40-006BEEBC`, `RET 4`; its float argument is unused):
+  - copies the owner's `+CCh` world matrix to `+8h`, first running `00414DB0` when `+C8h` is
+    clear;
+  - adds `0042D0D0(+98h, frame, 0)`, the offset through the rotation rows without normalising, to
+    the translation;
+  - builds the inverse at `+48h` (`0085DEA0`);
+  - stores owner `vtable[50h]` at `+88h`. For a carrier that is `006DFD60`,
+    `FLD [unit+1050h]`: `hull_heading_1050`.
+- **`006BC960`'s MotherShip arm** (`IsKindOf(9)`): T = (0, 0.5, float(float(-B4h x 0.5) + 10.0)).
+  `00CE3DC0` is the double 10.0.
+
+### The binding
+
+With the switch ON, `landing_site_key_006c09fe` gives each record-path candidate its key:
+- an airfield through `landing_deck_006c0750`;
+- a carrier through `carrier_holder_frame_006bee40`, which is the frame above, recomputed at each
+  resolution from the owner's current `world`.
+
+A class without a `runwaycenter` point keeps `key_known = false`. The census line is `summary
+squadron returntobase site keys computed=... carrier=... missing=... bound=...`.
+
+LABELLED:
+- The x87 sums are taken in double.
+- The host frame is the last published pose, where the image's is the last `00758E80` update.
+- The carrier holder serves only the key. Landing on a carrier stays refused (ranking #3).
+
+### Predictions, written before any ON run
+
+- **OFF** is gameplay-identical to main on every row: the switch only guards the new code, and the
+  summary adds one line.
+- **JM05 3000 and 9000, ON:**
+  - No resolution carries `site-key-unread`, and `unread=` is 0 in every land-task row.
+  - The squadrons still parked at their airfield at 2.55 s move to `ground` refusals ("not
+    airborne").
+  - The airborne carrier squadrons resolve to their nearest US site and install land tasks
+    (installs > 0).
+  - A squadron whose winner is a carrier installs a task whose deck is then refused by the
+    sequencer, so it does not land (ranking #3).
+  - Plane paths, deaths and damage move (exit 3).
+- **The other rows are gameplay-identical** (exit 0/1). USN04, USN13 and IJN01 resolve no
+  return-to-base on main, and LOMP10 has one site, where the key never decides.

@@ -188,6 +188,61 @@ TorpedoRunTimeResult torpedo_run_time_009d1360(const TorpedoApproachState& s,
     return out;
 }
 
+float torpedo_reset_attack_speed_009d03d9(float travel_speed_18c, float min_hit_vel,
+                                          float draw) noexcept {
+    // 009D03DE FMUL qword 0.75, 009D03E7 FSTP to a float, then 009D03FD keeps
+    // the smaller against desc+18Ch (JBE takes the product on a tie).
+    const float limit = static_cast<float>(static_cast<double>(min_hit_vel) *
+                                           kTorpedoResetHitVelFactor_00cec9d8);
+    const float cap = limit <= travel_speed_18c ? limit : travel_speed_18c;
+    return static_cast<float>(static_cast<double>(draw) * cap);   // 009D0437/009D0449
+}
+
+float torpedo_reset_near_leg_009d05ed(float near_7c, float far_80, float draw) noexcept {
+    // 009D05D1-009D05ED: draw * (+80h - +7Ch) + +7Ch.
+    const double gap = static_cast<double>(far_80) - near_7c;
+    return static_cast<float>(static_cast<double>(draw) * gap + near_7c);
+}
+
+float torpedo_reset_far_leg_009d0625(float near_7c, float far_80, float draw) noexcept {
+    // 009D0612-009D0625: +80h - draw * (+80h - +7Ch), +7Ch the new near leg.
+    const double gap = static_cast<double>(far_80) - near_7c;
+    return static_cast<float>(static_cast<double>(far_80) - draw * gap);
+}
+
+float torpedo_reset_run_time_009d0160(const TorpedoApproachState& s, float fall_time,
+                                      float run_speed) noexcept {
+    const double speed = s.closing_speed_bias_70;
+    // 009D01A6-009D01B8: dt stored to a float, NO floor (009D1360 floors it).
+    const float dt = static_cast<float>((speed - run_speed) /
+                                        static_cast<double>(kTorpedoDecelRate_00cf1440));
+    // 009D01BC-009D01D2: dd = (+70h + run) * 0.5 * dt, stored to a float.
+    const float dd = static_cast<float>((speed + run_speed) *
+        static_cast<double>(kTorpedoHalf_00d7a280) * dt);
+    // 009D01D6-009D01E4: the fall lead, stored to a float.
+    const float lead = static_cast<float>(speed * fall_time);
+    // 009D01E8-009D01FF: L = +7Ch - (lead + dd), stored to a float.
+    const float leg = static_cast<float>(
+        static_cast<double>(s.speed_late_7c) - (static_cast<double>(lead) + dd));
+    float t = fall_time;                                  // 009D023F: L < 0
+    if (!(leg < 0.0f)) {
+        if (dd <= leg) {
+            // 009D0227-009D0239: fall + dt + (L - dd) / run.
+            const double rest = run_speed != 0.0f
+                ? (static_cast<double>(leg) - dd) / run_speed : 0.0;
+            const float rest_f = static_cast<float>(rest);   // 009D022F FSTP
+            t = static_cast<float>(static_cast<double>(fall_time) + dt + rest_f);
+        } else {
+            // 009D0215-009D0221: fall + dt * L / dd (dd > L >= 0 here).
+            t = static_cast<float>(static_cast<double>(fall_time) +
+                                   static_cast<double>(dt) * (leg / static_cast<double>(dd)));
+        }
+    }
+    // 009D0255-009D0285: the bias, then the floor at zero into +98h.
+    const float total = static_cast<float>(static_cast<double>(s.run_time_bias_9c) + t);
+    return total < 0.0f ? 0.0f : total;
+}
+
 float torpedo_engage_range_009d4ac4(float current_8c, float attack_dist_tuning,
                                     float speed_ratio_41c) noexcept {
     // 009D4AC4-009D4AD8: FMUL the tuning row by the speed ratio at task+41Ch,
