@@ -1256,16 +1256,284 @@ OFF is this tree's build of `880219379` (`local\l11_fnoff_<row>.log`). ON is the
   - 5h's verdict stands: begin covers the first 2 to 6 s of an approach of about 14 s, and final
     flies the rest.
 
+## 5k. The touchdown, read and bound OFF (packet `cc9_plane_touchdown`, cc9-lua12, 2026-09-29)
+
+**Correction to the handoff's framing.** `007CA3F0 BSP_Plane_HandleTouchdownOrCrash` is not how a
+flying plane lands. The handler `007CCFA0` sends message kind `C3h` with sub-kind 4 or 5 to
+`007CA3F0` only when the message's current state (`msg+20h`) is **not** 7. With current state 7
+both sub-kinds go to `007CB5F0` (`007CD02C`, `007CD06D`). Only two routines request 4 or 5:
+- `007C1570`, called from `007C3C90` (placement: `006CFA20` in `BSP_AirOpsSite_PlacePlaneOnSpot`,
+  and `006D0684`, an unnamed mother-ship site tick);
+- `007C71E0`, the touchdown.
+
+`007C71E0` runs on message kind `C5h` (handler jump table `007CD1AC`/`007CD1D8`, arm `007CD0D9`).
+`C5h` has one constructor, `00762A60`. Of its two callers, `007CC4B6` is in the free-flight arm
+`007CC2F0`.
+
+### Who writes `+BF4h`/`+BF8h` (a census of every store to `+0BF4h`/`+0BF8h` in `.text`)
+
+| site | routine | store |
+| --- | --- | --- |
+| `007D01A7`, `007D01AD` | `BSP_PlaneUnitInstance_Construct` | null, clear (and `+C02h` clear, `+BFCh` = 1000.0 at `007D01EB`, `+C04h` = 0.0 at `007D0006`) |
+| `007D6261`, `007D6267` | `BSP_Plane_ReadPropertyBag` | null, clear |
+| `007B8ECA` | `BSP_Plane_SetGroundContactSite` `007B8E80` | `+BF4h` = the holder (observer swap, src/airfield_taxi.cpp) |
+| `007C5BFD`, `007C5F2D`, `007C5F49` | `007C5AC0`, the probe | below |
+| `007BB2FC` | `007BB2C0` (no direct caller; a virtual) | `+BF8h` = `006BC530(+FCh, &+BFCh)` when `+C02h` and `+BF4h` |
+
+The other three hits (`004EC40F`, `0062E3C0`, `006351E4`) are stack slots or another class.
+
+### `007C5AC0`, the probe (`007C5AC0`-`007C5F5E`, `__thiscall(plane, float step)`, `RET 4`)
+
+Both motion arms run it first (`007CBFC3`, `007CC43B`). **coverage:** complete except the gear
+request at `+C1Ch` (`007C5C11`-`007C5EEF`).
+1. `+C04h -= min(step, 0.5)` (`00CE3800`); a negative step sets -1.0.
+2. When `+C04h < 0` and the unit is present (`+5Ch`) with `+5Dh`, `+60h` and `+5Eh` clear:
+   - `holder = 006C0840(+54h, plane, &dist, 0, airborne or state 6)`, then `007B8E80(holder)`;
+   - `+C02h = 1000.0 > dist` (`00CE47A0`, double), or with no holder `+BF8h`/`+C02h` clear and
+     `+BFCh` = 999.0 (`00CF4888`);
+   - `+C04h = (dist - 200.0) x 0.004` (`00CE4D70`, `00CEB160`). Within 200 m of the key the probe
+     runs every step; at 1000 m every 3.2 s.
+3. Every step (`007C5F0A`): with `+C02h` and `+BF4h`, `+BF8h = 006BC530(pos, &+BFCh)`; otherwise
+   `+C02h`/`+BF8h` clear and `+BFCh` = 1000.0 (`00CE3804`).
+
+`006BC530` (`006BC530`-`006BC5CE`, `__thiscall(holder, pos, float*)`, `RET 8`) takes the position
+through the holder's inverse `+48h`, **not** less T. It writes the local y and answers
+`|x| < float(width x 0.5)` and `|z| < float(length x 0.5)` (the double 0.5 at `00D7A280`). So
+`+BF8h` means "over the runway rectangle" and `+BFCh` is the height above the owner's origin.
+
+**006C0840's key**, now read (`006C09FE`-`006C0A9B`), and its output (`006C0AFF`-`006C0B2A`):
+- `l = 006BCC90(pos)` with y zeroed.
+- An accepting holder (`006BC530`) keys on `|00438B10(holder+88h, plane vtable[50h])|`.
+- Any other holder keys on `00427E30(l)`, the length **squared**. Before that, `l.z x 0.3`
+  (`00CE3DC8`) when `-1500 < l.z < 800` (`00CF86A8`, `00CE3948`).
+- `*dist` is 0.0 for an accepting winner, else `sqrt(key)` (`00BF7030`). With no winner it is not
+  written.
+
+### The touchdown test (`007CC440`-`007CC4CA`) and the chain
+
+On a live plane (`+5Dh` clear, or net mode 2), after the probe:
+
+| gate | site |
+| --- | --- |
+| `+BF8h` set | `007CC440` |
+| `classDesc+1FCh WheelHeight >= +BFCh` | `007CC453`-`007CC463` (`JB` skips) |
+| `+908h > 10.0` (`00CE38B8`) | `007CC465` |
+| the gear channel `(+DECh)+28h` absent, or its value `+2Ch` = 1.0 | `007CC476`-`007CC494` |
+| `vtable[34h]` (`007BBB70`, the world velocity) y > -6.0 (`00D05E30`) | `007CC496`-`007CC4B0` |
+
+Then `00762A60` builds `C5h`, and `0077C2A0(plane, msg, 1, 0)` routes it. The arm returns there
+and skips the water test. The chain from there:
+- **`007C71E0`** (`__fastcall`): `+C49h` clear, `classDesc+198h != 0.0`, `+BF4h` and the gear
+  again. The owner is `holder->+4h->+7Ch`. When it is not the scene parent (`00923810(1)`), it
+  re-parents the plane (`007D9CE0`, `vtable[ACh]`). A class-9 owner runs the wire block
+  (`007DB630`). Then it calls `007C1570(4, 0)`.
+- **`007C1570`**: on the authority it builds `C3h` with current 7 and requested 4 (vtable
+  `00D03504`, `+20h`/`+21h`).
+- **`007CB5F0`**:
+  - `0090F6C0(plane, 4 or 0)`, scoring;
+  - state 4, `+C04h` = -1.0;
+  - with `classDesc+198h != 0`: `+904h = +908h > 5.0` (the landing flag, `00CE3850`) and
+    `+C18h` = 3;
+  - `007C11E0(0)`;
+  - the site `vtable[24h]` `006CED90` (`006CED90`-`006CEDCC`, `RET 4`) appends the plane to the
+    occupancy vector `+34h`/`+38h` unless it is there;
+  - `vtable[48h]` `006CE230` restamps `+40h`;
+  - a human plane over its own class-9 owner gets `0090F6C0(plane, 1)`.
+
+**The gear.** `(+DECh)+28h` is actuator channel B. The constructor `007EABC0` enables it only when
+the class has `+5D4h`, which is model data. `007C11E0` drives its target down unless the plane is
+on the water or has been airborne more than 5 s. In flight its target is `+C1Ch` (`007C6B6C`-`007C6BC6`),
+the request `007C5AC0` computes in mission state 0Dh. It asks for the gear:
+- when the plane is not flying;
+- when the plane is early in its flight (`+908h <= classDesc+5F8h`);
+- inside the approach cone in front of a friendly usable holder (`007C5CF8`-`007C5EE6`).
+
+`007B8D70` (`007B8D70`-`007B8D99`) is the same gear test. It is the one land/final uses before its
+done tests (`009B209B`).
+
+**WheelHeight** is written at `007D2A7C` only when WheelHeight and GroundPitch are both authored.
+The descriptor comes from `BSP_Memory_AllocZeroed` `00470B80`, so otherwise it is 0.0. This
+installation authors WheelHeight 1.52 for the B-25 Mitchell (`VehicleClass[118]`). It authors
+neither key for the P-40 (`[135]`) or the P-38 (`[104]`), so they must bring their origin down to
+the runway plane (vehicleclasses.lua mtime 2026-05-09, modded).
+
+### The binding, behind `kPlaneTouchdownBound` (committed OFF)
+
+- **Bound:**
+  - the probe, with `006C0840`'s key and output: `plane_landing_site_006c0840`,
+    `plane_site_probe_007c5ac0`;
+  - the touchdown gates and `007C71E0`/`007CB5F0`'s state effects, in `plane_touchdown_007cc440`;
+  - the site's occupancy add and its restamp. `006C3F80`'s site arm (5i) now reads the stamp, which
+    stays -99999.0 with the switch off;
+  - `009AFAF0`'s onGround gate.
+- **Not carried, labelled:**
+  - the gear channel: both gear gates pass, and `007B8D70` answers true, so land/final's done tests
+    never run;
+  - `+C49h`, taken clear;
+  - the re-parent: a static airfield;
+  - `0090F6C0` and `007C11E0(0)`'s actuator targets.
+  - Both messages are applied at once. The image drains the loopback queue at row 9 of the same
+    fixed step.
+  - The probe runs after this host's integration step.
+  - A mother-ship holder is refused, as in 5c.
+- **After state 4** the ground-roll arm `007CBFA0` does not run in this host, so the plane is held
+  where it touched down. A state-6 plane is held the same way.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000 (touchdown ON alone), written before any ON run
+
+OFF is this tree's build. ON flips only `kPlaneTouchdownBound`, so begin and final stay OFF and
+their entries are refused.
+1. **The probe runs on every plane.** The only holder in either mission is CB4_AF. Every plane of
+   party 0 near LOMP10's airfield gets `+BF4h`. The `summary plane touchdown` line lists every
+   plane with `probes > 0`.
+2. **No touchdown.** Without begin and final, no plane descends to the runway:
+   - line flies the pattern at its authored height;
+   - the P-40s and P-38s would need `+BFCh <= 0.0`;
+   - the B-25s would need `+BFCh <= 1.52`.
+
+   So `touchdowns=0` everywhere. Any `contact_steps` come from pattern passes over the 20 x 400 m
+   rectangle, at a `min_height` of tens of metres.
+3. **Gameplay identical on both rows** (`pair_diff` 1). The only differences are the new summary
+   lines and the landing-deck build line, which the probe may print earlier.
+- **Mechanism failure:** any of:
+  - a touchdown with a height above the wheel height;
+  - a probe count of zero on a plane that flew within 1000 m of CB4_AF;
+  - any gameplay move.
+- **Flip rule:** flip ON if the mechanism holds and gameplay is identical, since then the switch
+  changes nothing. The real test is the joint pair with begin and final (packet
+  `cc9_land_begin_final_repair`).
+
+
+### The pair and the verdict (cc9-lua12, 2026-09-29): gameplay identical, contact unexercised
+
+OFF is this tree's build of `6369a63c4` (`local\l12_tdoff_<row>.log`). ON is the same commit with
+`kPlaneTouchdownBound=true` (`local\l12_tdon_<row>.log`). A 300-frame LOMP10 smoke of the ON build
+ran first and ended cleanly.
+
+| row | `pair_diff` | touchdown summary |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 1, gameplay identical | 10 planes, 428 to 1004 probes each, `contact_steps=0`, `touchdowns=0` |
+| USN01 3200/3000 | 1, gameplay identical | 7 planes (Airfield2 is the holder; Enterprise is refused), `contact_steps=0`, `touchdowns=0` |
+
+1. **Held.** The probe runs on every flying plane and finds CB4_AF on LOMP10.
+2. **Held, and more strongly than predicted.** No plane in the line pattern ever crossed the
+   20 x 400 m rectangle, so `contact_steps` is 0 rather than a few high passes.
+3. **Held.** Both rows are gameplay identical. The ON log differs only by the summary lines and by
+   the deck build line, which the probe now prints earlier (LOMP10: log line 4275 instead of
+   5399).
+
+**Verdict: the switch stays OFF for now.** The flip rule is met, but `006BC530`'s contact path
+never ran, so this pair does not test it. The joint pair with begin and final (section 5l) flies
+the heads over the runway past T. It decides the switch together with begin and final.
+
+
+## 5l. The joint re-pair of begin, final and the touchdown (packet `cc9_land_begin_final_repair`, cc9-lua12, 2026-09-29)
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is `local\l12_tdoff_<row>.log`, with all three switches off. ON flips `kLandBeginStateBound`,
+`kLandFinalStateBound` and `kPlaneTouchdownBound`. The base is section 5j's joint pair (begin and
+final ON, `local\l11_fnon_lomp10.log` in cc9-lua11). Its final traces put the heads past T at
+local heights of 3.4 to 16 m over T:
+- Warhawk 01: minimum Y 3.4 m;
+- Lightning 01: 3.7 m;
+- Lightning 01|.-4: 5.8 m;
+- B-25 01: 11.3 m;
+- B-25 01|.-2: 10.8 m.
+
+1. **Contact is exercised.** Every head that reaches final (Warhawk 01, Lightning 01,
+   Lightning 01|.-4, B-25 01, B-25 01|.-2) shows `contact_steps > 0` once it flies along the
+   runway inside 10 m of the centre line.
+   - `min_height` is Y + 0.5 at the lowest point over the rectangle: about 4 m for the fighters
+     and 11 m for the B-25s.
+   - The line-only wingmen show 0.
+2. **No touchdown.** `touchdowns=0` everywhere. The P-40s and P-38s need `+BFCh <= 0.0` and
+   the B-25s need 1.52, and nothing in 5j's traces comes that low.
+3. **Everything else is 5j's joint pair.**
+   - With no touchdown nothing restamps the site. `009AFAF0`'s onGround gate changes nothing on
+     a static holder: past T the arm is never reached, and before T only the 1.0 floor could move.
+   - Begin lasts 1.2 to 6.6 s per head.
+   - Final flies on past T, sets its done byte and goes to a refused abort.
+   - LOMP10 moves (exit 3, the same moves as 5j: deaths identical, B-25 01 6207 -> 8414 m).
+   - USN01 is gameplay identical (exit 1).
+- **Mechanism failure:** any of:
+  - a touchdown with `+BFCh` above the wheel height;
+  - `contact_steps > 0` with a local |x| or |z| outside the rectangle, checked on the first
+    contact of Warhawk 01 from the final trace;
+  - begin or final departing from 5j.
+- **Flip rule (5j's):** the three flip together only if a head touches down **and** no head flies
+  on past T for more than 10 s. It is expected to fail on both counts, so all three stay OFF. The
+  blocker would then be the descent: the heads float 3.5 to 16 m over the runway, where the image
+  needs the wheel height.
+
+
+### The joint pair and the verdict (cc9-lua12, 2026-09-29): begin and final stay OFF, the touchdown flips ON
+
+OFF is `local\l12_tdoff_<row>.log`. ON is `6ad4b7fcd` with the three switches true
+(`local\l12_jon_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | 5j's moves exactly: deaths identical, B-25 01 6207.20 -> 8414.00 m, the same eight IJN ships gain an engagement range |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Contact is exercised: held.** Each head's first contact is at the runway threshold, local
+   z = -198.8 to -199.9. The lateral offset |x| is 0.58 to 0.97 m for the fighters and 3.6 m for
+   the B-25s. The first-contact heights are 11.9 to 14.4 m. Minimum heights over the rectangle
+   (`contact_steps` 218 to 256, i.e. the whole 400 m at about 32 m/s):
+
+   | head | minimum height |
+   | --- | --- |
+   | Warhawk 01 | 3.96 m |
+   | Warhawk 01\|.-4 | 3.89 m |
+   | Lightning 01\|.-4 | 6.09 m |
+   | Lightning 01 | 7.25 m |
+   | B-25 01\|.-2 | 11.88 m |
+   | B-25 01 | 12.35 m |
+
+   The prediction said "about 4 m for the fighters". That holds for the Warhawks; the Lightnings
+   stayed 2 to 3 m higher. Warhawk 01|.-4 made contact while still in begin (2934 begin ticks,
+   no final entry), as in 5j.
+2. **No touchdown: held.** `low_steps=0` on every plane: no head came below its wheel height (0.0
+   or 1.52).
+3. **Everything else matches 5j: held.**
+   - Begin lasted 12 to 66 ticks per head, and there were five final entries.
+   - The abort refusals are 1926 to 2919 per head, 5j's numbers.
+   - The native-table and summary moves are 5j's.
+- **Why the heads float.** Over the runway, Warhawk 01's final trace (every 10 ticks) runs:
+  - Y = 15.2 and 16.3 m in mode 2, the steer's nose-down arm (pitch -0.28 to -0.32);
+  - then 10.2 / 6.6 / 7.7 / 10.6 / 14.0 m in mode 1, where the steer holds ApproachPitch
+    +0.1047 rad because Y is below 1.4 x hull length;
+  - spd_cmd 32.0 and live speed 30.0 to 34.6 m/s throughout.
+
+  In this host, a +6 degree hold at 30 m/s climbs. For the image's planes to reach their wheel
+  height, the same hold has to sink at the commanded speed. This is the airframe response at the
+  landing speed that 5g already recorded as a spread miss. It belongs to the flight model
+  (`009FB800`, the lift and throttle at the ApproachPitch hold), not to the land task or the
+  touchdown.
+- **Verdict.**
+  - **Begin and final stay OFF.** 5j's rule fails on both counts: no head touches down, and every
+    head flies on past T for more than 10 s.
+  - **`kPlaneTouchdownBound` flips ON.** Section 5k's rule is met: it is gameplay identical alone
+    on both rows, and this pair shows its contact geometry working at the threshold with the
+    right lateral offsets. On its own it changes no gameplay until something brings a plane down
+    to its wheel height.
+
 ## 6. Open, in order
 
-1. **The touchdown.** Standby and line are ON (sections 5e and 5g), and the launch-site arm is ON
-   (5i). Begin (5h) and the airborne half of final (5j) are bound and match the listing, but they
-   stay OFF because this host has no touchdown, so the planes fly on past T.
-   - The touchdown is plane `+BF8h`/`+BF4h` ground contact and `007CA3F0`, which moves the control
-     mode off 7 (docs/PLANE_GROUND_OPS.md).
-   - After it come final's on-ground half (`009B1FEA`-`009B207A`, `006BC530`, `007B8D70`),
-     `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`) and
-     `land/abort` (`+64Ch`).
+1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON
+   (5e, 5g, 5i, 5k). Begin (5h) and the airborne half of final (5j) are bound and match the
+   listing. They stay OFF because the heads float 3.9 to 12 m over the runway, where the image
+   needs the wheel height: 0.0 for the P-40 and P-38 of this installation, 1.52 for the B-25
+   (5l).
+   - The blocker is the airframe response to the ApproachPitch hold (+0.1047 rad at about
+     32 m/s), which climbs in this host.
+   - After it come:
+     - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still);
+     - final's on-ground half (`009B1FEA`-`009B207A`);
+     - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
+     - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
+     - `land/abort` (`+64Ch`).
    - A mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
