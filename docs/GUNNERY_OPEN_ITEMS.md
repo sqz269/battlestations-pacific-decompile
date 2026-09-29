@@ -4655,3 +4655,68 @@ closed.
   - That is the read through `renderer+1A10h`, the D3D device, which is null. So the session change
     lost or released the device while the mission kept drawing. It is not an FMOD object.
   - Routed to the renderer lane: it is not a gunnery null guard.
+
+## 68. The periscope shape in the hull box (packet `cc9_hull_periscope_shape`, cc9-gunnery14)
+
+Closes 57.2's periscope item and 60.2 item 4's first half.
+
+### 68.1 The image (009396BA..009399BF, read again from the disk bytes)
+
+1. `0071AD50("periszkop")` (00D0C1F0) runs at 009396D8 on the model at `[[unit+1Ch]+360h]+160h`.
+   Its node goes to `[ESP+18h]`.
+2. **The gate.** The block is skipped when either of these is above 0:
+   - `[class+510h]`, KamikazeDamage (COMISS at 009396F5);
+   - `[class+514h]`, KamikazeBlastDamage (00939706).
+
+   It is also skipped when the node is null (0093970F).
+3. **The shape.** The walk 009397F0..0093985B takes the **first** `{item, node}` pair of `model+4Ch`
+   whose node is that node. That list holds the model's ConvexObjects in record order. With none,
+   0093982A leaves.
+4. **The descriptor:**
+   - type 4 (00939724), friction 1.0 (00D7A24C), group 2, mask 5;
+   - geometry `item+0Ch` (also stored at `controller+18h`, 00939883);
+   - rotation and origin: the node's local matrix (00B6DB60 at 0093988D), copied as a 4x3 by
+     00C336C0;
+   - translation: the origin plus the item's centre `item+14h..+1Ch` (009398E1..00939919). The
+     translated y goes to `controller+390h` (00939927).
+5. It is pushed after the hull shapes (009399B8). So 00C57C40's box of the rotated hull joins the
+   body union 00C55FC0.
+
+### 68.2 The binding (switch `kHullPeriscopeShapeBound`, committed OFF)
+
+- **`read_mmod_hull_convex_box`** (`src/mmod_hull_convex_box.cpp`) now also:
+  - finds the first Hierarchy record listing a Note named exactly `periszkop`;
+  - takes that record's first ConvexObject and its `Matrix` (00B936E0's sixteen floats, row-vector,
+    origin at `[12..14]`);
+  - computes `dyn_convex_mesh_shape_bounds_00c57c40` with the centred point box. It does not merge
+    the result.
+- **`mmod_hull_convex_box_add_periscope`** applies the kamikaze gate and merges the box, adding one
+  to `shape_count`.
+- **The units host's `class_hull_box`** calls it behind the switch and logs `hull periscope <unit>
+  (type N): shape= merged= ...`. That file is cc9-lua18's lane; the edit is handed to the lead.
+
+### 68.3 Census and predictions (written before the pair)
+
+`local\g14_pericensus.py` covers the installed ship models; this installation's models are dated
+2024-07-13 and are unmodified bulk. Twelve models list a `periszkop` Note. Only six of those records
+list a ConvexObject:
+
+| model | shape box y | hull y (without) | note |
+| --- | --- | --- | --- |
+| `i-400` | -3.48 .. 14.68 | -5.38 .. 12.47 | |
+| `kaiten` | -0.31 .. 2.13 | -0.50 .. 0.68 | gated: the Kaiten class has KamikazeDamage 3000 and KamikazeBlastDamage 3000 (`vehicleclasses.lua`, this installation, mtime 2026-05-09) |
+| `minisub` | 0.80 .. 4.53 | -0.88 .. 2.49 | |
+| `type7` | -3.28 .. 6.83 | -3.51 .. 4.38 | |
+| `type_b` | -3.36 .. 12.35 | -5.31 .. 7.00 | |
+| `narwhal` | -5.07 .. 12.37 | -6.20 .. 11.60 | |
+
+- **No shape to add** on `I-54`, `I-56`, `I-58`, `U-69`, `Cachalot` and `gato`: their periscope
+  record lists no ConvexObject.
+- **The reference rows** use `gato` (Gato), `Cachalot` (Narwhal, Tautog), `I-54` (PlayerSub,
+  TypeB w Jake) and `Kaiten`.
+- **Prediction:**
+  - with the switch ON, **every reference row is gameplay-identical** (no shape merges);
+  - the new log line shows `merged=0`: `shape=0` for gato, Cachalot and I-54, and `shape=1` for
+    Kaiten, gated.
+  - Where the switch would act: the classes on `i-400`, `minisub`, `type7`, `type_b` and `narwhal`
+    models. Their vertical extent grows by 2.2 to 5.4 m, so their roll and pitch inertia rises.

@@ -42,7 +42,29 @@ struct MmodHullConvexBox {
     std::uint32_t shape_count{0};   // kept {ConvexObject, node} pairs, as 0071B710 appends them
     std::uint32_t note_owner_records{0};  // records other than 0 kept through a Note
     std::uint32_t point_count{0};   // their vertices, for the log line
+    // Packet cc9_hull_periscope_shape: the periscope shape 009396BA..009399BF, read but not
+    // merged (mmod_hull_convex_box_add_periscope applies the class gate and merges it).
+    // periscope_node: a Note named exactly `periszkop` (00D0C1F0, 0071AD50 at 009396D8) is
+    // listed by some Hierarchy record. periscope_shape: that record lists a ConvexObject (the
+    // first {item, node} pair with that node, 009397F0..0093985B) and has a Matrix.
+    bool periscope_node{false};
+    bool periscope_shape{false};
+    OceanVec3 periscope_min{};      // 00C57C40's box for the shape, widened by 0.02
+    OceanVec3 periscope_max{};
+    std::uint32_t periscope_points{0};
+    bool periscope_merged{false};
 };
+
+// Packet cc9_hull_periscope_shape. ON: the units host adds the periscope shape to the hull
+// box through mmod_hull_convex_box_add_periscope. OFF: the box is the root/Note-owner union
+// alone. docs/GUNNERY_OPEN_ITEMS.md section 68.
+inline constexpr bool kHullPeriscopeShapeBound = false;
+
+// 009396DD..00939714 then 009399B8: with class+510h (KamikazeDamage) <= 0, class+514h
+// (KamikazeBlastDamage) <= 0 and the shape read, the shape's box joins the body union
+// (00C55FC0) and shape_count grows by one. Returns whether it was merged.
+bool mmod_hull_convex_box_add_periscope(MmodHullConvexBox& box, float kamikaze_damage_510,
+                                        float kamikaze_blast_damage_514) noexcept;
 
 // Returns false with `error` set when the model cannot be read; returns true with
 // shape_count 0 when it reads but no owner record lists a ConvexObject.
