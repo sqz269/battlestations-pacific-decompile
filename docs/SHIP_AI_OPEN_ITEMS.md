@@ -3912,3 +3912,88 @@ ship's damage) is unverified.
   `+28h = +514h` with no part entries, so what it applies needs the body.
 - The contact gates `0092CE70` and `unit+6B8h` / `00779AD0`, and the slower-body test, are not
   modelled.
+
+## 47. The AI planner spawn `00A25B90` -> `00A25A30` (packet `cc9_ai_planner_spawn`, read in part)
+
+Worker cc9-ships14, 2026-09-29 (13:12 UTC). This is GAMEPLAY_GAP_RANKING rank 8. The listing was
+read and nothing was bound. The packet is handed off unfinished at the handoff threshold.
+
+**Correction first: the Ghidra decompile of `00A25A30` is wrong.** It "removes unreachable blocks"
+`00A25AC1..00A25B24` because it believes the list at `[ESP+14h]` is still empty after `0066E590`.
+The listing shows the list is filled there. Read `00A25A30` from the assembly
+(`python tools/bsp.py ghidra disasm 00a25a30`).
+
+**`00A25B90`**, the planner spawn (`__thiscall(planner)(...)`). Its gates, in order:
+1. `[00F8AB6A] == 0`.
+2. `00946970([00F89B3C], [[planner+1Ch]+20h]) == 0.0` exactly. That is `FUCOMIP` against `FLDZ`,
+   then `LAHF` / `TEST AH,44h` / `JP` to the exit on not-equal or unordered. `00946970` is tagged
+   `stl_probable`, and its segment carries the `supportmanager` and `resourceusage` strings.
+
+Then:
+- `00A08420(...)` fills a local vector.
+- The quick-spawn position hint (AI_GROUP_THINK section 4) is taken.
+- It calls `00A25A30(planner)(pos-or-null, 1.0f, &vector, tag, 1)`, `RET 14h`.
+
+**`00A25A30`**, body `00A25A30`-`00A25B87`.
+1. It returns false when the weight is below `[00CE3800]`, or when the vector (32-byte entries) is
+   empty.
+2. Otherwise it gathers `0066E590(ECX = [planner+30h], EDX = &list, party = [[planner+1Ch]+20h])`:
+   - `0066E510`, and in it `0066E2B0`, walk the `[planner+30h]` list and keep entries whose entity
+     `+54h` equals the party;
+   - the entries with `+14h == 0` are then removed.
+3. With a non-empty list, it runs:
+   - `00A236F0(&sorted, &list, pos or 00F87574)`, which looks like an order by distance from the
+     hint;
+   - `00A23980(planner)(pos, &sorted, weight, &vector, tag, flag)`, whose byte result is the
+     return.
+4. `00A23980`'s callees include `00964790 BSP_VehicleClass_GetOrCreate`, `00942130` and
+   `00947940` (support-manager segment), `0084D560` and `00A21D90`.
+
+**Reading so far, provisional.** The spawn buys reinforcements through the support manager at spawn
+points the party owns (the `[planner+30h]` list, filtered by `+54h`). It creates **units**, not
+just a group object: `VehicleClass_GetOrCreate` is on the path. Neither claim is proven. The
+producers of `[00F8AB6A]` and of `00946970`'s answer decide whether a single-player mission ever
+passes the gates. `BannSupportmanager` / `PermitSupportmanager` (`008D1F50`-`008D2BB0`) are
+candidates for `[00F8AB6A]`.
+
+**Next steps.**
+1. Find the writers of `[00F8AB6A]` (scan `6A AB F8 00`) and read `00946970`. If a single-player
+   row never passes the gates, close the item with that evidence. The host's `spawn_due` counts
+   only the planner-side conditions.
+2. Otherwise, read `00A23980` whole and decide how the host would create a unit at run time.
+   SpawnNew `0094C480` exists as a model.
+
+## 48. Handoff (cc9-ships14, 2026-09-29 13:12 UTC, at about 78% context)
+
+**State.** Branch `agent/cc9-ships14`.
+- On main: 945e105a5, f975ff9d8, 04e56970d, 9319e32f6, 2ebb264f1, eccebd3ca and 4d0a51c9d.
+- This commit adds sections 47 and 48.
+- No lease is held after this commit.
+
+**Switches this worker turned ON:**
+
+| switch | file | section |
+| --- | --- | --- |
+| `kShipAiKamikazeAttackStepBound` | `src/game_hosts_ship_ai.cpp` | 45 |
+| `kKamikazeContactDetonationBound` (zero reach) | `src/game_hosts_gunnery.cpp` | 46 |
+
+**The lead's queue, not started or unfinished:**
+1. `cc9_ai_planner_spawn` (ranking 8). Read in part in section 47; start from its next steps.
+2. `cc9_scripted_order_natives` (ranking 9 and 13), in `src/mission_lua_host.cpp`: `UnitHoldFire`
+   `008A6AC0`, `PilotLand` `008A47B0`, `SetShipMaxSpeed` `00890A10`, `NavigatorEnable` `008A7060`,
+   `Scoring_SetMissionCompleted` `008B8AD0` and `GetCapturePercentage` `0089B840`. Predict per row
+   on IJN01, BSM01, JM05, USN02, LOMP10 and USN01 (GAMEPLAY_GAP_RANKING row 9 lists the rows).
+3. The periscope sub-state `009E4DC1` (ranking 11).
+
+**Open from sections 45 and 46:**
+- the direct-hit delivery `00915F20` of `00819A20`;
+- the contact gates `0092CE70` and `unit+6B8h` / `00779AD0`;
+- the Kaiten air deaths at 160.81 s, which keep every kamikaze short of a hull on USNOS.
+
+**Useful files in the cc9-ships14 tree (`local\`):**
+- `s14_run.ps1 -Exe <exe> -Prefix <p> -Row tag:MISSION:frames:mission_frames` launches in the
+  background with the reference environment.
+- `s14_wait.ps1 -Logs <names>` is the foreground wait on the final COM release.
+- `s14_gap.py <out.tsv> <logs...>` is the UNIMPLEMENTED and refusal census.
+- `s14_ctx.py <n> <names...>` prints the comments before each host record site.
+- Logs: `s14m_*` (fresh main rows), `s14k*` (section 45 pairs), `s14d*` (section 46 pairs).
