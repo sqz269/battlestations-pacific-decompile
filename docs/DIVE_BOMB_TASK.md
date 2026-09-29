@@ -5422,3 +5422,46 @@ Gameplay is identical on all three rows. Only dead aircraft steer differently, a
 moved.
 
 **Verdict: `kDepartedWingmanTaskBlockBound = true`.**
+
+## Where each aircraft stops on the ranking rows (packet `cc9_dive_bomb_release`, cc9-lua15, 2026-09-29)
+
+docs/GAMEPLAY_GAP_RANKING.md item 2 says the state walk stalls before the drop, at the in-range
+latch `approach+D0h` (`009C7C31`), the turndown (`009C7EA0`) or the 25 m aim error (`009C5C9B`).
+The per-aircraft lines (the dive entry, aim trace, gate and hand-over lines) and the death rows
+answer that for each aircraft. `local\l15_dive.py` in the cc9-lua15 tree tabulates them.
+
+The run is USN04 4700/4500, `local\l15_tdiag_usn04.log`, with main `100112f31` merged. The drop
+is `009C60F1`, and it needs three things (`009C608C`-`009C60EC`):
+- the aircraft below the drop floor `approach+A8h`;
+- the re-arm timer run out;
+- `|error| < 25.0` (`00CE3880`, a double).
+
+Every one of the 16 Vals closes the latch and passes the turndown. None stalls at either gate.
+
+| outcome | aircraft | evidence |
+| --- | --- | --- |
+| released | #3.1\|.-3 | `release alt=382.9 m range=306.9 m error=23.4 m` |
+| shot down in `aimdive`, above the drop floor | #1.1, #1.1\|.-3, #3.1\|.-4, #5.1, #5.1\|.-2, #5.1\|.-3, #7.1\|.-4 | death rows at 542 to 851 m. Killers are Lexington-class01, Fletcher-class03 and Northampton-class03 |
+| aim overshot | #3.1 (dies at 298 m, below the 382.9 m the release happened at, final error 116 m), #3.1\|.-2 (final error 64.6 m, 6 ticks of `aimglide`, dies at 389 m) | error crossed zero higher up (closest 0.2 m at 653 m, 0.7 m at 516 m) |
+| still diving when the row ends | #7.1, #7.1\|.-2, #7.1\|.-3 | no death row; the closest points are at 494 to 587 m altitude |
+| left the fly-over for `goaway` (`009C66E3`, bound) | #1.1\|.-2, #1.1\|.-4, #5.1\|.-4 | `span` 20 m at the hand-over where the heads had 0. The first two re-enter from 2.5 km and dive shallow (error 1.5 km) |
+
+So the state walk does not stall:
+- Seven of the sixteen are shot down during the dive.
+- Three run out of row.
+- Two overshoot: the aim error passes through zero above the drop floor and has grown past 25 m
+  by the time they are below it.
+- Three leave the fly-over by the bound tolerance test.
+
+**JM05 (6 Vals).** The latch never closes because the flight is 7.7 km out at the end of the
+3000-frame row (it starts at 15 km). This is a row-length effect, not a gate. It needs about 9000
+frames.
+
+**Nothing is bound.** The open items this points at:
+- the anti-aircraft lethality against a diving Val (the gunnery lane);
+- the timing of the aim error against the drop floor for the overshooting pair, to be read with
+  docs/DIVE_FLIGHT_RESPONSE.md, since the dive speed is capped near MaxSpd (`speed max=69.44`);
+- the fly-over leavers: their bearing error beats the tolerance at a span of 0 to 20 m. Why
+  these three and not the heads is unread.
+
+The torpedo counterpart is docs/TORPEDO_RELEASE_ORDERS.md section 6.
