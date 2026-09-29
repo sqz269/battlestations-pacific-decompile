@@ -68,6 +68,7 @@
 #include "bsp/unit_damage.hpp"
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_weapons.hpp"
+#include "bsp/weapon_director.hpp"
 
 namespace bsp::game {
 namespace {
@@ -515,6 +516,21 @@ constexpr float kBulletThrowMul[kThrowSeatCount][6] = {
 // (AA_LETHALITY_AUDIT 7.5): E2 identical, USN13 low losses 33 -> 14, JM05 2 releases.
 constexpr bool kAaGunnerSwingErrorBound = true;
 constexpr bool kAaFlakAimErrorBound = true;
+//  * kShipFireStanceBound: packet cc9_ship_fire_stance, the ship arm of the Lua
+//    natives UnitSetFireStance 008A6490 and UnitHoldFire 008A6AC0. A ship's
+//    vtable[114h] is 0080E150, the weapon director (docs/WEAPON_DIRECTOR.md), and
+//    0071BE80 asks its vtable[24h] 0071D560 (fire: stance 1 or 2) and [28h]
+//    0071D580 (move: stance 2 or 3) before sending both through vtable[40h]
+//    0071DA50 / [44h] 0071DAD0 as 5Ah messages, sub-kinds 0 and 1. The receiver
+//    stores +3Ch through 00836210 (which also drops the fire target when fire is
+//    forbidden, 0083622B) and +3Dh through 0071D5E0. Readers: the gunnery bridge
+//    008624C0 (+3Ch every category bar 7 and 8; +3Dh -> this+7Ch) and the
+//    ship AI's auto-target gate 009F5610 (+3Dh). SUBSTITUTIONS, labelled: the
+//    message is applied at the unit's next bridge pass rather than at the
+//    session's delivery row; the 0083622B target drop is the ship AI host's
+//    (its director fire target) and is not made here. OFF: every director keeps
+//    008363E0's 1/1 whatever the script says (the stance is recorded, counted).
+constexpr bool kShipFireStanceBound = false;
 // This installation's robots.lua (2025-06-01), AAGunnerBot, by skill index:
 // {AngleDiffErrorRatio (+0Ch), ConstAngleError (+14h), degrees}.
 constexpr float kAaGunnerErrorRows[6][2] = {
@@ -2008,6 +2024,19 @@ struct GameGunneryHost::Impl {
     std::vector<std::pair<std::size_t, float>> pending_explosions;
     // Packet cc9_set_invincible_floor: unit+150h by unit index.
     std::vector<float> invincibility_by_unit;
+    // Packet cc9_ship_fire_stance: director+3Ch / +3Dh by unit index, as the 5Ah
+    // sub-kinds 0 and 1 leave them (00836210 / 0071D5E0). `set` is false until a
+    // script stance reaches the unit; until then the bridge keeps 008363E0's 1/1.
+    struct DirectorStanceRow {
+        bool allow_fire{true};
+        bool allow_move{true};
+        bool set{false};
+    };
+    std::vector<DirectorStanceRow> director_stance_by_unit;
+    unsigned long long stance_sets{0};
+    unsigned long long stance_by_value[4]{0, 0, 0, 0};
+    unsigned long long stance_fire_forbidden_pushes{0};
+    unsigned long long stance_move_forbidden_reads{0};
     std::vector<GameGunneryHost::GameGunneryHitEvent> hit_events;   // cc9_lua_hit_listeners
     float hit_event_fire{0.0f};   // packet cc9_hit_event_fields
     float hit_event_leak{0.0f};
@@ -3984,6 +4013,17 @@ public:
                     if (!e->torpedo) ++owner_.director_torpedo_disabled_pushes;
                     owner_.done("Gunnery::ship_director_enables_007219c0", 0x007219c0u);
                 }
+            }
+        }
+        if constexpr (kShipFireStanceBound) {
+            // Packet cc9_ship_fire_stance: +3Ch and +3Dh as the last script stance
+            // left them (0071BE80 -> 0071DA50 / 0071DAD0 -> 00836210 / 0071D5E0).
+            if (unit_ < owner_.director_stance_by_unit.size()
+                    && owner_.director_stance_by_unit[unit_].set) {
+                const auto& row = owner_.director_stance_by_unit[unit_];
+                stance.allow_fire = row.allow_fire;                 // director+3Ch
+                stance.torpedo_category_enable = row.allow_move;    // director+3Dh
+                if (!row.allow_fire) ++owner_.stance_fire_forbidden_pushes;
             }
         }
         state_.category = bsp::apply_director_stance_008624c0(state_.category, stance,
@@ -9605,6 +9645,45 @@ float GameGunneryHost::unit_invincibility(std::size_t unit_index) const noexcept
     return impl_->invincibility_by_unit[unit_index];
 }
 
+void GameGunneryHost::set_director_fire_stance_0071be80(std::size_t unit_index, int stance) {
+    // 0071BE80: both predicates are asked before either message is sent
+    // (0071BE8F, 0071BE9D), then 0071DA50 (sub-kind 0) and 0071DAD0 (sub-kind 1).
+    const bool fire = bsp::director_stance_allows_fire_0071d560(
+        static_cast<bsp::FireStance>(stance));
+    const bool move = bsp::director_stance_allows_move_0071d580(
+        static_cast<bsp::FireStance>(stance));
+    ++impl_->stance_sets;
+    if (stance >= 0 && stance < 4) ++impl_->stance_by_value[stance];
+    if (unit_index >= impl_->director_stance_by_unit.size()) {
+        impl_->director_stance_by_unit.resize(unit_index + 1);
+    }
+    auto& row = impl_->director_stance_by_unit[unit_index];
+    row.allow_fire = fire;    // 00836210 at 00836216
+    row.allow_move = move;    // 0071D5E0
+    row.set = true;
+    impl_->log.notef("  director stance: unit %zu stance=%d allowFire %d allowMove %d bound=%d "
+        "(0071BE80 -> 0071DA50/0071DAD0 5Ah)", unit_index, stance, fire ? 1 : 0, move ? 1 : 0,
+        kShipFireStanceBound ? 1 : 0);
+    if constexpr (kShipFireStanceBound) {
+        impl_->done("WeaponDirector::set_fire_stance_0071be80", 0x0071be80u);
+    } else {
+        impl_->record("WeaponDirector::set_fire_stance_0071be80", 0x0071be80u);
+    }
+}
+
+bool GameGunneryHost::director_allow_fire_3c(std::size_t unit_index) const noexcept {
+    if (!kShipFireStanceBound || unit_index >= impl_->director_stance_by_unit.size()) return true;
+    const auto& row = impl_->director_stance_by_unit[unit_index];
+    return !row.set || row.allow_fire;
+}
+
+bool GameGunneryHost::director_allow_move_3d(std::size_t unit_index) const noexcept {
+    if (!kShipFireStanceBound || unit_index >= impl_->director_stance_by_unit.size()) return true;
+    const auto& row = impl_->director_stance_by_unit[unit_index];
+    if (row.set && !row.allow_move) ++impl_->stance_move_forbidden_reads;
+    return !row.set || row.allow_move;
+}
+
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     if (unit_index >= impl_->unit_state.size()) return;
     // Cause 1 is the only one a caller passes (007CE3A7); the funnel is the
@@ -10257,6 +10336,12 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery override hp calls=%llu applied=%llu bound=%d "
             "(008C1930, packet cc9_override_hp)", host.override_hp_calls, host.override_hp_applied,
             kLuaOverrideHpBound ? 1 : 0);
+        host.log.notef("summary mission gunnery director stance sets=%llu (stance 0/1/2/3 "
+            "%llu/%llu/%llu/%llu) fire_forbidden_pushes=%llu move_forbidden_reads=%llu bound=%d "
+            "(0071BE80 / 0071D560 / 0071D580 / 008624C0, packet cc9_ship_fire_stance)",
+            host.stance_sets, host.stance_by_value[0], host.stance_by_value[1],
+            host.stance_by_value[2], host.stance_by_value[3], host.stance_fire_forbidden_pushes,
+            host.stance_move_forbidden_reads, kShipFireStanceBound ? 1 : 0);
         host.log.notef("summary mission gunnery invincibility sets=%llu floored_writes=%llu "
             "sink_refusals=%llu bound=%d (00897A50 -> 0042ED80, 00879070, 008110F0, "
             "packet cc9_set_invincible_floor)", host.invincibility_sets,
