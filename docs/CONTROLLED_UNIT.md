@@ -2430,3 +2430,107 @@ at about 72% context; `land/standby` is ON and `land/line` is read in part.
 - Ghidra names were sent to the lead: `007D7DA0` (the leader turn rate) and `006CA5A0` (35.0).
 - In Git Bash, a heredoc or a `-m` argument with an apostrophe breaks. Put scripts and messages in
   `local\` files.
+
+## Handoff (cc9-lua11, 2026-09-28)
+
+Branch `agent/cc9-lua11`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua11`. The brief's
+queue is done at about 60% context. No lease is held.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_land_line_state` | `9cdf5ee0e`, `8a1936324`, `7f36065fd` | `kLandLineStateBound` | ON | docs/SQUADRON_LAND_TASK.md 5g |
+| `cc9_land_begin_state` (site arm) | `87895cada`, `8de33f8be` | `kLandingSiteSpacingBound` | ON, gameplay identical | 5i |
+| `cc9_land_begin_state` | `8abe8cee0`, `70f425145` | `kLandBeginStateBound` | OFF | 5h |
+| `cc9_land_final_state` | `880219379`, `a33bfc522` | `kLandFinalStateBound` | OFF | 5j |
+| `cc9_hull_inertia` | `5125fc9a6`, `5a68b4d19`, `664b571f7` | `kHullInertiaFromShapesBound` | OFF | docs/GUNNERY_OPEN_ITEMS.md 51, 51.1 |
+
+### Open, in order
+
+1. **The touchdown.** Begin and final's airborne half match the listing on LOMP10. They stay OFF
+   because this host has no ground contact: the planes fly on past T.
+   - What is missing: plane `+BF8h`/`+BF4h` and `007CA3F0`, which move the control mode off 7
+     (docs/PLANE_GROUND_OPS.md).
+   - Then come final's on-ground half (`009B1FEA`-`009B207A`), `land/park` (vtable `00D1FF60`)
+     and `land/abort`.
+   - Re-pair begin and final together, with the rule in 5j.
+2. **The hull inertia's hydro torque.** With the shape-derived inertia, `009329C0`'s AddTorque
+   turns every hull (51.1). A packet has to predict:
+   - the restoring moment and the rocking of a living hull;
+   - the capsize of a sinking wreck;
+   - the rise in hit records.
+   Then the switch can be re-paired.
+3. The W substitution in begin (the pilot bot's lifetime at `bot+80h`) is saturated. A host
+   `bot+80h` would remove it.
+
+### Working notes
+
+- `local\l11_run.ps1 -Exe <exe> -Prefix <p> -Rows 'tag:MISSION:frames:mission_frames'` launches
+  rows with the reference-k options.
+- `local\l11_sweep.py <lo> <hi> <disp>` lists stores to `[reg+disp]` over a range.
+- `local\l11_vcall.py <lo> <hi> <slot> <owner_disp>` finds a load from `+owner_disp` followed by a
+  `vtable+slot` call. MSVC calls virtuals through a register, so a byte scan for `FF 50 xx` misses
+  them.
+- Traces: `land line trace` (every 10 ticks), `land begin trace` and `land final trace` (every 10),
+  and `summary hull tilt` (one per ship).
+- One smoke died at renderer init (exit 4) with the console active. It passed on the retry 10
+  minutes later.
+
+### Handoff supplement (cc9-lua11, after the pause notices)
+
+The five pause messages reached me only after my turn ended. By then I had already bound
+`cc9_hull_inertia`: it is committed OFF with its pairs and verdict (`5125fc9a6`, `5a68b4d19`,
+`664b571f7`), and I took no work after it. Everything below is for the successor.
+
+- **land/line (ON, landed as `97a9ac3ba`).** The height clause is reclassified in 5g as a spread
+  miss of the vehicle response. The follow-up is the airframe's descent under `009FB800` and the
+  follow speed law (the plane flight controller at unit+AB0h).
+- **land/begin (OFF, landed as `a7035f516`) and land/final (OFF, landed as `b7564ea25`).**
+  - Re-pair plan: begin and final flip together on LOMP10 9200/9000 and USN01, with the flip rule in
+    5j.
+  - Both need the touchdown first: plane `+BF8h`/`+BF4h` ground contact and `007CA3F0`
+    BSP_Plane_HandleTouchdownOrCrash, which moves the control mode off 7. Without it every head
+    flies on past T.
+  - After the touchdown come final's on-ground half (`009B1FEA`-`009B207A`) and `land/park`
+    (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`, unread), then
+    `land/abort` (`+64Ch`).
+  - Labelled substitutions in begin:
+    - W, the pilot bot's lifetime at `bot+80h`, is saturated; land tasks younger than 10 s are
+      counted.
+    - holder+8Ch is 0 and the owner velocity is 0 (a static airfield).
+    - vtable[38h] is the live |v|.
+    - The 007C07A0 direction hold has no consumer and is counted.
+- **The launch-site arm (ON).** Section 5i.
+- **The hull-inertia extent binding (OFF, not landed: `5125fc9a6`, `5a68b4d19`, `664b571f7`).**
+  - It follows the 49.10 rule: `shape_count == 0` keeps the zero defaults.
+  - The periscope exception (`009396BA`-`009399BF`, the node named `periszkop` when class+510h and
+    +514h are both <= 0) is recorded and not bound. It affects i-400, kaiten, minisub, type7 and
+    type_b, all without a root ConvexObject; `0071AD50`'s key form is unread.
+  - Why OFF: the hydro torque of `009329C0` wakes (GUNNERY_OPEN_ITEMS 51.1).
+- **Ghidra, to define (names provisional, exclusive ends, RET then INT3):**
+
+  | range | name |
+  | --- | --- |
+  | `009B02E0`-`009B02ED` | BSP_BotStateLandLine_Enter |
+  | `009B02F0`-`009B02F5` | BSP_BotStateLandLine_Exit |
+  | `009B0300`-`009B08F5` | BSP_BotStateLandLine_Tick |
+  | `009B13E0`-`009B13F7` | BSP_BotStateLandBegin_Enter |
+  | `009B1D70`-`009B1DE3` | BSP_BotStateLandBegin_Tick |
+  | `009B1E60`-`009B1E8B` | BSP_BotStateLandFinal_Enter |
+  | `009B1E90`-`009B1E9E` | BSP_BotStateLandFinal_Exit |
+  | `009B1ED0`-`009B211F` | BSP_BotStateLandFinal_Tick |
+  | `006CE230`-`006CE23E` | BSP_AirOpsSite_StampTime |
+
+- **Ghidra, to name (existing FUN_s):**
+
+  | address | name |
+  | --- | --- |
+  | `009B1420` | BSP_BotStateLandBegin_Steer |
+  | `009B3C00` | BSP_BotStateLandBegin_FinalRule |
+  | `009B3370` | BSP_BotStateLandFinal_ParkRule |
+  | `009AFAF0` | BSP_BotApproachLand_Geometry |
+  | `006BCA80` | BSP_AirOpsHolder_PathPoint |
+  | `009B1300` | BSP_BotApproachLand_MinSpeed |
+  | `007DB4D0` | BSP_PlaneClass_LeaderTurnRadius |
+  | `006CF100` | BSP_AirOpsSite_Construct |

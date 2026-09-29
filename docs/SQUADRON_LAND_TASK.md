@@ -898,7 +898,8 @@ commit with `kLandLineStateBound=true` (`local\l11_lnon2_<row>.log`). A first pa
        back from the plane ahead (section 5c).
      - The distance stays bounded because every stint ends at a mode flip after 1 to 6 s.
    - **Height.** Every Warhawk and Lightning wingman stayed 110 to 150 m above the band's upper
-     edge for its whole stint. **This meets the height clause written above as a mechanism
+     edge for its whole stint. This literally meets the height clause written above. **Reclassified
+     on review (the lead, 2026-09-28): a spread miss of the vehicle response, not a mechanism
      failure.**
      - The target was the upper edge every time.
      - The band fell with the head, at 100 m/s at first and then 20 to 27 m/s. The wingman
@@ -912,7 +913,11 @@ commit with `kLandLineStateBound=true` (`local\l11_lnon2_<row>.log`). A first pa
   - The entries, the rule arm, and the tick's threshold, band, speed and probe values all match the
     listing.
   - The two missed outcomes follow from the sequencer's spacing and from the head's descent.
-  - The height clause was met literally. It is recorded here so the lead can review the flip.
+  - The height clause was met literally. On review it is reclassified as a spread miss of the vehicle
+    response. The state computes the right target, band and speed. The gap is the airframe's descent
+    rate under the pitch command `009FB800` and the follow speed law, which is the plane flight
+    controller's open item (docs/PLANE_FOLLOW_LAW.md; `pitch_command_009fb800` and the unit+AB0h
+    controller). The switch stays ON.
 
 ## 5h. `land/begin`, read and bound OFF (packet `cc9_land_begin_state`, cc9-lua11, 2026-09-28)
 
