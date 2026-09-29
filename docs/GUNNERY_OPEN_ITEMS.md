@@ -3883,7 +3883,7 @@ kHullInertiaFromShapesBound`). The flip is routed through the integrator.
   26.5 to 51 s later than the quasi-static loss. A dynamic model would need:
   - the overdamped roll (wreck damping 2.5, inertia x2);
   - pitch, for Houston's bow flooding.
-- **P2's kick size.** John1's 1.36e6 torque gives about 6 degrees against 52.2's formula of about
+- **P2's kick size** (closed in 59: the kick landed on the wreck). John1's 1.36e6 torque gives about 6 degrees against 52.2's formula of about
   25 (56.4). Read the 93h delivery (`0092BF30` -> `00C35330`) and re-measure on a flipped build.
 - **P4: closed as moot** (integrator, 2026-09-29). 52.3's hit-record rise was the rows bug, and no packet is planned. On the fixed pair, hit records FALL
   (2271 -> 2009, 276 -> 220). How a heeled hull's segment boxes change the impacts is still not read.
@@ -4021,3 +4021,145 @@ The pitch column is `asin(row2.y)` from `BSP_HULL_ATTITUDE_TRACE`; negative is b
   - integrate the first-order roll `dphi/dt = tau_net / (5.34 * 2 I_z)` from the loss time
     instead of a fixed 25 s window;
   - exclude hulls whose `|sum(w z)| / water` exceeds half the half-length, or score them on pitch.
+
+## 59. P2's kick size: the delivery adds nothing, and John1's kick landed on a wreck (packet `cc9_hull_kick_size`, cc9-gunnery12, 2026-09-29)
+
+This packet takes 57.2's item "P2's kick size". John1's 1.36e6 N m torque gave about 6 degrees of
+roll, against about 25 degrees from 52.2's formula.
+
+### 59.1 The delivery, from the listing
+
+- **`0092BF30` does nothing of its own.** It is two instructions, `MOV ECX,[ECX+2Ch]` and
+  `JMP 00C35330`: the controller's hull body, then the body's AddTorque.
+- **`00C35330` only adds.** It adds the vector into the motion state's torque accumulator `M+44h`
+  (`RET 4`; docs/RIGID_BODY_INTEGRATION.md). There is no scale, gate or clamp on the way.
+- **The integration.** `00C41550` does `w += (R^T diag(1/I) R) tau dt`, then `w *= 1 - c dt`.
+  `00C5B1B0` rotates by `w dt`, then applies `w *= 1 - c dt` again.
+- **The angular speed cap** `M+1Ch` is 1000 (`009392DB`), so it never binds.
+- **The host's route is the same.** `GameUnitsHost::add_hull_torque_message_93h` calls
+  `unit_handle_add_hull_torque_00822235` on the body, one step after the post. The image
+  integrates at the next step's `00875E0C` (46.2).
+
+**So the kick is `tau dt / I` about the forward row.** 52.2's formula is right for a living hull.
+
+### 59.2 Why John1 gave 6 degrees: the torque came from its killing hit
+
+In 56.5's verdict run (`g11c2on_usn02.log`, cc9-gunnery11 tree), everything happens at 26.05:
+- the torque is posted with `dead=0`;
+- the same impact (Yamakaze's torpedo blast, category 7) destroys John1's three hull segments;
+- the death row and `entity dead: ... died=26.05` follow.
+
+The wreck block `00824FE5` runs at that step's row-15 flush, after row 9's post. It doubles the
+inertia and sets the angular damping to 2.5. The torque is integrated only at the next step, so it
+acts on a wreck.
+
+`local\g12_kick.py`'s discrete model (the order above) on John1 (Alden class: k = 1.19e5 N m/rad,
+I_z = 48,180):
+
+| model | at +0.45 s | at +0.95 s | peak |
+| --- | --- | --- | --- |
+| live (I_z, c = 1.0) | 21.8 deg | 23.2 deg | 24.5 deg at 0.70 s |
+| wreck (2 I_z, c = 2.5) | 6.6 deg | 6.5 deg | 6.8 deg at 0.65 s |
+| observed (0.5 s samples) | 5.84 deg (26.50) | 5.59 deg (27.00) | - |
+
+The second torque, at 32.90 on the wreck, fits the same way: the wreck model peaks at 6.8 degrees
+and the trace rises from -0.48 to +5.19 by 33.50.
+
+**P2's 25 degrees was the live-hull figure applied to a kill.** In the image the order is the
+same: the post is at row 9, the wreck block at row 15, the Dyn step at the next step's
+`00875E0C`. So a killing torpedo's kick lands on a wreck in the image too.
+
+Uncertainty: `00821E80`'s 93h arm is not re-read for a dead-unit gate. The host delivers to a
+dead unit, and the trace shows the response.
+
+### 59.3 Predictions for the per-step re-measure (written before the run)
+
+The 0.5 s attitude samples cannot resolve a 0.7 s peak. This packet adds
+`BSP_HULL_ATTITUDE_TRACE=2`, which prints the same line after every motion step and changes no
+state. The run is one build: this branch's trace commit exported with
+`kHullInertiaFromShapesBound=true`, on USN02 9200/9000, with the flooding, attitude (=2) and
+roll-torque traces on.
+
+**The torques will differ from 56.5's run**, because main has moved since `5e139bd73`. The
+predictions are therefore per event.
+
+`g12_kick.py` scores every torque of at least 1e5 N m on a hull whose class has a box and
+elements. The observed excursion is measured from a baseline fitted linearly over the second
+before the post.
+
+- **P2a, living hulls.** For each event with no other torque on the same hull within 3 s:
+  - the observed peak is 0.6 to 1.05 times the model's live peak;
+  - it comes within 0.3 s of the model's peak time.
+  The bias should be below 1, because the element drag on the rolling hull (`omega x r` in the
+  drag, 52.1's "about 0.3/s") is not in the model.
+- **P2b, kill kicks.** An event whose victim is a wreck at the next step meets the same band
+  against the wreck model, and falls below 0.5 times the live model.
+- **Mechanism failure:**
+  - an isolated event above 1.2 or below 0.4 times its model;
+  - a kill kick that matches the live model better than the wreck model.
+
+### 59.4 The per-step run: the kick is `tau dt / I`; living hulls respond at about 0.67 of the reduced model
+
+**The run.** `local\g12k_usn02.log` in the cc9-gunnery12 tree: a `pair_export --commit 577713f70
+--flip kHullInertiaFromShapesBound=true` build (`local\g12k`), USN02 9200/9000 with m's launch
+form, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, `BSP_HULL_ATTITUDE_TRACE=2` and
+`BSP_HULL_ROLL_TORQUE_TRACE=1`. A 300-frame USN01 smoke ran first. The run repeats 56.5's ON run: its 39 torque lines
+(victim and time) are identical, and so is the gunnery summary (hit records 2009, deaths 11,
+damage 38828.3). All 39 torques are at least 1e5.
+
+**How the scoring window was chosen.** The first scoring took the largest deviation within 4 s of
+the post. Most events then peaked at the 4 s edge, because a torpedo hit also opens a leak and the
+flooding heel drifts. The score in the table below is therefore limited to the model's peak time
+plus 0.3 s, the window 59.3's timing clause allows. This choice was made after seeing the run.
+`g12_kick.py --wide` reproduces the 4 s figures.
+
+**Isolated events** (no other torque on the hull within 3 s):
+
+| t | victim | model | model peak (t) | observed (t) | ratio | 59.3 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 26.05 | John1 (kill) | wreck | 6.78 (0.65) | 5.91 (0.55) | 0.87 | held; live model 24.5, ratio 0.24 |
+| 32.90 | John1 | wreck | 6.78 (0.65) | 6.52 (0.60) | 0.96 | held |
+| 38.40 | Houston | wreck | 0.21 (0.95) | 0.22 (1.25) | 1.08 | above 1.05 |
+| 196.01 | Yukikaze | wreck | 2.81 (0.75) | 2.79 (0.80) | 0.99 | held |
+| 100.85 | Yudachi | live | 2.08 (0.80) | 1.34 (0.55) | 0.65 | held |
+| 250.36 | Yudachi | live | 1.98 (0.80) | 1.70 (0.75) | 0.86 | held |
+| 230.96 | Jintsu | live | 0.65 (0.70) | 0.43 (0.45) | 0.66 | held |
+| 261.06 | Jintsu | live | 0.60 (0.70) | 0.33 (0.40) | 0.55 | below 0.6 |
+| 280.61 | Jintsu | live | 0.69 (0.70) | 0.43 (0.44) | 0.63 | held |
+| 236.71 | Haguro | live | 0.25 (1.00) | 0.14 (0.50) | 0.57 | below 0.6; 0.5 s early |
+| 424.12 | Murasame | live | 1.88 (0.80) | 1.38 (0.60) | 0.73 | held |
+| 444.56 | Murasame | live | 1.78 (0.80) | 1.27 (0.65) | 0.71 | held |
+
+- **P2a, living hulls: 6 of 8 in the band.** Jintsu 261.06 (0.55) and Haguro (0.57) fall just
+  below it. The mean ratio is 0.67, and every living peak comes 0.05 to 0.5 s early.
+  - That is the sign of more damping than the reduced model's `c = 1.0`, and the direction 59.3
+    predicted: the element drag on the rolling hull is not in the model.
+  - Its size is larger than the 0.6 floor allowed for.
+- **P2b, kill kicks: held.**
+  - John1 26.05 follows the wreck model (0.87 against 0.24 live).
+  - Houston's kill kick at 20.60 is 1.04 of the wreck model and 0.23 of the live one, but it has
+    other torques within 3 s.
+  - John2's killing torque at 197.31 comes 0.75 s after a live one, and the linear baseline cannot
+    separate the two. `local\g12_john2.py` runs both kicks as one trajectory:
+    - the wreck-after-kill model adds 0.48 degrees from 197.26 to 197.71 and then creeps down;
+    - the live model adds 1.61 degrees and falls back within a second;
+    - observed: +0.48, from 2.23 to 2.71, then a slow decline (2.29 at 198.91; wreck model 2.47,
+      live 1.47).
+  - The wreck model fits, at about 0.85 of its amplitude.
+- **Mechanism failure: none.**
+  - No isolated event is above 1.2 or below 0.4.
+  - No kill kick matches the live model.
+- **Wrecks** sit at 0.87 to 1.08. At the wreck damping of 2.5 the drag's extra share is small.
+
+### 59.5 Verdict and what changes
+
+- **Nothing to bind.** The delivery `0092BF30 -> 00C35330` adds the torque unscaled, and the host
+  matches it. P2 is closed.
+- **John1's 6 degrees against 25** is the killing torpedo's kick landing on the wreck: x2 inertia
+  and damping 2.5, from the same step's row-15 wreck block. It is not a delivery or damping error.
+- **52.2's P2 figures are for living hulls, and overstate them by about 1.5.** The reduced model
+  omits the element drag's roll damping. A 1e6 N m hit on a Kortenaer gives about 8 degrees, not 12.
+- **Uncertainties:**
+  - `00821E80`'s 93h arm has no re-read dead-unit gate;
+  - the drag damping is inferred from the ratio and the early peaks, not computed;
+  - the baseline is a linear fit and cannot separate overlapping torques (see John2).
