@@ -1560,6 +1560,7 @@ struct GameUnitSlot {
     // and +04h (Length / 3.0, 0074F4F6), the three fields 0074F090 reads.
     float leak_damage_to_death_38{200.0f};
     float leak_total_rate_2c{0.0f};
+    float flood_trace_timer{0.0f};    // DIAGNOSTIC, packet cc9_hull_flooding_trace
     float leak_station_04{0.0f};
     // Packet cc9_live_hull_repair: set by the gunnery host every step.
     float leak_health_fraction{1.0f};  // 00923BE0
@@ -6908,6 +6909,49 @@ public:
             = bsp::ship_hydro_apply_forces_009329c0(in, dt, hydro_host);
         owner_.done("ShipMotion::hydrodynamics", 0x009329c0u);
         slot_.leak_water_mass_10fc = hydro_host.leak_water_mass_10fc;
+        // DIAGNOSTIC (packet cc9_hull_flooding_trace, BSP_HULL_FLOODING_TRACE=1):
+        // every 0.5 s per ship, the leak water unit+10FCh, the total rate +2Ch,
+        // alive or wreck (+5Dh), the hull's world height and up row, and each
+        // 0074F2E0 leak with a rate or water (its hull-space point). Read-only.
+        {
+            static const bool trace = [] {
+                char* v = nullptr;
+                std::size_t n = 0;
+                const bool on = _dupenv_s(&v, &n, "BSP_HULL_FLOODING_TRACE") == 0
+                    && v != nullptr && v[0] == '1';
+                std::free(v);
+                return on;
+            }();
+            if (trace) {
+                slot_.flood_trace_timer -= dt;
+                if (slot_.flood_trace_timer <= 0.0f) {
+                    slot_.flood_trace_timer += 0.5f;
+                    if (slot_.flood_trace_timer <= 0.0f) slot_.flood_trace_timer = 0.5f;
+                    const bool wreck = slot_.state != nullptr && slot_.state->simulate != 0;
+                    const float* up = slot_.motion.pose_row1;
+                    owner_.log.notef("hull flooding %s t=%.2f %s water=%.3f rate=%.4f leak_ready=%d "
+                        "y=%.2f up=(%.4f %.4f %.4f) height=%.2f",
+                        slot_.row.name.c_str(),
+                        static_cast<double>(owner_.summary.simulated_seconds),
+                        wreck ? "wreck" : "alive",
+                        static_cast<double>(slot_.leak_water_mass_10fc),
+                        static_cast<double>(slot_.leak_total_rate_2c), slot_.leak_ready ? 1 : 0,
+                        static_cast<double>(slot_.motion.position[1]),
+                        static_cast<double>(up[0]), static_cast<double>(up[1]),
+                        static_cast<double>(up[2]),
+                        static_cast<double>(slot_.motion_class.hull_height));
+                    for (std::size_t i = 0; i < slot_.leaks.size(); ++i) {
+                        const bsp::UnitLeakEntry& e = slot_.leaks[i];
+                        if (!(e.rate > 0.0f) && !(e.water > 0.0f)) continue;
+                        owner_.log.notef("  hull leak %s #%zu local=(%.2f %.2f %.2f) rate=%.4f "
+                            "water=%.3f", slot_.row.name.c_str(), i,
+                            static_cast<double>(e.point.x), static_cast<double>(e.point.y),
+                            static_cast<double>(e.point.z), static_cast<double>(e.rate),
+                            static_cast<double>(e.water));
+                    }
+                }
+            }
+        }
         ++slot_.row.hydro_calls;
         ++owner_.summary.hydro_calls;
         owner_.summary.hydro_element_steps
