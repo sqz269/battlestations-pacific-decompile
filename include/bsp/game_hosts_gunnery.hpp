@@ -235,12 +235,26 @@ struct GameGunRow {
     bool immediate_fire_009e2b60{false};
     unsigned long long seat_handovers{0};
     unsigned long long seat_returns{0};
+    // Packet cc9_player_gun_seat_artillery. Message 79h's group 3 arm
+    // (00959F72..0095A1C7) calls 0085ABA0 on every accepted gun, AI-held or
+    // not, from the session drain (fan-out row 9, 00875E91), after the gun
+    // waves: the pair is the last command before the next wave-1 step.
+    bool seat_cmd_pending{false};
+    float seat_cmd_horz{0.0f};
+    float seat_cmd_vert{0.0f};
 };
 
 // Packet cc9_player_gun_seat. ON binds message 79h's group 1/2 arm
 // (00959C20) and the gun bots' side gate 008FFA99 on the gun's own seat.
 // Committed OFF until its pair runs.
 inline constexpr bool kPlayerGunSeatBound = true;
+
+// Packet cc9_player_gun_seat_artillery. ON binds message 79h's group 3 arm
+// of 00959C20 (00959F72..0095A1C7): the aim point 00957740, the gravity arc
+// 00955630 and the 0085ABA0 turn of every Function 2/3/4/6 gun, AI-held
+// included; the trigger only on a player-held gun. docs/PLAYER_GUN_SEAT.md
+// section 7. ON by the pair in section 7.4.
+inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 
 // Packet cc9_player_gun_seat_segment_query. ON binds 00957D79..00957DD2 of
 // 00957BD0: with no target and the camera off the x = z = 0 axis, the

@@ -740,3 +740,130 @@ Open, recorded:
 - A re-target zeroes projtime for one tick.
 - The torpedo goaway tick (`009D0F10`) still reads the target's origin.
 - The lead uses the hull's heading for `00812090`'s body axis.
+
+## 12. The aim-error redraw: `009C3DA0` and `009D02A0` (packet `cc9_aim_error_draw`)
+
+cc9-planes1, 2026-09-29.
+
+**The row base is settled.** `009F9D0E`-`009F9D22` in the base approach constructor `009F9CE0` do
+`approach+14h = [00F8A30C] + [[unit+DF4h]+34h] * 248h + 0Ch`. So `[approach+14h]+N` is the
+`robot_config.hpp` field with suffix `N+0Ch`. That settles FOLLOWER_ATTACK_HANDOVER section 6's
+open contract in favour of the shifted reading.
+- The dive draws `row+30h`/`+34h`/`+2Ch`, which are `dive_bomb_targeth_error_03c`,
+  `_targetv_error_040` and `_calc_target_pos_error_038`, not torpedo fields.
+- The same shift already names `approach+A8h`'s `row+38h`/`+3Ch` as `dive_bomb_release_alt_1_044`
+  and `_2_048`.
+
+**The two bodies**, read whole from disk bytes, are in the `approach_target_ref.hpp` block
+"The aim-error redraw". Each draws, on stream 1:
+- `bias = (U(+-HError), 0, U(+-VError))` into `sub+34h` through `009FA380`;
+- the hull-point spread `sub+48h..50h = TargetPointSelectPrec` on all three axes, with the dirty
+  byte set;
+- (dive only) the named-section chance and weights `sub+64h..70h`;
+- a time error: the dive's `approach+C8h`, which feeds projtime at `009C7E3C`, and the torpedo's
+  `approach+9Ch`, the run-time bias `009D1360` adds into `+98h` and so into the engagement
+  estimate.
+
+This installation's robots.lua comments name each one. TargetHError and TargetVError are the miss
+across and along the target's long axis. CalcTargetPosError is "time to impact plus random this
+much: where the target will be then, it sends it there". That is the projtime jitter, and it
+confirms section 11's reading from the data side.
+
+**Callers:**
+- dive: `009C4083`, the approach constructor's tail call, and `009C6276`, every fly-over enter;
+- torpedo: `009D062B`, the reset's tail, and `009D15D6`, every aim enter.
+
+**The rows** are this installation's robots.lua PilotBot blocks (mtime 2025-06-01),
+`kTorpedoAimErrorRows` and `kDiveBombAimErrorRows`. The strike squadrons on USN04 and JM05 launch at
+skill 2, SPVeteran (the `air ops launch skill` lines):
+- torpedo errors 0 / 0 / +-1 s, spread 0.25;
+- dive errors 0 / 0 / 0, spread 0.5, section chance 1.0.
+
+SPNormal (level 1, the default) is torpedo 10 / 16 / +-10 s, spread 0.9, and dive 10 / 5 / +-10 s,
+spread 0.8, section chance 0.
+
+**Substitutions, labelled:**
+- The draws use the `release_altitude_draw_00bd2f10` stream-1 stand-in, keyed per unit under
+  `BSP_GUNNERY_RNG_STREAMS=1`.
+- The ship's named-section points (`ship+A68h..A94h`) are not carried by this host, so a positive
+  section chance still falls through to the hull box (00816650's own fallback when no section is
+  available). Skill 2 dive bombers would aim at engine rooms, magazines and fuel tanks in the
+  image. That remains open.
+
+### 12.1 Predictions for `kAimErrorDrawBound`, written before any ON run
+
+The OFF side is `db5276810` plus this packet with the switch OFF. The ON side flips it.
+
+- **Mechanism.** The `aim error draw` lines appear once per torpedo reset and aim enter, and once
+  per dive seed and fly-over enter. They show:
+  - USN04, E2 and JM05 skill-2 attackers: bias 0 and time within +-1 s (torpedo) or exactly 0
+    (dive), spread 0.25 or 0.5;
+  - a skill-1 attacker: bias up to +-10/16 m and time up to +-10 s.
+- **USN04 4500 and E2.** The Kates' hull point pulls toward the hull centre (spread 0.9 -> 0.25),
+  and the eta moves by at most 1 s, so the lead moves by at most 16 m.
+  - Torpedo releases 2 of 16, +-2.
+  - Every drop still hits.
+  - Dive releases 0 of 19, +-2.
+  - Deaths 46 (51 on E2), +-3, with the per-entity rows moving through the AA picture.
+- **JM05 9000.**
+  - The skill-1 airfield squadrons draw real errors: torpedo +-10 s on the eta, which is a lead
+    change of up to about 100 m against 10 m/s carriers.
+  - The skill-2 carrier squadrons change as above.
+  - Torpedo releases 6 of 24, +-3.
+  - The Shokaku and Zuikaku sinkings may flip, because a +-10 s eta error can turn a hit into a
+    miss.
+- **USN01 3000.** ScoutDauntless is the player's own unit and is not in the launch-skill lines, so
+  it takes level 1: bias +-10 m across and +-5 m along, projtime +-10 s, spread 0.8.
+  - A +-10 s jitter moves the lead by up to +-137 m at the convoy's 13.74 m/s. Both bombs'
+    "vs target at release" distances therefore move by tens to about 140 m.
+  - 2 of 2 releases are kept.
+  - Hit or miss: still expected to miss, at under 1-in-3 odds of a hit.
+- **USN13:** GAMEPLAY moves only where a torpedo task runs (4 of 60 releases on the ON side of
+  11.3); +-2.
+
+### 12.2 The pair, measured: `kAimErrorDrawBound` ON
+
+cc9-planes1, 2026-09-29. Both sides are exports of `ec176d648`: OFF `DB644D545010`, ON `F179E3072D4B`.
+The logs are `local\p1_{off,ton}_<row>.log`, and a 300-frame USN01 smoke ran first.
+
+**Mechanism: holds, with one correction to the prediction.** The `aim error draw` lines appear on
+every attacking row.
+- The JM05 carrier squadrons draw the skill-2 torpedo row: bias 0, spread 0.25, time within +-1 s
+  (-0.06, 0.62, 0.83, -0.67).
+- USN04's dive bombers (`movieval`, the Vals) draw the SPNormal dive row, spread 0.80 with
+  errors up to 6.3 m and 6.6 s, not the skill-2 row the prediction assumed. Their
+  `db_skill_row_14` is level 1. The launch-skill lines name the torpedo squadrons, not these.
+- USN01's torpedo bombers `Mav1`-`Mav4` draw SPNormal: bias up to 11 m, time up to +-9.5 s.
+
+| row | OFF -> ON | predicted | verdict |
+| --- | --- | --- | --- |
+| USN04 4500 | torpedo releases 1 -> 3 of 16, impacts 1 -> 3 (every drop hits); deaths 46 -> 45 (D3A Val #5.1\|.-3 survives); dive 0 -> 0 | releases 2 +-2, deaths +-3 | held |
+| E2 | torpedo 1 -> 3, dive 1 -> 2 of 19; deaths 51 -> 51 | +-2 | held |
+| JM05 9000 | torpedo releases 6 -> 8; Shokaku 3 -> 6 impacts, Zuikaku 3 -> 2; deaths 30 -> 29 (Kuma-class 01 survives); both carriers sink on both sides | 6 +-3, sinkings may flip | held; no flip |
+| USN01 3000 | ScoutDauntless 2 of 2 on both sides; "vs target at release" 114.1 -> 84.9 m and 119.7 -> 56.8 m; both miss | 2 of 2, move up to about 140 m, still miss | held |
+| USN13 3000 | torpedo 4 -> 3 of 60 | +-2 | held |
+
+The OFF column here is `db5276810`'s ON side, and it moved against 11.3 and 11.4 (for example
+USN04's torpedo releases 2 -> 1). That comes from lua18's gun-controller change merged in
+between, not from this switch. **The switch goes ON.**
+
+## 13. Handoff queue (cc9-planes1, about 75% context)
+
+1. **Ship section points for the dive bombers (next).**
+   - `00816650`'s named-section path needs `ship+A68h..A94h`, the engine room, magazine and fuel
+     tank points with their flag bytes. It also needs `0093A570`'s section-id vector at
+     `ship+A20h`.
+   - Skill 2-5 rows carry a section chance of 0.5-1.0 (`kDiveBombAimErrorRows`), so in the image
+     most veteran dive bombers aim at a section, not a random hull point.
+   - The units host carries none of it. `approach_target_ref_pick_009fa260` passes empty
+     sections, so the chance falls through to the box.
+   - Find the writers of `ship+A68h`/`+A78h`/`+A88h` (the ship constructor or its section
+     loader), bind the points behind a switch OFF, and pair on a row with skill-2 dive bombers.
+2. **The torpedo goaway aim** (`009D0F10`): it still reads the target's origin, not
+   `aim_point_009fada0`.
+3. **`009D0160`**, the torpedo reset's own `+98h` seed from `+9Ch`. It is unmodelled; the host
+   starts `+98h` at 0 until `009D1360` runs.
+4. **Recorded substitutions:**
+   - the stream-1 draws use `release_altitude_draw_00bd2f10`'s stand-in;
+   - a re-target zeroes projtime for one tick;
+   - the lead uses the hull's heading in place of `00812090`'s body axis.

@@ -4631,3 +4631,27 @@ this as heavy artillery engaging aircraft, and left open whether the artillery p
 
 63's verdict stands (faithful, nothing bound); only its reason is corrected. 65.2 item 3 is
 closed.
+
+## 67. Ranking #7 closed for group 3; reference p (cc9-gunnery14)
+
+- **Reference p** (`795bb9a80`, docs/GAME_EXECUTABLE.md "2026-09-29 p") attributes every switch
+  that turned ON after o. This closes 65.2 item 5.
+- **Ranking #7 (65.2 item 1).**
+  - The group 1/2 arm was already bound and ON.
+  - The row's 47371 calls were `message_other_group`, and every one is group 3.
+  - `kPlayerGunSeatArtilleryBound` binds the group 3 arm (00959F72..0095A1C7, with 00957740 read
+    whole) and is **ON** by the pair in docs/PLAYER_GUN_SEAT.md 7.4:
+    - JM06 and USNOS long move through the group unit's own artillery;
+    - the other eight rows are gameplay-identical.
+  - Groups 4 (0095A1CC) and 5 (0095A441) stay records, since no reference row sends them.
+  - Open inside the arm (records):
+    - the hit lead 009578C3 (00902290 / 00901C20);
+    - the hand-over 0095A05B, which needs fire input;
+    - the aim-point store `dev+408h..410h`.
+- **The in-flight c0000005 at `bsp_game.exe+280635`** (reference p's audio-drop batch; three
+  runs, the same second).
+  - It symbolises through `local\rb16\build\win32\bsp_game.map` to
+    `set_native_renderer_render_state_00b24460 + 0xD5` (`src/native_renderer_cached_states.cpp`).
+  - That is the read through `renderer+1A10h`, the D3D device, which is null. So the session change
+    lost or released the device while the mission kept drawing. It is not an FMOD object.
+  - Routed to the renderer lane: it is not a gunnery null guard.

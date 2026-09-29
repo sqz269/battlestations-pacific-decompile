@@ -250,6 +250,88 @@ std::array<float, 3> ship_predict_position_008120e0(const ShipPredictInputs& in,
                                                     float t) noexcept;
 
 // ---------------------------------------------------------------------------
+// The aim-error redraw: 009C3DA0 (dive bomb) and 009D02A0 (torpedo)
+// ---------------------------------------------------------------------------
+// Packet cc9_aim_error_draw. Both are __thiscall(approach), no arguments, and
+// read the robots row through [approach+14h], which 009F9D1E/009F9D22 set to
+// 00F8A30C + level * 248h + 0Ch. So [approach+14h]+N is the robot_config.hpp
+// field with suffix N+0Ch.
+//
+// 009C3DA0 (body 009C3DA0-009C3E9D, RET at 009C3E9C; callers 009C4083, the
+// tail of the approach constructor 009C3EA0, and 009C6276, the fly-over enter
+// 009C6270):
+//   d_h = 00BD2F10(-row+30h, row+30h)  009C3DCB  DiveBombTargetHError   (_03c)
+//   d_v = 00BD2F10(-row+34h, row+34h)  009C3DF5  DiveBombTargetVError   (_040)
+//   009FA380(sub+30h, (d_h, 0, d_v))   009C3E21  bias_34 = it, dirty_41 = 1
+//   sub+48h/+4Ch/+50h = row+58h        009C3E2E  DiveBombTargetPointSelectPrec (_064)
+//   sub+41h = 1                        009C3E3D
+//   sub+64h = row+70h                  009C3E56  DiveBombSectionDamageChance (_07c)
+//   sub+68h/+6Ch/+70h = row+74h/78h/7Ch  009C3E59-6B  EngineRoom/Magazine/Fueltank weights
+//   approach+C8h = 00BD2F10(-row+2Ch, row+2Ch)  009C3E8C  DiveBombCalcTargetPosError (_038)
+//
+// 009D02A0 (body 009D02A0-009D0379, RET at 009D0378; callers 009D062B, the
+// tail of the reset 009D0380, and 009D15D6, the aim enter 009D15D0):
+//   d_h = 00BD2F10(-row+1Ch, row+1Ch)  009D02CB  TorpTargetHError       (_028)
+//   d_v = 00BD2F10(-row+20h, row+20h)  009D02F5  TorpTargetVError       (_02c)
+//   009FA380(sub+B4h, (d_h, 0, d_v))   009D0324
+//   sub+48h/+4Ch/+50h = row+24h        009D032C  TorpTargetPointSelectPrec (_030)
+//   sub+41h = 1                        009D0348
+//   approach+9Ch = 00BD2F10(-row+18h, row+18h)  009D0368  TorpCalcTargetPosError (_024)
+// The torpedo leaves the section fields at the constructor's seeds.
+//
+// The robots.lua comments say what each is: TargetHError "aims randomly this
+// far from the right point, perpendicular to the target's long axis",
+// TargetVError "along the long axis", CalcTargetPosError (seconds) "the
+// estimated time to impact plus random this much: where the target will be
+// then, it sends it there" - the projtime jitter - and TargetPointSelectPrec
+// "the spread it picks an attackable point on the target with, 0 always the
+// centre".
+//
+// All draws are on stream ECX = 1, lower bound built as -0.0 - x (SUBSS), in
+// the order listed.
+struct ApproachAimErrorRow {
+    float h_error = 0.0f;       // metres, body x
+    float v_error = 0.0f;       // metres, body z
+    float time_error = 0.0f;    // seconds
+    float select_prec = 0.0f;   // the spread, all three axes
+    bool sets_sections = false; // 009C3DA0 only
+    float section_chance = 0.0f;
+    float engine_room_weight = 0.0f;
+    float magazine_weight = 0.0f;
+    float fuel_tank_weight = 0.0f;
+};
+
+// This installation's scripts/datatables/robots.lua (mtime 2025-06-01), the
+// PilotBot block of each level, indexed as 00901610 registers them: Stun 0
+// (:1253-1278), SPNormal 1 (:562-587), SPVeteran 2 (:701-726), MPNormal 3
+// (:839-864), MPVeteran 4 (:977-1002), Elite 5 (:1115-1140).
+// SUBSTITUTION, labelled, as kPilotDiveBombRows: the PilotBotConfig registry
+// itself is out of this process's reach.
+inline constexpr ApproachAimErrorRow kTorpedoAimErrorRows[6] = {
+    {200.0f, 250.0f, 15.0f, 0.1f},   // Stun
+    {10.0f, 16.0f, 10.0f, 0.9f},     // SPNormal
+    {0.0f, 0.0f, 1.0f, 0.25f},       // SPVeteran
+    {25.0f, 35.0f, 3.0f, 0.8f},      // MPNormal
+    {3.0f, 5.0f, 2.0f, 0.5f},        // MPVeteran
+    {0.0f, 0.0f, 1.0f, 0.25f},       // Elite
+};
+inline constexpr ApproachAimErrorRow kDiveBombAimErrorRows[6] = {
+    {100.0f, 150.0f, 17.0f, 1.0f, true, 0.0f, 1.0f, 0.1f, 0.1f},  // Stun
+    {10.0f, 5.0f, 10.0f, 0.8f, true, 0.0f, 0.5f, 0.5f, 0.5f},     // SPNormal
+    {0.0f, 0.0f, 0.0f, 0.5f, true, 1.0f, 0.5f, 1.0f, 1.0f},       // SPVeteran
+    {25.0f, 0.0f, 7.0f, 0.4f, true, 0.5f, 1.0f, 0.5f, 0.5f},      // MPNormal
+    {5.0f, 2.0f, 1.0f, 0.8f, true, 0.8f, 1.0f, 1.0f, 1.0f},       // MPVeteran
+    {0.0f, 0.0f, 0.0f, 0.5f, true, 1.0f, 0.5f, 1.0f, 1.0f},       // Elite
+};
+
+// The sub-object half of both redraws: 009FA380 plus the spread, dirty and
+// (dive only) section stores. The two position draws come in as arguments;
+// the time draw lands on the approach (dive +C8h, torpedo +9Ch), not here.
+void approach_target_ref_apply_aim_error(ApproachTargetRefState& state,
+                                         const ApproachAimErrorRow& row,
+                                         float h_draw, float v_draw) noexcept;
+
+// ---------------------------------------------------------------------------
 // A deterministic stand-in for the four draws
 // ---------------------------------------------------------------------------
 // LABELLED SUBSTITUTION, not a reconstruction. 00816650 takes its draws from
