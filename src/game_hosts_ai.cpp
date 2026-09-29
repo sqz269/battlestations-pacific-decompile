@@ -451,6 +451,18 @@ constexpr int kCampaignGameMode = 0;
 // the local slot index game+18ECh is 0. Flipped ON in 60.5, reverted to OFF
 // pending section 60.6 (the brain team chain).
 constexpr bool kAiPartyGateUnforcedBound = false;
+
+// Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
+// 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
+// group's record from a group's candidate score list (up to 128 records of
+// 0ACh at group+24h, count at group+5624h, keyed at record+0A8h). The list's
+// writers are 00A2B950 (inserts), 00A2BCC0 (marks record+0A4h), the planner
+// clears at 00A1CB9C / 00A2A148 / 00A2A29B and the constructor 00A2DFFF; its
+// only record reader is 00A2CDD0 <- 00A2D580 <- 00A31000, a text overlay
+// gated on [[00E198C4]+54h]+5 that no rel32 or abs32 in the image reaches.
+// No gameplay decision reads it, so this process keeps no list. True: the
+// removal is the release loop's concrete no-op. False: it stays a record.
+constexpr bool kAiGroupScoreListReleaseBound = true;
 // 004BCA50 in a single-player campaign: not forced, no session, and a mode
 // other than 8 or 9 becomes 8 (004BCA72).
 constexpr int kSinglePlayerEffectiveGameMode = 8;
@@ -923,8 +935,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void* first_group_of_proximity_list() override { return open(by_team[2]); }
 
     void release_group_reference(void* holder, void* group) override {
-        // 00A2B8F0 __thiscall(group+24h)(emptyGroup), contract: unread. The
-        // only reference this process holds between groups is a command target.
+        // 00A2B8F0 __thiscall(group+24h)(emptyGroup): the score-list removal
+        // (kAiGroupScoreListReleaseBound). The only reference this process
+        // holds between groups is a command target, counted here.
         Group* h = group_at(holder);
         Group* g = group_at(group);
         if (h != nullptr && h->command.target_group == static_cast<void*>(g)) {
@@ -938,7 +951,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // as 00A10040 does when 00A2D440 notifies (kAiTargetGroupDestroyedIdleBound).
             if (!kAiTargetGroupDestroyedIdleBound) h->command = birth;
         }
-        record("AiGroups::release_group_reference", 0x00a2b8f0u);
+        if constexpr (kAiGroupScoreListReleaseBound) {
+            done("AiGroups::release_group_reference", 0x00a2b8f0u);
+        } else {
+            record("AiGroups::release_group_reference", 0x00a2b8f0u);
+        }
     }
     void unlink_and_free_emptied_node(void* group) override {
         Group* g = group_at(group);
