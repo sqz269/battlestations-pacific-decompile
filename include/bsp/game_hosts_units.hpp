@@ -508,7 +508,7 @@ public:
     // 00999AA0, the pilot bot's hit notice (from the plane hit handler 007BBCF0
     // before 008777D0): the first task whose vtable[2Ch] answers true takes it.
     // Bound here: the torpedo task's 009D3270, approach+134h = 0. The divebomb
-    // (009C7900, approach+C4h) and strafe (009CC400) slots are labelled gaps.
+    // (009C7900, approach+C4h, carried) is bound too; strafe (009CC400) is a gap.
     bool plane_hit_task_notify_00999aa0(std::size_t plane_index);
 
     // Packet cc9_entity_dead. The units whose damage death has happened: a
