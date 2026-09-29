@@ -4055,3 +4055,57 @@ stayed on the console.
   through the 5Ah message);
 - `Scoring_SetMissionCompleted`, whose route is the mission-frame result host;
 - `GetCapturePercentage`, which waits on the capture tick `006F6760`.
+
+## 50. Scripted-order natives, part 2: `SetShipMaxSpeed` and `PilotLand` (`kScriptedOrderNatives2Bound`)
+
+Worker cc9-ships15, 2026-09-29. The branch merged main `fb349958a`, which brings lua16's two
+units-host entry points: `set_unit_max_speed_09c0` (commit `d7b093d01`) and
+`land_at_site_0099a3dd` (commit `49cb3ae26`).
+
+**The bodies are read in section 49.1.**
+- `SetShipMaxSpeed` `00890A10`: `00890B51 FSTP [ESI+9C0h]`. `unit+9C0h` is the host's
+  `motion.max_speed`, which `0080FC30` reads.
+- `PilotLand` `008A47B0`: `0077D600(entity, land 00E08FA0, target, 1)` at `008A4907`. The
+  receiving bots' land arm `0099A3DD` takes the site from the command target.
+  - The binding issues the command once through the host's `0077D600` path.
+  - After delivery it calls `land_at_site_0099a3dd`, which fans a squadron out to its members.
+  - The site is resolved through the target entity. IJN01's `Mission.AF2` is
+    `FindEntity("Airfield 02")`, whose deck is named "AirField 02".
+
+**UnitHoldFire's plane arm: is the null read swallowed? (V, lead's question.)** No handler was
+found between the binding and the Lua VM. The case is not reached on IJN01 (section 49.3: the
+targets are squadrons).
+- `008A6AC0`'s frame handler `00C9C09F` loads FuncInfo `00DCE5D4` for `___CxxFrameHandler3`
+  (`00BF6B43`). The record is:
+  - magic `19930522`;
+  - 4 unwind states;
+  - **0 try blocks**;
+  - EHFlags = 1, which is the `/EHs` synchronous model. Even a `catch(...)` in such a frame
+    does not take an access violation.
+- The Lua core unwinds with `setjmp`/`longjmp`, not SEH:
+  - `luaD_rawrunprotected` `00A68B80` calls `00C034F4` (`_setjmp3`) at `00A68BA6`;
+  - `luaD_throw` `00A69330` longjmps at `00A69346`, or exits at `00A69369`.
+- APP_INIT_BOOTSTRAP.md records no exception filter installed by the game.
+- **Not read:** every frame between `lua_pcall`'s callers and `WinMain` was not scanned for an
+  `__except`. Only the CRT's own `__try` in the entry point is known, and its filter does not
+  handle an access violation.
+- So in the original a UnitHoldFire on a lone plane most likely ends the process. This is
+  uncertain until that frame scan is done.
+
+### 50.1 Predictions (written before any pair)
+
+- **BSM01 (3000).**
+  - At init, Whitney's `unit+9C0h` goes from 12.8611 (`reference_speed` in the pre-step input
+    line) to 6, and Tautog's from 15.4332 to 6. The ship AI's reference speed and throttle
+    ceiling follow.
+  - Whitney (state follow, 494.11 m in OFF) moves less. Tautog (state stop, 187.19 m) changes
+    little.
+  - Deaths stay 0. Other ships move only through the neighbour lists.
+- **IJN01 (3000).**
+  - Two `PilotLand` calls, when the B-17 squadrons are generated (their world-list push is at
+    68.20 s). Each installs land tasks toward AirField 02 on its two members, unless the planes
+    are not airborne; that refusal is logged by lua16's install core.
+  - The B-17 tracks change. AA contacts with them can move kills through the shared RNG stream,
+    so the death rows may move. Judge from the per-entity table.
+- **LOMP10 (9000 long).** The n reference has no `PilotLand` call on this row, so identical is
+  expected unless the fighter-bomber landing check at `10_san_jose.lua:605` is reached.
