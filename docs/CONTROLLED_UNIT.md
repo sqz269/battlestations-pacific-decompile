@@ -2972,3 +2972,55 @@ With the gun switches on, three sets of land records are relabelled done:
   cones`.
 - Python edit scripts must write bytes (`write_bytes`). `write_text` on Windows turns
   `game_hosts_units.cpp` into CRLF.
+
+## Handoff (cc9-lua19, 2026-09-29)
+
+Branch `agent/cc9-lua19`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua19`. No lease
+is held after this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_gameplay_gap_ranking_2` | `86b1c7415`, `a3ee70ccb` (reruns) | none | the ranking refreshed: 15 new gaps, and a closed list | GAMEPLAY_GAP_RANKING.md |
+| `cc9_rtb_site_key` (ranking #1) | `b8c3b26c7`, `a3ee70ccb` | `kReturnToBaseSiteKeyBound` | OFF: the mechanism held; gated now only by carrier decks part 2 | SQUADRON_LAND_TASK.md 5ad |
+| `cc9_moveto_arrival_end_command` (#2) | `f52db1c2c`, `49f5ece1a`, `d05adce62` | `kMoveToArrivalEndCommandBound` | ON: stage-only, six rows identical. The first binding was a mechanism failure, corrected | PILOT_MOVETO_TASK.md, "The arrival ends the command" |
+| `cc9_carrier_landing_deck` part 1 (#3) | `cc00545ef`, `05e4fc29f` | `kCarrierLandingDeckBound` | OFF: the carriers recover planes, but a landed plane is left at its world point | SQUADRON_LAND_TASK.md 5ae |
+
+### Open, in order
+
+1. **Carrier decks part 2**, SQUADRON_LAND_TASK 5af. Carry the landed plane on the moving deck
+   (`007C71E0` re-parent, `007CBFA0` ground roll, the land/final and approach arms), then flip
+   `kCarrierLandingDeckBound` and `kReturnToBaseSiteKeyBound` together. The SELLING question of
+   5ad.2 is answered: cc9-ships17, SHIP_AI_OPEN_ITEMS 59, found the JM05 recall faithful.
+2. **The controlled unit on JM05** (raised by cc9-ships17).
+   - The host gives the idle player USS Phelps, a US ship, although the player's side in JM05 is
+     Japanese.
+   - cc9-ships17 is binding the image's party gate `009FFE50`: in the campaign the AI plans only
+     slot != 0.
+   - That may change which side the controlled unit should come from. Re-read this file's
+     controlled-unit pick against the player's party once that gate lands.
+3. **The rest of the ranking.** GAMEPLAY_GAP_RANKING rows #4-#15, the ones owned by this lane:
+   - #7, the `+348h` command block radius;
+   - #8, the `009C23B0` speed override;
+   - #14, the follow trail arm;
+   - #15, the airfield destruction slot `006D40F0` (0 reach).
+4. **The environment.** The display sleeps: runs die at renderer init with hr `0x8876086A`, or
+   mid-run with `present failed 0x88760868` and then c0000005 in
+   `set_native_renderer_render_state_00b24460`. Retry one 300-frame smoke every 10 minutes.
+   Twice on 2026-09-29 it came back within 15-40 minutes.
+
+### Working notes
+
+- **Runs and waits.**
+  - `local\l19_runs.ps1 -V <export dir> -Only <rows>` runs the reference launch form. Rows:
+    usn04 usn13 jm05 ijn01 lomp10 usn01 jm08 at 3000; e2 jm05l usn13l lomp10l ijn01l at 9000.
+  - `local\l19_wait.ps1 -Logs a,b -Max 560` is the foreground wait.
+- **Census.**
+  - `local\l19_nz.py` counts nonzero refusal counters and the stand-in markers.
+  - `local\l19_site.py <n> <key>` prints the source around a record site.
+  - `local\l19_kind9.py <lo> <hi>` finds the `IsKindOf(9)` sites.
+  - `local\l19_disp_scan.py` is lua18's displacement scan.
+  - `local\l19_sym.py <map> <va>` symbolises a crash address.
+- **Edit scripts.** `local\l19_edit1..4.py` hold the applied edits. They read and write bytes, so
+  the line endings are preserved.
