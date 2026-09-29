@@ -570,6 +570,10 @@ struct GameShipAiSummary {
     // whose goal lay in a zone, runs that left the point off the goal, and the
     // per-slot Landscape queries, hits and reach failures.
     unsigned long long retarget_off_zone_frames{0};  // OFF: arm frames, goal in a zone
+    // Packet cc9_approach_no_ship_hold (kShipAiApproachNoShipHoldBound).
+    unsigned long long hold_arm_runs{0};       // 009F2124 head passed: the goal stored
+    unsigned long long hold_frames{0};         // modes 0/2 no-ship frames held
+    unsigned long long hold_frames_differ{0};  // held point differs from the goal copy
     unsigned long long retarget_runs{0};
     unsigned long long retarget_zone_runs{0};
     unsigned long long retarget_moved_runs{0};
