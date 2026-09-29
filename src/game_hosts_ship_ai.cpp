@@ -1177,6 +1177,12 @@ struct GameShipAiHost::Impl {
     GameShipAiSummary summary{};
     unsigned long long steps{0};
     double sub_attack_clock{0.0};   // packet cc9_submarine_ai_states, census only
+    // Packet cc9_scripted_order_natives: [unit+740h]+11h cleared by 008A7060,
+    // keyed by unit index so a call made before the controller is registered
+    // (a GenerateObject at init) still applies.
+    std::vector<std::uint8_t> navigator_disabled;
+    unsigned long long navigator_enable_calls{0};
+    unsigned long long navigator_disabled_skips{0};
     bool logged_position{false};
     bool logged_gates{false};
     bool logged_party_list{false};
@@ -10231,7 +10237,13 @@ void GameShipAiHost::controller_step(float seconds) {
         GameShipAiRow& row = host.rows[index];
         if (!host.units.unit_active(index)) continue;
         if (ctl.generated_non_ship) continue;
-        if (ctl.nav_block_built) {
+        // 008759C4: the tick-node walk skips a sub-node whose +11h is 0. The
+        // controller (unit+740h) is one sub-node and the weapon director
+        // another, so only 009F50E0 stops; 0071F290 below still runs.
+        const bool navigator_off = index < host.navigator_disabled.size()
+            && host.navigator_disabled[index] != 0;
+        if (navigator_off) ++host.navigator_disabled_skips;
+        if (ctl.nav_block_built && !navigator_off) {
             ControllerBinding binding(host, ctl, row, index);
             const bool ran = bsp::ship_ai_controller_step_009f50e0(ctl.timers, seconds, binding);
             host.done("ShipAi::controller_step", 0x009f50e0u);
@@ -10313,6 +10325,16 @@ void GameShipAiHost::controller_step(float seconds) {
         ++host.summary.controller_updates;
         row.controller_update_session_gate = trace.session_gate_passed;
     }
+}
+
+void GameShipAiHost::set_navigator_enabled_0011(std::size_t unit_index, bool enabled) {
+    Impl& host = *impl_;
+    ++host.navigator_enable_calls;
+    if (host.navigator_disabled.size() <= unit_index) {
+        host.navigator_disabled.resize(unit_index + 1u, 0);
+    }
+    host.navigator_disabled[unit_index] = enabled ? 0 : 1;
+    host.done("ShipAi::navigator_enable_0011", 0x008a7060u);
 }
 
 bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
@@ -10572,6 +10594,14 @@ void GameShipAiHost::report() {
         host.summary.units, host.summary.ai_owned, host.summary.steps, host.summary.gated,
         host.summary.replans, host.summary.state_steps_concrete,
         host.summary.state_steps_recorded, host.summary.publishes, host.summary.promotions);
+    {
+        std::size_t disabled = 0;
+        for (const std::uint8_t d : host.navigator_disabled) disabled += d != 0 ? 1u : 0u;
+        host.log.notef("summary mission ship ai navigator enable calls=%llu disabled_units=%zu "
+            "skipped_steps=%llu (008A7060 [unit+740h]+11h, 008759C4, packet "
+            "cc9_scripted_order_natives)", host.navigator_enable_calls, disabled,
+            host.navigator_disabled_skips);
+    }
     host.log.notef("summary mission ship ai script fire target bound=%d sets=%llu releases=%llu "
         "(0089A8B0 / 00835860 / 00836240, packet cc9_usn02_deruyter_fire)",
         kScriptFireTargetBound ? 1 : 0, host.script_fire_target_sets,
