@@ -137,3 +137,108 @@ switch changes no gameplay in any reference row today. It matters once:
 - or MPNormal ships are created without a script re-skill;
 - or the launch inheritance of section 3 is bound. The JM05 carriers' planes would then fly the
   SPVeteran pilot rows.
+
+## 6. The carrier launch skill (packet `cc9_carrier_launch_skill`, switch `kCarrierLaunchSkillBound`)
+
+### 6.1 The read
+
+- **`006C5050`, `006C50FC`-`006C5113`.** `ECX = block+7Ch`, the owning entity. `CALL [vtable+12Ch]`
+  (`006C5107`) is the owner's unit+390h getter. `PUSH EAX` and `PUSH 00CF8838` (`Skill`) then store
+  it into the squadron's bag through `008F3710`. So a launched squadron's bag `Skill` is the
+  carrier's (or airfield's) **live** skill at the moment of launch, including any script
+  `SetSkillLevel` that ran before it.
+- **`007F1FE0`, the squadron's pass B (kind-1 arm `007F2101`).** `007F211B CALL 00927A80` reads
+  that bag skill into `[ESP+8]`. The tail, `007F225E`-`007F226E`, is `PUSH [ESP+8]; CALL
+  [vtable+128h]`. For a squadron that slot is `007ECF80`, the fan-out to every member's
+  `vtable[128h]` (docs/PILOT_SKILL_LEVEL.md section 2). The wing exists by then, because pass A
+  (`007F4580`) builds it first.
+- **This host before the packet.** `AirOpsDeck::owner_skill` is never written and
+  `AirOpsSquadronRequest::skill` is never read. Every launched squadron keeps the constructor's 1
+  until a script call.
+
+**The binding.**
+- `GameMissionLuaHost::create_squadron` reads the owner's live `skill_level`, looking the owner up
+  by the `HomeBase` name, into the pending node.
+- Pass B (`entity_init_second_vcall_a0`) calls `set_skill_level_007b8ae0` on the squadron, which
+  fans out through the plane-squadron registry.
+- Both builds print `air ops launch skill: squadron=... owner=... skill=... applied=...`. The ON
+  build adds `air ops launch skill applied: ... members=N`.
+- The catapult path (`006EC98D`, a single launched plane) is not bound. This host has no caller of
+  `catapult_spawn_properties_006ec8e0`.
+
+### 6.2 What the row changes (the tables the level selects)
+
+| reader | SPNormal (1) | SPVeteran (2) |
+| --- | --- | --- |
+| torpedo run-in row, `[[unit+DF4h]+34h]` (`TorpReleaseAlt`, `DistNear`, `DistFar`, `DropCloserMul`) | 12 m, 450 m, 650 m, 0.7 | 5 m, 800 m, 1200 m, 0.5 |
+| dive-bomb approach row (`009F9D22`, `kPilotDiveBombRows`) | row 1 | row 2 |
+| tail gunner shoot range, fixed-gun and AA throw rows (`game_hosts_gunnery.cpp`) | row 1 | row 2 |
+
+### 6.3 Predictions, written before the runs
+
+1. **JM05 9200/9000.**
+   - 14 `air ops launch skill` lines at `skill=2`: the 7 USS Lexington and 7 USS Yorktown
+     squadrons. 5 lines at `skill=1`, from the two airfields, which author SPNormal.
+   - ON: 14 `applied` lines, each with its full wing count.
+   - The US torpedo aircraft take the SPVeteran run-in: release window 800-1200 m instead of
+     450-650 m, at 5 m. docs/TORPEDO_RELEASE_ORDERS.md 7 has them shot down at 0.9-1.3 km with
+     0 of 24 releases, so **torpedo-task releases rise above 0**.
+   - US dive-bomb and fighter rows move.
+   - pair_diff 3.
+2. **USN04 4700/4500.** The US carriers' squadrons (two from Lexington-class01, two from
+   Yorktown-class01) print `skill=2`, because the script set their carriers to SkillLevelOwn 2
+   before the launch. The IJN strike aircraft are not air-ops launches in this row and do not
+   move. The US fighters' and bombers' rows move, and the IJN strike losses to US fighters move.
+   pair_diff 3.
+3. **USN13 3200/3000.** The nine US carriers' single squadrons print `skill=2`, and those
+   squadrons' rows move.
+4. **Mechanism failure.** A `skill=` value that differs from the owner's `SetSkillLevel` or scene
+   value. `members=` below the wing count, which would mean pass B ran before pass A's wing.
+   A moved row on a squadron whose line says `skill=1`.
+
+### 6.4 Measured, and the verdict
+
+The pair is one commit, `0ced7aed7`, exported twice by `tools/pair_export.py`: OFF, and ON with
+`kCarrierLaunchSkillBound=true`. Both ran in the reference environment. A 300-frame USN04 smoke
+of the ON binary finished clean; no launch happens that early. The logs are
+`local\l16_l{off,on}_{jm05l,usn04,usn13}.log` in the cc9-lua16 tree. The torpedo census is
+cc9-lua15's `local\l15_torp.py`.
+
+| row | launch lines (owner = skill) | applied | pair_diff | deaths |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 7 USS Lexington = 2, 7 USS Yorktown = 2, 2 MainAirfield = 1, 3 SecondaryAirfield = 1 | 19, every one `members=3` (= `wing=3`) | 3 | 29 -> 29, same set, 21 rows re-timed |
+| USN04 4700/4500 | 2 Lexington-class01 = 2, 2 Yorktown-class01 = 2 | 4, `members=3` | 1, identical | 45, identical |
+| USN13 3200/3000 | the nine US carriers = **1** | 9, `members=3` | 1, identical | 32, identical |
+
+Each prediction against the result:
+1. **JM05, the lines: held.** Only the two carriers give 2. On the ON side:
+   - hit records 1326 -> 1315, hull hits 970 -> 989, shots 7321 -> 7355;
+   - damage 24531.9 on both sides, and the same 29 deaths.
+
+   **JM05, torpedo releases: missed. They stay at 0 of 27.** The census shows why: the SPVeteran
+   row is in force.
+   - The aircraft now press lower: minimum altitude 12.9-20.1 m against 20.8-38.6 m OFF (the
+     Lexington_sqn05 and Yorktown_sqn06 flights).
+   - They also press closer: 844-1033 m for the wingmen.
+   - That is inside the new 800-1200 m window, and the `alt` gate now passes on 6 to 23 ticks.
+     But the SPVeteran release altitude is **5 m** (`TorpReleaseAlt`), stricter than SPNormal's
+     12 m, and none gets below 12.9 m before it is shot down.
+
+   The row moved the geometry the way the table says. What still loses the drops is the AA
+   (docs/AA_LETHALITY_AUDIT.md section 7).
+2. **USN04: held for the mechanism.** The four US squadrons fly at 2. They do not change a single
+   gameplay line in 4500 frames.
+3. **USN13: missed, and the image agrees with the host.** Every US launch there is a script
+   `LaunchSquadron` (`0089E3C0`), whose InitAll runs at once. `usn_13_truk.lua` launches each
+   carrier's squadron **before** its `SetSkillLevel(..., 2)`: log line 4521 is the launch and 4559
+   the first carrier re-skill. So the carrier's live skill at launch is still the constructor's 1.
+   The image would read the same `vtable[12Ch]` at the same moment. My prediction assumed the
+   re-skill came first.
+4. **Mechanism: held.**
+   - Every value equals the owner's live skill at the launch line.
+   - `members` equals the wing count on all 32 squadrons.
+   - No row moved on a squadron printing 1: USN13 is identical.
+
+**Verdict: `kCarrierLaunchSkillBound` flips ON.** The mechanism matches the image. Both misses are
+prediction errors about the script order and the release-altitude gate, not failures of the
+mechanism.

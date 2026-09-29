@@ -474,6 +474,9 @@ struct GameProjectileRow {
     bool flak_locked{false};
     std::size_t flak_target{0};
     float flak_remaining{0.0f};
+    // Packet cc9_aa_lethality_audit: the round's "distErr" (+290h), the firing
+    // AAFlakBot's bot+60h when kAaFlakAimErrorBound is on; 0 otherwise.
+    float flak_dist_err{0.0f};
     // Packet cc8_dive_glide. A bomb released by the dive-bomb task, and the
     // predicted impact point approach+D8h/+E0h carried at the release tick so
     // the run can print predicted against actual. INSTRUMENTATION; the image

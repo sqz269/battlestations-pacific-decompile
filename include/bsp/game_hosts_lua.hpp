@@ -1395,6 +1395,12 @@ private:
         // is [units_before, units_end). A later creation before InitAll (the
         // next SpawnNew member) must not be taken for this squadron's wing.
         std::size_t units_end{0};
+        // Packet cc9_carrier_launch_skill: an air-ops squadron's bag `Skill`,
+        // which 006C5050 fills from owner->vtable[12Ch]() at 006C5101..006C5113
+        // (the carrier's live unit+390h at launch). The squadron's pass B,
+        // 007F1FE0, hands it to its own vtable[128h] (007F226E), which 007ECF80
+        // fans out to the wing. -1 for any other node.
+        int launch_skill{-1};
     };
     friend class GameMissionLuaInitAllBinding;
     std::deque<PendingEntity> pending_entities_;  // 00F899D0, count 00F899D4

@@ -482,6 +482,56 @@ constexpr float kBulletThrowMul[kThrowSeatCount][6] = {
     {1.0f, 0.9f, 0.1f, 0.85f, 0.5f, 0.1f},   // ArtillerySubDirectorBot
     {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},    // PilotBot AimBulletThrowMul
 };
+// Packet cc9_aa_lethality_audit (docs/AA_LETHALITY_AUDIT.md section 7). The AA
+// bots' own aim errors, which the host had left out as "exact at SPVeteran";
+// a unit no script re-skills stays at unit+390h = 1 (0095CCCC), SPNormal.
+//  * kAaGunnerSwingErrorBound: AAGunnerBot 00902920 (category 1 on a ship),
+//    00902AE1..00902F5D. Each time the timer bot+60h runs out it reloads with
+//    U(3, 8) * InterpolateClamped(x0 0, y0 1, x1 6, y1 0.2, skill) (00419010 at
+//    00902B38, gun_bot_lead_error_span_00902920: 0.867 at SPNormal)
+//    and draws a spread e = AngleDiffErrorRatio * (the wrapped h + v angle
+//    between the target point and the lead aim, 00902C86..00902CD5) +
+//    U(0, ConstAngleError) degrees (00902CF0); a ship target divides e by
+//    settings +750h (AI slot) or +754h (00902D2A..00902D5E). Two N(0, e) draws
+//    (00BD2F90) are the new offsets, reached linearly over the period (rates
+//    bot+6Ch/+70h). Every tick the offsets step by rate * dt; one past
+//    25 / distance (00CE3880) is clamped to it (00415690), the timer set to
+//    1.0 and both rates to -0.5 * offset (00902E56..00902EA9, 00902EE0..
+//    00902F2B). The offsets are added to the solved angles (00438AA0) before
+//    the negative-vertical halving. SUBSTITUTIONS, labelled: the target point
+//    is the host's aim point for the target, not vtable[100h]'s hull-box draw
+//    (box 0.8 / 0.5 / 0.8, 00902BFD); the clamp distance is the muzzle-to-lead
+//    distance.
+//  * kAaFlakAimErrorBound: AAFlakBot 009030C0 (category 5, and 6 firing its
+//    Flak Bullet[2] at a plane). Its angles are solved + bot+58h / + bot+5Ch
+//    (00903280..00903293, before the vertical adjust); after a shot
+//    (bot+64h < gun+474h, 0090330A..0090331B)
+//    008FDBE0 rerolls: with U(0, 100) < GoodRatio * 100 each of h, v and the
+//    distance takes U(Min, Max), else U(Max, Bad), each with a random sign
+//    (00BA2C20 bit 0); the angles are degrees -> radians. The distance goes to
+//    the next round's "distErr" (00730F70, 00CFD51C), the +290h 0070C6C6 adds
+//    to the burst distance, in metres as authored.
+// OFF: no AA bot error at any skill (the rows below unread). ON by the verdict
+// (AA_LETHALITY_AUDIT 7.5): E2 identical, USN13 low losses 33 -> 14, JM05 2 releases.
+constexpr bool kAaGunnerSwingErrorBound = true;
+constexpr bool kAaFlakAimErrorBound = true;
+// This installation's robots.lua (2025-06-01), AAGunnerBot, by skill index:
+// {AngleDiffErrorRatio (+0Ch), ConstAngleError (+14h), degrees}.
+constexpr float kAaGunnerErrorRows[6][2] = {
+    {7.0f, 7.0f}, {5.0f, 4.0f}, {0.0f, 0.0f}, {1.0f, 1.0f}, {0.5f, 0.5f}, {0.0f, 0.0f}};
+// AAFlakBot, by skill index: {GoodRatio, AngleErrMin, Max, Bad (degrees),
+// DistErrMin, Max, Bad} (+0Ch..+24h, reader 008FC6D0).
+constexpr float kAaFlakErrorRows[6][7] = {
+    {0.0f, 0.5f, 5.0f, 7.0f, 0.5f, 5.0f, 7.0f},
+    {0.4f, 0.0f, 2.0f, 4.5f, 0.4f, 1.5f, 3.0f},
+    {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {0.85f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+    {1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}};
+// shipglobals.lua AAGunnerErrorModifier (2024-07-13): VersusAI 2.0 (+750h),
+// VersusPlayer 1.2 (+754h).
+constexpr float kAaGunnerModifierVersusAi = 2.0f;
+constexpr float kAaGunnerModifierVersusPlayer = 1.2f;
 //  * kShipSectionPointsBound: the artillery draw 00816650 can pick the target's
 //    engine room (kind 5), fuel tank (6) or magazine (8). 0081F980 fills
 //    unit+A88h / +A78h / +A68h from the ship model's GeomMesh elements of those
@@ -1061,6 +1111,8 @@ struct GameGunneryHost::Impl {
         torpedo_unload = 16,  // 0081DD85, 0081DCB0's pick, key (unit, 0)
         unit_fire_cooldown = 17, // 0072FB6A, the artillery cooldown, key (unit, 0)
         artillery_fire_delay = 18, // 006DFBD6, fireDelayTime = U(0, 0.1), key (gun, 0)
+        aa_gunner_error = 19, // 00902B5C period, 00902CF0 spread, 00902D77/00902D95 offsets, key (gun, 0)
+        aa_flak_error = 20,   // 008FDBE0's ratio, three magnitudes and three signs, key (gun, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -2013,6 +2065,45 @@ struct GameGunneryHost::Impl {
             / static_cast<float>(0x1000000u);
         return low + (high - low) * unit;
     }
+    // 00BD2F90 -> 00BF0DF0: the polar Box-Muller draw, mean + sigma * u1 *
+    // sqrt(-2 ln s / s) with u1, u2 = U(-1, 1) until s = u1^2 + u2^2 < 1. The
+    // uniforms come from `draw` so the stream option keys them like the rest.
+    float draw_normal(Draw purpose, std::size_t a, std::size_t b, float mean, float sigma) {
+        float u1 = 0.0f, u2 = 0.0f, s = 1.0f;
+        do {
+            u1 = draw(purpose, a, b, -1.0f, 1.0f);
+            u2 = draw(purpose, a, b, -1.0f, 1.0f);
+            s = u1 * u1 + u2 * u2;
+        } while (s >= 1.0f || s == 0.0f);
+        const float k = static_cast<float>(std::sqrt(-2.0 * std::log(static_cast<double>(s))
+            / static_cast<double>(s)));
+        return k * u1 * sigma + mean;
+    }
+
+    // Packet cc9_aa_lethality_audit (docs/AA_LETHALITY_AUDIT.md section 7).
+    // AAGunnerBot 00902920's swinging offsets, bot+60h..+70h, per gun.
+    struct AaGunnerSwing {
+        float timer{0.0f};       // bot+60h
+        float h{0.0f}, v{0.0f};  // bot+64h, bot+68h
+        float rh{0.0f}, rv{0.0f};  // bot+6Ch, bot+70h
+    };
+    std::map<std::size_t, AaGunnerSwing> aa_gunner_swing_by_gun;
+    // AAFlakBot 008FDBE0's roll, bot+58h/+5Ch (radians) and bot+60h (the fuse
+    // distance error handed to the next round through gun+41Ch, "distErr").
+    struct AaFlakError {
+        float h{0.0f}, v{0.0f}, dist{0.0f};
+        bool fired{false};       // gun+474h moved past bot+64h since the last roll
+    };
+    std::map<std::size_t, AaFlakError> aa_flak_error_by_gun;
+    unsigned long long aa_gunner_rolls{0};
+    unsigned long long aa_gunner_clamps{0};
+    unsigned long long aa_gunner_error_ticks{0};
+    double aa_gunner_miss_sum{0.0};          // |offset| * distance, metres
+    unsigned long long aa_gunner_rolls_by_level[6]{0, 0, 0, 0, 0, 0};
+    unsigned long long aa_flak_rolls{0};
+    unsigned long long aa_flak_rolls_by_level[6]{0, 0, 0, 0, 0, 0};
+    double aa_flak_angle_sum_deg{0.0};
+    double aa_flak_dist_abs_sum{0.0};
 
     const GameDeviceClassRow* device(int id) const {
         for (const GameDeviceClassRow& row : devices) {
@@ -5628,6 +5719,106 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
 
                 done("GunBot::angles_from_world_direction_008fdaf0", 0x008fdaf0u);
+                int aa_level = units.skill_level(owner_unit);
+                if (aa_level < 0 || aa_level > 5) aa_level = 1;
+                if (kAaGunnerSwingErrorBound && gun.category == 1
+                    && !units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase)) {
+                    // 00902920's swinging offsets (see kAaGunnerSwingErrorBound).
+                    AaGunnerSwing& sw = aa_gunner_swing_by_gun[g];
+                    sw.timer -= dt;
+                    if (sw.timer < 0.0f) {
+                        // 00902B16..00902B6B: U(3, 8) * InterpolateClamped(x0 0, y0 1,
+                        // x1 6, y1 0.2, skill), the product stored as a float.
+                        const double scale = static_cast<double>(
+                            bsp::gun_bot_lead_error_span_00902920(static_cast<float>(aa_level)));
+                        sw.timer = static_cast<float>(static_cast<double>(
+                            draw(Draw::aa_gunner_error, g, 0, 3.0f, 8.0f)) * scale);
+                        const float* row = kAaGunnerErrorRows[aa_level];
+                        float e = 0.0f;
+                        if (row[0] > 0.0f) {
+                            const float ad[3] = {at[0] - muzzle[0], at[1] - muzzle[1],
+                                at[2] - muzzle[2]};
+                            const float al = length3(ad);
+                            if (al > 0.0f) {
+                                const float au[3] = {ad[0] / al, ad[1] / al, ad[2] / al};
+                                const float h_at = kGunHorzSign * std::atan2(dot3(au, right),
+                                    dot3(au, forward));
+                                const float v_at = std::asin(std::max(-1.0f,
+                                    std::min(1.0f, dot3(au, up))));
+                                const float dh = bsp::wrapped_angle_subtract_00438b10(want_horz, h_at);
+                                const float dv = bsp::wrapped_angle_subtract_00438b10(
+                                    want_vert - pitch, v_at);
+                                e = bsp::wrapped_angle_add_00438aa0(dh, dv) * row[0];
+                            }
+                        }
+                        // 00902CF5..00902D07: double pi / 180, then the float sum.
+                        e = static_cast<float>(static_cast<double>(
+                            draw(Draw::aa_gunner_error, g, 0, 0.0f, row[1]))
+                            * 3.14159265358979 / 180.0 + static_cast<double>(e));
+                        if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
+                            e /= role_ai_held_00521e70(target, 0) ? kAaGunnerModifierVersusAi
+                                                                  : kAaGunnerModifierVersusPlayer;
+                        }
+                        const float nh = draw_normal(Draw::aa_gunner_error, g, 0, 0.0f, e);
+                        const float nv = draw_normal(Draw::aa_gunner_error, g, 0, 0.0f, e);
+                        sw.rh = (nh - sw.h) / sw.timer;
+                        sw.rv = (nv - sw.v) / sw.timer;
+                        ++aa_gunner_rolls;
+                        ++aa_gunner_rolls_by_level[aa_level];
+                    }
+                    sw.h += sw.rh * dt;
+                    sw.v += sw.rv * dt;
+                    const float limit = bsp::gun_bot_lead_error_limit_00902920(distance);  // 00CE3880
+                    if (std::fabs(sw.h) > limit) {
+                        sw.h = std::max(-limit, std::min(limit, sw.h));
+                        sw.timer = 1.0f;
+                        sw.rh = -0.5f * sw.h;
+                        sw.rv = -0.5f * sw.v;
+                        ++aa_gunner_clamps;
+                    }
+                    if (std::fabs(sw.v) > limit) {
+                        sw.v = std::max(-limit, std::min(limit, sw.v));
+                        sw.timer = 1.0f;
+                        sw.rh = -0.5f * sw.h;
+                        sw.rv = -0.5f * sw.v;
+                        ++aa_gunner_clamps;
+                    }
+                    want_horz = bsp::wrapped_angle_add_00438aa0(want_horz, sw.h);
+                    want_vert = bsp::wrapped_angle_add_00438aa0(want_vert, sw.v);
+                    ++aa_gunner_error_ticks;
+                    aa_gunner_miss_sum += std::sqrt(static_cast<double>(sw.h) * sw.h
+                        + static_cast<double>(sw.v) * sw.v) * distance;
+                }
+                if (kAaFlakAimErrorBound
+                    && (gun.category == 5
+                        || (gun.category == 6 && dp_air_ammo(g, gun.category, target) != nullptr))) {
+                    // 00903280..00903293: the angles take bot+58h / bot+5Ch; the
+                    // reroll after a shot is at the end of the tick, below.
+                    AaFlakError& fe = aa_flak_error_by_gun[g];
+                    want_horz += fe.h;
+                    want_vert += fe.v;
+                    if (fe.fired) {
+                        fe.fired = false;
+                        const float* row = kAaFlakErrorRows[aa_level];
+                        const bool good = draw(Draw::aa_flak_error, g, 0, 0.0f, 100.0f)
+                            < row[0] * 100.0f;
+                        const float lo_a = good ? row[1] : row[2], hi_a = good ? row[2] : row[3];
+                        const float lo_d = good ? row[4] : row[5], hi_d = good ? row[5] : row[6];
+                        const auto sign = [&]() {
+                            return draw(Draw::aa_flak_error, g, 1, 0.0f, 1.0f) < 0.5f ? -1.0f : 1.0f;
+                        };
+                        const float ah = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
+                        fe.h = sign() * ah * 3.14159265358979f / 180.0f;
+                        const float av = draw(Draw::aa_flak_error, g, 0, lo_a, hi_a);
+                        fe.v = sign() * av * 3.14159265358979f / 180.0f;
+                        const float d = draw(Draw::aa_flak_error, g, 0, lo_d, hi_d);
+                        fe.dist = sign() * d;
+                        ++aa_flak_rolls;
+                        ++aa_flak_rolls_by_level[aa_level];
+                        aa_flak_angle_sum_deg += (ah + av) * 0.5;
+                        aa_flak_dist_abs_sum += d;
+                    }
+                }
                 if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f) {
                     want_vert *= 0.5f;    // 00902F76 FMUL [00D7A280]
                     ++aa_negative_halvings;
@@ -6212,6 +6403,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 shot.bullet_class = dp->bullet_class;
                 launch_speed = dp->muzzle_speed;
                 ++dp_air_rounds;
+            }
+        }
+        if (kAaFlakAimErrorBound) {
+            const auto fe = aa_flak_error_by_gun.find(g);
+            if (fe != aa_flak_error_by_gun.end()) {
+                shot.flak_dist_err = fe->second.dist;   // gun+41Ch -> "distErr"
+                fe->second.fired = true;                // gun+474h moves past bot+64h
             }
         }
         shot.alive = true;
@@ -7104,7 +7302,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         //             the radial blast at proj+FCh with radius BlastRange and
         //             U(BlastDamageMin, BlastDamageMax) (docs/EXPLOSION_RADIAL_DAMAGE.md).
         // SUBSTITUTIONS, labelled: the distance error [+290h] (the AAFlakBot's
-        // DistErr, 008FDBE0 -> bot+60h) is 0, which is exact at the SPVeteran row
+        // DistErr, 008FDBE0 -> bot+60h) is 0 unless kAaFlakAimErrorBound (exact at SPVeteran)
         // USN04 sets; entities are this host's units (dead ones skipped, as the
         // image's list drops a destroyed entity); the unlocked passing rule at
         // 0070C7B6-0070C806 (10% per tick beyond 50 m) is not modelled, since it
@@ -7162,6 +7360,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                                 o[2] + tv[2] * t};
                             float rem = (aim[0] - from[0]) * dir[0]
                                 + (aim[1] - from[1]) * dir[1] + (aim[2] - from[2]) * dir[2];
+                            rem += shot.flak_dist_err;    // 0070C6C6 [+290h]
                             if (rem < 0.0f) rem = 0.0f;   // 0070C6D8-0070C6E3
                             shot.flak_remaining = rem;
                         }
@@ -9957,6 +10156,25 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
             "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
             kFlakProximityBurstBound ? 1 : 0);
+        host.log.notef("summary mission gunnery aa bot error gunner_rolls=%llu (by level %llu/%llu/"
+            "%llu/%llu/%llu/%llu) clamps=%llu ticks=%llu mean_miss_m=%.2f gunner_bound=%d "
+            "flak_rolls=%llu (by level %llu/%llu/%llu/%llu/%llu/%llu) mean_angle_deg=%.3f "
+            "mean_dist_err=%.3f flak_bound=%d (00902920 / 008FDBE0, packet cc9_aa_lethality_audit)",
+            host.aa_gunner_rolls, host.aa_gunner_rolls_by_level[0], host.aa_gunner_rolls_by_level[1],
+            host.aa_gunner_rolls_by_level[2], host.aa_gunner_rolls_by_level[3],
+            host.aa_gunner_rolls_by_level[4], host.aa_gunner_rolls_by_level[5],
+            host.aa_gunner_clamps, host.aa_gunner_error_ticks,
+            host.aa_gunner_error_ticks != 0
+                ? host.aa_gunner_miss_sum / static_cast<double>(host.aa_gunner_error_ticks) : 0.0,
+            kAaGunnerSwingErrorBound ? 1 : 0, host.aa_flak_rolls,
+            host.aa_flak_rolls_by_level[0], host.aa_flak_rolls_by_level[1],
+            host.aa_flak_rolls_by_level[2], host.aa_flak_rolls_by_level[3],
+            host.aa_flak_rolls_by_level[4], host.aa_flak_rolls_by_level[5],
+            host.aa_flak_rolls != 0
+                ? host.aa_flak_angle_sum_deg / static_cast<double>(host.aa_flak_rolls) : 0.0,
+            host.aa_flak_rolls != 0
+                ? host.aa_flak_dist_abs_sum / static_cast<double>(host.aa_flak_rolls) : 0.0,
+            kAaFlakAimErrorBound ? 1 : 0);
         host.log.notef("summary mission gunnery barrel count from model guns=%llu changed=%llu "
             "fallback=%llu devices=%zu bound=%d (007325A0/0072AB80, packet cc9_gun_barrel_count)",
             host.barrel_guns_from_model, host.barrel_guns_changed, host.barrel_guns_fallback,

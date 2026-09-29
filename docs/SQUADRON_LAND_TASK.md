@@ -2814,3 +2814,44 @@ switch makes visible for B-25 01. So this is a spread miss with the mechanism ma
 - The state names are the registered strings. The routine names in the ledger are hypotheses.
 - The land moveto shares the host's `009C18C0` substitutions: `009F9E40`'s bearing and `009BECD0`'s
   shaping.
+
+## The explicit `land` command: PilotLand's entry (packet `cc9_pilot_land_native`, cc9-lua16, 2026-09-29)
+
+**The image.**
+- `PilotLand` (`008A47B0`) reads the entity (argument 0) and a command target from argument 1
+  (`00B677E0`). It issues `0077D600(entity, land 00E08FA0, target, 1)` at `008A4907`, the same
+  shape as PilotMoveTo (`src/pilot_order_bindings.cpp`, `pilot_land_008a47b0`).
+- Each plane's bot land arm, `0099A3DD`-`0099A41A` (read from disk bytes), takes the site from
+  that command target, not from `007F16D0`:
+  - `0099A3E9 006BCD20(target, 1)` gives the target's deck, and a null deck returns at `0099A3F2`;
+  - `0099A404 006C4790(deck, plane+9D4h)` must pass;
+  - then `009B41C0` builds the task.
+- `006C4790`, read whole (`006C4790`-`006C47EC`), returns false for a null squadron
+  (`006C4797`-`006C4799`). It also returns false when the squadron is on the deck's `+B4h` list;
+  as before, that list is taken as empty.
+
+**The host.**
+- `install_land_task_0099a3dd` resolved the site only through `rtb_census`, the squadron's
+  `007F16D0` answer. Its half after resolution is now `install_land_task_core_009b41c0`.
+- The new public entry `GameUnitsHost::land_at_site_0099a3dd(unit, site)`:
+  - requires a deck named after the site and a registry squadron for the plane, then places
+    `land` / site on the plane's command;
+  - installs on every member when `unit` is the squadron (its fused flight leader), and on the
+    plane alone when it is a lone wing plane;
+  - marks the task `land_explicit_site`.
+- `land_command_still_valid_009b34d0` keeps an explicit task while the plane's own command is
+  still `land` with that site as target, instead of consulting `rtb_census`.
+
+**Neutrality.** Nothing calls the entry yet. The native binding is the next step. Exports of
+`d7b093d01` (before) and `49cb3ae26` (after) were run on LOMP10 9200/9000: pair_diff 1, gameplay
+identical, and 10 `land task install` lines on each side (`local\l16_p{base,new}_lomp10l.log`,
+cc9-lua16 tree).
+
+**Rows for the binding.**
+- **IJN01.** `ijn_1_pearl.lua` in this installation (mtime 2024-08-26), in the B-17 loop:
+  GenerateObject `B-17 01` and `B-17 02` (WingCount 2 each), then `PilotLand(unit, Mission.AF2)`.
+  `Mission.AF2` is `FindEntity("Airfield 02")`, which the host has as the deck `AirField 02`.
+- **LOMP10.** `10_san_jose.lua` (lines 523 and 557 in this installation, mtime 2024-07-13) sends
+  bombers whose `ammoType` is 0 and whose `unitcommand` is not `"land"` to `Mission.Airfield`.
+  The `unitcommand` read then needs to answer `"land"` for the placed command, or the script
+  re-issues it every pass. The same-target keep (`009B3560`) makes that harmless.
