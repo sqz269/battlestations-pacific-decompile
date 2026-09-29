@@ -426,6 +426,9 @@ struct GameUnitSlot {
     float plane_class_turn_roll_spd{0.0f};   // desc+1C8h TurnRollSpd
     float plane_class_turn_roll{0.0f};       // desc+25Ch TurnRoll
     float plane_class_turn_roll_leader{0.0f};  // desc+260h TurnRollLeader
+    // DIAGNOSTIC (packet cc9_hull_inertia): the largest angle between the hull's
+    // up row and world up seen by publish_pose, in degrees. Read-only.
+    float diag_hull_tilt_max_deg{0.0f};
     // The plan's non-slot fields, reset by 0099B450 on every think.
     bsp::PilotPlanState plan_state;
     // The range to the commanded target the first time the yaw arm planned for
@@ -3853,6 +3856,13 @@ struct GameUnitsHost::Impl {
     // The +CCh pose block and the motion state are two views of the same rows;
     // the motion path writes them, the pose refresh reads them.
     static void publish_pose(GameUnitSlot& slot) {
+        {
+            double uy = slot.motion.pose_row1[1];
+            if (uy > 1.0) uy = 1.0;
+            if (uy < -1.0) uy = -1.0;
+            const float tilt = static_cast<float>(std::acos(uy) * 57.29577951308232);
+            if (tilt > slot.diag_hull_tilt_max_deg) slot.diag_hull_tilt_max_deg = tilt;
+        }
         for (int i = 0; i < 3; ++i) {
             slot.world[static_cast<std::size_t>(i)] = slot.motion.pose_row0[i];
             slot.world[static_cast<std::size_t>(4 + i)] = slot.motion.pose_row1[i];
@@ -23569,6 +23579,15 @@ void GameUnitsHost::report() {
         host.summary.hydro_submerged_steps, host.summary.hydro_force_flushes,
         host.summary.hydro_torque_flushes,
         static_cast<double>(host.physics_world.gravity.y), kBuoyancyElementCount);
+    for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+        if (!s->motion_dispatch.runs_ship_base()) continue;
+        double uy = s->motion.pose_row1[1];
+        if (uy > 1.0) uy = 1.0;
+        if (uy < -1.0) uy = -1.0;
+        host.log.notef("summary hull tilt %s: max=%.2f final=%.2f deg (diagnostic, cc9_hull_inertia)",
+            s->row.name.c_str(), static_cast<double>(s->diag_hull_tilt_max_deg),
+            std::acos(uy) * 57.29577951308232);
+    }
     {
         std::size_t classes_ok = 0;
         for (const auto& [type_id, entry] : host.class_buoyancy_lists) {
