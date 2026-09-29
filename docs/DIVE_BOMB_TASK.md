@@ -5422,3 +5422,86 @@ Gameplay is identical on all three rows. Only dead aircraft steer differently, a
 moved.
 
 **Verdict: `kDepartedWingmanTaskBlockBound = true`.**
+
+## Where each aircraft stops on the ranking rows (packet `cc9_dive_bomb_release`, cc9-lua15, 2026-09-29)
+
+docs/GAMEPLAY_GAP_RANKING.md item 2 says the state walk stalls before the drop, at the in-range
+latch `approach+D0h` (`009C7C31`), the turndown (`009C7EA0`) or the 25 m aim error (`009C5C9B`).
+The per-aircraft lines (the dive entry, aim trace, gate and hand-over lines) and the death rows
+answer that for each aircraft. `local\l15_dive.py` in the cc9-lua15 tree tabulates them.
+
+The run is USN04 4700/4500, `local\l15_tdiag_usn04.log`, with main `100112f31` merged. The drop
+is `009C60F1`, and it needs three things (`009C608C`-`009C60EC`):
+- the aircraft below the drop floor `approach+A8h`;
+- the re-arm timer run out;
+- `|error| < 25.0` (`00CE3880`, a double).
+
+Every one of the 16 Vals closes the latch and passes the turndown. None stalls at either gate.
+
+| outcome | aircraft | evidence |
+| --- | --- | --- |
+| released | #3.1\|.-3 | `release alt=382.9 m range=306.9 m error=23.4 m` |
+| shot down in `aimdive`, above the drop floor | #1.1, #1.1\|.-3, #3.1\|.-4, #5.1, #5.1\|.-2, #5.1\|.-3, #7.1\|.-4 | death rows at 542 to 851 m. Killers are Lexington-class01, Fletcher-class03 and Northampton-class03 |
+| aim overshot | #3.1 (dies at 298 m, below the 382.9 m the release happened at, final error 116 m), #3.1\|.-2 (final error 64.6 m, 6 ticks of `aimglide`, dies at 389 m) | error crossed zero higher up (closest 0.2 m at 653 m, 0.7 m at 516 m) |
+| still diving when the row ends | #7.1, #7.1\|.-2, #7.1\|.-3 | no death row; the closest points are at 494 to 587 m altitude |
+| left the fly-over for `goaway` (`009C66E3`, bound) | #1.1\|.-2, #1.1\|.-4, #5.1\|.-4 | `span` 20 m at the hand-over where the heads had 0. The first two re-enter from 2.5 km and dive shallow (error 1.5 km) |
+
+So the state walk does not stall:
+- Seven of the sixteen are shot down during the dive.
+- Three run out of row.
+- Two overshoot: the aim error passes through zero above the drop floor and has grown past 25 m
+  by the time they are below it.
+- Three leave the fly-over by the bound tolerance test.
+
+**JM05 (6 Vals).** The latch never closes because the flight is 7.7 km out at the end of the
+3000-frame row (it starts at 15 km). This is a row-length effect, not a gate. It needs about 9000
+frames.
+
+**Nothing is bound.** The open items this points at:
+- the anti-aircraft lethality against a diving Val (the gunnery lane);
+- the timing of the aim error against the drop floor for the overshooting pair, to be read with
+  docs/DIVE_FLIGHT_RESPONSE.md, since the dive speed is capped near MaxSpd (`speed max=69.44`);
+- the fly-over leavers: their bearing error beats the tolerance at a span of 0 to 20 m. Why
+  these three and not the heads is unread.
+
+The torpedo counterpart is docs/TORPEDO_RELEASE_ORDERS.md section 6.
+
+### The fly-over leavers miss a 20-degree tolerance by about 0.2 degrees (packet `cc9_dive_flyabove_leavers`, cc9-lua15, 2026-09-29)
+
+This follows up the census above: three Vals leave the fly-over for `goaway` (#1.1|.-2, #1.1|.-4,
+#5.1|.-4). A USN04 4700/4500 run with `kHullAimTrace` switched on locally (not committed;
+`local\l15_fa_usn04.log`) prints the fly-over inputs every tick.
+
+**No aircraft turns during the fly-over.**
+- Each Val's heading changes by only 0.005 to 0.015 rad over its 140 to 170 fly-over ticks,
+  heads included. Examples: Val #1.1 goes from 2.9299 to 2.9247; #1.1|.-2 from 2.9024 to
+  2.8873 before it leaves.
+- Meanwhile the three-second lead bearing drifts by 0.2 to 0.35 rad, because the target moves at
+  16 m/s (`tv = (11.44, 11.46)`).
+- The cause is the dead band `T` of `009C6A37`. With `BL` set (`009C6530`, on every fly-over tick
+  here), `009C6857` makes `T = 00419010(0, 100 deg, classDesc+268h, 10 deg, R)`. This was read
+  again from the disk bytes: the stores at `009C6906`, `009C6902`, `009C68F8`, `009C68EE` and
+  `009C68DD` are `x0 = 0`, `y0 = 100 deg (00CEDD00)`, `x1 = +268h`, `y1 = 10 deg (00CE3990)` and
+  `x = R`.
+- `+268h` is `TurnCircleRadius` (`007D297F`), 1300 m for these Vals.
+  - Beyond 1300 m, `T` is 10 degrees and the error is under 10 degrees.
+  - Inside 1300 m, `T` grows faster than the error.
+  - So the dead-banded error, and with it the slew, stays exactly 0 for the whole leg.
+
+**The leave is a margin, not a gate that never passes.**
+- At `span` 0 every aircraft is between 0.11 and 0.35 rad off. The heads take the roll-in first,
+  because `009C67B0`'s `span <= 0` arm is read before the leave.
+- The three leavers reach `span` 8 to 29 m with `|error|` = 0.3506 to 0.3525 rad (20.09 to 20.20
+  degrees). The `009C66E3` tolerance there is `00419010(0, 20 deg, B4h x 0.8 - S, pi, span)`, only
+  just above 20 degrees. So each misses it by about 0.1 to 0.2 degrees, one or two ticks before its
+  span would reach 0.
+- They are wingmen, flying formation offsets beside their leader, so their error at a given span
+  is a few degrees larger than the leader's.
+
+**Verdict: the host matches the image here, and nothing is bound.** The dead band, the tolerance
+and the roll-in order are each transcribed and re-read. The one host divergence that feeds this
+geometry is the labelled aim-point substitution: the host aims at the target's origin, while the
+image aims at a body-frame hull point chosen by `target->vtable[+100h]` (docs/HANDOFF_DIVE_BOMB_AIM.md
+(b)). On a 0.2-degree margin that substitution can decide which wingmen leave. So the leavers are
+not evidence of a missing rule. `+19h`'s persistence (read, not applied) plays no part: `ready` is
+0 on every leaver tick before the leave.

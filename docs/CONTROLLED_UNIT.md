@@ -2698,3 +2698,54 @@ read and kept behind the switch. The airfield site's occupancy has no remover, a
   - 5r: `local\l14_loff_*`/`l14_lon_*`;
   - 5s: `local\l14_poff_*`/`l14_pon_*`;
   - 5t: `local\l14_soff_*`/`l14_son_*`.
+
+## Handoff (cc9-lua15, 2026-09-29)
+
+Branch `agent/cc9-lua15`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua15`. No lease is
+held after this addendum.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_plane_ground_pose` | `106dabf9b`, `ff48657e0` | `kPlaneGroundSteeringBound` | ON: stopped planes hold their heading | docs/SQUADRON_LAND_TASK.md 5u |
+| `cc9_torpedo_release_orders` | `f260985db` | none | `unit+C58h` is raised after the first, budget-free drop; not the blocker | docs/TORPEDO_RELEASE_ORDERS.md 6 |
+| `cc9_dive_bomb_release` | `9b2693f83` | none | no stalled gate: AA in the dive, row length, overshoot, fly-over leavers | docs/DIVE_BOMB_TASK.md, the per-aircraft section |
+| `cc9_torpedo_runin_descent` | `65f041420` | none | the run-in is the image's glide slope; JM05 9000's 12 torpedo aircraft reach 22-69 m and are shot down at 0.9-1.3 km | docs/TORPEDO_RELEASE_ORDERS.md 7 |
+| `cc9_dive_flyabove_leavers` | `88c963be4` | none | wingmen miss the 20-degree `009C66E3` tolerance by 0.1-0.2 degrees; the `009C6857` dead band keeps every Val straight | docs/DIVE_BOMB_TASK.md, last subsection |
+
+The 5u finding in one line: `007DA380`'s byte is `BL`. It gates all three axis floors of `007DA710`
+as well as the coupling. In mode 1 it is 0, so every axis takes the flat floor 0.6 (`00CE3D30`).
+The host passed it true, and its `idle_floor` held a mis-converted 0.15.
+
+### Open, in order
+
+1. **Abort's on-ground arm** `009B0E74`-`009B0F93` (5s), then `00951F40`'s hangar hide
+   (`007B96C0`), then re-pair park (`kLandParkStateBound`, 5s). Steering is now ON under them.
+2. **The B-25 forward creep** (5u, prediction 4): the two B-25s (brake 6.0) stop about 0.47 rad
+   off the runway heading and creep forward out through the strip's side. The candidates are the
+   brake strength against idle thrust, and the airfield ground surface `006CF180`.
+3. **Dive overshoot (ii):** two Vals pass aim error zero above the drop floor and are past 25 m
+   when below it. Read against docs/DIVE_FLIGHT_RESPONSE.md; the dive speed tops out near MaxSpd
+   69.4 m/s.
+4. The cc9-lua14 handoff items 5 (Lightning 01's approach with a plane on the runway, the lift-off
+   message `007C7110`, the direction hold's launch arm `007C705C`).
+5. Not carried and recorded in 5u: `007D9F60`'s up levelling (`ctl+80h..8Ch`) and its bank-yaw
+   rotation, and the deck lift `007DA2B1`-`007DA338` (for parented decks).
+
+### Working notes
+
+- `local\l15_run.ps1 -Exe <exe> -Prefix <p> -Rows 'tag:MISSION:frames:mission_frames'` launches
+  rows with the reference environment.
+- The census scripts:
+  - `local\l15_torp.py <log>`: torpedo per aircraft, including the new `aim gates:` line;
+  - `local\l15_dive.py <log>`: dive-bomb per aircraft, with death rows;
+  - `local\l15_aimdeaths.py <log>`: aim-state deaths.
+- Logs:
+  - 5u pair: `local\l15_goff_*` / `l15_gon_*`;
+  - torpedo and dive: `local\l15_tdiag_usn13.log`, `l15_tdiag_usn04.log`, `l15_rin_jm05l.log`
+    (JM05 9200/9000);
+  - fly-over trace: `local\l15_fa_usn04.log`.
+- The build directory was last built with `kHullAimTrace` = true (a local trace build, reverted
+  in the source). Rebuild before any run.
+- JM05 at 3000 frames is too short for either strike; use 9200/9000.
