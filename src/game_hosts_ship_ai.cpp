@@ -44,6 +44,7 @@
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/ship_ai_kamikaze_attack.hpp"
 // Packet cc8_ship_follow: the `follow` state's two halves and the unit group.
 #include "bsp/ship_ai_follow_land.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
@@ -263,6 +264,12 @@ inline constexpr bool kShipAiEngageKamikazeGateBound = true;
 // are records, so a unit the gate hands to the member stops being steered.
 // ON (2026-09-29): paired with the gate; the run arm (009E25BC) is unexercised.
 inline constexpr bool kShipAiEngageSubStateBound = true;
+// Packet cc9_kamikaze_attack_step, docs/SHIP_AI_OPEN_ITEMS.md section 45. True:
+// the kamikaze_attack state (brain+2254h) runs its enter 009DB320 (state+8h
+// cleared) and its step 009E2020 (ship_ai_kamikaze_attack_step_009e2020: the
+// engage step's intercept with its own null-target arm). False: both are
+// records, and a boat in the state keeps whatever drive the previous state left.
+inline constexpr bool kShipAiKamikazeAttackStepBound = false;
 // Packet cc9_approach_sight_test, docs/SHIP_AI_OPEN_ITEMS.md section 31. True:
 // 009E7FC0's gate asks the unit's own gunnery pass. With a target, 009E8116
 // 00864FD0 -> 00864D90 (GameGunneryHost::unit_sees_unit_00864d90, the pass's
@@ -926,6 +933,12 @@ struct GameShipAiHost::Impl {
         // The five attackmove sub-state objects 009E8450 builds, each with its
         // own storage. 007B3DD0 has none: its whole body is one RET 4.
         bsp::ShipAiAttackMoveEngageState engage{};
+        // brain+2254h+8h, the kamikaze_attack state's own latch (009E2020).
+        bsp::ShipAiAttackMoveEngageState kamikaze{};
+        std::uint64_t kamikaze_steps{0};
+        std::uint64_t kamikaze_run_steps{0};
+        std::uint64_t kamikaze_null_steps{0};
+        float kamikaze_min_range{-1.0f};
         bsp::ShipAiAttackMoveLeadPursuitState lead_pursuit{};
         bsp::ShipAiAttackMoveTangentState tangent{};
         float substate_ring_timer_14b4{0.0f};  // sub+14B4h, the approach warn sweep
@@ -2177,6 +2190,7 @@ public:
             }
         }
         const bool entering_attackmove = ai_offset == kAiOffsetAttackMove;
+        const bool entering_kamikaze = ai_offset == kAiOffsetKamikaze;
         ctl_.active_state_ai_offset = ai_offset;
         const StateDescriptor* state = state_for_ai_offset(ai_offset);
         ctl_.active_state_command = state != nullptr ? state->command_object : 0u;
@@ -2188,6 +2202,12 @@ public:
         // 009F3DC1..009F3DC8, the incoming state's vtable[4].
         if (entering_attackmove) {
             ship_ai_attackmove_state_enter_009e86c0(owner_, ctl_, index_);
+        } else if (entering_kamikaze && kShipAiKamikazeAttackStepBound) {
+            // 009DB320..009DB342: blk+234h = blk+29Ch = 1225.0f (00D216E8) and
+            // state+8h = 0. As at 009DB5E0, the two blk floats have no modelled
+            // reader (LABELLED: stored nowhere).
+            ctl_.kamikaze.attack_run_08 = false;
+            owner_.done("ShipAiState::kamikaze_enter_009db320", 0x009db320u);
         } else {
             owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
         }
@@ -3057,10 +3077,13 @@ private:
 
 // Packet cc9_engage_kamikaze_gate: bsp::ShipAiAttackMoveEngageHost, the calls
 // of 009E23B0 (the engage member's step, state+14C0h vtable +0Ch).
-class EngageStepBinding final : public bsp::ShipAiAttackMoveEngageHost {
+// Packet cc9_kamikaze_attack_step: the same calls serve 009E2020's target arm,
+// so the binding is a template over the two host interfaces.
+template <class Host>
+class EngageStepBindingT : public Host {
 public:
-    EngageStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
-                      GameShipAiRow& row, std::size_t index)
+    EngageStepBindingT(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                       GameShipAiRow& row, std::size_t index)
         : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
 
     std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
@@ -3123,11 +3146,23 @@ public:
     }
     void set_brain_speed_scale_0af0(float scale) override { ctl_.speed_scale_af0 = scale; }
 
-private:
+protected:
     GameShipAiHost::Impl& owner_;
     GameShipAiHost::Impl::Controller& ctl_;
     GameShipAiRow& row_;
     std::size_t index_;
+};
+
+using EngageStepBinding = EngageStepBindingT<bsp::ShipAiAttackMoveEngageHost>;
+
+class KamikazeStepBinding final : public EngageStepBindingT<bsp::ShipAiKamikazeAttackHost> {
+public:
+    using EngageStepBindingT<bsp::ShipAiKamikazeAttackHost>::EngageStepBindingT;
+    float unit_heading_vtable_0050() override {
+        // 009E2334, unit->vtable[50h](): the heading 009E00A0 also reads.
+        owner_.done("ShipAiKamikaze::unit_heading", 0x009e2334u);
+        return owner_.units.unit_heading_radians(index_);
+    }
 };
 
 class SubTargetTangentBinding final : public bsp::ShipAiAttackMoveTangentHost {
@@ -8569,6 +8604,32 @@ public:
             apply_ai_drive();
             return;
         }
+        if (state != nullptr && state->step == 0x009e2020u && kShipAiKamikazeAttackStepBound) {
+            // Packet cc9_kamikaze_attack_step: 009E2020, `seconds` unread.
+            KamikazeStepBinding kamikaze(owner_, ctl_, row_, index_);
+            const std::uint32_t target = ctl_.goal_vector.raw_target_0b20;
+            if (bsp::ship_ai_kamikaze_attack_step_009e2020(ctl_.kamikaze, kamikaze)) {
+                ++ctl_.kamikaze_run_steps;
+            }
+            ++ctl_.kamikaze_steps;
+            if (target == 0u) {
+                ++ctl_.kamikaze_null_steps;
+            } else {
+                float tx = 0.0f, ty = 0.0f, tz = 0.0f, ux = 0.0f, uy = 0.0f, uz = 0.0f;
+                owner_.units.unit_position_00fc(static_cast<std::size_t>(target - 1u), tx, ty, tz);
+                owner_.units.unit_position_00fc(index_, ux, uy, uz);
+                const float range = std::sqrt((tx - ux) * (tx - ux) + (tz - uz) * (tz - uz));
+                if (ctl_.kamikaze_min_range < 0.0f || range < ctl_.kamikaze_min_range) {
+                    ctl_.kamikaze_min_range = range;
+                }
+            }
+            owner_.done("ShipAiState::kamikaze_attack_step", 0x009e2020u);
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
+            return;
+        }
         // Every remaining leaf's step was named by docs/SHIP_AI_STATES.md as a
         // vtable slot and its body was not read, so the step is a record with
         // its own address.
@@ -10905,6 +10966,19 @@ void GameShipAiHost::report() {
         "frames_differ=%llu bound=%d (009F1E30 JE 009F2003, packet cc9_approach_no_ship_hold)",
         host.summary.hold_arm_runs, host.summary.hold_frames, host.summary.hold_frames_differ,
         bsp::kShipAiApproachNoShipHoldBound ? 1 : 0);
+    for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
+         ++index) {
+        const auto& c = host.controllers[index];
+        if (c.kamikaze_steps == 0u) continue;
+        host.log.notef("summary mission ship ai kamikaze attack %s: steps=%llu run_steps=%llu "
+            "null_target=%llu min_range=%.1f latch=%d (009E2020, packet cc9_kamikaze_attack_step)",
+            host.rows[index].unit.c_str(), static_cast<unsigned long long>(c.kamikaze_steps),
+            static_cast<unsigned long long>(c.kamikaze_run_steps),
+            static_cast<unsigned long long>(c.kamikaze_null_steps),
+            static_cast<double>(c.kamikaze_min_range), c.kamikaze.attack_run_08 ? 1 : 0);
+    }
+    host.log.notef("summary mission ship ai kamikaze attack bound=%d (009E2020 / 009DB320, "
+        "packet cc9_kamikaze_attack_step)", kShipAiKamikazeAttackStepBound ? 1 : 0);
     host.log.notef("summary mission ship ai engage kamikaze reads=%llu kamikaze_classes=%llu "
         "bound=%d (009E85CD, packet cc9_engage_kamikaze_gate)",
         host.summary.engage_kamikaze_reads, host.summary.engage_kamikaze_classes,
