@@ -528,3 +528,66 @@ What this changes in this document, and what it does not:
   `cc8_hull_aim_point` in `docs/HANDOFF_DIVE_BOMB_AIM.md`; an offset of tens of metres on a
   180-270 m hull has the shape of section 7's unexplained +37.8 to +49.6 m under-prediction on the
   misses, which stays unmeasured until that packet binds the point.
+
+## 11. Correction: the aim point DOES lead, through `sub+44h` "projtime" (packet `cc9_approach_target_lead`)
+
+cc9-planes1, 2026-09-29 (stamped 17:10 UTC). This section retracts the title of this document, and
+the "no lead" conclusions of section 10, `DIVE_BOMB_AIM_POINT.md` section 1 and the header of
+`include/bsp/approach_target_ref.hpp`. All of them read `009FADA0` up to `009FAF00` and set aside
+its tail as "off until something sets `sub+44h`". Two things set it.
+
+**The tail, `009FAF05`-`009FAF7D`** (disk bytes; `009FADA0` runs to `009FAF88` exclusive, `RET 4`
+at `009FAF85`, then INT3):
+
+```
+009faf05  movss  xmm0,[esi+44h]
+009faf0a  comiss xmm0,[00D7A218]        ; 0.0
+009faf11  jbe    009FAF80               ; projtime <= 0: no lead
+009faf26  mov    ecx,[esi+18h]          ; the target
+009faf29  fld    [esi+44h]
+009faf2e  mov    edx,[edx+48h]          ; target->vtable[48h]
+009faf31  push ecx / fstp [esp]         ; t = projtime
+009faf39  push eax                      ; &tmp
+009faf3a  call   edx                    ; __thiscall(out, t), RET 8
+009faf3c  tmp - target+FCh/+100h/+104h  ; the predicted displacement
+009faf62  sub+1Ch/+20h/+24h += it       ; added to the hull point just stored
+```
+
+**The name.** `009FB3E0` (the second constructor, four approach classes) registers the
+sub-object's fields through `[arg]->vtable[10h]`: `+48h` "precision", `+54h` "bullpos", `+34h`
+"error", **`+44h` "projtime"** (`009FB516 LEA EDX,[ESI+44h]`, name at `00D21C8C`), and "vehicle".
+
+**The writers**, found by scanning the approach code for stores at the embedded displacement, the
+scan the earlier censuses did not run:
+- **Torpedo**, sub at `approach+B4h`, so `sub+44h = approach+F8h`. It is written at `009D3D2F`,
+  `009D3D52` and `009D3D65`, and these are the three arms of the engagement estimate already
+  reconstructed as `torpedo_engagement_eta_009d3c93` (TORPEDO_APPROACH_UPDATE): `clamp(+98h +
+  2*max(+90h - speed, 0) / (unit speed + +70h), 0, 30)` seconds. The host keeps it as
+  `torpedo_approach.eta_f8` and feeds it nowhere.
+- **Dive bomb**, sub at `approach+30h`, so `sub+44h = approach+74h`. It is written at `009C7D65`
+  (0) and `009C7E72`/`009C7E85`: `clamp(tf + approach+C8h, 0, 30)`, where `tf` is the
+  `007BCC80(...) + 0.1` fall time of the predicted impact point, kept in the second argument slot
+  `[ESP+38h]`. `approach+C8h` is a construct-time jitter, `009C3E8C` `Uniform(-row+2Ch,
+  +row+2Ch)` on stream 1.
+
+Both writes come after the approach's own `009FADA0` call (`009D34BB`, `009C7A9F`), so each tick
+leads by the previous tick's estimate.
+
+**`target->vtable[48h]`** is `008120E0` on all nine hull-sampling vtables. I read each from
+`.rdata` at `vtable+48h`; the plane's `00D05F20` carries `00954650`. Its slot `+34h` is `00812090`
+and its `+38h` is `0080E0F0`, on all nine. Read whole (`008120E0`-`0081230D`, `RET 8` twice):
+- It takes a turning arc when `|00811890(unit+984h) x t| > 0.1` and speed `> 0.8333`. The chord is
+  `s x t` long, along `heading(v) - A/2`, where `A = yaw x t` clamped to `+-1` rad.
+- Otherwise it is straight: `pos + v x t`.
+
+Reconstructed as `bsp::ship_predict_position_008120e0` and
+`bsp::approach_target_ref_lead_tail_009faf05` (`src/approach_target_ref.cpp`), build-tested only.
+
+**The size.** At the aim entry (about 2200 m) the estimate is tens of seconds, clamped at 30. A
+Lexington at about 16 m/s (reference o's USN04: 3572 m in 225 s) moves 300-480 m in that time.
+So the image's Kates aim well ahead of the carrier, and the host's aim at the hull point itself
+is a lost lead of that size. Section 7's along-course under-prediction on the misses has the
+same sign.
+
+**What this does not change.** Section 1's bearing is still a pure `atan2` of (aim point - own
+position); the lead lives in the aim point, not in the bearing.
