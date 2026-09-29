@@ -4021,7 +4021,7 @@ struct GameUnitsHost::Impl {
     // the C5h -> 007C71E0 -> 007C1570(4) -> C3h -> 007CB5F0 chain into state 4,
     // with the site's occupancy add 006CED90 and restamp 006CE230. False: no
     // probe, plane+BF8h stays clear and a plane never leaves state 7 by landing.
-    static constexpr bool kPlaneTouchdownBound = false;
+    static constexpr bool kPlaneTouchdownBound = true;  // ON: gameplay identical, contact exercised (docs/SQUADRON_LAND_TASK.md 5k, 5l)
     static constexpr bool kLandingSiteSpacingBound = true;  // ON: pair gameplay identical (docs/SQUADRON_LAND_TASK.md 5i)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the

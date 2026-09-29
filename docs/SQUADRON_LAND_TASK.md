@@ -1466,16 +1466,74 @@ local heights of 3.4 to 16 m over T:
   blocker would then be the descent: the heads float 3.5 to 16 m over the runway, where the image
   needs the wheel height.
 
+
+### The joint pair and the verdict (cc9-lua12, 2026-09-29): begin and final stay OFF, the touchdown flips ON
+
+OFF is `local\l12_tdoff_<row>.log`. ON is `6ad4b7fcd` with the three switches true
+(`local\l12_jon_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | 5j's moves exactly: deaths identical, B-25 01 6207.20 -> 8414.00 m, the same eight IJN ships gain an engagement range |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Contact is exercised: held.** Each head's first contact is at the runway threshold, local
+   z = -198.8 to -199.9. The lateral offset |x| is 0.58 to 0.97 m for the fighters and 3.6 m for
+   the B-25s. The first-contact heights are 11.9 to 14.4 m. Minimum heights over the rectangle
+   (`contact_steps` 218 to 256, i.e. the whole 400 m at about 32 m/s):
+
+   | head | minimum height |
+   | --- | --- |
+   | Warhawk 01 | 3.96 m |
+   | Warhawk 01\|.-4 | 3.89 m |
+   | Lightning 01\|.-4 | 6.09 m |
+   | Lightning 01 | 7.25 m |
+   | B-25 01\|.-2 | 11.88 m |
+   | B-25 01 | 12.35 m |
+
+   The prediction said "about 4 m for the fighters". That holds for the Warhawks; the Lightnings
+   stayed 2 to 3 m higher. Warhawk 01|.-4 made contact while still in begin (2934 begin ticks,
+   no final entry), as in 5j.
+2. **No touchdown: held.** `low_steps=0` on every plane: no head came below its wheel height (0.0
+   or 1.52).
+3. **Everything else matches 5j: held.**
+   - Begin lasted 12 to 66 ticks per head, and there were five final entries.
+   - The abort refusals are 1926 to 2919 per head, 5j's numbers.
+   - The native-table and summary moves are 5j's.
+- **Why the heads float.** Over the runway, Warhawk 01's final trace (every 10 ticks) runs:
+  - Y = 15.2 and 16.3 m in mode 2, the steer's nose-down arm (pitch -0.28 to -0.32);
+  - then 10.2 / 6.6 / 7.7 / 10.6 / 14.0 m in mode 1, where the steer holds ApproachPitch
+    +0.1047 rad because Y is below 1.4 x hull length;
+  - spd_cmd 32.0 and live speed 30.0 to 34.6 m/s throughout.
+
+  In this host, a +6 degree hold at 30 m/s climbs. For the image's planes to reach their wheel
+  height, the same hold has to sink at the commanded speed. This is the airframe response at the
+  landing speed that 5g already recorded as a spread miss. It belongs to the flight model
+  (`009FB800`, the lift and throttle at the ApproachPitch hold), not to the land task or the
+  touchdown.
+- **Verdict.**
+  - **Begin and final stay OFF.** 5j's rule fails on both counts: no head touches down, and every
+    head flies on past T for more than 10 s.
+  - **`kPlaneTouchdownBound` flips ON.** Section 5k's rule is met: it is gameplay identical alone
+    on both rows, and this pair shows its contact geometry working at the threshold with the
+    right lateral offsets. On its own it changes no gameplay until something brings a plane down
+    to its wheel height.
+
 ## 6. Open, in order
 
-1. **The touchdown.** Standby and line are ON (sections 5e and 5g), and the launch-site arm is ON
-   (5i). Begin (5h) and the airborne half of final (5j) are bound and match the listing, but they
-   stay OFF because this host has no touchdown, so the planes fly on past T.
-   - The touchdown is plane `+BF8h`/`+BF4h` ground contact and `007CA3F0`, which moves the control
-     mode off 7 (docs/PLANE_GROUND_OPS.md).
-   - After it come final's on-ground half (`009B1FEA`-`009B207A`, `006BC530`, `007B8D70`),
-     `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`) and
-     `land/abort` (`+64Ch`).
+1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON
+   (5e, 5g, 5i, 5k). Begin (5h) and the airborne half of final (5j) are bound and match the
+   listing. They stay OFF because the heads float 3.9 to 12 m over the runway, where the image
+   needs the wheel height: 0.0 for the P-40 and P-38 of this installation, 1.52 for the B-25
+   (5l).
+   - The blocker is the airframe response to the ApproachPitch hold (+0.1047 rad at about
+     32 m/s), which climbs in this host.
+   - After it come:
+     - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still);
+     - final's on-ground half (`009B1FEA`-`009B207A`);
+     - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
+     - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
+     - `land/abort` (`+64Ch`).
    - A mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
