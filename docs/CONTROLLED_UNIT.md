@@ -2800,3 +2800,70 @@ is held after this addendum.
 - The pair to use for park is LOMP10 9200/9000 with `--flip kLandParkStateBound=true` on both
   sides. With park off, nothing reaches abort.
 - cc9-lua15's `local\l15_dive.py` and `local\l15_torp.py` read these logs unchanged.
+
+## FindEntity matches names case-insensitively (packet `cc9_find_entity_case`, 2026-09-29)
+
+Worker cc9-lua17. The finding is cc9-ships15's (docs/SHIP_AI_OPEN_ITEMS.md section 50):
+ijn_1_pearl.lua:526 asks `FindEntity("Airfield 02")`, the scene's unit is `AirField 02`, and the
+host answered nil.
+
+### The image's compare
+
+- `00925A90` (`__thiscall(registry, name)`, `RET 4` at `00925AE3`) walks the registry's chain at
+  `+8h` (next at `+44h`) and hands each entry to `009251F0` at `00925ACA`; the first non-null
+  answer wins.
+- `009251F0` (`__stdcall(node, name)`, `RET 8`) first calls `00438E10` at `0092521E` with
+  ECX = the node's name (`vtable+10h`) and EDX = the whole name. `00438E10` is a null-guarded
+  `_stricmp` (`00BF7FBF`, cleanup `ADD ESP,8` at `00438E2E`). A zero answer returns the node at
+  `00925228`. So an unqualified name matches the **whole** string with ASCII case folded, not a
+  prefix.
+- Only a qualified name (`strchr(name, '\')` at `0092523A`) descends: length test
+  (`00925254..00925265`), then `__strnicmp` at `00925273` on the component, then the children.
+  That arm is unchanged here (`src/entity_identity.cpp`, `entity_find_by_qualified_name_009251f0`).
+
+### The host
+
+`GameMissionLuaHost::push_resolved_entity` looked the name up in `scene_entity_ids_`, a
+case-sensitive `std::map`. `kFindEntityCaseInsensitiveBound` (src/game_hosts_lua.cpp) keeps the
+exact lookup and, on a miss, takes the first entry that `_stricmp` calls equal. LABELLED: the
+registry's walk order is not modelled, so two entries differing only in case would resolve by
+map order, not registry order; no reference row has such a pair.
+
+Other lookups: `SceneCommand::find_entity_by_name` (src/game_hosts_commands.cpp, cc9-gunnery13's
+file) compares `unit.name == name` for `0046AB48`'s call of `00925A90`; the same fold applies there
+and is routed, not edited. The squadron `HomeBase` key already folds case under
+`kSceneHomeBaseQualifiedNameBound`.
+
+### Census (OFF binary, `BSP_LUA_FIND_ENTITY_MISSES=1`, all sixteen n rows)
+
+| row | misses | cause |
+| --- | --- | --- |
+| IJN01 | `Airfield 02` | case only: the scene spells it `AirField 02` (ijn_1_pearl.scn, 2024-07-13 mtime) |
+| JM05 | nine names (`Clemson Class Damaged 01`/`02`, `Landing Ship, Tank 02`/`03`, `PT Boat 80' Elco 04`, `US Cargo Transport 01`/`02`, `US Tanker 01`, `USTroopTransport 01`) | absent: no spelling of any of them occurs in ijn_05_invasion_of_port_moresby.scn; jm05.lua:496-503 puts them in `Mission.UntouchUnits` |
+| the other fourteen | none | - |
+
+Logs: `local\l17_off_<row>.log` in the cc9-lua17 tree; scanner `local\l17_scn_names.py`.
+
+### Predictions (written before the ON runs)
+
+- IJN01: one `FindEntity case-folded: "Airfield 02" -> "AirField 02"` line. `Mission.AF2`'s only
+  reader is `PilotLand(unit, Mission.AF2)` at ijn_1_pearl.lua:975 for the two B-17s, and
+  `kPilotLandNativeBound` is OFF, so the native stays a record: **gameplay-identical** (`pair_diff`
+  0 or 1). The land install becomes reachable only when ships15 flips `kPilotLandNativeBound`.
+- JM05: no fold (the names are absent), so identical.
+- The other fourteen rows have no miss, so the switch cannot act there; not paired.
+
+### Measured, and the flip
+
+Pair at `d52148141`: OFF `local\l17_off` (SHA-256 prefix `FF6928FBF318`), ON `--flip
+kFindEntityCaseInsensitiveBound=true` `local\l17_on` (`7D513C6A88BF`), n's launch form with
+`BSP_LUA_FIND_ENTITY_MISSES=1` on both sides. A 300-frame USN01 smoke on ON ran clean.
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| IJN01 3200/3000 | 1, gameplay identical | `entity_resolves 78 -> 79`; the miss line became `FindEntity case-folded: "Airfield 02" -> "AirField 02"`; death rows, plane death modes and the 93-row unit table identical; the only native-table moves are the known sector-scan / clearance / pretranslate noise and the avoidance refill counter |
+| JM05 3200/3000 | 1, gameplay identical | the known noise only; the nine absent names still miss |
+
+The prediction held on both rows: **flipped ON**. `PilotLand` still runs as a record twice in
+IJN01 (`calls=2`, argc 2, `luaStageInit`), now with a live `Mission.AF2`; cc9-ships15 flips
+`kPilotLandNativeBound` next and pairs the land install.
