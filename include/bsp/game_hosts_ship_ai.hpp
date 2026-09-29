@@ -744,6 +744,13 @@ public:
     // for a unit that is not a loaded LandingShip. Read-only.
     bool unit_big_landing_ship_0808(std::size_t unit_index) const;
 
+    // Packet cc9_scripted_order_natives: 008A7060 NavigatorEnable stores its
+    // boolean at [unit+740h]+11h, the enabled byte of the ship AI controller's
+    // tick sub-node (0072BBD0 sets it to 1). 008759C4 skips the controller's
+    // +0Ch tick (009F50E0) while it is 0. Kept per unit index, so a call made
+    // before the controller is registered still applies.
+    void set_navigator_enabled_0011(std::size_t unit_index, bool enabled);
+
     // --ai-drive <name>=<throttle>,<rudder>, milestone 2o. A LABELLED
     // DIAGNOSTIC STAND-IN, not a reconstruction: eight of the nine state steps
     // have no body, so on a re-plan tick of a unit named here the executable

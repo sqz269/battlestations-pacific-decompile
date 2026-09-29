@@ -3997,3 +3997,61 @@ candidates for `[00F8AB6A]`.
 - `s14_gap.py <out.tsv> <logs...>` is the UNIMPLEMENTED and refusal census.
 - `s14_ctx.py <n> <names...>` prints the comments before each host record site.
 - Logs: `s14m_*` (fresh main rows), `s14k*` (section 45 pairs), `s14d*` (section 46 pairs).
+
+## 49. Scripted-order natives (packet `cc9_scripted_order_natives`, `kScriptedOrderNativesBound`)
+
+Worker cc9-ships15, 2026-09-29 (started 13:36 UTC), base `81bf3f3fd`. Ghidra was read-only.
+This covers GAMEPLAY_GAP_RANKING rows 9 and 13. The call counts come from the `rb14_*` reference
+logs (GAME_EXECUTABLE.md reference n).
+
+### 49.1 The natives, read whole
+
+| native | body (V = listing read) | rows, calls | this packet |
+| --- | --- | --- | --- |
+| `NavigatorEnable` `008A7060` | arg0 through `00888AA0` (no kind check), then `[unit+740h]+11h` = arg1 as a boolean. `unit+740h` is the ship AI controller (`00810DF7`). `+11h` is the enabled byte of its tick sub-node: `0072BBD0` sets it to 1 at `0072BBEF`. `008759C4 CMP [ESI+11h],BL / JE` skips the `+0Ch` tick, which is `009F50E0` for vtable `00D21AE8`. The weapon director is a separate sub-node, so it keeps ticking. | JM05, 1: `luaJM5InitCapPt` (`jm05.lua:4502-4509`, this installation, mtime 2024-07-13) calls it with `false` right after `GenerateObject("Event2Pt")`. The `true` call at `:1344` needs a capture that is not reached. | **bound**. `GameShipAiHost::set_navigator_enabled_0011`, a per-unit flag, gates the `009F50E0` step. |
+| `UnitHoldFire` `008A6AC0` | arg0 through `00888AA0`, `vtable[114h]`, then `0071BED0` on the answer with **no null check** (`008A6BD6-008A6BE4`). `0071BED0` is `0071BE80` with the stance literal 0 (`0071BEDB`, `0071BEEA`). | IJN01, 2: `ijn_1_pearl.lua:973`, B-17 01/02. This installation's copy has mtime **2024-08-26**, so it is modded. **Both are squadrons** (`GenerateObject squadron B-17 01: WingCount=2`), so the squadron arm is the one taken. An earlier reading took them for single planes, from the `plane spawn` rows; that was wrong. | **bound**. Squadron: the `+348h` block's answers for stance 0 (allowFire 0 from `0084D910`, allowMove 1 from `0084D930`), in the host's permission map, which is record-only. **Plane:** `vtable[114h]` of `00D06638` is `0047F180` (`XOR EAX,EAX`), so the image reads through null at `0071BED6`. The host counts that and does nothing, because it cannot reproduce the fault. Whether the game survives the fault (an SEH catch in the Lua call path) is unread. **Ship:** stays a record. `0071D560` allows fire for stance 1 or 2 and `0071D580` allows move for stance 2 or 3, then `0071DA50` sends 5Ah; that consumer is the gunnery host's. |
+| `EntityTurnToEntity` `008A0A10`, the arms after the squadron arm | `008A0DE9`: `vtable[5Ch](6)`. **Ship arm** (`008A0DF8-008A0E68`): `00414DB0` when `+C8h` is clear, then translation = `+FCh` (`esp+64h..6Ch` = m[12..14]), then `vtable[88h]` (`006E00A0` for TBoat vtable `00D0C648`, read at `00D0C6D0`). Then `00C336C0` and `00C56CF0` on `[0080E490()+2Ch]`, the physics body pose. **Other arm** (`008A0E6F-008A0EB8`): `vtable[88h]` alone. | LOMP10 3000 and 9000, 2 each: `10_san_jose.lua:430`, PT 01 and PT 02 in `luaIntroMovieEnd`, after `SetShipSpeed` and `PutTo`. | **bound**: `set_local_matrix_006e00a0` for kind 6; `007C9540` for a plane; any other kind stays a record (`008a0eb8`). **SUBSTITUTION:** the host's ship pose and physics state are one motion state, and velocity is not touched. |
+| `UnitSetFireStance` `008A6490`, ship arm | the ship director's `0071D560` / `0071D580` answers, then `0071DA50` / `0071DAD0` messages. | USN01, 9: `usn_1_marshall.lua:296` sets stance 0 at init on Northampton, SaltLakeCity and Dunlap. `:611` sets stance 2 on the first think and `:640` 3 s later (`secNarr`). Stance 2 is fire and move, the host's defaulted stance. | **not bound.** The consumer is the gunnery host's `director+3Ch/+3Dh`, which is gunnery12's. Predicted effect: only the window from init to the first think. |
+| `SetShipMaxSpeed` `00890A10` | arg0 through `00888AA0` (no kind check), then `00890B51 FSTP [ESI+9C0h]`. `unit+9C0h` is the host's `motion.max_speed` (`00822C20` seeds it; `0080FC30` reads it). | BSM01, 2: Whitney and Tautog set to 6 (`bsm_01_stationed_at_pearl.lua:1872/1888`, mtime 2024-07-13). | **routed:** the lead has the setter edit for lua16. Binding follows once it is on main. |
+| `PilotLand` `008A47B0` | `0077D600(entity, land 00E08FA0, target from arg1, flags 1)` at `008A4907`. The receiver is `0099A170`'s land arm `0099A3DD`, with the site from the command target. | IJN01, 2 (the B-17 planes to Mission.AF2) | **routed** to lua16: the land task install needs an explicit site owner. |
+| `Scoring_SetMissionCompleted` `008B8AD0` | reconstructed as `run_set_mission_completed_008b8ad0` (`src/mission_result.cpp`), which writes a `MissionResultHost` scoring slot | USN02, 1, at the scripted failure | **not bound:** the scoring slot is the mission-frame host's result object, which the Lua host has no route to. The score record has no in-mission reader. |
+| `GetCapturePercentage` `0089B840` | `006F1F90`: returns `|float [cb+7A8h] / int [cb+7A4h]|`, or 0 when `+7A4h` is 0 (FABS at `0089B966`). `006F2780` seeds `+7A4h` = CaptureValue (default 1000) and **`+7A8h` = 0**. The capture tick `006F6760` moves it and is unmodelled. | JM05, 48 (score text only, `jm05.lua:5178-5216`) | **closed, no gap in these rows:** before any capture progress the image answers 0.0, the host's neutral value. It opens with `006F6760`. |
+
+### 49.2 Predictions for the flip (written before any pair)
+
+- **JM05 (3000):** Event2Pt's controller never steps. It stays at its spawn (324.5, -0.5, -3224.7),
+  so the reference's 2374.31 m run to (-727.6, -1096.2) becomes about 0 m. Its `ship ai step` rows
+  freeze at their initial values. `summary mission ship ai navigator enable calls=1
+  disabled_units=1`, with skipped steps close to the step count. The rest of the row can move
+  through the neighbour and avoidance lists (Event2Pt is on them). Deaths stay 0.
+- **LOMP10 (3000 and 9000 long):** PT 01 and PT 02 are posed to face Ashigara at
+  `luaIntroMovieEnd`, and their tracks and end positions move. The planes' squadron arm is
+  unchanged. The `008a0d1c` record disappears. Deaths stay 0 (the reference has none).
+- **IJN01 (3000):** two null-director records, nothing done: gameplay identical (exit 0 or 1).
+- **BSM01 (3000), control:** none of the bound natives is called there: identical (0).
+
+### 49.3 The pairs, and the flip
+
+The pairs are same-tree exports of `9273d482b`: `local\s15_off` (SHA-256 `16AE88B2F53A`) and
+`local\s15_on` (`AB6154A1431E`). The logs are `local\s15{off,on}_<row>.log`, launched in the
+reference form with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`. A 300-frame USN01 smoke
+ran first (`local\s15s_smoke.log`). Every run presented its full frame count, and the session
+stayed on the console.
+
+| row | pair_diff | what moved | against the prediction |
+| --- | --- | --- | --- |
+| JM05 3000 | 3 | Event2Pt ends at its spawn (324.5, -3224.7), 0.00 m, against the reference's 2374.31 m run. `navigator enable calls=1 disabled_units=1 skipped_steps=3000`. Ship AI steps drop 152940 -> 149940, plus the plan, path and director counts that follow from them. Death rows are identical (0); damage 2118.3 and shots 99 are unchanged. | as predicted |
+| LOMP10 3000 | 3 | PT 01 is posed to forward (0.678, 0, 0.735) and PT 02 to (0.687, 0, 0.726). End positions: PT 01 (-735.0, -2002.3) -> (-251.1, -1610.0); PT 02 (-2698.0, -2154.3) -> (-2568.8, -2593.4). The `008a0d1c` record is gone. Death rows identical (0). | as predicted |
+| LOMP10 9000 | 3 | Both PTs reach their goals. PT 01 ends within 0.4 m of its OFF position; PT 02 ends at (820.6, -5187.9) -> (786.2, -5238.3). Death rows identical (0). | as predicted |
+| IJN01 3000 | 1 | two `UnitHoldFire: squadron B-17 0n allowFire 0 allowMove 1` notes. Nothing reads the host's permission map. | the rows are squadrons, not planes (see 49.1), and the gameplay is identical, as predicted |
+| BSM01 3000 | 0 | nothing | as predicted |
+
+**Flipped ON.** In each row the mechanism matched and no death row moved.
+
+**Still open from this packet:**
+- `SetShipMaxSpeed`, once lua16's `set_unit_max_speed_09c0` is on main;
+- `PilotLand` (lua16; the IJN01 targets are squadrons);
+- the ship arms of `UnitSetFireStance` and `UnitHoldFire` (gunnery12, `director+3Ch/+3Dh`
+  through the 5Ah message);
+- `Scoring_SetMissionCompleted`, whose route is the mission-frame result host;
+- `GetCapturePercentage`, which waits on the capture tick `006F6760`.

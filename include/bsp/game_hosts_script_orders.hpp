@@ -603,6 +603,11 @@ private:
     unsigned long long pilot_move_on_path_calls_{0};
     int run_entity_turn_to_entity(GameScriptOrderRow& row);
     int run_unit_set_fire_stance(GameScriptOrderRow& row);
+    // Packet cc9_scripted_order_natives (kScriptedOrderNativesBound).
+    int run_unit_hold_fire(GameScriptOrderRow& row);
+    int run_navigator_enable(GameScriptOrderRow& row);
+    unsigned long long hold_fire_null_director_{0};   // 0071BED6 on a null ECX
+    unsigned long long turn_ship_arm_posed_{0};       // 008A0DE9 arm
 public:
     // The +3Ch allowFire / +3Dh allowMove bytes of a squadron's +348h command
     // block (0084D810), keyed by squadron name. This host builds no such block,
