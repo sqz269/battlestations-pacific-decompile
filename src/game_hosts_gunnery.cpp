@@ -531,6 +531,17 @@ constexpr bool kAaFlakAimErrorBound = true;
 //    (its director fire target) and is not made here. OFF: every director keeps
 //    008363E0's 1/1 whatever the script says (the stance is recorded, counted).
 constexpr bool kShipFireStanceBound = false;
+//  * kPlaneHitTaskNotifyBound: packet cc9_plane_hit_task_notify
+//    (docs/AA_LETHALITY_AUDIT.md section 8). A plane's hit handler is 007BBCF0
+//    (vtable[ECh] of class 0Fh and its eight plane classes), which calls
+//    00999AA0 on the pilot bot before 008777D0: the first task whose
+//    vtable[2Ch] answers true takes the notice; the torpedo task's 009D3270 zeroes
+//    approach+134h, so the release distance goes back to TorpReleaseDistFar for
+//    15 s. The host routes every plane hit through 00826F10, so nothing reached
+//    the tasks. ON: each hit record dispatched to a plane victim (the direct and
+//    the blast path, and the gunless blast), damaging or not, first calls
+//    GameUnitsHost::plane_hit_task_notify_00999aa0. OFF: counted, not sent.
+constexpr bool kPlaneHitTaskNotifyBound = false;
 // This installation's robots.lua (2025-06-01), AAGunnerBot, by skill index:
 // {AngleDiffErrorRatio (+0Ch), ConstAngleError (+14h), degrees}.
 constexpr float kAaGunnerErrorRows[6][2] = {
@@ -2037,6 +2048,21 @@ struct GameGunneryHost::Impl {
     unsigned long long stance_by_value[4]{0, 0, 0, 0};
     unsigned long long stance_fire_forbidden_pushes{0};
     unsigned long long stance_move_forbidden_reads{0};
+    // Packet cc9_plane_hit_task_notify: hit records on plane victims, notices
+    // sent to 00999AA0, and the ones a task took (answered true).
+    unsigned long long plane_hit_records{0};
+    unsigned long long plane_hit_notices{0};
+    unsigned long long plane_hit_notices_taken{0};
+    void notify_plane_hit_007bbcf0(std::size_t victim) {
+        // 007BBCF0 is the handler of class 0Fh and the plane classes under it.
+        if (!units.unit_is_kind_of(victim, 0x0f)) return;
+        ++plane_hit_records;
+        if constexpr (kPlaneHitTaskNotifyBound) {
+            ++plane_hit_notices;
+            if (units.plane_hit_task_notify_00999aa0(victim)) ++plane_hit_notices_taken;
+            done("Plane::hit_task_notify_00999aa0", 0x00999aa0u);
+        }
+    }
     std::vector<GameGunneryHost::GameGunneryHitEvent> hit_events;   // cc9_lua_hit_listeners
     float hit_event_fire{0.0f};   // packet cc9_hit_event_fields
     float hit_event_leak{0.0f};
@@ -7957,6 +7983,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     ShipHitBinding binding(*this, victim, shooter, weapon, direction);
     binding.set_hit(hit);
     const float before = target.health;
+    notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
     bsp::apply_ship_hit_record_00826f10(binding, hit, view);
     ++summary.ship_hit_records;
     ++summary.dispatched_hits;
@@ -8219,6 +8246,7 @@ void GameGunneryHost::Impl::apply_gunless_blast_hit(std::size_t source, std::siz
     ShipHitBinding binding(*this, victim, source, nullptr, direction);
     binding.set_hit(hit);
     const float before = target.health;
+    notify_plane_hit_007bbcf0(victim);   // 007BBCF0 -> 00999AA0, before 008777D0
     bsp::apply_ship_hit_record_00826f10(binding, hit, view);
     ++summary.ship_hit_records;
     ++summary.dispatched_hits;
@@ -10336,6 +10364,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery override hp calls=%llu applied=%llu bound=%d "
             "(008C1930, packet cc9_override_hp)", host.override_hp_calls, host.override_hp_applied,
             kLuaOverrideHpBound ? 1 : 0);
+        host.log.notef("summary mission gunnery plane hit notice records=%llu sent=%llu taken=%llu "
+            "bound=%d (007BBCF0 -> 00999AA0 -> 009D3270, packet cc9_plane_hit_task_notify)",
+            host.plane_hit_records, host.plane_hit_notices, host.plane_hit_notices_taken,
+            kPlaneHitTaskNotifyBound ? 1 : 0);
         host.log.notef("summary mission gunnery director stance sets=%llu (stance 0/1/2/3 "
             "%llu/%llu/%llu/%llu) fire_forbidden_pushes=%llu move_forbidden_reads=%llu bound=%d "
             "(0071BE80 / 0071D560 / 0071D580 / 008624C0, packet cc9_ship_fire_stance)",
