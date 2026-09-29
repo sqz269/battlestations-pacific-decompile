@@ -1256,3 +1256,133 @@ Scripts in the cc9-planes2 tree's `local\`:
 - `p2_runs.ps1`: the launcher (`-Variants`, `-Rows`, `-Tag`);
 - `p2_edit_obstacles.py`: the applied edit, with an optional root argument;
 - `p2_{off,on}_*` logs.
+
+## 19. The torpedo reset's draws and its run-time seed (packet `cc9_torpedo_reset_draws`, cc9-planes3)
+
+cc9-planes3, stamped 2026-09-29 20:24 UTC. Written while game runs failed at renderer init
+(`CreateDevice` hr `0x8876086a`, `logonui=1`; smoke `local\p3_smoke.log` at about 20:17 UTC), so
+everything below is a reading and a prediction until the pairs in 19.4 run.
+
+### 19.1 What the reset draws (`009D0380 BSP_BotApproachTorpedo_Reset`, disk bytes)
+
+| field | store | image value | host before this packet |
+| --- | --- | --- | --- |
+| `+70h` | `009D0449` | `U(0.9, 1.1) * min(desc+18Ch TravelSpeed, 0.75 * 007BCE20(unit))` | 0 (`closing_speed_bias_70`) |
+| `+74h` | `009D0457` | 67.0f (`00D212A0`); `009D3489` replaces it on the first approach update | untouched until `009D3489` |
+| `+78h` | `009D0475` | `U(0, 0.25) * record+0h` TorpReleaseAlt | the whole TorpReleaseAlt |
+| `+7Ch` | `009D05ED` | `+7Ch + U(-0.1, 0.5) * (+80h - +7Ch)` | the row value times `+24h` |
+| `+80h` | `009D0625` | `+80h - U(-0.1, 0.5) * (+80h - new +7Ch)`, old `+80h` kept as a double (`009D05F6`) | the row value times `+24h` |
+| `+98h` | `009D0272`/`009D0285` in `009D0160` | section 17's formula, after `009D02A0` | 0, never written |
+
+- **Draw bounds, read as bytes.** 0.9f `00CE3860`, 1.1f `00CE6448`, 0.25f `00CE3868` (low
+  bound from `FLDZ`), -0.1f `00CE3CB4`, 0.5f `00CE3800`. The 0.75 is the double at `00CEC9D8`.
+  - Every draw is `00BD2F10` with `ECX = 1`, stream 1. The first argument, `[ESP]`, is the low
+    bound.
+- **The min at `009D03FD`.** `FCOMI ST1` / `JBE` keeps the product `0.75 * 007BCE20` when it is at
+  or below TravelSpeed. The product was rounded to a float at `009D03E7` first.
+- **`007BCE20` and `007BCFA0` have the same shape**, each `__fastcall(unit)`:
+  - They walk `unit+974h` (count `+994h`) and read `[[dev+3F8h]+34h]`.
+  - They keep the minimum of `+DCh` (`007BCE20`) or `+E4h` (`007BCFA0`) over the devices whose
+    `+8h` is 0Ah. They start from FLT_MAX (`00D7A248`).
+  - `+8h == 0Ah` is the Torpedo sub-type (docs/AI_TARGET_WEIGHT_TERMS.md, `006EA4F0`).
+  - `+DCh` is `MaxWaterHitVel`: `008566B0` reads the key and stores it raw at `+DCh`.
+  - `+E4h` is `WaterTravelSpeed`, with no 0.6 factor.
+  - So the planned attack speed is capped at three quarters of the slowest water-entry limit the
+    aircraft's torpedoes allow.
+- **Not bound in this packet:** the reset also draws `+88h` (`U(1.25, 1.5) * desc+268h + +80h`)
+  and `+12Ch` (`-U(0, 1)`), where the host holds the engage range and 0. They are queued in 19.5.
+
+### 19.2 `009D0160`, second reading of the x87 stack (asked for in 18, item 2)
+
+I re-traced `009D0160`-`009D0292` instruction by instruction from the disk bytes, and **I agree
+with section 17**. The opcodes the argument turns on, read as bytes because Capstone's register
+forms are easy to misread:
+- `009D01AE DE EA` is `FSUBP ST2,ST0`: ST2 = ST2 - ST0, so `+70h - run`.
+- `009D0219` and `009D022B`, `DE F3`, are `FDIVRP ST3,ST0`: ST3 = ST0 / ST3.
+  - At `009D0219` that gives L / dd.
+  - At `009D022B` it gives (L - dd) / run.
+- `009D0227 DE EA` is `FSUBP ST2,ST0`: ST2 = ST2 - ST0 = L - dd, where L is `+7Ch - (lead + dd)`
+  from `009D01F6`.
+
+So dd is subtracted twice on the middle arm. The comparison at `009D0211` also tests dd against
+the L that already has dd taken off. `009D1360` subtracts only its fall lead
+(`009D146E FSUB [ESP+14h]`), so the two routines really do differ. Other details:
+- `dt` is not floored.
+- `run` is not guarded against 0.
+- `007BCC80` is `__thiscall(unit, h)`. `ECX` is still `[ESI+4]` from `009D0169`, and the
+  `PUSH ECX` at `009D016F` only reserves the argument slot, which `009D0178` then overwrites
+  with h.
+- `+74h` at this point is the reset's 67.0.
+
+### 19.3 The binding (committed OFF)
+
+- **`src/torpedo_approach_update.cpp`** adds four functions:
+  - `torpedo_reset_attack_speed_009d03d9`
+  - `torpedo_reset_near_leg_009d05ed`
+  - `torpedo_reset_far_leg_009d0625`
+  - `torpedo_reset_run_time_009d0160`
+  - Build-tested only. The run-time divide is guarded as the `009D1360` port guards it.
+- **`src/game_hosts_units.cpp`**, in the torpedo task install after `+84h`:
+  - `kTorpedoResetDrawsBound` sets `+70h`, `+74h`, `+78h`, `+7Ch` and `+80h`.
+  - `kTorpedoResetRunTimeSeedBound` seeds `+98h` after the aim-error draw.
+  - The seed is meant to run with the draws ON, since it reads their fields.
+  - `torpedo_device_min_007bce20` walks the gunnery host's gun rows for the unit with
+    `bullet_sub_type == 0Ah`.
+  - The census line is `summary mission torpedo reset draws`, and the first 24 resets log
+    `torpedo reset draws` / `torpedo reset seed` lines.
+- **Labelled substitutions:**
+  - Each draw has its own keyed stand-in stream (`#t70`, `#t78`, `#t7c`, `#t80`), so the
+    existing draws keep their order.
+  - The devices are the gunnery host's gun rows.
+  - `007BCC80`'s vy is the host's `motion.linear_velocity.y`, as the dive side already takes it.
+  - **The seed is never refreshed.** The image rewrites `+98h` through `009D1360` on every aim
+    tick (`009D19A4`) and in done/prepare (`009D27D1`). In the host both calls are counters, so the
+    reset's value stands for the whole task. Binding `009D1360` is queued in 19.5.
+
+### 19.4 Predictions (written before any ON run)
+
+**Numbers for USN04's torpedo class** (the OFF logs' trace: `hit_limit=100.0`, `swim=30.9`, so
+WaterTravelSpeed 51.5):
+- `0.75 * 100 = 75` exceeds any torpedo bomber's TravelSpeed. So `+70h` = `U(0.9, 1.1) *
+  TravelSpeed`, about 55-77 m/s.
+- `hit_vel_min` must print 100.0 on USN04, never FLT_MAX (3.4e38).
+- With SPNormal, `+78h` falls from 12 m to 0-3 m. The commanded band `+74h + +78h` therefore drops
+  by 9-12 m on every torpedo run.
+- `+7Ch` moves by -20..+100 m and `+80h` by up to 100 m from 450/650.
+- The seed: `h` is about 67-70, so `fall` is about 3.4 s and `run` = 51.5.
+  - `dt` is about 0.1-0.3 (it can go negative for a slow draw).
+  - `L` is about 200-320.
+  - That gives **`+98h` of about 7-10 s**, plus the `+9Ch` time error.
+
+**Draws alone (pair A, `kTorpedoResetDrawsBound=true`):**
+- Mechanism:
+  - `draws` equals the number of torpedo task installs.
+  - Every `torpedo reset draws` line has a finite `hit_vel_min`.
+  - The `+78h` values lie in [0, 0.25 * TorpReleaseAlt].
+- Torpedo descent and release:
+  - The commanded release altitude drops by about 10 m on every torpedo row (USN04, E2, JM05,
+    USN01, USN13).
+  - The release distance shifts with `+7Ch`.
+  - The `+F8h` estimate shrinks at mid range, because the closing speed roughly doubles. So the
+    lead shrinks there. It is unchanged at 30 s beyond about 1400 m.
+- Torpedo-task releases and water contacts move on USN04 and E2. JM05, USN01 and USN13 release
+  nothing now, and may stay at 0.
+- Rows with no torpedo task (USN02, JM06, JM08, BSM01, LOMP06, LOMP10, USN12) stay gameplay
+  identical.
+- Deaths move by a few at most. Diff the per-entity table.
+
+**Seed on top (pair B, both true against draws only):**
+- Mechanism: `seeds` equals `draws`, and `mean_run_time_98` falls between 5 and 15 s, never 0 or
+  NaN.
+- `+F8h` at the release range rises from about 0 to about `+98h`. So the aim point leads the
+  target by about `+98h` x target speed (about 100-160 m for a 16 m/s carrier) at the drop.
+- Torpedo hit records move on USN04 and E2.
+
+**Verdict rules:**
+- **Pair A.**
+  - Keep it OFF if `hit_vel_min` is FLT_MAX on a row with a torpedo task (the device mapping
+    failed), if `draws` = 0 there, or if a row with no torpedo task moves.
+  - Otherwise flip it, even if releases fall (spread miss with the mechanism matching, recorded).
+- **Pair B.**
+  - Keep it OFF if `+98h` is 0, negative, NaN or above 30 on any seed line.
+  - Otherwise flip it.
