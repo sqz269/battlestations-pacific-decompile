@@ -1175,6 +1175,10 @@ struct GameUnitSlot {
     float torpedo_engage_range_8c{0.0f};  // task+484h == approach+8Ch
     float torpedo_engage_limit_90{0.0f};  // task+488h == approach+90h
     int torpedo_blocked_by_engaged{0};
+    // Packet cc9_jm05_blocked_engaged: which clause of 009D3210 refused, print-only:
+    // [0] no engage target (009D3222), [1] a wing member while the mode is not 2
+    // (009D3245), [2] the leader's range test 009D325B.
+    int torpedo_blocked_clause[3]{0, 0, 0};
     int torpedo_blocked_by_arm{0};
     // unit+C58h, the queued release-order count BSP_PilotBot_Tick 0099ACD0
     // spends at 0099AF81 by offering it to each task's vtable +24h. Its raiser
@@ -18096,6 +18100,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             binding.read_transition_inputs(&unit_).engaged;
                         if (!bsp::torpedo_engaged_009d3210(eng)) {
                             ++unit_.torpedo_blocked_by_engaged;
+                            ++unit_.torpedo_blocked_clause[!eng.has_engage_target_4c4 ? 0
+                                : !eng.unit_has_no_follow_target ? 1 : 2];
                         } else if (!unit_.torpedo_attack_flag_52a) {
                             ++unit_.torpedo_blocked_by_arm;
                         }
@@ -26881,12 +26887,14 @@ void GameUnitsHost::report() {
             int releases_dead = 0;
             int blocked_engaged = 0;
             int blocked_arm = 0;
+            int blocked_clause[3] = {0, 0, 0};
             for (const auto& slot : host.slots) {
                 if (!slot->torpedo_task_installed) continue;
                 ++tasked;
                 releases_total += slot->torpedo_releases;
                 releases_dead += slot->torpedo_releases_dead;
                 blocked_engaged += slot->torpedo_blocked_by_engaged;
+                for (int k = 0; k < 3; ++k) blocked_clause[k] += slot->torpedo_blocked_clause[k];
                 blocked_arm += slot->torpedo_blocked_by_arm;
                 char states[192];
                 int used = 0;
@@ -27195,8 +27203,10 @@ void GameUnitsHost::report() {
             }
             if (tasked > 0) {
                 host.log.notef("summary mission torpedo task: aircraft=%zu "
-                    "releases=%d blocked_engaged_009d3210=%d blocked_arm_009d49a0=%d",
-                    tasked, releases_total, blocked_engaged, blocked_arm);
+                    "releases=%d blocked_engaged_009d3210=%d blocked_arm_009d49a0=%d "
+                    "engaged_refusals no_target=%d member=%d range=%d",
+                    tasked, releases_total, blocked_engaged, blocked_arm,
+                    blocked_clause[0], blocked_clause[1], blocked_clause[2]);
                 // Packet cc9_torpedo_release_counter: `releases` above is task-level
                 // and counts dead aircraft, which spawn nothing. The rounds in the
                 // water are the gunnery host's `torpedo_drop drops`.
