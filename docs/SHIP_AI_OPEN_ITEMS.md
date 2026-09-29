@@ -5235,3 +5235,88 @@ together with section 61's score-list flip, which has no gameplay effect.
 - `s17_runs.ps1 -V <export> [-Only rows]` and `s17_wait.ps1`: the six-row launcher and the
   foreground wait.
 - Pair logs: `s17_{off,on}_<row>.log`. The last set is the 60.7 pair.
+
+## 63. The group observer's event 6 is a party change (packet `cc9_group_party_change_removal`, cc9-ships18, 2026-09-29)
+
+**Verdict.** Event 6 is "this entity's party was set", and its value is the new party. A group member
+whose party is set to anything other than the group's own party leaves the group. Scripted orders
+do not notify event 6. **Section 59's SELLING premise stands**: JM05's squadrons are not taken out of
+their air group by `PilotSetTarget` or any other order. Nothing was bound: the host has no unit
+SetParty for the removal to hang off, and no row reaches one (63.4).
+
+### 63.1 Correction to 60.8 and 61.1: the compared field is `group+5638h`, not `+5628h`
+
+`00A2DB50` is entered with ECX = the observer sub-object at `group+10h` (`00A2D8FD LEA EDX,[ESI+10h]`
+is what `00A2D906` registers), so its `CMP EAX,[ECX+5628h]` (`00A2DB5B`) reads `group+5638h`. The
+`ADD ECX,-10h` at `00A2DB6A` that recovers the group for `00A2D9D0` confirms the base.
+- A displacement sweep of `.text` (`local\s18_disp.py 5638 5628`) finds one writer of `+5638h`:
+  `00A2E045 MOV [ESI+5638h],ECX` in `BSP_AiGroup_Construct` (`00A2DFA0`), with ECX = the founding
+  entity's `+54h` (`00A2E042`). **`group+5638h` is the group's party**, fixed at construction.
+  Readers: 24 sites in `009FDEF0`-`00A3134E`, among them `00A2C3D4`/`00A2C9F6` (`CMP ..,2`).
+- The planners' `+5628h` writes (-1 at `00A1CBA6`, `00A2A14E`, `00A2A2A5`, `00A2E015`; 8 at
+  `00A2A786`) are a different field and have nothing to do with the removal.
+
+### 63.2 The notifier census
+
+- **The slot-0C dispatcher is `00696120`** (`RET 8`, ECX = the notifying entity, stack = event,
+  value). Its loop (`0069625B`-`0069626E`) loads each edge's observer (`+8`), and calls
+  `vtable[0Ch](entity, event, value)`. It is the slot-0C sibling of `00695F90`'s slot-04/08 pair.
+- **Its only caller is `00696350`** (`00696350..0069635E`, `RET 4`: ECX = entity, EDX = event,
+  one stack argument = value; `00696356`). A rel32/abs32 scan of the PE (`s18_rel32.py`) finds
+  exactly one reference to `00696120` and 13 CALLs of `00696350`:
+  - event 4: `006BF175`, `006C0E0E`, `006C487A`, `006C5842`, `006C5AF3`, `006C7C74`; `006C0CBB` sets EDX outside the seven
+    instructions read (not attributed);
+  - event 0: `006E14D2`, `006E659F`; event 1: `007F1D37` (`EBX = 1` at `007F1CFE`);
+  - event 5: `00927E31`, `00927EF5` (`LEA EDX,[EBP+5]` with EBP = 0 after the loop);
+  - **event 6: `00923BD0` only**, value = EBX = the first argument.
+- **`00923B80`** (`00923B80..00923BDB`, `RET 0Ch`, ECX = entity; args party, race, out) is the
+  base SetParty behind vtable `+2Ch` (31 `.rdata` dwords, vtable entries, name it; its one rel32 caller is `00928F50`'s
+  `00928F7D`). It stores party at `+54h` and race at `+58h` (`00923B92`/`00923B95`), walks the
+  `+48h`/`+44h` child list re-calling each child's `+2Ch` unless its `+5Ch(entity)` answers
+  (`00923B9F`-`00923BC5`), then notifies event 6 with the new party (`00923BC8`-`00923BD0`).
+- So on a party change, `00A2DB50` calls `00A2D9D0 BSP_AiGroup_RemoveEntity(member, 1)` unless
+  the new party equals the group's.
+
+Uncertainty: a dispatcher that walks the observer edges itself, without `00696120`, would not be in
+this census. None was seen, but no sweep for `CALL [reg+0Ch]` with three pushes was run.
+
+### 63.3 Who sets a unit's party at run time
+
+A sweep for vtable `+2Ch` calls with three pushes (`local\s18_vslot.py 2C 3`, validated by finding
+the known Lua binding site `008A8AE7`) gives 24 sites. The party-set shape (party, the entity's
+`+58h` race or `+54h` party, a zeroed out pointer) is at:
+- `008A88DA`, `008A8AE7`, `008A8D2B`: the Lua bindings in `008A8720`, `008A8930` (SetParty) and
+  `008A8B40`;
+- `0095ADBE`, `0095ADF0`: `BSP_Unit_HandleMessage`'s party and race arms (`MT_VEHICLE_SET_PARTY`,
+  a session message);
+- `00744A63` (`00744A20`, called from the airfield hangar reader `006D5220` and `00849F70`);
+- `006F50CA`, `006F5136` in `006F4D10` (no static callers; it also writes `unit+180h`, see
+  docs/AI_BRAIN_PLAYER_EXEMPTION.md);
+- `007F012F`/`007F0192` in `BSP_PilotControl_HandleMessage`, and `00923BBE` (the child walk).
+The other sites (`006D20B6`, `00784C20`, `00A496EC`, `00A4D21F` and the library ones) are other
+classes' `+2Ch`. Not proven: which of `006F4D10`, `00744A20` and the pilot message run in single
+player.
+
+### 63.4 The host, and reach on the six rows
+
+- The host's SetParty binding (`src/game_hosts_script_orders.cpp`, `entity_vcall_2c`) handles only
+  the mission script entity (`set_script_entity_party_00928f50`); on a unit it records
+  `LuaBindingCore::entity_set_party_vtable_2c` as unimplemented and changes nothing.
+- The 60.7 pair logs (`cc9-ships17\local\s17_on_*.log`) show one `SetParty` binding call per row,
+  at `luaStageInit` (the mission's `this.Party = SetParty(this, ...)`), and no
+  `entity_set_party_vtable_2c` record on any row.
+- The row scripts in this installation: JM05 (`COTP-IJN\PRCPIJN\JM05.lua`) has no `SetParty`.
+  USN01, USN13 and IJN01 set only `this` (the others are commented out). LOMP10 sets only `this`.
+  USN04 (`usn_19_coralus.lua`, mtime 2024-08-26) calls `SetParty(Mission.Lex, PARTY_NEUTRAL)` in
+  `luaAddFinalObj` (line 879), after the Lexington's scuttle sequence; the 4500-frame row does not
+  get there.
+- **Prediction for a binding: identical on all six rows.** A pair would be vacuous, so none was
+  run and no switch was added.
+
+### 63.5 What would bind it
+
+The removal belongs in a unit SetParty (the `00923B80` store and child walk, then the event-6
+notification into the AI group's membership), not in the AI planner. That is a unit-host packet
+(`src/game_hosts_units.cpp`), and its first row with reach would be a USN04 run long enough to reach
+`luaAddFinalObj`, or a mission that changes a grouped unit's side mid-run. Ghidra: `00A2DB50` has no
+function; its definition is `00A2DB50..00A2DB75` (`RET 0Ch` at `00A2DB72`, INT3 from `00A2DB75`).
