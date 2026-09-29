@@ -4792,3 +4792,115 @@ time; AI_GROUP_THINK's host table had it as "unread, contract: partial":
   2. `004BCA50` = 8 also gates phase 5 (skipped above mode 3) and every other mode read in the AI.
 - This belongs at or near the top of GAMEPLAY_GAP_RANKING. It decides which side's ships the
   whole AI lane moves.
+
+## 60. The single-player party gate (packet `cc9_ai_party_gate`, cc9-ships17, 2026-09-29)
+
+This follows 59.2. The switch is `kAiPartyGateUnforcedBound` in `src/game_hosts_ai.cpp`, committed OFF.
+
+### 60.1 The image: which slot plans, and under which team
+
+- **The gate, `009FFE50`** (read in full, `009FFE50-009FFEAB`). In a campaign `game+61Ch` is 0
+  (59.2), so the arm at `009FFE84` answers `slot != 0` in single player.
+- **A unit's slot, `009FFD20`.** `+180h` in 0..7 names that slot; 8 (`PLAYER_AI`, "AI control")
+  gives -1. The unauthored 9 gives 0 on the local team, else 4. The local team is
+  `[game+18CCh + 4*[game+18ECh]]+28h`:
+  - `004DFB70` (`004DFD57..004DFD77`) points slot 0 at the participant that `004BB440` built,
+    copies `game+1030h` (slot record 0's `+28h`) into it, and stores `EBX` into `game+18ECh`.
+    EBX is taken as 0 (the local index, as CONTROLLED_UNIT labels it).
+  - So the local team is Player1's `Party`.
+- **A brain's team.** `00A15A70` stores the slot at `brain+20h`, and at `00A15A90..00A15A97` it
+  stores `009FFD60(slot)` = `[game+18CCh + 4*slot]+28h` at `brain+24h`.
+  - Slots 1..7 still point at the slot records that `004BB160` set (`game+1008h + i*118h`).
+  - Their `+28h` is side block `+0h`, which `004C6890` copies from the scene's
+    `MultiPlay.PlayerN` `Party` (SCENE_RECORD_SIDE_BLOCKS). The slot-4 brain's team is Player5's
+    `Party`.
+- **A group's command.** The group constructor `00A2DFA0` stores `009FFD20` of its first member at
+  `+5634h`. A negative slot gets NONCONTROL. Otherwise `00A2E124` asks `009FFE50`: IDLE when the
+  slot is admitted, NONCONTROL when it is not.
+- **Other mode readers.** `004BCA50` = 8 skips phase 5 (`00A2EB08`, `JA` above 3). The tuning
+  record is Rookie at 8, as at 0 (`009FFC92`).
+- **Enum ordinals, LABELLED.** `Party` is taken as this installation's `PARTY_ALLIED 0` /
+  `PARTY_JAPANESE 1` (`luamw_init.lua` 73-74). The native enum table was not read.
+
+**The reference rows.** Player1 and Player5 are from this installation's scenes; the mtimes are
+2024-07-13 to 2024-10-29.
+
+| rows | scene | Player1 (local) | Player5 (slot-4 brain team) | image: planned side, brain team | host OFF: planned side |
+| --- | --- | --- | --- | --- | --- |
+| USN04, USN04 E2 | usn_19_coralus | Allied | Allied | Japanese (slot 4), team Allied | US (party 0) |
+| USN01 | usn_1_marshall | Allied | Allied | Japanese, team Allied | US |
+| USN02 | usn_2_java | Allied | Allied | Japanese, team Allied | US |
+| USN12 | usn_12_augusta | Allied | Allied | Japanese, team Allied | US |
+| USN13 | usn_13_truk | Allied | Allied | Japanese, team Allied | US |
+| USNOS, USNOS long | us_osumi | Allied | Allied | Japanese, team Allied | US |
+| LOMP06 | 06_crucial_cargo | Allied | Allied | Japanese, team Allied | US |
+| LOMP10, LOMP10 long | 10_san_jose | Allied | Allied | Japanese, team Allied | US |
+| BSM01 | bsm_01_stationed_at_pearl | Allied | Allied | Japanese, team Allied | US |
+| JM05, JM06, JM08 | ijn_05, ijn_06, prcpijn_08 | Japanese | Allied | US (slot 4), team Allied | US (party 0) |
+| IJN01 | ijn_1_pearl | Japanese | Allied | US, team Allied | US |
+
+**The consequence on the US-player rows.** Every one of them authors Player5 = Allied, so the
+slot-4 brain carries team 0 while its groups are Japanese.
+- Its planners' own side is Allied (planner `+30h`) and their enemy side is Japanese (`+34h`).
+- So Capture's targets and Attack's candidate groups are the Japanese groups that the same brain
+  owns.
+- This follows from the reads above. It is the most surprising part of this packet, and the ON
+  census (the group table and the planner lines) is what shows whether the host reproduces it.
+
+**The host's controlled unit.** The gate takes the local team from Player1, never from the
+controlled unit. On JM05 the host still controls USS Phelps (Allied), but the gate's local team is
+Japanese. Nothing else in this packet reads the controlled unit.
+
+LABELLED:
+- `+180h` is taken as 9 for every unit. JM05 (x4), JM08 (x1), LOMP10 (x3), USN12 (x4) and USNOS
+  (x2) author `OwnerPlayer = "AI control"` inside `MultiType` blocks, which would give -1.
+- The multiplayer arm is not modelled.
+
+### 60.2 The binding
+
+With `kAiPartyGateUnforcedBound` ON:
+- **The published slot parties.** The mission host publishes the eight `PlayerN` parties that it
+  already reads with `read_scene_record_slot_table_004f1d70`, through
+  `ai_publish_scene_slot_parties`.
+- **Group party.** `create_group` sets `party = 009FFD20(team)`, which is 0 or 4, and files the
+  group in a per-party list (`00F8A9E8 + p*0Ch`). The brain walks that list. The eviction
+  pass compares the member's slot the same way.
+- **The command a group is born with** comes from `009FFE50`'s unforced arm: slot 0 gets
+  NONCONTROL. The think pass's brain gate asks `009FFE50` the same way.
+- **The brain's team.** The ticking brain's team (`current_team`) is its slot's `PlayerN` Party.
+  - It is used as the planner's own team by `in.own_team`, Attack's own and enemy teams, and the
+    Capture and Defend sides. The brain itself is still looked up by slot.
+  - `brain+24h` (`world_set`) is that team.
+- **`game_mode()` is 8.**
+- **OFF** is the old rule: mode 0, the forced arm, and party = team.
+- **The census.** The creation line `ai party gate bound=... local_team=... slot_teams=...`, and
+  the summary line `summary mission ai party gate bound=... local_team=... slot4_team=...
+  local_slot_groups=... other_slot_groups=...`.
+
+### 60.3 Predictions, written before any ON run
+
+- **OFF** is gameplay-identical to main on all six standard rows (exit 0 or 1). It only adds the
+  two census lines.
+- **ON, every row:** `game_mode=8`, and the party table shows `ai party 0 ... ai_enabled=0
+  brain=0` and `ai party 4 ... ai_enabled=1 brain=1`.
+- **USN04, USN01, USN13 (US player), ON: exit 3, large movement.**
+  - The US groups are `party=0 command=NONCONTROL`, and no brain order reaches a US unit. The
+    brain orders issued on OFF to US ships and squadrons (for example Enterprise's CAUTIOUSATTACK
+    on USN13, USN04's escort attack) disappear.
+  - The Japanese groups are `party=4`, born IDLE and claimed by the slot-4 brain, with the
+    planner lines' `enemy_groups` counting team 1.
+  - USN04 has no CommandBuilding. Capture has no target and no own CB, so it hands to Attack
+    (brain+4h). Attack scores team-1 groups, that is, Japanese groups ordered against Japanese
+    groups.
+  - USN01 and USN13 have Japanese CommandBuildings. Capture's targets are those buildings (`+54h`
+    != 0), assigned to Japanese groups.
+  - Deaths, damage and first hit move (exit 3).
+- **JM05 and IJN01 (Japanese player), ON: exit 0 or 1 on gameplay.**
+  - The US groups move from party 0 to party 4 with the same team. The Japanese groups move from
+    party 1 to party 0, still NONCONTROL.
+  - The group table's `party` column and the party rows change.
+  - **The risk:** the party pass visits slot 4 after slots 0..3. If the brain's think draws from
+    the shared generator in a different order relative to the other slots' interval draws, the
+    ordering moves and so do deaths (then exit 3, with the mechanism unchanged).
+- **LOMP10: exit 1 or 3.** There is no combat on the reference row. Whether its three US
+  squadrons (the controlled `B-25 01`) move depends on the brain orders they got OFF.
