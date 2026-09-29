@@ -806,3 +806,63 @@ the leader.
   behavioural gain from false, Zero wingmen on station, is the image's `009BFEE0` law acting
   alone. Whether to turn placement off is a question for the follow-law owner, with this
   table as its evidence.
+
+## The arrival ends the command (packet `cc9_moveto_arrival_end_command`, cc9-lua19, 2026-09-29)
+
+GAMEPLAY_GAP_RANKING (refresh) #2. `kMoveToArrivalEndCommandBound` (`src/game_hosts_units.cpp`,
+`GameUnitsHost::Impl`) is committed **OFF**.
+
+### The image
+
+- **`009C3647`.** Once `approach+5Ch` is set (`009C3636`), `009C3570` calls approach `vtable[8]`
+  every tick. The approach vtable `00D20B58` holds `009BE2C0`, `009C3190` and `009C3100`.
+- **`009C3100`** (`009C3100-009C3135`, `RET`, `ECX` = approach = task+3F8h) reads:
+  `if (task->vtable[40h]() != 0) 0071E430(squadron->vtable[114h](), 00E08F68, 0)`.
+  - approach `+0Ch` = task `+404h` is the plane's squadron, `unit+9D4h` (`009F9CE0`).
+  - Its `vtable[114h]` (`007ECFD0`) is the `+348h` command block.
+  - The two pushes are `0071E430`'s arguments: the moveto class and terminal 0.
+- **`009C31B0`**, task `vtable[40h]` (`009C31B0-009C3288`):
+  - It answers 2 when there is no squadron.
+  - It answers 1 when the block's current command (`0071BE40`) is `00E08F68`, and either:
+    - the command's target object (`0071EB60` -> `00521EA0`) equals task `+43Ch`, the task's
+      target at approach `+44h`; or
+    - with no object, the command's point (`006F7DD0`) lies within 100 m planar of the task's
+      point (task `vtable[0Ch]`). `[00CE3D64]` = 10000.0 is compared as the squared distance.
+  - It answers 0 otherwise.
+- **`0099A4C0`** runs when the command changes. It keeps a single task only while that task's
+  `vtable[40h]` answers 1; otherwise it pops the task and calls `0099A170` for the command the
+  block now holds.
+- So the moveto ends as soon as one member of the flight has arrived.
+  - A wingman's dwell `+60h` starts at 0, so it arrives as soon as it is within ClosingDist x `+24h`
+    + TurnCircleRadius (about 1150 m for the USN04 Zeros).
+  - Every member's kind-7 task then goes.
+
+### The binding
+
+`moveto_arrival_end_command_009c3100` does, at the record site:
+1. It refuses a squadron-less plane and counts it.
+2. It tests the member's command class: that is `009C31B0` in this host, where the fan-out rows
+   stand in for the block.
+3. For each member still on moveto, it runs `0071E430` on that member's director (terminal 0).
+4. It then retires the kind-7 task on each member: `installed` and `arrived` are cleared, and the
+   class goes to 0.
+5. A promoted next command is counted; its task is not installed here.
+
+The census line is `summary moveto arrival end command ...`.
+
+### Predictions, written before any ON run
+
+- **OFF** is gameplay-identical to main on every row: the switch guards the new code, and the
+  summary adds one line.
+- **USN04 3000 and E2 9000, ON.** Main has 7 and 14 arrivals.
+  - The four IJN escort flights end their `PilotMoveToRange` moveto within a second of their first
+    wingman arrival, at about 1100 m.
+  - `commands_ended` is 4 on USN04, and `tasks_retired` is about 12. `next_promoted` is 0: the
+    script orders nothing after the moveto.
+  - The escorts then fly without a task. Their orbit inside the carrier group's AA stops, so the
+    escort deaths and their times move. On E2 the phase-1 end at 240 s (all of `IJNFightersLex`
+    dead) may move or vanish.
+  - Exit 3 on both rows.
+- **JM08 3000 and JM05 9000, ON.** 9 and 18 arrivals: those flights' movetos end and their tasks
+  retire; exit 3.
+- **USN01, LOMP10, IJN01 and JM05 3000** have no arrival on main, so they are gameplay-identical.
