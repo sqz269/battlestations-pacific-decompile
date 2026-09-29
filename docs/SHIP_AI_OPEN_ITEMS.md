@@ -3456,3 +3456,89 @@ they are. The lead accepted a build plus those pairs.
 
 The latch's own `+7C4h` read (`009F20A4`, mode 3 vs 4) is not bound. It needs `006F2D90`, the
 free-landing-spot test, as well, and it has the same zero reach.
+
+## 42. Section 38 item 2, first caller: the kamikaze arm's small-ship test `007EEB74` (packet `cc9_kamikaze_ship_blocked`, `kKamikazeShipBlockedBound`)
+
+Worker cc9-ships13, 2026-09-29. The switch is in `include/bsp/game_hosts_script_orders.hpp`.
+
+**The image** (`BSP_Unit_AttackCommandApplies`, `007EE8F0..007EEBFD`, the kamikaze arm
+`007EEB36..007EEB91`, read with `disasm-raw`). After the kamikaze-capable test
+(`vtable[5Ch](17h)` on `[unit+3D0h]`, `007EEB53`):
+- `007EEB64`: the target answers `vtable[5Ch](6)`, a ship.
+- `007EEB6E`: ECX is `[target+538h]`, the target's class, and `007EEB74` calls `00827F70` on it.
+- When both are true, `007EEB83` calls `00604A50([unit+3D0h])`, and a false answer rejects
+  (`007EEB8A JE 007EEBF6`: `XOR AL,AL`, `RET 10h`).
+- `00604A50` (`00604A50..00604A74`, `RET` then `INT3`) answers
+  `vtable[5Ch](17h) && byte [plane+C24h] == 0`. `+C24h` is the plane's `PilotFires` (`007CD930`).
+
+So a kamikaze attack on a small ship (TorpedoBoat `0Eh`, or LandingShip `0Ch` without
+BigLandingShip) is allowed only for a kamikaze plane whose `PilotFires` is clear.
+
+**The reconstruction** already has the input, `AttackFeasibilityInputs::kamikaze_ship_blocked`
+(`include/bsp/attack_commands.hpp`), and `kamikaze_applies` tests it. Its one filler,
+`GameScriptOrdersHost`'s PilotSetTarget path, never set it. ON, it sets
+`blocked = small(target) && !(plane kind 17h && !PilotFires)`:
+- `small` is the expression the ship AI sites use: kind `0Eh`, or kind `0Ch` without
+  BigLandingShip, the latter through `GameShipAiHost::unit_big_landing_ship_0808`.
+- PilotFires comes from `GameUnitsHost::plane_pilot_fires_0c24` (units lane).
+
+The census counts `small`, `blocked`, and the choices it changes. That covers both switch states.
+
+### The census (this tree, OFF, 3200/3000)
+
+`PilotSetTarget caps` lines with `kamikaze_capable=1`, `local\s13kz_<row>.log`:
+
+| row | PilotSetTarget calls | from kamikaze-capable planes | target classes |
+| --- | --- | --- | --- |
+| USN19 (Battle of Ormoc Bay) | 33 | 33 (self class 23) | 9 (24), 11 (9) |
+| USN17 (Samar) | 344 | 0 | - |
+| USN18 (Cape Engano) | 16 | 0 | - |
+| USN21 (Okinawa) | 1 | 0 | - |
+
+No log in any worker tree has a kamikaze-capable PilotSetTarget call apart from USN19.
+
+**The scene scan** is read-only over this installation's `universe/scenes/missions/**.scn`. It
+takes the class names from `universe/library/global.enums` and the kinds from
+`scripts/datatables/autoload/vehicleclasses.lua` (mtime 2026-05-09):
+- Kamikaze planes (`KamikazeZero`, `KamikazeVal`, `KamikazeJudy`, `KamikazeOscar` and the
+  `_light` variants).
+- Small ships:
+  - TorpedoBoat: `Elco` 27, `Kamikazeboat` 43, `JapPT` 77;
+  - LandingShip without BigLandingShip: `Higgins` 40, `Daihatsu` 90.
+
+Kamikaze planes appear in ten single-player scenes, and **none of them holds an American small
+ship**. Japanese small ships appear beside them only in the PRCP Leyte (1), Endgame at Kure (2) and
+`us_asw` (3) scenes, where the kamikazes are on the same side. The scenes that do mix kamikazes
+with US PT boats are all under `multi/`. So no single-player row can reach the test, and USN19 is
+the reach row for the zero-change prediction.
+
+**The PilotFires reader** is routed to the units lane (`GameUnitsHost::plane_pilot_fires_0c24`,
+lua14). Until it lands, the binding reads the byte as set, and it records
+`Plane::pilot_fires_0c24` whenever a small target is met. So ON would block every kamikaze order
+against a small ship. That is the image's answer for a plane whose PilotFires is set, and it is
+labelled. The reader replaces it when it lands.
+
+### Predictions, written before any ON run
+
+1. **USN19 3200/3000 is gameplay identical** (exit 0 or 1). Its kamikaze orders name ship
+   classes 9 and 11, which answer neither `0Eh` nor `0Ch`, so `small` is 0 and nothing is
+   blocked.
+2. **Mechanism failure** keeps the switch OFF: a nonzero `blocked` on USN19, or any move.
+
+### Section 38 item 2, second caller: `0081639D`, recorded and not bound
+
+`0081639D` is inside `008162B0`, the command-availability predicate, and is reached only past
+`008162BF`'s `00779D50`. Two game-host copies of that predicate exist:
+- the AI path, `tick_request_join_formation` in `src/game_hosts_ai.cpp`;
+- the script path, `GameScriptOrdersHost::entity_command_is_available`.
+
+Both implement only the `follow` arm (`bsp::entity_may_follow_target_00779d50`). When `00779D50`
+answers false, both answer false.
+- The image instead continues through `008162DB..00816406` (`src/ship_ai_states.cpp`,
+  `ship_ai_command_available_008162b0`), whose host interface nothing implements.
+- `0081639D` in that continuation needs a follower that is itself kind 8, a submarine
+  (`0081636F`).
+- Binding it means binding the whole continuation in both copies. No counted row has been shown
+  to reach it, so it is left recorded.
+
+`0096ACB4` (section 40) stays unowned and unreconstructed.

@@ -128,6 +128,15 @@ inline constexpr bool kEntityDeadBound = true;
 // the three bindings stay host records and no row is written.
 inline constexpr bool kMissionEndBound = true;
 
+// Packet cc9_kamikaze_ship_blocked (docs/SHIP_AI_OPEN_ITEMS.md section 42). In
+// 007EE8F0's kamikaze arm, a ship target (007EEB64) whose class 00827F70 calls
+// small (007EEB74: TorpedoBoat 0Eh, or LandingShip 0Ch without BigLandingShip)
+// rejects unless 00604A50([unit+3D0h]) holds: kind 17h and PilotFires
+// ([plane+C24h]) clear (007EEB83..007EEB8A). True: PilotSetTarget sets
+// AttackFeasibilityInputs::kamikaze_ship_blocked from that. False: it stays
+// false, as before. The census counts run in both states.
+inline constexpr bool kKamikazeShipBlockedBound = false;
+
 // Packet cc9_fill_path_points (docs/LUA_BINDING_MISSION.md, "FillPathPoints").
 // True: the Lua native FillPathPoints (0089A190) answers a new table whose
 // entry i + 1 is {x, y, z}, point i of the path entity's point list carried
@@ -691,6 +700,8 @@ private:
     unsigned long long pilot_set_target_target_resolved_{0};
     unsigned long long pilot_set_target_issued_{0};
     unsigned long long pilot_set_target_tasks_{0};
+    unsigned long long kamikaze_small_targets_{0};   // packet cc9_kamikaze_ship_blocked
+    unsigned long long kamikaze_blocked_{0};
     std::vector<SceneMarker> markers_;
     lua_State* state_{nullptr};
     // The mission machine, kept past a dispatch so the per-frame timer pass can
