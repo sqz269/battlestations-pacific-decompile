@@ -2949,6 +2949,13 @@ local\s12_sgt` (bsp_game SHA-256 prefix `D4A31E9E3430`).
 image's answer to terrain the image's own cast direction sees. No death flips. Prediction 1's
 magnitude missed and is recorded. Section 31's reason for keeping it OFF (the role swap) is gone.
 
+**Open item, for a terrain packet (the lead, 2026-09-29): the ridge in front of CB2 on USN01.** CB2
+is static; its raised point is at (3973.4, 32.0, -3182.2), y 32. The host's height field puts a
+ridge about 25 m high about 320 m out from it, toward Dunlap: the census hit points are at y
+24..26, 318..359 m from CB2. That ridge hides CB2 from Dunlap on 345 of 1542 sight tests and
+from the gunnery pass on 34 of 190. It needs checking against the island's authored height
+field, its placement, and CB2's class height. It was not audited here.
+
 ## 35. The no-ship hold of `nested+1228h` on its own switch (packet `cc9_approach_no_ship_hold`, `kShipAiApproachNoShipHoldBound`)
 
 Worker cc9-ships12, 2026-09-29. This is section 27's open item. The switch is in
@@ -3033,6 +3040,14 @@ the goal, and nothing on rows without such frames. The misses are spread: the ar
 a plane death flip my prediction ruled out. Both are recorded. The hold is the listing's
 behaviour (`009F1E30 JE 009F2003`). The death flip is a plane surviving AA whose ships steer at a
 point up to one arm period old, which is what the image does on that path.
+
+**Candidate reference row (the lead, 2026-09-29): IJN01 3200/3000.** It is the only row found
+where ships attack planes on the no-ship path (5872 latch frames, A7M targets). Launch it like
+the reference rows, with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`:
+
+```
+./tools/run_game.ps1 -Exe <exe> -Log local\<name>_ijn01.log -- --frames 3200 --press-start-frame 30 --menu-select IJN01 --mission-frames 3000 --mission-frame-seconds 0.05
+```
 
 ## 36. Rank 4 of section 28: the squadron exclusion `009FFEB0`, read and counted (packet `cc9_squadron_rtb_exclusion`)
 
@@ -3187,8 +3202,22 @@ target-kind stub) still answer "small" for a big landing ship.
    of the other side, which are mode 0 too. So find a row with modes 2 or 4 before binding.
 2. **The other `00827F70` callers** (`007EEB74`, `0081639D`, `0096ACB4`) still class a big landing
    ship as small. They belong to the units, commands and script-order lanes.
-3. **Rank 4's binding**, if a row with a spent bomber squadron in an AI group turns up. It needs a
-   units-host entry for `007F16D0` plus issue (section 36).
+3. **Rank 4's binding is unblocked** (the lead, 2026-09-29; main merge `2eb7e0a9c`,
+   docs/SQUADRON_ORDNANCE_STATE.md, `kSquadronOrdnanceReaderBound` ON). Two new
+   `GameUnitsHost` entries replace the census's union-mask test:
+   - `squadron_ammo_type_007edad0(unit)` takes the squadron or any member, and answers 0 when
+     nothing is carried.
+   - `issue_return_to_base_007f16d0(unit, source)` places `returntobase` on each member plane
+     through the Lua path, including `007F16D0`, and returns the planes placed.
+
+   Plan:
+   - Bind `tick_squadron_excluded_009ffeb0` behind a new switch, committed OFF. The answer is
+     true when the head class id is `10h`, `11h` or `12h`, the ammo type is 0 and the issue
+     placed at least one plane.
+   - Keep `rtb_exclusion_census` for the reach counts.
+   - No squadron runs dry within 3000 frames on JM05, USN13 or JM08, so pair on 9000-frame rows
+     (or a row where bombers do drop). Check `bomber_calls` > 0 first; section 36 counted 0 on
+     six rows at 3000.
 4. **The terrain in front of CB2 on USN01** (section 34): a ridge about 25 m high, about 320 m out,
    hides Dunlap's target. Check it against the island's height field if USN01's stand-off
    distances look wrong.
