@@ -1081,7 +1081,7 @@ the ON build ran clean.
    142.30 s (141.80 s OFF) and B-25 01 at 228.81 s (226.31 s OFF). Two wingmen also reached mode 4
    and entered: Lightning 01|.-4 at 162.41 s and B-25 01|.-2 at 240.51 s.
    - On entry, A8 was 786 to 834 m and the height above T was 168 to 208 m.
-2. **Final at once: held.** `009B3C00` answered true from the first rule tick after each entry.
+2. **Final at once: held (corrected in section 5j: begin lasts until A8 < a+24h x 312, 1.7 s for Warhawk 01).** `009B3C00` answered true from the first rule tick after each entry.
    Warhawk 01 counted 143 refused finals, one for each tick from 133.0 s until its done byte was
    set. **So in the image begin lasts one tick on this row, and final flies the approach.**
 3. **Flight: the mechanism held.** These are Warhawk 01's traces, one per second:
@@ -1207,13 +1207,61 @@ OFF is this tree's build with both switches off. ON flips `kLandBeginStateBound`
   T for more than 10 s. Without a touchdown the second test is expected to fail. If it does, both
   stay OFF, and the touchdown (`007CA3F0`, ground contact `+BF4h`) is the missing piece.
 
+
+### The joint pair and the verdict (cc9-lua11, 2026-09-28): both OFF, the touchdown is missing
+
+OFF is this tree's build of `880219379` (`local\l11_fnoff_<row>.log`). ON is the same commit with
+`kLandBeginStateBound=true` and `kLandFinalStateBound=true` (`local\l11_fnon_<row>.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical; the same eight IJN ships gain an engagement range; B-25 01 6207 -> 8414 m |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+1. **Begin lasts one tick: missed. The prediction was wrong; the mechanism is fine.**
+   - Begin lasted 12 to 66 ticks. `009B3C00` turns true when A8 falls below `a+24h x 312`.
+   - The entry points fix a+24h: Warhawk 01 went to final at A8 = 664.8 m (a+24h = 2.13, so
+     MaxSpd is about 83 m/s), Lightning 01 at 713.1 m, and B-25 01 and B-25 01|.-2 at about 555 m.
+   - The prediction had assumed a+24h near 4.
+   - Begin lasted 1.7 s for Warhawk 01, 1.8 s for Lightning 01, 1.2 s for Lightning 01|.-4, 6.0 s
+     for B-25 01 and 6.6 s for B-25 01|.-2.
+2. **The approach: held.** Warhawk 01's final traces follow the speed formula:
+   - 45.96 m/s at A8 = 664.8, which is `(r + a+5Ch)/2` with a+5Ch = 59.9;
+   - interpolated in between (39.36 at 563.2);
+   - `r` = 32.00 from A8 = 436 m, below `a+24h x 210` = 447 m.
+   - Heading, pitch and height followed the begin-only run.
+3. **No touchdown: held.** Every plane shows `touched=0` and `ground_refused=0`. Past T, every
+   head in final flew on and set its done byte, which sent it to a refused abort (1926 to 2919
+   refusals each).
+   - Warhawk 01|.-4 entered begin at 156.70 s. Its mode then fell from 4, so it went to a refused
+     abort before reaching final. The image would abort it too.
+4. **Held.** LOMP10 moves and USN01 does not.
+- **Verdict: both stay OFF.** The mechanism holds. The second half of the flip rule failed as
+  expected: every head flies on past T.
+  - The missing piece is the touchdown: plane `+BF8h`/`+BF4h` ground contact and `007CA3F0`
+    `BSP_Plane_HandleTouchdownOrCrash`, which moves the control mode off 7.
+  - With it, final's on-ground half and `land/park` become reachable.
+- **Correction to section 5h, item 2.**
+  - **Was:** "`009B3C00` answered true from the first rule tick after each entry ... in the image
+    begin lasts one tick on this row."
+  - **Is:** begin lasts until A8 falls below `a+24h x PosBehind x 0.4`: 1.7 s for Warhawk 01 and
+    6.0 s for B-25 01. The 143 refused finals in the begin-only run ran from 134.6 s to the done
+    byte at 148.9 s.
+  - **Evidence:** the final entries above.
+  - 5h's verdict stands: begin covers the first 2 to 6 s of an approach of about 14 s, and final
+    flies the rest.
+
 ## 6. Open, in order
 
-1. **The landing states the row now enters.** The sequencer is bound and ON (section 5c). LOMP10's
-   heads reach modes 2, 3 and 4, and the wingmen reach modes 1 and 2. So `land/standby` and
-   `land/line` come next, then `land/begin`, which also needs `006C3F80`'s launch-site arm (block
-   `+3Ch`, `+40h` and `vtable[30h]`). A mother-ship holder, refreshed from the moving ship, is
-   still refused.
+1. **The touchdown.** Standby and line are ON (sections 5e and 5g), and the launch-site arm is ON
+   (5i). Begin (5h) and the airborne half of final (5j) are bound and match the listing, but they
+   stay OFF because this host has no touchdown, so the planes fly on past T.
+   - The touchdown is plane `+BF8h`/`+BF4h` ground contact and `007CA3F0`, which moves the control
+     mode off 7 (docs/PLANE_GROUND_OPS.md).
+   - After it come final's on-ground half (`009B1FEA`-`009B207A`, `006BC530`, `007B8D70`),
+     `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`) and
+     `land/abort` (`+64Ch`).
+   - A mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
 3. **The follow law on a circling leader** (the Lightning members above). This belongs to the
