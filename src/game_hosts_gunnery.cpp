@@ -541,7 +541,10 @@ constexpr bool kShipFireStanceBound = false;
 //    the tasks. ON: each hit record dispatched to a plane victim (the direct and
 //    the blast path, and the gunless blast), damaging or not, first calls
 //    GameUnitsHost::plane_hit_task_notify_00999aa0. OFF: counted, not sent.
-constexpr bool kPlaneHitTaskNotifyBound = false;
+//    ON by the verdict (AA_LETHALITY_AUDIT 8.5): the resets land (JM05 250,
+//    E2 167) and the same planes release 1.5-3 s earlier, farther out; JM05's
+//    release count stays 3 (P2's size missed).
+constexpr bool kPlaneHitTaskNotifyBound = true;
 // This installation's robots.lua (2025-06-01), AAGunnerBot, by skill index:
 // {AngleDiffErrorRatio (+0Ch), ConstAngleError (+14h), degrees}.
 constexpr float kAaGunnerErrorRows[6][2] = {
