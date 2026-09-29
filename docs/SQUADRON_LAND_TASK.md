@@ -2702,6 +2702,42 @@ The ground-steering summary now also prints `yaw_rate` (`ctl+4Ch`) and the final
   - a contact loss by a plane that is turning.
 - **Flip rule:** ON when predictions 1 to 3 and 5 hold. Prediction 4 is recorded either way.
 
+### The pair and the verdict (cc9-lua15, 2026-09-29): steering flips ON, with a recorded miss
+
+- OFF is `106dabf9b` as committed (`local\l15_goff_<row>.log`). It is built on `ea5775f9b`, so
+  hull inertia is ON.
+- ON is the same commit exported with `kPlaneGroundSteeringBound` true (`local\l15_gon`,
+  `local\l15_gon_<row>.log`).
+- USN01 is gameplay identical (exit 1).
+- LOMP10 moves (exit 3). The death and unit tables are identical.
+
+**The predictions, one by one.**
+1. **Held.** All ten touchdown times are identical to OFF, from 153.15 s to 267.41 s. 5t's
+   0.05 s misses are gone.
+2. **Held for eight planes, missed for the two B-25s.**
+   - The eight fighters end with `yaw_rate` 0.00000, their final heading equal to their stop
+     heading to four digits, no contact loss and `min_bfc > -0.2`.
+   - B-25 01|.-2 loses contact at 309.55 s (OFF 325.94 s). B-25 01 now loses contact too, at
+     352.44 s (it does not in OFF). Both sink (`min_bfc` -1717 and -829).
+3. **Held while on the ground.** Each loss happens at exactly the stop heading: 0.7267 and
+   0.7282, against stop headings 0.7267 and 0.7282. The later heading changes are free flight
+   under the ground. Rolls: B-25 01 40.2 m (OFF 25.2), B-25 01|.-2 52.1 m (OFF 40.1), the
+   fighters within 1.2 m.
+4. **Missed, and it is not this mechanism.**
+   - The two B-25s leave through the strip's side (`local x = -10.0`) at 0.2 to 0.5 m/s with the
+     heading constant.
+   - They stopped about 0.47 rad off the runway's 0.26, so a forward creep along that heading
+     exits through the side after about 130 m.
+   - They are the only planes with `WheelBrake` 10 (brake 6.0 against the fighters' 48.0).
+   - The creep is forward motion that the band's brake does not hold. It is not a rotation.
+     Its source is still unidentified (5r).
+5. **Held.** Deaths are identical (0 rows either side).
+
+**Verdict.** The mechanism matches: no stopped plane on the ground turns, and every final yaw
+rate on the ground is 0. The one miss is the B-25 forward creep, a separate open item that the
+switch makes visible for B-25 01. So this is a spread miss with the mechanism matching, and
+`kPlaneGroundSteeringBound` flips **ON**. The B-25 creep goes on the open list.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
@@ -2710,8 +2746,10 @@ The ground-steering summary now also prints `yaw_rate` (`ctl+4Ch`) and the final
      followers no longer abort: they were aborted by the missing landed arm of `006C7960`, not by
      occupancy (5r, ON). All ten LOMP10 planes now land and stop on the runway;
    - stage B: park is read and bound OFF (5s). It failed on what lies under it:
-     - the ground steering, read and bound OFF in 5t, which fails until the ground pose
-       (`ctl+80h..8Ch`, `007D9C80`, `007D80C0`, `007DA2B1`) holds a stopped plane's attitude;
+     - the ground steering (5t) is ON since 5u: the rate law's flat floor 0.6 stops a stopped
+       plane's yaw rate. The up levelling and `007DA2B1`'s deck lift are read and not carried;
+     - the B-25s' forward creep after stopping (5u, prediction 4): the brake of 6.0 does not
+       hold them, and both leave the strip;
      - abort's on-ground arm `009B0E74`-`009B0F93` (the park <-> abort loop);
      - `00951F40`'s hide of a plane in the hangar;
    - a landed plane that creeps off the 20 m strip (B-25 01|.-2 at 325.94 s, 5r) loses contact
