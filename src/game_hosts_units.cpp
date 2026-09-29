@@ -1284,6 +1284,14 @@ struct GameUnitSlot {
     int torpedo_approach_no_target_ticks{0};
     int torpedo_approach_replans{0};
     int torpedo_aim_ticks{0};
+    // Packet cc9_torpedo_release_orders, observation only: aim ticks on which
+    // each flag of the 009D202C-009D2233 chain was true (state, lead, alt,
+    // bank, cone, all five), and the aim-tick extremes of the inputs.
+    int torpedo_aim_gate_ticks[6]{0, 0, 0, 0, 0, 0};
+    float torpedo_aim_min_alt{1.0e9f};
+    float torpedo_aim_min_f14{1.0e9f};
+    float torpedo_aim_last_fall_lead{0.0f};
+    float torpedo_aim_last_bank{0.0f};
     // The first tick on which the engaged pair went non-zero, or -1.
     int torpedo_first_engaged_tick{-1};
     float torpedo_range_min{-1.0f};
@@ -18924,6 +18932,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::TorpedoAimTickResult r =
                             bsp::torpedo_aim_tick_full_009d15f0(binding, in, dt);
                         ++unit_.torpedo_aim_ticks;
+                        {
+                            const bool g[5] = {r.gate_state_24, r.gate_lead,
+                                               r.gate_altitude, r.gate_bank, r.gate_cone};
+                            bool all = true;
+                            for (int i = 0; i < 5; ++i) {
+                                if (g[i]) ++unit_.torpedo_aim_gate_ticks[i];
+                                all = all && g[i];
+                            }
+                            if (all) ++unit_.torpedo_aim_gate_ticks[5];
+                            if (unit_.motion.position[1] < unit_.torpedo_aim_min_alt)
+                                unit_.torpedo_aim_min_alt = unit_.motion.position[1];
+                            if (r.range_f14 < unit_.torpedo_aim_min_f14)
+                                unit_.torpedo_aim_min_f14 = r.range_f14;
+                            unit_.torpedo_aim_last_fall_lead = ap.fall_lead_a0;
+                            unit_.torpedo_aim_last_bank = unit_.plane_pitch_angle_c64;
+                        }
                         // Packet cc9_torpedo_kind_land: one line per release, on
                         // the tick whose five-flag chain armed the timer at
                         // 009D2287 (the drop follows on the next tick). It sets
@@ -26634,6 +26658,19 @@ void GameUnitsHost::report() {
                         slot->torpedo_aim_timer_fires,
                         slot->torpedo_aim_timer_blocked_007bb110,
                         slot->torpedo_aim_timer_first_fire_tick);
+                    if (slot->torpedo_aim_ticks > 0) {
+                        host.log.notef("  torpedo %-12s aim gates: ticks=%d state=%d lead=%d "
+                            "alt=%d bank=%d cone=%d all=%d min_alt=%.1f min_f14=%.1f "
+                            "fall_lead_a0=%.1f last_c64=%.4f (packet cc9_torpedo_release_orders)",
+                            slot->row.name.c_str(), slot->torpedo_aim_ticks,
+                            slot->torpedo_aim_gate_ticks[0], slot->torpedo_aim_gate_ticks[1],
+                            slot->torpedo_aim_gate_ticks[2], slot->torpedo_aim_gate_ticks[3],
+                            slot->torpedo_aim_gate_ticks[4], slot->torpedo_aim_gate_ticks[5],
+                            static_cast<double>(slot->torpedo_aim_min_alt),
+                            static_cast<double>(slot->torpedo_aim_min_f14),
+                            static_cast<double>(slot->torpedo_aim_last_fall_lead),
+                            static_cast<double>(slot->torpedo_aim_last_bank));
+                    }
                     // ctl+370h. docs/TORPEDO_ATTACK_MODE.md: 009D3F69 and
                     // 009D40CB send an engaged task to prepare only at 0.
                     host.log.notef("  torpedo %-12s attack mode ctl+370h: "
