@@ -4338,7 +4338,7 @@ struct GameUnitsHost::Impl {
     // The fast path (0099C270: the published unit+520h, not an AI plane) skips it.
     // True: every AI PilotFires plane flying a modelled non-dogfight task runs it.
     // False: only the dogfight arm does.
-    static constexpr bool kTaskGunControllerAllTasksBound = false;
+    static constexpr bool kTaskGunControllerAllTasksBound = true;  // ON: DOGFIGHT_GUN 8
     // Routed from cc9-planes1 (docs/DIVE_BOMB_APPROACH.md 19): 009C18C0 measures
     // the planar separation from the +2Ch entity's pose ORIGIN (009C18EC-009C1913)
     // and steers at that origin (009C1B1C). True: the dive-bomb moveto tick feeds
@@ -19917,7 +19917,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.plane_speed_commands;
                         // 009B120B-009B1239: direction +40h = tuning+66Ch, then
                         // 009FABE0(009A1A20(0099B630())); no direction object here.
-                        owner_.record("BotStateLandStandby::direction_009fabe0", 0x009fabe0u);
+                        // DATA-CONDITIONAL (docs/DOGFIGHT_GUN.md 8): with the gun
+                        // controller ticking and the host delivering cone 0, the cone
+                        // Angle_Prepare and this direction are exact while the authored
+                        // Angle_Prepare is 0 (planeglobals.lua); otherwise recorded.
+                        if (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound &&
+                            owner_.lua.plane_globals_loaded() &&
+                            owner_.lua.plane_globals().pilot_auto_strafe_angle_angle_prepare == 0.0f) {
+                            owner_.done("BotStateLandStandby::direction_009fabe0", 0x009fabe0u);
+                        } else {
+                            owner_.record("BotStateLandStandby::direction_009fabe0", 0x009fabe0u);
+                        }
                         if ((unit_.land_standby_ticks % 200) == 1) {
                             owner_.log.notef("  land standby trace %s t=%.2f circle_d=%.1f r=%.1f "
                                 "alt=%.1f target=%.1f spd_cmd=%.2f spacing=%.3f mode=%d",
@@ -20102,7 +20112,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.plane_speed_commands;
                         // 009B08BC-009B08E7: direction +40h = tuning+66Ch, then
                         // 009FABE0(heading, 0099B630()); no direction object here.
-                        owner_.record("BotStateLandLine::direction_009fabe0", 0x009fabe0u);
+                        // DATA-CONDITIONAL, as standby's (docs/DOGFIGHT_GUN.md 8).
+                        if (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound &&
+                            owner_.lua.plane_globals_loaded() &&
+                            owner_.lua.plane_globals().pilot_auto_strafe_angle_angle_prepare == 0.0f) {
+                            owner_.done("BotStateLandLine::direction_009fabe0", 0x009fabe0u);
+                        } else {
+                            owner_.record("BotStateLandLine::direction_009fabe0", 0x009fabe0u);
+                        }
                         if ((unit_.land_line_ticks % 10) == 1) {   // DIAGNOSTIC: every 10 line ticks (1 s)
                             owner_.log.notef("  land line trace %s t=%.2f head_d=%.1f delta=%.3f "
                                 "thr=%.1f far=%d hdg_cmd=%.3f alt=%.1f band=(%.1f %.1f) target=%.1f "
@@ -20554,7 +20571,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         // 009B1DD4-009B1DDA: [approach+1Ch]+40h = 0.0 (the direction record).
-                        owner_.record("BotStateLandBegin::direction_40", 0x009b1ddau);
+                        // A literal 0.0 into the cone, which is what the host's gun
+                        // tick delivers outside dogfight (docs/DOGFIGHT_GUN.md 8).
+                        if constexpr (GameUnitsHost::Impl::kTaskGunControllerAllTasksBound) {
+                            owner_.done("BotStateLandBegin::direction_40", 0x009b1ddau);
+                        } else {
+                            owner_.record("BotStateLandBegin::direction_40", 0x009b1ddau);
+                        }
                         owner_.done("BotStateLandBegin::tick", 0x009b1d70u);
                     }
 

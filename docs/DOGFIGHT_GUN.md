@@ -257,3 +257,41 @@ Labelled substitutions:
 - **No ship takes forward-gun damage from a bomber** (item c).
 - **USN01** (five Mav torpedo aircraft, no enemy aircraft): 0 bursts; `pair_diff` 1 unless the
   RNG draw count moves.
+
+**Pairs** (OFF = `b0322e072` tree build, ON = its export with the flip; `local\l18_f0_*`,
+`local\l18_f1_*`):
+
+| row | pair_diff | task gun census (ON) |
+| --- | --- | --- |
+| JM05 9200/9000 | 1, gameplay identical | 45 planes, 85973 ticks, 0 bursts |
+| USN04 9200/9000 | 1 | 51 planes, 52177 ticks, 0 bursts |
+| USN13 3200/3000 | 1 | 24 planes, 24061 ticks, 0 bursts |
+| IJN01 3200/3000 | 1 | no eligible plane |
+| USN01 3200/3000 | 1 | 2 planes, 1296 ticks, 0 bursts |
+
+**Reach census** (ON only, `e845cbb01`, which adds `enemy_list_ticks`, the ticks with a non-empty
+`+50h` list; `local\l18_f2_*`):
+
+| row | planes | ticks | ticks with enemy aircraft listed | bursts |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 45 | 85973 | 0 | 0 |
+| USN04 9200/9000 | 51 | 52177 | 690 | 0 |
+| USN13 3200/3000 | 24 | 24061 | 0 | 0 |
+| JM08 3200/3000 | 9 | 9801 | 420 | 0 |
+| LOMP10 3200/3000 | 10 | 14926 | 0 | 0 |
+| USN02, JM06, BSM01, LOMP06, USN12, USNOS | 0 | 0 | 0 | 0 |
+
+**Verdict.** The mechanism matches: the tick runs on every eligible plane, and the enemy list fills
+on USN04 and JM08 when enemy aircraft come within 1200 m. The prediction of bursts on the mixed-air
+rows is a **spread miss**. No listed enemy ever enters the fire envelope
+(`lateral < 0.09 d`, `1 < z < 850`), so no row fires, and the firing list stays empty (`flagged=0`).
+Every pair is gameplay identical. **`kTaskGunControllerAllTasksBound` ON**, recorded as inert on
+the reference rows.
+
+**The land-state records, relabelled with the switch on:**
+- `009B1DDA` (begin's `direction_40`): **done**. It stores a literal 0.0, and the host's tick
+  delivers cone 0 outside dogfight.
+- `009FABE0` in standby and line: **done only while the authored `Angle_Prepare` is 0**, which
+  it is in this installation. The code tests `pilot_auto_strafe_angle_angle_prepare == 0` and
+  records otherwise.
+- The moveto `009FABE0` records (Angle_MoveTo 2 degrees) stay recorded; that cone is the open gap.
