@@ -2287,3 +2287,107 @@ frame, so the ship steers at the building itself. The image does something else:
   clearances pass (`00414C60` twice) as the approach point (`009F26F0`). This is x87-dense and
   needs `009E6120` and `008FE120` read first; it also needs a public Landscape segment query on
   the gunnery host (a line outside this lane).
+
+## 27. Rank 6, continued: the retarget arm, modes 0 and 2 (packet `cc9_approach_retarget_ring`, `kShipAiApproachRetargetRingBound`)
+
+Worker cc9-ships10, 2026-09-28. Read whole: `009F2124-009F2161` (the head) and
+`009F239A-009F272D` (modes 0 and 2). Modes 3 and 4 (`009F21A0-009F2395`) are not covered.
+
+**The image.**
+- **The head.** `009F2124` skips the arm when `nested+11D6h` is set. `009F2131` sets it, and
+  `009F2138..009F2161` raise `nested+11D8h` to at least 1.0 (`00D7A24C`; `FLD1`, `FCOMI`, `JBE`
+  keeps the timer, unordered included). The byte is cleared again by `009F1DAA` when that timer
+  runs out, so the arm runs once every 2 to 3 s.
+- **The point is the goal** (`009F23B5`). Then `0082ADC0([unit+538h])` gives the unit's
+  `[class+570h]` group and `004178F0` the first zone of it that holds the goal's x, z
+  (`009F23E8`). No zone ends the arm (`009F23F1`).
+- **The origin.** `008FE120(target)` is the target when it answers kind 5, else null. `h` is its
+  `[[t+538h]+0A8h]` (the class height extent), else 0.0. The origin is
+  `(goal.x, goal.y + max(50.0f 00CEB4D4, h), goal.z)` (`009F2474..009F248F`).
+- **The ring.** ESI walks the sixty slots from `nested+18h` at stride `4Ch`. `[ESI-8]`, `[ESI-4]`
+  and `[ESI]` are the slot's direction at slot `+0Ch`, `+10h` and `+14h`: cos, 0 and sin of its
+  heading (`ShipAiAttackMoveRingSlot`). For each slot:
+  - `R = max(0.6 * [unit+490h], [unit+490h] - 600.0)` (`00CEFF98`, `00D20198`), where
+    `unit+490h` is the artillery-only maximum range (docs/SHIP_AI_FIREPOWER_INPUTS.md). With a
+    building target in mode 2, `R = [building+7A0h] - 600.0` (`009F2505`).
+  - `P = goal + dir * 100000.0` (`00CF81F0`), and `00416DD0(zone)(&P, &goal, &hit, &edge)` moves
+    `hit` from the goal to the crossing nearest `P`: the outermost coast crossing on that bearing.
+    Its answer is not tested.
+  - `Q = (hit.x + dx * 100.0, 60.0f, hit.z + dz * 100.0)` (`00D7A220`, `00CEB4B0`).
+  - `00904400(44h, &origin, &Q, &record, 0)` at `009F25FA`: a Landscape hit skips the slot.
+  - The slot must have `R > |Q - goal|` and `best > |Q - unit|` (`00414C60` twice, `FCOMIP`,
+    `JBE`), `best` starting at `FLT_MAX` (`00D7A248`).
+  - Then `best = |Q - unit|` and the point becomes `hit + dir * 10.0` with y `dy * 10 + 0.0`
+    (`00CE3DC0`, `00D7A258`), stored at `009F26F0..009F2704`.
+- So the approach point becomes the spot 10 m off the coast, on the bearing nearest the unit,
+  whose 100 m-seaward probe sees the target's top over the land and lies inside the unit's
+  artillery reach. With no such bearing the point stays the goal.
+- **The ship path skips all of it.** `009F1E30 JE 009F2003` sends the no-ship path past the goal
+  copy at `009F1F0D`, so on that path the approach point changes only here.
+
+**The binding** (`ship_ai_approach_retarget_ring_009f239a`, `src/ship_ai_approach_update.cpp`).
+The Landscape cast needs a public query on the gunnery host, requested from the lead on
+2026-09-28 (`GameGunneryHost::landscape_segment_hit_00904400`). Until it lands this section has
+no committed code.
+
+## 28. The third ranking (packet `cc9_ship_ai_open_ranking_3`, cc9-ships10, 2026-09-28)
+
+**It replaces section 16's table.** Every lane switch named in sections 17 to 27 is in this base.
+
+**Source.** Ten rows run once on `agent/cc9-ships10` at `5a5cfd3b4`: main `9dcf7f537` plus this
+branch's rank 4 flip (section 25) and the mode latch committed OFF (section 26, identical ON).
+`build\win32\Release\bsp_game.exe` in that worktree, launch as section 16 (`local\ships10_run.ps1`),
+logs `local\ships10_b0_<row>.log`. `local\ships10_census.py ships10_b0 rows <regex>` sums the
+non-concrete host rows; `local\ships10_sites.py <row>` prints a record site. The rows are
+section 16's ten, which include USN12 and JM05.
+
+### Closed since section 16
+
+| item | switch | where |
+| --- | --- | --- |
+| the turn clearance's path fade (rank 3) | `kShipAiClearancePathFadeBound`, ON | section 17 |
+| the arm final's group area key (rank 10) | `kShipAiArmFinalAreaKeyBound`, ON (spread miss recorded) | section 18 |
+| the troop-landing class trait (rank 2) | `kTroopLandingTraitBound`, ON | section 19 |
+| the clearance outcome to the escape reader (new) | `kShipAiClearanceOutcomeWiringBound`, ON | section 20 |
+| the group reference release (rank 5) | read only | section 21 |
+| the heading wrap after a heading store (rank 7) | census, reach 1 | section 22 |
+| the AutoTarget follower gate (rank 1) | `kAutoTargetFollowerGateBound`, ON | sections 12 and 24 |
+| the AI command's avoid-zone point (rank 4) | `kAiCommandAvoidZonePointBound`, ON (spread miss recorded) | section 25 |
+| the approach mode latch (part of rank 6) | `kShipAiApproachModeLatchBound`, ON (modes 1 to 4 unexercised) | section 26 |
+
+Every switch in this lane is ON except `kShipAiApproachRetargetRingBound` (section 27, in
+progress).
+
+### The ranking
+
+Reach as in section 1. Calls are the sum over the ten base rows.
+
+| rank | item | image | host label | calls | reach, in one line |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **the approach retarget arm, modes 0 and 2** (section 27) | `009F2124-009F272D` | `ShipAiApproach::frame_state_unread_spans`; the goal is copied every frame | 1743 USN01 + 601 LOMP10 entry frames | 3: a ship attacking a coastal command building steers at the building itself instead of a point 10 m off the coast that sees it |
+| 2 | **the approach ring's sight test** | `00864FD0` (thunk onto `00864D90`) at `009E8116` in `009E7FC0` | `ShipAiApproach::zone_allows_target_00864680` answers true | 25067 (USN02 23525, USN01 1542) | 3: a hidden target stops mode 0's slot scoring. The label is stale: `kGunneryLineOfSightBound` is ON and the gunnery host runs `00864680`. Binding needs a public visibility query on the gunnery host |
+| 3 | the group reference release | `00A2B8F0` from `00A2E784` | `AiGroups::release_group_reference` | 52930 (JM05 22079, JM08 15823, USN13 10026) | 3: section 21's next step |
+| 4 | the carrier arm of the squadron exclusion | `009FFEB0` | `AiCommand::squadron_excluded_009ffeb0` | 15560 (JM05 8428, USN13 2079, JM08 1541) | 3 for a carrier's squadrons in an AI group. Borders the plane lane |
+| 5 | the engage gate's kamikaze fields | `[class+510h]` / `+514h` at `009E85CD` in `009E85B0` | `ShipAiEngageGate::armament_readiness` answers 0 / 0 | 7546 (USN02 6951, USN01 437, LOMP10 155) | 3 only for Kaiten (`VehicleClass[4]`) and Shinyo (`[43]`), the two classes with `KamikazeDamage` in this installation's `vehicleclasses.lua` (mtime 2026-05-09). Exact for every other class. The "armament readiness" name is wrong (docs/ATTACKMOVE_ENGAGEMENT_RANGE.md 2.1) |
+| 6 | BigLandingShip | `class+808h` at `00827F95` | `ShipAiNeighbour::big_landing_ship_808` answers 0 | 1550 (JM08) | 3 when an enemy submarine is near an LSM or LST |
+| 7 | a submarine target in the standoff choice | `009E6EFC` in `009E6E80` | `ShipAiApproach::target_kind_005c` answers false | 30105 | 0 on these rows: section 26 counts no kind-8 target. 3 on a submarine hunt |
+
+**Not ranked, and why:**
+- `ShipAi::unit_weapon_director`, `drive_heading_vtable50` and `ShipAiOrder::slot_to_order_ring`
+  (982855 each) are structure, as in section 1.
+- `ShipAiMoveOnPath::brain_leg_scale_0308` (15383) is a store with no reader; the value is kept.
+- `ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530` (13317) answers this installation's
+  robots.lua values; the substitution is labelled, not open.
+- `ShipAiApproach::sub_heading_command`, `sub_throttle_command` and `unit_depth_reference`
+  (30105 each) belong to the submarine sub-states; section 26 counts no submarine approach.
+- `ShipAiFollow::refresh_world_pose` (73578), `ShipAiApproachPoint::refresh_unit_pose`,
+  `ShipAiApproach::scratch_00954940` and the release rows are housekeeping.
+- The random stand-ins (`traffic_random`, `avoid_random`, `random_stream1`, `uniform_00bd2f10`)
+  stay unbound for the RNG-stream reason in section 16.
+- `AiCommand::tick_000c` (9829) is recorded only for the NonControl and Idle command types; the
+  other types count as done.
+- The AI party's power-up use `00A179E0` (461) waits on a power-up subsystem.
+
+**Top item.** Rank 1 is section 27, in progress; it waits on the gunnery host's Landscape
+query. Rank 2 is the next free packet once a gunnery-host visibility query exists; rank 5 is
+free now but exact on every reference row.
