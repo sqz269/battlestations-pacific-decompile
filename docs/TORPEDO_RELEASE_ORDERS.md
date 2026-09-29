@@ -509,3 +509,64 @@ to bind.**
 
 The first is the open run-in item of (7). The second and third are new candidates for a
 torpedo-lane packet: why two squadrons stall far out, and why two stop in `prepare`.
+
+## (9) JM05's late torpedo squadrons: the run ends, and the attack mode never reaches them (packet `cc9_torpedo_flight_lead`, cc9-lua18, 2026-09-29)
+
+Run: `local\l18_d0_jm05l.log`, JM05 9200/9000 on the cc9-lua18 tree (`aa1b33146`),
+`BSP_DEATH_TABLE=1`.
+
+**Yorktown_sqn12 and sqn13 neither die nor retire. The run ends.** Their squadrons are pushed at
+237.06 s and 240.06 s, and the mission stops at frame 9000, which is 450 s at the 0.05 s lockstep.
+At 0.1 s per think, that leaves 2129 and 2099 thinks, which are exactly the `arm_ticks` of every
+aircraft in each squadron. None of the six has a `death row` line, and the task table still shows
+their torpedo task when the run stops. The leaders entered `attackrun` 8.9 s and 5.9 s before the
+end, at 4310 m (the `ordered ... range` line). **Nothing to bind.**
+
+**Lexington_sqn15 is cut by the run end as well.** It is pushed at 258.06 s, and 1919 thinks is the
+rest of the run. **SecondaryAirfieldEntity 01_sqn18 dies.** The Fubuki-class AA kills all three at
+about 1220 m altitude (`death row` at 406.52, 413.62 and 428.62 s). The kill times match each
+aircraft's `arm_ticks` (1035, 1106, 1256 from 302.95 s).
+
+**What holds both squadrons in `prepare`: the attack mode `ctl+370h` stays 0 (hold) for their whole
+life.** The census lines read `attack mode ctl+370h: now=0 ... hold=1919 attack=0` and `hold=1035
+attack=0`, and `009D4030` sends an engaged task with mode 0 to `prepare` (section 4). Every other
+torpedo squadron in the run reads 1.
+
+**Why: the host's leader test is mission-wide, not per squadron.**
+- In the image, `0099B740` raises the mode only for the unit equal to `[ctl+3D0h]`, element 0 of
+  **its own** squadron's member array (`0099B757`). The mode is a field of that squadron's pilot
+  control block (section 4, `task+2FCh`).
+- The host (`torpedo_is_flight_lead`, set once at the task install) makes the **first torpedo task
+  installed in the mission** the only leader. That leader then copies its mode into **every**
+  torpedo task in the mission (`run_attack_mode_tick_0099b740`).
+- On JM05 the one leader is Lexington_sqn05 (`orders: lead=1`); all 23 other torpedo aircraft read
+  `lead=0`. Squadrons installed while sqn05's task ran got its 1. Squadrons installed after it ended
+  kept the seed, hold, forever: those are sqn15 and sqn18.
+- The dive-bomb twin (`db_is_flight_lead`) already resolves the leader per squadron and scopes the
+  copy to that squadron.
+
+**The binding** (`kTorpedoFlightLeadPerSquadronBound`, OFF when committed, `local\l18_torp_lead.py`
+until the file lease frees):
+- the leader is "this unit is the first live entry of its own squadron's `member_units`",
+  re-read every think;
+- the leader's mode goes to its own squadron's members only.
+
+Uncertainty: re-reading element 0 every think assumes the image's member array compacts when the
+leader dies; the removal path is not read here.
+
+**Predictions (written before the pairs):**
+- **JM05 9200/9000:**
+  - sqn15 and sqn18 read mode 1 from their first think; `prepare` ticks drop to at most 1 per
+    aircraft.
+  - Their leaders run `moveto` -> `attackrun`, as sqn12/13 do, instead of holding.
+  - sqn18 is inside its engage range at 305 s, so it descends into `attackrun`/`aim` and may
+    release. The AA deaths at 406-429 s move: time, altitude, and whether they die at all.
+  - `pair_diff` 3. The other 18 torpedo aircraft keep their state lines, except for a one-think
+    `hold` at their first tick.
+- **USN01 3200/3000:** Mav1-Mav5 are five single-plane squadrons (`WingCount=1`). Today Mav2-Mav5
+  spend one think in `prepare` because they read hold before Mav1's copy reaches them. ON, each
+  leads itself, so `prepare=1` disappears and `transitions` drops by one. Expect a small
+  trajectory move and `pair_diff` 3; the same kill count is likely but not assured.
+- **USN13 3200/3000 and USN04 9200/9000** (60 and 16 torpedo tasks, all at mode 1 at the end):
+  members of each squadron still read their leader's 1. Expect only first-think `hold` counters to
+  move, `pair_diff` 1 or 3 through one-think state timing.
