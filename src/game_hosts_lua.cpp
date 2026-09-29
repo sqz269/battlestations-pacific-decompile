@@ -192,8 +192,9 @@ constexpr bool kWingConstructionLuaActive =
 
 // Packet cc9_carrier_launch_skill (docs/SCENE_UNIT_SKILL.md section 6): an
 // air-ops squadron starts at its owner's live skill, the bag `Skill` 006C5050
-// reads through owner->vtable[12Ch](). OFF until paired.
-constexpr bool kCarrierLaunchSkillBound = false;
+// reads through owner->vtable[12Ch](). ON: JM05 9200/9000 moves (14 US
+// squadrons at 2), USN04 and USN13 are gameplay-identical.
+constexpr bool kCarrierLaunchSkillBound = true;
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser

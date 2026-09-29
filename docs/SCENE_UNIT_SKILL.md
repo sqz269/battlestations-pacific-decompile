@@ -195,3 +195,50 @@ switch changes no gameplay in any reference row today. It matters once:
 4. **Mechanism failure.** A `skill=` value that differs from the owner's `SetSkillLevel` or scene
    value. `members=` below the wing count, which would mean pass B ran before pass A's wing.
    A moved row on a squadron whose line says `skill=1`.
+
+### 6.4 Measured, and the verdict
+
+The pair is one commit, `0ced7aed7`, exported twice by `tools/pair_export.py`: OFF, and ON with
+`kCarrierLaunchSkillBound=true`. Both ran in the reference environment. A 300-frame USN04 smoke
+of the ON binary finished clean; no launch happens that early. The logs are
+`local\l16_l{off,on}_{jm05l,usn04,usn13}.log` in the cc9-lua16 tree. The torpedo census is
+cc9-lua15's `local\l15_torp.py`.
+
+| row | launch lines (owner = skill) | applied | pair_diff | deaths |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 7 USS Lexington = 2, 7 USS Yorktown = 2, 2 MainAirfield = 1, 3 SecondaryAirfield = 1 | 19, every one `members=3` (= `wing=3`) | 3 | 29 -> 29, same set, 21 rows re-timed |
+| USN04 4700/4500 | 2 Lexington-class01 = 2, 2 Yorktown-class01 = 2 | 4, `members=3` | 1, identical | 45, identical |
+| USN13 3200/3000 | the nine US carriers = **1** | 9, `members=3` | 1, identical | 32, identical |
+
+Each prediction against the result:
+1. **JM05, the lines: held.** Only the two carriers give 2. On the ON side:
+   - hit records 1326 -> 1315, hull hits 970 -> 989, shots 7321 -> 7355;
+   - damage 24531.9 on both sides, and the same 29 deaths.
+
+   **JM05, torpedo releases: missed. They stay at 0 of 27.** The census shows why: the SPVeteran
+   row is in force.
+   - The aircraft now press lower: minimum altitude 12.9-20.1 m against 20.8-38.6 m OFF (the
+     Lexington_sqn05 and Yorktown_sqn06 flights).
+   - They also press closer: 844-1033 m for the wingmen.
+   - That is inside the new 800-1200 m window, and the `alt` gate now passes on 6 to 23 ticks.
+     But the SPVeteran release altitude is **5 m** (`TorpReleaseAlt`), stricter than SPNormal's
+     12 m, and none gets below 12.9 m before it is shot down.
+
+   The row moved the geometry the way the table says. What still loses the drops is the AA
+   (docs/AA_LETHALITY_AUDIT.md section 7).
+2. **USN04: held for the mechanism.** The four US squadrons fly at 2. They do not change a single
+   gameplay line in 4500 frames.
+3. **USN13: missed, and the image agrees with the host.** Every US launch there is a script
+   `LaunchSquadron` (`0089E3C0`), whose InitAll runs at once. `usn_13_truk.lua` launches each
+   carrier's squadron **before** its `SetSkillLevel(..., 2)`: log line 4521 is the launch and 4559
+   the first carrier re-skill. So the carrier's live skill at launch is still the constructor's 1.
+   The image would read the same `vtable[12Ch]` at the same moment. My prediction assumed the
+   re-skill came first.
+4. **Mechanism: held.**
+   - Every value equals the owner's live skill at the launch line.
+   - `members` equals the wing count on all 32 squadrons.
+   - No row moved on a squadron printing 1: USN13 is identical.
+
+**Verdict: `kCarrierLaunchSkillBound` flips ON.** The mechanism matches the image. Both misses are
+prediction errors about the script order and the release-altitude gate, not failures of the
+mechanism.
