@@ -3019,3 +3019,45 @@ find. **That writer is still not located**, and it is not needed for step 3.
 - for the 40 classes without one (49.5), the native body box is the union over an empty shape set.
   How `00939A89` and `00C37E70` treat that seed (`+FLT_MAX`/`-FLT_MAX`) is not read, so leaving
   those inputs at zero is a host choice, and it is flagged.
+
+### 49.10 The empty shape set: zero extent, zero inertia, zero inverse (packet `cc9_empty_hull_box_seed`)
+
+**The `FLT_MAX` seed is never what an empty body keeps.** SHIP_HULL_SHAPES had read that a body with
+no shape never reaches the union `00C55FC0`: all six of its callers run with a shape already linked.
+This packet confirms what the body holds instead, and what the inertia path does with it.
+- **The box is exactly zero.** The body initialiser `00C43CA0` (`Dyn_Body_InitFromDescriptor`) zeroes
+  XMM0 at its entry (`00C43CA1 XORPS XMM0,XMM0`). Filtering its listing for XMM0 shows no later
+  write, only stores and `COMISS` reads. So `B+38h..+40h` and `B+44h..+4Ch` are stored as `0.0f` at
+  `00C43D22..00C43D41` and again at `00C43E5E..00C43E77`.
+- **No early out in the inertia block.** `00939A80..00939C10` contains three calls: `00C31F90` at
+  `00939A89` (the box read-back), `00424C40` at `00939B27` (the settings singleton, for `mul`) and
+  `00C37E70` at `00939C05`. It contains no conditional jump. With a zero box the extent is (0, 0, 0)
+  and every inertia component is `mul * Mass/12 * 0 = 0`.
+- **Zero maps to zero.** `00C37E70` (`Dyn_Body_SetInertia`, `__thiscall(body, const float[3])`,
+  `RET 4`) stores `0.0f` for any component that compares equal to zero (the `UCOMISS` and `JNP`
+  pair) and `1/x` otherwise. So the inverse inertia at `M+54h..+5Ch` is (0, 0, 0): the hull never
+  rotates under a torque.
+
+**The rule for lua11's step 3.** When `read_mmod_hull_convex_box` returns `shape_count == 0`, leave
+`aabb_min`, `aabb_max` and `shape_count` at their zero defaults. That is the native result, not a host
+choice; the flag in 49.9 is withdrawn.
+
+**One exception the reader does not cover: the periscope shape.** `009396BA..009399BF` adds one more
+shape to the same body under three conditions: `class+510h <= 0`, `class+514h <= 0`, and a node found by
+the name `periszkop` (`00D0C1F0`, `0071AD50` at `009396D8`). Its geometry is the `model+4Ch` pair whose
+node is that node (`00939843`: `[pair+4] == [ESP+18h]`). It is placed by the node's local matrix, with
+a real rotation (SHIP_HULL_SHAPES, "The periscope shape"). In this installation five models have such an
+item, and each owns a ConvexObject:
+
+| model | item |
+| --- | --- |
+| `i-400` | `i-400:periszkop nolod` |
+| `kaiten` | `kaiten:periszkop` |
+| `minisub` | `minisub:periszkop nolod` |
+| `type7` | `type7:periszkop nolod` |
+| `type_b` | `type_B:periszkop` |
+
+All five have no root ConvexObject. Whether `0071AD50` finds them depends on the unread name key form
+(49.5): the full `Model:item` name, the part after the colon, or neither, and whether the
+` nolod` suffix matters. So for these five classes the native box may be the periscope shape's box
+alone, which is small and gives a non-zero inertia. That is left as a flag for step 3, not bound.
