@@ -4589,3 +4589,53 @@ the attackmove is not how the host stores `land`.
   another push. The squadron's own generated order is the likely source; the commands lane should
   dump `slot_command[]` for units 330 and 332 at 68.20..68.25 s.
 - The arm only raises stage 2 on a friendly target; it does not disturb the land tasks here.
+
+## 57. Lua `Kill` on script entities (packet `cc9_lua_kill_script_entity`, ranking 14)
+
+Worker cc9-ships16, 2026-09-29 (stamped 16:21 UTC). The lead granted `src/game_hosts_lua.cpp` for
+this packet.
+
+**What the misses are.** `run_kill_008ac5c0` (`src/game_hosts_lua.cpp`) resolves only units, and
+counts anything else as `unresolved`. Every miss on the fresh rows is a script entity:
+- The counts are IJN01 2, USN01 2, JM05 1, USNOS 3 and LOMP10 1; the logs are `local\s16*` in the
+  cc9-ships16 tree.
+- The id is 100000 or above (`kScriptEntityIdBase`), and the entity was `created_for=luaDoTimeTable
+  think=luaTimetable`.
+- The first miss on each row follows `IsListenerActive` and `RemoveListener`. That is
+  `luaCamOnTargetExt` (scripts/global/commandhelpers.lua:7830, this installation, mtime
+  2024-10-29): `if Mission.CamScript.Dead == false then Kill(Mission.CamScript)`.
+- The binding trace lists only first calls, so the later misses are attributed to the same site by
+  their shape (timetable entities), not by a trace.
+
+**What the timetable is.** `Mission.CamScript` is `luaCamIngameMovieAuto`'s return value (7785,
+7813):
+```
+luaDelay(luaCamOnTargetExt, callbackTime, ...)
+  = CreateScript("luaDoTimeTable", {{false, t}, {luaCamOnTargetExt, 0}}, params)
+```
+So the Kill is normally the timetable killing itself from its own second entry.
+- In the image, 00926D90 sets Dead. `luaTimetable` (scripts/global/timetable.lua, mtime
+  2024-07-13) returns at `if this.Dead`.
+- In the host, Dead stays false, so `luaTimetable` reaches `ttt[idx][2] == 0` and calls
+  `DeleteScript(this)` in the same think.
+- The end state is the same (dead, off the think lists), and the rest of `luaCamOnTargetExt` runs
+  identically either way.
+- **The grep for mission work after the Kill point:** a luaDelay timetable has no entry after the
+  callback, so no timetable entry runs after the Kill.
+- The one other route is the player skip (`IC_ENDMOVIEPLAY` calls `luaCamOnTargetExt` with no
+  table while the timetable waits). There the host leaves the timetable alive and the callback
+  fires a second time. An idle player never skips.
+
+**The binding.** Under `kLuaKillScriptEntityBound`, committed OFF, a Kill whose argument's `Ptr`
+is a script entity runs `GameScriptOrdersHost::entity_kill_00926d90`. That call already exists and
+is reached from other paths; it sets Dead and `+5Eh`, erases the entity from both think lists and
+rebuilds the self table.
+
+**Predictions (written before the pairs).**
+- `unresolved` goes from 1..3 to 0 on every row, with the same count of `script entity id N
+  killed` lines.
+- Gameplay identical (exit 0 or 1) on USN04 4700/4500, USN13, JM05, USNOS, IJN01 and LOMP10
+  3200/3000.
+- DeleteScript's own count may drop by the same number, because the timetable now returns
+  before it.
+- No movie-camera pose change is expected, because the end state is reached in the same think.
