@@ -3920,3 +3920,89 @@ The pairs are JM05 at 3000 and 9000 frames, and USN04, USN13 and LOMP10 at 3000.
   - Plane paths after the first carrier touchdown move (exit 3).
 - **Both switches against neither** (the flip evidence): JM05 moves (recall and recovery). The
   controls stay gameplay identical.
+
+### 5ag.1 Measured (pairs on `7d8d5a86b`)
+
+**The exports.** All three are `tools/pair_export.py --commit 7d8d5a86b`:
+- `local\l20_n0`, no flip, SHA-256 prefix `FA29EA35EAAC`;
+- `local\l20_p0`, `kReturnToBaseSiteKeyBound` and `kCarrierLandingDeckBound`, `47C4CCB593A4`;
+- `local\l20_p1`, those two plus `kCarrierDeckParentBound`, `B09D7B509A8D`.
+
+The runs use reference p's launch form with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`
+(`local\l20_runs.ps1`); the logs are `local\l20_{n0,p0,p1}_<row>.log`. Every log is clean:
+`present interval immediate`, the export's module directory, `frames_presented` = frames - 1 and
+the final COM release.
+
+The environment: a first batch at 16:20 local (Pacific) died at renderer init (`hr 0x8876086A`,
+`logonui=1`, the session locked), and one run stopped at frame 4346. Those runs were discarded.
+After a clean 300-frame smoke at 16:41, every failed row was re-run.
+
+**The deck pair** (p0 -> p1, this switch alone):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | nothing |
+| USN13 3000 | 1, gameplay identical | nothing |
+| LOMP10 3000 | 1, gameplay identical | nothing |
+| JM05 3000 | 1, gameplay identical | nothing: no carrier touchdown happens within 3000 frames |
+| JM05 9000 | 3 | plane paths: 7 unit rows (nearest distances only); deaths (3, the same victims), hits, damage and shots are identical |
+
+**The mechanism held.**
+- `summary carrier deck parent parented=13 wire_seeded=13 carry_steps=32923 wire_steps=87
+  wire_resets=13 wire_max=94.01 stops=13 edge_takeoff_requests=0`.
+- **Every carrier touchdown re-parents and seeds the wire, and every plane stops on its deck:**
+  - On Yorktown, 6 planes touch down at local z -47 to -51 (z-less-T 61 to 65, so the seed is
+    8.0). They stop within 0.5 s at z -38 to -42.
+  - On Lexington, 7 planes touch down at z -139 (z-less-T -9.4, so the seed is 0.5). They stop
+    at z -134 to -136, inside the half length 139.5.
+- **OFF lost contact 13 times and ON never does.** On p0, the 6 Yorktown planes slide off at
+  local z 124.1 to 124.5 (the named Yorktown_sqn04 failure, again at 234.26 s). The 7 Lexington
+  planes lose contact at the stern edge (z -139.5 to -140.3) at touchdown, with |v| about 34.
+- The landed planes ride their carriers. Their ground-steering end points move from about
+  (-8900, -9400) to (-10600, -11000) with Yorktown.
+
+**The spread missed.** Plane water contacts are 4 on both sides, not 3. The fourth is USS
+Lexington_sqn07|.-2, on both sides. On this base the slid-off Yorktown planes never reached a
+water contact (5ae.1's fourth contact came from a different base).
+
+**Side finding for the AI lane: Yorktown steams astern.** The relative velocity at every Yorktown
+touchdown is larger than the world velocity:
+- world (19.9, 18.8) and relative (27.5, 26.0), so the carrier velocity is (-7.6, -7.2), 10.4 m/s
+  at heading 226.6 degrees;
+- the carrier's own runway heading is 0.815 rad (46.7 degrees).
+
+So Yorktown moves backwards at 10.4 m/s while it recovers aircraft. OFF's slide-off over the
+*bow* edge is the same fact. Lexington steams ahead: carrier velocity (12.3, 11.3), 16.7 m/s along
+its heading.
+
+**The flip pair** (n0 -> p1, all three switches against none):
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | summary lines only: 2 carrier decks build, and the deck-spawned planes probe their deck (contact steps 0 -> 8) |
+| USN13 3000 | 1, gameplay identical | summary lines only: 9 carrier decks build |
+| LOMP10 3000 | 1, gameplay identical | presentation lines |
+| JM05 3000 | 3 | torpedo-task releases 0 of 12 and dive-bomb 0 of 6 -> none installed; one plane water contact; 43 unit rows. Deaths 0, hits and damage are identical |
+| JM05 9000 | 3 | deaths 28 -> 3; 24 plane deaths -> 0; Shokaku no longer sinks, Kuma-class 01 now does; torpedo drops 8 -> 0; water contacts 21 -> 4; units 425 -> 407 |
+
+This is 5ad.1's recall (deaths 29 -> 3 on `b8c3b26c7`). The recalled strikes are now recovered
+aboard, not left circling.
+
+### 5ag.2 Verdict: all three ON
+
+- **`kCarrierDeckParentBound`.** The mechanism is the image's and matched the prediction on every
+  counted item. The one miss is a spread miss (the water-contact count), explained above. It flips
+  ON.
+- **`kCarrierLandingDeckBound`.** Part 2 was its gate (5ae.2): landed planes now stay on the
+  moving deck. It flips ON.
+- **`kReturnToBaseSiteKeyBound`.** Its two gates are closed:
+  - SELLING: SHIP_AI_OPEN_ITEMS 59 found the JM05 recall faithful;
+  - the carrier deck: 5ae plus this section.
+
+  It flips ON. JM05's reference row moves as the flip pair shows. That is the faithful recall of
+  the freshly launched strikes, recorded here for reference q's successor.
+- **Left open:**
+  - the carrier elevator retirement and relaunch (5aa; the taxi/park carrier arm `009B23E4`);
+  - the deck-edge takeoff `007CC264`, which needs the takeoff `007C7110`;
+  - the scoring call at `007CB7B7`;
+  - the host's use of the relative velocity by readers that expect a world velocity (labelled).

@@ -2214,13 +2214,13 @@ struct GameUnitsHost::Impl {
     // (landing_deck_006c0750) or a carrier holder frame built as 00758E80's
     // refresh leaves it (006BEE40 on 007593D0's holder). False: every key is
     // unknown, and two or more candidates make the resolution `site-key-unread`.
-    static constexpr bool kReturnToBaseSiteKeyBound = false;
+    static constexpr bool kReturnToBaseSiteKeyBound = true;  // ON: 5ag.2 (JM05 recall faithful, SHIP_AI_OPEN_ITEMS 59)
     // Packet cc9_carrier_landing_deck, part 1 (docs/SQUADRON_LAND_TASK.md 5ae).
     // True: landing_deck_006c0750 builds a mother-ship deck's holder as
     // 007593D0 -> 006C0D20 -> 006C0750 does and re-frames it from the carrier's
     // pose at each use (00758E80's per-update 006BEE40), and 006BA620 answers
     // RunwayLength x 0.3 on it. False: a mother-ship deck is refused.
-    static constexpr bool kCarrierLandingDeckBound = false;
+    static constexpr bool kCarrierLandingDeckBound = true;  // ON: 5ag.2 (part 2 carries the landed plane)
     unsigned long long carrier_decks_built{0}, carrier_deck_refreshes{0};
     // Packet cc9_carrier_landing_deck_part2 (docs/SQUADRON_LAND_TASK.md 5ag).
     // True: a touchdown on a mother-ship deck re-parents the plane to the
@@ -2230,7 +2230,7 @@ struct GameUnitsHost::Impl {
     // consumer 007DC1A7, and scales the wheel friction by the parent's
     // velocity (007DC0A2). False: the plane stays at its world touchdown
     // point and the wire and surface factor are 0 and 1.0.
-    static constexpr bool kCarrierDeckParentBound = false;
+    static constexpr bool kCarrierDeckParentBound = true;  // ON: 5ag.2 (13 of 13 carrier landings stop on deck)
     void carrier_deck_reparent_007c71e0(GameUnitSlot& p, const LandingDeck& d);
     void carrier_deck_carry_in(GameUnitSlot& p);
     void carrier_deck_capture(GameUnitSlot& p);
