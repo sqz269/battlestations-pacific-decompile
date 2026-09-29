@@ -4,7 +4,7 @@ Addresses: 009B41C0 009B3240 009B2E50 009AFE70 009AF9A0 009AFA50 009B3EB0 009B39
 009B3560 009B3680 009B3770 009B3CF0 009B3C60 009B3750 006C54C0 006C4790 006BD080 006C0B50 006CD240
 006CC9F0 006C7960 006C3B10 006C5C40 006C5380 006C3E50 006C46B0 006C45C0 006BED60 007C6760 006C7540
 006BEF70 006C0750 006BEE40 006BC960 006BF0D0 006BA620
-0099A3DD
+0099A3DD 007C07A0 007D83D0 007D88CB 009B1C79 009B0A3B 0074E210 007DC6C5
 
 Worker cc9-lua8, 2026-09-28. This continues `docs/CONTROLLED_UNIT.md`, "The squadron's
 `returntobase` resolution, and the `land` task's shape" (cc9-lua6). The switch is
@@ -1723,22 +1723,259 @@ command never falls below q = 1.
 and abort stay OFF. The diagnostic line stays: it is read-only and prints only while final is
 bound.
 
+### Second pass: the pitch arm in mode 1 and the drag the host supplies (packet `cc9_landing_descent_2`, cc9-lua13, 2026-09-29): nothing in the airframe laws
+
+The two reads the first pass left open are done, from the disk listing (`disasm-raw`), and so are
+the other host-supplied inputs of the core law that could put a sink under the flare. **None of
+them differs from the host in a way that sinks a plane held at q = 1 and +0.1047 rad.** Nothing is
+bound, there is no pair, and begin, final, abort and park stay where 5l and 5m left them.
+
+**The pitch arm in mode 1 (`0099DC9E`-`0099E512`).**
+- The flare writes mode 1: `009B1AB3` loads `[esp+58h]`, the first dword of the `tuning+4E0h`
+  block that `009B1439`-`009B144B` copied (`REP MOVSD`, 14h dwords, ApproachPitch = DEG(6)), sets
+  `+2D0h = 1` at `009B1ABB`, and `009B1B22` stores it to `+2BCh`. No `FCHS` on that path; the
+  `FCHS` at `009B1AD3` belongs to the glide arm's clamp to `[-desc+1F0h, desc+1ECh]`.
+- In mode 1 there is no slew. `0099DCE0` takes the `else` at `0099DD54`: the measured angle is
+  `unit+C64h`, the live pitch, which is what the host passes (`pin.held_pitch`). The mode-2 slew
+  `0099DCFA`-`0099DD4E` is bound ON already (`kPlanePitchModeTwoBound`) and is not on the flare path.
+- The floor `0099E490`-`0099E512` is `max(PitchTurnMaxPitch - 2.5 x (1 - q), +2BCh)` with
+  `PitchTurnMaxPitch` = DEG(6) (`tuning+5C0h`, mirrored at `tuning+88h`). It can only raise the
+  target; at q = 1 it equals the flare hold itself. It cannot sink anything.
+- The error gain: `0099E604` multiplies the wrapped error by `[esp+28h]`, which `0099D46E`-`0099D4E6`
+  sets to `1 / max(unit+340h x [00CE65D0], 1.0)`. `unit+340h` is CheatTurbo, 0 in this host and in
+  the installation's rows, so the gain is 1.0: the host's `dt_scale = 1.0` is exact.
+
+**The drag `007D9140` and its call site `007DBA32`-`007DBC76`.**
+- `a1` is `sqrt(|ctl+18h|^2)` (`007DBA47`-`007DBA88`), the world speed; the host uses the same.
+- `a2`, `a4`, `a5` are the plane's throttle, air brake and pitch control. The first pass took them
+  from the command block (`unit+9F0h`) and the latched block (`unit+BC0h`, `unit+BB4h`). My own
+  frame count leaves a four-byte doubt about which of the two slots `[esp+3Ch]`/`[esp+40h]` holds
+  which block at `007DBB28`/`007DBB33`. Either way the two blocks hold the same values one step
+  apart: `007B9770` copies `+9E4h..+9F4h` into `+BB0h..+BC0h` verbatim, with no rate or filter
+  (`007B9770`-`007B97C6`). That is not a sink.
+- `a3` (the pitch) only feeds the speed floor, whose two endpoints are both `MaxSpd x 0.1` in this
+  installation's PlaneGlobals, so its value cannot matter.
+- After the call: the result is multiplied by the `007DBB23` pitch ramp (`-0.3 -> r1`, `0.1 -> 1.0`,
+  with `r1 = 1.0` until the DeadMeat timer runs), by `[00D7A370]` only when `ctl+44h < 0`
+  (`007DBB6A`, flying backwards), and applied along the unit world velocity (`007DBB82`-`007DBBDF`).
+  The extra lateral term `007DBBE2`-`007DBC5C` runs only when `ctl+98h > 1.0`; `ctl+98h` is 1.0 from
+  the constructor (`007D7F5D`) and I found no other literal-offset writer to `ctl+98h` in
+  `007B0000`-`007F8000`. The host's drag is this.
+- The drag scales with `(1 - throttle)^2 x GlideRate`, so it only changes the throttle the speed
+  hold needs; the hold still settles at `r`, where lift balances weight. Drag cannot move the
+  flare below q = 1 while the throttle is below 1.0, and the trace's throttle peaks at 0.62.
+
+**The other inputs to the lift and gravity terms, censused** (byte scans for `MOVSS`/`FST(P)`/`MOV`
+stores at the literal offsets, `007B0000`-`007F8000` and `00996000`-`009F7000`; the controller is
+`unit+AB0h`, so `ctl+9Ch` would also be `unit+B4Ch`, which has no plane writer):
+- `ctl+9Ch`, the multiplier on q in the lift (`007DB8CF`): 1.0 from the constructor (`007D7F65`).
+  The other `+9Ch` stores in the range write other objects (the flight sub-object at `ctl+10h`:
+  `007D7D51`, `007D7D83`, `007DB726`; a vtable object at `00D05814`: `007B5390`; the unit
+  constructor's helper `007BAF90`; the sound element `007EB380`; the pilot-bot blocks). The host's
+  `lift_scale = 1.0` holds.
+- `ctl+94h`, the second gravity term (`007DB9E7`): set by `007D8180` (arg true or game mode 0/1)
+  and cleared by `007DB2C0`. Its size is `interp(1.0 -> 0, 2.5 -> 3.0, DeadMeat timer)`, which is 0
+  until the timer passes 1.0. No sink for a healthy plane.
+- `ctl+90h`, the lift cap: 99.0 from the constructor, or the 3.0 to 6.0 ramp (`007DB80D`-`007DB86F`);
+  at q = 1 the scaled lift is 1.5, under every value it can take.
+- `dyn+88h..90h`, the velocity delta `007D8470` adds (`007D8755`-`007D8774`): the sub-object's only
+  stores are the constructor (`007D7EFB`-`007D7F1B`) and `007D7A80`; the other hits at those offsets
+  are `ctl`-relative (`007DCCD3`, `007DCDAD`, `007DD84F`) or other objects.
+- The sink term in `007D8470`'s tail (`007D8CE9`-`007D8E15`, body `vy -= 0.1 x speed`) is gated on
+  the latched `unit+904h`. Its stores (22 sites) are the flight-state setters, the touchdown
+  `007CB6B0`/`007CB71F`, the spawn chooser, the property bag, and the ground task `009CE2C0`, which
+  clears it. It is a ground-contact flag, set only after a touchdown; it cannot act in the flare.
+
+**What the census left out: the steer's own hold.** The flight model has one more input on this
+path, and the host counts it instead of applying it: `009B1420` arms the timed direction hold
+through `007C07A0` on every steer pass with `c2 > 0` (`land_begin_hold_unapplied` in the land
+summary). That is section 5o, and it is the sink.
+
+## 5o. The steer's direction hold is the descent (packet `cc9_landing_descent_2`, cc9-lua13, 2026-09-29)
+
+docs/PLANE_DYN_TIMED_HOLD.md read the hold's setter, commit, decay and yaw-law use, and left the
+consumer of the direction `dyn+B4h` unfound. It is in `007D8470`, and it moves the velocity.
+
+### The consumer, `007D88CB`-`007D8C5E` (read from the disk listing)
+
+In `BSP_PlaneDynamics_IntegrateStep` (`__thiscall(dyn, float step, const Matrix* bodyToWorld =
+unit+74h, const Matrix* worldToBody = ctl+0B0h)`), after the velocity step, the 0.01 deadband and
+the contact terms, and before `007D8C6B` rotates the body velocity `dyn+64h` (ESI, `007D85F7`)
+back to world:
+- `007D88CB`-`007D88D6`: runs only while `dyn+C0h > 0.0` (`COMISS` against XMM0, which is the
+  deadband's zero from `007D878F`-`007D87C2`).
+- `007D88E0`-`007D8927`: `speed = |v|` when `|v|^2 > 1e-10` (`00CE3820`), else 0.
+- `007D8927`-`007D8938`: `d = 0042D0D0(dyn+B4h, [esp+58h] = worldToBody, 0)`, the direction in the
+  body frame.
+- `007D8951`-`007D8A0F`: `d / |d|` (the reciprocal only when `|d| > 0`).
+- `007D8A13`-`007D8AB6`: `v / |v|`, stored in place.
+- `007D8AB9`-`007D8B35`: `b = s d + (1 - s) v` with `s = dyn+C0h`, **not clamped**.
+- `007D8B39`-`007D8C12`: `v = (b / |b|) x speed`.
+- `007D8C15`-`007D8C5E`: the 0.01 deadband (`00D7A238`) again, per component.
+
+So while the hold has time left, every fixed step turns the velocity toward the hold's direction
+by the fraction `s` and keeps the speed. The attitude and the lift do not enter.
+
+### The arm on the landing path
+
+`009B1B1C`-`009B1C79` in `009B1420` (`BSP_BotStateLandBegin_Steer`, run by land/begin's tick and by
+land/final's airborne tick), when `c2 > 0` (`[esp+3Ch]`, `c1 x w_gain`, so `A8 < 260` m):
+- `lat = -X x 1.25 x interp(1.0 -> 0, 4.0 -> 1, |X|)` (`00CF87C0`, `00CE3D34`);
+- `fwd = max(Z, 2|X|)`; `off = pi/2 - atan2(fwd, lat)`, wrapped up to `[0, 2pi)`;
+- `hd = 00438AA0(A4, off)`; `ang = pi/2 - hd`, wrapped up;
+- `dir = (cos ang, tan P, sin ang)`, with `P = -atan2(Y - H, m)` at `[esp+10h]` (the glide pitch
+  from `009B1956`, **not** the ApproachPitch hold);
+- `007C07A0(plane, &dir, c2)`.
+
+`007C07A0` (`__thiscall(plane, const float* dir, float seconds)`, `RET 8`) normalises `dir`, and
+when `|nz| + |nx| > 0.1` it scales the seconds by `interp(15 deg -> 1.0, 60 deg -> 0.4)` of the
+heading error `|00438B10(pi/2 - atan2(nz, nx), vtable[50h])|` (`00D05AA8`, `00D05AAC`,
+`00CE7804`). `007D83D0` then stores the direction and the seconds. land/abort's tick clears it with
+`007C07A0(plane, (0, 1, 0), 0.0)` at `009B0A3B`. The only other arm is the launch path
+(`007C6F50` at `007C705C`, 0.8 s), from `007C713A` and `007CD0CA`; a rel32 and absolute scan finds
+no other caller of `007C07A0` or `007D83D0`.
+
+**The commit keeps it in flight.** `007DC6AA`-`007DC6C5` keeps the seconds only when
+`(plane+72Ch)->vtable[38h]()` is true. That slot of vtable `00D06130` is `0074E210`
+(`BSP_PlaneControlMode_IsFreeFlight`): `unit+900h == 7`, the free-flight mode every landing head is
+in. `007D81B0` also clears it when `GGame+1FE4h == 2`, which a single-player host takes as false
+(labelled).
+
+**What it does on the flare.** Near the runway `A8 < 80`, so `c1 = 0.8` and `s` is re-armed to
+about 0.8 on every steer pass. Every step then turns the velocity 80% of the way onto the glide
+path `P` toward `H`, whatever the pitch hold does. With ApproachAngle DEG(12), `t2 = tan(7.2 deg)
+= 0.126`, and `H = 0.5 + (Z - 100) x 0.126` for `Z < 200`. At Warhawk 01's first mode-1 sample
+(Z 85.5, Y 14.2, `local\l12_diag_lomp10.log` in cc9-lua12), `H = -1.4` and `P = -0.155 rad`, so
+the path sinks at about 5 m/s at 32 m/s. That is the descent the ApproachPitch hold cannot give.
+
+### The binding, behind `kPlaneDirectionHoldBound` (committed OFF)
+
+- `src/plane_flight.cpp` `blend_direction_hold_007d88cb`, the consumer above.
+- `src/game_hosts_units.cpp`:
+  - `arm_direction_hold_007c07a0`, 007C07A0;
+  - the steer's arm at `009B1C79`;
+  - land/abort's clear at `009B0A3B`;
+  - in the free-flight integrator: the `007D81C7` gate, the `007DC6C5` commit
+    (`plane_control_mode_900 == 7`), the consumer on the body velocity, then the `007D902F`
+    decay;
+  - the `0.6 x seconds` term (`007D9AFC`) in `control_authority`.
+- Not bound: the launch arm `007C705C`.
+- Diagnostics: `summary plane direction hold` per landing plane (arms, blend steps, maximum
+  seconds), printed only when the switch is on, and `hold=` in the `land final trace` line.
+
+With begin and final OFF nothing arms the hold, so the switch alone should be gameplay identical.
+It is paired jointly with begin, final and abort, where the arm is reached.
+
+### Predictions for LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF is the committed tree (the hold, begin, final and abort all OFF; the touchdown ON). ON flips
+`kPlaneDirectionHoldBound`, `kLandBeginStateBound`, `kLandFinalStateBound` and
+`kLandAbortStateBound`. The base for the landing numbers is 5m's pair (`local\l12_abon_lomp10.log`,
+the same three switches without the hold).
+1. **The hold is reached.** Every head that enters begin or final shows `arms > 0` and
+   `blend_steps > 0`, with `max_seconds` between 0.3 and 0.8. The line-only wingmen show 0.
+2. **The heads descend.** In the `land final trace`, Y falls through the old 4 to 16 m band
+   instead of porpoising. There is no mode-2 dive back from above 1.4 x Length after the first
+   mode-1 sample.
+3. **They touch down.**
+   - At least Warhawk 01 and one B-25 head reach `+BFCh <= WheelHeight` inside the rectangle,
+     with `touchdowns > 0` in `summary plane touchdown`.
+   - The touch-down vy is between -6 and -1 m/s, near or before T (local z -150 to -210).
+   - A head that passes T before reaching the ground sinks steeper (`H` falls with `Z`), and may
+     hit the vy gate (-6 m/s) and go through the runway: `td_refused_vy > 0` on such a head is
+     the image's law, not a mechanism failure.
+4. **After the touchdown.**
+   - The plane is held at its touch-down point in state 4: the ground roll `007CBFA0` is not run.
+   - final's on-ground half and park are refused, with `ground_refused > 0` on that head.
+   - Abort is not entered from a landed plane.
+5. **Deaths identical** (LOMP10 has none either side).
+   - LOMP10 moves (exit 3): the landing heads' positions, and the IJN engagement moves 5l
+     recorded.
+   - USN01 is gameplay identical (exit 1): no head reaches begin in 3000 frames, as in 5l and 5m.
+
+- **Mechanism failure:** any of:
+  - a blend step on a plane not in mode 7;
+  - `arms > 0` with `blend_steps = 0`;
+  - a head in final that still porpoises 4 to 16 m over the runway for more than 10 s with
+    `hold > 0` in its trace;
+  - a touchdown outside the rectangle.
+- **Flip rule.** The four flip ON together if at least one head touches down and no head in final
+  flies on past T for more than 10 s. If the mechanism holds but only some heads land, the hold
+  still flips ON (it is inert without begin), and begin, final and abort stay OFF with the reason
+  recorded.
+
+### The joint pair and the verdict (cc9-lua13, 2026-09-29): all four flip ON
+
+OFF is `546fe663d` as committed (`local\l13_off_<row>.log`). ON is the same commit exported with the
+four switches true (`local\l13_jon`, `bsp_game.exe` SHA-256 prefix `4E458B89288D`,
+`local\l13_jon_<row>.log`). Both ran with the reference options on the console session, after a
+300-frame USN01 smoke of the committed tree (`local\l13_smoke_usn01.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0); the same eight IJN ships gain an engagement range as in 5j, 5l and 5m; B-25 01 6207.20 -> 7026.66 m (landed at 251 s) |
+| USN01 3200/3000 | 1, gameplay identical | only the ship avoidance refill counter moves (known noise) |
+
+**Touchdowns** (`plane touchdown:` lines; the local frame is the site's):
+
+| head | first contact | touchdown | height / wheel | vy | local x, z |
+| --- | --- | --- | --- | --- | --- |
+| Warhawk 01 | 151.20 s, z -199.77, y 7.66 | 153.15 s | -0.164 / 0.00 | -4.06 | 0.9, -141.5 |
+| Lightning 01 | 163.16 s, z -199.80, y 7.41 | 165.06 s | -0.084 / 0.00 | -3.99 | 0.7, -142.7 |
+| B-25 01 | 250.01 s, z -198.54, y 6.70 | 251.16 s | 1.496 / 1.52 | -4.52 | 1.0, -159.1 |
+
+Warhawk 01's traces show the mechanism. The hold seconds climb from 0.29 at A8 183.7 to 0.80 at A8
+53.4. From the first mode-1 sample (Y 14.7 at Z 84.7) the flare hold is still +0.1047, but the
+body velocity turns nose-high relative to the path: aoa 0.14 to 0.23, q 0.86 to 0.95. Y falls
+14.7 -> 9.8 -> 5.8 -> 1.8 m, and the plane touches down 0.6 s after crossing T (Z -4.4 at 152.60 s). There is no climb
+back and no porpoise.
+
+**The predictions, one by one.**
+1. **The hold is reached: held for the three heads that landed, missed for the two that aborted.**
+   - Warhawk 01, Lightning 01 and B-25 01 show 88 / 87 / 74 arms, 172 / 170 / 144 blend steps,
+     and `max_seconds` 0.800.
+   - Lightning 01|.-4 and B-25 01|.-2 entered begin and final but aborted at A8 676.7 and 436.9
+     m, outside the 260 m arm range. Their 63 and 57 `arms` are land/abort's clears
+     (`009B0A3B`, 0.0 s), so `blend_steps = 0` is correct.
+   - Each aborted at the moment its leader touched down (Lightning 01|.-4's first abort trace is
+     165.41 s against Lightning 01's touchdown at 165.06 s) and went back to standby
+     (`to_standby=1`). The landed plane stays on the runway because the ground roll does not run.
+   - The line-only wingmen show 0: held.
+2. **The heads descend: held.** Nothing porpoises, and nothing dives back from above
+   1.4 x Length after the first mode-1 sample.
+3. **They touch down: held,** inside the rectangle with vy -4.0 to -4.5, no vy refusals, and one
+   low step each. Spread miss: the fighters touched down at local z -141.5 and -142.7, 8 m past
+   the predicted -150 to -210.
+4. **After the touchdown.**
+   - State 4 and held still: held.
+   - `ground_refused > 0` on a landed head: **missed**. The land task stops ticking at the
+     touchdown: Warhawk 01 has 1494 task ticks, against 4463 for its wingmen, and
+     `ground_refused=0`. So final's on-ground half is never reached in this host. Why the pilot
+     pass skips a state-4 plane has not been read.
+   - No abort from a landed plane: held.
+5. **Deaths identical, LOMP10 moves, USN01 gameplay identical: held.**
+
+No mechanism failure: every blend step is on a mode-7 plane (the commit), no steer arm is
+without a blend, no final head porpoises with `hold > 0`, and every touchdown is inside the
+rectangle.
+
+**Verdict.** The flip rule is met: three heads touch down, and no head in final flies on past T.
+`kPlaneDirectionHoldBound`, `kLandBeginStateBound`, `kLandFinalStateBound` and
+`kLandAbortStateBound` flip ON together. The misses are recorded above and none of them is in the
+mechanism.
+
 ## 6. Open, in order
 
-1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON
-   (5e, 5g, 5i, 5k). Begin (5h) and the airborne half of final (5j) are bound and match the
-   listing. They stay OFF because the heads float 3.9 to 12 m over the runway, where the image
-   needs the wheel height: 0.0 for the P-40 and P-38 of this installation, 1.52 for the B-25
-   (5l).
-   - The blocker is the airframe response to the ApproachPitch hold (+0.1047 rad at about
-     32 m/s), which climbs in this host.
-   - After it come:
-     - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still);
-     - final's on-ground half (`009B1FEA`-`009B207A`);
-     - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
-     - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
-     - `land/abort` is bound OFF and its mechanism holds (5m); it flips with begin and final.
-   - A mother-ship holder, refreshed from the moving ship, is still refused.
+1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
+   touchdown and the direction hold are ON (5e, 5g, 5i, 5k, 5o). The heads now land (5o). Open:
+   - the pilot pass for a state-4 plane: the land task stops ticking at the touchdown, so
+     final's on-ground half (`009B1FEA`-`009B207A`) and park are never reached;
+   - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still, so it
+     blocks the runway and its followers abort to standby);
+   - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
+   - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
+   - the direction hold's launch arm `007C705C` (0.8 s at BeginFlying), not bound;
+   - a mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
 3. **The follow law on a circling leader** (the Lightning members above). This belongs to the
