@@ -812,7 +812,8 @@ public:
     // GunneryPassBinding::visible_00864d90 itself, so a miss appends the same
     // cache entry with the same TTL draw the pass would, and it follows the same
     // OFF arm under kGunneryLineOfSightBound. False for an index out of range.
-    bool unit_sees_unit_00864d90(std::size_t unit, std::size_t target);
+    // Const like the other queries, but it writes the pass cache through impl_.
+    bool unit_sees_unit_00864d90(std::size_t unit, std::size_t target) const;
     // 009E8130 CALL 00864BA0 on [unit+6DCh]: MOV ECX,[ECX+68h], the three floats
     // copied to a local, CALL 00864680, RET 0Ch; no cache entry. 00864680 raises
     // the cache OWNER ([cache+0] = [pass+50h], the unit, stored at 00864C12..0F):

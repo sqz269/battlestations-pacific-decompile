@@ -262,6 +262,13 @@ inline constexpr bool kShipAiEngageKamikazeGateBound = true;
 // are records, so a unit the gate hands to the member stops being steered.
 // ON (2026-09-29): paired with the gate; the run arm (009E25BC) is unexercised.
 inline constexpr bool kShipAiEngageSubStateBound = true;
+// Packet cc9_approach_sight_test, docs/SHIP_AI_OPEN_ITEMS.md section 31. True:
+// 009E7FC0's gate asks the unit's own gunnery pass. With a target, 009E8116
+// 00864FD0 -> 00864D90 (GameGunneryHost::unit_sees_unit_00864d90, the pass's
+// cache itself); without one, 009E8129 009E6120 (the goal, brain+0B2Ch..0B34h)
+// and 009E8130 00864BA0 -> 00864680 (unit_sees_point_00864680). False: a target
+// is always visible and the no-target arm always fails, as before.
+inline constexpr bool kShipAiApproachSightTestBound = false;
 // Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
 // gives a generated ship its brain on the same path as a loaded one: SEntity
 // InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene
@@ -4141,7 +4148,17 @@ public:
         }
         return row->any_weapon_max_range;
     }
-    bool zone_allows_target_00864fd0(std::uint32_t) override {
+    bool zone_allows_target_00864fd0(std::uint32_t target) override {
+        if (kShipAiApproachSightTestBound && owner_.gunnery != nullptr && target != 0u) {
+            // 009E8116, [unit+6DCh]'s cache through 00864FD0 (packet
+            // cc9_approach_sight_test).
+            const bool seen = owner_.gunnery->unit_sees_unit_00864d90(index_,
+                static_cast<std::size_t>(target - 1u));
+            ++owner_.summary.sight_target_tests;
+            if (!seen) ++owner_.summary.sight_target_hidden;
+            owner_.done("ShipAiApproach::zone_allows_target_00864680", 0x00864680u);
+            return seen;
+        }
         // 009E8116. 00864FD0 is a thunk onto BSP_UnitGunneryVisibility_Test
         // (00864D90), the gunnery pass's own cached line-of-sight test, and the
         // gunnery host already answers that same routine with true for the same
@@ -4154,10 +4171,30 @@ public:
         return true;
     }
     bsp::ShipAiApproachPoint probe_point_009e6120() override {
+        if (kShipAiApproachSightTestBound) {
+            // 009E6120: [brain+0B2Ch..0B34h] copied into the caller's block.
+            owner_.done("ShipAiApproach::probe_point_009e6120", 0x009e6120u);
+            return bsp::ShipAiApproachPoint{ctl_.goal_vector.goal_x_0b2c,
+                ctl_.goal_vector.goal_y_0b30, ctl_.goal_vector.goal_z_0b34};
+        }
         owner_.record("ShipAiApproach::probe_point_009e6120", 0x009e6120u);
         return bsp::ShipAiApproachPoint{};
     }
-    bool zone_allows_point_00864ba0(const bsp::ShipAiApproachPoint&) override {
+    bool zone_allows_point_00864ba0(const bsp::ShipAiApproachPoint& point) override {
+        ++owner_.summary.sight_point_tests;
+        if (owner_.gunnery != nullptr) {
+            // Read-only, so it is asked on both sides: whether the goal is
+            // visible from the unit (OFF answers false regardless).
+            const float goal[3] = {ctl_.goal_vector.goal_x_0b2c,
+                ctl_.goal_vector.goal_y_0b30, ctl_.goal_vector.goal_z_0b34};
+            const bool seen = owner_.gunnery->unit_sees_point_00864680(index_,
+                kShipAiApproachSightTestBound ? &point.x : goal);
+            if (!seen) ++owner_.summary.sight_point_hidden;
+            if (kShipAiApproachSightTestBound) {
+                owner_.done("ShipAiApproach::zone_allows_point_00864ba0", 0x00864ba0u);
+                return seen;
+            }
+        }
         owner_.record("ShipAiApproach::zone_allows_point_00864ba0", 0x00864ba0u);
         return false;
     }
@@ -10744,6 +10781,12 @@ void GameShipAiHost::report() {
         "bound=%d (009E85CD, packet cc9_engage_kamikaze_gate)",
         host.summary.engage_kamikaze_reads, host.summary.engage_kamikaze_classes,
         kShipAiEngageKamikazeGateBound ? 1 : 0);
+    host.log.notef("summary mission ship ai approach sight target_tests=%llu "
+        "target_hidden=%llu point_tests=%llu point_hidden=%llu bound=%d "
+        "(009E8116 / 009E8130, packet cc9_approach_sight_test)",
+        host.summary.sight_target_tests, host.summary.sight_target_hidden,
+        host.summary.sight_point_tests, host.summary.sight_point_hidden,
+        kShipAiApproachSightTestBound ? 1 : 0);
     host.log.notef("summary mission ship ai engage member enters=%llu steps=%llu "
         "run_steps=%llu bound=%d (009DB5E0 / 009E23B0, packet cc9_engage_kamikaze_gate)",
         host.summary.engage_member_enters, host.summary.engage_member_steps,

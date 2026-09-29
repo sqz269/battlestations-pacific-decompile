@@ -545,6 +545,12 @@ struct GameShipAiSummary {
     unsigned long long engage_member_enters{0};
     unsigned long long engage_member_steps{0};
     unsigned long long engage_member_run_steps{0};
+    // Packet cc9_approach_sight_test: 009E7FC0's two sight tests. Target tests
+    // run ON only (they write the pass cache); point tests run on both sides.
+    unsigned long long sight_target_tests{0};
+    unsigned long long sight_target_hidden{0};
+    unsigned long long sight_point_tests{0};
+    unsigned long long sight_point_hidden{0};
     // Packet cc9_approach_mode_latch: 009F1BC0's latch computed on every
     // frame-state pass (both sides), by target class and by the mode it chose.
     unsigned long long latch_frames{0};

@@ -6696,7 +6696,7 @@ bool GameGunneryHost::query_segment_units(const float from[3], const float to[3]
     return hit;
 }
 
-bool GameGunneryHost::unit_sees_unit_00864d90(std::size_t unit, std::size_t target) {
+bool GameGunneryHost::unit_sees_unit_00864d90(std::size_t unit, std::size_t target) const {
     Impl& host = *impl_;
     if (unit >= host.unit_state.size() || target >= host.units.count()) return false;
     GunneryPassBinding binding(host, unit);

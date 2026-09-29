@@ -2434,9 +2434,13 @@ whose goal moves every frame. Per entity: the same five Mavis deaths on both sid
 **Verdict: OFF, recorded.** Prediction 4 named the retarget as the mechanism and it never fired;
 the move came from the hold, which the section describes but did not predict. The contract keeps a
 mechanism miss OFF. The binding stays in place: the hold is the image's behaviour (009F1E30 JE
-009F2003) and the ring is exact. The next step is a separate switch for the hold with its own
-predictions on rows that have not been run (any mission where AI ships attack planes or buildings),
-or a multiplayer-session row where `[class+570h]` is 1 or 3.
+009F2003) and the ring is exact.
+
+**Open item (the lead, 2026-09-29): the no-ship hold of `nested+1228h` as its own switch.** Split
+the hold (keep the frame's starting point on the no-ship path between arm runs) out of
+`kShipAiApproachRetargetRingBound`, and judge it with predictions written first, on rows the ring
+pair did not use (a mission where AI ships attack planes or buildings other than USN01, LOMP10 and
+USN02). No multiplayer row.
 
 ## 28. The third ranking (packet `cc9_ship_ai_open_ranking_3`, cc9-ships10, 2026-09-28)
 
@@ -2635,3 +2639,80 @@ kAiTargetGroupDestroyedIdleBound=true` (exe `69709265C0AC`); logs `local\s11_gof
 `local\s11_gon_<row>.log`. USN02 9200/9000: exit 1, with the six `attack_target_destroyed_00a10040`
 calls and the ship avoidance refill counter (known noise). JM08 3200/3000: exit 1, JM08's known
 noise only. Predictions 1 and 2 held. **Verdict: ON.**
+
+### Section 29 addendum: each flip alone (cc9-ships11, 2026-09-29)
+
+- **The engage member alone** is identical by construction: `009E87E3` is the only way into
+  `state+14C0h`, and it is reached only when `009E85B0` opens, which the gate switch keeps shut.
+- **The gate alone** (`pair_export --commit 86801174c --flip kShipAiEngageKamikazeGateBound=true`,
+  `local\s11_kgate_usnosl.log`, USNOS 9200/9000 against `local\s11_koff_usnosl.log`): exit 3.
+  `enters=1 steps=161`, and every step is a record, so `unit #2.7` sits unsteered from about
+  1.8 km (`navigate_astern`, throttle -0.625 to 0.5 in the step lines). Deaths go from 21 to 22:
+  **TroopTrans1 dies only in this variant**. Damage goes from 4267.6 to 8330.2, and NH deals 2550
+  instead of 434. That is why the two switches landed together.
+
+## 31. Rank 2 of section 28: the approach ring's sight test (packet `cc9_approach_sight_test`, `kShipAiApproachSightTestBound`)
+
+Worker cc9-ships11, 2026-09-29.
+
+**The image.** `009E7FC0` has passed its range gates (`009E80DF`, `009E80FF`). Then:
+- With a target (`ESI = [brain+0B20h]`, `009E810B`): `MOV ECX,[ECX+6DCh]; PUSH ESI; CALL 00864FD0`
+  (`009E8116`). `00864FD0` is `MOV ECX,[ECX+68h]; JMP 00864D90`, the unit's own gunnery-pass
+  visibility cache.
+- Without one: `009E6120` copies the goal (`[brain+0B2Ch..0B34h]`) and `00864BA0` (`009E8130`)
+  passes it by value to `00864680` on the same cache.
+- `009E8137`: a false answer jumps to `009E82F1`, so no slot is scored this frame.
+
+**The binding.** The host used to answer the target test true and the point test false (the goal
+was a zero point). ON asks `GameGunneryHost::unit_sees_unit_00864d90`, which shares the pass's own
+cache entry and TTL draw, and `unit_sees_point_00864680` with the goal (commits `264493a00`,
+`739f19aae`). The point test is read-only, so it is asked on both sides. The target test writes
+the cache, so it runs ON only.
+
+**OFF census** (`local\s11_soff_<row>.log`): `point_tests` is 0 on USN02 9200/9000 and USN01
+3200/3000. The no-target arm is not reached on either row: USN02's five no-target latch frames
+leave `009E7FC0` at an earlier gate.
+
+### Predictions, written before any ON run
+
+1. **USN02 9200/9000 moves (exit 3).** `target_tests` is near section 28's 23525. `target_hidden`
+   is above 0, because ships in the line screen each other and the query answers over units. Each
+   hidden frame skips the ring scoring. The shared cache also changes when the TTL draws of the
+   ship-target entries are taken.
+2. **USN01 3200/3000 moves (exit 3)** through the shared cache: its attackers' targets (Mavis) are
+   gunnery targets too. `target_tests` is near 1542.
+3. **`point_tests` stays 0 on both rows.**
+4. **Mechanism failure:** `target_tests` = 0 ON, or a move on a row where the ship AI never asked
+   (tests 0). Either keeps the switch OFF.
+
+### The pairs (cc9-ships11, 2026-09-29)
+
+OFF is `a6b00c4b2` in the tree. ON is `pair_export --commit a6b00c4b2 --flip
+kShipAiApproachSightTestBound=true --out local\s11_rt1`. Logs are `local\s11_soff_<row>.log` and
+`local\s11_son_<row>.log`.
+
+| row | target tests | hidden | point tests | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN02 9200/9000 | 23525 | 0 | 0 | 1, gameplay identical | 1 missed |
+| USN01 3200/3000 | 1542 | 345 | 0 | 3, moved | 2 held on the outcome, not on the cause |
+
+- **USN02.** No ship target is ever hidden. The shared cache takes 77 more appends
+  (`visibility_cache_append_00864d90` 3781 -> 3858), and no gameplay line moves. Prediction 1 said
+  it would move.
+- **USN01.** 345 of 1542 tests answer hidden, so the attackers skip the ring scoring on those
+  frames and stand further off: CB2 and Dunlap's nearest approach goes 759 -> 954 m, the coastal
+  guns' 1443..1493 -> 1737..1796 m, and shots go 1290 -> 1267. The same five deaths, no flips. The
+  targets on those frames are the coastal buildings (1631 building latch frames).
+- **Prediction 3 held** (`point_tests` 0 on both).
+
+**Why the hidden answers are suspect.** `line_of_sight_00864680` swaps the image's roles (commit
+`264493a00`): it casts from the target's raised point toward the observer and hides the target
+when the first hit lies more than 25 m from the OBSERVER. The image casts from the observer's
+raised point (`cache+14h`) toward the target's and measures the 25 m from the TARGET's point. The
+host's segment query answers over units, so a cast that starts at a large building can hit the
+building itself, far from the observer: hidden under the swap, visible in the image. So the one
+move this pair shows may come from that swap and not from the image's sight test.
+
+**Verdict: OFF, recorded.** Prediction 1 missed, and prediction 2's move has a different cause from
+the one written. Next step: fix the role swap in the gunnery lane (its own pairs, since the gunnery
+pass uses the same routine), then re-pair this switch on USN01 and USN02 with new predictions.
