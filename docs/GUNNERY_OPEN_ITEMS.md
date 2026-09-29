@@ -4021,3 +4021,79 @@ The pitch column is `asin(row2.y)` from `BSP_HULL_ATTITUDE_TRACE`; negative is b
   - integrate the first-order roll `dphi/dt = tau_net / (5.34 * 2 I_z)` from the loss time
     instead of a fixed 25 s window;
   - exclude hulls whose `|sum(w z)| / water` exceeds half the half-length, or score them on pitch.
+
+## 59. P2's kick size: the delivery adds nothing, and John1's kick landed on a wreck (packet `cc9_hull_kick_size`, cc9-gunnery12, 2026-09-29)
+
+This packet takes 57.2's item "P2's kick size". John1's 1.36e6 N m torque gave about 6 degrees of
+roll, against about 25 degrees from 52.2's formula.
+
+### 59.1 The delivery, from the listing
+
+- **`0092BF30` does nothing of its own.** It is two instructions, `MOV ECX,[ECX+2Ch]` and
+  `JMP 00C35330`: the controller's hull body, then the body's AddTorque.
+- **`00C35330` only adds.** It adds the vector into the motion state's torque accumulator `M+44h`
+  (`RET 4`; docs/RIGID_BODY_INTEGRATION.md). There is no scale, gate or clamp on the way.
+- **The integration.** `00C41550` does `w += (R^T diag(1/I) R) tau dt`, then `w *= 1 - c dt`.
+  `00C5B1B0` rotates by `w dt`, then applies `w *= 1 - c dt` again.
+- **The angular speed cap** `M+1Ch` is 1000 (`009392DB`), so it never binds.
+- **The host's route is the same.** `GameUnitsHost::add_hull_torque_message_93h` calls
+  `unit_handle_add_hull_torque_00822235` on the body, one step after the post. The image
+  integrates at the next step's `00875E0C` (46.2).
+
+**So the kick is `tau dt / I` about the forward row.** 52.2's formula is right for a living hull.
+
+### 59.2 Why John1 gave 6 degrees: the torque came from its killing hit
+
+In 56.5's verdict run (`g11c2on_usn02.log`, cc9-gunnery11 tree), everything happens at 26.05:
+- the torque is posted with `dead=0`;
+- the same impact (Yamakaze's torpedo blast, category 7) destroys John1's three hull segments;
+- the death row and `entity dead: ... died=26.05` follow.
+
+The wreck block `00824FE5` runs at that step's row-15 flush, after row 9's post. It doubles the
+inertia and sets the angular damping to 2.5. The torque is integrated only at the next step, so it
+acts on a wreck.
+
+`local\g12_kick.py`'s discrete model (the order above) on John1 (Alden class: k = 1.19e5 N m/rad,
+I_z = 48,180):
+
+| model | at +0.45 s | at +0.95 s | peak |
+| --- | --- | --- | --- |
+| live (I_z, c = 1.0) | 21.8 deg | 23.2 deg | 24.5 deg at 0.70 s |
+| wreck (2 I_z, c = 2.5) | 6.6 deg | 6.5 deg | 6.8 deg at 0.65 s |
+| observed (0.5 s samples) | 5.84 deg (26.50) | 5.59 deg (27.00) | - |
+
+The second torque, at 32.90 on the wreck, fits the same way: the wreck model peaks at 6.8 degrees
+and the trace rises from -0.48 to +5.19 by 33.50.
+
+**P2's 25 degrees was the live-hull figure applied to a kill.** In the image the order is the
+same: the post is at row 9, the wreck block at row 15, the Dyn step at the next step's
+`00875E0C`. So a killing torpedo's kick lands on a wreck in the image too.
+
+Uncertainty: `00821E80`'s 93h arm is not re-read for a dead-unit gate. The host delivers to a
+dead unit, and the trace shows the response.
+
+### 59.3 Predictions for the per-step re-measure (written before the run)
+
+The 0.5 s attitude samples cannot resolve a 0.7 s peak. This packet adds
+`BSP_HULL_ATTITUDE_TRACE=2`, which prints the same line after every motion step and changes no
+state. The run is one build: this branch's trace commit exported with
+`kHullInertiaFromShapesBound=true`, on USN02 9200/9000, with the flooding, attitude (=2) and
+roll-torque traces on.
+
+**The torques will differ from 56.5's run**, because main has moved since `5e139bd73`. The
+predictions are therefore per event.
+
+`g12_kick.py` scores every torque of at least 1e5 N m on a hull whose class has a box and
+elements. The observed excursion is measured from a baseline fitted linearly over the second
+before the post.
+
+- **P2a, living hulls.** For each event with no other torque on the same hull within 3 s:
+  - the observed peak is 0.6 to 1.05 times the model's live peak;
+  - it comes within 0.3 s of the model's peak time.
+  The bias should be below 1, because the element drag on the rolling hull (`omega x r` in the
+  drag, 52.1's "about 0.3/s") is not in the model.
+- **P2b, kill kicks.** An event whose victim is a wreck at the next step meets the same band
+  against the wreck model, and falls below 0.5 times the live model.
+- **Mechanism failure:**
+  - an isolated event above 1.2 or below 0.4 times its model;
+  - a kill kick that matches the live model better than the wreck model.
