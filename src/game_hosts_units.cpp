@@ -779,6 +779,7 @@ struct GameUnitSlot {
     bool plane_gun_fire_bc9{false};    // unit+BC9h, the latched gunFire
     int pg_trigger_ticks{0};
     int tg_ticks{0};    // census: 009FC7C0 ticks outside the dogfight arm
+    int tg_enemy_ticks{0};   // census: of those, ticks with a non-empty +50h list
     int pg_trigger_rises{0};
     int df_head_on_ticks{0};
     int pc_air_brake_overrides{0};
@@ -22328,6 +22329,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                      unit_.plane_pilot_fires_c24)) {
                                     ++unit_.tg_ticks;
                                     df_gun_tick_009fc7c0(elapsed);
+                                    if (!unit_.nb_enemy_50.empty()) ++unit_.tg_enemy_ticks;
                                 }
                             }
 
@@ -26758,7 +26760,7 @@ void GameUnitsHost::report() {
                             "attackrun_weaves=%d flyover_slot_writes=%d", calls, hits, weaves, slots);
                     }
                     if constexpr (Impl::kTaskGunControllerAllTasksBound) {
-                        int planes = 0, ticks = 0, tb = 0, tf = 0, rises = 0;
+                        int planes = 0, ticks = 0, tb = 0, tf = 0, rises = 0, enemy = 0;
                         for (const auto& slot : host.slots) {
                             if (slot->dogfight_task_installed || slot->tg_ticks == 0) continue;
                             ++planes;
@@ -26766,6 +26768,7 @@ void GameUnitsHost::report() {
                             tb += slot->df_gun.bursts;
                             tf += slot->df_gun.fire_ticks;
                             rises += slot->pg_trigger_rises;
+                            enemy += slot->tg_enemy_ticks;
                             if (slot->df_gun.bursts == 0) continue;
                             host.log.notef("  task gun %-12s ticks=%d bursts=%d fire_ticks=%d "
                                 "trigger_rises=%d finder_scans=%d", slot->row.name.c_str(),
@@ -26773,9 +26776,9 @@ void GameUnitsHost::report() {
                                 slot->pg_trigger_rises, slot->nb_scans);
                         }
                         host.log.notef("summary mission task gun (all tasks): planes=%d "
-                            "ticks=%d bursts=%d fire_ticks=%d trigger_rises=%d "
+                            "ticks=%d enemy_list_ticks=%d bursts=%d fire_ticks=%d trigger_rises=%d "
                             "(00999979 -> 009FC7C0, packet cc9_task_gun_controller_all_tasks)",
-                            planes, ticks, tb, tf, rises);
+                            planes, ticks, enemy, tb, tf, rises);
                     }
                     int bursts = 0, fire_ticks = 0;
                     for (const auto& slot : host.slots) {
