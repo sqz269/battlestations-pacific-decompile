@@ -246,6 +246,13 @@ inline constexpr bool kShipAiNeighbourCountBound = true;
 // False: no space, the start point unchanged, no hit (the stand-ins). ON: the
 // USN02 and E2 pairs held (docs/SHIP_AI_TAILS.md section 14.5).
 inline constexpr bool kShipAiRingScanProbeBound = true;
+// Packet cc9_engage_kamikaze_gate, docs/SHIP_AI_OPEN_ITEMS.md section 29. True:
+// 009E85CD / 009E85DD read [class+510h] and [class+514h], which
+// BSP_ShipClass_ReadLuaFields stores from the class table's KamikazeDamage
+// (00831A22) and KamikazeBlastDamage (00831A67), each defaulting to 0.0 (FLDZ at
+// 00831A0A / 00831A4F). False: both answer 0.0, which fails the gate's first
+// conjunct for every class.
+inline constexpr bool kShipAiEngageKamikazeGateBound = false;
 // Packet cc9_generated_ship_ai_registration, docs/GENERATED_SHIP_AI.md. The image
 // gives a generated ship its brain on the same path as a loaded one: SEntity
 // InitAll (00925F20) pass A calls vtable+9Ch = 00810F60, whose kind-1 (scene
@@ -2835,10 +2842,19 @@ public:
         return static_cast<std::uint32_t>(index_) + 1u;
     }
     void armament_readiness_0510(float& a, float& b) override {
-        // 009E85CD, [[unit+538h]+510h] and +514h. The object at unit+538h has
-        // no recovered class and neither field has a producer anywhere, so the
-        // pair is recorded and left at the zero a fresh object carries, which
-        // is the arm that fails the gate.
+        // 009E85CD, [[unit+538h]+510h] and +514h: KamikazeDamage and
+        // KamikazeBlastDamage (docs/ATTACKMOVE_ENGAGEMENT_RANGE.md 2.1; the
+        // "armament readiness" name is wrong, kept for the interface).
+        const float damage = owner_.class_number(index_, "KamikazeDamage", 0.0f);
+        const float blast = owner_.class_number(index_, "KamikazeBlastDamage", 0.0f);
+        if (damage > 0.0f || blast > 0.0f) ++owner_.summary.engage_kamikaze_classes;
+        ++owner_.summary.engage_kamikaze_reads;
+        if (kShipAiEngageKamikazeGateBound) {
+            owner_.done("ShipAiEngageGate::armament_readiness", 0x009e85cdu);
+            a = damage;
+            b = blast;
+            return;
+        }
         owner_.record("ShipAiEngageGate::armament_readiness", 0x009e85cdu);
         a = 0.0f;
         b = 0.0f;
@@ -10473,6 +10489,10 @@ void GameShipAiHost::report() {
         host.summary.latch_modes[4], host.summary.latch_clamps, host.summary.latch_resets,
         host.summary.latch_retarget_reachable, host.summary.latch_retarget_entries,
         bsp::kShipAiApproachModeLatchBound ? 1 : 0);
+    host.log.notef("summary mission ship ai engage kamikaze reads=%llu kamikaze_classes=%llu "
+        "bound=%d (009E85CD, packet cc9_engage_kamikaze_gate)",
+        host.summary.engage_kamikaze_reads, host.summary.engage_kamikaze_classes,
+        kShipAiEngageKamikazeGateBound ? 1 : 0);
     host.log.notef("summary mission ship ai command zone points answered=%llu moved=%llu "
         "(00A020BE / 00A020F0, packet cc9_ai_command_avoid_zone_point)",
         host.summary.ai_command_zone_points, host.summary.ai_command_zone_points_moved);

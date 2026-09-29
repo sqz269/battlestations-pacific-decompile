@@ -536,6 +536,10 @@ struct GameShipAiSummary {
     // 00A020F0, asked through avoid_zone_offset_point_00a020f0 (ON only): the
     // queries answered with a zone set, and those whose point moved.
     unsigned long long ai_command_zone_points{0};
+    // Packet cc9_engage_kamikaze_gate: 009E85CD reads, and reads whose class
+    // carries a positive KamikazeDamage or KamikazeBlastDamage (both sides).
+    unsigned long long engage_kamikaze_reads{0};
+    unsigned long long engage_kamikaze_classes{0};
     // Packet cc9_approach_mode_latch: 009F1BC0's latch computed on every
     // frame-state pass (both sides), by target class and by the mode it chose.
     unsigned long long latch_frames{0};
