@@ -2750,6 +2750,39 @@ tag:MISSION:frames:mission_frames` (launches in the background; wait on the log'
 release line); logs `local\s11_*`. The new pair row is USNOS (section 29; launch line and mtimes
 there).
 
+### Rank 4 read (cc9-ships11, 2026-09-29): the carrier arm of `009FFEB0`, not bound
+
+`009FFEB0-009FFF1D`, `__thiscall(squadron)`, plain `RET`, read whole from the disk bytes:
+- `[00E17BF2]` set -> false (`009FFEB3`), as the host already has.
+- `EDI = [[squadron+3D0h]+0C4h]`, the lead plane's class id (`009FFEC6`).
+- `007EDAD0` (BSP_PlaneSquadron_AmmoType, ECX = the squadron) nonzero -> false (`009FFED8`): a
+  squadron still carrying ordnance is never excluded.
+- Otherwise the class id must be `10h`, `12h` or `11h` (`009FFEDC..009FFEE9`), i.e. level, dive or
+  torpedo bomber; anything else -> false.
+- `007F16D0(&out)` (BSP_Plane_ResolveReturnToBase, ECX = the squadron) at `009FFEF2`. A null
+  `out` -> false. Otherwise `0077D600(squadron, out, &[ESP+10h], 1)` (BSP_Entity_IssueCommand,
+  `009FFF09`) and true (`009FFF0F`).
+
+So the arm sends a bomber squadron that has spent its ordnance home (the resolved `returntobase`
+command) and keeps it out of the AI command's member orders.
+
+**Why it is not bound in this lane:**
+1. The host has no ordnance state. `squadron_ammo_type_stand_in` (`src/game_hosts_ai.cpp`) answers
+   by class: 10h -> 5, 11h -> 2, 12h -> 1. So for exactly the three classes the arm admits,
+   `007EDAD0` is never 0 and the arm cannot fire. A faithful binding needs a real "first ordnance
+   kind still carried" reader over the squadron's planes (the release tasks know when a torpedo
+   or bomb has dropped). That is plane-lane state.
+2. The resolve (`record_return_to_base_007f16d0`, `bsp::resolve_return_to_base_007f16d0`) and the
+   command issue live in `src/game_hosts_units.cpp`. The flown `land` task behind a resolved
+   `returntobase` is bound only as far as docs/SQUADRON_LAND_TASK.md records (the landing states
+   are refused).
+
+**Next step:** a units/plane-lane packet exposing `squadron_ammo_type_007edad0(squadron)` from
+the real ordnance state, plus a public `issue_return_to_base_007f16d0(squadron)` that resolves and
+places the command the way the Lua `returntobase` path does. Then this host's
+`tick_squadron_excluded_009ffeb0` can bind the arm behind its own switch, with predictions on the
+rows with carrier strikes (JM05, USN13, JM08, which make 15560 calls between them per section 28).
+
 ## 33. The line-of-sight role swap (packet `cc9_los_role_swap`, `kGunneryLosRoleSwapBound`)
 
 Worker cc9-ships12, 2026-09-29. Item 1 of section 32. The switch lives in `src/game_hosts_gunnery.cpp`.

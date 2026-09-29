@@ -440,6 +440,18 @@ public:
     const GameCommandRow* issue_script_command(std::size_t unit_index,
         std::uint32_t command_object, const bsp::SceneCommandTarget& target,
         int flags, const std::string& source, const std::string& target_name);
+    // Packet cc9_squadron_ordnance_state. 007EDAD0 BSP_PlaneSquadron_AmmoType
+    // for the squadron of unit_index (its registry squadron unit or a member):
+    // 2 torpedo, 3 depth charge, 4 rocket, 5 paratrooper, 6 dummy kamikaze,
+    // 1 bomb, 0 nothing carried or no squadron. With the reader switch off it
+    // answers the leader-class stand-in. docs/SQUADRON_ORDNANCE_STATE.md.
+    int squadron_ammo_type_007edad0(std::size_t unit_index);
+    // `returntobase` (00E08F98) for the squadron of unit_index through the same
+    // path a Lua returntobase takes: each member plane through
+    // issue_script_command, which runs 007F16D0's resolution and 0077D600's
+    // delivery. Returns the number of member planes the order was placed on.
+    std::size_t issue_return_to_base_007f16d0(std::size_t unit_index,
+        const std::string& source);
 
     // Milestone 2m. The commanded-speed store 00890e6f makes on the navigator
     // parameter block at *(unit+73Ch), and the pair as it stands.

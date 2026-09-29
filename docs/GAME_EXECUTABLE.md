@@ -12157,3 +12157,234 @@ in k's rows. They were not exported here.
   - USN02's outcome depends on an opening torpedo spread against an idle Houston.
   - The periscope byte `+1234h` still has no producer.
   - E2 ends in phase 1 under lockstep (known). The Marshall `.nav` is the generic layer.
+
+## Mission reference baselines, 2026-09-29 l (main 3f1499210)
+
+Packet `cc9_reference_rebaseline_12`, worker cc9-gunnery11. **It replaces the 2026-09-28 k rows
+above.** The report is `reports/cc9_reference_rebaseline_12.json`.
+
+**Run parameters:**
+- One binary: `local\rb12\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery11 (SHA-256
+  `aab079902ce38596030584953e366993d813bb2aaba69dfdb04802f9af7ea4da`, prefix `AAB079902CE3`). It
+  is a clean `tools/pair_export.py --commit 3f1499210` export with no flip.
+- The run parameters are k's: `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, an
+  idle player, present interval immediate, `tools/run_game.ps1`, and
+  `--press-start-frame 30 --menu-select <mission>`, with k's thirteen rows at k's frame counts. A
+  300-frame USN01 smoke ran first.
+- Every log shows its milestone line with the right mission and frames,
+  `present interval immediate`, a module directory under `local\rb12` and the final COM release.
+- The session stayed on the console (`query session`: console Active) and no run failed.
+- No predictions were committed before these runs. Each move against k is attributed by
+  leave-one-out and group exports of `3f1499210` (the table under "Leave-one-out exports").
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11326.8 | 43 | 729 (122) | 10762 | 100.35 s | 2 of 16 / 0 of 19 | 15 | Lexington 3605.27 m | none | 502 | `local\rb12_usn04.log` |
+| USN01 | 3000 | 2833.0 | 5 | 393 (81) | 1290 | 49.10 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 3872.50 m | none | 531 | `local\rb12_usn01.log` |
+| USN04 (E2) | 9000 | 12797.4 | 51 | 820 (145) | 11927 | 100.35 s | 2 of 16 / 0 of 19 | 19 | Lexington 7250.24 m | none; phase 1 only (known) | 505 | `local\rb12_e2.log` |
+| USN02 | 9000 | 39395.6 | 10 | 2271 (423) | 2316 | 18.90 s | - | - | Kortenaer 484.55 m | **failed at 29.75 s**, phase 1 (unchanged) | 494 | `local\rb12_usn02.log` |
+| JM06 (smoke) | 3000 | 4340.0 | 1 | 276 (263) | 334 | 72.55 s | - | - | Fletcher-class 08 391.19 m | none | 481 | `local\rb12_jm06.log` |
+| JM08 (smoke) | 3000 | 4149.8 | 11 | 395 (122) | 2390 | 5.25 s | - | 4 | Auilick 2509.11 m | none | 491 | `local\rb12_jm08.log` |
+| USN13 (smoke) | 3000 | 9680.0 | 32 | 658 (204) | 7323 | 93.80 s | 0 of 60 / - | 7 | Enterprise 1859.00 m | none | 495 | `local\rb12_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 554.05 m | none | 465 | `local\rb12_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 2400.0 | 1 | 3 (1) | 10 | 36.90 s | - | - | Narwhal 673.48 m | none | 466 | `local\rb12_lomp06.log` |
+| LOMP10 | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 4893.32 m | none | 486 | `local\rb12_lomp10.log` |
+| JM05 | 3000 | 2396.3 | 1 | 41 (24) | 100 | 9.90 s | 0 of 12 / 0 of 6 | - | USS Phelps 2533.74 m | none | 537 | `local\rb12_jm05.log` |
+| USN12 | 3000 | 978.1 | 0 | 30 (15) | 83 | 8.30 s | - | - | Montpelier 2089.94 m | none | 472 | `local\rb12_usn12.log` |
+| LOMP10 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | - / no dive-bomb task row | - | B-25 01 6207.20 m | none | 490 | `local\rb12_lomp10l.log` |
+
+Every row moves against k (`pair_diff` exit 3). The unimplemented count falls on every row except
+JM08, where it stays at 491. On LOMP10 the controlled-moved column now names B-25 01, where k had
+no controlled unit.
+
+### The anchor: every move belongs to sixteen switches
+
+A value diff of every `constexpr bool k...Bound` declaration between `5aaa4948a` and `3f1499210`
+(`local\g11_switches.py`) finds sixteen switches newly ON. By packet:
+
+| group (variant) | switches | flip commit |
+| --- | --- | --- |
+| avoid-zone point (`nzone`) | `kAiCommandAvoidZonePointBound` | `2f8c2cf3a` |
+| follower gate (`nafg`) | `kAutoTargetFollowerGateBound` | `8edad11dc` |
+| plane follow law (`nfl`) | `kFollowLeaderLiveSpeedBound`, `kFollowLeaderTurnRateBound`, `kFollowTargetDirAcosBound` | `97d1c44bf`, `3198cc88c`, `196d0c3d9` |
+| formation join follow (`nfj`) | `kFormationJoinFollowBound` | `c05ff3746` |
+| land sub-states (`nland`) | `kLandingSequencerBound`, `kLandingApproachBitBound`, `kLandStandbyStateBound`, `kLandLineStateBound`, `kLandingSiteSpacingBound` | `c3b35987f`, `8c2cc67ca`, `5f2f7bde5`, `7f36065fd`, `8de33f8be` |
+| approach mode latch (`nml`) | `kShipAiApproachModeLatchBound` | `d717913c1` |
+| arm-final area key (`nfak`) | `kShipAiArmFinalAreaKeyBound` | `3edbe26f0` |
+| clearance (`nclr`) | `kShipAiClearancePathFadeBound`, `kShipAiClearanceOutcomeWiringBound` | `3edbe26f0`, `72c09257e` |
+| troop landing trait (`ntr`) | `kTroopLandingTraitBound` | `4fbfd759d` |
+
+Declared OFF since k and still OFF at the base: `kHullInertiaFromShapesBound`, `kLandBeginStateBound`,
+`kLandFinalStateBound`, `kShipAiEngageKamikazeGateBound`.
+
+With all sixteen OFF (`n0`), `3f1499210` is **gameplay-identical to reference k on all twelve rows
+run** (`pair_diff` exit 1 against `rb11_<row>` in cc9-gunnery10; BSM01 was not run in `n0`, and is
+closed by `nfj` below). Nothing else that landed since k moves a reference row.
+
+**The mode latch and the area key are identity on all thirteen rows** (`nml`, `nfak`: exit 1 against
+l everywhere), as their pairs recorded (mode 0 everywhere; the area key's spread miss).
+
+### What moved each row
+
+"X OFF" means that variant; it is read with `pair_diff` against l, and group variants also against k.
+Group exports close each row: `nfjg` = formation join + follower gate, `nfjgc` = `nfjg` + clearance,
+`nsh` = `nfjgc` + avoid zone + troop trait (the whole ship/formation side), `nshfl` = `nsh` + the
+plane follow law, `nlp` = land sub-states + follow law + `nfjg`.
+
+| row | the variant that equals k (exit 1) | what that means |
+| --- | --- | --- |
+| USN02 | `nfjgc` | formation join, follower gate and clearance own the whole move |
+| JM06 | `nsh` | the ship side owns it; the follow law has no part |
+| BSM01 | `nfj` alone (also `nfjg`) | formation join alone |
+| USN12 | `nafg` alone (also `nfjg`) | the follower gate alone |
+| LOMP06 | `nclr` alone | clearance alone |
+| USN04, E2, USN01, JM08, USN13, JM05 | `nshfl` | the ship side plus the plane follow law |
+| LOMP10, LOMP10 (long) | `nlp` | land sub-states, follow law, formation join and follower gate |
+
+**USN04 (4500).** 39 / 711 / 9488, damage 10136.8, 1 of 16 torpedo releases became **43 / 729 /
+10762, 11326.8, 2 of 16**.
+- Four new deaths: D3A Val #3.1|.-3, A6M Zero #6.2, D3A Val #5.1|.-2 and #5.1|.-4. **They belong to
+  the ship side:** `nsh` has k's 39 death rows exactly (membership identical, 36 rows changed in
+  time or killer).
+- Clearance OFF removes three of the four (#3.1|.-3, #5.1|.-2, #5.1|.-4) and adds A6M Zero #7.2|.-2
+  (41 deaths). Follower gate OFF gives 44 and formation join OFF gives 44, each swapping different
+  planes. The kills are RNG- and geometry-coupled plane rows; no single landing owns one plane.
+- **The follow law owns the damage and shot move** inside the same death set: `nsh` is 39 / 681 /
+  9223, 12070.6, 3 of 16; `nshfl` is k.
+- The pairs' directions: formation join recorded USN04 39 -> 44 and clearance wiring 39 -> 41 on
+  their own bases. The acos switch's recorded 44 -> 40 (PLANE_FOLLOW_LAW 17.6) is **not reproduced**
+  as a death change here: on this base the follow law moves no death row in or out.
+
+**E2 (9000).** 51 / 860 / 11455, 12158.7 became **51 / 820 / 11927, 12797.4**, 2 of 16 torpedo
+releases. The death set keeps 51 rows, 50 changed. `nshfl` is k. Clearance OFF: 857 / 11121,
+12158.7 (k's damage); follower gate OFF: 884 / 11915, 17979.0, 7 of 16.
+
+**USN01 (3000).** 474 / 1480, ScoutDauntless 3904.93 m became **393 / 1290, 3872.50 m**; deaths
+and damage keep k's values within 1.8. `nshfl` is k. **The follower gate owns the ScoutDauntless**
+(OFF: 3904.93 m, 475 / 1485); avoid zone, follow law, formation join and clearance OFF each move only
+details.
+
+**USN02 (9000).** 13 / 3179 / 2473, 46042.5, Kortenaer 771.70 m became **10 / 2271 / 2316,
+39395.6, 484.55 m**. The failure at 29.75 s is unchanged.
+- Against k: Alden, John3, Witte and Perth survive; Minegumo sinks.
+
+| variant | deaths / hit records / shots, damage | deaths against l |
+| --- | --- | --- |
+| follower gate OFF | 12 / 3314 / 2698, 45960.3 | Alden, John3, Witte sink again; Minegumo survives |
+| formation join OFF | 12 / 2762 / 2536, 48348.2 | Alden, John3 sink again |
+| clearance OFF | 11 / 3585 / 2435, 43460.5 | John3 sinks again |
+| `nfjg` | 11 / 2827 / 2409, 40763.0 | against k, Witte and Perth still survive |
+| `nfjgc` | **k exactly** | |
+
+- **Perth's survival needs clearance with the formation pair.** No single variant brings it back.
+- The pairs' directions hold: clearance wiring recorded USN02 13 -> 11 on its own base.
+
+**JM06 (3000).** 1 / 328 / 378, 4231.2, first hit 79.15 s, Fletcher-class 08 540.68 m became
+**1 / 276 / 334, 4340.0, 72.55 s, 391.19 m**. The one death row is identical.
+- `nsh` is k. `nfjgc` is not (247 / 266, Fletcher-class 08 75.88 m), so the troop trait or the avoid
+  zone is also needed; avoid zone OFF alone is identical to l, and troop trait OFF gives 221 / 310,
+  3066.1, 2146.65 m. **The troop trait is the fourth owner**, as its pair recorded (JM06 moves by its
+  200 lander asks).
+- Clearance OFF 184 / 248, 3474.1; follower gate OFF 288 / 331; formation join OFF 283 / 341.
+
+**JM08 (3000).** Combat keeps k's deaths and damage. Hit records 361 -> 395, shots 2324 -> 2390,
+Auilick 1495.61 -> 2509.11 m. `nshfl` is k.
+- **The Auilick is the formation pair's**: follower gate OFF and formation join OFF each give
+  1495.61 m (k's value). Avoid zone OFF gives 411 / 2248 with 2508.57 m.
+- The avoid-zone pair recorded JM08 as moving; this holds.
+
+**USN13 (3000).** 27 / 646 / 6989, 8450.6, first hit 96.40 s became **32 / 658 / 7323, 9680.0,
+93.80 s**; plane water contacts 5 -> 7; Enterprise 2034.34 -> 1859.00 m.
+- Five new deaths, bruh #1.5 with its three wingmen and bruh #1.9|.-2. **The formation pair owns
+  them**: follower gate OFF and formation join OFF each give 27 deaths. That is the follower gate
+  pair's recorded USN13 27 -> 32 in plane rows exactly.
+- Clearance OFF gives 31: bruh #1.9|.-3, which dies in both k and l, survives. The follow law and avoid zone OFF keep 32 and move
+  shots (7740, 7287).
+- `nsh` gives k's 27 death count, with one wingman swapped (bruh #1.9|.-2 dies where k has #1.9|.-4); `nshfl` is k.
+
+**BSM01 (3000).** No combat. HenryPT 0.00 -> 554.05 m. **Formation join alone**: OFF is k (exit 1).
+The unimplemented count goes 466 -> 465.
+
+**LOMP06 (1000).** Combat identical to k. Two bunkers' nearest distances move by 1 m. **Clearance
+alone**: OFF is k.
+
+**LOMP10 (3000).** 2 / 94 / 442, 980.0 became **0 / 0 / 0**: nothing fires.
+- **The land sub-states own it.** OFF gives 2 / 95 / 417, 980.0 with no controlled unit, k's death
+  set (B-25 01 and B-25 01|.-2). That is the approach bit's pair: B-25 01 installs land at CB4_AF at
+  3.80 s and no longer flies its bombing run. The follow law, formation join and follower gate move
+  the remaining details; `nlp` is k.
+
+**LOMP10 (9000).** 3 / 98 / 446, 1279.8 became **0 / 0 / 0**.
+- Land sub-states OFF bring back the two B-25 deaths (2 / 95 / 417, 980.0).
+- **PT 02's sinking is the formation pair's**: follower gate OFF and formation join OFF each give
+  1 death, PT 02 (4 hit records, 299.8 to 324.4 damage). `nlp` is k.
+
+**JM05 (3000).** Combat identical to k. USS Phelps 2567.69 -> 2533.74 m. `nshfl` is k. `nfjgc` gives k's 2567.69 m but still moves other details (exit 3). Follower gate OFF alone gives 1317.50 m and `nfjg` 2383.93 m, so the
+follower gate and clearance interact on this path. Avoid zone OFF and follow law OFF keep 2533.7 m.
+
+**USN12 (3000).** Combat identical to k. Montpelier 2244.01 -> 2089.94 m. **The follower gate
+alone**: OFF is k (exit 1).
+
+### Leave-one-out exports
+
+Each is `pair_export --commit 3f1499210` with only the listed switches OFF, run like the rows above
+(logs `local\rb12<v>_<row>.log`), and read with `pair_diff` against l (and the groups against k).
+
+| v | switches OFF | SHA-256 prefix | rows run | equal to k (exit 1) |
+| --- | --- | --- | --- | --- |
+| n0 | all sixteen | 2B96202BF49C | twelve (not BSM01) | all twelve |
+| nzone | avoid-zone point | 2A591AE09F20 | all 13 | none; moves USN01, JM08, USN13, JM05 against l |
+| nafg | follower gate | 60AEF29D4522 | all 13 | USN12 |
+| nfl | the three follow-law switches | D650105CA5DD | all 13 | none; moves USN04, E2, USN01, JM08, USN13, both LOMP10, JM05 against l |
+| nfj | formation join follow | 322C24395151 | all 13 | BSM01 |
+| nland | the five land switches | D017A2D81069 | all 13 | none; moves both LOMP10 against l |
+| nml | approach mode latch | 3CBE070E1745 | all 13 | none; identical to l on all 13 |
+| nfak | arm-final area key | 154AB6508FD2 | all 13 | none; identical to l on all 13 |
+| nclr | path fade, outcome wiring | E1097C85A856 | all 13 | LOMP06 |
+| ntr | troop landing trait | F4C43868A176 | all 13 | none; moves JM06 only against l |
+| nfjg | nfj, nafg | F411F6C5C38C | 11 (not LOMP06, LOMP10) | BSM01, USN12 |
+| nfjgc | nfjg, nclr | 9D26711F07CB | 11 | USN02, BSM01, USN12 |
+| nsh | nfjgc, nzone, ntr | DBBF1960BE50 | 11 | USN02, JM06, BSM01, USN12 |
+| nshfl | nsh, nfl | ADC4DBA5B239 | USN04, E2, USN01, JM08, USN13, JM05, BSM01, LOMP10 | all but LOMP10 |
+| nlp | nland, nfl, nfjg | 97F888F04D37 | both LOMP10 | both |
+
+### Post-base landings (the first flags for reference m)
+
+These landed on main after `3f1499210` (main `e715e2e91` when this section was written) and are not
+in l's rows. They were not exported here.
+- ON: `kAiTargetGroupDestroyedIdleBound` (`ff434772b`, section 30 of SHIP_AI_OPEN_ITEMS; USN02 and
+  JM08 identical on its pair), `kShipAiEngageKamikazeGateBound` (declared OFF after k, flipped ON after the base),
+  `kShipAiEngageSubStateBound` and `kPlaneTouchdownBound`.
+- Bound OFF: `kLandAbortStateBound`, `kShipAiApproachRetargetRingBound`, `kShipAiApproachSightTestBound`.
+
+### Flags
+
+- **Closed:**
+  - **Every post-base flag k listed is measured**, together with the ones that landed after k was
+    written; all sixteen are attributed above, and the all-OFF anchor equals k.
+  - **The follower gate pair's USN13 27 -> 32** holds exactly and belongs to the formation pair.
+  - **The approach bit's LOMP10 move** holds: the land sub-states remove the B-25 deaths.
+- **New:**
+  - **LOMP10 fires no shot in 9000 frames.** The land sub-states remove the B-25 bombing run and the
+    formation pair removes PT 02's sinking.
+  - **USN02 falls to 10 deaths**: Alden, John3, Witte and Perth survive, Minegumo sinks. Perth needs
+    clearance together with the formation pair.
+  - **The acos switch's USN04 44 -> 40** is not reproduced on this base; the follow law moves USN04's
+    damage and shots but no death row. Explained in GUNNERY_OPEN_ITEMS 54: the pair's base lacked
+    the follower gate and clearance, and the switch's death change flips sign with the base.
+  - **JM05's USS Phelps path** (corrected in GUNNERY_OPEN_ITEMS 54): the interaction is the follower
+    gate with formation join, not with clearance. Gate OFF alone gives 1317.50 m, gate and join OFF
+    2383.93 m, and all three with clearance give k's 2567.69 m (other details still moved). Clearance
+    OFF alone moves it by 0.01 m.
+- **Carried from k:**
+  - JM06's US Cargo Transport 02 survival, redundant inside k's ship-AI group; the identity group's
+    move of PBY Catalina 01 on JM06; the JM05 and USN12 path moves inside k's ship-AI group. l adds
+    no export of k's switches, so these are not separated.
+  - The reload feed's move of USN04 and E2, recorded in i, is not bisected into the plane tasks.
+  - JM06 and JM08 were not paired against the earlier gunnery flips (immediate fire, AA tests, wave
+    order, torpedo swim).
+  - USN02's outcome depends on an opening torpedo spread against an idle Houston.
+  - The periscope byte `+1234h` still has no producer.
+  - E2 ends in phase 1 under lockstep (known). The Marshall `.nav` is the generic layer.

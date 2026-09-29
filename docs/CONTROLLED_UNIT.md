@@ -2534,3 +2534,53 @@ The five pause messages reached me only after my turn ended. By then I had alrea
   | `009B1300` | BSP_BotApproachLand_MinSpeed |
   | `007DB4D0` | BSP_PlaneClass_LeaderTurnRadius |
   | `006CF100` | BSP_AirOpsSite_Construct |
+
+## Handoff (cc9-lua12, 2026-09-29)
+
+Branch `agent/cc9-lua12`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua12`. No lease
+is held. The lead asked me to stop after `cc9_hull_flooding_trace`.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_plane_touchdown` | `6369a63c4`, `6ad4b7fcd`, `257d94741` | `kPlaneTouchdownBound` | ON, gameplay identical | docs/SQUADRON_LAND_TASK.md 5k, 5l |
+| `cc9_land_begin_final_repair` | `257d94741` | `kLandBeginStateBound`, `kLandFinalStateBound` | OFF: no touchdown | 5l |
+| `cc9_land_park_state` | `aa541a3e1` | none | head read, not bound | 5m |
+| `cc9_land_abort_state` | `aa541a3e1`, `f157b5478` | `kLandAbortStateBound` | OFF (mechanism held; flips with begin and final) | 5m |
+| `cc9_landing_descent` | `046998bd5`, `e39d2cf1c`, `534019cd6` | none | no host substitution found | 5n |
+| `cc9_squadron_ordnance_state` | `fd28a0931`, `0fdb01ab3`, `e52c36714` | `kSquadronOrdnanceReaderBound` | ON | docs/SQUADRON_ORDNANCE_STATE.md |
+| `cc9_hull_flooding_trace` | `9ff6f59a8` | env `BSP_HULL_FLOODING_TRACE=1` | diagnostic | below |
+
+The stale leak comment gunnery11 routed is fixed in `534019cd6`
+(`src/game_hosts_units.cpp`, the ship leak gate).
+
+### Open, in order
+
+1. **The landing descent.** Under the image's laws as reconstructed, the ApproachPitch hold climbs
+   at the final speed command `r = LevelFlight x StallSpd`, which is q = 1 (5n). The blend never
+   lowers the command. Until something sinks the flare, the heads porpoise 4 to 16 m over the
+   runway and begin, final, abort and park stay OFF.
+   - Not yet read: the pitch arm's nose-up floor and slew in mode 1 (`0099DC9E`-`0099E512`) as
+     they apply to the flare, and `007D9140`'s drag, which the host supplies.
+2. **Park** (`009B22C0`-`009B2C68`) and final's on-ground half need a touchdown and the
+   ground-roll arm `007CBFA0`, which the host does not run.
+3. **The gear channel** `(+DECh)+28h` with its request `+C1Ch` (5k): only the touchdown gates read
+   it.
+4. **The begin W substitution** (`bot+80h`), unchanged.
+
+### Working notes
+
+- `local\l12_run.ps1 -Exe <exe> -Prefix <p> -Rows 'tag:MISSION:frames:mission_frames'` launches
+  rows with the reference options. `local\l12_run_flood.ps1` adds `BSP_HULL_FLOODING_TRACE=1`.
+- `local\l12_sweep.py`, `l12_calls.py` (rel32 and absolute references), `l12_abs.py` (absolute
+  dwords in every section), `l12_jt.py` (MSVC two-level switch tables), `l12_dec.py` (uses of
+  `+DECh`), `l12_flood_sum.py` (flooding summary).
+- Diagnostics:
+  - `land final flight` (every 10 final ticks, only while final is bound);
+  - `summary plane touchdown`;
+  - `plane ground contact first`;
+  - `land abort trace` and `summary land abort` (abort bound);
+  - `squadron ordnance` (reader ON, on change).
+- Bash heredocs holding an apostrophe fail in this harness: write scripts and messages with the
+  Write tool.

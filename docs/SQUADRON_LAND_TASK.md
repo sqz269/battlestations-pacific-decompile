@@ -1519,6 +1519,210 @@ OFF is `local\l12_tdoff_<row>.log`. ON is `6ad4b7fcd` with the three switches tr
     right lateral offsets. On its own it changes no gameplay until something brings a plane down
     to its wheel height.
 
+
+## 5m. `land/park` read at its head, `land/abort` read and bound OFF (packets `cc9_land_park_state`, `cc9_land_abort_state`, cc9-lua12, 2026-09-29)
+
+### `land/park`: not reached on LOMP10
+
+Vtable `00D1FF60`:
+- **Enter `009B21A0`** (`009B21A0`-`009B21BA`): `+1Ch` = 0.0, `+18h` = 0, `+28h` = 3.0
+  (`00CE3854`).
+- **Exit `009B21C0`** (`009B21C0`-`009B21C5`): `+18h` = 0.
+- **Tick `009B22C0`** (`009B22C0`-`009B2C68`, `RET 4`; ledger name
+  `BSP_PlaneBot_ApproachBaseStep`, docs/AIRFIELD_TAXI.md). Its head, `009B22C0`-`009B2313`:
+  `[approach+1Ch]+40h` = 0.0. Then, when the plane has ground contact (`+BF8h`, `+BF4h`), a holder
+  at `approach+34h`, and the holder's owner absent or with `+5Dh` set, the done byte is set and it
+  returns. Otherwise the ground taxi runs: the controls `+2C4h`/`+2CCh` and the `4 <-> 5`
+  transitions `007C1680`/`007C16F0`.
+
+The rule sends a plane to park only when `+900h` is 4 or 5 or `009B3370` answers. Both need a
+touchdown, which no LOMP10 plane makes (5l). Every output of the tick feeds the ground-roll arm,
+which this host does not run. **Park is left unbound.** It follows the descent, the ground roll and
+final's on-ground half.
+
+### `land/abort` (vtable `00D1FED4`), read whole from the listing
+
+- **Enter `009B0980`** (`009B0980`-`009B0998`): `+20h` = `+21h` = 0 (task `+66Ch`/`+66Dh`), then
+  `006BCD80(approach+2Ch, plane)`. `006BCD80` works under the block lock: it sets `+0Ch` (held) on
+  the plane's record in the vector at `block+A8h` (`006BCE32`).
+- **Exit `009B09A0`** (`009B09A0`-`009B09B6`): with `approach+2Ch`, `006BCE60(block, plane)`
+  clears the same byte (`006BCF12`).
+- **Tick `009B09C0`** (`009B09C0`-`009B0F96`, `RET 4`; dt is not read):
+  1. Bank 0.0 with `+2CCh` = 1, throttle 1.0 and air brake 0.0 with their bytes, `+2D8h` = 0,
+     then `007C07A0(plane, (0, 1, 0), 0.0)`. `+20h` = 0.
+  2. **On the ground** (`009B0E74`-`009B0F93`): `+21h` = 1, pitch `class+1ECh x 0.5`, and a
+     ground heading. Refused and counted.
+  3. **Airborne**: `l = 006BCC90(position)`, the runway frame less T;
+     `e = 00438B10(plane heading, holder+88h)`.
+     - `l.y < 5.0` (`00CE3850`): no heading command.
+     - `5 <= l.y < 25` (`00CE3880`): when `l.z < 200` (`00CE4D70`),
+       `|l.x| < holder+B0h` (the whole width) and `|e| < 30 degrees` (`00CEC724`), hold the
+       runway heading (`+2C0h` = `holder+88h`, `+2CCh` = 2). Otherwise take the look-ahead turn:
+       - the point 100 m ahead (`007BA2E0` x 100, `00D7A220`) goes into `006BCC90`;
+       - `+2C0h` = heading + 0.5 when its x >= 0, else heading - 0.5, with `+2CCh` = 2.
+     - Both lower arms end at `009B0C5C` with a pitch hold (`+2D0h` = 1):
+       `+2BCh = 00419010(007C47F0, 3 degrees (00D0CBA0), class+18Ch, class+1ECh, 007D99C0)`.
+     - `l.y >= 25`:
+       - above 40 m (`00CE685C`), `+20h` = 1 when `|e| > pi/2`, `l.z > 10` (`00CE38B8`) or
+         `l.z < -1200` (`00D1FEF0`);
+       - then the look-ahead turn and `009FB800(approach+3Ch, 1.0)`: climb toward the circle
+         point's height.
+- **The rule's abort arm** (`009B3E08`-`009B3E43`): `+66Ch` goes to standby, else `+66Dh` goes
+  to park. Abort is entered from begin or final, on the done byte (`009B3770`) or on mode not 4
+  (`009B3D7A`, `009B3DCE`).
+
+So abort is the go-around: full throttle, climb by speed below 25 m, and back to standby once
+above 40 m past T. The held byte keeps the plane's record out of the sequencer's spacing
+(`006C3F80` skips held records) until it leaves abort.
+
+**Bound OFF, `kLandAbortStateBound`:** the enter, exit, airborne tick, the rule's abort arm and
+the four begin/final edges. The on-ground arm and park are refused. This commit also makes the
+approach update honour `+904h` (`009B3ABA`: a touchdown ends the update before the geometry and
+the request pacing).
+
+### Predictions for the pair on LOMP10 9200/9000 and USN01 3200/3000, written before any ON run
+
+OFF flips `kLandBeginStateBound` and `kLandFinalStateBound` (the touchdown is ON by default). ON
+also flips `kLandAbortStateBound`. OFF reproduces `local\l12_jon_*`.
+1. **Every head that sets its done byte in final enters abort once at that time.** In 5l that is
+   Warhawk 01 at about 158.6 s, 198 m past T at Y 14 m. The other heads take the same route.
+2. **Abort is short and ends in standby.**
+   - Arm B holds the runway heading at full throttle with a climbing pitch (about 3 degrees at
+     the level-flight speed).
+   - Above 25 m, `009FB800` climbs toward the circle height.
+   - Above 40 m the plane is past T by more than 10 m, so `+20h` is set.
+   - Prediction: `to_standby` = `entries`, and each abort lasts under 20 s.
+3. **The heads fly the circuit again.** Standby -> line or begin -> final -> abort. Each head gets
+   two to four aborts in 450 s. There is still no touchdown (`touchdowns=0`), because the descent
+   is unchanged.
+4. **LOMP10 moves (exit 3) and USN01 is gameplay identical.** The final refusals of 5l
+   (`abort_refused` 1926 to 2919 per head) drop to 0.
+- **Mechanism failure:** any of:
+  - an abort longer than 60 s;
+  - an abort that ends anywhere but standby;
+  - an entry from a state other than begin or final;
+  - a plane left held after it leaves abort (the sequencer's census).
+- **Flip rule:** abort is reachable only with begin and final, which stay OFF (5l). It stays OFF
+  whatever the pair shows; the pair records whether its mechanism holds for the day the descent
+  is fixed.
+
+
+### The pair and the verdict (cc9-lua12, 2026-09-29): the mechanism holds, abort stays OFF with begin and final
+
+OFF is `aa541a3e1` with begin and final flipped (`local\l12_aboff_<row>.log`). ON also flips
+`kLandAbortStateBound` (`local\l12_abon_<row>.log`). A 300-frame USN01 smoke of the ON build ended
+cleanly.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | B-25 01 8414.00 -> 7360.32 m. The eight IJN ships' engagement ranges go back to the all-OFF values. Deaths are identical (0 on both) |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+Ten aborts, eight from final and two from begin (Warhawk 01|.-4 at 158.71 s, Lightning 01|.-4 at
+386.38 s):
+
+| head | aborts | ticks | to standby |
+| --- | --- | --- | --- |
+| Warhawk 01 | 3 | 131 | 3 |
+| Lightning 01 | 3 | 134 | 3 |
+| B-25 01 | 1 | 26 | 1 |
+| B-25 01\|.-2 | 1 | 56 | 1 |
+| Lightning 01\|.-4 | 1 | 60 | 1 |
+| Warhawk 01\|.-4 | 1 | 56 | 1 |
+
+1. **One abort at the done time: held.** Warhawk 01 went to abort at 158.21 s, 12.6 m over T and
+   185 m past it, against the predicted "about 158.6 s, Y 14".
+2. **Short and back to standby: held.** `to_standby` equals `entries` for every head, and the
+   longest abort is 60 ticks (3 s). Warhawk 01's first abort:
+   - arm B holds the runway heading while z < 200;
+   - past 200 m the look-ahead turn takes over (heading 0.30 -> 1.40 rad);
+   - the plane climbs from 12.6 to 34 m while the speed rises from 33 to 57 m/s at full throttle;
+   - the standby flag is set above 40 m, 4.5 s after entry.
+3. **The circuit repeats: partly held.** Warhawk 01 and Lightning 01 fly three circuits each. The
+   B-25s and the fourth planes abort once and spend the rest of the run in standby: 14 and 15
+   standby entries for the B-25s, from the standby/line mode arm. There is still no touchdown.
+4. **Held.** LOMP10 moves, USN01 is gameplay identical, and the 15307 final refusals (`009B3DCE`)
+   are gone.
+- **No mechanism failure.** Every abort ends in standby within 60 s, and every entry comes from
+  begin or final.
+- **Verdict: `kLandAbortStateBound` stays OFF.** It is reached only through begin and final, which
+  stay OFF until the descent is fixed (5l). When they are re-paired, abort flips with them.
+
+
+## 5n. Why the heads float over the runway (packet `cc9_landing_descent`, cc9-lua12, 2026-09-29): no host substitution found
+
+A diagnostic line `land final flight` (every 10 final ticks, commit `046998bd5`) was added and one
+LOMP10 9200/9000 run made with begin and final ON (`local\l12_diag_lomp10.log`). Warhawk 01 over
+the runway, 150.6 to 164.6 s:
+- the pitch follows the command: +0.090 to +0.104 at the flare hold of 0.1047;
+- q (007D99C0 / StallSpd / LevelFlight) is 0.92 to 1.05;
+- the angle of attack is 0.000 to 0.050;
+- the throttle cycles 0 to 0.62 around the speed command 32.0;
+- vy is -0.5 to +3.4 m/s in the hold.
+
+B-25 01 (flare threshold 1.4 x 17 = 23.8 m) shows the same at q 0.97 to 1.03, climbing at 3.3
+to 3.9 m/s. Both climb in the hold.
+
+**The reconstructed image laws give this result.**
+- **Lift** (`007DB875`): `(1 + aoa) x min(q, 1)^2 x AccelCheatMul x 9.81` against gravity
+  `AccelCheatMul x 9.81`. At q >= 1 lift balances weight at aoa = 0, and the body damping
+  (`007DBD37`, YDrag at DragRange 1.0-2.0, `DragFuncPower` 1.8) keeps the velocity on the nose.
+  So the path angle equals the pitch.
+  - The installation's planeglobals.lua says the same of `LevelFlight`: above that fraction of
+    StallSpd the lift is maximal and there is no sink in level flight. Its comment on
+    `DragFuncPower` calls it the flare's characteristic.
+- **The command** in final is `r = max(007C47F0, 007C4810)`, with `007C47F0 = LevelFlight x
+  StallSpd` (32.0 for the P-40 and 37.0 for the B-25). That is exactly q = 1. Both sides of q use
+  the same StallSpd, so this holds whatever the class row says.
+- **The hold** is ApproachPitch, `tuning+4E0h` copied at `009B1439`-`009B144B` and stored at
+  `009B1AB3` when not fast, not far out and Y < 1.4 x `class+A0h` Length (`00D045F0`). At q = 1
+  it climbs at the pitch; to sink it needs q below about 0.93.
+- **Nothing in final lowers the speed below r.** Past T, `s = r` and `+2B4h = r`. The throttle law
+  `0099D300` holds it:
+  - `+2B0h` = 1 skips the divisor raise at `0099D924`;
+  - `+2B8h` decays to 1.0 at `0099D75C`-`0099D79A`.
+- So under these laws the flare climbs until Y reaches the threshold, the glide arm dives back, and
+  the plane porpoises. The host reproduces the laws; I found no substitution that turns a descent
+  into a climb.
+
+Substitutions checked on this path, none of them systematic:
+- `+2B8h` held at 1.0: equal to the image in final, since the raise is skipped.
+- The measured speed is `|v|` instead of `007D99C0 / +2B8h`: within 0.1 m/s here.
+- **`0099DAC8`'s correction, taken as 0.** Its inputs do have writers, which corrects the host's
+  label "no displacement writer anywhere": `unit+B1Ch` is `ctl+6Ch` (`007D87F1`, `007DB382`) and
+  `unit+AE0h` is `ctl+30h`, a low-pass copy of a velocity (`007DC792`-`007DC80B`).
+  The term is `(forward speed - |smoothed velocity|) x 20.0 (00CE3D88) x dt`. That is a lag term:
+  it damps the throttle oscillation but has no sign bias.
+- Thrust's TurboMultiplier, `desc+604h`, `unit+0CC8h` and `008E6430` are 1.0 or off: no effect on
+  a hold at q = 1.
+
+**Gear and ground effect, checked.** A sweep of 007B0000-007F8000 for loads of `unit+DECh`
+followed by `+28h`/`+2Ch` finds only the gear gates (`007B8D70`, `007C7220`, `007CC476`) and
+the two setters (`007C619E`, `007C6B6C`), so the gear channel adds no drag in the flight law. The
+core law reads `+BFCh` only in the ground mode (`007DB702`), so there is no ground effect. By the
+laws read so far, the image's flare climbs as the host's does. That leaves three possibilities:
+- the image's heads also porpoise on this installation. With WheelHeight 0.0 for the P-40 and
+  P-38 that is plausible;
+- the speed in the image's flare falls below q = 1 for a reason outside these laws;
+- a law not yet read acts in the flare.
+
+The host cannot settle which without the original running, which the rules forbid.
+
+**The blend does not give the sink (checked in `local\l12_diag_lomp10.log`).** In every mode-1
+hold the final trace's speed command is `r` itself:
+- Warhawk 01: 32.00 in all 238 held samples;
+- Lightning 01: 31.50 in 236;
+- B-25 01: 37.00 in 123.
+
+The blend `009B1F2C`-`009B1FDF` only ever raises the command. `a+5Ch` (TravelSpeed x 0.75) is above
+`r`: Warhawk 01 entered final at 45.96 = (32.0 + 59.9) / 2, and Lightning 01 at 33.78 and 35.84
+on the way in. And the blend reaches `r` below `a+24h x 210` m, before the hold begins. So the
+command never falls below q = 1.
+
+**Not bound.** With no host substitution identified there is no switch to commit, and begin, final
+and abort stay OFF. The diagnostic line stays: it is read-only and prints only while final is
+bound.
+
 ## 6. Open, in order
 
 1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON
@@ -1533,7 +1737,7 @@ OFF is `local\l12_tdoff_<row>.log`. ON is `6ad4b7fcd` with the three switches tr
      - final's on-ground half (`009B1FEA`-`009B207A`);
      - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
      - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
-     - `land/abort` (`+64Ch`).
+     - `land/abort` is bound OFF and its mechanism holds (5m); it flips with begin and final.
    - A mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
