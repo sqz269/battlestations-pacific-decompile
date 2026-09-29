@@ -1048,3 +1048,46 @@ form as 14.4. A 300-frame USN01 smoke of the ON binary ran first (exit 0, final 
 The prediction assumed the break-off heading was consumed; it is not, on any of these rows. The
 mechanism matches the image (the point is 009D0670's), and nothing moved on rows without a goaway.
 **The switch goes ON**, recorded as gameplay-inert until an aircraft reaches a heading arm.
+
+### 15.5 Why no USN01 Mavis reaches the goaway any more (cc9-planes2, lead's request)
+
+docs/TORPEDO_AFTER_THE_DROP.md section 4 had all five Mavis in the goaway, three of them still
+alive at the end of the run. On main `32eeb5204`, none of them reaches it (15.4). **This is not a
+plane-switch regression. The Mavis die before they are low enough to release, and a dead
+aircraft's bot no longer thinks.**
+
+**The history, from the reference logs already on disk.** Each figure below is the per-aircraft
+`goaway 009D0F10: ticks=` sum.
+- `cc8-gunnery-host/local/rb_usn01.log`, near section 4's time: 399 / 250 / 251 / 723 / 719.
+- The AA-targeting passes (`rb2`, `rbB`, `rbF`) and `rb3`-`rb9`: two to four Mavis, each with
+  7-322 ticks. The AA chain was being bound over these passes, and the Mavis die sooner with
+  each one.
+- `rb10` (reference j): 22 ticks on one Mav. Reference j attributes USN01's whole move to
+  `kAiGroupSeedPerEntityBound`. Its leave-one-out `rb10ngs_usn01.log` restores rb9's
+  62 / 41 / 43.
+- `rb11` (reference k) onward: 0. Reference k attributes USN01's lost releases to
+  `kDeadPlaneBotThinkBound`, and its leave-one-out `rb11ndpb_usn01.log` restores 46 ticks, on a
+  dead Mav. docs/PLANE_DEATH_MODES.md 7.5 showed that the lost releases were dead planes'.
+
+**The bisect on current main (by switch, exports of `32eeb5204`).**
+
+| export | Mav deaths (s) | goaway ticks | lowest altitude in the aim state | torpedo releases |
+| --- | --- | --- | --- | --- |
+| main as is (`p2_off_usn01`, 15.4's OFF side) | 70.85-79.60 | 0 on all five | 69-194 m | 0 |
+| `kAiGroupSeedPerEntityBound` and `kDeadPlaneBotThinkBound` both OFF (`08C161EE2519`, `p2_bis2_usn01`) | 63.55-88.20 | Mav2 57, Mav3 110, Mav4 13 | 14-160 m | 1, by a dead plane (`live=0 dead=1`) |
+| the seed OFF alone (`p2_seed`) | not run: the renderer failed at CreateDevice, hr `0x8876086a`, with `logonui=1` (a locked session, an environment fault) | | | |
+
+- **With both switches OFF, every goaway belongs to a dead aircraft.** No Mav is alive at the
+  release altitude, and the one release is counted as a dead plane's.
+- So the goaways that return are the ghost states that `0099ACD0` suppresses in the image. That
+  `kDeadPlaneBotThinkBound` removes them is correct, from its listing reading in
+  docs/PLANE_DEATH_MODES.md 7.1.
+- **What really moved is how early the ship AA kills the Mavis:** now 63-88 s, where section 4 had
+  129.7 s and 134.9 s, with three survivors.
+  - That is the product of the AA chain's bindings (targeting, the group seed and gunnery),
+    each paired and accepted on its own evidence.
+  - Whether the image's AA is this lethal to a Mavis at 700 m or more cannot be settled
+    statically. It is a question for a recorded original run, not for a plane switch.
+- **Recorded, not a defect in my lane.** The goaway, its aim point (15.4) and the dead-plane
+  suppression all match the image. USN01 has stopped being a goaway row. The rows that still
+  exercise the goaway are USN04 and JM05.
