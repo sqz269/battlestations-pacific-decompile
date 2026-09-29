@@ -33,6 +33,7 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/ordnance_kinds.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
@@ -780,6 +781,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
     }
 
+    // Packet cc9_big_landing_ship: class+808h through the ship AI host, which
+    // read it at load; false when the switch is off.
+    bool big_landing_ship_0808(std::size_t unit) {
+        GameShipAiHost* ship_ai = units.ship_ai();
+        const bool big = ship_ai != nullptr && ship_ai->unit_big_landing_ship_0808(unit);
+        if (big) ++big_landing_ship_reads;   // counted on both sides
+        return kShipAiBigLandingShipBound && big;
+    }
+    unsigned long long big_landing_ship_reads{0};
+
     bsp::AiAccuracyTargetGroup accuracy_target_group(std::size_t unit) {
         if (units.unit_is_kind_of(unit, 0x0F)) {
             return bsp::AiAccuracyTargetGroup::Plane;
@@ -794,8 +805,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // exact; the +808h byte is the one thing this host does not hold,
             // so a BIG landing ship is classed small here where the native
             // would class it big. Labelled.
+            // Packet cc9_big_landing_ship: ON reads +808h from the ship AI host.
             if (units.unit_is_kind_of(unit, 0x0E) ||
-                units.unit_is_kind_of(unit, 0x0C)) {
+                (units.unit_is_kind_of(unit, 0x0C) && !big_landing_ship_0808(unit))) {
                 return bsp::AiAccuracyTargetGroup::SmallShip;
             }
             return bsp::AiAccuracyTargetGroup::BigShip;
@@ -1806,7 +1818,51 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // matches what 007EDA90 answers, which is false.
         record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
         if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
+        rtb_exclusion_census(member);
         return tick_squadron_excluded_007eda90(member);
+    }
+    // Packet cc9_squadron_rtb_exclusion census, no behaviour: 009FFEC6..
+    // 009FFF16 read. With [00E17BF2] clear the arm takes the head plane's class
+    // id [[sq+3D0h]+C4h] (009FFECD); when 007EDAD0 (the squadron's first
+    // ordnance kind over its +3D0h planes) answers 0 and the id is 10h, 11h or
+    // 12h, 007F16D0 resolves the squadron's returntobase into a command record
+    // and a non-null descriptor is issued through 0077D600(desc, &record, 1)
+    // (009FFF09); that returns true. Counted here: bomber-class calls, and the
+    // calls where the ordnance reader answers 0 (the arm would resolve).
+    void rtb_exclusion_census(void* member) {
+        if (member == nullptr) return;
+        const std::size_t index = unit_index_of(member);
+        const Squadron* s = squadron_of(index);
+        if (s == nullptr) return;
+        ++rtb_exclusion_squadron_calls;
+        const std::size_t head = lead_member(*s);
+        if (head == bsp::kPlaneSquadronNoUnit) return;
+        const int cls = units.unit_class_id(head);
+        if (cls != 0x10 && cls != 0x11 && cls != 0x12) return;
+        ++rtb_exclusion_bomber_calls;
+        // 007EDAD0 over the planes still listed: 2Bh, 2Ch, 33h, 31h, 2Fh, then
+        // 007B9320's general bomb; any one answers non-zero. LABELLED: the
+        // host's mask is the union over a plane's guns, cleared by drops.
+        for (const std::size_t plane : s->member_units) {
+            if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
+                if (s->registry_backed &&
+                    bsp::plane_squadron_registry().find_by_member_unit(plane) == nullptr) {
+                    continue;
+                }
+            }
+            const bsp::OrdnanceKindSet set{units.unit_ordnance(plane)};
+            if (set.contains(0x2b) || set.contains(0x2c) || set.contains(0x33) ||
+                set.contains(0x31) || set.contains(0x2f) ||
+                bsp::ordnance_has_general_bomb_2ah(set)) {
+                return;
+            }
+        }
+        ++rtb_exclusion_spent_calls;
+        if (rtb_exclusion_spent_calls <= 8u) {
+            log.notef("  ai rtb exclusion census: squadron %s head class %02Xh has no "
+                "ordnance (009FFED3 007EDAD0 = 0), 007F16D0 would resolve (packet "
+                "cc9_squadron_rtb_exclusion)", unit_name(index).c_str(), cls);
+        }
     }
     bool tick_member_is_groupable_combatant(void* member) override {
         if (member == nullptr) return false;
@@ -2549,16 +2605,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // otherwise: the troop-landing trait, behind kTroopLandingTraitBound. The strafeable
     // troop transports (classes 224 and 234, docs/SHIP_AI_OPEN_ITEMS.md 19) answer true. LandingShip 0Ch answers
     // 0.1 (00D7A2F0) when 00827F70 is true, which for a class-0Ch ship is the
-    // BigLandingShip byte +808h being clear (its default), else 1.0; the host
-    // has no reader for +808h, so the default arm 0.1 stands.
-    static float capture_weight_00a03510(int class_id, bool lands_troops = false) {
+    // BigLandingShip byte +808h being clear (its default), else 1.0 (00A0360B
+    // CALL 00827F70, JZ 00A03636). `big` is +808h (packet cc9_big_landing_ship,
+    // false with the switch off, so the 0.1 arm stands as before).
+    static float capture_weight_00a03510(int class_id, bool lands_troops = false,
+                                         bool big = false) {
         switch (class_id) {
         case 0x07: return 2.0f;
         case 0x08: case 0x0E: case 0x18: return 1.0f;
         case 0x09: return 3.0f;
         case 0x0A: return 4.0f;
         case 0x0B: return (bsp::game::kTroopLandingTraitBound && lands_troops) ? 3.0f : 0.0f;
-        case 0x0C: return 0.1f;
+        case 0x0C: return big ? 1.0f : 0.1f;
         case 0x0D: return 5.0f;
         case 0x1C: return 1.0f;
         default: return 0.0f;
@@ -2631,7 +2689,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // 00A03760.
             const WorldUnit& w = world[static_cast<std::size_t>(i)];
             bsp::AiTailArrivalValueInputs in;
-            in.capture_weight = capture_weight_00a03510(w.class_id, h.cargo_lands_troops(w.class_id, w.unit));
+            in.capture_weight = capture_weight_00a03510(w.class_id,
+                h.cargo_lands_troops(w.class_id, w.unit), h.big_landing_ship_0808(w.unit));
             in.distance = h.unit_xz_distance(w.unit, unit_index_of(target));
             in.capture_radius = static_cast<float>(static_cast<int>(
                 kCaptureAccessorsBound
@@ -3204,7 +3263,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         auto visit = [&](std::size_t candidate, int class_id) {
             const std::size_t body = proxy(candidate);
             if (class_id == 0x1C) return;
-            const float w = capture_weight_00a03510(class_id, cargo_lands_troops(class_id, candidate));
+            const float w = capture_weight_00a03510(class_id,
+                cargo_lands_troops(class_id, candidate), big_landing_ship_0808(candidate));
             if (!(0.0f < w)) return;
             float x = 0.0f, y = 0.0f, z = 0.0f;
             units.unit_position_00fc(body, x, y, z);
@@ -3612,6 +3672,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long selling_holds{0};
     unsigned long long selling_approaches{0};
     unsigned long long selling_returns{0};
+    unsigned long long rtb_exclusion_squadron_calls{0};   // packet cc9_squadron_rtb_exclusion
+    unsigned long long rtb_exclusion_bomber_calls{0};
+    unsigned long long rtb_exclusion_spent_calls{0};
     unsigned long long sell_thinks{0};
     unsigned long long sell_splits{0};
     unsigned long long sell_orders{0};
@@ -4736,6 +4799,13 @@ void GameAiCoordinatorHost::report() {
                 host.defend_spawn_arms);
         }
     }
+    host.log.notef("summary mission ai squadron rtb exclusion squadron_calls=%llu "
+        "bomber_calls=%llu spent_calls=%llu (009FFEB0 census, packet cc9_squadron_rtb_exclusion)",
+        host.rtb_exclusion_squadron_calls, host.rtb_exclusion_bomber_calls,
+        host.rtb_exclusion_spent_calls);
+    host.log.notef("summary mission ai big landing ship reads=%llu bound=%d (00827F95 via "
+        "009FE2D4.. and 00A0360B, packet cc9_big_landing_ship)", host.big_landing_ship_reads,
+        kShipAiBigLandingShipBound ? 1 : 0);
     if constexpr (kSellingTickBound) {
         host.log.notef("summary mission ai selling ticks=%llu holds=%llu approaches=%llu "
             "returntobase=%llu (00A11FF0, packet cc9_selling_tick)", host.selling_ticks,

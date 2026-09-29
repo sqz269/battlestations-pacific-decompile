@@ -3033,3 +3033,168 @@ the goal, and nothing on rows without such frames. The misses are spread: the ar
 a plane death flip my prediction ruled out. Both are recorded. The hold is the listing's
 behaviour (`009F1E30 JE 009F2003`). The death flip is a plane surviving AA whose ships steer at a
 point up to one arm period old, which is what the image does on that path.
+
+## 36. Rank 4 of section 28: the squadron exclusion `009FFEB0`, read and counted (packet `cc9_squadron_rtb_exclusion`)
+
+Worker cc9-ships12, 2026-09-29. No switch: the arm is not reached on any row counted.
+
+**The image** (`009FFEB0..009FFF1D`, `__thiscall`, ECX = the squadron, plain `RET`). The whole
+body was read:
+- `009FFEB3`: `[00E17BF2]` set returns 0. It is 0 in the image.
+- `009FFECD`: EDI = `[[sq+3D0h]+0C4h]`, the head plane's most-derived class id.
+- `009FFED3`: `007EDAD0(sq)` (BSP_PlaneSquadron_AmmoType). It walks the `+3CCh` planes at
+  `+3D0h`, and on each one tests through the weapon controller `007B91C0(kind, 1)`: `2Bh` -> 2,
+  `2Ch` -> 3, `33h` -> 4, `31h` -> 5, `2Fh` -> 6, and `007B9320` (the general bomb) -> 1. It
+  answers the first kind found, else 0 (`007EDB43`).
+- Only when that answer is 0 AND the head's id is `10h`, `11h` or `12h` (the bomber leaves,
+  `009FFEDC..009FFEE9`): `007F16D0(sq, &record)` resolves the squadron's `returntobase`
+  (`include/bsp/return_to_base.hpp`).
+- A non-null descriptor in `[record]` is issued as `0077D600(desc, &record+4, 1)` at `009FFF09`, and
+  the routine answers 1: the member is excluded from the leader's moveto. Otherwise it answers 0.
+
+So the "carrier arm" in section 28's label is a **return-to-base arm for a bomber squadron with
+no ordnance left**. The host answers `007EDA90`'s value in its place.
+
+**The census** (`src/game_hosts_ai.cpp`, `rtb_exclusion_census`, no behaviour). It counts the
+calls that name a squadron, those whose head is a bomber leaf, and those where the ordnance test
+answers 0. The test is `GameUnitsHost::unit_ordnance` over the planes still listed, a union mask
+that drops clear, and it is labelled. The summary line is
+`summary mission ai squadron rtb exclusion squadron_calls= bomber_calls= spent_calls=`. Rows at
+3200/3000 are `local\s12_rc_<row>.log`:
+
+| row | squadron calls | bomber calls | spent |
+| --- | --- | --- | --- |
+| USN13 | 416 | 0 | 0 |
+| LOMP10 | 2 | 0 | 0 |
+| JM05, JM08, USN04, USN01 | 0 | 0 | 0 |
+
+Section 28's call counts (JM05 8428, USN13 2079, JM08 1541) are inflated: the host evaluates
+`tick_squadron_excluded_009ffeb0` for every follower, ships included, while the image asks only
+after the squadron test. On these rows every squadron that follows a leader is a fighter group.
+
+**Decision: not bound.** A binding needs three things:
+- the ordnance reader above;
+- a units-host entry that resolves `007F16D0` for a squadron and places the resolved command
+  (the units lane: `record_return_to_base_007f16d0` / `rtb_census` exist but are private);
+- a row where an AI group's bomber squadron spends its load while following a leader.
+
+None of the counted rows has one.
+
+## 37. Rank 6 of section 28: BigLandingShip, `class+808h` (packet `cc9_big_landing_ship`, `kShipAiBigLandingShipBound`)
+
+Worker cc9-ships12, 2026-09-29. The switch is in `include/bsp/game_hosts_ship_ai.hpp`.
+
+**The image.** `00827F70` is a class method:
+- TorpedoBoat `0Eh` answers small.
+- LandingShip `0Ch` answers small only when the byte at `class+808h` is 0 (`00827F95`).
+- Everything else answers not small.
+
+The byte is `VehicleClass[type].BigLandingShip`, read exact-Boolean-or-false by the LandingShip
+leaf (`0074C630`). The same boolean picks that leaf's tuning pair (`"BigLandingShip true"`, scalar
+source `20h`, `src/vehicle_class_lua_load.cpp`). In this installation's `vehicleclasses.lua`
+(mtime 2026-05-09) it is true for `VehicleClass[12]` (LSM), `[41]` (US LST), `[91]` (IJN LST) and
+`[345]` (US LST, strafeable).
+
+`00827F70` has fourteen call sites (`ghidra xrefs`). This lane owns four:
+- the neighbour admission `009F0D82` (a small ship admits an enemy submarine as an obstacle);
+- the approach mode latch `009F1F76` (a small ship holds against a submarine target);
+- the AI bullet accuracy group `009FE2D4..009FE67C` (small ship or big ship);
+- the capture weight `00A0360B` (0.1 when small, else 1.0, `JZ 00A03636`).
+
+Not bound here: `007EEB74` (BSP_Unit_AttackCommandApplies), `0081639D`
+(BSP_Entity_CommandAvailableAgainstTarget), `0096ACB4`, and the standoff choice `009E6F11`
+(rank 7, behind a target-kind stub).
+
+**The binding.** The ship AI host records the byte at load, when the depth reader selects the
+"BigLandingShip true" pair for a class-`0Ch` unit. It logs `unit big landing ship unit= type_id=`
+and serves the byte through `GameShipAiHost::unit_big_landing_ship_0808`. ON, the four sites read
+it: the AI host reaches it through `units.ship_ai()`. OFF, every landing ship is small, as before.
+
+**OFF census** (this tree, `local\s12_blsoff_<row>.log`):
+- JM08 has five big landing ships: LSM 01, LSM 02 (type 12) and LST 01..03 (type 41).
+- IJN01 has eleven of type 345.
+- JM08 has no submarine, and IJN01's latch counts 0 submarine targets.
+
+### Predictions, written before any ON run
+
+1. **JM08 3200/3000 moves (exit 3).** The Japanese AI's accuracy against the five landing ships
+   switches from the small-ship to the big-ship offsets. Their capture weight rises 0.1 -> 1.0,
+   which changes the planner's arrival values and group targets. Hits on the LSTs and LSMs move;
+   a death flip among them is possible.
+2. **IJN01 3200/3000 moves (exit 3)** the same way, through the A7Ms' accuracy against the eleven
+   US LSTs and their capture weight.
+3. **The admission and latch sites change nothing on either row**: there is no submarine.
+4. **JM06 3200/3000 and USN12 3200/3000 are identical** (exit 0 or 1): no landing ship.
+5. **Mechanism failure** keeps the switch OFF: no `unit big landing ship` line on JM08, or any
+   move on JM06 or USN12.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+ON is `pair_export --commit b03cddfbc --flip kShipAiBigLandingShipBound=true --out local\s12_bls`.
+OFF is `local\s12_blsoff_<row>.log`, ON `local\s12_blson_<row>.log`.
+
+| row | admission reads (`big_landing_ship_808`) | AI-site big reads | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- |
+| JM08 3200/3000 | 1550, concrete ON | 0 | 1, gameplay identical | 1 **missed** |
+| IJN01 3200/3000 | 4588, concrete ON | 200 | 1, gameplay identical | 2 **missed** |
+| JM06 3200/3000 | 0 | 0 | 1, gameplay identical | 4 held |
+
+- **The admission is reached, and prediction 3 held.** ON, each landing ship's admission runs the
+  enemy-submarine test that small ships skip (`unit_is_kind_vtable5c` 3972 -> 5522 on JM08, 16923
+  -> 21511 on IJN01). No submarine exists, so no node changes.
+- **The AI sites.** Counted afterwards with `summary mission ai big landing ship reads=` in a
+  census build of the same tree (`local\s12_blscen_<row>.log`, gameplay-identical to the OFF
+  logs). JM08 asks 0 times: no AI accuracy or capture read names its landing ships. IJN01 asks 200
+  times, and the ON run still chooses and fires identically. So a 1.0 capture weight and the
+  big-ship accuracy group do not change a choice on that row.
+- Predictions 1 and 2 expected those reads to move the rows; they missed.
+
+**Verdict: ON.** It is exact to the listing (`00827F95` on the Lua byte), gameplay-identical on
+all three rows, and its mechanism is reached at the admission site. The four other callers of
+`00827F70` (`007EEB74`, `0081639D`, `0096ACB4`, and the standoff `009E6F11` behind rank 7's
+target-kind stub) still answer "small" for a big landing ship.
+
+## 38. Handoff (cc9-ships12, 2026-09-29, at about 70% context)
+
+**State of the lane.** Branch `agent/cc9-ships12`; no leases held. Switches this worker touched:
+
+| switch | state | section |
+| --- | --- | --- |
+| `kGunneryLosRoleSwapBound` (`src/game_hosts_gunnery.cpp`) | ON (USN01 moves by two one-sided cell tests; four rows identical) | 33 |
+| `kShipAiApproachSightTestBound` | ON (re-paired; USN01 moves as in section 31, three rows identical) | 34 |
+| `kShipAiApproachNoShipHoldBound` | ON (IJN01 moves, one plane death flip; USNOS and IJN05 identical) | 35 |
+| `kShipAiBigLandingShipBound` | ON (identical on JM08, IJN01 and JM06) | 37 |
+| rank 4, `009FFEB0` | read and counted, not bound: the arm is not reached on six rows | 36 |
+
+**Expect reference moves** from 33, 34 and 35: USN01 (the sight test and the hold, as in sections
+27 and 31), IJN01 (the hold), and LOMP10/USN02 wherever the hold reaches.
+
+**Diagnostics left in the code:**
+- `BSP_LOS_CENSUS=1`: landscape hits, the count of tests whose reverse cast would answer
+  differently, and the first 24 of those.
+- `summary mission ship ai approach no-ship hold`.
+- `summary mission ai squadron rtb exclusion`.
+- `summary mission ai big landing ship reads`.
+- `unit big landing ship` at load.
+
+**Open, in order:**
+1. **Rank 7 and a wider stub in the same host.** `StandoffBinding::target_is_kind_vtable_005c`
+   (`009E6E80`) answers false for EVERY kind, not only kind 8, so the building (`1Ch`) arms of
+   modes 4 and 2 (`009E6F29..`, `009E700B..`) never take the target's `+7C4h` / `+7A0h`. Those two
+   reads (`target_radius_07c4`, `target_gun_range_07a0`) are records answering 0 as well. Binding
+   kind 8 alone has no reach on any row counted: no row has a submarine target. The `1Ch` arms
+   need modes 2 or 4. The latch census shows mode 0 on every row counted, except USN01's buildings
+   of the other side, which are mode 0 too. So find a row with modes 2 or 4 before binding.
+2. **The other `00827F70` callers** (`007EEB74`, `0081639D`, `0096ACB4`) still class a big landing
+   ship as small. They belong to the units, commands and script-order lanes.
+3. **Rank 4's binding**, if a row with a spent bomber squadron in an AI group turns up. It needs a
+   units-host entry for `007F16D0` plus issue (section 36).
+4. **The terrain in front of CB2 on USN01** (section 34): a ridge about 25 m high, about 320 m out,
+   hides Dunlap's target. Check it against the island's height field if USN01's stand-off
+   distances look wrong.
+5. From section 32, still open: the engage gate's avoid-zone conjunct, and `[class+570h]` in
+   multiplayer.
+
+**Useful files** in the cc9-ships12 tree: `local\s12_run.ps1 -Exe <exe> -Prefix <p> -Row
+tag:MISSION:frames:mission_frames`. It launches in the background with `BSP_LOS_CENSUS=1` as well
+as the reference variables; wait on the log's final COM release line. The logs are `local\s12_*`.
