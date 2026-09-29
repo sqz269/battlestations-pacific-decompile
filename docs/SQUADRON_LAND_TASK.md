@@ -4006,3 +4006,108 @@ aboard, not left circling.
   - the deck-edge takeoff `007CC264`, which needs the takeoff `007C7110`;
   - the scoring call at `007CB7B7`;
   - the host's use of the relative velocity by readers that expect a world velocity (labelled).
+
+## 5ah. The carrier elevator, read whole, and what it needs before it can bind (packet `cc9_carrier_elevator`, cc9-lua20, 2026-09-29)
+
+This packet read the image only; no code changed. It completes 5aa's reading of the mother-ship
+site, answers `006BA5E0`, and names the chain a binding would need.
+
+### `006BA5E0` has no caller
+
+`006BA5E0` (`006BA5E0`-`006BA615`, `RET` at `006BA614`) answers the runway half width: `holder+B0h` whole when the
+owner answers `IsKindOf(9)`, x 0.5 otherwise. `local\l20_rel32.py` scans every section of the PE
+on disk for an `E8`/`E9` rel32 or an absolute dword landing on it, and finds none.
+
+The scan is live: on the same pass it finds `006BA620`'s five callers (`006C3BD2`, `006C3C80`,
+`006C3D52`, `007C73B0`, `009B19B5`) and the vtable slot `00CF8A5C` for `006D0600`. A
+register-indirect call through a computed address is not excluded. **Recorded as caller-less;
+nothing to bind.**
+
+### The mother-ship site (vtable `00CF8A58`, constructor `006CFAF0`)
+
+**The vtable.** Slots against the airfield site's `00CF89F8`:
+
+| slot | elevator site | airfield site | role |
+| --- | --- | --- | --- |
+| `+4h` | `006D0600` `BSP_AirOpsElevatorSite_Tick` | `006CF980` | the site tick, from `006CDC70` (`block+3Ch`) |
+| `+8h` | `006CFE40` | `006CEBE0` | the platform tick below. No caller was found: the 36 `FF 5x 08` calls in `.text` include none that loads its object from `[reg+3Ch]`, and the `mov reg,[reg+8]` / `call reg` form was not scanned |
+| `+2Ch` | `006D00E0` | `006CF420` | park's taxi target: `class+808h..+810h` with z - `classDesc+158h` (`RET 8`) |
+| `+34h` | `006D0390` | `006CF5B0` | park's spot test: `006CE610`, then a lane test against `class+810h` and the constant `[00E08FC8]` = 14.0 (`.data`, on disk) |
+| `+3Ch` | `006CFF70` | | the intake test: `006CFE90`, the plane's nose point (`classDesc+158h` through `unit+74h`) to the lift's x/z, below 3.0 (`00D7A2B0`) - plane `vtable[38h]` |
+| `+44h` | `006D0120` | `006CF520` | park's queue origin: `class+808h..+810h` |
+| `+50h` | `006D0050` | | the message handler, below |
+
+**The lift point.** `class+808h..+810h` is written by `00759120` at `007591B2`-`007591C2`: the
+first point of the model's Aux group `liftexitpoint`, index 2 (`push 2` at `00759167`; the
+string is at `00D018CC`). `runwaycenter` is the same call with index 0. The point is in the
+carrier's model frame.
+
+**The platform** (site `+44h`, constructor `006FC2A0`, set up by `006FC380` at `006CFD42`):
+- `P+0Ch..+14h` is the lift point;
+- `P+44h` is `MotherShip.ElevatorSpeed` (settings `+4D8h`), and `P+48h` the depth
+  `MotherShip.ElevatorDepth` (`+4DCh`);
+- `P+1Ch` = depth x 0.1 (`00D7A3A0`); the position `P+18h` starts at -`P+1Ch`;
+- `P+50h` is the mode: 0 still, 1 up, 2 down. `P+4Ch` is a 1.0 multiplier.
+
+**The platform tick**, `006FC480` (from slot `+8h`):
+- A dead platform plane (`+5Dh`) is released.
+- Mode 2: `P+18h += speed x dt x P+4Ch`. At `P+18h >= depth + P+1Ch` it clamps and goes to mode 0.
+- Mode 1: `P+18h -= ...` until below `-P+1Ch`, then mode 0.
+- `006FC0D0` then carries the plane: `unit+A4h..+ACh` = lift point + offset (`P+38h..+40h`),
+  with y lowered by `clamp(P+18h, 0, depth)`, and `00951F40(1)`.
+
+**The site tick**, `006D0600` (`006D0600`-`006D07A4`), when dt != 0, an owner (`+B8h`) exists and
+the platform is still (`+94h` = `P+50h` == 0):
+- **Lift at the top** (`P+18h < 0`):
+  - release a platform plane (`006FC250`); if it is alive, request ground state 4 (`007C3C90(0)`);
+  - then, with the carrier block's owner alive, scan the occupants `+34h`/`+38h` for a plane
+    with `+904h` set, the slot `+3Ch` intake true, `vtable[38h]` < 1.389 (`00CF8AAC`), and
+    `007B8D40` true (the gear channel);
+  - a candidate, or a ready plane `+18h` with `006D02F0` false, gives `006CFFF0(0, plane)`.
+    That is message `00758B90` routed with 5, whose handler `006D0050` with flag 0 calls:
+    - `006FC720(plane)` for a plane: it takes the plane (offset = its local position less the lift
+      point), requests **flight state 2** (`007C2090`: message `C3h`, routed with 7, unless it is
+      already 2), and starts down (mode 2);
+    - `006FC640` with no plane: an empty platform goes down.
+- **Lift at the bottom** (`P+18h > depth`) with mode 0:
+  - a platform plane is hidden (`007B96C0`) and released (`006FC250`);
+  - otherwise `+9Ch += dt`;
+  - past `tuning+510h`, with no platform plane, `006CFFF0(1, ready +18h)` relaunches: handler flag
+    1 -> `BSP_Plane_PlaceOnLaunchSpotLocked` and `006FC810` (up with the plane), or `006FC6B0`
+    (empty, up).
+
+### What a binding needs first
+
+**The lift takes only a plane parked on it.** The intake needs the plane's nose within 3.0 m of
+the lift point, less its speed. The landed plane stops near the stern (5ag.1: local z -38 to
+-42 on Yorktown, -134 on Lexington) and never gets there by itself.
+
+**The taxi is land/park.** Park's tick `009B22C0` has a carrier arm, `bVar4` = `009B23E4`'s
+`IsKindOf(9)` on the site owner. It uses the elevator site's slots `+44h`/`+2Ch`/`+34h` above,
+the move speed `tuning+4E8h`, and no path join (`009B271A` never goes to state 5). Its clock
+`park+28h` runs down while the plane is slow (< 1.0) and within 10 m (`00CE38B8`), and it feeds
+the done test `009B21D0`, whose class-9 test is `009B1E30` (`approach+30h` `IsKindOf(9)`). It
+steers with the same yaw law as the airfield arm.
+
+**`kLandParkStateBound` is OFF** for the park <-> abort loop (5s; 5aa found the image's airfield
+most likely loops the same way, invisibly). So no plane reaches park in any reference row, and an
+elevator binding is unreachable until park runs for carriers.
+
+**The relaunch side has no feed.** The ready plane `+18h` comes from the ready-plane pull
+`006C6540` and the stock regeneration, neither reconstructed (`air_operations.hpp`). The relaunch
+arm would be a record.
+
+**The state-2 request.** `007C2090` sends `C3h` with new state 2. The host's C3h handling and the
+land task's rule for `+900h` 2 were not read in this packet.
+
+### Proposed order (for the lead)
+
+1. Bind park's carrier arm (`009B23E4` and the `bVar4` branches, the `+2Ch`/`+44h`/`+34h` slots
+   above, `006CE610`) and the elevator site (`006D0600`, `006FC480`, `006FC720`, `007C2090`,
+   hide). Both are gated behind park.
+2. Pair them with `kLandParkStateBound=true` on both sides: JM05 9000 lands 13 carrier planes
+   (5ag.1).
+3. Measure whether the elevator ends the carrier park <-> abort loop (state 2 and the hide).
+   This is the question that decides whether park can flip for carriers.
+
+A separate packet is needed to read the host's `C3h` state-2 path and the rule for `+900h` 2 first.
