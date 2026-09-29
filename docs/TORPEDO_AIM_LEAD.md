@@ -1543,3 +1543,48 @@ launch form are 19.5's. All 18 logs are complete, and the runs finished at 21:40
 **Still standing:**
 - The seed is never refreshed (`009D1360` is unbound). It is the next packet.
 - `+88h` and `+12Ch` are not drawn.
+
+## 20. Who reads the pilot control block's `+398h`, and what this host supplies (packet `cc9_ctl398_audit`)
+
+cc9-planes3, read-only. This is the lead's audit of the `ctl+398h = 500` stand-in that 19.5 found.
+
+**Census method.** I ran `scan-bytes` with `--limit 4000` over `.text` for every disp32 form at
+`+398h`:
+- `D9`, `D8` and `DC ?? 98 03 00 00`;
+- `F3 0F 10`, `11`, `58`, `59` and `5C`;
+- `0F 2F`, `0F 2E`, `8B`, `89` and `C7`.
+
+153 hits came back (`local\p3_scan398.txt` in the cc9-planes3 tree). Most sit on other
+structures: `gun+398h`, the ship AI nav block (`009DDBC0`, `009DA0D0`, `009ED6B0`), the mission
+record, and the pose matrices in `007BEEE0` (`+364h`/`+394h..+39Ch` next to `+608h..+610h`). The
+pilot control block is reached as `approach+0Ch` or `task+404h`. The hits on it are:
+
+| routine | role | reads or writes `ctl+398h` | host |
+| --- | --- | --- | --- |
+| `009D4A70` torpedo cruise profile | writer, step 5 | `max(*(task+40Ch) = record+0h TorpReleaseAlt, 5.0)` | **was CruisingAlt 500**; `max(TorpReleaseAlt, 5)` since `ac16e89ac`, ON with `kTorpedoResetDrawsBound` (19.6) |
+| `009D3420` torpedo approach update, `009D3489` | reader, copied into `+74h` when below 100 | - | reads the above through `read_control_block` |
+| `009C8920` dive cruise profile, `009C89CE` | writer | `U(0, 15) + BeginAltRange/1` (leader only), gated by `+38Ch` / `+37Ch` / `+3AAh` | modelled: `kDiveProfileDrawBound`, `kSquadronAttackAltBound` (`src/game_hosts_units.cpp` near 3262) |
+| `009C7A80` dive approach update, `009C7AA7` | reader, copied into `approach+ACh` | - | `db_begin_alt_ac` from the squadron block's `sq_profile_398` / `sq_alt_398` |
+| `009C62B0` flyabove, `009C4A40` goaway, `009C7F00` goaway-complete | readers | - | read `db_begin_alt_ac` (the same copy) |
+| `009A4DC0`, `009A5000` (depth-charge constructors) | `MOV [ESI+398h],EBX`, where ESI is probably the task, not the block (not checked) | - | depth-charge task not hosted |
+| `009A1D60`/`009A1DC0`/`009A1A90`/`009A29F0` (close-to-ship), `009AB850`, `009ADE00`, `009B7C90` (level bomb), `009CA3B0` (strafe), `007B3EA0` (rocket) | approach readers; the base `approach+0Ch` is checked at `009AB857`, `009B7CA6` and `007B3EA6` only | - | these tasks are not hosted, so there is no stand-in to correct |
+
+**Findings:**
+- **The 500 stand-in reached one reader, `009D3489`.** It is corrected by the ON switch, so no
+  other host path saw it. The dive family has its own model of the same block, taken from its own
+  writer `009C8920`, and does not use the torpedo binding's stand-in.
+- **One real gap: the script override on the torpedo path.** `008A22B0 SquadronSetAttackAlt`
+  writes the squadron block's `+398h` and sets `+3AAh`. `+38Ch` is set when forced. `009D4A70`
+  step 5 then keeps the script value exactly as `009C8920` does for the dive. The host's torpedo
+  `read_control_block` ignores `sq_alt_398`.
+  - **Inert on the reference rows:** no `squadron attack alt` line appears in any 19.6 log (USN04,
+    E2, JM05, USN01, USN13, JM08).
+  - In this installation, `SquadronSetAttackAlt` appears in 81 mission scripts (for example
+    JM02's Betties at 500, forced). IJN01's call at `ijn_1_pearl.lua:1011` is on A7M fighters.
+  - A torpedo squadron given an attack altitude of 100 or more makes `009D3489` skip its store.
+    `+74h` then keeps the reset's 67.
+  - **Not bound here.** No row in the reference set exercises it, so a pair could only show
+    "identical". I have queued it, to be bound when a row with a torpedo squadron and a script
+    attack altitude is found.
+
+**No binding change comes out of this audit.**
