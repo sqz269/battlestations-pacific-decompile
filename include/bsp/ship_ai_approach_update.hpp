@@ -1137,6 +1137,8 @@ inline constexpr bool kShipAiApproachRetargetRingBound = false;
 // 009F2395, unread) still copy the goal every frame, labelled. False: the goal
 // is copied every frame. Ignored when kShipAiApproachRetargetRingBound is on,
 // which carries the same hold.
-inline constexpr bool kShipAiApproachNoShipHoldBound = false;
+// ON by the pairs of 2026-09-29 (section 35): IJN01 moves through the hold
+// (709 arm runs, 5119 held frames), USNOS and IJN05 identical.
+inline constexpr bool kShipAiApproachNoShipHoldBound = true;
 
 } // namespace bsp

@@ -2969,3 +2969,34 @@ rows where the arm is reachable, other than USN01, LOMP10 and USN02:
    is 0 and `arm_runs` is 0.
 3. **Mechanism failure** keeps the switch OFF. That is `arm_runs` = 0 on IJN01, `frames_differ` = 0
    with a move, or any move on USNOS or IJN05.
+
+### The pairs (cc9-ships12, 2026-09-29)
+
+ON is `pair_export --commit 85211f323 --flip kShipAiApproachNoShipHoldBound=true --out
+local\s12_hold`. OFF is this tree's build of `85211f323`: `local\s12_hoff_ijn01.log`, and the
+census logs `local\s12_lc_usnos.log` and `local\s12_lc_ijn05.log` (same build). ON is
+`local\s12_hon_<row>.log`.
+
+| row | arm runs | held frames | differ | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| IJN01 3200/3000 | 709 | 5119 | 5119 | 3, moved | 1: the move held; the arm-run range and "no death flip" **missed** |
+| USNOS 3200/3000 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+| IJN05 3200/3000 | 0 | 0 | 0 | 1, gameplay identical | 2 held |
+
+- **IJN01.** Every held frame differs from the goal copy: the A7M goals move every frame.
+  - The latch's `retarget_entries` equals the arm runs (709 of 5828 reachable frames). OFF
+    counts 5872 entries of 5872, because OFF never sets `nested+11D6h`.
+  - 709 is above my 100..300. The flag is cleared more often than the 2..3 s timer alone would
+    clear it; the likely clear is the attackmove enter reseed (`009F31C2..009F31ED` clears
+    `+11D6h` and `+11D8h`) when a ship switches plane targets. That is not isolated. Also, the
+    head's `009F214E` write (timer raised to 1.0) changes when `009F1DB4` draws from stream 1.
+- **Deaths 24 -> 23: one flip.** A7M_1|.-5, killed OFF, survives ON. 17 more death rows move in
+  time or killer, for example A7M_5|.-5 at 97.85 -> 107.20 s (PT3 -> Zeilin) and A7M_5|.-3 at
+  102.45 -> 111.90 s (PT4 -> Curtiss). The ships steer for points up to one arm period stale, so AA
+  ranges change (Downes moves 814 -> 787 m). No ship death moves.
+
+**Verdict: ON.** The mechanism is the one named: a hold on no-ship frames only, arm runs storing
+the goal, and nothing on rows without such frames. The misses are spread: the arm-run count, and
+a plane death flip my prediction ruled out. Both are recorded. The hold is the listing's
+behaviour (`009F1E30 JE 009F2003`). The death flip is a plane surviving AA whose ships steer at a
+point up to one arm period old, which is what the image does on that path.
