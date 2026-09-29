@@ -4743,3 +4743,50 @@ differs from the one the goal copy would write (`frames_differ`):
 - So the hold cannot move either row. The integrator's expectation assumed reach where the
   counters show none. This is the same shape as reference m's `nnsh` runs, which were identical on
   both rows.
+
+## 70. The command acceptance extra tests 009229F0 / 007AC9D0 (packet `cc9_command_extra_tests`, cc9-gunnery14)
+
+Ranking #9 (lua19's refreshed ranking).
+
+### 70.1 The image
+
+**0071D6D0** (body 0071D6D0..0071D772, `RET 8`):
+- The target checks come first: `vtable[8]` needs a target, then position byte `+1h` or category 1/2,
+  then `00521EA0` non-null and `+5Dh` clear.
+- Only after those does it reach 0071D71F. The two "no target needed" branches (0071D6E5 and
+  0071D6FE) also jump there.
+- The host had returned `true` on those two branches before the extra tests ran. This binding
+  corrects that order.
+
+**Torpedo** (00E08F18, 0071D71F..0071D73C) requires `009229F0(00521EA0(target), 6)`:
+- `009229F0`: `__fastcall(ECX entity, EDX kind)`, `RET 0`, body 009229F0..00922A34.
+  - A null entity returns false.
+  - `vtable[5Ch](6)` (a ship) returns true.
+  - `vtable[5Ch](1Bh)` (MLandFort) tail-calls `00922990([[entity+538h]+178h], 6)`.
+  - Anything else returns false.
+- `00922990` (body 00922990..009229EF, `RET 0`), for kind 6, accepts the class's `FakedType`
+  (`class+178h`, docs/ATTACK_GATE_TAILS.md) when it is 7, 8, 0Ah, 0Bh, 0Dh or 0Eh. For kind 0Fh it
+  accepts 10h..17h.
+- **So a torpedo order at a position (kind 0) is refused**, because 00521EA0 gives null.
+
+**Moveonpath** (00E08F80, 0071D73E..0071D75B):
+- It runs only when the descriptor names an object (`+0h != 0`), and requires `007AC9D0(entity)`
+  non-zero.
+- That is the entity being a path kind: 47h Path, 48h, 49h, 4Ah CameraPath (docs/ENTITY_CLASS_IDS.md).
+- User path points (a kind-0 descriptor, `007207CC`) never reach it.
+
+`00E08F78` (0071D75D..0071D767) only calls 00521EA0 and accepts.
+
+### 70.2 The binding (`kCommandExtraTestsBound`, committed OFF)
+
+- **`command_extra_test_0071d71f`** in the commands host's Impl runs at every return of both
+  0071D6D0 sites that the image routes through 0071D71F.
+- **Torpedo:** the target is resolved to a host unit and tested with `unit_is_kind_of(class, 6)`.
+  - **Labelled:** a kind-1Bh fort is refused, because this host holds no FakedType and the authored
+    default 1Bh is outside the set.
+  - **Labelled:** a unit whose class id is unknown is accepted.
+- **Moveonpath with an object descriptor:**
+  - refused when the object is a host unit, since no unit is a path kind;
+  - otherwise taken as the authored Path it names. **Substitution:** this host resolves units only.
+- **Summary line:** `summary mission director extra tests ...`, printed on both sides. It counts
+  tests, refusals by reason, and the labelled cases.
