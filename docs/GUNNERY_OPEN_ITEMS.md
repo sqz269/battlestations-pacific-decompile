@@ -3161,3 +3161,49 @@ Two pairs, as 47.3 asks: first the inertia alone, then with the roll torque.
   ConvexObject;
 - a DeRuyter extent other than (16.50, 17.89, 173.97) +/- 0.01;
 - pair A moving.
+
+### 51.1 The pairs and the verdict (cc9-lua11, 2026-09-28): OFF, the hydrodynamic torque wakes
+
+All four sides are builds of `5a68b4d19`, which adds a diagnostic `summary hull tilt <ship>: max=
+final=` line: the angle between each hull's up row and world up. The logs are in this tree's `local\`.
+
+| pair | OFF | ON | USN02 9200/9000 | JM06 3200/3000 |
+| --- | --- | --- | --- | --- |
+| A (roll torque OFF both sides) | `l11_ha2off_` | `l11_ha2on_` | 3; hit records 2271 -> 3963, damage 39396 -> 36182, deaths 10 = 10 | 3; hit records 276 -> 289, damage 4340 -> 5803, deaths 1 = 1 |
+| B (roll torque ON, as landed) | `l11_hb2off_` | `l11_hb2on_` | 3; hit records 2271 -> 4203, damage 39396 -> 34680 | 3; the same numbers as A |
+
+**Held:**
+- Every class with a root ConvexObject logs `shapes=1`. DeRuyter logs extent (16.50, 17.89, 173.97)
+  and min (-8.252, -5.672, -96.924).
+- Classes without one keep a zero box and do not move. On JM06 the transports and tankers
+  (`us_troop_transporter.mmod` and others in the census's no-root list) have identical tilts on
+  both sides.
+
+**Missed: pair A moved.** The prediction held that no torque acts without the hit roll torque.
+That was wrong. `009329C0`, the hydrodynamic tail of `00937440`, calls AddTorque (`00C35330`) on
+every hull on every step (`summary mission hydrodynamics ... add_torque=58273` on JM06). With a
+zero inverse inertia it did nothing; with the shape-derived inertia the buoyancy elements' moments
+turn the hulls.
+
+| row | OFF max tilt | ON |
+| --- | --- | --- |
+| USN02, living hulls | at most 1.18 deg | 5 to 24 deg at most, 0.3 to 6.4 deg at the end (Kortenaer 23.3 -> 0.4, DeRuyter 16.6 -> 6.0) |
+| USN02, the 10 ships that die | at most 1.18 deg | 62 to 180 deg: every wreck rolls over as it sinks (John1 179.7, Asagumo 174.3, Tokitsukaze 161.7) |
+| JM06 | at most 8 deg (the submarines) | Fletcher-class 08 (the controlled unit, damaged) holds 10.4 deg; Gato-class 01 19.7; PlayerSub 03 22.7 |
+
+- The ten capsized hulls are exactly the ten death rows. No living hull passes 30 degrees.
+- Hit records rise sharply on USN02 (2271 -> 3963 without the roll torque, 4203 with it) while
+  damage falls. The likely cause is shells meeting the heeled and rolled-over hulls, but that is
+  not read.
+
+**Verdict: OFF.**
+- The input is right: the extent matches the fixture and the census.
+- But the flip wakes a second mechanism the prediction excluded: `009329C0`'s buoyancy torque, on
+  every hull, every step.
+- Before it can flip, a packet has to predict that torque's effect from the listing:
+  - the restoring moment of the element list and the angular damping 1.0, for a living hull's
+    rocking;
+  - the wreck's element state, for the capsize;
+  - how the hit records respond to a tilted hull.
+- The roll-torque question of 47.3 is secondary: pair B differs from pair A on USN02 only by the
+  26 hit torques (hit records 3963 -> 4203).
