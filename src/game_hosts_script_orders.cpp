@@ -87,6 +87,23 @@ struct ScriptOrderBinding {
 // spawn, 3000 steps skipped) and LOMP10 3000/9000 moved (PT 01 and 02 posed).
 // IJN01 is gameplay identical and BSM01 identical. No death row moved.
 inline constexpr bool kScriptedOrderNativesBound = true;
+// Packet cc9_scripted_order_natives part 2 (section 50). True binds these two
+// natives; false leaves each one an unimplemented record.
+//  * SetShipMaxSpeed 00890A10: arg0 through 00888AA0 (no kind check), arg1 a
+//    number, then 00890B51 FSTP [ESI+9C0h] (GameUnitsHost::set_unit_max_speed_09c0).
+//  * PilotLand 008A47B0: 0077D600(entity, land 00E08FA0, target from arg1, 1)
+//    at 008A4907. The planes' bots take it through 0099A3DD, with the site
+//    from the command target (GameUnitsHost::land_at_site_0099a3dd, after the
+//    delivery, as run_pilot_move_to_range does).
+// kScriptedOrderNatives2Bound gates SetShipMaxSpeed. ON (section 50.2): BSM01
+// moved as predicted (Whitney 494 -> 315 m, Tautog 187 -> 150 m, no death).
+// kPilotLandNativeBound stays OFF (section 50.2). IJN01's target
+// FindEntity("Airfield 02") answers nil in this host, which matches names
+// case-sensitively, while the image's 009251F0 matches case-insensitively
+// (the unit is "AirField 02"). So the IJN01 pair could not exercise the land
+// install. Re-pair once FindEntity is fixed.
+inline constexpr bool kScriptedOrderNatives2Bound = true;
+inline constexpr bool kPilotLandNativeBound = false;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
 constexpr bool kExplodeToPartsBound = true;
@@ -121,6 +138,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // kScriptedOrderNativesBound.
     {"UnitHoldFire", 0x008a6ac0u},
     {"NavigatorEnable", 0x008a7060u},
+    // Packet cc9_scripted_order_natives part 2: SetShipMaxSpeed is handled only
+    // with kScriptedOrderNatives2Bound, PilotLand only with kPilotLandNativeBound.
+    {"SetShipMaxSpeed", 0x00890a10u},
+    {"PilotLand", 0x008a47b0u},
     // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
     // out, with its two per-unit companions: 98, 18 and 18 calls on USN04, and
     // the eight script sites are the Lexington and the Town being told to circle
@@ -455,6 +476,8 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         std::strcmp(binding->name, "NavigatorEnable") == 0) {
         return kScriptedOrderNativesBound;
     }
+    if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) return kScriptedOrderNatives2Bound;
+    if (std::strcmp(binding->name, "PilotLand") == 0) return kPilotLandNativeBound;
     return true;
 }
 
@@ -1592,6 +1615,15 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
         if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 0x0f)) {
             log_.implemented("Plane::weapon_director_0047f180 (null, 0071BE80 returns)",
                              "0047f180");
+        } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
+                   && units_.gunnery() != nullptr) {
+            // Packet cc9_ship_fire_stance (routed from gunnery13): the ship's
+            // director predicates 0071D560 / 0071D580, stored by the gunnery host.
+            // NOT DONE, labelled: the director fire-target release when a stance
+            // forbids fire (00836210 at 0083622B, kWeaponDirectorFireTarget).
+            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+            log_.implemented("MissionLuaNative::UnitSetFireStance ship arm (0071BE80)",
+                             "0071be80");
         } else {
             log_.unimplemented("MissionLuaNative::UnitSetFireStance non-squadron arm",
                                "0071be80");
@@ -1640,11 +1672,57 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
         ++hold_fire_null_director_;
         log_.notef("  UnitHoldFire: plane %s: vtable[114h] 0047F180 is null; the image "
             "faults at 0071BED6 (recorded, nothing done)", row.unit.c_str());
+    } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
+               && units_.gunnery() != nullptr) {
+        // Packet cc9_ship_fire_stance (routed from gunnery13): 0071BED0 is
+        // 0071BE80 with stance 0 on the ship's director.
+        units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
+        log_.implemented("MissionLuaNative::UnitHoldFire ship arm (0071BED0)", "0071bed0");
     } else {
         log_.unimplemented("MissionLuaNative::UnitHoldFire director arm (0071DA50 5Ah)",
                            "0071bed0");
     }
     return 0;
+}
+
+// 008A47B0 `PilotLand(unit, site)`, packet cc9_scripted_order_natives part 2.
+// Argument 0 through 00888AA0, argument 1 through ReadCommandTarget, then
+// 0077D600(entity, land 00E08FA0, target, 1) at 008A4907. The receiving bots'
+// 0099A170 land arm 0099A3DD takes the site from the command target; the units
+// host installs at the delivery (the standing substitution of
+// docs/SENTITY_INIT_ATTACH_ORDER.md 22.7) and fans a squadron out itself.
+int GameScriptOrdersHost::run_pilot_land(GameScriptOrderRow& row) {
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
+    const std::size_t site_index = target.object != nullptr
+        ? index_of(target.object)
+        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                : ~static_cast<std::size_t>(0));
+    ++pilot_land_calls_;
+    if (unit == nullptr || row.unit_index >= units_.count()) {
+        log_.notef("  PilotLand: unit unresolved; nothing issued (008A47B0)");
+        return 0;
+    }
+    entity_issue_command(unit, bsp::kPilotOrderClassLand, target, 1);   // 008A4907
+    const std::size_t leader = row.unit_index;
+    const std::string name = row.unit;
+    after_order_delivery([this, leader, site_index, name]() {
+        if (site_index >= units_.count()) {
+            log_.notef("  PilotLand: %s: the target is no unit; no task", name.c_str());
+            return;
+        }
+        pilot_land_tasks_ += units_.land_at_site_0099a3dd(leader, site_index);
+    });
+    log_.notef("  PilotLand: %s -> %s (target object=%d id=%d position=%d; 008A47B0 -> "
+        "0077D600 00E08FA0 -> 0099A3DD)", name.c_str(),
+        site_index < units_.count() ? units_.unit_row(site_index)->name.c_str() : "(no unit)",
+        target.object != nullptr ? 1 : 0, static_cast<int>(target.object_id),
+        static_cast<int>(target.position_valid));
+    return 0;  // the binding pushes nothing
 }
 
 // 008A7060 `NavigatorEnable(unit, enable)`, packet cc9_scripted_order_natives.
@@ -2177,6 +2255,20 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_unit_hold_fire(row);
     } else if (std::strcmp(binding->name, "NavigatorEnable") == 0) {
         results = run_navigator_enable(row);
+    } else if (std::strcmp(binding->name, "SetShipMaxSpeed") == 0) {
+        // 00890A10: argument 0 through 00888AA0, argument 1 through 00B66270,
+        // then 00890B51 FSTP [ESI+9C0h]. No result is pushed.
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        const float value = static_cast<float>(argument_number(1));
+        const bool stored = entity != nullptr && index < units_.count()
+            && units_.set_unit_max_speed_09c0(index, value);
+        log_.notef("  SetShipMaxSpeed: %s unit+9C0h = %.4f stored=%d (00890A10 -> 00890B51)",
+            index < units_.count() ? name_of(entity).c_str() : "?",
+            static_cast<double>(value), stored ? 1 : 0);
+        results = 0;
+    } else if (std::strcmp(binding->name, "PilotLand") == 0) {
+        results = run_pilot_land(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
     } else if (std::strcmp(binding->name, "SetFireTarget") == 0) {

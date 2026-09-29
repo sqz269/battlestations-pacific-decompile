@@ -9313,8 +9313,13 @@ public:
         if (command != 0u) {
             owner_.record_slot("AutoTarget::command_slot_kind", "00e08f70+vtable0c");
         }
+        // Packet cc9_ship_fire_stance (routed from gunnery13): the gunnery
+        // host holds director+3Dh, and it answers the default unless
+        // kShipFireStanceBound lets a stance move it.
+        const bool allow_move = owner_.gunnery_draws != nullptr
+            ? owner_.gunnery_draws->director_allow_move_3d(index_) : defaults.allow_move;
         const bool enabled = bsp::auto_target_selection_enabled_009f5610(
-            defaults.allow_move, command != 0u, kind);
+            allow_move, command != 0u, kind);
         owner_.done("AutoTarget::selection_enabled", 0x009f5610u);
         return enabled;
     }
