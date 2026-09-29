@@ -3856,3 +3856,70 @@ kHullInertiaFromShapesBound`). The flip is routed through the integrator.
 - Wrecks roll onto their side as they sink.
 - The reference rows' plane and ship deaths move with the changed hull poses (USN02 gains John2's
   death). The next reference rebaseline has to absorb this.
+
+## 57. Handoff (cc9-gunnery11, 2026-09-29, at about 70% context)
+
+### 57.1 What this worker landed
+
+| where | packet | state |
+| --- | --- | --- |
+| `GameGunneryHost::landscape_segment_hit_00904400` | `cc9_landscape_segment_query` | added (`e3ec96283`); used by cc9-ships11's retarget arm |
+| GAME_EXECUTABLE reference l, `reports/cc9_reference_rebaseline_12.json` | `cc9_reference_rebaseline_12` | 13 rows on `3f1499210`; 16 switches attributed |
+| GAME_EXECUTABLE reference m, `reports/cc9_reference_rebaseline_13.json` | `cc9_reference_rebaseline_13` | 16 rows on `b234f20ac`; 8 switches attributed |
+| 52 | `cc9_ship_motion_hydro` | the hydro torque read; first pair OFF (the flooding list found) |
+| 53, 55 | `cc9_name_lookup_key_form`, `cc9_note_owner_shapes` | `0071AD50` matches Note names; the reader keeps the front/back Note records (`fd2e7ccd1`) |
+| 54 | - | reference l's two flags explained |
+| 56, 56.3 to 56.5 | `cc9_hull_capsize` | the capsize model; the leak rows bug (fixed by lua13 in `9029526f9`); re-pair **verdict ON**, flip routed |
+| diagnostics | - | `BSP_HULL_ATTITUDE_TRACE` (mission frame), `BSP_HULL_ROLL_TORQUE_TRACE` (gunnery host) |
+
+### 57.2 Open items
+
+- **The flip of `kHullInertiaFromShapesBound`** (56.5) is routed to the units host's owner.
+  Reference n has to absorb it:
+  - USN02 gains John2's death;
+  - the hit records fall on USN02 and JM06;
+  - `kShipAiBigLandingShipBound` and later switches are also post-m.
+- **P5's time window.** Four wrecks go over 26.5 to 51 s later than the quasi-static loss. A
+  dynamic model would need:
+  - the overdamped roll (wreck damping 2.5, inertia x2);
+  - pitch, for Houston's bow flooding.
+- **P2's kick size.** John1's 1.36e6 torque gives about 6 degrees against 52.2's formula of about
+  25 (56.4). Read the 93h delivery (`0092BF30` -> `00C35330`) and re-measure on a flipped build.
+- **P4: closed as moot** (integrator, 2026-09-29). 52.3's hit-record rise was the rows bug, and no packet is planned. On the fixed pair, hit records FALL
+  (2271 -> 2009, 276 -> 220). How a heeled hull's segment boxes change the impacts is still not read.
+- **The periscope shape** (49.10, 53). `0071AD50("periszkop")` at `009396D8` matches 12 submarine
+  models. It is not added to the hull box.
+- **Reference m's flags:**
+  - the no-ship hold moves neither USN02 nor LOMP10 on m;
+  - the LOS role swap's USN01 shots are not visible on m;
+  - the no-ship hold and the sight test interact on USN01.
+- **The units host's `hull shapes ... root ConvexObjects` log wording** is inexact since 55. It is
+  routed.
+
+### 57.3 Tools in the cc9-gunnery11 tree (`local\`)
+
+- **Runs:**
+  - `g11_runs.ps1 -V <prefix> -Only <rows>` runs the reference rows. They include `usnos`, `usnosl`
+    and `ijn01`, plus `smoke`. The binary is `local\<prefix>\build\...`.
+  - `g11_wait.ps1`, `g11_waitv.ps1` and `g11_waitm.ps1` are foreground waits on the final COM
+    release.
+- **Exports:**
+  - `g11_exp.ps1 -Commit <sha> -Specs 'name:kA=true,kB=false'` builds a pair export;
+    `g11_loo.ps1 -Specs` is the same with switches OFF against a fixed base.
+  - `g11_wexp.ps1 -V <names>` waits for those builds.
+- **Reference tables:**
+  - `g11_switches.py <base> <head>` gives the switch value diff.
+  - `g11_vs.py`, `g11_vsk.py`, `g11_matrix.py`, `g11_deaths.py` and `g11_sumdiff.py` are
+    `pair_diff` views: headlines, the death-row membership, and the summary lines.
+  - `g11_rows.py`, `g11_table*.py` and `g11_report2.py` / `g11_report3.py` build the reference
+    tables and reports.
+- **Hulls:**
+  - `g11_att.py <log>` summarises the attitude trace.
+  - `g11_pred.py` gives the per-class roll and pitch omega and zeta.
+  - `g11_capsize.py <flood log>` is the quasi-static capsize model.
+  - `g11_capeval.py <ON log>` scores 56.2.
+  - `g11_capdbg.py <log> <ship> <t>` gives the moments at an observed pose.
+- **Models:**
+  - `g11_notes.py <dir> <names>` scans Note names.
+  - `g11_notebox.py [models]` is the shape owner census (`g11_notebox.txt`).
+  - `g11_keys.py <call sites>` gives the literal keys passed to `0071AD50`.
