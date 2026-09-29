@@ -391,3 +391,49 @@ applied turns and 320 refusals, so most camera pairs fall outside the mounts' ar
 A move that is not the group unit's own artillery (another unit's targeting, plane paths) would be
 a mechanism failure, apart from RNG coupling through changed shot counts
 (`shared-rng-stream` noise, which `BSP_GUNNERY_RNG_STREAMS=1` limits to the gunnery streams).
+
+### 7.4 The pair and the verdict
+
+**Setup.** Same-tree pair at `729e87697`:
+- `local\a3off` (SHA-256 prefix `ACEF03391F5E`) against `local\a3on`
+  (`--flip kPlayerGunSeatArtilleryBound=true`, prefix `B55B9E7C8543`);
+- `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, reference p's launch lines;
+- logs `local\a3{off,on}_<row>.log`.
+
+| row | exit | artillery guns / turns / refusals / hits | what moved |
+| --- | ---: | --- | --- |
+| USN04 | 1 | 0 / 0 / 0 / 0 | nothing |
+| USN01 | 1 | 8609 / 4306 / 4226 / 0 | nothing |
+| JM06 | **3** | 29985 / 14990 / 8979 / 2810 | Fletcher-class 08 (the group unit): shots 22 -> 19, dealt 419 -> 520. Row hit records 197 -> 201, damage 4112.8 -> 4239.2. Death rows identical |
+| JM08 | 1 | 29975 / 14985 / 11988 / 0 | nothing |
+| USN13 | 1 | 800 / 400 / 320 / 0 | nothing |
+| JM05 | 1 | 21268 / 10632 / 10632 / 0 | nothing (every turn refused) |
+| USN12 | 1 | 51950 / 25970 / 25326 / 8200 | nothing |
+| USNOS | 1 | 55197 / 27592 / 27592 / 0 | nothing (every turn refused) |
+| USNOS long | **3** | 211197 / 105592 / 84892 / 58136 | NH (the group unit): dealt 6035 -> 5363. Portland2 takes 3915 -> 3258 (consistent with GUNNERY_OPEN_ITEMS 63's friendly fire, not traced), TroopTrans1 deals 137 -> 185. Row damage 10635.1 -> 9964.0. One death row changes its per-category hits (unit #2.9); same victims |
+| IJN01 | 1 | 800 / 400 / 320 / 0 | nothing |
+
+**Prediction check:**
+- **Mechanism held.**
+  - The census is unchanged.
+  - The counters are non-zero exactly where group-3 messages are, and zero on USN04.
+  - Refusals are the large share.
+  - Every gameplay move begins at the group unit's own artillery; the other units' changes follow
+    from its fire.
+  - USN04, USN13 and IJN01 are identical.
+  - `unsolved` is 0 everywhere, so every pair is a solved arc.
+- **Spread missed.**
+  - Only JM06 and USNOS long of the seven all-mission rows move.
+  - On JM06 the group unit's damage rises (419 -> 520) while its shot count falls.
+  - Accepted turns do not change fire where the unit's bots had no target, or where the next bot
+    solution was already inside the refused set.
+- **Two ratios.**
+  - `turns` is half of `guns`: the gun tick consumes one pending pair per gun per tick, and the HUD
+    routes the message twice per tick (one message per entry unit, or two HUD updates per gun
+    tick). Only the last pair per tick counts, as in the image, where the drain's last 0085ABA0
+    stands.
+  - Not resolved here: which of those two causes applies.
+
+**Verdict: mechanism matches, spread missed; flipped ON** (`kPlayerGunSeatArtilleryBound = true`).
+Ranking #7 is closed for group 3. Groups 4 and 5 (0095A1CC, 0095A441) carry no message on any
+reference row, and stay records.

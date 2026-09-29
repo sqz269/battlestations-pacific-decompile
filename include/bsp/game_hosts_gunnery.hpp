@@ -253,8 +253,8 @@ inline constexpr bool kPlayerGunSeatBound = true;
 // of 00959C20 (00959F72..0095A1C7): the aim point 00957740, the gravity arc
 // 00955630 and the 0085ABA0 turn of every Function 2/3/4/6 gun, AI-held
 // included; the trigger only on a player-held gun. docs/PLAYER_GUN_SEAT.md
-// section 7. Committed OFF until its pair runs.
-inline constexpr bool kPlayerGunSeatArtilleryBound = false;
+// section 7. ON by the pair in section 7.4.
+inline constexpr bool kPlayerGunSeatArtilleryBound = true;
 
 // Packet cc9_player_gun_seat_segment_query. ON binds 00957D79..00957DD2 of
 // 00957BD0: with no target and the camera off the x = z = 0 axis, the
