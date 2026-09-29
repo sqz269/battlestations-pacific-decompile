@@ -114,6 +114,19 @@ inline constexpr bool kForeignTorpedoThreatHeadBound = true;
 // ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 24).
 inline constexpr bool kAutoTargetCommandAcceptBound = true;
 
+// Packet cc9_big_landing_ship (docs/SHIP_AI_OPEN_ITEMS.md section 37). 00827F70
+// (a class method): TorpedoBoat 0Eh is small; LandingShip 0Ch is small only
+// when the byte at class+808h, BigLandingShip, is 0 (00827F95). The byte is
+// VehicleClass[type].BigLandingShip, which the LandingShip leaf reads with
+// exact-Boolean-or-false at 0074C630 and which also picks the leaf's tuning
+// pair ("BigLandingShip true": scalar source 20h). True: the four callers
+// this lane owns read it - the neighbour admission 009F0D82, the approach mode
+// latch 009F1F76, the AI bullet accuracy group 009FE2D4.. and the capture
+// weight 00A0360B. False: every landing ship is small, as before.
+// ON by the pairs of 2026-09-29 (section 37): gameplay identical on JM08, IJN01
+// and JM06; the admission reads it 1550 / 4588 times, the AI sites 0 / 200.
+inline constexpr bool kShipAiBigLandingShipBound = true;
+
 class GameHostLog;
 class GameUnitsHost;
 class GameSceneContentsHost;
@@ -703,6 +716,11 @@ public:
     // 00825F2C..00825F7C, the motion head's own promotion of the slot the
     // controller published. Returns true when a valid order was promoted.
     bool promote_order_00825f2c(std::size_t unit_index);
+
+    // Packet cc9_big_landing_ship: class+808h for the unit's class, from its
+    // VehicleClass row at load (the depth reader's tuning-pair choice). False
+    // for a unit that is not a loaded LandingShip. Read-only.
+    bool unit_big_landing_ship_0808(std::size_t unit_index) const;
 
     // --ai-drive <name>=<throttle>,<rudder>, milestone 2o. A LABELLED
     // DIAGNOSTIC STAND-IN, not a reconstruction: eight of the nine state steps

@@ -10,6 +10,7 @@
 // docs/SHIP_AI_STATES.md, docs/UNIT_AUTOPILOT_PAIR.md, docs/BOT_FIRE_TARGET.md
 // and the milestone 2n section of docs/GAME_EXECUTABLE.md.
 
+#include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
@@ -711,6 +712,11 @@ struct GameShipAiHost::Impl {
     GameGunneryHost* gunnery_draws{nullptr};
     unsigned long long traffic_trace_lines{0};
     std::vector<GameGunneryHost::LiveTorpedo> live_torpedo_cache;
+    // Packet cc9_big_landing_ship: class+808h per unit, set at load.
+    std::vector<bool> big_landing_ship;
+    bool big_landing_ship_of(std::size_t index) const {
+        return index < big_landing_ship.size() && big_landing_ship[index];
+    }
     unsigned long long live_torpedo_cache_step{~0ull};
 
     // Packet cc9_target_release: whether a unit's damage death has happened.
@@ -4928,7 +4934,8 @@ public:
         in.unit_is_kind_0c = owner_.units.unit_is_kind_of(index_, 0x0c);
         in.unit_side_0054 = owner_.units.unit_side_0054(index_);
         in.class_small_surface_00827f70 = owner_.units.unit_is_kind_of(index_, 0x0e) ||
-            owner_.units.unit_is_kind_of(index_, 0x0c);
+            (owner_.units.unit_is_kind_of(index_, 0x0c) &&
+             !(kShipAiBigLandingShipBound && owner_.big_landing_ship_of(index_)));
         in.class_lands_troops_vtable_2c = owner_.units.unit_class_lands_troops_vtable_2c(index_);
         if (kApproachTurnRadiusBound) {
             in.turn_radius_00811a30 =
@@ -7734,9 +7741,12 @@ public:
         owner_.done("ShipAiNeighbour::class_is_kind_vtable18", 0x00827f70u);
         return owner_.units.unit_is_kind_of(fields_.index_of(actual_class), query);
     }
-    std::uint8_t big_landing_ship_808(const void*) override {
-        // class+808h, BigLandingShip. This host does not hold the byte (the same
-        // boundary game_hosts_ai.cpp labels for 00827F70); read as 0.
+    std::uint8_t big_landing_ship_808(const void* actual_class) override {
+        // class+808h, BigLandingShip (00827F95). OFF: read as 0.
+        if (kShipAiBigLandingShipBound) {
+            owner_.done("ShipAiNeighbour::big_landing_ship_808", 0x00827f95u);
+            return owner_.big_landing_ship_of(fields_.index_of(actual_class)) ? 1 : 0;
+        }
         owner_.record("ShipAiNeighbour::big_landing_ship_808", 0x00827f95u);
         return 0;
     }
@@ -9886,6 +9896,24 @@ bool register_ship_ai_unit(GameShipAiHost::Impl& host, std::size_t index,
             throw std::runtime_error("Ship depth load for " + row->name + ": " + error);
         ctl.class_reference_0570 = depth.class_reference_0570;
         ctl.class_depth_loaded = true;
+        // Packet cc9_big_landing_ship: the LandingShip leaf's "BigLandingShip
+        // true" pair is the one whose scalar source this read selected.
+        if (kind == 0x0c) {
+            for (std::size_t k = 0; k < bsp::ship_leaf_tuning_source_count(); ++k) {
+                const bsp::ShipLeafTuningSource& src = bsp::kShipLeafTuningSources[k];
+                if (src.leaf == bsp::ShipLeafClass::LandingShip &&
+                    std::strcmp(src.variant, "BigLandingShip true") == 0 &&
+                    src.scalar_source == depth.scalar_source) {
+                    if (host.big_landing_ship.size() <= index) {
+                        host.big_landing_ship.resize(index + 1, false);
+                    }
+                    host.big_landing_ship[index] = true;
+                    host.log.notef("unit big landing ship unit=%s type_id=%d (class+808h, "
+                        "packet cc9_big_landing_ship, bound=%d)", host.rows[index].unit.c_str(),
+                        row->type_id, kShipAiBigLandingShipBound ? 1 : 0);
+                }
+            }
+        }
         if (kShipAvoidZoneEscapeBound) {
             GameShipNavigationInput navigation{};
             if (!lua.read_ship_navigation_input(row->type_id, session_mode, navigation, error))
@@ -10157,6 +10185,10 @@ void GameShipAiHost::controller_step(float seconds) {
         ++host.summary.controller_updates;
         row.controller_update_session_gate = trace.session_gate_passed;
     }
+}
+
+bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
+    return impl_->big_landing_ship_of(unit_index);
 }
 
 bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {
