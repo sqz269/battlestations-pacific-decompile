@@ -1168,6 +1168,69 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
 }
 
 // ---------------------------------------------------------------------------
+// Packet cc9_approach_mode_latch (docs/SHIP_AI_OPEN_ITEMS.md section 26)
+// ---------------------------------------------------------------------------
+
+ShipAiApproachLatchResult ship_ai_approach_mode_latch_009f1f47(
+    const ShipAiApproachState& state, const ShipAiApproachLatchInputs& in) noexcept {
+    ShipAiApproachLatchResult out;
+    out.turn_radius_11f0 = state.turn_radius_11f0;
+    if (in.target_is_ship_06) {
+        if (!in.unit_is_kind_08 && in.target_is_kind_08 && !in.point_displaced &&
+            !in.class_small_surface_00827f70) {
+            // 009F1F84: the scale depends on the mode latched last frame.
+            const float scale = state.mode_1234 == ShipAiApproachMode::hold_1
+                ? kApproachSubHoldScaleHeld : kApproachSubHoldScaleEnter;
+            // 009F1FC8 FMUL dword, 009F1FCC FLD qword (the range spilled at
+            // 009F1FAD), FCOMIP, JBE: unordered falls to mode 0.
+            const double product = static_cast<double>(in.turn_radius_00811a30) *
+                static_cast<double>(scale);
+            if (product > static_cast<double>(state.goal_range_11e0)) {
+                out.mode = ShipAiApproachMode::hold_1;
+                // 00415510(ECX = &11F0h, EDX = &11E0h): FLD a, FLD b, FCOMI,
+                // JBE -> b; a only when b > a.
+                const float a = state.turn_radius_11f0;
+                const float b = state.goal_range_11e0;
+                out.turn_radius_11f0 = (b > a) ? a : b;
+                return out;
+            }
+        }
+        out.mode = ShipAiApproachMode::free_0;  // 009F1FF4
+        return out;
+    }
+    out.retarget_arm_reachable = true;
+    if (!in.target_is_building_1c) {
+        out.mode = ShipAiApproachMode::free_0;  // 009F211A
+        return out;
+    }
+    if (in.unit_side_0054 == in.target_side_0054) {
+        out.mode = ShipAiApproachMode::unassigned_2;  // 009F2022, EDI = 2
+        return out;
+    }
+    if (in.class_lands_troops_vtable_2c) {
+        // 009F2053..009F2079: 2 * turn radius stored as a float, then
+        // 00415550(ECX = &300.0f, EDX = &that), the larger (a when a > b).
+        const float twice = static_cast<float>(
+            static_cast<double>(in.turn_radius_00811a30) * 2.0);
+        const float reach = (kApproachLandingReachFloor > twice)
+            ? kApproachLandingReachFloor : twice;
+        // 009F20A4 FILD [target+7C4h], FADD reach, FCOMIP against +11E0h, JB.
+        const double limit = static_cast<double>(in.target_radius_07c4) +
+            static_cast<double>(reach);
+        const bool inside = in.unit_is_kind_0c && in.target_free_landing_spot_006f2d90 &&
+            limit >= static_cast<double>(state.goal_range_11e0);
+        out.mode = inside ? ShipAiApproachMode::inside_3 : ShipAiApproachMode::standoff_4;
+        // 009F20CA XORPS, COMISS 0.0 against +121Ch, JBE skips.
+        out.retarget_reset = 0.0f > state.timer_121c;
+        return out;
+    }
+    // 009F20F7..009F2118: the same side again, or the target's side 2.
+    out.mode = (in.unit_side_0054 == in.target_side_0054 || in.target_side_0054 == 2)
+        ? ShipAiApproachMode::unassigned_2 : ShipAiApproachMode::free_0;
+    return out;
+}
+
+// ---------------------------------------------------------------------------
 // Packet cc9_torpedo_standoff (docs/SENTITY_INIT_PASSES.md section 9)
 // ---------------------------------------------------------------------------
 

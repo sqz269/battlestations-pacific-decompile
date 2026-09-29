@@ -2214,3 +2214,93 @@ ON is `pair_export --commit 4e4a7f989 --flip kAiCommandAvoidZonePointBound=true`
   points (00A124E0, 00A12A90, 00A15490's leader arms); a planner that targets an enemy base would
   explain it. The LOMP10 row moves 48 points and no gameplay line; its ordered ship was not
   followed further.
+
+## 26. Rank 6: the approach frame state's mode latch (packet `cc9_approach_mode_latch`, `kShipAiApproachModeLatchBound`)
+
+Worker cc9-ships10, 2026-09-28. Rank 6 of section 16 is `009F1BC0`'s unread spans. This section
+takes the first of them, `009F1DBF-009F1E16` and the latch `009F1F47-009F2124`, read whole.
+
+**The image.**
+- `009F1DBF-009F1E12` split the raw target `brain+0B20h`. ESI is the target when it answers
+  `vtable[5Ch](6)` (a ship), else 0. EBX is the target when it answers `vtable[5Ch](1Ch)` (a command
+  building), else 0.
+- `009F1E25 MOV EDI,2`, then `009F1E30 JE 009F2003` takes the no-ship path. EDI is not written again
+  before `009F2022` and `009F2112`, so **both store mode 2**. docs/SHIP_AI_APPROACH_UPDATE.md's
+  latch table gives 1 at those two addresses and says 2 is never assigned; both are wrong.
+- A ship target: mode 1 when the unit is not kind 8, the target is kind 8, the point was not
+  displaced, `00827F70(brain+0AACh)` is false and `00811A30(unit, 1.0)` times 2.1 (`00D0B3C8`,
+  when the mode already is 1) or 1.9 (`00D21A94`) exceeds `nested+11E0h`. Mode 1 also sets
+  `nested+11F0h = 00415510(&11F0h, &11E0h)`, the smaller. Otherwise mode 0. **Both jump to
+  `009F272D`, past the retarget arm.**
+- No ship target: no building gives mode 0. A building on the unit's side gives mode 2. A troop
+  lander (`[brain+0AACh]->vtable[2Ch]`) gets mode 3 when it is kind `0Ch`, `006F2D90(target)`
+  holds and `(double)[target+7C4h] + max(300.0, 2 * turn radius) >= nested+11E0h`, else mode 4,
+  and resets `nested+11D6h`, `+11D8h` and `+121Ch` when `+121Ch` is negative. Any other building
+  gives mode 2 when its side is 2, else 0. Then `009F2124` runs the retarget arm when
+  `nested+11D6h` is clear.
+- `006F2D90`, read: it walks the building's list at `+794h` / `+798h` and answers true when one
+  element's `006AC220` returns 0. Name hypothesis: "has a free landing spot".
+
+**The binding.** `ship_ai_approach_mode_latch_009f1f47` (`src/ship_ai_approach_update.cpp`) is
+computed on every frame-state pass and counted on both sides; ON stores the mode, the clamp and
+the reset. LABELLED inputs: the point is never displaced (no target zone object), `00827F70`
+asks the unit's own kinds `0Eh` / `0Ch` and reads BigLandingShip as 0, `006F2D90` answers false
+and `[target+7C4h]` 0, so a lander is always in mode 4. Coverage: complete for
+`009F1DBF-009F1E16` and `009F1F47-009F2124`.
+
+**OFF** (`local\ships10_b0_<row>.log`, the tree build of `5a5cfd3b4`; main `9dcf7f537` plus this
+branch's rank 4 flip). `summary mission ship ai approach latch`:
+
+| row | frames | no target | ship | building | other | modes 0/1/2/3/4 | retarget arm reachable |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN02 | 27786 | 5 | 27781 | 0 | 0 | 27786/0/0/0/0 | 5 |
+| USN01 | 1748 | 0 | 5 | 1631 | 112 | 1748/0/0/0/0 | 1743 |
+| LOMP10 | 619 | 0 | 18 | 601 | 0 | 619/0/0/0/0 | 601 |
+| JM05 | 13 | 0 | 13 | 0 | 0 | 13/0/0/0/0 | 0 |
+
+USN13, USN04, JM08, JM06, USN12 and LOMP06 run no frame state. No row has a submarine target,
+a building of its own side or a troop lander on a building.
+
+### Predictions, written before any ON run
+
+1. **The latch is identical ON.** Every frame computes mode 0, which is what the field already
+   holds. The four rows above are identical apart from the record counts (`pair_diff` 0 or 1).
+2. **What the rows do reach is the retarget arm**, not the latch: USN01's 1631 and LOMP10's 601
+   frames against an enemy building fall to `009F2124` in mode 0. That arm is the next read.
+
+### The pairs and the verdict: ON
+
+ON is `pair_export --commit 5a5cfd3b4 --flip kShipAiApproachModeLatchBound=true`, SHA-256 prefix
+`B730F06BED3D` (`local\ships10_b1_<row>.log`).
+
+| row | pair_diff | modes ON |
+| --- | --- | --- |
+| USN02 | 1 | 27786/0/0/0/0 |
+| USN01 | 1 | 1748/0/0/0/0 |
+| LOMP10 | 1 | 619/0/0/0/0 |
+| JM05 | 1 | 13/0/0/0/0 |
+
+- **Prediction 1 held.** All four rows are gameplay-identical.
+- **Verdict: ON**, with the reach recorded: no reference row exercises modes 1 to 4, so the pairs
+  test only that mode 0 is the latch's answer on these rows. A submarine hunt (mode 1) or a troop
+  landing on a building (modes 3 and 4) needs its own row before its readers can be judged.
+
+### What rank 6 still holds: the retarget arm `009F2124-009F272D`
+
+It is what USN01 (1631 frames) and LOMP10 (601) reach: an attackmove against an enemy command
+building, mode 0. Today the host copies the goal (the building) into the approach point on every
+frame, so the ship steers at the building itself. The image does something else:
+- `009F2124`: only when `nested+11D6h` is clear, which `009F1DAA` does every 2 to 3 s. It sets the
+  byte and raises `nested+11D8h` to at least 1.0 (`00D7A24C`).
+- Mode 3 (`009F21A0..009F2338`): `006F2DE0` / `006F2E60` on the building, `006AC5D0` for the
+  point, and when in range `0x749D90` and `0077C2A0` issue a command (the landing). Not reached.
+- Mode 4 (`009F2342..009F2395`): the point is `006F3AF0(building)(&out, unit+FCh, [class+570h])`.
+  Not reached.
+- Modes 0 and 2 (`009F239A..009F272D`): the point is the goal (`009F23B5`); then, when the goal
+  lies in a zone of the unit's `0082ADC0` group (`004178F0`, `009F23E8`), a 60-slot loop over the
+  ring directions at `nested+18h` (stride `4Ch`) casts from a point near the target
+  (`009E6120`, `008FE120`) through `00416DD0` against that zone and through `00904400(44h)`, the
+  Landscape segment query the gunnery host runs for line of sight, and keeps the last slot whose
+  clearances pass (`00414C60` twice) as the approach point (`009F26F0`). This is x87-dense and
+  needs `009E6120` and `008FE120` read first; it also needs a public Landscape segment query on
+  the gunnery host (a line outside this lane).

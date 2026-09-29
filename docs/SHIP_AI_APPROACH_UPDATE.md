@@ -127,14 +127,14 @@ The mode latch at `nested+1234h`, `009F1F7F..009F2124`:
 | value | set at | condition |
 | --- | --- | --- |
 | 1 | `009F1FE2` | the kind-8 arm: the unit does **not** answer `vtable[5Ch](8)` (`009F1F47`), the target does (`009F1F5B`), the displaced-point flag is clear (`009F1F65`), `00827F70(shipclass)` says no (`009F1F76`), and `00811A30(unit, 1.0) * (2.1 in mode 1, else 1.9) > nested+11E0h` (`009F1FD2`, `FCOMIP` then `JBE` to mode 0). It also sets `nested+11F0h = min(nested+11F0h, nested+11E0h)` at `009F1FE8`. |
-| 1 | `009F2022` | `[unit+54h] == [target+54h]`, the same side. |
-| 1 | `009F2112` | the same-side test again on the `009F20F7` arm. |
+| 2 | `009F2022` | `[unit+54h] == [target+54h]`, the same side. EDI is 2 from `009F1E25` on this path (docs/SHIP_AI_OPEN_ITEMS.md section 26). |
+| 2 | `009F2112` | the same-side test again on the `009F20F7` arm, or `[target+54h] == 2` (`009F210E CMP ECX,EDI`). |
 | 3 | `009F20B4` | the unit answers `vtable[5Ch](0Ch)` (`009F208D`), `006F2D90(target)` passes, and `(int)[target+7C4h] + max(300.0f, 2 * 00811A30(unit, 1.0)) >= nested+11E0h` (`009F20AE`, `FCOMIP` then `JC` to mode 4), so the unit is already inside. |
 | 4 | `009F20C0` | otherwise, on the engageable arm. |
 | 0 | `009F1FF4`, `009F211A` | every other path. |
 
 Value 2 is compared by `009E6E80` (`009E7002`), `009E6A90` (`009E6C9F`) and `009F1BC0` itself
-(`009F24FC`, `009F282D`) but is **never assigned** in any range this packet read.
+(`009F24FC`, `009F282D`). It is assigned at `009F2022` and `009F2112`, which this packet misread as 1 (corrected by docs/SHIP_AI_OPEN_ITEMS.md section 26).
 
 ## `009E7FC0`, the per-frame score reset
 
