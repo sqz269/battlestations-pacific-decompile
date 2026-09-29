@@ -4192,7 +4192,7 @@ struct GameUnitsHost::Impl {
     // mode-4 arm and its begin arm, 009AFAF0's geometry (both arms) and the
     // approach update's onGround arm. final and abort stay refused. Needs
     // kLandLineStateBound. False: every entry to land/begin is refused.
-    static constexpr bool kLandBeginStateBound = false;
+    static constexpr bool kLandBeginStateBound = true;  // ON: joint pair with the direction hold (docs/SQUADRON_LAND_TASK.md 5o)
     // Packet cc9_land_begin_state: 006C3F80's k=0 mode-4 arm (006C42E9-006C4405)
     // over the airfield's launch site at block+3Ch. False: the arm is refused and
     // +8h keeps its value. docs/SQUADRON_LAND_TASK.md section 5i.
@@ -4200,7 +4200,7 @@ struct GameUnitsHost::Impl {
     // land/final's enter (009B1E60), its airborne tick (009B1ED0 to 009B1FE5)
     // and the rule's begin -> final and final arms. The on-ground half, park
     // and abort stay refused. Needs kLandBeginStateBound. False: final refused.
-    static constexpr bool kLandFinalStateBound = false;
+    static constexpr bool kLandFinalStateBound = true;  // ON: 5o
     // Packet cc9_landing_descent_2 (docs/SQUADRON_LAND_TASK.md section 5o): the
     // timed direction hold dyn+B4h/+C0h. The land steer's arm 009B1B1C-009B1C79
     // and land/abort's clear 009B0A3B through 007C07A0; the core law's commit
@@ -4208,7 +4208,7 @@ struct GameUnitsHost::Impl {
     // 007D88CB-007D8C5E in 007D8470; the decay 007D902F; and the 0.6 x seconds
     // term 007D9AFC in the control authority. The launch arm 007C705C (0.8 s at
     // BeginFlying) is NOT bound. False: the arms are counted and the field stays 0.
-    static constexpr bool kPlaneDirectionHoldBound = false;
+    static constexpr bool kPlaneDirectionHoldBound = true;  // ON: 5o
     // Packet cc9_plane_touchdown (docs/SQUADRON_LAND_TASK.md section 5k): the
     // free-flight arm's site probe 007C5AC0 (006C0840 with its key, 007B8E80,
     // 006BC530 into plane+BF8h/+BFCh), the touchdown test 007CC440-007CC4CA and
@@ -4220,7 +4220,7 @@ struct GameUnitsHost::Impl {
     // land/abort's enter/exit/tick (009B0980/009B09A0/009B09C0, the airborne
     // arm), the rule's abort arm (+66Ch -> standby) and the begin/final -> abort
     // edges. Reached only with kLandBeginStateBound. False: entries refused.
-    static constexpr bool kLandAbortStateBound = false;
+    static constexpr bool kLandAbortStateBound = true;  // ON: 5o
     // Packet cc9_squadron_ordnance_state: squadron_ammo_type_007edad0 answers
     // 007EDAD0 from the planes' racks (the kind each carries, rounds left), and
     // a census logs every change. False: it answers the leader-class stand-in

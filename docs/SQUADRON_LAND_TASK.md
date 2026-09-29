@@ -1904,22 +1904,78 @@ the same three switches without the hold).
   still flips ON (it is inert without begin), and begin, final and abort stay OFF with the reason
   recorded.
 
+### The joint pair and the verdict (cc9-lua13, 2026-09-29): all four flip ON
+
+OFF is `546fe663d` as committed (`local\l13_off_<row>.log`). ON is the same commit exported with the
+four switches true (`local\l13_jon`, `bsp_game.exe` SHA-256 prefix `4E458B89288D`,
+`local\l13_jon_<row>.log`). Both ran with the reference options on the console session, after a
+300-frame USN01 smoke of the committed tree (`local\l13_smoke_usn01.log`).
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0); the same eight IJN ships gain an engagement range as in 5j, 5l and 5m; B-25 01 6207.20 -> 7026.66 m (landed at 251 s) |
+| USN01 3200/3000 | 1, gameplay identical | only the ship avoidance refill counter moves (known noise) |
+
+**Touchdowns** (`plane touchdown:` lines; the local frame is the site's):
+
+| head | first contact | touchdown | height / wheel | vy | local x, z |
+| --- | --- | --- | --- | --- | --- |
+| Warhawk 01 | 151.20 s, z -199.77, y 7.66 | 153.15 s | -0.164 / 0.00 | -4.06 | 0.9, -141.5 |
+| Lightning 01 | 163.16 s, z -199.80, y 7.41 | 165.06 s | -0.084 / 0.00 | -3.99 | 0.7, -142.7 |
+| B-25 01 | 250.01 s, z -198.54, y 6.70 | 251.16 s | 1.496 / 1.52 | -4.52 | 1.0, -159.1 |
+
+Warhawk 01's traces show the mechanism. The hold seconds climb from 0.29 at A8 183.7 to 0.80 at A8
+53.4. From the first mode-1 sample (Y 14.7 at Z 84.7) the flare hold is still +0.1047, but the
+body velocity turns nose-high relative to the path: aoa 0.14 to 0.23, q 0.86 to 0.95. Y falls
+14.7 -> 9.8 -> 5.8 -> 1.8 m, and the plane touches down 0.6 s after crossing T (Z -4.4 at 152.60 s). There is no climb
+back and no porpoise.
+
+**The predictions, one by one.**
+1. **The hold is reached: held for the three heads that landed, missed for the two that aborted.**
+   - Warhawk 01, Lightning 01 and B-25 01 show 88 / 87 / 74 arms, 172 / 170 / 144 blend steps,
+     and `max_seconds` 0.800.
+   - Lightning 01|.-4 and B-25 01|.-2 entered begin and final but aborted at A8 676.7 and 436.9
+     m, outside the 260 m arm range. Their 63 and 57 `arms` are land/abort's clears
+     (`009B0A3B`, 0.0 s), so `blend_steps = 0` is correct.
+   - Each aborted at the moment its leader touched down (Lightning 01|.-4's first abort trace is
+     165.41 s against Lightning 01's touchdown at 165.06 s) and went back to standby
+     (`to_standby=1`). The landed plane stays on the runway because the ground roll does not run.
+   - The line-only wingmen show 0: held.
+2. **The heads descend: held.** Nothing porpoises, and nothing dives back from above
+   1.4 x Length after the first mode-1 sample.
+3. **They touch down: held,** inside the rectangle with vy -4.0 to -4.5, no vy refusals, and one
+   low step each. Spread miss: the fighters touched down at local z -141.5 and -142.7, 8 m past
+   the predicted -150 to -210.
+4. **After the touchdown.**
+   - State 4 and held still: held.
+   - `ground_refused > 0` on a landed head: **missed**. The land task stops ticking at the
+     touchdown: Warhawk 01 has 1494 task ticks, against 4463 for its wingmen, and
+     `ground_refused=0`. So final's on-ground half is never reached in this host. Why the pilot
+     pass skips a state-4 plane has not been read.
+   - No abort from a landed plane: held.
+5. **Deaths identical, LOMP10 moves, USN01 gameplay identical: held.**
+
+No mechanism failure: every blend step is on a mode-7 plane (the commit), no steer arm is
+without a blend, no final head porpoises with `hold > 0`, and every touchdown is inside the
+rectangle.
+
+**Verdict.** The flip rule is met: three heads touch down, and no head in final flies on past T.
+`kPlaneDirectionHoldBound`, `kLandBeginStateBound`, `kLandFinalStateBound` and
+`kLandAbortStateBound` flip ON together. The misses are recorded above and none of them is in the
+mechanism.
+
 ## 6. Open, in order
 
-1. **The descent to the wheel height.** Standby, line, the launch-site arm and the touchdown are ON
-   (5e, 5g, 5i, 5k). Begin (5h) and the airborne half of final (5j) are bound and match the
-   listing. They stay OFF because the heads float 3.9 to 12 m over the runway, where the image
-   needs the wheel height: 0.0 for the P-40 and P-38 of this installation, 1.52 for the B-25
-   (5l).
-   - The blocker is the airframe response to the ApproachPitch hold (+0.1047 rad at about
-     32 m/s), which climbs in this host.
-   - After it come:
-     - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still);
-     - final's on-ground half (`009B1FEA`-`009B207A`);
-     - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
-     - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
-     - `land/abort` is bound OFF and its mechanism holds (5m); it flips with begin and final.
-   - A mother-ship holder, refreshed from the moving ship, is still refused.
+1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
+   touchdown and the direction hold are ON (5e, 5g, 5i, 5k, 5o). The heads now land (5o). Open:
+   - the pilot pass for a state-4 plane: the land task stops ticking at the touchdown, so
+     final's on-ground half (`009B1FEA`-`009B207A`) and park are never reached;
+   - the ground-roll arm `007CBFA0` for state 4 (the host holds a landed plane still, so it
+     blocks the runway and its followers abort to standby);
+   - `land/park` (vtable `00D1FF60`: enter `009B21A0`, exit `009B21C0`, tick `009B22C0`);
+   - the gear channel `(+DECh)+28h` with `+C1Ch` (5k);
+   - the direction hold's launch arm `007C705C` (0.8 s at BeginFlying), not bound;
+   - a mother-ship holder, refreshed from the moving ship, is still refused.
 2. **B-25 01's approach bit.** `block+20h` bit 1 for a class 10h/16h head (`0047B850`). Until it is
    read, the B-25 squadron is refused and keeps bombing.
 3. **The follow law on a circling leader** (the Lightning members above). This belongs to the
