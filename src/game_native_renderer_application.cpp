@@ -355,6 +355,13 @@ struct GameNativeRendererApplication::Impl {
         if(observed_worker) CloseHandle(observed_worker);
         const auto device_refs=retained_device ? retained_device->Release() : 0;
         const auto api_refs=retained_api ? retained_api->Release() : 0;
+        // Packet cc9_d3d_device_lost.
+        const auto& lost=native_renderer_lost_device_stats();
+        log.notef("summary native renderer lost device: lost_polls=%u holds=%u recreations=%u "
+            "create_failures=%u resets=%u reset_failures=%u faked_polls=%u hold_bound=%d "
+            "(00B2ABD0/00B29670, packet cc9_d3d_device_lost)",lost.lost_polls,lost.lost_holds,
+            lost.recreations,lost.create_failures,lost.resets,lost.reset_failures,lost.faked_polls,
+            kRendererLostDeviceHoldBound?1:0);
         log.notef("native renderer final COM release: device=%lu api=%lu",device_refs,api_refs);
     }
 };

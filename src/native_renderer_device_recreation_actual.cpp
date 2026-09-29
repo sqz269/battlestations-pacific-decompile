@@ -12,6 +12,7 @@
 #include "bsp/native_renderer_cached_states.hpp"
 #include "bsp/native_renderer_gamma.hpp"
 #include "bsp/native_renderer_reset_readiness.hpp"
+#include "bsp/native_renderer_reset_process.hpp"
 #include "bsp/native_texture_2d_retained_recreation.hpp"
 #include "bsp/native_cube_volume_retained_recreation.hpp"
 #include "bsp/native_xlive_device_adapter.hpp"
@@ -275,8 +276,14 @@ void recreate_native_renderer_device_00b29670(void* renderer,
     auto create_device = reinterpret_cast<CreateCall>(word(pointer(word(create_d3d)), 0x40));
     auto* const parameters = static_cast<D3DPRESENT_PARAMETERS*>(at(renderer, 0x1a28));
     const HWND window = reinterpret_cast<HWND>(word(renderer, 0x1a44));
-    (void)create_device(create_d3d, 0, D3DDEVTYPE_HAL, window, behavior | 4u, parameters,
-        static_cast<IDirect3DDevice9**>(at(renderer, 0x1a10)));
+    auto& lost_stats = native_renderer_lost_device_stats();
+    ++lost_stats.recreations;
+    // DIAGNOSTIC (BSP_RENDERER_FAKE_LOST ...,createfail): skip the call, as a
+    // CreateDevice that fails leaves +1A10h at the zero stored above.
+    if (!native_renderer_fake_create_fail())
+        (void)create_device(create_d3d, 0, D3DDEVTYPE_HAL, window, behavior | 4u, parameters,
+            static_cast<IDirect3DDevice9**>(at(renderer, 0x1a10)));
+    if (word(renderer, 0x1a10) == 0) ++lost_stats.create_failures;
     set_native_renderer_render_state_00b24460(renderer, 0xa1, word(renderer, 0x1a38) != 0, globals);
     initialize_native_renderer_default_states_00b26170(renderer, globals);
     const GammaAccess gamma{bindings.actual_renderer_profile_00d5f0a8, &context.gamma};
