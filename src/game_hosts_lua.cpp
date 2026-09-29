@@ -196,6 +196,15 @@ constexpr bool kWingConstructionLuaActive =
 // squadrons at 2), USN04 and USN13 are gameplay-identical.
 constexpr bool kCarrierLaunchSkillBound = true;
 
+// Packet cc9_find_entity_case (docs/CONTROLLED_UNIT.md, "FindEntity matches
+// names case-insensitively"). 00925A90 hands each registry entry to 009251F0,
+// whose first test (0092521E) is 00438E10, a null-guarded CRT _stricmp
+// (00BF7FBF) over the whole name. True answers an exact miss with the first
+// entry that compares equal ignoring ASCII case; false keeps the exact map.
+// ON: IJN01 resolves "Airfield 02" -> "AirField 02" (entity_resolves 78 -> 79)
+// and is gameplay-identical while PilotLand stays a record; JM05 identical.
+constexpr bool kFindEntityCaseInsensitiveBound = true;
+
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
 // reads but the host does not model are listed in `unsupported_keys` when
@@ -6366,18 +6375,31 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         if (argument_count < 1 || lua_type(state, 1) != LUA_TSTRING) return false;
         const char* name = lua_tolstring(state, 1, nullptr);
         if (name == nullptr) return false;
-        const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
+        // DIAGNOSTIC, env-gated (BSP_LUA_FIND_ENTITY_MISSES=1): the names
+        // FindEntity answers nil for, and the case-folded hits. Prints nothing
+        // when unset.
+        static const bool trace = [] {
+            char* v = nullptr;
+            std::size_t n = 0;
+            const bool on = _dupenv_s(&v, &n, "BSP_LUA_FIND_ENTITY_MISSES") == 0
+                && v != nullptr && v[0] == '1';
+            std::free(v);
+            return on;
+        }();
+        std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
+        if (kFindEntityCaseInsensitiveBound && found == scene_entity_ids_.end()) {
+            // 009251F0's 00438E10 -> _stricmp: the whole string, ASCII case
+            // folded. LABELLED: the registry's walk order is not modelled; an
+            // exact hit wins, then the first case-folded match in name order.
+            for (found = scene_entity_ids_.begin(); found != scene_entity_ids_.end(); ++found) {
+                if (_stricmp(found->first.c_str(), name) == 0) break;
+            }
+            if (trace && !error_replay_ && found != scene_entity_ids_.end()) {
+                log_.notef("FindEntity case-folded: \"%s\" -> \"%s\"", name,
+                    found->first.c_str());
+            }
+        }
         if (found == scene_entity_ids_.end()) {
-            // DIAGNOSTIC, env-gated (BSP_LUA_FIND_ENTITY_MISSES=1): the names
-            // FindEntity answers nil for. Prints nothing when unset.
-            static const bool trace = [] {
-                char* v = nullptr;
-                std::size_t n = 0;
-                const bool on = _dupenv_s(&v, &n, "BSP_LUA_FIND_ENTITY_MISSES") == 0
-                    && v != nullptr && v[0] == '1';
-                std::free(v);
-                return on;
-            }();
             if (trace && !error_replay_) log_.notef("FindEntity miss: \"%s\"", name);
             return false;
         }

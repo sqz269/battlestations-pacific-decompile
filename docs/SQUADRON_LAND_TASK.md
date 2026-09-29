@@ -2994,3 +2994,430 @@ sets done, shown as `done_why` on the `summary land park` line. The run is LOMP1
      parented. The host calls it at `007CBFC3` unconditionally.
   3. The park rule's done edge `009B3770` and its conditions, which are not re-read here.
 - The counters stay, print-only. `kLandParkStateBound` stays OFF.
+
+## 5x. The park loop: the three reads, and the loop starts after the hangar (packet `cc9_land_park_loop_reads`, cc9-lua17, 2026-09-29)
+
+This packet makes the three reads that 5w left open. It also re-reads the 5w census log
+(`local\l16_diag_lomp10l.log`, cc9-lua16 tree, LOMP10 9200/9000 with `kLandParkStateBound=true`).
+No code changed.
+
+### (i) The probe position after `007C71E0`'s re-parent: world, so no double transform
+
+- `007C5B01` calls `00414DB0` with `ECX` = the plane, only while `+C8h` is clear.
+  - `00414DB0` (`BSP_EntityPose_RefreshWorld`, `00414DB0`-`00414E09`) rebuilds the world matrix at
+    `+CCh`: `local +74h x parent(+3Ch)+CCh` through `00413920`, or `+74h` alone for a root. Its
+    copy is `004134F0`.
+  - It then sets `+C8h` = 1.
+- `007C5B10`-`007C5B34` read `+FCh`/`+100h`/`+104h`, the translation row of that world matrix. This
+  is the row `00427EB0` returns. The values go to `[ESP+28h..30h]`.
+- The tail passes `[ESP+2Ch]` (after one push; the same slot) to `006BC530` at `007C5F28`, with
+  `ECX` = `+BF4h`, the holder.
+- `007C71E0` re-parents through `vtable+ACh(site)`; before that it calls `00414E10` and
+  `007BA020`, which are not re-read here. Whatever they do to the local pose `+74h`, `00414DB0`
+  composes `+CCh`/`+FCh` from `+74h` and the parent, so `+FCh` is the world position.
+- `006BC530` therefore gets a **world** point and transforms it once by `holder+48h`. The host's
+  world-position substitution (5k) matches here, and candidate 1 of 5w is closed.
+
+### (ii) Is `007C5AC0` reached while parented? Yes, on every fixed step
+
+`BSP_PlaneTickElement_FixedStep` (`007CE040`, `ESI` = unit+310h) dispatches at `007CEC30`:
+- `(unit+72Ch)->vtable[38h]` true: `007CC2F0`, which calls `007C5AC0` at `007CC43B`.
+- Otherwise, with `+900h` 4 or 5 (`007CEC7B`-`007CEC83`): `007CBFA0`, which calls it first
+  (`007CBFC3`).
+
+Neither arm tests the parent. The only earlier exits are:
+- `unit+5Eh` set (`007CE856`, to `007CF0D3`);
+- `unit+520h` set (`007CE86A`, to `007CECF6`); both are clear for an AI plane.
+
+The host's unconditional call at `007CBFC3` matches. Candidate 2 of 5w is closed.
+
+### (iii) The rule's done edge `009B3770`: matches
+
+- `009B3CF0` calls `009B3770` first, on every call (`009B3CF4`).
+- `009B3770`:
+  - does nothing in moveto (`+4C4h`) or follow (`+500h`);
+  - sends a done line or standby (`+598h`/`+5B8h`) to `009AFA50`'s cruise pick;
+  - sends **any other** done state to abort (`+64Ch`, `009B37A7`). That includes park.
+- The rule then continues in the same call. In abort, `+66Ch` leads to standby (`009B3E1B`) and
+  `+66Dh` to park (`009B3E38`, `ECX` = task+620h from `009B3DFA`).
+- The host's order is the same. Candidate 3 of 5w is closed.
+
+### The correction: every loop starts 13 to 16 s after the plane's hangar entry
+
+The first `state 620 -> 64C` per plane in the census log, against its hangar line (`007B96C0`):
+
+| plane | hangar (local) | first park done |
+| --- | --- | --- |
+| Lightning 01 | 186.71 s (41.9, -21.1) | 200.81 s |
+| Warhawk 01\|.-4 | 199.21 s | 214.21 s |
+| Lightning 01\|.-4 | 211.61 s | 224.81 s |
+| Warhawk 01\|.-2 | 224.81 s | 238.41 s |
+| Lightning 01\|.-2 | 233.91 s | 249.91 s |
+| Warhawk 01\|.-3 | 245.01 s | 261.01 s |
+| Lightning 01\|.-3 | 254.81 s | 269.81 s |
+| B-25 01 | 275.41 s (41.9, -19.9) | 290.70 s |
+| B-25 01\|.-2 | 288.20 s | 302.30 s |
+| Warhawk 01 | 172.51 s (41.5, -20.4) | never (ends in state 5 at (49.6, -25.5)) |
+
+So 5w's "done once `|x|` passes the runway half width" is the second episode, not the first. The
+first episode taxis on the path (`+900h` = 5) all the way to the hangar. `009B21E4` skips the whole
+done test in state 5, and the host does the same (`land_park_done_009b21d0`).
+
+B-25 01's trace (`land park trace`, every 20 ticks):
+- **272.5-276.5 s:** it arrives at about 7 m/s and overshoots to (46.9, -20.7).
+- **After that:** `spd` = 0.69 (`AirField/MoveSpd` 6.94 x the 0.1 heading-error scale), while
+  `v` holds at 0.92.
+- **276.5-288.5 s:** `err` goes from -2.9 to -1.8. The yaw is -0.1 to -0.5, cut by the deadband
+  `(5 - f18) x 0.2`. The plane drifts to (43.1, -32.6).
+- **290.5 s:** `dz` = 12 passes the turn distance `qd`. The path test drops it to state 4
+  (`leaves=1`), the contact arm fires because the plane is off the strip, and the loop starts.
+
+### What this leaves (in order)
+
+1. **Does the image's plane hold still at the hangar point?** The commanded speed is never 0 in
+   the listing (`00419010` floors at `base`, then the heading scale floors at 0.1). The host's `v`
+   stays at 0.92 against a command of 0.69. This is the forward creep of 5u and 6, and its brake
+   is the first suspect. If the image's plane settles near the target, `dz` stays under `qd` and
+   state 5 holds.
+2. **The hangar hide `007B96C0`.** The listing (`007B96C0`-`007B96CF`) does two things:
+   - it sets `+C00h` = 1. The only writers are `007B96C2` and the constructor clear at
+     `007D0110`. Byte scans for `80`/`38`/`3A`/`84`/`8A`/`0FB6`/`0FBE`/`F6`/`83`/`8B` on
+     displacement `C00h` find no reader, and the `C02h` control scan does hit `007BB2C3`.
+   - it calls `00951F40(0)`, which does `00710B80` (detach from the spatial index), then
+     visibility 0.
+
+   Neither stops the tick. So the hide alone cannot end the loop. Any loop the image has after
+   the hide is invisible, because the plane is hidden.
+3. After (1), re-pair park together with `kLandAbortGroundArmBound`.
+
+`kLandParkStateBound` stays OFF.
+
+## 5y. The ground creep is gravity through an unlevelled pose (packet `cc9_ground_speed_hold`, cc9-lua17, 2026-09-29)
+
+### The measurement
+
+`BSP_PLANE_GROUND_TRACE=<name prefix>` is a new env-gated diagnostic. It prints `007D8611`'s
+body-frame terms every tenth ground-band step. Run: LOMP10 9200/9000, park OFF, current tree,
+`local\l17_gt_lomp10l.log` (cc9-lua17 tree).
+
+B-25 01 stops at 256.9 s. From 258 s on it holds exactly:
+- body velocity `vb = (-0.235, 0.010, 0.004)`: the motion is **sideways** (body x), not forward;
+- driving term `a1c` (`body.pair_1c`) = `(-0.701, -13.584, -5.615)`;
+- resisting fold `r04` = `(0.219, -0.010, -0.004)`;
+- ground band `r40` = `(0.470, 0, 6.000)`: the lateral `|2 vx|`, and the wheel brake 10 x 0.6;
+- latched throttle 0, `thrust` 0, `pitch` 0.3915 rad.
+
+Along z, the brake (6.0) exceeds the driving term (5.6), so the forward motion is clamped at 0.
+Along x there is no brake. The lateral term `|2 vx|` only balances `-0.701` at
+`|vx| = (0.701 - 0.219) / 2 = 0.24`, which is the measured creep.
+
+`a1c` is gravity (with the DeadMeat/extra terms) expressed in a body frame that the touchdown
+left pitched 0.39 rad and slightly rolled: the x share -0.70 is a roll of about 3 degrees. The
+park drift of 5x is the same effect. For example Lightning 01 moves at a constant 0.84 m/s along
+-z while its heading error stays at -1.4 rad, which is sideways motion.
+
+### What the image has and this host lacks
+
+`007D9F60`'s up levelling, `007DA11C`-`007DA20C`, read whole (disk bytes):
+
+- **The rate.** It runs only for `ctl+8Ch > 0` (`007DA11C` COMISS / `007DA131` JBE). The stores
+  to `ctl+8Ch`, by scan of `f3 0f 11 ?? 8c 00 00 00` and `d9 ?? 8c 00 00 00` in `007B`-`007D`:
+  - the constructor `007D7F0B`/`007D7F55`;
+  - `007D7BC9`;
+  - the ground roll law, `007DCDBD`: `[00F87384]` = tuning+2A4h `Dynamics/RunwaySmoothStrength`,
+    4.0 in this installation;
+  - the free-flight step, `007DCCD3`: the zero from `007DCCD0` XORPS;
+  - the water law, `007DD84F`.
+
+  So the levelling is live exactly while the ground law runs.
+- **The axis.** `ctl+80h..88h` = `(0, cos GroundPitch, sin GroundPitch)`, with `GroundPitch` =
+  desc+200h (`007DCD6C`-`007DCDAD`).
+- **The update.**
+  - `0042D0D0(out, ctl+80h, M, 0)` puts the axis through the working pose `M` (`[ESP+38h]`, rows
+    at `+38h`/`+48h`/`+58h`) in the row-vector convention: `out = v x M`, into world.
+  - The delta is `(0 - t.x, 1 - t.y, 0 - t.z)`. The bytes are `DE E2` = FSUBRP `ST(2) = ST(0) -
+    ST(2)` at `007DA155`/`007DA165`, and `DE EA` = FSUBP at `007DA171`.
+  - The factor is `min(+8Ch x step, 1)` (`007DA17D`-`007DA19C`).
+  - Row 1 (`[ESP+48h..50h]`) takes the scaled delta (`007DA1D0`-`007DA208`).
+  - Then `0085DAD0` (`007DA20C`) renormalises row 1, removes row 1 from row 2, renormalises row
+    2 and sets row 0 = row 1 x row 2. The pose ends pitched by `GroundPitch` with no roll.
+
+`src/plane_advance_pose.cpp` already reconstructs this (`apply_up_levelling_007da14d`,
+`level_blend_007da179`). The host's pose advance (`advance_pose_0085e4d0`) never called it
+(5u: "not carried").
+
+**Binding.** Under `kPlaneGroundLevellingBound`, `advance_pose_0085e4d0(step, ground)` now:
+1. rotates as before;
+2. while the core law runs in ground mode, applies the levelling at `RunwaySmoothStrength` with
+   the slot's `GroundPitch`. That is desc+200h, written only when `WheelHeight` and
+   `GroundPitch` are both authored (`007D29B8`-`007D2AC6`); B-25: 0.017453, fighters: 0.
+
+Labelled:
+- the bank-yaw rotation `007DA080`-`007DA117` between the two is still not carried;
+- the water law's store is not modelled;
+- the image runs this in the `+4h` tick element, which this host folds into the fixed step.
+
+The ground-roll summary gains `level_steps`.
+
+### Predictions, written before any ON run
+
+**Pair A.** LOMP10 9200/9000, park OFF on both sides, `--flip kPlaneGroundLevellingBound=true`:
+1. Identical until the first touchdown, because the levelling needs the ground law.
+2. B-25 01 and B-25 01|.-2 stop and **stay** on the strip:
+   - no `plane ground contact lost` line;
+   - `min_bfc` above -2 (OFF: about -950 and -1780);
+   - the lateral creep gone (`vb.x` about 0 after the stop).
+3. Every landed plane has `level_steps > 0`. The fighters' rolls stay within a few metres.
+4. Deaths identical (0 rows).
+
+**Pair B.** LOMP10 9200/9000, `kLandParkStateBound=true` and `kLandAbortGroundArmBound=true` on
+both sides, plus the flip:
+1. The post-hangar sideways drift of 5x goes away. Planes that reach the hangar stay within a
+   few metres of the target in state 5.
+2. So the park <-> abort loop stops. Park entries per plane drop from hundreds to single digits,
+   and `done_why contact` falls with them.
+3. Mechanism test: the drift distance after the hangar entry, from the `land park trace` lines.
+
+### 5y.1 Measured, and the verdict
+
+The binaries are exports of `1a756bc16`:
+
+| export | flips | SHA-256 prefix |
+| --- | --- | --- |
+| `l17_a0` | none | `5DAD87554945` |
+| `l17_a1` | levelling | `82EC6E1805B6` |
+| `l17_b0` | park, abort ground arm | `31A6D6F0B5E6` |
+| `l17_b1` | park, abort ground arm, levelling | `D8EED8A0C333` |
+
+All runs used n's launch form with `BSP_PLANE_GROUND_TRACE=B-25 01`. A 300-frame smoke of `a1`
+ran clean. The logs are `local\l17_<export>_<row>.log`.
+
+**Pair A (park OFF), LOMP10 9200/9000: `pair_diff` 3, every prediction held.**
+1. **Identical before the first touchdown.** The early lines that moved are LOMP10's known
+   movie-camera and minimap noise.
+2. **The B-25s stay on the strip.**
+   - `min_bfc` is 1.514 and 1.470 (OFF: -953.9 and -1777.7).
+   - There is no `ground contact lost` line (OFF: 306.90 s and 342.14 s at local x = -10.0).
+   - Rolls are 24.3 and 22.0 m (OFF: 41.5 and 53.6, creep included).
+   - After the stop the trace holds `vb = (0, 0, 0)`, `a1c = (0.000, -14.713, -0.257)`. The
+     -0.257 is 14.71 x sin(0.017453), the B-25's `GroundPitch` (vehicleclasses.lua, this
+     installation, mtime 2026-05-09).
+3. **Every landed plane levels** (`level_steps` = `arm_steps`). The fighters' rolls move by at
+   most 1.2 m.
+4. **Deaths are identical** (0 rows); the 34-row unit table is identical.
+
+The same pair on the other rows:
+
+| row | `pair_diff` | what moved |
+| --- | --- | --- |
+| USN04 4700/4500 | 1 | the avoidance refill counter only |
+| USN01 3200/3000 | 1 | the avoidance refill counter only |
+| JM05 3200/3000 | 1 | the avoidance refill counter only |
+| USN13 3200/3000 | 0 | nothing |
+
+**`kPlaneGroundLevellingBound` flips ON.**
+
+**Pair B (park and the abort ground arm ON on both sides), LOMP10 9200/9000: prediction 1 held
+for half the planes, and prediction 2 missed.**
+
+| plane | park entries OFF -> ON | end state ON |
+| --- | --- | --- |
+| B-25 01 | 798 -> 1 | state 5 at (42.5, -25.5) |
+| B-25 01\|.-2 | 740 -> 1 | state 5 at (37.8, -20.9) |
+| Lightning 01\|.-3 | 902 -> 1 | state 5 at (47.1, -21.1) |
+| Lightning 01\|.-4 | 1127 -> 1 | state 5 at (38.6, -25.3) |
+| Warhawk 01\|.-3 | 946 -> 1 | state 5 at (37.5, -17.1) |
+| Lightning 01 | 1247 -> 547 | loops |
+| Lightning 01\|.-2 | 1002 -> 301 | loops |
+| Warhawk 01 | 1 -> 785 | loops |
+| Warhawk 01\|.-2 | 1059 -> 549 | loops |
+| Warhawk 01\|.-4 | 1180 -> 653 | loops |
+
+The drift of 5x is gone: every plane now stays within about 8 m of the hangar point for a
+minute or more. The loop that remains is a different mechanism. Warhawk 01's trace from 269 s to
+291 s shows it:
+- The target sits **behind** the plane (`err` 2.5 to 2.6 rad).
+- `v` pulses between 0 and 1.2 m/s against the command of 0.69.
+- The commanded yaw is 0.1 to 0.48, cut by the `(5 - f18) x 0.2` deadband.
+- The heading hardly moves. In the pulses where `v` is near 0, the rate law's flat floor of
+  0.6 (5u) holds the yaw rate at 0.
+- The plane crawls 12 m away, `dz` passes `qd`, and the path drops to state 4 at 293.3 s. The
+  abort ground arm then drives it off at up to 37 m/s. That is where the planes' `last x` of
+  several kilometres comes from, in `b0` as well.
+
+Both the image's rule (the deadband, `009B2AE1`-`009B2C1B`) and the floor were read and match. So
+the open question is whether the image's plane can turn round at 0.69 m/s, which the host's
+stop-and-go speed hold (the throttle demand arm integrating by `dt`) prevents.
+
+`kLandParkStateBound` and `kLandAbortGroundArmBound` stay OFF. The next items are:
+- the stop-and-go at the 0.69 command;
+- the abort ground arm's 37 m/s taxi.
+
+The hangar hide (`007B96C0`) was not bound: it only detaches and hides (5x), so it moves
+nothing that a log can check.
+
+## 5z. The stop-and-go at the 0.69 command reads as the image's own laws (packet `cc9_park_stop_and_go`, cc9-lua17, 2026-09-29)
+
+**Runs.**
+- `local\l17_c0_lomp10l.log`: an export of `126b71042` with park and the abort ground arm
+  flipped.
+- `local\l17_d_lomp10l.log`: the same flips as a local build, with the trace extended by the
+  latched controls, the yaw slot and the body angular rate.
+
+Both are LOMP10 9200/9000 with `BSP_PLANE_GROUND_TRACE=Warhawk 01`.
+
+### The cycle, measured
+
+Warhawk 01 after its hangar entry, sampled every 0.5 s. It repeats with a period of about 3 s:
+
+| t | latched throttle | brake | body vz |
+| --- | --- | --- | --- |
+| 173.66 | 0.0315 | 0 | 0 |
+| 174.66 | 0.110 | 0 | 0.35 |
+| 175.16 | 0.126 (the slot's peak) | 0 | 0.71 |
+| 175.66 | 0.102 | 0 | 1.06 |
+| 176.16 | 0.0315 | 0 | 1.22 |
+| 179.16 | 0.0157 | 15.24 | 1.22, then 0 |
+
+The last row is where the throttle falls through 0.023: `brake = WheelBrake 80 x (0.6 - 26 x
+0.0157)`.
+
+The terms against the listing:
+- **The demand arm (`0099D924`-`0099DC6B`), read again whole from disk bytes.**
+  - `err = 2B4h - measured`, less `(vtable[38h]() - 0042B2F0(unit+AE0h)) x [00CE3D88] x dt`.
+  - `increment = 00419010(-6.944, -2, 6.944, 2, err)`, x 0.6 when positive, x the slot `[ESP+6Ch]`
+    (dt).
+  - `demand = seed + increment`, clamped to [-1, 1].
+  - Throttle = `max(demand, 0.001)`, air brake = `max(-demand, 0)`.
+
+  This is the host's `pilot_plan_throttle_0099d300`.
+- **The dead band.** The increment is skipped only when all four hold: `|err| <= [00D09450]`,
+  `measured >= 1.0`, and `0.5 <= 2B4h/|measured| <= 1.5` (`0099DB1F`-`0099DB56`). At a 0.69
+  command, `measured < 1.0` forces the increment every think, so the host's
+  `dead_band_skips = false` is exact here.
+- **Measured speed.** It is `007D99C0(unit+AB0h)` (the body forward speed plus the carrier term)
+  divided by `plan+2B8h`, and less the carrier's speed on a class-6 holder (`0099D99E`-
+  `0099DA48`). `plan+2B8h` only decays toward 1.0 from above (`0099D75C`-`0099D79A`), and
+  `0099D924` raises it only when `+2B0h` is clear, which park sets. The host uses `|world v|`.
+  After the levelling (5y), body x is below 0.17 m/s in these cycles, so the difference is small.
+  LABELLED, not changed.
+- **The brake cliff.** It is the ground band `007DBEB3`-`007DBF0C` (`0.6 - throttle x 26`, 5q),
+  unchanged.
+
+So the pulse is the integral demand arm hunting against the ground band's brake cliff at
+throttle 0.023. No host substitution on this path produces it.
+
+### Why the plane cannot come round
+
+The yaw slot carries park's desired yaw, 0.37 to 0.47, the deadband having cut it from 1.1
+(`009B2AE1`-`009B2C1B`, `f18` = `|dx|` below 3 m). The latched yaw follows it. The body yaw rate
+is -0.13 to -0.21 rad/s while `v` is above about 0.5, and 0 in every stop. That follows from:
+- the mode-1 yaw factor `outB` (0 below `b` = about 0.3 m/s at throttle 0.1, full above `a` =
+  1.67 m/s);
+- the flat floor of 5u.
+
+The result is a turning circle of about 7 m, traversed about a third of the time. From 271 s to
+291 s the heading turns about 0.65 rad while the bearing to the target (behind, `err` 2.3 to 2.6)
+turns with the motion. The plane crawls from (46.1, -21.6) to (42.6, -31.9), `dz` passes `qd`, and
+it leaves the path at 293.2 s.
+
+**Reading.** Every law in this loop matches the listing. The host has no divergence left here
+that a switch could carry:
+- the park tick and its deadband;
+- the demand arm;
+- the ground band;
+- the mode-1 yaw factor and the floor;
+- the path test.
+
+After `007B96C0` the image's plane is hidden but still ticking (5x). Nothing found so far ends
+park for it:
+- state 5 skips the done test (`009B21E4`);
+- `+C00h` has no reader, and the SIB-form scans `80/8A/0FB6/38 ?? ?? 00 0C 00 00` are also empty.
+
+So the image may well loop the same way, invisibly. That cannot be settled from the host.
+
+**Open.**
+- The one term left unmatched is the measured speed (`007D99C0` forward speed against
+  `|world v|`); a switch for it is cheap but would not change the turning circle.
+- Is there an image routine that retires a landed, hidden plane (the air-ops holder's occupant
+  list `+34h`, the squadron's landing record)? That decides whether flipping park can ever be
+  gameplay-neutral.
+
+`kLandParkStateBound` and `kLandAbortGroundArmBound` stay OFF.
+
+## 5aa. What retires a landed plane: the carrier's elevator, never an airfield (packet `cc9_landed_plane_retirement`, cc9-lua17, 2026-09-29)
+
+This is a time-boxed census for the question 5z left open: does anything end park for a landed,
+hidden plane? Disk bytes and Ghidra were read only; no code changed.
+
+### The carrier elevator retires and relaunches (mother-ship holders only)
+
+The site class `00CF89F8` (`006CF3C0`/`006CFABC`, AIRFIELD_TAXI.md 2) has a subclass with vtable
+`00CF8A58`:
+- Its constructor `006CFAF0` stores `00CF8A58` at `006CFB24`, and `006D0470` stores it at
+  `006D0490`.
+- The constructor reads `MotherShip.ElevatorSpeed` (GAMEPLAY_SETTINGS.md).
+- The string `elevator` follows the table at `00CF8AB0`.
+- Its slot `+4h` is **`006D0600`-`006D07A4`**: `RET 4` at `006D07A1`, then INT3 padding. Ghidra
+  has no function there.
+
+It is `__thiscall(site, float dt)` and does two jobs:
+
+1. **Intake, `006D06A5`-`006D0722`.** It walks the occupant vector `+34h`/`+38h` for a plane
+   that meets all four of:
+   - `+904h` is set (landed);
+   - `site->vtable[3Ch](plane)` is true (`006CFF70`, not read);
+   - `vtable[38h]` speed < `[00CF8AAC]` = `3FB1C71Dh` = 1.389 m/s;
+   - `007B8D40` is true (the byte at `[plane+DECh]+44h` clear, or the float at `+48h` zero).
+
+   With a candidate, or when `+18h` is set and `006D02F0` (not read) answers false, it calls `006CFFF0(0, plane)`. That builds message
+   `00758B90` and routes it through `0077C2A0` with 5. The handler `006D0050` (slot `+50h`,
+   `00CF8AA8`) sends a plane with flag 0 to `006FC720`, which:
+   - takes the plane onto the platform `+34h`;
+   - calls **`007C2090`**, which requests flight state **2** (message `C3h`, new state 2, routed
+     with 7) unless the plane is already in 2;
+   - starts the lift (`+50h` = 2).
+2. **The lift, `006D0729`-`006D07A1`.** At the bottom it calls `007B96C0` (the hide) and
+   `006FC250`. After `tuning+510h`, with the platform empty, it calls `006CFFF0(1,
+   readyPlane +18h)`, which is the relaunch through `007C5F60`.
+
+So on a carrier a landed plane leaves the land task's world: it goes to flight state 2 and into
+the hangar, and the ready plane comes back up.
+
+### An airfield has no such path
+
+- **The airfield site's tick** (slot `+4h` of `00CF89F8` = `006CF980`, read whole to `RET 4` at
+  `006CF9DB`) only routes the ready-plane launch (`+18h` -> `0077C2A0` with 5). No slot of the 21
+  removes an occupant (AIRFIELD_TAXI.md, "Site occupancy").
+- **The hide `007B96C0`** has three callers. The other callers of `00951F40` are the elevator
+  platform (`006FC0D0`/`006FC250`/`006FC6B0`/`006FC810`), the spawn-state helper `007BC550`, and
+  the Lua `luaMW_SetVisibility` (`008A13D0`). None retires a plane.
+- **`+C00h` has no reader.** The byte scans in 5x plus the SIB forms
+  `80/8A/0FB6/38 ?? ?? 00 0C 00 00` all come back empty.
+- **The state-5 census** (`83 ?? 00 09 00 00 05`) finds these functions, none of them a
+  retirement:
+  - the done test `009B21D0` and the ground roll;
+  - the 4/5 transitions;
+  - `0099D300`;
+  - the taxi step `009CD540`;
+  - `007EFB60`, which promotes the squadron's next member when the leader is landed on the path;
+  - `009CF8E0`, the taxi task constructor;
+  - `007B83F0`/`007C7430` (message handlers).
+- **The taxi task** (`009CFF40`, created at `0099B10B` by the bot tick) needs the current task's
+  `vtable[30h]` true. For the land task that is `009B3730`, false in park and final
+  (`00D1FFA0`+30h), so a parked plane never gets it.
+
+### Verdict
+
+Nothing retires a landed plane at an airfield. The image's airfield plane, hidden at the hangar
+point, keeps running park. So the image most likely loops the way the host does (5z), invisibly.
+**Park stays OFF, and the park-loop line of work ends here for now.**
+
+The carrier elevator path is real. It belongs to the mother-ship holders the host refuses, and
+it becomes the model if those are ever bound.
+
+### For the lead (Ghidra, read-only here)
+
+Define `006D0600`-`006D07A4` (exclusive, `RET 4` at `006D07A1` then INT3), provisional name
+`BSP_AirOpsElevatorSite_Tick`: the mother-ship site's `+4h` slot, which runs the landed-plane
+intake and the elevator relaunch.

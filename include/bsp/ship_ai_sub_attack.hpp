@@ -127,6 +127,45 @@ struct ShipAiSubAttackHost {
 };
 
 // ---------------------------------------------------------------------------
+// 009DB8F0, the brain pre-pass's submarine helper (packet
+// cc9_submarine_periscope_substate). 009F1B57 calls it with ECX = brain+0AC4h,
+// a 4-byte holder of [brain+0AB4h]; 009F11DD..009F11F7 allocate it only when
+// unit->vtable[5Ch](8) answered true at construction, so only a submarine has
+// it. __thiscall(holder, float seconds), RET 4; the float is never read.
+// ---------------------------------------------------------------------------
+inline constexpr double kSubPeriscopePrepassBand = 2.5;      // 00CE3DE0 (double), 009DB922 / 009DB95A
+
+struct ShipAiPeriscopePrepassHost {
+    virtual ~ShipAiPeriscopePrepassHost() = default;
+    // unit+1268h depthLevel, unit+100h the world Y after 00414DB0, unit+1204h bands[1].
+    virtual int depth_level_1268() = 0;
+    virtual float world_y_0100() = 0;
+    virtual float periscope_band_1204() = 0;
+    // [unit+1ACh + role*4] == 8 || 00927F10(slot): role 1 is read inline
+    // (009DB96E..009DB981), role 0 through 00521E70(0) (009DB9BF). A false
+    // return means the answer is unavailable to the host (no write is made).
+    virtual bool role_ai_held(int role, bool& held) = 0;
+    // [ai+2264h] != null && [ai+2264h]->vtable[20h](): 009DAA80 (XOR AL,AL) for
+    // cruise/stop/follow/land/movetopos/moveonpath/attackmove, 009E4910 (MOV AL,1)
+    // for sub_attack and 009DB310 (MOV AL,1) for kamikaze_attack.
+    virtual bool active_state_wants_periscope_0020() = 0;
+    virtual int periscope_state_122c() = 0;
+    virtual void set_periscope_state_122c(int state) = 0;
+};
+
+enum class ShipAiPeriscopePrepassArm : int {
+    lowered_out_of_band,   // 009DB9E3..009DB9EC
+    raised_by_state,       // 009DB9AC
+    lowered_ai_held,       // 009DB9D4
+    kept_player_role1,     // 009DB981 JZ 009DB9F6
+    kept_player_role0,     // 009DB9C6 JZ 009DB9F6
+    kept_broken,           // any arm that met +122Ch == 2
+    role_unavailable,      // host could not answer a role; nothing written
+};
+
+ShipAiPeriscopePrepassArm ship_ai_periscope_prepass_009db8f0(ShipAiPeriscopePrepassHost& host);
+
+// ---------------------------------------------------------------------------
 // The state objects' fields.
 // ---------------------------------------------------------------------------
 struct ShipAiSubAttackTubeCache {  // +8h..+1Ch, 009E9CE0

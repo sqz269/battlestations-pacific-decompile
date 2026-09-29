@@ -355,6 +355,14 @@ inline constexpr bool kShipStationKeepingBound = true;
 // (009EAE20, 009EAFC0) over the 128-slot list. False: the empty list and the
 // old ageing pass, as before.
 inline constexpr bool kShipNeighbourListBound = true;
+// Packet cc9_submarine_periscope_substate, docs/SHIP_AI_OPEN_ITEMS.md section 54.
+// True: the brain pre-pass calls 009DB8F0 at 009F1B6C for a submarine (brain+0AC4h
+// is allocated only for unit->vtable[5Ch](8), 009F11DD): out of the periscope band
+// (depthLevel != 1 or world Y outside bands[1] +/- 2.5) it lowers the periscope;
+// in the band, for an AI-held role 1, the sub_attack and kamikaze_attack states
+// raise it and the others lower it when role 0 is AI-held. False: only the
+// sub_attack fire step writes +122Ch, as before. ON: pairs held (section 54).
+inline constexpr bool kSubmarinePeriscopePrepassBound = true;
 // True: the consumers see that list (blk+604h / +608h): the sector scan 009EB660,
 // 009DE5B0 section 6, the traffic pass 009EF350 and the clearance count. False:
 // they are handed an empty list and a zero count, so the list lands alone.
@@ -1101,10 +1109,15 @@ struct GameShipAiHost::Impl {
         bool approach_curves_built{false};
         // Packet cc9_submarine_ai_states: brain+2124h and its census.
         bsp::ShipAiSubAttackState sub_attack{};
-        // unit+122Ch periscopeState as the fire step writes it. LABELLED: the
-        // units host models no periscope, so nothing else reads or writes it
-        // and the broken state 2 has no producer.
+        // unit+122Ch periscopeState as the fire step (009E4DC1, 009EA8FB) and,
+        // under kSubmarinePeriscopePrepassBound, the pre-pass 009DB8F0 write it;
+        // the units host's mast (00854650) reads the mirror. LABELLED: the broken
+        // state 2 (009327F7, 009373E7) and the HUD's player writes have no producer.
         int periscope_state_122c{0};
+        unsigned long long prepass_periscope_calls{0};
+        unsigned long long prepass_periscope_raises{0};
+        unsigned long long prepass_periscope_lowers{0};
+        unsigned long long prepass_periscope_arms[7]{};
         bool sub_tubes_built{false};                  // brain+0AC8h, 009E97B0
         std::vector<std::size_t> sub_tubes_fore;      // brain+0AD0h..+0AD4h
         std::vector<std::size_t> sub_tubes_aft;       // brain+0AE0h..+0AE4h
@@ -8122,6 +8135,87 @@ void publish_neighbour_view(GameShipAiHost::Impl::Controller& ctl) {
     ctl.nav_block.neighbour_count_604 = static_cast<int>(ctl.neighbours.size());
 }
 
+// 00853630: a kamikaze class gets +1214h = 0, every other class the
+// "periszkop" node. LABELLED: the node is taken as found.
+bool has_periscope_node_1214(GameShipAiHost::Impl& owner, std::size_t index) {
+    return !(owner.class_number(index, "KamikazeDamage") > 0.0f
+             || owner.class_number(index, "KamikazeBlastDamage") > 0.0f);
+}
+
+// A store to unit+122Ch periscopeState from either ship-AI writer (009E4DC1 /
+// 009EA8FB in sub_attack, 009DB9AC / 009DB9D4 / 009DB9EC in the pre-pass).
+// Packet cc9_periscope_out: 00854650 reads it; the units host keeps the mast.
+// +81Ch is NumberOr with 00CE38B8's 10.0.
+void store_periscope_state_122c(GameShipAiHost::Impl& owner,
+                                GameShipAiHost::Impl::Controller& ctl, std::size_t index,
+                                int state) {
+    ctl.periscope_state_122c = state;
+    owner.units.set_submarine_periscope_state_122c(index, state,
+        has_periscope_node_1214(owner, index),
+        owner.class_number(index, "PeriscopeMoveRange", 10.0f));
+}
+
+// Packet cc9_submarine_periscope_substate: the host of 009DB8F0, the brain
+// pre-pass's submarine helper (009F1B57..009F1B70).
+class PeriscopePrepassBinding final : public bsp::ShipAiPeriscopePrepassHost {
+public:
+    PeriscopePrepassBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                            std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+
+    int depth_level_1268() override {
+        const GameUnitRow* row = owner_.units.unit_row(index_);
+        return row != nullptr ? row->submarine_depth_level : 0;
+    }
+    float world_y_0100() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        return y;
+    }
+    float periscope_band_1204() override {
+        float y = -20.0f;                                    // 00E0B578 default bands[1]
+        owner_.units.submarine_band_y(index_, 1, y);
+        return y;
+    }
+    bool role_ai_held(int role, bool& held) override {
+        std::int32_t slot;
+        if (!owner_.units.unit_current_role_slot(index_, role, slot)) return false;
+        if (slot == 8) {
+            held = true;
+            return true;
+        }
+        std::uint8_t ai;
+        if (owner_.session_participants == nullptr
+            || !owner_.session_participants->try_ai_held_00927f10(slot, ai)) {
+            return false;
+        }
+        held = ai != 0;
+        return true;
+    }
+    bool active_state_wants_periscope_0020() override {
+        return ctl_.active_state_ai_offset == kAiOffsetSubAttack
+               || ctl_.active_state_ai_offset == kAiOffsetKamikaze;
+    }
+    int periscope_state_122c() override { return ctl_.periscope_state_122c; }
+    void set_periscope_state_122c(int state) override {
+        if (state != ctl_.periscope_state_122c) {
+            ++(state == 1 ? ctl_.prepass_periscope_raises : ctl_.prepass_periscope_lowers);
+            owner_.log.notef("ship ai periscope prepass: unit=%s state=%d->%d level=%d "
+                "t=%.2f (009DB8F0, packet cc9_submarine_periscope_substate)",
+                owner_.units.unit_row(index_) != nullptr
+                    ? owner_.units.unit_row(index_)->name.c_str() : "?",
+                ctl_.periscope_state_122c, state, depth_level_1268(),
+                owner_.sub_attack_clock);
+        }
+        store_periscope_state_122c(owner_, ctl_, index_, state);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
 // Packet cc9_submarine_ai_states, docs/SHIP_AI_SUB_ATTACK.md: the host of the
 // sub_attack parent 009EAA90 and its sub-states 009E4B90 / 009E9EB0.
 class SubAttackBinding final : public bsp::ShipAiSubAttackHost {
@@ -8232,20 +8326,16 @@ public:
     int periscope_state_122c() override { return ctl_.periscope_state_122c; }
     void set_periscope_state_122c(int state) override {
         if (state == 1 && ctl_.periscope_state_122c != 1) ++ctl_.sub_attack_periscope_raises;
-        ctl_.periscope_state_122c = state;
-        // Packet cc9_periscope_out: the store is unit+122Ch in the image, which
-        // 00854650 reads; the units host keeps the mast. +81Ch is NumberOr with
-        // 00CE38B8's 10.0.
-        owner_.units.set_submarine_periscope_state_122c(index_, state, has_periscope_1214(),
-            owner_.class_number(index_, "PeriscopeMoveRange", 10.0f));
-        owner_.record("ShipAiSubAttack::periscope_state_122c", 0x009e4dc1u);
+        store_periscope_state_122c(owner_, ctl_, index_, state);
+        // Packet cc9_submarine_periscope_substate: with the pre-pass writer
+        // 009DB8F0 bound, both ship-AI writers of +122Ch are made.
+        if (kSubmarinePeriscopePrepassBound) {
+            owner_.done("ShipAiSubAttack::periscope_state_122c", 0x009e4dc1u);
+        } else {
+            owner_.record("ShipAiSubAttack::periscope_state_122c", 0x009e4dc1u);
+        }
     }
-    bool has_periscope_1214() override {
-        // 00853630: a kamikaze class gets +1214h = 0, every other class the
-        // "periszkop" node. LABELLED: the node is taken as found.
-        return !(owner_.class_number(index_, "KamikazeDamage") > 0.0f
-                 || owner_.class_number(index_, "KamikazeBlastDamage") > 0.0f);
-    }
+    bool has_periscope_1214() override { return has_periscope_node_1214(owner_, index_); }
     int depth_level_1268() override {
         const GameUnitRow* row = owner_.units.unit_row(index_);
         return row != nullptr ? row->submarine_depth_level : 0;
@@ -8396,6 +8486,14 @@ public:
                 owner_.done("ShipAi::neighbour_walk_009f1856", 0x009f1856u);
                 ++row_.neighbour_walks;
             }
+        }
+        // 009F1B57..009F1B70: [brain+0AC4h] non-null only for a submarine.
+        if (kSubmarinePeriscopePrepassBound && owner_.units.unit_is_kind_of(index_, 0x08)) {
+            PeriscopePrepassBinding periscope(owner_, ctl_, index_);
+            const bsp::ShipAiPeriscopePrepassArm arm = bsp::ship_ai_periscope_prepass_009db8f0(periscope);
+            ++ctl_.prepass_periscope_calls;
+            ++ctl_.prepass_periscope_arms[static_cast<int>(arm)];
+            owner_.done("ShipAi::periscope_prepass_009db8f0", 0x009db8f0u);
         }
         const auto request = bsp::ship_ai_avoidance_request_prepass_009f1b7b(
             owner_.avoid_all_ship_collision());
@@ -10669,6 +10767,25 @@ void GameShipAiHost::report() {
             static_cast<double>(c.sub_attack_min_range),
             static_cast<double>(c.sub_attack_last_throttle), c.sub_tubes_fore.size(),
             c.sub_tubes_aft.size(), static_cast<double>(c.sub_tubes_min_speed_0aec));
+    }
+    // Packet cc9_submarine_periscope_substate: one line per submarine the
+    // pre-pass helper 009DB8F0 ran for. Arms: out_of_band, raised, lowered_ai,
+    // player_role1, player_role0, broken, role_unavailable.
+    host.log.notef("summary mission ship ai periscope prepass bound=%d "
+        "(009DB8F0 at 009F1B6C, packet cc9_submarine_periscope_substate)",
+        kSubmarinePeriscopePrepassBound ? 1 : 0);
+    for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
+         ++index) {
+        const Impl::Controller& c = host.controllers[index];
+        if (c.prepass_periscope_calls == 0) continue;
+        host.log.notef("  periscope_prepass %-20s calls=%llu raises=%llu lowers=%llu "
+            "arms=%llu/%llu/%llu/%llu/%llu/%llu/%llu state=%d",
+            host.rows[index].unit.c_str(), c.prepass_periscope_calls,
+            c.prepass_periscope_raises, c.prepass_periscope_lowers,
+            c.prepass_periscope_arms[0], c.prepass_periscope_arms[1],
+            c.prepass_periscope_arms[2], c.prepass_periscope_arms[3],
+            c.prepass_periscope_arms[4], c.prepass_periscope_arms[5],
+            c.prepass_periscope_arms[6], c.periscope_state_122c);
     }
     // Milestone 2o: the hop's own table, one row per unit that wrote a ring
     // slot, so a reader can see what reached the ring rather than only what the

@@ -207,6 +207,37 @@ void ship_ai_sub_attack_raise_periscope_009e4d90(bool raise, ShipAiSubAttackHost
     }
 }
 
+ShipAiPeriscopePrepassArm ship_ai_periscope_prepass_009db8f0(ShipAiPeriscopePrepassHost& host) {
+    // Both band tests round band +/- 2.5 to float (FSTP [ESP+8]) and take the
+    // lower arm on JA, so an unordered compare stays in the band.
+    bool in_band = host.depth_level_1268() == 1;                        // 009DB8F6 JNZ
+    if (in_band) {
+        const float y = host.world_y_0100();                            // 009DB916
+        const double band = static_cast<double>(host.periscope_band_1204());
+        const float high = f(band + kSubPeriscopePrepassBand);          // 009DB91C..9DB928
+        const float low = f(band - kSubPeriscopePrepassBand);           // 009DB954..9DB960
+        if (y > high || low > y) in_band = false;                       // 009DB936 / 9DB96C JA
+    }
+    if (!in_band) {
+        if (host.periscope_state_122c() == 2) return ShipAiPeriscopePrepassArm::kept_broken;
+        host.set_periscope_state_122c(0);                               // 009DB9EC
+        return ShipAiPeriscopePrepassArm::lowered_out_of_band;
+    }
+    bool held = false;
+    if (!host.role_ai_held(1, held)) return ShipAiPeriscopePrepassArm::role_unavailable;
+    if (!held) return ShipAiPeriscopePrepassArm::kept_player_role1;     // 009DB981
+    if (host.active_state_wants_periscope_0020()) {                     // 009DB985..9DB99E
+        if (host.periscope_state_122c() == 2) return ShipAiPeriscopePrepassArm::kept_broken;
+        host.set_periscope_state_122c(1);                               // 009DB9AC
+        return ShipAiPeriscopePrepassArm::raised_by_state;
+    }
+    if (!host.role_ai_held(0, held)) return ShipAiPeriscopePrepassArm::role_unavailable;
+    if (!held) return ShipAiPeriscopePrepassArm::kept_player_role0;     // 009DB9C6
+    if (host.periscope_state_122c() == 2) return ShipAiPeriscopePrepassArm::kept_broken;
+    host.set_periscope_state_122c(0);                                   // 009DB9D4
+    return ShipAiPeriscopePrepassArm::lowered_ai_held;
+}
+
 float ship_ai_sub_attack_fire_step_009e9eb0(ShipAiSubAttackFire& fire, float dt,
                                             ShipAiSubAttackHost& host,
                                             ShipAiSubAttackTick* tick) {

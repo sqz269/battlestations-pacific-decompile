@@ -4327,3 +4327,265 @@ So on every reference row each site's class list is empty, and `00A0D1D0` has no
   - `s15{off2,on2}_*`: section 50;
   - `s15p_jm02`, `s15p_ijn11`: section 52.
 - `s15_a23980.c` / `s15_a23980.asm`: the repaired `00A23980`.
+
+## 54. The periscope sub-state: the pre-pass writer `009DB8F0` (packet `cc9_submarine_periscope_substate`)
+
+Worker cc9-ships16, 2026-09-29 (stamped 15:05 UTC). Ranking item 11. Ghidra read-only.
+
+**What the ranking row was.** `ShipAiSubAttack::periscope_state_122c [009e4dc1]` counted as
+UNIMPLEMENTED (JM06 128 on reference n, USNOS 61). The store itself, `009E4D90`, was already
+reconstructed (`src/ship_ai_sub_attack.cpp`) and has been mirrored into the units host's mast
+(`00854650`, `kSubmarinePeriscopeOutBound`, ON) since packet `cc9_periscope_out`. The row stayed
+a record because the census of `+122Ch` writers was incomplete.
+
+**The writer census.** `local\s16_disp_ctx.py` decodes every `2C 12 00 00` hit on disk (56 hits):
+- ship AI: `009E4DDA` (`009E4D90`, the fire step's raise), `009EA8FB` (the fire step's lower) and
+  **`009DB9AC` / `009DB9D4` / `009DB9EC` in `009DB8F0`**, which this process never ran;
+- the broken state 2: `009327F7` (`BSP_SubmarineUnit_BreakPeriscope`) and `009373E7`
+  (`BSP_UnitController_ClearShapeCollisionBits`); units/damage lane, not modelled;
+- the unit: `00853CA9` (SEntityInit), `00853FA1` (serialize), `00854ECF` (the repair or
+  auto-raise arm of `00854650`);
+- the player HUD: `00650402`, `00651799`, `00651D07`, `00651F36`, `00652467`;
+- readers: `00852E45`, `00650785`, `0089408B`, `0069265B`, `009E4EED`.
+- The `009F1EAF..009F26FA` hits are `ebp+122Ch` on the approach frame's own object, not a unit.
+
+**`009DB8F0`, read whole (`009DB8F0`-`009DB9FC` exclusive: RET 4 at `009DB9F9` is 3 bytes, INT3 at `009DB9FC`; named `BSP_ShipAi_SubmarinePeriscopePrepass` by the lead, bdcc793eb).** `__thiscall(holder,
+float seconds)`; ECX is `brain+0AC4h`, a 4-byte holder of `[brain+0AB4h]` (the unit). The float
+is never read. `009F11DD..009F11F7` allocate the holder only when `unit->vtable[5Ch](8)` is
+true at construction, so only a submarine has it. `009F1B57..009F1B70` call it after the
+neighbour walk and before the avoidance request, on every pre-pass.
+1. `009DB8F6`: `depthLevel [unit+1268h] != 1` -> the lower arm.
+2. `009DB916..009DB96C`: world Y `[unit+100h]` (after `00414DB0`) outside
+   `float(bands[1] + 2.5)` / `float(bands[1] - 2.5)` (`00CE3DE0` = 2.5 double; JA, so unordered
+   stays in) -> the lower arm.
+3. `009DB96E..009DB981`: role 1 (`[unit+1B0h]`) must be 8 or `00927F10`-AI-held, else return
+   with no write.
+4. `009DB985..009DB9AC`: `[ai+2264h]` non-null and `vtable[20h]()` true -> `+122Ch = 1` unless 2.
+   Slot `20h` is `009DAA80` (XOR AL,AL) for cruise, stop, follow, land, movetopos, moveonpath and
+   attackmove (`00D21598..00D219D0`), `009E4910` (MOV AL,1) for sub_attack (`00D2195C`) and
+   `009DB310` (MOV AL,1) for kamikaze_attack (`00D216B8`).
+5. `009DB9BB..009DB9D4`: else `00521E70(0)` (role 0 AI-held) -> `+122Ch = 0` unless 2; else no
+   write.
+6. The lower arm `009DB9E3..009DB9EC`: `+122Ch = 0` unless 2.
+
+**The binding.** `bsp::ship_ai_periscope_prepass_009db8f0` (`src/ship_ai_sub_attack.cpp`), run
+from the controller's `replan_prepare_009f1420` for `unit_is_kind_of(8)`, behind
+`kSubmarinePeriscopePrepassBound` (`src/game_hosts_ship_ai.cpp`), committed OFF. Both writers
+share one store helper, so the units host's mast sees each write. With the switch ON the
+`009E4DC1` row reports concrete. A new summary block, `periscope prepass`, lists calls, raises,
+lowers and the arm census per submarine; a note line marks each state change.
+- LABELLED: role answers the host cannot give (`unit_current_role_slot` or `00927F10`
+  unavailable) make no write and are counted as `role_unavailable`; the pose refresh
+  `00414DB0` is the host's position; the state-2 guard never fires (no producer).
+
+**Predictions (written before the pair).**
+- **JM06 3200/3000.** `PlayerSub 03` raised its periscope once, at 142.10 s, through the fire
+  step. ON: the pre-pass raises it on the first pre-pass where the boat is in sub_attack at
+  depthLevel 1 within 2.5 of bands[1], so at or before 142.10 s, and lowers it when the fire step
+  dives it (level 2/3), so at least one `out=0` line appears. The sensor answer moves from
+  PeriscopeIn toward PeriscopeOut for those windows. Any other submarine in cruise at level 1
+  already holds 0, so it shows only `lowered` arms with no transition. Deaths: no change
+  expected (low confidence; detection of the boat is the only route). Verdict expected: exit 1
+  or 3 on sensor counters; flip unless the mechanism misbehaves.
+- **USNOS 3200/3000.** `Gato` raised at 8.80 s. ON: raised at or before 8.80 s, lowered when it
+  dives. Same death expectation.
+- **LOMP06 1200/1000.** The Narwhal is the player's unit, so role 1 is not AI-held: every
+  in-band call takes `player_role1` with no write; out of band it writes 0 over 0. Expect
+  gameplay identical (exit 0 or 1).
+
+### 54.1 The pairs and the verdict: ON
+
+Same-tree pair on `5ce677984`: the OFF binary is this tree's build and the ON binary is
+`local\s16_peri` (`pair_export --flip kSubmarinePeriscopePrepassBound=true`, SHA-256 prefix
+`B8759AA30F83`). Reference environment, lockstep 0.05, console session. A 300-frame USN01 smoke
+on the ON binary was clean. Logs are `local\s16{off,on}_{jm06,usnos,lomp06}.log` and the diffs
+are `local\s16_diff_<row>.txt` in the cc9-ships16 tree.
+
+| row | pair_diff | death rows | what moved |
+| --- | --- | --- | --- |
+| JM06 3200/3000 | 1 | identical (1) | `009E4DC1` concrete; `009DB8F0` 4211 calls; `00855045` 638 -> 21000 |
+| USNOS 3200/3000 | 3 | identical (6) | Gato's periscope goes down at 23.30 s; recon `identified` 18883 -> 18879; 17 unit-table `nearest` values move by 1 to 31 m; gunnery candidate counts move a little |
+| LOMP06 1200/1000 | 1 | identical (1) | `009DB8F0` 218 calls; `00855045` 0 -> 1000 |
+
+**The mechanism against the predictions.**
+- **JM06: matches.**
+  - `PlayerSub 03` and `PlayerSub 02` enter sub_attack at 51.10 s. The pre-pass raises both at
+    once (0 -> 1, level 1) and lowers both at 51.35 s, when the boats reach level 2.
+  - From 140.85 s the fire step's `009EA8FB` lowers `PlayerSub 03` and the next pre-pass raises it
+    again (the notes repeat 0 -> 1). The mast still comes out at 142.10 s, as on OFF.
+  - The four other boats (`Narwhal-class Submarine 01` and the two TypeB boats, plus
+    `PlayerSub 01`) only write 0 over 0.
+  - The `00855045` count grows because each boat's mast arm now runs from its first store. On
+    OFF it ran only from the first fire-step store, and in the image every non-kamikaze boat has
+    `+1214h` from construction. The lowering arm moves a mast from 0 toward 0, so nothing is
+    visible.
+- **USNOS: matches, with one correction.**
+  - The Gato is raised by the pre-pass at 8.30 s (OFF: the mast is out at 8.80 s from the fire
+    step; ON: out at 8.80 s too).
+  - Six times from 10.05 s the pre-pass takes the out-of-band arm at level 1. The boat is above
+    `bands[1] + 2.5`, a height that `009E4D00` still accepts (`y > bands[1] - 2.0`). The fire step
+    re-raises each time until 23.30 s, when it does not, and the mast goes in (`out=0`).
+  - On OFF the mast stayed out to the end.
+  - The prediction said "lowered when it dives"; it is lowered when it rides above the band.
+  - The moved counters all follow from a submerged periscope: the recon pass identifies the boat
+    four fewer times, and targeting and the unit-table nearest distances shift with it.
+  - Deaths, damage, hits and shots are identical.
+- **LOMP06: gameplay identical; the arm prediction was wrong.**
+  - The Narwhal is AI-held on role 1 before the player takes it. It selects sub_attack from
+    cruise at 2.85 s, is raised at 2.85 s and lowered at 3.10 s (level 2).
+  - Later in-band calls take `player_role0` (27) with no write.
+
+**Verdict: flipped ON.** The mechanism matches the image on every row, and the death table is
+identical on all three.
+
+**Still open:**
+- The broken state 2. `009327F7` (`BSP_SubmarineUnit_BreakPeriscope`) and `009373E7` write it;
+  those are the units/damage lanes.
+- The repair and auto-raise arm at `00854E44..00854ECF`, in the units host.
+- The HUD's player writes.
+
+## 55. The PilotLand flip, re-paired with FindEntity case-insensitive (packet `cc9_pilot_land_flip`)
+
+Worker cc9-ships16, 2026-09-29 (stamped 15:33 UTC). It continues 50.2. The tree carries main's
+merge `c6d14ae2f` (`kFindEntityCaseInsensitiveBound` ON), so `Mission.AF2 = FindEntity("Airfield
+02")` now resolves to AirField 02.
+
+**Predictions (written before the pair).**
+- **IJN01 3200/3000.** Both `PilotLand` calls resolve (`-> AirField 02`). Each routes its B-17
+  squadron through `land_at_site_0099a3dd`, so land tasks are installed on the members, unless
+  lua16's install core refuses a plane that is not airborne; any refusal is logged. The B-17
+  tracks change, and AA kills may move through the shared RNG stream. Judge from the per-entity
+  death table.
+- **LOMP10 9200/9000.** No `PilotLand` call on the n reference, so identical (exit 0 or 1) unless
+  `10_san_jose.lua:605` is reached.
+
+### 55.1 The pairs and the verdict: stays OFF (a host clobber, not a PilotLand defect)
+
+Same-tree pair on `cdb0b0542` (main merged, `c6d14ae2f` included). The OFF binary is this
+tree's build, and the ON binary is `local\s16_pl` (SHA-256 prefix `8747823ED741`). Logs are
+`local\s16pl{off,on}_{ijn01,lomp10l}.log`; the diffs are `local\s16_pldiff_<row>.txt`.
+
+| row | pair_diff | result |
+| --- | --- | --- |
+| IJN01 3200/3000 | 1 | Gameplay identical; the death rows (9), the plane death modes and the unit table are identical. |
+| LOMP10 9200/9000 | 1 | No `PilotLand` call; only GuiText counts and the known LOMP10 noise move. As predicted. |
+
+**IJN01, the mechanism.** The first half matches the prediction:
+- Both calls now resolve: `PilotLand: B-17 0n -> AirField 02 (target object=1 id=2)`.
+- `land_at_site_0099a3dd` installs 2 tasks per squadron at 68.20 s: moveto (land) on the leader
+  and follow (land) on the wingman.
+- The source is recorded as `explicit land command`.
+
+**The failure.** All four tasks retire at 68.30 s with `the squadron's command is no longer land
+at this site (009B34D0)`.
+- For an explicit site, `land_command_still_valid_009b34d0` (`src/game_hosts_units.cpp`) requires
+  `attack_command_class == 00E08FA0` and `command_target_plus_one == land site`.
+- `land_at_site_0099a3dd` writes both. Between the install and the retire, the gunnery host's
+  command-target refresh (`src/game_hosts_gunnery.cpp`, the `0071EBF0` block) runs again. That
+  refresh runs 468 times in the run, and here it follows the squadrons' generation.
+- The refresh then calls `units.store_unit_command_target(i, command_target_by_unit[i])` for
+  **every** unit.
+- `command_target_by_unit` is resolved only from authored command rows (categories 1 and 2, by
+  target name). The B-17s have no such row, so their target is overwritten with 0 and the check
+  fails.
+- **Second observation, not traced (ON only).** At 68.25 s the director's attackmove arm `00836B45`
+  runs for the new squadrons (units 330 and 332) with `target=2` (AirField 02), logs `target not
+  hostile`, and raises stage 2.
+  - So `director.slot_command[0]` reads `kCommandAttackMove` after the land order is delivered.
+  - OFF has no such line.
+  - Whether the commands host stores the `land` class 00E08FA0 as attackmove is unread; it belongs
+    to the commands lane.
+
+In the image the target is read live from the plane's current command (`vtable[178h]` ->
+`00521EA0`), so nothing clears it.
+
+**Verdict: `kPilotLandNativeBound` stays OFF (mechanism failure, recorded).** The land install
+itself works; the task dies to the host's refresh. The fix is outside this lane.
+- The gunnery host's refresh should not overwrite a unit whose command came from a script order.
+  One way: store only non-zero resolutions. Another: keep the script-order target in its own
+  field and have 009B34D0 read that.
+- Routed through the lead to cc9-gunnery13 (the gunnery host) and cc9-lua17 (the units host).
+- Re-pair IJN01 after that change. The expected result is B-17 tracks bending toward AirField 02
+  after 68.20 s.
+
+## 56. The command-target refresh keeps unauthored targets (packet `cc9_command_target_refresh_keep`)
+
+Worker cc9-ships16, 2026-09-29 (stamped 15:55 UTC). It follows
+55.1.
+
+**The binding.** `refresh_command_targets()` (`src/game_hosts_gunnery.cpp`, 0071EBF0's rule)
+resolves a target only from a unit's current category 1/2 command row. For every other unit it
+writes 0 into the units host's `command_target_plus_one`.
+- That field also stands for the current command's own target (`vtable[178h]` -> `00521EA0`).
+  `land_at_site_0099a3dd` stores PilotLand's site there, and `009B34D0` reads it.
+- Under `kCommandTargetKeepUnauthoredBound`, committed OFF, a unit with no accepted row (no
+  current category 1/2 row) is left unwritten.
+- A unit whose accepted row names nothing is still written 0. That is the image's rule, because
+  the accepted slot's target is returned whatever it holds.
+- A summary line counts the skipped stores.
+- LABELLED risk: a unit whose last category 1/2 row goes stale, with no replacement, keeps its old
+  target where the image's 0071EBF0 would answer the neutral record. The USN01 and JM05 pairs
+  test for it.
+
+**Predictions (written before the pairs).**
+- **Pair A, keep ON alone (PilotLand OFF).**
+  - **USN01 3000 and JM05 3000:** gameplay identical (exit 0 or 1). No authored-row unit
+    changes, because nothing but the land paths writes the field non-zero, and a unit keeps a
+    target only if its last authored row went stale.
+  - **IJN01 3200/3000:** identical. Without PilotLand the B-17s never get a non-zero target.
+- **Pair B, keep ON plus `kPilotLandNativeBound` ON, against keep ON alone.**
+  - **IJN01:** the four land tasks install at 68.20 s and are **not** retired at 68.30 s.
+  - The B-17s then fly the land task's moveto/follow toward AirField 02, so their tracks bend
+    after 68.20 s (exit 3 on their unit-table rows).
+  - AA contacts may move deaths through the shared RNG stream; judge from the per-entity table.
+  - The attackmove-after-land observation (55.1) stays open and may still appear.
+  - **LOMP10 9200/9000:** no PilotLand call; identical.
+
+### 56.1 The pairs and the verdict: both ON
+
+Committed-OFF base `e6831c321`. The OFF binary is this tree's build.
+- **K1** is `--flip kCommandTargetKeepUnauthoredBound=true` (`local\s16_k1`, `CF7E7E3AB121`).
+- **K2** adds `--flip kPilotLandNativeBound=true` (`local\s16_k2`, `2B0BAFCBFE27`).
+
+The logs are `local\s16{koff,k1,k2}_<row>.log`, and the diffs are `local\s16_kdiff_<row>.txt`.
+
+| pair | row | pair_diff | result |
+| --- | --- | --- | --- |
+| A: OFF vs K1 | USN01 3200/3000 | 1 | identical; only the ship-AI refill counter (known noise) and the new keep count (12766) move |
+| A: OFF vs K1 | JM05 3200/3000 | 1 | identical; keeps 308725 |
+| A: OFF vs K1 | IJN01 3200/3000 | 1 | identical; keeps 157765 |
+| B: K1 vs K2 | IJN01 3200/3000 | 3 | four land tasks install at 68.20 s and **none retires** (`retired_invalid=0`) |
+| B: K1 vs K2 | LOMP10 9200/9000 | 1 | no call; GuiText counts and known LOMP10 presentation noise only |
+
+**Pair A, as predicted.** No authored-row unit changes on USN01, JM05 or IJN01. The skipped stores
+only avoid writing 0 over 0 there.
+
+**Pair B, IJN01, as predicted.**
+- The B-17 leaders fly the land moveto from 4153.6 m (B-17 01) and 4828.7 m (B-17 02).
+- By 88.30 s B-17 01 is at 3256 m and descending (alt 1200 -> 988). By 128.30 s it is in mode 3
+  at 188 m altitude. At 148.30 s it is 1360 m out.
+- Unit-table nearest distances: B-17 01 5378 -> 2496 m, B-17 02 6026 -> 2965 m, and the wingmen
+  alike.
+- The death rows (9) are identical.
+- The `settarget` player commands that reach the B-17s after fixed step 1382 do not displace the land command.
+- The land path's own unimplemented rows now run and are recorded: `006C0B50`, `006BD080`,
+  `006C5380`, `009C1850`, `009C18C0`, `006C4790`, and the `0099A3DD` arm record. These are
+  landing-sequencer and moveto internals on the lua17 side.
+
+**Verdict: `kCommandTargetKeepUnauthoredBound` ON, and `kPilotLandNativeBound` ON on top of it.**
+
+**Open: the attackmove after the land order.** Still seen with both ON:
+`attackmove arm 00836b45: unit=330/332 target=2 target not hostile ... stage 2` at 68.25 s.
+
+**A read of the commands host (unmodified).** The row and the slot both keep the land class, so
+the attackmove is not how the host stores `land`.
+- `issue_script_command` (`src/game_hosts_units.cpp:11370`) calls
+  `GameCommandsHost::issue_command_object` (`src/game_hosts_commands.cpp:1996`).
+- That builds the row from `class_of(00E08FA0)`, which is `entity_orders.cpp`'s
+  `{22, 00E08FA0, 00CFB600, "land", category 3}`.
+- It runs the arm chain, and the director's `store_slot` (`src/game_hosts_commands.cpp:1033`,
+  0071E764) stores the command object **as given** into `slot_command[slot]`.
+- So `slot_command[0] == kCommandAttackMove (00E08F78)` on those two units at 68.25 s comes from
+  another push. The squadron's own generated order is the likely source; the commands lane should
+  dump `slot_command[]` for units 330 and 332 at 68.20..68.25 s.
+- The arm only raises stage 2 on a friendly target; it does not disturb the land tasks here.

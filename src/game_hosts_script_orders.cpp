@@ -101,9 +101,13 @@ inline constexpr bool kScriptedOrderNativesBound = true;
 // FindEntity("Airfield 02") answers nil in this host, which matches names
 // case-sensitively, while the image's 009251F0 matches case-insensitively
 // (the unit is "AirField 02"). So the IJN01 pair could not exercise the land
-// install. Re-pair once FindEntity is fixed.
+// install. Re-paired with FindEntity fixed (section 55.1): the tasks install
+// at 68.20 s but retire at 68.30 s because the gunnery host's 0071EBF0
+// refresh zeroes command_target_plus_one for units with no authored command
+// row. ON (section 56.1) on top of kCommandTargetKeepUnauthoredBound: the four
+// IJN01 tasks survive and fly toward AirField 02; death rows identical.
 inline constexpr bool kScriptedOrderNatives2Bound = true;
-inline constexpr bool kPilotLandNativeBound = false;
+inline constexpr bool kPilotLandNativeBound = true;
 constexpr bool kDisablePhysicsBound = true;
 constexpr bool kAddMatrixInterpolatorBound = true;
 constexpr bool kExplodeToPartsBound = true;
