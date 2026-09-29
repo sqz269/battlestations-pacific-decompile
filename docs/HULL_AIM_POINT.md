@@ -259,3 +259,39 @@ Base `ec14870c3`, same-binary before/after pairs on this tree.
 ## 8. Measurements
 
 Recorded in section 9 as each pair lands.
+
+## 9. Re-pair on the faithful dive set (packet `cc9_dive_aim_hull_point`, cc9-lua16, 2026-09-29)
+
+Every earlier verdict on `kHullAimOffsetEnabled` (23 -> 8 releases, then 29 -> 0 and 23 -> 0 in
+docs/DIVE_THROTTLE.md and docs/FLYOVER_SPEED.md) was taken before the rest of the dive was bound.
+Since `e1a95859b` the aimdive tail, the goaway and aimglide throttles, the aimglide pitch and yaw
+and the fly-over speed are all ON, the host throttle moves, and cc9-lua15 measured the profile as
+faithful: on USN04 4700/4500 every Val closes the in-range latch and passes the turndown, and the
+releases are lost to anti-aircraft fire in the dive (7 of 16), row length (3), overshoot (2) and
+three wingmen leaving the fly-over by 0.1-0.2 degrees at `009C66E3` (docs/DIVE_BOMB_TASK.md, the
+last two subsections). The origin feed is now the only labelled divergence on that path. So the
+switch is re-paired unchanged: same code, same labelled draw substitute (section 6.1), flipped on a
+clean export of this branch.
+
+### 9.1 Predictions, written before the runs
+
+USN04 4700/4500, reference environment, same-binary OFF/ON pair.
+
+1. **Mechanism.** One `hull_aim draw` line per (attacker, target) pair, never a second one for the
+   same pair (the `+104h` slot is `0042BB20`, always true). Offsets along the hull up to
+   `0.45 x Length`, across up to `0.45 x Width`, up 0 to `0.125 x Height`.
+2. **The fly-over leavers.** The leave is a 0.1-0.2 degree margin against the bearing to the
+   three-second lead point, and at spans of 0-30 m a tens-of-metres move of the point swings that
+   bearing by far more than 0.2 degrees. Prediction: the leaver set is NOT {#1.1|.-2, #1.1|.-4,
+   #5.1|.-4}; which way each goes is not predicted. Leavers that remain still miss by under one
+   degree.
+3. **Overshoot at the drop floor.** The aim error is measured against the fed point, so the two
+   overshooters (#3.1, #3.1|.-2) take a different final error. Not predicted to fall under 25 m.
+4. **Releases.** Anti-aircraft deaths in the dive are the dominant loss and the switch does not
+   touch them, so the Val releases stay in 0-4 (OFF: cc9-lua15 measured 1). The earlier collapse
+   to 0 is NOT predicted, since the profile it came from is gone. A collapse again (ON below OFF
+   with the same aircraft alive at the drop floor) is a mechanism failure and keeps the switch OFF.
+5. **Hits.** A released bomb lands within the hull by construction, so every release that hit OFF
+   hits ON, give or take the ship's motion over the fall.
+6. **Torpedoes.** The torpedo `approach_target_point` is fed from the same point; the 2 of 16
+   torpedo releases may move by one either way.
