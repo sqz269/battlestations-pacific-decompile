@@ -606,6 +606,9 @@ private:
     // Packet cc9_scripted_order_natives (kScriptedOrderNativesBound).
     int run_unit_hold_fire(GameScriptOrderRow& row);
     int run_navigator_enable(GameScriptOrderRow& row);
+    int run_pilot_land(GameScriptOrderRow& row);
+    unsigned long long pilot_land_calls_{0};
+    std::size_t pilot_land_tasks_{0};
     unsigned long long hold_fire_null_director_{0};   // 0071BED6 on a null ECX
     unsigned long long turn_ship_arm_posed_{0};       // 008A0DE9 arm
 public:
