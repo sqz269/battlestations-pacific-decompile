@@ -4292,7 +4292,7 @@ struct GameUnitsHost::Impl {
     // refused with the mother-ship holders), the done test 009B21D0, the site
     // calls 006CF420/006CF520/006CF5B0 with 006CE610/006CDF70, the transitions
     // 007C16F0/007C1680 and 007B96C0/007B9000. False: park is refused as before.
-    static constexpr bool kLandParkStateBound = false;
+    static constexpr bool kLandParkStateBound = false;  // OFF: mechanism failure, the park <-> abort loop (5s)
     static constexpr bool kLandingLandedArmBound = true;  // ON: all ten LOMP10 planes land (docs/SQUADRON_LAND_TASK.md 5r)
     static constexpr bool kFollowLeaderTurnRateBound = true;  // ON: mechanism held, spread miss recorded (docs/PLANE_FOLLOW_LAW.md 17.5)
     // True: 009BFC58/009BFCC3's leader vtable[38h] (007B8E60, unit+B1Ch, the

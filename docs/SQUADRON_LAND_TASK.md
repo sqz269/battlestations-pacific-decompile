@@ -2476,6 +2476,66 @@ OFF is the committed tree. ON flips `kLandParkStateBound`.
   - If the turn fails only for lack of the ground steering, park stays OFF and the ground laws
     come next.
 
+### The pair and the verdict (cc9-lua14, 2026-09-29): mechanism failure, park stays OFF
+
+- OFF is `a2551c4a3` as committed (`local\l14_poff_<row>.log`).
+- ON is the same commit exported with `kLandParkStateBound` true (`local\l14_pon`,
+  `local\l14_pon_<row>.log`).
+- **Refactor check:** 5r's ON log against this OFF is gameplay identical (exit 1). Only the new
+  `air ops hangar` line moves.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| LOMP10 9200/9000 | 3 | deaths identical (0) |
+| USN01 3200/3000 | 1, gameplay identical | - |
+
+The scene's hangar is found: `air ops hangar: unit=CB4_AF Hangar 1 object=CB4_AF_Hangar
+entry=CB4_AF_entrypath1 exit=CB4_AF_exitpath1`. The target and the queue origin come out at
+(44.4, -20.6) and z = -20.0, as computed by hand.
+
+**The predictions, one by one.**
+1. **Held.** All ten planes enter park at the think after their touchdown, with `no_hangar=0`.
+   The logged lengths and widths are:
+   - P-40: 10.6 by 12.0;
+   - P-38: 11.6 by 12.0;
+   - B-25: 17 by 21.
+2. **Held for Warhawk 01, failed for the others.**
+   - Warhawk 01 rolls on from -141.5, at 27.6 m/s requested. It slows to the 6.94 m/s request
+     inside 35 m, sets `+910h` at z = -36.6 and joins the path at z = -27.2 (165.21 s).
+   - Lightning 01 enters park with a heading error of 0.236 rad. It gets full right yaw (1.0), yet
+     drifts left: x = -1.7, -6.7, then -11.0 at 171.71 s, with the error growing to 0.73.
+   - It then leaves the 20 m strip, loses contact, and `009B21D0` sets done.
+3. **Mechanism failure.**
+   - On the path Warhawk 01 turns very slowly: its error stays at 1.3 to 1.4 rad for 60 s. It
+     reaches `|dx| < 3` at 225.11 s at local (41.5, -1.0) (`007B96C0`).
+   - It is still simulated, so it drives on (x = 51 at 243 s), leaves the path and falls into the
+     loop below.
+4. **Queueing held.** `spot_refused` is 2 and 5 for two followers.
+5. **Moot.** Every plane leaves the strip.
+
+**The mechanism failure is the park <-> abort loop.**
+- Done sends the plane to abort. Abort's tick head requests throttle 1.0, and its on-ground arm
+  (refused) sets `+21h`, which sends it back to park. Park is done again at once.
+- The planes accumulate 750 to 1400 loops each (`from_abort`). The loops' throttle pulses drive
+  them off the airfield at up to 74 m/s: Lightning 01 is at local z = 700 by 191.7 s and at
+  22 km by the end.
+- There are lift-off requests (111 and 144 on two planes), and one sinks to `min_bfc = -45`.
+
+**Why.** The park reading is not the part that fails. The failure is in what this host lacks
+underneath it:
+1. **The ground steering.** The yaw request reaches the free-flight rate law, because the runway
+   steering band `007DA380` and the rate law's ground arm `007DA542` are not carried (5q). There
+   it does not hold a heading on the ground, and on Lightning 01 it turns the wrong way.
+2. **Abort's on-ground arm** (`009B0E74`-`009B0F93`: pitch `class+1ECh x 0.5` and a ground
+   heading) is refused. Only its throttle 1.0 and `+21h` act.
+3. **`00951F40(0)`**, the hangar's detach and hide, is not carried. A plane in the hangar keeps
+   driving.
+
+**Verdict.** `kLandParkStateBound` stays OFF, recorded as a mechanism failure. The reading
+(the tick, `009B21D0`, the site calls and the scene's hangars) stands and is kept behind the
+switch. Next, in order: the ground laws `007DA380`/`007DA542`, abort's on-ground arm, and
+`00951F40`'s effect on a hidden plane. Then re-pair park.
+
 ## 6. Open, in order
 
 1. **After the touchdown.** Standby, line, begin, final, abort, the launch-site arm, the
@@ -2483,8 +2543,9 @@ OFF is the committed tree. ON flips `kLandParkStateBound`.
    - stage A of the ground roll is ON (5q): a landed plane thinks, brakes and stops. The
      followers no longer abort: they were aborted by the missing landed arm of `006C7960`, not by
      occupancy (5r, ON). All ten LOMP10 planes now land and stop on the runway;
-   - stage B: park's taxi and the site calls (5r: the occupancy has no remover and matters
-     only to `006CF5B0`'s spot test);
+   - stage B: park is read and bound OFF (5s). It failed on what lies under it: the ground
+     steering laws `007DA380`/`007DA542`, abort's on-ground arm `009B0E74`-`009B0F93` (the
+     park <-> abort loop), and `00951F40`'s hide of a plane in the hangar;
    - a landed plane that creeps off the 20 m strip (B-25 01|.-2 at 325.94 s, 5r) loses contact
      and sinks through the ground in free flight: the airfield ground surface (`006CF180`) is not
      modelled, and what pushes a stopped plane sideways is unidentified;
