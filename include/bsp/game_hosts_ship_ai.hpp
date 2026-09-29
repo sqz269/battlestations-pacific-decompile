@@ -137,7 +137,9 @@ inline constexpr bool kShipAiBigLandingShipBound = true;
 // [target+7C4h] LandingRange (FILD at 009E6F4E) has no units-host field yet, so
 // ON the 1Ch query answers false while the latched mode is 4 and that arm keeps
 // its 1000.0 fallback, counted. False: every kind answers false, as before.
-inline constexpr bool kShipAiStandoffTargetKindBound = false;
+// ON by the pairs of 2026-09-29 (section 39): gameplay identical on USN01 and
+// JM16, zero reach on both; the mode-4 arm stays deferred as labelled.
+inline constexpr bool kShipAiStandoffTargetKindBound = true;
 
 class GameHostLog;
 class GameUnitsHost;

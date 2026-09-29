@@ -3270,3 +3270,23 @@ enter the approach with a building target: the approach is not where this host l
    buildings and the unit is no lander, so the latch gives mode 0 and neither `1Ch` arm runs.
 3. **JM16 3200/3000 is gameplay identical**: ship and other targets only.
 4. **Mechanism failure** keeps the switch OFF: any nonzero reach counter, or a move on either row.
+
+### The pairs (cc9-ships13, 2026-09-29)
+
+OFF is this tree at `f72fb98a5` (`local\s13koff_<row>.log`); ON is `pair_export --commit f72fb98a5
+--flip kShipAiStandoffTargetKindBound=true --out local\s13_k` (`local\s13kon_<row>.log`). A
+300-frame USN01 smoke ran first (`local\s13koff_smoke.log`, final COM release).
+
+| row | kind calls | kind_08 / building_mode2 / building_mode4_deferred / small_class | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- |
+| USN01 3200/3000 | 3784 both | 0 / 0 / 0 / 0 both | 1, gameplay identical | 1, 2 held |
+| JM16 3200/3000 | 1740 both | 0 / 0 / 0 / 0 both | 1, gameplay identical | 1, 3 held |
+
+The only moved lines are the switch's own `bound=` field and the ship avoidance refill counter
+(known noise: 107 -> 100 on USN01, 1222 -> 1236 on JM16).
+
+**Verdict: ON.** The binding is read whole except the mode-4 `+7C4h` read, which stays deferred
+and keeps the OFF answer, so ON is never further from the image than OFF. Both rows are gameplay
+identical and the reach is zero, as predicted. When the units lane lands
+`command_building_landing_range_07c4`, drop the mode-4 guard in `StandoffBinding` and re-pair on a
+row with a lander (none is known yet).
