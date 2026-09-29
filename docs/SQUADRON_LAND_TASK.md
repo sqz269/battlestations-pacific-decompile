@@ -3636,3 +3636,130 @@ LABELLED:
   land its planes, `kReturnToBaseSiteKeyBound` stays OFF.
 - It can flip once the SELLING assignment is shown to be the image's, with the pair above as its
   evidence.
+
+## 5ae. Carrier landing decks, part 1: the holder and the run length (packet `cc9_carrier_landing_deck`, cc9-lua19, 2026-09-29)
+
+GAMEPLAY_GAP_RANKING (refresh) #3. `kCarrierLandingDeckBound` (`src/game_hosts_units.cpp`,
+`GameUnitsHost::Impl`) is committed **OFF**.
+
+### The image (read for this packet)
+
+- **The holder.** `007593D0` builds the carrier's holder: `006C0D20` -> `006C0750` with the
+  `runwaycenter` offset (class `+814h`) and `RunwayWidth` / `RunwayLength` (class `+820h` /
+  `+824h`).
+  - `00758E80` re-frames it on every carrier update through `006BEE40`. 5ad has the frame, the
+    inverse, `+88h` = `unit+1050h`, and the T of `006BC960`'s MotherShip arm, (0, 0.5, -L/2 + 10).
+- **The run length**, `006BA620` (`006BA620-006BA65A`, `RET`): `RunwayLength` x 0.3 (`00CE3DC8`)
+  when the owner answers `IsKindOf(9)` (`006BA62F-006BA63D`), otherwise x 0.4 (`00CE65D0`). Each is
+  stored through a float.
+- **The corridor**, `006C3B10`. Its `IsKindOf(9)` at `006C3B98` tests the **plane's** scene parent
+  (`00923810(1)`): a plane already parented to an airfield or carrier answers true.
+  - The corridor's geometry has no MotherShip arm of its own; it reads the holder and `006BA620`.
+  - The parent test belongs to part 2 (touchdown attach, `007C71E0`), and stays labelled.
+- **The other `IsKindOf(9)` sites** found by `local\l19_kind9.py`:
+  - `006BA5F1`: the runway half width, `B0h` whole on a carrier and x 0.5 otherwise. No caller
+    was found by xref or dword scan, so it is left alone.
+  - `006BCD39`: `006BCD20`, the block lookup, where a carrier's block is at `+1188h`.
+  - `006C08FE`: `006C0840`'s own-site arm.
+  - `007B3C1D`, `007C6EBD`, `007C72D3`, `007CB7B7` and `007CC264`: the plane's parent, touchdown
+    and ground-roll arms (part 2).
+  - `009B1E40`, `009B202F` and `009B23E4`: the land/final and approach arms (part 2).
+
+### The binding (part 1)
+
+With the switch ON:
+- `landing_deck_006c0750` builds a mother-ship deck through `carrier_holder_frame_006bee40`
+  (5ad), marks it `mother_ship`, and re-frames it from the carrier's current pose at every later
+  lookup.
+- `landing_run_length_006ba620` answers x 0.3 on a mother-ship deck.
+- Everything downstream runs on the holder as it does for an airfield: the sequencer, corridor,
+  circle, standby, touchdown probe and landed arm.
+
+LABELLED:
+- The re-frame happens at a lookup, not at the carrier's update.
+- A plane that touches down is held at its world touchdown point (the airfield substitution),
+  where the image re-parents it to the moving deck (`007C71E0`, part 2).
+
+The census line is `summary carrier landing decks built=... refreshes=...`.
+
+### Predictions, written before any ON run
+
+**Reach.** Without `kReturnToBaseSiteKeyBound`, no reference row gives a carrier a land task. So
+both sides of the pair flip `kReturnToBaseSiteKeyBound=true`, and the pair measures this switch on
+top of it.
+- JM05 at 3000 and 9000 frames.
+- USN04, USN13 and LOMP10 at 3000 frames as controls. They resolve no carrier land task.
+
+**OFF.** The same as 5ad's ON side: land tasks to the carriers, whose decks are refused, so the
+planes circle over them.
+
+**ON, JM05:**
+- `carrier landing decks built` = 2 (Lexington and Yorktown; the Japanese carriers take no US
+  task).
+- The two decks' landing-sequencer rows show inserts and passes greater than 0, and the queue
+  modes move off 0.
+- Planes fly the corridor to the carrier's T.
+- Some touch down on the deck: the 5k probe answers over the carrier's runway within the 0.3 L
+  corridor.
+  - A plane that touches down is held at its world touchdown point while the carrier steams on.
+  - It then sits behind or beside the ship, which is part 2's gap.
+- Plane paths move (exit 3).
+- Deaths should stay near 5ad's ON side (3), since the strikes were already recalled there.
+
+**Controls.** USN04, USN13 and LOMP10 are gameplay-identical (exit 0/1).
+
+### 5ae.1 Measured (pairs on `cc00545ef`)
+
+**The pair.** Both sides flip `kReturnToBaseSiteKeyBound=true`.
+- OFF is `local\l19_cd0`, SHA-256 prefix `8E54C57F5727`.
+- ON adds `kCarrierLandingDeckBound=true`: `local\l19_cd1`, prefix `80846B49F94F`.
+- The logs are `local\l19_cd{0,1}_<row>.log`, and every run is clean.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | nothing |
+| USN13 3000 | 1, gameplay identical | nothing |
+| LOMP10 3000 | 1, gameplay identical | nothing |
+| JM05 3000 | 3 | plane paths |
+| JM05 9000 | 3 | 18 unit rows (plane paths); plane water contacts 3 -> 4 |
+
+On JM05 9000, deaths (3, the same victims), hits and damage are all identical.
+
+**The mechanism held.**
+- Carrier holders were built and re-framed 486039 times. For Lexington: RunwayWidth 40,
+  RunwayLength 279, T local (0, 0.5, -129.5), heading 1.5708.
+- The US carrier decks now run the sequencer:
+
+  | deck | inserts | passes | hits | landed-arm hits | modes 1 / 2 / 3 / 4 |
+  | --- | --- | --- | --- | --- | --- |
+  | USS Lexington | 15 | 7395 | 6569 | 1461 | 3063 / 794 / 13133 / 2690 |
+  | USS Yorktown | 6 | 3533 | 2339 | 4044 | 540 / 282 / 1787 / 4396 |
+
+- **13 carrier planes touch down on their deck** (touchdowns 15 -> 28), from USS Lexington_sqn03,
+  sqn05 and sqn07 and USS Yorktown_sqn04 and sqn06. For example, Yorktown_sqn04 touches down at
+  218.56 s, deck local (-0.9, -53.2), vy -5.04.
+
+**Spread misses.**
+- Four decks were built, not two: Shokaku and Zuikaku too. The plane-side site probe
+  (`007C5AC0` -> `006C0840`) looks up every deck.
+- **The held plane leaves its deck, as predicted.** The landed plane is held at its world
+  touchdown point. Yorktown_sqn04's contact is lost at 234.26 s at deck local z = 124.49 against a
+  half length of 124: the carrier has steamed out from under it. The one extra water contact
+  belongs to this.
+
+### 5ae.2 Verdict: kept OFF
+
+- Part 1's mechanism is the image's, and carriers now recover planes.
+- It leaves a landed plane hanging where the deck was. The re-parent to the moving deck
+  (`007C71E0` at `007C72D3`) and the ground roll on it (`007CC264`) are part 2.
+- It is also measured only on top of `kReturnToBaseSiteKeyBound`, which is itself OFF pending the
+  SELLING question (5ad.2).
+- So `kCarrierLandingDeckBound` stays OFF until part 2 carries the plane with the deck.
+
+**Part 2, the queue.** Each is an `IsKindOf(9)` site from `local\l19_kind9.py`:
+- `007C71E0` (the touchdown attach, re-parent at `007C72D3`);
+- `007CB5F0` (`007CB7B7`) and the ground roll `007CBFA0` (`007CC264`);
+- `007B3C1D` and `007C6EBD` (the plane's parent and its observed-unit callback);
+- `009B1E30` (`009B1E40`), land/final `009B1ED0` (`009B202F`) and the approach base step
+  `009B22C0` (`009B23E4`);
+- the elevator retirement of 5aa.
