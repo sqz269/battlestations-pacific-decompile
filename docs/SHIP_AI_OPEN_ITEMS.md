@@ -7737,3 +7737,68 @@ Predictions:
   moves a death or unit row.
 - **Still unexercised:** the BSM06 and BSM02 landing waves (`false` on each spawned transport)
   and the siege multiplayer scripts.
+
+## 91. Why JM08's landers never enter mode 3 with the hull-terrain solver ON (packet `cc9_landing_mode3_entry`, cc9-ships23, 2026-09-30)
+
+**Short answer: range is not the problem. The landers are never ordered at the HQ.** With the
+solver ON, the script's invasion trigger never fires, so no lander's approach target is
+`Headquarter 01`. This finding needs no host change; nothing was switched.
+
+### 91.1 What selects mode 3, and from how far
+
+- **The latch** (`009F1F47`, section 26; `ship_ai_approach_mode_latch_009f1f47`) gives mode 3
+  when all four hold:
+  - the target is IsKindOf(1Ch) on another side;
+  - the class lands troops (vtable `+2Ch`);
+  - the unit is IsKindOf(0Ch) and `006F2D90` finds a free pad;
+  - `[target+7C4h] + max(2 * turn radius, 300)` is at least `+11E0h`, the planar distance from
+    the unit to the brain goal `+0B2Ch`.
+- **The goal is the target's own position** (`009DBCC0`). The diagnostic prints
+  `goal == target_pos` on every line.
+- **JM08's `Headquarter 01`** authors `LandingRange = 4000` and `LandingPointRange = 1000`
+  (`prcpijn_08_defend_guadalcanal.scn:5132`, this installation, 2024-08-09 mtime). So an LST
+  enters mode 3 from **4344 m** (reach 343.9) of the HQ at world `(1348.9, -4468.1)`.
+- **Solver OFF** (`s23_b0_jm08x`): LST 01 latches mode 3 at t=700.35 from 2753 m out, the first
+  frame it has the HQ as target. The 230-356 m inland drive of section 84.4 comes after the
+  entry and is not what enabled it.
+- **Solver ON** (`s23_d1_jm08x`): the landers beach within about 1.2 km of the HQ. LST 01's first
+  contact is at `(2261.5, -3677.7)`, 1207 m out, well inside 4344 m. They never latch mode 3
+  because `approach latch ... building=0`: no unit's `+0B20h` target is ever a building.
+
+### 91.2 What was missing: `StartInvasion`
+
+`PRCPJM08.lua` (`COTP-IJN/PRCPIJN/prcpjm08.lua`, 2024-08-26 mtime) wires the HQ order like this:
+- `luaIntroMovieEnd` calls `CheckInvasion`. It re-arms every second until
+  `luaGetShipsAroundCoordinate({0,0,0}, 300, PARTY_ALLIED, "own")` answers non-nil.
+  `commandhelpers.lua:459-463` returns nil for an empty set.
+- Only then does `StartInvasion` issue `NavigatorAttackMove(unit, Mission.HQ)` to the invasion
+  force (both LSTs) and `NavigatorMoveToPos` to the six transports.
+- `JoinFormation(InvasionForce[2..18], Missouri)` at init aims the whole fleet at the origin:
+  Missouri starts at `(0, 6000)` on heading pi with `Command = Cruise`.
+
+The fleet diagnostic (`BSP_LANDER_DIAG=1`, `fleet diag:` every 10 s):
+
+| run | nearest allied ship to the origin | trigger |
+| --- | --- | --- |
+| solver OFF | USTroopTransport 05, 14.2 m at t=720.1 | `StartInvasion` at t=700 s; 8637 LST -> HQ command-target lines |
+| solver ON | USTroopTransport 04, 503.0 m at t=510.1 | never; 0 `NavigatorAttackMove` calls |
+
+- **The pass is incidental in both runs.** The formation leaves Missouri at t=0.05 (the
+  planner's `begin_command`, `0077D1A0 -> 77h`). Missouri wanders to `(-2868, 2305)` and back.
+  Transport 05 reaches the origin only because its OFF track crosses it.
+- **The tracks diverge from t=380 s in open water.** Ground is -1000 and nobody is in contact
+  (`s23_fleetcmp.py`: Gleaves, LSM 01 and Transport 05 first).
+- **What diverges first is the solver's first contact:** `Japanese Patrolboat 01` at t=94.80,
+  `(-86.3, -31.5, -2989.2)`. From there the engagement cascades.
+- **So the trigger is a knife-edge on the fleet's route, not a mode-3 geometry fault.**
+
+### 91.3 Open
+
+- **Whether the image's planner pulls the JoinFormation'd fleet off Missouri at t=0.05.**
+  If the image keeps the formation, Missouri's cruise runs down x = 0 through the origin and
+  `StartInvasion` fires deterministically. That is the next read: the caller of the t=0.05
+  `begin_command` (`00835C70`, UNIMPLEMENTED) and `docs/AI_PLANNERS.md`'s group orders for a
+  side whose ships the script put in formation.
+- **Where the landers beach relative to the pads** matters only after the ramp. The pad
+  approach point is `006AC5D0` from `LandingPointRange` 1000. Not read further here.
+- Diagnostics were added (`997477248`), env-gated: `lander latch diag:` and `fleet diag:`.
