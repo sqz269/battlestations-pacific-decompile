@@ -4883,3 +4883,41 @@ image's airfield plane loops invisibly the way the host's does.
 
 What the hide does change is labelled in the host already (a stowed or hangared plane stays
 targetable here; 5ap notes). A binding for that would be a targeting change, not a park change.
+
+## 5ar. Park as a fidelity verdict: the image loop accepted (packet `cc9_park_verdict`, cc9-lua24, 2026-09-30)
+
+5z, 5aa and 5aq read the image three ways and found nothing that retires a hidden airfield plane.
+The lead's decision: the invisible park <-> abort loop is the image's own behaviour as far as the
+listing shows. Keeping park OFF leaves the rebuild less faithful: carrier planes never reach the
+elevator, and airfield planes never taxi to the hangar. This packet pairs `kLandParkStateBound`
+ON against OFF (the elevator is already ON behind it) and flips park unless the loop visibly
+touches gameplay.
+
+**Build.** Both sides are exports of main `a6680e8bf`: `local\l24_poff` (no flips) and
+`local\l24_pon` (`kLandParkStateBound=true`). The rows are run in the reference launch form with
+`BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+
+**Rows.** These are the landing rows JM05 3200/3000, JM05 9200/9000, LOMP10 3200/3000, LOMP10
+9200/9000 and USN04 4700/4500, plus two controls, USN01 3200/3000 and BSM01 3200/3000.
+
+### Predictions, written before any run
+
+1. **Deaths.** The per-entity death table is identical on every row. The looping planes are
+   airfield planes of the player's side on JM05 and LOMP10. In this host they stay targetable (the
+   image's hidden planes are not; 5aq), so a death that differs would be an enemy shooting a
+   plane that the image has hidden. That would be the one interaction that counts against the
+   flip.
+2. **JM05 9000.** The counts match 5ao.1's ON side:
+   - F4F Wildcat 01 has `from_abort` 220, and MainAirfieldEntity 01_sqn01|.-2 has 672;
+   - Lexington stows 8 of 8;
+   - `pair_diff` returns 3 (positions and the land-task counters move).
+3. **LOMP10 9000.** The planes of 5x loop after their hangar entries: Lightning 01, Warhawk
+   01|.-2/-3/-4, Lightning 01|.-2/-3/-4, and B-25 01 and 01|.-2. `pair_diff` returns 3.
+4. **JM05 3000 and LOMP10 3000.** 1 or 3. The first park entries are late (JM05's first carrier
+   park entry is at 178.76 s), so few loops.
+5. **USN04 4500.** 1 (5ao.1 was gameplay identical with park on at the OFF side).
+6. **Controls.** USN01 and BSM01 return 0 or 1.
+7. **Wandering.** A looping airfield plane ends far from its field (5ao.1: Wildcat 01 at local
+   (-2671, 1368)). If a looping plane comes into range of enemy AA or a ship, it shows up as extra
+   `shots` or hit records against a plane. Those would be host-only interactions (the image's
+   plane is hidden), recorded but not a mechanism failure of park.
