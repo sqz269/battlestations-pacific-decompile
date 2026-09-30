@@ -8271,3 +8271,33 @@ over 2,600 s for all five. The 1800 s row cannot flip it even if every ramp lowe
   begins its own landing (`0074C57C..0074C618` -> `0074A990`).
 - **LST 02's stop after the HQ turns neutral** (with the 86.6 note): what the land step does
   when its building changes party.
+
+## 98. Why LST 02 stops after the HQ turns neutral (packet `cc9_lander_after_neutral`, cc9-ships24, 2026-09-30)
+
+**Short answer: the planner re-joins it, and its pad stays held, so nothing lands it again. No host
+defect was found; nothing was switched.** From `s24_d1_jm08x` (the section 97 ON binary with
+`BSP_LANDER_DIAG=1`):
+
+| t (s) | event |
+| --- | --- |
+| 905.15 | LST 02 begins its landing (94h -> `0074A4C0`, pad 2): state `land`, `d32c` falling |
+| 970.70 | `Headquarter 01 neutralized (prior party=1)` |
+| about 982 | `follow issued ... "LST 02" -> "Macomb"` (log line 188083); state `land` -> `follow` |
+| to 1800 | LST 02 keeps station on Macomb, which holds position with `attackmove` on Japanese AA truck 01 (`navigate_astern`, `dir=stopped`) |
+
+**The chain:**
+- The neutral HQ (party 2) leaves its team-1 group: `00A2DDE0` evicts a member whose `+54h` no
+  longer matches the group's team, and seeding admits only `+54h < 2`. So `HQ+16Ch` is null.
+- The Capture path's `00A1A720` then gives Macomb's group PATROLTO to the HQ's position (the
+  null-`+16Ch` arm; section 70), in place of CLOSEATTACK on the HQ's group.
+- PATROLTO runs the follower pass `00A10DC0` (`00A1565E`), which re-joins LST 02 to Macomb: the
+  image's rule of section 94. The `follow` replaces `land`.
+- `ship+1200h` stays set. Its only writers are the constructor (`0074BB84`), `0074A4C0`
+  (`0074A565`) and `0074A990` (`0074A9B0`) (a `89 ?? 00 12 00 00` scan; the `009E74D0` hits are
+  in the brain, not the ship). So every later 94h from PATROLTO's `00A11B80` answers -8, and the
+  mode-3 latch path also returns at `009F22F7`. The lander holds pad 2, and nothing re-begins it.
+
+**Open (not read):** whether the observer pair on the pad (`006AC490`) or a land-state exit clears
+the lander's side in the image. The scan above says no write to `+1200h` does, but a clear
+through a held pointer (such as `pad+1F8h` only) cannot be excluded without reading `0074B0B0..`
+and the land state's exit.
