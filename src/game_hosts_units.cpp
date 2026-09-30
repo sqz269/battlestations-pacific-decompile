@@ -585,6 +585,9 @@ struct GameUnitSlot {
     enum class TakeoffTaskState : int { kNone = 0, kPrepare = 0x448, kTakeoff = 0x470,
         kSlowTakeoff = 0x490, kParking = 0x4B8 };
     bool takeoff_task_installed{false};
+    // Packet cc9_takeoff_task_head: a land install that waits for the takeoff
+    // task to retire (kTakeoffTaskHeadBound).
+    bool land_install_waits_for_takeoff{false};
     TakeoffTaskState takeoff_state{TakeoffTaskState::kNone};
     // approach+2Ch, 009CFA80's altitude floor; +30h the margin (15.0 00CE5380,
     // 25.0 00CE89CC for IsKindOf(10h)); +34h the plane's y at the install when
@@ -2404,6 +2407,8 @@ struct GameUnitsHost::Impl {
     bool carrier_site_permission_006d01c0(LandingDeck& d, const GameUnitSlot& p);
     unsigned long long takeoff_installs{0}, takeoff_parking_refused{0};
     unsigned long long takeoff_done{0}, takeoff_to_slow{0}, takeoff_to_run{0};
+    // Packet cc9_takeoff_task_head.
+    unsigned long long land_installs_deferred{0}, land_installs_after_takeoff{0};
     unsigned long long takeoff_permission_asks{0}, takeoff_permission_denied{0};
     bool carrier_elevator_blocked_006d02f0(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
@@ -10333,6 +10338,19 @@ GameUnitsHost::Impl::LandTaskCensus& GameUnitsHost::Impl::land_census_for(
 //    land/park, 009B32BA, which is unbound), and a dead plane.
 void GameUnitsHost::Impl::install_land_task_0099a3dd(std::size_t unit_index) {
     if (unit_index >= slots.size()) return;
+    if constexpr (kTakeoffTaskHeadBound) {
+        // Packet cc9_takeoff_task_head. The takeoff task is the head of bot+58h,
+        // so 0099A170 builds no command task until it retires (0099A4C0 ->
+        // 0099A5EB). SUBSTITUTION, labelled: the delivery is remembered and the
+        // install runs at the takeoff task's done arm, from the command current
+        // then (the delivery was `returntobase`; a later non-land order that
+        // arrives in between is not re-checked).
+        if (slots[unit_index] && slots[unit_index]->takeoff_task_installed) {
+            if (!slots[unit_index]->land_install_waits_for_takeoff) ++land_installs_deferred;
+            slots[unit_index]->land_install_waits_for_takeoff = true;
+            return;
+        }
+    }
     const bsp::PlaneSquadronHostRecord* sq =
         bsp::plane_squadron_registry().find_by_member_unit(unit_index);
     if (sq == nullptr) return;
@@ -24635,6 +24653,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(avoid_len(unit_.plane_world_velocity)));
                             unit_.takeoff_task_installed = false;
                             unit_.takeoff_state = TS::kNone;
+                            if (kTakeoffTaskHeadBound && unit_.land_install_waits_for_takeoff) {
+                                // 0099A4C0 retires the head; with the list empty it
+                                // tail-jumps to 0099A170, which builds `land` from
+                                // the squadron's returntobase (0099A22A).
+                                unit_.land_install_waits_for_takeoff = false;
+                                ++owner_.land_installs_after_takeoff;
+                                owner_.install_land_task_0099a3dd(unit_.process_index);
+                            }
                         }
                         owner_.done("BotTaskTakeoff::tick", 0x009cfd70u);
                     }
@@ -26004,7 +26030,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // Packet cc9_land_task_reach: 009998FB calls the one
                             // installed task's vtable[64h]; a plane flying `land`
                             // runs that arm and no attack arm.
-                            if (kSquadronLandTaskBound && unit_.land_task_installed) {
+                            if (kTakeoffTaskHeadBound && kBaseLaunchChainBound
+                                    && unit_.takeoff_task_installed) {
+                                // Packet cc9_takeoff_task_head: 00999F50 put the
+                                // takeoff task at the head of bot+58h, and only the
+                                // head is ticked (0099AE89).
+                                run_takeoff_task_tick_009cfd70(elapsed);
+                            } else if (kSquadronLandTaskBound && unit_.land_task_installed) {
                                 run_land_task_tick_009b3eb0(elapsed);
                             } else if (kBaseLaunchChainBound && unit_.takeoff_task_installed) {
                                 // Packet cc9_takeoff_task_bind: the takeoff task is
@@ -29902,6 +29934,11 @@ void GameUnitsHost::report() {
             "009CFD70, packet cc9_takeoff_task_bind)", host.takeoff_installs,
             host.takeoff_parking_refused, host.takeoff_to_slow, host.takeoff_to_run,
             host.takeoff_done, host.takeoff_permission_asks, host.takeoff_permission_denied);
+        if constexpr (kTakeoffTaskHeadBound) {
+            host.log.notef("summary takeoff task head: land_deferred=%llu land_after_takeoff=%llu "
+                "(00999F50 / 0099AE89 / 0099A4C0 -> 0099A170, packet cc9_takeoff_task_head)",
+                host.land_installs_deferred, host.land_installs_after_takeoff);
+        }
         for (const auto& s : host.slots) {
             if (!s || s->takeoff_installs == 0) continue;
             host.log.notef("summary takeoff member %s: installs=%llu state=%X installed_at=%.2f "
