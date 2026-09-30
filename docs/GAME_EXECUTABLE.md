@@ -13693,3 +13693,70 @@ Each variant was turned OFF alone and read with `pair_diff` against u on the fou
     772 -> 786, shots 953 -> 1012 come from `sol`).
   - **`land`:** predicted "at most JM08 long"; it has no reach at all.
 - Nothing flipped during these runs, so reference v starts from main after this merge.
+
+## Mission reference baselines, 2026-09-30 v (main 16d01094e)
+
+Packet `cc9_reference_rebaseline_22`, worker cc9-gunnery20. The base is main `16d01094e`
+(2026-09-30 18:14 UTC). The report will be `reports/cc9_reference_rebaseline_22.json`. Anything
+flipped on main during these runs belongs to w.
+
+### Predictions (written before any run)
+
+**The switch diff.** Two checks over `7f622dde6..16d01094e`:
+- `local\g20_switches.py`;
+- the loose `git diff` over added and removed `constexpr bool k... = true|false` lines in `src`
+  and `include`.
+
+They agree: **eleven switches are newly ON**, and none is newly OFF.
+
+| short | switch(es) | record | predicted rows moved against u |
+| --- | --- | --- | --- |
+| `lch` | `kBaseLaunchChainBound` + `kBaseLaunchBrakeBound` + `kPlaneDesc158Bound` + `kTakeoffTaskHeadBound` (the brake, desc+158h and the takeoff head are staged on the chain) | SQUADRON_LAND_TASK 5bh, 5bj, 5bk, 5bl | JM05, JM05 long, USN04, E2, USN13 |
+| `brk` | `kBaseLaunchBrakeBound` alone | 5bj | re-timings only on the launch rows |
+| `d158` | `kPlaneDesc158Bound` alone | 5bk | USN04 re-timings; JM05 long park counts |
+| `head` | `kTakeoffTaskHeadBound` alone | 5bl | JM05, JM05 long |
+| `fjl` | `kFormationJoinLoopbackBound` | SHIP_AI 92.5 | JM08 long (25 -> about 168), USN13, USNOS, USNOS long, USN12, USN02, USN01, LOMP10, LOMP10 long, JM05, JM05 long, JM08 |
+| `pjl` | `kPlannerJoinLoopbackBound` | SHIP_AI 94.4 | USNOS, USNOS long, JM08 long |
+| `atm` | `kAiGroupTransportMovesBound` | SHIP_AI 96.4 | USNOS, USNOS long |
+| `nsa` | `kNavigatorShipAvoidanceDeliveryBound` | SHIP_AI 90.2 | none (only USN16 calls it) |
+| `hull` | `kHullTerrainDynHullVerticesBound` + `kHullTerrainNativeTerrainTestBound` + `kHullTerrainBodyPairManifoldBound` | GUNNERY 86.4, 87.4 | USNOS long, USN13, IJN01, JM05, JM08 long |
+
+**Rows:** u's eighteen in u's launch form (`local\g20_runs.ps1`), 1600x900.
+
+**Predicted moved against u (fifteen):** USN04, E2, USN01, USN02, JM08, USN13, LOMP10, JM05,
+USN12, LOMP10 long, USNOS, USNOS long, IJN01, JM05 long and JM08 long.
+**Predicted gameplay-identical (exit 0 or 1): BSM01, JM06, LOMP06.**
+
+The weakest calls:
+- **JM08:** the formation pair ran only the 36000-frame row; its t=0.05 joins exist from the
+  start, so JM08 should move too.
+- **JM06:** a control on the formation pair, and exit 1 on the hull pairs.
+
+**Headline predictions:**
+- **JM08 long:** deaths 25 -> about 168. The fleet stays on Missouri, `StartInvasion` runs, and
+  base objects die (SHIP_AI 92.5). Under the hull solver the landers still stop at the beach;
+  whether mode 3 latches is not predicted.
+- **USN04 and E2:** one more fighter death each (49 -> about 50, 51 -> about 52); launched
+  members lift off from decks.
+- **LOMP10:** 7 -> about 3 deaths (the formation pair).
+- **USNOS:** about 106. **USN13:** about 23.
+- **JM05 and JM05 long:** death tables within one row.
+- **USN12, USN02, USN01:** death tables identical or re-timed.
+
+**All-OFF anchor:** with the eleven OFF (`local\g20_rv0`), `16d01094e` is gameplay-identical to u
+(exit 0 or 1 against `g20_ru_<row>`) on all eighteen rows.
+
+**Leave-one-out.** Each variant above OFF alone against v on the rows v moves
+(`local\g20_lane.ps1`, logs `local\g20_v_<v>_<row>.log`). Predicted:
+- `fjl` attributes JM08 long, LOMP10 and USN12;
+- `lch` attributes USN04, E2 and the JM05 launch moves;
+- `hull` attributes IJN01;
+- `atm` attributes part of USNOS;
+- `nsa` moves nothing;
+- `brk`, `d158` and `head` move at most re-timings.
+
+**Run parameters:**
+- Clean `tools/pair_export.py --commit 16d01094e` exports: `local\g20_rv` (no flip) and
+  `local\g20_rv0` (the eleven `=false`).
+- `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player.
+- A 300-frame USN01 smoke first.
