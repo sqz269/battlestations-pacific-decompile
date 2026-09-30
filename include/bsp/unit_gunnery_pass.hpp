@@ -87,9 +87,10 @@ inline constexpr int kUnitGunneryCandidateCapacity = 0x50;
 // step 3 runs at most once every ten calls.
 inline constexpr int kUnitGunneryBridgeForcePeriod = 0x0A;
 
-// The distance penalty 00863A6B adds to a plane that has no follow target,
-// read from the double at 00D7A220.
-inline constexpr float kUnitGunneryLoiteringPlanePenalty = 100.0f;
+// The distance penalty 00863A6B adds to a plane that is its flight's leader
+// (007B8AD0: plane+9D8h, its slot in the squadron member array, is 0),
+// read from the double at 00D7A220. docs/AA_LETHALITY_AUDIT.md section 12.
+inline constexpr float kUnitGunneryFlightLeaderPenalty = 100.0f;
 
 // The category the torpedo group owns, singled out three times in the tick
 // (008651B4, 008651F5, 00865809).
@@ -309,12 +310,12 @@ bool weapon_sub_type_wants_target_record_00865838(int weapon_sub_type) noexcept;
 std::size_t bot_slot_for_projectile_kind_00729bc0(int projectile_kind,
                                                   int weapon_sub_type) noexcept;
 
-// 00863A34. The per-category range gate, and 00863A4F's loitering-plane penalty.
+// 00863A34. The per-category range gate, and 00863A4F's flight-leader penalty.
 struct GunneryScoreInputs {
     float distance = 0.0f;
     float category_range = 0.0f;   // unit+430h + category*4
     bool target_is_plane = false;
-    bool target_lacks_follow_target = false; // 007B8AD0
+    bool target_is_flight_leader = false; // 007B8AD0, plane+9D8h == 0
 };
 struct GunneryScoreResult {
     bool accepted = false;
