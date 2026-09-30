@@ -202,6 +202,14 @@ bool read_mmod_hull_convex_box(const std::vector<std::uint8_t>& mmod_bytes,
             out.shape_points.push_back(box.pts);
         }
     }
+    // Packet cc9_hull_fort_contact: 007482B0 takes every pair, whatever its node.
+    for (std::size_t record = 0; record != records.size(); ++record) {
+        for (const std::uint32_t index : records[record]) {
+            const auto found = convex.find(index);
+            if (found == convex.end() || found->second.points == 0) continue;
+            out.all_shape_points.push_back(found->second.pts);
+        }
+    }
     if (out.shape_count != 0) {
         out.min = OceanVec3{lo[0], lo[1], lo[2]};
         out.max = OceanVec3{hi[0], hi[1], hi[2]};

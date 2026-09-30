@@ -7397,3 +7397,133 @@ when `kArtilleryGroundOriginAimBound` flips ON? Docs only; no host defect was fo
   max_range 3300) from 39.00 s until it dies at 76.00 s, and fires one round in that window
   (48.65 s, fate 5). Whether the range or arc gate refuses the origin at that distance is not
   traced.
+
+## 96. Hull-fort contact: 007482B0's static bodies (packet `cc9_hull_fort_contact`, cc9-gunnery22)
+
+Section 94.2 item 1, and 89.2 step 3. The flow of `007482B0` was repaired in `f0ee5e80e`. The
+11 remaining "unreachable" warnings are the checked-iterator range tests calling `00BF6713`.
+
+### 96.1 The read
+
+**Who calls it.**
+- `007482B0` is `MLandFort vtable[0A0h]` (the dword at `00CFF498`).
+- `MCommandBuilding`'s slot `0A0h` is `006F2780` (the dword at `00CFB0C8`), which calls
+  `007482B0` first (`006F2783`).
+- There are no other callers. This is exactly query kind `1Bh`, `kUnitKindQueryLandStructure`.
+- `MLandVehicle`'s slot is `0074D800`.
+
+**The body.**
+- It exists when the shape list is not empty (`uStack_5C != 0`). Otherwise `unit+754h = 0`.
+- Its frame is the unit's world matrix: `00C336C0` on `unit+CCh`, after a parent refresh when
+  `unit+C8h` is clear.
+- The descriptor flags get bit 0 (`uStack_7C |= 1`) and the userdata is the unit.
+- `00C5D580` creates it, and the handle goes to `unit+754h`.
+- Only the destructor `00745AA0` destroys it (`00745B2D..00745B41`, `00C34F70`). No death path
+  touches `+754h`: its only other disp32 reader, in `00824B60`, belongs to the ship class. So a
+  wrecked fort keeps its body.
+
+**The shapes.**
+- `0074856B..007488A2` walks the model instance's `+4Ch` list (`unit+360h -> +160h`, through
+  `00476B90`; 8-byte `{item, node}` pairs, as `0071B710` appends them). **There is no node
+  filter**; the hull's walk keeps only the firstnode, root, front and back owners.
+- Per pair it pushes the template (`00748150`, a `vector<48h>::push_back`) and edits the back
+  element:
+
+  | offset | value | where |
+  | --- | --- | --- |
+  | `+04h` friction | 1.0 (`[00D7A24C]`) | `007486DD` |
+  | `+14h` hull | `&item+0Ch` | `00748720` |
+  | `+08h` group | 1 | `00748764` |
+  | `+0Ch` mask | `0Dh` | `007487A9` |
+  | `+10h` kind | 4 (the template) | `007485F4` |
+  | `+00h` restitution | 0 (the template) | - |
+  | `+18h..+44h` local frame | the template's identity rotation and zero translation | `00748626..00748689` |
+
+- The element's address goes into the body descriptor's shape list. `00747CC0(1Eh)` reserves 30
+  elements first, so a longer list would reallocate under the stored addresses. The census
+  counts such forts; none were seen.
+- **The fort does not add the centre back.** `006FAD70` builds the Dyn hull at `item+0Ch` from
+  the points minus their box centre (`006FAEA0`; the centre is kept at `item+14h`). The ship
+  hull adds that centre as the shape translation (`00939458..0093947A`, into descriptor
+  `+3Ch`). `007482B0` leaves `+3Ch..+44h` at zero, so a fort's shapes sit centred on the fort
+  origin. **Uncertainty:** read from the listing only; no image run confirms the placement.
+
+**Which forts have shapes.**
+- ConvexObjects are rare in this installation's structure models: 17 of 297 under
+  `models/structures` carry the chunk tag. They are piers (`molo`, `hatszogmolo`), boathangars,
+  a bridge, the underwater net and the floating debris models (`vizen_lebego_dolgok`).
+- Buildings, bunkers, hangars and the static planes have none, so they get no body.
+- `models/vehicles` has none. All 239 ship models do.
+
+### 96.2 The binding (`2e8fcbc96`, committed OFF)
+
+- **`kHullFortContactBound`** (`include/bsp/hull_terrain_contact.hpp`). The units host gives each
+  kind-1Bh unit a static `FortWorldEntry` the first step its world matrix is valid and its class
+  Mesh has a ConvexObject. The frame is fixed there, and the shapes are every ConvexObject in
+  record order (`MmodHullConvexBox::all_shape_points`).
+- `HullTerrainContactSolver::world_step` then runs `00C44090` on each (fort, hull) pair whose
+  world boxes meet: `00C535E0` on the kind-4 records (`fort_convex`).
+  - With the switch ON, the hit goes through `00C3F760` into one manifold per body pair.
+  - The fort is body A and static: handle 1 in `00C4B610`, solver index 0, and its own frame in
+    the row build.
+  - The manifold's friction is combine(1.0, hull), its restitution 0, and it joins the hull's
+    group and solve.
+  - With the switch OFF, the narrow phase is a census only.
+- **Log lines.** `fort shapes <unit> (...)` per class, `hull fort contact census:` per pair, and
+  `summary hull fort contact ...`.
+- **Labelled substitutions:**
+  - the world-box broad phase and the shape order (as the hull pairs);
+  - the fort taken as body A;
+  - no contact event for a fort pair (`009377E0` finds no `other`, section 92; the fort's own
+    listener is not read);
+  - the body is created at the host's first placed step, not at `vtable[0A0h]`.
+
+### 96.3 OFF census and predictions (written before any ON run)
+
+**OFF census** (this tree's build of `2e8fcbc96`, `local\g22_c0_<row>`, exit 0):
+- **IJN01:** 9 forts with shapes (the Pearl Harbor BBRow piers, `hatszogmolo.mmod`, one shape of
+  30 points each). There are 4888 near pairs and 431 hits over 397 steps. The pairs are
+  Whitney (CargoShip 234, navigating) against Pier 03 (first world step 2517, t = 125.9 s, 317
+  steps, deepest 12.65 m), Pier 04 (2826, 61 steps, 0.60 m) and Pier 05 (2982, 19 steps,
+  7.88 m).
+- **BSM01:** 9 forts and 21000 near pairs, but no hit.
+- **USNOS 2, JM08 1, USN13 1, JM05 10, JM06 4, LOMP06 20, LOMP10 6** forts with shapes; none
+  near a hull.
+- **USN01, USN12, USN04, USN02:** no fort with a shape.
+
+**Predictions** for the flip (`local\g22_f1`) against OFF (`local\g22_f0`):
+- **IJN01: exit 3.** Everything is identical to world step 2517 (t = 125.85 s). From there
+  Whitney is held off Pier 03 instead of passing through it. Its path, heading and speed move
+  after that step, and it may never reach Piers 04 and 05. Nothing before 125.85 s moves.
+- **Every row whose OFF census has no fort hit** (the 17 other reference rows, the long ones
+  judged by their own OFF log): exit 0 or 1.
+- **Mechanism failure:**
+  - IJN01 moving before 125.85 s;
+  - Whitney's ON contact deepening over steps as OFF (the fort not holding it);
+  - a row with no fort hit moving.
+
+### 96.4 The pair, and the flip
+
+**`local\g22_f1` (the flip, `2e8fcbc96`) against `local\g22_f0` (OFF),** both exports of the same
+commit. All 38 runs finished with `lost_polls=0`.
+
+| row | exit | fort hits OFF -> ON |
+| --- | --- | --- |
+| IJN01 | 3 | 431 -> 292 |
+| the other 18 rows (USN04, E2, USN01, USN02, JM06, JM08, USN13, BSM01, LOMP06, LOMP10, JM05, USN12, USNOS, LOMP10 long, USNOS long, JM05 long, USN13 long, JM08 long) | 1 | 0 -> 0 |
+
+- **IJN01, the mechanism.** The first diverging `ship ai step` line is step 2520, Whitney's
+  target heading 2.9400 -> 2.9420. That is three steps after the first fort hit (world step
+  2517, the same in both runs).
+  - Pier 03 now holds Whitney: 292 contact steps with the deepest hit 0.019 m, against 12.648 m
+    OFF.
+  - Whitney never reaches Piers 04 and 05 (census pairs 3 -> 1).
+- **IJN01, the gameplay.** Deaths, hit records, hull hits, damage and the death rows are
+  identical. Whitney fires one shot fewer (76 -> 75, total 2959 -> 2958). The rest is AI and
+  path counters moved by Whitney's changed track.
+- **Prediction:** matched on every row, and the mechanism is as predicted.
+- **Flipped ON:** `kHullFortContactBound`, for reference W.
+- **Not covered:**
+  - forts without ConvexObjects (every building) still have no body; that is the image's
+    reading;
+  - debris (`00447510`, section 94.2 item 2) is the next body family.

@@ -1,5 +1,6 @@
 #include "bsp/hull_terrain_contact.hpp"
 
+#include <array>
 #include <cmath>
 #include <cstdio>
 #include <cstdlib>
@@ -61,6 +62,10 @@ struct HullTerrainContactSolver::Manifold {
     unsigned long long serial{0};  // creation order: the scene's manifold list (LABELLED)
     float friction{0.0f};          // manifold +0h, written by 00C44090 on every hit
     float restitution{0.0f};       // manifold +4h
+    // Packet cc9_hull_fort_contact: a fort manifold's static body A has the fort's frame
+    // (rows, translation), not the terrain's identity; the row build reads it.
+    bool static_frame{false};
+    float frame_a[12]{};
     Manifold() {
         const float r0[3] = {1.0f, 0.0f, 0.0f}, r1[3] = {0.0f, 1.0f, 0.0f},
                     r2[3] = {0.0f, 0.0f, 1.0f}, p[3] = {0.0f, 0.0f, 0.0f};
@@ -91,6 +96,11 @@ void HullTerrainContactSolver::forget(std::size_t unit) {
         if (it->first.first == unit || it->first.second == unit) it = pair_manifolds_.erase(it);
         else ++it;
     }
+    for (auto it = fort_manifolds_.begin(); it != fort_manifolds_.end();) {
+        if (it->first.first == unit || it->first.second == unit) it = fort_manifolds_.erase(it);
+        else ++it;
+    }
+    fort_boxes_.erase(unit);
 }
 
 
@@ -897,8 +907,202 @@ void HullTerrainContactSolver::hull_hull_census(std::vector<HullWorldEntry>& hul
     hull_hull_narrow_phase(hulls, false);
 }
 
+// Packet cc9_hull_fort_contact. The record 00C57F50 builds from one of 007482B0's descriptors:
+// as hull_convex, but friction 1.0 ([00D7A24C] at 007486DD) and the local frame identity with
+// a ZERO translation (the template's +18h..+44h at 00748626..00748689, which the loop never
+// overwrites), so the 00C5DEB0 hull of the re-centred points sits on the fort origin. +4 is
+// the fort body's 3x4, fixed at creation.
+HullTerrainContactSolver::HullShape* HullTerrainContactSolver::fort_convex(
+    std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw,
+    const float frame[12]) {
+    HullShape& h = hull_shape(unit, shape, raw);
+    if (!h.handle || !h.handle->data || h.handle->data->vertex_count == 0) return nullptr;
+    if (!h.convex_ready) {
+        game::GameNativeDynProcess& process =
+            game::game_native_dyn_process(game::application_camera_axes_crt());
+        std::memset(h.convex, 0, sizeof(h.convex));
+        const void* table = process.body_creation().convex_shape_vtable;
+        const std::uint32_t kind = 4, group = 1, mask = 0x0D;
+        const float restitution = 0.0f, friction = 1.0f;
+        const void* mesh = h.handle->data;
+        const float local[12] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                                 0.0f, 0.0f, 0.0f};
+        std::memcpy(h.convex + 0x00, &table, sizeof(table));
+        std::memcpy(h.convex + 0x08, &kind, 4);
+        std::memcpy(h.convex + 0x24, &restitution, 4);
+        std::memcpy(h.convex + 0x28, &friction, 4);
+        std::memcpy(h.convex + 0x2C, &group, 4);
+        std::memcpy(h.convex + 0x30, &mask, 4);
+        std::memcpy(h.convex + 0x34, local, sizeof(local));
+        std::memcpy(h.convex + 0x210, &mesh, sizeof(mesh));
+        dyn_convex_shape_local_bounds_00c57c40(*reinterpret_cast<DynConvexShapeStorage*>(h.convex));
+        std::memcpy(h.body + 0x08, frame + 0, 12);
+        std::memcpy(h.body + 0x14, frame + 3, 12);
+        std::memcpy(h.body + 0x20, frame + 6, 12);
+        std::memcpy(h.body + 0x2C, frame + 9, 12);
+        const void* owner = h.body;
+        std::memcpy(h.convex + 0x04, &owner, sizeof(owner));
+        h.convex_ready = true;
+    }
+    return &h;
+}
+
+// 00C44090 for every (fort, hull) pair the broad phase would hand it, with the same LABELLED
+// substitutions as the hull pairs (a world-box test widened by 0.1 m; shape order) and body A
+// taken as the fort (the terrain's place: the SAP pair order is not read). No contact event
+// is queued: 009377E0 finds no `other` for a fort (section 92, not IsKindOf(6)), and the
+// fort's own listener is not read.
+void HullTerrainContactSolver::hull_fort_narrow_phase(std::vector<HullWorldEntry>& hulls,
+                                                      const std::vector<FortWorldEntry>& forts,
+                                                      bool apply) {
+    constexpr std::uint32_t kGroup = 1, kMask = 0x0D;
+    if (!dyn_shapes_overlap_filter(kGroup, kMask, kGroup, kMask)) return;
+    if (hulls.empty() || forts.empty()) return;
+    const auto world_box = [](const float f[12], const std::vector<OceanVec3>& local,
+                              FortBox& b) {
+        for (const OceanVec3& v : local) {
+            for (int k = 0; k < 3; ++k) {
+                const float w = f32(static_cast<double>(f[9 + k]) + f[k] * v.x +
+                                    f[3 + k] * v.y + f[6 + k] * v.z);
+                if (w < b.lo[k]) b.lo[k] = w;
+                if (w > b.hi[k]) b.hi[k] = w;
+                b.ok = true;
+            }
+        }
+    };
+    const auto empty_box = [] {
+        FortBox b;
+        b.ok = false;
+        for (int k = 0; k < 3; ++k) { b.lo[k] = 3.402823466e+38f; b.hi[k] = -3.402823466e+38f; }
+        return b;
+    };
+    std::vector<FortBox> hull_boxes(hulls.size());
+    std::vector<std::array<float, 12>> hull_frames(hulls.size());
+    for (std::size_t i = 0; i < hulls.size(); ++i) {
+        hull_boxes[i] = empty_box();
+        body_frame(*hulls[i].body, hull_frames[i].data());
+        for (std::size_t s = 0; s < hulls[i].shapes->size(); ++s) {
+            world_box(hull_frames[i].data(),
+                      hull_shape(hulls[i].unit, s, (*hulls[i].shapes)[s]).vertices,
+                      hull_boxes[i]);
+        }
+    }
+    game::GameNativeDynProcess& process =
+        game::game_native_dyn_process(game::application_camera_axes_crt());
+    DynGeneralConvexIntersectStorage& owner = process.general_convex_owner();
+    const CameraAxesCrtAccess& crt = game::application_camera_axes_crt();
+    for (const FortWorldEntry& fort : forts) {
+        if (fort.shapes == nullptr) continue;
+        auto fb = fort_boxes_.find(fort.unit);
+        if (fb == fort_boxes_.end()) {
+            FortBox box = empty_box();
+            for (std::size_t s = 0; s < fort.shapes->size(); ++s) {
+                HullShape& h = hull_shape(fort.unit, s, (*fort.shapes)[s]);
+                std::vector<OceanVec3> local;
+                local.reserve(h.vertices.size());
+                for (const OceanVec3& v : h.vertices) {
+                    local.push_back(OceanVec3{f32(static_cast<double>(v.x) - h.centre[0]),
+                                              f32(static_cast<double>(v.y) - h.centre[1]),
+                                              f32(static_cast<double>(v.z) - h.centre[2])});
+                }
+                world_box(fort.frame, local, box);
+            }
+            fb = fort_boxes_.emplace(fort.unit, box).first;
+            if (!forts_seen_[fort.unit]) {
+                forts_seen_[fort.unit] = true;
+                ++census_.forts;
+                census_.fort_shapes += fort.shapes->size();
+                if (fort.shapes->size() > 0x1E) ++census_.forts_over_reserve;
+            }
+        }
+        const FortBox& a = fb->second;
+        if (!a.ok) continue;
+        for (std::size_t j = 0; j < hulls.size(); ++j) {
+            const FortBox& b = hull_boxes[j];
+            if (!b.ok) continue;
+            bool overlap = true;
+            for (int k = 0; k < 3 && overlap; ++k) {
+                overlap = a.lo[k] - 0.1f <= b.hi[k] && b.lo[k] - 0.1f <= a.hi[k];
+            }
+            if (!overlap) continue;
+            ++census_.fort_pairs_near;
+            HullWorldEntry& eb = hulls[j];
+            const float* frame_b = hull_frames[j].data();
+            int pair_hits = 0;
+            float pair_depth = -3.402823466e+38f;
+            for (std::size_t sa = 0; sa < fort.shapes->size(); ++sa) {
+                HullShape* ha = fort_convex(fort.unit, sa, (*fort.shapes)[sa], fort.frame);
+                if (ha == nullptr) continue;
+                for (std::size_t sb = 0; sb < eb.shapes->size(); ++sb) {
+                    HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction,
+                                                *eb.body);
+                    if (hb == nullptr) continue;
+                    ++census_.fort_shape_tests;
+                    alignas(16) std::uint8_t result[4 + 8 * 36]{};
+                    if (!dispatch_native_dyn_general_convex_00c535e0(owner, result, ha->convex,
+                            fort.frame, hb->convex, frame_b, crt)) {
+                        continue;
+                    }
+                    std::int32_t n = 0;
+                    std::memcpy(&n, result, 4);
+                    const float* c = reinterpret_cast<const float*>(result + 4);
+                    for (std::int32_t k = 0; k < n; ++k, c += 9) {
+                        ++census_.fort_hits;
+                        ++pair_hits;
+                        double wa[3], wb[3];
+                        for (int q = 0; q < 3; ++q) {
+                            wa[q] = static_cast<double>(fort.frame[9 + q]) + fort.frame[q] * c[0] +
+                                    fort.frame[3 + q] * c[1] + fort.frame[6 + q] * c[2];
+                            wb[q] = static_cast<double>(frame_b[9 + q]) + frame_b[q] * c[3] +
+                                    frame_b[3 + q] * c[4] + frame_b[6 + q] * c[5];
+                        }
+                        const float depth = f32((wa[0] - wb[0]) * c[6] + (wa[1] - wb[1]) * c[7] +
+                                                (wa[2] - wb[2]) * c[8]);
+                        if (depth > pair_depth) pair_depth = depth;
+                        if (!apply) continue;
+                        auto& slot = fort_manifolds_[{fort.unit, eb.unit}];
+                        if (!slot) {
+                            slot = std::make_unique<Manifold>();
+                            slot->unit_a = Manifold::kStatic;
+                            slot->unit_b = eb.unit;
+                            slot->serial = ++manifold_serial_;
+                            slot->static_frame = true;
+                            std::memcpy(slot->frame_a, fort.frame, sizeof(slot->frame_a));
+                            slot->terrain.set_pose(fort.frame + 0, fort.frame + 3,
+                                                   fort.frame + 6, fort.frame + 9);
+                        }
+                        Manifold& m = *slot;
+                        m.friction = dyn_combine_friction(1.0f, eb.friction);
+                        m.restitution = dyn_combine_restitution(0.0f, 0.0f);
+                        m.hull.set_pose(eb.body->row0, eb.body->row1, eb.body->row2,
+                                        eb.body->position);
+                        if (!dyn_contact_normal_is_unit(c + 6)) ++census_.rejected_normal;
+                        float in[9];
+                        std::memcpy(in, c, sizeof(in));
+                        insert_native_dyn_contact_00c3f760(m.bytes, in);
+                    }
+                }
+            }
+            if (pair_hits > 0) {
+                ++census_.fort_hit_steps;
+                if (pair_depth > census_.fort_max_depth) census_.fort_max_depth = pair_depth;
+                HullPairCensus& pc = fort_pairs_[{fort.unit, eb.unit}];
+                if (pc.steps == 0) pc.first_step = census_.world_steps;
+                ++pc.steps;
+                if (pair_depth > pc.max_depth) pc.max_depth = pair_depth;
+            }
+        }
+    }
+}
+
 void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, float dt,
                                           bool hull_hull) {
+    world_step(hulls, {}, dt, hull_hull, false);
+}
+
+void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
+                                          const std::vector<FortWorldEntry>& forts, float dt,
+                                          bool hull_hull, bool hull_fort) {
     ++census_.world_steps;
     std::map<std::size_t, HullWorldEntry*> by_unit;
     for (HullWorldEntry& e : hulls) {
@@ -941,6 +1145,25 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, fl
             ++it;
         }
     }
+    // Packet cc9_hull_fort_contact: the fort manifolds (fort, hull); the fort's pose is fixed.
+    std::map<std::size_t, bool> fort_live;
+    for (const FortWorldEntry& f : forts) fort_live[f.unit] = true;
+    for (auto it = fort_manifolds_.begin(); it != fort_manifolds_.end();) {
+        const auto fh = by_unit.find(it->first.second);
+        Manifold& m = *it->second;
+        const bool live = fh != by_unit.end() && fort_live.count(it->first.first) != 0;
+        if (live) {
+            const DynBody& b = *fh->second->body;
+            m.hull.set_pose(b.row0, b.row1, b.row2, b.position);
+            refresh_native_dyn_manifold_00c4b9b0(m.bytes);
+        }
+        if (!live || m.count() <= 0) {
+            ++census_.retired;
+            it = fort_manifolds_.erase(it);
+        } else {
+            ++it;
+        }
+    }
     // The narrow phase: terrain per hull (section 87), then the hull pairs.
     for (HullWorldEntry& e : hulls) {
         ++census_.steps;
@@ -954,6 +1177,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, fl
     events_.clear();
     pending_events_.clear();
     if (hull_hull) hull_hull_narrow_phase(hulls, true);
+    hull_fort_narrow_phase(hulls, forts, hull_fort);
     // 00C35480 (the collision pass's last step, 00C57827), per queued hull-pair event: the
     // manifold's point 0 on A in world space (00C354E6..00C35542; the listener reads the first
     // of the transformed points at record+8h), then each listener in turn, A with (A, B) and B
@@ -999,6 +1223,7 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, fl
         list.push_back(m.get());
     }
     for (auto& [key, m] : pair_manifolds_) list.push_back(m.get());
+    for (auto& [key, m] : fort_manifolds_) list.push_back(m.get());
     std::sort(list.begin(), list.end(),
               [](const Manifold* a, const Manifold* b) { return a->serial < b->serial; });
 
@@ -1084,8 +1309,17 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, fl
             Manifold& m = formation.m(h);
             const std::int16_t ia = index(m.unit_a);
             const std::int16_t ib = index(m.unit_b);
-            const DynSolverBodyInput in_a = ia == 0 ? DynSolverBodyInput{}
+            DynSolverBodyInput in_a = ia == 0 ? DynSolverBodyInput{}
                 : dynamic_body_input(*by_unit.at(m.unit_a)->body, ia);
+            if (ia == 0 && m.static_frame) {
+                // The fort's static body: its frame, no velocity, no mass, index 0.
+                for (int k = 0; k < 3; ++k) {
+                    in_a.row0[k] = m.frame_a[k];
+                    in_a.row1[k] = m.frame_a[3 + k];
+                    in_a.row2[k] = m.frame_a[6 + k];
+                    in_a.position[k] = m.frame_a[9 + k];
+                }
+            }
             const DynSolverBodyInput in_b = ib == 0 ? DynSolverBodyInput{}
                 : dynamic_body_input(*by_unit.at(m.unit_b)->body, ib);
             for (std::int32_t p = 0; p < m.count(); ++p) {

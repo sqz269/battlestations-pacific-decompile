@@ -47,6 +47,11 @@ struct MmodHullConvexBox {
     // the vertices of the hull 00C5DEB0 builds from them (its 0.001 dedup, its dropping of
     // interior points and its vertex order are not reproduced). The periscope is not listed.
     std::vector<std::vector<OceanVec3>> shape_points;
+    // Packet cc9_hull_fort_contact (docs/GUNNERY_OPEN_ITEMS.md section 96): every
+    // {ConvexObject, node} pair of instance+4Ch with no node filter, as MLandFort's body
+    // builder 007482B0 walks it (0074856B..007488A2), in record order; raw points, file
+    // coordinates. A ConvexObject with no point is not listed.
+    std::vector<std::vector<OceanVec3>> all_shape_points;
     // Packet cc9_hull_periscope_shape: the periscope shape 009396BA..009399BF, read but not
     // merged (mmod_hull_convex_box_add_periscope applies the class gate and merges it).
     // periscope_node: a Note named exactly `periszkop` (00D0C1F0, 0071AD50 at 009396D8) is
