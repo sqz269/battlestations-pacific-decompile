@@ -903,3 +903,92 @@ the task.
 **Verdict: `kMoveToArrivalEndCommandBound` ON.** It is gameplay-identical on six rows, and the
 mechanism matches the image as read. The record `BotApproachMoveTo::arrived_vtable8` becomes the
 concrete `009C3100`.
+
+## The target-speed override (packet `cc9_moveto_target_speed`, cc9-lua20, 2026-09-29)
+
+GAMEPLAY_GAP_RANKING #8. `kMoveToTargetSpeedOverrideBound` (`src/game_hosts_units.cpp`) is
+committed **OFF**.
+
+### The image
+
+`009C23B0` (`009C23B0`-`009C2429`, `__thiscall(approach)`, plain `RET`, result in ST0) has two
+callers (rel32 scan): `009C24E0` in the moveto state's tick `009C2430`, and `009C26F2` in the circle
+tick `009C26D0`.
+
+**Argument order.** At both sites the stack is built across the calls:
+- `007C47F0` is called first, and its result stays pushed;
+- `009C23B0` is called next, and its result is pushed;
+- then `009BECD0` runs.
+
+So `009BECD0` receives `(009C23B0(), 007C47F0(), sep)`: 009C23B0 replaces the first argument, the
+`squadron+3A0h` the host passes today.
+
+**The body:**
+- `a = [approach+0Ch]+3A0h`, the squadron's travel speed.
+- With a target (`approach+44h`) and a class (`approach+8h`):
+  - `reach = class+268h TurnCircleRadius + approach+68h` (`009C23D5`-`009C23E3`);
+  - `approach+68h` is 50.0, stored by the constructor `009C1C30` from `00CEB4D4`.
+- When `approach+64h` (the planar distance to the steer point, `009BEBA0`) is below `reach`
+  (`009C23F8`), and the target's `vtable[38h]` speed is above `007C47F0` (LevelFlight x StallSpd,
+  `009C2412`, compared in double): `a` = the target's speed.
+
+So near a moving target, the flight takes the target's speed as its travel speed when the target is
+faster than the plane's level-flight speed. That matches a plane escorting another flight; a ship
+target is never that fast.
+
+### The binding
+
+With the switch ON, `moveto_speed_009c1850` takes its first argument from
+`moveto_target_speed_009c23b0` at the two kind-7 sites. The torpedo, dive-bomb and land callers
+keep `squadron+3A0h`, as the image's `009C1850` callers do.
+
+LABELLED: the target's `vtable[38h]` is the length of its `motion.linear_velocity`, as the
+`009D3D01` site takes it. `approach+64h` is `moveto_distance_64`.
+
+The census line is `summary moveto target speed override calls=... target=... within=...
+applied=...`.
+
+### Predictions, written before any ON run
+
+The rows are USN04 3000, E2 (USN04 9000), JM05 9000, JM08 3000 and LOMP10 3000.
+
+- `calls` equals the record count the OFF log prints for the site (USN04 about 6262).
+- `target` > 0 only where a moveto names a unit.
+- `applied` is 0 wherever every such target is a ship.
+- **Gameplay:** identical (exit 0/1) on every row where `applied` = 0. A row where a flight moves
+  to a faster plane moves (exit 3), and its flight arrives sooner.
+
+### Measured (pairs on `c624e7be5`)
+
+- **Exports:** OFF is `local\l20_t0` (SHA-256 prefix `0B4B450E226A`); ON is `local\l20_t1`
+  (`D2B3E11933F2`) with the flip.
+- **Logs:** `local\l20_t{0,1}_<row>.log`, reference p's launch form (`local\l20_runs.ps1`). Every
+  log shows present interval immediate, the export's module directory, `frames_presented` = F - 1
+  and the final COM release.
+- **The window changed between runs.** Every run of this pair requested a 1600x900 window, where
+  this worker's 5ag runs an hour earlier requested 640x480. The window request comes from the
+  installation's options. It is the same on both sides.
+
+| row | pair_diff | calls / target / within / applied |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | 5766 / 5766 / 712 / 0 |
+| E2 (USN04 9000) | 1 | 8056 / 8056 / 1481 / 0 |
+| JM08 3000 | 1 | 3667 / 3267 / 2696 / 0 |
+| JM05 9000 | 1 | 0: no kind-7 moveto runs on this tree (the recall of 5ag moved JM05's strikes) |
+| LOMP10 3000 | 1 | 0 |
+
+**The mechanism held.**
+- Every row that runs the kind-7 moveto names a target on most calls.
+- On USN04, E2 and JM08, the flight comes within TurnCircleRadius + 50 m of its target 712, 1481
+  and 2696 times.
+- Each time, the target was no faster than the plane's level-flight speed, so `009C23B0` answered
+  `squadron+3A0h`, as the host did without the switch.
+
+**The predictions held.** `calls` equals the OFF record count of the site on every row (5766, 8056
+and 3667), and `applied` is 0.
+
+### Verdict: `kMoveToTargetSpeedOverrideBound` ON
+
+The binding is faithful and gameplay-identical on five rows. It replaces the record
+`BotStateMoveTo::target_speed_override_009c23b0` with the concrete `009C23B0`. The override will
+act where a flight moves to a plane faster than its level-flight speed; no reference row has one.
