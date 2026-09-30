@@ -253,7 +253,9 @@ constexpr int kAiMovetoDiagEvery = 0;
 // falls outside the unit rows and the point reads (0,0,0): on ESMP08 the US
 // strike group measured 15712 to Zuikaku from the origin and never closed, and
 // its followers were sent to the origin. docs/SQUADRON_LAND_TASK.md 5cg.
-constexpr bool kAiSquadronLeaderPointBound = false;
+// ON (2026-09-30): controls identical, USNOS and ESMP08 moved; the ESMP08
+// promotion miss is recorded in 5cg.
+constexpr bool kAiSquadronLeaderPointBound = true;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group

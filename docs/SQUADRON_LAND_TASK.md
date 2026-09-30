@@ -8534,3 +8534,41 @@ none on USN02 or USN12.
 - **Weakest call:** whether the `Static ...` plane leaders on IJN01, BSM01 and the LOMP rows are
   squadrons; if they are, their `DEFENDPOSITION` passes re-centre from the origin and those rows
   move too. Not run here.
+
+### The pairs and the verdict (cc9-lua31, 2026-09-30): ON
+
+Same-tree exports of `4d6093605`: `local\l31_off` (SHA-256 prefix `4A0C783AB780`) and
+`local\l31_on` (`DA3EEEC12D78`, the switch flipped). Reference V's launch form,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player
+(`local\l31_runs.ps1`). A 500/300 USN01 smoke on the ON binary finished cleanly first.
+
+| row | `pair_diff` | deaths | hit records | damage | note |
+| --- | --- | --- | --- | --- | --- |
+| USN02 3200/3000 (control) | identical | 1 / 1 | 1126 / 1126 | 28473.8 / 28473.8 | one summary line, the known refill noise |
+| USN12 3200/3000 (control) | identical | 8 / 8 | 198 / 198 | 4048.7 / 4048.7 | only the known JM08/USN13-class sector-scan noise |
+| USNOS 3200/3000 | moved | 90 / 107 | 1400 / 1487 | 49146.1 / 54561.0 | 18 deaths only ON, all town buildings, containers, a hangar and a watchtower; 1 only OFF |
+| ESMP08 9200/9000 | moved | 7 / 6 | 210 / 198 | 2421.5 / 2017.7 | one Corsair death only OFF; 25 unit rows changed |
+
+Traced runs (`BSP_AI_SQUAD_TICK_TRACE=1`, `BSP_UNITCOMMAND_TRACE=1`; `local\l31_tr_{off,on}_esmp08l.log`,
+and `local\l31_tr_on_esmp08x.log` at 14200/14000):
+- **The mechanism holds.** ON, the US strike group's leader point is the flight leader's
+  position (t=164.36 `own=(13952 1245 -12694)`), and the distance to Zuikaku falls from 24677 at
+  t=148.55 to 3633 at t=448.41, about 70 per second, the TBM's closing speed. OFF it stays
+  `own=(0 0 0)` throughout.
+- **The group still does not promote (miss).** In the 14000-frame run the leader reaches 3598.7
+  at t=455.01, then circles 3164.6 to 4035.8 from Zuikaku's point until the group empties
+  (members 12 -> 2 by t=534.69). The loaded `CloseAttack_CollectDist` is 3000, so
+  `MOVETOATTACK` holds and the tick keeps ordering `moveto`: 2472 -> 2444 `tick_orders` over the
+  9000-frame pair, 0 promotions both sides. Why the leader holds 3.2-4 km off the carrier (the
+  15 s script re-target against the 2-4 s tick `moveto`, or a moveto loiter radius) is not read.
+- **`unitcommand` answers.** 9000 frames: OFF 936 `moveto`, 36 `nocommand`; ON 930 `moveto`,
+  36 `nocommand`, 4 `strafe`. 14000 frames ON: 1866 `moveto`, 36 `divebomb`, 20 `strafe`,
+  7 `torpedo`, 36 `nocommand`. The attack classes now appear, but `moveto` still dominates, so
+  `08_engano.lua:584` still re-targets and ESMP08 long is **not yet the goaway row**.
+
+Verdict: **ON.** The mechanism matches (a squadron-led group's point is the squadron's
+position, the followers go to the leader), the controls are identical, and the moved rows are the
+predicted ones. The ESMP08 promotion was predicted and did not happen; that is recorded as a
+miss downstream of the binding (the leader never closes inside 3000), not a failure of it.
+IJN01, BSM01, the LOMP rows, USN04, USN13, JM05 and JM06 were not run; they move where a
+squadron leads a group.
