@@ -7850,3 +7850,91 @@ Read-only; nothing bound. This is the first half of the strafe packet; the bindi
 3. Pairs: USNOS, USNOS long, ESMP08 long (new row, reference form: `--frames 9200
    --press-start-frame 30 --menu-select ESMP08 --mission-frames 9000 --mission-frame-seconds
    0.05`), plus two controls.
+
+## 5bx. The strafe task: rule and range test bound (partial), the attack states read (packet `cc9_strafe_task_bind`, cc9-lua29, 2026-09-30)
+
+New `include/bsp/strafe_task.hpp` and `src/strafe_task.cpp` (`bsp_core`). `kStrafeTaskBound` is
+declared **OFF** and nothing reads it yet: the host has no strafe arm, so no row can move and no
+pair was run. Coverage: **partial** (the header lists what is not bound).
+
+### 1. Bound as pure functions
+
+| routine | function | coverage | evidence |
+| --- | --- | --- | --- |
+| `009CC690` rule | `strafe_rule_009cc690` | complete | 5bw.4; operand set-up checked on disk (`009CC6D0`-`009CC7F5`; `009CC78E` calls `009CC2F0` with ECX = the current state, the gotowards state) |
+| `009CC5F0` engaged entry | inside the rule | complete | decompiled: mode 0 prepare, else `+448h` ? gotowards : attackrun |
+| `009CC2F0` gotowards ready | `strafe_gotowards_ready_009cc2f0` | complete | disk bytes `009CC2F0`-`009CC318`: byte `+20h`, then `2*[[+4]+8]+188h + [+4]+38h > +18h` (`JBE` false) |
+| `009CCED0` approach update | `strafe_approach_update_009cced0` | complete except its first call `009FADA0` (the target ref update, already in `src/approach_target_ref.cpp`) | disk bytes `009CCED0`-`009CD015`, traced on the x87 stack |
+
+The range test (`009CCED0`), from the bytes:
+- `+44h += dt` every call. That is the clock the hit notice `009CC400` zeroes (`task+43Ch`).
+- A countdown `+D0h` against the period `+CCh` (1.0) gates the test. `009CA4A0` seeds it with
+  `-Random(0, 1)`.
+- No target (`+54h`, else `+70h`), or a target with `+5Dh` set: out of range.
+- Otherwise the threshold is `(unit+100h - aim.y) / +30h + 2 * [+8]+188h`, floored at
+  `tuning+658h` (Pilot/Strafe/AttackDist). The floor is multiplied by 1.4 (`[00D06874]`) for a
+  kind-10h/16h plane (`009CA310`). **In range when the threshold exceeds the horizontal distance
+  to the aim point** (`009CAD00`).
+- The aim point is the approach's `vt[0]` `009CA680`, which reads `+74h/+78h/+7Ch`: the target
+  ref's `sub+1Ch` (the ref sits at `approach+58h`).
+
+### 2. Read, not bound: the attack states (decompiled; asm not yet checked)
+
+Approach fields used: `+4` the plane entity (pose `+FCh..+104h`), `+8` an object with `+188h`
+and `+26Ch`, `+18h` the pilot plan block (`+2B4h` speed, `+2C0h`/`+2C4h` heading, `+2BCh` pitch,
+`+2CCh`/`+2D0h` modes), `+1Ch` a command block (`+40h` a tuning row, `+5Ch..+64h` a point, `+28h`),
+`+30h` the glide tangent, `+34h` the goaway distance, `+3Ch` the aim-close distance, `+48h` the
+run speed, `+4Ch` a speed.
+
+- **gotowards `009CA870`** (enter `009CA820` rerolls the glide `009CA3B0` and `+48h`). It is the
+  byte-for-byte twin of the rocket task's `007B4980` (docs/PITCH_COMMAND_CALLERS.md):
+  - speed from `+48h`;
+  - `+18h` 3-D and `+1Ch` horizontal distance to the aim point;
+  - heading by `atan2` plus the near-field probe `007F0280`, into plan `+2C0h`, mode 2;
+  - `+20h` aligned when the heading error is below `0.6109` rad (`[00D057D8]`, 35 degrees);
+  - pitch through `009F9ED0` with a glide-limited descent;
+  - `tuning+678h` into the command block;
+  - `009FABE0`.
+- **attackrun `009CADB0`** (vtable `00D21004`):
+  - heading away from the aim point (`pi - atan2`), with a periodic probe offset `+20h`;
+  - `009FBA50` cruise altitude from `tuning+210h` and the range;
+  - plan flags;
+  - `tuning+670h`;
+  - `009A1A20`, then `009FABE0`.
+- **aim `009CB1B0`** (vtable `00D21020`):
+  - heading to the point (`BSP_PilotBot_CommandHeadingToPoint`), pitch by `atan2`, plan
+    `+2BCh`, mode 1;
+  - transforms the aim point into the plane's frame;
+  - `+1Ch` = forward distance below `+3Ch`;
+  - `+1Dh` = behind, too close (`[00CF0B58]`), or off-axis inside `[+8]+26Ch`;
+  - `approach+9Ch` = distance / `+4Ch` clamped;
+  - writes the aim point into the command block `[+1Ch]+5Ch..+64h` with `+28h` =
+    `[00CE3D30]`. **This is where the guns are pointed**, so the gun task `009FC7C0` reads this
+    block (to confirm when it is read);
+  - `tuning+678h`.
+- **goaway `009CBB30`** (vtable `00D2103C`):
+  - two random re-plan timers, `+30h` (heading, `009CB780`) and `+3Ch` (pitch, `009CB650`), hold
+    plan `+2C4h`/`+2BCh`;
+  - `+24h` done when the horizontal distance exceeds approach `+34h`, tested each `+40h` period;
+  - **the evasive manoeuvre**: when the plane is neither of two kinds (the two `vt[5Ch]` pushes
+    are not yet read) and `approach+44h < 1.0`, i.e. hit within the last second (the hit notice
+    zeroes `+44h`), it pushes a front task. With `Random(0,1) >= +18h` that task is the roll
+    `009BC030` (with `007B5D30`); otherwise `009BC0A0` (with `007B5E20`). It then sets `+44h` to
+    `[00CE89CC]` and calls `00999F50`;
+  - `tuning+674h`.
+
+### 3. Next
+
+1. Check each state tick's listing (all four have x87 and register inputs), and read the
+   approach constructor `009CA4A0` / glide seed `009CA3B0`. `approach+14h` is a robot row; its
+   `+D8h`/`+DCh`/`+E0h`/`+230h` look like `robot_config.hpp`'s `+E4h`/`+E8h`/`+ECh` Strafe keys
+   shifted by `0Ch`. That is unverified.
+2. The host arm (`009CD170`) in `src/game_hosts_units.cpp` on `attack_command_class ==
+   00E08F40`:
+   - moveto and follow reuse the host's existing states;
+   - prepare is a follow variant;
+   - the four attack states as above.
+3. The gun task `009FC7C0` and its reading of the aim block.
+4. The choice-input feed (5bw.6.1) in `src/game_hosts_script_orders.cpp`, its own switch, OFF.
+5. Pairs on USNOS, USNOS long and ESMP08 long, plus two controls. Flip the group only when strafe
+   runs end to end.
