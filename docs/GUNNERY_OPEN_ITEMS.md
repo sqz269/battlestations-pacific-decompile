@@ -6386,3 +6386,83 @@ vertices of the Dyn hull the ConvexObject parse builds from them.
 **Verdict: `kHullTerrainDynHullVerticesBound = true`.** Spread misses with the mechanism matching.
 It belongs to reference v. Remaining labelled substitutions from 84.1: `00C53630`'s own
 interpolation (85.2 item 3b), substeps (3c), and hull-terrain pairs only (3d).
+
+## 87. The solver's terrain test: 00C53630 itself, and one manifold per body pair (packet `cc9_hull_terrain_native_test`, cc9-gunnery20)
+
+This is 85.2 item 3b. The solver's narrow phase used the terrain object's height (`00ADB480`)
+and cell normal (`00ADAA40`). Now the reconstructed `00C53630` is called on shape records built
+as the image builds them. It is `intersect_native_dyn_terrain_convex_00c53630`, R145: an x87
+schedule compared against 36,864 original-byte pairs.
+
+### 87.1 The read
+
+- **The tile bodies, `00882AC0`** (`00883535..008839E2`):
+  - The outer loop is `tx` (`[esp+2Ch]`, with `[esp+30h]` stepping 12Ch = 300). The inner loop
+    is `tz` (`[esp+3Ch]` stepping 300).
+  - The block is `terrain+40h[wide * tz + tx]`; with no block there is no body (`00883564`).
+  - Each tile gets **one static body with one shape**. The shape descriptor is at `esp+48h`:
+    - kind 5 (`00883596`);
+    - an identity local frame (`008835CE..0088361F`);
+    - 33 x 33 samples;
+    - spacing 9.375;
+    - a U16 block (type 2) gives mode 1: samples `blk+40h`, bias `blk+2Ch`, `+58h = blk+30h`,
+      whose reciprocal is the shape's multiplier. A float block (type 0) gives mode 0, samples
+      `+34h`.
+  - The **body's** frame (descriptor `esp+168h`, `+14h`) is the Landscape `+74h` 4x4
+    (`rep movsd`, `00883871`) converted by `00C336C0`. Its translation is moved by
+    `(origin_x + float(300 tx), 0, origin_z + float(300 tz))` (`0088384F..00883905`), each sum
+    rounded to float. `00C5D580` creates the body.
+- **The pair, `00C44090`:**
+  - It loops body A's shapes against body B's shapes. Each shape pair must pass the mask test and
+    have a dispatcher.
+  - On a hit, the manifold is `00C3F4D0` FindOrCreate(**body A, body B**), so there is one
+    manifold per body pair, not per shape pair. Every point goes through `00C3F760`.
+  - The matrices passed are each body's `+08h` 3x4.
+- **`00C53630`'s output:**
+  - Point B is the vertex in body B's space (the shape frame applied).
+  - Point A is in the terrain shape's grid space: `(u * spacing_x, y, v * spacing_x)` plus
+    `(h - y) * n`, using the X-spacing quirk. That space is the tile body's space, since the
+    shape frame is the identity.
+  - The normal is the cell's cross product, normalized and taken to world.
+
+### 87.2 The bindings (committed OFF)
+
+- **`kHullTerrainNativeTerrainTestBound`:**
+  - Each hull shape becomes a kind-4 record: section 86's hull vertices, centred, with the centre as its
+    translation.
+  - Each tile becomes a kind-5 record plus its body frame.
+  - Every tile whose inclusive x/z range meets the hull's world x/z range is tested against every
+    hull shape.
+  - Point A goes in as the tile translation plus the local point: the host keeps its terrain
+    manifold body at the identity.
+- **`kHullTerrainBodyPairManifoldBound`:** the manifold key drops the shape (one manifold per
+  hull and tile).
+- **Labelled substitutions:**
+  - The right/down neighbours read at an inclusive edge coordinate are padded with `FFFFh`
+    (-1000.0); the image reads whatever follows the block.
+  - The Landscape frame's rotation is taken as identity, as 84.1 already does.
+  - The broad phase is the x/z range test above, not the Dyn AABB tree.
+  - The shape order inside a body pair is the host's list order.
+
+### 87.3 Predictions, written before any ON run
+
+For `kHullTerrainNativeTerrainTestBound` alone, against U with 86 ON:
+- **The mechanism:**
+  - `rejected_normal` stays 0.
+  - `max_depth` stays within about 1 m of OFF on every row except JM05, whose reserve
+    placement under the seabed dominates.
+  - The contact steps stay within 20% of OFF on every contact row. The heights are the same
+    samples; only the interpolation schedule and the tile assignment differ.
+- **Rows:**
+  - Exit 1: USN04, USN02 (no contact) and BSM01.
+  - JM06, USNOS, USN13, IJN01, JM05: exit 1 or 3 with identical death tables.
+  - USNOS long: exit 3 possible, with identical death tables.
+  - JM08 long: exit 3. The invaders still stop at the beach. Deaths are between 20 and 30.
+- **For `kHullTerrainBodyPairManifoldBound`** on top of the native test: the same classes. Hulls
+  with one shape are unaffected, so any move comes from multi-shape hulls. On most ships
+  `firstnode` gives the root plus `front` / `back` records (GUNNERY 55), so expect movement on
+  the contact rows only.
+- **A mechanism failure keeps a switch OFF:**
+  - a hull crossing land (`max_depth` in tens of metres outside JM05);
+  - contact steps falling by more than half;
+  - a non-unit normal.
