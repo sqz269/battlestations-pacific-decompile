@@ -536,6 +536,7 @@ struct GameUnitSlot {
     MoveToTaskState moveto_state{MoveToTaskState::kNone};
     bool moveto_arrived_454{false};        // task+454h, cleared by 009C1D0A
     float moveto_range{0.0f};              // the order's descriptor +14h
+    float moveto_approach_6c{0.0f};        // approach+6Ch, 009C35CB (cc9_moveto_command_range)
     float moveto_timer_548{1.0f};          // 009C307C, 1.0 (00D7A24C)
     float moveto_stagger_54c{-0.5f};       // 009C3084/009C3089: -U(0, 1), the midpoint
     // Part 2, the approach at task+3F8h (009C1C30 on 009F9CE0) and two state
@@ -2187,6 +2188,14 @@ struct GameUnitsHost::Impl {
     // (terminal 0), and each member's 0099A4C0 retires its kind-7 task. False:
     // the call is a record and the flight keeps its moveto task.
     static constexpr bool kMoveToArrivalEndCommandBound = true;  // ON: stage-only, six rows identical (docs/PILOT_MOVETO_TASK.md)
+    // Packet cc9_moveto_command_range (docs/PILOT_MOVETO_TASK.md, "The command block's
+    // range"). 009C3594-009C35CB: while the squadron's +348h block (squadron vtable[114h],
+    // 007ECFD0) has the moveto class 00E08F68 in its queue head slot (+54h), approach+6Ch
+    // takes the slot's trailing parameter (+6Ch = slot +18h), which PilotMoveToRange's
+    // third argument writes (008A46DC). The circle state's radius is then
+    // max(approach+6Ch, TurnCircleRadius) (009C27A6). True: the unit's issued moveto
+    // range stands for the block's head. False: 0 stands in, so r = TurnCircleRadius.
+    static constexpr bool kMoveToCommandRangeBound = true;  // ON: stage-only, twelve rows identical (docs/PILOT_MOVETO_TASK.md)
     void moveto_arrival_end_command_009c3100(GameUnitSlot& unit);
     unsigned long long moveto_end_calls{0}, moveto_end_no_squadron{0}, moveto_end_not_moveto{0};
     unsigned long long moveto_end_commands{0}, moveto_end_retired{0}, moveto_end_promoted{0};
@@ -23198,9 +23207,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.moveto_refresh_58 = (0.5f - dt) + unit_.moveto_refresh_58;
                             moveto_refresh_009beba0();
                         }
-                        // 009C359F-009C35D3: approach+6Ch from the squadron's
-                        // +348h block when its command is moveto. No block here.
-                        owner_.record("BotApproachMoveTo::command_block_range_6c", 0x009c359fu);
+                        // 009C359F-009C35CB: approach+6Ch from the squadron's
+                        // +348h block when its queue head is moveto (+54h == 00E08F68):
+                        // FLD [block+6Ch], FSTP [approach+6Ch].
+                        // SUBSTITUTION, labelled: the block is not modelled; the head is
+                        // this unit's installed moveto order (the tick runs only while
+                        // attack_command_class is moveto), whose descriptor +14h
+                        // (slot +18h = block+6Ch) is moveto_range.
+                        if constexpr (GameUnitsHost::Impl::kMoveToCommandRangeBound) {
+                            unit_.moveto_approach_6c = unit_.moveto_range;
+                            owner_.done("BotApproachMoveTo::command_block_range_6c", 0x009c359fu);
+                        } else {
+                            owner_.record("BotApproachMoveTo::command_block_range_6c", 0x009c359fu);
+                        }
                         if (!unit_.moveto_arrived_454) {
                             float closing = 800.0f, reference = 40.0f;
                             if (owner_.lua.plane_globals_loaded()) {
@@ -23494,10 +23513,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C27A2: approach vtable[0] = 009BE2C0, +48h..+50h.
                         const float* pt = unit_.moveto_point;
                         // 009C27A6-009C27D7: r = max(approach+6Ch, TurnCircleRadius
-                        // class+268h). SUBSTITUTION, labelled: approach+6Ch comes from
-                        // the squadron's +348h command block (009C359F), which this host
-                        // does not model; 0 stands in, so r is TurnCircleRadius.
-                        const float approach_6c = 0.0f;
+                        // class+268h). approach+6Ch is copied from the squadron's +348h
+                        // command block by 009C3570 (kMoveToCommandRangeBound); OFF, 0
+                        // stands in, so r is TurnCircleRadius.
+                        const float approach_6c = GameUnitsHost::Impl::kMoveToCommandRangeBound
+                            ? unit_.moveto_approach_6c : 0.0f;
                         const float tcr = unit_.plane_turn_circle_radius;
                         const float r = tcr > approach_6c ? tcr : approach_6c;
                         float min_angle = 0.0f, max_angle = 0.0f, followed = 0.0f;

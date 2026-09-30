@@ -1088,3 +1088,83 @@ becomes the concrete `009C207C`.
 **Ranking #14 is closed.** Its gameplay effect moves to a new gap: the wanderer
 `007BE060`-`007BE9A0` (from the plane fixed step at `007CE0D2`) and its translation consumer
 `007D8230`. The arm now keeps `+840h`/`+844h` in the image's state for that packet.
+
+## The command block's range, `approach+6Ch` (packet `cc9_moveto_command_range`, cc9-lua22, 2026-09-30)
+
+GAMEPLAY_GAP_RANKING #7. The switch is `kMoveToCommandRangeBound` in `src/game_hosts_units.cpp`
+(`GameUnitsHost::Impl`). It is committed **OFF**.
+
+### The image
+
+- **The copy, `009C3594`-`009C35CB`** (in `BSP_BotApproachMoveTo_Update` `009C3570`, listing read):
+  - `block = [approach+0Ch]->vtable[114h]()`. This is the squadron's `+348h` command block
+    (`007ECFD0`).
+  - When `block` is non-null and `[block+54h] == 00E08F68` (moveto in the queue head slot), the
+    update runs `FLD [block+6Ch]` then `FSTP [approach+6Ch]`.
+  - It runs on every update, after the 0.5 s refresh branch; both arms reach `009C3594`.
+- **What `block+6Ch` is:**
+  - The controller's queue slots start at `+54h`, with stride `1Ch`: the command pointer, then an
+    `18h`-byte parameter record (docs/COMMAND_EXECUTION.md).
+  - So `+6Ch` is slot 0's `+18h`: the record's trailing dword, descriptor `+14h`.
+  - Only `PilotMoveToRange` called with exactly three Lua arguments writes it (`008A46DC`), as a
+    float (docs/PILOT_ORDER_BINDINGS.md). `PilotMoveTo` and every other producer read so far
+    write 0.
+- **The consumer** is the circle state's radius, `r = max(approach+6Ch, TurnCircleRadius)`
+  (`009C27A6`-`009C27D7`), for a leader that has arrived.
+  - The arrival ring (`009C35D4` onward) uses only ClosingDist and TurnCircleRadius, so `+6Ch`
+    does not move it.
+- **Initial value:** none of the approach constructors (`009C1C30`, `009C2DF0`, `009C3000`)
+  stores `+6Ch`. The first update fills it.
+
+### The host binding
+
+`run_moveto_task_tick_009c3950` copies the unit's `moveto_range` into `moveto_approach_6c` on
+each tick, and the circle reads that field. `moveto_range` is the issued order's descriptor
+`+14h`, which `run_pilot_move_to_range` already stores.
+
+**Substitution, labelled:** the `+348h` block is not modelled. The unit's installed moveto order
+stands in for its queue head. The tick runs only while the unit's command class is moveto.
+
+### Predictions (written before any run)
+
+1. **Every reference row is gameplay-identical (exit 0 or 1).**
+   - In all nineteen ON logs of the recon pairs (`local\l22_on_*.log`), every issue logs
+     `range=0.0`: 8 `PilotMoveTo` and 16 `PilotMoveToRange`.
+   - So both sides compute `max(0, TCR) = TCR`.
+   - The only native-table change expected is the `command_block_range_6c` row, which goes from
+     record to concrete once a moveto task ticks.
+2. **Reach** needs a three-argument `PilotMoveToRange` whose range is above the plane's
+   TurnCircleRadius. Examples in this installation's scripts:
+   - USN04's `usn_19_coralus.lua`: `moviefisher`, 3750 and 3900, in `luaZuikakuMovieEnd` and
+     `luaMoveToPh2`. E2 does not reach either.
+   - LOMP06's `06_crucial_cargo.lua`: seaplanes, 500 and 1000, in `luaSubC1PlanesSpawned`.
+
+   A LOMP06 9200/9000 pair is run to look for reach. If it reaches, the orbit radius of an arrived
+   leader becomes the authored range wherever that exceeds TurnCircleRadius, and nothing else
+   changes.
+
+### The pairs, and the flip
+
+Setup:
+- Same tree, commit `adf3c170b`. `local\l22_r7off` (SHA-256 `4BA6B081D0E0`) against
+  `local\l22_r7on` (`D11C23AB97B6`, `--flip kMoveToCommandRangeBound=true`).
+- The reference launch form (`local\l22_runs.ps1`).
+- Twelve rows: USN04, E2, JM05, JM05 long, USN01, USN13, IJN01, LOMP10, JM08, USN02, BSM01 and JM06.
+
+**Prediction 1 held.** Every row is exit 0 or 1.
+- The copy ticks on USN04 (16754), E2 (16758) and JM08 (10201). On those rows the only native
+  change is `command_block_range_6c` going from record to concrete.
+- USN13's exit 1 is the known sector-scan and clearance noise.
+- JM05 long no longer reaches a moveto tick at all, so the ranking's "JM05 9000 30222" reach is
+  stale.
+
+**Prediction 2: no reach.**
+- A LOMP06 9200/9000 run on this tree issued no `PilotMoveTo*` at all.
+- A USN04 36200/36000 run issued only the eight two-argument `PilotMoveToRange` calls
+  (`range=0.0`).
+- So no row here gives a three-argument range above TurnCircleRadius. The binding is verified
+  only as identity.
+
+**Decision: ON** (stage-only), as with `kMoveToArrivalEndCommandBound`. A mission that issues
+`PilotMoveToRange(unit, target, r)` with r above TurnCircleRadius will now orbit at r once its
+leader arrives. That branch is untested at run time.
