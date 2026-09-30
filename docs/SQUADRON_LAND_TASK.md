@@ -7492,3 +7492,30 @@ So:
    - no row without ground aborts moves;
    - death tables are identical.
    - The post-push fall is the image's law and does not count against the flip.
+
+### Results (OFF `local\l28_roff`, SHA-256 `2ECC890B9A13`; ON `local\l28_ron`, `ECCB4518B43F`; both from `4f5c5f5d4`)
+
+| row | `pair_diff` | death rows | land aborts OFF / ON | pushes |
+| --- | --- | --- | --- | --- |
+| JM05 3000 | 1 | identical (12) | 1 / 1 (airborne) | 0 |
+| JM05 9000 | 1 | identical (14) | 21 / 2 | 1 (Helldiver 01, 446.06 s) |
+| JM05 12000 | 1 | identical (17) | 749 / 4 | 3 (Helldiver 01, Main sqn01\|.-3, Secondary sqn02\|.-3) |
+| LOMP10 3000, 9000 | 1, 1 | identical (3, 6) | 0 / 0 | 0 |
+| USN04, E2 | 1, 1 | identical (50, 52) | 0 / 0 | 0 |
+| USN01, BSM01 (controls) | 1, 1 | identical (17, 0) | 0 / 0 | 0 |
+
+Every push is from a `land` head in state 4 with `+BF8h` clear, at the plane's first ground abort.
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 9000 / 12000: one push per looper, aborts 1-2 per looper, deaths identical, exit 1 | **held** |
+| 2. other rows: no push, exit 1 | **held** |
+| 3. flip criterion | **met** |
+
+### Verdict: **flip ON** (`kGroundRetakeoffBound = true`)
+
+The fall after the push is recorded as the image's law (5bq, section 1 above), not as a
+mechanism failure. This supersedes 5bp's OFF verdict.
+
+For reference W: JM05 9000 and 12000 move at exit 1 (the land-task, takeoff and native-table
+counters). No other row moves.
