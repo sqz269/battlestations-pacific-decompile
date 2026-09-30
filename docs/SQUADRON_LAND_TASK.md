@@ -7185,3 +7185,78 @@ is held.
 - `l27_taskvt.py`, `l27_slots.py`, `l27_s30.py`, `l27_mk.py`, `l27_pushvt.py`: the task vtable
   census;
 - the edit scripts `l27_brake_edit.py`, `l27_p158_edit.py`, `l27_head_edit.py`.
+
+## 5bp. The tick tail's re-takeoff for a grounded plane (packet `cc9_ground_retakeoff`, cc9-lua28, 2026-09-30)
+
+This binds 5bn.1. The switch is `kGroundRetakeoffBound` (`include/bsp/game_hosts_units.hpp`),
+committed **OFF** with the predictions below.
+
+### The image, read whole (disk listing `0099ACD0`-`0099B1A3`)
+
+- **When the tail runs.** Only on a think that ticks the head task: the tick returns early for a
+  dead or removed plane (`0099ACE1`-`0099AD09`), skips to the end when the list is empty
+  (`0099AEC4`) or the `+74h` countdown has not run out (`0099AF10`), and after `009998A0` skips
+  to the end for a player-held plane (`0099AF33`, the `+9C2h` byte). The block `0099AF4F`-`0099B0B9`
+  has no other exit.
+- **The head.** `EBX` is written once, at `0099AE8C` (`[bot+58h][0]`, after `0099A4C0`'s retire)
+  or `0099AE90` (0 for an empty list). It is the task `009998A0` ticked at `0099AF1C`.
+- **The gate** (`0099B0BE`-`0099B105`), all of:
+  - `(unit+72Ch)->vtable[38h]` false: `+900h` is not 7 (free flight);
+  - the head's `38h` true (every command class, land and takeoff; 5bm's table);
+  - `0042A7E0(unit)` (`+900h` 4 or 5, `0042A7E0`-`0042A7F9`) or `+900h == 6`;
+  - the head's `30h` true. Land's is `009B3730` (`009B3730`-`009B374F`): false in `land/park`
+    (`+620h`) and `land/final` (`+5F8h`), true otherwise. Takeoff's `009CF9D0` and Stop's
+    `009BAC40` are false; every other command class answers true.
+- **The push** (`0099B107`-`0099B113`): `009CFF40(bot, DL = 0)` then `00999F50`, the front push.
+- **What `DL = 0` changes** (`009CF8E0`, decompiled): the start state is
+  - `takeoff/parking` (`+4B8h`) when the plane is landed (`+904h`) and on the path (`+900h == 5`),
+    as with `DL = 1`;
+  - otherwise `takeoff/Takeoff` (`+470h`) when `unit+AA0h <= 0.0` (`00D7A218`), else
+    `takeoff/SlowTakeoff` (`+490h`). `DL = 1` (`0099A4A0`) starts in `takeoff/prepare` (`+448h`)
+    instead. So the re-takeoff skips prepare's wait and its site permission.
+  - `takeoff/Takeoff`'s enter is `009CE270` (`009CE270`-`009CE290`): `+18h = -1.0`, `+1Ch = 0`,
+    then a tail-jump to `007C17D0(plane)`.
+- **State 6** is the plane on the water: `007CB7F0`'s tail `007CB92C` moves 7, 4 and 5 to 6 at the
+  water line (docs/ATTACK_RUN_DESCENT.md, the host's `cc9_water_surface_law`). A dead plane does not
+  think, so only a live ditched plane reaches the tail there. Queue item 2 of 5bo is answered by
+  that existing reading; `007B8BD0`'s use of state 6 in 5bj is the same field.
+
+### The host with the switch on
+
+- In the pilot think, after the task arm (the host's `009998A0` call), the gate above picks the
+  head as the host orders it: the takeoff task when installed (5bl), else `land`, else any other
+  installed command task (torpedo, dive bomb, moveto, dogfight).
+- A push installs the takeoff task through the `0099A4A0` install's approach setup (`009CD420`)
+  with the `DL = 0` start state: parking when `+904h` and `+900h == 5` (still **not bound**: it is
+  recorded and the task sits in parking, and the plane holds), else `takeoff/Takeoff` with
+  `009CE270`'s writes. SUBSTITUTION, labelled: `+AA0h` is carried as 0.0 (5be), so SlowTakeoff is
+  never chosen.
+- The land task stays installed below it and is not ticked until the takeoff task's done arm; it
+  then resumes from `land/abort`.
+- The player-held skip is not modelled (the rows run an idle player).
+- Summary line: `summary ground retakeoff: pushes= parking= takeoff= land_head= other_head=
+  state6=`.
+
+### Predictions (switch ON against OFF; written before the pairs)
+
+Reference U: of the landing rows only JM05 9000 has land aborts (2900 entries, 7 planes; 2896 of
+them `from_abort` in `land park`). JM05 3000, LOMP10 3000 and 9000, USN04, E2, USN13, USN01 and
+BSM01 have none, and only JM08 has a live water contact.
+
+1. **JM05 9000.** The six loopers (F4F Wildcat 01, SB2C Helldiver 02, MainAirfieldEntity
+   01_sqn01|.-2 and |.-3, SecondaryAirfieldEntity 01_sqn02|.-2 and |.-3) get a push at their
+   first ground abort, in state 4 (their park summaries end in state 4 with `contact` as the done
+   reason), so in `takeoff/Takeoff`.
+   - They take a takeoff run where they stand, lift off, and the takeoff task retires. `land`
+     then resumes from abort, flies a new approach and lands again. Each cycle costs one push.
+   - `from_abort` falls from 2896 to a few per plane (one per cycle). Pushes about equal to the
+     aborts on the ground; lift-offs rise by the same count.
+   - `pair_diff` 3. Death rows identical unless a relaunched plane meets enemy fire; any moved row
+     must involve one of the six.
+2. **JM05 3000, LOMP10 3000 and 9000, USN04, E2.** No ground abort: pushes 0 and `pair_diff`
+   1 (the summary line) unless a grounded plane carries some other command task.
+3. **Controls USN01 and BSM01:** pushes 0, exit 0 or 1.
+4. **Flip criterion.** The six loopers relaunch instead of looping, every push is from a
+   grounded head with `30h` true, no push on a row without ground aborts, and no death row moves
+   that the relaunch cannot explain. A relaunch that fails to lift off (the run stalls with no
+   holder) is a mechanism failure and keeps the switch OFF.

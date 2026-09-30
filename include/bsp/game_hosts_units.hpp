@@ -118,6 +118,17 @@ inline constexpr bool kPlaneDesc158Bound = true;
 // tables identical; USN04, E2, USN13 and the controls gameplay-identical).
 inline constexpr bool kTakeoffTaskHeadBound = true;
 
+// Packet cc9_ground_retakeoff (docs/SQUADRON_LAND_TASK.md 5bp). True: the pilot
+// bot tick's tail (0099B0BE-0099B113) pushes a new takeoff task at the head
+// (009CFF40(bot, DL = 0) -> 00999F50) for a plane that is not in free flight
+// ((unit+72Ch)->vtable[38h], +900h == 7), is on the ground (0042A7E0: +900h 4
+// or 5) or on the water (+900h == 6), and whose head task answers 38h and 30h
+// true. Land's 30h (009B3730) is false only in land/park and land/final, so a
+// grounded plane whose land task goes to land/abort takes off again. DL = 0
+// starts in takeoff/Takeoff (+AA0h <= 0.0), or takeoff/parking when landed on
+// the path. False: no push; the host's park <-> abort loop runs on the ground.
+inline constexpr bool kGroundRetakeoffBound = false;
+
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the
 // image's destroy 0077D1A0 -> 0077C980 message 77h -> 0077FE80 -> 0077BD70(null)

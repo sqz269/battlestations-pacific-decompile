@@ -588,6 +588,8 @@ struct GameUnitSlot {
     // Packet cc9_takeoff_task_head: a land install that waits for the takeoff
     // task to retire (kTakeoffTaskHeadBound).
     bool land_install_waits_for_takeoff{false};
+    // Packet cc9_ground_retakeoff: the tick tail's pushes for this plane.
+    unsigned long long retakeoff_pushes{0};
     TakeoffTaskState takeoff_state{TakeoffTaskState::kNone};
     // approach+2Ch, 009CFA80's altitude floor; +30h the margin (15.0 00CE5380,
     // 25.0 00CE89CC for IsKindOf(10h)); +34h the plane's y at the install when
@@ -2394,6 +2396,7 @@ struct GameUnitsHost::Impl {
     void ground_state_from_locked_007ca3f0(GameUnitSlot& p, LandingDeck& d, bool five);
     // Packet cc9_takeoff_task_bind (kBaseLaunchChainBound), piece 4 part 2a.
     void install_takeoff_task_0099a4a0(GameUnitSlot& p);
+    void push_ground_retakeoff_0099b107(GameUnitSlot& p, const char* head);
     // Packet cc9_base_launch_liftoff (kBaseLaunchChainBound), piece 5.
     void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
     unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
@@ -2409,6 +2412,9 @@ struct GameUnitsHost::Impl {
     unsigned long long takeoff_done{0}, takeoff_to_slow{0}, takeoff_to_run{0};
     // Packet cc9_takeoff_task_head.
     unsigned long long land_installs_deferred{0}, land_installs_after_takeoff{0};
+    // Packet cc9_ground_retakeoff (kGroundRetakeoffBound).
+    unsigned long long retakeoff_pushes{0}, retakeoff_parking{0}, retakeoff_takeoff{0};
+    unsigned long long retakeoff_land_head{0}, retakeoff_other_head{0}, retakeoff_state6{0};
     unsigned long long takeoff_permission_asks{0}, takeoff_permission_denied{0};
     bool carrier_elevator_blocked_006d02f0(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
@@ -12042,6 +12048,56 @@ void GameUnitsHost::Impl::install_takeoff_task_0099a4a0(GameUnitSlot& p) {
             static_cast<double>(p.takeoff_prep_phase_20));
     }
     done("PilotBot::install_takeoff_task_0099a4a0", 0x0099a4a0u);
+}
+
+// Packet cc9_ground_retakeoff (kGroundRetakeoffBound), docs/SQUADRON_LAND_TASK.md
+// 5bp. 0099B107-0099B113: 009CFF40(bot, DL = 0) = operator new(4D4h) and
+// 009CF8E0, pushed at the head by 00999F50. 009CF8E0 builds the same approach
+// as 0099A4A0's install (009CF710 -> 009CD420); with DL = 0 the start state is
+// takeoff/parking (+4B8h) when +904h is set and +900h == 5, else
+// takeoff/Takeoff (+470h) when unit+AA0h <= 0.0 (00D7A218), else
+// takeoff/SlowTakeoff (+490h). SUBSTITUTION, labelled: +AA0h is carried as 0.0
+// (docs/SQUADRON_LAND_TASK.md 5be), so SlowTakeoff is not chosen. Parking is not
+// bound: the task is recorded in it and holds the plane (the land task below it
+// is not ticked). takeoff/Takeoff's enter 009CE270 (009CE270-009CE290): +18h =
+// -1.0 (00D7A260), +1Ch = 0, then 007C17D0(plane), recorded.
+void GameUnitsHost::Impl::push_ground_retakeoff_0099b107(GameUnitSlot& p, const char* head) {
+    using TS = GameUnitSlot::TakeoffTaskState;
+    p.takeoff_base_34 = p.plane_contact_deck_bf4 != 0 ? p.motion.position[1] : 0.0f;
+    p.takeoff_margin_30 = bsp::unit_is_kind_of(p.class_id, 0x10) ? 25.0f : 15.0f;
+    p.takeoff_floor_2c = p.takeoff_margin_30 + p.takeoff_base_34;
+    p.takeoff_task_installed = true;
+    ++p.takeoff_installs;
+    ++takeoff_installs;
+    p.takeoff_installed_at = summary.simulated_seconds;
+    ++p.retakeoff_pushes;
+    ++retakeoff_pushes;
+    if (p.plane_control_mode_900 == 6) ++retakeoff_state6;
+    const bool parking = p.plane_landed_904 && p.plane_control_mode_900 == 5;
+    if (parking) {
+        p.takeoff_state = TS::kParking;
+        ++takeoff_parking_refused;
+        ++retakeoff_parking;
+    } else {
+        p.takeoff_state = TS::kTakeoff;
+        p.takeoff_run_18 = -1.0f;
+        p.takeoff_run_1c = 0.0f;
+        record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+        ++retakeoff_takeoff;
+    }
+    if (p.retakeoff_pushes <= 5) {
+        log.notef("  ground retakeoff %s: push %llu at %.2f s head=%s state=%d landed=%d "
+            "bf4=%zu bf8=%d y=%.2f |v|=%.2f -> %s%s (0099B0BE -> 009CFF40(DL 0) -> 00999F50; "
+            "packet cc9_ground_retakeoff)", p.row.name.c_str(), p.retakeoff_pushes,
+            static_cast<double>(summary.simulated_seconds), head, p.plane_control_mode_900,
+            p.plane_landed_904 ? 1 : 0, static_cast<std::size_t>(p.plane_contact_deck_bf4),
+            p.plane_ground_contact_bf8 ? 1 : 0, static_cast<double>(p.motion.position[1]),
+            std::sqrt(static_cast<double>(p.plane_world_velocity[0]) * p.plane_world_velocity[0]
+                + static_cast<double>(p.plane_world_velocity[1]) * p.plane_world_velocity[1]
+                + static_cast<double>(p.plane_world_velocity[2]) * p.plane_world_velocity[2]),
+            parking ? "takeoff/parking" : "takeoff/Takeoff", parking ? ", NOT BOUND" : "");
+    }
+    done("PilotBot::push_ground_retakeoff_0099b107", 0x0099b107u);
 }
 
 // The ground roll's lift-off send (007CC212 / 007CC26E): 00762A00 builds message
@@ -26055,6 +26111,42 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
                             }
                             }
+                            // Packet cc9_ground_retakeoff (kGroundRetakeoffBound),
+                            // 0099B0BE-0099B113: the tick's tail, after 009998A0
+                            // ticked the head. Placed after the task arm, ahead of
+                            // the arm's sub-object updates (LABELLED: the push only
+                            // writes the new task's fields, first ticked at the next
+                            // think). The head as the host orders it: the takeoff
+                            // task (30h 009CF9D0 false), else land (30h 009B3730,
+                            // false in park and final), else another command task
+                            // (30h true). The player-held skip (0099AF33) is not
+                            // modelled.
+                            if constexpr (kGroundRetakeoffBound && kTakeoffTaskHeadBound
+                                    && kBaseLaunchChainBound) {
+                                using LS = GameUnitSlot::LandTaskState;
+                                const int m900 = unit_.plane_control_mode_900;
+                                const char* head = nullptr;
+                                bool head_30 = false;
+                                if (unit_.takeoff_task_installed) {
+                                    head = "takeoff";
+                                } else if (kSquadronLandTaskBound && unit_.land_task_installed) {
+                                    head = "land";
+                                    head_30 = unit_.land_state != LS::kPark
+                                        && unit_.land_state != LS::kFinal;
+                                } else if (unit_.torpedo_task_installed
+                                        || unit_.dive_bomb_task_installed
+                                        || unit_.moveto_task_installed
+                                        || unit_.dogfight_task_installed) {
+                                    head = "command";
+                                    head_30 = true;
+                                }
+                                if (m900 != 7 && head != nullptr
+                                        && (m900 == 4 || m900 == 5 || m900 == 6) && head_30) {
+                                    if (unit_.land_task_installed) ++owner_.retakeoff_land_head;
+                                    else ++owner_.retakeoff_other_head;
+                                    owner_.push_ground_retakeoff_0099b107(unit_, head);
+                                }
+                            }
                             // 0099995C-00999979: after the task arm, 009FC7C0 on
                             // task+314h while unit+C24h. The dogfight arm already
                             // ticks it. SUBSTITUTIONS, labelled: the fast-path test
@@ -29938,6 +30030,18 @@ void GameUnitsHost::report() {
             host.log.notef("summary takeoff task head: land_deferred=%llu land_after_takeoff=%llu "
                 "(00999F50 / 0099AE89 / 0099A4C0 -> 0099A170, packet cc9_takeoff_task_head)",
                 host.land_installs_deferred, host.land_installs_after_takeoff);
+        }
+        if constexpr (kGroundRetakeoffBound) {
+            host.log.notef("summary ground retakeoff: pushes=%llu parking=%llu takeoff=%llu "
+                "land_head=%llu other_head=%llu state6=%llu (0099B0BE -> 009CFF40 -> 00999F50, "
+                "packet cc9_ground_retakeoff)", host.retakeoff_pushes, host.retakeoff_parking,
+                host.retakeoff_takeoff, host.retakeoff_land_head, host.retakeoff_other_head,
+                host.retakeoff_state6);
+            for (const auto& s : host.slots) {
+                if (!s || s->retakeoff_pushes == 0) continue;
+                host.log.notef("summary ground retakeoff member %s: pushes=%llu",
+                    s->row.name.c_str(), s->retakeoff_pushes);
+            }
         }
         for (const auto& s : host.slots) {
             if (!s || s->takeoff_installs == 0) continue;
