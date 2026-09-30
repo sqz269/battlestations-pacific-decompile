@@ -6327,7 +6327,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_plane_wanderer (docs/PLANE_WANDERER.md). True: the plane fixed step
     // runs 007BE060 at 007CE0D2 and the position takes 007D8230's offset term.
     // False: no wanderer (the offset stays zero).
-    static constexpr bool kPlaneWandererBound = false;
+    static constexpr bool kPlaneWandererBound = true;  // ON: mechanism held on five rows (PLANE_WANDERER 8)
     unsigned long long wanderer_planes{0}, wanderer_steps_total{0}, wanderer_active_total{0};
     unsigned long long wanderer_timer_draws{0}, wanderer_off_transitions{0};
     float wanderer_offset_max{0.0f}, wanderer_speed_max_seen{0.0f}, wanderer_accel_max_seen{0.0f};

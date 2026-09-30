@@ -181,3 +181,67 @@ The pairs are USN04 3000, E2 (USN04 9000), JM05 9000, JM08 3000 and LOMP10 3000:
   so the coupling is physical, not through a shared stream. The lead asked for judgement on
   mechanism, not death counts, and so will the verdict.
 - **LOMP10** moves too (its B-25s fly), unless no plane is airborne in the window.
+
+## 7. Measured (pairs on `7e5fe18c1`)
+
+- **Exports:** OFF is `local\l20_w0` (SHA-256 prefix `96563A329A43`); ON is `local\l20_w1`
+  (`237E8C671919`).
+- **Logs:** `local\l20_w{0,1}_<row>.log`, reference p's launch form with
+  `BSP_GUNNERY_RNG_STREAMS=1`. Every log is clean (present interval immediate, the export's
+  module directory, `frames_presented` = F - 1, the final COM release).
+
+**The mechanism, ON side:**
+
+| row | planes | active steps | gust draws | mean gust period | offset max | speed max | accel max | displacement (m) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 3000 | 63 | 97100 | 3225 | 1.51 s | 2.579 | 0.798 | 0.693 | 5071 |
+| E2 (USN04 9000) | 63 | 196536 | 6551 | 1.50 s | 2.579 | 0.798 | 0.693 | 10415 |
+| JM05 9000 | 48 | 198793 | 6668 | 1.49 s | 2.622 | 0.798 | 0.693 | 10351 |
+| JM08 3000 | 19 | 43665 | 1360 | 1.61 s | 3.295 | 0.798 | 0.693 | 2410 |
+| LOMP10 3000 | 10 | 20770 | 657 | 1.58 s | 2.811 | 0.794 | 0.693 | 1224 |
+
+- **Clamps:** `accel` stays under AccelMax 0.7, `speed` under SpeedMax 0.8, and `offset` under
+  OffsetMax 3.5, on every row.
+- **Gust period:** the mean is `active x 0.05 s / draws`. It matches TimeRange's mean 2.1 x
+  SmallPlaneTimeMul 0.7 = 1.47 s for the small planes. JM08 and LOMP10 run longer (1.61 and 1.58
+  s). That is consistent with a share of large planes, whose multiplier is 1.0 and mean 2.1 s
+  (LOMP10 flies B-25s); the per-class split was not counted.
+- **Off transitions** (land/final, turndown, aimdive, flyabove): 8, 16, 35, 0 and 14.
+
+**The pairs.** Every row moved (exit 3), as predicted.
+
+| row | deaths | the death table | follow station error, mean / max (m), OFF -> ON |
+| --- | --- | --- | --- |
+| USN04 3000 | 27 -> 27 | same 27 victims, times moved | 142.3 / 349.3 -> 163.3 / 507.0 |
+| E2 | 51 -> 51 | same 51 victims | 143.1 / 349.3 -> 160.1 / 507.0 |
+| JM05 9000 | 5 -> 5 | identical | 623.3 / 2158 -> 553.4 / 2118 (follow ticks 39453 -> 22284) |
+| JM08 3000 | 10 -> 10 | same 10 victims | 112.8 / 246.5 -> 108.8 / 250.4 |
+| LOMP10 3000 | 10 -> 10 | same 10 victims | 251.8 -> 96.7 (follow ticks 7 -> 67) |
+
+**The spread missed on the station error.** "At most a few metres" was wrong, for two reasons:
+- The host's follow law already leaves members 100 to 600 m from their stations. That is the
+  known placement hole of docs/PLANE_FORMATION.md and BOMBER_AFTER_TASK.
+- The drift changes which planes are in a follow state at all: JM05's follow ticks fall by 43%,
+  and LOMP10's rise from 7 to 67.
+
+So the station error is not a measure of the wanderer here. It is recorded, not used for the
+verdict.
+
+**Uncertainty, stated.** Section 4 reads `+0h` as an extra velocity, because `007D8230` adds
+`t x offset` to a translation that `006D1FC0` commits back each frame (docs/PLANE_ADVANCE_POSE.md).
+The designers' comment in `planeglobals.lua` calls it a deviation with a return "to the original
+position", and the decay law (section 3, step 7) is shaped like one. If the commit loop is ever
+shown not to feed `074h` back into `674h` between two fixed steps, the term becomes a sub-frame
+render offset with no gameplay, and the switch should go back OFF.
+
+## 8. Verdict: `kPlaneWandererBound` ON
+
+- The mechanism matches the listing on every counted item: the clamps, the gust period, the fades
+  (small against large), and the off states.
+- The rows moved as predicted, with the same victim set on all five and deaths unchanged.
+- The one prediction that missed (the station error) is a measurement confounded by the host's
+  follow law, and is explained above.
+- The records `PlaneWanderer::fixed_step` and the old `BotStateFollow::trail_arm_85` consumer gap
+  are closed.
+- **Open:** the roll `+28h` has no reader found, and `007D8230`'s sub-frame publish is not
+  modelled.
