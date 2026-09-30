@@ -13593,3 +13593,103 @@ stows; `nav` part of USN02; `stc`, `hid` nothing; `land` at most JM08 long.
 **Run parameters:** one binary per side, clean `tools/pair_export.py --commit 7f622dde6` exports
 (`local\g20_ru` no flip; `local\g20_ru0` the thirteen `=false`), `BSP_GUNNERY_RNG_STREAMS=1`,
 `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player, a 300-frame USN01 smoke first.
+
+- **Binaries:** `local\g20_ru\build\win32\Release\bsp_game.exe` (SHA-256 prefix `300556853E6B`) and
+  the anchor `local\g20_ru0` (`291C8107424A`); the full hashes are in the report.
+- **Environment:** a 300-frame USN01 smoke passed at 13:22 UTC (console session active). The u and
+  anchor rows ran 13:23-13:33 UTC; the leave-one-out lanes ran 13:35-14:33 UTC.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 14023.9 | 49 | 1004 (91) | 15384 | 98.70 s | 5 of 16 / 0 of 19 | 16 | Lexington-class01 3332.32 | none | 486 | `local\g20_ru_usn04.log` |
+| USN01 | 3000 | 11212.6 | 17 | 527 (107) | 2254 | 5.15 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 1245.72 | none | 505 | `local\g20_ru_usn01.log` |
+| USN04 (E2) | 9000 | 14074.7 | 51 | 1008 (91) | 15435 | 98.70 s | 5 of 16 / 0 of 19 | 19 | Lexington-class01 5588.15 | none | 487 | `local\g20_ru_e2.log` |
+| USN02 | 9000 | 61011.0 | 1 | 6061 (349) | 4941 | 19.25 s | - | - | Kortenaer 6825.13 | **failed at 29.75 s**, phase 1 (unchanged) | 485 | `local\g20_ru_usn02.log` |
+| JM06 (smoke) | 3000 | 3681.0 | 1 | 287 (286) | 354 | 72.10 s | - | - | Fletcher-class 08 451.48 | none | 478 | `local\g20_ru_jm06.log` |
+| JM08 (smoke) | 3000 | 4335.9 | 5 | 238 (148) | 2999 | 5.25 s | - | 1 | Auilick 953.32 | none | 484 | `local\g20_ru_jm08.log` |
+| USN13 (smoke) | 3000 | 7938.1 | 24 | 441 (137) | 5026 | 5.15 s | 0 of 60 / - | 6 | Enterprise 926.02 | none | 512 | `local\g20_ru_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 453 | `local\g20_ru_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 456 | `local\g20_ru_lomp06.log` |
+| LOMP10 | 3000 | 2847.1 | 7 | 240 (156) | 2985 | 90.50 s | - / 8 of 8 | - | (none) 8001.80 | none | 480 | `local\g20_ru_lomp10.log` |
+| JM05 | 3000 | 10011.6 | 12 | 353 (38) | 363 | 6.35 s | - | - | USS Phelps 2624.63 | none | 536 | `local\g20_ru_jm05.log` |
+| USN12 | 3000 | 4510.8 | 7 | 210 (18) | 182 | 7.55 s | - | - | Montpelier 1499.41 | none | 476 | `local\g20_ru_usn12.log` |
+| LOMP10 (long) | 9000 | 3514.5 | 9 | 250 (161) | 3004 | 90.50 s | - / 8 of 8 | - | (none) 8001.80 | none | 492 | `local\g20_ru_lomp10l.log` |
+| USNOS | 3000 | 53629.8 | 105 | 1718 (162) | 4656 | 4.50 s | - | 9 | NH 1497.26 | none | 513 | `local\g20_ru_usnos.log` |
+| USNOS (long) | 9000 | 63363.6 | 127 | 2809 (291) | 16423 | 4.50 s | - | 12 | NH 4492.07 | none | 517 | `local\g20_ru_usnosl.log` |
+| IJN01 | 3000 | 1348.3 | 3 | 75 (65) | 2414 | 86.55 s | - | - | Downes 220.52 | none | 497 | `local\g20_ru_ijn01.log` |
+| JM05 (long) | 9000 | 23201.9 | 18 | 786 (279) | 1012 | 6.35 s | - | 3 | USS Phelps 7466.83 | none | 551 | `local\g20_ru_jm05l.log` |
+| JM08 (long) | 36000 | 43262.9 | 25 | 1276 (566) | 6808 | 5.25 s | - | 1 | Auilick 4565.17 | none | 516 | `local\g20_ru_jm08l.log` |
+
+**Against t** (`pair_diff` against `g18_rt_<row>` in the cc9-gunnery18 tree): **fourteen rows move**
+(exit 3), exactly the predicted fourteen; **USN01, JM08, USN12 and BSM01 are gameplay-identical**
+(exit 1).
+
+Headline moves:
+- **USNOS and USNOS long:** deaths 107 -> 105 and 129 -> 127 (`Storage, 01 06` and
+  `Containers, 01 01#2` survive on both).
+- **USN04:** deaths 48 -> 49 (`D3A Val #7.1|.-3` dies), 24 rows re-timed. **E2:** dive-bomb-task
+  releases 1 -> 0 of 19, 27 rows re-timed. Torpedo-task releases stay 5 of 16 on both.
+- **USN02:** one death on both (its row changes in detail), failure unchanged at 29.75 s; hits 5111 -> 6061, hull hits
+  468 -> 349, damage 59303.8 -> 61011.0, shots 4545 -> 4941.
+- **JM06:** hits 192 -> 287, shots 276 -> 354; death rows identical.
+- **USN13, LOMP06, JM05, IJN01:** death rows identical. IJN01's hits 81 -> 75, shots 2586 -> 2414.
+- **LOMP10 and LOMP10 long:** death rows re-timed only (1 and 3 rows).
+- **JM05 long:** deaths identical (18); two rows change only their `nearest` ship. USS Lexington
+  ends at 7622 (was 8000) and stows 8 of 8 through the elevator.
+- **JM08 long:** deaths 25 -> 25 with five swapped. Only on t: three piers, Grayson and a bunker.
+  Only on u: USTroopTransport 02/03/06, Macomb and LST 02. The solver holds every invader at the
+  beach (`hull terrain contact ships=15 contact_steps=215151 max_depth=2.28`, the same numbers as
+  84.3's ON). `Headquarter 01` never reaches 0 hp (t: `health_zero=8 neutralized=1`). There are no
+  mode-3 points, no ramp contacts and no lowers, and the idle Auilick stops at 4565 m (t: 10504).
+
+### The anchor: thirteen switches
+
+With all thirteen OFF (`g20_ru0`), `7f622dde6` is **gameplay-identical to reference t on all
+eighteen rows** (exit 1 against `g18_rt_<row>`). Nothing else that landed since t moves a row.
+
+### What moved each row
+
+Each variant was turned OFF alone and read with `pair_diff` against u on the fourteen moved rows
+(`local\g20_lane.ps1`; logs `local\g20_u_<v>_<row>.log`).
+
+| variant (OFF) | switch(es) | rows that move against u |
+| --- | --- | --- |
+| `dmg` | `kAiTargetWeightDamageTermsBound` | USN02, JM06 (1 -> 2 deaths: see below), USN13, LOMP06, USNOS (105 -> 107), USNOS long (127 -> 129), IJN01 |
+| `rep` | `kHullRepairEnableRouteBound` | USN04 (49 -> 48), E2 (releases 0 -> 1 of 19), USN02, LOMP10, LOMP10 long, JM05, JM05 long |
+| `sol` | `kHullTerrainContactSolverBound` + `kShipTerrainContactBound` | USN13, JM05, USNOS (2 rows re-timed), USNOS long (127 -> 128: `MovieCargo` dies), IJN01 (hits and shots back to t's), JM05 long (hits and shots back to t's), JM08 long (25 -> 33) |
+| `nav` | `kNavigatorAvoidanceDeliveryBound` | USN02 only |
+| `park` | `kLandParkStateBound` + `kCarrierElevatorBound` | JM05 long only (unit table, 12 rows) |
+| `lsol` | `land` + `sol` | JM08 long: back to t's aggregates exactly (40160.1 damage, 7048 shots, 25 deaths) |
+| `land`, `stc`, `hid` | the landing chain; the keel stand-in; the hit-index detach | none |
+
+**Attribution:**
+- Every moved row is attributed:
+  - `dmg` alone attributes JM06, LOMP06 and the USNOS pair's two structure deaths;
+  - `rep` alone attributes USN04, E2, LOMP10 and LOMP10 long;
+  - `sol` alone attributes JM08 long.
+- **The landing chain is inert on u.** `land` OFF is gameplay-identical on JM08 long. With the
+  solver ON no lander reaches mode 3, so the chain's reach waits on SHIP_AI's mode-3 entry
+  (GUNNERY_OPEN_ITEMS 85.2 item 2).
+- **`sol` OFF on JM08 long is not t.** It has 33 deaths, with the chain driving the landers inland,
+  as 84.3's OFF side did. Only `lsol` (the chain and the solver together) returns t.
+- **The stand-in and the hit-index detach are inert**, as predicted.
+- **An interaction on JM06:** with `dmg` OFF and the other twelve ON, `USTroopTransport 01` dies at
+  124.35 s. The killer is `PlayerSub 02`, gun 116, category 1, at 153 m. It dies on neither t nor u.
+  Why is not read.
+
+**Prediction check:**
+- **Rows held:**
+  - the fourteen predicted to move moved, and the four predicted identical held;
+  - the anchor held on all eighteen.
+- **Headlines held:** USN02 (1 death, 29.75 s, damage 61011 inside 50000-70000), JM06 (287 hits,
+  354 shots), USN04 49, E2's release 1 -> 0, USNOS long 127, JM05 long's stows, and JM08 long's
+  beach stop with no ramp and no flip.
+- **Misses:**
+  - **USNOS:** predicted about 104, measured 105. The Gato's kill-depth kill (84.3) is not a death
+    row in the table, so the solver removes no USNOS death; `sol` moves only two re-timings there.
+  - **JM05 long:** predicted with only park and repair reach. The solver also moves it (hits
+    772 -> 786, shots 953 -> 1012 come from `sol`).
+  - **`land`:** predicted "at most JM08 long"; it has no reach at all.
+- Nothing flipped during these runs, so reference v starts from main after this merge.
