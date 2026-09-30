@@ -5628,3 +5628,44 @@ geometry), and USN13's Maru24. No death flip on these rows.
 2. The countdown binding (65.2) waits for a row where `009F47A7` arms.
 3. The `+304h` and `+338h` clears of `009ED6B0`'s reset span (`009ED78F`, `009ED795`) are unchecked
    against the host.
+
+## 66. The party gate's unpredicted rows: BSM01 and USNOS (cc9-ships18, 2026-09-29)
+
+Reference r (docs/GAME_EXECUTABLE.md, "2026-09-30 r") attributes the moves on USN02, JM06, BSM01,
+LOMP06, USNOS and USNOS long to `kAiPartyGateUnforcedBound` alone. SHIP_AI 60.7 had not predicted any
+of them. This section checks the mechanism on two of those rows, using cc9-gunnery15's logs: r is
+`g15_rr_<row>.log`, and r with the gate OFF is `g15_r_apg_<row>.log`, both in that tree's `local\`.
+It is a log reading; nothing was re-run.
+
+**BSM01: `HenryPT` stands still because it loses its brain's formation order, not a script order.**
+- **Gate OFF.** The AI planners ask for 1174 formation follows, `00779D50` admits 25, and `0077F940`
+  makes all 25 joins (5 groups). One of them is `follow issued (00720CD0, source join 0077F940):
+  "HenryPT" -> "Medusa"` (group 3). HenryPT then station-keeps on Medusa: 601 station requests and
+  1051 arm runs. That movement is its 603.30 m.
+- **Gate ON.** The gate line reads `local_team=0 slot4_team=0`. It plans only slot 4, and in BSM01
+  slot 4 is also team 0, so `other_slot_groups=0`: no group is planned for anyone. The follow
+  requests, joins and formation groups are all 0. HenryPT is on `stop` from step 10, with no
+  formation role, and moves 0.00 m.
+- **The script plays no part.** It is `bsm\bsm_01_stationed_at_pearl.lua` (this installation, mtime
+  2024-07-13), and it issues no formation or movement order to `Mission.Henry`. The calls on
+  HenryPT that run within 3000 frames are `SetInvincible` (49 on both sides), `ShipSetTorpedoStock`
+  and `SetSelectedUnit`. Its `SetRoleAvailable` calls are not reached on either side.
+- **So this is the section 60 rule working as designed.** In single player the image plans slot 4 and
+  never slot 0. The player side's formation follows came from the slot-0 planning that the gate
+  removed.
+
+**USNOS: +12 deaths are the other side's squadrons now receiving the planner's attacks.**
+- **What is new.** The 12 new death rows are the Japanese squadrons `plane #1.1`, `#1.2` and `#1.3`,
+  4 planes each, shot down by US ships (for example `plane #1.1` by Portland1 at 110.25 s).
+- **Gate ON.** The planners issue those squadrons orders through `AiPlanners::issue_member_order`
+  (`0077D600`): `artillery` at 42.45 s, followed by `attackmove building arm 00836B95 ... own_side=1`.
+  The gate line reads `other_slot_groups=315`, so the non-local side is planned.
+- **Gate OFF.** The same squadrons only carry the script's `PilotSetTarget` (declined at `007EEC50`)
+  and their target token; the planner never sends them in.
+- **The rest.** Damage 2004.5 -> 8636.9 and shots 4968 -> 1206 follow from the same change: the US
+  side is no longer planned, and the Japanese side is.
+
+**Verdict.** Both rows move by the rule 60.7 bound: slot 0, the player's side, loses its brain, and
+slot 4 gains one. The misses were in 60.7's row list, not in the mechanism. USN02, JM06 and LOMP06
+were not re-read here. r's attribution covers them, and the same two effects are the expected
+reading.
