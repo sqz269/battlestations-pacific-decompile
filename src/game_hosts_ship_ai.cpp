@@ -302,7 +302,10 @@ inline constexpr bool kGeneratedShipAiBound = true;
 // group it leads is NONCONTROL. True: the launch publishes 8 for the craft's
 // index (ai_set_unit_owner_player). False: the craft reads +180h = 9, joins the
 // nearest party group, and 00A11B80 moves it off its `land` order.
-inline constexpr bool kLandingCraftOwnerPlayerBound = false;
+// ON by section 101.4: JM08 36000's crafts keep `land`, the first ramp lowers at
+// 791.50 (was 1059.40), 11 ramps, 5 launches / 12 crafts; exit 3, no flip.
+// USNOS gameplay-identical.
+inline constexpr bool kLandingCraftOwnerPlayerBound = true;
 // Packet cc9_generated_ship_ai_registration part 2, docs/GENERATED_SHIP_AI.md
 // section 6. True: 009F1BC0's 00811A30(unit, 1.0) at 009F1D3C answers the class
 // turn circle, so nested+11F0h = max(class+500h * 10, circle * 1.5) as the image

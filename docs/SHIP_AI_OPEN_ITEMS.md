@@ -8546,3 +8546,25 @@ The pair is the section 100 build with this switch: OFF equals `s25_a1`.
   crafts die; each death frees a pad, a transport without a cooldown in member order then
   launches again (`launches` above 1, `crafts` above 8).
 - **USNOS:** no craft is launched there, so gameplay-identical (exit 0 or 1).
+
+### 101.4 The pairs (`s25_b0` vs `s25_b1`, both from `684e7a413`), and the flip
+
+| row | launches / crafts | ramps lowered (first) | 0074A4C0 begun | HQ neutral | capture adds | exit | deaths |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JM08 36000 | 1 / 8 -> 5 / 12 | 3 (1059.40) -> 11 (791.50) | 0 -> 1 | 1014.60 -> 1140.95 | 1746 -> 4592 ticks | 3 | 170 -> 151 (12 only ON, 31 only OFF, 130 changed) |
+| USNOS (control) | 0 | - | - | - | - | 1 | identical (106) |
+
+**The mechanism matches.** With `+180h = 8` no craft is a group member (`s25_e1_jm08x`, the ON
+binary with `BSP_LANDER_DIAG=1`, has no `transport move diag` row naming `LandingShip`), so each
+keeps `land` from launch. Ramps lower at 791.50, 796.40, 813.40, 827.30, 837.90 and 838.70
+(pads 7, 5, 0, 3, 2, 4), then 864.40, 867.35, 926.00, 1088.25 and 1168.90 for the relaunched
+crafts. Five crafts die (the first at 788.78 to AA truck 04, two to the HQ's gun at 671..799 m,
+two to Missouri's bombardment), each freeing a pad: the transports launch 4 more times (12 crafts)
+and one landing ship begins (`begun` 1). No flip (CaptureValue 2,000,000).
+
+**Predictions:** no group rows, the first ramp before 850 s (791.50), at least 3 ramps (11),
+craft losses with relaunches (`launches` 5, `crafts` 12), no flip and USNOS identity all held.
+Not predicted: the HQ turns neutral later (1140.95, from 1014.60), and the death table moves
+both ways (the bombardment spread of section 94.4).
+
+**Decision: `kLandingCraftOwnerPlayerBound` ON.**
