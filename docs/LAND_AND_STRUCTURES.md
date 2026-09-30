@@ -337,7 +337,8 @@ single `RET`: a command building does not die. Ownership changes instead, throug
 `006F3270`, which records the new party at `+7B0h`/`+7B4h` and tail-jumps `006F2940`.
 `vtable[218h]` `006F5960` returns `CaptureRange * CaptureRange`; `vtable[0A0h]` `006F2780` reads
 `CaptureRange`, `CaptureValue`, `LevelUpSeconds`, `Level`, `MinShootingRange` (`+7D0h`),
-`InferiorRange` (`+7CCh`), `LandingRange` and `LandingPointRange`.
+`InferiorRange` (`+7C8h`), `LandingRange` (`+7C4h`) and `LandingPointRange` (`+7CCh`, `006F28B3`;
+the landing-pad radius of `006F5CC0`, docs/SHIP_AI_OPEN_ITEMS.md 74.5).
 
 ## 5. What the scene creators read
 

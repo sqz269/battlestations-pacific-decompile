@@ -498,11 +498,12 @@ void GameScriptOrdersHost::record_unimplemented(const char* method,
 }
 
 void GameScriptOrdersHost::register_scene_marker(int id, const std::string& name,
-    const float world_position[3]) {
+    const float world_position[3], int class_id) {
     if (id <= 0) return;
     SceneMarker marker;
     marker.id = id;
     marker.name = name;
+    marker.class_id = class_id;
     marker.position[0] = world_position[0];
     marker.position[1] = world_position[1];
     marker.position[2] = world_position[2];
@@ -510,6 +511,33 @@ void GameScriptOrdersHost::register_scene_marker(int id, const std::string& name
     // Packet cc9_prcp03_phase_progress: the ship AI's goal needs the same
     // position when a command names this marker.
     units_.register_scene_marker_position(id, world_position);
+}
+
+// Packet cc9_building_pad_model. 006F5CC0's third pass, run once on the first
+// call, which is after the scene load as the image's InitAll pass C is. The
+// registry list 1Dh is taken as the LandingPoint markers in registration order
+// (SUBSTITUTION, labelled: the list's append order, 00928860's registrar, was
+// not read; order only breaks exact distance ties in 006F2E60 / 006F3AF0).
+bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
+    if (!kBuildingPadModelBound) return nullptr;
+    if (building_pads_built_) return &building_pads_;
+    building_pads_built_ = true;
+    std::vector<bsp::BuildingPadModel::Pad> points;
+    for (const SceneMarker& marker : markers_) {
+        if (marker.class_id != 0x1D) continue;  // LandingPoint, docs/ENTITY_CLASS_IDS.md
+        bsp::BuildingPadModel::Pad pad;
+        pad.marker_id = marker.id;
+        for (int i = 0; i < 3; ++i) pad.position[i] = marker.position[i];
+        points.push_back(pad);
+    }
+    for (std::size_t unit = 0; unit < units_.count(); ++unit) {
+        if (!units_.unit_is_kind_of(unit, 0x1C)) continue;  // MCommandBuilding
+        float position[3]{};
+        units_.unit_position_00fc(unit, position[0], position[1], position[2]);
+        building_pads_.adopt_landing_pads_006f5cc0(static_cast<int>(unit), position,
+            units_.command_building_landing_point_range_07cc(unit), points);
+    }
+    return &building_pads_;
 }
 
 // Packet cc8_airops_launch_tick. 006C5050 fills a scene property bag - `Type`
@@ -3839,6 +3867,21 @@ void GameScriptOrdersHost::report() {
             timers_.clears, timers_.deletes, timers_.passes, timers_.timed_fires,
             timers_.call_failures,
             timers_.first_error.empty() ? "" : timers_.first_error.c_str());
+        if (bsp::BuildingPadModel* pads = building_pads()) {
+            std::string per_building;
+            for (std::size_t unit = 0; unit < units_.count(); ++unit) {
+                const std::vector<int>& vec = pads->pads_of(static_cast<int>(unit));
+                if (!units_.unit_is_kind_of(unit, 0x1C)) continue;
+                const GameUnitRow* row = units_.unit_row(unit);
+                char item[160];
+                std::snprintf(item, sizeof(item), " %s=%zu",
+                    row != nullptr ? row->name.c_str() : "?", vec.size());
+                per_building += item;
+            }
+            log_.notef("summary building pads bound=1 buildings=%zu pads=%zu%s "
+                "(006F5CC0 pass 3, packet cc9_building_pad_model)",
+                pads->building_count(), pads->pad_count(), per_building.c_str());
+        }
         log_.notef("summary mission script entity identity bound=%d written=%zu "
             "party_sets=%zu (00928100: Race +58h, Party +54h, Type SCRIPTENTITY; "
             "00928F50 on SetParty; packet cc9_scene_race_and_script_identity)",

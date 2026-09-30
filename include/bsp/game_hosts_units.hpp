@@ -800,6 +800,10 @@ public:
     // unauthored). 009E6E80's mode-4 arm (009E6F4E FILD) and the latch 009F20A4 read
     // it. Answers 500 for a unit that is not a CommandBuilding (kind 1Ch) or has no slot.
     float command_building_landing_range_07c4(std::size_t unit_index) const;
+    // Packet cc9_building_pad_model: unit+7CCh, the CommandBuilding's
+    // LandingPointRange (006F2780: 006F2895 find, 006F28B3 store, 500 unauthored),
+    // as the int32 006F5CC0 squares. 500 for a non-CommandBuilding or no slot.
+    std::int32_t command_building_landing_point_range_07cc(std::size_t unit_index) const;
     // The plane class MaxSpd, class+188h (007D238A reads the Lua key). 00A03760
     // reads it for a PlaneSquadron (IsType 18h) as [unit+35Ch]+188h (00A03819 /
     // 00A0381F), the
