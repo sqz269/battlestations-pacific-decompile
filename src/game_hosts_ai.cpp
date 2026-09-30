@@ -75,7 +75,9 @@ inline constexpr bool kAiGroupTransportMovesBound = true;
 // 0074A990). True: delivered to kind-0Ch members at the call. False: counted.
 // The troop transport's 008206F0 (vtable 00CFA778, the craft launch) stays
 // counted either way.
-inline constexpr bool kLandingShipStartLandingBound = false;
+// ON by section 97.4: JM08 36000 begins 3 landings (LST 01, 03, 02) and exits 3;
+// the ramp missed by 0.35 s to the defenders; USNOS identical.
+inline constexpr bool kLandingShipStartLandingBound = true;
 
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();

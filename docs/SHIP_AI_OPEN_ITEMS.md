@@ -8229,3 +8229,45 @@ Only JM08 36000 routes 94h (2463, section 96.4); every other row is identical.
   flip is possible in the window, even with 5 landers; `flips=0`.
 - **Pair:** exit 3 on JM08 36000; death rows move (the landers now close on the beach). The
   transports' 94h stays counted (about the same count as the transports in the groups).
+
+### 97.4 The pairs (`s24_b0` vs `s24_b1`, both from `c285ac04d`), and the flip
+
+| row | 94h to landing ships / begun / refused / transports | exit | deaths | death rows |
+| --- | --- | --- | --- | --- |
+| JM08 36000 | 397 / 3 / 394 / 2065 | 3 | 160 -> 85 | 7 only ON, 82 only OFF, 68 changed |
+| USNOS (control) | 0 | 1 | 106 -> 106 | identical |
+
+**The mechanism matches the read.** `landing ship request (94h -> 0074A4C0)`: LST 01 (pad 7, 3468
+m) and LST 03 (pad 6, 2987 m) at t=632.75, the first CLOSEATTACK tick of Bristol's group; LST 02
+(pad 2, 3532 m) at 905.15, Macomb's. `begins` in the landing-modes line goes 0 -> 3. Every later
+94h to them is refused (-8, `+1200h` held), which is the 394.
+
+**The landings, from `BSP_LANDER_DIAG=1` (`s24_d1_jm08x`, the ON binary):**
+- LST 03 dies at 754.84 on its way in, to `Headquarter 01`'s own gun (range 818).
+- LST 01 drives in under the `land` command, touches ground 95 m from its pad at 789.90
+  (`last_ground`, ramp timer 1.65), and dies at 790.38 to Japanese AA truck 04. That is 0.35 s
+  short of the ramp latch's 2 s.
+- LST 02 turns away near t=990, about when the HQ is neutralized, and stops dead at
+  (2095.0, -2109.5) from about t=1010 to the end (the 86.6 observation: a landing on a building
+  that is no longer an enemy is dropped; why the ship stops rather than resumes is not read).
+- So `ground_contacts=13`, `lowers=0`, `landed_capture_adds=0`.
+
+**Predictions:** `begun` 3 (predicted 3 to 5) held; "at least one ramp lowers" missed by 0.35 s,
+to the defenders. That is the row's knife-edge, not the mechanism. The 82 OFF-only death rows are
+the Allied bombardment's tents and houses (section 94.4's spread); LST 01 and LST 03 die only ON.
+
+**Can a capture complete in the window? No.** Completion needs `|progress| >= CaptureValue`
+(`+7A4h`, section 80), and `Headquarter 01` authors CaptureValue 2,000,000. Arm 2 adds 150 per
+ramp-down lander per 1 s tick, and only once the HQ is neutral: over 13,000 s for one lander,
+over 2,600 s for all five. The 1800 s row cannot flip it even if every ramp lowers.
+
+**Decision: `kLandingShipStartLandingBound` ON** (mechanism match; the ramp miss is recorded).
+
+### 97.5 Next
+
+- **The transports' `008206F0`** (2065 routed 94h on JM08 36000): craft creation through the
+  units host (`create_units`, a units-host contract for cc9-lua27's lane), the hull-perimeter
+  placement with its depth and clearance probes, and 95h / `+1124h`. The craft's InitAll then
+  begins its own landing (`0074C57C..0074C618` -> `0074A990`).
+- **LST 02's stop after the HQ turns neutral** (with the 86.6 note): what the land step does
+  when its building changes party.

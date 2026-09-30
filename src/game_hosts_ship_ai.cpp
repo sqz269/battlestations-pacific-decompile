@@ -12115,6 +12115,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai landing requests 94h=%llu begun=%llu held=%llu "
+        "no_site=%llu no_pad=%llu (0074A4C0, packet cc9_startlanding_94h)",
+        host.summary.landing_requests_94h, host.summary.landing_requests_begun,
+        host.summary.landing_requests_held, host.summary.landing_requests_no_site,
+        host.summary.landing_requests_no_pad);
     host.log.notef("summary mission ship ai land state enters=%llu steps=%llu with_pad=%llu "
         "final=%llu pad_assigns=%llu bound=%d (009E18D0 / 009E1950, packet "
         "cc9_land_step_host)", host.summary.land_enters, host.summary.land_steps,
