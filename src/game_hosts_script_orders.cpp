@@ -938,7 +938,22 @@ std::int32_t GameScriptOrdersHost::air_ops_squadron_plane_count(
         for (std::size_t member : record->member_units) {
             if (member == bsp::kPlaneSquadronNoUnit) continue;
             const GameUnitRow* row = units_.unit_row(member);
-            if (row != nullptr && row->active) ++live;
+            if constexpr (kBaseLaunchChainBound) {
+                // Packet cc9_base_launch_task. A member Inside its base is a
+                // disabled entity (+5Ch clear, 007BC550) but still in +3D0h:
+                // only 007F3970's compaction at death takes it out. So the count
+                // is the members not out of action (+5Dh), destroyed (+5Eh) or
+                // removed (+5Fh), not the enabled ones.
+                bsp::SceneNodeFlags flags;
+                if (row == nullptr) continue;
+                if (!units_.unit_scene_node_flags(member, flags)) {
+                    if (row->active) ++live;
+                } else if (!flags.torn_down && !flags.destroyed && !flags.removed) {
+                    ++live;
+                }
+            } else {
+                if (row != nullptr && row->active) ++live;
+            }
         }
         return live;
     }

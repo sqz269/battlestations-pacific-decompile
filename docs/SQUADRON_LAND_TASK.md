@@ -5645,3 +5645,101 @@ cadence of every row that launches from a base. No code changed for it here.
 - **Added: the launch brake.** Once `block+38h` is set by `006C5050`, the deck refuses the next
   launch. The host never sets `block+38h`, so the carriers launch as fast as the mission script's
   gates admit: four each on JM05 in 3000 frames.
+
+## 5ay. Base launch chain, piece 2: the launch task and site readiness (packet `cc9_base_launch_task`, cc9-lua25, 2026-09-30)
+
+This piece is part of the same switch group, `kBaseLaunchChainBound`, which is still committed
+**OFF**. It also corrects piece 1.
+
+### Read
+
+- **Inside members are disabled entities (settles 5ax's `+5Ch` read).**
+  - `007CC820` calls `007C11E0 BSP_Plane_NotifyFlightState(0)`. In state 1 (outside 7/6/4/5/3) that
+    function zeroes `+9F0h` and stores `00F87574` into `+AECh..+B00h`. Because the state is 0 or 1,
+    it then calls `007BC550`.
+  - `007BC550` (`__fastcall(plane)`): with the Lua self `+4A4h` set, state 0 or 1 gives
+    `00922F80 BSP_SceneNode_Disable(0)` (`+5Ch = 0`) and `00951F40(0)` (spatial detach). Any other
+    state gives `00922F30` (enable, when `+5Ch` is clear) and `00951F40(1)`.
+  - Its other callers are `007C5F60 BSP_Plane_PlaceOnLaunchSpotLocked`, `007C6340` and `007C9770`.
+    So the deck placement (piece 3) re-enables the member it sends.
+- **The launch task is built for any squadron with a home base.** At `007F5390`-`007F5404`, the
+  squadron's pass C builds it when:
+  - `+404h` is set;
+  - the holder kind is not 2;
+  - the base is `IsKindOf(9)` or `IsKindOf(45h)`.
+
+  `+408h` is not tested. A scene squadron with a `HomeBase` therefore gets a task too. Its members
+  are in state 7, so `007EF010` answers 1 on the first ready tick and the task ends.
+- **Readiness.**
+  - `006CFF40` (`006CFF40`-`006CFF61`): true when all three hold:
+    - `site+94h == 0`;
+    - `0.0 > site+5Ch`;
+    - `site+18h == 0`.
+
+    With the platform at `site+44h`, the first two are the platform mode `P+50h` and `P+18h`.
+  - `006CDF60` (`006CDF60`-`006CDF69`): `site+18h == 0`.
+  - `006CF190` (`006CF190`-`006CF1BD`, `RET 4`): moves the observer pair at `site+4h` onto the
+    member, so `site+18h` = member.
+- **`007EF010`** sends the first member in `+3D0h` order that has `+5Ch` clear and `+900h` == 1. Its
+  `vtable[10h]` is the name getter (5ax).
+
+### The host with the switch on
+
+- **Piece 1, corrected.** `plane_enter_state_one_007cc820` now carries `007C11E0(0)`'s state-1
+  zeroing (throttle and velocities) and `007BC550`'s disable:
+  - `state->active` = 0 and `row.active` = false (`+5Ch`);
+  - `plane_hit_node_detached` (`00951F40(0)`).
+
+  The host's world walk skips the member, as `00904C00` does. Piece 1's per-step carry with the base
+  is removed, because a disabled member is not stepped. Its pose is placed again when it is sent.
+- **The task.** Pass C builds the launch task on the squadron record (`launch_task_*`) right after
+  the Inside start. ORDER, LABELLED: before the command block, not after it.
+- **The tick.** It runs once per step, before the site ticks in `run_landing_queue_006cd240`.
+  POSITION, LABELLED.
+  - The countdown, then the readiness of the base's `LandingDeck`:
+    - the new `site_ready_18`;
+    - for a mother ship, the elevator's `mode_50` and `p18`.
+  - Then the send: `site_ready_18` = member.
+- **Not carried.** The kill arm of `007EF010` for a dead owner is unreachable in the same step.
+- **Not built.** The scene squadrons' tasks, which end at their first ready tick.
+
+### Predictions (switch on, recorded before the run)
+
+- JM05 3000: 10 tasks are built.
+  - Each deck's first ready tick sends one member: two airfields, and each carrier with the lift at
+    the top.
+  - Nothing consumes `site+18h` until piece 3, so each of the four decks holds one ready plane for
+    the rest of the run.
+  - Four `sends` in all, and `not_ready` grows every step after them.
+  - No task ends, and 30 members stay Inside (disabled). No launched plane reaches state 7.
+- Off: identical to the parent.
+
+### Record (commits `7a34612d5`, `40412e9e5`, `f41a2bd3b`, 2026-09-30)
+
+- **Smoke, off (`7a34612d5`), USN01 300 frames:** 299 frames were presented and the run exited 0.
+- **First JM05 3000 with the switch on (`7a34612d5`, `local\l25_p2on`): a host defect.**
+  - Disabling the Inside members made `air_ops_squadron_plane_count` report 0, because it counted
+    `row.active`.
+  - The deck tick then released each slot as if its squadron were dead (the host's stand-in for
+    `007F1B70` -> `006C65B0`).
+  - The script's `stloPlaneNum < 2` gate relaunched until the 64-squadron ceiling: 64 squadrons, 192
+    members Inside.
+  - In the image a disabled member stays in `+3D0h`/`+3CCh` until `007F3970`'s compaction at death.
+    Under the switch the count now takes the members that are not out of action, destroyed or
+    removed (`+5Dh`/`+5Eh`/`+5Fh`): `40412e9e5`, with `f41a2bd3b` fixing the `C4702` that the ON
+    build raised.
+- **JM05 3000 with the switch on (`f41a2bd3b`, `local\l25_p2bon`, SHA-256 `A9E9BB5B9998`), as
+  predicted:**
+  - the same 10 launches as the off reference;
+  - `built=10 ended=0 sends=4`;
+  - each of the four decks received its first member at 3.05 s:
+    - `MainAirfieldEntity 01_sqn01`;
+    - `SecondaryAirfieldEntity 01_sqn02`;
+    - `USS Lexington_sqn03`;
+    - `USS Yorktown_sqn04`.
+  - Each member is its squadron's wing 0, the `+3D0h` head. Each deck kept that member in
+    `site+18h` for the rest of the run: `not_ready` was 28506 of 28670 ticks.
+  - 30 members stayed Inside.
+  - Shokaku and Zuikaku, which launch nothing on this row, stayed empty.
+
+Piece 3 (the deck arms) is what consumes `site+18h`.

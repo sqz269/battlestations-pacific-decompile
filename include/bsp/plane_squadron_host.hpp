@@ -113,6 +113,14 @@ struct PlaneSquadronHostRecord {
     // +408h, set by 007F1C00 with the flag and by 007ED6E0: the members start
     // Inside the base and 007F4DA9 skips the airborne placement 007F2920.
     bool home_launch_408{false};
+    // The launch task 007F1DE0 (38h bytes, vtable 00D08AE4) that pass C builds at
+    // 007F53FF for a squadron whose home base is a mother ship or an airfield:
+    // task+1Ch the send countdown, task+34h the squadron. `launch_task_deck` is
+    // the base's index in air_ops_decks().
+    bool launch_task_live{false};
+    float launch_task_timer_1c{0.0f};
+    std::size_t launch_task_deck{kPlaneSquadronNoUnit};
+    std::int32_t launch_task_sends{0};
     // +378h, the force flag 007EEF62 tests before it consults 007B8AD0.
     // 007F2D1E seeds it SET, so a squadron that has not been through 007ED3C0
     // raises a release order for every member unconditionally. `release_orders_

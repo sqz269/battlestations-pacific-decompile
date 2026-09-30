@@ -2274,6 +2274,11 @@ struct GameUnitsHost::Impl {
         // occupancy vector +34h/+38h that 006CED90 appends to.
         float site_stamp_40{-99999.0f};
         std::vector<std::size_t> site_occupants_34;
+        // site+18h, the ready plane (006CF190 stores it under the observer pair
+        // at site+4h), read by both readiness slots (006CDF60, 006CFF40) and by
+        // the deck arms. Packet cc9_base_launch_task (kBaseLaunchChainBound).
+        std::size_t site_ready_18{static_cast<std::size_t>(-1)};
+        unsigned long long site_ready_sets{0};
         std::vector<LandingQueueEntry> queue;
         std::vector<LandingAssignment> assignments;
         unsigned long long lookups{0}, found{0}, passes{0}, inserts{0}, releases{0};
@@ -2329,7 +2334,12 @@ struct GameUnitsHost::Impl {
     unsigned long long base_launch_inside_entries{0};
     unsigned long long base_launch_inside_squadrons{0};
     unsigned long long base_launch_inside_no_base{0};
-    unsigned long long base_launch_inside_carry_steps{0};
+    // Packet cc9_base_launch_task (kBaseLaunchChainBound).
+    void base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostRecord& sq, float dt);
+    unsigned long long base_launch_tasks_built{0}, base_launch_tasks_ended{0};
+    unsigned long long base_launch_ticks{0}, base_launch_not_ready{0};
+    unsigned long long base_launch_sends{0}, base_launch_owner_dead{0};
+    unsigned long long base_launch_no_deck{0};
     unsigned long long carrier_deck_parented{0}, carrier_deck_wire_seeded{0};
     unsigned long long carrier_deck_carry_steps{0}, carrier_deck_wire_steps{0};
     unsigned long long carrier_deck_wire_resets{0}, carrier_deck_edge_takeoffs{0};
@@ -11445,32 +11455,129 @@ void GameUnitsHost::Impl::plane_enter_state_two_007cc7a0(GameUnitSlot& p) {
 // state (007C2169) and requested 1 routed with 7 (007C21AD 0077C2A0), delivered
 // here at once, as 007C2090's twin is. Its handler 007CC820
 // BSP_Plane_EnterFlightStateOne (`RET`): 007C78A0 only on a client; when +900h
-// is not 1, +900h = 1, +C04h = -1.0 (00D7A260) and 007C11E0(0) (not carried, as
-// at the other state entries); then the re-parent vtable[ACh] to the squadron's
-// home base (+9D4h)->+404h (007CC86E-007CC88B), which every launched member has.
-// The re-parent is the host's deck parent (the local pose under the base).
-// Nothing here writes +908h or the velocity: those are what the host's creation
-// seed wrote for 007C6340, which 007F4DA9 skips for this squadron, so they go
-// back to the constructor's zero (007CFD20 leaves +900h at 0; LABELLED: +908h's
-// constructor zero is inferred from 007C6340 writing it on every placement arm).
+// is not 1, +900h = 1, +C04h = -1.0 (00D7A260) and 007C11E0(0); then the
+// re-parent vtable[ACh] (00924F90) to the squadron's home base (+9D4h)->+404h
+// (007CC86E-007CC88B), which every launched member has. The re-parent is the
+// host's deck parent (the local pose under the base).
+//
+// 007C11E0 BSP_Plane_NotifyFlightState(0) in state 1 (packet
+// cc9_base_launch_task): the actuator block +DECh bytes (not carried: no +DECh
+// block here); a state outside 7/6/4/5/3 zeroes +9F0h (the throttle), stores
+// the vector at 00F87574 into +AECh..+B00h (LABELLED: taken as the zero vector,
+// not read), then BSP_PlaneFlightController_BodyToWorldVelocity, 007DDEA0 and
+// 007EB380(0) (not carried beyond the zeroing); and in state 0 or 1 it calls
+// 007BC550, which with the Lua self +4A4h set (every attached member) DISABLES
+// the scene node (00922F80: +5Ch = 0) and detaches the spatial node
+// (00951F40(0)). So a member Inside is a disabled entity: the world walk
+// (00904C00) skips it and 006D1EF0 does not count it live, and 007EF010 sends
+// only members whose +5Ch is clear. The host's +5Ch is state->active.
+// +908h: the host's creation seed wrote 3600 for 007C6340, which 007F4DA9
+// skips here, so it goes back to the constructor's zero (LABELLED: inferred
+// from 007C6340 writing it on every placement arm).
 void GameUnitsHost::Impl::plane_enter_state_one_007cc820(GameUnitSlot& p,
                                                         std::size_t base_index) {
     if (p.plane_control_mode_900 == 1) return;                        // 007C214B
     p.plane_control_mode_900 = 1;                                     // 007CC857
     p.plane_site_timer_c04 = -1.0f;                                   // 007CC861
     p.plane_airborne_908 = 0.0f;
+    // 007C11E0(0), state 1: +9F0h = 0 and the velocities zeroed.
+    p.plane_live_throttle = 0.0f;
     for (int i = 0; i < 3; ++i) {
         p.plane_world_velocity[i] = 0.0f;
         p.plane_body_angular[i] = 0.0f;
     }
     p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
+    // 007BC550: 00922F80 (+5Ch = 0) and 00951F40(0).
+    if (p.state != nullptr) p.state->active = 0;
+    p.row.active = false;
+    p.plane_hit_node_detached = true;
     if (base_index < slots.size() && slots[base_index]) {
         p.deck_parent_plus_one = base_index + 1u;                     // vtable[ACh]
         p.deck_stop_logged = false;
         carrier_deck_capture(p);
     }
     ++base_launch_inside_entries;
-    record("Plane::enter_state_one_007cc820", 0x007cc820u);
+    done("Plane::enter_state_one_007cc820", 0x007cc820u);
+}
+
+// 007F1F00 BSP_SquadronLaunchTask_Tick (007F1F00-007F1FDB, __thiscall(task,
+// float dt), RET 4), with 007EF010 BSP_PlaneSquadron_SendNextHangarMember
+// (007EF010-007EF090, RET) and the site's readiness vtable[18h]: 006CDF60
+// (airfield, site+18h == 0) or 006CFF40 (mother ship: platform mode P+50h == 0,
+// 0.0 > P+18h (the lift at the top), site+18h == 0). task+1Ch counts down by
+// dt and holds while above 0 (007F1F8D JA); when the site is ready it is
+// re-armed to tuning+190h (AirField/PlaneSendInterval) and 007EF010 sends the
+// first member (+3D0h order) with +5Ch clear and +900h == 1: its vtable[10h]
+// (0042E950, the name getter; no effect), then, the base owner alive
+// (block+7Ch non-null, +5Dh clear), 006CF190(site, member): site+18h =
+// member. With the owner gone it kills the member (00926D90(1), counted and not
+// carried: this host's air-ops owner is a live unit when the squadron is made).
+// 007EF010 answering 1 (none left) unregisters the squadron and ends the task
+// (007F1FB5-007F1FCF, vtable[10h]).
+void GameUnitsHost::Impl::base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostRecord& sq,
+                                                        float dt) {
+    if (!sq.launch_task_live) return;
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    const std::size_t di = sq.launch_task_deck;
+    const bsp::AirOpsDeck* deck = di < decks.size() ? decks.mutable_at(di) : nullptr;
+    std::size_t owner = slots.size();
+    if (deck != nullptr) {
+        for (std::size_t u = 0; u < slots.size(); ++u) {
+            if (slots[u] && slots[u]->row.name == decks.name_at(di)) { owner = u; break; }
+        }
+    }
+    // 007F1F5C-007F1F71: squadron, block and the block's owner alive.
+    if (deck == nullptr || owner >= slots.size()) { ++base_launch_no_deck; return; }
+    if (gunnery != nullptr && gunnery->unit_dead(owner)) return;
+    ++base_launch_ticks;
+    // 007F1F73-007F1F8D: +1Ch -= dt; hold while above 0.
+    sq.launch_task_timer_1c -= dt;
+    if (sq.launch_task_timer_1c > 0.0f) return;
+    // 007F1F8F-007F1F9B: the site's vtable[18h].
+    LandingDeck* d = landing_deck_006c0750(di, owner);
+    if (d == nullptr) { ++base_launch_no_deck; return; }
+    bool ready = d->site_ready_18 >= slots.size();
+    if (!deck->is_airfield) {
+        CarrierElevator* e = carrier_elevator_ready(*d);
+        ready = ready && e != nullptr && e->mode_50 == 0 && 0.0f > e->p18;
+    }
+    if (!ready) { ++base_launch_not_ready; return; }
+    // 007F1F9D-007F1FAB: +1Ch = tuning+190h.
+    sq.launch_task_timer_1c = lua.plane_globals_loaded()
+        ? lua.plane_globals().air_field_plane_send_interval : 2.0f;
+    // 007EF010.
+    std::size_t pick = slots.size();
+    for (const std::size_t m : sq.member_units) {
+        if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+        const GameUnitSlot& p = *slots[m];
+        const bool enabled = p.state != nullptr && p.state->active != 0;   // +5Ch
+        if (!enabled && p.plane_control_mode_900 == 1) { pick = m; break; }
+    }
+    if (pick >= slots.size()) {
+        // 007EF041: 1, none left; 007F1FB7-007F1FCF end the task.
+        sq.launch_task_live = false;
+        ++base_launch_tasks_ended;
+        log.notef("base launch task: squadron=%s ends at %.2f s after %d send(s) "
+            "(007EF010 -> 1, 007F1FCF; packet cc9_base_launch_task)", sq.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), sq.launch_task_sends);
+        done("SquadronLaunchTask::tick_007f1f00", 0x007f1f00u);
+        return;
+    }
+    // 007EF067-007EF072: the owner of squadron+404h's block, alive. The tick's
+    // own gate (007F1F6D) tested the same owner this step, so the kill arm
+    // (00926D90(1)) cannot be reached here; base_launch_owner_dead stays 0.
+    // 006CF190: site+18h = member.
+    d->site_ready_18 = pick;
+    ++d->site_ready_sets;
+    ++sq.launch_task_sends;
+    ++base_launch_sends;
+    log.notef("base launch task: squadron=%s sends %s to %s %s at %.2f s (send %d; "
+        "007F1F00 -> 007EF010 -> 006CF190 site+18h; packet cc9_base_launch_task)",
+        sq.name.c_str(), slots[pick]->row.name.c_str(),
+        deck->is_airfield ? "airfield" : "mother ship", decks.name_at(di).c_str(),
+        static_cast<double>(summary.simulated_seconds), sq.launch_task_sends);
+    done("SquadronLaunchTask::tick_007f1f00", 0x007f1f00u);
+    done("Squadron::send_next_hangar_member_007ef010", 0x007ef010u);
 }
 
 // 006FC720 (flag 0 of 006D0050 with a plane): the platform at the top and still,
@@ -12295,6 +12402,15 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
     } else {
         Impl& h = *impl_;
         if (!h.lua.plane_globals_loaded()) return;
+        if constexpr (kBaseLaunchChainBound) {
+            // Packet cc9_base_launch_task: each squadron's launch task 007F1F00.
+            // POSITION, LABELLED: the image ticks it from its task list
+            // (00876020's registration), whose place in the frame is unread;
+            // it runs here, before the site ticks that read site+18h.
+            for (bsp::PlaneSquadronHostRecord& sq : bsp::plane_squadron_registry().records()) {
+                h.base_launch_task_tick_007f1f00(sq, dt);
+            }
+        }
         if constexpr (Impl::kCarrierElevatorBound) {
             // 006CDC70's site slots +4h (006D0600) and +8h (006CFE40 -> 006FC480);
             // LABELLED: run here, before the queue, in that order.
@@ -25885,17 +26001,6 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
                 }
                 if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
-                if constexpr (kBaseLaunchChainBound) {
-                    // Packet cc9_base_launch_inside_start. A plane Inside (state 1)
-                    // selects no arm (007CEC30), but 007CC820 parented it to its
-                    // base, whose scene node carries the child's derived pose
-                    // (00414E10, parent x local); the host's deck parent does it here.
-                    if (arm == bsp::PlaneMotionArm::None && slot.plane_control_mode_900 == 1
-                        && slot.deck_parent_plus_one != 0) {
-                        host.carrier_deck_carry_in(slot);
-                        ++host.base_launch_inside_carry_steps;
-                    }
-                }
                 ++host.summary.plane_steps;
                 if constexpr (kPlaneRowPositionBound) {
                     // Packet cc9_controlled_plane_ai_moveto: the row's copy of
@@ -27327,6 +27432,27 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
                         static_cast<double>(host.slots[squadron_index]->motion.position[1]),
                         static_cast<double>(host.slots[squadron_index]->motion.position[2]));
                     host.done("Squadron::enter_inside_007ed6e0", 0x007ed6e0u);
+                    // Packet cc9_base_launch_task, 007F5390-007F5404: with +404h
+                    // set, a holder kind ([+C0h]+4h) other than 2 (every host
+                    // squadron is kind 1) and a base answering IsKindOf(9) or
+                    // IsKindOf(45h), 38h bytes -> 007F1DE0(base+310h, squadron):
+                    // +1Ch = 0, the squadron at +34h. ORDER, LABELLED: the image
+                    // builds it after the command block (007F4E06-007F4EA3);
+                    // nothing between reads it, and here the command block's
+                    // early returns would otherwise skip it. A scene squadron with
+                    // a HomeBase gets a task in the image too, whose first ready
+                    // tick finds no state-1 member and ends it; it is not built here.
+                    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+                    for (std::size_t di = 0; di < decks.size(); ++di) {
+                        if (decks.name_at(di) != rec->bag_home_base) continue;
+                        rec->launch_task_live = true;
+                        rec->launch_task_timer_1c = 0.0f;
+                        rec->launch_task_deck = di;
+                        rec->launch_task_sends = 0;
+                        ++host.base_launch_tasks_built;
+                        host.done("SquadronLaunchTask::construct_007f1de0", 0x007f1de0u);
+                        break;
+                    }
                 }
             }
         }
@@ -28305,10 +28431,22 @@ void GameUnitsHost::report() {
             if (s && s->plane_control_mode_900 == 1) ++inside_now;
         }
         host.log.notef("summary base launch inside start: squadrons=%llu entries=%llu "
-            "no_base=%llu carry_steps=%llu inside_now=%zu (007F1C00 / 007ED6E0 / 007CC820, "
-            "packet cc9_base_launch_inside_start)", host.base_launch_inside_squadrons,
-            host.base_launch_inside_entries, host.base_launch_inside_no_base,
-            host.base_launch_inside_carry_steps, inside_now);
+            "no_base=%llu inside_now=%zu (007F1C00 / 007ED6E0 / 007CC820, packet "
+            "cc9_base_launch_inside_start)", host.base_launch_inside_squadrons,
+            host.base_launch_inside_entries, host.base_launch_inside_no_base, inside_now);
+        host.log.notef("summary base launch task: built=%llu ended=%llu ticks=%llu "
+            "not_ready=%llu sends=%llu no_deck=%llu (007F1DE0 / 007F1F00 / 007EF010 / "
+            "006CF190, packet cc9_base_launch_task)", host.base_launch_tasks_built,
+            host.base_launch_tasks_ended, host.base_launch_ticks, host.base_launch_not_ready,
+            host.base_launch_sends, host.base_launch_no_deck);
+        for (const Impl::LandingDeck& d : host.landing_decks) {
+            if (!d.built || d.owner >= host.slots.size()) continue;
+            host.log.notef("summary base launch site %s: ready_plane=%s sets=%llu",
+                host.slots[d.owner]->row.name.c_str(),
+                d.site_ready_18 < host.slots.size()
+                    ? host.slots[d.site_ready_18]->row.name.c_str() : "(none)",
+                d.site_ready_sets);
+        }
     }
     if constexpr (kLandingSequencerBound) {
         const bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
