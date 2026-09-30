@@ -441,6 +441,9 @@ struct GameProjectileRow {
     float position[3]{};
     float life{0.0f};
     bool alive{false};
+    // Diagnostic (BSP_SHELL_FATE): how the round ended. 0 none, 1 land, 2 entity,
+    // 3 flak burst, 4 water, 5 expired.
+    int fate{0};
     bool swimming{false};             // past the water crossing, on the swim
     // record+46Ch, the commanded world heading (atan2(x, z)) the launch command
     // 007311B0 carries as `heading`; 10000 (00D0C310) means none, and the steer
