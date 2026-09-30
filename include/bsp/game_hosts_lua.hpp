@@ -153,6 +153,15 @@ inline constexpr bool kLuaListenersBound = true;  // ON: identity pairs (docs/LU
 // listeners on its recon pass's level changes. False: `recon` entries never fire.
 inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
+// Packet cc9_recon_publication (docs/RECON_PUBLICATION.md). 00806B10, called by
+// 008079B0 after each slot's rebuild when the slot's +25h byte is set, sets
+// recon[party].enemy/own/neutral/unknown to nil, then refills them from triples
+// 1, 0, 2 and 3 through 00805D90: nineteen category tables each, keyed by the
+// decimal +174h id, valued thisTable[id] (00927BF0). True: the host publishes
+// its recon triples after each recon pass. False: the maps stay the empty shell
+// 00803A40 built, and every luaGetShipsAround* query answers empty.
+inline constexpr bool kReconPublishBound = false;
+
 // Packet cc9_recon_level_step_check (docs/LUA_BINDING_MISSION.md, "Why LOMP06's
 // seaplane listener was silent"). 008073C0 resets every record at each pass
 // (00807490 -> 00805BE0), which notifies old -> 0 through 0077B0C0, and 00805AF0
@@ -577,6 +586,13 @@ struct GameMissionLuaSummary {
     unsigned long long listener_attacker_filtered{0};
     unsigned long long listener_recon_changes{0};
     unsigned long long listener_recon_fires{0};
+    // Packet cc9_recon_publication.
+    unsigned long long recon_publish_passes{0};     // recon pass generations seen
+    unsigned long long recon_publish_slots{0};      // 00806B10 calls (a slot published)
+    unsigned long long recon_publish_unchanged{0};  // slots skipped: content as last published
+    unsigned long long recon_publish_entries{0};    // category entries written
+    unsigned long long recon_publish_excluded{0};   // 00805DE6 class exclusions
+    unsigned long long recon_publish_no_category{0};// category 13h
     unsigned long long listener_hit_events{0};
     unsigned long long listener_hit_fires{0};
     unsigned long long listener_hit_unmodelled{0};
@@ -1121,6 +1137,7 @@ public:
     int run_is_listener_active_008c6bb0(lua_State* state, int argument_count);
     void dispatch_kill_listeners_009813a0();
     void dispatch_recon_listeners_00980e50();
+    void publish_recon_slot_tables_00806b10();
     void dispatch_hit_listeners_00988510();
     // Packet cc9_set_invincible_native. 00897A50 SetInvincible, always bound: the
     // gunnery host's setter stores unit+150h and every reader of it is gated on
@@ -1360,6 +1377,12 @@ private:
     // recon pass generation they were taken at.
     std::vector<int> recon_listener_levels_;
     unsigned long long recon_listener_generation_{0};
+    // Packet cc9_recon_publication: the pass generation last published, and
+    // per party the (relation, category, id) triples last written.
+    unsigned long long recon_publish_generation_{0};
+    std::array<std::vector<std::uint32_t>, 3> recon_published_;
+    // squadron+354h per squadron unit, frozen the first time a member resolves.
+    std::map<std::size_t, int> recon_squadron_category_;
 public:
     void attach_units_hooks(GameUnitsHost* units) noexcept { units_hooks_ = units; }
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {

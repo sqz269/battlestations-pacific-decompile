@@ -199,6 +199,36 @@ bool recon_publish_excludes_class_00805de6(int class_id) noexcept
                      class_id) != kReconPublishExcludedClassIds.end();
 }
 
+int recon_publish_category_for_class(int class_id) noexcept
+{
+    switch (class_id) {
+    case 0x09: return 0x00; // MMothership       007581F0 (XOR EAX,EAX)
+    case 0x07: return 0x01; // MDestroyer        006FE4D0
+    case 0x0e: return 0x02; // MTorpedoBoat      00857D60
+    case 0x0d: return 0x03; // MBattleship       006DFDC0
+    case 0x0a: return 0x04; // MCruiser          006FB370
+    case 0x0b: return 0x05; // MCargo            006EB1D0
+    case 0x0c: return 0x06; // MLandingShip      0074BBC0
+    case 0x10: return 0x07; // MPlaneBomber      007D7790
+    case 0x12: return 0x08; // MPlaneDiveBomber  00951BD0
+    case 0x11: return 0x09; // MPlaneTorpedoBomber 00951CB0
+    case 0x13: return 0x0a; // MPlaneFighter     007DDA20
+    case 0x14: return 0x0b; // MReconPlane       0074E2B0
+    case 0x15: return 0x0b; // MSmallReconPlane  0084C990
+    case 0x16: return 0x0b; // MLargeReconPlane  0074E340
+    case 0x17: return 0x0c; // MPlaneKamikaze    00951D90
+    case 0x08: return 0x0d; // MSubmarine        00852FB0
+    case 0x19: return 0x0e; // MLandVehicle      0074DD40
+    case 0x1a: return 0x0e; // LandConvoy        004F24E0
+    case 0x1b: return 0x0f; // MLandFort         00745A40
+    case 0x1c: return 0x0f; // MCommandBuilding  006F5830
+    case 0x45: return 0x10; // MAirfield         006D1D20
+    case 0x46: return 0x11; // MShipyard         00846B40
+    case 0x47: return 0x12; // Path              0047B790
+    default:   return kReconPublishNoCategory;
+    }
+}
+
 // ---------------------------------------------------------------------------
 // 008073C0 as a sequence
 // ---------------------------------------------------------------------------

@@ -1,0 +1,114 @@
+# The recon publication: `recon[party][relation][category]` (packet `cc9_recon_publication`)
+
+Worker cc9-lua22. The queue item is SQUADRON_LAND_TASK 5aj item 1; the finding is SHIP_AI_OPEN_ITEMS
+74.4. Switch: `kReconPublishBound` (`include/bsp/game_hosts_lua.hpp`).
+
+## 1. What the image does (both routines read whole)
+
+**`00806B10` `BSP_Recon_PublishSlotTable`**, `__thiscall void(ReconSlot*, LuaInstance*)`, `RET 4`,
+body `00806B10`-`00806CCD`. The only caller is `008079B0`, after a slot's rebuild, and only when
+the slot's `+25h` byte is set. The pseudocode and docs/RECON_SLOT_LISTS.md section 4 agree. The
+ledger's "read to `00806BAE`" is stale: cc2_recon_slot_lists read the rest.
+
+1. Pass 1 (`00806B30`..`00806B9D`): `recon[slot+28h]` through `006B8190` / `00803750`. Then
+   `enemy`, `own`, `neutral` and `unknown` are set to nil through `006B8390` (pushstring, pushnil,
+   `lua_settable(-3)`).
+2. Pass 2 (`00806BA2`..`00806CB7`): each relation is created through `008037D0` (a rawget; when
+   the value is nil, a new table is rawset) and filled by `00805D90`:
+   - enemy from triple 1 (`+DE4h`);
+   - own from triple 0 (`+DD8h`);
+   - neutral from triple 2 (`+DF0h`);
+   - unknown from triple 3 (`+DFCh`).
+
+**`00805D90` `BSP_Recon_PublishRelationCategories`**, `__thiscall void(LuaInstance*, List*, int)`,
+`RET 0Ch`, body `00805D90`-`00805F29`. The listing was checked at `00805DE0`..`00805F0A`.
+1. It builds nineteen local `{count, head, tail}` lists.
+2. It walks the triple (`node+4` is next, `node+8` is the record, `record+4` is the unit):
+   - it skips unit `+C4h` classes `0Fh`, `10h`-`12h`, `14h`-`17h`, `13h` and `19h`;
+   - it takes the category `[unit+170h]->vtable[0]()`, and skips `13h`;
+   - it pushes the record into list `category` (`LEA ECX,[EAX+EAX*2]` then `[ESP+ECX*4+40h]` at
+     `00805E3C`).
+3. For each name of `00E0B590` (`mothership` .. `path`), in table order, it calls
+   `008037D0(name)`. This creates the table even when the bucket is empty. Then, for each record
+   in bucket order, it does
+   `table[itoa(u16 unit+174h)] = thisTable[itoa(u16 unit+174h)]`:
+   - `00927BF0` is `__thiscall(unit)(LuaInstance*)`: ECX is the unit, loaded at `00805EAD`. It does
+     getglobal `thisTable`, pushstring, `gettable(-2)` and `remove(-2)`;
+   - `006B84D0(-3)` is `lua_settable`.
+4. The third argument is never read.
+
+**The category** (`[unit+170h]` vtable slot 0). `local\l22_cat.py` collects every
+`MOV [reg+170h], imm32` in `.text`. `local\l22_pair.py` then checks, for each class, that the same
+constructor stores the primary vtable of docs/ENTITY_CLASS_IDS.md within `60h` bytes, and decodes
+slot 0.
+
+| category | classes (slot-0 function) |
+| --- | --- |
+| 0 mothership | 09h (`007581F0`) |
+| 1 destroyer | 07h (`006FE4D0`) |
+| 2 torpedoboat | 0Eh (`00857D60`) |
+| 3 battleship | 0Dh (`006DFDC0`) |
+| 4 cruiser | 0Ah (`006FB370`) |
+| 5 cargo | 0Bh (`006EB1D0`) |
+| 6 landingship | 0Ch (`0074BBC0`) |
+| 7-12 | the plane leaves 10h, 12h, 11h, 13h, 14h/15h/16h, 17h (all excluded from the publish) |
+| 13 submarine | 08h (`00852FB0`) |
+| 14 landvehicle | 1Ah LandConvoy (`004F24E0`), 19h (excluded) |
+| 15 landfort | 1Bh (`00745A40`), 1Ch (`006F5830`) |
+| 16 airfield | 45h (`006D1D20`) |
+| 17 shipyard | 46h (`00846B40`) |
+| 18 path | 47h (`0047B790`) |
+| 13h, none | 06h, 2Bh, 34h, 35h (`004E63F0` / `00700200`) |
+
+Two classes return a field instead of a constant:
+- **0Fh, the plane base** (`007D0350`, `unit+AACh`). It is excluded anyway.
+- **18h, the squadron** (`007EFA90`, `unit+354h`). The constructor stores `13h` (`007F2DF6`). Then
+  `007F4BA0` (the init slot A4h) overwrites it with the slot-0 member's (`+3D0h`) category, at
+  `007F4BE8` and again at `007F5438`. The displacement scan (`local\l22_disp354.txt`) finds no
+  other writer in the squadron's range.
+
+## 2. The host binding
+
+`GameMissionLuaHost::publish_recon_slot_tables_00806b10` (`src/game_hosts_lua.cpp`). It runs once
+per recon pass generation, after the recon listeners, when `kReconPublishBound` is set. The class
+map is `bsp::recon_publish_category_for_class` (`src/recon_slot_lists.cpp`). The Lua operations
+reuse `recon_values.cpp`'s `006B8190` / `00803750` / `008037D0` helpers, in the image's order.
+
+**Labelled substitutions:**
+- **Cadence:** publication happens at the mission frame after the host's recon pass, not inside
+  `008079B0`.
+- **The `+25h` dirty byte:** the image sets it through `0077B0C0` on any level change the slot
+  sees, and through `00803BA0` on a death it saw. The host instead publishes a party when the
+  (relation, category, id) sequence differs from its last publication. An unchanged sequence
+  gives the same tables, so the difference is confined to stale entries. If a unit left without
+  a level change or death, the image would keep its entry and the host drops it.
+- **The id:** the `+174h` id is the host's entity id (unit index + 1), which is also the
+  `thisTable` key.
+- **A squadron's `+354h`:** its first resolved member's class category (`member_units[0]`, else
+  the first departed unit), frozen at first resolution. An unresolved squadron keeps `13h` and is
+  not published.
+
+## 3. Predictions (written before any run)
+
+1. **Mechanism.** With the switch ON, the summary line `recon publication` shows `passes`,
+   `slots` and `entries` above 0 on every row that has units. OFF shows `bound=0` and zeros, and
+   the rows are identical to main.
+2. **JM08 36200/36000 with `BSP_ORIGIN_DIAG=1`:** from the first sample on, `recon[0].own` has
+   non-zero entries (destroyer, cruiser, landingship, cargo), and `around` becomes non-zero once
+   an Allied ship is within 300 m of the origin. SHIP_AI 74.4 says this happens by t = 720.8 s,
+   and possibly from t = 540.6 s (Grayson at 248.6 m). The invasion should therefore start near
+   mission frame 10800-14400. This installation's `jm08.lua` (mtime 2024-07-13) also reads
+   `recon[PARTY_ALLIED].own.landingship` in `luaJM8CheckUSNFleet`, and `recon[PARTY_JAPANESE].own.*`
+   (landfort, torpedoboat, reconplane, fighter, levelbomber) in six more places. Those loops were
+   empty and now run.
+3. **Other rows.** `commandhelpers.lua` (mtime 2024-10-29) reads `recon[...]` in
+   `luaGetNearestEnemy`, `luaGetNearestEnemyNot`, `luaGetShipsAround*`, `luaGetPlanesAround*`,
+   `luaGetVisibleEnemies`, `luaGetOwnPlanes`, `luaIsVisible*` and more. Any mission script or
+   script think that calls them changed answer.
+   - **Predicted moved (exit 3):** JM08, and every row whose mission script calls these helpers or
+     reads `recon` directly: USN04/E2, USN01, JM05/JM05 long, JM06, BSM01 and USN12.
+   - **Predicted identical or gameplay-identical:** rows whose scripts never reach a recon read.
+     These are listed from the logs once run, not assumed.
+4. **Failure modes that would keep it OFF:** a Lua error from a helper that now iterates real
+   entities (the `first_error` line), a stack imbalance (the host's `lua_gettop` is restored, so
+   it would surface as an error), or no publication on a row that has units.

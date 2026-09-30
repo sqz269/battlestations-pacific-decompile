@@ -321,6 +321,22 @@ inline constexpr std::size_t kReconPublishCategoryCount = 19;
 inline constexpr std::size_t kReconUnitCategoryVptrOffset = 0x170;
 inline constexpr std::size_t kReconUnitLuaIdOffset = 0x174; // u16, the table key
 
+// Packet cc9_recon_publication (docs/RECON_PUBLICATION.md). The category each
+// class answers through slot 0 of its +170h vtable, read from the image: every
+// `MOV [reg+170h], imm32` store in .text, paired with the class's primary
+// vtable stored by the same constructor, slot 0 decoded as `MOV EAX, imm; RET`
+// (local\l22_pair.py). Two classes answer a field instead of a constant:
+//   0Fh (the plane base, 007D0350) returns unit+AACh; every published plane
+//       class overrides it, and 0Fh is excluded from the publish anyway;
+//   18h (PlaneSquadronGen, 007EFA90) returns unit+354h, which the constructor
+//       sets to 13h (007F2DF6) and BSP_PlaneSquadron_SEntityInitSlotA4 007F4BA0
+//       overwrites with its slot-0 member's (+3D0h) category at 007F4BE8 and
+//       007F5438.
+// Both answer kReconPublishNoCategory here; the squadron's value is the
+// caller's (recon_publish_category_for_class of its slot-0 member's class).
+// Everything not listed, including 06h (004E63F0), 2Bh, 34h and 35h, is 13h.
+int recon_publish_category_for_class(int class_id) noexcept;
+
 // ---------------------------------------------------------------------------
 // The rebuild sequence
 // ---------------------------------------------------------------------------

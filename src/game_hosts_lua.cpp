@@ -49,6 +49,7 @@
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/recon_values.hpp"
+#include "bsp/recon_slot_lists.hpp"  // packet cc9_recon_publication
 #include "bsp/vfs_locale_runtime.hpp"
 #include "bsp/vfs_provider_manager.hpp"
 
@@ -2259,7 +2260,11 @@ void GameMissionLuaHost::install_recon_tables_00803a40() {
     ReconShellHost host(state_);
     bsp::ReconValuesContext context{host, bsp::recon_category_names_00e0b590.data()};
     bsp::install_recon_values_00803a40(context);
-    log_.unimplemented("Recon::publish_slot_table", "00806b10");
+    if (kReconPublishBound) {
+        log_.implemented("Recon::publish_slot_table", "00806b10");
+    } else {
+        log_.unimplemented("Recon::publish_slot_table", "00806b10");
+    }
     log_.notef("recon shell built by 00803a40: three party indices, each with enemy, "
         "neutral, unknown and own, each of those with the nineteen category maps of "
         "00E0B590. Every map is empty: 00806b10 and 00805d90 fill them from the recon "
@@ -3049,6 +3054,7 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     if (kLuaListenersBound) dispatch_kill_listeners_009813a0();
     dispatch_hit_listeners_00988510();
     if (kLuaListenersBound && kLuaReconListenersBound) dispatch_recon_listeners_00980e50();
+    if (kReconPublishBound) publish_recon_slot_tables_00806b10();
     // DAT_00F876A4. 0094C490 never reads the delta 0094C8F0 pushes for it, so
     // the step is used only to advance the clock the interval is measured on.
     spawn_world_clock_ += step_seconds;
@@ -4722,6 +4728,151 @@ void GameMissionLuaHost::dispatch_recon_listeners_00980e50() {
             }
             }   // transitions
         }
+    }
+}
+
+// Packet cc9_recon_publication (docs/RECON_PUBLICATION.md). 00806B10
+// __thiscall(ReconSlot*, LuaInstance*), RET 4, and its fill 00805D90
+// __thiscall(LuaInstance*, List* triple, int unused), RET 0Ch, both read whole:
+//   pass 1 (00806B30..00806B9D): recon[slot+28h].enemy/own/neutral/unknown = nil
+//     through 006B8390 (pushstring, pushnil, settable -3);
+//   pass 2 (00806BA2..00806CB7): enemy from triple 1 (+DE4h), own from triple 0
+//     (+DD8h), neutral from triple 2 (+DF0h), unknown from triple 3 (+DFCh), each
+//     through 008037D0 (rawget, created by rawset when nil) and 00805D90.
+// 00805D90 buckets the triple's records by category (skipping the ten classes of
+// 00805DE6 and category 13h), then for each of the nineteen names of 00E0B590
+// descends into (creates) that table and, per record in bucket order, sets
+// table[itoa(+174h)] = thisTable[itoa(+174h)] (00927BF0 = getglobal thisTable,
+// gettable, remove; 006B84D0 = settable -3).
+// SUBSTITUTIONS (labelled):
+//  - cadence: once per host recon pass generation, at the mission frame, after
+//    the recon listeners; the image publishes inside 008079B0 right after the
+//    slot's rebuild;
+//  - the +25h dirty byte (set by 0077B0C0 on any level change of the slot and by
+//    00803BA0 on a death it saw) is stood in for by "the published content
+//    differs from the last publication of this party";
+//  - the +174h id is the host's entity id (unit index + 1), the thisTable key;
+//  - a squadron's +354h is its first resolved member's category, frozen then
+//    (007F4BE8/007F5438 write it once, in the init slot 007F4BA0).
+void GameMissionLuaHost::publish_recon_slot_tables_00806b10() {
+    if (units_hooks_ == nullptr || state_ == nullptr) return;
+    const GameGunneryHost* gunnery = units_hooks_->gunnery();
+    if (gunnery == nullptr) return;
+    const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
+    if (pass.passes == recon_publish_generation_) return;
+    recon_publish_generation_ = pass.passes;
+    ++summary_.recon_publish_passes;
+
+    auto category_of = [&](std::size_t unit) -> int {
+        const int class_id = units_hooks_->unit_class_id(unit);
+        if (class_id != bsp::kReconSquadronClassId) {
+            return bsp::recon_publish_category_for_class(class_id);
+        }
+        const auto cached = recon_squadron_category_.find(unit);
+        if (cached != recon_squadron_category_.end()) return cached->second;
+        for (const bsp::PlaneSquadronHostRecord& record :
+             bsp::plane_squadron_registry().records()) {
+            if (record.squadron_unit != unit) continue;
+            std::size_t member = bsp::kPlaneSquadronNoUnit;
+            if (!record.member_units.empty()) member = record.member_units.front();
+            if (member == bsp::kPlaneSquadronNoUnit && !record.departed_units.empty()) {
+                member = record.departed_units.front();
+            }
+            if (member == bsp::kPlaneSquadronNoUnit) break;
+            const int category =
+                bsp::recon_publish_category_for_class(units_hooks_->unit_class_id(member));
+            recon_squadron_category_.emplace(unit, category);
+            return category;
+        }
+        return bsp::kReconPublishNoCategory;   // +354h = 13h from 007F2DF6
+    };
+
+    // 00806BE4, 00806C1A, 00806C50, 00806C86: relation name and triple.
+    static constexpr std::array<std::pair<const char*, int>, 4> kRelations{{
+        {"enemy", 1}, {"own", 0}, {"neutral", 2}, {"unknown", 3}}};
+    constexpr std::size_t kCategories = bsp::kReconPublishCategoryCount;
+    std::vector<std::size_t> triple;
+    for (int party = 0; party < 3; ++party) {
+        // buckets[relation][category] = entity ids in triple order.
+        std::array<std::array<std::vector<int>, kCategories>, 4> buckets;
+        bool any_triple = false;
+        for (std::size_t r = 0; r < kRelations.size(); ++r) {
+            if (!gunnery->recon_triple_units(party, kRelations[r].second, triple)) continue;
+            any_triple = true;
+            for (const std::size_t unit : triple) {
+                if (bsp::recon_publish_excludes_class_00805de6(
+                        units_hooks_->unit_class_id(unit))) {
+                    ++summary_.recon_publish_excluded;
+                    continue;
+                }
+                const int category = category_of(unit);
+                if (category < 0 || category >= static_cast<int>(kCategories)) {
+                    ++summary_.recon_publish_no_category;
+                    continue;
+                }
+                buckets[r][static_cast<std::size_t>(category)].push_back(
+                    static_cast<int>(unit + 1));
+            }
+        }
+        if (!any_triple) continue;   // no slot rebuilt for this party yet
+        std::vector<std::uint32_t> content;
+        for (std::size_t r = 0; r < buckets.size(); ++r) {
+            for (std::size_t c = 0; c < kCategories; ++c) {
+                for (const int id : buckets[r][c]) {
+                    content.push_back(static_cast<std::uint32_t>((r << 28) | (c << 20)) |
+                                      static_cast<std::uint32_t>(id));
+                }
+            }
+        }
+        std::vector<std::uint32_t>& last = recon_published_[static_cast<std::size_t>(party)];
+        if (content == last) {
+            ++summary_.recon_publish_unchanged;
+            continue;
+        }
+        last = content;
+        ++summary_.recon_publish_slots;
+
+        const bsp::ReconLuaInstanceView instance{state_};
+        const int top = ::lua_gettop(state_);
+        // Pass 1, 00806B30..00806B9D.
+        bsp::push_recon_global_table_006b8190(instance, bsp::kMissionReconGlobal);
+        {
+            bsp::ReconTableScope indexed = bsp::push_recon_index_table_00803750(instance, party);
+            for (const char* key : {"enemy", "own", "neutral", "unknown"}) {
+                ::lua_pushstring(state_, key);   // 006B8390
+                ::lua_pushnil(state_);
+                ::lua_settable(state_, -3);
+            }
+            bsp::pop_recon_table_scope(indexed);
+        }
+        bsp::pop_recon_global_table_006b8210(instance);
+        // Pass 2, 00806BA2..00806CB7.
+        bsp::push_recon_global_table_006b8190(instance, bsp::kMissionReconGlobal);
+        bsp::ReconTableScope indexed = bsp::push_recon_index_table_00803750(instance, party);
+        char key[16];
+        for (std::size_t r = 0; r < kRelations.size(); ++r) {
+            bsp::ReconTableScope related =
+                bsp::push_recon_named_table_008037d0(instance, kRelations[r].first);
+            for (std::size_t c = 0; c < kCategories; ++c) {   // 00805E5A..00805EEB
+                bsp::ReconTableScope category = bsp::push_recon_named_table_008037d0(
+                    instance, bsp::recon_category_names_00e0b590[c]);
+                for (const int id : buckets[r][c]) {
+                    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, id);
+                    ::lua_pushstring(state_, key);                              // 006B8120
+                    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);  // 00927BF0
+                    ::lua_pushstring(state_, key);
+                    ::lua_gettable(state_, -2);
+                    ::lua_remove(state_, -2);
+                    ::lua_settable(state_, -3);                                 // 006B84D0(-3)
+                    ++summary_.recon_publish_entries;
+                }
+                bsp::pop_recon_table_scope(category);
+            }
+            bsp::pop_recon_table_scope(related);
+        }
+        bsp::pop_recon_table_scope(indexed);
+        bsp::pop_recon_global_table_006b8210(instance);
+        ::lua_settop(state_, top);
     }
 }
 
@@ -6796,6 +6947,12 @@ void GameMissionLuaHost::report_mission_script_state() {
     log_.notef("summary mission script set invincible calls=%llu units=%llu unresolved=%llu "
         "(00897A50 -> 0042ED80, packet cc9_set_invincible_native)", summary_.invincible_calls,
         summary_.invincible_units, summary_.invincible_unresolved);
+    log_.notef("summary mission script recon publication bound=%d passes=%llu slots=%llu "
+        "unchanged=%llu entries=%llu excluded=%llu no_category=%llu (00806B10/00805D90, packet "
+        "cc9_recon_publication)", kReconPublishBound ? 1 : 0, summary_.recon_publish_passes,
+        summary_.recon_publish_slots, summary_.recon_publish_unchanged,
+        summary_.recon_publish_entries, summary_.recon_publish_excluded,
+        summary_.recon_publish_no_category);
     log_.notef("summary mission script recon listeners bound=%d changes=%llu fires=%llu "
         "(00980E50, packet cc9_lua_recon_listeners)", kLuaReconListenersBound ? 1 : 0,
         summary_.listener_recon_changes, summary_.listener_recon_fires);
