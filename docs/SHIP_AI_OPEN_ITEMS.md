@@ -7383,3 +7383,42 @@ The HQ is neutralized at t = 845, after LST 03's ramp is down (836.50) and befor
   re-request).
 - The 0A6h route (a record).
 - The scoring slots.
+
+## 87. Hull-terrain contact (packet `cc9_ship_terrain_contact`, cc9-ships22, 2026-09-30)
+
+### 87.1 What the image does
+
+- **Contact kind 8 is the hull touching ground.** `009377E0` (the contact callback: slot 0 of
+  `00D1961C`, with `this` = `controller+20h`) reads `kind = contact+2Ch`. On kind 8 it sets
+  `unit+1010h = 1` and returns (`0093786A..0093787F`), before the collision-damage gate.
+  `008255B0` rotates the byte into `+1011h` on the next update (`00825824..0082583E`). Two
+  readers of `+1011h` are known:
+  - the HUD warning at `006830A5`, alert 2, which is `ingame.warning_shallowwater`
+    (docs/SHIP_SCREEN_UPDATE.md, row 2 of the alert table);
+  - the landing ship's ramp latch at `0074AFF5` (section 86).
+- **The callback does nothing to the hull's motion for kind 8:** no damage, no velocity write,
+  no stop. The stop belongs to the `Dyn` library's contact phase (`00C5BB5F..00C5C455`, an LCP
+  solver: `Dyn::Scene::LCPSolver2Task`, docs/RIGID_BODY_INTEGRATION.md). That phase is unread.
+  So the stop is the solver's non-penetration of the hull's convex shapes against the terrain,
+  not a game-side rule. No `.text` store of an immediate to a contact's `+2Ch` exists in
+  `00C30000..00C5FFFF` (scan-bytes `C7 4x 2C ?? 00 00 00`; the pattern does occur elsewhere,
+  e.g. `004D6BCD`). The producer of kind 8 is therefore a register store in the unread phase.
+- **How the host moves ships today:** `motion_step_00825f20` runs `00825F20`. It then runs the
+  Dyn library's velocity phase `00C41550` and position phase `00C5B1B0`, and no collision or
+  contact phase. A hull passes through terrain. The AI's terrain avoidance (`0099F1C0` /
+  `009A1420`) is steering only.
+
+### 87.2 The host (committed OFF)
+
+This is a labelled substitution for the unread contact phase, in `GameUnitsHost::Impl::
+ship_terrain_contact`, after the position phase:
+- The hull box (the class model's convex shapes, `class_hull_box`) gives three keel points:
+  bow (`max.z`), middle and stern (`min.z`), all at the box's `min.y`, through the pose.
+- A point below the terrain height `00903860` is a contact. It sets `+1010h`, and the latch
+  rotates at the next motion step. This runs in both builds (it is also the census).
+- `kShipTerrainContactBound` (ON) makes the contact stop the hull. At each contact point, the
+  step's horizontal displacement and the linear velocity lose their uphill component (the
+  central-difference terrain gradient over 1 unit), so a hull cannot climb onto land and slides
+  along a shore. Flat ground above the keel blocks the horizontal motion whole.
+- `kLandingShipRampHullContactBound` (ON) points the ramp latch at `+1011h` instead of section
+  86's stand-in.

@@ -838,6 +838,9 @@ public:
     // builds no model box at [class+50h], so the producers' fallback applies and
     // the field is the descriptor's own +a0h `Length`.
     float unit_hull_length_09c8(std::size_t index) const;
+    // unit+1011h, the rotated contact latch (packet cc9_ship_terrain_contact):
+    // the hull touched the terrain in the previous motion step.
+    bool unit_ground_contact_1011(std::size_t index) const;
     // class+b0h `Mass` and the physics record 00937cf1 selects for this hull,
     // both settled when the body was built.
     float unit_hull_mass_00b0(std::size_t index) const;
