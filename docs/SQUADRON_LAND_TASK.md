@@ -7327,3 +7327,94 @@ park or final. What fails is the host's ground under a state-4 plane off the run
 - Whether park or the ground law should change is the next packet: find why a hangared plane's
   `+BF8h` clears (Helldiver 01 at 446.06 s, `|v|` 3.19 inside the hangar), and what holds a
   state-4 plane off the rectangle in the image (`007CB7F0` and the ground-contact producer).
+
+## 5bq. A grounded plane off the runway rectangle: no terrain producer in the image; the host's hangar orbit (packet `cc9_plane_ground_support`, cc9-lua28, 2026-09-30)
+
+This is a read, with the logs of 5bp (`local\l28_roff_jm05x.log`, the OFF side of JM05 at 12000
+frames). No code changed.
+
+### 1. Why `+BF8h` is clear: it never was set at the hangar
+
+- `+BF8h` is `006BC530` (decompiled): the point is inside the holder's
+  rectangle, `|l.x| < +B0h x 0.5` and `|l.z| < +B4h x 0.5`. The host's copy matches it.
+- Helldiver 01's contact-loss line at 445.86 s reads `local=(58.73 -0.07 26.56)
+  half=(17.50 260.00) state=4`. The hangar spot is 58.7 m to the side of a runway that is
+  17.5 m half-wide, so the plane has been off the rectangle ever since it taxied into the hangar
+  (184.41 s).
+- What held it up until then is state 5. `007DCCF0` (read) runs the ground law when `+BF8h` is set
+  **or** `+900h == 5`, and the free-flight step `007DC830` otherwise.
+- At 445.86 s land/park's join-or-leave test (`009B270F`-`009B2735`, the host's copy of the
+  listing) left the path. The path needs `v <= 1.5 x AirField/MoveSpd` (0.69, so 1.035 m/s), and
+  the plane was at 1.04 m/s. In state 4 off the rectangle, `007CBFA0` runs `007DC830`: free flight
+  at walking speed, so it falls.
+
+### 2. The image has no terrain producer for a plane
+
+**Dyn.** The plane's body is created at `007D6137` (`00C5D580`, in `007D5D20`). Each of its
+shape descriptors gets group `8000h` and mask `8000h` (`007D5FE8`-`007D5FF0`:
+`[edi-3Ch]` = descriptor `+08h`, `[edi-38h]` = `+0Ch`, where the descriptor is `edi-44h`,
+`007D6004`). The terrain shape is group 8, mask 0 (GUNNERY_OPEN_ITEMS 83.1). The pair filter
+`00C44090` tests `(maskB & groupA) || (maskA & groupB)`: `8000h & 8 = 0` and `0 & 8000h = 0`. So
+a plane never collides with the terrain in the Dyn world.
+
+**Plane tick.** No routine on the plane's tick samples the ground:
+- `007CE040`'s callees (Ghidra) include no ground-height routine;
+- `007CBFA0`'s calls include none. Its direct calls (disk listing) are `007C5AC0`,
+  `0041E870`, `00419CC0`, `00BD1510`, `0042E740`, `007DCCF0`, `007B8DA0`, `00762A00` and
+  `0077C2A0`. Its indirect calls are:
+  - `007CC08A`, the unit's `vtable[194h]`, called with a string just built by `0041E870`;
+  - `007CC13F`, `vtable[1ECh]` (`007CAF10`);
+  - `007CC186`, a site's `vtable[38h]`;
+  - `007CC264`, the holder owner's `vtable[5Ch](9)`;
+- `007DC830` (the free-flight step) includes none;
+- `007CC2F0`, the free-flight arm, samples only the water (`BSP_GameWorld_SampleWaterHeight`), and
+  it runs only in state 7.
+
+**The ground-height routine's callers.** `00903860 BSP_World_GroundHeightAt` has 24 callers
+(Ghidra xrefs). The plane code among them is:
+- `006CF8FD`, placing a queued plane (`BSP_AirOpsSite_PoseQueuedPlane`);
+- `0099FA2C`, `009A0624`, `009A0E56`, the pilot's terrain avoidance (`BSP_PilotBot_AvoidTerrain`).
+
+There is no contact or clamp.
+
+**So what supports a grounded plane in the image** is the holder's rectangle or the path
+(state 5), and nothing else. A state-4 plane off both free-flies there as it does here.
+
+**Uncertainty.**
+- Ghidra's callers can under-report (a rel32 scan of `00903860` has not been run).
+- A later write to a plane shape's group or mask (for example through the hit-index detach
+  `00710B80`) has not been ruled out.
+
+### 3. The divergence is upstream: every hangared plane orbits its spot
+
+A census of the land-park trace after 250 s (`local\l28_orbit.py`) covers every airfield plane
+hidden in a hangar on JM05 12000:
+- each circles its hangar target, 4 to 15 m from it, at up to 7-10 m/s. The requested speed is
+  AirField/MoveSpd, 0.69 m/s;
+- each exceeds the 1.035 m/s path limit in 40-54 of about 175 samples, for 350 s.
+
+| plane | samples | vmax | over 1.035 m/s | max distance from target |
+| --- | --- | --- | --- | --- |
+| F4F Wildcat 01..04 | 175 each | 8.3-10.1 | 40-54 | 12.1-15.8 |
+| SB2C Helldiver 02 | 175 | 9.0 | 42 | 15.0 |
+| SecondaryAirfieldEntity 01_sqn02, \|.-2 | 175 | 9.2, 10.1 | 53, 53 | 14.7, 14.6 |
+| MainAirfieldEntity 01_sqn01, \|.-2 | 175 | 7.1, 8.8 | 49, 43 | 12.5, 13.3 |
+| **SB2C Helldiver 01, MainAirfieldEntity 01_sqn01\|.-3, SecondaryAirfieldEntity 01_sqn02\|.-3** | 116-166 | **65-78** | 39-51 | **2217-3960** |
+
+- Most excursions into state 4 last a step or two: the plane slows and rejoins the path.
+- The three planes that are lost stayed in state 4 long enough for park's done test to fire
+  (`done_why contact`, off the path with `+BF8h` clear). After that, land/abort's throttle 1.0
+  (5bp) keeps them too fast to rejoin, and they fall.
+- The fall is the image's law once the state is 4. The orbit that puts them there is the host's.
+
+In the image a hangared plane is expected to stop on its spot. Its park step is still ticked (5bi),
+but a plane that comes to rest within the deadband never leaves the path.
+
+The host's orbit (up to 10 m/s against a 0.69 m/s request) points at one of two places:
+- the park step's steer and speed arithmetic, `009B273A`-`009B28C2`;
+- the state-5 ground law's speed tracking (`007DB680` in mode 1).
+
+**Next packet:** trace one hangared plane's park step and ground law per step inside its hangar
+(steer vector, deadband `f18`, requested and actual speed), and find which side overshoots.
+
+A terrain floor for planes would be a substitution with no image producer. It is **not bound**.
