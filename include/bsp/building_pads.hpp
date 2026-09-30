@@ -60,7 +60,17 @@ public:
         int pad_1200{-1};           // ship+1200h
         int building_1204{-1};      // ship+1204h
         float landing_time_1210{0.0f};  // ship+1210h, read by 009E18D0 via slot 248h
+        // The ramp latch of 0074AF50 (MLandingShip vtable 00CFFA30 slot 0DCh), seeded
+        // by the construct at 0074C0CD..0074C108. Lua property names (0074C455..,
+        // `{2,&field}`/`{0,name}` pairs): +11A8h "lastTalaj" (the last ground
+        // contact time), +11ACh "nyitzarTimer" (the open/close timer).
+        float last_ground_11a8{-10000000000.0f};  // 00CE4ADC
+        float ramp_timer_11ac{0.0f};
+        float ramp_delay_11b0{2.0f};              // 00CE3958, no other writer
+        bool ramp_down_1188{false};               // set by 0074A420 (and the 0A6h handler)
     };
+
+    Lander* mutable_lander(int ship);
 
     // 006F5CC0, CommandBuilding vtable 00CFB028 slot 0A4h (InitAll pass C, via
     // 006F6740), third pass only (006F6436-006F673E): every LandingPoint of the
@@ -159,5 +169,21 @@ bool refresh_pad_line_006ac5d0(BuildingPadModel::Pad& pad, int layer,
 // The process's one pad model (the image's live building and pad entities). The
 // script-orders host fills it after the scene load; the ship AI reads it.
 BuildingPadModel& building_pad_model();
+
+// 0074AF50's ramp latch, 0074AFCC..0074B0AC (packet cc9_landing_ramp_capture,
+// docs/SHIP_AI_OPEN_ITEMS.md section 86); the caller has already checked the
+// gates at 0074AF7B..0074AFC6 (+5Ch set, +5Dh/+60h/+5Eh clear, game mode not 2,
+// a pad at +1200h). `ground_1011` is the one-frame contact latch (+1011h, a
+// kind-8 physics contact rotated by 008255B0); `clock` is [00F876A4]; `dt` the
+// update's argument. x87: held_before = +11A8h > (clock - 1) - dt (0074AFE9
+// FCOMIP, JBE); a set latch stores clock into +11A8h (0074B006); held_now =
+// +11A8h > clock - 1 (0074B01C). A change resets +11ACh to +11B0h (0074B02E);
+// otherwise a positive +11ACh counts down by dt (0074B053..0074B05F) and, once it
+// is <= 0 (0074B065 FLDZ/FCOMIP, JB skips), a raised ramp (+1188h clear) with
+// held_now lowers: true means 0074A420 (+1188h = +1189h = 1) and the 0A6h route
+// (00749AA0, 0077C2A0 class 4) run. Coverage: 0074AFCC-0074B0AC; 0074B0B0.. (the
+// pad re-request, the ramp animation +11A4h and the unload) is not covered.
+bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& lander, bool ground_1011,
+                                      float clock, float dt);
 
 }  // namespace bsp

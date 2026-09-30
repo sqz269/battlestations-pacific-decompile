@@ -118,6 +118,33 @@ int BuildingPadModel::lander_pad_1200(int ship) const {
     return found != landers_.end() ? found->second.pad_1200 : -1;
 }
 
+BuildingPadModel::Lander* BuildingPadModel::mutable_lander(int ship) {
+    const auto found = landers_.find(ship);
+    return found != landers_.end() ? &found->second : nullptr;
+}
+
+bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& l, bool ground_1011,
+                                      float clock, float dt) {
+    // x87 intermediates are extended precision; here double.
+    const double c = static_cast<double>(clock);
+    const bool held_before =
+        static_cast<double>(l.last_ground_11a8) > (c - 1.0) - static_cast<double>(dt);
+    if (ground_1011) l.last_ground_11a8 = clock;                       // 0074B006
+    const bool held_now = static_cast<double>(l.last_ground_11a8) > c - 1.0;
+    if (held_now != held_before) {                                     // 0074B028
+        l.ramp_timer_11ac = l.ramp_delay_11b0;                         // 0074B02E
+        return false;
+    }
+    if (!(l.ramp_timer_11ac > 0.0f)) return false;                     // 0074B044 COMISS, JBE
+    l.ramp_timer_11ac = static_cast<float>(
+        static_cast<double>(l.ramp_timer_11ac) - static_cast<double>(dt));  // 0074B053..5F
+    if (0.0f < l.ramp_timer_11ac) return false;                        // 0074B067, JB
+    if (l.ramp_down_1188) return false;                                // 0074B06D -> 0074B109
+    if (!held_now) return false;                                       // 0074B07A TEST CL,CL
+    l.ramp_down_1188 = true;                                           // 0074A420
+    return true;
+}
+
 const BuildingPadModel::Lander* BuildingPadModel::lander(int ship) const {
     const auto found = landers_.find(ship);
     return found != landers_.end() ? &found->second : nullptr;
