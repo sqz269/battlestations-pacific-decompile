@@ -6838,3 +6838,79 @@ The OFF smoke (`local\g21_offsmoke_smoke.log`) is exit 1 against v's smoke
 - `src/game_native_dyn_process.cpp`, `include/bsp/game_native_dyn_process.hpp`;
 - `src/dyn_body_creation.cpp`, `include/bsp/dyn_body_creation.hpp`;
 - `src/game_hosts_units.cpp` (shared; applied from `local\g21_host_edit.py`).
+
+### 91.3 The OFF census, and the predictions (written 2026-09-30 20:49 UTC, before any ON run)
+
+**A fix before the census could run.** The first OFF commit `5e576aff9` crashed 16 of 18 reference
+rows with `c0000005`. The faults were in the reconstructed `00C51C20` (`direction_kernel`) and
+`00C48BE0` (`result_kernel`), reading `14h`. Both read the shape's body at `+4h` and its 3x4 at
+`+08h..+37h`:
+- `00C51C20` transforms the two box centres;
+- `00C48BE0` turns the witnesses body-local.
+
+`7b5e05db2` points each record's `+4h` at a copy of the hull's current 3x4.
+
+**Positive control** (`BSP_HULL_HULL_TRACE`, USN04, `local\g21_trace_usn04.txt`). The first hull
+shape (79 vertices) against itself:
+- shifted 1 m: hit, normal `(0.30, -0.83, -0.47)`;
+- shifted 1000 m: miss;
+- shifted 0 (coincident): a hit with a degenerate witness B (about `-5e10`). Two coincident
+  hulls do not occur in a mission.
+
+**OFF census** (`7b5e05db2`, this tree's build, `local\g21_off_<row>.log`):
+- 17 of 18 rows are exit 1 against v (`g20_rv_<row>`), death tables identical.
+- JM08 long is exit 3 (160 -> 85 deaths, 7 only ON, 82 only OFF, 68 changed). That is exactly
+  cc9-ships24's `kLandingShipStartLandingBound` pair (SHIP_AI 97.4), flipped on main after v's
+  base. So the census writes no state.
+
+| row | near pairs | 00C535E0 hits | hull pairs that met | deepest (m) |
+| --- | --- | --- | --- | --- |
+| USN04 | 2343 | 457 | 4 (destroyers through cruisers) | 14.7 |
+| E2 | 3341 | 457 | 4 | - |
+| USN01 | 1435 | 0 | 0 | - |
+| USN02 | 11658 | 5646 | 10 | 14.0 |
+| JM06 | 5002 | 5666 | 8 (tankers, transports) | 24.2 |
+| JM08 | 1827 | 608 | 3 | - |
+| USN13 | 12886 | 9049 | 11 | 17.1 |
+| BSM01 | 9000 | 0 | 0 | - |
+| LOMP06 | 1015 | 35 | 1 | - |
+| LOMP10 | 3070 | 118 | 1 | - |
+| JM05 | 8795 | 5213 | 9 | - |
+| USN12 | 304 | 291 | 1 | - |
+| LOMP10 long | 15070 | 118 | 1 | - |
+| USNOS | 9308 | 33032 | 15 (convoy and cargo ships) | 42.3 |
+| USNOS long | 18734 | 66571 | 24 | - |
+| IJN01 | 33101 | 15267 | 41 | 29.7 |
+| JM05 long | 33736 | 20392 | 23 | - |
+| JM08 long | 69821 | 30838 | 28 | 33.4 |
+
+So the host's hulls pass through each other on 16 of 18 rows, often by tens of metres.
+Convoys and formations overlap their neighbours.
+
+**Pair 1: `kDynWorldContactPhaseBound` alone** (`local\g21_w1`) against OFF.
+- **Mechanism:**
+  - every tick reads the start-of-step poses of the other ships;
+  - the terrain contact census (`summary hull terrain contact`) stays within a few percent of
+    OFF on USNOS long, USN13, IJN01, JM05 and JM08 long.
+- **Prediction:** exit 3 on every row with more than one moving ship. That is all rows but,
+  weakly, BSM01 and LOMP06, which may stay exit 1. Death tables re-timed or within a few rows;
+  no row loses or gains more than about 10% of its deaths, except JM08 long (a knife-edge
+  row).
+- **Mechanism failure** (keeps it OFF): a crash, a ship with a non-finite pose, or a terrain
+  census that collapses (for example, contact steps dropping by half).
+
+**Pair 2: `kHullHullContactBound` on top** (`local\g21_w2`) against pair 1's ON.
+- **Mechanism:**
+  - `summary hull hull contact` shows `groups > 0` and `multi_hull_groups > 0` on the 16 rows;
+  - the deepest hit per pair falls from 10-42 m to **under 2 m** (the bias rows push the hulls
+    apart; they no longer pass through each other).
+- **Prediction:**
+  - USN01 and BSM01 exit 0 or 1 against pair 1's ON, since no hulls meet;
+  - exit 3 on the other 16 rows; ship paths deflect at the contacts;
+  - convoys and formations (USNOS, JM06, IJN01, JM08 long) spread, and some deaths re-time;
+  - no hull is lifted clear of the water or spun (the solver shares the masses and inertias;
+    the terrain case already showed at most small vertical velocity changes).
+- **Mechanism failure** (keeps it OFF): hulls still interpenetrating by more than 5 m, a
+  crash, or a ship thrown more than 10 m above the sea.
+- **Not modelled either way:** the collision report and its damage (`009377E0` -> `008145B0`,
+  gated on descriptor `+510h` / `+514h`). Ramming damage stays absent on both sides.
