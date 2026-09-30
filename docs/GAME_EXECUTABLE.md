@@ -13531,3 +13531,65 @@ JM08 long (`local\g18_lane.ps1`; logs `local\g18_t_<v>_<row>.log`).
     building is reached).
   - LOMP10 long and IJN01 moved only in call counts, as the weak call said.
 - Nothing flipped during these runs, so reference u starts from main after this merge.
+
+## Mission reference baselines, 2026-09-30 u (main 7f622dde6)
+
+Packet `cc9_reference_rebaseline_21`, worker cc9-gunnery20. The base is main `7f622dde6`
+(2026-09-30 13:06 UTC), 106 commits after t's `2e850cf31`. The report will be
+`reports/cc9_reference_rebaseline_21.json`.
+
+### Predictions (written before any run)
+
+**The switch diff.** `local\g20_switches.py` (g18's, re-rooted) between `2e850cf31` and `7f622dde6`,
+cross-checked with a looser `git diff 2e850cf31 7f622dde6 -- src include tools cmake` over every
+added or removed `bool` constant: the two lists agree. **Thirteen switches are newly ON**, and one
+new switch is OFF (`kBaseLaunchChainBound`, not part of u). This is GUNNERY_OPEN_ITEMS 85.2's list.
+
+| short | switch(es) | record | predicted rows moved against t |
+| --- | --- | --- | --- |
+| `land` | `kEntityCommandSelfKindBound`, `kShipAiApproachLandingModesBound`, `kShipAiLandStepBound`, `kLandingShipRampBound`, `kLandingShipRampHullContactBound` (one group: the chain only acts together) | SHIP_AI 85.4, 86.6, 87.5 | JM08 long only, and weakly: under the solver no lander reaches mode 3 (GUNNERY 84.4), so the chain may be inert |
+| `sol` | `kHullTerrainContactSolverBound` + `kShipTerrainContactBound` (t's hull state: no stop at all) | GUNNERY 84.3 / 84.4, SHIP_AI 87.5 | JM08 long, USNOS, USNOS long, USN13, IJN01, JM05 (`nearest` only) |
+| `stc` | `kShipTerrainContactBound` alone | GUNNERY 84.4 | none (gated off under the solver) |
+| `park` | `kLandParkStateBound`, `kCarrierElevatorBound` (the elevator is staged behind park) | SQUADRON_LAND_TASK 5ar.1, 5ao.1 | JM05 long only |
+| `hid` | `kHitIndexDetachBound` | SQUADRON_LAND_TASK 5as.1 | none (JM05 rows move counters only) |
+| `dmg` | `kAiTargetWeightDamageTermsBound` | GUNNERY 80.5 | USN02, JM06, USN13, LOMP06, IJN01, USNOS, USNOS long |
+| `nav` | `kNavigatorAvoidanceDeliveryBound` | SHIP_AI 88.2 | USN02 only |
+| `rep` | `kHullRepairEnableRouteBound` | GUNNERY 82.4 | USN04, E2, USN02, LOMP10, LOMP10 long, JM05, JM05 long |
+
+**Rows:** t's eighteen in t's launch form (`local\g20_runs.ps1`, g18's re-rooted), 1600x900.
+
+**Predicted moved against t (fourteen):** USN04, E2, USN02, JM06, USN13, LOMP06, LOMP10,
+LOMP10 long, JM05, JM05 long, USNOS, USNOS long, IJN01 and JM08 long.
+**Predicted gameplay-identical (exit 0 or 1): USN01, JM08, USN12, BSM01** (every pair above left
+each of them at exit 1). The weakest calls: LOMP06 (call counts only on its pair), JM05 (`nearest`
+and one ship's health), and USN01 / JM08, which no pair moved but which carry the most RNG-coupled
+plane fire if two switches interact.
+
+**Headline predictions** (from the pairs, not from t):
+- **USN02:** deaths 1 (identical), the failure at 29.75 s unchanged; hits and damage move
+  (the damage terms raise them, the repair route lowers them; damage between 50000 and 70000).
+- **JM06:** hits 192 -> about 287, shots 276 -> about 354; death rows identical.
+- **USNOS:** deaths 107 -> about 104 (the damage terms about -2; the solver removes the Gato's
+  kill-depth kill at 98.25 s). **USNOS long:** 129 -> about 127.
+- **USN04:** deaths 48 -> about 49 with plane rows re-timed; torpedo-task releases stay 5 of 16.
+  **E2:** dive-bomb-task releases 1 -> 0 of 19 (t's knife-edge); deaths about 51.
+- **USN13, IJN01, LOMP06, LOMP10, LOMP10 long, JM05:** death rows identical (LOMP10 rows allow
+  0.05 s re-timings). USN13's Marus stop at their shores; IJN01's Downes path and Oglala's shots move.
+- **JM05 long:** deaths 18 identical; USS Lexington stows 8 of 8 through the elevator; six airfield
+  planes loop park <-> abort (5ar.1).
+- **JM08 long:** every invader stops at the beach (deepest candidate a few metres). The inland
+  structure kills are gone, no ramp lowers, no pad is assigned, `Headquarter 01` does not flip.
+  Deaths 25 -> between 20 and 30; which ships die is not predicted.
+
+**All-OFF anchor:** with the thirteen OFF (`local\g20_ru0`), `7f622dde6` is gameplay-identical to t
+(exit 0 or 1 against `g18_rt_<row>` in the cc9-gunnery18 tree) on all eighteen rows.
+
+**Leave-one-out.** Each variant above OFF alone against u on the rows u moves (`local\g20_lane.ps1`,
+logs `local\g20_u_<v>_<row>.log`), plus `lsol` (`land` + `sol` together) on JM08 long, since the
+chain's reach depends on whether hulls can cross land. Predicted: `dmg` attributes JM06 and LOMP06
+alone; `sol` USN13 and IJN01's path; `rep` USN04, E2, LOMP10 and LOMP10 long; `park` JM05 long's
+stows; `nav` part of USN02; `stc`, `hid` nothing; `land` at most JM08 long.
+
+**Run parameters:** one binary per side, clean `tools/pair_export.py --commit 7f622dde6` exports
+(`local\g20_ru` no flip; `local\g20_ru0` the thirteen `=false`), `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`, lockstep 0.05, idle player, a 300-frame USN01 smoke first.
