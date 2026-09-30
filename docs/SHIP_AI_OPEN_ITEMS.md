@@ -5750,3 +5750,101 @@ OFF is `pair_export --commit 7d535d21f --out local\s18_b4`, ON adds
 
 **Verdict: ON.** The mechanism is exact, gameplay identical on these seven rows, and nothing moves
 for reference R.
+
+## 68. The Maru reverse "orbit" is a close-attack chase, not an astern-steering defect (packet `cc9_ship_ai_reverse_orbit`, cc9-ships18, 2026-09-29)
+
+**Question (the lead, after 67.1).** USN13's Maru4 and Maru6 back toward their goals with full rudder
+and never reach `stop_3d4` (72 m). Does the host steer astern differently from the image?
+
+**Trace.** `BSP_SHIP_ESCAPE_TRACE=Maru4` on USN13 3200/3000, in-tree build at `0e2c392bb` plus a
+steering line (hull heading, the drive's heading, `+324h`, rudder, position, goal, `+330h`); the log
+is `local\s18_tr2_usn13.log`.
+
+| middle run | hull heading | drive heading (hull + pi) | `+324h` | error | rudder | ship | goal | `+330h` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 80 | 0.698 | -2.443 | -2.268 | 0.176 | 0.00 | (3400.0, -1000.0) | (3144.0, -1709.3) | 652.6 |
+| 800 | 0.819 | -2.323 | -2.259 | 0.064 | 0.71 | (3200.3, -1200.4) | (3070.7, -1783.2) | 419.7 |
+| 1600 | 0.990 | -2.152 | -2.148 | 0.005 | 0.05 | (2933.6, -1417.0) | (2959.8, -1874.6) | 192.2 |
+| 2000 | 1.078 | -2.064 | -2.124 | -0.060 | -0.67 | (2783.9, -1501.4) | (2904.7, -1906.4) | 103.4 |
+| 2400 | 0.773 | -2.369 | -2.545 | -0.177 | -1.00 | (2646.0, -1603.4) | (2848.9, -1944.5) | 160.1 |
+| 2980 | 0.337 | -2.805 | -3.000 | -0.196 | -1.00 | (2513.9, -1813.0) | (2790.1, -2033.1) | 158.1 |
+
+**Reading.**
+- **Astern steering works as the image's rule describes.**
+  - The drive steers the pi-turned heading (`009F409E`, host `drive_order_ring_009f3f80`), and the
+    error against `+324h` stays within +-0.2 rad the whole run.
+  - The hull heading follows `+324h` + pi (0.70 -> 1.08 -> 0.34 rad), and the stern points where the
+    arm asks.
+  - Full rudder appears only while `+324h` swings. No sign inversion or runaway turn is visible, so
+    there is nothing in the rudder law or the reverse sense to bind.
+- **The goal moves.** It is not a fixed point: it drifts (3144, -1709) -> (2790, -2033), about 480 m
+  in 145 s. Maru4 leads AI group team 1 (party 4), with `command=CLOSEATTACK target=1 leader=Maru4`
+  and `ai diag movetoattack leader=Maru4 dist=1256.9`, against the US cruiser group led by CB2. The
+  goal is the close-attack point, which follows the target. This is the party gate's slot-4 planning
+  (section 60) sending the Japanese convoy against CB2.
+- **The 100 to 260 m is `+330h`, the remaining path to the path point, not the distance to the goal.**
+  The ship itself stays 350 to 450 m from the moving goal (754 m at run 80, 353 m at run 2980).
+  `stop_3d4` is tested against `+330h` plus the setback at `009EEF5C..009EEF70` (the setback is 0
+  here: `max_setback=0.0`). It can only pass on the final leg, at a goal that stops moving.
+- **The astern latch persists by `009EF0A8`'s hysteresis.** The goal stays within
+  `max(540, 2 x turn) + 80` m and about 170 degrees off the raw hull heading, so the choice keeps
+  answering astern.
+
+**Verdict: no host defect found, nothing bound.** A cargo ship chasing a moving close-attack point
+stern first is what this rule gives for these inputs. Two things were not checked:
+- whether the image would give an unarmed `FleetOilerJ` group a CLOSEATTACK at all. That is the
+  planner's side, AI_PLANNERS; the Maru group's order came from the slot-4 planning;
+- whether the image's close-attack point for a ship this size lies behind it.
+
+Both are planner-lane questions, for the next ships worker.
+
+## 69. Handoff (cc9-ships18, 2026-09-29, at about 66% context)
+
+**Landed on main:** 63 (event 6 is a party change), 64 (the retarget ring ON), 65 (the escape-byte
+reset ON; the back-off countdown bound OFF), 66 (the party gate's BSM01/USNOS moves are the rule), 67
+(the `+304h`/`+338h` resets ON; the astern Marus are the choice rule). **Unlanded on
+`agent/cc9-ships18`:** section 68 and this section (docs), plus the `ship escape steer` line added
+to the env-gated `BSP_SHIP_ESCAPE_TRACE` diagnostic in `src/game_hosts_ship_ai.cpp`.
+
+**Switches this lane changed:**
+
+| switch | state | section |
+| --- | --- | --- |
+| `kShipAiApproachRetargetRingBound` | ON | 64 |
+| `kShipAiEscapeByteResetBound` | ON | 65.7 |
+| `kShipAiNavResetSpanBound` | ON | 67.4 |
+| `kShipAiObstacleBackoffCountdownBound` | OFF, exact, no reach on the seven rows | 65.5 |
+
+**Queue for the next ships worker:**
+1. **Section 60's labelled links** (the old queue item 3), if the party-gate flip is questioned:
+   - the Party ordinals come from `luamw_init.lua`;
+   - `OwnerPlayer "AI control"` (14 authored entries, -1) is not modelled;
+   - how the self-pairing plays out (60.6).
+   Section 66 settles BSM01 and USNOS as the rule. USN02, JM06 and LOMP06 were not re-read.
+2. **The planner questions 68 left:**
+   - does the image give an unarmed `FleetOilerJ` group (USN13's Maru4/5/6) a CLOSEATTACK against
+     CB2's group;
+   - does its close-attack point for that ship lie behind it?
+   Start at the `ai diag order_attack group_leader=Maru4` / `movetoattack` lines of
+   `local\s18_tr2_usn13.log` and docs/AI_PLANNERS.md.
+3. **Modes 3 and 4 of the approach retarget arm** (`009F21A0-009F2395`), unread and labelled
+   (`ShipAiApproach::retarget_modes_3_4`). Section 64's ring is ON.
+4. **The back-off countdown** (65.2) waits for a row where `009F47A7` arms (`held_steps` > 0 in
+   `summary mission ship ai backoff countdown`). Flip it by a pair on that row.
+5. **Routed elsewhere, not ours:**
+   - the unit `SetParty` (63.5, with the lua lane);
+   - JM05 9000's newly reached `BotStateLandAbort` `009B09C0` / `007C07A0` and
+     `PlayerGunSeat::artillery_hit_lead` `009578C3` (to cc9-lua21, via the lead).
+
+**Tools** (in `J:\PROG\battlestations-pacific-decompile-cc9-ships18\local\`, `s18_` prefix):
+- `s18_rel32.py <hex>...`: rel32 callers and abs32 references, from the PE on disk.
+- `s18_disp.py <disp>...`: every `.text` operand with that displacement. It misdecodes some
+  overlapping instructions (spurious `adc`), so read each hit with `s18_before.py`.
+- `s18_before.py <addr> [n_before] [n_after]`: a back-synced listing around an address.
+- `s18_vslot.py <slot> <npush>`: virtual calls through a slot with n pushes.
+- `s18_kinds.py <log> <needle>`: a log's lines about one unit, grouped by kind.
+- `s18_astern.py <log>...`: the units whose sampled throttle is negative, and until when.
+- `s18_runs.ps1 -V <export> [-Only rows]` and `s18_wait.ps1 -Logs ...`: the seven-row launcher
+  (with JM05 9000) and the foreground wait.
+- **The diagnostic:** `BSP_SHIP_ESCAPE_TRACE=<unit name>` logs, every 20 drive steps, the escape
+  inputs, the throttle ceiling, the profile and the steering of one unit.

@@ -10069,6 +10069,20 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
             const unsigned v = ctl.obstacle.profile.bin[b];
             bins[n++] = "0123456789abcdef"[v > 15u ? 15u : v];
         }
+        {
+            float px = 0.0f, py = 0.0f, pz = 0.0f;
+            units.unit_position_00fc(index, px, py, pz);
+            log.notef("  ship escape steer %s run=%llu hull_hdg=%.4f frame_hdg=%.4f tgt324=%.4f "
+                "rudder=%.3f pos=(%.1f, %.1f) goal=(%.1f, %.1f) d330=%.1f mode=%d",
+                row.unit.c_str(), row.middle_runs,
+                static_cast<double>(units.unit_heading_radians(index)),
+                static_cast<double>(heading),
+                static_cast<double>(ctl.blk.heading_target_324),
+                static_cast<double>(ctl.blk.desired_rudder), static_cast<double>(px),
+                static_cast<double>(pz), static_cast<double>(ctl.goal.goal_x_1dc),
+                static_cast<double>(ctl.goal.goal_z_1e0),
+                static_cast<double>(ctl.blk.distance_330), static_cast<int>(ctl.blk.mode));
+        }
         log.notef("  ship escape profile %s run=%llu bypass=%d bins(-2..+2)=%s",
             row.unit.c_str(), row.middle_runs, ctl.obstacle.profile.bypass_41 ? 1 : 0, bins);
         const float probe = bsp::ship_ai_throttle_ceiling_009ec7c0(settings, ceiling, true,
