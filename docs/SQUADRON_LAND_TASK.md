@@ -5836,3 +5836,116 @@ This piece is part of the same switch group, `kBaseLaunchChainBound`, which is s
   the entry path's head. That is the formula as read. The class's `+158h` (0.0 here, a
   substitution) is what would move the stack along the path. The pair should show whether the
   taxi of piece 4 separates them.
+
+## 5ba. Base launch chain, piece 3b: the carrier lift arm (packet `cc9_base_launch_deck_arms`, cc9-lua25, 2026-09-30)
+
+This piece is part of the same switch group, `kBaseLaunchChainBound`, which is still committed
+**OFF**. It is commit `0db2e1291`.
+
+### Read (disk listing)
+
+- **`006D0600` in full** (`006D0600`-`006D07A4`, `RET 4`). The platform is `P = site+44h`, so
+  `site+78h` is `P+34h`, the platform plane.
+  - **At the top** (`0.0 > P+18h`, mode 0):
+    - `+9Ch = 0`;
+    - with a platform plane: `006FC250` releases it, the ready plane `+18h` is unregistered and
+      cleared (`006D0667`-`006D0678`, whatever it holds), and the plane, if alive (`+5Dh`), gets
+      `007C3C90(plane, 0)` (`006D0684`);
+    - then, with the carrier alive: the landed candidate loop. A candidate gives `006CFFF0(0, cand)`.
+      Without one, a set `+18h` with `006D02F0` false gives `006CFFF0(0, 0)`.
+  - **At the bottom** (`P+18h > depth`, mode 0):
+    - with a platform plane: `007B96C0`, then `006FC250`, then `+9Ch = 0`;
+    - otherwise `+9Ch += dt`;
+    - when `+9Ch > tuning+510h` and the platform is empty: `006CFFF0(1, +18h)` and `+9Ch = 0`.
+- **`006CFFF0(flag, plane)`** (`006CFFF0`-`006D0048`, `RET 8`): a message `00758B90(flag, plane)`
+  routed to the carrier (`site+B8h`) through `0077C2A0(msg, 5, 0)`. Its handler reaches
+  **`006D0050`** (`006D0050`-`006D00D3`, `RET 0Ch`):
+
+  | flag | plane | calls |
+  | --- | --- | --- |
+  | 1 | set | `007C5F60(plane, carrier+1188h)`, then `006FC810(P, plane)` |
+  | 0 | set | `006FC720` (the landed intake) |
+  | 1 | none | `006FC6B0` (empty up) |
+  | 0 | none | `006FC640` (empty down) |
+
+  On a client, `006FBCE0` follows.
+- **`006FC640`**:
+  - `+50h = 0`, `+18h = -0.0 - +1Ch`;
+  - a platform plane is carried and dropped;
+  - `+50h = 2`;
+  - the sound `+54h` `vtable[0Ch](1.0)`.
+- **`006FC810`**:
+  - for a new plane: `+50h = 0` and `+18h = depth + +1Ch`;
+  - an old platform plane is carried, detached with `00951F40(0)`, and dropped;
+  - it takes the plane with the offset `(0, WheelHeight, -0.0 - planeDesc+158h)`;
+  - the sound, then `006FC0D0`, then `+50h = 1`.
+- **`006D02F0`**: blocked when the platform holds a plane, or when an occupant's local z (`+ACh`)
+  lies in `(lift z - 14.0 x 2.0, lift z + 14.0)`. The 14.0 is `00E08FC8`, read from the image's
+  `.data`; its writers were not censused. The 2.0 is the double `00D7A308`.
+- **`006D0930`**, the mother-ship site's `vtable[40h]`, gives the pose for `007C5F60`:
+  - identity axes;
+  - class `+808h..+810h` (the lift point), with y less `settings+4DCh` and less `planeDesc+158h`.
+
+  `007C5F60`'s mother-ship arm then sets `+9DCh = 5.0` and adds to the local translation:
+  - x += `+9D8h x +-1.0`;
+  - y += WheelHeight;
+  - z += 0.0.
+
+  `006FC810`'s carry replaces that translation, so only the axes (GroundPitch) survive.
+- Carrier site vtable `00CF8A58`: `+14h` = `006CFE30`, `+24h` = `006CED90`, `+40h` = `006D0930`.
+  Airfield `00CF89F8`: `006CF9F0`, `006CED90`, `006CF730`.
+
+### The host with the switch on
+
+- **Top:** after the release, `site_ready_18` is cleared, the plane is attached again, and
+  `ground_state_from_locked_007ca3f0(false)` takes it to state 4. Without a landed candidate, a
+  ready plane with `carrier_elevator_blocked_006d02f0` false sends the empty platform down
+  (`carrier_elevator_send_empty_down_006fc640`).
+- **Bottom:** once `pilot_landing_lift_delay` (`tuning+510h`) has passed with the platform empty,
+  the ready plane is placed (`place_on_launch_spot_007c5f60`, the mother-ship arm: the carrier as
+  deck parent, the local axes pitched, the translation at the lift) and raised
+  (`carrier_elevator_raise_plane_006fc810`). Without a ready plane the platform goes up empty, as
+  before.
+- **LABELLED:**
+  - the messages to the carrier are delivered at once;
+  - the site probe runs at the lift point, not at `006D0930`'s point;
+  - `planeDesc+158h` = 0;
+  - the platform sound is not carried.
+
+### Predictions (switch on, recorded before the run)
+
+JM05 3000, on each of Lexington and Yorktown:
+- The empty platform goes down at 3.05 s.
+- After `tuning+510h` plus the travel, the first member is placed in state 2 and raised.
+- At the top it is released in state 4 at the lift, which clears `site+18h`.
+- The launch task sends the second member 2.0 s later. `006D02F0` then stays blocked while the
+  first member stands within the lift band, because nothing taxis it away until piece 4.
+
+Expected totals: `up=2`, `top=2`, `down=2`, and `blocked` growing; about 22 members still Inside.
+
+### Record (commit `0db2e1291`, 2026-09-30)
+
+- **Smoke, off, USN01 300 frames:** 299 frames were presented; the run exited cleanly.
+- **JM05 3000, switch on** (`local\l25_p2bon` rebuilt at `0db2e1291`, SHA-256 `25E8E1E1883C`).
+  **The lift cycle holds, but the prediction on `006D02F0` failed.**
+  - **Timing on both carriers**, identical on each: the empty platform goes down at 3.05 s. The
+    first member is placed and raised at 5.65 s and released 2 -> 4 at 7.80 s. The next member
+    follows every 7.35 s (13.00/15.15, 20.35/22.50, 27.70/29.85 ...).
+  - **Totals:** all 24 carrier members went out (`up=24 top=24 down=24`), and every task ended
+    (`ended=10 sends=30 placed=30 ground_entries=30 inside_now=0`).
+  - **Why the prediction failed:** `006D02F0` blocked for only about 4.5 s per cycle
+    (`blocked=1097` ticks over 12 cycles), not until piece 4.
+    - The released planes leave the lift band on their own. The leader `USS Lexington_sqn03`
+      logs `carrier deck stop` at local (-0.83, 17.40, 39.39) with contact at 7.90 s.
+    - Its wingmen `.-2`/`.-3` never record a ground contact (`contact_steps=0`,
+      `min_height=1000.00`, `wheel=0.00`).
+    - So, in state 4 with no contact, the ground-roll arm takes the free-flight step (`007DC830`)
+      and the plane moves off the lift.
+  - **What this means:**
+    - The deck contact of a plane released at the lift is a host gap for piece 4, with the
+      pending read on the airfield height below 5 m.
+    - Class 101's `WheelHeight` reads 0.00 in the host (`plane_wheel_height_1fc` needs both
+      `WheelHeight` and `GroundPitch`).
+    - Until piece 4, the lift cadence is set by planes drifting off, not by a taxi.
+- **Airfields:** unchanged from 5az (six placed in state 5).
+- **No launched plane reaches state 7,** as expected before piece 5.
