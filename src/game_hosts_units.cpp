@@ -6029,7 +6029,7 @@ struct GameUnitsHost::Impl {
     // which answers the target's speed instead of squadron+3A0h when the target
     // is within TurnCircleRadius + approach+68h (50.0) and faster than 007C47F0.
     // False: squadron+3A0h always (a record).
-    static constexpr bool kMoveToTargetSpeedOverrideBound = false;
+    static constexpr bool kMoveToTargetSpeedOverrideBound = true;  // ON: five rows identical (PILOT_MOVETO_TASK)
     unsigned long long ts_override_calls{0}, ts_override_target{0};
     unsigned long long ts_override_within{0}, ts_override_applied{0};
     float ts_override_max_speed{0.0f};

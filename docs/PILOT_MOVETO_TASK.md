@@ -957,3 +957,38 @@ The rows are USN04 3000, E2 (USN04 9000), JM05 9000, JM08 3000 and LOMP10 3000.
 - `applied` is 0 wherever every such target is a ship.
 - **Gameplay:** identical (exit 0/1) on every row where `applied` = 0. A row where a flight moves
   to a faster plane moves (exit 3), and its flight arrives sooner.
+
+### Measured (pairs on `c624e7be5`)
+
+- **Exports:** OFF is `local\l20_t0` (SHA-256 prefix `0B4B450E226A`); ON is `local\l20_t1`
+  (`D2B3E11933F2`) with the flip.
+- **Logs:** `local\l20_t{0,1}_<row>.log`, reference p's launch form (`local\l20_runs.ps1`). Every
+  log shows present interval immediate, the export's module directory, `frames_presented` = F - 1
+  and the final COM release.
+- **The window changed between runs.** Every run of this pair requested a 1600x900 window, where
+  this worker's 5ag runs an hour earlier requested 640x480. The window request comes from the
+  installation's options. It is the same on both sides.
+
+| row | pair_diff | calls / target / within / applied |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | 5766 / 5766 / 712 / 0 |
+| E2 (USN04 9000) | 1 | 8056 / 8056 / 1481 / 0 |
+| JM08 3000 | 1 | 3667 / 3267 / 2696 / 0 |
+| JM05 9000 | 1 | 0: no kind-7 moveto runs on this tree (the recall of 5ag moved JM05's strikes) |
+| LOMP10 3000 | 1 | 0 |
+
+**The mechanism held.**
+- Every row that runs the kind-7 moveto names a target on most calls.
+- On USN04, E2 and JM08, the flight comes within TurnCircleRadius + 50 m of its target 712, 1481
+  and 2696 times.
+- Each time, the target was no faster than the plane's level-flight speed, so `009C23B0` answered
+  `squadron+3A0h`, as the host did without the switch.
+
+**The predictions held.** `calls` equals the OFF record count of the site on every row (5766, 8056
+and 3667), and `applied` is 0.
+
+### Verdict: `kMoveToTargetSpeedOverrideBound` ON
+
+The binding is faithful and gameplay-identical on five rows. It replaces the record
+`BotStateMoveTo::target_speed_override_009c23b0` with the concrete `009C23B0`. The override will
+act where a flight moves to a plane faster than its level-flight speed; no reference row has one.
