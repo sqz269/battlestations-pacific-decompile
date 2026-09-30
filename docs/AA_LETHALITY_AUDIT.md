@@ -1292,3 +1292,120 @@ Of 12.6's list:
 - the aim-point height is now bound;
 - the kind-6 second ammunition was already bound;
 - the fire-window origin and the recon contact list stay open (13.1).
+
+## 14. The recon contact list: the sweep scores every published kind (packet `cc9_recon_contact_kinds`, cc9-gunnery17)
+
+### 14.1 What was left of the substitution
+
+- The host has walked the published enemy triple since `kReconTeamListsBound` (docs/RECON_TEAM_LISTS.md),
+  with the aggregates since `kReconAggregatesBound`. So 12.6's "recon contact list" is the list
+  itself only in part.
+- One pre-filter remained in `recon_contact_count_008053c0`. It admitted only ship bases and plane
+  bases. Everything else the scan publishes (structures, land units, the squadron aggregates) was
+  dropped before the score.
+- **The image has no kind test on the walk** (docs/RECON_SLOT_OBJECT.md 4.1):
+  - 00865220..00865237 take `node->payload->unit` and call `00863990` directly;
+  - refusals come from inside the score: `00862820` (alive, active, the per-category allow byte,
+    the class arms), the rank, the plane/ship mask `008633D0`, and the category range.
+- **The reach is wide.** On s, the pre-filter dropped:
+
+| row | kind rejects | of considered |
+| --- | --- | --- |
+| USNOS long | 6247002 | 7924639 |
+| USNOS | 2167265 | 2701222 |
+| JM05 long | 1453697 | 2173627 |
+| JM08 | 694755 | 798915 |
+| JM05 | 511200 | 775528 |
+| USN13 | 376528 | 1916287 |
+| IJN01 | 89664 | 463424 |
+| USN01 | 36170 | 68076 |
+| LOMP06 | 11200 | 11740 |
+| LOMP10 long | 8118 | 39192 |
+| LOMP10 | 5084 | 25724 |
+| USN12 | 2592 | 11232 |
+| JM06 | 1656 | 9556 |
+| USN04, E2, USN02, BSM01 | 0 | - |
+
+### 14.2 The binding (`kReconContactAllKindsBound`, committed OFF)
+
+- ON: the pre-filter admits every live contact, and the host's `score_candidate_00863990` decides
+  (liveness, class id, rank, mask, range).
+- **Summary line**, on both sides: `summary mission gunnery recon contact other kinds admitted=
+  scored/accepted by class: CC:n/m`. Those are scores and acceptances of non-ship, non-plane
+  targets per class id, including director targets on the OFF side.
+- **Uncertainty:** the host's 00862820 is the reconstructed liveness rule. Its per-category allow
+  byte and class arms are as bound earlier (UNIT_GUNNERY_PASS). A class those arms refuse in the
+  image but the host admits would show up as a spurious acceptance here.
+
+### 14.3 Predictions (written before any ON run)
+
+1. **Identical (exit 0 or 1):** USN04, E2, USN02 and BSM01. They have no kind rejects, so the
+   switch changes nothing there.
+2. **Mechanism:**
+   - `admitted` > 0 on every other row, and about equal to OFF's kind-reject count until the
+     first moved step;
+   - the new classes are scored, and they are accepted only for categories whose rank is
+     non-zero for that class and within range. Expect the land and structure classes against the
+     artillery categories. The squadron aggregate (18h) is expected unranked and refused.
+3. **Rows that may move:** USNOS, USNOS long, JM05, JM05 long, JM08, USN13, IJN01, USN01, USN12,
+   JM06, LOMP06, LOMP10 and LOMP10 long. Ship guns take structure or land targets from the sweep:
+   - more structure deaths where they are in range (USNOS: the US base, the side the Japanese
+     guns already shell through the director);
+   - fewer rounds at ships or planes where a structure outranks them.
+   - The direction on deaths is up for structures. Ship and plane deaths may move either way.
+4. **Mechanism failure:** a move on a row where `admitted` is 0, or an acceptance of a class with
+   rank 0.
+
+### 14.4 The pair, and the verdict: ON
+
+A same-tree pair at `8b657605f`: `local\g17_rk0` (SHA-256 prefix `D74C0B7A6890`) against `local\g17_rk1`
+(`--flip kReconContactAllKindsBound=true`, `1EBB7834CA5B`). USN01 and JM05 were re-run on
+`5b4a02cd1`, which adds only a `same_side` census, and gave the same death rows. The 300-frame USN01
+smoke is clean. Logs are `local\g17_rk{0,1}_<row>.log`.
+
+| row | exit | deaths OFF -> ON | census ON (class: scored / accepted) |
+| --- | --- | --- | --- |
+| USN04, E2, USN02, BSM01 | 1 | = | admitted 0 |
+| IJN01, LOMP10 long | 1 | = | IJN01 admitted 89664, 1B: 1 / 0 |
+| USN01 | 3 | 5 -> 17 | 1B 5500 / 2468, 1C 504 / 66, 45 504 / 107 |
+| JM05 | 3 | 1 -> 12 | 1B 44332 / 2514, 1C 2136 / 249 |
+| JM05 long | 3 | 5 -> 18 | - |
+| USNOS | 3 | 55 -> 107 | 1B 665796 / 5268, 1C and 45 scored, 0 accepted |
+| USNOS long | 3 | 68 -> 129 | - |
+| USN12 | 3 | 4 -> 7 | 1B 510 / 428 |
+| JM08 | 3 | 4 -> 5 | 1B 224501 / 3979 |
+| USN13 | 3 | 23 -> 24; first hit 96.65 s -> 5.15 s | 1B 55614 / 1779 |
+| JM06, LOMP06, LOMP10 | 3 | = (hits or shots only) | LOMP06 1B 2800 / 0 |
+
+**The new deaths are structures and land units.** Examples:
+- USN01: Heavy AA, containers and storage, killed by Northampton and CB2;
+- JM05: offices, radar stations, barracks and bunkers;
+- USNOS: the killers are Shimotsuke (54), Ada2 and Zao1.
+
+`same_side` is 0 on USN01 and JM05: every admitted contact is on another side than the sweeping unit.
+
+**Prediction check:**
+- **The four predicted-identical rows held.**
+- **The mechanism held:**
+  - every moved row has `admitted` > 0;
+  - the new acceptances are classes 1Bh (MLandFort), 1Ch and 45h;
+  - the squadron aggregate (18h) never reaches the range test (unranked);
+  - IJN01 and LOMP10 long admit contacts and stay identical, since none is ranked and in range.
+- **The direction held:** structure deaths rise.
+
+**Verdict: ON** (`kReconContactAllKindsBound = true`). It is a large mover on the rows with shore
+targets (USN01, JM05, JM05 long, USNOS, USNOS long, USN12), and a gunnery-side counterpart of the
+capture-value change in reference s. It belongs to reference t.
+
+**Uncertainty, and a new open item.** The host's `00862820` models only the four liveness bytes.
+From the disk bytes (00862843..008628CA), the image also requires:
+- the per-instance allow byte `[ai+CCh+cat*61h+class]` (memset to 1 in the constructor, so
+  faithful unless something writes it);
+- the rank at `[00E19BF8+(cat*61h+class)*4]`, which the host tests separately;
+- for category 7, `IsKindOf(6)` and not `IsKindOf(0Eh)`;
+- for a kind-8 target (a submarine), `00852820 BSP_Entity_IsAboveDepthChargeDepth`: categories 8
+  and 9 refuse it when that answers true, and every other category refuses it when it answers
+  false.
+
+The last two arms are not in the host's score. They do not bear on this packet's structure classes
+(not kind 8), but they are an open binding in this lane.
