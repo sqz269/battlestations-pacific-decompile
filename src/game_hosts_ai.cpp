@@ -85,7 +85,10 @@ inline constexpr bool kLandingShipStartLandingBound = true;
 // hull and sets ship+1124h, the cooldown 008128E0 tests. True: delivered at the
 // call (GameShipAiHost::transport_launch_craft_008206f0) and the +1124h test
 // applies. False: counted, and +1124h reads 0.0.
-inline constexpr bool kLandingCraftLaunchBound = false;
+// ON by section 100.4: JM08 36000 launches 8 crafts from USTroopTransport 01 at
+// t=632.75, which hold every pad (0074A4C0 begins 3 -> 0); 3 ramps lower, no
+// flip; exit 3. USNOS gameplay-identical.
+inline constexpr bool kLandingCraftLaunchBound = true;
 
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();

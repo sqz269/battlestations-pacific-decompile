@@ -8467,3 +8467,41 @@ Only JM08 36000 routes 94h to transports (2065 in section 97.4); USNOS is the co
   at 754.84 / 790.38 near the beach. `pair_diff` exit 3.
 - **USNOS:** no transport is ready (the site search fails): gameplay-identical (exit 0 or 1; the
   summary lines print `launch_bound`).
+
+### 100.4 The pairs (`s25_a0` vs `s25_a1`, both from `15bbd803b`), and the flip
+
+| row | 94h to transports / launches / crafts | 0074A4C0 begun | ramps lowered | capture adds | exit | deaths | death rows |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JM08 36000 | 1 / 1 / 8 | 3 -> 0 | 0 -> 3 | 0 -> 1746 ticks | 3 | 85 -> 170 | 92 only ON, 7 only OFF, 71 changed |
+| USNOS (control) | 0 | 0 | - | - | 1 | 106 -> 106 | identical |
+
+**The mechanism matches the read.** At t=632.75 (Bristol's first CLOSEATTACK tick, the tick of
+section 97.4) USTroopTransport 01 (unit 353) launches 8 Higgins crafts on `Headquarter 01`'s
+pads 0..7: three on ring 1, three on ring 2, two on ring 3 (`spawn_phase` 2, 1, 0), at
+(1275..1345, -1467..-1561), with 11 clearance rejects (each new craft blocks its neighbours'
+points) and no depth reject (ground about -28 m). `+1124h = 120`. With every pad held, no other
+member is ever ready again: UST 02 / 04 and LST 01 / 03 get no pad in the same tick, `begun`
+falls from 3 to 0, and the transports now take the move path of section 96 (not ready).
+
+**The crafts, from `BSP_LANDER_DIAG=1` (`s25_d1_jm08x`, the ON binary):** they reach the
+shallows at (1470..1605, -3885..-3924) from t=1058 (ground about -1.1 m, pad distances 15..545 m),
+three ramps lower from t=1060 (`LandingShip::route_ramp_message_0a6` calls=3), and
+capture arm 2 adds 1746 ticks after the HQ turns neutral (t=1014.60 ON, 970.70 OFF). No craft
+dies, so no pad frees and there is no second launch. No flip (CaptureValue 2,000,000).
+
+**Predictions:** the launch (8 crafts, UST 01, 632.7, cooldown 120), `begun` 3 -> 0, at least
+one ramp, no flip and USNOS identity held. Missed: the arrival (about 1058 s, predicted 850..900;
+the crafts average about 5.6 m/s, not 15.4, and why is not read), the craft death rows (none
+die), and LST 03 still dies at 757.39 to the HQ gun: it now runs the move path to 0.75 x
+CaptureRange instead of a landing. New: USTroopTransport 01 (921.95, rammed by UST 04), UST 04
+(931.70, Helena at 852 m) and UST 05 (1097.90) die ON only, on the move path; LST 01 dies at
+1414.55 instead of 790.38. The 82-odd building rows are section 94.4's bombardment spread.
+
+**Decision: `kLandingCraftLaunchBound` ON** (mechanism match; the arrival time and the move-path
+losses recorded as misses).
+
+### 100.5 Next
+
+- Why the crafts close at about 5.6 m/s (the land state's throttle for a 13 m craft, or the
+  pad-line approach), and whether they should reach the beach rather than the reef line.
+- The transports' collisions on the move path once every pad is held (UST 01 by UST 04, at 76 m).
