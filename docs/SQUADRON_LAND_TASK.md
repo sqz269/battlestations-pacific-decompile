@@ -4977,7 +4977,9 @@ tree). A 300-frame smoke of the OFF build exited 0.
 - The loop touches no outcome on these rows.
 
 **Verdict: `kLandParkStateBound = true`, labelled "image loop accepted, SQUADRON_LAND_TASK
-5aq".** This also puts the elevator (5ao) into the reference rows.
+5aq".** This also puts the elevator (5ao) into the reference rows. **Superseded as to the loop by
+5bp:** the image pushes a takeoff task at the first ground abort, and the host's loopers are below
+the terrain. The switch stays ON for the lift and the hangar hold.
 
 **For reference U.** JM05 9000 moves (exit 3, the positions and the land-task, park and elevator
 counters); JM05 3000 moves at exit 1 (native table and summary counters only). The other rows are
@@ -7185,3 +7187,143 @@ is held.
 - `l27_taskvt.py`, `l27_slots.py`, `l27_s30.py`, `l27_mk.py`, `l27_pushvt.py`: the task vtable
   census;
 - the edit scripts `l27_brake_edit.py`, `l27_p158_edit.py`, `l27_head_edit.py`.
+
+## 5bp. The tick tail's re-takeoff for a grounded plane (packet `cc9_ground_retakeoff`, cc9-lua28, 2026-09-30)
+
+This binds 5bn.1. The switch is `kGroundRetakeoffBound` (`include/bsp/game_hosts_units.hpp`),
+committed **OFF** with the predictions below.
+
+### The image, read whole (disk listing `0099ACD0`-`0099B1A3`)
+
+- **When the tail runs.** Only on a think that ticks the head task: the tick returns early for a
+  dead or removed plane (`0099ACE1`-`0099AD09`), skips to the end when the list is empty
+  (`0099AEC4`) or the `+74h` countdown has not run out (`0099AF10`), and after `009998A0` skips
+  to the end for a player-held plane (`0099AF33`, the `+9C2h` byte). The block `0099AF4F`-`0099B0B9`
+  has no other exit.
+- **The head.** `EBX` is written once, at `0099AE8C` (`[bot+58h][0]`, after `0099A4C0`'s retire)
+  or `0099AE90` (0 for an empty list). It is the task `009998A0` ticked at `0099AF1C`.
+- **The gate** (`0099B0BE`-`0099B105`), all of:
+  - `(unit+72Ch)->vtable[38h]` false: `+900h` is not 7 (free flight);
+  - the head's `38h` true (every command class, land and takeoff; 5bm's table);
+  - `0042A7E0(unit)` (`+900h` 4 or 5, `0042A7E0`-`0042A7F9`) or `+900h == 6`;
+  - the head's `30h` true. Land's is `009B3730` (`009B3730`-`009B374F`): false in `land/park`
+    (`+620h`) and `land/final` (`+5F8h`), true otherwise. Takeoff's `009CF9D0` and Stop's
+    `009BAC40` are false; every other command class answers true.
+- **The push** (`0099B107`-`0099B113`): `009CFF40(bot, DL = 0)` then `00999F50`, the front push.
+- **What `DL = 0` changes** (`009CF8E0`, decompiled): the start state is
+  - `takeoff/parking` (`+4B8h`) when the plane is landed (`+904h`) and on the path (`+900h == 5`),
+    as with `DL = 1`;
+  - otherwise `takeoff/Takeoff` (`+470h`) when `unit+AA0h <= 0.0` (`00D7A218`), else
+    `takeoff/SlowTakeoff` (`+490h`). `DL = 1` (`0099A4A0`) starts in `takeoff/prepare` (`+448h`)
+    instead. So the re-takeoff skips prepare's wait and its site permission.
+  - `takeoff/Takeoff`'s enter is `009CE270` (`009CE270`-`009CE290`): `+18h = -1.0`, `+1Ch = 0`,
+    then a tail-jump to `007C17D0(plane)`.
+- **State 6** is the plane on the water: `007CB7F0`'s tail `007CB92C` moves 7, 4 and 5 to 6 at the
+  water line (docs/ATTACK_RUN_DESCENT.md, the host's `cc9_water_surface_law`). A dead plane does not
+  think, so only a live ditched plane reaches the tail there. Queue item 2 of 5bo is answered by
+  that existing reading; `007B8BD0`'s use of state 6 in 5bj is the same field.
+
+### The host with the switch on
+
+- In the pilot think, after the task arm (the host's `009998A0` call), the gate above picks the
+  head as the host orders it: the takeoff task when installed (5bl), else `land`, else any other
+  installed command task (torpedo, dive bomb, moveto, dogfight).
+- A push installs the takeoff task through the `0099A4A0` install's approach setup (`009CD420`)
+  with the `DL = 0` start state: parking when `+904h` and `+900h == 5` (still **not bound**: it is
+  recorded and the task sits in parking, and the plane holds), else `takeoff/Takeoff` with
+  `009CE270`'s writes. SUBSTITUTION, labelled: `+AA0h` is carried as 0.0 (5be), so SlowTakeoff is
+  never chosen.
+- The land task stays installed below it and is not ticked until the takeoff task's done arm; it
+  then resumes from `land/abort`.
+- The player-held skip is not modelled (the rows run an idle player).
+- Summary line: `summary ground retakeoff: pushes= parking= takeoff= land_head= other_head=
+  state6=`.
+
+### Predictions (switch ON against OFF; written before the pairs)
+
+Reference U: of the landing rows only JM05 9000 has land aborts (2900 entries, 7 planes; 2896 of
+them `from_abort` in `land park`). JM05 3000, LOMP10 3000 and 9000, USN04, E2, USN13, USN01 and
+BSM01 have none, and only JM08 has a live water contact.
+
+1. **JM05 9000.** The six loopers (F4F Wildcat 01, SB2C Helldiver 02, MainAirfieldEntity
+   01_sqn01|.-2 and |.-3, SecondaryAirfieldEntity 01_sqn02|.-2 and |.-3) get a push at their
+   first ground abort, in state 4 (their park summaries end in state 4 with `contact` as the done
+   reason), so in `takeoff/Takeoff`.
+   - They take a takeoff run where they stand, lift off, and the takeoff task retires. `land`
+     then resumes from abort, flies a new approach and lands again. Each cycle costs one push.
+   - `from_abort` falls from 2896 to a few per plane (one per cycle). Pushes about equal to the
+     aborts on the ground; lift-offs rise by the same count.
+   - `pair_diff` 3. Death rows identical unless a relaunched plane meets enemy fire; any moved row
+     must involve one of the six.
+2. **JM05 3000, LOMP10 3000 and 9000, USN04, E2.** No ground abort: pushes 0 and `pair_diff`
+   1 (the summary line) unless a grounded plane carries some other command task.
+3. **Controls USN01 and BSM01:** pushes 0, exit 0 or 1.
+4. **Flip criterion.** The six loopers relaunch instead of looping, every push is from a
+   grounded head with `30h` true, no push on a row without ground aborts, and no death row moves
+   that the relaunch cannot explain. A relaunch that fails to lift off (the run stalls with no
+   holder) is a mechanism failure and keeps the switch OFF.
+
+### Results (OFF `local\l28_roff`, SHA-256 `99C60502B60B`; ON `local\l28_ron`, `880A12FEA0BA`; both from `6a040f4dd`)
+
+The 300-frame USN01 smoke of the committed tree exits 0 (299 frames presented). All rows are in the
+reference launch form. `jm05x` is an extra row, JM05 at 12000 mission frames, run because the one
+push on the 9000 row comes 4 s before its end.
+
+| row | `pair_diff` | death rows | land aborts OFF / ON | pushes (all `land` head, state 4, `takeoff/Takeoff`) |
+| --- | --- | --- | --- | --- |
+| JM05 3000 | 1 | identical (12) | 1 / 1 (airborne) | 0 |
+| JM05 9000 | 1 | identical (14) | 21 / 2 | 1 |
+| JM05 12000 (`jm05x`) | 1 | identical (17) | 749 / 4 | 3 |
+| LOMP10 3000, 9000 | 1, 1 | identical (3, 6) | 0 / 0 | 0 |
+| USN04, E2 | 1, 1 | identical (50, 52) | 0 / 0 | 0 |
+| USN01, BSM01 (controls) | 1, 1 | identical (17, 0) | 0 / 0 | 0 |
+
+- **The base has moved since reference U.** On this tree the JM05 9000 loop is one plane, SB2C
+  Helldiver 01 (20 `from_abort`), not six planes and 2896. At 12000 frames there are three
+  loopers: Helldiver 01 (365), MainAirfieldEntity 01_sqn01|.-3 (206) and
+  SecondaryAirfieldEntity 01_sqn02|.-3 (177).
+- **The gate and the push behave as read.** Each looper gets exactly one push, at its first ground
+  abort (Helldiver 01 at 446.06 s: `head=land state=4 landed=1 bf4=1 bf8=0 y=2.74 |v|=3.19`). The
+  pushed task is the head, and `land` is not ticked again. The aborts fall from 749 to 4. No push
+  on any row without a ground abort; no parking start; no state-6 push.
+- **The relaunch never lifts off.** A diagnostic build (the ON export with two log lines in the
+  run step, not committed; `local\l28_diag_jm05x.log`) shows it:
+  - Helldiver 01 is at y 2.33 at 446.16 s. By 451.16 s it is at **y -77.86** at 41 m/s, and it
+    runs on at 69.5 m/s near y -79 to the end.
+  - The other two do the same: y -76.1 at 70-80 m/s, and y -56.0 at 67 m/s.
+  - Every step then takes the run step's MinWaterSpd arm (the host's arm D, `h > y` with
+    `h = 0`) and returns after `007B9010` sets `+C01h = 1`. The takeoff task's done arm (free flight) is never reached. Lift-offs are
+    unchanged (34 = 34).
+- **The OFF loopers are underground too.** Helldiver 01's land-task trace on the OFF side reads
+  alt -70.9 at 462.56 s and -79.2 at the end, 4174 m from its site. So the "park <-> abort loop"
+  is a plane that has fallen through the ground. In state 4 off the runway rectangle (`+BF8h`
+  clear), the host holds no ground under it. Land/abort's full throttle then drives it under the
+  airfield; with the switch on, takeoff/Takeoff's does.
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 9000: the loopers relaunch, lift off and fly a new approach | **failed**: one push per looper as predicted, but the run goes under the ground and never lifts off |
+| 2. JM05 3000, LOMP10, USN04, E2: no push, exit 1 | **held** |
+| 3. controls: no push, exit 0 or 1 | **held**: exit 1 |
+| 4. flip criterion | **not met**: mechanism failure (no lift-off) |
+
+### Verdict: **keep OFF** (mechanism failure, recorded)
+
+The image reading stands: the tail pushes a takeoff task over a grounded `land` task that is not in
+park or final. What fails is the host's ground under a state-4 plane off the runway rectangle.
+
+**5ar re-assessed.**
+- 5ar accepted the airfield loop as "the image's own behaviour as far as the listing shows". Two
+  readings contradict that:
+  - 5bn.1: in the image, the first ground abort pushes the takeoff task, so there is no loop;
+  - this section: the host's loopers are below the terrain.
+- So the loop is **not image behaviour**. It is a host artefact of a plane that lost its ground
+  (`done_why contact`, `+BF8h` clear) and fell through.
+- `kLandParkStateBound` stays ON, because its other effects are measured and hold:
+  - carrier planes reach the lift (5ao.1);
+  - the other airfield planes hold in state 5 at their hangar points.
+- The label on the switch changes from "image loop accepted" to "loop is a host ground-support
+  artefact; see 5bp".
+- Whether park or the ground law should change is the next packet: find why a hangared plane's
+  `+BF8h` clears (Helldiver 01 at 446.06 s, `|v|` 3.19 inside the hangar), and what holds a
+  state-4 plane off the rectangle in the image (`007CB7F0` and the ground-contact producer).
