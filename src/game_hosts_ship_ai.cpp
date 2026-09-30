@@ -552,6 +552,13 @@ inline constexpr float kLandingShipKeelDepth = 3.71f;
 // instead of the stand-in above. False: the stand-in.
 // ON by section 87.5.
 inline constexpr bool kLandingShipRampHullContactBound = true;
+// Packet cc9_landing_unload_latch (section 106). True: after the latch, a landing
+// ship with a pad runs 0074AF50's ramp animation (+11A4h over +1190h = 2.0 s) and,
+// once the ramp is fully down, the one-shot unload: +118Bh, +118Ch, and the unit's
+// Lua self table gets `LandingStarted` and `LandingFinished` = true (published by
+// the script-orders host). False: none of these, as before. ON by section 106.5:
+// JM08 36000's nine ramps each unload 2.05 s later; every row gameplay identical.
+inline constexpr bool kLandingShipUnloadBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -834,6 +841,7 @@ struct GameShipAiHost::Impl {
     double fleet_diag_next{0.0};
     unsigned long long ramp_ground_contacts{0};
     unsigned long long ramp_lowers{0};
+    unsigned long long ramp_unloads{0};
     unsigned long long capture_landed_adds{0};
     bool landing_ship_ground_contact(std::size_t unit, float ground[3]) const;
     void landing_ship_ramp_step(float seconds);
@@ -11465,17 +11473,30 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
         }
         if (!kLandingShipRampBound) continue;
         if (contact) ++ramp_ground_contacts;
-        if (!bsp::landing_ship_ramp_latch_0074afcc(*l, contact,
+        if (bsp::landing_ship_ramp_latch_0074afcc(*l, contact,
                 static_cast<float>(capture_clock), seconds)) {
-            continue;
+            ++ramp_lowers;
+            const GameUnitRow* row = units.unit_row(u);
+            log.notef("landing ship ramp: unit=%s lowered at t=%.2f pad=%d "
+                "landed_capture_power=%d (0074B080 0074A420; the 0A6h route 00749AA0 / "
+                "0077C2A0 is a record)", row != nullptr ? row->name.c_str() : "?",
+                capture_clock, l->pad_1200,
+                u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0);
+            record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
         }
-        ++ramp_lowers;
+        // Packet cc9_landing_unload_latch (section 106): every latch path reaches
+        // 0074B0B0 and falls through to the ramp animation and the unload.
+        if (!kLandingShipUnloadBound) continue;
+        if (!bsp::landing_ship_ramp_unload_0074b109(*l, seconds)) continue;
+        ++ramp_unloads;
+        pads.post_unload(static_cast<int>(u));
         const GameUnitRow* row = units.unit_row(u);
-        log.notef("landing ship ramp: unit=%s lowered at t=%.2f pad=%d landed_capture_power=%d "
-            "(0074B080 0074A420; the 0A6h route 00749AA0 / 0077C2A0 is a record)",
-            row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200,
-            u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0);
-        record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
+        log.notef("landing ship unload: unit=%s at t=%.2f pad=%d +118Bh=1 +118Ch=1 "
+            "LandingStarted=true LandingFinished=true queued (0074B164..0074B2EF, 0074AD90; "
+            "006AC370's troop paths and the shipLanded event 00986820 are records)",
+            row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200);
+        record("LandingShip::pad_troop_paths_006ac370", 0x006ac370u);
+        record("MissionEvents::ship_landed_00986820", 0x00986820u);
     }
 }
 
@@ -11988,6 +12009,9 @@ void GameShipAiHost::report() {
         "landed_capture_adds=%llu bound=%d (0074AFCC..0074B0AC, 006F6A58..006F6BF8, packet "
         "cc9_landing_ramp_capture)", host.ramp_ground_contacts, host.ramp_lowers,
         host.capture_landed_adds, kLandingShipRampBound ? 1 : 0);
+    host.log.notef("summary mission landing ship unload unloads=%llu bound=%d (0074B109..0074B329, "
+        "0074AD90, packet cc9_landing_unload_latch)", host.ramp_unloads,
+        kLandingShipUnloadBound ? 1 : 0);
     // Packet cc8_ship_follow: what 009E1610 did for each follower. The error is
     // the distance from the ship to the station point 009DE050 was handed.
     {

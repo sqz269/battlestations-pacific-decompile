@@ -430,6 +430,9 @@ public:
     // Packet cc9_entity_dead. 00929800's two Lua writes for every unit whose
     // death is new since the last call; see the .cpp.
     void publish_unit_deaths_00929800();
+    // Packet cc9_landing_unload_latch: the unloads the ship AI queued on the pad
+    // model get `LandingStarted` (0074B274..0074B2C1) then `LandingFinished` (0074AD90).
+    void publish_landing_unloads_0074ad90();
     // Packet cc9_mission_end: stamps the frame `Mission.EndMission` first reads
     // true, with the fail/complete status and the objectives at that moment.
     void observe_mission_end();

@@ -8726,3 +8726,255 @@ at about 1141 s; no flip (CaptureValue 2,000,000).
 for the lander and transport diagnostics, `BSP_MUZZLE_TRACE=<name prefix>` for a unit's shots.
 The last JM08 36000 logs: `s25_b0_jm08x` (101 OFF), `s25_b1_jm08x` (101 ON), `s25_e1_jm08x` (101
 ON with the lander diagnostics), `s25_m1_jm08x` (muzzle trace of Headquarter 01).
+
+## 106. The landing ship's unload latch (packet `cc9_landing_unload_latch`, `kLandingShipUnloadBound`, cc9-ships26, 2026-09-30)
+
+Section 103.4's binding. Read from the live decompile of `0074AF50` and the listing
+`0074B109..0074B329`, and `0074AD90` whole.
+
+### 106.1 What the image does after the latch
+
+- Every path through the latch (`0074AFCC..0074B0AC`) reaches `0074B0B0` and falls through to
+  `0074B109`, so the ramp animation runs in the latch's own frame.
+- **The ramp** (`r` = `+11A4h` at entry, `0074B111`): with `+1188h` set and `r < 1.0`
+  `[00D7A24C]`, `+11A4h = min(float(dt / +1190h + r), 1)`. The clamp is `006F22B0` with ECX = 1
+  (`0074B146`); section 103.2 had left the bound unread. With `+1188h` clear and `r > 0.0`, it is
+  `max(float(r - dt / +1190h), 0)` through `006F22F0` with ECX = 0 (`0074B309`). Both helpers
+  compare against `(float)ECX`, return the bound on a tie, and the argument is a single FSTP
+  rounding of an x87 sum.
+- With dt = 0.05 and `+1190h` = 2.0 the ramp needs **41** steps: after 40 it is just under 1.0 in
+  float. So the unload comes **2.05 s after the latch frame**.
+- **The unload, once:** `r >= 1.0` with `+118Ah` (`0074B16E`) and `+118Bh` (`0074B17B`) clear:
+  1. `+118Bh = 1` (`0074B18F`);
+  2. with a pad, the bow point goes to `006AC370` (the troop paths);
+  3. `LandingStarted = true` on the unit's Lua self object (`00927B40`, `00B673A0` at
+     `0074B274..0074B2C1`);
+  4. `0074AD90`: `LandingFinished = true`, `+118Ch = 1`, and `00986820` (the `shipLanded`
+     mission event, docs/MISSION_EVENTS_UPDATE.md) when `[00F8A0C4]` is set.
+- **Readers.** A `.text` census of the displacements (`8C 11 00 00`, `8B 11 00 00`,
+  `8A 11 00 00`) finds only the landing ship's own routines touching these fields:
+  - InitAll `0074BEC0` zeroes all three bytes (`0074BEF4..0074BF10`) and registers them as Lua
+    properties under their Hungarian keys (`0074C37B`, `0074C3B2`, `0074C3E9`);
+  - the save routine `0074A1F0` writes them;
+  - the update, and `0074AD90` for `+118Ch`.
+
+  The other hits are other classes' fields at the same offsets: `00826A90` is an IsKindOf(0Eh)
+  float at `+1188h`/byte at `+118Ch`, plus the submarine and state-message routines. Nothing
+  outside the landing ship reads `+118Bh` or `+118Ch`. `+118Ah` has no `.text` writer except the
+  zero. So in this process the unload's effects are the two Lua booleans and the event.
+
+### 106.2 Which scripts read the Lua fields, and whether a row reaches them
+
+Checked against this installation's `scripts\` tree.
+- **BSM02** loads `scripts/missions/bsm/bsm_02_defense_of_the_philippines.lua` (2024-08-26); the
+  log shows `mission script Scripts/missions/BSM\\bsm_02_defense_of_the_philippines.lua`.
+  - Lines 546 and 558 count `unit.LandingStarted` over `Mission.Invasion` / `Mission.LSTGang`;
+    at five landings the mission fails (line 538).
+  - Those units exist only from phase 2 (`luaMoveToPh2`, line 907). Phase 2 needs the player's
+    ship to leave the harbour. With the idle player, `s20_m_bsm02x` (36000 frames) ends in
+    `MissionPhase=1`, so **no reach**.
+  - They also only `NavigatorMoveOnPath`: they never take a pad, and the host's latch runs only
+    for a lander holding one.
+- **BSM06** loads `scripts/missions/bsm/bsm_06_holding_lombok.lua` (2024-07-13). Its matches
+  (lines 492, 502) are `Mission.LandingStarted`, the script's own flag, **not a unit field**.
+- **JM08** loads `COTP-IJN\PRCPIJN\prcpjm08.lua` (2024-08-26), which reads neither field.
+  `COTP-IJN\jm08.lua` and `ijn\JM\jm08.lua` do, but no row loads them.
+- The other unit readers are not reference rows: `chg\chg_5_tulagi.lua:653` (CHG05, phase 4) and
+  `global/commandhelpers.lua`'s `luaRemoveLandedUnitsFromTable`, which no mission script calls.
+  `usn_14` and `bsm_10` use `Mission.` flags.
+- `shipLanded` listeners exist only in `usn_07`, `jm11` and `jm13`, none of them a reference row.
+
+**So no reference row has a script reader.** The flip is judged on the mechanism alone, on JM08
+36000, the one row whose landers ramp: `s25_b1_jm08x` had 11 ramps, t = 791.50 .. 1168.90.
+
+### 106.3 The binding (committed OFF): `kLandingShipUnloadBound` (`src/game_hosts_ship_ai.cpp`)
+
+- **`bsp::landing_ship_ramp_unload_0074b109`** (`building_pads.cpp`) models the ramp animation
+  and the one-shot flags over new `Lander` fields: `+11A4h`, `+1190h`, `+118Ah`, `+118Bh`,
+  `+118Ch`.
+- **The ship AI's ramp step** runs it after the latch in the same iteration. An unload is queued
+  on the pad model (`post_unload`).
+- **`GameScriptOrdersHost::publish_landing_unloads_0074ad90`** drains the queue where the death
+  flags are published. It writes `LandingStarted` and then `LandingFinished` = true on the unit's
+  own self-table slot, with the same `Ptr` check as `Dead`.
+- **LABELLED:**
+  - the image writes these inside the ship's update; here the publish is at the script-timer
+    pass, a one-frame order bound;
+  - `006AC370`'s troop paths, the `soldiers` node, the ramp-bone poses and `00986820` are
+    records;
+  - a landing ship without a pad never runs the step (in the host `+1188h` needs a pad).
+
+### 106.4 Predictions (written before any ON run)
+
+Same-tree pair `s26_a0` (OFF) / `s26_a1` (ON).
+- **USN01 smoke and JM08 long (9000):** no ramp lowers, `unloads=0`; pair_diff exit 0 or 1.
+- **JM08 36000:**
+  - every `landing ship ramp: ... lowered at t=T` line whose lander stays alive with its pad is
+    followed by `landing ship unload` for the same unit at exactly T + 2.05, and a
+    `landing ship unload published` line;
+  - OFF has 11 lowers as in `s25_b1_jm08x`, and ON has the same 11 at the same times;
+  - 9 to 11 unloads (a craft that dies within 2.05 s of lowering does not unload);
+  - nothing reads `+118Bh`/`+118Ch` and the loaded script reads neither Lua field, so the pair is
+    **gameplay identical** (pair_diff exit 1, with the new lines as the only difference).
+- **Verdict rule:** a mechanism match (the timing and the 1:1 pairing) flips ON; any gameplay
+  move is a mechanism failure and stays OFF.
+
+### 106.5 The pairs (`s26_a0` vs `s26_a1`, both from `8d8a63e4b`), and the flip
+
+**Binaries:**
+- OFF `local\s26_a0\build\win32\Release\bsp_game.exe`;
+- ON `local\s26_a1\...` (SHA-256 prefix `0F78CED5B66F`).
+
+**Run form:** the reference launch form, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+**Environment:** `query session` showed `rdp-tcp#0` Active, and the runs were unaffected. The
+300-frame USN01 smoke on the tree build passed first.
+
+| row | pair_diff | deaths | death rows | unit table | lowers | unloads |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN01 smoke (300/100) | 1 | 0 / 0 | identical | identical (26) | 0 | 0 |
+| JM08 long (9200/9000) | 1 | 25 / 25 | identical | identical (119) | 0 | 0 |
+| JM08 36200/36000 | 1 | 118 / 118 | identical (118) | identical (276) | 9 / 9 | 0 / 9 |
+
+**JM08 36000, ON.** Each of the nine `landing ship ramp` lines is followed by a `landing ship
+unload` for the same pad at exactly T + 2.05:
+
+| ramp lowered | unloaded |
+| --- | --- |
+| 788.95 | 791.00 |
+| 789.60 | 791.65 |
+| 809.75 | 811.80 |
+| 811.90 | 813.95 |
+| 813.40 | 815.45 |
+| 814.30 | 816.35 |
+| 836.80 | 838.85 |
+| 1201.70 | 1203.75 |
+| 1293.65 | 1295.70 |
+
+Each unload is followed by a `landing ship unload published` line: units 390-398, all
+`LandingShip` crafts. The published times are on `units_.mission_clock()`, which runs about
+0.1 s off the ship AI's capture clock; the log order is unload, then publish.
+
+**Prediction misses.**
+- The count: main has moved since `s25_b1_jm08x`, so there were 9 lowers, not 11, on both sides.
+- The ramp times moved too, identically in both binaries.
+
+**Verdict: ON.** The mechanism matches (1:1, 41 frames) and every row is gameplay identical. As
+106.2 established, no reference row's script reads the fields, so this is a mechanism check only.
+The first rows that would move are BSM02 once its player leaves the harbour (the five-landing
+failure) and CHG05. Neither is reachable with the idle player.
+
+## 107. Do the image's other transports hold station once every pad is held? (packet `cc9_transport_moves_order_bridge`, cc9-ships26, 2026-09-30)
+
+Section 105 queue item 2.
+
+**Short answer: the image drives the same move path, but through the order bridge.** The host
+skips the bridge, and that is the divergence.
+
+### 107.1 The image
+
+- A member that is not ready (`008128E0`; with every pad held, `006F2A50(site, 0)` finds no free
+  pad) gets the point on the `0.75 x CaptureRange` circle nearest it (96.1). Nothing in
+  `00A11B80` holds station.
+- The point goes to **`00A02020`**: `00A11F23 CALL 0xA02020`, verified in `disasm-raw`.
+- `00A02020` (`BSP_AiCommand_IssueMoveToMember`) is not a bare order. Its steps
+  (docs/AI_COMMAND_TICK.md, `include/bsp/ai_command_tick.hpp`):
+  1. the class gate;
+  2. **the 80 m gate** (`00A02098 FLD double [00D21530]` = 6400.0): no order to a member already
+     within 80 m of the point;
+  3. for a ship, **the avoid-zone point**: `0082ADA0([unit+538h], 0)` (the class's navigation
+     group at depth), then `00417B10(group, &out, &{x, z}, 30.0 [00CE38C8], 1)`. The point
+     is pushed out of the draft's avoid zones with a 30 m margin, and y becomes 0;
+  4. then the `moveto` tail `0077D600`.
+- So in the image a transport is sent to the nearest navigable point outside its zones, 30 m
+  clear, and stops being re-ordered once within 80 m of it. **That is its station.**
+
+### 107.2 The host
+
+- `transport_moves_00a11b80` (`src/game_hosts_ai.cpp`) calls `tick_issue_moveto` directly, which
+  is only `00A02020`'s tail. It skips the class gate, the 80 m gate and the avoid-zone point.
+  The command ticks do take them (`order_leader` and the follower pass in
+  `src/ai_command_tick.cpp`, through `ai_order_bridge_00a02020` and `tick_avoid_zone_point`;
+  section 25).
+- **Effect** (`s26_d1_jm08x`, tree `4abe575d3`, `BSP_LANDER_DIAG=1`, JM08 36000):
+  - From t=632.67 Bristol's non-ready landers (UST 01, 02 and 04, LST 01 and 03) are all sent to
+    points 375 m from `Headquarter 01`: (1269..1342, -4093..-4102), inside about 75 m of each
+    other. LST 01 and LST 03 get the same point.
+  - Those points are on the island side of the reef. At t=1200, UST 04 (1686.7, -3915.6), UST
+    05 (1653.9, -3857.9) and LST 01 (1624.3, -3859.9) sit together aground (`contact=1`, ground
+    -3.7 / -5.1 / -4.2 m under 180 m hulls).
+  - In `s25_b1_jm08x`, UST 04 rammed UST 01 on this path.
+  - Summary: `transport moves calls=2815 landers=2137 ready=2 anchors=881 inside=0
+    movetos=2135`. No member is ever inside `r`, so the orders never stop.
+- `close_issue_moveto` (`00A13B60`'s arm, the no-candidate fallback `00A14D48`) has the same
+  bypass. It is recorded here and not bound: it reaches every close-attack group in every row,
+  so it is a separate packet.
+
+### 107.3 The binding (to be applied by the lead: `src/game_hosts_ai.cpp` is on loan)
+
+- `kAiTransportMovesOrderBridgeBound`, committed OFF.
+- ON, `00A11B80`'s move goes through a new `issue_moveto_bridge_00a02020`, which is
+  `order_leader`'s bridge sequence for one member: the class gate, the 80 m gate,
+  `tick_avoid_zone_point` for a ship, then `tick_issue_moveto`.
+
+### 107.4 Predictions (written before any ON run)
+
+Same-tree pair from the commit that carries the switch.
+- **JM08 36000 (exit 3):**
+  - fewer `movetos` than OFF (the 80 m gate), and `inside` stays 0 (the anchor distance is
+    unchanged);
+  - the Bristol-group transports and LSTs stop about 30 m outside their navigation zones, off
+    the reef line. There is no `contact=1` cluster at (1620..1690, -3860..-3915) by t=1200;
+  - no transport-on-transport ram;
+  - the landing crafts launch as before: UST 01 at about 632.7, 8 crafts. The unloads of section
+    106 still come 2.05 s after each ramp, though their times may move;
+  - transport death rows move (UST 01 died at 790.78 to the HQ gun at 1149 m; offshore it may
+    live longer).
+- **USNOS, USNOS long (exit 3 likely):** the convoys' `r = 75` points at `CB2` go through the
+  same bridge. The killer distances move again, as in 96.4; predicted with no flipped death row.
+- **IJN01, JM06, LOMP06, the other reference rows:** `00A11B80` issues no move (no anchor):
+  gameplay identical.
+- **Verdict rule:** flip ON when the moves are bridged and the transports hold outside the reef.
+  A mechanism failure stays OFF, recorded.
+
+## 108. Section 98's open note, closed: nothing but a pad switch or a death clears an occupant (cc9-ships26, 2026-09-30)
+
+Section 105 queue item 3. Section 98 left open whether the image clears a lander's side through
+the pad's own pointer (`pad+1F8h`) rather than `ship+1200h`. Section 103.3 had already settled
+`+1200h`.
+
+**`006AC490`** is `__thiscall(pad)(unit)`, read whole from the decompile. When `pad+1F8h`
+differs from `unit` it:
+1. unregisters the old observer pair (`BSP_Observer_UnregisterPair`) when the slot was set;
+2. stores `unit`;
+3. registers a new pair when `unit` is non-null.
+
+**The five rel32 callers of `006AC490`** (`local\s26_rel32.py`, from the PE on disk):
+- `006F2BA5`: `006F2A50`'s take (`006F2A67..006F2BC6`), which stores the caller's unit into the
+  free pad it found;
+- `006F2E22`: `BSP_CommandBuilding_ReleaseUnitPads` `006F2DE0`, which nulls every pad of the
+  building occupied by the unit;
+- `006F2FEE`: `006F2FB0`, which releases through `006F2DE0` and then takes the new pad;
+- `0074A9B6`: `0074A990`, the begin-landing;
+- `00821B4F`: the craft launch `008206F0`.
+
+**The two callers of `006F2DE0`, and the one of `006F2FB0`:**
+- `006F2DE0` is called from `006F2FB0` (`006F2FE1`) and from the approach retarget arm's mode 3
+  (`009F21C1`, section 72).
+- `006F2FB0` is called only from the land step's rescan (`009E1AAE`). That is a pad **switch**:
+  the lander always ends up occupying the new pad.
+
+**So an occupant is cleared only by:**
+- a switch (the land step's rescan, or mode 3's release-and-retake);
+- the lander's death, through the observer pair (the host's `forget_unit`).
+
+No path clears it on leaving the land state. LST 02 keeping pad 2 after its `follow` is the
+image's behaviour.
+
+**The host matches.**
+- `BuildingPadModel::assign_006f2fb0` has the same early-out, release and take.
+- `ship_ai_follow_land.cpp`'s `009E1AAE` arm changes only the step's local pad, as the image does
+  (no `+1200h` write).
+
+This also answers the two "contract: unread" callees that docs/SHIP_AI_FOLLOW_LAND.md lists
+under `006F2FB0`. **Closed, nothing to bind.**
