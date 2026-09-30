@@ -4756,7 +4756,7 @@ struct GameUnitsHost::Impl {
     // platform tick 006FC480 (006CFE40), the intake 006FC720 with the state-2
     // request 007C2090 -> 007CC7A0, the carry 006FC0D0 and the hide/release
     // 007B96C0/006FC250. False: park on a carrier takes the airfield arm.
-    static constexpr bool kCarrierElevatorBound = false;
+    static constexpr bool kCarrierElevatorBound = true;  // ON, staged behind park: JM05 9000 stows 8 of 8 (5ao.1)
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its

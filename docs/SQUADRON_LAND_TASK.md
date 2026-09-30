@@ -4701,3 +4701,60 @@ Both sides run with `kLandParkStateBound=true`. OFF is that alone; ON adds
 
 **Flip rule:** ON when 1 and 2 hold with no mechanism failure. The flip is of
 `kCarrierElevatorBound` only; park itself stays OFF for the airfield loop (5aa).
+
+### 5ao.1 Measured (pairs on `13fab4abe`), and the verdict: ON, staged behind park
+
+- **OFF** is `local\l23_eoff` (`kLandParkStateBound=true`).
+- **ON** is `local\l23_eon`, which adds `kCarrierElevatorBound=true`.
+- The logs are `local\l23_e{off,on}_<row>.log` and the diffs are `local\l23_ediff_<row>.txt`.
+- Everything was run in the reference launch form.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| JM05 9000 | 3 | deaths identical (5 rows); positions moved; the torpedo-task line "0 of 2" is absent ON |
+| JM05 3000 | 1 | the lift is unexercised (the first carrier park entry is at 178.76 s); only the new lines |
+| USN04 4700/4500 | 1 | gameplay identical |
+| LOMP10 9200/9000 | 0 | identical |
+
+**The lifts.** Each carrier's (`liftexitpoint`, 2) point was read. Lexington's is
+(-0.831, 17.396, 39.359) and Yorktown's (0.069, 15.366, 80.959); Shokaku and Zuikaku share
+(0.069, 17.296, 42.709). All four lifts built with speed 4.0 and depth 7.0.
+
+**The predictions:**
+1. **Held.**
+   - OFF: all 8 carrier park entries are refused at `006CF520` (3456 refusal calls). The planes
+     stay where they stopped.
+   - ON: each carrier plane taxis from local z of about -138 at up to 20.58 m/s. It slows
+     under the clamp (7.3 m/s at z = 24.7, 2.1 m/s at z = 35) and is taken 13.3 to 13.9 s after its
+     park entry (the four planes whose entries are traced).
+     - The take offsets are (-0.07..0.12, -0.3..-0.7, -1.1..-2.6), all inside 3 m.
+     - Each plane is stowed 2.15 s later.
+   - Lexington takes and stows 8 of 8: Lexington_sqn03 and its two wingmen, Yorktown_sqn04
+     and its two wingmen, and Yorktown_sqn08 and its first wingman.
+   - The later planes queue: `spot_refused` is 11 to 19 on them. After each stow the empty lift
+     comes back up (`empty_up` = 8).
+   - Yorktown's own lift takes nothing: every carrier landing on this row is on Lexington's
+     deck.
+2. **Moot, then held.** No carrier plane looped park <-> abort on the OFF side either (the
+   refusal keeps it in park), so there was no count to fall. ON, every stowed plane stays in
+   state 2 with `from_abort` = 0 and does not move again (last z 36.6 to 38.2).
+   - The airfield planes' loops are identical on both sides. For example, F4F Wildcat 01 has 220
+     and MainAirfieldEntity 01_sqn01|.-2 has 672; that loop is 5aa's and is untouched here.
+3. **Held as read, and it moves the count up.** The records stay after a stow (5an). Because the
+   deck is cleared, more planes land, so Lexington's final `+A8h` count rises from 18 (OFF) to 24
+   (ON), with landed arm hits 2273 -> 4344.
+   - OFF, the wingmen of a refused head never land. They re-install (Lexington_sqn03|.-2/-3 at
+     303.30 s) and keep circling.
+4. **Held.** Deaths are identical (5 rows), and the exit is 3.
+5. **Held.** LOMP10 is exit 0 and USN04 exit 1.
+
+**No mechanism failure.** Every take is within 3 m, no stowed plane moves, no carrier plane
+loses deck contact, and none reaches `done`. Two planes are still taxiing at the end of the run:
+Yorktown_sqn06 (entered at about 442 s) and Yorktown_sqn10|.-2.
+
+**Verdict: `kCarrierElevatorBound = true`.**
+- It is staged: with `kLandParkStateBound` OFF (5aa's airfield loop), no reference row reaches
+  it, and only the new `carrier lift`/`carrier elevator` lines appear.
+- On a carrier, park now ends as the image's does: on the lift, below, in state 2.
+- Step (c) is therefore answered: the elevator ends the carrier's park <-> abort question. The
+  airfield half of park is what still holds park OFF.
