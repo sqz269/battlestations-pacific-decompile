@@ -105,6 +105,23 @@ inline constexpr bool kDynWorldContactPhaseBound = true;
 // ramming damage) is not bound: hull-hull contact is physics only.
 inline constexpr bool kHullHullContactBound = true;
 
+// Packet cc9_hull_fort_contact (docs/GUNNERY_OPEN_ITEMS.md section 96; the read is 89.1).
+// MLandFort's vtable[0A0h] 007482B0 (and MCommandBuilding's 006F2780, which calls it first)
+// creates one static Dyn body per fort (0074889B 00C5D580, handle at unit+754h, destroyed
+// only by the destructor 00745AA0 at 00745B41): the body frame is the unit's world matrix at
+// creation (00C336C0 on unit+CCh), flags |= 1, and one shape per {ConvexObject, node} pair of
+// the model instance's +4Ch list with no node filter (0074856B..007488A2). Each shape
+// descriptor (48h bytes, pushed by 00748150) is kind 4 (007485F4), restitution 0, friction
+// 1.0 (007486DD, [00D7A24C]), group 1 (00748764), mask 0Dh (007487A9), the Dyn hull at
+// ConvexObject+0Ch (00748720), and an IDENTITY local frame with a ZERO translation: unlike the
+// ship hull (00939458..0093947A adds ConvexObject+14h, the box centre 006FAEA0 subtracted),
+// the fort's shapes sit centred on the fort origin. True: every (fort, hull) pair whose world
+// boxes meet goes through 00C535E0 on the kind-4 records, one manifold per body pair with the
+// fort as a static body (solver index 0, never expanded by 00C4B610), friction
+// combine(1.0, hull), restitution 0; the manifold joins the hull's group and solve. False:
+// the narrow phase runs as a census only; hulls pass through forts.
+inline constexpr bool kHullFortContactBound = false;
+
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
     int manifolds{0};         // manifolds holding a point after the insert
@@ -140,6 +157,14 @@ struct HullWorldEntry {
     HullTerrainContactStepResult result{};
 };
 
+// Packet cc9_hull_fort_contact. One fort's static body: the world frame at creation (rows,
+// then the translation, as body_frame lays a DynBody out) and its raw ConvexObject points.
+struct FortWorldEntry {
+    std::size_t unit{0};
+    float frame[12]{};
+    const std::vector<std::vector<OceanVec3>>* shapes{nullptr};
+};
+
 class HullTerrainContactSolver {
 public:
     HullTerrainContactSolver();
@@ -158,6 +183,10 @@ public:
     // order (ascending unit): ManifoldUpdate over every manifold, the terrain narrow phase per
     // hull, with `hull_hull` the hull pairs, 00C4B610's groups and one solve per group.
     void world_step(std::vector<HullWorldEntry>& hulls, float dt, bool hull_hull);
+    // Packet cc9_hull_fort_contact: the same phase with the forts' static bodies; with
+    // `hull_fort` false their pairs run as a census only.
+    void world_step(std::vector<HullWorldEntry>& hulls, const std::vector<FortWorldEntry>& forts,
+                    float dt, bool hull_hull, bool hull_fort);
     // The hull-pair narrow phase as a census only (no manifold, no state): the OFF build's
     // record of which hulls would touch.
     void hull_hull_census(std::vector<HullWorldEntry>& hulls);
@@ -175,6 +204,13 @@ public:
         unsigned long long world_steps{0}, hull_pairs_near{0}, hull_shape_tests{0};
         unsigned long long hull_hits{0}, groups{0}, multi_hull_groups{0};
         int max_group_bodies{0};
+        // Packet cc9_hull_fort_contact: forts seen, their shapes, (fort, hull) pairs whose
+        // world boxes met, shape pairs tested, hits, pairs with a hit, the deepest hit, and
+        // forts with more than 30 shapes (007482B0 reserves 1Eh at 00748447; a longer list
+        // reallocates the vector whose element addresses the body descriptor holds).
+        unsigned long long forts{0}, fort_shapes{0}, fort_pairs_near{0}, fort_shape_tests{0};
+        unsigned long long fort_hits{0}, fort_hit_steps{0}, forts_over_reserve{0};
+        float fort_max_depth{0.0f};
     };
     const Census& census() const noexcept { return census_; }
     // Per hull pair (lower unit first): the first census step with a hit, the steps with one
@@ -185,6 +221,10 @@ public:
     };
     const std::map<std::pair<std::size_t, std::size_t>, HullPairCensus>& hull_pairs() const noexcept {
         return hull_pairs_;
+    }
+    // Per (fort, hull) pair with a hit: the first world step, the steps with one, the deepest.
+    const std::map<std::pair<std::size_t, std::size_t>, HullPairCensus>& fort_pairs() const noexcept {
+        return fort_pairs_;
     }
     // The hull-pair contact events of the last world step (kHullHullContactBound).
     const std::vector<HullContactEvent>& contact_events() const noexcept { return events_; }
@@ -212,6 +252,16 @@ private:
                            const std::vector<OceanVec3>& raw, float friction,
                            const DynBody& body);
     void hull_hull_narrow_phase(std::vector<HullWorldEntry>& hulls, bool apply);
+    // Packet cc9_hull_fort_contact: the fort's kind-4 record (zero translation, friction 1.0).
+    HullShape* fort_convex(std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw,
+                           const float frame[12]);
+    void hull_fort_narrow_phase(std::vector<HullWorldEntry>& hulls,
+                                const std::vector<FortWorldEntry>& forts, bool apply);
+    std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> fort_manifolds_;
+    std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> fort_pairs_;
+    std::map<std::size_t, bool> forts_seen_;
+    struct FortBox { float lo[3], hi[3]; bool ok; };
+    std::map<std::size_t, FortBox> fort_boxes_;   // world box of a fort's shapes (static)
     std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> pair_manifolds_;
     std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> hull_pairs_;
     unsigned long long manifold_serial_{0};
