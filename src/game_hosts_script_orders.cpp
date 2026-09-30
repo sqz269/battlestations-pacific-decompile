@@ -5,6 +5,7 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/strafe_task.hpp"
 #include "bsp/game_hosts_commands.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -1347,6 +1348,18 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
                 kKamikazeShipBlockedBound ? 1 : 0);
             if (kKamikazeShipBlockedBound) in.kamikaze_ship_blocked = blocked;
         }
+    }
+    // Packet cc9_strafe_arm: the two guns inputs of the strafe and dogfight arms,
+    // read on the slot-0 plane as the self queries above are. 007EEB08/007EEBB7
+    // `CMP byte [plane+C24h],0` (PilotFires); 007EEB2C/007EEBC2 0047B850, which
+    // answers vt[5Ch](10h) || vt[5Ch](16h). OFF: both stay false and 007EEC50's
+    // guns answer is always 0 (docs/SQUADRON_LAND_TASK.md 5bw.1).
+    if constexpr (bsp::kAttackChoiceGunsFedBound) {
+        in.guns_available = units_.plane_pilot_fires_0c24(row.unit_index);
+        in.guns_suppressed = in.self_is_level_bomber || in.self_is_dogfight_excluded;
+        log_.notef("  PilotSetTarget guns feed: pilot_fires=%d suppressed=%d "
+            "(007EEB08/007EEB2C, packet cc9_strafe_arm)",
+            in.guns_available ? 1 : 0, in.guns_suppressed ? 1 : 0);
     }
     const std::uint32_t chosen =
         bsp::attack_command_choose(in, flags.prefer_ordnance, flags.allow_guns);

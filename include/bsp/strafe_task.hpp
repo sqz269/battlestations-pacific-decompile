@@ -7,10 +7,14 @@
 //
 // Coverage: partial. Bound here: the state rule 009CC690 with its engaged
 // entry 009CC5F0, the gotowards-ready test 009CC2F0, and the approach's
-// attack-range update 009CCED0. Not yet bound: the approach constructor
-// 009CA4A0 and its glide seed 009CA3B0, the state ticks (gotowards 009CA870,
-// aim 009CB1B0, goaway 009CBB30, attackrun 009CADB0), the cruise profile
-// 009CD020, and the host arm that runs them (009CD170).
+// attack-range update 009CCED0. Bound in the units host behind
+// kStrafeTaskBound (packet cc9_strafe_arm, docs/SQUADRON_LAND_TASK.md 5ca):
+// the arm 009CD170, the approach 009CA4A0 with its glide seed 009CA3B0, the
+// state ticks (gotowards 009CA870, aim 009CB1B0, goaway 009CBB30, attackrun
+// 009CADB0) and enters, the hit notice 009CC400 and the gun controller's read
+// of the aim point. Not bound: the cruise profile 009CD020 (cadence unread),
+// goaway's evasive task pushes (009BC030 / 009BC0A0, counted gaps) and
+// 009CA780's tail call 007B7870.
 
 namespace bsp {
 
@@ -27,9 +31,17 @@ enum class StrafeState : int {
     kAttackRun = 0x6D8,  // "strafe/attackrun", vtable 00D21004
 };
 
-// Off until the arm (009CD170) and the state ticks run in the units host;
-// nothing reads it yet. The group flips only when strafe runs end to end.
+// The arm (009CD170), its states and the gun read in the units host. OFF:
+// the group flips only when strafe runs end to end (it needs the feed below,
+// since nothing else chooses class 00E08F40).
 inline constexpr bool kStrafeTaskBound = false;
+
+// 007EEC50's guns inputs in the PilotSetTarget choice (src/
+// game_hosts_script_orders.cpp): guns_available = PilotFires (plane+C24h,
+// 007EEB08 / 007EEBB7) and guns_suppressed = 0047B850 (kind 10h or 16h,
+// 007EEB2C / 007EEBC2). It also lets PilotSetTarget choose dogfight against
+// an aircraft. OFF; it must not flip before kStrafeTaskBound.
+inline constexpr bool kAttackChoiceGunsFedBound = false;
 
 // 009CC690's inputs. `ctl` is [task+404h] (approach+0Ch).
 struct StrafeRuleInputs {
