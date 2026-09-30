@@ -3047,3 +3047,23 @@ wanderer pair: the follow placement leaves members 100-600 m (JM05 up to 2 km) o
 
 **The JM05 USS Phelps question** (the idle player on a US ship on a Japanese-side mission) is still
 waiting for cc9-ships17's party-gate result. This worker did not take it.
+
+## Handoff (cc9-lua21, 2026-09-30)
+
+Branch `agent/cc9-lua21`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua21`. No lease
+is held after this handoff.
+
+### Done
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_follow_approach_arm` | `838701681`, `c73b7efc1` | `kFollowPhaseABound` | ON (fidelity; byte-exact against the image on 5000 cases) | PLANE_FOLLOW_PHASE_A.md 8 |
+| `cc9_follow_turbo` | `4bdf19712`, `b8172f60c` | `kFollowTurboBound` | ON: follow station error 154 -> 22 m (USN04), 147 -> 21 (E2), 125 -> 33 (JM08) | PLANE_FOLLOW_PHASE_A.md 9 |
+| `cc9_wanderer_feedback` | `e56382108` | `kPlaneWandererBound` | stays ON (the plane commit 007BEEE0 copies +74h to +674h) | PLANE_WANDERER.md 9 |
+| `cc9_weapon_facts_order` | `9c4e98e50`, `95e869be7` | `kAiWeaponFactsAtAttachBound` | ON: t=0.05 stand-in pairs 2790 -> 0 (USN13) | WEAPON_FACTS_ORDER.md |
+
+### Open, in order
+
+The queue is in SQUADRON_LAND_TASK.md **5aj**. Its first item is the recon publication `00806B10`
+(SHIP_AI 74), which blocks every `luaGetShipsAround*` proximity trigger. JM08's invasion is one
+of them.
