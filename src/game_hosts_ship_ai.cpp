@@ -537,6 +537,10 @@ inline constexpr bool kLandingShipRampBound = true;
 // hull shapes' min y of models/ships/us/LST_mark5.mmod (type 41, -3.714) as the
 // hull log reports it; one value for every landing ship.
 inline constexpr float kLandingShipKeelDepth = 3.71f;
+// Packet cc9_ship_terrain_contact (section 87). True: the ramp latch reads the
+// units host's contact latch +1011h (GameUnitsHost::unit_ground_contact_1011)
+// instead of the stand-in above. False: the stand-in.
+inline constexpr bool kLandingShipRampHullContactBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -11349,7 +11353,11 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
         // 0074AF7B..0074AF9D: +5Ch set, +5Dh/+60h/+5Eh clear; 0074AFB2: mode != 2.
         if (!units.unit_alive_and_visible(u) || unit_dead(u)) continue;
         float ground[3] = {0.0f, 0.0f, 0.0f};
-        const bool contact = landing_ship_ground_contact(u, ground);
+        const bool stand_in = landing_ship_ground_contact(u, ground);
+        // Packet cc9_ship_terrain_contact: the units host's +1011h latch (the hull
+        // box's keel points against the terrain) replaces the stand-in.
+        const bool contact = kLandingShipRampHullContactBound
+            ? units.unit_ground_contact_1011(u) : stand_in;
         if (diag_tick) {
             float x = 0.0f, y = 0.0f, z = 0.0f;
             units.unit_position_00fc(u, x, y, z);

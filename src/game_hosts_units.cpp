@@ -1688,6 +1688,14 @@ struct GameUnitSlot {
     // [EDI+518h], EDI = unit+310h, at 008263CE..008263DC) and the census of a
     // wreck's hull ends against KillDepth (008265EC..00826622).
     float sink_time_828{0.0f};
+    // Packet cc9_ship_terrain_contact: +1010h / +1011h, the one-frame contact
+    // latch 008255B0 rotates (00825824..0082583E); 009377E0 sets +1010h on a
+    // kind-8 contact (the HUD's `ingame.warning_shallowwater`, 006830A5).
+    bool ground_contact_1010{false};
+    bool ground_contact_1011{false};
+    bool terrain_contact_seen{false};
+    unsigned long long terrain_contact_steps{0};
+    float terrain_max_penetration{0.0f};
     bool wreck_seen{false};
     float wreck_first_t{-1.0f};
     float wreck_min_end_y{0.0f};
@@ -5153,6 +5161,18 @@ struct GameUnitsHost::Impl {
     // descends (USN02: 20 wrecks, lowest hull end -47.04 m), so the kill and the
     // unlink have not run in any measured mission.
     static constexpr bool kSunkShipKillDepthBound = true;
+    // Packet cc9_ship_terrain_contact (docs/SHIP_AI_OPEN_ITEMS.md section 87).
+    // The image stops a hull on the terrain in the Dyn library's contact phase
+    // (00C5BB5F..00C5C455, an LCP solver, unread); its callback 009377E0 only
+    // latches +1010h on a kind-8 contact. SUBSTITUTION, labelled: after the
+    // position phase, three keel points of the hull box (bow, middle, stern at
+    // the box's min y, through the pose) are tested against the terrain height
+    // 00903860; a point below the ground is a contact (the latch, both builds).
+    // True: the step's horizontal displacement and the linear velocity lose
+    // their uphill component at each such point (the terrain gradient), so a
+    // hull cannot climb onto land and slides along a shore. False: the latch
+    // and the census only; hulls cross land, as before.
+    static constexpr bool kShipTerrainContactBound = false;
     // SUBSTITUTION, labelled: GameSettings+3F4h is not loaded into this host
     // (the reader 0083EA71 is in the Lua host's settings load, not bound).
     // This installation's scripts/datatables/shipglobals.lua line 377
@@ -5346,6 +5366,10 @@ struct GameUnitsHost::Impl {
     unsigned long long leak_redistributions = 0;
     unsigned long long kill_depth_tests = 0;
     std::size_t kill_depth_kills = 0;
+    void ship_terrain_contact(GameUnitSlot& slot, const float before[3]);
+    unsigned long long terrain_contact_steps = 0;
+    unsigned long long terrain_contact_stops = 0;
+    std::size_t terrain_contact_logged = 0;
     unsigned long long world_nodes_unlinked = 0;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
@@ -13542,6 +13566,98 @@ void GameUnitsHost::update_entity_008255b0(std::size_t index, float scaled_delta
     ++slot.row.instance_updates;
     ++host.summary.instance_updates;
     host.done("World::update_entity", 0x008255b0u);
+}
+
+// Packet cc9_ship_terrain_contact (docs/SHIP_AI_OPEN_ITEMS.md section 87). The
+// kind-8 contact of 009377E0 and the stop the Dyn contact phase gives it, as a
+// labelled substitution (see kShipTerrainContactBound).
+void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float before[3]) {
+    const ClassHullBox& hull = class_hull_box(slot);
+    if (!hull.ok || hull.box.shape_count == 0) return;
+    const float keel_y = hull.box.min.y;
+    const float zs[3] = {hull.box.max.z, 0.5f * (hull.box.min.z + hull.box.max.z),
+                         hull.box.min.z};
+    const float* r1 = slot.motion.pose_row1;
+    const float* r2 = slot.motion.pose_row2;
+    const float* p = slot.motion.position;
+    bool contact = false;
+    float deepest = 0.0f;
+    float dx = p[0] - before[0];
+    float dz = p[2] - before[2];
+    float vx = slot.motion.linear_velocity.x;
+    float vz = slot.motion.linear_velocity.z;
+    bool moved = false;
+    for (int i = 0; i < 3; ++i) {
+        const float w[3] = {p[0] + r1[0] * keel_y + r2[0] * zs[i],
+                            p[1] + r1[1] * keel_y + r2[1] * zs[i],
+                            p[2] + r1[2] * keel_y + r2[2] * zs[i]};
+        float ground = 0.0f;
+        if (!world_ground_height_00903860(w, ground)) continue;
+        const float depth = ground - w[1];
+        if (!(depth > 0.0f)) continue;
+        contact = true;
+        if (depth > deepest) deepest = depth;
+        if constexpr (!kShipTerrainContactBound) continue;
+        // The uphill direction at the point: central differences over 1 unit.
+        float h[4] = {ground, ground, ground, ground};
+        const float px[3] = {w[0] + 1.0f, w[1], w[2]};
+        const float mx[3] = {w[0] - 1.0f, w[1], w[2]};
+        const float pz[3] = {w[0], w[1], w[2] + 1.0f};
+        const float mz[3] = {w[0], w[1], w[2] - 1.0f};
+        world_ground_height_00903860(px, h[0]);
+        world_ground_height_00903860(mx, h[1]);
+        world_ground_height_00903860(pz, h[2]);
+        world_ground_height_00903860(mz, h[3]);
+        float ux = 0.5f * (h[0] - h[1]);
+        float uz = 0.5f * (h[2] - h[3]);
+        float len = std::sqrt(ux * ux + uz * uz);
+        if (!(len > 1.0e-6f)) {
+            // Flat ground above the keel: block the whole horizontal motion.
+            ux = dx;
+            uz = dz;
+            len = std::sqrt(ux * ux + uz * uz);
+            if (!(len > 1.0e-6f)) continue;
+        }
+        ux /= len;
+        uz /= len;
+        const float along = dx * ux + dz * uz;
+        if (along > 0.0f) {
+            dx -= along * ux;
+            dz -= along * uz;
+            moved = true;
+        }
+        const float vin = vx * ux + vz * uz;
+        if (vin > 0.0f) {
+            vx -= vin * ux;
+            vz -= vin * uz;
+            moved = true;
+        }
+    }
+    if (!contact) return;
+    slot.ground_contact_1010 = true;
+    ++slot.terrain_contact_steps;
+    ++terrain_contact_steps;
+    if (deepest > slot.terrain_max_penetration) slot.terrain_max_penetration = deepest;
+    if (!slot.terrain_contact_seen) {
+        slot.terrain_contact_seen = true;
+        if (terrain_contact_logged < 80) {
+            ++terrain_contact_logged;
+            log.notef("ship terrain contact: unit=%s first at t=%.2f pos=(%.1f %.1f %.1f) "
+                "penetration=%.2f bound=%d", slot.row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds), static_cast<double>(p[0]),
+                static_cast<double>(p[1]), static_cast<double>(p[2]),
+                static_cast<double>(deepest), kShipTerrainContactBound ? 1 : 0);
+        }
+    }
+    if (!moved) return;
+    ++terrain_contact_stops;
+    slot.motion.position[0] = before[0] + dx;
+    slot.motion.position[2] = before[2] + dz;
+    slot.motion.linear_velocity.x = vx;
+    slot.motion.linear_velocity.z = vz;
+    slot.body.position[0] = slot.motion.position[0];
+    slot.body.position[2] = slot.motion.position[2];
+    slot.motion_state.linear_velocity = slot.motion.linear_velocity;
 }
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
@@ -25893,6 +26009,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 }
             }
         }
+        // 00825824..0082583E: +1011h = +1010h; +1010h = 0 (the contact phase of
+        // this step sets it again). LABELLED order: here at the motion step.
+        slot.ground_contact_1011 = slot.ground_contact_1010;
+        slot.ground_contact_1010 = false;
         UnitRudderBinding rudder(host, slot);
         ShipMotionBinding motion(host, slot, rudder);
         const float before[3] = {slot.motion.position[0], slot.motion.position[1],
@@ -25993,6 +26113,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
             slot.motion.pose_row2[i] = slot.body.row2[i];
             slot.motion.position[i] = slot.body.position[i];
         }
+        host.ship_terrain_contact(slot, before);
         Impl::publish_pose(slot);
         const double dx = static_cast<double>(slot.motion.position[0]) - before[0];
         const double dy = static_cast<double>(slot.motion.position[1]) - before[1];
@@ -27889,6 +28010,11 @@ float GameUnitsHost::unit_hull_length_09c8(std::size_t index) const {
     return impl_->slots[index]->hull_extents.length_09c8;
 }
 
+bool GameUnitsHost::unit_ground_contact_1011(std::size_t index) const {
+    if (index >= impl_->slots.size()) return false;
+    return impl_->slots[index]->ground_contact_1011;
+}
+
 float GameUnitsHost::unit_hull_mass_00b0(std::size_t index) const {
     if (index >= impl_->slots.size()) return 0.0f;
     return impl_->slots[index]->motion_class.hull_mass;
@@ -28551,6 +28677,20 @@ void GameUnitsHost::report() {
             host.log.notef("summary live hull repair bound=%d flooded_hulls=%zu (00962E16 / "
                 "00923BE0, packet cc9_live_hull_repair)", Impl::kLiveHullRepairBound ? 1 : 0,
                 flooded);
+        }
+        {
+            std::size_t touched = 0;
+            for (const std::unique_ptr<GameUnitSlot>& s : host.slots) {
+                if (!s->terrain_contact_seen) continue;
+                ++touched;
+                host.log.notef("ship terrain contact census: unit=%s steps=%llu "
+                    "max_penetration=%.2f", s->row.name.c_str(), s->terrain_contact_steps,
+                    static_cast<double>(s->terrain_max_penetration));
+            }
+            host.log.notef("summary ship terrain contact bound=%d ships=%zu steps=%llu "
+                "stops=%llu (009377E0 kind 8, packet cc9_ship_terrain_contact)",
+                Impl::kShipTerrainContactBound ? 1 : 0, touched, host.terrain_contact_steps,
+                host.terrain_contact_stops);
         }
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "
