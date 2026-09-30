@@ -1918,3 +1918,85 @@ covers 26 logs: this section's `g15_eon_*` (9 rows) and reference r's `g15_rr_*`
   before pairing.
 - The new engage range (23.4) widens every approach by 700-1650 m, because TurnCircleRadius is
   1200 m on all these classes. Read any older approach-distance expectation against that.
+
+## 25. The order arm `0099AF53` is the image's budget, not a substitution (packet `cc9_torpedo_order_arm`, cc9-gunnery16, 2026-09-30 02:18 UTC)
+
+Section 24 item 1 asked whether `blocked_0099af53` stops the torpedo drops. It does not. Nothing
+was bound and nothing was paired.
+
+### 25.1 The image
+
+**The gate** (`disasm-raw 0099AF40 --length 0x90`, in `0099ACD0 BSP_PilotBot_Tick`):
+- `0099AF53 CMP dword [EAX+C58h],0` / `JLE 0099AFCC` skips the loop while the unit's queued
+  release-order count is zero or less.
+- Past it, `unit+72Ch`'s `vtable[+38h]`, byte `[unit+5Ch]` and `007B9140(unit, 0)` must all pass.
+  The loop then offers each task its `vtable[+24h]` (`0099AF90`-`0099AF9B`), and the first taker
+  costs one order (`0099AFB6 ADD [EAX+C58h],-1`).
+- If one of the three tests fails, the count is zeroed (`0099AFBF`-`0099AFC2`).
+
+**Every writer of `+C58h`** (`tools/store_census.py 0xC58`, disp8 and disp32, all store forms):
+- `007BCBFD` and `007BCC09` in `007BCBE0 BSP_Unit_SetQueuedReleaseOrders`;
+- `007D0038` in the constructor `007CFD20`;
+- `0099AFB6` (spend) and `0099AFC2` (zero) above.
+
+**The callers of `007BCBE0`** (`tools/callsite_census.py`, rel32 and absolute):
+- `007ED3D8` in `007ED3C0 BSP_PilotControl_ClearReleaseOrders`;
+- `007EEF7F` and `007EEFDD` in `007EEF30 BSP_PilotControl_IssueReleaseOrders`;
+- `009B945E` in `FUN_009b9420`, the stand-down at vtable `00D206AC`. It pushes 0
+  (`009B945C`), and `007BCBE0` stores 0 for any argument at or below zero (`007BCBEA JLE` ->
+  `007BCC09`), so it clears the budget.
+- The one non-drop raiser is the adjacent free-fire slot `009B9480` (`00D206B0`), which tail-jumps
+  to `007EFB30` (TORPEDO_FIRST_RELEASE). It answers a squadron order, not an AI tick.
+
+**The chain.** `007EEF30` is reached from the fixed step's issue stage only after `007BBBA0` has
+raised `unit+C20h` (TORPEDO_RELEASE_ORDERS section 6). The torpedo callers of `007BBBA0` include
+`009FA3D0` in `009FA3A0 BSP_ReleaseTimer_Tick`. The aim tick arms that timer at `009D2287` with no
+`+C58h` test.
+
+**Result:**
+- The first drop of a flight is budget-free.
+- The drop fills the flight's budget (999 per member).
+- The budget only feeds the arm offer (`009D49A0`), which arms `prepare+98h`.
+- So `blocked_0099af53` counts the attack ticks of an aircraft whose flight has not yet dropped.
+  That is the image's order, as TORPEDO_RELEASE_ORDERS section 6 already found.
+
+### 25.2 The logs agree (`local\g16_orders_census.py` in this tree)
+
+The census covers the reference r logs (`g15_rr_*`) and section 23.4's ON logs (`g15_eon_*`).
+
+| row | aircraft | `arm_offers>0` | budget raised | issued | `attack_mode_370` | `prepare_entries` |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 r | 16 | 2 | 2 | 1 | all 1 | all 0 |
+| E2 r | 16 | 2 | 2 | 1 | all 1 | all 0 |
+| USN13 r | 60 | 0 | 0 | 0 | all 1 | all 0 |
+| USN01 r | 17 | 0 | 0 | 0 | all 1 | all 0 |
+
+- On USN04 and E2 the one releasing Kate (`#4.1|.-3` in r) raises its own budget and its surviving
+  wing-mate's to 999. Those two then take 11 and 14 arm offers.
+- So section 23.5's "`arm_offers=0` on every line" is true of 182 of the 186 lines, not all of them.
+  The other four are the flights that dropped.
+
+### 25.3 Why `prepare` and `009D27D1` stay unreached
+
+- `009D4030` sends an engaged task to `prepare` only in attack mode 0 (hold). With mode 1 it goes
+  to `attackrun` (TORPEDO_RELEASE_ORDERS section 4).
+- Every torpedo aircraft on these rows reads mode 1.
+- The `prepare+98h` countdown that `009D27D1` refreshes therefore needs two things:
+  - a squadron held in mode 0 (the `BCh` message with byte 0, or the `closetoship` route);
+  - a flight budget, which arrives after a first drop, or from the free-fire order (`009B9480`).
+- An idle-player reference row supplies neither.
+- **Section 24 item 1 is closed as unreachable on the reference rows.** It is not a host gap.
+
+**What does limit the drops** is still the finding of TORPEDO_RELEASE_ORDERS sections 6 to 8:
+- aircraft reach `aim` and are shot down there before the lead flag's ~315 m;
+- USN13's aircraft die high, and JM05's are killed at 890-1264 m.
+
+That is the anti-aircraft lethality at 300-1300 m, which is the gunnery lane's own question
+(GUNNERY_OPEN_ITEMS).
+
+**Uncertainty:**
+- Whether an AI brain ever sends the free-fire order (`009B9480`) was not traced. If it did on
+  these rows, the census in 25.2 would show a raised budget without an issue. It shows none on
+  any of the four rows.
+- The mode-0 routes are taken from TORPEDO_RELEASE_ORDERS section 4 and its correction. They were
+  not re-read here.
