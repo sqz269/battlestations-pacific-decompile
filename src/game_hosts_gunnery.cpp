@@ -361,7 +361,9 @@ constexpr bool kPlanePlatformAttachmentBound = true;
 //    platform constructor 007F7110 stores, through 0072DD20. OFF: the gun fires from
 //    the unit origin raised by the class Height (the `no_mount` fallback). Same
 //    labelled simplification as ships: only the frame's origin is carried.
-constexpr bool kLandPlatformAttachmentBound = false;
+//    ON by the pair of 2026-09-29 (docs/GUN_BARREL_COUNT.md 9.4): JM05, JM05 long,
+//    JM08, USN12 and USN01 move as predicted, the twelve other rows are identical.
+constexpr bool kLandPlatformAttachmentBound = true;
 //  * kAaLineOfFireBound: an AA gun (weapon kinds 1, 5, 6; 00729560 installs the
 //    predicate at gun+42Ch) refuses a target when 0072CDD0 answers blocked:
 //    the segment from the gun (+5 m) to the target (+5 m, at least y = 5)

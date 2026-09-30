@@ -374,3 +374,44 @@ shows that every JM05 gun without a mount belongs to a unit that is neither a sh
 - `no_mount` goes to 0 on every row, and `muzzle offsets` counts the shots instead.
 - Whether a mission's ground guns hit more or less is not predicted; that depends on each model's
   slot heights.
+
+### 9.4 The pair: the mechanism held, flip ON
+
+**Setup.**
+- Exports of `8c7511688`: `local\g15_lmoff`, no flip, SHA-256 prefix `4404FE995B01`; and
+  `local\g15_lmon`, which flips `kLandPlatformAttachmentBound`, prefix `DCA5D507ABB8`.
+- q's sixteen rows plus JM05 long, in the reference launch form.
+- A 300-frame smoke passed first, at about 23:47 UTC. An earlier attempt at 23:29 UTC failed at
+  renderer init with CreateDevice 0x8876086A, after the session changed to rdp-tcp#1.
+- The runs ended by about 23:59 UTC (log mtimes).
+
+**pair_diff.**
+- Exit 3 (moved): JM05, JM05 long, JM08, USN12 and USN01. This is exactly the predicted set.
+- Exit 1 (gameplay-identical): the other twelve rows.
+
+**Mechanism.**
+- `no_mount` goes to 0 on every row: JM05 98 -> 0, JM05 long 1311 -> 0, JM08 1000 -> 0,
+  USN12 83 -> 0 and USN01 5 -> 0.
+- `land mounts` reports `identity=0` on every row: every land gun's class model carries its
+  `("slot", key)` group. The slot counts are JM05 67, JM08 17, USN12 4 and USN01 8.
+- **Every logged land frame is a pure translation:** forward is (0, 0, +z). So carrying only the
+  origin loses nothing on these rows.
+- Slot heights range from 0.47 m (concrete bunkers, 3 m aft of the origin) and 1.71 m (coastal
+  guns) up to 15.66 m (a command building's upper guns).
+
+**Effects** (death tables, per entity):
+
+| row | effect |
+| --- | --- |
+| JM05 | `Mogami-class 01` sinks, only ON. Hit records 39 -> 52, damage 2130.8 -> 2587.0. |
+| JM05 long | Three more sinkings, only ON: `Fubuki-class 01`, `Kuma-class 01` and `Japan Troop Transport 05`. Deaths 28 -> 31, hull hits 772 -> 951. |
+| JM08 | Same victims. Nine rows change time or killer; for example, `Japanese Patrolboat 01` now dies at 27.15 s instead of 81.70 s, to Medium Bunker 03 instead of 05. Shots 2867 -> 2464. |
+| USN12 | Hit records 32 -> 36, first hit 8.30 -> 7.85 s. No death row. |
+| USN01 | Shots 1263 -> 1277; the death table is identical. |
+
+**Verdict: flip ON.**
+- The mechanism matches the image, the moved set is the predicted one, and the controls are
+  identical.
+- The size of the change is a measured consequence, not a prediction: the US shore batteries on
+  JM05 now sink Japanese ships.
+- JM05 and JM08 now move against reference q, as this pair records.
