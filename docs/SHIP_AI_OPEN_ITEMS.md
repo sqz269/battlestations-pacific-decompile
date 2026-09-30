@@ -6649,3 +6649,159 @@ These are for after cc9-lua22's recon publication lets `CheckInvasion` start the
 - **The other rows** latch no lander (reference r: `lander=0` on all 17), so they are predicted
   exit 0 or 1.
 - **The building is not captured** in either run: the soldier traffic is a record (packet 5).
+
+## 78. How a landing captures: the CommandBuilding capture tick `006F6760` (packet `cc9_capture_tick_read`, cc9-ships20, 2026-09-30)
+
+This is the lead's packet 5. It is read only; nothing is bound. The decompile is
+`local\s20_6f6760.txt` (399 lines, paged).
+
+### 78.1 The soldier traffic does not capture
+
+- `004A4520` (76.2 step 4) builds 0xE4-byte traffic records (`004A0410`, mis-tagged
+  `CG_array_ctor_helper`, 31 callees including `SoldierClass_GetOrLoad_004B1400`) on the pad's
+  paths.
+- Nothing in the capture tick reads them. **They are the visible soldiers, not the capture
+  input**, so they can stay a record.
+
+### 78.2 What the capture tick counts
+
+`006F6760` is `__fastcall(building)`, body `006F6760-006F7352`, the CommandBuilding's capture
+tick. It sums a capture strength per party (`local_16c[party]`, party `+54h` < 2), and per player
+slot (`+188h`, < 8) for the scoring:
+
+1. **Ships in CaptureRange.** It walks world list 6 (`[[00E188A8]+19CCh]+64h`, the ships). A unit
+   counts when all of these hold:
+   - its squared distance is `<= (float)(CaptureRange * CaptureRange)` (`+7A0h`, int product);
+   - it is not IsKindOf(0Ch) with `+1188h` set;
+   - it is alive and active (`+5Ch` set; `+5Dh`, `+60h`, `+5Eh` clear);
+   - its party is < 2.
+
+   The value it adds comes from `__ftol` (`00BF7420`) of an x87 value that the decompile does not
+   show, scaled by `BSP_GameplayModifiers_ProductForUnit(10, unit)` when the modifier table is
+   active. **This value is unread (needs `--asm`).**
+2. **Landed landing ships on the pads.** For each pad of the `+794h` vector whose occupant
+   (`006AC220`):
+   - is IsKindOf(0Ch);
+   - is alive and active;
+   - **has `+1188h` set** (the ramp is down);
+   - has party < 2;
+
+   the capture strength of that party gets `[[occupant+538h]+810h]`, an int on the class
+   descriptor (the troop capture strength). The occupant's player slot is also marked for
+   scoring.
+3. **The garrison list** `+7DCh` / `+7E0h`: each member adds `[[member+314h]+0D8h]` (a float) to
+   its party.
+
+### 78.3 How the strengths move the progress
+
+- For a building held by party 0 or 1, the owner's opponent's strength is divided by 1.0f
+  (`00D7A24C`) or by a modifier.
+- The progress `+7A8h` moves by the difference of the two parties' strengths:
+  - A positive progress is party 0's and a negative one is party 1's.
+  - With neither party present, the progress decays toward 0 by the lobby option at
+    `[MultiLobbyOptionRegistry+0C0h]`.
+  - A party capturing against the opposite sign first decays through 0.
+- When `|+7A8h|` reaches `CaptureValue` (`+7A4h`):
+  - the progress resets to 0;
+  - D5h is routed (class 4, state 2);
+  - the best-scoring player slot is chosen from the per-slot sums, and D3h is routed (class 7)
+    with that slot;
+  - the score goes through `0090F860`.
+  - The ownership change itself is `vtable[1B0h]` `006F3270` (LAND_AND_STRUCTURES section 4);
+    the D3h handler `006F29D0` only records `+7A4h` / `+7A8h` / `+7ACh`.
+- A neutral building (`+54h == 2`) routes D5h progress updates on every change.
+- `+7ACh` = the winning side of the comparison (0, 1 or 2).
+
+### 78.4 Where `+1188h` comes from
+
+- `0074A420` (the 0A6h handler, 76.1) sets `+1188h` and `+1189h`.
+- Its other caller is the landing ship's update `0074AF20`, at `0074B080`:
+  - it runs only when `ship+1200h` (a pad) is set and `[game+1FE4h]` is not 2;
+  - it counts down `+11A8h` / `+11ACh` against the step;
+  - when the countdown passes 0 with a condition held in `CL` (unread), it lowers the ramp
+    (`0074A420`) and routes 0A6h to class 4 (`00749AA0`, then `0077C2A0`).
+- `0074AF20` has no vtable reference (only an SEH catch handler is listed as a caller), so its
+  caller is unread.
+
+### 78.5 What the host needs for a landing to capture
+
+1. The land step (`009E1950`) running for the lander, so that it reaches the pad and stops.
+2. `0074AF20`'s ramp countdown and its `CL` condition.
+3. The capture tick `006F6760`, at least its pad arm (class `+810h`) and the progress rule.
+   Arm 1 (ships in CaptureRange) matters for every CommandBuilding row, landing or not:
+   **today no building in this process is ever captured by anything.** Binding arm 1 moves
+   JM05, USN01, USN13 and USNOS (their buildings with ships in range), so it needs its own
+   pair set.
+
+## 79. Handoff (cc9-ships20, 2026-09-30, at about 75% context)
+
+### Landed on main, or on this branch at handoff
+
+| section | what | switch |
+| --- | --- | --- |
+| 74 | script-entity cap removed; JM08's reach census; recon maps found empty (`00806B10`) | `kScriptEntityPoolUnboundedBound` ON |
+| 75 | `bsp::BuildingPadModel` (`006F5CC0` pass 3, `006F2E60`, `006F2DE0`, `006F2FB0`, `006AC490`, half of `006F3AF0`); `LandingPointRange` parsed; marker class passed from the mission frame | `kBuildingPadModelBound` ON (inert without a reader) |
+| 76 | the 0A5h handler `0074B570`, `0074A990`, the land-state enter `009E18D0`, `00417E60` read; seven routines named by the lead | - |
+| 77 | retarget modes 3 and 4 over the pad model; `006AC5D0`'s cache refresh; the `land` command at the pad; `forget_unit` on death | `kShipAiApproachLandingModesBound` **OFF** |
+| 78 | the capture tick `006F6760` read: soldiers do not capture; landed ships on pads (class `+810h`, ramp `+1188h`) and ships in CaptureRange do | - |
+
+### Pending: the section 77 pairs
+
+1. **Wait until cc9-lua22's recon publication (`00806B10`) is on main.** The lead will say
+   when. Merge main.
+2. **Check that JM08's invasion starts before pairing.** Run JM08 36200/36000 and confirm
+   `summary mission script bindings ... attackmove>0`. `BSP_ORIGIN_DIAG=1` shows
+   `around>0` once an Allied ship is inside 300 m of the origin (about t = 540 s).
+3. **Pair** with
+   `python tools/pair_export.py --commit <sha> --flip kShipAiApproachLandingModesBound=true --out local\<x>`
+   on JM08 36000, plus the rows from section 74.3. Compare against the 77.2 predictions. Read
+   the `summary mission ship ai landing modes` line and the approach latch's `lander` and
+   `modes` fields.
+4. **Expect the landers to stop being useful after the `land` command.** The `land` state step
+   `009E1950` has a reconstruction (`ship_ai_follow_land.cpp`), but no host implements
+   `ShipAiLandStepHost`. The state table row for `land` (`game_hosts_ship_ai.cpp` about line 635)
+   selects the state, but its step is not run. So after `begins>0` the landers will sit in an
+   unrun state. That is the next binding.
+
+### The next packets, in order
+
+1. **The land step host** (`ShipAiLandStepHost` over the pad model):
+   - `unit_landing_pad_1200` is `BuildingPadModel::lander_pad_1200`;
+   - `pad_occupant` / `pad_owner` / `pick` / `assign` are in the model;
+   - `pad_approach_point` is 77's `refresh_pad_line_006ac5d0` plus the per-call arm;
+   - the enter `009E18D0` sets `speed_ramp_08` from `Lander::landing_time_1210` (76.3).
+2. **The landing ship's ramp**: `0074AF20` (per-frame, with a pad set). Read the `+11A8h` /
+   `+11ACh` countdown and the `CL` condition at `0074B07A`, then set `+1188h` (78.4).
+3. **The capture tick** `006F6760`, in two binds:
+   - the pad arm plus the progress/ownership rule (landing-only rows);
+   - arm 1, ships in CaptureRange. This moves every CommandBuilding row (JM05, USN01, USN13,
+     USNOS), so it needs its own pair set. First read the `__ftol` input with `--asm`.
+   - Ownership: `vtable[1B0h]` `006F3270` then `006F2940`.
+   - Also `GetCapturePercentage` (section 49's open item) closes then.
+4. **The MCargo transports' own landing** (JM08's `USTroopTransport 01..06`).
+   - They are cargo ships whose class carries a landing craft: class `+78Ch` (the
+     landing-ship class) and `+790h` (the amount), which is why
+     `unit_class_lands_troops_vtable_2c` answers yes.
+   - Mode 3 gives them no pad (the unit must be IsKindOf(0Ch)), so they land by spawning landing
+     craft instead. `LandingShipCoolDown` is class `+794h` (`ship_class_fields.cpp`,
+     `00833C27`).
+   - Start from the readers of class `+78Ch` / `+790h` / `+794h` (scan disp32 `78C` / `790`)
+     and from `GenerateObject`-style spawns of `MLandingShip` (factory `0074BE00`).
+   - JM08's script also orders them `NavigatorAttackMove(AP, HQ)` near their land points
+     (`CheckAP1..6`).
+5. **Unchanged from section 73:** the back-off countdown (65.2, OFF, no row arms it).
+
+### Tools
+
+In `J:\PROG\battlestations-pacific-decompile-cc9-ships20\local\`, `s20_` prefix:
+- `s20_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows>` adds `jm08l` (9200/9000) and `jm08x`,
+  `bsm02x`, `bsm06x` (36200/36000);
+- `s20_wait.ps1`;
+- `s20_pads_scn.py <scn>` predicts pad adoption from a scene;
+- `s20_near.py`;
+- `s20_vt.py refs|slots`;
+- `s20_bytes.py <hex>`;
+- `s20_consts.py <va>:f|d`;
+- `s20_disp.py`, `s20_rel32.py`, `s20_dump.py` (from s19);
+- `s20_edit_mf.py` (the local census patch pattern: apply, build, snapshot the build under
+  `local\<x>\build\win32\Release`, revert).
