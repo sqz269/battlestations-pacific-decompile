@@ -8301,3 +8301,75 @@ defect was found; nothing was switched.** From `s24_d1_jm08x` (the section 97 ON
 the lander's side in the image. The scan above says no write to `+1200h` does, but a clear
 through a held pointer (such as `pad+1F8h` only) cannot be excluded without reading `0074B0B0..`
 and the land state's exit.
+
+## 99. Handoff (cc9-ships24, 2026-09-30, at about 60% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 96 | `00A11B80` (now `BSP_AiCommand_TransportLandingApproach`): CLOSEATTACK / DEFENDPOSITION / PATROLTO move carrier members to 0.75 x CaptureRange of the anchor, or route 94h when `008128E0` says ready; the script-order route lands only when the group is already in CLOSEATTACK | `kAiGroupTransportMovesBound` ON |
+| 97 | 94h to an MLandingShip (vtable `00CFFA30`, slot `238h` = `0074A4C0`): nearest free pad, `0074A990` begin, `land` command. JM08 36000 begins 3 landings; LST 01 dies 0.35 s before its ramp | `kLandingShipStartLandingBound` ON |
+| 98 | LST 02's stop after the HQ turns neutral: the PATROLTO follower pass re-joins it and `ship+1200h` stays held | none |
+
+### Item 1: `008206F0`, the troop transport's landing-craft launch (not started in code)
+
+**What is read** (section 97.1, and `local\s24_8206f0_dec.txt` in this tree, a 707-line decompile
+with broken loop recovery; take the listing for the loop shape):
+- Guards: `class+78Ch` (the craft class) -1, `class+790h` (LandingShipAmount) -2,
+  `+1124h > 0` -3; site `006F2C30(2)` else `err - 8`.
+- Per free pad (`006F2A50(site, 0)`, the first free one) while the amount lasts:
+  - build the transport's hull rectangle (half extents `0.6 x class+A4h` / `0.6 x class+A0h`,
+    `[00CEFF98]`, grown by the craft width `craft_class+A0h x [00CF87C0]`), transformed by the
+    transport's matrix `+CCh`; sample its perimeter every about `2 x craft width`
+    (`BSP_Vector3_LengthFloatThreshold`, `00BF7420`);
+  - keep the three perimeter points nearest the pad (squared 3-D);
+  - for each candidate, reject it when `BSP_World_GroundHeightAt` at two points along the
+    pad direction is above `[00CFBC84]` (too shallow), or when a ship in world list `+64h`
+    (with `class+A8h + y` above `[00D098C8]`) is within the summed half widths and
+    `004F49F0` (a segment distance) is below the summed half lengths;
+  - create the craft: `craft_class->vt+28h(0)` then `vt+98h(0, world, &width)`, name
+    `"LandingShip"`, bag `Type = craft_class+70h`, `Party = +54h`, `Race = +58h`, `Skill 2`,
+    `OwnerPlayer 8`, `LandingCommanderPlayer = +180h`, `LandingPoint = pad+174h`,
+    `CommandBuilding = site+174h`, `SpawnPhase = max(3 - i, 0)`; the pose frame is built from
+    the direction to the pad (`00E0B68C..00E0B694` up vector, cross products);
+  - `006AC490(pad)(craft)`, push the craft, next pad `006F2A50(0)`, `+1128h = [00CE5380]`.
+- After the loop (`006F1F00` unlocks): with `n` crafts, `+1124h = class+794h x n /
+  class+790h` (LandingShipCoolDown, unsigned divide), then 95h routed at class 4 with that value.
+- **The craft lands itself.** Its InitAll `0074BEC0` reads `LandingPoint` (`00CE9238`) and
+  `CommandBuilding` (`00CE5870`) and calls `0074A990` (`0074C57C..0074C618`), so the host's
+  `landing_ship_request_landing_0074a4c0`'s tail (begin + `land`) is the model for it.
+
+**What to build** (units file is shared: prepare a `local\` edit script, claim only to apply):
+- **Creation:** the units host's run-time path is `GameUnitsHost::create_units(records)`
+  (`game_hosts_units.cpp`; after the first batch it calls
+  `gunnery->register_new_units_00864bd0()`, around line 13861). A craft is one
+  `GameSceneEntityRecord` of class `LandingShipGen` with the craft class's vehicle type,
+  party, race, skill 2, owner_player 8 and the world matrix. Check how generated units get a
+  ship-AI controller (docs/GENERATED_SHIP_AI.md) before assuming the craft moves.
+- **Then** `pads.begin_landing_0074a990(craft, pad, site, draw, spawn_phase)` and the `land`
+  command, as in `landing_ship_request_landing_0074a4c0`.
+- **Placement:** the depth and clearance probes can be a labelled substitution at first
+  (the perimeter point nearest the pad), but say so in the doc.
+- **Cooldown:** `+1124h` is written only by 95h here; the countdown is `0082614B` (SHIP_MOTION).
+  The host has no per-unit `+1124h` yet; `008128E0`'s test reads it (section 96's `transport_ready`
+  treats it as 0).
+- **Reach:** JM08 36000 routes 94h to transports 2065 times (section 97.4); its six
+  USTroopTransports are in Bristol's, Macomb's and Gleaves's groups. Only USNOS / USNOS long
+  also meet carrier members, and their site search fails (97.3), so they stay identical.
+
+### The rest of the queue
+
+2. The neutral CommandBuilding's own gun mounts (do they fire while party 2).
+3. `0074B0B0..`: the ramp animation and unload, and whether anything clears `ship+1200h`
+   (section 98's open item).
+4. The `009F47A7` back-off countdown, if a row arms it.
+5. Leftovers from 92/93: why Convoy1 is not bombed in USN01; the `luaKatoriSpotted` branch.
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships24\local\`, `s24_` prefix)
+
+`s24_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows>` (the `jm08x` row is JM08 36000),
+`s24_wait.ps1 -Logs <names>`, `s24_pairs.ps1 -A <off> -B <on> -Rows <rows>`. Set
+`BSP_LANDER_DIAG=1` before `s24_runs.ps1` for `lander diag:`, `transport move diag:` and the fleet
+lines. The last JM08 36000 logs are `s24_b0_jm08x` (OFF), `s24_b1_jm08x` (ON) and `s24_d1_jm08x`
+(ON with diagnostics).
