@@ -7196,3 +7196,41 @@ with 2 hits. Would the image's scorer prefer the tower over the ships, and why s
     JM08 long and USNOS long (direction not predicted per row).
 - **Mechanism failure:** JM08's HQ still firing at the tower, or a row with a zero census
   moving.
+
+### 93.4 The pair, and the flip
+
+**`local\g21_a1` (the flip, `e280693d1`) against `local\g21_a0` (OFF).** Every run is exit 0
+with `lost_polls=0`. The ON runs also carried `BSP_SHELL_FATE`, whose lines pair_diff masks.
+
+| row | exit | deaths | hit records |
+| --- | --- | --- | --- |
+| USN04, E2, USN02, BSM01, LOMP06, LOMP10, LOMP10 long, IJN01 | 1 | identical | - |
+| JM06 | 1 | identical | - |
+| USN01 | 3 | 17 -> 29 | 542 -> 1302 |
+| JM08 | 3 | 5 -> 19 (all 8 Watchtowers, 3 bunkers, a radio tower) | 180 -> 385 |
+| USN13 | 3 | 23 -> 22 | 456 -> 444 |
+| JM05 | 3 | 12 -> 10 | 366 -> 393 |
+| USN12 | 3 | 7 -> 8 | 196 -> 198 |
+| USNOS | 3 | 110 -> 87 | 1766 -> 1461 |
+| USNOS long | 3 | 166 -> 123 | 2779 -> 2265 |
+| JM05 long | 3 | 20 -> 15 | 711 -> 871 |
+| JM08 long | 3 | 46 -> 118 | 1563 -> 4209 |
+
+- **Mechanism (JM08):** Headquarter 01 fires no round while the tower lives. Its first round
+  is at t = 86.80 s, after "Watchtower, 01 03" has died at 83.40 s to "Japanese AA truck 05"
+  (category 2, range 84 m). Over the row the HQ fires 46 rounds against 160 OFF. So `0085ABA0`
+  refuses the depression, as 93.2 read.
+- **What moved:**
+  - Low guns on land (the AA trucks, category 2) now hit the ground units they target. Their
+    rounds had flown over the class-Height aim point too, so the Allied watchtowers and bunkers
+    on JM08 and JM08 long die.
+  - Ships firing at shore targets now command the depression to the origin: some are refused
+    by their windows, others land on or before the target. USNOS and USNOS long lose deaths;
+    JM08 long gains them.
+- **Prediction:** right on the zero-census rows and on JM08's mechanism. It missed on one row:
+  JM06 (697 aims) stays exit 1.
+- **Flipped ON:** `kArtilleryGroundOriginAimBound`. It is a mechanism match. The death moves
+  are large (JM08 long +72, USNOS long -43, USN01 +12), and all of them follow from the aim
+  point.
+- **Not changed:** MAirfield and MShipyard keep the Height-raised point. Their slot `100h`
+  (`006D3250`, `00844A10`) is unread.

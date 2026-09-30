@@ -752,7 +752,8 @@ constexpr bool kKamikazeDynContactBound = true;
 // such a target is aimed at its origin. False: at the origin raised by the class
 // Height (unit_aim_point), which puts the aim over a tower's top. MAirfield
 // (006D3250) and MShipyard (00844A10) have their own slot 100h, unread: unchanged.
-constexpr bool kArtilleryGroundOriginAimBound = false;
+// ON by the pairs of 2026-09-30 (section 93.4).
+constexpr bool kArtilleryGroundOriginAimBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
