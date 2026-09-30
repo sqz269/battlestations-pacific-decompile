@@ -47,6 +47,7 @@
 #include "bsp/ship_ai_kamikaze_attack.hpp"
 // Packet cc8_ship_follow: the `follow` state's two halves and the unit group.
 #include "bsp/ship_ai_follow_land.hpp"
+#include "bsp/building_pads.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
@@ -5115,6 +5116,137 @@ public:
         return r;
     }
 
+    // Packet cc9_landing_modes_3_4. 009F2169..009F2395; both arms end at 009F272D.
+    struct PadZones final : bsp::PadLineZoneQueries {
+        explicit PadZones(GameShipAiHost::Impl& owner) : owner_(owner) {}
+        std::uint32_t group_for_layer_004120d0(int layer) override {
+            return owner_.zones.ready()
+                ? owner_.zones.group_for_layer(static_cast<std::uint32_t>(layer)) : 0u;
+        }
+        std::uint32_t zone_containing_004178f0(std::uint32_t group, float x, float z) override {
+            return owner_.zones.group_containing(group, {x, z});
+        }
+        bool group_segment_hit_0041b4e0(std::uint32_t group, const float toward[2],
+                                        const float from[2], float out[2]) override {
+            std::array<float, 2> running{};
+            const bool hit = owner_.zones.group_segment_point(group, {toward[0], toward[1]},
+                {from[0], from[1]}, running);
+            out[0] = running[0];
+            out[1] = running[1];
+            return hit;
+        }
+        bool zone_segment_hit_00416dd0(std::uint32_t zone, const float toward[2],
+                                       const float start[2], float out[2]) override {
+            std::array<float, 2> running{};
+            const bool hit = owner_.zones.zone_segment_point(zone, {toward[0], toward[1]},
+                {start[0], start[1]}, running);
+            out[0] = running[0];
+            out[1] = running[1];
+            return hit;
+        }
+        GameShipAiHost::Impl& owner_;
+    };
+    void run_landing_modes_3_4(bsp::ShipAiApproachMode mode) {
+        GameShipAiSummary& s = owner_.summary;
+        bsp::BuildingPadModel& pads = bsp::building_pad_model();
+        // 009F2169..009F2189: EDI = [ctl+0B20h] when it answers IsKindOf(1Ch).
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        const bool known = t != 0u && t - 1u < owner_.units.count();
+        const int building = known && owner_.units.unit_is_kind_of(t - 1u, 0x1c)
+            ? static_cast<int>(t - 1u) : -1;
+        if (building < 0) {
+            // The latch gives 3 or 4 only for a CommandBuilding target; the image
+            // would call 006F2DE0 / 006F3AF0 with ECX = 0.
+            owner_.record("ShipAiApproach::landing_modes_no_building", 0x009f218bu);
+            return;
+        }
+        float unit_pos[3]{};
+        owner_.units.unit_position_00fc(index_, unit_pos[0], unit_pos[1], unit_pos[2]);
+        const int layer = static_cast<int>(ctl_.class_reference_0570);
+        if (mode == bsp::ShipAiApproachMode::standoff_4) {
+            // 009F2342..009F2395: 006F3AF0(building)(&out, &unit+0FCh, [[unit+538h]+570h]).
+            float bpos[3]{};
+            owner_.units.unit_position_00fc(static_cast<std::size_t>(building),
+                bpos[0], bpos[1], bpos[2]);
+            float xz[2]{};
+            pads.nearest_pad_xz_006f3af0(building, bpos, unit_pos, xz);
+            // 006F3C5A: 00417E60(manager)(&out, &xz, 10.0f [00CE38B8], layer) is
+            // 00412120(layer) then 00417B10(group)(out, xz, 10.0f, 1).
+            std::array<float, 2> out{xz[0], xz[1]};
+            if (owner_.zones.ready()) {
+                const std::uint32_t group =
+                    owner_.zones.group_for_layer(static_cast<std::uint32_t>(layer));
+                if (group != 0u) out = owner_.zones.offset(group, {xz[0], xz[1]}, 10.0f, true);
+            }
+            ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{out[0], 0.0f, out[1]};
+            ++s.landing_mode4_points;
+            owner_.done("ShipAiApproach::landing_mode_4", 0x009f2342u);
+            return;
+        }
+        // Mode 3. 009F21A0..009F21BC: ESI = the unit when IsKindOf(0Ch), else 0.
+        const int unit = owner_.units.unit_is_kind_of(index_, 0x0c)
+            ? static_cast<int>(index_) : -1;
+        pads.release_unit_pads_006f2de0(building, unit);                  // 009F21C1
+        const int pad = pads.pick_006f2e60(building, unit, unit_pos, false);  // 009F21CB
+        if (pad < 0) {                                                    // 009F21D4
+            ++s.landing_mode3_no_pad;
+            owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
+            return;
+        }
+        bsp::BuildingPadModel::Pad* p = pads.mutable_pad(pad);
+        PadZones zones(owner_);
+        if (bsp::refresh_pad_line_006ac5d0(*p, layer, zones)) ++s.landing_pad_line_casts;
+        // 009F21F6..009F220F: 006AC5D0(pad)(&out, &unit+0FCh, layer, 200.0f).
+        const bsp::ShipAiFollowLandXZ point = bsp::ship_ai_land_pad_approach_point_006ac5d0(
+            p->line, bsp::ShipAiFollowLandXZ{p->facing_x, p->facing_z},
+            bsp::ShipAiFollowLandXZ{unit_pos[0], unit_pos[2]}, 200.0f);
+        // 009F2214..009F2228; y is taken as 0.0f (SUBSTITUTION, labelled: the
+        // per-call arm's out+4 store was not re-read).
+        ctl_.approach.point_1228 = bsp::ShipAiApproachPoint{point.x, 0.0f, point.z};
+        ++s.landing_mode3_points;
+        // 009F2247..009F2293: |point - unit+0FCh| through 0042B2F0.
+        const double dx = static_cast<double>(point.x) - unit_pos[0];
+        const double dy = 0.0 - static_cast<double>(unit_pos[1]);
+        const double dz = static_cast<double>(point.z) - unit_pos[2];
+        const float d = static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
+        // 009F22A5..009F22E7: reach = max(00811A30(unit, 1.0) * 2.5, 300.0f).
+        const float turn = owner_.units.unit_class_turn_circle_radius_0082e960(index_, 1.0f);
+        const float reach = std::max(static_cast<float>(turn * 2.5), 300.0f);
+        if (!(reach > d)) {
+            owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
+            return;
+        }
+        // 009F22F0: [ctl]+3FCh = 0, a brain byte with no host counterpart.
+        owner_.record("ShipAiApproach::brain_byte_3fc", 0x009f22f0u);
+        ++s.landing_mode3_in_reach;
+        if (unit < 0 || pads.lander_pad_1200(unit) >= 0) {             // 009F22F7
+            owner_.done("ShipAiApproach::landing_mode_3", 0x009f21a0u);
+            return;
+        }
+        // 009F2304..009F2328: 00749D90 builds 0A5h (pad, building) and 0077C2A0
+        // routes it to the unit at class 7; 0074B570 runs 0074A990 on it.
+        // SUBSTITUTION, labelled: delivered at once rather than through the route.
+        owner_.record("LandingShip::vtable_148_on_0a5", 0x0074b5b0u);
+        const float draw = owner_.gunnery_draws != nullptr
+            ? owner_.gunnery_draws->ship_ai_draw(index_, 0.0f, 0.75f) : 0.0f;
+        // +1208h is the scene key SpawnPhase (00CFFCAC, 0074C5F4), which no scene
+        // in this installation authors: 0, the construct's value (0074BB90).
+        pads.begin_landing_0074a990(unit, pad, building, draw, 0);
+        owner_.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
+        // 0074A9FC..0074AA75: unless [game+1FE4h] == 2, 0077D600(ship)(land
+        // 00E08FA0, {kind 0, position valid, pad world position, 0.0f}, 1).
+        bsp::SceneCommandTarget target{};
+        target.kind = 0;
+        target.position_valid = 1;
+        target.position[0] = p->position[0];
+        target.position[1] = p->position[1];
+        target.position[2] = p->position[2];
+        owner_.units.issue_script_command(index_, 0x00e08fa0u, target, 1,
+            "0074A990 land at pad", "LandingPoint");
+        ++s.landing_begins;
+        owner_.done("ShipAiApproach::landing_mode_3_begin", 0x0074a990u);
+    }
+
     // Packet cc9_approach_retarget_ring, 009F2124..009F272D for modes 0 and 2
     // (docs/SHIP_AI_OPEN_ITEMS.md section 27). `before` is nested+1228h as the
     // frame began: on the no-ship path 009F1E30 JE 009F2003 skips the goal copy
@@ -5126,13 +5258,12 @@ public:
         const bsp::ShipAiApproachMode mode = ctl_.approach.mode_1234;
         if (mode == bsp::ShipAiApproachMode::inside_3 ||
             mode == bsp::ShipAiApproachMode::standoff_4) {
-            // 009F21A0..009F2395, read (docs/SHIP_AI_OPEN_ITEMS.md section 72)
-            // but not reconstructed: both modes need the building's landing-pad
-            // vector (+794h/+798h, 006F2DE0 / 006F2E60 / 006F3AF0), the pad
-            // approach cache (006AC5D0), the avoid-zone push 00417E60 and the
-            // landing message 0A5h (00749D90, routed class 7 by 0077C2A0), none
-            // of which this process has. No reference row latches mode 3 or 4.
-            owner_.record("ShipAiApproach::retarget_modes_3_4", 0x009f21a0u);
+            // 009F21A0..009F2395 (docs/SHIP_AI_OPEN_ITEMS.md sections 72, 76, 77).
+            if (!bsp::kShipAiApproachLandingModesBound) {
+                owner_.record("ShipAiApproach::retarget_modes_3_4", 0x009f21a0u);
+                return;
+            }
+            run_landing_modes_3_4(mode);
             return;
         }
         if (!bsp::kShipAiApproachRetargetRingBound) {
@@ -11235,6 +11366,13 @@ void GameShipAiHost::report() {
         host.summary.latch_modes[4], host.summary.latch_clamps, host.summary.latch_resets,
         host.summary.latch_retarget_reachable, host.summary.latch_retarget_entries,
         bsp::kShipAiApproachModeLatchBound ? 1 : 0);
+    host.log.notef("summary mission ship ai landing modes no_pad=%llu mode3_points=%llu "
+        "line_casts=%llu in_reach=%llu begins=%llu mode4_points=%llu bound=%d "
+        "(009F21A0..009F2395, 0074A990, packet cc9_landing_modes_3_4)",
+        host.summary.landing_mode3_no_pad, host.summary.landing_mode3_points,
+        host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
+        host.summary.landing_begins, host.summary.landing_mode4_points,
+        bsp::kShipAiApproachLandingModesBound ? 1 : 0);
     host.log.notef("summary mission ship ai standoff target kind calls=%llu kind_08=%llu "
         "building_mode2=%llu building_mode4=%llu small_class=%llu bound=%d "
         "(009E6F01 / 009E6F3A / 009E701C / 009E6F11, packet cc9_standoff_target_kind)",

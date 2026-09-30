@@ -1129,6 +1129,14 @@ inline constexpr float kApproachRetargetBestStart = 3.40282347e+38f; // 00D7A248
 // rows identical); the other six rows are gameplay identical, as predicted.
 inline constexpr bool kShipAiApproachRetargetRingBound = true;
 
+// Packet cc9_landing_modes_3_4, docs/SHIP_AI_OPEN_ITEMS.md section 77. True: the
+// retarget arm's modes 3 (009F21A0-009F2338) and 4 (009F2342-009F2395) run over
+// bsp::building_pad_model(): release and pick the pad, recast its approach line
+// (006AC5D0), and inside the reach begin the landing (0074A990, the 0A5h path)
+// with a `land` command at the pad; mode 4 takes the nearest pad pushed out of
+// the class layer's zones (006F3AF0 / 00417E60). False: both modes are records.
+inline constexpr bool kShipAiApproachLandingModesBound = false;
+
 // Packet cc9_approach_no_ship_hold (docs/SHIP_AI_OPEN_ITEMS.md section 35), the
 // hold alone, with the ring OFF. 009F1DC2..009F1DDB keep [brain+0B20h] in ESI only
 // when it answers kind 6 (a ship); 009F1E30 JE 009F2003 then skips the goal copy

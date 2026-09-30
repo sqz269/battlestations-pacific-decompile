@@ -6585,3 +6585,67 @@ the building's lock (`006F1EE0` / `006F1F00` with `ECX = building`):
 `0074B570`, `0074A4C0`, `0074BC10` and `009E18D0` have no Ghidra function (lookup finds only an
 enclosing candidate: `0074AF20`, `0074A420`, `0074BB00`, `009E1610`), so they need
 `ghidra_define_function.py`. `0074A990`, `0074A5A0` and `00417E60` exist as `FUN_`.
+
+## 77. Retarget modes 3 and 4, bound OFF (packet `cc9_landing_modes_3_4`, cc9-ships20, 2026-09-30)
+
+This is section 73's step (4). The reading is in sections 72 and 76, and the pad model in 75.
+
+### 77.1 The binding (`kShipAiApproachLandingModesBound`, committed OFF)
+
+`GameShipAiHost` `run_landing_modes_3_4` (`src/game_hosts_ship_ai.cpp`) runs over
+`bsp::building_pad_model()`. The coverage column names what is left out.
+
+| step | image | host | coverage |
+| --- | --- | --- | --- |
+| building | `009F2169-009F2189` | target `ctl+0B20h` when IsKindOf(1Ch), else a record (the image would call with `ECX = 0`) | complete |
+| mode 4 | `009F2342-009F2395` | `nearest_pad_xz_006f3af0`, then `zones.offset(zones.group_for_layer(class+570h), xz, 10.0f, true)`, y = 0 | complete. An empty zone table leaves the point unmoved (the image reads slot 0). |
+| mode 3 unit | `009F21A0-009F21BC` | the unit when IsKindOf(0Ch), else -1 | complete |
+| release, then pick | `009F21C1`, `009F21CB` | `release_unit_pads_006f2de0`, then `pick_006f2e60(unit, false)` | complete |
+| approach line | `006AC5D0` first arm (`006AC5F2-006AC927`) | `bsp::refresh_pad_line_006ac5d0` over `PadLineZoneQueries`. It uses the new `GameAvoidZoneRuntime::group_containing` (004178F0) and `zone_segment_point` (00416DD0), plus `group_segment_point` (0041B4E0). | complete; the x87 products are done in double |
+| approach point | `006AC5D0` per-call arm | `ship_ai_land_pad_approach_point_006ac5d0` (existing) | y taken as 0 (SUBSTITUTION) |
+| reach | `009F2247-009F22E7` | `max(turn circle(1.0) * 2.5, 300)` against the 3-D distance | complete |
+| `[ctl]+3FCh = 0` | `009F22F0` | record `ShipAiApproach::brain_byte_3fc` | not modelled |
+| 0A5h | `009F2304-009F2328` -> `0074B570` -> `0074A990` | delivered at once (SUBSTITUTION: no route) | see the next rows |
+| `vtable[148h](1FFh, 8)` | `0074B5B0` | record | unread |
+| link, occupant, landing time | `0074A9AA-0074A9E6` | `begin_landing_0074a990` with `ship_ai_draw(unit, 0, 0.75)`. SpawnPhase is 0: no scene in this installation authors it. | complete |
+| soldier traffic | `004A4520` | record `TrafficConfig::launch_pad_troops` | **not modelled (packet 5)** |
+| `land` command | `0074AA0B-0074AA75` | `issue_script_command(unit, 00E08FA0, {position, pad world position}, 1)` | complete |
+
+- **Death:** `GameScriptOrdersHost::run_script_timers` calls `forget_unit` for every destroyed
+  unit (the observer substitution of 75.1).
+- **Summary line:** `summary mission ship ai landing modes`.
+- **The OFF smoke** (USN01, 300 frames, `local\s20_off4_smoke.log`) passed, with `bound=0` and all
+  counters at 0.
+
+### 77.2 Predictions for JM08 36200/36000 (written before any flip run)
+
+These are for after cc9-lua22's recon publication lets `CheckInvasion` start the invasion (section
+74.4: an Allied ship is inside 300 m of the origin at about t = 540 s).
+
+- **Who can land.** `StartInvasion` orders `NavigatorAttackMove(unit, Mission.HQ)` for all of
+  `Mission.InvasionForce`.
+  - Only the `LandingShipGen` members are IsKindOf(0Ch): `LST 01`, `LST 02`, `LSM 01`, `LSM 02`
+    (`LST 03` is in `LandShips` but not in the invasion force).
+  - The six `USTroopTransport` units are `MCargo` (creator `006EB290`, vtable `00CFA778`, `kind=11`
+    in the hull line). If they latch mode 3, the unit is null, so `pick` answers none
+    (`no_pad`) and they never land.
+  - The latch also needs vtable `+2Ch` (the class lands troops), the host's
+    `unit_class_lands_troops_vtable_2c`:
+    - an `MLandingShip` answers yes unless it is a rocketer (`+809h`);
+    - a cargo ship answers yes when its class carries a landing craft (`+78Ch` and `+790h`
+      non-zero).
+    - So the transports may latch too. For them mode 3 counts `no_pad`, and their own landing
+      (spawning landing craft, class field `+794h` LandingShipCoolDown) is a different path that
+      is not read.
+- **Expected ON counts**, if the latch admits them:
+  - `mode4_points > 0` (the approach from outside the reach);
+  - `mode3_points > 0` and `line_casts = 8` at most (one per pad per layer; the SP class layer is
+    0);
+  - `begins` from 1 to 4 (each landing ship once: after it lands, `+1200h` stays set);
+  - `in_reach >= begins`.
+- **Gameplay:** exit 3 on JM08 36000. The `land` command moves each lander into the `land` state
+  (`009E1950`). The death table should differ only through those four ships and whatever shoots at
+  them.
+- **The other rows** latch no lander (reference r: `lander=0` on all 17), so they are predicted
+  exit 0 or 1.
+- **The building is not captured** in either run: the soldier traffic is a record (packet 5).

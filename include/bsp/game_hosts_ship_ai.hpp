@@ -601,6 +601,15 @@ struct GameShipAiSummary {
     unsigned long long latch_resets{0};          // 009F20DE..009F20ED
     unsigned long long latch_retarget_reachable{0}; // no ship target: 009F2124 follows
     unsigned long long latch_retarget_entries{0};   // ... and nested+11D6h was clear
+    // Packet cc9_landing_modes_3_4 (ON only): mode-3 runs with no free or held
+    // pad, runs that set a pad approach point, pad approach lines recast, runs
+    // inside the reach, landings begun (0074A990), and mode-4 standoff points.
+    unsigned long long landing_mode3_no_pad{0};
+    unsigned long long landing_mode3_points{0};
+    unsigned long long landing_pad_line_casts{0};
+    unsigned long long landing_mode3_in_reach{0};
+    unsigned long long landing_begins{0};
+    unsigned long long landing_mode4_points{0};
     // Packet cc9_approach_retarget_ring (ON only): arm runs past 009F2124, runs
     // whose goal lay in a zone, runs that left the point off the goal, and the
     // per-slot Landscape queries, hits and reach failures.

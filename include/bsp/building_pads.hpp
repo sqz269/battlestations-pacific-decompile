@@ -22,6 +22,8 @@
 #include <map>
 #include <vector>
 
+#include "bsp/ship_ai_follow_land.hpp"
+
 namespace bsp {
 
 // 006F2780: `LandingPointRange` (key 00CFAE0C, 006F2895) stored at +7CCh
@@ -44,6 +46,20 @@ public:
         float position[3]{};    // pad+0FCh..+104h, the authored world translation
         int occupant{-1};       // pad+1F8h, a units-host index, -1 for null
         int owner{-1};          // pad+220h, the building's units-host index
+        // 006AC260: the pad's forward row (+0ECh / +0F4h) normalised in xz
+        // (length of (x, 0.0 [00D7A258], z); 0 when not positive).
+        float facing_x{0.0f};
+        float facing_z{0.0f};
+        // pad+208h..+21Ch, 006AC5D0's approach cache. The construct 004E9520
+        // writes +208h = -99 (0FFFFFF9Dh) and +218h = 1000.0f [00CE3804].
+        ShipAiLandPadLine line{-99, 0.0f, 0.0f, 0.0f, 1000.0f, 800.0f};
+    };
+
+    // The landing ship's side of the link, 0074A990 (BSP_LandingShip_BeginLandingAtPad).
+    struct Lander {
+        int pad_1200{-1};           // ship+1200h
+        int building_1204{-1};      // ship+1204h
+        float landing_time_1210{0.0f};  // ship+1210h, read by 009E18D0 via slot 248h
     };
 
     // 006F5CC0, CommandBuilding vtable 00CFB028 slot 0A4h (InitAll pass C, via
@@ -94,6 +110,16 @@ public:
     void nearest_pad_xz_006f3af0(int building, const float building_position[3],
                                  const float from[3], float out_xz[2]) const;
 
+    // 0074A990 steps 1-3 (docs/SHIP_AI_OPEN_ITEMS.md 76.2): the link, the
+    // occupant and the landing time (draw + SpawnPhase) * 1.5 [00CE3D78], where
+    // `draw` is 00BD2F10's uniform(0, 0.75f [00CEE07C]) the caller made.
+    void begin_landing_0074a990(int ship, int pad, int building, float draw,
+                                std::int32_t spawn_phase_1208);
+    // ship+1200h, -1 for null.
+    int lander_pad_1200(int ship) const;
+    const Lander* lander(int ship) const;
+    Pad* mutable_pad(int index);
+
     const std::vector<int>& pads_of(int building) const;
     const Pad* pad(int index) const;
     std::size_t pad_count() const { return pads_.size(); }
@@ -104,6 +130,34 @@ private:
     int intern_pad(const Pad& pad);
     std::vector<Pad> pads_;
     std::map<int, std::vector<int>> vectors_;  // building -> +794h vector
+    std::map<int, Lander> landers_;
 };
+
+// The zone queries 006AC5D0's cache refresh makes, in the image's argument
+// order (toward, start/from, out).
+struct PadLineZoneQueries {
+    virtual ~PadLineZoneQueries() = default;
+    // 004218E0 then 004120D0(layer): the layer's group, 0 for none.
+    virtual std::uint32_t group_for_layer_004120d0(int layer) = 0;
+    // 004178F0(group)(point): the first zone containing the point, 0 for none.
+    virtual std::uint32_t zone_containing_004178f0(std::uint32_t group,
+                                                   float x, float z) = 0;
+    // 0041B4E0(group)(toward, from, out) -> AL.
+    virtual bool group_segment_hit_0041b4e0(std::uint32_t group, const float toward[2],
+                                            const float from[2], float out[2]) = 0;
+    // 00416DD0(zone)(toward, start, out, &edge) -> AL.
+    virtual bool zone_segment_hit_00416dd0(std::uint32_t zone, const float toward[2],
+                                           const float start[2], float out[2]) = 0;
+};
+
+// 006AC5D0's first arm, 006AC5F2..006AC927: on a new layer key the pad's
+// approach line is recast. Coverage: this arm; the per-call arm is
+// ship_ai_land_pad_approach_point_006ac5d0. Returns true when it recast.
+bool refresh_pad_line_006ac5d0(BuildingPadModel::Pad& pad, int layer,
+                               PadLineZoneQueries& zones);
+
+// The process's one pad model (the image's live building and pad entities). The
+// script-orders host fills it after the scene load; the ship AI reads it.
+BuildingPadModel& building_pad_model();
 
 }  // namespace bsp

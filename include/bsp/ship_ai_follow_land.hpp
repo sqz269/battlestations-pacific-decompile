@@ -269,9 +269,11 @@ inline constexpr float kShipAiLandSpeedRampFull = 1.0f;  // 00D7A24C
 // (009F3A72), `final` = 0 (009F3A77) and `hold_heading` = 0 (009F3A7B). It does
 // **not** write +8h; see the uncertainty in docs/SHIP_AI_FOLLOW_LAND.md.
 struct ShipAiLandState {
-    // +8h, the speed-ramp countdown. Only 009E1FC6 writes it after
-    // construction; at or below -1.0f the ramp is finished and the step leaves
-    // through 009E1FFE with the speed scale pinned to 1.0f.
+    // +8h, the speed-ramp countdown. At or below -1.0f the ramp is finished and
+    // the step leaves through 009E1FFE with the speed scale pinned to 1.0f.
+    // Producer (docs/SHIP_AI_OPEN_ITEMS.md 76.3): the state's enter 009E18D0
+    // (vtable 00D21658 slot 4) stores 0.0f, then for a kind-0Ch unit the landing
+    // time unit+1210h (slot 248h, 0074BC10); 009E1FC6 counts it down.
     float speed_ramp_08{0.0f};
     // +0Ch, seconds until the next pad re-scan. 1.0f at construction, refilled
     // uniform in [3, 5] at 009E1A58, forced to -1.0f when the pad was stolen

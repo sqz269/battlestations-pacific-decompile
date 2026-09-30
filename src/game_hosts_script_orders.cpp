@@ -520,14 +520,26 @@ void GameScriptOrdersHost::register_scene_marker(int id, const std::string& name
 // not read; order only breaks exact distance ties in 006F2E60 / 006F3AF0).
 bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
     if (!kBuildingPadModelBound) return nullptr;
+    bsp::BuildingPadModel& building_pads_ = bsp::building_pad_model();
     if (building_pads_built_) return &building_pads_;
     building_pads_built_ = true;
+    building_pads_.clear();
     std::vector<bsp::BuildingPadModel::Pad> points;
     for (const SceneMarker& marker : markers_) {
         if (marker.class_id != 0x1D) continue;  // LandingPoint, docs/ENTITY_CLASS_IDS.md
         bsp::BuildingPadModel::Pad pad;
         pad.marker_id = marker.id;
         for (int i = 0; i < 3; ++i) pad.position[i] = marker.position[i];
+        // 006AC260: the forward row +0ECh / +0F4h (frame[8], frame[10]) over the
+        // length of (x, 0, z); zero when that length is not positive.
+        float frame[16]{};
+        if (units_.scene_marker_frame(static_cast<std::uint32_t>(marker.id), frame)) {
+            const double len = std::sqrt(static_cast<double>(frame[8]) * frame[8]
+                + static_cast<double>(frame[10]) * frame[10]);
+            const float inv = len > 0.0 ? static_cast<float>(1.0 / len) : 0.0f;
+            pad.facing_x = inv * frame[8];
+            pad.facing_z = inv * frame[10];
+        }
         points.push_back(pad);
     }
     for (std::size_t unit = 0; unit < units_.count(); ++unit) {
@@ -3745,6 +3757,14 @@ void GameScriptOrdersHost::run_script_timers(float step) {
     if (machine_state_ == nullptr) return;
     observe_mission_end();
     publish_unit_deaths_00929800();
+    if (bsp::BuildingPadModel* pads = building_pads()) {
+        // Packet cc9_landing_modes_3_4: the pad's observer handle (+1E4h) drops a
+        // destroyed occupant. SUBSTITUTION, labelled: the handle's notification
+        // slot (vtable 00CE75CC) was not read.
+        for (const auto& death : units_.destroyed_units()) {
+            pads->forget_unit(static_cast<int>(death.first));
+        }
+    }
     if constexpr (kSceneRaceAndScriptIdentityBound) {
         mirror_script_identity_00928100();
     }
