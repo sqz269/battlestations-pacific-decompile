@@ -4560,3 +4560,201 @@ It does five things, in order:
 Park's carrier arm `009B23E4` (the `bVar4` branches, the site slots `+2Ch`/`+44h`/`+34h`, and
 `006CE610`), and the elevator site `006D0600` / `006FC480` / `006FC720` with the state write
 above. All of it goes behind `kLandParkStateBound`, committed OFF.
+
+## 5ao. The carrier elevator, step (b): park's carrier arm and the lift, bound OFF (packet `cc9_carrier_elevator`, cc9-lua23, 2026-09-30)
+
+Read from the disk listing whole: park's tick `009B22C0` for its carrier flag, the done test
+`009B21D0`, the mother-ship site's slots and the platform. This section adds to 5ah.
+
+### Park's carrier arm (`009B22C0`, the flag at `[esp+13h]`)
+
+The flag is set at `009B23EA` when `approach+30h vtable[5Ch](9)` answers true (`009B23E4`).
+Where it is set, the tick differs from the airfield arm (5s) as follows.
+
+- **Targets.**
+  - The site calls go to the mother-ship vtable `00CF8A58`:
+    - `+44h` is `006D0120`: q = the lift point, `class+808h..+810h` of the carrier;
+    - `+2Ch` is `006D00E0`: t = the same point, with z less `planeDesc+158h`.
+  - Both points are in the carrier's model frame, the frame of plane `+A4h..+ACh` under the
+    carrier.
+  - `planeDesc+158h` is written at `007D473A` as (model `+3Ch` + model `+30h`) x 0.5. That is
+    most likely the model box's centre along z.
+- **No retarget.** `009B23EF` jumps over the retarget block (`007B9000`/`007C1680`).
+- **Speed.**
+  - base = `Pilot/Landing/ParkVelocity` (tuning `+4E8h`, KTS 40 in this installation's
+    planeglobals.lua) instead of AirField/MoveSpd (`009B24C7`).
+  - The `00419010` ramp, the 0.85 v floor and the `+910h` queue flag are all jumped over
+    (`009B24E7` -> `009B260C`).
+  - At `009B260C`-`009B2631`, `park+28h -= dt` while the plane is slower than 1.0 and within 10 m
+    of t in z. This is the clock 5ah names.
+- **No path.** `009B265F` skips the path test, so `bl` stays 0 and a plane on the path leaves it.
+- **Steer when slow** (`009B27F6`-`009B2851`): sx = dx, sz = min(dz, max(1.0, 12.0 - |dx|))
+  (double `00CE42D0` = 12.0), and f18 stays dz.
+- **Lane test.** It calls site `+34h` = `006D0390` with the enable byte clear (`009B28F9` `SETE`).
+  - `006D0390` answers false when `006CE610` does.
+  - Otherwise, with Lz = `class+810h` and pz = plane `+ACh`, it answers true outside the lane
+    Lz - (19 + 2 max(0, v - 1)) < pz < Lz - 12. The constants are 14.0 at `[00E08FC8]`, the
+    doubles 2.0 (`00D7A308`) and 5.0 (`00D7A370`), and 1.0 (`00D7A210`).
+  - Inside the lane, `006D0150` decides. It is true when the platform is still (`+94h`), at the
+    top (0 > `site+5Ch`), and no other occupant's `006CFE90` distance is under 14.0.
+- **Speed clamp** (`009B2923`-`009B298D`):
+  - behind the target (0 > f18): spd = 0;
+  - otherwise c = max(0.5, f18 x 0.5); spd below 0.1 becomes 0.1, else min(spd, c).
+- **Done test** (`009B2228`): past the target in z, `009B1E30` (the class-9 owner) sends the plane
+  to site `vtable[3Ch]` = `006CFF70`. A plane that answers there is not done.
+  - `006CFF70`: (3.0 (double `00D7A2B0`) - speed) > `006CFE90`.
+  - `006CFE90`: the plane's point (0, 0, `planeDesc+158h`) through `unit+74h`, then its x/z
+    distance to the lift (`site+50h`/`+58h`).
+
+### The lift (mother-ship site `+4h` `006D0600`, `+8h` `006CFE40` -> `006FC480`)
+
+The platform sits at `site+44h`. The reading in 5ah holds; these are the details it lacked:
+- **The platform's fields.**
+  - `+0Ch..+14h` the lift point, `+18h` the depth, `+1Ch` = depth x 0.1 (`006FC3D0`, double
+    `00D7A3A0`);
+  - `+34h` the platform plane, `+38h..+40h` its offset from the lift;
+  - `+44h` ElevatorSpeed, `+48h` ElevatorDepth, `+4Ch` 1.0, `+50h` the mode.
+  - The values are 4.0 and 7.0 in this installation's shipglobals.lua, `ShipGlobals.MotherShip`
+    (mtime 2024-07-13).
+- **`006FC480`, the platform tick.**
+  - Mode 1: `+18h -= speed x dt x +4Ch`, stopping at -`+1Ch`.
+  - Mode 2: `+18h += ...`, stopping at depth + `+1Ch`.
+  - Then `006FC0D0` carries the plane: local position = lift + offset, with y less
+    clamp(`+18h`, 0, depth); then `00951F40(1)`.
+  - A still platform resets `+4Ch` to 1.0.
+- **`006FC720`, the take.** It returns at once for the plane already on the platform. Otherwise:
+  mode 0, `+18h` = -`+1Ch`, the old plane dropped; the offset = the plane's local position less
+  the lift; `007C2090` (the state-2 request, 5an); then down (mode 2).
+- **`006FC250`, the release.** It carries, drops the plane, and calls `00951F40(0)` when the
+  platform is still and at the bottom.
+- **`006D0600`, the site tick.** At the top it scans the occupants for a candidate plane with:
+  - `+904h` set;
+  - `006CFF70` true;
+  - speed < 1.389 (`00CF8AAC`);
+  - `007B8D40` true.
+  It takes the last such candidate. At the bottom it hides the plane (`007B96C0`) and releases
+  it; after LiftDelay (0.5) with the platform empty, it sends the lift back up (`006FC6B0`).
+
+### The binding, behind `kCarrierElevatorBound` (committed OFF)
+
+It is meaningful only with `kLandParkStateBound` on.
+
+**Bound:**
+- the carrier arm of the park tick;
+- the done test's intake exemption;
+- `006D0390`/`006D0150`, `006CFF70`/`006CFE90`;
+- the site tick, the platform tick, the take, the carry and the release;
+- `007CC7A0` as a direct state write: `+9F0h` = 0, `+900h` = 2, `+C04h` = -1.0.
+
+The lift point comes from the carrier model's (`liftexitpoint`, 2) Aux group (`00759167`), and
+ElevatorSpeed/Depth from `ShipGlobals.MotherShip`.
+
+**LABELLED:**
+- `planeDesc+158h` is 0.0: the plane's origin stands in for the box centre.
+- The ready plane `+18h` is never set, because the relaunch feed is not reconstructed. So the
+  relaunch arm sends only the empty lift back up (counted as `unfed_relaunch`).
+- `007B8D40` (the gear channel) answers true, because there is no `+DECh` block.
+- `00951F40`'s node detach and show are not carried. A stowed plane keeps its slot, stays in
+  state 2 and is no longer moved or thought for.
+- `site+1Ch`'s `006CEDD0` is taken clear.
+- The two site slots run from the landing queue's caller, before the queue.
+- `007C11E0(0)` is not carried, as at the 4 <-> 5 transitions.
+
+**New lines:**
+- `carrier lift class ...` and `carrier elevator <carrier>: lift=... speed=... depth=...`;
+- `  carrier elevator ...: takes <plane>` and `... stows <plane>`;
+- `summary carrier elevator <carrier>: ...`.
+
+### Predictions, written before any ON run
+
+Both sides run with `kLandParkStateBound=true`. OFF is that alone; ON adds
+`kCarrierElevatorBound=true`. The rows are JM05 9000 and JM05 3000, with USN04 4500 and LOMP10
+9000 as controls.
+
+1. **JM05 9000:**
+   - Both US carriers (Lexington, Yorktown) read a lift point and build their lift.
+   - OFF: every carrier-landed plane that enters park is refused at `006CF520` (a carrier
+     deck has no authored hangar). It stays in park, on deck, near the stern (5ag.1: local z
+     -38 to -42 on Yorktown, -134 on Lexington).
+   - ON: those planes taxi forward toward the lift at up to ParkVelocity (20.6 m/s) and slow
+     to max(0.5, dz/2) near it.
+   - The first plane on each deck reaches the lift and is taken (`takes`, state 2) within 60 s
+     of its park entry, and is stowed about 2 s later (7.7 m at 4 m/s).
+   - Later planes queue: the lane test stops them 12 to 19 m aft of the lift while it is busy.
+   - `intakes` >= 1 on each deck with a park entry, and `stowed` = `intakes` or one fewer.
+2. **The park <-> abort loop falls on carrier planes.** The `from_abort` counts of the stowed
+   planes stop growing at their stow time, because state 2 stops the bot (5an).
+3. **The sequencer records stay** (5an): the deck record counts are unchanged by the stows.
+4. **JM05 gameplay:** deaths identical, and the diff exit is 3 (positions moved).
+   - A stowed plane is still a unit this host can target, which is labelled.
+   - A moved death would be a plane on deck (OFF) that is below (ON). It is recorded per
+     entity.
+5. **Controls.**
+   - LOMP10 9000 has no carrier deck, so it is gameplay identical (exit 0 or 1).
+   - USN04 4500: its Lexington lands no plane in 4500 frames (5ag), so exit 0 or 1.
+
+**Mechanism failure**, any of:
+- a carrier plane in park that never comes within 12 m of the lift while the lift is free;
+- a take with the plane more than 3 m from the lift;
+- a stowed plane that moves again;
+- a plane running off the deck (contact lost) on the way to the lift.
+
+**Flip rule:** ON when 1 and 2 hold with no mechanism failure. The flip is of
+`kCarrierElevatorBound` only; park itself stays OFF for the airfield loop (5aa).
+
+### 5ao.1 Measured (pairs on `13fab4abe`), and the verdict: ON, staged behind park
+
+- **OFF** is `local\l23_eoff` (`kLandParkStateBound=true`).
+- **ON** is `local\l23_eon`, which adds `kCarrierElevatorBound=true`.
+- The logs are `local\l23_e{off,on}_<row>.log` and the diffs are `local\l23_ediff_<row>.txt`.
+- Everything was run in the reference launch form.
+
+| row | `pair_diff` | note |
+| --- | --- | --- |
+| JM05 9000 | 3 | deaths identical (5 rows); positions moved; the torpedo-task line "0 of 2" is absent ON |
+| JM05 3000 | 1 | the lift is unexercised (the first carrier park entry is at 178.76 s); only the new lines |
+| USN04 4700/4500 | 1 | gameplay identical |
+| LOMP10 9200/9000 | 0 | identical |
+
+**The lifts.** Each carrier's (`liftexitpoint`, 2) point was read. Lexington's is
+(-0.831, 17.396, 39.359) and Yorktown's (0.069, 15.366, 80.959); Shokaku and Zuikaku share
+(0.069, 17.296, 42.709). All four lifts built with speed 4.0 and depth 7.0.
+
+**The predictions:**
+1. **Held.**
+   - OFF: all 8 carrier park entries are refused at `006CF520` (3456 refusal calls). The planes
+     stay where they stopped.
+   - ON: each carrier plane taxis from local z of about -138 at up to 20.58 m/s. It slows
+     under the clamp (7.3 m/s at z = 24.7, 2.1 m/s at z = 35) and is taken 13.3 to 13.9 s after its
+     park entry (the four planes whose entries are traced).
+     - The take offsets are (-0.07..0.12, -0.3..-0.7, -1.1..-2.6), all inside 3 m.
+     - Each plane is stowed 2.15 s later.
+   - Lexington takes and stows 8 of 8: Lexington_sqn03 and its two wingmen, Yorktown_sqn04
+     and its two wingmen, and Yorktown_sqn08 and its first wingman.
+   - The later planes queue: `spot_refused` is 11 to 19 on them. After each stow the empty lift
+     comes back up (`empty_up` = 8).
+   - Yorktown's own lift takes nothing: every carrier landing on this row is on Lexington's
+     deck.
+2. **Moot, then held.** No carrier plane looped park <-> abort on the OFF side either (the
+   refusal keeps it in park), so there was no count to fall. ON, every stowed plane stays in
+   state 2 with `from_abort` = 0 and does not move again (last z 36.6 to 38.2).
+   - The airfield planes' loops are identical on both sides. For example, F4F Wildcat 01 has 220
+     and MainAirfieldEntity 01_sqn01|.-2 has 672; that loop is 5aa's and is untouched here.
+3. **Held as read, and it moves the count up.** The records stay after a stow (5an). Because the
+   deck is cleared, more planes land, so Lexington's final `+A8h` count rises from 18 (OFF) to 24
+   (ON), with landed arm hits 2273 -> 4344.
+   - OFF, the wingmen of a refused head never land. They re-install (Lexington_sqn03|.-2/-3 at
+     303.30 s) and keep circling.
+4. **Held.** Deaths are identical (5 rows), and the exit is 3.
+5. **Held.** LOMP10 is exit 0 and USN04 exit 1.
+
+**No mechanism failure.** Every take is within 3 m, no stowed plane moves, no carrier plane
+loses deck contact, and none reaches `done`. Two planes are still taxiing at the end of the run:
+Yorktown_sqn06 (entered at about 442 s) and Yorktown_sqn10|.-2.
+
+**Verdict: `kCarrierElevatorBound = true`.**
+- It is staged: with `kLandParkStateBound` OFF (5aa's airfield loop), no reference row reaches
+  it, and only the new `carrier lift`/`carrier elevator` lines appear.
+- On a carrier, park now ends as the image's does: on the lift, below, in state 2.
+- Step (c) is therefore answered: the elevator ends the carrier's park <-> abort question. The
+  airfield half of park is what still holds park OFF.
