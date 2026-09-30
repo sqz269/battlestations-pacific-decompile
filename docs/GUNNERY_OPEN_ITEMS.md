@@ -5343,3 +5343,37 @@ clean. Logs are `local\g17_ca{0,1}_<row>.log`.
   - IJN01's boats never reach the score, so it stays identical (predicted "may move").
 
 **Verdict: ON** (`kGunneryClassArmsBound = true`). It belongs to reference t.
+
+## 78. Blast damage on the shooter's own side: the image has no side exemption (cc9-gunnery17, SHIP_AI 82's question)
+
+SHIP_AI 82 records Shimotsuke (party 1) killing party-1 statics and coastal guns on USNOS by blast
+(`killer_blast=1`, 25 kills from 7.65 s). The question was whether the image's blast path exempts
+the shooter's side. Read from the disk bytes, **it does not**:
+
+- **`0084BAD0` BSP_Explosion_ApplyRadialDamage** (0084BAD0..0084BC5F). The only exemption is
+  `0084BBCF CMP [ESI],ECX; JE 0084BBFE`: a record whose entity is the `sourceEntity` argument is not
+  queued. No party or relation is read.
+- **`00904470`, the gather** (EXPLOSION_RADIAL_DAMAGE): it excludes only the source's own collision
+  node (`sourceEntity->vtable[B0h]()`, compared at `0098C535`).
+- **`00926E80`, the queue push**, and the drain `00926700`: no side test. The drain skips a subject
+  with `+5Eh` or `+5Fh` set.
+- **`009239A0` BSP_Entity_DispatchQueuedHit** (009239A0..00923AE7):
+  - it resolves the shot's owner through kinds 29h/2Ah (`+174h` / `+314h`);
+  - when the shot is `IsKindOf(44h)` and the owner's `+CCh` is non-negative, it notifies the victim
+    through `vtable[24h](party, centre, direction)`;
+  - it then calls `vtable[ECh](record)` up the `+3Ch` parent chain.
+  - The notification carries the party, but nothing refuses the hit.
+- **`vtable[ECh]` of the structure class** (primary vtable `00CFF3F8`, slot `00CFF4E4 = 008777D0`,
+  the unit hit apply, UNIT_HIT_PATH): the damage is `(base * ownerMod - armour) * scale`. The
+  owner modifier is the difficulty product for the shot's owning unit, not a relation test.
+
+**The host matches.** `apply_impact_blast` skips the shooter only (`if (i == shooter) continue`,
+citing 0084BBF9), with no side filter. So the own-side blast kills are the image's rule, as read,
+the same finding as GUNNERY_OPEN_ITEMS 63 for heavy artillery. **Nothing is bound.**
+
+- **Not read:** the difficulty owner modifier's value for an AI owner (`ProductForUnit(1, ...)`,
+  DIFFICULTY_MULTIPLIERS). It scales every hit by its owner, whatever the victim's side.
+- **The open question is what Shimotsuke is aiming at.** A blast lands on its own statics when the
+  aim point is next to them. After `kReconContactAllKindsBound` (AA_LETHALITY_AUDIT 14) the ship
+  also takes structure targets from its own sweep, so the aim point, not the blast, is where a
+  difference would be. `same_side` is 0 there: no own-side target is admitted.
