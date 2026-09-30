@@ -5162,10 +5162,11 @@ struct GameUnitsHost::Impl {
     // position phase, three keel points of the hull box (bow, middle, stern at
     // the box's min y, through the pose) are tested against the terrain height
     // 00903860; a point below the ground is a contact (the latch, both builds).
-    // True: the step's horizontal displacement and the linear velocity lose
-    // their uphill component at each such point (the terrain gradient), so a
-    // hull cannot climb onto land and slides along a shore. False: the latch
-    // and the census only; hulls cross land, as before.
+    // True: at a point whose penetration the step deepened, the step's
+    // horizontal displacement and the linear velocity lose their uphill
+    // component (the terrain gradient), so a hull cannot climb onto land and
+    // slides along a shore; a hull already resting in contact moves freely on
+    // the level or away. False: the latch and the census only; hulls cross land.
     static constexpr bool kShipTerrainContactBound = false;
     // SUBSTITUTION, labelled: GameSettings+3F4h is not loaded into this host
     // (the reader 0083EA71 is in the Lua host's settings load, not bound).
@@ -13558,6 +13559,14 @@ void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float b
         contact = true;
         if (depth > deepest) deepest = depth;
         if constexpr (!kShipTerrainContactBound) continue;
+        // Only a step that deepens the point's penetration is resisted: the same
+        // keel point at the step's start position (the pose's rotation kept).
+        const float w0[3] = {w[0] - (p[0] - before[0]), w[1] - (p[1] - before[1]),
+                             w[2] - (p[2] - before[2])};
+        float ground0 = 0.0f;
+        if (world_ground_height_00903860(w0, ground0) && !(depth > ground0 - w0[1] + 0.001f)) {
+            continue;
+        }
         // The uphill direction at the point: central differences over 1 unit.
         float h[4] = {ground, ground, ground, ground};
         const float px[3] = {w[0] + 1.0f, w[1], w[2]};
@@ -13571,13 +13580,7 @@ void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float b
         float ux = 0.5f * (h[0] - h[1]);
         float uz = 0.5f * (h[2] - h[3]);
         float len = std::sqrt(ux * ux + uz * uz);
-        if (!(len > 1.0e-6f)) {
-            // Flat ground above the keel: block the whole horizontal motion.
-            ux = dx;
-            uz = dz;
-            len = std::sqrt(ux * ux + uz * uz);
-            if (!(len > 1.0e-6f)) continue;
-        }
+        if (!(len > 1.0e-6f)) continue;   // flat: the step did not climb
         ux /= len;
         uz /= len;
         const float along = dx * ux + dz * uz;
