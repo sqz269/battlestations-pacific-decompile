@@ -5454,3 +5454,82 @@ out one at a time. The host instead places the squadron in the air at 150 m (`cr
 - the list at `game+19CCh+64h`;
 - the prepare state (`009CDD50`/`009CDE50`);
 - `007C17D0`.
+
+## 5aw. Handoff (cc9-lua24, 2026-09-30, stamped 10:50 UTC)
+
+**What cc9-lua24 landed** (all merged into main by the lead):
+
+| packet | switch | state | section |
+| --- | --- | --- | --- |
+| `cc9_park_hide_detach` | none | the hide's spatial detach moves nothing; the lead is refuted | 5aq |
+| `cc9_park_verdict` | `kLandParkStateBound` | **ON**, image loop accepted (death tables identical on seven rows) | 5ar |
+| `cc9_hit_index_detach` | `kHitIndexDetachBound` (gunnery) | verdict ON; cc9-gunnery18 applies the one-line flip | 5as |
+| `cc9_relaunch_feed_read` | none | `site+18h` is the squadron launch itself, not a relaunch | 5at |
+| `cc9_plane_takeoff_read` | none | the takeoff task mapped (part 1) and the Takeoff step plus the Inside start read (part 2) | 5au, 5av |
+
+**The queue:**
+
+1. **The base launch chain, one switch group `kBaseLaunchChainBound`** (committed OFF). Build it
+   in this order, each piece OFF and paired as a record while it grows:
+   1. **Launched members start Inside** (5av):
+      - the bag's `State` 1 -> `007F1C00 SetHomeAirBase(base, flag)` -> `+408h` = 1;
+      - `007ED6E0` -> `007C2130` -> `007CC820`: state 1, re-parented to the base;
+      - no airborne placement (`007F2920` skipped).
+
+      Today `create_air_ops_squadron_006c5050` (`src/game_hosts_script_orders.cpp`) places the
+      squadron airborne at 150 m.
+   2. **The launch task and site readiness** (5at): `007F1DE0`/`007F1F00` (`PlaneSendInterval`
+      2.0 s), `007EF010`, `006CF190`, and the readiness slots `006CDF60` (airfield) and `006CFF40`
+      (mother ship).
+   3. **The deck arms** (5at):
+      - the airfield placement `006CF980` -> `006CF9F0` -> `007C5F60` (the pose already exists in
+        `src/airfield_taxi.cpp`), then state 5;
+      - the carrier lift cycle in `006D0600`: the empty platform goes down, waits `tuning+510h`,
+        and `006CFFF0(1)` brings the plane up; then release, clear `+18h`, and `007C3C90(0)` gives
+        state 4. `kCarrierElevatorBound` already carries the lift itself.
+   4. **The takeoff task**:
+      - the install gate `0099B0BE`-`0099B118` (5au);
+      - `009CFF40`/`009CF8E0`, the four states, the tick `009CFD70` and the rule `009CFC70` (5au);
+      - the SlowTakeoff state (5au);
+      - the Takeoff step `009CE2C0` (5av: A-F as written, G transcribed from the listing).
+   5. **The lift-off**: send `C6h` (today counted as `liftoff_req` and `edge_takeoff_requests`)
+      and bind `007C7110 BSP_Plane_BeginFlying` (`begin_flying_007c7110` in
+      `src/plane_ground_ops.cpp` is a pure reconstruction).
+
+   - **Flip criterion.** On JM05 3000 (two airfields and two carriers), every launched member
+     reaches state 7 and flies its squadron's task. Then diff the per-entity death table and record
+     the launch timing for the next reference. USN04, E2, JM05 long and USN13 follow; they are the
+     only rows that launch from a base (5au census).
+   - **Timing to expect:**
+     - one member per 2.0 s once the site is ready;
+     - on a carrier, add the lift's `tuning+510h` wait and its travel (`depth / ElevatorSpeed`)
+       each way.
+2. **Open reads the chain still needs:**
+   - member `vtable[10h]`, the activation `007EF010` calls before `006CF190` (it presumably sets
+     `+5Ch`);
+   - the G tail of `009CE2C0` (the deck taxi and roll, listing lines 490-1332 of
+     `local\l24_ce2c0_full.asm` in the cc9-lua24 tree): the lateral excess, the yaw law, 5 -> 4 at
+     `009CF35F`, the throttle and brake, and the speed request;
+   - whether the host's airfield runways sit below 5 m world `y`. If they do, the Takeoff step's
+     arm E applies there (straight ahead, full throttle);
+   - also unread: `007B9000`, `007B9010`, `007B8D10`, `007B8DC0`, `006BEFF0`, `006BC890`,
+     `00816410`, the unit list at `game+19CCh+64h`, the prepare state `009CDD50`/`009CDE50`, and
+     `007C17D0`.
+3. **`planeDesc+158h`** (5ap item 3): the model box, `007D473A`. Not urgent; every JM05 take was
+   within 3 m.
+4. **#15** stays parked until a row destroys a hangar.
+5. **Low priority** (5ap):
+   - SetParty with the event-6 group removal;
+   - the `unit_lacks_follow_target` -> `unit_is_flight_leader` rename;
+   - the one-think-late turbo clear `009BDE40`;
+   - the moveto leader's climb speed loss.
+
+**Also open for other lanes:** the host keeps a hidden or stowed plane in the gunnery candidates
+and the recon triples. The image does too (5as), so this is not a divergence. It is recorded only
+because 5ar.1's counters moved.
+
+**Tools in the cc9-lua24 tree** (`local\`):
+- `l24_runs.ps1`: the reference rows, as in cc9-lua23's;
+- `l24_consts.py`: floats and doubles from the executable on disk;
+- `l24_grep.py`: a line filter for spilled outputs;
+- `l24_ce2c0_full.asm` and `l24_ce2c0.c`: the Takeoff step listing and pseudocode.
