@@ -416,3 +416,59 @@ lower mean is over a different population.
   one).
 - The binding stays as the image's reading. It is exact against the image's bytes, and it is the
   base for flipping once the speed side is settled.
+
+**Flipped ON, 2026-09-30, the lead's decision on fidelity.** This is a spread miss with the
+mechanism matching, which the pair rule allows:
+- The binding is exact against the image's bytes (section 8.1).
+- `applied=1`, and the regime split repeats the shadow.
+- Deaths, drops and water contacts stayed inside their spreads on all five rows.
+
+The station-error criterion measured a gap that this pair showed lies outside the steering
+regime. So it is not a test of this binding. The OFF path (lead pursuit always) stays in the code
+and is not run.
+
+### 8.9 The error split (packet `cc9_follow_error_split`)
+
+A diagnostic now runs on both sides:
+- `summary follow error split` splits the station error on every follow-law tick in the leader's
+  frame (its horizontal forward, not the lagged track).
+- It reports:
+  - the along mean;
+  - the |cross| and |dy| means;
+  - counts behind, ahead and beside (50 m and dominant axis);
+  - own |v| minus leader |v|, overall and when behind;
+  - on fly-to ticks, `009BEE30`'s commanded speed `+2B4h` minus own |v|.
+
+The per-400-tick `follow law` rows now key off a counter for every follow-law tick (`fw_law_ticks`).
+Before, they keyed off the dive-bomb follow counter and never printed on the torpedo and dogfight
+seams.
+
+**Measured on `c73b7efc1`** (Phase A ON; export `local\l21_s1`, `918C55118E53`, logs
+`local\l21_s1_<row>.log`, reference launch rows):
+
+| row | follow ticks | error mean (m) | along mean (m) | \|cross\| mean | \|dy\| mean | behind / ahead / beside | own - leader \|v\| (m/s) | same, behind | fly-to cmd - own (m/s) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 12225 | 156.6 | -137.6 | 15.8 | 50.1 | 8633 / 0 / 12 | -1.30 | -2.24 | +75.9 |
+| E2 | 15550 | 150.9 | -134.3 | 13.0 | 47.8 | 10188 / 0 / 12 | -1.10 | -1.98 | +75.3 |
+| JM05 9000 | 32083 | 527.7 | -233.2 | 302.4 | 98.2 | 15349 / 2992 / 12791 | -6.19 | -8.98 | +48.2 |
+| JM08 | 6534 | 124.8 | -117.4 | 22.4 | 11.8 | 4757 / 0 / 131 | +0.11 | +1.14 | +75.1 |
+| LOMP10 | 1009 | 247.4 | -240.3 | 29.7 | 26.2 | 991 / 0 / 18 | +0.53 | +0.54 | +80.1 |
+
+LOMP10's follow population grew from 67 to 1009 ticks with main's changes since `838701681`.
+
+**The gap is a speed deficit, not steering.**
+- On every row but JM05 the member sits straight BEHIND its station: the along mean is -117 to
+  -240 m, with |cross| of 13-30 m and not one tick ahead.
+- It flies at its leader's speed or slower (-2.2 to +1.1 m/s while behind). So it never closes.
+- Meanwhile `009BEE30`'s fly-to arm commands about 75 m/s MORE than the member is doing.
+
+So the command is there and is not being realised. The loss is between `+2B4h` and the airframe:
+the speed-hold / throttle slot path, the class speed ceiling, or the leader already flying at the
+member's top speed.
+
+JM05 9000 adds a real cross-track component (|cross| 302 m, 40% of ticks beside), on top of the
+same deficit.
+
+**Next:** the existing `follow trace` diagnostic (`kFollowTraceEvery`, in the shared units file)
+prints the throttle slot, `want`, `v` and the speed mode on the follow seams. One OFF-only run
+with it at 400 would show which stage drops the 75 m/s.
