@@ -8364,3 +8364,34 @@ strafe task. It is handed to the lead.
   final Zero squadrons and back. It fires in phase 3.
 - `usn_04_defend_guadalcanal.lua` line 422 (P-40 against a Japanese bomber) is not in this
   installation's `missiontree.lua`.
+
+## 5ce. The strafe order does become current; the AI command tick overwrites it (packet `cc9_strafe_unitcommand`, cc9-lua30, 2026-09-30)
+
+This corrects the reading of 5cd.2. It comes from the commands host's own row table in
+`local\l30_uc_esmp08.log`.
+
+- **The director takes the strafe order.** `PilotSetTarget` issues `strafe` (ordinal 10,
+  category 1) through `0077D600`. Its row reads `issue 1 slot 1 curr 1` (log line 42937 for
+  `TBM Avenger #1.1`): the push lands in slot 0 and is the current command (`0071BE40`). The
+  host's director path is not the gap.
+- **What replaces it is a `moveto` from the AI command tick.** The next rows for the same plane
+  (log lines 43049, 43093, 43135, 43180) are `moveto  ai_command_tick  15 3 1 1 1`. That is
+  `src/game_hosts_ai.cpp` `tick_issue_moveto`, the host's `00A02020`
+  (`BSP_AiCommand_IssueMoveToMember`), reached from `ai_command_tick.cpp`'s follower pass
+  `00A10DC0` or leader arm. There are 1062 `ai_command_tick` rows in the 4000-frame run. After
+  the order, `unitcommand` therefore reads `moveto`, and `08_engano.lua` re-targets every 15 s.
+- **`00A02020` itself has no current-command test** (decompiled; the Ghidra plate reads the body
+  whole). It admits a squadron when `007EDA90` rejects it, or a ship base, and issues `moveto`
+  unconditionally. So a fix is not a gate in `00A02020`. It is in whichever caller decides to
+  order these US squadrons, and how often, in the AI group tick (the planners' lane,
+  `game_hosts_ai.cpp` / `ai_command_tick.cpp`). The questions:
+  - is an ESMP08 US strike squadron in an AI group at all in the image;
+  - what cadence does the follower pass run at;
+  - does a squadron holding an attack command drop out of the group.
+- **`ammotype`**: the image's only `ammoType` string (file offset `0x908770`) sits in a property
+  table beside the pointer `007EFAE0`. That is a thunk (`SUB ECX,310h / JMP 007F1140`) into the
+  squadron's property reader `007F1140`, which is not read yet, so it is **not bound**. The host
+  answers nothing, so the script's `~= 0` test passes; that matches the image whenever the
+  squadron's ammo type is non-zero.
+
+Nothing is bound in this section. The `commands` loan is not needed for this finding.
