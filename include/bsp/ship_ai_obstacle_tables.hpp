@@ -289,6 +289,41 @@ inline constexpr float kShipAiStallThreshold = 10.0f; // 00CE38B8
 // 009F45CD: the hold blk+354h is raised to while a sector is blocked.
 inline constexpr float kShipAiObstacleHold = 3.0f; // 00CE3854
 
+// ---------------------------------------------------------------------------
+// 009F3F89..009F3FE3, the head of 009F3F80 before the 009F3FEB early out
+// ---------------------------------------------------------------------------
+// Packet cc9_ship_ai_backoff_countdown (docs/SHIP_AI_OPEN_ITEMS.md section 65).
+// While the astern latch blk+380h is at or above zero (009F3F97 COMISS against
+// 0, JB skips a negative or unordered value):
+//   - 009F3FA4..009F3FAD raise blk+354h to 3.0f (00CE3854);
+//   - 009F3FB5..009F3FC5 count the latch down by the routine's dt, through a
+//     float local (FSUB, FSTP), then FST into blk+380h;
+//   - 009F3FCB..009F3FE3: once it is below zero (FLDZ, FCOMI, JBE keeps it) it
+//     becomes -1.0f (00D7A260) and the stall accumulator blk+384h becomes 0.
+// Returns true when the latch expired on this call.
+inline constexpr float kShipAiObstacleBackoffExpired = -1.0f; // 00D7A260
+bool ship_ai_backoff_countdown_009f3f89(float& hold_354, ShipAiObstacleState& obs,
+                                        float dt) noexcept;
+
+// True: the host runs 009F3F89..009F3FE3 at the top of 009F3F80. False: the
+// latch 009F47A7 arms at 1.0f is never counted down, so an AI ship that backs
+// off once stays astern-only (009F47FC's [-1, 0] window) and the escape
+// section (009F488D) never runs again unless the stall passes 10.
+inline constexpr bool kShipAiObstacleBackoffCountdownBound = false;
+
+// 009ED788, MOV byte [ESI+36Ch],0 with ESI = blk, in 009ED6B0's unconditional
+// per-step reset span (009ED759..009ED795). The escape byte is set again only by
+// 009F4DA0's station arm (brain+374h at 009F4FC8, 009F4FEA and 009F5003), one
+// chain slot later. True: the
+// host clears blk+36Ch there. False: the byte keeps the last station-arm value,
+// so a ship that leaves its formation with it set runs 009F3F80's escape section
+// on every step: its throttle is held at 0 while committed ahead (009F4AD2), it
+// flips astern once stopped, and nothing flips it back (section 65.5).
+// ON by the pairs of 2026-09-29 (section 65.7): JM05 Yorktown steams ahead to
+// its goal (d32c 13111 -> 2477 m at 9000), death rows identical on seven rows;
+// USN13's astern Maru4/Maru6 are the navigator's astern latch, recorded.
+inline constexpr bool kShipAiEscapeByteResetBound = true;
+
 // 009F45A4..009F45B0.
 int ship_ai_sector_index_009f45a4(int direction_index, int bucket) noexcept;
 

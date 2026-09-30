@@ -698,4 +698,28 @@ void ship_ai_drive_order_ring_middle_009f40ca(ShipAiControlBlock& blk, ShipAiObs
     }
 }
 
+// ---------------------------------------------------------------------------
+// 009F3F89..009F3FE3, the head of 009F3F80
+// ---------------------------------------------------------------------------
+bool ship_ai_backoff_countdown_009f3f89(float& hold_354, ShipAiObstacleState& obs,
+                                        float dt) noexcept {
+    const float timer = obs.backoff_timer_380; // 009F3F89, kept at [ESP+24h]
+    if (!(timer >= 0.0f)) {                    // 009F3F97 COMISS, 009F3FA2 JB
+        return false;
+    }
+    if (kShipAiObstacleHold > hold_354) {      // 009F3FA4 COMISS, 009F3FAB JBE
+        hold_354 = kShipAiObstacleHold;        // 009F3FAD
+    }
+    // 009F3FB5..009F3FBD: FLD, FSUB [ESP+2Ch] (dt), FSTP to the float local.
+    const float counted = static_cast<float>(static_cast<double>(timer) -
+                                             static_cast<double>(dt));
+    obs.backoff_timer_380 = counted;           // 009F3FC5 FST
+    if (!(0.0f > counted)) {                   // 009F3FCB FLDZ / FCOMI, 009F3FD1 JBE
+        return false;
+    }
+    obs.backoff_timer_380 = kShipAiObstacleBackoffExpired; // 009F3FDB
+    obs.stall_time_384 = 0.0f;                              // 009F3FE3
+    return true;
+}
+
 } // namespace bsp
