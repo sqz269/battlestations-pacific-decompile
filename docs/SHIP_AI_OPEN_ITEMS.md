@@ -5567,3 +5567,64 @@ Rows: section 64's seven.
    have, can still show negative throttles: that is the image's station keeping, not this defect.
 5. **Mechanism failure** keeps it OFF: Yorktown still at -0.625 to the end of JM05 with the switch ON,
    or no row moving.
+
+### 65.7 The escape-byte pairs and the verdict: ON
+
+OFF is `pair_export --commit f9e933541 --out local\s18_b2`; ON is the same with
+`--flip kShipAiEscapeByteResetBound=true` (`local\s18_b3`). A 300-frame USN01 smoke ran on ON first.
+Logs are `local\s18_{b2,b3}_<row>.log`.
+
+| row | OFF `set_on_entry` (units) | OFF vs countdown OFF | `pair_diff` ON | death rows | prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 4985 (11) | 1 | 1, gameplay identical | identical (50) | 1 held; 3 n/a (station arms) |
+| USN01 3200/3000 | 967 (2) | 1 | 1, gameplay identical | identical (5) | 1 held |
+| USN13 3200/3000 | 16480 (7) | 1 | 3, moved | identical (22) | 3 **partly missed** |
+| JM05 3200/3000 | 13181 (22) | 1 | 3, moved | identical (1) | 2 held |
+| IJN01 3200/3000 | 4598 (25) | 1 | 1, gameplay identical | identical (6) | 3 missed for PT1/LST3 |
+| LOMP10 3200/3000 | 5 (1) | 1 | 1, gameplay identical | identical (10) | 1 held |
+| JM05 9200/9000 | 27656 (24) | 1 | 3, moved | identical (5) | 2 held |
+
+**JM05 9000, the question.**
+- **Yorktown.** OFF, it is astern from step 180 to 9000 at -0.625, and its `d32c` grows
+  8585 -> 13111 m. ON, it has a positive throttle from step 250 and is at 1.000 from step 1050. Its
+  `d32c` falls 8531 -> 7437 (step 3050) -> 2477 m at 9000: it steams ahead to its `movetopos` goal.
+  The unit table's `nearest` for Yorktown goes 15813 -> 5791.
+- **Other ships.** Minneapolis, Chicago, Portland, Farragut and Aylwin, all followers, stop ending
+  astern. Each ends ahead at 0.87 to 1.00, and their `nearest` falls from about 15 km to about 6 km:
+  they stay with the fleet.
+- **Unchanged.** Haguro and Zuikaku keep their negative throttles on both sides (IJN station arms).
+- **Totals.** Deaths 5/5 with identical rows. Hits, damage and shots are identical. Plane water
+  contacts 4 -> 3.
+- **Newly reached, both lua20's lane:** `BotStateLandAbort::tick` `009B09C0` (116 calls) with its
+  `direction_hold_007c07a0` record, `PlayerGunSeat::artillery_hit_lead` `009578C3` (56), and a
+  Yorktown squadron's land task at 371 s. The carrier now moves ahead during recovery.
+
+**JM05 3000.** The same shape. Yorktown's `nearest` goes 15813 -> 12511, and the death row is
+identical.
+
+**The USN13 miss.** Maru24 changes (its final throttle goes -0.625 -> -0.500), but Maru4 and Maru6
+still end astern. A trace on the ON build (`BSP_SHIP_ESCAPE_TRACE=Maru4`, `local\s18_tr_usn13.log`)
+shows the cause is not this byte:
+- the escape byte stays at 0, and the committed direction stays astern;
+- the latched direction `blk+35Ch` is 2 (Astern) from middle run 80, with `blk+1C8h` = 1;
+- the throttle comes from the ceiling in the astern direction.
+So those Marus are sent astern by the navigation arm's own direction latch. That is a separate item,
+opened below, not a failure of this mechanism.
+
+IJN01's PT1 and LST3 are not moved either. Their byte is set by their station arms every step, which
+prediction 4 allowed.
+
+**Verdict: ON.** The mechanism is confirmed where predicted: Yorktown and the JM05 US followers.
+Prediction 3 over-reached on USN13 and IJN01. This is a spread miss with the mechanism matching,
+recorded. `kShipAiObstacleBackoffCountdownBound` stays OFF (65.5).
+
+**Expected movement for reference R:** JM05 (the US carrier group's positions and the landing
+geometry), and USN13's Maru24. No death flip on these rows.
+
+**Open items.**
+1. USN13 Maru4 and Maru6 on `movetopos` latch `blk+35Ch` = Astern. Check that `009ED6B0`'s direction
+   latch (`009ED7D8..009ED8BD`, the `blk+1D0h` sign and the `00D7A270` dead band) and the goal's
+   side agree with the image.
+2. The countdown binding (65.2) waits for a row where `009F47A7` arms.
+3. The `+304h` and `+338h` clears of `009ED6B0`'s reset span (`009ED78F`, `009ED795`) are unchecked
+   against the host.

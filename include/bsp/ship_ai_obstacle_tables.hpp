@@ -319,7 +319,10 @@ inline constexpr bool kShipAiObstacleBackoffCountdownBound = false;
 // so a ship that leaves its formation with it set runs 009F3F80's escape section
 // on every step: its throttle is held at 0 while committed ahead (009F4AD2), it
 // flips astern once stopped, and nothing flips it back (section 65.5).
-inline constexpr bool kShipAiEscapeByteResetBound = false;
+// ON by the pairs of 2026-09-29 (section 65.7): JM05 Yorktown steams ahead to
+// its goal (d32c 13111 -> 2477 m at 9000), death rows identical on seven rows;
+// USN13's astern Maru4/Maru6 are the navigator's astern latch, recorded.
+inline constexpr bool kShipAiEscapeByteResetBound = true;
 
 // 009F45A4..009F45B0.
 int ship_ai_sector_index_009f45a4(int direction_index, int bucket) noexcept;
