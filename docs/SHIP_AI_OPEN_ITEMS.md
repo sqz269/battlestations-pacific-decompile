@@ -8579,7 +8579,7 @@ switched.**
 race`, repeats the call down the child list (`+48h`, next at `+44h`) for every child whose
 `vt+5Ch(kind)` refuses the passed kind, then notifies the observers (`BSP_Observer_NotifySlot0C`).
 The building's guns take targets from its party's recon slot (`[recon+DE8h]`, the side's enemy
-list; section 26 of docs/RECON_CALL_SITES.md). For slot 2 the relation rule `008065FF..0080672B`
+list, docs/RECON_CALL_SITES.md; `008053C0`, read by the host's `recon_contact_count_008053c0`). For slot 2 the relation rule `008065FF..0080672B`
 puts every unit of another party in `neutral`, never in `enemy`
 (`include/bsp/recon_slot_lists.hpp`), so a party-2 building's enemy list is empty and its gun
 pass finds no candidate. (The garrison occupants are separate units and change side with the
