@@ -84,6 +84,14 @@ namespace {
 //    trigger it, and its pair was identical, as predicted.
 //  * fire window: LANDED (packet cc9_aa_fire_window_mount): 0085A9A0 tests in the
 //    parent entity [gun+3Ch]'s frame, and every slot frame here is hull-aligned.
+// Packet cc9_weapon_facts_order (docs/AI_TARGET_WEIGHT_TERMS.md, SHIP_AI 70.1): the
+// image's 00A08460 reads live object fields - target+48h and the attacker's
+// subsystem barrels at +94h/+98h - that exist from construction, so the first AI
+// think (t=0.05) already scores with them. This host publishes the table at the
+// END of each gunnery step, after that think, so the first think saw no rows and
+// fell back to the class stand-in. ON: publish once more when the guns are built
+// (attach_00864bd0 / register_new_units_00864bd0).
+constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
 constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount frame here; cc9_aa_fire_window_mount)
@@ -9739,6 +9747,9 @@ void GameGunneryHost::attach_00864bd0() {
     host.build_guns(0);
     host.attach_passes(0);
     host.refresh_build_summary();
+    if constexpr (kAiWeaponFactsAtAttachBound) {
+        host.publish_ai_weapon_facts();
+    }
     host.log.notef("gunnery: %zu unit(s) carry %zu gun(s) from %zu authored device class "
         "row(s) and %zu bullet class row(s); the weapon director think time is %.3f s "
         "(Globals.WeaponSystems.WeaponDirectorThinkTime, 0087e16b)",
@@ -9757,6 +9768,9 @@ void GameGunneryHost::register_new_units_00864bd0() {
     host.build_guns(first);
     host.attach_passes(first);
     host.refresh_build_summary();
+    if constexpr (kAiWeaponFactsAtAttachBound) {
+        host.publish_ai_weapon_facts();
+    }
     host.log.notef("gunnery: spawn batch registered unit(s) %zu..%zu on the existing host, "
         "%zu new gun(s) (%zu total); the summary, hit records and in-flight rounds of the "
         "%zu unit(s) already built are untouched",
