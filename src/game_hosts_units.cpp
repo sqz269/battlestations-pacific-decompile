@@ -2391,6 +2391,10 @@ struct GameUnitsHost::Impl {
     void ground_state_from_locked_007ca3f0(GameUnitSlot& p, LandingDeck& d, bool five);
     // Packet cc9_takeoff_task_bind (kBaseLaunchChainBound), piece 4 part 2a.
     void install_takeoff_task_0099a4a0(GameUnitSlot& p);
+    // Packet cc9_base_launch_liftoff (kBaseLaunchChainBound), piece 5.
+    void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
+    unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
+    unsigned long long base_launch_liftoff_site_leaves{0}, base_launch_c01_sets{0};
     void takeoff_prepare_enter_009cdd50(GameUnitSlot& p);
     void takeoff_slow_enter_009ce1d0(GameUnitSlot& p);
     bool takeoff_permission_009cdd10(GameUnitSlot& p);
@@ -11967,6 +11971,57 @@ void GameUnitsHost::Impl::install_takeoff_task_0099a4a0(GameUnitSlot& p) {
             static_cast<double>(p.takeoff_prep_phase_20));
     }
     done("PilotBot::install_takeoff_task_0099a4a0", 0x0099a4a0u);
+}
+
+// The ground roll's lift-off send (007CC212 / 007CC26E): 00762A00 builds message
+// C6h and 0077C2A0(unit, msg, 1, 0) routes it; LABELLED: delivered at once.
+// BSP_Plane_HandleMessage's case C6h (007CCFA0) calls 007C6F50(msg byte +20h),
+// which 00762A00 does not write; the flag only adds 007D83D0's push for a
+// parented plane, and is taken as 0 here (LABELLED, uncertainty in 5bf).
+// 007C6F50 (007C6F50-007C70FD, RET 4), +C49h clear (not carried: clear):
+// - parented (+3Ch): 007D9CE0(0) takes ctl+18h back to world by adding the
+//   parent's velocity (the reverse of 007C71E0's 007C7277), 004134F0 the pose
+//   from +CCh, 00924F90(0) drops the parent. The host keeps the world pose.
+// - +900h != 7: C3h with sub-kind 7 (+21h), routed with 7 (0077C2A0; delivered
+//   at once, LABELLED) -> 007CCFA0 -> 007C7110: with +900h 4 or 5 and a holder,
+//   the site's vtable[28h] 006CF180 -> 006CEF80 erases the plane from site+34h;
+//   then +900h = 7, +C04h = -1.0, +910h = 0, +904h = 0, +908h = 0 from 4 or 3
+//   (else 3600.0, 00CFDEB0), and 007C11E0(0) (recorded).
+void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why) {
+    if (p.deck_parent_plus_one != 0 && p.deck_parent_plus_one <= slots.size()) {
+        const GameUnitSlot* o = slots[p.deck_parent_plus_one - 1u].get();
+        if (o != nullptr) {
+            p.plane_world_velocity[0] += o->motion.linear_velocity.x;
+            p.plane_world_velocity[1] += o->motion.linear_velocity.y;
+            p.plane_world_velocity[2] += o->motion.linear_velocity.z;
+        }
+        p.deck_parent_plus_one = 0;
+        ++base_launch_liftoff_unparented;
+    }
+    const int prev = p.plane_control_mode_900;
+    if (prev == 7) return;
+    if ((prev == 4 || prev == 5) && p.plane_contact_deck_bf4 != 0
+        && p.plane_contact_deck_bf4 <= landing_decks.size()) {
+        std::vector<std::size_t>& occ = landing_decks[p.plane_contact_deck_bf4 - 1u].site_occupants_34;
+        const auto it = std::find(occ.begin(), occ.end(), p.process_index);
+        if (it != occ.end()) {
+            occ.erase(it);
+            ++base_launch_liftoff_site_leaves;
+        }
+    }
+    p.plane_control_mode_900 = 7;
+    p.plane_site_timer_c04 = -1.0f;
+    p.plane_taxi_queue_910 = false;
+    p.plane_landed_904 = false;
+    p.plane_airborne_908 = (prev == 4 || prev == 3) ? 0.0f : 3600.0f;
+    record("Plane::flight_state_notify_007c11e0", 0x007c11e0u);
+    ++base_launch_liftoffs;
+    log.notef("base launch lift-off: %s %d -> 7 at %.2f s (%s) y=%.2f |v|=%.2f "
+        "(007CC1B3 -> C6h -> 007C6F50 -> C3h 7 -> 007C7110; packet cc9_base_launch_liftoff)",
+        p.row.name.c_str(), prev, static_cast<double>(summary.simulated_seconds), why,
+        static_cast<double>(p.motion.position[1]),
+        static_cast<double>(avoid_len(p.plane_world_velocity)));
+    done("Plane::begin_flying_007c7110", 0x007c7110u);
 }
 
 // 009CDD50 (009CDD50-009CDE4C, RET), takeoff/prepare's enter: +19h = +18h = 0,
@@ -26974,7 +27029,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // Step 8, 007CC1B3-007CC2B3, the lift-off request: state 4,
                         // BFCh - WheelHeight > 0.1 and unit+ACCh (ctl+1Ch, world vy)
                         // > 0.1. Counted, not sent: the takeoff 007C7110 is not bound.
-                        if (!on_path &&
+                        if constexpr (kBaseLaunchChainBound) {
+                            // Packet cc9_base_launch_liftoff: 007CC1B3-007CC2B3 as
+                            // the listing has them (EBX = 2 at 007CC145, so both
+                            // arms run on the authority): out of state 5, BFCh -
+                            // WheelHeight > 0.8 (double 00CE3D40) and ctl+1Ch > 0.1
+                            // (double 00D7A3A0) sends C6h; else, contact lost
+                            // (+BF8h clear) on a holder whose owner answers
+                            // IsKindOf(9) sends C6h; else, contact lost, +C01h = 2.
+                            if (!on_path) {
+                                const float h = unit_.plane_contact_height_bfc -
+                                    unit_.plane_wheel_height_1fc;
+                                const std::size_t hd = unit_.plane_contact_deck_bf4;
+                                if (static_cast<double>(h) > 0.800000011920929 &&
+                                    static_cast<double>(unit_.plane_world_velocity[1]) >
+                                        0.10000000149011612) {
+                                    ++unit_.ground_liftoff_requests;
+                                    owner_.plane_liftoff_c6h_007c6f50(unit_, "height");
+                                } else if (!unit_.plane_ground_contact_bf8) {
+                                    if (hd != 0 && hd <= owner_.landing_decks.size()
+                                        && owner_.landing_decks[hd - 1u].mother_ship) {
+                                        ++owner_.carrier_deck_edge_takeoffs;
+                                        owner_.plane_liftoff_c6h_007c6f50(unit_, "deck edge");
+                                    } else {
+                                        unit_.plane_c01 = 2;                  // 007CC2AD
+                                        ++owner_.base_launch_c01_sets;
+                                    }
+                                }
+                            }
+                        } else if (!on_path &&
                             unit_.plane_contact_height_bfc - unit_.plane_wheel_height_1fc > 0.1f &&
                             unit_.plane_world_velocity[1] > 0.1f) {
                             ++unit_.ground_liftoff_requests;
@@ -29677,6 +29760,10 @@ void GameUnitsHost::report() {
             "(006FC640 / 006FC810 / 006D0667 / 006D02F0, packet cc9_base_launch_deck_arms)",
             host.base_launch_lift_down, host.base_launch_lift_up, host.base_launch_lift_top,
             host.base_launch_lift_blocked);
+        host.log.notef("summary base launch lift-off: liftoffs=%llu unparented=%llu site_leaves=%llu "
+            "c01_sets=%llu (007CC1B3 / 007C6F50 / 007C7110, packet cc9_base_launch_liftoff)",
+            host.base_launch_liftoffs, host.base_launch_liftoff_unparented,
+            host.base_launch_liftoff_site_leaves, host.base_launch_c01_sets);
         host.log.notef("summary base launch takeoff task: installs=%llu parking_refused=%llu "
             "to_slow=%llu to_run=%llu done=%llu permission_asks=%llu denied=%llu (0099A4A0 / "
             "009CFD70, packet cc9_takeoff_task_bind)", host.takeoff_installs,
