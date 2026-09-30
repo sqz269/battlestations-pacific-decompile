@@ -112,3 +112,57 @@ reuse `recon_values.cpp`'s `006B8190` / `00803750` / `008037D0` helpers, in the 
 4. **Failure modes that would keep it OFF:** a Lua error from a helper that now iterates real
    entities (the `first_error` line), a stack imbalance (the host's `lua_gettop` is restored, so
    it would surface as an error), or no publication on a row that has units.
+
+## 4. The pairs, and the flip
+
+Setup:
+- Same tree, commit `54162190a`. `local\l22_off` (SHA-256 `FAACD01BA8E1`) is a clean export;
+  `local\l22_on` (`BA840A4C77F6`) is `--flip kReconPublishBound=true`.
+- The launch form is the reference rows' (`local\l22_runs.ps1`, copied from cc9-gunnery17 and
+  cc9-ships20), with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+- JM08 36200/36000 was also run with `BSP_ORIGIN_DIAG=1` on both sides.
+- Runs ended by 2026-09-30 06:30 UTC.
+
+| row | `pair_diff` | ON passes / publishes / entries |
+| --- | --- | --- |
+| USN04, E2, USN01, JM06, JM08 3000, USN13, BSM01, LOMP06, LOMP10, USN12, LOMP10 long, USNOS, USNOS long, IJN01, USN13 long | exit 1 (gameplay identical) | e.g. USN04 75 / 12 / 154, USN13 50 / 42 / 10061 |
+| **JM08 36000** | exit 3 | 600 / 91 / 31871 |
+| **USN02** 9000 | exit 3 | 150 / 11 / 274 |
+| **JM05** 3000 and **JM05 long** | exit 3 | 50 / 35 / 7690; 150 / 75 / 18001 |
+
+**Prediction 1 (the mechanism) held.**
+- Every ON row publishes. `no_category` is 0 everywhere. OFF is `bound=0`.
+- No row's error-line count changes.
+
+**Prediction 2 (JM08) held.**
+- `recon[0].own` has 36 entries from t = 0.1 s (OFF: 0 at every sample).
+- `around` is 1 at t = 720.8 s (`USTroopTransport 05` at 19.2 m). OFF never gets there.
+- This installation's `PRCPJM08.lua` (the script the row loads, mtime 2024-08-26) polls
+  `CheckInvasion` once a second, and it fires. `StartInvasion` issues the 21 `NavigatorAttackMove`
+  orders onto `Headquarter 01` and the six `NavigatorMoveToPos` orders onto `USNLandingNavpoint
+  01`-`06`. The first comes at mission frame 14005, inside the predicted 10800-14400.
+- `CheckAP*` then re-issues AttackMove for transports 01, 04 and 02.
+- **Death table:** 18 -> 18 rows. TroopTransports 01, 02, 04 and LST 03 no longer die; kontener
+  01, 02, 03 and 05 now die; 10 rows change time or killer. The controlled Auilick moves
+  4565 -> 10504 m.
+- This row is now the reaching row for SHIP_AI 73's pad model (cc9-ships20).
+
+**Prediction 3 (which rows move) partly missed.** The mechanism matches, so the switch flips; the
+miss is recorded here.
+- **Predicted to move but identical:** USN04/E2, USN01, JM06, BSM01 and USN12. Their scripts
+  read recon only in branches these 3000-9000-frame rows do not reach. `local\l22_scripts.py`
+  lists each row's script and its reads: USN01 `usn_1_marshall.lua` and USN12 `usn_12_augusta.lua`
+  have none.
+- **Moved, not individually predicted:**
+  - **USN02:** 14 -> 1 deaths. Its `usn_2_java.lua` has no recon read. The mission fails at
+    29.75 s on both sides, and `luaInitMissionEnd` (`commandhelpers.lua` 13643) then calls
+    `SetInvincible(value, 0.1)` on every unit of `luaGetOwnUnits(nil, party)` for all three
+    parties. With the maps empty, only the scripted ten were protected; now all 37 are. So the
+    thirteen post-failure sinkings stop (Alden, John1-3 and others stop at their floor health),
+    and hit records double.
+    This is script behaviour after mission end, not combat.
+  - **JM05 (3000 and 9000):** the script's recon reads now answer. `SetFireTarget` and
+    `NavigatorAttackMove` run once, on `Clemson class 1930 #1.1` (range 1600 -> 1852). Deaths,
+    hits and damage are identical.
+
+**Decision: ON** (`kReconPublishBound = true`).

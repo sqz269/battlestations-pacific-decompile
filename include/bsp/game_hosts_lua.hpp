@@ -160,7 +160,7 @@ inline constexpr bool kLuaReconListenersBound = true;  // ON: pairs held (docs/L
 // decimal +174h id, valued thisTable[id] (00927BF0). True: the host publishes
 // its recon triples after each recon pass. False: the maps stay the empty shell
 // 00803A40 built, and every luaGetShipsAround* query answers empty.
-inline constexpr bool kReconPublishBound = false;
+inline constexpr bool kReconPublishBound = true;  // ON: pairs held (docs/RECON_PUBLICATION.md section 4)
 
 // Packet cc9_recon_level_step_check (docs/LUA_BINDING_MISSION.md, "Why LOMP06's
 // seaplane listener was silent"). 008073C0 resets every record at each pass
