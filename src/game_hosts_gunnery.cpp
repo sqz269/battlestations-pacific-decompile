@@ -509,6 +509,13 @@ constexpr bool kTorpedoGyroHeadingBound = true;
 //    unit order. SUBSTITUTIONS: the squadron and convoy aggregates (classes 18h
 //    and 1Ah, 00805490 / 00805680) are not built. docs/RECON_TEAM_LISTS.md.
 constexpr bool kReconTeamListsBound = true;
+//  * kReconContactAllKindsBound: the sweep's walk (008651D7..00865237,
+//    docs/RECON_SLOT_OBJECT.md 4.1) scores node->payload->unit whatever its
+//    kind. The host admitted only ship and plane bases from the published
+//    triple, so the structures, land units and aggregates the scan publishes
+//    never reached 00863990. OFF: that pre-filter. Packet
+//    cc9_recon_contact_kinds, docs/AA_LETHALITY_AUDIT.md section 14.
+constexpr bool kReconContactAllKindsBound = false;
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
@@ -1301,6 +1308,9 @@ struct GameGunneryHost::Impl {
     unsigned long long plane_box_hits{0};
     // Packet cc9_aa_leader_penalty (census, both sides): plane candidates past
     // the class, rank and mask gates, and how many were flight leaders.
+    unsigned long long recon_contact_admit_other{0};   // kReconContactAllKindsBound
+    std::map<int, unsigned long long> recon_other_scored_by_class;
+    std::map<int, unsigned long long> recon_other_accepted_by_class;
     unsigned long long aa_range_origin_scored{0};   // kAaCategoryRangeOriginBound census
     unsigned long long aa_range_origin_flips{0};
     double aa_range_origin_abs_delta{0.0};
@@ -4317,11 +4327,18 @@ public:
                     const bool plane_base =
                         owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase);
                     if (!ship_base && !plane_base) {
-                        ++owner_.summary.contact_reject_kind;
-                        continue;
+                        // Packet cc9_recon_contact_kinds: 008651D7..00865237 hands
+                        // every node's payload->unit to 00863990 with no kind
+                        // test; structures, land units and the aggregates are
+                        // refused there (00862820, the rank) or scored.
+                        if constexpr (!kReconContactAllKindsBound) {
+                            ++owner_.summary.contact_reject_kind;
+                            continue;
+                        }
+                        ++owner_.recon_contact_admit_other;
                     }
                     if (plane_base) ++owner_.summary.contact_admit_plane;
-                    else ++owner_.summary.contact_admit_ship;
+                    else if (ship_base) ++owner_.summary.contact_admit_ship;
                     contacts_.push_back(i);
                 }
             }
@@ -4512,6 +4529,11 @@ public:
         }
         if (out.accepted) ++accepted_;
         else ++rejected_;
+        if (!is_plane && !owner_.units.unit_is_kind_of(other, bsp::kUnitGunneryKindShipBase)) {
+            const int cls = owner_.units.unit_class_id(other);
+            ++owner_.recon_other_scored_by_class[cls];
+            if (out.accepted) ++owner_.recon_other_accepted_by_class[cls];
+        }
         if (torpedo_cat) {
             // Everything before this point passed, so the only guard left inside
             // 00863990 is the range test against the category range at
@@ -10860,6 +10882,20 @@ void GameGunneryHost::report() {
                 ? host.aa_range_origin_abs_delta / static_cast<double>(host.aa_range_origin_scored)
                 : 0.0,
             kAaCategoryRangeOriginBound ? 1 : 0);
+        {
+            std::string by_class;
+            for (const auto& [cls, n] : host.recon_other_scored_by_class) {
+                const auto it = host.recon_other_accepted_by_class.find(cls);
+                char item[64];
+                std::snprintf(item, sizeof item, " %02X:%llu/%llu", cls & 0xff, n,
+                    it != host.recon_other_accepted_by_class.end() ? it->second : 0ull);
+                by_class += item;
+            }
+            host.log.notef("summary mission gunnery recon contact other kinds admitted=%llu "
+                "scored/accepted by class:%s bound=%d (008651D7..00865237, packet "
+                "cc9_recon_contact_kinds)", host.recon_contact_admit_other,
+                by_class.empty() ? " none" : by_class.c_str(), kReconContactAllKindsBound ? 1 : 0);
+        }
         {
             const double nb = static_cast<double>(host.plane_blast_box_records);
             const double nm = static_cast<double>(host.plane_blast_mesh_records);

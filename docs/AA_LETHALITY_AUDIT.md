@@ -1292,3 +1292,66 @@ Of 12.6's list:
 - the aim-point height is now bound;
 - the kind-6 second ammunition was already bound;
 - the fire-window origin and the recon contact list stay open (13.1).
+
+## 14. The recon contact list: the sweep scores every published kind (packet `cc9_recon_contact_kinds`, cc9-gunnery17)
+
+### 14.1 What was left of the substitution
+
+- The host has walked the published enemy triple since `kReconTeamListsBound` (docs/RECON_TEAM_LISTS.md),
+  with the aggregates since `kReconAggregatesBound`. So 12.6's "recon contact list" is the list
+  itself only in part.
+- One pre-filter remained in `recon_contact_count_008053c0`. It admitted only ship bases and plane
+  bases. Everything else the scan publishes (structures, land units, the squadron aggregates) was
+  dropped before the score.
+- **The image has no kind test on the walk** (docs/RECON_SLOT_OBJECT.md 4.1):
+  - 00865220..00865237 take `node->payload->unit` and call `00863990` directly;
+  - refusals come from inside the score: `00862820` (alive, active, the per-category allow byte,
+    the class arms), the rank, the plane/ship mask `008633D0`, and the category range.
+- **The reach is wide.** On s, the pre-filter dropped:
+
+| row | kind rejects | of considered |
+| --- | --- | --- |
+| USNOS long | 6247002 | 7924639 |
+| USNOS | 2167265 | 2701222 |
+| JM05 long | 1453697 | 2173627 |
+| JM08 | 694755 | 798915 |
+| JM05 | 511200 | 775528 |
+| USN13 | 376528 | 1916287 |
+| IJN01 | 89664 | 463424 |
+| USN01 | 36170 | 68076 |
+| LOMP06 | 11200 | 11740 |
+| LOMP10 long | 8118 | 39192 |
+| LOMP10 | 5084 | 25724 |
+| USN12 | 2592 | 11232 |
+| JM06 | 1656 | 9556 |
+| USN04, E2, USN02, BSM01 | 0 | - |
+
+### 14.2 The binding (`kReconContactAllKindsBound`, committed OFF)
+
+- ON: the pre-filter admits every live contact, and the host's `score_candidate_00863990` decides
+  (liveness, class id, rank, mask, range).
+- **Summary line**, on both sides: `summary mission gunnery recon contact other kinds admitted=
+  scored/accepted by class: CC:n/m`. Those are scores and acceptances of non-ship, non-plane
+  targets per class id, including director targets on the OFF side.
+- **Uncertainty:** the host's 00862820 is the reconstructed liveness rule. Its per-category allow
+  byte and class arms are as bound earlier (UNIT_GUNNERY_PASS). A class those arms refuse in the
+  image but the host admits would show up as a spurious acceptance here.
+
+### 14.3 Predictions (written before any ON run)
+
+1. **Identical (exit 0 or 1):** USN04, E2, USN02 and BSM01. They have no kind rejects, so the
+   switch changes nothing there.
+2. **Mechanism:**
+   - `admitted` > 0 on every other row, and about equal to OFF's kind-reject count until the
+     first moved step;
+   - the new classes are scored, and they are accepted only for categories whose rank is
+     non-zero for that class and within range. Expect the land and structure classes against the
+     artillery categories. The squadron aggregate (18h) is expected unranked and refused.
+3. **Rows that may move:** USNOS, USNOS long, JM05, JM05 long, JM08, USN13, IJN01, USN01, USN12,
+   JM06, LOMP06, LOMP10 and LOMP10 long. Ship guns take structure or land targets from the sweep:
+   - more structure deaths where they are in range (USNOS: the US base, the side the Japanese
+     guns already shell through the director);
+   - fewer rounds at ships or planes where a structure outranks them.
+   - The direction on deaths is up for structures. Ship and plane deaths may move either way.
+4. **Mechanism failure:** a move on a row where `admitted` is 0, or an acceptance of a class with
+   rank 0.
