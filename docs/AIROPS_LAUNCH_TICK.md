@@ -253,9 +253,15 @@ block+38h and so makes `006BF620` refuse readiness, is the **non-campaign** arm.
 
 This process asserts a campaign session in three places now (`game_non_campaign_flag()` returning 0
 for `GetDifficulty`, `non_campaign_session()` returning false, and `inputs.non_campaign_session =
-false`), so it can only take the zero arm. **In a campaign the deck has no readiness brake**: nothing
-writes block+38h, `006BF620` never refuses on it, and `006CC690` never takes its queue arm. That is
-not a gap in the reconstruction; it is what the executable does.
+false`), so it can only take the zero arm. ~~In a campaign the deck has no readiness brake: nothing
+writes block+38h, `006BF620` never refuses on it, and `006CC690` never takes its queue arm.~~
+**CORRECTED (docs/SQUADRON_LAND_TASK.md 5ax and 5bj, 2026-09-30).** `006C6540` is not the only
+writer. `006C5050` itself stores the squadron it has just made at block+38h whenever its flag argument
+is 0 (`006C5314`-`006C5348`). Every launch from `006CC690` passes 0 (`006CC72E`), so every campaign
+launch sets the brake. `006C5B70` releases it: `006CDC70` runs it after `006CD240`, and it clears
+block+38h once `007ED740` answers, that is, when every member is in state 7, 6, or 4 with ground
+contact. While the brake is held, `006BF620` answers not ready. The host binds both behind
+`kBaseLaunchBrakeBound` (ON since 5bj).
 
 What paces a campaign launch is the mission script. `usn_19_coralus.lua` gates each American carrier
 on `stloPlaneNum < 2` and each Japanese one on `stloPlaneNum < 4`, counting through

@@ -96,6 +96,15 @@ inline constexpr bool kWingConstructionInPassABound = true;
 // land/park, a recorded spread miss; controls gameplay-identical).
 inline constexpr bool kBaseLaunchChainBound = true;
 
+// Packet cc9_plane_desc_158 (docs/SQUADRON_LAND_TASK.md 5bk). True: planeDesc+158h
+// (007D473A) is read from the class model's top-level `BoundingBox`, the box
+// centre along z, for the airfield spot slide (007C5F60), the lift offsets
+// (007C5F60's carrier arm, 006FC810) and park's lift target (006D00E0) and nose distance
+// (006CFE90). False: 0.0, the plane's origin, as before.
+// ON: 5bk's pairs (death tables identical on JM05 and USN13, re-timed on USN04;
+// JM05 9000's park-loop count moves recorded as a spread miss).
+inline constexpr bool kPlaneDesc158Bound = true;
+
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the
 // image's destroy 0077D1A0 -> 0077C980 message 77h -> 0077FE80 -> 0077BD70(null)

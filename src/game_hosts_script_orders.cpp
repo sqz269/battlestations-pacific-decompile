@@ -577,14 +577,15 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     wing_count_out = 0;
     if (vehicle_class == 0u) return 0u;
     // A process guard, and RE-JUSTIFIED by packet cc8_airops_deck_brake. It was
-    // written as a stand-in for the deck's readiness brake, block+38h, on the
-    // assumption that reconstructing that brake would replace it. It would not:
-    // 007F1C55's JZ sends a **campaign** session's squadron to 006CC7B0's queue
-    // at block+74h, and only a non-campaign one to the spotting queue whose drain
-    // 006C6540 writes block+38h. This process asserts a campaign session, so
-    // nothing writes block+38h and the native has no readiness brake here either.
+    // written as a stand-in for the deck's readiness brake, block+38h.
+    // CORRECTED (docs/SQUADRON_LAND_TASK.md 5ax, 5bj): a campaign launch does set
+    // that brake. 006C5050 stores each flag-0 squadron at block+38h
+    // (006C5314-006C5348), and 006C5B70 releases it once every member is flying
+    // or on the ground in state 4. Both are bound behind kBaseLaunchBrakeBound.
+    // So this limit is only a safety net, not a stand-in for any native rule.
     //
-    // What bounds a campaign launch is the mission script's own gate -
+    // What bounds a campaign launch is the brake together with the mission
+    // script's own gate -
     // `stloPlaneNum < 2` for each American carrier and `< 4` for each Japanese
     // one - and that gate works only because the tick keeps slot+28h filled. Over
     // USN04's six decks it admits about two dozen squadrons, so the number below
@@ -602,10 +603,9 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
             squadron_limit_logged_ = true;
             log_.notef("air ops squadron: the %zu-squadron ceiling of this process is "
                 "reached; further launches leave slot+28h zero. It is a safety net, not "
-                "a native rule: a campaign session takes 007F1C55's zero arm into the "
-                "block+74h queue and nothing writes block+38h, so the deck has no "
-                "readiness brake here either, and the mission script's own stloPlaneNum "
-                "gate is what paces a launch",
+                "a native rule: the deck's readiness brake (block+38h, 006C5050 / "
+                "006C5B70) and the mission script's own stloPlaneNum gate are what pace "
+                "a launch",
                 kSquadronCreateLimit);
         }
         return 0u;
