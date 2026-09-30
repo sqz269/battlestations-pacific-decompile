@@ -7906,3 +7906,47 @@ nothing where no authored command wipes it.
    spares the shooter's side.
 3. **USN01's unit table shrinks 88 -> 59 rows** (29 only OFF). Check whether that is the table's
    own filter (moved units) or units missing.
+
+- **Item 2 of the list above is answered.** The image's blast path has no side exemption
+  (GUNNERY_OPEN_ITEMS 78), so friendly blast kills are the image's rule.
+
+## 93. Two follow-ups to section 92 (cc9-ships23, 2026-09-30)
+
+### 93.1 USN01's unit table 88 -> 59 is 29 real absences, not a table filter
+
+- **The table** is the gunnery unit table (`unit side guns cats ... sunk_at killed_by`). It
+  lists every unit the run created.
+- **The 29 OFF-only rows** are eight generated squadrons with their wingmen: ConTBD1-3 and ConSBD1-3
+  (from `luaConLeadHit`), plus KatTBD and KatSBD (from `luaKatoriSpotted`, line 955; that branch
+  is not traced here).
+- **What spawns them:** `luaConLeadHit` in `usn/usn_1_marshall.lua:893`
+  (`GenerateObject("ConTBD1")` ...). It is the callback of the hit listener on `Convoy1`
+  (`Mission.ConLeader`, line 226), filtered to TORPEDO, BOMB and ROCKET.
+- **OFF:** `hit listener 00988510: target "Convoy1" type "Bomb" damage 502.8 -> luaConLeadHit()`.
+- **ON:** no such hit and no `ConTBD1` line anywhere. With section 92 ON no bomb lands on Convoy1
+  in the 150 s (why the attack differs is not traced), and the script branch that generates the strike is never
+  taken.
+- **So the shrink is a downstream gameplay consequence of section 92,** not missing units or a
+  filter.
+
+### 93.2 What replaces JM08's landers' HQ command about one second after StartInvasion
+
+The sequence in `s23_c1_jm08x` (the flip ON):
+
+| t (s) | event |
+| --- | --- |
+| 538.79-538.89 | `NavigatorAttackMove(unit, HQ)` makes `attackmove` (`00E08F78`) current. `009F5DA0` releases each LST from its planner formation (`follower release diag ... 00E08F78`; LST 03 from Bristol, LST 02 from Macomb, LST 01 from Bristol). This is the image's own rule. |
+| 538.85 | The HQ latch runs once: LST 03 mode 3, LST 01 and LST 02 mode 4. |
+| 538.9-539.9 | The side-AI planner's follower pass `00A10DC0` asks `0077C8D0` for each LST again. `follow issued (00720CD0, source join 0077F940): "LST 01" -> "Bristol"`, LST 03 -> Bristol, LST 02 -> Macomb. `00720CD0` clears every slot, so `follow` replaces `attackmove`. |
+
+- **What replaces the order is the planner's regrouping.** The planner still counts the LSTs as
+  members of the Bristol and Macomb groups (every ship base is groupable, `009FE080`'s ship
+  tail). Its follower pass re-joins them at the next member pass.
+- **Open (the next read, ranked):**
+  1. Does the image's planner keep a script-ordered unit in its group? The candidates are its
+     group refresh and admission (`00A2E260` split, `009FE080`) and the member pass
+     `00A2C790`, which notifies `current_command` (`00A0FC90`, `RET 8`, a no-op).
+  2. The planner's join is still delivered at the call (`game_hosts_ai.cpp`
+     `tick_request_join_formation`, the same `0077C964` route as section 92). Posting it
+     through the loopback like section 92 would be parity. It does not change this ordering:
+     the script's `attackmove` is posted first, so the join still lands last.
