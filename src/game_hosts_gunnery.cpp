@@ -91,7 +91,7 @@ namespace {
 // END of each gunnery step, after that think, so the first think saw no rows and
 // fell back to the class stand-in. ON: publish once more when the guns are built
 // (attach_00864bd0 / register_new_units_00864bd0).
-constexpr bool kAiWeaponFactsAtAttachBound = false;
+constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
 constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount frame here; cc9_aa_fire_window_mount)
