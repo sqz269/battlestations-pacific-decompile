@@ -8065,3 +8065,73 @@ Predictions:
 - `s23_disp.py` (displacement sweep) and `s23_census.py` (script call census).
 - `BSP_LANDER_DIAG=1` now also prints `lander latch diag`, `fleet diag` (every 10 s) and
   `follower release diag`.
+
+## 96. How the image lets a planner-group lander land (packet `cc9_group_transport_moves`, cc9-ships24, 2026-09-30)
+
+**Short answer.** Two routes, and the host had only the first.
+1. **A script order survives only while the group is in CLOSEATTACK.** The follower pass
+   `00A10DC0` (the re-join of section 94) runs from IDLE, MOVETO, MOVETOATTACK above
+   CollectDist, CAUTIOUSMOVE, CAUTIOUSATTACK, DEFENDPOSITION, PATROLTO and three more, but not from
+   CLOSEATTACK (`00A15490`: `00A13B60`, `00A11B80`, `00A11AF0`). `00A13B60` skips a lander
+   (`00A1443D`, the class trait `00827FB0`), so nothing re-orders it there. This is what
+   happened in `s23_b0_jm08x`: Bristol's group promoted at dist 2981.2 before `StartInvasion`,
+   LST 01 and LST 03 kept `attackmove` to the HQ, and `begins=2`. In `s23_c1` / `s23_e1` the
+   invasion came first (e1: `StartInvasion` at log line 88675, promotion at t=632.4), so the
+   planner re-joined them. The race is the image's; there is no host defect in it.
+2. **The planner's own route is `00A11B80`**, CLOSEATTACK's and DEFENDPOSITION's middle call
+   (and PATROLTO's, after its near pass). SENTITY_INIT_PASSES 9a/9b read it and parked it because
+   no reference group then held a transport near an enemy CommandBuilding. JM08 long now does:
+   Bristol's CLOSEATTACK group (7 members, LSTs and transports) targets `Headquarter 01`'s group.
+
+### 96.1 `00A11B80`, re-read from the listing (`00A11B80..00A11F63`)
+
+`__thiscall(command)(AiGroup* other)`, `RET 4`. For each node of the command's group list
+(`[cmd+4h]+5640h`), member `ebx`:
+- skip unless `vt+5Ch(6)` (`00A11C0E`) and `[ebx+538h]->vt+2Ch()` (`00A11C27`, `00827FB0`);
+- **ready** = `ebx->vt+234h(0)` = `008128E0` (`00A11C3E`): the class test, `+1124h <= 0.0`,
+  `006F2C30(&ebx+FCh, ebx+54h, 2)` (the nearest list-28 entity of another party within its
+  `+7C4h` LandingRange, 3-D squared, `006F2D1C..006F2D34`) and `006F2A50(site, 0)` (a pad with a
+  null occupant);
+- ready: message 94h (`0075B430(94h)`, vtable `00CF5C4C`) routed through `0077C2A0(msg, 2, 0)`
+  (`00A11C44..00A11C82`); next member;
+- not ready, **anchor**, fixed once per call by the first such member (`[esp+13h]` latch):
+  - with `other`: the first member of `other` answering `vt+5Ch(1Ch)` (`00A11CC0..00A11CFA`);
+  - without: over list 28, the entity with `+54h != group+5638h` whose XZ squared distance to the
+    group's first member (`00F87574` when empty) is strictly below the running best, seeded
+    with `(tuning+1F4h)^2` (`00A11D9C..00A11E87`);
+  - no anchor: next member;
+- `d` = XZ distance member - anchor (`00A11D2E..00A11D97`; `d = 0` when `d^2 <= [00CE3820]`),
+  `r = FILD [anchor+7A0h] * 0.75` (CaptureRange, `00A11E9D`); when `d > r` the member gets
+  `00A02020(member, anchor + (member - anchor) * r / d)` with the anchor's own y
+  (`00A11EC0..00A11F23`): the point on the `r` circle nearest the member.
+
+### 96.2 The binding (committed OFF): `kAiGroupTransportMovesBound`
+
+- `game_hosts_ai.cpp`, `transport_moves_00a11b80`, called where the image calls it: CLOSEATTACK
+  after `00A13B60` with the target group, DEFENDPOSITION and PATROLTO with none.
+- **LABELLED:**
+  - `+1124h` is 0: its writer is message 95h, sent only by the unmodelled launch `008206F0`;
+  - message 94h is counted, not delivered: its one receiver `00821F61 -> vt+238h = 008206F0`
+    (the landing-craft launch, about 5 KB) is not modelled;
+  - list 28 is the units host's world list 28; a site must be alive.
+- **Summary line:** `summary mission ai group transport moves bound= calls= landers= ready=
+  startlanding_94h= anchors= no_anchor= inside= movetos=`. `BSP_LANDER_DIAG=1` prints the first
+  60 decisions as `transport move diag:`.
+
+### 96.3 Reach census and predictions (written before the pairs)
+
+Rows where `00A13B60` met a lander (`close_landers`, reference u, `g20_ru_<row>.log`):
+IJN01 595, JM06 196, JM08 long 795, LOMP06 18, USNOS 234, USNOS long 1070.
+- **IJN01, JM06, LOMP06:** no CommandBuilding exists, so no site and no anchor. Identical.
+- **USNOS, USNOS long:** the three CommandBuildings (HQ1, HQ2, CB2) are party 1, the same as the
+  planned Japanese landers' party and group team, so neither the site search nor the anchor
+  search finds one. Identical (exit 0 or 1).
+- **JM08 long (36000):** Bristol's group reaches CLOSEATTACK near t=632 with its landers.
+  - Landers within 4000 m of the HQ (LandingRange 4000, 8 free pads) are **ready**: 94h is
+    counted and they get no move, so they keep following Bristol as before.
+  - Landers farther out (or in a PATROLTO / DEFENDPOSITION group whose leader is within 3000 m
+    of the HQ) get a `moveto` to the point 375 m from the HQ. Moved rows are possible only through
+    these; the count is predicted small (0 to a few dozen distinct orders after the dedupe).
+  - Prediction: `startlanding_94h > 0`, exit 1 if `movetos = 0`, else exit 3 with the moved
+    landers' tracks; no ramp and no begin from this switch alone (94h is not delivered).
+- **JM08 (9200):** no group reaches CLOSEATTACK by 460 s; exit 0 or 1.

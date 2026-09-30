@@ -27,6 +27,7 @@
 #include "bsp/ai_planners.hpp"
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/ai_tuning_globals.hpp"
+#include "bsp/building_pads.hpp"
 #include "bsp/ai_target_weights.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
@@ -51,6 +52,18 @@ namespace bsp::game {
 // ON by section 94.4: posted equals delivered in JM08 36000 (39), USNOS (10) and
 // USN02 (7); USN02 exit 1, USNOS and JM08 exit 3 by spread (base objects).
 inline constexpr bool kPlannerJoinLoopbackBound = true;
+
+// Packet cc9_group_transport_moves (docs/SHIP_AI_OPEN_ITEMS.md section 96).
+// 00A11B80, the middle call of CLOSEATTACK (00A15490, with the target group),
+// DEFENDPOSITION (00A15500) and PATROLTO (00A15690, both with none): each
+// member that is a ship (vt+5Ch(6)) whose class carries landing craft
+// (00827FB0) is either ready (008128E0: an enemy list-28 site within its
+// LandingRange with a free pad), when 94h MT_SHIP_STARTLANDING is routed for
+// it, or moved by 00A02020 to the point 0.75 x CaptureRange from the anchor
+// CommandBuilding on its own side. True: the moves are issued. False: counted
+// only. Either way 94h is counted and not delivered: its receiver 008206F0,
+// the landing-craft launch, is not modelled.
+inline constexpr bool kAiGroupTransportMovesBound = false;
 
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();
@@ -1526,6 +1539,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 summary.close_candidates_scored += close_tick.candidates_scored;
                 ++patrol_close_passes;
             }
+            transport_moves_00a11b80(cmd->owner_group, nullptr);          // 00A15690
             const bsp::AiCommandTickResult tail =
                 bsp::ai_command_patrol_to_tail_00a15695(*this, *cmd, tick.patrol_far, found);
             tick.orders_issued += tail.orders_issued;
@@ -1550,6 +1564,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             summary.close_fallback_movetos += close_tick.fallback_movetos;
             summary.close_candidates_scored += close_tick.candidates_scored;
             done("AiCommand::close_attack_tick", 0x00a13b60u);
+            // 00A154E8 (CLOSEATTACK, cmd+1Ch) / 00A15564 (DEFENDPOSITION, 0).
+            transport_moves_00a11b80(cmd->owner_group, close ? cmd->target_group : nullptr);
             if constexpr (kShipDirectorEnablesBound) {
                 if (close) {
                     // 00A154F7 JMP 00A11AF0 (packet cc9_ship_torpedo_mask_read):
@@ -2517,6 +2533,160 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long formation_joins_made{0};
     unsigned long long formation_joins_posted{0};     // cc9_planner_join_loopback
     unsigned long long formation_joins_delivered{0};
+    // Packet cc9_group_transport_moves: 00A11B80's census.
+    struct TransportMoveCounts {
+        unsigned long long calls{0};
+        unsigned long long landers{0};      // vt+5Ch(6) and 00827FB0
+        unsigned long long ready{0};        // 008128E0 true: 94h routed
+        unsigned long long anchors{0};      // anchor searches that found one
+        unsigned long long no_anchor{0};    // not ready, no anchor
+        unsigned long long inside{0};       // d <= 0.75 x CaptureRange
+        unsigned long long movetos{0};      // 00A02020 issued (bound only)
+        int diag_lines{0};
+    } transport_moves;
+
+    static bool lander_diag_enabled() {
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_LANDER_DIAG") != 0) return false;
+            const bool on = text != nullptr && text[0] != '\0' && text[0] != '0';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
+    // 008128E0's site half: 006F2C30(&unit+FCh, unit+54h, 2) walks list 28 for
+    // the nearest entity of another party within its +7C4h LandingRange (3-D
+    // squared, 006F2D1C..006F2D34), then 006F2A50(site, 0) asks for a pad of
+    // +794h with a null occupant (006AC220). The +1124h cooldown test is
+    // LABELLED 0: its one writer is 95h, sent by the unmodelled launch 008206F0.
+    bool transport_ready_008128e0(std::size_t unit) {
+        float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+        units.unit_position_00fc(unit, ux, uy, uz);
+        const int side = units.unit_side_0054(unit);
+        std::size_t site = static_cast<std::size_t>(-1);
+        float best = 0.0f;
+        for (std::size_t i = 0; i < units.world_list_size(28); ++i) {
+            const std::size_t e = units.world_list_entry(28, i);
+            if (e >= units.count() || units.unit_side_0054(e) == side) continue;
+            float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+            units.unit_position_00fc(e, ex, ey, ez);
+            const float dx = ex - ux, dy = ey - uy, dz = ez - uz;
+            const float d2 = dx * dx + dy * dy + dz * dz;
+            const float range = units.command_building_landing_range_07c4(e);
+            if (d2 > range * range) continue;
+            if (site == static_cast<std::size_t>(-1) || d2 < best) {
+                site = e;
+                best = d2;
+            }
+        }
+        if (site == static_cast<std::size_t>(-1)) return false;
+        const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+        for (const int pad : pads.pads_of(static_cast<int>(site))) {
+            const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+            if (p != nullptr && p->occupant < 0) return true;
+        }
+        return false;
+    }
+
+    // 00A11B80, body 00A11B80-00A11F63, __thiscall(command)(AiGroup* other).
+    void transport_moves_00a11b80(void* own_group, void* other_group) {
+        Group* g = group_at(own_group);
+        if (g == nullptr) return;
+        TransportMoveCounts& c = transport_moves;
+        ++c.calls;
+        bool searched = false;                        // [esp+13h]
+        std::size_t anchor = static_cast<std::size_t>(-1);  // [esp+14h]
+        const std::vector<std::size_t> members = g->members;
+        for (const std::size_t m : members) {
+            if (m >= units.count()) continue;
+            if (!units.unit_is_kind_of(m, 0x06)) continue;                // 00A11C0E
+            if (!units.unit_class_lands_troops_vtable_2c(m)) continue;    // 00A11C27
+            ++c.landers;
+            if (transport_ready_008128e0(m)) {                            // 00A11C3E
+                // 00A11C44..00A11C82: 94h through 0077C2A0(msg, 2, 0).
+                ++c.ready;
+                if (lander_diag_enabled() && c.diag_lines < 60) {
+                    ++c.diag_lines;
+                    log.notef("transport move diag: t=%.2f leader=%s member=%s ready=1 "
+                        "94h counted (008206F0 not modelled)", clock_seconds,
+                        unit_name(g->members.front()).c_str(), unit_name(m).c_str());
+                }
+                continue;
+            }
+            if (!searched) {
+                searched = true;
+                if (Group* other = group_at(other_group)) {
+                    // 00A11CC0..00A11CFA: the first member answering vt+5Ch(1Ch).
+                    for (const std::size_t o : other->members) {
+                        if (o < units.count() && units.unit_is_kind_of(o, 0x1c)) {
+                            anchor = o;
+                            break;
+                        }
+                    }
+                } else {
+                    // 00A11D9C..00A11E87: list 28, another team than group+5638h,
+                    // XZ squared distance to the first member strictly below the
+                    // best, seeded with (tuning+1F4h)^2.
+                    const float reach = tuning.at(bsp::kAiTuningCloseAttackCollectDist);
+                    float best = reach * reach;
+                    float rx = 0.0f, ry = 0.0f, rz = 0.0f;
+                    if (!g->members.empty()) {
+                        units.unit_position_00fc(g->members.front(), rx, ry, rz);
+                    }
+                    for (std::size_t i = 0; i < units.world_list_size(28); ++i) {
+                        const std::size_t e = units.world_list_entry(28, i);
+                        if (e >= units.count() || units.unit_side_0054(e) == g->team) continue;
+                        float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+                        units.unit_position_00fc(e, ex, ey, ez);
+                        const float dx = ex - rx, dz = ez - rz;
+                        const float d2 = dx * dx + dz * dz;
+                        if (best > d2) {
+                            best = d2;
+                            anchor = e;
+                        }
+                    }
+                }
+                if (anchor != static_cast<std::size_t>(-1)) ++c.anchors;
+            }
+            if (anchor == static_cast<std::size_t>(-1)) {                 // 00A11D06
+                ++c.no_anchor;
+                continue;
+            }
+            float mx = 0.0f, my = 0.0f, mz = 0.0f, ax = 0.0f, ay = 0.0f, az = 0.0f;
+            units.unit_position_00fc(m, mx, my, mz);
+            units.unit_position_00fc(anchor, ax, ay, az);
+            const float dx = mx - ax, dz = mz - az;                       // 00A11D2E
+            const float d2 = dx * dx + dz * dz;
+            // 00A11D6E: d = 0 when d^2 <= the double 1.0e-10 at 00CE3820.
+            const float d = static_cast<double>(d2) > 1.0e-10
+                ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+            // 00A11E9D FILD [anchor+7A0h], FMUL double 0.75 (00CEC9D8).
+            const float r = static_cast<float>(
+                static_cast<double>(units.command_building_capture_range_07a0(anchor)) * 0.75);
+            if (!(d > r)) {                                              // 00A11EB7
+                ++c.inside;
+                continue;
+            }
+            const float k = d / r;                                       // 00A11EC0
+            const float point[3] = {dx / k + ax, ay, dz / k + az};        // 00A11EC6..00A11F1F
+            if (lander_diag_enabled() && c.diag_lines < 60) {
+                ++c.diag_lines;
+                log.notef("transport move diag: t=%.2f leader=%s member=%s ready=0 anchor=%s "
+                    "d=%.1f r=%.1f point=(%.1f %.1f) bound=%d", clock_seconds,
+                    unit_name(g->members.front()).c_str(), unit_name(m).c_str(),
+                    unit_name(anchor).c_str(), static_cast<double>(d),
+                    static_cast<double>(r), static_cast<double>(point[0]),
+                    static_cast<double>(point[2]), kAiGroupTransportMovesBound ? 1 : 0);
+            }
+            if constexpr (kAiGroupTransportMovesBound) {
+                if (tick_issue_moveto(handle(m), point)) ++c.movetos;     // 00A11F23
+            }
+        }
+        done("AiCommand::transport_moves_00a11b80", 0x00a11b80u);
+    }
     // Packet cc9_ai_command_avoid_zone_point: 00A020F0 reached (both sides), and
     // answered by the ship-AI host's runtime / with a moved point (ON only).
     unsigned long long avoid_zone_asks{0};
@@ -5100,6 +5270,14 @@ void GameAiCoordinatorHost::report() {
         "(00A10E67 -> 0077C8D0 -> 0076E520 -> 0076C600 -> 0077F940, packet "
         "cc9_planner_join_loopback)", host.formation_joins_posted,
         host.formation_joins_delivered, kPlannerJoinLoopbackBound ? 1 : 0);
+    host.log.notef("summary mission ai group transport moves bound=%d calls=%llu landers=%llu "
+        "ready=%llu startlanding_94h=%llu anchors=%llu no_anchor=%llu inside=%llu movetos=%llu "
+        "(00A11B80, 008128E0; 94h not delivered, 008206F0 not modelled; packet "
+        "cc9_group_transport_moves)", kAiGroupTransportMovesBound ? 1 : 0,
+        host.transport_moves.calls, host.transport_moves.landers, host.transport_moves.ready,
+        host.transport_moves.ready, host.transport_moves.anchors,
+        host.transport_moves.no_anchor, host.transport_moves.inside,
+        host.transport_moves.movetos);
     host.log.notef("summary mission ai command zone point asks=%llu answers=%llu moved=%llu "
         "bound=%d (00A020BE / 00A020F0, margin 30.0, packet cc9_ai_command_avoid_zone_point)",
         host.avoid_zone_asks, host.avoid_zone_answers, host.avoid_zone_moved,
