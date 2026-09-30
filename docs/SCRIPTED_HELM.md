@@ -418,8 +418,9 @@ reference.
 ### 6.6 Entry point for the HUD pump (2026-09-24)
 
 `GameUnitsHost::role_screen_update_0067bb50()` is now public, so the HUD owner can call page
-27h's slot 20h once per pump, as the image does (twice per mission frame,
-docs/SHIP_SCREEN_UPDATE.md section 21). The switch `kRoleScreenFixedStepCall` defaults to true and keeps
+27h's slot 20h once per pump, as the image does (docs/SHIP_SCREEN_UPDATE.md section 21). The
+"twice per mission frame" recorded there was the host's cadence. The pump runs once per frame
+since `kMenuPumpYieldsToMissionFrameBound` (GUNNERY_OPEN_ITEMS 76). The switch `kRoleScreenFixedStepCall` defaults to true and keeps
 today's once-per-fixed-step call. With the default, no code path changes and no row moves, so no
 pair was run. Set it to false only once the pump calls the entry point.
 

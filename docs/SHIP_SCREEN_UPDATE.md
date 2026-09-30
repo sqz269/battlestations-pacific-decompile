@@ -10,7 +10,9 @@ Addresses: 004F75C0 0064DD30 0064BB90 00CF5E30 004C43C0 004C5090 00535EE0 0077C2
 **Source.** `local\hp_on_usn04.log` (USN04 4500, main de0780502), using the pump counts
 `HudMinimap::update` (9,160) and `HudMarkers::update` (9,158).
 
-**The pump.** It runs twice per mission frame. The interface is 20h (screens 29h 49h 44h 35h) for
+**The pump.** In this host it ran twice per mission frame. That was the host's cadence, not the
+image's; since `kMenuPumpYieldsToMissionFrameBound` (GUNNERY_OPEN_ITEMS 76) it runs once per
+004e4a40. The counts below were taken at twice per frame; the same run now gives about half. The interface is 20h (screens 29h 49h 44h 35h) for
 the first pumps, then 25h for the rest of the run.
 
 **The 25h level-1 set** is `29h 49h 44h 27h 4Dh 45h 46h 26h 2Eh 35h 50h`. 35h and 4Dh have bound
@@ -841,7 +843,8 @@ The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
 `GameUnitsHost::Impl::role_screen_update_0067bb50`, under `kPlayerRoleBookkeepingBound`. The units
 host calls it once per fixed step, before the unit loop. That member is private to
 `GameUnitsHost::Impl`, so the HUD pump cannot reach it. Calling it from the pump as well would run
-the role take a second time per step, and the pump runs twice per mission frame.
+the role take a second time per step, and the pump runs twice per mission frame (the host's
+cadence then; once per frame since GUNNERY_OPEN_ITEMS 76).
 
 What the plumbing needs is the owner's change in `src/game_hosts_units.cpp`:
 - a public `GameUnitsHost` entry point for the 27h update;
@@ -1248,8 +1251,10 @@ Expect input-gated orders and UI-mode writes. It is a packet of its own.
 
 **The routing.** 0067BB50 is slot 20h of vtable 00CF7A38, HUD page 27h (the vtable dword sits at
 00CF7A58). The recovered pump 004F8830 calls slot 20h of every screen that is both wanted (+4h)
-and applied (+5h), so the image runs the 27h take at the pump's cadence. That is twice per
-mission frame here, from `run_front_end_state_frame`.
+and applied (+5h), so the image runs the 27h take at the pump's cadence. That was twice per
+mission frame here, from `run_front_end_state_frame`. It was the host's cadence: the menu host
+pumped in addition to the mission frame's own 004c40f0. It is once per frame since
+`kMenuPumpYieldsToMissionFrameBound` (GUNNERY_OPEN_ITEMS 76).
 - `bsp::kHudRoleScreenPumpBound` routes the pump's slot 27h to
   `GameHudHost::update_role_screen_0067bb50`, which forwards to the public
   `GameUnitsHost::role_screen_update_0067bb50`.
