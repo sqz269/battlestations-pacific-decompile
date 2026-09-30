@@ -48,7 +48,9 @@ namespace bsp::game {
 // join reaches 0077F940 at its turn in the next 0076C600 drain, not at the call.
 // True: posted through commands_post_loopback_callback_0076e520, as section 92
 // does for the script's joins. False: joined at the call, as before.
-inline constexpr bool kPlannerJoinLoopbackBound = false;
+// ON by section 94.4: posted equals delivered in JM08 36000 (39), USNOS (10) and
+// USN02 (7); USN02 exit 1, USNOS and JM08 exit 3 by spread (base objects).
+inline constexpr bool kPlannerJoinLoopbackBound = true;
 
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();

@@ -8002,3 +8002,66 @@ Predictions:
   the image. So JM08's landers still re-join Bristol and Macomb, with `begins=0` as before.
 - **JM08 36000, USNOS, USN02:** exit 1 or 3. A one-step delay on each of 31 / 10 / 7 joins can
   move positions; no death row should flip for a mechanism reason.
+
+### 94.4 The pairs (`s23_e0` vs `s23_e1`, both from `c4cdf547c`), and the flip
+
+| row | planner joins posted / delivered | joins made, OFF -> ON | exit | deaths |
+| --- | --- | --- | --- | --- |
+| JM08 36000 | 39 / 39 | 31 -> 36 | 3 | 168 -> 132 (22 only ON, 58 only OFF) |
+| USNOS | 10 / 10 | 10 -> 10 | 3 | 106 -> 106 (7 rows changed) |
+| USN02 | 7 / 7 | 7 -> 7 | 1 | identical |
+
+- **The mechanism matches the read.** Every posted join is delivered at its turn in the drain.
+- **JM08's landers still lose the HQ order,** as predicted: `mode3_points=3`, `begins=0`, the same
+  as section 92's ON run.
+- **JM08's 80 flipped death rows are the Allied bombardment's victims, a spread:**
+  - tents: 22 of the flipped rows;
+  - houses: 5;
+  - sandbags, a watchtower, two Gekkos, two `US ...` buildings and one transport.
+  The prediction ("no death row flips for a mechanism reason") was right in kind but missed the
+  size of the spread. JM08 is a long, chaotic row.
+- **Decision: `kPlannerJoinLoopbackBound` ON.**
+- **What this leaves for JM08's landing:** the image's planner, as read, overrides the script's
+  `attackmove` for a planner-group member. So the landers can reach mode 3 only as a group
+  leader, or once the planner's group command itself takes them there. That is item 3 of the
+  handoff below.
+
+## 95. Handoff (cc9-ships23, 2026-09-30, at about 70% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 90 | `NavigatorSetAvoidShipCollision` (`008A3970`) delivered to director `+241h` | `kNavigatorShipAvoidanceDeliveryBound` ON |
+| 91 | JM08 mode-3 entry: the invasion trigger was a knife-edge, not range; diagnostics `lander latch diag`, `fleet diag` | none |
+| 92 | JoinFormation's 76h join posted through the loopback drain; scripted formations no longer break up at t=0.05 | `kFormationJoinLoopbackBound` ON |
+| 93 | USN01's 29 absent units are an ungenerated script branch; the planner's regroup clears JM08's HQ order | none |
+| 94 | the planner re-join is the image's rule; its join is posted through the loopback too | `kPlannerJoinLoopbackBound` ON |
+
+### The next packets, in order
+
+1. **Packet 2 of the lead's queue:** what a neutral CommandBuilding's own gun mounts do (section
+   81 left them following their party).
+2. **Packet 3:** the MCargo transports' landing craft (class `+78Ch/+790h/+794h` readers, the
+   MLandingShip factory `0074BE00`), and the back-off countdown if a row arms `009F47A7`.
+3. **JM08's landing after section 94.** The landers are planner followers of Bristol and Macomb.
+   Read:
+   - whether a planner-group command (the planner's own `attackmove` or `CLOSEATTACK` at
+     Headquarter 01) reaches their approach latch;
+   - or whether the image's LSTs lead their own planner groups (`00A2D8E0`'s `009FFD80` class
+     weight sort: which class heads a mixed group).
+4. **Packet 4:** `0074B0B0..`, the landing ship's ramp animation and unload.
+5. **Left from 92.5 and 93.1:** why Convoy1 is not bombed in USN01 with section 92 ON; the
+   `luaKatoriSpotted` branch.
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships23\local\`, `s23_` prefix)
+
+- `s23_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows>`. The rows include `jm08x`, `usn16`,
+  `usn16l`, `bsm06` and `bsm02`, beside the reference rows.
+- `s23_wait.ps1 -Logs <names>`.
+- `s23_pairs.ps1 -A <off> -B <on> -Rows <rows>`: exit, early leaves, deaths, and the death and
+  unit table verdicts.
+- `s23_fleetcmp.py <off.log> <on.log>`: first per-unit divergence of `fleet diag`.
+- `s23_disp.py` (displacement sweep) and `s23_census.py` (script call census).
+- `BSP_LANDER_DIAG=1` now also prints `lander latch diag`, `fleet diag` (every 10 s) and
+  `follower release diag`.
