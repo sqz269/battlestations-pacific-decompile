@@ -864,6 +864,11 @@ public:
     // 004A9BD0 reads into [00E18710]/[00E1870C]. False when the global is
     // absent or not a table of two numbers.
     bool read_global_number_pair(const char* name, float& first, float& second);
+    // Packet cc9_carrier_elevator: a number two tables deep, such as
+    // ShipGlobals.MotherShip.ElevatorSpeed (shipglobals.lua, which 00B67800 runs;
+    // the settings loader stores it at +4D8h, 0083FB4C). False when absent.
+    bool read_global_nested_number(const char* table, const char* sub, const char* key,
+        float& out);
     // Packet cc9_bot_scheduler_writers: 0091B2E0's two reads of the Scoring
     // table (Scripts\datatables\Scoring.lua, run when `Scoring` is absent):
     // InGameScoreUpdateTimeInterval (default 1.0, 0091BC0E) and

@@ -1479,6 +1479,26 @@ bool GameMissionLuaHost::read_global_number_pair(const char* name, float& first,
     return ok;
 }
 
+bool GameMissionLuaHost::read_global_nested_number(const char* table, const char* sub,
+    const char* key, float& out) {
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, table);
+    bool ok = false;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, sub);
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_isnumber(state_, -1)) {
+                out = static_cast<float>(::lua_tonumber(state_, -1));
+                ok = true;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return ok;
+}
+
 bool GameMissionLuaHost::read_scoring_intervals_0091b2e0(float& update_interval,
     float& recalc_interval) {
     update_interval = 1.0f;   // 0091BC0E FLD1

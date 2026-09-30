@@ -670,6 +670,7 @@ struct GameUnitSlot {
     float land_park_target_20{0.0f};      // park +20h: the taxi target x (airfield frame)
     float land_park_target_24{0.0f};      // park +24h: the taxi target z
     float land_park_timer_28{0.0f};       // park +28h, 3.0 at the enter (the carrier arm's clock)
+    unsigned long long land_park_carrier_ticks{0};   // packet cc9_carrier_elevator
     bool plane_taxi_queue_910{false};     // plane+910h: inside the hangar queue band
     bool plane_in_hangar_c00{false};      // plane+C00h, 007B96C0
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
@@ -2221,6 +2222,24 @@ struct GameUnitsHost::Impl {
         float countdown_0c{0.0f};        // +0Ch
         float interval_10{1.0f};         // +10h
     };
+    // Packet cc9_carrier_elevator: the mother-ship site's platform at site+44h
+    // (006FC2A0, set up by 006FC380 at 006CFD42) and the site's own +18h/+78h/
+    // +9Ch. P+0Ch..+14h the lift point, +18h the lift's depth below it, +1Ch
+    // depth x 0.1, +34h the platform plane, +38h..+40h its offset, +44h
+    // MotherShip.ElevatorSpeed, +48h ElevatorDepth, +4Ch 1.0, +50h the mode
+    // (0 still, 1 up, 2 down).
+    struct CarrierElevator {
+        bool built{false};
+        bool refused{false};
+        float lift[3]{0.0f, 0.0f, 0.0f};
+        float p18{0.0f}, p1c{0.0f}, speed_44{0.0f}, depth_48{0.0f}, p4c{1.0f};
+        int mode_50{0};
+        std::size_t plane_34{static_cast<std::size_t>(-1)};
+        float off_38[3]{0.0f, 0.0f, 0.0f};
+        float timer_9c{0.0f};
+        unsigned long long ticks{0}, intakes{0}, hides{0}, releases{0}, empty_up{0};
+        unsigned long long top_releases{0}, unfed_relaunch{0}, lane_waits{0};
+    };
     struct LandingDeck {
         bool built{false};
         bool refused{false};             // a mother-ship deck, or no authored runway
@@ -2234,6 +2253,7 @@ struct GameUnitsHost::Impl {
         // Packet cc9_carrier_landing_deck: a mother-ship holder (007593D0's),
         // re-framed from the moving ship at each use (00758E80 -> 006BEE40).
         bool mother_ship{false};
+        CarrierElevator elevator;   // packet cc9_carrier_elevator
         // The launch site at block+3Ch (packet cc9_plane_touchdown): +40h, which
         // 006CF100 stamps now - 99999.0 (00CF89D0) and 006CE230 restamps, and the
         // occupancy vector +34h/+38h that 006CED90 appends to.
@@ -2274,6 +2294,21 @@ struct GameUnitsHost::Impl {
     void carrier_deck_reparent_007c71e0(GameUnitSlot& p, const LandingDeck& d);
     void carrier_deck_carry_in(GameUnitSlot& p);
     void carrier_deck_capture(GameUnitSlot& p);
+    // Packet cc9_carrier_elevator (kCarrierElevatorBound).
+    CarrierElevator* carrier_elevator_ready(LandingDeck& d);
+    std::array<float, 3> carrier_local_point(const LandingDeck& d, const float* world) const;
+    float carrier_elevator_nose_distance_006cfe90(const LandingDeck& d,
+        const GameUnitSlot& p) const;
+    bool carrier_elevator_intake_006cff70(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool carrier_elevator_lift_free_006d0150(const LandingDeck& d, const GameUnitSlot& p) const;
+    bool carrier_elevator_lane_006d0390(const LandingDeck& d, const GameUnitSlot& p) const;
+    void carrier_elevator_carry_006fc0d0(LandingDeck& d);
+    void carrier_elevator_release_006fc250(LandingDeck& d);
+    void carrier_elevator_take_006fc720(LandingDeck& d, GameUnitSlot& p);
+    void carrier_elevator_site_tick_006d0600(LandingDeck& d, float dt);
+    void carrier_elevator_platform_tick_006fc480(LandingDeck& d, float dt);
+    void plane_enter_state_two_007cc7a0(GameUnitSlot& p);
+    unsigned long long carrier_elevator_state_two{0};
     unsigned long long carrier_deck_parented{0}, carrier_deck_wire_seeded{0};
     unsigned long long carrier_deck_carry_steps{0}, carrier_deck_wire_steps{0};
     unsigned long long carrier_deck_wire_resets{0}, carrier_deck_edge_takeoffs{0};
@@ -2288,6 +2323,10 @@ struct GameUnitsHost::Impl {
         float center[3]{0.0f, 0.0f, 0.0f};
         float width{0.0f};
         float length{0.0f};
+        // 00759167-007591C2: class+808h..+810h, the first point of the model's
+        // ("liftexitpoint", 2) Aux group (packet cc9_carrier_elevator).
+        bool lift_ok{false};
+        float lift[3]{0.0f, 0.0f, 0.0f};
     };
     std::map<int, CarrierRunwayClass> carrier_runway_classes;
     const CarrierRunwayClass& carrier_runway_class_00759120(const GameUnitSlot& s);
@@ -4708,6 +4747,16 @@ struct GameUnitsHost::Impl {
     // one second. OFF until paired with the hit notice's caller.
     static constexpr bool kDiveHitClockBound = false;
     static constexpr bool kLandParkStateBound = false;  // OFF: mechanism failure, the park <-> abort loop (5s)
+    // Packet cc9_carrier_elevator (docs/SQUADRON_LAND_TASK.md 5ao). True, on a
+    // mother-ship deck: land/park's carrier arm (009B23E4's vtable[5Ch](9)
+    // branches: the lift targets 006D0120/006D00E0, ParkVelocity, the +28h
+    // clock, no path, the 12 m steer, the lift-lane test 006D0390/006D0150 and
+    // the speed clamp 009B291C-009B298D), the done test's intake exemption
+    // (009B2228, 006CFF70), and the elevator: the site tick 006D0600, the
+    // platform tick 006FC480 (006CFE40), the intake 006FC720 with the state-2
+    // request 007C2090 -> 007CC7A0, the carry 006FC0D0 and the hide/release
+    // 007B96C0/006FC250. False: park on a carrier takes the airfield arm.
+    static constexpr bool kCarrierElevatorBound = false;
     // Packet cc9_land_abort_ground_arm: land/abort's on-ground arm 009B0E74-009B0F93
     // (+21h = 1, the pitch hold class+1ECh x 0.5, a yaw on the runway-axis error).
     // False: the arm is refused and only +21h acts. OFF: paired with park on, its
@@ -10601,6 +10650,21 @@ const GameUnitsHost::Impl::CarrierRunwayClass& GameUnitsHost::Impl::carrier_runw
             e.ok = true;
             e.reason = "runwaycenter";
         }
+        if constexpr (kCarrierElevatorBound) {
+            const bsp::GunFirePointItem* lift =
+                bsp::find_named_point_group_00718870(items, "liftexitpoint", 2u);
+            if (lift != nullptr && !lift->points.empty()) {
+                for (int k = 0; k < 3; ++k) {
+                    e.lift[k] = lift->points.front()[static_cast<std::size_t>(k)];
+                }
+                e.lift_ok = true;
+            }
+            log.notef("carrier lift class %d \"%s\": %s lift=(%.3f, %.3f, %.3f) (00759167, "
+                "packet cc9_carrier_elevator)", type_id, s.row.name.c_str(),
+                e.lift_ok ? "liftexitpoint" : "no liftexitpoint point",
+                static_cast<double>(e.lift[0]), static_cast<double>(e.lift[1]),
+                static_cast<double>(e.lift[2]));
+        }
     }
     log.notef("carrier runway class %d \"%s\" mesh=%s: %s center=(%.3f, %.3f, %.3f) "
         "RunwayWidth=%.2f RunwayLength=%.2f (00759120 / 00759590, packet cc9_rtb_site_key)",
@@ -11171,6 +11235,275 @@ void GameUnitsHost::Impl::carrier_deck_carry_in(GameUnitSlot& p) {
     deck_to_world(o->world, p.deck_local_rows + 6, false, p.motion.pose_row2);
     deck_to_world(o->world, p.deck_local_vel, false, p.plane_world_velocity);
     ++carrier_deck_carry_steps;
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_carrier_elevator (kCarrierElevatorBound), docs/SQUADRON_LAND_TASK.md
+// 5ao. Every body was read from the disk listing.
+// ---------------------------------------------------------------------------
+
+// planeDesc+158h (007D473A: (model+3Ch + model+30h) x 0.5, most likely the
+// model's box centre along z). SUBSTITUTION, labelled: 0.0, the plane's origin;
+// the plane models' boxes are not read by this host.
+namespace { constexpr float kPlaneDesc158 = 0.0f; }
+
+// The point in the carrier's model frame: what plane+A4h..+ACh holds under the
+// carrier (007C71E0's re-parent), from the world point and the carrier's
+// current matrix.
+std::array<float, 3> GameUnitsHost::Impl::carrier_local_point(const LandingDeck& d,
+    const float* world) const {
+    std::array<float, 3> l{};
+    if (d.owner < slots.size() && slots[d.owner]) {
+        deck_to_local(slots[d.owner]->world, world, true, l.data());
+    }
+    return l;
+}
+
+// 006CFAF0 / 006FC380: the platform from the lift point, ElevatorSpeed (+44h),
+// ElevatorDepth (+48h), +1Ch = depth x 0.1 (double 00D7A3A0), +18h = -+1Ch.
+GameUnitsHost::Impl::CarrierElevator* GameUnitsHost::Impl::carrier_elevator_ready(
+    LandingDeck& d) {
+    CarrierElevator& e = d.elevator;
+    if (e.built) return e.refused ? nullptr : &e;
+    e.built = true;
+    if (!d.mother_ship || d.owner >= slots.size() || !slots[d.owner]) {
+        e.refused = true;
+        return nullptr;
+    }
+    const CarrierRunwayClass& cls = carrier_runway_class_00759120(*slots[d.owner]);
+    float speed = 0.0f, depth = 0.0f;
+    const bool s1 = lua.read_global_nested_number("ShipGlobals", "MotherShip",
+        "ElevatorSpeed", speed);
+    const bool s2 = lua.read_global_nested_number("ShipGlobals", "MotherShip",
+        "ElevatorDepth", depth);
+    if (!cls.lift_ok || !s1 || !s2) {
+        e.refused = true;
+        log.notef("carrier elevator %s: REFUSED lift=%d speed=%d depth=%d (006CFAF0, packet "
+            "cc9_carrier_elevator)", slots[d.owner]->row.name.c_str(), cls.lift_ok ? 1 : 0,
+            s1 ? 1 : 0, s2 ? 1 : 0);
+        return nullptr;
+    }
+    for (int k = 0; k < 3; ++k) e.lift[k] = cls.lift[k];
+    e.speed_44 = speed;
+    e.depth_48 = depth;
+    e.p1c = static_cast<float>(static_cast<double>(depth) * 0.1);   // 006FC3D0
+    e.p18 = -e.p1c;
+    e.p4c = 1.0f;
+    e.mode_50 = 0;
+    log.notef("carrier elevator %s: lift=(%.3f, %.3f, %.3f) speed=%.2f depth=%.2f (006CFAF0 / "
+        "006FC380, packet cc9_carrier_elevator)", slots[d.owner]->row.name.c_str(),
+        static_cast<double>(e.lift[0]), static_cast<double>(e.lift[1]),
+        static_cast<double>(e.lift[2]), static_cast<double>(speed), static_cast<double>(depth));
+    return &e;
+}
+
+// 006CFE90 (RET 4): the plane's point (0, 0, planeDesc+158h) through its local
+// matrix (unit+74h), then the x/z distance to the lift (P+0Ch/+14h, site+50h/
+// +58h); 0.0 below the 1e-10 square (00CE3820).
+float GameUnitsHost::Impl::carrier_elevator_nose_distance_006cfe90(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    // With planeDesc+158h taken as 0.0 the point is the plane's origin.
+    const std::array<float, 3> l = carrier_local_point(d, p.motion.position);
+    const float dx = l[0] - d.elevator.lift[0];
+    const float dz = l[2] - d.elevator.lift[2];
+    const float s = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    return static_cast<double>(s) > 1e-10 ? static_cast<float>(std::sqrt(static_cast<double>(s)))
+                                          : 0.0f;
+}
+
+// 006CFF70 (site vtable +3Ch, RET 4): false for a null plane, else
+// (3.0 (double 00D7A2B0) - vtable[38h] speed) > 006CFE90.
+bool GameUnitsHost::Impl::carrier_elevator_intake_006cff70(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    const double v = avoid_len(p.plane_world_velocity);
+    return 3.0 - v > static_cast<double>(carrier_elevator_nose_distance_006cfe90(d, p));
+}
+
+// 006D0150 (RET 4): the platform still (+94h, P+50h, zero) and at the top
+// (0 > P+18h, site+5Ch), and no other occupant within 14.0 ([00E08FC8]) of the
+// lift.
+bool GameUnitsHost::Impl::carrier_elevator_lift_free_006d0150(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    const CarrierElevator& e = d.elevator;
+    if (e.mode_50 != 0 || !(0.0f > e.p18)) return false;
+    for (const std::size_t oi : d.site_occupants_34) {
+        if (oi >= slots.size() || !slots[oi]) continue;
+        if (14.0f > carrier_elevator_nose_distance_006cfe90(d, *slots[oi])
+            && oi != p.process_index) return false;
+    }
+    return true;
+}
+
+// 006D0390 (site vtable +34h, RET 10h): 006CE610 first; then, with Lz the lift's
+// z (class+810h) and pz the plane's (+ACh), true unless the plane is inside the
+// lane Lz - (19 + 2 max(0, v - 1.0)) < pz < Lz - 12 (14.0 [00E08FC8], 2.0 and 5.0
+// doubles 00D7A308 / 00D7A370, 1.0 00D7A210), where 006D0150 decides.
+bool GameUnitsHost::Impl::carrier_elevator_lane_006d0390(const LandingDeck& d,
+    const GameUnitSlot& p) const {
+    if (!landing_queue_clear_006ce610(d, p)) return false;
+    const double lz = d.elevator.lift[2];
+    const double pz = carrier_local_point(d, p.motion.position)[2];
+    if (!(lz - (14.0 - 2.0) > pz)) return true;                          // 006D03FA
+    float s = static_cast<float>(static_cast<double>(avoid_len(p.plane_world_velocity)) - 1.0);
+    if (0.0f > s) s = 0.0f;
+    const double bound = lz - (static_cast<double>(s) + s + (14.0 + 5.0));
+    if (!(pz > bound)) return true;                                      // 006D0450
+    return carrier_elevator_lift_free_006d0150(d, p);
+}
+
+// 006FC0D0: with a platform plane, its local position = the lift point less
+// clamp(P+18h, 0, depth) in y plus its offset (+38h..+40h); 00951F40(1). The
+// host writes the local pose and carries it to the world at once.
+void GameUnitsHost::Impl::carrier_elevator_carry_006fc0d0(LandingDeck& d) {
+    CarrierElevator& e = d.elevator;
+    if (e.plane_34 >= slots.size() || !slots[e.plane_34]) return;
+    GameUnitSlot& p = *slots[e.plane_34];
+    float y = e.p18;
+    if (0.0f > y) y = 0.0f;
+    else if (y > e.depth_48) y = e.depth_48;
+    p.deck_local_pos[0] = e.lift[0] + e.off_38[0];
+    p.deck_local_pos[1] = static_cast<float>(static_cast<double>(e.lift[1]) - y) + e.off_38[1];
+    p.deck_local_pos[2] = e.lift[2] + e.off_38[2];
+    for (float& v : p.deck_local_vel) v = 0.0f;      // 007B8DE0, taken as the stop
+    carrier_deck_carry_in(p);
+}
+
+// 006FC250: carry, drop the platform plane, and hide it (00951F40(0)) when the
+// platform is still and at the bottom (P+18h > depth).
+void GameUnitsHost::Impl::carrier_elevator_release_006fc250(LandingDeck& d) {
+    CarrierElevator& e = d.elevator;
+    carrier_elevator_carry_006fc0d0(d);
+    const std::size_t pi = e.plane_34;
+    e.plane_34 = static_cast<std::size_t>(-1);
+    ++e.releases;
+    // 006FC279-006FC28F: at the bottom and still, 00951F40(0) detaches the
+    // plane's node; this host has no node to detach (labelled). The site tick
+    // has already set +C00h through 007B96C0.
+    (void)pi;
+}
+
+// 007CC7A0 BSP_Plane_EnterFlightStateTwo, reached from 007C2090's C3h message
+// (single player: game+1FE4h is not 2, so no 007C78A0): +9F0h = 0; when +900h
+// is not 2, +900h = 2, +C04h = -1.0 and 007C11E0(0) (not carried, as at the
+// 4 <-> 5 transitions); game+193Ch is not modelled.
+void GameUnitsHost::Impl::plane_enter_state_two_007cc7a0(GameUnitSlot& p) {
+    p.plane_live_throttle = 0.0f;
+    if (p.plane_control_mode_900 == 2) return;
+    p.plane_control_mode_900 = 2;
+    p.plane_site_timer_c04 = -1.0f;
+    ++carrier_elevator_state_two;
+    record("Plane::enter_state_two_007cc7a0", 0x007cc7a0u);
+}
+
+// 006FC720 (flag 0 of 006D0050 with a plane): the platform at the top and still,
+// the old plane dropped, this one taken with its offset from the lift, 007C2090
+// (state 2 unless already 2), then down (+50h = 2).
+void GameUnitsHost::Impl::carrier_elevator_take_006fc720(LandingDeck& d, GameUnitSlot& p) {
+    CarrierElevator& e = d.elevator;
+    if (e.plane_34 == p.process_index) return;
+    e.mode_50 = 0;
+    e.p18 = -0.0f - e.p1c;
+    if (e.plane_34 < slots.size()) {
+        carrier_elevator_carry_006fc0d0(d);
+        e.plane_34 = static_cast<std::size_t>(-1);
+    }
+    e.plane_34 = p.process_index;
+    const std::array<float, 3> l = carrier_local_point(d, p.motion.position);
+    for (int k = 0; k < 3; ++k) e.off_38[k] = l[k] - e.lift[k];
+    plane_enter_state_two_007cc7a0(p);                                // 007C2090
+    e.mode_50 = 2;
+    ++e.intakes;
+    log.notef("  carrier elevator %s: takes %s at %.2f s offset=(%.2f %.2f %.2f) "
+        "(006FC720 -> 007C2090, packet cc9_carrier_elevator)",
+        slots[d.owner]->row.name.c_str(), p.row.name.c_str(),
+        static_cast<double>(summary.simulated_seconds), static_cast<double>(e.off_38[0]),
+        static_cast<double>(e.off_38[1]), static_cast<double>(e.off_38[2]));
+}
+
+// 006D0600 (site vtable +4h, RET 4). The ready plane +18h is never set in this
+// host (the relaunch feed 006C6540 is not reconstructed), so the arms that read
+// it answer as for none; +1Ch's 006CEDD0 is not reached (taken clear).
+void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, float dt) {
+    CarrierElevator& e = d.elevator;
+    if (dt == 0.0f) return;
+    if (d.owner >= slots.size() || !slots[d.owner]) return;
+    ++e.ticks;
+    if (e.mode_50 != 0) return;                                       // 006D0640
+    if (0.0f > e.p18) {                                               // 006D064A: at the top
+        e.timer_9c = 0.0f;
+        if (e.plane_34 < slots.size()) {
+            // 006D065E-006D0684: a plane brought up (the relaunch) is released
+            // and asked for ground state 4 (007C3C90(0)); not reached here.
+            carrier_elevator_release_006fc250(d);
+            ++e.top_releases;
+        }
+        std::size_t cand = static_cast<std::size_t>(-1);
+        for (const std::size_t oi : d.site_occupants_34) {
+            if (oi >= slots.size() || !slots[oi]) continue;
+            const GameUnitSlot& o = *slots[oi];
+            if (!o.plane_landed_904) continue;
+            if (!carrier_elevator_intake_006cff70(d, o)) continue;
+            if (!(1.3888889f > avoid_len(o.plane_world_velocity))) continue;   // 00CF8AAC
+            // 007B8D40, the gear channel: this host carries no +DECh block, so
+            // the channel is absent and the test answers true (labelled).
+            cand = oi;
+        }
+        if (cand < slots.size()) carrier_elevator_take_006fc720(d, *slots[cand]);
+        return;
+    }
+    if (!(e.p18 > e.depth_48)) return;                                // 006D0738
+    if (e.plane_34 < slots.size()) {
+        GameUnitSlot& p = *slots[e.plane_34];
+        p.plane_in_hangar_c00 = true;                                 // 007B96C0
+        log.notef("  carrier elevator %s: stows %s at %.2f s (007B96C0 / 006FC250, packet "
+            "cc9_carrier_elevator)", slots[d.owner]->row.name.c_str(), p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds));
+        carrier_elevator_release_006fc250(d);
+        ++e.hides;
+        e.timer_9c = 0.0f;
+    } else {
+        e.timer_9c = e.timer_9c + dt;
+    }
+    const bsp::GameTuningBlock& g = lua.plane_globals();
+    if (e.timer_9c > g.pilot_landing_lift_delay && e.plane_34 >= slots.size()) {
+        // 006CFFF0(1, ready +18h) -> 006D0050 flag 1 with no plane -> 006FC6B0:
+        // the empty platform goes up.
+        ++e.unfed_relaunch;
+        e.p18 = e.depth_48 + e.p1c;
+        e.mode_50 = 1;
+        ++e.empty_up;
+        e.timer_9c = 0.0f;
+    }
+}
+
+// 006FC480 (through 006CFE40, slot +8h, when dt != 0 and the owner exists).
+void GameUnitsHost::Impl::carrier_elevator_platform_tick_006fc480(LandingDeck& d, float dt) {
+    CarrierElevator& e = d.elevator;
+    if (dt == 0.0f) return;
+    if (d.owner >= slots.size() || !slots[d.owner]) return;
+    const bool moving = e.mode_50 != 0;
+    if (e.plane_34 < slots.size() && gunnery != nullptr && gunnery->unit_dead(e.plane_34)) {
+        e.plane_34 = static_cast<std::size_t>(-1);                   // 006FC498 (+5Dh)
+    }
+    const float step = static_cast<float>(static_cast<double>(e.speed_44 * dt) * e.p4c);
+    if (e.mode_50 == 1) {
+        e.p18 = e.p18 - step;
+        if (!(0.0f < e.p18) && -e.p1c > e.p18) {
+            e.p18 = -e.p1c;
+            e.mode_50 = 0;
+        }
+    } else if (e.mode_50 == 2) {
+        e.p18 = step + e.p18;
+        if (!(e.p18 < e.depth_48)) {
+            const float bottom = e.depth_48 + e.p1c;
+            if (!(e.p18 < bottom)) {
+                e.p18 = bottom;
+                e.mode_50 = 0;
+            }
+        }
+    }
+    if (e.plane_34 < slots.size()) carrier_elevator_carry_006fc0d0(d);
+    if (!moving) e.p4c = 1.0f;                                        // 006FC5EA
 }
 
 // 007C71E0 (007C71E0-007C742F), the re-parent arm (007C726C-007C72C5) and the
@@ -11884,6 +12217,16 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
     } else {
         Impl& h = *impl_;
         if (!h.lua.plane_globals_loaded()) return;
+        if constexpr (Impl::kCarrierElevatorBound) {
+            // 006CDC70's site slots +4h (006D0600) and +8h (006CFE40 -> 006FC480);
+            // LABELLED: run here, before the queue, in that order.
+            for (Impl::LandingDeck& d : h.landing_decks) {
+                if (!d.built || d.refused || !d.mother_ship) continue;
+                if (h.carrier_elevator_ready(d) == nullptr) continue;
+                h.carrier_elevator_site_tick_006d0600(d, dt);
+                h.carrier_elevator_platform_tick_006fc480(d, dt);
+            }
+        }
         for (Impl::LandingDeck& d : h.landing_decks) {
             if (!d.built || d.refused) continue;
             for (std::size_t i = 0; i < d.queue.size(); ++i) {
@@ -22382,15 +22725,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // the class-9 target, is false: an airfield), or when the plane
                     // heads more than pi/2 (00CE3830) away from holder+88h.
                     void land_park_done_009b21d0(const GameUnitsHost::Impl::LandingDeck& d,
-                        float pz) {
+                        float pz, bool carrier = false) {
                         if (unit_.land_done_18) return;
                         if (unit_.plane_control_mode_900 == 5) return;
                         if (0.0f <= unit_.land_park_timer_28 && unit_.plane_ground_contact_bf8
                             && unit_.plane_contact_deck_bf4 != 0) {
                             if (unit_.land_park_target_24 < pz) {
-                                unit_.land_done_18 = true;              // 009B1E30 false
-                                ++unit_.land_park_done_why[3];
-                                return;
+                                // 009B2228: on a class-9 target (009B1E30) the plane
+                                // at the lift (site vtable[3Ch], 006CFF70) is not done.
+                                if (!(carrier && owner_.carrier_elevator_intake_006cff70(d,
+                                        unit_))) {
+                                    unit_.land_done_18 = true;
+                                    ++unit_.land_park_done_why[3];
+                                    return;
+                                }
                             }
                             const float e = bsp::wrapped_angle_subtract_00438b10(
                                 unit_.plane_heading_c6c, d.runway_heading_88);
@@ -22412,7 +22760,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // +9Ch (the local forward) are the world position and heading
                     // through the airfield frame; [approach+1Ch]+40h and approach+B4h
                     // (both zeroed at the head) are not carried.
-                    void run_land_park_tick_009b22c0() {
+                    void run_land_park_tick_009b22c0(float dt) {
                         GameUnitsHost::Impl::LandingDeck* d = unit_.land_deck_plus_one == 0 ? nullptr
                             : owner_.landing_deck_006c0750(unit_.land_deck_plus_one - 1u,
                                 unit_.land_site_plus_one - 1u);
@@ -22436,8 +22784,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired = 0.0f;
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
                         unit_.plan_state.pitch_mode_2d0 = 0;
-                        // 009B2351-009B2388: 006CF520, the queue origin; its z only.
+                        // Packet cc9_carrier_elevator: 009B23D8-009B23EA, the carrier
+                        // flag (approach+30h vtable[5Ch](9)) in [esp+13h].
+                        const bool carrier = GameUnitsHost::Impl::kCarrierElevatorBound
+                            && d->mother_ship;
                         std::array<float, 3> q{};
+                        std::array<float, 3> t{};
+                        float px = 0.0f;
+                        float pz = 0.0f;
+                        if (carrier) {
+                            GameUnitsHost::Impl::CarrierElevator* lift =
+                                owner_.carrier_elevator_ready(*d);
+                            if (lift == nullptr) {
+                                land_refuse_state("land/park on a carrier without its lift "
+                                    "(006D0120)", 0x009b2367u);
+                                return;
+                            }
+                            // 006D0120 (+44h): q = the lift point class+808h..+810h;
+                            // 006D00E0 (+2Ch): t = the lift point with z less
+                            // planeDesc+158h. Both in the carrier's model frame, as
+                            // plane+A4h/+ACh is under the carrier.
+                            q = {lift->lift[0], lift->lift[1], lift->lift[2]};
+                            t = {lift->lift[0], lift->lift[1], lift->lift[2] - kPlaneDesc158};
+                            const std::array<float, 3> pl =
+                                owner_.carrier_local_point(*d, unit_.motion.position);
+                            px = pl[0];
+                            pz = pl[2];
+                            ++unit_.land_park_carrier_ticks;
+                        } else {
+                        // 009B2351-009B2388: 006CF520, the queue origin; its z only.
                         if (!owner_.landing_hangar_point_006cf420_006cf520(*d, true, q)) {
                             ++unit_.land_park_no_hangar;
                             land_refuse_state("land/park without an entry path (006CF520)",
@@ -22446,20 +22821,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         // 009B236E-009B239A: 006CF420, the taxi target; its fallback is
                         // the plane's world position, used as is.
-                        std::array<float, 3> t{};
                         if (!owner_.landing_hangar_point_006cf420_006cf520(*d, false, t)) {
                             t = {unit_.motion.position[0], unit_.motion.position[1],
                                  unit_.motion.position[2]};
                         }
                         const std::array<float, 3> pl =
                             landing_xform_004142e0(d->inverse_48, unit_.motion.position);
-                        const float px = pl[0];
-                        const float pz = pl[2];
+                        px = pl[0];
+                        pz = pl[2];
+                        }
                         const bool attached = unit_.plane_ground_contact_bf8
                             && unit_.plane_contact_deck_bf4 != 0;
                         // 009B23F1-009B2454: off a holder and the target moved by more
-                        // than 10 m (100.0, 00D7A220): 007B9000 then 007C1680.
-                        if (!attached) {
+                        // than 10 m (100.0, 00D7A220): 007B9000 then 007C1680. The
+                        // carrier arm jumps over it (009B23EF).
+                        if (!carrier && !attached) {
                             const float ex = unit_.land_park_target_20 - t[0];
                             const float ez = unit_.land_park_target_24 - t[2];
                             const float e2 = static_cast<float>(static_cast<double>(ex) * ex +
@@ -22472,7 +22848,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         unit_.land_park_target_20 = t[0];
                         unit_.land_park_target_24 = t[2];
-                        land_park_done_009b21d0(*d, pz);                      // 009B2476
+                        land_park_done_009b21d0(*d, pz, carrier);             // 009B2476
                         const float dx = unit_.land_park_target_20 - px;
                         const float dz = unit_.land_park_target_24 - pz;
                         const float v = avoid_len(unit_.plane_world_velocity);   // vtable[38h]
@@ -22482,17 +22858,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             land_refuse_state("land/park without the tuning block", 0x009b24beu);
                             return;
                         }
-                        // 009B24D1: AirField/MoveSpd (+184h).
-                        const float base = g->air_field_move_spd;
+                        // 009B24C3-009B24D9: AirField/MoveSpd (+184h), or on a carrier
+                        // Pilot/Landing/ParkVelocity (+4E8h).
+                        const float base = carrier ? g->pilot_landing_park_velocity
+                                                   : g->air_field_move_spd;
                         // 009B24F3-009B256B: hi = max(base, 007C4830 x 0.6);
                         // speed = 00419010(base x 5, base, base x 10, hi, dz).
                         const float srs = static_cast<float>(static_cast<double>(
                             g->dynamics_spd_multipliers_stall_range_max * unit_.plane_stall_spd) *
                             0.6000000238418579);
                         const float hi = base > srs ? base : srs;
-                        float spd = bsp::clamped_interpolate_00419010(
+                        float spd = carrier ? base : bsp::clamped_interpolate_00419010(
                             static_cast<float>(static_cast<double>(base) * 5.0), base,
                             static_cast<float>(10.0 * static_cast<double>(base)), hi, dz);
+                        if (carrier) {
+                            // 009B260C-009B2631: the clock +28h runs down while the
+                            // plane is slower than 1.0 and within 10 m (00CE38B8).
+                            if (1.0f > v && 10.0f > dz) {
+                                unit_.land_park_timer_28 = unit_.land_park_timer_28 - dt;
+                            }
+                        } else
                         // 009B256F-009B25A1: beyond 100 m keep 0.85 x the speed.
                         if (static_cast<double>(dz) > 100.0) {
                             const float keep = static_cast<float>(static_cast<double>(v) *
@@ -22502,12 +22887,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B25A7-009B2603: +910h once the queue origin's z is less
                         // than 20 (28 for a 10h/16h class, 00D1FF80) ahead.
                         const float lim = park_bomber_class_0047b850(unit_) ? 28.0f : 20.0f;
-                        if (lim > q[2] - pz) unit_.plane_taxi_queue_910 = true;
+                        if (!carrier && lim > q[2] - pz) unit_.plane_taxi_queue_910 = true;
                         // 009B2634-009B270D: slow at or below 1.5 x base; then the path
                         // test against the turn distance.
                         const bool slow = static_cast<double>(v) <= static_cast<double>(base) * 1.5;
                         bool path = false;
-                        if (slow) {
+                        if (slow && !carrier) {                                   // 009B265F
                             const float want = g->dynamics_runway_yaw_turn_spd_mul *
                                 unit_.plane_class.yaw_spd;
                             const float rate = want > g->air_field_min_turn_spd ? want
@@ -22554,6 +22939,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plane_in_hangar_c00 = true;
                                     ++unit_.land_park_hangar;
                                 }
+                            } else if (carrier) {
+                                // 009B27F6-009B2851: sx = dx, sz = min(dz, max(1.0,
+                                // 12.0 (double 00CE42D0) - |dx|)); f18 stays dz.
+                                sx = dx;
+                                const float adx = dx > 0.0f ? dx : -0.0f - dx;
+                                float ahead = static_cast<float>(12.0 - static_cast<double>(adx));
+                                if (1.0f > ahead) ahead = 1.0f;                     // 00415550
+                                sz = dz < ahead ? dz : ahead;                        // 00415510
                             } else {
                                 // 009B276A-009B2851: the runway band, half of the runway
                                 // width less the class Width; e the excess outside it.
@@ -22577,10 +22970,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009B28C8-009B2916: 006CF5B0 off the path and outside the queue
                         // band; a refusal stops the plane.
                         if (unit_.plane_control_mode_900 != 5 && !unit_.plane_taxi_queue_910) {
-                            if (!owner_.landing_spot_clear_006cf5b0(*d, unit_, true,
+                            // The carrier site's +34h is 006D0390, called with the
+                            // enable byte clear (009B28F9 SETE).
+                            if (carrier ? !owner_.carrier_elevator_lane_006d0390(*d, unit_)
+                                        : !owner_.landing_spot_clear_006cf5b0(*d, unit_, true,
                                     unit_.land_park_target_20, unit_.land_park_target_24)) {
                                 spd = 0.0f;
                                 ++unit_.land_park_spot_refused;
+                            }
+                        }
+                        if (carrier) {
+                            // 009B2923-009B298D: behind the target (0 > f18) stop;
+                            // else c = max(0.5, f18 x 0.5), and spd below 0.1 (double
+                            // 00D7A3A0) becomes 0.1 (00D7A2F0), otherwise min(spd, c).
+                            if (0.0f > f18) {
+                                spd = 0.0f;
+                            } else {
+                                const float half = static_cast<float>(
+                                    static_cast<double>(f18) * 0.5);
+                                const float c = 0.5f > half ? 0.5f : half;
+                                if (0.1 > static_cast<double>(spd)) {
+                                    spd = 0.1f;
+                                } else if (spd > c) {
+                                    spd = c;
+                                }
                             }
                         }
                         // 009B2993-009B2A42: the heading of (sx, sz) and the plane's,
@@ -23314,7 +23727,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             break;
                         case LS::kPark:
                             if constexpr (GameUnitsHost::Impl::kLandParkStateBound) {
-                                run_land_park_tick_009b22c0();
+                                run_land_park_tick_009b22c0(dt);
                                 break;
                             }
                             land_refuse_state("a landing state's tick", 0x009b3f39u);
@@ -27612,6 +28025,19 @@ void GameUnitsHost::report() {
             host.lhc_side_moved, host.lhc_own_ok, host.lhc_own_far, host.lhc_dd_r_sum / n,
             host.lhc_own_d_r_sum / n, host.lhc_r_moved_sum / n, host.lhc_point_moved_sum / n,
             host.lhc_leave);
+    }
+    if constexpr (Impl::kCarrierElevatorBound) {
+        for (const Impl::LandingDeck& d : host.landing_decks) {
+            const Impl::CarrierElevator& e = d.elevator;
+            if (!d.mother_ship || !e.built || d.owner >= host.slots.size()) continue;
+            host.log.notef("summary carrier elevator %s: refused=%d ticks=%llu intakes=%llu "
+                "stowed=%llu releases=%llu empty_up=%llu unfed_relaunch=%llu top_releases=%llu "
+                "mode=%d p18=%.2f state_two=%llu (006D0600 / 006FC480 / 006FC720, packet "
+                "cc9_carrier_elevator)", host.slots[d.owner]->row.name.c_str(),
+                e.refused ? 1 : 0, e.ticks, e.intakes, e.hides, e.releases, e.empty_up,
+                e.unfed_relaunch, e.top_releases, e.mode_50, static_cast<double>(e.p18),
+                host.carrier_elevator_state_two);
+        }
     }
     if constexpr (kLandingSequencerBound) {
         const bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
