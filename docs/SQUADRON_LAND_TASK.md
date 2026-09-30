@@ -4468,3 +4468,95 @@ What the numbers say:
   - 5al item 2, the moveto leader's climb speed loss.
   - Whether JM05's carrier record counts (Lexington 24) match what the image would hold once the
     carrier elevator (5ah) removes landed planes. That is part of the elevator chain.
+
+## 5an. The carrier elevator, step (a): the state-2 request and what `+900h` 2 does to the land task (packet `cc9_elevator_state2_read`, cc9-lua23, 2026-09-30)
+
+This is 5ah's step (a). It was read from the disk listing only, and no code changed.
+
+### The request `007C2090` (`007C2090`-`007C2126`, `__thiscall(plane)`, plain `RET`)
+
+- **It returns without a message** in either of two cases:
+  - `+900h` is already 2 (`007C20B0`);
+  - the game's `[00E188A8]+1FE4h` is 2 (`007C20BE`). That is the network mode; it is not 2 in
+    a single-player mission.
+- **Otherwise it builds message `C3h`** (`0075B430(C3h)`, vtable `00D03504`):
+  - `+20h` = the current `+900h` (the byte);
+  - `+21h` = 2.
+- **It routes the message** through `0077C2A0(plane, msg, 7, 0)`.
+
+### The handler `007CCFA0` (`BSP_Plane_HandleMessage`)
+
+- **Kind dispatch.** The kind byte `+10h` less `7Ah` indexes the byte table `007CD1D8`. For
+  `C3h` that is `007CD221` = 1, and the dword table `007CD1AC` gives `007CCFEF`.
+- **State dispatch.** `007CCFEF` takes the requested state `+21h` - 1 into the table `007CD22C`,
+  whose entries 1..7 are:
+
+  | requested state | handler address | what it does |
+  | --- | --- | --- |
+  | 1 | `007CD00A` | calls `007CC820` |
+  | 2 | `007CD01B` | calls `007CC7A0` |
+  | 3 | `007CD0A8` | default |
+  | 4 | `007CD02C` | the touchdown pair of 5k |
+  | 5 | `007CD06D` | the touchdown pair of 5k |
+  | 6 | `007CD090` | not read here |
+  | 7 | `007CD0A1` | not read here |
+
+  The state-2 arm does not test the current state.
+
+### `007CC7A0` `BSP_Plane_EnterFlightStateTwo` (`007CC7A0`-`007CC810`, `__fastcall(plane)`, `RET`)
+
+It does five things, in order:
+1. **Network mode only** (`game+1FE4h` == 2, not single player): `007C78A0(2, +904h)`.
+2. **Throttle.** `+9F0h` = 0.0 (`007CC7CC`), unconditionally.
+3. **The state write**, when `+900h` is not already 2:
+   - `+900h` = 2 (`007CC7E2`);
+   - `+C04h` = -1.0 (`00D7A260`), so the site probe `007C5AC0` runs on the next step;
+   - `007C11E0(0)` (`BSP_Plane_NotifyFlightState`).
+4. **Controlled-plane clear.** With no pilot at `+9D8h`, the byte `game+193Ch` is cleared.
+5. It returns.
+
+### What state 2 does to the land task and to the motion
+
+- **The land task stops thinking.** Its rule `009B3CF0` has no arm for `+900h` 2; its only
+  `+900h` arm is 4 or 5 -> park. The bot tick's gate 8 (`0099AE5F`, `0074E230`) admits only
+  `+900h` 4 to 7 (docs/PILOT_BOT_TICK_GATES.md). So from the state-2 write on, `0099ACD0` bails:
+  - neither the rule nor the park tick runs again;
+  - the park <-> abort loop ends, which answers 5ah's question 3 from the image side.
+- **No motion arm runs.** The fixed step's dispatch `007CE040` takes free flight only when
+  `(+72Ch)->vtable[38h]` answers (`+900h` 7), the ground roll for 4 or 5, and the surface for 6.
+  For 2 it takes none (`007CECA0`). The plane moves only as the platform carries it: `006FC0D0`
+  writes `unit+A4h..+ACh`. At the bottom it is hidden (`007B96C0`) and released (`006FC250`).
+- **Other `+900h == 2` readers.** A byte census of `CMP dword [reg+900h],2` (`83 B8..BF 00 09 00 00
+  02`) finds two sites:
+  - `0074E222`, the predicate `0074E220`, which has no rel32 caller and no dword reference;
+  - `007CC7C2`, above.
+  Register compares (`CMP [reg+900h],EAX`) are not covered. The corridor's 2-or-4 refusal is in
+  `006C3B10` (5b).
+- **The sequencer keeps the record.**
+  - `006C7960` answers mode 4 for a `+904h` plane before any other test (5b, 5r).
+  - `006C45C0`, the squadron release, needs the head airborne. A squadron whose head has landed
+    and gone below is never released by it.
+  - So the image, too, keeps landed-and-stowed planes on the deck's `+A8h` vector unless another
+    path erases them (not found here). 5am's question, whether the elevator lowers the record
+    count, leans to no. The count drops only through a release, and the release needs an
+    airborne head.
+
+### The host today
+
+- The host never writes `+900h` 2 (the census of `plane_control_mode_900` stores finds 4, 5, 6 and
+  7 only).
+- Its motion dispatch (`select_motion_arm_007ce040`, `src/plane_flight.cpp`) already answers
+  `None` for 2.
+- Its pilot pass runs at the head of the ground-roll arm, so a state-2 plane would neither think
+  nor move, as in the image.
+- A binding of step (b) needs these pieces:
+  - `007C2090` as a direct state write (single player, no message queue): `+900h` = 2,
+    `+9F0h` = 0, `+C04h` = -1.0, and the notify;
+  - the platform carry `006FC0D0`;
+  - the hide and release.
+
+### Next: step (b)
+
+Park's carrier arm `009B23E4` (the `bVar4` branches, the site slots `+2Ch`/`+44h`/`+34h`, and
+`006CE610`), and the elevator site `006D0600` / `006FC480` / `006FC720` with the state write
+above. All of it goes behind `kLandParkStateBound`, committed OFF.
