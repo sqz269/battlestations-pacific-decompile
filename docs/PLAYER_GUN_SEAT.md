@@ -433,6 +433,9 @@ a mechanism failure, apart from RNG coupling through changed shot counts
     tick). Only the last pair per tick counts, as in the image, where the drain's last 0085ABA0
     stands.
   - Not resolved here: which of those two causes applies.
+  - **Resolved later** (GUNNERY_OPEN_ITEMS 76): two HUD updates per gun tick. The host pumped the
+    front-end screens twice per mission frame. `kMenuPumpYieldsToMissionFrameBound` (ON) leaves
+    one pump, and `turns` then equals `guns`.
 
 **Verdict: mechanism matches, spread missed; flipped ON** (`kPlayerGunSeatArtilleryBound = true`).
 Ranking #7 is closed for group 3. Groups 4 and 5 (0095A1CC, 0095A441) carry no message on any

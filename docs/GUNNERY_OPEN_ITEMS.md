@@ -5189,3 +5189,35 @@ s's launch form.
    own artillery (shots, damage dealt by the group unit), as in 7.4.
 4. **Mechanism failure:** a move that starts anywhere else (plane paths, other units' targeting,
    ship AI), apart from RNG coupling through changed shot counts.
+
+### 76.4 Measured, and the verdict: ON
+
+A same-tree pair at `ecd0e978f`: `local\g17_mp0` (SHA-256 prefix `756D48D596E1`) against `local\g17_mp1`
+(`--flip kMenuPumpYieldsToMissionFrameBound=true`, `482BDB28706D`). The 300-frame USN01 smoke on
+the ON build is clean (`pump_frames=300`). Logs are `local\g17_mp{0,1}_<row>.log`.
+
+**Gameplay: all seventeen rows exit 1**, and the death rows are identical on every row.
+
+| row | front-end pump_frames | seat groups (2 / 3) | group 3 guns / turns / refusals |
+| --- | --- | --- | --- |
+| USN04 | 9200 -> 4700 | 7997 / 0 -> 3999 / 0 | - |
+| USN01 | 6200 -> 3200 | 0 / 2367 -> 0 / 1184 | 7421 / 3712 / 3632 -> 3712 / 3712 / 3632 |
+| JM06 | 6200 -> 3200 | 0 / 5997 -> 0 / 2999 | 29985 / 14990 / 9747 -> 14995 / 14990 / 9747 |
+| USNOS long | 18200 -> 9200 | 605 / 16369 -> 303 / 8185 | 211197 / 105592 / 105592 -> 105605 / 105592 / 105592 |
+| LOMP06 | 2200 -> 1200 | - | - |
+
+**Prediction check:**
+- **The mechanism held.** The pump runs once per frame, and the seat messages and accepted guns
+  halve. `turns` equals `guns` except for the last message of the run, which no gun tick consumes
+  (JM06 14995 against 14990: one message of five guns).
+- The turns and refusals themselves are unchanged. The idle camera does not move between the two
+  passes, so the second pass sent the same pair.
+- **JM06 and USNOS long did not move.** That is inside the prediction ("may move").
+
+**Verdict: ON** (`kMenuPumpYieldsToMissionFrameBound = true`). Item 71.3's ratio question is
+closed. The level-1 screens now run at the image's cadence: once per 004e4a40, plus once per
+drain-loop iteration.
+- SHIP_SCREEN_UPDATE sections 21 and 26 and SCRIPTED_HELM 6.6 describe "twice per mission frame".
+  That was the host's cadence.
+- The role take 27h (`kHudRoleScreenPumpBound`) now runs once per frame. It was already
+  gameplay-identical at twice.

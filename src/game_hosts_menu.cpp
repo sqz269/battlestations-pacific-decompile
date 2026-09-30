@@ -31,7 +31,7 @@ namespace {
 
 // Packet cc9_menu_pump_once: during a mission frame the front-end pump 004f8830
 // runs only from the mission frame's own 004c40f0 passes (GameMenuHost::frame).
-constexpr bool kMenuPumpYieldsToMissionFrameBound = false;
+constexpr bool kMenuPumpYieldsToMissionFrameBound = true;  // ON: 17 rows identical (GUNNERY_OPEN_ITEMS 76.4)
 
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
 // has exactly one element (docs/MAIN_MENU_PATH.md).
