@@ -6733,3 +6733,34 @@ The mission scripts gate their launches on `IsReadyToSendPlanes`:
 6. **Flip criterion:** every brake that is set is released once its squadron is out or on the
    ground in state 4, `queued=0`, and no death row moves that the new launch times cannot explain.
    Row 2's held brake is the image's rule applied to 5bh's airfield hold, not a mechanism failure.
+
+### Results (OFF `local\l27_boff`, SHA-256 `4AAAE55AB63C`; ON `local\l27_bon`, `ED381B4A1106`; both from `8afd63890`)
+
+The 300-frame smoke of the committed tree (USN01, `local\l27_b_off_smoke_smoke.log`) exits 0 with
+299 frames presented.
+
+| row | pair_diff | brake: set / released / held at end | launch times ON (OFF) | queued | death table |
+| --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 3 | 10 / 10 / 0 | carriers 3.05, 27.05, 54.05, 81.05 (3.05, 6.05, 9.05, 12.05) | 0 | identical; every headline value identical |
+| JM05 9000 | 3 | 12 / 11 / **1** | as above; Secondary sqn11 153.00; **Secondary's next launch (302.95 OFF) never comes**; Main 403.03 | 0 | identical (18 rows) |
+| USN04 4500 | 3 | 4 / 4 / 0 | sqn03/04 at **51.05** (30.05) | 0 | 20 rows re-timed by 0.05-5.35 s, several with another killer; one row enters the window (`A6M Zero #8.2` 224.36 s, which dies at 226.31 s OFF on E2); releases and first hit unchanged |
+| E2 9000 | 3 | 4 / 4 / 0 | as USN04 | 0 | same victim set (52); the same re-timings |
+| USN13 3000 | **1** | 9 / 9 / 0 | all at 0.00 | 0 | identical |
+| USN01, LOMP06 | **1** | 0 | - | - | identical |
+
+Against the predictions:
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 carriers at about 3, 26, 49, 72 s; all 30 still lift off; deaths identical | **held**: 3.05, 27.05, 54.05, 81.05; `liftoffs=30`; the launch moves no death row. Missed in detail: the airfields release at 17.85 s (Main) and 29.65 s (Secondary), not within about 7 s. Their members reach state 4 with contact only after the taxi |
+| 2. JM05 9000: Secondary's second launch never comes | **held**: `held_at_end=1`, 12 launches instead of 13, `liftoffs=34` |
+| 3. USN04/E2: second launches at about 45-50 s | **held, 1 s outside**: 51.05 s. Releases unchanged; the strike deaths are re-timed as the fighters now meet it at other places |
+| 4. USN13 gameplay identical | **held**: exit 1 |
+| 5. controls | **held**: exit 1 |
+| 6. flip criterion | **met**: every brake set is released when its squadron is flying or on the ground in state 4, except the one the image's rule keeps behind 5bh's airfield hold; `queued=0` on every row |
+
+### Verdict: **flip ON**
+
+The mechanism matches on every launch row, the scripts wait on `IsReadyToSendPlanes` as read, and
+no launch is queued, so the unbound `006C64B0` is never needed. The JM05 9000 held brake is the
+image's rule (`007B8BD0` refuses state 5) applied to the held wingmen of 5bh and 5bi.

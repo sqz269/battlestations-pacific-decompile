@@ -472,7 +472,9 @@ struct AirOpsSceneDeck {
 // answers: the squadron has members and each is in state 7, 6, or 4 with
 // ground contact (007B8BD0). While it is held, 006BF620 answers not ready and
 // 006CC690 queues. False: block+38h is never written, as before.
-inline constexpr bool kBaseLaunchBrakeBound = false;
+// ON: 5bj's pairs (every set brake released except the one the image's rule
+// holds behind 5bh's airfield hold; no launch queued; death rows re-timed only).
+inline constexpr bool kBaseLaunchBrakeBound = true;
 
 // The block mode 1 leaves behind. `slots` is block+4Ch with its count at
 // block+50h; `max_in_air_planes` is block+58h.
