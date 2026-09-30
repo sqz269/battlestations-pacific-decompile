@@ -3024,3 +3024,26 @@ is held after this addendum.
   - `local\l19_sym.py <map> <va>` symbolises a crash address.
 - **Edit scripts.** `local\l19_edit1..4.py` hold the applied edits. They read and write bytes, so
   the line endings are preserved.
+
+## Handoff (cc9-lua20, 2026-09-30)
+
+Branch `agent/cc9-lua20`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua20`. No lease
+is held after this handoff.
+
+### Done
+
+| packet | commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_carrier_landing_deck_part2` | `7d8d5a86b`, `d9aa13856` | `kCarrierDeckParentBound`, `kCarrierLandingDeckBound`, `kReturnToBaseSiteKeyBound` | ON: 13 of 13 carrier landings stop on deck; JM05 9000 deaths 28 -> 3 (the faithful recall) | SQUADRON_LAND_TASK.md 5ag |
+| `cc9_carrier_elevator` | `f6d3cbb8a` | none | read: the elevator needs park's carrier arm; `006BA5E0` is caller-less | SQUADRON_LAND_TASK.md 5ah |
+| `cc9_moveto_target_speed` (#8) | `c624e7be5`, `0cd7e2da0` | `kMoveToTargetSpeedOverrideBound` | ON: stage-identical on five rows | PILOT_MOVETO_TASK.md |
+| `cc9_follow_trail_arm` (#14) | `1e9be389a`, `10ab258d8` | `kFollowTrailArmBound` | ON: stage-only (writes the wanderer's +840h/+844h) | PILOT_MOVETO_TASK.md |
+| `cc9_plane_wanderer` | `7e5fe18c1`, `84580f94d` | `kPlaneWandererBound` | ON: every plane row moves; the mechanism held | PLANE_WANDERER.md |
+
+### Open, in order
+
+The queue and its evidence are in SQUADRON_LAND_TASK.md **5ai**. Its first item comes out of the
+wanderer pair: the follow placement leaves members 100-600 m (JM05 up to 2 km) off station.
+
+**The JM05 USS Phelps question** (the idle player on a US ship on a Japanese-side mission) is still
+waiting for cc9-ships17's party-gate result. This worker did not take it.
