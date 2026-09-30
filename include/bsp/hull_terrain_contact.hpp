@@ -1,0 +1,95 @@
+#pragma once
+// Packet cc9_hull_terrain_contact_solver (docs/GUNNERY_OPEN_ITEMS.md section 84; the read is
+// section 83). The Dyn library's contact phase for one hull body against the terrain, in the
+// order 00C5BB30 runs it between the velocity phase 00C41550 and the position phase 00C5B1B0:
+//
+//   * ManifoldUpdate: every manifold of the hull goes through 00C4B9B0 (native, R152); a
+//     manifold left with no point is retired (00C549D0's second pass).
+//   * The narrow phase 00C44090 for each (hull convex shape, terrain tile) pair: the terrain/
+//     convex test 00C53630 gives up to eight candidates (every hull vertex at or below the
+//     terrain height, in vertex order); each goes into the pair's manifold through 00C3F760
+//     (native, R138, the four-point reduction included). The manifold's friction is
+//     combine(hull material Friction, 0.0) and its restitution (0 + 0) * 0.5 (the terrain shape
+//     00882AC0 builds has friction 0, restitution 0).
+//   * The solve 00403720 for the hull's group: the row build 00C4DE40, the warm start 00C42BA0,
+//     world+38h = 10 iterations of 00C42530 / 00C42230, the write-back 00C37B50 into the
+//     motion state's velocities and pseudo-velocities, and 00C35020 into the points.
+//
+// SUBSTITUTIONS, labelled:
+//   * The terrain test uses the terrain object's own bilinear height 00ADB480 and cell normal
+//     00ADAA40 over the same samples (the Dyn shape of each tile reads the tile block 00882AC0
+//     hands it), not 00C53630's own interpolation schedule. The candidate is 00C53630's: the
+//     surface point is the vertex moved (h - y) along the normal, and the normal points up.
+//   * The hull vertices are the ConvexObject's raw points (MmodHullConvexBox::shape_points), not
+//     the vertices of the hull 00C5DEB0 builds from them.
+//   * Only hull-terrain pairs: no hull-hull or hull-object manifold joins the group, and the
+//     terrain tile is taken as the one the vertex's grid cell truncates to (a vertex on a tile's
+//     inclusive far edge is not offered to the next tile as well).
+//   * One substep of the host's whole step, as the host's two integration phases already run.
+//
+// Descriptive names are hypotheses. Not the native layout or ABI.
+#include <cstddef>
+#include <cstdint>
+#include <map>
+#include <memory>
+#include <string>
+#include <tuple>
+#include <vector>
+
+#include "bsp/dyn_lcp_impulse_math.hpp"
+#include "bsp/rigid_body_integration.hpp"
+#include "bsp/world_ocean.hpp"
+
+namespace bsp {
+
+// Packet cc9_hull_terrain_contact_solver. True: every ship hull runs the contact phase above
+// against the terrain after the velocity phase, and the kind-8 latch (+1010h) is set from its
+// contacts. False: the narrow phase runs as a census only (no state written), and the hull
+// crosses land as before.
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 84.3).
+inline constexpr bool kHullTerrainContactSolverBound = true;
+
+struct HullTerrainContactStepResult {
+    int candidates{0};        // 00C53630 outputs over all pairs this step
+    int manifolds{0};         // manifolds holding a point after the insert
+    int points{0};            // points solved
+    float max_depth{0.0f};    // the deepest candidate (h - y)
+    float normal_impulse{0.0f};   // sum of the accumulated normal impulses after the solve
+    float bias_impulse{0.0f};     // likewise, the pseudo-velocity rows
+    OceanVec3 delta_linear{};     // velocity change written back
+    OceanVec3 delta_linear_bias{};
+    bool contact{false};      // a candidate was produced (the kind-8 report)
+};
+
+class HullTerrainContactSolver {
+public:
+    HullTerrainContactSolver();
+    ~HullTerrainContactSolver();
+    HullTerrainContactSolver(const HullTerrainContactSolver&) = delete;
+    HullTerrainContactSolver& operator=(const HullTerrainContactSolver&) = delete;
+
+    // `shapes` are the hull's convex shapes in body space; `hull_friction` the material's
+    // Friction (00939365). With `apply` false only the narrow phase runs, into the census.
+    HullTerrainContactStepResult step(std::size_t unit, DynBody& body,
+                                      const std::vector<std::vector<OceanVec3>>& shapes,
+                                      float hull_friction, float dt, bool apply);
+    // Drops a unit's manifolds (death, removal).
+    void forget(std::size_t unit);
+
+    struct Census {
+        unsigned long long steps{0}, contact_steps{0}, candidates{0}, rejected_normal{0};
+        unsigned long long solves{0}, rows{0}, retired{0};
+        std::size_t units_touched{0};
+        float max_depth{0.0f};
+    };
+    const Census& census() const noexcept { return census_; }
+
+private:
+    struct Manifold;
+    using Key = std::tuple<std::size_t, int, int, int, int>;  // unit, shape, landscape, tx, tz
+    std::map<Key, std::unique_ptr<Manifold>> manifolds_;
+    std::map<std::size_t, bool> touched_;
+    Census census_;
+};
+
+}  // namespace bsp
