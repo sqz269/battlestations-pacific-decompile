@@ -13037,3 +13037,53 @@ moved rows. Exit 3 means the switch moves that row.
   9200-frame row, which q does not run.
 - **The gun seat also moves USN13.** One death row changes: `bruh #1.3|.-4` is killed by DD_4
   instead of Santa, with hit records 700 vs 701.
+
+## Mission reference baselines, 2026-09-30 r (main 28840d691)
+
+Packet `cc9_reference_rebaseline_18`, worker cc9-gunnery15. **It replaces the 2026-09-29 q rows
+above.** The report is `reports/cc9_reference_rebaseline_18.json`.
+
+### Predictions (written before any run)
+
+**The switch diff:**
+- A value diff of every `constexpr bool k...` declaration between `83b528811` and `28840d691`
+  (`local\g15_switches.py`) finds **eight switches newly ON** and no new OFF switch.
+- Two of the eight existed OFF at q: `kMoveToArrivalEndCommandBound` and `kReturnToBaseSiteKeyBound`.
+- The other six were added after q.
+- The three carrier switches act only together (SQUADRON_LAND_TASK 5ag), so leave-one-out treats
+  them as one variant.
+
+| switch | flip commit | its pair recorded | predicted rows moved against q |
+| --- | --- | --- | --- |
+| `kAiPartyGateUnforcedBound` | `7f43e0d99` | SHIP_AI 60.5 / 60.7 (USN04, USN01, USN13, JM05, IJN01, LOMP10 exit 3) | those six, and E2 and LOMP10 long, which share their planners |
+| `kAiGroupScoreListReleaseBound` | `5f8a0e6c6` | SHIP_AI 61.4 (JM05, USN13 exit 1) | none |
+| `kReturnToBaseSiteKeyBound` | `d9aa13856` | SQUADRON_LAND_TASK 5ag.2 (JM05 9000 deaths 28 -> 3; controls gameplay-identical) | JM05 long |
+| `kCarrierLandingDeckBound` | `d9aa13856` | with the site key | JM05 long |
+| `kCarrierDeckParentBound` | `d9aa13856` | 5ag.1 (13 of 13 touchdowns on deck; JM05 9000 exit 3) | JM05 long |
+| `kLandPlatformAttachmentBound` | `2e508be11` | GUN_BARREL_COUNT 9.4 (JM05, JM05 long, JM08, USN12, USN01 exit 3) | JM05, JM08, USN12, USN01, JM05 long |
+| `kTorpedoRunTimeUpdateBound` | `1fa9b6f98` | TORPEDO_AIM_LEAD 21.4 (USN04/E2, USN13, USN01 move; JM05, JM08 identical) | USN04, E2, USN13, USN01 |
+| `kMoveToArrivalEndCommandBound` | `d05adce62` | PILOT_MOVETO_TASK (six rows exit 1, stage-only) | none |
+
+**Rows:**
+- R runs q's sixteen rows plus **JM05 long** (JM05, 9200/9000), which q did not run.
+- JM05 long's q value is taken from q's own binary (`local\g15_rq`, `7EC67ABBAACE`), run on that
+  row alongside R.
+
+**Predicted moved against q:** USN04, E2, USN01, USN13, JM05, JM08, USN12, IJN01, LOMP10,
+LOMP10 long and JM05 long.
+
+**Predicted identical:** USN02, JM06, BSM01, LOMP06, USNOS and USNOS long. None of these has a
+planner that the party gate changes, a land gun or a torpedo release.
+
+**All-OFF anchor:** with the eight OFF, `28840d691` is gameplay-identical to q on all seventeen
+rows.
+
+**Leave-one-out** (six variants: the party gate, the score list, the carrier group, land mounts,
+torpedo run time and the moveto stage):
+- the party gate attributes USN04, USN01, USN13, JM05, IJN01, LOMP10 and E2;
+- land mounts attribute JM05, JM08, USN12 and USN01;
+- the carrier group attributes JM05 long;
+- the run-time update attributes USN04, E2, USN13 and USN01;
+- the score list and the moveto stage attribute nothing.
+- Because the party gate changes who plans, several rows may lose their other attributions once
+  it is ON, for example if a torpedo release no longer happens.
