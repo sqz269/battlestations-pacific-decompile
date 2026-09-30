@@ -6215,7 +6215,7 @@ The stand-in's census still runs.
 - **Group the solver with the landing chain on JM08 long.** They interact: the chain's mode-3
   entry is not reached while hulls cannot cross land.
 
-**2. JM08 long's landing mode-3 entry under the solver** (84.4). This is cc9-ships22's lane.
+**2. JM08 long's landing mode-3 entry under the solver** (84.4). The lead keeps the solver ON (2026-09-30) and routes this to cc9-ships23 as its top item. In reference u, read JM08 long as moving through the solver, with this fix still pending.
 With the solver ON, `mode3_points` goes 1081 -> 0 and the ramps go 2 -> 0. Find what selects
 `009F21A0`'s mode 3, and from how far; then find where the image's landers beach relative to
 `Headquarter 01`'s pads. The per-solve diagnostic is `BSP_HULL_TERRAIN_TRACE=<file>`. On
