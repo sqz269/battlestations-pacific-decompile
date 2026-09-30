@@ -339,6 +339,19 @@ inline constexpr float kTorpedoResetAltDrawHi_00ce3868 = 0.25f;
 // +80h is carried as a double (009D05F6 FSTP qword).
 inline constexpr float kTorpedoResetLegDrawLo_00ce3cb4 = -0.1f;
 inline constexpr float kTorpedoResetLegDrawHi_00ce3800 = 0.5f;
+// Packet cc9_torpedo_reset_engage_draws. 009D04A6-009D053F: +88h =
+// U(1.25, 1.5) * desc+268h TurnCircleRadius + +80h (lo 00CF29A8, hi 00CE380C,
+// stream 1 from 009D0478; +80h as seeded at 009D0497, before the jitter), then
+// +8Ch = +90h = +88h * 1.3 (the qword at 00D21298). The x87 sum is rounded to a
+// float at 009D04F9 and the product at 009D052B.
+inline constexpr float kTorpedoResetEngageDrawLo_00cf29a8 = 1.25f;
+inline constexpr float kTorpedoResetEngageDrawHi_00ce380c = 1.5f;
+inline constexpr double kTorpedoResetEngageScale_00d21298 = 1.2999999523162842;
+float torpedo_reset_scan_seed_009d04be(float draw, float turn_circle_radius_268,
+                                       float far_80) noexcept;
+float torpedo_reset_engage_range_009d0517(float scan_seed_88) noexcept;
+// 009D0581-009D0590: +12Ch = -U(0, 1) (FLDZ lo, FLD1 hi, stream 1), the first
+// replan delay 009D3420 counts down.
 float torpedo_reset_near_leg_009d05ed(float near_7c, float far_80, float draw) noexcept;
 float torpedo_reset_far_leg_009d0625(float near_7c, float far_80, float draw) noexcept;
 

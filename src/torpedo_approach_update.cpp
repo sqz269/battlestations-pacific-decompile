@@ -198,6 +198,18 @@ float torpedo_reset_attack_speed_009d03d9(float travel_speed_18c, float min_hit_
     return static_cast<float>(static_cast<double>(draw) * cap);   // 009D0437/009D0449
 }
 
+float torpedo_reset_scan_seed_009d04be(float draw, float turn_circle_radius_268,
+                                       float far_80) noexcept {
+    // 009D04BE FMUL [EDI+268h], 009D04D3 FADD [ESI+80h], 009D04F9 FSTP float.
+    return static_cast<float>(static_cast<double>(draw) * turn_circle_radius_268 + far_80);
+}
+
+float torpedo_reset_engage_range_009d0517(float scan_seed_88) noexcept {
+    // 009D0517 FMUL qword [00D21298], 009D052B FSTP float; stored to +8Ch and +90h.
+    return static_cast<float>(static_cast<double>(scan_seed_88) *
+                              kTorpedoResetEngageScale_00d21298);
+}
+
 float torpedo_reset_near_leg_009d05ed(float near_7c, float far_80, float draw) noexcept {
     // 009D05D1-009D05ED: draw * (+80h - +7Ch) + +7Ch.
     const double gap = static_cast<double>(far_80) - near_7c;

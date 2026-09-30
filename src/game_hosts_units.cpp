@@ -1905,6 +1905,14 @@ constexpr bool kFlyToObstacleListBound = true;    // ON: TORPEDO_AIM_LEAD 16.1
 // own keyed stand-in stream (name#t70, #t78, #t7c, #t80), so the draws the
 // host already makes keep their sequence. OFF: the row values, as before.
 constexpr bool kTorpedoResetDrawsBound = true;          // ON: TORPEDO_AIM_LEAD 19.6
+// Packet cc9_torpedo_reset_engage_draws (docs/TORPEDO_AIM_LEAD.md section 23): the
+// reset's two remaining draws in 009D0380. +88h = U(1.25, 1.5) * desc+268h
+// TurnCircleRadius + +80h (009D04A6-009D050B), and +8Ch = +90h = +88h * 1.3
+// (009D0517-009D053F), the engage range 009D4AC4 then clamps up to AttackDist;
+// +12Ch = -U(0, 1) (009D0581-009D0590), the first replan delay. SUBSTITUTION,
+// labelled: keyed stand-in streams name#t88 and name#t12c. OFF: +88h is the
+// engage range, +90h is 0 until the first tick and +12Ch is 0.
+constexpr bool kTorpedoResetEngageDrawsBound = true;   // ON: TORPEDO_AIM_LEAD 23.4
 // Packet cc9_torpedo_reset_draws: 009D0160, called at 009D0632 after the aim
 // error draw, seeds +98h, which the engagement estimate adds into +F8h, the
 // torpedo projtime. The host binds no other +98h writer (009D1360 at 009D19A4
@@ -19151,6 +19159,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // gate inert. docs/TORPEDO_RELEASE_GATE.md.
                             ap.aspect_scale_84 = kTorpRows[torp_row][3];
                             unit_.torpedo_release_alt_row = kTorpRows[torp_row][0];
+                            if constexpr (kTorpedoResetEngageDrawsBound) {
+                                // 009D04A6-009D053F, drawn from +80h as seeded
+                                // (009D0497), before the 009D0625 jitter below.
+                                const std::string& n = unit_.row.name;
+                                ap.scan_radius_seed_88 = bsp::torpedo_reset_scan_seed_009d04be(
+                                    owner_.release_altitude_draw_00bd2f10(n + "#t88",
+                                        bsp::kTorpedoResetEngageDrawLo_00cf29a8,
+                                        bsp::kTorpedoResetEngageDrawHi_00ce380c),
+                                    unit_.plane_turn_circle_radius, ap.speed_early_80);
+                                const float range =
+                                    bsp::torpedo_reset_engage_range_009d0517(ap.scan_radius_seed_88);
+                                ap.range_90 = range;
+                                // 009D4AC4, which runs after the reset, clamps +8Ch.
+                                ap.engage_range_8c = bsp::torpedo_engage_range_009d4ac4(
+                                    range, bsp::kPilotTorpedoAttackDistDefault, 1.0f);
+                                // 009D0581-009D0590.
+                                ap.replan_timer_12c = -owner_.release_altitude_draw_00bd2f10(
+                                    n + "#t12c", 0.0f, 1.0f);
+                                if (owner_.torpedo_reset_draws_ < 24) {
+                                    owner_.log.notef("torpedo reset engage %s: turn_circle=%.1f "
+                                        "+80h=%.1f +88h=%.1f +90h=%.1f +8Ch=%.1f +12Ch=%.3f "
+                                        "(009D04A6-009D0590, cc9_torpedo_reset_engage_draws)",
+                                        n.c_str(), static_cast<double>(unit_.plane_turn_circle_radius),
+                                        static_cast<double>(ap.speed_early_80),
+                                        static_cast<double>(ap.scan_radius_seed_88),
+                                        static_cast<double>(ap.range_90),
+                                        static_cast<double>(ap.engage_range_8c),
+                                        static_cast<double>(ap.replan_timer_12c));
+                                }
+                            }
                             if constexpr (kTorpedoResetDrawsBound) {
                                 // 009D03D9-009D0475 and 009D0581-009D0625.
                                 const std::string& n = unit_.row.name;

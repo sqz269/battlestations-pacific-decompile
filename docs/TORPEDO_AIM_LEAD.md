@@ -1756,3 +1756,115 @@ renderer init (`hr 0x8876086a`, `logonui=1`); one smoke run 10 minutes later pas
 - `p3_edit_units*.py` are the applied edits, each taking an optional path for a dry run.
 - `p3_diff*_<row>.txt` are the pair diffs.
 - `p3_scan398.txt` is the section 20 census.
+
+## 23. The reset's engage draws (packet `cc9_torpedo_reset_engage_draws`, cc9-gunnery15)
+
+Section 22's item 1.
+
+### 23.1 The image, `009D0380` (disk bytes, `disasm-raw 009D0497 --length 0x110`)
+
+**The scan seed and the engage range.**
+- `009D04A6`-`009D04B9` pushes hi `00CE380C` 1.5f and lo `00CF29A8` 1.25f (both read as bytes)
+  and calls `00BD2F10`.
+  - ECX is `1` from `009D0478`, and nothing writes ECX before the call, so the draw is on stream 1.
+- `009D04BE FMUL [EDI+268h]`: EDI is `[ESI+8]` (`009D046F`), the class descriptor, and `+268h`
+  is TurnCircleRadius (`include/bsp/dive_bomb_task.hpp`).
+- `009D04D3 FADD [ESI+80h]`: the far leg as seeded at `009D0497`, before the jitter at
+  `009D0625`.
+- `009D04F9 FSTP` rounds the sum to a float, and `009D050B FST [ESI+88h]` stores it.
+- `009D0517 FMUL qword [00D21298]` multiplies by `1.2999999523162842` (the bytes `00 00 00 C0 CC
+  CC F4 3F`).
+  - `009D052B FSTP` rounds to a float.
+  - `009D0539 FST [ESI+8Ch]` and `009D053F FSTP [ESI+90h]` store the same value to both fields.
+- `+8Ch` is then clamped up by `009D4AC4` to `AttackDist * ratio`. The host holds 2200 with a
+  ratio of 1.0.
+
+**The replan delay.**
+- `009D0555`-`009D0579` pushes lo `FLDZ` and hi `FLD1`, sets `ECX = 1`, and stores
+  `+128h = 1.0f`.
+- `009D0581` calls `00BD2F10`, `009D0586 FCHS` negates it, and `009D0590` stores it to `+12Ch`.
+- **Result:** `+12Ch = -U(0, 1)`.
+
+**The host before this packet:**
+- `+88h` was the engage range (2200).
+- `+90h` stayed 0 until the first approach tick.
+- `+12Ch` was 0.
+
+**The readers of `+88h`:**
+- the approach cap in `src/torpedo_approach_update.cpp` (`cap = +88h * ...`);
+- the state-tick ratio `range_90 / scan_seed_88` in `src/bot_task_states.cpp`.
+
+### 23.2 The binding (`kTorpedoResetEngageDrawsBound`, committed OFF)
+
+- **In `src/game_hosts_units.cpp`,** the reset block, before the `009D0625` jitter:
+  - `+88h` comes from `torpedo_reset_scan_seed_009d04be`;
+  - `+90h` and the clamped `+8Ch` come from `torpedo_reset_engage_range_009d0517`, then
+    `009D4AC4`;
+  - `+12Ch = -U(0, 1)`.
+- **Substitution, labelled:** keyed stand-in streams `name#t88` and `name#t12c`, as for the
+  section 19 draws, so the draws the host already makes keep their order.
+- **Logged:** the first 24 resets each write a `torpedo reset engage` line.
+
+### 23.3 Predictions (written before any run)
+
+**Magnitudes.** The far leg `+80h` is 617-642 m on USN04, USN13 and USN01, and 1057 m on JM05
+(the R logs' `torpedo reset draws` lines).
+- With a TurnCircleRadius of a few hundred metres, `+88h` falls from 2200 to roughly 800-1500 m.
+- `+88h * 1.3` stays below 2200, so **`+8Ch` is unchanged** (the clamp holds it at AttackDist).
+- The ON log lines will show the actual values.
+
+**Rows,** against reference r:
+- **Moved:** the torpedo-task rows USN04, E2, USN13, USN01, JM05 and JM05 long. Their approach
+  cap and state ratio use the smaller `+88h`, and their first replan comes up to 1 s later.
+- **Identical:** JM08, USN12 and JM06, which have no torpedo task.
+
+**Caveat.** Under the party gate (R), only USN04 and E2 still release a torpedo (1 of 16 each), and
+USN13 releases none. So the release counts can move only on USN04 and E2. Elsewhere the change
+shows in the aircraft paths.
+
+### 23.4 The pair: the mechanism held, the magnitude missed; flip ON
+
+**Setup.**
+- Exports of `18979299d` (main `9ff123eef` plus this packet): `local\g15_eoff`, SHA-256 prefix
+  `1CBB523307C0`, and `local\g15_eon`, `5B5C9A7C3622`.
+- Rows USN04, E2, USN13, USN01, JM05, JM05 long, JM08, USN12 and JM06, in the reference launch
+  form.
+- A smoke passed at 01:46 UTC, and the runs ended by 02:11 UTC.
+
+**The values, from the ON log lines.**
+- Every torpedo class on these rows has TurnCircleRadius **1200 m**: the Kates, the TBDs and
+  Lexington's squadrons.
+  - The Kate far leg `+80h` is 650, so `+88h` is 2250-2450.
+  - JM05's `+80h` is 1200, so `+88h` is 2716-2971.
+- `+90h = +8Ch = +88h * 1.3` is 2926-3863. That is **above** AttackDist 2200, so the `009D4AC4`
+  clamp keeps the drawn value: **the engage range widens by 700-1650 m.**
+- `+12Ch` falls in (-1, 0].
+- Every value follows 23.1's formula.
+
+**pair_diff.**
+- Exit 3 (moved): USN04, E2, USN13 and USN01.
+- Gameplay-identical: JM05 and JM05 long (exit 1), JM08 (exit 1), USN12 (exit 0) and JM06 (exit 1).
+
+**Effects** (death tables, per entity):
+
+| row | torpedo releases | deaths |
+| --- | --- | --- |
+| USN04 | 1 of 16 on both sides | 50 -> 51 (`D3A Val #7.1\|.-2` only ON); 43 rows re-timed; water contacts 14 -> 16 |
+| E2 | 1 of 16 on both sides | 51 -> 51 with 44 re-timed |
+| USN13 | 0 of 60 on both sides | 22 -> 25 (`bruh #1.4`, `#1.9\|.-2`, `#1.9\|.-3` only ON: Kates shot down on the longer approach) |
+| USN01 | 0 of 17 on both sides | 5 -> 6 (`KatTBD\|.-3` only ON) |
+
+No ship death changes on any row.
+
+**Misses, recorded:**
+- **The magnitude.** 23.3 assumed a TurnCircleRadius of a few hundred metres and predicted `+8Ch`
+  unchanged. At 1200 m the draw exceeds AttackDist, so the engage range itself grows.
+- **JM05 and JM05 long do not move.** Their twelve torpedo tasks reset, but no approach tick
+  reads the new values within the window. This matches 21.4, where JM05 was identical.
+- The extra plane deaths are path changes. Through the shared generator 00BD2F10 they are also
+  coupled to the ships' fire draws, so they cannot be attributed kill by kill.
+
+**Verdict: flip ON.**
+- The mechanism matches the image's formula on every logged reset.
+- The moved rows are the torpedo rows, and the controls are identical.
+- The size is a spread miss.
