@@ -34,12 +34,23 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_commands.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp::game {
+
+// Packet cc9_planner_join_loopback (docs/SHIP_AI_OPEN_ITEMS.md section 94). The
+// planner's follower pass 00A10DC0 asks 0077C8D0 (at 00A10E67), which routes the
+// same 76h join as JoinFormation (0077C964 -> 0077C2A0 flags 7 -> 0076E520): the
+// join reaches 0077F940 at its turn in the next 0076C600 drain, not at the call.
+// True: posted through commands_post_loopback_callback_0076e520, as section 92
+// does for the script's joins. False: joined at the call, as before.
+// ON by section 94.4: posted equals delivered in JM08 36000 (39), USNOS (10) and
+// USN02 (7); USN02 exit 1, USNOS and JM08 exit 3 by spread (base objects).
+inline constexpr bool kPlannerJoinLoopbackBound = true;
 
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();
@@ -2189,7 +2200,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // and calls 0077F940. In this process the route is local, so the join
             // runs here rather than through the session; the wire hop is the
             // part that is not modelled, not the merge.
-            if (units.formation_join_0077f940(follower_index, leader_index)) {
+            bool posted = false;
+            if constexpr (kPlannerJoinLoopbackBound) {
+                ++formation_joins_posted;
+                posted = commands_post_loopback_callback_0076e520(follower_index,
+                    [this, follower_index, leader_index] {
+                        ++formation_joins_delivered;
+                        if (units.formation_join_0077f940(follower_index, leader_index)) {
+                            ++formation_joins_made;
+                        }
+                    });
+            }
+            if (!posted && units.formation_join_0077f940(follower_index, leader_index)) {
                 ++formation_joins_made;
             }
         } else {
@@ -2493,6 +2515,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long formation_requests_available{0};
     unsigned long long formation_requests_refused{0};
     unsigned long long formation_joins_made{0};
+    unsigned long long formation_joins_posted{0};     // cc9_planner_join_loopback
+    unsigned long long formation_joins_delivered{0};
     // Packet cc9_ai_command_avoid_zone_point: 00A020F0 reached (both sides), and
     // answered by the ship-AI host's runtime / with a moved point (ON only).
     unsigned long long avoid_zone_asks{0};
@@ -5072,6 +5096,10 @@ void GameAiCoordinatorHost::report() {
         "+188h OwnerPlayer arm is skipped, this process has no producer for it)",
         host.formation_requests_seen, host.formation_requests_available,
         host.formation_requests_refused, host.formation_joins_made);
+    host.log.notef("summary mission ai follow join loopback posted=%llu delivered=%llu bound=%d "
+        "(00A10E67 -> 0077C8D0 -> 0076E520 -> 0076C600 -> 0077F940, packet "
+        "cc9_planner_join_loopback)", host.formation_joins_posted,
+        host.formation_joins_delivered, kPlannerJoinLoopbackBound ? 1 : 0);
     host.log.notef("summary mission ai command zone point asks=%llu answers=%llu moved=%llu "
         "bound=%d (00A020BE / 00A020F0, margin 30.0, packet cc9_ai_command_avoid_zone_point)",
         host.avoid_zone_asks, host.avoid_zone_answers, host.avoid_zone_moved,

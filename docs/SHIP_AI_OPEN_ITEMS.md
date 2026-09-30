@@ -7950,3 +7950,118 @@ The sequence in `s23_c1_jm08x` (the flip ON):
      `tick_request_join_formation`, the same `0077C964` route as section 92). Posting it
      through the loopback like section 92 would be parity. It does not change this ordering:
      the script's `attackmove` is posted first, so the join still lands last.
+
+## 94. Does the image's planner keep a script-ordered unit and re-join it? (packet `cc9_planner_join_loopback`, cc9-ships23, 2026-09-30)
+
+**Short answer: yes. The re-join of section 93.2 is the image's rule.** Four routines were read,
+and none has a gate that spares a script-ordered unit.
+
+### 94.1 The four routines
+
+| routine | what it does with a script-ordered member | evidence |
+| --- | --- | --- |
+| `00A2BD90` (the `0077D600` group notify at `0077D7A7`) | nothing | `[group+564Ch]`, then `JMP [vt+24h]` = `00A0FC90`, `RET 8`: a no-op (AI_GROUP_THINK section 2) |
+| `00A2DDE0` evict | keeps it | the gates are `+5Ch` set, `+5Dh`/`+5Eh`/`+60h` clear, `009FFD20(member) == group+5634h` and `member+54h == group+5638h`. `009FFD20` (`009FFD20..009FFD5C`) is the loss-counting slot from `entity+180h` and the party: no command read |
+| `00A2E260` split | keeps it | the `009FE080` subset; a ship base is always groupable |
+| `00A10DC0` follower pass (`00A10DC0`) | asks `0077C8D0` again | for every member after the head: IsKindOf(6) at `00A10E3E`, then `0077C8D0(leader)` at `00A10E67`. No command read. Its callers are the tick of every AI command class: Idle, MoveTo, MoveToAttack, CautiousMove, CautiousAttack, DefendPosition, and four more |
+
+- **`0077C8D0`** (`0077C8D0`, RET 4 at `0077C979`) asks only `vtable[16Ch]("follow", leader)` at
+  `0077C8FE`, which is `00779D50`: liveness, kind, side, and the same-group test. It then routes
+  76h. There is no current-command test.
+- **`0077F940`** then issues `follow` through each member's director `vt+58h` (`0077FAB8`), and
+  `00720CD0` clears every slot.
+- **So in the image, too,** a planner-group member that a script orders away (`attackmove` ->
+  `009F5DEB` leave) is re-joined at the group's next follower pass, and its script order is
+  cleared. JM08's landers following Bristol and Macomb is not a host defect.
+
+### 94.2 The one difference: when the planner's join is delivered
+
+- `game_hosts_ai.cpp`'s `tick_request_join_formation` joined at the call. The image posts the
+  76h through `0077C964 -> 0077C2A0` (flags 7) into the loopback vector, the same route
+  section 92 bound for the script's joins.
+- **`kPlannerJoinLoopbackBound`** (committed OFF) posts it through
+  `commands_post_loopback_callback_0076e520`.
+- **Summary line:** `summary mission ai follow join loopback posted= delivered= bound=`.
+
+### 94.3 Census and predictions (written before the pairs)
+
+Planner joins made, from section 92's ON logs (`s23_c1`):
+
+| row | planner requests / joins |
+| --- | --- |
+| JM08 36000 | 6710 / 31 |
+| USN13 | 986 / 29 |
+| USNOS | 737 / 10 |
+| USN02 | 13 / 7 |
+| USN01 | 150 / 2 |
+
+Predictions:
+- **Mechanism:** posted equals delivered, and joins keep the same count to within a few. A join
+  lands one pump (0.05 s) later, after anything posted before it.
+- **Order:** a script order posted in the same step as a planner join still loses to it, as in
+  the image. So JM08's landers still re-join Bristol and Macomb, with `begins=0` as before.
+- **JM08 36000, USNOS, USN02:** exit 1 or 3. A one-step delay on each of 31 / 10 / 7 joins can
+  move positions; no death row should flip for a mechanism reason.
+
+### 94.4 The pairs (`s23_e0` vs `s23_e1`, both from `c4cdf547c`), and the flip
+
+| row | planner joins posted / delivered | joins made, OFF -> ON | exit | deaths |
+| --- | --- | --- | --- | --- |
+| JM08 36000 | 39 / 39 | 31 -> 36 | 3 | 168 -> 132 (22 only ON, 58 only OFF) |
+| USNOS | 10 / 10 | 10 -> 10 | 3 | 106 -> 106 (7 rows changed) |
+| USN02 | 7 / 7 | 7 -> 7 | 1 | identical |
+
+- **The mechanism matches the read.** Every posted join is delivered at its turn in the drain.
+- **JM08's landers still lose the HQ order,** as predicted: `mode3_points=3`, `begins=0`, the same
+  as section 92's ON run.
+- **JM08's 80 flipped death rows are the Allied bombardment's victims, a spread:**
+  - tents: 22 of the flipped rows;
+  - houses: 5;
+  - sandbags, a watchtower, two Gekkos, two `US ...` buildings and one transport.
+  The prediction ("no death row flips for a mechanism reason") was right in kind but missed the
+  size of the spread. JM08 is a long, chaotic row.
+- **Decision: `kPlannerJoinLoopbackBound` ON.**
+- **What this leaves for JM08's landing:** the image's planner, as read, overrides the script's
+  `attackmove` for a planner-group member. So the landers can reach mode 3 only as a group
+  leader, or once the planner's group command itself takes them there. That is item 3 of the
+  handoff below.
+
+## 95. Handoff (cc9-ships23, 2026-09-30, at about 70% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 90 | `NavigatorSetAvoidShipCollision` (`008A3970`) delivered to director `+241h` | `kNavigatorShipAvoidanceDeliveryBound` ON |
+| 91 | JM08 mode-3 entry: the invasion trigger was a knife-edge, not range; diagnostics `lander latch diag`, `fleet diag` | none |
+| 92 | JoinFormation's 76h join posted through the loopback drain; scripted formations no longer break up at t=0.05 | `kFormationJoinLoopbackBound` ON |
+| 93 | USN01's 29 absent units are an ungenerated script branch; the planner's regroup clears JM08's HQ order | none |
+| 94 | the planner re-join is the image's rule; its join is posted through the loopback too | `kPlannerJoinLoopbackBound` ON |
+
+### The next packets, in order
+
+1. **Packet 2 of the lead's queue:** what a neutral CommandBuilding's own gun mounts do (section
+   81 left them following their party).
+2. **Packet 3:** the MCargo transports' landing craft (class `+78Ch/+790h/+794h` readers, the
+   MLandingShip factory `0074BE00`), and the back-off countdown if a row arms `009F47A7`.
+3. **JM08's landing after section 94.** The landers are planner followers of Bristol and Macomb.
+   Read:
+   - whether a planner-group command (the planner's own `attackmove` or `CLOSEATTACK` at
+     Headquarter 01) reaches their approach latch;
+   - or whether the image's LSTs lead their own planner groups (`00A2D8E0`'s `009FFD80` class
+     weight sort: which class heads a mixed group).
+4. **Packet 4:** `0074B0B0..`, the landing ship's ramp animation and unload.
+5. **Left from 92.5 and 93.1:** why Convoy1 is not bombed in USN01 with section 92 ON; the
+   `luaKatoriSpotted` branch.
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships23\local\`, `s23_` prefix)
+
+- `s23_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows>`. The rows include `jm08x`, `usn16`,
+  `usn16l`, `bsm06` and `bsm02`, beside the reference rows.
+- `s23_wait.ps1 -Logs <names>`.
+- `s23_pairs.ps1 -A <off> -B <on> -Rows <rows>`: exit, early leaves, deaths, and the death and
+  unit table verdicts.
+- `s23_fleetcmp.py <off.log> <on.log>`: first per-unit divergence of `fleet diag`.
+- `s23_disp.py` (displacement sweep) and `s23_census.py` (script call census).
+- `BSP_LANDER_DIAG=1` now also prints `lander latch diag`, `fleet diag` (every 10 s) and
+  `follower release diag`.
