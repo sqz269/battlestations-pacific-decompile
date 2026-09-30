@@ -1868,3 +1868,53 @@ No ship death changes on any row.
 - The mechanism matches the image's formula on every logged reset.
 - The moved rows are the torpedo rows, and the controls are identical.
 - The size is a spread miss.
+
+### 23.5 The done/prepare site `009D27D1`: no row reaches it (census)
+
+**The census.** `local\g15_prepcensus.py` in the cc9-gunnery15 tree reads the existing ON logs. It
+covers 26 logs: this section's `g15_eon_*` (9 rows) and reference r's `g15_rr_*` (17 rows).
+- Every torpedo aircraft line reports `prepare_entries=0` and `drop_timer_98=-1.0`. There are 16
+  such lines each on USN04 and E2, 60 on USN13 and 17 on USN01, 186 in total.
+- No `009D27D1` line appears in any native table.
+- Every aircraft line shows `blocked_0099af53` on its attack ticks. The order arm never offers the
+  prepare (`arm_offers=0`).
+- The JM05 rows write no attack-mode line at all. Their twelve tasks reset (23.4) but never
+  reach the attack arm.
+
+**Result:** the committed countdown never starts on any reference row, so the `009D27D1` update
+(21.1) is still unexercised. No new runs were made, since none would reach it.
+
+## 24. Handoff (cc9-gunnery15, 2026-09-30 02:14 UTC)
+
+**Landed this session** on the torpedo path: section 23, `kTorpedoResetEngageDrawsBound` ON
+(`314da1b35`, merged in `bd5d5b583`).
+
+**Open, in order:**
+
+1. **The prepare/done site `009D27D1` (21.1, 23.5)** needs a row where a torpedo task enters
+   prepare.
+   - Every reference aircraft is held by the order arm's `blocked_0099af53`.
+   - Start from that blocker (the attack-mode census names it), not from `009D27D1`.
+2. **The script attack altitude on the torpedo path (section 20, 22 item 2).**
+   - `008A22B0 SquadronSetAttackAlt` writes the squadron block's `+398h`. `009D4A70` step 5
+     keeps it, gated by `+38Ch`/`+37Ch`/`+3AAh`.
+   - The host's torpedo `read_control_block` ignores `sq_alt_398`.
+   - It is inert until a row with a scripted torpedo squadron is found. 81 scripts in this
+     installation call it; `p3_scan398.txt` in the cc9-planes3 tree is the census.
+3. **The renames (22 item 4, sections 13, 16 and 18):**
+   - FlyToObstacle `extent_max`/`extent_sum` are the AA range and the AA damage sum
+     (`include/bsp/plane_fly_to_solver.hpp`).
+   - `speed_late_7c`/`speed_early_80` are distances, the near and far legs.
+   - The substitutions listed in section 13.
+
+**Choosing rows under the party gate** (reference r, `kAiPartyGateUnforcedBound` ON):
+- The US side's own torpedo work is nearly gone from the reference rows:
+  - USN04 and E2 release 1 of 16;
+  - USN13 releases 0 of 60 (4 in q);
+  - USN01 releases 0 of 17.
+- **For torpedo mechanisms, use rows where the AI side flies torpedo planes.** The candidates are
+  the US-player rows' Japanese Kates, whose groups the slot-4 brain now plans (SHIP_AI 60.5).
+- Check each candidate's `torpedo-task releases` and the attack-mode census in the r logs
+  before pairing.
+- The new engage range (23.4) widens every approach by 700-1650 m, because TurnCircleRadius is
+  1200 m on all these classes. Read any older approach-distance expectation against that.

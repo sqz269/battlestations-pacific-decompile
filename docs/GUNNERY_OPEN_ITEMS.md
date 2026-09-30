@@ -4978,3 +4978,61 @@ changed times, killers and ranges:
   - **Closed by cc9-gunnery15** (docs/GUN_BARREL_COUNT.md section 9):
     - every `no_mount` gun is on a land-class unit, whose class runs the same 0095F500 slot pass;
     - `kLandPlatformAttachmentBound` is ON by its pair (9.4).
+
+## 74. Handoff (cc9-gunnery15, 2026-09-30 02:14 UTC)
+
+### 74.1 Landed
+
+All of these are merged to main.
+
+| item | commits | state |
+| --- | --- | --- |
+| The periscope flip (72.1) | `9c4a77c6f` | `kHullPeriscopeShapeBound` ON |
+| The extra tests and fallbacks (73) | `3d6d3d1c2` | `kCommandExtraTestsBound` ON; `kGunBarrelMeshlessOneBound` OFF (no reach) |
+| Reference q (main `83b528811`) | `219235036`, `d0a764f86` | docs/GAME_EXECUTABLE.md "2026-09-29 q"; 17 switches, anchor, leave-one-out |
+| #11, the land-class gun mounts | `8c7511688`, `2e508be11` | `kLandPlatformAttachmentBound` ON (GUN_BARREL_COUNT 9) |
+| Reference r (main `28840d691`) | `d9dd34cad`, `ef2633046`, `409120fc8` | "2026-09-30 r"; 8 switches, 17 rows (JM05 long added), window size shown inert |
+| Ranking closures | `79fa18943`, `409120fc8` | #2, #4, #5, #8, #11, #14 closed; the wanderer added as row 16 |
+| The torpedo reset engage draws | `6a4f54ffa`, `18979299d`, `314da1b35` | `kTorpedoResetEngageDrawsBound` ON (TORPEDO_AIM_LEAD 23) |
+
+### 74.2 Open
+
+**Reference s** should collect everything flipped after `28840d691`:
+- the retarget ring `c17a250ae`;
+- the follow trail arm `10ab258d8`;
+- the target-speed override `0cd7e2da0`;
+- the wanderer flip `84580f94d`;
+- the reset engage draws `314da1b35`;
+- anything newer.
+
+**The party gate's reach** (reference r): it alone moves USN02, JM06, BSM01, LOMP06, USNOS and
+USNOS long.
+- BSM01's idle-player `HenryPT` no longer moves at all.
+- LOMP06 loses the Narwhal's kill.
+- These moves are measured, not paired against the image. The ships lane should check BSM01.
+
+**The rest:**
+- **Torpedo items:** TORPEDO_AIM_LEAD 24, covering the prepare site, the script attack
+  altitude, the renames and row choice under the party gate.
+- **From 71.3, still open:**
+  - the sprite bridge after a device recreation;
+  - the group 3 arm's records (`009578C3`, `0095A05B`, `dev+408h`);
+  - group 3's `turns` being half its `guns`;
+  - the torpedo test on a kind-1Bh fort.
+- **Land mounts:** only the slot frame's origin is carried. Every land frame logged so far is a
+  pure translation, but a rotated land slot would need the full frame.
+
+### 74.3 Tools (`local\` in the cc9-gunnery15 tree, prefix `g15_`)
+
+- **Runs:**
+  - `g15_runs.ps1 -V <v> -Only <rows> [-Exe tree|<path>]` launches rows in the reference form.
+  - `g15_wait.ps1 -Logs <names>` waits on them.
+  - `g15_exp.ps1` runs one pair export in the background.
+- **Leave-one-out:** `g15_lane_r.ps1 -Lane x -Variants 'v=kA+kB' -Commit <sha> -Prefix <p>`
+  re-exports incrementally into `local\g15_lane_<x>` and runs 17 rows per variant.
+- **Comparison:** `g15_vs.py <off> <on> [rows]` gives pair_diff exits (prefix `rb16` is p in
+  cc9-gunnery14). `g15_pairs.ps1` adds log sanity checks.
+- **Reference tables:** `g15_switches.py <a> <b>` (the value diff), `g15_flipcommits.py`,
+  `g15_rows.py`, `g15_table*.py`, `g15_report17.py` and `g15_report18.py`.
+- **Census:** `g15_prepcensus.py`. The env-gated `BSP_MOUNT_CENSUS=1` diagnostic stays in
+  `src/game_hosts_gunnery.cpp`.
