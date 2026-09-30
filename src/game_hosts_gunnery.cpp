@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/hull_terrain_contact.hpp"
 #include "bsp/mission_result.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/gun_fire_points.hpp"
@@ -735,6 +736,13 @@ constexpr bool kWreckHitDeliveryBound = true;
 // ON (2026-09-29) with zero reach: USNOS 3000 and 9000 identical, no contact
 // (closest bow 110.5 m; section 46.4).
 constexpr bool kKamikazeContactDetonationBound = true;
+// Packet cc9_hull_contact_report, docs/GUNNERY_OPEN_ITEMS.md section 92. True: the
+// contact that runs 008145B0 is the Dyn hull-pair event of the last world step
+// (bsp::kHullHullContactBound; 00C44090 queues it, 00C35480 hands it to both bodies'
+// listeners 009377E0), and only the slower body at the event point calls 008145B0.
+// False: the bow-point / hull-box stand-in below; the events run as a census only.
+// ON by the pairs of 2026-09-30 (section 92.4): exit 1 on all 18 reference rows.
+constexpr bool kKamikazeDynContactBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
@@ -2592,6 +2600,7 @@ struct GameGunneryHost::Impl {
         const bsp::HitRecord* blast_record = nullptr, int team_id = -1);
     // Packet cc9_kaiten_contact_detonation.
     void run_kamikaze_contacts(float dt);
+    void run_kamikaze_box_contacts();
     void kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
         const float contact[3]);
     void apply_gunless_blast_hit(std::size_t source, std::size_t victim,
@@ -2603,7 +2612,11 @@ struct GameGunneryHost::Impl {
         float range_518{0.0f};
     };
     std::vector<KamikazeRow> kamikaze_rows;
+    KamikazeRow& kamikaze_row(std::size_t k);
     unsigned long long kz_contacts{0};
+    // Packet cc9_hull_contact_report: the Dyn events, the slower-body calls of 008145B0,
+    // the calls refused as not hostile, and the hostile calls with a live kamikaze party.
+    unsigned long long kz_dyn_events{0}, kz_dyn_calls{0}, kz_dyn_refused{0}, kz_dyn_kamikaze{0};
     unsigned long long kz_hostile_refused{0};
     unsigned long long kz_detonations{0};
     unsigned long long kz_direct_arms{0};
@@ -8528,8 +8541,81 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
 //    does, with one entry per hull at its box distance.
 //  * the direct arm's delivery 00915F20 is unread: it is counted as a record.
 // ---------------------------------------------------------------------------
+// Packet cc9_hull_contact_report (docs/GUNNERY_OPEN_ITEMS.md section 92). The image's
+// contact report for a hull pair: 00C44090 queues one event {manifold, shape A, shape B}
+// per dispatcher hit when a listener mask (the controller's 7FF9h, 00939CD5) meets the other
+// shape's group; 00C35480 calls body A's listener with (A, B) and body B's with (B, A).
+// 009377E0 for a kind other than 8 (the other shape's group, 00C32450):
+//   other = the other body's owner if it answers IsKindOf(6) (00937827..0093784F);
+//   the gate opens for any such pair (00937886..009378E6; the +510h / +514h test only
+//   forces it open when there is no unit);
+//   two cancels need unit+6B8h >= 0 (DummyObjectID; -1 for every unit, 0095CDBE);
+//   the velocities of both bodies at the event point (record+8h, the manifold's point 0 on
+//   A), and 008145B0(point, |impulse|, other, 0) only when |v_own| <= |v_other|
+//   (00937B31..00937B61): the slower body reports.
+// 008145B0 reads neither the point nor the magnitude: single player, other non-null,
+// 00803510 == 1 (enemy), then message 70h to each party that is alive and a kamikaze
+// (00779AA0: +510h or +514h above 0), with the other as its target. So the image has no
+// ramming damage for ordinary ships; the report only sets off kamikazes.
+// LABELLED: a kamikaze detonates at most once per step here (00819A20 sets +100Ah; whether
+// a second message 70h in one step detonates again is not read); the events are those of
+// the host's last world step.
+GameGunneryHost::Impl::KamikazeRow& GameGunneryHost::Impl::kamikaze_row(std::size_t k) {
+    if (kamikaze_rows.size() != unit_state.size()) kamikaze_rows.assign(unit_state.size(), {});
+    KamikazeRow& kr = kamikaze_rows[k];
+    if (!kr.read) {
+        kr.read = true;
+        const int type_id = unit_state[k].row.type_id;
+        if (type_id >= 0) {
+            kr.damage_510 = lua.read_vehicle_class_number(type_id, "KamikazeDamage", 0.0f);
+            kr.blast_514 = lua.read_vehicle_class_number(type_id, "KamikazeBlastDamage", 0.0f);
+            kr.range_518 = lua.read_vehicle_class_number(type_id, "KamikazeBlastRange", 0.0f);
+        }
+    }
+    return kr;
+}
+
 void GameGunneryHost::Impl::run_kamikaze_contacts(float dt) {
     static_cast<void>(dt);
+    std::vector<char> detonated(unit_state.size(), 0);
+    for (const bsp::HullContactEvent& ev : units.hull_contact_events()) {
+        ++kz_dyn_events;
+        const std::size_t party[2] = {ev.unit_a, ev.unit_b};
+        const float speed[2] = {ev.speed_a, ev.speed_b};
+        for (int side = 0; side < 2; ++side) {   // 00C35551: listener A; 00C3558C: listener B
+            const std::size_t own = party[side];
+            const std::size_t other = party[1 - side];
+            if (own >= unit_state.size() || other >= unit_state.size()) continue;
+            if (!units.unit_is_kind_of(other, bsp::kUnitGunneryKindShipBase)) continue;
+            if (!(speed[side] <= speed[1 - side])) continue;
+            ++kz_dyn_calls;
+            // 008145ED..008145FB: 00803510(unit+54h, other+54h) == 1.
+            if (bsp::scoring_relative_party_00803510(units.unit_side_0054(own),
+                    units.unit_side_0054(other)) != bsp::kScoringPartyEnemy) {
+                ++kz_dyn_refused;
+                continue;
+            }
+            const std::size_t order[2] = {own, other};
+            for (int q = 0; q < 2; ++q) {
+                const std::size_t k = order[q];
+                if (unit_state[k].dead) continue;   // +5Dh..+60h
+                const KamikazeRow& kr = kamikaze_row(k);
+                if (!(kr.damage_510 > 0.0f) && !(kr.blast_514 > 0.0f)) continue;   // 00779AA0
+                ++kz_dyn_kamikaze;
+                if constexpr (kKamikazeDynContactBound) {
+                    if (detonated[k] == 0) {
+                        detonated[k] = 1;
+                        ++kz_contacts;
+                        kamikaze_detonate_00819a20(k, order[1 - q], ev.point);
+                    }
+                }
+            }
+        }
+    }
+    if constexpr (!kKamikazeDynContactBound) run_kamikaze_box_contacts();
+}
+
+void GameGunneryHost::Impl::run_kamikaze_box_contacts() {
     if (kamikaze_rows.size() != unit_state.size()) kamikaze_rows.assign(unit_state.size(), {});
     for (std::size_t k = 0; k < unit_state.size(); ++k) {
         if (unit_state[k].dead) continue;
@@ -11380,6 +11466,10 @@ void GameGunneryHost::report() {
         host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
         host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
         kKamikazeContactDetonationBound ? 1 : 0);
+    host.log.notef("summary mission gunnery hull contact report events=%llu slower_calls=%llu "
+        "not_hostile=%llu kamikaze_parties=%llu bound=%d (00C35480 / 009377E0 / 008145B0, "
+        "packet cc9_hull_contact_report)", host.kz_dyn_events, host.kz_dyn_calls,
+        host.kz_dyn_refused, host.kz_dyn_kamikaze, kKamikazeDynContactBound ? 1 : 0);
     host.log.notef("summary mission gunnery damage queued_hits=%llu dispatched=%llu "
         "hit_records=%llu hull=%llu part=%llu fires=%llu floods=%llu attributions=%llu "
         "deaths=%llu kill_credits=%llu total_damage=%.1f first_hit=%.2f s",

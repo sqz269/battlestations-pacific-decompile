@@ -58,6 +58,8 @@
 #include <utility>
 #include <vector>
 
+namespace bsp { struct HullContactEvent; }
+
 #include "bsp/pilot_command_path.hpp"
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
@@ -824,6 +826,10 @@ public:
         float in_z, float& out_x, float& out_y, float& out_z) const;
     // unit+54h, the side word 009f14db / 009f14e4 compare and 009e2588 copies.
     int unit_side_0054(std::size_t index) const;
+    // Packet cc9_hull_contact_report (GUNNERY_OPEN_ITEMS 92): the hull-pair contact events of
+    // the last Dyn world step (bsp/hull_terrain_contact.hpp; empty unless
+    // bsp::kHullHullContactBound).
+    const std::vector<bsp::HullContactEvent>& hull_contact_events() const;
     // The party write of 00928F50 (vtable[2Ch] SetPartyRace), for a
     // CommandBuilding's neutralize and flip (packet cc9_command_building_capture_bind).
     void set_unit_side_0054(std::size_t index, int party);

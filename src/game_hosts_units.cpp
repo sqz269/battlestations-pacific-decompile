@@ -30460,6 +30460,10 @@ bool GameUnitsHost::plane_pilot_fires_0c24(std::size_t unit_index) const {
     return impl_->slots[unit_index]->plane_pilot_fires_c24;
 }
 
+const std::vector<bsp::HullContactEvent>& GameUnitsHost::hull_contact_events() const {
+    return impl_->hull_terrain.contact_events();
+}
+
 int GameUnitsHost::unit_side_0054(std::size_t index) const {
     if (index >= impl_->slots.size()) return -1;
     // unit+54h is the party the scene record authored, which milestone 2h's
