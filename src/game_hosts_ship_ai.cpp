@@ -512,7 +512,9 @@ inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
 // (006F47F0: every CommandBuildingGlobals Repair level is >= 100). Arm 2 (landed
 // landing ships on the pads) is not here; it needs the landing chain. False: the
 // gunnery host's kill funnel kills the building, as before.
-inline constexpr bool kCommandBuildingCaptureBound = false;
+// ON (2026-09-30): the seven CommandBuilding and control rows gameplay-identical (exit 1);
+// the BSP_CB_FORCE_ZERO diagnostics neutralize, tick and flip as read (section 81.2).
+inline constexpr bool kCommandBuildingCaptureBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
