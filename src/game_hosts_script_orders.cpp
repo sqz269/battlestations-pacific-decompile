@@ -2059,8 +2059,9 @@ void* GameScriptOrdersHost::entity_weapon_director(void* entity) {
 // constructor 008366D0 seeds all three bytes to 1 (EBX = 1 at 008366F4, stored at
 // 00836724..00836730), so only a `false` moves anything. Delivered at once
 // (SUBSTITUTION, labelled: the 0077C2A0 route is a loopback here, as for the
-// other 5Ah senders). False: counted only, as before.
-inline constexpr bool kNavigatorAvoidanceDeliveryBound = false;
+// other 5Ah senders). False: counted only, as before. ON by section 88.2: only
+// USN02 moves (its four torpedo-evasion disables); every other row identical.
+inline constexpr bool kNavigatorAvoidanceDeliveryBound = true;
 
 void GameScriptOrdersHost::session_route_avoidance_message(void* director,
     int selector, bool enabled) {

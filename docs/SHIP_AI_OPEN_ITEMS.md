@@ -7606,3 +7606,48 @@ will replace the stand-in, and turn it OFF when that solver flips.
   torpedoed in the 9000 frames, otherwise exit 1.
 - **JM05:** the two PT boats' avoid-zone searches drop land (`009DA6FB..`, `009EFCBD`). They
   path through land zones and the interim hull stop (87.5) holds them at the shore: exit 1 or 3.
+
+### 88.2 The pairs (`s22_p0` vs `s22_p1`), and the flip
+
+- **Rows with no `false` order: exit 1, as predicted.** USNOS (172 deliveries), USN13 (104),
+  USN04, E2, USN01, USN12, JM08 36000, BSM01, LOMP06, LOMP10, IJN01. Death rows identical.
+- **USN02: exit 3.** Death rows are identical (one row); 27 unit rows move.
+  - DeRuyter, Java and Kortenaer (torpedo evasion off) change course.
+  - Kortenaer, the controlled unit, moved 6746.73 -> 6812.68.
+  - Damage dealt and taken moves on both sides.
+  - The mission ends at 29.75 s on both sides (`Mission.EndMission`, "Game Over").
+- **JM06 and JM05: exit 1.** JM06's twelve merchant hulls were not torpedoed within the run;
+  JM05's two PT boats with land avoidance off did not move.
+- **Decision: `kNavigatorAvoidanceDeliveryBound` ON.** The mechanism matches the read. Only a
+  `false` moves anything, and only USN02's does within these rows.
+- **Open:** `NavigatorSetAvoidShipCollision` (`008A3970`, sub-kind 8 into `+241h`) has no host
+  binding, and the land setter's disable arm (the hull shape mask 0Dh) is recorded only.
+
+## 89. Handoff (cc9-ships22, 2026-09-30, at about 72% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 85 | the land arm asks the unit's own IsKindOf(0Ch) | `kEntityCommandSelfKindBound`, `kShipAiApproachLandingModesBound`, `kShipAiLandStepBound` ON |
+| 86 | the ramp latch `0074AF50` and capture arm 2 | `kLandingShipRampBound` ON |
+| 87 | hull-terrain contact latch and census; the stop as an interim stand-in | `kShipTerrainContactBound` ON (interim), `kLandingShipRampHullContactBound` ON |
+| 88 | the navigator avoidance setters delivered | `kNavigatorAvoidanceDeliveryBound` ON |
+
+### The next packets, in order
+
+1. **`NavigatorSetAvoidShipCollision`** (`008A3970`, sub-kind 8, director `+241h`): the Lua
+   binding reaches no host code. The receiver arm already exists.
+2. **What a neutral building's own gun mounts do** (the lead's queue item 3): section 81 left
+   the building's guns following its party.
+3. **The MCargo landing craft, and the back-off countdown** (65.2, 79).
+4. **`0074B0B0..`, the rest of the landing ship's update:** the pad re-request, the ramp
+   animation `+11A4h` over `+1190h`, and the unload.
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships22\local\`, `s22_` prefix)
+
+- `s22_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows> [-Force '<unit>@<s>[:<value>]']`
+  (rows include `jm08x`, `ijn01`, `usn02`).
+- `s22_wait.ps1 -Logs <names>`.
+- `BSP_LANDER_DIAG=1` prints each lander's position, ground and ramp state once a second.
+- `s22_disp.py`, `s22_vt.py`, `s22_consts.py` (from s21).
