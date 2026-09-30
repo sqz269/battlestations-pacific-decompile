@@ -528,8 +528,11 @@ inline constexpr bool kShipAiLandStepBound = true;
 // held ground contact lowers the ramp, +1188h), the capture tick counts it through
 // arm 2 (class+810h LandedCapturePower, 006F6AF7) and arm 1 skips it. The ground
 // contact is a labelled terrain-height substitution (landing_ship_ground_contact).
-// False: no ramp is lowered and arm 2 adds nothing, as before.
-inline constexpr bool kLandingShipRampBound = false;
+// False: no ramp is lowered and arm 2 adds nothing, as before. ON by section 86.6:
+// the five plain rows are gameplay identical; JM08's ramps lower at 836.50 and
+// 898.35; with the HQ forced neutral at 845 (CaptureValue 3000) LST 03's 150 per
+// tick flips it to party 0 at 863.95.
+inline constexpr bool kLandingShipRampBound = true;
 // LABELLED: the keel depth of the contact substitution, below the waterline: the
 // hull shapes' min y of models/ships/us/LST_mark5.mmod (type 41, -3.714) as the
 // hull log reports it; one value for every landing ship.

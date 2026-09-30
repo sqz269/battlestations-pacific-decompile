@@ -7351,3 +7351,35 @@ The HQ is neutralized at t = 845, after LST 03's ramp is down (836.50) and befor
   later: `flipped to party=0` at about t = 865. The HQ is repaired and becomes Allied. LST 01
   adds 150 more if it lowers its ramp before the flip. Everything after the flip may move.
   Expected pair exit 3.
+
+### 86.6 The cycle, and the flip
+
+`s22_h0` vs `s22_h1` (`Headquarter 01@845:3000`): pair exit 3, deaths 38 -> 65.
+- **ON matches 86.5.**
+  - LST 03's ramp lowers at 836.50.
+  - The HQ is neutralized at 845.00.
+  - Every tick from 845.00 logs `s0=150 s1=0 side=0`, and the progress climbs 150 per tick
+    (arm 2 alone; `landed_capture_adds=20`).
+  - At 863.95 the HQ is `flipped to party=0 side=0 slot=0 repair=1` (predicted about 865).
+- **After the flip:**
+  - The Japanese take the HQ back down to 0 hp later (`neutralized=2`).
+  - LST 01 never lowers its ramp (`lowers=1`) and survives: its death row is OFF-only. Its
+    landing is presumably dropped once the HQ is no longer an enemy building (unverified).
+  - Everything else after 864 moves (35 deaths only ON, 8 only OFF).
+- **OFF:** neutral at 845, no flip, no D5h update.
+
+**Decision: `kLandingShipRampBound` ON.**
+- The five plain rows are gameplay identical, as predicted (86.4).
+- The latch lowers each ramp 2 s after the first contact.
+- Arm 2 adds `LandedCapturePower` per tick and completes a capture as read.
+- The one wrong prediction was about the plain JM08 HQ (it now reaches 0 hp at 1179.50). It
+  was a fact about the row, not the mechanism, and it changes no outcome, because no lander is
+  alive by then.
+
+**Open:**
+- The landers cross the island (86.2): the host has no hull-terrain stop, so a lander keeps its
+  pad while driving on.
+- The `+1189h` byte, and `0074B0B0..` (the ramp animation, the troop unload, the pad
+  re-request).
+- The 0A6h route (a record).
+- The scoring slots.
