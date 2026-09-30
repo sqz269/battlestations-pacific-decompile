@@ -87,6 +87,16 @@ namespace {
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
 constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount frame here; cc9_aa_fire_window_mount)
+//  * kAaLeaderPenaltyBound: 00863A4F..00863A71 in the candidate score. A target
+//    that answers IsKindOf(0Fh) and 007B8AD0 (plane+9D8h == 0: slot 0 of its
+//    squadron's member array, the flight leader, or a plane in no squadron)
+//    has 100.0 (qword 00D7A220) added to its sort distance, so within a rank
+//    every gun prefers a wing member up to 100 m farther than the leader. The
+//    host passed false for every plane. Leader test as the units host's
+//    unit_is_flight_leader_007b8ad0: the first live member of the plane's
+//    registry record, or true with no record. Packet cc9_aa_leader_penalty,
+//    docs/AA_LETHALITY_AUDIT.md section 12; ON by the pair of 12.5. OFF: no penalty.
+constexpr bool kAaLeaderPenaltyBound = true;
 
 // Packet cc9_gun_ballistics. docs/GUN_BALLISTICS.md.
 //  * kGunGravityArcBound: the gravity arc 00955630 and its 006DF8BF pre-estimate
@@ -1274,6 +1284,10 @@ struct GameGunneryHost::Impl {
     unsigned long long plane_mesh_tests{0};
     unsigned long long plane_mesh_hits{0};
     unsigned long long plane_box_hits{0};
+    // Packet cc9_aa_leader_penalty (census, both sides): plane candidates past
+    // the class, rank and mask gates, and how many were flight leaders.
+    unsigned long long aa_leader_penalty_scored{0};
+    unsigned long long aa_leader_penalty_leaders{0};
     // Packet cc9_flak_blast_plane (census, both sides): bursts within range of a
     // plane's class box, those with a mesh element in range, and the distances.
     unsigned long long plane_blast_box_records{0};
@@ -4400,7 +4414,22 @@ public:
         in.distance = length3(delta);
         in.category_range = state_.category_ranges[slot];
         in.target_is_plane = is_plane;
-        in.target_lacks_follow_target = false;
+        // 00863A4F..00863A71: IsKindOf(0Fh) and 007B8AD0 (plane+9D8h == 0).
+        bool flight_leader = false;
+        if (is_plane) {
+            flight_leader = true;   // no registry record: +9D8h keeps 0
+            if (const bsp::PlaneSquadronHostRecord* sqn =
+                    bsp::plane_squadron_registry().find_by_member_unit(other)) {
+                for (const std::size_t member : sqn->member_units) {
+                    if (member == bsp::kPlaneSquadronNoUnit) continue;
+                    flight_leader = member == other;   // +3D0h[0]
+                    break;
+                }
+            }
+            ++owner_.aa_leader_penalty_scored;
+            if (flight_leader) ++owner_.aa_leader_penalty_leaders;
+        }
+        in.target_lacks_follow_target = kAaLeaderPenaltyBound && flight_leader;
         const bsp::GunneryScoreResult out = bsp::score_candidate_00863990(in);
         distance = out.distance;
         if (!aa_trace_unit().empty() && state_.row.name == aa_trace_unit()) {
@@ -10763,6 +10792,10 @@ void GameGunneryHost::report() {
             "class_box_hits=%llu bound=%d (0087BCC0 -> 00712440 -> 00724510, packet "
             "cc9_plane_mesh_hit)", host.plane_mesh_tests, host.plane_mesh_hits,
             host.plane_box_hits, kPlaneMeshHitTestBound ? 1 : 0);
+        host.log.notef("summary mission gunnery aa leader penalty plane_candidates=%llu leaders=%llu "
+            "bound=%d (00863A4F / 007B8AD0, packet cc9_aa_leader_penalty)",
+            host.aa_leader_penalty_scored, host.aa_leader_penalty_leaders,
+            kAaLeaderPenaltyBound ? 1 : 0);
         {
             const double nb = static_cast<double>(host.plane_blast_box_records);
             const double nm = static_cast<double>(host.plane_blast_mesh_records);

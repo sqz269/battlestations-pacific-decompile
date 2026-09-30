@@ -1028,3 +1028,160 @@ fire in the image, so the host's omission is faithful. Nothing was bound.
 
 **Status of 10.6's open stages:** (b) is closed as faithful. (a), AA target selection and range
 gates, is still open.
+
+## 12. AA target selection and range gates: one unbound term, the flight-leader penalty (packet `cc9_aa_leader_penalty`, cc9-gunnery16, 2026-09-30 03:45 UTC)
+
+Section 10.6's open stage (a).
+
+### 12.1 What is already established
+
+The selection chain was compared term by term in `docs/AA_TARGETING.md` section 2 (2026-09-23). This
+packet rechecked each row against today's switches:
+
+| term | status today |
+| --- | --- |
+| cadence `GlobalConfig+88h`, class gate, mask, rank, order and walk, gun range `[proj+60h]`, no hysteresis | faithful (AA_TARGETING 2) |
+| kind 5/6 minimum air range `005459E0`/`00729B90` | `kAaMinRangeBound` ON. Kind 6's second ammunition is still not loaded (AA_TARGETING 8) |
+| AA gunner armour test `008FBE00` | `kAaArmourBound` ON |
+| fire window `0085A9A0` | `kAaFireWindowBound` ON |
+| line of fire `0072F6E0` | `kAaLineOfFireBound` ON |
+| visibility `00864D90` -> `00864680` | `kGunneryLineOfSightBound` ON (GUNNERY_OPEN_ITEMS 1) |
+| untouchable gate `00862440` | GUNNERY_OPEN_ITEMS 40 |
+| contact list `[recon+DE8h]` | substitution recorded (RECON_SLOT_OBJECT) |
+| category range | faithful to within the class-height offset of the aim point (AA_TARGETING 2) |
+| **the +100 "no-follow" penalty `00863A4F`** | **never applied**: `target_lacks_follow_target = false` |
+
+The range gates inside the two AA bots were covered in their own sections:
+- `00902920`'s swing error: section 7;
+- `009030C0`'s flak error: section 7;
+- the vertical window: `docs/AA_VERTICAL_WINDOW.md`.
+
+The last row is the one term in the selection chain that is still unbound.
+
+### 12.2 The image: the penalty is on the flight leader, not on a loitering plane
+
+`disasm-raw 00863A30 --length 0x80`, the tail of `00863990`:
+- `00863A32 FST [EBX]` stores the distance, and `00863A34` tests it against `unit+430h+i*4`.
+- `00863A4F`-`00863A58`: `target->vtable[5Ch](0Fh)`, the plane test.
+- `00863A60 CALL 007B8AD0`:
+  - `007B8AD0` is `XOR EAX,EAX / CMP [ECX+9D8h],EAX / SETE AL / RET` (`disasm-raw 007B8AD0`);
+  - `plane+9D8h` is the member's slot in its squadron's member array (BOMBER_AFTER_TASK;
+    BOT_TASK_STATES correction), so 0 means the flight leader;
+  - a plane in no squadron keeps 0.
+- `00863A69`-`00863A71`: `[EBX] += qword [00D7A220]` = **100.0** (`pe_const_read`).
+
+So within one rank, every gun prefers a wing member up to 100 m farther than its leader. AA_TARGETING
+and `unit_gunnery_pass.hpp` call this "a plane with no follow target", following BOT_TASK_STATES'
+withdrawn reading of `+9D8h`. The constant and the arithmetic are right; the name is not.
+
+### 12.3 The binding (`kAaLeaderPenaltyBound`, committed OFF)
+
+`GunneryPassBinding::score_candidate_00863990` sets `target_lacks_follow_target` for a plane
+candidate that is its squadron's leader, with the units host's `007B8AD0` stand-in:
+- the first live entry of `bsp::plane_squadron_registry().find_by_member_unit(unit)->member_units`;
+- or true when the plane is in no squadron.
+
+The reconstructed `score_candidate_00863990` then adds the 100 m.
+
+**Census, both sides:** `summary mission gunnery aa leader penalty plane_candidates= leaders=`.
+
+**Labelled:** the registry compaction stands for the image's re-index `007ED260`, as in the units
+host.
+
+### 12.4 Predictions (written before any run)
+
+Rows and launch are as in 9.5 and 10.5, same-tree exports.
+
+- **P1, census.**
+  - `leaders / plane_candidates` is 0.2-0.5 on E2, USN04 and USN13, which fly flights of 3 and 4.
+  - USN01 reads near 1.0, because its Mav1-5 are single-plane squadrons.
+- **P2, who dies.** On E2, USN04 and USN13 9000, leaders (death-row names with no `|.-` suffix)
+  make up a smaller share of the aircraft deaths ON, and members a larger one. The total AA kills
+  move by at most 10%.
+- **P3, USN01.** It moves little: every single-plane squadron gets the same penalty, so only its
+  multi-plane US flights can change order. `pair_diff` 3 is allowed, through the shared stream.
+- **P4, torpedo releases.** They stay within 1 of OFF on E2, USN04 and USN13 9000.
+- **P5, controls.** JM06 and USN12 are gameplay-identical (no plane candidates).
+
+**Mechanism failure:**
+- `leaders = 0` with plane candidates; or
+- the leader share of deaths rises on all three Kate rows.
+
+### 12.5 The pair: the penalty acts and moves little; flip ON
+
+**Setup.**
+- Same-tree exports of `4633852c6`:
+  - `local\g16_lpoff`, SHA-256 prefix `61FA343037F8`;
+  - `local\g16_lpon`, `10996A2A7BA8`.
+- Rows and launch are as in 10.5. A 300-frame USN01 smoke passed first, and the runs ended by
+  04:08 UTC.
+- The summary is `local\g16_leaderstats.py`. A "leader" is a death-row name with no `|.-` suffix.
+  That is a heuristic: a promoted member keeps its suffix.
+
+| row | pair_diff | census OFF: plane candidates / leaders | AA kills OFF -> ON | leader share of AA kills | torpedo-task releases |
+| --- | --- | --- | --- | --- | --- |
+| E2 9200/9000 | 3 | 92609 / 48075 (0.52) | 48 -> 48 | 0.33 -> 0.33 | 5 -> 5 |
+| USN04 4700/4500 | 3 | 92572 / 48038 (0.52) | 47 -> 47 | 0.34 -> 0.32 | 5 -> 5 |
+| USN13 3200/3000 | 3 | 470538 / 198858 (0.42) | 21 -> 22 | 0.29 -> 0.27 | 0 -> 0 |
+| USN13 9200/9000 | 3 | 1585367 / 638058 (0.40) | 110 -> 106 | 0.25 -> 0.25 | **3 -> 0** |
+| USN01 3200/3000 | 3 | 10262 / 7194 (0.70) | 5 -> 5 | 1.00 -> 1.00 | 0 -> 0 |
+| JM06 3200/3000 | **1** | 0 / 0 | 0 -> 0 | - | - |
+| USN12 3200/3000 | **1** | 0 / 0 | 4 -> 4 | - | - |
+
+**Death tables, per entity.**
+- E2: none only on one side; 43 re-timed.
+- USN04: 1 only OFF and 1 only ON.
+- USN13 3000: 1 only ON.
+- USN13 9000: 14 only OFF and 13 only ON.
+- USN01: nothing re-timed. Its move is in the flight paths only.
+- No ship death changes.
+
+**Against 12.4:**
+- **P1: held on USN13, missed on E2 and USN04, missed on USN01.**
+  - The leader fraction of the plane candidates is 0.40-0.42 on USN13, and 0.52 on E2 and USN04,
+    just above the predicted 0.5. The Zeros and the single-plane scouts count as leaders.
+  - USN01 reads 0.70, not about 1.0: it has multi-plane US flights as well as the single Mavs.
+- **P2: held weakly.** The leader share of the AA kills falls by 0.02 on USN04 and USN13 and is flat
+  on E2 and USN13 9000. The total AA kills move by at most 4%.
+- **P3: held.** USN01 has no death change.
+- **P4: missed on USN13 9000**, where the torpedo releases go 3 -> 0.
+  - That row swaps 14 and 13 aircraft deaths through the shared stream 1 (00BD2F10), so the
+    three releasing aircraft are not attributable to the penalty.
+  - E2 and USN04 hold at 5.
+- **P5: held.**
+- **Mechanism failure: not met.**
+  - Leaders are counted on every plane row.
+  - The leader share does not rise on any Kate row.
+
+**Verdict: flip ON (`kAaLeaderPenaltyBound = true`).**
+- The term is the image's arithmetic (`00863A4F`-`00863A71`, 100.0 on `007B8AD0`).
+- Its effect on who dies is small in these rows. A 100 m preference moves a gun only between
+  aircraft already within 100 m of each other.
+- P1's size, P4 on USN13 9000 and P2's weak size are recorded as misses.
+
+**Naming correction.**
+- `include/bsp/unit_gunnery_pass.hpp`'s `target_lacks_follow_target` and
+  `kUnitGunneryLoiteringPlanePenalty`, and AA_TARGETING section 1's "follows nothing", describe
+  `+9D8h` by the withdrawn reading.
+- The field is the member slot, so the test is "the target is its flight's leader". The rename is
+  left to the header's owner; this note is the record.
+
+### 12.6 The AA path against torpedo planes, closed
+
+Every stage the lead listed (target selection and range gates, fire rate and burst, the per-shot
+hit test, damage per hit, the plane's damage model) is now faithful or bound ON:
+- sections 1-3, 7, 8;
+- section 9, the hit shape;
+- section 10, the blast distance;
+- section 11, the passing rule, which is unreachable;
+- section 12, the leader penalty;
+- AA_TARGETING's landed acceptance terms.
+
+**Labelled substitutions that remain:**
+- the recon contact list;
+- the aim-point height offset in the category range;
+- kind 6's unloaded second ammunition;
+- the fire window in the hull frame.
+
+**Result:** with those substitutions, torpedo-plane attrition in this host follows the image's AA
+path at every stage read.
