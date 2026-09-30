@@ -6328,3 +6328,61 @@ vertices of the Dyn hull the ConvexObject parse builds from them.
   - a hull with 0 vertices, or `hull_vertices > raw_points`;
   - a hull crossing land (`max_depth` in the tens of metres);
   - a ship stopping away from land.
+
+### 86.4 Measured (pairs on `af7fd46c5`), and the verdict: ON
+
+**Setup.**
+- `local\g20_voff` (no flip, SHA-256 prefix `3B40DE0255B1`) against `local\g20_von`
+  (`--flip kHullTerrainDynHullVerticesBound=true`, `3DBC6B14B350`).
+- Reference u's launch form, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+- The 300-frame USN01 smoke of the ON build is clean: 35 shapes, 4148 raw points, 992 hull
+  vertices.
+- The OFF side is gameplay-identical to reference u (exit 1 on JM08 long, USNOS, IJN01 and JM05).
+- The logs are `local\g20_v{off,on}_<row>.log`.
+
+| row | exit | ON: shapes / raw points / hull vertices | contact steps OFF / ON | candidates OFF / ON | max depth OFF / ON (m) | what moved |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04, USN02 | 1 | - | 0 / 0 | - | - | census line only |
+| JM06 | 1 | 48 / 4932 / 1244 | 1808 / 1834 | 3749 / 4286 | 0.30 / 0.30 | nothing |
+| BSM01 | 1 | 63 / 6765 / 1973 | 807 / 3119 | 2094 / 3887 | 12.15 / 12.15 | nothing (resting hulls) |
+| USNOS | 1 | 184 / 23414 / 6383 | 2123 / 2117 | 4741 / 3264 | 0.05 / 0.09 | nothing |
+| USNOS long | 3 | 184 / 23414 / 6383 | 21602 / 21998 | 122559 / 51658 | 2.91 / 0.49 | death rows identical; hits 2809 -> 2812, shots 16423 -> 16402 |
+| USN13 | 3 | 285 / 34913 / 7710 | 7913 / 6883 | 53029 / 10585 | 3.49 / 0.41 | death rows identical; unit rows only |
+| IJN01 | 3 | 87 / 10310 / 2852 | 2619 / 4069 | 4308 / 4928 | 5.29 / 5.29 | death rows identical; the controlled Downes' path 220.52 -> 193.89 m, shots 2414 -> 2533 |
+| JM05 | 3 | 80 / 8619 / 3368 | 6207 / 6507 | 54425 / 53826 | 222.44 / 226.57 (the reserve placement under the seabed, 84.3) | `nearest` only |
+| JM08 long | 3 | 41 / 4145 / 1156 | 215151 / 198623 | 1431086 / 439606 | 2.28 / 2.65 | deaths 25 -> 24 (see below) |
+
+**JM08 long.**
+- The invaders still stop at the beach (deepest candidate 2.65 m); 13 ships touch land, where
+  OFF had 15.
+- Four deaths are only OFF: Static Gekko 06, Japanese AA truck 01, USTroopTransport 05 and LST 02.
+  Three piers die only ON (`Pier, Wooden 01`, `Pier, Wooden 04`, `Pier, Wooden, Large 01`).
+- `Headquarter 01` now reaches 0 hp and goes neutral (`health_zero=11 neutralized=1`, OFF 0 / 0).
+  It never flips, and no ramp lowers (`ground_contacts=0`).
+
+**Against the predictions (86.3).**
+- **Held:**
+  - the mechanism: hull vertices are 20-40% of the raw points on every row, and no hull crosses
+    land;
+  - every exit-1 row, the exit-3 rows' death tables, and JM08 long's beach stop and death count
+    (24, inside 20-30).
+- **Misses:**
+  1. **`max_depth` moves more than "barely":** USN13 3.49 -> 0.41 and USNOS long 2.91 -> 0.49.
+     The argument was wrong. The depth `h(x, z) - y` is not linear in the point, because the
+     terrain is not a plane, so an interior point under a bump can be deeper than every hull
+     vertex. The raw set's deepest candidates were presumably such points (not traced per pose).
+  2. **Candidates rise on IJN01, JM06 and BSM01.** Their contact steps rise with them: the
+     trajectories changed. Candidates per contact step fall everywhere except JM06 (2.07 -> 2.34).
+  3. **JM08 long's HQ reaches 0 hp**, where "the HQ is not reached" was predicted. The hulls still stop at the beach (no ramp contact on either side);
+     which ships brought it down is not read.
+  4. USNOS moved nothing (exit 3 was allowed; exit 1 measured).
+- **No mechanism failure:**
+  - no hull crosses land;
+  - `hull_vertices < raw_points` on every row;
+  - no ship stops away from land.
+  - Not checked: whether a single shape built zero vertices. The census counts totals only; every
+    row's average is 26 to 42 vertices per shape.
+
+**Verdict: `kHullTerrainDynHullVerticesBound = true`.** Spread misses with the mechanism matching.
+It belongs to reference v. Remaining labelled substitutions from 84.1: `00C53630`'s own
+interpolation (85.2 item 3b), substeps (3c), and hull-terrain pairs only (3d).

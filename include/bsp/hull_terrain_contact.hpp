@@ -57,7 +57,8 @@ inline constexpr bool kHullTerrainContactSolverBound = true;
 // points; the shape's translation is the centre. True: the narrow phase tests that hull's
 // vertices (avoid_zone_dyn_hull_replace_00c5deb0, in its vertex order) plus the centre, per
 // shape. False: the raw points in file order, as before.
-inline constexpr bool kHullTerrainDynHullVerticesBound = false;
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 86.4).
+inline constexpr bool kHullTerrainDynHullVerticesBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
