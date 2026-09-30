@@ -8936,3 +8936,45 @@ Same-tree pair from the commit that carries the switch.
   gameplay identical.
 - **Verdict rule:** flip ON when the moves are bridged and the transports hold outside the reef.
   A mechanism failure stays OFF, recorded.
+
+## 108. Section 98's open note, closed: nothing but a pad switch or a death clears an occupant (cc9-ships26, 2026-09-30)
+
+Section 105 queue item 3. Section 98 left open whether the image clears a lander's side through
+the pad's own pointer (`pad+1F8h`) rather than `ship+1200h`. Section 103.3 had already settled
+`+1200h`.
+
+**`006AC490`** is `__thiscall(pad)(unit)`, read whole from the decompile. When `pad+1F8h`
+differs from `unit` it:
+1. unregisters the old observer pair (`BSP_Observer_UnregisterPair`) when the slot was set;
+2. stores `unit`;
+3. registers a new pair when `unit` is non-null.
+
+**The five rel32 callers of `006AC490`** (`local\s26_rel32.py`, from the PE on disk):
+- `006F2BA5`: `006F2A50`'s take (`006F2A67..006F2BC6`), which stores the caller's unit into the
+  free pad it found;
+- `006F2E22`: `BSP_CommandBuilding_ReleaseUnitPads` `006F2DE0`, which nulls every pad of the
+  building occupied by the unit;
+- `006F2FEE`: `006F2FB0`, which releases through `006F2DE0` and then takes the new pad;
+- `0074A9B6`: `0074A990`, the begin-landing;
+- `00821B4F`: the craft launch `008206F0`.
+
+**The two callers of `006F2DE0`, and the one of `006F2FB0`:**
+- `006F2DE0` is called from `006F2FB0` (`006F2FE1`) and from the approach retarget arm's mode 3
+  (`009F21C1`, section 72).
+- `006F2FB0` is called only from the land step's rescan (`009E1AAE`). That is a pad **switch**:
+  the lander always ends up occupying the new pad.
+
+**So an occupant is cleared only by:**
+- a switch (the land step's rescan, or mode 3's release-and-retake);
+- the lander's death, through the observer pair (the host's `forget_unit`).
+
+No path clears it on leaving the land state. LST 02 keeping pad 2 after its `follow` is the
+image's behaviour.
+
+**The host matches.**
+- `BuildingPadModel::assign_006f2fb0` has the same early-out, release and take.
+- `ship_ai_follow_land.cpp`'s `009E1AAE` arm changes only the step's local pad, as the image does
+  (no `+1200h` write).
+
+This also answers the two "contract: unread" callees that docs/SHIP_AI_FOLLOW_LAND.md lists
+under `006F2FB0`. **Closed, nothing to bind.**
