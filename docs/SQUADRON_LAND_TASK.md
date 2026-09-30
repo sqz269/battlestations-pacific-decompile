@@ -4309,3 +4309,90 @@ merging.
 - `l22_cat.py` / `l22_pair.py`: the `+170h` vtable slot-0 census.
 - `l22_disp.py`: the displacement scan.
 - `l22_leasewait.ps1`: a foreground wait for a shared file's lease.
+
+## 5al. The land holding speed: no host difference; the follow ticks are the sequencer's mode-1 phases (packet `cc9_land_holding_speed`, cc9-lua23, 2026-09-30)
+
+The question (5ak item 3, PLANE_FOLLOW_PHASE_A 10): JM05's follow error lives in `follow (land)`.
+Is the leader held near 31.5 m/s by the moveto blend's wingmen-wait term, and does the land
+follow's station differ from the image? **Answer: the host matches the image on both, and the
+premise does not hold. Nothing is bound.**
+
+### The image, read for this packet
+
+- **The land moveto's speed slot is `009C1850`.** `moveto (land)` has vtable `00D20AEC`
+  (constructor `009C2AC0` at `009B2EC9`); its `+1Ch` dword is `009C1850`, the slot `009C18C0`
+  calls at `009C198A`-`009C1999`. `009C1850` computes `009BECD0([approach+0Ch]+3A0h,
+  007C47F0(), sep)`. The land approach's head is `009F9CE0`, which sets `+0Ch` = `unit+9D4h`, the
+  squadron. So the land leader gets the same blend as the dive-bomb moveto. The host's
+  `run_land_moveto_tick_009c18c0` already calls `moveto_speed_009c1850` there.
+- **`009C18C0`'s target** is `[state+2Ch]`'s position (`+FCh`..`+104h`, `009C18EC`-`009C1913`).
+  For the land task that is `[approach+30h]`, the block's owner (the carrier). The host uses the
+  site slot's position.
+- **`follow (land)` is the shared follow state.** `009C2980` (`RET 8`) writes vtable `00D20AB8`,
+  whose tick is `009C1FD0`. The 100.0 that `009B2ECE`-`009B2ED5` pushes is not read by the body.
+  The live decompile shows one parameter; the listing sweep found no load of the second stack
+  slot. The approach constructor `009B2E50` rewrites only the six later states' vtables. So the
+  station is `009BFD70`'s, the one section 8.1's oracle matched.
+- **The wingmen value, per member.** The publisher is `007BCC20`:
+  - it answers -1 through `007BCC6F` when the plane is dead (`+5Eh`), remote (`+5Dh`), or has no
+    squadron, `+9D0h` or bot;
+  - it answers 0.0 when `(plane+72Ch)->vtable[38h]` is false;
+  - otherwise it tail-jumps to `00999AE0`. That walks the bot's tasks (`+58h`, count `+5Ch`) and
+    tail-jumps to `vtable[4Ch]` of the first task whose `vtable[34h]` answers false. With none,
+    it returns -1.
+  - The land task's vtable `00D1FFA0` has `+34h` = `0099B700` (false) and `+4Ch` = `009B3750`.
+  - `009BE3E0` reads the plane's `+FCh`..`+104h` less the follow state's `+30h`..`+38h`, the
+    leader's `vtable[50h]` heading, and the `+85h` latch.
+  - The host's `follow_wait_value_009be3e0` takes the same inputs.
+
+### Measured (diagnostic `summary land moveto speed`, commit `ffb2a7aca`)
+
+Logs are `local\l23_d1_jm05{,l}.log`, reference launch form. JM05 9000's follow rows are
+identical to cc9-lua22's `l22_fct2_jm05l.log`.
+
+| row | calls | a | b | want | wingmen | own v | sep | at b | wingmen < 1 | sep < 3000 | v < 40 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 2440 | 103.5 | 34.1 | 83.5 | 0.690 | 52.7 | 3343 | 0 | 1056 | 41 | 831 |
+| JM05 9000 | 8035 | 100.9 | 34.5 | 81.3 | 0.682 | 50.8 | 3403 | 11 | 3810 | 47 | 2840 |
+
+- **The land leader is not held at the floor.** It sits at b in 11 of 8035 calls. The wingmen
+  term does pull the command down, to about 81 of 101 m/s.
+- **Its low speed is not commanded.** 35% of the calls are below 40 m/s while the leader wants
+  about 81 m/s at almost full throttle (`follow speed ceiling`: `thr_leader` 0.906). The speed is
+  lost in flight. The climb to the glide's far altitude (section 5) is the likely cause; this is
+  not measured here.
+- **The 31.5 m/s rows are the members' own commands**, not the leaders':
+  - the follow law's ahead-of-station arm (`follow law ... spd=31.5` with `along` > 0);
+  - `land/standby`'s speed (for example `USS Lexington_sqn03|.-3 state=5B8 spd=31.50` at 25.65 s).
+
+**Where the follow ticks come from** (`local\l23_states.py`, from the `state A -> B` lines):
+
+| row | member-s in follow (land) | head in `land/standby` | head in `moveto (land)` | head 2<->3 flips |
+| --- | --- | --- | --- | --- |
+| JM05 3000 | 1197 | 710 | 488 | 61 (16 heads) |
+| JM05 9000 | 3373 | 1771 | 1601 | 120 (19 heads) |
+
+- The members are not in a steady cruise formation. They re-enter `follow (land)` whenever the
+  sequencer gives them mode 1 (5b, `006C7960`):
+  - **The head flies `moveto (land)` from outside StandbyDist** (head mode 1).
+  - **The head is in `land/standby` but off its circle** (head mode 2). Its `006C5C40` heading
+    test fails, and a member with head mode 2 gets mode 1 unless `006C5E20` answers.
+- One member of Lexington_sqn03 switches between modes 3 and 1 every 2 to 5 s from 35 s on
+  (22 changes by 113 s).
+- Each switch changes the member's state, `land/standby` <-> `follow (land)`. So the station error
+  is re-seeded each time, which explains the large error while following a turning head.
+
+### Verdict
+
+- No switch. The speed chain and the follow station are the image's. PLANE_FOLLOW_PHASE_A 10's
+  "leaders held near 31.5 m/s by the wingmen-wait term" is corrected: the leaders are not held,
+  and 31.5 m/s is the members' own command.
+- **Open, for the queue** (neither is read yet):
+  1. **The head's 2<->3 chatter.** Is it the image's? 006C5C40 picks the circle point by the
+     side of the runway axis (`x > 0` in the holder frame). The radius `006C3E50` grows with the
+     record count (`r` 1100 -> 2558 m on Lexington_sqn03 between 5.75 s and 75 s). A head circling
+     a point at more than the offset `T.x + r` crosses the axis, the side flips, and the
+     heading test fails. This is a hypothesis: check `land/standby`'s circle steer and when
+     006C5C40 fails, before anything else.
+  2. **The moveto leader's speed loss** (35% of calls below 40 m/s at full throttle). Check the
+     glide's commanded altitude against the leader's climb.

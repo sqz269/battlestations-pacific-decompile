@@ -697,3 +697,11 @@ wingmen-wait term, which holds the leader near 31.5 m/s (docs/SQUADRON_LAND_TASK
 31.5 m/s holds are recorded), and the land follow's station. That is the landing lane's open item,
 not the cruise follow law. Section 9.4's "JM05 9000's remainder is its cross-track" is resolved
 as a population effect.
+
+**Correction (cc9-lua23, 2026-09-30, docs/SQUADRON_LAND_TASK.md 5al).** The land leaders are not
+held near 31.5 m/s: `moveto (land)` sits at the blend's floor in 11 of 8035 calls on JM05 9000,
+and wants about 81 m/s. The 31.5 m/s rows are the members' own commands. These are the follow
+law's ahead-of-station arm and `land/standby`'s speed. The follow ticks are the landing
+sequencer's mode-1 phases. The head is either flying `moveto (land)` from outside StandbyDist, or
+in `land/standby` off its circle; in that case its mode flips between 2 and 3 (120 flips in 450 s).
+The speed chain and the station match the image; nothing is bound.

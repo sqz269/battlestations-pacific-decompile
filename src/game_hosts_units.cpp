@@ -6188,10 +6188,22 @@ struct GameUnitsHost::Impl {
                 values.data(), static_cast<int>(values.size()), sq->formation_shape_3e4);
         }
         ++moveto_blend_calls_;
+        last_blend_a_ = travel_scaled;
+        last_blend_b_ = bot_desired_speed_007c47f0(unit);
+        last_blend_wingmen_ = sq != nullptr ? wingmen : 1.0f;
+        last_blend_near_ = sq != nullptr && sep < w1;
         return bsp::dogfight_moveto_speed_009becd0(travel_scaled,
             bot_desired_speed_007c47f0(unit), sep, w1, w2, sq != nullptr, wingmen);
     }
     int moveto_blend_calls_{0};
+    // DIAGNOSTIC, packet cc9_land_holding_speed: the last 009C1850 call's
+    // a (squadron+3A0h stand-in), b (007C47F0), 007EF2C0 and sep < WaitDist1.
+    float last_blend_a_{0.0f}, last_blend_b_{0.0f}, last_blend_wingmen_{1.0f};
+    bool last_blend_near_{false};
+    unsigned long long lhs_n{0}, lhs_floor{0}, lhs_wait{0}, lhs_near{0};
+    unsigned long long lhs_slow{0}, lhs_slow_floor{0}, lhs_sep300{0};
+    double lhs_a_sum{0.0}, lhs_b_sum{0.0}, lhs_want_sum{0.0}, lhs_wingmen_sum{0.0};
+    double lhs_v_sum{0.0}, lhs_sep_sum{0.0};
 
     // 009BEE30's hold arm, 009BEE56-009BF9E5, through
     // bsp::plane_follow_hold_command_009bee56 (docs/PLANE_FOLLOW_HOLD_ARM.md).
@@ -22953,6 +22965,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+                        if constexpr (GameUnitsHost::Impl::kMovetoSpeedBlendBound) {
+                            // DIAGNOSTIC, packet cc9_land_holding_speed.
+                            const float* lv = unit_.plane_world_velocity;
+                            const double v = std::sqrt(static_cast<double>(lv[0]) * lv[0] +
+                                static_cast<double>(lv[1]) * lv[1] +
+                                static_cast<double>(lv[2]) * lv[2]);
+                            const float want = unit_.plane_desired_speed_2b4;
+                            const bool floor = want < owner_.last_blend_b_ + 1.0f;
+                            ++owner_.lhs_n;
+                            owner_.lhs_a_sum += owner_.last_blend_a_;
+                            owner_.lhs_b_sum += owner_.last_blend_b_;
+                            owner_.lhs_want_sum += want;
+                            owner_.lhs_wingmen_sum += owner_.last_blend_wingmen_;
+                            owner_.lhs_v_sum += v;
+                            owner_.lhs_sep_sum += sep;
+                            if (floor) ++owner_.lhs_floor;
+                            if (owner_.last_blend_wingmen_ < 0.999f) ++owner_.lhs_wait;
+                            if (owner_.last_blend_near_) ++owner_.lhs_near;
+                            if (sep < 300.0f) ++owner_.lhs_sep300;
+                            if (v < 40.0) {
+                                ++owner_.lhs_slow;
+                                if (floor) ++owner_.lhs_slow_floor;
+                            }
+                        }
                         bsp::MoveToGlideInputs gin;
                         gin.near_range_30 = 100.0f;
                         gin.far_range_34 = 100.0f;
@@ -27408,6 +27444,17 @@ void GameUnitsHost::report() {
                 host.fes_member_v_sum / n, host.fes_leader_v_sum / n, host.fes_member_max_sum / n,
                 host.fes_leader_max_sum / n, host.fes_leader_want_sum / n, host.fes_thr_member_sum / n,
                 host.fes_thr_leader_sum / n, host.fes_member_full, host.fes_leader_full);
+        }
+        if (host.lhs_n != 0) {
+            const double n = static_cast<double>(host.lhs_n);
+            host.log.notef("summary land moveto speed n=%llu a=%.2f b=%.2f want=%.2f wingmen=%.3f "
+                "v=%.2f sep=%.1f at_floor=%llu wingmen_below_1=%llu sep_below_wait1=%llu "
+                "sep_below_300=%llu v_below_40=%llu v_below_40_at_floor=%llu (009C1850 in "
+                "moveto (land), packet cc9_land_holding_speed diagnostic)", host.lhs_n,
+                host.lhs_a_sum / n, host.lhs_b_sum / n, host.lhs_want_sum / n,
+                host.lhs_wingmen_sum / n, host.lhs_v_sum / n, host.lhs_sep_sum / n,
+                host.lhs_floor, host.lhs_wait, host.lhs_near, host.lhs_sep300, host.lhs_slow,
+                host.lhs_slow_floor);
         }
         host.log.notef("summary follow phase-a lead=%llu abeam=%llu circle=%llu mean_time=%.3f "
             "applied=%d (009C0251-009C0EE0, packet cc9_follow_approach_arm; a shadow when OFF)",
