@@ -5167,7 +5167,9 @@ struct GameUnitsHost::Impl {
     // component (the terrain gradient), so a hull cannot climb onto land and
     // slides along a shore; a hull already resting in contact moves freely on
     // the level or away. False: the latch and the census only; hulls cross land.
-    static constexpr bool kShipTerrainContactBound = false;
+    // ON by section 87.5: the landers beach and lower their ramps 2 s after the first
+    // contact; the no-contact rows are gameplay identical.
+    static constexpr bool kShipTerrainContactBound = true;
     // SUBSTITUTION, labelled: GameSettings+3F4h is not loaded into this host
     // (the reader 0083EA71 is in the Lua host's settings load, not bound).
     // This installation's scripts/datatables/shipglobals.lua line 377

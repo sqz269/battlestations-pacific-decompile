@@ -540,7 +540,8 @@ inline constexpr float kLandingShipKeelDepth = 3.71f;
 // Packet cc9_ship_terrain_contact (section 87). True: the ramp latch reads the
 // units host's contact latch +1011h (GameUnitsHost::unit_ground_contact_1011)
 // instead of the stand-in above. False: the stand-in.
-inline constexpr bool kLandingShipRampHullContactBound = false;
+// ON by section 87.5.
+inline constexpr bool kLandingShipRampHullContactBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

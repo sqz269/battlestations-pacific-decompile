@@ -7464,3 +7464,54 @@ hull resting in contact moves freely on the level or away, and cannot climb.
   A hull pinned against a shore by its own AI stays there (the AI's avoidance is unchanged).
 - **BSM01 and IJN01:** the resting hulls keep moving where the step does not deepen them. Exit
   0/1 if none of them climbs; otherwise small moves.
+
+### 87.5 The pairs on `d4638209e`, and the flip
+
+Exports `s22_m0` (no flip) and `s22_m1` (`kShipTerrainContactBound`,
+`kLandingShipRampHullContactBound`). Reference launch form.
+
+| row | exit | ON: ships / contact steps / stops |
+| --- | --- | --- |
+| JM08 36000 | 3 (deaths 33 -> 29) | 14 / 27294 / 15617 |
+| USN13 | 3 (death rows identical, 7 unit rows moved) | 5 / 7542 / 3831 |
+| USNOS | 3 (2 death rows moved in time) | 2 / 926 / 148 |
+| IJN01 | 3 (death rows identical; hits 81 -> 79; controlled Downes moved 196 -> 228) | 9 / 4083 / 2559 |
+| JM05 | 1 | 6 / 11154 / 478 |
+| JM06 | 1 | 1 / 127 / 127 |
+| BSM01 | 1 | 1 / 3000 / 57 |
+| USN04, E2, USN01, USN02, LOMP06, LOMP10, USN12 | 1 | 0 |
+
+- **JM08, as predicted.**
+  - LST 03 first touches at t = 829.67 at (1067, -3542); it stops there, and its ramp lowers at
+    831.95 (latch plus one frame).
+  - LST 01 touches at 895.20 at (1198, -3652), and its ramp lowers at 899.00.
+  - Neither crosses the island any more. Their deaths move: LST 03 at 878.16 to an AA truck at
+    1207, instead of 900.60 to the HQ at 597; LST 01 at 920.05 to the HQ at 810, instead of
+    974.39 at 592.
+  - The HQ is neutralized at 1415.25 instead of 1179.50. No landed capture (both landers are
+    dead by then).
+- **USN13's Marus** stay at a keel penetration of 0.6-1.2 m (OFF: 19-115 m); they are held at
+  the shore.
+- **Correction to 87.3.** Most penetrations of 100 m or more are not ships crossing land alive.
+  They are wrecks sinking through the seabed, and diving submarines. The stop is horizontal, so
+  those stay deep with the switch ON:
+  - JM08's dead landers at about 245 m;
+  - JM05's Clemsons and Fletchers at 210-227 m, where the row is identical;
+  - USNOS's Gato at 132 m.
+  The ships that do cross land alive are:
+  - JM08's landers and escorts: the stand-in diagnostic shows LST 01 at y = 0 over ground of
+    +3 to +7;
+  - USN13's Marus;
+  - some of IJN01's berth hulls.
+  JM05 was predicted to move and did not. Its contacts are wrecks and its resting PT boats.
+- **Decision: both switches ON.**
+  - Every no-contact row is gameplay identical.
+  - The landers beach and lower their ramps as the image's contact latch would make them.
+  - The contact rows move only where a live hull used to climb.
+- **Open:**
+  - The Dyn contact phase itself; the stop here is a labelled substitution.
+  - A sunk hull sinks through the seabed, and a submarine can dive into it: no vertical
+    response.
+  - The IJN01 dry-dock hulls (Downes, Cassin, Pennsylvania) sit in contact.
+  - The navigator's land-collision avoidance setter (ranking #13, `0071C1E0` case 3-6,
+    director `+220h..+223h`), next.
