@@ -609,3 +609,25 @@ arrive with their leaders; no spread was predicted for that.
 
 The 100-600 m follow gap (SQUADRON_LAND_TASK 5ai item 1) is closed on USN04, E2, JM08 and
 LOMP10. JM05 9000's remainder is its cross-track and population, still open.
+
+### 9.5 Who else requests turbo: nobody (cc9-lua21, 2026-09-30)
+
+A whole-`.text` displacement scan for `+2E5h` found six writers besides the reader `0099BF0F`.
+Each was read at its site:
+
+| site | function | object | value | meaning |
+| --- | --- | --- | --- | --- |
+| `009BEE42` | `009BEE30` follow command step | pilot plan (`[approach+18h]`) | 1 | **the follow turbo request** (9.2) |
+| `0099B572` | `0099B450` plan reseed | pilot plan | 0 (`DL`, `0099B46E XOR EDX,EDX`) | the per-think clear |
+| `009C2347` | `009C1FD0` follow tick | pilot plan (`[[state+4]+18h]`) | 0 | release when latched and `plan+268h & 1`; `+268h` is never set, so this is dead in practice |
+| `0099B3E4` | `0099B3E0`-`0099B3ED` (`RET 4`) | pilot plan (`ECX`) | the byte argument | a setter with **no reference**: no rel32 call, no absolute dword, no Ghidra xref |
+| `009A4F1A` | `009A4DC0` (called by `BSP_BotTaskDepthCharge_Construct` at `009A5281`) | the **task** object (`ESI = ECX`) | 0 (`009A4DFA XOR EBX,EBX`) | zero-initialisation of the depth-charge task's own `+2B0h`..`+2E5h`; not the plan |
+| `009A5143` | `009A5000` (called from `009A6820`) | the task object (`ESI = ECX`) | 0 (`009A5038 XOR EBX,EBX`) | the same, for the second depth-charge constructor |
+
+**So the follow state is the only live turbo request** in the image, and it is raised only for
+wing members, because the leader's tick exits at `009C1FF1` first.
+- Dogfight, moveto, attack runs and landing never request turbo.
+- A plane on turbo in any other state is a host error, and the host has none:
+  `plan_turbo_2e5` is set only in `run_follow_law_009bfee0_009bee30`.
+- The two depth-charge sites are same-offset fields of a different object. That is the
+  constructor-store pattern, not a writer of the plan.
