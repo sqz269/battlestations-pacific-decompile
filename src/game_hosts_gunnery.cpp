@@ -630,9 +630,10 @@ constexpr bool kHullElementSegmentBound = true;
 //    every triangle in model space (all four Kate elements hang on node 0), no
 //    movable part group excluded (00712440's +198h list), and the record keeps
 //    0Ah / -1 instead of the element's kind and index (00723F62 / 00723F6C), so
-//    the plane damage path is unchanged. OFF: the class box.
+//    the plane damage path is unchanged. OFF: the class box. ON by the pair of
+//    docs/AA_LETHALITY_AUDIT.md section 9.5.
 //    Packet cc9_plane_mesh_hit.
-constexpr bool kPlaneMeshHitTestBound = false;
+constexpr bool kPlaneMeshHitTestBound = true;
 //  * kShipDamageControlTickBound: message 9Eh's add arms 0093A4F0 (water,
 //    task+34h) and 0093A470 (fire, task+38h) add seconds, and the water and
 //    fire steps of 0093CA20 (0093C120 over +34h at WaterTickDamage, 0093C210

@@ -701,3 +701,86 @@ class_box_hits=`.
 - aircraft hits unchanged with the census showing a ratio of at least 3.
 
 Either keeps the switch OFF.
+
+### 9.5 The pair: the mechanism held, the kills moved less than predicted; flip ON
+
+**Setup.**
+- Same-tree exports of `4301c9f0a`:
+  - `local\g16_pmoff`, SHA-256 prefix `35B30900F146`;
+  - `local\g16_pmon`, `2953A0A98C6A`, with `kPlaneMeshHitTestBound = true`.
+- Launch: reference form, with the RNG option and the death table on.
+- A 300-frame USN01 smoke passed first. The runs ended by 03:05 UTC.
+- Summaries: `local\g16_pmstats.py`. Per-entity diffs: `local\g16_deathdiff.py`. Both are in the
+  cc9-gunnery16 tree.
+
+| row | pair_diff | census OFF: tests / mesh / box (box / mesh) | deaths OFF -> ON | AA kills | dying aircraft's hits c1 / c5 / c6, OFF -> ON | torpedo-task releases |
+| --- | --- | --- | --- | --- | --- | --- |
+| E2 9200/9000 | 3 | 455 / 17 / 127 (7.5) | 51 -> 51 | 48 -> 48 | 113 / 169 / 496 -> 67 / 190 / 556 | 2 -> 4 |
+| USN04 4700/4500 | 3 | 416 / 17 / 126 (7.4) | 50 -> 51 | 47 -> 48 | 112 / 165 / 487 -> 67 / 190 / 556 | 2 -> 4 |
+| USN13 3200/3000 | 3 | 466 / 49 / 186 (3.8) | 25 -> 23 | 25 -> 23 | 147 / 41 / 162 -> 62 / 37 / 237 | 0 -> 0 |
+| USN13 9200/9000 | 3 | 6880 / 1037 / 2982 (2.9) | 137 -> 115 | 121 -> 110 | 1522 / 205 / 645 -> 1135 / 244 / 864 | 0 -> **3** |
+| USN01 3200/3000 | 3 | 501 / 230 / 370 (1.6) | 7 -> 5 | 6 -> 5 | 90 / 19 / 10 -> 70 / 16 / 16 | 0 -> 0 |
+| JM06 3200/3000 | **1** | 0 / 0 / 0 | 1 -> 1 | - | - | - |
+| USN12 3200/3000 | **1** | 0 / 0 / 0 | 4 -> 4 | - | - | - |
+
+**Death tables, per entity.**
+- **E2:** no victim only on one side; 41 re-timed.
+- **USN04:** `D3A Val #7.1|.-3` dies only ON; 40 re-timed.
+- **USN13 3000:** `bruh #1.9|.-2` and `|.-3` die only OFF.
+- **USN13 9000:** 28 aircraft only OFF, 6 only ON.
+  - `Coastal Gun 03` dies only ON, bombed by aircraft that now live.
+- **USN01:**
+  - `KatTBD|.-3` dies only OFF.
+  - `Convoy1` dies only OFF. On OFF it was killed by a `ScoutDauntless|.-2` bomb; ON, that path
+    changed.
+- No ship death changes on any row.
+
+**Against 9.4:**
+- **P1, census: held on the Kate rows, missed on USN01.**
+  - The ratio is 7.5 / 7.4 / 3.8 / 2.9 on E2, USN04 and USN13 (USN13 long's 2.9 is just under 3).
+  - USN01's 1.6 is below 3. Its plane tests include the US aircraft's own segments and
+    line-of-fire queries at short range, which the census cannot separate.
+  - ON, `mesh_hits` > 0 on every plane row.
+- **P2, hits on aircraft: missed.**
+  - Direct MG hits (c1) on the dying aircraft fall by 41% (E2, USN04), 58% (USN13 3000), 25% (USN13
+    9000) and 22% (USN01). That is the mechanism.
+  - The summed c1 + c5 + c6 does not fall. The aircraft now live longer inside the escorts' flak,
+    and the blast hits rise: c6 +12% on E2, +46% on USN13 3000, +34% on USN13 9000. Flak locks
+    rise too (E2 929 -> 965, USN13 9000 1277 -> 1609).
+  - Blasts are area damage. The per-shot hit test does not limit them.
+- **P3, deaths: held only on USN13.** USN13 9000 falls 137 -> 115 and USN13 3000 25 -> 23. E2 and
+  USN04 keep their kills, because flak finishes the aircraft that the MG no longer does.
+- **P4, torpedo drops: held.** E2 and USN04 go 2 -> 4 torpedo-task releases, and USN13 9000 goes
+  0 -> 3.
+- **P5, controls: held.** JM06 and USN12 have no plane tests and are gameplay-identical.
+- **Mechanism failure: not met.** ON `mesh_hits` is non-zero, and the direct hits fell where the
+  census predicted.
+
+**Verdict: flip ON (`kPlaneMeshHitTestBound = true`).**
+- The mechanism is the image's: a plane is hit only through its GeomMesh.
+- It acts on every row that has plane tests and leaves the controls identical.
+- P2's and P3's sizes are recorded as misses. The next lethal stage is the flak blast.
+
+**Uncertainty:**
+- The mesh is traced from the host's plane pose origin, on the assumption that it is the model
+  origin. The ON hits and the higher drop counts fit that, but it was not checked against a
+  node transform.
+- Other plane classes (TBD, Val, Zero, Dauntless) take their own models' GeomMesh; only the Kate's
+  was read here.
+
+### 9.6 Next: the flak blast against a plane
+
+With the direct-hit test faithful, blast damage from the proximity bursts (category 5 and 6) is
+what kills most of the torpedo aircraft that survive the MG.
+
+**The image.**
+- The radial blast `0084BAD0` gathers collision nodes through each shape's sphere test.
+- For a unit part that test is `0070F720`, a real test against the part's collision body
+  (COLLISION_SHAPES, slot 4).
+
+**The host.** How the host measures a plane's distance from a burst was not read in this packet.
+
+**The next packet** compares the two:
+- the image's `0070F720` distance or overlap rule;
+- the damage falloff in `0084BAD0` (EXPLOSION_RADIAL_DAMAGE);
+- against the host's blast path for class 0Fh victims.
