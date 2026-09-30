@@ -1185,3 +1185,61 @@ hit test, damage per hit, the plane's damage model) is now faithful or bound ON:
 
 **Result:** with those substitutions, torpedo-plane attrition in this host follows the image's AA
 path at every stage read.
+
+## 13. The remaining substitutions of 12.6 (packet `cc9_aa_range_origin`, cc9-gunnery17)
+
+### 13.1 Where each one stands
+
+- **Kind 6's second ammunition (`+74h+7Ch`) for `00729B90`** is already bound.
+  - `kDualPurposeSecondAmmoBound` (docs/AA_LEAD.md 3) loads `Bullet[2]`.
+  - `bind_aa_acceptance` reads its `MinRange` for a category-6 gun against a plane
+    (`dp_air_ammo`, which needs the target's plane kind, as 00729BC0's `IsKindOf(0Fh)` does).
+  - The "not loaded" labels in AA_TARGETING 2 and 8, 12.1's table and the source comment were
+    stale; the comment is corrected.
+- **The fire window in the hull frame** is exact in its frame (docs/AA_FIRE_WINDOW_MOUNT.md 2).
+  - What remains is the origin: the host uses the slot point plus the muzzle offsets, where the
+    image uses the gun node's translation `[gun+3CCh]+120h`. That is a few metres at AA ranges.
+  - The host builds no gun node (docs/GUN_MOUNT_POSITIONS.md). Not pursued here.
+- **The recon contact list** (`[recon+DE8h]` against the host's recon levels) belongs to the recon
+  lane: RECON_SLOT_OBJECT, and cc9-lua22's `cc9_recon_publication` holds those files now. Not
+  touched here.
+- **The aim-point height in the category range** is bound in this packet (13.2).
+
+### 13.2 The image: pose origins, no height
+
+The score `00863990` (disk bytes, `bsp.py disasm-raw 00863990`):
+- `ESI = [ECX+50h]`, the gunnery AI's unit. `EDI` is the candidate.
+- Both poses are refreshed through `00414DB0` when `+C8h` is clear (008639CC..008639E7).
+- Then 008639EC..00863A1D subtract the unit's `+FCh/+100h/+104h` from the candidate's.
+  `0042B2F0` takes the length. It is stored to the caller's sort distance (00863A32) and compared
+  with `[ESI+EBP*4+430h]`, the category range (00863A34..00863A41).
+- No class `Height` is added anywhere in this stretch.
+- The host measured the distance between the two aim points (`unit_aim_point`: the origin raised
+  by the class Height). For a ship and a plane, that shortens the slant distance by about
+  `(ship Height - plane Height) * sin(elevation)`.
+
+**The binding:** `kAaCategoryRangeOriginBound` (`src/game_hosts_gunnery.cpp`, committed OFF) uses
+`unit_pose`'s origins for both units. The score serves every category, so ship-against-ship
+candidates change too, by their Height difference.
+- **Summary line**, on both sides: `summary mission gunnery candidate range origin scored=
+  verdict_flips= mean_abs_delta= bound=`. It counts the candidates whose range verdict would
+  differ under the other measure.
+
+### 13.3 Predictions (written before any ON run)
+
+A same-tree pair on s's seventeen rows, in s's launch form.
+1. **Mechanism:**
+   - `scored` is equal on both sides;
+   - `verdict_flips` is a small share (under 2%) of `scored` on every row with gunnery;
+   - `mean_abs_delta` is a few metres (1-15 m).
+2. **Direction:** against planes, the origin distance is longer. So AA guns take a plane into range
+   slightly later, and the first AA rounds come no earlier.
+3. **Rows:**
+   - The plane rows (USN04, E2, USN01, USN13, JM08, LOMP10, LOMP10 long, USNOS, USNOS long, IJN01,
+     JM05 long) move (exit 3), through the first-engagement timing and the shared stream.
+   - Surface-gunnery rows (USN02, JM06, JM05, USN12) may move where a candidate sits at a range
+     edge.
+   - BSM01 and LOMP06 are identical (no gunnery at a range edge).
+4. **Spread:** plane deaths per row within ±15% of OFF, and the torpedo-task releases within ±2.
+5. **Mechanism failure:** `scored` differs between the sides before the first flip, or flips are
+   0 on a plane row that moves.

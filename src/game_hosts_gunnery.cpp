@@ -95,6 +95,13 @@ constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
 constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount frame here; cc9_aa_fire_window_mount)
+//  * kAaCategoryRangeOriginBound: the candidate score's distance 008639EC..
+//    00863A32 is between the two pose origins, target +FCh..+104h minus the
+//    owner unit's ([ai+50h]) after both are refreshed (00414DB0), and is the
+//    value tested against unit+430h+slot*4 and written to the sort distance.
+//    The host measured it between the class-Height-raised aim points.
+//    Packet cc9_aa_range_origin, docs/AA_LETHALITY_AUDIT.md section 13.
+constexpr bool kAaCategoryRangeOriginBound = false;
 //  * kAaLeaderPenaltyBound: 00863A4F..00863A71 in the candidate score. A target
 //    that answers IsKindOf(0Fh) and 007B8AD0 (plane+9D8h == 0: slot 0 of its
 //    squadron's member array, the flight leader, or a plane in no squadron)
@@ -1294,6 +1301,9 @@ struct GameGunneryHost::Impl {
     unsigned long long plane_box_hits{0};
     // Packet cc9_aa_leader_penalty (census, both sides): plane candidates past
     // the class, rank and mask gates, and how many were flight leaders.
+    unsigned long long aa_range_origin_scored{0};   // kAaCategoryRangeOriginBound census
+    unsigned long long aa_range_origin_flips{0};
+    double aa_range_origin_abs_delta{0.0};
     unsigned long long aa_leader_penalty_scored{0};
     unsigned long long aa_leader_penalty_leaders{0};
     // Packet cc9_flak_blast_plane (census, both sides): bursts within range of a
@@ -4414,14 +4424,39 @@ public:
             return false;
         }
         float mine[3], theirs[3];
-        owner_.unit_aim_point(unit_, mine);
-        owner_.unit_aim_point(other, theirs);
+        if constexpr (kAaCategoryRangeOriginBound) {
+            float r[3], u[3], f[3];
+            owner_.unit_pose(unit_, r, u, f, mine);      // [ai+50h]+FCh
+            owner_.unit_pose(other, r, u, f, theirs);    // target+FCh
+        } else {
+            owner_.unit_aim_point(unit_, mine);
+            owner_.unit_aim_point(other, theirs);
+        }
         const float delta[3] = {theirs[0] - mine[0], theirs[1] - mine[1],
             theirs[2] - mine[2]};
         bsp::GunneryScoreInputs in;
         in.distance = length3(delta);
         in.category_range = state_.category_ranges[slot];
         in.target_is_plane = is_plane;
+        {
+            // Both measures, printed on both sides: the other one's range verdict.
+            float a[3], b[3];
+            if constexpr (kAaCategoryRangeOriginBound) {
+                owner_.unit_aim_point(unit_, a);
+                owner_.unit_aim_point(other, b);
+            } else {
+                float r[3], u[3], f[3];
+                owner_.unit_pose(unit_, r, u, f, a);
+                owner_.unit_pose(other, r, u, f, b);
+            }
+            const float d2[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+            const float other_distance = length3(d2);
+            ++owner_.aa_range_origin_scored;
+            owner_.aa_range_origin_abs_delta += std::fabs(static_cast<double>(other_distance - in.distance));
+            if ((in.distance < in.category_range) != (other_distance < in.category_range)) {
+                ++owner_.aa_range_origin_flips;
+            }
+        }
         // 00863A4F..00863A71: IsKindOf(0Fh) and 007B8AD0 (plane+9D8h == 0).
         bool flight_leader = false;
         if (is_plane) {
@@ -4667,8 +4702,8 @@ public:
     // the device row's Function id, and the test is kind 5 or 6 - FLAK and
     // LIGHTARTILLERYFLAK - against the ammunition's MinRange (+58h). The host
     // keyed the flag on category 7 (TORPEDO) with a zero minimum. Kind 6 reads
-    // its SECOND ammunition entry (+74h+7Ch) against a plane, which this host
-    // does not load, so kind 6 keeps a zero minimum: unbound, labelled.
+    // its SECOND ammunition entry (+74h+7Ch) against a plane: loaded since
+    // kDualPurposeSecondAmmoBound (docs/AA_LEAD.md 3) and read below.
     //
     // 00729BC0 -> the bot slot's vtable[1Ch], for the two AA bots only:
     //  * AAGunnerBot 008FBE00 (category 1, slot +390h): a target answering
@@ -10818,6 +10853,13 @@ void GameGunneryHost::report() {
             "bound=%d (00863A4F / 007B8AD0, packet cc9_aa_leader_penalty)",
             host.aa_leader_penalty_scored, host.aa_leader_penalty_leaders,
             kAaLeaderPenaltyBound ? 1 : 0);
+        host.log.notef("summary mission gunnery candidate range origin scored=%llu verdict_flips=%llu "
+            "mean_abs_delta=%.2f bound=%d (008639EC..00863A32, packet cc9_aa_range_origin)",
+            host.aa_range_origin_scored, host.aa_range_origin_flips,
+            host.aa_range_origin_scored > 0
+                ? host.aa_range_origin_abs_delta / static_cast<double>(host.aa_range_origin_scored)
+                : 0.0,
+            kAaCategoryRangeOriginBound ? 1 : 0);
         {
             const double nb = static_cast<double>(host.plane_blast_box_records);
             const double nm = static_cast<double>(host.plane_blast_mesh_records);
