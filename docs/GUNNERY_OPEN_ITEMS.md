@@ -5773,3 +5773,73 @@ the difficulty owner modifier, what Shimotsuke aims at on USNOS).
 - `false` equals the number of false calls in the script at difficulty 1.
 - The heal applied on the false tasks (`withheld`, which counts that heal) is 0 on ON.
 - Rows with `withheld = 0` on OFF are gameplay-identical.
+
+### 82.4 Measured (pairs on `89eeb2b62`), and the verdict: ON
+
+**Setup.**
+- One base, `89eeb2b62` (main with cc9-lua25's caller `e90b50be9`), exported twice:
+  `local\g19_off` with no flip and `local\g19_on` with `--flip kHullRepairEnableRouteBound=true`.
+- The rows use reference t's launch form (`local\g19_runs.ps1`, g18's re-rooted), with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+- A 300-frame USN01 smoke passed first.
+- The fourteen reach rows ran 11:42-11:48 UTC.
+- The logs are `local\g19_<off|on>_<row>.log`; `local\g19_vs.py` gives the exits.
+
+**The census** (`summary mission gunnery repair enable`, OFF side):
+
+| row | calls | false | withheld (OFF heal on false tasks) |
+| --- | ---: | ---: | --- |
+| USN04 | 18 | 18 | 1921: Lexington-class01 854, Yorktown-class01 824, Fletcher-class04 244 |
+| E2 | 18 | 18 | 4452: Yorktown-class01 2389, Lexington-class01 1194, Fletcher-class04 869 |
+| USN02 | 34 | 16 | 22650 over ten ships: Haguro 4676, Jintsu 3649, DeRuyter 2679, Java 2532, Samidare 2162 and five more |
+| LOMP10 / long | 10 / 10 | 10 / 10 | 291 / 363 (Kiyoshimo) |
+| JM05 / long | 1 / 2 | 1 / 1 | 1333 (USS Lexington) / 0 (the long row's second call re-enables it) |
+| BSM01, LOMP06 | 29, 19 | 29, 19 | 0 (undamaged) |
+| USN01, USN13, USN12, USNOS, USNOS long | 14, 52, 12, 86, 86 | 0 | 0 |
+
+**The mechanism matches on every row.**
+- `calls` equals t's `route_repair_enable_message` count on every row.
+- `before_init=0`: every flag arrives after the host's 0093BCC0 point.
+- The ON side's `withheld` is 0 everywhere.
+
+**pair_diff, OFF against ON:**
+- **Exit 1, as predicted (seven rows):** USN01, USN13, BSM01, LOMP06, USN12, USNOS and USNOS long.
+  The only change on each is the census status of the two bound methods.
+- **USN04, exit 3.** Deaths 48 -> 49: `D3A Val #7.1|.-3` dies only ON, and 24 plane rows are
+  re-timed. No US ship dies on either side.
+- **E2, exit 3.** 51 -> 51 deaths with 27 rows re-timed; dive-bomb-task releases 1 -> 0 of 19.
+  - That release is reference t's knife-edge: `aro` alone moved it 0 -> 1.
+- **USN02, exit 3.** The death rows are identical (1), and the mission still fails at 29.75 s.
+  - Damage 66963.7 -> 55106.1 and hull hits 432 -> 342.
+  - The unrepaired DR group ends at lower health: DeRuyter 1152 -> 600, Java 1034 -> 600,
+    Kortenaer 874 -> 250.
+  - The engagement then moves: Perth takes 3815 -> 0 damage, Electra fires 336 -> 132 shots.
+- **LOMP10 and LOMP10 long, exit 3.** The death rows are identical except re-timings of 0.05 s:
+  `Warhawk 01` 129.05 -> 129.10, and on the long row PT 01 and PT 02. Kiyoshimo ends at
+  3683 -> 3391.
+- **JM05, exit 3.** The death rows are identical; USS Lexington ends at 6555 -> 5222 (the 1333
+  withheld). JM05 long is also exit 3 with identical deaths: Lexington 8000 -> 7622 while the
+  first flag holds.
+
+**Against the predictions (82.3).**
+- **Hits:**
+  - the seven identical rows;
+  - the rows that move (USN04, E2, USN02, LOMP10, LOMP10 long);
+  - USN02's failure time;
+  - no US ship dying later on USN04 and E2 (none dies on either side);
+  - the mechanism check.
+- **Spread misses:**
+  1. USN02's `withheld` is 22650, not "at most about 6% of max". The prediction assumed the row
+     ends at the failure, but the host simulates all 9000 frames after it.
+  2. USN04 and E2 moved through plane deaths, re-timed by up to 5 s, rather than through ship
+     deaths. A damaged ship's health feeds the target weights (`kAiTargetWeightDamageTermsBound`,
+     GUNNERY 80), and the planes' deaths are RNG-coupled to the AA fire (memory
+     "shared RNG stream couples pairs").
+  3. JM05 moved, where "identical unless damaged" was the prediction; its unit, USS Lexington, is
+     damaged.
+
+**Verdict: `kHullRepairEnableRouteBound = true`.**
+- The mechanism is the image's, and it matched on every counted item.
+- The misses are spread, not mechanism.
+- The labelled differences in 82.2 stand.
+- GAMEPLAY_GAP_RANKING #12 closes with this flip.
