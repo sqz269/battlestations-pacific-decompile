@@ -92,7 +92,25 @@ reads `spent_calls=0` on every t row. The host comment above `tick_squadron_excl
 | 10 | `meshless_guns` 20-396 per row, `meshless_changed=0` on all eighteen | no reach; parked until a row has a Mesh-less multi-barrel device |
 | 12 | `Session::route_repair_enable_message` on sixteen rows: USNOS 86, USNOS long 86, USN13 52, USN02 34, BSM01 29, LOMP06 19, USN04 18, E2 18, USN01 14, USN12 12, LOMP10 10, LOMP10 long 10, JM05 long 2, JM05 1 | the next gunnery packet (cc9-gunnery19): find the image's consumer of the repair flag and bind it OFF |
 | 13 | `avoidance_receiver_torpedo` on nine rows (USNOS 86, USN13 52, USN02 28, E2 18, USN04 18, USN01 14, JM06 12, USN12 12, USNOS long 86); `_land` on ten (the same without JM06, plus JM05 2, JM05 long 2) | cc9-ships22, with the grounding work |
-| 15 | `UnitMotion::unreconstructed_phase_006d2510` runs every frame per airfield (twelve rows). Hangars now die on USNOS and USNOS long (four each: `Hangar, Medium, 03 01/02`, `Hangar, Small, 01 02/03`), from the all-kinds contacts, but none of them is a registered airfield hangar (`air ops hangar:` lists `Hangar, Large, 08 01`, `Hangar, Small, 02 02` and `Multi Hangar 1`) | still no reach, on the reading that the air-ops hangar list is the `+830h` list (not re-read here) |
+| 15 | `UnitMotion::unreconstructed_phase_006d2510` runs every frame per airfield (twelve rows). Hangars now die on USNOS and USNOS long (four each: `Hangar, Medium, 03 01/02`, `Hangar, Small, 01 02/03`), from the all-kinds contacts, but none of them is a registered airfield hangar (`air ops hangar:` lists `Hangar, Large, 08 01`, `Hangar, Small, 02 02` and `Multi Hangar 1`) | still no reach. The `+830h` reading is confirmed (below) |
+
+**#15's hangar list, re-read (cc9-gunnery19, 2026-09-30).**
+- **The slot's test.** `006D40F0` (inside Ghidra's `006D40D0`, reached as `unit->vtable[1A8h]`)
+  skips when `byte [unit+5Dh]` is set (`006D410B`).
+  - It walks `[+830h] .. [+830h] + 0Ch*[+834h]` and leaves at the first record whose entity
+    (`[rec+0]`) has `hp [+370h] > 0` (`006D4140..006D4158`).
+  - Only when none has hp left does it reach the `+71Ch` and destruction arm (`006D415A`).
+- **The list's writer.** `+830h` is used by `BSP_AirField_PickHangarEntryPath` /
+  `PickHangarExitPath` / `FindUsableHangarObject` (`006D2780`, `006D2640`, `006D2730`), all hangar
+  users with paths. The append helper `006D2980` is called from `006D5220`
+  (`BSP_AirField_ReadHangarAndMarkerProperties`), the "Hangar %d" `Object` reader.
+  - The host's `air ops hangar:` lines log exactly those `Object` names
+    (`src/game_hosts_scene_contents.cpp`, `006d5220 kind 1`).
+  - The image appends only a name that resolves to an entity, so the logged list is a superset of
+    `+830h`.
+- **So on t no row reaches the arm.** USNOS's four dead hangars are scenery `Hangar` entities, not
+  any airfield's `Object`. `006D2040`, `006D31A0` and `006D4C70` also touch `+830h` and have no
+  direct caller; they were not read.
 
 **Still open from the first ranking:** unchanged (AA lethality at 300-800 m; the approach
 sub-throttle and sub-heading producers).

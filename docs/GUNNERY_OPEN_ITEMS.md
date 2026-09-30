@@ -5720,3 +5720,56 @@ the difficulty owner modifier, what Shimotsuke aims at on USNOS).
 - **The caller.** `GameScriptOrdersHost::session_route_repair_enable_message` in
   `src/game_hosts_script_orders.cpp` must call the setter. That file is leased to cc9-lua25; the
   prepared edit is `local\g19_script_orders_patch.txt` in the cc9-gunnery19 tree.
+
+### 82.3 Predictions, written before any ON run
+
+**Inputs.**
+- Every t row runs at effective difficulty 1: `MissionStart::set_effective_difficulty game+6ACh=1`
+  on all nineteen t logs, and `Mission.Difficulty = GetDifficulty()` in the scripts.
+- The flags each row's script routes at difficulty 1 were read from this installation's scripts
+  (`local\g19_repair_scripts.py`; the mtimes are 2024-07-13, and 2024-08-13 / 2024-08-26 for
+  usn_13_truk / usn_19_coralus).
+- A false flag matters only on a ship that has damage control (`dc.enabled`), is damaged, and is
+  still alive. The host heals `0.002 x max` per second (t logs:
+  `hull repair 0.00200 of max per second`), so ON withholds up to about 45% of max over a
+  4500-frame row.
+
+**Rows whose scripts route only true at difficulty 1: gameplay-identical (exit 0 or 1).**
+- USNOS and USNOS long (86 calls; Shimotsuke explicitly true).
+- USN13 (52), USN01 (14) and USN12 (12).
+
+**Rows whose false flags land on undamaged ships: identical.**
+- BSM01 (29 calls). Every Japanese gang is set false, but t's BSM01 takes 0 damage.
+- LOMP06 (19 calls: Warships, Escorts and Cargos false; the player false only at difficulty 2).
+  t's LOMP06 has 0 damage.
+
+**Rows that should move.**
+- **USN04 and E2** (`usn_19_coralus.lua`, 18 calls).
+  - The player's escorts, `LexFleet` and `TownFleet`, are false at difficulty 1.
+  - Their hull hits (USN04: 93 hull records on t) stop healing.
+  - Predicted: `withheld > 0` on the OFF census; ON moves the death table (exit 3) with the same or
+    earlier deaths of US escorts, and no US ship dies later than on OFF.
+  - The IJN fleets' Ph2/Ph3 flags (true and false) apply only if those phases start in the frames
+    run; that is not predicted.
+- **USN02** (`usn_2_java.lua`, 34 calls).
+  - `DRGrp` (Kortenaer, Electra and the others) is false at difficulty 1; so are the `DRKillers`
+    (Haguro, Jintsu, Yudachi, Samidare, Murasame, Harusame), which are also `SetInvincible(0.5)`.
+  - Predicted: `withheld > 0` on the DR group (t: 468 hull records, 59303 damage).
+  - The failure at 29.75 s is unchanged: it comes before much heal can build up (at most about 6%
+    of max).
+  - Deaths stay 1 or rise by at most the DR group's members.
+- **LOMP10 and LOMP10 long** (`10_san_jose.lua`, 10 calls).
+  - The `SanJoseForce` (Ashigara, Oyodo and six destroyers) is false. HQ, Airfield and Shipyard are
+    also false, but those are routed only if `IsKindOf(6)`; the census counts 10 routed calls, so
+    all 10 are routed, which is labelled.
+  - Predicted: `withheld > 0` wherever the force is damaged (t: 156 hull records); death rows
+    identical or re-timed earlier.
+- **JM05 and JM05 long** (1 and 2 calls). The script was not found under
+  `ijn_05_invasion_of_port_moresby.lua` in this installation's tree. The OFF census names the unit;
+  predicted identical unless that unit is damaged.
+
+**The mechanism check on every ON row.**
+- `calls` equals t's `route_repair_enable_message` count.
+- `false` equals the number of false calls in the script at difficulty 1.
+- The heal applied on the false tasks (`withheld`, which counts that heal) is 0 on ON.
+- Rows with `withheld = 0` on OFF are gameplay-identical.
