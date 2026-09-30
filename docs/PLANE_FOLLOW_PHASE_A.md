@@ -472,3 +472,98 @@ same deficit.
 **Next:** the existing `follow trace` diagnostic (`kFollowTraceEvery`, in the shared units file)
 prints the throttle slot, `want`, `v` and the speed mode on the follow seams. One OFF-only run
 with it at 400 would show which stage drops the 75 m/s.
+
+## 9. The speed loss: the follow step's turbo request (packet `cc9_follow_turbo`, cc9-lua21, 2026-09-30)
+
+### 9.1 Where the 75 m/s goes
+
+The diagnostic `summary follow speed ceiling` was added at `caeaaa4c4` and runs on both sides.
+Over every follow-law tick it reports:
+- the member and leader |v|;
+- their class MaxSpd (`desc+188h`);
+- the leader's commanded `+2B4h`;
+- both throttle slots, and how often each is at 0.99 or above.
+
+Measured on `caeaaa4c4` (export `A3B86BC078A2`, logs `local\l21_s1_<row>.log`):
+
+| row | member v | leader v | MaxSpd | leader want | throttle member / leader | at full, member / leader |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 72.6 | 73.9 | 75.7 | 102.7 | 0.982 / 0.976 | 91% / 94% |
+| E2 | 74.3 | 75.2 | 76.1 | 102.6 | 0.984 / 0.976 | 92% / 94% |
+| JM05 9000 | 52.7 | 58.9 | 70.8 | 106.1 | 0.831 / 0.906 | 72% / 87% |
+| JM08 | 80.7 | 80.5 | 83.3 | 94.0 | 0.968 / 0.955 | 78% / 34% |
+| LOMP10 | 90.1 | 89.5 | 87.6 | 122.1 | 0.988 / 0.993 | 96% / 98% |
+
+- The leader is commanded `TravelSpeed x NewTravelSpeedMul` (1.6), above its MaxSpd, as in the
+  image (PLANE_FOLLOW_LAW.md 16.2). So it flies flat out at MaxSpd.
+- The member is also at full throttle, and the same class caps it at the same speed.
+- The throttle path is not the loss. The airframe is: in this host a member at full throttle can
+  never out-run a leader at full throttle.
+
+### 9.2 The image's answer: `009BEE42`, the turbo request
+
+`009BEE30` opens `MOV byte [[approach+18h]+2E5h],1` at `009BEE42`, before the `+85h` branch, so it
+runs on both arms. The chain, each link read from the listing:
+
+| step | address | effect |
+| --- | --- | --- |
+| request | `009BEE42` | `plan+2E5h = 1` on every follow command step (never for the leader: the tick returns at `009C1FF1` first) |
+| reseed | `0099B572` | `plan+2E5h = DL`, with `DL = 0` from `0099B46E XOR EDX,EDX`, at every think |
+| release | `009C2347` | `plan+2E5h = 0` when latched and `plan+268h & 1`. `+268h` is only ever stored as 0 (DOGFIGHT_MANEUVER_BODIES.md), so this does not fire |
+| command buffer | `0099BF0F` | `cmd+15h = plan+2E5h`, which is `unit+A11h` |
+| commit | `007BB8D0`-`007BB8D6` | `unit+9F9h = cmd+15h`. The `unit+61h` gate at `007BB8D3` has no writer |
+| control copy | `007DC84F` | `ctl+4h = unit+9F9h`, every step |
+| thrust | `007D9062` | `a *= tuning+330h` `Dynamics/SpdMultipliers/TurboMultiplier` (1.95) when `ctl+4h` |
+| follow exit | `009BDE40` (vtable `00D20AB8` +8) | `unit+9F9h = 0` via `007B8A90` |
+
+- Drag is `Accel / MaxSpd^2 x v^2` (`007C4990`). So a member on turbo settles at
+  `MaxSpd x sqrt(1.95)`, about 1.4 MaxSpd: 106 m/s on USN04 against the leader's 74.
+- `include/bsp/pilot_command_path.hpp` calls `cmd+15h` / `unit+A11h` "dead". That is a
+  correction owed: `007BB8D0` reads it (PILOT_PLAN_SLOT_PIPELINE.md already has the row).
+- Other writers of `plan+2E5h` remain unread: `009A4F1A` (in `009A4DC0`) and `009A5143` (in
+  `009A5000`).
+
+**The binding:** `kFollowTurboBound`, committed OFF, in `src/game_hosts_units.cpp`:
+- `plan_turbo_2e5` is set at the top of `run_follow_law_009bfee0_009bee30` and cleared in the
+  think reseed.
+- `plane_turbo_9f9` is copied at the pilot commit (`007BB920` site).
+- The thrust multiply is added beside `007D9052`'s `Accel x throttle`.
+- **Substitution, labelled:** the follow exit's immediate clear (`009BDE40`) is not bound. The
+  byte drops at the next think's commit instead, one think late.
+- A new summary line: `summary follow turbo steps= bound=`.
+
+### 9.3 Predictions, written before any ON run
+
+Pair: OFF = the no-flip export of the binding commit, ON = `kFollowTurboBound=true`. Same five
+rows.
+
+**Mechanism:**
+- `turbo steps` is 0 OFF and non-zero ON on every row with follow ticks.
+- Member |v| rises above leader |v| while behind: `behind_speed_diff_mean` goes from about -2 to
+  +5..+30 m/s.
+
+**Along-track error falls:**
+
+| row | along mean OFF -> ON | station error mean OFF -> ON | latched share OFF -> ON |
+| --- | --- | --- | --- |
+| USN04 | about -138 -> -10..-80 | about 157 -> 40-110 | 38% -> 55-85% |
+| E2 | about -134 -> -10..-80 | about 151 -> 40-110 | 40% -> 55-85% |
+| JM05 9000 | about -233 -> -30..-180 | about 528 -> 250-480 | rises |
+| JM08 | about -117 -> -10..-70 | about 125 -> 30-100 | rises |
+| LOMP10 | about -240 -> -20..-150 | about 247 -> 60-200 | rises |
+
+- The `ahead` count becomes non-zero (overshoot), but stays below `behind`.
+- The cross-track and dy means barely move.
+
+**Gameplay** (formations close up, so AA exposure and arrival times move):
+- **USN04:** deaths 27 ± 5, torpedo drops 2 ± 2, water contacts 7 ± 4.
+- **E2:** deaths 51 ± 8, water contacts 19 ± 6.
+- **JM05 9000:** deaths 5 ± 3.
+- **JM08:** deaths 10 ± 2.
+- **LOMP10:** deaths 10 ± 3.
+
+**Verdict rule:**
+- Flip ON if the mechanism holds (turbo steps non-zero, member faster than leader while behind)
+  and the along-track error falls on at least three of USN04, E2, JM08 and LOMP10.
+- Keep it OFF, and record the reason, if water contacts rise by more than half or the ahead count
+  exceeds the behind count.
