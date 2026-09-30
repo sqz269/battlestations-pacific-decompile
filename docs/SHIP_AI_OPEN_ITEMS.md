@@ -7237,3 +7237,80 @@ and `s22_e1` (the same plus `kEntityCommandSelfKindBound`). Reference launch for
   has no reach while `kShipAiApproachLandingModesBound` is OFF (only `0074A990` sends a landing
   ship `land` on these rows), so the three move together. The post-flip JM08 36000 is `s22_e1`.
 - **Open:** the landers hold at the final arm until the ramp `0074AF20` is bound (the next packet).
+
+## 86. The landing ship's ramp and capture arm 2 (packet `cc9_landing_ramp_capture`, cc9-ships22, 2026-09-30)
+
+### 86.1 The ramp is `0074AF50`, not `0074AF20`
+
+`0074AF20` is a 0x25-byte forwarder (`0074AF42 RET 0Ch`, INT3 padding) to `0074A160`. The code
+section 78.4 read (`0074B07A`, `0074B080`) belongs to the next body. That body starts at
+`0074AF50` (SEH prologue), and Ghidra has no function there. `0074AF50` is `MLandingShip`'s
+per-frame update: its one reference is the vtable `00CFFA30` slot `0DCh` (`00CFFB0C`, a PE
+scan). It is `__thiscall(ship)(float dt)`. It calls the base update `008255B0(dt)` and then gates
+on `+5Ch` being set and `+5Dh`/`+60h`/`+5Eh` being clear (`0074AF7B..0074AF9D`).
+The ramp latch, `0074AFA3..0074B0AC`:
+
+| site | what |
+| --- | --- |
+| `0074AFB2`, `0074AFBF` | skipped when `[game+1FE4h]` == 2 or `+1200h` (the pad) is null |
+| `0074AFCC..0074AFF3` | `held_before = +11A8h > (clock - 1) - dt`. The x87 sequence is `FLD +11A8h`, `FLD [00F876A4]`, `FLD1`, `FSUB ST1,ST0`, `FLD dt`, `FLD ST0`, `FSUBP ST3`, `FXCH ST3`, `FCOMIP ST2`, `JBE` |
+| `0074AFF5..0074B006` | a set `+1011h` stores the clock into `+11A8h` |
+| `0074B00E..0074B026` | `held_now = +11A8h > clock - 1` (`FSUBRP ST2`, `FCOMIP ST1`) |
+| `0074B028..0074B03A` | `held_now != held_before`: `+11ACh = +11B0h` |
+| `0074B03C..0074B06B` | otherwise a positive `+11ACh` counts down by `dt`, and processing continues only once it is `<= 0` (`FLDZ`/`FCOMIP`, `JB`) |
+| `0074B06D..0074B0AC` | ramp already down (`+1188h`): skip. Otherwise, when `held_now` (the `CL` at `0074B07A`): `0074A420` (`+1188h = +1189h = 1`, then the ramp node pose) and the 0A6h route (`00749AA0`, `0077C2A0` class 4) |
+
+Evidence for the fields:
+- The construct `0074C0CD..0074C108` seeds `+11A4h` = 0, `+11ACh` = 0,
+  `+11A8h` = -1e10 (`00CE4ADC`) and `+11B0h` = 2.0 (`00CE3958`).
+- A displacement census finds no other writer of `+11B0h`.
+- The Lua property pairs at `0074C455..0074C4A8` name `+11A8h` `lastTalaj` ("last ground") and
+  `+11ACh` `nyitzarTimer` ("open/close timer").
+- `+1011h` is `008255B0`'s one-frame copy of `+1010h`. The only `1` store to `+1010h` is
+  `00937878` in the contact callback `009377E0`, on a contact whose kind (`contact+2Ch`) is 8.
+  The HUD's ship warning at `006830A5` reads the same latch.
+
+So the ramp lowers once the hull has been in continuous ground contact for 2 s.
+`0074B0B0..` (the pad re-request, the ramp animation `+11A4h` over `+1190h`, the unload) is not
+covered.
+
+### 86.2 The host
+
+`kLandingShipRampBound` (`src/game_hosts_ship_ai.cpp`, committed OFF). The latch itself is
+`bsp::landing_ship_ramp_latch_0074afcc` (`building_pads.cpp`, over new `Lander` fields). It runs
+for every landing ship that holds a pad, after the capture tick of the same step (LABELLED
+order). The same switch turns on two parts of the capture tick:
+- **Arm 2** (`006F6A58..006F6BF8`, verified in the listing): every pad occupant that is
+  IsKindOf(0Ch), alive, has its ramp down and has party < 2 adds class `+810h`
+  `LandedCapturePower` (an integer ADD at `006F6AF7`). This installation's vehicleclasses.lua
+  (mtime 2026-05-10) authors 150 for the US LST (class 41) and 100 for the Higgins.
+- **Arm 1's exclusion**: a ramp-down landing ship is skipped there.
+
+**SUBSTITUTION (labelled): the ground contact.** This process has no hull contacts. The host
+counts contact when the terrain height (`00903860`) under the bow, the centre or the stern
+(plus or minus half of `+9C8h` along the heading) is above the waterline less 3.71 (the LST
+hull's min y).
+
+**Found on the way, not fixed:** the landers drive across the island. `BSP_LANDER_DIAG=1` on
+JM08 36000 (tree build, landing chain ON) shows LST 01 holding its heading at full throttle in
+the land state's final arm (`009E1E3B`), with the ground under it at +3 to +7. It is 890 units
+past its pad at t = 967. The image's ship is stopped by the hull-terrain contact itself. The
+pad stays held, so under this host arm 2 still counts the lander wherever it has gone.
+
+### 86.3 Predictions (written before any run)
+
+- **Plain rows, OFF vs ON (JM08 36000, JM05, USN13, USNOS, USN04): exit 1.** On JM08,
+  `ground_contacts > 0`, `lowers = 2` (LST 03 about t = 837, LST 01 about t = 899: first
+  contact plus 2 s) and `landed_capture_adds = 0`. The capture tick runs only for a neutral
+  building, and JM08's HQ never reaches 0 hp (sections 80.4 and 81.2). Nothing else reads the
+  ramp. USN13, USNOS and USN04 have `lowers = 0`, because no lander begins there (pairs A to
+  C). JM05 was not in those pairs: it may lower ramps, which moves nothing unless one of its
+  buildings is neutral.
+- **Can the landing capture JM08's HQ in the 1800 s window? No.** It needs a neutral HQ first,
+  which does not happen. Even neutral at t = 0, 2,000,000 / (2 x 150) is about 6667 s.
+- **Diagnostic `BSP_CB_FORCE_ZERO=Headquarter 01@500:3000`, JM08 36000, OFF vs ON.**
+  - OFF: neutral at 500 and no flip (as 81.2).
+  - ON: from LST 03's lowering (about 837 s), about 150 per second (300 once LST 01 lowers
+    too), so progress +150 per tick. The HQ flips to party 0 about 20 ticks later (about
+    t = 857), if LST 03 survives with its ramp down.
+  - Pair exit 3.

@@ -523,6 +523,17 @@ inline constexpr bool kCommandBuildingCaptureBound = true;
 // False: the state is selected and its step is a record, as before. ON by
 // section 85.4 (enters=2 steps=822 with_pad=822 final=772 on JM08 36000).
 inline constexpr bool kShipAiLandStepBound = true;
+// Packet cc9_landing_ramp_capture (docs/SHIP_AI_OPEN_ITEMS.md section 86). True: a
+// landing ship holding a pad runs 0074AF50's ramp latch (0074AFCC..0074B0AC: 2 s of
+// held ground contact lowers the ramp, +1188h), the capture tick counts it through
+// arm 2 (class+810h LandedCapturePower, 006F6AF7) and arm 1 skips it. The ground
+// contact is a labelled terrain-height substitution (landing_ship_ground_contact).
+// False: no ramp is lowered and arm 2 adds nothing, as before.
+inline constexpr bool kLandingShipRampBound = false;
+// LABELLED: the keel depth of the contact substitution, below the waterline: the
+// hull shapes' min y of models/ships/us/LST_mark5.mmod (type 41, -3.714) as the
+// hull log reports it; one value for every landing ship.
+inline constexpr float kLandingShipKeelDepth = 3.71f;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -793,6 +804,16 @@ struct GameShipAiHost::Impl {
     }
     void build_capture_buildings();
     void capture_step(float seconds);
+    // Packet cc9_landing_ramp_capture: class+810h LandedCapturePower per unit, the
+    // ramp latch's counters and the BSP_LANDER_DIAG=1 trace (env-gated).
+    std::vector<std::int32_t> landed_capture_power_0810;
+    bool lander_diag{false};
+    double lander_diag_next{0.0};
+    unsigned long long ramp_ground_contacts{0};
+    unsigned long long ramp_lowers{0};
+    unsigned long long capture_landed_adds{0};
+    bool landing_ship_ground_contact(std::size_t unit, float ground[3]) const;
+    void landing_ship_ramp_step(float seconds);
     unsigned long long traffic_trace_lines{0};
     std::vector<GameGunneryHost::LiveTorpedo> live_torpedo_cache;
     // Packet cc9_big_landing_ship: class+808h per unit, set at load.
@@ -10867,6 +10888,10 @@ void GameShipAiHost::controller_step(float seconds) {
     // fixed-step callback list (00874DE0, row 5), after the job waves; here it
     // runs at the head of the controller pass of the same step (LABELLED order).
     host.capture_step(seconds);
+    // Packet cc9_landing_ramp_capture: 0074AF50 is each MLandingShip's own update
+    // (vtable 00CFFA30 slot 0DCh); here it runs after the capture tick of the same
+    // step (LABELLED order).
+    host.landing_ship_ramp_step(seconds);
     ++host.steps;
     host.sub_attack_clock += static_cast<double>(seconds);
     // The session pump (fixed-step row 9) drains last step's queue before the
@@ -11104,8 +11129,16 @@ void GameShipAiHost::Impl::build_capture_buildings() {
     capture_built = true;
     const std::size_t count = units.count();
     capture_power_0804.assign(count, 10.0f);
+    landed_capture_power_0810.assign(count, 0);
     for (std::size_t u = 0; u < count; ++u) {
         const GameUnitRow* row = units.unit_row(u);
+        // class+810h `LandedCapturePower`, an integer, 0 when unauthored
+        // (vehicle_class_lua_load.cpp); this installation's vehicleclasses.lua
+        // (mtime 2026-05-10) authors 150 for the US LST (class 41).
+        if (row != nullptr && settings_owner != nullptr && row->type_id >= 0) {
+            landed_capture_power_0810[u] = settings_owner->read_vehicle_class_integer(
+                row->type_id, "LandedCapturePower", nullptr, 0);
+        }
         // 00834526..00834547: `CapturePower`, an integer or 10, CVTSI2SS into
         // class+804h (ship_class_fields.cpp).
         if (row != nullptr && settings_owner != nullptr && row->type_id >= 0) {
@@ -11148,6 +11181,10 @@ void GameShipAiHost::Impl::build_capture_buildings() {
             }
         }
     }
+    if (_dupenv_s(&env, &env_bytes, "BSP_LANDER_DIAG") == 0 && env != nullptr) {
+        lander_diag = env[0] == '1';
+    }
+    std::free(env);
     for (const CaptureBuilding& b : capture_buildings) {
         const GameUnitRow* row = units.unit_row(b.unit);
         log.notef("command building capture: unit=%s party=%d capture_range=%d "
@@ -11194,8 +11231,13 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             units.unit_position_00fc(u, x, y, z);
             const float dx = x - bx, dy = y - by, dz = z - bz;
             if (!(dz * dz + dx * dx + dy * dy <= range_sq)) continue;
-            // IsKindOf(0Ch) with +1188h (the ramp down) is excluded: this process
-            // never lowers a ramp, so no landing ship is excluded (LABELLED).
+            // IsKindOf(0Ch) with +1188h (the ramp down) is excluded. Without
+            // kLandingShipRampBound no ramp is ever lowered (LABELLED).
+            if (kLandingShipRampBound && units.unit_is_kind_of(u, 0x0C)) {
+                const bsp::BuildingPadModel::Lander* l =
+                    bsp::building_pad_model().lander(static_cast<int>(u));
+                if (l != nullptr && l->ramp_down_1188) continue;
+            }
             const int party = units.unit_side_0054(u);
             if (party < 0 || party >= 2) continue;
             // +5Ch set, +5Dh / +60h / +5Eh clear (0043F080's four cells), and
@@ -11205,6 +11247,28 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             const float power = u < capture_power_0804.size() ? capture_power_0804[u] : 10.0f;
             strength[party] = bsp::command_building_add_capture_power_006f69d2(
                 strength[party], power, 1.0f);
+        }
+        // Arm 2, 006F6A58..006F6BF8: every pad of +794h whose occupant (006AC220)
+        // is IsKindOf(0Ch), alive and active (+5Ch set, +5Dh/+60h/+5Eh clear), has
+        // its ramp down (+1188h) and party < 2 adds class+810h to that party
+        // (006F6AF7, an integer ADD). The scoring slots (006F6AFB..) are not
+        // modelled, as for arm 1.
+        if (kLandingShipRampBound) {
+            const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+            for (const int pad_index : pads.pads_of(static_cast<int>(b.unit))) {
+                const bsp::BuildingPadModel::Pad* p = pads.pad(pad_index);
+                if (p == nullptr || p->occupant < 0) continue;
+                const std::size_t o = static_cast<std::size_t>(p->occupant);
+                if (!units.unit_is_kind_of(o, 0x0C)) continue;
+                if (!units.unit_alive_and_visible(o) || unit_dead(o)) continue;
+                const bsp::BuildingPadModel::Lander* l = pads.lander(p->occupant);
+                if (l == nullptr || !l->ramp_down_1188) continue;
+                const int party = units.unit_side_0054(o);
+                if (party < 0 || party >= 2) continue;
+                strength[party] += o < landed_capture_power_0810.size()
+                    ? landed_capture_power_0810[o] : 0;
+                ++capture_landed_adds;
+            }
         }
         // Arm 3, the paratrooper list +7DCh: always empty in this process.
         const bsp::CommandBuildingTickOutcome tick = bsp::command_building_capture_tick_006f6760(
@@ -11243,6 +11307,77 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             // guns follow its party.
             if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit, 1.0f);
         }
+    }
+}
+
+bool GameShipAiHost::Impl::landing_ship_ground_contact(std::size_t unit, float ground[3]) const {
+    // SUBSTITUTION, labelled (section 86): +1010h is set by the physics library's
+    // contact callback 009377E0 on a kind-8 contact (contact+2Ch == 8), the one the
+    // HUD's grounding warning (006830A5) also reads; this process has no hull
+    // contacts. The hull is taken to touch the ground when the terrain height
+    // (00903860) under its bow, centre or stern (+-half the hull length +9C8h on
+    // the heading) rises above the waterline less the keel depth.
+    float x = 0.0f, y = 0.0f, z = 0.0f;
+    units.unit_position_00fc(unit, x, y, z);
+    const std::array<float, 2> fwd = bsp::heading_to_direction_006bc0c0(
+        units.unit_heading_radians(unit));
+    const float half = units.unit_hull_length_09c8(unit) * 0.5f;
+    const float offsets[3] = {half, 0.0f, -half};
+    bool touch = false;
+    for (int i = 0; i < 3; ++i) {
+        const float p[3] = {x + fwd[0] * offsets[i], y, z + fwd[1] * offsets[i]};
+        float h = -1000.0f;
+        if (!world_ground_height_00903860(p, h)) h = -1000.0f;
+        ground[i] = h;
+        if (h > y - kLandingShipKeelDepth) touch = true;
+    }
+    return touch;
+}
+
+void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
+    const std::size_t count = units.count();
+    const bool diag_tick = lander_diag && capture_clock >= lander_diag_next;
+    if (diag_tick) lander_diag_next = capture_clock + 1.0;
+    bsp::BuildingPadModel& pads = bsp::building_pad_model();
+    for (std::size_t u = 0; u < count; ++u) {
+        bsp::BuildingPadModel::Lander* l = pads.mutable_lander(static_cast<int>(u));
+        if (l == nullptr || l->pad_1200 < 0) continue;                  // 0074AFBF
+        if (!units.unit_is_kind_of(u, 0x0C)) continue;
+        // 0074AF7B..0074AF9D: +5Ch set, +5Dh/+60h/+5Eh clear; 0074AFB2: mode != 2.
+        if (!units.unit_alive_and_visible(u) || unit_dead(u)) continue;
+        float ground[3] = {0.0f, 0.0f, 0.0f};
+        const bool contact = landing_ship_ground_contact(u, ground);
+        if (diag_tick) {
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units.unit_position_00fc(u, x, y, z);
+            const bsp::BuildingPadModel::Pad* p = pads.pad(l->pad_1200);
+            const float px = p != nullptr ? p->position[0] : 0.0f;
+            const float pz = p != nullptr ? p->position[2] : 0.0f;
+            const GameUnitRow* row = units.unit_row(u);
+            log.notef("lander diag: t=%.2f unit=%s pos=(%.1f %.1f %.1f) heading=%.3f "
+                "ground bow/mid/stern=%.2f/%.2f/%.2f len=%.1f pad_dist=%.1f contact=%d "
+                "last_ground=%.2f timer=%.2f ramp=%d", capture_clock,
+                row != nullptr ? row->name.c_str() : "?", x, y, z,
+                static_cast<double>(units.unit_heading_radians(u)),
+                ground[0], ground[1], ground[2],
+                static_cast<double>(units.unit_hull_length_09c8(u)),
+                std::sqrt((px - x) * (px - x) + (pz - z) * (pz - z)), contact ? 1 : 0,
+                l->last_ground_11a8 < -1.0e9f ? -1.0 : static_cast<double>(l->last_ground_11a8),
+                static_cast<double>(l->ramp_timer_11ac), l->ramp_down_1188 ? 1 : 0);
+        }
+        if (!kLandingShipRampBound) continue;
+        if (contact) ++ramp_ground_contacts;
+        if (!bsp::landing_ship_ramp_latch_0074afcc(*l, contact,
+                static_cast<float>(capture_clock), seconds)) {
+            continue;
+        }
+        ++ramp_lowers;
+        const GameUnitRow* row = units.unit_row(u);
+        log.notef("landing ship ramp: unit=%s lowered at t=%.2f pad=%d landed_capture_power=%d "
+            "(0074B080 0074A420; the 0A6h route 00749AA0 / 0077C2A0 is a record)",
+            row != nullptr ? row->name.c_str() : "?", capture_clock, l->pad_1200,
+            u < landed_capture_power_0810.size() ? landed_capture_power_0810[u] : 0);
+        record("LandingShip::route_ramp_message_0a6", 0x0074b0a0u);
     }
 }
 
@@ -11363,6 +11498,10 @@ void GameShipAiHost::report() {
         kCommandBuildingCaptureBound ? 1 : 0, host.capture_health_zero_calls,
         host.capture_neutralized, host.capture_countdown_fires, host.capture_progress_messages,
         host.capture_flips);
+    host.log.notef("summary mission landing ship ramp ground_contacts=%llu lowers=%llu "
+        "landed_capture_adds=%llu bound=%d (0074AFCC..0074B0AC, 006F6A58..006F6BF8, packet "
+        "cc9_landing_ramp_capture)", host.ramp_ground_contacts, host.ramp_lowers,
+        host.capture_landed_adds, kLandingShipRampBound ? 1 : 0);
     // Packet cc8_ship_follow: what 009E1610 did for each follower. The error is
     // the distance from the ship to the station point 009DE050 was handed.
     {
