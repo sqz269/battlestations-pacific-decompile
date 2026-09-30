@@ -6473,3 +6473,115 @@ and the diffs `local\s20_pd3_<row>.txt`.
 - The pads carry a units-host index for their occupant. Nothing clears it on a unit's death yet
   (`forget_unit` has no caller). The reader packet has to call it from the death path, or assert
   the substitution there.
+
+## 76. The land-at-pad message 0A5h and what follows it (packet `cc9_land_at_pad_read`, cc9-ships20, 2026-09-30)
+
+This is section 73's step (3). It is read only; nothing is bound. The listings are disk bytes
+(`disasm-raw`), because Ghidra has no function at several of these starts.
+
+### 76.1 The landing ship's message handler
+
+`0074B570` is `MLandingShip`'s HandleMessage, at vtable `00CFFA30` slot `164h` (`00CFFB94`). It
+is the same slot that holds `00821E80` in the battleship (`00CF9214`) and cruiser (`00CFB89C`)
+vtables. It is `__thiscall(ship)(msg)`, `RET 4`, body `0074B570-0074B68B`, and switches on the byte
+`msg+10h`:
+
+| message | what the handler does |
+| --- | --- |
+| `0A5h` (land at pad) | `ship->vtable[148h](1FFh, 8)` (unread). Resolves the building from its `u16` id at `msg+1Eh` and the pad from `msg+1Ch`, through the id tables at `00F89A54` / `00F89AA8` (split at `[00F89A10]`). Then **`0074A990(ship)(pad, building)`**. If the ship is the HUD's selected unit (`[[00E198C4]+40h]` through `00644A60`), it also updates the HUD (`00566050`, `004CC460(34h, 0)`, one vtable call). Returns 1. |
+| `0A6h` | `0074A420(ship)`: sets `+1188h` and `+1189h` to 1 and copies a part pose into `+11B4h..+11BCh` (the ramp). Returns 1. |
+| anything else | `00821E80`, the ship handler. |
+
+### 76.2 `0074A990`: begin landing at the pad
+
+It is `__thiscall(ship)(pad, building)`, `RET 8`, body `0074A990-0074AA8B`. Everything runs under
+the building's lock (`006F1EE0` / `006F1F00` with `ECX = building`):
+
+1. `ship+1204h = building`, `ship+1200h = pad`.
+2. `006AC490(pad)(ship)`: the pad's occupant becomes the ship.
+3. **`ship+1210h = (uniform(0, 0.75f) + (float)ship+1208h) * 1.5`**:
+   - `uniform` is `00BD2F10`; the 0.75f is at `00CEE07C`;
+   - `ship+1208h` is an int, via `FIADD`;
+   - the 1.5 is a double at `00CE3D78`.
+   - `ship+1208h` is the scene key at `00CFFC94`, `"LandingCommanderPlayer"`, stored at `0074C5F4`. What that key means is not read.
+4. `004A4520([game+21D0h])(pad, building, ship)`. `game+21D0h` is the TrafficConfig, and this is
+   the ground-troop traffic (body `004A4520-004A489F`, read to about `004A4700`):
+   - for each path handle in the pad's list at `pad+200h` (built by the construct's `004E7A10`),
+     it either creates a 0xE4-byte traffic record (`004A0410`) carrying the building and the ship,
+     or re-targets an existing record's `+0DCh` to the ship;
+   - so the landing puts soldiers on the pad's authored `Path`/`PathEndZ` routes toward the
+     building.
+5. Unless `[game+1FE4h] == 2`, it issues the **`land` command (`00E08FA0`)** to the ship through
+   `0077D600`, carrying the pad's world position (`pad+0FCh..+104h`), a flag byte 1 and 0.0f.
+   So the ship's own `land` state (`009E1950`) takes over.
+
+### 76.3 The land state's enter, and what the building gets
+
+- **`009E18D0`** is the `land` state's enter (vtable `00D21658` slot 4), body `009E18D0-009E194C`:
+  - `state+8h = 0.0f`, then `state+0Ch = 1.0f` (`00D7A24C`);
+  - when the unit at `brain+0AA8h` answers IsKindOf(0Ch), **`state+8h = unit->vtable[248h]()`**.
+    That slot is `0074BC10`, `FLD [ECX+1210h]; RET`, so it is the landing time from 76.2;
+  - `state+10h = 0`, then `0080E490(unit, 0)` and `0092BD70` on the result (unread).
+- **This settles the open point in `ShipAiLandState::speed_ramp_08`**: its producer is this enter,
+  not the construct `009F39C0`.
+- **The building effect is not a message to the building.**
+  - `0074A5A0` (vtable slot `17Ch`, body `0074A5A0-0074A624`) builds message 0A4h (`00749BF0`: pad
+    id `+12Ch`, building id `+12Eh`, `+1208h` at `+130h`). It sends that only to non-local peers
+    (`00779FC0` -> `BSP_Session_SendMessageToNonlocalPeer`), so it is multiplayer replication.
+  - The CommandBuilding's handler (`006F5460`, slot `164h`) takes only `D3h..D6h` and passes the
+    rest to `00744BE0`.
+  - What the landing does to the building therefore goes through the soldier traffic of 76.2 step 4.
+    Whether a soldier reaching `PathEndZ` feeds the capture countdown (`+7C0h`,
+    LAND_AND_STRUCTURES section 4) is **unread**: the next reading target is the `004A0410` record
+    and its tick.
+- **`0074A4C0`** (vtable slot `238h`, body `0074A4C0-0074A59A`, SEH) is a second way in:
+  - it returns -8 when `ship+1200h` is already set;
+  - otherwise it finds a building with `006F2C30(&ship+0FCh, party ship+54h, 2, &err)` and fails
+    with `err - 8` when there is none;
+  - it takes a pad with `006F2A50(building)(ship)` and returns -4 when there is none;
+  - otherwise it **writes `ship+1200h = pad` before** building the 0A5h message
+    (`00749D90`) and routing it (`0077C2A0`, class 7), and returns 1;
+  - its callers (through slot `238h`) and the two helpers are unread.
+
+### 76.4 `00417E60`, mode 4's push-out
+
+- It is `__thiscall(manager)(float2* out, const float2* point, float margin, int layer)`,
+  `RET 10h`, body `00417E60-00417E8C`, complete:
+  - `group = 00412120(manager)(layer)` (`GroupForLayerOrBelow`);
+  - then `00417B10(group)(out, point, margin, 1)` (`OffsetPointSequential`);
+  - it returns `out`.
+- The host already has both halves in `game_hosts_ship_ai.cpp`: `zones.group_for_layer` and
+  `zones.offset(set, xz, margin, true)`, as the follow step's `push_out_of_zones_00417b10` uses them.
+- So mode 4's point is `zones.offset(zones.group_for_layer([[unit+538h]+570h]), nearest pad xz,
+  10.0f, true)`, stored with y = 0.
+
+### 76.5 What binding modes 3 and 4 needs (the next packet)
+
+- **Mode 3:** `pick_006f2e60`, the approach point `006AC5D0` (cache refresh plus per-call arm), the
+  reach test, `[ctl]+3FCh = 0`, and on `unit+1200h == 0` the 0A5h path, which is 76.2 in the host:
+  - set the unit's pad and building;
+  - `set_occupant`;
+  - the landing time;
+  - issue `land` at the pad.
+  The soldier traffic (step 4) stays a record.
+- **Mode 4:** 76.4.
+- **The unit's `+1200h` / `+1204h` / `+1210h` need a host home.** No host field exists for them.
+  The pad model's occupant is the pad side of the same link.
+- **Unit death calls `BuildingPadModel::forget_unit`** (the observer substitution).
+
+**Names for the lead** (hypotheses; each end is the byte after `RET` and is followed by `INT3`, from
+`disasm-raw`):
+
+| range | name | ABI |
+| --- | --- | --- |
+| `0074B570-0074B68B` | `BSP_LandingShip_HandleMessage` | `__thiscall(ship)(msg)`, `RET 4` |
+| `0074A990-0074AA8B` | `BSP_LandingShip_BeginLandingAtPad` | `__thiscall(ship)(pad, building)`, `RET 8` |
+| `0074A4C0-0074A59A` | `BSP_LandingShip_RequestLandingAtNearestBuilding` (provisional) | `__thiscall(ship)()`, `RET`, int result |
+| `0074A5A0-0074A624` | `BSP_LandingShip_ReplicateLandingState` | `__thiscall(ship)(arg)`, `RET 4` |
+| `0074BC10-0074BC17` | `BSP_LandingShip_LandingTime_1210` | `__thiscall(ship)()`, float in ST0 |
+| `009E18D0-009E194C` | `BSP_ShipAiLand_Enter` | `__thiscall(state)()`, `RET` |
+| `00417E60-00417E8C` | `BSP_AvoidZoneManager_PushOutForLayer` | `__thiscall(manager)(out, point, margin, layer)`, `RET 10h` |
+
+`0074B570`, `0074A4C0`, `0074BC10` and `009E18D0` have no Ghidra function (lookup finds only an
+enclosing candidate: `0074AF20`, `0074A420`, `0074BB00`, `009E1610`), so they need
+`ghidra_define_function.py`. `0074A990`, `0074A5A0` and `00417E60` exist as `FUN_`.
