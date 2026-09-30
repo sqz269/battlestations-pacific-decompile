@@ -6551,7 +6551,83 @@ The read closes it with no code change:
   phase once per 0.05 s step, which is the image's order inside `00C5BB30`.
 - **The one condition:** this holds for the host's step of 0.05, the reference launch form's
   `--mission-frame-seconds 0.05`. A different host step would need the plan.
+- **Real play:** frame times vary, so the number of fixed steps per rendered frame varies (zero
+  or more, FIXED_STEP_FANOUT). Every call still passes `0.05f` (`00D0DE84`), so each fixed step
+  still runs one substep. A host run with a variable step would differ.
 - No switch and no pair. The header comment in `include/bsp/hull_terrain_contact.hpp` records it.
 
 Left from 84.1: hull-terrain pairs only (85.2 item 3d: hull-hull and hull-object manifolds, the
 group formation `00C4B610`).
+
+## 89. Hull-hull and hull-object contact: the read and a build plan (85.2 item 3d, cc9-gunnery20)
+
+This is a read. No code changed. It sets out which Dyn bodies the image lets a hull touch, and
+what the host needs in order to model it. It is not one packet.
+
+### 89.1 The pair filter and who passes it
+
+- **The filter.** `00C44090` tests each shape pair with
+  `(B+30h & A+2Ch) != 0 || (A+30h & B+2Ch) != 0`, before it looks up the dispatcher.
+  - Shape `+2Ch` is the group; it comes from the shape descriptor's `+08h`.
+  - Shape `+30h` is the mask; it comes from descriptor `+0Ch`.
+  - Terrain shows the mapping: `00882AC0` writes desc `+08h = 8` and `+0Ch = 0` (at `esp+50h` /
+    `esp+54h`); section 84 reads the terrain shape as group 8, mask 0.
+- **A hull shape** has group 1 (`009394DD`) and mask `0Dh | class bits` (`009394A9`,
+  `009395E2`). With `NavigatorSetAvoidLandCollision(false)` the mask is `0Dh`. `0Dh` is bits 0,
+  2 and 3, so a hull reaches groups 1, 4 and 8.
+
+The Dyn body creators, from Ghidra xrefs to `00C5D580`, with their shape filters:
+
+| creator | what | group / mask (descriptor stores) | touches a hull? |
+| --- | --- | --- | --- |
+| `00937C90` | ship hull | 1 / `0Dh` + class bits | yes: **hull-hull** |
+| `0092AAE0` (from `00935D30`) | a unit's single transformed box (COLLISION_SHAPES G) | 1 / `0Dh` (`local_50`, `local_4C`) | yes |
+| `007482B0` | `MLandFort` `vtable[0A0h]` (forts) | 1 / `0Dh` | yes: **hull-fort** |
+| `008509F0` | not identified (no rel32 caller; a vtable method); 48h-byte shape entries | mask `0Dh` (`00851022`); group not read | probably |
+| `00447510` | floating debris (GAME_DYNAMICS_LIST) | 4 / `0Dh` | yes: **hull-debris** |
+| `00882AC0` | terrain tiles | 8 / 0 | yes (sections 84-87) |
+| `00423C50` | avoid-zone draft physics | a 2 at `esp+F4h` (`004243DB`); which field it is is not read | unknown |
+| `007D5D20` | plane | no immediate group/mask store in `007D5D20..007D6137`; not read | unknown |
+
+**Uncertainty:**
+- Ghidra's callers can under-report. A rel32 and absolute-dword scan of `00C5D580` has not been
+  run.
+- The `0092AAE0` and `008509F0` owners are not identified beyond the table above.
+
+### 89.2 What the host needs, in order
+
+1. **A world-level contact phase.** Today the units host calls `HullTerrainContactSolver::step`
+   once per hull, so each hull solves against static terrain alone. `00C5BB30` runs these phases
+   once for the whole world:
+   - the collision pass;
+   - `00C4B610`'s grouping: bodies joined by manifolds form one group (reconstructed:
+     `native_dyn_create_contact_groups_00c4b610` and `dyn_create_contact_groups_00c4b610`);
+   - one solve per group, over all its dynamic bodies.
+
+   The call site is in `src/game_hosts_units.cpp` (shared).
+2. **Convex-convex narrow phase.** Kind 4 against kind 4 goes through the general-convex
+   dispatcher `00C535E0`, which is reconstructed (`dispatch_native_dyn_general_convex_00c535e0`)
+   and writes one contact per hit. It needs:
+   - a real convex shape record, whose `+0` is `NativeDynConvexShapeRuntime::table()` and whose
+     `+210h` is the `AvoidZoneDynHullData` (section 86 already builds it: vertices, adjacency,
+     support seeds);
+   - the process's general-convex owner (`DynGeneralConvexIntersectStorage`, its 26 support
+     directions and critical section);
+   - the process's mutable CRT conversion word.
+
+   `GameNativeDynProcess` owns all three but exposes none of them. That is a small interface
+   addition in `game_native_dyn_process.*`.
+3. **Object bodies in the host's world.** Forts, debris and the `0092AAE0` boxes are not host
+   Dyn bodies today. Forts are static boxes or convexes: the dispatcher table selects box-convex
+   or convex-convex, and both are reconstructed (`native_dyn_box_box`,
+   `native_dyn_primitive_dispatch`). Debris are dynamic bodies of `game+30h`.
+4. **The group solve.** The rows for two dynamic bodies use both bodies' masses and inertias.
+   The batch already takes a velocity array; the host would index each body.
+
+**Proposed order:**
+- hull-hull first: steps 1, 2 and 4 with ships only; it needs no object census;
+- then forts (static, step 3);
+- then debris.
+
+Each gets a switch committed OFF and a pair. The reach rows for hull-hull are the formation and
+harbour rows (IJN01, USNOS, USN13, JM08 long).
