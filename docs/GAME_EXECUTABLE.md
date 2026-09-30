@@ -13101,6 +13101,11 @@ torpedo run time and the moveto stage):
   - Those runs were discarded. After a passing smoke at 00:27 UTC, everything was relaunched.
   - **Control:** q's binary re-run on USN04 and JM05 under the new session is gameplay-identical
     to q (exit 1), so the session change does not move the rows.
+  - **Window size:** every q row requested and presented 640x480. Every r and anchor row
+    requested 1600x900 (`renderer init request` and `back_buffer=`), after the desktop changed
+    with the session. options.txt is unchanged since 2026-09-19.
+  - The size is inert on gameplay: the 1600x900 anchor is exit 1 against the 640x480 q rows on
+    all seventeen, and so is the q-binary control.
   - The runs ended at about 00:58 UTC; the leave-one-out lanes finished at 01:33 UTC.
 
 ### The runs
