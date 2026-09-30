@@ -5672,3 +5672,51 @@ the difficulty owner modifier, what Shimotsuke aims at on USNOS).
 - `g18_firstdiff.py <a> <b> [n] [skip_regex]`: the first differing lines of two logs, with
   pointers and ids normalised. This is how 80.1's divergence was found.
 - The rows run fast: all 36 t and anchor runs, JM08 long included, took about 15 minutes.
+
+## 82. RepairEnable reaches the repair task (packet `cc9_repair_enable_route`, cc9-gunnery19, GAMEPLAY_GAP_RANKING #12)
+
+### 82.1 The image
+
+- **The send.** `RepairEnable(unit, flag)` is `008AD330`. For an `IsKindOf(6)` entity (008AD487
+  `TEST BL,BL`), it builds a message with `0075B430(9Fh)` at `008AD494`. The message's vtable is
+  `00D03360` and the flag byte is at `+1Ch` (`008AD4B7`). `0077C2A0(msg, 7, ebp)` at `008AD4CD`
+  routes it to the entity. A non-kind-6 entity instead gets the byte at `entity+378h` (`008AD4E8`);
+  that arm is unchanged.
+- **The receive.** `BSP_UnitInstance_HandleMessage` `00821E80` (body `00821E80-00822393`) handles
+  9Fh at `008220D7`: `MOVZX EDX,[msg+1Ch]; LEA ECX,[unit+A20h]; CALL 00939FD0`.
+  - `00939FD0` is `MOV AL,[ESP+4]; MOV [ECX+45h],AL; RET 4`.
+  - Its only caller is `008220E2` (`ghidra xrefs`).
+- **The consumer.** `0093C770` (the hull repair step) tests `CMP BYTE [ESI+45h],0` at `0093C776`.
+  - When the byte is clear, `XORPS XMM0` at `0093C77C` makes the rate 0, so the hull does not heal.
+  - When it is set, the rate is `BodyRepairMultiplier` (priority 0) or `1.0`.
+- **The census of the task byte.**
+  - A capstone sweep of the task block `00939F00-0093D200` (`local\g19_45.py`) finds three accesses
+    to `[reg+45h]`: the setter, the constructor `0093BD48` (`MOV [ESI+45h],1`) and `0093C776`.
+  - Of the 45 `.text` hits for displacement `A20h`, all are `lea`/`add` feeding task methods
+    (`local\g19_a20.py`); no other method's body reads `+45h`.
+  - The displacement `unit+A65h` never occurs in `.text`: the one byte hit, at `004314A1`, is inside
+    a `JB` rel32.
+  - **Uncertainty:** a reader that holds the task pointer outside the swept block is not excluded.
+- **Delivery.** In a local session `0077C2A0` queues the message; the session pump drains it at
+  the next fixed step (the `kShipPassSideMessageBound` note in `game_hosts_ship_ai.cpp`).
+
+### 82.2 The binding (`kHullRepairEnableRouteBound`, committed OFF)
+
+- **The setter.** `GameGunneryHost::set_hull_repair_enabled_00939fd0(unit, flag)` stores the flag as
+  the task's `script_hull_repair`. When the switch is ON it also writes `task.hull_repair_enabled`
+  (`+45h`).
+- **The heal gate.** The host's 0093C770 step heals only while `task.hull_repair_enabled` is set.
+- **When the unit has no task yet.** If the call comes before `build_guns` has made the unit's
+  task, the flag is kept and applied at the host's 0093BCC0 point. The count is `before_init`. In
+  the image the constructor always runs first.
+- **Labelled differences from the image.**
+  - The flag is stored at the Lua call, not at the next step's drain.
+  - A disabled task skips the `00879810(-0)` call, as the host already does for an undamaged hull.
+- **The census line.** `summary mission gunnery repair enable bound= calls= false= before_init=
+  disabled_tasks= disabled_with_damage_control= withheld= by_unit{}`.
+  - `withheld` is the heal the host applied on tasks whose last flag was false. That is what ON
+    removes.
+  - The per-call line is `  repair enable: unit N <name> enabled= damage_control= bound=`.
+- **The caller.** `GameScriptOrdersHost::session_route_repair_enable_message` in
+  `src/game_hosts_script_orders.cpp` must call the setter. That file is leased to cc9-lua25; the
+  prepared edit is `local\g19_script_orders_patch.txt` in the cc9-gunnery19 tree.
