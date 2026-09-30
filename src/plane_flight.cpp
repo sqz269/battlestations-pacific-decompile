@@ -177,6 +177,8 @@ PlaneMotionArm run_plane_fixed_step_007ce040(PlaneFlightHost& host, float step) 
         // 00953D7D CMP byte [ESI+210h],0 / 00953D84 JNZ: the slot runs only when
         // unit+520h is clear. docs/TICK_ELEMENT_OVERRIDES.md had this inverted.
         host.out_of_action_countdown_007c6c30(step);  // 00953D98, vtable[+1D8h]
+        // 007CE09C-007CE0D2: with unit+520h clear, the wanderer (single player).
+        host.wanderer_fixed_step_007be060(step);
     }
 
     PlaneMotionDispatchInputs dispatch;
