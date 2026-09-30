@@ -64,6 +64,12 @@ struct GameSceneEntityRecord {
     // so every entity whose group derives from Common has one; -1 when the bag
     // has none.
     int race{-1};
+    // Packet cc9_ai_owner_player_slot: `OwnerPlayer` (00CF882C), which 0077F0E0's
+    // activation hands vtable[144h] (0077F1F9) for unit+180h, or 9 when the bag
+    // has none (0077F1F1 MOV EAX,9). Resolved through global.enums `Players`
+    // ("Player 1".."Player 8" 0..7, "AI control" 8, "Any player" 9).
+    std::string owner_player_symbol;
+    int owner_player{9};
     // Packet cc9_scene_unit_skill: 00927A80 over the merged bag. `Skill` (00CF8838,
     // group defaults included: Ship, LandFort, LandConvoy, PlaneSquadronWNavpoint
     // declare SPNormal), else `Crew` (00D19264) through 006E6210, else 1. The
@@ -189,6 +195,8 @@ struct GameSceneContentsSummary {
     std::size_t property_groups{0};
     std::size_t enum_tables{0};
     std::size_t enum_symbols{0};
+    // `OwnerPlayer` symbols the library's `Players` table did not resolve.
+    std::size_t owner_player_unresolved{0};
 
     int effective_game_mode{-1};        // 004bca50 at the gate
     bool game_mode_forced_to_9{false};  // the .ema probe at 004d5458
