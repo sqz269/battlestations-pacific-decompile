@@ -4,7 +4,9 @@
 
 #include <cmath>
 
+#include "bsp/camera_position_modes.hpp"      // camera_asin_clamped_0042cf10
 #include "bsp/dive_bomb_task.hpp"
+#include "bsp/native_scalar_float_by_ref.hpp"  // 00415510 / 00415550
 // 00438B10 is already reconstructed there; `FLD [ESP+4] / FSUB [ESP+8]` at its
 // own entry fixes the order as wrap(left - right), which is what every call
 // below depends on.
@@ -133,12 +135,28 @@ PlaneFollowFlyToCommand plane_follow_flyto_command_009bee30(
 
 namespace {
 
+// The double constants 009BFEE0 reads (each at the width its FADD/FMUL takes).
+constexpr double kHalfPi = 1.5707963705062866;        // [00CE3830]
+constexpr double kPi = 3.1415927410125732;            // [00CE3D28]
+constexpr double kTwoPi = 6.2831854820251465;         // [00CE3828]
+constexpr double kThreeHalfPi = 4.7123889923095703;   // [00D20A20]
+constexpr double kGuardShare = 0.05000000074505806;   // [00D7A270]
+constexpr double kPullBack = 0.20000000298023224;     // [00CE3D10]
+constexpr double kBandHalfHeight = 120.0;             // [00D1F3F8]
+constexpr float kLengthFloor = 0.009999999776482582f; // [00D7A238]
+
+// Every intermediate the listing keeps goes through an FSTP dword; this is
+// that rounding.
+inline float F(double v) noexcept { return static_cast<float>(v); }
+inline float fsin(float v) noexcept { return F(std::sin(static_cast<double>(v))); }
+inline float fcos(float v) noexcept { return F(std::cos(static_cast<double>(v))); }
+
 // 009C0142-009C0164 and 009C0F86-009C0FAE both wrap with a SINGLE conditional
 // add of 2*pi ([00CE3828] = 6.2831854820251465), not a loop; an input below
 // -2*pi therefore stays negative in the image and does so here.
 float wrap_once_to_two_pi_009c0150(float a) noexcept {
     if (!(0.0f <= a)) {
-        return static_cast<float>(static_cast<double>(a) + 6.2831854820251465);
+        return static_cast<float>(static_cast<double>(a) + kTwoPi);
     }
     return a;
 }
@@ -165,7 +183,230 @@ float clamp_into_band_009c17c6(float v, float floor_v, float ceil_v) noexcept {
     return v;
 }
 
+// 0042CF10 as Phase A calls it: `PUSH` of a float, ST0 back, RET 4.
+float asin_clamped(float v) noexcept { return camera_asin_clamped_0042cf10(v); }
+
+// 0042BE90: |*ECX| (00D7A208 is the sign mask).
+float fabs_0042be90(float v) noexcept { return v > 0.0f ? v : F(-0.0 - v); }
+
 }  // namespace
+
+PlaneFollowPhaseA plane_follow_phase_a_009c0251(
+    const PlaneFollowPhaseAInputs& in) noexcept {
+    const float A = in.heading_error;
+    const float V = in.cross_track;
+    const float AL = in.along_track;
+    const float vl = in.leader_speed;
+    const float iw = in.inv_turn_rate;
+    const float r = in.turn_radius;
+    // base-21h, written by the classifier at 009C01F0 / 009C021E.
+    const bool sgn = V < 0.0f;
+    // 009C0ECB-009C0EDF: (BL ? [00E0E2F9]=2 : [00E0E2FB]=4) | [00E0E2F8]=8,
+    // BL being the V-sign byte on every path that reaches it.
+    const int bl_turn_circle = sgn ? 10 : 12;
+    // 009C0800: TEST BL,BL / JE 009C08F5 (BL=2) else 009C0814 (BL=4).
+    const int bl_abeam_0800 = sgn ? 4 : 2;
+    // 009C08E7: TEST BL,BL / JE 009C0814 (BL=4) else 009C08F5 (BL=2).
+    const int bl_abeam_08e7 = sgn ? 2 : 4;
+
+    PlaneFollowPhaseA out;
+    // 009C086D / 009C0B82: behind the moving station at the end of the plan,
+    // or more than 5% of that distance off the track -> turn circle; else lead
+    // pursuit.  `time` is base+04h (quadrant 1) or base-10h (quadrant 2).
+    auto lead_or_circle = [&](float p, float x24, float time) {
+        out.time = time;
+        if (0.0f > p) {
+            out.bl = bl_turn_circle;
+            return out;
+        }
+        const float e = fabs_0042be90(F(static_cast<double>(x24) + V));
+        out.bl = (static_cast<double>(e) > static_cast<double>(p) * kGuardShare)
+                     ? bl_turn_circle : 1;
+        return out;
+    };
+
+    if (in.quadrant_bl == 1) {
+        // 009C032D-009C0409: the first arc, turning through th onto the track.
+        float th, x18, x24;
+        if (!sgn) {
+            th = F(A + kHalfPi);                                          // 009C033F
+            x18 = F(-static_cast<double>(r) * fsin(th));
+        } else {
+            th = F(kHalfPi - A);                                          // 009C03A5
+            x18 = F(static_cast<double>(fsin(th)) * r);
+        }
+        const float T = F(kHalfPi * iw + static_cast<double>(th) * iw);   // base-10h
+        const float x1c = F(static_cast<double>(F(1.0 - fcos(th))) * r);
+        x24 = sgn ? F(static_cast<double>(x18) + r) : F(static_cast<double>(x18) - r);
+        float x28 = F(static_cast<double>(x1c) + r);                      // 009C0417
+        const float t = F(static_cast<double>(x24) + V);                  // 009C0423
+        float t4 = T;                                                     // base+04h
+        if (!sgn ? (t < 0.0f) : (t > 0.0f)) {
+            // 009C0463: the arc is cut short where it already meets the track.
+            const float at = !sgn ? F(-0.0 - t) : t;
+            const float half = F(static_cast<double>(at) * 0.5);
+            float phi = asin_clamped(F(static_cast<double>(half) / r));
+            phi = min_native_float_by_ref_00415510(&th, &phi);          // 009C0492
+            x24 = F(-0.0 - V);                                            // 009C04AC
+            x28 = F(x28 - static_cast<double>(r) * 2.0 * F(1.0 - fcos(phi)));
+            t4 = F(T - static_cast<double>(phi) * 2.0 * iw);              // 009C04F6
+        }
+        // 009C0508-009C0522: along-track position at the end of the plan,
+        // relative to the station that has moved on at the leader's speed.
+        const float p = F(static_cast<double>(F(x28 - static_cast<double>(t4) * vl)) + AL);
+        if (0.0f > p) return lead_or_circle(p, x24, t4);                  // 009C052E
+        // 009C0534: ahead of it: plan a full reversal instead.
+        float t2 = F(static_cast<double>(iw) * kPi + T);                  // 009C055C
+        const float x1c_b = F(static_cast<double>(x1c) - r);              // base+1Ch
+        const float x18_b = sgn ? F(static_cast<double>(x18) + r) : F(static_cast<double>(x18) - r);
+        const float h = F(F(static_cast<double>(x18_b) + V) * 0.5);       // base-14h
+        const bool too_far = !sgn ? (h >= r) : (-r >= h);                     // 009C0578 / 009C06C7
+        if (!too_far) {
+            // 009C057E-009C07B6: the second arc and its alternative.
+            const float arg = (h < 0.0f)
+                ? F(static_cast<double>(F(static_cast<double>(h) + r)) / r)       // 009C058D
+                : F(-static_cast<double>(F(static_cast<double>(h) - r)) / r);     // 009C05BA
+            const float psi1 = asin_clamped(arg);
+            const float beta = !sgn ? F(-0.0 - A) : A;                    // 009C05F2 / 009C0728
+            const float two_iw = F(2.0 * iw);                             // base+34h
+            t2 = F(static_cast<double>(psi1) * two_iw + t2);
+            const float x44 = !sgn
+                ? F(static_cast<double>(F(1.0 - fcos(beta))) * -static_cast<double>(r))
+                : F(static_cast<double>(F(1.0 - fcos(beta))) * r);
+            const float x48 = F(static_cast<double>(fsin(beta)) * r);
+            const float g = F(static_cast<double>(fabs_0042be90(
+                F(F(static_cast<double>(x44) + V) * 0.5))) / r);
+            const float psi2 = asin_clamped(g);
+            const float t3 = F(static_cast<double>(psi2) * two_iw +
+                               F(static_cast<double>(beta) * iw + static_cast<double>(iw) * kTwoPi));
+            if (t3 <= t2) {
+                // 009C0829-009C0861, 009C08DF: never reached by the sampled
+                // geometries (docs/PLANE_FOLLOW_PHASE_A.md section 8);
+                // transcribed from the listing.
+                const float q = F(static_cast<double>(F(x48 - static_cast<double>(t3) * vl)) + AL);
+                if (-q > p) return lead_or_circle(p, x24, t4);
+                out.bl = bl_abeam_08e7;
+                out.time = t3;
+                return out;
+            }
+        }
+        // 009C07D6-009C0814.
+        const float q = F(static_cast<double>(F(x1c_b - static_cast<double>(t2) * vl)) + AL);
+        if (-q > p) return lead_or_circle(p, x24, t4);                    // 009C07FC
+        out.bl = bl_abeam_0800;
+        out.time = t2;
+        return out;
+    }
+
+    if (in.quadrant_bl == 2) {
+        // 009C0909-009C09B9.
+        float th, T, x24;
+        if (!sgn) {
+            th = A;
+            T = F(static_cast<double>(iw) * A + static_cast<double>(iw) * kPi);
+            x24 = F(static_cast<double>(r) * F(1.0 - fcos(th)) - 2.0 * r);
+        } else {
+            th = F(-0.0 - A);
+            T = F(static_cast<double>(th) * iw + static_cast<double>(iw) * kPi);
+            x24 = F(2.0 * r - static_cast<double>(r) * F(1.0 - fcos(th)));
+        }
+        float x28 = F(static_cast<double>(fsin(th)) * r + 2.0 * r);      // 009C09CD
+        const float t = F(static_cast<double>(x24) + V);                  // 009C09D9
+        if (!sgn ? (t < 0.0f) : (t > 0.0f)) {
+            const float at = !sgn ? F(-0.0 - t) : t;                      // 009C0A7F
+            const float phi = asin_clamped(F(static_cast<double>(F(static_cast<double>(at) * 0.5)) / r));
+            x24 = F(-0.0 - V);
+            x28 = F(x28 - static_cast<double>(F(1.0 - fcos(phi))) * (2.0 * r));
+            T = F(T - (static_cast<double>(phi) + phi) * iw);
+        }
+        const float p = F(static_cast<double>(F(x28 - static_cast<double>(T) * vl)) + AL);  // 009C09FC
+        if (0.0f > p) return lead_or_circle(p, x24, T);                   // 009C0A24
+        const float gam = !sgn ? F(kHalfPi - A) : F(A + kHalfPi);         // 009C0A36 / 009C0AFF
+        const float t5 = F(static_cast<double>(gam) * iw + static_cast<double>(iw) * kThreeHalfPi);
+        const float x48 = F(static_cast<double>(F(static_cast<double>(F(1.0 - fcos(gam))) * r)) - r);
+        const float q = F(static_cast<double>(F(x48 - static_cast<double>(t5) * vl)) + AL);  // 009C0B65
+        if (-q > p) return lead_or_circle(p, x24, T);                     // 009C0B73
+        out.bl = bl_abeam_08e7;                                           // 009C0B75
+        out.time = t5;
+        return out;
+    }
+
+    if (in.quadrant_bl == 4) {
+        // 009C0BE3-009C0C6D.
+        float gam, x34;
+        if (!sgn) {
+            gam = F(A - kHalfPi);
+            x34 = F(static_cast<double>(F(fsin(gam) - 1.0)) * r);
+        } else {
+            gam = F(-(A + kHalfPi));
+            x34 = F(static_cast<double>(F(1.0 - fsin(gam))) * r);
+        }
+        float t6 = F((static_cast<double>(gam) + kThreeHalfPi) * iw);     // base-10h
+        float x38 = F((3.0 - F(1.0 - fcos(gam))) * r);                    // 009C0C81
+        const float u = F(static_cast<double>(x34) + V);                  // 009C0C8D
+        if (!sgn ? (u < 0.0f) : (u > 0.0f)) {
+            const float phi = asin_clamped(                               // 009C0D15
+                F(static_cast<double>(F(static_cast<double>(fabs_0042be90(u)) * 0.5)) / r));
+            x38 = F(x38 - static_cast<double>(r) * 2.0 * F(1.0 - fcos(phi)));
+            t6 = F(t6 - 2.0 * phi * iw);
+        }
+        const float p = F(static_cast<double>(F(x38 - static_cast<double>(t6) * vl)) + AL);  // 009C0CC2
+        const float dl = !sgn ? F(kPi - A) : F(A + kPi);                  // 009C0CDC / 009C0DA0
+        const float half_turn = F(kPi * iw);                              // base+24h (a double store)
+        const float t7 = F(static_cast<double>(iw) * dl + kPi * iw);      // base+04h
+        const float x48 = F(-static_cast<double>(r) * fsin(dl));          // 009C0DE0
+        const float q = F(static_cast<double>(F(x48 - static_cast<double>(t7) * vl)) + AL);
+        const float ap = (p > 0.0f) ? p : F(-0.0 - p);                    // 009C0E04 / 009C0E0C
+        const float aq = (q > 0.0f) ? q : F(-0.0 - q);                    // 009C0E24 / 009C0E2C
+        if (aq > ap) {                                                    // 009C0E42
+            out.bl = bl_abeam_0800;
+            out.time = t6;
+            return out;
+        }
+        float t7v = t7;
+        float hv = half_turn;
+        out.bl = bl_turn_circle;
+        out.time = min_native_float_by_ref_00415510(&t7v, &hv);         // 009C0EC2
+        return out;
+    }
+
+    // Quadrant 3, 009C0E4E-009C0EC7: always the turn circle.
+    const float gam = !sgn ? F(-(A + kHalfPi)) : F(A - kHalfPi);
+    float t8 = F((kHalfPi + gam) * iw);                                   // base+04h
+    float hv = F(static_cast<double>(iw) * kPi);                          // 009C0EB0
+    out.bl = bl_turn_circle;
+    out.time = min_native_float_by_ref_00415510(&t8, &hv);
+    return out;
+}
+
+bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
+                                    float out0[2], float out1[2]) noexcept {
+    const float dx = q[0] - c[0];                                         // 004F3826
+    const float dz = q[1] - c[1];                                         // 004F3838
+    const float d2 = static_cast<float>(
+        static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+    const float d = static_cast<double>(d2) > 1e-10                       // 00CE3820
+        ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+    if (!(r < d)) return false;                                           // 004F3887
+    const float ux = static_cast<float>(static_cast<double>(dx) / d);
+    const float uz = static_cast<float>(static_cast<double>(dz) / d);
+    const float p = static_cast<float>(static_cast<double>(r) * r / d);   // 004F38C1
+    const float t = static_cast<float>(std::sqrt(static_cast<double>(
+        static_cast<float>(static_cast<double>(d) * d -
+                           static_cast<double>(r) * r))));                // 004F38D8
+    const float h = static_cast<float>(static_cast<double>(t) * r / d);   // 004F38F2
+    const float mx = static_cast<float>(
+        c[0] + static_cast<double>(static_cast<float>(static_cast<double>(p) * ux)));
+    const float mz = static_cast<float>(
+        c[1] + static_cast<double>(static_cast<float>(static_cast<double>(p) * uz)));
+    const float bx = static_cast<float>(-static_cast<double>(uz) * h);
+    const float bz = static_cast<float>(static_cast<double>(ux) * h);
+    out0[0] = static_cast<float>(static_cast<double>(mx) + bx);           // 004F4479
+    out0[1] = static_cast<float>(static_cast<double>(mz) + bz);
+    out1[0] = static_cast<float>(static_cast<double>(mx) - bx);           // 004F4498
+    out1[1] = static_cast<float>(static_cast<double>(mz) - bz);
+    return true;
+}
 
 PlaneFollowGeometry plane_follow_geometry_009bfee0(
     const PlaneFollowGeometryInputs& in, PlaneFollowRegime regime) noexcept {
@@ -192,7 +433,7 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
     const float bearing_raw = static_cast<float>(
         std::atan2(static_cast<double>(dz), static_cast<double>(dx)));
     const float bearing = wrap_once_to_two_pi_009c0150(
-        static_cast<float>(1.5707963705062866 - bearing_raw));
+        static_cast<float>(kHalfPi - bearing_raw));
 
     // 009C0176-009C01B2.  R * (sin, cos) of the bearing taken in the reference
     // frame: the cross-track and along-track offsets from the station.
@@ -201,23 +442,54 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
     out.along_track = r * static_cast<float>(std::cos(static_cast<double>(a0)));
 
     // 009C01B6-009C01D3, then the quadrant classifier 009C01D3-009C024F.
-    // Recorded because it is Phase A's input, not because it selects a regime:
-    // Phase A overwrites BL before the dispatch reads it.
     const float a = wrapped_angle_subtract_00438b10(in.own_heading, ref);
     out.heading_error = a;
     {
         const bool s = (out.cross_track >= 0.0f);
         const bool aa = (a >= 0.0f);
         const bool near_axis =
-            (std::fabs(static_cast<double>(a)) <= 1.5707963705062866);
+            (std::fabs(static_cast<double>(a)) <= kHalfPi);
         out.quadrant_bl = (s == aa) ? (near_axis ? 2 : 4) : (near_axis ? 1 : 3);
     }
+
+    // Phase A, 009C0251-009C0EE0, then 009C0EE1-009C0F00.
+    float lead_distance = 0.0f;
+    float turn_radius = 0.0f;
+    if (in.run_phase_a) {
+        // 009C025E-009C02A9: the leader's horizontal speed.
+        const float vl = horizontal_range_0042b2f0(in.leader_velocity[0], in.leader_velocity[2]);
+        // 009C02AF-009C0323: the turn model.
+        const float mul = in.own_large_turn_class ? in.large_plane_turn_mul
+                                                  : in.small_plane_turn_mul;
+        const float w = F(static_cast<double>(mul) * in.class_turn_rate_270);
+        turn_radius = F(static_cast<double>(in.class_travel_speed_18c) / w);
+        PlaneFollowPhaseAInputs pin;
+        pin.heading_error = a;
+        pin.cross_track = out.cross_track;
+        pin.along_track = out.along_track;
+        pin.quadrant_bl = out.quadrant_bl;
+        pin.leader_speed = vl;
+        pin.inv_turn_rate = F(1.0 / w);
+        pin.turn_radius = turn_radius;
+        const PlaneFollowPhaseA pa = plane_follow_phase_a_009c0251(pin);
+        out.phase_a_bl = pa.bl;
+        out.phase_a_time = pa.time;
+        lead_distance = F(static_cast<double>(pa.time) * vl);             // 009C0F00
+        out.lead_distance = lead_distance;
+        out.turn_radius = turn_radius;
+        // 009C1059 TEST [00E0E2FA]=1,BL; 009C1241 TEST [00E0E2F8]=8,BL.
+        regime = (pa.bl & 1) ? PlaneFollowRegime::kLeadPursuit
+               : (pa.bl & 8) ? PlaneFollowRegime::kOffsetPoint009c1328
+                             : PlaneFollowRegime::kAbeam;
+        out.regime = regime;
+    }
+    out.state_5c = -1.0f;                                                 // 009C0EF4
 
     // 009C0F0D-009C0F80: the leader's horizontal forward length, floored at
     // [00D7A238] = 0.01 so a vertical leader cannot degenerate the direction.
     float lh = horizontal_range_0042b2f0(in.leader_forward[0], in.leader_forward[2]);
-    if (!(static_cast<double>(lh) >= 0.009999999776482582)) {
-        lh = 0.009999999776482582f;
+    if (!(static_cast<double>(lh) >= kLengthFloor)) {
+        lh = kLengthFloor;
     }
 
     // 009C0F86-009C104C.  U is the unit vector along the LAGGED leader heading
@@ -226,12 +498,10 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
     // `out` in EAX (00419545 MOV EAX,EDI), so the copy that follows reads the
     // normalized local, not the leader's pose row 0.
     const float t_dir = wrap_once_to_two_pi_009c0150(
-        static_cast<float>(1.5707963705062866 - static_cast<double>(ref)));
-    const float u_raw[3] = {
-        lh * static_cast<float>(std::cos(static_cast<double>(t_dir))),
-        in.leader_forward[1],
-        lh * static_cast<float>(std::sin(static_cast<double>(t_dir))),
-    };
+        static_cast<float>(kHalfPi - static_cast<double>(ref)));
+    const float h_x = lh * static_cast<float>(std::cos(static_cast<double>(t_dir)));  // base+34h
+    const float h_z = lh * static_cast<float>(std::sin(static_cast<double>(t_dir)));  // base+38h
+    const float u_raw[3] = {h_x, in.leader_forward[1], h_z};
     float u[3];
     normalize_00419510(u_raw, u);
 
@@ -247,8 +517,13 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
                   static_cast<double>(d3[1]) * d3[1] +
                   static_cast<double>(d3[2]) * d3[2]));
     out.range_3d = d;
+    // SUBSTITUTION, labelled, for the switch-off binding only: base-0Ch is
+    // Phase A's; without it D stands in, the same slope-times-distance shape
+    // the lead regime uses.
+    const float base_0c = in.run_phase_a ? lead_distance : d;
 
     float p[3];
+    bool copy_to_60 = true;
     switch (regime) {
         case PlaneFollowRegime::kLeadPursuit: {
             // 009C10D2-009C1105: the station pushed D ahead along the track.
@@ -260,8 +535,7 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
             float n[3];
             normalize_00419510(back, n);
             for (int i = 0; i < 3; ++i) {
-                p[i] += static_cast<float>(0.20000000298023224 *
-                                           static_cast<double>(d)) * n[i];
+                p[i] += static_cast<float>(kPullBack * static_cast<double>(d)) * n[i];
             }
             // 009C11EF-009C1239: and pushed FollowedPointDist further along.
             for (int i = 0; i < 3; ++i) p[i] += in.followed_point_dist * u[i];
@@ -269,36 +543,99 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
         }
         case PlaneFollowRegime::kAbeam: {
             // 009C15C0-009C1661.  The horizontal perpendicular of the OWN
-            // nose.  pose row 2 normalized is (sin h, cos h) for the slot +50h
-            // heading h, which is what makes deriving it from `own_heading`
-            // the same vector the listing builds from pose +ECh/+F4h.
-            const float ux =
-                static_cast<float>(std::sin(static_cast<double>(in.own_heading)));
-            const float uz =
-                static_cast<float>(std::cos(static_cast<double>(in.own_heading)));
-            // 009C1646: BL&2 set -> (-uz, ux), the LEFT perpendicular; clear ->
-            // (uz, -ux), the RIGHT one.  Phase A sets that bit from the saved
-            // sign of V (009C08E7 `TEST BL,BL` on base-21h), so the side is the
-            // side the aircraft is already on.
-            const bool left = (out.cross_track < 0.0f);
-            const float dir_x = left ? -uz : uz;
-            const float dir_z = left ? ux : -ux;
-            // 009C167B-009C16AF.
+            // nose: pose row 2's (x, z) times 00419260's reciprocal length.
+            float fx, fz;
+            if (in.run_phase_a) {
+                const double inv = 1.0 / std::sqrt(
+                    static_cast<double>(in.own_forward[0]) * in.own_forward[0] +
+                    static_cast<double>(in.own_forward[2]) * in.own_forward[2]);
+                fx = F(in.own_forward[0] * inv);
+                fz = F(in.own_forward[2] * inv);
+            } else {
+                // pose row 2 normalized is (sin h, cos h) for the slot +50h
+                // heading h.
+                fx = static_cast<float>(std::sin(static_cast<double>(in.own_heading)));
+                fz = static_cast<float>(std::cos(static_cast<double>(in.own_heading)));
+            }
+            // 009C1646: BL&2 set -> (-fz, fx), the LEFT perpendicular; clear ->
+            // (fz, -fx), the RIGHT one.  Which BL Phase A leaves depends on the
+            // join it left through (009C0800 or 009C08E7, opposite polarity on
+            // the V sign), so the side is Phase A's, not the V sign's.
+            const bool left = in.run_phase_a ? ((out.phase_a_bl & 2) != 0)
+                                             : (out.cross_track < 0.0f);
+            const float dir_x = left ? -fz : fz;
+            const float dir_z = left ? fx : -fx;
+            // 009C1678-009C16AF.
             p[0] = in.own_pos[0] + in.followed_point_dist * dir_x;
             p[2] = in.own_pos[2] + in.followed_point_dist * dir_z;
-            // 009C16B2: stationY + U.y * base-0Ch.  SUBSTITUTION, labelled:
-            // base-0Ch is Phase A's (009C0EE1-009C0F00 scales it by base-8h and
-            // nothing writes it again before here), so D stands in for it -
-            // the same slope-times-distance shape the lead regime uses.
-            p[1] = in.station[1] + u[1] * d;
+            // 009C16B2: stationY + U.y * base-0Ch.
+            p[1] = in.station[1] + u[1] * base_0c;
             break;
         }
         case PlaneFollowRegime::kOffsetPoint009c1328: {
-            // 009C12DD-009C1336: station + base-0Ch * U, with the same
-            // substitution for base-0Ch.  The perpendicular this block also
-            // builds (009C124D-009C12D9) feeds computation past 009C1365 that
-            // is not part of the steer point and is not bound.
-            for (int i = 0; i < 3; ++i) p[i] = in.station[i] + d * u[i];
+            // 009C12E7-009C1336: station + base-0Ch * U.
+            if (!in.run_phase_a) {
+                // The switch-off binding, with D for base-0Ch.
+                for (int i = 0; i < 3; ++i) p[i] = in.station[i] + d * u[i];
+                break;
+            }
+            for (int i = 0; i < 3; ++i) p[i] = F(base_0c * u[i] + static_cast<double>(in.station[i]));
+            // 009C124D-009C1262: the turn circle's radius, state+5Ch.
+            out.state_5c = turn_radius;
+            // 009C1273-009C12D9: the horizontal track direction (h / lh),
+            // swapped, one component negated on the V sign, times r.
+            const float ux = F(static_cast<double>(h_x) / lh);
+            const float uz = F(static_cast<double>(h_z) / lh);
+            const bool sgn = out.cross_track < 0.0f;                      // 009C12A7, base-21h
+            const float nx = F(static_cast<double>(sgn ? F(-0.0 - uz) : uz) * turn_radius);
+            const float nz = F(static_cast<double>(turn_radius) * (sgn ? ux : F(-0.0 - ux)));
+            // 009C1343-009C134E: the circle centre beside that point.
+            const float c[2] = {F(static_cast<double>(nx) + p[0]), F(static_cast<double>(nz) + p[2])};
+            // 009C1365-009C13C2: the aircraft from the centre, floored at 0.01.
+            const float ddx = in.own_pos[0] - c[0];
+            const float ddz = in.own_pos[2] - c[1];
+            float dist = horizontal_range_0042b2f0(ddx, ddz);
+            if (!(static_cast<double>(dist) >= kLengthFloor)) dist = kLengthFloor;
+            // 009C13C8-009C142C: inside radius + 1, pushed out to it.
+            float q[2] = {in.own_pos[0], in.own_pos[2]};
+            const double r1 = 1.0 + static_cast<double>(turn_radius);
+            if (!(r1 <= dist)) {
+                const float k = F(r1 / dist);
+                q[0] = F(c[0] + static_cast<double>(F(static_cast<double>(ddx) * k)));
+                q[1] = F(c[1] + static_cast<double>(F(static_cast<double>(k) * ddz)));
+            }
+            // 009C1432-009C14A9: the tangent; BL&2 (V < 0) takes out0.
+            // When 004F4840 declines, the out slots keep what they held:
+            // base+44h/48h = (base-0Ch * U.x, base-0Ch * U.y) and base+24h/28h
+            // = (U.x, U.y).
+            float t0[2] = {F(base_0c * u[0]), F(base_0c * u[1])};
+            float t1[2] = {u[0], u[1]};
+            circle_tangent_points_004f4840(c, turn_radius, q, t0, t1);
+            const float* tp = sgn ? t0 : t1;
+            out.state_60[0] = tp[0];
+            out.state_60[1] = in.own_pos[1];                              // 009C15B1
+            out.state_60[2] = tp[1];
+            copy_to_60 = false;
+            // 009C14B6-009C152B: the direction from q to the tangent point,
+            // lengthened to FollowedPointDist when shorter.
+            float vx = F(static_cast<double>(tp[0]) - q[0]);
+            float vz = F(static_cast<double>(tp[1]) - q[1]);
+            float len = horizontal_range_0042b2f0(vx, vz);
+            if (!(in.followed_point_dist <= len)) {
+                float floor01 = 0.1f;                                     // 009C14FE
+                const float k = F(static_cast<double>(in.followed_point_dist) /
+                                  max_native_float_by_ref_00415550(&floor01, &len));
+                vx = F(static_cast<double>(vx) * k);
+                vz = F(static_cast<double>(k) * vz);
+            }
+            // 009C1545-009C15B6: from the aircraft's own position; Y stays
+            // the station's point.
+            p[0] = F(static_cast<double>(in.own_pos[0]) + vx);
+            p[2] = F(static_cast<double>(in.own_pos[2]) + vz);
+            out.state_50[0] = c[0];
+            out.state_50[1] = in.own_pos[1];
+            out.state_50[2] = c[1];
+            out.state_50_written = true;
             break;
         }
     }
@@ -307,6 +644,9 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
     out.steer_point[0] = p[0];
     out.steer_point[1] = p[1];
     out.steer_point[2] = p[2];
+    if (copy_to_60) {                                                     // 009C16C0
+        for (int i = 0; i < 3; ++i) out.state_60[i] = p[i];
+    }
 
     // 009C16D2-009C1846, the tail.  BOTH Y values into one leader-relative
     // band.  This is the `done` floor that keeps a spent wing member out of the
@@ -314,11 +654,16 @@ PlaneFollowGeometry plane_follow_geometry_009bfee0(
     // above did to the steer Y.
     if (in.band_inputs_available) {
         const float floor_candidate = in.leader_pos[1] + in.band_floor_offset;
-        const float floor_v =
-            (floor_candidate < in.state_88) ? floor_candidate : in.state_88;
+        float floor_v =
+            (floor_candidate <= in.state_88) ? floor_candidate : in.state_88;
+        if (in.run_phase_a) {
+            // 009C1734-009C175A: and never below leaderY - 120.
+            const float lower = F(in.leader_pos[1] - kBandHalfHeight);
+            if (!(lower <= floor_v)) floor_v = lower;
+        }
         const float ceil_candidate = static_cast<float>(
-            static_cast<double>(in.leader_pos[1]) + 120.0);
-        const float ceil_v = (in.band_ceiling_210 < ceil_candidate)
+            static_cast<double>(in.leader_pos[1]) + kBandHalfHeight);
+        const float ceil_v = (in.band_ceiling_210 <= ceil_candidate)
                                  ? in.band_ceiling_210
                                  : ceil_candidate;
         out.station_y = clamp_into_band_009c17c6(out.station_y, floor_v, ceil_v);

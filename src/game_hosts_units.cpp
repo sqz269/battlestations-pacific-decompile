@@ -4511,6 +4511,14 @@ struct GameUnitsHost::Impl {
     // 009BEE30's HOLD arm (009BEE56-009BF9E5) while latched and its fly-to arm
     // otherwise. The per-tick station PLACEMENT at those seams is the OFF path.
     static constexpr bool kPlaneFollowLawBound = true;
+    // Packet cc9_follow_approach_arm (docs/PLANE_FOLLOW_PHASE_A.md section 8):
+    // outside the +85h latch, 009BFEE0's Phase A (009C0251-009C0EE0) picks the
+    // fly-to regime - lead pursuit, abeam, or the turn-circle lead-in
+    // 009C124D-009C15BB - and the lead distance, where the host flew lead
+    // pursuit always; with it the tail's leaderY - 120 floor (009C1734).
+    // OFF: lead pursuit always, and Phase A runs as a shadow for the
+    // summary line only.
+    static constexpr bool kFollowPhaseABound = false;
     // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
     // the fly-to arm's two class terms as the image reads them - cruise =
     // 007C47F0 (LevelFlight x StallSpd) x 0.9 at 009BFC41/009BFC49 and the
@@ -6336,6 +6344,10 @@ struct GameUnitsHost::Impl {
     double follow_station_err_sum{0.0};
     unsigned long long follow_station_err_n{0};
     float follow_station_err_max{0.0f};
+    // Diagnostic, both sides: Phase A's regime per fly-to tick (applied with
+    // kFollowPhaseABound, else the shadow of what it would pick).
+    unsigned long long follow_phase_a_lead{0}, follow_phase_a_abeam{0}, follow_phase_a_circle{0};
+    double follow_phase_a_time_sum{0.0};
     static constexpr bool kFollowTrailArmBound = true;  // ON: stage-only, five rows identical (PILOT_MOVETO_TASK)
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
     unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
@@ -6384,6 +6396,38 @@ struct GameUnitsHost::Impl {
                 follow_trail_arm_009c207c(unit, *leader);
         }
         return true;
+    }
+
+    // 007DB4D0 (007DB4D0-007DB62F, __thiscall(class), RET, ST0), read whole in
+    // packet cc9_land_begin_state (docs/SQUADRON_LAND_TASK.md): the turn rate
+    // at TurnRollLeader, which it stores at class+270h (007DB616) before
+    // returning class+26Ch = TravelSpeed / rate.  When the pitch share e
+    // exceeds 0.6 (00CE3D30) the image also rewrites +260h as
+    // atan(0.6 PitchSpd / c) (007DB5EB); this host does not keep that write.
+    float plane_class_turn_rate_270_007db4d0(const GameUnitSlot& u) const {
+        const float trl = u.plane_class_turn_roll_leader;                     // +260h
+        const float sr = static_cast<float>(std::sin(static_cast<double>(trl)));
+        const float cr = static_cast<float>(std::cos(static_cast<double>(trl)));
+        const float a = static_cast<float>(
+            static_cast<double>(u.plane_class_turn_roll_spd) * sr);           // +1C8h
+        float y1 = 0.0f, y2 = 0.0f;
+        if (lua.plane_globals_loaded()) {
+            y1 = lua.plane_globals().pilot_general_yaw_turn_roll_range_1;
+            y2 = lua.plane_globals().pilot_general_yaw_turn_roll_range_2;
+        }
+        const float bi = bsp::clamped_interpolate_00419010(y1, 1.0f, y2, 0.0f, trl);
+        const float b = static_cast<float>(static_cast<double>(bi) * 0.20000000298023224);
+        const double ys = u.plane_class.yaw_spd;                              // +1B0h
+        const float c = static_cast<float>(
+            (static_cast<double>(sr) * u.plane_class.slide_ratio + b) * ys);  // +1B8h
+        const float dd = static_cast<float>(static_cast<double>(a) +
+            static_cast<double>(c) * cr);
+        const double ps = u.plane_class.pitch_spd;                             // +1ACh
+        float e = static_cast<float>((static_cast<double>(sr) * c) /
+            (static_cast<double>(cr) * ps));
+        if (e > 0.6000000238418579f) e = 0.6000000238418579f;
+        return static_cast<float>(static_cast<double>(dd) +
+            ps * e * static_cast<double>(sr));
     }
 
     void run_follow_law_009bfee0_009bee30(
@@ -6471,9 +6515,39 @@ struct GameUnitsHost::Impl {
         gin.state_88 = 1.0e30f;
         gin.band_inputs_available = true;
 
+        // Phase A's inputs, 009C025E-009C0323: the leader's world velocity
+        // (vtable +34h, 007BBB70 = unit+AC8h), the own vtable +5Ch(10h) /
+        // +5Ch(16h) pair that picks LargePlaneTurnMul, the class turn rate
+        // class+270h (007DB4D0) and TravelSpeed class+18Ch; the abeam
+        // regime's nose is pose row 2 (009C15E2).
+        for (int i = 0; i < 3; ++i) {
+            gin.leader_velocity[i] = leader.plane_world_velocity[i];
+            gin.own_forward[i] = unit.motion.pose_row2[i];
+        }
+        gin.own_large_turn_class = bsp::unit_is_kind_of(unit.class_id, 0x10) ||
+                                   bsp::unit_is_kind_of(unit.class_id, 0x16);
+        gin.small_plane_turn_mul = gt.pilot_follow_small_plane_turn_mul;
+        gin.large_plane_turn_mul = gt.pilot_follow_large_plane_turn_mul;
+        gin.class_turn_rate_270 = plane_class_turn_rate_270_007db4d0(unit);
+        gin.class_travel_speed_18c = unit.plane_travel_speed;
+        gin.run_phase_a = kFollowPhaseABound;
         const bsp::PlaneFollowGeometry geo =
             bsp::plane_follow_geometry_009bfee0(
                 gin, bsp::PlaneFollowRegime::kLeadPursuit);
+        {
+            bsp::PlaneFollowGeometry shadow;
+            if constexpr (!kFollowPhaseABound) {
+                bsp::PlaneFollowGeometryInputs shadow_in = gin;
+                shadow_in.run_phase_a = true;
+                shadow = bsp::plane_follow_geometry_009bfee0(
+                    shadow_in, bsp::PlaneFollowRegime::kLeadPursuit);
+            }
+            const bsp::PlaneFollowGeometry& pa = kFollowPhaseABound ? geo : shadow;
+            if (pa.phase_a_bl & 1) ++follow_phase_a_lead;
+            else if (pa.phase_a_bl & 8) ++follow_phase_a_circle;
+            else ++follow_phase_a_abeam;
+            follow_phase_a_time_sum += pa.phase_a_time;
+        }
         done("BotStateFollow::steer_point", 0x009bfee0u);
 
         bsp::PlaneFollowFlyToInputs fin;
@@ -21527,31 +21601,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // pitch share e exceeds 0.6 (00CE3D30) the image also rewrites +260h as
                     // atan(0.6 PitchSpd / c) (007DB5EB); this host does not keep that write.
                     float class_turn_radius_26c_007db4d0() const {
-                        const float trl = unit_.plane_class_turn_roll_leader;                 // +260h
-                        const float sr = static_cast<float>(std::sin(static_cast<double>(trl)));
-                        const float cr = static_cast<float>(std::cos(static_cast<double>(trl)));
-                        const float a = static_cast<float>(
-                            static_cast<double>(unit_.plane_class_turn_roll_spd) * sr);       // +1C8h
-                        float y1 = 0.0f, y2 = 0.0f;
-                        if (owner_.lua.plane_globals_loaded()) {
-                            y1 = owner_.lua.plane_globals().pilot_general_yaw_turn_roll_range_1;
-                            y2 = owner_.lua.plane_globals().pilot_general_yaw_turn_roll_range_2;
-                        }
-                        const float bi = bsp::clamped_interpolate_00419010(y1, 1.0f, y2, 0.0f, trl);
-                        const float b = static_cast<float>(static_cast<double>(bi) * 0.20000000298023224);
-                        const double ys = unit_.plane_class.yaw_spd;                          // +1B0h
-                        const float c = static_cast<float>(
-                            (static_cast<double>(sr) * unit_.plane_class.slide_ratio + b) * ys);  // +1B8h
-                        const float dd = static_cast<float>(static_cast<double>(a) +
-                            static_cast<double>(c) * cr);
-                        const double ps = unit_.plane_class.pitch_spd;                         // +1ACh
-                        float e = static_cast<float>((static_cast<double>(sr) * c) /
-                            (static_cast<double>(cr) * ps));
-                        if (e > 0.6000000238418579f) e = 0.6000000238418579f;
-                        const float r = static_cast<float>(static_cast<double>(dd) +
-                            ps * e * static_cast<double>(sr));
                         return static_cast<float>(static_cast<double>(unit_.plane_travel_speed) /
-                            static_cast<double>(r));
+                            static_cast<double>(owner_.plane_class_turn_rate_270_007db4d0(unit_)));
                     }
 
                     // 009B1420 (009B1420-009B1D60, __thiscall(state)(float dt), RET 4; dt
@@ -23156,39 +23207,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // u = (q - c) / d; 004F4430 writes out0 = m + b, out1 = m - b.
                     // False (outs untouched) unless r < d (004F3887). The two
                     // tangent points of the circle seen from q. Coverage: complete.
-                    static bool circle_tangent_points_004f4840(const float c[2], float r,
-                                                               const float q[2],
-                                                               float out0[2], float out1[2]) {
-                        const float dx = q[0] - c[0];                          // 004F3826
-                        const float dz = q[1] - c[1];                          // 004F3838
-                        const float d2 = static_cast<float>(
-                            static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
-                        const float d = static_cast<double>(d2) > 1e-10        // 00CE3820
-                            ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
-                        if (!(r < d)) return false;                            // 004F3887
-                        const float ux = static_cast<float>(static_cast<double>(dx) / d);
-                        const float uz = static_cast<float>(static_cast<double>(dz) / d);
-                        const float p = static_cast<float>(
-                            static_cast<double>(r) * r / d);                   // 004F38C1
-                        const float t = static_cast<float>(std::sqrt(static_cast<double>(
-                            static_cast<float>(static_cast<double>(d) * d -
-                                               static_cast<double>(r) * r))));  // 004F38D8
-                        const float h = static_cast<float>(
-                            static_cast<double>(t) * r / d);                   // 004F38F2
-                        const float mx = static_cast<float>(
-                            c[0] + static_cast<double>(static_cast<float>(
-                                static_cast<double>(p) * ux)));
-                        const float mz = static_cast<float>(
-                            c[1] + static_cast<double>(static_cast<float>(
-                                static_cast<double>(p) * uz)));
-                        const float bx = static_cast<float>(-static_cast<double>(uz) * h);
-                        const float bz = static_cast<float>(static_cast<double>(ux) * h);
-                        out0[0] = static_cast<float>(static_cast<double>(mx) + bx);   // 004F4479
-                        out0[1] = static_cast<float>(static_cast<double>(mz) + bz);
-                        out1[0] = static_cast<float>(static_cast<double>(mx) - bx);   // 004F4498
-                        out1[1] = static_cast<float>(static_cast<double>(mz) - bz);
-                        return true;
-                    }
+                    // Now bsp::circle_tangent_points_004f4840 (plane_follow_law), which
+                    // 009BFEE0's turn-circle regime (009C1448) also calls.
 
                     // 009FBB20, packet cc9_pilot_moveto_task part 4: the circle steer,
                     // __thiscall on the approach (ECX), stack (const float* point_xz,
@@ -23249,7 +23269,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             static_cast<float>(point[1] + static_cast<double>(
                                 static_cast<float>(static_cast<double>(uz) * mr)))};
                         float tangent[2][2]{};   // uninitialised in the image if 004F3887 fails
-                        circle_tangent_points_004f4840(point, r, q, tangent[0], tangent[1]);
+                        bsp::circle_tangent_points_004f4840(point, r, q, tangent[0], tangent[1]);
                         const float* t = tangent[side ? 1 : 0];                // 009FBD0E
                         const float tvx = t[0] - pos[0];                       // 009FBD22
                         const float tvz = t[1] - pos[1];                       // 009FBD35
@@ -27120,6 +27140,13 @@ void GameUnitsHost::report() {
             "packet cc9_plane_wanderer diagnostic)", host.follow_station_err_n,
             host.follow_station_err_n ? host.follow_station_err_sum / host.follow_station_err_n : 0.0,
             static_cast<double>(host.follow_station_err_max));
+        host.log.notef("summary follow phase-a lead=%llu abeam=%llu circle=%llu mean_time=%.3f "
+            "applied=%d (009C0251-009C0EE0, packet cc9_follow_approach_arm; a shadow when OFF)",
+            host.follow_phase_a_lead, host.follow_phase_a_abeam, host.follow_phase_a_circle,
+            (host.follow_phase_a_lead + host.follow_phase_a_abeam + host.follow_phase_a_circle)
+                ? host.follow_phase_a_time_sum / static_cast<double>(host.follow_phase_a_lead +
+                      host.follow_phase_a_abeam + host.follow_phase_a_circle) : 0.0,
+            Impl::kFollowPhaseABound ? 1 : 0);
         host.log.notef("summary follow trail arm calls=%llu raised=%llu enabled=%llu disabled=%llu "
             "min_mul=%.3f bound=%d (009C207C, packet cc9_follow_trail_arm)", host.trail_arm_calls,
             host.trail_arm_raised, host.trail_arm_enabled, host.trail_arm_disabled,
