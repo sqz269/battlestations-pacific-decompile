@@ -2240,6 +2240,21 @@ void GameScriptOrdersHost::slot_counter_increment(int slot) {
     log_.unimplemented("Formation::slot_counter_increment", "00905300");
 }
 
+// Packet cc9_formation_join_loopback (docs/SHIP_AI_OPEN_ITEMS.md section 92).
+// 0077C964 routes the 76h join through 0077C2A0 with flags 7, which on a local
+// session appends it to the loopback vector (0077C44D -> 0076E520,
+// docs/SESSION_MESSAGE_DISPATCH.md) behind the scene's authored MT_COMMANDs
+// (0077D600, flags 1). The pump's drain 0076C600 delivers them in post order: the
+// authored `cruise` clears the slots and becomes current, then 0077F940 -> 00720CD0
+// clears again and makes `follow` current, which is what 009F5DE0 compares. This
+// host joined at the call, before the authored commands arrived, so the cruise
+// (flags 1, 0081733E clear-all) replaced the follow and 009F5DEB released every
+// scripted follower at t=0.05. True: the join is posted into the commands host's
+// loopback vector and runs at its turn. False: joined at the call, as before.
+// ON by section 92.5: the t=0.05 leaves go to 0 in all eight reach rows (exit 3),
+// both controls exit 1, and JM08's StartInvasion fires (first HQ latch 538.85 s).
+inline constexpr bool kFormationJoinLoopbackBound = true;
+
 void GameScriptOrdersHost::session_route_formation_message(void* follower,
     std::uint16_t leader_object_id) {
     // 0077C964 routes a type-76h message whose only payload is the leader's
@@ -2255,6 +2270,20 @@ void GameScriptOrdersHost::session_route_formation_message(void* follower,
         || leader_index >= units_.count()) {
         log_.unimplemented("Formation::route_join_message", "0077c964");
         return;
+    }
+    if constexpr (kFormationJoinLoopbackBound) {
+        ++summary_.formation_joins_posted;
+        const bool posted = bsp::game::commands_post_loopback_callback_0076e520(
+            follower_index, [this, follower_index, leader_index] {
+                ++summary_.formation_joins_delivered;
+                if (units_.formation_join_0077f940(follower_index, leader_index)) {
+                    ++summary_.formations_joined;
+                }
+            });
+        if (posted) {
+            log_.implemented("Formation::route_join_message", "0077c964");
+            return;
+        }
     }
     if (units_.formation_join_0077f940(follower_index, leader_index)) {
         ++summary_.formations_joined;
@@ -3926,6 +3955,11 @@ void GameScriptOrdersHost::report() {
         summary_.land_avoidance_orders, summary_.torpedo_evasion_orders,
         summary_.avoidance_disables, summary_.avoidance_delivered,
         kNavigatorAvoidanceDeliveryBound ? 1 : 0);
+    log_.notef("summary mission script formation join loopback posted=%zu delivered=%zu "
+        "joined=%zu bound=%d (0077C964 -> 0076E520 -> 0076C600 -> 0077F940, packet "
+        "cc9_formation_join_loopback)", summary_.formation_joins_posted,
+        summary_.formation_joins_delivered, summary_.formations_joined,
+        kFormationJoinLoopbackBound ? 1 : 0);
     log_.notef("summary mission script navigator ship avoidance orders=%zu disables=%zu "
         "delivered=%zu bound=%d (008A3970 -> 008359C0 -> 00835640 +241h, packet "
         "cc9_navigator_ship_avoidance)", summary_.ship_avoidance_orders,

@@ -390,6 +390,9 @@ public:
     // while kSetCommandQueueDelayBound is false. finish answers the deliveries.
     void begin_loopback_drain_0076c600();
     std::size_t finish_loopback_drain_0076c600();
+    // commands_post_loopback_callback_0076e520's body (packet
+    // cc9_formation_join_loopback).
+    bool post_loopback_callback(std::size_t unit_index, std::function<void()> deliver);
     // When the last issue's MT_COMMAND waits in the queue, `fn` is taken and
     // run after that chain's delivery (its push and finish tail); answers
     // false, leaving `fn`, when the order was delivered already or the switch
@@ -605,5 +608,12 @@ private:
 void commands_begin_loopback_drain_0076c600();
 std::size_t commands_finish_loopback_drain_0076c600();
 bool commands_after_last_issue_delivery(std::function<void()>& fn);
+// Packet cc9_formation_join_loopback (docs/SHIP_AI_OPEN_ITEMS.md section 92): a
+// session message whose receiver this host does not own (the 76h join 0077C964 ->
+// 0077FE80 -> 0077F940) takes its place in the same loopback vector as MT_COMMAND
+// (0077C2A0 flags 7 -> 0076E520), and `deliver` runs at its turn in 0076C600.
+// False when there is no live host (the caller then delivers at once).
+bool commands_post_loopback_callback_0076e520(std::size_t unit_index,
+                                              std::function<void()> deliver);
 
 }  // namespace bsp::game

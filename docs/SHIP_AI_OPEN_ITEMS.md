@@ -7802,3 +7802,107 @@ The fleet diagnostic (`BSP_LANDER_DIAG=1`, `fleet diag:` every 10 s):
 - **Where the landers beach relative to the pads** matters only after the ramp. The pad
   approach point is `006AC5D0` from `LandingPointRange` 1000. Not read further here.
 - Diagnostics were added (`997477248`), env-gated: `lander latch diag:` and `fleet diag:`.
+
+## 92. Scripted formations broke up at t=0.05: the join is delivered out of order (packet `cc9_formation_join_loopback`, cc9-ships23, 2026-09-30)
+
+### 92.1 Who releases the followers
+
+- **The release.** `009F5DA0` (the auto-target tick, `bot_fire_target.cpp`) releases a
+  formation follower (`007788B0`) unless the current command `[director+54h]` is null or
+  `follow` (`00E08F60`, compared at `009F5DE0`). The release is `0077C980(unit, 0)` at
+  `009F5DEB`, reaching `77h -> 0077BD70`, the leave.
+- **What was current.** The new `follower release diag` line (`BSP_LANDER_DIAG=1`) shows JM08's
+  17 scripted followers at t=0.05 all had `00E08F70` current: the authored `cruise`.
+
+### 92.2 Why `cruise` and not `follow`
+
+- **In the image both messages share one queue, in post order.**
+  - `JoinFormation`'s 76h goes out through `0077C964 -> 0077C2A0` with flags 7.
+  - Each scene-authored `Command` is an MT_COMMAND with flags 1 (`0077D600`).
+  - On a local session both are appended to the loopback vector (`0077C44D -> 0076E520`,
+    `docs/SESSION_MESSAGE_DISPATCH.md`). The pump's `0076C600` delivers them in post order.
+- **So the image ends with `follow` current:**
+  1. the authored `cruise` arrives first (`0081733E` clear-all, then the push);
+  2. the join `0077FE80 -> 0077F940 -> 00720CD0` arrives next (clear, push `follow`).
+- **The host joined at the Lua call,** before the pump delivered the queued `cruise`. The
+  `cruise`'s clear-all then removed the `follow`, and `009F5DEB` released every scripted follower
+  on the first tick.
+- **This is the cause of section 91's JM08 knife-edge.** The fleet was meant to stay on
+  Missouri, whose authored cruise runs down x = 0 through the origin that `CheckInvasion`
+  watches.
+
+### 92.3 The change (committed OFF)
+
+- **`kFormationJoinLoopbackBound`** (`game_hosts_script_orders.cpp`). ON, the join is posted as
+  a callback entry into the commands host's loopback vector
+  (`commands_post_loopback_callback_0076e520`, new `LoopbackKind::Callback`). It is delivered at
+  its turn in the drain.
+- **OFF, the join runs at the call,** as before.
+- **Summary line:** `summary mission script formation join loopback posted= delivered= joined=
+  bound=`.
+- **Local check (JM08, 1200 frames, switch forced ON, not a pair):**
+  - 17 posted, 17 delivered, 17 joined, and no leave at t=0.05.
+  - The first leaves come at 2.70-4.55 s, when the planner's or script's next command (`00E08F68`
+    / `00E08F80`) becomes current. That is the image's own rule.
+
+### 92.4 Reach census and predictions (written before the pairs)
+
+Leaves at t<=0.10 against all leaves, from `s22_p1` (reference-form, before this change):
+
+| row | early leaves / all | prediction |
+| --- | --- | --- |
+| JM08 36000 | 17 / 39 | exit 3 |
+| USN13 | 39 / 56 | exit 3 |
+| USNOS | 32 / 51 | exit 3 |
+| USN12 | 11 / 11 | exit 3 |
+| USN02 | 10 / 18 | exit 3 |
+| USN01 | 8 / 8 | exit 3 |
+| LOMP10 | 7 / 7 | exit 3 |
+| JM05 | 5 / 8 | exit 3 |
+| E2, JM06 (controls) | 0 / 0 and 0 / 6 | exit 0 or 1; the joins are delivered one pump later, with no command lost |
+
+- **JM08 36000:** the invasion force keeps station on Missouri, and Missouri's cruise passes
+  the origin, so `StartInvasion` fires. If the landers then reach Headquarter 01's 4344 m
+  latch, `mode3_points > 0` and begins may follow with the solver ON.
+- **The reach rows:** followers hold their station until a new command replaces `follow`.
+  Fleet positions, engagements and possibly death rows move.
+
+### 92.5 The pairs (`s23_c0` vs `s23_c1`, both from `2ebfd52f3`), and the flip
+
+| row | leaves at t<=0.10, OFF -> ON | joins posted / delivered | exit | deaths | death rows |
+| --- | --- | --- | --- | --- | --- |
+| JM08 36000 | 17 -> 0 | 17 / 17 | 3 | 25 -> 168 | 153 only ON, 10 only OFF |
+| USN13 | 39 -> 0 | 47 / 47 | 3 | 24 -> 23 | 1 only OFF, 22 changed |
+| USNOS | 32 -> 0 | 63 / 63 | 3 | 105 -> 106 | 3 only ON, 2 only OFF, 70 changed |
+| USN12 | 11 -> 0 | 11 / 11 | 3 | 7 -> 7 | identical |
+| USN02 | 10 -> 0 | 11 / 11 | 3 | 1 -> 1 | identical; 27 unit rows move |
+| USN01 | 8 -> 0 | 13 / 13 | 3 | 17 -> 17 | 2 changed |
+| LOMP10 | 7 -> 0 | 7 / 7 | 3 | 7 -> 3 | 1 only ON, 5 only OFF |
+| JM05 | 5 -> 0 | 39 / 39 | 3 | 12 -> 12 | 3 changed |
+| E2 (control) | 0 -> 0 | 16 / 16 | 1 | 51 -> 51 | identical |
+| JM06 (control) | 0 -> 0 | 9 / 9 | 1 | 1 -> 1 | identical |
+
+**Every prediction held,** including both controls. A join delivered one pump later changes
+nothing where no authored command wipes it.
+
+**JM08 36000**
+- **The fleet stays on Missouri.** Grayson passes 77.8 m from the origin at 550.1 s, and
+  `StartInvasion` runs: `NavigatorAttackMove` is reached (OFF: never), and the first HQ latch line is at 538.85 s.
+- **The landers pick up Headquarter 01:**
+  - LST 03 latches mode 3 from 4202.6 m;
+  - LST 01 and LST 02 latch mode 4 (4672.3 m and 8114.9 m);
+  - totals: `mode3_points=3`, `mode4_points=19`, `in_reach=0`, `begins=0`.
+- **Most of the 153 new deaths are Japanese.** The Allied fleet now closes on the base: Missouri
+  alone kills 48 tents, 31 houses and 15 static aircraft.
+
+**Decision: `kFormationJoinLoopbackBound` ON.** The mechanism matches the read in every row.
+
+**Open, in order**
+1. **JM08: the landers hold the HQ target for about one second.** The lander latch lines stop at
+   539.85 s (six lines in the run). The LSTs then wander 1.2-1.7 km from the HQ until the end,
+   and nothing reaches `in_reach`. Next: what replaces their command after `StartInvasion`.
+2. **Friendly blast kills appear once the fleet stays together.** USTroopTransport 01, 02 and 05
+   die to Gleaves's `cat=6` blast, and 06 to Bristol's. Check whether the image's blast damage
+   spares the shooter's side.
+3. **USN01's unit table shrinks 88 -> 59 rows** (29 only OFF). Check whether that is the table's
+   own filter (moved units) or units missing.

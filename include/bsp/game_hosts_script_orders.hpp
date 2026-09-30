@@ -312,6 +312,10 @@ struct GameScriptOrdersSummary {
     std::size_t ship_avoidance_orders{0};
     std::size_t ship_avoidance_disables{0};
     std::size_t ship_avoidance_delivered{0};
+    // Packet cc9_formation_join_loopback: 76h joins posted to / delivered by the
+    // commands host's loopback drain.
+    std::size_t formation_joins_posted{0};
+    std::size_t formation_joins_delivered{0};
     std::size_t skills{0};
     std::size_t repairs{0};
     std::size_t roles{0};
