@@ -29,6 +29,10 @@
 namespace bsp::game {
 namespace {
 
+// Packet cc9_menu_pump_once: during a mission frame the front-end pump 004f8830
+// runs only from the mission frame's own 004c40f0 passes (GameMenuHost::frame).
+constexpr bool kMenuPumpYieldsToMissionFrameBound = false;
+
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
 // has exactly one element (docs/MAIN_MENU_PATH.md).
 constexpr int kNoScreenSlot = -1;
@@ -1853,7 +1857,15 @@ void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
         // 004e53b6, BSP_Game_UpdateInterfaceOnly, which OnMove calls on every
         // frame that does not take the front-end branch.
         host.log.implemented("FrontEndScreens::update_interface_only", "004c40f0");
-        if (host.path_step == MainMenuPathStep::ScreenVisible) {
+        // Packet cc9_menu_pump_once (docs/GUNNERY_OPEN_ITEMS.md section 76):
+        // 004e53b6 is the else arm of the simulation gate (004e53b2 JMPs over
+        // it), and a mission frame runs 004e4a40 whole through
+        // run_mission_frame_004e4a40, 004e5259 / 004e53b6 / 004e5469 included.
+        // Pumping here as well ran every level-1 screen twice per mission
+        // frame. OFF: the second pass stays.
+        const bool mission_frame_pumps = kMenuPumpYieldsToMissionFrameBound
+            && host.mission != nullptr && host.mission->next_advance_runs_mission_frame();
+        if (host.path_step == MainMenuPathStep::ScreenVisible && !mission_frame_pumps) {
             // Once the path has settled the pump at 004c4165 is the only
             // front-end work left in the frame; before that the path's own
             // EnterScreen step performs it.

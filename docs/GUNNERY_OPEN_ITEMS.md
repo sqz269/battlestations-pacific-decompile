@@ -5118,3 +5118,74 @@ Send the renames to their owners, cc9-lua (units, dive) and the torpedo lane.
 - `g16_meshprobe2.exe <mmod...>`: elements and the GeomMesh holder's matrix chain.
 
 **Census:** `g16_orders_census.py`, the torpedo `orders:` lines.
+
+## 76. The front-end pump runs twice per mission frame (cc9-gunnery17, packet `cc9_menu_pump_once`)
+
+Item 71.3 asked why group 3's `turns` is half of its `guns` (PLAYER_GUN_SEAT 7.4). The two
+candidates were two entries for one unit, or two HUD updates per gun tick. **It is the second.**
+
+### 76.1 Evidence
+
+- **Not two entries.** On every s row, `HudWeaponGroupScreen::route_fire_message` (0077C2A0) has
+  exactly as many calls as `HudWeaponGroupScreen::fire_message` (00954A10): JM06 6158 and 6158,
+  USN01 2367 and 2367 (`local\g17_rs_<row>.log`).
+- **Two pumps per frame.** The whole in-mission screen set updates about twice per mission frame:
+  JM06 runs 3000 mission frames, and `HudShipView::update` 0064D610,
+  `HudWeaponGroupScreen::update` 005484F0 and `HudWarningScreen::update` 00683020 each have 6158
+  calls. The front-end summary shows `pump_frames=6200` over 3200 frames. The HUD summary shows
+  `pump_frames=3000`, the mission frame's own passes.
+- **Where the second pass comes from.**
+  - `GameMenuHost::frame` (`src/game_hosts_menu.cpp`) models 004e4a40's front-end split: 004e4b9d
+    for game states 1, 2 and 4, else "004e53b6, BSP_Game_UpdateInterfaceOnly". It pumps in the
+    else arm on every frame, then calls `GameMissionHost::advance`.
+  - During a mission, `advance` runs `run_mission_frame_004e4a40`, which is 004e4a40 whole
+    (`src/mission_state_frame.cpp`). It has its own 004c40f0 calls at 004e5259 (the
+    interface-only branch), 004e53b6 (the gate fallback) and 004e5469 (the drain loop).
+  - **In the image 004e53b6 is the else arm of the simulation gate.** 004e53b2 is
+    `JMP 004e53bb` over the `MOV ECX,ESI; CALL 004c40f0` at 004e53b4/004e53b6 (disk bytes,
+    `bsp.py disasm-raw 004e5395`). One 004e4a40 per frame therefore pumps once, unless the drain
+    loop at 004e5453 finds a pending request.
+  - So the menu host's pump is a second model of the same call. Every level-1 screen of the 25h
+    set updates twice per mission frame. SHIP_SCREEN_UPDATE 21 and 26 recorded this cadence as
+    "twice per mission frame"; it was the host's, not the image's.
+- **Why `turns` is half of `guns`.** Each pass routes one message, and each message counts the
+  accepted guns. The gun tick consumes one pending pair per gun per fixed step. The pair a gun
+  follows is the menu pass's pair of the current frame, taken before the frame's simulation, and
+  it overwrites the mission pass's pair of the previous frame.
+
+### 76.2 The binding (switch `kMenuPumpYieldsToMissionFrameBound`, committed OFF)
+
+- `GameMenuHost::frame` skips its else-arm pump when the next `advance` runs a mission frame
+  (`GameMissionHost::next_advance_runs_mission_frame`: the step is InMission or MissionFrames,
+  there is a frame host and frames remain).
+- Frames before the mission (the load) and after it keep the menu pump, since no 004e4a40 model
+  runs on them.
+- **Uncertainty:** the mission frame's 004e5259 pass needs the HUD manager built (`GameHudHost::
+  update_interface_only_004c40f0` returns without it). On every s row the HUD `pump_frames` equals
+  the mission frames, so this does not remove a pass there.
+
+### 76.3 Predictions, written before any ON run
+
+A same-tree pair, `local\g17_mp0` (OFF) against `local\g17_mp1` (ON), on s's seventeen rows in
+s's launch form.
+
+1. **Mechanism, on every row:**
+   - front-end `pump_frames` falls to the frame count: 6200 -> 3200, USN04 9200 -> 4700 and the
+     9000-frame rows 18200 -> 9200;
+   - `HudShipView::update`, `HudWeaponGroupScreen::update` and the other level-1 screens' calls
+     halve (JM06 6158 -> about 3079);
+   - the seat group counts halve (JM06 group 3 5997 -> about 3000; USN04 group 2 7997 -> about
+     4000), and so do `artillery guns`;
+   - group 3's `turns` stay (JM06 14990) and now equal `guns`, apart from the first and last
+     frames.
+2. **Gameplay, identical (exit 0 or 1):** USN04, E2, USN02, BSM01, LOMP06, LOMP10, LOMP10 long,
+   USN01, JM08, JM05, JM05 long, USN12, USN13, USNOS and IJN01.
+   - In PLAYER_GUN_SEAT 7.4, the group 3 turns moved no gameplay on these rows.
+   - The screens' other effects are presentation (markers, minimap, warnings) or idempotent (the
+     role take 27h).
+3. **May move:** JM06 and USNOS long, the two rows where group 3's turns moved fire in 7.4. The
+   pair each gun follows is now the previous frame's mission pass instead of this frame's menu
+   pass, so the camera it uses is up to one frame older. Any move must begin at the group unit's
+   own artillery (shots, damage dealt by the group unit), as in 7.4.
+4. **Mechanism failure:** a move that starts anywhere else (plane paths, other units' targeting,
+   ship AI), apart from RNG coupling through changed shot counts.

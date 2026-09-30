@@ -1821,6 +1821,15 @@ void GameMissionHost::Impl::publish_frame_summary() {
     }
 }
 
+bool GameMissionHost::next_advance_runs_mission_frame() const noexcept {
+    const Impl& host = *impl_;
+    if (host.requested_id.empty() || !host.summary.tree_loaded) return false;
+    if (host.step != GameMissionStep::InMission && host.step != GameMissionStep::MissionFrames) {
+        return false;
+    }
+    return host.frame_host != nullptr && host.mission_frames > 0;
+}
+
 bool GameMissionHost::advance(float seconds) {
     Impl& host = *impl_;
     if (host.requested_id.empty() || !host.summary.tree_loaded) return false;

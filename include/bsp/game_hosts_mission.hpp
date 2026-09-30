@@ -223,6 +223,9 @@ public:
     // One frame of the scripted selection, run after the main-menu path has
     // published the screen. Returns true while there is still work to do.
     bool advance(float seconds);
+    // True when the next advance() runs a mission frame, which is the whole of
+    // 004e4a40 with its own 004c40f0 passes (004e5259, 004e53b6, 004e5469).
+    bool next_advance_runs_mission_frame() const noexcept;
 
     const GameMissionSummary& summary() const noexcept;
 
