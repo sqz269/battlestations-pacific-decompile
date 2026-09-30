@@ -6148,3 +6148,103 @@ script attack order or the Capture spawn arm (`00A2B400`, a record here).
   out, const float3* from, int zone_group)`, `RET 0Ch`);
 - `00749D90-00749DEF` `BSP_SessionMessage_LandAtPad_Construct` (message 0A5h,
   `__thiscall(msg)(pad, building)`, `RET 8`).
+
+## 73. Handoff (cc9-ships19, 2026-09-30, at about 70% context)
+
+**Landed on main:**
+- 70 (`kCaptureGroupValueBound` ON: 00A250A0 replaces the members x defenders stand-in);
+- 71 (`kAiOwnerPlayerSlotBound` ON: `OwnerPlayer` reaches 009FFD20; the Party ordinals are settled
+  from `global.enums`);
+- 72 (retarget modes 3 and 4 read; nothing bound).
+
+The lead applied the three names from 72.
+
+**Switches this lane changed:**
+
+| switch | state | section |
+| --- | --- | --- |
+| `kCaptureGroupValueBound` | ON | 70.1 |
+| `kAiOwnerPlayerSlotBound` | ON | 71.3 |
+| `kShipAiObstacleBackoffCountdownBound` | still OFF, exact, no reach | 65.5 |
+
+### The next main packet: the troop-landing / CommandBuilding pad model
+
+The goal is for retarget modes 3 and 4 (`009F21A0-009F2395`, section 72) to run. Every address below
+has been read, unless it is marked unread.
+
+1. **Build the pads with the building.**
+   - A CommandBuilding holds a pad vector at `+794h` (begin) / `+798h` (count, stride 4), guarded by
+     the critical section at `+764h`.
+   - Each pad carries:
+     - its occupant at `+1F8h` (`006AC220`: `MOV EAX,[ECX+1F8h]; RET`);
+     - an id at `+174h` (read by `00749D90`);
+     - its owner base at `+220h`;
+     - a cached approach line at `+208h..+21Ch` (docs/SHIP_AI_OPEN_ITEMS / `ship_ai_follow_land.hpp`
+       line 294).
+   - The producer that fills `+794h` has not been found yet.
+     - Start from the CommandBuilding creator `006F2780`, which also stores `CaptureRange +7A0h` and
+       `LandingRange +7C4h`, and from the Landscape/model attach.
+     - Scan disp32 `794h` stores with `local\s19_disp.py 794`, and read every hit with
+       `s19_before.py`.
+2. **The pad routines.**
+   - `006F2E60` (pick the pad: the one this unit holds, else the nearest free one; read) and
+     `006F2DE0` `BSP_CommandBuilding_ReleaseUnitPads` (read).
+   - `006F2FB0` (assign; read, but its inner calls are unread) and `006AC490` (clear or set the
+     occupant; unread).
+   - `006AC5D0`: the per-call arm is reconstructed as `ship_ai_land_pad_approach_point_006ac5d0`; the
+     cache refresh is not.
+   - `006F3AF0` `BSP_CommandBuilding_NearestPadStandoffPoint` (read).
+   - `00417E60` on the avoid-zone manager (unread; takes 10.0f `00CE38B8` and the class zone group).
+   - The seams are already declared in `include/bsp/ship_ai_follow_land.hpp`
+     (`pick_landing_pad_006f2e60`, `assign_landing_pad_006f2fb0`, `pad_approach_point_006ac5d0`,
+     `pad_occupant_006ac220`). No host implements them. The units host owns the buildings, so this is
+     shared with the units lane.
+3. **The landing message.**
+   - `00749D90` `BSP_SessionMessage_LandAtPad_Construct` builds message 0A5h (vtable `00CFF908`, pad
+     id at `+1Ch`, building id at `+1Eh`). `0077C2A0` routes it at class 7.
+   - The unit's 0A5h handler is unread; start from `Unit_HandleMessage` `0095ABE0`.
+   - Mode 3 also reads `unit+1200h` and writes `[ctl]+3FCh`; neither has a host counterpart.
+4. **Bind modes 3 and 4 OFF, then pair on a row that reaches them.**
+
+**Which rows could reach a troop landing:**
+- **JM08 (scripted, the best candidate).** `scripts/missions/COTP-IJN/PRCPIJN/jm08.lua` (and
+  `prcpjm08.lua`, both mtime 2024-07-13):
+  - line 757, `CheckInvasion`: when Allied ships come within 300 m of (0,0,0),
+    `StartInvasion` orders `NavigatorAttackMove(unit, Mission.HQ)` for the invasion force. It also
+    sends `USTroopTransport 01..06` (`Mission.APs`, line 533) to `Mission.LandPoints`.
+  - line 825, `CheckAP1..6`: within 200 m of its land point, each transport is ordered to
+    `NavigatorAttackMove(AP, Mission.HQ)`.
+  - `Mission.HQ` is `Headquarter 01`, a `CommandBuilding` (`prcpijn_08_defend_guadalcanal.scn` line
+    5132). So a landing-class unit gets an enemy CommandBuilding target from the script, not from a
+    planner.
+  - The reference JM08 row (3000 frames) latches nothing (`approach latch frames=0` in
+    `g15_rr_jm08.log`), so the invasion has not started by then.
+  - **First step:** run JM08 at 9200/9000. Check `summary mission ship ai approach latch` for
+    `lander>0` and modes 3/4 > 0, and check which script file the row loads.
+- **BSM02 and BSM06** have landing scripts too (`luaSpawnLandingWave`, `luaCommenceLandings`,
+  `luaLCVPLanding`); they are not reference rows. `multi/siege907.lua` is multiplayer.
+- **BSM03 and BSM08** author their LandingShipGen units as `OwnerPlayer "AI control"` (section 71),
+  so no planner orders them. Only their scripts could.
+- **Planner reach** is nearly closed:
+  - the close-attack gate refuses landing-ship members (`00A1443D`);
+  - the Capture spawn arm (`00A2B400`, a record here) would be the planner path to a landing.
+
+**Still waiting:**
+- **The back-off countdown** (65.2, `kShipAiObstacleBackoffCountdownBound` OFF) needs a row where
+  `009F47A7` arms (`held_steps > 0` in `summary mission ship ai backoff countdown`). None of the
+  rows run in 70-72 armed it; I did not check each log for it.
+- **The t=0.05 weapon-facts timing** (70.1) was routed by the lead to cc9-lua21.
+- **The `global.enums` comment** in `game_hosts_mission.cpp` (71.1) was routed to the mission-host
+  owner.
+
+**Tools** (in `J:\PROG\battlestations-pacific-decompile-cc9-ships19\local\`, `s19_` prefix):
+- the s18 tools, retargeted: `s19_rel32.py`, `s19_disp.py`, `s19_before.py`, `s19_vslot.py`,
+  `s19_kinds.py`;
+- `s19_runs.ps1 -V <name> [-Exe <path>] -Only <rows>` (adds usn12, usnos and jm08) and
+  `s19_wait.ps1`;
+- `s19_short.ps1 -Menus <rows>` (300-frame census runs) and `s19_diag.ps1` (one run with
+  `BSP_CAPTURE_DIAG=1`);
+- `s19_capval.py <log>` (the capture group values per group);
+- `s19_owners.py` (every authored `OwnerPlayer` in this installation's scenes);
+- `s19_str.py <text>...` (string VA and abs32 refs in the PE) and `s19_dump.py <va> <n>` (dwords
+  with the strings they point at).
