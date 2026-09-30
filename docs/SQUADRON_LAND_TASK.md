@@ -7743,3 +7743,110 @@ the rocket task (`007B7FD0`, `00E08F48`), and no reference row issues either (5b
   USNOS, IJN01, LOMP06, LOMP10, BSM01). A strafe task is therefore needed for campaign coverage
   (JM09, JM12, USN10 and the ESMP Engano and Tengo missions), and only a new reference row on one of
   them could judge it.
+
+## 5bw. The strafe task, read: reach, the unfed choice inputs, the layout and the state graph (packet `cc9_strafe_task_read`, cc9-lua29, 2026-09-30)
+
+Read-only; nothing bound. This is the first half of the strafe packet; the binding follows.
+
+### 1. Reach: the host never chooses strafe, because two of 007EEC50's inputs are never fed
+
+- `src/game_hosts_script_orders.cpp` builds `AttackFeasibilityInputs` for `PilotSetTarget` but
+  never sets `guns_available` (007EEB08 / 007EEBB7, `CMP byte [plane+C24h],0`, PilotFires) or
+  `guns_suppressed` (007EEB2C / 007EEBC2, `CALL 0047B850`). Both default to false
+  (`include/bsp/attack_commands.hpp`), so `strafe_applies` and `dogfight_applies` always answer
+  false and 007EEC50's guns answer is always 0. `has_rocket_ordnance` and
+  `has_depth_charge_ordnance` are never set either.
+- The image's strafe arm (disk bytes 007EEB94-007EEBC7): target surface (the byte argument) or
+  `target->vt[5Ch](41h)`; then `[[sq+3D0h]+C24h] != 0`; then `0047B850([sq+3D0h])` must be false.
+  0047B850 (`0047B850`-`0047B873`, read to the first exit) answers `vt[5Ch](10h) || vt[5Ch](16h)`:
+  a level bomber or a dogfight-excluded plane may not strafe. The dogfight arm (007EEAEC-007EEB31)
+  uses the same PilotFires byte and 0047B850 after its own `IsKindOf(16h)` refusal.
+- **Where the image would strafe** (orders the host declines today, `007EEC50 -> 00000000` with a
+  surface target):
+  - reference v **USNOS and USNOS long**: three `plane #1.1..#1.3` (self class 18, the Dauntless
+    class, no bomb loaded: `gb=0`) against targets 348, 352, 349 at native frame 832 (about
+    40 s), `g20_rv_usnos.log`;
+  - **ESMP08** (`IJN\ESMP\08_engano`, `local\l29_base_esmp08.log`, main `557733990`): seven
+    orders at native frame 2939 (mission frame about 2900): TBM Avenger #1.1, #1.7, #1.9 and F4U
+    Corsair #1.3, #1.6, #1.8, #1.10. The script's `luaControlAirAttacks` re-orders every 15 s, so
+    the 9000-frame form carries the strafe runs.
+  Whether each of these planes has PilotFires set and is not kind 10h/16h in the image is the
+  first thing the binding must log; that decides strafe versus nothing.
+- **Mission candidates checked:** the menu ids JM09 and USN10 do not load the strafe-issuing
+  scripts (`missiontree.lua`: JM09 is `prcpijn_solomons.scn`, USN10 is
+  `usn_05_GuadalCanal_1st_Battle.scn`). The scenes naming those scripts are reached only as JM14
+  (`PRCPJM12`, which has no strafe test; its 3000-frame run loaded 0 units), ESMP08 and ESMP11.
+  ESMP11 issued no `PilotSetTarget` in 3000 frames. **ESMP08 (long) is the new row;** USNOS is
+  the reference row that reaches strafe first.
+
+### 2. The task object (kind 0Ah, `6FCh` bytes)
+
+- Factory `009CD300`, constructor `009CC230`: `BSP_BotTask_ConstructBase(owner, 10)`, the
+  approach `009CC020(owner, target)` at `+3F8h`, vtables `00D210E0` / `00D210D8` (`+3F8h`) /
+  `00D210D4` (`+4CCh`), then the initial state `+4E0h` (moveto) for the flight leader
+  (`BSP_Unit_IsSquadronFlightLeader`) or `+51Ch` (follow), entered through its `vt[4]`, and
+  `BSP_BotApproach_BindToTask`.
+- The approach `009CC020` (base `009CA4A0(unit, target)`) builds seven states, registered by
+  name (whole-object offsets):
+
+| state | offset | built by | vtable |
+| --- | --- | --- | --- |
+| `moveto (strafe)` | `+4E0h` | `BSP_BotStateMoveTo_Construct` | - |
+| `follow (strafe)` | `+51Ch` | `BSP_BotStateFollow_Construct` | - |
+| `strafe/prepare` | `+5B4h` | `BSP_BotStateFollow_Construct` (a follow variant) | - |
+| `strafe/gotowards` | `+64Ch` | inline | `00D20FE8` |
+| `strafe/aim` | `+670h` | inline | `00D21020` |
+| `strafe/goaway` | `+690h` | `009CB500` | `00D2103C` (tick `009CBB30`, the evasive-roll pusher) |
+| `strafe/attackrun` | `+6D8h` | `009CAC80` | `00D21004` |
+
+- Primary vtable `00D210E0` against the dive bomb's `00D20E18` (slot: strafe / divebomb):
+  `+2Ch` hit notice `009CC400` / `009C7900`; `+3Ch` getter `009CC3D0` / `009C79A0`; `+40h` test
+  `009CC850` / `009C8060`; `+54h` cruise profile `009CD020` / `009C8920`; `+58h` `009CD0D0` /
+  `009C7FF0`; **`+64h` the arm `009CD170` / `009C8790`**. Slot `+04h` `009CC8F0` is a debug draw
+  (static vectors, `00860BE0` / `0085F990` under `+35Dh`).
+
+### 3. The arm `009CD170` (no Ghidra function; `009CD170`-`009CD1E4` `RET 4`, INT3 from `009CD1E7`)
+
+1. `009CCED0(dt)` on the approach `+3F8h` (`009CD182`);
+2. the moveto state's `009BDE80(dt, +430h, +438h)` on `+4E0h` (`009CD1AF`);
+3. the rule `009CC690(dt)` (`009CD1BE`);
+4. the current state's `vt[0Ch](dt)` on `[+310h]` (`009CD1D6`);
+5. `+2E4h = FFh` (`009CD1D8`).
+
+### 4. The rule `009CC690`, decompiled
+
+`engaged` = `+448h != 0`, or `ctl+370h == 2` and (`+44Ch != 0` or `+468h != 0`), where `ctl` is
+`[+404h]` (approach `+0Ch`; `+370h` is the control mode the torpedo and dive-bomb rules also read).
+
+- In an attack state (`+5B4h`, `+64Ch`, `+670h`, `+690h`, `+6D8h`) and `engaged`:
+  - `ctl+370h == 0` -> prepare;
+  - prepare -> `009CC5F0`: mode 0 stays prepare, else `+448h` ? gotowards : attackrun;
+  - attackrun -> gotowards when `+448h` is set;
+  - goaway -> gotowards when `+6B4h` is set;
+  - gotowards -> aim when `009CC2F0` answers (`approach+20h` set and
+    `approach+18h < 2 * [[approach+4]+8]+188h + [approach+4]+38h`);
+  - aim -> goaway when `+68Dh` or `+68Ch` is set.
+- Not in an attack state and `engaged` -> `009CC5F0`.
+- Otherwise (not engaged) -> moveto for the flight leader, follow for a wing member.
+- A change calls the old state's `vt[8]` and the new state's `vt[4]`.
+
+### 5. Still to read before binding
+
+- the approach update `009CCED0` and the approach base `009CA4A0` (what sets `+448h`, `+44Ch`,
+  `+468h`, `approach+18h`/`+20h`);
+- the state ticks: gotowards `009CA870`, aim (`00D21020` slots), goaway `009CBB30` with the roll
+  push, attackrun (`00D21004` slots), prepare's follow variant;
+- the cruise profile `009CD020`, `009CD0D0`, the hit notice `009CC400`, the test `009CC850`;
+- how strafe fires the guns (the gun task `009FC7C0`, `BotTaskGun::tick`, is UNIMPLEMENTED in the
+  host; strafe damage depends on it).
+
+### 6. Plan
+
+1. Feed `guns_available` (PilotFires, the host's `plane_pilot_fires_c24`) and `guns_suppressed`
+   (kinds 10h/16h) in the script-order choice, behind a switch, OFF. By itself this issues
+   strafe (and dogfight against aircraft) where the host declines today. It must land with, or
+   after, the strafe task; otherwise the plane gets a class no arm acts on.
+2. The strafe task arm, rule and states, behind the same or a second switch, OFF.
+3. Pairs: USNOS, USNOS long, ESMP08 long (new row, reference form: `--frames 9200
+   --press-start-frame 30 --menu-select ESMP08 --mission-frames 9000 --mission-frame-seconds
+   0.05`), plus two controls.
