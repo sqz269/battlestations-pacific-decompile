@@ -60,10 +60,13 @@ inline constexpr bool kPlannerJoinLoopbackBound = true;
 // (00827FB0) is either ready (008128E0: an enemy list-28 site within its
 // LandingRange with a free pad), when 94h MT_SHIP_STARTLANDING is routed for
 // it, or moved by 00A02020 to the point 0.75 x CaptureRange from the anchor
-// CommandBuilding on its own side. True: the moves are issued. False: counted
-// only. Either way 94h is counted and not delivered: its receiver 008206F0,
-// the landing-craft launch, is not modelled.
-inline constexpr bool kAiGroupTransportMovesBound = false;
+// (the target group's first kind-1Ch member, or with no target
+// group the nearest list-28 entity of another team). True: the moves are
+// issued. False: counted only. Either way 94h is counted and not delivered:
+// its receiver 008206F0, the landing-craft launch, is not modelled.
+// ON by section 96.4: JM08 36000, JM08, IJN01, JM06 and LOMP06 exit 1; USNOS
+// and USNOS long exit 3 with no death row flipped (convoys steer for CB2).
+inline constexpr bool kAiGroupTransportMovesBound = true;
 
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();

@@ -8135,3 +8135,39 @@ IJN01 595, JM06 196, JM08 long 795, LOMP06 18, USNOS 234, USNOS long 1070.
   - Prediction: `startlanding_94h > 0`, exit 1 if `movetos = 0`, else exit 3 with the moved
     landers' tracks; no ramp and no begin from this switch alone (94h is not delivered).
 - **JM08 (9200):** no group reaches CLOSEATTACK by 460 s; exit 0 or 1.
+
+### 96.4 The pairs (`s24_a0` vs `s24_a1`, both from `0c5c61d0d`), and the flip
+
+| row | landers / ready (94h) / anchors / movetos (ON) | exit | deaths | death rows |
+| --- | --- | --- | --- | --- |
+| JM08 36000 | 2463 / 2463 / 0 / 0 | 1 | 159 -> 159 | identical |
+| JM08 long (9200) | 0 | 1 | 7 -> 7 | identical |
+| JM08 (3200) | 0 | 1 | 7 -> 7 | identical |
+| USNOS | 238 / 0 / 119 / 238 | 3 | 106 -> 106 | 22 changed, 0 flipped |
+| USNOS long | 1144 / 0 / 544 / 1144 | 3 | 147 -> 147 | 26 changed, 0 flipped |
+| IJN01 | 595 / 0 / 0 (no_anchor 595) | 1 | 3 -> 3 | identical |
+| JM06 | 196 / 0 / 0 (no_anchor 196) | 1 | 1 -> 1 | identical |
+| LOMP06 | 18 / 0 / 0 (no_anchor 18) | 1 | 0 -> 0 | identical |
+
+- **JM08 36000 held.** Every lander `00A11B80` meets is in Bristol's (and later groups')
+  CLOSEATTACK within 4000 m of `Headquarter 01`, which has 8 free pads, so every one is ready: 94h
+  is counted 2463 times and no move is issued. Nothing moves until 94h has a receiver.
+- **USNOS and USNOS long missed the prediction, and the mechanism matches the listing.**
+  `BSP_LANDER_DIAG=1` (`s24_d0_usnos`): `leader=Ada1 member=Convoy1..3`, `leader=Aki2
+  member=Convoy4`, `anchor=CB2`, `r=75.0` (CaptureRange 100). The groups are in CLOSEATTACK
+  against their **own** side's `CB2` group, the section 60 / 70 consequence (the slot-4 brain
+  carries team Allied while it commands the Japanese). The anchor is the target group's first
+  kind-1Ch member, so the site's party is never compared (`00A11CC0..00A11CFA` has no party
+  test). The prediction assumed the party test of the no-`other` arm applied to both arms. The
+  convoys now steer for the point 75 m from `CB2`; the changed death rows are killer distances
+  (`nearest_horizontal` 834 -> 830 ...) and no row flips.
+- **Decision: `kAiGroupTransportMovesBound` ON.** The mechanism matches the read in every row.
+
+### 96.5 What JM08's landing needs next
+
+- **The 94h receiver.** `00821F61 -> vt+238h = 008206F0` launches the landing craft and sends 95h
+  (which writes the `+1124h` cooldown). JM08 36000 routes 94h 2463 times from Bristol's group
+  alone, so binding the launch (queue packet 3, the MCargo / MLandingShip factory `0074BE00`)
+  is what turns the planner route into landings.
+- **The script route stays a race** (96, route 1): it lands only when `StartInvasion` comes
+  after the lander's group has promoted to CLOSEATTACK.
