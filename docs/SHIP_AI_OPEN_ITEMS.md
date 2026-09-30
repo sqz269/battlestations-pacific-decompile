@@ -5919,3 +5919,43 @@ around that point. An attacker whose weight is 0 admits only target-group member
 (`E08F78`, `00A149FC`) at the chosen **entity**. So the close-attack point is an enemy unit of the
 target group. It moves when that unit moves, and it lies behind the Maru only because that unit
 is behind it. The image places no point relative to the attacker's own hull.
+
+### 70.1 The pairs, and the decision
+
+**Runs.** Pair `3350621c1`: OFF is the tree build and ON is `local\s19_p1` (flip
+`kCaptureGroupValueBound=true`, ON binary `26EDE0E5132A`). Reference launch form, lockstep 0.05,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+| row | exit | predicted | what moved |
+| --- | --- | --- | --- |
+| USN13 | 3 | moved | `handoffs 0 -> 28`; capture-path assignments `1436 -> 356`; `00A0F970` calls `0 -> 42756` (41860 zero); death rows identical (25), 56 unit rows moved (mostly nearest-enemy distances) |
+| USN01 | 3 | moved | `handoffs 0 -> 3`; assignments `134 -> 44`; deaths `7 -> 6`: Convoy1 no longer sinks (damage taken 1121 -> 549); KatTBD-3 dies at 148.15 instead of 148.65 |
+| USN04 | 1 | identical | none |
+| JM05 | 1 | identical | none |
+
+**The mechanism held.**
+- The zero-valued groups are handed to `brain+4h`, and the Attack think then scores them through
+  `00A1CB80`.
+- Every one of the 400 sampled `00A0F970` values with a Maru group as attacker is 0, so the pick is
+  the first populated enemy group.
+- Maru4's group keeps its t=0.05 MOVETOATTACK at CB2's group. It is promoted to CLOSEATTACK at the
+  same step as OFF (`dist=1256.9`), so section 68's chase is unchanged: it is the image's rule for
+  these inputs.
+
+**Spread misses.**
+- USN13 hands off 28 groups, not 27. The OFF diag was capped at 450 lines, which covered only the
+  second think; one more group scores 0 later.
+- USN01 hands off 3, not 4. From t=0.10 that row has four groups (`groups=4`), and Katori's is the
+  only positive one. The prediction had counted Convoy2 separately, from late lines.
+
+**Decision: `kCaptureGroupValueBound` is ON.** The mechanism is the image's, the controls are
+identical, and the misses are counts.
+
+**Answer to section 68, first question:**
+- The image does give an unarmed or AA-only group an attack order. The Capture planner drops it
+  (value 0 against every defender), and the Attack planner's `00A1CB80` still picks the first
+  populated enemy group, because 0 beats its -999999 floor.
+- The MOVETOATTACK tick then promotes that order to CLOSEATTACK inside CollectDist.
+- The t=0.05 orders still come from the host's stand-in weight of 1.0: the weapon-facts rows are
+  published after the first think. That is a publication-timing substitution in the units host,
+  not this switch.

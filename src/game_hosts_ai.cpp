@@ -323,8 +323,10 @@ constexpr bool kCaptureAccessorsBound = true;
 // kPlannerGroupTargetValueBound already runs for 00A0F970. A group whose pairs
 // all weigh 0 (no barrels) then fails the 00A2AC02 `w > 0` test, stays
 // unassigned and is handed to brain+4h or brain+8h. False: members x defenders,
-// always positive, so every group is assigned.
-constexpr bool kCaptureGroupValueBound = false;
+// always positive, so every group is assigned. ON (2026-09-30): USN13 and USN01
+// moved as predicted (28 and 3 Maru/convoy groups handed to Attack), USN04 and
+// JM05 gameplay-identical (section 70.1).
+constexpr bool kCaptureGroupValueBound = true;
 
 // Packet cc9_planner_group_target_value (rank 10), docs/SHIP_AI_OPEN_ITEMS.md
 // section 7. True: the planner's candidate base term is 00A0F970's group target
