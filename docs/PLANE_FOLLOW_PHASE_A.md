@@ -369,3 +369,50 @@ that is already ahead.
   and nothing pathological appears. Pathological means water contacts up by more than half,
   members orbiting (fly-to share rising), or a crash.
 - A mechanism failure keeps it OFF: `applied` not 1, or a regime missing where the shadow had it.
+
+### 8.8 Measured (pairs on `838701681`) and the verdict: kept OFF
+
+- OFF logs: `local\l21_p0_<row>.log`. ON logs: `local\l21_pa_<row>.log`.
+- Diffs: `local\l21_diff_<row>.txt`. `pair_diff` exits 3 on all five rows.
+
+| row | fly-to lead / abeam / circle, ON (OFF shadow) | latched share OFF -> ON | station error mean OFF -> ON (m) | max OFF -> ON (m) |
+| --- | --- | --- | --- | --- |
+| USN04 3000 | 313 / 0 / 7624 (313 / 0 / 7618) | 38% -> 38% | 163.3 -> 163.8 | 507 -> 514 |
+| E2 | 313 / 0 / 9595 (313 / 0 / 9588) | 40% -> 40% | 160.1 -> 160.8 | 507 -> 514 |
+| JM05 9000 | 4787 / 1630 / 25848 (4418 / 1630 / 13274) | 13% -> 9% | 553.4 -> 431.1 | 2118 -> 1790 |
+| JM08 3000 | 0 / 0 / 4247 (19 / 0 / 3813) | 41% -> 35% | 108.8 -> 124.8 | 250 -> 255 |
+| LOMP10 3000 | 22 / 0 / 9 (22 / 0 / 9) | 54% -> 54% | 96.7 -> 96.8 | 287 -> 287 |
+
+JM05 9000 has 35351 follow ticks ON against 22284 OFF. Its members stay in `follow` longer, so its
+lower mean is over a different population.
+
+**Gameplay** (every row inside its predicted spread):
+
+| row | deaths | torpedo drops | plane water contacts | per-entity |
+| --- | --- | --- | --- | --- |
+| USN04 | 27 = 27 | 2 = 2 | 8 -> 7 | same 27 dead, 16 rows changed (time or killer) |
+| E2 | 51 = 51 | 2 = 2 | 19 = 19 | same 51 dead, 40 rows changed |
+| JM05 9000 | 5 = 5 | - | 3 = 3 | death rows identical, 20 unit rows moved |
+| JM08 | 10 = 10 | - | 2 = 2 | death rows identical, 1 unit row moved |
+| LOMP10 | 10 = 10 | - | 1 = 1 | same dead, 5 rows changed |
+
+**Verdict: kept OFF**, by the rule fixed in 8.7.
+- **The mechanism held.** `applied=1` on every row, and the regime split repeats the shadow almost
+  tick for tick on USN04, E2 and LOMP10.
+- **The station error fell on only one of the four rows** (JM05 9000, over a larger population).
+  It is flat on USN04 and E2, and worse on JM08, whose fly-to share also rose (59% -> 65%). That
+  meets the rule's "orbiting" exclusion.
+
+**What this says about the gap:**
+- The image's own regime choice does not close the 100-600 m station error. On USN04 the circle
+  regime replaces lead pursuit on 96% of fly-to ticks, and the mean moves by 0.5 m.
+- So the error is not a steering-regime substitution. The remaining host-side candidates are:
+  - the fly-to speed (`009BEE30`'s catch-up ramp and its level-flight / `classDesc+188h`
+    terms, PLANE_FOLLOW_LAW.md section 15);
+  - the latch recomputed without hysteresis;
+  - the station itself (`007F23A0`'s live slot 0).
+- **Next measurement:** an along-track / cross-track split of the error on fly-to ticks. It would
+  show whether members sit behind their stations (a speed deficit) or beside them (a steering
+  one).
+- The binding stays as the image's reading. It is exact against the image's bytes, and it is the
+  base for flipping once the speed side is settled.
