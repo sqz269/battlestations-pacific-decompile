@@ -4195,3 +4195,67 @@ A separate packet is needed to read the host's `C3h` state-2 path and the rule f
   again at 16:41.
 - From about 17:27 local the window request became 1600x900 instead of 640x480 (the lead routed it
   to the reference worker).
+
+## 5aj. Handoff (cc9-lua21, 2026-09-30, stamped 05:19 UTC)
+
+**What cc9-lua21 landed.** Each row is in main through the lead's merges; the last two are
+merging.
+
+| packet | switch | state | section |
+| --- | --- | --- | --- |
+| `cc9_follow_approach_arm` (5ai item 1, read) | `kFollowPhaseABound` | **ON** on fidelity | PLANE_FOLLOW_PHASE_A 8-8.8 |
+| `cc9_follow_error_split` | none (diagnostic) | both sides | PLANE_FOLLOW_PHASE_A 8.9 |
+| `cc9_follow_turbo` (5ai item 1, the fix) | `kFollowTurboBound` | **ON**: station error 154 -> 22 m on USN04 | PLANE_FOLLOW_PHASE_A 9-9.5 |
+| `cc9_wanderer_feedback` (5ai item 2) | `kPlaneWandererBound` | stays **ON** | PLANE_WANDERER 9 |
+| `cc9_weapon_facts_order` | `kAiWeaponFactsAtAttachBound` (in `src/game_hosts_gunnery.cpp`) | **ON** | WEAPON_FACTS_ORDER |
+
+**The queue, in the lead's order:**
+
+1. **The recon publication `00806B10` (PRIORITY).** cc9-ships20 found it in SHIP_AI 74 (main
+   `20edc0e8c`).
+   - `Recon::publish_slot_table` is unimplemented (`src/game_hosts_lua.cpp` about line 2262).
+     `recon[p][rel][cat]` stays empty, so every `luaGetShipsAround*` query returns nil. JM08's
+     invasion trigger never fires, although Allied ships reach 42.8 m.
+   - `00806B10` (`00806B10`-`00806CCD`, `RET 4`, `__thiscall(ReconSlot*, LuaInstance*)`) is
+     called only from `008079B0` `BSP_Recon_ServicePeriodicRefresh`. The ledger says it is read
+     only to `00806BAE`. `00805D90` is its fill partner.
+   - Read both whole, then bind OFF with predictions. Use ships20's env-gated `BSP_ORIGIN_DIAG`:
+     `recon[PARTY_ALLIED].own` entries should become non-zero, and JM08 36200/36000 should start
+     the invasion near frame 10800.
+   - Pair on JM08 36000 plus the usual rows, flip by verdict, and list every scripted mission
+     that moves.
+2. **Ranking #7:** the squadron `+348h` command block, `approach+6Ch`, the moveto circle radius
+   (docs/GAMEPLAY_GAP_RANKING.md).
+3. **Ranking #15:** the airfield destruction slot `006D40F0`. It is parked until a row destroys a
+   hangar.
+4. **5ah (a)(b)(c):** the carrier elevator chain. Unchanged from 5ai item 5.
+5. **Low priority:**
+   - unit SetParty with the event-6 group removal (SHIP_AI 63);
+   - renaming the withdrawn `unit_lacks_follow_target` to `unit_is_flight_leader`. `unit+9D8h` is
+     the squadron member slot (AA_LETHALITY_AUDIT 12). Uses are in `dive_bomb_task.hpp` (about 298
+     and 1435), `torpedo_release_orders.hpp` (about 146 and 198) and `game_hosts_units.cpp`
+     (about 3835 and 14432). Check the polarity at each use, and put it in a commit that already
+     touches those files.
+
+**Open from this worker's packets:**
+- JM05 9000's follow error is 390 m even with turbo: |cross| 209 m, and 40% of ticks beside
+  the station. That is a steering or station problem, not speed.
+- The follow exit's immediate turbo clear (`009BDE40`) is one think late in the host.
+
+**Tools in the cc9-lua21 tree** (`local\`). Copy what you need with your own prefix.
+- `l21_emu.py` + `l21_harness.py`: an x86/x87/SSE interpreter that runs the image's own bytes on
+  fake objects. A read of an unset field stops the run and names it.
+- `l21_sym.py`: a concolic SSA trace.
+- `l21_blocks.py` / `l21_raw.py`: block-level symbolic listing / listing with the exact x87 depth
+  (`l21_depth.json`).
+- `l21_paths.py`: random-input path census with coverage.
+- `l21_probe*.{cpp,py,ps1}`: checks a C++ transcription against the image through a probe exe
+  (link with `/FORCE:UNRESOLVED`).
+- `l21_disp.py`: the displacement scan.
+- `l21_dword.py`: absolute-dword references, which find vtable slots.
+- `l21_rd.py`: reads dwords at an address.
+- `l21_runs.ps1` / `l21_wait.ps1`: the launch rows and the foreground wait.
+- `l21_along.py`: aggregates the per-400-tick `follow law` rows.
+
+**Environment:** runs were clean all session. The window is 1600x900 and a 3000-frame row takes
+about 20-40 s.
