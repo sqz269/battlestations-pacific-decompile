@@ -31,17 +31,17 @@ enum class StrafeState : int {
     kAttackRun = 0x6D8,  // "strafe/attackrun", vtable 00D21004
 };
 
-// The arm (009CD170), its states and the gun read in the units host. OFF:
-// the group flips only when strafe runs end to end (it needs the feed below,
-// since nothing else chooses class 00E08F40).
-inline constexpr bool kStrafeTaskBound = false;
+// The arm (009CD170), its states and the gun read in the units host. Flipped
+// with the feed below as one group (nothing else chooses class 00E08F40);
+// goaway and script dogfights are unmeasured (5cb).
+inline constexpr bool kStrafeTaskBound = true;   // ON: SQUADRON_LAND_TASK 5cb
 
 // 007EEC50's guns inputs in the PilotSetTarget choice (src/
 // game_hosts_script_orders.cpp): guns_available = PilotFires (plane+C24h,
 // 007EEB08 / 007EEBB7) and guns_suppressed = 0047B850 (kind 10h or 16h,
 // 007EEB2C / 007EEBC2). It also lets PilotSetTarget choose dogfight against
-// an aircraft. OFF; it must not flip before kStrafeTaskBound.
-inline constexpr bool kAttackChoiceGunsFedBound = false;
+// an aircraft. It must not be ON without kStrafeTaskBound.
+inline constexpr bool kAttackChoiceGunsFedBound = true;   // ON: SQUADRON_LAND_TASK 5cb
 
 // 009CC690's inputs. `ctl` is [task+404h] (approach+0Ch).
 struct StrafeRuleInputs {

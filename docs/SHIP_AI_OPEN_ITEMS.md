@@ -8593,3 +8593,69 @@ crafts 324, Grayson 125, Bristol 79, Macomb 66.
 
 **Open (not read):** whether the image drops a held gun target at the party change (the observer
 notification) rather than at the next sweep; at most about 1.5 s of fire.
+
+## 103. The landing ship's ramp and unload, `0074B0B0..` (packet `cc9_landing_ship_unload_read`, cc9-ships25, 2026-09-30)
+
+Read only: nothing was bound. `BSP_LandingShip_Update` `0074AF50` (body `0074AF50..0074B568`,
+live decompile), past the ramp latch of section 86 (`0074AFCC..0074B0AC`).
+
+### 103.1 The field names
+
+The save routine `0074A1F0` (no direct caller; a serializer slot) writes the landing ship's state
+under its own Hungarian keys, which name the fields:
+
+| field | key | meaning (hypothesis) |
+| --- | --- | --- |
+| `+1188h` byte | `nyitva` | open (the ramp latch sets it, section 86) |
+| `+1189h` byte | `horgony` | anchored; with it `horgonyPont` `+11B4h` and `horgonyMatrix` `+11C0h` |
+| `+118Ah` byte | `partraszallas` | landing (blocks the unload below) |
+| `+118Bh` byte | `gyorsPartraszallas` | "fast landing"; the update latches it at the unload |
+| `+118Ch` byte | `partraszalltunk` | "we have landed" |
+| `+11A4h` float | `rampaElfordulas` | ramp rotation, 0..1 |
+| `+11A8h` float | `lastTalaj` | last ground contact time |
+| `+11ACh` float | `nyitzarTimer` | open/close timer |
+
+`+1190h` (the ramp rotation time) is `2.0` `[00CE3958]`, stored by InitAll `0074BEC0`.
+
+### 103.2 The routine after the latch
+
+- **The ramp** (`0074B2F4..0074B329`): while `+1188h` is set and `+11A4h < 1.0 [00D7A24C]`,
+  `+11A4h = 006F22B0(+11A4h + dt / +1190h)` (a min against the integer bound in ECX); while it is
+  clear and `+11A4h > 0.0`, `006F22F0(+11A4h - dt / +1190h)` (a max). The bound values in ECX were
+  not read at the call sites (expected 1 and 0). When `+11A4h` moves, each record of the ramp-bone
+  vector `+1198h` (stride 4Ch) gets `lerp(rec+44h, rec+48h, +11A4h)` and its node a rotation about
+  X (`BSP_Matrix_BuildRotationX`, node `vt+38h`): presentation.
+- **The unload, once** (`0074B1..`, reached when `+1188h` is set, `+11A4h >= 1.0`, `+118Ah` and
+  `+118Bh` clear): `+118Bh = 1`; with a pad (`+1200h`), the bow point `pos + 0.5 [00D7A280] x
+  (Length-scaled row, 00414260(class+A0h))` goes to `006AC370(pad)(&point)`, which walks the pad's
+  path list `+200h`, moves each path's first knot to that point in the path's own frame, rebuilds
+  the knots and starts it (`0048CA60(path, 1)`): the troops' walk-in (presentation, traffic). A
+  small landing ship (`class+808h` BigLandingShip clear) hides its `soldiers` note node. Then the
+  Lua self object gets `LandingStarted = true`, and `0074AD90` sets `LandingFinished = true`,
+  `+118Ch = 1`, and calls `00986820(ship)` when `[00F8A0C4]` is set (not read).
+- **So the unload lands 2 s after the ramp latch** (the ramp opens over `+1190h` = 2.0 s).
+- **The capture warning** (`0074B0B0`): with `+1188h` clear and no pad (`+1200h` null), when
+  `vt+240h()` and `vt+174h()` answer and `vt+174h()->vt+8()` is false,
+  `BSP_WarningManager_ReportCaptureShip(0, ship)`: HUD.
+
+### 103.3 Does anything clear `ship+1200h`? No.
+
+Every `+1200h` store in `.text` (`89 ?? 00 12 00 00`, `C7 ?? 00 12 00 00`, `8D ?? 00 12 00 00`):
+the constructor `0074BB84`, `0074A4C0` (`0074A565`), `0074A990` (`0074A9B0`); `009E7566`,
+`009E7571`, `009E75C4` and `009E564F` write a ship-AI brain object, and the two `LEA`s are in
+`BSP_SubmarineUnit_SEntityInit` and `00ACED50`. The update above only reads `+1200h`. So a lander
+keeps its pad for life: section 98's LST 02 behaviour (held pad, every later 94h -8) is the
+image's, and a lander that has unloaded is never re-begun. The pad's side is released only by
+the occupant observer on the lander's death (`forget_unit`), as the host models.
+
+### 103.4 What the host lacks, and where it matters
+
+- The host models the latch (`landing_ship_ramp_latch_0074afcc`, `+1188h`) but not `+11A4h`, the
+  unload, `+118Ch`, or the two Lua fields.
+- **`LandingStarted` / `LandingFinished` are read by scripts** in this installation:
+  `global/commandhelpers.lua` (2024-10-29, `luaRemoveLandedUnitsFromTable`, line 12306), and the
+  mission scripts `bsm_02`, `bsm_06`, `bsm_10`, `chg_5`, `COTP-IJN/jm08.lua` and `usn_14`. JM08's
+  row loads `COTP-IJN\PRCPIJN\PRCPJM08.lua` (2024-08-26), which does not read either field.
+- **The binding** (a later packet): 2 s after a latch, set `+118Ch` and publish the two booleans on
+  the unit's Lua self object. The Lua write is the Lua host's (cc9-lua29's lane). Reach: rows whose
+  script reads the fields and whose landers ramp inside the window (BSM02 / BSM06 first).

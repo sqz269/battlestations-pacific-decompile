@@ -8204,3 +8204,109 @@ When the search does find an aircraft, it shoots at the aircraft instead.
   - no goaway before the mission ends at 150 s;
   - 168 hit-notice resets: the planes are under fire throughout.
 - The arm's `record` line printed it as UNIMPLEMENTED; it is now `done`.
+
+## 5cb. The strafe group's pairs and the verdict (packet `cc9_strafe_flip`, cc9-lua30, 2026-09-30)
+
+OFF `local\l30_off` (SHA-256 `47F00B464DCD`), ON `local\l30_on` (`B6E261D42376`, both flips). Both
+are built from `cc43405cc`. Reference launch form, `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`. Script: `local\l30_runs.ps1`; logs: `local\l30_{off,on}_<row>.log`.
+
+| row | pair_diff | what moved |
+| --- | --- | --- |
+| USN01 3200/3000 (control) | 1, gameplay identical | - |
+| JM05 3200/3000 (control) | 1, gameplay identical | - |
+| USNOS 3200/3000 | 3 | deaths 110 -> 113; the three strafe targets take damage |
+| USNOS 9200/9000 | 3 | deaths 166 -> 169; the same strafe rows as the 3000 row |
+| ESMP08 9200/9000 | 3 | deaths 0 -> 7 (F4U Corsairs); no strafe fire |
+
+**Choices.** The class counts of `PilotSetTarget choose` move only where OFF declined:
+- USNOS: `00000000` x3 becomes `00e08f40` x3;
+- ESMP08: `00000000` x177 becomes `00e08f40` x177;
+- the torpedo, dive and level choices are unchanged on every row;
+- no row chose `00e08f58`.
+
+**Dogfight by `PilotSetTarget`** is not exercised anywhere. Among the rb13 reference logs, only
+USNOS declines any order (3). cc9-lua29's ESMP11 and JM14 bases issue no `PilotSetTarget`. So no
+available row gains a script dogfight. This is recorded as unmeasured, not as a pass.
+
+**USNOS 3000:**
+- 12 tasks (three squadrons of four) and 45 transitions;
+- five aim entries at t = 117.8-127.1 s, from about 1000 m (3-D) at 575-672 m altitude;
+- 148 aim thinks and **53 gun fire ticks on the aim point** (corrected in 5cc: 169 and 61 were
+  the `f3ef5bbcf` run of 5ca.4).
+
+The strafe damage lands on the ordered targets (unit table, OFF -> ON):
+
+| target | hits | dealt | taken |
+| --- | --- | --- | --- |
+| TroopTrans2 | 0 -> 8 | 0 -> 89 | 0 -> 22 |
+| TroopTrans3 | 0 -> 38 | 0 -> 25 | 0 -> 108 |
+| TroopTrans6 | 0 -> 13 | 0 -> 70 | 0 -> 37 |
+
+The strafers press in and die to AA:
+- OFF already loses 9 of the 12 (they circle at about 1200 m under fire);
+- ON loses all 12. `plane #1.1`, `#1.2` and `#1.1|.-2` are the three only-ON deaths;
+- nine death rows move earlier or later, at 372-928 m instead of about 1200 m, killed by
+  Portland2, TroopTrans1 or the Gear boats.
+
+Every aimer dies within 1-5 s of entering aim. So **goaway and its evasive gate are never
+reached**, and attackrun only as the members' one-think blips at an order.
+
+**ESMP08 long:**
+- 497 installs for 36 planes: `luaControlAirAttacks` re-targets every 15 s, and a new target
+  re-installs;
+- 322 attackrun thinks, all one-think blips after an order;
+- three aim entries at t = 442-444 s, zero gun fires;
+- seven Corsairs shot down closing on the IJN fleet. OFF they never engage and nothing dies;
+- 210 hit resets.
+
+**Against 5ca.3:**
+- smoke: as predicted;
+- the feed and the choice: as predicted;
+- strafe damage on the USNOS targets: as predicted;
+- the task count is **missed** (12, not 3), and aim entries are **missed** (5 in USNOS,
+  predicted 2-4 per plane);
+- goaway and the full cycle: **missed**, not reached because the aimers die;
+- ESMP08 fire: **missed**, 0;
+- dogfight by `PilotSetTarget`: **unmeasured**;
+- controls: as predicted.
+
+A divergence between the USNOS 3000 row and the head of the 9000 row, reported here at first,
+does not exist: see 5cc.
+
+### Verdict: **flip ON**, with recorded misses (`kStrafeTaskBound = true`, `kAttackChoiceGunsFedBound = true`)
+
+The mechanism matches end to end where it is reached:
+- the order chooses strafe;
+- the task installs;
+- moveto/follow -> gotowards -> aim run as read;
+- the gun fires on the aim point;
+- the ordered targets take the damage.
+
+The misses are spread (counts) and reach (goaway unreached because AA kills the aimers), not a
+mechanism failure. Still unverified:
+- goaway, attackrun beyond the one-think blip, and the evasive gaps;
+- script dogfights.
+
+## 5cc. The USNOS 3000/9000 "divergence" was two binaries, not nondeterminism (cc9-lua30, 2026-09-30)
+
+5cb reported that on the ON side, the USNOS 3000 row and the first 150 s of the 9000 row
+disagree: aim thinks 169 vs 148 and gun fires 61 vs 53. **That was a transcription error.**
+- 169 / 61 are the 5ca.4 run, built from `f3ef5bbcf`.
+- 148 / 53 are the 5cb run, built from `cc43405cc`.
+- `local\l30_on_usnos.log` was rewritten by the 5cb run (mtime 22:16:35 UTC) before its census was
+  re-read.
+- The two builds differ by other packets' landed code: `git diff --stat f3ef5bbcf cc43405cc`
+  touches `game_hosts_ship_ai.cpp`, `hull_terrain_contact.cpp`, `game_hosts_ai.cpp` and
+  `game_hosts_units.cpp`, 12 files, +1299/-115.
+
+**The check.** `local\l30_firstdiff.py` starts at the first `local-player unit lists sources`
+line. It drops the harness lines, the first-call `host ...` registrations and the lines naming the
+run length, and it masks pointers and thread ids.
+- On both sides (`l30_off_usnos` vs `l30_off_usnosl`, `l30_on_usnos` vs `l30_on_usnosl`) the two
+  rows are line-identical up to and including `controlled unit frame 3000 t= 150.00`.
+- The first difference is the 3000 row's end-of-run summary.
+- The two logs' per-plane strafe census rows are identical, and so is their summary (aim = 148,
+  fires = 53).
+
+Nothing in the first 150 s reads the configured frame count, and the runs are deterministic.
