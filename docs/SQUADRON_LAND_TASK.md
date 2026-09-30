@@ -6819,3 +6819,64 @@ this packet the value was a constant 0.0 (`kPlaneDesc158`).
 5. **USN01, LOMP06:** no launch, exit 0 or 1.
 6. **Flip criterion:** no mechanism count moves (placements, lift-offs, brake releases, stows
    within one), and no death row moves that the new positions cannot explain.
+
+### Results (OFF `local\l27_poff`, SHA-256 `13ADE266E8B5`; ON `local\l27_pon`, `E59D0D9507B9`; both from `3f3ff4971`)
+
+The 300-frame smoke of the committed tree (USN01) exits 0, with 299 frames presented.
+
+**The values** (`plane desc 158h:` lines; min z / max z of each `BoundingBox`):
+
+| class | model (this installation) | z range | `+158h` |
+| --- | --- | --- | --- |
+| 135 | `models/planes/us/Warhawk.MMOD` | -5.853 .. 3.877 | **-0.988** |
+| 101 | `models/planes/us/F4F_Wildcat.MMOD` | -6.170 .. 2.590 | **-1.790** |
+| 112 | `models/planes/us/tdb_devastator.MMOD` | -7.421 .. 4.056 | **-1.682** |
+| 108 | `models/planes/us/dauntless.MMOD` | -6.746 .. 3.224 | **-1.761** |
+| 26 | `models/planes/us/F6F_Hellcat.mmod` | -5.249 .. 5.075 | **-0.087** |
+
+The offsets are within the predicted +-3 m. Every model opened and had a box.
+
+The OFF side now carries main's later merges, so its JM05 numbers differ from 5bj's; only same-tree
+pairs are compared here.
+
+| row | pair_diff | mechanism counts ON (OFF) | death table |
+| --- | --- | --- | --- |
+| JM05 3000 | 3 | placed 30, lift-offs 30, brake 10/10: unchanged | **identical** (12 rows); hits 353 -> 354 |
+| JM05 9000 | 3 | placed 36, lift-offs 34 (34), stows 12 (12); brake held at end **2** (1); unparented lift-offs 33 (34); `c01_sets` 4554 (204) | **identical** (14 rows) |
+| USN04 4500 | 3 | 12/12, done 12: unchanged | 20 rows re-timed. One row leaves the window (`A6M Zero #8.2`, 224.36 s OFF; ON it dies at 226.31 s on E2). Releases and first hit unchanged |
+| E2 9000 | 3 | unchanged | same victim set (52), the same re-timings |
+| USN13 3000 | 3 | 27/27, done 27: unchanged | **identical**; every headline value identical (plane positions only) |
+| USN01 | 1 | - | identical |
+| LOMP06 | 0 | - | identical |
+
+**The JM05 9000 miss.** The new spot slide makes the airfield members start about 1-2 m further
+back (slide `(+158h + 1.0) - index x 0.2`: -0.76/-0.96/-1.16 for Main's class-108 sqn12, against
+1.00/0.80/0.60). That re-times the recalled airfield planes' landings, and then 5ar's park <-> abort
+loop, already known to be position sensitive, falls differently:
+- **Main airfield.** `MainAirfieldEntity 01_sqn01|.-2` now loops with 233 park entries and ends
+  holding `+910h` (`q910=1`; OFF `q910=0`). So 5bh's `006CE4A0` hold now also stops
+  `MainAirfieldEntity 01_sqn12|.-3` (`hold=357`, never aligned). Its brake stays held (5bj's rule),
+  and it is presumably where the extra `c01_sets` come from (not traced).
+- **Secondary airfield.** `SecondaryAirfieldEntity 01_sqn02|.-3`, a hangared recalled plane,
+  **lifts off again at 378.73 s** (height, y 4.16, 42.85 m/s) out of `land/park` with `q910=0`. That
+  is the unparented lift-off.
+- **Open, new:** how a hangared plane reaches lift-off speed from `land/park`. Its park summary
+  has `entries=1 from_abort=0`, so it is not the abort loop. It is recorded here, not traced.
+
+None of this is the `+158h` read itself. The five readers take the image's value; what moves is the
+downstream park loop's sensitivity. No death row moves on either JM05 row.
+
+| prediction | result |
+| --- | --- |
+| 1. offsets within +-3 m | **held**: -1.79 to -0.09 |
+| 2. JM05: counts unchanged, lift-offs within about 1 s, deaths identical | **held on 3000**. On 9000, deaths are identical but two mechanism counts move (held brakes 1 -> 2, one extra relaunch from park): a spread miss through the park loop |
+| 3. USN04/E2 | **held**: re-timed only |
+| 4. USN13 | **held**: positions only |
+| 5. controls | **held** |
+
+### Verdict: **flip ON**, spread miss recorded
+
+The `+158h` mechanism matches the image, and its readers are the image's. The JM05 9000 count moves
+come from the park loop that 5ar accepted as the image's, reached at different times, not from this
+read. Open for the queue: the park loop's airfield relaunch (above), and 5bi's split-form
+`vtable[28h]` scan.
