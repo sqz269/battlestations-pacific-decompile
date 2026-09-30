@@ -4818,3 +4818,68 @@ Yorktown_sqn06 (entered at about 442 s) and Yorktown_sqn10|.-2.
 - `l23_states.py` (land state occupancy from the `state A -> B` lines);
 - `l23_lft.py` (the `land follow trace` rows);
 - `l23_edit3.py` and `l23_edit4.py` (the elevator binding, a model for anchor-checked edits).
+
+## 5aq. The hangar hide's detach moves nothing: the lead of 5ap item 1 is refuted (packet `cc9_park_hide_detach`, cc9-lua24, 2026-09-30)
+
+5ap item 1 asked whether the hangar hide's spatial detach takes away the hidden plane's ground
+contact, terrain height, collision or fixed step. Ghidra was read only; no code changed, no run.
+
+### What the hide does
+
+- `007B96C0`-`007B96CF`: `+C00h` = 1, then `00951F40(0)` (5x).
+- `00951F40`-`00951F7E` (`__thiscall(unit, char show)`, `RET 4`), listing:
+  - it does nothing unless `unit+4A4h` (the scene node) is set;
+  - `ECX` = `unit+360h` (the unit part instance), then `00710B80` for 0 or `00710AD0` for 1;
+  - `00B6DA70(node+4A4h, 0.0 or 1.0, 0)`, `BSP_SceneNode_SetVisibilityFactor`, which only stores
+    the float at scene node `+ACh` and recurses into the children (`00B6DA70`-`00B6DAAB`).
+- `00710B80`-`00710BA2` (`__fastcall(part)`, `RET`): if `part+184h` is set,
+  `BSP_SpatialIndex_DetachNode(0042E630(), part)` (`0098A500`), then `part+184h` = 0.
+
+`unit+360h` is the plane's collision node (docs/COLLISION_SHAPES.md row D, `[owner+360h]`).
+
+### Who reads the spatial index
+
+The 25 callers of `0042E630` and the callers of the four queries (`0098ADD0` segment,
+`0098B130` nearest unit on segment, `0098B370` sweep, `0098C630` sphere):
+
+| consumer | kind |
+| --- | --- |
+| `BSP_Projectile_TraceSegmentAndImpact` `0084BF00`, `0084B6B0` | shell hits |
+| `BSP_Explosion_GatherHitRecords` `00904470` | blast hits |
+| `BSP_LineOfFirePredicate_Blocked` `0072CDD0` | line of fire |
+| `BSP_Aim_ResolveRayToWorldPoint` `00957740`, `00957BD0` (gun aim) | aim rays |
+| `00904400` (callers `007C2450`, `00864680` gunnery visibility, `009F1BC0` ship AI approach), `009043A0` (HUD pick) | segment tests |
+| `BSP_CameraMover_KeepAboveWater` `0042F0C0`, `0042EF90`, `0043B9C0`, `00452BD0` (binoculars), `00547480`, `0060ABD0`, `008949D0`, `00894C00` | camera and HUD; `0042EF90`, `0060ABD0`, `008949D0` and `00894C00` have no direct caller and were not read further |
+| `006D3B10`, `006D3C10` (airfield read and destructor), `00883BB0`/`00880CD0` (landscape), `0092AAE0` (ship collision install), `00712C80` (part destroy) | attach and detach |
+| `00875BB0` -> `0098BDB0` | the per-step refresh of registered roots |
+
+`007C2450`, the only plane-segment caller, is reached from `006082D0`/`00609BD0` (HUD segment
+24), not from any tick.
+
+None of them is on a plane's motion path:
+- **Ground contact and height.** The probe `007C5AC0` asks the landing site (`006C0840`) and the
+  holder's runway test (`006BC530`); neither touches the index (5k, 5x (i)).
+- **Collision.** The index is a hit broadphase (shells, blasts, line of fire, aim). No fixed-step
+  routine queries it for body contacts.
+- **Fixed step.** `BSP_PlaneTickElement_FixedStep` (`007CE040`) exits early only on `unit+5Eh` and
+  `unit+520h` (5x (ii)). The refresh `0098BDB0` only walks registered nodes, and a detached node is
+  simply not refreshed. The plane's own pose is refreshed lazily by its readers (`00414DB0` on
+  `+C8h` clear, for example at `007C5B01`).
+- **Readers of `part+184h`.** A scan of `80 ?? 84 01 00 00 00` finds 15 sites. Only `00710AD0`
+  and `00710B80` test it on a part. Two others were checked and are other structures: `0099ADD0`
+  (`PilotBot_Tick`, `[bot+50h]` = the unit) and `007EE304` (`[esi+3D0h]`). The remaining hits are
+  menu, weapon director, gun bot and ship AI code.
+- **The visibility factor.** Loads of `unit+4A4h` (`8B ?? A4 04 00 00`) in the plane (`007B`-
+  `007D`), bot (`0099`-`009B`) and fan-out (`0087`) ranges are all effects and message handlers
+  (`007CA647`, `007D0A00`, `007D0B80`, `007D766F`), with no motion reader.
+
+### Verdict
+
+The image's hidden plane keeps its ground contact, its runway height and its fixed step. It
+loses only its shell, blast and line-of-fire targetability and its drawing. Nothing in the hide
+can stop it drifting, so this lead does not end the loop. There is no difference to bind, and
+`kLandParkStateBound` stays OFF. This agrees with 5aa and 5z: as far as the listing shows, the
+image's airfield plane loops invisibly the way the host's does.
+
+What the hide does change is labelled in the host already (a stowed or hangared plane stays
+targetable here; 5ap notes). A binding for that would be a targeting change, not a park change.
