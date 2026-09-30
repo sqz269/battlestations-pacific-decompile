@@ -6123,3 +6123,49 @@ cancelling the host motion tick's vertical velocity.
 - SHIP_AI 87.2's `kShipTerrainContactBound` must stay OFF: the two are exclusive.
 - `kLandingShipRampHullContactBound` can now be judged against real contacts: the latch comes
   from this solver.
+
+### 84.4 The stand-in gate, the shape filter, and the pair on current main (cc9-gunnery19)
+
+**The gate** (`a5a9a7502`). With `kHullTerrainContactSolverBound` ON:
+- the SHIP_AI 87.2 keel stand-in never applies its stop, even with `kShipTerrainContactBound` ON;
+- `+1010h` / `+1011h` come from the solver's contacts alone.
+
+The stand-in's census still runs.
+
+**The shape filter.** The solver now applies `00C44104`'s test:
+- **Hull:** group 1; mask `0Dh | class bit`, or `0Dh` after
+  `NavigatorSetAvoidLandCollision(false)`, which calls `008A3C79 -> 0092BD00 -> 00C48020` and
+  writes `shape+30h = 0Dh` for every hull shape (SHIP_AI 87.6).
+- **Terrain:** group 8, mask 0.
+- `0Dh` keeps bit 8, so the disable side does **not** drop terrain contact; it drops only the class
+  bit. No hull-terrain pair is filtered. The test is in the code as documentation of that.
+
+**The pair on current main** (`a5a9a7502`; `local\g19_goff` flips the solver OFF,
+`local\g19_gon` is main as it is). The stand-in is OFF and the ramp latch
+`kLandingShipRampHullContactBound` ON on both sides.
+- **Exit 1:** USN02, USN04, USN01, JM06.
+- **Exit 3:** JM08 long, USNOS, USN13, IJN01, JM05. Each has the same death rows and
+  aggregates as 84.3, so the stand-in and the ramp latch leave the solver's pair unchanged.
+- **This is also the stand-in-OFF comparison:** main's stand-in is OFF on both sides.
+
+**What the solver does to JM08 long's landing chain** (`summary mission ship ai landing modes`,
+`land state`, `landing ship ramp`):
+
+| | OFF (hulls cross land) | ON (solver) |
+| --- | --- | --- |
+| mode-3 approach points | 1081 | **0** |
+| mode-3 in reach / begins | 2 / 2 | 0 / 0 |
+| land steps / final | 822 / 772 | 0 / 0 |
+| ramp ground contacts / lowers | 3008 / 2 (LST 03 at 831.95 s, LST 01 at 897.15 s) | 0 / 0 |
+
+- **Why it breaks:** with the solver the landers stop at the beach, and the approach never
+  selects landing mode 3 (`009F21A0`, `mode3_points=0`, `no_pad=0`). So no pad is assigned, no
+  ramp latches, and nothing lands.
+- On OFF the chain ran only because the hulls drove 230-356 m inland into the HQ's reach.
+- **The chain's entry to mode 3 is therefore unverified against a hull that cannot leave the
+  water.** This is cc9-ships22's lane (SHIP_AI 85-86):
+  - what selects mode 3 in the image, and from how far;
+  - whether the image's landers beach closer to `Headquarter 01`'s pads than the host's do.
+- **Also open on the solver's side:** interior raw points can stop a hull slightly early
+  (84.1's labelled substitution). That is centimetres to metres, not the hundreds of metres the
+  landing needed on OFF.
