@@ -5843,3 +5843,121 @@ the difficulty owner modifier, what Shimotsuke aims at on USNOS).
 - The misses are spread, not mechanism.
 - The labelled differences in 82.2 stand.
 - GAMEPLAY_GAP_RANKING #12 closes with this flip.
+
+## 83. What a hull-terrain contact does in the image (packet `cc9_hull_terrain_contact_read`, cc9-gunnery19, for SHIP_AI_OPEN_ITEMS 87)
+
+Read-only; no code or Ghidra change.
+
+**Scope.** SHIP_AI 87.1 calls the contact phase `00C5BB5F..00C5C455` "unread". Most of it had
+already been read, in five docs:
+- DYN_PHYSICS_SUBSTEP (the substep order);
+- DYN_CONTACT_SOLVER (groups and the task split);
+- DYN_LCP_IMPULSE_MATH (the rows, which the shipped `LCPSolverTask` `00403720` runs);
+- DYN_COLLISION_PASS (the narrow phase and the manifold);
+- NATIVE_DYN_TERRAIN_CONVEX_R145 (the terrain/convex test `00C53630..00C549C8`).
+
+This section joins those five and adds what they left open for a hull: the terrain shape's
+material, and the terrain contact's normal and depth.
+
+### 83.1 The chain for one hull against the terrain
+
+**1. Which pairs are tested** (`00C57070`, then `00C44090`). A pair of shapes is tested when
+`(maskB & groupA) || (maskA & groupB)`.
+- **The hull shapes** are convex meshes (kind 4) with group `1` and mask `0Dh | class bit`
+  (SHIP_HULL_SHAPES, `009394DD` / `009394A9`).
+- **The terrain shape**, read here from `BSP_Landscape_LoadTerrain` `00882AC0`, has its descriptor
+  on the stack at `ESP+48h` and appended to the body's shape list at `00883849`:
+
+  | field | offset | value | written at |
+  | --- | --- | --- | --- |
+  | restitution | `+00h` | `0.0` | `0088359E` |
+  | friction | `+04h` | `0.0` | `008835A4`, rewritten 0 at `00883684` after the `XORPS` at `00883679` |
+  | group | `+08h` | `8` (`ESP+50h`) | - |
+  | mask | `+0Ch` | `0` | `008835AE` |
+  | kind | `+10h` | `5` (terrain) | `00883596` |
+
+  - The heightfield fields follow at `+44h..+60h`, matching R145's constructor table.
+  - The body is static: descriptor flags `|= 1` at `008838AB`, `CreateBody` at `00883921`.
+  - Sample modes 0 and 2 (`00883624..0088365E`) pass the `XORPS` at `00883679`. Any other mode
+    jumps to `0088367C` past it, but `XMM0` is still the `0.0` from `00883571`: nothing between
+    `00883571` and `0088367C` loads it, only stores. So the friction is 0 in every mode.
+- **So the hull collides:** the hull mask `0Dh` has bit `8`, and the terrain mask `0` does not
+  matter.
+
+**2. The contacts** (`00C53630`, R145).
+- **Which points:** every vertex of every hull convex mesh, in mesh order, at or below the
+  bilinearly interpolated terrain height (`00C54680..00C5468C`: `y <= h`, else skip). At most eight
+  per shape pair.
+- **The normal is the terrain cell's surface normal, pointing up, not the vertical and not a
+  finite-difference gradient.**
+  - It is the cross product of the cell's two edge vectors, built from the X spacing `+21Ch`, the
+    Z spacing `+220h` and the height differences, then normalised through the sqrt at `00C547C4`
+    (`00C546F6..00C547F7`).
+  - **Uncertainty:** which sample pair gives each height difference was not traced sample by
+    sample.
+- **The witness point on the terrain** is the vertex moved by `(h - y)` along that normal
+  (`00C54818..00C5486C`). Its x and z are scaled by the X spacing twice (R145's retained quirk).
+- **The depth** is set by the manifold insert `00C3F760` as `n . (worldA - worldB)`, which is
+  `(h - y)`: the vertical gap below the surface, used as a distance along `n`. On a slope it
+  exceeds the true perpendicular penetration by `1 / n_y`.
+
+**3. Material.**
+- Friction is `combine(0.5, 0.0)`: a product unless one side is negative. The hull's value is 0.5
+  for `Ship` and `TBoat` and 1.0 for `Submarine` (`00939365`); the terrain's is 0.0. **The
+  hull-terrain contact is frictionless.**
+- Restitution is `(0 + 0) * 0.5 = 0`.
+- The manifold keeps up to four points. A point within 0.05 units of an existing one keeps its
+  warm-start impulses; the reduction above four points (`00C3FA46..00C3FFD5`) is unread.
+
+**4. The solver** (`00403720`: ten iterations, `world+38h`).
+- **The normal row.** The target is `min(0, vn*0 + 0.05) = 0`, so the velocity row removes
+  exactly the approach speed along `n`, with no bounce. The impulse is clamped `>= 0`: push, never
+  pull.
+- **The friction row** exists, but its limit is `0 * impulse = 0`, so it applies nothing.
+- **Position correction is a split impulse** into the pseudo-velocity pair. Its target is
+  `world+18h * clamp(depth, 0, world+28h) / dt`, that is `0.1 * min(depth, 0.5) / dt`: each
+  substep pushes out one tenth of the overlap, at most 0.05 units per substep. It adds no real
+  velocity.
+- **The terrain is static** (solver index 0), so the whole response goes to the hull:
+  - linear, along `n`;
+  - angular, through `rA x n` and the world inverse inertia, so an off-centre contact yaws, pitches
+    and rolls the hull.
+- **The contact report.** Kind 8 reaches `009377E0` through the per-body callback `B+68h`
+  (DYN_COLLISION_PASS "contact notifications"). That is SHIP_AI 87.1's `+1010h` latch, which only
+  latches.
+
+### 83.2 The three-keel-point stand-in (SHIP_AI 87.2), against this
+
+| aspect | image | 87.2 | fair? |
+| --- | --- | --- | --- |
+| contact set | every hull-mesh vertex below the surface, up to 8 per shape, 4 kept per manifold | bow, middle and stern at the box's `min.y` | partly. A beam-on or quarter contact, and any vertex higher than the keel on a steep bank, is missed |
+| direction removed | the approach component along the cell normal `n`, which has a vertical part | the horizontal uphill component, along the terrain gradient | **steep shores: yes** (`n` is nearly horizontal; the two agree when the gradient is much greater than 1). **Gentle slopes: no.** The image removes only `g²/(1+g²)` of the horizontal uphill speed and turns the rest into upward velocity (the hull rides up and is lifted); 87.2 stops the uphill motion whole |
+| friction | none (terrain friction 0) | none (slides along the shore) | yes. The slide is the image's |
+| restitution | none | none | yes |
+| penetration | pushed out, 10% of depth (max 0.5) per substep, by pseudo-velocity | a hull already below stays; only further uphill motion is blocked | no. A hull that reaches a contact already penetrating is never pushed out |
+| rotation | yes, from off-centre points (torque about the centre of mass) | none | no. A grounded bow slews the hull |
+| flat ground above the keel | vertex below the surface, `n` vertical: removes downward speed and lifts | "blocks the horizontal motion whole" | no. The image does not stop horizontal motion on flat ground; with no friction, the hull is lifted, not held |
+
+**Verdict.** 87.2 is a fair first-order stand-in for the common case, a hull driving into a
+steep bank. It keeps the image's frictionless, bounce-free slide. It is not faithful on:
+- gentle beaches, where the image lifts the hull (the effect depends on the ship's vertical model,
+  cc9-ships22's lane);
+- penetration recovery;
+- rotation;
+- side and quarter contacts.
+
+**What would replace it**, in order of fidelity:
+1. **Run the image's phases for hull-terrain pairs only.** The narrow phase `00C53630` (natively
+   reconstructed, R145), the manifold insert `00C3F760`, and the `00403720` rows
+   (`00C4DE40` / `00C42BA0` / `00C42530` / `00C42230` / `00C37B50` / `00C35020`, reconstructed in
+   `src/dyn_lcp_impulse_math.cpp`), fed with the host's Dyn bodies. The host already runs
+   `00C41550` and `00C5B1B0` on them.
+2. **A closer stand-in.** Per hull-mesh vertex below the surface, with the cell normal and
+   `depth = h - y`:
+   - cancel the negative normal velocity at the point, with angular coupling through the
+     inertia;
+   - add `0.1 * min(depth, 0.5) / dt` of positional push along `n`;
+   - no friction and no bounce.
+
+**Not read, and labelled:** the four-point reduction; the exact sample pairs of the normal; the
+hull's vertical model after a lift.
