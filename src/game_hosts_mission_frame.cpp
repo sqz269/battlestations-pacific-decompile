@@ -2176,8 +2176,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
             for (const GameSceneMarkerSeed& marker : markers) {
+                // Packet cc9_building_pad_model: the class id lets the pad model
+                // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).
                 host.script_orders->register_scene_marker(marker.id, marker.name,
-                    marker.position);
+                    marker.position, marker.class_id);
                 host.units->register_scene_marker_frame(marker.id, marker.world);
                 if (!host.helm_orders.empty()) {
                     Impl::HelmMarker named;
