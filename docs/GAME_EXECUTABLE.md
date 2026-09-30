@@ -13760,3 +13760,113 @@ The weakest calls:
   `local\g20_rv0` (the eleven `=false`).
 - `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player.
 - A 300-frame USN01 smoke first.
+
+- **Binaries:** `local\g20_rv\build\win32\Release\bsp_game.exe` (SHA-256 prefix `F183B6F26309`) and
+  the anchor `local\g20_rv0` (`9F5C70C5634B`); the full hashes are in the report.
+- **Environment:** a 300-frame USN01 smoke passed at 18:31 UTC. `query session` showed the console
+  session as `Conn`, and the runs were unaffected. The v and anchor rows ran 18:31-18:42 UTC; the
+  leave-one-out lanes ran 18:43-19:45 UTC.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 14337.7 | 50 | 1061 (148) | 15644 | 98.70 s | 5 of 16 / 0 of 19 | 16 | Lexington-class01 3332.32 | none | 490 | `local\g20_rv_usn04.log` |
+| USN01 | 3000 | 10252.4 | 17 | 522 (113) | 2164 | 5.15 s | 0 of 5 / 2 of 2 | 3 | ScoutDauntless 4623.23 | none | 504 | `local\g20_rv_usn01.log` |
+| USN04 (E2) | 9000 | 14388.5 | 52 | 1065 (148) | 15695 | 98.70 s | 5 of 16 / 0 of 19 | 19 | Lexington-class01 5588.15 | none | 491 | `local\g20_rv_e2.log` |
+| USN02 | 9000 | 64747.8 | 1 | 5621 (293) | 4641 | 19.25 s | - | - | Kortenaer 6756.10 | **failed at 29.75 s**, phase 1 (unchanged) | 486 | `local\g20_rv_usn02.log` |
+| JM06 (smoke) | 3000 | 3694.7 | 1 | 288 (287) | 357 | 72.10 s | - | - | Fletcher-class 08 451.48 | none | 478 | `local\g20_rv_jm06.log` |
+| JM08 (smoke) | 3000 | 3445.8 | 7 | 196 (101) | 2983 | 5.25 s | - | 1 | Auilick 904.91 | none | 482 | `local\g20_rv_jm08.log` |
+| USN13 (smoke) | 3000 | 7467.7 | 23 | 434 (131) | 4142 | 5.15 s | 0 of 60 / - | 6 | Enterprise 926.02 | none | 515 | `local\g20_rv_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 453 | `local\g20_rv_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 456 | `local\g20_rv_lomp06.log` |
+| LOMP10 | 3000 | 2157.4 | 3 | 194 (118) | 3457 | 92.05 s | - / 9 of 8 | - | (none) 7558.47 | none | 482 | `local\g20_rv_lomp10.log` |
+| JM05 | 3000 | 9819.4 | 12 | 358 (35) | 335 | 6.35 s | - | - | USS Phelps 2622.58 | none | 541 | `local\g20_rv_jm05.log` |
+| USN12 | 3000 | 4199.8 | 7 | 196 (14) | 140 | 7.55 s | - | - | Montpelier 1499.41 | none | 474 | `local\g20_rv_usn12.log` |
+| LOMP10 (long) | 9000 | 2817.7 | 6 | 211 (122) | 3807 | 92.05 s | - / 9 of 8 | - | (none) 7558.47 | none | 495 | `local\g20_rv_lomp10l.log` |
+| USNOS | 3000 | 57669.3 | 106 | 1786 (156) | 4438 | 4.50 s | - | 8 | NH 1497.26 | none | 515 | `local\g20_rv_usnos.log` |
+| USNOS (long) | 9000 | 78626.3 | 147 | 2771 (282) | 15626 | 4.50 s | - | 13 | NH 4492.07 | none | 527 | `local\g20_rv_usnosl.log` |
+| IJN01 | 3000 | 1628.1 | 3 | 80 (68) | 2866 | 86.55 s | - | - | Downes 472.13 | none | 497 | `local\g20_rv_ijn01.log` |
+| JM05 (long) | 9000 | 22495.2 | 14 | 644 (122) | 866 | 6.35 s | - | 3 | USS Phelps 7522.71 | none | 558 | `local\g20_rv_jm05l.log` |
+| JM08 (long) | 36000 | 93415.1 | 160 | 3669 (471) | 8075 | 5.25 s | - | 1 | Auilick 10053.91 | none | 522 | `local\g20_rv_jm08l.log` |
+
+**Against u** (`pair_diff` against `g20_ru_<row>`): **sixteen rows move** (exit 3). **BSM01 and
+LOMP06 are gameplay-identical** (exit 1).
+
+Headline moves:
+- **JM08 long:** deaths 25 -> 160.
+  - 144 only on v (base objects), 9 only on u (invaders: USTroopTransport 04, LSM 01/02,
+    LST 01/03, Macomb and more).
+  - `Headquarter 01` reaches 0 hp 27 times and goes neutral once, but never flips.
+  - Landing mode 3 is selected at 3 points (`mode3_points=3`, `in_reach=0`); no ramp touches
+    ground.
+- **USNOS long:** 127 -> 147 (22 only on v: offices, fortress elements, planes). **USNOS:**
+  105 -> 106.
+- **USN04 and E2:** 49 -> 50 and 51 -> 52 (one fighter each); hull hits 91 -> 148.
+- **LOMP10 and LOMP10 long:** 7 -> 3 and 9 -> 6. The Warhawk and Lightning plane deaths change.
+  LOMP10's dive-bomb task counts 9 releases for 8 aircraft (u: 8), so one plane releases twice;
+  not read.
+- **JM05 long:** 18 -> 14. A troop transport and three shore structures survive.
+- **JM08:** 5 -> 7 (two Gekko wingmen die).
+- **USN13:** 24 -> 23.
+- **USN01:**
+  - The death table keeps its victims, 2 rows changed.
+  - Torpedo-task aircraft 17 -> 5. The controlled unit is `ScoutDauntless` at 4623 m; on u it
+    was `ConTBD1`.
+  - `fjl` OFF returns u's aggregates.
+- **IJN01:** death rows re-timed. The controlled Downes moves 220.52 -> 472.13 m.
+- **USN02, JM06, USN12, JM05:** death tables keep their victims. USN02 still fails at 29.75 s.
+
+### The anchor: eleven switches
+
+With all eleven OFF (`g20_rv0`), `16d01094e` is **gameplay-identical to u on all eighteen rows**
+(exit 1 against `g20_ru_<row>`). Nothing else that landed since u moves a row.
+
+### What moved each row
+
+Each variant was turned OFF alone and read with `pair_diff` against v on the sixteen moved rows
+(`local\g20_lane.ps1`; logs `local\g20_v_<v>_<row>.log`).
+
+| variant (OFF) | rows that move against v |
+| --- | --- |
+| `fjl` formation join loopback | USN01 (u's aggregates return), JM08 (7 -> 5), USN13 (23 -> 24), LOMP10 (3 -> 7), JM05, USN12, LOMP10 long (6 -> 9), USNOS (106 -> 105), USNOS long (147 -> 127), JM05 long (14 -> 18), JM08 long (160 -> 55), USN02 |
+| `pjl` planner join loopback | USN01, JM06, JM08 (7 -> 6), USN13, JM05, USN12, USNOS, USNOS long (147 -> 146), IJN01, JM05 long, JM08 long (160 -> 165) |
+| `hull` the three hull switches | USN13, JM05, USNOS long, IJN01, JM05 long, JM08 long (160 -> 132) |
+| `lch` the launch chain group | USN04 (50 -> 49), E2 (52 -> 51), USN13, JM05, JM05 long |
+| `d158` planeDesc+158h | USN04 (50 -> 51), E2, USN13, JM05, JM05 long |
+| `atm` transport moves | USNOS, USNOS long (re-timings only) |
+| `brk` launch brake, `head` takeoff head | JM05, JM05 long (death rows identical) |
+| `nsa` ship avoidance delivery | none |
+
+**Attribution:**
+- Every moved row is attributed:
+  - `fjl` alone attributes LOMP10, LOMP10 long and USN02;
+  - `pjl` alone attributes JM06;
+  - `lch` and `d158` attribute USN04 and E2.
+- **The formation join is the largest mover.** It carries the JM08 long invasion's base deaths,
+  USNOS long's +20, LOMP10's plane fights and JM05 long's four.
+- **JM08 long is a three-way interaction:**
+  - `fjl` OFF gives 55, not u's 25;
+  - `hull` OFF gives 132;
+  - `pjl` OFF gives 165. That run reproduces section 87's `g20_n2` exactly (95003.4 damage,
+    4304 hits), which had no planner join.
+- `nsa` is inert, as predicted.
+
+**Prediction check:**
+- **Rows:**
+  - fifteen predicted to move moved;
+  - BSM01 and LOMP06 held identical;
+  - the anchor held on all eighteen.
+- **Misses:**
+  - **JM06 moved.** It was predicted identical. Its death table keeps its one row; `pjl` alone
+    moves it, with shots 354 -> 357.
+  - **JM05 long:** predicted within one row; 18 -> 14 (`fjl`).
+  - **`d158`** moves a USN04 death (50 -> 51 with it OFF), more than the re-timing predicted.
+  - **`pjl`** reaches eleven rows, not the three predicted.
+- **Held:**
+  - JM08 long near 168 (160);
+  - USN04 50 and E2 52;
+  - LOMP10 3; USNOS 106; USN13 23;
+  - JM05 12;
+  - USN02's 29.75 s failure.
+- **Flipped on main during these runs (for w):** `kLandingShipStartLandingBound` ON (cc9-ships24, `00b972337`). `kGroundRetakeoffBound` is new and OFF (cc9-lua28).
