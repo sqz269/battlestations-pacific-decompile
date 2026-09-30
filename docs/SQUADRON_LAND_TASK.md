@@ -7519,3 +7519,53 @@ mechanism failure. This supersedes 5bp's OFF verdict.
 
 For reference W: JM05 9000 and 12000 move at exit 1 (the land-task, takeoff and native-table
 counters). No other row moves.
+
+## 5bs. The throttle dead band of 0099D300's demand arm (packet `cc9_throttle_dead_band`, cc9-lua28, 2026-09-30)
+
+5br found this band as the one host difference in the speed hold. The switch is
+`kThrottleDeadBandBound` (`include/bsp/game_hosts_units.hpp`), committed **OFF** with the
+predictions below.
+
+### The image (disk listing `0099DAAA`-`0099DBC7`, read whole)
+
+- `[esp+14h]` is the measured speed: `007D99C0 / +2B8h`, less the carrier's forward speed on a
+  mother-ship holder.
+- `[esp+24h]` is the error: `+2B4h - speed - correction`.
+- `[esp+38h]` is `|speed|`, and `[esp+44h]` is `+2B4h / |speed|` (`0099DAEC`-`0099DAFF`).
+- `[esp+38h]` is then overwritten with `|error|`.
+- **The increment** (`0099DB58`-`0099DBC7`) runs when any of these holds:
+  - `|error| > 0.8333` (double `00D09450`, 3 km/h), `0099DB2D JA`;
+  - `1.0 > speed` (`00D7A24C`), `0099DB3A JA`;
+  - `ratio > 1.5` (`00CE380C`), `0099DB49 JA`;
+  - `0.5 > ratio` (`00CE3800`), `0099DB56 JBE` falls through.
+- Otherwise `0099DB56 JBE 0099DBCB` skips the increment, and the demand is the slot's seed. The
+  throttle holds where it is.
+- The increment's first store, `+2ECh = min(+2ECh, [00E0E2F0])` (`0099DB58`-`0099DB6A`), has no
+  reader in this host and is recorded, not bound.
+
+The host always applied the increment (`dead_band_skips = false`). With the switch ON, the flag is
+computed from the same inputs the host feeds the arm: speed scale 1.0 and correction 0, the
+labelled substitutions of the throttle packet. Summary line: `summary throttle dead band: applied=
+skipped=`.
+
+### Predictions (switch ON against OFF; written before the pairs)
+
+1. **Mechanism.** On every row with planes, `skipped` is a large share of the thinks: cruising
+   planes sit within 3 km/h of their request.
+2. **Motion.** Within the band the throttle stops integrating, so speeds settle up to 0.83 m/s off
+   the request instead of hunting around it. Every plane's position moves slightly.
+   - `pair_diff` 3 on every plane row.
+   - Death rows can shift in time wherever an attack run's timing moves. Such moves are timing
+     knock-on (and RNG-coupled for AA, per the shared-stream note), not a changed mechanism.
+3. **No regime change.**
+   - Take-offs, landings, lift-offs, releases and the ground-retakeoff pushes stay within a few
+     counts.
+   - No squadron that attacks with OFF fails to attack with ON.
+4. **Rows.** Every reference row: USN01, USN02, USN04, E2, USN12, USN13, JM05 3000 and 9000,
+   JM06, JM08, LOMP06, LOMP10 3000 and 9000, USNOS, IJN01 and BSM01. BSM01 has no planes, so it
+   is exit 0 or 1 with `skipped=0`.
+5. **Flip criterion.**
+   - `skipped > 0` wherever planes fly;
+   - no regime change (item 3);
+   - moved death rows limited to timing: the same victims, or victims whose killer's attack
+     timing moved.
