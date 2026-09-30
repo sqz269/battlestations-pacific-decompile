@@ -6121,3 +6121,105 @@ Then piece 5 (`C6h` and `007C7110`), and the flip criterion of 5aw.
 - `l25_ce2c0_full.asm`: the `Takeoff` step listing, copied from cc9-lua24;
 - `l25_c5f60.c`, `l25_cf730.c`, `l25_ca3f0.c`, `l25_cde50.c`, `l25_cfc70.c`, `l25_cfa80.c`,
   `l25_cfd70.c`, `l25_d0600.asm`: the bodies read.
+
+## 5bd. Base launch chain, piece 4 part 2a: the takeoff task bound to SlowTakeoff (packet `cc9_takeoff_task_bind`, cc9-lua26, 2026-09-30)
+
+Behind `kBaseLaunchChainBound`, committed **OFF**. It binds the task record, `prepare`,
+`SlowTakeoff`, the rule, the tick and the altitude floor. The `Takeoff` step `009CE2C0` is part 2b.
+
+### What is bound
+
+| address | routine | coverage | host |
+| --- | --- | --- | --- |
+| `0099A4A0` | the install at `007CA3F0`'s end (`009CFF40(bot, 1)`, `00999F50`) | complete, except that `00999F50`'s push over an existing task restarts the one record | `install_takeoff_task_0099a4a0` |
+| `009CF8E0`, `009CD420` | the constructor and the approach base | the start-state choice and `+2Ch`/`+30h`/`+34h` | same |
+| `009CDD50` | `prepare` enter | complete | `takeoff_prepare_enter_009cdd50` |
+| `009CDE50` | `prepare` step | complete; `approach+38h` is a record | `run_takeoff_prepare_step_009cde50` |
+| `009CDD10`, `006D01C0` | the site permission (the airfield `006CF400` answers 1) | complete | `takeoff_permission_009cdd10`, `carrier_site_permission_006d01c0` |
+| `009CE1D0`, `009CE160` | `SlowTakeoff` enter and step | complete | `takeoff_slow_enter_009ce1d0`, `run_takeoff_slow_step_009ce160` |
+| `009CFB60` | `SlowTakeoff` -> `Takeoff` | complete, with `+AA0h` carried as 0.0 | `takeoff_slow_leave_009cfb60` |
+| `009CFC70` | the rule | complete | `takeoff_rule_009cfc70` |
+| `009CFD70` | the tick (slot `+64h` of `00D21228`) | complete | `run_takeoff_task_tick_009cfd70`, run as the bot's one task from the pilot think |
+| `009CFA80` | the altitude floor | partial: squadron+350h's layer is not carried (34Ch's stands in), and the `0071E430` tail is recorded | `takeoff_altitude_floor_009cfa80` |
+| `009CE270` | `Takeoff` enter | `+18h` = -1.0, `+1Ch` = 0; `007C17D0` recorded | in the rule |
+
+State vtables, read from `.rdata`:
+
+| state | vtable | enter | exit | step |
+| --- | --- | --- | --- | --- |
+| prepare | `00D2116C` | `009CDD50` | `009CDD00` (a `RET`) | `009CDE50` |
+| SlowTakeoff | `00D21188` | `009CE1D0` | `009CE150` (a `RET`) | `009CE160` |
+| Takeoff | `00D211A4` | `009CE270` | `009CE290` (a `RET`) | `009CE2C0` |
+| parking | `00D21150` | `009CD520` | `009CD530` | `009CD540` |
+
+### Corrections to 5bb
+
+- **Constants.** `00D7A3A0` (0.1), `00CE3D78` (1.5), `00CEFF98` (0.6) and `00CEFFB0` (0.95) are
+  doubles. The period divisor is the double `00CE3828` (2 pi), not the float `00CE3D9C` (that one is
+  the phase draw's upper bound). The initial minimum member distance is `00D7A248` (FLT_MAX).
+- **`009CFB60`'s 60 m arm sends a message.** Past 3600.0 (`00CE3D70`, double) it builds message
+  `7Ah` (`0080F960`, byte `+20h` = 0) and routes it to the plane through `0077C2A0(plane, msg, 0,
+  0)`. `BSP_Plane_HandleMessage`'s case `'z'` (`007CD171`) calls `007B83F0(0)`, which sets
+  `+AA0h` = -1.0. So a plane that left SlowTakeoff by distance has `+AA0h` <= 0 from then on.
+- **`SlowTakeoff` lasts one tick for a launched plane.** `+AA0h` is 0.0 from `007D5D20`
+  (`007D614B`). It becomes 5.0 only for a `ShipYardLaunch` bag key or a kind-2 descriptor's
+  `+12Ah` (`007D6355`, `007D645A`). The air-ops launch bag of `006C5050` pushes no `ShipYardLaunch`
+  key (its key pushes are `00CE4780`, `00CF8840`, `00CF8838`, `00CE8EE0`, `00CE5804`, `00CF882C`,
+  `00CF8820`, `00CF8818`, `00CF880C`, `00CF8800`, `00CF69AC`, `00CF87EC`). So `009CFB60` answers
+  true on its first call and the plane goes on to `Takeoff`.
+  - Uncertainty: whether a squadron member's descriptor is kind 2 with `+12Ah` set is unread.
+  - The host carries `+AA0h` as 0.0, the value that matches the bag reading.
+- **The altitude floor's layer** is squadron+350h, which `007F1D90` selects from the squadron's own
+  slope argument. The host does not carry it.
+
+### Predictions, written before the smoke (switch ON, JM05 3000)
+
+1. Every member that `007CA3F0` places in state 4 or 5 logs `installed in takeoff/prepare`: the six
+   airfield members and the 24 carrier members. None is installed in parking, because `+904h` is
+   clear.
+2. **Airfield members** (state 5, an airfield holder) leave `prepare` on its first step with
+   `airfield holder`. They go through `SlowTakeoff` on the next tick and reach `Takeoff` on the
+   tick after that, about 0.2 s after placement. There they stop: `run_refused` counts.
+3. **Carrier members** (state 4 at the lift top):
+   - they hold throttle 0.01 and air brake 1.0 while the roll and pitch slots wobble;
+   - each leaves `prepare` after `PrepareTime` with the deck-order permission, or at once when a
+     squadron member stands within 10 m;
+   - Inside members still count as squadron members, so their host position decides the 10 m
+     test. The log gives the minimum distance at the exit.
+4. No member reaches state 7 and no task is done. The squadron stays grounded until part 2b binds
+   `Takeoff`.
+5. With the switch OFF the build is identical in behaviour: the takeoff code is reached only from
+   `007CA3F0`, which only the chain calls.
+
+### Results (switch ON, JM05 3000, `local\l26_p4aon_jm05.log`, built from `52366dd9b` with the flip)
+
+The 300-frame OFF smoke (`local\l26_off_smoke.log`) exits 0 with the smoke's usual summaries.
+
+| prediction | result |
+| --- | --- |
+| 1. every placed member installed in prepare, none in parking | **held for the ten members placed**: `installs=10 parking_refused=0`. Only ten were placed, not 30 (see below) |
+| 2. airfield members: prepare one step, then SlowTakeoff, Takeoff about 0.2 s later | **held**: installed 3.05 s, `prepare -> SlowTakeoff` 3.25 s (`airfield holder`), `-> Takeoff` 3.35 s; the same at 5.10 and 7.15 s |
+| 3. carrier members: prepare time with the deck-order permission, or a member within 10 m | **held for the leaders**: Lexington's and Yorktown's leaders leave after 1.50 s (`prepare time and site permission`); the nearest other member is 78.92 m away, so the Inside members never trip the 10 m test |
+| 4. no member reaches state 7 and no task is done | **held**: `done=0`; eight members sit in Takeoff with the step refused |
+
+**The launch now stalls after two members per carrier**, where piece 3b lifted 24.
+- The first wingman (`|.-2`) is lifted at 14.50 s, not 13.00 s, and released at 16.65 s. It then
+  stays in prepare for the rest of the run: 2638 of 2640 permission asks are denied.
+- **Why:**
+  - `006D01C0` denies while another occupant of `site+34h` has a lower `z'`. The leader is still
+    in the occupancy vector.
+  - With Takeoff refused, the leader's plan keeps 0099B450's reseed: speed `TravelSpeed x
+    NewTravelSpeedMul`, `+2D8h` = 1. So it rolls down the deck and leaves it over the bow at
+    15.30 s, still in state 4, at 41.18 m/s. The log line is `plane ground contact lost ...
+    local=(-0.60 0.01 139.56) half=(20.00 139.50)`.
+  - The wingman, held by prepare's throttle 0.01 and air brake 1.0, stays on the lift. Then
+    `006D02F0` blocks the platform (`blocked=5494`) and the third member never comes up
+    (`ready_plane=... |.-3`).
+- **This is the expected state between pieces.** In the image the leader flies away in `Takeoff`,
+  and its occupancy entry goes with the lift-off (piece 5, `007C7110`, unread). The piece-3b cadence
+  comes back only when both are bound.
+
+**The wingman's deck contact (queue item 4) is not reproduced in this run.** `|.-2` logs
+`carrier deck stop ... local=(-0.83 17.40 39.39) contact=1` at 16.75 s, the leader's own
+release point and contact. 5ba's non-contact came with a leader still standing on the lift spot.
+Recheck it once Takeoff moves the leader off.

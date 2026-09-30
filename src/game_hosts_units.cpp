@@ -577,6 +577,39 @@ struct GameUnitSlot {
     unsigned long long moveto_state_changes{0};
     unsigned long long moveto_arrivals{0};
     float moveto_min_distance{-1.0f};
+    // Packet cc9_takeoff_task_bind (kBaseLaunchChainBound, docs/SQUADRON_LAND_TASK.md
+    // 5bd): the `takeoff` task, kind 0Dh (009CFF40 -> 009CF8E0, size 4D4h). Its
+    // four states sit in the approach at task+3F8h and register their names in
+    // 009CF710 (strings, not invented): +448h "takeoff/prepare", +470h
+    // "takeoff/Takeoff", +490h "takeoff/SlowTakeoff", +4B8h "takeoff/parking".
+    enum class TakeoffTaskState : int { kNone = 0, kPrepare = 0x448, kTakeoff = 0x470,
+        kSlowTakeoff = 0x490, kParking = 0x4B8 };
+    bool takeoff_task_installed{false};
+    TakeoffTaskState takeoff_state{TakeoffTaskState::kNone};
+    // approach+2Ch, 009CFA80's altitude floor; +30h the margin (15.0 00CE5380,
+    // 25.0 00CE89CC for IsKindOf(10h)); +34h the plane's y at the install when
+    // it has a holder (+BF4h), else 0 (009CD420).
+    float takeoff_floor_2c{0.0f};
+    float takeoff_margin_30{15.0f};
+    float takeoff_base_34{0.0f};
+    // takeoff/prepare (approach+50h): +18h the site permission cache, +19h done,
+    // +1Ch the time in the state, +20h the wobble phase, +24h its period.
+    bool takeoff_prep_permit_18{false};
+    bool takeoff_prep_done_19{false};
+    float takeoff_prep_t_1c{0.0f};
+    float takeoff_prep_phase_20{0.0f};
+    float takeoff_prep_period_24{0.0f};
+    // takeoff/SlowTakeoff (approach+98h): +18h..+20h the start, +24h the yaw.
+    float takeoff_slow_start_18[3]{0.0f, 0.0f, 0.0f};
+    float takeoff_slow_yaw_24{0.0f};
+    // takeoff/Takeoff (approach+78h): +18h and +1Ch as 009CE270 sets them.
+    float takeoff_run_18{0.0f};
+    float takeoff_run_1c{0.0f};
+    unsigned long long takeoff_installs{0}, takeoff_ticks{0}, takeoff_prep_ticks{0};
+    unsigned long long takeoff_slow_ticks{0}, takeoff_run_refused{0};
+    float takeoff_installed_at{-1.0f}, takeoff_prep_left_at{-1.0f};
+    float takeoff_slow_left_at{-1.0f}, takeoff_prep_min_member_d{-1.0f};
+    const char* takeoff_prep_exit{""};
     // Packet cc9_land_task_reach (kSquadronLandTaskBound): the `land` task,
     // kind 3 (009B41C0 -> 009B3240, size 670h). The eight states sit in the
     // approach at task+3F8h and register these names through 00411E70 in
@@ -2348,6 +2381,15 @@ struct GameUnitsHost::Impl {
     bool place_on_launch_spot_007c5f60(GameUnitSlot& p, std::size_t deck_index,
                                        LandingDeck& d, bool airfield);
     void ground_state_from_locked_007ca3f0(GameUnitSlot& p, LandingDeck& d, bool five);
+    // Packet cc9_takeoff_task_bind (kBaseLaunchChainBound), piece 4 part 2a.
+    void install_takeoff_task_0099a4a0(GameUnitSlot& p);
+    void takeoff_prepare_enter_009cdd50(GameUnitSlot& p);
+    void takeoff_slow_enter_009ce1d0(GameUnitSlot& p);
+    bool takeoff_permission_009cdd10(GameUnitSlot& p);
+    bool carrier_site_permission_006d01c0(LandingDeck& d, const GameUnitSlot& p);
+    unsigned long long takeoff_installs{0}, takeoff_parking_refused{0};
+    unsigned long long takeoff_done{0}, takeoff_to_slow{0}, takeoff_to_run{0};
+    unsigned long long takeoff_permission_asks{0}, takeoff_permission_denied{0};
     bool carrier_elevator_blocked_006d02f0(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
     void carrier_elevator_raise_plane_006fc810(LandingDeck& d, GameUnitSlot& p);
@@ -11875,11 +11917,123 @@ void GameUnitsHost::Impl::ground_state_from_locked_007ca3f0(GameUnitSlot& p, Lan
     for (int i = 0; i < 3; ++i) p.plane_world_velocity[i] = 0.0f;
     p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
     ++base_launch_ground_entries;
-    record("PilotBot::install_takeoff_task_0099a4a0", 0x0099a4a0u);
+    install_takeoff_task_0099a4a0(p);                                    // 0099A4A0
     log.notef("base launch ground state: %s 2 -> %d at %.2f s (007C3C90 -> 007C1570 -> C3h "
         "-> 007CA3F0; packet cc9_base_launch_deck_arms)", p.row.name.c_str(),
         p.plane_control_mode_900, static_cast<double>(summary.simulated_seconds));
     done("Plane::ground_state_from_locked_007ca3f0", 0x007ca3f0u);
+}
+
+// 0099A4A0 (0099A4A0-0099A4B4, RET): MOV DL,1; 009CFF40(bot, 1) = operator
+// new(4D4h) and 009CF8E0; 00999F50 pushes it. 009CF8E0 builds the approach
+// (009CF710 -> 009CD420) and, with flag 1, starts in prepare (+448h), unless the
+// plane is landed (+904h) on the path (+900h == 5), which starts in parking
+// (+4B8h, not bound: refused). 009CD420: +34h = plane y when +BF4h is set,
+// else 0; +30h = 15.0 (00CE5380; the IsKindOf(13h) arm stores the same), 25.0
+// (00CE89CC) for IsKindOf(10h); +2Ch = +30h + +34h. 00999F50's push over an
+// existing task is not modelled: a second install restarts the one record.
+void GameUnitsHost::Impl::install_takeoff_task_0099a4a0(GameUnitSlot& p) {
+    using TS = GameUnitSlot::TakeoffTaskState;
+    p.takeoff_base_34 = p.plane_contact_deck_bf4 != 0 ? p.motion.position[1] : 0.0f;
+    p.takeoff_margin_30 = bsp::unit_is_kind_of(p.class_id, 0x10) ? 25.0f : 15.0f;
+    p.takeoff_floor_2c = p.takeoff_margin_30 + p.takeoff_base_34;
+    p.takeoff_task_installed = true;
+    ++p.takeoff_installs;
+    ++takeoff_installs;
+    p.takeoff_installed_at = summary.simulated_seconds;
+    if (p.plane_landed_904 && p.plane_control_mode_900 == 5) {
+        p.takeoff_state = TS::kParking;
+        ++takeoff_parking_refused;
+        log.notef("  takeoff task %s: installed in takeoff/parking at %.2f s, NOT BOUND "
+            "(009CF8E0 -> +4B8h; packet cc9_takeoff_task_bind)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds));
+    } else {
+        p.takeoff_state = TS::kPrepare;
+        takeoff_prepare_enter_009cdd50(p);
+        log.notef("  takeoff task %s: installed in takeoff/prepare at %.2f s state=%d "
+            "floor=%.2f period=%.3f phase=%.3f (0099A4A0 -> 009CF8E0 -> 009CDD50; packet "
+            "cc9_takeoff_task_bind)", p.row.name.c_str(),
+            static_cast<double>(summary.simulated_seconds), p.plane_control_mode_900,
+            static_cast<double>(p.takeoff_floor_2c),
+            static_cast<double>(p.takeoff_prep_period_24),
+            static_cast<double>(p.takeoff_prep_phase_20));
+    }
+    done("PilotBot::install_takeoff_task_0099a4a0", 0x0099a4a0u);
+}
+
+// 009CDD50 (009CDD50-009CDE4C, RET), takeoff/prepare's enter: +19h = +18h = 0,
+// +1Ch = 0; +20h = U(0, 2 pi) (00CE3D9C); T = tuning+4DCh PrepareTime, 1.5
+// (00CE380C) when 1.5 (double 00CE3D78) > T; p = T / 2 pi (double 00CE3828),
+// a float; a sign -1.0 (00D7A260) when U(0, 1) > 0.5 (00CE3800), else 1.0
+// (00D7A24C); +24h = sign x U(p x 0.6, 0.95 x p) (doubles 00CEFF98, 00CEFFB0).
+// The draws are 00BD2F10's, here on the per-unit streams.
+void GameUnitsHost::Impl::takeoff_prepare_enter_009cdd50(GameUnitSlot& p) {
+    p.takeoff_prep_done_19 = false;
+    p.takeoff_prep_permit_18 = false;
+    p.takeoff_prep_t_1c = 0.0f;
+    p.takeoff_prep_phase_20 =
+        release_altitude_draw_00bd2f10(p.row.name + "#t20", 0.0f, 6.2831854820251465f);
+    float t = lua.plane_globals_loaded() ? lua.plane_globals().pilot_take_off_prepare_time
+                                         : 0.0f;
+    if (1.5 > static_cast<double>(t)) t = 1.5f;
+    const float per = static_cast<float>(static_cast<double>(t) / 6.2831854820251465);
+    const float u = release_altitude_draw_00bd2f10(p.row.name + "#t24s", 0.0f, 1.0f);
+    const float sign = u > 0.5f ? -1.0f : 1.0f;
+    const float hi = static_cast<float>(0.949999988079071 * static_cast<double>(per));
+    const float lo = static_cast<float>(static_cast<double>(per) * 0.6000000238418579);
+    p.takeoff_prep_period_24 = release_altitude_draw_00bd2f10(p.row.name + "#t24", lo, hi)
+        * sign;
+}
+
+// 009CE1D0 (009CE1D0-009CE22A, RET), takeoff/SlowTakeoff's enter: +18h..+20h =
+// the plane's position, +24h = U(-0.3, 0.3) (00D06888, 00CE69C8).
+void GameUnitsHost::Impl::takeoff_slow_enter_009ce1d0(GameUnitSlot& p) {
+    for (int i = 0; i < 3; ++i) p.takeoff_slow_start_18[i] = p.motion.position[i];
+    p.takeoff_slow_yaw_24 = release_altitude_draw_00bd2f10(p.row.name + "#t524",
+        -0.30000001192092896f, 0.30000001192092896f);
+}
+
+// 009CDD10 (009CDD10-009CDD46, RET): +18h caches the answer. Without a holder
+// (+BF4h) it is 1; otherwise the holder's site (+4h -> +3Ch) vtable[20h](plane):
+// the airfield 006CF400 answers 1, the mother ship 006D01C0 the deck order.
+bool GameUnitsHost::Impl::takeoff_permission_009cdd10(GameUnitSlot& p) {
+    if (p.takeoff_prep_permit_18) return true;
+    bool ok = true;
+    if (p.plane_contact_deck_bf4 != 0 && p.plane_contact_deck_bf4 <= landing_decks.size()) {
+        LandingDeck& d = landing_decks[p.plane_contact_deck_bf4 - 1u];
+        if (d.mother_ship) ok = carrier_site_permission_006d01c0(d, p);
+    }
+    ++takeoff_permission_asks;
+    if (!ok) ++takeoff_permission_denied;
+    p.takeoff_prep_permit_18 = ok;
+    return ok;
+}
+
+// 006D01C0 (006D01C0-006D02E5, the mother-ship site's vtable[20h], RET 4): the
+// plane's own deck coordinate starts at -(L x 0.5) (FCHS, double 0.5 00D7A280),
+// the best other at 9999.0 (00CE4C04). For each occupant of site+34h,
+// 006BEFF0 on the carrier's holder (+B8h -> +1208h) gives z' = L x 0.5 - l.z;
+// the plane's own replaces the start, every other keeps the least (<=). The
+// answer is 0 when the least other is below the plane's own. The holder is
+// re-framed from the carrier first (landing_deck_006c0750), as its update does.
+bool GameUnitsHost::Impl::carrier_site_permission_006d01c0(LandingDeck& d,
+    const GameUnitSlot& p) {
+    const std::size_t di = static_cast<std::size_t>(&d - landing_decks.data());
+    if (landing_deck_006c0750(di, d.owner) == nullptr) return true;
+    float own = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
+    float best = 9999.0f;
+    for (const std::size_t oi : d.site_occupants_34) {
+        if (oi >= slots.size() || !slots[oi]) continue;
+        const std::array<float, 3> l =
+            landing_xform_004142e0(d.inverse_48, slots[oi]->motion.position);
+        const float z = static_cast<float>(static_cast<double>(d.length_b4) * 0.5 - l[2]);
+        if (oi == p.process_index) {
+            own = z;
+        } else if (z <= best) {
+            best = z;
+        }
+    }
+    return !(best < own);
 }
 
 // 006FC720 (flag 0 of 006D0050 with a plane): the platform at the top and still,
@@ -14067,7 +14221,8 @@ void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float b
         if (!(depth > 0.0f)) continue;
         contact = true;
         if (depth > deepest) deepest = depth;
-        if constexpr (!kShipTerrainContactBound) continue;
+        // Packet cc9_hull_terrain_contact_gate: the Dyn contact phase replaces the stand-in.
+        if constexpr (!kShipTerrainContactBound || bsp::kHullTerrainContactSolverBound) continue;
         // Only a step that deepens the point's penetration is resisted: the same
         // keel point at the step's start position (the pose's rotation kept).
         const float w0[3] = {w[0] - (p[0] - before[0]), w[1] - (p[1] - before[1]),
@@ -24264,6 +24419,250 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.done("BotTaskLand::cruise_profile", 0x009b3c60u);
                     }
 
+                    // Packet cc9_takeoff_task_bind (kBaseLaunchChainBound), piece 4
+                    // part 2a. 009CFD70 (009CFD70-009CFDC3, RET 4, slot +64h of the
+                    // vtable 00D21228): +430h = FFh; 009CFA80 on the approach; the
+                    // rule 009CFC70; the current state's vtable[0Ch](dt); +2E4h =
+                    // +430h (a record: no reader here).
+                    void run_takeoff_task_tick_009cfd70(float dt) {
+                        using TS = GameUnitSlot::TakeoffTaskState;
+                        if (!unit_.takeoff_task_installed) return;
+                        ++unit_.takeoff_ticks;
+                        takeoff_altitude_floor_009cfa80();
+                        const bool done = takeoff_rule_009cfc70();
+                        switch (unit_.takeoff_state) {
+                        case TS::kPrepare: run_takeoff_prepare_step_009cde50(dt); break;
+                        case TS::kSlowTakeoff: run_takeoff_slow_step_009ce160(); break;
+                        case TS::kTakeoff:
+                            // 009CE2C0, the Takeoff step: piece 4 part 2b, not bound.
+                            ++unit_.takeoff_run_refused;
+                            owner_.record("TakeoffStateTakeoff::step_009ce2c0", 0x009ce2c0u);
+                            break;
+                        default:
+                            owner_.record("TakeoffStateParking::step_009cd540", 0x009cd540u);
+                            break;
+                        }
+                        if (done) {
+                            // 0099B690 -> 0099A660 queues the task on the bot's
+                            // retire list; the bot drops it before its next think.
+                            ++owner_.takeoff_done;
+                            owner_.log.notef("  takeoff task %s: done at %.2f s in state %X "
+                                "state=%d y=%.2f floor=%.2f |v|=%.2f (009CFC70 -> 0099B690; "
+                                "packet cc9_takeoff_task_bind)", unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<unsigned>(unit_.takeoff_state),
+                                unit_.plane_control_mode_900,
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(unit_.takeoff_floor_2c),
+                                static_cast<double>(avoid_len(unit_.plane_world_velocity)));
+                            unit_.takeoff_task_installed = false;
+                            unit_.takeoff_state = TS::kNone;
+                        }
+                        owner_.done("BotTaskTakeoff::tick", 0x009cfd70u);
+                    }
+
+                    // 009CFA80 (009CFA80-009CFB5C, RET 4): +2Ch = max(layer(x, z) +
+                    // +30h, +30h + +34h), layer = 0041BC20 on squadron+350h. That
+                    // layer is not carried (007F1D90's slope argument is unread), so
+                    // squadron+34Ch's layer stands in: SUBSTITUTION, labelled. The
+                    // tail ends a current moveto command whose target is the
+                    // squadron's +404h through 0071E430; recorded, not modelled.
+                    void takeoff_altitude_floor_009cfa80() {
+                        const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+                        const bsp::TerrainGridLayerRecord* layer =
+                            reg.layer(reg.squadron_layer_34c());
+                        const float h = layer != nullptr ? avoid_zone_sample_0041bc20(*layer,
+                            unit_.motion.position[0], unit_.motion.position[2]) : 0.0f;
+                        const float m = unit_.takeoff_margin_30;
+                        float f = static_cast<float>(static_cast<double>(m) + h);
+                        const float g = static_cast<float>(static_cast<double>(m) +
+                            unit_.takeoff_base_34);
+                        if (f < g) f = g;
+                        unit_.takeoff_floor_2c = f;
+                        owner_.record("TakeoffTask::end_moveto_command_0071e430", 0x009cfb04u);
+                    }
+
+                    // 009CFC70 (009CFC70-009CFD55, RET): the done arm (0099B690)
+                    // when the plane is in free flight ((plane+72Ch)->vtable[38h],
+                    // +900h == 7) with +908h > 5.0 (00CE3850) and either y above
+                    // +2Ch or its speed (vtable[38h]) above 007C4810's
+                    // MinControlSpeed; then prepare -> SlowTakeoff once prepare's
+                    // +19h is set, SlowTakeoff -> Takeoff when 009CFB60 is true.
+                    // Returns the done arm; the transitions run either way.
+                    bool takeoff_rule_009cfc70() {
+                        using TS = GameUnitSlot::TakeoffTaskState;
+                        bool done = false;
+                        if (unit_.plane_control_mode_900 == 7 && unit_.plane_airborne_908 > 5.0f) {
+                            done = unit_.motion.position[1] > unit_.takeoff_floor_2c;
+                            if (!done && owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                const float mc = bsp::plane_min_control_speed_007c4810(
+                                    bsp::tuning_min_control_multiplier_007e41df(
+                                        g.dynamics_spd_multipliers_control_range_min,
+                                        g.dynamics_spd_multipliers_control_range_max,
+                                        g.dynamics_spd_multipliers_stall_range_max,
+                                        g.dynamics_spd_multipliers_level_flight),
+                                    unit_.plane_stall_spd);
+                                done = avoid_len(unit_.plane_world_velocity) > mc;
+                            }
+                        }
+                        if (unit_.takeoff_state == TS::kPrepare) {
+                            if (unit_.takeoff_prep_done_19) {
+                                // 009CDD00, prepare's exit, is a RET.
+                                unit_.takeoff_state = TS::kSlowTakeoff;
+                                unit_.takeoff_prep_left_at = owner_.summary.simulated_seconds;
+                                owner_.takeoff_slow_enter_009ce1d0(unit_);
+                                ++owner_.takeoff_to_slow;
+                                owner_.log.notef("  takeoff task %s: prepare -> SlowTakeoff at "
+                                    "%.2f s after %.2f s (%s, min member %.2f m) yaw=%.3f "
+                                    "(009CFC70; packet cc9_takeoff_task_bind)",
+                                    unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    static_cast<double>(unit_.takeoff_prep_t_1c),
+                                    unit_.takeoff_prep_exit,
+                                    static_cast<double>(unit_.takeoff_prep_min_member_d),
+                                    static_cast<double>(unit_.takeoff_slow_yaw_24));
+                            }
+                        } else if (unit_.takeoff_state == TS::kSlowTakeoff) {
+                            if (takeoff_slow_leave_009cfb60()) {
+                                // 009CE150, SlowTakeoff's exit, is a RET; 009CE270,
+                                // Takeoff's enter: +18h = -1.0 (00D7A260), +1Ch = 0,
+                                // then 007C17D0(plane), recorded (part 2b).
+                                unit_.takeoff_state = TS::kTakeoff;
+                                unit_.takeoff_slow_left_at = owner_.summary.simulated_seconds;
+                                unit_.takeoff_run_18 = -1.0f;
+                                unit_.takeoff_run_1c = 0.0f;
+                                owner_.record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
+                                ++owner_.takeoff_to_run;
+                                owner_.log.notef("  takeoff task %s: SlowTakeoff -> Takeoff at "
+                                    "%.2f s (009CFB60; the Takeoff step 009CE2C0 is not bound; "
+                                    "packet cc9_takeoff_task_bind)", unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds));
+                            }
+                        }
+                        return done;
+                    }
+
+                    // 009CFB60 (009CFB60-009CFC6B, RET): true at once when plane+AA0h
+                    // <= 0.0 (00D7A218). Otherwise true once the plane is more than
+                    // 60 m from the state's start (squared planar distance, the y
+                    // term 0 x 0, against 3600.0 00CE3D70), after sending the plane
+                    // message 7Ah (0080F960, byte +20h = 0) through 0077C2A0(plane,
+                    // msg, 0, 0), whose handler 007B83F0 sets +AA0h = -1.0. The host
+                    // carries +AA0h as 0.0 (SUBSTITUTION, labelled; the image's
+                    // launched plane has 0.0 or -1.0 unless its descriptor asks for a
+                    // ShipYardLaunch, 007D6355 / 007D645A), so the first arm answers.
+                    bool takeoff_slow_leave_009cfb60() {
+                        constexpr float kPlaneAa0 = 0.0f;
+                        if (!(kPlaneAa0 > 0.0f)) return true;
+                        const float dx = unit_.motion.position[0] - unit_.takeoff_slow_start_18[0];
+                        const float dz = unit_.motion.position[2] - unit_.takeoff_slow_start_18[2];
+                        const float d2 = static_cast<float>(static_cast<double>(dx) * dx +
+                            static_cast<double>(dz) * dz);
+                        if (!(static_cast<double>(d2) > 3600.0)) return false;
+                        owner_.record("Plane::message_7a_007b83f0", 0x009cfc38u);
+                        return true;
+                    }
+
+                    // 009CDE50 (009CDE50-009CE10C, RET 4), takeoff/prepare's step.
+                    void run_takeoff_prepare_step_009cde50(float dt) {
+                        ++unit_.takeoff_prep_ticks;
+                        // approach+38h = 0: no reader here (a record).
+                        if (unit_.plane_control_mode_900 == 7) {
+                            unit_.takeoff_prep_done_19 = true;       // free flight
+                            unit_.takeoff_prep_exit = "free flight";
+                        }
+                        if (unit_.takeoff_prep_done_19) return;
+                        // Throttle 0.01 (00D7A238) and air brake 1.0, active, +2D8h = 0;
+                        // yaw 0 active, +2D4h = 0.
+                        unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 0.00999999977648258f;
+                        unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                        unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 1.0f;
+                        unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                        unit_.plane_air_brake_mode_2d8 = 0;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].desired = 0.0f;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                        unit_.gl_yaw_mode_2d4_zero = true;
+                        // 007B8D10: the +DECh channel absent here, so true.
+                        unit_.takeoff_prep_t_1c += dt;
+                        // 009CDF0C-009CDF1F: a holder whose owner answers IsKindOf(45h),
+                        // an airfield (a holder that is not a mother ship here).
+                        const std::size_t hi = unit_.plane_contact_deck_bf4;
+                        if (hi != 0 && hi <= owner_.landing_decks.size()
+                            && !owner_.landing_decks[hi - 1u].mother_ship) {
+                            unit_.takeoff_prep_done_19 = true;
+                            unit_.takeoff_prep_exit = "airfield holder";
+                            return;
+                        }
+                        const float t = unit_.takeoff_prep_t_1c;
+                        if (0.10000000149011612 > static_cast<double>(t)) return;   // 00D7A3A0
+                        // The wobble: angle = (t - 0.1) / +24h + +20h; roll slot =
+                        // cos, pitch slot = sin, each times 00419260's 1/|(cos, sin)|.
+                        const float a = static_cast<float>((static_cast<double>(t) -
+                            0.10000000149011612) / unit_.takeoff_prep_period_24 +
+                            unit_.takeoff_prep_phase_20);
+                        const float sn = static_cast<float>(std::sin(static_cast<double>(a)));
+                        const float cs = static_cast<float>(std::cos(static_cast<double>(a)));
+                        const float len = static_cast<float>(std::sqrt(
+                            static_cast<double>(cs) * cs + static_cast<double>(sn) * sn));
+                        const float r = len == 0.0f ? 0.0f : 1.0f / len;
+                        unit_.plan_slots[bsp::kPilotSlotRoll].desired = r * cs;
+                        unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                        unit_.plan_heading_mode_2cc = 0;
+                        unit_.plan_heading_2c0_written = false;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired = r * sn;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                        unit_.plan_state.pitch_mode_2d0 = 0;
+                        // The squadron's members (+3CCh of +3D0h, up to five): done
+                        // when the nearest other is under 10.0 m (00CE38B8).
+                        const std::size_t sq = owner_.landing_squadron_of(unit_.process_index);
+                        const std::vector<std::size_t> ms = owner_.landing_members(sq);
+                        if (!ms.empty()) {
+                            float best = 3.4028234663852886e+38f;   // 00D7A248
+                            for (const std::size_t m : ms) {
+                                if (m == unit_.process_index || !owner_.slots[m]) continue;
+                                const float* q = owner_.slots[m]->motion.position;
+                                const float ex = q[0] - unit_.motion.position[0];
+                                const float ey = q[1] - unit_.motion.position[1];
+                                const float ez = q[2] - unit_.motion.position[2];
+                                const float d = static_cast<float>(std::sqrt(
+                                    static_cast<double>(ex) * ex + static_cast<double>(ey) * ey +
+                                    static_cast<double>(ez) * ez));
+                                if (d < best) best = d;
+                            }
+                            unit_.takeoff_prep_min_member_d = best;
+                            if (best < 10.0f) {
+                                unit_.takeoff_prep_done_19 = true;
+                                unit_.takeoff_prep_exit = "member within 10 m";
+                                return;
+                            }
+                        }
+                        // PrepareTime (tuning+4DCh, unclamped) passed and the site allows.
+                        const float pt = owner_.lua.plane_globals_loaded()
+                            ? owner_.lua.plane_globals().pilot_take_off_prepare_time : 0.0f;
+                        if (pt < t && owner_.takeoff_permission_009cdd10(unit_)) {
+                            unit_.takeoff_prep_done_19 = true;
+                            unit_.takeoff_prep_exit = "prepare time and site permission";
+                        }
+                    }
+
+                    // 009CE160 (009CE160-009CE1CA, RET 4), takeoff/SlowTakeoff's step:
+                    // approach+38h = 0 (a record); bank +2C4h = 0 with +2CCh = 1; the
+                    // yaw slot = +24h, active, +2D4h = 0; speed +2B4h = 20.0
+                    // (00CE3930), +2B0h = 0, +2D8h = 1.
+                    void run_takeoff_slow_step_009ce160() {
+                        ++unit_.takeoff_slow_ticks;
+                        unit_.plan_state.bank_target_2c4 = 0.0f;
+                        unit_.plan_heading_mode_2cc = 1;
+                        unit_.plan_heading_2c0_written = false;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].desired = unit_.takeoff_slow_yaw_24;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                        unit_.gl_yaw_mode_2d4_zero = true;
+                        unit_.plane_desired_speed_2b4 = 20.0f;
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                    }
+
                     void run_land_task_tick_009b3eb0(float dt) {
                         using LS = GameUnitSlot::LandTaskState;
                         if (!unit_.land_task_installed) return;
@@ -24995,6 +25394,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // runs that arm and no attack arm.
                             if (kSquadronLandTaskBound && unit_.land_task_installed) {
                                 run_land_task_tick_009b3eb0(elapsed);
+                            } else if (kBaseLaunchChainBound && unit_.takeoff_task_installed) {
+                                // Packet cc9_takeoff_task_bind: the takeoff task is
+                                // the bot's one task, so no attack arm runs.
+                                run_takeoff_task_tick_009cfd70(elapsed);
                             } else {
                             run_torpedo_task_arm_009d4850(elapsed);
                             run_dive_bomb_task_arm_009c8790(elapsed);
@@ -28836,6 +29239,23 @@ void GameUnitsHost::report() {
             "(006FC640 / 006FC810 / 006D0667 / 006D02F0, packet cc9_base_launch_deck_arms)",
             host.base_launch_lift_down, host.base_launch_lift_up, host.base_launch_lift_top,
             host.base_launch_lift_blocked);
+        host.log.notef("summary base launch takeoff task: installs=%llu parking_refused=%llu "
+            "to_slow=%llu to_run=%llu done=%llu permission_asks=%llu denied=%llu (0099A4A0 / "
+            "009CFD70, packet cc9_takeoff_task_bind)", host.takeoff_installs,
+            host.takeoff_parking_refused, host.takeoff_to_slow, host.takeoff_to_run,
+            host.takeoff_done, host.takeoff_permission_asks, host.takeoff_permission_denied);
+        for (const auto& s : host.slots) {
+            if (!s || s->takeoff_installs == 0) continue;
+            host.log.notef("summary takeoff member %s: installs=%llu state=%X installed_at=%.2f "
+                "prep_left=%.2f (%s) slow_left=%.2f ticks=%llu prep=%llu slow=%llu "
+                "run_refused=%llu flight_state=%d", s->row.name.c_str(), s->takeoff_installs,
+                static_cast<unsigned>(s->takeoff_state),
+                static_cast<double>(s->takeoff_installed_at),
+                static_cast<double>(s->takeoff_prep_left_at), s->takeoff_prep_exit,
+                static_cast<double>(s->takeoff_slow_left_at), s->takeoff_ticks,
+                s->takeoff_prep_ticks, s->takeoff_slow_ticks, s->takeoff_run_refused,
+                s->plane_control_mode_900);
+        }
         for (const Impl::LandingDeck& d : host.landing_decks) {
             if (!d.built || d.owner >= host.slots.size()) continue;
             host.log.notef("summary base launch site %s: ready_plane=%s sets=%llu",

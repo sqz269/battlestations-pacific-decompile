@@ -6123,3 +6123,145 @@ cancelling the host motion tick's vertical velocity.
 - SHIP_AI 87.2's `kShipTerrainContactBound` must stay OFF: the two are exclusive.
 - `kLandingShipRampHullContactBound` can now be judged against real contacts: the latch comes
   from this solver.
+
+### 84.4 The stand-in gate, the shape filter, and the pair on current main (cc9-gunnery19)
+
+**The gate** (`a5a9a7502`). With `kHullTerrainContactSolverBound` ON:
+- the SHIP_AI 87.2 keel stand-in never applies its stop, even with `kShipTerrainContactBound` ON;
+- `+1010h` / `+1011h` come from the solver's contacts alone.
+
+The stand-in's census still runs.
+
+**The shape filter.** The solver now applies `00C44104`'s test:
+- **Hull:** group 1; mask `0Dh | class bit`, or `0Dh` after
+  `NavigatorSetAvoidLandCollision(false)`, which calls `008A3C79 -> 0092BD00 -> 00C48020` and
+  writes `shape+30h = 0Dh` for every hull shape (SHIP_AI 87.6).
+- **Terrain:** group 8, mask 0.
+- `0Dh` keeps bit 8, so the disable side does **not** drop terrain contact; it drops only the class
+  bit. No hull-terrain pair is filtered. The test is in the code as documentation of that.
+
+**The pair on current main** (`a5a9a7502`; `local\g19_goff` flips the solver OFF,
+`local\g19_gon` is main as it is). The stand-in is OFF and the ramp latch
+`kLandingShipRampHullContactBound` ON on both sides.
+- **Exit 1:** USN02, USN04, USN01, JM06.
+- **Exit 3:** JM08 long, USNOS, USN13, IJN01, JM05. Each has the same death rows and
+  aggregates as 84.3, so the stand-in and the ramp latch leave the solver's pair unchanged.
+- **This is also the stand-in-OFF comparison:** main's stand-in is OFF on both sides.
+
+**What the solver does to JM08 long's landing chain** (`summary mission ship ai landing modes`,
+`land state`, `landing ship ramp`):
+
+| | OFF (hulls cross land) | ON (solver) |
+| --- | --- | --- |
+| mode-3 approach points | 1081 | **0** |
+| mode-3 in reach / begins | 2 / 2 | 0 / 0 |
+| land steps / final | 822 / 772 | 0 / 0 |
+| ramp ground contacts / lowers | 3008 / 2 (LST 03 at 831.95 s, LST 01 at 897.15 s) | 0 / 0 |
+
+- **Why it breaks:** with the solver the landers stop at the beach, and the approach never
+  selects landing mode 3 (`009F21A0`, `mode3_points=0`, `no_pad=0`). So no pad is assigned, no
+  ramp latches, and nothing lands.
+- On OFF the chain ran only because the hulls drove 230-356 m inland into the HQ's reach.
+- **The chain's entry to mode 3 is therefore unverified against a hull that cannot leave the
+  water.** This is cc9-ships22's lane (SHIP_AI 85-86):
+  - what selects mode 3 in the image, and from how far;
+  - whether the image's landers beach closer to `Headquarter 01`'s pads than the host's do.
+- **Also open on the solver's side:** interior raw points can stop a hull slightly early
+  (84.1's labelled substitution). That is centimetres to metres, not the hundreds of metres the
+  landing needed on OFF.
+
+## 85. Handoff (cc9-gunnery19, 2026-09-30 13:05 UTC, at about 70% context)
+
+### 85.1 Landed
+
+| item | commits | state |
+| --- | --- | --- |
+| GAMEPLAY_GAP_RANKING refresh against reference t; #15's `+830h` list re-read | `8efe89ced`, `54fbbd5ea` | #1, #3, #6, #9 and #16 closed; #10 and #15 parked (no reach on t) |
+| RepairEnable's 9Fh arm reaches `task+45h` (82) | `816520781`, `b6d9c158b` | `kHullRepairEnableRouteBound` ON; moves USN04, E2, USN02, LOMP10, LOMP10 long, JM05 and JM05 long |
+| The hull-terrain contact read (83) | `79c63984e` | the terrain shape is frictionless and inelastic; the LCP laws |
+| The hull-terrain contact phase (84) | `5204cf184`, `5f982775c`, `a5a9a7502`, `66cb304a9` | `kHullTerrainContactSolverBound` ON (`include/bsp/hull_terrain_contact.hpp`); it gates SHIP_AI 87.2's stand-in off and feeds `+1010h` / `+1011h` |
+
+### 85.2 Open, in order
+
+**1. Reference u. Do not wait for `kBaseLaunchChainBound`** (OFF on main, expected later).
+- **Base:** current main.
+- **Method:** as t (GAME_EXECUTABLE "2026-09-30 t"):
+  - commit the predictions first;
+  - run the switch diff `2e850cf31..base`;
+  - run the all-OFF anchor against `g18_rt_<row>` (the cc9-gunnery18 tree);
+  - compare u against t;
+  - run leave-one-out on the moved rows.
+- **Rows:** t's eighteen, s's seventeen plus JM08 long.
+- **The diff tool misses switches.** `local\g18_switches.py` (copied as `local\g19_switches.py`)
+  missed several at `f8622d137`. Also run
+  `git diff 2e850cf31 HEAD -- src include | rg "^\+.*constexpr bool k\w+ = true"`, then check
+  each switch's current value.
+- **Switches ON since t, as of `f8622d137`:**
+
+| switch | owner / record | expected reach |
+| --- | --- | --- |
+| `kEntityCommandSelfKindBound`, `kShipAiApproachLandingModesBound`, `kShipAiLandStepBound` | cc9-ships22, SHIP_AI 85.4 (the landing chain; one commit, group them) | JM08 long |
+| `kLandingShipRampBound`, `kLandingShipRampHullContactBound` | cc9-ships22, SHIP_AI 86.6 / 87.5 | JM08 long; with the solver ON the landers never reach mode 3 (84.4), so expect the ramp to be inert |
+| `kLandParkStateBound`, `kCarrierElevatorBound` | cc9-lua24, SQUADRON_LAND_TASK 5ar / 5ao.1 | JM05 long |
+| `kHitIndexDetachBound` | cc9-lua24, 5as.1 | its pair's rows |
+| `kAiTargetWeightDamageTermsBound` | GUNNERY 80.5 | USN02, JM06, USN13, LOMP06, IJN01, USNOS, USNOS long |
+| `kNavigatorAvoidanceDeliveryBound` | cc9-ships22 (ranking #13) | the rows with `NavigatorSet*` calls: USNOS, USN13, USN02, E2, USN04, USN01, JM06, USN12 |
+| `kHullRepairEnableRouteBound` | 82.4 | USN04, E2, USN02, LOMP10, LOMP10 long, JM05, JM05 long |
+| `kHullTerrainContactSolverBound` | 84.3 / 84.4 | JM08 long (deaths 33 -> 25 on its pair; the invasion stops at the beach), USNOS (the Gato wreck rests on the seabed; the kill-depth kill is gone), USN13, IJN01, JM05 (`nearest` only) |
+
+- **`kShipTerrainContactBound` is `true` at `f8622d137`**
+  (`src/game_hosts_units.cpp`, `GameUnitsHost::Impl`). With the solver ON its stop is gated
+  off (84.4), so it is inert. Leave-one-out on it alone should be exit 0/1 on every row.
+- **Group the solver with the landing chain on JM08 long.** They interact: the chain's mode-3
+  entry is not reached while hulls cannot cross land.
+
+**2. JM08 long's landing mode-3 entry under the solver** (84.4). The lead keeps the solver ON (2026-09-30) and routes this to cc9-ships23 as its top item. In reference u, read JM08 long as moving through the solver, with this fix still pending.
+With the solver ON, `mode3_points` goes 1081 -> 0 and the ramps go 2 -> 0. Find what selects
+`009F21A0`'s mode 3, and from how far; then find where the image's landers beach relative to
+`Headquarter 01`'s pads. The per-solve diagnostic is `BSP_HULL_TERRAIN_TRACE=<file>`. On
+JM08 long a beached transport sits at y about -10.5; the motion tick's servo gives
+`v0.y = -22` and the solver answers `dv.y = +20`.
+
+**3. The solver's labelled substitutions** (84.1), in order of expected effect:
+- **a. `00C5DEB0`'s hull vertices.**
+  - The solver uses the ConvexObject's raw points (`MmodHullConvexBox::shape_points`). The
+    image builds a convex hull from them: a 0.001 dedup, a 4096-vertex limit, interior points
+    dropped, its own vertex order.
+  - Interior points can add candidates and use up the 8-per-pair cap in a different order.
+  - Read `00C5DEB0` and reproduce the vertex set and its order.
+- **b. `00C53630`'s own interpolation.**
+  - The solver uses the terrain object's `00ADB480` height and `00ADAA40` cell normal over the
+    same tile samples.
+  - `00C53630` has its own schedule (R145), including the X-spacing quirk on the witness point.
+  - The native `intersect_native_dyn_terrain_convex_00c53630` could be called on shape blobs:
+    - terrain `+08h = 5`, `+34h` local transform, `+210h` samples (`uint16`), `+214h/+218h` 33,
+      `+21Ch/+220h` 9.375, `+224h` `inv_scale`, `+228h` offset, `+22Ch` mode 1;
+    - convex `+210h` mesh `{vertices, count}`, 16-byte vertices;
+    - `application_camera_axes_crt()` for its CRT context.
+  - The tile's local transform comes from `00882AC0`'s `rep movsd` of `[src+74h]` and the tile
+    offsets (`00883853..008838A2`), not read.
+- **c. Substeps.** The host runs one substep per 0.05 s step (its integration phases already
+  did). The image's `00C5C540` plan (fixed substep `world+00h`) would run the contact phase per
+  substep.
+- **d. Only hull-terrain pairs.** Hull-hull and hull-object manifolds and the group formation
+  `00C4B610` are not modelled. The reserve ships under the seabed (JM05's destroyers at
+  y = -250) get terrain contacts; whether the image's reserve bodies are in the Dyn world is
+  not established.
+
+**4. Carried over from 81.2:** the fire-window origin, the torpedo items, 80.3's labelled items,
+and 79.2 item 4.
+
+### 85.3 Tools (`local\` in the cc9-gunnery19 tree, prefix `g19_`)
+
+- **Reference-form runs:** `g19_runs.ps1 -V <prefix> -Only <rows>`, `g19_wait.ps1 -Logs`,
+  `g19_exp.ps1 -Commit -Out [-Flip]` and `g19_vs.py <off> <on> [rows]` (resolves `g18_rt` into
+  the cc9-gunnery18 tree). These are g18's, re-rooted.
+- **Census helpers:**
+  - `g19_reach.py <patterns>`: grep over reference t's logs;
+  - `g19_repair_scripts.py`: the RepairEnable calls per row script;
+  - `g19_a20.py` / `g19_45.py`: the repair-task census.
+- **Pair logs:**
+  - `g19_off_*` / `g19_on_*`: RepairEnable;
+  - `g19_hoff_*` / `g19_hon_*`: the solver on `5204cf184`;
+  - `g19_goff_*` / `g19_gon_*`: the solver on `a5a9a7502`;
+  - `g19_trace_jm08l.txt` / `g19_trace_jm05.txt`: solver traces.
