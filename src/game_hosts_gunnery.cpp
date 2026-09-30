@@ -634,6 +634,18 @@ constexpr bool kHullElementSegmentBound = true;
 //    docs/AA_LETHALITY_AUDIT.md section 9.5.
 //    Packet cc9_plane_mesh_hit.
 constexpr bool kPlaneMeshHitTestBound = true;
+//  * kPlaneBlastElementEntriesBound: a burst's distance to a PLANE is taken per
+//    GeomMesh element, as kBlastElementEntriesBound does for a ship. The image's
+//    sphere test for the plane's unit-part shape is 0070F720, which ends in
+//    0070F759 CALL 00723F80, the same element walk (00723B70 per element: the
+//    element box reject, the closest triangle, an entry within the radius); no
+//    entry, no record. 004705C0 then keeps the largest per-element result. OFF:
+//    one entry at the distance to the class Width x Height x Length box.
+//    Labelled: the gather's outer range test stays on the class box (the Kate's
+//    mesh leaves it only at the tail, by 0.64 m); the element index is the
+//    element's node (0 on every plane model read). Packet cc9_flak_blast_plane,
+//    docs/AA_LETHALITY_AUDIT.md section 10.
+constexpr bool kPlaneBlastElementEntriesBound = false;
 //  * kShipDamageControlTickBound: message 9Eh's add arms 0093A4F0 (water,
 //    task+34h) and 0093A470 (fire, task+38h) add seconds, and the water and
 //    fire steps of 0093CA20 (0093C120 over +34h at WaterTickDamage, 0093C210
@@ -1262,6 +1274,13 @@ struct GameGunneryHost::Impl {
     unsigned long long plane_mesh_tests{0};
     unsigned long long plane_mesh_hits{0};
     unsigned long long plane_box_hits{0};
+    // Packet cc9_flak_blast_plane (census, both sides): bursts within range of a
+    // plane's class box, those with a mesh element in range, and the distances.
+    unsigned long long plane_blast_box_records{0};
+    unsigned long long plane_blast_mesh_records{0};
+    double plane_blast_box_distance{0.0};
+    double plane_blast_box_distance_matched{0.0};
+    double plane_blast_mesh_distance{0.0};
     unsigned long long summary_zero_damage_attributions_skipped{0};   // packet cc9_kill_credit
     // 006DF6D7-006DF7B5 then 006DF7BB-006DF7E7: the body point on the target,
     // refreshed every TargetPointRefreshTime, carried to world by its pose.
@@ -8727,15 +8746,15 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         entry.part_index = 0;
         entry.distance = distance;
         std::vector<bsp::HitPartEntry> element_entries;
-        const ShipModelSlots* model = kBlastElementEntriesBound ? ship_mesh_of(i) : nullptr;
-        if (model != nullptr && !model->element_ranges.empty()) {
-            // 00723F80: the centre into the node's space (the pose rows here),
-            // then 00723B70 per element: the root-box reject, the closest
-            // triangle, and an entry when it lies within the radius.
-            float local[3];
-            for (int a = 0; a < 3; ++a) local[a] = dot3(rel, axes[a]);
-            const float r2 = weapon->blast_range * weapon->blast_range;
-            for (const auto& range : model->element_ranges) {
+        // 00723F80: the centre into the node's space (the pose rows here),
+        // then 00723B70 per element: the root-box reject, the closest
+        // triangle, and an entry when it lies within the radius.
+        float local[3];
+        for (int a = 0; a < 3; ++a) local[a] = dot3(rel, axes[a]);
+        const float r2 = weapon->blast_range * weapon->blast_range;
+        const auto gather_elements = [&](const ShipModelSlots& mesh,
+                                         std::vector<bsp::HitPartEntry>& out) {
+            for (const auto& range : mesh.element_ranges) {
                 if (range.count == 0) continue;
                 float box2 = 0.0f;
                 for (int a = 0; a < 3; ++a) {
@@ -8748,8 +8767,8 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
                 bool any = false;
                 for (std::size_t t = range.first; t < range.first + range.count; ++t) {
                     const float d2 = point_triangle_distance2_0085df60(local,
-                        model->element_tris[t * 3].data(), model->element_tris[t * 3 + 1].data(),
-                        model->element_tris[t * 3 + 2].data());
+                        mesh.element_tris[t * 3].data(), mesh.element_tris[t * 3 + 1].data(),
+                        mesh.element_tris[t * 3 + 2].data());
                     if (d2 < best2) { best2 = d2; any = true; }   // 00723CFB strict
                 }
                 if (!any) continue;
@@ -8757,7 +8776,31 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
                 e.kind = range.kind;
                 e.part_index = range.index;
                 e.distance = std::sqrt(best2);
-                element_entries.push_back(e);
+                out.push_back(e);
+            }
+        };
+        const ShipModelSlots* model = kBlastElementEntriesBound ? ship_mesh_of(i) : nullptr;
+        // Packet cc9_flak_blast_plane: a plane's sphere test is the same
+        // 0070F720 -> 00723F80 walk (0070F759). Census on both sides.
+        const ShipModelSlots* plane_mesh = model == nullptr && kBlastElementEntriesBound
+            ? plane_mesh_of(i, true) : nullptr;
+        if (plane_mesh != nullptr && !plane_mesh->element_ranges.empty()) {
+            std::vector<bsp::HitPartEntry> census;
+            gather_elements(*plane_mesh, census);
+            ++plane_blast_box_records;
+            plane_blast_box_distance += distance;
+            if (!census.empty()) {
+                float nearest_e = census.front().distance;
+                for (const auto& e : census) nearest_e = std::min(nearest_e, e.distance);
+                ++plane_blast_mesh_records;
+                plane_blast_mesh_distance += nearest_e;
+                plane_blast_box_distance_matched += distance;
+            }
+            if (kPlaneBlastElementEntriesBound) model = plane_mesh;
+        }
+        if (model != nullptr && !model->element_ranges.empty()) {
+            gather_elements(*model, element_entries);
+            for (const bsp::HitPartEntry& e : element_entries) {
                 ++be_entries;
                 if (e.kind == bsp::kShipHitSegmentKindBreakable) ++be_entries_fizika;
                 if (e.kind == bsp::kUnitHitPartEntryAlternateArmour) ++be_entries_underwater;
@@ -10715,6 +10758,18 @@ void GameGunneryHost::report() {
             "class_box_hits=%llu bound=%d (0087BCC0 -> 00712440 -> 00724510, packet "
             "cc9_plane_mesh_hit)", host.plane_mesh_tests, host.plane_mesh_hits,
             host.plane_box_hits, kPlaneMeshHitTestBound ? 1 : 0);
+        {
+            const double nb = static_cast<double>(host.plane_blast_box_records);
+            const double nm = static_cast<double>(host.plane_blast_mesh_records);
+            host.log.notef("summary mission gunnery plane blast box_records=%llu mesh_records=%llu "
+                "mean_box_dist=%.2f matched_box_dist=%.2f matched_mesh_dist=%.2f bound=%d "
+                "(0070F720 -> 00723F80, packet cc9_flak_blast_plane)",
+                host.plane_blast_box_records, host.plane_blast_mesh_records,
+                nb > 0.0 ? host.plane_blast_box_distance / nb : -1.0,
+                nm > 0.0 ? host.plane_blast_box_distance_matched / nm : -1.0,
+                nm > 0.0 ? host.plane_blast_mesh_distance / nm : -1.0,
+                kPlaneBlastElementEntriesBound ? 1 : 0);
+        }
         host.log.notef("summary mission gunnery aa line of fire queries=%llu blocked=%llu "
             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
