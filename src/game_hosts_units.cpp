@@ -2395,6 +2395,9 @@ struct GameUnitsHost::Impl {
     void plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why);
     unsigned long long base_launch_liftoffs{0}, base_launch_liftoff_unparented{0};
     unsigned long long base_launch_liftoff_site_leaves{0}, base_launch_c01_sets{0};
+    // Packet cc9_base_launch_brake: 006C5B70's releases of block+38h.
+    unsigned long long base_launch_brake_releases{0}, base_launch_brake_gone{0};
+    void release_launch_brake_006c5b70();
     void takeoff_prepare_enter_009cdd50(GameUnitSlot& p);
     void takeoff_slow_enter_009ce1d0(GameUnitSlot& p);
     bool takeoff_permission_009cdd10(GameUnitSlot& p);
@@ -13003,7 +13006,72 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
             }
         }
         h.done("AirOps::landing_queue_tick", 0x006cd240u);
+        if constexpr (bsp::kBaseLaunchBrakeBound) h.release_launch_brake_006c5b70();
     }
+}
+
+// Packet cc9_base_launch_brake (docs/SQUADRON_LAND_TASK.md 5bj). 006C5B70
+// (006C5B70-006C5C34, __thiscall(block, float), RET 4), which 006CDC70 runs after
+// 006CD240 when block+1Ch and +1Dh are clear and the owner at block+7Ch is
+// present with +5Dh clear (006CDCE1-006CDD04). With block+38h set and 007ED740
+// true, it re-publishes every slot whose +28h is that squadron (006BF150, a
+// slot notice: counted, not carried) and clears block+38h (006C5C05-006C5C0A).
+// 007ED740 (007ED740-007ED782): +3CCh > 0 and 007B8BD0 true for each +3D0h
+// member. 007B8BD0 (007B8BD0-007B8C15): true for state 7 (+72Ch vtable[38h] is
+// 0074E210, `+1D4h == 7` on the sub-object, i.e. +900h), for state 6, and for
+// state 4 with +BF8h set; false otherwise.
+// SUBSTITUTIONS, labelled:
+//  - a member whose scene node is torn down, destroyed or removed is skipped, as
+//    the +3D0h compaction at death (007F3970) would drop it;
+//  - the observer pair's own clear (0065AFF0 zeroes +14h when the observed
+//    squadron notifies) is stood in for by a squadron whose resolved members are
+//    all gone; its notice's sender is unread;
+//  - a squadron whose members this host has not resolved yet holds the brake.
+void GameUnitsHost::Impl::release_launch_brake_006c5b70() {
+    bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+    for (std::size_t di = 0; di < decks.size(); ++di) {
+        bsp::AirOpsDeck* deck = decks.mutable_at(di);
+        if (deck == nullptr || deck->launch_in_progress == 0u) continue;
+        if (deck->runway_failure || deck->hangar_failure) continue;
+        if (!deck->owner_present || deck->owner_blocked) continue;
+        // The entity id is the unit index plus one (007F4E9E's reader above).
+        const std::size_t sq_unit = static_cast<std::size_t>(deck->launch_in_progress - 1u);
+        const bsp::PlaneSquadronHostRecord* rec = nullptr;
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit == sq_unit) { rec = &r; break; }
+        }
+        if (rec == nullptr || rec->member_units.empty()) continue;
+        std::size_t resolved = 0, live = 0;
+        bool every = true;
+        for (const std::size_t m : rec->member_units) {
+            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+            ++resolved;
+            const GameUnitSlot& p = *slots[m];
+            // unit_scene_node_flags' fields +5Dh, +5Eh, +5Fh (as the plane count reads them).
+            if (p.scene_flags_available && p.state != nullptr && (p.state->simulate != 0
+                    || p.scene_destroyed_005e != 0 || p.scene_removed_005f != 0)) {
+                continue;
+            }
+            ++live;
+            const int st = p.plane_control_mode_900;
+            if (!(st == 7 || st == 6 || (st == 4 && p.plane_ground_contact_bf8))) every = false;
+        }
+        if (resolved == 0) continue;
+        const bool gone = live == 0;
+        if (!gone && !every) continue;
+        if (gone) ++base_launch_brake_gone; else ++base_launch_brake_releases;
+        if (base_launch_brake_releases + base_launch_brake_gone <= 40) {
+            log.notef("base launch brake: deck %s releases squadron %s at %.2f s (%s; "
+                "006CDD04 -> 006C5B70 -> 006C5C0A, packet cc9_base_launch_brake)",
+                decks.name_at(di).c_str(), rec->name.c_str(),
+                static_cast<double>(summary.simulated_seconds),
+                gone ? "no live member: the observer notice, labelled"
+                     : "007ED740: every member in 7, 6 or 4 on the ground");
+        }
+        deck->launch_in_progress = 0u;
+        ++deck->launch_brake_clears;
+    }
+    done("AirOps::republish_spotted_slot", 0x006c5b70u);
 }
 
 // Packet cc9_scene_unit_skill (docs/SCENE_UNIT_SKILL.md): a scene-placed unit
@@ -29764,6 +29832,20 @@ void GameUnitsHost::report() {
             "c01_sets=%llu (007CC1B3 / 007C6F50 / 007C7110, packet cc9_base_launch_liftoff)",
             host.base_launch_liftoffs, host.base_launch_liftoff_unparented,
             host.base_launch_liftoff_site_leaves, host.base_launch_c01_sets);
+        if constexpr (bsp::kBaseLaunchBrakeBound) {
+            unsigned long long sets = 0, clears = 0, held = 0;
+            bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+            for (std::size_t di = 0; di < decks.size(); ++di) {
+                const bsp::AirOpsDeck* deck = decks.mutable_at(di);
+                if (deck == nullptr) continue;
+                sets += deck->launch_brake_sets;
+                clears += deck->launch_brake_clears;
+                if (deck->launch_in_progress != 0u) ++held;
+            }
+            host.log.notef("summary base launch brake: sets=%llu clears=%llu released=%llu "
+                "gone=%llu held_at_end=%llu (006C5050 / 006C5B70, packet cc9_base_launch_brake)",
+                sets, clears, host.base_launch_brake_releases, host.base_launch_brake_gone, held);
+        }
         host.log.notef("summary base launch takeoff task: installs=%llu parking_refused=%llu "
             "to_slow=%llu to_run=%llu done=%llu permission_asks=%llu denied=%llu (0099A4A0 / "
             "009CFD70, packet cc9_takeoff_task_bind)", host.takeoff_installs,

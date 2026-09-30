@@ -464,6 +464,18 @@ struct AirOpsSceneDeck {
     std::vector<AirOpsSceneSlot> slots;
 };
 
+// Packet cc9_base_launch_brake (docs/SQUADRON_LAND_TASK.md 5bj). True: the
+// deck's readiness brake block+38h is written and released as the image does.
+// 006C5050 stores the squadron it has just made at block+38h whenever its flag
+// is 0 (006C532C-006C5348: [block+24h]+14h, the observer pair's slot), and
+// 006C5B70, run by 006CDC70 after 006CD240, clears it (006C5C0A) once 007ED740
+// answers: the squadron has members and each is in state 7, 6, or 4 with
+// ground contact (007B8BD0). While it is held, 006BF620 answers not ready and
+// 006CC690 queues. False: block+38h is never written, as before.
+// ON: 5bj's pairs (every set brake released except the one the image's rule
+// holds behind 5bh's airfield hold; no launch queued; death rows re-timed only).
+inline constexpr bool kBaseLaunchBrakeBound = true;
+
 // The block mode 1 leaves behind. `slots` is block+4Ch with its count at
 // block+50h; `max_in_air_planes` is block+58h.
 struct AirOpsDeck {
@@ -493,6 +505,11 @@ struct AirOpsDeck {
     // being spotted" is what the writer shows; what the queue at block+D8h is
     // filled by has not been read. docs/AIROPS_LAUNCH_TICK.md.
     std::uint32_t launch_in_progress{0};
+    // Packet cc9_base_launch_brake, under kBaseLaunchBrakeBound: 006C5050's
+    // flag-0 stores into block+38h (the squadron's entity id) and 006C5B70's
+    // releases.
+    unsigned long long launch_brake_sets{0};
+    unsigned long long launch_brake_clears{0};
     // block+7Ch is the OWNING ENTITY, named from 006C5050, which reads its
     // virtual at +12Ch for `Skill`, its +54h for `Party`, its +58h, its +188h
     // for `OwnerPlayer` and passes the pointer itself as `HomeBase`. 006BF620

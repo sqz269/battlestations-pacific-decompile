@@ -6628,3 +6628,139 @@ the invisible park loop as the image's.
 - The Main airfield's hangar position never sets `+910h` (5bh), so it does not block.
 - **Open:** the six unread `vtable[28h]` sites above, and a split-form scan. Either could show a
   non-takeoff erase.
+
+## 5bj. The `block+38h` launch brake (packet `cc9_base_launch_brake`, cc9-lua27, 2026-09-30)
+
+The switch is `kBaseLaunchBrakeBound` (`include/bsp/air_operations.hpp`), committed **OFF**.
+`kBaseLaunchChainBound` has been ON since 5bh.
+
+### The image, read for this piece (Ghidra and the disk listing, read only)
+
+**The store.** `006C5050` (`006C5314`-`006C5348`) stores the squadron at `block+38h` when its flag
+argument is 0 and `block+38h` is not already that squadron:
+- `EBP` is the block (`006C5074`), and no other write to `EBP` follows until the epilogue.
+- `ESI` is the entity `004F0AD0` returns (`006C52EA`).
+- The store is `[block+24h]+14h`, the observer pair's watched slot. The old pair is unregistered
+  (`006952A0`) and the new one registered (`00694A60`).
+
+Every launch from `006CC690` passes flag 0 (`006CC72E PUSH 0`). The comment in
+`game_hosts_script_orders.cpp` ("RE-JUSTIFIED ... nothing writes block+38h" in a campaign) and
+AIROPS_LAUNCH_TICK section 5's "in a campaign the deck has no readiness brake" missed this writer.
+5ax found it.
+
+**The release, `006C5B70`**, `__thiscall(block, float)`, `RET 4`.
+- `006CDC70` runs it after `006CD240`, when `block+1Ch` and `+1Dh` are clear and the owner at
+  `block+7Ch` is present with `+5Dh` clear (`006CDCE1`-`006CDD04`).
+- With `block+38h` set and `007ED740(block+38h)` true, it walks the slots and re-publishes
+  (`006BF150`: `00696350`, `006BD520`, `0077C7B0`, a slot notice) each slot whose `+28h` is that
+  squadron. It then unregisters the pair and clears `block+38h` (`006C5C05`-`006C5C0A`).
+
+**`007ED740`** (`007ED740`-`007ED782`) is true when `+3CCh` > 0 and `007B8BD0` answers true for every
+`+3D0h` member.
+
+**`007B8BD0`** (`007B8BD0`-`007B8C15`) is true when any of these holds:
+- `plane+72Ch`'s `vtable[38h]` answers. The sub-object's vtable is `00D06130`, stored at
+  `007CFD63`; slot `38h` is `0074E210` `BSP_PlaneControlMode_IsFreeFlight`, which tests
+  `+1D4h == 7` on the sub-object, that is plane `+900h` == 7.
+- `+900h` is 6.
+- `+900h` is 4 with `+BF8h` (ground contact) set.
+
+State 5, and every state from 1 to 3, answers false.
+
+**The observer's own clear.** The pair's vtable at `00CF6514` has notify slot `0065AFF0`. It zeroes
+`+14h` when the notifying entity is the watched one (`0065B007`). Which notice the squadron sends,
+and when, is unread.
+
+So each flag-0 launch holds its deck until all members of the launched squadron are on the ground
+in state 4 or flying. While the brake is held:
+- `006BF620` (IsReadyToSendPlanes) answers false;
+- `006CC690` queues instead of starting (`006CC715`).
+
+The mission scripts gate their launches on `IsReadyToSendPlanes`:
+- `usn_19_coralus.lua` lines 539 and 553, mtime 2024-08-26, this installation;
+- `commandhelpers.lua` lines 7898, 7916, 8087, 8094 and 8194.
+
+**The six unread `vtable[28h]` sites of 5bi** (read here; none is a site erase):
+- `006D4229` and `007CC9CD` call `vtable[28h](word)` on the vehicle-class descriptor from
+  `00964790`.
+- `006D4D66` and `006D4D82` call it on the entries of `[edi+830h]` and store the result as a
+  word, so it is a getter.
+- `00999B4B` walks the task vector at `bot+58h`.
+- `009BD0FB` and `009BD109` call it on the object `0071BFF0` returns.
+
+5bi's "not excluded" narrows to the split-form calls, which are still unscanned.
+
+### The host with the switch on
+
+- **The store:** `air_ops_launch_start_006c7490` (`src/air_operations.cpp`), after the factory
+  returns the squadron. With `request.state == 1` (the flag 0), `deck.launch_in_progress` =
+  the squadron's entity id.
+- **The release:** `GameUnitsHost::Impl::release_launch_brake_006c5b70`, run at the end of
+  `run_landing_queue_006cd240` (`006CDC70`'s order). It applies `007ED740`/`007B8BD0` to the
+  squadron record's members. SUBSTITUTIONS, labelled:
+  - a member whose scene node is torn down, destroyed or removed is skipped (the `+3D0h`
+    compaction at death);
+  - a squadron whose members are all gone stands in for the observer notice;
+  - a squadron whose members are not resolved yet holds the brake;
+  - `006BF150`'s notice is not carried.
+- **Not carried:** `006C64B0`, the state-2 wait that launches a queued slot once the brake clears.
+  So a launch that `006CC690` queues never starts here; the Lua host's `summary` counts it as
+  `queued`. The scripts read above gate on readiness, so none is expected.
+
+### Predictions (switch ON against OFF, both with the chain ON; written before any run)
+
+1. **JM05 3000.** A carrier's next launch waits for its previous squadron.
+   - Lexington_sqn03's last member reaches state 4 at about 25.6 s, and Yorktown_sqn04's at about
+     25.4 s. So `LaunchSquadron` calls on each carrier move from 3.05/6.05/9.05/12.05 s to about
+     3, 26, 49 and 72 s.
+   - The airfields release within about 7 s of each launch.
+   - The lift was already the bottleneck (5bh: one release every 9 s per carrier), so the
+     lift-off times of the later squadrons move by at most about 10 s.
+   - All 30 members still lift off within 3000 frames.
+   - Death table identical (the squadrons are recalled in both).
+2. **JM05 9000.** As row 1 for the first ten squadrons.
+   - Secondary airfield: sqn11 (153 s) holds the brake for good. Its two wingmen end in state 5
+     (5bh), which `007B8BD0` refuses, so **sqn12 (302.95 s) is not launched** (`held_at_end`
+     >= 1).
+   - The Main airfield's sqn13 (403 s) launches. Death table identical.
+3. **USN04 and E2.** `Lexington-class01_sqn03` and `Yorktown-class01_sqn04` wait for
+   sqn01/sqn02 to be all on deck or flying: launch at about 45-50 s instead of 30.05 s. Their
+   lift-offs move by at most about 10 s. The strike outcome (releases, first hit) is unchanged. The
+   one fighter death of 5bh may move or vanish.
+4. **USN13.** One launch per carrier, so the brake is set and released without holding a second
+   launch. Gameplay identical (exit 0 or 1).
+5. **USN01, LOMP06:** no launch, exit 0 or 1.
+6. **Flip criterion:** every brake that is set is released once its squadron is out or on the
+   ground in state 4, `queued=0`, and no death row moves that the new launch times cannot explain.
+   Row 2's held brake is the image's rule applied to 5bh's airfield hold, not a mechanism failure.
+
+### Results (OFF `local\l27_boff`, SHA-256 `4AAAE55AB63C`; ON `local\l27_bon`, `ED381B4A1106`; both from `8afd63890`)
+
+The 300-frame smoke of the committed tree (USN01, `local\l27_b_off_smoke_smoke.log`) exits 0 with
+299 frames presented.
+
+| row | pair_diff | brake: set / released / held at end | launch times ON (OFF) | queued | death table |
+| --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 3 | 10 / 10 / 0 | carriers 3.05, 27.05, 54.05, 81.05 (3.05, 6.05, 9.05, 12.05) | 0 | identical; every headline value identical |
+| JM05 9000 | 3 | 12 / 11 / **1** | as above; Secondary sqn11 153.00; **Secondary's next launch (302.95 OFF) never comes**; Main 403.03 | 0 | identical (18 rows) |
+| USN04 4500 | 3 | 4 / 4 / 0 | sqn03/04 at **51.05** (30.05) | 0 | 20 rows re-timed by 0.05-5.35 s, several with another killer; one row enters the window (`A6M Zero #8.2` 224.36 s, which dies at 226.31 s OFF on E2); releases and first hit unchanged |
+| E2 9000 | 3 | 4 / 4 / 0 | as USN04 | 0 | same victim set (52); the same re-timings |
+| USN13 3000 | **1** | 9 / 9 / 0 | all at 0.00 | 0 | identical |
+| USN01, LOMP06 | **1** | 0 | - | - | identical |
+
+Against the predictions:
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 carriers at about 3, 26, 49, 72 s; all 30 still lift off; deaths identical | **held**: 3.05, 27.05, 54.05, 81.05; `liftoffs=30`; the launch moves no death row. Missed in detail: the airfields release at 17.85 s (Main) and 29.65 s (Secondary), not within about 7 s. Their members reach state 4 with contact only after the taxi |
+| 2. JM05 9000: Secondary's second launch never comes | **held**: `held_at_end=1`, 12 launches instead of 13, `liftoffs=34` |
+| 3. USN04/E2: second launches at about 45-50 s | **held, 1 s outside**: 51.05 s. Releases unchanged; the strike deaths are re-timed as the fighters now meet it at other places |
+| 4. USN13 gameplay identical | **held**: exit 1 |
+| 5. controls | **held**: exit 1 |
+| 6. flip criterion | **met**: every brake set is released when its squadron is flying or on the ground in state 4, except the one the image's rule keeps behind 5bh's airfield hold; `queued=0` on every row |
+
+### Verdict: **flip ON**
+
+The mechanism matches on every launch row, the scripts wait on `IsReadyToSendPlanes` as read, and
+no launch is queued, so the unbound `006C64B0` is never needed. The JM05 9000 held brake is the
+image's rule (`007B8BD0` refuses state 5) applied to the held wingmen of 5bh and 5bi.
