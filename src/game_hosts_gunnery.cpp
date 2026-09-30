@@ -743,6 +743,16 @@ constexpr bool kKamikazeContactDetonationBound = true;
 // False: the bow-point / hull-box stand-in below; the events run as a census only.
 // ON by the pairs of 2026-09-30 (section 92.4): exit 1 on all 18 reference rows.
 constexpr bool kKamikazeDynContactBound = true;
+// Packet cc9_ground_target_aim_point, docs/GUNNERY_OPEN_ITEMS.md section 93. The
+// artillery bot 006DF520 (sub-types 2, 3, 4, 6 and 9) aims at the target's world
+// matrix (+CCh) applied to the local point target->vtable[100h] wrote into
+// bot+A8h..+B0h (006DF792..006DF7EE), plus its ErrorOffset. For MLandFort
+// (00CFF3F8), MCommandBuilding (00CFB028) and MLandVehicle (00CFFDE0) that slot is
+// 0042D810, which writes (0, 0, 0): the aim point is the target's origin. True:
+// such a target is aimed at its origin. False: at the origin raised by the class
+// Height (unit_aim_point), which puts the aim over a tower's top. MAirfield
+// (006D3250) and MShipyard (00844A10) have their own slot 100h, unread: unchanged.
+constexpr bool kArtilleryGroundOriginAimBound = false;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
@@ -2614,6 +2624,7 @@ struct GameGunneryHost::Impl {
     std::vector<KamikazeRow> kamikaze_rows;
     KamikazeRow& kamikaze_row(std::size_t k);
     unsigned long long kz_contacts{0};
+    unsigned long long ground_origin_aims{0};   // packet cc9_ground_target_aim_point
     // Packet cc9_hull_contact_report: the Dyn events, the slower-body calls of 008145B0,
     // the calls refused as not hostile, and the hostile calls with a live kamikaze party.
     unsigned long long kz_dyn_events{0}, kz_dyn_calls{0}, kz_dyn_refused{0}, kz_dyn_kamikaze{0};
@@ -5932,6 +5943,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // 006DF9A5..006DF9CD: no ship target zeroes bot+90h.
                 if (kArtilleryRangingErrorBound) ranging_ship_aim_by_gun[g] = false;
                 unit_aim_point(target, theirs);
+                // Counted either way; the origin replaces the point only when bound.
+                if (artillery_bot_aims(gun.category, target)
+                    && (units.unit_is_kind_of(target, 0x1B)
+                        || units.unit_is_kind_of(target, 0x19))) {
+                    ++ground_origin_aims;
+                    if constexpr (kArtilleryGroundOriginAimBound) {
+                        // 0042D810: the local aim point is (0, 0, 0), so the target origin.
+                        float r[3], u[3], f[3];
+                        unit_pose(target, r, u, f, theirs);
+                    }
+                }
             }
             float velocity[3];
             unit_velocity(target, velocity);
@@ -7727,6 +7749,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             const float direction[3] = {shot.flight.velocity.x, shot.flight.velocity.y,
                 shot.flight.velocity.z};
             ++impacts_land;
+            shot.fate = 1;
             if (trace) {
                 log.notef("  torpedo trace %llu exit=land_impact at=(%.1f,%.2f,%.1f) life=%.2f",
                     shot.torpedo_trace_id, static_cast<double>(point[0]),
@@ -7747,6 +7770,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             const float direction[3] = {shot.flight.velocity.x, shot.flight.velocity.y,
                 shot.flight.velocity.z};
             ++summary.impacts_entity;
+            shot.fate = 2;
             if (trace) {
                 log.notef("  torpedo trace %llu exit=entity_impact hit=%s "
                     "at=(%.1f,%.2f,%.1f) life=%.2f",
@@ -7893,6 +7917,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                             for (int i = 0; i < 3; ++i) shot.position[i] = burst[i];
                             const float no_dir[3] = {0.0f, 0.0f, 0.0f};
                             ++flak_bursts;
+                            shot.fate = 3;
                             round_bullet_class = shot.bullet_class;
                             apply_impact_blast(shot.owner_unit - 1, shot.gun_row, shot.team_id_1c, burst, no_dir);
                             round_bullet_class = -1;
@@ -7907,6 +7932,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
 
         if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
             ++summary.water_crossings;
+            shot.fate = 4;
             // A torpedo does not die at the surface: it enters its swim. The
             // round's record carries a swim speed at +470h, written at
             // 0085786D..00857875 as WaterTravelSpeed * the double at 00D0C5E0
@@ -8007,6 +8033,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         const float speed = cruise;
         if (range > 0.0f && shot.life * speed > range) {
             ++summary.expired;
+            shot.fate = 5;
             if (trace) {
                 log.notef("  torpedo trace %llu exit=expired life=%.2f speed=%.1f "
                     "range=%.1f travelled=%.1f", shot.torpedo_trace_id,
@@ -8079,6 +8106,38 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         rec.life = row.life;
         rec.died_above_water = row.position[1] > 0.0f;
         bomb_impacts.push_back(rec);
+    }
+    // Diagnostic, env-gated: BSP_SHELL_FATE=<shooter>[|<target>] logs every ended round of
+    // that shooter with its fate, end point and life, and the target's position.
+    static const std::string shell_fate = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        std::string out;
+        if (_dupenv_s(&text, &bytes, "BSP_SHELL_FATE") == 0 && text != nullptr) out = text;
+        std::free(text);
+        return out;
+    }();
+    if (!shell_fate.empty()) {
+        const std::size_t bar = shell_fate.find('|');
+        const std::string shooter = shell_fate.substr(0, bar);
+        const std::string target = bar == std::string::npos ? std::string() : shell_fate.substr(bar + 1);
+        float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+        for (std::size_t i = 0; i < unit_state.size() && !target.empty(); ++i) {
+            if (unit_state[i].row.name == target) {
+                units.unit_position_00fc(i, tx, ty, tz);
+                break;
+            }
+        }
+        for (const GameProjectileRow& row : shots) {
+            if (row.alive || row.owner_unit == 0 || row.owner_unit > unit_state.size()) continue;
+            if (unit_state[row.owner_unit - 1].row.name != shooter) continue;
+            log.notef("shell fate t=%.2f shooter=%s bullet=%d fate=%d end=(%.2f %.2f %.2f) "
+                "life=%.3f target=(%.2f %.2f %.2f)", static_cast<double>(clock_seconds),
+                shooter.c_str(), row.bullet_class, row.fate,
+                static_cast<double>(row.position[0]), static_cast<double>(row.position[1]),
+                static_cast<double>(row.position[2]), static_cast<double>(row.life),
+                static_cast<double>(tx), static_cast<double>(ty), static_cast<double>(tz));
+        }
     }
     shots.erase(std::remove_if(shots.begin(), shots.end(),
         [](const GameProjectileRow& row) { return !row.alive; }), shots.end());
@@ -11466,6 +11525,9 @@ void GameGunneryHost::report() {
         host.kz_detonations, host.kz_direct_arms, host.kz_blast_records, host.kz_self_records,
         host.kz_blast_damage, static_cast<double>(host.kz_min_gap), host.kz_min_gap_t,
         kKamikazeContactDetonationBound ? 1 : 0);
+    host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
+        "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
+        host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);
     host.log.notef("summary mission gunnery hull contact report events=%llu slower_calls=%llu "
         "not_hostile=%llu kamikaze_parties=%llu bound=%d (00C35480 / 009377E0 / 008145B0, "
         "packet cc9_hull_contact_report)", host.kz_dyn_events, host.kz_dyn_calls,
