@@ -91,7 +91,10 @@ inline constexpr bool kWingConstructionInPassABound = true;
 // lift-off follow as later pieces of the same group. False: the squadron is
 // made airborne 150 m over its base in state 7, as before. Flipped only end to
 // end (every launched member on JM05 reaching state 7).
-inline constexpr bool kBaseLaunchChainBound = false;
+// ON: 5bh's pairs (116 of 120 launched members lift off on five rows; four JM05
+// 9000 wingmen are held by 006CE4A0 behind hangared planes that never finish
+// land/park, a recorded spread miss; controls gameplay-identical).
+inline constexpr bool kBaseLaunchChainBound = true;
 
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the

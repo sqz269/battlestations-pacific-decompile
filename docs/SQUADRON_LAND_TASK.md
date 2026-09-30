@@ -6491,3 +6491,74 @@ windows: JM05's are recalled, USN04's and USN13's hold a `moveto` on their own c
 5. **USN01 and LOMP06 (controls):** no launch, exit 0 or 1.
 6. **Flip criterion:** every launched member on every row leaves Inside and lifts off (or is
    killed on deck), and no death row moves that the launches cannot explain.
+
+### Results (OFF SHA-256 `24EF070049E7`, ON `E56BC3DD351B`, both from `7356585c2`)
+
+`python local\l27_cmp.py <row>` prints the headline, the per-victim death diff and the ON launch
+summaries; `pair_diff` exits are in the table.
+
+| row | pair_diff | launched: placed / lifted off | takeoff `done` | death table | other headline moves |
+| --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 3 | 30 / 30 | 0 | **identical** (12 rows) | hits 353 -> 360, damage 10011.6 -> 10049.6, shots 363 both |
+| JM05 9000 | 3 | 39 / **35** | 0 | **identical** (18 rows) | hits 786 -> 793; water contacts 3 both |
+| USN04 4500 | 3 | 12 / 12 | 12 | **one new row**: `Yorktown-class01_sqn04\|.-3` at 117.85 s, killed by `B5N Kate #4.1\|.-4` (rear gun, 50 hits from 115.35 s, alt 183 m) | hull hits 91 -> 152, shots 15384 -> 15621; releases 5 of 16 / 0 of 19 both; first hit 98.70 s both |
+| E2 9000 | 3 | 12 / 12 | 12 | the same one new row | as USN04 |
+| USN13 3000 | 3 | 27 / 27 | 27 | **identical** (24 rows) | every headline value identical |
+| USN01 | **1** | - | - | identical | - |
+| LOMP06 | **1** | - | - | identical | - |
+
+Against the predictions:
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 3000 as the smoke | **held**: the same numbers as `l26_p5on_jm05.log` (lift-offs from 15.70 s, releases about 9 s apart) |
+| 2. JM05 9000, 39 of 39 | **missed by four**: see below |
+| 3. USN04/E2 lift-offs over about 50-60 s, strike outcome within one | **held**: lift-offs 37.65-84.20 s; releases, first hit and water contacts unchanged. The new death is a launched fighter itself |
+| 4. USN13, the launch at load | **held**: the chain starts at 0 s; all 27 lift off, `inside_now=0`; nothing else moves |
+| 5. controls | **held**: exit 1 |
+
+**The four JM05 9000 wingmen** (`SecondaryAirfieldEntity 01_sqn11|.-2`, `|.-3`, `_sqn12|.-2`,
+`|.-3`) never align (`first_aligned=-1`, `hold=901`-`909`): the Takeoff step's hold arm
+(`007B4ED0(-1.0)`) runs because the site's `vtable[1Ch]` answers yes. That routine is `006CE4A0`
+(read here in full, `006CE4A0`-`006CE4E5`, `RET` then `INT3`): it walks `site+34h` and answers 1 for
+an occupant with `+904h` and `+910h` both set. The host matches it byte for byte.
+- The occupants are the recalled planes that landed at the Secondary airfield: `F4F Wildcat 01`-`04`
+  and `SB2C Helldiver 01`. They taxied into the hangar at 128.30-184.41 s (`007B96C0`), and they stay
+  in `land/park` to the end with `done=0 q910=1 c00=1`.
+- So a hangared airfield plane never leaves `land/park` or `site+34h`, and once it has `+910h` it
+  holds later takeoffs at its airfield. At the Main airfield the three hangared `_sqn01` planes
+  never set `+910h` (`q910=0`: the queue-origin test at `009B25A7` did not pass there), so sqn13
+  is not held and all three of its members lift off.
+- The hold arm runs only with `+BF8h` clear or `+BF4h` null, so the leaders of sqn11 and sqn12
+  pass while their wingmen are held. Why the leaders pass that test and the wingmen do not is
+  not traced (LABELLED).
+- OFF never meets this: its launched planes appear airborne.
+- The image must clear `+904h` or drop the plane from `site+34h` somewhere after the hangar.
+  `+904h`'s byte writers (`scan-bytes c6 ?? 04 09 00 00` and `88 ?? 04 09 00 00`) include
+  `BSP_Plane_SetFlightState` (`007C14B5`, `007C14DE`, `007C1518`), `007C3680`, `007C7430` and
+  `007CB9E0`. Which of them the park exit reaches is unread: new queue item 1 of the handoff.
+
+**The takeoff task's done arm runs where no land task arrives.** On USN04, E2 and USN13 the launched
+squadrons hold their initial `moveto`, get no `returntobase`, and every member's takeoff task
+retires (`done=12`, `done=27`). On JM05 `land` takes over after the lift-off, as in 5bf. So the done
+arm is reached; whether `00999F50` stacks `land` over it is still 5bg item 2.
+
+**The JM05 recall moves by 2.1 s** (Lexington_sqn03 5.60 s OFF, 7.70 s ON in this pair). Both come
+from the SELLING tick. The squadron now starts on the deck instead of 150 m up, so its group joins
+the SELLING air group at a different pass (the join is a 650 m merge distance, 59.1). LABELLED: that
+reading of the 2.1 s is not traced pass by pass.
+
+**The USN04 fighter death.** Yorktown's last fighter lifts off at 81.65 s and is still climbing
+toward its carrier when the first Japanese strike reaches the fleet (first hit 98.70 s). A B5N's
+rear gun kills it at 117.85 s. OFF holds the same fighters at 150 m over the carrier from 27 s,
+where none is hit. The extra 61 hull hits and 237 shots are the strike's gunners and the fleet's
+AA now meeting these fighters.
+
+### Verdict: **flip ON**
+
+- The mechanism holds on every launch row: every launched member is placed, raised and rolled, and
+  116 of 120 lift off; the four that do not are held by the image's own hold rule against a
+  downstream host gap (the park exit), not by the launch chain. Recorded as a spread miss.
+- Death tables: identical on JM05, JM05 long and USN13. USN04 and E2 add one row, a launched fighter
+  shot down after a lift-off the image times the same way. The controls are gameplay-identical.
+- This flip belongs to reference V (U is being built without it).
