@@ -6562,3 +6562,69 @@ AA now meeting these fighters.
 - Death tables: identical on JM05, JM05 long and USN13. USN04 and E2 add one row, a launched fighter
   shot down after a lift-off the image times the same way. The controls are gameplay-identical.
 - This flip belongs to reference V (U is being built without it).
+
+## 5bi. The park exit of a hangared airfield plane (packet `cc9_airfield_park_exit`, cc9-lua27, 2026-09-30)
+
+5bh left one question: does anything in the image let a hangared airfield plane stop blocking its
+airfield? The block is `006CE4A0`, the site's `vtable[1Ch]`. It answers 1 while any `site+34h`
+occupant has `+904h` and `+910h` set. This section reads Ghidra only; no code changed, no run.
+
+**Answer: nothing found.** As far as the listing shows, the image's hangared airfield plane keeps
+both bytes and its `site+34h` entry. So the four held JM05 9000 wingmen of 5bh are the image's
+behaviour too, given the image reaches the same hangar state. This agrees with 5ar, which accepted
+the invisible park loop as the image's.
+
+### Why park never finishes in the hangar
+
+- **`009B21D0`, park's done test** (decompiled here). It returns at once when `+900h` is 5, so
+  `+18h` is never set while the plane is in state 5. The host's `land_park_done_009b21d0` has the
+  same early return.
+- **The plane stays in state 5 in the hangar.** Park's join test at `009B270F` wants the path while
+  it is slow, with `qd + 30 > dz` and not `qd < dz`. In the hangar (`f18 < 3`, `007B96C0`) that
+  still holds, so the plane never goes back to state 4. The host shows the same thing: every
+  hangared Wildcat has `entries=1 done=0 state=5`.
+- **Park's enter and exit** (`009B21A0`, `009B21C0`) and its vtable `00D1FF60`, slots
+  `009B2E30 009B21A0 009B21C0 009B22C0 007B3DE0 007B3DF0 007B45E0`, touch only the state's own
+  fields (`+18h`, `+1Ch`, `+28h`).
+
+### Who writes `+910h` and `+904h`
+
+- **`+910h`.** `scan-bytes c6/88/80 ?? 10 09 00 00` finds these writers:
+  - `BSP_Plane_BeginFlying` (`007C7195`), `007CB9E0`, `BSP_Plane_ReadPropertyBag`,
+    `BSP_Plane_SetFlightState` (`007C14D6`, `007C1510`), `007C3680`, `007C7430`,
+    `BSP_Plane_ChooseSpawnFlightState` and the constructor;
+  - park's own set at `009B2603`;
+  - `009B2170`, a one-instruction setter (`+910h` = 1, `RET`) with no code or data reference.
+
+  The readers are `006CE4A0`, `006CF5DD` (the spot test) and `009B28D6`. Every clear is a change of
+  flight state or a (re)construction, and a hangared plane in state 5 reaches none of them.
+- **`+904h`.** Its byte writers (5bh) are the same family: `SetFlightState`, `FiveToFour` /
+  `FourToFive` (`007C16D8`, `007C175F`), `007C3680`, `007C7430`, `BeginFlying`, `007CB9E0`,
+  `OnTouchdownFromFlight`, `ChooseSpawn`, the property bag and the constructors.
+  - `FiveToFour` and `FourToFive` run only when park's join test changes its answer, and in the
+    hangar it does not.
+
+### Who removes a plane from `site+34h`
+
+- The erase `006CEF80` has one caller, `006CF180`. That is the site's `vtable[28h]`, stored at
+  `00CF8970`, `00CF8A20` and `00CF8A80` (the three site vtables). Its known caller is
+  `BeginFlying` (`007C7163`, `MOV EAX,[EDX+28h]` ... `CALL EAX`).
+- Section 5r's "no slot removes an occupant" is corrected: slot `+28h` does, but only at a
+  takeoff.
+- A scan for the adjacent form `8B ?? 28 FF ??` in `006B`-`006D`, `007B`-`007D` and `0099`-`009B`
+  finds seven more sites: `006D4229`, `006D4D66`, `006D4D82`, `007CC9CD`, `00999B4B`, `009BD0FB`
+  and `009BD109`.
+  - `007CC9CD` calls `vtable[28h]` on the object returned by `00964790(id)`. It is not a site.
+  - The other six were not read.
+  - A split form (`MOV reg,[reg+28h]`, another instruction, then `CALL reg`, as at `007C7163`) is
+    not covered.
+  - **LABELLED:** a non-takeoff erase is not excluded.
+
+### Consequence
+
+- There is no binding to add. `kBaseLaunchChainBound` stays ON.
+- A later airfield launch at an airfield where a hangared plane holds `+910h` is held in the image
+  too, if the image hangars the plane the same way.
+- The Main airfield's hangar position never sets `+910h` (5bh), so it does not block.
+- **Open:** the six unread `vtable[28h]` sites above, and a split-form scan. Either could show a
+  non-takeoff erase.
