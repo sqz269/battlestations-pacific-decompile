@@ -6631,3 +6631,105 @@ The Dyn body creators, from Ghidra xrefs to `00C5D580`, with their shape filters
 
 Each gets a switch committed OFF and a pair. The reach rows for hull-hull are the formation and
 harbour rows (IJN01, USNOS, USN13, JM08 long).
+
+## 90. Handoff (cc9-gunnery20, 2026-09-30 19:50 UTC, at about 60% context)
+
+### 90.1 Landed
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference u (GAME_EXECUTABLE "2026-09-30 u", base `7f622dde6`) | `cf3539fa1`, `2c9efd019` | 18 rows; anchor exit 1 on all; every moved row attributed |
+| 86: the solver tests 00C5DEB0's hull vertices | `af7fd46c5`, `a354023e0` | `kHullTerrainDynHullVerticesBound` ON |
+| 87: 00C53630 itself on tile and hull records, one manifold per body pair | `1b42b15ff`, `a94bb94cc` | `kHullTerrainNativeTerrainTestBound`, `kHullTerrainBodyPairManifoldBound` ON; the 87.3 criterion override was accepted by the lead |
+| 88: substeps are not a substitution | `0700d18eb`, `834999948` | the image runs one 0.05 substep per fixed step |
+| 89: hull-hull and hull-object contact, the read and the plan | `c9f41d0a7` | read only |
+| Reference v (GAME_EXECUTABLE "2026-09-30 v", base `16d01094e`) | `8a5e6c53b`, `4a57721f4` | 18 rows; anchor exit 1 on all; every moved row attributed; **v is the baseline** |
+
+### 90.2 Open, in order
+
+**1. Hull-hull, then forts, then debris: 89.2's build plan, one packet each.**
+- **a. Hull-hull.**
+  - **A world-level contact phase.** Replace the per-hull `HullTerrainContactSolver::step` call
+    in `src/game_hosts_units.cpp` (shared: claim it only to apply a prepared edit) with one call
+    per fixed step over every hull. It runs:
+    - the terrain narrow phase (section 87);
+    - hull-hull pairs through the reconstructed general-convex dispatcher
+      (`dispatch_native_dyn_general_convex_00c535e0`, one contact per hit);
+    - `00C4B610`'s grouping (`native_dyn_create_contact_groups_00c4b610` /
+      `dyn_create_contact_groups_00c4b610`);
+    - one solve per group, over all its dynamic bodies. The rows index each body's velocity
+      slot; the terrain is the static slot 0.
+  - **Convex shape records.**
+    - `+0` is `NativeDynConvexShapeRuntime::table()` (`include/bsp/native_dyn_convex_support.hpp`).
+    - `+08h` is kind 4; `+34h` the local frame with the centre (section 86).
+    - `+210h` is the `AvoidZoneDynHullData` itself, with vertices, adjacency and support seeds.
+      Keep the 00C5DEB0 handle in `HullShape` instead of destroying it.
+  - **What `GameNativeDynProcess` must expose** (`game_native_dyn_process.*`; it owns all three
+    today and exposes none):
+    - the general-convex owner (`DynGeneralConvexIntersectStorage`);
+    - the convex pool;
+    - the mutable CRT conversion word `0109EEA4`.
+  - **Filter:** hulls are group 1, mask `0Dh` plus class bits, so every hull pair passes.
+  - **Switch:** `kHullHullContactBound`, committed OFF, with predictions.
+  - **Reach rows:** the formation and harbour rows, USNOS / USNOS long, USN13, IJN01 and JM08
+    long.
+- **b. Forts** (`MLandFort`, `007482B0`, group 1). These need host static bodies with their
+  shapes, which are not read yet (`007482D0..00748986`).
+- **c. Debris** (`00447510`, group 4, dynamic bodies of `game+30h`).
+- **Census debt:** 89.1's creator list comes from Ghidra xrefs. Scan rel32 and absolute dwords
+  for `00C5D580` before relying on it. `008509F0`'s owner and the avoid-zone and plane filters
+  are unread.
+
+**2. Reference w** from main after v.
+- **Switches already flipped since v's base `16d01094e`:**
+  - `kLandingShipStartLandingBound` ON (cc9-ships24, `00b972337`);
+  - `kGroundRetakeoffBound` new and OFF (cc9-lua28, 5bp; not part of w unless flipped).
+- **Method:** as v (GAME_EXECUTABLE "2026-09-30 v"):
+  - `local\g20_switches.py` plus the loose diff;
+  - the all-OFF anchor against `g20_rv_<row>`;
+  - leave-one-out through `local\g20_lanesv.ps1` (edit its variants and commit).
+
+**3. USN01's controlled unit under v: owner, the lua / controlled-unit lane.**
+- **Symptom.** On v's USN01 row the idle player's controlled unit is `ScoutDauntless` (moved
+  4623.23 m), and 5 aircraft run the torpedo task. On u it was `ConTBD1` (1245.72 m), with 17
+  aircraft.
+- **Cause, from the leave-one-out:** `kFormationJoinLoopbackBound` alone. With `fjl` OFF, USN01 is
+  exit 1 against u, `ConTBD1` 1245.72. Every other variant OFF keeps `ScoutDauntless`.
+- **Not read:** why a formation join posted one pump later changes which unit the player
+  controls. The hypothesis is the torpedo squadron's join order at t = 0.05 selecting a
+  different first controllable unit. The logs are `local\g20_rv_usn01.log` and
+  `local\g20_v_fjl_usn01.log` (cc9-gunnery20 tree).
+
+**4. Smaller items from v, not read:**
+- LOMP10's dive-bomb task counts 9 releases for 8 aircraft (u: 8).
+- JM08 long's HQ reaches 0 hp 27 times without a flip; `mode3_points=3`, no ramp contact.
+
+**5. Carried over:** 85.2 item 4 (the fire-window origin, the torpedo items, 80.3's labelled
+items, 79.2 item 4), and 87.2's labelled substitutions:
+- the `FFFFh` edge padding;
+- the identity Landscape rotation;
+- the x/z-range broad phase;
+- the shape order inside a body pair.
+
+### 90.3 Tools (`local\` in the cc9-gunnery20 tree, prefix `g20_`)
+
+- **Reference runs:**
+  - `g20_runs.ps1 -V <prefix> -Only <rows>` and `g20_wait.ps1 -Logs`;
+  - `g20_exp.ps1 -Commit -Out [-Flip]`;
+  - `g20_vs.py <off> <on> [rows]`;
+  - `g20_rows.py` / `g20_tablev.py` for the row table;
+  - `g20_report22.py` for the report.
+- **Leave-one-out:**
+  - `g20_lane.ps1 -Lane -Variants -Rows -Commit -Prefix` and the lane launcher
+    `g20_lanesv.ps1`;
+  - `g20_loov.py <v>...` for the verdicts against `g20_rv`.
+- **Solver:**
+  - `g20_htc.py <prefix>...` prints the hull-terrain census per row;
+  - `BSP_HULL_TERRAIN_COMPARE=<file>` (env-gated, in `src/hull_terrain_contact.cpp`) logs where
+    the host test and 00C53630 disagree;
+  - `g20_cmp_*.txt` are its logs.
+- **Pair logs:**
+  - `g20_voff` / `g20_von`: section 86;
+  - `g20_n0` / `n1` / `n2`: section 87;
+  - `g20_ru*` / `g20_u_*`: u;
+  - `g20_rv*` / `g20_v_*`: v.
