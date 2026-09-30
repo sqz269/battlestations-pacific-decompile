@@ -7114,3 +7114,13 @@ The OFF census comes from this tree's build of `bed6dc011`, 18 rows plus the smo
 
 **Mechanism failure:** any row whose gameplay moves (there is no hostile kamikaze contact to
 move it).
+
+### 92.4 The pair, and the flip
+
+**`local\g21_k1` (the flip) against `local\g21_r0` (OFF), both from `bed6dc011`.**
+- All 18 rows are exit 1, death tables identical, every run exit 0 with `lost_polls=0`.
+- USNOS long's kamikaze summary goes to `contacts=0 hostile_refused=0 min_gap=-1.0`: the
+  stand-in is off. The prediction was right on every row.
+- **Flipped ON:** `kKamikazeDynContactBound`. Hull contact now sets off a kamikaze the way the
+  image does, and it does nothing else. No reference row has a hostile kamikaze contact, so the
+  flip moves nothing yet.

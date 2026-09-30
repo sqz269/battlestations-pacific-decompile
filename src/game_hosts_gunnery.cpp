@@ -741,7 +741,8 @@ constexpr bool kKamikazeContactDetonationBound = true;
 // (bsp::kHullHullContactBound; 00C44090 queues it, 00C35480 hands it to both bodies'
 // listeners 009377E0), and only the slower body at the event point calls 008145B0.
 // False: the bow-point / hull-box stand-in below; the events run as a census only.
-constexpr bool kKamikazeDynContactBound = false;
+// ON by the pairs of 2026-09-30 (section 92.4): exit 1 on all 18 reference rows.
+constexpr bool kKamikazeDynContactBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
