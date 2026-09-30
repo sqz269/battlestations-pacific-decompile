@@ -1238,8 +1238,8 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
         participant_scene_counts.emplace(scene_path, table.max_player_num);
         // Packet cc9_ai_party_gate: 004C6890 copies each side block's +0h
         // (Party) into slot record +28h. The ordinal is this installation's
-        // PARTY_ALLIED 0 / PARTY_JAPANESE 1 / PARTY_NEUTRAL 2 (luamw_init.lua
-        // 73-75); the native enum table was not read (labelled).
+        // universe/library/global.enums `enum Party` (Allied 0, Japanese 1,
+        // Neutral 2; lines 1705-1710, mtime 2024-10-29; SHIP_AI 71).
         {
             std::array<int, 8> parties{};
             for (std::size_t i = 0; i < parties.size(); ++i) {
