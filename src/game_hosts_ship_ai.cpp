@@ -520,8 +520,9 @@ inline constexpr bool kCommandBuildingCaptureBound = true;
 // landing time +1210h, +0Ch = 1.0f, +10h = 0) and its step 009E1950 over the
 // building pad model (pad re-pick 006F2E60 / 006F2FB0, the pad approach point
 // 006AC5D0, the approach arm's navigation goal and the final arm's held heading).
-// False: the state is selected and its step is a record, as before.
-inline constexpr bool kShipAiLandStepBound = false;
+// False: the state is selected and its step is a record, as before. ON by
+// section 85.4 (enters=2 steps=822 with_pad=822 final=772 on JM08 36000).
+inline constexpr bool kShipAiLandStepBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

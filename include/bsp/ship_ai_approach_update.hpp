@@ -1138,8 +1138,11 @@ inline constexpr bool kShipAiApproachRetargetRingBound = true;
 // Packet cc9_land_step_host (section 83.2) adds the latch's two landing inputs
 // under the same switch: 009F2095 006F2D90 (the building has a free pad) and
 // 009F20A4 the building's LandingRange +7C4h; before, both were 0, so mode 3 was
-// never latched and every lander stayed in mode 4.
-inline constexpr bool kShipAiApproachLandingModesBound = false;
+// never latched and every lander stayed in mode 4. ON with kShipAiLandStepBound
+// and kEntityCommandSelfKindBound (section 85.4): on JM08 36000 both landers now
+// begin, take the `land` state and reach its final arm; USN13, USNOS and USN04
+// are gameplay identical.
+inline constexpr bool kShipAiApproachLandingModesBound = true;
 
 // Packet cc9_approach_no_ship_hold (docs/SHIP_AI_OPEN_ITEMS.md section 35), the
 // hold alone, with the ring OFF. 009F1DC2..009F1DDB keep [brain+0B20h] in ESI only

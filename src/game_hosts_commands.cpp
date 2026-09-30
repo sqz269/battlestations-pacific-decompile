@@ -85,6 +85,15 @@ constexpr bool kSquadronSetCommandBound = true;
 // no row can move; the switch only matters where a scene names a unit in other case.
 constexpr bool kSceneCommandFindCaseInsensitiveBound = true;
 
+// Packet cc9_land_command_current (docs/SHIP_AI_OPEN_ITEMS.md section 85). 00816E30's
+// land arm (00816FC6..00816FD9) asks the unit's own IsKindOf(0Ch), [EDI]+5Ch with
+// EDI = the unit (00816E6A MOV EDI,ECX): an MLandingShip keeps `land`, anything
+// else gets `attackmove` (00816FD9 MOV EBP,00E08F78). True: the answer comes from
+// the unit's recovered class chain. False: every unit answers false, a record, so
+// a landing ship's `land` became an attackmove and never reached the land state.
+// ON by section 85.4: both JM08 land rows became current (slot=1, curr=1).
+constexpr bool kEntityCommandSelfKindBound = true;
+
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
 constexpr int kSessionModeSinglePlayer = 1;
@@ -1283,9 +1292,16 @@ public:
         chain_.owner.record_slot("EntityCommandArm::target_is_kind_of", "00cfc3d0+vtable5c");
         return false;
     }
-    bool self_is_kind_of_vtable5c(int) override {
-        chain_.owner.record_slot("EntityCommandArm::self_is_kind_of", "00cfc3d0+vtable5c");
-        return false;
+    bool self_is_kind_of_vtable5c(int kind) override {
+        if constexpr (kEntityCommandSelfKindBound) {
+            // 00816FC6..00816FCF; the land arm is the only caller.
+            chain_.owner.done("EntityCommandArm::self_is_kind_of", 0x00816fcfu);
+            return bsp::unit_is_kind_of(chain_.unit.class_id, kind);
+        } else {
+            static_cast<void>(kind);
+            chain_.owner.record_slot("EntityCommandArm::self_is_kind_of", "00cfc3d0+vtable5c");
+            return false;
+        }
     }
     void request_join_formation_0077c8d0(std::uint32_t) override {
         chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);

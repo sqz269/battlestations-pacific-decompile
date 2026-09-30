@@ -7153,3 +7153,87 @@ ON). Reference launch form, lockstep 0.05, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEA
 include `jm08x`, `usn13l`, `usnosl`); `s21_wait.ps1 -Logs <names>`; `s21_vcall.py <slot>`
 (sites that load or call `[reg+slot]`); `s21_vt.py`, `s21_bytes.py`, `s21_rel32.py`,
 `s21_consts.py`, `s21_disp.py`, `s21_str.py`, `s21_dump.py` (from s20).
+
+## 85. Why the `land` command never became current (packet `cc9_land_command_current`, cc9-ships22, 2026-09-30)
+
+### 85.1 The cause: the arm cascade rewrote `land` to `attackmove`
+
+The 83.3 command-table rows already said so: both `0074A990 land at pad` rows print the command
+name `attackmove` beside ordinal 22 (`LST 03 attackmove 0074A990 land at pad 22 3 1 0 0`). The
+name is `row.command`, which `deliver_entity_command` overwrites with the substituted class when
+the arm cascade rewrites `EBP`. `slot=0` is the pushed-slot flag: nothing reached `0071E6C0` as
+`land`.
+
+The image, `00816E30` (MT_COMMAND's delivery, `vtable[160h]`; for `MLandingShip` too: the
+`MLandingShip` vtable `00CFFA30` holds `00816E30` at `+160h` and `0074B570` at `+164h`, read from
+the PE):
+
+```
+00816E6A  MOV EDI,ECX                 ; the unit; no later write to EDI before the land arm
+00816FBE  CMP EBP,00E08FA0 ; land      (00816FC4 JNE 00816FE3)
+00816FC6  MOV EDX,[EDI] / MOV EAX,[EDX+5Ch] / PUSH 0Ch / MOV ECX,EDI / CALL EAX  ; IsKindOf(0Ch)
+00816FD1  TEST AL,AL / JNE 00817330   ; MLandingShip: keep `land`, the checked tail
+00816FD9  MOV EBP,00E08F78            ; anything else: `land` becomes `attackmove`
+00816FDE  JMP 00817334
+```
+
+`0Ch` is `MLandingShip` (docs/ENTITY_CLASS_IDS.md). The host's `self_is_kind_of_vtable5c`
+(`EntityCommandArmsBinding`, `src/game_hosts_commands.cpp`) answered `false` for every unit, a
+record, so every lander's `land` became an `attackmove` at the pad's position. That attackmove has
+no target entity, so `00836920`'s attackmove arm finds the target gone and raises stage 2, the
+queue clears, and the director's idle tail issues `follow` (the ord-14 row). The land state
+(`00E08FA0` in the state table) is therefore never selected.
+
+Neither candidate from 83.3 was the cause: the category-3 row is taken (the director has no
+per-category refusal for it: `0071D6D0` passes a position-valid category-3 descriptor without a
+resolve), and no script attackmove had to override it.
+
+### 85.2 The fix, committed OFF
+
+`kEntityCommandSelfKindBound` (in `src/game_hosts_commands.cpp`): `self_is_kind_of_vtable5c(kind)`
+answers `unit_is_kind_of(chain.unit.class_id, kind)` from the recovered class chain. Its only
+caller is the land arm, and only `MLandingShip` units answer true, so the switch can reach only a
+`land` delivered to a landing ship: `0074A990` (under `kShipAiApproachLandingModesBound`), or a
+scripted `PilotLand` on a landing ship (none authored in the rows below).
+
+### 85.3 Predictions (written before any run)
+
+- **Pair C:** landing modes and land step ON on both sides; `kEntityCommandSelfKindBound` OFF vs
+  ON. JM08 36000: the two land rows read `land` with `slot=1` and become current (`curr=1`);
+  `land enters` = 2 (= `begins`), `steps > 0`, `with_pad > 0`; the landers drive to their pads'
+  approach points and at least one reaches `final > 0`. No ramp lowers (`0074AF20` unbound), so no
+  capture by landing. Exit 3. USN13, USNOS, USN04: 0 or 1 (no lander begins there).
+- **Pair D** (reach check, all three ON vs landing modes OFF): not needed if C matches; the flip
+  of the whole chain is decided on C.
+
+### 85.4 Pair C on `09e2deb58`, and the flip
+
+`48c944487` committed the switch OFF; its ON export failed on C4702 (unreachable code after the
+`if constexpr` return), fixed in `09e2deb58`. Exports `s22_e0` (landing modes and land step ON)
+and `s22_e1` (the same plus `kEntityCommandSelfKindBound`). Reference launch form, lockstep 0.05,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`; the 300-frame smoke of `48c944487` passed.
+
+| row | e0 vs e1 |
+| --- | --- |
+| JM08 36000 | 3 (deaths 29 -> 33) |
+| USN13 | 1 |
+| USNOS | 1 |
+| USN04 | 1 |
+
+- **The prediction holds on JM08.** Both command rows now read
+  `LST 0x land 0074A990 land at pad 22 3 1 1 1` (was `attackmove ... 1 0 0`). `land state
+  enters=2 steps=822 with_pad=822 final=772 pad_assigns=0` (was all 0). `begins=2`, `mode3_points`
+  1081 on both sides; `mode4_points` 6001 -> 3945 (the landers leave the approach state for `land`).
+- **Deaths (per-entity table):** LST 03 dies 871.71 -> 900.60, now to `Headquarter 01` at 597
+  (was an AA truck at 1190); LST 01 919.20 -> 974.39, killer range 901 -> 592: both landers now
+  sit at their pads under the HQ. Ten statics die only ON (tents, a hangar, a watchtower, two
+  static planes, an AA truck, a barracks), six units only OFF (Grayson, Macomb, LSM 02, LST 02,
+  a pier, a troop transport). Why the escorts' fights moved is not read (unverified: the landers
+  now hold at the pads for about 30-55 s longer and draw the base's fire).
+  No ramp lowers (`0074AF20` unbound), so nothing is captured by landing, as predicted.
+- **Decision: flipped ON, all three** (`kShipAiApproachLandingModesBound`, `kShipAiLandStepBound`,
+  `kEntityCommandSelfKindBound`). Every arm matched its prediction (77.2, 83.1 and 85.3); the
+  controls stay gameplay identical on every pair (A, B, C). `kEntityCommandSelfKindBound` alone
+  has no reach while `kShipAiApproachLandingModesBound` is OFF (only `0074A990` sends a landing
+  ship `land` on these rows), so the three move together. The post-flip JM08 36000 is `s22_e1`.
+- **Open:** the landers hold at the final arm until the ramp `0074AF20` is bound (the next packet).
