@@ -23,7 +23,8 @@
 //   * The hull vertices are the ConvexObject's raw points (MmodHullConvexBox::shape_points), not
 //     the vertices of the hull 00C5DEB0 builds from them, unless kHullTerrainDynHullVerticesBound
 //     (below) is ON.
-//   * Only hull-terrain pairs: no hull-hull or hull-object manifold joins the group, and the
+//   * Only hull-terrain pairs (and hull-hull with kHullHullContactBound; no hull-object
+//     manifold) join the group, and the
 //     terrain tile is taken as the one the vertex's grid cell truncates to (a vertex on a tile's
 //     inclusive far edge is not offered to the next tile as well).
 //   * One substep of the host's whole step, as the host's two integration phases already run.
@@ -40,6 +41,7 @@
 #include <tuple>
 #include <vector>
 
+#include "bsp/avoid_zone_dyn_hull.hpp"
 #include "bsp/dyn_lcp_impulse_math.hpp"
 #include "bsp/rigid_body_integration.hpp"
 #include "bsp/world_ocean.hpp"
@@ -80,6 +82,26 @@ inline constexpr bool kHullTerrainNativeTerrainTestBound = true;
 // ON by the pairs of 2026-09-30 (section 87.4).
 inline constexpr bool kHullTerrainBodyPairManifoldBound = true;
 
+// Packet cc9_hull_hull_contact (docs/GUNNERY_OPEN_ITEMS.md section 91; the read is 89). The
+// fixed-step fanout runs 00C5C540 (row 1, 00875E0C) once for the world, not once per unit:
+// every body's velocity phase 00C41550, then the collision pass (ManifoldUpdate, then the
+// narrow phase 00C44090 over the broad phase's pairs), 00C4B610's groups and one solve per
+// group, then every body's position phase 00C5B1B0. True: the units host runs every ship's
+// motion tick and velocity phase first, then this world phase over every hull (the terrain
+// manifolds, grouped by 00C4B610 and solved per group with the bodies indexed in manifold
+// order, 00C4DEDB), then each hull's position phase and the rest of its tick, in unit order.
+// False: each hull's contact and position phases run inside its own tick, as before.
+inline constexpr bool kDynWorldContactPhaseBound = false;
+// Same packet. Needs kDynWorldContactPhaseBound. True: every pair of hulls whose world
+// boxes meet goes through 00C44090's convex-convex path: the shape filter (group 1, mask
+// 0Dh: every hull pair passes), the dispatcher cell 4 * 6 + 4 = 00C535E0 on real kind-4
+// convex records (+0 the process's ConvexMeshShape table, +0Ch the 00C57C40 box, +34h the
+// shape frame, +210h the 00C5DEB0 hull), one manifold per body pair (00C3F4D0) with the
+// friction combine(fA, fB) and the restitution (rA + rB) * 0.5, each hit through 00C3F760;
+// both hulls then join one group and one solve. False: hulls pass through each other (the
+// narrow phase still runs as a census, no state written).
+inline constexpr bool kHullHullContactBound = false;
+
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
     int manifolds{0};         // manifolds holding a point after the insert
@@ -90,6 +112,18 @@ struct HullTerrainContactStepResult {
     OceanVec3 delta_linear{};     // velocity change written back
     OceanVec3 delta_linear_bias{};
     bool contact{false};      // a candidate was produced (the kind-8 report)
+    int hull_candidates{0};   // 00C535E0 hits against other hulls this step
+    int group_bodies{0};      // dynamic bodies in the hull's group (world phase)
+};
+
+// One hull for the world phase: the body after its velocity phase, its convex shapes in body
+// space and its material friction. `result` is written by the phase.
+struct HullWorldEntry {
+    std::size_t unit{0};
+    DynBody* body{nullptr};
+    const std::vector<std::vector<OceanVec3>>* shapes{nullptr};
+    float friction{0.0f};
+    HullTerrainContactStepResult result{};
 };
 
 class HullTerrainContactSolver {
@@ -106,6 +140,13 @@ public:
                                       float hull_friction, float dt, bool apply);
     // Drops a unit's manifolds (death, removal).
     void forget(std::size_t unit);
+    // kDynWorldContactPhaseBound: 00C5BB30's contact phase once for every hull, in `hulls`
+    // order (ascending unit): ManifoldUpdate over every manifold, the terrain narrow phase per
+    // hull, with `hull_hull` the hull pairs, 00C4B610's groups and one solve per group.
+    void world_step(std::vector<HullWorldEntry>& hulls, float dt, bool hull_hull);
+    // The hull-pair narrow phase as a census only (no manifold, no state): the OFF build's
+    // record of which hulls would touch.
+    void hull_hull_census(std::vector<HullWorldEntry>& hulls);
 
     struct Census {
         unsigned long long steps{0}, contact_steps{0}, candidates{0}, rejected_normal{0};
@@ -115,8 +156,22 @@ public:
         // Dyn hull builds (kHullTerrainDynHullVerticesBound): shapes built, their raw points
         // and the hull vertices 00C5DEB0 kept.
         unsigned long long hull_shapes{0}, raw_points{0}, hull_vertices{0};
+        // Hull pairs (00C535E0): world steps, pairs whose world boxes met, shape pairs
+        // tested, hits, 00C4B610 groups solved, groups with two or more hulls and the largest.
+        unsigned long long world_steps{0}, hull_pairs_near{0}, hull_shape_tests{0};
+        unsigned long long hull_hits{0}, groups{0}, multi_hull_groups{0};
+        int max_group_bodies{0};
     };
     const Census& census() const noexcept { return census_; }
+    // Per hull pair (lower unit first): the first census step with a hit, the steps with one
+    // and the deepest hit (witness A minus witness B along the normal, world space).
+    struct HullPairCensus {
+        unsigned long long first_step{0}, steps{0};
+        float max_depth{0.0f};
+    };
+    const std::map<std::pair<std::size_t, std::size_t>, HullPairCensus>& hull_pairs() const noexcept {
+        return hull_pairs_;
+    }
 
 private:
     struct Manifold;
@@ -129,7 +184,17 @@ private:
         std::vector<float> records;         // 4 floats per vertex: the centred point, pad
         struct Mesh { const float* vertices; std::uint32_t count; } mesh{};
         std::uint8_t shape[0x240]{};
+        // The 00C5DEB0 hull kept for the kind-4 convex record 00C535E0 reads (+210h).
+        std::shared_ptr<AvoidZoneDynHullHandle> handle;
+        alignas(16) std::uint8_t convex[0x240]{};
+        bool convex_ready{false};
     };
+    HullShape* hull_convex(std::size_t unit, std::size_t shape,
+                           const std::vector<OceanVec3>& raw, float friction);
+    void hull_hull_narrow_phase(std::vector<HullWorldEntry>& hulls, bool apply);
+    std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> pair_manifolds_;
+    std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> hull_pairs_;
+    unsigned long long manifold_serial_{0};
     const std::vector<OceanVec3>& dyn_hull_vertices(std::size_t unit, std::size_t shape,
                                                     const std::vector<OceanVec3>& raw);
     HullShape& hull_shape(std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw);

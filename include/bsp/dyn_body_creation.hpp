@@ -73,6 +73,10 @@ void dyn_body_register_broadphase_00c50470(DynBodyStorage&, void* scene,
     const AvoidZoneDynHullMemory&);
 void dyn_body_recompute_bounds_00c55fc0(DynBodyStorage&);
 void dyn_convex_shape_refresh_bounds_00c57c40(DynConvexShapeStorage&);
+// 00C57C40's first statement alone: shape+0Ch = the borrowed mesh's box (mesh+18h/+24h)
+// widened by 0.02 and transformed by the shape frame at +34h. The body bounds refresh
+// 00C55FC0 that follows is not run, for a shape record that has no native body at +4.
+void dyn_convex_shape_local_bounds_00c57c40(DynConvexShapeStorage&);
 void dyn_convex_shape_construct_00c57f50(DynConvexShapeStorage&, DynBodyStorage&,
     const DynShapeDescriptor&, const void* complete_vtable);
 

@@ -164,4 +164,14 @@ const DynBodyCreationContext& GameNativeDynProcess::body_creation(){
         throw std::logic_error("Dyn convex bodies require completed pool startup");
     return i.convex->body;
 }
+DynGeneralConvexIntersectStorage& GameNativeDynProcess::general_convex_owner(){
+    auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();
+    return i.dispatch.general_convex;
+}
+const volatile std::uint32_t& GameNativeDynProcess::crt_conversion_0109eea4(){
+    auto& i=*impl_;std::lock_guard lock(i.startup_mutex);i.require_initialized();
+    if(i.convex_state!=Impl::StartupState::returned)
+        throw std::logic_error("the CRT conversion word is bound by the convex pool startup");
+    return i.convex->conversion;
+}
 } // namespace bsp::game

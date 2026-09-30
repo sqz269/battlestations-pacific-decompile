@@ -6733,3 +6733,108 @@ items, 79.2 item 4), and 87.2's labelled substitutions:
   - `g20_n0` / `n1` / `n2`: section 87;
   - `g20_ru*` / `g20_u_*`: u;
   - `g20_rv*` / `g20_v_*`: v.
+
+## 91. Hull-hull contact: the world phase and 00C535E0 on real convex records (packet `cc9_hull_hull_contact`, cc9-gunnery21)
+
+This builds 89.2 steps 1, 2 and 4 for ships only. Both switches are committed OFF; the pairs
+and verdicts follow in 91.4.
+
+### 91.1 The census of 00C5D580's callers (the debt from 89.1)
+
+`tools/callsite_census.py 00c5d580` (every E8/E9 rel32 in `.text`, and the literal address in
+`.text`, `.rdata` and `.data`) finds **ten call sites in nine functions and no literal**:
+- the eight creators of 89.1's table (`00423C50`, `00447510`, `007482B0`, `007D5D20`, `008509F0`,
+  `00882AC0` twice, `0092AAE0`, `00937C90`);
+- **one more:** `00C5DA93`, in a ten-byte stub `00C5DA90..00C5DA99` that Ghidra has no function
+  for (`MOV ECX,[ECX]; PUSH EAX; CALL 00C5D580; RET`, INT3 from `00C5DA99`). It is a register-ABI
+  wrapper: EAX the descriptor, ECX a pointer to the world pointer. The same census on
+  `00c5da90` finds no rel32 caller and no literal, so it is unreferenced in the image.
+
+So 89.1's creator list is complete. `008509F0`'s owner and the avoid-zone and plane filters
+stay unread.
+
+### 91.2 What the image does, and what was built
+
+The fixed-step fanout runs `00C5C540` once for the world (row 1, `00875E0C`,
+FIXED_STEP_FANOUT). Its substep `00C5BB30` runs:
+1. every body's velocity phase `00C41550`;
+2. the collision pass: ManifoldUpdate, then `00C44090` over the broad phase's pairs;
+3. `00C4B610`'s groups;
+4. one solve per group;
+5. every body's position phase `00C5B1B0`.
+
+The units host ran all of that inside each ship's own tick, so a hull only ever met the terrain.
+
+**`kDynWorldContactPhaseBound`** (`include/bsp/hull_terrain_contact.hpp`). The units host runs
+every ship's tick and velocity phase first. Then, after the loop, it calls
+`GameUnitsHost::Impl::run_world_contact_phase`:
+- `HullTerrainContactSolver::world_step` over every hull:
+  - ManifoldUpdate (`00C4B9B0`) over every manifold, retiring the empty ones;
+  - the terrain narrow phase of section 87 per hull;
+  - with the second switch, the hull pairs;
+  - `dyn_create_contact_groups_00c4b610` through its host interface (terrain tiles are static and
+    never expanded through);
+  - one solve per group, with the bodies indexed in the order `00C4DE40` meets them (A then B per
+    manifold; static 0; `00C4DEDB`). Every dynamic body's velocity slot is written back.
+- Then each ship's position phase and the rest of its tick, in unit order
+  (`finish_motion_tick`, the old loop tail moved unchanged).
+
+What this changes even with no hull pair: a unit's tick now reads the other ships' poses from
+the start of the step, as the image's ticks read the last Dyn step's poses. Before, a unit later
+in the list saw the poses the earlier units had just integrated.
+
+**`kHullHullContactBound`** (needs the first). Every pair of hulls whose world boxes meet goes
+through `00C44090`'s convex-convex path:
+- The shape filter: group 1, mask `0Dh`, so every hull pair passes.
+- Dispatcher cell `4 * 6 + 4`: the reconstructed `00C535E0`
+  (`dispatch_native_dyn_general_convex_00c535e0`). Its inputs:
+  - the process's general-convex owner (26 directions, critical section), now exposed by
+    `GameNativeDynProcess::general_convex_owner()`;
+  - the CRT context;
+  - a real kind-4 record per hull shape (`HullShape::convex`):
+    - `+0` the process's ConvexMeshShape table (`body_creation().convex_shape_vtable`);
+    - `+8` kind 4;
+    - `+0Ch` the local box from `00C57C40` (its first statement, now
+      `dyn_convex_shape_local_bounds_00c57c40`, without the native body refresh);
+    - `+24h` restitution 0;
+    - `+28h` the material friction;
+    - `+2Ch` group 1 and `+30h` mask `0Dh`;
+    - `+34h` the shape frame (identity, the centre as translation);
+    - `+210h` the `00C5DEB0` hull, which `hull_shape` now keeps instead of destroying.
+- One manifold per body pair (`00C3F4D0`), with friction `combine(fA, fB)` and restitution
+  `(0 + 0) * 0.5` written on every hit (`00C44154..00C441DB`: the combines, `FindOrCreate` at `00C441C5`, the stores at `00C441D8` / `00C441DB`). Each hit goes through `00C3F760`.
+- Both hulls then join one group and one solve.
+
+OFF, the same narrow phase runs after every step as a **census** (no manifold, no state), and the
+end-of-run summary prints `hull pair contact census` per pair and `summary hull hull contact`.
+The OFF smoke (`local\g21_offsmoke_smoke.log`) is exit 1 against v's smoke
+(`g20_rv_smoke`): the only moved lines are main's later landing summaries and the new census line.
+
+**LABELLED substitutions:**
+- **The broad phase.** The SAP pair list is replaced by a test on each hull's world box, every
+  hull vertex widened by 0.1 m. That is more than the 0.02 the image widens each shape box by, so
+  no pair the SAP holds is missed; the narrow phase decides every hit.
+- **Body A** is the lower unit.
+- **Shape order.** Shape pairs go in shape order; the image walks each body's shape chain
+  (`+70h` / `+208h`).
+- **Manifold list order** is creation order; `00C3F4D0`'s list is not read. Each body's contact
+  array (`B+74h`) follows the same order.
+- **Sleep.** Hull bodies are taken as awake (`B+50h` bits 0 and 1 clear).
+- **A manifold whose hull did not step** this step is retired.
+- **No contact report yet.** `00C44090`'s second half queues a report when a body's listener
+  (`B+68h`) mask meets the other shape's group. For a hull that is `009377E0`; which kind a
+  hull-hull report delivers, and whether it deals collision damage, is not read. Hull-hull
+  contact here is physics only.
+
+**Uncertainty:**
+- Whether the image's hull bodies sleep.
+- The contact report, above.
+- The `00C535E0` path has run only on the reconstruction's differential fixtures
+  (NATIVE_DYN_GENERAL_CONVEX_R140). With these records it runs for the first time in the game
+  executable.
+
+**Files:**
+- `src/hull_terrain_contact.cpp`, `include/bsp/hull_terrain_contact.hpp`;
+- `src/game_native_dyn_process.cpp`, `include/bsp/game_native_dyn_process.hpp`;
+- `src/dyn_body_creation.cpp`, `include/bsp/dyn_body_creation.hpp`;
+- `src/game_hosts_units.cpp` (shared; applied from `local\g21_host_edit.py`).
