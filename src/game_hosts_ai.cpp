@@ -245,6 +245,15 @@ constexpr bool kPlannerRangeInterpBound = true;
 // group's leader, so the 00A12A90 collect-distance promotion can be timed.
 // Off (0) in the landed build.
 constexpr int kAiMovetoDiagEvery = 0;
+// Packet cc9_ai_tick_strafe: the leader point of a group whose first member is
+// a plane squadron. 00A10C20 (00A10C44-00A10C54) refreshes and returns the
+// member's own +FCh, which for a squadron this host answers from its flight
+// leader (proxy(), as tick_member_position already does and as GetPosition's
+// 008A7C3C read of the same field does). OFF, the squadron's candidate index
+// falls outside the unit rows and the point reads (0,0,0): on ESMP08 the US
+// strike group measured 15712 to Zuikaku from the origin and never closed, and
+// its followers were sent to the origin. docs/SQUADRON_LAND_TASK.md 5cg.
+constexpr bool kAiSquadronLeaderPointBound = false;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
@@ -885,6 +894,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     std::map<int, int> class_sample_counts;
     unsigned long long choice_samples_logged{0};
 
+    static bool squad_tick_trace_enabled() {
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_AI_SQUAD_TICK_TRACE") != 0) return false;
+            const bool on = text != nullptr && text[0] == '1';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
     static bool ai_weight_model_enabled() {
         // _dupenv_s rather than getenv, which is a /W4 /WX error under MSVC;
         // the same form native_frame_job_lifetime.cpp already uses.
@@ -1498,6 +1519,36 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     : (bsp::ai_entity_is_groupable_combatant_009fe080(
                            combatant_facts(g->members.front())) ? 1 : 0),
                 g == nullptr ? std::size_t{0} : g->members.size());
+        }
+        // Packet cc9_ai_tick_strafe: every MOVETOATTACK / CLOSEATTACK tick of a
+        // group whose first member is a plane squadron, with 00A12A90's two
+        // inputs. Env-gated (BSP_AI_SQUAD_TICK_TRACE=1), observation only.
+        if (squad_tick_trace_enabled() &&
+            (cmd->type == bsp::AiCommandType::MoveToAttack ||
+             cmd->type == bsp::AiCommandType::CloseAttack)) {
+            Group* g = group_at(cmd->owner_group);
+            if (g != nullptr && !g->members.empty() && is_squadron(g->members.front())) {
+                Group* tg = group_at(cmd->target_group);
+                float own[3] = {0.0f, 0.0f, 0.0f};
+                float tgt[3] = {0.0f, 0.0f, 0.0f};
+                tick_leader_point(g, own);
+                if (cmd->target_group != nullptr) tick_leader_point(cmd->target_group, tgt);
+                log.notef("  ai squadtick t=%.2f cmd=%s leader=%s members=%zu target=%s "
+                    "dist=%.1f collect=%.1f groupable=%d own=(%.0f %.0f %.0f) "
+                    "tgt=(%.0f %.0f %.0f)",
+                    static_cast<double>(clock_seconds),
+                    cmd->type == bsp::AiCommandType::MoveToAttack ? "MOVETOATTACK" : "CLOSEATTACK",
+                    unit_name(g->members.front()).c_str(), g->members.size(),
+                    (tg == nullptr || tg->members.empty())
+                        ? "" : unit_name(tg->members.front()).c_str(),
+                    static_cast<double>(tick_horizontal_distance(own, tgt)),
+                    static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+                    bsp::ai_entity_is_groupable_combatant_009fe080(
+                        combatant_facts(g->members.front())) ? 1 : 0,
+                    static_cast<double>(own[0]), static_cast<double>(own[1]),
+                    static_cast<double>(own[2]), static_cast<double>(tgt[0]),
+                    static_cast<double>(tgt[1]), static_cast<double>(tgt[2]));
+            }
         }
         if constexpr (kAiMovetoDiagEvery > 0) {
             if (cmd->type == bsp::AiCommandType::MoveToAttack) {
@@ -2796,7 +2847,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         Group* g = group_at(group);
         if (g == nullptr || g->members.empty()) return nullptr;
         float y = 0.0f;
-        units.unit_position_00fc(g->members.front(), g->leader_position[0], y,
+        const std::size_t leader = kAiSquadronLeaderPointBound
+            ? proxy(g->members.front()) : g->members.front();
+        units.unit_position_00fc(leader, g->leader_position[0], y,
             g->leader_position[2]);
         g->leader_position[1] = y;
         return g->leader_position;
