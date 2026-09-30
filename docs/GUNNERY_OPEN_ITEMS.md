@@ -5068,6 +5068,10 @@ All of these are merged to main, or merge with this handoff.
   - this session's three: `kPlaneMeshHitTestBound`, `kPlaneBlastElementEntriesBound`,
     `kAaLeaderPenaltyBound`. The three are independent and may be tested one at a time;
   - whatever cc9-ships and cc9-lua landed after r. The diff decides.
+- **Base (the lead's note, 2026-09-30):** main `117a5902d` or later.
+  - That base adds `kFollowTurboBound` ON (cc9-lua21, PLANE_FOLLOW_PHASE_A 9.4): the wingmen hold
+    station, and the USN04 and E2 torpedo drops rise.
+  - It is one of the larger movers and belongs in s. Re-export any earlier base.
 - **Environment:** the window is 1600x900 for both r and s (r showed the size inert). Anything
   flipped during the s runs goes to t.
 - **R row timing:** each 9000-frame row took about 1-2 minutes of wall time. A 7-row pair fits in
