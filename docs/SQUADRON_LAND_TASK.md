@@ -5743,3 +5743,77 @@ This piece is part of the same switch group, `kBaseLaunchChainBound`, which is s
   - Shokaku and Zuikaku, which launch nothing on this row, stayed empty.
 
 Piece 3 (the deck arms) is what consumes `site+18h`.
+
+## 5az. Base launch chain, piece 3a: the airfield deck arm (packet `cc9_base_launch_deck_arms`, cc9-lua25, 2026-09-30)
+
+This piece is part of the same switch group, `kBaseLaunchChainBound`, which is still committed
+**OFF**. The carrier lift arm is piece 3b.
+
+### Read
+
+- **`006CF980`** (the airfield site tick, `006CF980`-`006CF9DB`, `RET 4`):
+  - with `+1Ch` set it calls `006CEDD0` (unread; the host never sets `+1Ch`);
+  - with a ready plane in `+18h` it routes the message `006BDAC0(plane)` to the airfield (`site+44h`)
+    through `0077C2A0(msg, 5, 0)`. The handler reaches `006CF9F0`.
+- **`006CF9F0`** (`006CF9F0`-`006CFA5D`, `RET 4`): with the airfield and its block owner `+7A8h`
+  alive, it calls:
+  - `007C5F60(plane, airfield+72Ch)`;
+  - `007C3C90(plane, 1)`;
+  - `0042ED50`;
+  - `(plane+310h)->vtable[8](0.0)`.
+
+  On both paths it then clears `site+18h`. So `006CDF60` answers ready again at once. The next member
+  follows one `PlaneSendInterval` later.
+- **`006CF730`** (the pose):
+  - the entry path of `006D2780`, points 0 and 1;
+  - the slide from point 0 along their direction is `(planeDesc+158h + 1.0) - plane+9D8h x 0.2`.
+    The factor is the double at `00CE3D10`, `FMUL double ptr` at `006CF877`.
+  - y is `[airfield+7ACh]+9Ch`, or the ground height when that is absent;
+  - the frame is returned in the airfield's axes.
+- **`007C5F60`** (the full pseudocode; its control-block writes are now read):
+  - the forward row is tilted to `GroundPitch`;
+  - airfield: `+9DCh = 3.0` (`00CE3854`) and local y += `WheelHeight`;
+  - carrier: `+9DCh = 5.0`, local x += `+9D8h x +-1.0` by the pitch sign, local y += `WheelHeight`,
+    local z += `0.0`;
+  - the gear and flap channels of `+DECh` are set;
+  - `vtable[ACh](block+7Ch)` re-parents the plane, `007B8E80(block+80h)` attaches the holder, and
+    `007C5AC0(-1.0)` probes the site;
+  - `+9F0h = 0`; state 2 with `+C04h = -1.0` and `007C11E0(0)`; the velocities are zeroed;
+  - `008073C0`, then `007BC550`, which **enables** the plane (state 2).
+- **`007C3C90(1)` from state 2.** It calls `007C1570(5)`, which sends a `C3h` message. The handler
+  `007CCFA0` routes it through arm `007CD06D`: the current state is not 7, and `0042A7E0` (state 4 or 5)
+  is false, so it calls `007CA3F0(1)`. With a holder, `007CA3F0` does:
+  - `007C1430(5)` (`+904h`/`+C18h` with `MinWaterSpd`);
+  - `+9F0h = 0`, `+9F4h = 1.0`, `+9E4h`/`+9E8h`/`+9ECh = 0`;
+  - the site's `vtable[24h]` `006CED90` (the occupancy vector);
+  - the velocity zeroed;
+  - **`0099A4A0`**: `009CFF40(dl = 1)` -> `00999F50`, the takeoff task install. That is where piece 4
+    starts.
+
+### The host with the switch on
+
+- `run_landing_queue_006cd240` runs `airfield_site_tick_006cf980` for every built airfield deck,
+  after the launch tasks. POSITION, LABELLED.
+- `place_on_launch_spot_007c5f60`:
+  - the pose from the entry path picked by the refactored `landing_hangar_path_006d2780_006d2640`
+    (shared with `006CF420`/`006CF520`);
+  - `GroundPitch` and `WheelHeight`;
+  - the airfield as the deck parent, the contact deck, and the site probe;
+  - state 2, the velocities zeroed, and the plane enabled again (`state->active` = 1, node attached).
+- `ground_state_from_locked_007ca3f0` takes the plane to state 5 with the control reset and the
+  occupancy push. The takeoff install `0099A4A0` is recorded only (piece 4).
+- SUBSTITUTIONS, labelled:
+  - `planeDesc+158h` = 0.0;
+  - y is point 0's world y, not the airfield's `+7ACh` object;
+  - the airfield's axes are taken as world;
+  - `+9DCh`, `+DECh`, `007EB270`, `007C18B0` and `vtable[D8h]` are not carried.
+
+### Predictions (switch on, recorded before the run)
+
+- JM05 3000: each airfield squadron's three members are placed one every 2.0 s from 3.05 s:
+  - wing 0 at slide 1.0;
+  - the next members at 0.8 and 0.6 along the entry path.
+- Each goes 2 -> 5 and stays in state 5 near the entry path, because no takeoff task exists yet.
+  That is 6 `placed` and 6 `ground_entries`.
+- The carriers' first members stay in `site+18h` (piece 3b).
+- No launched plane reaches state 7.
