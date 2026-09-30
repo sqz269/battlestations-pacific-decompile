@@ -4987,3 +4987,80 @@ unchanged by this switch.
 targetable and visible. The image does not: the `00710B80` detach removes them from the shell,
 blast, line-of-fire and aim queries, and the scene node hides them. A binding that drops `+C00h`
 planes from the gunnery candidates and the recon triples belongs to the gunnery and recon lanes.
+
+## 5as. The hide's detach, bound: a hidden plane leaves the hit index (packet `cc9_hit_index_detach`, cc9-lua24, 2026-09-30)
+
+5aq read what the hide does: `00951F40(0)` -> `00710B80` -> `0098A500` removes the collision part
+`[unit+360h]` from the spatial index, and `00B6DA70` stops drawing the plane. With park ON
+(5ar), the host now reaches the hide on JM05 9000 (six looping airfield planes, eight stowed
+carrier planes). This packet binds the index half.
+
+### What is bound, behind `kHitIndexDetachBound` (`src/game_hosts_gunnery.cpp`, committed OFF)
+
+- **The flag.** `GameUnitsHost::unit_hit_node_detached`, slot field `plane_hit_node_detached`:
+  - set where the host carries `00951F40(0)`: the park hangar hide (`009B28B8` -> `007B96C0`) and
+    the elevator's bottom release `006FC250` (`006FC279`-`006FC28F`);
+  - cleared by the carry `006FC0D0`, which is `00951F40(1)` -> `00710AD0`. The spawn-state helper
+    `007BC550` and `luaMW_SetVisibility` (`008A13D0`) are the other `00951F40` callers and are not
+    carried.
+- **The queries that skip a detached unit** (the index's consumers, 5aq):
+  - `SegmentBinding::shape_count`, the host's `0098ADD0` segment sweep: the shell sweep of
+    `0084BF00`, the player seat's aim rays and the picks;
+  - the blast gather of `apply_impact_blast` (`00904470` -> `0098C630`);
+  - the line of fire's unit half (`0072CDD0` with `0098B130`).
+- **Not bound, and why.**
+  - **The AA and gun candidates.** They come from the side's recon list `[recon+DE8h]`
+    (docs/AA_TARGETING.md 2), not from the index. The only index query on the AA path is
+    `00864680`'s visibility segment, and that is kind `44h`, the landscape. So the image's guns may
+    still pick a hidden plane; they just cannot hit it.
+  - **The recon triples.** The sensor pass `008073C0` walks class buckets of present units
+    (docs/RECON_SENSOR_PASS.md), not the index. Nothing read shows the hide removing a unit from
+    those buckets.
+  - **The drawing** (`00B6DA70`, scene node `+ACh`). It is presentation only.
+- **Counter.** `summary mission gunnery hit index detach bound=%d offers=%llu` counts the offers
+  of a detached unit on both sides. They are skipped only when the switch is ON.
+
+### Predictions, written before any ON run
+
+1. **JM05 9000** (park ON on both sides): `pair_diff` returns 0 or 1.
+   - On the park-ON run of 5ar.1, the hits, shots and damage equal the park-OFF run's. So no shell
+     or blast reached a hidden plane, and skipping them changes nothing.
+   - `offers` is non-zero: the sweeps meet detached planes' boxes.
+   - This differs from the lead's expectation. The candidate and recon counters of 5ar.1 stay
+     where they are, because neither path runs through the index (above).
+2. **JM05 3000.** 1: the hangar entries exist (5ar.1: seven airfield planes in park), so
+   `offers` may be non-zero, but no hit moves.
+3. **USN04 4500, LOMP10 9000 and the controls USN01 and BSM01.** 0 or 1, with `offers` = 0 (no
+   plane reaches the hide).
+4. **A mechanism failure would be** a detached plane taking a hit or a blast record ON, or any
+   death row changing without a hidden plane in it.
+
+### 5as.1 Measured (pairs on `ad0380150`), and the verdict: ON
+
+- **OFF** is `local\l24_hoff` and **ON** is `--flip kHitIndexDetachBound=true`, `local\l24_hon`.
+  Both have park ON (5ar).
+- The logs are `local\l24_h{off,on}_<row>.log` and the diffs `local\l24_hdiff_<row>.txt` (cc9-lua24
+  tree).
+- The 300-frame smoke of the OFF build exited 0.
+
+| row | `pair_diff` | death rows | `offers` | moved |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 1 | identical (18) | 1258 | `line_of_fire_tests` 27484 -> 27398 |
+| JM05 3200/3000 | 1 | identical (12) | 18 | `line_of_fire_tests` 24825 -> 24823 |
+| USN04 4700/4500 | 1 | identical (48) | 0 | the bound line only |
+| LOMP10 9200/9000 | 1 | identical (9) | 0 | the bound line only |
+| USN01 3200/3000 (control) | 1 | identical (17) | 0 | the bound line only |
+| BSM01 3200/3000 (control) | 1 | identical (0) | 0 | the bound line only |
+
+The ship AI `free` refill counter also moved on some rows; it is the known same-binary noise.
+
+**The predictions:**
+1. **Held.** JM05 9000 returned 1, and `offers` = 1258. The line of fire's box tests fall by 86,
+   which is the detached planes no longer being tested. Hits, shots, damage and the per-entity
+   death table are identical. As predicted, the candidate and recon counters of 5ar.1 do not move.
+2. **Held.** JM05 3000 returned 1, with `offers` = 18.
+3. **Held.** The other rows show `offers` = 0.
+4. **No mechanism failure.** No detached plane took a hit or a blast record on either side.
+
+**Verdict: `kHitIndexDetachBound = true`.** The flip itself is the lead's to apply, because
+`src/game_hosts_gunnery.cpp` is leased to cc9-gunnery18. It is U material, after T's base.
