@@ -7715,3 +7715,31 @@ would be dead code and every pair would be identical by construction.
 
 Item 1 of 5bt closes as unreached. The queue continues with the controlled-unit fallback (5bt.4),
 then `007C6F50`'s `msg+20h` flag and `+C49h`, the `+2ECh` pair (5bt.5), and the `vtable[28h]` scan.
+
+## 5bv. Which missions need the strafe and rocket tasks: a script census (cc9-lua29, 2026-09-30)
+
+Read-only, from this installation's `scripts/` (modded; the files cited below are not the locally
+modified `vehicleclasses.lua`). The host has neither the strafe task (`009CD300`, `00E08F40`) nor
+the rocket task (`007B7FD0`, `00E08F48`), and no reference row issues either (5bu).
+
+- **Strafe is scripted in campaign missions.** `global/luamw_init.lua` line 162 defines
+  `COMMAND_STRAFE = "strafe"`. Scripts that test a plane's `unitcommand` against `"strafe"` and
+  re-issue `PilotSetTarget` to a fighter against a ship, which 007EEC50 answers with strafe when
+  no ordnance class applies:
+  - `missions/COTP-IJN/jm09.lua` line 1784 (fighters out of ammo retargeted at
+    `Mission.AICruisers`), and its copy `missions/COTP-IJN/PRCPIJN/jm09.lua` line 2451;
+  - `missions/COTP-IJN/jm12.lua` line 888;
+  - `missions/COTP-USN/usn_10_battle_of_capeengano.lua` line 3080 (Fighter and Kamikaze types),
+    and its copy under `PRCPUS/` line 3272;
+  - `missions/ijn/ESMP/08_engano.lua` line 584 and `missions/ijn/ESMP/11_tengo.lua` line 592.
+- **IJN01's "Strafe" objective is the player's**: `missions/ijn/ijn_1_pearl.lua` lines 435-460
+  collect `Mission.StrafeShips` for `luaObj_Add("primary", 1, ...)` (line 984); no AI plane is
+  ordered to strafe there. With an idle player it issues nothing.
+- **Rocket.** No script names a `rocket` command (`COMMAND_*` has no rocket entry). Rocket runs
+  come from the air-support powerup `rocket1` ("Corsair Rocket Run", `datatables/powerupclasses.lua`
+  line 241) and from rocket-armed classes when 007EEC50's ordnance order picks `00E08F48` for them.
+  Which plane classes carry rockets in this installation was not censused.
+- None of these missions is a reference row (JM05, JM06, JM08, USN01, USN02, USN04, USN12, USN13,
+  USNOS, IJN01, LOMP06, LOMP10, BSM01). A strafe task is therefore needed for campaign coverage
+  (JM09, JM12, USN10 and the ESMP Engano and Tengo missions), and only a new reference row on one of
+  them could judge it.

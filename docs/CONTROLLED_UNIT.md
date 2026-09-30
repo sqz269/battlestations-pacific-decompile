@@ -3222,3 +3222,34 @@ Open, in order (SQUADRON_LAND_TASK.md 5bt):
 4. the controlled-unit fallback when the script's intended unit does not exist (USN01:
    ScoutDauntless under reference V);
 5. the `+2ECh` store and reader of `0099D300`.
+
+## USN01's controlled unit under reference v: the script's own choice, not a fallback (packet `cc9_controlled_fallback`, cc9-lua29, 2026-09-30)
+
+Read-only; no switch. The question from the 5bt queue was whether the host picks ScoutDauntless as
+a fallback because the script's intended unit ConTBD1 does not exist. It does not: no fallback
+rule runs on either side.
+
+- **The script** (this installation's `scripts/missions/usn/usn_1_marshall.lua`, mtime
+  2024-07-13 08:26, the untouched bulk copy):
+  - line 740, `luaPh2MovieEnd`: `SetSelectedUnit(Mission.ScoutBomba)`, the ScoutDauntless
+    generated at line 707 and made invincible at line 713;
+  - line 900, `luaConLeadHit` (the `hit` listener `ConLeadListener` on Convoy1): generates
+    ConTBD1..3 and ConSBD1..3;
+  - line 928, `luaConHitMovieEnd` (after that movie): `SetSelectedUnit(FindEntity("ConTBD1"))`.
+  So ScoutDauntless is the intended controlled unit until Convoy1 is hit; ConTBD1 is selected
+  only after the hit, and only after it has been generated.
+- **Reference u** (`local\g20_ru_usn01.log` in the cc9-gunnery20 tree): `SetSelectedUnit` accepts
+  ScoutDauntless (line 17104), the listener is added (17105); `luaConLeadHit` runs (its first
+  call, `HideScoreDisplay`, at line 22312) and ConTBD1 spawns (22313).
+- **Reference v** (`g20_rv_usn01.log`): the same acceptance of ScoutDauntless at frame about 1745
+  (line 17530) and the same listener (17531), but Convoy1 is never hit in 3000 frames, so
+  `luaConLeadHit` never runs, ConTBD1 is never generated and line 928 is never reached. The
+  controlled unit stays ScoutDauntless; being invincible, it never dies, so the death release
+  (004C0890(null), above) never fires either.
+- **Why Convoy1 is not hit on v:** the formation-join change (SHIP_AI 93) that moved the row
+  between u and v; not a controlled-unit question.
+- **If `FindEntity` did return nil** (not reached on any row): were a null entity to reach
+  00647300, 00645060 rejects it at `00645082 TEST ESI,ESI` / `0064508B JE 00645151`, and 00647300
+  returns (see "The path (V)" above), leaving `00E188D8` unchanged: the previous controlled unit
+  stays. Whether 008AB260's argument read (`0041DD40` at `008AB293`) passes a nil through or
+  raises first was not read.
