@@ -416,3 +416,29 @@ lower mean is over a different population.
   one).
 - The binding stays as the image's reading. It is exact against the image's bytes, and it is the
   base for flipping once the speed side is settled.
+
+**Flipped ON, 2026-09-30, the lead's decision on fidelity.** This is a spread miss with the
+mechanism matching, which the pair rule allows:
+- The binding is exact against the image's bytes (section 8.1).
+- `applied=1`, and the regime split repeats the shadow.
+- Deaths, drops and water contacts stayed inside their spreads on all five rows.
+
+The station-error criterion measured a gap that this pair showed lies outside the steering
+regime. So it is not a test of this binding. The OFF path (lead pursuit always) stays in the code
+and is not run.
+
+### 8.9 The error split (packet `cc9_follow_error_split`)
+
+A diagnostic now runs on both sides:
+- `summary follow error split` splits the station error on every follow-law tick in the leader's
+  frame (its horizontal forward, not the lagged track).
+- It reports:
+  - the along mean;
+  - the |cross| and |dy| means;
+  - counts behind, ahead and beside (50 m and dominant axis);
+  - own |v| minus leader |v|, overall and when behind;
+  - on fly-to ticks, `009BEE30`'s commanded speed `+2B4h` minus own |v|.
+
+The per-400-tick `follow law` rows now key off a counter for every follow-law tick (`fw_law_ticks`).
+Before, they keyed off the dive-bomb follow counter and never printed on the torpedo and dogfight
+seams.

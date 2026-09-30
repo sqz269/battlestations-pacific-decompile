@@ -1629,6 +1629,9 @@ struct GameUnitSlot {
     // (1 hold, 2 fly-to), station distance and the motion step it ran on.
     int fw_arm{0};
     float fw_station_dist{-1.0f};
+    // Every follow-law tick (both arms); gates the `follow law` rows, which
+    // keyed off the dive-bomb follow counter and never printed elsewhere.
+    int fw_law_ticks{0};
     unsigned long long fw_step{0};
     float fw_station[3]{0.0f, 0.0f, 0.0f};
     float fw_leader_heading{0.0f};
@@ -4526,7 +4529,7 @@ struct GameUnitsHost::Impl {
     // pursuit always; with it the tail's leaderY - 120 floor (009C1734).
     // OFF: lead pursuit always, and Phase A runs as a shadow for the
     // summary line only.
-    static constexpr bool kFollowPhaseABound = false;
+    static constexpr bool kFollowPhaseABound = true;  // ON: fidelity, PLANE_FOLLOW_PHASE_A 8.8
     // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
     // the fly-to arm's two class terms as the image reads them - cruise =
     // 007C47F0 (LevelFlight x StallSpd) x 0.9 at 009BFC41/009BFC49 and the
@@ -6352,6 +6355,15 @@ struct GameUnitsHost::Impl {
     double follow_station_err_sum{0.0};
     unsigned long long follow_station_err_n{0};
     float follow_station_err_max{0.0f};
+    // Diagnostic, both sides (packet cc9_follow_error_split): the station
+    // error split in the leader's frame (its horizontal forward, not the
+    // lagged track), and the speeds, over every follow-law tick.
+    double fes_along_sum{0.0}, fes_cross_abs_sum{0.0}, fes_dy_abs_sum{0.0};
+    unsigned long long fes_n{0}, fes_behind{0}, fes_ahead{0}, fes_beside{0};
+    double fes_speed_diff_sum{0.0};   // own |v| - leader |v|
+    double fes_behind_speed_diff_sum{0.0};
+    double fes_flyto_cmd_minus_own_sum{0.0};
+    unsigned long long fes_flyto_n{0};
     // Diagnostic, both sides: Phase A's regime per fly-to tick (applied with
     // kFollowPhaseABound, else the shadow of what it would pick).
     unsigned long long follow_phase_a_lead{0}, follow_phase_a_abeam{0}, follow_phase_a_circle{0};
@@ -6462,6 +6474,38 @@ struct GameUnitsHost::Impl {
                 dot > gt.pilot_follow_good_position_dir;
             unit.fw_arm = latch_85 ? 1 : 2;
             unit.fw_station_dist = static_cast<float>(dist);
+            ++unit.fw_law_ticks;
+            {
+                // DIAGNOSTIC (cc9_follow_error_split): along = d . f, cross =
+                // d . (f.z, -f.x), f the leader's horizontal forward.
+                double fx = lf[0], fz = lf[2];
+                const double fl = std::sqrt(fx * fx + fz * fz);
+                if (fl > 1e-6) {
+                    fx /= fl;
+                    fz /= fl;
+                    const double along = dx * fx + dz * fz;
+                    const double cross = dx * fz - dz * fx;
+                    const float* vo = unit.plane_world_velocity;
+                    const float* vl = leader.plane_world_velocity;
+                    const double so = std::sqrt(static_cast<double>(vo[0]) * vo[0] +
+                        static_cast<double>(vo[1]) * vo[1] + static_cast<double>(vo[2]) * vo[2]);
+                    const double sl = std::sqrt(static_cast<double>(vl[0]) * vl[0] +
+                        static_cast<double>(vl[1]) * vl[1] + static_cast<double>(vl[2]) * vl[2]);
+                    ++fes_n;
+                    fes_along_sum += along;
+                    fes_cross_abs_sum += std::fabs(cross);
+                    fes_dy_abs_sum += std::fabs(dy);
+                    fes_speed_diff_sum += so - sl;
+                    if (along < -50.0 && std::fabs(along) >= std::fabs(cross)) {
+                        ++fes_behind;
+                        fes_behind_speed_diff_sum += so - sl;
+                    } else if (along > 50.0 && std::fabs(along) >= std::fabs(cross)) {
+                        ++fes_ahead;
+                    } else if (std::fabs(cross) > 50.0) {
+                        ++fes_beside;
+                    }
+                }
+            }
             follow_station_err_sum += dist;
             ++follow_station_err_n;
             if (static_cast<float>(dist) > follow_station_err_max) {
@@ -6658,12 +6702,20 @@ struct GameUnitsHost::Impl {
             unit.gun_cone_40 = strafe_cone_tuning(0x670);
         }
 
-        if ((unit.db_follow_tick_ticks % 400) == 1) {
+        {
+            // DIAGNOSTIC (cc9_follow_error_split): commanded minus own speed.
+            const float* vo = unit.plane_world_velocity;
+            const double so = std::sqrt(static_cast<double>(vo[0]) * vo[0] +
+                static_cast<double>(vo[1]) * vo[1] + static_cast<double>(vo[2]) * vo[2]);
+            fes_flyto_cmd_minus_own_sum += static_cast<double>(cmd.desired_speed_2b4) - so;
+            ++fes_flyto_n;
+        }
+        if ((unit.fw_law_ticks % 400) == 1) {
             log.notef("  follow law %-12s n=%d R=%.1f D=%.1f "
                 "ref=%.3f V=%.1f along=%.1f A=%.3f lag=%.2f "
                 "steer=(%.1f %.1f %.1f) cmdalt=%.1f ownY=%.1f "
                 "spd=%.2f band=%d",
-                unit.row.name.c_str(), unit.db_follow_tick_ticks,
+                unit.row.name.c_str(), unit.fw_law_ticks,
                 static_cast<double>(geo.range_horizontal),
                 static_cast<double>(geo.range_3d),
                 static_cast<double>(geo.reference_heading),
@@ -27178,6 +27230,18 @@ void GameUnitsHost::report() {
             "packet cc9_plane_wanderer diagnostic)", host.follow_station_err_n,
             host.follow_station_err_n ? host.follow_station_err_sum / host.follow_station_err_n : 0.0,
             static_cast<double>(host.follow_station_err_max));
+        {
+            const double n = host.fes_n ? static_cast<double>(host.fes_n) : 1.0;
+            host.log.notef("summary follow error split n=%llu along_mean=%.1f cross_abs_mean=%.1f "
+                "dy_abs_mean=%.1f behind=%llu ahead=%llu beside=%llu speed_diff_mean=%.2f "
+                "behind_speed_diff_mean=%.2f flyto_cmd_minus_own_mean=%.2f (leader frame, "
+                "packet cc9_follow_error_split diagnostic)", host.fes_n,
+                host.fes_along_sum / n, host.fes_cross_abs_sum / n, host.fes_dy_abs_sum / n,
+                host.fes_behind, host.fes_ahead, host.fes_beside, host.fes_speed_diff_sum / n,
+                host.fes_behind ? host.fes_behind_speed_diff_sum / static_cast<double>(host.fes_behind) : 0.0,
+                host.fes_flyto_n ? host.fes_flyto_cmd_minus_own_sum /
+                    static_cast<double>(host.fes_flyto_n) : 0.0);
+        }
         host.log.notef("summary follow phase-a lead=%llu abeam=%llu circle=%llu mean_time=%.3f "
             "applied=%d (009C0251-009C0EE0, packet cc9_follow_approach_arm; a shadow when OFF)",
             host.follow_phase_a_lead, host.follow_phase_a_abeam, host.follow_phase_a_circle,
