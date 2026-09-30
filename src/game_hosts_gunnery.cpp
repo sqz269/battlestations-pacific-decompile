@@ -59,6 +59,7 @@
 #include "bsp/projectile_impact.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/sensor_table_data.hpp"
+#include "bsp/ship_ai_attackmove_substates.hpp"
 #include "bsp/ship_hit_record.hpp"
 #include "bsp/part_damage_reachability.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -516,6 +517,15 @@ constexpr bool kReconTeamListsBound = true;
 //    never reached 00863990. OFF: that pre-filter. Packet
 //    cc9_recon_contact_kinds, docs/AA_LETHALITY_AUDIT.md section 14.
 constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.4
+//  * kGunneryClassArmsBound: 00862820's arms after the liveness bytes and the
+//    rank (00862843..008628CA). Category 7 needs IsKindOf(6) and not
+//    IsKindOf(0Eh). A kind-8 target then goes through 00852820 (world y +100h
+//    above ([+1204h] + [+1200h]) / 3.0, 00D7A2B0): categories 8 and 9 refuse
+//    it when that answers true, every category but 7 refuses it when it
+//    answers false. The per-instance allow byte [ai+CCh+cat*61h+class] is the
+//    constructor's memset 1 (00864623), taken as set. OFF: the liveness bytes
+//    only. Packet cc9_gunnery_class_arms, docs/GUNNERY_OPEN_ITEMS.md 77.
+constexpr bool kGunneryClassArmsBound = false;
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
@@ -1308,6 +1318,10 @@ struct GameGunneryHost::Impl {
     unsigned long long plane_box_hits{0};
     // Packet cc9_aa_leader_penalty (census, both sides): plane candidates past
     // the class, rank and mask gates, and how many were flight leaders.
+    unsigned long long class_arm_torpedo_refusals{0};   // kGunneryClassArmsBound census
+    unsigned long long class_arm_sub_tests{0};
+    unsigned long long class_arm_sub_above{0};
+    unsigned long long class_arm_sub_refusals{0};
     unsigned long long recon_contact_admit_other{0};   // kReconContactAllKindsBound
     unsigned long long recon_contact_other_same_side{0};
     std::map<int, unsigned long long> recon_other_scored_by_class;
@@ -4438,6 +4452,34 @@ public:
                 owner_.units.unit_class_id(other)) == 0) {
             if (torpedo_cat) ++owner_.summary.torpedo_cat_reject_rank;
             return false;
+        }
+        {
+            // 00862869..008628C5, counted on both sides.
+            bool refuse = false;
+            if (category == bsp::kUnitGunneryTorpedoCategory) {        // 00862869
+                if (!owner_.units.unit_is_kind_of(other, 6)
+                    || owner_.units.unit_is_kind_of(other, 0x0e)) {
+                    refuse = true;
+                    ++owner_.class_arm_torpedo_refusals;
+                }
+            }
+            if (!refuse && category != bsp::kUnitGunneryTorpedoCategory
+                && owner_.units.unit_is_kind_of(other, 8)) {           // 0086288C
+                float x = 0.0f, y = 0.0f, z = 0.0f;
+                owner_.units.unit_position_00fc(other, x, y, z);
+                float band0 = 0.0f, band1 = -20.0f;                   // 00E0B578 defaults
+                owner_.units.submarine_band_y(other, 0, band0);        // +1200h
+                owner_.units.submarine_band_y(other, 1, band1);        // +1204h
+                const bool above = !bsp::ship_ai_attackmove_altitude_gate_00852860(y, band1, band0);
+                ++owner_.class_arm_sub_tests;
+                if (above) ++owner_.class_arm_sub_above;
+                const bool asw = category == 8 || category == 9;       // 0086289B / 008628A0
+                if (asw ? above : !above) {
+                    refuse = true;
+                    ++owner_.class_arm_sub_refusals;
+                }
+            }
+            if (kGunneryClassArmsBound && refuse) return false;
         }
         if (!bsp::category_mask_admits_target_008633d0(state_.category.mask[slot],
                 is_plane)) {
@@ -10886,6 +10928,10 @@ void GameGunneryHost::report() {
                 ? host.aa_range_origin_abs_delta / static_cast<double>(host.aa_range_origin_scored)
                 : 0.0,
             kAaCategoryRangeOriginBound ? 1 : 0);
+        host.log.notef("summary mission gunnery class arms torpedo_refusals=%llu sub_tests=%llu "
+            "sub_above=%llu sub_refusals=%llu bound=%d (00862869..008628C5 / 00852820, packet "
+            "cc9_gunnery_class_arms)", host.class_arm_torpedo_refusals, host.class_arm_sub_tests,
+            host.class_arm_sub_above, host.class_arm_sub_refusals, kGunneryClassArmsBound ? 1 : 0);
         {
             std::string by_class;
             for (const auto& [cls, n] : host.recon_other_scored_by_class) {
