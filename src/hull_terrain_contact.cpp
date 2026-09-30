@@ -7,8 +7,12 @@
 
 #include "bsp/avoid_zone_dyn_hull.hpp"
 #include "bsp/dyn_collision_pass.hpp"
+#include "bsp/dyn_body_creation.hpp"
+#include "bsp/dyn_contact_solver.hpp"
+#include "bsp/game_native_dyn_process.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/native_dyn_collision_pass.hpp"
+#include "bsp/native_dyn_general_convex.hpp"
 #include "bsp/native_dyn_narrow_phase.hpp"
 #include "bsp/native_dyn_terrain_convex.hpp"
 
@@ -45,10 +49,18 @@ float f32(double v) { return static_cast<float>(v); }
 // The native manifold: points at +08h (30h each, four), count +0C8h, body A +0CCh, body B
 // +0D0h (docs/NATIVE_DYN_NARROW_PHASE_R138.md). Body A is the terrain tile's static body (the
 // identity frame, so its local point is the world point); body B the hull.
+// A hull-hull manifold (kHullHullContactBound) uses the same record: `terrain` then holds
+// body A's pose (the lower unit) and `hull` body B's.
 struct HullTerrainContactSolver::Manifold {
     alignas(16) std::uint8_t bytes[0x100]{};
     NativeBody terrain;
     NativeBody hull;
+    static constexpr std::size_t kStatic = static_cast<std::size_t>(-1);
+    std::size_t unit_a{kStatic};   // kStatic: the terrain tile's static body
+    std::size_t unit_b{kStatic};
+    unsigned long long serial{0};  // creation order: the scene's manifold list (LABELLED)
+    float friction{0.0f};          // manifold +0h, written by 00C44090 on every hit
+    float restitution{0.0f};       // manifold +4h
     Manifold() {
         const float r0[3] = {1.0f, 0.0f, 0.0f}, r1[3] = {0.0f, 1.0f, 0.0f},
                     r2[3] = {0.0f, 0.0f, 1.0f}, p[3] = {0.0f, 0.0f, 0.0f};
@@ -75,6 +87,10 @@ void HullTerrainContactSolver::forget(std::size_t unit) {
         if (it->first.first == unit) it = hulls_.erase(it);
         else ++it;
     }
+    for (auto it = pair_manifolds_.begin(); it != pair_manifolds_.end();) {
+        if (it->first.first == unit || it->first.second == unit) it = pair_manifolds_.erase(it);
+        else ++it;
+    }
 }
 
 
@@ -93,6 +109,8 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
     h.raw = raw;
     h.vertices.clear();
     h.records.clear();
+    h.handle.reset();
+    h.convex_ready = false;
     std::vector<OceanVec3> local;
     float centre[3] = {0.0f, 0.0f, 0.0f};
     if (kHullTerrainDynHullVerticesBound) {
@@ -116,15 +134,20 @@ HullTerrainContactSolver::HullShape& HullTerrainContactSolver::hull_shape(
                                    f32(static_cast<double>(raw[i].y) - centre[1]),
                                    f32(static_cast<double>(raw[i].z) - centre[2])};
         }
-        const AvoidZoneDynHullMemory memory{
+        static const AvoidZoneDynHullMemory memory{
             nullptr, [](void*, std::size_t bytes) -> void* { return std::malloc(bytes); },
             [](void*, void* p) { std::free(p); }};
-        AvoidZoneDynHullHandle handle{};
+        // Kept for the convex record (+210h) the hull pairs read; destroyed with the shape.
+        h.handle = std::shared_ptr<AvoidZoneDynHullHandle>(new AvoidZoneDynHullHandle{},
+            [](AvoidZoneDynHullHandle* p) {
+                avoid_zone_dyn_hull_destroy_00c37450(*p, memory);
+                delete p;
+            });
+        AvoidZoneDynHullHandle& handle = *h.handle;
         avoid_zone_dyn_hull_construct_00c5df30(handle, centred.data(),
                                                static_cast<std::uint32_t>(centred.size()), memory);
         const std::uint32_t n = avoid_zone_dyn_hull_vertex_count_00c32d20(handle);
         for (std::uint32_t i = 0; i < n; ++i) local.push_back(handle.data->vertices[i].point);
-        avoid_zone_dyn_hull_destroy_00c37450(handle, memory);
         ++census_.hull_shapes;
         census_.raw_points += raw.size();
         census_.hull_vertices += n;
@@ -334,6 +357,8 @@ HullTerrainContactStepResult HullTerrainContactSolver::native_narrow_phase(
                         auto found = manifolds_.find(key);
                         if (found == manifolds_.end()) {
                             found = manifolds_.emplace(key, std::make_unique<Manifold>()).first;
+                            found->second->unit_b = unit;
+                            found->second->serial = ++manifold_serial_;
                         }
                         Manifold& m = *found->second;
                         m.hull.set_pose(body.row0, body.row1, body.row2, body.position);
@@ -437,6 +462,8 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
                 auto found = manifolds_.find(key);
                 if (found == manifolds_.end()) {
                     found = manifolds_.emplace(key, std::make_unique<Manifold>()).first;
+                    found->second->unit_b = unit;
+                    found->second->serial = ++manifold_serial_;
                 }
                 Manifold& m = *found->second;
                 m.hull.set_pose(body.row0, body.row1, body.row2, body.position);
@@ -560,6 +587,521 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
     ++census_.solves;
     census_.rows += static_cast<unsigned long long>(row);
     return out;
+}
+
+
+// ---------------------------------------------------------------------------
+// Packet cc9_hull_hull_contact (docs/GUNNERY_OPEN_ITEMS.md section 91): the world phase.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+DynSolverBodyInput dynamic_body_input(const DynBody& body, std::int16_t index) {
+    DynSolverBodyInput in;
+    for (int k = 0; k < 3; ++k) {
+        in.row0[k] = body.row0[k];
+        in.row1[k] = body.row1[k];
+        in.row2[k] = body.row2[k];
+        in.position[k] = body.position[k];
+    }
+    const DynMotionState& ms = *body.motion;
+    in.linear_velocity[0] = ms.linear_velocity.x;
+    in.linear_velocity[1] = ms.linear_velocity.y;
+    in.linear_velocity[2] = ms.linear_velocity.z;
+    in.angular_velocity[0] = ms.angular_velocity.x;
+    in.angular_velocity[1] = ms.angular_velocity.y;
+    in.angular_velocity[2] = ms.angular_velocity.z;
+    in.inverse_mass = ms.inverse_mass;
+    for (int k = 0; k < 9; ++k) in.inverse_inertia[k] = ms.inverse_inertia_world[k];
+    in.solver_index = index;
+    return in;
+}
+
+void body_frame(const DynBody& body, float out[12]) {
+    for (int k = 0; k < 3; ++k) {
+        out[k] = body.row0[k];
+        out[3 + k] = body.row1[k];
+        out[6 + k] = body.row2[k];
+        out[9 + k] = body.position[k];
+    }
+}
+
+}  // namespace
+
+// The kind-4 record 00C57F50 builds for a hull shape, for 00C535E0: +0 the process's
+// ConvexMeshShape table (its double-support slot +0Ch is 00C385B0 over the borrowed mesh),
+// +4 the body (a copy of the hull's current 3x4 at +08h..+37h, which 00C51C20 and 00C48BE0
+// read; 00C57C40's body refresh is not run), +8 kind 4, +0Ch the local box 00C57C40 writes,
+// +24h restitution 0 (0093944D writes no shape restitution; section 84), +28h the material
+// friction, +2Ch group 1, +30h mask 0Dh, +34h the shape frame (identity, the centre as
+// translation, 006FAEA0), +210h the 00C5DEB0 hull.
+HullTerrainContactSolver::HullShape* HullTerrainContactSolver::hull_convex(
+    std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw, float friction,
+    const DynBody& body) {
+    HullShape& h = hull_shape(unit, shape, raw);
+    if (!h.handle || !h.handle->data || h.handle->data->vertex_count == 0) return nullptr;
+    if (!h.convex_ready) {
+        game::GameNativeDynProcess& process =
+            game::game_native_dyn_process(game::application_camera_axes_crt());
+        std::memset(h.convex, 0, sizeof(h.convex));
+        const void* table = process.body_creation().convex_shape_vtable;
+        const std::uint32_t kind = 4, group = 1, mask = 0x0D;
+        const float restitution = 0.0f;
+        const void* mesh = h.handle->data;
+        const float frame[12] = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+                                 h.centre[0], h.centre[1], h.centre[2]};
+        std::memcpy(h.convex + 0x00, &table, sizeof(table));
+        std::memcpy(h.convex + 0x08, &kind, 4);
+        std::memcpy(h.convex + 0x24, &restitution, 4);
+        std::memcpy(h.convex + 0x28, &friction, 4);
+        std::memcpy(h.convex + 0x2C, &group, 4);
+        std::memcpy(h.convex + 0x30, &mask, 4);
+        std::memcpy(h.convex + 0x34, frame, sizeof(frame));
+        std::memcpy(h.convex + 0x210, &mesh, sizeof(mesh));
+        dyn_convex_shape_local_bounds_00c57c40(*reinterpret_cast<DynConvexShapeStorage*>(h.convex));
+        h.convex_ready = true;
+    }
+    std::memcpy(h.convex + 0x28, &friction, 4);
+    std::memcpy(h.body + 0x08, body.row0, 12);
+    std::memcpy(h.body + 0x14, body.row1, 12);
+    std::memcpy(h.body + 0x20, body.row2, 12);
+    std::memcpy(h.body + 0x2C, body.position, 12);
+    const void* owner = h.body;
+    std::memcpy(h.convex + 0x04, &owner, sizeof(owner));
+    return &h;
+}
+
+// 00C44090 for every hull pair the broad phase would hand it. LABELLED substitutions: the
+// SAP pair list is replaced by a world-box test (every hull vertex in world space, widened
+// by 0.1 m, more than the 0.02 the image widens each shape box by, so no pair the SAP holds
+// is missed; the narrow phase decides every hit); body A is the lower unit; the shape pairs
+// go in shape order (the image walks each body's shape chain +70h / +208h).
+void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry>& hulls,
+                                                      bool apply) {
+    constexpr std::uint32_t kHullGroup = 1, kHullMaskBase = 0x0D;
+    if (!dyn_shapes_overlap_filter(kHullGroup, kHullMaskBase, kHullGroup, kHullMaskBase)) return;
+    struct Box { float lo[3], hi[3]; bool ok; };
+    std::vector<Box> boxes(hulls.size());
+    for (std::size_t i = 0; i < hulls.size(); ++i) {
+        Box& b = boxes[i];
+        b.ok = false;
+        for (int k = 0; k < 3; ++k) { b.lo[k] = 3.402823466e+38f; b.hi[k] = -3.402823466e+38f; }
+        const DynBody& body = *hulls[i].body;
+        for (std::size_t s = 0; s < hulls[i].shapes->size(); ++s) {
+            for (const OceanVec3& v : hull_shape(hulls[i].unit, s, (*hulls[i].shapes)[s]).vertices) {
+                for (int k = 0; k < 3; ++k) {
+                    const float w = f32(static_cast<double>(body.position[k]) + body.row0[k] * v.x +
+                                        body.row1[k] * v.y + body.row2[k] * v.z);
+                    if (w < b.lo[k]) b.lo[k] = w;
+                    if (w > b.hi[k]) b.hi[k] = w;
+                    b.ok = true;
+                }
+            }
+        }
+    }
+    game::GameNativeDynProcess& process =
+        game::game_native_dyn_process(game::application_camera_axes_crt());
+    DynGeneralConvexIntersectStorage& owner = process.general_convex_owner();
+    const CameraAxesCrtAccess& crt = game::application_camera_axes_crt();
+    // Diagnostic, env-gated: BSP_HULL_HULL_TRACE=<file> logs a self-test of 00C535E0 on the
+    // first hull shape (against itself, shifted 1 m and 1000 m along x) and the first 300
+    // near pairs with their boxes and hits.
+    static std::FILE* trace = [] {
+        char* path = nullptr;
+        std::size_t length = 0;
+        std::FILE* f = nullptr;
+        if (_dupenv_s(&path, &length, "BSP_HULL_HULL_TRACE") == 0 && path) {
+            fopen_s(&f, path, "w");
+            std::free(path);
+        }
+        return f;
+    }();
+    static int trace_lines = 0;
+    static bool self_tested = false;
+    if (trace && !self_tested && !hulls.empty() && !hulls[0].shapes->empty()) {
+        HullShape* h = hull_convex(hulls[0].unit, 0, (*hulls[0].shapes)[0], hulls[0].friction,
+                                  *hulls[0].body);
+        if (h != nullptr) {
+            self_tested = true;
+            float fa[12];
+            body_frame(*hulls[0].body, fa);
+            for (const float shift : {0.0f, 1.0f, 1000.0f}) {
+                float fb[12];
+                std::memcpy(fb, fa, sizeof(fb));
+                fb[9] += shift;
+                alignas(16) std::uint8_t other[0x240];
+                alignas(16) std::uint8_t other_body[0x40];
+                std::memcpy(other, h->convex, sizeof(other));
+                std::memcpy(other_body, h->body, sizeof(other_body));
+                std::memcpy(other_body + 0x2C, fb + 9, 4);
+                const void* ob = other_body;
+                std::memcpy(other + 0x04, &ob, sizeof(ob));
+                alignas(16) std::uint8_t result[4 + 8 * 36]{};
+                const bool hit = dispatch_native_dyn_general_convex_00c535e0(owner, result,
+                    h->convex, fa, other, fb, crt);
+                std::int32_t n = 0;
+                std::memcpy(&n, result, 4);
+                const float* c = reinterpret_cast<const float*>(result + 4);
+                std::fprintf(trace, "selftest unit=%zu shift=%.1f hit=%d n=%d c=(%.3f %.3f %.3f | "
+                    "%.3f %.3f %.3f | %.3f %.3f %.3f) box=(%.2f %.2f %.2f .. %.2f %.2f %.2f) "
+                    "verts=%u\n", hulls[0].unit, shift, hit ? 1 : 0, n, c[0], c[1], c[2], c[3],
+                    c[4], c[5], c[6], c[7], c[8],
+                    *reinterpret_cast<const float*>(h->convex + 0x0C),
+                    *reinterpret_cast<const float*>(h->convex + 0x10),
+                    *reinterpret_cast<const float*>(h->convex + 0x14),
+                    *reinterpret_cast<const float*>(h->convex + 0x18),
+                    *reinterpret_cast<const float*>(h->convex + 0x1C),
+                    *reinterpret_cast<const float*>(h->convex + 0x20),
+                    h->handle->data->vertex_count);
+            }
+            std::fflush(trace);
+        }
+    }
+    for (std::size_t i = 0; i < hulls.size(); ++i) {
+        for (std::size_t j = i + 1; j < hulls.size(); ++j) {
+            const Box& a = boxes[i];
+            const Box& b = boxes[j];
+            if (!a.ok || !b.ok) continue;
+            bool overlap = true;
+            for (int k = 0; k < 3 && overlap; ++k) {
+                overlap = a.lo[k] - 0.1f <= b.hi[k] && b.lo[k] - 0.1f <= a.hi[k];
+            }
+            if (!overlap) continue;
+            ++census_.hull_pairs_near;
+            HullWorldEntry& ea = hulls[i];
+            HullWorldEntry& eb = hulls[j];
+            float frame_a[12], frame_b[12];
+            body_frame(*ea.body, frame_a);
+            body_frame(*eb.body, frame_b);
+            int pair_hits = 0;
+            float pair_depth = -3.402823466e+38f;
+            for (std::size_t sa = 0; sa < ea.shapes->size(); ++sa) {
+                HullShape* ha = hull_convex(ea.unit, sa, (*ea.shapes)[sa], ea.friction, *ea.body);
+                if (ha == nullptr) continue;
+                for (std::size_t sb = 0; sb < eb.shapes->size(); ++sb) {
+                    HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction,
+                                                 *eb.body);
+                    if (hb == nullptr) continue;
+                    ++census_.hull_shape_tests;
+                    alignas(16) std::uint8_t result[4 + 8 * 36]{};
+                    if (!dispatch_native_dyn_general_convex_00c535e0(owner, result, ha->convex,
+                            frame_a, hb->convex, frame_b, crt)) {
+                        continue;
+                    }
+                    std::int32_t n = 0;
+                    std::memcpy(&n, result, 4);
+                    const float* c = reinterpret_cast<const float*>(result + 4);
+                    for (std::int32_t k = 0; k < n; ++k, c += 9) {
+                        ++census_.hull_hits;
+                        ++pair_hits;
+                        ++ea.result.hull_candidates;
+                        ++eb.result.hull_candidates;
+                        // Witnesses are body-local (C48BE0); the depth is along the normal.
+                        double wa[3], wb[3];
+                        for (int q = 0; q < 3; ++q) {
+                            wa[q] = static_cast<double>(frame_a[9 + q]) + frame_a[q] * c[0] +
+                                    frame_a[3 + q] * c[1] + frame_a[6 + q] * c[2];
+                            wb[q] = static_cast<double>(frame_b[9 + q]) + frame_b[q] * c[3] +
+                                    frame_b[3 + q] * c[4] + frame_b[6 + q] * c[5];
+                        }
+                        const float depth = f32((wa[0] - wb[0]) * c[6] + (wa[1] - wb[1]) * c[7] +
+                                                (wa[2] - wb[2]) * c[8]);
+                        if (depth > pair_depth) pair_depth = depth;
+                        if (!apply) continue;
+                        // 00C44154..00C441DB: the combines, FindOrCreate(A, B) at 00C441C5,
+                        // then friction and restitution into manifold +0h / +4h on every hit.
+                        auto& slot = pair_manifolds_[{ea.unit, eb.unit}];
+                        if (!slot) {
+                            slot = std::make_unique<Manifold>();
+                            slot->unit_a = ea.unit;
+                            slot->unit_b = eb.unit;
+                            slot->serial = ++manifold_serial_;
+                        }
+                        Manifold& m = *slot;
+                        m.friction = dyn_combine_friction(ea.friction, eb.friction);
+                        m.restitution = dyn_combine_restitution(0.0f, 0.0f);
+                        m.terrain.set_pose(ea.body->row0, ea.body->row1, ea.body->row2,
+                                           ea.body->position);
+                        m.hull.set_pose(eb.body->row0, eb.body->row1, eb.body->row2,
+                                        eb.body->position);
+                        if (!dyn_contact_normal_is_unit(c + 6)) ++census_.rejected_normal;
+                        float in[9];
+                        std::memcpy(in, c, sizeof(in));
+                        insert_native_dyn_contact_00c3f760(m.bytes, in);
+                    }
+                }
+            }
+            // After the first 50 lines only hits deeper than 3 m, with both velocities; with
+            // BSP_HULL_HULL_TRACE_UNIT=<unit> every near line of that unit instead, from the
+            // world step BSP_HULL_HULL_TRACE_STEP on.
+            static const long trace_unit = [] {
+                char* v = nullptr;
+                std::size_t length = 0;
+                long u = -1;
+                if (_dupenv_s(&v, &length, "BSP_HULL_HULL_TRACE_UNIT") == 0 && v) {
+                    u = std::strtol(v, nullptr, 10);
+                    std::free(v);
+                }
+                return u;
+            }();
+            static const unsigned long long trace_step = [] {
+                char* v = nullptr;
+                std::size_t length = 0;
+                unsigned long long n = 0;
+                if (_dupenv_s(&v, &length, "BSP_HULL_HULL_TRACE_STEP") == 0 && v) {
+                    n = std::strtoull(v, nullptr, 10);
+                    std::free(v);
+                }
+                return n;
+            }();
+            const bool unit_line = trace_unit >= 0 && census_.world_steps >= trace_step &&
+                (ea.unit == static_cast<std::size_t>(trace_unit) ||
+                 eb.unit == static_cast<std::size_t>(trace_unit));
+            if (trace && trace_lines < 400 &&
+                (trace_unit >= 0 ? unit_line
+                                 : (trace_lines < 50 || (pair_hits > 0 && pair_depth > 3.0f)))) {
+                ++trace_lines;
+                const DynMotionState* ma = ea.body->motion;
+                const DynMotionState* mb = eb.body->motion;
+                std::fprintf(trace, "near step=%llu a=%zu b=%zu hits=%d depth=%.3f "
+                    "A=(%.1f %.1f %.1f .. %.1f %.1f %.1f) B=(%.1f %.1f %.1f .. %.1f %.1f %.1f) "
+                    "vA=(%.2f %.2f %.2f) vB=(%.2f %.2f %.2f) imA=%.3g imB=%.3g\n",
+                    census_.world_steps, ea.unit, eb.unit, pair_hits,
+                    pair_hits > 0 ? pair_depth : 0.0f, a.lo[0], a.lo[1], a.lo[2], a.hi[0],
+                    a.hi[1], a.hi[2], b.lo[0], b.lo[1], b.lo[2], b.hi[0], b.hi[1], b.hi[2],
+                    ma ? ma->linear_velocity.x : 0.0f, ma ? ma->linear_velocity.y : 0.0f,
+                    ma ? ma->linear_velocity.z : 0.0f, mb ? mb->linear_velocity.x : 0.0f,
+                    mb ? mb->linear_velocity.y : 0.0f, mb ? mb->linear_velocity.z : 0.0f,
+                    ma ? ma->inverse_mass : 0.0f, mb ? mb->inverse_mass : 0.0f);
+                std::fflush(trace);
+            }
+            if (pair_hits > 0) {
+                HullPairCensus& pc = hull_pairs_[{ea.unit, eb.unit}];
+                if (pc.steps == 0) pc.first_step = census_.world_steps;
+                ++pc.steps;
+                if (pair_depth > pc.max_depth) pc.max_depth = pair_depth;
+            }
+        }
+    }
+}
+
+void HullTerrainContactSolver::hull_hull_census(std::vector<HullWorldEntry>& hulls) {
+    ++census_.world_steps;
+    hull_hull_narrow_phase(hulls, false);
+}
+
+void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, float dt,
+                                          bool hull_hull) {
+    ++census_.world_steps;
+    std::map<std::size_t, HullWorldEntry*> by_unit;
+    for (HullWorldEntry& e : hulls) {
+        e.result = HullTerrainContactStepResult{};
+        by_unit[e.unit] = &e;
+    }
+    // ManifoldUpdate (00C549D0) over every manifold, both bodies at their current poses; a
+    // manifold whose hull is not stepping this step, or left with no point, is retired.
+    for (auto it = manifolds_.begin(); it != manifolds_.end();) {
+        const auto found = by_unit.find(std::get<0>(it->first));
+        Manifold& m = *it->second;
+        if (found != by_unit.end()) {
+            const DynBody& body = *found->second->body;
+            m.hull.set_pose(body.row0, body.row1, body.row2, body.position);
+            refresh_native_dyn_manifold_00c4b9b0(m.bytes);
+        }
+        if (found == by_unit.end() || m.count() <= 0) {
+            ++census_.retired;
+            it = manifolds_.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    for (auto it = pair_manifolds_.begin(); it != pair_manifolds_.end();) {
+        const auto fa = by_unit.find(it->first.first);
+        const auto fb = by_unit.find(it->first.second);
+        Manifold& m = *it->second;
+        const bool live = fa != by_unit.end() && fb != by_unit.end();
+        if (live) {
+            const DynBody& a = *fa->second->body;
+            const DynBody& b = *fb->second->body;
+            m.terrain.set_pose(a.row0, a.row1, a.row2, a.position);
+            m.hull.set_pose(b.row0, b.row1, b.row2, b.position);
+            refresh_native_dyn_manifold_00c4b9b0(m.bytes);
+        }
+        if (!live || m.count() <= 0) {
+            ++census_.retired;
+            it = pair_manifolds_.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    // The narrow phase: terrain per hull (section 87), then the hull pairs.
+    for (HullWorldEntry& e : hulls) {
+        ++census_.steps;
+        e.result = native_narrow_phase(e.unit, *e.body, *e.shapes, true);
+        if (e.result.contact) {
+            ++census_.contact_steps;
+            if (!touched_[e.unit]) { touched_[e.unit] = true; ++census_.units_touched; }
+            if (e.result.max_depth > census_.max_depth) census_.max_depth = e.result.max_depth;
+        }
+    }
+    if (hull_hull) hull_hull_narrow_phase(hulls, true);
+
+    // The scene's manifold list in creation order (LABELLED: 00C3F4D0's list order is not
+    // read), each body's contact array (B+74h) in the same order.
+    std::vector<Manifold*> list;
+    for (auto& [key, m] : manifolds_) {
+        m->friction = dyn_combine_friction(by_unit.at(std::get<0>(key))->friction, kTerrainFriction);
+        m->restitution = dyn_combine_restitution(0.0f, kTerrainRestitution);
+        list.push_back(m.get());
+    }
+    for (auto& [key, m] : pair_manifolds_) list.push_back(m.get());
+    std::sort(list.begin(), list.end(),
+              [](const Manifold* a, const Manifold* b) { return a->serial < b->serial; });
+
+    // 00C4B610 through its host interface. Body handle 1 is every terrain tile (static, never
+    // expanded through); a hull's handle is 2 + its index in `hulls`.
+    struct Groups final : DynGroupFormationHost {
+        std::vector<Manifold*>& list;
+        std::map<std::size_t, std::size_t> body_of_unit;
+        std::vector<std::int16_t> manifold_mark, body_mark;
+        std::vector<std::vector<DynHandle>> contacts;
+        std::vector<std::vector<DynHandle>> groups;
+        Groups(std::vector<Manifold*>& l, const std::vector<HullWorldEntry>& hulls) : list(l) {
+            for (std::size_t i = 0; i < hulls.size(); ++i) body_of_unit[hulls[i].unit] = i + 2;
+            manifold_mark.assign(list.size(), kDynGroupMarkUnassigned);
+            body_mark.assign(hulls.size() + 2, kDynGroupMarkUnassigned);
+            contacts.resize(hulls.size() + 2);
+            for (std::size_t k = 0; k < list.size(); ++k) {
+                for (const DynHandle b : {body(list[k]->unit_a), body(list[k]->unit_b)}) {
+                    if (b >= 2) contacts[b].push_back(static_cast<DynHandle>(k + 1));
+                }
+            }
+        }
+        DynHandle body(std::size_t unit) const {
+            if (unit == Manifold::kStatic) return 1;
+            return static_cast<DynHandle>(body_of_unit.at(unit));
+        }
+        Manifold& m(DynHandle h) const { return *list[h - 1]; }
+        void clear_groups_00c3f410() override { groups.clear(); }
+        void reset_marks_00c36ac0() override {
+            std::fill(manifold_mark.begin(), manifold_mark.end(), kDynGroupMarkUnassigned);
+            std::fill(body_mark.begin(), body_mark.end(), kDynGroupMarkUnassigned);
+        }
+        std::int32_t scene_manifold_count() override { return static_cast<std::int32_t>(list.size()); }
+        DynHandle manifold_list_head() override { return 1; }
+        DynHandle manifold_list_sentinel() override { return static_cast<DynHandle>(list.size() + 1); }
+        DynHandle manifold_next(DynHandle h) override { return h + 1; }
+        std::int32_t manifold_point_count(DynHandle h) override { return m(h).count(); }
+        std::int16_t manifold_group_mark(DynHandle h) override { return manifold_mark[h - 1]; }
+        void set_manifold_group_mark(DynHandle h, std::int16_t v) override { manifold_mark[h - 1] = v; }
+        DynHandle manifold_body_a(DynHandle h) override { return body(m(h).unit_a); }
+        DynHandle manifold_body_b(DynHandle h) override { return body(m(h).unit_b); }
+        // LABELLED: a hull body is taken as awake (B+50h bits 0 and 1 clear).
+        std::uint32_t body_flags(DynHandle b) override { return b == 1 ? kDynBodyFlagStatic : 0u; }
+        void wake_body(DynHandle) override {}
+        std::int16_t body_group_mark(DynHandle b) override { return body_mark[b]; }
+        void set_body_group_mark(DynHandle b, std::int16_t v) override { body_mark[b] = v; }
+        std::int32_t body_contact_count(DynHandle b) override {
+            return static_cast<std::int32_t>(contacts[b].size());
+        }
+        DynHandle body_contact(DynHandle b, std::int32_t i) override {
+            return contacts[b][static_cast<std::size_t>(i)];
+        }
+        void set_group_count(std::int32_t count) override {
+            groups.resize(static_cast<std::size_t>(count));
+        }
+        void append_to_group_00c36b60(std::int32_t g, DynHandle h) override {
+            groups[static_cast<std::size_t>(g)].push_back(h);
+        }
+    } formation(list, hulls);
+    dyn_create_contact_groups_00c4b610(formation);
+
+    // One solve (00403720) per group. 00C4DE40 indexes the bodies as it meets them, A then B
+    // per manifold (00C4DEDB): a static body is 0, each new dynamic body the next index.
+    const DynSolverWorldSettings settings{};   // 0.1, 1.0, 0.5, 10: the shipped world
+    for (const std::vector<DynHandle>& group : formation.groups) {
+        if (group.empty()) continue;
+        std::map<std::size_t, std::int16_t> index_of;
+        std::vector<HullWorldEntry*> indexed{nullptr};
+        const auto index = [&](std::size_t unit) -> std::int16_t {
+            if (unit == Manifold::kStatic) return 0;
+            const auto found = index_of.find(unit);
+            if (found != index_of.end()) return found->second;
+            const std::int16_t k = static_cast<std::int16_t>(indexed.size());
+            index_of[unit] = k;
+            indexed.push_back(by_unit.at(unit));
+            return k;
+        };
+        const std::int32_t friction_base = static_cast<std::int32_t>(group.size()) * 4;
+        std::vector<DynConstraintRow> rows(group.size() * 8);
+        std::vector<DynSolverContactPoint*> row_points;
+        std::int32_t row = 0;
+        for (const DynHandle h : group) {
+            Manifold& m = formation.m(h);
+            const std::int16_t ia = index(m.unit_a);
+            const std::int16_t ib = index(m.unit_b);
+            const DynSolverBodyInput in_a = ia == 0 ? DynSolverBodyInput{}
+                : dynamic_body_input(*by_unit.at(m.unit_a)->body, ia);
+            const DynSolverBodyInput in_b = ib == 0 ? DynSolverBodyInput{}
+                : dynamic_body_input(*by_unit.at(m.unit_b)->body, ib);
+            for (std::int32_t p = 0; p < m.count(); ++p) {
+                DynConstraintBuildInput in;
+                in.body_a = in_a;
+                in.body_b = in_b;
+                in.point = m.points()[p];
+                in.friction = m.friction;
+                in.restitution = m.restitution;
+                dyn_build_contact_rows_00c4de40(in, settings, dt,
+                    rows[static_cast<std::size_t>(row)],
+                    rows[static_cast<std::size_t>(friction_base + row)]);
+                row_points.push_back(&m.points()[p]);
+                ++row;
+            }
+        }
+        if (row == 0) continue;
+        std::vector<DynSolverBodyVelocity> velocities(indexed.size());
+        DynConstraintBatch batch;
+        batch.rows = rows.data();
+        batch.velocities = velocities.data();
+        batch.velocity_count = static_cast<std::int32_t>(indexed.size());
+        batch.normal_row_count = row;
+        batch.friction_row_base = friction_base;
+        dyn_apply_warm_start_00c42ba0(batch);
+        dyn_solve_group_00403720(batch, settings.iterations);
+        std::vector<DynSolverVelocityWriteBack> back(indexed.size());
+        dyn_write_back_velocities_00c37b50(velocities.data(), batch.velocity_count, back.data());
+        dyn_store_impulses_00c35020(batch, row_points.data(), row);
+        const int bodies = static_cast<int>(indexed.size()) - 1;
+        ++census_.groups;
+        if (bodies >= 2) ++census_.multi_hull_groups;
+        if (bodies > census_.max_group_bodies) census_.max_group_bodies = bodies;
+        census_.rows += static_cast<unsigned long long>(row);
+        for (std::size_t k = 1; k < indexed.size(); ++k) {
+            HullWorldEntry& e = *indexed[k];
+            DynMotionState& mw = *e.body->motion;
+            const DynSolverVelocityWriteBack& d = back[k];
+            mw.linear_velocity.x += d.linear_velocity[0];
+            mw.linear_velocity.y += d.linear_velocity[1];
+            mw.linear_velocity.z += d.linear_velocity[2];
+            mw.angular_velocity.x += d.angular_velocity[0];
+            mw.angular_velocity.y += d.angular_velocity[1];
+            mw.angular_velocity.z += d.angular_velocity[2];
+            mw.linear_bias.x += d.linear_bias[0];
+            mw.linear_bias.y += d.linear_bias[1];
+            mw.linear_bias.z += d.linear_bias[2];
+            mw.angular_bias.x += d.angular_bias[0];
+            mw.angular_bias.y += d.angular_bias[1];
+            mw.angular_bias.z += d.angular_bias[2];
+            e.result.points = row;
+            e.result.manifolds = static_cast<int>(group.size());
+            e.result.group_bodies = bodies;
+            e.result.delta_linear = OceanVec3{d.linear_velocity[0], d.linear_velocity[1],
+                                              d.linear_velocity[2]};
+            e.result.delta_linear_bias = OceanVec3{d.linear_bias[0], d.linear_bias[1],
+                                                   d.linear_bias[2]};
+            ++census_.solves;
+        }
+    }
 }
 
 }  // namespace bsp

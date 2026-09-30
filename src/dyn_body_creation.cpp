@@ -308,12 +308,15 @@ void dyn_body_recompute_bounds_00c55fc0(DynBodyStorage& body) {
     at<DynAabb>(&body,0x38)=bounds;
     if (at<std::uint32_t>(&body,0x50)&8) refresh_proxy(&body);
 }
-void dyn_convex_shape_refresh_bounds_00c57c40(DynConvexShapeStorage& shape) {
+void dyn_convex_shape_local_bounds_00c57c40(DynConvexShapeStorage& shape) {
     const auto* mesh=at<const AvoidZoneDynHullData*>(&shape,0x210);
     const DynAabb expanded{{expand(mesh->minimum.x,-0.02),expand(mesh->minimum.y,-0.02),
         expand(mesh->minimum.z,-0.02)},{expand(mesh->maximum.x,0.02),
         expand(mesh->maximum.y,0.02),expand(mesh->maximum.z,0.02)}};
     at<DynAabb>(&shape,0xc)=transform_bounds(expanded,&at<float>(&shape,0x34));
+}
+void dyn_convex_shape_refresh_bounds_00c57c40(DynConvexShapeStorage& shape) {
+    dyn_convex_shape_local_bounds_00c57c40(shape);
     dyn_body_recompute_bounds_00c55fc0(*at<DynBodyStorage*>(&shape,4));
 }
 void dyn_convex_shape_construct_00c57f50(DynConvexShapeStorage& shape,DynBodyStorage& body,

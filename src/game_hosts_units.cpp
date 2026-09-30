@@ -5483,6 +5483,21 @@ struct GameUnitsHost::Impl {
         float first_t{-1.0f};
     };
     std::map<std::size_t, HullTerrainUnit> hull_terrain_units;
+    // Packet cc9_hull_hull_contact (docs/GUNNERY_OPEN_ITEMS.md 91): the ticks waiting for the
+    // world phase (kDynWorldContactPhaseBound), and the hulls of this step for the OFF
+    // census of hull pairs.
+    struct WorldContactPending {
+        std::size_t index{0};
+        float before[3]{};
+        bsp::ShipMotionStepResult result{};
+    };
+    std::vector<WorldContactPending> world_contact_pending;
+    std::vector<bsp::HullWorldEntry> hull_census;
+    void record_hull_terrain_result(GameUnitSlot& slot, std::size_t index,
+        const bsp::HullTerrainContactStepResult& r);
+    void finish_motion_tick(GameUnitSlot& slot, const float before[3],
+        const bsp::ShipMotionStepResult& result, float step_seconds);
+    void run_world_contact_phase(float step_seconds);
     unsigned long long world_nodes_unlinked = 0;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
@@ -14546,6 +14561,138 @@ void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float b
     slot.body.position[0] = slot.motion.position[0];
     slot.body.position[2] = slot.motion.position[2];
     slot.motion_state.linear_velocity = slot.motion.linear_velocity;
+}
+
+// Packet cc9_hull_terrain_contact_solver: one hull's contact result into the kind-8 latch
+// (+1010h) and the per-unit census. Moved out of motion_step_00825f20 unchanged by packet
+// cc9_hull_hull_contact, which calls it from the world phase too.
+void GameUnitsHost::Impl::record_hull_terrain_result(GameUnitSlot& slot, std::size_t index,
+    const bsp::HullTerrainContactStepResult& r) {
+    Impl& host = *this;
+    if (r.contact) {
+        if constexpr (bsp::kHullTerrainContactSolverBound) {
+            slot.ground_contact_1010 = true;   // 009377E0 kind 8
+            host.done("DynScene::hull_terrain_contact_phase", 0x00c53630u);
+        }
+        Impl::HullTerrainUnit& u = host.hull_terrain_units[index];
+        if (u.first_t < 0.0f) {
+            u.first_t = host.summary.simulated_seconds;
+            host.log.notef("hull terrain contact: unit=%s first at t=%.2f "
+                "pos=(%.1f %.1f %.1f) candidates=%d depth=%.2f bound=%d "
+                "(00C53630 / 00C3F760 / 00403720)", slot.row.name.c_str(),
+                static_cast<double>(u.first_t),
+                static_cast<double>(slot.body.position[0]),
+                static_cast<double>(slot.body.position[1]),
+                static_cast<double>(slot.body.position[2]), r.candidates,
+                static_cast<double>(r.max_depth),
+                bsp::kHullTerrainContactSolverBound ? 1 : 0);
+        }
+        ++u.steps;
+        if (r.max_depth > u.max_depth) u.max_depth = r.max_depth;
+        if (r.delta_linear.y > u.max_up_dv) u.max_up_dv = r.delta_linear.y;
+        const float hdv = std::sqrt(r.delta_linear.x * r.delta_linear.x
+            + r.delta_linear.z * r.delta_linear.z);
+        if (hdv > u.max_horizontal_dv) u.max_horizontal_dv = hdv;
+    }
+}
+
+// The position phase 00C5B1B0 and the rest of one ship's motion tick, moved out of
+// motion_step_00825f20 unchanged by packet cc9_hull_hull_contact.
+void GameUnitsHost::Impl::finish_motion_tick(GameUnitSlot& slot, const float before[3],
+    const bsp::ShipMotionStepResult& result, float step_seconds) {
+    Impl& host = *this;
+    bsp::dyn_body_integrate_position_00c5b1b0(slot.body, host.physics_world,
+        step_seconds);
+    host.done("ShipMotion::rigid_body_position_phase", 0x00c5b1b0u);
+    slot.motion.linear_velocity = slot.motion_state.linear_velocity;
+    slot.motion.angular_velocity = slot.motion_state.angular_velocity;
+    for (int i = 0; i < 3; ++i) {
+        slot.motion.pose_row0[i] = slot.body.row0[i];
+        slot.motion.pose_row1[i] = slot.body.row1[i];
+        slot.motion.pose_row2[i] = slot.body.row2[i];
+        slot.motion.position[i] = slot.body.position[i];
+    }
+    host.ship_terrain_contact(slot, before);
+    Impl::publish_pose(slot);
+    const double dx = static_cast<double>(slot.motion.position[0]) - before[0];
+    const double dy = static_cast<double>(slot.motion.position[1]) - before[1];
+    const double dz = static_cast<double>(slot.motion.position[2]) - before[2];
+    slot.row.path_length += static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
+    // Milestone 2s: the drift angle and the trajectory speed, measured from
+    // the step's own displacement rather than from the velocity, so they
+    // report where the hull went and not what it was told. The drift is the
+    // angle in the horizontal plane between that displacement and the
+    // hull's forward axis (pose row 2), which is the quantity milestone 2r's
+    // section 2 table reports for both the executable and the probe.
+    {
+        const double planar = std::sqrt(dx * dx + dz * dz);
+        slot.row.trajectory_speed = (step_seconds > 0.0f)
+            ? static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz)
+                / static_cast<double>(step_seconds))
+            : 0.0f;
+        if (planar > 1.0e-6) {
+            const double fx = slot.motion.pose_row2[0];
+            const double fz = slot.motion.pose_row2[2];
+            const double forward = std::sqrt(fx * fx + fz * fz);
+            if (forward > 1.0e-6) {
+                double cosine = (dx * fx + dz * fz) / (planar * forward);
+                if (cosine > 1.0) cosine = 1.0;
+                if (cosine < -1.0) cosine = -1.0;
+                slot.row.drift_degrees
+                    = static_cast<float>(std::acos(cosine) * 180.0 / 3.14159265358979323846);
+                if (slot.row.drift_degrees > slot.row.peak_drift_degrees) {
+                    slot.row.peak_drift_degrees = slot.row.drift_degrees;
+                }
+            }
+        }
+    }
+    slot.row.command_applied = result.gate.command_applies;
+    if (!host.logged_gate) {
+        host.logged_gate = true;
+        // 00826994: the command is suppressed when the keel sample point has
+        // risen above half the local wave height. With the flat-sea stand-in
+        // that is a test of the authored hull height against zero, so a
+        // reader can tell a closed gate from a missing class row.
+        host.log.notef("ship motion gate on \"%s\": keel=(%.2f, %.2f, %.2f) wave=%.2f "
+            "applies=%d throttle=%.3f target_speed=%.3f engine_gate=%.1f",
+            slot.row.name.c_str(), static_cast<double>(result.keel_point.x),
+            static_cast<double>(result.keel_point.y),
+            static_cast<double>(result.keel_point.z),
+            static_cast<double>(result.wave_height),
+            result.gate.command_applies ? 1 : 0,
+            static_cast<double>(result.gate.throttle),
+            static_cast<double>(result.target_speed),
+            static_cast<double>(result.engine_gate));
+    }
+    ++slot.row.motion_ticks;
+    ++host.summary.motion_ticks;
+    host.done("World::unit_motion_tick", 0x00825f20u);
+    host.refresh_row(slot);
+}
+
+// Packet cc9_hull_hull_contact (docs/GUNNERY_OPEN_ITEMS.md 91). 00C5C540 once for the world
+// after every ship's tick and velocity phase: 00C5BB30's contact phase over every hull
+// (HullTerrainContactSolver::world_step: ManifoldUpdate, the terrain narrow phase, the
+// hull pairs with kHullHullContactBound, 00C4B610's groups, one solve per group), then each
+// ship's position phase and the rest of its tick in unit order.
+void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
+    std::vector<bsp::HullWorldEntry> hulls;
+    for (const WorldContactPending& pending : world_contact_pending) {
+        GameUnitSlot& slot = *slots[pending.index];
+        const ClassHullBox& hb = class_hull_box(slot);
+        if (!hb.ok || hb.box.shape_points.empty()) continue;
+        hulls.push_back(bsp::HullWorldEntry{pending.index, &slot.body, &hb.box.shape_points,
+            bsp::ship_physics_material_shipped(slot.hull_material).friction, {}});
+    }
+    hull_terrain.world_step(hulls, step_seconds, bsp::kHullHullContactBound);
+    for (const bsp::HullWorldEntry& e : hulls) {
+        record_hull_terrain_result(*slots[e.unit], e.unit, e.result);
+    }
+    for (const WorldContactPending& pending : world_contact_pending) {
+        finish_motion_tick(*slots[pending.index], pending.before, pending.result,
+            step_seconds);
+    }
+    world_contact_pending.clear();
 }
 
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
@@ -27763,110 +27910,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         bsp::dyn_body_integrate_velocity_00c41550(slot.body, host.physics_world,
             step_seconds);
         host.done("ShipMotion::rigid_body_velocity_phase", 0x00c41550u);
-        // Packet cc9_hull_terrain_contact_solver: the contact phase of 00C5BB30 (collision
-        // pass, groups, solve) for this hull against the terrain, between the two phases.
-        // OFF it is the narrow phase alone, as a census.
-        {
+        // Packet cc9_hull_hull_contact (docs/GUNNERY_OPEN_ITEMS.md 91): with
+        // kDynWorldContactPhaseBound 00C5C540 runs once for the world after every tick
+        // (fixed-step row 1): the contact phase over every hull, then each hull's position
+        // phase and the rest of its tick, in unit order (run_world_contact_phase).
+        if constexpr (bsp::kDynWorldContactPhaseBound) {
+            host.world_contact_pending.push_back(Impl::WorldContactPending{index,
+                {before[0], before[1], before[2]}, result});
+        } else {
+            // Packet cc9_hull_terrain_contact_solver: the contact phase of 00C5BB30
+            // (collision pass, groups, solve) for this hull against the terrain, between
+            // the two phases. OFF it is the narrow phase alone, as a census.
             const Impl::ClassHullBox& hb = host.class_hull_box(slot);
             if (hb.ok && !hb.box.shape_points.empty()) {
+                const float friction
+                    = bsp::ship_physics_material_shipped(slot.hull_material).friction;
                 const bsp::HullTerrainContactStepResult r = host.hull_terrain.step(index,
-                    slot.body, hb.box.shape_points,
-                    bsp::ship_physics_material_shipped(slot.hull_material).friction,
-                    step_seconds, bsp::kHullTerrainContactSolverBound);
-                if (r.contact) {
-                    if constexpr (bsp::kHullTerrainContactSolverBound) {
-                        slot.ground_contact_1010 = true;   // 009377E0 kind 8
-                        host.done("DynScene::hull_terrain_contact_phase", 0x00c53630u);
-                    }
-                    Impl::HullTerrainUnit& u = host.hull_terrain_units[index];
-                    if (u.first_t < 0.0f) {
-                        u.first_t = host.summary.simulated_seconds;
-                        host.log.notef("hull terrain contact: unit=%s first at t=%.2f "
-                            "pos=(%.1f %.1f %.1f) candidates=%d depth=%.2f bound=%d "
-                            "(00C53630 / 00C3F760 / 00403720)", slot.row.name.c_str(),
-                            static_cast<double>(u.first_t),
-                            static_cast<double>(slot.body.position[0]),
-                            static_cast<double>(slot.body.position[1]),
-                            static_cast<double>(slot.body.position[2]), r.candidates,
-                            static_cast<double>(r.max_depth),
-                            bsp::kHullTerrainContactSolverBound ? 1 : 0);
-                    }
-                    ++u.steps;
-                    if (r.max_depth > u.max_depth) u.max_depth = r.max_depth;
-                    if (r.delta_linear.y > u.max_up_dv) u.max_up_dv = r.delta_linear.y;
-                    const float hdv = std::sqrt(r.delta_linear.x * r.delta_linear.x
-                        + r.delta_linear.z * r.delta_linear.z);
-                    if (hdv > u.max_horizontal_dv) u.max_horizontal_dv = hdv;
-                }
+                    slot.body, hb.box.shape_points, friction, step_seconds,
+                    bsp::kHullTerrainContactSolverBound);
+                host.record_hull_terrain_result(slot, index, r);
+                // The hull pairs as a census only (no state), after every tick.
+                host.hull_census.push_back(bsp::HullWorldEntry{index, &slot.body,
+                    &hb.box.shape_points, friction, {}});
             }
+            host.finish_motion_tick(slot, before, result, step_seconds);
         }
-        bsp::dyn_body_integrate_position_00c5b1b0(slot.body, host.physics_world,
-            step_seconds);
-        host.done("ShipMotion::rigid_body_position_phase", 0x00c5b1b0u);
-        slot.motion.linear_velocity = slot.motion_state.linear_velocity;
-        slot.motion.angular_velocity = slot.motion_state.angular_velocity;
-        for (int i = 0; i < 3; ++i) {
-            slot.motion.pose_row0[i] = slot.body.row0[i];
-            slot.motion.pose_row1[i] = slot.body.row1[i];
-            slot.motion.pose_row2[i] = slot.body.row2[i];
-            slot.motion.position[i] = slot.body.position[i];
-        }
-        host.ship_terrain_contact(slot, before);
-        Impl::publish_pose(slot);
-        const double dx = static_cast<double>(slot.motion.position[0]) - before[0];
-        const double dy = static_cast<double>(slot.motion.position[1]) - before[1];
-        const double dz = static_cast<double>(slot.motion.position[2]) - before[2];
-        slot.row.path_length += static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz));
-        // Milestone 2s: the drift angle and the trajectory speed, measured from
-        // the step's own displacement rather than from the velocity, so they
-        // report where the hull went and not what it was told. The drift is the
-        // angle in the horizontal plane between that displacement and the
-        // hull's forward axis (pose row 2), which is the quantity milestone 2r's
-        // section 2 table reports for both the executable and the probe.
-        {
-            const double planar = std::sqrt(dx * dx + dz * dz);
-            slot.row.trajectory_speed = (step_seconds > 0.0f)
-                ? static_cast<float>(std::sqrt(dx * dx + dy * dy + dz * dz)
-                    / static_cast<double>(step_seconds))
-                : 0.0f;
-            if (planar > 1.0e-6) {
-                const double fx = slot.motion.pose_row2[0];
-                const double fz = slot.motion.pose_row2[2];
-                const double forward = std::sqrt(fx * fx + fz * fz);
-                if (forward > 1.0e-6) {
-                    double cosine = (dx * fx + dz * fz) / (planar * forward);
-                    if (cosine > 1.0) cosine = 1.0;
-                    if (cosine < -1.0) cosine = -1.0;
-                    slot.row.drift_degrees
-                        = static_cast<float>(std::acos(cosine) * 180.0 / 3.14159265358979323846);
-                    if (slot.row.drift_degrees > slot.row.peak_drift_degrees) {
-                        slot.row.peak_drift_degrees = slot.row.drift_degrees;
-                    }
-                }
-            }
-        }
-        slot.row.command_applied = result.gate.command_applies;
-        if (!host.logged_gate) {
-            host.logged_gate = true;
-            // 00826994: the command is suppressed when the keel sample point has
-            // risen above half the local wave height. With the flat-sea stand-in
-            // that is a test of the authored hull height against zero, so a
-            // reader can tell a closed gate from a missing class row.
-            host.log.notef("ship motion gate on \"%s\": keel=(%.2f, %.2f, %.2f) wave=%.2f "
-                "applies=%d throttle=%.3f target_speed=%.3f engine_gate=%.1f",
-                slot.row.name.c_str(), static_cast<double>(result.keel_point.x),
-                static_cast<double>(result.keel_point.y),
-                static_cast<double>(result.keel_point.z),
-                static_cast<double>(result.wave_height),
-                result.gate.command_applies ? 1 : 0,
-                static_cast<double>(result.gate.throttle),
-                static_cast<double>(result.target_speed),
-                static_cast<double>(result.engine_gate));
-        }
-        ++slot.row.motion_ticks;
-        ++host.summary.motion_ticks;
-        host.done("World::unit_motion_tick", 0x00825f20u);
-        host.refresh_row(slot);
+    }
+    if constexpr (bsp::kDynWorldContactPhaseBound) {
+        host.run_world_contact_phase(step_seconds);
+    } else {
+        host.hull_terrain.hull_hull_census(host.hull_census);
+        host.hull_census.clear();
     }
     host.summary.total_path_length = 0.0f;
     for (const std::unique_ptr<GameUnitSlot>& slot : host.slots) {
@@ -30526,6 +30600,22 @@ void GameUnitsHost::report() {
                 c.contact_steps, c.candidates, c.rejected_normal, c.solves, c.rows, c.retired,
                 static_cast<double>(c.max_depth), bsp::kHullTerrainDynHullVerticesBound ? 1 : 0,
                 c.hull_shapes, c.raw_points, c.hull_vertices);
+            for (const auto& [pair, pc] : host.hull_terrain.hull_pairs()) {
+                const char* a = pair.first < host.slots.size()
+                    ? host.slots[pair.first]->row.name.c_str() : "?";
+                const char* b = pair.second < host.slots.size()
+                    ? host.slots[pair.second]->row.name.c_str() : "?";
+                host.log.notef("hull pair contact census: a=%s b=%s first_step=%llu steps=%llu "
+                    "max_depth=%.3f", a, b, pc.first_step, pc.steps,
+                    static_cast<double>(pc.max_depth));
+            }
+            host.log.notef("summary hull hull contact world_phase=%d bound=%d world_steps=%llu "
+                "pairs_near=%llu shape_tests=%llu hits=%llu pairs=%zu groups=%llu "
+                "multi_hull_groups=%llu max_group_bodies=%d (00C535E0 / 00C4B610 / 00403720, "
+                "packet cc9_hull_hull_contact)", bsp::kDynWorldContactPhaseBound ? 1 : 0,
+                bsp::kHullHullContactBound ? 1 : 0, c.world_steps, c.hull_pairs_near,
+                c.hull_shape_tests, c.hull_hits, host.hull_terrain.hull_pairs().size(),
+                c.groups, c.multi_hull_groups, c.max_group_bodies);
         }
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "

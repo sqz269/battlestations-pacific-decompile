@@ -6733,3 +6733,287 @@ items, 79.2 item 4), and 87.2's labelled substitutions:
   - `g20_n0` / `n1` / `n2`: section 87;
   - `g20_ru*` / `g20_u_*`: u;
   - `g20_rv*` / `g20_v_*`: v.
+
+## 91. Hull-hull contact: the world phase and 00C535E0 on real convex records (packet `cc9_hull_hull_contact`, cc9-gunnery21)
+
+This builds 89.2 steps 1, 2 and 4 for ships only. Both switches are committed OFF; the pairs
+and verdicts follow in 91.4.
+
+### 91.1 The census of 00C5D580's callers (the debt from 89.1)
+
+`tools/callsite_census.py 00c5d580` (every E8/E9 rel32 in `.text`, and the literal address in
+`.text`, `.rdata` and `.data`) finds **ten call sites in nine functions and no literal**:
+- the eight creators of 89.1's table (`00423C50`, `00447510`, `007482B0`, `007D5D20`, `008509F0`,
+  `00882AC0` twice, `0092AAE0`, `00937C90`);
+- **one more:** `00C5DA93`, in a ten-byte stub `00C5DA90..00C5DA99` that Ghidra has no function
+  for (`MOV ECX,[ECX]; PUSH EAX; CALL 00C5D580; RET`, INT3 from `00C5DA99`). It is a register-ABI
+  wrapper: EAX the descriptor, ECX a pointer to the world pointer. The same census on
+  `00c5da90` finds no rel32 caller and no literal, so it is unreferenced in the image.
+
+So 89.1's creator list is complete. `008509F0`'s owner and the avoid-zone and plane filters
+stay unread.
+
+### 91.2 What the image does, and what was built
+
+The fixed-step fanout runs `00C5C540` once for the world (row 1, `00875E0C`,
+FIXED_STEP_FANOUT). Its substep `00C5BB30` runs:
+1. every body's velocity phase `00C41550`;
+2. the collision pass: ManifoldUpdate, then `00C44090` over the broad phase's pairs;
+3. `00C4B610`'s groups;
+4. one solve per group;
+5. every body's position phase `00C5B1B0`.
+
+The units host ran all of that inside each ship's own tick, so a hull only ever met the terrain.
+
+**`kDynWorldContactPhaseBound`** (`include/bsp/hull_terrain_contact.hpp`). The units host runs
+every ship's tick and velocity phase first. Then, after the loop, it calls
+`GameUnitsHost::Impl::run_world_contact_phase`:
+- `HullTerrainContactSolver::world_step` over every hull:
+  - ManifoldUpdate (`00C4B9B0`) over every manifold, retiring the empty ones;
+  - the terrain narrow phase of section 87 per hull;
+  - with the second switch, the hull pairs;
+  - `dyn_create_contact_groups_00c4b610` through its host interface (terrain tiles are static and
+    never expanded through);
+  - one solve per group, with the bodies indexed in the order `00C4DE40` meets them (A then B per
+    manifold; static 0; `00C4DEDB`). Every dynamic body's velocity slot is written back.
+- Then each ship's position phase and the rest of its tick, in unit order
+  (`finish_motion_tick`, the old loop tail moved unchanged).
+
+What this changes even with no hull pair: a unit's tick now reads the other ships' poses from
+the start of the step, as the image's ticks read the last Dyn step's poses. Before, a unit later
+in the list saw the poses the earlier units had just integrated.
+
+**`kHullHullContactBound`** (needs the first). Every pair of hulls whose world boxes meet goes
+through `00C44090`'s convex-convex path:
+- The shape filter: group 1, mask `0Dh`, so every hull pair passes.
+- Dispatcher cell `4 * 6 + 4`: the reconstructed `00C535E0`
+  (`dispatch_native_dyn_general_convex_00c535e0`). Its inputs:
+  - the process's general-convex owner (26 directions, critical section), now exposed by
+    `GameNativeDynProcess::general_convex_owner()`;
+  - the CRT context;
+  - a real kind-4 record per hull shape (`HullShape::convex`):
+    - `+0` the process's ConvexMeshShape table (`body_creation().convex_shape_vtable`);
+    - `+8` kind 4;
+    - `+0Ch` the local box from `00C57C40` (its first statement, now
+      `dyn_convex_shape_local_bounds_00c57c40`, without the native body refresh);
+    - `+24h` restitution 0;
+    - `+28h` the material friction;
+    - `+2Ch` group 1 and `+30h` mask `0Dh`;
+    - `+34h` the shape frame (identity, the centre as translation);
+    - `+210h` the `00C5DEB0` hull, which `hull_shape` now keeps instead of destroying.
+- One manifold per body pair (`00C3F4D0`), with friction `combine(fA, fB)` and restitution
+  `(0 + 0) * 0.5` written on every hit (`00C44154..00C441DB`: the combines, `FindOrCreate` at `00C441C5`, the stores at `00C441D8` / `00C441DB`). Each hit goes through `00C3F760`.
+- Both hulls then join one group and one solve.
+
+OFF, the same narrow phase runs after every step as a **census** (no manifold, no state), and the
+end-of-run summary prints `hull pair contact census` per pair and `summary hull hull contact`.
+The OFF smoke (`local\g21_offsmoke_smoke.log`) is exit 1 against v's smoke
+(`g20_rv_smoke`): the only moved lines are main's later landing summaries and the new census line.
+
+**LABELLED substitutions:**
+- **The broad phase.** The SAP pair list is replaced by a test on each hull's world box, every
+  hull vertex widened by 0.1 m. That is more than the 0.02 the image widens each shape box by, so
+  no pair the SAP holds is missed; the narrow phase decides every hit.
+- **Body A** is the lower unit.
+- **Shape order.** Shape pairs go in shape order; the image walks each body's shape chain
+  (`+70h` / `+208h`).
+- **Manifold list order** is creation order; `00C3F4D0`'s list is not read. Each body's contact
+  array (`B+74h`) follows the same order.
+- **Sleep.** Hull bodies are taken as awake (`B+50h` bits 0 and 1 clear).
+- **A manifold whose hull did not step** this step is retired.
+- **No contact report yet.** `00C44090`'s second half queues a report when a body's listener
+  (`B+68h`) mask meets the other shape's group. For a hull that is `009377E0`; which kind a
+  hull-hull report delivers, and whether it deals collision damage, is not read. Hull-hull
+  contact here is physics only.
+
+**Uncertainty:**
+- Whether the image's hull bodies sleep.
+- The contact report, above.
+- The `00C535E0` path has run only on the reconstruction's differential fixtures
+  (NATIVE_DYN_GENERAL_CONVEX_R140). With these records it runs for the first time in the game
+  executable.
+
+**Files:**
+- `src/hull_terrain_contact.cpp`, `include/bsp/hull_terrain_contact.hpp`;
+- `src/game_native_dyn_process.cpp`, `include/bsp/game_native_dyn_process.hpp`;
+- `src/dyn_body_creation.cpp`, `include/bsp/dyn_body_creation.hpp`;
+- `src/game_hosts_units.cpp` (shared; applied from `local\g21_host_edit.py`).
+
+### 91.3 The OFF census, and the predictions (written 2026-09-30 20:49 UTC, before any ON run)
+
+**A fix before the census could run.** The first OFF commit `5e576aff9` crashed 16 of 18 reference
+rows with `c0000005`. The faults were in the reconstructed `00C51C20` (`direction_kernel`) and
+`00C48BE0` (`result_kernel`), reading `14h`. Both read the shape's body at `+4h` and its 3x4 at
+`+08h..+37h`:
+- `00C51C20` transforms the two box centres;
+- `00C48BE0` turns the witnesses body-local.
+
+`7b5e05db2` points each record's `+4h` at a copy of the hull's current 3x4.
+
+**Positive control** (`BSP_HULL_HULL_TRACE`, USN04, `local\g21_trace_usn04.txt`). The first hull
+shape (79 vertices) against itself:
+- shifted 1 m: hit, normal `(0.30, -0.83, -0.47)`;
+- shifted 1000 m: miss;
+- shifted 0 (coincident): a hit with a degenerate witness B (about `-5e10`). Two coincident
+  hulls do not occur in a mission.
+
+**OFF census** (`7b5e05db2`, this tree's build, `local\g21_off_<row>.log`):
+- 17 of 18 rows are exit 1 against v (`g20_rv_<row>`), death tables identical.
+- JM08 long is exit 3 (160 -> 85 deaths, 7 only ON, 82 only OFF, 68 changed). That is exactly
+  cc9-ships24's `kLandingShipStartLandingBound` pair (SHIP_AI 97.4), flipped on main after v's
+  base. So the census writes no state.
+
+| row | near pairs | 00C535E0 hits | hull pairs that met | deepest (m) |
+| --- | --- | --- | --- | --- |
+| USN04 | 2343 | 457 | 4 (destroyers through cruisers) | 14.7 |
+| E2 | 3341 | 457 | 4 | - |
+| USN01 | 1435 | 0 | 0 | - |
+| USN02 | 11658 | 5646 | 10 | 14.0 |
+| JM06 | 5002 | 5666 | 8 (tankers, transports) | 24.2 |
+| JM08 | 1827 | 608 | 3 | - |
+| USN13 | 12886 | 9049 | 11 | 17.1 |
+| BSM01 | 9000 | 0 | 0 | - |
+| LOMP06 | 1015 | 35 | 1 | - |
+| LOMP10 | 3070 | 118 | 1 | - |
+| JM05 | 8795 | 5213 | 9 | - |
+| USN12 | 304 | 291 | 1 | - |
+| LOMP10 long | 15070 | 118 | 1 | - |
+| USNOS | 9308 | 33032 | 15 (convoy and cargo ships) | 42.3 |
+| USNOS long | 18734 | 66571 | 24 | - |
+| IJN01 | 33101 | 15267 | 41 | 29.7 |
+| JM05 long | 33736 | 20392 | 23 | - |
+| JM08 long | 69821 | 30838 | 28 | 33.4 |
+
+So the host's hulls pass through each other on 16 of 18 rows, often by tens of metres.
+Convoys and formations overlap their neighbours.
+
+**Pair 1: `kDynWorldContactPhaseBound` alone** (`local\g21_w1`) against OFF.
+- **Mechanism:**
+  - every tick reads the start-of-step poses of the other ships;
+  - the terrain contact census (`summary hull terrain contact`) stays within a few percent of
+    OFF on USNOS long, USN13, IJN01, JM05 and JM08 long.
+- **Prediction:** exit 3 on every row with more than one moving ship. That is all rows but,
+  weakly, BSM01 and LOMP06, which may stay exit 1. Death tables re-timed or within a few rows;
+  no row loses or gains more than about 10% of its deaths, except JM08 long (a knife-edge
+  row).
+- **Mechanism failure** (keeps it OFF): a crash, a ship with a non-finite pose, or a terrain
+  census that collapses (for example, contact steps dropping by half).
+
+**Pair 2: `kHullHullContactBound` on top** (`local\g21_w2`) against pair 1's ON.
+- **Mechanism:**
+  - `summary hull hull contact` shows `groups > 0` and `multi_hull_groups > 0` on the 16 rows;
+  - the deepest hit per pair falls from 10-42 m to **under 2 m** (the bias rows push the hulls
+    apart; they no longer pass through each other).
+- **Prediction:**
+  - USN01 and BSM01 exit 0 or 1 against pair 1's ON, since no hulls meet;
+  - exit 3 on the other 16 rows; ship paths deflect at the contacts;
+  - convoys and formations (USNOS, JM06, IJN01, JM08 long) spread, and some deaths re-time;
+  - no hull is lifted clear of the water or spun (the solver shares the masses and inertias;
+    the terrain case already showed at most small vertical velocity changes).
+- **Mechanism failure** (keeps it OFF): hulls still interpenetrating by more than 5 m, a
+  crash, or a ship thrown more than 10 m above the sea.
+- **Not modelled either way:** the collision report and its damage (`009377E0` -> `008145B0`,
+  gated on descriptor `+510h` / `+514h`). Ramming damage stays absent on both sides.
+
+### 91.4 The pairs, and the flips (2026-09-30 21:22 UTC)
+
+**Setup.**
+- Exports from `7b5e05db2`: `local\g21_w1` (world phase) and `local\g21_w2` (world phase plus
+  hull pairs).
+- OFF is this tree's build of the same commit (`local\g21_off_<row>`).
+- 18 rows in v's launch form.
+- Nine runs died at startup around 20:58 UTC with the known environment failure (FMOD
+  `error.fsb`, renderer `0x8876086A`), or ran through a device loss (`lost_polls` above 0: W1
+  USN02 and W2 USNOS long). After one clean smoke all nine were rerun; every row used here is
+  exit 0 with `lost_polls=0`.
+
+**Pair 1, `kDynWorldContactPhaseBound`** (W1 against OFF):
+
+| exit | rows |
+| --- | --- |
+| 1 | JM06, JM08, BSM01, LOMP06, USN12, USNOS, IJN01, USN02 |
+| 3 | USN04 (deaths 50 -> 48), E2 (torpedo releases 5 -> 4), USN01, USN13 (re-timed), JM05, LOMP10 (3 -> 2), LOMP10 long (6 -> 5), USNOS long (4 rows re-timed), JM05 long, JM08 long (85 rows re-timed) |
+
+- **Mechanism: matches.** The terrain census is unchanged: contact steps and candidates are
+  within 0.5% of OFF on USNOS long, IJN01, JM05, JM05 long, JM08 long, USN13 and USNOS.
+- **Prediction: a spread miss.** Fewer rows moved than predicted. The moved rows are the carrier
+  and aircraft rows. The formation rows (USNOS, IJN01, JM06) are gameplay-identical, so ship
+  ticks rarely read another ship's pose within a step.
+- **USN01:** W1 brings back u's controlled unit. `ConTBD1` 1245.75 m, 93 units, torpedo tasks
+  "0 of 17", against v's `ScoutDauntless` 4623.23 m with 64 units. The ConTBD and ConSBD
+  squadrons spawn again. So 90.2 item 3 (v's USN01 regression under
+  `kFormationJoinLoopbackBound`) depends on the within-step order of ship poses, and the image's
+  order restores it.
+- **Order check against the image.** Per fixed step the image runs:
+  1. `00C5C540` (row 1), integrating the velocities the previous ticks set;
+  2. rows 2-16;
+  3. the unit ticks, which read those poses.
+
+  W1 integrates at the end of the host's motion step. The next step's fanout and ticks then
+  read the integrated poses. That is the same sequence, and the same one-step lag of a pose
+  that is copied from a carrier.
+- **Flipped ON.**
+
+**Pair 2, `kHullHullContactBound`** (W2 against W1):
+
+| row | exit | deaths | hits | groups with two or more hulls, largest | deepest hit (OFF census -> W2) |
+| --- | --- | --- | --- | --- | --- |
+| USN04 | 3 | 48 -> 49 | 213 | 213, 2 | 14.7 -> 0.10 |
+| E2 | 3 | 52 (43 re-timed) | 213 | 213, 2 | -> 0.10 |
+| USN01 | 1 | identical | 0 | 0 | none |
+| USN02 | 3 | identical | 1997 | 1999, 2 | 14.0 -> 2.98 |
+| JM06 | 3 | identical | 3079 | 2757, 3 | 24.2 -> 0.41 |
+| JM08 | 3 | 7 -> 5 | 212 | 212, 2 | -> 0.28 |
+| USN13 | 3 | 23 (21 re-timed) | 2733 | 2737, 2 | 17.1 -> 0.29 |
+| BSM01 | 1 | none | 0 | 0 | none |
+| LOMP06 | 3 | none | 5 | 5, 2 | -> 0.04 |
+| LOMP10 | 3 | 2 (re-timed) | 45 | 45, 2 | -> 0.46 |
+| JM05 | 3 | 12 (2 re-timed) | 3262 | 2799, 3 | -> 0.55 |
+| USN12 | 3 | 7 (2 re-timed) | 17 | 17, 2 | -> 0.10 |
+| LOMP10 long | 3 | 5 (re-timed) | 45 | 45, 2 | -> 0.46 |
+| USNOS | 3 | 106 -> 110 | 9978 | 4698, 4 | 42.3 -> 2.99 |
+| USNOS long | 3 | 147 -> 166 | 30359 | 14698, 4 | -> 2.99 |
+| IJN01 | 3 | 3 -> 2 | 9240 | 8072, 4 | 29.7 -> 2.02 |
+| JM05 long | 3 | 14 -> 20 | 12094 | 9399, 4 | -> 1.69 |
+| JM08 long | 3 | 85 -> 28 | 29997 | 24361, 4 | 33.4 -> **16.55** |
+
+- **Prediction:** USN01 and BSM01 exit 1, the other 16 exit 3. **All right.**
+- **The deepest hit:**
+  - under 1 m on 11 rows;
+  - 1.7-3.0 m on USN02, USNOS, USNOS long, IJN01 and JM05 long (the "under 2 m" call missed
+    by up to 1 m);
+  - 16.55 m on JM08 long (Helena against Missouri).
+- **JM08 long, read with `BSP_HULL_HULL_TRACE_UNIT=349 BSP_HULL_HULL_TRACE_STEP=13300`**
+  (`local\g21_trace_jm08l_349b.txt`):
+  - Helena slides along Missouri in resting contact for 70 steps, depth 0.014-0.034 m. The
+    boxes and velocities change smoothly: A moves 0.5 m per step, `vA` stays at
+    `(8.1, 0.0, 10.2)`.
+  - At world step 13368 the reported depth jumps to 14.59 m in one step, with no pose jump.
+  - The hulls cannot have moved 14 m into each other in 0.05 s. So it is `00C535E0`'s own
+    result changing branch (the fallback over the 26 directions), not an interpenetration.
+  - The solver then removes it at the bias limit, about 0.05 m per step, over about 300 steps.
+    Helena rises at most 0.6 m (box `min.y` -8.1 to -8.7) and is not thrown.
+  - The 91.3 failure criterion was meant for hulls that actually interpenetrate. This is
+    recorded as the native narrow phase's behaviour on these records, not as a host failure.
+  - **Uncertainty:** the image would do the same only if its records are these (section 86's
+    hulls, `00C57C40`'s box); no image run confirms it.
+- **The changed rows follow the contacts.**
+  - On JM08 long the transports and landers no longer pile onto each other near Missouri. They
+    spread toward the beach: terrain contact steps go from 126433 to 224418. `USTroopTransport`
+    01, 02, 04 and 05, LST 02 and Gleaves die to the HQ and shore guns, and the shore dies
+    later or not at all (85 -> 28 deaths).
+  - USNOS long gains 19 deaths.
+  - JM08 long is the known knife-edge row.
+- **Flipped ON.** The mechanism matches: every hull pair that met now forms a group and is
+  solved, and the interpenetration of 10-42 m is gone on 15 of the 16 rows with contacts. The prediction spread
+  missed on the depth bound (up to 3.0 m) and on JM08 long's one native deep result.
+
+**Open, in order:**
+1. **The contact report.** `00C44090` queues a report when a body's listener (`B+68h`) mask
+   meets the other shape's group, and the hull's listener is `009377E0`. A kind other than 8
+   runs its damage gate (descriptor `+510h` / `+514h`) and `008145B0`, which is collision
+   damage. Read the hull listener's mask (`+4h`) and `008145B0` before binding ramming damage.
+2. **Forts** (`007482B0`, group 1, static) and **debris** (`00447510`, group 4), as 89.2.
+3. JM08 long's 14.6 m branch change: a differential run of `00C535E0` on the two records at
+   world step 13368 against the image's bytes would settle whether the image gives the same
+   result.

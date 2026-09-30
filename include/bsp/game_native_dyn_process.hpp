@@ -27,6 +27,12 @@ public:
     const NativeDynWorldStepContext& world_step();
     const NativeGameContactReportRuntime& contact_reports();
     const DynDispatchVtables& dispatch_tables();
+    // Packet cc9_hull_hull_contact (GUNNERY_OPEN_ITEMS 91). The general-convex owner whose
+    // table cell D7A1A8 calls 00C535E0 (constructed by 00C48FD0 inside CC8950: the 26
+    // support directions and the critical section), and the mutable CRT conversion word
+    // 0109EEA4 the convex pool bound at CC89C0. Both after the startup calls returned.
+    DynGeneralConvexIntersectStorage& general_convex_owner();
+    const volatile std::uint32_t& crt_conversion_0109eea4();
 private:
     friend GameNativeDynProcess& game_native_dyn_process(const CameraAxesCrtAccess&,
         const AvoidZoneDynHullMemory&);
