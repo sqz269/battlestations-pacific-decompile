@@ -119,6 +119,17 @@ struct HullTerrainContactStepResult {
     int group_bodies{0};      // dynamic bodies in the hull's group (world phase)
 };
 
+// Packet cc9_hull_contact_report (docs/GUNNERY_OPEN_ITEMS.md section 92). One hull-pair contact
+// event of the last world step as 00C35480 hands it to the two listeners: the body pair (A the
+// lower unit), the manifold's point 0 on A in world space, and each body's velocity length at
+// that point. The magnitude and normal 009377E0 also computes are not kept: 008145B0 reads
+// neither.
+struct HullContactEvent {
+    std::size_t unit_a{0}, unit_b{0};
+    float point[3]{};
+    float speed_a{0.0f}, speed_b{0.0f};
+};
+
 // One hull for the world phase: the body after its velocity phase, its convex shapes in body
 // space and its material friction. `result` is written by the phase.
 struct HullWorldEntry {
@@ -175,6 +186,8 @@ public:
     const std::map<std::pair<std::size_t, std::size_t>, HullPairCensus>& hull_pairs() const noexcept {
         return hull_pairs_;
     }
+    // The hull-pair contact events of the last world step (kHullHullContactBound).
+    const std::vector<HullContactEvent>& contact_events() const noexcept { return events_; }
 
 private:
     struct Manifold;
@@ -202,6 +215,12 @@ private:
     std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> pair_manifolds_;
     std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> hull_pairs_;
     unsigned long long manifold_serial_{0};
+    struct PendingEvent {
+        std::size_t unit_a, unit_b;
+        Manifold* manifold;
+    };
+    std::vector<PendingEvent> pending_events_;
+    std::vector<HullContactEvent> events_;
     const std::vector<OceanVec3>& dyn_hull_vertices(std::size_t unit, std::size_t shape,
                                                     const std::vector<OceanVec3>& raw);
     HullShape& hull_shape(std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw);

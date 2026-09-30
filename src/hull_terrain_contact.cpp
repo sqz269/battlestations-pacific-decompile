@@ -829,6 +829,13 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
                         std::memcpy(in, c, sizeof(in));
                         insert_native_dyn_contact_00c3f760(m.bytes, in);
                     }
+                    // 00C441F9..00C442D8: one event {manifold, shape A, shape B} per
+                    // dispatcher hit, queued when a listener mask (hull: 7FF9h, 00939CD5)
+                    // meets the other shape's group (1).
+                    if (apply && n > 0) {
+                        pending_events_.push_back(
+                            {ea.unit, eb.unit, pair_manifolds_[{ea.unit, eb.unit}].get()});
+                    }
                 }
             }
             // After the first 50 lines only hits deeper than 3 m, with both velocities; with
@@ -944,7 +951,44 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls, fl
             if (e.result.max_depth > census_.max_depth) census_.max_depth = e.result.max_depth;
         }
     }
+    events_.clear();
+    pending_events_.clear();
     if (hull_hull) hull_hull_narrow_phase(hulls, true);
+    // 00C35480 (the collision pass's last step, 00C57827), per queued hull-pair event: the
+    // manifold's point 0 on A in world space (00C354E6..00C35542; the listener reads the first
+    // of the transformed points at record+8h), then each listener in turn, A with (A, B) and B
+    // with (B, A). 009377E0 reads each body's velocity at that point: v + w x (p - B+2Ch)
+    // (00C35300, 00C31F20 angular M+0Ch, 00C31F40 linear M+0h) and its length (0042B2F0).
+    for (const PendingEvent& pe : pending_events_) {
+        Manifold& m = *pe.manifold;
+        if (m.count() <= 0) continue;
+        const DynBody& a = *by_unit.at(pe.unit_a)->body;
+        const DynBody& b = *by_unit.at(pe.unit_b)->body;
+        const DynSolverContactPoint& p0 = m.points()[0];
+        HullContactEvent ev;
+        ev.unit_a = pe.unit_a;
+        ev.unit_b = pe.unit_b;
+        for (int k = 0; k < 3; ++k) {
+            ev.point[k] = f32(static_cast<double>(a.row0[k]) * p0.local_point_a[0] +
+                              static_cast<double>(a.row1[k]) * p0.local_point_a[1] +
+                              static_cast<double>(a.row2[k]) * p0.local_point_a[2] +
+                              a.position[k]);
+        }
+        const auto point_speed = [&ev](const DynBody& body) {
+            const DynMotionState& ms = *body.motion;
+            const float r[3] = {ev.point[0] - body.position[0], ev.point[1] - body.position[1],
+                                ev.point[2] - body.position[2]};
+            const float w[3] = {ms.angular_velocity.x, ms.angular_velocity.y,
+                                ms.angular_velocity.z};
+            const float v[3] = {ms.linear_velocity.x + (r[2] * w[1] - r[1] * w[2]),
+                                ms.linear_velocity.y + (r[0] * w[2] - w[0] * r[2]),
+                                ms.linear_velocity.z + (w[0] * r[1] - r[0] * w[1])};
+            return std::sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+        };
+        ev.speed_a = point_speed(a);
+        ev.speed_b = point_speed(b);
+        events_.push_back(ev);
+    }
 
     // The scene's manifold list in creation order (LABELLED: 00C3F4D0's list order is not
     // read), each body's contact array (B+74h) in the same order.
