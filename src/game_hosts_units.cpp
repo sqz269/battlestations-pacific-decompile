@@ -7227,6 +7227,51 @@ struct GameUnitsHost::Impl {
     double goaway_aim_offset_sum_{0.0};
     double goaway_aim_offset_max_{0.0};
 
+    // Packet cc9_plane_desc_158. 007D473A, in BSP_PlaneClass_BindModelData_Provisional
+    // (007D3E60, EBP = the class descriptor from 007D3E7F, never rewritten):
+    // model = [desc+50h] (007D470E); FLD model+30h, FSTP float; FLD model+3Ch,
+    // FSTP float, FLD, FADD the first, FMUL double 0.5 (00D7A280), FSTP float to
+    // desc+158h. The model box is local min xyz, max xyz at +28h..+3Ch, from the
+    // model's top-level `BoundingBox` (00B7F525..00B7F55C,
+    // docs/UNIT_HULL_EXTENTS.md), so this is the box centre along z.
+    // SUBSTITUTIONS, labelled: the class model is the vehicle class's `Mesh` file
+    // (as the section points and the buoyancy list read it); a model without a
+    // BoundingBox, or that does not open, gives 0.0.
+    std::map<int, float> plane_desc_158_by_class_;
+    float plane_desc_158(const GameUnitSlot& p) {
+        if constexpr (!kPlaneDesc158Bound) {
+            (void)p;
+            return 0.0f;
+        } else {
+            const int type_id = p.row.type_id;
+            auto found = plane_desc_158_by_class_.find(type_id);
+            if (found != plane_desc_158_by_class_.end()) return found->second;
+            float& value = plane_desc_158_by_class_[type_id];
+            value = 0.0f;
+            const std::string mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+            std::vector<std::uint8_t> bytes;
+            std::array<float, 6> box{};
+            const char* why = "ok";
+            if (mesh.empty()) {
+                why = "no Mesh string";
+            } else if (!lua.read_resource_file(mesh, bytes)) {
+                why = "model did not open";
+            } else if (!bsp::read_mmod_bounding_box(bytes, box)) {
+                why = "no BoundingBox";
+            } else {
+                const float min_z = box[2];                              // model+30h
+                const float max_z = box[5];                              // model+3Ch
+                value = static_cast<float>((static_cast<double>(max_z)
+                    + static_cast<double>(min_z)) * 0.5);                // 007D4730-007D473A
+            }
+            log.notef("plane desc 158h: class %d %s z=[%.3f %.3f] -> %.3f (%s; 007D473A, "
+                "packet cc9_plane_desc_158)", type_id, mesh.c_str(),
+                static_cast<double>(box[2]), static_cast<double>(box[5]),
+                static_cast<double>(value), why);
+            return value;
+        }
+    }
+
     // Packet cc9_ship_section_points: 0081F980's section records per vehicle
     // class, from the class's Mesh model (the same read the buoyancy list and
     // the gunnery host's section points make).
@@ -11387,9 +11432,9 @@ void GameUnitsHost::Impl::carrier_deck_carry_in(GameUnitSlot& p) {
 // 5ao. Every body was read from the disk listing.
 // ---------------------------------------------------------------------------
 
-// planeDesc+158h (007D473A: (model+3Ch + model+30h) x 0.5, most likely the
-// model's box centre along z). SUBSTITUTION, labelled: 0.0, the plane's origin;
-// the plane models' boxes are not read by this host.
+// planeDesc+158h (007D473A: (model+3Ch + model+30h) x 0.5, the model's box
+// centre along z). With kPlaneDesc158Bound off it is 0.0, the plane's origin.
+// Read through Impl::plane_desc_158 (kPlaneDesc158Bound, include/bsp/game_hosts_units.hpp).
 namespace { constexpr float kPlaneDesc158 = 0.0f; }
 
 // The point in the carrier's model frame: what plane+A4h..+ACh holds under the
@@ -11447,8 +11492,13 @@ GameUnitsHost::Impl::CarrierElevator* GameUnitsHost::Impl::carrier_elevator_read
 // +58h); 0.0 below the 1e-10 square (00CE3820).
 float GameUnitsHost::Impl::carrier_elevator_nose_distance_006cfe90(const LandingDeck& d,
     const GameUnitSlot& p) const {
-    // With planeDesc+158h taken as 0.0 the point is the plane's origin.
-    const std::array<float, 3> l = carrier_local_point(d, p.motion.position);
+    // The point (0, 0, planeDesc+158h) in the plane's frame: its origin plus
+    // +158h along its forward row (pose row 2, the frame unit+74h carries).
+    const float c = const_cast<Impl*>(this)->plane_desc_158(p);
+    const float nose[3] = {p.motion.position[0] + p.motion.pose_row2[0] * c,
+        p.motion.position[1] + p.motion.pose_row2[1] * c,
+        p.motion.position[2] + p.motion.pose_row2[2] * c};
+    const std::array<float, 3> l = carrier_local_point(d, nose);
     const float dx = l[0] - d.elevator.lift[0];
     const float dz = l[2] - d.elevator.lift[2];
     const float s = static_cast<float>(static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
@@ -11743,7 +11793,7 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         const float len = std::sqrt(dir[0] * dir[0] + dir[1] * dir[1] + dir[2] * dir[2]);
         const float inv = len > 0.0f ? 1.0f / len : 0.0f;
         for (float& c : dir) c *= inv;
-        slide = static_cast<float>((static_cast<double>(kPlaneDesc158) + 1.0)
+        slide = static_cast<float>((static_cast<double>(plane_desc_158(p)) + 1.0)
             - static_cast<double>(index_9d8) * 0.20000000298023224);
         pos[0] = a[0] + dir[0] * slide;
         pos[1] = a[1];
@@ -11800,7 +11850,7 @@ bool GameUnitsHost::Impl::place_on_launch_spot_007c5f60(GameUnitSlot& p,
         p.deck_local_pos[0] = e->lift[0];
         p.deck_local_pos[1] = static_cast<float>(static_cast<double>(e->lift[1]) - y)
             + p.plane_wheel_height_1fc;
-        p.deck_local_pos[2] = e->lift[2] + (-0.0f - kPlaneDesc158);
+        p.deck_local_pos[2] = e->lift[2] + (-0.0f - plane_desc_158(p));
         p.deck_parent_plus_one = d.owner + 1u;                          // vtable[ACh]
         p.deck_stop_logged = false;
         carrier_deck_carry_in(p);
@@ -11891,7 +11941,7 @@ void GameUnitsHost::Impl::carrier_elevator_raise_plane_006fc810(LandingDeck& d,
     e.plane_34 = p.process_index;
     e.off_38[0] = 0.0f;
     e.off_38[1] = p.plane_wheel_height_1fc;
-    e.off_38[2] = -0.0f - kPlaneDesc158;
+    e.off_38[2] = -0.0f - plane_desc_158(p);
     carrier_elevator_carry_006fc0d0(d);
     e.mode_50 = 1;
     ++base_launch_lift_up;
@@ -23733,7 +23783,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // planeDesc+158h. Both in the carrier's model frame, as
                             // plane+A4h/+ACh is under the carrier.
                             q = {lift->lift[0], lift->lift[1], lift->lift[2]};
-                            t = {lift->lift[0], lift->lift[1], lift->lift[2] - kPlaneDesc158};
+                            t = {lift->lift[0], lift->lift[1],
+                                lift->lift[2] - owner_.plane_desc_158(unit_)};
                             const std::array<float, 3> pl =
                                 owner_.carrier_local_point(*d, unit_.motion.position);
                             px = pl[0];

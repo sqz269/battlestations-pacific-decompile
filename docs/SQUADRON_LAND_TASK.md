@@ -6764,3 +6764,58 @@ Against the predictions:
 The mechanism matches on every launch row, the scripts wait on `IsReadyToSendPlanes` as read, and
 no launch is queued, so the unbound `006C64B0` is never needed. The JM05 9000 held brake is the
 image's rule (`007B8BD0` refuses state 5) applied to the held wingmen of 5bh and 5bi.
+
+## 5bk. `planeDesc+158h`, the model box centre (packet `cc9_plane_desc_158`, cc9-lua27, 2026-09-30)
+
+The switch is `kPlaneDesc158Bound` (`include/bsp/game_hosts_units.hpp`), committed **OFF**. Before
+this packet the value was a constant 0.0 (`kPlaneDesc158`).
+
+### The image, read for this piece
+
+**`007D470E`-`007D473A`**, in `BSP_PlaneClass_BindModelData_Provisional` (`007D3E60`-`007D5889`):
+- `EBP` is the class descriptor (`007D3E7F MOV EBP,ECX`; the whole listing has no other write to
+  `EBP`, `local\output\ghidra-disasm-007d3e60-lines-3000-083156.txt`).
+- The model is `[desc+50h]` (`007D470E`).
+- The code:
+  - `FLD [model+30h]`, `FSTP` to a float spill;
+  - `FLD [model+3Ch]`, `FSTP`/`FLD` through a float;
+  - `FADD` the first;
+  - `FMUL` double `00D7A280` (0.5, bytes `00 00 00 00 00 00 E0 3F`);
+  - `FSTP float [desc+158h]`.
+- The model's local box is min xyz, max xyz at `+28h`..`+3Ch`. The producer is the model's top-level
+  `BoundingBox` (`00B7F525`..`00B7F55C`, docs/UNIT_HULL_EXTENTS.md). So `+158h` is the box centre
+  along z: (min z + max z) x 0.5.
+
+### The host with the switch on
+
+- `Impl::plane_desc_158(p)` reads the class's `Mesh` file and takes its `BoundingBox` through
+  `bsp::read_mmod_bounding_box`. It computes the value in 007D473A's order and caches it per class,
+  with one `plane desc 158h:` log line per class.
+- SUBSTITUTIONS, labelled:
+  - the class model is the `Mesh` file (the section points and the buoyancy list read it the
+    same way);
+  - a model without a box, or one that does not open, gives 0.0.
+- The five readers now call it:
+  - the airfield spot slide `(+158h + 1.0) - plane+9D8h x 0.2` (`007C5F60`);
+  - the lift offset `-+158h` at placement and at the raise (`007C5F60`'s carrier arm, `006FC810`);
+  - park's lift target t (`006D00E0`);
+  - the lift intake's nose distance (`006CFE90`). This is now the point (0, 0, `+158h`) carried
+    by the plane's forward row, where before it was the origin.
+
+### Predictions (switch ON against OFF, written before any pair)
+
+1. The `plane desc 158h` lines give small offsets, within about +-3 m, for the fighter, dive
+   bomber and torpedo bomber models of JM05, USN04 and USN13.
+2. **JM05 3000 and 9000.**
+   - Each plane sits `+158h` further along z on its lift and its airfield spot.
+   - The launch counts, lift-offs (30/30; 34 on JM05 9000 with 5bj's held brake) and brake
+     releases are unchanged. Lift-off times move by at most about 1 s.
+   - On JM05 9000, park's intake of recalled carrier planes still takes and stows them (5ao's
+     "Lexington stows 8 of 8"); the count may move by one.
+   - Death tables identical.
+3. **USN04, E2:** lift-off times move by at most about 1 s; the strike outcome is unchanged; death
+   rows re-timed at most.
+4. **USN13:** 27 of 27 lift off. Gameplay-identical or moved only in plane positions.
+5. **USN01, LOMP06:** no launch, exit 0 or 1.
+6. **Flip criterion:** no mechanism count moves (placements, lift-offs, brake releases, stows
+   within one), and no death row moves that the new positions cannot explain.
