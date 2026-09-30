@@ -1922,6 +1922,23 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 stored.landing_range_raw = bits;
             }
         }
+        // Packet cc9_building_pad_model: 006F2895-006F28B3, `LandingPointRange`,
+        // the same way.
+        const SceneProperty* pad_prop = bag.find("LandingPointRange");
+        if (pad_prop != nullptr && !pad_prop->values.empty()) {
+            std::int32_t as_int = 0;
+            float as_float = 0.0f;
+            if (pad_prop->type_letter == "I"
+                && scene_scan_int(pad_prop->values.back(), as_int)) {
+                stored.landing_point_range_present = true;
+                stored.landing_point_range_raw = as_int;
+            } else if (scene_scan_float(pad_prop->values.back(), as_float)) {
+                std::int32_t bits = 0;
+                std::memcpy(&bits, &as_float, sizeof bits);
+                stored.landing_point_range_present = true;
+                stored.landing_point_range_raw = bits;
+            }
+        }
         // Packet cc9_submarine_depth_level: 00853630's two scene finds, kept
         // for the submarine seed in the units host. An enum symbol resolves
         // through the library (`Depth : Periscope` -> 1); an `I` value is

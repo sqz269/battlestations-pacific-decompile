@@ -1484,6 +1484,9 @@ struct GameUnitSlot {
     std::int32_t capture_range_7a0{500};
     // unit+7C4h LandingRange as 006F2780 stores it (006F285F; 500 when unauthored).
     std::int32_t landing_range_7c4{500};
+    // Packet cc9_building_pad_model: unit+7CCh LandingPointRange (006F28B3; 500
+    // when unauthored), the radius 006F5CC0 adopts landing pads within.
+    std::int32_t landing_point_range_7cc{500};
     // Packet cc9_squadron_travel_alt: the squadron cruise block 0089F550 writes, kept on
     // the squadron's slot. The countdown +380h is held as the clock at which it goes
     // below zero (0.5 s after the call); -1.0 at construction means already expired.
@@ -12112,6 +12115,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->capture_range_7a0 = entity.capture_range_present ? entity.capture_range_raw : 500;
         // 006F2780's LandingRange, unit+7C4h (006F285F).
         slot->landing_range_7c4 = entity.landing_range_present ? entity.landing_range_raw : 500;
+        // Packet cc9_building_pad_model: 006F2780's LandingPointRange, unit+7CCh (006F28B3).
+        slot->landing_point_range_7cc = entity.landing_point_range_present
+            ? entity.landing_point_range_raw : 500;
 
         // Milestone 2q: 00926110, BSP_SEntity_InitAll's call of the entity's
         // vtable slot 0A0h, which for this class family is 00822C20. Only that
@@ -27096,6 +27102,16 @@ float GameUnitsHost::command_building_landing_range_07c4(std::size_t unit_index)
     if (unit_index >= impl_->slots.size()) return 500.0f;
     if (!unit_is_kind_of(unit_index, 0x1c)) return 500.0f;
     return static_cast<float>(impl_->slots[unit_index]->landing_range_7c4);
+}
+
+std::int32_t GameUnitsHost::command_building_landing_point_range_07cc(
+    std::size_t unit_index) const {
+    // Packet cc9_building_pad_model: 006F2780 stores the scene LandingPointRange
+    // dword (006F2895) at unit+7CCh (006F28B3), 500 when unauthored; 006F5CC0's
+    // third pass squares it as an int32 (006F6617). 1Ch is MCommandBuilding.
+    if (unit_index >= impl_->slots.size()) return 500;
+    if (!unit_is_kind_of(unit_index, 0x1c)) return 500;
+    return impl_->slots[unit_index]->landing_point_range_7cc;
 }
 
 float GameUnitsHost::plane_class_max_speed_0188(std::size_t unit_index) const {

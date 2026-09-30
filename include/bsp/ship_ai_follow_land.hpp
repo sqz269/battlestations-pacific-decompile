@@ -350,9 +350,10 @@ struct ShipAiLandStepHost {
     virtual int brain_landing_base_0b20() = 0;
 
     // 009E1A97, 006F2E60(base)(unit, 0). Body 006F2E60-006F2FA2, read: it walks
-    // the pad vector at base+794h / +798h, returns the pad this unit already
-    // occupies when the second argument is zero, otherwise the nearest free pad
-    // by squared 3D distance.
+    // the pad vector at base+794h / +798h in order; with skip_owned false a pad
+    // this unit occupies returns as soon as it is reached, otherwise the answer is
+    // the nearest free pad by squared 3D distance (bsp::BuildingPadModel::
+    // pick_006f2e60, packet cc9_building_pad_model).
     virtual int pick_landing_pad_006f2e60(int base, int unit, bool skip_owned) = 0;
 
     // 009E1AAE, 006F2FB0(base)(unit, pad). Body 006F2FB0-006F3009, read: it

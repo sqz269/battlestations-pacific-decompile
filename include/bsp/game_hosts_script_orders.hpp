@@ -52,6 +52,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/building_pads.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/lua_binding_mission.hpp"
 #include "bsp/lua_binding_navigator.hpp"
@@ -255,6 +256,13 @@ inline constexpr bool kScriptThinkOnFixedStep = true;
 // luaDelay chain of a long mission (JM08 at mission frame 2001).
 inline constexpr bool kScriptEntityPoolUnboundedBound = true;
 
+// Packet cc9_building_pad_model, docs/SHIP_AI_OPEN_ITEMS.md section 75. True: the
+// first building_pads() call builds every CommandBuilding's landing-pad vector as
+// 006F5CC0's third pass does at InitAll pass C (bsp/building_pads.hpp) and the end
+// summary reports it. Nothing reads the pads yet (retarget modes 3/4 and the land
+// step are separate switches). False: no pad vector exists.
+inline constexpr bool kBuildingPadModelBound = true;
+
 class GameHostLog;
 class GameUnitsHost;
 struct GameSceneEntityRecord;
@@ -437,8 +445,14 @@ public:
     // which nothing in the mission moves; that is the value `GetPosition`
     // 008A7B00 reads at 008A7C3C. `id` is this process's entity number, the
     // same substitution for the u16 at +174h that the unit rows already make.
+    // Packet cc9_building_pad_model: `class_id` is the marker's scene class
+    // (GameSceneMarkerSeed::class_id); LandingPoint 1Dh markers are the pads
+    // building_pads() adopts. -1 when the caller does not pass it.
     void register_scene_marker(int id, const std::string& name,
-        const float world_position[3]);
+        const float world_position[3], int class_id = -1);
+
+    // Packet cc9_building_pad_model. Null while kBuildingPadModelBound is off.
+    bsp::BuildingPadModel* building_pads();
 
     // Packet cc8_airops_launch_tick. The unit side of 006C5050: the launch start
     // 006C7490 calls it at 006C74C6 and stores what it returns in slot+28h. The
@@ -648,6 +662,7 @@ private:
         int id{0};
         std::string name;
         float position[3]{0.0f, 0.0f, 0.0f};
+        int class_id{-1};  // packet cc9_building_pad_model
     };
     const SceneMarker* marker_for_id(int id) const noexcept;
 
@@ -750,6 +765,8 @@ private:
     bsp::EntityThinkList think_live_{};
     bsp::EntityThinkList think_pending_{};
     float think_countdown_{0.0f};   // 00F89A04, zero at process start
+    bsp::BuildingPadModel building_pads_{};  // packet cc9_building_pad_model
+    bool building_pads_built_{false};
     float origin_diag_next_{0.0f};  // BSP_ORIGIN_DIAG, packet cc9_script_entity_pool
     float think_step_accumulator_{0.0f};  // mirror of 00875BB0's accumulator (00F876AC)
     // A DeleteScript from inside a think function would erase from the live list

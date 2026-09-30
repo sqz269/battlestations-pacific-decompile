@@ -133,6 +133,11 @@ struct GameSceneEntityRecord {
     // (1F4h) when absent, stored at unit+7C4h (006F285F).
     bool landing_range_present{false};
     std::int32_t landing_range_raw{500};   // 006F2847 LandingRange -> unit+7C4h
+    // Packet cc9_building_pad_model: 006F2780's `LandingPointRange` find (key
+    // 00CFAE0C, 006F2895), the found record's +0Ch dword or 1F4h (006F28A8),
+    // stored at unit+7CCh (006F28B3); 006F5CC0 adopts the pads within it.
+    bool landing_point_range_present{false};
+    std::int32_t landing_point_range_raw{500};
     // Packet cc9_land_convoy_members: 00743450's reads from a LandConvoy's bag,
     // merged with the library group (landconvoy.props). `convoy_slots` holds the
     // Rows * Columns slot map after the Type1..4 x Position1..4 walk: the resolved

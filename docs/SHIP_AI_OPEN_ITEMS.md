@@ -6208,7 +6208,8 @@ has been read, unless it is marked unread.
 
 **Which rows could reach a troop landing:**
 - **JM08 (scripted, the best candidate).** `scripts/missions/COTP-IJN/PRCPIJN/jm08.lua` (and
-  `prcpjm08.lua`, both mtime 2024-07-13):
+  `prcpjm08.lua`; mtimes 2024-07-13 and 2024-08-26, and the second is the one this installation
+  loads, section 74.1):
   - line 757, `CheckInvasion`: when Allied ships come within 300 m of (0,0,0),
     `StartInvasion` orders `NavigatorAttackMove(unit, Mission.HQ)` for the invasion force. It also
     sends `USTroopTransport 01..06` (`Mission.APs`, line 533) to `Mission.LandPoints`.
@@ -6393,3 +6394,82 @@ Runs: `local\s20_diag_jm08x.log` (pool OFF) and `local\s20_diag2_jm08x.log` (poo
 - The host has LandingPoints as scene markers (`GameSceneMarkerSeed`, class id 1Dh, world frame),
   registered through `GameScriptOrdersHost::register_scene_marker` and
   `GameUnitsHost::register_scene_marker_frame`. It has no pad vector.
+
+## 75. The building pad model (packet `cc9_building_pad_model`, cc9-ships20, 2026-09-30)
+
+This is section 73's steps (1) and (2), modelled. The reading is in 74.5, and the flow repair of
+`006F5CC0` is on main (`4222a3f86`).
+
+### 75.1 What is modelled
+
+The model is `bsp::BuildingPadModel` (`include/bsp/building_pads.hpp`, `src/building_pads.cpp`),
+built behind `kBuildingPadModelBound` (committed OFF):
+
+| routine | coverage | host |
+| --- | --- | --- |
+| `006F5CC0` pass 3 (`006F6436-006F673E`) | complete for pass 3; passes 1 and 2 not modelled | `adopt_landing_pads_006f5cc0`, `building_pad_in_range_006f5cc0` |
+| `006F2E60` pick | complete | `pick_006f2e60` |
+| `006F2DE0` release | complete | `release_unit_pads_006f2de0` |
+| `006F2FB0` assign | complete | `assign_006f2fb0` |
+| `006AC490` set occupant | complete; the observer pair is a SUBSTITUTION (`forget_unit`) | `set_occupant_006ac490` |
+| `006F3AF0` standoff point | partial: `006F3AF0-006F3C5A` (nearest pad xz); the `00417E60` push-out is unread | `nearest_pad_xz_006f3af0` |
+| `006F2780` `LandingPointRange` | complete for this key (`006F2895-006F28B3`, default 1F4h) | `GameSceneEntityRecord::landing_point_range_raw`, `GameUnitsHost::command_building_landing_point_range_07cc` |
+
+- **Where it is built.** `GameScriptOrdersHost::building_pads()` builds the model on its first
+  call, from the LandingPoint markers (class `1Dh`) in registration order and every `1Ch` unit's
+  position and `+7CCh`. The image builds it at InitAll pass C. Both buildings and pads are
+  stationary, so the only difference is timing.
+- **SUBSTITUTIONS (labelled):**
+  - Registry list `1Dh`'s order is taken as marker registration order. That order only breaks
+    exact distance ties.
+  - The x87 sums are done in double and rounded to float at the image's store.
+  - A pad's occupant is a units-host index.
+- **Nothing reads the pads yet.** Retarget modes 3/4 (section 72) and the land step
+  (`ship_ai_follow_land`) are separate switches, for the next packets.
+- **The marker class needs one line in `src/game_hosts_mission_frame.cpp`** (cc9-gunnery16's file,
+  routed to the lead). At about line 2179, `register_scene_marker(marker.id, marker.name,
+  marker.position)` must pass `marker.class_id` as a fourth argument. Until then every
+  marker's class is -1 and the model adopts no pads.
+
+### 75.2 Predictions (written before any flip run)
+
+These are from `local\s20_pads_scn.py`, this installation's scenes (world position = own
+translation plus the parents'):
+
+| row | scene | CommandBuildings, LandingPointRange | pads adopted |
+| --- | --- | --- | --- |
+| JM08 | `prcpijn_08_defend_guadalcanal.scn` | `Headquarter 01` (1349, -4468), 1000 | 8 (LandingPoint 01..08 at 582-809 m) |
+| USN01 | `usn_1_marshall.scn` | `CB2`, 1000 | 8 |
+| USN13 | `usn_13_truk.scn` | `CB2`, `CB4`, `CBT`, 1000 each | 16 in total |
+| JM05 | `ijn_05_invasion_of_port_moresby.scn` | `MainCommandBuilding 01` 800, `SecondaryCommandBuilding 01` 1500, `RadarStation 01` 500 | 28 in total |
+| USNOS | `us_osumi.scn` | `HQ1` 1500, `HQ2` 1500, `CB2` 650 | 8 in total |
+| USN04, IJN01, LOMP10, USN12 | - | none with a pad in range | 0 |
+
+- The flip only adds the `summary building pads` line. **Every pair is predicted exit 0 or 1**,
+  because no reader exists.
+- The host's y may differ from the authored y (`__SnapToTerrain`). The nearest margin is 191 m
+  (JM08's `LandingPoint 08`, 809 m against 1000), so no adoption should flip.
+
+### 75.3 The census, and the flip
+
+Runs 2026-09-30 05:33-05:55 UTC. OFF is `a64444960`'s build (`local\s20_off3`). ON is that build
+plus the local-only mission-frame line from 75.1 and the switch on (`local\s20_on3`; the patch is
+`local\s20_edit_mf.py` and was reverted before any commit). Logs are `local\s20_{off3,on3}_<row>.log`
+and the diffs `local\s20_pd3_<row>.txt`.
+
+| row | pair_diff | `summary building pads` (ON) | predicted |
+| --- | --- | --- | --- |
+| JM08 | 1 | `Headquarter 01=8` | 8 |
+| USN01 | 1 | `CB2=8` | 8 |
+| USN13 | 1 | `CB2=8 CB4=8 CBT=0` | 16 |
+| JM05 | 1 | `MainCommandBuilding 01=13 SecondaryCommandBuilding 01=11 RadarStation 01=4` | 28 |
+| USNOS | 1 | `HQ1=0 HQ2=0 CB2=8` | 8 |
+| USN04 | 1 | no building | 0 |
+
+- Every count matches the scene prediction. Every pair is gameplay-identical, as predicted, since
+  there is no reader.
+- **Verdict: flipped ON.** It stays inert until two things land: the mission-frame line, and a
+  reader (modes 3/4, or the land step).
+- The pads carry a units-host index for their occupant. Nothing clears it on a unit's death yet
+  (`forget_unit` has no caller). The reader packet has to call it from the death path, or assert
+  the substitution there.
