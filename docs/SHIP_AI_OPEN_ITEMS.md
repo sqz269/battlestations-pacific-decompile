@@ -7802,3 +7802,67 @@ The fleet diagnostic (`BSP_LANDER_DIAG=1`, `fleet diag:` every 10 s):
 - **Where the landers beach relative to the pads** matters only after the ramp. The pad
   approach point is `006AC5D0` from `LandingPointRange` 1000. Not read further here.
 - Diagnostics were added (`997477248`), env-gated: `lander latch diag:` and `fleet diag:`.
+
+## 92. Scripted formations broke up at t=0.05: the join is delivered out of order (packet `cc9_formation_join_loopback`, cc9-ships23, 2026-09-30)
+
+### 92.1 Who releases the followers
+
+- **The release.** `009F5DA0` (the auto-target tick, `bot_fire_target.cpp`) releases a
+  formation follower (`007788B0`) unless the current command `[director+54h]` is null or
+  `follow` (`00E08F60`, compared at `009F5DE0`). The release is `0077C980(unit, 0)` at
+  `009F5DEB`, reaching `77h -> 0077BD70`, the leave.
+- **What was current.** The new `follower release diag` line (`BSP_LANDER_DIAG=1`) shows JM08's
+  17 scripted followers at t=0.05 all had `00E08F70` current: the authored `cruise`.
+
+### 92.2 Why `cruise` and not `follow`
+
+- **In the image both messages share one queue, in post order.**
+  - `JoinFormation`'s 76h goes out through `0077C964 -> 0077C2A0` with flags 7.
+  - Each scene-authored `Command` is an MT_COMMAND with flags 1 (`0077D600`).
+  - On a local session both are appended to the loopback vector (`0077C44D -> 0076E520`,
+    `docs/SESSION_MESSAGE_DISPATCH.md`). The pump's `0076C600` delivers them in post order.
+- **So the image ends with `follow` current:**
+  1. the authored `cruise` arrives first (`0081733E` clear-all, then the push);
+  2. the join `0077FE80 -> 0077F940 -> 00720CD0` arrives next (clear, push `follow`).
+- **The host joined at the Lua call,** before the pump delivered the queued `cruise`. The
+  `cruise`'s clear-all then removed the `follow`, and `009F5DEB` released every scripted follower
+  on the first tick.
+- **This is the cause of section 91's JM08 knife-edge.** The fleet was meant to stay on
+  Missouri, whose authored cruise runs down x = 0 through the origin that `CheckInvasion`
+  watches.
+
+### 92.3 The change (committed OFF)
+
+- **`kFormationJoinLoopbackBound`** (`game_hosts_script_orders.cpp`). ON, the join is posted as
+  a callback entry into the commands host's loopback vector
+  (`commands_post_loopback_callback_0076e520`, new `LoopbackKind::Callback`). It is delivered at
+  its turn in the drain.
+- **OFF, the join runs at the call,** as before.
+- **Summary line:** `summary mission script formation join loopback posted= delivered= joined=
+  bound=`.
+- **Local check (JM08, 1200 frames, switch forced ON, not a pair):**
+  - 17 posted, 17 delivered, 17 joined, and no leave at t=0.05.
+  - The first leaves come at 2.70-4.55 s, when the planner's or script's next command (`00E08F68`
+    / `00E08F80`) becomes current. That is the image's own rule.
+
+### 92.4 Reach census and predictions (written before the pairs)
+
+Leaves at t<=0.10 against all leaves, from `s22_p1` (reference-form, before this change):
+
+| row | early leaves / all | prediction |
+| --- | --- | --- |
+| JM08 36000 | 17 / 39 | exit 3 |
+| USN13 | 39 / 56 | exit 3 |
+| USNOS | 32 / 51 | exit 3 |
+| USN12 | 11 / 11 | exit 3 |
+| USN02 | 10 / 18 | exit 3 |
+| USN01 | 8 / 8 | exit 3 |
+| LOMP10 | 7 / 7 | exit 3 |
+| JM05 | 5 / 8 | exit 3 |
+| E2, JM06 (controls) | 0 / 0 and 0 / 6 | exit 0 or 1; the joins are delivered one pump later, with no command lost |
+
+- **JM08 36000:** the invasion force keeps station on Missouri, and Missouri's cruise passes
+  the origin, so `StartInvasion` fires. If the landers then reach Headquarter 01's 4344 m
+  latch, `mode3_points > 0` and begins may follow with the solver ON.
+- **The reach rows:** followers hold their station until a new command replaces `follow`.
+  Fleet positions, engagements and possibly death rows move.

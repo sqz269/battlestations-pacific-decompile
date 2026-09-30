@@ -9919,6 +9919,15 @@ public:
             return;
         }
         if (owner_.units.unit_formation_group_0284(index_) >= 0) {
+            static const bool diag = [] { char* e = nullptr; std::size_t n = 0; const bool on = _dupenv_s(&e, &n, "BSP_LANDER_DIAG") == 0 && e != nullptr && e[0] == '1'; std::free(e); return on; }();
+            if (diag) {
+                // BSP_LANDER_DIAG=1 (packet cc9_formation_follower_release): the
+                // command 009F5DD0 found current, which is what made 009F5DE0 fail.
+                const GameUnitRow* r = owner_.units.unit_row(index_);
+                owner_.log.notef("follower release diag: t=%.2f unit=%s current_command=%08X",
+                    owner_.capture_clock, r != nullptr ? r->name.c_str() : "?",
+                    static_cast<unsigned>(owner_.units.director_current_command_0071be40(index_)));
+            }
             owner_.units.leave_group_on_destroy_0077bd70(index_);
             ++owner_.summary.autotarget_follower_leaves;
         }

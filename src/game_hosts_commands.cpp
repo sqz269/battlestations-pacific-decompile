@@ -477,7 +477,7 @@ struct GameCommandsHost::Impl {
     // heading the caller read, and whether the chain's finish tail (the
     // current-command read and 00835C70's arm) runs at the end of this delivery.
     static constexpr std::size_t kNoLoopbackRow = static_cast<std::size_t>(-1);
-    enum class LoopbackKind { Command, SetCommand, Clear, UserPathPoint };
+    enum class LoopbackKind { Command, SetCommand, Clear, UserPathPoint, Callback };
     struct LoopbackMessage {
         LoopbackKind kind{LoopbackKind::Command};
         std::size_t unit{0};
@@ -1926,6 +1926,10 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         apply_user_path_point_007207c0(message.unit, message.user_point,
                                        message.user_outside_map);
         break;
+    case LoopbackKind::Callback:
+        // A message another host receives: its receiver runs as the
+        // after_delivery below, at this entry's turn in the drain.
+        break;
     }
     if (chain.finish_pending) finish_issue_in_place(*this, chain);
     if (chain.after_delivery) {
@@ -2089,6 +2093,24 @@ void commands_begin_loopback_drain_0076c600() {
 std::size_t commands_finish_loopback_drain_0076c600() {
     GameCommandsHost* live = live_commands_host();
     return live != nullptr ? live->finish_loopback_drain_0076c600() : 0;
+}
+
+bool commands_post_loopback_callback_0076e520(std::size_t unit_index,
+                                              std::function<void()> deliver) {
+    GameCommandsHost* live = live_commands_host();
+    return live != nullptr && live->post_loopback_callback(unit_index, std::move(deliver));
+}
+
+bool GameCommandsHost::post_loopback_callback(std::size_t unit_index,
+                                              std::function<void()> deliver) {
+    Impl& host = *impl_;
+    if (unit_index >= host.units.size() || unit_index >= host.directors.size()) return false;
+    Impl::LoopbackMessage message;
+    message.kind = Impl::LoopbackKind::Callback;
+    message.unit = unit_index;
+    message.after_delivery = std::move(deliver);
+    host.post_loopback(message);
+    return true;
 }
 
 const GameCommandRow* GameCommandsHost::issue_command_object(std::size_t unit_index,
