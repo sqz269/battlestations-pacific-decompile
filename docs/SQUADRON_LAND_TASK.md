@@ -6427,3 +6427,67 @@ With the switch ON, JM05 3000 lifts all 30 launched members into state 7 (5bf).
 - `l26_from_ce2c0_full.asm`: the Takeoff listing;
 - `l26_c6f50.asm`, `l26_cbfa0.asm`: the lift-off listings;
 - the logs `l26_p4aon_jm05.log`, `l26_p4bon_jm05.log`, `l26_p5on_jm05.log`.
+
+## 5bh. The flip pairs for `kBaseLaunchChainBound` (packet `cc9_base_launch_flip`, cc9-lua27, 2026-09-30)
+
+Pairs from `7356585c2`: OFF `python tools/pair_export.py --commit 7356585c2 --out local\l27_off`
+(no flips), ON the same with `--flip kBaseLaunchChainBound=true --out local\l27_on`. Rows in the
+reference launch form (t's lines: lockstep 0.05, idle player, `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`), logs `local\l27_{off,on}_<row>.log` in the cc9-lua27 tree.
+
+### The JM05 recall is the image's rule, not the switch's
+
+Queue item 1 of 5bg asked whether the `returntobase` that reaches the launched JM05 squadrons at
+launch (7.70 s for `USS Lexington_sqn03` in `l26_p5on_jm05.log`) is a side effect of the switch.
+It is not:
+- The command comes from the SELLING tick (`00A11FF0`, host source `ai_selling_tick`; the ON log
+  counts `returntobase=662` in `summary mission ai selling`). The switch does not touch it.
+- SHIP_AI_OPEN_ITEMS 59.1 (cc9-ships17) read every link from launch to that command (world list 24
+  seed, the `00A2C8D0` join, Capture, Sell `00A22800`, the air test, the tick) and found that the
+  image sends `returntobase` to every launched US squadron on JM05 on each command tick. With the
+  switch OFF the same squadrons get it too, only airborne.
+- The moment: in t (`g18_rt_jm05l.log`, OFF) Lexington_sqn03 gets it at 5.60 s; in the ON smoke at
+  7.70 s. Why the ON record is 2.1 s later is for the pair to show (the record prints on a change
+  of arm, site or note). Otherwise the moment follows the launch: the squadron joins list 24 at its launch order (3.05 s for
+  Lexington_sqn03), and the next SELLING tick after the brain's seed pass issues the command. OFF
+  places the squadron at launch in the air; ON leaves it Inside, so the first land install is
+  refused (`not airborne`) until the lift-off. This timing is not a switch artefact.
+
+### Which rows launch from a base
+
+From t's logs (`g18_rt_<row>.log` in the cc9-gunnery18 tree), `air ops launch skill applied`:
+
+| row | launches | members | launched at | their orders | in the OFF death table |
+| --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 10 squadrons (2 airfields, Lexington, Yorktown) | 30 | 3.05 s onward | SELLING `returntobase` (image rule, above) | none |
+| JM05 9000 | 13 | 39 | 3.05 s onward | same | none |
+| USN04 4500, E2 9000 | 4 fighter squadrons (class 101), 2 per carrier | 12 | 27.05 s, 30.05 s | initial `moveto` their own carrier only; the US side is NONCONTROL (`kAiPartyGateUnforcedBound`) | none (every `gunrow` of theirs has `shots 0`) |
+| USN13 3000 | 9 squadrons (class 26), one per carrier | 27 | 0.00 s (at load) | initial `moveto` their own carrier only | none |
+| USN01, LOMP06 | none | 0 | - | - | - |
+
+No launched squadron in any row fires a shot, kills or dies in t. None flies a strike in these
+windows: JM05's are recalled, USN04's and USN13's hold a `moveto` on their own carrier.
+
+### Predictions (written before the pairs)
+
+1. **JM05 3000:** as `l26_p5on_jm05.log`. `placed=30 liftoffs=30`, the first carrier leader lifts
+   off near 15.7 s, then one release about every 9 s per carrier, the airfield members at
+   17.8-21.8 s. Every member ends in state 7 or back on its deck under `land`. **Death table
+   identical** (the twelve structure and ship rows); hits and shots within a few percent (the
+   ON smoke had 360 hits against 353). Exit 3 (moved) through plane positions and counters.
+2. **JM05 9000:** the same for the first ten; the three late airfield squadrons (sqn11-13, ordered
+   at 153.00, 302.95 and 403.03 s in t) launch from their airfields the same way. `placed=39 liftoffs=39`. **Death table identical** (eighteen rows, no plane
+   among them). Plane water contacts may differ from OFF's 3. Exit 3.
+3. **USN04 and E2:** the four squadrons start Inside at 27.05/30.05 s. With two squadrons per
+   carrier, six members per deck, the last lift-off about 50-60 s after the first, near 80-100 s.
+   The Japanese strikes' first hit (98.70 s), the torpedo-task releases (5 of 16) and dive-bomb
+   releases (1 of 19 on E2) are **unchanged or moved by at most one**. Death rows identical, or at
+   most two re-timed (enemy AA and escorts now meet planes on deck and at low height instead of at
+   150 m). Exit 3 through gunnery counters.
+4. **USN13 3000:** a launch at load. Weakest call: the chain may not start before the carriers'
+   decks are registered. If it does, 27 members go through their decks over the first 30-40 s;
+   death table identical (24 rows) and first hit 5.15 s unchanged. If the members stay Inside
+   (`inside_now>0` at the end), that is a mechanism failure and keeps the switch OFF.
+5. **USN01 and LOMP06 (controls):** no launch, exit 0 or 1.
+6. **Flip criterion:** every launched member on every row leaves Inside and lifts off (or is
+   killed on deck), and no death row moves that the launches cannot explain.
