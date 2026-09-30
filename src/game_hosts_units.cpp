@@ -2415,6 +2415,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_ground_retakeoff (kGroundRetakeoffBound).
     unsigned long long retakeoff_pushes{0}, retakeoff_parking{0}, retakeoff_takeoff{0};
     unsigned long long retakeoff_land_head{0}, retakeoff_other_head{0}, retakeoff_state6{0};
+    // Packet cc9_throttle_dead_band (kThrottleDeadBandBound): 0099D300's demand
+    // arm, increments applied and skipped by the dead band.
+    unsigned long long throttle_band_applied{0}, throttle_band_skipped{0};
     unsigned long long takeoff_permission_asks{0}, takeoff_permission_denied{0};
     bool carrier_elevator_blocked_006d02f0(const LandingDeck& d) const;
     void carrier_elevator_send_empty_down_006fc640(LandingDeck& d);
@@ -26836,6 +26839,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // as zero. SUBSTITUTION, labelled.
                             tin.error_correction = 0.0f;
                             tin.dead_band_skips = false;
+                            if constexpr (kThrottleDeadBandBound) {
+                                // Packet cc9_throttle_dead_band, 0099DAAA-0099DB56. The
+                                // increment (0099DB58-0099DBC7) runs when |e| > 0.8333
+                                // (double 00D09450), or 1.0 > speed (00D7A24C), or the
+                                // ratio want / |speed| (0099DAEC-0099DAFF) is above 1.5
+                                // (00CE380C) or below 0.5 (00CE3800); otherwise
+                                // 0099DB56 JBE 0099DBCB skips it and the demand is
+                                // the seed. The 0099DB58 store to +2ECh (min with
+                                // [00E0E2F0]) has no reader here: recorded.
+                                const bool demand_reached = tin.air_brake_mode == 0
+                                    ? tin.flight_state == 5 && tin.slot_active
+                                    : (tin.air_brake_mode == 1
+                                        && !(0.001f > tin.desired_speed));
+                                if (demand_reached) {
+                                    const float spd = tin.measured_speed / tin.speed_scale;
+                                    const float e = (tin.desired_speed - spd)
+                                        - tin.error_correction;
+                                    const float ae = e > 0.0f ? e : 0.0f - e;
+                                    const float as = spd > 0.0f ? spd : 0.0f - spd;
+                                    const float ratio = tin.desired_speed / as;
+                                    const bool apply = static_cast<double>(ae) > 0.8333333134651184
+                                        || 1.0f > spd || ratio > 1.5f || 0.5f > ratio;
+                                    tin.dead_band_skips = !apply;
+                                    if (apply) ++owner_.throttle_band_applied;
+                                    else ++owner_.throttle_band_skipped;
+                                }
+                            }
                             const bsp::PilotBotThrottleResult tr =
                                 bsp::pilot_plan_throttle_0099d300(tin);
                             if constexpr (GameUnitsHost::Impl::kThrottleSlotTrace) {
@@ -30032,6 +30062,11 @@ void GameUnitsHost::report() {
             host.log.notef("summary takeoff task head: land_deferred=%llu land_after_takeoff=%llu "
                 "(00999F50 / 0099AE89 / 0099A4C0 -> 0099A170, packet cc9_takeoff_task_head)",
                 host.land_installs_deferred, host.land_installs_after_takeoff);
+        }
+        if constexpr (kThrottleDeadBandBound) {
+            host.log.notef("summary throttle dead band: applied=%llu skipped=%llu "
+                "(0099DB1F-0099DB56, packet cc9_throttle_dead_band)",
+                host.throttle_band_applied, host.throttle_band_skipped);
         }
         if constexpr (kGroundRetakeoffBound) {
             host.log.notef("summary ground retakeoff: pushes=%llu parking=%llu takeoff=%llu "

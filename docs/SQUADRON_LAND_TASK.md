@@ -7519,3 +7519,145 @@ mechanism failure. This supersedes 5bp's OFF verdict.
 
 For reference W: JM05 9000 and 12000 move at exit 1 (the land-task, takeoff and native-table
 counters). No other row moves.
+
+## 5bs. The throttle dead band of 0099D300's demand arm (packet `cc9_throttle_dead_band`, cc9-lua28, 2026-09-30)
+
+5br found this band as the one host difference in the speed hold. The switch is
+`kThrottleDeadBandBound` (`include/bsp/game_hosts_units.hpp`), committed **OFF** with the
+predictions below.
+
+### The image (disk listing `0099DAAA`-`0099DBC7`, read whole)
+
+- `[esp+14h]` is the measured speed: `007D99C0 / +2B8h`, less the carrier's forward speed on a
+  mother-ship holder.
+- `[esp+24h]` is the error: `+2B4h - speed - correction`.
+- `[esp+38h]` is `|speed|`, and `[esp+44h]` is `+2B4h / |speed|` (`0099DAEC`-`0099DAFF`).
+- `[esp+38h]` is then overwritten with `|error|`.
+- **The increment** (`0099DB58`-`0099DBC7`) runs when any of these holds:
+  - `|error| > 0.8333` (double `00D09450`, 3 km/h), `0099DB2D JA`;
+  - `1.0 > speed` (`00D7A24C`), `0099DB3A JA`;
+  - `ratio > 1.5` (`00CE380C`), `0099DB49 JA`;
+  - `0.5 > ratio` (`00CE3800`), `0099DB56 JBE` falls through.
+- Otherwise `0099DB56 JBE 0099DBCB` skips the increment, and the demand is the slot's seed. The
+  throttle holds where it is.
+- The increment's first store, `+2ECh = min(+2ECh, [00E0E2F0])` (`0099DB58`-`0099DB6A`), has no
+  reader in this host and is recorded, not bound.
+
+The host always applied the increment (`dead_band_skips = false`). With the switch ON, the flag is
+computed from the same inputs the host feeds the arm: speed scale 1.0 and correction 0, the
+labelled substitutions of the throttle packet. Summary line: `summary throttle dead band: applied=
+skipped=`.
+
+### Predictions (switch ON against OFF; written before the pairs)
+
+1. **Mechanism.** On every row with planes, `skipped` is a large share of the thinks: cruising
+   planes sit within 3 km/h of their request.
+2. **Motion.** Within the band the throttle stops integrating, so speeds settle up to 0.83 m/s off
+   the request instead of hunting around it. Every plane's position moves slightly.
+   - `pair_diff` 3 on every plane row.
+   - Death rows can shift in time wherever an attack run's timing moves. Such moves are timing
+     knock-on (and RNG-coupled for AA, per the shared-stream note), not a changed mechanism.
+3. **No regime change.**
+   - Take-offs, landings, lift-offs, releases and the ground-retakeoff pushes stay within a few
+     counts.
+   - No squadron that attacks with OFF fails to attack with ON.
+4. **Rows.** Every reference row: USN01, USN02, USN04, E2, USN12, USN13, JM05 3000 and 9000,
+   JM06, JM08, LOMP06, LOMP10 3000 and 9000, USNOS, IJN01 and BSM01. BSM01 has no planes, so it
+   is exit 0 or 1 with `skipped=0`.
+5. **Flip criterion.**
+   - `skipped > 0` wherever planes fly;
+   - no regime change (item 3);
+   - moved death rows limited to timing: the same victims, or victims whose killer's attack
+     timing moved.
+
+### Results (OFF `local\l28_roff`, SHA-256 `2EC5F1C0E7C6`; ON `local\l28_ron`, `DF8B30ED8828`; both from `66a266556`)
+
+The 300-frame USN01 smoke of the committed tree exits 0. LOMP10 3000's OFF run failed once at
+renderer init (CreateDevice hr `0x8876086A`, the environment) and was re-run.
+
+| row | `pair_diff` | increments applied / skipped (ON) | death rows |
+| --- | --- | --- | --- |
+| JM05 3000 | 3 | 38314 / 2323 | identical (12) |
+| JM05 9000 | 3 | 120543 / 25902 | identical (14) |
+| JM06 | 1 | 1500 / 0 | identical (1) |
+| JM08 | 1 | 14726 / 2188 | identical (7) |
+| LOMP06 | 1 | 0 / 0 | identical (0) |
+| LOMP10 3000 | 3 | 4439 / 46 | same 3 victims; Lightning 01\|.-3 at 124.30 -> 124.50 s |
+| LOMP10 9000 | 3 | 10441 / 46 | same 6 victims, 1 re-timed |
+| USN01 | 3 | 6266 / 141 | identical (17) |
+| USN02 | 1 | 0 / 0 | identical (1) |
+| USN04 | 3 | 35599 / 1658 | 50 -> 48: 43 re-timed, mostly within 1-5 s; the two OFF-only deaths are at 224.06 and 224.36 s of a 225 s row |
+| E2 (USN04 9000) | 3 | 60378 / 1699 | same 52 victims, 47 re-timed |
+| USN12 | 1 | 0 / 0 | identical (7) |
+| USN13 | 3 | 57812 / 1662 | same 23 victims, 21 re-timed |
+| USNOS | 3 | 39394 / 399 | same 106 victims, 4 re-timed |
+| IJN01 | 1 | 49353 / 203 | identical (3) |
+| BSM01 | 1 | 6000 / 0 | identical (0) |
+
+**Regime counters.**
+- Lift-offs are equal on JM05 3000 and 9000 (30, 34), USN04 and E2 (12) and USN13 (27).
+- USN04 and E2: torpedo-task releases 5 -> 4 of 16, dive-bomb releases 0 -> 1 of 19.
+- JM05 9000's single ground-retakeoff push (Helldiver 01) does not occur with ON. The hangar orbit
+  itself is unchanged: `local\l28_orbit.py` gives the same 5-10 m/s circles. The looper's
+  excursion past `qd` is timing-dependent.
+
+| prediction | result |
+| --- | --- |
+| 1. `skipped` a large share | **partly**: 1-18% of increments. Cruising planes rarely sit inside 3 km/h |
+| 2. every plane row moves (exit 3), deaths re-timed only | **held** on 10 rows. JM06, JM08, IJN01 and USN02/USN12/LOMP06 (no increments) are exit 1 |
+| 3. no regime change | **held**: lift-offs equal; one torpedo release fewer and one dive release more on the USN04 pair, which is within the RNG-coupled spread |
+| 4. BSM01 exit 0 or 1 | **held** (1) |
+| 5. flip criterion | **met**: every changed death row keeps its victim, except the two USN04 deaths that fall past the row's end |
+
+### Verdict: **flip ON** (`kThrottleDeadBandBound = true`)
+
+The mechanism holds, and the misses are spread misses: the skip share and the exit-1 rows. The
+USN04 torpedo-release and death-count moves are recorded as timing, RNG-coupled per the shared-stream
+note.
+
+For reference W, every row with exit 3 above moves.
+
+## 5bt. Handoff (cc9-lua28, 2026-09-30)
+
+Branch `agent/cc9-lua28`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua28`. No lease
+is held after this handoff.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_ground_retakeoff` | `6a040f4dd`, `fbc82bfb6` | `kGroundRetakeoffBound` | OFF, then superseded | 5bp |
+| `cc9_plane_ground_support` | `98bed39c3` | - | read: no plane terrain contact in the image | 5bq |
+| `cc9_hangar_orbit` | `3e1aab7ee`, `debfa7537` | `kGroundRetakeoffBound` | **ON** | 5br |
+| `cc9_throttle_dead_band` | `66a266556`, `24c78b40f` | `kThrottleDeadBandBound` | **ON** | 5bs |
+
+**What changed in the picture:**
+- The airfield park loop is not image behaviour (5bp).
+- Planes have no terrain contact in the image (5bq).
+- Hangared planes orbit their spot under the image's own park law, and sometimes leave the path
+  and free-fall, invisibly (5br).
+- `+900h` state 6 is the plane on the water (5bp).
+
+### Next, in order
+
+1. **The strafe evasive roll** (5bn.2): `009BC030` -> `00D205E0`, tick `009BA020`, pushed by
+   `007B6240` and `009CBB30`. It needs `009CBB30`'s owner (the strafe task, `009CD300`) in the host
+   first. After it, **the flight leader's task** (5bn.4, `009BBFC0`, tick `009BC3A0`, gated on
+   `unit+184h`).
+2. **`007C6F50`'s `msg+20h` flag and `+C49h`** (5bg item 4).
+3. **5bi's split-form `vtable[28h]` scan** (low value).
+4. **The controlled-unit fallback** (low priority, from the lead). On USN01, reference V's idle
+   player controls ScoutDauntless, because the script's intended unit ConTBD1 is never spawned
+   once Convoy1 is not hit (SHIP_AI 93; the formation-join switch). Check that the host's fallback
+   choice when the scripted unit does not exist matches the image's rule (docs/CONTROLLED_UNIT.md).
+   Nothing is bound yet.
+5. **Open from 5bs:** the `+2ECh` store at `0099DB58` (min with `[00E0E2F0]`) and the reader of
+   `+2ECh` (`0099D7B5`, the mode-0 arm) are not bound.
+
+**Tools** (`local\` in the cc9-lua28 tree):
+- `l28_runs.ps1`: the reference rows;
+- `l28_cmp.py`: headline and per-victim death diff of a pair, with the base-launch and
+  ground-retakeoff summaries;
+- `l28_table.sh`, `l28_dbtab.sh`: row tables;
+- `l28_orbit.py`: the hangar orbit census from the land-park trace;
+- the edit scripts `l28_retakeoff_edit.py`, `l28_verdict_edit.py`, `l28_flip_edit.py`,
+  `l28_db_edit.py`;
+- the diagnostic edit scripts `l28_diag*_edit.py`, which apply to an export only.

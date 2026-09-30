@@ -133,6 +133,14 @@ inline constexpr bool kTakeoffTaskHeadBound = true;
 // 007DCCF0, which is the image's law (5bq), not a host failure (5bp corrected).
 inline constexpr bool kGroundRetakeoffBound = true;
 
+// Packet cc9_throttle_dead_band (docs/SQUADRON_LAND_TASK.md 5bs). True: 0099D300's
+// demand arm skips the throttle increment (0099DB1F-0099DB56 JBE 0099DBCB) when
+// |error| <= 0.8333 (double 00D09450), the measured speed >= 1.0 (00D7A24C) and
+// 0.5 (00CE3800) <= desired / |speed| <= 1.5 (00CE380C); the demand is then the
+// slot's seed. False: the increment is always applied.
+// ON by 5bs's pairs (same victims on every row, deaths re-timed only).
+inline constexpr bool kThrottleDeadBandBound = true;
+
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the
 // image's destroy 0077D1A0 -> 0077C980 message 77h -> 0077FE80 -> 0077BD70(null)

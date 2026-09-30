@@ -3202,3 +3202,23 @@ Open, in order (SQUADRON_LAND_TASK.md 5bo):
 3. the strafe roll and the flight leader's task;
 4. `007C6F50`'s flag;
 5. the split-form `vtable[28h]` scan.
+
+## Handoff (cc9-lua28, 2026-09-30)
+
+Branch `agent/cc9-lua28`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua28`. No lease
+is held after this handoff.
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_ground_retakeoff` | `6a040f4dd`, `fbc82bfb6` | `kGroundRetakeoffBound` | superseded by 5br | SQUADRON_LAND_TASK.md 5bp |
+| `cc9_plane_ground_support` | `98bed39c3` | - | read | 5bq |
+| `cc9_hangar_orbit` | `3e1aab7ee`, `debfa7537` | `kGroundRetakeoffBound` | ON | 5br |
+| `cc9_throttle_dead_band` | `66a266556`, `24c78b40f` | `kThrottleDeadBandBound` | ON | 5bs |
+
+Open, in order (SQUADRON_LAND_TASK.md 5bt):
+1. the strafe evasive roll, then the flight leader's task;
+2. `007C6F50`'s flag;
+3. the split-form `vtable[28h]` scan;
+4. the controlled-unit fallback when the script's intended unit does not exist (USN01:
+   ScoutDauntless under reference V);
+5. the `+2ECh` store and reader of `0099D300`.
