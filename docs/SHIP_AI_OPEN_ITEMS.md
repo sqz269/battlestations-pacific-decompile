@@ -7549,3 +7549,36 @@ the unit's controller (`0080E490`). `0092BD00` walks the hull body's shapes (`[c
 `00C31DC0`, next at `shape+208h`) and sets each shape's mask `shape+30h` to 0Dh (`00C48020`).
 So a script that turns land avoidance off also changes the hull's collision mask. Whether 0Dh
 excludes the terrain pair is for the contact-phase reader to settle.
+
+**Status of 87.5 (lead's final decision):** `kShipTerrainContactBound` and
+`kLandingShipRampHullContactBound` stay ON as a labelled interim stand-in: `18cf1abe1` is
+reverted. cc9-gunnery19's reconstruction of the image's contact solver (GUNNERY_OPEN_ITEMS 83)
+will replace the stand-in, and turn it OFF when that solver flips.
+
+## 88. The navigator's avoidance setters (packet `cc9_navigator_avoidance`, ranking #13, cc9-ships22, 2026-09-30)
+
+- **Send side.** `NavigatorSetAvoidLandCollision` (`008A3B10`) and `NavigatorSetTorpedoEvasion`
+  (`008A3CD0`) route a 5Ah message through `0077C2A0`, with sub-kind 9 and 7 respectively
+  (`00835A40`, `00835940`). This is already reconstructed in `lua_binding_navigator.cpp`.
+  `NavigatorSetAvoidShipCollision` (`008A3970`, sub-kind 8) has no host binding.
+- **Receive side.** `00721A93` hands the message to the director's `vtable[38h]` = `00835640`.
+  Sub-kinds 7, 8 and 9 store `msg+24h != 0` into `+240h`, `+241h` and `+242h`; every other
+  sub-kind tail-jumps to `0071C1E0`. The host already has these arms, as
+  `GameCommandsHost::apply_director_avoidance_message_00835640`.
+- **Readers.** Both bytes are already consulted by bound code:
+  - `+240h` by `009DA231` (the torpedo gate);
+  - `+242h` by the avoid-zone searchers `009DA6FB..009DA7E2` and the turn clearance `009EFCBD`.
+- **Defaults.** The constructor `008366D0` seeds all three bytes to 1 (`008366F4 MOV EBX,1`;
+  EBX is callee-saved through the `00836700` and `00836705` calls; stores at
+  `00836724..00836730`). So only a `false` changes behaviour.
+- **The gap.** `GameScriptOrdersHost::session_route_avoidance_message` counted the message and
+  never delivered it. `kNavigatorAvoidanceDeliveryBound` (committed OFF) delivers it at once,
+  labelled as a loopback like the other 5Ah senders. A per-order log and a summary line are
+  added in both builds.
+- **The land setter's disable arm, read.** `0092BD00` on the unit's controller (`0080E490`) sets
+  every hull shape's collision mask `shape+30h` to 0Dh (`00C48020`). This is recorded, not
+  modelled: it belongs to the contact phase (section 87.6).
+- **Where the calls come from.** In this installation (2024-10-29 mtime),
+  `scripts/global/commandhelpers.lua`'s `luaEnableNavigator(entity, enable)` sets all three
+  avoidances to `enable`, so a script that disables a unit's navigator also turns its land and
+  torpedo avoidance off.
