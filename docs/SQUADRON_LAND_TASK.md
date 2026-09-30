@@ -7938,3 +7938,133 @@ run speed, `+4Ch` a speed.
 4. The choice-input feed (5bw.6.1) in `src/game_hosts_script_orders.cpp`, its own switch, OFF.
 5. Pairs on USNOS, USNOS long and ESMP08 long, plus two controls. Flip the group only when strafe
    runs end to end.
+
+## 5by. The strafe approach constructor and the attack-state listings, checked (packet `cc9_strafe_states_check`, cc9-lua29, 2026-09-30)
+
+Read-only; nothing bound. Listings from disk bytes (`disasm-raw`), kept in the cc9-lua29 tree as
+`local\l29_asm_<addr>.txt`.
+
+### 1. The approach constructor `009CA4A0` (listing `009CA4A0`-`009CA66B`)
+
+`approach+14h` is the PilotBot robots row viewed `0Ch` in (`00F8A30C + level*248h + 0Ch`,
+include/bsp/approach_target_ref.hpp), so `[+14h]+N` is `robot_config.hpp`'s `+N+0Ch`. The 5bx
+guess is **confirmed**. `+24h` is 009F9CE0's speed ratio.
+
+| field | value | site |
+| --- | --- | --- |
+| `+34h` goaway distance | `min(Random(0.9, 1.05) * StrafeGoAwayDistance (row +E8h), tuning+658h * 0.8) * +24h` | `009CA4DB`-`009CA557` |
+| `+38h` shoot distance | `Random(0.9, 1.1) * AimShootDistance (row +23Ch) * +24h` | `009CA55A`-`009CA586` |
+| `+3Ch` too-close distance | `Random(0.9, 1.1) * StrafeTooCloseDistance (row +E4h) * +24h` | `009CA589`-`009CA5C3` |
+| `+44h` hit clock | 3600.0 (`[00CFDEB0]`) | `009CA5BA` |
+| `+50h` in range, `+54h` | 0, 0 | `009CA5BF`, `009CA5C6` |
+| target ref | `009FB200` at `+58h` | `009CA5CD` |
+| `+CCh` period | 1.0 (`[00D7A24C]`) | `009CA5F5` |
+| `+D0h` countdown | `-Random(0, 1)` | `009CA5FD`-`009CA604` |
+| `+4Ch` | `007C2610(plane)` (`BSP_Unit_MinKind21ComponentSpeed`) | `009CA60D` |
+| `+54h` | the target when it answers `vt[5Ch](41h)`, else 0 | `009CA615`-`009CA62C` |
+| glide seed | `009CA3B0` | `009CA62F` |
+| kind 10h/16h plane | `+34h` and `+3Ch` times 1.4 (`[00D045F0]` double) | `009CA634`-`009CA668` |
+
+The glide seed `009CA3B0` reads `+34h` **before** the 1.4 scaling:
+- angle = `min(atan2(ctl+398h, +34h), StrafeAttackAngle (row +ECh))`, with `ctl` = `+0Ch`;
+- `+2Ch` = `Random(0.8, 1.2) * angle`;
+- `+30h` = `tan(+2Ch)`;
+- `+40h` = `+30h * +34h + Random(-10, 40)`.
+
+The listing is checked to the random call (`009CA41B`); the rest is from the decompiler.
+
+### 2. Corrections to 5bx.2
+
+- **attackrun `009CADB0` runs AT the target, not away from it.**
+  - The heading is `pi/2 - atan2(dz, dx)` (`[00CE3830]` is pi/2), wrapped by 2pi: the game's
+    heading to the aim point. `dt` is the stack argument (`009CAE3E`, `[ESP+4Ch]`).
+  - Every `+18h` seconds (countdown `+1Ch`) the near-field probe `007F0280` runs, with
+    `ctl` = approach `+0Ch` and box (100, 60, 120). It sets the offset `+20h` =
+    `-a*b*c*pi/6` (`[00CEC730]`), which is added to the heading.
+  - Plan `+2C0h`, mode 2.
+  - Altitude (`009CAF0F`-`009CB015`, EBX = the tuning singleton):
+    - `h` = `tuning+210h * 0.9 - plane+100h`, clamped to [0, 400];
+    - the factor is `00419010` over (0.1, 0.3)-(0.5, 1.0) at `h / min(dist, tuning+658h)`;
+    - then `009FBA50(approach+40h, approach+38h, dist, factor)`.
+  - Plan `+278h` = 0.98, `+27Ch` = 1, `+2A8h` = 0, `+2ACh` = 1, `+2D8h` = 0; `tuning+670h`
+    into the command block; `009A1A20`; `009FABE0`.
+- **goaway `009CBB30`'s manoeuvre** (listing `009CBC96`-`009CBE27`):
+  - the two kinds are **10h and 16h**: a level bomber or a dogfight-excluded plane never evades;
+  - the gate is `approach+44h < 1.0` (`009CBCBA`-`009CBCCA`);
+  - the probability field is the **goaway state's** `+18h`, not the approach's:
+    - `Random(0,1) >= state+18h` pushes the roll `009BC030(ECX = [plane]+10h, EDX = condition
+      007B5D30, arg = approach+34h)`;
+    - otherwise `009BC0A0` with `007B5E20`;
+  - either one sets `approach+44h` = 25.0 (`[00CE89CC]`) and front-pushes through `00999F50`.
+- **aim `009CB1B0`:** the constant the decompiler shows as double `[00CEE07C]` reads 8.5e194 as
+  a double, so it is a float or part of another value. The listing must settle it before the
+  lateral test is bound. The other constants: 0.75 (`[00CEC9D8]`), 0.85 (`[00CF0B58]`), the
+  clamp 30 (`[00CE7630]`/`[00CE38C8]`), and the command-block `+28h` = 0.6 (`[00CE3D30]`).
+- **gotowards `009CA870`:** the listing is partly checked by docs/PITCH_COMMAND_CALLERS.md (the
+  `009F9ED0` call). Its alignment limit is 35 degrees (`[00D057D8]` double 0.61087).
+
+## 5bz. Handoff (cc9-lua29, 2026-09-30)
+
+Branch `agent/cc9-lua29`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua29`. No lease
+is held after this handoff.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_strafe_roll_leader_task` | `3c876b938` | - | read: both unreached | 5bu |
+| `cc9_controlled_fallback` | `38e09e9f5` | - | read: the script's own choice (CONTROLLED_UNIT.md) | 5bv |
+| `cc9_strafe_task_read` | `d92823c5a` | - | read: why the host never strafes | 5bw |
+| `cc9_strafe_task_bind` | `8a9a800ec` | `kStrafeTaskBound` (no reader) | OFF, partial | 5bx |
+| `cc9_strafe_states_check` | this section's commit | - | read | 5by |
+
+**What changed in the picture:**
+- The host never chooses strafe or dogfight through `PilotSetTarget`. 007EEC50's guns inputs
+  (PilotFires `plane+C24h`, and `0047B850` = kinds 10h/16h) are never fed (5bw.1).
+- USNOS (reference rows) and ESMP08 reach strafe in the image.
+- The strafe task's rule and range test are bound as pure functions (`src/strafe_task.cpp`).
+- The goaway state's evasive manoeuvre is the only pusher of the roll `009BC030` in strafe. It
+  fires within 1 s of a hit.
+
+### Next, in order (strafe group; the lead's plan)
+
+1. **The host arm `009CD170`** in `src/game_hosts_units.cpp` (a shared file: prepare the edit as
+   a `local\` script, claim only to apply, build and commit, release). It runs when
+   `attack_command_class == 00E08F40` (`kAttackCmdStrafe`), behind `kStrafeTaskBound`.
+   - Install: the state is moveto for the flight leader (`007B8AD0`), else follow. Seed the
+     approach as 5by.1, from the robots row the host already carries (robot_config.hpp) and
+     `Pilot/Strafe/AttackDist` / `CruisingAlt` / `ReferenceSpeed` (`game_tuning_singleton.hpp`
+     `+654`/`+658`/`+65C`).
+   - Each think: `009CCED0` (bound: `strafe_approach_update_009cced0`, after the host's target
+     ref update `009FADA0`), the moveto helper `009BDE80`, the rule `strafe_rule_009cc690`, then
+     the state tick.
+   - Moveto, follow and prepare (a follow variant) reuse the host's existing moveto/follow
+     states, as the torpedo arm does (`run_torpedo_task_arm_009d4850`).
+   - The four attack ticks as 5bx.2 with 5by.2's corrections. Check the aim listing's
+     `[00CEE07C]` first.
+   - The hit notice `009CC400` (`src/game_hosts_units.cpp` `00999AA0`, today a GAP line) must
+     zero the approach's `+44h`. That is what arms goaway's evasive manoeuvre; the manoeuvre
+     task itself (`009BC030` / `009BC0A0`) can stay a counted, labelled gap at first.
+2. **The gun task `009FC7C0`** (`BotTaskGun::tick`, UNIMPLEMENTED; 70302 calls on USN04). The aim
+   state writes the aim point into `[approach+1Ch]+5Ch..+64h` with `+28h` = 0.6; confirm that the
+   gun task reads it. Coordinate with the gunnery host only through its existing hit/damage entry
+   points; ask the lead for any edit in `game_hosts_gunnery.cpp`.
+3. **The choice-input feed** in `src/game_hosts_script_orders.cpp` (the ships lane's file: claim
+   it only for this edit and release). Set `guns_available` = `plane_pilot_fires_0c24` and
+   `guns_suppressed` = `unit_is_kind_of(0x10) || unit_is_kind_of(0x16)` on the ordered unit,
+   behind its own switch, OFF. It must not flip before (1). It also enables dogfight by
+   `PilotSetTarget` against aircraft; check that on the rows where it newly appears.
+4. **Pairs:** USNOS, USNOS long, and the new row ESMP08 long (`--frames 9200 --press-start-frame
+   30 --menu-select ESMP08 --mission-frames 9000 --mission-frame-seconds 0.05`, in the reference
+   form of `local\l29_runs.ps1`), plus two controls. Flip the group only when strafe runs end to
+   end.
+
+**Other open items** (lower priority, unchanged from 5bt):
+- `007C6F50`'s `msg+20h` flag and `+C49h`;
+- the `+2ECh` store and reader of `0099D300`;
+- the split-form `vtable[28h]` scan.
+
+**Tools** (`local\` in the cc9-lua29 tree):
+- `l29_runs.ps1`: the reference rows plus `esmp08`, `esmp11`, `jm14`, `esmp08l`, `esmp11l`;
+- `l29_floats.py`: floats and doubles from the PE on disk;
+- `l29_dec.ps1`: batch decompile to a file;
+- `l29_asm_*.txt`, `l29_states.c`: the listings and decompiles of the strafe states;
+- `l29_base_esmp08.log`: the 3000-frame ESMP08 run on main `557733990`.

@@ -3253,3 +3253,18 @@ rule runs on either side.
   returns (see "The path (V)" above), leaving `00E188D8` unchanged: the previous controlled unit
   stays. Whether 008AB260's argument read (`0041DD40` at `008AB293`) passes a nil through or
   raises first was not read.
+
+## Handoff (cc9-lua29, 2026-09-30)
+
+Branch `agent/cc9-lua29`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua29`. No lease
+is held after this handoff.
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_strafe_roll_leader_task` | `3c876b938` | - | read: unreached | SQUADRON_LAND_TASK.md 5bu |
+| `cc9_controlled_fallback` | `38e09e9f5` | - | read: USN01's ScoutDauntless is the script's own choice | this file, "USN01's controlled unit under reference v" |
+| strafe group | `d92823c5a`, `8a9a800ec`, the 5by commit | `kStrafeTaskBound` | OFF, partial | 5bw, 5bx, 5by |
+
+Open, in order: SQUADRON_LAND_TASK.md 5bz. First the strafe host arm, then the gun task, the
+choice-input feed and the pairs; then `007C6F50`'s flag, the `+2ECh` pair and the `vtable[28h]`
+scan.
