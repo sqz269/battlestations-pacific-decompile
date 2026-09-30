@@ -1135,6 +1135,10 @@ inline constexpr bool kShipAiApproachRetargetRingBound = true;
 // (006AC5D0), and inside the reach begin the landing (0074A990, the 0A5h path)
 // with a `land` command at the pad; mode 4 takes the nearest pad pushed out of
 // the class layer's zones (006F3AF0 / 00417E60). False: both modes are records.
+// Packet cc9_land_step_host (section 83.2) adds the latch's two landing inputs
+// under the same switch: 009F2095 006F2D90 (the building has a free pad) and
+// 009F20A4 the building's LandingRange +7C4h; before, both were 0, so mode 3 was
+// never latched and every lander stayed in mode 4.
 inline constexpr bool kShipAiApproachLandingModesBound = false;
 
 // Packet cc9_approach_no_ship_hold (docs/SHIP_AI_OPEN_ITEMS.md section 35), the
