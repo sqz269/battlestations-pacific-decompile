@@ -9019,6 +9019,21 @@ public:
         } else {
             owner_.record("ShipAi::escape_byte_reset_36c", 0x009ed788u);
         }
+        // Packet cc9_ship_ai_reset_span_304_338 (section 67): 009ED78F MOV
+        // [ESI+304h],ECX(0) and 009ED795 MOV byte [ESI+338h],CL(0) in the same
+        // span. The navigation arm rewrites both (009EE765, 009EE783); the
+        // station arm does not, and its 009EE57B exit still reaches 009DE5B0,
+        // whose separation turn 009DEBB9 reads the turn side +304h.
+        if (ctl_.nav.side_304 != bsp::ShipAiNavTurnSide::Unconstrained) {
+            ++owner_.summary.nav_side_304_set_on_entry;
+        }
+        if (bsp::kShipAiNavResetSpanBound) {
+            ctl_.nav.side_304 = bsp::ShipAiNavTurnSide::Unconstrained;
+            ctl_.nav.last_leg_338 = false;
+            owner_.done("ShipAi::nav_reset_304_338", 0x009ed78fu);
+        } else {
+            owner_.record("ShipAi::nav_reset_304_338", 0x009ed78fu);
+        }
         if (early_out) return true;
         // Milestone 2p. The rest of 009ED6B0 is two alternatives, not a
         // prologue and a tail (docs/SHIP_AI_GOAL_VECTOR.md, correction 4):
@@ -9073,6 +9088,10 @@ public:
             ctl_.blk.distance_32c = st.distance_32c;
             owner_.done("ShipAi::station_keeping_arm", 0x009eda28u);
             // 009EE57B JMP 009EF206: the arm ends in 009DE5B0 like every other.
+            if (ctl_.nav.side_304 != bsp::ShipAiNavTurnSide::Unconstrained &&
+                ctl_.nav_block.neighbour_count_604 > 0) {
+                ++owner_.summary.station_separation_sided;
+            }
             if (kShipAiArmFinalWholeBound)
                 owner_.arm_final_step_009de5b0(index_, ctl_, row_);
             else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
@@ -11235,6 +11254,11 @@ void GameShipAiHost::report() {
         for (const auto& c : host.controllers) {
             if (c.escape_36c_stale_steps != 0u) ++escape_units;
         }
+        host.log.notef("summary mission ship ai nav reset span side_304_set_on_entry=%llu "
+            "station_separation_sided=%llu bound=%d (009ED78F/009ED795, packet "
+            "cc9_ship_ai_reset_span_304_338)",
+            host.summary.nav_side_304_set_on_entry, host.summary.station_separation_sided,
+            bsp::kShipAiNavResetSpanBound ? 1 : 0);
         host.log.notef("summary mission ship ai escape byte reset set_on_entry=%llu units=%zu "
             "bound=%d (009ED788, packet cc9_ship_ai_backoff_countdown)",
             host.summary.escape_36c_stale_steps, escape_units,

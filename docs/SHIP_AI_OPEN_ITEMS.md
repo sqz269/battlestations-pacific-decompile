@@ -5669,3 +5669,59 @@ It is a log reading; nothing was re-run.
 slot 4 gains one. The misses were in 60.7's row list, not in the mechanism. USN02, JM06 and LOMP06
 were not re-read here. r's attribution covers them, and the same two effects are the expected
 reading.
+
+## 67. 65.7's open items: the USN13 astern Marus, and the `+304h`/`+338h` resets (packet `cc9_ship_ai_reset_span_304_338`, cc9-ships18, 2026-09-29)
+
+### 67.1 Maru4 and Maru6 go astern by the image's choice rule
+
+Source: `local\s18_b3_usn13.log` (the 65.7 ON pair) and the `Maru4` trace `local\s18_tr_usn13.log`.
+- **Both are on `movetopos` with a goal close behind them.** Maru4 enters it at step 100 with the
+  goal 651.8 m away on bearing -2.32 rad, against a heading of 0.70 rad (about 173 degrees off). Maru6
+  enters at step 90 with the goal 507.8 m away on bearing 2.835 rad.
+- **The latch is `009EF0A8`'s choice** (`ship_ai_astern_choice_009ef0a8`; the `+1CCh` gear order is
+  0, so the choice arm runs):
+  - astern when the remaining distance `+330h` is under `max(3 x +9C8h, 2 x turn radius)`, with 80 m
+    of hysteresis once astern, and the heading error is over 130 degrees (120 once astern);
+  - their `+9C8h` is 180.0 (the table's `len_9c8`), so the first term alone is 540 m;
+  - for Maru4's first latch at 651.8 m, the threshold must exceed 651.8 m, so `2 x turn radius`
+    does. The table shows `turn_3c8` 534.76 and `turn_3cc` 508.02; which of these, if either, is
+    `0082E850`'s radius was not established;
+  - both are latched astern from their first `movetopos` sample.
+- **The ships do close their goals.** Maru4's `d330` falls 651.8 -> 101.8 m by step 2070 while
+  backing. It never reaches `stop_3d4` = 72 m: it circles at 100 to 200 m with full rudder
+  (`d330` 200.3 at step 2870). Maru6 ends 138.5 m out.
+- **Verdict:** the astern latch is the rule, not a host substitution. **Open:** why a reversing
+  transport orbits its goal instead of arriving. That is astern steering (the rudder law with the
+  pi-turned heading, `009F409E`, and the arm final's reverse sense) against a stop radius smaller
+  than its reversing turn circle. It was not read here, and it may be the image's own behaviour.
+
+### 67.2 The `+304h` and `+338h` resets
+
+`009ED78F MOV [ESI+304h],ECX` and `009ED795 MOV byte [ESI+338h],CL` (ECX = 0 from `009ED767`) sit in
+`009ED6B0`'s unconditional reset span next to `009ED788`. A displacement sweep over
+`009ED000-009EFFFF` (`local\s18_disp.py 304 338`):
+- **Writers:** `+304h` at `009EE765`, `+338h` at `009EE783` and `009EE7E4`, all in the navigation
+  arm.
+- **Reader in the body:** `+304h` at `009EE90C`, also in that arm and after its writer.
+- **The reader outside the arm:** `009DEBB9`, the separation turn of `009DE5B0`. The host reads
+  `nav.side_304` there.
+- **The station arm writes neither** (`009EDA28..009EE57B`), and its `009EE57B JMP 009EF206` still
+  reaches `009DE5B0`. So in the image a station-keeping ship's separation turn sees side 0. The host
+  hands it whatever turn side that ship's last navigation step left.
+- **`+338h`** has no reader outside the navigation arm in the host; its reset is bound for
+  completeness.
+
+**Binding:** `kShipAiNavResetSpanBound` (`include/bsp/ship_ai_navigation.hpp`), committed OFF: the two
+clears in `navigate_009ed6b0`. Both sides count `side_304_set_on_entry` and
+`station_separation_sided` (station-arm steps with a live neighbour count whose side is non-zero).
+The summary line is `summary mission ship ai nav reset span`.
+
+### 67.3 Predictions, written before any ON run
+
+Rows: section 64's seven.
+1. **OFF is gameplay identical to 65.7's ON** (`s18_b3`), apart from the new summary line and record
+   row.
+2. **Rows with `station_separation_sided` = 0 on OFF are gameplay identical ON** (exit 0 or 1).
+3. **Rows with `station_separation_sided` > 0 on OFF may move (exit 3):** the followers' separation
+   turns change sides. A death flip is not predicted.
+4. **Mechanism failure:** a move on a row with `station_separation_sided` = 0.
