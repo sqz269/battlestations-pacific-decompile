@@ -7094,3 +7094,62 @@ and land step ON). JM08 36000 (recon ON: `attackmove=21`):
 - **Fix (under `kShipAiApproachLandingModesBound`, still OFF):** both inputs from the pad model
   and `command_building_landing_range_07c4`. Section 77's pair and this one are re-run on the
   new commit with the same predictions (83.1).
+
+### 83.3 The pairs on `1c07444b6`, and the decision
+
+Exports `s21_c0` (no flip), `s21_c1` (landing modes ON), `s21_c2` (landing modes and land step
+ON). Reference launch form, lockstep 0.05, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+| row | A: c0 vs c1 | B: c1 vs c2 |
+| --- | --- | --- |
+| JM08 36000 | 3 (deaths 25 -> 29) | 1 |
+| USN13 | 1 | 1 |
+| USNOS | 1 | 1 |
+| USN04 | 1 | 1 |
+
+- **Pair A matches 77.2 up to the begin:** latch `modes=6955/0/0/1081/6001` (mode 3 now
+  latched), `mode3_points=1081`, `line_casts=2`, `in_reach=2`, `begins=2` (LST 01 and LST 03),
+  `mode4_points=6001`. On the first commit (83.2) the same flip gave 5478 mode-4 points and no
+  begin, and still exit 3 (the mode-4 standoff points alone move the landers).
+- **Pair B is identical: `land enters=0 steps=0`.** The `land` command `0074A990` issues
+  (`0077D600`, `00E08FA0`, ord 22, flags 1) is logged in the command table with `issue=1` but
+  `curr=0` for both landers, and a later `director idle tail` row (ord 14) is the current one. So
+  the land command never becomes the director's current command, and the state selection never
+  picks `land`. **Unread:** why the command path does not make it current (the category-3 `land`
+  row in `entity_orders.cpp` may be a plane order the ship director does not take, or the
+  script's repeated `NavigatorAttackMove` may override it). That is the next packet.
+- **Decision: both switches stay OFF.** `kShipAiApproachLandingModesBound`'s own arms match their
+  predictions, but its purpose (a lander in the `land` state) fails downstream, and
+  `kShipAiLandStepBound` has no reach until it does. The latch-input fix (83.2) is kept under
+  `kShipAiApproachLandingModesBound`.
+
+## 84. Handoff (cc9-ships21, 2026-09-30, at about 75% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 80 | the capture tick read whole; corrections to 78 | - |
+| 81 | the capture: neutralize at 0 hp, 1 s countdown, arms 1 and 3, progress, flip, repair; `BSP_CB_FORCE_ZERO=<unit>@<s>[:<value>]` diagnostic | `kCommandBuildingCaptureBound` ON |
+| 82 | USNOS's 18 -> 63 deaths: planner rule confirmed, blast kills of statics | - |
+| 83 | the land state's enter and step host; the latch's landing inputs | `kShipAiLandStepBound` OFF, `kShipAiApproachLandingModesBound` OFF |
+
+### The next packets, in order
+
+1. **Why the `land` command never becomes current** (83.3). Start from the command table rows
+   of `local\s21_c1_jm08x.log` in the cc9-ships21 tree (`grep "land at pad"`) and the commands
+   host's handling of ord 22 (`entity_orders.cpp` row `{22, 00E08FA0, 00CFB600, "land", 3,
+   true}`), then `0077D600`'s path for a ship. Once `land enters > 0` on JM08, re-run pair B
+   (`s21_runs.ps1 -V <x> -Only jm08x,usn13,usnos,usn04`).
+2. **The ramp** `0074AF20` (the `+11A8h`/`+11ACh` countdown and the CL condition at `0074B07A`),
+   then capture arm 2 (`LandedCapturePower`, class `+810h`) in `capture_step` (the
+   `kCommandBuildingCaptureBound` block in `game_hosts_ship_ai.cpp`).
+3. **What a neutral building's own gun mounts do** (lead's queue item).
+4. From 79: the MCargo transports' landing craft; the back-off countdown (65.2).
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships21\local\`, `s21_` prefix)
+
+`s21_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows> [-Force '<unit>@<s>[:<value>]']` (rows
+include `jm08x`, `usn13l`, `usnosl`); `s21_wait.ps1 -Logs <names>`; `s21_vcall.py <slot>`
+(sites that load or call `[reg+slot]`); `s21_vt.py`, `s21_bytes.py`, `s21_rel32.py`,
+`s21_consts.py`, `s21_disp.py`, `s21_str.py`, `s21_dump.py` (from s20).
