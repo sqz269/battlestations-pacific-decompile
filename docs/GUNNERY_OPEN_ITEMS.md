@@ -7234,3 +7234,74 @@ with `lost_polls=0`. The ON runs also carried `BSP_SHELL_FATE`, whose lines pair
   point.
 - **Not changed:** MAirfield and MShipyard keep the Height-raised point. Their slot `100h`
   (`006D3250`, `00844A10`) is unread.
+
+## 94. Handoff (cc9-gunnery21, 2026-09-30 22:30 UTC, at about 78% context)
+
+### 94.1 Landed
+
+| item | commits | state |
+| --- | --- | --- |
+| 91: the Dyn world phase and hull-hull contact (00C535E0 on kind-4 records, 00C4B610 groups) | `5e576aff9`, `7b5e05db2`, `1de29dd21`, `841add1bc` | `kDynWorldContactPhaseBound`, `kHullHullContactBound` ON |
+| 92: the hull contact report (00C35480 -> 009377E0 -> 008145B0); no ramming damage in the image | `bed6dc011`, `c60dcf1d1`, `d43fa61e5` | `kKamikazeDynContactBound` ON (exit 1 on all 18 rows) |
+| 93: JM08's HQ flak and the Watchtower; artillery aims at a ground target's origin (0042D810) | `e280693d1`, `ccb11aaeb`, `e605e1f15` | `kArtilleryGroundOriginAimBound` ON (large death moves; 93.4) |
+
+**Switches flipped since v, for reference W:**
+- `kDynWorldContactPhaseBound`;
+- `kHullHullContactBound`;
+- `kKamikazeDynContactBound`;
+- `kArtilleryGroundOriginAimBound`;
+- plus those the lead already collects (`kLandingShipStartLandingBound`, ...).
+
+The lead's HQ flak / watchtower question is answered by 93 (scorer: no divergence; accuracy:
+the aim point). It is not open.
+
+### 94.2 Open, in order
+
+1. **Forts** (89.2 step 3). `MLandFort vtable[0A0h]` = `007482B0` creates a static body with
+   group 1, mask `0Dh` (89.1).
+   - Its shapes (`007482D0..00748986`) are not read. Ghidra's decompile of `007482B0` removes
+     11 "unreachable" blocks, which calls for a flow repair (`ghidra flow 007482b0`, then the
+     lead's `ghidra_flow_repair.py`) before the read:
+
+     ```
+     007486A3  007486BD  007486EE  00748708  00748732  0074874C
+     00748777  00748791  007487BC  007487D6  00748969
+     ```
+   - The build then needs static hull-fort pairs in `world_step`. The dispatcher cell is
+     `kindA * 6 + kindB`: box-convex through `native_dyn_primitive_dispatch` /
+     `native_dyn_box_box`, convex-convex through `00C535E0`. Add a static body handle per fort
+     (flags static; solver index 0, like the terrain tiles).
+   - The report of 92 then covers hull-fort contacts too; a fort is not `IsKindOf(6)`, so
+     009377E0 gives no `other`.
+2. **Debris** (`00447510`, group 4, dynamic bodies of `game+30h`, GAME_DYNAMICS_LIST).
+3. **The remaining 3d items:**
+   - **JM08 long's 14.6 m branch change** (91.4): a differential run of `00C535E0` on the two
+     records at world step 13368 against the image's bytes. The trace
+     `BSP_HULL_HULL_TRACE_UNIT=349 BSP_HULL_HULL_TRACE_STEP=13300` reproduces the case.
+   - **91.2's labelled substitutions:** the box broad phase, body A as the lower unit, the
+     shape order, the manifold list order, hull bodies taken as awake.
+   - **The ErrorOffset** of `006DF520` step 5 is not applied for non-ship targets.
+   - **MAirfield and MShipyard's slot `100h`** (`006D3250`, `00844A10`), for 93's aim point.
+4. **From v, not read:** LOMP10's 9 dive releases from 8 aircraft; JM08 long's HQ at 0 hp
+   without a flip (cc9-ships24).
+5. **Carried over:** 90.2 item 5 (85.2 item 4 and 87.2's labelled substitutions).
+
+### 94.3 Tools (`local\` in the cc9-gunnery21 tree, prefix `g21_`)
+
+- **Runs** (copied from g20):
+  - `g21_runs.ps1 -V <prefix> -Only <rows> [-Exe]` and `g21_wait.ps1 -Logs`;
+  - `g21_exp.ps1 -Commit -Out [-Flip]`;
+  - `g21_vs.py <off> <on> [rows]` (it knows `g20_rv`).
+- **Census and diagnostics:**
+  - `g21_hh.py <prefix> [rows]`: the hull-hull census and the deepest pair;
+  - `g21_terr.py <prefixes> <rows>`: the terrain census;
+  - `g21_mapsym.py <addr>`: bsp_game.exe crash address to symbol, through `build\win32\bsp_game.map`.
+- **Env-gated diagnostics in code:**
+  - `BSP_HULL_HULL_TRACE=<file>`, with `_UNIT=<unit>` and `_STEP=<n>`
+    (`src/hull_terrain_contact.cpp`);
+  - `BSP_SHELL_FATE=<shooter>[|<target>]` (`src/game_hosts_gunnery.cpp`).
+- **Pair logs:**
+  - `g21_off` / `g21_w1` / `g21_w2`: section 91;
+  - `g21_r0` / `g21_k1`: section 92;
+  - `g21_a0` / `g21_a1` and `g21_hq_jm08`: section 93;
+  - `g21_trace_*.txt`: the traces.
