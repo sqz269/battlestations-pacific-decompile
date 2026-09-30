@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "bsp/ai_command_lifetime.hpp"
+#include "bsp/attack_commands.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
 #include "bsp/unit_rudder.hpp"
@@ -263,6 +264,19 @@ constexpr int kAiMovetoDiagEvery = 0;
 // ON (2026-09-30): controls identical, USNOS and ESMP08 moved; the ESMP08
 // promotion miss is recorded in 5cg.
 constexpr bool kAiSquadronLeaderPointBound = true;
+// Packet cc9_ai_tick_plane_retask: a plane that receives the AI command tick's
+// moveto (00A02020's tail, 0077D600 00E08F68 through the squadron fan-out) is
+// re-tasked from it. In the image the plane's bot tick sees the command change
+// (0099AE7E -> 0099A4C0): a strafe head (vtable 00D210E0) keeps itself only
+// while 009CC850 finds the current command settarget 00E08F40 or 00E08F78 on
+// the same target, so a moveto retires it and 0099A170's moveto arm
+// (0099A23A) builds the kind-7 task 009C3BE0; a kind-7 head is kept when
+// 009C31B0 finds the new point within 100 m (squared 10000, 00CE3D64) of its
+// own. OFF, this host placed the moveto on the director and left the old task
+// flying: ESMP08's strike leader kept strafing its script target and circled
+// 3.2-4 km off Zuikaku. The install runs at the delivery, one bot tick early,
+// as PilotMoveTo's does (SENTITY_INIT_ATTACH_ORDER 22.7). docs/SQUADRON_LAND_TASK.md 5ch.
+constexpr bool kAiTickMovetoRetasksPlaneBound = false;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
@@ -426,6 +440,49 @@ AiDamageTermsCensus& ai_damage_terms_census() {
     static AiDamageTermsCensus census;
     return census;
 }
+
+// 0099A170's inputs for a plane the AI tick has just ordered, answered from
+// GameUnitsHost as ScriptOrderAttackCommandHost does for the script orders.
+class AiTickMovetoBotHost final : public bsp::AttackCommandHost {
+public:
+    explicit AiTickMovetoBotHost(bsp::game::GameUnitsHost& units) : units_(units) {}
+    std::uint32_t unit_weapon_director(std::uint32_t unit) override {
+        return index_for(unit) < units_.count() ? unit : 0u;   // 0099A18B
+    }
+    std::uint32_t director_current_command(std::uint32_t director) override {
+        return units_.director_current_command_0071be40(index_for(director));
+    }
+    std::uint32_t director_current_params(std::uint32_t director) override {
+        return director;
+    }
+    std::uint32_t resolve_target(std::uint32_t) override {
+        return 0u;   // a position descriptor (00A0214B): no object
+    }
+    bool entity_is_kind(std::uint32_t entity, int kind) override {
+        return units_.unit_is_kind_of(index_for(entity), kind);
+    }
+    bool target_still_attackable(std::uint32_t) override { return false; }
+    std::uint32_t choose_attack_command(std::uint32_t, std::uint32_t, bool, bool) override {
+        return 0u;
+    }
+    std::uint32_t resolve_return_to_base(std::uint32_t) override { return 0u; }
+    std::uint32_t create_bot_task(std::uint32_t, std::uint32_t command,
+                                  std::uint32_t) override {
+        built_command_ = command;
+        return 1u;
+    }
+    void install_bot_task(std::uint32_t, std::uint32_t) override {}
+    bool land_group_available(std::uint32_t) override { return false; }
+    std::uint32_t built_command() const noexcept { return built_command_; }
+
+private:
+    static std::size_t index_for(std::uint32_t token) noexcept {
+        return token > 0u ? static_cast<std::size_t>(token - 1u)
+                          : ~static_cast<std::size_t>(0);
+    }
+    bsp::game::GameUnitsHost& units_;
+    std::uint32_t built_command_{0};
+};
 
 class AiWeightModelBinding final : public bsp::AiTargetWeightModelHost {
 public:
@@ -2237,6 +2294,52 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return bsp::ai_entity_is_groupable_combatant_009fe080(
             combatant_facts(unit_index_of(member)));
     }
+    // Packet cc9_ai_tick_plane_retask (kAiTickMovetoRetasksPlaneBound).
+    struct PlaneRetask {
+        bool valid{false};
+        float point[3]{0.0f, 0.0f, 0.0f};
+    };
+    std::map<std::size_t, PlaneRetask> plane_retask;
+    unsigned long long retask_installed{0};
+    unsigned long long retask_kept{0};
+    unsigned long long retask_replaced_other{0};
+    unsigned long long retask_not_current{0};
+    unsigned long long retask_refused{0};
+    void retask_plane_on_moveto(std::size_t plane, std::uint32_t before,
+                                const float point[3]) {
+        if (units.director_current_command_0071be40(plane) != bsp::kCommandMoveTo) {
+            ++retask_not_current;   // a deferred delivery: no current moveto yet
+            return;
+        }
+        PlaneRetask& r = plane_retask[plane];
+        if (before == bsp::kCommandMoveTo && r.valid) {
+            // 009C31B0: the kind-7 head stays when the new point is within
+            // 100 m planar of the one it was built for.
+            const float dx = point[0] - r.point[0];
+            const float dz = point[2] - r.point[2];
+            if (dx * dx + dz * dz < 10000.0f) {
+                ++retask_kept;
+                return;
+            }
+        }
+        AiTickMovetoBotHost bot(units);
+        const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+            static_cast<std::uint32_t>(plane + 1u), bot);
+        if (task == 0u || bot.built_command() != bsp::kCommandMoveTo) {
+            ++retask_refused;
+            return;
+        }
+        if (before != bsp::kCommandMoveTo) ++retask_replaced_other;
+        units.store_unit_attack_command_class(plane, bsp::kCommandMoveTo);
+        units.store_unit_moveto_range(plane, 0.0f);
+        units.store_unit_moveto_target(plane, ~static_cast<std::size_t>(0));
+        units.store_unit_moveto_point(plane, point);
+        r.valid = true;
+        r.point[0] = point[0];
+        r.point[1] = point[1];
+        r.point[2] = point[2];
+        ++retask_installed;
+    }
     bool tick_issue_moveto(void* member, const float position[3]) override {
         // 00A02020's tail: 0077D600 with the `moveto` class descriptor
         // 00E08F68 and a position descriptor, flags 1.
@@ -2256,11 +2359,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (const std::vector<std::size_t>* members = squadron_member_units(unit)) {
             // 007ECF80's shape again: one moveto per live member plane.
             for (const std::size_t plane : *members) {
+                const std::uint32_t before = kAiTickMovetoRetasksPlaneBound
+                    ? units.director_current_command_0071be40(plane) : 0u;
                 if (units.issue_script_command(plane, bsp::kAiSceneCommandMoveTo, target,
                                                bsp::kAiSceneCommandFlags, "ai_command_tick",
                                                unit_name(plane)) != nullptr) {
                     ++placed;
                     ++summary.squadron_member_orders;
+                    if constexpr (kAiTickMovetoRetasksPlaneBound) {
+                        retask_plane_on_moveto(plane, before, position);
+                    }
                 }
             }
             if (placed != 0) ++summary.squadron_commands;
@@ -5485,6 +5593,13 @@ void GameAiCoordinatorHost::report() {
         host.summary.squadrons_built, host.summary.squadron_members,
         host.summary.squadron_group_members, host.summary.squadron_excluded,
         host.summary.squadron_commands, host.summary.squadron_member_orders);
+    if constexpr (kAiTickMovetoRetasksPlaneBound) {
+        host.log.notef("summary mission ai tick plane retask installed=%llu kept=%llu "
+            "replaced_other=%llu not_current=%llu refused=%llu (0099A4C0 -> 0099A170 "
+            "009C3BE0 on the tick's moveto, packet cc9_ai_tick_plane_retask)",
+            host.retask_installed, host.retask_kept, host.retask_replaced_other,
+            host.retask_not_current, host.retask_refused);
+    }
     if constexpr (kAiCaptureThinkBound) {
         host.log.notef("summary mission ai capture thinks=%llu target_fallbacks=%llu handoffs=%llu "
             "attack_thinks=%llu (packet cc9_planner_defend_capture_thinks)", host.capture_thinks,

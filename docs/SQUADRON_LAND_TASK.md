@@ -8572,3 +8572,86 @@ predicted ones. The ESMP08 promotion was predicted and did not happen; that is r
 miss downstream of the binding (the leader never closes inside 3000), not a failure of it.
 IJN01, BSM01, the LOMP rows, USN04, USN13, JM05 and JM06 were not run; they move where a
 squadron leads a group.
+
+## 5ch. The AI tick's moveto did not re-task the plane (packet `cc9_ai_tick_plane_retask`, cc9-lua31, 2026-09-30)
+
+The lead's question after 5cg: why does ESMP08's strike leader hold 3.2-4 km off Zuikaku? The
+candidates were the 15 s script re-target against the 2-4 s tick `moveto`, or a moveto loiter or
+arrival radius, plus the 80 m gate and the CollectDist value.
+
+### Answers
+
+- **`CloseAttack_CollectDist` is 3000 on ESMP08, and that is the image's value.** `00D1AF84`
+  (5000) is only the default. `00A335D0` loads the record `009FFC80` picks, and game mode 8 is
+  above 7, so it takes the `IslandCapture` arm with difficulty 0. That is
+  `HighLvlAIGlobals["IslandCaptureParams_Rookie"]`, which authors 3000 at
+  `scripts/datatables/highlvlaiglobals.lua:119` (this installation, mtime 2024-07-13). Every
+  record authors 3000 except `EscortParams` (6000, line 832). The run's line reads
+  `summary mission ai tuning mode=0 (IslandCaptureParams_Rookie)`.
+- **The 80 m gate is not it.** The leader and follower orders pass `00A02020` whole (5cg reply),
+  and the leader is kilometres from its point.
+- **A loiter radius is not it.** The leader never flies a moveto task: see the next point.
+- **The leader flies its script target, not the tick's point.** In `local\l31_tr_on_esmp08x.log`
+  the leader's `command target 0071EBF0` token walks through a new random `Mission.IJNFleet` ship
+  every 15 s (Tama, Zuiho, Maki, Ise, Wakatsuki, ...). Its strafe task is re-installed at each
+  `PilotSetTarget`, and there is no moveto task install for any plane apart from the 36 script
+  `PilotMoveTo` installs. The tick's `moveto` reaches the director (`unitcommand` reads `moveto`),
+  but the bot keeps its strafe task. So the leader circles whichever fleet ship it was last given,
+  3.2-4 km from Zuikaku.
+
+### The image
+
+- **`0099A4C0` retires the strafe head on a `moveto`.** The bot tick calls `0099A4C0` at
+  `0099AE7E` when the command changes. It keeps a single head task only while the task's
+  `vtable[40h]` answers 1; otherwise it pops the task and calls `0099A170` for the new command
+  (docs/PILOT_MOVETO_TASK.md, docs/PILOT_BOT_TICK_GATES.md).
+- **The strafe task's `vtable[40h]` is `009CC850`.** The vtable is `00D210E0`, stored at
+  `009CC281` in the factory `009CC230`. `009CC850` is `009CC850`-`009CC8BC`, `__thiscall(task)`,
+  plain `RET`, read from the disk bytes. It takes `[task+404h]`'s `vtable[114h]` director and
+  answers 1 only when:
+  - `0071BE40` is `00E08F40` (`settarget`) or `00E08F78`; and
+  - the command's target (`0071EB60` -> `00521EA0`) equals `task+44Ch`, or `task+468h` when
+    `+44Ch` is null, or both are null.
+
+  A `moveto` (`00E08F68`) answers 0.
+- **`0099A170` then builds the moveto task.** Its moveto arm (`0099A23A`) has no precondition
+  and builds the kind-7 task `009C3BE0`.
+- **A moveto head is kept on a repeat.** `009C31B0` keeps the kind-7 task when the new command
+  is a moveto whose point lies within 100 m planar (`[00CE3D64]` = 10000, squared) of the task's
+  own point (docs/PILOT_MOVETO_TASK.md).
+
+So in the image, every tick `moveto` the group issues ends the scripted strafe, and the leader
+flies to the target group's leader point. The script's re-target 15 s later starts a strafe
+again, which the next tick (2-4 s) ends. That matches 5ce's `unitcommand` reading `moveto`. It
+also means the leader closes on Zuikaku's point.
+
+### The binding, committed OFF
+
+`kAiTickMovetoRetasksPlaneBound` in `src/game_hosts_ai.cpp`:
+- In `tick_issue_moveto`'s squadron fan-out, once the member plane's director holds the
+  `moveto`, the binding runs `bot_install_command_task_0099a170` with a position-only host
+  (`AiTickMovetoBotHost`).
+- It stores the kind-7 task's inputs as PilotMoveTo does: the class `00E08F68`, range 0, no
+  target object, and the point.
+- It keeps the existing task instead when the plane already held a tick `moveto` whose point
+  lies within 100 m (`009C31B0`).
+- **SUBSTITUTION, labelled:** the install runs at the delivery, one bot tick early, as for
+  every script order (SENTITY_INIT_ATTACH_ORDER 22.7).
+- A census line `summary mission ai tick plane retask ...` is printed when the switch is ON.
+
+### Predictions, written before any ON run
+
+- **ESMP08 9200/9000 and 14200/14000:**
+  - the US strike leader stops circling its script target and closes on Zuikaku's leader point;
+  - the group's distance falls below 3000 and it **promotes to `CLOSEATTACK`** (5cg's trace
+    reached 3600 by t=451 while circling, so the promotion should come before t=470);
+  - `retask replaced_other` is non-zero (the strafe heads that a tick `moveto` ends);
+  - after the promotion, `ai_command_tick` `moveto` rows for that group stop and `00A13B60`
+    takes over;
+  - strafe task ticks fall;
+  - the death table moves.
+- **USNOS 3200/3000:** moved (its squadron-led groups' members are re-tasked).
+- **USN02 and USN12 (controls):** gameplay-identical, `pair_diff` exit 0 or 1. Neither has a
+  squadron in a tick-ordered group.
+- **Weakest call:** the promotion. The leader may instead dive onto Zuikaku's own escorts before
+  3000; the script's 15 s strafe re-target still installs between ticks.
