@@ -2646,6 +2646,7 @@ leases `cc9_land_park_taxi` and `cc9_plane_ground_steering` are released with th
 | --- | --- | --- | --- | --- |
 | `cc9_landing_follower_spacing` | `fc783360c`, `057bc636d` | `kLandingLandedArmBound` | ON: all ten LOMP10 planes land | docs/SQUADRON_LAND_TASK.md 5r |
 | `cc9_land_park_taxi` | `a2551c4a3`, `7d89f84cf` | `kLandParkStateBound` | OFF: mechanism failure (park <-> abort loop) | 5s |
+| `cc9_park_verdict` | this commit | `kLandParkStateBound` | **ON**: image loop accepted (SQUADRON_LAND_TASK 5aq, pairs 5ar.1) | 5ar |
 | `cc9_plane_ground_steering` | `f187ab8b1` and the verdict commit | `kPlaneGroundSteeringBound` | OFF: mechanism failure (stopped planes keep turning) | 5t |
 
 The followers' abort was never the spacing rule. `006C7960` tests `plane+904h` before the airborne
