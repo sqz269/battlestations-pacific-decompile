@@ -7305,3 +7305,72 @@ the aim point). It is not open.
   - `g21_r0` / `g21_k1`: section 92;
   - `g21_a0` / `g21_a1` and `g21_hq_jm08`: section 93;
   - `g21_trace_*.txt`: the traces.
+
+## 95. USNOS's death drops under the ground-origin aim (packet `cc9_origin_aim_death_drops`, cc9-gunnery22)
+
+The question (section 93.4): why do USNOS (110 -> 87) and USNOS long (166 -> 123) lose deaths
+when `kArtilleryGroundOriginAimBound` flips ON? Docs only; no host defect was found.
+
+### 95.1 Evidence
+
+- **Pairs.** `local\g21_a0` / `g21_a1` in the cc9-gunnery21 tree (93.4), and a re-run on this
+  tree's `f0ee5e80e`: `local\g22_q0` (the switch forced OFF) against `local\g22_q1` (as
+  committed, ON). Both with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, the reference
+  launch lines; all exit 0, `lost_polls=0`. The re-run gives 113 -> 90 deaths, with the same
+  27 OFF-only and 4 ON-only victims on USNOS as the g21 pair.
+- **Traces** (read-only diagnostics already in the host): `BSP_AA_TRACE_UNIT=<unit>` for the
+  target changes, `BSP_SHELL_FATE=<shooter>|<target>` for the round end points. Logs
+  `g22_q0_usnos` / `g22_q1_usnos` (Shimotsuke), `g22_q0_usnosl` / `g22_q1_usnosl` (ToSpawnAda),
+  `g22_q0t_*` (fates against a named target), `g22_q0z_*` / `g22_q1z_*` (Zao2, Zao3),
+  `g22_q0d_usnos` / `g22_q1d_usnos` (Zao3 against Debrish3 02).
+- **Death sets** by victim name: `local\g22_deaths.py <off> <on>`.
+- **Not the RNG stream.** The runs use separate gunnery streams. The first divergence is in
+  the hits, not in a draw: `gunnery step 100 t=5.00` has hits 4 OFF against 22 ON with the
+  same shots (27). The capture posts' first rounds (category 2, 140..330 m) now land on the
+  ground units they target.
+
+### 95.2 USNOS: every flipped fate (unique victims 108 -> 85; 27 OFF-only, 4 ON-only)
+
+| victims | OFF killer | why they live ON |
+| --- | --- | --- |
+| 8, t = 16.70..17.25 (Hangar Small 01 02 and 01 03, Hangar Medium 03 01, Storage 01 14/18/23, two small Quonset huts) | Shimotsuke (DestroyerGen 346, platforms 1-4, category 6), blast, 2711..2763 m | OFF: its guns hold Watchtower, 01 09 at (-3504.9, 3.0, 3540.3) from 4.15 s to 55.40 s. Aimed at the class-Height point, the rounds land 150..180 m past the tower (x -3613..-3683; `g22_q0t_usnos`), among these buildings. The tower itself survives to 139.30 s. ON: Capture Post 02 (category 2, 143 m) kills the tower at 11.10 s. Shimotsuke moves to Watchtower, 01 10 at 12.35 s and kills it at 29.45 s with a direct round. Its rounds end at the tower (fate 2, x about -3537), not behind it. |
+| 14, t = 102.25..109.55 (Barracks 09/10/11, Storage 01 09, Storage Raktar01 02, six stone houses, Watchtower 01 05, Radiotower 01, Medium Bunker 33) | Shimotsuke, blast, 2886..3304 m | OFF: from 92.30 s its guns take Static warhawk 04 (LandFort `Stat_warhawk`, 2977 m) and then 02. Rounds land about 330 m beyond them (x -3585..-3624, z 3114..3135). ON: warhawks 03 and 04 die at 38.55 s and 02 at 76.00 s, to Capture Post 05 (category 2, 302..333 m). Shimotsuke is never on them in that window. |
+| 3 tents, t = 122.55 | Zao3 gun 965, blast, 2338..2353 m | The same target both ways: Debrish3 02 (LandFort 726, at (-3774.0, 0.5, -2435.0)), 106.65..143.55 s. OFF: the round ends at (-4074.4, 38.8, -2287.6), 335 m past the fort, on the rise where the tents stand. ON: the corresponding round ends at (-3971.4, 46.5, -2342.4), 220 m past, and kills nothing. |
+| Fortress element, Small tower 01, t = 149.65 | Zao2 gun 925, blast, 2315 m | The same Debrish3 02 targeting (traced on the long row, identical OFF and ON). The OFF scatter reaches the tower. |
+| US Barracks Brown 08, t = 128.55 | Capture Post 03, blast, 379 m | Downstream: not traced. |
+| **ON-only:** Office 01 01 (5.05 s) and Radiotower 02 (29.60 s) | Capture Post 05, direct, 165 and 202 m | The low guns hit what they aim at. |
+| **ON-only:** Hangar Small 04 10 (16.40 s), Office 01 03 (16.60 s) | Shimotsuke, 2518..2564 m | Rounds on and around Watchtower, 01 10. |
+
+### 95.3 USNOS long (unique victims 161 -> 120; 44 OFF-only, 3 ON-only)
+
+- **The first 150 s** match USNOS: the 22 Shimotsuke victims, a Zao3 tent and Capture Post
+  03's barracks.
+- **13 victims to ToSpawnAda at 357.29..369.38 s** (Watchtower 01 14, Heavy AA US Big
+  Platform 09, eight storages, a barracks, an office, a house; category 4, blast, 2281..2946 m):
+  - OFF: ToSpawnAda's platform 2 takes Radiotower 02 at (1455.3, 3.0, 5603.7) at 330.19 s.
+    Its rounds from 355.69 s end 60..300 m around the tower, inside the airfield cluster
+    (`g22_q0t_usnosl`). The tower dies at 363.63 s to Capture Post 03.
+  - ON: Radiotower 02 died at 29.60 s (95.2). At 330.19 s the Ada takes House, Okinawa B 07
+    instead, 3108 m away, and never fires into the cluster.
+- **Zao2, 4 victims at 265.81..280.85 s** (two wooden houses, Tent03 16, Storage 01 17; blast,
+  1562..1858 m): the Debrish3 02 scatter of 95.2. The target timeline is identical both ways
+  (`g22_q0z_usnosl` / `g22_q1z_usnosl`). One ON-only victim, Storage 01 07 at 288.25 s, is
+  the same scatter landing elsewhere.
+- **Capture Post 03** (2 more, 228.51 s and 314.00 s) and **Fortress element, Small 06**
+  (Storage Raktar02 01, 238.06 s): downstream, not traced.
+
+### 95.4 Reading
+
+- **Most of the drop is collateral.** 47 of the 71 OFF-only victims over both rows (22 + 22
+  Shimotsuke, 3 Zao3) were killed by rounds aimed at the class-Height point above a ground
+  target: the rounds passed over it and fell 150..335 m beyond, among clustered buildings.
+- **The rest follow from earlier target deaths.** The ToSpawnAda 13 and the second Shimotsuke
+  group are rounds at a target that died early in the ON run: Radiotower 02, the warhawks.
+  Those died early because low category 2 guns now hit ground targets.
+- **The image's aim is the origin (0042D810).** So the OFF collateral is a host artefact, and
+  the ON counts are the reconstruction's current reading. No switch changes; section 93's
+  flip stands.
+- **Open, not a defect claim.** ON, Shimotsuke holds Static warhawk 02 (3286 m, gun
+  max_range 3300) from 39.00 s until it dies at 76.00 s, and fires one round in that window
+  (48.65 s, fate 5). Whether the range or arc gate refuses the origin at that distance is not
+  traced.
