@@ -7017,3 +7017,100 @@ Convoys and formations overlap their neighbours.
 3. JM08 long's 14.6 m branch change: a differential run of `00C535E0` on the two records at
    world step 13368 against the image's bytes would settle whether the image gives the same
    result.
+
+## 92. The hull-hull contact report: 00C35480 -> 009377E0 -> 008145B0 (packet `cc9_hull_contact_report`, cc9-gunnery21)
+
+### 92.1 What the image does
+
+**The events.**
+- `00C44090` queues one event `{manifold, shape A, shape B}` in `scene+0D8h` per dispatcher hit
+  (the mask tests `00C4420D..00C44232`, the append `00C44258..00C44301`). It does so when body A's listener mask (`[B+68h]+4h`) meets shape B's
+  group, or body B's meets shape A's.
+- A hull's listener is its controller `+20h`, and its mask `+24h` is `7FF9h` (`00939CD5`,
+  UNIT_CONTROLLER_UPDATE). So every hull pair and every hull-terrain pair queues events.
+
+**The dispatch, `00C35480`** (the collision pass's last step, `00C57827`). Per event:
+- It transforms the manifold's points on body A into world space, into a stack record: `+0`
+  shape, `+4h` the other shape, `+8h..` the points (`00C354E0..00C35549`).
+- `+38h..+40h` is copied from `manifold + 8 + eventIndex * 30h` (`00C354B6..00C354CE`; the
+  index advances by `30h` per event, `00C355C5`). That is point *k*'s normal for event *k*,
+  and memory past the four points for *k* >= 4. It is an image quirk; only 009377E0's
+  magnitude reads it.
+- It calls body A's listener with `(A, B)` (`00C35551..00C35580`), then body B's with the same
+  record and the shapes swapped (`00C35582..00C355B8`).
+
+**`009377E0`** (body `009377E0..00937B6F`, `RET 4`), for the record `esi`:
+- **The kind.** kind = `00C32450(esi+4)` (the other shape's `+2Ch`, its group) and flags =
+  `00C32450(esi+0)`. Kind 8 (terrain) latches `unit+1010h` and returns, as section 84 binds.
+- **The other unit.** `other` = `00C31EA0` (the other body's `+6Ch` owner), kept only if it
+  answers `IsKindOf(6)` (`00937827..0093784F`). Flags bit 1 with another unit runs `009373C0`;
+  a hull's group is 1, so it does not run.
+- **The gate** (`00937886..009378E6`) opens for any pair with another unit. The
+  `+510h` / `+514h` (KamikazeDamage / KamikazeBlastDamage) test only matters when there is
+  none.
+- **Two cancels** (`009378ED..00937916`): `unit+6B8h >= 0` with `00779AD0` (the age
+  `([00F876B0] - unit+294h) * [00D0DE84]`) under 3.0 (`[00CE3854]`), and the same test on the
+  other unit (`0092CE70`). `unit+6B8h` is DummyObjectID: -1 from the unit constructor
+  (`0095CDBE`, `0095CDE9`), and its writers have no caller. So neither cancel ever fires.
+- **The point velocities.** Both bodies' velocities at record `+8h`: `v + w x (p - B+2Ch)`
+  (`00C35300` B+2Ch, `00C31F20` angular `M+0Ch`, `00C31F40` linear `M+0h`), and their lengths
+  (`0042B2F0`). The impact vector is `n * dot(n, v_own - v_other)` with its y zeroed, using
+  the `+38h` normal.
+- **The call.** `008145B0(point, |impact|, other, 0)` on the own unit, only when
+  `|v_own| <= |v_other|` (`00937B31..00937B61`). The slower body reports.
+
+**`008145B0`** (`__thiscall`, `RET 10h`, read in full here):
+- It reads neither the point nor the magnitude.
+- It needs a single-player session (`game+1FE4h != 2`), `other != 0`, and
+  `00803510(unit+54h, other+54h) == 1` (enemy).
+- Then, for each party that is alive (`+5Dh..+60h` clear) and a kamikaze (`00779AA0`: `+510h`
+  or `+514h` above 0), it routes message 70h with the other party as the target: the
+  detonation `00819A20` of SHIP_AI 46.
+
+**So the image has no ramming damage for ordinary ships.** A hull-hull contact sets off a
+kamikaze and does nothing else. The eventIndex normal quirk changes only the unused
+magnitude.
+
+### 92.2 What was built (committed OFF, `bed6dc011`)
+
+- **`HullTerrainContactSolver`** keeps each hull-pair event of the last world step
+  (`contact_events()`): the pair (A the lower unit), the manifold's point 0 on A in world space,
+  and both point speeds, taken after the narrow phase and before the solve, as `00C35480`
+  runs. `GameUnitsHost::hull_contact_events()` exposes them.
+- **The gunnery host's `run_kamikaze_contacts`** runs every event through both listeners:
+  `IsKindOf(6)`, the slower body, hostility, then a live kamikaze party.
+- **`kKamikazeDynContactBound`** (`src/game_hosts_gunnery.cpp`):
+  - True: that is the contact that detonates. The bow-point / hull-box stand-in of section 46
+    no longer runs.
+  - False: the stand-in as before, with the events as a census (`summary mission gunnery hull
+    contact report`).
+- **LABELLED:**
+  - a kamikaze detonates at most once per step (whether a second message 70h in one step
+    detonates again is not read);
+  - the events are those of the host's last world step;
+  - the report needs `kHullHullContactBound`.
+
+### 92.3 The OFF census, and the predictions (2026-09-30 21:41 UTC, before any ON run)
+
+The OFF census comes from this tree's build of `bed6dc011`, 18 rows plus the smoke
+(`local\g21_r0_<row>`), all exit 0, `lost_polls=0`.
+- Every event produces exactly one slower-body call; there are no ties.
+- No call has a hostile kamikaze party on any row.
+- USN02 has 618 hostile calls between ordinary ships (Java and Samidare): no effect in the
+  image.
+- The kamikaze boats of USNOS long touch only friendly hulls: 294 refused box contacts under
+  the stand-in, and 0 hostile Dyn calls.
+
+| rows | events | not hostile | kamikaze parties |
+| --- | --- | --- | --- |
+| USN01, BSM01, smoke | 0 | 0 | 0 |
+| USN02 | 1997 | 1379 | 0 |
+| the other 14 | 5 (LOMP06) .. 129461 (JM08 long) | all | 0 |
+
+**Prediction (`local\g21_k1`, the flip, against OFF):**
+- exit 0 or 1 on all 18 rows, death tables identical;
+- the kamikaze summary's `contacts` and `hostile_refused` go to 0 on USNOS long (the stand-in
+  is off), and `min_gap` to -1 on USNOS and USNOS long.
+
+**Mechanism failure:** any row whose gameplay moves (there is no hostile kamikaze contact to
+move it).

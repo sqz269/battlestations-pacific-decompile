@@ -829,7 +829,7 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
                         std::memcpy(in, c, sizeof(in));
                         insert_native_dyn_contact_00c3f760(m.bytes, in);
                     }
-                    // 00C441F9..00C442D8: one event {manifold, shape A, shape B} per
+                    // 00C4420D..00C44301: one event {manifold, shape A, shape B} per
                     // dispatcher hit, queued when a listener mask (hull: 7FF9h, 00939CD5)
                     // meets the other shape's group (1).
                     if (apply && n > 0) {
