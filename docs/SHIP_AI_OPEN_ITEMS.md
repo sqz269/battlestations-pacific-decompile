@@ -5408,3 +5408,95 @@ casts, reach tests and moved points), and the move appears only on the row with 
 switch is flipped in `include/bsp/ship_ai_approach_update.hpp`. Modes 3 and 4 (`009F21A0-009F2395`)
 stay unread and labelled. The expected movement for reference R is IJN01's damage split above,
 with no death flip.
+
+## 65. Yorktown astern: the obstacle back-off latch is never counted down (packet `cc9_ship_ai_backoff_countdown`, cc9-ships18, 2026-09-29)
+
+The lead's question: cc9-lua20 saw USS Yorktown in JM05 moving astern at 10.4 m/s while it recovered
+aircraft, with velocity (-7.6, -7.2) against a heading of 46.7 degrees. Lexington steamed ahead. Is
+the astern motion the image's recovery behaviour, or a host substitution?
+
+**Answer: a host defect in the ship AI drive, not carrier recovery.** The host never runs the head of
+`009F3F80` (`BSP_ShipAi_DriveOrderRing`), which counts down the obstacle astern latch `blk+380h`.
+The latch is armed at 1.0 s by `009F47A7`. Once it has been armed, it stays positive forever. The ship
+is then held on the astern-only throttle window, and the escape section that would re-commit it ahead
+never runs again.
+
+### 65.1 What Yorktown does in the host (JM05 9200/9000, `local\s18_on_jm05l.log`, 60.7 + section 64 build)
+
+- From step 60 (3.0 s) Yorktown is on `movetopos`, a scripted or planner order. Its nav goal is
+  (-431.7, -920.9), 13.1 km away on heading 0.8172 rad (46.8 degrees). No carrier-recovery code
+  touches its throttle or heading.
+- From step 180 its sampled desired throttle is -0.625. That is `009EC7C0`'s astern floor
+  (`kShipAiAsternThrottleFloor`, `00D21A78`), taken because `blk+364h` is clear: the ship is committed
+  astern. The latched direction stays `ahead`.
+- The throttle stays at -0.625 to step 9000. Its distance to the goal (`d32c`) grows from 8585 to
+  12615 m. The hull has turned onto the goal bearing (rudder 0), so it backs away from its goal
+  stern first: velocity (-7.6, -7.2) is heading 46.7 degrees reversed. **That is lua20's
+  observation.**
+- The recovered squadrons land on a carrier moving backwards. Recovery is a consumer of the motion,
+  not its cause.
+
+### 65.2 The image
+
+`009F3F80` (`void __thiscall(blk)(float dt)`, `RET 4`, body `009F3F80-009F4D06`) begins, before its
+only early out at `009F3FEB`, with this head (disk bytes, `local\s18_before.py 009F3FC5`):
+
+```
+009F3F89 MOVSS XMM0,[ESI+380h] / MOVSS [ESP+24h],XMM0 / COMISS XMM0,XMM1(0) / JB 009F3FEB
+009F3FA4 COMISS XMM0(3.0f 00CE3854),[ESI+354h] / JBE / MOVSS [ESI+354h],XMM0
+009F3FB5 FLD [ESP+24h] / FSUB [ESP+2Ch](dt) / FSTP [ESP+24h] / FLD [ESP+24h] / FST [ESI+380h]
+009F3FCB FLDZ / FCOMI ST1 / FSTP ST0 / JBE 009F3FEB
+009F3FD3 MOVSS [ESI+380h],-1.0f (00D7A260) / MOVSS [ESI+384h],0
+```
+
+So while `blk+380h >= 0`, it holds `blk+354h` at no less than 3.0, counts the latch down by `dt`, and
+when it goes negative resets it to -1.0 and clears the stall accumulator `blk+384h`. A displacement sweep
+(`local\s18_disp.py 380 384`, 009D0000-009FFFFF) finds `+380h` accessed only by this head,
+`009F47A7`/`009F47A9` (the 1.0 on a back-off) and the read at `009F488D`. Its other hits are
+misdecodes that overlap those instructions.
+
+**The host.** `drive_order_ring_009f3f80` in `src/game_hosts_ship_ai.cpp` starts at the `009F3FEB`
+early out. The obstacle middle (`src/ship_ai_obstacle_tables.cpp`) arms `backoff_timer_380` and reads
+it at `009F47FC` and `009F488D`, but nothing counts it down. docs/GAME_EXECUTABLE.md's span table for
+`009F3F80` starts at `009F3FEB`, and docs/SHIP_AI_OBSTACLE_TABLES.md says the head belongs to
+another packet. The countdown fell into the gap between them.
+
+**Census of stuck ships** (`local\s18_astern.py`, the section 64 ON logs; negative sampled throttle
+up to the last step):
+- JM05 3000: Yorktown, Minneapolis, Chicago, Portland, Farragut, Aylwin, Haguro and Zuikaku at -0.625
+  or close to it; several IJN destroyers carry smaller negatives to the end.
+- USN13: Maru4, Maru6, Maru18 and Maru24 at -0.625, and Maru14, Maru15, Maru39 and Maru48 negative.
+- IJN01: PT1 and LST3 at -0.625.
+- USN04: Northampton-class01 (from step 4410).
+- USN01: none at the end.
+
+### 65.3 The binding
+
+`bsp::ship_ai_backoff_countdown_009f3f89` (`src/ship_ai_obstacle_tables.cpp`), called at the top of
+`drive_order_ring_009f3f80` behind `kShipAiObstacleBackoffCountdownBound`
+(`include/bsp/ship_ai_obstacle_tables.hpp`). It is committed OFF. `blk+354h` is
+`ShipAiControlBlock::clamp_354`, the field `009DE763` raises the same way. Both sides count
+`held_steps` (entries with the latch at or above zero) and the units that had any. ON also counts
+`expiries`. The summary line is `summary mission ship ai backoff countdown`, with one
+`ship ai backoff held` row per unit.
+
+### 65.4 Predictions, written before any ON run
+
+Rows: section 64's seven, same launch form.
+1. **OFF is gameplay identical to its own base** (only the new summary lines and a record row).
+2. **ON moves every row whose OFF `units` > 0 (exit 3), and `expiries` > 0 there.**
+   - ON `held_steps` falls to a small fraction of OFF: each arming lasts about 1 s (20 steps at
+     0.05) unless the same blocker re-arms it.
+3. **JM05 (3000 and 9000):**
+   - Yorktown's sampled throttle leaves -0.625 within a few seconds of step 180, and it makes
+     headway toward (-431.7, -920.9): `d32c` falls instead of growing.
+   - Minneapolis, Chicago, Portland, Farragut, Haguro and Zuikaku no longer end the run astern.
+   - The recovered squadrons land on a Yorktown moving ahead. Landing and death rows may move, in a
+     direction not predicted.
+4. **USN13:** the Maru transports listed above stop backing astern and follow or move to their
+   points. Positions, and so the bombing and gunnery exchanges, move; the death table can move.
+5. **IJN01:** PT1 and LST3 stop backing astern.
+6. **Mechanism failure** keeps the switch OFF:
+   - `expiries` = 0 ON;
+   - or Yorktown still ends the JM05 row at -0.625 with `d32c` growing. Then something other than
+     this latch holds it astern, and 65.1 is wrong.

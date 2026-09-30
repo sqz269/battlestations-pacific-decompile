@@ -289,6 +289,28 @@ inline constexpr float kShipAiStallThreshold = 10.0f; // 00CE38B8
 // 009F45CD: the hold blk+354h is raised to while a sector is blocked.
 inline constexpr float kShipAiObstacleHold = 3.0f; // 00CE3854
 
+// ---------------------------------------------------------------------------
+// 009F3F89..009F3FE3, the head of 009F3F80 before the 009F3FEB early out
+// ---------------------------------------------------------------------------
+// Packet cc9_ship_ai_backoff_countdown (docs/SHIP_AI_OPEN_ITEMS.md section 65).
+// While the astern latch blk+380h is at or above zero (009F3F97 COMISS against
+// 0, JB skips a negative or unordered value):
+//   - 009F3FA4..009F3FAD raise blk+354h to 3.0f (00CE3854);
+//   - 009F3FB5..009F3FC5 count the latch down by the routine's dt, through a
+//     float local (FSUB, FSTP), then FST into blk+380h;
+//   - 009F3FCB..009F3FE3: once it is below zero (FLDZ, FCOMI, JBE keeps it) it
+//     becomes -1.0f (00D7A260) and the stall accumulator blk+384h becomes 0.
+// Returns true when the latch expired on this call.
+inline constexpr float kShipAiObstacleBackoffExpired = -1.0f; // 00D7A260
+bool ship_ai_backoff_countdown_009f3f89(float& hold_354, ShipAiObstacleState& obs,
+                                        float dt) noexcept;
+
+// True: the host runs 009F3F89..009F3FE3 at the top of 009F3F80. False: the
+// latch 009F47A7 arms at 1.0f is never counted down, so an AI ship that backs
+// off once stays astern-only (009F47FC's [-1, 0] window) and the escape
+// section (009F488D) never runs again unless the stall passes 10.
+inline constexpr bool kShipAiObstacleBackoffCountdownBound = false;
+
 // 009F45A4..009F45B0.
 int ship_ai_sector_index_009f45a4(int direction_index, int bucket) noexcept;
 

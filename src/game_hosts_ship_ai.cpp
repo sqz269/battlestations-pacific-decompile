@@ -939,6 +939,7 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiGoalVectorState goal_vector{};
         bsp::ShipAiGoalTargetRecord latched{};
         bsp::ShipAiObstacleState obstacle{};
+        unsigned long long backoff_held_steps{0}; // 009F3F80 entries, blk+380h >= 0
         bsp::ShipAiPathPointRecord path_point{};
         // The five attackmove sub-state objects 009E8450 builds, each with its
         // own storage. 007B3DD0 has none: its whole body is one RET 4.
@@ -9832,6 +9833,21 @@ void GameShipAiHost::Impl::run_navigation_goal_009de050(Controller& ctl, GameShi
 void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controller& ctl,
     GameShipAiRow& row, float seconds) {
     done("ShipAi::drive_order_ring", 0x009f3f80u);
+    // Packet cc9_ship_ai_backoff_countdown, 009F3F89..009F3FE3: the head counts
+    // the astern latch blk+380h down before the early out below.
+    if (ctl.obstacle.backoff_timer_380 >= 0.0f) {
+        ++summary.backoff_held_steps;
+        ++ctl.backoff_held_steps;
+    }
+    if (bsp::kShipAiObstacleBackoffCountdownBound) {
+        if (bsp::ship_ai_backoff_countdown_009f3f89(ctl.blk.clamp_354, ctl.obstacle,
+                                                    seconds)) {
+            ++summary.backoff_expiries;
+        }
+        done("ShipAiObstacle::backoff_countdown", 0x009f3f89u);
+    } else {
+        record("ShipAiObstacle::backoff_countdown", 0x009f3f89u);
+    }
     // 009F3FEB CMP byte [ESI+3F5h],0 / 009F3FF2 JNZ 009F4D00: the routine's one
     // early out, and it jumps past the hop to the epilogue. blk+3F5h is the
     // byte 009ED6B0 returns on (bsp::ShipAiControlBlock::early_out_3f5) and
@@ -11120,6 +11136,23 @@ void GameShipAiHost::report() {
         "frames_differ=%llu bound=%d (009F1E30 JE 009F2003, packet cc9_approach_no_ship_hold)",
         host.summary.hold_arm_runs, host.summary.hold_frames, host.summary.hold_frames_differ,
         bsp::kShipAiApproachNoShipHoldBound ? 1 : 0);
+    {
+        std::size_t held_units = 0;
+        for (const auto& c : host.controllers) {
+            if (c.backoff_held_steps != 0u) ++held_units;
+        }
+        host.log.notef("summary mission ship ai backoff countdown held_steps=%llu units=%zu "
+            "expiries=%llu bound=%d (009F3F89..009F3FE3, packet cc9_ship_ai_backoff_countdown)",
+            host.summary.backoff_held_steps, held_units, host.summary.backoff_expiries,
+            bsp::kShipAiObstacleBackoffCountdownBound ? 1 : 0);
+        for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
+             ++index) {
+            const auto& c = host.controllers[index];
+            if (c.backoff_held_steps == 0u) continue;
+            host.log.notef("  ship ai backoff held %-24s steps=%llu", host.rows[index].unit.c_str(),
+                c.backoff_held_steps);
+        }
+    }
     for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
          ++index) {
         const auto& c = host.controllers[index];
