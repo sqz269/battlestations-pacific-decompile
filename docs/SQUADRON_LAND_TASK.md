@@ -5034,3 +5034,33 @@ carrier planes). This packet binds the index half.
    plane reaches the hide).
 4. **A mechanism failure would be** a detached plane taking a hit or a blast record ON, or any
    death row changing without a hidden plane in it.
+
+### 5as.1 Measured (pairs on `ad0380150`), and the verdict: ON
+
+- **OFF** is `local\l24_hoff` and **ON** is `--flip kHitIndexDetachBound=true`, `local\l24_hon`.
+  Both have park ON (5ar).
+- The logs are `local\l24_h{off,on}_<row>.log` and the diffs `local\l24_hdiff_<row>.txt` (cc9-lua24
+  tree).
+- The 300-frame smoke of the OFF build exited 0.
+
+| row | `pair_diff` | death rows | `offers` | moved |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 1 | identical (18) | 1258 | `line_of_fire_tests` 27484 -> 27398 |
+| JM05 3200/3000 | 1 | identical (12) | 18 | `line_of_fire_tests` 24825 -> 24823 |
+| USN04 4700/4500 | 1 | identical (48) | 0 | the bound line only |
+| LOMP10 9200/9000 | 1 | identical (9) | 0 | the bound line only |
+| USN01 3200/3000 (control) | 1 | identical (17) | 0 | the bound line only |
+| BSM01 3200/3000 (control) | 1 | identical (0) | 0 | the bound line only |
+
+The ship AI `free` refill counter also moved on some rows; it is the known same-binary noise.
+
+**The predictions:**
+1. **Held.** JM05 9000 returned 1, and `offers` = 1258. The line of fire's box tests fall by 86,
+   which is the detached planes no longer being tested. Hits, shots, damage and the per-entity
+   death table are identical. As predicted, the candidate and recon counters of 5ar.1 do not move.
+2. **Held.** JM05 3000 returned 1, with `offers` = 18.
+3. **Held.** The other rows show `offers` = 0.
+4. **No mechanism failure.** No detached plane took a hit or a blast record on either side.
+
+**Verdict: `kHitIndexDetachBound = true`.** The flip itself is the lead's to apply, because
+`src/game_hosts_gunnery.cpp` is leased to cc9-gunnery18. It is U material, after T's base.
