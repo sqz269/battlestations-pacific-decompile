@@ -7046,3 +7046,33 @@ in the cc9-gunnery17 tree. Read only.
   the bases. The coastal guns are the ships' own party; the other props' party is not in the log.
   So whether the image lets a ship's blast damage its own side's statics is a question for the
   gunnery blast path (cc9-gunnery17), not for the planner. The planner switch stays ON.
+
+## 83. The land state's step bound OFF, and the section 77 pairs (packet `cc9_land_step_host`, cc9-ships21, 2026-09-30)
+
+`kShipAiLandStepBound` (`src/game_hosts_ship_ai.cpp`, committed OFF) runs the `land` state
+(vtable `00D21658`) where it was a record:
+
+| slot | image | host |
+| --- | --- | --- |
+| enter `+4h` | `009E18D0`: `+8h` = 0, `+0Ch` = 1.0f, `+8h` = landing time `+1210h` for a kind-0Ch unit, `+10h` = 0 | the same, from `BuildingPadModel::Lander::landing_time_1210`; the tail `0080E490` / `0092BD70` is a record |
+| step `+0Ch` | `009E1950` (`ship_ai_follow_land.cpp`) | `LandStepBinding` over the pad model: `lander_pad_1200`, `006AC220` occupant, `+220h` owner, `brain+0B20h` fallback base, `006F2E60` pick, `006F2FB0` assign, `006AC5D0` (line refresh plus per-call arm), the shared-stream draw for the 3..5 s re-scan |
+| `vtable[2Ch]` | `009DAB10` (slot read from the PE: `00D21658+2Ch`) | the navigation states' shared arrival test, as `movetopos` |
+
+Host substitutions (LABELLED): `0082ADC0`'s zone set is `group_for_layer(class+570h)` (the
+landing modes' `00417E60` arm does the same); `blk+300h` (brain+308h) has no reader and is a
+record; the pose-cache refreshes are records.
+
+### 83.1 Predictions (written before any run)
+
+The land state is only entered through the `land` command that `0074A990` issues (section 77), so
+the land step changes nothing unless `kShipAiApproachLandingModesBound` is also on.
+
+- **Pair A, the pending section 77 pair:** `kShipAiApproachLandingModesBound` OFF vs ON (land
+  step OFF on both), JM08 36000 plus controls USN13, USNOS and USN04. JM08: 77.2's predictions
+  (`mode4_points > 0`, `mode3_points > 0`, `begins` 1..4, exit 3); the landers sit in an unrun
+  `land` state after `begins`. Controls exit 0 or 1 (no lander latches).
+- **Pair B:** landing modes ON on both sides, land step OFF vs ON, same rows. JM08: `enters` equal
+  to `begins`, `steps > 0`, `with_pad > 0` (each lander holds the pad `0074A990` gave it), the
+  landers drive toward their pads' approach points and reach `final > 0`; exit 3. Nothing lowers
+  a ramp yet (`0074AF20` is the next packet), so `LandedCapturePower` never counts and the HQ is
+  not captured. Controls exit 0 or 1.

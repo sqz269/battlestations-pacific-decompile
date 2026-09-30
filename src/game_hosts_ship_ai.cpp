@@ -515,6 +515,13 @@ inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
 // ON (2026-09-30): the seven CommandBuilding and control rows gameplay-identical (exit 1);
 // the BSP_CB_FORCE_ZERO diagnostics neutralize, tick and flip as read (section 81.2).
 inline constexpr bool kCommandBuildingCaptureBound = true;
+// Packet cc9_land_step_host (docs/SHIP_AI_OPEN_ITEMS.md section 83). True: the
+// `land` state (vtable 00D21658) runs its enter 009E18D0 (state+8h = the lander's
+// landing time +1210h, +0Ch = 1.0f, +10h = 0) and its step 009E1950 over the
+// building pad model (pad re-pick 006F2E60 / 006F2FB0, the pad approach point
+// 006AC5D0, the approach arm's navigation goal and the final arm's held heading).
+// False: the state is selected and its step is a record, as before.
+inline constexpr bool kShipAiLandStepBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -975,6 +982,8 @@ struct GameShipAiHost::Impl {
         // and `out_of_station` CLEAR (009F3A53); 009DF2D0 writes everything else
         // before the step reads it.
         bsp::ShipAiFollowState follow_state{};
+        // Packet cc9_land_step_host: the `land` state's own fields (brain+0BE0h).
+        bsp::ShipAiLandState land_state{};
         // What the follow step published, for the report only: the distance from
         // the ship to the station 009DE050 was given, last and worst.
         float follow_station_error{0.0f};
@@ -2289,6 +2298,23 @@ public:
             // reader (LABELLED: stored nowhere).
             ctl_.kamikaze.attack_run_08 = false;
             owner_.done("ShipAiState::kamikaze_enter_009db320", 0x009db320u);
+        } else if (kShipAiLandStepBound && state != nullptr && state->step == 0x009e1950u) {
+            // 009E18D0..009E194C (docs/SHIP_AI_OPEN_ITEMS.md 76.3): state+8h = 0.0f,
+            // +0Ch = 1.0f, then for a kind-0Ch unit +8h = unit->vtable[248h]() =
+            // 0074BC10 (FLD [ECX+1210h]), the landing time; +10h = 0. The trailing
+            // 0080E490(unit, 0) / 0092BD70 pair is a record (unread).
+            ctl_.land_state.speed_ramp_08 = 0.0f;
+            ctl_.land_state.rescan_timer_0c = 1.0f;
+            if (owner_.units.unit_is_kind_of(index_, 0x0c)) {
+                const bsp::BuildingPadModel::Lander* lander =
+                    bsp::building_pad_model().lander(static_cast<int>(index_));
+                ctl_.land_state.speed_ramp_08 = lander != nullptr ? lander->landing_time_1210
+                                                                  : 0.0f;
+            }
+            ctl_.land_state.final_10 = false;
+            owner_.record("ShipAiLand::enter_tail_0080e490", 0x0080e490u);
+            ++owner_.summary.land_enters;
+            owner_.done("ShipAiState::land_enter_009e18d0", 0x009e18d0u);
         } else {
             owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
         }
@@ -8614,6 +8640,187 @@ private:
     std::size_t index_;
 };
 
+// Packet cc9_land_step_host: 009E1950's host over the building pad model. The
+// step's entity handles are units-host (or pad) indices plus one; 0 is null.
+class LandStepBinding final : public bsp::ShipAiLandStepHost {
+public:
+    LandStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                    GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    bool held_pad() const { return held_pad_; }
+
+    void refresh_world_pose_00414db0(int) override {
+        // The pose cache refresh; this host's poses are always current.
+        owner_.record("ShipAiLand::refresh_world_pose", 0x00414db0u);
+    }
+    int brain_unit_0aa8() override { return static_cast<int>(index_) + 1; }
+    bsp::ShipAiFollowLandXZ brain_goal_vector_0b2c() override {
+        owner_.done("ShipAiLand::brain_goal_0b2c", 0x009e195bu);
+        return bsp::ShipAiFollowLandXZ{ctl_.goal_vector.goal_x_0b2c,
+                                       ctl_.goal_vector.goal_z_0b34};
+    }
+    bsp::ShipAiFollowLandXZ unit_position() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        return bsp::ShipAiFollowLandXZ{x, z};
+    }
+    bool entity_matches_kind_5c(int entity, int kind) override {
+        // 009E19C2 (0Ch on the unit) and 009E1A8C (1Ch on the base): IsKindOf.
+        if (entity <= 0) return false;
+        return owner_.units.unit_is_kind_of(static_cast<std::size_t>(entity - 1), kind);
+    }
+    int unit_landing_pad_1200(int unit) override {
+        const int pad = bsp::building_pad_model().lander_pad_1200(unit - 1);
+        held_pad_ = pad >= 0;
+        return pad >= 0 ? pad + 1 : 0;
+    }
+    int pad_occupant_006ac220(int pad) override {
+        const bsp::BuildingPadModel::Pad* p = bsp::building_pad_model().pad(pad - 1);
+        return p != nullptr && p->occupant >= 0 ? p->occupant + 1 : 0;
+    }
+    float random_uniform_00bd2f10(float low, float high) override {
+        // 009E1A51, the shared generator, as the landing modes' 0074A990 draw.
+        if (owner_.gunnery_draws == nullptr) return low;
+        return owner_.gunnery_draws->ship_ai_draw(index_, low, high);
+    }
+    int pad_owner_220(int pad) override {
+        const bsp::BuildingPadModel::Pad* p = bsp::building_pad_model().pad(pad - 1);
+        return p != nullptr && p->owner >= 0 ? p->owner + 1 : 0;
+    }
+    int brain_landing_base_0b20() override {
+        // brain+0B20h, the goal vector's raw target (a units-host handle, index + 1).
+        const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
+        return t != 0u && t - 1u < owner_.units.count() ? static_cast<int>(t) : 0;
+    }
+    int pick_landing_pad_006f2e60(int base, int unit, bool skip_owned) override {
+        float pos[3]{};
+        owner_.units.unit_position_00fc(static_cast<std::size_t>(unit - 1), pos[0], pos[1],
+                                        pos[2]);
+        const int pad = bsp::building_pad_model().pick_006f2e60(base - 1, unit - 1, pos,
+                                                                skip_owned);
+        owner_.done("ShipAiLand::pick_pad_006f2e60", 0x006f2e60u);
+        return pad >= 0 ? pad + 1 : 0;
+    }
+    void assign_landing_pad_006f2fb0(int base, int unit, int pad) override {
+        bsp::building_pad_model().assign_006f2fb0(base - 1, unit - 1, pad - 1);
+        ++owner_.summary.land_pad_assigns;
+        owner_.done("ShipAiLand::assign_pad_006f2fb0", 0x006f2fb0u);
+    }
+    void set_blk_field_300(float) override {
+        // blk+300h (brain+308h): no reader in this process (as moveonpath's store).
+        owner_.record("ShipAiLand::brain_field_308", 0x009e1ac2u);
+    }
+    int ship_class_zone_group_570() override {
+        return static_cast<int>(ctl_.class_reference_0570);
+    }
+    bsp::ShipAiFollowLandXZ pad_approach_point_006ac5d0(int pad,
+                                                        const bsp::ShipAiFollowLandXZ& from,
+                                                        int zone_group,
+                                                        float half_width) override {
+        bsp::BuildingPadModel::Pad* p = bsp::building_pad_model().mutable_pad(pad - 1);
+        if (p == nullptr) return from;
+        ApproachUpdateBinding::PadZones zones(owner_);
+        if (bsp::refresh_pad_line_006ac5d0(*p, zone_group, zones)) {
+            ++owner_.summary.landing_pad_line_casts;
+        }
+        owner_.done("ShipAiLand::pad_approach_point_006ac5d0", 0x006ac5d0u);
+        return bsp::ship_ai_land_pad_approach_point_006ac5d0(
+            p->line, bsp::ShipAiFollowLandXZ{p->facing_x, p->facing_z}, from, half_width);
+    }
+    float heading_from_delta(float dx, float dz) override {
+        return bsp::ship_ai_approach_heading_from_delta(dx, dz);
+    }
+    float unit_heading_vtable_50() override {
+        return owner_.units.unit_heading_radians(index_);
+    }
+    float subtract_wrapped_angle_00438b10(float a, float b) override {
+        return bsp::wrapped_angle_subtract_00438b10(a, b);
+    }
+    bsp::ShipAiFollowLandXZ heading_to_direction_006bc0c0(float heading) override {
+        const std::array<float, 2> d = bsp::heading_to_direction_006bc0c0(heading);
+        return bsp::ShipAiFollowLandXZ{d[0], d[1]};
+    }
+    void clear_path_plan_009da4e0() override {
+        PathPlanBinding path(owner_);
+        bsp::ship_ai_clear_path_plan_009da4e0(ctl_.path, path);
+        owner_.done("ShipAiLand::clear_path_plan", 0x009da4e0u);
+    }
+    void wrap_blk_desired_heading_00605070() override {
+        // 00605070 wraps blk+1D8h into (-pi, pi] in place.
+        ctl_.blk.desired_heading =
+            bsp::ship_ai_firepower_wrap_angle_00605070(ctl_.blk.desired_heading);
+        owner_.count_heading_wrap_store(ctl_.blk.desired_heading);
+    }
+    float interpolate_clamped_00419010(float x0, float y0, float x1, float y1,
+                                       float x) override {
+        return bsp::clamped_interpolate_00419010(x0, y0, x1, y1, x);
+    }
+    int nav_zone_set_for_class_0082adc0() override {
+        // 0082ADC0: the class's +570h looked up in the zone manager. LABELLED: the
+        // same group_for_layer the landing modes' 00417E60 arm uses for +570h.
+        if (!owner_.zones.ready()) return 0;
+        return static_cast<int>(owner_.zones.group_for_layer(ctl_.class_reference_0570));
+    }
+    bsp::ShipAiFollowLandXZ push_point_out_of_zones_00417b10(
+        int zone_set, const bsp::ShipAiFollowLandXZ& point, float margin,
+        bool use_bounds) override {
+        if (zone_set == 0 || !owner_.zones.ready()) return point;
+        const std::array<float, 2> out = owner_.zones.offset(
+            static_cast<std::uint32_t>(zone_set), {point.x, point.z}, margin, use_bounds);
+        return bsp::ShipAiFollowLandXZ{out[0], out[1]};
+    }
+    void set_blk_flag_3f4(bool value) override { ctl_.avoidance.flag_3fc = value; }
+    void set_blk_field_3f0(int value) override { ctl_.avoidance.side_filter_3f8 = value; }
+    void set_navigation_goal_009de050(const bsp::ShipAiFollowLandXZ& goal, bool keep_mode,
+                                      bool final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal.x, goal.z, keep_mode,
+                                            final_leg);
+    }
+    float turn_circle_radius_00811a30(float throttle) override {
+        return owner_.units.unit_class_turn_circle_radius_0082e960(index_, throttle);
+    }
+    bool state_reached_vtable_2c(const bsp::ShipAiFollowLandXZ& goal) override {
+        // 00D21658 slot 2Ch is 009DAB10, the navigation states' shared test
+        // (MoveToPosStepBinding::state_goal_reached_vtable_002c).
+        const bsp::ShipAiPathPlanBlock& live
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        const bsp::ShipAiPathArrivalResult arrival = bsp::ship_ai_path_arrival_009da590(
+            ctl_.goal.flag_2fe, goal.x, goal.z, live.latched_goal_x, live.latched_goal_z);
+        if (arrival.clears_latch) ctl_.goal.flag_2fe = false;
+        owner_.done("ShipAiLand::goal_reached_009da590", 0x009da590u);
+        return arrival.reached;
+    }
+    bool goal_already_reached_009da610(const bsp::ShipAiFollowLandXZ& goal) override {
+        return bsp::ship_ai_nav_goal_already_reached_009da610(ctl_.goal, goal);
+    }
+    bsp::ShipAiSteeringMode blk_steering_mode() override { return ctl_.blk.mode; }
+    void enter_heading_mode() override {
+        // 009E1D84..009E1D97: mode 3 and blk+360h / +368h zeroed on the transition.
+        ctl_.blk.mode = bsp::ShipAiSteeringMode::Heading;
+        ctl_.blk.timer_360 = 0.0f;
+        ctl_.blk.timer_368 = 0.0f;
+    }
+    void set_blk_desired_heading_1d8(float heading) override {
+        ctl_.blk.desired_heading = heading;
+    }
+    void set_blk_requested_direction_1cc(bsp::ShipAiThrottleDirection value) override {
+        ctl_.blk.requested_direction = value;
+    }
+    void set_blk_throttle_hold_1c8(int value) override { ctl_.blk.throttle_hold_1c8 = value; }
+    void set_blk_desired_throttle_1d0(float throttle) override {
+        ctl_.blk.desired_throttle = throttle;
+    }
+    void set_brain_speed_scale_0af0(float scale) override { ctl_.speed_scale_af0 = scale; }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+    bool held_pad_{false};
+};
+
 class ControllerBinding final : public bsp::ShipAiControllerHost {
 public:
     ControllerBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -8842,6 +9049,21 @@ public:
                 ++owner_.summary.state_steps_real;
                 apply_ai_drive();
             }
+            return;
+        }
+        if (kShipAiLandStepBound && state != nullptr && state->step == 0x009e1950u) {
+            // Packet cc9_land_step_host: 009E1950 with the replan's elapsed time,
+            // as 009F5186 passes it to every state's vtable[0Ch].
+            LandStepBinding land(owner_, ctl_, row_, index_);
+            bsp::ship_ai_land_step_009e1950(ctl_.land_state, land, elapsed);
+            owner_.done("ShipAiState::land_step", 0x009e1950u);
+            ++owner_.summary.land_steps;
+            if (land.held_pad()) ++owner_.summary.land_steps_with_pad;
+            if (ctl_.land_state.final_10) ++owner_.summary.land_steps_final;
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
             return;
         }
         if (state != nullptr && state->step == 0x009e59c0u) {
@@ -11592,6 +11814,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai land state enters=%llu steps=%llu with_pad=%llu "
+        "final=%llu pad_assigns=%llu bound=%d (009E18D0 / 009E1950, packet "
+        "cc9_land_step_host)", host.summary.land_enters, host.summary.land_steps,
+        host.summary.land_steps_with_pad, host.summary.land_steps_final,
+        host.summary.land_pad_assigns, kShipAiLandStepBound ? 1 : 0);
     host.log.notef("summary mission ship ai standoff target kind calls=%llu kind_08=%llu "
         "building_mode2=%llu building_mode4=%llu small_class=%llu bound=%d "
         "(009E6F01 / 009E6F3A / 009E701C / 009E6F11, packet cc9_standoff_target_kind)",

@@ -610,6 +610,14 @@ struct GameShipAiSummary {
     unsigned long long landing_mode3_in_reach{0};
     unsigned long long landing_begins{0};
     unsigned long long landing_mode4_points{0};
+    // Packet cc9_land_step_host: the land state's enter (009E18D0) and step
+    // (009E1950) runs, steps that held a pad, steps in the final arm, and pad
+    // re-picks that assigned a new pad.
+    unsigned long long land_enters{0};
+    unsigned long long land_steps{0};
+    unsigned long long land_steps_with_pad{0};
+    unsigned long long land_steps_final{0};
+    unsigned long long land_pad_assigns{0};
     // Packet cc9_approach_retarget_ring (ON only): arm runs past 009F2124, runs
     // whose goal lay in a zone, runs that left the point off the goal, and the
     // per-slot Landscape queries, hits and reach failures.
