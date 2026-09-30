@@ -644,8 +644,8 @@ constexpr bool kPlaneMeshHitTestBound = true;
 //    Labelled: the gather's outer range test stays on the class box (the Kate's
 //    mesh leaves it only at the tail, by 0.64 m); the element index is the
 //    element's node (0 on every plane model read). Packet cc9_flak_blast_plane,
-//    docs/AA_LETHALITY_AUDIT.md section 10.
-constexpr bool kPlaneBlastElementEntriesBound = false;
+//    docs/AA_LETHALITY_AUDIT.md section 10; ON by the pair of 10.5.
+constexpr bool kPlaneBlastElementEntriesBound = true;
 //  * kShipDamageControlTickBound: message 9Eh's add arms 0093A4F0 (water,
 //    task+34h) and 0093A470 (fire, task+38h) add seconds, and the water and
 //    fire steps of 0093CA20 (0093C120 over +34h at WaterTickDamage, 0093C210

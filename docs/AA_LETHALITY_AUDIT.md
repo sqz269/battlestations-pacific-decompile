@@ -890,3 +890,82 @@ Main's `kPlaneMeshHitTestBound` is ON on both sides.
 - `mesh_records = 0`; or
 - a negative distance difference; or
 - `took=` unchanged with ON records.
+
+### 10.5 The pair: the mechanism held; flip ON
+
+**Setup.**
+- Same-tree exports of `d695ce9c0` (main with section 9 ON, plus this switch OFF):
+  - `local\g16_fboff`, SHA-256 prefix `D6808F497493`;
+  - `local\g16_fbon`, `CCA0D98DDD45`.
+- Launch, rows, smoke and scripts are as in 9.5. The per-burst figures come from
+  `local\g16_fbstats.py`, which takes the `impact blast` lines on units whose names do not contain
+  "class".
+- The runs ended by 03:35 UTC.
+
+| row | pair_diff | census OFF: mesh / box records | matched distance, box -> mesh | mean damage per plane burst OFF -> ON | deaths | torpedo-task releases |
+| --- | --- | --- | --- | --- | --- | --- |
+| E2 9200/9000 | 3 | 778 / 827 (0.94) | 17.44 -> 20.62 m (+3.18) | 11.40 -> 9.83 (-14%) | 51 -> 51 | 4 -> 5 |
+| USN04 4700/4500 | 3 | 778 / 827 (0.94) | 17.44 -> 20.62 (+3.18) | 11.40 -> 9.78 (-14%) | 51 -> 50 | 4 -> 5 |
+| USN13 3200/3000 | 3 | 310 / 331 (0.94) | 9.81 -> 13.49 (+3.68) | 16.28 -> 13.65 (-16%) | 23 -> 21 | 0 -> 0 |
+| USN13 9200/9000 | 3 | 1268 / 1320 (0.96) | 11.15 -> 13.34 (+2.19) | 14.79 -> 13.79 (-7%) | 114 -> 117 | 3 -> 3 |
+| USN01 3200/3000 | 3 | 32 / 34 (0.94) | 0.74 -> 2.34 (+1.60) | 22.83 -> 22.65 (-1%) | 5 -> 5 | 0 -> 0 |
+| JM06 3200/3000 | **1** | 0 / 0 | - | unchanged | 1 -> 1 | - |
+| USN12 3200/3000 | **1** | 0 / 0 | - | unchanged | 4 -> 4 | - |
+
+**The OFF side matches main.**
+- The E2 OFF figures equal section 9.5's ON run, apart from the new census line.
+- USN13 9000 differs from 9.5's ON run (114 against 115 deaths) because main moved in between
+  (merges of cc9-ships18). The pair itself is same-tree.
+
+**Death tables, per entity.**
+- E2: none only on one side; 46 re-timed.
+- USN04: one aircraft only OFF.
+- USN13 3000: two aircraft only OFF.
+- USN13 9000: 4 only OFF, 7 only ON.
+- USN01: none.
+- No ship death changes on any row.
+
+ON, the planes live longer, so they take more bursts (E2 827 -> 947 lines, USN13 9000 1335 ->
+1371).
+
+**Against 10.4:**
+- **P1, census: held in kind, missed by a hair in size.**
+  - `mesh_records / box_records` is 0.94-0.96 against the predicted 0.95 or more.
+  - The distance gap is +1.6 to +3.7 m against the predicted +0.5 to +3.5 m. USN13 3000's +3.68 is
+    just over.
+  - No gap is negative, so the pose origin agrees (10.1).
+- **P2, damage per burst: held.** It falls 14% (E2, USN04), 16% (USN13) and 7% (USN13 9000). USN01
+  is -1%: its bursts are nearly contact bursts.
+- **P3, deaths: held on E2, USN04 and USN13; missed on USN13 9000.** There the count rose by 3,
+  against a predicted fall. The 4 / 7 swap is RNG- and path-coupled (shared generator 00BD2F10).
+- **P4, torpedo releases: held.** E2 and USN04 go 4 -> 5; USN13 9000 is unchanged.
+- **P5, controls: held.**
+- **Mechanism failure: not met.** There are records, every distance gap is positive, and `took=`
+  fell.
+
+**Verdict: flip ON (`kPlaneBlastElementEntriesBound = true`).** The distance rule is the image's.
+The sizes that missed (P1's ratio and gap, P3 on USN13 9000) are recorded.
+
+### 10.6 Where the AA path against torpedo planes stands
+
+Every stage has now been compared with the image, and each is either faithful or bound ON:
+
+| stage | where |
+| --- | --- |
+| target velocity | 3 |
+| skill errors | 7 |
+| barrel count and cadence | 8.2 |
+| damage per hit, HP, armour | 1, 8.2 |
+| aim point | 8.2 |
+| hit notice | 8.5 |
+| direct-hit shape | 9 |
+| blast distance | 10 |
+
+**Two stages were not audited, and are recorded as open:**
+- **Target selection and the range gates of the AA bots** (`00902920`, `009030C0` and the AA
+  director). No section compares which plane a mount picks and at what range it opens fire.
+- **The flak proximity lock's passing rule** (`0070C7B6`-`0070C806`, 10% per tick beyond 50 m;
+  the flak comment in `src/game_hosts_gunnery.cpp` records it as not modelled).
+
+With those two open, torpedo-plane attrition is faithful at every audited stage. It is not yet
+faithful end to end.
