@@ -6074,3 +6074,77 @@ slot-4 or merge consequence are gameplay-identical. The USN12 miss is recorded a
 - generated squadrons and wing members take 9;
 - the `+180h` writers other than `0077F1F9` are not modelled (the message arm `0095AC28`, the
   session dispatchers, `006F4D10`).
+
+## 72. The retarget arm's modes 3 and 4, read (packet `cc9_approach_retarget_modes_3_4`, cc9-ships19, 2026-09-30)
+
+**Read whole:** `009F2161-009F2395` (disk bytes, `local\s19_arm34.txt`), and the callees `006F2DE0`,
+`006F3AF0` and `00749D90` (live decompile). The latch (`ship_ai_approach_mode_latch_009f1f47`)
+gives mode 3 or 4 only when the target at `ctl+0B20h` is an enemy CommandBuilding (IsKindOf 1Ch)
+and the unit's class lands troops (vtable `+2Ch`). Mode 3 is the one inside the reach;
+mode 4 is the standoff.
+
+**The shared head (`009F2169-009F219A`).** `EDI` = `[ctl+0B20h]` when it answers IsKindOf(1Ch), else
+0; that value is spilled to `[ESP+14h]`. Mode 3 continues; mode 4 is taken at `009F233D`.
+
+**Mode 3 (`009F21A0-009F2338`):**
+```
+ESI = unit ([ctl+0AA8h]) when IsKindOf(0Ch), a landing ship, else 0
+006F2DE0(building)(ESI)              ; releases every pad of the building's +794h vector whose
+                                     ; occupant (006AC220, pad+1F8h) is this unit (006AC490(0)),
+                                     ; under the critical section at building+764h
+EBX = 006F2E60(building)(ESI, 0)     ; the pad the unit holds, else the nearest free one
+if (EBX == 0) done                   ; 009F21D4
+point = 006AC5D0(pad)(&out, &unit+0FCh, [[unit+538h]+570h], 200.0f [00CE386C])
+nested+1228h..1230h = point          ; 009F2214-009F2228
+d = |point - unit+0FCh| (0042B2F0)
+reach = max(00811A30(unit, 1.0) * 2.5 [00CE3DE0 double], 300.0f [00CE3AE8])   ; 00415550
+if (!(reach > d)) done               ; 009F22E3 FCOMIP / JBE
+[ctl]+3FCh = 0 (byte)                ; 009F22F0
+if (unit+1200h != 0) done            ; 009F22F7
+msg = 00749D90(&local, pad, building); 0077C2A0(unit)(msg, 7, 0)
+```
+`00749D90` (`00749D90-00749DEF`, `RET 8`) builds session message 0A5h
+(`BSP_SessionMessage_ConstructBase(0A5h)`, vtable `00CFF908`). It carries the pad's `+174h` id at
+`+1Ch` and the building's `+174h` id at `+1Eh`. `0077C2A0` is `EntityOrder::route_message`, so
+the landing ship is told to land at that pad.
+
+**Mode 4 (`009F2342-009F2395`):**
+- The point is `006F3AF0(building)(&out, &unit+0FCh, [[unit+538h]+570h])`.
+- `006F3AF0` (`006F3AF0-006F3CBB`, `RET 0Ch`) takes the xz of the pad nearest the unit, by 3-D
+  squared distance over the `+794h` vector. The seed is `FLT_MAX` (`00D7A248`). With no pad it
+  takes the building's own xz.
+- It then hands that point to `00417E60` on the avoid-zone manager singleton, with 10.0f
+  (`00CE38B8`) and the class's zone group. Its answer's x and z are stored with y = 0.
+- `00417E60` is unread; presumably it pushes the point out of that zone group.
+
+**Why nothing is bound.** Neither mode can run in this process:
+- no building carries a landing-pad vector (`+794h`/`+798h`), and no pad carries an occupant
+  (`+1F8h`), an id (`+174h`) or an approach cache (`+208h..`, 006AC5D0);
+- `00417E60` and the unit's handler for message 0A5h are unreconstructed. `ship_ai_follow_land`
+  declares the pad seams (`pick_landing_pad_006f2e60`, `pad_approach_point_006ac5d0`), but no host
+  implements them;
+- `unit+1200h` and `ctl+3FCh` have no reader here.
+
+**No reference row reaches them.** The latch census in reference r (`summary mission ship ai
+approach latch`, `local\g15_rr_*.log` in cc9-gunnery15's tree) shows `lander=0` and modes 3 and 4
+at 0 on all 17 rows. Only LOMP10 and LOMP10 long latch a building target (601 and 1801 frames),
+and neither of those is a landing ship. The close-attack gate also refuses landing-ship members
+(`00A1443D`, `ai_close_attack_member_served`). A planner reaches these modes only through a
+script attack order or the Capture spawn arm (`00A2B400`, a record here).
+
+**Decision: labelled, no switch.**
+- The host comment at `ShipAiApproach::retarget_modes_3_4` now names the missing producers.
+- A future packet needs the building pad model first. That is the units/landing lane:
+  - the pads are built with the building (`+794h`);
+  - `006F2FB0`, `006AC490`, `006AC5D0`'s cache and `00417E60` come next;
+  - then the message-0A5h landing handler.
+- Only after that can modes 3 and 4 be bound. They also need a row with a troop landing on an enemy
+  CommandBuilding: this installation's BSM03 and BSM08 author LandingShipGen units, but as
+  "AI control" (section 71), so they are NONCONTROL and not planned.
+
+**Names for the lead (hypotheses, bodies verified RET then INT3):**
+- `006F2DE0-006F2E54` `BSP_CommandBuilding_ReleaseUnitPads` (`__thiscall(building)(unit)`, `RET 4`);
+- `006F3AF0-006F3CBB` `BSP_CommandBuilding_NearestPadStandoffPoint` (`__thiscall(building)(float3*
+  out, const float3* from, int zone_group)`, `RET 0Ch`);
+- `00749D90-00749DEF` `BSP_SessionMessage_LandAtPad_Construct` (message 0A5h,
+  `__thiscall(msg)(pad, building)`, `RET 8`).
