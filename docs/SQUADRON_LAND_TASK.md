@@ -6953,3 +6953,35 @@ This is why 5bf saw `done=0` on JM05 and `done=12`/`27` where no `returntobase` 
 3. **USN01, LOMP06:** exit 0 or 1.
 4. **Flip criterion:** `done` = lift-offs on every row, no relaunch from park, no death row
    moves that the later land installs cannot explain.
+
+### Results (OFF `local\l27_hoff`, SHA-256 `DA281A29FF47`; ON `local\l27_hon`, `372D1E3FF0D1`; both from `9edf15bd0`)
+
+The 300-frame smoke of the committed tree (USN01) exits 0, with 299 frames presented.
+
+| row | pair_diff | takeoff `done` ON (OFF) | land deferred / installed after takeoff | lift-offs, unparented ON (OFF) | death table |
+| --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 3 | **30** (0) | 30 / 30 | 30, 30 (30, 30) | **identical**; every headline value identical |
+| JM05 9000 | 3 | **34** (0) | 36 / 34 | 34, **34** (34, 33) | **identical** (14 rows) |
+| USN04, E2 | **1** | 12 (12) | 0 / 0 | unchanged | identical |
+| USN13 | **1** | 27 (27) | 0 / 0 | unchanged | identical |
+| USN01, LOMP06 | **1** | - | - | - | identical |
+
+- **The relaunch is gone.** JM05 9000's `SecondaryAirfieldEntity 01_sqn02|.-3` lifts off once, at
+  34.25 s. Every lift-off is from a parented plane.
+- The 5bk count moves also return: the brake is held at end 1 (was 2) and `c01_sets` is 78 (was
+  4554). The two deferred installs without a done are Secondary sqn11's held wingmen (5bh), which
+  never lift off.
+- **Timing.** Lexington_sqn03's leader lifts off at 15.70 s. Its takeoff task retires at 20.70 s
+  (y 68.9, 64.0 m/s: the `+908h` > 5 s arm), and `land` installs in the same step.
+
+| prediction | result |
+| --- | --- |
+| 1. JM05: `done` about equal to lift-offs, land after takeoff, relaunch gone, deaths identical | **held** |
+| 2. USN04, E2, USN13: `land_deferred=0`, gameplay-identical | **held**: exit 1 |
+| 3. controls | **held** |
+| 4. flip criterion | **met** |
+
+### Verdict: **flip ON**
+
+5bg item 2 is answered: `land` replaces nothing and stacks over nothing. It waits for the takeoff
+task's done arm, as the image's task list orders them.

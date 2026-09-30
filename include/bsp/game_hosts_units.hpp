@@ -114,7 +114,9 @@ inline constexpr bool kPlaneDesc158Bound = true;
 // So a `returntobase` delivered while the takeoff task is live installs `land`
 // only after the takeoff task's done arm. False: `land` installs at the delivery
 // and is ticked ahead of the takeoff task, which stays installed behind it.
-inline constexpr bool kTakeoffTaskHeadBound = false;
+// ON: 5bl's pairs (done = lift-offs on JM05, the park relaunch gone, death
+// tables identical; USN04, E2, USN13 and the controls gameplay-identical).
+inline constexpr bool kTakeoffTaskHeadBound = true;
 
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the
