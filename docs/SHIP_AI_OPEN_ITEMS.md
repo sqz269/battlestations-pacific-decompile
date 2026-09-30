@@ -6805,3 +6805,123 @@ In `J:\PROG\battlestations-pacific-decompile-cc9-ships20\local\`, `s20_` prefix:
 - `s20_disp.py`, `s20_rel32.py`, `s20_dump.py` (from s19);
 - `s20_edit_mf.py` (the local census patch pattern: apply, build, snapshot the build under
   `local\<x>\build\win32\Release`, revert).
+
+## 80. The capture tick read whole, and what a flip changes (packet `cc9_capture_tick_full_read`, cc9-ships21, 2026-09-30)
+
+Read only; nothing is bound. Listings: `local\s21_6760asm.txt` (740 lines, `006F6760`),
+`local\s21_4d10asm.txt` (`006F4D10`), `local\s21_7360.txt` (`006F7360`), all from the PE on
+disk. **Headline: the capture tick runs only on a neutral building (`+54h == 2`), and no
+CommandBuilding in any reference row is ever neutral**, so binding the tick's arms alone moves
+no row. Section 78.5's "arm 1 moves JM05, USN01, USN13 and USNOS" is withdrawn.
+
+### 80.1 Corrections to section 78
+
+| was (78) | is | evidence |
+| --- | --- | --- |
+| the tick is the building's capture tick, run on every building | it runs only when the building's party is 2 (neutral), once per `+7BCh` = 1.0 s | `006F7360` `006F755D` `CMP [EDI-2BCh],2` (EDI = unit+310h, so unit+54h); `006F75ED..006F7617` the `+7C0h` countdown (`fsubr [+7BCh]`, `faddp`) then `CALL 006F6760`; the ctor seeds `+7BCh` = 1.0f (LAND_AND_STRUCTURES section 4); `006F7617` is the tick's only caller (rel32 scan) |
+| the owner's opponent's strength is divided by 1.0f or a modifier | that arm (`+54h < 2`) is unreachable from the only caller | as above |
+| D3h's handler `006F29D0` records `+7A4h/+7A8h/+7ACh` | `006F29D0` is **D5h**'s; D3h's is `006F4D10` | the CB message slot `vtable[164h]` `006F5460`: `movzx eax,[msg+10h]; add eax,-0D3h; jmp [006F55B8+eax*4]`; table `006F549E` (D3h -> `006F4D10(msg+1Ch, byte msg+20h)`), `006F54B5` (D4h -> `006F38E0`), `006F5481` (D5h -> `006F29D0(f[+1Ch], [+20h], [+24h])`), `006F54CB` (D6h) |
+| ownership changes through `vtable[1B0h]` `006F3270` | `006F3270` is the **health-changed** slot; at health <= 0 it neutralizes. The capture's ownership change is D3h's `006F4D10` | `00877B90 BSP_UnitInstance_SetHealth` calls `vtable[1B0h]` at `00877C3A` on every write (not in game mode 2); `006F3270`: `COMISS 0,[+370h]`, health > 0 -> base `00958A30`; else party != 2 -> `+7B0h` = party, `+7B4h` = `+2D8h`, tail `006F2940` (`+7A8h` = 0, route D3h slot 9 through `0077C2A0` class 7) |
+| arm 3 is "the garrison list" | `+7DCh` holds landed **paratroopers** (`MParatrooper`, class 31h) | `006F39B0` (adds under `+764h`) is called from `007AB590` (vtable `00D04FE4`); `006F34B0` (removes) from `007AAE10` (vtable `00D050DC`), the paratrooper's on-killed method, when its `+48Ch` building is set; segment keywords `paratrooper, soldieranim` |
+
+### 80.2 The tick `006F6760` (`__fastcall(ECX = building)`, body `006F6760`-`006F7353`, `RET`)
+
+`s[2]` (party strengths), `slot[8]` (`local_160`), `landed[8]` (`local_128`) and two flag
+byte arrays (landed, paratrooper) start at 0. `mod` below is 1.0f (`00D7A24C`) unless
+`[00E0C978]` and `[[00F88C30]+100h]` are set, then `008E6430(10, unit)`; this host's
+modifier list is empty (1.0f).
+
+1. **Ships in CaptureRange** (world list `[[00E188A8]+19CCh]+64h`): condition as 78.2.
+   `006F69D2..006F69ED`: `s[party] = __ftol(class[+804h] * mod + (float)s[party])`, where
+   class `+804h` is `CapturePower` (`ship_class_fields.cpp`, `IntegerOrAsFloat`, default 10).
+   Then, when `+188h` (OwnerPlayer) < 8, `slot[+188h]` gets the same sum (`006F6A2C..006F6A41`).
+2. **Landed landing ships on the pads** (78.2): `s[party] += class[+810h]`
+   (`LandedCapturePower`, `vehicle_class_lua_load.cpp`, default 0), an integer add at
+   `006F6AF7`. Scoring: slot = `+188h`, else `+180h`, else `+120Ch`; when the class's
+   CapturePower is 0.0 (`UCOMISS`/`LAHF`/`TEST AH,44h`/`JP` at `006F6B15..006F6B28` skips when
+   unequal) `landed[slot] += LandedCapturePower * mod`; when `+188h` < 8, `slot[+188h]` gets its
+   sum and the landed flag is set.
+3. **Paratroopers** `+7DCh`/`+7E0h`: `s[member+54h] = (int)((float)s + [[member+314h]+0D8h])`;
+   scoring through the member's `vtable[108h]()+0ACh` owner (`+180h`) or its own `+4B8h`.
+4. **Progress** `+7A8h` (a float; positive is party 0's): both present -> `+= s0 - s1`; one
+   present -> the side with the opposite sign first decays by `F` then adds; none -> decays by
+   `F` toward 0 and clamps at 0. `F` = `[MultiLobbyOptionRegistry+0C0h]` =
+   `CaptureSettings.FallbackCapturePower`, loaded by `008D2F50` (`008D3C3E..008D3C6D`, default
+   20.0f `00CE3930`); this installation's `scripts/datatables/multiglobals.lua` (mtime
+   2024-07-13) authors 20 ("if nobody is in range, the counter is held toward 0 with this
+   power"). The registry's ctor `005769E0` leaves `+0C0h` unwritten; `008D2F50`'s one caller is
+   `00689540 BSP_MultiMenu_Init`. This host does not load MultiGlobals (`game_hosts_lua.cpp`
+   6113), so a bind takes 20 as a LABELLED constant.
+5. **Side** `local_174` = 0 when `s0 > s1`, 1 when `s1 > s0`, 2 when equal.
+6. **D5h** (progress update, `0077C2A0` class 4, `ECX` = building): when the progress changed
+   (`|new - old| > 0`) and the building is neutral (always, here): `{progress, CaptureValue,
+   side}`. Its handler `006F29D0` stores them back.
+7. **Completion** at `|progress| >= (float)CaptureValue` (`+7A4h`): pick `best` among the eight
+   slot records `[[00E188A8]+18CCh+i*4]`: eligible when `+28h == side`, or `+8h` clear, or
+   (`+9h` set and `+0Ah` clear) (`006F7100..006F711C`, the decompile is right); the first
+   eligible slot, then any with a strictly larger `slot[i] + landed[i]`. In single player every
+   record has `+8h` set, slot 0 has `+9h` clear and slots 1..7 have `+9h` and `+0Ah` set
+   (section 60.6's table), so **only slots whose Party equals the winning side are eligible**;
+   none -> `best` = 8. Then `+7A8h` = 0, D5h `{0, CaptureValue, 2}` (class 4), D3h
+   `{best, silent 0}` (class 7), `0090F860(best, landed ? 0Ch : 37h, para ? 31h : 37h)`
+   (scoring, one caller), `+7ACh` = side.
+
+### 80.3 What a flip does: D3h `006F4D10` (`__thiscall(slot, silent byte)`, body `006F4D10`-`006F5454`, `RET 8`)
+
+- `+7A8h` = 0; `+528h` = slot the first time (it starts -1).
+- Not silent: the `globals.cblost_you` / `cblost_we` / `cbneutralized_we` announcements
+  (`00734870`, `005CF3D0`), presentation.
+- **slot 8** (no eligible slot): straight to the neutral set below, without recording.
+- **slot 9** (neutralize, from `006F2940`): when the old party != 2 and game mode `[+1FE4h]` is 2,
+  `+7B0h` = old party; then the neutral set: `+7D8h` = class `+190h` (a float the fixed step
+  decays), `vtable[2Ch]` `00951F30` -> `00928F50` SetPartyRace`(2, +58h)`.
+- **slot 0..7**: party `p` = `slot record+28h`; SetPartyRace`(p, race)` with race 2 for party 0,
+  1 for party 1 (`006F4F83..006F4FB8`). When the previous owner's slot `+7B4h` still has party
+  `+7B0h` and that equals `p` (the old owner retook it): `+2D8h` = -1 and the observer at
+  `+2B0h` is released. Otherwise (or when `+7B0h` is 2): **repair** `006F47F0(this, 1.0, 1.0)`
+  and the same for every garrison slot occupant (`+778h`, stride 64h, occupant at `+14h`), then
+  `vtable[214h]` `006F3010`, which runs `006AC4D0` on every pad of `+794h` (walks the pad's
+  `+1FCh` list when `[game+21D0h]` is set; contract unread).
+- Every path: `vtable[144h](slot)` (`0077F2D0`), then for each garrison occupant
+  `vtable[1CCh]()`, SetPartyRace`(new party, occupant+58h)`, `vtable[144h](slot)`. **The garrison
+  guns change side with the building.**
+- Not silent: more announcements; D4h (`00CFADD0`, the level message) through `0077C2A0` class 7
+  unless game mode 2; the local player's selection refresh when the building is the selected
+  unit (`00644A60`); `BSP_WarningManager_ReportCapturePoint`; `0095D3C0`; `0095DE00` rebuilds the
+  `MFlag` model ("zaszlo"). No airfield state is touched.
+- `006F47F0(unit, a, b)`: `hp += maxHp * ([004C1D10()+2Ch+level*4] * a / b)` clamped to max
+  (`+36Ch`/`+370h`), then each part (`IsKindOf(4)`) by `rate[level] * a / [004C1D10()+40h]`,
+  replaying `"destroyed"` through `vtable[19Ch]` on a part that comes back to full.
+
+### 80.4 Reach in this process
+
+- **Authored parties.** Every reference row's CommandBuildings are owned: JM05 (three, Allied),
+  JM08 (`Headquarter 01`, Japanese), USN01 (CB2), USN13 (CB2, CB4, CBT), USNOS (HQ1, HQ2, CB2),
+  LOMP10 (CB4, Allied) (`scene type CommandBuilding` lines, reference s logs).
+- **Health.** A building is neutralized only when its health reaches 0. In reference s the most
+  damaged is USNOS long's CB2 at 11588 of 12000; no CommandBuilding has a death row in any row.
+- **This host kills a CommandBuilding at health 0.** `GameGunneryHost::Impl::kill_unit`
+  (the `unit_is_dead` funnel, `game_hosts_gunnery.cpp`) makes no class exception, where the image
+  has `vtable[1A8h]` `006F1F80` = `RET` and neutralizes through `006F3270`. No row reaches it
+  today.
+- **Paratroopers:** none (`summary mission gunnery ordnance ... paratrooper=0`), so arm 3 has no
+  reach. Arm 2 needs the landing chain (section 79).
+- The missions that need capture: JM05's script reads `GetCapturePercentage` on its three CBs
+  (the player's objective, idle in the reference); JM08 fails when `Headquarter 01`'s Party is
+  not Japanese (line 451, mtime 2024-07-13), so the Allied invasion must shell it to 0 and then
+  land or sail within CaptureRange.
+
+### 80.5 The bind (next packet), with predictions
+
+One switch `kCommandBuildingCaptureBound` (OFF) for: the neutralize at health <= 0 in place of
+the kill for class 1Ch (`006F3270` -> `006F2940` -> `006F4D10` slot 9), the fixed-step countdown
+(`006F75ED`), the tick's arms 1 and 3 with the progress rule, and the D3h flip (party of the
+building and of its garrison occupants, the repair, `+7B0h`/`+7B4h`/`+528h`). Arm 2 goes behind
+a second switch with the landing chain. The kill funnel is in cc9-gunnery17's file, so the hook
+there is one prepared call.
+
+**Predictions:** exit 0 or 1 on every reference row (no CommandBuilding reaches health 0). The
+mechanism is shown by an env-gated diagnostic that sets one building's health to 0 at a chosen
+time (for example USN13's CB2 at t = 60 s): the building goes neutral, and when an enemy ship
+sits inside CaptureRange for about `CaptureValue / (sum of CapturePower)` one-second ticks (the
+decay of 20 applies only while no ship is in range), it flips to that side with its garrison guns.
