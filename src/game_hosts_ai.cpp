@@ -472,7 +472,9 @@ constexpr bool kAiPartyGateUnforcedBound = true;
 // -1, so a group led by such a unit is NONCONTROL (00A2E124) and any other
 // group evicts it (00A2DE40); 0..7 names that slot. False: +180h is 9 for every
 // unit (section 60's labelled substitution). Needs kAiPartyGateUnforcedBound.
-constexpr bool kAiOwnerPlayerSlotBound = false;
+// ON (2026-09-30): JM05 and USN12 moved, with no death row changed; LOMP10,
+// USNOS, JM08, USN04 and USN13 gameplay-identical (section 71.3).
+constexpr bool kAiOwnerPlayerSlotBound = true;
 
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied

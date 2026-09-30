@@ -6039,3 +6039,38 @@ No reference row authors `"Player N"`.
   (`local_slot_groups` can drop), and the rows are gameplay-identical (exit 1).
 - **Controls USN04 and USN13** author no `OwnerPlayer` 8. They are identical apart from the new
   census lines (exit 0 or 1).
+
+### 71.3 The pairs, and the decision
+
+**Runs.** Pair `9de336d8b`: OFF is the tree build and ON is `local\s19_p2`. Reference launch form,
+3200/3000, lockstep 0.05, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+| row | exit | predicted | what moved |
+| --- | --- | --- | --- |
+| JM05 | 3 | 1 (3 possible) | death rows identical (1); the four airfields and shipyards leave slot 4; `prox_merges 200 -> 195`, `members_added 539 -> 436`, `tick_orders 1189 -> 1160`; USS Phelps moved 2649 -> 2625 m; the other units change only in nearest-enemy distance |
+| USN12 | 3 | **1, missed** | death rows identical (4); `local_slot_groups 16 -> 12`, `prox_merges 12 -> 9`; Fortress-10 deals 452 -> 462; Shigure and Samidare damage taken moves |
+| LOMP10 | 1 | 1 | none |
+| USNOS | 1 | 1 | none |
+| JM08 | 1 | 1 | none |
+| USN04 | 1 | 1 | none (control) |
+| USN13 | 1 | 1 | none (control) |
+
+**The USN12 miss is a missed consequence of the same rule, not a different mechanism.**
+- `00A2DFA0` stores the slot at `00A2E03C` and inserts the group into the per-party list
+  `00F8A9E8 + slot*0Ch` only when the slot is not below 0 (`00A2E03A CMP EAX,EDI / 00A2E04B JL
+  00A2E086`, disk bytes). The host has the same guard in `create_group`.
+- A slot -1 group is therefore in its team list, where it is a target candidate, and in no party
+  list. It never thinks, so it never proximity-merges.
+- On USN12 the four fortress groups stop merging into the slot-0 groups (`prox_merges 12 -> 9`).
+  The Japanese brain then sees four more candidate groups, which moves its orders.
+- The prediction had reasoned only that both states are NONCONTROL.
+
+**Decision: `kAiOwnerPlayerSlotBound` is ON.** The mechanism is the image's (`009FFD20` and the
+`00A2E04B` guard, both read). No death row moved on any of the seven rows. The five rows without a
+slot-4 or merge consequence are gameplay-identical. The USN12 miss is recorded above.
+
+**Still LABELLED:**
+- the key is the entity name;
+- generated squadrons and wing members take 9;
+- the `+180h` writers other than `0077F1F9` are not modelled (the message arm `0095AC28`, the
+  session dispatchers, `006F4D10`).
