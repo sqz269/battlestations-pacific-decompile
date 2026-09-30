@@ -6985,3 +6985,81 @@ The 300-frame smoke of the committed tree (USN01) exits 0, with 299 frames prese
 
 5bg item 2 is answered: `land` replaces nothing and stacks over nothing. It waits for the takeoff
 task's done arm, as the image's task list orders them.
+
+## 5bm. Install at delivery against the image's task list: a census (packet `cc9_task_install_order`, cc9-lua27, 2026-09-30)
+
+SENTITY_INIT_ATTACH_ORDER 22.7 labelled a substitution: the host installs a command task at the
+order's delivery, where the image builds it through `0099A170` inside the bot tick. 5bl fixed that
+for the takeoff task. This section is the census for every other task class. It was read from
+Ghidra and the disk image; no code changed and no run was made.
+
+### The retire rule `0099A4C0`, read whole
+
+The rule runs once per bot think (`0099AE7E`), after the interval gate: `bot+70h` accumulates `dt`
+and the think runs once it reaches 0.09 s (`00D1F39C` = `3DB851EC`).
+- If the director's command is `00E08F88`, it first calls `0099A0A0`.
+- Then, while the list has a head task, the head **stays** when any of these holds:
+  - `vtable[38h]` is false;
+  - `vtable[34h]` is true;
+  - the list has one task and `vtable[40h]` answers 1.
+- Otherwise the head goes to the retire list and the loop repeats.
+- When the list ends empty, it tail-jumps to `0099A170`, which builds the command task. The same
+  think then ticks it (`0099AE89` onward).
+
+### The slots of every task class (`local\l27_taskvt.py`, `local\l27_slots.py`, disk image)
+
+| class (factory) | task vtable | `34h` | `38h` | `40h` |
+| --- | --- | --- | --- | --- |
+| base | `00D05704` | `0099B6F0` true | `0099B700` false | `0099B730` 0 |
+| Land (`009B41C0`) | `00D1FFA0` | `0099B700` false | `0099B710` true | `009B3560` |
+| Dogfight (`009AB570`) | `00D1F9B0` | false | true | `009A9CC0` |
+| MoveTo / attackmove moveto (`009C3BE0`, `009C3C40`) | `00D20B68`, `00D20BE0` | false | true | `009C31B0` |
+| DiveBomb (`009C8C70`) | `00D20E18` | false | true | `009C8060` |
+| LevelBomb (`009B9030`) | `00D20210` | false | true | `009B81F0` |
+| Stop (`009BADB0`) | `00D20500` | false | true | `009B9590` |
+| `009BDBB0` | `00D20910` | false | true | `009BD280` |
+| Kamikaze (`009AF720`) | `00D1FD40` | false | true | `009AF560` |
+| DropKamikaze (`009AEBE0`) | `00D1FC70` | false | true | `009AE140` |
+| DepthCharge (`009A6970`) | `00D1F738` | false | true | `009A5DB0` |
+| CloseToShip (`009A2F40`) | `00D1F4E8` | false | true | `009A2920` |
+| **Takeoff** (`009CFF40`) | `00D21228` | **`009CF9E0` true** | true | `0099C2C0` |
+
+- Every command task class has `34h` false and `38h` true. So it retires at the first think in
+  which its `40h` stops answering 1.
+- Each `40h` starts by reading `task+404h` (the unit). `009C31B0`, read here, answers 1 only while
+  the director's current command is still moveto (`00E08F68`) with the same target (`task+43Ch`),
+  or, for a point target, the same point within `00CE3D64`. Otherwise it answers 0 (2 with no unit).
+- Only the takeoff task holds its place against a new order (`34h` true). 5bl bound that.
+
+### Why no binding is needed for the command classes
+
+- **Image.** A new order is taken at the next bot think, whose accumulator the host carries
+  (`pilot_think_accumulator_70`, the 0.09 s gate). The old head's `40h` answers 0 there,
+  `0099A4C0` retires it, `0099A170` builds the new task, and the same think ticks it.
+- **Host.** It installs at the delivery, and the task is first ticked at that same next think.
+- So both run the new task from the same think.
+- The only difference is when the task is **constructed**: at the delivery in the host, at the
+  think in the image. That is at most one 0.09 s think earlier. The constructors read the unit's
+  pose and the target once, so such a read is at most 0.09 s early.
+- This is below every mechanism the pairs measure. A switch would move nothing a pair can judge,
+  so none is bound. 22.7's label is corrected accordingly: "one bot tick early" means the
+  construction only; the first tick is the same think.
+
+### Task pushes the host does not model (census; open items)
+
+`00999F50` (the front push) has eight rel32 callers (`local\l27_refs.py`). The table gives the
+last vtable stored before each (`local\l27_pushvt.py`, `local\l27_mk.py`):
+
+| call site | in | task made by | task vtable | `34h` | host |
+| --- | --- | --- | --- | --- | --- |
+| `0099A4AD` | `BSP_PilotBot_InstallTakeoffTask` | `009CFF40` | `00D21228` | true | bound (5bd, 5bl) |
+| `0099B113` | `BSP_PilotBot_Tick`, tail | `009CFF40` (takeoff again) | `00D21228` | true | **not modelled**. Gated on the unit not in free flight, the head's `38h` and `30h` true, and `0042A7E0(unit)` or `+900h == 6` (docs/PILOT_COMMAND_PATH.md) |
+| `0099AE1C` | `BSP_PilotBot_Tick` | `009BBFC0` | `00D20658` | false (`009BB6B0`), `38h` `009BB6C0` | **not modelled**. Pushed for a flight leader with `unit+184h` set, when the head's `38h` answers |
+| `007B6223`, `007B657D` | `007B6240` and the block before it | `009BC030` | `00D205E0` | true | **not modelled** |
+| `009CBB19`, `009CBE27` | `009CBB30` and the block before it | `009BC030` | `00D205E0` | true | **not modelled** |
+| `009BB47F` | `009BB380` | `009BAFC0` | `00D20568` | true | **not modelled** |
+
+- The `00D205E0` class (tick `009BA020`) and the `00D20568` class (tick `009B93D0`) hold their
+  place like the takeoff task.
+- What they are, and whether any reference row reaches them, is unread. These are the open items
+  of this census.
