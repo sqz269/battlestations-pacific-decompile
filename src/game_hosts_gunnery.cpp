@@ -95,8 +95,8 @@ constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount fram
 //    host passed false for every plane. Leader test as the units host's
 //    unit_is_flight_leader_007b8ad0: the first live member of the plane's
 //    registry record, or true with no record. Packet cc9_aa_leader_penalty,
-//    docs/AA_LETHALITY_AUDIT.md section 12. OFF: no penalty.
-constexpr bool kAaLeaderPenaltyBound = false;
+//    docs/AA_LETHALITY_AUDIT.md section 12; ON by the pair of 12.5. OFF: no penalty.
+constexpr bool kAaLeaderPenaltyBound = true;
 
 // Packet cc9_gun_ballistics. docs/GUN_BALLISTICS.md.
 //  * kGunGravityArcBound: the gravity arc 00955630 and its 006DF8BF pre-estimate

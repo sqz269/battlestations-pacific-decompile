@@ -1106,3 +1106,82 @@ Rows and launch are as in 9.5 and 10.5, same-tree exports.
 **Mechanism failure:**
 - `leaders = 0` with plane candidates; or
 - the leader share of deaths rises on all three Kate rows.
+
+### 12.5 The pair: the penalty acts and moves little; flip ON
+
+**Setup.**
+- Same-tree exports of `4633852c6`:
+  - `local\g16_lpoff`, SHA-256 prefix `61FA343037F8`;
+  - `local\g16_lpon`, `10996A2A7BA8`.
+- Rows and launch are as in 10.5. A 300-frame USN01 smoke passed first, and the runs ended by
+  04:08 UTC.
+- The summary is `local\g16_leaderstats.py`. A "leader" is a death-row name with no `|.-` suffix.
+  That is a heuristic: a promoted member keeps its suffix.
+
+| row | pair_diff | census OFF: plane candidates / leaders | AA kills OFF -> ON | leader share of AA kills | torpedo-task releases |
+| --- | --- | --- | --- | --- | --- |
+| E2 9200/9000 | 3 | 92609 / 48075 (0.52) | 48 -> 48 | 0.33 -> 0.33 | 5 -> 5 |
+| USN04 4700/4500 | 3 | 92572 / 48038 (0.52) | 47 -> 47 | 0.34 -> 0.32 | 5 -> 5 |
+| USN13 3200/3000 | 3 | 470538 / 198858 (0.42) | 21 -> 22 | 0.29 -> 0.27 | 0 -> 0 |
+| USN13 9200/9000 | 3 | 1585367 / 638058 (0.40) | 110 -> 106 | 0.25 -> 0.25 | **3 -> 0** |
+| USN01 3200/3000 | 3 | 10262 / 7194 (0.70) | 5 -> 5 | 1.00 -> 1.00 | 0 -> 0 |
+| JM06 3200/3000 | **1** | 0 / 0 | 0 -> 0 | - | - |
+| USN12 3200/3000 | **1** | 0 / 0 | 4 -> 4 | - | - |
+
+**Death tables, per entity.**
+- E2: none only on one side; 43 re-timed.
+- USN04: 1 only OFF and 1 only ON.
+- USN13 3000: 1 only ON.
+- USN13 9000: 14 only OFF and 13 only ON.
+- USN01: nothing re-timed. Its move is in the flight paths only.
+- No ship death changes.
+
+**Against 12.4:**
+- **P1: held on USN13, missed on E2 and USN04, missed on USN01.**
+  - The leader fraction of the plane candidates is 0.40-0.42 on USN13, and 0.52 on E2 and USN04,
+    just above the predicted 0.5. The Zeros and the single-plane scouts count as leaders.
+  - USN01 reads 0.70, not about 1.0: it has multi-plane US flights as well as the single Mavs.
+- **P2: held weakly.** The leader share of the AA kills falls by 0.02 on USN04 and USN13 and is flat
+  on E2 and USN13 9000. The total AA kills move by at most 4%.
+- **P3: held.** USN01 has no death change.
+- **P4: missed on USN13 9000**, where the torpedo releases go 3 -> 0.
+  - That row swaps 14 and 13 aircraft deaths through the shared stream 1 (00BD2F10), so the
+    three releasing aircraft are not attributable to the penalty.
+  - E2 and USN04 hold at 5.
+- **P5: held.**
+- **Mechanism failure: not met.**
+  - Leaders are counted on every plane row.
+  - The leader share does not rise on any Kate row.
+
+**Verdict: flip ON (`kAaLeaderPenaltyBound = true`).**
+- The term is the image's arithmetic (`00863A4F`-`00863A71`, 100.0 on `007B8AD0`).
+- Its effect on who dies is small in these rows. A 100 m preference moves a gun only between
+  aircraft already within 100 m of each other.
+- P1's size, P4 on USN13 9000 and P2's weak size are recorded as misses.
+
+**Naming correction.**
+- `include/bsp/unit_gunnery_pass.hpp`'s `target_lacks_follow_target` and
+  `kUnitGunneryLoiteringPlanePenalty`, and AA_TARGETING section 1's "follows nothing", describe
+  `+9D8h` by the withdrawn reading.
+- The field is the member slot, so the test is "the target is its flight's leader". The rename is
+  left to the header's owner; this note is the record.
+
+### 12.6 The AA path against torpedo planes, closed
+
+Every stage the lead listed (target selection and range gates, fire rate and burst, the per-shot
+hit test, damage per hit, the plane's damage model) is now faithful or bound ON:
+- sections 1-3, 7, 8;
+- section 9, the hit shape;
+- section 10, the blast distance;
+- section 11, the passing rule, which is unreachable;
+- section 12, the leader penalty;
+- AA_TARGETING's landed acceptance terms.
+
+**Labelled substitutions that remain:**
+- the recon contact list;
+- the aim-point height offset in the category range;
+- kind 6's unloaded second ammunition;
+- the fire window in the hull frame.
+
+**Result:** with those substitutions, torpedo-plane attrition in this host follows the image's AA
+path at every stage read.
