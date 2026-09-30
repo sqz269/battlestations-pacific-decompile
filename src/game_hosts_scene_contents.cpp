@@ -1906,6 +1906,23 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 stored.capture_range_raw = bits;
             }
         }
+        // Packet cc9_command_building_capture_bind: `CaptureValue` -> unit+7A4h,
+        // the same way (006F2780, 1000 when absent).
+        const SceneProperty* value_prop = bag.find("CaptureValue");
+        if (value_prop != nullptr && !value_prop->values.empty()) {
+            std::int32_t as_int = 0;
+            float as_float = 0.0f;
+            if (value_prop->type_letter == "I"
+                && scene_scan_int(value_prop->values.back(), as_int)) {
+                stored.capture_value_present = true;
+                stored.capture_value_raw = as_int;
+            } else if (scene_scan_float(value_prop->values.back(), as_float)) {
+                std::int32_t bits = 0;
+                std::memcpy(&bits, &as_float, sizeof bits);
+                stored.capture_value_present = true;
+                stored.capture_value_raw = bits;
+            }
+        }
         // 006F2847-006F285F, `LandingRange`, the same way (routed from cc9-ships13).
         const SceneProperty* landing_prop = bag.find("LandingRange");
         if (landing_prop != nullptr && !landing_prop->values.empty()) {

@@ -6925,3 +6925,124 @@ mechanism is shown by an env-gated diagnostic that sets one building's health to
 time (for example USN13's CB2 at t = 60 s): the building goes neutral, and when an enemy ship
 sits inside CaptureRange for about `CaptureValue / (sum of CapturePower)` one-second ticks (the
 decay of 20 applies only while no ship is in range), it flips to that side with its garrison guns.
+
+## 81. The capture bound OFF: neutralize, countdown, tick, flip (packet `cc9_command_building_capture_bind`, cc9-ships21, 2026-09-30)
+
+`kCommandBuildingCaptureBound` (`src/game_hosts_ship_ai.cpp`, committed OFF) over
+`bsp/command_building_capture.hpp` (the pure rules of section 80). What it runs:
+
+| step | image | host |
+| --- | --- | --- |
+| health 0 | `00877B90` -> `vtable[1B0h]` `006F3270` -> `006F2940` -> D3h slot 9 -> `006F4D10` | `GameGunneryHost::Impl::kill_unit` asks `GameShipAiHost::command_building_health_zero_006f3270` first; for a CommandBuilding it neutralizes (party 2, progress 0, `+7B0h` = old party) and the building does not die |
+| countdown | `006F755D..006F761C` in `006F7360`, 1.0 s | `command_building_capture_countdown_006f75ed`, at the head of `controller_step` (the image's row 5 runs after the job waves; LABELLED order) |
+| arm 1 | ships (IsKindOf 6) within `CaptureRange`, party < 2, the four alive cells | the same; CapturePower from `VehicleClass[type].CapturePower` (default 10); the ramp exclusion `+1188h` never applies (no ramp is ever lowered) |
+| arm 3 | the paratrooper list `+7DCh` | empty (no paratroopers exist here) |
+| progress | `006F6DEF..006F7334` | `command_building_capture_tick_006f6760`, fallback 20 (LABELLED, multiglobals.lua) |
+| flip | D3h `006F4D10`, slot chosen at `006F70E6` | side 0/1 -> that party (LABELLED: each party has a slot record); a tie -> slot 8, stays neutral; repair to full (`006F47F0`, Repair >= 100 at every level); the gunnery row's side refreshed |
+
+Not modelled (records or labels): the announcements, D4h, the flag model, `0090F860` scoring,
+the per-pad `006AC4D0`, the parts repair, garrison slot occupants as separate units (the
+building's own gun mounts follow its party), the AI host's party lists (built at load; a
+flipped building stays in its first group), `+2D8h` (so the retake exemption never applies),
+the ctor's `-uniform(0,1)` countdown phase (not drawn, to keep the shared stream).
+
+`CaptureValue` (`+7A4h`) is now parsed from the scene (`game_hosts_scene_contents.cpp`, 1000
+when absent) and `GameUnitsHost::set_unit_side_0054` writes the party.
+
+The diagnostic `BSP_CB_FORCE_ZERO=<unit>@<seconds>` (both builds) applies one 1e9 script damage
+(`apply_script_damage_0095da00`) to the named building at that mission time.
+
+### 81.1 Predictions (written before any run)
+
+- **Plain reference rows, ON against OFF:** exit 0 or 1 on every row. No CommandBuilding
+  reaches health 0 (section 80.4), so `health_zero=0 neutralized=0 countdown_fires=0` on both
+  sides; the new summary line is the same on both.
+- **USN13, `CB2@60`:** OFF: CB2 gets a death row at t = 60.0 and `kill` follows as for any unit.
+  ON: `neutralized (prior party=1) at t=60.0`, no CB2 death row, `countdown_fires` about one per
+  second from then on. Progress moves only if a ship of either side is within CaptureRange
+  (100 on this installation's CommandBuildings); a Japanese ship there drives it negative and
+  flips it back to party 1 after about `CaptureValue / (10 * ships)` seconds; with nobody in
+  range it stays 0 and CB2 stays neutral to the end. Everything that shoots at or through CB2
+  may move after t = 60 in both builds, since the OFF build removes it.
+- **JM08 long (`jm08x`, 36000), `Headquarter 01@500`:** OFF: the HQ dies at 500 s. ON: neutral
+  at 500 s. JM08's script (line 451, mtime 2024-07-13) fails the mission when the HQ's Party is
+  not Japanese, so the ON run may end the mission early through that check (a party 2 building
+  answers the check the same way the OFF build's dead one may not). If the Allied landers or
+  escorts come within CaptureRange (the invasion reaches the origin around t = 540 s), the HQ
+  flips to party 0.
+
+### 81.2 The pairs, and the decision
+
+**Runs.** OFF `local\s21_off` (`a12a93f60`, no flip, binary `53A2F31276FB`), ON `local\s21_on`
+(flip `kCommandBuildingCaptureBound=true`, `B4C6A980BBE7`), and for the flip diagnostic
+`local\s21_on2` (`b5696554b`, the CaptureValue override, flipped, `50194FB13C85`). Reference
+launch form, lockstep 0.05, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+| row | exit | predicted | what moved |
+| --- | --- | --- | --- |
+| USN13 | 1 | identical | none; `health_zero=0 neutralized=0 countdown_fires=0` on both |
+| USNOS | 1 | identical | none |
+| JM05 | 1 | identical | none |
+| USN01 | 1 | identical | none |
+| LOMP10 | 1 | identical | none |
+| JM08 | 1 | identical | none |
+| USN04 | 1 | identical | none |
+
+**The authored capture values** (the new census line): USN01 and USN13 `CaptureRange` 100,
+`CaptureValue` 10000; USNOS HQ1/HQ2/CB2 100 / 10000; LOMP10 CB4 1100 / 7000; JM05
+MainCommandBuilding 0 / 10000, SecondaryCommandBuilding 20 / 60000, RadarStation 10 / 60000;
+JM08 `Headquarter 01` 500 / 2000000. At 10 CapturePower per ship per second these take
+hundreds to hundreds of thousands of ship-seconds, so in these rows a capture by ships alone is
+rare; JM05's small ranges suggest its buildings are meant to be taken by landing (arm 2).
+
+**Diagnostics** (`BSP_CB_FORCE_ZERO`, same binaries):
+- **USN13 long, `CB2@20`.** OFF: CB2 dies at t = 19.95 (a death row, `killer=-`). ON:
+  `neutralized (prior party=1) at t=20.00`, no CB2 death row, 431 countdown fires (one per
+  second to the end). From t = 391.95 two Japanese ships sit inside the 100 range (`s1=20`) and
+  the progress runs to -200 by t = 400.95; they leave, and the fallback decay takes it back to 0
+  by t = 410.95 (20 D5h updates). No flip (10000 needed). The ON-vs-OFF pair is exit 3 (106 vs 93
+  deaths): expected, because OFF removes CB2 at 20 s and everything aimed at it moves.
+- **USN13 long, `CB2@20:150` (ON2).** Neutral at 20.00; the same two ships drive the progress to
+  -160; `flipped to party=1 side=1 repair=1 at t=398.95`; the countdown stops (380 fires), as the
+  building is no longer neutral. The logged `slot` is the side (slot choice not modelled).
+- **JM08 long (36000), `Headquarter 01@500`.** OFF: the HQ dies at 499.90. ON: neutral at 500.00,
+  1301 countdown fires, no D5h update (no ship within 500 of the HQ to the end, t = 1800), no
+  flip; the HQ takes 379 more health-zero hits while neutral. Pair exit 3 (11 vs 20 deaths): with
+  the HQ standing, the invasion keeps firing on it and nine props near it (containers, tents,
+  two Static Gekko) die from t = 945. `MissionFailedRan=nil` on both: the script's line-451 check
+  did not end the mission in this process.
+
+**Decision: ON.** Every plain row is gameplay-identical as predicted, and the mechanism matches
+the read (neutralize instead of death, one tick per second, the progress rule including the
+fallback decay, the flip and the repair). Open: arm 2 (landed landing ships, with the landing
+chain), the slot choice and `0090F860` scoring, what a neutral building's own gun mounts do (not checked; the image's
+garrison occupants are separate units), and the AI host's party lists for
+a flipped building.
+
+## 82. USNOS's death rise in reference s and `kCaptureGroupValueBound` (packet `cc9_usnos_capture_value_check`, cc9-ships21, 2026-09-30)
+
+Question: reference s's USNOS deaths 18 -> 63 were attributed to `kCaptureGroupValueBound`
+(section 70) by the `cgv` leave-one-out. Do the planner handoffs follow the `00A250A0` rule, or is
+it a host side effect? Logs: `g17_rs_usnos.log` (s, cgv ON) and `g17_s_cgv_usnos.log` (cgv OFF)
+in the cc9-gunnery17 tree. Read only.
+
+- **The planner half follows the rule.** ON: `capture group value bound=1 calls=1872 zero=63`,
+  `handoffs=21`, capture-path assignments 603. OFF: `calls=0`, `handoffs=0`, assignments 1083. The
+  zero-value groups stop being assigned and are handed on, as section 70 predicted for USN13 and
+  USN01. The Attack think's census (`ai group target value`) then scores six handed-off groups
+  (MovieCargo, Cargo1, 4, 6, 7, 9) at value 0 against every candidate (HQ1, HQ2,
+  `Storage, 09 02`, ...), which is section 70's "0 beats the floor, first populated group wins"
+  case.
+- **The orders change for the warship groups that stay assigned.** OFF: Ada1, Zao2, Zao3 and
+  Ada3 are ordered at HQ2. ON: Ada1 at CB2, and Zao2 and Shimotsuke (party 1) at HQ1,
+  `cautious=1`.
+- **The extra deaths are blast kills of static objects by three of those ships.** 49 of the 63
+  death rows have killer Shimotsuke (25, cat 6), Ada2 (16, cat 4) or Zao1 (8, cat 6), all
+  `killer_blast=1`, at ranges of about 1000 to 2800 and from t = 7.65. The victims are containers,
+  storage, oil tanks, tents, barracks, hangars, two coastal guns (`coastal_gun_us`, authored party
+  1) and static aircraft (`Static dauntless`, `Static Jill`). The OFF run has none of these rows.
+- **Reading:** the `00A250A0` rule does what section 70 says. The death rise is a consequence:
+  the re-targeted warships fire from new positions, and their blasts reach static objects near
+  the bases. The coastal guns are the ships' own party; the other props' party is not in the log.
+  So whether the image lets a ship's blast damage its own side's statics is a question for the
+  gunnery blast path (cc9-gunnery17), not for the planner. The planner switch stays ON.
