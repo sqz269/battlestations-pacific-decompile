@@ -13254,3 +13254,107 @@ to r (exit 0 or 1 against `g15_rr_<row>` in the cc9-gunnery15 tree) on all seven
   `red`: USN04, E2, USN13, USN01.
 - Because the plane switches share one random stream, any plane variant is expected to move every
   plane row it touches at all; attributions among them are coupled, not exclusive.
+
+**Run parameters:**
+- **One binary:** `local\g17_rs\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery17, a clean
+  `tools/pair_export.py --commit 59ff2a1d7` export with no flip (SHA-256 prefix `ECAB9B8141DC`;
+  the full hash is in the report).
+- **Rows:** r's seventeen in r's launch form (`local\g17_runs.ps1`, g15's re-rooted), with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, 1600x900 (`back_buffer=1600x900`).
+- **Environment:** a 300-frame USN01 smoke passed at 04:33 UTC (console session active). The s
+  and anchor rows ran 04:34-04:44 UTC; the leave-one-out lanes ran 04:45-06:07 UTC.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 14042.6 | 49 | 991 (92) | 14649 | 98.70 s | 5 of 16 / 0 of 19 | 16 | Lexington-class01 3332.83 | none | 491 | `local\g17_rs_usn04.log` |
+| USN01 | 3000 | 3039.9 | 5 | 145 (85) | 1829 | 51.50 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 1227.56 | none | 511 | `local\g17_rs_usn01.log` |
+| USN04 (E2) | 9000 | 14074.7 | 51 | 994 (92) | 14663 | 98.70 s | 5 of 16 / 0 of 19 | 19 | Lexington-class01 5601.02 | none | 492 | `local\g17_rs_e2.log` |
+| USN02 | 9000 | 55530.0 | 14 | 2563 (359) | 2105 | 19.25 s | - | - | Kortenaer 6783.22 | **failed at 29.75 s**, phase 1 (unchanged) | 487 | `local\g17_rs_usn02.log` |
+| JM06 (smoke) | 3000 | 4622.1 | 1 | 210 (194) | 314 | 72.15 s | - | - | Fletcher-class 08 426.02 | none | 485 | `local\g17_rs_jm06.log` |
+| JM08 (smoke) | 3000 | 4611.3 | 9 | 289 (178) | 4034 | 5.25 s | - | 1 | Auilick 2516.80 | none | 486 | `local\g17_rs_jm08.log` |
+| USN13 (smoke) | 3000 | 7637.2 | 23 | 429 (137) | 4936 | 96.65 s | 0 of 60 / - | 6 | Enterprise 926.02 | none | 515 | `local\g17_rs_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 455 | `local\g17_rs_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 459 | `local\g17_rs_lomp06.log` |
+| LOMP10 | 3000 | 2861.9 | 7 | 240 (156) | 2982 | 90.50 s | - / 8 of 8 | - | (none) 8001.80 | none | 482 | `local\g17_rs_lomp10.log` |
+| JM05 | 3000 | 2587.0 | 1 | 52 (26) | 97 | 9.95 s | - | - | USS Phelps 2624.63 | none | 536 | `local\g17_rs_jm05.log` |
+| USN12 | 3000 | 4079.5 | 4 | 200 (21) | 95 | 7.55 s | - | - | Montpelier 1499.41 | none | 480 | `local\g17_rs_usn12.log` |
+| LOMP10 (long) | 9000 | 3537.1 | 9 | 250 (162) | 3000 | 90.50 s | - / 8 of 8 | - | (none) 8001.80 | none | 494 | `local\g17_rs_lomp10l.log` |
+| USNOS | 3000 | 27123.1 | 63 | 842 (98) | 3996 | 6.75 s | - | 9 | NH 1497.26 | none | 520 | `local\g17_rs_usnos.log` |
+| USNOS (long) | 9000 | 43020.0 | 89 | 1794 (219) | 14974 | 6.75 s | - | 12 | NH 4492.07 | none | 524 | `local\g17_rs_usnosl.log` |
+| IJN01 | 3000 | 1431.1 | 3 | 81 (66) | 2586 | 86.55 s | - | - | Downes 220.09 | none | 499 | `local\g17_rs_ijn01.log` |
+| JM05 (long) | 9000 | 18189.4 | 5 | 753 (628) | 1583 | 9.95 s | - | 3 | USS Phelps 7466.83 | none | 548 | `local\g17_rs_jm05l.log` |
+
+**Against r** (`pair_diff` against `g15_rr_<row>` in the cc9-gunnery15 tree): **fifteen rows move**
+(exit 3); **USN02 and BSM01 are gameplay-identical** (exit 1).
+
+Headline moves:
+- **USN04 and E2:** torpedo-task releases 1 -> 5 of 16; damage 11938.8 -> 14042.6 and
+  12158.8 -> 14074.7; hull hits 125 -> 92. USN04 deaths 50 -> 49.
+- **LOMP10 and LOMP10 long:** dive-bomb-task releases 3 -> 8 of 8; deaths 10 -> 7 and 12 -> 9.
+- **USNOS and USNOS long:** deaths 18 -> 63 and 34 -> 89. The new dead are the US base's
+  structures (storage, oil tanks, hangars, barracks, coastal guns, static aircraft), killed by
+  Shimotsuke (25), Ada2 (16) and Zao1 (8) on USNOS. Five plane deaths of r (`plane #1.1`,
+  `#1.2` and their wing members) are gone.
+- **IJN01:** deaths 6 -> 3, damage 3324.0 -> 1431.1.
+- **JM08:** deaths 10 -> 9, shots 2341 -> 4034. **USN13:** deaths 22 -> 23, shots 3800 -> 4936.
+- **USN01:** the same five Mavs die, re-timed; damage 3885.8 -> 3039.9.
+- **JM05 long:** death rows identical; Yorktown's `movetopos` distance at step 9000 is
+  13111.13 -> 2499.17 m (SHIP_AI 65.7's 2477 m).
+- **JM05, USN12, JM06:** death rows identical. JM06's only change is the PBY Catalina's position
+  (the wanderer); LOMP06's Yugiri fires 6 shots instead of 2.
+
+### The anchor: fourteen switches
+
+With all fourteen OFF (`g17_rs0`, SHA-256 prefix `090D297D57CC`), `59ff2a1d7` is
+**gameplay-identical to reference r on all seventeen rows** (exit 1 against `g15_rr_<row>`).
+Nothing else that landed since r moves a reference row. (The anchor's native table registers three
+more unimplemented methods than r's: the backoff countdown `009F3F89` and the two ship-AI reset
+stages, which the anchor carries OFF.)
+
+### What moved each row
+
+Each variant was turned OFF alone and read with `pair_diff` against s on the fifteen moved rows
+(`local\g17_lane.ps1`; logs `local\g17_s_<v>_<row>.log`).
+
+| variant (OFF) | switch | rows that move against s |
+| --- | --- | --- |
+| `wan` | `kFollowTrailArmBound` + `kPlaneWandererBound` | USN04, E2, USN01, JM06, JM08, USN13, LOMP10, LOMP10 long, JM05, JM05 long, USNOS, USNOS long, IJN01 |
+| `pha` | `kFollowPhaseABound` | USN04, E2, USN01, USN13, LOMP10, LOMP10 long, JM05, JM05 long |
+| `tur` | `kFollowTurboBound` | USN04, E2, USN01, USN13, LOMP10, LOMP10 long, JM05, JM05 long, IJN01 |
+| `mts` | `kMoveToTargetSpeedOverrideBound` | none |
+| `pmh` | `kPlaneMeshHitTestBound` | USN04, E2, USN01, JM08, USN13, LOMP10, LOMP10 long, USNOS, USNOS long, IJN01 |
+| `pbe` | `kPlaneBlastElementEntriesBound` | the same ten as `pmh` |
+| `alp` | `kAaLeaderPenaltyBound` | the same ten as `pmh` |
+| `red` | `kTorpedoResetEngageDrawsBound` | USN04, E2, USN01, USN13 |
+| `rrg` | `kShipAiApproachRetargetRingBound` | IJN01 (Downes moves 220 -> 301 m; death rows identical) |
+| `ebr` | `kShipAiEscapeByteResetBound` | USN13, LOMP06, JM05, JM05 long, USNOS, USNOS long (death rows identical on all) |
+| `nrs` | `kShipAiNavResetSpanBound` | none |
+| `cgv` | `kCaptureGroupValueBound` | USN01, USN13, USNOS (63 -> 15 deaths OFF), USNOS long (89 -> 35) |
+| `aop` | `kAiOwnerPlayerSlotBound` | JM05, USN12, JM05 long (death rows identical) |
+
+**Attribution:**
+- Every moved row is attributed. `aop` alone attributes USN12; `ebr` alone attributes LOMP06;
+  `wan` alone attributes JM06.
+- **The torpedo and dive releases belong to the mesh hit test.** With `pmh` OFF, USN04 and E2
+  release 0 of 16 and LOMP10 5 of 8; with `pbe` OFF, 2 of 16; every other variant keeps 4-6 of 16.
+  The turbo, predicted to raise them, does not (5 of 16 with it OFF).
+- **USNOS's base destruction belongs to the capture value** (SHIP_AI 70.1): with it OFF USNOS
+  returns to 15 deaths and USNOS long to 35, near r. The Japanese surface groups handed to the
+  Attack planner shell the base. This row is measured here, not paired against the image; the
+  reading is provisional.
+- The inert pair is confirmed: `mts` and `nrs` move nothing.
+
+**Prediction misses:**
+- **Rows:** JM06 and LOMP06, predicted identical, move. JM06 has an aircraft (the PBY), so the
+  wanderer reaches it; LOMP06's Yugiri shot count follows the escape byte reset. USN02 and BSM01
+  hold.
+- **Reach:** the three AA switches, the turbo and Phase A each reach more rows than their pairs
+  covered (the shared random stream, and AA on every row where planes are shot at). Phase A does
+  not move JM08 (predicted). The escape byte reset reaches LOMP06, JM05 and USNOS; the capture
+  value reaches USNOS; the owner slot reaches JM05 long.
+- **Headlines:** the turbo is not the source of the E2/USN04 release rise (the mesh hit test is).
+  USN01's `Convoy1` prediction was not testable: r already had no `Convoy1` death (the party gate).
+  IJN01's deaths did not stay at r's (6 -> 3); the retarget ring alone does not move them, the
+  plane and AA variants do.
