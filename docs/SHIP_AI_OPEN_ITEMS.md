@@ -7582,3 +7582,27 @@ will replace the stand-in, and turn it OFF when that solver flips.
   `scripts/global/commandhelpers.lua`'s `luaEnableNavigator(entity, enable)` sets all three
   avoidances to `enable`, so a script that disables a unit's navigator also turns its land and
   torpedo avoidance off.
+
+### 88.1 Census (`s22_p0`, `86503a897`, OFF) and predictions (written before the ON run)
+
+| row | land orders | torpedo orders | orders with `false` |
+| --- | --- | --- | --- |
+| USNOS | 86 | 86 | 0 |
+| USN13 | 52 | 52 | 0 |
+| USN02 | 28 | 28 | 4 (torpedo: DeRuyter, Java, Kortenaer and one more) |
+| USN04, E2 | 18 | 18 | 0 |
+| USN01 | 14 | 14 | 0 |
+| USN12 | 12 | 12 | 0 |
+| JM06 | 0 | 12 | 12 (torpedo: the tankers, the hospital ship, the transports) |
+| JM05 | 2 | 0 | 2 (land: both PT Boats) |
+| JM08 36000, BSM01, LOMP06, LOMP10, IJN01 | 0 | 0 | 0 |
+
+- **Rows with no `false`: exit 0 or 1.** Delivering a `true` into a byte the constructor
+  already set to 1 changes nothing.
+- **JM06:** twelve merchant hulls stop evading torpedoes (`009DA231` false). If the Japanese
+  submarines or torpedo planes attack them, they hold course and take more hits: exit 3.
+  Otherwise exit 1.
+- **USN02:** the four Allied cruisers and destroyers stop evading torpedoes: exit 3 if they are
+  torpedoed in the 9000 frames, otherwise exit 1.
+- **JM05:** the two PT boats' avoid-zone searches drop land (`009DA6FB..`, `009EFCBD`). They
+  path through land zones and the interim hull stop (87.5) holds them at the shore: exit 1 or 3.
