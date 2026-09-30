@@ -2104,8 +2104,11 @@ inline constexpr bool kNavigatorAvoidanceDeliveryBound = true;
 // 1 (0083672A), so only a `false` changes anything. True: delivered at once, the
 // same loopback SUBSTITUTION as the two setters above. False: counted only (the
 // row is routed here in both builds, so the binding no longer reports as an
-// unimplemented native).
-inline constexpr bool kNavigatorShipAvoidanceDeliveryBound = false;
+// unimplemented native). ON by section 90.2: USN16's six Taffy carriers take the
+// `false`; 009DD010 stops running and Kitkun Bay's traffic writes drop 255 -> 0,
+// gameplay identical (their OFF traffic terms were all zero). Every other row
+// makes no call.
+inline constexpr bool kNavigatorShipAvoidanceDeliveryBound = true;
 
 void GameScriptOrdersHost::session_route_avoidance_message(void* director,
     int selector, bool enabled) {

@@ -7709,3 +7709,31 @@ Predictions:
     Carrier courses and the ships near them move; deaths may move.
 - **BSM06 / BSM02:** exit 3 only if a landing wave or phase 2 spawns within 9000 frames;
   otherwise exit 1 (the order count line moves in neither).
+
+### 90.2 The pairs (`s23_a0` vs `s23_a1`, both from `4080faf71`), and the flip
+
+| row | frames | ship-collision orders | exit | what moved |
+| --- | --- | --- | --- | --- |
+| USN16 | 3200 | 6, all `false` | 1 | the mechanism lines only |
+| USN16 | 9200 | 6, all `false` | 1 | the mechanism lines only |
+| BSM06 | 9200 | 0 | 1 | nothing (no landing wave spawned) |
+| BSM02 | 9200 | 0 | 1 | nothing (phase 2 not reached); 116 death rows identical |
+| USN02 | 9200 | 0 | 1 | nothing; death row identical |
+
+- **USN16:** the six orders are Fanshaw Bay, Saint Lo, White Plains, Kalinin Bay, Kitkun Bay
+  and Gambier Bay, from `luaInitMission`. ON delivers all six (`delivered=6`). The mechanism
+  matches the read:
+  - `ShipAiClearance::neighbour_blocks_sweep_009dd010` (958 calls OFF) no longer runs, because
+    `009EC770` accepts no party.
+  - Kitkun Bay, the only unit with the zone and neighbour diagnostic lines: `traffic_writes`
+    255 -> 0 (`009EF350` accepts no party) and `rudder_gate_open` 8745 -> 9000 of 9000.
+- **Why gameplay did not move.** The OFF side's traffic terms were all zero (`traffic_max=0.000`,
+  `max_turn=0.000`), and the 255 closed rudder-gate frames did not change a position.
+  The unit table (24 rows) is identical, and so is the controlled Fanshaw Bay's distance.
+- **Prediction miss (spread, not mechanism).** I predicted exit 3 for USN16. The carriers lose
+  their ship avoidance as read, but no other ship came close enough within 450 s for it to
+  steer them.
+- **Decision: `kNavigatorShipAvoidanceDeliveryBound` ON.** The mechanism matches the read; no row
+  moves a death or unit row.
+- **Still unexercised:** the BSM06 and BSM02 landing waves (`false` on each spawned transport)
+  and the siege multiplayer scripts.
