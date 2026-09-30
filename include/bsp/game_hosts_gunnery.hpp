@@ -395,7 +395,8 @@ inline constexpr bool kUnitFireCooldownBound = true;
 // reaches the gunnery host's task and gates its 0093C770 step. LABELLED: stored at
 // the Lua call, not queued to the next step's session pump. False: the flag is
 // counted and dropped, and every task keeps 0093BCC0's +45h = 1.
-inline constexpr bool kHullRepairEnableRouteBound = false;
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 82.4).
+inline constexpr bool kHullRepairEnableRouteBound = true;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
