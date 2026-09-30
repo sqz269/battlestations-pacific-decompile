@@ -8232,7 +8232,8 @@ available row gains a script dogfight. This is recorded as unmeasured, not as a 
 **USNOS 3000:**
 - 12 tasks (three squadrons of four) and 45 transitions;
 - five aim entries at t = 117.8-127.1 s, from about 1000 m (3-D) at 575-672 m altitude;
-- 169 aim thinks and **61 gun fire ticks on the aim point**.
+- 148 aim thinks and **53 gun fire ticks on the aim point** (corrected in 5cc: 169 and 61 were
+  the `f3ef5bbcf` run of 5ca.4).
 
 The strafe damage lands on the ordered targets (unit table, OFF -> ON):
 
@@ -8270,8 +8271,8 @@ reached**, and attackrun only as the members' one-think blips at an order.
 - dogfight by `PilotSetTarget`: **unmeasured**;
 - controls: as predicted.
 
-The USNOS 3000 row and the first 150 s of the 9000 row do not match on the ON side (aim thinks
-169 vs 148, fires 61 vs 53). Open.
+A divergence between the USNOS 3000 row and the head of the 9000 row, reported here at first,
+does not exist: see 5cc.
 
 ### Verdict: **flip ON**, with recorded misses (`kStrafeTaskBound = true`, `kAttackChoiceGunsFedBound = true`)
 
@@ -8285,5 +8286,27 @@ The mechanism matches end to end where it is reached:
 The misses are spread (counts) and reach (goaway unreached because AA kills the aimers), not a
 mechanism failure. Still unverified:
 - goaway, attackrun beyond the one-think blip, and the evasive gaps;
-- script dogfights;
-- the ON-side mismatch between the 3000 row and the head of the 9000 row.
+- script dogfights.
+
+## 5cc. The USNOS 3000/9000 "divergence" was two binaries, not nondeterminism (cc9-lua30, 2026-09-30)
+
+5cb reported that on the ON side, the USNOS 3000 row and the first 150 s of the 9000 row
+disagree: aim thinks 169 vs 148 and gun fires 61 vs 53. **That was a transcription error.**
+- 169 / 61 are the 5ca.4 run, built from `f3ef5bbcf`.
+- 148 / 53 are the 5cb run, built from `cc43405cc`.
+- `local\l30_on_usnos.log` was rewritten by the 5cb run (mtime 22:16:35 UTC) before its census was
+  re-read.
+- The two builds differ by other packets' landed code: `git diff --stat f3ef5bbcf cc43405cc`
+  touches `game_hosts_ship_ai.cpp`, `hull_terrain_contact.cpp`, `game_hosts_ai.cpp` and
+  `game_hosts_units.cpp`, 12 files, +1299/-115.
+
+**The check.** `local\l30_firstdiff.py` starts at the first `local-player unit lists sources`
+line. It drops the harness lines, the first-call `host ...` registrations and the lines naming the
+run length, and it masks pointers and thread ids.
+- On both sides (`l30_off_usnos` vs `l30_off_usnosl`, `l30_on_usnos` vs `l30_on_usnosl`) the two
+  rows are line-identical up to and including `controlled unit frame 3000 t= 150.00`.
+- The first difference is the 3000 row's end-of-run summary.
+- The two logs' per-plane strafe census rows are identical, and so is their summary (aim = 148,
+  fires = 53).
+
+Nothing in the first 150 s reads the configured frame count, and the runs are deterministic.
