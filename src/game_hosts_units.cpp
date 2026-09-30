@@ -607,6 +607,14 @@ struct GameUnitSlot {
     float takeoff_run_1c{0.0f};
     unsigned long long takeoff_installs{0}, takeoff_ticks{0}, takeoff_prep_ticks{0};
     unsigned long long takeoff_slow_ticks{0}, takeoff_run_refused{0};
+    // Packet cc9_takeoff_step_bind: takeoff/Takeoff's step 009CE2C0.
+    // approach+38h as the step writes it (3, FFh or 0; no reader here), the
+    // step's census and the first aligned and first full-throttle times.
+    int takeoff_run_38{0};
+    unsigned long long takeoff_run_ticks{0}, takeoff_run_aligned{0}, takeoff_run_speed{0};
+    unsigned long long takeoff_run_low_land{0}, takeoff_run_no_holder{0};
+    unsigned long long takeoff_run_hold{0}, takeoff_run_no_deck{0};
+    float takeoff_run_first_aligned{-1.0f}, takeoff_run_last_throttle{0.0f};
     float takeoff_installed_at{-1.0f}, takeoff_prep_left_at{-1.0f};
     float takeoff_slow_left_at{-1.0f}, takeoff_prep_min_member_d{-1.0f};
     const char* takeoff_prep_exit{""};
@@ -24433,11 +24441,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         switch (unit_.takeoff_state) {
                         case TS::kPrepare: run_takeoff_prepare_step_009cde50(dt); break;
                         case TS::kSlowTakeoff: run_takeoff_slow_step_009ce160(); break;
-                        case TS::kTakeoff:
-                            // 009CE2C0, the Takeoff step: piece 4 part 2b, not bound.
-                            ++unit_.takeoff_run_refused;
-                            owner_.record("TakeoffStateTakeoff::step_009ce2c0", 0x009ce2c0u);
-                            break;
+                        case TS::kTakeoff: run_takeoff_run_step_009ce2c0(dt); break;
                         default:
                             owner_.record("TakeoffStateParking::step_009cd540", 0x009cd540u);
                             break;
@@ -24535,8 +24539,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.record("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
                                 ++owner_.takeoff_to_run;
                                 owner_.log.notef("  takeoff task %s: SlowTakeoff -> Takeoff at "
-                                    "%.2f s (009CFB60; the Takeoff step 009CE2C0 is not bound; "
-                                    "packet cc9_takeoff_task_bind)", unit_.row.name.c_str(),
+                                    "%.2f s (009CFB60; packet cc9_takeoff_task_bind)",
+                                    unit_.row.name.c_str(),
                                     static_cast<double>(owner_.summary.simulated_seconds));
                             }
                         }
@@ -24643,6 +24647,440 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (pt < t && owner_.takeoff_permission_009cdd10(unit_)) {
                             unit_.takeoff_prep_done_19 = true;
                             unit_.takeoff_prep_exit = "prepare time and site permission";
+                        }
+                    }
+
+                    // 009CE2C0 (009CE2C0-009CE6F8, RET 4 at 009CF6F5), takeoff/Takeoff's
+                    // step, transcribed from the listing (docs/SQUADRON_LAND_TASK.md 5be).
+                    // H is the holder (+BF4h), 0 in free flight; `carrier` its owner's
+                    // IsKindOf(9) (a mother-ship deck here). The x87 order is kept where
+                    // the listing stores to float; `|x|` is x > 0 ? x : -0.0 - x.
+                    void run_takeoff_run_step_009ce2c0(float dt) {
+                        using Impl = GameUnitsHost::Impl;
+                        using bsp::clamped_interpolate_00419010;
+                        GameUnitSlot& p = unit_;
+                        ++p.takeoff_run_ticks;
+                        auto fabs0 = [](float x) { return x > 0.0f ? x : -0.0f - x; };
+                        const bool loaded = owner_.lua.plane_globals_loaded();
+                        if (p.plane_landed_904) p.plane_landed_904 = false;          // 009CE2E0
+                        const bool free = p.plane_control_mode_900 == 7;             // +72Ch vt[38h]
+                        std::size_t hi = free ? 0 : p.plane_contact_deck_bf4;
+                        Impl::LandingDeck* d = nullptr;
+                        if (hi != 0 && hi <= owner_.landing_decks.size()) {
+                            Impl::LandingDeck& dk = owner_.landing_decks[hi - 1u];
+                            d = owner_.landing_deck_006c0750(hi - 1u, dk.owner);
+                        }
+                        if (hi != 0 && d == nullptr) {
+                            // A holder the host did not build: taken as none (labelled).
+                            ++p.takeoff_run_no_deck;
+                            hi = 0;
+                        }
+                        const GameUnitSlot* ow = (d != nullptr && d->owner < owner_.slots.size())
+                            ? owner_.slots[d->owner].get() : nullptr;
+                        const bool carrier = d != nullptr && d->mother_ship;        // IsKindOf(9)
+                        const bool owner_dead = ow == nullptr || (owner_.gunnery != nullptr
+                            && owner_.gunnery->unit_dead(d->owner));                 // +5Dh
+                        const float v = avoid_len(p.plane_world_velocity);           // vtable[38h]
+                        const float* pos = p.motion.position;
+                        // A: m = H+B4h x 0.5 - |plane.xz - owner.xz|, else 150.0 (00CE3808).
+                        float m = 150.0f;
+                        if (d != nullptr && ow != nullptr) {
+                            const double ex = static_cast<double>(pos[0]) - ow->motion.position[0];
+                            const double ez = static_cast<double>(pos[2]) - ow->motion.position[2];
+                            const float len = static_cast<float>(std::sqrt(ex * ex + ez * ez));
+                            m = static_cast<float>(static_cast<double>(d->length_b4) * 0.5 - len);
+                        }
+                        // B: the obstacle factor over world list 6 (the ships), skipping
+                        // the holder's owner: 00816410 (the point where the ray from the
+                        // ship's origin toward the plane leaves its box), in the plane's
+                        // frame; 5 < z < 100 (double) and |x| < 50 (double).
+                        float f = 0.0f;
+                        for (const GameUnitWorldNode* node = owner_.world_lists.entries[6].head;
+                             node != nullptr; node = node->next) {
+                            const GameUnitSlot* u = node->unit;
+                            if (u == nullptr) continue;
+                            if (d != nullptr && u->process_index == d->owner) continue;
+                            float q[3];
+                            Impl::follow_to_body(*u, pos, false, q);
+                            const AvoidBox b = avoid_box(*u);
+                            const float bx = (-b.mn[0] < b.mx[0]) ? b.mx[0] : -b.mn[0];
+                            const float bz = (-b.mn[2] < b.mx[2]) ? b.mx[2] : -b.mn[2];
+                            const float ax = fabs0(q[0]), ay = fabs0(q[1]), az = fabs0(q[2]);
+                            float kq = 1.0f;
+                            if (bx < ax && bx / ax <= 1.0f) kq = bx / ax;
+                            if (!(ay <= b.mx[1])) {
+                                const float ky = b.mx[1] / ay;
+                                if (ky <= kq) kq = ky;
+                            }
+                            if (bz < az && bz / az <= kq) kq = bz / az;
+                            const float ql[3] = {q[0] * kq, q[1] * kq, kq * q[2]};
+                            float qw[3];
+                            deck_to_world(u->world, ql, true, qw);
+                            float l[3];
+                            Impl::follow_to_body(p, qw, false, l);
+                            if (l[2] > 5.0f && 100.0 > static_cast<double>(l[2])
+                                && 50.0 > static_cast<double>(fabs0(l[0]))) {
+                                const float fi = clamped_interpolate_00419010(100.0f, 0.0f, 40.0f,
+                                    1.0f, l[2]);
+                                if (fi > f) f = fi;
+                            }
+                        }
+                        // C: the pitch target P.
+                        const float T = p.plane_climb_angle_1ec;                    // class+1ECh
+                        float P = p.plane_min_water_spd_198 == 0.0f ? 0.1f : 0.05f;  // 00D7A2F0 / 00CE7638
+                        const bool bomber = bsp::unit_is_kind_of(p.class_id, 0x10)
+                            || bsp::unit_is_kind_of(p.class_id, 0x16);
+                        const bsp::GameTuningBlock* g = loaded ? &owner_.lua.plane_globals() : nullptr;
+                        const double stall_range = g == nullptr ? 1.0 : static_cast<double>(
+                            g->dynamics_spd_multipliers_stall_range_max * p.plane_stall_spd);  // 007C4830
+                        if (free) {
+                            const float x = static_cast<float>(static_cast<double>(f) * 5.0 +
+                                p.plane_airborne_908);
+                            P = clamped_interpolate_00419010(2.0f, P, 6.0f, T, x);
+                        } else if (bomber) {
+                            const float sr = static_cast<float>(static_cast<double>(v) / stall_range);
+                            const float a = clamped_interpolate_00419010(1.0f, 0.05f, 1.5f, T, sr);
+                            const float xb = static_cast<float>(static_cast<double>(f) * 150.0 + m);
+                            const float b = clamped_interpolate_00419010(150.0f, 0.05f, 50.0f, T, xb);
+                            const float m2 = static_cast<float>(-static_cast<double>(T) * 2.0);
+                            const float c = clamped_interpolate_00419010(0.0f, m2, 7.0f, T,
+                                p.takeoff_run_1c);
+                            const float bc = b > c ? b : c;
+                            P = a > bc ? a : bc;
+                        } else {
+                            const float sr = static_cast<float>(static_cast<double>(v) / stall_range);
+                            const float a = clamped_interpolate_00419010(1.4f, 0.05f, 1.8f, T, sr);
+                            const float b = clamped_interpolate_00419010(80.0f, 0.05f, 30.0f, T, m);
+                            P = a > b ? a : b;
+                        }
+                        auto write_hold = [&](float thr, float brake) {
+                            p.plan_slots[bsp::kPilotSlotThrottle].desired = thr;
+                            p.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            p.plan_slots[bsp::kPilotSlotAirBrake].desired = brake;
+                            p.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            p.plane_air_brake_mode_2d8 = 0;
+                        };
+                        auto write_level = [&]() {
+                            p.plan_state.bank_target_2c4 = 0.0f;                     // +2C4h, +2CCh = 1
+                            p.plan_heading_mode_2cc = 1;
+                            p.plan_heading_2c0_written = false;
+                            p.plan_state.pitch_target_2bc = P;                       // +2BCh, +2D0h = 1
+                            p.plan_state.pitch_mode_2d0 = 1;
+                        };
+                        // D: with a holder.
+                        if (d != nullptr) {
+                            if (p.plane_min_water_spd_198 != 0.0f) {
+                                float h = 0.0f;
+                                if (owner_dead) {
+                                    const float sn = fabs0(static_cast<float>(std::sin(
+                                        static_cast<double>(p.plane_bank_angle_c68))));
+                                    h = static_cast<float>(static_cast<double>(p.class_width_00a4)
+                                        * sn * 0.5 + 2.5);
+                                }
+                                if (h > pos[1]) {
+                                    p.plane_c01 = 1;                                  // 007B9010
+                                    return;
+                                }
+                            }
+                            // (+BF8h clear or +BF4h null) and the site's vtable[1Ch]
+                            // 006CE4A0: an occupant landed (+904h) in the taxi queue (+910h).
+                            if (!p.plane_ground_contact_bf8 || p.plane_contact_deck_bf4 == 0) {
+                                bool taxi = false;
+                                for (const std::size_t oi : d->site_occupants_34) {
+                                    if (oi < owner_.slots.size() && owner_.slots[oi]
+                                        && owner_.slots[oi]->plane_landed_904
+                                        && owner_.slots[oi]->plane_taxi_queue_910) {
+                                        taxi = true;
+                                        break;
+                                    }
+                                }
+                                if (taxi) {
+                                    ++p.takeoff_run_hold;
+                                    write_hold(0.0f, 1.0f);                          // 007B4ED0(-1.0)
+                                    return;
+                                }
+                            }
+                        }
+                        if (free) {
+                            const float x = static_cast<float>(static_cast<double>(
+                                p.plane_pitch_angle_c64) - 0.05235987901687622);
+                            if (x > P) P = x;
+                        }
+                        // E: a land plane below 5 m.
+                        if (p.plane_min_water_spd_198 == 0.0f && 5.0f > pos[1]) {
+                            ++p.takeoff_run_low_land;
+                            p.takeoff_run_38 = 3;
+                            write_level();
+                            p.plan_slots[bsp::kPilotSlotYaw].desired = 0.0f;
+                            p.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            p.gl_yaw_mode_2d4_zero = true;
+                            write_hold(1.0f, 0.0f);
+                            return;
+                        }
+                        const double level = g == nullptr ? 0.0 : static_cast<double>(
+                            g->dynamics_spd_multipliers_level_flight * p.plane_stall_spd);   // 007C47F0
+                        p.takeoff_run_38 = (free && static_cast<double>(v) > level
+                            && p.plane_airborne_908 > 3.0f) ? 0xFF : 0;
+                        // F: no holder.
+                        if (d == nullptr) {
+                            ++p.takeoff_run_no_holder;
+                            write_hold(1.0f, 0.0f);
+                            write_level();
+                            p.plan_slots[bsp::kPilotSlotYaw].desired = 0.0f;
+                            p.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            p.gl_yaw_mode_2d4_zero = true;
+                            return;
+                        }
+                        // G: with a holder.
+                        if (owner_dead && (!p.plane_ground_contact_bf8 || p.plane_contact_deck_bf4 == 0)) {
+                            p.plane_c01 = 2;                                           // 007B9000
+                        }
+                        write_level();
+                        const std::array<float, 3> lo = owner_.carrier_local_point(*d, pos);  // owner+110h
+                        const float lx = lo[0];
+                        const float lz = lo[2];
+                        const bool lane_flag = !carrier
+                            && (!p.plane_ground_contact_bf8 || p.plane_contact_deck_bf4 == 0);
+                        const bool refused = !(carrier
+                            ? owner_.carrier_elevator_lane_006d0390(*d, p)                // 006D0390
+                            : owner_.landing_spot_clear_006cf5b0(*d, p, lane_flag, lx, lz));
+                        // 006BEFF0: (0 - l.x, 0 - l.y, L x 0.5 - l.z) in the holder frame.
+                        const std::array<float, 3> hl = landing_xform_004142e0(d->inverse_48, pos);
+                        const float dirx = static_cast<float>(0.0 - hl[0]);
+                        const float dirz = static_cast<float>(static_cast<double>(d->length_b4) * 0.5
+                            - hl[2]);
+                        float dxp = dirx;
+                        if (carrier && dirx > 0.0f) {
+                            const float t = static_cast<float>(static_cast<double>(dirx) - 3.0);
+                            dxp = 0.0f > t ? 0.0f : t;
+                        }
+                        auto heading_of = [](float z, float x) {
+                            const float at = static_cast<float>(std::atan2(static_cast<double>(z),
+                                static_cast<double>(x)));
+                            float h = static_cast<float>(1.5707963705062866 - at);
+                            if (0.0f > h) h = static_cast<float>(h + 6.2831854820251465);
+                            return h;
+                        };
+                        const float hr = heading_of(dirz, dxp);
+                        // +94h/+9Ch, the pose's forward row: the local pose under a parent.
+                        const bool parented = p.deck_parent_plus_one != 0;
+                        const float fx = parented ? p.deck_local_rows[6] : p.motion.pose_row2[0];
+                        const float fz = parented ? p.deck_local_rows[8] : p.motion.pose_row2[2];
+                        const float hp = heading_of(fz, fx);
+                        const float err = bsp::wrapped_angle_subtract_00438b10(hr, hp);
+                        const float aerr = fabs0(err);
+                        // The lateral tolerance.
+                        float mc = 1.0f;
+                        if (g != nullptr) {
+                            mc = bsp::plane_min_control_speed_007c4810(
+                                bsp::tuning_min_control_multiplier_007e41df(
+                                    g->dynamics_spd_multipliers_control_range_min,
+                                    g->dynamics_spd_multipliers_control_range_max,
+                                    g->dynamics_spd_multipliers_stall_range_max,
+                                    g->dynamics_spd_multipliers_level_flight),
+                                p.plane_stall_spd);
+                        }
+                        const float tv = static_cast<float>(static_cast<double>(v) / mc * 8.0);
+                        float tol = 2.5 > static_cast<double>(tv) ? 2.5f : tv;
+                        // 006BC890: the site's vtable[44h]; the lift point (006D0120) on a
+                        // carrier, the queue origin (006CF520) in the airfield's frame.
+                        float end = 40.0f;
+                        {
+                            float ez = 0.0f;
+                            bool have = false;
+                            if (carrier) {
+                                const Impl::CarrierElevator* e = owner_.carrier_elevator_ready(*d);
+                                if (e != nullptr) { ez = e->lift[2]; have = true; }
+                            } else {
+                                const bsp::game::ScenePathEntry* path =
+                                    owner_.landing_hangar_path_006d2780_006d2640(*d, true);
+                                if (path != nullptr && !path->points_world.empty()) {
+                                    ez = owner_.carrier_local_point(*d,
+                                        path->points_world.front().data())[2];
+                                    have = true;
+                                }
+                            }
+                            if (have) end = static_cast<float>(static_cast<double>(ez) + 40.0);
+                        }
+                        if (lz > end) {
+                            const float c = static_cast<float>((static_cast<double>(lz) - end) * 0.25);
+                            if (!(tol > c)) tol = c;
+                        }
+                        {
+                            const float c = static_cast<float>(static_cast<double>(d->width_b0) * 0.5
+                                - 1.0);
+                            if (!(c > tol)) tol = c;
+                        }
+                        if (0.800000011920929 > static_cast<double>(aerr)) {
+                            const double w = d->width_b0;
+                            const double a4 = p.class_width_00a4;
+                            const float c = static_cast<float>(bomber ? (w - (a4 - 2.0)) * 0.5
+                                                                      : (w - (a4 + 1.0)) * 0.5);
+                            if (!(tol > c)) tol = c;
+                        }
+                        // The lateral excess e.
+                        float e = 0.0f;
+                        if (dxp >= 0.0f) {
+                            const float t = static_cast<float>(static_cast<double>(dxp) - tol);
+                            if (t > 0.0f) e = t;
+                        } else {
+                            const float t = static_cast<float>(static_cast<double>(tol) + dxp);
+                            if (0.0f > t) e = t;
+                        }
+                        float B = carrier ? 3.0f : 15.0f;                             // 00CE3854 / 00CE5380
+                        if (bomber) B = static_cast<float>(static_cast<double>(v) * 1.399999976158142 + B);
+                        float fwd = 0.0f;
+                        bool open = true;
+                        if (!carrier) {
+                            if (0.0f > p.takeoff_run_18) {
+                                p.takeoff_run_18 = owner_.release_altitude_draw_00bd2f10(
+                                    p.row.name + "#t518", 0.5f, 1.0f);
+                            }
+                            B = p.takeoff_run_18 * B;
+                            const float t = static_cast<float>(static_cast<double>(B) - fabs0(e));
+                            if (0.0f > t) open = false; else B = t;
+                        }
+                        if (open && B > 0.0f) {
+                            p.takeoff_run_18 = 1.0f;
+                            const float k = static_cast<float>(static_cast<double>(fabs0(e)) * 6.0 + 2.5);
+                            const float q = static_cast<float>(static_cast<double>(B) +
+                                static_cast<double>(B) * B * 0.10000000149011612);
+                            fwd = k > q ? q : k;
+                        }
+                        const float ha = heading_of(fwd, e);
+                        const float err2 = bsp::wrapped_angle_subtract_00438b10(ha, hp);
+                        float a2 = fabs0(err2);
+                        if (lz > end) {
+                            const float t = static_cast<float>(static_cast<double>(a2) -
+                                (static_cast<double>(lz) - end) * 0.05000000074505806);
+                            a2 = 0.0f > t ? 0.0f : t;
+                        }
+                        bool aligned = false;
+                        if (!refused) {
+                            const float lim = carrier ? 1.0f : 6.0f;
+                            if (!(lim < fabs0(e))) {
+                                const double ang = carrier ? 5.0 : 8.0;              // 00CE3850 / 00CE3918
+                                aligned = ang * 3.1415927410125732 / 180.0 >= static_cast<double>(a2);
+                            }
+                            if (!aligned && static_cast<double>(p.takeoff_run_1c) > 0.800000011920929) {
+                                aligned = true;
+                            }
+                        }
+                        // The yaw command.
+                        const float ys = p.plane_class.yaw_spd;                       // class+1B0h
+                        float yk = 0.0f;
+                        if (g != nullptr) {
+                            const float g1 = g->air_field_min_turn_spd / ys;         // tuning+188h
+                            const float g2 = ys * g->dynamics_runway_yaw_turn_spd_mul;   // +2B0h
+                            const float gg = g2 > g1 ? g2 : g1;
+                            const float w = clamped_interpolate_00419010(
+                                g->dynamics_runway_yaw_turn_spd_limit_1, gg,
+                                g->dynamics_runway_yaw_turn_spd_limit_1_2, 1.0f, v);
+                            const float vv = 1.0f > v ? 1.0f : v;
+                            float r = g->dynamics_runway_yaw_turn_spd_limit_1_2 / vv;
+                            if (r > 1.0f) r = 1.0f;
+                            yk = static_cast<float>(static_cast<double>(ys) * 0.6000000238418579 * r * w);
+                        }
+                        p.plan_slots[bsp::kPilotSlotYaw].desired =
+                            clamped_interpolate_00419010(-yk, -1.0f, yk, 1.0f, err2);
+                        p.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                        p.gl_yaw_mode_2d4_zero = true;
+                        // 007B8D10: no +DECh here, so true and 007B8DC0 is not reached.
+                        const bool log_row = (p.takeoff_run_ticks % 20u) == 1u;
+                        if (aligned) {
+                            ++p.takeoff_run_aligned;
+                            if (p.takeoff_run_first_aligned < 0.0f) {
+                                p.takeoff_run_first_aligned = owner_.summary.simulated_seconds;
+                            }
+                            p.takeoff_run_1c += dt;
+                            owner_.plane_five_to_four_007c1680(p);
+                            float tq;
+                            if (carrier) {
+                                bsp::UnitBodyAxisSpeedInputs in{};
+                                in.velocity[0] = ow->motion.linear_velocity.x;
+                                in.velocity[1] = ow->motion.linear_velocity.y;
+                                in.velocity[2] = ow->motion.linear_velocity.z;
+                                in.axis[0] = ow->motion.pose_row2[0];
+                                in.axis[1] = ow->motion.pose_row2[1];
+                                in.axis[2] = ow->motion.pose_row2[2];
+                                const float t = static_cast<float>(1.2000000476837158 -
+                                    static_cast<double>(bsp::unit_forward_speed_0092d730(in)) *
+                                    0.05000000074505806);
+                                tq = 0.800000011920929 > static_cast<double>(t) ? 0.8f : t;
+                            } else {
+                                tq = bomber ? 1.0f : 0.9f;                           // 00CE3860
+                            }
+                            // 007B9140(0): kind 17h, or a device holding 2Ah.
+                            const bsp::OrdnanceKindSet set{p.ordnance_mask};
+                            const bool drop = bsp::ordnance_has_torpedo_2bh(set)
+                                || bsp::ordnance_has_general_bomb_2ah(set);
+                            const float cf = drop ? 0.16f : 0.25f;                   // 00CE81A0 / 00CE3868
+                            float add = static_cast<float>((1.399999976158142 -
+                                static_cast<double>(p.plane_body_accel_7c[2])) * cf);   // ctl+68h (+B18h)
+                            if (0.0f > add) add = 0.0f;
+                            tq = static_cast<float>(static_cast<double>(add) + tq);
+                            const float ramp = clamped_interpolate_00419010(0.0f, 0.0f, 5.0f, 1.0f,
+                                p.takeoff_run_1c);
+                            if (ramp > tq) tq = ramp;
+                            if (1.0f > tq) {
+                                const double z = carrier ? 40.0
+                                    : 400.0 - static_cast<double>(v) * 8.0;
+                                if (z > static_cast<double>(m)) tq = 1.0f;
+                            }
+                            float th;
+                            if (0.4000000059604645 > static_cast<double>(tq)) th = 0.4f;
+                            else th = tq > 1.0f ? 1.0f : tq;
+                            write_hold(th, 0.0f);
+                            p.takeoff_run_last_throttle = th;
+                            if (log_row) {
+                                owner_.log.notef("  takeoff run %s: t=%.2f ALIGNED state=%d l=(%.2f %.2f) "
+                                    "e=%.2f err=%.3f a2=%.3f 1c=%.2f thr=%.3f v=%.2f contact=%d "
+                                    "(009CE2C0)", p.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    p.plane_control_mode_900, static_cast<double>(lx),
+                                    static_cast<double>(lz), static_cast<double>(e),
+                                    static_cast<double>(err2), static_cast<double>(a2),
+                                    static_cast<double>(p.takeoff_run_1c), static_cast<double>(th),
+                                    static_cast<double>(v), p.plane_ground_contact_bf8 ? 1 : 0);
+                            }
+                            return;
+                        }
+                        if (refused) {
+                            ++p.takeoff_run_refused;
+                            write_hold(0.00999999977648258f, 1.0f);
+                            return;
+                        }
+                        // The taxi speed request.
+                        ++p.takeoff_run_speed;
+                        float spd;
+                        if (carrier) {
+                            spd = clamped_interpolate_00419010(0.0872664675116539f, 2.777777910232544f,
+                                1.0471975803375244f, 0.5555555820465088f, a2);
+                        } else {
+                            const float t2a8 = g == nullptr ? 0.0f : static_cast<float>(
+                                static_cast<double>(g->dynamics_runway_yaw_turn_spd_limit_1) *
+                                0.6000000238418579);
+                            spd = clamped_interpolate_00419010(0.1745329350233078f,
+                                g == nullptr ? 0.0f : g->air_field_move_spd, 0.4363323152065277f,
+                                t2a8, a2);
+                            spd = static_cast<float>(static_cast<double>(clamped_interpolate_00419010(
+                                0.5235987901687622f, 1.0f, 1.3962634801864624f, 0.20000000298023224f,
+                                a2)) * spd);
+                            if (0.8333333730697632 > static_cast<double>(spd)) spd = 0.8333333730697632f;
+                        }
+                        p.plane_desired_speed_2b4 = spd;
+                        p.plane_trg_speed_corr_off_2b0 = 0;
+                        p.plane_air_brake_mode_2d8 = 1;
+                        if (log_row) {
+                            owner_.log.notef("  takeoff run %s: t=%.2f taxi state=%d l=(%.2f %.2f) e=%.2f "
+                                "err=%.3f a2=%.3f spd=%.2f v=%.2f contact=%d (009CE2C0)",
+                                p.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                p.plane_control_mode_900, static_cast<double>(lx),
+                                static_cast<double>(lz), static_cast<double>(e),
+                                static_cast<double>(err2), static_cast<double>(a2),
+                                static_cast<double>(spd), static_cast<double>(v),
+                                p.plane_ground_contact_bf8 ? 1 : 0);
                         }
                     }
 
@@ -29248,13 +29686,18 @@ void GameUnitsHost::report() {
             if (!s || s->takeoff_installs == 0) continue;
             host.log.notef("summary takeoff member %s: installs=%llu state=%X installed_at=%.2f "
                 "prep_left=%.2f (%s) slow_left=%.2f ticks=%llu prep=%llu slow=%llu "
-                "run_refused=%llu flight_state=%d", s->row.name.c_str(), s->takeoff_installs,
+                "run_refused=%llu flight_state=%d run_ticks=%llu aligned=%llu taxi=%llu hold=%llu "
+                "low_land=%llu no_holder=%llu first_aligned=%.2f last_thr=%.3f",
+                s->row.name.c_str(), s->takeoff_installs,
                 static_cast<unsigned>(s->takeoff_state),
                 static_cast<double>(s->takeoff_installed_at),
                 static_cast<double>(s->takeoff_prep_left_at), s->takeoff_prep_exit,
                 static_cast<double>(s->takeoff_slow_left_at), s->takeoff_ticks,
                 s->takeoff_prep_ticks, s->takeoff_slow_ticks, s->takeoff_run_refused,
-                s->plane_control_mode_900);
+                s->plane_control_mode_900, s->takeoff_run_ticks, s->takeoff_run_aligned,
+                s->takeoff_run_speed, s->takeoff_run_hold, s->takeoff_run_low_land,
+                s->takeoff_run_no_holder, static_cast<double>(s->takeoff_run_first_aligned),
+                static_cast<double>(s->takeoff_run_last_throttle));
         }
         for (const Impl::LandingDeck& d : host.landing_decks) {
             if (!d.built || d.owner >= host.slots.size()) continue;

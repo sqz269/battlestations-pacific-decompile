@@ -6223,3 +6223,89 @@ The 300-frame OFF smoke (`local\l26_off_smoke.log`) exits 0 with the smoke's usu
 `carrier deck stop ... local=(-0.83 17.40 39.39) contact=1` at 16.75 s, the leader's own
 release point and contact. 5ba's non-contact came with a leader still standing on the lift spot.
 Recheck it once Takeoff moves the leader off.
+
+## 5be. Base launch chain, piece 4 part 2b: the Takeoff step `009CE2C0` (packet `cc9_takeoff_step_bind`, cc9-lua26, 2026-09-30)
+
+Behind `kBaseLaunchChainBound`, committed **OFF**. `run_takeoff_run_step_009ce2c0` is the whole
+step. It is transcribed from the listing (`local\l26_from_ce2c0_full.asm`, cc9-lua24's scripted
+listing), with the stack slots tracked through each `SUB ESP,14h` block. The pseudocode was used
+only as a cross-check; its flag bytes are mangled.
+
+### Corrections to 5av
+
+- **C.** The two ground arms start their ramps at 0.05 (`00CE7638`) whatever `MinWaterSpd` is.
+  The `P0` choice (0.1 `00D7A2F0` when `MinWaterSpd` == 0) feeds only the free-flight arm.
+  - The class `10h`/`16h` arm overwrites `f`'s slot with `-2T`.
+  - `f` is not read again.
+- **G, the lateral tolerance.** Only one of the three bounds is a cap.
+  - The past-the-end term `(lz - end) x 0.25` and the aligned-heading width term are **floors**:
+    `tol = c` when `tol <= c` (`009CED6D`, `009CEE3D` `JA` over the store).
+  - The half-width term `H+B0h x 0.5 - 1.0` is the only cap (`009CEDAB`).
+- **`end`** is `006BC890(block)`, which calls the site's `vtable[44h]`:
+  - on a carrier it is `006D0120`, the lift point in the carrier's frame;
+  - on an airfield it is `006CF520`, the hangar entry path's first point in the airfield's frame;
+  - either way the step adds 40.0 (`00D7A378`).
+- **The site calls.**
+  - `vtable[1Ch]` is `006CE4A0` on both site vtables (`00CF89F8`, `00CF8A58`). It is true when an
+    occupant of `site+34h` has `+904h` and `+910h` set.
+  - `vtable[34h]` is `006CF5B0` on an airfield and `006D0390` on a mother ship.
+- **`+94h`/`+9Ch`**, the heading's forward row, is the pose at `+74h`. For a plane parented to a
+  carrier that is the local pose, so the heading error is taken in the carrier's frame. That is
+  the same frame as `006BEFF0`'s holder direction and the owner-frame `lx`/`lz`.
+- **`+B18h`** is `ctl+68h`, the previous step's body forward acceleration (`007DC756`).
+- **The throttle** (aligned):
+  - it starts at 1.2 (`00CEC160`) - the carrier's forward speed (`0092D730` on `owner+1018h`) x
+    0.05, floored at 0.8 (`00CE74F8`); on an airfield it is 1.0 for class `10h`/`16h`, else 0.9
+    (`00CE3860`);
+  - then `+ max((1.4 - ctl+68h) x (0.16 if 007B9140(0) else 0.25), 0)`;
+  - then `max(that, interp(0, 0, 5, 1, state+1Ch))`;
+  - below 1.0 it becomes 1.0 when 40.0 (carrier) or `400 - 8v` (airfield) exceeds `m`;
+  - it is written as 0.4 (`00CE7804`) below 0.4 (`00CE65D0`), else clamped to 1.0.
+- **Lined up** means: not refused, and either (`|e| <= 1.0` (carrier) / 6.0, and `a2` within 5
+  (carrier) / 8 degrees), or `state+1Ch > 0.8`.
+- **`007C17D0`**, the Takeoff enter's tail, does nothing unless `+904h` is set, which it is not
+  for a launched plane. It is recorded.
+
+### Host substitutions, labelled in the code
+
+- `007B8D10` is true (no `+DECh` block), so `007B8DC0` is not reached.
+- `007B9140(0)` is the torpedo or general-bomb bit of the unit's ordnance mask.
+- A holder deck the host did not build counts as no holder.
+- An airfield without an entry path keeps `end` = 40.0.
+
+### Predictions, written before the smoke (switch ON, JM05 3000)
+
+1. **Carrier leaders** enter Takeoff at about 9.5 s, as in 5bd.
+   - They line up within a few ticks and are logged `ALIGNED`.
+   - The throttle rises to 0.8-1.0 and they roll down the deck.
+   - They leave its bow about 4-8 s later. They stay in state 4, because the lift-off `C6h` /
+     `007C7110` (piece 5) is not bound.
+2. The wingmen stay in prepare, denied by the leaders' occupancy, as in 5bd.
+3. **Airfield members** (state 5 on the path) run the lane test.
+   - When lined up they go 5 -> 4 through `007C1680` and roll.
+   - Or, below 5 m of height, they take the low-land arm E at full throttle.
+4. No member reaches state 7 and no task is done.
+
+### Results (switch ON, JM05 3000, `local\l26_p4bon_jm05.log`, built from `931c852db` with the flip)
+
+The OFF 300-frame smoke (`local\l26_off2_smoke.log`) exits 0.
+
+| prediction | result |
+| --- | --- |
+| 1. carrier leaders line up, roll and leave the bow in state 4 | **held**. Both leaders are `ALIGNED` on their first Takeoff tick (9.50 s, `e` = 0, `err` = 0). Lexington: throttle 1.0, then 0.80-0.82 while the `state+1Ch` ramp builds, then 1.0; 9.3 m/s at 11.5 s, 35.8 m/s at 15.5 s, contact lost between 15.5 and 17.5 s at 36-44 m/s. Yorktown loses contact between 13.5 and 15.5 s |
+| 2. wingmen held in prepare | **held**: 2639 of 2641 permission asks denied |
+| 3. airfield members line up, 5 -> 4, and roll | **held**. First lined up at 13.3-29.7 s after 37-205 taxi ticks (speed request 0.83 m/s at large heading errors). The one traced (`MainAirfieldEntity 01_sqn01|.-2`) leaves the runway contact at 59 m/s in state 4 with throttle 0.9-1.0; all six end at throttle 1.0 in state 4. None took the low-land arm (their runways are above 5 m) |
+| 4. no state 7, no task done | **held**: `done=0`; `edge_takeoff_requests=1074` counts the carrier edge requests that piece 5 will send |
+
+**After the deck edge.** Still in state 4 and in its Takeoff state, Yorktown's leader took the D
+arm's taxi hold for 316 ticks: an occupant of its site was landed in the taxi queue, so the step
+wrote throttle 0 with the air brake. That is the image's rule for a plane that has lost contact
+without lifting off. It stops once piece 5 moves the plane to state 7 and out of the site.
+
+**Next: piece 5.** It covers the `C6h` lift-off send and `007C7110`, from the ground roll's two
+counted requests:
+- `007CC1B3`, height over the wheels and `vy` > 0.1;
+- `007CC23E`, contact lost on a ship holder.
+
+After that the rule's done arm (state 7, `+908h` > 5.0, above the floor or faster than
+MinControlSpeed) retires the task, and the flip criterion of 5aw can be checked.
