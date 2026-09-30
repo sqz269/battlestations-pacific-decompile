@@ -5595,3 +5595,80 @@ and USNOS long (15528), barrels whose high damage equals the armour exactly (the
 
 **Verdict: ON** (`kAiTargetWeightDamageTermsBound = true`), a spread miss with the mechanism
 matching. It belongs to reference u.
+
+## 81. Handoff (cc9-gunnery18, written at about 62% context)
+
+### 81.1 Landed
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference t (GAME_EXECUTABLE "2026-09-30 t", `reports/cc9_reference_rebaseline_20.json`) | `ffef61b90`, `e1f2078b6` | the baseline; 16 of 17 s rows moved plus JM08 long, all attributed |
+| Why the weapon facts at attach move JM08 long (80.1) | `0fcf19d8d` | a first-think group order changes which group draws the non-cautious roll; the switch's timing is the image's |
+| The target weight's damage terms (80) | `0fcf19d8d`, `5e20b9ab0` | `kAiTargetWeightDamageTermsBound` ON |
+| cc9-lua24's hit-index detach flip (SQUADRON_LAND_TASK 5as.1) | `f98f1281d` | `kHitIndexDetachBound` ON, applied here because this lane held the file; on the branch, not yet on main when written |
+
+### 81.2 Open, in order
+
+**1. Reference u.**
+- **Base:** main after this handoff. cc9-lua25's base launch chain is coming: if it lands within a
+  few hours, wait for it and take u after it.
+- **Method:** as t (GAME_EXECUTABLE "2026-09-30 t"): predictions committed first; a fresh value diff
+  `2e850cf31..base` with `local\g18_switches.py`; the all-OFF anchor against `g18_rt_<row>`; u
+  against t; leave-one-out on the moved rows.
+- **Rows:** t's eighteen (s's seventeen plus JM08 long 36200/36000). t's logs are
+  `local\g18_rt_<row>.log` in the cc9-gunnery18 tree; its binary is `local\g18_rt`.
+- **Switches newly ON after `2e850cf31`** (the diff at `18f056a15` plus `f98f1281d`; recheck at the
+  u base):
+
+| switch | flip commit | owner / record | expected reach |
+| --- | --- | --- | --- |
+| `kEntityCommandSelfKindBound` | `79df1d06b` | cc9-ships22, SHIP_AI 85.4 (with the two below: the landing chain) | JM08 long (29 -> 33 deaths on its pair), controls identical |
+| `kShipAiApproachLandingModesBound` | `79df1d06b` | as above; its site `009F21A0` was reached on t's JM08 long (8463 calls) | JM08 long |
+| `kShipAiLandStepBound` | `79df1d06b` | as above | JM08 long |
+| `kLandParkStateBound` | `d970bd49a` | cc9-lua24, SQUADRON_LAND_TASK 5ar | JM05 9000 (death rows identical) |
+| `kCarrierElevatorBound` | `0f735b0fe` | cc9-lua24, 5ao.1 (staged behind park) | JM05 long (stows 8 of 8) |
+| `kLandingShipRampBound` | `9dd9efa62` | cc9-ships22, SHIP_AI 86.6 (a landing captures a building) | JM08 long |
+| `kHitIndexDetachBound` | `f98f1281d` | cc9-lua24, 5as.1 | the pair's rows |
+| `kAiTargetWeightDamageTermsBound` | `5e20b9ab0` | 80.5 | USN02, JM06, USN13, LOMP06, IJN01, USNOS, USNOS long |
+| the ramp/capture arm 2 and anything else that lands | - | cc9-ships22 | recheck the diff |
+
+- **Interactions to expect:**
+  - JM08 long carries the landing chain, the ramp and the capture together. Group the three
+    landing-chain switches, since they flipped in one commit.
+  - JM08 long's outcome is coupled to the cautious draws (80.1). Judge it on the census lines (the
+    landing and capture summaries, and `target weight damage terms`), not on deaths alone.
+  - The damage terms change every model row's weights 8-140x but moved few choices. Expect small
+    death moves only on the shore rows.
+
+**2. The fire-window origin** (79.2 item 2). Skipped by the lead for now; low value without a
+per-gun node model.
+
+**3. Torpedo items** (79.2 item 3). Inert on every reference row; the lead ranked them last.
+
+**4. From 80.3's labelled items:**
+- a squadron target is weighed through its planes' class (`+35Ch`) in the image; the host uses the
+  squadron's own row;
+- the type-0Fh attacker branch `00A0861F..00A09222` and the category gates (`bVar3..cVar7` before
+  `00A0943D`) are unprojected;
+- the entity type queries `vtable[+18h]` / `+1Ch` are stubs answering false / 0.
+
+**5. From 79.2 item 4:** unchanged (the kind-6 ship lead on the group 3 seat, `dev+408h`'s readers,
+the difficulty owner modifier, what Shimotsuke aims at on USNOS).
+
+### 81.3 Tools (`local\` in the cc9-gunnery18 tree, prefix `g18_`)
+
+- `g18_runs.ps1 -V <prefix> -Only <rows> [-Exe <path>]`: the reference rows including `jm08l` and
+  `smoke`; the exe defaults to `local\<prefix>`'s build.
+- `g18_wait.ps1 -Logs <names>`, `g18_exp.ps1 -Commit -Out [-Flip]`: as g17's. `local\g18_lane_a/b/c`
+  hold warm builds (an incremental export takes about a minute).
+- `g18_lane.ps1 -Lane -Variants 'v=kA+kB' -Rows [-Commit] [-Prefix]`: leave-one-out, default commit
+  `2e850cf31` and prefix `g18_t`; pass the u base and a new prefix.
+- `g18_vs.py <off> <on> [rows]`: `pair_diff` exits (resolves `g17_rs` into the cc9-gunnery17 tree).
+- `g18_rows.py <prefix> <base>`, then `g18_table.py` (edit its input name): the reference table.
+- `g18_loo.py <v...>`: verdicts of `g18_t_<v>_<row>` against `g18_rt_<row>`; re-point both prefixes.
+- `g18_report20.py`: the t report; copy it for u.
+- `g18_switches.py <a> <b>`: the value diff. `git log -S "<name> = true"` finds a flip commit, but
+  it can land on a doc mention (it did for `kHitIndexDetachBound`); check the diff.
+- `g18_firstdiff.py <a> <b> [n] [skip_regex]`: the first differing lines of two logs, with
+  pointers and ids normalised. This is how 80.1's divergence was found.
+- The rows run fast: all 36 t and anchor runs, JM08 long included, took about 15 minutes.
