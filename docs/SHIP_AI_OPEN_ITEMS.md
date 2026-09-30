@@ -7422,3 +7422,45 @@ ship_terrain_contact`, after the position phase:
   along a shore. Flat ground above the keel blocks the horizontal motion whole.
 - `kLandingShipRampHullContactBound` (ON) points the ramp latch at `+1011h` instead of section
   86's stand-in.
+
+### 87.3 Census: which reference ships cross land today (`s22_k0`, `bcf024627`, switch OFF)
+
+The contact latch runs in both builds, so the OFF runs are the census. Reference launch form.
+The rows are the reference set's 3200-frame rows plus USN04 4700 and E2, USN02 9200, and
+JM08 36000.
+
+| row | ships in contact | steps | deepest keel penetration (m) and who |
+| --- | --- | --- | --- |
+| USN04, E2, USN01, USN02, LOMP06, LOMP10, USN12 | 0 | 0 | - |
+| JM06 | 1 | 125 | Gato-class Submarine 01, 40.1 |
+| JM08 36000 | 11 | 28417 | USTroopTransport 01 357.1, 06 286.8; Gleaves 291.3; LST 03 273.3; Bristol 259.7; LSM 01 242.8; LST 01 232.7; Japanese Patrolboat 01 183.7; USTroopTransport 03 16.2, 05 5.1; LSM 02 4.7 |
+| USN13 | 5 | 7721 | Maru42 115.3, Maru43 108.3, Maru16 30.9, Maru46 23.5, Maru27 19.3 |
+| BSM01 | 1 | 3000 (every step) | Raleigh 3.5, resting |
+| JM05 | 6 | 12313 | Fletcher #2.2 226.6, #2.1 216.3; Clemson #1.2 212.3, #1.1 210.8; both PT Boats 7.9 and 6.4 on every step (resting) |
+| USNOS | 2 | 1047 | Gato 132.4, Cargo5 4.5 |
+| IJN01 | 8 | 7162 | Oglala 17.3, Curtiss 17.3, Pennsylvania 16.0, Downes 9.1, Iowa 8.7, Whitney 8.4, Helena 8.2, Cassin 3.3 (Pearl Harbor's berths and dry dock) |
+
+Penetrations of 100-360 m are hulls driven deep into hills: in seven of the sixteen rows, ships
+cross land today. Resting contacts (BSM01's Raleigh, JM05's PT boats, IJN01's moored ships) are
+hulls whose keel sits below the terrain at a berth or in shallows.
+
+**The first rule is revised before any ON run.** As committed, the stop blocked all horizontal
+motion over flat ground, which would freeze every resting hull. The revision
+(`s22_edit_terrain2.py`) resists a step only at a point whose penetration the step deepened. A
+hull resting in contact moves freely on the level or away, and cannot climb.
+
+### 87.4 Predictions for the revised rule (both switches ON vs OFF), written before any ON run
+
+- **Rows with no contact** (USN04, E2, USN01, USN02, LOMP06, LOMP10, USN12): exit 0 or 1.
+- **JM08 36000:**
+  - LST 01 and LST 03 stop at the beach within about 150 of their pads (the diagnostic's
+    `pad_dist` reached 34.5 on the stand-in run) and stay there.
+  - Their ramps lower about 2 s after their first contact (near 837 and 899, give or take
+    the keel geometry).
+  - The troop transports, Gleaves, Bristol and LSM 01 stop at the shoreline instead of
+    crossing.
+  - Exit 3; the landers' and the escorts' death rows move.
+- **JM05, USN13, USNOS, JM06:** the deep crossers are stopped at the shore. Exit 3 is likely.
+  A hull pinned against a shore by its own AI stays there (the AI's avoidance is unchanged).
+- **BSM01 and IJN01:** the resting hulls keep moving where the step does not deepen them. Exit
+  0/1 if none of them climbs; otherwise small moves.
