@@ -6248,3 +6248,148 @@ has been read, unless it is marked unread.
 - `s19_owners.py` (every authored `OwnerPlayer` in this installation's scenes);
 - `s19_str.py <text>...` (string VA and abs32 refs in the PE) and `s19_dump.py <va> <n>` (dwords
   with the strings they point at).
+
+## 74. Which row reaches a troop landing (packet `cc9_script_entity_pool`, cc9-ships20, 2026-09-30)
+
+Section 73's step (0): run JM08 long and see whether the scripted invasion starts.
+
+### 74.1 The census on main `15f066a2d` (runs 2026-09-30 04:19-04:27 UTC)
+
+Launch form of the reference rows (`--press-start-frame 30 --mission-frame-seconds 0.05`,
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 1600x900), logs `local\s20_m_<row>.log`:
+
+| row | frames | script | approach latch | lander | modes 3/4 | script `attackmove` |
+| --- | --- | --- | --- | --- | --- | --- |
+| JM08 | 9200/9000 | `PRCPJM08.lua` | 336 frames, all `other`, all mode 0 | 0 | 0/0 | 0 |
+| JM08 | 36200/36000 | same | 1828 frames, all `other`, all mode 0 | 0 | 0/0 | 0 |
+| BSM02 | 9200/9000 and 36200/36000 | `bsm_02_defense_of_the_philippines.lua` | 0 | 0 | 0/0 | 0 |
+| BSM06 | 9200/9000 and 36200/36000 | `bsm_06_holding_lombok.lua` | 0 | 0 | 0/0 | 0 |
+
+- The script this installation loads for JM08 is `scripts/missions/COTP-IJN/PRCPIJN/prcpjm08.lua`
+  (mtime 2024-08-26 16:10, not 2024-07-13 as section 73 says; `jm08.lua` is 2024-07-13 and differs
+  only in its script path, name and message map).
+- **JM08 does not reach, and the reason is the host, not the mission.** JM08's `script_calls`
+  stops growing at mission frame 2001 (2889, the same at 3000, 9000, 18000 and 36000). The end
+  summary says `timers created=512 ... deletes=511`.
+- `GameScriptOrdersHost::script_entity_create_00898841` stops at `kScriptEntityCapacity = 512`
+  and answers no entity from then on. Every `luaDelay` makes one script entity. JM08 re-arms about
+  ten one-second checks (`CheckInvasion`, `CheckAP1..6`, `CheckPrim1/2`, `CheckCompletion`, ...), so
+  its 512 are spent by about 100 s of mission time, and every delayed chain then stops.
+- `CheckInvasion` polls for an Allied ship within 300 m of (0,0,0) once a second. Its chain died at
+  frame 2001, so even an Allied fleet arriving later would start nothing.
+- The image has no bound: `BSP_LuaBinding_CreateScript` allocates each entity with `operator_new`
+  (0x1E4 bytes at `00898834`-`00898841`, then `_memset` and the construct `00928630` at `0089886F`).
+- BSM02 (1421 calls by frame 36000) and BSM06 (27 calls) spend less than 512, so the cap is not
+  their limit. Both issue their landings with `NavigatorMoveOnPath` / `NavigatorMoveToRange` to
+  path points, not to a CommandBuilding (`bsm_02...lua` lines 1039-1098, `bsm_06...lua` 611-640),
+  and their latch stays 0.
+
+### 74.2 The pool switch, `kScriptEntityPoolUnboundedBound` (committed OFF, flipped ON in 74.3)
+
+- ON: the records live in a `std::deque` (element addresses stay valid on `push_back`, which is
+  why the vector needed a reserved capacity), the cap is not applied, and the id is still
+  `kScriptEntityIdBase + index`. OFF keeps the 512 cap exactly. The storage type changes in both
+  modes; OFF behaviour is unchanged because a reserved vector never reallocated below 512.
+- **Predictions (written before any flip run):**
+  - JM08 long moves (exit 3): `script_calls` keeps growing past frame 2001, and `timers created`
+    goes past 512. Whether the invasion starts depends on an Allied ship reaching 300 m of the
+    origin, which this reading cannot predict; if it does, `attackmove` > 0 and some transport
+    latches `building` or `lander`.
+  - Every other row whose script makes more than 512 delayed calls moves too. BSM02 long, BSM06
+    long, and the 3000-frame reference rows that stay under 512, are identical (exit 0 or 1).
+  - The run-time cost is linear scans over more records (`script_entity`, the think pass); no
+    crash.
+
+### 74.3 The pairs, and the flip
+
+Same-tree pairs on `4e3280266` (OFF = the tree build, ON = `local\s20_p1`, `96ACBC609FE5`), run
+2026-09-30 04:46-04:55 UTC, `local\s20_pd1_<row>.txt`:
+
+| row | pair_diff | script entities created (ON) | cap hits (OFF) |
+| --- | --- | --- | --- |
+| USN04, USN01, USN13, JM05, IJN01, LOMP10, JM05 long, USNOS | 1 | 10 to 346 | 0 |
+| USN12 | 0 | 33 | 0 |
+| JM08 (3000) | 1 | 1048 | 9 |
+| JM08 long (9000) | 1 | 3892 | 9 |
+| JM08 36000 | 1 | 16681 | 9 |
+
+- The mechanism matches the prediction: past 512 the ON side keeps creating (`CreateScript`
+  521 -> 16681 calls on JM08 36000, `GetHpPercentage` 171 -> 5559), and the OFF side logs the cap.
+- The gameplay prediction for JM08 missed: every JM08 row is gameplay-identical (27 deaths, the
+  same per-entity death rows and unit table). The script now runs, but `CheckInvasion` never finds
+  a ship (74.4).
+- **Verdict: flipped ON.** The image has no bound, and no row's gameplay moves. The flip commit is
+  the one that adds this subsection.
+
+### 74.4 Why the invasion still does not start: the `recon` tables are empty
+
+`BSP_ORIGIN_DIAG=1` (added with this packet, env-gated, in `run_script_think_pass`) logs the
+nearest live unit of each party to (0,0,0) every 30 s. It also runs a Lua chunk that calls
+`luaGetShipsAroundCoordinate(origin, 300, PARTY_ALLIED, "own")` and counts `recon[PARTY_ALLIED].own`.
+Runs: `local\s20_diag_jm08x.log` (pool OFF) and `local\s20_diag2_jm08x.log` (pool ON), JM08
+36200/36000.
+
+- **The ships do arrive.** Party 0 is `PARTY_ALLIED` in this installation
+  (`scripts/global/luamw_init.lua` 73-75, cited at `src/game_hosts_lua.cpp` 2316). Its nearest unit
+  to the origin is `Grayson` at 248.6 m at t = 540.6 s, and `USTroopTransport 05` at 42.8 m at
+  t = 720.8 s. Both are inside `CheckInvasion`'s 300 m.
+- **The script cannot see them.** At every sample, `PARTY_ALLIED` is 0, `around` is 0 and
+  `recon[0].own` has **0 entries across all nineteen categories**.
+- `luaGetShipsAroundCoordinate` (`scripts/global/commandhelpers.lua` line 408, mtime 2024-10-29,
+  this installation) walks only `recon[party][allegiance]`.
+- The host builds the shell (`install_recon_tables_00803a40`, `src/game_hosts_lua.cpp` 2256) and
+  records `Recon::publish_slot_table 00806b10` as unimplemented (one call in every run). Nothing
+  fills the category maps. `docs/FIXED_STEP_COUNTDOWN.md` says `00806B10` was read only to
+  `00806BAE`.
+- **Consequence:** every `luaGetShipsAround*` / `luaGetOwnUnits`-style query in every mission
+  answers nil or empty. This matters beyond JM08: any script that waits on a proximity test never
+  advances.
+- This is the Lua host's and the recon pass's lane (`src/game_hosts_lua.cpp`,
+  `src/fixed_step_countdown.cpp`, `00806B10`/`00805D90`/`008073C0`), so I have not touched it.
+  Once the `own` maps are published, JM08 should start its invasion at about t = 540 s
+  (mission frame about 10800), so JM08 at 36200/36000 is the reaching row for section 73's pad
+  model.
+
+### 74.5 Section 73's step (1), read ahead: what fills the pad vector
+
+- **The producer** is `BSP_CommandBuilding_AdoptNearbyGarrison` `006F5CC0`, CommandBuilding
+  vtable `00CFB028` slot `0A4h` (via `006F6740`, which runs `00748CC0` first, then this, then copies
+  `+54h` into `+7B8h`).
+  - The ledger's body end `006F5EC8` is wrong: the routine runs on to `006F673E`, and
+    `006F5EC8` is the start of its second loop.
+  - It makes three passes over the world registry `[[00E188A8]+19CCh]`, whose lists are
+    `{count, head, tail}` at `+18h + id*0Ch`:
+    1. list 5 (`+58h`) for kinds `1Bh`/`45h`/`46h` within `InferiorRange`;
+    2. list `4Dh` (`+3B8h`, `006F5ED3`) into the list at `+788h`, setting `entity+344h = building`;
+    3. **list `1Dh` (`+178h`, `006F6442`), the LandingPoints.**
+  - The third pass keeps every LandingPoint whose squared distance to the building is
+    `<= (float)(LandingPointRange * LandingPointRange)`. `LandingPointRange` is `+7CCh`, an integer
+    product. It push_backs the pad into `+794h` (begin) / `+798h` (count) / `+79Ch` (capacity),
+    growing by `2n + 2` (`006F66B1`-`006F66F9`), and sets `pad+220h = building`.
+- **Ghidra drops blocks after `_free`**: the decompile shows `_free(old); return;` inside the
+  growth. The listing continues (the new begin is stored at `006F66F9`). Flow repair is needed
+  before anyone reads this routine from the pseudocode.
+- **Offset correction:** `docs/LAND_AND_STRUCTURES.md` (line 340) names `+7CCh` `InferiorRange`.
+  `006F2780` stores `InferiorRange` (`00CFAE20`) at `+7C8h` (`006F288C`) and `LandingPointRange`
+  (`00CFAE0C`) at `+7CCh` (`006F28B3`), as `docs/SENTITY_INIT_PASSES.md` (line 966) already says.
+- **The pad is a `LandingPoint`**: class `1Dh`, factory `004E9D40` (0x224 bytes), construct
+  `004E9520`. The construct gives:
+  - an observer handle at `+1E4h` (vtable `00CE75CC`), whose target is the occupant at `+1F8h`
+    (`006AC490`: unregister the old occupant, store the new one, `BSP_Observer_RegisterPair` on
+    the new one);
+  - `+1F4h` byte 1, `+200h = 004E7A10()`, `+208h = -99` (the approach-cache key, `006AC5D0`
+    compares it with its layer argument), `+218h = [00CE3804]`, `+220h = 0`.
+- **In JM08**, `Headquarter 01` authors `LandingPointRange = I 1000`, `LandingRange = I 4000` and
+  `InferiorRange = I 100000`. It is a child of `Landscape 01` at (-19500, -15900), so its world
+  position is about (1349, -4468). `LandingPoint 01` (top level, at (1820, -4010)) is about 657 m
+  away, so it becomes a pad. Checking the other seven is the model packet's job.
+- **The pad routines, read:**
+  - `006F2E60` pick: for each pad, a free one is a candidate by squared distance to the unit;
+    one held by the unit returns at once unless the ignore-held byte is set; otherwise the
+    nearest free pad, or 0.
+  - `006F2FB0` assign: returns early if the pad already holds the unit; otherwise, under `+764h`,
+    `ReleaseUnitPads(unit)` and then `006AC490(unit)` on the pad.
+  - `006AC490` is `__thiscall(pad)(unit)`, `RET 4`, body `006AC490`-`006AC4C3`.
+- The host has LandingPoints as scene markers (`GameSceneMarkerSeed`, class id 1Dh, world frame),
+  registered through `GameScriptOrdersHost::register_scene_marker` and
+  `GameUnitsHost::register_scene_marker_frame`. It has no pad vector.
