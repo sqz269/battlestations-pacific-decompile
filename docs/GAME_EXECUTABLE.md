@@ -13358,3 +13358,176 @@ Each variant was turned OFF alone and read with `pair_diff` against s on the fif
   USN01's `Convoy1` prediction was not testable: r already had no `Convoy1` death (the party gate).
   IJN01's deaths did not stay at r's (6 -> 3); the retarget ring alone does not move them, the
   plane and AA variants do.
+
+## Mission reference baselines, 2026-09-30 t (main 2e850cf31)
+
+Packet `cc9_reference_rebaseline_20`, worker cc9-gunnery18. The base is main `2e850cf31`
+(2026-09-30 08:31 UTC), 81 commits after s's `59ff2a1d7`. The report will be
+`reports/cc9_reference_rebaseline_20.json`.
+
+### Predictions (written before any run)
+
+**The switch diff.** A value diff of every `constexpr bool k...` declaration between `59ff2a1d7`
+and `2e850cf31` (`local\g18_switches.py`, g17's script re-rooted) finds **ten switches newly ON**
+and one new switch OFF (`kShipAiApproachLandingModesBound`, no reach recorded; it stays OFF). It is
+the same list as GUNNERY_OPEN_ITEMS 79.2's diff at `743c05f9b`; nothing else landed.
+
+| switch | flip commit | its pair recorded | predicted rows moved against s |
+| --- | --- | --- | --- |
+| `kAiWeaponFactsAtAttachBound` | `95e869be7` | WEAPON_FACTS_ORDER 6 (USN13, USN01 stand-in counters to 0; JM05, IJN01, USN04 identical) | USN13, USN01 (death rows as its pair: identical) |
+| `kScriptEntityPoolUnboundedBound` | `33eace460` | SHIP_AI 74 (USN12 exit 0, eleven rows exit 1; only JM08 36000 hits the cap) | none; JM08 long only |
+| `kBuildingPadModelBound` | `44af89738` | SHIP_AI 75.3 (six rows exit 1; no reader yet) | none |
+| `kMoveToCommandRangeBound` | `3c3741507` | PILOT_MOVETO_TASK (twelve rows exit 0 or 1, stage-only) | none |
+| `kReconPublishBound` | `13322fd0d` | RECON_PUBLICATION 4 (USN02 14 -> 1 deaths; JM05, JM05 long one scripted target; JM08 36000 invasion) | USN02, JM05, JM05 long, JM08 long |
+| `kCommandBuildingCaptureBound` | `909760b78` | SHIP_AI 81 (seven rows exit 1) | only together with the all-kinds contacts, if at all |
+| `kMenuPumpYieldsToMissionFrameBound` | `3385d1d66` | GUNNERY_OPEN_ITEMS 76 (seventeen rows exit 1) | none |
+| `kAaCategoryRangeOriginBound` | `b5c88ebb2` | AA_LETHALITY_AUDIT 13.4 (USN04, E2, USNOS, USNOS long aggregates; USN13, LOMP10, LOMP10 long, IJN01 call counts; five rows `nearest` only) | USN04, E2, USN13, LOMP10, LOMP10 long, USNOS, USNOS long, IJN01 |
+| `kReconContactAllKindsBound` | `8819d5c6f` | AA_LETHALITY_AUDIT 14.4 (eleven rows exit 3, structure deaths rise) | USN01, JM05, JM05 long, USNOS, USNOS long, USN12, JM08, USN13, JM06, LOMP06, LOMP10 |
+| `kGunneryClassArmsBound` | `0df7fdc36` | GUNNERY_OPEN_ITEMS 77.4 (JM06 gameplay; USNOS rows `nearest` only) | JM06 |
+
+**Rows:** s's seventeen in s's launch form, 1600x900, plus an eighteenth, **JM08 long (36200 /
+36000)**, added because the recon publication made its invasion run (RECON_PUBLICATION 4). s has
+no JM08 long row, so the all-OFF anchor stands in for s on it.
+
+**Predicted moved against s (sixteen):** USN04, E2, USN01, USN02, JM06, JM08, USN13, LOMP06,
+LOMP10, LOMP10 long, JM05, JM05 long, USN12, USNOS, USNOS long and IJN01.
+**Predicted identical (exit 0 or 1): BSM01** (every one of the ten pairs left it identical).
+The weakest calls are LOMP10 long and IJN01, which moved only in gunnery call counts on their
+pairs; a row whose only difference is the logged `nearest` distance counts as moved by exit code
+but is read as gameplay-identical (79.3's caveat).
+
+**Headline predictions** (from the pairs, which already carried s's capture value, not from s):
+- **USNOS and USNOS long:** deaths 63 -> about 105-115 and 89 -> about 125-140 (the pair had
+  55 -> 107 and 68 -> 129). The new dead are base structures killed by Shimotsuke, Ada2 and Zao1.
+- **USN01:** deaths 5 -> about 17 (Heavy AA, containers and storage).
+- **JM05 and JM05 long:** deaths 1 -> about 12 and 5 -> about 18 (offices, radar, barracks,
+  bunkers).
+- **USN12:** 4 -> about 7. **JM08:** 9 -> about 10. **USN13:** first hit 96.65 s -> about 5 s.
+- **USN02:** deaths 14 -> 1; the 29.75 s mission failure is unchanged.
+- **JM06:** the Narwhal's shots fall to 0 and row damage by about a fifth; death rows identical.
+- **USN04 and E2:** death rows re-timed at most one death apart; releases unchanged at 5 of 16.
+- **LOMP06, LOMP10, LOMP10 long, IJN01:** hits, shots or call counts only; death rows identical.
+- **JM08 long:** `StartInvasion` issues its AttackMove / MoveToPos orders between mission frames
+  13000 and 15000, as on the recon pair (frame 14005). Whether a ship reaches `Headquarter 01`'s
+  500 m capture range is not predicted.
+
+**All-OFF anchor:** with the ten OFF (`local\g18_rt0`), `2e850cf31` is gameplay-identical to s
+(exit 0 or 1 against `g17_rs_<row>` in the cc9-gunnery17 tree) on all seventeen rows.
+
+**Leave-one-out.** Each switch OFF alone against t on the rows t moves (`local\g18_lane.ps1`,
+logs `local\g18_t_<v>_<row>.log`): `wfa` weapon facts, `pool`, `pad`, `mtr` moveto range, `rpb`
+recon publish, `cbc` capture, `mpy` menu pump, `aro` range origin, `rka` all kinds, `gca` class
+arms. If `rka` and `cbc` both move the shore rows, they are also run together (`cap`), since the
+all-kinds contacts are what put structures under fire and so give the capture its reach.
+Predicted: `rka` attributes the structure deaths; `rpb` USN02, JM05 and JM08 long; `aro` the
+plane rows; `gca` JM06; `wfa` USN13 and USN01 without death-row changes; `pool`, `pad`, `mtr`,
+`mpy` nothing on the 3000-9000 rows; `cbc` nothing alone.
+
+**Run parameters:**
+- **One binary:** `local\g18_rt\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery18, a clean
+  `tools/pair_export.py --commit 2e850cf31` export with no flip (SHA-256 prefix `049D94AEFF62`; the
+  full hash is in the report). The anchor `local\g18_rt0` (`E0E6F50732F2`) turns the ten OFF.
+- **Rows:** s's seventeen in s's launch form (`local\g18_runs.ps1`, g17's re-rooted) plus JM08 long
+  (36200/36000), with `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, 1600x900.
+- **Environment:** a 300-frame USN01 smoke passed at 08:48 UTC (console session active). The t
+  and anchor rows ran 08:49-09:03 UTC; the leave-one-out lanes ran 09:04-10:09 UTC.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 13906.9 | 48 | 980 (93) | 15039 | 98.70 s | 5 of 16 / 1 of 19 | 16 | Lexington-class01 3332.83 | none | 492 | `local\g18_rt_usn04.log` |
+| USN01 | 3000 | 11212.6 | 17 | 527 (107) | 2254 | 5.15 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 1245.72 | none | 508 | `local\g18_rt_usn01.log` |
+| USN04 (E2) | 9000 | 14074.7 | 51 | 993 (93) | 15277 | 98.70 s | 5 of 16 / 1 of 19 | 19 | Lexington-class01 5601.02 | none | 493 | `local\g18_rt_e2.log` |
+| USN02 | 9000 | 59303.8 | 1 | 5111 (468) | 4545 | 19.25 s | - | - | Kortenaer 6733.38 | **failed at 29.75 s**, phase 1 (unchanged) | 487 | `local\g18_rt_usn02.log` |
+| JM06 (smoke) | 3000 | 3634.4 | 1 | 192 (186) | 276 | 72.15 s | - | - | Fletcher-class 08 426.02 | none | 483 | `local\g18_rt_jm06.log` |
+| JM08 (smoke) | 3000 | 4335.9 | 5 | 238 (148) | 2999 | 5.25 s | - | 1 | Auilick 953.32 | none | 484 | `local\g18_rt_jm08.log` |
+| USN13 (smoke) | 3000 | 7938.1 | 24 | 441 (137) | 5026 | 5.15 s | 0 of 60 / - | 6 | Enterprise 926.02 | none | 514 | `local\g18_rt_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 454 | `local\g18_rt_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 458 | `local\g18_rt_lomp06.log` |
+| LOMP10 | 3000 | 2861.9 | 7 | 240 (156) | 2982 | 90.50 s | - / 8 of 8 | - | (none) 8001.80 | none | 481 | `local\g18_rt_lomp10.log` |
+| JM05 | 3000 | 10011.6 | 12 | 353 (38) | 363 | 6.35 s | - | - | USS Phelps 2624.63 | none | 538 | `local\g18_rt_jm05.log` |
+| USN12 | 3000 | 4510.8 | 7 | 210 (18) | 182 | 7.55 s | - | - | Montpelier 1499.41 | none | 479 | `local\g18_rt_usn12.log` |
+| LOMP10 (long) | 9000 | 3537.1 | 9 | 250 (162) | 3000 | 90.50 s | - / 8 of 8 | - | (none) 8001.80 | none | 493 | `local\g18_rt_lomp10l.log` |
+| USNOS | 3000 | 53630.0 | 107 | 1678 (155) | 4252 | 4.50 s | - | 9 | NH 1497.26 | none | 520 | `local\g18_rt_usnos.log` |
+| USNOS (long) | 9000 | 62996.2 | 129 | 2640 (275) | 15484 | 4.50 s | - | 12 | NH 4492.07 | none | 520 | `local\g18_rt_usnosl.log` |
+| IJN01 | 3000 | 1431.1 | 3 | 81 (66) | 2586 | 86.55 s | - | - | Downes 220.09 | none | 498 | `local\g18_rt_ijn01.log` |
+| JM05 (long) | 9000 | 22396.9 | 18 | 772 (275) | 953 | 6.35 s | - | 3 | USS Phelps 7466.83 | none | 550 | `local\g18_rt_jm05l.log` |
+| JM08 (long) | 36000 | 40160.1 | 25 | 1202 (519) | 7048 | 5.25 s | - | 1 | Auilick 10504.46 | none | 528 | `local\g18_rt_jm08l.log` |
+
+**Against s** (`pair_diff` against `g17_rs_<row>` in the cc9-gunnery17 tree): **sixteen rows move**
+(exit 3); **BSM01 is gameplay-identical** (exit 1). JM08 long moves against the anchor.
+
+Headline moves:
+- **USNOS and USNOS long:** deaths 63 -> 107 and 89 -> 129; damage about doubles.
+- **USN01:** deaths 5 -> 17 (twelve new structure and land-unit deaths); first hit 51.50 s -> 5.15 s.
+- **JM05 and JM05 long:** deaths 1 -> 12 and 5 -> 18. **USN12:** 4 -> 7.
+- **USN02:** deaths 14 -> 1 (the post-failure invincibility); mission failure unchanged at 29.75 s.
+- **JM08:** deaths 9 -> 5. Five Japanese plane deaths of s (`Gekko 01` and its wing members,
+  `Ki-43 Oscar 01|.-2` and `|.-3`) are gone; one structure (`House, Medium, Stone, White, Piled 03`)
+  now dies.
+- **USN13:** deaths 23 -> 24, first hit 96.65 s -> 5.15 s.
+- **JM06:** damage 4622.1 -> 3634.4, shots 314 -> 276, death rows identical.
+- **USN04 and E2:** USN04 deaths 49 -> 48 with 15 rows re-timed; E2 dive-bomb-task releases
+  0 -> 1 of 19; torpedo-task releases stay 5 of 16.
+- **LOMP06, LOMP10, LOMP10 long, IJN01:** death rows and aggregates identical; only call counts
+  (and on LOMP06 the host-method census) moved.
+- **JM08 long (against the anchor):** deaths 28 -> 25. `StartInvasion` issues its 21
+  `NavigatorAttackMove` onto `Headquarter 01` and six `NavigatorMoveToPos`; the first ship in
+  `attackmove` is logged at ship-AI step 14010. `Headquarter 01` reaches 0 hp and goes neutral
+  (`health_zero=8 neutralized=1`) but never flips (`flips=0`). Eight invading ships die (Bristol,
+  LST 01/03, LSM 01/02, Gleaves, Grayson, USTroopTransport 05). The now-reached
+  `ShipAiApproach::retarget_modes_3_4` (`009F21A0`, UNIMPLEMENTED, 8463 calls) is
+  `kShipAiApproachLandingModesBound`'s site.
+
+### The anchor: ten switches
+
+With all ten OFF (`g18_rt0`), `2e850cf31` is **gameplay-identical to reference s on all seventeen
+rows** (exit 1 against `g17_rs_<row>`). Nothing else that landed since s moves a reference row.
+
+### What moved each row
+
+Each variant was turned OFF alone and read with `pair_diff` against t on the sixteen moved rows plus
+JM08 long (`local\g18_lane.ps1`; logs `local\g18_t_<v>_<row>.log`).
+
+| variant (OFF) | switch | rows that move against t |
+| --- | --- | --- |
+| `rka` | `kReconContactAllKindsBound` | USN01 (17 -> 5 deaths), JM06, JM08 (5 -> 4), USN13 (24 -> 23), LOMP06, LOMP10, JM05 (12 -> 1), USN12 (7 -> 4), USNOS (107 -> 55), USNOS long (129 -> 68), JM05 long (18 -> 5), JM08 long (25 -> 16) |
+| `cap` | `kReconContactAllKindsBound` + `kCommandBuildingCaptureBound` | as `rka` on every row; JM08 long 25 -> 18 |
+| `cbc` | `kCommandBuildingCaptureBound` | JM08 long only (25 -> 26 deaths) |
+| `wfa` | `kAiWeaponFactsAtAttachBound` | USN01 (death rows same, one re-timed), JM08 (5 -> 10: the five plane deaths return), USN13 (death rows identical), USNOS (107 -> 114), USNOS long (129 -> 134), JM08 long (25 -> 154) |
+| `rpb` | `kReconPublishBound` | USN02 (1 -> 14), JM05, JM05 long (death rows identical), JM08 long (25 -> 52, no invasion) |
+| `pool` | `kScriptEntityPoolUnboundedBound` | JM08 long only (25 -> 52; gameplay-identical to `rpb` OFF: no invasion) |
+| `aro` | `kAaCategoryRangeOriginBound` | USN04 (48 -> 49), E2 (releases 1 -> 0 of 19), USNOS (107 -> 106), USNOS long; USN01, JM06, JM08, USN13, LOMP10, LOMP10 long, JM05, JM05 long, IJN01, JM08 long with death rows identical |
+| `gca` | `kGunneryClassArmsBound` | JM06 (damage 3634.4 -> 4506.8), USNOS, USNOS long (death rows identical) |
+| `pad`, `mtr`, `mpy` | the pad model, the moveto range, the menu pump | none |
+
+**Attribution:**
+- Every moved row is attributed. `rpb` alone attributes USN02; `aro` alone attributes LOMP10 long
+  and IJN01; `rka` alone attributes LOMP06 and USN12.
+- **The structure deaths belong to the all-kinds contacts.** With `rka` OFF, USNOS returns to 55,
+  JM05 to 1, USN01 to 5: the pair's numbers.
+- **The capture does not overlap the contacts on the 3000-9000 rows.** `cap` equals `rka` there;
+  `cbc` reaches only JM08 long, where the invasion brings ships to `Headquarter 01`.
+- **JM08's lost plane deaths belong to the weapon facts at attach**, not to the contacts.
+- **JM08 long's invasion needs both the publication and the unbounded pool**; either OFF gives the
+  same no-invasion run (52 deaths).
+- **The weapon facts at attach are the largest single mover on JM08 long:** OFF, the invading ships
+  survive (the eight deaths above disappear) and 137 more base objects die (tents, barracks,
+  containers, watchtowers, static aircraft, AA trucks). ON, the defenders sink the invaders first.
+  This row is measured here, not paired against the image; the reading is provisional.
+- The inert set is confirmed: `pad`, `mtr` and `mpy` move nothing.
+
+**Prediction check:**
+- **Rows held:** all sixteen predicted to move moved; BSM01 held identical; the anchor held.
+- **Headlines held:** USNOS 107 and USNOS long 129 (predicted 105-115 and 125-140), USN01 17, JM05 12,
+  JM05 long 18, USN12 7, USN02 1, USN13's first hit 5.15 s, JM06's damage, the JM08 long invasion
+  (ship-AI step 14010, inside 13000-15000).
+- **Misses:**
+  - **JM08:** predicted 9 -> about 10, measured 5. The weapon facts at attach, predicted to move only
+    USN13 and USN01 without death changes, remove five plane deaths here.
+  - **The weapon facts' reach:** also USNOS, USNOS long and JM08 long (its pair covered none of them).
+  - **`cbc`:** predicted to have no reach alone; it moves JM08 long (the one row whose command
+    building is reached).
+  - LOMP10 long and IJN01 moved only in call counts, as the weak call said.
+- Nothing flipped during these runs, so reference u starts from main after this merge.
