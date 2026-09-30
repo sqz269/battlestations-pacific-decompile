@@ -120,7 +120,8 @@ inline constexpr bool kHullHullContactBound = true;
 // fort as a static body (solver index 0, never expanded by 00C4B610), friction
 // combine(1.0, hull), restitution 0; the manifold joins the hull's group and solve. False:
 // the narrow phase runs as a census only; hulls pass through forts.
-inline constexpr bool kHullFortContactBound = false;
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 96.4).
+inline constexpr bool kHullFortContactBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step

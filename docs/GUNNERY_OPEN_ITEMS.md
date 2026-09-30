@@ -7501,3 +7501,29 @@ Section 94.2 item 1, and 89.2 step 3. The flow of `007482B0` was repaired in `f0
   - IJN01 moving before 125.85 s;
   - Whitney's ON contact deepening over steps as OFF (the fort not holding it);
   - a row with no fort hit moving.
+
+### 96.4 The pair, and the flip
+
+**`local\g22_f1` (the flip, `2e8fcbc96`) against `local\g22_f0` (OFF),** both exports of the same
+commit. All 38 runs finished with `lost_polls=0`.
+
+| row | exit | fort hits OFF -> ON |
+| --- | --- | --- |
+| IJN01 | 3 | 431 -> 292 |
+| the other 18 rows (USN04, E2, USN01, USN02, JM06, JM08, USN13, BSM01, LOMP06, LOMP10, JM05, USN12, USNOS, LOMP10 long, USNOS long, JM05 long, USN13 long, JM08 long) | 1 | 0 -> 0 |
+
+- **IJN01, the mechanism.** The first diverging `ship ai step` line is step 2520, Whitney's
+  target heading 2.9400 -> 2.9420. That is three steps after the first fort hit (world step
+  2517, the same in both runs).
+  - Pier 03 now holds Whitney: 292 contact steps with the deepest hit 0.019 m, against 12.648 m
+    OFF.
+  - Whitney never reaches Piers 04 and 05 (census pairs 3 -> 1).
+- **IJN01, the gameplay.** Deaths, hit records, hull hits, damage and the death rows are
+  identical. Whitney fires one shot fewer (76 -> 75, total 2959 -> 2958). The rest is AI and
+  path counters moved by Whitney's changed track.
+- **Prediction:** matched on every row, and the mechanism is as predicted.
+- **Flipped ON:** `kHullFortContactBound`, for reference W.
+- **Not covered:**
+  - forts without ConvexObjects (every building) still have no body; that is the image's
+    reading;
+  - debris (`00447510`, section 94.2 item 2) is the next body family.
