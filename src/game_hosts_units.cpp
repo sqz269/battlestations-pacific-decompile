@@ -30192,11 +30192,13 @@ void GameUnitsHost::report() {
             const bsp::HullTerrainContactSolver::Census& c = host.hull_terrain.census();
             host.log.notef("summary hull terrain contact bound=%d ships=%zu steps=%llu "
                 "contact_steps=%llu candidates=%llu rejected_normal=%llu solves=%llu rows=%llu "
-                "retired=%llu max_depth=%.2f (00C53630 / 00C3F760 / 00C4B9B0 / 00403720, "
+                "retired=%llu max_depth=%.2f dyn_hull=%d hull_shapes=%llu raw_points=%llu "
+                "hull_vertices=%llu (00C53630 / 00C3F760 / 00C4B9B0 / 00403720, 00C5DEB0, "
                 "packet cc9_hull_terrain_contact_solver)",
                 bsp::kHullTerrainContactSolverBound ? 1 : 0, c.units_touched, c.steps,
                 c.contact_steps, c.candidates, c.rejected_normal, c.solves, c.rows, c.retired,
-                static_cast<double>(c.max_depth));
+                static_cast<double>(c.max_depth), bsp::kHullTerrainDynHullVerticesBound ? 1 : 0,
+                c.hull_shapes, c.raw_points, c.hull_vertices);
         }
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "

@@ -21,7 +21,8 @@
 //     hands it), not 00C53630's own interpolation schedule. The candidate is 00C53630's: the
 //     surface point is the vertex moved (h - y) along the normal, and the normal points up.
 //   * The hull vertices are the ConvexObject's raw points (MmodHullConvexBox::shape_points), not
-//     the vertices of the hull 00C5DEB0 builds from them.
+//     the vertices of the hull 00C5DEB0 builds from them, unless kHullTerrainDynHullVerticesBound
+//     (below) is ON.
 //   * Only hull-terrain pairs: no hull-hull or hull-object manifold joins the group, and the
 //     terrain tile is taken as the one the vertex's grid cell truncates to (a vertex on a tile's
 //     inclusive far edge is not offered to the next tile as well).
@@ -48,6 +49,16 @@ namespace bsp {
 // crosses land as before.
 // ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 84.3).
 inline constexpr bool kHullTerrainContactSolverBound = true;
+
+// Packet cc9_hull_terrain_dyn_hull_vertices (docs/GUNNERY_OPEN_ITEMS.md section 86). The
+// ConvexObject parse 006FAD70 copies the points (xyz at +4h of each 20h record, 006FAE40),
+// centres them on their box (006F9EE0: (min + max) * 0.5 [00D7A280], stored at shape+14h;
+// 006FAEA0 subtracts it) and builds the Dyn hull 00C5DEB0 at shape+0Ch from the re-centred
+// points; the shape's translation is the centre. True: the narrow phase tests that hull's
+// vertices (avoid_zone_dyn_hull_replace_00c5deb0, in its vertex order) plus the centre, per
+// shape. False: the raw points in file order, as before.
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 86.4).
+inline constexpr bool kHullTerrainDynHullVerticesBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
@@ -81,11 +92,21 @@ public:
         unsigned long long solves{0}, rows{0}, retired{0};
         std::size_t units_touched{0};
         float max_depth{0.0f};
+        // Dyn hull builds (kHullTerrainDynHullVerticesBound): shapes built, their raw points
+        // and the hull vertices 00C5DEB0 kept.
+        unsigned long long hull_shapes{0}, raw_points{0}, hull_vertices{0};
     };
     const Census& census() const noexcept { return census_; }
 
 private:
     struct Manifold;
+    struct HullShape {
+        std::vector<OceanVec3> raw;         // the raw points the build came from
+        std::vector<OceanVec3> vertices;    // body space: hull vertex + centre
+    };
+    const std::vector<OceanVec3>& dyn_hull_vertices(std::size_t unit, std::size_t shape,
+                                                    const std::vector<OceanVec3>& raw);
+    std::map<std::pair<std::size_t, std::size_t>, HullShape> hulls_;
     using Key = std::tuple<std::size_t, int, int, int, int>;  // unit, shape, landscape, tx, tz
     std::map<Key, std::unique_ptr<Manifold>> manifolds_;
     std::map<std::size_t, bool> touched_;

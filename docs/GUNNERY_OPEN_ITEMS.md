@@ -6265,3 +6265,124 @@ and 79.2 item 4.
   - `g19_hoff_*` / `g19_hon_*`: the solver on `5204cf184`;
   - `g19_goff_*` / `g19_gon_*`: the solver on `a5a9a7502`;
   - `g19_trace_jm08l.txt` / `g19_trace_jm05.txt`: solver traces.
+
+## 86. The solver's hull vertices from 00C5DEB0 (packet `cc9_hull_terrain_dyn_hull_vertices`, cc9-gunnery20)
+
+85.2 item 3a. The solver tested the ConvexObject's raw points in file order. The image tests the
+vertices of the Dyn hull the ConvexObject parse builds from them.
+
+### 86.1 The read
+
+- **`006FAD70`** (the ConvexObject parse; ECX the object, RET 4) runs in this order:
+  - `006FAE3B..006FAE5F` copies the point records' xyz, which sit at `+4h` of each 20h-byte
+    record, into a 0Ch-stride array.
+  - `006F9EE0` (ECX the object, stack `(points, count)`) takes the box: min and max start from
+    `+-FLT_MAX` (`[00D7A244]`, `[00D7A248]`). The centre is `(min + max) * 0.5`: each sum is
+    rounded to float, then multiplied by the double `0.5` at `[00D7A280]` (`006FA25D..006FA2AF`).
+    The centre is stored at object `+14h`.
+  - `006FAEA0..006FAEC7` subtracts the centre from every point.
+  - `006FAECE` calls `00C5DEB0` (ECX object `+0Ch`, stack `(count, points)`, RET 8).
+  - The listing ends with RET 4 at `006FAEE2`; INT3 padding follows.
+- **The shape takes the centre back as its translation** (mmod_hull_convex_box.hpp, from GUNNERY
+  47-49).
+- **`00C53630` reads the convex mesh `{vertices, count}`** (16-byte vertices). These are
+  `00C389C0`'s vertex records, in the order that `00C5DAE0`'s triangle compaction leaves them.
+- **`00C5DEB0` already has a reconstruction:** `avoid_zone_dyn_hull_replace_00c5deb0` in
+  `src/avoid_zone_dyn_hull.cpp`, checked against 719 original-byte fixtures (docs/AVOID_ZONE_DYN_HULL.md).
+
+### 86.2 The binding (`bsp::kHullTerrainDynHullVerticesBound`, committed OFF)
+
+- **ON:** each hull shape is built once per unit and rebuilt only when its raw points change:
+  - the centre, computed as `006F9EE0` does;
+  - the re-centred points go through `avoid_zone_dyn_hull_construct_00c5df30`;
+  - the narrow phase then tests the hull's vertices plus the centre, in the hull's vertex order.
+- **OFF:** the raw points in file order, as before.
+- **Census:** the summary line `summary hull terrain contact` gains `dyn_hull`, `hull_shapes`,
+  `raw_points` and `hull_vertices`. The counts cover only builds, so they are 0 when OFF.
+- **Uncertainty:**
+  - The host's raw points are assumed to be the same floats as the file's `+4h` xyz.
+  - The Dyn convex shape is assumed to hold this hull's vertices in this order. The hull copy
+    `00C40F50` is a deep copy (`004039D0`, a memcpy), so it would keep them. That the shape's
+    mesh comes through it is not read.
+
+### 86.3 Predictions, written before any ON run
+
+- **The mechanism:**
+  - `hull_vertices < raw_points` on every row with ships. The hull drops interior points and
+    points within 0.001 of another.
+  - `hull_shapes` equals the number of hull shapes of the ships that run the phase.
+- **`max_depth` barely moves.** The deepest point of a convex point set is a hull vertex, so on a
+  given pose the deepest candidate is the same. It moves only through changed trajectories.
+- **Fewer candidates per contact step.** Interior points under the terrain stop taking places in
+  the 8-per-pair cap, and the hull's vertex order replaces file order in filling it.
+- **Rows:**
+  - No hull-terrain contact: USN04, E2, USN01, USN02, JM08, LOMP06, LOMP10, USN12. Exit 1: only
+    the census line moves.
+  - Contact but gameplay-identical under the solver: JM06, BSM01. Exit 1.
+  - USN13, JM05: exit 1 or 3, with `nearest` only.
+  - IJN01, USNOS, USNOS long: exit 3 is possible (the harbour grazes and the Gato's seabed rest),
+    with death rows identical.
+  - JM08 long: exit 3 (36000 frames of beach contact). The invaders still stop at the beach;
+    `max_depth` stays below 5 m; the HQ is not reached; deaths are between 20 and 30.
+- **A mechanism failure keeps it OFF:**
+  - a hull with 0 vertices, or `hull_vertices > raw_points`;
+  - a hull crossing land (`max_depth` in the tens of metres);
+  - a ship stopping away from land.
+
+### 86.4 Measured (pairs on `af7fd46c5`), and the verdict: ON
+
+**Setup.**
+- `local\g20_voff` (no flip, SHA-256 prefix `3B40DE0255B1`) against `local\g20_von`
+  (`--flip kHullTerrainDynHullVerticesBound=true`, `3DBC6B14B350`).
+- Reference u's launch form, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+- The 300-frame USN01 smoke of the ON build is clean: 35 shapes, 4148 raw points, 992 hull
+  vertices.
+- The OFF side is gameplay-identical to reference u (exit 1 on JM08 long, USNOS, IJN01 and JM05).
+- The logs are `local\g20_v{off,on}_<row>.log`.
+
+| row | exit | ON: shapes / raw points / hull vertices | contact steps OFF / ON | candidates OFF / ON | max depth OFF / ON (m) | what moved |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04, USN02 | 1 | - | 0 / 0 | - | - | census line only |
+| JM06 | 1 | 48 / 4932 / 1244 | 1808 / 1834 | 3749 / 4286 | 0.30 / 0.30 | nothing |
+| BSM01 | 1 | 63 / 6765 / 1973 | 807 / 3119 | 2094 / 3887 | 12.15 / 12.15 | nothing (resting hulls) |
+| USNOS | 1 | 184 / 23414 / 6383 | 2123 / 2117 | 4741 / 3264 | 0.05 / 0.09 | nothing |
+| USNOS long | 3 | 184 / 23414 / 6383 | 21602 / 21998 | 122559 / 51658 | 2.91 / 0.49 | death rows identical; hits 2809 -> 2812, shots 16423 -> 16402 |
+| USN13 | 3 | 285 / 34913 / 7710 | 7913 / 6883 | 53029 / 10585 | 3.49 / 0.41 | death rows identical; unit rows only |
+| IJN01 | 3 | 87 / 10310 / 2852 | 2619 / 4069 | 4308 / 4928 | 5.29 / 5.29 | death rows identical; the controlled Downes' path 220.52 -> 193.89 m, shots 2414 -> 2533 |
+| JM05 | 3 | 80 / 8619 / 3368 | 6207 / 6507 | 54425 / 53826 | 222.44 / 226.57 (the reserve placement under the seabed, 84.3) | `nearest` only |
+| JM08 long | 3 | 41 / 4145 / 1156 | 215151 / 198623 | 1431086 / 439606 | 2.28 / 2.65 | deaths 25 -> 24 (see below) |
+
+**JM08 long.**
+- The invaders still stop at the beach (deepest candidate 2.65 m); 13 ships touch land, where
+  OFF had 15.
+- Four deaths are only OFF: Static Gekko 06, Japanese AA truck 01, USTroopTransport 05 and LST 02.
+  Three piers die only ON (`Pier, Wooden 01`, `Pier, Wooden 04`, `Pier, Wooden, Large 01`).
+- `Headquarter 01` now reaches 0 hp and goes neutral (`health_zero=11 neutralized=1`, OFF 0 / 0).
+  It never flips, and no ramp lowers (`ground_contacts=0`).
+
+**Against the predictions (86.3).**
+- **Held:**
+  - the mechanism: hull vertices are 20-40% of the raw points on every row, and no hull crosses
+    land;
+  - every exit-1 row, the exit-3 rows' death tables, and JM08 long's beach stop and death count
+    (24, inside 20-30).
+- **Misses:**
+  1. **`max_depth` moves more than "barely":** USN13 3.49 -> 0.41 and USNOS long 2.91 -> 0.49.
+     The argument was wrong. The depth `h(x, z) - y` is not linear in the point, because the
+     terrain is not a plane, so an interior point under a bump can be deeper than every hull
+     vertex. The raw set's deepest candidates were presumably such points (not traced per pose).
+  2. **Candidates rise on IJN01, JM06 and BSM01.** Their contact steps rise with them: the
+     trajectories changed. Candidates per contact step fall everywhere except JM06 (2.07 -> 2.34).
+  3. **JM08 long's HQ reaches 0 hp**, where "the HQ is not reached" was predicted. The hulls still stop at the beach (no ramp contact on either side);
+     which ships brought it down is not read.
+  4. USNOS moved nothing (exit 3 was allowed; exit 1 measured).
+- **No mechanism failure:**
+  - no hull crosses land;
+  - `hull_vertices < raw_points` on every row;
+  - no ship stops away from land.
+  - Not checked: whether a single shape built zero vertices. The census counts totals only; every
+    row's average is 26 to 42 vertices per shape.
+
+**Verdict: `kHullTerrainDynHullVerticesBound = true`.** Spread misses with the mechanism matching.
+It belongs to reference v. Remaining labelled substitutions from 84.1: `00C53630`'s own
+interpolation (85.2 item 3b), substeps (3c), and hull-terrain pairs only (3d).
