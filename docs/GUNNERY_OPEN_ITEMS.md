@@ -7305,3 +7305,26 @@ the aim point). It is not open.
   - `g21_r0` / `g21_k1`: section 92;
   - `g21_a0` / `g21_a1` and `g21_hq_jm08`: section 93;
   - `g21_trace_*.txt`: the traces.
+
+### 94.4 The queue as the lead set it (2026-09-30), superseding 94.2's order
+
+1. **USNOS 110 -> 87 and USNOS long 166 -> 123 under `kArtilleryGroundOriginAimBound`.**
+   Explain which deaths disappear and why a ground-aim change lowers deaths in a mostly naval
+   row. Name the per-entity flips, and say whether they are RNG-coupled.
+   - **A first look** (`pair_diff local\g21_a0_usnos.log local\g21_a1_usnos.log`, cc9-gunnery21
+     tree): 27 rows only OFF, 4 only ON, 66 changed.
+   - **The 27 lost** are all shore buildings: hangars, storage, Quonset barracks, houses, a
+     watchtower, a radio tower, a bunker, tents, a fortress tower.
+   - **The 4 gained:** Office 01 01 and 01 03, Hangar Small 04 10, Radiotower 02.
+   - **So the lost deaths are the ships' shore bombardment, not naval losses.** The hypothesis
+     to test: ship guns aimed at a building's origin now command a depression some mounts'
+     windows refuse (as with 93.2's HQ flak), or their rounds land short of the building
+     instead of in its box.
+   - **To test it:** `BSP_SHELL_FATE` on one bombarding ship, and 0085ABA0's refusal count for
+     ground targets. Check the shared RNG (memory: `00BD2F10` is process-wide) before calling
+     single deaths attributable.
+2. **Forts (`007482B0`)**, as 94.2 item 1. The flow repair comes first.
+3. **The slot-`100h` routines** of MAirfield `006D3250` and MShipyard `00844A10`, for 93's aim
+   point.
+4. **Debris, and the remaining 3d items** (94.2 items 2 and 3).
+5. **Reference W**: every flip since v, including `kArtilleryGroundOriginAimBound`.
