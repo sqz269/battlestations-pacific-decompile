@@ -5221,3 +5221,36 @@ drain-loop iteration.
   That was the host's cadence.
 - The role take 27h (`kHudRoleScreenPumpBound`) now runs once per frame. It was already
   gameplay-identical at twice.
+
+### 76.5 The rest of 71.3: group 3's records, the fort torpedo test, the sprite bridge
+
+**The hit lead 009578C3** (disk bytes, `bsp.py disasm-raw 009578c3` and `009579b2`):
+- It runs with `[dev+3FCh] == 0` and a hit entity. A kind-1Eh hit is first resolved through
+  `00923810(1)` (009578E7). The lead time is `[[dev+3F8h]+34h]+5Ch * +50h` (00957934 / 009579D8).
+- **Kind 6 (a ship):** `00902290` (00957964), then `00427C90` / `004142E0`, and the stores to the out
+  pointer at 00957B24..00957B39. The out becomes the hit point plus the lead offset.
+- **Any other kind:** `00901C20` at 00957A00, a subtraction into locals, `0042AEB0` on a local, and
+  `JMP 00957B3C`. That jump lands past the out stores, so **the out keeps the raw hit point**
+  written at 009578AF..009578BE. The host's raw point is exact for these kinds.
+- **Reach:** the record now fires only for kind-6 hits. On the seventeen reference rows (the
+  `g17_mp1` pair logs) no hit of the camera ray is an entity: `PlayerGunSeat::artillery_hit_lead` has
+  no calls, and every counted hit is land. The ship lead `00902290` stays a record, with no reach.
+- **The hand-over 0095A05B** needs fire input (+34h/+35h), which an idle player never gives. It
+  stays a record with no reach.
+- **`dev+408h..410h`** (the aim point the solve stores) is not stored by the host. Its readers were
+  not surveyed; open.
+
+**The torpedo test on a kind-1Bh fort** (GUNNERY_OPEN_ITEMS 70.2's labelled case):
+- `00922990` accepts a fort's class `FakedType` (`class+178h`) only when it is 7, 8, 0Ah, 0Bh, 0Dh
+  or 0Eh. The class reader's default is 1Bh (00749668..00749684, docs/ATTACK_GATE_TAILS.md).
+- **No file in this installation authors `FakedType`.**
+  - A search of all 621 `.lua` files under the install (the `scripts\datatables\autoload` class
+    tables included; `vehicleclasses.lua` mtime 2026-05-10) found no match, case-insensitive.
+  - `universe\` has no match either.
+- So every fort holds the default 1Bh, and the refusal is the image's answer for this
+  installation. The comment in `src/game_hosts_commands.cpp` says so now.
+- `fort_unread` is 0 on all seventeen s rows, so there is no reach either way.
+
+**The sprite bridge** (D3D_DEVICE_LOST 6) is a host scaffold that draws the milestone overlay. It is
+not the native GUI. It has no reach on a reference row, which never loses the device. It stays
+retired after a recreation (accepted open item, not pursued).

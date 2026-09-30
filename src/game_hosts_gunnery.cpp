@@ -9673,10 +9673,18 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
                 aim[1] = hit[1];
                 aim[2] = hit[2];
                 ++seat_artillery_hits;
-                // 009578C3..00957A50: with [dev+3FCh] == 0 and a hit entity,
-                // the entity's lead at the round's speed (00902290 for kind 6,
-                // 00901C20 otherwise) is added. Not modelled: the raw point.
-                if (any) record("PlayerGunSeat::artillery_hit_lead", 0x009578c3u);
+                // 009578C3..00957A50: with [dev+3FCh] == 0 and a hit entity
+                // (a kind-1Eh hit resolved through 00923810(1) first), the lead
+                // at the round's speed [[dev+3F8h]+34h]+5Ch * +50h. Only kind 6
+                // uses it: 00957964 00902290, then the out stores at 00957B24.
+                // Any other kind runs 00901C20 (00957A00) and JMPs to 00957B3C
+                // past those stores, so its out is the raw hit point, as here.
+                // The kind-6 lead is not modelled (record); it has no reach on
+                // the reference rows, whose hits are all land (GUNNERY_OPEN_ITEMS
+                // 76.5).
+                if (any && hit_unit != 0 && units.unit_is_kind_of(hit_unit - 1, 6)) {
+                    record("PlayerGunSeat::artillery_hit_lead", 0x009578c3u);
+                }
             } else if (!(0.0f > dir[1])) {                         // 00957A55..00957ABF
                 // 0042B260 normalises (dir.x, 0, dir.z); 00CE3CB8 = 20000.0.
                 const float h = std::sqrt(dir[0] * dir[0] + dir[2] * dir[2]);

@@ -241,8 +241,10 @@ struct GameCommandsHost::Impl {
                 } else if (bsp::unit_is_kind_of(class_id, 6)) {      // 00922A00
                     accept = true;
                 } else if (bsp::unit_is_kind_of(class_id, 0x1b)) {   // 00922A14
-                    // 00922990([class+178h] FakedType, 6). LABELLED: this host holds no
-                    // FakedType; the authored default 1Bh is outside the set, so refused.
+                    // 00922990([class+178h] FakedType, 6). No class row in this
+                    // installation authors FakedType (every scripts\ .lua searched,
+                    // GUNNERY_OPEN_ITEMS 76.5), so every fort holds the default 1Bh
+                    // (00749684), outside the set: refused, as the image does here.
                     ++summary.torpedo_fort_unread;
                 } else {
                     ++summary.torpedo_refused_kind;
