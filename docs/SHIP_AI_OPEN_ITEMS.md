@@ -5848,3 +5848,74 @@ to the env-gated `BSP_SHIP_ESCAPE_TRACE` diagnostic in `src/game_hosts_ship_ai.c
   (with JM05 9000) and the foreground wait.
 - **The diagnostic:** `BSP_SHIP_ESCAPE_TRACE=<unit name>` logs, every 20 drive steps, the escape
   inputs, the throttle ceiling, the profile and the steering of one unit.
+
+## 70. Section 68's planner questions: which groups the Capture planner keeps (packet `cc9_capture_group_value`, cc9-ships19, 2026-09-30)
+
+**Questions (68).** Does the image give USN13's unarmed Maru4 convoy group a CLOSEATTACK at all, and
+where does it put the close-attack point?
+
+**How the Maru groups get their order.** USN13's slot-4 brain runs the Capture target path
+(`00A29FD0`, `kAiCaptureTargetPathBound`, docs/PLANNER_TASK_CHOICE.md section 8), because the US side
+holds three CommandBuildings (CB2, CB4, CBT). The first think (t=0.05) assigns all 42 groups. Every
+assignment answers `order=attack`: `00A1A720` finds the target's `+16Ch` group set, so `00A2CBD0`
+issues MOVETOATTACK. The command tick `00A12A90` then promotes it to CLOSEATTACK inside
+`CloseAttack_CollectDist` (3000 here). `local\s19_diag_usn13.log` shows the chain:
+`assign leader=Maru4 -> CB2`, `order_attack ... Maru4 ... CB2`, and `ai command promote ... Maru4
+dist=1256.9`.
+
+**The host difference.** The per-group weight at `00A2A380` is `00A250A0(group, entity)`:
+`00A0C650(00A07E40(group), 00A24870(entity), 0, -1.0 [00D7A260], 0, 0, 1.0)` (live decompile of
+`00A250A0`; it has no empty-group test, unlike `00A0F970`). The host still carries the labelled
+stand-in `members x defenders`, which is always positive, so every group is assigned (section 8's
+substitution list). `00A0C650` is already reconstructed for `00A0F970`
+(`kPlannerGroupTargetValueBound` ON). The assignment loop skips a pair unless `w > 0`
+(`00A2AC02 COMISS [00D7A218] / JBE`). A group with no pair value is therefore never assigned. It is
+handed to `brain+4h` (Attack) when its record's nearest own list-28 entity is null (`00A2AFC0`), and
+to `brain+8h` otherwise.
+
+**Bound OFF:** `kCaptureGroupValueBound` (`src/game_hosts_ai.cpp`). ON computes `00A250A0` from the
+`00A04560` records of the group members and of `00A24870`'s entities (the defenders, or the target
+alone), through the extracted `compose_attack_value_00a0c650`. `BSP_CAPTURE_DIAG=1` logs the value in
+both states (`capture value t= leader= barrels= target= value= stand_in=`). The summary line is
+`summary mission ai capture group value bound= calls= zero=`.
+
+**What the value is on USN13 (OFF diag, `local\s19_diag2_usn13.log`):**
+- **At t=0.05 every value is positive.** The weapon-facts rows are not published yet, so
+  `00A08460` takes its stand-in weight of 1.0. Maru4's group scores 21.3 against CB2, 11.6 against
+  CB4 and 15.7 against CBT; the stand-in gives 60, 42 and 33.
+- **From t=0.10 the Maru groups score 0 against all three targets:** 27 groups, Maru1 through
+  Maru50, with 5 to 31 barrels each (`barrels=17` for Maru4's). Inferred, not traced per barrel: their
+  barrels have no accuracy entry against the defenders' class groups, so `009FE270` answers the
+  reject offset 0. Only the
+  eight warship groups (Agano, Fumizuki, Katori, Matsukaze, Naka, Nowaki, Oite, Yamagumo) stay
+  positive.
+- **Census:** 4308 calls, 3150 zero.
+
+**Predictions (written before the ON runs):**
+- **USN13 moves (exit 3).**
+  - From the t=0.10 think the 27 Maru groups are not assigned. `near_own` is `-` for every group,
+    so each one is handed to `brain+4h` once: capture-path assignments drop far below 1436, and the
+    handoffs appear.
+  - `summary mission ai group target value calls` rises from 0, because the Attack think
+    (`00A1CF90` -> `00A1CB80`) now owns groups.
+  - For a Maru group, the `00A1CB80` score is nonzero only against enemy groups its barrels can
+    hit, which are plausibly air groups. When every candidate scores 0, the first populated enemy
+    group wins, because 0 beats the -999999 floor at `00D22CC4`. `00A2CBD0` returns early while the
+    command already targets that group, so a group whose first pick is CB2's keeps its t=0.05
+    order.
+  - The eight warship groups stay assigned to CommandBuilding targets. Their target can change
+    with the real values (Agano: CB2 7.1, CBT 3.7, CB4 1.3).
+- **USN04 and JM05 are gameplay-identical (exit 0 or 1).** They run no capture path
+  (`capture path thinks=0` on `s18_b5`).
+- **USN01 runs the capture path (38 thinks) and moves (exit 3).** OFF diag
+  (`local\s19_diag_usn01.log`): one target (CB2) and five groups. From t=0.10, Convoy1 (19
+  barrels), Convoy2, Convoy3 and Mav1 score 0, and Katori's group stays positive. Those four are
+  handed to `brain+4h` at t=0.10; only Katori's group stays assigned.
+
+**Answer to 68's second question (static).** CLOSEATTACK's tick hands `00A13B60` the target
+group's leader point (`00A15490`, radius argument 1.5). `00A13B60` scores the candidates collected
+around that point. An attacker whose weight is 0 admits only target-group members (`00A146CD` /
+`00A146D9`, `ai_close_attack_candidate_admitted`). A ship member is then given an attack-move
+(`E08F78`, `00A149FC`) at the chosen **entity**. So the close-attack point is an enemy unit of the
+target group. It moves when that unit moves, and it lies behind the Maru only because that unit
+is behind it. The image places no point relative to the attacker's own hull.
