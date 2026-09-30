@@ -46,7 +46,8 @@ namespace bsp {
 // against the terrain after the velocity phase, and the kind-8 latch (+1010h) is set from its
 // contacts. False: the narrow phase runs as a census only (no state written), and the hull
 // crosses land as before.
-inline constexpr bool kHullTerrainContactSolverBound = false;
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 84.3).
+inline constexpr bool kHullTerrainContactSolverBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step

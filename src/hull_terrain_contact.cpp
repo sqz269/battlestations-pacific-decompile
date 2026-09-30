@@ -1,6 +1,8 @@
 #include "bsp/hull_terrain_contact.hpp"
 
 #include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 #include "bsp/dyn_collision_pass.hpp"
@@ -225,8 +227,33 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
     mw.angular_bias.x += back[1].angular_bias[0];
     mw.angular_bias.y += back[1].angular_bias[1];
     mw.angular_bias.z += back[1].angular_bias[2];
+    // Diagnostic, env-gated: BSP_HULL_TERRAIN_TRACE=<file> appends one line per solve.
+    static std::FILE* trace = [] {
+        char* path = nullptr;
+        std::size_t length = 0;
+        std::FILE* file = nullptr;
+        if (_dupenv_s(&path, &length, "BSP_HULL_TERRAIN_TRACE") == 0 && path != nullptr) {
+            if (fopen_s(&file, path, "a") != 0) file = nullptr;
+        }
+        std::free(path);
+        return file;
+    }();
+    if (trace != nullptr) {
+        std::fprintf(trace, "unit=%zu pos=(%.2f %.2f %.2f) v0=(%.3f %.3f %.3f) w0=(%.4f %.4f "
+            "%.4f) dv=(%.3f %.3f %.3f) dw=(%.4f %.4f %.4f) bias=(%.3f %.3f %.3f) rows=%d "
+            "imass=%.3g iI=(%.3g %.3g %.3g) depth0=%.2f n0=(%.3f %.3f %.3f)\n", unit,
+            body.position[0], body.position[1], body.position[2], hull_in.linear_velocity[0],
+            hull_in.linear_velocity[1], hull_in.linear_velocity[2], hull_in.angular_velocity[0],
+            hull_in.angular_velocity[1], hull_in.angular_velocity[2],
+            back[1].linear_velocity[0], back[1].linear_velocity[1], back[1].linear_velocity[2],
+            back[1].angular_velocity[0], back[1].angular_velocity[1],
+            back[1].angular_velocity[2], back[1].linear_bias[0], back[1].linear_bias[1],
+            back[1].linear_bias[2], row, hull_in.inverse_mass, hull_in.inverse_inertia[0],
+            hull_in.inverse_inertia[4], hull_in.inverse_inertia[8], row_points[0]->depth,
+            row_points[0]->normal[0], row_points[0]->normal[1], row_points[0]->normal[2]);
+    }
     out.points = row;
-    out.delta_linear = OceanVec3{back[1].linear_velocity[0], back[1].linear_velocity[1],
+    out.delta_linear =OceanVec3{back[1].linear_velocity[0], back[1].linear_velocity[1],
                                  back[1].linear_velocity[2]};
     out.delta_linear_bias = OceanVec3{back[1].linear_bias[0], back[1].linear_bias[1],
                                       back[1].linear_bias[2]};

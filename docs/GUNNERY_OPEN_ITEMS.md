@@ -6049,3 +6049,77 @@ velocity when the contact is off-centre.
 - `solves` is greater than 0.
 - No hull ends deeper inland than its first contact point by more than a hull length.
 - The no-contact rows show `ships=0`.
+
+### 84.3 Measured (pairs on `5204cf184`), and the verdict: ON
+
+**Setup.**
+- `local\g19_hoff` (no flip) and `local\g19_hon` (`--flip kHullTerrainContactSolverBound=true`),
+  in the reference launch form.
+- A 400-frame BSM01 smoke of the ON build passed first.
+- Fifteen rows ran 12:20-12:27 UTC: the SHIP_AI 87.3 contact rows plus the controls.
+- The env-gated diagnostic `BSP_HULL_TERRAIN_TRACE=<file>`, one line per solve, was used on two
+  extra ON runs, JM08 long and JM05 (`local\g19_trace_<row>.txt`).
+
+**pair_diff, OFF against ON:**
+
+| row | exit | contact steps OFF / ON | deepest candidate OFF / ON (m) | what moved |
+| --- | --- | --- | --- | --- |
+| USN04, E2, USN01, USN02, JM08, LOMP06, LOMP10, USN12 | 1 | 0 / 0 | - | nothing (census labels only) |
+| JM06 | 1 | 119 / 1808 | 37.90 / 0.30 | the Gato stops at the shore; gameplay-identical |
+| BSM01 | 1 | 8973 / 807 | 12.15 / 12.15 (t = 0.05, the spawn pose) | resting hulls; gameplay-identical |
+| USN13 | 3 | 7749 / 7913 | 109.70 / 3.49 | the five Marus stop at their shores (`nearest` only) |
+| JM05 | 3 | 12320 / 6207 | 222.44 / 222.44 | `nearest` only (see below) |
+| IJN01 | 3 | 5999 / 2619 | 16.95 / 5.29 | the harbour ships graze the berths: Oglala's shots 306 -> 133, the controlled Downes' path 196.29 -> 220.52 m; death rows identical |
+| USNOS | 3 | 895 / 2123 | 132.09 / 0.05 | the Gato no longer crosses land. Its wreck rests on the seabed at -71.95 m instead of sinking to the kill depth, so the kill at 98.25 s (`Entity::on_killed_lua_self`) is gone. Cargo5 takes 177 -> 735 damage |
+| JM08 long | 3 | 27390 / 215151 | 355.80 / 2.28 | see below |
+
+**JM08 long.**
+- On OFF the invasion force drives 230-356 m inland: USTroopTransport 01/06, LST 01/03, LSM 01,
+  Gleaves, Bristol.
+- There it kills 15 shore structures: four piers, two AA trucks, static planes, barracks, tents,
+  a hangar and a watchtower.
+- On ON every invader stops at the beach, the deepest candidate at 2.28 m. Fifteen ships touch
+  land, lifted onto the slope.
+- None of the 15 structures dies. Instead seven invaders die at the beach under fire:
+  USTroopTransport 02/04/05, LSM 02, LST 02, Macomb, and one static Mavis.
+- Deaths go 33 -> 25.
+
+**JM05's destroyers are not crossers.**
+- The trace shows Clemson #1.1/#1.2 and Fletcher #2.1/#2.2 at y = -250 from their first step.
+  That is a reserve placement under the seabed, and they rise from it on their own vertical
+  velocity (0.6-1.7 m/s on OFF).
+- SHIP_AI 87.3's 200-226 m "crossings" on JM05 are this depth, not a hill.
+- ON adds the bias push (up to 1 m/s of pseudo-velocity), so they surface a little sooner.
+  Only `nearest` moves.
+- **Uncertainty:** whether the image's reserve bodies are in the Dyn world at all before their
+  spawn is not established.
+
+**The large upward velocity changes** (`max_up_dv` up to 54 m/s on JM08 long) are the solver
+cancelling the host motion tick's vertical velocity.
+- That velocity steers the hull to its buoyancy height (trace: `v0.y = -22.5` each step on a
+  beached transport at y = -10.5, and `dv.y = +20.3`).
+- The net vertical speed stays under 3 m/s, and the hull rests on the slope. This is the
+  intended interaction of the two, not an impulse blow-up.
+- The inverse mass and world inverse inertia the rows use are the host body's
+  (`7.3e-5`; `1e-8..1e-7`).
+
+**Against 84.2.**
+- **Hits:**
+  - the no-contact rows are exit 1;
+  - JM08 long, USN13, USNOS and IJN01 move;
+  - the deep crossers stop at the shore: the maximum depth falls from 110-356 m to 0.05-3.5 m;
+  - the wreck rests on the seabed (USNOS);
+  - the mechanism checks: candidates are of the same order, `solves > 0`, and every
+    no-contact row shows `ships=0`.
+- **Spread misses:**
+  1. BSM01 and JM06 are gameplay-identical, not exit 3. Neither the lift nor the stop reaches
+     a gameplay field.
+  2. JM05's movers were reserve placements, not crossers.
+  3. JM08 long's outcome is the beach fight above, which 84.2 did not predict in detail.
+
+**Verdict: `kHullTerrainContactSolverBound = true`.**
+- The mechanism is the image's contact phase, and it matched on every checked item.
+- The labelled substitutions in 84.1 stand.
+- SHIP_AI 87.2's `kShipTerrainContactBound` must stay OFF: the two are exclusive.
+- `kLandingShipRampHullContactBound` can now be judged against real contacts: the latch comes
+  from this solver.
