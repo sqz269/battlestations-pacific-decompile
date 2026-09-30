@@ -4975,4 +4975,6 @@ changed times, killers and ranges:
   - `by_device` counts every muzzle fallback, but with `meshless` and `other` at 0 these are all
     `no_mount`.
   - Read the DeviceClass rows with `g14_devices.py` before binding.
-  - **Open; not started.**
+  - **Closed by cc9-gunnery15** (docs/GUN_BARREL_COUNT.md section 9):
+    - every `no_mount` gun is on a land-class unit, whose class runs the same 0095F500 slot pass;
+    - `kLandPlatformAttachmentBound` is ON by its pair (9.4).
