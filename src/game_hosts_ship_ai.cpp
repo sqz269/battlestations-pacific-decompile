@@ -5136,6 +5136,21 @@ public:
             in.target_is_building_1c = owner_.units.unit_is_kind_of(target, 0x1c);
             in.target_is_kind_08 = owner_.units.unit_is_kind_of(target, 8);
             in.target_side_0054 = owner_.units.unit_side_0054(target);
+            if (bsp::kShipAiApproachLandingModesBound && in.target_is_building_1c) {
+                // 009F2095, 006F2D90 (ECX = the building, body 006F2D90-006F2DDB,
+                // RET): true at the first pad of +794h whose occupant (006AC220) is
+                // null. 009F20A4, FILD [target+7C4h], the LandingRange.
+                const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+                for (const int pad : pads.pads_of(static_cast<int>(target))) {
+                    const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+                    if (p != nullptr && p->occupant < 0) {
+                        in.target_free_landing_spot_006f2d90 = true;
+                        break;
+                    }
+                }
+                in.target_radius_07c4 = static_cast<std::int32_t>(
+                    owner_.units.command_building_landing_range_07c4(target));
+            }
         }
         in.unit_is_kind_08 = owner_.units.unit_is_kind_of(index_, 8);
         in.unit_is_kind_0c = owner_.units.unit_is_kind_of(index_, 0x0c);

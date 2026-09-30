@@ -7076,3 +7076,21 @@ the land step changes nothing unless `kShipAiApproachLandingModesBound` is also 
   landers drive toward their pads' approach points and reach `final > 0`; exit 3. Nothing lowers
   a ramp yet (`0074AF20` is the next packet), so `LandedCapturePower` never counts and the HQ is
   not captured. Controls exit 0 or 1.
+
+### 83.2 First pair: no lander ever latches mode 3, and why
+
+Exports of `0d1c01d2b`: `s21_b0` (no flip), `s21_b1` (landing modes ON), `s21_b2` (landing modes
+and land step ON). JM08 36000 (recon ON: `attackmove=21`):
+
+- `b1` and `b2`: `mode4_points=5478`, `mode3_points=0`, `begins=0`; the latch census is
+  `lander=5478 modes=6961/0/0/0/5478`. Every lander frame is mode 4. `land enters=0`.
+- The landers still reach the base and fight there (LST 01 is killed by `Headquarter 01` at
+  919.45; LSM 01 by an AA truck at 1157.30), so the distance is not what keeps them out.
+- **Cause:** the latch's two landing inputs were never filled. `009F2095` calls `006F2D90`
+  (`ECX` = the building, body `006F2D90`-`006F2DDB`, `RET`: true at the first pad of `+794h`
+  whose occupant `006AC220` is null) and `009F20A4` FILDs the building's `+7C4h` LandingRange;
+  the host left both at 0/false (`ShipAiApproachLatchInputs` defaults), so `inside` was always
+  false.
+- **Fix (under `kShipAiApproachLandingModesBound`, still OFF):** both inputs from the pad model
+  and `command_building_landing_range_07c4`. Section 77's pair and this one are re-run on the
+  new commit with the same predictions (83.1).
