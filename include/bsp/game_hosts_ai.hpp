@@ -238,7 +238,8 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept;
 // expected damage per hit 009FE200 (00A09578) and the water term (00A095A9,
 // 00A09624), and a target's hit points are its class HP rather than an
 // OverrideHP'd instance maximum. False: the pre-bind substitutions.
-inline constexpr bool kAiTargetWeightDamageTermsBound = false;
+// ON: section 80.5 (controls identical; USN02, JM06, USNOS rows move).
+inline constexpr bool kAiTargetWeightDamageTermsBound = true;
 
 class GameHostLog;
 class GameUnitsHost;

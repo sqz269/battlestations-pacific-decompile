@@ -5554,3 +5554,44 @@ runs on BSM01, LOMP10, LOMP10 long, JM05 and JM05 long.
 - **Keep OFF if:** a control moves; `barrels` is 0 on a model row; `armour_refusals` equals
   `barrels` on a row (a units mismatch between armour and damage); or a row's attack orders
   collapse to 0.
+
+### 80.5 The pair, and the verdict: ON
+
+A same-tree pair at `0fcf19d8d` (branch merged with main `4209e62f7`): `local\g18_lane_a` (SHA-256
+prefix `D7589F0BA0A0`) against `local\g18_lane_b` (`--flip kAiTargetWeightDamageTermsBound=true`,
+`5EDB8D4F16B8`). The 300-frame USN01 smoke on the ON build is clean. The 18 reference t rows ran
+10:40-10:54 UTC in t's launch form; logs `local\g18_p{0,1}_<row>.log`.
+
+| row | exit | barrels / armour refusals ON | close weight sum OFF -> ON | group weight sum OFF -> ON | what moved |
+| --- | --- | --- | --- | --- | --- |
+| BSM01, LOMP10, LOMP10 long, JM05, JM05 long | 1 | 0 / 0 | 0 | 0 | nothing (controls) |
+| USN04, E2 | 1 | 14782 / 0 | 0 | 2556 -> 21780 | nothing |
+| USN01 | 1 | 15530 / 6214 | 0 | 296 -> 5051 | nothing |
+| JM08 | 1 | 638892 / 47400 | 0 | 14015 -> 1490471 | nothing |
+| USN12 | 1 | 78264 / 23850 | 5569 -> 289913 | 9.5 -> 1273 | nothing |
+| JM08 long | 1 | 11964792 / 1181643 | 106696 -> 8396262 | 138032 -> 14833321 | nothing: the first capture order swaps Gleaves and Macomb, both cautious, so the draws land as before |
+| USN02 | 3 | 625276 / 309503 | 458 -> 65395 | 530 -> 74314 | hits 5111 -> 6229, damage 59304 -> 66964, shots 4545 -> 5025; death rows identical |
+| JM06 | 3 | 44153 / 30856 | 325 -> 6522 | 112 -> 11467 | hits 192 -> 287, shots 276 -> 354; death rows identical |
+| USN13 | 3 | 548977 / 259998 | 2485 -> 101446 | 6196 -> 140838 | call counts only; death rows identical |
+| LOMP06 | 3 | 36680 / 12240 | 0 | 743 -> 60741 | call counts only |
+| IJN01 | 3 | 1191252 / 753091 | 15495 -> 653876 | 3335 -> 52143 | Downes moves 220 -> 196 m; death rows identical |
+| USNOS | 3 | 2361941 / 701524 | 6607 -> 339631 | 40274 -> 4066176 | deaths 107 -> 105 (two OFF deaths absent, 61 rows re-timed or re-attributed) |
+| USNOS long | 3 | 7426460 / 2198446 | 24328 -> 1516931 | 117941 -> 12018181 | deaths 129 -> 128 |
+
+`water_scale` is 100.0 (WaterTickDamage) on every ON row; `zero_per_hit` is 0 except USNOS (5308)
+and USNOS long (15528), barrels whose high damage equals the armour exactly (the gate passes them, 009FE200 answers 0).
+
+**Prediction check:**
+- **The controls held** (exit 1, `barrels` 0 on both sides).
+- **The mechanism held:** every model row counts barrels ON and none OFF; refusals are a share,
+  never all (USN02 49%, IJN01 63%, JM08 7%); the weight sums rise 8-140x.
+- **Misses, all spread:**
+  - USN04 and E2 have no refusal (no scored barrel met armour above its damage; not examined further), where every model row was predicted to refuse some.
+  - USN12, JM08 and JM08 long were predicted to move and are gameplay-identical: the weights
+    changed but not the choices they feed.
+  - USN01 stays identical (predicted "may move").
+- **The spread held:** shore deaths within 2% (USNOS 105, USNOS long 128); no row's attack stopped
+  (shots rose on every moved row).
+
+**Verdict: ON** (`kAiTargetWeightDamageTermsBound = true`), a spread miss with the mechanism
+matching. It belongs to reference u.
