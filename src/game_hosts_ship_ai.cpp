@@ -11539,6 +11539,75 @@ bool GameShipAiHost::avoid_zone_offset_point_00a020f0(std::size_t unit, const fl
     return true;
 }
 
+int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
+    Impl& host = *impl_;
+    GameShipAiSummary& s = host.summary;
+    ++s.landing_requests_94h;
+    if (unit >= host.units.count()) return 0;
+    bsp::BuildingPadModel& pads = bsp::building_pad_model();
+    const int ship = static_cast<int>(unit);
+    if (pads.lander_pad_1200(ship) >= 0) {                             // 0074A4DB
+        ++s.landing_requests_held;
+        return -8;
+    }
+    // 0074A50B..0074A51A: 006F2C30 over list 28, another party, within the
+    // site's +7C4h LandingRange by 3-D squared distance, the nearest.
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    host.units.unit_position_00fc(unit, ux, uy, uz);
+    const int side = host.units.unit_side_0054(unit);
+    int site = -1;
+    float best = 0.0f;
+    for (std::size_t i = 0; i < host.units.world_list_size(28); ++i) {
+        const std::size_t e = host.units.world_list_entry(28, i);
+        if (e >= host.units.count() || host.units.unit_side_0054(e) == side) continue;
+        float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+        host.units.unit_position_00fc(e, ex, ey, ez);
+        const float dx = ex - ux, dy = ey - uy, dz = ez - uz;
+        const float d2 = dx * dx + dy * dy + dz * dz;
+        const float range = host.units.command_building_landing_range_07c4(e);
+        if (d2 > range * range) continue;
+        if (site < 0 || d2 < best) {
+            site = static_cast<int>(e);
+            best = d2;
+        }
+    }
+    if (site < 0) {                                                  // 0074A523
+        ++s.landing_requests_no_site;
+        return -9;
+    }
+    // 0074A540 006F2A50(site)(ship): the nearest pad whose occupant is null.
+    const float unit_pos[3] = {ux, uy, uz};
+    const int pad = pads.pick_006f2e60(site, ship, unit_pos, true);
+    if (pad < 0) {                                                   // 0074A547
+        ++s.landing_requests_no_pad;
+        return -4;
+    }
+    const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+    if (p == nullptr) return -4;
+    // 0074A565 ship+1200h = pad; 0074A56B..0074A57F 0A5h (00749D90) routed at
+    // class 7; 0074B570 runs 0074A990. Delivered at the call (LABELLED).
+    const float draw = host.gunnery_draws != nullptr
+        ? host.gunnery_draws->ship_ai_draw(unit, 0.0f, 0.75f) : 0.0f;
+    pads.begin_landing_0074a990(ship, pad, site, draw, 0);
+    host.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
+    // 0074A9FC..0074AA75: 0077D600(ship)(land 00E08FA0, pad world position).
+    bsp::SceneCommandTarget target{};
+    target.kind = 0;
+    target.position_valid = 1;
+    target.position[0] = p->position[0];
+    target.position[1] = p->position[1];
+    target.position[2] = p->position[2];
+    host.units.issue_script_command(unit, 0x00e08fa0u, target, 1,
+        "0074A4C0 land at pad", "LandingPoint");
+    ++s.landing_begins;
+    ++s.landing_requests_begun;
+    host.log.notef("  landing ship request (94h -> 0074A4C0): t=%.2f unit=%u pad=%d site=%d "
+        "d=%.1f", host.capture_clock, static_cast<unsigned>(unit), pad, site,
+        static_cast<double>(std::sqrt(best)));
+    host.done("LandingShip::request_landing_0074a4c0", 0x0074a4c0u);
+    return 1;
+}
+
 void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long long interval) {
     Impl& host = *impl_;
     if (interval == 0 || host.controllers.empty()) return;
@@ -12046,6 +12115,11 @@ void GameShipAiHost::report() {
         host.summary.landing_pad_line_casts, host.summary.landing_mode3_in_reach,
         host.summary.landing_begins, host.summary.landing_mode4_points,
         bsp::kShipAiApproachLandingModesBound ? 1 : 0);
+    host.log.notef("summary mission ship ai landing requests 94h=%llu begun=%llu held=%llu "
+        "no_site=%llu no_pad=%llu (0074A4C0, packet cc9_startlanding_94h)",
+        host.summary.landing_requests_94h, host.summary.landing_requests_begun,
+        host.summary.landing_requests_held, host.summary.landing_requests_no_site,
+        host.summary.landing_requests_no_pad);
     host.log.notef("summary mission ship ai land state enters=%llu steps=%llu with_pad=%llu "
         "final=%llu pad_assigns=%llu bound=%d (009E18D0 / 009E1950, packet "
         "cc9_land_step_host)", host.summary.land_enters, host.summary.land_steps,
