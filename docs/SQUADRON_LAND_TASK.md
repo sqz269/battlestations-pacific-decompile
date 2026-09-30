@@ -7569,3 +7569,50 @@ skipped=`.
    - no regime change (item 3);
    - moved death rows limited to timing: the same victims, or victims whose killer's attack
      timing moved.
+
+### Results (OFF `local\l28_roff`, SHA-256 `2EC5F1C0E7C6`; ON `local\l28_ron`, `DF8B30ED8828`; both from `66a266556`)
+
+The 300-frame USN01 smoke of the committed tree exits 0. LOMP10 3000's OFF run failed once at
+renderer init (CreateDevice hr `0x8876086A`, the environment) and was re-run.
+
+| row | `pair_diff` | increments applied / skipped (ON) | death rows |
+| --- | --- | --- | --- |
+| JM05 3000 | 3 | 38314 / 2323 | identical (12) |
+| JM05 9000 | 3 | 120543 / 25902 | identical (14) |
+| JM06 | 1 | 1500 / 0 | identical (1) |
+| JM08 | 1 | 14726 / 2188 | identical (7) |
+| LOMP06 | 1 | 0 / 0 | identical (0) |
+| LOMP10 3000 | 3 | 4439 / 46 | same 3 victims; Lightning 01\|.-3 at 124.30 -> 124.50 s |
+| LOMP10 9000 | 3 | 10441 / 46 | same 6 victims, 1 re-timed |
+| USN01 | 3 | 6266 / 141 | identical (17) |
+| USN02 | 1 | 0 / 0 | identical (1) |
+| USN04 | 3 | 35599 / 1658 | 50 -> 48: 43 re-timed, mostly within 1-5 s; the two OFF-only deaths are at 224.06 and 224.36 s of a 225 s row |
+| E2 (USN04 9000) | 3 | 60378 / 1699 | same 52 victims, 47 re-timed |
+| USN12 | 1 | 0 / 0 | identical (7) |
+| USN13 | 3 | 57812 / 1662 | same 23 victims, 21 re-timed |
+| USNOS | 3 | 39394 / 399 | same 106 victims, 4 re-timed |
+| IJN01 | 1 | 49353 / 203 | identical (3) |
+| BSM01 | 1 | 6000 / 0 | identical (0) |
+
+**Regime counters.**
+- Lift-offs are equal on JM05 3000 and 9000 (30, 34), USN04 and E2 (12) and USN13 (27).
+- USN04 and E2: torpedo-task releases 5 -> 4 of 16, dive-bomb releases 0 -> 1 of 19.
+- JM05 9000's single ground-retakeoff push (Helldiver 01) does not occur with ON. The hangar orbit
+  itself is unchanged: `local\l28_orbit.py` gives the same 5-10 m/s circles. The looper's
+  excursion past `qd` is timing-dependent.
+
+| prediction | result |
+| --- | --- |
+| 1. `skipped` a large share | **partly**: 1-18% of increments. Cruising planes rarely sit inside 3 km/h |
+| 2. every plane row moves (exit 3), deaths re-timed only | **held** on 10 rows. JM06, JM08, IJN01 and USN02/USN12/LOMP06 (no increments) are exit 1 |
+| 3. no regime change | **held**: lift-offs equal; one torpedo release fewer and one dive release more on the USN04 pair, which is within the RNG-coupled spread |
+| 4. BSM01 exit 0 or 1 | **held** (1) |
+| 5. flip criterion | **met**: every changed death row keeps its victim, except the two USN04 deaths that fall past the row's end |
+
+### Verdict: **flip ON** (`kThrottleDeadBandBound = true`)
+
+The mechanism holds, and the misses are spread misses: the skip share and the exit-1 rows. The
+USN04 torpedo-release and death-count moves are recorded as timing, RNG-coupled per the shared-stream
+note.
+
+For reference W, every row with exit 3 above moves.

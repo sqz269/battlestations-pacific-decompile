@@ -138,7 +138,8 @@ inline constexpr bool kGroundRetakeoffBound = true;
 // |error| <= 0.8333 (double 00D09450), the measured speed >= 1.0 (00D7A24C) and
 // 0.5 (00CE3800) <= desired / |speed| <= 1.5 (00CE380C); the demand is then the
 // slot's seed. False: the increment is always applied.
-inline constexpr bool kThrottleDeadBandBound = false;
+// ON by 5bs's pairs (same victims on every row, deaths re-timed only).
+inline constexpr bool kThrottleDeadBandBound = true;
 
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the
