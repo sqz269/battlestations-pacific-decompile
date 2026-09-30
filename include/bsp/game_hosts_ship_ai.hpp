@@ -611,6 +611,10 @@ struct GameShipAiSummary {
     unsigned long long backoff_expiries{0};
     // 009ED6B0 entries that found the escape byte blk+36Ch still set (009ED788).
     unsigned long long escape_36c_stale_steps{0};
+    // 009ED6B0 entries that found the turn side blk+304h non-zero (009ED78F).
+    unsigned long long nav_side_304_set_on_entry{0};
+    // Station-arm steps whose 009DE5B0 separation turn ran on a non-zero side.
+    unsigned long long station_separation_sided{0};
     // Packet cc9_approach_no_ship_hold (kShipAiApproachNoShipHoldBound).
     unsigned long long hold_arm_runs{0};       // 009F2124 head passed: the goal stored
     unsigned long long hold_frames{0};         // modes 0/2 no-ship frames held

@@ -96,6 +96,16 @@ enum class ShipAiNavTurnSide : int {
     ClampNonNegative = 2, // 009EE916: a negative error is forced to zero
 };
 
+// 009ED78F and 009ED795, in 009ED6B0's unconditional per-step reset span: blk+304h
+// (the turn side) and blk+338h (the last-leg byte) are cleared before either arm
+// runs. The navigation arm rewrites both (009EE765, 009EE783); the station arm
+// (009EDA28..009EE57B) writes neither, and its exit still reaches 009DE5B0, whose
+// separation turn 009DEBB9 reads +304h. True: the host clears both there. False:
+// a station-keeping ship turns with the side its last navigation step left.
+// ON by the pairs of 2026-09-29 (section 67.4): gameplay identical on seven rows,
+// USN13 with 1938 sided station-arm separation steps included.
+inline constexpr bool kShipAiNavResetSpanBound = true;
+
 // The fields of `blk` the arm uses that ShipAiControlBlock does not declare.
 // Offsets are relative to blk = brain+8h, the same base ShipAiControlBlock uses.
 struct ShipAiNavState {
