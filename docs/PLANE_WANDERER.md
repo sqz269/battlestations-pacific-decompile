@@ -245,3 +245,38 @@ render offset with no gameplay, and the switch should go back OFF.
   are closed.
 - **Open:** the roll `+28h` has no reader found, and `007D8230`'s sub-frame publish is not
   modelled.
+
+## 9. The feedback question, settled: the offset is a velocity (packet `cc9_wanderer_feedback`, cc9-lua21, 2026-09-30)
+
+SQUADRON_LAND_TASK 5ai item 2 asked whether the step commit copies the published pose `unit+74h`
+back into `unit+674h` between fixed steps. If it did not, section 4's "extra velocity" reading was
+wrong and `kPlaneWandererBound` had to go back OFF. **The commit does copy it back, so the switch
+stays ON.** Two corrections to sections 2 and 4 come with the answer.
+
+**The plane's commit slot is `007BEEE0`, not `006D1FC0`.**
+- The plane tick-element vtables all carry `007C6500` / `007CE040` / `007BEEE0` at `+4h` / `+8h`
+  / `+0Ch`. The vtables are `00D0002C`, `00D002C4`, `00D05EDC`, `00D19CE4` and five more; they
+  were found by an absolute-dword scan for `007C6500`.
+- `006D1FC0` is the generic unit's `+0Ch`; the plane overrides it.
+- `007BEEE0` (`007BEEE0`-`007BEFDD`, `RET` at `007BEFDC`, then INT3) runs three steps:
+  1. It stores the committed translation in the carrier/parent frame at `unit+918h..920h`
+     (`004142E0` against `[node-2D4h]`'s pose, or a plain copy without a parent).
+  2. It stores the committed matrix at `unit+924h` (`007BEFA9`).
+  3. It ends exactly as `006D1FC0` does: `004134F0(unit+674h <- unit+74h)` (`007BEFC0`), or from
+     `node+1D0h` when `node+1C8h` is set.
+- The tick-element order puts `+0Ch` right after `+4h` in wave 1 (TICK_ELEMENT_OVERRIDES.md).
+  So every fixed step's published pose becomes the next step's committed pose.
+
+**The consumer AI planes run is `007D9F60`, not `007D8230`.**
+- `007C6500` picks the publisher on `node+210h` = `unit+520h` (`007C66F4`-`007C6706`):
+  - set (the formation lock): `007D8230`;
+  - clear: `007D9F60`.
+- The host's hold arm never takes the lock, so AI planes are unlocked and run `007D9F60`.
+- Both add the same term:
+  - `007D8278`-`007D8300`: `674h row3 + t x ctl+18h..20h + t x unit+810h..818h`;
+  - `007DA222`-`007DA2A9`: `unit+6A4h..6ACh + t x ctl+18h..20h + t x unit+810h..818h`.
+- So the offset is published on both paths and committed by `007BEEE0`. Its units are m/s: an
+  extra world velocity, as section 4 read it.
+
+**Verdict:** `kPlaneWandererBound` stays ON. The binding's publish ("adds `offset x step` where
+the host integrates the velocity") is the image's term on either path.

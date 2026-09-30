@@ -130,12 +130,15 @@ float pilot_cmd_clamp_bipolar_0099bc00(float value) noexcept;
 PilotCommandBlock pilot_cmd_evaluate_plan_slots_0099bc00(const PilotPlanSlots& slots, float rate,
                                                          float dt) noexcept;
 
-// 0099BEE0: 0099BC00 plus the three byte copies. Only `low` survives into the control block -
-// `mid` and `high` land at unit+A11h and unit+A12h, which have no reader in the image.
+// 0099BEE0: 0099BC00 plus the three byte copies.  All three reach the unit at the commit
+// (007BB6E0): CORRECTED, packet cc9_follow_turbo (docs/PLANE_FOLLOW_PHASE_A.md 9.2) - `mid`
+// and `high` were recorded here as dead, but 007BB8D0-007BB8D6 copies cmd+15h into the turbo
+// byte unit+9F9h (007DC84F -> ctl+4h -> 007D9062 thrust x TurboMultiplier) and 007BB8BF-
+// 007BB8C2 copies cmd+16h into unit+9FAh while unit+5Dh is clear.
 struct PilotCmdBytes {
     std::uint8_t low{0};   // bot+2E4h -> out+14h -> unit+A10h -> the byte unit+9F8h
-    std::uint8_t mid{0};   // bot+2E5h -> out+15h -> unit+A11h, dead
-    std::uint8_t high{0};  // bot+2DCh -> out+16h -> unit+A12h, dead
+    std::uint8_t mid{0};   // bot+2E5h -> out+15h -> unit+A11h -> unit+9F9h, the turbo request
+    std::uint8_t high{0};  // bot+2DCh -> out+16h -> unit+A12h -> unit+9FAh (unit+5Dh clear)
 };
 PilotCommandBlock pilot_cmd_evaluate_plan_slots_0099bee0(const PilotPlanSlots& slots,
                                                          const PilotCmdBytes& bytes, float rate,
