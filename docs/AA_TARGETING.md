@@ -261,3 +261,12 @@ What is established regardless:
   on by default (`kAaMinRangeBound = true`). Its measured pair, with the per-consumer stream
   option, moved exactly the eight predicted Yorktown-class01 FLAK rows and nothing else
   (`docs/RANDOM_STREAMS.md` section 3).
+
+## Correction (packet cc9_aa_range_origin, cc9-gunnery17)
+
+- **Kind 6's second ammunition is loaded** since `kDualPurposeSecondAmmoBound` (docs/AA_LEAD.md 3).
+  Its `MinRange` is the kind-6 minimum against a plane. The "not loaded" entries in sections 2 and 8
+  predate that packet.
+- **The category range's distance** is between the two pose origins, with no class `Height`
+  (`00863990`, 008639EC..00863A32). Section 2's "faithful to within the height offset" is bound as
+  `kAaCategoryRangeOriginBound` (docs/AA_LETHALITY_AUDIT.md 13).

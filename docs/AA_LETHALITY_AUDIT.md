@@ -1185,3 +1185,110 @@ hit test, damage per hit, the plane's damage model) is now faithful or bound ON:
 
 **Result:** with those substitutions, torpedo-plane attrition in this host follows the image's AA
 path at every stage read.
+
+## 13. The remaining substitutions of 12.6 (packet `cc9_aa_range_origin`, cc9-gunnery17)
+
+### 13.1 Where each one stands
+
+- **Kind 6's second ammunition (`+74h+7Ch`) for `00729B90`** is already bound.
+  - `kDualPurposeSecondAmmoBound` (docs/AA_LEAD.md 3) loads `Bullet[2]`.
+  - `bind_aa_acceptance` reads its `MinRange` for a category-6 gun against a plane
+    (`dp_air_ammo`, which needs the target's plane kind, as 00729BC0's `IsKindOf(0Fh)` does).
+  - The "not loaded" labels in AA_TARGETING 2 and 8, 12.1's table and the source comment were
+    stale; the comment is corrected.
+- **The fire window in the hull frame** is exact in its frame (docs/AA_FIRE_WINDOW_MOUNT.md 2).
+  - What remains is the origin: the host uses the slot point plus the muzzle offsets, where the
+    image uses the gun node's translation `[gun+3CCh]+120h`. That is a few metres at AA ranges.
+  - The host builds no gun node (docs/GUN_MOUNT_POSITIONS.md). Not pursued here.
+- **The recon contact list** (`[recon+DE8h]` against the host's recon levels) belongs to the recon
+  lane: RECON_SLOT_OBJECT, and cc9-lua22's `cc9_recon_publication` holds those files now. Not
+  touched here.
+- **The aim-point height in the category range** is bound in this packet (13.2).
+
+### 13.2 The image: pose origins, no height
+
+The score `00863990` (disk bytes, `bsp.py disasm-raw 00863990`):
+- `ESI = [ECX+50h]`, the gunnery AI's unit. `EDI` is the candidate.
+- Both poses are refreshed through `00414DB0` when `+C8h` is clear (008639CC..008639E7).
+- Then 008639EC..00863A1D subtract the unit's `+FCh/+100h/+104h` from the candidate's.
+  `0042B2F0` takes the length. It is stored to the caller's sort distance (00863A32) and compared
+  with `[ESI+EBP*4+430h]`, the category range (00863A34..00863A41).
+- No class `Height` is added anywhere in this stretch.
+- The host measured the distance between the two aim points (`unit_aim_point`: the origin raised
+  by the class Height). For a ship and a plane, that shortens the slant distance by about
+  `(ship Height - plane Height) * sin(elevation)`.
+
+**The binding:** `kAaCategoryRangeOriginBound` (`src/game_hosts_gunnery.cpp`, committed OFF) uses
+`unit_pose`'s origins for both units. The score serves every category, so ship-against-ship
+candidates change too, by their Height difference.
+- **Summary line**, on both sides: `summary mission gunnery candidate range origin scored=
+  verdict_flips= mean_abs_delta= bound=`. It counts the candidates whose range verdict would
+  differ under the other measure.
+
+### 13.3 Predictions (written before any ON run)
+
+A same-tree pair on s's seventeen rows, in s's launch form.
+1. **Mechanism:**
+   - `scored` is equal on both sides;
+   - `verdict_flips` is a small share (under 2%) of `scored` on every row with gunnery;
+   - `mean_abs_delta` is a few metres (1-15 m).
+2. **Direction:** against planes, the origin distance is longer. So AA guns take a plane into range
+   slightly later, and the first AA rounds come no earlier.
+3. **Rows:**
+   - The plane rows (USN04, E2, USN01, USN13, JM08, LOMP10, LOMP10 long, USNOS, USNOS long, IJN01,
+     JM05 long) move (exit 3), through the first-engagement timing and the shared stream.
+   - Surface-gunnery rows (USN02, JM06, JM05, USN12) may move where a candidate sits at a range
+     edge.
+   - BSM01 and LOMP06 are identical (no gunnery at a range edge).
+4. **Spread:** plane deaths per row within ±15% of OFF, and the torpedo-task releases within ±2.
+5. **Mechanism failure:** `scored` differs between the sides before the first flip, or flips are
+   0 on a plane row that moves.
+
+### 13.4 The pair, and the verdict: ON
+
+A same-tree pair at `d163ff80d`: `local\g17_ro0` (SHA-256 prefix `E6E22A5A2195`) against `local\g17_ro1`
+(`--flip kAaCategoryRangeOriginBound=true`, `1CE9D85AA4D4`). The 300-frame USN01 smoke on the ON
+build is clean. Logs are `local\g17_ro{0,1}_<row>.log`.
+
+**Census, OFF -> ON:**
+
+| row | scored | verdict flips | mean abs delta (m) |
+| --- | --- | --- | --- |
+| USN04 | 94601 -> 94643 | 15 / 15 | 0.43 |
+| E2 | 94601 -> 94828 | 15 / 15 | 0.43 / 0.44 |
+| USN13 | 660615 = | 11 / 11 | 0.56 |
+| USNOS long | 956071 -> 955833 | 13 / 13 | 0.09 |
+| JM06 | 8428 = | 0 | 0.03 |
+| USN02 | 97368 = | 0 | 0.00 |
+
+**What moved:**
+- **Gameplay-identical (exit 1):** USN02, BSM01, LOMP06 and USN12.
+- **Aggregates moved:**
+  - USN04: deaths 49 -> 48; the same victims otherwise, 15 death rows re-timed.
+  - E2: shots 14663 -> 15277, dive-bomb-task releases 0 -> 1 of 19; death rows re-timed, no victim
+    changes.
+  - USNOS: deaths 54 -> 55.
+  - USNOS long: two plane deaths re-timed.
+- **Only gunnery call counts moved, no aggregate:** USN13, LOMP10, LOMP10 long and IJN01.
+- **Only the logged candidate distance moved:** JM06, JM08, USN01, JM05 and JM05 long (exit 3).
+  Their unit tables differ only in `nearest`, by about 1 m, and that field is now the origin
+  distance itself.
+
+**Prediction check:**
+- **The mechanism held:**
+  - `scored` is equal where nothing moved first;
+  - the flips are a tiny share (15 of 94601 on USN04);
+  - every gameplay move is on a row with flips.
+- **The magnitude missed.** The mean delta is 0.03-0.56 m against the predicted 1-15 m. The Height
+  terms nearly cancel for most pairs, and planes at altitude see the difference at a steep
+  elevation only when close.
+- **The failure criterion "0 flips on a plane row that moves" was mis-stated.** The same distance
+  is the sort key, so the order among in-range candidates can change without a range flip.
+  JM06's moves are that metric alone, not gameplay.
+- The spreads held: plane deaths within one per row, and torpedo-task releases unchanged.
+
+**Verdict: ON** (`kAaCategoryRangeOriginBound = true`), a spread miss with the mechanism matching.
+Of 12.6's list:
+- the aim-point height is now bound;
+- the kind-6 second ammunition was already bound;
+- the fire-window origin and the recon contact list stay open (13.1).
