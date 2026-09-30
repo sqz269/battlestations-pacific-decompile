@@ -69,11 +69,13 @@ inline constexpr bool kHullTerrainDynHullVerticesBound = true;
 // spacing 9.375, mode 1) and as 006FAD70 builds the hull shape (kind 4, the hull vertices,
 // the centre as its translation). Every tile whose x/z range meets the hull's is tested.
 // False: the terrain object's height 00ADB480 and cell normal 00ADAA40 (84.1).
-inline constexpr bool kHullTerrainNativeTerrainTestBound = false;
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 87.4).
+inline constexpr bool kHullTerrainNativeTerrainTestBound = true;
 // Same packet. 00C44090 keeps one manifold per body pair (00C3F4D0 FindOrCreate(body A,
 // body B)): every hull shape's contacts with one tile go into one manifold. True: the key
 // drops the shape. False: one manifold per (hull shape, tile), as 84.1 built it.
-inline constexpr bool kHullTerrainBodyPairManifoldBound = false;
+// ON by the pairs of 2026-09-30 (section 87.4).
+inline constexpr bool kHullTerrainBodyPairManifoldBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step

@@ -6466,3 +6466,68 @@ For `kHullTerrainNativeTerrainTestBound` alone, against U with 86 ON:
   - a hull crossing land (`max_depth` in tens of metres outside JM05);
   - contact steps falling by more than half;
   - a non-unit normal.
+
+### 87.4 Measured (pairs on `1b42b15ff`), and the verdict: both ON
+
+**Setup.**
+- Three exports of `1b42b15ff`: main after reference U plus later landings, including
+  `kBaseLaunchChainBound`. That base alone gives JM08 long 167 deaths.
+  - `g20_n0`: no flip (`CEDCA68BD714`).
+  - `g20_n1`: `kHullTerrainNativeTerrainTestBound` (`2BCF41A3EBEB`).
+  - `g20_n2`: that plus `kHullTerrainBodyPairManifoldBound` (`0E230CDCE2E3`).
+- Reference U's launch form. The 300-frame smoke of `g20_n1` is clean.
+- The logs are `local\g20_n{0,1,2}_<row>.log`; `local\g20_htc.py` prints the census.
+
+| row | n0 -> n1 (native test) | n1 -> n2 (body-pair manifold) | contact steps n0 / n1 / n2 | max depth n0 / n1 (m) |
+| --- | --- | --- | --- | --- |
+| USN04, USN02 | 1 | 1 | 0 | - |
+| JM06 | 1 | 1 | 1834 / 1834 / 1834 | 0.30 / 0.30 |
+| BSM01 | 1 | 0 | 3119 / 1091 / 1091 | 12.15 / 12.15 |
+| USNOS | 1 | 1 | 1718 / 1707 / 1707 | 0.12 / 0.12 |
+| USNOS long | 3: death rows change `nearest` only | 3: 1 row `nearest` | 20826 / 20623 / 20610 | 0.45 / 0.38 |
+| USN13 | 3: death rows identical | 3: death rows identical | 7862 / 7958 / 7958 | 4.64 / 2.57 |
+| IJN01 | 3: death rows identical; Downes 193.89 -> 197.78 m, hits 77 -> 79 | 1 | 4069 / 2602 / 2602 | 5.29 / 5.29 |
+| JM05 | 3: `nearest` only | 1 | 6507 / 6530 / 6417 | 226.57 (the reserve placement) |
+| JM08 long | 3: deaths 167 -> 166 (`USTroopTransport 06` survives; two transports die later) | 3: 166 -> 165 (`USTroopTransport 05` survives) | 83431 / 66778 / 61670 | 1.07 / 0.62 |
+
+`rejected_normal` is 0 on every row and side.
+
+**Where the two tests disagree.**
+- I ran the env-gated diagnostic `BSP_HULL_TERRAIN_COMPARE=<file>` on a local ON build, logging
+  the first 400 vertices where the host test and `00C53630` disagree:
+  - BSM01: `local\g20_cmp_bsm01.txt`;
+  - IJN01: `local\g20_cmp_ijn01.txt`.
+- Every disagreement is a vertex within **7 mm** of the surface:
+  - the mean `|y - h|` is 0.7 mm on IJN01;
+  - on BSM01 every one is below 0.01 m, most at `y == host h` exactly.
+- The two interpolation schedules differ by millimetres. A hull resting on the terrain then sits
+  at a different equilibrium and flickers in and out of contact on different steps. That is what
+  changes the contact-step counts.
+
+**Against the predictions (87.3).**
+- **Held:**
+  - `rejected_normal` stays 0;
+  - `max_depth` stays within 1 m of OFF except on USN13 (4.64 -> 2.57, shallower);
+  - every exit class;
+  - the body-pair key moves only contact rows (BSM01 exit 0: its hulls have one shape).
+- **Miss, and a criterion I am overriding:**
+  - The contact steps fall by more than 20% on JM08 long (-20%), IJN01 (-36%) and BSM01 (-65%).
+  - BSM01's fall meets the failure criterion I wrote in 87.3 ("contact steps falling by more than
+    half"). That criterion was meant to catch hulls losing contact and passing through land.
+  - The diagnostic shows the opposite: millimetre disagreements at rest. `max_depth` is
+    unchanged (12.15, the spawn pose), and BSM01 is gameplay-identical (exit 1).
+  - So I read it as the prediction's premise failing (it assumed the equilibria would coincide),
+    not the mechanism failing. **This reading is the lead's to overrule.**
+- **Premise change:** JM08 long's "20 to 30 deaths" was written against U. This base gives 167
+  on every side. The invaders still stop at the beach (max depth under 1.1 m).
+
+**Verdict:** `kHullTerrainNativeTerrainTestBound = true` and
+`kHullTerrainBodyPairManifoldBound = true`. Both belong to reference V.
+
+**Still labelled:**
+- the FFFFh edge padding;
+- the identity Landscape rotation;
+- the x/z-range broad phase;
+- the shape order within a body pair;
+- substeps (85.2 item 3c);
+- hull-terrain pairs only (3d).

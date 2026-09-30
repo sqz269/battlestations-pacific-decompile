@@ -253,10 +253,58 @@ HullTerrainContactStepResult HullTerrainContactSolver::native_narrow_phase(
                 const TerrainTile& tile = *slot;
                 for (std::size_t s = 0; s < hulls.size(); ++s) {
                     alignas(16) std::uint8_t result[4 + 8 * 36]{};
-                    if (!intersect_native_dyn_terrain_convex_00c53630(
-                            result, tile.shape, tile.frame, hulls[s]->shape, hull_frame, crt)) {
-                        continue;
+                    const bool hit = intersect_native_dyn_terrain_convex_00c53630(
+                        result, tile.shape, tile.frame, hulls[s]->shape, hull_frame, crt);
+                    // Diagnostic, env-gated: BSP_HULL_TERRAIN_COMPARE=<file> logs the vertices
+                    // where the host test (00ADB480 height) and 00C53630 disagree (first 400).
+                    static std::FILE* compare = [] {
+                        char* path = nullptr;
+                        std::size_t length = 0;
+                        std::FILE* f = nullptr;
+                        if (_dupenv_s(&path, &length, "BSP_HULL_TERRAIN_COMPARE") == 0 && path) {
+                            fopen_s(&f, path, "w");
+                            std::free(path);
+                        }
+                        return f;
+                    }();
+                    static int compare_lines = 0;
+                    if (compare && compare_lines < 400) {
+                        std::int32_t hits = 0;
+                        std::memcpy(&hits, result, 4);
+                        const float* rc = reinterpret_cast<const float*>(result + 4);
+                        for (const OceanVec3& v : hulls[s]->vertices) {
+                            const float w[3] = {
+                                f32(static_cast<double>(body.position[0]) + body.row0[0] * v.x +
+                                    body.row1[0] * v.y + body.row2[0] * v.z),
+                                f32(static_cast<double>(body.position[1]) + body.row0[1] * v.x +
+                                    body.row1[1] * v.y + body.row2[1] * v.z),
+                                f32(static_cast<double>(body.position[2]) + body.row0[2] * v.x +
+                                    body.row1[2] * v.y + body.row2[2] * v.z)};
+                            const float inv = f32(1.0 / kTerrainCell);
+                            const float u = f32((static_cast<double>(w[0]) - t.node_x - t.origin_x) * inv);
+                            const float g = f32((static_cast<double>(w[2]) - t.node_z - t.origin_z) * inv);
+                            if (!(u >= tx * 32.0f && u <= tx * 32.0f + 32.0f && g >= tz * 32.0f &&
+                                  g <= tz * 32.0f + 32.0f)) {
+                                continue;
+                            }
+                            const float h = t.grid_height_00adb480(u, g);
+                            const bool host = w[1] <= h;
+                            bool native = false;
+                            for (std::int32_t k = 0; k < hits; ++k) {
+                                const float* q = rc + 9 * k;
+                                if (std::fabs(q[3] - v.x) < 1e-3f && std::fabs(q[4] - v.y) < 1e-3f &&
+                                    std::fabs(q[5] - v.z) < 1e-3f) native = true;
+                            }
+                            if (host != native) {
+                                std::fprintf(compare, "step=%llu unit=%zu s=%zu tile=%d,%d n=%d w=%.3f,%.3f,%.3f "
+                                    "u=%.4f g=%.4f host_h=%.3f host=%d native=%d\n", census_.steps, unit, s,
+                                    tx, tz, hits, w[0], w[1], w[2], u, g, h, host ? 1 : 0, native ? 1 : 0);
+                                ++compare_lines;
+                            }
+                        }
+                        if (compare_lines >= 400) std::fflush(compare);
                     }
+                    if (!hit) continue;
                     std::int32_t n = 0;
                     std::memcpy(&n, result, 4);
                     const float* c = reinterpret_cast<const float*>(result + 4);
