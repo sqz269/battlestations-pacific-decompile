@@ -1483,6 +1483,9 @@ struct GameUnitSlot {
     // Packet cc9_units_capture_accessors: unit+7A0h CaptureRange as 006F2780 stores
     // it (the scene record's dword, 500 when unauthored).
     std::int32_t capture_range_7a0{500};
+    // Packet cc9_command_building_capture_bind: unit+7A4h CaptureValue (006F2780,
+    // 1000 when unauthored).
+    std::int32_t capture_value_7a4{1000};
     // unit+7C4h LandingRange as 006F2780 stores it (006F285F; 500 when unauthored).
     std::int32_t landing_range_7c4{500};
     // Packet cc9_building_pad_model: unit+7CCh LandingPointRange (006F28B3; 500
@@ -12251,6 +12254,8 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
 
         // Packet cc9_units_capture_accessors: 006F2780's CaptureRange, unit+7A0h.
         slot->capture_range_7a0 = entity.capture_range_present ? entity.capture_range_raw : 500;
+        // Packet cc9_command_building_capture_bind: 006F2780's CaptureValue, unit+7A4h.
+        slot->capture_value_7a4 = entity.capture_value_present ? entity.capture_value_raw : 1000;
         // 006F2780's LandingRange, unit+7C4h (006F285F).
         slot->landing_range_7c4 = entity.landing_range_present ? entity.landing_range_raw : 500;
         // Packet cc9_building_pad_model: 006F2780's LandingPointRange, unit+7CCh (006F28B3).
@@ -27266,6 +27271,20 @@ float GameUnitsHost::command_building_capture_range_07a0(std::size_t unit_index)
     if (unit_index >= impl_->slots.size()) return 500.0f;
     if (!unit_is_kind_of(unit_index, 0x1c)) return 500.0f;
     return static_cast<float>(impl_->slots[unit_index]->capture_range_7a0);
+}
+
+std::int32_t GameUnitsHost::command_building_capture_value_07a4(std::size_t unit_index) const {
+    // 006F2780 -> unit+7A4h; 006F6760 compares |+7A8h| with (float)+7A4h.
+    if (unit_index >= impl_->slots.size()) return 1000;
+    if (!unit_is_kind_of(unit_index, 0x1c)) return 1000;
+    return impl_->slots[unit_index]->capture_value_7a4;
+}
+
+void GameUnitsHost::set_unit_side_0054(std::size_t index, int party) {
+    // Packet cc9_command_building_capture_bind: 00928F50 SetPartyRace's party
+    // write, from a CommandBuilding's neutralize or flip (006F4D10).
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->row.party = party;
 }
 
 float GameUnitsHost::command_building_landing_range_07c4(std::size_t unit_index) const {

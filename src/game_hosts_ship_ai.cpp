@@ -99,6 +99,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/vector_helpers.hpp"
+#include "bsp/command_building_capture.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/weapon_director.hpp"
 
@@ -501,6 +502,19 @@ inline constexpr bool kShipAiArmFinalAreaKeyBound = true;
 // ON (2026-09-28): seven rows move through the escape requests, three identical; USN12
 // spread miss recorded (docs/SHIP_AI_OPEN_ITEMS.md section 20).
 inline constexpr bool kShipAiClearanceOutcomeWiringBound = true;
+// Packet cc9_command_building_capture_bind (docs/SHIP_AI_OPEN_ITEMS.md sections 80
+// and 81). True: a CommandBuilding (kind 1Ch) whose health reaches 0 is neutralized
+// (006F3270 -> 006F2940 -> 006F4D10 slot 9) instead of killed; a neutral building
+// runs the 1 s countdown (006F75ED) and the capture tick 006F6760 over arm 1 (ships
+// within CaptureRange, class CapturePower) and arm 3 (the paratrooper list +7DCh,
+// always empty here: this process makes no paratroopers); at |progress| >=
+// CaptureValue it flips to the winning side (006F4D10) and is repaired to full
+// (006F47F0: every CommandBuildingGlobals Repair level is >= 100). Arm 2 (landed
+// landing ships on the pads) is not here; it needs the landing chain. False: the
+// gunnery host's kill funnel kills the building, as before.
+// ON (2026-09-30): the seven CommandBuilding and control rows gameplay-identical (exit 1);
+// the BSP_CB_FORCE_ZERO diagnostics neutralize, tick and flip as read (section 81.2).
+inline constexpr bool kCommandBuildingCaptureBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -744,6 +758,33 @@ struct GameShipAiHost::Impl {
     bool layer_timing_loaded{false};
     // Packet cc9_ship_torpedo_response: the same host, for its stream-1 draw.
     GameGunneryHost* gunnery_draws{nullptr};
+    // Packet cc9_command_building_capture_bind: one record per CommandBuilding,
+    // built on the first controller step, and CapturePower (class+804h) per unit.
+    struct CaptureBuilding {
+        std::size_t unit{0};
+        bsp::CommandBuildingCaptureState state{};
+        double neutral_at{-1.0};
+    };
+    std::vector<CaptureBuilding> capture_buildings;
+    std::vector<float> capture_power_0804;
+    bool capture_built{false};
+    double capture_clock{0.0};
+    std::string capture_force_name;       // BSP_CB_FORCE_ZERO=<unit>@<seconds>
+    double capture_force_at{-1.0};
+    bool capture_forced{false};
+    unsigned long long capture_neutralized{0};
+    unsigned long long capture_countdown_fires{0};
+    unsigned long long capture_progress_messages{0};   // D5h routes
+    unsigned long long capture_flips{0};
+    unsigned long long capture_health_zero_calls{0};
+    CaptureBuilding* capture_building_of(std::size_t unit) {
+        for (CaptureBuilding& b : capture_buildings) {
+            if (b.unit == unit) return &b;
+        }
+        return nullptr;
+    }
+    void build_capture_buildings();
+    void capture_step(float seconds);
     unsigned long long traffic_trace_lines{0};
     std::vector<GameGunneryHost::LiveTorpedo> live_torpedo_cache;
     // Packet cc9_big_landing_ship: class+808h per unit, set at load.
@@ -10584,6 +10625,10 @@ void GameShipAiHost::controller_step(float seconds) {
     Impl& host = *impl_;
     if (host.controllers.empty()) return;
     if constexpr (kGeneratedShipAiBound) host.register_generated_units();
+    // Packet cc9_command_building_capture_bind. The image runs 006F7360 from the
+    // fixed-step callback list (00874DE0, row 5), after the job waves; here it
+    // runs at the head of the controller pass of the same step (LABELLED order).
+    host.capture_step(seconds);
     ++host.steps;
     host.sub_attack_clock += static_cast<double>(seconds);
     // The session pump (fixed-step row 9) drains last step's queue before the
@@ -10817,6 +10862,174 @@ void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float 
         static_cast<double>(rudder));
 }
 
+void GameShipAiHost::Impl::build_capture_buildings() {
+    capture_built = true;
+    const std::size_t count = units.count();
+    capture_power_0804.assign(count, 10.0f);
+    for (std::size_t u = 0; u < count; ++u) {
+        const GameUnitRow* row = units.unit_row(u);
+        // 00834526..00834547: `CapturePower`, an integer or 10, CVTSI2SS into
+        // class+804h (ship_class_fields.cpp).
+        if (row != nullptr && settings_owner != nullptr && row->type_id >= 0) {
+            capture_power_0804[u] = static_cast<float>(
+                settings_owner->read_vehicle_class_integer(row->type_id, "CapturePower",
+                                                           nullptr, 10));
+        }
+        if (!units.unit_is_kind_of(u, 0x1C)) continue;   // MCommandBuilding
+        CaptureBuilding b;
+        b.unit = u;
+        b.state.party_54 = units.unit_side_0054(u);
+        b.state.capture_value_7a4 = units.command_building_capture_value_07a4(u);
+        // LABELLED: the constructor seeds +7C0h = -uniform(0, 1), a phase stagger;
+        // the draw is not taken here so the shared stream stays as it was. Only
+        // where inside the first second a neutral building's ticks fall moves.
+        b.state.countdown_7c0 = 0.0f;
+        capture_buildings.push_back(b);
+    }
+    char* env = nullptr;
+    std::size_t env_bytes = 0;
+    std::string text;
+    if (_dupenv_s(&env, &env_bytes, "BSP_CB_FORCE_ZERO") == 0 && env != nullptr) text = env;
+    std::free(env);
+    if (!text.empty()) {
+        // <unit>@<seconds>[:<capture value>]; the optional value replaces that
+        // building's CaptureValue so a short run can reach the flip.
+        const std::size_t at = text.rfind('@');
+        if (at != std::string::npos) {
+            capture_force_name = text.substr(0, at);
+            capture_force_at = std::atof(text.c_str() + at + 1);
+            const std::size_t colon = text.find(':', at);
+            if (colon != std::string::npos) {
+                const std::int32_t value = std::atoi(text.c_str() + colon + 1);
+                for (CaptureBuilding& b : capture_buildings) {
+                    const GameUnitRow* row = units.unit_row(b.unit);
+                    if (row != nullptr && row->name == capture_force_name && value > 0) {
+                        b.state.capture_value_7a4 = value;
+                    }
+                }
+            }
+        }
+    }
+    for (const CaptureBuilding& b : capture_buildings) {
+        const GameUnitRow* row = units.unit_row(b.unit);
+        log.notef("command building capture: unit=%s party=%d capture_range=%d "
+            "capture_value=%d bound=%d (006F2780 +7A0h/+7A4h, packet "
+            "cc9_command_building_capture_bind)", row != nullptr ? row->name.c_str() : "?",
+            b.state.party_54,
+            static_cast<int>(units.command_building_capture_range_07a0(b.unit)),
+            b.state.capture_value_7a4, kCommandBuildingCaptureBound ? 1 : 0);
+    }
+}
+
+void GameShipAiHost::Impl::capture_step(float seconds) {
+    if (!capture_built) build_capture_buildings();
+    capture_clock += static_cast<double>(seconds);
+    // The diagnostic (env-gated, both builds): one AddDamage-sized hit that takes
+    // the named building to 0 through the gunnery host's death funnel.
+    if (!capture_forced && capture_force_at >= 0.0 && capture_clock >= capture_force_at
+        && gunnery_draws != nullptr) {
+        capture_forced = true;
+        for (const CaptureBuilding& b : capture_buildings) {
+            const GameUnitRow* row = units.unit_row(b.unit);
+            if (row == nullptr || row->name != capture_force_name) continue;
+            log.notef("command building capture diag: forcing unit=%s to health 0 at t=%.2f "
+                "(BSP_CB_FORCE_ZERO)", row->name.c_str(), capture_clock);
+            gunnery_draws->apply_script_damage_0095da00(b.unit, 1.0e9f);
+        }
+    }
+    if (!kCommandBuildingCaptureBound) return;
+    for (CaptureBuilding& b : capture_buildings) {
+        if (!bsp::command_building_capture_countdown_006f75ed(b.state, seconds)) continue;
+        ++capture_countdown_fires;
+        // 006F6760 arm 1: world list 6 (the ships, IsKindOf(6)).
+        std::int32_t strength[2] = {0, 0};
+        float bx = 0.0f, by = 0.0f, bz = 0.0f;
+        units.unit_position_00fc(b.unit, bx, by, bz);
+        const std::int32_t range = static_cast<std::int32_t>(
+            units.command_building_capture_range_07a0(b.unit));
+        // (float)(CaptureRange * CaptureRange), an int product (IMUL).
+        const float range_sq = static_cast<float>(range * range);
+        const std::size_t count = units.count();
+        for (std::size_t u = 0; u < count; ++u) {
+            if (!units.unit_is_kind_of(u, 6)) continue;
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units.unit_position_00fc(u, x, y, z);
+            const float dx = x - bx, dy = y - by, dz = z - bz;
+            if (!(dz * dz + dx * dx + dy * dy <= range_sq)) continue;
+            // IsKindOf(0Ch) with +1188h (the ramp down) is excluded: this process
+            // never lowers a ramp, so no landing ship is excluded (LABELLED).
+            const int party = units.unit_side_0054(u);
+            if (party < 0 || party >= 2) continue;
+            // +5Ch set, +5Dh / +60h / +5Eh clear (0043F080's four cells), and
+            // not dead in the gunnery host's funnel.
+            if (!units.unit_alive_and_visible(u) || unit_dead(u)) continue;
+            // The modifier 008E6430(10, unit) is 1.0f: the list is empty here.
+            const float power = u < capture_power_0804.size() ? capture_power_0804[u] : 10.0f;
+            strength[party] = bsp::command_building_add_capture_power_006f69d2(
+                strength[party], power, 1.0f);
+        }
+        // Arm 3, the paratrooper list +7DCh: always empty in this process.
+        const bsp::CommandBuildingTickOutcome tick = bsp::command_building_capture_tick_006f6760(
+            b.state, strength[0], strength[1], bsp::kCommandBuildingFallbackCapturePower);
+        if (tick.progress_changed) ++capture_progress_messages;   // D5h, 006F29D0 stores it back
+        if (tick.progress_changed && capture_progress_messages <= 400) {
+            const GameUnitRow* row = units.unit_row(b.unit);
+            log.notef("command building capture tick: unit=%s t=%.2f s0=%d s1=%d side=%d "
+                "progress=%.1f value=%d", row != nullptr ? row->name.c_str() : "?",
+                capture_clock, strength[0], strength[1], tick.side,
+                static_cast<double>(tick.completed ? 0.0f : b.state.progress_7a8),
+                b.state.capture_value_7a4);
+        }
+        if (!tick.completed) continue;
+        // 006F70E6..006F71F5: in single player only slot records whose Party equals
+        // the side are eligible. LABELLED: both parties are taken to have a slot
+        // record (Player1 and the mission's AI players), so a side 0 or 1 wins
+        // and a tie (side 2) finds none: slot 8, the building stays neutral.
+        const std::int32_t slot = tick.side < 2 ? tick.side : 8;
+        // +2D8h has no producer here, so the old owner's retake exemption never
+        // applies (prior slot -1, 006F4FC2 JA).
+        const bsp::CommandBuildingFlipOutcome flip = bsp::command_building_flip_006f4d10(
+            b.state, slot, tick.side, -1);
+        const GameUnitRow* row = units.unit_row(b.unit);
+        log.notef("command building capture: unit=%s flipped to party=%d side=%d slot=%d "
+            "repair=%d at t=%.2f (006F6760 -> D3h 006F4D10)", row != nullptr ? row->name.c_str()
+            : "?", flip.new_party, tick.side, slot, flip.repair ? 1 : 0, capture_clock);
+        ++capture_flips;
+        units.set_unit_side_0054(b.unit, flip.new_party);
+        if (gunnery_draws != nullptr) {
+            gunnery_draws->refresh_unit_side(b.unit);
+            // 006F47F0(this, 1.0, 1.0): Repair[level] / 100 is >= 1.0 at every level
+            // (this installation's commandbuildingglobals.lua, 2024-07-13: 100, 110,
+            // 120, 130), so the building returns to full health. The garrison slot
+            // occupants (+778h) are not separate units here; the building's own
+            // guns follow its party.
+            if (flip.repair) gunnery_draws->repair_unit_to_fraction(b.unit, 1.0f);
+        }
+    }
+}
+
+bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_index) {
+    Impl& host = *impl_;
+    if (!kCommandBuildingCaptureBound) return false;
+    if (!host.capture_built) host.build_capture_buildings();
+    Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
+    if (b == nullptr) return false;
+    ++host.capture_health_zero_calls;
+    // 006F3270: health <= 0 on an owned building neutralizes it; on a neutral one
+    // it returns. Either way the building does not die (vtable[1A8h] 006F1F80 RET).
+    if (bsp::command_building_neutralize_006f3270(b->state, -1)) {
+        ++host.capture_neutralized;
+        b->neutral_at = host.capture_clock;
+        host.units.set_unit_side_0054(unit_index, 2);
+        if (host.gunnery_draws != nullptr) host.gunnery_draws->refresh_unit_side(unit_index);
+        const GameUnitRow* row = host.units.unit_row(unit_index);
+        host.log.notef("command building capture: unit=%s neutralized (prior party=%d) at "
+            "t=%.2f (006F3270 -> 006F2940 -> D3h slot 9)", row != nullptr ? row->name.c_str()
+            : "?", b->state.prior_party_7b0, host.capture_clock);
+    }
+    return true;
+}
+
 void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
     impl_->gunnery_draws = gunnery;
@@ -10906,6 +11119,12 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
 void GameShipAiHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
+    host.log.notef("summary mission command building capture buildings=%zu bound=%d "
+        "health_zero=%llu neutralized=%llu countdown_fires=%llu progress_messages=%llu "
+        "flips=%llu (packet cc9_command_building_capture_bind)", host.capture_buildings.size(),
+        kCommandBuildingCaptureBound ? 1 : 0, host.capture_health_zero_calls,
+        host.capture_neutralized, host.capture_countdown_fires, host.capture_progress_messages,
+        host.capture_flips);
     // Packet cc8_ship_follow: what 009E1610 did for each follower. The error is
     // the distance from the ship to the station point 009DE050 was handed.
     {

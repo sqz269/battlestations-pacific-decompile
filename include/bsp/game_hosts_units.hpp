@@ -765,6 +765,9 @@ public:
         float in_z, float& out_x, float& out_y, float& out_z) const;
     // unit+54h, the side word 009f14db / 009f14e4 compare and 009e2588 copies.
     int unit_side_0054(std::size_t index) const;
+    // The party write of 00928F50 (vtable[2Ch] SetPartyRace), for a
+    // CommandBuilding's neutralize and flip (packet cc9_command_building_capture_bind).
+    void set_unit_side_0054(std::size_t index, int party);
     // unit+BC9h, the latched gunFire (packet cc9_plane_gun_pass). The gunnery
     // host's plane-gun hook reads it; docs/PLANE_GUN_PASS.md.
     bool plane_gun_trigger_bc9(std::size_t index) const;
@@ -795,6 +798,10 @@ public:
     // `(float)(int)target[+7A0h]` (00A037CF FILD). Answers 500 for a unit that is not a
     // CommandBuilding (kind 1Ch) or has no slot.
     float command_building_capture_range_07a0(std::size_t unit_index) const;
+    // Packet cc9_command_building_capture_bind: unit+7A4h, the CommandBuilding's
+    // CaptureValue (006F2780 stores the scene dword, 1000 when unauthored). 1000
+    // for a unit that is not a CommandBuilding or has no slot.
+    std::int32_t command_building_capture_value_07a4(std::size_t unit_index) const;
     // Routed from cc9-ships13: unit+7C4h, the CommandBuilding's LandingRange, which
     // 006F2780 stores from the scene (006F2847 find, 006F285F store; 500 when
     // unauthored). 009E6E80's mode-4 arm (009E6F4E FILD) and the latch 009F20A4 read

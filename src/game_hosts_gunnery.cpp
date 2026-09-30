@@ -9294,6 +9294,11 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
 void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     UnitState& target = unit_state[victim];
     if (target.dead) return;
+    // Packet cc9_command_building_capture_bind: a CommandBuilding does not die
+    // (vtable[1A8h] 006F1F80 is RET); at health 0 00877B90's vtable[1B0h] call
+    // reaches 006F3270, which neutralizes it. The ship AI host answers false
+    // unless kCommandBuildingCaptureBound is on.
+    if (ship_ai != nullptr && ship_ai->command_building_health_zero_006f3270(victim)) return;
     target.dead = true;
     target.row.sunk = true;
     target.row.sunk_seconds = clock_seconds;
@@ -10057,6 +10062,22 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return false;
     const Impl::UnitState& state = impl_->unit_state[unit_index];
     return state.dead || state.health <= 0.0f;
+}
+
+void GameGunneryHost::refresh_unit_side(std::size_t unit_index) {
+    if (unit_index >= impl_->unit_state.size()) return;
+    impl_->unit_state[unit_index].row.side = impl_->units.unit_side_0054(unit_index);
+}
+
+void GameGunneryHost::repair_unit_to_fraction(std::size_t unit_index, float fraction) {
+    if (unit_index >= impl_->unit_state.size()) return;
+    Impl::UnitState& state = impl_->unit_state[unit_index];
+    if (state.dead) return;
+    // 006F47F0: only when 0 < fraction and health < max; min(max, health + fraction * max).
+    if (!(0.0f < fraction) || !(state.health < state.max_health)) return;
+    const float healed = fraction * state.max_health + state.health;
+    state.health = healed < state.max_health ? healed : state.max_health;
+    state.row.health = state.health;
 }
 
 float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_index,
