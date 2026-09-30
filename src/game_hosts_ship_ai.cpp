@@ -1292,6 +1292,17 @@ struct GameShipAiHost::Impl {
     unsigned long long autotarget_recon_candidates{0};
     unsigned long long autotarget_recon_unbuilt{0};
     GameShipAiSummary summary{};
+    // Packet cc9_landing_craft_launch: ship+1124h per transport, and the class
+    // keys 008206F0 reads, cached by VehicleClass id.
+    std::map<std::size_t, float> transport_cooldown_1124;
+    std::map<int, GameUnitsHost::VehicleClassLaunchKeys> launch_keys;
+    const GameUnitsHost::VehicleClassLaunchKeys& class_launch_keys(int type_id) {
+        auto found = launch_keys.find(type_id);
+        if (found == launch_keys.end()) {
+            found = launch_keys.emplace(type_id, units.vehicle_class_launch_keys(type_id)).first;
+        }
+        return found->second;
+    }
     unsigned long long steps{0};
     double sub_attack_clock{0.0};   // packet cc9_submarine_ai_states, census only
     // Packet cc9_scripted_order_natives: [unit+740h]+11h cleared by 008A7060,
@@ -11608,6 +11619,324 @@ int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
     return 1;
 }
 
+namespace {
+// 004F49F0, __fastcall(ECX = segment a {x0, z0, x1, z1}, EDX = segment b):
+// 0 when BSP_Math_SegmentCrossing2D says the two cross, else the least of the
+// four endpoint-to-other-segment distances (BSP_Segment2f_PointDistance).
+// SUBSTITUTION, labelled: the two helpers' bodies were not read; this is the
+// textbook crossing test and the clamped point-to-segment distance.
+double segment_point_distance_2d(const double s[4], double px, double pz) {
+    const double dx = s[2] - s[0], dz = s[3] - s[1];
+    const double len2 = dx * dx + dz * dz;
+    double t = len2 > 0.0 ? ((px - s[0]) * dx + (pz - s[1]) * dz) / len2 : 0.0;
+    t = t < 0.0 ? 0.0 : (t > 1.0 ? 1.0 : t);
+    const double ex = s[0] + t * dx - px, ez = s[1] + t * dz - pz;
+    return std::sqrt(ex * ex + ez * ez);
+}
+
+double segment_distance_2d_004f49f0(const double a[4], const double b[4]) {
+    auto cross = [](double ox, double oz, double ax, double az, double bx, double bz) {
+        return (ax - ox) * (bz - oz) - (az - oz) * (bx - ox);
+    };
+    const double d1 = cross(b[0], b[1], b[2], b[3], a[0], a[1]);
+    const double d2 = cross(b[0], b[1], b[2], b[3], a[2], a[3]);
+    const double d3 = cross(a[0], a[1], a[2], a[3], b[0], b[1]);
+    const double d4 = cross(a[0], a[1], a[2], a[3], b[2], b[3]);
+    if (((d1 > 0.0 && d2 < 0.0) || (d1 < 0.0 && d2 > 0.0))
+        && ((d3 > 0.0 && d4 < 0.0) || (d3 < 0.0 && d4 > 0.0))) {
+        return 0.0;
+    }
+    const double to_a = std::min(segment_point_distance_2d(a, b[0], b[1]),
+                                 segment_point_distance_2d(a, b[2], b[3]));
+    const double to_b = std::min(segment_point_distance_2d(b, a[0], a[1]),
+                                 segment_point_distance_2d(b, a[2], a[3]));
+    return to_b <= to_a ? to_b : to_a;
+}
+}  // namespace
+
+float GameShipAiHost::transport_cooldown_1124(std::size_t unit) const {
+    const auto found = impl_->transport_cooldown_1124.find(unit);
+    return found != impl_->transport_cooldown_1124.end() ? found->second : 0.0f;
+}
+
+int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
+    Impl& host = *impl_;
+    GameShipAiSummary& s = host.summary;
+    ++s.craft_launch_calls;
+    const GameUnitRow* row = host.units.unit_row(unit);
+    if (row == nullptr) return 0;
+    const GameUnitsHost::VehicleClassLaunchKeys ship_keys = host.class_launch_keys(row->type_id);
+    if (ship_keys.landing_ship_078c == 0) {                              // 00820729
+        ++s.craft_launch_other;
+        return -1;
+    }
+    if (ship_keys.landing_ship_amount_0790 == 0) {                       // 0082074A
+        ++s.craft_launch_other;
+        return -2;
+    }
+    if (transport_cooldown_1124(unit) > 0.0f) {                          // 00820767..00820776
+        ++s.craft_launch_cooling;
+        return -3;
+    }
+    // 008207B5 006F2C30(&ship+FCh, ship+54h, 2): list 28, another party, within
+    // the site's +7C4h LandingRange by 3-D squared distance, the nearest.
+    float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+    host.units.unit_position_00fc(unit, ux, uy, uz);
+    const int side = host.units.unit_side_0054(unit);
+    int site = -1;
+    float best = 0.0f;
+    for (std::size_t i = 0; i < host.units.world_list_size(28); ++i) {
+        const std::size_t e = host.units.world_list_entry(28, i);
+        if (e >= host.units.count() || host.units.unit_side_0054(e) == side) continue;
+        float ex = 0.0f, ey = 0.0f, ez = 0.0f;
+        host.units.unit_position_00fc(e, ex, ey, ez);
+        const float dx = ex - ux, dy = ey - uy, dz = ez - uz;
+        const float d2 = dx * dx + dy * dy + dz * dz;
+        const float range = host.units.command_building_landing_range_07c4(e);
+        if (d2 > range * range) continue;
+        if (site < 0 || d2 < best) {
+            site = static_cast<int>(e);
+            best = d2;
+        }
+    }
+    if (site < 0) {                                                      // 008207C2
+        ++s.craft_launch_no_site;
+        return -9;
+    }
+    bsp::BuildingPadModel& pads = bsp::building_pad_model();
+    // 006F2A50(site)(0): the first pad of the vector whose +1F8h is null.
+    auto first_free_pad = [&]() {
+        for (const int p : pads.pads_of(site)) {
+            const bsp::BuildingPadModel::Pad* pad = pads.pad(p);
+            if (pad != nullptr && pad->occupant < 0) return p;
+        }
+        return -1;
+    };
+    const GameUnitsHost::VehicleClassLaunchKeys craft_keys =
+        host.class_launch_keys(ship_keys.landing_ship_078c);
+    // 00820810..0082083D: the ring step craft.A0h x 1.25 [00CF87C0] and the
+    // perimeter spacing craft.A0h + craft.A0h, both stored as floats.
+    const float ring_step = static_cast<float>(static_cast<double>(craft_keys.length_00a0) * 1.25);
+    const float spacing = static_cast<float>(static_cast<double>(craft_keys.length_00a0) * 2.0);
+    // 008208AB..008208B7: 0.6 [00CEFF98, double] x Width (x) and x Length (z).
+    const double k06 = 0.6000000238418579;
+    const float half_x = static_cast<float>(k06 * ship_keys.width_00a4);
+    const float half_z = static_cast<float>(k06 * ship_keys.length_00a0);
+    float right[3], up[3], forward[3], origin[3];
+    host.units.unit_pose(unit, right, up, forward, origin);
+    auto to_world = [&](float x, float z, float out[3]) {
+        for (int k = 0; k < 3; ++k) {
+            out[k] = static_cast<float>(static_cast<double>(x) * right[k]
+                + static_cast<double>(z) * forward[k] + origin[k]);
+        }
+    };
+    std::vector<std::size_t> launched;
+    int pad = first_free_pad();                                          // 00820844
+    for (int ring = 1; pad >= 0 && ring <= 4; ++ring) {                  // 00820860, 00821D48
+        // 008208BB: ring x step, then the four corners (-x,-z) (+x,-z) (+x,+z)
+        // (-x,+z) through the transport's matrix (004142E0).
+        const float m = static_cast<float>(ring * static_cast<double>(ring_step));
+        const float cx0 = static_cast<float>(-static_cast<double>(half_x) - m);
+        const float cx1 = static_cast<float>(static_cast<double>(half_x) + m);
+        const float cz0 = static_cast<float>(-static_cast<double>(half_z) - m);
+        const float cz1 = static_cast<float>(static_cast<double>(half_z) + m);
+        float corner[4][3];
+        to_world(cx0, cz0, corner[0]);
+        to_world(cx1, cz0, corner[1]);
+        to_world(cx1, cz1, corner[2]);
+        to_world(cx0, cz1, corner[3]);
+        // 00820AA0..00820CBF: each edge split into n = ftol(ftol(|edge|) / spacing)
+        // parts; the n - 1 inner points, corners excluded.
+        std::vector<std::array<float, 3>> points;
+        for (int e = 0; e < 4; ++e) {
+            const float* a = corner[e];
+            const float* b = corner[e == 3 ? 0 : e + 1];
+            const float d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+            const double len = std::sqrt(static_cast<double>(d[0]) * d[0]
+                + static_cast<double>(d[1]) * d[1] + static_cast<double>(d[2]) * d[2]);
+            const int whole = static_cast<int>(len);
+            const int n = spacing > 0.0f ? static_cast<int>(whole / static_cast<double>(spacing)) : 0;
+            if (n <= 1) continue;
+            const float step[3] = {d[0] / static_cast<float>(n), d[1] / static_cast<float>(n),
+                                   d[2] / static_cast<float>(n)};
+            for (int j = 1; j < n; ++j) {
+                points.push_back({static_cast<float>(j * static_cast<double>(step[0]) + a[0]),
+                                  static_cast<float>(j * static_cast<double>(step[1]) + a[1]),
+                                  static_cast<float>(j * static_cast<double>(step[2]) + a[2])});
+            }
+        }
+        const bsp::BuildingPadModel::Pad* target = pads.pad(pad);
+        if (target == nullptr) break;
+        std::vector<float> dist;
+        for (const auto& p : points) {
+            const double dx = target->position[0] - p[0], dy = target->position[1] - p[1],
+                         dz = target->position[2] - p[2];
+            dist.push_back(static_cast<float>(dz * dz + dx * dx + dy * dy));
+        }
+        // 00820DB4..00820EDC, three picks, as the image does them: the first
+        // strict minimum of dist over the first |points| entries; that point is
+        // erased from `points` in order, but the erase from `dist` searches for
+        // the float VALUE of the index (CVTSI2SS ESI at 00820E6F) and swaps the
+        // last into it only on an exact match. So dist normally keeps its entry
+        // and the later picks take the points that followed the first one.
+        std::vector<std::array<float, 3>> candidates;
+        for (int pick = 0; pick < 3 && !points.empty(); ++pick) {
+            std::size_t sel = 0;
+            for (std::size_t j = 1; j < points.size(); ++j) {
+                if (dist[sel] > dist[j]) sel = j;
+            }
+            candidates.push_back(points[sel]);
+            points.erase(points.begin() + static_cast<std::ptrdiff_t>(sel));
+            const float key = static_cast<float>(sel);
+            for (std::size_t j = 0; j < dist.size(); ++j) {
+                if (dist[j] == key) {
+                    if (j != dist.size() - 1) dist[j] = dist.back();
+                    dist.pop_back();
+                    break;
+                }
+            }
+        }
+        bool made = false;
+        for (const auto& c : candidates) {                               // 00820F01..00821803
+            const double dx = static_cast<double>(target->position[0]) - c[0];
+            const double dz = static_cast<double>(target->position[2]) - c[2];
+            const float len = static_cast<float>(std::sqrt(static_cast<float>(dx * dx + 0.0)
+                + dz * dz));
+            const float inv = len > 0.0f ? 1.0f / len : 0.0f;
+            const float dir_x = static_cast<float>(inv * dx);
+            const float dir_y = 0.0f;                                    // [00D7A258] 0.0 x inv
+            const float dir_z = static_cast<float>(inv * dz);
+            // 008210A0..0082118E: two ground probes at (k - 0.5) x craft length
+            // along the pad direction; a ground above -5.0 [00CFBC84] rejects.
+            bool shallow = false;
+            for (int k = 0; k < 2 && !shallow; ++k) {
+                const double t = (k - 0.5) * craft_keys.length_00a0;
+                const float q[3] = {static_cast<float>(c[0] + t * dir_x),
+                                    static_cast<float>(c[1] + t * dir_y),
+                                    static_cast<float>(c[2] + t * dir_z)};
+                float ground = 0.0f;
+                if (world_ground_height_00903860(q, ground) && -5.0f < ground) shallow = true;
+            }
+            if (shallow) {
+                ++s.craft_depth_rejects;
+                continue;
+            }
+            // 00821194..008217D7: ships of list 6 whose class +A8h + y is above
+            // -5.0 [00D098C8], within (their A0h x 0.5 + craft A0h) in 3-D, whose
+            // keel segment comes nearer the craft's than the two half widths.
+            const double half_craft = 0.5 * craft_keys.length_00a0;
+            const double seg_b[4] = {c[0] + half_craft * dir_x, c[2] + half_craft * dir_z,
+                                     c[0] - half_craft * dir_x, c[2] - half_craft * dir_z};
+            bool blocked = false;
+            for (std::size_t i = 0; i < host.units.world_list_size(6) && !blocked; ++i) {
+                const std::size_t e = host.units.world_list_entry(6, i);
+                if (e >= host.units.count()) continue;
+                const GameUnitRow* other = host.units.unit_row(e);
+                if (other == nullptr) continue;
+                const GameUnitsHost::VehicleClassLaunchKeys& ok =
+                    host.class_launch_keys(other->type_id);
+                float r[3], u[3], f[3], t[3];
+                if (!host.units.unit_pose(e, r, u, f, t)) continue;
+                if (!(-5.0 < static_cast<double>(ok.height_00a8) + t[1])) continue;
+                const double ex = t[0] - c[0], ey = t[1] - c[1], ez = t[2] - c[2];
+                const double reach = ok.length_00a0 * 0.5 + craft_keys.length_00a0;
+                if (!(ex * ex + ey * ey + ez * ez < reach * reach)) continue;
+                const double half = 0.5 * ok.length_00a0;
+                const double seg_a[4] = {t[0] - half * f[0], t[2] - half * f[2],
+                                         t[0] + half * f[0], t[2] + half * f[2]};
+                const double gap = segment_distance_2d_004f49f0(seg_a, seg_b);
+                if (gap < ok.width_00a4 * 0.5 + craft_keys.width_00a4 * 0.5) blocked = true;
+            }
+            if (blocked) {
+                ++s.craft_clearance_rejects;
+                continue;
+            }
+            // 00821808..00821B0C: the craft, class +78Ch, "LandingShip", the bag
+            // Type / Party / Race / Skill 2 / OwnerPlayer 8 / LandingCommanderPlayer
+            // / LandingPoint / CommandBuilding / SpawnPhase max(3 - ring, 0); the
+            // frame's rows: up x forward, up (00E0B68C..94 = 0, 1, 0), the pad
+            // direction, and the candidate point.
+            const int spawn_phase = std::max(3 - ring, 0);
+            GameSceneEntityRecord record;
+            record.name = "LandingShip";
+            record.class_name = "LandingShipGen";
+            record.class_id = 0x0c;
+            record.type_table = "VehicleClasses";
+            record.type_id = ship_keys.landing_ship_078c;
+            record.party = side;
+            record.owner_player = 8;
+            record.bag_skill = 2;
+            record.bag_skill_source = "008206F0";
+            record.generated = true;
+            record.created = true;
+            const float rows[4][3] = {{dir_z, 0.0f, -dir_x}, {0.0f, 1.0f, 0.0f},
+                                      {dir_x, dir_y, dir_z}, {c[0], c[1], c[2]}};
+            for (int rr = 0; rr < 4; ++rr) {
+                for (int k = 0; k < 3; ++k) record.world[rr * 4 + k] = rows[rr][k];
+                record.world[rr * 4 + 3] = rr == 3 ? 1.0f : 0.0f;
+            }
+            std::memcpy(record.local, record.world, sizeof(record.local));
+            const std::size_t before = host.units.count();
+            host.units.create_units({record});
+            if (host.units.count() <= before) {
+                ++s.craft_create_failed;
+                break;
+            }
+            const std::size_t craft = before;
+            ++s.crafts_created;
+            // 00821B4F 006AC490(pad)(craft); then the craft's InitAll 0074BEC0
+            // (0074C57C..0074C618) runs 0074A990(pad, building) with SpawnPhase
+            // at +1208h. Delivered at the call (LABELLED): the draw and the
+            // `land` command as in the 0074A4C0 host above.
+            const float draw = host.gunnery_draws != nullptr
+                ? host.gunnery_draws->ship_ai_draw(craft, 0.0f, 0.75f) : 0.0f;
+            pads.begin_landing_0074a990(static_cast<int>(craft), pad, site, draw, spawn_phase);
+            host.record("TrafficConfig::launch_pad_troops", 0x004a4520u);
+            bsp::SceneCommandTarget order{};
+            order.kind = 0;
+            order.position_valid = 1;
+            order.position[0] = target->position[0];
+            order.position[1] = target->position[1];
+            order.position[2] = target->position[2];
+            host.units.issue_script_command(craft, 0x00e08fa0u, order, 1,
+                "0074A990 land at pad (craft)", "LandingPoint");
+            ++s.landing_begins;
+            launched.push_back(craft);
+            host.log.notef("  landing craft launch (94h -> 008206F0): t=%.2f transport=%u "
+                "craft=%u ring=%d pad=%d site=%d at=(%.1f, %.1f, %.1f) spawn_phase=%d",
+                host.capture_clock, static_cast<unsigned>(unit), static_cast<unsigned>(craft),
+                ring, pad, site, static_cast<double>(c[0]), static_cast<double>(c[1]),
+                static_cast<double>(c[2]), spawn_phase);
+            made = true;
+            break;
+        }
+        if (made) {
+            pad = first_free_pad();                                      // 00821BBB
+            --ring;                                                      // 00821BC8
+        }
+    }
+    if (!launched.empty()) {
+        // 00821D8C..00821DC9: LandingShipCoolDown x n / LandingShipAmount,
+        // unsigned; then 95h (routed at class 4) whose 00821F85 stores the same.
+        const std::uint32_t product = static_cast<std::uint32_t>(
+            ship_keys.landing_ship_cool_down_0794) * static_cast<std::uint32_t>(launched.size());
+        const std::uint32_t q =
+            product / static_cast<std::uint32_t>(ship_keys.landing_ship_amount_0790);
+        double value = static_cast<double>(static_cast<std::int32_t>(q));
+        if (static_cast<std::int32_t>(q) < 0) value += 4294967296.0;
+        host.transport_cooldown_1124[unit] = static_cast<float>(value);
+        ++s.craft_launch_launched;
+        host.done("TroopTransport::launch_landing_craft_008206f0", 0x008206f0u);
+        return static_cast<int>(launched.size());
+    }
+    if (pad < 0) {
+        ++s.craft_launch_no_pad;
+        return -4;
+    }
+    ++s.craft_launch_refused;
+    return -8;
+}
+
 void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long long interval) {
     Impl& host = *impl_;
     if (interval == 0 || host.controllers.empty()) return;
@@ -12120,6 +12449,15 @@ void GameShipAiHost::report() {
         host.summary.landing_requests_94h, host.summary.landing_requests_begun,
         host.summary.landing_requests_held, host.summary.landing_requests_no_site,
         host.summary.landing_requests_no_pad);
+    host.log.notef("summary mission ship ai craft launch calls=%llu launched=%llu crafts=%llu "
+        "cooling=%llu no_site=%llu no_pad=%llu refused=%llu other=%llu create_failed=%llu "
+        "depth_rejects=%llu clearance_rejects=%llu (008206F0, packet cc9_landing_craft_launch)",
+        host.summary.craft_launch_calls, host.summary.craft_launch_launched,
+        host.summary.crafts_created, host.summary.craft_launch_cooling,
+        host.summary.craft_launch_no_site, host.summary.craft_launch_no_pad,
+        host.summary.craft_launch_refused, host.summary.craft_launch_other,
+        host.summary.craft_create_failed, host.summary.craft_depth_rejects,
+        host.summary.craft_clearance_rejects);
     host.log.notef("summary mission ship ai land state enters=%llu steps=%llu with_pad=%llu "
         "final=%llu pad_assigns=%llu bound=%d (009E18D0 / 009E1950, packet "
         "cc9_land_step_host)", host.summary.land_enters, host.summary.land_steps,

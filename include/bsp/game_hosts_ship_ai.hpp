@@ -616,6 +616,19 @@ struct GameShipAiSummary {
     unsigned long long landing_requests_no_site{0};  // 006F2C30 found none
     unsigned long long landing_requests_no_pad{0};   // -4, 006F2A50 found none
     unsigned long long landing_mode4_points{0};
+    // Packet cc9_landing_craft_launch: 008206F0's outcomes, its crafts, and the
+    // perimeter candidates the depth and clearance probes rejected.
+    unsigned long long craft_launch_calls{0};
+    unsigned long long craft_launch_launched{0};   // calls that made a craft
+    unsigned long long craft_launch_cooling{0};    // -3, +1124h above 0.0
+    unsigned long long craft_launch_no_site{0};
+    unsigned long long craft_launch_no_pad{0};     // -4
+    unsigned long long craft_launch_refused{0};    // -8, every candidate rejected
+    unsigned long long craft_launch_other{0};      // -1 / -2
+    unsigned long long crafts_created{0};
+    unsigned long long craft_create_failed{0};
+    unsigned long long craft_depth_rejects{0};
+    unsigned long long craft_clearance_rejects{0};
     // Packet cc9_land_step_host: the land state's enter (009E18D0) and step
     // (009E1950) runs, steps that held a pad, steps in the final arm, and pad
     // re-picks that assigned a new pad.
@@ -824,6 +837,20 @@ public:
     // pad and 0A5h -> 0074B570 -> 0074A990, delivered at the call (LABELLED, as
     // the mode-3 path does). Answers 1 when a landing began.
     int landing_ship_request_landing_0074a4c0(std::size_t unit);
+
+    // Packet cc9_landing_craft_launch (docs/SHIP_AI_OPEN_ITEMS.md section 100).
+    // 94h on the troop transport (vtable 00CFA778): vt+238h = 008206F0, body
+    // 008206F0-00821E79, __fastcall(ship). Guards -1 (no craft class +78Ch), -2
+    // (LandingShipAmount 0), -3 (+1124h above 0.0); no site answers -9 as the
+    // 0074A4C0 host does. Rings 1..4 of the grown hull rectangle, three perimeter
+    // points near the first free pad, the depth and ship clearance probes, then
+    // one craft per free pad (created through GameUnitsHost::create_units; its
+    // InitAll's 0074A990 and `land` delivered at the call, LABELLED). Answers
+    // the number launched, else -4 (pads ran out) or -8.
+    int transport_launch_craft_008206f0(std::size_t unit);
+    // ship+1124h, the launch cooldown: written by 008206F0 at 00821DC9 and by
+    // 95h at 00821F85 only; 0.0 until then (constructor 0081F2B4).
+    float transport_cooldown_1124(std::size_t unit) const;
 
     // The per-unit table and the one-line summaries the milestone reports.
     void report();

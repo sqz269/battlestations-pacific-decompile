@@ -1160,6 +1160,22 @@ public:
     // +A4h has no recovered producer at all and is reported as zero.
     void unit_class_extents(std::size_t index, float& forward, float& right,
         float& up) const;
+    // Packet cc9_landing_craft_launch (docs/SHIP_AI_OPEN_ITEMS.md section 100):
+    // the VehicleClass keys 008206F0 reads off [unit+538h] and off the craft's
+    // class [class+78Ch], for a class id rather than a unit: Length +A0h, Width
+    // +A4h, Height +A8h, LandingShip (+78Ch as its id, 0 when it does not
+    // resolve), LandingShipAmount +790h and LandingShipCoolDown +794h (IntegerOr
+    // 60, 00833C0A). found is false when VehicleClass[type_id] is absent.
+    struct VehicleClassLaunchKeys {
+        bool found{false};
+        float length_00a0{0.0f};
+        float width_00a4{0.0f};
+        float height_00a8{0.0f};
+        int landing_ship_078c{0};
+        int landing_ship_amount_0790{0};
+        int landing_ship_cool_down_0794{60};
+    };
+    VehicleClassLaunchKeys vehicle_class_launch_keys(int type_id);
     // One row without rebuilding the flat table, for a per-frame reader.
     // active is refreshed from the canonical byte on each request. Request
     // again after lifecycle writes; neither row API lends an authoritative flag.

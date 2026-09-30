@@ -8373,3 +8373,97 @@ with broken loop recovery; take the listing for the loop shape):
 `BSP_LANDER_DIAG=1` before `s24_runs.ps1` for `lander diag:`, `transport move diag:` and the fleet
 lines. The last JM08 36000 logs are `s24_b0_jm08x` (OFF), `s24_b1_jm08x` (ON) and `s24_d1_jm08x`
 (ON with diagnostics).
+
+## 100. The troop transport's landing-craft launch `008206F0` (packet `cc9_landing_craft_launch`, cc9-ships25, 2026-09-30)
+
+### 100.1 The routine, from the listing (`008206F0..00821E79`, `__fastcall(ship)`)
+
+Read from Ghidra's listing plus `disasm-raw 00821C81..00821D57`, a block the listing drops after
+the `free` at `00821C7C` (it holds the loop tail). The decompile's loop recovery is wrong; the
+shape below is the listing's.
+
+- **Guards:** `class+78Ch` (the craft class) 0 answers -1 (`00820729`), `class+790h`
+  (LandingShipAmount) 0 answers -2 (`0082074A`), `+1124h` above 0.0 `[00D7A218]` answers -3
+  (`00820767..00820776`). The site `006F2C30(&ship+FCh, ship+54h, 2)` (`008207B5`) else
+  `err - 8`.
+- **The ring loop** (`[esp+58h]` = ring, from 1, `00820860..00821D4F`): while LandingShipAmount is
+  non-zero (tested only, never counted down), the current pad is non-null and ring <= 4:
+  - the hull rectangle's half extents `0.6 [00CEFF98, double] x Width (+A4h)` and `x Length
+    (+A0h)`, each grown by `ring x craft Length x 1.25 [00CF87C0]` (`008208BB` FILD ring); the
+    four corners `(-x,-z) (+x,-z) (+x,+z) (-x,+z)` through the transport's matrix `+CCh`;
+  - each edge split into `n = ftol(ftol(|edge|) / (2 x craft Length))` parts; the `n - 1` inner
+    points (corners excluded, `00820B72..00820CAB`);
+  - squared 3-D distances to the pad; **three picks** (`00820DB4..00820EDC`): the first strict
+    minimum, erased from the point vector in order, but the erase from the distance vector looks
+    for the float value of the index (`CVTSI2SS ESI` at `00820E6F`) and only an exact match is
+    swapped out. So the distances keep their entries and picks 2 and 3 are normally the two
+    points that followed the nearest one along the perimeter. An image quirk, modelled as is;
+  - per candidate (`00820F01..00821803`): the pad direction `(dx, 0, dz)` normalised; two ground
+    probes `00903860` at `(k - 0.5) x craft Length` along it (k = 0, 1); a ground found above
+    -5.0 `[00CFBC84]` rejects (`0082117E`); then every ship of world list 6 whose `class+A8h + y`
+    is above -5.0 `[00D098C8, double]`, whose 3-D distance is below `its Length x 0.5 + craft
+    Length`, and whose keel segment (`pos -+ 0.5 x Length x forward`, xz) comes within
+    `its Width x 0.5 + craft Width x 0.5` of the craft's segment by `004F49F0` (0 when the two
+    cross, else the least endpoint distance) rejects;
+  - the first candidate that passes gets the craft: `craft_class->vt+28h(0)`, `vt+98h(0, world,
+    &frame)` with the frame rows `(dz, 0, -dx)`, `(0, 1, 0)` (`00E0B68C..94`), `(dx, 0, dz)` and
+    the point; name `"LandingShip"`; the bag `Type`, `Party +54h`, `Race +58h`, `Skill 2`,
+    `OwnerPlayer 8`, `LandingCommanderPlayer +180h`, `LandingPoint pad+174h`, `CommandBuilding
+    site+174h`, `SpawnPhase max(3 - ring, 0)` (`00821ACF..00821B0C`); `006AC490(pad)(craft)`; the
+    next pad `006F2A50(site)(0)`; `+1128h = 15.0 [00CE5380]`; **ring - 1** (`00821BC8`), so a
+    success stays on the same ring. A ring with no passing candidate moves out one ring.
+- **After the loop** (`00821D5D..00821E27`): with `n` crafts, `+1124h = (unsigned)(CoolDown x n) /
+  Amount` (`DIV` at `00821D97`), then 95h at class 4, whose receiver `00821F85` stores the same
+  value. Answers `n`, else -4 when the pads ran out and -8 otherwise.
+- **The craft lands itself.** `0074BEC0`'s tail (`0074C57C..0074C618`, disk bytes) reads
+  `LandingPoint`, `CommandBuilding`, `SpawnPhase` (to `+1208h`) and `LandingCommanderPlayer`
+  (to `+120Ch`, default 8) and calls `0074A990(pad, building)`.
+- **`+1124h` never counts down.** A census of every `24 11 00 00` displacement in `.text`:
+  readers `008128FC` (the ready test), `00820767` (the guard), `0065001D` (HUD); writers
+  `0081F2B4` (the constructor, 0.0), `00821DC9`, `00821F85` (95h) and `0080E106`, a setter at
+  `0080E100` with no rel32 caller (an `E8`/`E9` target scan over `.text`,
+  `local\s25_rel32.py`) and no absolute reference. `0082614B` (section 99's guess) reads
+  `+E14h`. So a transport launches once, and every later 94h to it answers -3. (`0064A2A0`, a
+  getter of `+1124h` referenced from `005AD3DC`, reads a HUD object; not the ship.)
+
+### 100.2 The binding (committed OFF): `kLandingCraftLaunchBound` (`src/game_hosts_ai.cpp`)
+
+- ON, a ready transport's 94h calls `GameShipAiHost::transport_launch_craft_008206f0`
+  (`src/game_hosts_ship_ai.cpp`), and `transport_ready_008128e0` applies the `+1124h` test
+  (`GameShipAiHost::transport_cooldown_1124`, a per-unit map; 0.0 when OFF).
+- The craft is one `GameSceneEntityRecord` (`LandingShipGen`, class 0Ch, type = the transport's
+  `LandingShip`, party, owner player 8, skill 2, the frame above) through
+  `GameUnitsHost::create_units`; the generated-unit registration (`kGeneratedShipAiBound`, ON)
+  gives it a ship-AI controller at the next step. The class keys come from the new
+  `GameUnitsHost::vehicle_class_launch_keys(type_id)` (Length, Width, Height, LandingShip,
+  Amount, CoolDown IntegerOr 60).
+- **LABELLED:** InitAll's `0074A990` and the `land` command are delivered at the call, with
+  `00BD2F10`'s uniform(0, 0.75) from the gunnery draws, as the 0074A4C0 host does; `Race`,
+  `LandingCommanderPlayer` (`+120Ch`) and `+1128h` are not carried; the no-site answer is -9
+  (the image's `err - 8`); `004F49F0`'s two helpers are the textbook crossing test and clamped
+  point-segment distance, unread.
+- **Summary lines:** `summary mission ai startlanding 94h ... transports= launch_bound=
+  launches= crafts= launch_refused=` and `summary mission ship ai craft launch calls= launched=
+  crafts= cooling= no_site= no_pad= refused= other= create_failed= depth_rejects=
+  clearance_rejects=`; one `landing craft launch (94h -> 008206F0)` line per craft.
+
+### 100.3 Predictions (written before any ON run)
+
+Only JM08 36000 routes 94h to transports (2065 in section 97.4); USNOS is the control.
+- **The first launch.** At t = 632.67 (Bristol's first CLOSEATTACK tick) the member order is
+  USTroopTransport 01, 02, 04, then LST 01 and LST 03. UST 01 (180 x 16 m, ground about -28 m,
+  about 3.3 km from `Headquarter 01`) launches on ring 1 for every free pad: **8 Higgins crafts**
+  (class 40, 13 x 5 m), about 27.6 m apart along the side facing the pad (each craft blocks its
+  own point for the next). `+1124h = 60 x 8 / 4 = 120`. Depth rejects 0 there.
+- **The landing ships lose their pads.** UST 02, UST 04, LST 01 and LST 03 find no free pad in
+  the same tick, so `begun` (0074A4C0) falls from 3 to 0 at 632.67. A pad frees only when its
+  craft dies (`forget_unit`); the next ready member in order (a transport with no cooldown
+  first) takes it. So `begun` ends between 0 and 2 and `crafts` at 8 or more.
+- **The crafts land.** 8 crafts at 15.4 m/s over about 3.3 km reach the beach at about
+  850..900 s; the HQ's gun (range about 818 m) and the AA trucks fire on them. At least one ramp
+  lowers. Capture arm 2 adds only after the HQ turns neutral (about 970 s): no flip, since
+  CaptureValue is 2,000,000.
+- **Deaths:** new rows for the crafts (all named `LandingShip`); LST 01 and LST 03 no longer die
+  at 754.84 / 790.38 near the beach. `pair_diff` exit 3.
+- **USNOS:** no transport is ready (the site search fails): gameplay-identical (exit 0 or 1; the
+  summary lines print `launch_bound`).
