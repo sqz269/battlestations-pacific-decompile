@@ -32,6 +32,7 @@ struct PointBox {
     float lo[3]{};
     float hi[3]{};
     std::uint32_t points{0};
+    std::vector<OceanVec3> pts;  // packet cc9_hull_terrain_contact_solver: the points, file order
 };
 
 // 006FAD70's front half: the u32 at +8h when at least 0Ch bytes remain (006FAD83), then
@@ -56,6 +57,7 @@ bool read_convex_points(StructuredNode& entry, PointBox& box) {
             if (p[k] < box.lo[k]) box.lo[k] = p[k];
             if (box.hi[k] < p[k]) box.hi[k] = p[k];
         }
+        box.pts.push_back(OceanVec3{p[0], p[1], p[2]});
         for (int list = 0; list < 3; ++list) {
             std::uint32_t n = 0;
             if (!entry.read_u32(n)) return false;
@@ -197,6 +199,7 @@ bool read_mmod_hull_convex_box(const std::vector<std::uint8_t>& mmod_bytes,
             }
             ++out.shape_count;
             out.point_count += box.points;
+            out.shape_points.push_back(box.pts);
         }
     }
     if (out.shape_count != 0) {

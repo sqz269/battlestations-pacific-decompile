@@ -5961,3 +5961,91 @@ steep bank. It keeps the image's frictionless, bounce-free slide. It is not fait
 
 **Not read, and labelled:** the four-point reduction; the exact sample pairs of the normal; the
 hull's vertical model after a lift.
+
+## 84. The hull-terrain contact phase, bound (packet `cc9_hull_terrain_contact_solver`, cc9-gunnery19)
+
+### 84.1 The binding (`bsp::kHullTerrainContactSolverBound`, `include/bsp/hull_terrain_contact.hpp`, committed OFF)
+
+`bsp::HullTerrainContactSolver` (`src/hull_terrain_contact.cpp`) runs 83.1's chain for each
+ship hull, between the host's velocity phase `00C41550` and position phase `00C5B1B0`
+(`motion_step_00825f20`, where `00C5BB30` puts the collision pass, the groups and the solve).
+
+**Per step, per hull:**
+1. **ManifoldUpdate.** Each of the hull's manifolds goes through the native `00C4B9B0`
+   (`refresh_native_dyn_manifold_00c4b9b0`, R152) against the current pose. A manifold left
+   empty is retired (`00C549D0`'s second pass).
+2. **The narrow phase, per (hull convex shape, Landscape, terrain tile).**
+   - The shape's vertices go through the pose in file order.
+   - A vertex at or below the height is a candidate (`00C54680..00C5468C`), up to eight per pair.
+     The height is `grid_height_00adb480` at the vertex's grid coordinate.
+   - Each candidate is:
+     - the surface point, `vertex + (h - y) * n`, on the terrain body;
+     - the vertex, on the hull;
+     - the cell normal `cell_normal_00adaa40`, pointing up.
+   - It goes into the pair's manifold through the native `00C3F760`
+     (`insert_native_dyn_contact_00c3f760`, R138, with the four-point reduction).
+   - The terrain body is the identity frame.
+3. **The solve** (`00403720`) for the hull's manifolds, with the semantic
+   `src/dyn_lcp_impulse_math.cpp`.
+   - Rows in manifold-then-point order: the row build `00C4DE40`, then the warm start `00C42BA0`.
+   - Ten iterations of `00C42530` / `00C42230`.
+   - The write-back `00C37B50` adds to the motion state's velocities and pseudo-velocities; the
+     position phase consumes and clears the pseudo-velocities. `00C35020` stores the impulses.
+   - Friction is `combine(material Friction, 0.0) = 0` and restitution 0 (83.1); the world
+     settings are the shipped 0.1 / 1.0 / 0.5 / 10.
+4. **The latch.** A candidate sets `+1010h` (the kind-8 report of `009377E0`). With the switch
+   ON, SHIP_AI 87.2's keel census no longer sets it.
+
+**OFF** runs step 2's test only, as a census, with no manifold and no write:
+- `hull terrain contact:` gives the first contact per unit;
+- `hull terrain contact census:` gives, per unit, the steps, `max_depth`, `max_up_dv` and
+  `max_horizontal_dv`;
+- `summary hull terrain contact` is the totals line.
+
+**Labelled substitutions:**
+- The terrain object's `00ADB480` / `00ADAA40` over the tile samples stand in for `00C53630`'s
+  own interpolation.
+- The hull vertices are the raw ConvexObject points (`MmodHullConvexBox::shape_points`), not the
+  vertices of `00C5DEB0`'s hull: interior points can add candidates, and the order differs.
+- Only hull-terrain pairs are handled. A vertex belongs to the tile its cell truncates to.
+- There is one substep per host step.
+
+**Mutual exclusion with SHIP_AI 87.2.** `kShipTerrainContactBound` (the keel stand-in) must stay
+OFF while this switch is ON; both are OFF as committed.
+
+### 84.2 Predictions, written before any ON run
+
+**The base.** SHIP_AI 87.3's census (keel points, OFF) and 83.1's laws. A contact removes the
+approach speed along the up-pointing cell normal, with no friction. It pushes the hull out by
+`0.1 * min(depth, 0.5) / dt`, which is at most 0.05 m per 0.05 s step, and it adds angular
+velocity when the contact is off-centre.
+
+- **No-contact rows** (USN04, E2, USN01, USN02 up to its failure, LOMP06, LOMP10, USN12):
+  exit 0 or 1.
+  - Exception: a wreck that reaches the seabed now rests on it instead of sinking on towards
+    the kill depth. On USN02 9000, whose wrecks reach -47 m on OFF, the wreck rows can move
+    (sink depth only; the deaths themselves are unchanged).
+- **JM08 36000 (the landing):**
+  - The deep crossers stop at the beach instead of crossing up to 357 m inland: the transports,
+    LST 01/03, Gleaves, Bristol and LSM 01. On a gentle beach a hull is lifted and slides
+    sideways along the slope rather than stopping dead.
+  - Maximum inland penetration drops from about 100-360 m to under about 10 m.
+  - Exit 3, and the landing chain's outcome can move (the ramp latch reads `+1011h`, but its
+    switch `kLandingShipRampHullContactBound` stays OFF here).
+- **JM05, USN13, USNOS, JM06:** the deep crossers (Fletchers, Clemsons, Maru42/43, Gato) stop
+  at their shores. Exit 3.
+- **Resting contacts** (BSM01's Raleigh 3.5 m; JM05's PT boats 6-8 m; IJN01's moored ships
+  3-17 m, by the keel census):
+  - They are pushed up at up to 0.05 m per step, against the buoyancy the host's motion tick
+    applies, so they ride higher at their berths.
+  - A pose or position change of up to their keel penetration is expected; that is exit 3 by
+    the position fields.
+  - BSM01 takes no damage, so its death rows stay identical.
+  - **Uncertainty:** in the image these berths may not be in contact at all. The keel census
+    uses the box; the solver uses the raw points.
+
+**The mechanism check:**
+- ON's `candidates` are within the OFF census's order of magnitude on each contact row.
+- `solves` is greater than 0.
+- No hull ends deeper inland than its first contact point by more than a hull length.
+- The no-contact rows show `ships=0`.

@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/hull_terrain_contact.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
@@ -5370,6 +5371,18 @@ struct GameUnitsHost::Impl {
     unsigned long long terrain_contact_steps = 0;
     unsigned long long terrain_contact_stops = 0;
     std::size_t terrain_contact_logged = 0;
+    // Packet cc9_hull_terrain_contact_solver (docs/GUNNERY_OPEN_ITEMS.md 84): the Dyn contact
+    // phase for hull-terrain pairs, and its per-unit census {contact steps, max depth, max
+    // upward velocity change, max pseudo-velocity}.
+    bsp::HullTerrainContactSolver hull_terrain;
+    struct HullTerrainUnit {
+        unsigned long long steps{0};
+        float max_depth{0.0f};
+        float max_up_dv{0.0f};
+        float max_horizontal_dv{0.0f};
+        float first_t{-1.0f};
+    };
+    std::map<std::size_t, HullTerrainUnit> hull_terrain_units;
     unsigned long long world_nodes_unlinked = 0;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
@@ -13634,7 +13647,8 @@ void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float b
         }
     }
     if (!contact) return;
-    slot.ground_contact_1010 = true;
+    // With kHullTerrainContactSolverBound the latch comes from the solver's contacts.
+    if constexpr (!bsp::kHullTerrainContactSolverBound) slot.ground_contact_1010 = true;
     ++slot.terrain_contact_steps;
     ++terrain_contact_steps;
     if (deepest > slot.terrain_max_penetration) slot.terrain_max_penetration = deepest;
@@ -26102,6 +26116,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         bsp::dyn_body_integrate_velocity_00c41550(slot.body, host.physics_world,
             step_seconds);
         host.done("ShipMotion::rigid_body_velocity_phase", 0x00c41550u);
+        // Packet cc9_hull_terrain_contact_solver: the contact phase of 00C5BB30 (collision
+        // pass, groups, solve) for this hull against the terrain, between the two phases.
+        // OFF it is the narrow phase alone, as a census.
+        {
+            const Impl::ClassHullBox& hb = host.class_hull_box(slot);
+            if (hb.ok && !hb.box.shape_points.empty()) {
+                const bsp::HullTerrainContactStepResult r = host.hull_terrain.step(index,
+                    slot.body, hb.box.shape_points,
+                    bsp::ship_physics_material_shipped(slot.hull_material).friction,
+                    step_seconds, bsp::kHullTerrainContactSolverBound);
+                if (r.contact) {
+                    if constexpr (bsp::kHullTerrainContactSolverBound) {
+                        slot.ground_contact_1010 = true;   // 009377E0 kind 8
+                        host.done("DynScene::hull_terrain_contact_phase", 0x00c53630u);
+                    }
+                    Impl::HullTerrainUnit& u = host.hull_terrain_units[index];
+                    if (u.first_t < 0.0f) {
+                        u.first_t = host.summary.simulated_seconds;
+                        host.log.notef("hull terrain contact: unit=%s first at t=%.2f "
+                            "pos=(%.1f %.1f %.1f) candidates=%d depth=%.2f bound=%d "
+                            "(00C53630 / 00C3F760 / 00403720)", slot.row.name.c_str(),
+                            static_cast<double>(u.first_t),
+                            static_cast<double>(slot.body.position[0]),
+                            static_cast<double>(slot.body.position[1]),
+                            static_cast<double>(slot.body.position[2]), r.candidates,
+                            static_cast<double>(r.max_depth),
+                            bsp::kHullTerrainContactSolverBound ? 1 : 0);
+                    }
+                    ++u.steps;
+                    if (r.max_depth > u.max_depth) u.max_depth = r.max_depth;
+                    if (r.delta_linear.y > u.max_up_dv) u.max_up_dv = r.delta_linear.y;
+                    const float hdv = std::sqrt(r.delta_linear.x * r.delta_linear.x
+                        + r.delta_linear.z * r.delta_linear.z);
+                    if (hdv > u.max_horizontal_dv) u.max_horizontal_dv = hdv;
+                }
+            }
+        }
         bsp::dyn_body_integrate_position_00c5b1b0(slot.body, host.physics_world,
             step_seconds);
         host.done("ShipMotion::rigid_body_position_phase", 0x00c5b1b0u);
@@ -28691,6 +28742,22 @@ void GameUnitsHost::report() {
                 "stops=%llu (009377E0 kind 8, packet cc9_ship_terrain_contact)",
                 Impl::kShipTerrainContactBound ? 1 : 0, touched, host.terrain_contact_steps,
                 host.terrain_contact_stops);
+            for (const auto& [unit, u] : host.hull_terrain_units) {
+                const char* name = unit < host.slots.size()
+                    ? host.slots[unit]->row.name.c_str() : "?";
+                host.log.notef("hull terrain contact census: unit=%s first=%.2f steps=%llu "
+                    "max_depth=%.2f max_up_dv=%.3f max_horizontal_dv=%.3f", name,
+                    static_cast<double>(u.first_t), u.steps, static_cast<double>(u.max_depth),
+                    static_cast<double>(u.max_up_dv), static_cast<double>(u.max_horizontal_dv));
+            }
+            const bsp::HullTerrainContactSolver::Census& c = host.hull_terrain.census();
+            host.log.notef("summary hull terrain contact bound=%d ships=%zu steps=%llu "
+                "contact_steps=%llu candidates=%llu rejected_normal=%llu solves=%llu rows=%llu "
+                "retired=%llu max_depth=%.2f (00C53630 / 00C3F760 / 00C4B9B0 / 00403720, "
+                "packet cc9_hull_terrain_contact_solver)",
+                bsp::kHullTerrainContactSolverBound ? 1 : 0, c.units_touched, c.steps,
+                c.contact_steps, c.candidates, c.rejected_normal, c.solves, c.rows, c.retired,
+                static_cast<double>(c.max_depth));
         }
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "

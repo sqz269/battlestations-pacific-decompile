@@ -42,6 +42,11 @@ struct MmodHullConvexBox {
     std::uint32_t shape_count{0};   // kept {ConvexObject, node} pairs, as 0071B710 appends them
     std::uint32_t note_owner_records{0};  // records other than 0 kept through a Note
     std::uint32_t point_count{0};   // their vertices, for the log line
+    // Packet cc9_hull_terrain_contact_solver: each kept shape's points, in body space (file
+    // coordinates, as the box), in file order. These are the ConvexObject's raw points, not
+    // the vertices of the hull 00C5DEB0 builds from them (its 0.001 dedup, its dropping of
+    // interior points and its vertex order are not reproduced). The periscope is not listed.
+    std::vector<std::vector<OceanVec3>> shape_points;
     // Packet cc9_hull_periscope_shape: the periscope shape 009396BA..009399BF, read but not
     // merged (mmod_hull_convex_box_add_periscope applies the class gate and merges it).
     // periscope_node: a Note named exactly `periszkop` (00D0C1F0, 0071AD50 at 009396D8) is
