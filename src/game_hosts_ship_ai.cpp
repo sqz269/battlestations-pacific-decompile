@@ -10890,10 +10890,22 @@ void GameShipAiHost::Impl::build_capture_buildings() {
     if (_dupenv_s(&env, &env_bytes, "BSP_CB_FORCE_ZERO") == 0 && env != nullptr) text = env;
     std::free(env);
     if (!text.empty()) {
+        // <unit>@<seconds>[:<capture value>]; the optional value replaces that
+        // building's CaptureValue so a short run can reach the flip.
         const std::size_t at = text.rfind('@');
         if (at != std::string::npos) {
             capture_force_name = text.substr(0, at);
             capture_force_at = std::atof(text.c_str() + at + 1);
+            const std::size_t colon = text.find(':', at);
+            if (colon != std::string::npos) {
+                const std::int32_t value = std::atoi(text.c_str() + colon + 1);
+                for (CaptureBuilding& b : capture_buildings) {
+                    const GameUnitRow* row = units.unit_row(b.unit);
+                    if (row != nullptr && row->name == capture_force_name && value > 0) {
+                        b.state.capture_value_7a4 = value;
+                    }
+                }
+            }
         }
     }
     for (const CaptureBuilding& b : capture_buildings) {
