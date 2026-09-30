@@ -6190,3 +6190,36 @@ State vtables, read from `.rdata`:
    `Takeoff`.
 5. With the switch OFF the build is identical in behaviour: the takeoff code is reached only from
    `007CA3F0`, which only the chain calls.
+
+### Results (switch ON, JM05 3000, `local\l26_p4aon_jm05.log`, built from `52366dd9b` with the flip)
+
+The 300-frame OFF smoke (`local\l26_off_smoke.log`) exits 0 with the smoke's usual summaries.
+
+| prediction | result |
+| --- | --- |
+| 1. every placed member installed in prepare, none in parking | **held for the ten members placed**: `installs=10 parking_refused=0`. Only ten were placed, not 30 (see below) |
+| 2. airfield members: prepare one step, then SlowTakeoff, Takeoff about 0.2 s later | **held**: installed 3.05 s, `prepare -> SlowTakeoff` 3.25 s (`airfield holder`), `-> Takeoff` 3.35 s; the same at 5.10 and 7.15 s |
+| 3. carrier members: prepare time with the deck-order permission, or a member within 10 m | **held for the leaders**: Lexington's and Yorktown's leaders leave after 1.50 s (`prepare time and site permission`); the nearest other member is 78.92 m away, so the Inside members never trip the 10 m test |
+| 4. no member reaches state 7 and no task is done | **held**: `done=0`; eight members sit in Takeoff with the step refused |
+
+**The launch now stalls after two members per carrier**, where piece 3b lifted 24.
+- The first wingman (`|.-2`) is lifted at 14.50 s, not 13.00 s, and released at 16.65 s. It then
+  stays in prepare for the rest of the run: 2638 of 2640 permission asks are denied.
+- **Why:**
+  - `006D01C0` denies while another occupant of `site+34h` has a lower `z'`. The leader is still
+    in the occupancy vector.
+  - With Takeoff refused, the leader's plan keeps 0099B450's reseed: speed `TravelSpeed x
+    NewTravelSpeedMul`, `+2D8h` = 1. So it rolls down the deck and leaves it over the bow at
+    15.30 s, still in state 4, at 41.18 m/s. The log line is `plane ground contact lost ...
+    local=(-0.60 0.01 139.56) half=(20.00 139.50)`.
+  - The wingman, held by prepare's throttle 0.01 and air brake 1.0, stays on the lift. Then
+    `006D02F0` blocks the platform (`blocked=5494`) and the third member never comes up
+    (`ready_plane=... |.-3`).
+- **This is the expected state between pieces.** In the image the leader flies away in `Takeoff`,
+  and its occupancy entry goes with the lift-off (piece 5, `007C7110`, unread). The piece-3b cadence
+  comes back only when both are bound.
+
+**The wingman's deck contact (queue item 4) is not reproduced in this run.** `|.-2` logs
+`carrier deck stop ... local=(-0.83 17.40 39.39) contact=1` at 16.75 s, the leader's own
+release point and contact. 5ba's non-contact came with a leader still standing on the lift spot.
+Recheck it once Takeoff moves the leader off.
