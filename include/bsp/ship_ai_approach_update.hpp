@@ -1124,7 +1124,10 @@ inline constexpr float kApproachRetargetBestStart = 3.40282347e+38f; // 00D7A248
 // OFF by verdict (2026-09-29): [class+570h] is 0 for every ship leaf in single
 // player, so the key-0 group (no zones) ends the arm on every row; USN01 moved
 // through the hold alone, which the predictions had not named (section 27).
-inline constexpr bool kShipAiApproachRetargetRingBound = false;
+// ON by the re-pair of 2026-09-29 with the party gate ON (section 64): IJN01's
+// A7M goals lie in a class-group zone (496 zone runs of 723, 94 moved, death
+// rows identical); the other six rows are gameplay identical, as predicted.
+inline constexpr bool kShipAiApproachRetargetRingBound = true;
 
 // Packet cc9_approach_no_ship_hold (docs/SHIP_AI_OPEN_ITEMS.md section 35), the
 // hold alone, with the ring OFF. 009F1DC2..009F1DDB keep [brain+0B20h] in ESI only

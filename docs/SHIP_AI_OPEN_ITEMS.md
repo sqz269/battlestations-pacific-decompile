@@ -5321,7 +5321,7 @@ notification into the AI group's membership), not in the AI planner. That is a u
 `luaAddFinalObj`, or a mission that changes a grouped unit's side mid-run. Ghidra: `00A2DB50` has no
 function; its definition is `00A2DB50..00A2DB75` (`RET 0Ch` at `00A2DB72`, INT3 from `00A2DB75`).
 
-## 64. The retarget ring re-checked with the party gate ON (packet `cc9_approach_retarget_ring_recheck`, cc9-ships18, 2026-09-30)
+## 64. The retarget ring re-checked with the party gate ON (packet `cc9_approach_retarget_ring_recheck`, cc9-ships18, 2026-09-29)
 
 Ranking #4 (docs/GAMEPLAY_GAP_RANKING.md). Section 27 kept `kShipAiApproachRetargetRingBound` OFF
 because the class group's zone lookup never found a zone on USN01, LOMP10 or USN02. Since then the
@@ -5365,3 +5365,46 @@ both from this branch. Rows: the six above in the reference launch form, plus JM
    identical like prediction 2.
 5. **Mechanism failure** keeps the switch OFF: IJN01 with `zone_runs` = 0, or `moved_runs` = 0
    (every slot a Landscape hit or out of reach), or a move on a row whose `zone_runs` is 0.
+
+### 64.3 The pairs
+
+OFF is `pair_export --commit af96f70c7 --out local\s18_off` (exe `F6629C16A3CA`), ON the same with
+`--flip kShipAiApproachRetargetRingBound=true --out local\s18_on`. Launch as the reference rows
+(`local\s18_runs.ps1`, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`). A 300-frame USN01 smoke on ON
+ran first. Its first attempt stopped at startup on `sound/gui/error.fsb` (`create_result=78`); the
+immediate retry ran clean, and no pair run hit it. Logs `local\s18_{off,on}_<row>.log`.
+
+| row | runs ON | zone runs | moved runs | `pair_diff` | prediction |
+| --- | --- | --- | --- | --- | --- |
+| USN04 4700/4500 | 0 | 0 | 0 | 1, gameplay identical | 1 held |
+| USN01 3200/3000 | 0 | 0 | 0 | 1, gameplay identical | 1 held |
+| JM05 3200/3000 | 0 | 0 | 0 | 1, gameplay identical | 1 held |
+| USN13 3200/3000 | 134 | 0 | 0 | 1, gameplay identical | 2 held |
+| LOMP10 3200/3000 | 68 | 0 | 0 | 1, gameplay identical | 2 held |
+| IJN01 3200/3000 | 723 | 496 | 94 | 3, moved | 3 held |
+| JM05 9200/9000 | 0 | 0 | 0 | 1, gameplay identical | 4 held (`off_zone_frames` 0) |
+
+- **IJN01.** 496 of the 723 arm runs find the goal in a zone (69%; the OFF count was 4126 of 6203
+  frames). They make 29760 Landscape queries, of which 18633 hit, and 7719 slots fail the reach
+  test. 94 runs move the point.
+  - The first sixteen zone runs are units 281 to 283 with `reach_0490 = 10.00`. That is the
+    `00956C20` floor for a unit with no Function 2/3/4/6 guns, so `R` = 6 m and no slot qualifies.
+    The moved runs come from armed units.
+  - Per entity: the same six deaths in the same order, with identical plane death modes. Zeilin took
+    680 -> 1365 damage (hits 12 -> 24), Phoenix dealt 680 -> 1366, LST6 hits 4 -> 6 (taken 0 -> 2), and
+    Mona's nearest moved 2909 -> 2872. Total damage 3324.0 -> 4010.2; shots 3066 on both sides. The
+    player's Downes moved 259.54 -> 216.74 m.
+- **The JM05 9000 reach is gone.** GAMEPLAY_GAP_RANKING's 3845 reachable frames predate the party
+  gate. With the gate ON, the arm is never reached (0 runs on both sides).
+- **Unexplained, gameplay-identical lines.** The end-of-run ship AI table's `clear_37c` column
+  changed on one unit where the arm cannot act: USN13's Maru6 went FLT_MAX -> 9999.0, and JM05 9000's
+  Fubuki-class 05 went 5258.7 -> FLT_MAX (JM05 has 0 arm runs). Also moved: the `free: empty`
+  counter on JM05 and USN01, the known refill counter, and LOMP10's presentation lines. The `free: empty` pair is the ship avoidance noise recorded in section 40. The clearance
+  column matches the known USN13 clearance-counter noise, but on JM05 it is unexplained. It is not
+  the ring, which never runs on that row.
+
+**Verdict: ON.** Every prediction held. The mechanism is exercised on IJN01 (zone runs, Landscape
+casts, reach tests and moved points), and the move appears only on the row with zone runs. The
+switch is flipped in `include/bsp/ship_ai_approach_update.hpp`. Modes 3 and 4 (`009F21A0-009F2395`)
+stay unread and labelled. The expected movement for reference R is IJN01's damage split above,
+with no death flip.
