@@ -6265,3 +6265,66 @@ and 79.2 item 4.
   - `g19_hoff_*` / `g19_hon_*`: the solver on `5204cf184`;
   - `g19_goff_*` / `g19_gon_*`: the solver on `a5a9a7502`;
   - `g19_trace_jm08l.txt` / `g19_trace_jm05.txt`: solver traces.
+
+## 86. The solver's hull vertices from 00C5DEB0 (packet `cc9_hull_terrain_dyn_hull_vertices`, cc9-gunnery20)
+
+85.2 item 3a. The solver tested the ConvexObject's raw points in file order. The image tests the
+vertices of the Dyn hull the ConvexObject parse builds from them.
+
+### 86.1 The read
+
+- **`006FAD70`** (the ConvexObject parse; ECX the object, RET 4) runs in this order:
+  - `006FAE3B..006FAE5F` copies the point records' xyz, which sit at `+4h` of each 20h-byte
+    record, into a 0Ch-stride array.
+  - `006F9EE0` (ECX the object, stack `(points, count)`) takes the box: min and max start from
+    `+-FLT_MAX` (`[00D7A244]`, `[00D7A248]`). The centre is `(min + max) * 0.5`: each sum is
+    rounded to float, then multiplied by the double `0.5` at `[00D7A280]` (`006FA25D..006FA2AF`).
+    The centre is stored at object `+14h`.
+  - `006FAEA0..006FAEC7` subtracts the centre from every point.
+  - `006FAECE` calls `00C5DEB0` (ECX object `+0Ch`, stack `(count, points)`, RET 8).
+  - The listing ends with RET 4 at `006FAEE2`; INT3 padding follows.
+- **The shape takes the centre back as its translation** (mmod_hull_convex_box.hpp, from GUNNERY
+  47-49).
+- **`00C53630` reads the convex mesh `{vertices, count}`** (16-byte vertices). These are
+  `00C389C0`'s vertex records, in the order that `00C5DAE0`'s triangle compaction leaves them.
+- **`00C5DEB0` already has a reconstruction:** `avoid_zone_dyn_hull_replace_00c5deb0` in
+  `src/avoid_zone_dyn_hull.cpp`, checked against 719 original-byte fixtures (docs/AVOID_ZONE_DYN_HULL.md).
+
+### 86.2 The binding (`bsp::kHullTerrainDynHullVerticesBound`, committed OFF)
+
+- **ON:** each hull shape is built once per unit and rebuilt only when its raw points change:
+  - the centre, computed as `006F9EE0` does;
+  - the re-centred points go through `avoid_zone_dyn_hull_construct_00c5df30`;
+  - the narrow phase then tests the hull's vertices plus the centre, in the hull's vertex order.
+- **OFF:** the raw points in file order, as before.
+- **Census:** the summary line `summary hull terrain contact` gains `dyn_hull`, `hull_shapes`,
+  `raw_points` and `hull_vertices`. The counts cover only builds, so they are 0 when OFF.
+- **Uncertainty:**
+  - The host's raw points are assumed to be the same floats as the file's `+4h` xyz.
+  - The Dyn convex shape is assumed to hold this hull's vertices in this order. The hull copy
+    `00C40F50` is a deep copy (`004039D0`, a memcpy), so it would keep them. That the shape's
+    mesh comes through it is not read.
+
+### 86.3 Predictions, written before any ON run
+
+- **The mechanism:**
+  - `hull_vertices < raw_points` on every row with ships. The hull drops interior points and
+    points within 0.001 of another.
+  - `hull_shapes` equals the number of hull shapes of the ships that run the phase.
+- **`max_depth` barely moves.** The deepest point of a convex point set is a hull vertex, so on a
+  given pose the deepest candidate is the same. It moves only through changed trajectories.
+- **Fewer candidates per contact step.** Interior points under the terrain stop taking places in
+  the 8-per-pair cap, and the hull's vertex order replaces file order in filling it.
+- **Rows:**
+  - No hull-terrain contact: USN04, E2, USN01, USN02, JM08, LOMP06, LOMP10, USN12. Exit 1: only
+    the census line moves.
+  - Contact but gameplay-identical under the solver: JM06, BSM01. Exit 1.
+  - USN13, JM05: exit 1 or 3, with `nearest` only.
+  - IJN01, USNOS, USNOS long: exit 3 is possible (the harbour grazes and the Gato's seabed rest),
+    with death rows identical.
+  - JM08 long: exit 3 (36000 frames of beach contact). The invaders still stop at the beach;
+    `max_depth` stays below 5 m; the HQ is not reached; deaths are between 20 and 30.
+- **A mechanism failure keeps it OFF:**
+  - a hull with 0 vertices, or `hull_vertices > raw_points`;
+  - a hull crossing land (`max_depth` in the tens of metres);
+  - a ship stopping away from land.

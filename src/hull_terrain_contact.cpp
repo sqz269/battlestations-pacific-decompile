@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "bsp/avoid_zone_dyn_hull.hpp"
 #include "bsp/dyn_collision_pass.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/native_dyn_collision_pass.hpp"
@@ -63,6 +64,61 @@ void HullTerrainContactSolver::forget(std::size_t unit) {
         if (std::get<0>(it->first) == unit) it = manifolds_.erase(it);
         else ++it;
     }
+    for (auto it = hulls_.begin(); it != hulls_.end();) {
+        if (it->first.first == unit) it = hulls_.erase(it);
+        else ++it;
+    }
+}
+
+// 006FAD70's shape build: centre on the box (006F9EE0), 00C5DEB0 on the re-centred points,
+// the centre back as the shape's translation. Rebuilt only when the raw points change.
+const std::vector<OceanVec3>& HullTerrainContactSolver::dyn_hull_vertices(
+    std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw) {
+    HullShape& h = hulls_[{unit, shape}];
+    if (!h.vertices.empty() && h.raw.size() == raw.size() &&
+        (raw.empty() || std::memcmp(h.raw.data(), raw.data(), raw.size() * sizeof(OceanVec3)) == 0)) {
+        return h.vertices;
+    }
+    h.raw = raw;
+    h.vertices.clear();
+    // 006F9EE0: min/max from +-FLT_MAX [00D7A244/00D7A248], the centre (min + max) * 0.5,
+    // each sum rounded to float first (006FA25D..006FA2AF).
+    float lo[3] = {3.402823466e+38f, 3.402823466e+38f, 3.402823466e+38f};
+    float hi[3] = {-3.402823466e+38f, -3.402823466e+38f, -3.402823466e+38f};
+    for (const OceanVec3& p : raw) {
+        const float c[3] = {p.x, p.y, p.z};
+        for (int k = 0; k < 3; ++k) {
+            if (lo[k] > c[k]) lo[k] = c[k];
+            if (hi[k] < c[k]) hi[k] = c[k];
+        }
+    }
+    float centre[3];
+    for (int k = 0; k < 3; ++k) centre[k] = f32(static_cast<double>(f32(static_cast<double>(lo[k]) + hi[k])) * 0.5);
+    std::vector<OceanVec3> local(raw.size());
+    for (std::size_t i = 0; i < raw.size(); ++i) {
+        local[i] = OceanVec3{f32(static_cast<double>(raw[i].x) - centre[0]),
+                             f32(static_cast<double>(raw[i].y) - centre[1]),
+                             f32(static_cast<double>(raw[i].z) - centre[2])};
+    }
+    const AvoidZoneDynHullMemory memory{
+        nullptr, [](void*, std::size_t bytes) -> void* { return std::malloc(bytes); },
+        [](void*, void* p) { std::free(p); }};
+    AvoidZoneDynHullHandle handle{};
+    avoid_zone_dyn_hull_construct_00c5df30(handle, local.data(),
+                                           static_cast<std::uint32_t>(local.size()), memory);
+    const std::uint32_t n = avoid_zone_dyn_hull_vertex_count_00c32d20(handle);
+    h.vertices.reserve(n);
+    for (std::uint32_t i = 0; i < n; ++i) {
+        const OceanVec3& v = handle.data->vertices[i].point;
+        h.vertices.push_back(OceanVec3{f32(static_cast<double>(v.x) + centre[0]),
+                                       f32(static_cast<double>(v.y) + centre[1]),
+                                       f32(static_cast<double>(v.z) + centre[2])});
+    }
+    avoid_zone_dyn_hull_destroy_00c37450(handle, memory);
+    ++census_.hull_shapes;
+    census_.raw_points += raw.size();
+    census_.hull_vertices += n;
+    return h.vertices;
 }
 
 HullTerrainContactStepResult HullTerrainContactSolver::step(
@@ -102,12 +158,14 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
     const game::SceneWorldClassLists& lists = game::scene_world_class_lists();
     const std::vector<std::size_t>& landscapes = lists.list(game::kSceneLandscapeClassId);
     for (std::size_t s = 0; s < shapes.size(); ++s) {
+        const std::vector<OceanVec3>& vertices =
+            kHullTerrainDynHullVerticesBound ? dyn_hull_vertices(unit, s, shapes[s]) : shapes[s];
         for (std::size_t li = 0; li < landscapes.size(); ++li) {
             const game::SceneWorldObject& object = lists.objects()[landscapes[li]];
             if (!object.terrain) continue;
             const game::SceneTerrainHeightField& t = *object.terrain;
             std::map<std::pair<int, int>, int> per_tile;
-            for (const OceanVec3& v : shapes[s]) {
+            for (const OceanVec3& v : vertices) {
                 const float w[3] = {
                     f32(static_cast<double>(body.position[0]) + body.row0[0] * v.x +
                         body.row1[0] * v.y + body.row2[0] * v.z),
