@@ -6449,3 +6449,27 @@ translation plus the parents'):
   because no reader exists.
 - The host's y may differ from the authored y (`__SnapToTerrain`). The nearest margin is 191 m
   (JM08's `LandingPoint 08`, 809 m against 1000), so no adoption should flip.
+
+### 75.3 The census, and the flip
+
+Runs 2026-09-30 05:33-05:55 UTC. OFF is `a64444960`'s build (`local\s20_off3`). ON is that build
+plus the local-only mission-frame line from 75.1 and the switch on (`local\s20_on3`; the patch is
+`local\s20_edit_mf.py` and was reverted before any commit). Logs are `local\s20_{off3,on3}_<row>.log`
+and the diffs `local\s20_pd3_<row>.txt`.
+
+| row | pair_diff | `summary building pads` (ON) | predicted |
+| --- | --- | --- | --- |
+| JM08 | 1 | `Headquarter 01=8` | 8 |
+| USN01 | 1 | `CB2=8` | 8 |
+| USN13 | 1 | `CB2=8 CB4=8 CBT=0` | 16 |
+| JM05 | 1 | `MainCommandBuilding 01=13 SecondaryCommandBuilding 01=11 RadarStation 01=4` | 28 |
+| USNOS | 1 | `HQ1=0 HQ2=0 CB2=8` | 8 |
+| USN04 | 1 | no building | 0 |
+
+- Every count matches the scene prediction. Every pair is gameplay-identical, as predicted, since
+  there is no reader.
+- **Verdict: flipped ON.** It stays inert until two things land: the mission-frame line, and a
+  reader (modes 3/4, or the land step).
+- The pads carry a units-host index for their occupant. Nothing clears it on a unit's death yet
+  (`forget_unit` has no caller). The reader packet has to call it from the death path, or assert
+  the substitution there.

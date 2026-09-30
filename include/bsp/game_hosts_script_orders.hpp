@@ -261,7 +261,7 @@ inline constexpr bool kScriptEntityPoolUnboundedBound = true;
 // 006F5CC0's third pass does at InitAll pass C (bsp/building_pads.hpp) and the end
 // summary reports it. Nothing reads the pads yet (retarget modes 3/4 and the land
 // step are separate switches). False: no pad vector exists.
-inline constexpr bool kBuildingPadModelBound = false;
+inline constexpr bool kBuildingPadModelBound = true;
 
 class GameHostLog;
 class GameUnitsHost;
