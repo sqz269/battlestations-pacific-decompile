@@ -7549,3 +7549,105 @@ the unit's controller (`0080E490`). `0092BD00` walks the hull body's shapes (`[c
 `00C31DC0`, next at `shape+208h`) and sets each shape's mask `shape+30h` to 0Dh (`00C48020`).
 So a script that turns land avoidance off also changes the hull's collision mask. Whether 0Dh
 excludes the terrain pair is for the contact-phase reader to settle.
+
+**Status of 87.5 (lead's final decision):** `kShipTerrainContactBound` and
+`kLandingShipRampHullContactBound` stay ON as a labelled interim stand-in: `18cf1abe1` is
+reverted. cc9-gunnery19's reconstruction of the image's contact solver (GUNNERY_OPEN_ITEMS 83)
+will replace the stand-in, and turn it OFF when that solver flips.
+
+## 88. The navigator's avoidance setters (packet `cc9_navigator_avoidance`, ranking #13, cc9-ships22, 2026-09-30)
+
+- **Send side.** `NavigatorSetAvoidLandCollision` (`008A3B10`) and `NavigatorSetTorpedoEvasion`
+  (`008A3CD0`) route a 5Ah message through `0077C2A0`, with sub-kind 9 and 7 respectively
+  (`00835A40`, `00835940`). This is already reconstructed in `lua_binding_navigator.cpp`.
+  `NavigatorSetAvoidShipCollision` (`008A3970`, sub-kind 8) has no host binding.
+- **Receive side.** `00721A93` hands the message to the director's `vtable[38h]` = `00835640`.
+  Sub-kinds 7, 8 and 9 store `msg+24h != 0` into `+240h`, `+241h` and `+242h`; every other
+  sub-kind tail-jumps to `0071C1E0`. The host already has these arms, as
+  `GameCommandsHost::apply_director_avoidance_message_00835640`.
+- **Readers.** Both bytes are already consulted by bound code:
+  - `+240h` by `009DA231` (the torpedo gate);
+  - `+242h` by the avoid-zone searchers `009DA6FB..009DA7E2` and the turn clearance `009EFCBD`.
+- **Defaults.** The constructor `008366D0` seeds all three bytes to 1 (`008366F4 MOV EBX,1`;
+  EBX is callee-saved through the `00836700` and `00836705` calls; stores at
+  `00836724..00836730`). So only a `false` changes behaviour.
+- **The gap.** `GameScriptOrdersHost::session_route_avoidance_message` counted the message and
+  never delivered it. `kNavigatorAvoidanceDeliveryBound` (committed OFF) delivers it at once,
+  labelled as a loopback like the other 5Ah senders. A per-order log and a summary line are
+  added in both builds.
+- **The land setter's disable arm, read.** `0092BD00` on the unit's controller (`0080E490`) sets
+  every hull shape's collision mask `shape+30h` to 0Dh (`00C48020`). This is recorded, not
+  modelled: it belongs to the contact phase (section 87.6).
+- **Where the calls come from.** In this installation (2024-10-29 mtime),
+  `scripts/global/commandhelpers.lua`'s `luaEnableNavigator(entity, enable)` sets all three
+  avoidances to `enable`, so a script that disables a unit's navigator also turns its land and
+  torpedo avoidance off.
+
+### 88.1 Census (`s22_p0`, `86503a897`, OFF) and predictions (written before the ON run)
+
+| row | land orders | torpedo orders | orders with `false` |
+| --- | --- | --- | --- |
+| USNOS | 86 | 86 | 0 |
+| USN13 | 52 | 52 | 0 |
+| USN02 | 28 | 28 | 4 (torpedo: DeRuyter, Java, Kortenaer and one more) |
+| USN04, E2 | 18 | 18 | 0 |
+| USN01 | 14 | 14 | 0 |
+| USN12 | 12 | 12 | 0 |
+| JM06 | 0 | 12 | 12 (torpedo: the tankers, the hospital ship, the transports) |
+| JM05 | 2 | 0 | 2 (land: both PT Boats) |
+| JM08 36000, BSM01, LOMP06, LOMP10, IJN01 | 0 | 0 | 0 |
+
+- **Rows with no `false`: exit 0 or 1.** Delivering a `true` into a byte the constructor
+  already set to 1 changes nothing.
+- **JM06:** twelve merchant hulls stop evading torpedoes (`009DA231` false). If the Japanese
+  submarines or torpedo planes attack them, they hold course and take more hits: exit 3.
+  Otherwise exit 1.
+- **USN02:** the four Allied cruisers and destroyers stop evading torpedoes: exit 3 if they are
+  torpedoed in the 9000 frames, otherwise exit 1.
+- **JM05:** the two PT boats' avoid-zone searches drop land (`009DA6FB..`, `009EFCBD`). They
+  path through land zones and the interim hull stop (87.5) holds them at the shore: exit 1 or 3.
+
+### 88.2 The pairs (`s22_p0` vs `s22_p1`), and the flip
+
+- **Rows with no `false` order: exit 1, as predicted.** USNOS (172 deliveries), USN13 (104),
+  USN04, E2, USN01, USN12, JM08 36000, BSM01, LOMP06, LOMP10, IJN01. Death rows identical.
+- **USN02: exit 3.** Death rows are identical (one row); 27 unit rows move.
+  - DeRuyter, Java and Kortenaer (torpedo evasion off) change course.
+  - Kortenaer, the controlled unit, moved 6746.73 -> 6812.68.
+  - Damage dealt and taken moves on both sides.
+  - The mission ends at 29.75 s on both sides (`Mission.EndMission`, "Game Over").
+- **JM06 and JM05: exit 1.** JM06's twelve merchant hulls were not torpedoed within the run;
+  JM05's two PT boats with land avoidance off did not move.
+- **Decision: `kNavigatorAvoidanceDeliveryBound` ON.** The mechanism matches the read. Only a
+  `false` moves anything, and only USN02's does within these rows.
+- **Open:** `NavigatorSetAvoidShipCollision` (`008A3970`, sub-kind 8 into `+241h`) has no host
+  binding, and the land setter's disable arm (the hull shape mask 0Dh) is recorded only.
+
+## 89. Handoff (cc9-ships22, 2026-09-30, at about 72% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 85 | the land arm asks the unit's own IsKindOf(0Ch) | `kEntityCommandSelfKindBound`, `kShipAiApproachLandingModesBound`, `kShipAiLandStepBound` ON |
+| 86 | the ramp latch `0074AF50` and capture arm 2 | `kLandingShipRampBound` ON |
+| 87 | hull-terrain contact latch and census; the stop as an interim stand-in | `kShipTerrainContactBound` ON (interim), `kLandingShipRampHullContactBound` ON |
+| 88 | the navigator avoidance setters delivered | `kNavigatorAvoidanceDeliveryBound` ON |
+
+### The next packets, in order
+
+1. **`NavigatorSetAvoidShipCollision`** (`008A3970`, sub-kind 8, director `+241h`): the Lua
+   binding reaches no host code. The receiver arm already exists.
+2. **What a neutral building's own gun mounts do** (the lead's queue item 3): section 81 left
+   the building's guns following its party.
+3. **The MCargo landing craft, and the back-off countdown** (65.2, 79).
+4. **`0074B0B0..`, the rest of the landing ship's update:** the pad re-request, the ramp
+   animation `+11A4h` over `+1190h`, and the unload.
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships22\local\`, `s22_` prefix)
+
+- `s22_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows> [-Force '<unit>@<s>[:<value>]']`
+  (rows include `jm08x`, `ijn01`, `usn02`).
+- `s22_wait.ps1 -Logs <names>`.
+- `BSP_LANDER_DIAG=1` prints each lander's position, ground and ramp state once a second.
+- `s22_disp.py`, `s22_vt.py`, `s22_consts.py` (from s21).
