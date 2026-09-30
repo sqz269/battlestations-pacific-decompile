@@ -1632,6 +1632,10 @@ struct GameUnitSlot {
     // Every follow-law tick (both arms); gates the `follow law` rows, which
     // keyed off the dive-bomb follow counter and never printed elsewhere.
     int fw_law_ticks{0};
+    // Packet cc9_follow_turbo: plan+2E5h (the pilot's turbo request) and the
+    // unit's turbo byte unit+9F9h, which 007DC84F copies to ctl+4h.
+    bool plan_turbo_2e5{false};
+    bool plane_turbo_9f9{false};
     unsigned long long fw_step{0};
     float fw_station[3]{0.0f, 0.0f, 0.0f};
     float fw_leader_heading{0.0f};
@@ -4530,6 +4534,16 @@ struct GameUnitsHost::Impl {
     // OFF: lead pursuit always, and Phase A runs as a shadow for the
     // summary line only.
     static constexpr bool kFollowPhaseABound = true;  // ON: fidelity, PLANE_FOLLOW_PHASE_A 8.8
+    // Packet cc9_follow_turbo (docs/PLANE_FOLLOW_PHASE_A.md section 9): the
+    // follow command step 009BEE30 raises the pilot's turbo request plan+2E5h
+    // (009BEE42, both arms; 0099B572 clears it in every think's reseed).
+    // 0099BF0F copies it into the command buffer +15h (unit+A11h), 007BB8D6
+    // into the turbo byte unit+9F9h at the commit, 007DC84F into ctl+4h each
+    // step, and 007D9062 multiplies the thrust by tuning+330h
+    // Dynamics/SpdMultipliers/TurboMultiplier.  The host had none of the
+    // chain, so a wing member could never out-run its full-throttle leader.
+    static constexpr bool kFollowTurboBound = true;  // ON: along error -65..-93% (PLANE_FOLLOW_PHASE_A 9.4)
+    unsigned long long follow_turbo_steps{0};
     // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
     // the fly-to arm's two class terms as the image reads them - cruise =
     // 007C47F0 (LevelFlight x StallSpd) x 0.9 at 009BFC41/009BFC49 and the
@@ -6363,6 +6377,11 @@ struct GameUnitsHost::Impl {
     double fes_speed_diff_sum{0.0};   // own |v| - leader |v|
     double fes_behind_speed_diff_sum{0.0};
     double fes_flyto_cmd_minus_own_sum{0.0};
+    // ... and the throttle slots and speed ceilings behind the deficit.
+    double fes_thr_member_sum{0.0}, fes_thr_leader_sum{0.0};
+    double fes_member_v_sum{0.0}, fes_leader_v_sum{0.0};
+    double fes_member_max_sum{0.0}, fes_leader_max_sum{0.0}, fes_leader_want_sum{0.0};
+    unsigned long long fes_member_full{0}, fes_leader_full{0};
     unsigned long long fes_flyto_n{0};
     // Diagnostic, both sides: Phase A's regime per fly-to tick (applied with
     // kFollowPhaseABound, else the shadow of what it would pick).
@@ -6456,6 +6475,9 @@ struct GameUnitsHost::Impl {
         const GameUnitSlot& leader) {
         if (!lua.plane_globals_loaded()) return;
         const bsp::GameTuningBlock& gt = lua.plane_globals();
+        if constexpr (kFollowTurboBound) {
+            unit.plan_turbo_2e5 = true;   // 009BEE42, before the +85h branch
+        }
         if constexpr (kPlaneFollowLawBound) {
             // 009BFD70's +85h latch, recomputed every tick with no hysteresis
             // (009BFDD4 clear, 009BFE19 distance, 009BFE62-7B heading dot):
@@ -6496,6 +6518,17 @@ struct GameUnitsHost::Impl {
                     fes_cross_abs_sum += std::fabs(cross);
                     fes_dy_abs_sum += std::fabs(dy);
                     fes_speed_diff_sum += so - sl;
+                    const float tm = unit.plan_slots[bsp::kPilotSlotThrottle].current;
+                    const float tl = leader.plan_slots[bsp::kPilotSlotThrottle].current;
+                    fes_thr_member_sum += tm;
+                    fes_thr_leader_sum += tl;
+                    if (tm >= 0.99f) ++fes_member_full;
+                    if (tl >= 0.99f) ++fes_leader_full;
+                    fes_member_v_sum += so;
+                    fes_leader_v_sum += sl;
+                    fes_member_max_sum += unit.plane_max_spd;
+                    fes_leader_max_sum += leader.plane_max_spd;
+                    fes_leader_want_sum += leader.plane_desired_speed_2b4;
                     if (along < -50.0 && std::fabs(along) >= std::fabs(cross)) {
                         ++fes_behind;
                         fes_behind_speed_diff_sum += so - sl;
@@ -13417,6 +13450,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // and taken as 1.0. Labelled partial on those three.
                         if (unit_.plane_latched_throttle > 0.01f) {
                             float a = unit_.plane_accel * unit_.plane_latched_throttle;
+                            if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
+                                // 007D9062: ctl+4h (unit+9F9h, 007DC84F) multiplies
+                                // by tuning+330h TurboMultiplier (1.95 here).
+                                if (unit_.plane_turbo_9f9 && owner_.lua.plane_globals_loaded()) {
+                                    a *= owner_.lua.plane_globals()
+                                        .dynamics_spd_multipliers_turbo_multiplier;
+                                    ++owner_.follow_turbo_steps;
+                                }
+                            }
                             if (state.pitch < 0.0f) {
                                 float fall_mul = 2.6f;      // tuning+324h
                                 float range1 = 0.174533f;   // tuning+328h DEG(10)
@@ -23668,6 +23710,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // pitch floor from ratcheting.
                             bsp::pilot_reset_plan_0099b450(unit_.plan_state,
                                 unit_.plan_slots, live);
+                            if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
+                                unit_.plan_turbo_2e5 = false;   // 0099B572, DL = 0 (0099B46E)
+                            }
                             // Packet cc9_plane_gunfire: the rest of 0099B450's tail
                             // (0099B4E8-0099B580) for the fields this host keeps on
                             // the slot. +2B4h = [plan+2F4h]+190h (0099B503/0099B511),
@@ -23917,6 +23962,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.pilot_command_block[bsp::kPilotCmdThrottle]);
                         unit_.plane_live_air_brake = bsp::pilot_quantize_control_axis_007bb6e0(
                             unit_.pilot_command_block[bsp::kPilotCmdAirBrake]);
+                        if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
+                            // 0099BF0F plan+2E5h -> cmd+15h (unit+A11h), then
+                            // 007BB8D0-007BB8D6 into unit+9F9h; the unit+61h
+                            // gate at 007BB8D3 has no writer, so it is open.
+                            unit_.plane_turbo_9f9 = unit_.plan_turbo_2e5;
+                        }
                         unit_.pilot_command_pending_a14 = false;   // 007BB990
                         ++owner_.summary.pilot_commits;
                         if constexpr (GameUnitsHost::Impl::kPlaneCommitCommandBound) {
@@ -27241,6 +27292,16 @@ void GameUnitsHost::report() {
                 host.fes_behind ? host.fes_behind_speed_diff_sum / static_cast<double>(host.fes_behind) : 0.0,
                 host.fes_flyto_n ? host.fes_flyto_cmd_minus_own_sum /
                     static_cast<double>(host.fes_flyto_n) : 0.0);
+            host.log.notef("summary follow turbo steps=%llu bound=%d (009BEE42 -> 007D9062, "
+                "packet cc9_follow_turbo)", host.follow_turbo_steps,
+                Impl::kFollowTurboBound ? 1 : 0);
+            host.log.notef("summary follow speed ceiling n=%llu member_v=%.2f leader_v=%.2f "
+                "member_maxspd=%.2f leader_maxspd=%.2f leader_want=%.2f thr_member=%.3f "
+                "thr_leader=%.3f member_full=%llu leader_full=%llu (throttle slot current, "
+                "packet cc9_follow_speed_loss diagnostic)", host.fes_n,
+                host.fes_member_v_sum / n, host.fes_leader_v_sum / n, host.fes_member_max_sum / n,
+                host.fes_leader_max_sum / n, host.fes_leader_want_sum / n, host.fes_thr_member_sum / n,
+                host.fes_thr_leader_sum / n, host.fes_member_full, host.fes_leader_full);
         }
         host.log.notef("summary follow phase-a lead=%llu abeam=%llu circle=%llu mean_time=%.3f "
             "applied=%d (009C0251-009C0EE0, packet cc9_follow_approach_arm; a shadow when OFF)",
