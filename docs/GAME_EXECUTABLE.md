@@ -13191,3 +13191,66 @@ prefixes are in the report.
   reach a torpedo run (their nine deaths are gone too).
 - **The land mounts no longer move USN01.** Its five `no_mount` shots belonged to the planning
   that the party gate replaces.
+
+## Mission reference baselines, 2026-09-30 s (main 59ff2a1d7)
+
+Packet `cc9_reference_rebaseline_19`, worker cc9-gunnery17. The base is main `59ff2a1d7`
+(2026-09-30 04:14 UTC), 79 commits after r's `28840d691`; it includes `kFollowTurboBound`
+(merged at `117a5902d`). The report will be `reports/cc9_reference_rebaseline_19.json`.
+
+### Predictions (written before any run)
+
+**The switch diff.** A value diff of every `constexpr bool k...` declaration between `28840d691`
+and `59ff2a1d7` (`local\g17_switches.py`, g15's script re-rooted) finds **fourteen switches newly
+ON** and one new switch OFF (`kShipAiObstacleBackoffCountdownBound`, SHIP_AI 65.7, no reach; it
+stays OFF). Thirteen of the fourteen were added after r; `kShipAiApproachRetargetRingBound`
+existed OFF at r.
+
+| switch | flip commit | its pair recorded | predicted rows moved against r |
+| --- | --- | --- | --- |
+| `kShipAiApproachRetargetRingBound` | `78842c560` | SHIP_AI 64 (IJN01 moved; USN04, USN01, JM05, JM05 long, USN13, LOMP10 exit 1) | IJN01 |
+| `kMoveToTargetSpeedOverrideBound` | `0cd7e2da0` | PILOT_MOVETO_TASK (five rows exit 1, applied = 0) | none |
+| `kFollowTrailArmBound` | `10ab258d8` | PILOT_MOVETO_TASK (five rows exit 1, stage-only) | with the wanderer |
+| `kPlaneWandererBound` | `84580f94d` | PLANE_WANDERER 8 (USN04, E2, JM08, LOMP10, JM05 long exit 3, death rows same) | every plane row, through the shared stream |
+| `kShipAiEscapeByteResetBound` | `283dd1ef9` | SHIP_AI 65.7 (JM05 long: Yorktown closes its goal; USN13 via Maru24) | JM05 long, USN13 |
+| `kTorpedoResetEngageDrawsBound` | `314da1b35` | TORPEDO_AIM_LEAD 23.4 (USN04, E2, USN13, USN01 move) | USN04, E2, USN13, USN01 |
+| `kShipAiNavResetSpanBound` | `0e2c392bb` | SHIP_AI 67.4 (seven rows exit 1) | none |
+| `kPlaneMeshHitTestBound` | `dfeedf7e5` | AA_LETHALITY_AUDIT 9.5 (E2, USN04, USN13, USN01 move; JM06, USN12 exit 1) | USN04, E2, USN13, USN01 |
+| `kCaptureGroupValueBound` | `b1c67116e` | SHIP_AI 70.1 (USN13, USN01 move; Convoy1 no longer sinks; USN04, JM05 exit 1) | USN13, USN01 |
+| `kFollowPhaseABound` | `c73b7efc1` | PLANE_FOLLOW_PHASE_A 8.8 (USN04, E2, JM05 long, JM08, LOMP10 exit 3) | USN04, E2, JM05 long, JM08, LOMP10 |
+| `kPlaneBlastElementEntriesBound` | `a09ccee6c` | AA_LETHALITY_AUDIT 10.5 (as the mesh test) | USN04, E2, USN13, USN01 |
+| `kAiOwnerPlayerSlotBound` | `0ad6917bc` | SHIP_AI 71.3 (JM05, USN12 move, no death row changed) | JM05, USN12 |
+| `kAaLeaderPenaltyBound` | `2228a5ebd` | AA_LETHALITY_AUDIT 12.5 (plane rows move, controls exit 1) | USN04, E2, USN13, USN01 |
+| `kFollowTurboBound` | `b8172f60c` | PLANE_FOLLOW_PHASE_A 9.4 (USN04, E2, JM05 long, LOMP10 exit 3; JM08 exit 1) | USN04, E2, JM05 long, LOMP10 |
+
+**Rows:** r's seventeen, in r's launch form, 1600x900.
+
+**Predicted moved against r (thirteen):** USN04, E2, USN01, JM08, USN13, LOMP10, LOMP10 long,
+JM05, JM05 long, USN12, USNOS, USNOS long and IJN01. Every one except USN12 has aircraft in the
+air, and the wanderer and the follow chain move every plane row through the shared stream.
+
+**Predicted identical (exit 0 or 1): USN02, JM06, BSM01 and LOMP06.** None has aircraft, an
+owner-slot -1 group, a capture objective or an escape latch. This is the weakest prediction: r
+showed the party gate reaching rows its pairs never covered.
+
+**Headline predictions:**
+- USN04 and E2: torpedo-task releases rise from 1 of 16 (the turbo brings the wing members to their
+  leaders, and the mesh hit test and blast elements lower AA lethality against Kates).
+- USN01: `Convoy1` no longer sinks (capture group value).
+- JM05 long: Yorktown leaves the astern commit (escape byte); death rows otherwise near r.
+- USN12: moved, with the same death rows as r (owner slot).
+- IJN01: the A7M goals' zone runs move; death rows as r.
+
+**All-OFF anchor:** with the fourteen OFF (`local\g17_rs0`), `59ff2a1d7` is gameplay-identical
+to r (exit 0 or 1 against `g15_rr_<row>` in the cc9-gunnery15 tree) on all seventeen rows.
+
+**Leave-one-out.** Variants, each turned OFF alone against s:
+- `wan`: `kFollowTrailArmBound` + `kPlaneWandererBound`, together, because the arm is what enables
+  the wanderer (PILOT_MOVETO_TASK, "The follow trail arm"). Predicted: every plane row.
+- `pha`, `tur`, `mts`: the three follow and moveto switches alone. `pha`: USN04, E2, JM05 long,
+  JM08, LOMP10; `tur`: USN04, E2, JM05 long, LOMP10, LOMP10 long; `mts`: none.
+- `pmh`, `pbe`, `alp`: the three AA switches alone. Each: USN04, E2, USN01, USN13.
+- `rrg`: IJN01. `ebr`: JM05 long, USN13. `nrs`: none. `cgv`: USN13, USN01. `aop`: JM05, USN12.
+  `red`: USN04, E2, USN13, USN01.
+- Because the plane switches share one random stream, any plane variant is expected to move every
+  plane row it touches at all; attributions among them are coupled, not exclusive.
