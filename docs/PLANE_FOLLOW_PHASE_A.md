@@ -631,3 +631,69 @@ wing members, because the leader's tick exits at `009C1FF1` first.
   `plan_turbo_2e5` is set only in `run_follow_law_009bfee0_009bee30`.
 - The two depth-charge sites are same-offset fields of a different object. That is the
   constructor-store pattern, not a writer of the plan.
+
+## 10. JM05's cross-track residual is the land task's follow (packet `cc9_follow_cross_track`, cc9-lua22, 2026-09-30)
+
+The question: JM05 9000 keeps a 390 m station error, mostly cross-track, with 40% of ticks
+beside the station, after the turbo fix (9.4). Which host piece leaves members abeam?
+
+**New diagnostic** (both sides, reads only). `summary follow cross track` splits section 8.9's
+leader-frame error three ways:
+- by leader manoeuvre: turning when `|007D7DA0|` is above 0.05 rad/s;
+- by follow branch: the `+85h` latched hold, or Phase A's lead, abeam or circle (`BL & 1`, abeam,
+  `BL & 8`);
+- by task: whether the member has the land task installed.
+
+Measured on this tree (logs `local\l22_fct_jm05l.log`, `local\l22_fct2_jm05{,l}.log`, reference
+launch form, 2026-09-30 about 07:20 UTC).
+
+**By task** (the answer):
+
+| row | task | follow ticks | error mean (m) | along | \|cross\| | own \|v\| mean | ticks below 40 m/s |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JM05 9000 | land | 33718 | 364.9 | -174.7 | 190.4 | 63.2 | 7912 |
+| JM05 9000 | other | 144 | 96.7 | -69.5 | 60.5 | 67.1 | 0 |
+| JM05 3000 | land | 11972 | 414.9 | -238.7 | 199.4 | 65.0 | 2816 |
+| JM05 3000 | other | 144 | 96.7 | -69.5 | 60.5 | 67.1 | 0 |
+
+**By branch and manoeuvre, JM05 9000:**
+
+| leader | branch | n | error | along | \|cross\| | beside |
+| --- | --- | --- | --- | --- | --- | --- |
+| straight | hold | 2868 | 33.9 | -17.4 | 15.2 | 178 |
+| straight | lead | 2971 | 219.4 | +59.7 | 136.1 | 1603 |
+| straight | abeam | 412 | 490.5 | +39.0 | 374.5 | 315 |
+| straight | circle | 5467 | 498.7 | -352.1 | 237.5 | 1317 |
+| turning | hold | 2241 | 69.5 | -18.5 | 36.7 | 538 |
+| turning | lead | 4149 | 218.2 | +66.7 | 137.8 | 2225 |
+| turning | abeam | 1548 | 435.1 | -49.0 | 304.4 | 962 |
+| turning | circle | 14206 | 486.0 | -301.1 | 239.4 | 4967 |
+
+USN04, for contrast: 15320 hold ticks at 15-35 m error, 431 lead and 40 circle, no abeam.
+
+**Reading:**
+- 99.6% of JM05's follow-law ticks belong to members whose **land task** is installed (70 land
+  installs; `follow (land)` at the carriers). They are not in cruise formation.
+- These members sit in the landing holding pattern behind leaders that the moveto speed blend
+  (the wingmen-wait term, SQUADRON_LAND_TASK section 5, the 31.5 m/s holds) slows to about
+  31.5 m/s.
+- 23% of their ticks are below 40 m/s (the 31.5 m/s floor recurs in the per-400 `follow law`
+  rows; `local\l22_fl.py` aggregates them per member). At that speed the class turn circle is
+  large against the station offsets.
+- So Phase A picks the turn-circle regime (58% of ticks), and the member orbits abeam of a slow,
+  mostly turning leader.
+- The 144 non-land ticks behave like the other rows (97 m).
+
+**Against the image:**
+- The regime choice and every steer point are the image's own. Section 8.1's emulator oracle
+  matched the transcription on 5000 sampled geometries, including both abeam joins `009C0800`
+  (`V >= 0` gives left) and `009C08E7` (`V >= 0` gives right) and the station distance of
+  `009BFD70`.
+- The abeam branch is 6% of the ticks here.
+- No difference in `009BFD70`, `009C0800` or `009C08E7` was found, so nothing is bound.
+
+**Where the residual lives instead:** the land task's leader speed, the moveto blend's
+wingmen-wait term, which holds the leader near 31.5 m/s (docs/SQUADRON_LAND_TASK.md, where the
+31.5 m/s holds are recorded), and the land follow's station. That is the landing lane's open item,
+not the cruise follow law. Section 9.4's "JM05 9000's remainder is its cross-track" is resolved
+as a population effect.

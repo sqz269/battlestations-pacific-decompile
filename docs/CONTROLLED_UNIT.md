@@ -3067,3 +3067,24 @@ is held after this handoff.
 The queue is in SQUADRON_LAND_TASK.md **5aj**. Its first item is the recon publication `00806B10`
 (SHIP_AI 74), which blocks every `luaGetShipsAround*` proximity trigger. JM08's invasion is one
 of them.
+
+## Handoff (cc9-lua22, 2026-09-30)
+
+Branch `agent/cc9-lua22`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua22`. No lease
+is held after this handoff.
+
+### Done
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_recon_publication` | `54162190a`, `13322fd0d`, `487ee85a1` | `kReconPublishBound` | ON: `recon[party][relation][category]` filled; JM08 invasion at frame 14005 | RECON_PUBLICATION.md |
+| `cc9_moveto_command_range` | `adf3c170b`, `3c3741507` | `kMoveToCommandRangeBound` | ON, stage-only (twelve rows identical) | PILOT_MOVETO_TASK.md, last section |
+| `cc9_follow_cross_track` | `eb21ac023` | none (diagnostic) | JM05's residual is the land holding pattern | PLANE_FOLLOW_PHASE_A.md 10 |
+
+### Open, in order
+
+The queue is in SQUADRON_LAND_TASK.md **5ak**:
+1. #15 (parked);
+2. the carrier elevator chain 5ah (a)(b)(c);
+3. the land task's 31.5 m/s holding speed (new);
+4. SetParty, the `unit_is_flight_leader` rename and the late turbo clear.

@@ -6398,6 +6398,26 @@ struct GameUnitsHost::Impl {
     // Diagnostic, both sides: Phase A's regime per fly-to tick (applied with
     // kFollowPhaseABound, else the shadow of what it would pick).
     unsigned long long follow_phase_a_lead{0}, follow_phase_a_abeam{0}, follow_phase_a_circle{0};
+    // Diagnostic, both sides (packet cc9_follow_cross_track): the leader-frame
+    // error split by leader manoeuvre (0 straight, 1 turning: |007D7DA0| above
+    // 0.05 rad/s) and by the follow branch (0 latched hold, 1 lead, 2 abeam,
+    // 3 circle). cross_turn is cross signed + toward the turn's outside.
+    double fct_along[2][4]{}, fct_cross_abs[2][4]{}, fct_cross_turn[2][4]{}, fct_err[2][4]{};
+    unsigned long long fct_n[2][4]{}, fct_beside[2][4]{};
+    // ... and by task: 0 no land task, 1 the member has the land task installed.
+    double fct_task_err[2]{}, fct_task_cross_abs[2]{}, fct_task_along[2]{}, fct_task_speed[2]{};
+    unsigned long long fct_task_n[2]{}, fct_task_slow[2]{};
+    void fct_add(int turn, int branch, double along, double cross, double err, float rate) {
+        fct_n[turn][branch] += 1;
+        fct_along[turn][branch] += along;
+        fct_cross_abs[turn][branch] += std::fabs(cross);
+        fct_err[turn][branch] += err;
+        // cross = d . (f.z, -f.x) is + to the leader's left of travel for a
+        // y-up frame; a positive rate is recorded as is, so the sign is only
+        // compared between buckets, not interpreted absolutely.
+        fct_cross_turn[turn][branch] += rate >= 0.0f ? cross : -cross;
+        if (std::fabs(cross) > 50.0 && std::fabs(cross) > std::fabs(along)) fct_beside[turn][branch] += 1;
+    }
     double follow_phase_a_time_sum{0.0};
     static constexpr bool kFollowTrailArmBound = true;  // ON: stage-only, five rows identical (PILOT_MOVETO_TASK)
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
@@ -6487,6 +6507,11 @@ struct GameUnitsHost::Impl {
         const GameUnitSlot& leader) {
         if (!lua.plane_globals_loaded()) return;
         const bsp::GameTuningBlock& gt = lua.plane_globals();
+        // DIAGNOSTIC (cc9_follow_cross_track): this tick's split, bucketed below.
+        double fct_tick_along = 0.0, fct_tick_cross = 0.0, fct_tick_err = 0.0;
+        bool fct_tick_valid = false;
+        const float fct_rate = leader_turn_rate_007d7da0(leader);
+        const int fct_turn = std::fabs(fct_rate) > 0.05f ? 1 : 0;
         if constexpr (kFollowTurboBound) {
             unit.plan_turbo_2e5 = true;   // 009BEE42, before the +85h branch
         }
@@ -6525,6 +6550,19 @@ struct GameUnitsHost::Impl {
                         static_cast<double>(vo[1]) * vo[1] + static_cast<double>(vo[2]) * vo[2]);
                     const double sl = std::sqrt(static_cast<double>(vl[0]) * vl[0] +
                         static_cast<double>(vl[1]) * vl[1] + static_cast<double>(vl[2]) * vl[2]);
+                    fct_tick_along = along;
+                    fct_tick_cross = cross;
+                    fct_tick_err = dist;
+                    fct_tick_valid = true;
+                    {
+                        const int k = unit.land_task_installed ? 1 : 0;
+                        ++fct_task_n[k];
+                        fct_task_err[k] += dist;
+                        fct_task_cross_abs[k] += std::fabs(cross);
+                        fct_task_along[k] += along;
+                        fct_task_speed[k] += so;
+                        if (so < 40.0) ++fct_task_slow[k];
+                    }
                     ++fes_n;
                     fes_along_sum += along;
                     fes_cross_abs_sum += std::fabs(cross);
@@ -6560,6 +6598,7 @@ struct GameUnitsHost::Impl {
             for (int i = 0; i < 3; ++i) unit.fw_station[i] = station.world[i];
             unit.fw_leader_heading = leader.plane_heading_c6c;
             if (latch_85) {
+                if (fct_tick_valid) fct_add(fct_turn, 0, fct_tick_along, fct_tick_cross, fct_tick_err, fct_rate);
                 run_follow_hold_arm_009bee56(unit, station, leader, gt);
                 return;
             }
@@ -6643,6 +6682,10 @@ struct GameUnitsHost::Impl {
             if (pa.phase_a_bl & 1) ++follow_phase_a_lead;
             else if (pa.phase_a_bl & 8) ++follow_phase_a_circle;
             else ++follow_phase_a_abeam;
+            if (fct_tick_valid) {
+                const int branch = (pa.phase_a_bl & 1) ? 1 : ((pa.phase_a_bl & 8) ? 3 : 2);
+                fct_add(fct_turn, branch, fct_tick_along, fct_tick_cross, fct_tick_err, fct_rate);
+            }
             follow_phase_a_time_sum += pa.phase_a_time;
         }
         done("BotStateFollow::steer_point", 0x009bfee0u);
@@ -27328,6 +27371,33 @@ void GameUnitsHost::report() {
                 host.fes_behind ? host.fes_behind_speed_diff_sum / static_cast<double>(host.fes_behind) : 0.0,
                 host.fes_flyto_n ? host.fes_flyto_cmd_minus_own_sum /
                     static_cast<double>(host.fes_flyto_n) : 0.0);
+            {
+                for (int k = 0; k < 2; ++k) {
+                    if (host.fct_task_n[k] == 0) continue;
+                    const double d = static_cast<double>(host.fct_task_n[k]);
+                    host.log.notef("summary follow cross track task=%s n=%llu err_mean=%.1f "
+                        "along_mean=%.1f cross_abs_mean=%.1f own_v_mean=%.1f own_v_below_40=%llu "
+                        "(packet cc9_follow_cross_track diagnostic)", k ? "land" : "other",
+                        host.fct_task_n[k], host.fct_task_err[k] / d, host.fct_task_along[k] / d,
+                        host.fct_task_cross_abs[k] / d, host.fct_task_speed[k] / d,
+                        host.fct_task_slow[k]);
+                }
+                static const char* const kTurn[2] = {"straight", "turning"};
+                static const char* const kBranch[4] = {"hold", "lead", "abeam", "circle"};
+                for (int t = 0; t < 2; ++t) {
+                    for (int b = 0; b < 4; ++b) {
+                        const unsigned long long c = host.fct_n[t][b];
+                        if (c == 0) continue;
+                        const double d = static_cast<double>(c);
+                        host.log.notef("summary follow cross track %s/%s n=%llu err_mean=%.1f "
+                            "along_mean=%.1f cross_abs_mean=%.1f cross_turnsigned_mean=%.1f beside=%llu "
+                            "(packet cc9_follow_cross_track diagnostic)", kTurn[t], kBranch[b], c,
+                            host.fct_err[t][b] / d, host.fct_along[t][b] / d,
+                            host.fct_cross_abs[t][b] / d, host.fct_cross_turn[t][b] / d,
+                            host.fct_beside[t][b]);
+                    }
+                }
+            }
             host.log.notef("summary follow turbo steps=%llu bound=%d (009BEE42 -> 007D9062, "
                 "packet cc9_follow_turbo)", host.follow_turbo_steps,
                 Impl::kFollowTurboBound ? 1 : 0);
