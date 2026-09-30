@@ -7661,3 +7661,57 @@ is held after this handoff.
 - the edit scripts `l28_retakeoff_edit.py`, `l28_verdict_edit.py`, `l28_flip_edit.py`,
   `l28_db_edit.py`;
 - the diagnostic edit scripts `l28_diag*_edit.py`, which apply to an export only.
+
+## 5bu. The strafe evasive roll and the flight leader's task: both unreached (packet `cc9_strafe_roll_leader_task`, cc9-lua29, 2026-09-30)
+
+Read-only. No switch is bound: neither task can be constructed in any reference row, so a binding
+would be dead code and every pair would be identical by construction.
+
+### 1. The evasive roll `009BC030` -> `00D205E0` needs a strafe or a rocket task
+
+- **Pushers, placed by vtable.** Neither pusher has a rel32 caller; each is a data slot:
+  - `007B6240` sits at `00D05830`, slot `+0Ch` of the state vtable at `00D05824` (`007B6810`,
+    `007B5F10`, `007B3DC0`, `007B6240`, `007B3DE0`, ...). The block lies just below the
+    **rocket** task's vtables (`00D0590C`-`00D05918`, factory `007B7FD0`). So this pusher is a
+    rocket-task state tick, not strafe code (5bn.2 grouped both under strafe).
+  - `009CBB30` sits at `00D21048`, slot `+0Ch` of the state vtable at `00D2103C` (`009CC000`,
+    `009CB8B0`, `007B3DC0`, `009CBB30`), below the strafe task's vtables (`00D210D4`-`00D210E0`,
+    factory `009CD300`). This one is the strafe run's.
+  - Adjacency is the evidence for both owners; which constructor stores `00D05824` / `00D2103C`
+    was not read. Provisional.
+- **Reach.** The roll is pushed only from inside a strafe (`00E08F40`) or rocket (`00E08F48`)
+  task. Census over the nineteen reference-v logs (`local\g20_rv_*.log` in the cc9-gunnery20
+  tree), every `PilotSetTarget task: 0099A170 -> ... command=` line: `00E08F18` x702,
+  `00E08F20` x330, `00E08F28` x8, `00E08F78` x5. **No `00E08F40`, no `00E08F48`.** The host has
+  no strafe or rocket task either (`src/game_hosts_units.cpp`, the `00999AA0` comment: "no strafe
+  task in this host"; no strafe or rocket `BotTask*` method in any call table).
+- 007EEC50 picks strafe only as the guns answer when no ordnance class applies and dogfight does
+  not (`src/attack_commands.cpp` `attack_command_choose`). None of the scripted orders in the
+  rows reaches that arm.
+- **Verdict:** unreached. The roll waits on a strafe task (`009CD300`, `6FCh`) or a rocket task
+  (`007B7FD0`, `708h`) in the host, and on a row whose script or planner orders one.
+
+### 2. The flight leader's task `009BBFC0` -> `00D20658`: the player-piloted leader
+
+- **Gate, from disk bytes** (`disasm-raw 0099ADB0`): `0099ADC7 CMP [ESI+5Ch],0` (list not
+  empty), `0099ADD0 CMP byte [[ESI+50h]+184h],0`, `0099ADD9 CALL 007B8AD0` (flight leader),
+  `0099ADEC CALL [vt+38h]` on the head; then `0099ADF4` news 8 bytes = {`00D1F31C`, unit},
+  `0099AE14 CALL 009BBFC0`, `0099AE1C CALL 00999F50`.
+- **`unit+184h` is the player's role-1 (pilot) hold** (docs/CONTROLLED_UNIT_HELM.md: its only
+  setter is `00780214` on an accepted role-1 take). With an idle player nothing takes role 1.
+- **Tick `009BC3A0`** (decompiled): copies the unit's `+9E4h`-`+9F8h` (six dwords) into the plan
+  `+3FCh`-`+410h` every tick. When the controller's `vt[38h]` answers false and `+900h == 6`, it
+  sets `+408h` to `[00D7A24C]` or 0; when it answers true, it raises `+408h` to at least
+  `tuning+598h`. Then fixed plan flags (`+2C8h`=0, `+2D0h`=1, `+2D4h`=1, `+27Ch`=`+408h`,
+  `+280h`=1, `+2B0h`=1), the `0099B690` retire when `+3F8h` answers, and a counter at `+414h`
+  that runs while `unit+9D8h` is set and clears `[unit+DF4h]+80h` otherwise.
+  Reading: the bot mirrors the human pilot's inputs so the squadron logic keeps a plan. That
+  `+9E4h`-`+9F8h` is the player's control block is a hypothesis, not verified.
+- **Reach:** every reference-v log prints `+184h=0` on every `player roles` line (109 lines), and
+  no `scripted helm transfer` line appears in any of them. **Unreached** in the image and the
+  host alike while the player is idle.
+
+### Next
+
+Item 1 of 5bt closes as unreached. The queue continues with the controlled-unit fallback (5bt.4),
+then `007C6F50`'s `msg+20h` flag and `+C49h`, the `+2ECh` pair (5bt.5), and the `vtable[28h]` scan.
