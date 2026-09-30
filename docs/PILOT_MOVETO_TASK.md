@@ -992,3 +992,99 @@ and 3667), and `applied` is 0.
 The binding is faithful and gameplay-identical on five rows. It replaces the record
 `BotStateMoveTo::target_speed_override_009c23b0` with the concrete `009C23B0`. The override will
 act where a flight moves to a plane faster than its level-flight speed; no reference row has one.
+
+## The follow trail arm (packet `cc9_follow_trail_arm`, cc9-lua20, 2026-09-29)
+
+GAMEPLAY_GAP_RANKING #14. `kFollowTrailArmBound` (`src/game_hosts_units.cpp`) is committed **OFF**.
+
+### The image
+
+**The arm.** `009C207C`-`009C211C` sits in the follow tick `009C1FD0`, after `009BEE30`. It runs
+only when `009C1FD0` did not already return at `009C2006` (a pending or queued release).
+- It needs the good-position flag `state+85h`, which `009BFD70` sets this tick, and a leader
+  (`state+2Ch`).
+- `b = |leader+C68h|`, the leader's bank (the `-0.0f` idiom `00D7A208`).
+- When `b > 0.5` (`00CE3800`), or the leader's published byte `leader[9C2h + word[00F876B8]*8]` is
+  set: `plane+844h = 0` and `plane+840h = 0.0` (`009C2102`-`009C2115`).
+- Otherwise `plane+844h = 1` and `plane+840h = 1.0 - 2b` (`009C20D5`-`009C20FA`: `FADD ST0,ST0`,
+  `FLD1`, `FSUBRP`, then a float store).
+
+**What `+840h` and `+844h` are.** They are the plane's **wanderer**, the object at `plane+810h`:
+- `007C4560` `BSP_PlaneWanderer_Construct` (called at `007CFDC6` in the plane constructor) stores
+  `+30h` = 1.0 and `+34h` = 1.
+- The Lua bindings `008A1B70` and `008A1D60` write them. Their table entries `00E0BD74` /
+  `00E0BD7C` name them `SquadronSetWandererMul` (`00D1047C`) and `SquadronSetWandererEnabled`
+  (`00D10460`).
+- The other writers turn the wanderer off and on:
+  - land/final's enter and exit (`009B1E84` / `009B1E96`);
+  - aim-dive's (`009C588B` / `009C58A6`);
+  - `009C44C8` / `009C44E6` and `009C6216` / `009C6283`.
+- **Census** (`local\l20_disp.py`, every `.text` operand with displacement `840h` or `844h`,
+  misdecodes checked by hand): no disp32 reader. The reader is `007BE060`
+  `BSP_PlaneWanderer_FixedStep`, which reads `this+30h` and `this+34h` with `this = plane+810h`.
+  Its sole caller is the plane fixed step (`007CE0D2`).
+
+**The wanderer itself** (`007BE060`-`007BE9A0`, x87 with register-passed values, single player
+only):
+- It draws random wandering on stream 1 (`00BD2F10`) from the `Wanderer/*` tuning (`+1C0h..+1F4h`).
+- It writes a velocity at `+0..+8`, which the pose advance `007D8230` adds to the plane's
+  translation.
+- So an enabled wanderer moves a formation member off its station by up to `Wanderer/OffsetMax`,
+  scaled by the multiplier the trail arm writes.
+- **This host does not run the wanderer**: no field, no step.
+
+### The binding
+
+`follow_trail_arm_009c207c` writes the two fields on both follow-tick stand-ins: the moveto
+follow and `Impl::run_follow_tick_009c1fd0` (torpedo and land follow). The second one gains
+`009C2006`'s release gate for the arm.
+
+LABELLED:
+- `+85h` is the host's latch (`fw_arm` 1 on this motion step).
+- The published byte is clear for an AI leader, as at `009BEF09`.
+
+The census line is `summary follow trail arm calls=... raised=... enabled=... disabled=...`.
+
+### Predictions, written before any ON run
+
+The rows are USN04 3000, E2, JM05 9000, JM08 3000 and LOMP10 3000.
+- **Stage only.** Nothing in the host reads `+840h`/`+844h`, so every row is gameplay identical
+  (exit 0/1).
+- `calls` > 0 on the rows that run a follow tick (USN04 and JM05 in the ranking's reach).
+- `raised` is a share of `calls`.
+- `disabled` is counted while leaders bank past 0.5 rad.
+
+**Consequence for the ranking.** #14's gameplay effect is the wanderer (`007BE060` and its
+`007D8230` consumer). It needs its own packet, and it draws from the shared stream 1, so
+behaviour pairs will move with it.
+
+### Measured (pairs on `1e9be389a`)
+
+- **Exports:** OFF is `local\l20_f0` (SHA-256 prefix `0900746D5252`); ON is `local\l20_f1`
+  (`A2D366343E97`).
+- **Logs:** `local\l20_f{0,1}_<row>.log`. Every log is clean (present interval immediate, the
+  export's module directory, `frames_presented` = F - 1, the final COM release).
+
+| row | pair_diff | calls / raised / enabled / disabled / min mul |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | 12674 / 4814 / 4774 / 40 / 0.013 |
+| E2 (USN04 9000) | 1 | 16462 / 6592 / 6532 / 60 / 0.002 |
+| JM05 9000 | 1 | 39453 / 2714 / 2201 / 513 / 0.001 |
+| JM08 3000 | 1 | 6534 / 2378 / 2231 / 147 / 0.000 |
+| LOMP10 3000 | 1 | 0 |
+
+**The predictions held.**
+- Every row is gameplay identical.
+- On the four rows with a follow tick, the arm raises on a third or less of its calls, and it
+  mostly enables the wanderer.
+- It disables it while a leader banks past 0.5 rad; `min mul` near 0 is a leader at almost that
+  bank.
+
+### Verdict: `kFollowTrailArmBound` ON
+
+The arm is faithful and stage-only (five rows identical). The record `BotStateFollow::trail_arm_85`
+becomes the concrete `009C207C`.
+
+**Ranking #14 is closed.** Its gameplay effect moves to a new gap: the wanderer
+`007BE060`-`007BE9A0` (from the plane fixed step at `007CE0D2`) and its translation consumer
+`007D8230`. The arm now keeps `+840h`/`+844h` in the image's state for that packet.

@@ -551,6 +551,13 @@ struct GameUnitSlot {
     // +74h its countdown, drawn at construction.
     unsigned long long moveto_follow_ticks{0};
     unsigned long long moveto_follow_no_station{0};
+    // The wanderer at plane+810h (007C4560 constructs it: +30h = 1.0, +34h = 1):
+    // plane+840h WandererMul and plane+844h WandererEnabled (the Lua names at
+    // 00D1047C / 00D10460, SquadronSetWandererMul / SquadronSetWandererEnabled).
+    // Written by the follow trail arm 009C207C (kFollowTrailArmBound); read by
+    // 007BE060 BSP_PlaneWanderer_FixedStep, which this host does not run.
+    float plane_wanderer_mul_840{1.0f};
+    bool plane_wanderer_enabled_844{true};
     // Part 4, the circle state 009C26D0 (kMoveToCircleSteerBound): tick count and
     // the planar distance to the steer point that 009FBB20 measured, min / max / last.
     unsigned long long moveto_circle_ticks{0};
@@ -6308,12 +6315,56 @@ struct GameUnitsHost::Impl {
     // 009C1FD0 with kPlaneFollowLawBound: 009BFD70's station from the live
     // slot 0 (no placement), then 009BFEE0/009BEE30. False when the member has
     // no station (it is its squadron's leader, or alone).
+    // Packet cc9_follow_trail_arm (docs/PILOT_MOVETO_TASK.md, "The follow trail
+    // arm"; GAMEPLAY_GAP_RANKING #14). True: 009C1FD0's arm after 009BEE30 runs.
+    // False: a record.
+    static constexpr bool kFollowTrailArmBound = true;  // ON: stage-only, five rows identical (PILOT_MOVETO_TASK)
+    unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
+    unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
+    float trail_arm_min_mul{1.0f};
+
+    // 009C207C-009C211C, in 009C1FD0 after 009BEE30. With the good-position
+    // flag state+85h (009BFD70's, this tick) and a leader (state+2Ch): b =
+    // |leader+C68h| (the bank, -0.0f idiom 00D7A208); when b > 0.5 (00CE3800) or
+    // the leader's published byte leader[9C2h + word[00F876B8]*8] is set:
+    // plane+844h = 0, plane+840h = 0.0 (009C2102-009C2115); otherwise +844h = 1
+    // and +840h = 1.0 - 2b (009C20D5-009C20FA, FADD ST0,ST0 then FSUBRP from
+    // FLD1, through a float store). Without the flag or a leader, nothing.
+    // LABELLED: the published byte is clear for an AI leader, as in 009BEF09
+    // (plane_follow_hold.hpp); +85h is the host's latch from
+    // run_follow_law_009bfee0_009bee30 (fw_arm 1 on this motion step).
+    void follow_trail_arm_009c207c(GameUnitSlot& unit, const GameUnitSlot& leader) {
+        ++trail_arm_calls;
+        if (!(unit.fw_arm == 1 && unit.fw_step == summary.motion_steps)) return;
+        ++trail_arm_raised;
+        const float c68 = leader.plane_bank_angle_c68;
+        const float b = c68 > 0.0f ? c68 : -0.0f - c68;
+        const bool leader_published_520 = false;
+        if (b > 0.5f || leader_published_520) {
+            unit.plane_wanderer_enabled_844 = false;
+            unit.plane_wanderer_mul_840 = 0.0f;
+            ++trail_arm_disabled;
+            return;
+        }
+        unit.plane_wanderer_enabled_844 = true;
+        unit.plane_wanderer_mul_840 = static_cast<float>(1.0 - (static_cast<double>(b) + b));
+        ++trail_arm_enabled;
+        if (unit.plane_wanderer_mul_840 < trail_arm_min_mul) {
+            trail_arm_min_mul = unit.plane_wanderer_mul_840;
+        }
+    }
+
     bool run_follow_tick_009c1fd0(GameUnitSlot& unit) {
         bsp::PlaneFormationStation station;
         const GameUnitSlot* leader = nullptr;
         place_wing_member_on_station_007f23a0(unit, false, &station, &leader, false);
         if (!station.produced || leader == nullptr) return false;
         run_follow_law_009bfee0_009bee30(unit, station, *leader);
+        if constexpr (kFollowTrailArmBound) {
+            // 009C1FFD-009C2006: a pending or queued release returns first.
+            if (!(unit.torpedo_release_pending_c25 || unit.torpedo_issue_requests_c20 > 0))
+                follow_trail_arm_009c207c(unit, *leader);
+        }
         return true;
     }
 
@@ -23038,7 +23089,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.run_follow_law_009bfee0_009bee30(unit_, station, *leader);
                         // 009C207C-009C211C: the +85h trail arm (unit+844h/+840h),
                         // live only once +85h is raised; 009BED80 clears it.
-                        owner_.record("BotStateFollow::trail_arm_85", 0x009c207cu);
+                        if constexpr (GameUnitsHost::Impl::kFollowTrailArmBound) {
+                            owner_.follow_trail_arm_009c207c(unit_, *leader);
+                            owner_.done("BotStateFollow::trail_arm_85", 0x009c207cu);
+                        } else {
+                            owner_.record("BotStateFollow::trail_arm_85", 0x009c207cu);
+                        }
                         // 009C211D-009C2355: the +74h countdown on the +70h period,
                         // and on expiry the sight search over the recon list
                         // (008053C0, vtable[5Ch](5)) that sets +84h, +80h and
@@ -26927,6 +26983,10 @@ void GameUnitsHost::report() {
             host.moveto_end_commands, host.moveto_end_stage_only, host.moveto_end_retired,
             host.moveto_end_promoted,
             Impl::kMoveToArrivalEndCommandBound ? 1 : 0);
+        host.log.notef("summary follow trail arm calls=%llu raised=%llu enabled=%llu disabled=%llu "
+            "min_mul=%.3f bound=%d (009C207C, packet cc9_follow_trail_arm)", host.trail_arm_calls,
+            host.trail_arm_raised, host.trail_arm_enabled, host.trail_arm_disabled,
+            static_cast<double>(host.trail_arm_min_mul), Impl::kFollowTrailArmBound ? 1 : 0);
         host.log.notef("summary moveto target speed override calls=%llu target=%llu within=%llu "
             "applied=%llu max_speed=%.2f bound=%d (009C23B0, packet cc9_moveto_target_speed)",
             host.ts_override_calls, host.ts_override_target, host.ts_override_within,
