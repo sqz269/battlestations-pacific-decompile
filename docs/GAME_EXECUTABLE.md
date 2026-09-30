@@ -13087,3 +13087,102 @@ torpedo run time and the moveto stage):
 - the score list and the moveto stage attribute nothing.
 - Because the party gate changes who plans, several rows may lose their other attributions once
   it is ON, for example if a torpedo release no longer happens.
+
+**Run parameters:**
+- **One binary:** `local\g15_rr\build\win32\Release\bsp_game.exe` in worktree cc9-gunnery15.
+  - SHA-256 prefix `701791B0FD6C`; the full hash is in the report.
+  - It is a clean `tools/pair_export.py --commit 28840d691` export with no flip.
+- **Rows:** q's sixteen plus JM05 long, in q's launch form (`local\g15_runs.ps1`), with
+  `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+- **JM05 long's q value** is `local\g15_rq_jm05l.log`, from q's own binary.
+- **Environment:**
+  - The first launch, at 00:16 UTC, failed at startup on `sound/gui/error.fsb`: the session had
+    moved from rdp-tcp#1 to the console.
+  - Those runs were discarded. After a passing smoke at 00:27 UTC, everything was relaunched.
+  - **Control:** q's binary re-run on USN04 and JM05 under the new session is gameplay-identical
+    to q (exit 1), so the session change does not move the rows.
+  - The runs ended at about 00:58 UTC; the leave-one-out lanes finished at 01:33 UTC.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11938.8 | 50 | 891 (125) | 10490 | 98.70 s | 1 of 16 / 0 of 19 | 14 | Lexington-class01 3359.92 | none | 492 | `local\g15_rr_usn04.log` |
+| USN01 | 3000 | 3885.8 | 5 | 192 (118) | 1619 | 53.65 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 1004.03 | none | 511 | `local\g15_rr_usn01.log` |
+| USN04 (E2) | 9000 | 12158.8 | 51 | 908 (125) | 10773 | 98.70 s | 1 of 16 / 0 of 19 | 19 | Lexington-class01 5789.44 | none | 492 | `local\g15_rr_e2.log` |
+| USN02 | 9000 | 55530.0 | 14 | 2563 (359) | 2105 | 19.25 s | - | - | Kortenaer 6783.22 | **failed at 29.75 s**, phase 1 (unchanged) | 487 | `local\g15_rr_usn02.log` |
+| JM06 (smoke) | 3000 | 4622.1 | 1 | 210 (194) | 314 | 72.15 s | - | - | Fletcher-class 08 426.02 | none | 484 | `local\g15_rr_jm06.log` |
+| JM08 (smoke) | 3000 | 3966.2 | 10 | 298 (127) | 2341 | 5.25 s | - | 2 | Auilick 2516.80 | none | 483 | `local\g15_rr_jm08.log` |
+| USN13 (smoke) | 3000 | 6740.5 | 22 | 389 (103) | 3800 | 98.70 s | 0 of 60 / - | 6 | Enterprise 926.02 | none | 514 | `local\g15_rr_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 454 | `local\g15_rr_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 2 | - | - | - | Narwhal 770.74 | none | 458 | `local\g15_rr_lomp06.log` |
+| LOMP10 | 3000 | 3500.0 | 10 | 276 (230) | 1789 | 90.50 s | - / 3 of 8 | 1 | (none) 7030.75 | none | 483 | `local\g15_rr_lomp10.log` |
+| JM05 | 3000 | 2587.0 | 1 | 52 (26) | 97 | 9.95 s | - | 1 | USS Phelps 2561.04 | none | 536 | `local\g15_rr_jm05.log` |
+| USN12 | 3000 | 4068.9 | 4 | 200 (21) | 95 | 7.55 s | - | - | Montpelier 1499.41 | none | 483 | `local\g15_rr_usn12.log` |
+| LOMP10 (long) | 9000 | 4179.1 | 12 | 286 (236) | 1807 | 90.50 s | - / 3 of 8 | 1 | (none) 7030.75 | none | 495 | `local\g15_rr_lomp10l.log` |
+| USNOS | 3000 | 8636.9 | 18 | 1024 (81) | 1206 | 10.80 s | - | 6 | NH 1497.26 | none | 521 | `local\g15_rr_usnos.log` |
+| USNOS (long) | 9000 | 12846.9 | 34 | 1285 (86) | 1764 | 10.80 s | - | 6 | NH 4492.07 | none | 524 | `local\g15_rr_usnosl.log` |
+| IJN01 | 3000 | 3324.0 | 6 | 152 (131) | 3066 | 83.25 s | - | 1 | Downes 259.54 | none | 501 | `local\g15_rr_ijn01.log` |
+| JM05 (long) | 9000 | 18189.4 | 5 | 753 (628) | 1583 | 9.95 s | - | 4 | USS Phelps 7462.98 | none | 546 | `local\g15_rr_jm05l.log` |
+
+**Against q** (`pair_diff` against `g15_rq_<row>`): **all seventeen rows move** (exit 3).
+
+Headline moves:
+- **USN04 and E2:** damage drops by about a quarter (16652.1 -> 11938.8 and 17173.9 -> 12158.8).
+  Torpedo-task releases go from 8 to 1 of 16. USN04 gains two plane deaths.
+- **USN13:** deaths 31 -> 22; the nine `bruh` Kate deaths are gone.
+- **USN01:** damage 2786.4 -> 3885.8, and five victims change (SHIP_AI 60.7). The controlled unit
+  is now `ConTBD1`.
+- **USN02:** deaths 11 -> 14 and damage 38828.3 -> 55530.0. Kortenaer moves 6783 m instead of
+  549 m, and the mission still fails at 29.75 s.
+- **JM06:** damage 4239.2 -> 4622.1; the death table is unchanged.
+- **JM08:** same victims, re-timed; shots 2867 -> 2341.
+- **BSM01:** the player's `HenryPT` no longer moves (603.30 -> 0.00 m). No combat on either side.
+- **LOMP06:** the Narwhal's one kill is gone (deaths 1 -> 0).
+- **LOMP10 and LOMP10 long:** 0 -> 10 and 0 -> 12 deaths. The B-25s, Warhawks and Lightnings are
+  shot down by Kiyoshimo, Asashimo and Ashigara.
+- **JM05:** Mogami-class 01 sinks (the land mounts, GUN_BARREL_COUNT 9.4).
+- **JM05 long:** deaths 28 -> 5 (the recall, SQUADRON_LAND_TASK 5ag.2).
+- **USN12:** deaths 0 -> 4, hit records 32 -> 200.
+- **USNOS and USNOS long:** deaths 6 -> 18 and 21 -> 34.
+- **IJN01:** deaths 9 -> 6 (SHIP_AI 60.7).
+
+### The anchor: eight switches
+
+With all eight OFF (`g15_rr0`, SHA-256 prefix `24E9FEF46A80`), `28840d691` is
+**gameplay-identical to reference q on all seventeen rows** (exit 1 against `g15_rq_<row>`).
+Nothing else that landed since q moves a reference row.
+
+### What moved each row
+
+Each variant was turned OFF alone and read with `pair_diff` against r on all seventeen rows. The
+three carrier switches were turned OFF together. Logs are `local\g15_r_<v>_<row>.log`, and
+prefixes are in the report.
+
+| variant (OFF) | switch | rows that move against r |
+| --- | --- | --- |
+| `apg` | `kAiPartyGateUnforcedBound` | **all seventeen** |
+| `ags` | `kAiGroupScoreListReleaseBound` | none |
+| `car` | `kReturnToBaseSiteKeyBound` + `kCarrierLandingDeckBound` + `kCarrierDeckParentBound` | JM05, JM05 long (5 -> 33 deaths OFF) |
+| `lpa` | `kLandPlatformAttachmentBound` | JM08, JM05, USN12, JM05 long |
+| `trt` | `kTorpedoRunTimeUpdateBound` | USN04, E2, USN01 |
+| `mta` | `kMoveToArrivalEndCommandBound` | none |
+
+**Attribution:**
+- Every moved row is attributed.
+- The party gate attributes all seventeen; it is the only attribution for USN02, JM06, USN13,
+  BSM01, LOMP06, LOMP10, LOMP10 long, USNOS, USNOS long and IJN01.
+- The score list and the moveto stage are inert, as predicted.
+
+**Prediction misses:**
+- **The party gate's reach was under-predicted.** SHIP_AI 60.7 paired six rows. R shows it moves
+  every row, including five predicted identical: USN02, JM06, BSM01, LOMP06, USNOS and USNOS long.
+  - With party 0 left without a brain and party 4 planning, the US-player rows' US groups are born
+    NONCONTROL (SHIP_AI 60.5).
+  - BSM01's idle-player `HenryPT` standing still, and LOMP06's lost kill, are that change seen on
+    the player side.
+  - These rows are measured here, not paired against the image. That reading is provisional.
+- **The run-time update no longer moves USN13.** With the party gate ON, USN13's Kates no longer
+  reach a torpedo run (their nine deaths are gone too).
+- **The land mounts no longer move USN01.** Its five `no_mount` shots belonged to the planning
+  that the party gate replaces.
