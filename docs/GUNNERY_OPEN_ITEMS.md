@@ -5254,3 +5254,92 @@ drain-loop iteration.
 **The sprite bridge** (D3D_DEVICE_LOST 6) is a host scaffold that draws the milestone overlay. It is
 not the native GUI. It has no reach on a reference row, which never loses the device. It stays
 retired after a recreation (accepted open item, not pursued).
+
+## 77. 00862820's class arms: the torpedo kind test and the submarine depth test (cc9-gunnery17, packet `cc9_gunnery_class_arms`)
+
+### 77.1 The image (disk bytes, `bsp.py disasm-raw 00862820 --length 0xab`)
+
+`00862820`: `__thiscall(ai)(int category, Entity* target)`, `RET 8`, body 00862820..008628CB.
+1. 00862825..0086283B: the four liveness bytes `+5Ch` set, `+5Dh`, `+60h`, `+5Eh` clear. The host has
+   these (`target_is_engageable_00862820`).
+2. 00862843..0086285D: the per-instance allow byte `[ai + CCh + cat*61h + class(+C4h)]`. The
+   constructor memsets it to 1 (UNIT_GUNNERY_PASS 2, 00864623), and no other writer is known, so it
+   is taken as set.
+3. 0086285F..00862867: the rank `[00E19BF8 + (cat*61h + class)*4]`. The host tests it separately.
+4. 00862869..0086288A: **category 7 requires `IsKindOf(6)` and not `IsKindOf(0Eh)`.**
+5. 0086288C..008628C5: for a target answering `IsKindOf(8)`:
+   - categories 8 and 9 (0086289B / 008628A0) refuse it when `00852820` answers true;
+   - category 7 accepts it (008628B7);
+   - every other category refuses it when `00852820` answers false.
+6. `00852820 BSP_Entity_IsAboveDepthChargeDepth` (body 00852820..0085285B, then INT3) returns
+   true when world y `+100h` > `([+1204h] + [+1200h]) / 3.0`. The divisor is the double `3.0` at
+   00D7A2B0 (bytes `00 .. 08 40`). It is the exact complement of `00852860`, which the host already
+   has as `ship_ai_attackmove_altitude_gate_00852860`.
+
+The host's score modelled steps 1 and 3 only.
+
+### 77.2 The binding (`kGunneryClassArmsBound`, committed OFF)
+
+- In `score_candidate_00863990`, after the rank:
+  - the category-7 kind test;
+  - the kind-8 depth test, from the units host's `submarine_band_y` bands 0 and 1. A boat whose
+    bands were never seeded uses the `00E0B578` defaults (0, -20), as the ship-AI binding does.
+- **Summary line**, on both sides: `summary mission gunnery class arms torpedo_refusals= sub_tests=
+  sub_above= sub_refusals= bound=`.
+
+### 77.3 Predictions (written before any ON run)
+
+Rows with kind-8 units (from `unit hull input` in the s-base logs): JM06 (8, the Narwhal and Gato
+boats and PlayerSub), BSM01 (Tautog), LOMP06 (Narwhal), USNOS and USNOS long (Gato and others) and
+IJN01 (Tautog, Cachalot). The pair runs all seventeen rows. The controls are USN04 and USN02, with
+no submarine.
+
+1. **Mechanism:**
+   - `sub_tests` > 0 exactly on the submarine rows where a submarine reaches the score;
+   - `sub_refusals` > 0 where a submerged boat meets gun categories, or a surfaced one meets
+     categories 8/9;
+   - `torpedo_refusals` > 0 only where a category-7 candidate is not a ship base or is kind 0Eh.
+2. **Controls (USN04, USN02):** gameplay-identical, with `sub_tests` 0. `torpedo_refusals` may be
+   non-zero only if a torpedo-category candidate is a non-ship.
+3. **Submarine rows:**
+   - guns stop taking a submerged boat as a target, and depth charges stop taking a surfaced one;
+   - JM06, IJN01 and USNOS may move (submarine damage and deaths change);
+   - BSM01 and LOMP06 move only if a boat is scored there.
+4. **Mechanism failure:** a gameplay move on a row with `sub_tests` and `torpedo_refusals` both
+   0 on the ON side.
+
+### 77.4 The pair, and the verdict: ON
+
+A same-tree pair at `8d5ee7a84`: `local\g17_ca0` (SHA-256 prefix `CE56E96B3D65`) against `local\g17_ca1`
+(`--flip kGunneryClassArmsBound=true`, `DB8E4EED7EFA`). The 300-frame USN01 smoke on the ON build is
+clean. Logs are `local\g17_ca{0,1}_<row>.log`.
+
+| row | exit | sub tests / above / refusals | what moved |
+| --- | --- | --- | --- |
+| USN04, USN02 (controls) | 1 | 0 | nothing |
+| JM06 | 3 | 3000 / 0 / 2652 | Narwhal-class Submarine 01's shots 6 -> 0 (dealt 88 -> 0); the PBY and US Tankers 01/02 score nothing (their only candidates were a submerged boat). Row damage 4506.8 -> 3634.4, shots 302 -> 276. Death rows identical |
+| USNOS, USNOS long | 3 | 22974 / 21824 / 5524 (long: 24294 / 23144 / 5794) | only the logged `nearest` distances. Aggregates and death rows identical |
+| LOMP06 | 1 | 27 / 0 / 18 | nothing |
+| BSM01, IJN01 | 1 | 0 | nothing (no boat reaches the score) |
+| the other nine rows | 1 | 0 | nothing |
+
+- `torpedo_refusals` is 0 on every row. No category-7 candidate on a reference row is a non-ship or
+  kind 0Eh, so that arm has no reach here.
+- The census is equal on both sides on every row. Every refusal happens before the first moved
+  step.
+
+**Prediction check:**
+- **The controls held.**
+- **The mechanism held:**
+  - sub tests appear only on submarine rows (JM06, LOMP06, USNOS, USNOS long);
+  - JM06's boats are all below the depth line (above 0 of 3000), so the gun categories refuse
+    them;
+  - USNOS's boats are mostly surfaced (21824 of 22974 above). Its refusals are depth-charge
+    categories refusing the surfaced boats and guns refusing the submerged ones.
+- **The spread:**
+  - JM06 is the gameplay move: guns and aircraft no longer engage a submerged boat. Damage falls
+    19%, and deaths are unchanged.
+  - USNOS moves only in the logged candidate distance.
+  - IJN01's boats never reach the score, so it stays identical (predicted "may move").
+
+**Verdict: ON** (`kGunneryClassArmsBound = true`). It belongs to reference t.
