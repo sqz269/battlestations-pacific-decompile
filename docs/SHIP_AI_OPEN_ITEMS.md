@@ -8818,3 +8818,48 @@ Same-tree pair `s26_a0` (OFF) / `s26_a1` (ON).
     **gameplay identical** (pair_diff exit 1, with the new lines as the only difference).
 - **Verdict rule:** a mechanism match (the timing and the 1:1 pairing) flips ON; any gameplay
   move is a mechanism failure and stays OFF.
+
+### 106.5 The pairs (`s26_a0` vs `s26_a1`, both from `8d8a63e4b`), and the flip
+
+**Binaries:**
+- OFF `local\s26_a0\build\win32\Release\bsp_game.exe`;
+- ON `local\s26_a1\...` (SHA-256 prefix `0F78CED5B66F`).
+
+**Run form:** the reference launch form, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+**Environment:** `query session` showed `rdp-tcp#0` Active, and the runs were unaffected. The
+300-frame USN01 smoke on the tree build passed first.
+
+| row | pair_diff | deaths | death rows | unit table | lowers | unloads |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN01 smoke (300/100) | 1 | 0 / 0 | identical | identical (26) | 0 | 0 |
+| JM08 long (9200/9000) | 1 | 25 / 25 | identical | identical (119) | 0 | 0 |
+| JM08 36200/36000 | 1 | 118 / 118 | identical (118) | identical (276) | 9 / 9 | 0 / 9 |
+
+**JM08 36000, ON.** Each of the nine `landing ship ramp` lines is followed by a `landing ship
+unload` for the same pad at exactly T + 2.05:
+
+| ramp lowered | unloaded |
+| --- | --- |
+| 788.95 | 791.00 |
+| 789.60 | 791.65 |
+| 809.75 | 811.80 |
+| 811.90 | 813.95 |
+| 813.40 | 815.45 |
+| 814.30 | 816.35 |
+| 836.80 | 838.85 |
+| 1201.70 | 1203.75 |
+| 1293.65 | 1295.70 |
+
+Each unload is followed by a `landing ship unload published` line: units 390-398, all
+`LandingShip` crafts. The published times are on `units_.mission_clock()`, which runs about
+0.1 s off the ship AI's capture clock; the log order is unload, then publish.
+
+**Prediction misses.**
+- The count: main has moved since `s25_b1_jm08x`, so there were 9 lowers, not 11, on both sides.
+- The ramp times moved too, identically in both binaries.
+
+**Verdict: ON.** The mechanism matches (1:1, 41 frames) and every row is gameplay identical. As
+106.2 established, no reference row's script reads the fields, so this is a mechanism check only.
+The first rows that would move are BSM02 once its player leaves the harbour (the five-landing
+failure) and CHG05. Neither is reachable with the idle player.

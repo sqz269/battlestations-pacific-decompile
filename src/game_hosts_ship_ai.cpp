@@ -556,8 +556,9 @@ inline constexpr bool kLandingShipRampHullContactBound = true;
 // ship with a pad runs 0074AF50's ramp animation (+11A4h over +1190h = 2.0 s) and,
 // once the ramp is fully down, the one-shot unload: +118Bh, +118Ch, and the unit's
 // Lua self table gets `LandingStarted` and `LandingFinished` = true (published by
-// the script-orders host). False: none of these, as before.
-inline constexpr bool kLandingShipUnloadBound = false;
+// the script-orders host). False: none of these, as before. ON by section 106.5:
+// JM08 36000's nine ramps each unload 2.05 s later; every row gameplay identical.
+inline constexpr bool kLandingShipUnloadBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
