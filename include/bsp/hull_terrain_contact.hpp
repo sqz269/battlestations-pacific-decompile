@@ -188,9 +188,13 @@ private:
         std::shared_ptr<AvoidZoneDynHullHandle> handle;
         alignas(16) std::uint8_t convex[0x240]{};
         bool convex_ready{false};
+        // The body the record's +4h points to: 00C51C20 and 00C48BE0 read its 3x4 at
+        // +08h..+37h (the rows, then the translation at +2Ch).
+        std::uint8_t body[0x40]{};
     };
     HullShape* hull_convex(std::size_t unit, std::size_t shape,
-                           const std::vector<OceanVec3>& raw, float friction);
+                           const std::vector<OceanVec3>& raw, float friction,
+                           const DynBody& body);
     void hull_hull_narrow_phase(std::vector<HullWorldEntry>& hulls, bool apply);
     std::map<std::pair<std::size_t, std::size_t>, std::unique_ptr<Manifold>> pair_manifolds_;
     std::map<std::pair<std::size_t, std::size_t>, HullPairCensus> hull_pairs_;

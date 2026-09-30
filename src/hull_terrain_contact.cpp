@@ -630,12 +630,14 @@ void body_frame(const DynBody& body, float out[12]) {
 
 // The kind-4 record 00C57F50 builds for a hull shape, for 00C535E0: +0 the process's
 // ConvexMeshShape table (its double-support slot +0Ch is 00C385B0 over the borrowed mesh),
-// +4 the body (none here: only 00C57C40's body refresh reads it, and it is not run), +8 kind
-// 4, +0Ch the local box 00C57C40 writes, +24h restitution 0 (0093944D writes no shape
-// restitution; section 84), +28h the material friction, +2Ch group 1, +30h mask 0Dh, +34h the
-// shape frame (identity, the centre as translation, 006FAEA0), +210h the 00C5DEB0 hull.
+// +4 the body (a copy of the hull's current 3x4 at +08h..+37h, which 00C51C20 and 00C48BE0
+// read; 00C57C40's body refresh is not run), +8 kind 4, +0Ch the local box 00C57C40 writes,
+// +24h restitution 0 (0093944D writes no shape restitution; section 84), +28h the material
+// friction, +2Ch group 1, +30h mask 0Dh, +34h the shape frame (identity, the centre as
+// translation, 006FAEA0), +210h the 00C5DEB0 hull.
 HullTerrainContactSolver::HullShape* HullTerrainContactSolver::hull_convex(
-    std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw, float friction) {
+    std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw, float friction,
+    const DynBody& body) {
     HullShape& h = hull_shape(unit, shape, raw);
     if (!h.handle || !h.handle->data || h.handle->data->vertex_count == 0) return nullptr;
     if (!h.convex_ready) {
@@ -660,6 +662,12 @@ HullTerrainContactSolver::HullShape* HullTerrainContactSolver::hull_convex(
         h.convex_ready = true;
     }
     std::memcpy(h.convex + 0x28, &friction, 4);
+    std::memcpy(h.body + 0x08, body.row0, 12);
+    std::memcpy(h.body + 0x14, body.row1, 12);
+    std::memcpy(h.body + 0x20, body.row2, 12);
+    std::memcpy(h.body + 0x2C, body.position, 12);
+    const void* owner = h.body;
+    std::memcpy(h.convex + 0x04, &owner, sizeof(owner));
     return &h;
 }
 
@@ -695,6 +703,60 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
         game::game_native_dyn_process(game::application_camera_axes_crt());
     DynGeneralConvexIntersectStorage& owner = process.general_convex_owner();
     const CameraAxesCrtAccess& crt = game::application_camera_axes_crt();
+    // Diagnostic, env-gated: BSP_HULL_HULL_TRACE=<file> logs a self-test of 00C535E0 on the
+    // first hull shape (against itself, shifted 1 m and 1000 m along x) and the first 300
+    // near pairs with their boxes and hits.
+    static std::FILE* trace = [] {
+        char* path = nullptr;
+        std::size_t length = 0;
+        std::FILE* f = nullptr;
+        if (_dupenv_s(&path, &length, "BSP_HULL_HULL_TRACE") == 0 && path) {
+            fopen_s(&f, path, "w");
+            std::free(path);
+        }
+        return f;
+    }();
+    static int trace_lines = 0;
+    static bool self_tested = false;
+    if (trace && !self_tested && !hulls.empty() && !hulls[0].shapes->empty()) {
+        HullShape* h = hull_convex(hulls[0].unit, 0, (*hulls[0].shapes)[0], hulls[0].friction,
+                                  *hulls[0].body);
+        if (h != nullptr) {
+            self_tested = true;
+            float fa[12];
+            body_frame(*hulls[0].body, fa);
+            for (const float shift : {0.0f, 1.0f, 1000.0f}) {
+                float fb[12];
+                std::memcpy(fb, fa, sizeof(fb));
+                fb[9] += shift;
+                alignas(16) std::uint8_t other[0x240];
+                alignas(16) std::uint8_t other_body[0x40];
+                std::memcpy(other, h->convex, sizeof(other));
+                std::memcpy(other_body, h->body, sizeof(other_body));
+                std::memcpy(other_body + 0x2C, fb + 9, 4);
+                const void* ob = other_body;
+                std::memcpy(other + 0x04, &ob, sizeof(ob));
+                alignas(16) std::uint8_t result[4 + 8 * 36]{};
+                const bool hit = dispatch_native_dyn_general_convex_00c535e0(owner, result,
+                    h->convex, fa, other, fb, crt);
+                std::int32_t n = 0;
+                std::memcpy(&n, result, 4);
+                const float* c = reinterpret_cast<const float*>(result + 4);
+                std::fprintf(trace, "selftest unit=%zu shift=%.1f hit=%d n=%d c=(%.3f %.3f %.3f | "
+                    "%.3f %.3f %.3f | %.3f %.3f %.3f) box=(%.2f %.2f %.2f .. %.2f %.2f %.2f) "
+                    "verts=%u\n", hulls[0].unit, shift, hit ? 1 : 0, n, c[0], c[1], c[2], c[3],
+                    c[4], c[5], c[6], c[7], c[8],
+                    *reinterpret_cast<const float*>(h->convex + 0x0C),
+                    *reinterpret_cast<const float*>(h->convex + 0x10),
+                    *reinterpret_cast<const float*>(h->convex + 0x14),
+                    *reinterpret_cast<const float*>(h->convex + 0x18),
+                    *reinterpret_cast<const float*>(h->convex + 0x1C),
+                    *reinterpret_cast<const float*>(h->convex + 0x20),
+                    h->handle->data->vertex_count);
+            }
+            std::fflush(trace);
+        }
+    }
     for (std::size_t i = 0; i < hulls.size(); ++i) {
         for (std::size_t j = i + 1; j < hulls.size(); ++j) {
             const Box& a = boxes[i];
@@ -714,10 +776,11 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
             int pair_hits = 0;
             float pair_depth = -3.402823466e+38f;
             for (std::size_t sa = 0; sa < ea.shapes->size(); ++sa) {
-                HullShape* ha = hull_convex(ea.unit, sa, (*ea.shapes)[sa], ea.friction);
+                HullShape* ha = hull_convex(ea.unit, sa, (*ea.shapes)[sa], ea.friction, *ea.body);
                 if (ha == nullptr) continue;
                 for (std::size_t sb = 0; sb < eb.shapes->size(); ++sb) {
-                    HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction);
+                    HullShape* hb = hull_convex(eb.unit, sb, (*eb.shapes)[sb], eb.friction,
+                                                 *eb.body);
                     if (hb == nullptr) continue;
                     ++census_.hull_shape_tests;
                     alignas(16) std::uint8_t result[4 + 8 * 36]{};
@@ -767,6 +830,15 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
                         insert_native_dyn_contact_00c3f760(m.bytes, in);
                     }
                 }
+            }
+            if (trace && trace_lines < 300) {
+                ++trace_lines;
+                std::fprintf(trace, "near step=%llu a=%zu b=%zu hits=%d depth=%.3f "
+                    "A=(%.1f %.1f %.1f .. %.1f %.1f %.1f) B=(%.1f %.1f %.1f .. %.1f %.1f %.1f)\n",
+                    census_.world_steps, ea.unit, eb.unit, pair_hits,
+                    pair_hits > 0 ? pair_depth : 0.0f, a.lo[0], a.lo[1], a.lo[2], a.hi[0],
+                    a.hi[1], a.hi[2], b.lo[0], b.lo[1], b.lo[2], b.hi[0], b.hi[1], b.hi[2]);
+                std::fflush(trace);
             }
             if (pair_hits > 0) {
                 HullPairCensus& pc = hull_pairs_[{ea.unit, eb.unit}];
