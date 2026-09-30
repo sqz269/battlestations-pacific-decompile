@@ -784,3 +784,188 @@ what kills most of the torpedo aircraft that survive the MG.
 - the image's `0070F720` distance or overlap rule;
 - the damage falloff in `0084BAD0` (EXPLOSION_RADIAL_DAMAGE);
 - against the host's blast path for class 0Fh victims.
+
+## 10. The flak blast against a plane, and the plane models behind section 9 (packet `cc9_flak_blast_plane`, cc9-gunnery16, 2026-09-30 03:13 UTC)
+
+### 10.1 Section 9's model uncertainty, retired
+
+**The survey.** `local\g16_meshprobe2.exe` read every plane model that this installation's
+`vehicleclasses.lua` names (31 files, all dated 2024-07-13). For each, the probe used this tree's
+readers to print:
+- the GeomMesh elements;
+- the hierarchy node that holds the GeomMesh resource, and the matrices up its parent chain.
+
+**What it found:**
+- Every model has **one** GeomMesh.
+- In 30 of the 31, the holder is node 0, the model root `GroupRoot_*`, with an identity matrix.
+- The exception is `Hawker_hurricane.MMOD`. Its mesh hangs on node 13 (`Hawker_hurricane_SDC:damage`),
+  whose matrix is a 0.0017 rad (0.1 degree) rotation with no translation. That moves a vertex 7 m
+  out by 1 cm.
+- The element "node" field is not a transform:
+  - it is 0 everywhere except the engines of the Gekko (1), P-38 (1) and B-17 (2);
+  - `00723D60` copies `element+8h` into `record+34h` as an index (NARROWPHASE_UNIT_PART_SHAPE
+    section 2);
+  - `00723E90` applies one transform, the shape's node matrices, to the whole geometry.
+
+Section 9 asked about three models specifically:
+
+| model | elements | span x height x length |
+| --- | --- | --- |
+| `zero.MMOD` (A6M) | 4, node 0 | 11.6 x 2.8 x 8.5 m |
+| `F4F_Wildcat.MMOD` | 4, node 0 | 11.6 x 2.8 x 8.5 m (the same collision boxes as the Zero) |
+| `B25.MMOD` | 4, node 0 (fuselage 32 triangles, engine 24) | 21.6 x 3.9 x 16.6 m |
+
+**The pose origin.**
+- `node+50h`, the matrix `00723E90` traces through, is copied from the entity's pose at `pose+CCh`
+  (`0098BA41` and `0098BC94` through `004134F0`; SPATIAL_INDEX).
+- So the mesh root sits exactly at the entity's pose, which is what the host's `unit_pose` stands
+  for.
+
+**Result:** section 9's binding needs no node transforms on any plane model in this installation.
+Model space is exact to within 1 cm.
+
+### 10.2 The image: a burst reaches a plane through the same element walk
+
+**`0070F720 BSP_UnitPartCollisionShape_TestSphere`** (`disasm-raw 0070F720 --length 0x80`, body
+`0070F720`-`0070F762`, `RET 0Ch`):
+- it prepares the collision body at `shape+20h` (`00B6DB70`, unless `body+5Ch` bit 1 is set);
+- it maps the centre with `00B6E0D0`;
+- it then calls `00723F80(geom = shape+24h; body+F0h, ...)` at `0070F759`.
+
+That is the per-element walk the host already runs for ships under `kBlastElementEntriesBound`
+(`00723B70` per element):
+- the element box reject;
+- the closest triangle;
+- an entry at that distance when it lies inside the radius.
+
+**The effect.** `004705C0` keeps the largest per-element result: `max(0, (1 - d/R) * b - armour)`.
+If no element is in range, there is no record at all.
+
+**The host.** `apply_impact_blast` gives a plane one entry, at the distance from the burst centre
+to the class box (16.5 x 7 x 14 m for the Kate). The Kate's mesh lies inside that box, so the
+host's distance is never longer than the image's, and is shorter by up to about 3.5 m below or above
+the wing.
+
+The E2 run of section 9 shows the scale:
+- 391 Kate blast lines, all with bullet classes 44 and 15;
+- base 35, range 35 and armour 6, so each burst deals `29 - d` HP;
+- one metre of distance is 1 HP of a burst worth about 24.
+
+### 10.3 The binding (`kPlaneBlastElementEntriesBound`, committed OFF)
+
+**ON:** a plane's blast record uses its mesh's element entries, through the same code as the ship
+path. When no element is in range, there is no record.
+
+**Labelled:**
+- the outer range test stays on the class box (the Kate's mesh leaves it only at the tail, by
+  0.64 m);
+- the element index is the element's `+8h` (0 on the Kate).
+
+**Census, both sides** (`summary mission gunnery plane blast`):
+- bursts within range of a plane's class box (`box_records`);
+- those with an element in range (`mesh_records`);
+- the mean box distance, overall and on the matched records;
+- the mean nearest-element distance on the matched records.
+
+### 10.4 Predictions (written before any run)
+
+Rows, exports and launch are as in 9.5: E2, USN04, USN13 3000 and 9000, USN01, JM06 and USN12.
+Main's `kPlaneMeshHitTestBound` is ON on both sides.
+
+- **P1, census.**
+  - `mesh_records / box_records` is at least 0.95, since 35 m dwarfs the gap.
+  - On the matched records, `matched_mesh_dist - matched_box_dist` is between +0.5 and +3.5 m on
+    every Kate row.
+  - A negative difference would mean a pose-origin mismatch. That is a mechanism failure.
+- **P2, damage per burst.** The mean `took=` of the blast lines against planes falls 5-15% on E2 and
+  USN13 9000.
+- **P3, aircraft deaths.**
+  - Small moves: E2 within 51 +/- 4.
+  - USN13 9000 falls by at most 10% from its 115.
+  - The kills that remain come later, since more bursts are needed.
+- **P4, torpedo releases.** They stay the same or rise by 1-2 on E2, USN04 and USN13 9000.
+- **P5, controls.** JM06 and USN12 are gameplay-identical.
+
+**Mechanism failure:**
+- `mesh_records = 0`; or
+- a negative distance difference; or
+- `took=` unchanged with ON records.
+
+### 10.5 The pair: the mechanism held; flip ON
+
+**Setup.**
+- Same-tree exports of `d695ce9c0` (main with section 9 ON, plus this switch OFF):
+  - `local\g16_fboff`, SHA-256 prefix `D6808F497493`;
+  - `local\g16_fbon`, `CCA0D98DDD45`.
+- Launch, rows, smoke and scripts are as in 9.5. The per-burst figures come from
+  `local\g16_fbstats.py`, which takes the `impact blast` lines on units whose names do not contain
+  "class".
+- The runs ended by 03:35 UTC.
+
+| row | pair_diff | census OFF: mesh / box records | matched distance, box -> mesh | mean damage per plane burst OFF -> ON | deaths | torpedo-task releases |
+| --- | --- | --- | --- | --- | --- | --- |
+| E2 9200/9000 | 3 | 778 / 827 (0.94) | 17.44 -> 20.62 m (+3.18) | 11.40 -> 9.83 (-14%) | 51 -> 51 | 4 -> 5 |
+| USN04 4700/4500 | 3 | 778 / 827 (0.94) | 17.44 -> 20.62 (+3.18) | 11.40 -> 9.78 (-14%) | 51 -> 50 | 4 -> 5 |
+| USN13 3200/3000 | 3 | 310 / 331 (0.94) | 9.81 -> 13.49 (+3.68) | 16.28 -> 13.65 (-16%) | 23 -> 21 | 0 -> 0 |
+| USN13 9200/9000 | 3 | 1268 / 1320 (0.96) | 11.15 -> 13.34 (+2.19) | 14.79 -> 13.79 (-7%) | 114 -> 117 | 3 -> 3 |
+| USN01 3200/3000 | 3 | 32 / 34 (0.94) | 0.74 -> 2.34 (+1.60) | 22.83 -> 22.65 (-1%) | 5 -> 5 | 0 -> 0 |
+| JM06 3200/3000 | **1** | 0 / 0 | - | unchanged | 1 -> 1 | - |
+| USN12 3200/3000 | **1** | 0 / 0 | - | unchanged | 4 -> 4 | - |
+
+**The OFF side matches main.**
+- The E2 OFF figures equal section 9.5's ON run, apart from the new census line.
+- USN13 9000 differs from 9.5's ON run (114 against 115 deaths) because main moved in between
+  (merges of cc9-ships18). The pair itself is same-tree.
+
+**Death tables, per entity.**
+- E2: none only on one side; 46 re-timed.
+- USN04: one aircraft only OFF.
+- USN13 3000: two aircraft only OFF.
+- USN13 9000: 4 only OFF, 7 only ON.
+- USN01: none.
+- No ship death changes on any row.
+
+ON, the planes live longer, so they take more bursts (E2 827 -> 947 lines, USN13 9000 1335 ->
+1371).
+
+**Against 10.4:**
+- **P1, census: held in kind, missed by a hair in size.**
+  - `mesh_records / box_records` is 0.94-0.96 against the predicted 0.95 or more.
+  - The distance gap is +1.6 to +3.7 m against the predicted +0.5 to +3.5 m. USN13 3000's +3.68 is
+    just over.
+  - No gap is negative, so the pose origin agrees (10.1).
+- **P2, damage per burst: held.** It falls 14% (E2, USN04), 16% (USN13) and 7% (USN13 9000). USN01
+  is -1%: its bursts are nearly contact bursts.
+- **P3, deaths: held on E2, USN04 and USN13; missed on USN13 9000.** There the count rose by 3,
+  against a predicted fall. The 4 / 7 swap is RNG- and path-coupled (shared generator 00BD2F10).
+- **P4, torpedo releases: held.** E2 and USN04 go 4 -> 5; USN13 9000 is unchanged.
+- **P5, controls: held.**
+- **Mechanism failure: not met.** There are records, every distance gap is positive, and `took=`
+  fell.
+
+**Verdict: flip ON (`kPlaneBlastElementEntriesBound = true`).** The distance rule is the image's.
+The sizes that missed (P1's ratio and gap, P3 on USN13 9000) are recorded.
+
+### 10.6 Where the AA path against torpedo planes stands
+
+Every stage has now been compared with the image, and each is either faithful or bound ON:
+
+| stage | where |
+| --- | --- |
+| target velocity | 3 |
+| skill errors | 7 |
+| barrel count and cadence | 8.2 |
+| damage per hit, HP, armour | 1, 8.2 |
+| aim point | 8.2 |
+| hit notice | 8.5 |
+| direct-hit shape | 9 |
+| blast distance | 10 |
+
+**Two stages were not audited, and are recorded as open:**
+- **Target selection and the range gates of the AA bots** (`00902920`, `009030C0` and the AA
+  director). No section compares which plane a mount picks and at what range it opens fire.
+- **The flak proximity lock's passing rule** (`0070C7B6`-`0070C806`, 10% per tick beyond 50 m;
+  the flak comment in `src/game_hosts_gunnery.cpp` records it as not modelled).
+
+With those two open, torpedo-plane attrition is faithful at every audited stage. It is not yet
+faithful end to end.
