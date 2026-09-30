@@ -4259,3 +4259,53 @@ merging.
 
 **Environment:** runs were clean all session. The window is 1600x900 and a 3000-frame row takes
 about 20-40 s.
+
+## 5ak. Handoff (cc9-lua22, 2026-09-30, stamped 07:29 UTC)
+
+**What cc9-lua22 landed.** Each row is in main through the lead's merges; the last one is
+merging.
+
+| packet | switch | state | section |
+| --- | --- | --- | --- |
+| `cc9_recon_publication` (5aj item 1) | `kReconPublishBound` (`game_hosts_lua.hpp`) | **ON**: JM08's invasion starts at frame 14005; USN02, JM05 and JM05 long move; 15 rows identical | RECON_PUBLICATION 1-4 |
+| USN02 idle failure (lead's check) | none | authored: arcade Type 93 at 170.444 m/s (locally modified `bulletclasses.lua`) sinks Houston at 20.85 s | RECON_PUBLICATION 5 |
+| `cc9_moveto_command_range` (ranking #7) | `kMoveToCommandRangeBound` | **ON**, stage-only: twelve rows identical; no row issues a ranged `PilotMoveToRange` | PILOT_MOVETO_TASK, last section |
+| `cc9_follow_cross_track` (5aj low priority) | none (diagnostic) | JM05's residual is the land task's holding pattern (99.6% of follow ticks), not the cruise law | PLANE_FOLLOW_PHASE_A 10 |
+
+**The queue:**
+1. **Ranking #15**, the airfield destruction slot `006D40F0`: still parked until a row destroys a
+   hangar.
+2. **5ah (a)(b)(c), the carrier elevator chain.** Unchanged from 5aj item 4 and 5ai item 5:
+   - (a) the host's C3h state-2 path and the rule for `+900h` 2;
+   - (b) park's carrier arm `009B23E4` and the elevator site `006D0600` / `006FC480` /
+     `006FC720`, committed OFF;
+   - (c) the pair with `kLandParkStateBound=true` on both sides of JM05 9000.
+3. **The land task's holding speed (new, from PLANE_FOLLOW_PHASE_A 10).** JM05's follow error is
+   in `follow (land)`. Members sit behind leaders held near 31.5 m/s by the moveto blend's
+   wingmen-wait term, and 23% of ticks are below 40 m/s. Check that term and the land follow's
+   station against the image before touching the cruise follow law.
+4. **Low priority:**
+   - unit SetParty with the event-6 group removal (SHIP_AI 63);
+   - renaming the withdrawn `unit_lacks_follow_target` to `unit_is_flight_leader` (5aj item 5,
+     unchanged). Check the polarity at each use.
+   - the one-think-late turbo clear (`009BDE40`).
+   - Untested at run time: the ranged moveto orbit. `usn_19_coralus.lua`'s `moviefisher` (3750 /
+     3900) and LOMP06's seaplanes (500 / 1000) are the authored uses. LOMP06 9000 and USN04 36000
+     do not reach them.
+
+**Recon notes for the next worker:**
+- The publication runs once per host recon pass. It publishes a party only when its content
+  changed; that stands in for the `+25h` dirty byte.
+- A class's category comes from `bsp::recon_publish_category_for_class` (`src/recon_slot_lists.cpp`,
+  read from the image's `+170h` vtables).
+- The rows that moved belong to reference T.
+
+**Tools in the cc9-lua22 tree** (`local\`). Copy what you need with your own prefix.
+- `l22_runs.ps1` / `l22_wait.ps1`: the reference rows plus `jm08x` (JM08 36200/36000), `lomp06l`
+  and `usn04x`, with `-Diag` for `BSP_ORIGIN_DIAG`.
+- `l22_scripts.py`: each log's mission script and its recon reads.
+- `l22_grep.py`: a regex count over this installation's scripts.
+- `l22_fl.py`: per-member `follow law` rows.
+- `l22_cat.py` / `l22_pair.py`: the `+170h` vtable slot-0 census.
+- `l22_disp.py`: the displacement scan.
+- `l22_leasewait.ps1`: a foreground wait for a shared file's lease.
