@@ -332,6 +332,13 @@ struct GameAiSummary {
 // pass; the coordinator reads them when kAiPartyGateUnforcedBound is set.
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties);
 
+// Packet cc9_ai_owner_player_slot (docs/SHIP_AI_OPEN_ITEMS.md section 71). The
+// scene's authored `OwnerPlayer` ordinals other than 9, by entity name: unit+180h
+// as 0077F1F9 stores it. The scene contents host publishes them after its load;
+// the coordinator reads them when kAiOwnerPlayerSlotBound is set. Replaces any
+// earlier publication.
+void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int>>& owners);
+
 class GameAiCoordinatorHost {
 public:
     GameAiCoordinatorHost(GameHostLog& log, GameUnitsHost& units);

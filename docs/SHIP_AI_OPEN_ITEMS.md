@@ -5959,3 +5959,292 @@ identical, and the misses are counts.
 - The t=0.05 orders still come from the host's stand-in weight of 1.0: the weapon-facts rows are
   published after the first think. That is a publication-timing substitution in the units host,
   not this switch.
+
+## 71. Section 60's labelled links: the Party ordinals and `OwnerPlayer "AI control"` (packet `cc9_ai_owner_player_slot`, cc9-ships19, 2026-09-30)
+
+### 71.1 The Party ordinals are settled
+
+- The scene reader resolves `E <table> : <symbol>` through the library's enum tables
+  (docs/SCENE_PROPERTY_BAG.md, `0048E840`). These are not native strings: `"Players"` and
+  `"AI control"` occur nowhere in the exe.
+- This installation's `universe/library/global.enums` (mtime 2024-10-29) declares
+  `enum Party { Allied = 0, Japanese = 1, Neutral = 2 }` at lines 1705-1710. That matches the
+  `luamw_init.lua` ordinals the party gate took. The link is closed and changes no behaviour.
+- The host's own library (`game_hosts_scene_contents.cpp`, `PropertyLibrary::resolve_symbol`)
+  already resolves `Party` this way for unit records.
+- The hard-coded `Allied/Japanese/Neutral` mapping for the slot parties in
+  `game_hosts_mission.cpp` (not this lane's file) gives the same numbers. Its comment still cites
+  `luamw_init.lua`; the source of truth is `global.enums`.
+- The native `00E0CF24` table (`Allied`, `Axis`, `Neutral`) is a different list. It is not the
+  scene enum.
+
+### 71.2 `OwnerPlayer` is a unit property, not a `MultiType` one
+
+Section 60.1 said the entries sit inside `MultiType` blocks. They do not. In, for example,
+`ijn_05_invasion_of_port_moresby.scn` lines 1167-1169 (mtime 2024-07-13), `"MultiType" { }` is empty
+and `OwnerPlayer = E Players :"AI control" ;` is its sibling in the entity's bag.
+
+- **The enum.** `global.enums` 1725-1737 declares `enum Players`: `"Player 1"`..`"Player 8"` = 0..7,
+  `"AI control"` = 8, `"Any player"` = 9. The group default is
+  `OwnerPlayer = E Players:"Any player"` (line 1757).
+- **The producer.** `0077F0E0` activation hands the found record's `+0Ch` to vtable `[144h]` at
+  `0077F1F9`, which stores `unit+180h`. It passes 9 when the bag has no `OwnerPlayer`
+  (`0077F1F1`, docs/AI_BRAIN_PLAYER_EXEMPTION.md).
+- **The consumer, `009FFD20`** (live decompile, `009FFD20-009FFD5C`):
+  - `+180h == 8` returns -1;
+  - `+180h < 8` returns `+180h`;
+  - otherwise the single-player team rule applies: 0 on the local team, else 4.
+- **The AI sites** are `00A2DFA0` (the group's `+5634h`), `00A2DDE0` (evict a member whose slot
+  differs) and `00A16EF0`.
+- **The consequence.** A group led by an "AI control" unit is NONCONTROL (`00A2E124`, slot -1). Any
+  other group evicts such a unit on its next evict pass.
+
+**The reference rows' entries.** `local\s19_owners.py` walks every scene. The OFF census line is
+`ai owner player`, run from `local\s19_c_<row>.log`, 300 frames.
+
+| row | units with `+180h = 8` | side | slot, OFF (+180h taken as 9) | slot, ON |
+| --- | --- | --- | --- | --- |
+| JM05 | SecondaryAirfieldEntity 01, MainAirfieldEntity 01, MainShipyardEntity 01, MainShipyardEntity 02 | 0 | 4 (planned) | -1 |
+| LOMP10 | CB4_AF, CargoShip | 0 | 0 | -1 |
+| LOMP10 | CB4_AF_Hangar | 2 | 4 (planned) | -1 |
+| USN12 | Fortress-07..10 | 0 | 0 | -1 |
+| USNOS | Airfield3, Multi Hangar 1 | 1 | 4 (planned) | -1 |
+| JM08 | MainAirFieldEntity 01 | 1 | 0 | -1 |
+
+That is 14 entries on these rows, as section 60 counted. Across all scenes, `s19_owners.py` finds
+2392 `OwnerPlayer` lines, and the non-reference scenes author "AI control" on many ships (BSM, CHG).
+No reference row authors `"Player N"`.
+
+**Bound OFF: `kAiOwnerPlayerSlotBound`** (`src/game_hosts_ai.cpp`, which needs the party gate).
+- **The scene side.** The scene contents host resolves each record's `OwnerPlayer` through its
+  library and publishes the values other than 9 by entity name. The call is
+  `ai_publish_scene_owner_players`, and the log line is `scene owner players: ...`.
+- **The ON path.** `unit_slot_009ffd20` replaces the team-only rule at the three host sites:
+  `create_group`, `evict_invalid_members` and the party-record census.
+- **LABELLED.** The key is the entity name, because this process has no entity object; a name
+  authored with two values reads as 9 (`conflicts=` in the census line). Generated squadrons and
+  wing members take 9. The session and message writers of `+180h` (docs/AI_BRAIN_PLAYER_EXEMPTION.md)
+  are not modelled; none is reached in single player.
+
+**Predictions (written before the ON runs):**
+- **JM05 and USNOS** have entries whose OFF slot is 4, the planned slot.
+  - ON, those units leave slot 4. `other_slot_groups` in `summary mission ai party gate` drops,
+    because the airfields and shipyards lead groups of their own or are evicted from mixed ones.
+  - The deaths are predicted unchanged. These are static installations, and the close-attack
+    member gate (`00A143ED`/`00A14427`) serves no airfield (`served=0` on the OFF log). Any
+    gameplay move comes only through a group that one of these units led and that held ships.
+  - Exit 1 is the prediction; exit 3 is possible on that one path.
+- **LOMP10** also has CB4_AF_Hangar at slot 4 -> -1: the same prediction as JM05.
+- **USN12 and JM08**: slot 0 -> -1, and both are NONCONTROL either way. The census moves
+  (`local_slot_groups` can drop), and the rows are gameplay-identical (exit 1).
+- **Controls USN04 and USN13** author no `OwnerPlayer` 8. They are identical apart from the new
+  census lines (exit 0 or 1).
+
+### 71.3 The pairs, and the decision
+
+**Runs.** Pair `9de336d8b`: OFF is the tree build and ON is `local\s19_p2`. Reference launch form,
+3200/3000, lockstep 0.05, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`.
+
+| row | exit | predicted | what moved |
+| --- | --- | --- | --- |
+| JM05 | 3 | 1 (3 possible) | death rows identical (1); the four airfields and shipyards leave slot 4; `prox_merges 200 -> 195`, `members_added 539 -> 436`, `tick_orders 1189 -> 1160`; USS Phelps moved 2649 -> 2625 m; the other units change only in nearest-enemy distance |
+| USN12 | 3 | **1, missed** | death rows identical (4); `local_slot_groups 16 -> 12`, `prox_merges 12 -> 9`; Fortress-10 deals 452 -> 462; Shigure and Samidare damage taken moves |
+| LOMP10 | 1 | 1 | none |
+| USNOS | 1 | 1 | none |
+| JM08 | 1 | 1 | none |
+| USN04 | 1 | 1 | none (control) |
+| USN13 | 1 | 1 | none (control) |
+
+**The USN12 miss is a missed consequence of the same rule, not a different mechanism.**
+- `00A2DFA0` stores the slot at `00A2E03C` and inserts the group into the per-party list
+  `00F8A9E8 + slot*0Ch` only when the slot is not below 0 (`00A2E03A CMP EAX,EDI / 00A2E04B JL
+  00A2E086`, disk bytes). The host has the same guard in `create_group`.
+- A slot -1 group is therefore in its team list, where it is a target candidate, and in no party
+  list. It never thinks, so it never proximity-merges.
+- On USN12 the four fortress groups stop merging into the slot-0 groups (`prox_merges 12 -> 9`).
+  The Japanese brain then sees four more candidate groups, which moves its orders.
+- The prediction had reasoned only that both states are NONCONTROL.
+
+**Decision: `kAiOwnerPlayerSlotBound` is ON.** The mechanism is the image's (`009FFD20` and the
+`00A2E04B` guard, both read). No death row moved on any of the seven rows. The five rows without a
+slot-4 or merge consequence are gameplay-identical. The USN12 miss is recorded above.
+
+**Still LABELLED:**
+- the key is the entity name;
+- generated squadrons and wing members take 9;
+- the `+180h` writers other than `0077F1F9` are not modelled (the message arm `0095AC28`, the
+  session dispatchers, `006F4D10`).
+
+## 72. The retarget arm's modes 3 and 4, read (packet `cc9_approach_retarget_modes_3_4`, cc9-ships19, 2026-09-30)
+
+**Read whole:** `009F2161-009F2395` (disk bytes, `local\s19_arm34.txt`), and the callees `006F2DE0`,
+`006F3AF0` and `00749D90` (live decompile). The latch (`ship_ai_approach_mode_latch_009f1f47`)
+gives mode 3 or 4 only when the target at `ctl+0B20h` is an enemy CommandBuilding (IsKindOf 1Ch)
+and the unit's class lands troops (vtable `+2Ch`). Mode 3 is the one inside the reach;
+mode 4 is the standoff.
+
+**The shared head (`009F2169-009F219A`).** `EDI` = `[ctl+0B20h]` when it answers IsKindOf(1Ch), else
+0; that value is spilled to `[ESP+14h]`. Mode 3 continues; mode 4 is taken at `009F233D`.
+
+**Mode 3 (`009F21A0-009F2338`):**
+```
+ESI = unit ([ctl+0AA8h]) when IsKindOf(0Ch), a landing ship, else 0
+006F2DE0(building)(ESI)              ; releases every pad of the building's +794h vector whose
+                                     ; occupant (006AC220, pad+1F8h) is this unit (006AC490(0)),
+                                     ; under the critical section at building+764h
+EBX = 006F2E60(building)(ESI, 0)     ; the pad the unit holds, else the nearest free one
+if (EBX == 0) done                   ; 009F21D4
+point = 006AC5D0(pad)(&out, &unit+0FCh, [[unit+538h]+570h], 200.0f [00CE386C])
+nested+1228h..1230h = point          ; 009F2214-009F2228
+d = |point - unit+0FCh| (0042B2F0)
+reach = max(00811A30(unit, 1.0) * 2.5 [00CE3DE0 double], 300.0f [00CE3AE8])   ; 00415550
+if (!(reach > d)) done               ; 009F22E3 FCOMIP / JBE
+[ctl]+3FCh = 0 (byte)                ; 009F22F0
+if (unit+1200h != 0) done            ; 009F22F7
+msg = 00749D90(&local, pad, building); 0077C2A0(unit)(msg, 7, 0)
+```
+`00749D90` (`00749D90-00749DEF`, `RET 8`) builds session message 0A5h
+(`BSP_SessionMessage_ConstructBase(0A5h)`, vtable `00CFF908`). It carries the pad's `+174h` id at
+`+1Ch` and the building's `+174h` id at `+1Eh`. `0077C2A0` is `EntityOrder::route_message`, so
+the landing ship is told to land at that pad.
+
+**Mode 4 (`009F2342-009F2395`):**
+- The point is `006F3AF0(building)(&out, &unit+0FCh, [[unit+538h]+570h])`.
+- `006F3AF0` (`006F3AF0-006F3CBB`, `RET 0Ch`) takes the xz of the pad nearest the unit, by 3-D
+  squared distance over the `+794h` vector. The seed is `FLT_MAX` (`00D7A248`). With no pad it
+  takes the building's own xz.
+- It then hands that point to `00417E60` on the avoid-zone manager singleton, with 10.0f
+  (`00CE38B8`) and the class's zone group. Its answer's x and z are stored with y = 0.
+- `00417E60` is unread; presumably it pushes the point out of that zone group.
+
+**Why nothing is bound.** Neither mode can run in this process:
+- no building carries a landing-pad vector (`+794h`/`+798h`), and no pad carries an occupant
+  (`+1F8h`), an id (`+174h`) or an approach cache (`+208h..`, 006AC5D0);
+- `00417E60` and the unit's handler for message 0A5h are unreconstructed. `ship_ai_follow_land`
+  declares the pad seams (`pick_landing_pad_006f2e60`, `pad_approach_point_006ac5d0`), but no host
+  implements them;
+- `unit+1200h` and `ctl+3FCh` have no reader here.
+
+**No reference row reaches them.** The latch census in reference r (`summary mission ship ai
+approach latch`, `local\g15_rr_*.log` in cc9-gunnery15's tree) shows `lander=0` and modes 3 and 4
+at 0 on all 17 rows. Only LOMP10 and LOMP10 long latch a building target (601 and 1801 frames),
+and neither of those is a landing ship. The close-attack gate also refuses landing-ship members
+(`00A1443D`, `ai_close_attack_member_served`). A planner reaches these modes only through a
+script attack order or the Capture spawn arm (`00A2B400`, a record here).
+
+**Decision: labelled, no switch.**
+- The host comment at `ShipAiApproach::retarget_modes_3_4` now names the missing producers.
+- A future packet needs the building pad model first. That is the units/landing lane:
+  - the pads are built with the building (`+794h`);
+  - `006F2FB0`, `006AC490`, `006AC5D0`'s cache and `00417E60` come next;
+  - then the message-0A5h landing handler.
+- Only after that can modes 3 and 4 be bound. They also need a row with a troop landing on an enemy
+  CommandBuilding: this installation's BSM03 and BSM08 author LandingShipGen units, but as
+  "AI control" (section 71), so they are NONCONTROL and not planned.
+
+**Names for the lead (hypotheses, bodies verified RET then INT3):**
+- `006F2DE0-006F2E54` `BSP_CommandBuilding_ReleaseUnitPads` (`__thiscall(building)(unit)`, `RET 4`);
+- `006F3AF0-006F3CBB` `BSP_CommandBuilding_NearestPadStandoffPoint` (`__thiscall(building)(float3*
+  out, const float3* from, int zone_group)`, `RET 0Ch`);
+- `00749D90-00749DEF` `BSP_SessionMessage_LandAtPad_Construct` (message 0A5h,
+  `__thiscall(msg)(pad, building)`, `RET 8`).
+
+## 73. Handoff (cc9-ships19, 2026-09-30, at about 70% context)
+
+**Landed on main:**
+- 70 (`kCaptureGroupValueBound` ON: 00A250A0 replaces the members x defenders stand-in);
+- 71 (`kAiOwnerPlayerSlotBound` ON: `OwnerPlayer` reaches 009FFD20; the Party ordinals are settled
+  from `global.enums`);
+- 72 (retarget modes 3 and 4 read; nothing bound).
+
+The lead applied the three names from 72.
+
+**Switches this lane changed:**
+
+| switch | state | section |
+| --- | --- | --- |
+| `kCaptureGroupValueBound` | ON | 70.1 |
+| `kAiOwnerPlayerSlotBound` | ON | 71.3 |
+| `kShipAiObstacleBackoffCountdownBound` | still OFF, exact, no reach | 65.5 |
+
+### The next main packet: the troop-landing / CommandBuilding pad model
+
+The goal is for retarget modes 3 and 4 (`009F21A0-009F2395`, section 72) to run. Every address below
+has been read, unless it is marked unread.
+
+1. **Build the pads with the building.**
+   - A CommandBuilding holds a pad vector at `+794h` (begin) / `+798h` (count, stride 4), guarded by
+     the critical section at `+764h`.
+   - Each pad carries:
+     - its occupant at `+1F8h` (`006AC220`: `MOV EAX,[ECX+1F8h]; RET`);
+     - an id at `+174h` (read by `00749D90`);
+     - its owner base at `+220h`;
+     - a cached approach line at `+208h..+21Ch` (docs/SHIP_AI_OPEN_ITEMS / `ship_ai_follow_land.hpp`
+       line 294).
+   - The producer that fills `+794h` has not been found yet.
+     - Start from the CommandBuilding creator `006F2780`, which also stores `CaptureRange +7A0h` and
+       `LandingRange +7C4h`, and from the Landscape/model attach.
+     - Scan disp32 `794h` stores with `local\s19_disp.py 794`, and read every hit with
+       `s19_before.py`.
+2. **The pad routines.**
+   - `006F2E60` (pick the pad: the one this unit holds, else the nearest free one; read) and
+     `006F2DE0` `BSP_CommandBuilding_ReleaseUnitPads` (read).
+   - `006F2FB0` (assign; read, but its inner calls are unread) and `006AC490` (clear or set the
+     occupant; unread).
+   - `006AC5D0`: the per-call arm is reconstructed as `ship_ai_land_pad_approach_point_006ac5d0`; the
+     cache refresh is not.
+   - `006F3AF0` `BSP_CommandBuilding_NearestPadStandoffPoint` (read).
+   - `00417E60` on the avoid-zone manager (unread; takes 10.0f `00CE38B8` and the class zone group).
+   - The seams are already declared in `include/bsp/ship_ai_follow_land.hpp`
+     (`pick_landing_pad_006f2e60`, `assign_landing_pad_006f2fb0`, `pad_approach_point_006ac5d0`,
+     `pad_occupant_006ac220`). No host implements them. The units host owns the buildings, so this is
+     shared with the units lane.
+3. **The landing message.**
+   - `00749D90` `BSP_SessionMessage_LandAtPad_Construct` builds message 0A5h (vtable `00CFF908`, pad
+     id at `+1Ch`, building id at `+1Eh`). `0077C2A0` routes it at class 7.
+   - The unit's 0A5h handler is unread; start from `Unit_HandleMessage` `0095ABE0`.
+   - Mode 3 also reads `unit+1200h` and writes `[ctl]+3FCh`; neither has a host counterpart.
+4. **Bind modes 3 and 4 OFF, then pair on a row that reaches them.**
+
+**Which rows could reach a troop landing:**
+- **JM08 (scripted, the best candidate).** `scripts/missions/COTP-IJN/PRCPIJN/jm08.lua` (and
+  `prcpjm08.lua`, both mtime 2024-07-13):
+  - line 757, `CheckInvasion`: when Allied ships come within 300 m of (0,0,0),
+    `StartInvasion` orders `NavigatorAttackMove(unit, Mission.HQ)` for the invasion force. It also
+    sends `USTroopTransport 01..06` (`Mission.APs`, line 533) to `Mission.LandPoints`.
+  - line 825, `CheckAP1..6`: within 200 m of its land point, each transport is ordered to
+    `NavigatorAttackMove(AP, Mission.HQ)`.
+  - `Mission.HQ` is `Headquarter 01`, a `CommandBuilding` (`prcpijn_08_defend_guadalcanal.scn` line
+    5132). So a landing-class unit gets an enemy CommandBuilding target from the script, not from a
+    planner.
+  - The reference JM08 row (3000 frames) latches nothing (`approach latch frames=0` in
+    `g15_rr_jm08.log`), so the invasion has not started by then.
+  - **First step:** run JM08 at 9200/9000. Check `summary mission ship ai approach latch` for
+    `lander>0` and modes 3/4 > 0, and check which script file the row loads.
+- **BSM02 and BSM06** have landing scripts too (`luaSpawnLandingWave`, `luaCommenceLandings`,
+  `luaLCVPLanding`); they are not reference rows. `multi/siege907.lua` is multiplayer.
+- **BSM03 and BSM08** author their LandingShipGen units as `OwnerPlayer "AI control"` (section 71),
+  so no planner orders them. Only their scripts could.
+- **Planner reach** is nearly closed:
+  - the close-attack gate refuses landing-ship members (`00A1443D`);
+  - the Capture spawn arm (`00A2B400`, a record here) would be the planner path to a landing.
+
+**Still waiting:**
+- **The back-off countdown** (65.2, `kShipAiObstacleBackoffCountdownBound` OFF) needs a row where
+  `009F47A7` arms (`held_steps > 0` in `summary mission ship ai backoff countdown`). None of the
+  rows run in 70-72 armed it; I did not check each log for it.
+- **The t=0.05 weapon-facts timing** (70.1) was routed by the lead to cc9-lua21.
+- **The `global.enums` comment** in `game_hosts_mission.cpp` (71.1) was routed to the mission-host
+  owner.
+
+**Tools** (in `J:\PROG\battlestations-pacific-decompile-cc9-ships19\local\`, `s19_` prefix):
+- the s18 tools, retargeted: `s19_rel32.py`, `s19_disp.py`, `s19_before.py`, `s19_vslot.py`,
+  `s19_kinds.py`;
+- `s19_runs.ps1 -V <name> [-Exe <path>] -Only <rows>` (adds usn12, usnos and jm08) and
+  `s19_wait.ps1`;
+- `s19_short.ps1 -Menus <rows>` (300-frame census runs) and `s19_diag.ps1` (one run with
+  `BSP_CAPTURE_DIAG=1`);
+- `s19_capval.py <log>` (the capture group values per group);
+- `s19_owners.py` (every authored `OwnerPlayer` in this installation's scenes);
+- `s19_str.py <text>...` (string VA and abs32 refs in the PE) and `s19_dump.py <va> <n>` (dwords
+  with the strings they point at).

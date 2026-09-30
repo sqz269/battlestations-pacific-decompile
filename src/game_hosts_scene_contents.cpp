@@ -8,6 +8,7 @@
 #include "bsp/camera_inverse.hpp"
 #include "bsp/main_menu_map_point_geometry.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/cruise_speed_setting.hpp"
@@ -1520,6 +1521,20 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.party_symbol = party.symbol;
     record.party = party_id;
     record.race = race_id;
+    {
+        // Packet cc9_ai_owner_player_slot: 0077F1C8.. finds `OwnerPlayer` and
+        // hands its +0Ch to vtable[144h] (unit+180h), else 9 (0077F1F1).
+        const SceneEnumProperty owner_player = scene_enum_property(bag, "OwnerPlayer");
+        if (owner_player.present) {
+            record.owner_player_symbol = owner_player.symbol;
+            int value = 9;
+            if (owner.library.resolve_symbol(owner_player.table, owner_player.symbol, value)) {
+                record.owner_player = value;
+            } else {
+                ++owner.summary.owner_player_unresolved;
+            }
+        }
+    }
     {
         // Packet cc9_scene_unit_skill: 00927A80. Both finds go through 008F2260
         // and read the record's +0Ch integer, so an enum symbol resolves through
@@ -4473,6 +4488,20 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
         }
         scene_terrain_query_census() = SceneTerrainQueryCensus{};
         scene_terrain_quadtree_census() = SceneTerrainQuadtreeCensus{};
+    }
+    // Packet cc9_ai_owner_player_slot: every authored OwnerPlayer other than
+    // 9, by entity name, for the AI coordinator's 009FFD20 (unit+180h).
+    {
+        std::vector<std::pair<std::string, int>> owners;
+        for (const GameSceneEntityRecord& entity : impl.entities) {
+            if (entity.owner_player != 9) owners.emplace_back(entity.name, entity.owner_player);
+        }
+        impl.log.notef("scene owner players: %zu authored non-default (unit+180h, 0077F1F9), "
+            "%zu unresolved symbol(s)", owners.size(), impl.summary.owner_player_unresolved);
+        for (const auto& row : owners) {
+            impl.log.notef("  scene owner player %s = %d", row.first.c_str(), row.second);
+        }
+        ai_publish_scene_owner_players(owners);
     }
     // The wings 007F4580 spawned, flushed after the census loops so the scene
     // tallies stay a count of scene rows: a member plane is not a scene entity,
