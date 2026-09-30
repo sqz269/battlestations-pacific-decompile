@@ -2195,7 +2195,7 @@ struct GameUnitsHost::Impl {
     // third argument writes (008A46DC). The circle state's radius is then
     // max(approach+6Ch, TurnCircleRadius) (009C27A6). True: the unit's issued moveto
     // range stands for the block's head. False: 0 stands in, so r = TurnCircleRadius.
-    static constexpr bool kMoveToCommandRangeBound = false;
+    static constexpr bool kMoveToCommandRangeBound = true;  // ON: stage-only, twelve rows identical (docs/PILOT_MOVETO_TASK.md)
     void moveto_arrival_end_command_009c3100(GameUnitSlot& unit);
     unsigned long long moveto_end_calls{0}, moveto_end_no_squadron{0}, moveto_end_not_moveto{0};
     unsigned long long moveto_end_commands{0}, moveto_end_retired{0}, moveto_end_promoted{0};

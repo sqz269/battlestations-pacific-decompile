@@ -1142,3 +1142,29 @@ stands in for its queue head. The tick runs only while the unit's command class 
    A LOMP06 9200/9000 pair is run to look for reach. If it reaches, the orbit radius of an arrived
    leader becomes the authored range wherever that exceeds TurnCircleRadius, and nothing else
    changes.
+
+### The pairs, and the flip
+
+Setup:
+- Same tree, commit `adf3c170b`. `local\l22_r7off` (SHA-256 `4BA6B081D0E0`) against
+  `local\l22_r7on` (`D11C23AB97B6`, `--flip kMoveToCommandRangeBound=true`).
+- The reference launch form (`local\l22_runs.ps1`).
+- Twelve rows: USN04, E2, JM05, JM05 long, USN01, USN13, IJN01, LOMP10, JM08, USN02, BSM01 and JM06.
+
+**Prediction 1 held.** Every row is exit 0 or 1.
+- The copy ticks on USN04 (16754), E2 (16758) and JM08 (10201). On those rows the only native
+  change is `command_block_range_6c` going from record to concrete.
+- USN13's exit 1 is the known sector-scan and clearance noise.
+- JM05 long no longer reaches a moveto tick at all, so the ranking's "JM05 9000 30222" reach is
+  stale.
+
+**Prediction 2: no reach.**
+- A LOMP06 9200/9000 run on this tree issued no `PilotMoveTo*` at all.
+- A USN04 36200/36000 run issued only the eight two-argument `PilotMoveToRange` calls
+  (`range=0.0`).
+- So no row here gives a three-argument range above TurnCircleRadius. The binding is verified
+  only as identity.
+
+**Decision: ON** (stage-only), as with `kMoveToArrivalEndCommandBound`. A mission that issues
+`PilotMoveToRange(unit, target, r)` with r above TurnCircleRadius will now orbit at r once its
+leader arrives. That branch is untested at run time.
