@@ -8395,3 +8395,62 @@ This corrects the reading of 5cd.2. It comes from the commands host's own row ta
   squadron's ammo type is non-zero.
 
 Nothing is bound in this section. The `commands` loan is not needed for this finding.
+
+## 5cf. Handoff (cc9-lua30, 2026-09-30)
+
+Branch `agent/cc9-lua30`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua30`. No lease
+is held after this handoff. This file is not on loan; `src/game_hosts_ai.cpp` and
+`src/ai_command_tick.cpp` were lent for the packet below and are handed back untouched.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_strafe_arm` | `f3ef5bbcf`, `635620a4d` | `kStrafeTaskBound`, `kAttackChoiceGunsFedBound` | bound | 5ca |
+| `cc9_strafe_flip` | `bb1a1e2c8` | both | **ON**, misses recorded | 5cb |
+| `cc9_strafe_row_divergence` | `6e2d656d3` | - | closed: two binaries, the runs are line-identical | 5cc |
+| `cc9_strafe_unitcommand` | `d9fcb3794`, `4b9a1a4cc` | - (env trace `BSP_UNITCOMMAND_TRACE`) | read | 5cd, 5ce |
+
+### Where the AI-tick packet stands (the lead's loan, not finished)
+
+The question: why `GetProperty(unit, "unitcommand")` reads `moveto` after a strafe order on
+ESMP08, so that `08_engano.lua:584` re-targets every 15 s.
+
+Established:
+- The strafe order becomes the director's current command at issue (5ce).
+- The host's **AI coordinator** puts all 12 US strike squadrons of the first wave into one group:
+  `ai group team=0 party=4 members=12 claimed=1 command=MOVETOATTACK leader=TBM Avenger #1.1`
+  (`local\l30_uc_esmp08.log`, line 42022). The script spawns them as one `SpawnNew`
+  `groupMembers` wave (`08_engano.lua:519-535`).
+- In the image the squadrons are groupable combatants: `009FE080` admits a squadron whose
+  `007EDA90` is false (docs/AI_COMMAND_LIFETIME.md).
+- **`00A02020` has no current-command test.** The `MOVETOATTACK` closing arm `00A12A90` orders the
+  leader while the distance exceeds `CloseAttack_CollectDist` (5000), every 2 to 4 s on USN02
+  (docs/AI_COMMAND_TICK.md). The follower pass `00A10DC0` then sends every other squadron to the
+  leader's point.
+- So far nothing found in the image skips a squadron that holds an attack command. The
+  divergence, if any, is upstream:
+  - (a) whether the image's coordinator groups a script-spawned wave at all;
+  - (b) whether the group promotes to `CLOSEATTACK` (whose `00A13B60` is unread and may not order
+    squadrons) once within 5000 of the target group.
+
+  The host's group was still `MOVETOATTACK` at the end of the 4000-frame run, with 1062
+  `ai_command_tick` rows.
+
+Next, in order:
+1. Read the promotion: `00A12A90`'s distance is between the two groups' leader points
+   (`009FFC10`), and the US leader is a strike squadron closing on the fleet, so it should promote.
+   Log the host's distance and CollectDist for that group per think; if it never drops below
+   5000, find out why.
+2. Read `00A13B60` (CLOSEATTACK) for whether it issues to squadrons.
+3. Read the coordinator's seeding for script-spawned `groupMembers` waves (`seed_admits`,
+   `game_hosts_ai.cpp:789`; docs/AI_COORDINATOR_TICK.md).
+4. Bind any divergence OFF, with predictions. Pair ESMP08 (3000 and long), USNOS and two
+   controls. If ESMP08's strafers then keep their order, ESMP08 long is the goaway row (5cb).
+5. Then the script-dogfight rows: USNEX `usn_1_pearl.lua:1350-1357` (phase 3) and BSM04
+   `bsm_04_vengance_at_luzon.lua:1909` (after the intro movie) (5cd.3).
+
+Tools in `local\` of this tree:
+- `l30_runs.ps1` and `l30_launch.ps1`: the pair rows, and a detached launcher for the long rows;
+- `l30_firstdiff.py`: the masked first-difference of two logs;
+- `l30_apply_units.py` and `l30_strafe_methods.cpp.txt`: the 5ca edit;
+- `l30_uc_esmp08.log`: the `unitcommand` trace run;
+- `l30_{off,on}_<row>.log`: the 5cb pairs.
