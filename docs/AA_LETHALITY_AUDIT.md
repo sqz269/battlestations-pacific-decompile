@@ -1355,3 +1355,57 @@ Of 12.6's list:
    - The direction on deaths is up for structures. Ship and plane deaths may move either way.
 4. **Mechanism failure:** a move on a row where `admitted` is 0, or an acceptance of a class with
    rank 0.
+
+### 14.4 The pair, and the verdict: ON
+
+A same-tree pair at `8b657605f`: `local\g17_rk0` (SHA-256 prefix `D74C0B7A6890`) against `local\g17_rk1`
+(`--flip kReconContactAllKindsBound=true`, `1EBB7834CA5B`). USN01 and JM05 were re-run on
+`5b4a02cd1`, which adds only a `same_side` census, and gave the same death rows. The 300-frame USN01
+smoke is clean. Logs are `local\g17_rk{0,1}_<row>.log`.
+
+| row | exit | deaths OFF -> ON | census ON (class: scored / accepted) |
+| --- | --- | --- | --- |
+| USN04, E2, USN02, BSM01 | 1 | = | admitted 0 |
+| IJN01, LOMP10 long | 1 | = | IJN01 admitted 89664, 1B: 1 / 0 |
+| USN01 | 3 | 5 -> 17 | 1B 5500 / 2468, 1C 504 / 66, 45 504 / 107 |
+| JM05 | 3 | 1 -> 12 | 1B 44332 / 2514, 1C 2136 / 249 |
+| JM05 long | 3 | 5 -> 18 | - |
+| USNOS | 3 | 55 -> 107 | 1B 665796 / 5268, 1C and 45 scored, 0 accepted |
+| USNOS long | 3 | 68 -> 129 | - |
+| USN12 | 3 | 4 -> 7 | 1B 510 / 428 |
+| JM08 | 3 | 4 -> 5 | 1B 224501 / 3979 |
+| USN13 | 3 | 23 -> 24; first hit 96.65 s -> 5.15 s | 1B 55614 / 1779 |
+| JM06, LOMP06, LOMP10 | 3 | = (hits or shots only) | LOMP06 1B 2800 / 0 |
+
+**The new deaths are structures and land units.** Examples:
+- USN01: Heavy AA, containers and storage, killed by Northampton and CB2;
+- JM05: offices, radar stations, barracks and bunkers;
+- USNOS: the killers are Shimotsuke (54), Ada2 and Zao1.
+
+`same_side` is 0 on USN01 and JM05: every admitted contact is on another side than the sweeping unit.
+
+**Prediction check:**
+- **The four predicted-identical rows held.**
+- **The mechanism held:**
+  - every moved row has `admitted` > 0;
+  - the new acceptances are classes 1Bh (MLandFort), 1Ch and 45h;
+  - the squadron aggregate (18h) never reaches the range test (unranked);
+  - IJN01 and LOMP10 long admit contacts and stay identical, since none is ranked and in range.
+- **The direction held:** structure deaths rise.
+
+**Verdict: ON** (`kReconContactAllKindsBound = true`). It is a large mover on the rows with shore
+targets (USN01, JM05, JM05 long, USNOS, USNOS long, USN12), and a gunnery-side counterpart of the
+capture-value change in reference s. It belongs to reference t.
+
+**Uncertainty, and a new open item.** The host's `00862820` models only the four liveness bytes.
+From the disk bytes (00862843..008628CA), the image also requires:
+- the per-instance allow byte `[ai+CCh+cat*61h+class]` (memset to 1 in the constructor, so
+  faithful unless something writes it);
+- the rank at `[00E19BF8+(cat*61h+class)*4]`, which the host tests separately;
+- for category 7, `IsKindOf(6)` and not `IsKindOf(0Eh)`;
+- for a kind-8 target (a submarine), `00852820 BSP_Entity_IsAboveDepthChargeDepth`: categories 8
+  and 9 refuse it when that answers true, and every other category refuses it when it answers
+  false.
+
+The last two arms are not in the host's score. They do not bear on this packet's structure classes
+(not kind 8), but they are an open binding in this lane.

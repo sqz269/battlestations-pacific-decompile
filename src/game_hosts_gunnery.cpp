@@ -515,7 +515,7 @@ constexpr bool kReconTeamListsBound = true;
 //    triple, so the structures, land units and aggregates the scan publishes
 //    never reached 00863990. OFF: that pre-filter. Packet
 //    cc9_recon_contact_kinds, docs/AA_LETHALITY_AUDIT.md section 14.
-constexpr bool kReconContactAllKindsBound = false;
+constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.4
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
