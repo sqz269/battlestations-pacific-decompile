@@ -5949,3 +5949,175 @@ Expected totals: `up=2`, `top=2`, `down=2`, and `blocked` growing; about 22 memb
     - Until piece 4, the lift cadence is set by planes drifting off, not by a taxi.
 - **Airfields:** unchanged from 5az (six placed in state 5).
 - **No launched plane reaches state 7,** as expected before piece 5.
+
+## 5bb. Base launch chain, piece 4 part 1: the takeoff task read for the bind (packet `cc9_base_launch_takeoff_read`, cc9-lua25, 2026-09-30)
+
+Read only: no code changed in this part. It settles how a launched plane gets its takeoff task,
+the first state it enters, and the two short states. The `Takeoff` step `009CE2C0` (5av) is still
+the large remaining read.
+
+### The install is `007CA3F0`'s, not the bot tick's
+
+- `007CA3F0` (5az) ends, for a plane on a holder in single player, with **`0099A4A0`** (`0099A4A0`-
+  `0099A4B4`, `RET`):
+  - `MOV DL,1`;
+  - `009CFF40(bot, 1)`, which is `operator new(4D4h)` and the constructor `009CF8E0`;
+  - `00999F50`, the push.
+
+  So every plane that `007C3C90` puts in state 4 or 5 gets a takeoff task at once. That covers the
+  airfield placement (state 5) and the carrier lift release (state 4).
+- The bot tick's install at `0099B0BE`-`0099B118` (5au) passes flag 0. It is a second, general
+  route for a grounded plane whose current task allows it.
+- **With flag 1, `009CF8E0` picks `prepare`** (`+448h`), unless the plane is landed (`+904h`) and on
+  the path (`+900h` == 5), which picks `parking`. A launched plane has `+904h` clear (`+908h` = 0),
+  so it always starts in `prepare`.
+
+### `takeoff/prepare` (`+448h`)
+
+**Enter `009CDD50`:**
+- clears `+18h` and `+19h`, and sets `+1Ch = 0`;
+- draws `+20h` from `UniformFloatRange(0, 2*pi)` (`00CE3D9C`);
+- reads `T = tuning+4DCh` (`Pilot/TakeOff/PrepareTime`), and uses 1.5 (`00CE380C`) when
+  `T < 1.5` (`00CE3D78`);
+- draws a sign: -1.0 (`00D7A260`) when a uniform draw exceeds 0.5 (`00CE3800`), else 1.0;
+- `+24h = sign x UniformFloatRange((T / 2*pi) x 0.6, (T / 2*pi) x 0.95)` (`00CEFF98`, `00CEFFB0`).
+
+**Step `009CDE50`** (`__thiscall(state, dt)`):
+- The task's `+38h` = 0.
+- Done (`+19h` = 1) with no plane, or with the plane in free flight.
+- Otherwise it writes these plan controls:
+
+  | control | offset | value |
+  | --- | --- | --- |
+  | throttle | `+278h` | 0.01 (`00D7A238`), active |
+  | air brake | `+2A8h` | 1.0, active |
+  | air-brake mode | `+2D8h` | 0 |
+  | yaw | `+284h` | 0, active |
+  | yaw mode | `+2D4h` | 0 |
+
+- When `007B8D10` holds (the `+DECh` channel `+44h` absent or at 1.0; the host has no `+DECh`, so
+  true), it adds `dt` to `+1Ch` and then checks, in order:
+  - an airfield holder (`(+BF4h)->+4->+7Ch` answers `IsKindOf(45h)`) makes it done at once;
+  - after `+1Ch >= 0.1` (`00D7A3A0`):
+    - it writes a slow circular wobble into the roll slot `+290h` (active, `+2CCh` = 0) and the
+      pitch slot `+29Ch` (active, `+2D0h` = 0). The angle is `(+1Ch - 0.1) / +24h + +20h`, and the
+      values are `cos` and `sin` of it, normalised with `BSP_Vector2f_ReciprocalLength`;
+    - with squadron members (up to five of `+3D0h`), done when the nearest other member is under
+      10.0 m (`00CE38B8`);
+    - done when `+1Ch > tuning+4DCh` and `009CDD10` answers true.
+- **`009CDD10`** caches `+18h`. Unless it is already set, it asks the holder site's `vtable[20h]`
+  whether this plane may go:
+  - airfield `006CF400`: always 1;
+  - mother ship `006D01C0`: 1 only when the plane's deck position along the runway (`006BEFF0`) is
+    not ahead of every other site occupant's. A non-occupant counts at `-(owner+1208h)+B4h x 0.5`,
+    and the start value is 9999.0 (`00CE4C04`).
+
+  So on a carrier the planes go in deck order.
+
+The rule `009CFC70` then moves `prepare` to **`SlowTakeoff`** (`+490h`) once `+19h` is set.
+- On an airfield that is on the first step, because of the `IsKindOf(45h)` exit.
+- On a carrier it is after `PrepareTime` and the site's permission, or at once when a wingman
+  stands within 10 m.
+
+### `takeoff/SlowTakeoff` (`+490h`)
+
+- **Enter `009CE1D0`:** stores the start position (`+FCh..+104h`) and draws `+24h` from
+  `UniformFloatRange(-0.3, 0.3)` (`00D06888`, `00CE69C8`).
+- **Step `009CE160`:**
+  - the task's `+38h` = 0;
+  - bank `+2C4h` = 0 with `+2CCh` = 1;
+  - the yaw slot `+284h` = `+24h`, active, with `+2D4h` = 0;
+  - speed `+2B4h` = 20.0 (`00CE3930`), `+2B0h` = 0, `+2D8h` = 1.
+- **The rule's `009CFB60`** goes to `Takeoff` (`+470h`) once the plane is more than 60 m from the
+  start (squared distance against 3600.0), or at once when `plane+AA0h <= 0.0` (5au).
+
+### The rule and the tick (`009CFC70`, `009CFD70`)
+
+- **Tick:** `+430h` = `FFh`; `009CFA80`, the altitude floor (task+3F8h+2Ch = max(the avoid layer at
+  (x, z) + `+30h`, `+30h` + `+34h`), and it ends a current `moveto` to the home base); the rule; the
+  state's step; then `+2E4h` = `+430h`.
+- **Rule, done arm** (`0099B690`): with no plane, or when the plane is in free flight with `+908h`
+  > 5.0 and either its height `+100h` is above `task+424h` or its speed (`vtable[38h]`) is above
+  `BSP_PlaneClass_MinControlSpeed`.
+
+### The deck-contact gap after the lift release (from 5ba)
+
+- **`WheelHeight` 0.00 for class 101 is the image's value, not a host reading gap.** This
+  installation's `vehicleclasses.lua` (modified 2026-05-09) authors neither `WheelHeight` nor
+  `GroundPitch` in `VehicleClass[101]` (F4F Wildcat, lines 44757-45123). `007D29B8`-`007D2AC6`
+  write `classDesc+1FCh`/`+200h` only when both are present, so the descriptor keeps its zero. The
+  nearest authored pair after it (`GroundPitch` 0.174533 at line 45656, `WheelHeight` 1.12 at line
+  45838) belongs to class 103, the D4Y Judy.
+- **Why the wingmen never touch down:** still open.
+  - After the release, `007C5AC0` holds contact only while `landing_over_runway_006bc530` accepts
+    the plane's position on the mother-ship holder.
+  - The leader logged contact at local (-0.83, 17.40, 39.39); its two wingmen, released at the
+    same lift, never did.
+  - The next reader should log the holder-local position and `006BC530`'s answer for a wingman at
+    its release. Suspects are the probe's `+C04h` re-arm and `landing_deck_006c0750`'s frame
+    refresh order against the carry.
+
+### Next (piece 4 part 2, for the successor)
+
+1. **Bind the task record.**
+   - Install it at the end of `ground_state_from_locked_007ca3f0`, where `0099A4A0` is now only
+     recorded.
+   - First state `prepare`, or `parking` for a landed plane on the path.
+   - Run the tick from the pilot think of the ground-roll arm (`pilot_think_and_commit`), the way
+     the land task's states run.
+   - The plan-slot offsets map as the land task's comments give them:
+
+     | offset | control |
+     | --- | --- |
+     | `+278h`/`+27Ch` | throttle |
+     | `+284h`/`+288h` | yaw |
+     | `+290h`/`+294h` | roll |
+     | `+29Ch`/`+2A0h` | pitch |
+     | `+2A8h`/`+2ACh` | air brake |
+     | `+2B4h` | speed |
+     | `+2C4h` | bank |
+     | `+2CCh`, `+2D0h`, `+2D4h`, `+2D8h` | the modes |
+2. **Bind `prepare` and `SlowTakeoff`** as read above, with the site permission `006CF400`/`006D01C0`.
+3. **Transcribe the `Takeoff` step `009CE2C0`**: A-F from 5av, G from `local\l25_ce2c0_full.asm`
+   (lines 490-1332), then the lift-off (piece 5).
+4. **The wingmen's deck contact** (above).
+5. **`planeDesc+158h`** (`007D473A`, the model box). It sets the airfield stack spacing and the lift
+   offset, and matters once the takeoff runs.
+
+## 5bc. Handoff (cc9-lua25, 2026-09-30, stamped 12:31 UTC)
+
+**The switch group `kBaseLaunchChainBound`** (`include/bsp/game_hosts_units.hpp`) is committed
+**OFF**. Pieces 1-3 are bound behind it and recorded on JM05 3000 with the switch on:
+
+| piece | what | commits | section | state with the switch on |
+| --- | --- | --- | --- | --- |
+| 1 | Inside start: `007F1C00` flag arm, `007ED6E0`, `007C2130`, `007CC820`; members disabled through `007C11E0` -> `007BC550` | `41ef06574`, `7a34612d5` | 5ax, 5ay | 30 members Inside, disabled |
+| 2 | launch task: `007F1DE0`, `007F1F00`, `007EF010`, `006CF190`; readiness `006CDF60`/`006CFF40`; `+3CCh` counts disabled members | `7a34612d5`, `40412e9e5`, `f41a2bd3b` | 5ay | one send per `PlaneSendInterval` while the site is ready |
+| 3a | airfield arm: `006CF980`, `006CF9F0`, `007C5F60` (`006CF730` pose), `007C3C90(1)`, `007CA3F0` | `84cde0e77` | 5az | six airfield members placed, then state 5 |
+| 3b | carrier lift: `006D0600` launch arms, `006D0050`, `006FC640`, `006FC810`, `006D02F0`, `006D0930` | `0db2e1291` | 5ba | 24 carrier members lifted to state 4, one every 7.35 s |
+| 4, part 1 | the takeoff task read for the bind: install at `0099A4A0` (flag 1 -> `prepare`), `prepare`, `SlowTakeoff`, rule, tick, the site permission `vtable[20h]` | read only | 5bb | not bound |
+
+**Next, piece 4 part 2**, in the order 5bb gives. Nothing of it is committed:
+1. bind the takeoff task record at `ground_state_from_locked_007ca3f0`'s `0099A4A0` record;
+2. bind `prepare` and `SlowTakeoff`;
+3. transcribe the `Takeoff` step `009CE2C0` (A-F from 5av, G from the listing);
+4. the wingmen's deck contact after the lift release;
+5. `planeDesc+158h`.
+
+Then piece 5 (`C6h` and `007C7110`), and the flip criterion of 5aw.
+
+**Open for the lead:**
+- `006C5050` writes `block+38h` on every flag-0 launch (5ax). The chain does not model this brake
+  yet. What clears it (the `block+24h` observer pair's notice) is unread.
+- The piece-2 records show the launch cadence the flip will bring:
+  - airfield members every 2.05 s from 3.05 s;
+  - carrier members every 7.35 s from 5.65 s.
+
+**Tools** (`local\` in the cc9-lua25 tree):
+- `l25_runs.ps1`: the reference rows;
+- `l25_consts.py`: floats and doubles from the executable on disk;
+- `l25_calls.py`: an `E8` call census with the preceding instructions;
+- `l25_p3a_edit.py`, `l25_p3b_edit.py`: the prepared edits, as a model for the shared-file rule;
+- `l25_ce2c0_full.asm`: the `Takeoff` step listing, copied from cc9-lua24;
+- `l25_c5f60.c`, `l25_cf730.c`, `l25_ca3f0.c`, `l25_cde50.c`, `l25_cfc70.c`, `l25_cfa80.c`,
+  `l25_cfd70.c`, `l25_d0600.asm`: the bodies read.

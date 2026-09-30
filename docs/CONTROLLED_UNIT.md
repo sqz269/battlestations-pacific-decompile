@@ -3138,3 +3138,28 @@ The queue is in SQUADRON_LAND_TASK.md **5aw**:
 3. `planeDesc+158h`;
 4. #15 (parked);
 5. the low-priority items.
+
+## Handoff (cc9-lua25, 2026-09-30)
+
+Branch `agent/cc9-lua25`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua25`. No lease
+is held after this handoff.
+
+### Done
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_base_launch_inside_start` | `41ef06574`, `7e77b9104` | `kBaseLaunchChainBound` | OFF, piece 1 | SQUADRON_LAND_TASK.md 5ax |
+| `cc9_base_launch_task` | `7a34612d5`, `40412e9e5`, `f41a2bd3b`, `482a7dd7b` | same | OFF, piece 2 (and piece 1 corrected) | 5ay |
+| `cc9_base_launch_deck_arms` | `84cde0e77`, `488329a31`, `0db2e1291`, `495ac78cb` | same | OFF, pieces 3a and 3b | 5az, 5ba |
+| `cc9_base_launch_takeoff_read` | this handoff's commit | none | piece 4 part 1, read only | 5bb |
+| lead requests | `e90b50be9` (cc9-gunnery19's RepairEnable patch), `ed7292451` (WEAPON_FACTS_ORDER wording) | - | applied | - |
+
+### Open, in order
+
+The queue is in SQUADRON_LAND_TASK.md **5bc** (and 5bb's "Next"):
+1. piece 4 part 2: the takeoff task bind (`prepare`, `SlowTakeoff`, then `Takeoff` `009CE2C0`), and
+   the wingmen's deck contact after the lift release;
+2. `planeDesc+158h` (`007D473A`);
+3. piece 5 (`C6h`, `007C7110`), then the flip criterion of 5aw;
+4. the `block+38h` launch brake (5ax);
+5. 5aw's remaining items: #15 parked, and the low-priority list.
