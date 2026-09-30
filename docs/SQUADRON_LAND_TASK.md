@@ -5064,3 +5064,118 @@ The ship AI `free` refill counter also moved on some rows; it is the known same-
 
 **Verdict: `kHitIndexDetachBound = true`.** The flip itself is the lead's to apply, because
 `src/game_hosts_gunnery.cpp` is leased to cc9-gunnery18. It is U material, after T's base.
+
+## 5at. The relaunch feed, read: it is the squadron launch itself (packet `cc9_relaunch_feed_read`, cc9-lua24, 2026-09-30)
+
+5ap item 2 asked what fills the elevator's ready plane `site+18h`. The answer is not the stowed
+planes. Every carrier and airfield launch goes through it, so the "relaunch" is the launch path.
+Ghidra and the disk bytes were read only; no code changed.
+
+### The chain in the image
+
+1. **The launch task** (vtable `00D08AE4`: `007F1EE0` dtor, `0071C470`, `0071C480`, `007F1F00`
+   tick, `0071C4A0`).
+   - Its constructor is `007F1DE0` (`__thiscall(task, element, squadron)`). It chains the base
+     task constructor, registers through `00876020`, clears `+1Ch`, and puts the squadron under
+     the observer pair at `task+20h` (`007F0F80`), so `task+34h` is the squadron.
+   - Its one caller is `007F53FF`, in the squadron's pass C `007F4BA0`
+     (`BSP_PlaneSquadron_SEntityInitSlotA4`), at `007F5390`-`007F5404`. It runs when the home
+     base `squadron+404h` is set, the holder kind `[+C0h]+4h` is not 2, and the base answers
+     `IsKindOf(9)` (a mother ship) or `IsKindOf(45h)` (an airfield). It allocates 38h bytes and
+     passes `base+310h` and the squadron.
+2. **The tick `007F1F00`** (`007F1F00`-`007F1FDB`, `__thiscall(task, float dt)`, `RET 4`):
+   - `block` = `[task+4]+28h` + `1188h` for kind 9, or + `72Ch` for kind 45h (`007F1F14`-
+     `007F1F58`).
+   - With a squadron (`+34h`), a block and the block's owner `+7Ch` alive:
+     - `+1Ch -= dt`, and it waits while that is above 0;
+     - then it asks the site `[block+3Ch]->vtable[18h]()` whether it is ready;
+     - when ready, `+1Ch` = `tuning+190h` (`AirField/PlaneSendInterval`, 2.0 in this
+       installation) and it calls `007EF010(squadron)`.
+   - When `007EF010` answers 1 (no member left to send), it unregisters the squadron and the
+     task ends through its own `vtable[10h]`.
+3. **`007EF010`** (`007EF010`-`007EF090`, `__fastcall(squadron)`, `RET`):
+   - it takes the first member `[+3D0h + i*4]` (i < `+3CCh`) with `+5Ch` clear and `+900h` == 1;
+   - it calls that member's `vtable[10h]`;
+   - it takes the block of `squadron+404h` (`006BCD20`). If the block's owner `+7Ch` is null or
+     dead (`+5Dh`), it kills the member (`00926D90(1)`). Otherwise it calls
+     `006CF190(block+3Ch site, member)`, which stores the member in the observed slot
+     `site+18h` (`006CF190`-`006CF1C0`, `RET 4`).
+   - It returns 0 when a member was sent, and 1 when none was left.
+4. **The site's readiness**, `vtable[18h]`:
+   - airfield `00CF89F8`: `006CDF60` (`006CDF60`-`006CDF69`), `site+18h == 0`;
+   - mother ship `00CF8A58`: `006CFF40` (`006CFF40`-`006CFF61`), true when all three hold:
+     - `+94h` (the platform mode `P+50h`) is 0;
+     - `0.0 > +5Ch` (`P+18h`, the lift at the top);
+     - `+18h` is 0.
+5. **The deck.**
+   - **Airfield.** The site tick `006CF980` routes `+18h` (message through `0077C2A0` with 5)
+     to `006CF9F0`: `007C5F60` places and locks the plane (state 2) on the launch spot, then
+     `007C3C90(plane, 1)` requests state 5 and `+18h` is cleared (AIRFIELD_TAXI 7).
+   - **Carrier**, `006D0600` re-read (`006D0600`-`006D07A4`):
+     - At the top with the platform empty and no landed candidate, a ready plane
+       (`+18h`, with `006D02F0` false) sends the **empty** platform down: `006CFFF0(0, 0)`, then
+       `006FC640` (`006D0707`-`006D071D`, `EBP` = 0).
+     - At the bottom, after `tuning+510h`, `006CFFF0(1, +18h)` places the ready plane on the
+       platform (`BSP_Plane_PlaceOnLaunchSpotLocked`) and brings it up (`006FC810`).
+     - At the top again (`006D065E`-`006D0684`):
+       - `006FC250` releases the platform plane;
+       - `+18h` is unregistered and cleared;
+       - `007C3C90(plane, 0)` requests state 4.
+6. **After that**, the plane in state 4 or 5 on the deck or strip needs the bot's taxi and
+   takeoff and the lift-off `007C7110 BSP_Plane_BeginFlying` (state 7). None of these is bound in
+   this host (CONTROLLED_UNIT, the takeoff items).
+
+`007C3C90` is `BSP_Plane_RequestGroundState(flag)`: state `4 + (flag != 0)`, through `007C1570`.
+
+### What the host does today
+
+`GameScriptOrdersHost::create_air_ops_squadron_006c5050` (`src/game_hosts_script_orders.cpp`)
+creates the whole squadron **airborne**, 150 m (`kAirOpsSquadronLaunchAltitude`) over the home
+base's origin, all members at once, in state 7 with `+908h` = 3600. Its own comment labels this
+as a contract: "the taxi and catapult paths; none of that is reconstructed". So no host plane is
+ever in state 1, no launch task exists, and `site+18h` has no writer. Stowed carrier planes are
+never relaunched, and that is not a relaunch gap. In the image a stowed plane (state 2, below
+deck) is not state 1, so `007EF010` would not pick it either. Nothing read so far brings a stowed
+plane back.
+
+### Why this is not bound in this packet
+
+Routing carrier launches through the lift in isolation would leave every launched plane locked on
+the deck in state 4. The chain needs these pieces, in this order:
+1. **The launched squadron's members in state 1, in the hangar.** `006C5050` -> `007F4580`: the
+   state each member starts in is not read. The launch task only sends `+900h` == 1 members with
+   `+5Ch` clear.
+2. **The launch task** (`007F1DE0`, `007F1F00`, `007EF010`, `006CF190`, the two readiness slots):
+   one member per `PlaneSendInterval`, gated by the site.
+3. **The deck arms.**
+   - Airfield: `006CF980` -> `006CF9F0` -> `007C5F60` (the pose already exists in
+     `src/airfield_taxi.cpp`), then state 5.
+   - Carrier: the lift cycle above, then state 4.
+4. **The takeoff.** The state 4/5 bot taxi to the runway, the takeoff roll, and `007C7110`.
+   Without it, pieces 1-3 strand every launch.
+
+Each piece can be bound OFF and paired on its own only from piece 4 backwards: 4 is reachable
+today only by a plane already on the ground. A switch for 1-3 alone would take launched
+squadrons out of the air on JM05, USN04 and IJN01. That would be a mechanism failure by
+construction, so no OFF commit was made for it here.
+
+### For the lead
+
+- Ghidra names, with bounds verified by `disasm-raw` (`RET`, then `INT3`):
+  - `007F1DE0` `BSP_SquadronLaunchTask_Construct` (already a Ghidra function; its bounds were not re-checked here);
+  - `007F1F00`-`007F1FDB` `BSP_SquadronLaunchTask_Tick`;
+  - `007EF010`-`007EF090` `BSP_PlaneSquadron_SendNextHangarMember`;
+  - `006CFF40`-`006CFF61` `BSP_AirOpsElevatorSite_IsReadyForPlane`;
+  - `006CDF60`-`006CDF69` `BSP_AirOpsSite_IsReadyForPlane`.
+
+  `006CFF40` and `006CDF60` have no Ghidra function.
+- **Proposed packets**, in order:
+  1. `cc9_plane_takeoff_read`: the state 4/5 taxi-out, the takeoff roll and `007C7110`, read
+     from an authored ground start if any reference row has one.
+  2. `cc9_launch_member_state`: `007F4580`'s member state for a launched squadron.
+  3. `cc9_launch_task` (the task and the site readiness).
+  4. `cc9_launch_deck_arms` (the airfield placement, then the lift cycle), paired only once
+     1-3 hold.
+- This changes launch timing on every row with an air-ops launch (USN04 launches from six decks, docs/USN04_STRIKE_CLASS.md; which other rows launch was not censused). Members
+  would leave one per 2.0 s after the site is ready, plus the lift's `tuning+510h` wait and its
+  travel of `depth / ElevatorSpeed` each way on a carrier.
