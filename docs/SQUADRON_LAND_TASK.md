@@ -7616,3 +7616,48 @@ USN04 torpedo-release and death-count moves are recorded as timing, RNG-coupled 
 note.
 
 For reference W, every row with exit 3 above moves.
+
+## 5bt. Handoff (cc9-lua28, 2026-09-30)
+
+Branch `agent/cc9-lua28`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua28`. No lease
+is held after this handoff.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_ground_retakeoff` | `6a040f4dd`, `fbc82bfb6` | `kGroundRetakeoffBound` | OFF, then superseded | 5bp |
+| `cc9_plane_ground_support` | `98bed39c3` | - | read: no plane terrain contact in the image | 5bq |
+| `cc9_hangar_orbit` | `3e1aab7ee`, `debfa7537` | `kGroundRetakeoffBound` | **ON** | 5br |
+| `cc9_throttle_dead_band` | `66a266556`, `24c78b40f` | `kThrottleDeadBandBound` | **ON** | 5bs |
+
+**What changed in the picture:**
+- The airfield park loop is not image behaviour (5bp).
+- Planes have no terrain contact in the image (5bq).
+- Hangared planes orbit their spot under the image's own park law, and sometimes leave the path
+  and free-fall, invisibly (5br).
+- `+900h` state 6 is the plane on the water (5bp).
+
+### Next, in order
+
+1. **The strafe evasive roll** (5bn.2): `009BC030` -> `00D205E0`, tick `009BA020`, pushed by
+   `007B6240` and `009CBB30`. It needs `009CBB30`'s owner (the strafe task, `009CD300`) in the host
+   first. After it, **the flight leader's task** (5bn.4, `009BBFC0`, tick `009BC3A0`, gated on
+   `unit+184h`).
+2. **`007C6F50`'s `msg+20h` flag and `+C49h`** (5bg item 4).
+3. **5bi's split-form `vtable[28h]` scan** (low value).
+4. **The controlled-unit fallback** (low priority, from the lead). On USN01, reference V's idle
+   player controls ScoutDauntless, because the script's intended unit ConTBD1 is never spawned
+   once Convoy1 is not hit (SHIP_AI 93; the formation-join switch). Check that the host's fallback
+   choice when the scripted unit does not exist matches the image's rule (docs/CONTROLLED_UNIT.md).
+   Nothing is bound yet.
+5. **Open from 5bs:** the `+2ECh` store at `0099DB58` (min with `[00E0E2F0]`) and the reader of
+   `+2ECh` (`0099D7B5`, the mode-0 arm) are not bound.
+
+**Tools** (`local\` in the cc9-lua28 tree):
+- `l28_runs.ps1`: the reference rows;
+- `l28_cmp.py`: headline and per-victim death diff of a pair, with the base-launch and
+  ground-retakeoff summaries;
+- `l28_table.sh`, `l28_dbtab.sh`: row tables;
+- `l28_orbit.py`: the hangar orbit census from the land-park trace;
+- the edit scripts `l28_retakeoff_edit.py`, `l28_verdict_edit.py`, `l28_flip_edit.py`,
+  `l28_db_edit.py`;
+- the diagnostic edit scripts `l28_diag*_edit.py`, which apply to an export only.
