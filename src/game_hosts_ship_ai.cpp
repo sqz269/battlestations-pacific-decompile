@@ -559,6 +559,12 @@ inline constexpr bool kLandingShipRampHullContactBound = true;
 // the script-orders host). False: none of these, as before. ON by section 106.5:
 // JM08 36000's nine ramps each unload 2.05 s later; every row gameplay identical.
 inline constexpr bool kLandingShipUnloadBound = true;
+// Packet cc9_capture_generated_class_fields (section 109). True: a unit created
+// after the capture tables were built (JM08's launched Higgins crafts) gets its
+// class's CapturePower (+804h) and LandedCapturePower (+810h), as the image reads
+// them through the class pointer. False: such a unit adds 10 in arm 1 and 0 in
+// arm 2, as before.
+inline constexpr bool kCaptureGeneratedUnitClassFieldsBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -828,6 +834,8 @@ struct GameShipAiHost::Impl {
         return nullptr;
     }
     void build_capture_buildings();
+    // Packet cc9_capture_generated_class_fields: class+804h / +810h for one unit.
+    void read_capture_class_fields(std::size_t u);
     void capture_step(float seconds);
     // Packet cc9_landing_ramp_capture: class+810h LandedCapturePower per unit, the
     // ramp latch's counters and the BSP_LANDER_DIAG=1 trace (env-gated).
@@ -11206,27 +11214,29 @@ void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float 
         static_cast<double>(rudder));
 }
 
+void GameShipAiHost::Impl::read_capture_class_fields(std::size_t u) {
+    const GameUnitRow* row = units.unit_row(u);
+    if (row == nullptr || settings_owner == nullptr || row->type_id < 0) return;
+    // class+810h `LandedCapturePower`, an integer, 0 when unauthored
+    // (vehicle_class_lua_load.cpp); this installation's vehicleclasses.lua
+    // (mtime 2026-05-09) authors 150 for the US LST (class 41) and 100 for the
+    // Higgins (class 40).
+    landed_capture_power_0810[u] = settings_owner->read_vehicle_class_integer(
+        row->type_id, "LandedCapturePower", nullptr, 0);
+    // 00834526..00834547: `CapturePower`, an integer or 10, CVTSI2SS into
+    // class+804h (ship_class_fields.cpp). The Higgins authors 0.
+    capture_power_0804[u] = static_cast<float>(
+        settings_owner->read_vehicle_class_integer(row->type_id, "CapturePower",
+                                                   nullptr, 10));
+}
+
 void GameShipAiHost::Impl::build_capture_buildings() {
     capture_built = true;
     const std::size_t count = units.count();
     capture_power_0804.assign(count, 10.0f);
     landed_capture_power_0810.assign(count, 0);
     for (std::size_t u = 0; u < count; ++u) {
-        const GameUnitRow* row = units.unit_row(u);
-        // class+810h `LandedCapturePower`, an integer, 0 when unauthored
-        // (vehicle_class_lua_load.cpp); this installation's vehicleclasses.lua
-        // (mtime 2026-05-10) authors 150 for the US LST (class 41).
-        if (row != nullptr && settings_owner != nullptr && row->type_id >= 0) {
-            landed_capture_power_0810[u] = settings_owner->read_vehicle_class_integer(
-                row->type_id, "LandedCapturePower", nullptr, 0);
-        }
-        // 00834526..00834547: `CapturePower`, an integer or 10, CVTSI2SS into
-        // class+804h (ship_class_fields.cpp).
-        if (row != nullptr && settings_owner != nullptr && row->type_id >= 0) {
-            capture_power_0804[u] = static_cast<float>(
-                settings_owner->read_vehicle_class_integer(row->type_id, "CapturePower",
-                                                           nullptr, 10));
-        }
+        read_capture_class_fields(u);
         if (!units.unit_is_kind_of(u, 0x1C)) continue;   // MCommandBuilding
         CaptureBuilding b;
         b.unit = u;
@@ -11294,6 +11304,15 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         }
     }
     if (!kCommandBuildingCaptureBound) return;
+    if (kCaptureGeneratedUnitClassFieldsBound && capture_power_0804.size() < units.count()) {
+        // The image reads +804h / +810h through each unit's class pointer, so a unit
+        // created after the scene load (a launched craft, a GenerateObject) carries
+        // its class's values. The tables were sized once, at the first capture step.
+        const std::size_t from = capture_power_0804.size();
+        capture_power_0804.resize(units.count(), 10.0f);
+        landed_capture_power_0810.resize(units.count(), 0);
+        for (std::size_t u = from; u < units.count(); ++u) read_capture_class_fields(u);
+    }
     for (CaptureBuilding& b : capture_buildings) {
         if (!bsp::command_building_capture_countdown_006f75ed(b.state, seconds)) continue;
         ++capture_countdown_fires;

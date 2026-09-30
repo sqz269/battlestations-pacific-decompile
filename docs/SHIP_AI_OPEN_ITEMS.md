@@ -8978,3 +8978,78 @@ image's behaviour.
 
 This also answers the two "contract: unread" callees that docs/SHIP_AI_FOLLOW_LAND.md lists
 under `006F2FB0`. **Closed, nothing to bind.**
+
+## 109. JM08's HQ capture rate: the launched crafts add nothing (packet `cc9_capture_generated_class_fields`, `kCaptureGeneratedUnitClassFieldsBound`, cc9-ships26, 2026-09-30)
+
+The lead's question: on JM08 36000 the crafts land and `Headquarter 01` (CaptureValue 2,000,000)
+never flips. What does the image add per tick, and how long would it need?
+
+### 109.1 The image's rate (section 80.2, re-checked against the host)
+
+`006F6760` runs once a second (`+7BCh` = 1.0) and only while the building is neutral.
+- **Arm 1:** each ship in CaptureRange adds its class `CapturePower` (`class+804h`). A
+  ramp-down landing ship is excluded.
+- **Arm 2:** each pad whose occupant is a ramp-down IsKindOf(0Ch) of party < 2 adds its class
+  `LandedCapturePower` (`class+810h`).
+- **Arm 3:** paratroopers; there are none.
+- **Progress:** `+= s0 - s1`, flipping at `|progress| >= CaptureValue`.
+- **Multipliers:** the modifier `008E6430(10, unit)` is 1.0 (the list is empty).
+- **Nothing else feeds it.** The pads count only through arm 2's occupant test. The unload latch
+  (`+118Bh`/`+118Ch`) and `LandingFinished` are not read by the tick: section 106.1's census found
+  no reader of those fields outside the landing ship.
+
+In this installation's `vehicleclasses.lua` (mtime 2026-05-09):
+
+| class | `CapturePower` | `LandedCapturePower` |
+| --- | --- | --- |
+| `VehicleClass[40]` Higgins | 0 | 100 |
+| `VehicleClass[41]` US LST | not checked | 150 |
+
+So a landed Higgins adds **100 per second**, and one on its way in adds 0.
+
+### 109.2 The host's divergence
+
+`build_capture_buildings` sizes `capture_power_0804` / `landed_capture_power_0810` to the unit
+count once, at the first capture step. The crafts that `008206F0` creates later (units 390..401
+on JM08) fall past the end, so:
+- arm 2 adds **0** for them: the ramp lines print `landed_capture_power=0`;
+- arm 1 would give them the default 10 instead of the class's 0.
+
+**On `s26_a1_jm08x` (main + section 106):**
+- the HQ is neutralized at 913.95;
+- 887 capture ticks follow, with 6428 landed-pad counts (about 7.2 crafts per tick);
+- `progress_messages=0`: the progress never leaves 0.
+
+The image reads both fields through each unit's class pointer, so a generated unit carries its
+class's values.
+
+### 109.3 How long the image needs on this row
+
+With the observed occupancy, about 7.2 landed Higgins after neutrality, the rate is about 725
+per second.
+- **Flip time:** 2,000,000 / 725 is about 2760 s after 913.95, so t is about 3670 s (73,400
+  mission frames).
+- **Fastest possible:** with all 8 pads held it is 2500 s, t of about 3414 s.
+- **The reference window is 1800 s, so the image does not flip it either.** A run to t = 3700 s
+  would show whether it does.
+
+**Other rows:** no other reference row neutralizes a CommandBuilding (section 80.4), so no
+reachable row flips a base within its window.
+
+### 109.4 The binding (committed OFF): `kCaptureGeneratedUnitClassFieldsBound`
+
+ON, before each capture step, the tables are extended to the current unit count, and each new
+unit gets its class's `CapturePower` and `LandedCapturePower` (`read_capture_class_fields`,
+factored out of the scene-load pass).
+
+### 109.5 Predictions (written before any ON run)
+
+Same-tree pair `s26_c0` (OFF) / `s26_c1` (ON).
+- **JM08 36000, exit 1 (gameplay identical):** the progress changes nothing the host reads until
+  a flip, and there is no flip.
+  - `progress_messages` goes from 0 to about 880;
+  - the final progress is about 100 x the landed-pad count, about 640,000, with `side=0`;
+  - `flips=0`; deaths 118 on both sides.
+- **JM08 long (9200/9000), exit 1 or 0:** the HQ is not neutral within 450 s, so nothing ticks.
+- **An extra ON-only run of JM08 to 3800 s (76,000 mission frames):** the HQ flips to party 0
+  near t = 3670 (between 3400 and 4000), unless occupancy changes after 1800 s.
