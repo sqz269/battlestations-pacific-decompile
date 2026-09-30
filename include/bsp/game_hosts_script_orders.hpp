@@ -305,6 +305,8 @@ struct GameScriptOrdersSummary {
     std::size_t commanded_speed_stores{0}; // 008a3901 / 008a3912
     std::size_t land_avoidance_orders{0};  // 008a3b10, 5Ah selector 9
     std::size_t torpedo_evasion_orders{0}; // 008a3cd0, 5Ah selector 7
+    std::size_t avoidance_disables{0};     // either setter with false
+    std::size_t avoidance_delivered{0};    // 00835640 applied (cc9_navigator_avoidance)
     std::size_t skills{0};
     std::size_t repairs{0};
     std::size_t roles{0};
@@ -646,6 +648,7 @@ public:
 private:
     std::map<std::string, SquadronPermissions> squadron_permissions_;
     std::size_t index_of(void* entity) const noexcept;
+    std::size_t avoidance_logged_{0};
     std::string name_of(void* entity) const;
 
     // The script entities CreateScript made. Not a native structure: it is this

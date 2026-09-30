@@ -2080,17 +2080,51 @@ void* GameScriptOrdersHost::entity_weapon_director(void* entity) {
 // (blk+3ECh) - and its two setters 009dabb0 (torpedo) and 009dabd0 (land) are
 // the ones include/bsp/ship_ai_avoidance_request.hpp marks Unused, i.e. with no
 // caller found. So this is a store with a named consumer that nothing calls yet.
+//
+// Packet cc9_navigator_avoidance (docs/SHIP_AI_OPEN_ITEMS.md section 88). True: the
+// message is delivered to the receiver this host already has, 00835640's arms
+// (GameUnitsHost::apply_director_avoidance_message_00835640): sub-kind 7 stores
+// director+240h (torpedo evasion), 9 stores +242h (land collision), which the
+// bound ship AI readers 009DA231 / 009DA6FB.. / 009EFCBD consult. The director
+// constructor 008366D0 seeds all three bytes to 1 (EBX = 1 at 008366F4, stored at
+// 00836724..00836730), so only a `false` moves anything. Delivered at once
+// (SUBSTITUTION, labelled: the 0077C2A0 route is a loopback here, as for the
+// other 5Ah senders). False: counted only, as before. ON by section 88.2: only
+// USN02 moves (its four torpedo-evasion disables); every other row identical.
+inline constexpr bool kNavigatorAvoidanceDeliveryBound = true;
+
 void GameScriptOrdersHost::session_route_avoidance_message(void* director,
     int selector, bool enabled) {
-    static_cast<void>(director);
-    if (selector == bsp::kNavigatorAvoidanceSelectorLandCollision) {
+    const bool land = selector == bsp::kNavigatorAvoidanceSelectorLandCollision;
+    if (land) {
         ++summary_.land_avoidance_orders;
-        record_unimplemented("Navigator::avoidance_receiver_land", "0071c1e0");
     } else {
         ++summary_.torpedo_evasion_orders;
-        record_unimplemented("Navigator::avoidance_receiver_torpedo", "0071c1e0");
     }
-    static_cast<void>(enabled);
+    if (!enabled) ++summary_.avoidance_disables;
+    const std::size_t index = index_of(director);
+    if (avoidance_logged_ < 60) {
+        ++avoidance_logged_;
+        const GameUnitRow* row = index < units_.count() ? units_.unit_row(index) : nullptr;
+        log_.notef("navigator avoidance order: unit=%s %s=%d bound=%d (00835940 / 00835A40 "
+            "-> 00835640)", row != nullptr ? row->name.c_str() : "?",
+            land ? "land" : "torpedo", enabled ? 1 : 0,
+            kNavigatorAvoidanceDeliveryBound ? 1 : 0);
+    }
+    if constexpr (kNavigatorAvoidanceDeliveryBound) {
+        bsp::DirectorCommandMessage message;
+        message.base_kind = 0x5a;
+        message.vtable = 0x00cfd9c4u;
+        message.sub_kind = selector;
+        message.value = enabled ? 1u : 0u;
+        if (index < units_.count()
+            && units_.apply_director_avoidance_message_00835640(index, message)) {
+            ++summary_.avoidance_delivered;
+        }
+    } else {
+        record_unimplemented(land ? "Navigator::avoidance_receiver_land"
+            : "Navigator::avoidance_receiver_torpedo", "0071c1e0");
+    }
 }
 
 // 0092bd00 over 0080e490 at 008a3c72/008a3c79, the arm 008a3b10 takes on the
@@ -3841,7 +3875,12 @@ void GameScriptOrdersHost::report() {
             if (!per.empty()) per += ' ';
             per += entry.first + '=' + std::to_string(entry.second);
         }
-        log_.notef("summary mission script after-row-9 order queue (packet "
+        log_.notef("summary mission script navigator avoidance land=%zu torpedo=%zu disables=%zu "
+        "delivered=%zu bound=%d (008A3B10 / 008A3CD0 -> 00835640, packet cc9_navigator_avoidance)",
+        summary_.land_avoidance_orders, summary_.torpedo_evasion_orders,
+        summary_.avoidance_disables, summary_.avoidance_delivered,
+        kNavigatorAvoidanceDeliveryBound ? 1 : 0);
+    log_.notef("summary mission script after-row-9 order queue (packet "
             "cc9_after_row9_order_queue, 0076C600): bound=%d applied=%llu pending=%zu "
             "continuations=%llu deferred_by_poster: %s", kAfterRow9OrderQueueBound ? 1 : 0,
             deferred_applied_, deferred_orders_.size(), deferred_continuations_, per.empty() ? "(none)" : per.c_str());
