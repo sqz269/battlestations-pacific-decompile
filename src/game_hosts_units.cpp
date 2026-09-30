@@ -29790,6 +29790,22 @@ void GameUnitsHost::unit_class_extents(std::size_t index, float& forward, float&
     // guessed from either of the other two.
 }
 
+GameUnitsHost::VehicleClassLaunchKeys GameUnitsHost::vehicle_class_launch_keys(
+    int type_id) {
+    VehicleClassLaunchKeys out;
+    const GameVehicleClassRow row = impl_->lua.read_vehicle_class_row(type_id);
+    if (!row.found) return out;
+    out.found = true;
+    out.length_00a0 = row.length;
+    out.width_00a4 = row.width;
+    out.height_00a8 = row.height;
+    out.landing_ship_078c = row.landing_ship_resolves ? row.landing_ship_id : 0;
+    out.landing_ship_amount_0790 = row.landing_ship_amount;
+    out.landing_ship_cool_down_0794 =
+        impl_->lua.read_vehicle_class_integer(type_id, "LandingShipCoolDown", nullptr, 60);
+    return out;
+}
+
 const GameUnitRow* GameUnitsHost::unit_row(std::size_t index) const noexcept {
     if (index >= impl_->slots.size()) return nullptr;
     GameUnitSlot& slot = *impl_->slots[index];
