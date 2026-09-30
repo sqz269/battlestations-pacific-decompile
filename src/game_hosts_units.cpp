@@ -1906,7 +1906,7 @@ constexpr bool kTorpedoResetDrawsBound = true;          // ON: TORPEDO_AIM_LEAD 
 // +12Ch = -U(0, 1) (009D0581-009D0590), the first replan delay. SUBSTITUTION,
 // labelled: keyed stand-in streams name#t88 and name#t12c. OFF: +88h is the
 // engage range, +90h is 0 until the first tick and +12Ch is 0.
-constexpr bool kTorpedoResetEngageDrawsBound = false;
+constexpr bool kTorpedoResetEngageDrawsBound = true;   // ON: TORPEDO_AIM_LEAD 23.4
 // Packet cc9_torpedo_reset_draws: 009D0160, called at 009D0632 after the aim
 // error draw, seeds +98h, which the engagement estimate adds into +F8h, the
 // torpedo projtime. The host binds no other +98h writer (009D1360 at 009D19A4

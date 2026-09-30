@@ -1821,3 +1821,50 @@ Section 22's item 1.
 **Caveat.** Under the party gate (R), only USN04 and E2 still release a torpedo (1 of 16 each), and
 USN13 releases none. So the release counts can move only on USN04 and E2. Elsewhere the change
 shows in the aircraft paths.
+
+### 23.4 The pair: the mechanism held, the magnitude missed; flip ON
+
+**Setup.**
+- Exports of `18979299d` (main `9ff123eef` plus this packet): `local\g15_eoff`, SHA-256 prefix
+  `1CBB523307C0`, and `local\g15_eon`, `5B5C9A7C3622`.
+- Rows USN04, E2, USN13, USN01, JM05, JM05 long, JM08, USN12 and JM06, in the reference launch
+  form.
+- A smoke passed at 01:46 UTC, and the runs ended by 02:11 UTC.
+
+**The values, from the ON log lines.**
+- Every torpedo class on these rows has TurnCircleRadius **1200 m**: the Kates, the TBDs and
+  Lexington's squadrons.
+  - The Kate far leg `+80h` is 650, so `+88h` is 2250-2450.
+  - JM05's `+80h` is 1200, so `+88h` is 2716-2971.
+- `+90h = +8Ch = +88h * 1.3` is 2926-3863. That is **above** AttackDist 2200, so the `009D4AC4`
+  clamp keeps the drawn value: **the engage range widens by 700-1650 m.**
+- `+12Ch` falls in (-1, 0].
+- Every value follows 23.1's formula.
+
+**pair_diff.**
+- Exit 3 (moved): USN04, E2, USN13 and USN01.
+- Gameplay-identical: JM05 and JM05 long (exit 1), JM08 (exit 1), USN12 (exit 0) and JM06 (exit 1).
+
+**Effects** (death tables, per entity):
+
+| row | torpedo releases | deaths |
+| --- | --- | --- |
+| USN04 | 1 of 16 on both sides | 50 -> 51 (`D3A Val #7.1\|.-2` only ON); 43 rows re-timed; water contacts 14 -> 16 |
+| E2 | 1 of 16 on both sides | 51 -> 51 with 44 re-timed |
+| USN13 | 0 of 60 on both sides | 22 -> 25 (`bruh #1.4`, `#1.9\|.-2`, `#1.9\|.-3` only ON: Kates shot down on the longer approach) |
+| USN01 | 0 of 17 on both sides | 5 -> 6 (`KatTBD\|.-3` only ON) |
+
+No ship death changes on any row.
+
+**Misses, recorded:**
+- **The magnitude.** 23.3 assumed a TurnCircleRadius of a few hundred metres and predicted `+8Ch`
+  unchanged. At 1200 m the draw exceeds AttackDist, so the engage range itself grows.
+- **JM05 and JM05 long do not move.** Their twelve torpedo tasks reset, but no approach tick
+  reads the new values within the window. This matches 21.4, where JM05 was identical.
+- The extra plane deaths are path changes. Through the shared generator 00BD2F10 they are also
+  coupled to the ships' fire draws, so they cannot be attributed kill by kill.
+
+**Verdict: flip ON.**
+- The mechanism matches the image's formula on every logged reset.
+- The moved rows are the torpedo rows, and the controls are identical.
+- The size is a spread miss.
