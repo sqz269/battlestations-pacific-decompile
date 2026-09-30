@@ -316,3 +316,56 @@ caller) had only the `min`. The emulated image showed it when `state+88h` was sm
 **Coverage:** `009C0026`-`009C1846` complete, except the substitutions the host already carried:
 `state+88h` = 1e30, the leader turn rate from `007D7DA0`, and the pose-clean assumption at the
 `00414DB0` sites. The hold arm `009BFEFC`-`009C0025` is not part of this packet.
+
+### 8.7 Predictions, written before any ON run
+
+**The pair:**
+- OFF is the no-flip export of `838701681` (`local\l21_p0`, `BA99FA9E2C7E`).
+- ON is the same commit with `kFollowPhaseABound=true` (`local\l21_pa`, `D95DED205C5F`).
+- Both use the reference launch rows (lockstep 0.05, idle player, `BSP_GUNNERY_RNG_STREAMS=1`,
+  `BSP_DEATH_TABLE=1`).
+- The OFF logs are in. Their shadow line says what Phase A would pick on each fly-to tick:
+
+| row | follow ticks | fly-to (lead / abeam / circle) | latched | station error mean / max (m) | mean plan time (s) |
+| --- | --- | --- | --- | --- | --- |
+| USN04 3000 | 12709 | 313 / 0 / 7618 | 38% | 163.3 / 507.0 | 2.14 |
+| E2 (USN04 9000) | 16425 | 313 / 0 / 9588 | 40% | 160.1 / 507.0 | 1.94 |
+| JM05 9000 | 22284 | 4418 / 1630 / 13274 | 13% | 553.4 / 2117.7 | 9.01 |
+| JM08 3000 | 6534 | 19 / 0 / 3813 | 41% | 108.8 / 250.4 | 2.17 |
+| LOMP10 3000 | 67 | 22 / 0 / 9 | 54% | 96.7 / 286.7 | 3.23 |
+
+**So the host's "lead pursuit always" is the image's choice on only 4% of USN04's fly-to ticks.**
+The image almost always takes the turn-circle lead-in. That is the regime a member takes when it
+would end its plan behind its moving station, or more than 5% of that distance off the track.
+
+**Mechanism (the switch's own lines):**
+- `applied=1`, and the regime split keeps the OFF shape: circle dominant on USN04, E2 and JM08,
+  and all three regimes present on JM05 9000.
+- The latched share (`1 - fly-to / follow ticks`) rises on USN04, E2 and JM08. The prediction
+  is 45-70%.
+
+**The station error** (`summary follow station error`) is the packet's target. It falls, because
+the circle regime steers at a tangent point near `station + L U`, with `L` about 2 s of the
+leader's travel. Lead pursuit steered at `station + (D + 250) U`, which runs ahead of a member
+that is already ahead.
+
+| row | OFF mean | ON mean predicted |
+| --- | --- | --- |
+| USN04 | 163 | 80-140 |
+| E2 | 160 | 80-140 |
+| JM05 9000 | 553 | 250-500 |
+| JM08 | 109 | 60-105 |
+| LOMP10 | 97 (67 ticks) | any |
+
+**Gameplay** (path-coupled, so spreads only):
+- **USN04:** deaths 27 ± 4, torpedo drops 2 ± 2, plane water contacts 8 ± 4.
+- **E2:** deaths 51 ± 6, water contacts 19 ± 6.
+- **JM05 9000:** deaths 5 ± 3. The idle player's USS Phelps is unaffected.
+- **JM08:** exit 3 with deaths 10 ± 2.
+- **LOMP10:** exit 1 or 3; there are only 67 follow ticks.
+
+**Verdict rule, fixed now:**
+- Flip ON if the station error mean falls on at least three of USN04, E2, JM05 9000 and JM08,
+  and nothing pathological appears. Pathological means water contacts up by more than half,
+  members orbiting (fly-to share rising), or a crash.
+- A mechanism failure keeps it OFF: `applied` not 1, or a regime missing where the shadow had it.
