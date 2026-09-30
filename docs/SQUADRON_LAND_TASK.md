@@ -4111,3 +4111,87 @@ land task's rule for `+900h` 2 were not read in this packet.
    This is the question that decides whether park can flip for carriers.
 
 A separate packet is needed to read the host's `C3h` state-2 path and the rule for `+900h` 2 first.
+
+## 5ai. Handoff (cc9-lua20, 2026-09-30, stamped 02:11 UTC)
+
+**What cc9-lua20 landed.** Each row is in main through the lead's merges.
+
+| packet | switch | state | section |
+| --- | --- | --- | --- |
+| `cc9_carrier_landing_deck_part2` | `kCarrierDeckParentBound` (with `kCarrierLandingDeckBound` and `kReturnToBaseSiteKeyBound`) | **ON** | 5ag |
+| `cc9_carrier_elevator` (read only) | none | - | 5ah |
+| `cc9_moveto_target_speed` (ranking #8) | `kMoveToTargetSpeedOverrideBound` | **ON**, stage-identical | PILOT_MOVETO_TASK, "The target-speed override" |
+| `cc9_follow_trail_arm` (ranking #14) | `kFollowTrailArmBound` | **ON**, stage-only | PILOT_MOVETO_TASK, "The follow trail arm" |
+| `cc9_plane_wanderer` | `kPlaneWandererBound` | **ON**, every plane row moves | docs/PLANE_WANDERER.md |
+
+**The queue, in the lead's order (2026-09-30):**
+
+1. **Followers sit 100-600 m off their stations (a likely real gap).** The wanderer pair measured
+   the 009BFD70 distance each follow tick, with the diagnostic
+   `summary follow station error n=... mean=... max=...` (both sides).
+
+   On the OFF logs `local\l20_w0_<row>.log` (cc9-lua20 tree, the no-flip export of `7e5fe18c1`):
+
+   | row | follow ticks | mean (m) | max (m) |
+   | --- | --- | --- | --- |
+   | USN04 3000 | 12674 | 142.3 | 349.3 |
+   | E2 (USN04 9000) | 16462 | 143.1 | 349.3 |
+   | JM05 9000 | 39453 | 623.3 | 2158.2 |
+   | JM08 3000 | 6534 | 112.8 | 246.5 |
+   | LOMP10 3000 | 7 | 251.8 | 274.6 |
+
+   With the wanderer ON (`l20_w1`) the means are 163.3 / 160.1 / 553.4 / 108.8 / 96.7.
+
+   Formation flight, escort cover and every strike approach hang on this.
+
+   - **The host side.** `GameUnitsHost::Impl::place_wing_member_on_station_007f23a0`
+     (`src/game_hosts_units.cpp`) computes the station and, with `apply_position` true, teleports
+     the member onto it.
+     - Its callers are the moveto follow tick `run_moveto_follow_tick_009c1fd0` and
+       `Impl::run_follow_tick_009c1fd0` (torpedo and land follow), both with
+       `apply_position = false`, and a once-placement at the `true` call site.
+     - The flying law is `run_follow_law_009bfee0_009bee30` under `kPlaneFollowLawBound` (ON). It
+       holds the `+85h` latch (within GoodPositionDist and GoodPositionDir) and runs the hold arm
+       `run_follow_hold_arm_009bee56` only inside the latch. Outside it, the approach is the host's.
+   - **The image side.** It is the follow tick `009C1FD0`:
+     - the station `009BFD70` (reconstructed);
+     - `009BFEE0`, of which docs/BOMBER_AFTER_TASK.md reads only arm A, the hold; arm B, the
+       approach to the station, is about 1500 instructions and unread;
+     - `009BEE30` (`009BEE30`-`009BFD67`), about a thousand instructions.
+
+     docs/PLANE_FORMATION.md section 6 names the placement a hole. The numbers above say the
+     approach does not converge: a member outside the latch never gets the image's approach arm.
+   - **Start by reading:** docs/BOMBER_AFTER_TASK.md sections 5-6, docs/PLANE_FORMATION.md
+     sections 5-6, docs/PLANE_FOLLOW_LAW.md. Then take `009BFEE0` arm B with `--asm`
+     (register-passed x87, as `007BE060` was). Measure with the same diagnostic.
+2. **The wanderer uncertainty.** Does `006D1FC0` copy the published pose `unit+74h` back into
+   `unit+674h` between fixed steps? docs/PLANE_WANDERER.md section 4 reads `+0h` as an extra
+   velocity because of that loop (docs/PLANE_ADVANCE_POSE.md). The tuning comments call it a
+   deviation that returns to position.
+   - If the commit does not feed back, `007D8230`'s term is a sub-frame render offset, and
+     `kPlaneWandererBound` goes back OFF.
+   - **Read** `006D1FC0` and its call order against `007C6500` and `007CE040`.
+3. **Ranking #7:** the squadron `+348h` command block, `approach+6Ch`, the moveto circle radius.
+4. **Ranking #15:** the airfield destruction slot `006D40F0`. It is parked until a row destroys a
+   hangar.
+5. **5ah (a)(b)(c):** the carrier elevator chain.
+   - (a) the host's C3h state-2 path and the rule for `+900h` 2;
+   - (b) park's carrier arm `009B23E4` and the elevator site `006D0600` / `006FC480` / `006FC720`,
+     committed OFF;
+   - (c) the pair with `kLandParkStateBound=true` on both sides of JM05 9000.
+6. **Low priority:** a unit SetParty in `src/game_hosts_units.cpp` with the event-6 group removal
+   (SHIP_AI 63; no reference row reaches it in-window).
+
+**Tools in the cc9-lua20 tree** (`local\`), copy what you need with your own prefix:
+- `l20_runs.ps1` / `l20_wait.ps1` / `l20_until.ps1`: the launch rows, the foreground wait, and a
+  wall-clock wait;
+- `l20_rel32.py <addr...>`: every E8/E9 rel32 and absolute dword to an address, over the PE on disk;
+- `l20_disp.py <disp...>`: every `.text` operand with a displacement. Check decodes by hand: a
+  misdecode can mask a MOVSS/FLD;
+- `l20_tuneread.py <off...>`: tuning-block readers after `CALL 0042E740`.
+
+**Environment notes.**
+- Runs failed at renderer init at 16:20 local on 2026-09-29, with `logonui=1`. They were clean
+  again at 16:41.
+- From about 17:27 local the window request became 1600x900 instead of 640x480 (the lead routed it
+  to the reference worker).
