@@ -2314,6 +2314,14 @@ struct GameUnitsHost::Impl {
     bool landing_released_006c45c0(const LandingDeck& d, const GameUnitSlot& p) const;
     bool landing_corridor_006c3b10(const LandingDeck& d, const GameUnitSlot& p) const;
     bool landing_on_circle_006c5c40(const LandingDeck& d, const GameUnitSlot& p) const;
+    // DIAGNOSTIC, packet cc9_land_head_chatter: 006C5C40's parts for a head in
+    // land/standby at the leader pass of 006C7960.
+    void landing_head_circle_diag(const LandingDeck& d, const GameUnitSlot& p, int old_mode,
+                                  int new_mode);
+    unsigned long long lhc_n{0}, lhc_on{0}, lhc_far{0}, lhc_side_moved{0}, lhc_heading{0};
+    unsigned long long lhc_own_ok{0}, lhc_own_far{0}, lhc_leave{0}, lhc_trace{0};
+    double lhc_dd_r_sum{0.0}, lhc_delta_fail_sum{0.0}, lhc_r_moved_sum{0.0};
+    double lhc_point_moved_sum{0.0}, lhc_own_d_r_sum{0.0};
     bool landing_turn_in_006c5e20(const LandingDeck& d, const GameUnitSlot& p) const;
     std::array<float, 3> landing_circle_point_006c5380(const LandingDeck& d,
         const GameUnitSlot& p, bool side) const;
@@ -11376,6 +11384,68 @@ bool GameUnitsHost::Impl::landing_on_circle_006c5c40(const LandingDeck& d,
     return thr > delta;
 }
 
+void GameUnitsHost::Impl::landing_head_circle_diag(const LandingDeck& d, const GameUnitSlot& p,
+                                                   int old_mode, int new_mode) {
+    const std::array<float, 3> l = landing_local_006bcc90(d, p.motion.position);
+    const bool side = l[0] > 0.0f;
+    const std::array<float, 3> c = landing_circle_point_006c5380(d, p, side);
+    const float vx = c[0] - p.motion.position[0];
+    const float vz = c[2] - p.motion.position[2];
+    const float dd = landing_len2_00414c60(vx, vz);
+    const float r = landing_radius_006c3e50(d, p);
+    const float off = side ? 1.5707963705062866f : -1.5707963705062866f;
+    const float a = static_cast<float>(static_cast<double>(
+        bsp::heading_angle_00414eb0(std::array<float, 2>{vx, vz})) - static_cast<double>(off));
+    const float delta = std::fabs(bsp::wrapped_angle_subtract_00438b10(a, p.plane_heading_c6c));
+    const float thr = bsp::clamped_interpolate_00419010(
+        static_cast<float>(static_cast<double>(r) * 0.25), 0.7853981852531433f,
+        static_cast<float>(static_cast<double>(r) * 0.800000011920929), 0.3490658700466156f, dd);
+    // The same test against the point and side the standby steer flies (+38h, +44h).
+    const float ox = p.land_circle_38[0] - p.motion.position[0];
+    const float oz = p.land_circle_38[2] - p.motion.position[2];
+    const float od = landing_len2_00414c60(ox, oz);
+    const float ooff = p.land_side_44 ? 1.5707963705062866f : -1.5707963705062866f;
+    const float oa = static_cast<float>(static_cast<double>(
+        bsp::heading_angle_00414eb0(std::array<float, 2>{ox, oz})) - static_cast<double>(ooff));
+    const float odelta = std::fabs(bsp::wrapped_angle_subtract_00438b10(oa, p.plane_heading_c6c));
+    const float pmx = c[0] - p.land_circle_38[0];
+    const float pmz = c[2] - p.land_circle_38[2];
+    const float point_moved = landing_len2_00414c60(pmx, pmz);
+    ++lhc_n;
+    const bool beyond = static_cast<double>(dd) > static_cast<double>(r) * 1.600000023841858;
+    const bool on = !beyond && thr > delta;
+    if (on) ++lhc_on;
+    else if (beyond) ++lhc_far;
+    else {
+        ++lhc_heading;
+        lhc_delta_fail_sum += delta;
+    }
+    if (side != p.land_side_44) ++lhc_side_moved;
+    if (odelta < 1.5707963705062866f) ++lhc_own_ok;
+    if (static_cast<double>(od) > static_cast<double>(p.land_radius_48) * 1.6) ++lhc_own_far;
+    lhc_dd_r_sum += r > 0.0f ? dd / r : 0.0f;
+    lhc_own_d_r_sum += p.land_radius_48 > 0.0f ? od / p.land_radius_48 : 0.0f;
+    lhc_r_moved_sum += std::fabs(r - p.land_radius_48);
+    lhc_point_moved_sum += point_moved;
+    if (old_mode == 3 && new_mode != 3) {
+        ++lhc_leave;
+        if (lhc_trace < 60) {
+            ++lhc_trace;
+            log.notef("  land head circle leave %s t=%.2f mode %d->%d side_now=%d side44=%d "
+                "x_local=%.1f dd=%.1f r=%.1f r44=%.1f delta=%.3f thr=%.3f own_d=%.1f "
+                "own_delta=%.3f point_moved=%.1f records=%zu (006C5C40, packet "
+                "cc9_land_head_chatter diagnostic)", p.row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds), old_mode, new_mode,
+                side ? 1 : 0, p.land_side_44 ? 1 : 0, static_cast<double>(l[0]),
+                static_cast<double>(dd), static_cast<double>(r),
+                static_cast<double>(p.land_radius_48), static_cast<double>(delta),
+                static_cast<double>(thr), static_cast<double>(od),
+                static_cast<double>(odelta), static_cast<double>(point_moved),
+                d.assignments.size());
+        }
+    }
+}
+
 // 006C5E20 (RET 4): TRUE when 006C3B10 or 006C5C40 answers (006C6010); else the
 // StandbyDist gate and the heading test against the circle point.
 bool GameUnitsHost::Impl::landing_turn_in_006c5e20(const LandingDeck& d,
@@ -11446,6 +11516,10 @@ void GameUnitsHost::Impl::landing_mode_006c7960(LandingDeck& d, std::size_t deck
     } else {
         mode = (landing_deck_usable_006bed60(deck_index) && landing_corridor_006c3b10(d, p)
                 && rec.spacing_8 > 0.0f) ? 4 : 3;
+    }
+    if (leader_pass && p.land_task_installed &&
+        p.land_state == GameUnitSlot::LandTaskState::kStandby) {
+        landing_head_circle_diag(d, p, rec.mode_10, mode);   // DIAGNOSTIC
     }
     rec.mode_10 = mode;
     landing_path_006c6020(d, rec);
@@ -27526,6 +27600,18 @@ void GameUnitsHost::report() {
             "writes=%llu (packet cc9_land_task_reach)", installs, kept, refused, reqs, empty,
             refused_states, host.land_retired_invalid, host.land_profile_calls,
             host.land_profile_writes);
+    }
+    if (host.lhc_n != 0) {
+        const double n = static_cast<double>(host.lhc_n);
+        host.log.notef("summary land head circle n=%llu on=%llu far=%llu heading_fail=%llu "
+            "heading_fail_delta=%.3f side_moved=%llu own_heading_ok=%llu own_far=%llu dd_over_r=%.3f "
+            "own_d_over_r=%.3f r_moved=%.1f point_moved=%.1f leaves=%llu (006C5C40 at the leader "
+            "pass for heads in land/standby, packet cc9_land_head_chatter diagnostic)", host.lhc_n,
+            host.lhc_on, host.lhc_far, host.lhc_heading,
+            host.lhc_heading ? host.lhc_delta_fail_sum / static_cast<double>(host.lhc_heading) : 0.0,
+            host.lhc_side_moved, host.lhc_own_ok, host.lhc_own_far, host.lhc_dd_r_sum / n,
+            host.lhc_own_d_r_sum / n, host.lhc_r_moved_sum / n, host.lhc_point_moved_sum / n,
+            host.lhc_leave);
     }
     if constexpr (kLandingSequencerBound) {
         const bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
