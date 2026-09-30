@@ -315,6 +315,19 @@ constexpr bool kSellingTickBound = true;
 // (docs/PLANNER_TASK_CHOICE.md section 14.2).
 constexpr bool kCaptureAccessorsBound = true;
 
+// Packet cc9_capture_group_value, docs/SHIP_AI_OPEN_ITEMS.md section 70. True:
+// the Capture target path's per-group weight 00A250A0 (called at 00A2A380) is
+// 00A0C650 over the group's member records (00A07E40) and the target's defender
+// records (00A24870: list-2 entities of the enemy side, IsKindOf 6, 18h or 1Bh,
+// within Capture_CollectDefendersDist, else the target alone), the composition
+// kPlannerGroupTargetValueBound already runs for 00A0F970. A group whose pairs
+// all weigh 0 (no barrels) then fails the 00A2AC02 `w > 0` test, stays
+// unassigned and is handed to brain+4h or brain+8h. False: members x defenders,
+// always positive, so every group is assigned. ON (2026-09-30): USN13 and USN01
+// moved as predicted (28 and 3 Maru/convoy groups handed to Attack), USN04 and
+// JM05 gameplay-identical (section 70.1).
+constexpr bool kCaptureGroupValueBound = true;
+
 // Packet cc9_planner_group_target_value (rank 10), docs/SHIP_AI_OPEN_ITEMS.md
 // section 7. True: the planner's candidate base term is 00A0F970's group target
 // value, (AttackSumMul * attack sum + attack maxes sum) / ReferenceWeight over
@@ -2871,6 +2884,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiTailCaptureScoreTerms terms{};
         float price{0.0f};            // rec+1Ch
         std::size_t defenders{0};     // 00A24870's record count, for the stand-in
+        std::vector<std::size_t> defender_units;   // 00A24870's entities, in list-2 order
         bool live{true};
         std::vector<Group*> assigned; // 00A27AE0's per-target list
     };
@@ -2927,9 +2941,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // 1Bh within Capture_CollectDefendersDist (3-D, 00A1A660) of the target, or
     // the target alone when there is none. 00A0C650's pair terms are not
     // reconstructed (docs/PLANNER_KATE_TARGETING.md section 3), so this counts
-    // the attacker-defender pairs: members x defenders, always positive.
+    // the attacker-defender pairs: members x defenders, always positive
+    // (kCaptureGroupValueBound replaces the count with 00A0C650's value).
     std::size_t capture_defenders_00a24870(std::size_t target, int enemy_side,
-                                            const CaptureTuning& t) const {
+                                            const CaptureTuning& t,
+                                            std::vector<std::size_t>* collected = nullptr) const {
         float tx = 0.0f, ty = 0.0f, tz = 0.0f;
         units.unit_position_00fc(target, tx, ty, tz);
         const float r2 = t.collect_defenders * t.collect_defenders;
@@ -2946,10 +2962,50 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (units.unit_is_kind_of(u, 0x06) || units.unit_is_kind_of(u, 0x18) ||
                 units.unit_is_kind_of(u, 0x1B)) {
                 ++n;
+                if (collected != nullptr) collected->push_back(u);
             }
         }
+        if (n == 0 && collected != nullptr) collected->push_back(target);   // 00A248FD
         return n == 0 ? 1u : n;   // 00A248FD: the target's own record
     }
+
+    // 00A250A0, __thiscall(planner)(group, entity), returns ST0:
+    // 00A0C650(00A07E40(group), 00A24870(entity), 0, -1.0 [00D7A260], 0, 0, 1.0).
+    // Unlike 00A0F970 it has no empty-group test; an empty attacker list sums 0.
+    float capture_group_value_00a250a0(const Group* g, const CaptureTargetRec& rec) {
+        std::vector<GroupValueRecord> attackers;
+        std::vector<GroupValueRecord> defenders;
+        for (const std::size_t m : g->members) attackers.push_back(group_value_record_00a04560(m));
+        for (const std::size_t u : rec.defender_units) {
+            defenders.push_back(group_value_record_00a04560(u));
+        }
+        float attack_sum = 0.0f;
+        float maxes_sum = 0.0f;
+        const float value = compose_attack_value_00a0c650(attackers, defenders, attack_sum,
+                                                          maxes_sum);
+        ++capture_value_calls;
+        if (value == 0.0f) ++capture_value_zero;
+        if (capture_diag_enabled() && capture_value_lines < 450) {
+            ++capture_value_lines;
+            std::size_t barrels = 0;
+            for (const GroupValueRecord& a : attackers) {
+                const GameAiWeaponFacts::Unit* row = game_ai_weapon_facts().row(a.unit);
+                if (row != nullptr) barrels += row->barrels.size();
+            }
+            log.notef("    capture value t=%.2f leader=%s members=%zu barrels=%zu target=%s "
+                      "defenders=%zu value=%.4f sum=%.4f maxes=%.4f stand_in=%zu",
+                      static_cast<double>(clock_seconds),
+                      g->members.empty() ? "-" : unit_name(proxy(g->members.front())).c_str(),
+                      g->members.size(), barrels, unit_name(rec.unit).c_str(),
+                      rec.defender_units.size(),
+                      static_cast<double>(value), static_cast<double>(attack_sum),
+                      static_cast<double>(maxes_sum), g->members.size() * rec.defenders);
+        }
+        return value;
+    }
+    unsigned long long capture_value_calls{0};
+    unsigned long long capture_value_zero{0};
+    unsigned long long capture_value_lines{0};
 
     std::size_t group_alloc_order(const Group* g) const {
         for (std::size_t i = 0; i < groups.size(); ++i) {
@@ -2986,7 +3042,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // 00A2A18B-00A2A1E2, the target's CaptureWeight being the Lua 1.0.
             rec.price = bsp::ai_tail_capture_record_price(rec.terms, capture_weight_00a03510(0x1C),
                                                           t.point_value, t.min_resource);
-            rec.defenders = capture_defenders_00a24870(e, enemy, t);
+            rec.defenders = capture_defenders_00a24870(e, enemy, t, &rec.defender_units);
             plan.targets.push_back(std::move(rec));
         }
         // 00A2A263-00A2AA90, one record per owned group, keyed by the group
@@ -3025,9 +3081,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 std::size_t ti = 0;
                 while (ti < plan.targets.size() && plan.targets[ti].unit != e) ++ti;
                 if (ti == plan.targets.size()) continue;
-                // 00A2A380: the base weight (stand-in above).
-                const float base = static_cast<float>(g->members.size()) *
-                                   static_cast<float>(plan.targets[ti].defenders);
+                // 00A2A380: the base weight, 00A250A0(group, entity), or the
+                // members x defenders stand-in with kCaptureGroupValueBound OFF.
+                // BSP_CAPTURE_DIAG=1 logs the image's value in both states.
+                if (!kCaptureGroupValueBound && capture_diag_enabled()) {
+                    (void)capture_group_value_00a250a0(g, plan.targets[ti]);
+                }
+                const float base = kCaptureGroupValueBound
+                    ? capture_group_value_00a250a0(g, plan.targets[ti])
+                    : static_cast<float>(g->members.size()) *
+                          static_cast<float>(plan.targets[ti].defenders);
                 // 00A2A393: 1.0 (00D7A24C) unless this is the group's current
                 // target, which takes 00419010(+1B0h, +1ACh, +1B4h, +1A8h, d).
                 float mul = 1.0f;
@@ -4157,33 +4220,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         std::vector<GroupValueRecord> targets;
         for (const std::size_t m : own->members) attackers.push_back(group_value_record_00a04560(m));
         for (const std::size_t m : target->members) targets.push_back(group_value_record_00a04560(m));
-        // 00A0C650 BSP_AiGroup_ComposeAttackValue. The pair loop sums every
-        // pair (attack sum) and keeps each attacker's best (00A0C8xx); the
-        // maxes vector starts at 0.0 (the 004A8F10 resize with FLDZ).
         float attack_sum = 0.0f;
         float maxes_sum = 0.0f;
-        for (const GroupValueRecord& a : attackers) {
-            float best = 0.0f;
-            for (const GroupValueRecord& t : targets) {
-                const float v = group_value_pair_00a0c3c0(a, t);
-                attack_sum = v + attack_sum;
-                if (best < v) best = v;
-            }
-            // 00A0CC82-00A0CC9B: the maxes are summed in attacker order.
-            maxes_sum = best + maxes_sum;
-        }
-        // 00A0CDC6-00A0CDE3: (+218h AttackSumMul x sum + maxes) / +214h
-        // ReferenceWeight, 0.33 and 5.0 in all seven tables (lines 139-140).
-        const float base = (kGroupValueAttackSumMul * attack_sum + maxes_sum) /
-                           kGroupValueReferenceWeight;
-        // 00A0CE26-00A0CE6B: the speed bonus min(+22Ch x 00A07C10(group), +228h x
-        // base). Both are authored 0 (lines 144-145), so it is 0 for any finite
-        // group speed; 00A07C10 is not called here.
-        const float speed_bonus = 0.0f;
-        // 00A0CE71: the three penalties are zeroed when arg1 is 0, which it is
-        // from 00A1CC61. Then 00A0CEB0-ish clamps a negative result to 0.
-        float result = speed_bonus + base;
-        if (result < 0.0f) result = 0.0f;
+        const float result = compose_attack_value_00a0c650(attackers, targets, attack_sum, maxes_sum);
         if (result == 0.0f) ++group_value_census.zero_results;
         const float population = static_cast<float>(target->members.size());
         if (group_value_census.samples < kGroupValueSampleLimit) {
@@ -4204,6 +4243,41 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                       static_cast<double>(attack_sum), static_cast<double>(maxes_sum),
                       std::sqrt(static_cast<double>(leader_d2)), static_cast<double>(range));
         }
+        return result;
+    }
+    // 00A0C650 BSP_AiGroup_ComposeAttackValue with (0, -1.0 [00D7A260], 0, 0,
+    // 1.0), the arguments both 00A0F970 (00A1CC61) and 00A250A0 pass.
+    float compose_attack_value_00a0c650(const std::vector<GroupValueRecord>& attackers,
+                                        const std::vector<GroupValueRecord>& targets,
+                                        float& attack_sum, float& maxes_sum) {
+        // The pair loop sums every pair (attack sum) and keeps each attacker's
+        // best (00A0C8xx); the maxes vector starts at 0.0 (the 004A8F10 resize
+        // with FLDZ).
+        attack_sum = 0.0f;
+        maxes_sum = 0.0f;
+        for (const GroupValueRecord& a : attackers) {
+            float best = 0.0f;
+            for (const GroupValueRecord& t : targets) {
+                const float v = group_value_pair_00a0c3c0(a, t);
+                attack_sum = v + attack_sum;
+                if (best < v) best = v;
+            }
+            // 00A0CC82-00A0CC9B: the maxes are summed in attacker order.
+            maxes_sum = best + maxes_sum;
+        }
+        // 00A0CDC6-00A0CDE3: (+218h AttackSumMul x sum + maxes) / +214h
+        // ReferenceWeight, 0.33 and 5.0 in all seven tables (lines 139-140).
+        const float base = (kGroupValueAttackSumMul * attack_sum + maxes_sum) /
+                           kGroupValueReferenceWeight;
+        // 00A0CE26-00A0CE6B: the speed bonus min(+22Ch x 00A07C10(group), +228h x
+        // base). Both are authored 0 (lines 144-145), so it is 0 for any finite
+        // group speed; 00A07C10 is not called here.
+        const float speed_bonus = 0.0f;
+        // 00A0CE71: the three penalties are zeroed when arg1 is 0, which it is
+        // from 00A1CC61 and from 00A250A0. Then 00A0CEB0-ish clamps a negative
+        // result to 0.
+        float result = speed_bonus + base;
+        if (result < 0.0f) result = 0.0f;
         return result;
     }
     static constexpr float kGroupValueAttackSumMul = 0.33f;
@@ -4976,6 +5050,9 @@ void GameAiCoordinatorHost::report() {
             host.capture_orders_defend, host.capture_orders_patrol, host.capture_orders_kept,
             host.capture_merges, host.capture_spawn_due, host.patrol_ticks,
             host.patrol_close_passes);
+        host.log.notef("summary mission ai capture group value bound=%d calls=%llu zero=%llu "
+            "(00A250A0 at 00A2A380, packet cc9_capture_group_value)",
+            kCaptureGroupValueBound ? 1 : 0, host.capture_value_calls, host.capture_value_zero);
     }
     if constexpr (kGeneratedSquadronBrainBound) {
         host.log.notef("summary mission ai generated squadrons=%llu index_shifts=%llu "
