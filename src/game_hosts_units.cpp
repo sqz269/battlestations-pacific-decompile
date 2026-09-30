@@ -19565,7 +19565,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.st_arm_ticks;
                         const int b = strafe_state_bucket(unit_.strafe_state);
                         if (b >= 0) ++unit_.st_state_ticks[b];
-                        owner_.record("BotTaskStrafe::arm", 0x009cd170u);
+                        owner_.done("BotTaskStrafe::arm", 0x009cd170u);
                     }
 
                     void run_dive_bomb_task_arm_009c8790(float dt) {

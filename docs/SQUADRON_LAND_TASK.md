@@ -8182,3 +8182,25 @@ When the search does find an aircraft, it shoots at the aircraft instead.
   set now chooses `00e08f58` where it chose nothing, and the dogfight arm installs there. Those
   rows move; each such line is checked.
 - **Rows without either** (the controls): gameplay identical.
+
+### 4. The smoke and a first ON run (built from `f3ef5bbcf` with both flips, SHA-256 `77349F959157`)
+
+- **Smoke** (USN01 300/100, `local\l30_smoke_on.log`): final COM release, `present interval
+  immediate`, the module directory under `local\l30_on`, and `summary mission strafe task:
+  planes=0`. As predicted.
+- **USNOS 3000, ON side only** (`local\l30_on_usnos.log`; a mechanism check, not a verdict):
+  - three orders print `guns feed: pilot_fires=1 suppressed=0` and choose `00e08f40`; the other
+    three print `pilot_fires=0 suppressed=1` and still choose `00e08f28`, as before;
+  - the order reaches **three squadrons of four** (`plane #1.1..#1.3` and their `|.-2..-4`
+    members), so 12 strafe tasks install, not three;
+  - every member takes **one think of attackrun** at t = 39.8 s and returns to follow at 39.9 s.
+    The members think before their leader in that frame and read the order's mode 2 (007ED430 at
+    008A4C41) until the leader's 0099B740 lowers it. This is the image's ordering, not a host
+    artefact;
+  - moveto/follow -> gotowards from t = 91.5 s (in range at about 2000-2500 m horizontal), with
+    some one-second flaps at the range edge (the test runs once per second);
+  - five aim entries from t = 117.8 s, 169 aim thinks, **61 gun fire ticks on the aim point**
+    (three bursts, `task gun` rows for the three leaders);
+  - no goaway before the mission ends at 150 s;
+  - 168 hit-notice resets: the planes are under fire throughout.
+- The arm's `record` line printed it as UNIMPLEMENTED; it is now `done`.
