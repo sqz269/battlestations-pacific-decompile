@@ -7866,3 +7866,43 @@ Leaves at t<=0.10 against all leaves, from `s22_p1` (reference-form, before this
   latch, `mode3_points > 0` and begins may follow with the solver ON.
 - **The reach rows:** followers hold their station until a new command replaces `follow`.
   Fleet positions, engagements and possibly death rows move.
+
+### 92.5 The pairs (`s23_c0` vs `s23_c1`, both from `2ebfd52f3`), and the flip
+
+| row | leaves at t<=0.10, OFF -> ON | joins posted / delivered | exit | deaths | death rows |
+| --- | --- | --- | --- | --- | --- |
+| JM08 36000 | 17 -> 0 | 17 / 17 | 3 | 25 -> 168 | 153 only ON, 10 only OFF |
+| USN13 | 39 -> 0 | 47 / 47 | 3 | 24 -> 23 | 1 only OFF, 22 changed |
+| USNOS | 32 -> 0 | 63 / 63 | 3 | 105 -> 106 | 3 only ON, 2 only OFF, 70 changed |
+| USN12 | 11 -> 0 | 11 / 11 | 3 | 7 -> 7 | identical |
+| USN02 | 10 -> 0 | 11 / 11 | 3 | 1 -> 1 | identical; 27 unit rows move |
+| USN01 | 8 -> 0 | 13 / 13 | 3 | 17 -> 17 | 2 changed |
+| LOMP10 | 7 -> 0 | 7 / 7 | 3 | 7 -> 3 | 1 only ON, 5 only OFF |
+| JM05 | 5 -> 0 | 39 / 39 | 3 | 12 -> 12 | 3 changed |
+| E2 (control) | 0 -> 0 | 16 / 16 | 1 | 51 -> 51 | identical |
+| JM06 (control) | 0 -> 0 | 9 / 9 | 1 | 1 -> 1 | identical |
+
+**Every prediction held,** including both controls. A join delivered one pump later changes
+nothing where no authored command wipes it.
+
+**JM08 36000**
+- **The fleet stays on Missouri.** Grayson passes 77.8 m from the origin at 550.1 s, and
+  `StartInvasion` runs: `NavigatorAttackMove` is reached (OFF: never), and the first HQ latch line is at 538.85 s.
+- **The landers pick up Headquarter 01:**
+  - LST 03 latches mode 3 from 4202.6 m;
+  - LST 01 and LST 02 latch mode 4 (4672.3 m and 8114.9 m);
+  - totals: `mode3_points=3`, `mode4_points=19`, `in_reach=0`, `begins=0`.
+- **Most of the 153 new deaths are Japanese.** The Allied fleet now closes on the base: Missouri
+  alone kills 48 tents, 31 houses and 15 static aircraft.
+
+**Decision: `kFormationJoinLoopbackBound` ON.** The mechanism matches the read in every row.
+
+**Open, in order**
+1. **JM08: the landers hold the HQ target for about one second.** The lander latch lines stop at
+   539.85 s (six lines in the run). The LSTs then wander 1.2-1.7 km from the HQ until the end,
+   and nothing reaches `in_reach`. Next: what replaces their command after `StartInvasion`.
+2. **Friendly blast kills appear once the fleet stays together.** USTroopTransport 01, 02 and 05
+   die to Gleaves's `cat=6` blast, and 06 to Bristol's. Check whether the image's blast damage
+   spares the shooter's side.
+3. **USN01's unit table shrinks 88 -> 59 rows** (29 only OFF). Check whether that is the table's
+   own filter (moved units) or units missing.

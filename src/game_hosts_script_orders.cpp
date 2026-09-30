@@ -2251,7 +2251,9 @@ void GameScriptOrdersHost::slot_counter_increment(int slot) {
 // (flags 1, 0081733E clear-all) replaced the follow and 009F5DEB released every
 // scripted follower at t=0.05. True: the join is posted into the commands host's
 // loopback vector and runs at its turn. False: joined at the call, as before.
-inline constexpr bool kFormationJoinLoopbackBound = false;
+// ON by section 92.5: the t=0.05 leaves go to 0 in all eight reach rows (exit 3),
+// both controls exit 1, and JM08's StartInvasion fires (first HQ latch 538.85 s).
+inline constexpr bool kFormationJoinLoopbackBound = true;
 
 void GameScriptOrdersHost::session_route_formation_message(void* follower,
     std::uint16_t leader_object_id) {
