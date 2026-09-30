@@ -6363,6 +6363,11 @@ struct GameUnitsHost::Impl {
     double fes_speed_diff_sum{0.0};   // own |v| - leader |v|
     double fes_behind_speed_diff_sum{0.0};
     double fes_flyto_cmd_minus_own_sum{0.0};
+    // ... and the throttle slots and speed ceilings behind the deficit.
+    double fes_thr_member_sum{0.0}, fes_thr_leader_sum{0.0};
+    double fes_member_v_sum{0.0}, fes_leader_v_sum{0.0};
+    double fes_member_max_sum{0.0}, fes_leader_max_sum{0.0}, fes_leader_want_sum{0.0};
+    unsigned long long fes_member_full{0}, fes_leader_full{0};
     unsigned long long fes_flyto_n{0};
     // Diagnostic, both sides: Phase A's regime per fly-to tick (applied with
     // kFollowPhaseABound, else the shadow of what it would pick).
@@ -6496,6 +6501,17 @@ struct GameUnitsHost::Impl {
                     fes_cross_abs_sum += std::fabs(cross);
                     fes_dy_abs_sum += std::fabs(dy);
                     fes_speed_diff_sum += so - sl;
+                    const float tm = unit.plan_slots[bsp::kPilotSlotThrottle].current;
+                    const float tl = leader.plan_slots[bsp::kPilotSlotThrottle].current;
+                    fes_thr_member_sum += tm;
+                    fes_thr_leader_sum += tl;
+                    if (tm >= 0.99f) ++fes_member_full;
+                    if (tl >= 0.99f) ++fes_leader_full;
+                    fes_member_v_sum += so;
+                    fes_leader_v_sum += sl;
+                    fes_member_max_sum += unit.plane_max_spd;
+                    fes_leader_max_sum += leader.plane_max_spd;
+                    fes_leader_want_sum += leader.plane_desired_speed_2b4;
                     if (along < -50.0 && std::fabs(along) >= std::fabs(cross)) {
                         ++fes_behind;
                         fes_behind_speed_diff_sum += so - sl;
@@ -27241,6 +27257,13 @@ void GameUnitsHost::report() {
                 host.fes_behind ? host.fes_behind_speed_diff_sum / static_cast<double>(host.fes_behind) : 0.0,
                 host.fes_flyto_n ? host.fes_flyto_cmd_minus_own_sum /
                     static_cast<double>(host.fes_flyto_n) : 0.0);
+            host.log.notef("summary follow speed ceiling n=%llu member_v=%.2f leader_v=%.2f "
+                "member_maxspd=%.2f leader_maxspd=%.2f leader_want=%.2f thr_member=%.3f "
+                "thr_leader=%.3f member_full=%llu leader_full=%llu (throttle slot current, "
+                "packet cc9_follow_speed_loss diagnostic)", host.fes_n,
+                host.fes_member_v_sum / n, host.fes_leader_v_sum / n, host.fes_member_max_sum / n,
+                host.fes_leader_max_sum / n, host.fes_leader_want_sum / n, host.fes_thr_member_sum / n,
+                host.fes_thr_leader_sum / n, host.fes_member_full, host.fes_leader_full);
         }
         host.log.notef("summary follow phase-a lead=%llu abeam=%llu circle=%llu mean_time=%.3f "
             "applied=%d (009C0251-009C0EE0, packet cc9_follow_approach_arm; a shadow when OFF)",
