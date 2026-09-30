@@ -817,6 +817,11 @@ struct GameShipAiHost::Impl {
     std::vector<std::int32_t> landed_capture_power_0810;
     bool lander_diag{false};
     double lander_diag_next{0.0};
+    // BSP_LANDER_DIAG=1 also prints the approach latch's inputs for a lander
+    // targeting a building, once a second per unit (packet
+    // cc9_landing_mode3_entry, docs/SHIP_AI_OPEN_ITEMS.md section 91).
+    std::vector<double> latch_diag_next;
+    double fleet_diag_next{0.0};
     unsigned long long ramp_ground_contacts{0};
     unsigned long long ramp_lowers{0};
     unsigned long long capture_landed_adds{0};
@@ -5154,6 +5159,21 @@ public:
     // the neighbour binding does and reads BigLandingShip (class+808h) as 0,
     // 006F2D90 (a free landing spot on the building, [target+794h] list) is
     // false and [target+7C4h] is 0. So a lander is always in mode 4.
+    void log_latch_diag(const GameUnitRow* urow, const GameUnitRow* trow, float ux, float uz,
+                        float bx, float bz, const bsp::ShipAiApproachLatchInputs& in,
+                        const bsp::ShipAiApproachLatchResult& r) {
+        const float twice = static_cast<float>(static_cast<double>(in.turn_radius_00811a30) * 2.0);
+        const float reach = twice > 300.0f ? twice : 300.0f;
+        owner_.log.notef("lander latch diag: t=%.2f unit=%s target=%s pos=(%.1f %.1f) "
+            "goal=(%.1f %.1f) target_pos=(%.1f %.1f) goal_range=%.1f landing_range=%d "
+            "reach=%.1f free_pad=%d kind0c=%d mode=%d->%d", owner_.capture_clock,
+            urow != nullptr ? urow->name.c_str() : "?", trow != nullptr ? trow->name.c_str() : "?",
+            ux, uz, ctl_.goal_vector.goal_x_0b2c, ctl_.goal_vector.goal_z_0b34, bx, bz,
+            static_cast<double>(ctl_.approach.goal_range_11e0), in.target_radius_07c4,
+            static_cast<double>(reach), in.target_free_landing_spot_006f2d90 ? 1 : 0,
+            in.unit_is_kind_0c ? 1 : 0, static_cast<int>(ctl_.approach.mode_1234),
+            static_cast<int>(r.mode));
+    }
     bsp::ShipAiApproachLatchResult run_mode_latch() {
         GameShipAiSummary& s = owner_.summary;
         ++s.latch_frames;
@@ -5207,6 +5227,21 @@ public:
             else if (in.class_lands_troops_vtable_2c) ++s.latch_building_lander;
         }
         ++s.latch_modes[static_cast<int>(r.mode)];
+        if (owner_.lander_diag && target_known && in.target_is_building_1c
+            && in.class_lands_troops_vtable_2c) {
+            if (owner_.latch_diag_next.size() <= index_)
+                owner_.latch_diag_next.resize(index_ + 1, -1.0);
+            if (owner_.capture_clock >= owner_.latch_diag_next[index_]) {
+                owner_.latch_diag_next[index_] = owner_.capture_clock + 1.0;
+                float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+                owner_.units.unit_position_00fc(index_, ux, uy, uz);
+                float bx = 0.0f, by = 0.0f, bz = 0.0f;
+                owner_.units.unit_position_00fc(target, bx, by, bz);
+                const GameUnitRow* urow = owner_.units.unit_row(index_);
+                const GameUnitRow* trow = owner_.units.unit_row(target);
+                log_latch_diag(urow, trow, ux, uz, bx, bz, in, r);
+            }
+        }
         if (r.turn_radius_11f0 != ctl_.approach.turn_radius_11f0) ++s.latch_clamps;
         if (r.retarget_reset) ++s.latch_resets;
         if (r.retarget_arm_reachable) {
@@ -11346,6 +11381,27 @@ void GameShipAiHost::Impl::landing_ship_ramp_step(float seconds) {
     const std::size_t count = units.count();
     const bool diag_tick = lander_diag && capture_clock >= lander_diag_next;
     if (diag_tick) lander_diag_next = capture_clock + 1.0;
+    if (lander_diag && capture_clock >= fleet_diag_next) {
+        // BSP_LANDER_DIAG=1: every side-0 ship's position, heading, speed and the
+        // ground under it, every 10 s (packet cc9_landing_mode3_entry).
+        fleet_diag_next = capture_clock + 10.0;
+        for (std::size_t u = 0; u < count; ++u) {
+            if (!units.unit_is_kind_of(u, 6) || units.unit_side_0054(u) != 0) continue;
+            if (!units.unit_alive_and_visible(u) || unit_dead(u)) continue;
+            float x = 0.0f, y = 0.0f, z = 0.0f;
+            units.unit_position_00fc(u, x, y, z);
+            const float p[3] = {x, y, z};
+            float h = -1000.0f;
+            if (!world_ground_height_00903860(p, h)) h = -1000.0f;
+            const GameUnitRow* row = units.unit_row(u);
+            log.notef("fleet diag: t=%.1f unit=%s pos=(%.1f %.1f %.1f) heading=%.3f ground=%.2f "
+                "contact=%d origin_dist=%.1f", capture_clock,
+                row != nullptr ? row->name.c_str() : "?", x, y, z,
+                static_cast<double>(units.unit_heading_radians(u)), h,
+                units.unit_ground_contact_1011(u) ? 1 : 0,
+                std::sqrt(static_cast<double>(x) * x + static_cast<double>(z) * z));
+        }
+    }
     bsp::BuildingPadModel& pads = bsp::building_pad_model();
     for (std::size_t u = 0; u < count; ++u) {
         bsp::BuildingPadModel::Lander* l = pads.mutable_lander(static_cast<int>(u));
