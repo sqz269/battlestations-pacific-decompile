@@ -5713,3 +5713,33 @@ This piece is part of the same switch group, `kBaseLaunchChainBound`, which is s
   - Four `sends` in all, and `not_ready` grows every step after them.
   - No task ends, and 30 members stay Inside (disabled). No launched plane reaches state 7.
 - Off: identical to the parent.
+
+### Record (commits `7a34612d5`, `40412e9e5`, `f41a2bd3b`, 2026-09-30)
+
+- **Smoke, off (`7a34612d5`), USN01 300 frames:** 299 frames were presented and the run exited 0.
+- **First JM05 3000 with the switch on (`7a34612d5`, `local\l25_p2on`): a host defect.**
+  - Disabling the Inside members made `air_ops_squadron_plane_count` report 0, because it counted
+    `row.active`.
+  - The deck tick then released each slot as if its squadron were dead (the host's stand-in for
+    `007F1B70` -> `006C65B0`).
+  - The script's `stloPlaneNum < 2` gate relaunched until the 64-squadron ceiling: 64 squadrons, 192
+    members Inside.
+  - In the image a disabled member stays in `+3D0h`/`+3CCh` until `007F3970`'s compaction at death.
+    Under the switch the count now takes the members that are not out of action, destroyed or
+    removed (`+5Dh`/`+5Eh`/`+5Fh`): `40412e9e5`, with `f41a2bd3b` fixing the `C4702` that the ON
+    build raised.
+- **JM05 3000 with the switch on (`f41a2bd3b`, `local\l25_p2bon`, SHA-256 `A9E9BB5B9998`), as
+  predicted:**
+  - the same 10 launches as the off reference;
+  - `built=10 ended=0 sends=4`;
+  - each of the four decks received its first member at 3.05 s:
+    - `MainAirfieldEntity 01_sqn01`;
+    - `SecondaryAirfieldEntity 01_sqn02`;
+    - `USS Lexington_sqn03`;
+    - `USS Yorktown_sqn04`.
+  - Each member is its squadron's wing 0, the `+3D0h` head. Each deck kept that member in
+    `site+18h` for the rest of the run: `not_ready` was 28506 of 28670 ticks.
+  - 30 members stayed Inside.
+  - Shokaku and Zuikaku, which launch nothing on this row, stayed empty.
+
+Piece 3 (the deck arms) is what consumes `site+18h`.
