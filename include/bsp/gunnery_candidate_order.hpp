@@ -6,7 +6,7 @@
 // or of one of its small callees. Names are hypotheses, not recovered symbols.
 //
 // Reused rather than redeclared: unit_gunnery_pass.hpp already declares
-// kUnitGunneryCandidateCapacity (50h), kUnitGunneryLoiteringPlanePenalty
+// kUnitGunneryCandidateCapacity (50h), kUnitGunneryFlightLeaderPenalty
 // (100.0f), kUnitGunneryTorpedoCategory (7), GunneryCandidate and the pair
 // insert_ranked_candidate_00865284 / candidate_walk_order_008657a3. This header
 // does not redefine those; it publishes the gates and the first-accepted-wins

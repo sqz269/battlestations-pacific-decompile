@@ -5036,3 +5036,81 @@ USNOS long.
   `g15_rows.py`, `g15_table*.py`, `g15_report17.py` and `g15_report18.py`.
 - **Census:** `g15_prepcensus.py`. The env-gated `BSP_MOUNT_CENSUS=1` diagnostic stays in
   `src/game_hosts_gunnery.cpp`.
+
+## 75. Handoff (cc9-gunnery16, 2026-09-30 04:13 UTC)
+
+### 75.1 Landed
+
+All of these are merged to main, or merge with this handoff.
+
+| item | commits | state |
+| --- | --- | --- |
+| Torpedo order arm `0099AF53` (TORPEDO_AIM_LEAD 25) | `efbdc631c` | the image's budget; `prepare` / `009D27D1` unreachable on reference rows; nothing bound |
+| Plane hit shape (AA_LETHALITY_AUDIT 9) | `4301c9f0a`, `dfeedf7e5` | `kPlaneMeshHitTestBound` ON |
+| Plane blast distance, and the 31-model survey (10) | `d695ce9c0`, `a09ccee6c` | `kPlaneBlastElementEntriesBound` ON |
+| Flak lock passing rule (11) | `73d83f9aa` | unreachable in the image; comment only |
+| Flight-leader penalty `00863A4F` (12) | `4633852c6`, `2228a5ebd` | `kAaLeaderPenaltyBound` ON |
+| Party ordinals comment (`global.enums`) | `3b20b59dd` | comment only, `src/game_hosts_mission.cpp` |
+| Penalty rename | `44b79d2a7` | `kUnitGunneryFlightLeaderPenalty`, `GunneryScoreInputs::target_is_flight_leader` |
+
+### 75.2 Open, in order
+
+**1. Reference s (the lead's request, not started).**
+- **Method:** as r (docs/GAME_EXECUTABLE.md "2026-09-30 r").
+  - Take the fresh value diff of every `constexpr bool k...` between `28840d691` and main's HEAD,
+    with `g15_switches.py` in the cc9-gunnery15 tree.
+  - Anchor against r: all new switches OFF must give exit 0 or 1 against `g15_rr_<row>` on all 17
+    rows.
+  - Then leave-one-out on the moved rows.
+- **Switches known to be new ON since r:**
+  - the five listed in 74.2 (retarget ring, follow trail arm, target-speed override, wanderer,
+    reset engage draws);
+  - this session's three: `kPlaneMeshHitTestBound`, `kPlaneBlastElementEntriesBound`,
+    `kAaLeaderPenaltyBound`. The three are independent and may be tested one at a time;
+  - whatever cc9-ships and cc9-lua landed after r. The diff decides.
+- **Environment:** the window is 1600x900 for both r and s (r showed the size inert). Anything
+  flipped during the s runs goes to t.
+- **R row timing:** each 9000-frame row took about 1-2 minutes of wall time. A 7-row pair fits in
+  one 10-minute wait, so a 17-row lane takes about three waits.
+
+**2. GUNNERY_OPEN_ITEMS 71.3** (unchanged from 74.2):
+- the sprite bridge;
+- group 3's records and its `turns`/`guns` ratio;
+- the kind-1Bh fort torpedo test.
+
+**3. AA substitutions left (AA_LETHALITY_AUDIT 12.6):**
+- the recon contact list;
+- the aim-point height in the category range;
+- kind 6's second ammunition (`+74h+7Ch`) for `00729B90`;
+- the fire window in the hull frame.
+
+**4. The withdrawn `+9D8h` name elsewhere (other lanes).** `unit_lacks_follow_target` in:
+- `include/bsp/dive_bomb_task.hpp` (298, 1435);
+- `include/bsp/torpedo_release_orders.hpp` (146, 198);
+- `src/game_hosts_units.cpp` (3835, 14432).
+
+Each means "the unit is its flight's leader", the same test as `unit_is_flight_leader_007b8ad0`.
+Send the renames to their owners, cc9-lua (units, dive) and the torpedo lane.
+
+**5. Torpedo items** (TORPEDO_AIM_LEAD 24 items 2 and 3):
+- the script attack altitude `sq_alt_398`, which is inert until a scripted torpedo row is found;
+- the renames.
+
+### 75.3 Tools (`local\` in the cc9-gunnery16 tree, prefix `g16_`)
+
+**Runs:**
+- `g16_runs.ps1`, `g16_exp.ps1` and `g16_pairs.ps1` are g15's, re-rooted.
+- Rows used: `e2`, `usn04`, `usn13`, `usn13l`, `usn01`, `jm06`, `usn12`.
+
+**Pair summaries:**
+- `g16_pmstats.py`: plane mesh census, deaths, dying-hit categories, releases;
+- `g16_fbstats.py`: blast census, per-burst damage on planes;
+- `g16_leaderstats.py`: leader share of AA kills;
+- `g16_deathdiff.py`: per-entity death diff.
+
+**Model probes** (built against `build\win32\Release\bsp_core.lib` through `g16_cl.ps1`, which adds
+`geom_mesh_resource.cpp` and `part_damage_reachability.cpp`):
+- `g16_meshprobe.exe <mmod> <w> <h> <l>`: class box against GeomMesh silhouettes;
+- `g16_meshprobe2.exe <mmod...>`: elements and the GeomMesh holder's matrix chain.
+
+**Census:** `g16_orders_census.py`, the torpedo `orders:` lines.

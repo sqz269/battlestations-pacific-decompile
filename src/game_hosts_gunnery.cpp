@@ -4429,7 +4429,7 @@ public:
             ++owner_.aa_leader_penalty_scored;
             if (flight_leader) ++owner_.aa_leader_penalty_leaders;
         }
-        in.target_lacks_follow_target = kAaLeaderPenaltyBound && flight_leader;
+        in.target_is_flight_leader = kAaLeaderPenaltyBound && flight_leader;
         const bsp::GunneryScoreResult out = bsp::score_candidate_00863990(in);
         distance = out.distance;
         if (!aa_trace_unit().empty() && state_.row.name == aa_trace_unit()) {

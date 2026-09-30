@@ -196,9 +196,9 @@ GunneryScoreResult score_candidate_00863990(const GunneryScoreInputs& in) noexce
         return result;
     }
 
-    // 00863A4F: a plane with no follow target is pushed back before the tie-break.
-    if (in.target_is_plane && in.target_lacks_follow_target) {
-        result.distance += kUnitGunneryLoiteringPlanePenalty;
+    // 00863A4F: a plane that leads its flight is pushed back before the tie-break.
+    if (in.target_is_plane && in.target_is_flight_leader) {
+        result.distance += kUnitGunneryFlightLeaderPenalty;
     }
     result.accepted = true;
     return result;

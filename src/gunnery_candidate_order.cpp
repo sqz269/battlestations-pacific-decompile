@@ -14,7 +14,7 @@ float gunnery_candidate_distance_key_00863a21(float straight_distance,
     // 00863A32 stores the raw length first, so a contact that fails either test
     // keeps the unbiased distance. 00863A6B adds the double at 00D7A220.
     if (contact_is_class_0f && contact_slot_9d8_null) {
-        return straight_distance + kUnitGunneryLoiteringPlanePenalty;
+        return straight_distance + kUnitGunneryFlightLeaderPenalty;
     }
     return straight_distance;
 }
