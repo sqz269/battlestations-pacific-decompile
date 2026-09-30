@@ -5179,3 +5179,123 @@ construction, so no OFF commit was made for it here.
 - This changes launch timing on every row with an air-ops launch (USN04 launches from six decks, docs/USN04_STRIKE_CLASS.md; which other rows launch was not censused). Members
   would leave one per 2.0 s after the site is ready, plus the lift's `tuning+510h` wait and its
   travel of `depth / ElevatorSpeed` each way on a carrier.
+
+## 5au. The takeoff task mapped, and which rows launch from a base (packet `cc9_plane_takeoff_read`, part 1, cc9-lua24, 2026-09-30)
+
+This is the first half of the takeoff read that 5at asked for. It maps the task that takes a
+plane from the ground into the air, and it censuses the rows that would reach it. Ghidra and the
+disk bytes were read only; no code changed. The large state step `009CE2C0` is left for part 2.
+
+### Which reference rows launch squadrons from a base
+
+Source: reference T's logs in the cc9-gunnery18 tree (`local\g18_t_pool_<row>.log`), the lines
+`summary air ops tick ... squadrons_created=` and `summary mission airops gates`, plus the
+`<base>_sqnNN` names each created squadron carries.
+
+| row | squadrons created | bases |
+| --- | --- | --- |
+| USN04 4700/4500 | 4 | Lexington-class01, Yorktown-class01 (carriers) |
+| USN04 9200/9000 (E2) | 4 | the same |
+| JM05 3200/3000 | 10 | MainAirfieldEntity 01, SecondaryAirfieldEntity 01 (airfields); USS Lexington, USS Yorktown (carriers) |
+| JM05 9200/9000 | 13 | the same |
+| USN13 3200/3000 | 9 | Enterprise, Essex, Intrepid, Cabot, Cowpens, Monterey, Yorktown; also Hill and Wood (`LaunchSquadron` 9 calls, `IsReadyToSendPlanes` 0) |
+| every other row | 0 | |
+
+The other rows are IJN01, JM06, JM08, JM08 long, LOMP06, LOMP10, LOMP10 long, USN01, USN02, USN12,
+USNOS and USNOS long.
+
+`Hill` and `Wood` are not carriers by name. Whether their squadrons go through a base site (an
+airfield or mother-ship block), or through something else such as `MCatapult`
+(AIR_OPERATIONS 3b), is not read. The reach of a base-launch binding is therefore USN04, E2,
+JM05, JM05 long and USN13.
+
+### The takeoff task (kind `0Dh`, `takeoff` at `00D21290`)
+
+- **Install.** The pilot bot's tick installs it at `0099B0BE`-`0099B118` when all of these hold:
+  - the plane is not in free flight: `(plane+72Ch)->vtable[38h]()` is false;
+  - the current task answers `vtable[38h]` true;
+  - the plane is on the ground or water: `0042A7E0` (`+900h` is 4 or 5) or `+900h` == 6;
+  - the current task answers `vtable[30h]` true.
+
+  It then calls `009CFF40(bot, 0)` (`009CFF40`-`009CFFA6`, `operator new(4D4h)`, then `009CF8E0`)
+  and pushes the result with `00999F50`.
+  - For the land task, `vtable[30h]` is `009B3730`, false in park and final (5aa). So a landed
+    plane never gets a takeoff task from these states.
+- **Constructor `009CF8E0`** (`__thiscall(task, bot, char flag)`): the base task with kind
+  `0Dh`, then the four states (`009CF710`), then vtables `00D21228`, `00D2121C` (the state machine
+  at `+3F8h`) and `00D21218` (`+434h`). The first state `+310h` is:
+  - `+4B8h` **parking**, when the plane is landed (`+904h`) and on the path (`+900h` == 5);
+  - otherwise `+448h` **prepare**, when `flag` is set;
+  - otherwise `+470h` **Takeoff**, when `plane+AA0h <= 0.0` (`00D7A218`);
+  - otherwise `+490h` **SlowTakeoff**.
+- **The states** (`009CF710` registers them under their names in the bot state registry):
+
+  | state | offset | vtable | enter | exit | step |
+  | --- | --- | --- | --- | --- | --- |
+  | `takeoff/prepare` | `+448h` | `00D2116C` | `009CDD50` | `009CDD00` | `009CDE50` |
+  | `takeoff/Takeoff` | `+470h` | `00D211A4` | `009CE270` | `009CE290` (`RET`) | `009CE2C0` |
+  | `takeoff/SlowTakeoff` | `+490h` | `00D21188` | `009CE1D0` | `009CE150` | `009CE160` |
+  | `takeoff/parking` | `+4B8h` | `00D21150` | `009CD520` | `009CD530` | `009CD540` (the taxi step of AIRFIELD_TAXI 6) |
+
+- **The tick `009CFD70`** (`BSP_TakeoffTask_Tick`, vtable `+64h`): `+430h` = `FFh`, then
+  `009CFA80` (the altitude floor), then the rule `009CFC70`, then the current state's step, then
+  `+2E4h` = `+430h`.
+- **The rule `009CFC70`** (`__fastcall(task)`):
+  - **Done** (`0099B690`) when there is no plane, or when all of these hold:
+    - the plane is in free flight;
+    - `+908h` > 5.0 (`00CE3850`);
+    - and either the height `+100h` is above `task+424h`, or the speed `vtable[38h]` is above
+      `BSP_PlaneClass_MinControlSpeed`.
+  - `prepare` -> `SlowTakeoff` once the prepare state's byte `+19h` is set.
+  - `SlowTakeoff` -> `Takeoff` once `009CFB60` answers true. That happens at once when
+    `plane+AA0h <= 0.0`; otherwise when the plane has moved more than 60 m from where the state
+    began (squared distance against `00CE3D70` = 3600.0).
+- **SlowTakeoff.**
+  - The enter `009CE1D0` stores the start position and draws a heading offset through
+    `00BD2F10` between -0.3 and 0.3 (`00D06888`, `00CE69C8`).
+  - The step `009CE160`-`009CE1CB` (`RET 4`) holds neutral controls, steers to that offset, and
+    requests speed 20.0 (`00CE3930`).
+- **Takeoff.**
+  - The enter `009CE270`-`009CE28F` sets `+18h` = `[00D7A260]` and `+1Ch` = 0, then tail-jumps
+    to `007C17D0`, which tests `+904h` and the flight state against the session role; it was not
+    read further.
+  - The step `009CE2C0`-`009CF6F8` (exclusive, final `RET 4` at `009CF6F5`) is about 5 KB of
+    x87-heavy code: 93 calls, 13 of them `00419010` ramps and 7 of them tuning reads. It
+    includes:
+    - `007C1680` (5 -> 4) at `009CF35F`;
+    - `007B9000` at `009CEAC4`;
+    - `006BEFF0` at `009CEBC1` and `006BC890` at `009CED37` (the site and runway);
+    - `007C4810`/`007C4830`, the takeoff lengths of AIRFIELD_TAXI and `0x8720` of the host.
+
+    This is part 2.
+- **The lift-off** stays as PLANE_GROUND_OPS 5 has it:
+  - the ground-roll arm `007CBFA0` sends `C6h` when the height over the contact passes 0.1 with
+    `+ACCh` > 0.1, or when contact is lost over a class-9 deck;
+  - `007CCFA0` sub-kind 7 calls `007C7110 BSP_Plane_BeginFlying` (state 7, and the site's
+    `vtable[28h](plane)`).
+
+### The host today
+
+- No takeoff task exists.
+- The ground-roll arm and its law run (5q-5u).
+- The `C6h` request is counted, not sent: the ground-roll summary's `liftoff_req`, and the deck's
+  `edge_takeoff_requests`.
+- `begin_flying_007c7110` exists as a pure reconstruction in `src/plane_ground_ops.cpp` and is
+  not bound.
+- Launched squadrons spawn airborne (5at).
+
+### The plan: one switch group, flipped only end to end
+
+The group is `kBaseLaunchChainBound`, one switch for all five pieces, committed OFF, each piece
+paired as a record while it is built:
+1. `007F4580`: launched members start in state 1 in the hangar (next part).
+2. The launch task `007F1DE0`/`007F1F00`/`007EF010`/`006CF190` and the two readiness slots (5at).
+3. The deck arms: the airfield placement `006CF980`/`006CF9F0`/`007C5F60` and the carrier lift
+   cycle (5at).
+4. The takeoff task: install gate, rule, states, and the `Takeoff` step (part 2).
+5. The lift-off: send `C6h` and bind `007C7110`.
+
+**Flip criterion.** On JM05 3000 (airfields and carriers) every launched member reaches state 7
+and flies its squadron's task. The per-entity death table is diffed, and the launch timing is
+recorded for reference U. USN04, E2 and USN13 follow. Until then the switch stays OFF and
+launched squadrons keep spawning airborne.
