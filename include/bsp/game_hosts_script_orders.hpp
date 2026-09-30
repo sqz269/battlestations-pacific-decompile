@@ -253,7 +253,7 @@ inline constexpr bool kScriptThinkOnFixedStep = true;
 // (00898841, one operator_new per call) has no count bound, as in the image. False: creation
 // stops at kScriptEntityCapacity (512) and CreateScript answers no entity, which ends every
 // luaDelay chain of a long mission (JM08 at mission frame 2001).
-inline constexpr bool kScriptEntityPoolUnboundedBound = false;
+inline constexpr bool kScriptEntityPoolUnboundedBound = true;
 
 class GameHostLog;
 class GameUnitsHost;
@@ -750,6 +750,7 @@ private:
     bsp::EntityThinkList think_live_{};
     bsp::EntityThinkList think_pending_{};
     float think_countdown_{0.0f};   // 00F89A04, zero at process start
+    float origin_diag_next_{0.0f};  // BSP_ORIGIN_DIAG, packet cc9_script_entity_pool
     float think_step_accumulator_{0.0f};  // mirror of 00875BB0's accumulator (00F876AC)
     // A DeleteScript from inside a think function would erase from the live list
     // while the walk is iterating it. The native's cursor captured its successor

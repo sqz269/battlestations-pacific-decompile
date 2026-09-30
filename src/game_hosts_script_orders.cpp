@@ -36,9 +36,11 @@
 
 extern "C" {
 #include "lua.h"
+#include "lauxlib.h"
 }
 
 #include <cctype>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -3563,6 +3565,59 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
     argument_count_ = 0;
     if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
     mission_clock_ += step;
+    // Packet cc9_script_entity_pool, diagnostic only: BSP_ORIGIN_DIAG=1 logs, every
+    // 30 s of mission time, the nearest live unit of each party to (0,0,0), the
+    // point JM08's CheckInvasion polls with a 300 m radius (prcpjm08.lua line 758).
+    static const bool origin_diag = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        if (_dupenv_s(&text, &bytes, "BSP_ORIGIN_DIAG") != 0) return false;
+        const bool on = text != nullptr && text[0] != '0';
+        std::free(text);
+        return on;
+    }();
+    if (origin_diag && mission_clock_ >= origin_diag_next_) {
+        origin_diag_next_ = mission_clock_ + 30.0f;
+        for (int party = 0; party < 4; ++party) {
+            float best = -1.0f;
+            std::string best_name;
+            for (std::size_t i = 0; i < units_.count(); ++i) {
+                const GameUnitRow* row = units_.unit_row(i);
+                if (row == nullptr || row->party != party || !units_.unit_alive_and_visible(i)) continue;
+                float x = 0.0f, y = 0.0f, z = 0.0f;
+                units_.unit_position_00fc(i, x, y, z);
+                const float d = std::sqrt(x * x + z * z);
+                if (best < 0.0f || d < best) { best = d; best_name = row->name; }
+            }
+            if (best >= 0.0f) {
+                log_.notef("origin diag t=%.1f party=%d nearest=%s dist=%.1f",
+                    mission_clock_, party, best_name.c_str(), best);
+            }
+        }
+        if (state_ != nullptr) {
+            static const char kChunk[] =
+                "local o={x=0,y=0,z=0} local n=0 "
+                "local s=luaGetShipsAroundCoordinate(o,300,PARTY_ALLIED,\"own\") "
+                "if s then for k,v in pairs(s) do n=n+1 end end "
+                "local c,best,bn=0,-1,\"-\" "
+                "local r=recon and recon[PARTY_ALLIED] and recon[PARTY_ALLIED].own "
+                "if r then for k,t in pairs(r) do for k2,u in pairs(t) do c=c+1 "
+                "if (k==\"destroyer\" or k==\"cargo\" or k==\"landingship\" or k==\"cruiser\" or k==\"battleship\") and not u.Dead then "
+                "local d=luaGetDistance(u,o) if best<0 or d<best then best=d bn=k..\":\"..tostring(u.Name) end end end end end "
+                "return tostring(PARTY_ALLIED)..\" around=\"..n..\" own_entries=\"..c..\" nearest_ship=\"..bn..\" dist=\"..tostring(best)";
+            const int top = lua_gettop(state_);
+            if (luaL_loadbuffer(state_, kChunk, sizeof(kChunk) - 1, "origin_diag") == 0 &&
+                lua_pcall(state_, 0, 1, 0) == 0) {
+                const char* text = lua_tostring(state_, -1);
+                log_.notef("origin diag lua t=%.1f party_allied=%s", mission_clock_,
+                    text != nullptr ? text : "?");
+            } else {
+                const char* text = lua_tostring(state_, -1);
+                log_.notef("origin diag lua error: %s", text != nullptr ? text : "?");
+            }
+            lua_settop(state_, top);
+        }
+    }
     std::vector<bsp::EntityThinkFields> fields;
     fields.reserve(script_entities_.size());
     for (const GameScriptEntity& script : script_entities_) {
