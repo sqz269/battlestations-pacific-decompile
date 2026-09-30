@@ -7314,3 +7314,40 @@ pad stays held, so under this host arm 2 still counts the lander wherever it has
     too), so progress +150 per tick. The HQ flips to party 0 about 20 ticks later (about
     t = 857), if LST 03 survives with its ramp down.
   - Pair exit 3.
+
+### 86.4 The pairs on `38a9729cf`
+
+Exports `s22_f0` (no flip) and `s22_f1` (`kLandingShipRampBound`). Reference launch form,
+lockstep 0.05, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`. The 300-frame smoke passed.
+
+| row | exit | what the ON side logs |
+| --- | --- | --- |
+| JM08 36000 | 1 | `lowers=2`: LST 03 at t = 836.50 and LST 01 at 898.35 (predicted about 837 and 899); `ground_contacts=2893`; `landed_capture_adds=0`; `landed_capture_power=150` for both |
+| JM05 | 1 | `lowers=0`; no lander begins |
+| USN13 | 1 | `lowers=0` |
+| USNOS | 1 | `lowers=0` |
+| USN04 | 1 | `lowers=0` |
+
+- **One prediction was wrong: JM08's HQ does reach 0 hp.** Since section 85's flip, the HQ is
+  neutralized at t = 1179.50 on both sides (`health_zero=92`, 621 countdown fires). The two
+  landers have died by then: LST 03 at 900.60 and LST 01 at 974.39, both to `Headquarter 01`. So
+  arm 2 still adds nothing and no flip happens. The answer on the capture window is unchanged:
+  the capture cannot complete within the 1800 s window, because while the HQ is owned the tick
+  does not run, and once it is neutral no lander is left.
+- **The diagnostic as predicted (`Headquarter 01@500:3000`) cannot show the cycle.** The `s22_g0`
+  and `s22_g1` runs are identical (exit 1) with `lowers=0` and `ground_contacts=0`: with the HQ
+  neutral from t = 500, no lander takes a pad. That fits the landing modes, which go for an enemy
+  building (section 77). The mechanism is not contradicted, but the diagnostic's timing was wrong.
+
+### 86.5 The whole cycle, `Headquarter 01@845:3000` (predictions written before the run)
+
+The HQ is neutralized at t = 845, after LST 03's ramp is down (836.50) and before LST 03 dies
+(900.60 on the OFF side).
+- **OFF** (`s22_h0`): the HQ is neutral from 845, with no ramp and no arm 2. Ships in
+  CaptureRange 500 add 10 each; the landers are not within 500 (their killer ranges are
+  592-597). Expect no flip, or a slow one.
+- **ON** (`s22_h1`): LST 03 (ramp down, the occupant of pad 7) adds 150 on every 1 s tick from
+  the first tick after 845. The progress climbs +150 per tick and passes 3000 about 20 ticks
+  later: `flipped to party=0` at about t = 865. The HQ is repaired and becomes Allied. LST 01
+  adds 150 more if it lowers its ramp before the flip. Everything after the flip may move.
+  Expected pair exit 3.
