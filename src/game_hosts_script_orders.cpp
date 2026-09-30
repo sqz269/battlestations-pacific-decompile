@@ -951,9 +951,9 @@ std::int32_t GameScriptOrdersHost::air_ops_squadron_plane_count(
                 } else if (!flags.torn_down && !flags.destroyed && !flags.removed) {
                     ++live;
                 }
-                continue;
+            } else {
+                if (row != nullptr && row->active) ++live;
             }
-            if (row != nullptr && row->active) ++live;
         }
         return live;
     }
