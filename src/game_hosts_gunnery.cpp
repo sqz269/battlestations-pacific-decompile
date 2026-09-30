@@ -7623,9 +7623,14 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         // SUBSTITUTIONS, labelled: the distance error [+290h] (the AAFlakBot's
         // DistErr, 008FDBE0 -> bot+60h) is 0 unless kAaFlakAimErrorBound (exact at SPVeteran)
         // USN04 sets; entities are this host's units (dead ones skipped, as the
-        // image's list drops a destroyed entity); the unlocked passing rule at
-        // 0070C7B6-0070C806 (10% per tick beyond 50 m) is not modelled, since it
-        // can only act on the tick that also locks.
+        // image's list drops a destroyed entity). The passing rule at
+        // 0070C7B6-0070C806 (a 10% burst per tick beyond 50 m) is unreachable in
+        // the image, so it is not modelled: it needs a finite best distance, which
+        // only the one search tick that locks has (+288h is set at 0070C661 and
+        // cleared only by the constructor 0070CAF2; every locked tick carries
+        // FLT_MAX, 0070C4B1), and on that tick +284h is still FLT_MAX from
+        // 0070CB30, so 0070C7CE records the distance and never draws.
+        // docs/AA_LETHALITY_AUDIT.md section 11.
         if constexpr (kFlakProximityBurstBound) {
             const GameBulletClassRow* const fc = bullet(shot.bullet_class);
             if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
