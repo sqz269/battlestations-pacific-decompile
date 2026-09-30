@@ -552,6 +552,12 @@ Two leaf guards are read. `009C08B5`-`009C08C7` is `JA` on `e > 0.05 * p` (`[00D
 track) selects the abeam **RIGHT** direction: the member is steered 250 m to the side it is
 already on. On that branch the manoeuvre is a **break-away, not a rejoin**.
 
+> **Corrected 2026-09-30, packet `cc9_follow_approach_arm`** (docs/PLANE_FOLLOW_PHASE_A.md
+> section 8.3). The abeam side is decided at two joins with opposite polarity: through
+> `009C0800` a member with `V >= 0` gets `BL = 2` (LEFT), through `009C08E7` it gets `BL = 4`
+> (RIGHT). The manoeuvre is not always a break-away. The "bit-8 regime" is the turn-circle
+> lead-in of section 8.4 there, not `station + base-0Ch * U`.
+
 ## 5.12 The lead-pursuit regime, read end to end
 
 This is the one a member converging on its station flies, and the three "store sites"
@@ -636,11 +642,11 @@ is unread; the ~1000-instruction commander that consumes it is read and bound".
 | `009BFEE0` fly-to arm, abeam direction | `009C15C0`-`009C1661` | **read** (§5.6) — perpendicular of the nose; entered only from `JE` at `009C1247` |
 | `009BFEE0` fly-to arm, `BL` classifier | `009C01D3`-`009C024F` | **read** (§5.6.2) — quadrant of `(V, A)` about `±π/2`; sets the abeam side and the `009C1247` guard |
 | `009BFEE0` fly-to arm, the frame | `009C0026`-`009C0250` | **read** (§5.10) — R, the lagged reference heading, `A`, `V`, the quadrant classifier |
-| `009BFEE0` fly-to arm, PHASE A | `009C0251`-`009C0EE0` | **OPEN** — the remaining blocker, but it reaches the dispatch through only two channels (§5.12.1): the regime selector and `base-0Ch` |
+| `009BFEE0` fly-to arm, PHASE A | `009C0251`-`009C0EE0` | **read and bound** (PLANE_FOLLOW_PHASE_A.md section 8; was OPEN) — the remaining blocker, but it reaches the dispatch through only two channels (§5.12.1): the regime selector and `base-0Ch` |
 | `009BFEE0` fly-to arm, `U` producer | `009C0EE1`-`009C1058` | **read** (§5.12) — the unit vector along the lagged track with the leader's slope |
 | `009BFEE0` fly-to arm, lead pursuit | `009C1059`-`009C123C` | **read and bound** (§5.12) — three stages of ONE point, not three regimes |
 | `009BFEE0` fly-to arm, `009C1328` | `009C1241`-`009C1336` | **read** (§5.12.1); the tail past `009C1365` is not part of the steer point and is unread |
-| `009BFEE0` fly-to arm, `009C1552` site | `009C1455`-`009C1560` | **OPEN** — reached from a subtree this packet did not enter; ends `JMP 009C16D2` |
+| `009BFEE0` fly-to arm, `009C1552` site | `009C1455`-`009C1560` | **read and bound** (PLANE_FOLLOW_PHASE_A.md section 8.4; was OPEN) — reached from a subtree this packet did not enter; ends `JMP 009C16D2` |
 | `009BFEE0` tail | `009C16D2`-`009C1846` | read previously (BOMBER_AFTER_TASK 10.8) |
 | `009BEE30` fly-to arm | `009BF9EA`-`009BFD38` | **read and bound** (section 5) |
 | `009BEE30` hold arm | `009BEE56`-`009BF9E5` | **OPEN** — the larger arm; writes cmd `+278h`-`+29Ch` |

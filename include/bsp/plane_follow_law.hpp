@@ -187,33 +187,55 @@ float plane_follow_blended_altitude_009bfaac(float station_y, float steer_y,
 //     009C01A9  along = R * cos(A0)    the ALONG-TRACK offset
 //     009C01CE  A     = wrap(ownHeading - ref)   the heading error
 //
-// WHAT IS NOT READ, named exactly.  Phase A, 009C0251-009C0EE0 (~1200
-// instructions), is unread.  It reaches the dispatch through exactly two
-// channels, which is what makes the substitution bounded:
+// PHASE A, 009C0251-009C0EE0, read whole (packet cc9_follow_approach_arm,
+// docs/PLANE_FOLLOW_PHASE_A.md section 8).  It is a turn planner: from the
+// frame above and a turn model (w = TurnMul * classDesc+270h, the class turn
+// rate 007DB4D0 stores; r = classDesc+18Ch TravelSpeed / w) it plans the turns
+// that bring the member onto the lagged track behind its moving station, and
+// leaves exactly two values for the dispatch: the regime byte BL and a TIME
+// (base-0Ch), which 009C0F00 turns into the leader's distance flown during the
+// plan (time * the leader's horizontal speed).  The BL values:
 //
-//   * the REGIME SELECTOR.  BL is rewritten in Phase A - 009C0814 sets 4,
-//     009C08CD and 009C0BC7 set 1, 009C08F5 sets 2, 009C0EDF sets
-//     (BL ? 2 : 4) | 8 - so the quadrant classifier's BL in {1,2,3,4}
-//     (009C01D3-009C024F) is consumed inside Phase A by thirteen `TEST BL,BL`
-//     booleans and does NOT survive.  `009C1059 TEST [00E0E2FA],BL` (BL&1)
-//     picks lead pursuit, `009C1241 TEST [00E0E2F8],BL` (BL&8) picks the
-//     009C1328 regime, and BL&2 picks the abeam side.
-//   * `base-0Ch`, the scalar of the abeam regime's altitude offset, last
-//     written at 009C0EE1-009C0F00 as `base-0Ch *= base-8h` from Phase A
-//     values and never written again before 009C16B2.
+//   1                 lead pursuit       009C08CD, 009C0BC7
+//   2 / 4             abeam, left/right  009C08F5 / 009C0814, reached from
+//                                        009C0800 (V >= 0 -> 2) and from
+//                                        009C08E7 (V >= 0 -> 4): the two joins
+//                                        test the V-sign byte base-21h with
+//                                        OPPOSITE polarity
+//   (V<0 ? 2 : 4)|8   the turn-circle    009C0ECB-009C0EDF
+//                     lead-in
 //
-// THE THREE REGIMES this binds, all read from the listing:
+// Checked against the image's own bytes: tools-free emulation of 009BFEE0 on
+// 5000 sampled geometries matches every output of the fly-to arm (section 8).
+// One branch, 009C0829-009C0861 plus 009C08DF (the quadrant-1 "second arc is
+// shorter" exit), was never reached by the samples and is transcribed from
+// the listing only.
+//
+// THE THREE REGIMES, all read from the listing:
 //
 //   lead pursuit   BL&1     009C107B-009C123C, then JMP 009C16C0
 //   abeam          !BL&8    009C15C0-009C16CF, entered by JE at 009C1247
-//   009C1328       BL&8     009C12DD-009C1336
+//   turn circle    BL&8     009C124D-009C15BB: the point L = time * speed
+//                           ahead of the station along the lagged track, a
+//                           circle of radius r beside it (side by the V sign),
+//                           the tangent from the aircraft to that circle
+//                           (004F4840), and the steer point at least
+//                           FollowedPointDist along that tangent.  It jumps to
+//                           the tail and does not copy +44h..4Ch to +60h..68h.
 //
 // THE TAIL, 009C16D2-009C1846, then clamps BOTH the station Y and the steer Y
 // into one leader-relative band; see section 5.9 of docs/PLANE_FOLLOW_LAW.md.
+// The floor is max(min(leaderY + LeaderFollowAlt, state+88h), leaderY - 120)
+// (009C1734-009C175A, [00D1F3F8] = 120.0 double); the old binding had only the
+// min.  The lower bound is applied when `run_phase_a` is set, so the switch-off
+// path keeps its band.
 struct PlaneFollowGeometryInputs {
     // The own unit: pose +FCh/+100h/+104h, and virtual slot +50h.
     float own_pos[3] = {0.0f, 0.0f, 0.0f};
     float own_heading = 0.0f;
+    // The own pose row 2 (+ECh/+F0h/+F4h): the abeam regime's nose, through
+    // 00419260 at 009C15F1.
+    float own_forward[3] = {0.0f, 0.0f, 1.0f};
     // state+30h/34h/38h, the station 007F23A0 produced.
     float station[3] = {0.0f, 0.0f, 0.0f};
     // The leader, state+2Ch: pose +FCh/+100h/+104h, virtual slot +50h, and
@@ -239,12 +261,56 @@ struct PlaneFollowGeometryInputs {
     // False leaves both Y values unclamped and says so, rather than inventing
     // a band out of defaults.
     bool band_inputs_available = false;
+
+    // Phase A.  When set, the image's selector picks the regime and the
+    // `regime` argument is ignored.
+    bool run_phase_a = false;
+    // The leader's vtable +34h, 007BBB70: the world velocity unit+AC8h..AD0h.
+    // Phase A uses its horizontal length (009C025E-009C02A9).
+    float leader_velocity[3] = {0.0f, 0.0f, 0.0f};
+    // 009C02CF / 009C02DE: the own unit answers vtable +5Ch(10h) or +5Ch(16h)
+    // (the 0047B850 pair) -> block+10h LargePlaneTurnMul, else block+0Ch
+    // SmallPlaneTurnMul.
+    bool own_large_turn_class = false;
+    float small_plane_turn_mul = 1.1f;      // block+0Ch
+    float large_plane_turn_mul = 1.1f;      // block+10h
+    // classDesc = [[state+4]+8]: +270h, the turn rate 007DB4D0 stores, and
+    // +18Ch TravelSpeed.
+    float class_turn_rate_270 = 0.0f;
+    float class_travel_speed_18c = 0.0f;
 };
 
-// Which of the three regimes produced the point.  `kLeadPursuit` is what a
-// member converging on its station flies; see the selector note above for why
-// a caller that cannot run Phase A must choose.
+// Which of the three regimes produced the point.  `kLeadPursuit` is what the
+// switch-off host always asks for; with `run_phase_a` Phase A decides.
 enum class PlaneFollowRegime { kLeadPursuit, kAbeam, kOffsetPoint009c1328 };
+
+// Phase A's inputs, each the frame slot it reads.
+struct PlaneFollowPhaseAInputs {
+    float heading_error = 0.0f;   // base-1Ch, A
+    float cross_track = 0.0f;     // base+0Ch, V
+    float along_track = 0.0f;     // base+10h
+    int quadrant_bl = 0;          // BL from 009C01D3-009C024F, 1..4
+    float leader_speed = 0.0f;    // base-08h after 009C029E
+    float inv_turn_rate = 0.0f;   // base-18h, 1 / w
+    float turn_radius = 0.0f;     // base-20h, r
+};
+
+struct PlaneFollowPhaseA {
+    int bl = 0;          // BL at 009C0EE1
+    float time = 0.0f;   // base-0Ch at 009C0EE1, seconds
+};
+
+// 009C0251-009C0EE0 from its inputs.  Pure.
+PlaneFollowPhaseA plane_follow_phase_a_009c0251(
+    const PlaneFollowPhaseAInputs& in) noexcept;
+
+// 004F4840 -> 004F4430 -> 004F3810 (packet cc9_pilot_moveto_task part 4): the
+// two tangent points of the circle (c, r) seen from q.  004F3810 returns the
+// chord midpoint m = c + (r*r/d) u and b = h (-u.z, u.x), h = r sqrt(d*d -
+// r*r) / d, u = (q - c) / d; 004F4430 writes out0 = m + b, out1 = m - b.
+// False, outs untouched, unless r < d (004F3887).  xz pairs.
+bool circle_tangent_points_004f4840(const float c[2], float r, const float q[2],
+                                    float out0[2], float out1[2]) noexcept;
 
 struct PlaneFollowGeometry {
     bool produced = false;
@@ -264,6 +330,20 @@ struct PlaneFollowGeometry {
     float range_horizontal = 0.0f;    // 009C00A2, R
     float range_3d = 0.0f;            // 009C10A9, D
     bool band_applied = false;
+    // Phase A (only with run_phase_a).
+    int phase_a_bl = 0;               // BL at 009C0EE1
+    float phase_a_time = 0.0f;        // base-0Ch at 009C0EE1
+    float lead_distance = 0.0f;       // base-0Ch after 009C0F00
+    float turn_radius = 0.0f;         // base-20h
+    // The auxiliary state fields the arm writes.  +5Ch is -1 (009C0EF4)
+    // except in the turn-circle regime (r, 009C1262); +50h..58h the circle
+    // centre (x, own Y, z), turn-circle regime only; +60h..68h a copy of the
+    // steer point (009C16C0), or in the turn-circle regime the tangent point
+    // with the own Y.  Consumers not identified.
+    float state_50[3] = {0.0f, 0.0f, 0.0f};
+    bool state_50_written = false;
+    float state_5c = -1.0f;
+    float state_60[3] = {0.0f, 0.0f, 0.0f};
 };
 
 // 009BFEE0's fly-to arm, 009C0026-009C16D1 plus the tail 009C16D2-009C1846.
@@ -271,8 +351,8 @@ struct PlaneFollowGeometry {
 // is a field of the follow state, which this returns by value instead.  Pure:
 // the only global it reads are the four never-written bit constants at
 // 00E0E2F8-00E0E2FB, which are folded into the branch structure here.
-// `regime` selects which of the three the caller wants, because the selector
-// lives in the unread Phase A.
+// Without `in.run_phase_a`, `regime` selects which of the three the caller
+// wants and the lead distance stands in as D (the switch-off binding).
 PlaneFollowGeometry plane_follow_geometry_009bfee0(
     const PlaneFollowGeometryInputs& in, PlaneFollowRegime regime) noexcept;
 
