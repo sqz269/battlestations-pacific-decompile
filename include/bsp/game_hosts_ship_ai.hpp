@@ -609,6 +609,8 @@ struct GameShipAiSummary {
     // latch blk+380h at or above zero, and (ON) the entries that expired it.
     unsigned long long backoff_held_steps{0};
     unsigned long long backoff_expiries{0};
+    // 009ED6B0 entries that found the escape byte blk+36Ch still set (009ED788).
+    unsigned long long escape_36c_stale_steps{0};
     // Packet cc9_approach_no_ship_hold (kShipAiApproachNoShipHoldBound).
     unsigned long long hold_arm_runs{0};       // 009F2124 head passed: the goal stored
     unsigned long long hold_frames{0};         // modes 0/2 no-ship frames held

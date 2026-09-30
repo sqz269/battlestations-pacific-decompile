@@ -504,6 +504,22 @@ inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
 
+// Diagnostic only: BSP_SHIP_ESCAPE_TRACE=<unit name> logs the escape inputs of
+// 009F3F80 for that unit. _dupenv_s rather than getenv (a /W4 /WX error).
+bool ship_escape_trace_unit(const std::string& unit) {
+    static const std::string wanted = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        std::string value;
+        if (_dupenv_s(&text, &bytes, "BSP_SHIP_ESCAPE_TRACE") == 0 && text != nullptr) {
+            value = text;
+        }
+        std::free(text);
+        return value;
+    }();
+    return !wanted.empty() && unit == wanted;
+}
+
 bool has_ship_navigation_class(int kind) noexcept {
     // Actual VehicleClass.Type leaf kinds. The ship-family virtual+210
     // reaches00810DD0/009F3F20; other entity families own different brains.
@@ -940,6 +956,7 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiGoalTargetRecord latched{};
         bsp::ShipAiObstacleState obstacle{};
         unsigned long long backoff_held_steps{0}; // 009F3F80 entries, blk+380h >= 0
+        unsigned long long escape_36c_stale_steps{0}; // 009ED788 found blk+36Ch set
         bsp::ShipAiPathPointRecord path_point{};
         // The five attackmove sub-state objects 009E8450 builds, each with its
         // own storage. 007B3DD0 has none: its whole body is one RET 4.
@@ -8989,6 +9006,19 @@ public:
         ctl_.goal.flag_2fe = false;
         ctl_.nav.look_ahead_340 = ctl_.nav.look_ahead_max_3c8;  // 009ED769
         owner_.done("ShipAi::per_tick_arrival_reset", 0x009ed779u);
+        // Packet cc9_ship_ai_backoff_countdown (section 65.5): 009ED788 MOV byte
+        // [ESI+36Ch],0 in the same unconditional span. Only 009F4DA0's station
+        // arm sets the escape byte again, one chain slot later.
+        if (ctl_.obstacle.escape_enabled_36c) {
+            ++owner_.summary.escape_36c_stale_steps;
+            ++ctl_.escape_36c_stale_steps;
+        }
+        if (bsp::kShipAiEscapeByteResetBound) {
+            ctl_.obstacle.escape_enabled_36c = false;
+            owner_.done("ShipAi::escape_byte_reset_36c", 0x009ed788u);
+        } else {
+            owner_.record("ShipAi::escape_byte_reset_36c", 0x009ed788u);
+        }
         if (early_out) return true;
         // Milestone 2p. The rest of 009ED6B0 is two alternatives, not a
         // prologue and a tail (docs/SHIP_AI_GOAL_VECTOR.md, correction 4):
@@ -9985,8 +10015,57 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     obstacle.set_direction(ctl.blk.direction);
     const float rudder_before = ctl.blk.desired_rudder;
     if (ctl.obstacle.published_33c < 0.0f) ++row.rudder_gate_open;
+    const bool trace_escape = ship_escape_trace_unit(row.unit);
+    const bool pre_364 = ctl.blk.yaw_rate_subtracts_364;
     bsp::ship_ai_drive_order_ring_middle_009f40ca(ctl.blk, ctl.obstacle, frame, settings,
                                                   ceiling, obstacle);
+    if (trace_escape && (pre_364 != ctl.blk.yaw_rate_subtracts_364 ||
+                         row.middle_runs % 20u == 0u)) {
+        // Diagnostic only (BSP_SHIP_ESCAPE_TRACE=<unit name>): the inputs the
+        // 009F4880..009F4B98 escape section decides on, and what it left.
+        unsigned ahead = 0, astern = 0;
+        for (int i = 0; i < 4; ++i) {
+            if (ctl.obstacle.sector[static_cast<std::size_t>(1 + i)].blocked) ahead |= 1u << i;
+            if (ctl.obstacle.sector[static_cast<std::size_t>(7 + i)].blocked) astern |= 1u << i;
+        }
+        log.notef("  ship escape trace %s run=%llu dir=%d 364=%d->%d 36c=%d 370=%d 1c8=%d "
+            "378=%d 368=%.3f 380=%.3f 384=%.3f speed=%.3f herr=%.4f blocked=%x/%x thr=%.3f "
+            "344=%.3f live=%.3f cmd=%d/%.3f ref=%.3f",
+            row.unit.c_str(), row.middle_runs, static_cast<int>(ctl.blk.direction),
+            pre_364 ? 1 : 0, ctl.blk.yaw_rate_subtracts_364 ? 1 : 0,
+            ctl.obstacle.escape_enabled_36c ? 1 : 0, ctl.obstacle.escape_mode_370,
+            ctl.blk.throttle_hold_1c8, ctl.obstacle.escape_latch_378,
+            static_cast<double>(ctl.blk.timer_368),
+            static_cast<double>(ctl.obstacle.backoff_timer_380),
+            static_cast<double>(ctl.obstacle.stall_time_384), static_cast<double>(speed),
+            static_cast<double>(error), ahead, astern,
+            static_cast<double>(ctl.blk.desired_throttle),
+            static_cast<double>(ctl.obstacle.throttle_limit_344),
+            static_cast<double>(ceiling.live_throttle), ceiling.commanded_speed_enabled ? 1 : 0,
+            static_cast<double>(ceiling.commanded_speed),
+            static_cast<double>(ceiling.reference_speed));
+        char bins[80] = {};
+        std::size_t n = 0;
+        for (std::size_t b = 0; b < ctl.obstacle.profile.bin.size() && n + 1 < sizeof(bins); ++b) {
+            const unsigned v = ctl.obstacle.profile.bin[b];
+            bins[n++] = "0123456789abcdef"[v > 15u ? 15u : v];
+        }
+        log.notef("  ship escape profile %s run=%llu bypass=%d bins(-2..+2)=%s",
+            row.unit.c_str(), row.middle_runs, ctl.obstacle.profile.bypass_41 ? 1 : 0, bins);
+        const float probe = bsp::ship_ai_throttle_ceiling_009ec7c0(settings, ceiling, true,
+            error, ctl.obstacle.danger_a84, 1.0f);
+        log.notef("  ship escape ceiling %s run=%llu loaded=%d slow=%.4f/%.4f/%.3f "
+            "fast=%.4f/%.4f/%.3f dmul=%.3f danger=%.3f ceiling(ahead,cap1)=%.4f",
+            row.unit.c_str(), row.middle_runs, settings_loaded ? 1 : 0,
+            static_cast<double>(settings.hdg_diff_value_min_slow),
+            static_cast<double>(settings.hdg_diff_value_max_slow),
+            static_cast<double>(settings.thrust_min_slow),
+            static_cast<double>(settings.hdg_diff_value_min_fast),
+            static_cast<double>(settings.hdg_diff_value_max_fast),
+            static_cast<double>(settings.thrust_min_fast),
+            static_cast<double>(settings.hdg_diff_danger_mul),
+            static_cast<double>(ctl.obstacle.danger_a84), static_cast<double>(probe));
+    }
     done("ShipAi::drive_order_ring_body", 0x009f40cau);
     ++row.middle_runs;
     ++summary.middle_runs;
@@ -11151,6 +11230,21 @@ void GameShipAiHost::report() {
             if (c.backoff_held_steps == 0u) continue;
             host.log.notef("  ship ai backoff held %-24s steps=%llu", host.rows[index].unit.c_str(),
                 c.backoff_held_steps);
+        }
+        std::size_t escape_units = 0;
+        for (const auto& c : host.controllers) {
+            if (c.escape_36c_stale_steps != 0u) ++escape_units;
+        }
+        host.log.notef("summary mission ship ai escape byte reset set_on_entry=%llu units=%zu "
+            "bound=%d (009ED788, packet cc9_ship_ai_backoff_countdown)",
+            host.summary.escape_36c_stale_steps, escape_units,
+            bsp::kShipAiEscapeByteResetBound ? 1 : 0);
+        for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();
+             ++index) {
+            const auto& c = host.controllers[index];
+            if (c.escape_36c_stale_steps == 0u) continue;
+            host.log.notef("  ship ai escape byte set %-24s steps=%llu",
+                host.rows[index].unit.c_str(), c.escape_36c_stale_steps);
         }
     }
     for (std::size_t index = 0; index < host.controllers.size() && index < host.rows.size();

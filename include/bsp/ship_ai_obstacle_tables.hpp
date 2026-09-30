@@ -311,6 +311,16 @@ bool ship_ai_backoff_countdown_009f3f89(float& hold_354, ShipAiObstacleState& ob
 // section (009F488D) never runs again unless the stall passes 10.
 inline constexpr bool kShipAiObstacleBackoffCountdownBound = false;
 
+// 009ED788, MOV byte [ESI+36Ch],0 with ESI = blk, in 009ED6B0's unconditional
+// per-step reset span (009ED759..009ED795). The escape byte is set again only by
+// 009F4DA0's station arm (brain+374h at 009F4FC8, 009F4FEA and 009F5003), one
+// chain slot later. True: the
+// host clears blk+36Ch there. False: the byte keeps the last station-arm value,
+// so a ship that leaves its formation with it set runs 009F3F80's escape section
+// on every step: its throttle is held at 0 while committed ahead (009F4AD2), it
+// flips astern once stopped, and nothing flips it back (section 65.5).
+inline constexpr bool kShipAiEscapeByteResetBound = false;
+
 // 009F45A4..009F45B0.
 int ship_ai_sector_index_009f45a4(int direction_index, int bucket) noexcept;
 
