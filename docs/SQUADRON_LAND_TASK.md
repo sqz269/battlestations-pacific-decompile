@@ -8310,3 +8310,57 @@ run length, and it masks pointers and thread ids.
   fires = 53).
 
 Nothing in the first 150 s reads the configured frame count, and the runs are deterministic.
+
+## 5cd. Rows for goaway and for a script dogfight, from the Lua; the unitcommand gap (packet `cc9_strafe_unitcommand`, cc9-lua30, 2026-09-30)
+
+Read-only apart from an env-gated trace. The rows were chosen from this installation's scripts
+(`scripts/`, modded), not by trial.
+
+### 1. Strafe orders against light AA: none in a reachable row
+
+The strafe choice needs three things: a `PilotSetTarget` from a plane with no ordnance class, a
+surface target, and PilotFires set.
+- The scripts that re-order a plane unless it is already strafing (5bv) are `jm09.lua`,
+  `jm12.lua`, `usn_10_battle_of_capeengano.lua`, `ESMP/08_engano.lua` and `ESMP/11_tengo.lua`.
+- `missiontree.lua` reaches only the two ESMP scenes (lines 5815 and 5968). Both target a battle
+  fleet: `Mission.IJNFleet` at Engano, and Yamato's group at Tengo.
+- USNOS targets troop transports escorted by the Gear boats.
+- Among the other `PilotSetTarget` calls, the transport, convoy and landing-ship targets
+  (`usn_1_marshall` `Mission.Convoy`, `prcp_13_iwojima` `Mission.LandingShips`, `usn_6_guad`,
+  `usn_ormoc`) are ordered to bombers or torpedo aircraft, which take an ordnance class.
+
+So no reachable row strafes a lightly defended target. The best goaway candidate is **ESMP08
+long**, and only once the gap below is closed: its strafers are re-targeted before they finish a
+pass.
+
+### 2. The gap: `GetProperty(unit, "unitcommand")` never answers the attack order
+
+`08_engano.lua` lines 579-590 (`luaControlAirAttacks`, every 15 s) re-order a bomber only when its
+`unitcommand` is neither `"torpedo"` nor `"strafe"` nor `"divebomb"`. The trace in
+`game_hosts_lua.cpp` (`BSP_UNITCOMMAND_TRACE=1`, `local\l30_uc_esmp08.log`, ESMP08 4200/4000 on
+this branch with the strafe group ON) logs every answer:
+- after the first strafe order (log line 22150), every answer is `moveto` (`00E08F68`, 108) or
+  `nocommand` (33);
+- no answer is ever `strafe`, and no torpedo-ordered plane answers `torpedo` either.
+
+The host's director (`0071BE40` on slot 0) keeps the `PilotMoveTo` command from line 541. The
+attack class that `PilotSetTarget` issues through `0077D600` never becomes the current command.
+- `GetProperty(unit, "ammotype")` has no reader either, so the `~= 0` test is always true.
+- Consequence: the script re-orders the whole bomber list every 15 s on both sides. In the 5cb ON
+  run that gives 497 strafe installs for 36 planes. Each re-target restarts moveto/follow, which
+  is why ESMP08 reached only three aim entries.
+- The same gap re-orders ESMP08's torpedo bombers (`00e08f18`) OFF and ON alike.
+
+This is the commands host's `director_current_command_0071be40` / entity-order delivery, not the
+strafe task. It is handed to the lead.
+
+### 3. Script dogfights: candidates
+
+- **BSM04** (`bsm_04_vengance_at_luzon.lua` line 1909): `PilotSetTarget(Mission.Cat,
+  Mission.ZeroGang[1])` in `luaIntroMovieEnd`. A 3200/3000 probe with the group ON
+  (`local\l30_probe_bsm04.log`) did not reach it; only the B-17 level-bomb orders appear (49 x
+  `00e08f28`). The intro movie does not end for an idle player within 150 s. This is unconfirmed.
+- **USNEX** Pearl Harbor (`USNRM/usn_1_pearl.lua` lines 1350-1357): the Welch squadron against the
+  final Zero squadrons and back. It fires in phase 3.
+- `usn_04_defend_guadalcanal.lua` line 422 (P-40 against a Japanese bomber) is not in this
+  installation's `missiontree.lua`.

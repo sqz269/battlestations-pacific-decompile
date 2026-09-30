@@ -4339,6 +4339,23 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
         // vtable[4]() name through 00B66710 (00927B1E), none pushes
         // "nocommand" (00D1926C, 00927B2B).
         const std::uint32_t command = units->director_current_command_0071be40(index);
+        // Packet cc9_strafe_unitcommand: env-gated trace of what a script sees
+        // (BSP_UNITCOMMAND_TRACE=1), the first 4000 answers.
+        static const bool trace = [] {
+            char* text = nullptr;
+            std::size_t length = 0;
+            const bool on = _dupenv_s(&text, &length, "BSP_UNITCOMMAND_TRACE") == 0 &&
+                text != nullptr;
+            std::free(text);
+            return on;
+        }();
+        static int traced = 0;
+        if (trace && traced < 4000) {
+            ++traced;
+            const char* n = command != 0u ? units->command_name_of(command) : "nocommand";
+            log_.notef("unitcommand trace unit=%zu command=%08lx name=%s",
+                index, static_cast<unsigned long>(command), n != nullptr ? n : "(null)");
+        }
         if (command == 0u) {
             ++summary_.get_property_unitcommand_nocommand;
             ::lua_pushstring(state, "nocommand");
