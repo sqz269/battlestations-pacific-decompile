@@ -6531,3 +6531,27 @@ For `kHullTerrainNativeTerrainTestBound` alone, against U with 86 ON:
 - the shape order within a body pair;
 - substeps (85.2 item 3c);
 - hull-terrain pairs only (3d).
+
+## 88. The solver's substeps: not a substitution (85.2 item 3c, cc9-gunnery20)
+
+84.1 labelled "one substep of the host's whole step" as a substitution for `00C5C540`'s plan.
+The read closes it with no code change:
+- **`world+00h`, the fixed substep, is `0.05f`.**
+  - `004DE160` loads `[00CE7638]` (bytes `CD CC 4C 3D`, 0.05f).
+  - `004DE168` stores it at the world descriptor's `+00h`.
+  - `00C41AD0` copies it into `world+00h` (DYN_WORLD_SETTINGS).
+- **`00C5C540` is called once per fixed game step** (`00875E0C`, the step 0.05f).
+- **The plan runs exactly one substep of 0.05.** The plan is `dyn_world_substep_plan_00c5c540`
+  (`00C5C68B..00C5C6C6`):
+  - The accumulator `world+48h` is cleared at the end of every call.
+  - So `fixed_substep < dt + previous` is `0.05f < 0.05f`, which is false, and no full
+    substep runs.
+  - The remainder branch then runs one substep of 0.05 (`00C5C6BD`).
+- **The host already matches.** It runs its velocity phase, the contact phase and its position
+  phase once per 0.05 s step, which is the image's order inside `00C5BB30`.
+- **The one condition:** this holds for the host's step of 0.05, the reference launch form's
+  `--mission-frame-seconds 0.05`. A different host step would need the plan.
+- No switch and no pair. The header comment in `include/bsp/hull_terrain_contact.hpp` records it.
+
+Left from 84.1: hull-terrain pairs only (85.2 item 3d: hull-hull and hull-object manifolds, the
+group formation `00C4B610`).
