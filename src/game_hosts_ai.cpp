@@ -2008,8 +2008,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 009FFEB0 is a second squadron-carrier exclusion, not 007EDA90: it
         // returns false outright when the byte at 00E17BF2 is set, and that
         // byte is 00 in the image, so the carrier arm is what runs. That arm
-        // was not read. This process holds no carrier link, so the answer here
-        // matches what 007EDA90 answers, which is false.
+        // (009FFEC6..009FFF16) was read whole in docs/SHIP_AI_OPEN_ITEMS.md
+        // section 36 and is bound as rtb_exclusion_arm below (section 40,
+        // kAiSquadronRtbExclusionBound). With the switch OFF the answer is
+        // 007EDA90's, the stand-in used before the arm was read.
         record("AiCommand::squadron_excluded_009ffeb0", 0x009ffeb0u);
         if (lua_device_reload_enabled_00e17bf2()) return false;   // 009FFEB0, [00E17BF2] set
         rtb_exclusion_census(member);

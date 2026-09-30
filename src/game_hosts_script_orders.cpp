@@ -157,6 +157,8 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"NavigatorMoveOnPath", 0x008a3600u},
     {"NavigatorSetAvoidLandCollision", 0x008a3b10u},
     {"NavigatorSetTorpedoEvasion", 0x008a3cd0u},
+    // Packet cc9_navigator_ship_avoidance (docs/SHIP_AI_OPEN_ITEMS.md section 90).
+    {"NavigatorSetAvoidShipCollision", 0x008a3970u},
     {"NavigatorMoveToRange", 0x008a2f20u},
     {"NavigatorMoveToPos", 0x008a2bc0u},
     {"NavigatorDirectMoveToRange", 0x008a2d70u},
@@ -2093,8 +2095,47 @@ void* GameScriptOrdersHost::entity_weapon_director(void* entity) {
 // USN02 moves (its four torpedo-evasion disables); every other row identical.
 inline constexpr bool kNavigatorAvoidanceDeliveryBound = true;
 
+// Packet cc9_navigator_ship_avoidance (docs/SHIP_AI_OPEN_ITEMS.md section 90).
+// 008A3970 NavigatorSetAvoidShipCollision sends selector 8 through 008359C0
+// (00835A0A), which 00835640 stores into director+241h (00835668). The bound
+// readers of that byte are 009EC787 (009EC770, the clearance category gate),
+// 009EF37B (009EF350, the traffic pass) and 009F106C (009F0EA0, the neighbour
+// refresh); each reads GameDirectorAvoidance::ship. The constructor seeds it to
+// 1 (0083672A), so only a `false` changes anything. True: delivered at once, the
+// same loopback SUBSTITUTION as the two setters above. False: counted only (the
+// row is routed here in both builds, so the binding no longer reports as an
+// unimplemented native).
+inline constexpr bool kNavigatorShipAvoidanceDeliveryBound = false;
+
 void GameScriptOrdersHost::session_route_avoidance_message(void* director,
     int selector, bool enabled) {
+    if (selector == bsp::kNavigatorAvoidanceSelectorShipCollision) {
+        ++summary_.ship_avoidance_orders;
+        if (!enabled) ++summary_.ship_avoidance_disables;
+        const std::size_t ship_index = index_of(director);
+        if (avoidance_logged_ < 60) {
+            ++avoidance_logged_;
+            const GameUnitRow* row =
+                ship_index < units_.count() ? units_.unit_row(ship_index) : nullptr;
+            log_.notef("navigator avoidance order: unit=%s ship=%d bound=%d (008359C0 -> "
+                "00835640 +241h)", row != nullptr ? row->name.c_str() : "?", enabled ? 1 : 0,
+                kNavigatorShipAvoidanceDeliveryBound ? 1 : 0);
+        }
+        if constexpr (kNavigatorShipAvoidanceDeliveryBound) {
+            bsp::DirectorCommandMessage message;
+            message.base_kind = 0x5a;
+            message.vtable = 0x00cfd9c4u;
+            message.sub_kind = selector;
+            message.value = enabled ? 1u : 0u;
+            if (ship_index < units_.count()
+                && units_.apply_director_avoidance_message_00835640(ship_index, message)) {
+                ++summary_.ship_avoidance_delivered;
+            }
+        } else {
+            record_unimplemented("Navigator::avoidance_receiver_ship", "00835640");
+        }
+        return;
+    }
     const bool land = selector == bsp::kNavigatorAvoidanceSelectorLandCollision;
     if (land) {
         ++summary_.land_avoidance_orders;
@@ -2442,6 +2483,8 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = bsp::lua_binding_navigator_set_avoid_land_collision(*this);
     } else if (std::strcmp(binding->name, "NavigatorSetTorpedoEvasion") == 0) {
         results = bsp::lua_binding_navigator_set_torpedo_evasion(*this);
+    } else if (std::strcmp(binding->name, "NavigatorSetAvoidShipCollision") == 0) {
+        results = bsp::lua_binding_navigator_set_avoid_ship_collision(*this);
     } else if (std::strcmp(binding->name, "JoinFormation") == 0) {
         void* leader = entity_from_argument(1);
         row.formation_leader = name_of(leader);
@@ -3880,6 +3923,11 @@ void GameScriptOrdersHost::report() {
         summary_.land_avoidance_orders, summary_.torpedo_evasion_orders,
         summary_.avoidance_disables, summary_.avoidance_delivered,
         kNavigatorAvoidanceDeliveryBound ? 1 : 0);
+    log_.notef("summary mission script navigator ship avoidance orders=%zu disables=%zu "
+        "delivered=%zu bound=%d (008A3970 -> 008359C0 -> 00835640 +241h, packet "
+        "cc9_navigator_ship_avoidance)", summary_.ship_avoidance_orders,
+        summary_.ship_avoidance_disables, summary_.ship_avoidance_delivered,
+        kNavigatorShipAvoidanceDeliveryBound ? 1 : 0);
     log_.notef("summary mission script after-row-9 order queue (packet "
             "cc9_after_row9_order_queue, 0076C600): bound=%d applied=%llu pending=%zu "
             "continuations=%llu deferred_by_poster: %s", kAfterRow9OrderQueueBound ? 1 : 0,

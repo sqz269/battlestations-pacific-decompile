@@ -7651,3 +7651,61 @@ will replace the stand-in, and turn it OFF when that solver flips.
 - `s22_wait.ps1 -Logs <names>`.
 - `BSP_LANDER_DIAG=1` prints each lander's position, ground and ramp state once a second.
 - `s22_disp.py`, `s22_vt.py`, `s22_consts.py` (from s21).
+
+## 90. `NavigatorSetAvoidShipCollision` delivered (packet `cc9_navigator_ship_avoidance`, cc9-ships23, 2026-09-30)
+
+- **The binding, read whole.** `008A3970..008A3B0A` (RET at `008A3B09`, INT3 from `008A3B0A`).
+  It is the same sequence as `008A3B10`:
+  - the entity from argument 0 through `00888AA0` (`008A3A6F`);
+  - the boolean from argument 1 (`008A3AA6`);
+  - `*(entity+738h)` read after the boolean (`008A3A96`);
+  - `008359C0` at `008A3AAE` with ECX = the director.
+  There is no disable-side arm (like `008A3CD0`).
+- **The sender.** `008359C0` is byte-for-byte `00835940` except `MOV dword [ESP+24h],8` at
+  `00835A0A`. So it is a 5Ah message, vtable `00CFD9C4`, routed through `0077C2A0` with flags 7.
+- **The receiver** already exists: `00835640` stores sub-kind 8 into `+241h` (`00835668`), as
+  `GameCommandsHost::apply_director_avoidance_message_00835640` (`flags.ship`).
+- **The readers are all bound.** A displacement sweep of `.text` for byte operands at `+241h`
+  (`s23_disp.py 241`) finds:
+  - `009EC787` in `009EC770`, the clearance category gate;
+  - `009EF37B` in `009EF350`, the traffic pass;
+  - `009F106C` in `009F0EA0`, the neighbour refresh;
+  - the director's own `00720E30`/`00720E62` (copy), `0072150C` (state message build),
+    `00721A03` (state message apply), `008362DD` (property dump) and `0083672A` (constructor).
+  The three ship-AI readers read `GameDirectorAvoidance::ship` in `game_hosts_ship_ai.cpp`.
+- **Default.** The constructor stores 1 (`0083672A`, EBX = 1 from `008366F4`), so only a
+  `false` moves anything.
+- **The gap.** The row was not in `kScriptOrderBindings`. `GameMissionLuaHost` recorded it as an
+  unimplemented native and nothing reached the director.
+- **The change.** The row is now routed in both builds. `kNavigatorShipAvoidanceDeliveryBound`
+  (committed OFF) delivers the message at once: the same loopback SUBSTITUTION as section 88. A
+  per-order log line (`ship=`) and a summary line are added:
+  `summary mission script navigator ship avoidance orders= disables= delivered= bound=`.
+- **Correction to section 88.** Section 88 said `luaEnableNavigator` sets all three avoidances;
+  it does (`commandhelpers.lua:6894..6896`, this installation, 2024-10-29 mtime). But no
+  reference row calls `luaEnableNavigator`. Their land and torpedo orders are direct calls in the
+  mission scripts. `s22_p0`/`s22_p1` logs have no `NavigatorSetAvoidShipCollision` line in any
+  row, so no reference row calls it.
+- **Also fixed:** the comment above `tick_squadron_excluded_009ffeb0` (`game_hosts_ai.cpp`) said
+  the carrier arm "was not read". Section 36 read it and section 40 bound it.
+
+### 90.1 Census and predictions (written before the ON run)
+
+Loose scripts in this installation (`s23_census.py`, comments excluded):
+
+| row | script | ship-collision calls |
+| --- | --- | --- |
+| all 14 reference rows | see `s22_p1_*.log` | 0 |
+| USN16 (LOMP "09 Samar") | `usn/LOMP/09_samar.lua:367`, `luaInitMission` | 1 per Taffy carrier, `false` |
+| BSM06 | `bsm/bsm_06_holding_lombok.lua:732`, `luaInvasionWaveSpawned` | 1 per spawned transport, `false` |
+| BSM02 | `bsm_02_defense_of_the_philippines.lua:941/993/1076`, phase 2 and the landing waves | `false` |
+
+Predictions:
+- **Reference rows:** exit 0 or 1 (no call).
+- **USN16:** the Taffy escort carriers get `+241h = 0` at mission init.
+  - `009EC770` and `009EF350` stop accepting any party (the filter needs the director byte).
+  - `009F0EA0` answers 0 for their side filter.
+  - So the carriers stop steering around other ships and hold their formation course: exit 3.
+    Carrier courses and the ships near them move; deaths may move.
+- **BSM06 / BSM02:** exit 3 only if a landing wave or phase 2 spawns within 9000 frames;
+  otherwise exit 1 (the order count line moves in neither).

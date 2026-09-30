@@ -297,6 +297,9 @@ inline constexpr int kNavigatorAvoidanceMessageType = 0x5A;
 // at 0083598A and MOV dword [ESP+0x24],0x9 at 00835A8A.
 inline constexpr int kNavigatorAvoidanceSelectorTorpedo = 7;
 inline constexpr int kNavigatorAvoidanceSelectorLandCollision = 9;
+// MOV dword [ESP+0x24],0x8 at 00835A0A: 008359C0, the ship-collision sender
+// 008A3970 calls. Packet cc9_navigator_ship_avoidance.
+inline constexpr int kNavigatorAvoidanceSelectorShipCollision = 8;
 // PUSH 0x0 / PUSH 0x0 at 008A38BD and 008A38BF. JoinFormation's 0077C964 and
 // the two 5Ah sends pass 7; the path order passes 0, which is a difference this
 // packet records and does not explain.
@@ -455,6 +458,12 @@ int lua_binding_navigator_move_on_path(LuaCommandTargetSource& targets,
 // that only 008A3B10 has.
 int lua_binding_navigator_set_avoid_land_collision(LuaBindingNavigatorHost& host);
 int lua_binding_navigator_set_torpedo_evasion(LuaBindingNavigatorHost& host);
+// 008A3970 NavigatorSetAvoidShipCollision (008A3970..008A3B0A, RET at 008A3B09).
+// The same sequence as 008A3B10: the entity from argument 0 through 00888AA0
+// (008A3A6F), the boolean from argument 1 (008A3AA6), *(entity+738h) read after
+// the boolean (008A3A96), then 008359C0 (selector 8) at 008A3AAE. No disable-side
+// arm, like 008A3CD0.
+int lua_binding_navigator_set_avoid_ship_collision(LuaBindingNavigatorHost& host);
 
 }  // namespace bsp
 

@@ -307,6 +307,11 @@ struct GameScriptOrdersSummary {
     std::size_t torpedo_evasion_orders{0}; // 008a3cd0, 5Ah selector 7
     std::size_t avoidance_disables{0};     // either setter with false
     std::size_t avoidance_delivered{0};    // 00835640 applied (cc9_navigator_avoidance)
+    // Packet cc9_navigator_ship_avoidance: 008a3970, 5Ah selector 8. Kept apart
+    // from the three counters above so their summary line reads as before.
+    std::size_t ship_avoidance_orders{0};
+    std::size_t ship_avoidance_disables{0};
+    std::size_t ship_avoidance_delivered{0};
     std::size_t skills{0};
     std::size_t repairs{0};
     std::size_t roles{0};

@@ -43,8 +43,8 @@ constexpr int kArgumentFollowMode = 2;    // 008A374B PUSH EBX, EBX = 2
 constexpr int kArgumentPathParameter = 3; // 008A378B PUSH 0x3
 constexpr int kArgumentSpeed = 4;         // 008A37CA PUSH 0x4
 
-// 008A3B10 and 008A3CD0 share this sequence and differ only in the selector and
-// in whether the disable side has an arm. Both read the entity from argument 0
+// 008A3B10, 008A3CD0 and 008A3970 share this sequence and differ only in the
+// selector and in whether the disable side has an arm (008A3B10 alone). Both read the entity from argument 0
 // and the boolean from argument 1, and both take *(entity+738h) as the director.
 int set_navigator_avoidance_flag(LuaBindingNavigatorHost& host, int selector,
                                  bool has_disable_arm)
@@ -158,6 +158,12 @@ int lua_binding_navigator_set_avoid_land_collision(LuaBindingNavigatorHost& host
 int lua_binding_navigator_set_torpedo_evasion(LuaBindingNavigatorHost& host)
 {
     return set_navigator_avoidance_flag(host, kNavigatorAvoidanceSelectorTorpedo, false);
+}
+
+int lua_binding_navigator_set_avoid_ship_collision(LuaBindingNavigatorHost& host)
+{
+    // 008A3AAE: 008359C0 differs from 00835940 only in the selector (00835A0A).
+    return set_navigator_avoidance_flag(host, kNavigatorAvoidanceSelectorShipCollision, false);
 }
 
 // ---------------------------------------------------------------------------
