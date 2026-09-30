@@ -755,7 +755,7 @@ constexpr bool kBlastElementEntriesBound = true;
 //    the line of fire's unit half 0098B130. The AA candidates come from the
 //    recon list, not the index, and are untouched. OFF: detached planes stay
 //    hittable. Packet cc9_hit_index_detach, docs/SQUADRON_LAND_TASK.md 5as.
-constexpr bool kHitIndexDetachBound = false;
+constexpr bool kHitIndexDetachBound = true;
 //  * kHullSegmentHealthBound: 0092D1F0 on the controller's 20 per-segment
 //    healths (00937C90: HP / the number of fizika_NN model nodes found, the
 //    gate byte -1 for an index with none), reached by R4 (a direct hit on a
