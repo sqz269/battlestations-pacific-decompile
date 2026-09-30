@@ -6880,3 +6880,76 @@ The `+158h` mechanism matches the image, and its readers are the image's. The JM
 come from the park loop that 5ar accepted as the image's, reached at different times, not from this
 read. Open for the queue: the park loop's airfield relaunch (above), and 5bi's split-form
 `vtable[28h]` scan.
+
+## 5bl. The park relaunch and the takeoff task as head task (packet `cc9_takeoff_task_head`, cc9-lua27, 2026-09-30)
+
+This answers 5bk's open relaunch and 5bg item 2. The switch is `kTakeoffTaskHeadBound`
+(`include/bsp/game_hosts_units.hpp`), committed **OFF**.
+
+### The relaunch, traced in the host (`local\l27_pon_jm05l.log`)
+
+`SecondaryAirfieldEntity 01_sqn02|.-3` hangared at 230.76 s. It then:
+- **373.63 s:** `land task ...: retired, the squadron's command is no longer land at this site
+  (009B34D0)`. The squadron's `returntobase` now resolves to the Main airfield.
+- **378.23 s:** `takeoff run ...: ALIGNED state=4 ... thr=1.000 v=42.11`. The **takeoff task from
+  7.15 s** has been installed the whole time with `done=0`, under `land`. With `land` gone, the
+  pilot think's `else if` (`game_hosts_units.cpp`, the `run_takeoff_task_tick_009cfd70` arm) ticks
+  it again. The Takeoff step runs from the hangar spot.
+- **378.73 s:** the height lift-off. `007C7110` clears `+904h`/`+910h` and erases the plane from
+  `site+34h`.
+- **378.98 s:** `land` installs again, for the Main airfield.
+
+So the host path is **a stale takeoff task resumed when `land` retires**. It is not a park exit.
+5bi stands: park itself never retires a hangared plane.
+
+### The image: the takeoff task is the head, and `land` waits for it (5bg item 2)
+
+- **`00999F50`** (`0099A4A0`'s install) inserts at the **front** of the bot's task vector
+  (`bot+58h`, count `+5Ch`, capacity `+60h`). It shifts every entry up one and stores at `[0]`
+  (decompiled here).
+- **`0099A020`** (`0099A170`'s install, reached only from `0099A490`) appends at the **back**.
+- **The tick** `0099ACD0` ticks only the head: `0099AE89 MOV EDX,[ESI+58h] / MOV EBX,[EDX]`. It
+  calls `009998A0` on it (`0099AF1C`) after `0099A4C0` has retired finished head tasks.
+- **A command task is built only when the list is empty**, through `0099A4C0`'s tail-jump
+  `0099A5EB JMP 0099A170` (rel32 census `local\l27_refs.py`: `0099A170`'s only other caller is
+  `0099ADAA`). The other route is `bot+7Ch`. docs/PILOT_BOT_TICK_GATES.md settled that `+7Ch`
+  is set only by the move-to state `009C1BA8` when it runs out of target.
+- **`00999E40` / `00999EE0`**, run under `+7Ch`, move every task to the retire list at `+64h`, then
+  call `vtable[58h]` on each and delete it.
+
+So a `returntobase` delivered to a plane whose takeoff task is live installs nothing until the
+takeoff task retires. The takeoff task runs to its done arm (`009CFC70`), and `land` is built
+then, from the current command. `land` never stacks over `takeoff`. When `land` later retires,
+there is no takeoff task left to resume, so **the image has no such relaunch**.
+
+The host differs in two ways:
+1. It installs `land` at the delivery (the labelled substitution of SENTITY_INIT_ATTACH_ORDER
+   22.7).
+2. It ticks `land` ahead of the takeoff task.
+
+This is why 5bf saw `done=0` on JM05 and `done=12`/`27` where no `returntobase` arrives (5bh).
+
+### The host with the switch on
+
+- The takeoff task, while installed, is ticked ahead of `land`.
+- `install_land_task_0099a3dd` on a plane with a live takeoff task only records the delivery.
+- The takeoff task's done arm then installs `land` (`0099A4C0 -> 0099A170`).
+- SUBSTITUTION, labelled: the deferred install uses the delivered `returntobase`. A different
+  order that arrives in between is not re-checked.
+- Summary line: `summary takeoff task head: land_deferred= land_after_takeoff=`.
+
+### Predictions (switch ON against OFF; written before the pairs)
+
+1. **JM05 3000 and 9000.**
+   - Every launched member that lifts off keeps its takeoff task to the done arm (`done` about
+     30, not 0).
+   - `land` installs about 5-10 s after each lift-off instead of about 2 s after it
+     (`land_after_takeoff` about equal to `done`).
+   - On 9000, the park relaunch goes away: no lift-off from a hangared plane, `unparented` equal
+     to `liftoffs`.
+   - The recalled planes land a few seconds later. Death tables identical.
+2. **USN04, E2, USN13.** No `returntobase` reaches these squadrons (5bh), so `land_deferred=0`.
+   Gameplay-identical (exit 0 or 1), except where the head order meets another task.
+3. **USN01, LOMP06:** exit 0 or 1.
+4. **Flip criterion:** `done` = lift-offs on every row, no relaunch from park, no death row
+   moves that the later land installs cannot explain.
