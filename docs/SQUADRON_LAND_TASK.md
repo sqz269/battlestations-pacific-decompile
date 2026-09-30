@@ -5299,3 +5299,158 @@ paired as a record while it is built:
 and flies its squadron's task. The per-entity death table is diffed, and the launch timing is
 recorded for reference U. USN04, E2 and USN13 follow. Until then the switch stays OFF and
 launched squadrons keep spawning airborne.
+
+## 5av. The Takeoff step read, and how launched members start Inside (packet `cc9_plane_takeoff_read`, part 2, cc9-lua24, 2026-09-30)
+
+This part reads the `takeoff/Takeoff` step and the squadron's side of the launch. Ghidra and the
+disk bytes were read only; no code changed.
+
+**Sources.**
+- The Takeoff step: a scripted listing (`disasm-raw 009CE2C0`, 1333 lines, kept as
+  `local\l24_ce2c0_full.asm`) against the Ghidra pseudocode (`local\l24_ce2c0.c`). The listing
+  decides wherever the pseudocode's flag bytes are mangled (`CONCAT13`).
+- Constants: read from this installation's executable on disk (`local\l24_consts.py`).
+
+### `009CE2C0 BSP_TakeoffStateTakeoff_Step` (`__thiscall(state, float dt)`, `RET 4`)
+
+`EBP` is the state, `ESI` the plane `[[state+4]+4]`, and the control block `[[state+4]+18h]`
+(PILOT_CONTROLS: slot 0 throttle `+278h`, slot 1 `+284h`, slot 4 `+2A8h`, the pitch target
+`+2BCh`, the speed request `+2B4h`). There are no SEH state stores; ESP is tracked through the
+`SUB ESP,14h` blocks that precede each five-float `00419010` call. `00419010` is
+`BSP_Math_InterpolateClamped(x0, y0, x1, y1, x)` and cleans its own 14h.
+
+**A. Setup** (`009CE2D7`-`009CE3E5`).
+- A landed flag `+904h` is cleared.
+- `H` = the contact holder `+BF4h`, or 0 in free flight (`(+72Ch)->vtable[38h]` true). `v` is
+  `vtable[38h]` (speed).
+- `carrier` = `(H+4)+7Ch` answers `IsKindOf(9)`.
+- With `H`: `m = H+B4h x 0.5 - |plane.xz - owner.xz|` (`00D7A280` = 0.5, `0042B2F0`); otherwise
+  `m = 150.0` (`00CE3808`).
+
+**B. The obstacle factor `f`** (`009CE3E9`-`009CE56E`).
+- It walks the list at `[[00E188A8]+19CCh]+64h` (node `+4` next, `+8` unit), skipping the
+  holder's owner.
+- For each unit: `00816410(unit, out, plane+FCh)`, then the result is taken into the plane's
+  frame (`+110h`, rebuilt through `00B63D50` when `+10Ch` is clear).
+- When local `z` lies in (5.0, 100.0) and `|x|` < 50.0: `f = max(f, interp(100, 0, 40, 1, z))`.
+
+**C. The pitch target `P`** (`009CE574`-`009CE81D`).
+- `P0` = 0.05 (`00CE7638`), or 0.1 (`00D7A2F0`) when `classDesc+198h MinWaterSpd` == 0.
+- `T` = `classDesc+1ECh` (the takeoff pitch, as in 5v).
+- `s` = `v / 007C4830(classDesc)`, where `007C4830` is `BSP_PlaneClass_StallRangeSpeed`.
+
+| case | `P` |
+| --- | --- |
+| free flight | `interp(2.0, P0, 6.0, T, f x 5.0 + plane+908h)` |
+| ground, class `10h` or `16h` | `max(interp(1.0, P0, 1.5, T, s), interp(150, P0, 50, T, f x 150 + m), interp(0, -2T, 7.0, T, state+1Ch))` |
+| ground, other classes | `max(interp(1.4, P0, 1.8, T, s), interp(80, P0, 30, T, m))` |
+
+**D. The water arm** (`009CE823`-`009CE930`), only with `H` and `MinWaterSpd` != 0.
+- With the owner dead: at plane height `+100h` < `classDesc+A4h x |sin(+C68h)| x 0.5 + 2.5`, it
+  calls `007B9010` and returns.
+- Then, with `+BF8h` clear or `+BF4h` null, `(H+4)+3Ch->vtable[1Ch]()` true gives
+  `BSP_PilotPlan_SetDirectThrottle(-1.0)` and returns.
+- In free flight, `P` is floored at `+C64h - 0.0523599` (3 degrees).
+
+**E. The low land plane** (`009CE968`-`009CEA3E`, checked on the listing).
+- It applies when `MinWaterSpd` == 0 and the plane's world `y` (`+100h`) is below 5.0.
+- It sets `state+4 -> +38h` = 3 and writes:
+  - throttle 1.0, direct (`+278h`, `+27Ch` = 1, `+2D8h` = 0);
+  - slot 4 = 0;
+  - yaw slot `+284h` = 0 (active);
+  - `+2C4h` = 0 (mode 1);
+  - pitch target `+2BCh` = `P` (mode `+2D0h` = 1);
+
+  and returns. So a land plane below 5 m takes off straight ahead, at full throttle, pitching
+  up by the ramps in C.
+- Whether the host's airfield runways sit below 5 m is not checked here. The carrier decks do
+  not (the lift points of 5ao.1 are at 15-17 m).
+- `state+38h` is next set to `FFh` when all three hold, else 0 (`009CEA41`-`009CEA96`):
+  - the plane is in free flight;
+  - `v` > `007C47F0(classDesc)`;
+  - `+908h` > 3.0.
+
+**F. No holder** (`009CF66B` on): throttle 1.0, pitch `P`, yaw 0, return.
+
+**G. With a holder: the deck or elevated runway** (`009CEA99`-`009CF6F5`).
+- **The site tests.**
+  - `007B9000` runs when the owner is dead and `(+BF8h clear or +BF4h null)`.
+  - The pitch target `P` is written.
+  - The plane is taken into the owner's frame (`lx`, `ly`, `lz`).
+  - The site's lane test `vtable[34h](plane, !carrier && no contact, lx, lz)` (`006CF5B0` on an
+    airfield) sets a refused flag `[esp+13h]`.
+- **The runway direction.** `006BEFF0(H, out, plane+FCh)` gives the direction.
+  - On a carrier with `dx` > 0 it takes `dx' = max(dx - 3.0, 0)`.
+  - The runway heading is `pi/2 - atan2(dz, dx')` and the plane's `pi/2 - atan2(+9Ch, +94h)`;
+    `err` = `00438B10` (wrapped difference), `|err|` at `[esp+18h]`.
+- **The lateral tolerance `tol`.**
+  - `tol` = `max(v / 007C4810(classDesc) x 8.0, 2.5)`.
+  - Past the runway end (`006BC890`'s `z + 40.0`, else 40.0), it is capped by
+    `(lz - end) x 0.25`.
+  - It is also capped by `H+B0h x 0.5 - 1.0`.
+  - With `|err|` < 0.8 it is further capped by `(H+B0h - (classDesc+A4h - 2.0)) x 0.5` for a
+    class 10h/16h plane, and by `(H+B0h - (classDesc+A4h + 1.0)) x 0.5` otherwise
+    (`009CEDB9`-`009CEE45`).
+- **What follows** (`009CEE4B`-`009CF6F5`) is not reduced to closed form here:
+  - the lateral excess;
+  - a bound of 3.0 on a carrier or 15.0 otherwise (`00CE3854`, `00CE5380`), and the random
+    factor `state+18h` (`00BD2F10(0.5, 1.0)` when negative);
+  - the yaw command `+284h` = `interp(-k, -1, k, 1, err')` with `k` from `tuning+188h`,
+    `+2A8h`, `+2ACh`, `+2B0h` and `classDesc+1B0h YawSpd`;
+  - then `007B8D10` / `007B8DC0`;
+  - `BSP_Plane_FlightStateFiveToFour` (`009CF35F`) when a path plane is lined up, with
+    `state+1Ch += lz`;
+  - the throttle `+278h`, from `BSP_Unit_CanDropOrdnance(0)` (`00CE3868` or `00CE81A0` x
+    `(1.4 - +B18h)`), the `state+1Ch` ramp, and the floor test against `00CE65D0`;
+  - or, when the lane is refused, throttle -1.0 with slot 4 = 1.0 (the brake);
+  - or the speed request `+2B4h` from `tuning+2A8h`/`+184h` ramps against `|err|`.
+
+  This part is the deck taxi and roll. It is the one the carrier launch rows need, and it goes
+  to the bind packet, which transcribes it from the listing (lines 490-1332 of
+  `l24_ce2c0_full.asm`).
+
+### How a launched member starts Inside
+
+`006C5050`'s bag carries `State` 1 on the normal path (AIROPS_LAUNCH_START 3).
+
+The squadron's pass C, `007F4BA0`, for the kind-1 holder (`007F4C0B`-`007F4DB5`):
+1. It reads `State` (`00CF8818`, default 7), and `flag = State < 2`.
+2. It reads `HomeBase` (`00CF8820`) and `SpawnPoint` (`00CE56B8`). A `SpawnPoint` whose entity
+   has an air-ops block also sets `flag` and becomes the base.
+3. It calls `007F1C00 BSP_PlaneSquadron_SetHomeAirBase(base, flag)`.
+   - In a campaign session (`[00E188A8]+1FE4h` == 0) that is the alternate push (`006CC7B0`,
+     the slot queue).
+   - With `flag` it then does `+408h` = 1 and calls `007ED6E0`. In a non-campaign session it always
+     takes the ready-plane push and `007ED6E0`.
+4. `007ED6E0` (`__fastcall(squadron)`) sets `+408h` = 1 and calls `007C2130` on every member.
+   `007C2130` (`007C2130`-`007C21C3`, `RET`) requests flight state **1** through a `C3h` message
+   routed with 7, the state-1 twin of `007C2090`. It skips a member already in 1 and a client.
+   - The handler `007CC820 BSP_Plane_EnterFlightStateOne` sets `+900h` = 1, stamps `+C04h`,
+     calls `007C11E0(0)`, and re-parents the plane to the base (`vtable[ACh](squadron+404h)`).
+5. `007F2920`, the in-air or water placement through `007C6340`, is **skipped** when `+408h` is
+   set (`007F4DA9`).
+6. The launch task is built at the end of pass C (5at).
+
+So the image's launched squadron sits Inside at its base, and the launch task sends its members
+out one at a time. The host instead places the squadron in the air at 150 m (`create_air_ops_squadron_006c5050`).
+
+### What the bind needs (for the group `kBaseLaunchChainBound`)
+
+1. The bag's `State` 1 honoured:
+   - `SetHomeAirBase` with the flag;
+   - `007ED6E0` -> `007C2130` -> `007CC820` (state 1, re-parent);
+   - no airborne placement.
+2. The launch task and readiness (5at). Member `vtable[10h]` (the activation before
+   `006CF190`) is still unread.
+3. The deck arms (5at).
+4. The takeoff task:
+   - the install gate (5au);
+   - the rule and the four states (5au);
+   - the Takeoff step: A-F above as written, G transcribed from the listing.
+5. The lift-off `C6h` and `007C7110`.
+
+**Unread:**
+- `007B9000`, `007B9010`, `007B8D10`, `007B8DC0`, `006BEFF0`, `006BC890`, `00816410`;
+- the list at `game+19CCh+64h`;
+- the prepare state (`009CDD50`/`009CDE50`);
+- `007C17D0`.
