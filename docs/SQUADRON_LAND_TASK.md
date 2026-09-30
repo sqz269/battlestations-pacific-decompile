@@ -8068,3 +8068,139 @@ is held after this handoff.
 - `l29_dec.ps1`: batch decompile to a file;
 - `l29_asm_*.txt`, `l29_states.c`: the listings and decompiles of the strafe states;
 - `l29_base_esmp08.log`: the 3000-frame ESMP08 run on main `557733990`.
+
+## 5ca. The strafe group bound OFF: the arm, the states, the gun read and the choice feed (packet `cc9_strafe_arm`, cc9-lua30, 2026-09-30)
+
+Two switches, both committed **OFF**: `kStrafeTaskBound` (the arm, its states, the hit notice and
+the gun read, `src/game_hosts_units.cpp`) and `kAttackChoiceGunsFedBound` (the guns inputs of
+`007EEC50`, `src/game_hosts_script_orders.cpp`). Both live in `include/bsp/strafe_task.hpp`.
+Nothing else chooses class `00E08F40`, so the arm is inert without the feed. The group flips only
+together, by the pairs of 5cb.
+
+### 1. Read for this packet (disk listings, `local\l30_asm_*.txt` in the cc9-lua30 tree)
+
+**Correction to 5bw.3 and 5bz.** The arm calls `009BDE80` with **near = far = `task+438h`
+(approach `+40h`, the glide distance) and speed range = `task+430h` (approach `+38h`, the shoot
+distance)**, not `(dt, +430h, +438h)`. `009CD187`-`009CD1AC` store `+438h` twice (`FST`/`FSTP` into
+the first two slots) and `+430h` into the third. The constructor agrees: `009CC067`-`009CC0B3`
+builds the moveto state with `009C2AC0(approach, target, [+40h], [+40h], [+38h])`.
+
+| routine | listing | what it does |
+| --- | --- | --- |
+| states `009CC020` | `009CC062`-`009CC165` | moveto `009C2AC0` at approach `+E8h`; follow and prepare are both `009C2980(approach, 100.0)` (`[00CE3D08]`), so prepare runs the follow tick `009C1FD0`; gotowards `+18h` = `+1Ch` = 800.0 (`[00CE3950]`) |
+| slot `+4Ch` `009CC8D0` | `009CC8D0`-`009CC8E5` | `009BE3E0` on the follow state `+51Ch` only, else `0099B720` (-1.0): prepare does not answer |
+| hit notice `009CC400` | `009CC400`-`009CC40D` | `task+43Ch` (approach `+44h`) = 0.0, `AL = 1` |
+| gotowards enter `009CA820` | `009CA820`-`009CA866` | `+20h` = 0; glide seed `009CA3B0`; `+48h` = U(0.8, 1.1) (`[00CE74F8]`, `[00CE6448]`) * desc `+18Ch` TravelSpeed; tail-jump `009CA780` |
+| target point `009CA780` | `009CA780`-`009CA814` | ref `+48h..+50h` = StrafeTargetPointSelectPrec, ref `+41h` = 1, ref `+64h..+70h` = StrafeSectionDamageChance and the three weights; `009FA260` (the pick); `007B7870([approach+20h], [approach+70h], approach+80h)` |
+| gotowards tick `009CA870` | `009CA870`-`009CAC6D` | see below |
+| aim enter `009CB0F0` | `009CB0F0`-`009CB11F` | `+1Ch` = `+1Dh` = 0; `+18h` = U(0.2, 0.8), not read by the tick |
+| aim tick `009CB1B0` | `009CB1B0`-`009CB4E3` | see below; **`[00CEE07C]` is the float 0.75** (`009CB463 FLD dword`) |
+| goaway ctor `009CB500` | `009CB500`-`009CB60D` | `+28h`/`+2Ch` = 2/5, `+30h` = U(0, 5); `+34h`/`+38h` = 2/5, `+3Ch` = U(0, 5); `+40h` = 1.0, `+44h` = -U(0, 1); `+18h` = U(0.3, 0.9) |
+| goaway enter `009CB8B0` | `009CB8B0`-`009CBB2E` | gun `+40h` = tuning `+674h`; `009CB780`; `009CB650`; `+24h` = 0; for a plane of neither kind 10h nor 16h hit within U(10, 16) s: an evasive push, as the tick's |
+| goaway bank `009CB780` | decompiled | `r` = clamp(wrap(bearing - heading) / (pi/6), -1, 1); `+1Ch` = U(r - 1, r + 1) * 20 deg * -1 (`[00D05858]`, `[00D7A250]`) |
+| goaway pitch `009CB650` | decompiled | with a target and altitude >= 30: U(min(p, 0), min(class `+1ECh`, p + 10 deg)) with p = `009FB700`(target y + approach `+40h`); else class `+1ECh` |
+| `009FB700` | decompiled | climb `+1ECh` * clamp(e / ClimbDist, 0, 1) above, drop `+1F0h` * clamp(e / DropDist, -1.5, 0) below |
+| goaway tick `009CBB30` | decompiled | the two re-plan timers; plan `+2C4h` = `+1Ch` (bank, mode 1), `+2BCh` = `+20h` (mode 1); throttle 1.0, brake 0, `+2D8h` = 0; `+24h` every `+40h` s; the evasive push; gun `+40h` = `+674h` |
+| attackrun enter `009CAD90` | `009CAD90`-`009CADA5` | `+20h` = 0, `+18h` = 0.4 |
+| attackrun tick `009CADB0` | `009CADB0`-`009CB091` | as 5by.2; `009FBA50(+40h, +38h, dist, factor)` confirmed; throttle 0.98 (`[00CE6650]`) |
+
+**Gotowards `009CA870`**, from the listing: plan speed = approach `+48h`; `+18h`/`+1Ch` the 3-D and
+horizontal distances to the aim point; `h0` = pi/2 - atan2(dz, dx), wrapped into [0, 2pi);
+`007F0280` in **mode 0** (the squadron, `009CA9C6 PUSH 0`) with box (150, 150, 500) (`[00CE3808]`,
+`[00CE397C]`) and zero weights; when |out_a.x| > 0.05 (`[00D7A270]`), `o` = -out_a.x * out_b.y *
+out_b.z and the offset is `o` * 50 deg (`[00D057E0]`) when |o| > 0.1 (`[00D7A3A0]`); `h` =
+fmod(h0 + offset, 2pi) wrapped into [-pi, pi] into plan `+2C0h`, mode 2; `+20h` = |wrap(h -
+heading)| < 35 deg; the height above the aim point `y` is reduced when `+1Ch` * `+30h` >= y (by
+min((g - y) / 2, 1.5 y)), then `009F9ED0(-y, +1Ch)`; gun `+40h` = `+678h`; `009FABE0`.
+
+**Aim `009CB1B0`**, from the listing: speed `+48h`; `009F9E40` (heading, mode 2); pitch
+atan2(dy, horizontal) into `+2BCh` with **mode 1**; the aim point in the plane's frame; `f` =
+max(z, 0.75 |p|); `+1Ch` = f < approach `+3Ch`; `+1Dh` = z < 0 or f < 0.85 * `+3Ch`; if `+1Dh` is
+clear, approach `+9Ch` = clamp(f / `+4Ch`, 0, 30), and inside class `+26Ch` (TravelSpeed / turn
+rate) `+1Dh` = |(x/f, y/f)| > 0.75; gun `+40h` = `+678h`; **gun `+5Ch..+64h` = the aim point and
+gun `+28h` = 0.6**.
+
+**The gun controller reads the aim block (queue item 2).** `009FC7C0`
+(docs/DOGFIGHT_GUN.md 1): when the search `007B96F0` finds no aircraft (`+74h` = 0) and `+28h` >
+0, it takes `LAB_009fcac2`: `+4Ch` = -1.0 and the envelope runs on the lead point `+5Ch` the aim
+state wrote. The tail resets `+28h` = -1.0 every tick, so only the aim state's thinks fire on it.
+When the search does find an aircraft, it shoots at the aircraft instead.
+
+### 2. What is bound (behind `kStrafeTaskBound`)
+
+- **Install** on class `00E08F40` with a target: the approach as 5by.1 (with `+24h` = max(1,
+  MaxSpd / Pilot/Strafe/ReferenceSpeed)), the glide seed, the goaway draws, moveto for the flight
+  leader and follow for a member. A new target re-installs.
+- **Each think**, in the image's order: `0099B740` (the attack mode, the leader's value copied to
+  its members), the target ref (aim point) and `009CCED0`, the rule `009CC690`, the new state's
+  enter on a change, the state tick.
+- **Ticks**: moveto (the generic `009C18C0` with the ranges above), follow and prepare (the
+  generic follow tick), gotowards, aim, goaway, attackrun as read.
+- **The hit notice**: `00999AA0` zeroes approach `+44h` for a strafe plane.
+- **The gun**: `009FC7C0` fires on the aim point when the search found nothing; the strafe plane
+  joins the task-gun list. A strafe order no longer runs the torpedo arm alongside.
+- The strafe robots rows are this installation's `robots.lua` (mtime 2025-06-01 23:03 UTC), by
+  skill level.
+
+**Substitutions, labelled in the code:**
+- ctl `+398h` for the glide seed is the script's attack altitude when set, else
+  Pilot/Strafe/CruisingAlt (what `009CD020` stores there; its call cadence is unread).
+- The target point's pick runs at the next aim-point query on a fresh deterministic seed.
+- target `+5Dh` is the host's liveness.
+- Draws are keyed stand-in streams (`name#st<field>`).
+
+**Gaps, counted:**
+- goaway's evasive pushes (`009BC030` / `009BC0A0`);
+- `007B7870`;
+- `009FABE0`'s `+68h` (the host's gun gate reads the plane's forward);
+- the moveto and follow enters;
+- the cruise profile `009CD020`.
+
+**Feed (`kAttackChoiceGunsFedBound`)**: `guns_available` = PilotFires and `guns_suppressed` = kind
+10h or 16h, on the ordered unit. It logs `PilotSetTarget guns feed:` per order.
+
+### 3. Predictions (both switches ON against OFF; written before any ON run)
+
+- **The smoke** (USN01 300 frames) runs to its final COM release and prints no strafe line: USN01
+  issues no strafe order in 100 mission frames.
+- **USNOS 3000 and 9000**:
+  - the three `plane #1.1..#1.3` orders at native frame 832 print `guns feed: pilot_fires=1
+    suppressed=0` and choose `00e08f40` (if a Dauntless has PilotFires clear, 007EEC50 still
+    declines and nothing moves: a mechanism miss to record);
+  - three `strafe task 009CC230 ... installed` lines; the leader starts in moveto, the two
+    members in follow;
+  - the leader cycles moveto -> gotowards -> aim -> goaway -> gotowards; the members follow until
+    they are in range themselves. Expect 2 to 4 aim entries per plane in the 3000 row after
+    about 110 s of flight, and several times that in the 9000 row;
+  - `gun_point_ticks` > 0 and `gun_point_fires` > 0 on the aim thinks;
+  - the task-gun census gains the three planes;
+  - the targets (348, 352, 349) may take bullet damage. Deaths may move; read the per-entity
+    death table, not the count.
+- **ESMP08 long**: the seven orders at native frame 2939 choose strafe; the 15 s re-orders keep
+  the same target, so no re-install. The same state cycle as USNOS.
+- **Dogfights by `PilotSetTarget`**: any row that orders an aircraft at an aircraft with PilotFires
+  set now chooses `00e08f58` where it chose nothing, and the dogfight arm installs there. Those
+  rows move; each such line is checked.
+- **Rows without either** (the controls): gameplay identical.
+
+### 4. The smoke and a first ON run (built from `f3ef5bbcf` with both flips, SHA-256 `77349F959157`)
+
+- **Smoke** (USN01 300/100, `local\l30_smoke_on.log`): final COM release, `present interval
+  immediate`, the module directory under `local\l30_on`, and `summary mission strafe task:
+  planes=0`. As predicted.
+- **USNOS 3000, ON side only** (`local\l30_on_usnos.log`; a mechanism check, not a verdict):
+  - three orders print `guns feed: pilot_fires=1 suppressed=0` and choose `00e08f40`; the other
+    three print `pilot_fires=0 suppressed=1` and still choose `00e08f28`, as before;
+  - the order reaches **three squadrons of four** (`plane #1.1..#1.3` and their `|.-2..-4`
+    members), so 12 strafe tasks install, not three;
+  - every member takes **one think of attackrun** at t = 39.8 s and returns to follow at 39.9 s.
+    The members think before their leader in that frame and read the order's mode 2 (007ED430 at
+    008A4C41) until the leader's 0099B740 lowers it. This is the image's ordering, not a host
+    artefact;
+  - moveto/follow -> gotowards from t = 91.5 s (in range at about 2000-2500 m horizontal), with
+    some one-second flaps at the range edge (the test runs once per second);
+  - five aim entries from t = 117.8 s, 169 aim thinks, **61 gun fire ticks on the aim point**
+    (three bursts, `task gun` rows for the three leaders);
+  - no goaway before the mission ends at 150 s;
+  - 168 hit-notice resets: the planes are under fire throughout.
+- The arm's `record` line printed it as UNIMPLEMENTED; it is now `done`.
