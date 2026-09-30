@@ -5307,3 +5307,39 @@ no submarine.
    - BSM01 and LOMP06 move only if a boat is scored there.
 4. **Mechanism failure:** a gameplay move on a row with `sub_tests` and `torpedo_refusals` both
    0 on the ON side.
+
+### 77.4 The pair, and the verdict: ON
+
+A same-tree pair at `8d5ee7a84`: `local\g17_ca0` (SHA-256 prefix `CE56E96B3D65`) against `local\g17_ca1`
+(`--flip kGunneryClassArmsBound=true`, `DB8E4EED7EFA`). The 300-frame USN01 smoke on the ON build is
+clean. Logs are `local\g17_ca{0,1}_<row>.log`.
+
+| row | exit | sub tests / above / refusals | what moved |
+| --- | --- | --- | --- |
+| USN04, USN02 (controls) | 1 | 0 | nothing |
+| JM06 | 3 | 3000 / 0 / 2652 | Narwhal-class Submarine 01's shots 6 -> 0 (dealt 88 -> 0); the PBY and US Tankers 01/02 score nothing (their only candidates were a submerged boat). Row damage 4506.8 -> 3634.4, shots 302 -> 276. Death rows identical |
+| USNOS, USNOS long | 3 | 22974 / 21824 / 5524 (long: 24294 / 23144 / 5794) | only the logged `nearest` distances. Aggregates and death rows identical |
+| LOMP06 | 1 | 27 / 0 / 18 | nothing |
+| BSM01, IJN01 | 1 | 0 | nothing (no boat reaches the score) |
+| the other nine rows | 1 | 0 | nothing |
+
+- `torpedo_refusals` is 0 on every row. No category-7 candidate on a reference row is a non-ship or
+  kind 0Eh, so that arm has no reach here.
+- The census is equal on both sides on every row. Every refusal happens before the first moved
+  step.
+
+**Prediction check:**
+- **The controls held.**
+- **The mechanism held:**
+  - sub tests appear only on submarine rows (JM06, LOMP06, USNOS, USNOS long);
+  - JM06's boats are all below the depth line (above 0 of 3000), so the gun categories refuse
+    them;
+  - USNOS's boats are mostly surfaced (21824 of 22974 above). Its refusals are depth-charge
+    categories refusing the surfaced boats and guns refusing the submerged ones.
+- **The spread:**
+  - JM06 is the gameplay move: guns and aircraft no longer engage a submerged boat. Damage falls
+    19%, and deaths are unchanged.
+  - USNOS moves only in the logged candidate distance.
+  - IJN01's boats never reach the score, so it stays identical (predicted "may move").
+
+**Verdict: ON** (`kGunneryClassArmsBound = true`). It belongs to reference t.

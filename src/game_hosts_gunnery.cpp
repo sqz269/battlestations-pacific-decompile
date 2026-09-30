@@ -525,7 +525,7 @@ constexpr bool kReconContactAllKindsBound = true;  // ON: AA_LETHALITY_AUDIT 14.
 //    answers false. The per-instance allow byte [ai+CCh+cat*61h+class] is the
 //    constructor's memset 1 (00864623), taken as set. OFF: the liveness bytes
 //    only. Packet cc9_gunnery_class_arms, docs/GUNNERY_OPEN_ITEMS.md 77.
-constexpr bool kGunneryClassArmsBound = false;
+constexpr bool kGunneryClassArmsBound = true;  // ON: GUNNERY_OPEN_ITEMS 77.4
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
