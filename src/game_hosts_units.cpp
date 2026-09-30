@@ -4860,9 +4860,11 @@ struct GameUnitsHost::Impl {
     // of the 3600.0 floor, so a hit (009C7900) arms the forced goaway re-roll for
     // one second. OFF until paired with the hit notice's caller.
     static constexpr bool kDiveHitClockBound = false;
-    // ON: image loop accepted, SQUADRON_LAND_TASK 5aq. The airfield park <->
-    // abort loop after the hangar hide is the image's as far as the listing
-    // reads (5z, 5aa, 5aq); paired in 5ar.1, every death table identical.
+    // ON: paired in 5ar.1, every death table identical. The airfield park <->
+    // abort loop is NOT the image's (SQUADRON_LAND_TASK 5bp): the image pushes a
+    // takeoff task at the first ground abort (0099B0BE), and the host's loopers
+    // are planes that lost +BF8h and fell below the terrain (a host
+    // ground-support artefact). Kept ON for the carrier lift and the hangar hold.
     static constexpr bool kLandParkStateBound = true;
     // Packet cc9_carrier_elevator (docs/SQUADRON_LAND_TASK.md 5ao). True, on a
     // mother-ship deck: land/park's carrier arm (009B23E4's vtable[5Ch](9)

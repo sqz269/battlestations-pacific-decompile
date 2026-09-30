@@ -127,6 +127,9 @@ inline constexpr bool kTakeoffTaskHeadBound = true;
 // grounded plane whose land task goes to land/abort takes off again. DL = 0
 // starts in takeoff/Takeoff (+AA0h <= 0.0), or takeoff/parking when landed on
 // the path. False: no push; the host's park <-> abort loop runs on the ground.
+// OFF, mechanism failure (5bp): the push fires once per looper as read, but the
+// run never lifts off, because a state-4 plane off the runway rectangle has no
+// ground under it in this host and runs at about y -78 m.
 inline constexpr bool kGroundRetakeoffBound = false;
 
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member

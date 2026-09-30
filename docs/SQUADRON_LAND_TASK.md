@@ -4977,7 +4977,9 @@ tree). A 300-frame smoke of the OFF build exited 0.
 - The loop touches no outcome on these rows.
 
 **Verdict: `kLandParkStateBound = true`, labelled "image loop accepted, SQUADRON_LAND_TASK
-5aq".** This also puts the elevator (5ao) into the reference rows.
+5aq".** This also puts the elevator (5ao) into the reference rows. **Superseded as to the loop by
+5bp:** the image pushes a takeoff task at the first ground abort, and the host's loopers are below
+the terrain. The switch stays ON for the lift and the hangar hold.
 
 **For reference U.** JM05 9000 moves (exit 3, the positions and the land-task, park and elevator
 counters); JM05 3000 moves at exit 1 (native table and summary counters only). The other rows are
@@ -7260,3 +7262,68 @@ BSM01 have none, and only JM08 has a live water contact.
    grounded head with `30h` true, no push on a row without ground aborts, and no death row moves
    that the relaunch cannot explain. A relaunch that fails to lift off (the run stalls with no
    holder) is a mechanism failure and keeps the switch OFF.
+
+### Results (OFF `local\l28_roff`, SHA-256 `99C60502B60B`; ON `local\l28_ron`, `880A12FEA0BA`; both from `6a040f4dd`)
+
+The 300-frame USN01 smoke of the committed tree exits 0 (299 frames presented). All rows are in the
+reference launch form. `jm05x` is an extra row, JM05 at 12000 mission frames, run because the one
+push on the 9000 row comes 4 s before its end.
+
+| row | `pair_diff` | death rows | land aborts OFF / ON | pushes (all `land` head, state 4, `takeoff/Takeoff`) |
+| --- | --- | --- | --- | --- |
+| JM05 3000 | 1 | identical (12) | 1 / 1 (airborne) | 0 |
+| JM05 9000 | 1 | identical (14) | 21 / 2 | 1 |
+| JM05 12000 (`jm05x`) | 1 | identical (17) | 749 / 4 | 3 |
+| LOMP10 3000, 9000 | 1, 1 | identical (3, 6) | 0 / 0 | 0 |
+| USN04, E2 | 1, 1 | identical (50, 52) | 0 / 0 | 0 |
+| USN01, BSM01 (controls) | 1, 1 | identical (17, 0) | 0 / 0 | 0 |
+
+- **The base has moved since reference U.** On this tree the JM05 9000 loop is one plane, SB2C
+  Helldiver 01 (20 `from_abort`), not six planes and 2896. At 12000 frames there are three
+  loopers: Helldiver 01 (365), MainAirfieldEntity 01_sqn01|.-3 (206) and
+  SecondaryAirfieldEntity 01_sqn02|.-3 (177).
+- **The gate and the push behave as read.** Each looper gets exactly one push, at its first ground
+  abort (Helldiver 01 at 446.06 s: `head=land state=4 landed=1 bf4=1 bf8=0 y=2.74 |v|=3.19`). The
+  pushed task is the head, and `land` is not ticked again. The aborts fall from 749 to 4. No push
+  on any row without a ground abort; no parking start; no state-6 push.
+- **The relaunch never lifts off.** A diagnostic build (the ON export with two log lines in the
+  run step, not committed; `local\l28_diag_jm05x.log`) shows it:
+  - Helldiver 01 is at y 2.33 at 446.16 s. By 451.16 s it is at **y -77.86** at 41 m/s, and it
+    runs on at 69.5 m/s near y -79 to the end.
+  - The other two do the same: y -76.1 at 70-80 m/s, and y -56.0 at 67 m/s.
+  - Every step then takes the run step's MinWaterSpd arm (the host's arm D, `h > y` with
+    `h = 0`) and returns after `007B9010` sets `+C01h = 1`. The takeoff task's done arm (free flight) is never reached. Lift-offs are
+    unchanged (34 = 34).
+- **The OFF loopers are underground too.** Helldiver 01's land-task trace on the OFF side reads
+  alt -70.9 at 462.56 s and -79.2 at the end, 4174 m from its site. So the "park <-> abort loop"
+  is a plane that has fallen through the ground. In state 4 off the runway rectangle (`+BF8h`
+  clear), the host holds no ground under it. Land/abort's full throttle then drives it under the
+  airfield; with the switch on, takeoff/Takeoff's does.
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 9000: the loopers relaunch, lift off and fly a new approach | **failed**: one push per looper as predicted, but the run goes under the ground and never lifts off |
+| 2. JM05 3000, LOMP10, USN04, E2: no push, exit 1 | **held** |
+| 3. controls: no push, exit 0 or 1 | **held**: exit 1 |
+| 4. flip criterion | **not met**: mechanism failure (no lift-off) |
+
+### Verdict: **keep OFF** (mechanism failure, recorded)
+
+The image reading stands: the tail pushes a takeoff task over a grounded `land` task that is not in
+park or final. What fails is the host's ground under a state-4 plane off the runway rectangle.
+
+**5ar re-assessed.**
+- 5ar accepted the airfield loop as "the image's own behaviour as far as the listing shows". Two
+  readings contradict that:
+  - 5bn.1: in the image, the first ground abort pushes the takeoff task, so there is no loop;
+  - this section: the host's loopers are below the terrain.
+- So the loop is **not image behaviour**. It is a host artefact of a plane that lost its ground
+  (`done_why contact`, `+BF8h` clear) and fell through.
+- `kLandParkStateBound` stays ON, because its other effects are measured and hold:
+  - carrier planes reach the lift (5ao.1);
+  - the other airfield planes hold in state 5 at their hangar points.
+- The label on the switch changes from "image loop accepted" to "loop is a host ground-support
+  artefact; see 5bp".
+- Whether park or the ground law should change is the next packet: find why a hangared plane's
+  `+BF8h` clears (Helldiver 01 at 446.06 s, `|v|` 3.19 inside the hangar), and what holds a
+  state-4 plane off the rectangle in the image (`007CB7F0` and the ground-contact producer).
