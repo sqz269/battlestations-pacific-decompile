@@ -5725,3 +5725,28 @@ Rows: section 64's seven.
 3. **Rows with `station_separation_sided` > 0 on OFF may move (exit 3):** the followers' separation
    turns change sides. A death flip is not predicted.
 4. **Mechanism failure:** a move on a row with `station_separation_sided` = 0.
+
+### 67.4 The pairs and the verdict: ON
+
+OFF is `pair_export --commit 7d535d21f --out local\s18_b4`, ON adds
+`--flip kShipAiNavResetSpanBound=true` (`local\s18_b5`). Smoke first; logs `local\s18_{b4,b5}_<row>.log`.
+
+| row | OFF `side_304_set_on_entry` | OFF `station_separation_sided` | `pair_diff` ON | death rows |
+| --- | --- | --- | --- | --- |
+| USN04 | 0 | 0 | 1, gameplay identical | identical (50) |
+| USN01 | 0 | 0 | 1 | identical (7) |
+| USN13 | 23706 | 1938 | 1 | identical (25) |
+| JM05 | 17740 | 0 | 1 | identical (1) |
+| IJN01 | 61196 | 0 | 1 | identical (6) |
+| LOMP10 | 3590 | 0 | 1 | identical (10) |
+| JM05 9000 | 42176 | 0 | 1 | identical (5) |
+
+- **Predictions 2 and 4 held.** Prediction 3 allowed a move on USN13 and none came: its 1938 sided
+  steps did not change a separation outcome.
+- **Prediction 1 could not be judged.** Between `s18_b3` (65.7) and `s18_b4` the branch took main's
+  gunnery15 and lua20 merges (`dafed8a1a`, `d90daefdc`: the torpedo reset draws, the plane wanderer,
+  follow placement), so `s18_b3` against `s18_b4` moves on every row for reasons outside this switch.
+  The pair is same-tree, and that is what the verdict uses.
+
+**Verdict: ON.** The mechanism is exact, gameplay identical on these seven rows, and nothing moves
+for reference R.
