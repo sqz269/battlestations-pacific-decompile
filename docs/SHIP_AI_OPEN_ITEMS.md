@@ -7515,3 +7515,26 @@ Exports `s22_m0` (no flip) and `s22_m1` (`kShipTerrainContactBound`,
   - The IJN01 dry-dock hulls (Downes, Cassin, Pennsylvania) sit in contact.
   - The navigator's land-collision avoidance setter (ranking #13, `0071C1E0` case 3-6,
     director `+220h..+223h`), next.
+
+### 87.6 The lead's decision, and the ramp's own pair
+
+The image's hull-terrain contact has been read (GUNNERY_OPEN_ITEMS 83):
+- terrain friction and restitution are 0;
+- every hull convex vertex at or below the terrain height is a contact;
+- the solver removes the approach speed along the cell normal and pushes out;
+- there is an angular response.
+On gentle beaches the image lifts a hull rather than stopping it, and it does not stop a hull
+over flat ground. The keel-point stand-in is therefore kept only as a record:
+`kShipTerrainContactBound` goes back OFF (`18cf1abe1`), and cc9-gunnery19 binds the image's
+contact phase on this section's census rows. `kLandingShipRampHullContactBound` stays ON as the
+latch's consumer. Its effect with the stop OFF is paired here.
+
+**Predictions** (written before the run): `s22_n0` (ramp latch on the stand-in) against `s22_n1`
+(ramp latch on `+1011h`). The stop is OFF on both sides. Commit `18cf1abe1`.
+- **JM08 36000:**
+  - LST 03's ramp lowers at about 832 instead of 836.50 (hull contact at 829.67, plus the 2 s
+    latch and one frame).
+  - LST 01's lowers at about 898-899.
+  - The landers still cross the island.
+  - The HQ is not neutral while either lander lives, so no capture tick counts them. Exit 1.
+- **USN13, USNOS, USN04:** exit 1 (no lander begins).
