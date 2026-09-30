@@ -196,6 +196,12 @@ struct GameAiWeaponFacts {
         // sub-type 12h is unresolved. A unit with any such barrel keeps the
         // stand-in rather than scoring that barrel at zero.
         bool accuracy_resolved{false};
+        // Packet cc9_ai_target_weight_damage_terms: the bullet class record's
+        // max(DamageMin +ACh, BlastDamageMin +B4h), max(DamageMax +B0h,
+        // BlastDamageMax +B8h) and WaterDamage +BCh (00A09460..00A094C9, 00A095A9).
+        float damage_low{0.0f};
+        float damage_high{0.0f};
+        float water_damage{0.0f};
     };
     struct Unit {
         bool known{false};
@@ -205,10 +211,18 @@ struct GameAiWeaponFacts {
         // would not. docs/AI_TARGET_WEIGHT_TERMS.md term 2.
         bool inputs_complete{false};
         float hit_points{0.0f};      // target+48h, read at 00A08593
-        float capture_state{0.0f};   // target+4Ch, read at 00A085A8
+        // target+4Ch, read at 00A085A8: the class Armour. The target is the
+        // class descriptor (00A04560 record+0h), not the unit; this field was
+        // once read as a capture state.
+        float armour{0.0f};
+        // 00A085F8: vtable[+24h] of a class answering vtable[+18h](6), which a
+        // ship class serves with UnderwaterArmour (009635D0); otherwise Armour.
+        float underwater_armour{0.0f};
         std::vector<Barrel> barrels; // flattened over the attacker's subsystems
     };
     std::vector<Unit> units;
+    // 00424C40 +3B0h at 00A09624, ShipGlobals.WaterTickDamage.
+    float water_damage_scale{1.0f};
 
     void reset() noexcept;
     // The row for a unit index, or null when nothing has published one.
@@ -218,6 +232,13 @@ struct GameAiWeaponFacts {
 };
 
 GameAiWeaponFacts& game_ai_weapon_facts() noexcept;
+
+// Packet cc9_ai_target_weight_damage_terms (docs/GUNNERY_OPEN_ITEMS.md section 80).
+// True: 00A08460's barrel loop applies the image's armour gate (00A094D5), the
+// expected damage per hit 009FE200 (00A09578) and the water term (00A095A9,
+// 00A09624), and a target's hit points are its class HP rather than an
+// OverrideHP'd instance maximum. False: the pre-bind substitutions.
+inline constexpr bool kAiTargetWeightDamageTermsBound = false;
 
 class GameHostLog;
 class GameUnitsHost;

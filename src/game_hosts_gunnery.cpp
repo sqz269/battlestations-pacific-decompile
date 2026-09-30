@@ -1046,6 +1046,7 @@ struct GameGunneryHost::Impl {
         bsp::TorpedoSupplyTickState supply{};
         float torpedo_spread{0.0f};      // unit+6D4h, 0 from 0095CE11
         float max_health{0.0f};
+        float class_hit_points{0.0f};    // desc+48h HP, which OverrideHP never writes
         float health{0.0f};
         // The twelve category records at unit+394h and the ranges at unit+430h.
         std::array<std::vector<std::size_t>, bsp::kUnitGunneryCategoryCount> category_guns{};
@@ -3527,6 +3528,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             }
         }
         state.max_health = flat_scaled(type_id, "hp", kMilliScale, 0.0f);
+        state.class_hit_points = state.max_health;   // desc+48h, never overridden
         state.health = state.max_health;
         state.max_torpedo_stock = flat(type_id, "torpstock", 0);  // packet cc9_torpedo_stock
         state.armour = flat_scaled(type_id, "armour", kMilliScale, 0.0f);
@@ -9990,12 +9992,21 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
     // the accumulated damage by. The class maximum is what makes that a ratio.
     for (const UnitState& state : unit_state) {
         GameAiWeaponFacts::Unit& row = facts.row_for_write(state.row.unit_index);
-        row.hit_points = state.row.max_health;
-        // target+4Ch, read at 00A085A8. Nothing in this process produces a
-        // capture state, so it stays zero and the model's capture accumulator
-        // contributes nothing.
-        row.capture_state = 0.0f;
+        // The target is the class descriptor (00A04560 record+0h), so +48h is
+        // the class HP. OverrideHP (008C1A71) writes the instance's +36Ch,
+        // which the class never sees: bound, the class value is published.
+        // LABELLED: a squadron's class is its planes' (+35Ch), which this row
+        // does not model; it keeps the unit's own class HP.
+        row.hit_points = kAiTargetWeightDamageTermsBound ? state.class_hit_points
+                                                         : state.row.max_health;
+        // target+4Ch at 00A085A8 is the class Armour, and 00A085F8's vtable[+24h]
+        // answer for a ship class is UnderwaterArmour; state.underwater_armour
+        // already carries Armour for every other family.
+        row.armour = state.armour;
+        row.underwater_armour = state.underwater_armour;
     }
+    // 00424C40 +3B0h, WaterTickDamage (ShipGlobals, one value for every class).
+    facts.water_damage_scale = damage_control.empty() ? 0.0f : damage_control.front().water_tick;
     // 00A095E3 walks the attacker's subsystems at +94h/+98h and their 48h-stride
     // barrel entries at +74h/+78h. This process has one gun row per gun and a
     // barrel count on it, so the barrels are flattened into one list per unit.
@@ -10033,6 +10044,12 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
         // so what the row owes is the selector and the lookup runs per target.
         // docs/AI_TARGET_WEIGHT_TERMS.md.
         barrel.bullet_sub_type = gun.bullet_sub_type;
+        if (const GameBulletClassRow* b = bullet(gun.bullet_class)) {
+            // 00A09460..00A094C9 and 00A095A9, the barrel's bullet class record.
+            barrel.damage_low = std::max(b->damage_min, b->blast_damage_min);
+            barrel.damage_high = std::max(b->damage_max, b->blast_damage_max);
+            barrel.water_damage = b->water_damage;
+        }
         {
             // Resolvable is a property of the sub-type alone: every group of a
             // resolvable sub-type answers either an offset or a legitimate

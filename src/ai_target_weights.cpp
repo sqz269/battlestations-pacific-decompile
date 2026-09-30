@@ -264,6 +264,25 @@ float ai_target_weight_result(float total, float target_hit_points,
     return ratio > max_target_kill_ratio ? max_target_kill_ratio : ratio;
 }
 
+float ai_expected_hit_damage_009fe200(float low, float high, float armour,
+                                      float hit_points) noexcept {
+    // 009FE211 FCOMI / JBE: high <= armour answers the 0.0 in the local.
+    if (high <= armour) {
+        return 0.0f;
+    }
+    float result;
+    if (low >= armour) {
+        // 009FE21D..009FE225: (low + high) * 0.5 - armour.
+        result = static_cast<float>((static_cast<double>(low) + high) * 0.5 - armour);
+    } else {
+        // 009FE229..009FE239: (high - armour) / (high - low) * ((high - armour) * 0.5).
+        const double over = static_cast<double>(high) - armour;
+        result = static_cast<float>(over / (static_cast<double>(high) - low) * (over * 0.5));
+    }
+    // 009FE245 FCOMI / JBE: the result is capped at the hit points.
+    return result > hit_points ? hit_points : result;
+}
+
 void ai_load_globals_00a335d0(AiGlobalsLoaderHost& host) {
     host.run_script(kAiGlobalsInitScript); // 00A33600
     host.run_script(kAiGlobalsDataScript); // 00A3365C
@@ -346,9 +365,15 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
     const bool attacker_model_type =
         host.entity_is_type(key.attacker, kAiTypeQueryAttackerModel); // 00A085AD
 
+    // 00A085A8 +4Ch into two frame slots; 00A085F8 overwrites one of them with
+    // vtable[+24h] when the target class answers vtable[+18h](6).
+    const bool terms = host.damage_terms_bound();
+    const float class_armour = terms ? host.target_armour(key.target) : 0.0f;
+    const float underwater_armour = terms ? host.target_underwater_armour(key.target) : 0.0f;
+
     float total = 0.0f;
     if (!attacker_model_type) {
-        // 00A09228..00A09733. The barrel loop and the capture terms.
+        // 00A09228..00A09733. The barrel loop and the water terms.
         float capture_accumulator = 0.0f;
         const int subsystems = host.subsystem_count(key.attacker);
         for (int index = 0; index < subsystems; ++index) {
@@ -367,6 +392,22 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
             float best = 0.0f;
             const int barrels = host.barrel_count(subsystem);
             for (int barrel = 0; barrel < barrels; ++barrel) {
+                float low = 0.0f;
+                float high = 0.0f;
+                float armour = 0.0f;
+                if (terms) {
+                    // 00A09443: sub-type 0Ah reads the vtable[+24h] slot, every
+                    // other sub-type the class Armour copy.
+                    armour = host.barrel_sub_type(subsystem, barrel) == 0x0A
+                                 ? underwater_armour
+                                 : class_armour;
+                    low = host.barrel_damage_low(subsystem, barrel);
+                    high = host.barrel_damage_high(subsystem, barrel);
+                    if (armour > high) {
+                        host.note_damage_terms_barrel(true, 0.0f);
+                        continue; // 00A094D5 FCOMIP / JA: the barrel cannot pierce
+                    }
+                }
                 const float accuracy = host.barrel_accuracy(subsystem, barrel, key.target);
                 if (!(accuracy > 0.0f)) {
                     continue; // 00A094F5 FCOMIP / JNC
@@ -376,17 +417,25 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
                     ai_barrel_time_factor(tuning.damage_calc_time,
                                           host.barrel_reload(subsystem, barrel));
                 const float damage = ai_barrel_damage(factor, accuracy, shots);
-                const float weighted = damage * host.distance_falloff(0.0f, 0.0f, 0.0f, 0.0f);
+                // 00A09578: 009FE200(low, high, armour, hp). OFF: 1.0.
+                const float per_hit =
+                    terms ? ai_expected_hit_damage_009fe200(low, high, armour, target_hit_points)
+                          : 1.0f;
+                if (terms) host.note_damage_terms_barrel(false, per_hit);
+                const float weighted = damage * per_hit;
                 if (weighted > best) {
                     best = weighted; // 00A09593 FCOMIP / JBE
                 }
-                capture_accumulator += damage; // 00A095A9 FMUL slot+0BCh, FADD
+                // 00A095A9 FMUL [bullet+0BCh] WaterDamage, FADD. OFF: x 1.
+                capture_accumulator +=
+                    damage * (terms ? host.barrel_water_damage(subsystem, barrel) : 1.0f);
             }
             total += best; // 00A095D8
         }
         capture_accumulator =
             ai_clamp_capture_accumulator(capture_accumulator, tuning.damage_calc_time);
-        total += host.capture_scale() * capture_accumulator; // 00A09629
+        // 00A09624 settings+3B0h WaterTickDamage. OFF: 1.0.
+        total += (terms ? host.water_damage_scale() : 1.0f) * capture_accumulator; // 00A09629
         total = ai_clamp_total_damage(total, target_hit_points, tuning.max_target_kill_ratio);
     }
     // The attacker-is-type-0Fh branch at 00A0861F..00A09222 is not projected.
