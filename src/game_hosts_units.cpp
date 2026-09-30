@@ -14067,7 +14067,8 @@ void GameUnitsHost::Impl::ship_terrain_contact(GameUnitSlot& slot, const float b
         if (!(depth > 0.0f)) continue;
         contact = true;
         if (depth > deepest) deepest = depth;
-        if constexpr (!kShipTerrainContactBound) continue;
+        // Packet cc9_hull_terrain_contact_gate: the Dyn contact phase replaces the stand-in.
+        if constexpr (!kShipTerrainContactBound || bsp::kHullTerrainContactSolverBound) continue;
         // Only a step that deepens the point's penetration is resisted: the same
         // keel point at the step's start position (the pose's rotation kept).
         const float w0[3] = {w[0] - (p[0] - before[0]), w[1] - (p[1] - before[1]),

@@ -90,6 +90,15 @@ HullTerrainContactStepResult HullTerrainContactSolver::step(
     }
 
     // The narrow phase: 00C53630 per (shape, tile), then 00C3F760 per candidate.
+    // 00C44104..00C44110, the shape filter. A hull shape's group is 1 (009394DD) and its mask
+    // 0Dh | the class bit (009394A9, 009395E2); NavigatorSetAvoidLandCollision(false) resets it
+    // to 0Dh (008A3C79 -> 0092BD00 -> 00C48020, SHIP_AI 87.6). The terrain's group is 8, its
+    // mask 0 (00882AC0). Both hull masks carry bit 8, so every hull-terrain pair passes.
+    constexpr std::uint32_t kHullGroup = 1, kHullMaskBase = 0x0D, kTerrainGroup = 8,
+                            kTerrainMask = 0;
+    if (!dyn_shapes_overlap_filter(kHullGroup, kHullMaskBase, kTerrainGroup, kTerrainMask)) {
+        return out;
+    }
     const game::SceneWorldClassLists& lists = game::scene_world_class_lists();
     const std::vector<std::size_t>& landscapes = lists.list(game::kSceneLandscapeClassId);
     for (std::size_t s = 0; s < shapes.size(); ++s) {
