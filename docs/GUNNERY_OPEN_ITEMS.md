@@ -5377,3 +5377,94 @@ the same finding as GUNNERY_OPEN_ITEMS 63 for heavy artillery. **Nothing is boun
   aim point is next to them. After `kReconContactAllKindsBound` (AA_LETHALITY_AUDIT 14) the ship
   also takes structure targets from its own sweep, so the aim point, not the blast, is where a
   difference would be. `same_side` is 0 there: no own-side target is admitted.
+
+## 79. Handoff (cc9-gunnery17, written at about 72% context)
+
+### 79.1 Landed (all merged to main, or merging with this handoff)
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference s (GAME_EXECUTABLE "2026-09-30 s", `reports/cc9_reference_rebaseline_19.json`) | `2a34cc5da`, `866db7f40` | the baseline; 15 of 17 rows moved against r, all attributed |
+| One front-end pump per mission frame (76) | `ecd0e978f`, `3385d1d66`, doc fixes `ad99294cf` | `kMenuPumpYieldsToMissionFrameBound` ON; 17 rows exit 1 |
+| Group 3 hit lead, hand-over, fort torpedo test (76.5) | `0a50f7e1d` | records and comments; no reach |
+| Candidate range between pose origins (AA_LETHALITY_AUDIT 13) | `d163ff80d`, `b5c88ebb2` | `kAaCategoryRangeOriginBound` ON |
+| The sweep scores every published kind (AA_LETHALITY_AUDIT 14) | `8b657605f`, `5b4a02cd1`, `8819d5c6f` | `kReconContactAllKindsBound` ON; large shore mover |
+| 00862820's class arms (77) | `8d5ee7a84`, `0df7fdc36` | `kGunneryClassArmsBound` ON; JM06 moves |
+| Own-side blast (78) | `cfefc96ec` | the image has no side exemption; host faithful; nothing bound |
+
+### 79.2 Open, in order
+
+**1. Reference t.** The base is main after this handoff.
+- **Method:** as s (GAME_EXECUTABLE "2026-09-30 s").
+  - Commit the predictions first.
+  - Take a fresh value diff `59ff2a1d7..base` with `local\g17_switches.py` (cc9-gunnery17 tree).
+  - Anchor with every new switch OFF against `g17_rs_<row>` (s's logs are in the cc9-gunnery17
+    tree, `local\g17_rs_<row>.log`, binary `local\g17_rs`).
+  - Then leave-one-out with `local\g17_lane.ps1` (three lanes in parallel, about 25 minutes per
+    variant including an incremental export).
+- **Switches newly ON after `59ff2a1d7`** (the diff at `743c05f9b`; recheck at the t base):
+
+| switch | flip commit | owner / record | expected reach |
+| --- | --- | --- | --- |
+| `kAiWeaponFactsAtAttachBound` | `95e869be7` | cc9-lua21, WEAPON_FACTS_ORDER 6 | USN13, USN01 (deaths identical at its pair) |
+| `kScriptEntityPoolUnboundedBound` | `33eace460` | lua lane | the diff decides |
+| `kBuildingPadModelBound` | `44af89738` | cc9-ships (troop landing pad) | landing rows |
+| `kMoveToCommandRangeBound` | `3c3741507` | PILOT_MOVETO_TASK: stage-only, twelve rows identical | none |
+| `kReconPublishBound` | `13322fd0d` | RECON_PUBLICATION 4 | script-side recon rows |
+| `kCommandBuildingCaptureBound` | `909760b78` | cc9-ships21, SHIP_AI 81: a CommandBuilding at 0 hp goes neutral | USNOS, USN13, USN01, JM05 (now that ships shoot structures) |
+| `kMenuPumpYieldsToMissionFrameBound` | `3385d1d66` | 76 | none (17 rows exit 1) |
+| `kAaCategoryRangeOriginBound` | `b5c88ebb2` | AA_LETHALITY_AUDIT 13 | USN04, E2, USNOS, USNOS long |
+| `kReconContactAllKindsBound` | `8819d5c6f` | AA_LETHALITY_AUDIT 14 | USN01, JM05, JM05 long, USNOS, USNOS long, USN12, JM08, USN13, JM06, LOMP06, LOMP10 |
+| `kGunneryClassArmsBound` | `0df7fdc36` | 77 | JM06 (USNOS in the logged distance only) |
+
+  `kShipAiApproachLandingModesBound` is new and OFF; it stays out.
+- **Interactions to expect:**
+  - `kReconContactAllKindsBound` puts structures under fire. That gives
+    `kCommandBuildingCaptureBound` its reach, so group those two if their moves overlap.
+  - The shore rows' death counts rose 2-3x on the pair (USNOS 55 -> 107); predict from those
+    pairs, not from s.
+
+**2. The fire-window origin** (AA_LETHALITY_AUDIT 13.1, AA_FIRE_WINDOW_MOUNT 2).
+- `0085A9A0` measures from the gun node's world translation `[gun+3CCh]+120h`. The host measures
+  from the slot point plus the muzzle offsets.
+- The frame is already exact. The difference is a few metres at AA ranges.
+- Needs a per-gun node, which the host does not build (GUN_MOUNT_POSITIONS). Low value unless a
+  node model lands.
+
+**3. Torpedo items (TORPEDO_AIM_LEAD 24):**
+- **2:** the script attack altitude `sq_alt_398` (`008A22B0 SquadronSetAttackAlt` writes squadron
+  `+398h`; `009D4A70` step 5). It is inert until a row with a scripted torpedo squadron exists.
+- **3:** the renames (FlyToObstacle `extent_max`/`extent_sum` = the AA range and AA damage sum;
+  `speed_late_7c`/`speed_early_80` are distances). They are in `include/bsp/torpedo_*` and
+  `src/torpedo_*.cpp`.
+- **1:** the prepare site `009D27D1`, blocked by `blocked_0099af53` on every reference row.
+- All three are inert on every reference row, and the lead ranked them last.
+
+**4. From 76.5 and 78, small:**
+- the kind-6 ship lead `00902290` on the group 3 seat (a record, no reach);
+- `dev+408h`'s readers;
+- the difficulty owner modifier's value for an AI owner (UNIT_HIT_PATH, `ProductForUnit(1, ...)`);
+- what Shimotsuke aims at on USNOS: its blasts land by its own statics (78; SHIP_AI 82).
+
+### 79.3 Tools (`local\` in the cc9-gunnery17 tree, prefix `g17_`)
+
+**Runs and exports:**
+- `g17_runs.ps1 -V <prefix> -Only <rows>`: the reference rows, launch form of r and s.
+- `g17_wait.ps1 -Logs <names>`: a foreground wait.
+- `g17_exp.ps1 -Commit -Out [-Flip]`: a detached pair export. A fresh output directory is a cold
+  build of about 20 minutes; re-use an existing `local\g17_*` directory for an incremental one.
+- `g17_lane.ps1 -Lane -Variants 'v=kA+kB' -Rows`: leave-one-out.
+
+**Comparisons:**
+- `g17_vs.py <off> <on> [rows]`: `pair_diff` exits. The `g15_rr` / `g15_rq` prefixes resolve into
+  the cc9-gunnery15 tree.
+- `g17_rows.py`, then `g17_table.py`: the reference table.
+- `g17_loo.py <v...>`: leave-one-out verdicts against `g17_rs`.
+- `g17_rel.py`: releases per variant.
+- `g17_report19.py`: the s report.
+
+**Switch audit:** `g17_switches.py <a> <b>` (value diff) and `g17_flipcommits.py`.
+
+**Reading a moved row:** `pair_diff`'s `nearest` field is the logged candidate distance.
+Sections 13 and 77 changed it without gameplay, so read the aggregates and the death table
+before calling a row moved.
