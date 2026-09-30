@@ -2208,10 +2208,22 @@ void GameScriptOrdersHost::entity_set_repair_enabled_field(void* entity, bool en
 }
 
 void GameScriptOrdersHost::session_route_repair_enable_message(void* entity, bool enabled) {
-    static_cast<void>(entity);
-    log_.unimplemented("Session::route_repair_enable_message", "008ad4cd");
     if (row_ != nullptr) row_->repair = enabled ? 1 : 0;
     ++summary_.repairs;
+    // Packet cc9_repair_enable_route (GUNNERY_OPEN_ITEMS 82): 008AD48B builds message
+    // 9Fh with the flag at +1Ch and 0077C2A0 (008AD4CD, flags 7) routes it to the
+    // entity; 00821E80's 9Fh arm (008220D7) calls 00939FD0 on the repair task at
+    // unit+A20h. The gunnery host holds the task.
+    const std::size_t index = index_of(entity);
+    GameGunneryHost* gunnery = units_.gunnery();
+    if (gunnery != nullptr && index < units_.count()) {
+        gunnery->set_hull_repair_enabled_00939fd0(index, enabled);
+    }
+    if constexpr (kHullRepairEnableRouteBound) {
+        log_.implemented("Session::route_repair_enable_message", "008ad4cd");
+    } else {
+        log_.unimplemented("Session::route_repair_enable_message", "008ad4cd");
+    }
 }
 
 int GameScriptOrdersHost::game_session_mode() {

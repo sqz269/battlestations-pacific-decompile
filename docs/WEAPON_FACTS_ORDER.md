@@ -11,9 +11,12 @@ weapon-facts table was still empty.
 
 ## 2. The image's order
 
-- `00A08460` reads live object fields, both present from construction:
+- `00A08460` reads fields of the vehicle CLASS descriptors (`00A04560` record+0h = `[entity+538h]` or
+  `[entity+35Ch]`), present from load:
   - the target's hit points at `target+48h` (`00A08593`);
   - the attacker's subsystem barrel lists at `+94h`/`+98h` (`00A095E3`).
+- `target+4Ch` is the class `Armour`, not a capture state (GUNNERY_OPEN_ITEMS 80,
+  cc9-gunnery18).
 - It has no table and no publication step. So the facts exist before the first brain think:
   every unit is constructed before the scene's first tick.
 
