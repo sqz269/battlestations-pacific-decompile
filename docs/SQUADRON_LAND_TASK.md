@@ -5603,3 +5603,45 @@ cadence of every row that launches from a base. No code changed for it here.
   Mechanism failure by construction until piece 2.
 - Rows without a base launch: no `base launch inside start` line, and gameplay is identical.
 - Off (committed): identical to the parent commit (0 or 1 from `pair_diff`).
+
+### Record (commit `41ef06574`, 2026-09-30)
+
+- **Smoke, off (the committed build), USN01 300 frames:** 299 frames were presented, the run exited
+  0, and it made no launch.
+- **JM05 3000, switch on** (`pair_export --flip kBaseLaunchChainBound=true`, `local\l25_p1on`,
+  `bsp_game.exe` SHA-256 `C3193E925355`):
+  - 10 `base launch inside start` lines:
+    - `MainAirfieldEntity 01` at (2801.7, 13.3, 6342.2);
+    - `SecondaryAirfieldEntity 01` at (-1469.9, 3.2, -845.4);
+    - four each from USS Lexington and USS Yorktown, at y -0.3 and -0.4.
+  - All 30 members stayed Inside to the end: `summary base launch inside start: squadrons=10
+    entries=30 no_base=0 carry_steps=86010 inside_now=30`.
+  - The same ten launches (classes 135, 135, 101, 101, 112 x4, 108 x2) as the off reference
+    `l24_poff_jm05`. The host still has no `block+38h` brake, so the cadence did not change.
+  - As predicted: the mechanism holds, and every launch strands until piece 2.
+  - Cosmetic: `007CC820` logs through `record` (UNIMPLEMENTED in the host table) because the
+    `007C11E0(0)` step is not carried. The next edit of the file will change it to `done`.
+
+### Open reads this piece settled or added
+
+- **Settled: member `vtable[10h]`**, the call `007EF010` makes before `006CF190`, is `0042E950
+  BSP_UnitInstance_NamePointerOrFallback` in all nine plane entity vtables (`00D05F20`, `00D06638`,
+  `00D1A000`, `00D19D28`, `00D06920`, `00D00070`, `00D0BA80`, `00D00308`, `00D1A2D8`, slot `+10h`,
+  read from the disk image). It is a pure getter, so it activates nothing. It does not set `+5Ch`.
+- **Added: `+5Ch` of an Inside member.**
+  - `007EF010` sends only a member with `+5Ch` **clear** and `+900h` == 1 (`007EF028`-`007EF035`).
+  - `+5Ch` is the scene-node enable byte: `00922F30 BSP_SceneNode_Enable` sets it and recurses
+    through the children at `+48h`/`+44h`. The world walk `00904C00` and the liveness test
+    `006D1EF0` gate on it.
+  - So a member Inside the base is a disabled entity: not updated and not live. The host keeps it
+    active (`state->active` = 1). SUBSTITUTION, labelled.
+  - What leaves `+5Ch` clear on a flag-0 member, and what enables it when the member is sent, is
+    unread:
+    - `006C7528` enables the squadron itself (`00922F30(squadron, 0)`), before its members exist
+      (they are made in the next InitAll's pass A);
+    - `00924F90`, the re-parent `vtable[ACh]`, does not touch `+5Ch`.
+
+    This is piece 2's first read, together with the `block+38h` clear.
+- **Added: the launch brake.** Once `block+38h` is set by `006C5050`, the deck refuses the next
+  launch. The host never sets `block+38h`, so the carriers launch as fast as the mission script's
+  gates admit: four each on JM05 in 3000 frames.
