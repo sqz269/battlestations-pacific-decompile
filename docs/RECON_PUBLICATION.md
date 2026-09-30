@@ -166,3 +166,39 @@ miss is recorded here.
     hits and damage are identical.
 
 **Decision: ON** (`kReconPublishBound = true`).
+
+## 5. Why USN02 fails at 29.75 s with an idle player (the lead's check)
+
+**Verdict: this is authored behaviour of this installation, not a host gap.** The recon
+publication does not cause it: the failure time is 29.75 s on both sides of the pair.
+
+The trigger:
+- The row loads `Scripts/missions/USN/usn_2_java.lua` (mtime 2024-07-13).
+- `luaCheckObjectives` (line 493) calls `luaMissionFailed()` as soon as
+  `Mission.Houston.Dead or Mission.Exeter.Dead` (line 521), in any phase above 0.
+- `luaMissionFailed` (line 821) ends through `luaMissionFailedNew(<random live ally>, "Game Over")`.
+  That call is where the log's `entity="Alden"` comes from.
+
+What sinks Houston, from `local\l22_off_usn02.log`:
+- The IJN destroyers start about 2.4-2.7 km from Houston's column. Their formation leader
+  Yamakaze is at (3500, -4500); Houston is at (1200, -6000).
+- The IJN destroyers launch torpedoes from t = 1.45 s. Yamakaze's first launch is at t = 1.55 s
+  (`gunnery: torpedo launch`).
+- The torpedoes are the Type 93, bullet class 67. Its `WaterTravelSpeed` is 170.444 in this
+  installation's arcade `bulletclasses.lua`, whose mtime is 2026-05-09, so it is locally modified.
+  The host reads that table the way the image does (docs/CLASSTABLE_SELECTION.md section 3; the
+  realistic table has 51.444).
+- Two Type 93 blasts hit Houston at 19.25 s and 20.85 s (4075.9 and 1891.2 damage against
+  6500 HP). The death row gives killer Yamakaze, range 2438 m. The next objective check fails the
+  mission.
+- The script protects only the player's `DRGrp` (`SetInvincible(unit, 0.1)`, line 230). The
+  Houston group (line 246, Houston, Alden and John1-3) gets no protection, so an idle player
+  cannot save Houston.
+
+Remaining uncertainty:
+- The launch timing (t = 1.45 s) and the steering to the lead point are the host's torpedo
+  chain, landed and paired elsewhere (TORPEDO_FRIENDLY_CROSSING, CLASSTABLE_SELECTION section 5).
+  They are not validated against the original game, which is never run here.
+- An early loss is consistent with the modded 170 m/s arcade torpedo and a scene that starts the
+  two forces inside torpedo range. No unit, objective or query answers wrongly: Houston and
+  Exeter resolve (`entity_resolves=36`), and `luaCheckObjectives` reads only `.Dead`.
