@@ -3268,3 +3268,18 @@ is held after this handoff.
 Open, in order: SQUADRON_LAND_TASK.md 5bz. First the strafe host arm, then the gun task, the
 choice-input feed and the pairs; then `007C6F50`'s flag, the `+2ECh` pair and the `vtable[28h]`
 scan.
+
+## Handoff (cc9-lua30, 2026-09-30)
+
+Branch `agent/cc9-lua30`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua30`. No lease
+is held after this handoff.
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| strafe group | `f3ef5bbcf`, `bb1a1e2c8` | `kStrafeTaskBound`, `kAttackChoiceGunsFedBound` | ON, misses recorded | SQUADRON_LAND_TASK.md 5ca, 5cb |
+| USNOS 3000/9000 check | `6e2d656d3` | - | runs line-identical | 5cc |
+| unitcommand / AI tick | `d9fcb3794`, `4b9a1a4cc` | - | read, open | 5cd, 5ce, 5cf |
+
+Open, in order: SQUADRON_LAND_TASK.md 5cf. First the AI group's `MOVETOATTACK` promotion and
+`CLOSEATTACK` for the ESMP08 strike wave (why its `moveto` overwrites the strafe order), then
+ESMP08 long as the goaway row, then the USNEX and BSM04 script-dogfight rows.
