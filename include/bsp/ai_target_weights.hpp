@@ -376,9 +376,16 @@ struct AiTargetWeightModelHost {
     virtual bool entity_is_type(const void* entity, int type_code) = 0;
     // Entity vtable slot +1Ch, the entity's kind; compared with 1Ch at 00A0966A.
     virtual int entity_kind(const void* entity) = 0;
-    // Target +48h and +4Ch, read as floats at 00A08593 and 00A085A8.
+    // Target +48h and +4Ch, read as floats at 00A08593 and 00A085A8. The target
+    // is the vehicle CLASS descriptor (00A04560 record+0h, [entity+538h] or
+    // [+35Ch]), so these are the class HP and the class Armour
+    // (docs/VEHICLE_CLASS_FIELDS.md); +4Ch was once read as a capture state.
     virtual float target_hit_points(const void* target) = 0;
-    virtual float target_capture_state(const void* target) = 0;
+    virtual float target_armour(const void* target) = 0;
+    // 00A085F8: when the target class answers vtable[+18h](6), vtable[+24h]'s
+    // answer replaces the +4Ch copy in the frame slot the sub-type 0Ah barrels
+    // read (00A09448); for a ship class that slot is 009635D0, UnderwaterArmour.
+    virtual float target_underwater_armour(const void* target) = 0;
     // The attacker's subsystem list, +94h and +98h (00A095E3).
     virtual int subsystem_count(const void* attacker) = 0;
     // One barrel of a subsystem: the 48h-stride entries at +74h/+78h.
@@ -388,11 +395,35 @@ struct AiTargetWeightModelHost {
     virtual int barrel_shots(const void* subsystem, int barrel) = 0;
     // 009FE270 at 00A094E6: the accuracy of this barrel against the target.
     virtual float barrel_accuracy(const void* subsystem, int barrel, const void* target) = 0;
-    // 009FE200 at 00A09578: the four-argument distance falloff.
-    virtual float distance_falloff(float a, float b, float c, float d) = 0;
-    // 00424C40 +3B0h at 00A09624: the global capture-to-damage scale.
-    virtual float capture_scale() = 0;
+    // The barrel's bullet class record ([entry+34h]): sub-type +8h,
+    // max(DamageMin +ACh, BlastDamageMin +B4h) and max(DamageMax +B0h,
+    // BlastDamageMax +B8h) (00A09460..00A094C9, 00415550 BSP_Math_MaxFloatByRef),
+    // and WaterDamage +BCh (00A095A9).
+    virtual int barrel_sub_type(const void* subsystem, int barrel) = 0;
+    virtual float barrel_damage_low(const void* subsystem, int barrel) = 0;
+    virtual float barrel_damage_high(const void* subsystem, int barrel) = 0;
+    virtual float barrel_water_damage(const void* subsystem, int barrel) = 0;
+    // 00424C40 +3B0h at 00A09624, WaterTickDamage: the scale of the water term.
+    virtual float water_damage_scale() = 0;
+    // Packet cc9_ai_target_weight_damage_terms. False keeps the pre-bind
+    // substitutions: no armour gate, a per-hit damage of 1.0 where 009FE200
+    // stands, a water term of hits x 1 at scale 1.0.
+    virtual bool damage_terms_bound() = 0;
+    // A census hook, no native counterpart: one call per barrel the bound loop
+    // reaches, with whether the armour gate refused it and 009FE200's answer.
+    virtual void note_damage_terms_barrel(bool refused, float per_hit) {
+        (void)refused;
+        (void)per_hit;
+    }
 };
+
+// 009FE200 (__stdcall, RET 10h, body 009FE200-009FE26A): the expected damage one
+// hit deals above the armour when the damage is uniform on [low, high], capped
+// at the target's hit points. 0 when high <= armour; the mean minus the armour
+// when low >= armour; otherwise (high - armour)^2 / (2 (high - low)). The 0.5
+// is the double at 00D7A280. Called at 00A09578 as (low, high, armour, hp).
+float ai_expected_hit_damage_009fe200(float low, float high, float armour,
+                                      float hit_points) noexcept;
 
 // The model's memo, override and normalisation spine plus the barrel loop of the
 // attacker-is-not-type-0Fh branch. Coverage is partial: see the doc's routine

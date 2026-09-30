@@ -5468,3 +5468,255 @@ the same finding as GUNNERY_OPEN_ITEMS 63 for heavy artillery. **Nothing is boun
 **Reading a moved row:** `pair_diff`'s `nearest` field is the logged candidate distance.
 Sections 13 and 77 changed it without gameplay, so read the aggregates and the death table
 before calling a row moved.
+
+## 80. The target weight's damage terms (packet `cc9_ai_target_weight_damage_terms`, cc9-gunnery18)
+
+### 80.1 Why (reference t, `kAiWeaponFactsAtAttachBound` on JM08 long)
+
+Reference t's leave-one-out (GAME_EXECUTABLE "2026-09-30 t") found `kAiWeaponFactsAtAttachBound` to
+be JM08 long's largest mover (25 deaths ON, 154 OFF). The first gameplay difference between
+`g18_rt_jm08l` and `g18_t_wfa_jm08l` (pointer-normalised line diff) is the US capture planner's
+think at t = 0.05:
+- both sides order all five US groups onto `Headquarter 01`, in a different order (ON Helena,
+  Bristol, Gleaves, Macomb, Grayson; OFF Bristol, Helena, Macomb, Gleaves, Grayson). The order is
+  `capture_plan_00a29fd0`'s greedy pick on `k*s + (1-k)*w` with `w` = `00A250A0`, which OFF scores
+  with the stand-in weight 1.0 (no facts yet) and ON with the facts;
+- each `order_attack` draws `cautious = random_00bd2f10(0, 1) > aggressive`
+  (`game_hosts_ai.cpp` `order_attack`). The draws are the same on both sides and only the second
+  is non-cautious, so ON Bristol's seven-ship group attacks plainly and Helena's group cautiously
+  (command 8), OFF the reverse (Helena command 7). Every later planner diag line keeps it.
+
+So the magnitude is a random draw landing on a different group, not a systematic effect. The
+switch's timing is the image's: `00A08460`'s target and attacker are the vehicle **class**
+descriptors (`00A04560` record+0h = `[entity+538h]` or `[entity+35Ch]`, AI_TARGET_WEIGHT_TERMS),
+so the hit points and barrel lists it reads exist from load. WEAPON_FACTS_ORDER section 2's "live
+object fields ... present from construction" should read "class descriptor fields, present from
+load"; its conclusion stands (routed to that doc's owner).
+
+### 80.2 The image (disk bytes, `bsp.py disasm-raw 00A08460 --length 0x13B0`, `009FE200 --length 0x70`)
+
+The barrel loop of `00A08460`'s not-type-0Fh branch, frame offsets relative to ESP after the
+prologue:
+- `00A085A8` reads `target+4Ch`, the class **Armour** (VEHICLE_CLASS_FIELDS, `0087CCB4`), into
+  `+70h` (`00A085B1`, one push pending) and `+48h` (`00A085B7`). `00A085F8` overwrites `+48h` with
+  `vtable[+24h]()` when the target class answers `vtable[+18h](6)`; a ship class serves that slot
+  with `009635D0`, **UnderwaterArmour** `+6B4h`.
+- `00A09443`: a barrel whose bullet sub-type is `0Ah` takes `+48h`, every other `+70h`.
+- `00A09460..00A094C9`: `low = max(BlastDamageMin +B4h, DamageMin +ACh)`,
+  `high = max(BlastDamageMax +B8h, DamageMax +B0h)` of the barrel's bullet class
+  (`00415550 BSP_Math_MaxFloatByRef`).
+- `00A094D5 FCOMIP / JA`: **armour > high skips the barrel** (before the accuracy lookup).
+- `00A09578`: `009FE200(low, high, armour, hp)` multiplies the barrel's
+  `time factor * accuracy * shots`. `009FE200` (`RET 10h`, `009FE200-009FE26A`) is the expected
+  damage one hit deals above the armour for a uniform `[low, high]`, capped at `hp`:
+  0 when `high <= armour`; `(low + high) * 0.5 - armour` when `low >= armour`; otherwise
+  `(high - armour) / (high - low) * ((high - armour) * 0.5)`; the 0.5 is the double at `00D7A280`.
+- `00A095A9`: the accumulator adds `D * WaterDamage (+BCh)`; `00A09624` scales it by
+  `00424C40+3B0h`, **WaterTickDamage**.
+
+**The host before this packet:** `+4Ch` was read as a "capture state" and published as 0 (unused);
+`009FE200` was labelled a distance falloff and answered 1.0; the accumulator added `D * 1` at scale
+1.0; the hit points were the instance maximum, which `OverrideHP` rewrites. So every host weight
+ignored damage and armour.
+
+### 80.3 The binding (`kAiTargetWeightDamageTermsBound`, committed OFF)
+
+- `include/bsp/game_hosts_ai.hpp`: the switch; `Barrel::damage_low/high/water_damage`;
+  `Unit::armour/underwater_armour` (replacing `capture_state`); `water_damage_scale`.
+- `src/game_hosts_gunnery.cpp` `publish_ai_weapon_facts`: publishes them from the bullet class row
+  and the unit's `armour` / `underwater_armour`, WaterTickDamage from the damage-control row, and,
+  bound, the class HP (`UnitState::class_hit_points`) instead of the OverrideHP'd maximum.
+- `src/ai_target_weights.cpp`: the gate, `ai_expected_hit_damage_009fe200` and the water term,
+  each behind `damage_terms_bound()`; OFF keeps 1.0, `x 1` and scale 1.0 exactly.
+- `src/game_hosts_ai.cpp`: the binding's methods and a census line
+  `summary mission ai target weight damage terms` (barrels, armour refusals, zero per-hit answers,
+  the per-hit sum, and the sums of the model's answers at its close-target and group-value sites).
+- **Labelled:** a squadron target keeps its own row's class HP and armour, where the image weighs
+  it through its planes' class (`+35Ch`); the category gates `bVar3..cVar7` and the type-0Fh branch
+  stay as they were.
+
+### 80.4 Predictions (written before any ON run)
+
+The model runs on T's rows USN04, E2, USN01, USN02, JM06, JM08, USN13, LOMP06, USN12, USNOS,
+USNOS long, IJN01 and JM08 long (`model_runs` or `model_pairs` above 0 on `g18_rt_<row>`); it never
+runs on BSM01, LOMP10, LOMP10 long, JM05 and JM05 long.
+
+- **Mechanism:** ON, `barrels` > 0 and `armour_refusals` > 0 on every model row, `per_hit_sum` > 0,
+  `water_scale` the WaterTickDamage the damage-control line logs. OFF, `barrels` = 0. The close and
+  group weight sums rise by one to two orders of magnitude ON (a per-hit damage of tens to hundreds
+  replaces 1.0), with the ratio capped at MaxTargetKillRatio.
+- **Controls (exit 0 or 1):** BSM01, LOMP10, LOMP10 long, JM05, JM05 long.
+- **Moved (exit 3), expected:** USN13, USNOS, USNOS long, IJN01, USN12, USN02, JM06, JM08, JM08 long.
+  USN01, USN04, E2 and LOMP06 may move (their model pairs feed few decisions).
+- **Spread:** deaths within about 25% of OFF on the shore rows; no row's AI stops attacking
+  (attack and `attackmove` counts stay above 0 wherever they were). JM08 long is RNG-coupled through
+  the cautious draw (80.1), so it is judged on the census and the first capture order, not deaths.
+- **Keep OFF if:** a control moves; `barrels` is 0 on a model row; `armour_refusals` equals
+  `barrels` on a row (a units mismatch between armour and damage); or a row's attack orders
+  collapse to 0.
+
+### 80.5 The pair, and the verdict: ON
+
+A same-tree pair at `0fcf19d8d` (branch merged with main `4209e62f7`): `local\g18_lane_a` (SHA-256
+prefix `D7589F0BA0A0`) against `local\g18_lane_b` (`--flip kAiTargetWeightDamageTermsBound=true`,
+`5EDB8D4F16B8`). The 300-frame USN01 smoke on the ON build is clean. The 18 reference t rows ran
+10:40-10:54 UTC in t's launch form; logs `local\g18_p{0,1}_<row>.log`.
+
+| row | exit | barrels / armour refusals ON | close weight sum OFF -> ON | group weight sum OFF -> ON | what moved |
+| --- | --- | --- | --- | --- | --- |
+| BSM01, LOMP10, LOMP10 long, JM05, JM05 long | 1 | 0 / 0 | 0 | 0 | nothing (controls) |
+| USN04, E2 | 1 | 14782 / 0 | 0 | 2556 -> 21780 | nothing |
+| USN01 | 1 | 15530 / 6214 | 0 | 296 -> 5051 | nothing |
+| JM08 | 1 | 638892 / 47400 | 0 | 14015 -> 1490471 | nothing |
+| USN12 | 1 | 78264 / 23850 | 5569 -> 289913 | 9.5 -> 1273 | nothing |
+| JM08 long | 1 | 11964792 / 1181643 | 106696 -> 8396262 | 138032 -> 14833321 | nothing: the first capture order swaps Gleaves and Macomb, both cautious, so the draws land as before |
+| USN02 | 3 | 625276 / 309503 | 458 -> 65395 | 530 -> 74314 | hits 5111 -> 6229, damage 59304 -> 66964, shots 4545 -> 5025; death rows identical |
+| JM06 | 3 | 44153 / 30856 | 325 -> 6522 | 112 -> 11467 | hits 192 -> 287, shots 276 -> 354; death rows identical |
+| USN13 | 3 | 548977 / 259998 | 2485 -> 101446 | 6196 -> 140838 | call counts only; death rows identical |
+| LOMP06 | 3 | 36680 / 12240 | 0 | 743 -> 60741 | call counts only |
+| IJN01 | 3 | 1191252 / 753091 | 15495 -> 653876 | 3335 -> 52143 | Downes moves 220 -> 196 m; death rows identical |
+| USNOS | 3 | 2361941 / 701524 | 6607 -> 339631 | 40274 -> 4066176 | deaths 107 -> 105 (two OFF deaths absent, 61 rows re-timed or re-attributed) |
+| USNOS long | 3 | 7426460 / 2198446 | 24328 -> 1516931 | 117941 -> 12018181 | deaths 129 -> 128 |
+
+`water_scale` is 100.0 (WaterTickDamage) on every ON row; `zero_per_hit` is 0 except USNOS (5308)
+and USNOS long (15528), barrels whose high damage equals the armour exactly (the gate passes them, 009FE200 answers 0).
+
+**Prediction check:**
+- **The controls held** (exit 1, `barrels` 0 on both sides).
+- **The mechanism held:** every model row counts barrels ON and none OFF; refusals are a share,
+  never all (USN02 49%, IJN01 63%, JM08 7%); the weight sums rise 8-140x.
+- **Misses, all spread:**
+  - USN04 and E2 have no refusal (no scored barrel met armour above its damage; not examined further), where every model row was predicted to refuse some.
+  - USN12, JM08 and JM08 long were predicted to move and are gameplay-identical: the weights
+    changed but not the choices they feed.
+  - USN01 stays identical (predicted "may move").
+- **The spread held:** shore deaths within 2% (USNOS 105, USNOS long 128); no row's attack stopped
+  (shots rose on every moved row).
+
+**Verdict: ON** (`kAiTargetWeightDamageTermsBound = true`), a spread miss with the mechanism
+matching. It belongs to reference u.
+
+## 81. Handoff (cc9-gunnery18, written at about 62% context)
+
+### 81.1 Landed
+
+| item | commits | state |
+| --- | --- | --- |
+| Reference t (GAME_EXECUTABLE "2026-09-30 t", `reports/cc9_reference_rebaseline_20.json`) | `ffef61b90`, `e1f2078b6` | the baseline; 16 of 17 s rows moved plus JM08 long, all attributed |
+| Why the weapon facts at attach move JM08 long (80.1) | `0fcf19d8d` | a first-think group order changes which group draws the non-cautious roll; the switch's timing is the image's |
+| The target weight's damage terms (80) | `0fcf19d8d`, `5e20b9ab0` | `kAiTargetWeightDamageTermsBound` ON |
+| cc9-lua24's hit-index detach flip (SQUADRON_LAND_TASK 5as.1) | `f98f1281d` | `kHitIndexDetachBound` ON, applied here because this lane held the file; on the branch, not yet on main when written |
+
+### 81.2 Open, in order
+
+**1. Reference u.**
+- **Base:** main after this handoff. cc9-lua25's base launch chain is coming: if it lands within a
+  few hours, wait for it and take u after it.
+- **Method:** as t (GAME_EXECUTABLE "2026-09-30 t"): predictions committed first; a fresh value diff
+  `2e850cf31..base` with `local\g18_switches.py`; the all-OFF anchor against `g18_rt_<row>`; u
+  against t; leave-one-out on the moved rows.
+- **Rows:** t's eighteen (s's seventeen plus JM08 long 36200/36000). t's logs are
+  `local\g18_rt_<row>.log` in the cc9-gunnery18 tree; its binary is `local\g18_rt`.
+- **Switches newly ON after `2e850cf31`** (the diff at `18f056a15` plus `f98f1281d`; recheck at the
+  u base):
+
+| switch | flip commit | owner / record | expected reach |
+| --- | --- | --- | --- |
+| `kEntityCommandSelfKindBound` | `79df1d06b` | cc9-ships22, SHIP_AI 85.4 (with the two below: the landing chain) | JM08 long (29 -> 33 deaths on its pair), controls identical |
+| `kShipAiApproachLandingModesBound` | `79df1d06b` | as above; its site `009F21A0` was reached on t's JM08 long (8463 calls) | JM08 long |
+| `kShipAiLandStepBound` | `79df1d06b` | as above | JM08 long |
+| `kLandParkStateBound` | `d970bd49a` | cc9-lua24, SQUADRON_LAND_TASK 5ar | JM05 9000 (death rows identical) |
+| `kCarrierElevatorBound` | `0f735b0fe` | cc9-lua24, 5ao.1 (staged behind park) | JM05 long (stows 8 of 8) |
+| `kLandingShipRampBound` | `9dd9efa62` | cc9-ships22, SHIP_AI 86.6 (a landing captures a building) | JM08 long |
+| `kHitIndexDetachBound` | `f98f1281d` | cc9-lua24, 5as.1 | the pair's rows |
+| `kAiTargetWeightDamageTermsBound` | `5e20b9ab0` | 80.5 | USN02, JM06, USN13, LOMP06, IJN01, USNOS, USNOS long |
+| the ramp/capture arm 2 and anything else that lands | - | cc9-ships22 | recheck the diff |
+
+- **Interactions to expect:**
+  - JM08 long carries the landing chain, the ramp and the capture together. Group the three
+    landing-chain switches, since they flipped in one commit.
+  - JM08 long's outcome is coupled to the cautious draws (80.1). Judge it on the census lines (the
+    landing and capture summaries, and `target weight damage terms`), not on deaths alone.
+  - The damage terms change every model row's weights 8-140x but moved few choices. Expect small
+    death moves only on the shore rows.
+
+**2. The fire-window origin** (79.2 item 2). Skipped by the lead for now; low value without a
+per-gun node model.
+
+**3. Torpedo items** (79.2 item 3). Inert on every reference row; the lead ranked them last.
+
+**4. From 80.3's labelled items:**
+- a squadron target is weighed through its planes' class (`+35Ch`) in the image; the host uses the
+  squadron's own row;
+- the type-0Fh attacker branch `00A0861F..00A09222` and the category gates (`bVar3..cVar7` before
+  `00A0943D`) are unprojected;
+- the entity type queries `vtable[+18h]` / `+1Ch` are stubs answering false / 0.
+
+**5. From 79.2 item 4:** unchanged (the kind-6 ship lead on the group 3 seat, `dev+408h`'s readers,
+the difficulty owner modifier, what Shimotsuke aims at on USNOS).
+
+### 81.3 Tools (`local\` in the cc9-gunnery18 tree, prefix `g18_`)
+
+- `g18_runs.ps1 -V <prefix> -Only <rows> [-Exe <path>]`: the reference rows including `jm08l` and
+  `smoke`; the exe defaults to `local\<prefix>`'s build.
+- `g18_wait.ps1 -Logs <names>`, `g18_exp.ps1 -Commit -Out [-Flip]`: as g17's. `local\g18_lane_a/b/c`
+  hold warm builds (an incremental export takes about a minute).
+- `g18_lane.ps1 -Lane -Variants 'v=kA+kB' -Rows [-Commit] [-Prefix]`: leave-one-out, default commit
+  `2e850cf31` and prefix `g18_t`; pass the u base and a new prefix.
+- `g18_vs.py <off> <on> [rows]`: `pair_diff` exits (resolves `g17_rs` into the cc9-gunnery17 tree).
+- `g18_rows.py <prefix> <base>`, then `g18_table.py` (edit its input name): the reference table.
+- `g18_loo.py <v...>`: verdicts of `g18_t_<v>_<row>` against `g18_rt_<row>`; re-point both prefixes.
+- `g18_report20.py`: the t report; copy it for u.
+- `g18_switches.py <a> <b>`: the value diff. `git log -S "<name> = true"` finds a flip commit, but
+  it can land on a doc mention (it did for `kHitIndexDetachBound`); check the diff.
+- `g18_firstdiff.py <a> <b> [n] [skip_regex]`: the first differing lines of two logs, with
+  pointers and ids normalised. This is how 80.1's divergence was found.
+- The rows run fast: all 36 t and anchor runs, JM08 long included, took about 15 minutes.
+
+## 82. RepairEnable reaches the repair task (packet `cc9_repair_enable_route`, cc9-gunnery19, GAMEPLAY_GAP_RANKING #12)
+
+### 82.1 The image
+
+- **The send.** `RepairEnable(unit, flag)` is `008AD330`. For an `IsKindOf(6)` entity (008AD487
+  `TEST BL,BL`), it builds a message with `0075B430(9Fh)` at `008AD494`. The message's vtable is
+  `00D03360` and the flag byte is at `+1Ch` (`008AD4B7`). `0077C2A0(msg, 7, ebp)` at `008AD4CD`
+  routes it to the entity. A non-kind-6 entity instead gets the byte at `entity+378h` (`008AD4E8`);
+  that arm is unchanged.
+- **The receive.** `BSP_UnitInstance_HandleMessage` `00821E80` (body `00821E80-00822393`) handles
+  9Fh at `008220D7`: `MOVZX EDX,[msg+1Ch]; LEA ECX,[unit+A20h]; CALL 00939FD0`.
+  - `00939FD0` is `MOV AL,[ESP+4]; MOV [ECX+45h],AL; RET 4`.
+  - Its only caller is `008220E2` (`ghidra xrefs`).
+- **The consumer.** `0093C770` (the hull repair step) tests `CMP BYTE [ESI+45h],0` at `0093C776`.
+  - When the byte is clear, `XORPS XMM0` at `0093C77C` makes the rate 0, so the hull does not heal.
+  - When it is set, the rate is `BodyRepairMultiplier` (priority 0) or `1.0`.
+- **The census of the task byte.**
+  - A capstone sweep of the task block `00939F00-0093D200` (`local\g19_45.py`) finds three accesses
+    to `[reg+45h]`: the setter, the constructor `0093BD48` (`MOV [ESI+45h],1`) and `0093C776`.
+  - Of the 45 `.text` hits for displacement `A20h`, all are `lea`/`add` feeding task methods
+    (`local\g19_a20.py`); no other method's body reads `+45h`.
+  - The displacement `unit+A65h` never occurs in `.text`: the one byte hit, at `004314A1`, is inside
+    a `JB` rel32.
+  - **Uncertainty:** a reader that holds the task pointer outside the swept block is not excluded.
+- **Delivery.** In a local session `0077C2A0` queues the message; the session pump drains it at
+  the next fixed step (the `kShipPassSideMessageBound` note in `game_hosts_ship_ai.cpp`).
+
+### 82.2 The binding (`kHullRepairEnableRouteBound`, committed OFF)
+
+- **The setter.** `GameGunneryHost::set_hull_repair_enabled_00939fd0(unit, flag)` stores the flag as
+  the task's `script_hull_repair`. When the switch is ON it also writes `task.hull_repair_enabled`
+  (`+45h`).
+- **The heal gate.** The host's 0093C770 step heals only while `task.hull_repair_enabled` is set.
+- **When the unit has no task yet.** If the call comes before `build_guns` has made the unit's
+  task, the flag is kept and applied at the host's 0093BCC0 point. The count is `before_init`. In
+  the image the constructor always runs first.
+- **Labelled differences from the image.**
+  - The flag is stored at the Lua call, not at the next step's drain.
+  - A disabled task skips the `00879810(-0)` call, as the host already does for an undamaged hull.
+- **The census line.** `summary mission gunnery repair enable bound= calls= false= before_init=
+  disabled_tasks= disabled_with_damage_control= withheld= by_unit{}`.
+  - `withheld` is the heal the host applied on tasks whose last flag was false. That is what ON
+    removes.
+  - The per-call line is `  repair enable: unit N <name> enabled= damage_control= bound=`.
+- **The caller.** `GameScriptOrdersHost::session_route_repair_enable_message` in
+  `src/game_hosts_script_orders.cpp` must call the setter. That file is leased to cc9-lua25; the
+  prepared edit is `local\g19_script_orders_patch.txt` in the cc9-gunnery19 tree.

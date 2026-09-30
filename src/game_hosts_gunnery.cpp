@@ -755,7 +755,7 @@ constexpr bool kBlastElementEntriesBound = true;
 //    the line of fire's unit half 0098B130. The AA candidates come from the
 //    recon list, not the index, and are untouched. OFF: detached planes stay
 //    hittable. Packet cc9_hit_index_detach, docs/SQUADRON_LAND_TASK.md 5as.
-constexpr bool kHitIndexDetachBound = false;
+constexpr bool kHitIndexDetachBound = true;
 //  * kHullSegmentHealthBound: 0092D1F0 on the controller's 20 per-segment
 //    healths (00937C90: HP / the number of fizika_NN model nodes found, the
 //    gate byte -1 for an index with none), reached by R4 (a direct hit on a
@@ -1055,6 +1055,7 @@ struct GameGunneryHost::Impl {
         bsp::TorpedoSupplyTickState supply{};
         float torpedo_spread{0.0f};      // unit+6D4h, 0 from 0095CE11
         float max_health{0.0f};
+        float class_hit_points{0.0f};    // desc+48h HP, which OverrideHP never writes
         float health{0.0f};
         // The twelve category records at unit+394h and the ranges at unit+430h.
         std::array<std::vector<std::size_t>, bsp::kUnitGunneryCategoryCount> category_guns{};
@@ -2148,8 +2149,16 @@ struct GameGunneryHost::Impl {
         double water_damage{0.0};     // totals for the summary
         double fire_damage{0.0};
         double repaired{0.0};
+        // Packet cc9_repair_enable_route: the last RepairEnable flag routed to this
+        // task (-1: none), and the heal the host applied while that flag was false
+        // (what kHullRepairEnableRouteBound withholds).
+        int script_hull_repair{-1};
+        double withheld{0.0};
     };
     std::vector<DamageControl> damage_control;
+    unsigned long long repair_enable_calls{0};
+    unsigned long long repair_enable_false{0};
+    unsigned long long repair_enable_before_init{0};   // routed before build_guns ran
     bool dc_logged{false};
     unsigned long long dc_water_adds{0};
     unsigned long long dc_fire_adds{0};
@@ -3545,6 +3554,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             }
         }
         state.max_health = flat_scaled(type_id, "hp", kMilliScale, 0.0f);
+        state.class_hit_points = state.max_health;   // desc+48h, never overridden
         state.health = state.max_health;
         state.max_torpedo_stock = flat(type_id, "torpstock", 0);  // packet cc9_torpedo_stock
         state.armour = flat_scaled(type_id, "armour", kMilliScale, 0.0f);
@@ -3580,6 +3590,14 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 * flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
             dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
             dc.task.hull_repair_enabled = true;      // +45h = 1
+            if (dc.script_hull_repair >= 0) {
+                // In the image 0093BCC0 runs at creation, before any script can
+                // route 9Fh; a flag this host received first is kept.
+                ++repair_enable_before_init;
+                if constexpr (kHullRepairEnableRouteBound) {
+                    dc.task.hull_repair_enabled = dc.script_hull_repair != 0;
+                }
+            }
             dc.sections.clear();
             const int nsec = flat(type_id, "nsec", 0);
             for (int k = 1; k <= nsec && k <= 64; ++k) {
@@ -9301,13 +9319,17 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
             if (write.wrote) state.health = write.stored_health;
         };
         if constexpr (kShipHullRepairBound) {
-            // 0093C770, then 00877B90(max) when the heal overshoots.
-            const float heal = 1.0f * dt * dc.repair_fraction * state.max_health;
+            // 0093C770, then 00877B90(max) when the heal overshoots. 0093C776: a
+            // clear +45h makes the rate 0 (XORPS at 0093C77C); the host then skips
+            // the 00879810(-0) call, as it already does for an undamaged hull.
+            const float heal = dc.task.hull_repair_enabled
+                ? 1.0f * dt * dc.repair_fraction * state.max_health : 0.0f;
             if (state.health < state.max_health && heal > 0.0f) {
                 const float before = state.health;
                 damage(-heal);   // 00879810 negates into 00879070
                 if (state.health > state.max_health) state.health = state.max_health;
                 dc.repaired += state.health - before;
+                if (dc.script_hull_repair == 0) dc.withheld += state.health - before;
             }
             done("DamageControl::repair_hull_0093c770", 0x0093c770u);
         }
@@ -10010,12 +10032,21 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
     // the accumulated damage by. The class maximum is what makes that a ratio.
     for (const UnitState& state : unit_state) {
         GameAiWeaponFacts::Unit& row = facts.row_for_write(state.row.unit_index);
-        row.hit_points = state.row.max_health;
-        // target+4Ch, read at 00A085A8. Nothing in this process produces a
-        // capture state, so it stays zero and the model's capture accumulator
-        // contributes nothing.
-        row.capture_state = 0.0f;
+        // The target is the class descriptor (00A04560 record+0h), so +48h is
+        // the class HP. OverrideHP (008C1A71) writes the instance's +36Ch,
+        // which the class never sees: bound, the class value is published.
+        // LABELLED: a squadron's class is its planes' (+35Ch), which this row
+        // does not model; it keeps the unit's own class HP.
+        row.hit_points = kAiTargetWeightDamageTermsBound ? state.class_hit_points
+                                                         : state.row.max_health;
+        // target+4Ch at 00A085A8 is the class Armour, and 00A085F8's vtable[+24h]
+        // answer for a ship class is UnderwaterArmour; state.underwater_armour
+        // already carries Armour for every other family.
+        row.armour = state.armour;
+        row.underwater_armour = state.underwater_armour;
     }
+    // 00424C40 +3B0h, WaterTickDamage (ShipGlobals, one value for every class).
+    facts.water_damage_scale = damage_control.empty() ? 0.0f : damage_control.front().water_tick;
     // 00A095E3 walks the attacker's subsystems at +94h/+98h and their 48h-stride
     // barrel entries at +74h/+78h. This process has one gun row per gun and a
     // barrel count on it, so the barrels are flattened into one list per unit.
@@ -10053,6 +10084,12 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
         // so what the row owes is the selector and the lookup runs per target.
         // docs/AI_TARGET_WEIGHT_TERMS.md.
         barrel.bullet_sub_type = gun.bullet_sub_type;
+        if (const GameBulletClassRow* b = bullet(gun.bullet_class)) {
+            // 00A09460..00A094C9 and 00A095A9, the barrel's bullet class record.
+            barrel.damage_low = std::max(b->damage_min, b->blast_damage_min);
+            barrel.damage_high = std::max(b->damage_max, b->blast_damage_max);
+            barrel.water_damage = b->water_damage;
+        }
         {
             // Resolvable is a property of the sub-type alone: every group of a
             // resolvable sub-type answers either an offset or a legitimate
@@ -10288,6 +10325,27 @@ bool GameGunneryHost::water_gate_007bc5b0(std::size_t unit_index,
 float GameGunneryHost::unit_invincibility(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->invincibility_by_unit.size()) return 0.0f;
     return impl_->invincibility_by_unit[unit_index];
+}
+
+void GameGunneryHost::set_hull_repair_enabled_00939fd0(std::size_t unit_index, bool enabled) {
+    // 008220D7: MOVZX EDX, [msg+1Ch]; LEA ECX, [unit+A20h]; CALL 00939FD0, which
+    // stores AL at task+45h and returns (RET 4).
+    ++impl_->repair_enable_calls;
+    if (!enabled) ++impl_->repair_enable_false;
+    if (unit_index >= impl_->damage_control.size()) impl_->damage_control.resize(unit_index + 1);
+    auto& dc = impl_->damage_control[unit_index];
+    dc.script_hull_repair = enabled ? 1 : 0;
+    if constexpr (kHullRepairEnableRouteBound) {
+        dc.task.hull_repair_enabled = enabled;
+        impl_->done("RepairTask::set_hull_repair_enabled_00939fd0", 0x00939fd0u);
+    } else {
+        impl_->record("RepairTask::set_hull_repair_enabled_00939fd0", 0x00939fd0u);
+    }
+    const char* name = unit_index < impl_->unit_state.size()
+        ? impl_->unit_state[unit_index].row.name.c_str() : "?";
+    impl_->log.notef("  repair enable: unit %zu %s enabled=%d damage_control=%d bound=%d "
+        "(008AD4CD 9Fh -> 008220D7 -> 00939FD0 task+45h)", unit_index, name, enabled ? 1 : 0,
+        dc.enabled ? 1 : 0, kHullRepairEnableRouteBound ? 1 : 0);
 }
 
 void GameGunneryHost::set_director_fire_stance_0071be80(std::size_t unit_index, int stance) {
@@ -11357,6 +11415,30 @@ void GameGunneryHost::report() {
             host.be_entries, host.be_entries_fizika, host.be_entries_underwater,
             host.be_damage_element, kHullSegmentHealthBound ? 1 : 0, host.seg_hits,
             host.seg_gate_refused, host.seg_damage, host.seg_destroyed);
+        // Packet cc9_repair_enable_route: the routed RepairEnable flags, and the heal
+        // applied on tasks whose last flag was false (withheld when bound).
+        std::size_t disabled = 0, disabled_dc = 0;
+        double withheld = 0.0;
+        std::string by_unit;
+        for (std::size_t i = 0; i < host.damage_control.size(); ++i) {
+            const auto& dc = host.damage_control[i];
+            if (dc.script_hull_repair != 0) continue;
+            ++disabled;
+            if (dc.enabled) ++disabled_dc;
+            withheld += dc.withheld;
+            if (dc.withheld > 0.0 && i < host.unit_state.size()) {
+                char buf[160];
+                std::snprintf(buf, sizeof(buf), " %s:%.0f", host.unit_state[i].row.name.c_str(),
+                    dc.withheld);
+                by_unit += buf;
+            }
+        }
+        host.log.notef("summary mission gunnery repair enable bound=%d calls=%llu false=%llu "
+            "before_init=%llu disabled_tasks=%zu disabled_with_damage_control=%zu "
+            "withheld=%.0f by_unit{%s } (008AD4CD / 00939FD0 / 0093C776, packet "
+            "cc9_repair_enable_route)", kHullRepairEnableRouteBound ? 1 : 0,
+            host.repair_enable_calls, host.repair_enable_false, host.repair_enable_before_init,
+            disabled, disabled_dc, withheld, by_unit.c_str());
     }
 
     std::array<unsigned long long, bsp::kUnitGunneryCategoryCount> cat_guns{};

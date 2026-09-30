@@ -345,6 +345,21 @@ constexpr bool kPlannerGroupTargetValueBound = true;
 // row. Every method names the native site it stands at. The entity pointers
 // the key carries are this process's unit handles, index + 1.
 // docs/AI_TARGET_WEIGHT_TERMS.md term 2.
+// Packet cc9_ai_target_weight_damage_terms: the census of the bound barrel loop
+// and the sums of the model's answers at its two call sites, in both states.
+struct AiDamageTermsCensus {
+    unsigned long long barrels{0};
+    unsigned long long armour_refusals{0};
+    unsigned long long zero_per_hit{0};
+    double per_hit_sum{0.0};
+    double close_weight_sum{0.0};
+    double group_weight_sum{0.0};
+};
+AiDamageTermsCensus& ai_damage_terms_census() {
+    static AiDamageTermsCensus census;
+    return census;
+}
+
 class AiWeightModelBinding final : public bsp::AiTargetWeightModelHost {
 public:
     // The target group is a callback because 009FE270 asks the target itself,
@@ -371,9 +386,13 @@ public:
         const GameAiWeaponFacts::Unit* row = facts_.row(index_of(target));
         return row != nullptr ? row->hit_points : 0.0f;
     }
-    float target_capture_state(const void* target) override {
+    float target_armour(const void* target) override {
         const GameAiWeaponFacts::Unit* row = facts_.row(index_of(target));
-        return row != nullptr ? row->capture_state : 0.0f;
+        return row != nullptr ? row->armour : 0.0f;
+    }
+    float target_underwater_armour(const void* target) override {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(target));
+        return row != nullptr ? row->underwater_armour : 0.0f;
     }
     // 00A095E3's subsystem walk is flattened into one barrel list per unit, so
     // the attacker has a single subsystem carrying every barrel.
@@ -408,20 +427,37 @@ public:
         if (!resolved || offset == 0u) return 0.0f;
         return block_.at(offset);
     }
-    // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread, so both
-    // stand in neutral.
-    //
-    // This one used to `return a`, on the reading that `a` was the value being
-    // scaled and returning it kept the value undiminished. It is not: the call
-    // site multiplies by the answer and passes `(0, 0, 0, 0)`, four distance
-    // arguments this projection has not recovered. So the stub answered 0 and
-    // annihilated the term, `best` could never leave 0, and the barrel loop
-    // contributed nothing to `total` even once the subsystem handle was fixed.
-    // A falloff is a multiplier, so its neutral value is 1.0f. Labelled: the
-    // real falloff is a function of the four distances and diminishes with
-    // range, so this over-states a distant barrel.
-    float distance_falloff(float, float, float, float) override { return 1.0f; }
-    float capture_scale() override { return 1.0f; }
+    // Packet cc9_ai_target_weight_damage_terms. 009FE200 at 00A09578 is not a
+    // distance falloff, as this binding once labelled it: its four arguments
+    // are the barrel's damage range, the target's armour and hit points, and
+    // it answers the expected damage per hit (bsp::ai_expected_hit_damage_009fe200).
+    // 00424C40+3B0h at 00A09624 is WaterTickDamage, scaling the WaterDamage sum.
+    // With kAiTargetWeightDamageTermsBound OFF the model keeps 1.0 for both.
+    int barrel_sub_type(const void* subsystem, int barrel) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->bullet_sub_type : 0;
+    }
+    float barrel_damage_low(const void* subsystem, int barrel) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->damage_low : 0.0f;
+    }
+    float barrel_damage_high(const void* subsystem, int barrel) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->damage_high : 0.0f;
+    }
+    float barrel_water_damage(const void* subsystem, int barrel) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        return b != nullptr ? b->water_damage : 0.0f;
+    }
+    float water_damage_scale() override { return facts_.water_damage_scale; }
+    bool damage_terms_bound() override { return kAiTargetWeightDamageTermsBound; }
+    void note_damage_terms_barrel(bool refused, float per_hit) override {
+        AiDamageTermsCensus& c = ai_damage_terms_census();
+        ++c.barrels;
+        if (refused) ++c.armour_refusals;
+        else if (!(per_hit > 0.0f)) ++c.zero_per_hit;
+        else c.per_hit_sum += per_hit;
+    }
 
 private:
     static std::size_t index_of(const void* entity) {
@@ -1638,6 +1674,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             AiWeightModelBinding model(facts, record, tuning,
                 [this](std::size_t unit) { return accuracy_target_group(unit); });
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
+            ai_damage_terms_census().close_weight_sum += in.base_weight;
             ++summary.weight_model_runs;
         } else {
             // 00A08460 with none of its inputs. 1.0f is the identity of the
@@ -4191,6 +4228,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             AiWeightModelBinding model(facts, record, tuning,
                 [this](std::size_t unit) { return accuracy_target_group(unit); });
             weight = bsp::ai_target_weight_00a08460(model, key);
+            ai_damage_terms_census().group_weight_sum += weight;
             ++group_value_census.model_pairs;
         } else {
             // LABELLED: 00A08460 with none of its inputs, the identity the
@@ -5187,6 +5225,16 @@ void GameAiCoordinatorHost::report() {
         host.group_value_census.empty_groups, host.group_value_census.model_pairs,
         host.group_value_census.stand_in_pairs, host.group_value_census.distance_cut_pairs,
         host.group_value_census.zero_results);
+    {
+        const AiDamageTermsCensus& c = ai_damage_terms_census();
+        host.log.notef("summary mission ai target weight damage terms bound=%d barrels=%llu "
+            "armour_refusals=%llu zero_per_hit=%llu per_hit_sum=%.1f close_weight_sum=%.3f "
+            "group_weight_sum=%.3f water_scale=%.3f (00A094D5 gate, 009FE200 at 00A09578, "
+            "00A095A9 / 00A09624; packet cc9_ai_target_weight_damage_terms)",
+            kAiTargetWeightDamageTermsBound ? 1 : 0, c.barrels, c.armour_refusals,
+            c.zero_per_hit, c.per_hit_sum, c.close_weight_sum, c.group_weight_sum,
+            static_cast<double>(game_ai_weapon_facts().water_damage_scale));
+    }
     {
         // Packet cc8_ai_target_weight_zero: one line per (bullet sub-type,
         // target group) pair actually asked for. `accuracy` is what 009FE270
