@@ -936,6 +936,13 @@ public:
     // * kill_unit_00926d90(): 007CE3A7's BSP_MissionEntity_Kill(unit, 1), the
     //   plane tick's depth kill, through the same funnel a gunfire death takes.
     bool unit_dead(std::size_t unit_index) const noexcept;
+    // Packet cc9_command_building_capture_bind (ship AI host's capture):
+    // * refresh_unit_side(): re-reads unit+54h into the unit's gunnery row after a
+    //   CommandBuilding's neutralize or flip (00928F50 SetPartyRace);
+    // * repair_unit_to_fraction(): 006F47F0's hull arm, health += max * fraction,
+    //   clamped to max (the parts arm is not modelled).
+    void refresh_unit_side(std::size_t unit_index);
+    void repair_unit_to_fraction(std::size_t unit_index, float fraction);
     // Packet cc9_lua_hit_listeners: one record per gunnery hit that reached the
     // victim's health (the post-multiplier amount lost), queued at the hit dispatch
     // after 0077CE60's attribution. take_hit_events() drains it. Nothing drains it

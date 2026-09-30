@@ -128,6 +128,10 @@ struct GameSceneEntityRecord {
     // (006F27E5). This installation authors it as `I 100` on its CommandBuildings.
     bool capture_range_present{false};
     std::int32_t capture_range_raw{500};
+    // Packet cc9_command_building_capture_bind: 006F2780's `CaptureValue` find,
+    // read like CaptureRange, stored at unit+7A4h; 1000 when absent.
+    bool capture_value_present{false};
+    std::int32_t capture_value_raw{1000};
     // Routed from cc9-ships13: 006F2780's `LandingRange` find (key 00CFAE30,
     // 006F2847), read like CaptureRange: the found record's +0Ch dword, or 500
     // (1F4h) when absent, stored at unit+7C4h (006F285F).

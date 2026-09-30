@@ -6925,3 +6925,48 @@ mechanism is shown by an env-gated diagnostic that sets one building's health to
 time (for example USN13's CB2 at t = 60 s): the building goes neutral, and when an enemy ship
 sits inside CaptureRange for about `CaptureValue / (sum of CapturePower)` one-second ticks (the
 decay of 20 applies only while no ship is in range), it flips to that side with its garrison guns.
+
+## 81. The capture bound OFF: neutralize, countdown, tick, flip (packet `cc9_command_building_capture_bind`, cc9-ships21, 2026-09-30)
+
+`kCommandBuildingCaptureBound` (`src/game_hosts_ship_ai.cpp`, committed OFF) over
+`bsp/command_building_capture.hpp` (the pure rules of section 80). What it runs:
+
+| step | image | host |
+| --- | --- | --- |
+| health 0 | `00877B90` -> `vtable[1B0h]` `006F3270` -> `006F2940` -> D3h slot 9 -> `006F4D10` | `GameGunneryHost::Impl::kill_unit` asks `GameShipAiHost::command_building_health_zero_006f3270` first; for a CommandBuilding it neutralizes (party 2, progress 0, `+7B0h` = old party) and the building does not die |
+| countdown | `006F755D..006F761C` in `006F7360`, 1.0 s | `command_building_capture_countdown_006f75ed`, at the head of `controller_step` (the image's row 5 runs after the job waves; LABELLED order) |
+| arm 1 | ships (IsKindOf 6) within `CaptureRange`, party < 2, the four alive cells | the same; CapturePower from `VehicleClass[type].CapturePower` (default 10); the ramp exclusion `+1188h` never applies (no ramp is ever lowered) |
+| arm 3 | the paratrooper list `+7DCh` | empty (no paratroopers exist here) |
+| progress | `006F6DEF..006F7334` | `command_building_capture_tick_006f6760`, fallback 20 (LABELLED, multiglobals.lua) |
+| flip | D3h `006F4D10`, slot chosen at `006F70E6` | side 0/1 -> that party (LABELLED: each party has a slot record); a tie -> slot 8, stays neutral; repair to full (`006F47F0`, Repair >= 100 at every level); the gunnery row's side refreshed |
+
+Not modelled (records or labels): the announcements, D4h, the flag model, `0090F860` scoring,
+the per-pad `006AC4D0`, the parts repair, garrison slot occupants as separate units (the
+building's own gun mounts follow its party), the AI host's party lists (built at load; a
+flipped building stays in its first group), `+2D8h` (so the retake exemption never applies),
+the ctor's `-uniform(0,1)` countdown phase (not drawn, to keep the shared stream).
+
+`CaptureValue` (`+7A4h`) is now parsed from the scene (`game_hosts_scene_contents.cpp`, 1000
+when absent) and `GameUnitsHost::set_unit_side_0054` writes the party.
+
+The diagnostic `BSP_CB_FORCE_ZERO=<unit>@<seconds>` (both builds) applies one 1e9 script damage
+(`apply_script_damage_0095da00`) to the named building at that mission time.
+
+### 81.1 Predictions (written before any run)
+
+- **Plain reference rows, ON against OFF:** exit 0 or 1 on every row. No CommandBuilding
+  reaches health 0 (section 80.4), so `health_zero=0 neutralized=0 countdown_fires=0` on both
+  sides; the new summary line is the same on both.
+- **USN13, `CB2@60`:** OFF: CB2 gets a death row at t = 60.0 and `kill` follows as for any unit.
+  ON: `neutralized (prior party=1) at t=60.0`, no CB2 death row, `countdown_fires` about one per
+  second from then on. Progress moves only if a ship of either side is within CaptureRange
+  (100 on this installation's CommandBuildings); a Japanese ship there drives it negative and
+  flips it back to party 1 after about `CaptureValue / (10 * ships)` seconds; with nobody in
+  range it stays 0 and CB2 stays neutral to the end. Everything that shoots at or through CB2
+  may move after t = 60 in both builds, since the OFF build removes it.
+- **JM08 long (`jm08x`, 36000), `Headquarter 01@500`:** OFF: the HQ dies at 500 s. ON: neutral
+  at 500 s. JM08's script (line 451, mtime 2024-07-13) fails the mission when the HQ's Party is
+  not Japanese, so the ON run may end the mission early through that check (a party 2 building
+  answers the check the same way the OFF build's dead one may not). If the Allied landers or
+  escorts come within CaptureRange (the invasion reaches the origin around t = 540 s), the HQ
+  flips to party 0.

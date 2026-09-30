@@ -758,6 +758,13 @@ public:
     // controller published. Returns true when a valid order was promoted.
     bool promote_order_00825f2c(std::size_t unit_index);
 
+    // Packet cc9_command_building_capture_bind: the gunnery host's kill funnel asks
+    // this first. True for a CommandBuilding while kCommandBuildingCaptureBound is
+    // on: 006F3270 neutralizes an owned building at health 0 (or returns for a
+    // neutral one) and the building does not die (vtable[1A8h] 006F1F80 is RET).
+    // False otherwise, and the funnel kills as before.
+    bool command_building_health_zero_006f3270(std::size_t unit_index);
+
     // Packet cc9_big_landing_ship: class+808h for the unit's class, from its
     // VehicleClass row at load (the depth reader's tuning-pair choice). False
     // for a unit that is not a loaded LandingShip. Read-only.
