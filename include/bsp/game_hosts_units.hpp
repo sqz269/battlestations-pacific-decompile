@@ -127,10 +127,11 @@ inline constexpr bool kTakeoffTaskHeadBound = true;
 // grounded plane whose land task goes to land/abort takes off again. DL = 0
 // starts in takeoff/Takeoff (+AA0h <= 0.0), or takeoff/parking when landed on
 // the path. False: no push; the host's park <-> abort loop runs on the ground.
-// OFF, mechanism failure (5bp): the push fires once per looper as read, but the
-// run never lifts off, because a state-4 plane off the runway rectangle has no
-// ground under it in this host and runs at about y -78 m.
-inline constexpr bool kGroundRetakeoffBound = false;
+// ON by 5br's re-pair (every death table identical, pair_diff 1 on every row;
+// one push per JM05 hangar looper at its first ground abort). The pushed run
+// does not lift off: a state-4 plane off the runway rectangle free-falls under
+// 007DCCF0, which is the image's law (5bq), not a host failure (5bp corrected).
+inline constexpr bool kGroundRetakeoffBound = true;
 
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the

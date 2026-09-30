@@ -7418,3 +7418,104 @@ The host's orbit (up to 10 m/s against a 0.69 m/s request) points at one of two 
 (steer vector, deadband `f18`, requested and actual speed), and find which side overshoots.
 
 A terrain floor for planes would be a substitution with no image producer. It is **not bound**.
+
+## 5br. The hangar orbit is the image's park law; the re-takeoff re-paired (packet `cc9_hangar_orbit`, cc9-lua28, 2026-09-30)
+
+This follows 5bq section 3. Two diagnostic builds traced SB2C Helldiver 02 once per think inside
+its hangar on JM05:
+- `local\l28_diag2.log`: 0099D300's throttle inputs and outputs;
+- `local\l28_diag3.log`: land/park's internals.
+
+Neither build is committed.
+
+### 1. What the trace shows
+
+- **The 0.69 m/s "request" of 5bq was a misreading.** AirField/MoveSpd (tuning `+184h`) is
+  **9.72 m/s** in this installation. `hi` is 18.67.
+  - `slow` (`v <= 1.5 x base`, 14.6 m/s) is therefore always true.
+  - The request is `spd = RunwayYawTurnSpdLimit/1` (6.94 m/s, `009B2705`) whenever `qd + 30 > dz`.
+    It is then scaled by the heading error: `00419010(3 deg, 1.0, (5|sx| + 30) deg, 0.1, |err|)`,
+    `009B2A1F`-`009B2AED`.
+  - Facing away from the spot, it asks 0.69 m/s (scale 0.1). Facing the spot, it asks 6.94 m/s.
+- **The orbit.** At 310.5-312.8 s the plane turns toward its spot from 5.4 m to the side:
+  - the scale rises from 0.25 to 1.0, and the request from 1.76 to 6.94 m/s;
+  - the throttle follows up to 0.89, and the plane reaches 7.4 m/s;
+  - it passes the spot (`dz` goes from +0.8 to -0.5), the heading error jumps to 1.9-2.7 rad, and
+    the request drops to 0.69 m/s. It circles back.
+- **The airfield arm never stops at the spot.**
+  - The carrier arm's "behind the target, stop" and its speed clamp (`009B2923`-`009B298D`) are
+    skipped for an airfield (`009B2921 JE 009B2993` on the carrier flag `[esp+13h]`).
+  - The deadband `f18` only widens the yaw deadband.
+  - `f18 < 3` hides the plane (`007B96C0`), and `+C00h` has no reader in the image
+    (GAMEPLAY_LOOSE_ENDS_2 A2).
+  - So a hidden plane keeps being driven.
+- **Leaving the path.** The join-or-leave test (`009B2634`-`009B2735`, disk listing, which matches
+  the host line for line) keeps the plane in state 5 only while `qd >= dz`, with
+  `qd = 1.5 / max(RunwayYawTurnSpdMul x YawSpd, AirField/MinTurnSpd) x RunwayYawTurnSpdLimit/1`.
+  - An orbit that swings more than `qd` short of the spot leaves the path. Helldiver 01 did so at
+    445.86 s, at `dz` 11.9 m.
+  - In state 4 off the rectangle, `007DCCF0` runs free flight (5bq).
+- **Corrections to 5bq.**
+  - 5bq's "1.5 x MoveSpd = 1.035 m/s" is wrong: MoveSpd is 9.72 m/s. The path exit is the `qd` test.
+  - The throttle law is not the cause. `0099D300`'s demand arm integrates the speed error (the
+    host copy matches `0099D8C1`-`0099DC75`) and follows the request. The host differs only in
+    the dead band at `0099DB1F`-`0099DB56` (`|e| <= 0.833`, `v >= 1.0` and `0.5 <= want/v <= 1.5`
+    skips the increment; the host always applies it). That band cannot make an orbit.
+
+**Verdict of the trace: as far as the listing reads, the orbit is the image's.**
+- A plane at its airfield hangar spot circles it under land/park's airfield arm.
+- When the circle takes it more than `qd` short of the spot, it leaves the path and free-falls.
+- Nothing in the host needs fixing for this; the one host difference found (the throttle dead
+  band) is recorded as an open item.
+- The hide makes all of it invisible in the image: planes are hidden by 5aq's scene-node hide and
+  detached from the hit index by 5as.
+
+### 2. What this does to 5bp's verdict
+
+5bp kept `kGroundRetakeoffBound` OFF because the pushed takeoff never lifted off. That criterion
+assumed a grounded plane would roll and climb. Once the plane is in state 4 off the rectangle, the
+image's own law makes it free-fall (5bq), with or without the push.
+
+So:
+- **Mechanism.** The gate and the push match the listing (5bp), and what follows the push is the
+  image's law.
+- **Outcome.** With the switch ON, the host ends each looper in a takeoff task at the head, as
+  the image does. The alternative is a park <-> abort loop that the image cannot produce.
+
+### Predictions for the re-pair (switch ON against OFF, both from `4f5c5f5d4`; written before the runs)
+
+1. **JM05 9000 and 12000.** One push per looper at its first ground abort. Aborts fall to 1-2 per
+   looper. Death tables identical; `pair_diff` 1.
+2. **JM05 3000, LOMP10 3000 and 9000, USN04, E2, USN01, BSM01.** No push; `pair_diff` 1.
+3. **Flip criterion.**
+   - every push comes from a grounded head whose `30h` is true;
+   - no row without ground aborts moves;
+   - death tables are identical.
+   - The post-push fall is the image's law and does not count against the flip.
+
+### Results (OFF `local\l28_roff`, SHA-256 `2ECC890B9A13`; ON `local\l28_ron`, `ECCB4518B43F`; both from `4f5c5f5d4`)
+
+| row | `pair_diff` | death rows | land aborts OFF / ON | pushes |
+| --- | --- | --- | --- | --- |
+| JM05 3000 | 1 | identical (12) | 1 / 1 (airborne) | 0 |
+| JM05 9000 | 1 | identical (14) | 21 / 2 | 1 (Helldiver 01, 446.06 s) |
+| JM05 12000 | 1 | identical (17) | 749 / 4 | 3 (Helldiver 01, Main sqn01\|.-3, Secondary sqn02\|.-3) |
+| LOMP10 3000, 9000 | 1, 1 | identical (3, 6) | 0 / 0 | 0 |
+| USN04, E2 | 1, 1 | identical (50, 52) | 0 / 0 | 0 |
+| USN01, BSM01 (controls) | 1, 1 | identical (17, 0) | 0 / 0 | 0 |
+
+Every push is from a `land` head in state 4 with `+BF8h` clear, at the plane's first ground abort.
+
+| prediction | result |
+| --- | --- |
+| 1. JM05 9000 / 12000: one push per looper, aborts 1-2 per looper, deaths identical, exit 1 | **held** |
+| 2. other rows: no push, exit 1 | **held** |
+| 3. flip criterion | **met** |
+
+### Verdict: **flip ON** (`kGroundRetakeoffBound = true`)
+
+The fall after the push is recorded as the image's law (5bq, section 1 above), not as a
+mechanism failure. This supersedes 5bp's OFF verdict.
+
+For reference W: JM05 9000 and 12000 move at exit 1 (the land-task, takeoff and native-table
+counters). No other row moves.
