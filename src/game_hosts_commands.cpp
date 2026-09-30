@@ -1296,9 +1296,11 @@ public:
             // 00816FC6..00816FCF; the land arm is the only caller.
             chain_.owner.done("EntityCommandArm::self_is_kind_of", 0x00816fcfu);
             return bsp::unit_is_kind_of(chain_.unit.class_id, kind);
+        } else {
+            static_cast<void>(kind);
+            chain_.owner.record_slot("EntityCommandArm::self_is_kind_of", "00cfc3d0+vtable5c");
+            return false;
         }
-        chain_.owner.record_slot("EntityCommandArm::self_is_kind_of", "00cfc3d0+vtable5c");
-        return false;
     }
     void request_join_formation_0077c8d0(std::uint32_t) override {
         chain_.owner.record("EntityCommandArm::request_join_formation", 0x0077c8d0u);
