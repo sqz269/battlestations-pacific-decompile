@@ -296,6 +296,13 @@ inline constexpr bool kShipAiApproachSightTestBound = true;
 // ON: USN02 moved as predicted (Exeter lost at 210.81 s, the mission fails at
 // 212.91 s); USN01, USN04 and JM06 identical (docs/GENERATED_SHIP_AI.md section 5).
 inline constexpr bool kGeneratedShipAiBound = true;
+// Packet cc9_landing_craft_owner_player (docs/SHIP_AI_OPEN_ITEMS.md section 101).
+// 008206F0 bags `OwnerPlayer 8` (00821A72), so the craft's +180h is 8 ("AI
+// control"): 009FFD20 answers -1, 00A2DE40 evicts it from any party group and a
+// group it leads is NONCONTROL. True: the launch publishes 8 for the craft's
+// index (ai_set_unit_owner_player). False: the craft reads +180h = 9, joins the
+// nearest party group, and 00A11B80 moves it off its `land` order.
+inline constexpr bool kLandingCraftOwnerPlayerBound = false;
 // Packet cc9_generated_ship_ai_registration part 2, docs/GENERATED_SHIP_AI.md
 // section 6. True: 009F1BC0's 00811A30(unit, 1.0) at 009F1D3C answers the class
 // turn circle, so nested+11F0h = max(class+500h * 10, circle * 1.5) as the image
@@ -11884,6 +11891,7 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
             }
             const std::size_t craft = before;
             ++s.crafts_created;
+            if constexpr (kLandingCraftOwnerPlayerBound) ai_set_unit_owner_player(craft, 8);
             // 00821B4F 006AC490(pad)(craft); then the craft's InitAll 0074BEC0
             // (0074C57C..0074C618) runs 0074A990(pad, building) with SpawnPhase
             // at +1208h. Delivered at the call (LABELLED): the draw and the

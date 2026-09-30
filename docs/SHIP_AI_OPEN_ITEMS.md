@@ -8505,3 +8505,44 @@ losses recorded as misses).
 - Why the crafts close at about 5.6 m/s (the land state's throttle for a 13 m craft, or the
   pad-line approach), and whether they should reach the beach rather than the reef line.
 - The transports' collisions on the move path once every pad is held (UST 01 by UST 04, at 76 m).
+
+## 101. Why the landing crafts stall (packet `cc9_landing_craft_owner_player`, cc9-ships25, 2026-09-30)
+
+### 101.1 The cause, from `s25_d1_jm08x`
+
+The crafts are not slow; they stop. The first craft runs at about 15 m/s from t=733 to 808, then
+holds at about 370 m from its pad from t=858 to about 1150. The samples show why: from t=638
+the crafts are in `movetopos`, not `land`. `transport move diag` lists all eight as members of
+**Bristol's group** (`leader=Bristol member=LandingShip ready=0 anchor=Headquarter 01 r=375.0`):
+the party brain seeded them into the group, `00A11B80` found them landers that are not ready
+(`008128E0` asks `006F2A50(site, 0)` for a pad with a null occupant, and each craft holds its
+own), and `00A02020` gave each a `moveto` to the 0.75 x CaptureRange circle, replacing `land`.
+They sit on that circle until the group's command changes.
+
+**The image keeps them out of the group.** `008206F0` bags `OwnerPlayer 8` (`00821A72`), which
+`0077F1F9` stores at `+180h`. By section 71, `009FFD20` answers -1 for `+180h == 8` ("AI
+control"), `00A2DE40` evicts such a member from any other group, and a group it leads is
+NONCONTROL (`00A2E124`). The host's `create_units` does not carry `owner_player`, and the
+coordinator's `unit_owner_player_0180` looks `+180h` up by scene entity name only, so every
+craft read 9 and joined Bristol's group.
+
+### 101.2 The binding (committed OFF): `kLandingCraftOwnerPlayerBound` (`src/game_hosts_ship_ai.cpp`)
+
+ON, the launch publishes `+180h = 8` for the craft's unit index through the new
+`ai_set_unit_owner_player` (`src/game_hosts_ai.cpp`; an index table read ahead of the by-name
+one, cleared with it at load). Nothing else changes.
+
+### 101.3 Predictions (written before any ON run)
+
+The pair is the section 100 build with this switch: OFF equals `s25_a1`.
+- **JM08 36000, exit 3.** The crafts leave Bristol's group (or never stay in it): no `transport
+  move diag` rows name `LandingShip`, `members_evicted` rises, and the crafts keep `land` from
+  launch to the final arm. They run at about 15 m/s over about 2.2..2.6 km and reach the final
+  arm (within 350 m and facing the pad) by about 800 s, the beach or reef line before 850 s,
+  about 200 s earlier than `s25_a1`'s 1058.
+- **Ramps and capture:** at least 3 ramps lower (the same shallows), earlier; capture arm 2 still
+  waits for the HQ to turn neutral (about 970..1015 s); no flip.
+- **Losses:** the crafts arrive while the HQ's gun is alive (it killed LST 03 at 823 m), so some
+  crafts die; each death frees a pad, a transport without a cooldown in member order then
+  launches again (`launches` above 1, `crafts` above 8).
+- **USNOS:** no craft is launched there, so gameplay-identical (exit 0 or 1).
