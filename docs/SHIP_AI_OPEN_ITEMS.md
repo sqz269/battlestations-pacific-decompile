@@ -8171,3 +8171,61 @@ IJN01 595, JM06 196, JM08 long 795, LOMP06 18, USNOS 234, USNOS long 1070.
   is what turns the planner route into landings.
 - **The script route stays a race** (96, route 1): it lands only when `StartInvasion` comes
   after the lander's group has promoted to CLOSEATTACK.
+
+## 97. Message 94h delivered: the landing ship's landing request (packet `cc9_startlanding_94h`, cc9-ships24, 2026-09-30)
+
+### 97.1 Two receivers, by vtable
+
+`00A11B80` routes 94h `MT_SHIP_STARTLANDING`; the ship arm `00821F61` calls `vt+238h`. The two
+classes that pass `00A11B80`'s class test have different slots (disk bytes):
+
+| class | instance vtable | `+234h` (ready) | `+238h` (94h) |
+| --- | --- | --- | --- |
+| MLandingShip (LST, LSM; factory `0074BE00`, ctor `0074BB00` stores `00CFFA30`) | `00CFFA30` | `008128E0` | **`0074A4C0`** |
+| the troop transport (`00CFA778`, VehicleClass 224 / 234) | `00CFA778` | `008128E0` | `008206F0` |
+
+- **`0074A4C0`** (section 76.3, read again here, `0074A4C0..0074A59A`): returns -8 when
+  `ship+1200h` is set; `006F2C30(&ship+FCh, ship+54h, 2)` finds the site (else `err - 8`);
+  `006F2A50(site)(ship)` takes the nearest free pad by 3-D squared distance (`006F2AF0..`: an
+  occupied pad is skipped; with an entity the nearest wins), else -4; writes `ship+1200h = pad`,
+  builds 0A5h (`00749D90`) and routes it at class 7; its receiver `0074B570` runs `0074A990`
+  (begin landing: link, pad occupant, landing time, the traffic launch, and the `land` command
+  to the pad). This is the same begin the mode-3 latch uses (section 76.2), which the host binds.
+- **`008206F0`** (the transport's launch, read to its outline, 5 KB): for each free pad while
+  `LandingShipAmount` lasts it picks one of the three hull-perimeter points nearest the pad,
+  rejects it on a depth probe (`BSP_World_GroundHeightAt` above `[00CFBC84]`) or a ship within
+  clearance (world list `+64h`), then creates a craft of class `+78Ch` (`vt+28h`, `vt+98h`) with
+  the bag `Type`, `Party`, `Race`, `Skill 2`, `OwnerPlayer 8`, `LandingCommanderPlayer
+  = ship+180h`, `LandingPoint = pad+174h`, `CommandBuilding = site+174h`, `SpawnPhase =
+  max(3 - i, 0)`, and holds the pad (`006AC490`). The craft's own InitAll (`0074BEC0`,
+  `0074C57C..0074C618`) reads `LandingPoint` (`00CE9238`) and `CommandBuilding` (`00CE5870`) and
+  calls `0074A990` itself. Afterwards `ship+1124h = LandingShipCoolDown * launched / amount` and
+  95h is routed. **Not bound here:** it needs a runtime craft creation in the units host
+  (`create_units`) and the placement probes; it stays counted.
+
+### 97.2 The binding (committed OFF): `kLandingShipStartLandingBound`
+
+- `game_hosts_ai.cpp`: a ready member of kind 0Ch gets
+  `GameShipAiHost::landing_ship_request_landing_0074a4c0` (new, `game_hosts_ship_ai.cpp`).
+  A ready transport stays counted as `launch_not_modelled`.
+- **LABELLED:** 94h and the 0A5h it leads to are delivered at the call, as the mode-3 path already
+  does for 0A5h; SpawnPhase (`ship+1208h`) is 0; the landing-time draw is `00BD2F10`'s
+  uniform(0, 0.75) from the gunnery draws, as in mode 3.
+- **Summary line:** `summary mission ai startlanding 94h bound= landing_ships= begun= held=
+  no_site= no_pad= transports_not_modelled=`.
+
+### 97.3 Predictions (written before the pairs)
+
+Only JM08 36000 routes 94h (2463, section 96.4); every other row is identical.
+- **Mechanism:** at the first CLOSEATTACK tick of Bristol's group (t near 632), LST 01, LST 03
+  and LSM 02 (MLandingShip, within 4000 m of `Headquarter 01`) each begin a landing on one of
+  its 8 pads: `begun` = 3 there, then 94h returns -8 (`held`) while `+1200h` is set. Macomb's
+  group (LST 02) and Gleaves's (LSM 01) do the same at their promotions. `begun` between 3 and
+  5, `summary mission ship ai landing modes ... begins` rises from 0 by the same number.
+- **Landing:** the `land` command replaces `follow`; CLOSEATTACK has no follower pass, so it
+  sticks. At least one ramp lowers (the ramp latch 2 s after first contact, section 86), and
+  capture arm 2 adds 150 per tick for a ramp-down lander **only once the HQ is neutral**.
+- **Capture:** the HQ's authored CaptureValue is 2,000,000. At 150 per lander per second no
+  flip is possible in the window, even with 5 landers; `flips=0`.
+- **Pair:** exit 3 on JM08 36000; death rows move (the landers now close on the beach). The
+  transports' 94h stays counted (about the same count as the transports in the groups).

@@ -609,6 +609,12 @@ struct GameShipAiSummary {
     unsigned long long landing_pad_line_casts{0};
     unsigned long long landing_mode3_in_reach{0};
     unsigned long long landing_begins{0};
+    // Packet cc9_startlanding_94h: 0074A4C0's outcomes.
+    unsigned long long landing_requests_94h{0};
+    unsigned long long landing_requests_begun{0};
+    unsigned long long landing_requests_held{0};     // -8, ship+1200h already set
+    unsigned long long landing_requests_no_site{0};  // 006F2C30 found none
+    unsigned long long landing_requests_no_pad{0};   // -4, 006F2A50 found none
     unsigned long long landing_mode4_points{0};
     // Packet cc9_land_step_host: the land state's enter (009E18D0) and step
     // (009E1950) runs, steps that held a pad, steps in the final arm, and pad
@@ -809,6 +815,15 @@ public:
     // layer; the caller then keeps the requested point.
     bool avoid_zone_offset_point_00a020f0(std::size_t unit, const float in_xz[2],
                                           float margin, float out_xz[2]);
+
+    // Packet cc9_startlanding_94h (docs/SHIP_AI_OPEN_ITEMS.md section 97). 94h
+    // MT_SHIP_STARTLANDING on an MLandingShip: 00821F61 -> vt+238h = 0074A4C0
+    // (body 0074A4C0-0074A59A). -8 when ship+1200h is set; 006F2C30(&ship+FCh,
+    // ship+54h, 2) for the site (err - 8 when none; this host answers -9); the
+    // nearest free pad 006F2A50(site)(ship) (-4 when none); then ship+1200h =
+    // pad and 0A5h -> 0074B570 -> 0074A990, delivered at the call (LABELLED, as
+    // the mode-3 path does). Answers 1 when a landing began.
+    int landing_ship_request_landing_0074a4c0(std::size_t unit);
 
     // The per-unit table and the one-line summaries the milestone reports.
     void report();

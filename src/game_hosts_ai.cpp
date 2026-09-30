@@ -68,6 +68,15 @@ inline constexpr bool kPlannerJoinLoopbackBound = true;
 // and USNOS long exit 3 with no death row flipped (convoys steer for CB2).
 inline constexpr bool kAiGroupTransportMovesBound = true;
 
+// Packet cc9_startlanding_94h (docs/SHIP_AI_OPEN_ITEMS.md section 97). The 94h
+// that 00A11B80 routes for a ready member reaches 00821F61 -> vt+238h: on an
+// MLandingShip (vtable 00CFFA30) that is 0074A4C0, the landing request that
+// takes the nearest free pad of the site and begins the landing (0A5h ->
+// 0074A990). True: delivered to kind-0Ch members at the call. False: counted.
+// The troop transport's 008206F0 (vtable 00CFA778, the craft launch) stays
+// counted either way.
+inline constexpr bool kLandingShipStartLandingBound = false;
+
 void GameObjectiveSets::reset() noexcept {
     for (std::size_t i = 0; i < kSlotCount; ++i) slots[i].clear();
     adds = unit_adds = unit_removes = rejected = 0;
@@ -2545,6 +2554,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         unsigned long long no_anchor{0};    // not ready, no anchor
         unsigned long long inside{0};       // d <= 0.75 x CaptureRange
         unsigned long long movetos{0};      // 00A02020 issued (bound only)
+        unsigned long long landing_ships{0};   // 94h for a kind-0Ch member
+        unsigned long long begun{0};           // 0074A4C0 answered 1
+        unsigned long long refused{0};         // 0074A4C0 answered <= 0
+        unsigned long long transports{0};      // 94h for 008206F0, not modelled
         int diag_lines{0};
     } transport_moves;
 
@@ -2611,6 +2624,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (transport_ready_008128e0(m)) {                            // 00A11C3E
                 // 00A11C44..00A11C82: 94h through 0077C2A0(msg, 2, 0).
                 ++c.ready;
+                if (units.unit_is_kind_of(m, 0x0c)) {
+                    ++c.landing_ships;
+                    if constexpr (kLandingShipStartLandingBound) {
+                        // 00821F61 -> vt+238h = 0074A4C0, at the call (LABELLED).
+                        GameShipAiHost* ship_ai = units.ship_ai();
+                        const int answer = ship_ai != nullptr
+                            ? ship_ai->landing_ship_request_landing_0074a4c0(m) : 0;
+                        if (answer == 1) ++c.begun; else ++c.refused;
+                    }
+                } else {
+                    ++c.transports;                 // vt+238h = 008206F0
+                }
                 if (lander_diag_enabled() && c.diag_lines < 60) {
                     ++c.diag_lines;
                     log.notef("transport move diag: t=%.2f leader=%s member=%s ready=1 "
@@ -5281,6 +5306,12 @@ void GameAiCoordinatorHost::report() {
         host.transport_moves.ready, host.transport_moves.anchors,
         host.transport_moves.no_anchor, host.transport_moves.inside,
         host.transport_moves.movetos);
+    host.log.notef("summary mission ai startlanding 94h bound=%d landing_ships=%llu begun=%llu "
+        "refused=%llu transports_not_modelled=%llu (00821F61 -> vt+238h: 0074A4C0 on "
+        "00CFFA30, 008206F0 on 00CFA778; packet cc9_startlanding_94h)",
+        kLandingShipStartLandingBound ? 1 : 0, host.transport_moves.landing_ships,
+        host.transport_moves.begun, host.transport_moves.refused,
+        host.transport_moves.transports);
     host.log.notef("summary mission ai command zone point asks=%llu answers=%llu moved=%llu "
         "bound=%d (00A020BE / 00A020F0, margin 30.0, packet cc9_ai_command_avoid_zone_point)",
         host.avoid_zone_asks, host.avoid_zone_answers, host.avoid_zone_moved,
