@@ -1083,6 +1083,11 @@ public:
     // minimap walk (005c1628..005c164a) and the marker gate (006431a8) run.
     // Reads all four persistent cells; unavailable native state fails the gate.
     bool unit_alive_and_visible(std::size_t index) const;
+    // True once 00951F40(0) -> 00710B80 has taken the unit's collision part
+    // ([unit+360h]) out of the spatial index (the hangar hide 007B96C0 and the
+    // elevator's 006FC250) and 00951F40(1) has not put it back. Packet
+    // cc9_hit_index_detach (docs/SQUADRON_LAND_TASK.md 5as).
+    bool unit_hit_node_detached(std::size_t index) const noexcept;
     // The world matrix rows 0063a6c0 and 00427eb0 read: +CCh right, +DCh up,
     // +ECh forward and +FCh translation. False when the index is out of range.
     bool unit_pose(std::size_t index, float right[3], float up[3], float forward[3],

@@ -747,6 +747,15 @@ constexpr bool kKamikazeContactDetonationBound = true;
 //    adds it once (008778E4..00877A37). OFF: one entry at the hull-box
 //    distance. Packet cc9_blast_element_parts, docs/BLAST_ELEMENT_PARTS.md.
 constexpr bool kBlastElementEntriesBound = true;
+//  * kHitIndexDetachBound: a unit whose collision part 00951F40(0) ->
+//    00710B80 -> 0098A500 took out of the spatial index (the hangar hide
+//    007B96C0, the elevator's 006FC250; GameUnitsHost::unit_hit_node_detached)
+//    is not offered to the index's queries: the segment sweep 0098ADD0 (shells
+//    0084BF00, aim rays, picks), the blast sphere 00904470 -> 0098C630, and
+//    the line of fire's unit half 0098B130. The AA candidates come from the
+//    recon list, not the index, and are untouched. OFF: detached planes stay
+//    hittable. Packet cc9_hit_index_detach, docs/SQUADRON_LAND_TASK.md 5as.
+constexpr bool kHitIndexDetachBound = false;
 //  * kHullSegmentHealthBound: 0092D1F0 on the controller's 20 per-segment
 //    healths (00937C90: HP / the number of fizika_NN model nodes found, the
 //    gate byte -1 for an index with none), reached by R4 (a direct hit on a
@@ -1830,6 +1839,14 @@ struct GameGunneryHost::Impl {
     unsigned long long impacts_land{0};   // packet cc9_landscape_spatial_attach
     unsigned long long landscape_traces{0};  // Landscape shapes reached past 0085CAD0
     unsigned long long pick_rays_logged{0};
+    // Packet cc9_hit_index_detach: offers of a detached unit the index would
+    // not have made (counted with the switch either way; skipped only ON).
+    mutable unsigned long long hit_index_detached_offers{0};
+    bool hit_index_detached(std::size_t index) const {
+        if (!units.unit_hit_node_detached(index)) return false;
+        ++hit_index_detached_offers;
+        return kHitIndexDetachBound;
+    }
     unsigned long long line_of_fire_queries{0};
     unsigned long long line_of_fire_blocked{0};
     unsigned long long line_of_fire_refusals{0};
@@ -1861,6 +1878,7 @@ struct GameGunneryHost::Impl {
         std::size_t best_unit = static_cast<std::size_t>(-1);
         for (std::size_t u = 0; u < unit_state.size(); ++u) {
             if (u == owner || u == target || unit_state[u].dead) continue;
+            if (hit_index_detached(u)) continue;   // 0098B130 never reaches the node
             const UnitState& st = unit_state[u];
             // The unit's box: its model's BoundingBox (masts and superstructure
             // included) when the class model reads, else the class hull box.
@@ -7026,6 +7044,7 @@ public:
             return 0;
         }
         if (!owner_.units.unit_alive_and_visible(index)) return 0;
+        if (owner_.hit_index_detached(index)) return 0;
         return 1;
     }
     bool shape_trace_segment(const void* entity, int, const bsp::HitQueryPoint& from,
@@ -8866,6 +8885,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         if (i == shooter) continue;  // 0084BBF9 skips the burst's own source
         UnitState& state = unit_state[i];
         if (state.dead) continue;
+        if (hit_index_detached(i)) continue;   // 0098C630 never reaches the node
 
         // The distance from the burst centre to the unit's hull box, in the
         // hull's own frame: the same slab SegmentBinding::shape_trace_segment
@@ -10984,6 +11004,9 @@ void GameGunneryHost::report() {
             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
             kAaLineOfFireBound ? 1 : 0);
+        host.log.notef("summary mission gunnery hit index detach bound=%d offers=%llu "
+            "(00951F40(0)/00710B80/0098A500, packet cc9_hit_index_detach)",
+            kHitIndexDetachBound ? 1 : 0, host.hit_index_detached_offers);
         host.log.notef("summary mission gunnery landscape attach bound=%d entries=%zu %s "
             "impacts_land=%llu (00884078/0087FF80/0072CE91, packet cc9_landscape_spatial_attach)",
             kLandscapeSpatialAttachBound ? 1 : 0,
