@@ -452,6 +452,7 @@ public:
         const float world_position[3], int class_id = -1);
 
     // Packet cc9_building_pad_model. Null while kBuildingPadModelBound is off.
+    // The first call fills bsp::building_pad_model() (cleared first).
     bsp::BuildingPadModel* building_pads();
 
     // Packet cc8_airops_launch_tick. The unit side of 006C5050: the launch start
@@ -765,7 +766,6 @@ private:
     bsp::EntityThinkList think_live_{};
     bsp::EntityThinkList think_pending_{};
     float think_countdown_{0.0f};   // 00F89A04, zero at process start
-    bsp::BuildingPadModel building_pads_{};  // packet cc9_building_pad_model
     bool building_pads_built_{false};
     float origin_diag_next_{0.0f};  // BSP_ORIGIN_DIAG, packet cc9_script_entity_pool
     float think_step_accumulator_{0.0f};  // mirror of 00875BB0's accumulator (00F876AC)

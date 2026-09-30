@@ -286,6 +286,23 @@ bool GameAvoidZoneRuntime::group_segment_point(std::uint32_t group,
     if (hit.hit) running = hit.point;
     return hit.hit;
 }
+std::uint32_t GameAvoidZoneRuntime::group_containing(std::uint32_t group,
+    const std::array<float, 2>& point) const {
+    impl_->require_ready();
+    if (group == 0u || group > impl_->groups.size()) return 0u;
+    const std::int32_t index = avoid_zone_first_containing_004178f0(
+        impl_->table.groups.at(group - 1), point);
+    return index < 0 ? 0u : impl_->groups.at(group - 1).handles.at(
+        static_cast<std::size_t>(index));
+}
+bool GameAvoidZoneRuntime::zone_segment_point(std::uint32_t token,
+    const std::array<float, 2>& toward, const std::array<float, 2>& start,
+    std::array<float, 2>& running) const {
+    const auto& zone = impl_->zone(token);
+    running = start;
+    std::int32_t edge = 0;
+    return avoid_zone_segment_hit_00416dd0(impl_->polygon(zone), toward, running, edge);
+}
 AvoidZoneTangentCorners GameAvoidZoneRuntime::detour(std::uint32_t token,
     const std::array<float, 2>& far_point, std::int32_t edge, std::int32_t near_hint,
     std::int32_t side_hint, float margin) const {
