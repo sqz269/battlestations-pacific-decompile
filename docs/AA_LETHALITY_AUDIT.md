@@ -582,3 +582,122 @@ testable once Vals survive their dives. Neither side's releases depend on it tod
 A note for lua16: with the dive notice in, JM05's notices taken rose from 250 to 406 of 406. Every
 hit on a plane now finds a torpedo or dive task. That matches the image's walk of the task list:
 the first task that answers true takes the hit.
+
+## 9. The per-shot hit test: the host hits a plane's class box, the image hits its GeomMesh (packet `cc9_plane_mesh_hit`, cc9-gunnery16, 2026-09-30 02:38 UTC)
+
+The lead asked for a stage-by-stage comparison of the AA path against the torpedo planes. Sections
+1-8 had already covered most stages, and found them faithful or bound them:
+- target velocity (3);
+- skill errors, SPNormal swing and flak aim (7);
+- barrel count and cadence (8.2);
+- damage per hit, HP, armour and the difficulty multiplier (1, 8.2; DIFFICULTY_MULTIPLIERS 1);
+- aim point (8.2);
+- hit notification (8.3-8.5).
+
+The stage none of them read is the per-shot hit test: what a round's segment has to touch to hit
+a plane.
+
+### 9.1 The image: a plane is hit through its model's GeomMesh
+
+**The shapes a plane owns.**
+- `007D5DAC`, in `BSP_Plane_ReadPropertyBag`, calls `00955420`. The first call there,
+  `00955424`, is `0087BCC0` (`callsite_census`; `disasm-raw 00955420`).
+- `0087BCC0` builds the unit-part instance: `007135C0`, then `00712440`
+  (NARROWPHASE_UNIT_PART_SHAPE section 0, steps 1-7).
+- Its `00CFD768` shapes carry the model's GeomMesh. A segment query reaches them through
+  `0098AC82` and then `00724510` -> `00723E90` -> `00723D60`: the closest triangle over the mesh
+  elements.
+- `00712440` publishes only the shapes whose transform is not a movable part group (its `+198h`
+  list).
+
+**No other shape is available to a plane.**
+- The transformed box at `entity+1A4h` (`00929B80`) is published only by `0092AAE0`.
+- `0092AAE0`'s two callers are both in `00935D30` (`callsite_census 0092AAE0`).
+- `00935D30` is the breakup-piece builder, reached from `BSP_UnitInstance_OnBreakupMessage`. Its
+  strings are `ELELLYE` and `HATULLYA`.
+
+**The model.** This installation's `vehicleclasses.lua` (2026-05-10) gives the B5N Kate:
+- `Mesh = "models/planes/japan/B5N_Kate.MMOD"`;
+- `Width 16.5`, `Height 7`, `Length 14`.
+
+`b5n_kate.MMOD` (2024-07-13) holds one GeomMesh. It was read with this tree's
+`bsp::read_mmod_geom_meshes`, through the probe `local\g16_meshprobe.exe`:
+- 24 vertices, 44 triangles;
+- four elements, all on node 0: `engine` (kind 3, 8 triangles), `rwing` (kind 1, 12), `lwing`
+  (kind 0, 12) and `fuselage` (kind 2, 12). In other words, four boxes;
+- bounds x -7.53..7.53, y -1.11..1.92, z -7.64..3.75, so 15.1 x 3.0 x 11.4 m.
+
+### 9.2 The host: the class box
+
+`SegmentBinding::shape_trace_segment` (`src/game_hosts_gunnery.cpp`) tests a plane against:
+- the slab box `Width x Height x Length`, centred on the unit origin: 16.5 x 7 x 14 m for the
+  Kate;
+- the posed box, for the broad phase.
+
+Ships have used the mesh since `kShellHullHitTestBound`. Planes never did.
+
+**Silhouettes compared.** The probe casts parallel rays on a 5 cm grid, from a gun ahead of the
+plane at azimuth `az` off the nose and elevation `el` below it.
+
+| el \ az | 0 | 30 | 60 | 90 |
+| --- | --- | --- | --- | --- |
+| 0 deg | 115.5 / 29.1 m2 (4.0x) | 148.8 / 28.4 (5.2x) | 142.5 / 27.4 (5.2x) | 98.0 / 27.6 (3.6x) |
+| 3 deg | 127.9 / 27.7 (4.6x) | 160.7 / 27.6 (5.8x) | 154.3 / 27.3 (5.7x) | 109.9 / 28.0 (3.9x) |
+| 10 deg | 154.3 / 32.8 (4.7x) | 186.6 / 32.2 (5.8x) | 180.4 / 31.3 (5.8x) | 136.5 / 31.4 (4.3x) |
+| 30 deg | 215.3 / 49.6 (4.3x) | 244.3 / 50.8 (4.8x) | 238.9 / 50.2 (4.8x) | 200.9 / 48.3 (4.2x) |
+
+Each cell is the box area, then the mesh area, then box / mesh.
+
+**Result:** at every aspect the host presents 3.6 to 5.8 times the image's target area. A round
+that passes up to 3.5 m above or below the wing, or up to 3 m ahead of the nose, is a hit here and
+a miss in the image. **This is the first stage where the host is more lethal than the image.**
+
+### 9.3 The binding (`kPlaneMeshHitTestBound`, committed OFF)
+
+**ON:** a plane with a model mesh is traced against its triangles (the ship path's triangle loop),
+with the posed mesh bounds as the broad phase.
+
+**Labelled substitutions:**
+- every triangle is in model space (all four Kate elements hang on node 0);
+- no movable part group is excluded;
+- the record keeps `0Ah` / `-1`, not the element's kind and index (`00723F62` / `00723F6C`), so the
+  plane damage path downstream is unchanged.
+
+**Census, on both sides of the switch:** `summary mission gunnery plane mesh hit tests= mesh_hits=
+class_box_hits=`.
+- It counts every narrowphase segment against a plane with a mesh, line-of-fire queries included.
+- It gives both verdicts on the same segment.
+- It changes no state.
+
+### 9.4 Predictions (written before any run)
+
+**The pair.**
+- Same-tree exports of the OFF commit; the ON side flips `kPlaneMeshHitTestBound`.
+- Rows: USN04 4700/4500, E2 9200/9000, USN13 3200/3000, USN13 9200/9000 and USN01 3200/3000, plus
+  JM06 and USN12 as controls.
+- Reference launch form, with the RNG option and the death table on.
+
+**Predictions:**
+- **P1, the census.**
+  - On OFF, `class_box_hits / mesh_hits` is at least 3 on every row with plane tests. Aim that
+    concentrates rounds near the centre can pull it below the 3.6-5.8 silhouette ratio, but not
+    to 1.
+  - On ON, the rows keep the same form.
+- **P2, hits on aircraft.** The summed `c1` + `c5` + `c6` hits in the death rows of aircraft fall
+  by at least 30% on E2, USN04 and USN13.
+  - Category 1 (MG, direct only) falls most.
+  - Flak blasts (5 and 6) are not direct-strike limited, since the proximity fuse of section 3
+    bursts near the plane, so they fall least.
+- **P3, deaths.**
+  - Aircraft killed by AA fall on E2 (48 in r), USN04 (47) and USN13 3000 (22).
+  - The kills that remain come later, with a later `first_damage`.
+- **P4, torpedo drops.** E2 and USN04 go from 1 of 16 torpedo-task releases to at least 2. USN13
+  may rise from 0; that is not required.
+- **P5, controls.** JM06 and USN12 are gameplay-identical (`pair_diff` 0 or 1) if their OFF census
+  shows `tests=0`.
+
+**Mechanism failure:**
+- ON `mesh_hits = 0` with `tests > 0` (a pose or model mismatch); or
+- aircraft hits unchanged with the census showing a ratio of at least 3.
+
+Either keeps the switch OFF.

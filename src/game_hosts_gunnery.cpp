@@ -616,6 +616,23 @@ constexpr bool kShellHullHitTestBound = true;
 //    OFF: every mesh hit carries -1 / 0Ah and none of them runs.
 //    Packet cc9_ship_fire_flooding, docs/SHIP_FIRE_FLOODING.md.
 constexpr bool kHullElementSegmentBound = true;
+//  * kPlaneMeshHitTestBound: a round's segment against a PLANE is tested against
+//    the triangles of the plane model's GeomMesh, as for a ship above. A plane
+//    reaches the same shapes: BSP_Plane_ReadPropertyBag (007D5DAC) calls
+//    00955420, whose first call 00955424 is 0087BCC0; that builds the unit-part
+//    instance (007135C0 -> 00712440), whose 00CFD768 shapes carry the GeomMesh
+//    (00724510 -> 00723E90). The transformed box (entity+1A4h, 00929B80) is
+//    installed only by 0092AAE0 for the breakup pieces (00935D30), never for a
+//    plane. The B5N Kate's GeomMesh is four boxes (engine, rwing, lwing,
+//    fuselage; 24 vertices, 44 triangles) spanning 15.1 x 3.0 x 11.4 m, against
+//    the host's Width x Height x Length box of 16.5 x 7 x 14 m: 4 to 6 times the
+//    silhouette (docs/AA_LETHALITY_AUDIT.md section 9). Labelled substitutions:
+//    every triangle in model space (all four Kate elements hang on node 0), no
+//    movable part group excluded (00712440's +198h list), and the record keeps
+//    0Ah / -1 instead of the element's kind and index (00723F62 / 00723F6C), so
+//    the plane damage path is unchanged. OFF: the class box.
+//    Packet cc9_plane_mesh_hit.
+constexpr bool kPlaneMeshHitTestBound = false;
 //  * kShipDamageControlTickBound: message 9Eh's add arms 0093A4F0 (water,
 //    task+34h) and 0093A470 (fire, task+38h) add seconds, and the water and
 //    fire steps of 0093CA20 (0093C120 over +34h at WaterTickDamage, 0093C210
@@ -1238,6 +1255,12 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, ArtilleryAimPoint> artillery_aim_by_gun;
     unsigned long long artillery_aim_points{0};
     unsigned long long shell_mesh_hits{0};
+    // Packet cc9_plane_mesh_hit: narrowphase segment tests against a plane with a
+    // mesh (every query, line-of-fire ones included), and the mesh's and the class
+    // box's verdicts on the same segments (census only, both sides of the switch).
+    unsigned long long plane_mesh_tests{0};
+    unsigned long long plane_mesh_hits{0};
+    unsigned long long plane_box_hits{0};
     unsigned long long summary_zero_damage_attributions_skipped{0};   // packet cc9_kill_credit
     // 006DF6D7-006DF7B5 then 006DF7BB-006DF7E7: the body point on the target,
     // refreshed every TargetPointRefreshTime, carried to world by its pose.
@@ -1838,6 +1861,20 @@ struct GameGunneryHost::Impl {
         if (type_id < 0) return nullptr;
         const ShipModelSlots& model = ship_model_slots(type_id);
         return model.has_mesh ? &model : nullptr;
+    }
+    // Packet cc9_plane_mesh_hit. See kPlaneMeshHitTestBound.
+    // `census` reads the model whatever the switch, for the census only.
+    const ShipModelSlots* plane_mesh_of(std::size_t index, bool census = false) {
+        if ((!kPlaneMeshHitTestBound && !census) || index >= unit_state.size()) return nullptr;
+        if (!units.unit_is_kind_of(index, bsp::kUnitGunneryKindPlaneBase)) return nullptr;
+        const int type_id = unit_state[index].row.type_id;
+        if (type_id < 0) return nullptr;
+        const ShipModelSlots& model = ship_model_slots(type_id);
+        return model.has_mesh ? &model : nullptr;
+    }
+    const ShipModelSlots* hit_mesh_of(std::size_t index) {
+        if (const ShipModelSlots* ship = ship_mesh_of(index)) return ship;
+        return plane_mesh_of(index);
     }
     // Packet cc9_aa_turn_average: 00901C20's turn-rate average, 00901CC1..00901EEE,
     // on the target velocity `v` in place. See kAaTargetTurnAverageBound.
@@ -6865,7 +6902,7 @@ bool SegmentBinding::box_of(std::size_t index, float centre[3], float half[3]) c
     const GameGunneryHost::Impl::UnitState& state = owner_.unit_state[index];
     float right[3], up[3], forward[3], origin[3];
     owner_.unit_pose(index, right, up, forward, origin);
-    if (const auto* model = owner_.ship_mesh_of(index)) {
+    if (const auto* model = owner_.hit_mesh_of(index)) {
         // Packet cc9_hull_sections: the mesh bounds, posed, as the broad phase.
         float c[3], e[3];
         for (int k = 0; k < 3; ++k) {
@@ -6920,7 +6957,60 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     // The hull box in its own frame: a slab test along the three pose rows.
     float right[3], up[3], forward[3], origin[3];
     owner_.unit_pose(index, right, up, forward, origin);
-    if (const auto* model = owner_.ship_mesh_of(index)) {
+    const GameGunneryHost::Impl::ShipModelSlots* plane_model = owner_.ship_mesh_of(index) == nullptr
+        ? owner_.plane_mesh_of(index) : nullptr;
+    if (const GameGunneryHost::Impl::ShipModelSlots* census = owner_.ship_mesh_of(index) == nullptr
+            ? owner_.plane_mesh_of(index, true) : nullptr) {
+        // Census only, on both sides of the switch: the class box's and the
+        // mesh's verdicts on the same segment. Changes no state but the counters.
+        ++owner_.plane_mesh_tests;
+        const GameGunneryHost::Impl::UnitState& st = owner_.unit_state[index];
+        const float h[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f, st.hull_length * 0.5f};
+        const float* ax[3] = {right, up, forward};
+        const float rel0[3] = {from.x - origin[0], from.y - origin[1], from.z - origin[2]};
+        const float sp[3] = {to.x - from.x, to.y - from.y, to.z - from.z};
+        float o[3], d[3];
+        for (int i = 0; i < 3; ++i) {
+            o[i] = dot3(rel0, ax[i]);
+            d[i] = dot3(sp, ax[i]);
+        }
+        float lo_t = 0.0f, hi_t = 1.0f;
+        bool inside = h[0] > 0.0f && h[2] > 0.0f;
+        for (int i = 0; i < 3 && inside; ++i) {
+            if (std::fabs(d[i]) < 1.0e-6f) { inside = o[i] >= -h[i] && o[i] <= h[i]; continue; }
+            float t0 = (-h[i] - o[i]) / d[i], t1 = (h[i] - o[i]) / d[i];
+            if (t0 > t1) std::swap(t0, t1);
+            lo_t = std::max(lo_t, t0);
+            hi_t = std::min(hi_t, t1);
+            inside = lo_t <= hi_t;
+        }
+        if (inside) ++owner_.plane_box_hits;
+        bool mesh_hit = false;
+        const auto& tri = census->tris;
+        for (std::size_t n = 0; n + 2 < tri.size() && !mesh_hit; n += 3) {
+            const auto& a = tri[n];
+            const auto& b = tri[n + 1];
+            const auto& c = tri[n + 2];
+            const float e1[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+            const float e2[3] = {c[0] - a[0], c[1] - a[1], c[2] - a[2]};
+            const float p[3] = {d[1] * e2[2] - d[2] * e2[1], d[2] * e2[0] - d[0] * e2[2],
+                d[0] * e2[1] - d[1] * e2[0]};
+            const float det = e1[0] * p[0] + e1[1] * p[1] + e1[2] * p[2];
+            if (std::fabs(det) < 1e-12f) continue;
+            const float inv = 1.0f / det;
+            const float s0[3] = {o[0] - a[0], o[1] - a[1], o[2] - a[2]};
+            const float u = (s0[0] * p[0] + s0[1] * p[1] + s0[2] * p[2]) * inv;
+            if (u < 0.0f || u > 1.0f) continue;
+            const float q[3] = {s0[1] * e1[2] - s0[2] * e1[1], s0[2] * e1[0] - s0[0] * e1[2],
+                s0[0] * e1[1] - s0[1] * e1[0]};
+            const float v = (d[0] * q[0] + d[1] * q[1] + d[2] * q[2]) * inv;
+            if (v < 0.0f || u + v > 1.0f) continue;
+            const float t = (e2[0] * q[0] + e2[1] * q[1] + e2[2] * q[2]) * inv;
+            mesh_hit = t >= 0.0f && t <= 1.0f;
+        }
+        if (mesh_hit) ++owner_.plane_mesh_hits;
+    }
+    if (const auto* model = owner_.hit_mesh_of(index)) {
         // 00723E90 / 00723D60 / 00723AA0: the segment in the ship's frame
         // against every GeomMesh triangle; the closest hit wins.
         const float* ax[3] = {right, up, forward};
@@ -6936,7 +7026,8 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         float best = 2.0f;
         int best_kind = 0x0A;
         int best_index = kDirectHitHullSegment;
-        const bool by_element = kHullElementSegmentBound && !model->element_tris.empty();
+        const bool by_element = kHullElementSegmentBound && !model->element_tris.empty()
+            && plane_model == nullptr;
         const auto& tri = by_element ? model->element_tris : model->tris;
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
@@ -6981,7 +7072,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
         hit_landscape = 0;
-        ++owner_.shell_mesh_hits;
+        if (plane_model == nullptr) ++owner_.shell_mesh_hits;
         return true;
     }
     const GameGunneryHost::Impl::UnitState& state = owner_.unit_state[index];
@@ -10619,6 +10710,10 @@ void GameGunneryHost::report() {
             "bound=%d (00816650 / 0081F980; 00724510 -> 00723AA0, packet cc9_hull_sections)",
             host.artillery_section_points, kShipSectionPointsBound ? 1 : 0, host.shell_mesh_hits,
             kShellHullHitTestBound ? 1 : 0);
+        host.log.notef("summary mission gunnery plane mesh hit tests=%llu mesh_hits=%llu "
+            "class_box_hits=%llu bound=%d (0087BCC0 -> 00712440 -> 00724510, packet "
+            "cc9_plane_mesh_hit)", host.plane_mesh_tests, host.plane_mesh_hits,
+            host.plane_box_hits, kPlaneMeshHitTestBound ? 1 : 0);
         host.log.notef("summary mission gunnery aa line of fire queries=%llu blocked=%llu "
             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
