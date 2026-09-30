@@ -46,6 +46,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <deque>
 #include <functional>
 #include <map>
 #include <string>
@@ -247,6 +248,12 @@ inline constexpr bool kNavigatorForceTorpedoBound = false;
 // rule. With a lockstep 0.05 s frame this is one pass per frame, which is the
 // old behaviour exactly. False: one think pass per frame with the frame delta.
 inline constexpr bool kScriptThinkOnFixedStep = true;
+
+// Packet cc9_script_entity_pool, docs/SHIP_AI_OPEN_ITEMS.md section 74. True: CreateScript
+// (00898841, one operator_new per call) has no count bound, as in the image. False: creation
+// stops at kScriptEntityCapacity (512) and CreateScript answers no entity, which ends every
+// luaDelay chain of a long mission (JM08 at mission frame 2001).
+inline constexpr bool kScriptEntityPoolUnboundedBound = false;
 
 class GameHostLog;
 class GameUnitsHost;
@@ -738,7 +745,8 @@ private:
     void* path_entity_for_order_{nullptr};
 
     // Packet cc_lua_binding_audit.
-    std::vector<GameScriptEntity> script_entities_;
+    // A deque: Lua holds the records as light userdata, and push_back keeps them in place.
+    std::deque<GameScriptEntity> script_entities_;
     bsp::EntityThinkList think_live_{};
     bsp::EntityThinkList think_pending_{};
     float think_countdown_{0.0f};   // 00F89A04, zero at process start

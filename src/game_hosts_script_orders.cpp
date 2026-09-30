@@ -254,8 +254,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
 constexpr std::uint32_t kScriptEntityIdBase = 100000u;
 
 // The records are handed to Lua as light userdata, so the storage must not move
-// under a live `Ptr`. The capacity is taken once and creation stops at it; the
-// native has no such bound, which is why the cap is reported rather than silent.
+// under a live `Ptr`; a deque keeps them in place. With kScriptEntityPoolUnboundedBound
+// off, creation stops at this count; the native has no such bound, which is why the
+// cap is reported rather than silent.
 constexpr std::size_t kScriptEntityCapacity = 512;
 
 // The adapter for the bodies of docs/LUA_BINDING_CORE.md that this host runs:
@@ -3035,10 +3036,7 @@ void* GameScriptOrdersHost::script_entity_create_00898841() {
     // The 0x1E4-byte allocation and 00928630's construct. This process keeps only
     // the fields the five script bindings and 00929460 read; every other byte of
     // the native block has no reader here.
-    if (script_entities_.capacity() < kScriptEntityCapacity) {
-        script_entities_.reserve(kScriptEntityCapacity);
-    }
-    if (script_entities_.size() >= kScriptEntityCapacity) {
+    if (!kScriptEntityPoolUnboundedBound && script_entities_.size() >= kScriptEntityCapacity) {
         // 00898841 has no bound; this process does, because the records are handed
         // to Lua as light userdata and must not move.
         log_.notef("script entity cap %zu reached; CreateScript answers no entity "

@@ -6248,3 +6248,54 @@ has been read, unless it is marked unread.
 - `s19_owners.py` (every authored `OwnerPlayer` in this installation's scenes);
 - `s19_str.py <text>...` (string VA and abs32 refs in the PE) and `s19_dump.py <va> <n>` (dwords
   with the strings they point at).
+
+## 74. Which row reaches a troop landing (packet `cc9_script_entity_pool`, cc9-ships20, 2026-09-30)
+
+Section 73's step (0): run JM08 long and see whether the scripted invasion starts.
+
+### 74.1 The census on main `15f066a2d` (runs 2026-09-30 04:19-04:27 UTC)
+
+Launch form of the reference rows (`--press-start-frame 30 --mission-frame-seconds 0.05`,
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, 1600x900), logs `local\s20_m_<row>.log`:
+
+| row | frames | script | approach latch | lander | modes 3/4 | script `attackmove` |
+| --- | --- | --- | --- | --- | --- | --- |
+| JM08 | 9200/9000 | `PRCPJM08.lua` | 336 frames, all `other`, all mode 0 | 0 | 0/0 | 0 |
+| JM08 | 36200/36000 | same | 1828 frames, all `other`, all mode 0 | 0 | 0/0 | 0 |
+| BSM02 | 9200/9000 and 36200/36000 | `bsm_02_defense_of_the_philippines.lua` | 0 | 0 | 0/0 | 0 |
+| BSM06 | 9200/9000 and 36200/36000 | `bsm_06_holding_lombok.lua` | 0 | 0 | 0/0 | 0 |
+
+- The script this installation loads for JM08 is `scripts/missions/COTP-IJN/PRCPIJN/prcpjm08.lua`
+  (mtime 2024-08-26 16:10, not 2024-07-13 as section 73 says; `jm08.lua` is 2024-07-13 and differs
+  only in its script path, name and message map).
+- **JM08 does not reach, and the reason is the host, not the mission.** JM08's `script_calls`
+  stops growing at mission frame 2001 (2889, the same at 3000, 9000, 18000 and 36000). The end
+  summary says `timers created=512 ... deletes=511`.
+- `GameScriptOrdersHost::script_entity_create_00898841` stops at `kScriptEntityCapacity = 512`
+  and answers no entity from then on. Every `luaDelay` makes one script entity. JM08 re-arms about
+  ten one-second checks (`CheckInvasion`, `CheckAP1..6`, `CheckPrim1/2`, `CheckCompletion`, ...), so
+  its 512 are spent by about 100 s of mission time, and every delayed chain then stops.
+- `CheckInvasion` polls for an Allied ship within 300 m of (0,0,0) once a second. Its chain died at
+  frame 2001, so even an Allied fleet arriving later would start nothing.
+- The image has no bound: `BSP_LuaBinding_CreateScript` allocates each entity with `operator_new`
+  (0x1E4 bytes at `00898834`-`00898841`, then `_memset` and the construct `00928630` at `0089886F`).
+- BSM02 (1421 calls by frame 36000) and BSM06 (27 calls) spend less than 512, so the cap is not
+  their limit. Both issue their landings with `NavigatorMoveOnPath` / `NavigatorMoveToRange` to
+  path points, not to a CommandBuilding (`bsm_02...lua` lines 1039-1098, `bsm_06...lua` 611-640),
+  and their latch stays 0.
+
+### 74.2 The pool switch, `kScriptEntityPoolUnboundedBound` (committed OFF)
+
+- ON: the records live in a `std::deque` (element addresses stay valid on `push_back`, which is
+  why the vector needed a reserved capacity), the cap is not applied, and the id is still
+  `kScriptEntityIdBase + index`. OFF keeps the 512 cap exactly. The storage type changes in both
+  modes; OFF behaviour is unchanged because a reserved vector never reallocated below 512.
+- **Predictions (written before any flip run):**
+  - JM08 long moves (exit 3): `script_calls` keeps growing past frame 2001, and `timers created`
+    goes past 512. Whether the invasion starts depends on an Allied ship reaching 300 m of the
+    origin, which this reading cannot predict; if it does, `attackmove` > 0 and some transport
+    latches `building` or `lander`.
+  - Every other row whose script makes more than 512 delayed calls moves too. BSM02 long, BSM06
+    long, and the 3000-frame reference rows that stay under 512, are identical (exit 0 or 1).
+  - The run-time cost is linear scans over more records (`script_entity`, the think pass); no
+    crash.
