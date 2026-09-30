@@ -5817,3 +5817,22 @@ This piece is part of the same switch group, `kBaseLaunchChainBound`, which is s
   That is 6 `placed` and 6 `ground_entries`.
 - The carriers' first members stay in `site+18h` (piece 3b).
 - No launched plane reaches state 7.
+
+### Record (commit `84cde0e77`, 2026-09-30)
+
+- **Smoke, off, USN01 300 frames:** 299 frames were presented; the run exited cleanly.
+- **JM05 3000, switch on** (`local\l25_p2bon` rebuilt at `84cde0e77`, SHA-256 `49C80E481811`), as
+  predicted:
+  - Each airfield placed its three members at 3.05, 5.10 and 7.15 s:
+    - index 0/1/2, slide 1.00/0.80/0.60;
+    - `SecondaryAirfieldEntity 01` at about (-1406.0, 3.2, -898.0);
+    - `MainAirfieldEntity 01` at about (2876.0, 13.3, 6332.5).
+  - Each member went 2 -> 5 on placement: `placed=6 ground_entries=6 refused=0`.
+  - Both airfield tasks then ended (`ended=2`, `sends=8`: six on the airfields and one on each
+    carrier). The carriers still hold their first member in `site+18h`.
+  - 24 members stayed Inside at the end.
+  - GroundPitch reads 0.000 for class 135.
+- **The spacing is 0.2 m per index,** so the three members stand almost on top of each other at
+  the entry path's head. That is the formula as read. The class's `+158h` (0.0 here, a
+  substitution) is what would move the stack along the path. The pair should show whether the
+  taxi of piece 4 separates them.
