@@ -6551,6 +6551,9 @@ The read closes it with no code change:
   phase once per 0.05 s step, which is the image's order inside `00C5BB30`.
 - **The one condition:** this holds for the host's step of 0.05, the reference launch form's
   `--mission-frame-seconds 0.05`. A different host step would need the plan.
+- **Real play:** frame times vary, so the number of fixed steps per rendered frame varies (zero
+  or more, FIXED_STEP_FANOUT). Every call still passes `0.05f` (`00D0DE84`), so each fixed step
+  still runs one substep. A host run with a variable step would differ.
 - No switch and no pair. The header comment in `include/bsp/hull_terrain_contact.hpp` records it.
 
 Left from 84.1: hull-terrain pairs only (85.2 item 3d: hull-hull and hull-object manifolds, the
