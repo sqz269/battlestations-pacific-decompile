@@ -648,6 +648,16 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     record.world[12] = owner_row->position[0];
     record.world[13] = owner_row->position[1] + kAirOpsSquadronLaunchAltitude;
     record.world[14] = owner_row->position[2];
+    if constexpr (kBaseLaunchChainBound) {
+        // Packet cc9_base_launch_inside_start (docs/SQUADRON_LAND_TASK.md 5ax).
+        // 006C5050 copies the owner's world matrix (owner+CCh, 16 dwords) into
+        // the bag and adds the random launch height (tuning+210h) to its y only
+        // with the airborne flag (006C5050's param_2), which this host's one
+        // launch path, 006CC733, pushes as 0. So the squadron is made at the
+        // base's own origin, with `State` 1; the axes stay the identity
+        // (SUBSTITUTION, labelled: the owner's rotation rows are not copied).
+        record.world[13] = owner_row->position[1];
+    }
 
     // 006C5050 fills `WingCount` from slot+8h and hands the bag to 004F0AD0,
     // whose slot-39 attach 007F4580 then makes that many planes. This is the
@@ -709,6 +719,11 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     squadron.type_class_id = static_cast<std::int32_t>(vehicle_class);
     squadron.party = record.party;
     squadron.from_air_ops_launch = true;
+    // The bag's `HomeBase` (006C5050, the owner at block+7Ch) and `State`: 1,
+    // since 006CC733 pushes the airborne flag as 0 (006C5050: State =
+    // flag ? 7 : 1). Read by the squadron's pass C behind kBaseLaunchChainBound.
+    squadron.bag_home_base = home_base;
+    squadron.bag_state = 1;
     squadron.squadron_unit = before;
     squadron.member_names.clear();
     squadron.member_units.clear();

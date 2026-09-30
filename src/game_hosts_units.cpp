@@ -2316,6 +2316,12 @@ struct GameUnitsHost::Impl {
     void carrier_elevator_platform_tick_006fc480(LandingDeck& d, float dt);
     void plane_enter_state_two_007cc7a0(GameUnitSlot& p);
     unsigned long long carrier_elevator_state_two{0};
+    // Packet cc9_base_launch_inside_start (kBaseLaunchChainBound).
+    void plane_enter_state_one_007cc820(GameUnitSlot& p, std::size_t base_index);
+    unsigned long long base_launch_inside_entries{0};
+    unsigned long long base_launch_inside_squadrons{0};
+    unsigned long long base_launch_inside_no_base{0};
+    unsigned long long base_launch_inside_carry_steps{0};
     unsigned long long carrier_deck_parented{0}, carrier_deck_wire_seeded{0};
     unsigned long long carrier_deck_carry_steps{0}, carrier_deck_wire_steps{0};
     unsigned long long carrier_deck_wire_resets{0}, carrier_deck_edge_takeoffs{0};
@@ -11404,6 +11410,40 @@ void GameUnitsHost::Impl::plane_enter_state_two_007cc7a0(GameUnitSlot& p) {
     p.plane_site_timer_c04 = -1.0f;
     ++carrier_elevator_state_two;
     record("Plane::enter_state_two_007cc7a0", 0x007cc7a0u);
+}
+
+// 007C2130 BSP_Plane_RequestFlightStateOne (007C2130-007C21C3, __thiscall(plane),
+// RET): skips a plane already in 1 (007C214B) and a client session (game+1FE4h ==
+// 2, 007C2159; single player is not); otherwise a C3h message with the current
+// state (007C2169) and requested 1 routed with 7 (007C21AD 0077C2A0), delivered
+// here at once, as 007C2090's twin is. Its handler 007CC820
+// BSP_Plane_EnterFlightStateOne (`RET`): 007C78A0 only on a client; when +900h
+// is not 1, +900h = 1, +C04h = -1.0 (00D7A260) and 007C11E0(0) (not carried, as
+// at the other state entries); then the re-parent vtable[ACh] to the squadron's
+// home base (+9D4h)->+404h (007CC86E-007CC88B), which every launched member has.
+// The re-parent is the host's deck parent (the local pose under the base).
+// Nothing here writes +908h or the velocity: those are what the host's creation
+// seed wrote for 007C6340, which 007F4DA9 skips for this squadron, so they go
+// back to the constructor's zero (007CFD20 leaves +900h at 0; LABELLED: +908h's
+// constructor zero is inferred from 007C6340 writing it on every placement arm).
+void GameUnitsHost::Impl::plane_enter_state_one_007cc820(GameUnitSlot& p,
+                                                        std::size_t base_index) {
+    if (p.plane_control_mode_900 == 1) return;                        // 007C214B
+    p.plane_control_mode_900 = 1;                                     // 007CC857
+    p.plane_site_timer_c04 = -1.0f;                                   // 007CC861
+    p.plane_airborne_908 = 0.0f;
+    for (int i = 0; i < 3; ++i) {
+        p.plane_world_velocity[i] = 0.0f;
+        p.plane_body_angular[i] = 0.0f;
+    }
+    p.motion.linear_velocity = bsp::OceanVec3{0.0f, 0.0f, 0.0f};
+    if (base_index < slots.size() && slots[base_index]) {
+        p.deck_parent_plus_one = base_index + 1u;                     // vtable[ACh]
+        p.deck_stop_logged = false;
+        carrier_deck_capture(p);
+    }
+    ++base_launch_inside_entries;
+    record("Plane::enter_state_one_007cc820", 0x007cc820u);
 }
 
 // 006FC720 (flag 0 of 006D0050 with a plane): the platform at the top and still,
@@ -25724,6 +25764,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     }
                 }
                 if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
+                if constexpr (kBaseLaunchChainBound) {
+                    // Packet cc9_base_launch_inside_start. A plane Inside (state 1)
+                    // selects no arm (007CEC30), but 007CC820 parented it to its
+                    // base, whose scene node carries the child's derived pose
+                    // (00414E10, parent x local); the host's deck parent does it here.
+                    if (arm == bsp::PlaneMotionArm::None && slot.plane_control_mode_900 == 1
+                        && slot.deck_parent_plus_one != 0) {
+                        host.carrier_deck_carry_in(slot);
+                        ++host.base_launch_inside_carry_steps;
+                    }
+                }
                 ++host.summary.plane_steps;
                 if constexpr (kPlaneRowPositionBound) {
                     // Packet cc9_controlled_plane_ai_moveto: the row's copy of
@@ -27108,6 +27159,51 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
         // controller +348h (SUBSTITUTION, labelled).
         Impl& host = *impl_;
         if (squadron_index >= host.slots.size()) return;
+        if constexpr (kBaseLaunchChainBound) {
+            // Packet cc9_base_launch_inside_start (docs/SQUADRON_LAND_TASK.md
+            // 5ax), 007F4C0B-007F4DB5 for an air-ops squadron: `State` (00CF8818)
+            // is the bag's 1, so flag = State < 2; `HomeBase` (00CF8820) is the
+            // deck owner. 007F1C00(base, flag): in this campaign session
+            // ([00E188A8]+1FE4h == 0) 007F1C69 pushes 006CC7B0 (the host made
+            // that push at the launch start, labelled in air_operations.cpp),
+            // then 007F1C78 +408h = flag and 007F1C7E 007ED6E0, which sets +408h
+            // again and calls 007C2130 on every member +3D0h[0..+3CCh). 007F4DA9
+            // then skips 007F2920, the airborne placement, since +408h is set.
+            bsp::PlaneSquadronHostRecord* rec =
+                bsp::plane_squadron_registry().find_by_member_unit(squadron_index);
+            if (rec != nullptr && rec->from_air_ops_launch && rec->bag_state < 2
+                && !rec->home_launch_408) {
+                std::size_t base = host.slots.size();
+                for (std::size_t u = 0; u < host.slots.size(); ++u) {
+                    if (host.slots[u] && host.slots[u]->row.name == rec->bag_home_base) {
+                        base = u;
+                        break;
+                    }
+                }
+                if (base >= host.slots.size()) {
+                    ++host.base_launch_inside_no_base;
+                } else {
+                    rec->home_launch_408 = true;                          // 007F1C78
+                    std::size_t entered = 0;
+                    for (const std::size_t m : rec->member_units) {       // 007ED700
+                        if (m == bsp::kPlaneSquadronNoUnit || m >= host.slots.size()) continue;
+                        if (!host.slots[m]) continue;
+                        host.plane_enter_state_one_007cc820(*host.slots[m], base);
+                        ++entered;
+                    }
+                    ++host.base_launch_inside_squadrons;
+                    host.log.notef("base launch inside start: squadron=%s base=%s members=%zu "
+                        "state 1 at (%.1f %.1f %.1f) (007F1C00 flag -> 007ED6E0 -> 007C2130 "
+                        "-> 007CC820, 007F4DA9 skips 007F2920; packet "
+                        "cc9_base_launch_inside_start)", rec->name.c_str(),
+                        rec->bag_home_base.c_str(), entered,
+                        static_cast<double>(host.slots[squadron_index]->motion.position[0]),
+                        static_cast<double>(host.slots[squadron_index]->motion.position[1]),
+                        static_cast<double>(host.slots[squadron_index]->motion.position[2]));
+                    host.done("Squadron::enter_inside_007ed6e0", 0x007ed6e0u);
+                }
+            }
+        }
         if constexpr (Impl::kSceneHomeBaseBound) {
             // Packet cc9_scene_home_base_key: 007F4C40..007F4CFA, before the
             // command test. `HomeBase` (00CF8820) of type 5 with a non-empty
@@ -28071,6 +28167,17 @@ void GameUnitsHost::report() {
                 e.unfed_relaunch, e.top_releases, e.mode_50, static_cast<double>(e.p18),
                 host.carrier_elevator_state_two);
         }
+    }
+    if constexpr (kBaseLaunchChainBound) {
+        std::size_t inside_now = 0;
+        for (const auto& s : host.slots) {
+            if (s && s->plane_control_mode_900 == 1) ++inside_now;
+        }
+        host.log.notef("summary base launch inside start: squadrons=%llu entries=%llu "
+            "no_base=%llu carry_steps=%llu inside_now=%zu (007F1C00 / 007ED6E0 / 007CC820, "
+            "packet cc9_base_launch_inside_start)", host.base_launch_inside_squadrons,
+            host.base_launch_inside_entries, host.base_launch_inside_no_base,
+            host.base_launch_inside_carry_steps, inside_now);
     }
     if constexpr (kLandingSequencerBound) {
         const bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();

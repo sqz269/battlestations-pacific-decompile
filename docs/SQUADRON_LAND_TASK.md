@@ -5533,3 +5533,73 @@ because 5ar.1's counters moved.
 - `l24_consts.py`: floats and doubles from the executable on disk;
 - `l24_grep.py`: a line filter for spilled outputs;
 - `l24_ce2c0_full.asm` and `l24_ce2c0.c`: the Takeoff step listing and pseudocode.
+
+## 5ax. Base launch chain, piece 1: the Inside start (packet `cc9_base_launch_inside_start`, cc9-lua25, 2026-09-30)
+
+The first piece of the switch group `kBaseLaunchChainBound` (`include/bsp/game_hosts_units.hpp`),
+committed **OFF**. With the switch on, an air-ops launch no longer makes its squadron airborne; its
+members sit Inside their base in state 1. Nothing sends them out yet (piece 2), so with this piece
+alone every base launch strands. That is expected, and the switch stays off until piece 5.
+
+### Read for this piece (Ghidra and the disk listing, read only)
+
+- **`006C5050` (only caller `006C7490`)**: `State` = `flag ? 7 : 1` and `VelocitySI` =
+  `flag ? classDesc+18Ch : 0`. The bag's matrix is the owner's `+CCh` (16 dwords). Only with the flag
+  is the random height `BSP_Random_UniformFloatRange(00CE3D08, 00CE3AE8) + tuning+210h` added to its
+  y. `flag` is `006C7490`'s second argument:
+  - `006CC733` (the host's one launch path, `006CC690`) pushes 0;
+  - `006CD7CA` (`006CD6C0`) pushes 0;
+  - `006CA8F7` (`006CA8E0`) pushes 1 under a byte argument. This airborne launch path is not
+    reconstructed here.
+- **`007F1C00`** (listing `007F1C00`-`007F1C93`): with a base, `006BCD20` gives its block.
+  - In this campaign session (`[00E188A8]+1FE4h` == 0) it calls `006CC7B0` (`007F1C69`), then with
+    the flag `+408h = flag` (`007F1C78`) and `007ED6E0` (`007F1C7E`).
+  - Otherwise it calls `006CC760` and `007ED6E0` unconditionally.
+- **`007ED6E0`** (`007ED6E0`-`007ED718`): `+408h = 1`, then `007C2130` on each `+3D0h[i]`,
+  `i < +3CCh`.
+- **`007C2130`** (`007C2130`-`007C21C3`, `RET`, INT3 after): it skips `+900h == 1` and a client
+  (`+1FE4h == 2`). Otherwise it sends `C3h` (current `+900h`, requested 1, vtable `00D03504`) through
+  `0077C2A0(msg, 7, 0)`.
+- **`007CC820`** (`RET`):
+  - `007C78A0` only on a client;
+  - when `+900h != 1`: `+900h = 1`, `+C04h = [00D7A260]` (-1.0), `007C11E0(0)`;
+  - then `vtable[ACh]` with `(+9D4h)->+404h` (the squadron's home base) or, without a squadron,
+    `(+BF4h)->+4h->+7Ch`.
+
+**Correction to `include/bsp/air_operations.hpp` (`launch_in_progress`) and
+`src/air_operations.cpp` (`006CC690`'s comment).** Both say `006C7490` and `006C5050` never write
+`block+38h`. They do: `006C532C`-`006C5348` store the new squadron at `block+38h` (the observed slot
+of the pair at `block+24h`, `[EDI+14h]` with `EDI = block+24h`) whenever the flag is 0. So every
+flag-0 launch sets the readiness brake itself:
+- `006BF620` (IsReadyToSendPlanes) refuses;
+- `006CC690` queues;
+- `006C5050` refuses the next launch at `006C5078`.
+
+This lasts until the pair's slot is cleared. What clears it (the squadron's death through the
+observer, or the launch task's end) is **unread**. It belongs to piece 2 and changes the launch
+cadence of every row that launches from a base. No code changed for it here.
+
+### The host with the switch on
+
+- `create_air_ops_squadron_006c5050` makes the squadron at the base's own origin, without the 150 m.
+  SUBSTITUTION, labelled: the axes stay the identity. It records the bag's `HomeBase` and `State` 1
+  on the squadron record.
+- The squadron's pass C (`on_squadron_pass_c_initial_command`), before the command test, takes
+  `007F1C00`'s flag arm:
+  - it sets `home_launch_408`;
+  - for every member, `plane_enter_state_one_007cc820`: state 1, `+C04h` = -1.0, the base as the
+    deck parent with the local pose captured;
+  - it zeroes `+908h` and the velocity that the host's creation seed wrote for `007C6340`, which
+    `007F4DA9` skips here.
+- A plane in state 1 selects no arm (`007CEC30`). The host carries its pose with the base each
+  step. LABELLED: this stands in for the scene hierarchy's derived pose.
+- The squadron's initial command (`moveto` home base) is still issued as before. A state-1 member
+  does not think (`0099ACD0`'s gate 8 admits 4..7).
+
+### Predictions (with the switch on; recorded before the smoke)
+
+- JM05, USN04, E2, JM05 long, USN13: every launched squadron logs `base launch inside start`. Its
+  members stay in state 1 at the base for the whole run, and no launched plane reaches state 7.
+  Mechanism failure by construction until piece 2.
+- Rows without a base launch: no `base launch inside start` line, and gameplay is identical.
+- Off (committed): identical to the parent commit (0 or 1 from `pair_diff`).

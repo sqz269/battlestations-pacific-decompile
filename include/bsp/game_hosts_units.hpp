@@ -82,6 +82,17 @@ namespace bsp::game {
 // on 30.6's pairs.
 inline constexpr bool kWingConstructionInPassABound = true;
 
+// Switch group cc9_base_launch_chain (docs/SQUADRON_LAND_TASK.md 5aw item 1,
+// 5ax onwards). True: an air-ops launch runs the image's base launch chain. The
+// squadron is made at its base with the bag's `State` 1 (006C5050), its pass C
+// takes 007F1C00's flag arm (+408h, 007ED6E0 -> 007C2130 -> 007CC820: every
+// member in state 1 Inside, parented to the base) and skips the airborne
+// placement (007F4DA9); the launch task, the deck arms, the takeoff task and the
+// lift-off follow as later pieces of the same group. False: the squadron is
+// made airborne 150 m over its base in state 7, as before. Flipped only end to
+// end (every launched member on JM05 reaching state 7).
+inline constexpr bool kBaseLaunchChainBound = false;
+
 // Packet cc9_dead_member_group_removal (docs/SHIP_AI_FORMATION.md, "A dead member
 // leaves its group"). True: a destroyed ship leaves its formation group as the
 // image's destroy 0077D1A0 -> 0077C980 message 77h -> 0077FE80 -> 0077BD70(null)

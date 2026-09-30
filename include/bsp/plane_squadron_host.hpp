@@ -106,6 +106,13 @@ struct PlaneSquadronHostRecord {
     std::int32_t type_class_id{0};     // the `Type` the wing was built from
     int party{-1};
     bool from_air_ops_launch{false};   // 006C5050 rather than a scene row
+    // 006C5050's bag: `HomeBase` (the deck owner's name) and `State` (7 with the
+    // airborne flag, 1 without; 7 is 007F4C0B's default for a bag without it).
+    std::string bag_home_base;
+    std::int32_t bag_state{7};
+    // +408h, set by 007F1C00 with the flag and by 007ED6E0: the members start
+    // Inside the base and 007F4DA9 skips the airborne placement 007F2920.
+    bool home_launch_408{false};
     // +378h, the force flag 007EEF62 tests before it consults 007B8AD0.
     // 007F2D1E seeds it SET, so a squadron that has not been through 007ED3C0
     // raises a release order for every member unconditionally. `release_orders_
