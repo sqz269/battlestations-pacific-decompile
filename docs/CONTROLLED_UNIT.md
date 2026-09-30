@@ -3163,3 +3163,21 @@ The queue is in SQUADRON_LAND_TASK.md **5bc** (and 5bb's "Next"):
 3. piece 5 (`C6h`, `007C7110`), then the flip criterion of 5aw;
 4. the `block+38h` launch brake (5ax);
 5. 5aw's remaining items: #15 parked, and the low-priority list.
+
+## Handoff (cc9-lua26, 2026-09-30)
+
+Branch `agent/cc9-lua26`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua26`. No lease
+is held after this handoff.
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_takeoff_task_bind` | `52366dd9b`, `c70fe0b88` | `kBaseLaunchChainBound` | OFF, piece 4 part 2a | SQUADRON_LAND_TASK.md 5bd |
+| `cc9_takeoff_step_bind` | `931c852db`, `92112d7b0` | same | OFF, piece 4 part 2b | 5be |
+| `cc9_base_launch_liftoff` | `de336ac51` and the handoff commit | same | OFF, piece 5; 30 of 30 JM05 members reach state 7 with the switch on | 5bf |
+
+Open, in order (SQUADRON_LAND_TASK.md 5bg):
+1. the flip pairs for `kBaseLaunchChainBound`;
+2. the land task pre-empting the takeoff task (`00999F50`);
+3. the `block+38h` brake;
+4. `007C6F50`'s flag;
+5. `planeDesc+158h`.
