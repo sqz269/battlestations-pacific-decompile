@@ -7124,3 +7124,75 @@ move it).
 - **Flipped ON:** `kKamikazeDynContactBound`. Hull contact now sets off a kamikaze the way the
   image does, and it does nothing else. No reference row has a hostile kamikaze contact, so the
   flip moves nothing yet.
+
+## 93. JM08's HQ flak and the Watchtower: the scorer, and the aim point (packet `cc9_hq_flak_watchtower`, cc9-gunnery21)
+
+The lead's question (cc9-ships25's log `s25_m1_jm08x.log`): Headquarter 01's two category-6
+flak mounts (platforms 4 and 5) fire 732 of 1461 shots at "Watchtower, 01 03" from t=4.6 s,
+with 2 hits. Would the image's scorer prefer the tower over the ships, and why so few hits?
+
+### 93.1 Target choice: the image does the same
+
+- **The ranks.** Category 6 (LIGHTARTILLERYFLAK) ranks by its authored row `00E09BE0`
+  (GUNNERY_TABLES), read through `00727BD0`: the air classes 1-9, then MDestroyer 10,
+  MSubmarine 11, MCargo 12, MLandingShip 13, MMothership 14, MCruiser 15, MBattleship 16,
+  MCommandBuilding 17, **MLandFort 18**, then MAirfield, MShipyard, MLandVehicle and NavPoint.
+- **The order.** `00865284` sorts by rank then distance, and `008657A3` walks from the end, so
+  the lowest rank goes first and, within a rank, the nearest. Every ship class outranks the
+  tower. The tower (rank 18, not 0) is still a legitimate candidate when no ship is within
+  `00863990`'s range.
+- **In the log** (platform 4's target changes): the tower alone from 5.05 s to 719.85 s. Then
+  LST 03, and from then on only ships (Grayson, Bristol, Macomb and others); it never returns
+  to the tower. So the host already prefers the ships the moment one is in range, as the
+  image's order does. **No scorer divergence.**
+
+### 93.2 The misses: the host aims over the tower
+
+- **Where the rounds end.** `BSP_SHELL_FATE="Headquarter 01|Watchtower, 01 03"` on JM08 3000
+  (`local\g21_hq_jm08.log`): all 160 rounds of bullet class 31 end on land (fate 1) about
+  400 m beyond the tower. Example: end `(1865.7, 4.7, -4597.2)` after 1.8 s, against the tower
+  at `(1462.4, 4.9, -4503.5)`, from muzzles near `(1340, 23, -4475)`. They cross the tower's
+  range at about the muzzle's height.
+- **The image's aim point** (`006DF520`, the artillery bot for sub-types 2, 3, 4, 6 and 9) is
+  the target's world matrix (`+CCh`) applied to the local point `target->vtable[100h]`
+  writes into `bot+A8h..+B0h` (`006DF792..006DF7EE`), plus its ErrorOffset.
+  - Slot `100h` is `0042D810` for MLandFort (`00CFF3F8`), MCommandBuilding (`00CFB028`) and
+    MLandVehicle (`00CFFDE0`). It writes `(0, 0, 0)` (`0042D814..0042D825`, `RET 1Ch`). The
+    aim point is the **origin**.
+  - MAirfield (`006D3250`), MShipyard (`00844A10`) and the ships (`00816650`, the host's
+    `artillery_aim_point`) have their own slots.
+- **The host** aims at every non-ship target through `unit_aim_point`: the origin raised by
+  the class `Height`. The Watchtower class (vehicleclasses.lua line 80713, this installation,
+  mtime 2026-05-09) has Height 15, so the aim is at y = 19.9, level with the mount (20.7). The
+  0.5-degree arc epsilon (`00D08B88`) passes the -0.4-degree command, and the round flies over
+  the tower.
+- **The image's command.** At the origin (y = 4.9) the command is about -7.6 degrees.
+  Headquarter's platforms 4 and 5 (VehicleClass[97], lines 44347..44407) author
+  MinVertAngle 0 on their windows (one window 5 degrees). So `0085ABA0` refuses the pair at
+  `0085AC94`, and **the image never fires the HQ flak at the tower.** The mounts hold it as
+  their target, silent, until a ship comes in range.
+- **So 732 wasted shots is a host artefact**: the Height-raised aim point turned a refused
+  depression into an accepted level shot.
+
+### 93.3 The switch and the predictions (written 2026-09-30 22:12 UTC, before any ON run)
+
+- **`kArtilleryGroundOriginAimBound`** (`src/game_hosts_gunnery.cpp`, committed OFF in
+  `e280693d1`): an artillery-bot aim at a LandFort, CommandBuilding or LandVehicle takes the
+  origin. The census `summary mission gunnery ground target origin aims` counts the aims it
+  changes, either way.
+- **OFF census** (`local\g21_a0_<row>`, this tree's build of `e280693d1`, all exit 0,
+  `lost_polls=0`):
+  - JM05 30418, JM05 long 67302, JM06 697, JM08 20927, JM08 long 1413671, USN01 24120,
+    USN12 8760, USN13 2918, USNOS 177710, USNOS long 276346;
+  - 0 on USN04, E2, USN02, BSM01, LOMP06, LOMP10, LOMP10 long and IJN01.
+- **Prediction for the flip** (`local\g21_a1`) against OFF:
+  - exit 0 or 1 on the eight rows with no such aim;
+  - exit 3 on the ten with one;
+  - JM08: Headquarter 01's platforms 4 and 5 fire **no** round at the Watchtower (0085ABA0
+    refuses), so HQ shots drop by about 160 over the row;
+  - wherever a gun sits above its target, ship and fort artillery against ground units
+    commands a lower elevation. Guns whose windows allow the depression land their rounds on
+    or before the target instead of past it. Ground-unit deaths and damage move on JM05,
+    JM08 long and USNOS long (direction not predicted per row).
+- **Mechanism failure:** JM08's HQ still firing at the tower, or a row with a zero census
+  moving.
