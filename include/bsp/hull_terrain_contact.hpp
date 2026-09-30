@@ -27,6 +27,9 @@
 //     terrain tile is taken as the one the vertex's grid cell truncates to (a vertex on a tile's
 //     inclusive far edge is not offered to the next tile as well).
 //   * One substep of the host's whole step, as the host's two integration phases already run.
+//     Not a substitution (GUNNERY_OPEN_ITEMS 88): world+00h is 0.05f ([00CE7638] stored at
+//     004DE168), so 00C5C540's plan with the fixed 0.05f step runs no full substep and one
+//     remainder substep of 0.05 (the accumulator world+48h is cleared every call).
 //
 // Descriptive names are hypotheses. Not the native layout or ABI.
 #include <cstddef>
