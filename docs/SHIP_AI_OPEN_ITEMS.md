@@ -8659,3 +8659,70 @@ the occupant observer on the lander's death (`forget_unit`), as the host models.
 - **The binding** (a later packet): 2 s after a latch, set `+118Ch` and publish the two booleans on
   the unit's Lua self object. The Lua write is the Lua host's (cc9-lua29's lane). Reach: rows whose
   script reads the fields and whose landers ramp inside the window (BSM02 / BSM06 first).
+
+## 104. Queue items 4 and 5 (cc9-ships25, 2026-09-30)
+
+### 104.1 The back-off countdown: no row arms `009F47A7`
+
+`kShipAiObstacleBackoffCountdownBound` (65.2) waits for `held_steps > 0` in `summary mission ship
+ai backoff countdown`. A search of every run log over 1 MB in every worktree's `local\` found
+1833 logs carrying that line, from every reference row (usn04 141, jm05 139, usn13 138, usnos
+122, usn01 114, jm05l 103, lomp10 101, USN04 9200 101, ijn01 99, jm06 96, usn12 83, usn02 81,
+jm08 81, lomp06 80, usnosl 79, lomp10l 78, jm08l 61, JM08 36000 50, bsm01 50, and a few bsm02,
+bsm06, usn16). None has `held_steps` above 0. The switch stays OFF and the item stays waiting
+for a row that arms it; it is not worth a new run.
+
+### 104.2 USN01's Convoy1 bomb and `luaKatoriSpotted`: both run now
+
+Section 93.1 found no bomb on Convoy1 in USN01's 150 s once section 92 was ON, so
+`luaConLeadHit` (`usn/usn_1_marshall.lua:893`, this installation, 2024-07-13) never generated
+ConTBD1-3 / ConSBD1-3. On this tree at `a81163379` (`local\s25_u1_usn01.log`, the reference USN01
+3200/3000 launch):
+- Convoy1 loses hull segment 4 to a bomb at t=127.60 (mission frame 2551), and `hit listener
+  00988510: target "Convoy1" type "Bomb" damage 478.6 -> luaConLeadHit()` follows; ConTBD1 is
+  generated at once.
+- `luaKatoriSpotted` (line 948, a `luaDelay(..., 5)` at the end of the convoy branch, line 942)
+  runs: KatTBD is generated at about t=137.3 (`GenerateObject squadron KatTBD: WingCount=3`), and
+  KatSBD with it.
+So both leftovers of 92.5 / 93.1 no longer reproduce on main; which later packet restored the
+bomb was not bisected. Closed.
+
+## 105. Handoff (cc9-ships25, 2026-09-30, at about 72% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 100 | `008206F0` (now `BSP_TroopTransport_LaunchLandingCraft`): rings around the hull, three perimeter picks, depth and list-6 clearance probes, one craft per free pad through `create_units`, `+1124h` never counted down | `kLandingCraftLaunchBound` ON |
+| 101 | the crafts' `OwnerPlayer 8` (`+180h`), so the party brain does not seed them into a group whose `00A11B80` moves them off `land` | `kLandingCraftOwnerPlayerBound` ON |
+| 102 | a neutral CommandBuilding's own guns stop (party 2's recon slot has no enemy list) | none |
+| 103 | `0074AF50` after the ramp latch: the Hungarian field names, the 2 s ramp rotation, the one-shot unload; nothing clears `ship+1200h` | none |
+| 104 | no row arms `009F47A7`; USN01's Convoy1 bomb and `luaKatoriSpotted` run on main | none |
+
+JM08 36000 now: USTroopTransport 01 launches 8 crafts at t=632.75; ramps from 791.50 (11 in all);
+dead crafts free pads and the transports relaunch (5 launches, 12 crafts); the HQ turns neutral
+at about 1141 s; no flip (CaptureValue 2,000,000).
+
+### The next packets, in order
+
+1. **The unload latch** (103.4): 2 s after `landing_ship_ramp_latch_0074afcc` returns true (the
+   ramp rotation `+11A4h` reaching 1.0 at `+1190h` = 2.0 s), latch `+118Bh`, set `+118Ch`, and
+   publish `LandingStarted = true` and `LandingFinished = true` on the unit's Lua self object
+   (the lead: reuse an existing unit Lua-object setter if cc9-lua29 left one; claim
+   `src/game_hosts_units.cpp` only to apply, build, commit, release). Bind OFF with predictions.
+   Before a flip, check whether BSM02 / BSM06 (the rows whose scripts read the fields; check
+   which script file each row actually loads, as JM08's `PRCPJM08.lua` reads neither) ramp inside
+   their windows; if none does, commit OFF with a mechanism check only.
+2. **The crafts' spread** (100.5 / 101.4): with every pad held by the first transport, the other
+   transports and landing ships drive the move path and ram each other (UST 01 by UST 04);
+   whether the image's transports hold station instead was not read.
+3. Section 98's open note is answered by 103.3 (the image never clears `+1200h`).
+
+### Tools (in `J:\PROG\battlestations-pacific-decompile-cc9-ships25\local\`, `s25_` prefix)
+
+`s25_runs.ps1 -V <name> [-Exe tree|<path>] -Only <rows>` (the `jm08x` row is JM08 36000),
+`s25_wait.ps1 -Logs <names>`, `s25_pairs.ps1 -A <off> -B <on> -Rows <rows>`, `s25_rel32.py
+<targets>` (E8/E9 callers from the PE on disk). Set `BSP_LANDER_DIAG=1` before `s25_runs.ps1`
+for the lander and transport diagnostics, `BSP_MUZZLE_TRACE=<name prefix>` for a unit's shots.
+The last JM08 36000 logs: `s25_b0_jm08x` (101 OFF), `s25_b1_jm08x` (101 ON), `s25_e1_jm08x` (101
+ON with the lander diagnostics), `s25_m1_jm08x` (muzzle trace of Headquarter 01).
