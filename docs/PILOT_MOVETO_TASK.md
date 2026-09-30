@@ -1057,3 +1057,34 @@ The rows are USN04 3000, E2, JM05 9000, JM08 3000 and LOMP10 3000.
 **Consequence for the ranking.** #14's gameplay effect is the wanderer (`007BE060` and its
 `007D8230` consumer). It needs its own packet, and it draws from the shared stream 1, so
 behaviour pairs will move with it.
+
+### Measured (pairs on `1e9be389a`)
+
+- **Exports:** OFF is `local\l20_f0` (SHA-256 prefix `0900746D5252`); ON is `local\l20_f1`
+  (`A2D366343E97`).
+- **Logs:** `local\l20_f{0,1}_<row>.log`. Every log is clean (present interval immediate, the
+  export's module directory, `frames_presented` = F - 1, the final COM release).
+
+| row | pair_diff | calls / raised / enabled / disabled / min mul |
+| --- | --- | --- |
+| USN04 3000 | 1, gameplay identical | 12674 / 4814 / 4774 / 40 / 0.013 |
+| E2 (USN04 9000) | 1 | 16462 / 6592 / 6532 / 60 / 0.002 |
+| JM05 9000 | 1 | 39453 / 2714 / 2201 / 513 / 0.001 |
+| JM08 3000 | 1 | 6534 / 2378 / 2231 / 147 / 0.000 |
+| LOMP10 3000 | 1 | 0 |
+
+**The predictions held.**
+- Every row is gameplay identical.
+- On the four rows with a follow tick, the arm raises on a third or less of its calls, and it
+  mostly enables the wanderer.
+- It disables it while a leader banks past 0.5 rad; `min mul` near 0 is a leader at almost that
+  bank.
+
+### Verdict: `kFollowTrailArmBound` ON
+
+The arm is faithful and stage-only (five rows identical). The record `BotStateFollow::trail_arm_85`
+becomes the concrete `009C207C`.
+
+**Ranking #14 is closed.** Its gameplay effect moves to a new gap: the wanderer
+`007BE060`-`007BE9A0` (from the plane fixed step at `007CE0D2`) and its translation consumer
+`007D8230`. The arm now keeps `+840h`/`+844h` in the image's state for that packet.

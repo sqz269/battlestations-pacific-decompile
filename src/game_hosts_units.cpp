@@ -6318,7 +6318,7 @@ struct GameUnitsHost::Impl {
     // Packet cc9_follow_trail_arm (docs/PILOT_MOVETO_TASK.md, "The follow trail
     // arm"; GAMEPLAY_GAP_RANKING #14). True: 009C1FD0's arm after 009BEE30 runs.
     // False: a record.
-    static constexpr bool kFollowTrailArmBound = false;
+    static constexpr bool kFollowTrailArmBound = true;  // ON: stage-only, five rows identical (PILOT_MOVETO_TASK)
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
     unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
     float trail_arm_min_mul{1.0f};
