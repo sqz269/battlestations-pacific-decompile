@@ -6354,3 +6354,76 @@ Both routings are delivered at once (**LABELLED**).
    lift-off; it would show as a state-4 plane with `c01_sets` counting.
 4. The flip criterion (all 30 members in state 7 flying their task) is checked on the summary.
    It may still fail on the `block+38h` brake (5ax) or the wingmen's cadence.
+
+### Results (switch ON, JM05 3000, `local\l26_p5on_jm05.log`, built from `de336ac51` with the flip)
+
+The OFF 300-frame smoke (`local\l26_off3_smoke.log`) exits 0.
+
+**Every launched member flies.** `placed=30`, `liftoffs=30 unparented=30 site_leaves=30
+c01_sets=0`. The whole chain now runs end to end:
+- the lift delivers 24 carrier members (`down=24 up=24 top=24`), as in 5ba;
+- every site's ready plane is consumed;
+- `inside_now=0`.
+
+| prediction | result |
+| --- | --- |
+| 1. carrier leaders lift off at the bow | **partly held.** They lift off earlier, by `height` on the deck: Lexington's leader at 15.70 s, y 18.07, 49.0 m/s. The height arm comes before the edge arm |
+| 2. the wingmen get their permission and the lift resumes | **held**: `permission_asks=24 denied=0`. On each carrier the members go from prepare to SlowTakeoff 1.6 s after release, one release about every 9 s (8.9-9.1 s) |
+| 3. airfield members lift off by `height` | **held**: 17.80-21.75 s at y 14.2 and about 45 m/s; `c01_sets=0` |
+| 4. flip criterion | **every member reaches state 7** (30 of 30). The takeoff task's done arm never runs (`done=0`): see below |
+
+**The land task pre-empts the takeoff task.**
+- The launched squadrons receive `returntobase` (`00E08F98`) right after the launch. Lexington_sqn03
+  gets it at 7.70 s (`returntobase 007F16D0 ... RECORD ONLY`), and its members install `land` at
+  the delivery (`issue_script_command` -> `install_land_task_0099a3dd`).
+- The host's pilot think runs `land` ahead of `takeoff` (`run_land_task_tick_009b3eb0` is the
+  first arm). Lexington_sqn03's first install is at 17.55 s, 1.85 s after its lift-off.
+- From then on the member flies `land`, and the takeoff record stays installed but unticked. The
+  image's `00999F50` push would make `land` the current task and the takeoff task a stacked one;
+  whether and when it retires is unread.
+- The members fly `land` back to their decks. MainAirfield_sqn01 ends in states 4 and 5 again;
+  Yorktown_sqn04's leader ends in state 4. So "flies its task" holds with `land` as the task.
+- Deaths, hits and the gunnery aggregates are near the OFF rows (360 against 364 hits, 12 deaths),
+  but no pair has been run.
+
+## 5bg. Handoff (cc9-lua26, 2026-09-30, stamped 13:57 UTC)
+
+`kBaseLaunchChainBound` is committed **OFF**. Pieces 1-5 are all bound behind it:
+
+| piece | what | commits | section |
+| --- | --- | --- | --- |
+| 1-3b | Inside start, launch task, deck arms, lift (cc9-lua25) | see 5bc | 5ax-5ba |
+| 4, 2a | takeoff task install `0099A4A0`, prepare, SlowTakeoff, rule, tick, floor | `52366dd9b`, `c70fe0b88` | 5bd |
+| 4, 2b | the Takeoff step `009CE2C0` | `931c852db`, `92112d7b0` | 5be |
+| 5 | the lift-off: `007CC1B3` -> C6h -> `007C6F50` -> `007C7110` | `de336ac51` and this section's commit | 5bf |
+
+With the switch ON, JM05 3000 lifts all 30 launched members into state 7 (5bf).
+
+### Next, in order
+
+1. **The flip.** Pair JM05 3000 and JM05 9000, USN04, E2 and USN13, plus two controls (for
+   example USN01 and BSM01), with `python tools/pair_export.py --commit <sha> --flip
+   kBaseLaunchChainBound=true --out local\<row>`. Then run `pair_diff`, diff the per-entity death
+   tables, and flip by verdict.
+   - Expect JM05 to move: the squadrons now launch over about 100 s instead of appearing
+     airborne at 150 m.
+   - USN04 and E2 launch from carriers too.
+   - The mechanism criterion (all members in state 7 and flying their task) holds on JM05 3000.
+2. **The land task pre-empting the takeoff task** (5bf). In the host, `land` is ticked ahead of
+   `takeoff`, and the takeoff record stays installed with `done=0`. Read `00999F50`'s push and
+   the bot's current-task switch to decide:
+   - whether `land` replaces the takeoff task or stacks over it;
+   - when the takeoff task retires.
+   The launched squadrons get `returntobase` at launch on JM05 (7.70 s for Lexington_sqn03);
+   check whether the image issues that command at the same moment.
+3. **The `block+38h` launch brake** (5ax), still unmodelled.
+4. **`007C6F50`'s flag** (`msg+20h`, never written by `00762A00`) and `+C49h`. Both are taken as 0.
+5. **`planeDesc+158h`** (`007D473A`) is still 0.0 (queue item 5 of 5bc).
+
+**Tools** (`local\` in the cc9-lua26 tree):
+- `l26_runs.ps1`: the reference rows;
+- `l26_consts.py`: constants from the executable on disk;
+- `l26_p4a_edit.py`, `l26_p4b_edit.py`, `l26_p5_edit.py`: the applied edits;
+- `l26_from_ce2c0_full.asm`: the Takeoff listing;
+- `l26_c6f50.asm`, `l26_cbfa0.asm`: the lift-off listings;
+- the logs `l26_p4aon_jm05.log`, `l26_p4bon_jm05.log`, `l26_p5on_jm05.log`.
