@@ -831,13 +831,48 @@ void HullTerrainContactSolver::hull_hull_narrow_phase(std::vector<HullWorldEntry
                     }
                 }
             }
-            if (trace && trace_lines < 300) {
+            // After the first 50 lines only hits deeper than 3 m, with both velocities; with
+            // BSP_HULL_HULL_TRACE_UNIT=<unit> every near line of that unit instead, from the
+            // world step BSP_HULL_HULL_TRACE_STEP on.
+            static const long trace_unit = [] {
+                char* v = nullptr;
+                std::size_t length = 0;
+                long u = -1;
+                if (_dupenv_s(&v, &length, "BSP_HULL_HULL_TRACE_UNIT") == 0 && v) {
+                    u = std::strtol(v, nullptr, 10);
+                    std::free(v);
+                }
+                return u;
+            }();
+            static const unsigned long long trace_step = [] {
+                char* v = nullptr;
+                std::size_t length = 0;
+                unsigned long long n = 0;
+                if (_dupenv_s(&v, &length, "BSP_HULL_HULL_TRACE_STEP") == 0 && v) {
+                    n = std::strtoull(v, nullptr, 10);
+                    std::free(v);
+                }
+                return n;
+            }();
+            const bool unit_line = trace_unit >= 0 && census_.world_steps >= trace_step &&
+                (ea.unit == static_cast<std::size_t>(trace_unit) ||
+                 eb.unit == static_cast<std::size_t>(trace_unit));
+            if (trace && trace_lines < 400 &&
+                (trace_unit >= 0 ? unit_line
+                                 : (trace_lines < 50 || (pair_hits > 0 && pair_depth > 3.0f)))) {
                 ++trace_lines;
+                const DynMotionState* ma = ea.body->motion;
+                const DynMotionState* mb = eb.body->motion;
                 std::fprintf(trace, "near step=%llu a=%zu b=%zu hits=%d depth=%.3f "
-                    "A=(%.1f %.1f %.1f .. %.1f %.1f %.1f) B=(%.1f %.1f %.1f .. %.1f %.1f %.1f)\n",
+                    "A=(%.1f %.1f %.1f .. %.1f %.1f %.1f) B=(%.1f %.1f %.1f .. %.1f %.1f %.1f) "
+                    "vA=(%.2f %.2f %.2f) vB=(%.2f %.2f %.2f) imA=%.3g imB=%.3g\n",
                     census_.world_steps, ea.unit, eb.unit, pair_hits,
                     pair_hits > 0 ? pair_depth : 0.0f, a.lo[0], a.lo[1], a.lo[2], a.hi[0],
-                    a.hi[1], a.hi[2], b.lo[0], b.lo[1], b.lo[2], b.hi[0], b.hi[1], b.hi[2]);
+                    a.hi[1], a.hi[2], b.lo[0], b.lo[1], b.lo[2], b.hi[0], b.hi[1], b.hi[2],
+                    ma ? ma->linear_velocity.x : 0.0f, ma ? ma->linear_velocity.y : 0.0f,
+                    ma ? ma->linear_velocity.z : 0.0f, mb ? mb->linear_velocity.x : 0.0f,
+                    mb ? mb->linear_velocity.y : 0.0f, mb ? mb->linear_velocity.z : 0.0f,
+                    ma ? ma->inverse_mass : 0.0f, mb ? mb->inverse_mass : 0.0f);
                 std::fflush(trace);
             }
             if (pair_hits > 0) {

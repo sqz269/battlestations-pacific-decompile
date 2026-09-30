@@ -91,7 +91,8 @@ inline constexpr bool kHullTerrainBodyPairManifoldBound = true;
 // manifolds, grouped by 00C4B610 and solved per group with the bodies indexed in manifold
 // order, 00C4DEDB), then each hull's position phase and the rest of its tick, in unit order.
 // False: each hull's contact and position phases run inside its own tick, as before.
-inline constexpr bool kDynWorldContactPhaseBound = false;
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 91.4).
+inline constexpr bool kDynWorldContactPhaseBound = true;
 // Same packet. Needs kDynWorldContactPhaseBound. True: every pair of hulls whose world
 // boxes meet goes through 00C44090's convex-convex path: the shape filter (group 1, mask
 // 0Dh: every hull pair passes), the dispatcher cell 4 * 6 + 4 = 00C535E0 on real kind-4
@@ -100,7 +101,9 @@ inline constexpr bool kDynWorldContactPhaseBound = false;
 // friction combine(fA, fB) and the restitution (rA + rB) * 0.5, each hit through 00C3F760;
 // both hulls then join one group and one solve. False: hulls pass through each other (the
 // narrow phase still runs as a census, no state written).
-inline constexpr bool kHullHullContactBound = false;
+// ON by the pairs of 2026-09-30 (section 91.4). The collision report (009377E0 -> 008145B0,
+// ramming damage) is not bound: hull-hull contact is physics only.
+inline constexpr bool kHullHullContactBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step

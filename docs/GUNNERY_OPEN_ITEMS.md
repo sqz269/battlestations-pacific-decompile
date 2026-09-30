@@ -6914,3 +6914,106 @@ Convoys and formations overlap their neighbours.
   crash, or a ship thrown more than 10 m above the sea.
 - **Not modelled either way:** the collision report and its damage (`009377E0` -> `008145B0`,
   gated on descriptor `+510h` / `+514h`). Ramming damage stays absent on both sides.
+
+### 91.4 The pairs, and the flips (2026-09-30 21:22 UTC)
+
+**Setup.**
+- Exports from `7b5e05db2`: `local\g21_w1` (world phase) and `local\g21_w2` (world phase plus
+  hull pairs).
+- OFF is this tree's build of the same commit (`local\g21_off_<row>`).
+- 18 rows in v's launch form.
+- Nine runs died at startup around 20:58 UTC with the known environment failure (FMOD
+  `error.fsb`, renderer `0x8876086A`), or ran through a device loss (`lost_polls` above 0: W1
+  USN02 and W2 USNOS long). After one clean smoke all nine were rerun; every row used here is
+  exit 0 with `lost_polls=0`.
+
+**Pair 1, `kDynWorldContactPhaseBound`** (W1 against OFF):
+
+| exit | rows |
+| --- | --- |
+| 1 | JM06, JM08, BSM01, LOMP06, USN12, USNOS, IJN01, USN02 |
+| 3 | USN04 (deaths 50 -> 48), E2 (torpedo releases 5 -> 4), USN01, USN13 (re-timed), JM05, LOMP10 (3 -> 2), LOMP10 long (6 -> 5), USNOS long (4 rows re-timed), JM05 long, JM08 long (85 rows re-timed) |
+
+- **Mechanism: matches.** The terrain census is unchanged: contact steps and candidates are
+  within 0.5% of OFF on USNOS long, IJN01, JM05, JM05 long, JM08 long, USN13 and USNOS.
+- **Prediction: a spread miss.** Fewer rows moved than predicted. The moved rows are the carrier
+  and aircraft rows. The formation rows (USNOS, IJN01, JM06) are gameplay-identical, so ship
+  ticks rarely read another ship's pose within a step.
+- **USN01:** W1 brings back u's controlled unit. `ConTBD1` 1245.75 m, 93 units, torpedo tasks
+  "0 of 17", against v's `ScoutDauntless` 4623.23 m with 64 units. The ConTBD and ConSBD
+  squadrons spawn again. So 90.2 item 3 (v's USN01 regression under
+  `kFormationJoinLoopbackBound`) depends on the within-step order of ship poses, and the image's
+  order restores it.
+- **Order check against the image.** Per fixed step the image runs:
+  1. `00C5C540` (row 1), integrating the velocities the previous ticks set;
+  2. rows 2-16;
+  3. the unit ticks, which read those poses.
+
+  W1 integrates at the end of the host's motion step. The next step's fanout and ticks then
+  read the integrated poses. That is the same sequence, and the same one-step lag of a pose
+  that is copied from a carrier.
+- **Flipped ON.**
+
+**Pair 2, `kHullHullContactBound`** (W2 against W1):
+
+| row | exit | deaths | hits | groups with two or more hulls, largest | deepest hit (OFF census -> W2) |
+| --- | --- | --- | --- | --- | --- |
+| USN04 | 3 | 48 -> 49 | 213 | 213, 2 | 14.7 -> 0.10 |
+| E2 | 3 | 52 (43 re-timed) | 213 | 213, 2 | -> 0.10 |
+| USN01 | 1 | identical | 0 | 0 | none |
+| USN02 | 3 | identical | 1997 | 1999, 2 | 14.0 -> 2.98 |
+| JM06 | 3 | identical | 3079 | 2757, 3 | 24.2 -> 0.41 |
+| JM08 | 3 | 7 -> 5 | 212 | 212, 2 | -> 0.28 |
+| USN13 | 3 | 23 (21 re-timed) | 2733 | 2737, 2 | 17.1 -> 0.29 |
+| BSM01 | 1 | none | 0 | 0 | none |
+| LOMP06 | 3 | none | 5 | 5, 2 | -> 0.04 |
+| LOMP10 | 3 | 2 (re-timed) | 45 | 45, 2 | -> 0.46 |
+| JM05 | 3 | 12 (2 re-timed) | 3262 | 2799, 3 | -> 0.55 |
+| USN12 | 3 | 7 (2 re-timed) | 17 | 17, 2 | -> 0.10 |
+| LOMP10 long | 3 | 5 (re-timed) | 45 | 45, 2 | -> 0.46 |
+| USNOS | 3 | 106 -> 110 | 9978 | 4698, 4 | 42.3 -> 2.99 |
+| USNOS long | 3 | 147 -> 166 | 30359 | 14698, 4 | -> 2.99 |
+| IJN01 | 3 | 3 -> 2 | 9240 | 8072, 4 | 29.7 -> 2.02 |
+| JM05 long | 3 | 14 -> 20 | 12094 | 9399, 4 | -> 1.69 |
+| JM08 long | 3 | 85 -> 28 | 29997 | 24361, 4 | 33.4 -> **16.55** |
+
+- **Prediction:** USN01 and BSM01 exit 1, the other 16 exit 3. **All right.**
+- **The deepest hit:**
+  - under 1 m on 11 rows;
+  - 1.7-3.0 m on USN02, USNOS, USNOS long, IJN01 and JM05 long (the "under 2 m" call missed
+    by up to 1 m);
+  - 16.55 m on JM08 long (Helena against Missouri).
+- **JM08 long, read with `BSP_HULL_HULL_TRACE_UNIT=349 BSP_HULL_HULL_TRACE_STEP=13300`**
+  (`local\g21_trace_jm08l_349b.txt`):
+  - Helena slides along Missouri in resting contact for 70 steps, depth 0.014-0.034 m. The
+    boxes and velocities change smoothly: A moves 0.5 m per step, `vA` stays at
+    `(8.1, 0.0, 10.2)`.
+  - At world step 13368 the reported depth jumps to 14.59 m in one step, with no pose jump.
+  - The hulls cannot have moved 14 m into each other in 0.05 s. So it is `00C535E0`'s own
+    result changing branch (the fallback over the 26 directions), not an interpenetration.
+  - The solver then removes it at the bias limit, about 0.05 m per step, over about 300 steps.
+    Helena rises at most 0.6 m (box `min.y` -8.1 to -8.7) and is not thrown.
+  - The 91.3 failure criterion was meant for hulls that actually interpenetrate. This is
+    recorded as the native narrow phase's behaviour on these records, not as a host failure.
+  - **Uncertainty:** the image would do the same only if its records are these (section 86's
+    hulls, `00C57C40`'s box); no image run confirms it.
+- **The changed rows follow the contacts.**
+  - On JM08 long the transports and landers no longer pile onto each other near Missouri. They
+    spread toward the beach: terrain contact steps go from 126433 to 224418. `USTroopTransport`
+    01, 02, 04 and 05, LST 02 and Gleaves die to the HQ and shore guns, and the shore dies
+    later or not at all (85 -> 28 deaths).
+  - USNOS long gains 19 deaths.
+  - JM08 long is the known knife-edge row.
+- **Flipped ON.** The mechanism matches: every hull pair that met now forms a group and is
+  solved, and the interpenetration of 10-42 m is gone on 15 of the 16 rows with contacts. The prediction spread
+  missed on the depth bound (up to 3.0 m) and on JM08 long's one native deep result.
+
+**Open, in order:**
+1. **The contact report.** `00C44090` queues a report when a body's listener (`B+68h`) mask
+   meets the other shape's group, and the hull's listener is `009377E0`. A kind other than 8
+   runs its damage gate (descriptor `+510h` / `+514h`) and `008145B0`, which is collision
+   damage. Read the hull listener's mask (`+4h`) and `008145B0` before binding ramming damage.
+2. **Forts** (`007482B0`, group 1, static) and **debris** (`00447510`, group 4), as 89.2.
+3. JM08 long's 14.6 m branch change: a differential run of `00C535E0` on the two records at
+   world step 13368 against the image's bytes would settle whether the image gives the same
+   result.
