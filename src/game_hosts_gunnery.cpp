@@ -1309,6 +1309,7 @@ struct GameGunneryHost::Impl {
     // Packet cc9_aa_leader_penalty (census, both sides): plane candidates past
     // the class, rank and mask gates, and how many were flight leaders.
     unsigned long long recon_contact_admit_other{0};   // kReconContactAllKindsBound
+    unsigned long long recon_contact_other_same_side{0};
     std::map<int, unsigned long long> recon_other_scored_by_class;
     std::map<int, unsigned long long> recon_other_accepted_by_class;
     unsigned long long aa_range_origin_scored{0};   // kAaCategoryRangeOriginBound census
@@ -4336,6 +4337,9 @@ public:
                             continue;
                         }
                         ++owner_.recon_contact_admit_other;
+                        if (owner_.units.unit_side_0054(i) == own_side) {
+                            ++owner_.recon_contact_other_same_side;
+                        }
                     }
                     if (plane_base) ++owner_.summary.contact_admit_plane;
                     else if (ship_base) ++owner_.summary.contact_admit_ship;
@@ -10892,8 +10896,9 @@ void GameGunneryHost::report() {
                 by_class += item;
             }
             host.log.notef("summary mission gunnery recon contact other kinds admitted=%llu "
-                "scored/accepted by class:%s bound=%d (008651D7..00865237, packet "
+                "same_side=%llu scored/accepted by class:%s bound=%d (008651D7..00865237, packet "
                 "cc9_recon_contact_kinds)", host.recon_contact_admit_other,
+                host.recon_contact_other_same_side,
                 by_class.empty() ? " none" : by_class.c_str(), kReconContactAllKindsBound ? 1 : 0);
         }
         {
