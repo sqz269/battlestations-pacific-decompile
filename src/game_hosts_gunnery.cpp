@@ -101,7 +101,7 @@ constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount fram
 //    value tested against unit+430h+slot*4 and written to the sort distance.
 //    The host measured it between the class-Height-raised aim points.
 //    Packet cc9_aa_range_origin, docs/AA_LETHALITY_AUDIT.md section 13.
-constexpr bool kAaCategoryRangeOriginBound = false;
+constexpr bool kAaCategoryRangeOriginBound = true;  // ON: AA_LETHALITY_AUDIT 13.4
 //  * kAaLeaderPenaltyBound: 00863A4F..00863A71 in the candidate score. A target
 //    that answers IsKindOf(0Fh) and 007B8AD0 (plane+9D8h == 0: slot 0 of its
 //    squadron's member array, the flight leader, or a plane in no squadron)

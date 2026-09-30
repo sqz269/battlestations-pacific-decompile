@@ -1243,3 +1243,52 @@ A same-tree pair on s's seventeen rows, in s's launch form.
 4. **Spread:** plane deaths per row within ±15% of OFF, and the torpedo-task releases within ±2.
 5. **Mechanism failure:** `scored` differs between the sides before the first flip, or flips are
    0 on a plane row that moves.
+
+### 13.4 The pair, and the verdict: ON
+
+A same-tree pair at `d163ff80d`: `local\g17_ro0` (SHA-256 prefix `E6E22A5A2195`) against `local\g17_ro1`
+(`--flip kAaCategoryRangeOriginBound=true`, `1CE9D85AA4D4`). The 300-frame USN01 smoke on the ON
+build is clean. Logs are `local\g17_ro{0,1}_<row>.log`.
+
+**Census, OFF -> ON:**
+
+| row | scored | verdict flips | mean abs delta (m) |
+| --- | --- | --- | --- |
+| USN04 | 94601 -> 94643 | 15 / 15 | 0.43 |
+| E2 | 94601 -> 94828 | 15 / 15 | 0.43 / 0.44 |
+| USN13 | 660615 = | 11 / 11 | 0.56 |
+| USNOS long | 956071 -> 955833 | 13 / 13 | 0.09 |
+| JM06 | 8428 = | 0 | 0.03 |
+| USN02 | 97368 = | 0 | 0.00 |
+
+**What moved:**
+- **Gameplay-identical (exit 1):** USN02, BSM01, LOMP06 and USN12.
+- **Aggregates moved:**
+  - USN04: deaths 49 -> 48; the same victims otherwise, 15 death rows re-timed.
+  - E2: shots 14663 -> 15277, dive-bomb-task releases 0 -> 1 of 19; death rows re-timed, no victim
+    changes.
+  - USNOS: deaths 54 -> 55.
+  - USNOS long: two plane deaths re-timed.
+- **Only gunnery call counts moved, no aggregate:** USN13, LOMP10, LOMP10 long and IJN01.
+- **Only the logged candidate distance moved:** JM06, JM08, USN01, JM05 and JM05 long (exit 3).
+  Their unit tables differ only in `nearest`, by about 1 m, and that field is now the origin
+  distance itself.
+
+**Prediction check:**
+- **The mechanism held:**
+  - `scored` is equal where nothing moved first;
+  - the flips are a tiny share (15 of 94601 on USN04);
+  - every gameplay move is on a row with flips.
+- **The magnitude missed.** The mean delta is 0.03-0.56 m against the predicted 1-15 m. The Height
+  terms nearly cancel for most pairs, and planes at altitude see the difference at a steep
+  elevation only when close.
+- **The failure criterion "0 flips on a plane row that moves" was mis-stated.** The same distance
+  is the sort key, so the order among in-range candidates can change without a range flip.
+  JM06's moves are that metric alone, not gameplay.
+- The spreads held: plane deaths within one per row, and torpedo-task releases unchanged.
+
+**Verdict: ON** (`kAaCategoryRangeOriginBound = true`), a spread miss with the mechanism matching.
+Of 12.6's list:
+- the aim-point height is now bound;
+- the kind-6 second ammunition was already bound;
+- the fire-window origin and the recon contact list stay open (13.1).
