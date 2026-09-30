@@ -416,6 +416,10 @@ public:
     // 007CE96F 007B9770, the control-input latch.
     virtual void latch_control_input_007b9770() = 0;
 
+    // 007CE0D2 007BE060 on unit+810h, the wanderer, with unit+520h clear and
+    // game+1FE4h == 0 (docs/PLANE_WANDERER.md). No-op unless the host binds it.
+    virtual void wanderer_fixed_step_007be060(float step) { (void)step; }
+
     // Observation points the sequence reads rather than calls.
     virtual bool airborne_time_frozen() = 0;  // unit+9E0h
     virtual int ground_water_mode() = 0;      // unit+900h

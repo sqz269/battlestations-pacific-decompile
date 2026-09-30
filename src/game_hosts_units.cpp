@@ -18,6 +18,7 @@
 #include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_ground_ops.hpp"
+#include "bsp/plane_wanderer.hpp"
 #include "bsp/plane_death_modes.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/plane_pose_commit.hpp"
@@ -556,8 +557,13 @@ struct GameUnitSlot {
     // 00D1047C / 00D10460, SquadronSetWandererMul / SquadronSetWandererEnabled).
     // Written by the follow trail arm 009C207C (kFollowTrailArmBound); read by
     // 007BE060 BSP_PlaneWanderer_FixedStep, which this host does not run.
-    float plane_wanderer_mul_840{1.0f};
-    bool plane_wanderer_enabled_844{true};
+    // plane+810h, the wanderer (packet cc9_plane_wanderer): +30h is plane+840h
+    // WandererMul, +34h plane+844h WandererEnabled.
+    bsp::PlaneWandererState wanderer;
+    bool wanderer_off_state{false};   // in land/final, turndown, aimdive or flyabove
+    unsigned long long wanderer_steps{0}, wanderer_active{0};
+    float wanderer_offset_max_seen{0.0f};
+    double wanderer_displacement{0.0};
     // Part 4, the circle state 009C26D0 (kMoveToCircleSteerBound): tick count and
     // the planar distance to the steer point that 009FBB20 measured, min / max / last.
     unsigned long long moveto_circle_ticks{0};
@@ -6318,6 +6324,18 @@ struct GameUnitsHost::Impl {
     // Packet cc9_follow_trail_arm (docs/PILOT_MOVETO_TASK.md, "The follow trail
     // arm"; GAMEPLAY_GAP_RANKING #14). True: 009C1FD0's arm after 009BEE30 runs.
     // False: a record.
+    // Packet cc9_plane_wanderer (docs/PLANE_WANDERER.md). True: the plane fixed step
+    // runs 007BE060 at 007CE0D2 and the position takes 007D8230's offset term.
+    // False: no wanderer (the offset stays zero).
+    static constexpr bool kPlaneWandererBound = false;
+    unsigned long long wanderer_planes{0}, wanderer_steps_total{0}, wanderer_active_total{0};
+    unsigned long long wanderer_timer_draws{0}, wanderer_off_transitions{0};
+    float wanderer_offset_max{0.0f}, wanderer_speed_max_seen{0.0f}, wanderer_accel_max_seen{0.0f};
+    double wanderer_displacement_total{0.0};
+    // Diagnostic, both sides: the follow law's station error (009BFD70's distance).
+    double follow_station_err_sum{0.0};
+    unsigned long long follow_station_err_n{0};
+    float follow_station_err_max{0.0f};
     static constexpr bool kFollowTrailArmBound = true;  // ON: stage-only, five rows identical (PILOT_MOVETO_TASK)
     unsigned long long trail_arm_calls{0}, trail_arm_raised{0};
     unsigned long long trail_arm_enabled{0}, trail_arm_disabled{0};
@@ -6341,16 +6359,16 @@ struct GameUnitsHost::Impl {
         const float b = c68 > 0.0f ? c68 : -0.0f - c68;
         const bool leader_published_520 = false;
         if (b > 0.5f || leader_published_520) {
-            unit.plane_wanderer_enabled_844 = false;
-            unit.plane_wanderer_mul_840 = 0.0f;
+            unit.wanderer.enabled = false;
+            unit.wanderer.mul = 0.0f;
             ++trail_arm_disabled;
             return;
         }
-        unit.plane_wanderer_enabled_844 = true;
-        unit.plane_wanderer_mul_840 = static_cast<float>(1.0 - (static_cast<double>(b) + b));
+        unit.wanderer.enabled = true;
+        unit.wanderer.mul = static_cast<float>(1.0 - (static_cast<double>(b) + b));
         ++trail_arm_enabled;
-        if (unit.plane_wanderer_mul_840 < trail_arm_min_mul) {
-            trail_arm_min_mul = unit.plane_wanderer_mul_840;
+        if (unit.wanderer.mul < trail_arm_min_mul) {
+            trail_arm_min_mul = unit.wanderer.mul;
         }
     }
 
@@ -6392,6 +6410,11 @@ struct GameUnitsHost::Impl {
                 dot > gt.pilot_follow_good_position_dir;
             unit.fw_arm = latch_85 ? 1 : 2;
             unit.fw_station_dist = static_cast<float>(dist);
+            follow_station_err_sum += dist;
+            ++follow_station_err_n;
+            if (static_cast<float>(dist) > follow_station_err_max) {
+                follow_station_err_max = static_cast<float>(dist);
+            }
             unit.fw_step = summary.motion_steps;
             for (int i = 0; i < 3; ++i) unit.fw_station[i] = station.world[i];
             unit.fw_leader_heading = leader.plane_heading_c6c;
@@ -13165,6 +13188,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 007DB680 BSP_PlaneFlight_CoreLaw with its integrator, run by the
                     // free-flight step (ground false) and by the ground law 007DCCF0
                     // (ground true, ctl+FCh = 1; packet cc9_plane_ground_roll).
+                    // 007D8230 (007D8278-007D8318): the published translation takes
+                    // t x unit+810h..818h next to t x ctl+18h. LABELLED: this host has
+                    // no sub-frame publish; the term is added where it integrates the
+                    // velocity, with t the fixed step.
+                    void wanderer_publish_007d8230(float step) {
+                        if constexpr (GameUnitsHost::Impl::kPlaneWandererBound) {
+                            const float* o = unit_.wanderer.offset;
+                            for (int i = 0; i < 3; ++i) unit_.motion.position[i] += o[i] * step;
+                            const double d = static_cast<double>(avoid_len(o)) * step;
+                            unit_.wanderer_displacement += d;
+                            owner_.wanderer_displacement_total += d;
+                        } else {
+                            (void)step;
+                        }
+                    }
                     void run_core_law_007db680(float step, bool ground) {
                         // The class field the law actually depends on. StallSpd
                         // is the only authored one; everything else is a
@@ -13694,11 +13732,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             for (int i = 0; i < 3; ++i) {
                                 unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                             }
+                            wanderer_publish_007d8230(step);
                         } else {
                             for (int i = 0; i < 3; ++i) {
                                 unit_.plane_world_velocity[i] += world_accel[i] * step;
                                 unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                             }
+                            wanderer_publish_007d8230(step);
                         }
                         // 0092D730 takes the body's linear velocity from
                         // 00C31F40 and dots it with the third row of the body
@@ -24740,6 +24780,91 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         }   // kPlaneGroundRollBound
                     }
+                    // 007CE0D2 -> 007BE060 (packet cc9_plane_wanderer). Reached only
+                    // with unit+520h clear (007CE09C) and game+1FE4h == 0, so the
+                    // +520h/+9D8h arm and 00927F30(1) read false (LABELLED).
+                    void wanderer_fixed_step_007be060(float step) override {
+                        if constexpr (GameUnitsHost::Impl::kPlaneWandererBound) {
+                            bsp::PlaneWandererState& w = unit_.wanderer;
+                            const std::string key = unit_.row.name + "#wander";
+                            const bsp::PlaneWandererDraw draw = [this, &key](float lo, float hi) {
+                                return owner_.release_altitude_draw_00bd2f10(key, lo, hi);
+                            };
+                            if (!w.constructed) {
+                                // 007C4560's draw, taken at the first step (LABELLED:
+                                // the image draws it at construction, 007CFDC6).
+                                bsp::plane_wanderer_construct_007c4560(w, draw);
+                                ++owner_.wanderer_planes;
+                            }
+                            // The +844h writers outside the trail arm: land/final's
+                            // enter/exit 009B1E84/009B1E96, turndown's 009C44C8/009C44E6,
+                            // aimdive's 009C588B/009C58A6, flyabove's 009C6283/009C6216.
+                            // LABELLED: observed as state transitions at this step.
+                            using DB = bsp::DiveBombState;
+                            const bool off_state =
+                                (unit_.land_task_installed &&
+                                 unit_.land_state == GameUnitSlot::LandTaskState::kFinal) ||
+                                unit_.dive_bomb_state == DB::kTurnDown ||
+                                unit_.dive_bomb_state == DB::kAimDive ||
+                                unit_.dive_bomb_state == DB::kFlyAbove;
+                            if (off_state != unit_.wanderer_off_state) {
+                                w.enabled = !off_state;
+                                unit_.wanderer_off_state = off_state;
+                                ++owner_.wanderer_off_transitions;
+                            }
+                            bsp::PlaneWandererTuning t;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                t.speed_range_1 = g.wanderer_speed_range_1;
+                                t.speed_range_2 = g.wanderer_speed_range_2;
+                                t.roll_change_chance = g.wanderer_roll_change_chance;
+                                t.roll_change_max = g.wanderer_roll_change_max;
+                                t.roll_change_decay = g.wanderer_roll_change_decay;
+                                t.roll_change_speed = g.wanderer_roll_change_speed;
+                                t.time_range_1 = g.wanderer_time_range_1;
+                                t.time_range_2 = g.wanderer_time_range_2;
+                                t.offset_max = g.wanderer_offset_max;
+                                t.change_mul = g.wanderer_change_mul;
+                                t.accel_max = g.wanderer_accel_max;
+                                t.speed_max = g.wanderer_speed_max;
+                                t.accel_decay_time = g.wanderer_accel_decay_time;
+                                t.speed_decay_time = g.wanderer_speed_decay_time;
+                                t.offset_decay_time = g.wanderer_offset_decay_time;
+                                t.small_decal_mul = g.wanderer_small_plane_decal_mul;
+                                t.small_roll_decay_mul = g.wanderer_small_plane_roll_decay_mul;
+                                t.small_accel_mul = g.wanderer_small_plane_accel_mul;
+                                t.small_time_mul = g.wanderer_small_plane_time_mul;
+                                t.small_offset_mul = g.wanderer_small_plane_offset_mul;
+                            } else {
+                                return;   // no tuning: the statics would be zero
+                            }
+                            bsp::PlaneWandererInputs in;
+                            in.airborne = landing_airborne(unit_);
+                            in.large = park_bomber_class_0047b850(unit_);
+                            in.plane_speed = avoid_len(unit_.plane_world_velocity);
+                            in.height_9b4 = unit_.motion.position[1] - owner_.avoid_surface_height(
+                                unit_.motion.position[0], unit_.motion.position[2]);
+                            const float timer_before = w.timer;
+                            const bool act = bsp::plane_wanderer_fixed_step_007be060(w, t, in, step, draw);
+                            ++unit_.wanderer_steps;
+                            ++owner_.wanderer_steps_total;
+                            if (act) {
+                                ++unit_.wanderer_active;
+                                ++owner_.wanderer_active_total;
+                                if (timer_before - step < 0.0f) ++owner_.wanderer_timer_draws;
+                            }
+                            const float ol = avoid_len(w.offset);
+                            if (ol > unit_.wanderer_offset_max_seen) unit_.wanderer_offset_max_seen = ol;
+                            if (ol > owner_.wanderer_offset_max) owner_.wanderer_offset_max = ol;
+                            const float sl = avoid_len(w.speed);
+                            if (sl > owner_.wanderer_speed_max_seen) owner_.wanderer_speed_max_seen = sl;
+                            const float al = avoid_len(w.accel);
+                            if (al > owner_.wanderer_accel_max_seen) owner_.wanderer_accel_max_seen = al;
+                            owner_.done("PlaneWanderer::fixed_step", 0x007be060u);
+                        } else {
+                            (void)step;
+                        }
+                    }
                     void surface_007cba50(float) override {
                         ++owner_.summary.plane_arm_surface;
                     }
@@ -26983,6 +27108,18 @@ void GameUnitsHost::report() {
             host.moveto_end_commands, host.moveto_end_stage_only, host.moveto_end_retired,
             host.moveto_end_promoted,
             Impl::kMoveToArrivalEndCommandBound ? 1 : 0);
+        host.log.notef("summary plane wanderer planes=%llu steps=%llu active=%llu timer_draws=%llu "
+            "off_transitions=%llu offset_max=%.3f speed_max=%.3f accel_max=%.3f displacement=%.1f "
+            "bound=%d (007BE060 / 007D8230, packet cc9_plane_wanderer)", host.wanderer_planes,
+            host.wanderer_steps_total, host.wanderer_active_total, host.wanderer_timer_draws,
+            host.wanderer_off_transitions, static_cast<double>(host.wanderer_offset_max),
+            static_cast<double>(host.wanderer_speed_max_seen),
+            static_cast<double>(host.wanderer_accel_max_seen), host.wanderer_displacement_total,
+            Impl::kPlaneWandererBound ? 1 : 0);
+        host.log.notef("summary follow station error n=%llu mean=%.2f max=%.2f (009BFD70 distance, "
+            "packet cc9_plane_wanderer diagnostic)", host.follow_station_err_n,
+            host.follow_station_err_n ? host.follow_station_err_sum / host.follow_station_err_n : 0.0,
+            static_cast<double>(host.follow_station_err_max));
         host.log.notef("summary follow trail arm calls=%llu raised=%llu enabled=%llu disabled=%llu "
             "min_mul=%.3f bound=%d (009C207C, packet cc9_follow_trail_arm)", host.trail_arm_calls,
             host.trail_arm_raised, host.trail_arm_enabled, host.trail_arm_disabled,
