@@ -360,6 +360,10 @@ void ai_publish_scene_slot_parties(const std::array<int, 8>& parties);
 // the coordinator reads them when kAiOwnerPlayerSlotBound is set. Replaces any
 // earlier publication.
 void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int>>& owners);
+// Packet cc9_landing_craft_owner_player (docs/SHIP_AI_OPEN_ITEMS.md section 101):
+// unit+180h for a unit created at run time by index, ahead of the by-name table
+// (008206F0 bags `OwnerPlayer 8` at 00821A72). Cleared by the publication above.
+void ai_set_unit_owner_player(std::size_t unit, int owner);
 
 class GameAiCoordinatorHost {
 public:

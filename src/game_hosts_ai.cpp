@@ -585,6 +585,8 @@ bool g_scene_slot_parties_published = false;
 // conflict and reads as 9.
 std::map<std::string, int> g_scene_owner_players;
 std::set<std::string> g_scene_owner_player_conflicts;
+// Packet cc9_landing_craft_owner_player: +180h by unit index for run-time units.
+std::map<std::size_t, int> g_unit_owner_players;
 
 // 00A2C790's per-member chain reaches the member's own weapon director through
 // the ENTITY's vtable[+114h] and reports its state back to the group's AI
@@ -603,6 +605,7 @@ void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {
 void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int>>& owners) {
     g_scene_owner_players.clear();
     g_scene_owner_player_conflicts.clear();
+    g_unit_owner_players.clear();
     for (const auto& row : owners) {
         const auto it = g_scene_owner_players.find(row.first);
         if (it != g_scene_owner_players.end() && it->second != row.second) {
@@ -610,6 +613,10 @@ void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int
         }
         g_scene_owner_players[row.first] = row.second;
     }
+}
+
+void ai_set_unit_owner_player(std::size_t unit, int owner) {
+    g_unit_owner_players[unit] = owner;
 }
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
@@ -1253,6 +1260,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     // unit+180h as 0077F1F9 stores it from the scene's `OwnerPlayer`, else 9.
     int unit_owner_player_0180(std::size_t unit) const {
+        for (const std::size_t key : {unit, proxy(unit)}) {
+            const auto by_index = g_unit_owner_players.find(key);
+            if (by_index != g_unit_owner_players.end()) return by_index->second;
+        }
         const GameUnitRow* row = units.unit_row(unit);
         if (row == nullptr) row = units.unit_row(proxy(unit));
         if (row == nullptr) return 9;
