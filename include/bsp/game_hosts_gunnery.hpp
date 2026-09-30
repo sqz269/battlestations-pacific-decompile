@@ -386,6 +386,16 @@ inline constexpr bool kDifficultyMultipliersBound = true;
 // unit's own tick. False: neither test binds, as before.
 // ON by the pairs of 2026-09-28 (docs/GUNNERY_OPEN_ITEMS.md section 12).
 inline constexpr bool kUnitFireCooldownBound = true;
+// Packet cc9_repair_enable_route (docs/GUNNERY_OPEN_ITEMS.md section 82). RepairEnable
+// on an IsKindOf(6) entity (008AD330) builds message 9Fh with the flag at +1Ch
+// (008AD48B..008AD4B7) and routes it through 0077C2A0 (008AD4CD, flags 7); the unit's
+// handler 00821E80 takes it at 008220D7 and calls 00939FD0 on the repair task at
+// unit+A20h, which stores the byte at task+45h. 0093C770 is the only reader in the
+// task block (0093C776): with +45h clear the hull repair rate is 0. True: the flag
+// reaches the gunnery host's task and gates its 0093C770 step. LABELLED: stored at
+// the Lua call, not queued to the next step's session pump. False: the flag is
+// counted and dropped, and every task keeps 0093BCC0's +45h = 1.
+inline constexpr bool kHullRepairEnableRouteBound = false;
 // robots.lua (this installation, 2025-06-01): NoTargetTimeUntilRest = 20.0 for
 // AAFlakBot, TailGunnerBot, AAGunnerBot, ArtilleryGunnerBot, TorpedoBot and
 // DepthChargeBot alike; descriptor +4h, read by 008FBCE0 as [[bot+30h]+4h].
@@ -992,6 +1002,10 @@ public:
     // 0071D580(stance). Always recorded; the two readers answer the stored
     // values only with kShipFireStanceBound, else 008363E0's default true.
     void set_director_fire_stance_0071be80(std::size_t unit_index, int stance);
+    // Packet cc9_repair_enable_route: the 9Fh arm of 00821E80 (008220D7), which calls
+    // 00939FD0 to store the flag at task+45h. Always counted; applied only with
+    // kHullRepairEnableRouteBound.
+    void set_hull_repair_enabled_00939fd0(std::size_t unit_index, bool enabled);
     bool director_allow_fire_3c(std::size_t unit_index) const noexcept;
     bool director_allow_move_3d(std::size_t unit_index) const noexcept;   // 009F5614's read
     // 007BC5B0's tail, past its flight-state and unit+AA0h tests: true when
