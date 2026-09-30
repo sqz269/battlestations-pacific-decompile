@@ -4921,3 +4921,69 @@ touches gameplay.
    (-2671, 1368)). If a looping plane comes into range of enemy AA or a ship, it shows up as extra
    `shots` or hit records against a plane. Those would be host-only interactions (the image's
    plane is hidden), recorded but not a mechanism failure of park.
+
+### 5ar.1 Measured, and the verdict: park ON, the image loop accepted
+
+The logs are `local\l24_p{off,on}_<row>.log` and the diffs `local\l24_pdiff_<row>.txt` (cc9-lua24
+tree). A 300-frame smoke of the OFF build exited 0.
+
+| row | `pair_diff` | death rows | note |
+| --- | --- | --- | --- |
+| JM05 9200/9000 | 3 | identical (18) | unit table: 12 `nearest` moves; deaths, hits (772), shots (953), damage and water contacts identical |
+| JM05 3200/3000 | 1 | identical (12) | 7 airfield planes and none of the carrier planes enter park; no loop before 3000 frames |
+| LOMP10 9200/9000 | 1 | identical (9) | no plane reaches park on this base (no `land park` summary on either side) |
+| LOMP10 3200/3000 | 1 | identical (7) | as above |
+| USN04 4700/4500 | 1 | identical (48) | |
+| USN01 3200/3000 (control) | 1 | identical (17) | |
+| BSM01 3200/3000 (control) | 0 | | |
+
+**The predictions:**
+1. **Held.** Every death table is identical.
+2. **Held.** On JM05 9000, F4F Wildcat 01 has `from_abort` 220 and MainAirfieldEntity
+   01_sqn01|.-2 has 672. Lexington stows 8 of 8 (Lexington_sqn03 x3, Yorktown_sqn04 x3,
+   Yorktown_sqn08 x2, all in state 2). `pair_diff` returned 3.
+3. **Failed as a premise.** LOMP10's landing traffic of 5x (2026-09-29) no longer reaches park
+   on the current base: no plane enters it on either side. The LOMP10 rows therefore say nothing
+   about the loop.
+4. **Held.** JM05 3000 and LOMP10 3000 both returned 1.
+5. **Held.** USN04 returned 1.
+6. **Held.** USN01 returned 1 and BSM01 returned 0.
+7. **Measured.** On JM05 9000, six airfield planes loop. They end far from their field:
+
+   | plane | `from_abort` | last local (x, z) |
+   | --- | --- | --- |
+   | F4F Wildcat 01 | 220 | (-2671, 1368) |
+   | SB2C Helldiver 02 | 360 | (-3181, 2816) |
+   | MainAirfieldEntity 01_sqn01\|.-2 | 672 | (6397, 7473) |
+   | MainAirfieldEntity 01_sqn01\|.-3 | 617 | (5940, 6733) |
+   | SecondaryAirfieldEntity 01_sqn02\|.-2 | 276 | (-2602, 2608) |
+   | SecondaryAirfieldEntity 01_sqn02\|.-3 | 751 | (-7432, 8310) |
+
+   The other airfield planes hold in state 5 at their hangar points. Their only interactions
+   outside the land task are small moves in counters:
+   - `Gunnery::score_candidate_00863990` 277683 -> 281923;
+   - ship AI autotarget `mean_candidates` 6.18 -> 6.20;
+   - recon publication `excluded` (plane classes met in the recon triples) 14360 -> 14325;
+   - recon level table `writes` 1367 -> 1370.
+
+   Shots, hit records, damage, deaths and plane water contacts are identical. These moves come
+   from hidden planes (the looping ones, and the stowed carrier planes) staying targetable and
+   visible in this host. The image detaches them from the hit index and hides them (5aq). That
+   is the existing labelled substitution, not a park mechanism.
+
+**No mechanism failure.**
+- On a carrier, park ends on the lift (5ao.1).
+- On an airfield it loops invisibly as the image's listing reads (5z, 5aa, 5aq).
+- The loop touches no outcome on these rows.
+
+**Verdict: `kLandParkStateBound = true`, labelled "image loop accepted, SQUADRON_LAND_TASK
+5aq".** This also puts the elevator (5ao) into the reference rows.
+
+**For reference U.** JM05 9000 moves (exit 3, the positions and the land-task, park and elevator
+counters); JM05 3000 moves at exit 1 (native table and summary counters only). The other rows are
+unchanged by this switch.
+
+**Open (not park).** The host keeps hidden planes (`+C00h`, and state 2 below deck)
+targetable and visible. The image does not: the `00710B80` detach removes them from the shell,
+blast, line-of-fire and aim queries, and the scene node hides them. A binding that drops `+C00h`
+planes from the gunnery candidates and the recon triples belongs to the gunnery and recon lanes.
