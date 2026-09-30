@@ -4396,3 +4396,75 @@ identical to cc9-lua22's `l22_fct2_jm05l.log`.
      006C5C40 fails, before anything else.
   2. **The moveto leader's speed loss** (35% of calls below 40 m/s at full throttle). Check the
      glide's commanded altitude against the leader's climb.
+
+## 5am. The head's mode 2<->3 chatter: the image's 20-degree gate, not a side flip (packet `cc9_land_head_chatter`, cc9-lua23, 2026-09-30)
+
+The question (5al open item 1): on JM05 the land heads' sequencer mode flips between 3 (on the
+landing circle) and 2 (inside StandbyDist, off it). Each flip moves the wing members between
+`land/standby` and `follow (land)`. Is the flip a host defect? **No difference from the image was
+found, and nothing is bound.** 5al's hypothesis, that the circle side flips across the runway
+axis, is refuted.
+
+### `006C5C40` re-read from the listing
+
+The body is `006C5C40`-`006C5E18`. Each step matches `landing_on_circle_006c5c40`:
+
+1. **Side.** Side = `006BCC90(pos).x > 0` (`006C5C8F` `COMISS` against `00D7A218`, `JA`), held
+   at `[esp+30h]`.
+2. **Circle point.** P = `006C5380(plane, side)`, and d = `00414C60` (the 2D length) of P - pos.
+3. **Distance gate.** False when d > r x 1.6 (double `00CE3D48`), with r = `006C3E50(plane)`.
+4. **Offset.** +pi/2 (`00CE3C64`, `3FC90FDB`) for side 1, and -pi/2 (`00CE3CCC`) otherwise.
+5. **Angle.** delta = |`00438B10`(`00414EB0`(P - pos) - off, `vtable[50h]()`)|. The heading is
+   staged as `00438B10`'s second stack argument before `00414EB0` is called (`006C5D48`-`006C5D51`).
+6. **Threshold.** `00419010`(r x 0.25 (double `00D7A348`), 45 deg (`00CEB5A8`), r x 0.8 (double
+   `00CE3D40`), 20 deg (`00CE398C`, `3EB2B8C3`); d). The stack order was traced from the pushes at
+   `006C5D9E`-`006C5DF3`.
+7. **Result.** True when the threshold is greater than delta (`006C5E01` `FCOMIP`, `JBE` to false).
+
+### Measured (diagnostic `summary land head circle`, commit `524d449ff`)
+
+The diagnostic runs at `006C7960`'s leader pass for each head in `land/standby`. Logs are
+`local\l23_d2_jm05{,l}.log`.
+
+| row | samples | on | beyond 1.6 r | heading fail (mean delta) | side differs from +44h | own-point heading < 90 deg | d / r | point moved | 3 -> not 3 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| JM05 3000 | 4972 | 4267 | 115 | 590 (1.058) | 1 | 4835 | 0.983 | 83.1 m | 48 |
+| JM05 9000 | 8665 | 6907 | 159 | 1599 (1.334) | 1 | 8306 | 0.959 | 259.0 m | 96 |
+
+The columns:
+- **Side differs from +44h:** the side `006C5C40` takes from the head's position against the side
+  the standby steer `009FBB20` flies.
+- **Own-point heading < 90 deg:** the same test against the steer's own point `+38h`.
+- **Point moved:** P now against `+38h`.
+
+What the numbers say:
+- **The side never flips** (1 sample in 8665), and the heads circle the right way round
+  (96-97% within 90 deg of the tangent of their own circle).
+- **Every traced exit is the heading gate** at d beyond 0.8 r, where the threshold is 20 deg.
+  Examples of the delta at an exit: 0.35-0.55 rad, with d / r between 0.63 and 1.36.
+- **Carrier heads make 47 of the 60 traced exits on JM05 9000.** Lexington_sqn03 alone has 11.
+  The 13 airfield exits (F4F, SB2C and the airfield squadrons) come in two groups: four within
+  20 s of entering standby, and nine between 80 s and 175 s. The latter are likely re-entries or
+  r changes, but they are not split here.
+- **Two image mechanisms keep a carrier head off its circle:**
+  - **The circle point rides the carrier.** `00758E80` re-frames the holder on every carrier
+    update (5ae). P sits PosBehind (780 m) aft and r abeam, so a carrier turn swings P by
+    hundreds of metres.
+  - **r follows the deck's record count.** `006C3E50`'s f runs over RadiusChange 10 -> 50 records
+    (1.0 -> 2.5, squared). Lexington holds 24 records on JM05 3000, so r = 1100 x 2.33 = 2558 m.
+    Each insert or release on the deck moves every head's r at once. At 64.35 s Yorktown_sqn08's
+    r went from 3014 m to 1296 m, and P moved 2462 m.
+- The circle is only 1.1 TurnCircleRadius at f = 1 (CircleMultiplierMin), so a head has little
+  turn margin to recover within 20 deg.
+
+### Verdict
+
+- No switch. The chatter is the image's own gate, fed by the carrier's motion and the deck's
+  record count.
+- One host input is the head's circle tracking, which depends on the flight laws (the heading
+  response and the standby speed command, `+2B4h` up to TravelSpeed x 1.6 at spacing 1.0). It is
+  not compared here: this host has no measurement of the original at run time.
+- Left for the queue:
+  - 5al item 2, the moveto leader's climb speed loss.
+  - Whether JM05's carrier record counts (Lexington 24) match what the image would hold once the
+    carrier elevator (5ah) removes landed planes. That is part of the elevator chain.
