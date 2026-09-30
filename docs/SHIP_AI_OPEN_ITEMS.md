@@ -7950,3 +7950,55 @@ The sequence in `s23_c1_jm08x` (the flip ON):
      `tick_request_join_formation`, the same `0077C964` route as section 92). Posting it
      through the loopback like section 92 would be parity. It does not change this ordering:
      the script's `attackmove` is posted first, so the join still lands last.
+
+## 94. Does the image's planner keep a script-ordered unit and re-join it? (packet `cc9_planner_join_loopback`, cc9-ships23, 2026-09-30)
+
+**Short answer: yes. The re-join of section 93.2 is the image's rule.** Four routines were read,
+and none has a gate that spares a script-ordered unit.
+
+### 94.1 The four routines
+
+| routine | what it does with a script-ordered member | evidence |
+| --- | --- | --- |
+| `00A2BD90` (the `0077D600` group notify at `0077D7A7`) | nothing | `[group+564Ch]`, then `JMP [vt+24h]` = `00A0FC90`, `RET 8`: a no-op (AI_GROUP_THINK section 2) |
+| `00A2DDE0` evict | keeps it | the gates are `+5Ch` set, `+5Dh`/`+5Eh`/`+60h` clear, `009FFD20(member) == group+5634h` and `member+54h == group+5638h`. `009FFD20` (`009FFD20..009FFD5C`) is the loss-counting slot from `entity+180h` and the party: no command read |
+| `00A2E260` split | keeps it | the `009FE080` subset; a ship base is always groupable |
+| `00A10DC0` follower pass (`00A10DC0`) | asks `0077C8D0` again | for every member after the head: IsKindOf(6) at `00A10E3E`, then `0077C8D0(leader)` at `00A10E67`. No command read. Its callers are the tick of every AI command class: Idle, MoveTo, MoveToAttack, CautiousMove, CautiousAttack, DefendPosition, and four more |
+
+- **`0077C8D0`** (`0077C8D0`, RET 4 at `0077C979`) asks only `vtable[16Ch]("follow", leader)` at
+  `0077C8FE`, which is `00779D50`: liveness, kind, side, and the same-group test. It then routes
+  76h. There is no current-command test.
+- **`0077F940`** then issues `follow` through each member's director `vt+58h` (`0077FAB8`), and
+  `00720CD0` clears every slot.
+- **So in the image, too,** a planner-group member that a script orders away (`attackmove` ->
+  `009F5DEB` leave) is re-joined at the group's next follower pass, and its script order is
+  cleared. JM08's landers following Bristol and Macomb is not a host defect.
+
+### 94.2 The one difference: when the planner's join is delivered
+
+- `game_hosts_ai.cpp`'s `tick_request_join_formation` joined at the call. The image posts the
+  76h through `0077C964 -> 0077C2A0` (flags 7) into the loopback vector, the same route
+  section 92 bound for the script's joins.
+- **`kPlannerJoinLoopbackBound`** (committed OFF) posts it through
+  `commands_post_loopback_callback_0076e520`.
+- **Summary line:** `summary mission ai follow join loopback posted= delivered= bound=`.
+
+### 94.3 Census and predictions (written before the pairs)
+
+Planner joins made, from section 92's ON logs (`s23_c1`):
+
+| row | planner requests / joins |
+| --- | --- |
+| JM08 36000 | 6710 / 31 |
+| USN13 | 986 / 29 |
+| USNOS | 737 / 10 |
+| USN02 | 13 / 7 |
+| USN01 | 150 / 2 |
+
+Predictions:
+- **Mechanism:** posted equals delivered, and joins keep the same count to within a few. A join
+  lands one pump (0.05 s) later, after anything posted before it.
+- **Order:** a script order posted in the same step as a planner join still loses to it, as in
+  the image. So JM08's landers still re-join Bristol and Macomb, with `begins=0` as before.
+- **JM08 36000, USNOS, USN02:** exit 1 or 3. A one-step delay on each of 31 / 10 / 7 joins can
+  move positions; no death row should flip for a mechanism reason.
