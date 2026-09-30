@@ -564,6 +564,17 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
         slot.launched_squadron = squadron;
     }
     if (squadron == 0u) return;
+    if constexpr (kBaseLaunchBrakeBound) {
+        // Packet cc9_base_launch_brake. 006C5314-006C5348, inside 006C5050: with
+        // the flag argument 0 (every launch from 006CC690) and block+38h not
+        // already this squadron, the old observer pair is unregistered (006952A0),
+        // the new squadron is stored at [block+24h]+14h = block+38h and the pair is
+        // registered on it (00694A60). The observer itself is not carried.
+        if (request.state == 1 && deck.launch_in_progress != squadron) {
+            deck.launch_in_progress = squadron;
+            ++deck.launch_brake_sets;
+        }
+    }
     // The squadron's own construction registers it with its home base:
     // 007F4580 BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes calls 007F1C00,
     // which stores the base at squadron+404h and queues the squadron on it. In a
