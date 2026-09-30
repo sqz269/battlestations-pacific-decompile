@@ -6023,9 +6023,49 @@ struct GameUnitsHost::Impl {
         // 007D7A40 after a changed pitch or yaw: unread, not modelled.
     }
 
+    // Packet cc9_moveto_target_speed (docs/PILOT_MOVETO_TASK.md, "The target-speed
+    // override"; GAMEPLAY_GAP_RANKING #8). True: the kind-7 moveto state and its
+    // circle (009C24E0, 009C26F2) take 009BECD0's first argument from 009C23B0,
+    // which answers the target's speed instead of squadron+3A0h when the target
+    // is within TurnCircleRadius + approach+68h (50.0) and faster than 007C47F0.
+    // False: squadron+3A0h always (a record).
+    static constexpr bool kMoveToTargetSpeedOverrideBound = false;
+    unsigned long long ts_override_calls{0}, ts_override_target{0};
+    unsigned long long ts_override_within{0}, ts_override_applied{0};
+    float ts_override_max_speed{0.0f};
+
+    // 009C23B0 (009C23B0-009C2429, __thiscall(approach), RET, ST0). a =
+    // [approach+0Ch]+3A0h (squadron+3A0h, `base`); with a target (+44h) and a
+    // class (+8h): when approach+64h < class+268h TurnCircleRadius + approach+68h
+    // (009C23D5-009C23F8; +68h = 50.0 from 009C1C30, 00CEB4D4) and the target's
+    // vtable[38h] speed > 007C47F0 (009C23FA-009C2412), a = that speed.
+    // LABELLED: the target's vtable[38h] is its motion.linear_velocity length, as
+    // the 009D3D01 site takes it; approach+64h is the host's moveto_distance_64.
+    float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
+        ++ts_override_calls;
+        if (unit.moveto_target_plus_one == 0 || unit.moveto_target_plus_one > slots.size()
+            || !slots[unit.moveto_target_plus_one - 1u]) return base;
+        ++ts_override_target;
+        const GameUnitSlot& t = *slots[unit.moveto_target_plus_one - 1u];
+        const bsp::OceanVec3& v = t.motion.linear_velocity;
+        const float speed = static_cast<float>(std::sqrt(static_cast<double>(v.x) * v.x
+            + static_cast<double>(v.y) * v.y + static_cast<double>(v.z) * v.z));
+        const float reach = unit.plane_turn_circle_radius + 50.0f;          // 009C23E3 FSTP
+        if (!(reach > unit.moveto_distance_64)) return base;                 // 009C23F8 JBE
+        ++ts_override_within;
+        if (!(static_cast<double>(speed) >
+              static_cast<double>(bot_desired_speed_007c47f0(unit)))) return base;  // 009C2412
+        ++ts_override_applied;
+        if (speed > ts_override_max_speed) ts_override_max_speed = speed;
+        return speed;
+    }
+
     // 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed's speed for a torpedo or
-    // dive-bomb moveto: 009BECD0(squadron+3A0h, 007C47F0(), sep).
-    float moveto_speed_009c1850(const GameUnitSlot& unit, float sep) {
+    // dive-bomb moveto: 009BECD0(squadron+3A0h, 007C47F0(), sep). With
+    // `via_009c23b0` (the kind-7 moveto and circle states) the first argument
+    // is 009C23B0's.
+    float moveto_speed_009c1850(const GameUnitSlot& unit, float sep,
+                                bool via_009c23b0 = false) {
         float w1 = 3000.0f, w2 = 5000.0f;
         float dont_wait = 0.87266463f, wait = 1.7453293f, good = 100.0f, nearby = 200.0f;
         float travel_mul = 1.6f;
@@ -6042,7 +6082,10 @@ struct GameUnitsHost::Impl {
         // squadron+3A0h = [squadron+35Ch]+190h, the class's TravelSpeed x
         // tuning+334h NewTravelSpeedMul (007D23F5/007D2406). The squadron's
         // class is its members' class, so the unit's own row stands in.
-        const float travel_scaled = unit.plane_travel_speed * travel_mul;
+        float travel_scaled = unit.plane_travel_speed * travel_mul;
+        if constexpr (kMoveToTargetSpeedOverrideBound) {
+            if (via_009c23b0) travel_scaled = moveto_target_speed_009c23b0(unit, travel_scaled);
+        }
         const bsp::PlaneSquadronHostRecord* sq =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
         float wingmen = 1.0f;
@@ -23175,15 +23218,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C26D3-009C2702: 009BECD0(009C23B0(007C47F0(0))), the moveto
                         // state's chain with 0 where it passes dist; the host's
                         // moveto_speed_009c1850 takes that slot as `sep`.
-                        const float blended = owner_.moveto_speed_009c1850(unit_, 0.0f);
+                        const float blended = owner_.moveto_speed_009c1850(unit_, 0.0f, true);
                         // 009C270B-009C2730: min with TravelSpeed class+18Ch.
                         const float travel = unit_.plane_travel_speed;
                         unit_.plane_desired_speed_2b4 = travel > blended ? blended : travel;
                         unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C2743
                         unit_.plane_air_brake_mode_2d8 = 1;       // 009C274F
                         ++unit_.plane_speed_commands;
-                        owner_.record("BotStateMoveTo::target_speed_override_009c23b0",
-                                      0x009c23b0u);
+                        if constexpr (GameUnitsHost::Impl::kMoveToTargetSpeedOverrideBound) {
+                            owner_.done("BotStateMoveTo::target_speed_override_009c23b0",
+                                        0x009c23b0u);
+                        } else {
+                            owner_.record("BotStateMoveTo::target_speed_override_009c23b0",
+                                          0x009c23b0u);
+                        }
                         if (unit_.torpedo_release_pending_c25) {
                             // 009C2763-009C2794: +2BCh = 0, +2D0h = 2, +2C4h = 0, +2CCh = 1.
                             owner_.record("BotStateMoveToCircle::c25_arm", 0x009c2763u);
@@ -23270,12 +23318,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C23B0 is [approach+0Ch]+3A0h unless the target is
                         // within TurnCircleRadius + 50 and faster than 007C47F0;
                         // that override is not applied (a record below).
-                        unit_.plane_desired_speed_2b4 = owner_.moveto_speed_009c1850(unit_, dist);
+                        unit_.plane_desired_speed_2b4 = owner_.moveto_speed_009c1850(unit_, dist, true);
                         unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C2503
                         unit_.plane_air_brake_mode_2d8 = 1;       // 009C250A
                         ++unit_.plane_speed_commands;
-                        owner_.record("BotStateMoveTo::target_speed_override_009c23b0",
-                                      0x009c23b0u);
+                        if constexpr (GameUnitsHost::Impl::kMoveToTargetSpeedOverrideBound) {
+                            owner_.done("BotStateMoveTo::target_speed_override_009c23b0",
+                                        0x009c23b0u);
+                        } else {
+                            owner_.record("BotStateMoveTo::target_speed_override_009c23b0",
+                                          0x009c23b0u);
+                        }
                         if (unit_.torpedo_release_pending_c25) {
                             owner_.record("BotStateMoveTo::c25_arm", 0x009c2519u);
                             return;
@@ -26874,6 +26927,11 @@ void GameUnitsHost::report() {
             host.moveto_end_commands, host.moveto_end_stage_only, host.moveto_end_retired,
             host.moveto_end_promoted,
             Impl::kMoveToArrivalEndCommandBound ? 1 : 0);
+        host.log.notef("summary moveto target speed override calls=%llu target=%llu within=%llu "
+            "applied=%llu max_speed=%.2f bound=%d (009C23B0, packet cc9_moveto_target_speed)",
+            host.ts_override_calls, host.ts_override_target, host.ts_override_within,
+            host.ts_override_applied, static_cast<double>(host.ts_override_max_speed),
+            Impl::kMoveToTargetSpeedOverrideBound ? 1 : 0);
         host.log.notef("summary carrier landing decks built=%llu refreshes=%llu bound=%d "
             "(007593D0 / 006BEE40 / 006BA620, packet cc9_carrier_landing_deck)",
             host.carrier_decks_built, host.carrier_deck_refreshes,
