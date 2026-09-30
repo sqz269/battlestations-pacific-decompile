@@ -6285,3 +6285,27 @@ only as a cross-check; its flag bytes are mangled.
    - When lined up they go 5 -> 4 through `007C1680` and roll.
    - Or, below 5 m of height, they take the low-land arm E at full throttle.
 4. No member reaches state 7 and no task is done.
+
+### Results (switch ON, JM05 3000, `local\l26_p4bon_jm05.log`, built from `931c852db` with the flip)
+
+The OFF 300-frame smoke (`local\l26_off2_smoke.log`) exits 0.
+
+| prediction | result |
+| --- | --- |
+| 1. carrier leaders line up, roll and leave the bow in state 4 | **held**. Both leaders are `ALIGNED` on their first Takeoff tick (9.50 s, `e` = 0, `err` = 0). Lexington: throttle 1.0, then 0.80-0.82 while the `state+1Ch` ramp builds, then 1.0; 9.3 m/s at 11.5 s, 35.8 m/s at 15.5 s, contact lost between 15.5 and 17.5 s at 36-44 m/s. Yorktown loses contact between 13.5 and 15.5 s |
+| 2. wingmen held in prepare | **held**: 2639 of 2641 permission asks denied |
+| 3. airfield members line up, 5 -> 4, and roll | **held**. First lined up at 13.3-29.7 s after 37-205 taxi ticks (speed request 0.83 m/s at large heading errors). The one traced (`MainAirfieldEntity 01_sqn01|.-2`) leaves the runway contact at 59 m/s in state 4 with throttle 0.9-1.0; all six end at throttle 1.0 in state 4. None took the low-land arm (their runways are above 5 m) |
+| 4. no state 7, no task done | **held**: `done=0`; `edge_takeoff_requests=1074` counts the carrier edge requests that piece 5 will send |
+
+**After the deck edge.** Still in state 4 and in its Takeoff state, Yorktown's leader took the D
+arm's taxi hold for 316 ticks: an occupant of its site was landed in the taxi queue, so the step
+wrote throttle 0 with the air brake. That is the image's rule for a plane that has lost contact
+without lifting off. It stops once piece 5 moves the plane to state 7 and out of the site.
+
+**Next: piece 5.** It covers the `C6h` lift-off send and `007C7110`, from the ground roll's two
+counted requests:
+- `007CC1B3`, height over the wheels and `vy` > 0.1;
+- `007CC23E`, contact lost on a ship holder.
+
+After that the rule's done arm (state 7, `+908h` > 5.0, above the floor or faster than
+MinControlSpeed) retires the task, and the flip criterion of 5aw can be checked.
