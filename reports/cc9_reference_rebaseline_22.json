@@ -1,0 +1,1424 @@
+{
+ "packet": "cc9_reference_rebaseline_22",
+ "worker": "cc9-gunnery20",
+ "reference": "2026-09-30 v",
+ "base_commit": "16d01094e",
+ "previous_reference": {
+  "name": "2026-09-30 u",
+  "commit": "7f622dde6",
+  "logs": "J:\\PROG\\battlestations-pacific-decompile-cc9-gunnery20\\local\\g20_ru_<row>.log"
+ },
+ "binary": {
+  "v": {
+   "dir": "local\\g20_rv",
+   "sha256": "F183B6F26309DCAB7E1B5C728007FE888FD8FB1117FD3BE8F9916C51CD15D441",
+   "flips": []
+  },
+  "anchor": {
+   "dir": "local\\g20_rv0",
+   "sha256": "9F5C70C5634B62125D32FE302DFE8FF5F3D6587B6C583DB16E18C458648BDCC6",
+   "flips": [
+    "kBaseLaunchChainBound",
+    "kBaseLaunchBrakeBound",
+    "kPlaneDesc158Bound",
+    "kTakeoffTaskHeadBound",
+    "kFormationJoinLoopbackBound",
+    "kPlannerJoinLoopbackBound",
+    "kAiGroupTransportMovesBound",
+    "kNavigatorShipAvoidanceDeliveryBound",
+    "kHullTerrainDynHullVerticesBound",
+    "kHullTerrainNativeTerrainTestBound",
+    "kHullTerrainBodyPairManifoldBound"
+   ],
+   "value": false
+  }
+ },
+ "environment": {
+  "window": "1600x900",
+  "env": {
+   "BSP_GUNNERY_RNG_STREAMS": "1",
+   "BSP_DEATH_TABLE": "1"
+  },
+  "mission_frame_seconds": 0.05,
+  "smoke": "local\\g20_rv_smoke.log (300 frames, clean)"
+ },
+ "rows": {
+  "usn04": {
+   "mission": "USN04",
+   "frames": "4700/4500",
+   "log": "local\\g20_rv_usn04.log",
+   "u_vs_v": {
+    "damage": [
+     "14023.9",
+     "14337.7"
+    ],
+    "deaths": [
+     "49",
+     "50"
+    ],
+    "hit records": [
+     "1004",
+     "1061"
+    ],
+    "hull hits": [
+     "91",
+     "148"
+    ],
+    "shots": [
+     "15384",
+     "15644"
+    ],
+    "first hit": [
+     "98.70 s",
+     "98.70 s"
+    ],
+    "torpedo-task releases": [
+     "5 of 16",
+     "5 of 16"
+    ],
+    "dive-bomb-task releases": [
+     "0 of 19",
+     "0 of 19"
+    ],
+    "plane water contacts": [
+     "16",
+     "16"
+    ],
+    "controlled moved": [
+     "Lexington-class01 3332.32",
+     "Lexington-class01 3332.32"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "486",
+     "490"
+    ]
+   }
+  },
+  "e2": {
+   "mission": "USN04",
+   "frames": "9200/9000",
+   "log": "local\\g20_rv_e2.log",
+   "u_vs_v": {
+    "damage": [
+     "14074.7",
+     "14388.5"
+    ],
+    "deaths": [
+     "51",
+     "52"
+    ],
+    "hit records": [
+     "1008",
+     "1065"
+    ],
+    "hull hits": [
+     "91",
+     "148"
+    ],
+    "shots": [
+     "15435",
+     "15695"
+    ],
+    "first hit": [
+     "98.70 s",
+     "98.70 s"
+    ],
+    "torpedo-task releases": [
+     "5 of 16",
+     "5 of 16"
+    ],
+    "dive-bomb-task releases": [
+     "0 of 19",
+     "0 of 19"
+    ],
+    "plane water contacts": [
+     "19",
+     "19"
+    ],
+    "controlled moved": [
+     "Lexington-class01 5588.15",
+     "Lexington-class01 5588.15"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "487",
+     "491"
+    ]
+   }
+  },
+  "usn01": {
+   "mission": "USN01",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_usn01.log",
+   "u_vs_v": {
+    "damage": [
+     "11212.6",
+     "10252.4"
+    ],
+    "deaths": [
+     "17",
+     "17"
+    ],
+    "hit records": [
+     "527",
+     "522"
+    ],
+    "hull hits": [
+     "107",
+     "113"
+    ],
+    "shots": [
+     "2254",
+     "2164"
+    ],
+    "first hit": [
+     "5.15 s",
+     "5.15 s"
+    ],
+    "torpedo-task releases": [
+     "0 of 17",
+     "0 of 5"
+    ],
+    "dive-bomb-task releases": [
+     "2 of 19",
+     "2 of 2"
+    ],
+    "plane water contacts": [
+     "3",
+     "3"
+    ],
+    "controlled moved": [
+     "ConTBD1 1245.72",
+     "ScoutDauntless 4623.23"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "505",
+     "504"
+    ]
+   }
+  },
+  "usn02": {
+   "mission": "USN02",
+   "frames": "9200/9000",
+   "log": "local\\g20_rv_usn02.log",
+   "u_vs_v": {
+    "damage": [
+     "61011.0",
+     "64747.8"
+    ],
+    "deaths": [
+     "1",
+     "1"
+    ],
+    "hit records": [
+     "6061",
+     "5621"
+    ],
+    "hull hits": [
+     "349",
+     "293"
+    ],
+    "shots": [
+     "4941",
+     "4641"
+    ],
+    "first hit": [
+     "19.25 s",
+     "19.25 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "Kortenaer 6825.13",
+     "Kortenaer 6756.10"
+    ],
+    "mission end": [
+     "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)",
+     "failed at 29.75 s (Mission.EndMission) text=\"Game Over\" entity=\"Alden\" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side)"
+    ],
+    "unimplemented": [
+     "485",
+     "486"
+    ]
+   }
+  },
+  "jm06": {
+   "mission": "JM06",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_jm06.log",
+   "u_vs_v": {
+    "damage": [
+     "3681.0",
+     "3694.7"
+    ],
+    "deaths": [
+     "1",
+     "1"
+    ],
+    "hit records": [
+     "287",
+     "288"
+    ],
+    "hull hits": [
+     "286",
+     "287"
+    ],
+    "shots": [
+     "354",
+     "357"
+    ],
+    "first hit": [
+     "72.10 s",
+     "72.10 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "Fletcher-class 08 451.48",
+     "Fletcher-class 08 451.48"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "478",
+     "478"
+    ]
+   }
+  },
+  "jm08": {
+   "mission": "JM08",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_jm08.log",
+   "u_vs_v": {
+    "damage": [
+     "4335.9",
+     "3445.8"
+    ],
+    "deaths": [
+     "5",
+     "7"
+    ],
+    "hit records": [
+     "238",
+     "196"
+    ],
+    "hull hits": [
+     "148",
+     "101"
+    ],
+    "shots": [
+     "2999",
+     "2983"
+    ],
+    "first hit": [
+     "5.25 s",
+     "5.25 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     "1",
+     "1"
+    ],
+    "controlled moved": [
+     "Auilick 953.32",
+     "Auilick 904.91"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "484",
+     "482"
+    ]
+   }
+  },
+  "usn13": {
+   "mission": "USN13",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_usn13.log",
+   "u_vs_v": {
+    "damage": [
+     "7938.1",
+     "7467.7"
+    ],
+    "deaths": [
+     "24",
+     "23"
+    ],
+    "hit records": [
+     "441",
+     "434"
+    ],
+    "hull hits": [
+     "137",
+     "131"
+    ],
+    "shots": [
+     "5026",
+     "4142"
+    ],
+    "first hit": [
+     "5.15 s",
+     "5.15 s"
+    ],
+    "torpedo-task releases": [
+     "0 of 60",
+     "0 of 60"
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     "6",
+     "6"
+    ],
+    "controlled moved": [
+     "Enterprise 926.02",
+     "Enterprise 926.02"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "512",
+     "515"
+    ]
+   }
+  },
+  "bsm01": {
+   "mission": "BSM01",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_bsm01.log",
+   "u_vs_v": {
+    "damage": [
+     "0.0",
+     "0.0"
+    ],
+    "deaths": [
+     "0",
+     "0"
+    ],
+    "hit records": [
+     "0",
+     "0"
+    ],
+    "hull hits": [
+     "0",
+     "0"
+    ],
+    "shots": [
+     "0",
+     "0"
+    ],
+    "first hit": [
+     "-1.00 s",
+     "-1.00 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "HenryPT 0.00",
+     "HenryPT 0.00"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "453",
+     "453"
+    ]
+   }
+  },
+  "lomp06": {
+   "mission": "LOMP06",
+   "frames": "1200/1000",
+   "log": "local\\g20_rv_lomp06.log",
+   "u_vs_v": {
+    "damage": [
+     "0.0",
+     "0.0"
+    ],
+    "deaths": [
+     "0",
+     "0"
+    ],
+    "hit records": [
+     "0",
+     "0"
+    ],
+    "hull hits": [
+     "0",
+     "0"
+    ],
+    "shots": [
+     "6",
+     "6"
+    ],
+    "first hit": [
+     "-1.00 s",
+     "-1.00 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "Narwhal 770.74",
+     "Narwhal 770.74"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "456",
+     "456"
+    ]
+   }
+  },
+  "lomp10": {
+   "mission": "LOMP10",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_lomp10.log",
+   "u_vs_v": {
+    "damage": [
+     "2847.1",
+     "2157.4"
+    ],
+    "deaths": [
+     "7",
+     "3"
+    ],
+    "hit records": [
+     "240",
+     "194"
+    ],
+    "hull hits": [
+     "156",
+     "118"
+    ],
+    "shots": [
+     "2985",
+     "3457"
+    ],
+    "first hit": [
+     "90.50 s",
+     "92.05 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     "8 of 8",
+     "9 of 8"
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "(none) 8001.80",
+     "(none) 7558.47"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "480",
+     "482"
+    ]
+   }
+  },
+  "jm05": {
+   "mission": "JM05",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_jm05.log",
+   "u_vs_v": {
+    "damage": [
+     "10011.6",
+     "9819.4"
+    ],
+    "deaths": [
+     "12",
+     "12"
+    ],
+    "hit records": [
+     "353",
+     "358"
+    ],
+    "hull hits": [
+     "38",
+     "35"
+    ],
+    "shots": [
+     "363",
+     "335"
+    ],
+    "first hit": [
+     "6.35 s",
+     "6.35 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "USS Phelps 2624.63",
+     "USS Phelps 2622.58"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "536",
+     "541"
+    ]
+   }
+  },
+  "usn12": {
+   "mission": "USN12",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_usn12.log",
+   "u_vs_v": {
+    "damage": [
+     "4510.8",
+     "4199.8"
+    ],
+    "deaths": [
+     "7",
+     "7"
+    ],
+    "hit records": [
+     "210",
+     "196"
+    ],
+    "hull hits": [
+     "18",
+     "14"
+    ],
+    "shots": [
+     "182",
+     "140"
+    ],
+    "first hit": [
+     "7.55 s",
+     "7.55 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "Montpelier 1499.41",
+     "Montpelier 1499.41"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "476",
+     "474"
+    ]
+   }
+  },
+  "lomp10l": {
+   "mission": "LOMP10",
+   "frames": "9200/9000",
+   "log": "local\\g20_rv_lomp10l.log",
+   "u_vs_v": {
+    "damage": [
+     "3514.5",
+     "2817.7"
+    ],
+    "deaths": [
+     "9",
+     "6"
+    ],
+    "hit records": [
+     "250",
+     "211"
+    ],
+    "hull hits": [
+     "161",
+     "122"
+    ],
+    "shots": [
+     "3004",
+     "3807"
+    ],
+    "first hit": [
+     "90.50 s",
+     "92.05 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     "8 of 8",
+     "9 of 8"
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "(none) 8001.80",
+     "(none) 7558.47"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "492",
+     "495"
+    ]
+   }
+  },
+  "usnos": {
+   "mission": "USNOS",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_usnos.log",
+   "u_vs_v": {
+    "damage": [
+     "53629.8",
+     "57669.3"
+    ],
+    "deaths": [
+     "105",
+     "106"
+    ],
+    "hit records": [
+     "1718",
+     "1786"
+    ],
+    "hull hits": [
+     "162",
+     "156"
+    ],
+    "shots": [
+     "4656",
+     "4438"
+    ],
+    "first hit": [
+     "4.50 s",
+     "4.50 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     "9",
+     "8"
+    ],
+    "controlled moved": [
+     "NH 1497.26",
+     "NH 1497.26"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "513",
+     "515"
+    ]
+   }
+  },
+  "usnosl": {
+   "mission": "USNOS",
+   "frames": "9200/9000",
+   "log": "local\\g20_rv_usnosl.log",
+   "u_vs_v": {
+    "damage": [
+     "63363.6",
+     "78626.3"
+    ],
+    "deaths": [
+     "127",
+     "147"
+    ],
+    "hit records": [
+     "2809",
+     "2771"
+    ],
+    "hull hits": [
+     "291",
+     "282"
+    ],
+    "shots": [
+     "16423",
+     "15626"
+    ],
+    "first hit": [
+     "4.50 s",
+     "4.50 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     "12",
+     "13"
+    ],
+    "controlled moved": [
+     "NH 4492.07",
+     "NH 4492.07"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "517",
+     "527"
+    ]
+   }
+  },
+  "ijn01": {
+   "mission": "IJN01",
+   "frames": "3200/3000",
+   "log": "local\\g20_rv_ijn01.log",
+   "u_vs_v": {
+    "damage": [
+     "1348.3",
+     "1628.1"
+    ],
+    "deaths": [
+     "3",
+     "3"
+    ],
+    "hit records": [
+     "75",
+     "80"
+    ],
+    "hull hits": [
+     "65",
+     "68"
+    ],
+    "shots": [
+     "2414",
+     "2866"
+    ],
+    "first hit": [
+     "86.55 s",
+     "86.55 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     null,
+     null
+    ],
+    "controlled moved": [
+     "Downes 220.52",
+     "Downes 472.13"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "497",
+     "497"
+    ]
+   }
+  },
+  "jm05l": {
+   "mission": "JM05",
+   "frames": "9200/9000",
+   "log": "local\\g20_rv_jm05l.log",
+   "u_vs_v": {
+    "damage": [
+     "23201.9",
+     "22495.2"
+    ],
+    "deaths": [
+     "18",
+     "14"
+    ],
+    "hit records": [
+     "786",
+     "644"
+    ],
+    "hull hits": [
+     "279",
+     "122"
+    ],
+    "shots": [
+     "1012",
+     "866"
+    ],
+    "first hit": [
+     "6.35 s",
+     "6.35 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     "3",
+     "3"
+    ],
+    "controlled moved": [
+     "USS Phelps 7466.83",
+     "USS Phelps 7522.71"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "551",
+     "558"
+    ]
+   }
+  },
+  "jm08l": {
+   "mission": "JM08",
+   "frames": "36200/36000",
+   "log": "local\\g20_rv_jm08l.log",
+   "u_vs_v": {
+    "damage": [
+     "43262.9",
+     "93415.1"
+    ],
+    "deaths": [
+     "25",
+     "160"
+    ],
+    "hit records": [
+     "1276",
+     "3669"
+    ],
+    "hull hits": [
+     "566",
+     "471"
+    ],
+    "shots": [
+     "6808",
+     "8075"
+    ],
+    "first hit": [
+     "5.25 s",
+     "5.25 s"
+    ],
+    "torpedo-task releases": [
+     null,
+     null
+    ],
+    "dive-bomb-task releases": [
+     null,
+     null
+    ],
+    "plane water contacts": [
+     "1",
+     "1"
+    ],
+    "controlled moved": [
+     "Auilick 4565.17",
+     "Auilick 10053.91"
+    ],
+    "mission end": [
+     "none (Mission.EndMission never true)",
+     "none (Mission.EndMission never true)"
+    ],
+    "unimplemented": [
+     "516",
+     "522"
+    ]
+   }
+  }
+ },
+ "anchor_exit_vs_u": {
+  "usn04": 1,
+  "e2": 1,
+  "usn01": 1,
+  "usn02": 1,
+  "jm06": 1,
+  "jm08": 1,
+  "usn13": 1,
+  "bsm01": 1,
+  "lomp06": 1,
+  "lomp10": 1,
+  "jm05": 1,
+  "usn12": 1,
+  "lomp10l": 1,
+  "usnos": 1,
+  "usnosl": 1,
+  "ijn01": 1,
+  "jm05l": 1,
+  "jm08l": 1
+ },
+ "v_exit_vs_u": {
+  "usn04": 3,
+  "e2": 3,
+  "usn01": 3,
+  "usn02": 3,
+  "jm06": 3,
+  "jm08": 3,
+  "usn13": 3,
+  "bsm01": 1,
+  "lomp06": 1,
+  "lomp10": 3,
+  "jm05": 3,
+  "usn12": 3,
+  "lomp10l": 3,
+  "usnos": 3,
+  "usnosl": 3,
+  "ijn01": 3,
+  "jm05l": 3,
+  "jm08l": 3
+ },
+ "leave_one_out": {
+  "lch": {
+   "switches_off": [
+    "kBaseLaunchChainBound",
+    "kBaseLaunchBrakeBound",
+    "kPlaneDesc158Bound",
+    "kTakeoffTaskHeadBound"
+   ],
+   "logs": "local\\g20_v_lch_<row>.log",
+   "rows_moved": [
+    "usn04",
+    "e2",
+    "usn13",
+    "jm05",
+    "jm05l"
+   ],
+   "exits": {
+    "usn04": 3,
+    "e2": 3,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 3,
+    "lomp10": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1,
+    "jm05l": 3,
+    "jm08l": 1,
+    "usn02": 1
+   },
+   "death_rows": {
+    "usn04": "DEATH ROWS: 50 -> 49 rows, 0 only ON, 1 only OFF, 0 changed",
+    "e2": "DEATH ROWS: 52 -> 51 rows, 0 only ON, 1 only OFF, 0 changed",
+    "usn13": "DEATH ROWS: 23 -> 23 rows, 0 only ON, 0 only OFF, 1 changed",
+    "jm05": "DEATH ROWS: identical (12 rows)",
+    "jm05l": "DEATH ROWS: identical (14 rows)"
+   }
+  },
+  "brk": {
+   "switches_off": [
+    "kBaseLaunchBrakeBound"
+   ],
+   "logs": "local\\g20_v_brk_<row>.log",
+   "rows_moved": [
+    "jm05",
+    "jm05l"
+   ],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "lomp10": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1,
+    "jm05l": 3,
+    "jm08l": 1,
+    "usn02": 1
+   },
+   "death_rows": {
+    "jm05": "DEATH ROWS: identical (12 rows)",
+    "jm05l": "DEATH ROWS: identical (14 rows)"
+   }
+  },
+  "d158": {
+   "switches_off": [
+    "kPlaneDesc158Bound"
+   ],
+   "logs": "local\\g20_v_d158_<row>.log",
+   "rows_moved": [
+    "usn04",
+    "e2",
+    "usn13",
+    "jm05",
+    "jm05l"
+   ],
+   "exits": {
+    "usn04": 3,
+    "e2": 3,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 3,
+    "lomp10": 1,
+    "jm05": 3,
+    "usn12": 0,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1,
+    "jm05l": 3,
+    "jm08l": 1,
+    "usn02": 1
+   },
+   "death_rows": {
+    "usn04": "DEATH ROWS: 50 -> 51 rows, 1 only ON, 0 only OFF, 22 changed",
+    "e2": "DEATH ROWS: 52 -> 52 rows, 0 only ON, 0 only OFF, 24 changed",
+    "usn13": "DEATH ROWS: identical (23 rows)",
+    "jm05": "DEATH ROWS: identical (12 rows)",
+    "jm05l": "DEATH ROWS: identical (14 rows)"
+   }
+  },
+  "head": {
+   "switches_off": [
+    "kTakeoffTaskHeadBound"
+   ],
+   "logs": "local\\g20_v_head_<row>.log",
+   "rows_moved": [
+    "jm05",
+    "jm05l"
+   ],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "lomp10": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1,
+    "jm05l": 3,
+    "jm08l": 1,
+    "usn02": 1
+   },
+   "death_rows": {
+    "jm05": "DEATH ROWS: identical (12 rows)",
+    "jm05l": "DEATH ROWS: identical (14 rows)"
+   }
+  },
+  "fjl": {
+   "switches_off": [
+    "kFormationJoinLoopbackBound"
+   ],
+   "logs": "local\\g20_v_fjl_<row>.log",
+   "rows_moved": [
+    "usn01",
+    "jm08",
+    "usn13",
+    "lomp10",
+    "jm05",
+    "usn12",
+    "lomp10l",
+    "usnos",
+    "usnosl",
+    "jm05l",
+    "jm08l",
+    "usn02"
+   ],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 3,
+    "jm06": 1,
+    "jm08": 3,
+    "usn13": 3,
+    "lomp10": 3,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 3,
+    "usnos": 3,
+    "usnosl": 3,
+    "ijn01": 1,
+    "jm05l": 3,
+    "jm08l": 3,
+    "usn02": 3
+   },
+   "death_rows": {
+    "usn01": "DEATH ROWS: 17 -> 17 rows, 0 only ON, 0 only OFF, 2 changed",
+    "jm08": "DEATH ROWS: 7 -> 5 rows, 0 only ON, 2 only OFF, 4 changed",
+    "usn13": "DEATH ROWS: 23 -> 24 rows, 1 only ON, 0 only OFF, 22 changed",
+    "lomp10": "DEATH ROWS: 3 -> 7 rows, 5 only ON, 1 only OFF, 2 changed",
+    "jm05": "DEATH ROWS: 12 -> 12 rows, 0 only ON, 0 only OFF, 3 changed",
+    "usn12": "DEATH ROWS: identical (7 rows)",
+    "lomp10l": "DEATH ROWS: 6 -> 9 rows, 4 only ON, 1 only OFF, 5 changed",
+    "usnos": "DEATH ROWS: 106 -> 105 rows, 2 only ON, 3 only OFF, 69 changed",
+    "usnosl": "DEATH ROWS: 147 -> 127 rows, 2 only ON, 22 only OFF, 88 changed",
+    "jm05l": "DEATH ROWS: 14 -> 18 rows, 4 only ON, 0 only OFF, 4 changed",
+    "jm08l": "DEATH ROWS: 160 -> 55 rows, 15 only ON, 120 only OFF, 39 changed",
+    "usn02": "DEATH ROWS: identical (1 rows)"
+   }
+  },
+  "pjl": {
+   "switches_off": [
+    "kPlannerJoinLoopbackBound"
+   ],
+   "logs": "local\\g20_v_pjl_<row>.log",
+   "rows_moved": [
+    "usn01",
+    "jm06",
+    "jm08",
+    "usn13",
+    "jm05",
+    "usn12",
+    "usnos",
+    "usnosl",
+    "ijn01",
+    "jm05l",
+    "jm08l"
+   ],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 3,
+    "jm06": 3,
+    "jm08": 3,
+    "usn13": 3,
+    "lomp10": 1,
+    "jm05": 3,
+    "usn12": 3,
+    "lomp10l": 1,
+    "usnos": 3,
+    "usnosl": 3,
+    "ijn01": 3,
+    "jm05l": 3,
+    "jm08l": 3,
+    "usn02": 1
+   },
+   "death_rows": {
+    "usn01": "DEATH ROWS: 17 -> 17 rows, 0 only ON, 0 only OFF, 1 changed",
+    "jm06": "DEATH ROWS: identical (1 rows)",
+    "jm08": "DEATH ROWS: 7 -> 6 rows, 0 only ON, 1 only OFF, 5 changed",
+    "usn13": "DEATH ROWS: identical (23 rows)",
+    "jm05": "DEATH ROWS: 12 -> 12 rows, 0 only ON, 0 only OFF, 3 changed",
+    "usn12": "DEATH ROWS: 7 -> 7 rows, 0 only ON, 0 only OFF, 3 changed",
+    "usnos": "DEATH ROWS: 106 -> 106 rows, 0 only ON, 0 only OFF, 7 changed",
+    "usnosl": "DEATH ROWS: 147 -> 146 rows, 0 only ON, 1 only OFF, 12 changed",
+    "ijn01": "DEATH ROWS: 3 -> 3 rows, 0 only ON, 0 only OFF, 3 changed",
+    "jm05l": "DEATH ROWS: 14 -> 14 rows, 0 only ON, 0 only OFF, 4 changed",
+    "jm08l": "DEATH ROWS: 160 -> 165 rows, 26 only ON, 21 only OFF, 138 changed"
+   }
+  },
+  "atm": {
+   "switches_off": [
+    "kAiGroupTransportMovesBound"
+   ],
+   "logs": "local\\g20_v_atm_<row>.log",
+   "rows_moved": [
+    "usnos",
+    "usnosl"
+   ],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "lomp10": 1,
+    "jm05": 1,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 3,
+    "usnosl": 3,
+    "ijn01": 1,
+    "jm05l": 1,
+    "jm08l": 1,
+    "usn02": 1
+   },
+   "death_rows": {
+    "usnos": "DEATH ROWS: 106 -> 106 rows, 0 only ON, 0 only OFF, 22 changed",
+    "usnosl": "DEATH ROWS: 147 -> 147 rows, 0 only ON, 0 only OFF, 30 changed"
+   }
+  },
+  "nsa": {
+   "switches_off": [
+    "kNavigatorShipAvoidanceDeliveryBound"
+   ],
+   "logs": "local\\g20_v_nsa_<row>.log",
+   "rows_moved": [],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 1,
+    "lomp10": 1,
+    "jm05": 1,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 1,
+    "ijn01": 1,
+    "jm05l": 1,
+    "jm08l": 1,
+    "usn02": 1
+   },
+   "death_rows": {}
+  },
+  "hull": {
+   "switches_off": [
+    "kHullTerrainDynHullVerticesBound",
+    "kHullTerrainNativeTerrainTestBound",
+    "kHullTerrainBodyPairManifoldBound"
+   ],
+   "logs": "local\\g20_v_hull_<row>.log",
+   "rows_moved": [
+    "usn13",
+    "jm05",
+    "usnosl",
+    "ijn01",
+    "jm05l",
+    "jm08l"
+   ],
+   "exits": {
+    "usn04": 1,
+    "e2": 1,
+    "usn01": 1,
+    "jm06": 1,
+    "jm08": 1,
+    "usn13": 3,
+    "lomp10": 1,
+    "jm05": 3,
+    "usn12": 1,
+    "lomp10l": 1,
+    "usnos": 1,
+    "usnosl": 3,
+    "ijn01": 3,
+    "jm05l": 3,
+    "jm08l": 3,
+    "usn02": 1
+   },
+   "death_rows": {
+    "usn13": "DEATH ROWS: identical (23 rows)",
+    "jm05": "DEATH ROWS: 12 -> 12 rows, 0 only ON, 0 only OFF, 2 changed",
+    "usnosl": "DEATH ROWS: 147 -> 147 rows, 0 only ON, 0 only OFF, 9 changed",
+    "ijn01": "DEATH ROWS: identical (3 rows)",
+    "jm05l": "DEATH ROWS: 14 -> 14 rows, 0 only ON, 0 only OFF, 2 changed",
+    "jm08l": "DEATH ROWS: 160 -> 132 rows, 21 only ON, 49 only OFF, 45 changed"
+   }
+  }
+ }
+}
