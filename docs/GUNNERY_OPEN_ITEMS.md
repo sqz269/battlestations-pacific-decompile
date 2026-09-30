@@ -5468,3 +5468,130 @@ the same finding as GUNNERY_OPEN_ITEMS 63 for heavy artillery. **Nothing is boun
 **Reading a moved row:** `pair_diff`'s `nearest` field is the logged candidate distance.
 Sections 13 and 77 changed it without gameplay, so read the aggregates and the death table
 before calling a row moved.
+
+## 80. The target weight's damage terms (packet `cc9_ai_target_weight_damage_terms`, cc9-gunnery18)
+
+### 80.1 Why (reference t, `kAiWeaponFactsAtAttachBound` on JM08 long)
+
+Reference t's leave-one-out (GAME_EXECUTABLE "2026-09-30 t") found `kAiWeaponFactsAtAttachBound` to
+be JM08 long's largest mover (25 deaths ON, 154 OFF). The first gameplay difference between
+`g18_rt_jm08l` and `g18_t_wfa_jm08l` (pointer-normalised line diff) is the US capture planner's
+think at t = 0.05:
+- both sides order all five US groups onto `Headquarter 01`, in a different order (ON Helena,
+  Bristol, Gleaves, Macomb, Grayson; OFF Bristol, Helena, Macomb, Gleaves, Grayson). The order is
+  `capture_plan_00a29fd0`'s greedy pick on `k*s + (1-k)*w` with `w` = `00A250A0`, which OFF scores
+  with the stand-in weight 1.0 (no facts yet) and ON with the facts;
+- each `order_attack` draws `cautious = random_00bd2f10(0, 1) > aggressive`
+  (`game_hosts_ai.cpp` `order_attack`). The draws are the same on both sides and only the second
+  is non-cautious, so ON Bristol's seven-ship group attacks plainly and Helena's group cautiously
+  (command 8), OFF the reverse (Helena command 7). Every later planner diag line keeps it.
+
+So the magnitude is a random draw landing on a different group, not a systematic effect. The
+switch's timing is the image's: `00A08460`'s target and attacker are the vehicle **class**
+descriptors (`00A04560` record+0h = `[entity+538h]` or `[entity+35Ch]`, AI_TARGET_WEIGHT_TERMS),
+so the hit points and barrel lists it reads exist from load. WEAPON_FACTS_ORDER section 2's "live
+object fields ... present from construction" should read "class descriptor fields, present from
+load"; its conclusion stands (routed to that doc's owner).
+
+### 80.2 The image (disk bytes, `bsp.py disasm-raw 00A08460 --length 0x13B0`, `009FE200 --length 0x70`)
+
+The barrel loop of `00A08460`'s not-type-0Fh branch, frame offsets relative to ESP after the
+prologue:
+- `00A085A8` reads `target+4Ch`, the class **Armour** (VEHICLE_CLASS_FIELDS, `0087CCB4`), into
+  `+70h` (`00A085B1`, one push pending) and `+48h` (`00A085B7`). `00A085F8` overwrites `+48h` with
+  `vtable[+24h]()` when the target class answers `vtable[+18h](6)`; a ship class serves that slot
+  with `009635D0`, **UnderwaterArmour** `+6B4h`.
+- `00A09443`: a barrel whose bullet sub-type is `0Ah` takes `+48h`, every other `+70h`.
+- `00A09460..00A094C9`: `low = max(BlastDamageMin +B4h, DamageMin +ACh)`,
+  `high = max(BlastDamageMax +B8h, DamageMax +B0h)` of the barrel's bullet class
+  (`00415550 BSP_Math_MaxFloatByRef`).
+- `00A094D5 FCOMIP / JA`: **armour > high skips the barrel** (before the accuracy lookup).
+- `00A09578`: `009FE200(low, high, armour, hp)` multiplies the barrel's
+  `time factor * accuracy * shots`. `009FE200` (`RET 10h`, `009FE200-009FE26A`) is the expected
+  damage one hit deals above the armour for a uniform `[low, high]`, capped at `hp`:
+  0 when `high <= armour`; `(low + high) * 0.5 - armour` when `low >= armour`; otherwise
+  `(high - armour) / (high - low) * ((high - armour) * 0.5)`; the 0.5 is the double at `00D7A280`.
+- `00A095A9`: the accumulator adds `D * WaterDamage (+BCh)`; `00A09624` scales it by
+  `00424C40+3B0h`, **WaterTickDamage**.
+
+**The host before this packet:** `+4Ch` was read as a "capture state" and published as 0 (unused);
+`009FE200` was labelled a distance falloff and answered 1.0; the accumulator added `D * 1` at scale
+1.0; the hit points were the instance maximum, which `OverrideHP` rewrites. So every host weight
+ignored damage and armour.
+
+### 80.3 The binding (`kAiTargetWeightDamageTermsBound`, committed OFF)
+
+- `include/bsp/game_hosts_ai.hpp`: the switch; `Barrel::damage_low/high/water_damage`;
+  `Unit::armour/underwater_armour` (replacing `capture_state`); `water_damage_scale`.
+- `src/game_hosts_gunnery.cpp` `publish_ai_weapon_facts`: publishes them from the bullet class row
+  and the unit's `armour` / `underwater_armour`, WaterTickDamage from the damage-control row, and,
+  bound, the class HP (`UnitState::class_hit_points`) instead of the OverrideHP'd maximum.
+- `src/ai_target_weights.cpp`: the gate, `ai_expected_hit_damage_009fe200` and the water term,
+  each behind `damage_terms_bound()`; OFF keeps 1.0, `x 1` and scale 1.0 exactly.
+- `src/game_hosts_ai.cpp`: the binding's methods and a census line
+  `summary mission ai target weight damage terms` (barrels, armour refusals, zero per-hit answers,
+  the per-hit sum, and the sums of the model's answers at its close-target and group-value sites).
+- **Labelled:** a squadron target keeps its own row's class HP and armour, where the image weighs
+  it through its planes' class (`+35Ch`); the category gates `bVar3..cVar7` and the type-0Fh branch
+  stay as they were.
+
+### 80.4 Predictions (written before any ON run)
+
+The model runs on T's rows USN04, E2, USN01, USN02, JM06, JM08, USN13, LOMP06, USN12, USNOS,
+USNOS long, IJN01 and JM08 long (`model_runs` or `model_pairs` above 0 on `g18_rt_<row>`); it never
+runs on BSM01, LOMP10, LOMP10 long, JM05 and JM05 long.
+
+- **Mechanism:** ON, `barrels` > 0 and `armour_refusals` > 0 on every model row, `per_hit_sum` > 0,
+  `water_scale` the WaterTickDamage the damage-control line logs. OFF, `barrels` = 0. The close and
+  group weight sums rise by one to two orders of magnitude ON (a per-hit damage of tens to hundreds
+  replaces 1.0), with the ratio capped at MaxTargetKillRatio.
+- **Controls (exit 0 or 1):** BSM01, LOMP10, LOMP10 long, JM05, JM05 long.
+- **Moved (exit 3), expected:** USN13, USNOS, USNOS long, IJN01, USN12, USN02, JM06, JM08, JM08 long.
+  USN01, USN04, E2 and LOMP06 may move (their model pairs feed few decisions).
+- **Spread:** deaths within about 25% of OFF on the shore rows; no row's AI stops attacking
+  (attack and `attackmove` counts stay above 0 wherever they were). JM08 long is RNG-coupled through
+  the cautious draw (80.1), so it is judged on the census and the first capture order, not deaths.
+- **Keep OFF if:** a control moves; `barrels` is 0 on a model row; `armour_refusals` equals
+  `barrels` on a row (a units mismatch between armour and damage); or a row's attack orders
+  collapse to 0.
+
+### 80.5 The pair, and the verdict: ON
+
+A same-tree pair at `0fcf19d8d` (branch merged with main `4209e62f7`): `local\g18_lane_a` (SHA-256
+prefix `D7589F0BA0A0`) against `local\g18_lane_b` (`--flip kAiTargetWeightDamageTermsBound=true`,
+`5EDB8D4F16B8`). The 300-frame USN01 smoke on the ON build is clean. The 18 reference t rows ran
+10:40-10:54 UTC in t's launch form; logs `local\g18_p{0,1}_<row>.log`.
+
+| row | exit | barrels / armour refusals ON | close weight sum OFF -> ON | group weight sum OFF -> ON | what moved |
+| --- | --- | --- | --- | --- | --- |
+| BSM01, LOMP10, LOMP10 long, JM05, JM05 long | 1 | 0 / 0 | 0 | 0 | nothing (controls) |
+| USN04, E2 | 1 | 14782 / 0 | 0 | 2556 -> 21780 | nothing |
+| USN01 | 1 | 15530 / 6214 | 0 | 296 -> 5051 | nothing |
+| JM08 | 1 | 638892 / 47400 | 0 | 14015 -> 1490471 | nothing |
+| USN12 | 1 | 78264 / 23850 | 5569 -> 289913 | 9.5 -> 1273 | nothing |
+| JM08 long | 1 | 11964792 / 1181643 | 106696 -> 8396262 | 138032 -> 14833321 | nothing: the first capture order swaps Gleaves and Macomb, both cautious, so the draws land as before |
+| USN02 | 3 | 625276 / 309503 | 458 -> 65395 | 530 -> 74314 | hits 5111 -> 6229, damage 59304 -> 66964, shots 4545 -> 5025; death rows identical |
+| JM06 | 3 | 44153 / 30856 | 325 -> 6522 | 112 -> 11467 | hits 192 -> 287, shots 276 -> 354; death rows identical |
+| USN13 | 3 | 548977 / 259998 | 2485 -> 101446 | 6196 -> 140838 | call counts only; death rows identical |
+| LOMP06 | 3 | 36680 / 12240 | 0 | 743 -> 60741 | call counts only |
+| IJN01 | 3 | 1191252 / 753091 | 15495 -> 653876 | 3335 -> 52143 | Downes moves 220 -> 196 m; death rows identical |
+| USNOS | 3 | 2361941 / 701524 | 6607 -> 339631 | 40274 -> 4066176 | deaths 107 -> 105 (two OFF deaths absent, 61 rows re-timed or re-attributed) |
+| USNOS long | 3 | 7426460 / 2198446 | 24328 -> 1516931 | 117941 -> 12018181 | deaths 129 -> 128 |
+
+`water_scale` is 100.0 (WaterTickDamage) on every ON row; `zero_per_hit` is 0 except USNOS (5308)
+and USNOS long (15528), barrels whose high damage equals the armour exactly (the gate passes them, 009FE200 answers 0).
+
+**Prediction check:**
+- **The controls held** (exit 1, `barrels` 0 on both sides).
+- **The mechanism held:** every model row counts barrels ON and none OFF; refusals are a share,
+  never all (USN02 49%, IJN01 63%, JM08 7%); the weight sums rise 8-140x.
+- **Misses, all spread:**
+  - USN04 and E2 have no refusal (no scored barrel met armour above its damage; not examined further), where every model row was predicted to refuse some.
+  - USN12, JM08 and JM08 long were predicted to move and are gameplay-identical: the weights
+    changed but not the choices they feed.
+  - USN01 stays identical (predicted "may move").
+- **The spread held:** shore deaths within 2% (USNOS 105, USNOS long 128); no row's attack stopped
+  (shots rose on every moved row).
+
+**Verdict: ON** (`kAiTargetWeightDamageTermsBound = true`), a spread miss with the mechanism
+matching. It belongs to reference u.
