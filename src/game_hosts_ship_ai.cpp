@@ -5126,7 +5126,12 @@ public:
         const bsp::ShipAiApproachMode mode = ctl_.approach.mode_1234;
         if (mode == bsp::ShipAiApproachMode::inside_3 ||
             mode == bsp::ShipAiApproachMode::standoff_4) {
-            // 009F21A0..009F2395, not read by this packet.
+            // 009F21A0..009F2395, read (docs/SHIP_AI_OPEN_ITEMS.md section 72)
+            // but not reconstructed: both modes need the building's landing-pad
+            // vector (+794h/+798h, 006F2DE0 / 006F2E60 / 006F3AF0), the pad
+            // approach cache (006AC5D0), the avoid-zone push 00417E60 and the
+            // landing message 0A5h (00749D90, routed class 7 by 0077C2A0), none
+            // of which this process has. No reference row latches mode 3 or 4.
             owner_.record("ShipAiApproach::retarget_modes_3_4", 0x009f21a0u);
             return;
         }
