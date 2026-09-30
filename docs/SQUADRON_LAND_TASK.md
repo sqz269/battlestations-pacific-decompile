@@ -4987,3 +4987,549 @@ unchanged by this switch.
 targetable and visible. The image does not: the `00710B80` detach removes them from the shell,
 blast, line-of-fire and aim queries, and the scene node hides them. A binding that drops `+C00h`
 planes from the gunnery candidates and the recon triples belongs to the gunnery and recon lanes.
+
+## 5as. The hide's detach, bound: a hidden plane leaves the hit index (packet `cc9_hit_index_detach`, cc9-lua24, 2026-09-30)
+
+5aq read what the hide does: `00951F40(0)` -> `00710B80` -> `0098A500` removes the collision part
+`[unit+360h]` from the spatial index, and `00B6DA70` stops drawing the plane. With park ON
+(5ar), the host now reaches the hide on JM05 9000 (six looping airfield planes, eight stowed
+carrier planes). This packet binds the index half.
+
+### What is bound, behind `kHitIndexDetachBound` (`src/game_hosts_gunnery.cpp`, committed OFF)
+
+- **The flag.** `GameUnitsHost::unit_hit_node_detached`, slot field `plane_hit_node_detached`:
+  - set where the host carries `00951F40(0)`: the park hangar hide (`009B28B8` -> `007B96C0`) and
+    the elevator's bottom release `006FC250` (`006FC279`-`006FC28F`);
+  - cleared by the carry `006FC0D0`, which is `00951F40(1)` -> `00710AD0`. The spawn-state helper
+    `007BC550` and `luaMW_SetVisibility` (`008A13D0`) are the other `00951F40` callers and are not
+    carried.
+- **The queries that skip a detached unit** (the index's consumers, 5aq):
+  - `SegmentBinding::shape_count`, the host's `0098ADD0` segment sweep: the shell sweep of
+    `0084BF00`, the player seat's aim rays and the picks;
+  - the blast gather of `apply_impact_blast` (`00904470` -> `0098C630`);
+  - the line of fire's unit half (`0072CDD0` with `0098B130`).
+- **Not bound, and why.**
+  - **The AA and gun candidates.** They come from the side's recon list `[recon+DE8h]`
+    (docs/AA_TARGETING.md 2), not from the index. The only index query on the AA path is
+    `00864680`'s visibility segment, and that is kind `44h`, the landscape. So the image's guns may
+    still pick a hidden plane; they just cannot hit it.
+  - **The recon triples.** The sensor pass `008073C0` walks class buckets of present units
+    (docs/RECON_SENSOR_PASS.md), not the index. Nothing read shows the hide removing a unit from
+    those buckets.
+  - **The drawing** (`00B6DA70`, scene node `+ACh`). It is presentation only.
+- **Counter.** `summary mission gunnery hit index detach bound=%d offers=%llu` counts the offers
+  of a detached unit on both sides. They are skipped only when the switch is ON.
+
+### Predictions, written before any ON run
+
+1. **JM05 9000** (park ON on both sides): `pair_diff` returns 0 or 1.
+   - On the park-ON run of 5ar.1, the hits, shots and damage equal the park-OFF run's. So no shell
+     or blast reached a hidden plane, and skipping them changes nothing.
+   - `offers` is non-zero: the sweeps meet detached planes' boxes.
+   - This differs from the lead's expectation. The candidate and recon counters of 5ar.1 stay
+     where they are, because neither path runs through the index (above).
+2. **JM05 3000.** 1: the hangar entries exist (5ar.1: seven airfield planes in park), so
+   `offers` may be non-zero, but no hit moves.
+3. **USN04 4500, LOMP10 9000 and the controls USN01 and BSM01.** 0 or 1, with `offers` = 0 (no
+   plane reaches the hide).
+4. **A mechanism failure would be** a detached plane taking a hit or a blast record ON, or any
+   death row changing without a hidden plane in it.
+
+### 5as.1 Measured (pairs on `ad0380150`), and the verdict: ON
+
+- **OFF** is `local\l24_hoff` and **ON** is `--flip kHitIndexDetachBound=true`, `local\l24_hon`.
+  Both have park ON (5ar).
+- The logs are `local\l24_h{off,on}_<row>.log` and the diffs `local\l24_hdiff_<row>.txt` (cc9-lua24
+  tree).
+- The 300-frame smoke of the OFF build exited 0.
+
+| row | `pair_diff` | death rows | `offers` | moved |
+| --- | --- | --- | --- | --- |
+| JM05 9200/9000 | 1 | identical (18) | 1258 | `line_of_fire_tests` 27484 -> 27398 |
+| JM05 3200/3000 | 1 | identical (12) | 18 | `line_of_fire_tests` 24825 -> 24823 |
+| USN04 4700/4500 | 1 | identical (48) | 0 | the bound line only |
+| LOMP10 9200/9000 | 1 | identical (9) | 0 | the bound line only |
+| USN01 3200/3000 (control) | 1 | identical (17) | 0 | the bound line only |
+| BSM01 3200/3000 (control) | 1 | identical (0) | 0 | the bound line only |
+
+The ship AI `free` refill counter also moved on some rows; it is the known same-binary noise.
+
+**The predictions:**
+1. **Held.** JM05 9000 returned 1, and `offers` = 1258. The line of fire's box tests fall by 86,
+   which is the detached planes no longer being tested. Hits, shots, damage and the per-entity
+   death table are identical. As predicted, the candidate and recon counters of 5ar.1 do not move.
+2. **Held.** JM05 3000 returned 1, with `offers` = 18.
+3. **Held.** The other rows show `offers` = 0.
+4. **No mechanism failure.** No detached plane took a hit or a blast record on either side.
+
+**Verdict: `kHitIndexDetachBound = true`.** The flip itself is the lead's to apply, because
+`src/game_hosts_gunnery.cpp` is leased to cc9-gunnery18. It is U material, after T's base.
+
+## 5at. The relaunch feed, read: it is the squadron launch itself (packet `cc9_relaunch_feed_read`, cc9-lua24, 2026-09-30)
+
+5ap item 2 asked what fills the elevator's ready plane `site+18h`. The answer is not the stowed
+planes. Every carrier and airfield launch goes through it, so the "relaunch" is the launch path.
+Ghidra and the disk bytes were read only; no code changed.
+
+### The chain in the image
+
+1. **The launch task** (vtable `00D08AE4`: `007F1EE0` dtor, `0071C470`, `0071C480`, `007F1F00`
+   tick, `0071C4A0`).
+   - Its constructor is `007F1DE0` (`__thiscall(task, element, squadron)`). It chains the base
+     task constructor, registers through `00876020`, clears `+1Ch`, and puts the squadron under
+     the observer pair at `task+20h` (`007F0F80`), so `task+34h` is the squadron.
+   - Its one caller is `007F53FF`, in the squadron's pass C `007F4BA0`
+     (`BSP_PlaneSquadron_SEntityInitSlotA4`), at `007F5390`-`007F5404`. It runs when the home
+     base `squadron+404h` is set, the holder kind `[+C0h]+4h` is not 2, and the base answers
+     `IsKindOf(9)` (a mother ship) or `IsKindOf(45h)` (an airfield). It allocates 38h bytes and
+     passes `base+310h` and the squadron.
+2. **The tick `007F1F00`** (`007F1F00`-`007F1FDB`, `__thiscall(task, float dt)`, `RET 4`):
+   - `block` = `[task+4]+28h` + `1188h` for kind 9, or + `72Ch` for kind 45h (`007F1F14`-
+     `007F1F58`).
+   - With a squadron (`+34h`), a block and the block's owner `+7Ch` alive:
+     - `+1Ch -= dt`, and it waits while that is above 0;
+     - then it asks the site `[block+3Ch]->vtable[18h]()` whether it is ready;
+     - when ready, `+1Ch` = `tuning+190h` (`AirField/PlaneSendInterval`, 2.0 in this
+       installation) and it calls `007EF010(squadron)`.
+   - When `007EF010` answers 1 (no member left to send), it unregisters the squadron and the
+     task ends through its own `vtable[10h]`.
+3. **`007EF010`** (`007EF010`-`007EF090`, `__fastcall(squadron)`, `RET`):
+   - it takes the first member `[+3D0h + i*4]` (i < `+3CCh`) with `+5Ch` clear and `+900h` == 1;
+   - it calls that member's `vtable[10h]`;
+   - it takes the block of `squadron+404h` (`006BCD20`). If the block's owner `+7Ch` is null or
+     dead (`+5Dh`), it kills the member (`00926D90(1)`). Otherwise it calls
+     `006CF190(block+3Ch site, member)`, which stores the member in the observed slot
+     `site+18h` (`006CF190`-`006CF1C0`, `RET 4`).
+   - It returns 0 when a member was sent, and 1 when none was left.
+4. **The site's readiness**, `vtable[18h]`:
+   - airfield `00CF89F8`: `006CDF60` (`006CDF60`-`006CDF69`), `site+18h == 0`;
+   - mother ship `00CF8A58`: `006CFF40` (`006CFF40`-`006CFF61`), true when all three hold:
+     - `+94h` (the platform mode `P+50h`) is 0;
+     - `0.0 > +5Ch` (`P+18h`, the lift at the top);
+     - `+18h` is 0.
+5. **The deck.**
+   - **Airfield.** The site tick `006CF980` routes `+18h` (message through `0077C2A0` with 5)
+     to `006CF9F0`: `007C5F60` places and locks the plane (state 2) on the launch spot, then
+     `007C3C90(plane, 1)` requests state 5 and `+18h` is cleared (AIRFIELD_TAXI 7).
+   - **Carrier**, `006D0600` re-read (`006D0600`-`006D07A4`):
+     - At the top with the platform empty and no landed candidate, a ready plane
+       (`+18h`, with `006D02F0` false) sends the **empty** platform down: `006CFFF0(0, 0)`, then
+       `006FC640` (`006D0707`-`006D071D`, `EBP` = 0).
+     - At the bottom, after `tuning+510h`, `006CFFF0(1, +18h)` places the ready plane on the
+       platform (`BSP_Plane_PlaceOnLaunchSpotLocked`) and brings it up (`006FC810`).
+     - At the top again (`006D065E`-`006D0684`):
+       - `006FC250` releases the platform plane;
+       - `+18h` is unregistered and cleared;
+       - `007C3C90(plane, 0)` requests state 4.
+6. **After that**, the plane in state 4 or 5 on the deck or strip needs the bot's taxi and
+   takeoff and the lift-off `007C7110 BSP_Plane_BeginFlying` (state 7). None of these is bound in
+   this host (CONTROLLED_UNIT, the takeoff items).
+
+`007C3C90` is `BSP_Plane_RequestGroundState(flag)`: state `4 + (flag != 0)`, through `007C1570`.
+
+### What the host does today
+
+`GameScriptOrdersHost::create_air_ops_squadron_006c5050` (`src/game_hosts_script_orders.cpp`)
+creates the whole squadron **airborne**, 150 m (`kAirOpsSquadronLaunchAltitude`) over the home
+base's origin, all members at once, in state 7 with `+908h` = 3600. Its own comment labels this
+as a contract: "the taxi and catapult paths; none of that is reconstructed". So no host plane is
+ever in state 1, no launch task exists, and `site+18h` has no writer. Stowed carrier planes are
+never relaunched, and that is not a relaunch gap. In the image a stowed plane (state 2, below
+deck) is not state 1, so `007EF010` would not pick it either. Nothing read so far brings a stowed
+plane back.
+
+### Why this is not bound in this packet
+
+Routing carrier launches through the lift in isolation would leave every launched plane locked on
+the deck in state 4. The chain needs these pieces, in this order:
+1. **The launched squadron's members in state 1, in the hangar.** `006C5050` -> `007F4580`: the
+   state each member starts in is not read. The launch task only sends `+900h` == 1 members with
+   `+5Ch` clear.
+2. **The launch task** (`007F1DE0`, `007F1F00`, `007EF010`, `006CF190`, the two readiness slots):
+   one member per `PlaneSendInterval`, gated by the site.
+3. **The deck arms.**
+   - Airfield: `006CF980` -> `006CF9F0` -> `007C5F60` (the pose already exists in
+     `src/airfield_taxi.cpp`), then state 5.
+   - Carrier: the lift cycle above, then state 4.
+4. **The takeoff.** The state 4/5 bot taxi to the runway, the takeoff roll, and `007C7110`.
+   Without it, pieces 1-3 strand every launch.
+
+Each piece can be bound OFF and paired on its own only from piece 4 backwards: 4 is reachable
+today only by a plane already on the ground. A switch for 1-3 alone would take launched
+squadrons out of the air on JM05, USN04 and IJN01. That would be a mechanism failure by
+construction, so no OFF commit was made for it here.
+
+### For the lead
+
+- Ghidra names, with bounds verified by `disasm-raw` (`RET`, then `INT3`):
+  - `007F1DE0` `BSP_SquadronLaunchTask_Construct` (already a Ghidra function; its bounds were not re-checked here);
+  - `007F1F00`-`007F1FDB` `BSP_SquadronLaunchTask_Tick`;
+  - `007EF010`-`007EF090` `BSP_PlaneSquadron_SendNextHangarMember`;
+  - `006CFF40`-`006CFF61` `BSP_AirOpsElevatorSite_IsReadyForPlane`;
+  - `006CDF60`-`006CDF69` `BSP_AirOpsSite_IsReadyForPlane`.
+
+  `006CFF40` and `006CDF60` have no Ghidra function.
+- **Proposed packets**, in order:
+  1. `cc9_plane_takeoff_read`: the state 4/5 taxi-out, the takeoff roll and `007C7110`, read
+     from an authored ground start if any reference row has one.
+  2. `cc9_launch_member_state`: `007F4580`'s member state for a launched squadron.
+  3. `cc9_launch_task` (the task and the site readiness).
+  4. `cc9_launch_deck_arms` (the airfield placement, then the lift cycle), paired only once
+     1-3 hold.
+- This changes launch timing on every row with an air-ops launch (USN04 launches from six decks, docs/USN04_STRIKE_CLASS.md; which other rows launch was not censused). Members
+  would leave one per 2.0 s after the site is ready, plus the lift's `tuning+510h` wait and its
+  travel of `depth / ElevatorSpeed` each way on a carrier.
+
+## 5au. The takeoff task mapped, and which rows launch from a base (packet `cc9_plane_takeoff_read`, part 1, cc9-lua24, 2026-09-30)
+
+This is the first half of the takeoff read that 5at asked for. It maps the task that takes a
+plane from the ground into the air, and it censuses the rows that would reach it. Ghidra and the
+disk bytes were read only; no code changed. The large state step `009CE2C0` is left for part 2.
+
+### Which reference rows launch squadrons from a base
+
+Source: reference T's logs in the cc9-gunnery18 tree (`local\g18_t_pool_<row>.log`), the lines
+`summary air ops tick ... squadrons_created=` and `summary mission airops gates`, plus the
+`<base>_sqnNN` names each created squadron carries.
+
+| row | squadrons created | bases |
+| --- | --- | --- |
+| USN04 4700/4500 | 4 | Lexington-class01, Yorktown-class01 (carriers) |
+| USN04 9200/9000 (E2) | 4 | the same |
+| JM05 3200/3000 | 10 | MainAirfieldEntity 01, SecondaryAirfieldEntity 01 (airfields); USS Lexington, USS Yorktown (carriers) |
+| JM05 9200/9000 | 13 | the same |
+| USN13 3200/3000 | 9 | Enterprise, Essex, Intrepid, Cabot, Cowpens, Monterey, Yorktown; also Hill and Wood (`LaunchSquadron` 9 calls, `IsReadyToSendPlanes` 0) |
+| every other row | 0 | |
+
+The other rows are IJN01, JM06, JM08, JM08 long, LOMP06, LOMP10, LOMP10 long, USN01, USN02, USN12,
+USNOS and USNOS long.
+
+`Hill` and `Wood` are not carriers by name. Whether their squadrons go through a base site (an
+airfield or mother-ship block), or through something else such as `MCatapult`
+(AIR_OPERATIONS 3b), is not read. The reach of a base-launch binding is therefore USN04, E2,
+JM05, JM05 long and USN13.
+
+### The takeoff task (kind `0Dh`, `takeoff` at `00D21290`)
+
+- **Install.** The pilot bot's tick installs it at `0099B0BE`-`0099B118` when all of these hold:
+  - the plane is not in free flight: `(plane+72Ch)->vtable[38h]()` is false;
+  - the current task answers `vtable[38h]` true;
+  - the plane is on the ground or water: `0042A7E0` (`+900h` is 4 or 5) or `+900h` == 6;
+  - the current task answers `vtable[30h]` true.
+
+  It then calls `009CFF40(bot, 0)` (`009CFF40`-`009CFFA6`, `operator new(4D4h)`, then `009CF8E0`)
+  and pushes the result with `00999F50`.
+  - For the land task, `vtable[30h]` is `009B3730`, false in park and final (5aa). So a landed
+    plane never gets a takeoff task from these states.
+- **Constructor `009CF8E0`** (`__thiscall(task, bot, char flag)`): the base task with kind
+  `0Dh`, then the four states (`009CF710`), then vtables `00D21228`, `00D2121C` (the state machine
+  at `+3F8h`) and `00D21218` (`+434h`). The first state `+310h` is:
+  - `+4B8h` **parking**, when the plane is landed (`+904h`) and on the path (`+900h` == 5);
+  - otherwise `+448h` **prepare**, when `flag` is set;
+  - otherwise `+470h` **Takeoff**, when `plane+AA0h <= 0.0` (`00D7A218`);
+  - otherwise `+490h` **SlowTakeoff**.
+- **The states** (`009CF710` registers them under their names in the bot state registry):
+
+  | state | offset | vtable | enter | exit | step |
+  | --- | --- | --- | --- | --- | --- |
+  | `takeoff/prepare` | `+448h` | `00D2116C` | `009CDD50` | `009CDD00` | `009CDE50` |
+  | `takeoff/Takeoff` | `+470h` | `00D211A4` | `009CE270` | `009CE290` (`RET`) | `009CE2C0` |
+  | `takeoff/SlowTakeoff` | `+490h` | `00D21188` | `009CE1D0` | `009CE150` | `009CE160` |
+  | `takeoff/parking` | `+4B8h` | `00D21150` | `009CD520` | `009CD530` | `009CD540` (the taxi step of AIRFIELD_TAXI 6) |
+
+- **The tick `009CFD70`** (`BSP_TakeoffTask_Tick`, vtable `+64h`): `+430h` = `FFh`, then
+  `009CFA80` (the altitude floor), then the rule `009CFC70`, then the current state's step, then
+  `+2E4h` = `+430h`.
+- **The rule `009CFC70`** (`__fastcall(task)`):
+  - **Done** (`0099B690`) when there is no plane, or when all of these hold:
+    - the plane is in free flight;
+    - `+908h` > 5.0 (`00CE3850`);
+    - and either the height `+100h` is above `task+424h`, or the speed `vtable[38h]` is above
+      `BSP_PlaneClass_MinControlSpeed`.
+  - `prepare` -> `SlowTakeoff` once the prepare state's byte `+19h` is set.
+  - `SlowTakeoff` -> `Takeoff` once `009CFB60` answers true. That happens at once when
+    `plane+AA0h <= 0.0`; otherwise when the plane has moved more than 60 m from where the state
+    began (squared distance against `00CE3D70` = 3600.0).
+- **SlowTakeoff.**
+  - The enter `009CE1D0` stores the start position and draws a heading offset through
+    `00BD2F10` between -0.3 and 0.3 (`00D06888`, `00CE69C8`).
+  - The step `009CE160`-`009CE1CB` (`RET 4`) holds neutral controls, steers to that offset, and
+    requests speed 20.0 (`00CE3930`).
+- **Takeoff.**
+  - The enter `009CE270`-`009CE28F` sets `+18h` = `[00D7A260]` and `+1Ch` = 0, then tail-jumps
+    to `007C17D0`, which tests `+904h` and the flight state against the session role; it was not
+    read further.
+  - The step `009CE2C0`-`009CF6F8` (exclusive, final `RET 4` at `009CF6F5`) is about 5 KB of
+    x87-heavy code: 93 calls, 13 of them `00419010` ramps and 7 of them tuning reads. It
+    includes:
+    - `007C1680` (5 -> 4) at `009CF35F`;
+    - `007B9000` at `009CEAC4`;
+    - `006BEFF0` at `009CEBC1` and `006BC890` at `009CED37` (the site and runway);
+    - `007C4810`/`007C4830`, the takeoff lengths of AIRFIELD_TAXI and `0x8720` of the host.
+
+    This is part 2.
+- **The lift-off** stays as PLANE_GROUND_OPS 5 has it:
+  - the ground-roll arm `007CBFA0` sends `C6h` when the height over the contact passes 0.1 with
+    `+ACCh` > 0.1, or when contact is lost over a class-9 deck;
+  - `007CCFA0` sub-kind 7 calls `007C7110 BSP_Plane_BeginFlying` (state 7, and the site's
+    `vtable[28h](plane)`).
+
+### The host today
+
+- No takeoff task exists.
+- The ground-roll arm and its law run (5q-5u).
+- The `C6h` request is counted, not sent: the ground-roll summary's `liftoff_req`, and the deck's
+  `edge_takeoff_requests`.
+- `begin_flying_007c7110` exists as a pure reconstruction in `src/plane_ground_ops.cpp` and is
+  not bound.
+- Launched squadrons spawn airborne (5at).
+
+### The plan: one switch group, flipped only end to end
+
+The group is `kBaseLaunchChainBound`, one switch for all five pieces, committed OFF, each piece
+paired as a record while it is built:
+1. `007F4580`: launched members start in state 1 in the hangar (next part).
+2. The launch task `007F1DE0`/`007F1F00`/`007EF010`/`006CF190` and the two readiness slots (5at).
+3. The deck arms: the airfield placement `006CF980`/`006CF9F0`/`007C5F60` and the carrier lift
+   cycle (5at).
+4. The takeoff task: install gate, rule, states, and the `Takeoff` step (part 2).
+5. The lift-off: send `C6h` and bind `007C7110`.
+
+**Flip criterion.** On JM05 3000 (airfields and carriers) every launched member reaches state 7
+and flies its squadron's task. The per-entity death table is diffed, and the launch timing is
+recorded for reference U. USN04, E2 and USN13 follow. Until then the switch stays OFF and
+launched squadrons keep spawning airborne.
+
+## 5av. The Takeoff step read, and how launched members start Inside (packet `cc9_plane_takeoff_read`, part 2, cc9-lua24, 2026-09-30)
+
+This part reads the `takeoff/Takeoff` step and the squadron's side of the launch. Ghidra and the
+disk bytes were read only; no code changed.
+
+**Sources.**
+- The Takeoff step: a scripted listing (`disasm-raw 009CE2C0`, 1333 lines, kept as
+  `local\l24_ce2c0_full.asm`) against the Ghidra pseudocode (`local\l24_ce2c0.c`). The listing
+  decides wherever the pseudocode's flag bytes are mangled (`CONCAT13`).
+- Constants: read from this installation's executable on disk (`local\l24_consts.py`).
+
+### `009CE2C0 BSP_TakeoffStateTakeoff_Step` (`__thiscall(state, float dt)`, `RET 4`)
+
+`EBP` is the state, `ESI` the plane `[[state+4]+4]`, and the control block `[[state+4]+18h]`
+(PILOT_CONTROLS: slot 0 throttle `+278h`, slot 1 `+284h`, slot 4 `+2A8h`, the pitch target
+`+2BCh`, the speed request `+2B4h`). There are no SEH state stores; ESP is tracked through the
+`SUB ESP,14h` blocks that precede each five-float `00419010` call. `00419010` is
+`BSP_Math_InterpolateClamped(x0, y0, x1, y1, x)` and cleans its own 14h.
+
+**A. Setup** (`009CE2D7`-`009CE3E5`).
+- A landed flag `+904h` is cleared.
+- `H` = the contact holder `+BF4h`, or 0 in free flight (`(+72Ch)->vtable[38h]` true). `v` is
+  `vtable[38h]` (speed).
+- `carrier` = `(H+4)+7Ch` answers `IsKindOf(9)`.
+- With `H`: `m = H+B4h x 0.5 - |plane.xz - owner.xz|` (`00D7A280` = 0.5, `0042B2F0`); otherwise
+  `m = 150.0` (`00CE3808`).
+
+**B. The obstacle factor `f`** (`009CE3E9`-`009CE56E`).
+- It walks the list at `[[00E188A8]+19CCh]+64h` (node `+4` next, `+8` unit), skipping the
+  holder's owner.
+- For each unit: `00816410(unit, out, plane+FCh)`, then the result is taken into the plane's
+  frame (`+110h`, rebuilt through `00B63D50` when `+10Ch` is clear).
+- When local `z` lies in (5.0, 100.0) and `|x|` < 50.0: `f = max(f, interp(100, 0, 40, 1, z))`.
+
+**C. The pitch target `P`** (`009CE574`-`009CE81D`).
+- `P0` = 0.05 (`00CE7638`), or 0.1 (`00D7A2F0`) when `classDesc+198h MinWaterSpd` == 0.
+- `T` = `classDesc+1ECh` (the takeoff pitch, as in 5v).
+- `s` = `v / 007C4830(classDesc)`, where `007C4830` is `BSP_PlaneClass_StallRangeSpeed`.
+
+| case | `P` |
+| --- | --- |
+| free flight | `interp(2.0, P0, 6.0, T, f x 5.0 + plane+908h)` |
+| ground, class `10h` or `16h` | `max(interp(1.0, P0, 1.5, T, s), interp(150, P0, 50, T, f x 150 + m), interp(0, -2T, 7.0, T, state+1Ch))` |
+| ground, other classes | `max(interp(1.4, P0, 1.8, T, s), interp(80, P0, 30, T, m))` |
+
+**D. The water arm** (`009CE823`-`009CE930`), only with `H` and `MinWaterSpd` != 0.
+- With the owner dead: at plane height `+100h` < `classDesc+A4h x |sin(+C68h)| x 0.5 + 2.5`, it
+  calls `007B9010` and returns.
+- Then, with `+BF8h` clear or `+BF4h` null, `(H+4)+3Ch->vtable[1Ch]()` true gives
+  `BSP_PilotPlan_SetDirectThrottle(-1.0)` and returns.
+- In free flight, `P` is floored at `+C64h - 0.0523599` (3 degrees).
+
+**E. The low land plane** (`009CE968`-`009CEA3E`, checked on the listing).
+- It applies when `MinWaterSpd` == 0 and the plane's world `y` (`+100h`) is below 5.0.
+- It sets `state+4 -> +38h` = 3 and writes:
+  - throttle 1.0, direct (`+278h`, `+27Ch` = 1, `+2D8h` = 0);
+  - slot 4 = 0;
+  - yaw slot `+284h` = 0 (active);
+  - `+2C4h` = 0 (mode 1);
+  - pitch target `+2BCh` = `P` (mode `+2D0h` = 1);
+
+  and returns. So a land plane below 5 m takes off straight ahead, at full throttle, pitching
+  up by the ramps in C.
+- Whether the host's airfield runways sit below 5 m is not checked here. The carrier decks do
+  not (the lift points of 5ao.1 are at 15-17 m).
+- `state+38h` is next set to `FFh` when all three hold, else 0 (`009CEA41`-`009CEA96`):
+  - the plane is in free flight;
+  - `v` > `007C47F0(classDesc)`;
+  - `+908h` > 3.0.
+
+**F. No holder** (`009CF66B` on): throttle 1.0, pitch `P`, yaw 0, return.
+
+**G. With a holder: the deck or elevated runway** (`009CEA99`-`009CF6F5`).
+- **The site tests.**
+  - `007B9000` runs when the owner is dead and `(+BF8h clear or +BF4h null)`.
+  - The pitch target `P` is written.
+  - The plane is taken into the owner's frame (`lx`, `ly`, `lz`).
+  - The site's lane test `vtable[34h](plane, !carrier && no contact, lx, lz)` (`006CF5B0` on an
+    airfield) sets a refused flag `[esp+13h]`.
+- **The runway direction.** `006BEFF0(H, out, plane+FCh)` gives the direction.
+  - On a carrier with `dx` > 0 it takes `dx' = max(dx - 3.0, 0)`.
+  - The runway heading is `pi/2 - atan2(dz, dx')` and the plane's `pi/2 - atan2(+9Ch, +94h)`;
+    `err` = `00438B10` (wrapped difference), `|err|` at `[esp+18h]`.
+- **The lateral tolerance `tol`.**
+  - `tol` = `max(v / 007C4810(classDesc) x 8.0, 2.5)`.
+  - Past the runway end (`006BC890`'s `z + 40.0`, else 40.0), it is capped by
+    `(lz - end) x 0.25`.
+  - It is also capped by `H+B0h x 0.5 - 1.0`.
+  - With `|err|` < 0.8 it is further capped by `(H+B0h - (classDesc+A4h - 2.0)) x 0.5` for a
+    class 10h/16h plane, and by `(H+B0h - (classDesc+A4h + 1.0)) x 0.5` otherwise
+    (`009CEDB9`-`009CEE45`).
+- **What follows** (`009CEE4B`-`009CF6F5`) is not reduced to closed form here:
+  - the lateral excess;
+  - a bound of 3.0 on a carrier or 15.0 otherwise (`00CE3854`, `00CE5380`), and the random
+    factor `state+18h` (`00BD2F10(0.5, 1.0)` when negative);
+  - the yaw command `+284h` = `interp(-k, -1, k, 1, err')` with `k` from `tuning+188h`,
+    `+2A8h`, `+2ACh`, `+2B0h` and `classDesc+1B0h YawSpd`;
+  - then `007B8D10` / `007B8DC0`;
+  - `BSP_Plane_FlightStateFiveToFour` (`009CF35F`) when a path plane is lined up, with
+    `state+1Ch += lz`;
+  - the throttle `+278h`, from `BSP_Unit_CanDropOrdnance(0)` (`00CE3868` or `00CE81A0` x
+    `(1.4 - +B18h)`), the `state+1Ch` ramp, and the floor test against `00CE65D0`;
+  - or, when the lane is refused, throttle -1.0 with slot 4 = 1.0 (the brake);
+  - or the speed request `+2B4h` from `tuning+2A8h`/`+184h` ramps against `|err|`.
+
+  This part is the deck taxi and roll. It is the one the carrier launch rows need, and it goes
+  to the bind packet, which transcribes it from the listing (lines 490-1332 of
+  `l24_ce2c0_full.asm`).
+
+### How a launched member starts Inside
+
+`006C5050`'s bag carries `State` 1 on the normal path (AIROPS_LAUNCH_START 3).
+
+The squadron's pass C, `007F4BA0`, for the kind-1 holder (`007F4C0B`-`007F4DB5`):
+1. It reads `State` (`00CF8818`, default 7), and `flag = State < 2`.
+2. It reads `HomeBase` (`00CF8820`) and `SpawnPoint` (`00CE56B8`). A `SpawnPoint` whose entity
+   has an air-ops block also sets `flag` and becomes the base.
+3. It calls `007F1C00 BSP_PlaneSquadron_SetHomeAirBase(base, flag)`.
+   - In a campaign session (`[00E188A8]+1FE4h` == 0) that is the alternate push (`006CC7B0`,
+     the slot queue).
+   - With `flag` it then does `+408h` = 1 and calls `007ED6E0`. In a non-campaign session it always
+     takes the ready-plane push and `007ED6E0`.
+4. `007ED6E0` (`__fastcall(squadron)`) sets `+408h` = 1 and calls `007C2130` on every member.
+   `007C2130` (`007C2130`-`007C21C3`, `RET`) requests flight state **1** through a `C3h` message
+   routed with 7, the state-1 twin of `007C2090`. It skips a member already in 1 and a client.
+   - The handler `007CC820 BSP_Plane_EnterFlightStateOne` sets `+900h` = 1, stamps `+C04h`,
+     calls `007C11E0(0)`, and re-parents the plane to the base (`vtable[ACh](squadron+404h)`).
+5. `007F2920`, the in-air or water placement through `007C6340`, is **skipped** when `+408h` is
+   set (`007F4DA9`).
+6. The launch task is built at the end of pass C (5at).
+
+So the image's launched squadron sits Inside at its base, and the launch task sends its members
+out one at a time. The host instead places the squadron in the air at 150 m (`create_air_ops_squadron_006c5050`).
+
+### What the bind needs (for the group `kBaseLaunchChainBound`)
+
+1. The bag's `State` 1 honoured:
+   - `SetHomeAirBase` with the flag;
+   - `007ED6E0` -> `007C2130` -> `007CC820` (state 1, re-parent);
+   - no airborne placement.
+2. The launch task and readiness (5at). Member `vtable[10h]` (the activation before
+   `006CF190`) is still unread.
+3. The deck arms (5at).
+4. The takeoff task:
+   - the install gate (5au);
+   - the rule and the four states (5au);
+   - the Takeoff step: A-F above as written, G transcribed from the listing.
+5. The lift-off `C6h` and `007C7110`.
+
+**Unread:**
+- `007B9000`, `007B9010`, `007B8D10`, `007B8DC0`, `006BEFF0`, `006BC890`, `00816410`;
+- the list at `game+19CCh+64h`;
+- the prepare state (`009CDD50`/`009CDE50`);
+- `007C17D0`.
+
+## 5aw. Handoff (cc9-lua24, 2026-09-30, stamped 10:50 UTC)
+
+**What cc9-lua24 landed** (all merged into main by the lead):
+
+| packet | switch | state | section |
+| --- | --- | --- | --- |
+| `cc9_park_hide_detach` | none | the hide's spatial detach moves nothing; the lead is refuted | 5aq |
+| `cc9_park_verdict` | `kLandParkStateBound` | **ON**, image loop accepted (death tables identical on seven rows) | 5ar |
+| `cc9_hit_index_detach` | `kHitIndexDetachBound` (gunnery) | verdict ON; cc9-gunnery18 applies the one-line flip | 5as |
+| `cc9_relaunch_feed_read` | none | `site+18h` is the squadron launch itself, not a relaunch | 5at |
+| `cc9_plane_takeoff_read` | none | the takeoff task mapped (part 1) and the Takeoff step plus the Inside start read (part 2) | 5au, 5av |
+
+**The queue:**
+
+1. **The base launch chain, one switch group `kBaseLaunchChainBound`** (committed OFF). Build it
+   in this order, each piece OFF and paired as a record while it grows:
+   1. **Launched members start Inside** (5av):
+      - the bag's `State` 1 -> `007F1C00 SetHomeAirBase(base, flag)` -> `+408h` = 1;
+      - `007ED6E0` -> `007C2130` -> `007CC820`: state 1, re-parented to the base;
+      - no airborne placement (`007F2920` skipped).
+
+      Today `create_air_ops_squadron_006c5050` (`src/game_hosts_script_orders.cpp`) places the
+      squadron airborne at 150 m.
+   2. **The launch task and site readiness** (5at): `007F1DE0`/`007F1F00` (`PlaneSendInterval`
+      2.0 s), `007EF010`, `006CF190`, and the readiness slots `006CDF60` (airfield) and `006CFF40`
+      (mother ship).
+   3. **The deck arms** (5at):
+      - the airfield placement `006CF980` -> `006CF9F0` -> `007C5F60` (the pose already exists in
+        `src/airfield_taxi.cpp`), then state 5;
+      - the carrier lift cycle in `006D0600`: the empty platform goes down, waits `tuning+510h`,
+        and `006CFFF0(1)` brings the plane up; then release, clear `+18h`, and `007C3C90(0)` gives
+        state 4. `kCarrierElevatorBound` already carries the lift itself.
+   4. **The takeoff task**:
+      - the install gate `0099B0BE`-`0099B118` (5au);
+      - `009CFF40`/`009CF8E0`, the four states, the tick `009CFD70` and the rule `009CFC70` (5au);
+      - the SlowTakeoff state (5au);
+      - the Takeoff step `009CE2C0` (5av: A-F as written, G transcribed from the listing).
+   5. **The lift-off**: send `C6h` (today counted as `liftoff_req` and `edge_takeoff_requests`)
+      and bind `007C7110 BSP_Plane_BeginFlying` (`begin_flying_007c7110` in
+      `src/plane_ground_ops.cpp` is a pure reconstruction).
+
+   - **Flip criterion.** On JM05 3000 (two airfields and two carriers), every launched member
+     reaches state 7 and flies its squadron's task. Then diff the per-entity death table and record
+     the launch timing for the next reference. USN04, E2, JM05 long and USN13 follow; they are the
+     only rows that launch from a base (5au census).
+   - **Timing to expect:**
+     - one member per 2.0 s once the site is ready;
+     - on a carrier, add the lift's `tuning+510h` wait and its travel (`depth / ElevatorSpeed`)
+       each way.
+2. **Open reads the chain still needs:**
+   - member `vtable[10h]`, the activation `007EF010` calls before `006CF190` (it presumably sets
+     `+5Ch`);
+   - the G tail of `009CE2C0` (the deck taxi and roll, listing lines 490-1332 of
+     `local\l24_ce2c0_full.asm` in the cc9-lua24 tree): the lateral excess, the yaw law, 5 -> 4 at
+     `009CF35F`, the throttle and brake, and the speed request;
+   - whether the host's airfield runways sit below 5 m world `y`. If they do, the Takeoff step's
+     arm E applies there (straight ahead, full throttle);
+   - also unread: `007B9000`, `007B9010`, `007B8D10`, `007B8DC0`, `006BEFF0`, `006BC890`,
+     `00816410`, the unit list at `game+19CCh+64h`, the prepare state `009CDD50`/`009CDE50`, and
+     `007C17D0`.
+3. **`planeDesc+158h`** (5ap item 3): the model box, `007D473A`. Not urgent; every JM05 take was
+   within 3 m.
+4. **#15** stays parked until a row destroys a hangar.
+5. **Low priority** (5ap):
+   - SetParty with the event-6 group removal;
+   - the `unit_lacks_follow_target` -> `unit_is_flight_leader` rename;
+   - the one-think-late turbo clear `009BDE40`;
+   - the moveto leader's climb speed loss.
+
+**Also open for other lanes:** the host keeps a hidden or stowed plane in the gunnery candidates
+and the recon triples. The image does too (5as), so this is not a divergence. It is recorded only
+because 5ar.1's counters moved.
+
+**Tools in the cc9-lua24 tree** (`local\`):
+- `l24_runs.ps1`: the reference rows, as in cc9-lua23's;
+- `l24_consts.py`: floats and doubles from the executable on disk;
+- `l24_grep.py`: a line filter for spilled outputs;
+- `l24_ce2c0_full.asm` and `l24_ce2c0.c`: the Takeoff step listing and pseudocode.

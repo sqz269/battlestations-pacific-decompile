@@ -673,6 +673,10 @@ struct GameUnitSlot {
     unsigned long long land_park_carrier_ticks{0};   // packet cc9_carrier_elevator
     bool plane_taxi_queue_910{false};     // plane+910h: inside the hangar queue band
     bool plane_in_hangar_c00{false};      // plane+C00h, 007B96C0
+    // [unit+360h]+184h cleared: 00951F40(0) -> 00710B80 took the collision part
+    // out of the spatial index (007B96C0, 006FC250); 00951F40(1) (006FC0D0)
+    // puts it back. Packet cc9_hit_index_detach, SQUADRON_LAND_TASK 5as.
+    bool plane_hit_node_detached{false};
     std::uint8_t plane_c01{0};            // plane+C01h, 007B9000 stores 2
     unsigned long long land_park_entries{0}, land_park_ticks{0}, land_park_done{0};
     unsigned long long land_park_joins{0}, land_park_leaves{0}, land_park_spot_refused{0};
@@ -11372,6 +11376,7 @@ void GameUnitsHost::Impl::carrier_elevator_carry_006fc0d0(LandingDeck& d) {
     p.deck_local_pos[2] = e.lift[2] + e.off_38[2];
     for (float& v : p.deck_local_vel) v = 0.0f;      // 007B8DE0, taken as the stop
     carrier_deck_carry_in(p);
+    p.plane_hit_node_detached = false;               // 00951F40(1) -> 00710AD0
 }
 
 // 006FC250: carry, drop the platform plane, and hide it (00951F40(0)) when the
@@ -11383,9 +11388,9 @@ void GameUnitsHost::Impl::carrier_elevator_release_006fc250(LandingDeck& d) {
     e.plane_34 = static_cast<std::size_t>(-1);
     ++e.releases;
     // 006FC279-006FC28F: at the bottom and still, 00951F40(0) detaches the
-    // plane's node; this host has no node to detach (labelled). The site tick
-    // has already set +C00h through 007B96C0.
-    (void)pi;
+    // plane's node (the hit queries honour it behind the gunnery host's
+    // kHitIndexDetachBound). The site tick has already set +C00h through 007B96C0.
+    if (pi < slots.size() && slots[pi]) slots[pi]->plane_hit_node_detached = true;
 }
 
 // 007CC7A0 BSP_Plane_EnterFlightStateTwo, reached from 007C2090's C3h message
@@ -22945,6 +22950,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             static_cast<double>(px), static_cast<double>(pz));
                                     }
                                     unit_.plane_in_hangar_c00 = true;
+                                    unit_.plane_hit_node_detached = true;   // 00951F40(0)
                                     ++unit_.land_park_hangar;
                                 }
                             } else if (carrier) {
@@ -27513,6 +27519,11 @@ bool GameUnitsHost::plane_local_input_gate_007bb9a0(std::size_t index,
 int GameUnitsHost::unit_class_id(std::size_t index) const noexcept {
     if (index >= impl_->slots.size()) return -1;
     return impl_->slots[index]->class_id;
+}
+
+bool GameUnitsHost::unit_hit_node_detached(std::size_t index) const noexcept {
+    if (index >= impl_->slots.size() || !impl_->slots[index]) return false;
+    return impl_->slots[index]->plane_hit_node_detached;
 }
 
 bool GameUnitsHost::unit_alive_and_visible(std::size_t index) const {

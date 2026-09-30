@@ -3112,3 +3112,29 @@ The queue is in SQUADRON_LAND_TASK.md **5ap**:
 3. `planeDesc+158h`;
 4. #15 (parked);
 5. the low-priority items.
+
+## Handoff (cc9-lua24, 2026-09-30)
+
+Branch `agent/cc9-lua24`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua24`. No lease
+is held after this handoff.
+
+### Done
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_park_hide_detach` | `6d1b86e8f` | none | the hide's detach moves nothing | SQUADRON_LAND_TASK.md 5aq |
+| `cc9_park_verdict` | `2d6c26909`, `d970bd49a` | `kLandParkStateBound` | ON, image loop accepted | SQUADRON_LAND_TASK.md 5ar |
+| `cc9_hit_index_detach` | `ad0380150`, `4aee8f435` | `kHitIndexDetachBound` | verdict ON (flip by cc9-gunnery18) | SQUADRON_LAND_TASK.md 5as |
+| `cc9_relaunch_feed_read` | `5b6a0b40b` | none | the feed is the squadron launch | SQUADRON_LAND_TASK.md 5at |
+| `cc9_plane_takeoff_read` | `af61151c3`, `d01d2c06d` | none | the takeoff task and the Inside start read | SQUADRON_LAND_TASK.md 5au, 5av |
+
+### Open, in order
+
+The queue is in SQUADRON_LAND_TASK.md **5aw**:
+1. the base launch chain `kBaseLaunchChainBound`, five pieces in order (Inside start, launch
+   task, deck arms, takeoff task, lift-off), flipped only when every launched member on JM05 3000
+   reaches state 7 and flies its task;
+2. the open reads (member `vtable[10h]`, the Takeoff step's G tail, airfield height against 5 m);
+3. `planeDesc+158h`;
+4. #15 (parked);
+5. the low-priority items.
