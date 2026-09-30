@@ -7063,3 +7063,125 @@ last vtable stored before each (`local\l27_pushvt.py`, `local\l27_mk.py`):
   place like the takeoff task.
 - What they are, and whether any reference row reaches them, is unread. These are the open items
   of this census.
+
+## 5bn. The front-pushed task classes, identified (packet `cc9_front_pushed_tasks`, cc9-lua27, 2026-09-30)
+
+This section follows up 5bm's four unmodelled `00999F50` pushes. It was read from Ghidra and the
+disk image. No code changed and no run was made. Scripts are in `local\` of the cc9-lua27 tree:
+`l27_refs.py`, `l27_mk.py`, `l27_s30.py`, `l27_pushvt.py`.
+
+### 1. The re-takeoff at the tick tail, `0099B0BE`-`0099B113`: reachable, and it changes 5ar
+
+The listing, read whole:
+- `0099B0BE`-`0099B0D4`: `(unit+72Ch)->vtable[38h]` is false, so the plane is not in state 7.
+- `0099B0D6`-`0099B0E1`: the head task's `vtable[38h]` is true.
+- `0099B0E3`-`0099B0F8`: `0042A7E0(unit)` is true (`+900h` 4 or 5), or `+900h == 6` (state 6's meaning is unread).
+- `0099B0FA`-`0099B105`: the head task's `vtable[30h]` is true.
+- `0099B107`-`0099B113`: then `00999F50(bot, 009CFF40(bot, 0))`, a **new takeoff task at the
+  head**.
+
+The head task's `vtable[30h]` (`local\l27_s30.py`):
+- It is true for every command task class (`0099B6F0`; CloseToShip's own `009A28C0` also answers true), with three exceptions:
+  - Stop (`009BAC40`, false);
+  - Takeoff (`009CF9D0`, false);
+  - Land (below).
+- **Land's is `009B3730`**. It answers false when the current land state is `land/park` (task
+  `+620h`) or `land/final` (`+5F8h`), and **true in every other state**. Those states are
+  `land/abort`, `land/standby`, `land/begin`, `land/line`, and moveto/follow (land).
+
+So in the image, a grounded plane whose land task is in `land/abort` gets a takeoff task at the
+head on the next think. It rolls, lifts off, and the takeoff task retires at its done arm. The land
+task then resumes from abort, through standby to a new approach.
+
+- The host has no such push.
+- 5ar's accepted "invisible park <-> abort loop" is the host running `land/abort` on the ground
+  without it.
+- **Reach:** reference U's JM05 9000 row (`g20_ru_jm05l.log`, cc9-gunnery20 tree) has 31
+  `land park` planes with `from_abort` totalling **2896** (JM05 3000: 0). Each re-entry from
+  abort on the ground is a point where the image would push this takeoff.
+- **5ar's verdict ("the image loops invisibly") is contradicted.** As far as this listing shows,
+  a park abort on the ground is a relaunch in the image. Not yet bound: queue item 1 of the
+  handoff.
+
+### 2. `009BC030` -> `00D205E0` (tick `009BA020`): a timed roll manoeuvre, not reached
+
+- `009BC030` news `40Ch` and constructs through `009BAFC0` (the `00D20568` class below). It then
+  stores `+408h` = its byte argument, the vtable `00D205E0`, and `+404h` = 1.
+- The tick `009BA020` writes the plan:
+  - a bank target of `+-00CE3830` (the sign from `+408h`);
+  - a heading from `009B9680`;
+  - a throttle blend from the pitch error `+3FCh - unit+C64h`.
+- It retires through `0099B690` when its `+3F8h` object answers. `34h` is true (`009BA810`), so it
+  holds its place like the takeoff task.
+- It is pushed by `007B6240` (and the block before it, `007B6223`) and by `009CBB30` (and
+  `009CBB19`), both on a random timer (`BSP_Random_UniformFloatRange` over `+28h..+2Ch` and
+  `+34h..+38h`).
+- `007B6240` and `009CBB30` read `Pilot/AutoStrafeAngle/Angle_GoAway` (docs/GAME_TUNING_SINGLETON.md
+  `+674`). `009CBB30` lies in the strafe task's code (`BSP_BotTask_MakeStrafe` `009CD300`), so this
+  is the strafe run's evasive roll.
+- **Reach:** the host has no model of `007B6240` or `009CBB30` (docs/LUA_BINDING_MISSION.md lists
+  `007B6240` as a reader without a host model). No reference log can show it. Open.
+
+### 3. `009BAFC0` -> `00D20568` (tick `009B93D0`): the roll's base class
+
+- `009BAFC0` calls `BSP_BotTask_ConstructBase(owner, 0Fh)`, stores `+3F8h` = its second argument
+  and the vtable `00D20568`, and captures a pitch/height reference (`+400h`).
+- `009BB380` pushes it directly (`009BB47F`). Who calls `009BB380` is unread; open.
+- Not reached as far as read.
+
+### 4. `009BBFC0` -> `00D20658` (tick `009BC3A0`): the flight leader's task, not identified
+
+- Pushed at `0099AE1C` when the list is not empty, `unit+184h` is set, the unit is its squadron's
+  flight leader, and the head's `38h` answers. It carries `00D1F31C` (`0099AE03`).
+- `34h` is false, so a later command retires it.
+- `unit+184h` and the tick `009BC3A0` are unread. Open.
+
+## 5bo. Handoff (cc9-lua27, 2026-09-30, stamped 18:14 UTC)
+
+Branch `agent/cc9-lua27`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua27`. No lease
+is held.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_base_launch_flip` | `a43db386d`, `4c228cca8` | `kBaseLaunchChainBound` | **ON** | 5bh |
+| `cc9_airfield_park_exit` | `7e345bb8b` | - | read: park never retires a hangared plane | 5bi |
+| `cc9_base_launch_brake` | `8afd63890`, `4aa6700d6` | `kBaseLaunchBrakeBound` (`air_operations.hpp`) | **ON** | 5bj |
+| stale brake notes | `fa21cc8a9` | - | AIROPS_LAUNCH_TICK 5 and the script-orders comment corrected | - |
+| `cc9_plane_desc_158` | `3f3ff4971`, `a9af6c1c1` | `kPlaneDesc158Bound` | **ON**, spread miss recorded | 5bk |
+| `cc9_takeoff_task_head` | `9edf15bd0`, `911f42c52` | `kTakeoffTaskHeadBound` | **ON** | 5bl |
+| `cc9_task_install_order` | `766a29f58` | - | census: no binding needed | 5bm |
+| `cc9_front_pushed_tasks` | this section's commit | - | read | 5bn |
+
+### Next, in order
+
+1. **Bind the tick tail's re-takeoff** (5bn.1) behind a new switch, committed OFF.
+   - In the pilot think, after the task tick, push a takeoff task at the head when all of these
+     hold:
+     - the plane is not in state 7;
+     - the head's `38h` is true;
+     - the plane is in state 4 or 5, or in state 6;
+     - the head's `30h` is true.
+   - For `land`, `30h` is true except in park and final.
+   - The push reuses the host's takeoff task install, and 5bl's head order then ticks it. The
+     construction argument is `009CFF40(bot, 0)`; check its difference from `0099A4A0`'s call.
+   - Predictions to write first:
+     - JM05 9000's aborted park planes (2896 re-entries in reference U) relaunch and go around
+       instead of looping;
+     - more lift-offs; the brake is unaffected (not a base launch);
+     - death rows only where the extra flights meet AA.
+   - Pair JM05 3000 and 9000, LOMP10 3000 and 9000 (landing rows), USN04 and E2, plus two
+     controls.
+   - This also re-opens 5ar's verdict on `kLandParkStateBound`.
+2. Identify `+900h` state 6 (it gates both `007B8BD0` in 5bj and the 5bn.1 tail).
+3. The strafe run's evasive roll (5bn.2) needs `009CBB30`'s owner in the host first. The flight
+   leader's task `009BBFC0` needs `unit+184h`. Both are open reads.
+4. `007C6F50`'s `msg+20h` flag and `+C49h` (5bg item 4).
+5. 5bi's split-form `vtable[28h]` scan (low value).
+
+**Tools** (`local\` in the cc9-lua27 tree):
+- `l27_runs.ps1`: the reference rows;
+- `l27_cmp.py`: headline, per-victim death diff and base-launch summaries of a pair;
+- `l27_refs.py`: rel32 and dword references on disk;
+- `l27_taskvt.py`, `l27_slots.py`, `l27_s30.py`, `l27_mk.py`, `l27_pushvt.py`: the task vtable
+  census;
+- the edit scripts `l27_brake_edit.py`, `l27_p158_edit.py`, `l27_head_edit.py`.

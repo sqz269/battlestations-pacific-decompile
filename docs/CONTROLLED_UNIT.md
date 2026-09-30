@@ -3181,3 +3181,24 @@ Open, in order (SQUADRON_LAND_TASK.md 5bg):
 3. the `block+38h` brake;
 4. `007C6F50`'s flag;
 5. `planeDesc+158h`.
+
+## Handoff (cc9-lua27, 2026-09-30)
+
+Branch `agent/cc9-lua27`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua27`. No lease
+is held after this handoff.
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_base_launch_flip` | `4c228cca8` | `kBaseLaunchChainBound` | ON | SQUADRON_LAND_TASK.md 5bh |
+| `cc9_base_launch_brake` | `8afd63890`, `4aa6700d6` | `kBaseLaunchBrakeBound` | ON | 5bj |
+| `cc9_plane_desc_158` | `3f3ff4971`, `a9af6c1c1` | `kPlaneDesc158Bound` | ON | 5bk |
+| `cc9_takeoff_task_head` | `9edf15bd0`, `911f42c52` | `kTakeoffTaskHeadBound` | ON | 5bl |
+| reads | `7e345bb8b`, `fa21cc8a9`, `766a29f58` and the handoff commit | - | 5bi, 5bm, 5bn | - |
+
+Open, in order (SQUADRON_LAND_TASK.md 5bo):
+1. the tick tail's re-takeoff for grounded planes (`0099B0BE`-`0099B113`). It reaches JM05
+   9000's park aborts and contradicts 5ar;
+2. `+900h` state 6;
+3. the strafe roll and the flight leader's task;
+4. `007C6F50`'s flag;
+5. the split-form `vtable[28h]` scan.
