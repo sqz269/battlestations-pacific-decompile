@@ -969,3 +969,62 @@ Every stage has now been compared with the image, and each is either faithful or
 
 With those two open, torpedo-plane attrition is faithful at every audited stage. It is not yet
 faithful end to end.
+
+## 11. The flak lock's passing rule `0070C7B6`-`0070C806` is unreachable (packet `cc9_flak_passing_rule`, cc9-gunnery16, 2026-09-30 03:41 UTC)
+
+Section 10.6 left the flak proximity lock's "passing rule" open. The host does not model it. Read
+from disk bytes (`disasm-raw 0070C370 --length 0x2D0` and `0070C640 --length 0x1E0`), it cannot
+fire in the image, so the host's omission is faithful. Nothing was bound.
+
+**Offsets.** In `0070C370 BSP_FlakProjectile_TickAdvance`, `ESI` is `proj+244h`, so
+`[ESI+40h/44h/48h/4Ch/50h]` are:
+- `proj+284h`, the closest lock distance so far;
+- `+288h`, the lock byte;
+- `+28Ch`, the remaining distance;
+- `+290h`, the distance error;
+- `+294h`, the target.
+
+**The rule** (`0070C7B6`-`0070C806`), with `x` = XMM0:
+- If `90000 > x` (`00CFD508`, 300 m squared):
+  - if `+284h >= x`, store `+284h = x` (`0070C7D0`);
+  - otherwise, if `x > 2500` (`00CFD50C`, 50 m squared), draw `U(0, 100)` (`00CE3D08`, stream 1), and
+    burst in place (`0070C797` -> `0070C210(proj, 1)`) when the draw is below 10 (`00CE38B8`).
+
+**What `x` is on each path:**
+- **Locked tick.** `0070C503 JNE 0070C703` skips the search. XMM0 still holds `[00D7A248]` =
+  FLT_MAX, loaded at `0070C4B1`; the only XMM0 use between is the store at `0070C4F7`. So
+  `90000 > x` fails and the rule is skipped.
+- **Search tick.** `x = [ESP+20h]` (`0070C6F7`), the best squared distance. It starts at FLT_MAX
+  (`0070C4F7`), and a candidate replaces it only when it also passes the lock test
+  (`0070C625`-`0070C63D`), which sets the lock byte (`0070C661`).
+  - If there is no candidate, `x` stays FLT_MAX and the rule is skipped.
+  - If there is one, this is the lock tick.
+
+**Why the lock tick never draws.**
+- `+284h` is FLT_MAX from the constructor (`0070CB30 MOVSS [ESI+284h],XMM0`, with XMM0 from
+  `00D7A248` at `0070CAE8`).
+- So on the lock tick `+284h >= x` holds: `0070C7CE JB` is not taken, and the distance is recorded.
+
+**Why there is no second lock tick.**
+- `store_census 0x288` finds one byte store to `+288h`, the constructor's `0070CAF2` (0). The lock
+  store `0070C661` is disp8 on `ESI+44h`.
+- Nothing clears the lock.
+- The byte stores to `[reg+44h]` at `006E21F2`, `006E21FB`, `006E6427` and `006E6467` are the shot
+  base's own air/water mode byte at `proj+44h` (their `this` also holds the effect pointers
+  `+24h`/`+28h`). They are not `proj+288h`.
+
+**Result:**
+- The draw at `0070C7F7` and the in-place burst at `0070C806` are never reached.
+- Only the `+284h` record store executes, and nothing else reads `+284h`: `store_census 0x284`
+  lists only the constructor and `0070C7D0` for this object, and the tick itself reads it.
+- **Nothing to bind.** The host comment in `src/game_hosts_gunnery.cpp` said the rule was
+  unmodelled because "it can only act on the tick that also locks". It now states the proof. No
+  code changed.
+
+**Uncertainty:**
+- A `+288h` clear through a pointer or block copy would reopen the rule. The census covers literal
+  displacements only.
+- The rule reads as a guard for a re-lock design the shipped code never uses.
+
+**Status of 10.6's open stages:** (b) is closed as faithful. (a), AA target selection and range
+gates, is still open.
