@@ -5959,3 +5959,83 @@ identical, and the misses are counts.
 - The t=0.05 orders still come from the host's stand-in weight of 1.0: the weapon-facts rows are
   published after the first think. That is a publication-timing substitution in the units host,
   not this switch.
+
+## 71. Section 60's labelled links: the Party ordinals and `OwnerPlayer "AI control"` (packet `cc9_ai_owner_player_slot`, cc9-ships19, 2026-09-30)
+
+### 71.1 The Party ordinals are settled
+
+- The scene reader resolves `E <table> : <symbol>` through the library's enum tables
+  (docs/SCENE_PROPERTY_BAG.md, `0048E840`). These are not native strings: `"Players"` and
+  `"AI control"` occur nowhere in the exe.
+- This installation's `universe/library/global.enums` (mtime 2024-10-29) declares
+  `enum Party { Allied = 0, Japanese = 1, Neutral = 2 }` at lines 1705-1710. That matches the
+  `luamw_init.lua` ordinals the party gate took. The link is closed and changes no behaviour.
+- The host's own library (`game_hosts_scene_contents.cpp`, `PropertyLibrary::resolve_symbol`)
+  already resolves `Party` this way for unit records.
+- The hard-coded `Allied/Japanese/Neutral` mapping for the slot parties in
+  `game_hosts_mission.cpp` (not this lane's file) gives the same numbers. Its comment still cites
+  `luamw_init.lua`; the source of truth is `global.enums`.
+- The native `00E0CF24` table (`Allied`, `Axis`, `Neutral`) is a different list. It is not the
+  scene enum.
+
+### 71.2 `OwnerPlayer` is a unit property, not a `MultiType` one
+
+Section 60.1 said the entries sit inside `MultiType` blocks. They do not. In, for example,
+`ijn_05_invasion_of_port_moresby.scn` lines 1167-1169 (mtime 2024-07-13), `"MultiType" { }` is empty
+and `OwnerPlayer = E Players :"AI control" ;` is its sibling in the entity's bag.
+
+- **The enum.** `global.enums` 1725-1737 declares `enum Players`: `"Player 1"`..`"Player 8"` = 0..7,
+  `"AI control"` = 8, `"Any player"` = 9. The group default is
+  `OwnerPlayer = E Players:"Any player"` (line 1757).
+- **The producer.** `0077F0E0` activation hands the found record's `+0Ch` to vtable `[144h]` at
+  `0077F1F9`, which stores `unit+180h`. It passes 9 when the bag has no `OwnerPlayer`
+  (`0077F1F1`, docs/AI_BRAIN_PLAYER_EXEMPTION.md).
+- **The consumer, `009FFD20`** (live decompile, `009FFD20-009FFD5C`):
+  - `+180h == 8` returns -1;
+  - `+180h < 8` returns `+180h`;
+  - otherwise the single-player team rule applies: 0 on the local team, else 4.
+- **The AI sites** are `00A2DFA0` (the group's `+5634h`), `00A2DDE0` (evict a member whose slot
+  differs) and `00A16EF0`.
+- **The consequence.** A group led by an "AI control" unit is NONCONTROL (`00A2E124`, slot -1). Any
+  other group evicts such a unit on its next evict pass.
+
+**The reference rows' entries.** `local\s19_owners.py` walks every scene. The OFF census line is
+`ai owner player`, run from `local\s19_c_<row>.log`, 300 frames.
+
+| row | units with `+180h = 8` | side | slot, OFF (+180h taken as 9) | slot, ON |
+| --- | --- | --- | --- | --- |
+| JM05 | SecondaryAirfieldEntity 01, MainAirfieldEntity 01, MainShipyardEntity 01, MainShipyardEntity 02 | 0 | 4 (planned) | -1 |
+| LOMP10 | CB4_AF, CargoShip | 0 | 0 | -1 |
+| LOMP10 | CB4_AF_Hangar | 2 | 4 (planned) | -1 |
+| USN12 | Fortress-07..10 | 0 | 0 | -1 |
+| USNOS | Airfield3, Multi Hangar 1 | 1 | 4 (planned) | -1 |
+| JM08 | MainAirFieldEntity 01 | 1 | 0 | -1 |
+
+That is 14 entries on these rows, as section 60 counted. Across all scenes, `s19_owners.py` finds
+2392 `OwnerPlayer` lines, and the non-reference scenes author "AI control" on many ships (BSM, CHG).
+No reference row authors `"Player N"`.
+
+**Bound OFF: `kAiOwnerPlayerSlotBound`** (`src/game_hosts_ai.cpp`, which needs the party gate).
+- **The scene side.** The scene contents host resolves each record's `OwnerPlayer` through its
+  library and publishes the values other than 9 by entity name. The call is
+  `ai_publish_scene_owner_players`, and the log line is `scene owner players: ...`.
+- **The ON path.** `unit_slot_009ffd20` replaces the team-only rule at the three host sites:
+  `create_group`, `evict_invalid_members` and the party-record census.
+- **LABELLED.** The key is the entity name, because this process has no entity object; a name
+  authored with two values reads as 9 (`conflicts=` in the census line). Generated squadrons and
+  wing members take 9. The session and message writers of `+180h` (docs/AI_BRAIN_PLAYER_EXEMPTION.md)
+  are not modelled; none is reached in single player.
+
+**Predictions (written before the ON runs):**
+- **JM05 and USNOS** have entries whose OFF slot is 4, the planned slot.
+  - ON, those units leave slot 4. `other_slot_groups` in `summary mission ai party gate` drops,
+    because the airfields and shipyards lead groups of their own or are evicted from mixed ones.
+  - The deaths are predicted unchanged. These are static installations, and the close-attack
+    member gate (`00A143ED`/`00A14427`) serves no airfield (`served=0` on the OFF log). Any
+    gameplay move comes only through a group that one of these units led and that held ships.
+  - Exit 1 is the prediction; exit 3 is possible on that one path.
+- **LOMP10** also has CB4_AF_Hangar at slot 4 -> -1: the same prediction as JM05.
+- **USN12 and JM08**: slot 0 -> -1, and both are NONCONTROL either way. The census moves
+  (`local_slot_groups` can drop), and the rows are gameplay-identical (exit 1).
+- **Controls USN04 and USN13** author no `OwnerPlayer` 8. They are identical apart from the new
+  census lines (exit 0 or 1).

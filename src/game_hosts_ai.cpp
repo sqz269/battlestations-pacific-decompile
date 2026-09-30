@@ -14,6 +14,7 @@
 #include <utility>
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -465,6 +466,14 @@ constexpr int kCampaignGameMode = 0;
 // for the section 60.6 re-read, flipped ON again after reference q (60.7).
 constexpr bool kAiPartyGateUnforcedBound = true;
 
+// Packet cc9_ai_owner_player_slot, docs/SHIP_AI_OPEN_ITEMS.md section 71. True:
+// 009FFD20 reads each unit's +180h, the scene's `OwnerPlayer` resolved through
+// global.enums `Players` (0077F1F9, 9 when absent): 8 ("AI control") answers
+// -1, so a group led by such a unit is NONCONTROL (00A2E124) and any other
+// group evicts it (00A2DE40); 0..7 names that slot. False: +180h is 9 for every
+// unit (section 60's labelled substitution). Needs kAiPartyGateUnforcedBound.
+constexpr bool kAiOwnerPlayerSlotBound = false;
+
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
 // group's record from a group's candidate score list (up to 128 records of
@@ -483,6 +492,13 @@ constexpr int kSinglePlayerEffectiveGameMode = 8;
 std::array<int, 8> g_scene_slot_parties{-1, -1, -1, -1, -1, -1, -1, -1};
 bool g_scene_slot_parties_published = false;
 
+// Packet cc9_ai_owner_player_slot: unit+180h by scene entity name, for the
+// authored values other than 9. LABELLED: keyed by name because this process
+// has no entity object; a name authored with two different values is a
+// conflict and reads as 9.
+std::map<std::string, int> g_scene_owner_players;
+std::set<std::string> g_scene_owner_player_conflicts;
+
 // 00A2C790's per-member chain reaches the member's own weapon director through
 // the ENTITY's vtable[+114h] and reports its state back to the group's AI
 // command, whose vt+24h (00A0FC90) discards it. Neither 00A10890 nor 00A109B0
@@ -495,6 +511,18 @@ bool g_scene_slot_parties_published = false;
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {
     g_scene_slot_parties = parties;
     g_scene_slot_parties_published = true;
+}
+
+void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int>>& owners) {
+    g_scene_owner_players.clear();
+    g_scene_owner_player_conflicts.clear();
+    for (const auto& row : owners) {
+        const auto it = g_scene_owner_players.find(row.first);
+        if (it != g_scene_owner_players.end() && it->second != row.second) {
+            g_scene_owner_player_conflicts.insert(row.first);
+        }
+        g_scene_owner_players[row.first] = row.second;
+    }
 }
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
@@ -1027,7 +1055,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         for (const std::size_t unit : g->members) {
             bsp::AiGroupCandidateFlags flags = unit_flags(unit);
             const int side = units.unit_side_0054(proxy(unit));
-            if (bsp::ai_group_member_still_belongs(flags, party_slot_of_team(side), g->party,
+            if (bsp::ai_group_member_still_belongs(flags, unit_slot_009ffd20(unit), g->party,
                                                    side, g->team)) {
                 kept.push_back(unit);
             } else if (unit < group_of_unit.size()) {
@@ -1088,7 +1116,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (g->team < 0 || g->team > bsp::kAiGroupMaxSeedTeam) g->team = 0;
         // OFF: this process files a group under its own team. ON: group+5634h
         // is 009FFD20 of the first member (00A2DFA0).
-        g->party = party_slot_of_team(g->team);
+        g->party = kAiOwnerPlayerSlotBound ? unit_slot_009ffd20(unit)
+                                           : party_slot_of_team(g->team);
         if constexpr (kAiPartyGateUnforcedBound) {
             if (g->party == 0) ++party_gate_local_groups; else ++party_gate_other_groups;
         }
@@ -1122,6 +1151,27 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (slot < 0 || slot >= 8) return slot;
         const int party = g_scene_slot_parties[static_cast<std::size_t>(slot)];
         return (g_scene_slot_parties_published && party >= 0) ? party : slot;
+    }
+    // 009FFD20 BSP_Unit_LossCountingSlot (009FFD20-009FFD5C, live decompile):
+    // +180h == 8 answers -1, +180h < 8 answers itself, otherwise the single-
+    // player team rule below. kAiOwnerPlayerSlotBound OFF takes +180h as 9 for
+    // every unit (section 60's labelled substitution).
+    int unit_slot_009ffd20(std::size_t unit) const {
+        const int team_slot = party_slot_of_team(units.unit_side_0054(proxy(unit)));
+        if constexpr (!kAiOwnerPlayerSlotBound) return team_slot;
+        const int owner = unit_owner_player_0180(unit);
+        if (owner == 8) return -1;
+        if (owner >= 0 && owner < 8) return owner;
+        return team_slot;
+    }
+    // unit+180h as 0077F1F9 stores it from the scene's `OwnerPlayer`, else 9.
+    int unit_owner_player_0180(std::size_t unit) const {
+        const GameUnitRow* row = units.unit_row(unit);
+        if (row == nullptr) row = units.unit_row(proxy(unit));
+        if (row == nullptr) return 9;
+        if (g_scene_owner_player_conflicts.count(row->name) != 0) return 9;
+        const auto it = g_scene_owner_players.find(row->name);
+        return it != g_scene_owner_players.end() ? it->second : 9;
     }
     // 009FFD20 for a unit whose +180h is 9, in single player: 0 on the local
     // player's team, else 4 (009FFD4B SUB / NEG / SBB / AND EAX,4).
@@ -4647,7 +4697,7 @@ void GameAiCoordinatorHost::create_00a32350() {
     for (std::size_t i = 0; i < host.units.count(); ++i) {
         const int side = host.units.unit_side_0054(i);
         // ON: the slot 009FFD20 files the unit under (cc9_ai_party_gate).
-        const int slot = side >= 0 ? host.party_slot_of_team(side) : side;
+        const int slot = side >= 0 ? host.unit_slot_009ffd20(i) : side;
         if (slot >= 0 && slot < bsp::kAiGroupPartySlotCount) {
             host.party_record[static_cast<std::size_t>(slot)] = true;
         }
@@ -4660,6 +4710,24 @@ void GameAiCoordinatorHost::create_00a32350() {
         g_scene_slot_parties[0], g_scene_slot_parties[1], g_scene_slot_parties[2],
         g_scene_slot_parties[3], g_scene_slot_parties[4], g_scene_slot_parties[5],
         g_scene_slot_parties[6], g_scene_slot_parties[7], host.game_mode());
+    {
+        // Packet cc9_ai_owner_player_slot: the units whose +180h is not 9.
+        std::size_t authored = 0, ai_control = 0, named_slot = 0;
+        for (std::size_t i = 0; i < host.units.count(); ++i) {
+            const int owner = host.unit_owner_player_0180(i);
+            if (owner == 9) continue;
+            ++authored;
+            if (owner == 8) ++ai_control; else if (owner >= 0 && owner < 8) ++named_slot;
+            host.log.notef("  ai owner player unit=%s owner=%d slot=%d side=%d",
+                host.units.unit_row(i) != nullptr ? host.units.unit_row(i)->name.c_str() : "-",
+                owner, host.unit_slot_009ffd20(i), host.units.unit_side_0054(i));
+        }
+        host.log.notef("ai owner player bound=%d published=%zu conflicts=%zu units=%zu "
+            "ai_control=%zu named_slot=%zu (009FFD20 +180h, 0077F1F9; packet "
+            "cc9_ai_owner_player_slot)", kAiOwnerPlayerSlotBound ? 1 : 0,
+            g_scene_owner_players.size(), g_scene_owner_player_conflicts.size(), authored,
+            ai_control, named_slot);
+    }
     // 00A335D0. 009FFC80 picks the record: an effective game mode of 0 takes
     // the 009FFC9E arm, which clamps 00A15950's difficulty into the three
     // IslandCapture records. Nothing in this process produces a difficulty, so
