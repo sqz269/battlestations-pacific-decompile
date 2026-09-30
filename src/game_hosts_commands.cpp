@@ -91,7 +91,8 @@ constexpr bool kSceneCommandFindCaseInsensitiveBound = true;
 // else gets `attackmove` (00816FD9 MOV EBP,00E08F78). True: the answer comes from
 // the unit's recovered class chain. False: every unit answers false, a record, so
 // a landing ship's `land` became an attackmove and never reached the land state.
-constexpr bool kEntityCommandSelfKindBound = false;
+// ON by section 85.4: both JM08 land rows became current (slot=1, curr=1).
+constexpr bool kEntityCommandSelfKindBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.

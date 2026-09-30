@@ -7205,3 +7205,35 @@ scripted `PilotLand` on a landing ship (none authored in the rows below).
   capture by landing. Exit 3. USN13, USNOS, USN04: 0 or 1 (no lander begins there).
 - **Pair D** (reach check, all three ON vs landing modes OFF): not needed if C matches; the flip
   of the whole chain is decided on C.
+
+### 85.4 Pair C on `09e2deb58`, and the flip
+
+`48c944487` committed the switch OFF; its ON export failed on C4702 (unreachable code after the
+`if constexpr` return), fixed in `09e2deb58`. Exports `s22_e0` (landing modes and land step ON)
+and `s22_e1` (the same plus `kEntityCommandSelfKindBound`). Reference launch form, lockstep 0.05,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`; the 300-frame smoke of `48c944487` passed.
+
+| row | e0 vs e1 |
+| --- | --- |
+| JM08 36000 | 3 (deaths 29 -> 33) |
+| USN13 | 1 |
+| USNOS | 1 |
+| USN04 | 1 |
+
+- **The prediction holds on JM08.** Both command rows now read
+  `LST 0x land 0074A990 land at pad 22 3 1 1 1` (was `attackmove ... 1 0 0`). `land state
+  enters=2 steps=822 with_pad=822 final=772 pad_assigns=0` (was all 0). `begins=2`, `mode3_points`
+  1081 on both sides; `mode4_points` 6001 -> 3945 (the landers leave the approach state for `land`).
+- **Deaths (per-entity table):** LST 03 dies 871.71 -> 900.60, now to `Headquarter 01` at 597
+  (was an AA truck at 1190); LST 01 919.20 -> 974.39, killer range 901 -> 592: both landers now
+  sit at their pads under the HQ. Ten statics die only ON (tents, a hangar, a watchtower, two
+  static planes, an AA truck, a barracks), six units only OFF (Grayson, Macomb, LSM 02, LST 02,
+  a pier, a troop transport). Why the escorts' fights moved is not read (unverified: the landers
+  now hold at the pads for about 30-55 s longer and draw the base's fire).
+  No ramp lowers (`0074AF20` unbound), so nothing is captured by landing, as predicted.
+- **Decision: flipped ON, all three** (`kShipAiApproachLandingModesBound`, `kShipAiLandStepBound`,
+  `kEntityCommandSelfKindBound`). Every arm matched its prediction (77.2, 83.1 and 85.3); the
+  controls stay gameplay identical on every pair (A, B, C). `kEntityCommandSelfKindBound` alone
+  has no reach while `kShipAiApproachLandingModesBound` is OFF (only `0074A990` sends a landing
+  ship `land` on these rows), so the three move together. The post-flip JM08 36000 is `s22_e1`.
+- **Open:** the landers hold at the final arm until the ramp `0074AF20` is bound (the next packet).
