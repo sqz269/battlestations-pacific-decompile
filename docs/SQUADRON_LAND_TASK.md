@@ -4758,3 +4758,63 @@ Yorktown_sqn06 (entered at about 442 s) and Yorktown_sqn10|.-2.
 - On a carrier, park now ends as the image's does: on the lift, below, in state 2.
 - Step (c) is therefore answered: the elevator ends the carrier's park <-> abort question. The
   airfield half of park is what still holds park OFF.
+
+## 5ap. Handoff (cc9-lua23, 2026-09-30, stamped 08:56 UTC)
+
+**What cc9-lua23 landed** (all in main through the lead's merges; the last is merge `15b678442`):
+
+| packet | switch | state | section |
+| --- | --- | --- | --- |
+| `cc9_land_holding_speed` (5ak item 3) | none (diagnostic) | the 31.5 m/s leader premise is refuted; the follow ticks are the sequencer's mode-1 phases | 5al |
+| `cc9_land_head_chatter` | none (diagnostic) | the head's 2<->3 flips are the image's 20-degree gate, fed by the carrier's motion and the deck's record count | 5am |
+| `cc9_elevator_state2_read` (5ah a) | none | `007C2090` -> `007CCFA0` -> `007CC7A0`; state 2 stops the bot (gate 8), so the land task stops | 5an |
+| `cc9_carrier_elevator` (5ah b, c) | `kCarrierElevatorBound` | **ON, staged behind park**: JM05 9000 with park on stows 8 of 8 carrier planes | 5ao, 5ao.1 |
+
+**The queue:**
+1. **Park's airfield loop.** This is the only thing holding `kLandParkStateBound` OFF: the
+   airfield planes loop park <-> abort after the hangar. On JM05 9000 with park on, for example,
+   F4F Wildcat 01 loops 220 times and MainAirfieldEntity 01_sqn01|.-2 672 times, identically with
+   and without the elevator.
+   - **The question.** What does the image do to a parked airfield plane that ends the loop? This
+     would be the airfield counterpart of state 2 below deck. 5x-5aa closed the laws (done test,
+     probe, rule, deadband, rate floor) and found no retirement.
+   - **A lead not yet read.** The hangar hide `007B96C0` -> `00951F40(0)` calls
+     `00710B80 BSP_UnitPartInstance_DetachSpatialNode` on `unit+360h`, which removes the node
+     from `BSP_SpatialIndex_GetSingleton` (`0042E630`) through `0098A500`
+     (`BSP_SpatialIndex_DetachNode`, docs/SPATIAL_INDEX.md). Check whether the detached plane
+     keeps any of the following. If it loses any of them, the image's hidden plane cannot drift
+     off the strip, and the loop never starts:
+     - its ground contact or terrain height (the probe `007C5AC0` uses the holder, but the
+       ground roll's surface query may use the spatial index);
+     - its collision;
+     - its fixed step.
+   - **Then decide.** Bind that effect OFF, pair LOMP10 9200/9000 and JM05 9000 with park on and
+     off, and flip park ON if the loop ends.
+   - 5ao.1's OFF and ON logs (`local\l23_e{off,on}_jm05l.log`, cc9-lua23 tree) already hold the
+     park-on airfield loop counts for JM05 9000.
+2. **The relaunch feed.** It gives the lift something to bring up. The ready plane `site+18h`
+   comes from the ready-plane pull `006C6540` and the stock regeneration, neither reconstructed
+   (`air_operations.hpp`). The elevator's relaunch arm is counted as `unfed_relaunch` (8 on JM05
+   9000). The handler for flag 1 with a plane is `BSP_Plane_PlaceOnLaunchSpotLocked` plus
+   `006FC810`, and the top release is `007C3C90(0)`.
+3. **`planeDesc+158h`.** It is taken as 0.0 in the lift's nose distance and taxi target.
+   `007D473A` writes (model `+3Ch` + model `+30h`) x 0.5; model is `classDesc+50h`, and its box
+   layout is not read. Every take on JM05 was within 3 m, so this is not urgent.
+4. **#15** stays parked until a row destroys a hangar.
+5. **Low priority:**
+   - SetParty with the event-6 group removal (SHIP_AI 63);
+   - the `unit_lacks_follow_target` -> `unit_is_flight_leader` rename;
+   - the one-think-late turbo clear (`009BDE40`);
+   - the moveto leader's climb speed loss (5al item 2).
+
+**Notes:**
+- A stowed carrier plane keeps its slot and its sequencer record. It is targetable in this host
+  (labelled; the image detaches its node).
+- On JM05 9000, every carrier landing is on Lexington's deck; Yorktown's lift takes nothing.
+- The diagnostics `summary land moveto speed` and `summary land head circle` stay, print-only.
+
+**Tools in the cc9-lua23 tree** (`local\`):
+- `l23_runs.ps1` (the reference rows, as in cc9-lua22's);
+- `l23_states.py` (land state occupancy from the `state A -> B` lines);
+- `l23_lft.py` (the `land follow trace` rows);
+- `l23_edit3.py` and `l23_edit4.py` (the elevator binding, a model for anchor-checked edits).

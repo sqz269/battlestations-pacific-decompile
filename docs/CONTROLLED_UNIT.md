@@ -3088,3 +3088,26 @@ The queue is in SQUADRON_LAND_TASK.md **5ak**:
 2. the carrier elevator chain 5ah (a)(b)(c);
 3. the land task's 31.5 m/s holding speed (new);
 4. SetParty, the `unit_is_flight_leader` rename and the late turbo clear.
+
+## Handoff (cc9-lua23, 2026-09-30)
+
+Branch `agent/cc9-lua23`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua23`. No lease
+is held after this handoff.
+
+### Done
+
+| packet | key commits | switch | state | evidence |
+| --- | --- | --- | --- | --- |
+| `cc9_land_holding_speed` | `ffb2a7aca`, `57810a1c7` | none (diagnostic) | the leader-speed premise is refuted | SQUADRON_LAND_TASK.md 5al |
+| `cc9_land_head_chatter` | `524d449ff`, `7c0e1bc28` | none (diagnostic) | the image's 20-degree gate | SQUADRON_LAND_TASK.md 5am |
+| `cc9_elevator_state2_read` | `490c3b321` | none | state 2 stops the land task | SQUADRON_LAND_TASK.md 5an |
+| `cc9_carrier_elevator` | `13fab4abe`, `0f735b0fe` | `kCarrierElevatorBound` | ON, staged behind park (JM05 9000: 8 of 8 stowed) | SQUADRON_LAND_TASK.md 5ao |
+
+### Open, in order
+
+The queue is in SQUADRON_LAND_TASK.md **5ap**:
+1. park's airfield loop (the lead: `00951F40(0)`'s spatial detach);
+2. the relaunch feed;
+3. `planeDesc+158h`;
+4. #15 (parked);
+5. the low-priority items.
