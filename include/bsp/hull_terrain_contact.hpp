@@ -60,6 +60,23 @@ inline constexpr bool kHullTerrainContactSolverBound = true;
 // ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 86.4).
 inline constexpr bool kHullTerrainDynHullVerticesBound = true;
 
+// Packet cc9_hull_terrain_native_test (docs/GUNNERY_OPEN_ITEMS.md section 87). True: each
+// (hull shape, terrain tile) pair goes through the reconstructed 00C53630 itself
+// (intersect_native_dyn_terrain_convex_00c53630: its own grid transform, sample decode,
+// interpolation, witness point and normal) on shape records built as 00882AC0 builds the tile
+// (one static body per tile: body frame = the Landscape frame with the translation moved by
+// (origin + 300 * tile, 0), shape kind 5 with an identity local frame, 33 x 33 u16 samples,
+// spacing 9.375, mode 1) and as 006FAD70 builds the hull shape (kind 4, the hull vertices,
+// the centre as its translation). Every tile whose x/z range meets the hull's is tested.
+// False: the terrain object's height 00ADB480 and cell normal 00ADAA40 (84.1).
+// ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 87.4).
+inline constexpr bool kHullTerrainNativeTerrainTestBound = true;
+// Same packet. 00C44090 keeps one manifold per body pair (00C3F4D0 FindOrCreate(body A,
+// body B)): every hull shape's contacts with one tile go into one manifold. True: the key
+// drops the shape. False: one manifold per (hull shape, tile), as 84.1 built it.
+// ON by the pairs of 2026-09-30 (section 87.4).
+inline constexpr bool kHullTerrainBodyPairManifoldBound = true;
+
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
     int manifolds{0};         // manifolds holding a point after the insert
@@ -103,10 +120,22 @@ private:
     struct HullShape {
         std::vector<OceanVec3> raw;         // the raw points the build came from
         std::vector<OceanVec3> vertices;    // body space: hull vertex + centre
+        // The native convex shape record (kind 4) for 00C53630: +34h local frame (identity,
+        // translation the centre), +210h -> {16-byte vertex records, count}.
+        float centre[3]{};
+        std::vector<float> records;         // 4 floats per vertex: the centred point, pad
+        struct Mesh { const float* vertices; std::uint32_t count; } mesh{};
+        std::uint8_t shape[0x240]{};
     };
     const std::vector<OceanVec3>& dyn_hull_vertices(std::size_t unit, std::size_t shape,
                                                     const std::vector<OceanVec3>& raw);
+    HullShape& hull_shape(std::size_t unit, std::size_t shape, const std::vector<OceanVec3>& raw);
     std::map<std::pair<std::size_t, std::size_t>, HullShape> hulls_;
+    // The native terrain tile records (kind 5), per height field and tile.
+    struct TerrainTile;
+    std::map<std::tuple<const void*, int, int>, std::unique_ptr<TerrainTile>> tiles_;
+    HullTerrainContactStepResult native_narrow_phase(std::size_t unit, DynBody& body,
+        const std::vector<std::vector<OceanVec3>>& shapes, bool apply);
     using Key = std::tuple<std::size_t, int, int, int, int>;  // unit, shape, landscape, tx, tz
     std::map<Key, std::unique_ptr<Manifold>> manifolds_;
     std::map<std::size_t, bool> touched_;
