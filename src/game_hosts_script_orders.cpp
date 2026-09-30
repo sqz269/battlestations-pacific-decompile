@@ -3584,6 +3584,52 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
     log_.implemented("MissionEntity::on_killed_lua_00929800", "00929800");
 }
 
+// Packet cc9_landing_unload_latch, docs/SHIP_AI_OPEN_ITEMS.md 106. In the image the
+// landing ship's own update 0074AF50 writes `LandingStarted` = true on its Lua self
+// object (BSP_MissionEntity_LuaSelfObject 00927B40, BSP_LuaObject_SetBoolean 00B673A0
+// at 0074B274..0074B2C1) and then 0074AD90 writes `LandingFinished` = true, in the
+// frame the ramp is found fully down. Here the ship AI queues the unload on the pad
+// model (only with kLandingShipUnloadBound) and this pass, which runs where the
+// death flags are published, writes both; the one-frame order bound of
+// publish_unit_deaths_00929800 applies.
+void GameScriptOrdersHost::publish_landing_unloads_0074ad90() {
+    bsp::BuildingPadModel* const pads = building_pads();
+    if (pads == nullptr || machine_state_ == nullptr) return;
+    const std::vector<int> unloads = pads->take_unloads();
+    if (unloads.empty()) return;
+    lua_State* const L = machine_state_;
+    for (const int ship : unloads) {
+        if (ship < 0) continue;
+        lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+        if (!lua_istable(L, -1)) {
+            lua_settop(L, lua_gettop(L) - 1);
+            continue;
+        }
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, ship + 1);
+        lua_getfield(L, -1, key);
+        bool own_slot = false;
+        if (lua_istable(L, -1)) {
+            lua_getfield(L, -1, "Ptr");
+            own_slot = lua_touserdata(L, -1)
+                == reinterpret_cast<void*>(static_cast<std::uintptr_t>(ship + 1));
+            lua_settop(L, lua_gettop(L) - 1);
+        }
+        if (own_slot) {
+            lua_pushboolean(L, 1);
+            lua_setfield(L, -2, "LandingStarted");    // 0074B2B1
+            lua_pushboolean(L, 1);
+            lua_setfield(L, -2, "LandingFinished");   // 0074AD90
+            const GameUnitRow* const row = units_.unit_row(static_cast<std::size_t>(ship));
+            log_.notef("landing ship unload published: unit=%d \"%s\" at t=%.2f "
+                "LandingStarted=true LandingFinished=true (0074B2B1, 0074AD90)", ship,
+                row != nullptr ? row->name.c_str() : "", static_cast<double>(units_.mission_clock()));
+        }
+        lua_settop(L, lua_gettop(L) - 2);
+    }
+    log_.implemented("LandingShip::publish_landing_lua_0074ad90", "0074ad90");
+}
+
 bool GameScriptOrdersHost::DialogKeyLess::operator()(const std::string& a,
     const std::string& b) const noexcept {
     const std::size_t n = a.size() < b.size() ? a.size() : b.size();
@@ -3921,6 +3967,7 @@ void GameScriptOrdersHost::run_script_timers(float step) {
     if (machine_state_ == nullptr) return;
     observe_mission_end();
     publish_unit_deaths_00929800();
+    publish_landing_unloads_0074ad90();
     if (bsp::BuildingPadModel* pads = building_pads()) {
         // Packet cc9_landing_modes_3_4: the pad's observer handle (+1E4h) drops a
         // destroyed occupant. SUBSTITUTION, labelled: the handle's notification

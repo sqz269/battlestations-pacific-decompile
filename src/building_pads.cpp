@@ -145,6 +145,27 @@ bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& l, bool ground_1
     return true;
 }
 
+bool landing_ship_ramp_unload_0074b109(BuildingPadModel::Lander& l, float dt) {
+    const float r = l.ramp_rotation_11a4;                               // 0074B111
+    const double step = static_cast<double>(dt)
+        / static_cast<double>(l.ramp_rotation_time_1190);
+    if (l.ramp_down_1188) {                                             // 0074B10F
+        if (1.0f <= r) {                                                // 0074B133, JBE
+            if (l.landing_118a || l.fast_landing_118b) return false;    // 0074B16E, 0074B17B
+            l.fast_landing_118b = true;                                 // 0074B18F
+            l.landed_118c = true;                                       // 0074AD90
+            return true;
+        }
+        const float up = static_cast<float>(step + static_cast<double>(r));  // 0074B14F FSTP
+        l.ramp_rotation_11a4 = 1.0f > up ? up : 1.0f;                   // 006F22B0(ECX = 1)
+        return false;
+    }
+    if (!(r > 0.0f)) return false;                                      // 0074B2F4, JBE
+    const float down = static_cast<float>(static_cast<double>(r) - step);  // 0074B313 FSTP
+    l.ramp_rotation_11a4 = down > 0.0f ? down : 0.0f;                   // 006F22F0(ECX = 0)
+    return false;
+}
+
 const BuildingPadModel::Lander* BuildingPadModel::lander(int ship) const {
     const auto found = landers_.find(ship);
     return found != landers_.end() ? &found->second : nullptr;
@@ -247,6 +268,7 @@ void BuildingPadModel::clear() {
     pads_.clear();
     vectors_.clear();
     landers_.clear();
+    unloads_.clear();
 }
 
 }  // namespace bsp
