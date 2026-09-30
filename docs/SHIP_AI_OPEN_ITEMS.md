@@ -8568,3 +8568,28 @@ Not predicted: the HQ turns neutral later (1140.95, from 1014.60), and the death
 both ways (the bombardment spread of section 94.4).
 
 **Decision: `kLandingCraftOwnerPlayerBound` ON.**
+
+## 102. Does a neutral CommandBuilding's own gun fire? (packet `cc9_neutral_building_guns`, cc9-ships25, 2026-09-30)
+
+**Short answer: no, in the image by construction and in this process by run. Nothing was
+switched.**
+
+**The image.** Neutralizing (`006F2940` -> D3h slot 9 -> `006F4D10`) ends in `vtable[2Ch]`
+`00951F30` -> `00928F50`, whose base `00923B80` (live decompile) stores `+54h = 2`, `+58h =
+race`, repeats the call down the child list (`+48h`, next at `+44h`) for every child whose
+`vt+5Ch(kind)` refuses the passed kind, then notifies the observers (`BSP_Observer_NotifySlot0C`).
+The building's guns take targets from its party's recon slot (`[recon+DE8h]`, the side's enemy
+list; section 26 of docs/RECON_CALL_SITES.md). For slot 2 the relation rule `008065FF..0080672B`
+puts every unit of another party in `neutral`, never in `enemy`
+(`include/bsp/recon_slot_lists.hpp`), so a party-2 building's enemy list is empty and its gun
+pass finds no candidate. (The garrison occupants are separate units and change side with the
+building, section 80; they are not its own mounts.)
+
+**This process.** `BSP_MUZZLE_TRACE="Headquarter 01"` on JM08 36000 (`local\s25_m1_jm08x`, main
+`3a0f3808a` plus this branch): 1461 placed shots, the last at t=1059.71; the HQ is neutralized
+at 1058.15. The five shots after it are the guns finishing the target they held (Gleaves) until
+the next contact sweep; none follows. Its targets before: `Watchtower, 01 03` 732, the landing
+crafts 324, Grayson 125, Bristol 79, Macomb 66.
+
+**Open (not read):** whether the image drops a held gun target at the party change (the observer
+notification) rather than at the next sweep; at most about 1.5 s of fire.
