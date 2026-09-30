@@ -567,3 +567,45 @@ rows.
   and the along-track error falls on at least three of USN04, E2, JM08 and LOMP10.
 - Keep it OFF, and record the reason, if water contacts rise by more than half or the ahead count
   exceeds the behind count.
+
+### 9.4 Measured (pair on `4bdf19712`) and the verdict: ON
+
+- OFF: `local\l21_p0` (`4E906856EB2D`).
+- ON: `local\l21_pa` with `kFollowTurboBound=true` (`E97EA0B3EC07`).
+- Logs are `local\l21_{p0,pa}_<row>.log` and diffs are `local\l21_tdiff_<row>.txt`.
+
+| row | turbo steps | station error mean OFF -> ON (m) | along mean | \|cross\| | behind ticks | latched share | pair_diff |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 0 -> 24073 | 153.8 -> 22.4 | -134.9 -> -9.4 | 15.9 -> 11.6 | 8649 -> 328 | 40% -> 96% | 3 |
+| E2 | 0 -> 31209 | 147.4 -> 20.5 | -131.1 -> -9.6 | 13.0 -> 10.2 | 10351 -> 410 | 44% -> 97% | 3 |
+| JM05 9000 | 0 -> 61643 | 527.7 -> 389.7 | -233.2 -> -203.1 | 302.4 -> 208.9 | 15349 -> 17017 | 6% -> 12% | 3 |
+| JM08 | 0 -> 12982 | 124.8 -> 32.8 | -117.4 -> -21.2 | 22.4 -> 17.9 | 4757 -> 691 | 35% -> 95% | 1 |
+| LOMP10 | 0 -> 1870 | 247.4 -> 98.5 | -240.3 -> -84.6 | 29.7 -> 28.1 | 991 -> 427 | 0% -> 60% | 3 |
+
+- The ahead count is 0 on every row but JM05 (2992 -> 2535).
+- Members are faster than their leaders while behind on E2 (+2.5), JM08 (+13.9), LOMP10 (+20.9)
+  and JM05 (-9.0 -> +5.1).
+- On USN04 the 328 remaining behind ticks are transients at -0.9. The prediction there was
+  +5..+30, a miss on a residue of 3% of the ticks.
+- The latched share overshot the predicted 55-85% on USN04, E2 and JM08 (95-97%).
+
+**Gameplay:**
+
+| row | deaths | torpedo drops | water contacts | per-entity |
+| --- | --- | --- | --- | --- |
+| USN04 | 27 -> 26 | 2 -> 3 | 6 = 6 | A6M Zero #4.2 survives; 23 death rows moved |
+| E2 | 51 = 51 | 2 -> 5 | 19 = 19 | 48 death rows moved |
+| JM05 9000 | 5 = 5 | - | 3 = 3 | death rows identical |
+| JM08 | 9 = 9 | - | 1 = 1 | gameplay identical (exit 1) |
+| LOMP10 | 7 = 7 | - | - | 5 death rows moved |
+
+Every row is inside its predicted spread. E2's torpedo drops rise 2 -> 5, because wingmen now
+arrive with their leaders; no spread was predicted for that.
+
+**Verdict: ON.**
+- The mechanism held on all five rows.
+- The along-track error fell on all four named rows, by 65-93%.
+- No exclusion fired: water contacts are unchanged, and ahead never exceeds behind.
+
+The 100-600 m follow gap (SQUADRON_LAND_TASK 5ai item 1) is closed on USN04, E2, JM08 and
+LOMP10. JM05 9000's remainder is its cross-track and population, still open.

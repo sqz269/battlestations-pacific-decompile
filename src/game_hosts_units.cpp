@@ -4542,7 +4542,7 @@ struct GameUnitsHost::Impl {
     // step, and 007D9062 multiplies the thrust by tuning+330h
     // Dynamics/SpdMultipliers/TurboMultiplier.  The host had none of the
     // chain, so a wing member could never out-run its full-throttle leader.
-    static constexpr bool kFollowTurboBound = false;
+    static constexpr bool kFollowTurboBound = true;  // ON: along error -65..-93% (PLANE_FOLLOW_PHASE_A 9.4)
     unsigned long long follow_turbo_steps{0};
     // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
     // the fly-to arm's two class terms as the image reads them - cruise =
