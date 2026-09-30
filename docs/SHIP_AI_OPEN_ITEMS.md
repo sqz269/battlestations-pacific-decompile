@@ -8863,3 +8863,76 @@ Each unload is followed by a `landing ship unload published` line: units 390-398
 106.2 established, no reference row's script reads the fields, so this is a mechanism check only.
 The first rows that would move are BSM02 once its player leaves the harbour (the five-landing
 failure) and CHG05. Neither is reachable with the idle player.
+
+## 107. Do the image's other transports hold station once every pad is held? (packet `cc9_transport_moves_order_bridge`, cc9-ships26, 2026-09-30)
+
+Section 105 queue item 2.
+
+**Short answer: the image drives the same move path, but through the order bridge.** The host
+skips the bridge, and that is the divergence.
+
+### 107.1 The image
+
+- A member that is not ready (`008128E0`; with every pad held, `006F2A50(site, 0)` finds no free
+  pad) gets the point on the `0.75 x CaptureRange` circle nearest it (96.1). Nothing in
+  `00A11B80` holds station.
+- The point goes to **`00A02020`**: `00A11F23 CALL 0xA02020`, verified in `disasm-raw`.
+- `00A02020` (`BSP_AiCommand_IssueMoveToMember`) is not a bare order. Its steps
+  (docs/AI_COMMAND_TICK.md, `include/bsp/ai_command_tick.hpp`):
+  1. the class gate;
+  2. **the 80 m gate** (`00A02098 FLD double [00D21530]` = 6400.0): no order to a member already
+     within 80 m of the point;
+  3. for a ship, **the avoid-zone point**: `0082ADA0([unit+538h], 0)` (the class's navigation
+     group at depth), then `00417B10(group, &out, &{x, z}, 30.0 [00CE38C8], 1)`. The point
+     is pushed out of the draft's avoid zones with a 30 m margin, and y becomes 0;
+  4. then the `moveto` tail `0077D600`.
+- So in the image a transport is sent to the nearest navigable point outside its zones, 30 m
+  clear, and stops being re-ordered once within 80 m of it. **That is its station.**
+
+### 107.2 The host
+
+- `transport_moves_00a11b80` (`src/game_hosts_ai.cpp`) calls `tick_issue_moveto` directly, which
+  is only `00A02020`'s tail. It skips the class gate, the 80 m gate and the avoid-zone point.
+  The command ticks do take them (`order_leader` and the follower pass in
+  `src/ai_command_tick.cpp`, through `ai_order_bridge_00a02020` and `tick_avoid_zone_point`;
+  section 25).
+- **Effect** (`s26_d1_jm08x`, tree `4abe575d3`, `BSP_LANDER_DIAG=1`, JM08 36000):
+  - From t=632.67 Bristol's non-ready landers (UST 01, 02 and 04, LST 01 and 03) are all sent to
+    points 375 m from `Headquarter 01`: (1269..1342, -4093..-4102), inside about 75 m of each
+    other. LST 01 and LST 03 get the same point.
+  - Those points are on the island side of the reef. At t=1200, UST 04 (1686.7, -3915.6), UST
+    05 (1653.9, -3857.9) and LST 01 (1624.3, -3859.9) sit together aground (`contact=1`, ground
+    -3.7 / -5.1 / -4.2 m under 180 m hulls).
+  - In `s25_b1_jm08x`, UST 04 rammed UST 01 on this path.
+  - Summary: `transport moves calls=2815 landers=2137 ready=2 anchors=881 inside=0
+    movetos=2135`. No member is ever inside `r`, so the orders never stop.
+- `close_issue_moveto` (`00A13B60`'s arm, the no-candidate fallback `00A14D48`) has the same
+  bypass. It is recorded here and not bound: it reaches every close-attack group in every row,
+  so it is a separate packet.
+
+### 107.3 The binding (to be applied by the lead: `src/game_hosts_ai.cpp` is on loan)
+
+- `kAiTransportMovesOrderBridgeBound`, committed OFF.
+- ON, `00A11B80`'s move goes through a new `issue_moveto_bridge_00a02020`, which is
+  `order_leader`'s bridge sequence for one member: the class gate, the 80 m gate,
+  `tick_avoid_zone_point` for a ship, then `tick_issue_moveto`.
+
+### 107.4 Predictions (written before any ON run)
+
+Same-tree pair from the commit that carries the switch.
+- **JM08 36000 (exit 3):**
+  - fewer `movetos` than OFF (the 80 m gate), and `inside` stays 0 (the anchor distance is
+    unchanged);
+  - the Bristol-group transports and LSTs stop about 30 m outside their navigation zones, off
+    the reef line. There is no `contact=1` cluster at (1620..1690, -3860..-3915) by t=1200;
+  - no transport-on-transport ram;
+  - the landing crafts launch as before: UST 01 at about 632.7, 8 crafts. The unloads of section
+    106 still come 2.05 s after each ramp, though their times may move;
+  - transport death rows move (UST 01 died at 790.78 to the HQ gun at 1149 m; offshore it may
+    live longer).
+- **USNOS, USNOS long (exit 3 likely):** the convoys' `r = 75` points at `CB2` go through the
+  same bridge. The killer distances move again, as in 96.4; predicted with no flipped death row.
+- **IJN01, JM06, LOMP06, the other reference rows:** `00A11B80` issues no move (no anchor):
+  gameplay identical.
+- **Verdict rule:** flip ON when the moves are bridged and the transports hold outside the reef.
+  A mechanism failure stays OFF, recorded.
