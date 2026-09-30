@@ -68,6 +68,16 @@ public:
         float ramp_timer_11ac{0.0f};
         float ramp_delay_11b0{2.0f};              // 00CE3958, no other writer
         bool ramp_down_1188{false};               // set by 0074A420 (and the 0A6h handler)
+        // The ramp animation and the unload of 0074AF50 (docs/SHIP_AI_OPEN_ITEMS.md
+        // 103, 106), keys from the save routine 0074A1F0: +11A4h "rampaElfordulas",
+        // +118Ah "partraszallas", +118Bh "gyorsPartraszallas", +118Ch
+        // "partraszalltunk". InitAll 0074BEC0 zeroes the bytes and stores 2.0
+        // (00CE3958) into +1190h; the construct seeds +11A4h = 0.
+        float ramp_rotation_11a4{0.0f};
+        float ramp_rotation_time_1190{2.0f};
+        bool landing_118a{false};        // no .text writer but InitAll's zero (and Lua/save)
+        bool fast_landing_118b{false};   // 0074B18F, the unload's one-shot latch
+        bool landed_118c{false};         // 0074AD90
     };
 
     Lander* mutable_lander(int ship);
@@ -136,7 +146,18 @@ public:
     std::size_t building_count() const { return vectors_.size(); }
     void clear();
 
+    // The unloads landing_ship_ramp_unload_0074b109 fired, in order, for the
+    // script host to publish `LandingStarted` / `LandingFinished` (the image
+    // writes both inside the ship's own update). take_ empties the queue.
+    void post_unload(int ship) { unloads_.push_back(ship); }
+    std::vector<int> take_unloads() {
+        std::vector<int> out;
+        out.swap(unloads_);
+        return out;
+    }
+
 private:
+    std::vector<int> unloads_;
     int intern_pad(const Pad& pad);
     std::vector<Pad> pads_;
     std::map<int, std::vector<int>> vectors_;  // building -> +794h vector
@@ -185,5 +206,21 @@ BuildingPadModel& building_pad_model();
 // pad re-request, the ramp animation +11A4h and the unload) is not covered.
 bool landing_ship_ramp_latch_0074afcc(BuildingPadModel::Lander& lander, bool ground_1011,
                                       float clock, float dt);
+
+// 0074AF50's ramp animation and one-shot unload, 0074B109..0074B329 (section 106),
+// run every frame after the latch (every latch path reaches 0074B0B0 and falls
+// through). r = +11A4h at entry. Ramp down: r >= 1.0 [00D7A24C] (0074B133 COMISS,
+// JBE) with +118Ah and +118Bh clear sets +118Bh (0074B18F) and, through 0074AD90,
+// +118Ch, and returns true; r < 1.0 stores min(float(dt / +1190h + r), 1)
+// (006F22B0 with ECX = 1 at 0074B146). Ramp up and r > 0.0 [00D7A218]: max(float(r -
+// dt / +1190h), 0) (006F22F0, ECX = 0 at 0074B309). x87 intermediates are extended
+// precision; here double, rounded once to float as the FSTP does. With dt 0.05 the
+// ramp needs 41 steps, so the unload comes 2.05 s after the latch frame.
+// Coverage: the flags and the rotation. Not modelled: the bow point handed to
+// 006AC370 (the pad's troop paths), the `soldiers` note node of a small ship, the
+// ramp-bone poses (presentation), and the `shipLanded` event 00986820 (a record in
+// the caller). The Lua writes (`LandingStarted`, then 0074AD90's `LandingFinished`)
+// are the caller's.
+bool landing_ship_ramp_unload_0074b109(BuildingPadModel::Lander& lander, float dt);
 
 }  // namespace bsp
