@@ -8775,3 +8775,45 @@ disconnected, one USNRM01 36000 run died at FMOD startup (environment, not code)
 
 Verdict: **ON.** The controls are identical, and the one moved row is the predicted one with
 its mechanism visible.
+
+### 5ch addendum: USNOS shots 6166 -> 802 (cc9-lua31, 2026-09-30)
+
+The lead asked about this drop. It is taken from 5ch's own pair logs, `local\l31_{off,on}_usnos.log`
+(`a59dae607`, OFF `CB9334362F07`, ON `ECA965F3003A`), plus one traced ON run,
+`local\l31_tr_usnos.log` (`BSP_AI_SQUAD_TICK_TRACE=1`).
+
+**The shots that vanish are anti-aircraft fire at planes.**
+- `ballistics aa_direct_aims` falls 51754 -> 5991 and `no_gravity_shots` 5846 -> 482.
+- `artillery_arc_aims` is 106700 on both sides, so ship-against-ship and ship-against-shore fire
+  is untouched.
+- `aa bot error` loses every level-2 roll (gunner 335 -> 0, flak 308 -> 0), and `aa line of fire
+  queries` falls 655 -> 140.
+
+**The plane deaths that flip** are all twelve planes of `plane #1.1`, `#1.2` and `#1.3` (four
+each). These are 12 of OFF's 18 plane deaths, so the plane death modes fall 18 -> 6. All twelve
+are only-OFF.
+- OFF, `plane #1.1` is killed at t=120.75 by `Portland1` (22 hits taken) while it strafes
+  `TroopTrans2`.
+- Its strafe task (installed at log line 18200) runs 810 ticks: 583 moveto, 197 gotowards and
+  30 aim, with 6 gun fires.
+- ON it takes no hit.
+
+**The first diverging line** (`l30_firstdiff.py`) is mission frame 916, about t=46 s:
+`moveto task plane #1.3: installed kind 7, leader=1 state=moveto` (ON line 21945). `plane #1.1`
+follows at t=46.65.
+
+**What they do instead, traced.** The three squadrons each lead a two-member `MOVETOATTACK`
+group whose target group's leader is **HQ2** at (1736, 3, 5422). The tick's `moveto` retires
+the scripted strafe and installs the kind-7 task towards HQ2:
+- At t=46.65 `plane #1.1` is at (1970, 1236, -6450), 11875 from HQ2.
+- At t=148.60 it is at (1619, 828, 334), 5090 from HQ2.
+
+That is a steady close at the TBF's speed, at a live target and a valid point. The planes are not
+parked, not frozen, not sent to the origin, and not sent to a dead target. Their task table
+agrees: `min_d` equals `last_d` (5018.9), and `arrived=0` because the run ends first. So the
+squadrons leave the transports to Portland's AA umbrella and fly inland towards HQ2, and the AA
+has almost nothing to shoot at.
+
+**Verdict.** The drop is a consequence of the image's `009CC850` rule (a `moveto` retires a strafe
+head, and `0099A170` builds the moveto task). It is not a host artefact, so the flip stands. The
+assumption that remains is the one stated in 5cg: that the image puts these squadrons in a tick-ordered AI group.
