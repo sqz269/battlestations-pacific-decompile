@@ -9081,3 +9081,46 @@ flip time follows CaptureValue / rate. Every pair is gameplay identical.
 **Answer to the lead's question:** with the observed landings the image needs about 2580 s of
 neutral time, so JM08 flips its HQ at about t = 3500, past every reference window (1800 s at
 most). No reachable reference row flips a base.
+
+### 107.5 The pairs (`s26_e0` vs `s26_e1`, both from `0b88fa011` = main `8a7a2eef5` + this branch), and the flip
+
+The switch landed on main as `3c183008f` (applied by cc9-lua31 from this section's edit). Runs
+used the reference launch form. Six runs that started at about 17:35 died at FMOD startup
+(`sound/gui/error.fsb`, create_result 78) while the session moved from `rdp-tcp` to the console.
+They were relaunched once the console was Active.
+
+| row | pair_diff | deaths | death rows | zone-point asks / moved (OFF -> ON) | 00A11B80 movetos |
+| --- | --- | --- | --- | --- | --- |
+| JM08 long (9200/9000) | 1 | 31 / 31 | identical | - | - |
+| USNOS | 1 | 107 / 107 | identical | 940/0 -> 1175/191 | 235 / 235 |
+| USNOS long | 1 | 125 / 125 | identical | - | - |
+| JM08 36200/36000 | 3 | 158 -> 143 | 15 only ON, 30 only OFF, 96 changed | 455/455 -> 2703/2703 | 2065 / 2248 |
+
+**The mechanism matches.** On JM08 36000 every bridged `00A11B80` move takes the avoid-zone point
+(2248 more asks, all moved). With `BSP_LANDER_DIAG=1` (`s26_e0d_jm08x` / `s26_e1d_jm08x`) at
+t=1200:
+
+| | OFF | ON |
+| --- | --- | --- |
+| UST 02 | aground at (1577, -3900), ground -2.7 m, `contact=1` | at (2112, -3762), ground -25.4 m |
+| LST 01 | aground at (1532, -3889), ground -2.7 m, `contact=1` | at (1690, -3681), ground -27.8 m |
+| other Bristol transports | deep water | deep water (-24 .. -28 m) |
+
+The landing chain is intact in both: 8 -> 9 ramps, every unload 2.05 s after its ramp, and two
+launches (10 crafts) -> four launches (11).
+
+**Missed predictions:**
+- **The rams persist.** OFF's transport deaths are UST 05 (941.39, by LST 01 at 83 m), UST 02 (by
+  LST 03, 63 m), UST 04 (by Macomb, 188 m) and UST 06 (by LST 01, 117 m). ON's are UST 05 (by
+  Bristol, 165 m), UST 02 (by UST 03, 180 m) and UST 01 (by Bristol, 62 m). These are friendly
+  hull contacts among ships converging on the same area, outside `00A11B80`'s point choice.
+  Recorded as the next item.
+- **UST 04 still grounds by t=1500** (ground -13.4 m, `contact=1`), on an order not traced here.
+- **USNOS stayed gameplay identical.** 191 convoy points moved, but no convoy reached its `CB2`
+  point within the window. The prediction was "exit 3 likely".
+- **`movetos` rose** where it was predicted to fall. The runs diverge, so the counts are not
+  comparable.
+
+**Verdict: `kAiTransportMovesOrderBridgeBound` ON.** The mechanism matches (the bridge and the
+offset points; the transports hold in deep water where OFF grounds them). The rams and UST 04's
+late grounding are recorded misses with their own causes.
