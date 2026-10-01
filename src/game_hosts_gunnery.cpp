@@ -824,7 +824,8 @@ constexpr bool kHullSegmentHealthBound = true;
 //    bearing turns by U(-AngleChange, AngleChange) per update. 006DF520 walks
 //    bot+90h toward bot+84h at 30 m/s per axis (0042AC60 at 006DF694..006DF6D2),
 //    adds it to the world aim point (006DF800..006DF81F), and zeroes it when the
-//    target is not a ship (006DF9A5..006DF9CD). Rows: robots.lua
+//    target has no object, a position target (006DF9A5..006DF9CD; section 97.1
+//    corrects an earlier 'not a ship' reading, kArtilleryNonShipErrorOffsetBound). Rows: robots.lua
 //    ArtillerySubDirectorBot (00E19994, stride 28h), by the owner's skill row.
 //    OFF: no ranging offset. Packet cc9_artillery_ranging_error,
 //    docs/ARTILLERY_RANGING_ERROR.md.
