@@ -7527,3 +7527,114 @@ commit. All 38 runs finished with `lost_polls=0`.
   - forts without ConvexObjects (every building) still have no body; that is the image's
     reading;
   - debris (`00447510`, section 94.2 item 2) is the next body family.
+
+## 97. Artillery aims at structures: the slot-100h routines and the ErrorOffset (packet `cc9_artillery_structure_aim`, cc9-gunnery22)
+
+Section 94.2 item 3 (the airfield, shipyard and ErrorOffset parts), and the Shimotsuke
+observation of 95.4.
+
+### 97.1 The read
+
+**`006DF520` steps 4 and 5 run for every entity target.**
+- At `006DF659..006DF664` the bot calls its own `vtable[44h]`, which is `0072BD30`: the
+  command target's resolved object, or null when the bot's target record has no object.
+- Only null takes `006DF979`: the point comes from `0059BD20`, and `bot+90h` is zeroed
+  (`006DF9A5..006DF9CD`). So the zeroing is for a **position** target, not a non-ship one.
+- Section 85 and the host's comment read it as "not a ship". That is corrected here.
+- Every unit target, whatever its kind, goes through:
+  - the refresh timer (`bot+B4h`, reloaded from TargetPointRefreshTime);
+  - `target->vtable[100h]`;
+  - the target matrix;
+  - the stepped offset `bot+90h -> bot+84h` at `dt * 30` (`006DF66A..006DF6D2`, added at
+    `006DF800..006DF81F`).
+- The offset goal `bot+84h` comes from `00862660`, through the target record `00864CA0`. The
+  unit pass builds that record for every assigned target, not only for ships
+  (`unit_gunnery_pass.cpp`, `00865838`).
+
+**`MAirfield` slot `100h`: `006D3250`** (vtable `00CF8C08`; `RET 1Ch`; the six arguments after
+`out` are unused).
+- With `n = [+884h]`, it returns `+83Ch + i * 0Ch`, where `i` is `U(0, n - 1)` truncated
+  (`00BD2F10` with `ECX = 1`, drawn only when `n >= 2`). With `n = 0` it returns `(0, 0, 0)`.
+- `006D2980` fills that list from the `+830h` hangar vector (`006D5220`'s `"Hangar %d"`
+  Objects): each hangar whose `+370h` hit points exceed 0 (`[00D7A218] = 0.0`), at most six,
+  stored as the hangar's world position (`+FCh`) carried into the airfield's frame (`+110h`).
+  So the aim is a live hangar's position, or the airfield origin.
+- `006D2980` runs from `006D5220` (scene read), `006D31A0` (full repair) and `006D3F20` (a
+  park-spot test reached only through a vtable). The list is not refreshed on a hangar's death.
+
+**`MShipyard` slot `100h`: `00844A10`** (vtable `00D0B870`; `RET 1Ch`).
+- It walks the `+780h` vector (16-byte elements). `00849F70` fills it from the shipyard's own
+  `"Hangar %d"` sub-bags (`00CF8F08`).
+- It picks a random element whose object passes the liveness test (`+5Ch` set; `+5Dh`, `+5Eh`
+  and `+60h` clear), with `00BD2F10` drawn only when two or more pass.
+- It returns that object's world position (`+FCh..+104h`), or a path point, carried into the
+  shipyard's frame. With none it returns `[00F87574]`, which is zero.
+- The host does not read a shipyard's hangar list, so this slot is **not bound**.
+
+### 97.2 Shimotsuke's silence (95.4): neither the range nor the arc gate
+
+`BSP_FIRE_GATE_TRACE=Shimotsuke` (an env-gated diagnostic added with this packet) on USNOS, on
+this tree's build of `81065beed`:
+- **From 39.30 s to 63.45 s** the gun holds Static warhawk 02 at 3281..3135 m, inside
+  `max_range` 3300, with the arc solved and the angles accepted. But `settled = 0`.
+  - The hull is turning: the commanded bearing moves from 86.3 to 51.2 degrees, about
+    1.4 degrees a second.
+  - The gun trails its command by 0.13..0.15 degrees, more than the 0.1-degree band of
+    `006DEE40`. That is about two 0.05 s ticks of the turn.
+- **From 64.45 s** the turn slows to about 0.5 degrees a second, the lag falls under 0.1
+  degrees, and the four platforms fire a salvo at 63.55..65.55 s
+  (`BSP_MUZZLE_TRACE=Shimotsuke`).
+- **So it is the settle gate during a turn.** Whether the image trails by the same two ticks
+  depends on the order of the hull tick, `0085ABA0` and the stepper `0085AD80` within a frame
+  (the host's `kGunWaveOrderBound` order). That order is not read here: **open**.
+
+### 97.3 The switches (`81065beed`, committed OFF) and the census
+
+**The switches:**
+- **`kArtilleryNonShipErrorOffsetBound`** (`src/game_hosts_gunnery.cpp`): a non-ship, non-plane
+  unit target gets the stepped ErrorOffset, and the step is kept across target changes. Planes
+  are left out: sub-type 6 answers a plane with the AAFlakBot, and the plane's slot `100h` is
+  not read.
+- **`kArtilleryAirfieldAimSlotBound`:** an airfield target's aim is a live listed hangar's world
+  position, redrawn every 5 s from the aim-point stream, or the airfield origin.
+  - LABELLED: the hangar list is taken live at each draw (`!dead`), not at `006D2980`'s rebuild
+    points.
+  - A hangar Object with no host unit is skipped.
+
+**Census line:** `summary mission gunnery structure aims`.
+
+**OFF census** (`local\g22_c1_<row>`, this tree's build, exit 0), non-ship artillery aim ticks
+(airfield aims in brackets):
+- USNOS 98519;
+- JM05 23954;
+- USN01 20725 (492 at Airfield2, whose one hangar is "Multi Hangar 1");
+- JM08 18345;
+- USN12 8007;
+- USN13 2918;
+- IJN01 1155;
+- JM06 697;
+- 0 on USN04, USN02, BSM01, LOMP06 and LOMP10.
+- No row aims at a shipyard.
+
+### 97.4 Predictions (written before any ON run)
+
+**Pair 1, `kArtilleryNonShipErrorOffsetBound`** (`local\g22_e1` against `local\g22_e0`):
+- **Exit 3** on every row with non-ship aims: the eight above and their long rows.
+  - Ground targets are now aimed with the ranging radius, which shrinks only after shots, so
+    the first rounds at each new ground target scatter.
+  - Ground-target hit records fall on the rows with the most such aims: USNOS, JM05, USN01,
+    JM08 and their long rows. Ground deaths come later or fewer there. The direction is not
+    predicted on rows with few aims.
+- **Exit 0 or 1** on USN04, USN02, BSM01, LOMP06 and LOMP10. Every other row with no
+  non-ship aim in its own OFF log, such as E2 or LOMP10 long, is judged the same way.
+- **Mechanism failure:**
+  - a zero-census row moving;
+  - `offset_mean` 0 on a row with aims.
+
+**Pair 2, `kArtilleryAirfieldAimSlotBound`** (`local\g22_e2` against `local\g22_e0`):
+- **USN01: exit 3.** The 492 Airfield2 aims move from its origin, raised by Height, to "Multi
+  Hangar 1" while the hangar lives, with no draw (one hangar). `airfield_draws = 0`.
+- **Exit 0 or 1** on every row whose OFF census has no airfield aim.
+- **Mechanism failure:**
+  - `airfield_draws` above zero on USN01;
+  - a row with no airfield aim moving.
