@@ -8655,3 +8655,54 @@ also means the leader closes on Zuikaku's point.
   squadron in a tick-ordered group.
 - **Weakest call:** the promotion. The leader may instead dive onto Zuikaku's own escorts before
   3000; the script's 15 s strafe re-target still installs between ticks.
+
+### The pairs and the verdict (cc9-lua31, 2026-09-30): ON
+
+**First pair (`55854580e`, OFF `A79ECDA42F68`, ON `DB142BAB5873`): a mechanism failure.**
+- The install ran straight after `issue_script_command`.
+- With the loopback queue bound, the `moveto` is delivered only at the session pump's drain, so
+  the director still held the old command. A temporary diagnostic (not committed) showed
+  `before=now=00e08f18` (torpedo), `00e08f40` and `00e08f20`.
+- ESMP08 9000 counted `not_current=1026` and `replaced_other=0`: no attack head was ever
+  retired. Meanwhile the installs over existing moveto heads cut every strafe short (0 hits).
+- That run is discarded.
+
+**The correction (`a59dae607`).** The install now follows the delivery through
+`commands_after_last_issue_delivery`, as the script orders' installs do.
+
+**Second pair (`a59dae607`, OFF `CB9334362F07`, ON `ECA965F3003A`).** Reference V's launch
+form; a 500/300 USN01 smoke on the ON binary finished cleanly.
+
+| row | `pair_diff` | deaths | hit records | damage | retask installed / kept / replaced_other |
+| --- | --- | --- | --- | --- | --- |
+| USN02 (control) | exit 1, gameplay identical | 1 / 1 | 1126 / 1126 | same | 0 / 0 / 0 |
+| USN12 (control) | exit 1, gameplay identical | 8 / 8 | 198 / 198 | same | 0 / 0 / 0 |
+| USNOS 3200/3000 | moved | 107 / 95 | 1487 / 1189 | 54561.0 / 51217.3 | 440 / 416 / 24 |
+| ESMP08 9200/9000 | moved | 6 / 0 | 198 / 0 | 2017.7 / 0.0 | 4425 / 291 / 1023 |
+| ESMP08 14200/14000 | moved | 48 / 44 | 1040 / 1619 | 12303.1 / 13714.7 | 7819 / 719 / 1789 |
+
+- **The mechanism holds.**
+  - `not_current` is 0 everywhere.
+  - On ESMP08 1023 (9000) and 1789 (14000) attack heads are retired by a tick `moveto`.
+- **The promotion happens (prediction met).**
+  - ESMP08 14000 counts `promotions` 1 -> 2: the US strike group now reaches `CLOSEATTACK`.
+  - A traced run of the first, pre-delivery build already showed it at t=445.41, d=2609.7; the
+    corrected pair is not traced.
+  - `00A13B60` then serves the squadrons: `served` 214 -> 893, `settarget` 211 -> 647, and
+    `fallback moveto` 3 -> 246.
+  - The tick's own orders fall: `tick_orders` 4420 -> 3969.
+- **The strike lands later and harder.**
+  - Before the promotion every scripted strafe is ended by the next tick `moveto`, so ESMP08
+    9000, which ends at t=450 just after the promotion, has no hit ON (198 OFF).
+  - At 14000 the first hit moves 420.32 -> 486.20 s, and hits rise 1040 -> 1619.
+  - Two torpedoes are dropped (`torpedo-task releases` 0 of 21 -> 2 of 21). That is the first
+    torpedo release of this row.
+- **USNOS** loses 12 plane deaths: its re-tasked squadrons fly to their group's point instead of
+  pressing attacks through the AA (shots 6166 -> 802).
+- **Goaway: still none.** The strafe tables show `goaway` 0 ticks on both sides of ESMP08 14000
+  (aims 9 -> 8). So ESMP08 long is **still not the goaway row**. The strafers now take the close
+  pass's `settarget`, and whether that pass reaches a strafe's goaway is the next question.
+
+Verdict: **ON.** The mechanism matches, the controls are gameplay-identical, the predicted
+promotion happened, and the moved rows are the predicted ones. The pre-promotion loss of every
+scripted strafe on ESMP08 is the image's rule as read (`009CC850`), not a miss.
