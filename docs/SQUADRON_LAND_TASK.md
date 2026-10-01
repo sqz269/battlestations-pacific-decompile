@@ -8817,3 +8817,69 @@ has almost nothing to shoot at.
 **Verdict.** The drop is a consequence of the image's `009CC850` rule (a `moveto` retires a strafe
 head, and `0099A170` builds the moveto task). It is not a host artefact, so the flip stands. The
 assumption that remains is the one stated in 5cg: that the image puts these squadrons in a tick-ordered AI group.
+
+## 5cj. Handoff (cc9-lua31, 2026-09-30)
+
+Branch `agent/cc9-lua31`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua31`. No lease
+is held. The `src/game_hosts_ai.cpp` loan from the ships lane was used for 5cg, 5ch and the
+routed SHIP_AI 107 edit, and is handed back.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_ai_tick_strafe` | `4d6093605`, `2101fd20c` | `kAiSquadronLeaderPointBound` | **ON** | 5cg |
+| routed SHIP_AI 107 | `3c183008f` | `kAiTransportMovesOrderBridgeBound` | OFF (cc9-ships26 pairs it) | SHIP_AI 107 |
+| `cc9_ai_tick_plane_retask` | `55854580e`, `a59dae607`, `e052a57b2`, `430b5f188` | `kAiTickMovetoRetasksPlaneBound` | **ON** | 5ch and its addendum |
+| `cc9_get_property_ammotype` | `5d0513291`, `e38f0796e` | `kGetPropertySquadronAmmoTypeBound` | **ON** | 5ci |
+
+Env traces added: `BSP_AI_SQUAD_TICK_TRACE=1` (`src/game_hosts_ai.cpp`) logs every
+`MOVETOATTACK` or `CLOSEATTACK` tick of a squadron-led group, with both leader points and the
+collect distance. Run scripts: `local\l31_runs.ps1` (pairs) and `local\l31_apply_*.py` (the edits).
+
+### Next: the `settarget` that `CLOSEATTACK` issues to a squadron (the goaway question)
+
+After 5ch, ESMP08's strike group promotes. `00A13B60` then serves its squadrons with `settarget`
+(`00E08EF8`, ordinal 1; docs/AI_CLOSE_ATTACK_TICK.md). The host issues it through
+`close_issue_order` (`src/game_hosts_ai.cpp`, the registry path `issue_order`), and **no bot task
+follows**. The planes keep their last kind-7 moveto task towards the old point, or a scripted
+strafe, until the next 15 s `PilotSetTarget`.
+
+What the image should do, from what is read so far (to verify first):
+- `0099A4C0` asks the head's `vtable[40h]`:
+  - a kind-7 moveto head's `009C31B0` answers 0 for a non-moveto command, so the head is retired;
+  - a strafe head's `009CC850` answers 0 for `00E08EF8` (it accepts only `00E08F40` and
+    `00E08F78`), so it is retired as well.
+- `0099A170` has **no arm for `00E08EF8`** in `src/attack_commands.cpp`'s reconstruction (the arms
+  are none, moveto, moveonpath, the attack classes, land, retreat and stop), so it builds nothing.
+  Confirm this against the listing, `0099A23A` onwards.
+- So the image's served squadron would fly with an **empty task vector** and a `settarget` naming
+  the target. What a plane bot does with no task and a current `settarget` (`0099D300`'s plan,
+  `007EEC50`, or the squadron's free-attack logic) is the read. It decides whether ESMP08 long
+  ever reaches a strafe goaway.
+- Bind it OFF in the host's `close_issue_order` delivery (after the loopback drain, as 5ch does
+  through `commands_after_last_issue_delivery`). Pair ESMP08 14200/14000, USNOS, USN02 and USN12.
+
+### Then the script-dogfight rows (queue item 3), neither reached yet
+
+- **USNRM01** (not `USNEX`; the menu id is `USNRM01`, `missiontree.lua:3299`),
+  `usn_1_pearl.lua:1327` `luaPh3Start` (the Welch squadron at 1350-1357). The chain is: phase 1
+  (the WV movie end at 1090 -> `luaBombingMovie` 1111 -> `luaBombingMovieEnd` 1156 -> Blackout
+  -> `luaPh2Movie1` 1173), then phase 2, where the Nevada must come within 800 of
+  `Mission.NevadaBeach` (lines 744-782 -> `luaNevadaBeachMovie` 1312 -> `luaPh3Start`). A 9000
+  run did not show which phase it reached. A 36000 run died at FMOD startup while the session
+  was disconnected (environment). Next: an env-gated trace of the Lua callbacks the host fires
+  (luaDelay, dialog and movie callbacks), or grep a long run for `PilotSetTarget` from a Welch
+  unit.
+- **BSM04** `bsm_04_vengance_at_luzon.lua:1909` in `luaIntroMovieEnd`. It is reached only
+  through the dialog chain `INTRO` (lines 155-180: `luaIntroMovieB`, `luaIntroMovieC`,
+  `luaZekesDia`) -> `ZEKES` (`luaIntroMovieD`, line 190) -> `luaDelay(luaIntroMovieEnd, 8)`
+  (1896). cc9-lua30's 3200 probe never got there, so find where the dialog sequence stops in the
+  host.
+
+### Notes for the next worker
+
+- `CloseAttack_CollectDist` is 3000 on these rows by the image's own load: game mode 8 selects
+  `IslandCaptureParams_Rookie` (`highlvlaiglobals.lua:119`). 5000 is only the default.
+- `GetProperty(..., "ammoType")` is case-insensitive in the image (`_stricmp`). ESMP08's wave all
+  carries ordnance (`zero=0`).
+- The USNOS AA drop under 5ch is explained in the addendum: planes fly to HQ2 instead of
+  strafing under Portland's AA.
