@@ -7638,3 +7638,50 @@ this tree's build of `81065beed`:
 - **Mechanism failure:**
   - `airfield_draws` above zero on USN01;
   - a row with no airfield aim moving.
+
+### 97.5 The pairs, and the flips
+
+**Pairs:** `local\g22_e1` (ErrorOffset ON) and `local\g22_e2` (airfield slot ON), each against
+`local\g22_e0`, all three exports of `81065beed`.
+- **Run conditions.** The RDP session dropped during the first batch (`query session`:
+  Disc). The runs started then died at startup, and one ON run (`g22_e1_usn13l`) logged
+  `lost_polls=6001`.
+- After the session returned (console, Active), a 300-frame smoke was clean, and every failed
+  run was re-run. All runs used in the tables have `lost_polls=0`.
+
+**Pair 1, `kArtilleryNonShipErrorOffsetBound`:**
+
+| row | exit | deaths | hit records | non-ship aims | mean offset (m) |
+| --- | --- | --- | --- | --- | --- |
+| USNOS | 3 | 107 -> 98 | 1487 -> 1392 | 108389 | 13.9 |
+| USNOS long | 3 | 125 -> 115 | 2213 -> 2134 | 164023 | 16.3 |
+| JM08 | 3 | 25 -> 22 | 485 -> 470 | 20552 | 9.6 |
+| JM08 long | 3 | 158 -> 178 | 4356 -> 4352 | 1122046 | 9.0 |
+| JM05 | 3 | 10 -> 11 | 393 -> 412 | 25360 | 6.3 |
+| JM05 long | 3 | 15 -> 16 | 871 -> 879 | 51178 | 4.5 |
+| USN12 | 3 | 8 -> 5 | 198 -> 219 | 8577 | 11.0 |
+| USN01 | 3 | 29 -> 29 | 1280 -> 1276 | 20725 | 0.7 |
+| JM06 | 3 | 1 -> 1 | 273 -> 274 | 697 | 16.7 |
+| IJN01 | 3 | 5 -> 5 | 104 -> 104 | 1155 | 6.1 |
+| USN13 long | 3 | 125 -> 124 | 3504 -> 3551 | 42419 | 9.2 |
+| USN13 | **1** | 22 -> 22 | 444 -> 444 | 2918 | 26.8 |
+| USN04, E2, USN02, BSM01, LOMP06, LOMP10, LOMP10 long | 1 | identical | identical | 0 | 0 |
+
+- **Mechanism:** matched. The offset is applied on every row with non-ship aims
+  (`offset_mean > 0`), and every zero-census row is gameplay-identical.
+- **Spread misses:**
+  - USN13 stays exit 1 despite 2918 aims and a 26.8 m mean offset;
+  - JM05 and USN12 gain hit records instead of losing them;
+  - JM08 long's hit records stay flat while its deaths rise by 20.
+- **Flipped ON** as a mechanism match with recorded spread misses.
+
+**Pair 2, `kArtilleryAirfieldAimSlotBound`:**
+- **USN01: exit 3.** Deaths are identical; hit records 1280 -> 1287. The census: 492 airfield
+  aims, `airfield_draws = 0` (Airfield2 lists one hangar), and `airfield_no_hangar = 8` (the
+  hangar died during the row, so the aim fell back to the origin).
+- **Every other row: exit 1.**
+- **Prediction:** met.
+- **Flipped ON.**
+
+**Not changed:** MShipyard's `00844A10`. No reference row aims at a shipyard, and the host
+does not read a shipyard's `"Hangar %d"` list (`00849F70`).

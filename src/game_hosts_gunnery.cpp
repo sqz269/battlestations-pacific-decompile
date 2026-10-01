@@ -764,7 +764,8 @@ constexpr bool kArtilleryGroundOriginAimBound = true;
 // vehicle or an airfield as to a ship. True: a non-ship unit target gets the
 // stepped offset too, and the step is kept across target changes. False: the
 // step is zeroed for a non-ship target, as before.
-constexpr bool kArtilleryNonShipErrorOffsetBound = false;
+// ON by the pairs of 2026-09-30 (section 97.5).
+constexpr bool kArtilleryNonShipErrorOffsetBound = true;
 // Same packet. MAirfield's slot 100h 006D3250 (RET 1Ch, the extra arguments
 // unused) returns slot U(0, n - 1) truncated (00BD2F10 with ECX 1, drawn only
 // when n >= 2) of the inline list +83Ch (count +884h, at most six), which
@@ -777,7 +778,8 @@ constexpr bool kArtilleryNonShipErrorOffsetBound = false;
 // origin raised by the class Height. MShipyard's 00844A10 (a random live
 // "Hangar %d" object of +780h, 00849F70) is not bound: the host does not read a
 // shipyard's hangar list.
-constexpr bool kArtilleryAirfieldAimSlotBound = false;
+// ON by the pairs of 2026-09-30 (section 97.5).
+constexpr bool kArtilleryAirfieldAimSlotBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
