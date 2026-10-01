@@ -72,8 +72,9 @@ inline constexpr bool kAiGroupTransportMovesBound = true;
 // 00A11B80's move (00A11F23 CALL 00A02020) passes the order bridge as the command
 // ticks' leader and follower orders do: the class gate, the 80 m gate (00A0206E)
 // and a ship's 00417B10 avoid-zone point (30 m margin, y = 0). False: the point on
-// the 0.75 x CaptureRange circle is issued directly, as before.
-inline constexpr bool kAiTransportMovesOrderBridgeBound = false;
+// the 0.75 x CaptureRange circle is issued directly, as before. ON by section 107.5:
+// JM08 36000's transports hold in deep water; JM08 long and USNOS (long) identical.
+inline constexpr bool kAiTransportMovesOrderBridgeBound = true;
 
 // Packet cc9_startlanding_94h (docs/SHIP_AI_OPEN_ITEMS.md section 97). The 94h
 // that 00A11B80 routes for a ready member reaches 00821F61 -> vt+238h: on an
