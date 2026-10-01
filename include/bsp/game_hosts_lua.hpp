@@ -125,6 +125,12 @@ inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs
 // host cannot source (ammoType, state, TargetIsHome, TorpedoStock, owner, the
 // LandConvoy keys) stay unserved. False: both keys return no value, as before.
 inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling (docs/MISSION_LUA_GETPROPERTY.md 9.13)
+// Packet cc9_get_property_ammotype (docs/SQUADRON_LAND_TASK.md 5ci). True: the
+// squadron's own GetProperty 007EF1C0 (PlaneSquadronGen vtable 00D087C0 +138h)
+// answers "ammoType" (_stricmp 00BF7FBF at 007EF1E1, so "ammotype" too) with
+// 007EDAD0's integer through GameUnitsHost::squadron_ammo_type_007edad0. Only a
+// squadron serves the key. False: no value, so a script's `~= 0` test passes.
+inline constexpr bool kGetPropertySquadronAmmoTypeBound = true;  // ON 2026-09-30: controls identical, USNRM01 moved (5ci)
 
 // Packet cc9_lua_kill (docs/LUA_BINDING_MISSION.md, "Kill, 008AC5C0"). The Lua
 // native Kill(entity [, hard]) resolves argument 0 (00888AA0) and takes cause 1,
@@ -570,6 +576,9 @@ struct GameMissionLuaSummary {
     unsigned long long get_property_unitcommand_unnamed{0};
     unsigned long long get_property_reconlevel_asked{0};
     unsigned long long get_property_reconlevel_tables{0};
+    unsigned long long get_property_ammotype_asked{0};
+    unsigned long long get_property_ammotype_served{0};
+    unsigned long long get_property_ammotype_zero{0};
     // Packet cc9_lua_kill: Kill calls, units killed, calls with no units-host
     // slot, calls on an already dead unit, squadron calls.
     unsigned long long kill_calls{0};

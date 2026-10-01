@@ -4318,6 +4318,30 @@ bool get_property_class_is_base_only(int class_id) noexcept {
 int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const char* key) {
     const bool wants_unitcommand = get_property_key_is(key, "unitcommand");
     const bool wants_reconlevel = get_property_key_is(key, "reconlevel");
+    if (get_property_key_is(key, "ammoType")) {
+        // 007EF1C0: 00779BB0 first (neither of its keys), then
+        // 007EF1CF-007EF1EB _stricmp(key, "ammoType") == 0 -> 007EDAD0 ->
+        // 00B66480 (push integer). Only a PlaneSquadronGen reaches 007EF1C0.
+        ++summary_.get_property_ammotype_asked;
+        if constexpr (kGetPropertySquadronAmmoTypeBound) {
+            GameUnitsHost* units = units_hooks_;
+            const int id = air_ops_entity_id(state);
+            if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
+                return 0;
+            }
+            const std::size_t index = static_cast<std::size_t>(id - 1);
+            const bsp::PlaneSquadronHostRecord* sq =
+                bsp::plane_squadron_registry().find_by_member_unit(index);
+            if (sq == nullptr || sq->squadron_unit != index) return 0;
+            const int ammo = units->squadron_ammo_type_007edad0(index);
+            ++summary_.get_property_ammotype_served;
+            if (ammo == 0) ++summary_.get_property_ammotype_zero;
+            ::lua_pushinteger(state, static_cast<lua_Integer>(ammo));
+            return 1;
+        } else {
+            return -1;
+        }
+    }
     if (!wants_unitcommand && !wants_reconlevel) return -1;
     if (wants_unitcommand) ++summary_.get_property_unitcommand_asked;
     if (wants_reconlevel) ++summary_.get_property_reconlevel_asked;
@@ -7003,6 +7027,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.get_property_unitcommand_asked, summary_.get_property_unitcommand_named,
         summary_.get_property_unitcommand_nocommand, summary_.get_property_unitcommand_unnamed,
         summary_.get_property_reconlevel_asked, summary_.get_property_reconlevel_tables);
+    log_.notef("summary mission getproperty ammotype bound=%d asked=%llu served=%llu zero=%llu "
+        "(007EF1C0 -> 007EDAD0, packet cc9_get_property_ammotype)",
+        kGetPropertySquadronAmmoTypeBound ? 1 : 0, summary_.get_property_ammotype_asked,
+        summary_.get_property_ammotype_served, summary_.get_property_ammotype_zero);
     log_.notef("summary mission airops gates: ready_calls=%llu ready_true=%llu "
         "launch_calls=%llu started=%llu queued=%llu (00895d20, 0089e3c0)",
         summary_.air_ops_ready_calls, summary_.air_ops_ready_true,

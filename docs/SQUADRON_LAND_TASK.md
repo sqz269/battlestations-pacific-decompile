@@ -8706,3 +8706,72 @@ form; a 500/300 USN01 smoke on the ON binary finished cleanly.
 Verdict: **ON.** The mechanism matches, the controls are gameplay-identical, the predicted
 promotion happened, and the moved rows are the predicted ones. The pre-promotion loss of every
 scripted strafe on ESMP08 is the image's rule as read (`009CC850`), not a miss.
+
+## 5ci. `GetProperty(squadron, "ammoType")` bound OFF (packet `cc9_get_property_ammotype`, cc9-lua31, 2026-09-30)
+
+Queue item 4 of the brief. This corrects 5ce on one point. **`007F1140` is not the property
+reader.** It is the squadron's scalar deleting destructor (`BSP_PlaneSquadron_Destruct`, then
+`_free`), and `007EFAE0` is its tick-element thunk (docs/TICK_ELEMENT_OVERRIDES.md, slot `+0h`).
+The `ammoType` string at `00D08770` merely sits in front of the tick-element vtable `00D0877C`.
+
+**The reader is `007EF1C0` `BSP_PlaneSquadron_GetProperty`**, the PlaneSquadronGen vtable
+`00D087C0` `+138h` (ledger; docs/MISSION_LUA_GETPROPERTY.md 9.2). Its sequence, from the disk
+bytes:
+- `007EF1CF` `CALL 00779BB0`: the base reader, which handles `unitcommand` and `reconlevel`.
+- `007EF1D4`-`007EF1D9`: the key at `[arg+4]`; when it is null, the reader jumps to the `state`
+  test.
+- `007EF1DB` `PUSH 00D08770` (`"ammoType"`), then `007EF1E1` `CALL 00BF7FBF` (`_stricmp`).
+- `007EF1F0`: on a match, `007EF1F4` `CALL 007EDAD0` on the squadron, and the integer is pushed.
+
+**The comparison is case-insensitive**, so `08_engano.lua:582`'s `"ammotype"` matches. The
+integer comes from `007EDAD0`, which the units host already reconstructs as
+`squadron_ammo_type_007edad0` (docs/SQUADRON_ORDNANCE_STATE.md, `kSquadronOrdnanceReaderBound`
+ON). Its values are 2 torpedo, 3 depth charge, 4 rocket, 5 paratrooper, 6 dummy kamikaze,
+1 bomb, and 0 when nothing is carried.
+
+**Binding.** `kGetPropertySquadronAmmoTypeBound` (`include/bsp/game_hosts_lua.hpp`), committed
+OFF:
+- `run_get_property_class_readers` serves the key only to an entity that is a registry squadron's
+  own unit, with `squadron_ammo_type_007edad0`.
+- OFF, the host answers no value, and the scripts' `~= 0` test passes on `nil`.
+- A summary line `summary mission getproperty ammotype bound asked served zero` is printed on
+  both sides.
+
+### Predictions, written before any ON run
+
+- **ESMP08 9200/9000:**
+  - The wave's Avengers answer 2 and the Helldivers 1. A Corsair with no ordnance answers 0.
+  - For a 0, `luaControlAirAttacks` stops calling `PilotSetTarget` (`08_engano.lua:582`).
+  - The strafe installs from the 15 s loop (5cb counted 497) fall: by the Corsairs' share if
+    they carry nothing, to 0 for the Corsairs if `zero` equals their count.
+  - The death table moves.
+- **USNRM01 (`usn_1_pearl.lua:1983`, the Japanese attackers' loop):** moved if that loop runs;
+  `asked` is non-zero.
+- **USN02, USN12 (controls):** gameplay-identical. Neither script asks `ammoType`; `asked` is 0.
+- **JM06:** docs/MISSION_LUA_GETPROPERTY.md measured 17 `ammoType` asks; the row may move.
+- **Uncertainty:** whether ESMP08's Corsairs carry ordnance. Their `Equipment` in
+  `08_engano.lua` decides it, and `zero` will show it.
+
+### The pairs and the verdict (cc9-lua31, 2026-09-30): ON
+
+The pairs are same-tree builds of `5d0513291`: OFF `4FB4CBF41BA4`, ON `9942BFBAB41B`. They used
+reference V's launch form, and a 500/300 USN01 smoke on the ON binary finished cleanly. The
+runs waited for the console session to come back after it had disconnected; while it was
+disconnected, one USNRM01 36000 run died at FMOD startup (environment, not code).
+
+| row | `pair_diff` | `ammoType` asked / served / zero | note |
+| --- | --- | --- | --- |
+| USN02 (control) | exit 1, gameplay identical | 0 / 0 / 0 | |
+| USN12 (control) | exit 1, gameplay identical | 0 / 0 / 0 | |
+| JM06 3200/3000 | exit 1, gameplay identical | 0 / 0 / 0 | its asks lie past 3000 frames |
+| ESMP08 9200/9000 | exit 1, gameplay identical | 324 / 324 / 0 | every wave squadron carries ordnance |
+| USNRM01 9200/9000 | moved | 290 / 290 / 43 | deaths 158 -> 156, hits 1994 -> 2207, dive releases 34 -> 30 |
+
+- **The mechanism holds.** Every ask is served, and only from a squadron's own unit.
+- **ESMP08's Corsairs carry ordnance.** `zero=0`, so the weakest call of the predictions resolved
+  the other way: the script keeps re-targeting the whole wave, and the row is unchanged.
+- **USNRM01 moves as predicted.** Forty-three answers are 0. For those squadrons
+  `usn_1_pearl.lua:1983` (`GetProperty(unit,"ammoType") ~= 0`) no longer re-targets.
+
+Verdict: **ON.** The controls are identical, and the one moved row is the predicted one with
+its mechanism visible.
