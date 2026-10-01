@@ -563,8 +563,9 @@ inline constexpr bool kLandingShipUnloadBound = true;
 // after the capture tables were built (JM08's launched Higgins crafts) gets its
 // class's CapturePower (+804h) and LandedCapturePower (+810h), as the image reads
 // them through the class pointer. False: such a unit adds 10 in arm 1 and 0 in
-// arm 2, as before.
-inline constexpr bool kCaptureGeneratedUnitClassFieldsBound = false;
+// arm 2, as before. ON by section 109.6: JM08 36000 gameplay identical, and a
+// 76000-frame JM08 run flips the HQ to party 0 at t=3496.95.
+inline constexpr bool kCaptureGeneratedUnitClassFieldsBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {

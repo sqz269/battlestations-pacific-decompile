@@ -9053,3 +9053,31 @@ Same-tree pair `s26_c0` (OFF) / `s26_c1` (ON).
 - **JM08 long (9200/9000), exit 1 or 0:** the HQ is not neutral within 450 s, so nothing ticks.
 - **An extra ON-only run of JM08 to 3800 s (76,000 mission frames):** the HQ flips to party 0
   near t = 3670 (between 3400 and 4000), unless occupancy changes after 1800 s.
+
+### 109.6 The pairs (`s26_c0` vs `s26_c1`, both from `4c9e7d51e`), and the flip
+
+| row | pair_diff | deaths | death rows / unit table | `progress_messages` | flips |
+| --- | --- | --- | --- | --- | --- |
+| JM08 long (9200/9000) | 1 | 25 / 25 | identical / identical | 0 / 0 | 0 / 0 |
+| JM08 36200/36000 | 1 | 118 / 118 | identical / identical (276) | 0 / 887 | 0 / 0 |
+
+**JM08 36000, ON.**
+- The HQ is neutralized at 913.95, as in OFF, and every one of the 887 ticks after it moves the
+  progress (`s0` = 100 x the landed crafts, `s1` = 0, `side` 0).
+- By t=1312 all 8 pads hold a landed craft (`s0=800`, progress 253,200 at 1312.95).
+- The log's capture-tick lines stop at their 400-line cap. The final progress is about
+  6428 x 100 = 642,800, below 2,000,000, so there is no flip, as predicted.
+
+**The ON-only run to 3800 s** (`s26_c1_jm08xx`, JM08 76200/76000):
+- `Headquarter 01 flipped to party=0 side=0 slot=0 repair=1 at t=3496.95`;
+- `countdown_fires=2584`, `flips=1`.
+
+That is 2583 ticks after neutrality, an average of about 774 per tick. The prediction was 3400
+to 4000 (point estimate 3670, which assumed 7.2 crafts; occupancy rose to 8 pads).
+
+**Verdict: ON.** The mechanism matches: the crafts add their class's `LandedCapturePower` and the
+flip time follows CaptureValue / rate. Every pair is gameplay identical.
+
+**Answer to the lead's question:** with the observed landings the image needs about 2580 s of
+neutral time, so JM08 flips its HQ at about t = 3500, past every reference window (1800 s at
+most). No reachable reference row flips a base.
