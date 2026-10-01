@@ -8572,3 +8572,137 @@ predicted ones. The ESMP08 promotion was predicted and did not happen; that is r
 miss downstream of the binding (the leader never closes inside 3000), not a failure of it.
 IJN01, BSM01, the LOMP rows, USN04, USN13, JM05 and JM06 were not run; they move where a
 squadron leads a group.
+
+## 5ch. The AI tick's moveto did not re-task the plane (packet `cc9_ai_tick_plane_retask`, cc9-lua31, 2026-09-30)
+
+The lead's question after 5cg: why does ESMP08's strike leader hold 3.2-4 km off Zuikaku? The
+candidates were the 15 s script re-target against the 2-4 s tick `moveto`, or a moveto loiter or
+arrival radius, plus the 80 m gate and the CollectDist value.
+
+### Answers
+
+- **`CloseAttack_CollectDist` is 3000 on ESMP08, and that is the image's value.** `00D1AF84`
+  (5000) is only the default. `00A335D0` loads the record `009FFC80` picks, and game mode 8 is
+  above 7, so it takes the `IslandCapture` arm with difficulty 0. That is
+  `HighLvlAIGlobals["IslandCaptureParams_Rookie"]`, which authors 3000 at
+  `scripts/datatables/highlvlaiglobals.lua:119` (this installation, mtime 2024-07-13). Every
+  record authors 3000 except `EscortParams` (6000, line 832). The run's line reads
+  `summary mission ai tuning mode=0 (IslandCaptureParams_Rookie)`.
+- **The 80 m gate is not it.** The leader and follower orders pass `00A02020` whole (5cg reply),
+  and the leader is kilometres from its point.
+- **A loiter radius is not it.** The leader never flies a moveto task: see the next point.
+- **The leader flies its script target, not the tick's point.** In `local\l31_tr_on_esmp08x.log`
+  the leader's `command target 0071EBF0` token walks through a new random `Mission.IJNFleet` ship
+  every 15 s (Tama, Zuiho, Maki, Ise, Wakatsuki, ...). Its strafe task is re-installed at each
+  `PilotSetTarget`, and there is no moveto task install for any plane apart from the 36 script
+  `PilotMoveTo` installs. The tick's `moveto` reaches the director (`unitcommand` reads `moveto`),
+  but the bot keeps its strafe task. So the leader circles whichever fleet ship it was last given,
+  3.2-4 km from Zuikaku.
+
+### The image
+
+- **`0099A4C0` retires the strafe head on a `moveto`.** The bot tick calls `0099A4C0` at
+  `0099AE7E` when the command changes. It keeps a single head task only while the task's
+  `vtable[40h]` answers 1; otherwise it pops the task and calls `0099A170` for the new command
+  (docs/PILOT_MOVETO_TASK.md, docs/PILOT_BOT_TICK_GATES.md).
+- **The strafe task's `vtable[40h]` is `009CC850`.** The vtable is `00D210E0`, stored at
+  `009CC281` in the factory `009CC230`. `009CC850` is `009CC850`-`009CC8BC`, `__thiscall(task)`,
+  plain `RET`, read from the disk bytes. It takes `[task+404h]`'s `vtable[114h]` director and
+  answers 1 only when:
+  - `0071BE40` is `00E08F40` (`settarget`) or `00E08F78`; and
+  - the command's target (`0071EB60` -> `00521EA0`) equals `task+44Ch`, or `task+468h` when
+    `+44Ch` is null, or both are null.
+
+  A `moveto` (`00E08F68`) answers 0.
+- **`0099A170` then builds the moveto task.** Its moveto arm (`0099A23A`) has no precondition
+  and builds the kind-7 task `009C3BE0`.
+- **A moveto head is kept on a repeat.** `009C31B0` keeps the kind-7 task when the new command
+  is a moveto whose point lies within 100 m planar (`[00CE3D64]` = 10000, squared) of the task's
+  own point (docs/PILOT_MOVETO_TASK.md).
+
+So in the image, every tick `moveto` the group issues ends the scripted strafe, and the leader
+flies to the target group's leader point. The script's re-target 15 s later starts a strafe
+again, which the next tick (2-4 s) ends. That matches 5ce's `unitcommand` reading `moveto`. It
+also means the leader closes on Zuikaku's point.
+
+### The binding, committed OFF
+
+`kAiTickMovetoRetasksPlaneBound` in `src/game_hosts_ai.cpp`:
+- In `tick_issue_moveto`'s squadron fan-out, once the member plane's director holds the
+  `moveto`, the binding runs `bot_install_command_task_0099a170` with a position-only host
+  (`AiTickMovetoBotHost`).
+- It stores the kind-7 task's inputs as PilotMoveTo does: the class `00E08F68`, range 0, no
+  target object, and the point.
+- It keeps the existing task instead when the plane already held a tick `moveto` whose point
+  lies within 100 m (`009C31B0`).
+- **SUBSTITUTION, labelled:** the install runs at the delivery, one bot tick early, as for
+  every script order (SENTITY_INIT_ATTACH_ORDER 22.7).
+- A census line `summary mission ai tick plane retask ...` is printed when the switch is ON.
+
+### Predictions, written before any ON run
+
+- **ESMP08 9200/9000 and 14200/14000:**
+  - the US strike leader stops circling its script target and closes on Zuikaku's leader point;
+  - the group's distance falls below 3000 and it **promotes to `CLOSEATTACK`** (5cg's trace
+    reached 3600 by t=451 while circling, so the promotion should come before t=470);
+  - `retask replaced_other` is non-zero (the strafe heads that a tick `moveto` ends);
+  - after the promotion, `ai_command_tick` `moveto` rows for that group stop and `00A13B60`
+    takes over;
+  - strafe task ticks fall;
+  - the death table moves.
+- **USNOS 3200/3000:** moved (its squadron-led groups' members are re-tasked).
+- **USN02 and USN12 (controls):** gameplay-identical, `pair_diff` exit 0 or 1. Neither has a
+  squadron in a tick-ordered group.
+- **Weakest call:** the promotion. The leader may instead dive onto Zuikaku's own escorts before
+  3000; the script's 15 s strafe re-target still installs between ticks.
+
+### The pairs and the verdict (cc9-lua31, 2026-09-30): ON
+
+**First pair (`55854580e`, OFF `A79ECDA42F68`, ON `DB142BAB5873`): a mechanism failure.**
+- The install ran straight after `issue_script_command`.
+- With the loopback queue bound, the `moveto` is delivered only at the session pump's drain, so
+  the director still held the old command. A temporary diagnostic (not committed) showed
+  `before=now=00e08f18` (torpedo), `00e08f40` and `00e08f20`.
+- ESMP08 9000 counted `not_current=1026` and `replaced_other=0`: no attack head was ever
+  retired. Meanwhile the installs over existing moveto heads cut every strafe short (0 hits).
+- That run is discarded.
+
+**The correction (`a59dae607`).** The install now follows the delivery through
+`commands_after_last_issue_delivery`, as the script orders' installs do.
+
+**Second pair (`a59dae607`, OFF `CB9334362F07`, ON `ECA965F3003A`).** Reference V's launch
+form; a 500/300 USN01 smoke on the ON binary finished cleanly.
+
+| row | `pair_diff` | deaths | hit records | damage | retask installed / kept / replaced_other |
+| --- | --- | --- | --- | --- | --- |
+| USN02 (control) | exit 1, gameplay identical | 1 / 1 | 1126 / 1126 | same | 0 / 0 / 0 |
+| USN12 (control) | exit 1, gameplay identical | 8 / 8 | 198 / 198 | same | 0 / 0 / 0 |
+| USNOS 3200/3000 | moved | 107 / 95 | 1487 / 1189 | 54561.0 / 51217.3 | 440 / 416 / 24 |
+| ESMP08 9200/9000 | moved | 6 / 0 | 198 / 0 | 2017.7 / 0.0 | 4425 / 291 / 1023 |
+| ESMP08 14200/14000 | moved | 48 / 44 | 1040 / 1619 | 12303.1 / 13714.7 | 7819 / 719 / 1789 |
+
+- **The mechanism holds.**
+  - `not_current` is 0 everywhere.
+  - On ESMP08 1023 (9000) and 1789 (14000) attack heads are retired by a tick `moveto`.
+- **The promotion happens (prediction met).**
+  - ESMP08 14000 counts `promotions` 1 -> 2: the US strike group now reaches `CLOSEATTACK`.
+  - A traced run of the first, pre-delivery build already showed it at t=445.41, d=2609.7; the
+    corrected pair is not traced.
+  - `00A13B60` then serves the squadrons: `served` 214 -> 893, `settarget` 211 -> 647, and
+    `fallback moveto` 3 -> 246.
+  - The tick's own orders fall: `tick_orders` 4420 -> 3969.
+- **The strike lands later and harder.**
+  - Before the promotion every scripted strafe is ended by the next tick `moveto`, so ESMP08
+    9000, which ends at t=450 just after the promotion, has no hit ON (198 OFF).
+  - At 14000 the first hit moves 420.32 -> 486.20 s, and hits rise 1040 -> 1619.
+  - Two torpedoes are dropped (`torpedo-task releases` 0 of 21 -> 2 of 21). That is the first
+    torpedo release of this row.
+- **USNOS** loses 12 plane deaths: its re-tasked squadrons fly to their group's point instead of
+  pressing attacks through the AA (shots 6166 -> 802).
+- **Goaway: still none.** The strafe tables show `goaway` 0 ticks on both sides of ESMP08 14000
+  (aims 9 -> 8). So ESMP08 long is **still not the goaway row**. The strafers now take the close
+  pass's `settarget`, and whether that pass reaches a strafe's goaway is the next question.
+
+Verdict: **ON.** The mechanism matches, the controls are gameplay-identical, the predicted
+promotion happened, and the moved rows are the predicted ones. The pre-promotion loss of every
+scripted strafe on ESMP08 is the image's rule as read (`009CC850`), not a miss.
