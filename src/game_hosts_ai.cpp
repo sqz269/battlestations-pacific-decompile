@@ -68,6 +68,13 @@ inline constexpr bool kPlannerJoinLoopbackBound = true;
 // and USNOS long exit 3 with no death row flipped (convoys steer for CB2).
 inline constexpr bool kAiGroupTransportMovesBound = true;
 
+// Packet cc9_transport_moves_order_bridge (docs/SHIP_AI_OPEN_ITEMS.md 107). True:
+// 00A11B80's move (00A11F23 CALL 00A02020) passes the order bridge as the command
+// ticks' leader and follower orders do: the class gate, the 80 m gate (00A0206E)
+// and a ship's 00417B10 avoid-zone point (30 m margin, y = 0). False: the point on
+// the 0.75 x CaptureRange circle is issued directly, as before.
+inline constexpr bool kAiTransportMovesOrderBridgeBound = false;
+
 // Packet cc9_startlanding_94h (docs/SHIP_AI_OPEN_ITEMS.md section 97). The 94h
 // that 00A11B80 routes for a ready member reaches 00821F61 -> vt+238h: on an
 // MLandingShip (vtable 00CFFA30) that is 0074A4C0, the landing request that
@@ -245,6 +252,17 @@ constexpr bool kPlannerRangeInterpBound = true;
 // group's leader, so the 00A12A90 collect-distance promotion can be timed.
 // Off (0) in the landed build.
 constexpr int kAiMovetoDiagEvery = 0;
+// Packet cc9_ai_tick_strafe: the leader point of a group whose first member is
+// a plane squadron. 00A10C20 (00A10C44-00A10C54) refreshes and returns the
+// member's own +FCh, which for a squadron this host answers from its flight
+// leader (proxy(), as tick_member_position already does and as GetPosition's
+// 008A7C3C read of the same field does). OFF, the squadron's candidate index
+// falls outside the unit rows and the point reads (0,0,0): on ESMP08 the US
+// strike group measured 15712 to Zuikaku from the origin and never closed, and
+// its followers were sent to the origin. docs/SQUADRON_LAND_TASK.md 5cg.
+// ON (2026-09-30): controls identical, USNOS and ESMP08 moved; the ESMP08
+// promotion miss is recorded in 5cg.
+constexpr bool kAiSquadronLeaderPointBound = true;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
@@ -885,6 +903,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     std::map<int, int> class_sample_counts;
     unsigned long long choice_samples_logged{0};
 
+    static bool squad_tick_trace_enabled() {
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_AI_SQUAD_TICK_TRACE") != 0) return false;
+            const bool on = text != nullptr && text[0] == '1';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
     static bool ai_weight_model_enabled() {
         // _dupenv_s rather than getenv, which is a /W4 /WX error under MSVC;
         // the same form native_frame_job_lifetime.cpp already uses.
@@ -1499,6 +1529,36 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                            combatant_facts(g->members.front())) ? 1 : 0),
                 g == nullptr ? std::size_t{0} : g->members.size());
         }
+        // Packet cc9_ai_tick_strafe: every MOVETOATTACK / CLOSEATTACK tick of a
+        // group whose first member is a plane squadron, with 00A12A90's two
+        // inputs. Env-gated (BSP_AI_SQUAD_TICK_TRACE=1), observation only.
+        if (squad_tick_trace_enabled() &&
+            (cmd->type == bsp::AiCommandType::MoveToAttack ||
+             cmd->type == bsp::AiCommandType::CloseAttack)) {
+            Group* g = group_at(cmd->owner_group);
+            if (g != nullptr && !g->members.empty() && is_squadron(g->members.front())) {
+                Group* tg = group_at(cmd->target_group);
+                float own[3] = {0.0f, 0.0f, 0.0f};
+                float tgt[3] = {0.0f, 0.0f, 0.0f};
+                tick_leader_point(g, own);
+                if (cmd->target_group != nullptr) tick_leader_point(cmd->target_group, tgt);
+                log.notef("  ai squadtick t=%.2f cmd=%s leader=%s members=%zu target=%s "
+                    "dist=%.1f collect=%.1f groupable=%d own=(%.0f %.0f %.0f) "
+                    "tgt=(%.0f %.0f %.0f)",
+                    static_cast<double>(clock_seconds),
+                    cmd->type == bsp::AiCommandType::MoveToAttack ? "MOVETOATTACK" : "CLOSEATTACK",
+                    unit_name(g->members.front()).c_str(), g->members.size(),
+                    (tg == nullptr || tg->members.empty())
+                        ? "" : unit_name(tg->members.front()).c_str(),
+                    static_cast<double>(tick_horizontal_distance(own, tgt)),
+                    static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+                    bsp::ai_entity_is_groupable_combatant_009fe080(
+                        combatant_facts(g->members.front())) ? 1 : 0,
+                    static_cast<double>(own[0]), static_cast<double>(own[1]),
+                    static_cast<double>(own[2]), static_cast<double>(tgt[0]),
+                    static_cast<double>(tgt[1]), static_cast<double>(tgt[2]));
+            }
+        }
         if constexpr (kAiMovetoDiagEvery > 0) {
             if (cmd->type == bsp::AiCommandType::MoveToAttack) {
                 ++diag_moveto_ticks;
@@ -1991,6 +2051,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     bool close_issue_moveto(void* member, const float point[3]) override {
         return tick_issue_moveto(member, point);
+    }
+
+    // 00A02020 whole for one member (ai_command_tick.cpp's order_leader sequence):
+    // the class gate, the 80 m gate, a ship's 00417B10 point, then the tail.
+    bool issue_moveto_bridge_00a02020(void* member, const float point[3]) {
+        float position[3] = {0.0f, 0.0f, 0.0f};
+        if (!tick_member_position(member, position)) return false;
+        float avoid[2] = {point[0], point[2]};
+        const bool squadron = tick_member_is_plane_squadron(member);
+        const bool excluded = tick_squadron_excluded_007eda90(member);
+        const bool ship = tick_member_is_ship_base(member);
+        if (bsp::ai_order_bridge_takes_zone_point_00a02020(squadron, excluded, ship, position,
+                                                            point)) {
+            tick_avoid_zone_point(member, point, avoid);
+        }
+        const bsp::AiOrderBridgeResult bridge = bsp::ai_order_bridge_00a02020(
+            squadron, excluded, ship, position, point, avoid);
+        if (!bridge.issued) return false;
+        return tick_issue_moveto(member, bridge.position);
     }
     float close_tuning_field(std::uint32_t offset) override { return tuning.at(offset); }
     int close_own_team(void* group) override {
@@ -2754,7 +2833,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     static_cast<double>(point[2]), kAiGroupTransportMovesBound ? 1 : 0);
             }
             if constexpr (kAiGroupTransportMovesBound) {
-                if (tick_issue_moveto(handle(m), point)) ++c.movetos;     // 00A11F23
+                // 00A11F23 CALL 00A02020 (SHIP_AI 107).
+                const bool issued = kAiTransportMovesOrderBridgeBound
+                    ? issue_moveto_bridge_00a02020(handle(m), point)
+                    : tick_issue_moveto(handle(m), point);
+                if (issued) ++c.movetos;
             }
         }
         done("AiCommand::transport_moves_00a11b80", 0x00a11b80u);
@@ -2796,7 +2879,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         Group* g = group_at(group);
         if (g == nullptr || g->members.empty()) return nullptr;
         float y = 0.0f;
-        units.unit_position_00fc(g->members.front(), g->leader_position[0], y,
+        const std::size_t leader = kAiSquadronLeaderPointBound
+            ? proxy(g->members.front()) : g->members.front();
+        units.unit_position_00fc(leader, g->leader_position[0], y,
             g->leader_position[2]);
         g->leader_position[1] = y;
         return g->leader_position;

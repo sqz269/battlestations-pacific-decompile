@@ -8454,3 +8454,121 @@ Tools in `local\` of this tree:
 - `l30_apply_units.py` and `l30_strafe_methods.cpp.txt`: the 5ca edit;
 - `l30_uc_esmp08.log`: the `unitcommand` trace run;
 - `l30_{off,on}_<row>.log`: the 5cb pairs.
+
+## 5cg. A squadron-led AI group's leader point was the origin (packet `cc9_ai_tick_strafe`, cc9-lua31, 2026-09-30)
+
+This answers item 1 of 5cf. The `src/game_hosts_ai.cpp` and `src/ai_command_tick.cpp` loan from
+the ships lane is used for it.
+
+### The measurement
+
+`BSP_AI_SQUAD_TICK_TRACE=1` (new, env-gated, observation only) logs every `MOVETOATTACK` and
+`CLOSEATTACK` tick of a group whose first member is a plane squadron, with `00A12A90`'s two inputs
+and both leader points. ESMP08 4200/4000 at `cbde1ec24` plus the trace
+(`local\l31_sq_esmp08.log`, strafe group ON as on main) logs 18 ticks, from t=148.55 to t=198.41,
+all for the one group:
+
+    ai squadtick t=148.55 cmd=MOVETOATTACK leader=TBM Avenger #1.1 members=12 target=Zuikaku
+      dist=15712.4 collect=3000.0 groupable=1 own=(0 0 0) tgt=(11285 -3 10932)
+    ...
+    ai squadtick t=198.41 cmd=MOVETOATTACK leader=TBM Avenger #1.1 members=12 target=Zuikaku
+      dist=15201.6 collect=3000.0 groupable=1 own=(0 0 0) tgt=(10924 -3 10571)
+
+- **The own leader point is `(0 0 0)` on every tick.** The distance is Zuikaku's distance from the
+  map origin; it shrinks only because Zuikaku sails towards the origin. It can never fall below
+  `CloseAttack_CollectDist` (3000 loaded here), so the group can never promote, whatever the
+  squadrons do.
+- **The cause is one host line.** `group_leader_position` (the host's `00A10C20` read, reached from
+  `tick_leader_point`) passes the group's first member index straight to
+  `GameUnitsHost::unit_position_00fc`. A squadron's candidate index is past the unit rows
+  (`is_squadron`: `index >= units.count()`), so the read answers zeros. `tick_member_position`
+  already applies `proxy()`; this read did not.
+- **The same point feeds the follower pass.** `00A10DC0` sends every non-leader member to the
+  leader point through `00A02020`. So on ESMP08 the 11 follower squadrons were ordered towards the
+  map origin on every tick, which is part of the 1062 `ai_command_tick` `moveto` rows of 5ce.
+
+### The image
+
+`00A10C20` (`00A10C20`-`00A10C5B`, `RET`, `__thiscall(group)`, disk bytes): when `+5644h` is 0 it
+returns `00F87574`; otherwise it takes the first node of the `+5640h` list, its entity at node
+`+8h`, runs `00414DB0` when the entity's `+C8h` byte is clear, and returns `&entity+FCh`. For a
+squadron that is the squadron's own world position. `GetPosition` (`008A7B00`, the read at
+`008A7C3C`) returns the same field, and the scripts use it on squadrons as a moving point (the
+ESMP08 intro movie's `cameraandtarget` follows the squadron), so the field tracks the flight.
+Which routine keeps a squadron's `+74h`/`+FCh` current is **not read**: the squadron's tick
+element has no pose step (`docs/TICK_ELEMENT_OVERRIDES.md`, slot `+4h` is the base stub). This
+host answers every squadron pose from its flight leader (`proxy()`, labelled in
+`docs/CONSTRUCT_WORLD.md` "the squadron's position +FCh | the leader's pose"); the binding uses
+that same substitution. Uncertainty: the image's squadron point could be a formation centre
+rather than the flight leader; the difference is at most the formation spread.
+
+Questions (a) and (b) of 5cf:
+- (a) Grouping a script-spawned wave is not the divergence. The group exists in the host because
+  `009FE080` admits squadrons (`groupable=1` above) and the prox merges join them; nothing in the
+  measurement needed the image to group them differently.
+- (b) The promotion and `00A13B60` are read and bound (docs/AI_COMMAND_TICK.md,
+  docs/AI_CLOSE_ATTACK_TICK.md). The group never reached them because its distance was measured
+  from the origin.
+
+### The binding, committed OFF
+
+`kAiSquadronLeaderPointBound` in `src/game_hosts_ai.cpp`. ON, `group_leader_position` reads
+`proxy(front)` instead of `front`. It changes nothing for a group led by a unit, since `proxy()`
+of a unit index is the index.
+
+### Predictions, written before any ON run
+
+Reference V's end tables (`g20_rv_*.log`) list squadron-led groups on USNOS (a `CAUTIOUSATTACK`
+group led by `plane #1.1`), USN13 (`MOVETOATTACK`, `bruh #1.4`), USN04 (`CLOSEATTACK`,
+`A6M Zero #7.2`), JM06 (`MOVETOATTACK`, `PBY Catalina 01`), JM05 (`SELLING`, `F4F Wildcat 01`) and
+none on USN02 or USN12.
+- **ESMP08 long (9200/9000):** the US strike group's distance starts at its real separation and
+  falls as it flies; it promotes to `CLOSEATTACK` inside 3000. Its followers go to the leader, not
+  the origin. After the promotion `ai_command_tick` stops issuing `moveto` to those squadrons, and
+  `00A13B60` takes over (`settarget` to a served squadron). Whether `unitcommand` then answers
+  `strafe` long enough for `08_engano.lua:584` to leave the planes alone is **not predicted**.
+  The death table moves.
+- **USNOS 3200/3000:** moved (its squadron-led `CAUTIOUSATTACK` group's followers stop heading
+  for the origin).
+- **USN02 and USN12 (controls):** gameplay-identical, `pair_diff` exit 0 or 1.
+- **Weakest call:** whether the `Static ...` plane leaders on IJN01, BSM01 and the LOMP rows are
+  squadrons; if they are, their `DEFENDPOSITION` passes re-centre from the origin and those rows
+  move too. Not run here.
+
+### The pairs and the verdict (cc9-lua31, 2026-09-30): ON
+
+Same-tree exports of `4d6093605`: `local\l31_off` (SHA-256 prefix `4A0C783AB780`) and
+`local\l31_on` (`DA3EEEC12D78`, the switch flipped). Reference V's launch form,
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player
+(`local\l31_runs.ps1`). A 500/300 USN01 smoke on the ON binary finished cleanly first.
+
+| row | `pair_diff` | deaths | hit records | damage | note |
+| --- | --- | --- | --- | --- | --- |
+| USN02 3200/3000 (control) | identical | 1 / 1 | 1126 / 1126 | 28473.8 / 28473.8 | one summary line, the known refill noise |
+| USN12 3200/3000 (control) | identical | 8 / 8 | 198 / 198 | 4048.7 / 4048.7 | only the known JM08/USN13-class sector-scan noise |
+| USNOS 3200/3000 | moved | 90 / 107 | 1400 / 1487 | 49146.1 / 54561.0 | 18 deaths only ON, all town buildings, containers, a hangar and a watchtower; 1 only OFF |
+| ESMP08 9200/9000 | moved | 7 / 6 | 210 / 198 | 2421.5 / 2017.7 | one Corsair death only OFF; 25 unit rows changed |
+
+Traced runs (`BSP_AI_SQUAD_TICK_TRACE=1`, `BSP_UNITCOMMAND_TRACE=1`; `local\l31_tr_{off,on}_esmp08l.log`,
+and `local\l31_tr_on_esmp08x.log` at 14200/14000):
+- **The mechanism holds.** ON, the US strike group's leader point is the flight leader's
+  position (t=164.36 `own=(13952 1245 -12694)`), and the distance to Zuikaku falls from 24677 at
+  t=148.55 to 3633 at t=448.41, about 70 per second, the TBM's closing speed. OFF it stays
+  `own=(0 0 0)` throughout.
+- **The group still does not promote (miss).** In the 14000-frame run the leader reaches 3598.7
+  at t=455.01, then circles 3164.6 to 4035.8 from Zuikaku's point until the group empties
+  (members 12 -> 2 by t=534.69). The loaded `CloseAttack_CollectDist` is 3000, so
+  `MOVETOATTACK` holds and the tick keeps ordering `moveto`: 2472 -> 2444 `tick_orders` over the
+  9000-frame pair, 0 promotions both sides. Why the leader holds 3.2-4 km off the carrier (the
+  15 s script re-target against the 2-4 s tick `moveto`, or a moveto loiter radius) is not read.
+- **`unitcommand` answers.** 9000 frames: OFF 936 `moveto`, 36 `nocommand`; ON 930 `moveto`,
+  36 `nocommand`, 4 `strafe`. 14000 frames ON: 1866 `moveto`, 36 `divebomb`, 20 `strafe`,
+  7 `torpedo`, 36 `nocommand`. The attack classes now appear, but `moveto` still dominates, so
+  `08_engano.lua:584` still re-targets and ESMP08 long is **not yet the goaway row**.
+
+Verdict: **ON.** The mechanism matches (a squadron-led group's point is the squadron's
+position, the followers go to the leader), the controls are identical, and the moved rows are the
+predicted ones. The ESMP08 promotion was predicted and did not happen; that is recorded as a
+miss downstream of the binding (the leader never closes inside 3000), not a failure of it.
+IJN01, BSM01, the LOMP rows, USN04, USN13, JM05 and JM06 were not run; they move where a
+squadron leads a group.

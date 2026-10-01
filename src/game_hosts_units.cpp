@@ -5544,6 +5544,39 @@ struct GameUnitsHost::Impl {
             static_cast<double>(entry.box.min.z));
         return entry;
     }
+    // Packet cc9_hull_fort_contact (docs/GUNNERY_OPEN_ITEMS.md 96): a fort's shapes are every
+    // ConvexObject of its class Mesh model, whatever its node (007482B0 walks instance+4Ch
+    // with no filter), cached per type_id; its static body takes the world matrix of the
+    // first step the fort is placed (007482B0 runs once, at creation).
+    std::map<int, ClassHullBox> class_fort_boxes;
+    const ClassHullBox& class_fort_box(const GameUnitSlot& s) {
+        const int type_id = s.row.type_id;
+        auto found = class_fort_boxes.find(type_id);
+        if (found != class_fort_boxes.end()) return found->second;
+        ClassHullBox& entry = class_fort_boxes[type_id];
+        const std::string mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+        std::vector<std::uint8_t> bytes;
+        std::string error;
+        if (mesh.empty()) {
+            entry.reason = "no Mesh string";
+        } else if (!lua.read_resource_file(mesh, bytes)) {
+            entry.reason = "model did not open";
+        } else if (!bsp::read_mmod_hull_convex_box(bytes, entry.box, error)) {
+            entry.reason = "model read failed: " + error;
+        } else {
+            entry.ok = true;
+            entry.reason = "every ConvexObject";
+        }
+        std::size_t points = 0;
+        for (const std::vector<bsp::OceanVec3>& shape : entry.box.all_shape_points) {
+            points += shape.size();
+        }
+        log.notef("fort shapes %s (type %d, %s): %s shapes=%zu points=%zu "
+            "(007482B0, packet cc9_hull_fort_contact)", s.row.name.c_str(), type_id,
+            mesh.c_str(), entry.reason.c_str(), entry.box.all_shape_points.size(), points);
+        return entry;
+    }
+    std::map<std::size_t, bsp::FortWorldEntry> fort_bodies;
     unsigned long long buoyancy_lists_stand_in = 0;
     unsigned long long buoyancy_lists_fallbacks = 0;
     unsigned long long leak_models_built = 0;
@@ -14777,7 +14810,33 @@ void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
         hulls.push_back(bsp::HullWorldEntry{pending.index, &slot.body, &hb.box.shape_points,
             bsp::ship_physics_material_shipped(slot.hull_material).friction, {}});
     }
-    hull_terrain.world_step(hulls, step_seconds, bsp::kHullHullContactBound);
+    // Packet cc9_hull_fort_contact: every MLandFort and MCommandBuilding (kind 1Bh) with a
+    // placed world matrix and a shape has one static body (bsp::kHullFortContactBound; OFF
+    // the fort pairs are a census only).
+    std::vector<bsp::FortWorldEntry> forts;
+    for (std::size_t i = 0; i < slots.size(); ++i) {
+        const GameUnitSlot& s = *slots[i];
+        if (!bsp::unit_is_kind_of(s.class_id, bsp::kUnitKindQueryLandStructure)) continue;
+        auto found = fort_bodies.find(i);
+        if (found == fort_bodies.end()) {
+            if (s.world_valid == 0) continue;
+            const ClassHullBox& fb = class_fort_box(s);
+            if (!fb.ok || fb.box.all_shape_points.empty()) continue;
+            bsp::FortWorldEntry e;
+            e.unit = i;
+            e.shapes = &fb.box.all_shape_points;
+            for (int k = 0; k < 3; ++k) {
+                e.frame[k] = s.world[k];
+                e.frame[3 + k] = s.world[4 + k];
+                e.frame[6 + k] = s.world[8 + k];
+                e.frame[9 + k] = s.world[12 + k];
+            }
+            found = fort_bodies.emplace(i, e).first;
+        }
+        forts.push_back(found->second);
+    }
+    hull_terrain.world_step(hulls, forts, step_seconds, bsp::kHullHullContactBound,
+        bsp::kHullFortContactBound);
     for (const bsp::HullWorldEntry& e : hulls) {
         record_hull_terrain_result(*slots[e.unit], e.unit, e.result);
     }
@@ -31437,6 +31496,22 @@ void GameUnitsHost::report() {
                 bsp::kHullHullContactBound ? 1 : 0, c.world_steps, c.hull_pairs_near,
                 c.hull_shape_tests, c.hull_hits, host.hull_terrain.hull_pairs().size(),
                 c.groups, c.multi_hull_groups, c.max_group_bodies);
+            for (const auto& [pair, pc] : host.hull_terrain.fort_pairs()) {
+                const char* a = pair.first < host.slots.size()
+                    ? host.slots[pair.first]->row.name.c_str() : "?";
+                const char* b = pair.second < host.slots.size()
+                    ? host.slots[pair.second]->row.name.c_str() : "?";
+                host.log.notef("hull fort contact census: fort=%s hull=%s first_step=%llu "
+                    "steps=%llu max_depth=%.3f", a, b, pc.first_step, pc.steps,
+                    static_cast<double>(pc.max_depth));
+            }
+            host.log.notef("summary hull fort contact bound=%d forts=%llu shapes=%llu "
+                "over_reserve=%llu pairs_near=%llu shape_tests=%llu hits=%llu hit_steps=%llu "
+                "pairs=%zu max_depth=%.3f (007482B0 / 00C535E0, packet cc9_hull_fort_contact)",
+                bsp::kHullFortContactBound ? 1 : 0, c.forts, c.fort_shapes,
+                c.forts_over_reserve, c.fort_pairs_near, c.fort_shape_tests, c.fort_hits,
+                c.fort_hit_steps, host.hull_terrain.fort_pairs().size(),
+                static_cast<double>(c.fort_max_depth));
         }
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "
