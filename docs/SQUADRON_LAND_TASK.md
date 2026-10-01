@@ -8751,3 +8751,27 @@ OFF:
 - **JM06:** docs/MISSION_LUA_GETPROPERTY.md measured 17 `ammoType` asks; the row may move.
 - **Uncertainty:** whether ESMP08's Corsairs carry ordnance. Their `Equipment` in
   `08_engano.lua` decides it, and `zero` will show it.
+
+### The pairs and the verdict (cc9-lua31, 2026-09-30): ON
+
+The pairs are same-tree builds of `5d0513291`: OFF `4FB4CBF41BA4`, ON `9942BFBAB41B`. They used
+reference V's launch form, and a 500/300 USN01 smoke on the ON binary finished cleanly. The
+runs waited for the console session to come back after it had disconnected; while it was
+disconnected, one USNRM01 36000 run died at FMOD startup (environment, not code).
+
+| row | `pair_diff` | `ammoType` asked / served / zero | note |
+| --- | --- | --- | --- |
+| USN02 (control) | exit 1, gameplay identical | 0 / 0 / 0 | |
+| USN12 (control) | exit 1, gameplay identical | 0 / 0 / 0 | |
+| JM06 3200/3000 | exit 1, gameplay identical | 0 / 0 / 0 | its asks lie past 3000 frames |
+| ESMP08 9200/9000 | exit 1, gameplay identical | 324 / 324 / 0 | every wave squadron carries ordnance |
+| USNRM01 9200/9000 | moved | 290 / 290 / 43 | deaths 158 -> 156, hits 1994 -> 2207, dive releases 34 -> 30 |
+
+- **The mechanism holds.** Every ask is served, and only from a squadron's own unit.
+- **ESMP08's Corsairs carry ordnance.** `zero=0`, so the weakest call of the predictions resolved
+  the other way: the script keeps re-targeting the whole wave, and the row is unchanged.
+- **USNRM01 moves as predicted.** Forty-three answers are 0. For those squadrons
+  `usn_1_pearl.lua:1983` (`GetProperty(unit,"ammoType") ~= 0`) no longer re-targets.
+
+Verdict: **ON.** The controls are identical, and the one moved row is the predicted one with
+its mechanism visible.

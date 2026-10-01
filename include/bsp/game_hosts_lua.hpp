@@ -130,7 +130,7 @@ inline constexpr bool kGetPropertyClassReadersBound = true;  // ON: lead ruling 
 // answers "ammoType" (_stricmp 00BF7FBF at 007EF1E1, so "ammotype" too) with
 // 007EDAD0's integer through GameUnitsHost::squadron_ammo_type_007edad0. Only a
 // squadron serves the key. False: no value, so a script's `~= 0` test passes.
-inline constexpr bool kGetPropertySquadronAmmoTypeBound = false;
+inline constexpr bool kGetPropertySquadronAmmoTypeBound = true;  // ON 2026-09-30: controls identical, USNRM01 moved (5ci)
 
 // Packet cc9_lua_kill (docs/LUA_BINDING_MISSION.md, "Kill, 008AC5C0"). The Lua
 // native Kill(entity [, hard]) resolves argument 0 (00888AA0) and takes cause 1,
