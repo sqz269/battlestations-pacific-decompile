@@ -8883,3 +8883,99 @@ What the image should do, from what is read so far (to verify first):
   carries ordnance (`zero=0`).
 - The USNOS AA drop under 5ch is explained in the addendum: planes fly to HQ2 instead of
   strafing under Portland's AA.
+
+## 5ck. An AI `settarget` to a squadron goes through the squadron's intake (packet `cc9_ai_squadron_settarget_intake`, cc9-lua32, 2026-10-01)
+
+5cj asked what a plane bot does with an empty task vector while the director holds a `settarget`.
+In the image that state never arises, because the order never reaches the planes as a `settarget`.
+
+### The image
+
+- **The squadron converts the order.** `0077D600`'s MT_COMMAND is delivered to the receiver's
+  `vtable[160h]` (`0078061C`, docs/CRUISE_COMMAND.md). For a squadron that is `007F1940`
+  (vtable `00D087C0`, slot `00D08920`; docs/CONTROLLED_UNIT.md). Its arm at
+  `007F1AD6`-`007F1B24`, read from the disk bytes:
+  - `CMP EAX,00E08EF8` / `CMP EAX,00E08F78`: `settarget` and `attackmove` both jump to
+    `007F1B14`. This arm skips the `+3D0h` member test that the other arms make at `007F1AE4`.
+  - `PUSH 1 / PUSH 1`, then `00521EA0` on the message's descriptor, then `PUSH EAX`. `MOV ECX,ESI`
+    (the squadron) and `CALL 007EEC50` choose the class.
+  - `007F1B2B TEST EDI,EDI / JE 007F1B5D`: a null class issues **nothing**, and the squadron
+    keeps its previous command.
+  - With a class and message `+21h` set, it clears (`0071D880`) and then issues the **chosen
+    class** with the same descriptor (`0071ECF0`). `00A13B60` sets `+21h`, because it pushes
+    flags 1 at `00A14A4A`.
+- **The bots then install that class.** Each member bot reads the squadron's director
+  (`unit+9D4h` -> `vtable[114h]`). On the change, `0099A4C0` asks the head task's
+  `vtable[40h]`:
+  - a strafe head stays only for strafe or `attackmove` on the same target (`009CC850`);
+  - a kind-7 moveto head stays only for a moveto (`009C31B0`).
+
+  `0099A170` then builds the torpedo, dive-bomb, strafe or other task on the AI's target.
+- **0099A170 has no `settarget` arm, as 5cj said.** Its compare chain (`0099A1B5`-`0099A47A`)
+  names `00E08FA0`, `F78`, `F98`, `F68`, `F80`, `F20`, `F28`, `F30`, `F18`, `F40`, `F48`, `F50`,
+  `F58`, `FA8`, `F38`, `F90` and `F88`. The listing confirms it, but the arm is never reached for
+  a squadron.
+- **An empty task vector would freeze the plane's controls.** In `0099ACD0`, when the head after
+  `0099A4C0` is null, the update `009998A0`, the plan evaluation and the command-block store
+  `007B8C90` are all skipped. The plane keeps its last stick block. This matters only for a
+  non-squadron receiver.
+
+### The host before this packet
+
+- `close_issue_order` sends `settarget` through the registry path. `fan_out_to_members` places it
+  on every member plane.
+  - In 5ch's ESMP08 14000 ON log there are 1941 such member orders, all to US squadrons.
+  - USNRM01 9000 has 6345, mostly to the `Jap` waves, `KateSpawn3/5` and `A6M_1-8`.
+  - JM06 has 25, to `PBY Catalina 01`.
+  - USNOS, USN02 and USN12 have none.
+- The planes keep whatever task they had: the script's strafe, torpedo or dive task on the
+  script's target, or 5ch's moveto.
+
+### Next packet: the binding (planned, not committed)
+
+The work paused before the bind landed (lead's pause, 2026-10-01). The plan for
+`cc9_ai_squadron_settarget_intake` is below.
+- `kAiSquadronSetTargetIntakeBound = false` goes in `include/bsp/game_hosts_script_orders.hpp`, with
+  `script_orders_squadron_intake_007f1940(leader, members, target_index)` beside
+  `script_orders_drain_loopback_0076c600`.
+- `src/game_hosts_script_orders.cpp`:
+  - move 007EEC50's input assembly out of `run_pilot_set_target` into
+    `choose_attack_class_007eec50(unit, target_index, prefer_ordnance, allow_guns, label)`;
+    `PilotSetTarget` keeps its census lines through `label`;
+  - `squadron_intake_007f1940` chooses with `(1, 1)` on the slot-0 plane;
+  - a non-null class is issued with flags 1 (kind-1 descriptor, `object_id` = target index + 1)
+    to every member plane, and 0099A170 is installed after delivery, as the `PilotSetTarget`
+    fan-out does;
+  - a null class issues nothing;
+  - add a census line `summary mission script squadron intake bound calls declined
+    member_orders tasks`.
+- `src/game_hosts_ai.cpp` (cc9-ships26's lane, needs a loan): in `close_issue_order`, for an
+  `is_squadron` member, skip a repeat (`order_is_repeat`), call the intake with
+  `members->front()`, and count it as issued in place of `issue_order`'s fan-out.
+- **SUBSTITUTIONS, labelled:** the member planes' directors stand in for the squadron's, and the
+  install runs one bot tick early (SENTITY_INIT_ATTACH_ORDER 22.7).
+- A prepared, build-tested patch of the two script-orders files is in the cc9-lua32 tree:
+  `local\l32_intake_code.patch`, built clean at `19e4d5190`. The `close_issue_order` edit is
+  `local\l32_apply_ai.py`. Both are uncommitted local files, and the tree may be removed.
+- Pairs: ESMP08 14200/14000 and 9200/9000, USNRM01 9200/9000, JM06, USNOS, USN02 and USN12.
+
+### Predictions for that packet, written before any ON run
+
+- **ESMP08 14200/14000:**
+  - `calls` is in the hundreds and `declined` is near 0: every wave squadron carries ordnance,
+    and the targets are ships;
+  - `tasks` is close to `member_orders`;
+  - the classes split as PilotSetTarget's do: Corsairs strafe (`F40`), Helldivers dive (`F20`),
+    Avengers torpedo (`F18`);
+  - the squadrons attack 00A13B60's choice (the Zuikaku group by weight) between the script's
+    15 s re-targets, not the script's random `IJNFleet` ship;
+  - the death table moves (IJN hits shift towards the Zuikaku group, and US losses change under
+    its AA);
+  - **weakest call:** whether a strafe now reaches its goaway. The script's 15 s re-target and
+    the AI's re-target (a new target name on each `order_is_repeat` miss) both rebuild the task.
+- **ESMP08 9200/9000:** moved, smaller.
+- **USNRM01 9200/9000:** moved, strongly. The Japanese waves take the AI's targets at Pearl
+  Harbor.
+- **JM06 3200/3000:** moved, with one PBY.
+- **USN02 and USN12 (controls):** pair_diff 0 or 1, with no `settarget` to a squadron.
+- **USNOS:** identical apart from the census, since it has no AI `settarget`.
