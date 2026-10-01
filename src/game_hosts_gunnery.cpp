@@ -67,6 +67,7 @@
 #include "bsp/unit_fire_flooding.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
+#include "bsp/air_operations.hpp"
 #include "bsp/unit_damage.hpp"
 #include "bsp/unit_hit_path.hpp"
 #include "bsp/unit_weapons.hpp"
@@ -754,6 +755,31 @@ constexpr bool kKamikazeDynContactBound = true;
 // (006D3250) and MShipyard (00844A10) have their own slot 100h, unread: unchanged.
 // ON by the pairs of 2026-09-30 (section 93.4).
 constexpr bool kArtilleryGroundOriginAimBound = true;
+// Packet cc9_artillery_structure_aim, docs/GUNNERY_OPEN_ITEMS.md section 97.
+// 006DF520's steps 4 and 5 run for EVERY entity target: the branch at 006DF664
+// tests bot->vtable[44h] (0072BD30, the command target's resolved object), and
+// only a target with no object (a position) takes 006DF979, which zeroes bot+90h
+// (006DF9A5..006DF9CD). So the ErrorOffset step (bot+90h toward bot+84h at
+// dt * 30, 006DF66A..006DF6D2, added at 006DF800..006DF81F) applies to a fort, a
+// vehicle or an airfield as to a ship. True: a non-ship unit target gets the
+// stepped offset too, and the step is kept across target changes. False: the
+// step is zeroed for a non-ship target, as before.
+// ON by the pairs of 2026-09-30 (section 97.5).
+constexpr bool kArtilleryNonShipErrorOffsetBound = true;
+// Same packet. MAirfield's slot 100h 006D3250 (RET 1Ch, the extra arguments
+// unused) returns slot U(0, n - 1) truncated (00BD2F10 with ECX 1, drawn only
+// when n >= 2) of the inline list +83Ch (count +884h, at most six), which
+// 006D2980 fills with each listed hangar ("Hangar %d" Object, the +830h vector)
+// whose +370h hit points are above 0, carried into the airfield's frame; with no
+// hangar the point is (0, 0, 0). True: an artillery aim at an airfield takes a
+// live hangar's world position, redrawn every TargetPointRefreshTime (5 s), or
+// the airfield origin. LABELLED: the hangar list is taken live at the draw;
+// 006D2980 rebuilds it only from 006D5220, 006D31A0 and 006D3F20. False: the
+// origin raised by the class Height. MShipyard's 00844A10 (a random live
+// "Hangar %d" object of +780h, 00849F70) is not bound: the host does not read a
+// shipyard's hangar list.
+// ON by the pairs of 2026-09-30 (section 97.5).
+constexpr bool kArtilleryAirfieldAimSlotBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
@@ -798,7 +824,8 @@ constexpr bool kHullSegmentHealthBound = true;
 //    bearing turns by U(-AngleChange, AngleChange) per update. 006DF520 walks
 //    bot+90h toward bot+84h at 30 m/s per axis (0042AC60 at 006DF694..006DF6D2),
 //    adds it to the world aim point (006DF800..006DF81F), and zeroes it when the
-//    target is not a ship (006DF9A5..006DF9CD). Rows: robots.lua
+//    target has no object, a position target (006DF9A5..006DF9CD; section 97.1
+//    corrects an earlier 'not a ship' reading, kArtilleryNonShipErrorOffsetBound). Rows: robots.lua
 //    ArtillerySubDirectorBot (00E19994, stride 28h), by the owner's skill row.
 //    OFF: no ranging offset. Packet cc9_artillery_ranging_error,
 //    docs/ARTILLERY_RANGING_ERROR.md.
@@ -1580,24 +1607,77 @@ struct GameGunneryHost::Impl {
             out[i] = o[i] + r[i] * st.body[0] + u[i] * st.body[1] + f[i] * st.body[2];
         }
         if constexpr (kArtilleryRangingErrorBound) {
-            // 006DF66A..006DF6D2: bot+90h steps toward bot+84h by dt * 30 per
-            // axis (0042AC60), then 006DF800..006DF81F adds it to the point.
-            std::array<float, 3>& step = ranging_step_by_gun[gun_index];
-            if (!ranging_ship_aim_by_gun[gun_index]) step = {0.0f, 0.0f, 0.0f};
-            ranging_ship_aim_by_gun[gun_index] = true;
-            const auto found = ranging_target_by_gun.find(gun_index);
-            const std::array<float, 3> goal = found != ranging_target_by_gun.end()
-                ? found->second : std::array<float, 3>{0.0f, 0.0f, 0.0f};
-            const float max_step = dt * 30.0f;   // 00CE7630
-            for (int i = 0; i < 3; ++i) {
-                const float gap = goal[i] - step[i];
-                if (max_step > std::fabs(gap)) step[i] = goal[i];
-                else step[i] += gap > 0.0f ? max_step : -max_step;
-                out[i] += step[i];
-            }
-            ranging_error_sum += std::sqrt(step[0] * step[0] + step[2] * step[2]);
+            const float length = ranging_offset_step(gun_index, dt, out);
+            ranging_error_sum += length;
             ++ranging_error_samples;
         }
+    }
+    // 006DF66A..006DF6D2: bot+90h steps toward bot+84h by dt * 30 per axis
+    // (0042AC60), then 006DF800..006DF81F adds it to the point. Returns the
+    // horizontal length of the step after the update.
+    float ranging_offset_step(std::size_t gun_index, float dt, float out[3]) {
+        std::array<float, 3>& step = ranging_step_by_gun[gun_index];
+        if (!ranging_ship_aim_by_gun[gun_index]) step = {0.0f, 0.0f, 0.0f};
+        ranging_ship_aim_by_gun[gun_index] = true;
+        const auto found = ranging_target_by_gun.find(gun_index);
+        const std::array<float, 3> goal = found != ranging_target_by_gun.end()
+            ? found->second : std::array<float, 3>{0.0f, 0.0f, 0.0f};
+        const float max_step = dt * 30.0f;   // 00CE7630
+        for (int i = 0; i < 3; ++i) {
+            const float gap = goal[i] - step[i];
+            if (max_step > std::fabs(gap)) step[i] = goal[i];
+            else step[i] += gap > 0.0f ? max_step : -max_step;
+            out[i] += step[i];
+        }
+        return std::sqrt(step[0] * step[0] + step[2] * step[2]);
+    }
+    // Packet cc9_artillery_structure_aim: 006D3250 through 006DF520's step 4 for an
+    // airfield target. Returns false when the target has no deck (the caller keeps
+    // its point).
+    bool airfield_aim_point(std::size_t gun_index, std::size_t target, float dt,
+                            float out[3]) {
+        const bsp::AirOpsDeck* deck =
+            bsp::air_ops_decks().find(unit_state[target].row.name);
+        if (deck == nullptr) return false;
+        AirfieldAim& st = airfield_aim_by_gun[gun_index];
+        if (st.target != target) { st.target = target; st.timer = -1.0f; }
+        st.timer -= dt;
+        if (st.timer <= 0.0f) {
+            st.timer = 5.0f;   // TargetPointRefreshTime (row+14h), 5 in every row
+            if (unit_index_by_name.size() != unit_state.size()) {
+                unit_index_by_name.clear();
+                for (std::size_t i = 0; i < unit_state.size(); ++i) {
+                    unit_index_by_name.emplace(unit_state[i].row.name, i);
+                }
+            }
+            // 006D2980: the listed hangars with +370h > 0, at most six, in order.
+            std::vector<std::size_t> live;
+            for (const bsp::AirOpsDeck::HangarNames& h : deck->hangars) {
+                if (live.size() > 5) break;
+                const auto found = unit_index_by_name.find(h.object);
+                if (found == unit_index_by_name.end()) continue;
+                if (unit_state[found->second].dead) continue;
+                live.push_back(found->second);
+            }
+            st.hangar = !live.empty();
+            if (live.empty()) {
+                ++airfield_no_hangar;
+                float r[3], u[3], f[3];
+                unit_pose(target, r, u, f, st.point);   // (0, 0, 0) in the airfield frame
+            } else {
+                float pick = 0.0f;
+                if (live.size() >= 2) {                  // 006D325E..006D327D
+                    pick = draw(Draw::aim_point, gun_index, 0, 0.0f,
+                                static_cast<float>(live.size() - 1));
+                    ++airfield_slot_draws;
+                }
+                const std::size_t index = static_cast<std::size_t>(static_cast<int>(pick));
+                float r[3], u[3], f[3];
+                unit_pose(live[std::min(index, live.size() - 1)], r, u, f, st.point);
+            }
+        }
+        for (int i = 0; i < 3; ++i) out[i] = st.point[i];
+        return true;
     }
     // 0072C6A0's slots, and 00729BC0's dispatch on the projectile kind of the
     // ammunition in use. A sub-type 6 gun answers a plane with its SECOND
@@ -2626,6 +2706,16 @@ struct GameGunneryHost::Impl {
     KamikazeRow& kamikaze_row(std::size_t k);
     unsigned long long kz_contacts{0};
     unsigned long long ground_origin_aims{0};   // packet cc9_ground_target_aim_point
+    // Packet cc9_artillery_structure_aim: non-ship artillery aims (each tick), those at an
+    // airfield or a shipyard, the airfield slot draws and those with no live hangar.
+    unsigned long long nonship_artillery_aims{0}, airfield_aims{0}, shipyard_aims{0};
+    unsigned long long airfield_slot_draws{0}, airfield_no_hangar{0};
+    double nonship_offset_sum{0.0};
+    unsigned long long nonship_offset_samples{0};
+    struct AirfieldAim { std::size_t target{static_cast<std::size_t>(-1)}; float timer{-1.0f};
+                         float point[3]{}; bool hangar{false}; };
+    std::map<std::size_t, AirfieldAim> airfield_aim_by_gun;
+    std::map<std::string, std::size_t> unit_index_by_name;
     // Packet cc9_hull_contact_report: the Dyn events, the slower-body calls of 008145B0,
     // the calls refused as not hostile, and the hostile calls with a live kamikaze party.
     unsigned long long kz_dyn_events{0}, kz_dyn_calls{0}, kz_dyn_refused{0}, kz_dyn_kamikaze{0};
@@ -5941,8 +6031,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 && units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
                 artillery_aim_point(g, target, dt, theirs, owner_unit);
             } else {
-                // 006DF9A5..006DF9CD: no ship target zeroes bot+90h.
-                if (kArtilleryRangingErrorBound) ranging_ship_aim_by_gun[g] = false;
+                // 006DF9A5..006DF9CD zeroes bot+90h only for a target with no object
+                // (kArtilleryNonShipErrorOffsetBound; the host used to zero it here).
+                if (kArtilleryRangingErrorBound && !kArtilleryNonShipErrorOffsetBound) {
+                    ranging_ship_aim_by_gun[g] = false;
+                }
                 unit_aim_point(target, theirs);
                 // Counted either way; the origin replaces the point only when bound.
                 if (artillery_bot_aims(gun.category, target)
@@ -5953,6 +6046,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         // 0042D810: the local aim point is (0, 0, 0), so the target origin.
                         float r[3], u[3], f[3];
                         unit_pose(target, r, u, f, theirs);
+                    }
+                }
+                // Packet cc9_artillery_structure_aim (section 97): the airfield's slot
+                // 100h, and the ErrorOffset step for every non-ship unit target.
+                // Planes are left out: sub-type 6 answers a plane with the AAFlakBot, and the
+                // plane's slot 100h is not read.
+                if (artillery_bot_aims(gun.category, target)
+                    && !units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase)) {
+                    ++nonship_artillery_aims;
+                    if (units.unit_is_kind_of(target, bsp::kUnitKindQueryAirfield)) {
+                        ++airfield_aims;
+                        float slot[3];
+                        if (kArtilleryAirfieldAimSlotBound
+                            && airfield_aim_point(g, target, dt, slot)) {
+                            for (int i = 0; i < 3; ++i) theirs[i] = slot[i];
+                        }
+                    } else if (units.unit_is_kind_of(target, bsp::kUnitKindQueryShipyard)) {
+                        ++shipyard_aims;
+                    }
+                    if constexpr (kArtilleryRangingErrorBound && kArtilleryNonShipErrorOffsetBound) {
+                        nonship_offset_sum += ranging_offset_step(g, dt, theirs);
+                        ++nonship_offset_samples;
                     }
                 }
             }
@@ -6469,6 +6584,37 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
+        // DIAGNOSTIC, env-gated: BSP_FIRE_GATE_TRACE=<owner unit name> prints each of
+        // that unit's guns once a second with the gates of want_fire. Reads only.
+        static const std::string fire_gate_unit = aa_env("BSP_FIRE_GATE_TRACE");
+        if (!fire_gate_unit.empty() && owner_unit < unit_state.size()
+            && unit_state[owner_unit].row.name == fire_gate_unit) {
+            static std::map<std::size_t, float> next_line;
+            float& next = next_line[g];
+            if (clock_seconds >= next) {
+                next = clock_seconds + 1.0f;
+                float tp[3] = {0.0f, 0.0f, 0.0f};
+                float range = 0.0f;
+                if (target < unit_state.size()) {
+                    unit_aim_point(target, tp);
+                    const float d[3] = {tp[0] - muzzle[0], tp[1] - muzzle[1], tp[2] - muzzle[2]};
+                    range = length3(d);
+                }
+                log.notef("  fire gate t=%.2f %s gun=%zu cat=%d target=%s range=%.0f "
+                    "max_range=%.0f have=%d arc=%d accepted=%d settled=%d window=%d "
+                    "want=(%.2f %.2f) at=(%.2f %.2f) deg",
+                    static_cast<double>(clock_seconds), fire_gate_unit.c_str(), g,
+                    gun.category, target < unit_state.size()
+                        ? unit_state[target].row.name.c_str() : "-",
+                    static_cast<double>(range), static_cast<double>(gun.max_range),
+                    have_target ? 1 : 0, arc_solved ? 1 : 0, accepted ? 1 : 0,
+                    settled ? 1 : 0, may_fire_here ? 1 : 0,
+                    static_cast<double>(want_horz * 57.2957795f),
+                    static_cast<double>(want_vert * 57.2957795f),
+                    static_cast<double>(gun.angles.horz * 57.2957795f),
+                    static_cast<double>(gun.angles.vert * 57.2957795f));
+            }
+        }
         if (kAaBotFireTestsBound && !player_seat
             && (gun.category == 1 || gun.category == 5
                 || (gun.category == 6 && have_target
@@ -11529,6 +11675,14 @@ void GameGunneryHost::report() {
     host.log.notef("summary mission gunnery ground target origin aims=%llu bound=%d "
         "(006DF520 with 0042D810, packet cc9_ground_target_aim_point)",
         host.ground_origin_aims, kArtilleryGroundOriginAimBound ? 1 : 0);
+    host.log.notef("summary mission gunnery structure aims nonship=%llu airfield=%llu "
+        "shipyard=%llu airfield_draws=%llu airfield_no_hangar=%llu offset_mean=%.1f "
+        "offset_bound=%d airfield_bound=%d (006DF520 steps 4-5, 006D3250, packet "
+        "cc9_artillery_structure_aim)", host.nonship_artillery_aims, host.airfield_aims,
+        host.shipyard_aims, host.airfield_slot_draws, host.airfield_no_hangar,
+        host.nonship_offset_samples > 0
+            ? host.nonship_offset_sum / static_cast<double>(host.nonship_offset_samples) : 0.0,
+        kArtilleryNonShipErrorOffsetBound ? 1 : 0, kArtilleryAirfieldAimSlotBound ? 1 : 0);
     host.log.notef("summary mission gunnery hull contact report events=%llu slower_calls=%llu "
         "not_hostile=%llu kamikaze_parties=%llu bound=%d (00C35480 / 009377E0 / 008145B0, "
         "packet cc9_hull_contact_report)", host.kz_dyn_events, host.kz_dyn_calls,
