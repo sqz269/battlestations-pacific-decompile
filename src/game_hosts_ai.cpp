@@ -2367,7 +2367,15 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     ++placed;
                     ++summary.squadron_member_orders;
                     if constexpr (kAiTickMovetoRetasksPlaneBound) {
-                        retask_plane_on_moveto(plane, before, position);
+                        // The MT_COMMAND waits for the session pump's drain
+                        // (cc9_set_command_queue_delay); 0099A4C0 runs in the
+                        // plane's bot tick after it, so the install follows the
+                        // delivery, as the script orders' installs do.
+                        const std::array<float, 3> at{position[0], position[1], position[2]};
+                        std::function<void()> install = [this, plane, before, at]() {
+                            retask_plane_on_moveto(plane, before, at.data());
+                        };
+                        if (!commands_after_last_issue_delivery(install)) install();
                     }
                 }
             }
