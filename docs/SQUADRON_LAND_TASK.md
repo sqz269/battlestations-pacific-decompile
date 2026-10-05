@@ -10816,3 +10816,39 @@ USN01 smoke on `gx1`: clean.
    and dive options from `009552E0`'s list).
 3. Feed record+10h as the image forms it.
 4. Re-pair the gates after that; the USNOS neutral-target effect can then be judged on its own.
+
+## 5de. Handoff (cc9-lua36, 2026-10-05)
+
+Branch `agent/cc9-lua36`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua36`. No lease
+is held; the `src/game_hosts_ai.cpp` loan was released after 5db.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_terrain_avoid_forward_speed` | `d97ad79fd`, `cecbbb42d` | `kTerrainAvoidForwardSpeedBound` | **ON** | 5da, 5da.1 |
+| `cc9_order_attack_member_issue` | `f8860bd1f`, `45004bc4d` | `kOrderAttackNoMemberIssueBound` | **ON** | 5db, 5db.1 |
+| Kate nose-up stall | `7a3f912ab` | - | image as read | 5dc |
+| `cc9_ai_weight_gates_flip` | `ed61e0ca8` | the two gates | **OFF**, mechanism failure | 5dd, 5dd.1 |
+
+Censuses:
+- `summary mission ai order attack member issue bound= skips=`;
+- the `vehicle/terrain avoid ... thr=` lines for the throttle cap.
+
+Scripts in `local\`:
+- `l36_queue.ps1 -Jobs 'side:row',... -Tag t` (3-slot queue over `local\l36_<side>` exports, all 22
+  X rows defined);
+- `l36_diffall.ps1 -A a -B b -Rows ...` (one line per pair);
+- `l36_picks.py` (squadtick pick census);
+- `l36_relunits.py` / `l36_reltargets.py` (release census by squadron or target);
+- `l36_firstdiff.py` (first differing line, with a filter);
+- `l36_rel32.py <addr...>` (rel32 call census from the disk image);
+- `l36_diag2.py` (the uncommitted pitch diagnostic, applied to an export copy).
+
+### Next, in order
+
+1. **The AI loadout arm (5dd.1).** Project `00A08655`-`00A08A8E` and record+10h (`00A04560`:
+   `unit+C54h` via `007B9140(1)`, `unit+3D0h` for kind 18h). Then re-pair the gates.
+2. **5ch (`kAiTickMovetoRetasksPlaneBound`).** Re-pair it with the gates OFF, now that 5da and 5db
+   are in. Not started.
+3. **The water-surface `vtable[204h]` compares (5dc).** `007CBAEF` against `desc+19Ch`, and
+   `007CB858` against 8.0: does the image ditch a slow aircraft?
+4. 5cx's manoeuvre-survives-command item still has no reach.
