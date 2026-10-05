@@ -321,7 +321,8 @@ constexpr bool kAiForcedTargetWeightRulesBound = true;
 // collection admits only the other party, 00A13C2F). False: the labelled
 // stand-in sends every non-ship member a scene token at the target group's
 // first member, which is how an own-group plan reached 60 directors on USN13.
-constexpr bool kOrderAttackNoMemberIssueBound = false;
+// ON since the 5db.1 pairs: 21 of 22 X rows identical, USNRM01 releases up.
+constexpr bool kOrderAttackNoMemberIssueBound = true;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group

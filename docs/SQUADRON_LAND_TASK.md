@@ -10638,3 +10638,49 @@ CLOSEATTACK's `settarget`/`attackmove` through `00A13B60`), as in the image.
   may attack later or not at all; a CLOSEATTACK `settarget` should replace most of it once in range.
 - USN04 and USNRM01: AI-controlled plane groups lose the direct `dogfight`/`attackmove` at
   order time. Expect moved dogfight timing; a mechanism failure would be groups that never engage.
+
+### 5db.1 Measured: **ON** (cc9-lua36, 2026-10-05)
+
+Four same-tree builds from `f8860bd1f`: `local\l36_aoff`/`l36_aon` (this switch, gates OFF) and
+`l36_goff`/`l36_gon` (the same with `kAiWeightBarrelGatesBound` and `kAiPlaneAttackerWeightBound`
+ON). Launch form of reference X (`local\l36_queue.ps1`, 3 slots, `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`). USN01 300-frame smoke ON: clean. Census:
+`summary mission ai order attack member issue bound= skips=`.
+
+**Gates OFF, all 22 reference X rows:**
+- 21 rows are **gameplay identical** (pair_diff exit 1), although the stand-in is skipped 2-73 times
+  on most of them (USN13 59, USN13 long 73, USNOS/USNOS long 42, IJN01 13, USN01 10, E2 10, USN04 9).
+  The rows without AI attack orders (BSM01, LOMP10/long, JM05/long, IJN11) have 0 skips.
+- **USNRM01 moved:**
+  - deaths 191 -> 201; torpedo-task releases 55 of 79 -> 61 of 86; dive-bomb-task releases
+    112 -> 115.
+  - The director refusals go 48 -> 0. The Kates lose 15 stand-in commands, so KateSpawn1's flight
+    dies at the script's 186.91 s Kill at 17-49 m on a run-in (was 305-349 m).
+  - West Virginia is sunk at 356.94 s by Jap #30.1|.-3's bomb, and the script then spawns
+    Oklahoma_Killers (units 523 -> 529).
+  - More of the strike reaches Battleship Row, not less.
+
+**Gates ON (USN13, USN13 long, USN04, E2, USNOS, USNRM01):**
+- USN13, USN04, E2, USNOS: gameplay identical.
+- USN13 long: deaths 149 -> 152. The director refusals go 124 -> 0. The death swaps (bruh #2.x,
+  JapAF/Airfield squadrons, storage) are a cascade from Maru4's close-attack ordering at the first
+  divergence; no row stops attacking.
+- USNRM01: torpedo releases 56 -> 64, dive-bomb releases 84 -> 75, deaths 173 -> 185.
+
+**No row shows attacks vanishing.** Where the stand-in was the only path to a member, the command
+tick's `moveto` and CLOSEATTACK's `settarget`/`attackmove` take over, and releases rise on the one
+row that moves. Mechanism match: **flipped ON.**
+
+**The gates, re-tested under this switch** (`aon` against `gon`, so only the gates differ):
+
+| row | gates OFF | gates ON |
+| --- | --- | --- |
+| USN13 long | deaths 118, damage 47452 | deaths 152, damage 57478 |
+| USNOS | deaths 97, damage 46848 | deaths 67, damage 36261 |
+| USNRM01 | deaths 201; releases 61 / 115 | deaths 185; releases 64 / 75 |
+| USN13, USN04, E2 | - | identical |
+
+With the own-group attack-move gone, the gates no longer produce any friendly scene command (0
+refusals). What they still change is the planner's choice, which 5cu read as the image's. A fresh
+plausibility read of the gates (and of 5ch) is now meaningful. These numbers are its starting point,
+not a verdict.
