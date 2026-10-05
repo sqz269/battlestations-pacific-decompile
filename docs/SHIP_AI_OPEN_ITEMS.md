@@ -11779,3 +11779,54 @@ of offsets (`00F8A7B0..`, guarded by `00F8A870` bit 0). It stays unbound, with i
   re-merged only when within `AutoMerge_MergeDist` of another group. Groups get smaller; planner
   claims (capture, attack) can change; death rows can move on those rows. Rows with
   `followers_beyond` = 0 must stay gameplay-identical.
+
+### 149.5 Smoke, census and pairs; flipped ON
+
+All runs on this tree, in reference y's launch form (`local\s32_rows.ps1`, the table of
+cc9-gunnery25's `g25_runs.ps1`). OFF is the commit `53143a846` build; ON is
+`pair_export.py --commit 53143a846 --flip kAiAutoMergeLeaveBound=true --out local\s32_aml_on`.
+**Smoke** (`local\s32_smoke.log`, USN04 300 frames): clean exit, `passes=11 passes_beyond=0`.
+
+| row | OFF census: passes / passes beyond / followers beyond | ON removals | `pair_diff` | deaths OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 177 / 35 / 49 | 3 | 3 | 44 -> 43 |
+| E2 (USN04 9000) | 405 / 43 / 57 | 4 | 3 | 74 -> 73 |
+| USN02 9000 | 625 / 152 / 250 | 4 | 3 | 3 -> 3, rows identical; damage 66185.9 -> 67078.4 |
+| JM08 3000 | 545 / 14 / 20 | 3 | 3 | 22 -> 22, 3 rows retimed |
+| IJN11 3000 | 58 / 0 / 0 | 0 | **1** | identical |
+| USN13 long 9000 | 1920 / 429 / 585 | 16 | 3 | 133 -> 121 |
+| USNOS long 9000 | 1942 / 0 / 0 | 0 | **1** | identical |
+| JM05 long 9000 | 516 / 63 / 313 | 6 | 3 | 17 rows identical |
+| ESMP08 long 9000 | 157 / 125 / 523 | 6 | 3 | 7 rows identical |
+| USNRM01 9000 | 2171 / 76 / 76 | 4 | **1** | 192 rows identical |
+
+**The mechanism matches the image.**
+- The OFF counts repeat each tick while a far follower stays in the group. ON, each such follower
+  is removed once, and the walk restarts.
+- The leavers are what the reading predicts:
+  - USN04: York-class01 at 117.10 s and York-class02 at 139.70 s leave Lexington-class01's group
+    (population 6, then 5).
+  - USN13: Wood_sqn03, Cabot_sqn06 and Monterey_sqn09 leave their carrier squadrons' groups at
+    98.6-104.9 s.
+  - ESMP08: Hyuga and Chiyoda leave Zuikaku's group at 72.00 s and 112.65 s. Zuikaku's group is
+    back to 6 at 164.16 s, which shows the re-seed and the `AutoMerge_MergeDist` re-merge.
+  - JM08: Mavis 02, Oscar 01 and Gekko 01 leave the Mavis groups.
+- The rows with no follower past the distance stay gameplay-identical (IJN11, USNOS long), as
+  predicted. USNRM01's four removals change nothing that gameplay reads.
+
+**What moves.**
+- The moved deaths are aircraft and ground structures: dogfight partners, the bombing targets of
+  the US squadrons, and storage and containers on USN13 long. The plane deaths are RNG-coupled
+  through the shared stream (memory note, gunnery's RNG stream).
+- USN13 long loses 12 deaths (133 -> 121): 19 rows only OFF, 7 only ON, all aircraft or
+  structures (`local\s32_deaths.py`). No ship flips; the only ship row that changes is Maru10,
+  sunk earlier (376.08 -> 368.03 s, by `bruh #2.4` instead of `#2.6`). USN04, E2 and JM08 change no
+  ship row.
+- USN04 and E2 gain one dive-bomb task (0 of 19 -> 0 of 20).
+
+**Verdict: flipped ON** (mechanism matching, spread recorded). **LABELLED:**
+- `006956A0`'s observer pair is not modelled.
+- A squadron's position is its lead plane's, as in the rest of the file.
+
+**Next:** the idle formation shape `00A11070` (IDLE's tail, census row
+`AiCommand::idle_formation_00a11070`) is unbound.

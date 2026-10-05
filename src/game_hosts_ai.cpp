@@ -950,8 +950,10 @@ constexpr bool kAiOwnerPlayerSlotBound = true;
 // is cleared, 006956A0 drops the observer pair) and the walk restarts; it
 // returns once every follower is inside. The removed entity is seeded into a
 // group of its own by the next group think. False: the pass is not run and
-// only its census is taken.
-constexpr bool kAiAutoMergeLeaveBound = false;
+// only its census is taken. ON (2026-10-05): USN04, E2, USN02, JM08, USN13 long,
+// JM05 long and ESMP08 long moved; IJN11, USNOS long and USNRM01 gameplay-
+// identical (section 149.5).
+constexpr bool kAiAutoMergeLeaveBound = true;
 
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
