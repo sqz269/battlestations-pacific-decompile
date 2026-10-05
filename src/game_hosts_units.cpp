@@ -12,6 +12,8 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/hull_terrain_contact.hpp"
+#include "bsp/avoid_zone_draft_bodies.hpp"
+#include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/submarine_model.hpp"  // packet cc9_set_submarine_depth_level
 #include "bsp/unit_motion.hpp"      // unit_step_towards_0042ac60, packet cc9_periscope_out
 #include "bsp/game_hosts_scene_contents.hpp"  // packet cc9_submarine_seabed
@@ -1800,6 +1802,12 @@ struct GameUnitSlot {
     // Packet cc9_sunk_hull_shape_flag8: 00826410..0082643B cleared mask bit 8 (the terrain
     // group) on every hull shape once sinkTime passed 60 s (00C47F60).
     bool sunk_terrain_mask_cleared{false};
+    // Packet cc9_avoid_zone_draft_bodies: the class bit the hull build ORs into every hull
+    // shape's mask (009394E5..009395E2), taken at the first world contact phase, and
+    // whether 0092BD70(0) has cleared it.
+    std::uint32_t hull_class_bit{0};
+    bool hull_class_bit_taken{false};
+    bool hull_class_bit_cleared{false};
     // Packet cc9_ship_terrain_contact: +1010h / +1011h, the one-frame contact
     // latch 008255B0 rotates (00825824..0082583E); 009377E0 sets +1010h on a
     // kind-8 contact (the HUD's `ingame.warning_shallowwater`, 006830A5).
@@ -5627,6 +5635,9 @@ struct GameUnitsHost::Impl {
     // phase for hull-terrain pairs, and its per-unit census {contact steps, max depth, max
     // upward velocity change, max pseudo-velocity}.
     bsp::HullTerrainContactSolver hull_terrain;
+    // Packet cc9_avoid_zone_draft_bodies: the draft-body build and the 0092BD70 calls.
+    bsp::AvoidZoneDraftBuildCensus draft_build{};
+    unsigned long long hull_class_bit_clears{0}, hull_class_bit_sets{0};
     struct HullTerrainUnit {
         unsigned long long steps{0};
         float max_depth{0.0f};
@@ -14859,6 +14870,45 @@ void GameUnitsHost::Impl::finish_motion_tick(GameUnitSlot& slot, const float bef
 // hull pairs with kHullHullContactBound, 00C4B610's groups, one solve per group), then each
 // ship's position phase and the rest of its tick in unit order.
 void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
+    // Packet cc9_avoid_zone_draft_bodies: 00424DDF..00425487 builds the draft bodies at
+    // mission load, after the zones; here once, at the first world phase after the ship
+    // AI's avoid-zone geometry is loaded (LABELLED: the build time; the bodies are static).
+    // The session is single player (game+1FE4h = 0, game_hosts_mission.cpp), so the
+    // depths are AvoidZoneDepthsSingle's (00837DE0).
+    if (!hull_terrain.draft_bodies_set() && ship_ai != nullptr) {
+        if (const bsp::game::GameAvoidZoneRuntime* zones = ship_ai->avoid_zone_runtime()) {
+            std::array<std::int32_t, 9> depth{};
+            std::string error;
+            if (!lua.read_avoid_zone_draft_depths(0, depth, error))
+                throw std::runtime_error("Avoid-zone draft depths: " + error);
+            const bsp::AvoidZoneDraftDepthInputs inputs{depth[0], depth[1], depth[2],
+                depth[3], depth[4], depth[5], depth[6], depth[7], depth[8]};
+            const std::vector<bsp::AvoidZoneDraftBody> built =
+                bsp::avoid_zone_draft_bodies_00424ddf(zones->table(),
+                    [zones](std::size_t g) {
+                        return zones->native_group(zones->table().groups.at(g));
+                    },
+                    inputs, application_camera_axes_crt(), draft_build);
+            std::vector<bsp::DraftWorldEntry> drafts;
+            for (const bsp::AvoidZoneDraftBody& b : built) {
+                bsp::DraftWorldEntry e;
+                e.layer = b.layer;
+                e.group = b.group;
+                for (int k = 0; k < 12; ++k) e.frame[k] = b.frame[k];
+                e.hull = b.hull;
+                drafts.push_back(std::move(e));
+            }
+            hull_terrain.set_draft_bodies(std::move(drafts), bsp::kAvoidZoneDraftBodiesBound);
+            log.notef("avoid-zone draft bodies: depths=%d,%d,%d,%d,%d,%d,%d,%d,%d pairs=%zu "
+                "groups_missing=%zu zones=%zu zones_short=%zu pieces=%zu pieces_short=%zu "
+                "hulls_rejected=%zu bodies=%zu bound=%d (00424DDF..00425487 / 00423C50, packet "
+                "cc9_avoid_zone_draft_bodies)", depth[0], depth[1], depth[2], depth[3],
+                depth[4], depth[5], depth[6], depth[7], depth[8], draft_build.pairs,
+                draft_build.groups_missing, draft_build.zones, draft_build.zones_short,
+                draft_build.pieces, draft_build.pieces_short, draft_build.hulls_rejected,
+                draft_build.bodies, bsp::kAvoidZoneDraftBodiesBound ? 1 : 0);
+        }
+    }
     std::vector<bsp::HullWorldEntry> hulls;
     for (const WorldContactPending& pending : world_contact_pending) {
         GameUnitSlot& slot = *slots[pending.index];
@@ -14867,6 +14917,17 @@ void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
         hulls.push_back(bsp::HullWorldEntry{pending.index, &slot.body, &hb.box.shape_points,
             bsp::ship_physics_material_shipped(slot.hull_material).friction, {},
             bsp::kSunkHullTerrainMaskBound && slot.sunk_terrain_mask_cleared});
+        // 009394E5..009395E2: the class kind [[ctl+1Ch]+538h]->vtable[1Ch]() and, for a
+        // landing ship, BigLandingShip (class+808h). LABELLED: a cruiser's +808h
+        // (HeavyCruiser) is read as 0 (no host field); both cruiser bits are in the
+        // single-player layer's mask 3EF0h, so no single-player pair depends on it.
+        if (!slot.hull_class_bit_taken) {
+            slot.hull_class_bit_taken = true;
+            const bool big = slot.class_id == 0x0C && ship_ai != nullptr &&
+                ship_ai->unit_big_landing_ship_0808(pending.index);
+            slot.hull_class_bit = bsp::hull_class_bit_009394fb(slot.class_id, big);
+        }
+        hulls.back().class_bit = slot.hull_class_bit_cleared ? 0u : slot.hull_class_bit;
     }
     // Packet cc9_hull_fort_contact: every MLandFort and MCommandBuilding (kind 1Bh) with a
     // placed world matrix and a shape has one static body (bsp::kHullFortContactBound; OFF
@@ -29093,6 +29154,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
 GameShipAiHost* GameUnitsHost::ship_ai() noexcept { return impl_->ship_ai; }
 
+void GameUnitsHost::set_hull_class_bit_0092bd70(std::size_t unit_index, bool on) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return;
+    // 0092BD70: the bit from the class kind (as at 009394FB), then 00C47F60(bit) or
+    // 00C47F90(bit) over the hull's shape chain (00C31DC0, next +208h).
+    host.slots[unit_index]->hull_class_bit_cleared = !on;
+    ++(on ? host.hull_class_bit_sets : host.hull_class_bit_clears);
+    host.done("Units::set_hull_class_bit", 0x0092bd70u);
+}
+
 void GameUnitsHost::set_ship_ai(GameShipAiHost* ai) noexcept {
     impl_->ship_ai = ai;
     if (impl_->gunnery != nullptr) impl_->gunnery->set_ship_ai(ai);
@@ -31756,6 +31827,22 @@ void GameUnitsHost::report() {
                 bsp::kHullHullContactBound ? 1 : 0, c.world_steps, c.hull_pairs_near,
                 c.hull_shape_tests, c.hull_hits, host.hull_terrain.hull_pairs().size(),
                 c.groups, c.multi_hull_groups, c.max_group_bodies);
+            for (const auto& [pair, pc] : host.hull_terrain.draft_pairs()) {
+                const char* b = pair.second < host.slots.size()
+                    ? host.slots[pair.second]->row.name.c_str() : "?";
+                host.log.notef("hull draft contact census: draft=%zu hull=%s first_step=%llu "
+                    "steps=%llu max_depth=%.3f", pair.first, b, pc.first_step, pc.steps,
+                    static_cast<double>(pc.max_depth));
+            }
+            host.log.notef("summary hull draft contact bound=%d drafts=%llu filtered=%llu "
+                "pairs_near=%llu shape_tests=%llu hits=%llu hit_steps=%llu pairs=%zu "
+                "max_depth=%.3f class_bit_clears=%llu sets=%llu (00423C50 / 00C535E0 / "
+                "0092BD70, packet cc9_avoid_zone_draft_bodies)",
+                bsp::kAvoidZoneDraftBodiesBound ? 1 : 0, c.drafts, c.draft_pairs_filtered,
+                c.draft_pairs_near, c.draft_shape_tests, c.draft_hits, c.draft_hit_steps,
+                host.hull_terrain.draft_pairs().size(),
+                static_cast<double>(c.draft_max_depth), host.hull_class_bit_clears,
+                host.hull_class_bit_sets);
             for (const auto& [pair, pc] : host.hull_terrain.fort_pairs()) {
                 const char* a = pair.first < host.slots.size()
                     ? host.slots[pair.first]->row.name.c_str() : "?";
