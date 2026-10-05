@@ -214,8 +214,15 @@ unsigned int objective_slot_mask(bool have_party, int party, bool have_slot, int
         static_cast<std::size_t>(slot) < bsp::game::GameObjectiveSets::kSlotCount) {
         return bsp::objective_explicit_slot_mask(slot);
     }
+    // Without player records only slot 0 is active here (008CDF58's two bytes:
+    // in single player slot 0 has +8h set and +9h clear, slots 1..7 +9h set,
+    // SHIP_AI 60.6). Section 125: 008CDEF2 keeps an active slot only when its
+    // +28h equals the party argument, so another party's objective lands in no
+    // slot. Before kLocalPartyFromSceneBound slot 0 takes every party.
+    if (bsp::game::kLocalPartyFromSceneBound && have_party) {
+        return party == bsp::game::scene_slot_party(0, 0) ? 1u : 0u;
+    }
     (void)party;
-    // Without player records only slot 0 is active here (008CDF58's two bytes).
     return have_party ? 1u : 1u;
 }
 

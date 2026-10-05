@@ -290,6 +290,20 @@ constexpr bool kAiSquadronLeaderPointBound = true;
 // ON (2026-09-30): controls identical; ESMP08 now promotes to CLOSEATTACK (5ch).
 constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_LAND_TASK 5co
 
+// Packet cc9_plane_attacker_weight, docs/SQUADRON_LAND_TASK.md 5cq. 00A08460's
+// class type queries (vtable[+18h]) were a stub answering false, so a plane
+// attacker never took the type-0Fh branch and the non-plane walk ran without
+// its target gates.
+// kAiWeightBarrelGatesBound true: the type queries answer through the unit's
+// own kind test (LABELLED: the class descriptor's slot, asked of the unit), and
+// the walk applies 00A0924C..00A0943D's per-target gates and 00A09362..00A093A8's
+// platform filters.
+// kAiPlaneAttackerWeightBound true: a 0Fh attacker takes the plane arm
+// 00A0861F..00A09222 (no-loadout arm: kamikaze, strafe, dogfight and tail-gun
+// options) and the 00A09771 x3 bonus. Both false: the earlier substitution.
+constexpr bool kAiWeightBarrelGatesBound = false;
+constexpr bool kAiPlaneAttackerWeightBound = false;
+
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
 // leader's class weight out of the tuning block, read at 00A2EB97/00A2EBA2
@@ -453,6 +467,36 @@ AiDamageTermsCensus& ai_damage_terms_census() {
     return census;
 }
 
+// Packet cc9_plane_attacker_weight: the type queries the model asks, by code,
+// and how often the unit's own kind test answers true (whether or not the
+// answer is used); the plane arm's options; the walk's gate refusals.
+struct AiPlaneWeightCensus {
+    unsigned long long queries[0x30]{};
+    unsigned long long true_answers[0x30]{};
+    unsigned long long stub_divergences{0};   // answered false, the kind test says true
+    unsigned long long plane_arm_calls{0};
+    unsigned long long plane_arm_no_options{0};
+    unsigned long long plane_arm_loadout{0};
+    unsigned long long options[3]{};          // kamikaze, strafe, dogfight
+    unsigned long long positive_options[3]{};
+    double option_value_sum[3]{};
+    unsigned long long gate_refusals[0x14]{};
+    unsigned long long gate_admits{0};
+    unsigned long long platform_refusals{0};
+    unsigned long long plane_platforms{0};
+    unsigned long long plane_platforms_pilot{0};
+    unsigned long long plane_platforms_tail{0};
+    unsigned long long plane_platforms_zero_reload{0};
+    unsigned long long plane_platforms_no_bullet{0};
+    unsigned long long term_factor_nonfinite{0};
+    unsigned long long term_accuracy_zero{0};
+    unsigned long long term_damage_zero{0};
+};
+AiPlaneWeightCensus& ai_plane_weight_census() {
+    static AiPlaneWeightCensus census;
+    return census;
+}
+
 // 0099A170's inputs for a plane the AI tick has just ordered, answered from
 // GameUnitsHost as ScriptOrderAttackCommandHost does for the script orders.
 class AiTickMovetoBotHost final : public bsp::AttackCommandHost {
@@ -501,9 +545,14 @@ public:
     // The target group is a callback because 009FE270 asks the target itself,
     // so the answer cannot be baked into the published row.
     using TargetGroupFn = std::function<bsp::AiAccuracyTargetGroup(std::size_t)>;
+    // The unit's own kind test (vtable[5Ch]), standing in for the class
+    // descriptor's vtable[+18h] (packet cc9_plane_attacker_weight).
+    using KindFn = std::function<bool(std::size_t, int)>;
     AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning,
-                         const bsp::AiTuningBlock& block, TargetGroupFn group)
-        : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)) {}
+                         const bsp::AiTuningBlock& block, TargetGroupFn group,
+                         KindFn kind = KindFn())
+        : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)),
+          kind_(std::move(kind)) {}
 
     // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
     // skipping it changes no answer; the census counts the queries instead.
@@ -513,9 +562,21 @@ public:
     // ForcedTargetWeightValues tail, which this process does not run.
     bool forced_rule_weight(const bsp::AiTargetWeightKey&, float&) override { return false; }
     const bsp::AiModeTuning& mode_tuning() override { return tuning_; }
-    // Entity vtable +18h and +1Ch. Neither is the +5Ch class test, and neither
-    // has a producer here, so the model takes its no-bonus arms.
-    bool entity_is_type(const void*, int) override { return false; }
+    // Entity vtable +18h and +1Ch. +18h is the class descriptor's type query;
+    // packet cc9_plane_attacker_weight answers it with the unit's own kind test
+    // (LABELLED) while either of its switches is ON. OFF it stays the stub's
+    // false, and the census counts each false the kind test would answer true.
+    bool entity_is_type(const void* entity, int code) override {
+        const bool real = kind_ ? kind_(index_of(entity), code) : false;
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        if (code >= 0 && code < 0x30) {
+            ++c.queries[code];
+            if (real) ++c.true_answers[code];
+        }
+        if (kAiWeightBarrelGatesBound || kAiPlaneAttackerWeightBound) return real;
+        if (real) ++c.stub_divergences;
+        return false;
+    }
     int entity_kind(const void*) override { return 0; }
 
     float target_hit_points(const void* target) override {
@@ -587,6 +648,95 @@ public:
     }
     float water_damage_scale() override { return facts_.water_damage_scale; }
     bool damage_terms_bound() override { return kAiTargetWeightDamageTermsBound; }
+
+    // Packet cc9_plane_attacker_weight.
+    bool barrel_target_gates_bound() override { return kAiWeightBarrelGatesBound; }
+    bool barrel_platform_admitted(const void* subsystem, int barrel) override {
+        // 00A09362 +38h != -1 holds for every row (a platform with a Gun[1]
+        // takes it as its DefaultGun at 0096149E); 00A0936C +18h == 1 and
+        // 00A093A4's 25h refusal are the published platform fields.
+        const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
+        const bool ok = b != nullptr && b->platform_gun_count == 1 && !b->device_bomb_platform;
+        if (!ok) ++ai_plane_weight_census().platform_refusals;
+        return ok;
+    }
+    bool plane_arm_bound() override { return kAiPlaneAttackerWeightBound; }
+    // The attacker class's +94h/+98h platforms, one published row each.
+    // LABELLED: a platform whose device has no Function category, or whose
+    // bullet never resolved, has no row, and the null slots of a gapped
+    // Platforms table are not kept; neither changes which options are built.
+    int plane_platform_count(const void* attacker) override {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(attacker));
+        return row != nullptr ? static_cast<int>(row->barrels.size()) : 0;
+    }
+    bool plane_platform(const void* attacker, int index,
+                        bsp::AiPlanePlatformFacts& out) override {
+        const GameAiWeaponFacts::Barrel* b = barrel_at(attacker, index);
+        if (b == nullptr) return false;
+        out.present = true;
+        out.has_default_gun = true;
+        out.gun_count = b->platform_gun_count;
+        out.device_is_gun = !b->device_bomb_platform;
+        out.device_function = b->category;
+        out.pilot_fires = b->platform_pilot_fires;
+        out.reload = b->reload;
+        out.bullet.present = b->bullet_sub_type != 0;
+        out.bullet.sub_type = b->bullet_sub_type;
+        out.bullet.damage_min = b->damage_min;
+        out.bullet.damage_max = b->damage_max;
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        ++c.plane_platforms;
+        if (out.pilot_fires) ++c.plane_platforms_pilot;
+        if (out.device_function == bsp::kAiPlaneTailGunFunction) ++c.plane_platforms_tail;
+        if (!(out.reload > 0.0f)) ++c.plane_platforms_zero_reload;
+        if (!out.bullet.present) ++c.plane_platforms_no_bullet;
+        return true;
+    }
+    bool kamikaze_bullet(const void* attacker, bsp::AiPlaneBulletFacts& out) override {
+        const GameAiWeaponFacts::Unit* row = facts_.row(index_of(attacker));
+        if (row == nullptr || !row->kamikaze.present) return false;
+        out.present = true;
+        out.sub_type = row->kamikaze.sub_type;
+        out.damage_min = row->kamikaze.damage_min;
+        out.damage_max = row->kamikaze.damage_max;
+        out.blast_min = row->kamikaze.blast_min;
+        out.blast_max = row->kamikaze.blast_max;
+        return true;
+    }
+    // 009FE270 by sub-type, the lookup barrel_accuracy makes for a barrel.
+    float bullet_accuracy(const void*, int sub_type, const void* target) override {
+        if (!group_) return 0.0f;
+        bool resolved = false;
+        const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
+            sub_type, group_(index_of(target)), resolved);
+        if (!resolved || offset == 0u) return 0.0f;
+        return block_.at(offset);
+    }
+    void note_plane_option(std::uint32_t descriptor, float value) override {
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        const int slot = descriptor == bsp::kAiPlaneOptionKamikaze ? 0
+                         : descriptor == bsp::kAiPlaneOptionStrafe ? 1 : 2;
+        ++c.options[slot];
+        if (value > 0.0f) ++c.positive_options[slot];
+        c.option_value_sum[slot] += value;
+    }
+    void note_plane_option_terms(float factor, double accuracy, float damage) override {
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        if (!std::isfinite(factor)) ++c.term_factor_nonfinite;
+        if (!(accuracy > 0.0)) ++c.term_accuracy_zero;
+        if (!(damage > 0.0f)) ++c.term_damage_zero;
+    }
+    void note_plane_arm(bool loadout_arm, bool no_options) override {
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        ++c.plane_arm_calls;
+        if (loadout_arm) ++c.plane_arm_loadout;
+        if (no_options) ++c.plane_arm_no_options;
+    }
+    void note_barrel_gate(int sub_type, bool admitted) override {
+        AiPlaneWeightCensus& c = ai_plane_weight_census();
+        if (admitted) ++c.gate_admits;
+        else if (sub_type >= 0 && sub_type < 0x14) ++c.gate_refusals[sub_type];
+    }
     void note_damage_terms_barrel(bool refused, float per_hit) override {
         AiDamageTermsCensus& c = ai_damage_terms_census();
         ++c.barrels;
@@ -610,6 +760,7 @@ private:
     const bsp::AiModeTuning& tuning_;
     const bsp::AiTuningBlock& block_;
     TargetGroupFn group_;
+    KindFn kind_;
 };
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
@@ -687,6 +838,12 @@ std::map<std::size_t, int> g_unit_owner_players;
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {
     g_scene_slot_parties = parties;
     g_scene_slot_parties_published = true;
+}
+
+int scene_slot_party(int slot, int fallback) noexcept {
+    if (!g_scene_slot_parties_published || slot < 0 || slot >= 8) return fallback;
+    const int party = g_scene_slot_parties[static_cast<std::size_t>(slot)];
+    return party >= 0 ? party : fallback;
 }
 
 void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int>>& owners) {
@@ -984,6 +1141,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return enabled;
     }
 
+    // Packet cc9_plane_attacker_weight: every 00A0F970 call whose own group is
+    // led by a squadron or plane, with each candidate's value. Env-gated
+    // (BSP_AI_GROUP_VALUE_TRACE=1), observation only.
+    static bool group_value_trace_enabled() {
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_AI_GROUP_VALUE_TRACE") != 0) return false;
+            const bool on = text != nullptr && text[0] == '1';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
     static bool ai_weight_model_enabled() {
         // _dupenv_s rather than getenv, which is a /W4 /WX error under MSVC;
         // the same form native_frame_job_lifetime.cpp already uses.
@@ -1103,6 +1275,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiModeTuning record{};
         record.max_target_kill_ratio = tuning.at(0x05Cu);
         record.damage_calc_time = tuning.at(0x060u);
+        // Packet cc9_plane_attacker_weight: the plane arm's record +58h and
+        // +78h..+94h. The tuning block carries none of them, and this
+        // installation's highlvlaiglobals.lua (mtime 2024-07-13) authors the
+        // same values in all seven mode tables (lines 35 and 55-57 of the first;
+        // seven identical rows each): DogfightEquipmentPenalty 0.6,
+        // DogfightParams {8, 3, 4}, StrafeParams {18, 8, 16}, TailGunParams {15, 8}.
+        record.dogfight_equipment_penalty = 0.6f;
+        record.dogfight_params_1 = 8.0f;
+        record.dogfight_params_2 = 3.0f;
+        record.dogfight_params_3 = 4.0f;
+        record.strafe_params_1 = 18.0f;
+        record.strafe_params_2 = 8.0f;
+        record.strafe_params_3 = 16.0f;
+        record.tail_gun_params_1 = 15.0f;
+        record.tail_gun_params_2 = 8.0f;
         return record;
     }
 
@@ -1859,12 +2046,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             && attacker_row->inputs_complete && target_row->inputs_complete) {
             bsp::AiTargetWeightKey key;
             key.attacker = handle(attacker_unit);
-            key.attacker_class = units.unit_class_id(attacker_unit);
+            // 00A0F83C reads record+10h, which 00A04560 always leaves 0; only
+            // the plane arm reads it (packet cc9_plane_attacker_weight).
+            key.attacker_class = kAiPlaneAttackerWeightBound ? 0
+                                 : units.unit_class_id(attacker_unit);
             key.target = handle(target);
-            key.target_is_neutral = 0;   // target record +1Ch, no producer here
+            // Target record +1Ch, 00A04568's side >= 2. Only the gates read it,
+            // so it is published with them (packet cc9_plane_attacker_weight).
+            key.target_is_neutral =
+                (kAiWeightBarrelGatesBound && units.unit_side_0054(target) >= 2) ? 1 : 0;
             const bsp::AiModeTuning record = mode_tuning_record();
             AiWeightModelBinding model(facts, record, tuning,
-                [this](std::size_t unit) { return accuracy_target_group(unit); });
+                [this](std::size_t unit) { return accuracy_target_group(unit); },
+                [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); });
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
             ai_damage_terms_census().close_weight_sum += in.base_weight;
             ++summary.weight_model_runs;
@@ -1908,7 +2102,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // docs/MISSION_OBJECTIVES.md for why they hold no unit on these
         // missions, which makes this false throughout.
         const int attacker_side = units.unit_side_0054(attacker_unit);
-        const int local_party = 0;   // [00E188A8]+18CCh, slot 0's +28h
+        // [00E188A8]+18CCh, slot 0's +28h (00A0F875 / 00A0F87B; section 125).
+        const int local_party = local_player_party();
         const int objective_set = attacker_side == local_party ? 0 : 4;
         const std::vector<std::size_t> set =
             game_objective_sets().units_in_slot(objective_set);
@@ -4754,12 +4949,14 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.attacker = handle(a.unit);
             // a+10h: 0 for a ship record (00A04650); the model reads it only
             // as a memo key, and this binding keeps no memo.
-            key.attacker_class = units.unit_class_id(a.unit);
+            key.attacker_class = kAiPlaneAttackerWeightBound ? 0   // record+10h
+                                 : units.unit_class_id(a.unit);
             key.target = handle(t.unit);
             key.target_is_neutral = t.third_party ? 1 : 0;
             const bsp::AiModeTuning record = mode_tuning_record();
             AiWeightModelBinding model(facts, record, tuning,
-                [this](std::size_t unit) { return accuracy_target_group(unit); });
+                [this](std::size_t unit) { return accuracy_target_group(unit); },
+                [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); });
             weight = bsp::ai_target_weight_00a08460(model, key);
             ai_damage_terms_census().group_weight_sum += weight;
             ++group_value_census.model_pairs;
@@ -4847,6 +5044,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         float maxes_sum = 0.0f;
         const float result = compose_attack_value_00a0c650(attackers, targets, attack_sum, maxes_sum);
         if (result == 0.0f) ++group_value_census.zero_results;
+        if (group_value_trace_enabled() &&
+            (is_squadron(own->members.front()) ||
+             units.unit_is_kind_of(proxy(own->members.front()), 0x0F))) {
+            log.notef("  ai group value trace t=%.2f own_lead=%s own_team=%d own_members=%zu "
+                      "target_lead=%s target_team=%d target_members=%zu value=%.4f sum=%.4f "
+                      "maxes=%.4f leader_dist=%.0f",
+                      static_cast<double>(clock_seconds), unit_name(own->members.front()).c_str(),
+                      own->team, own->members.size(), unit_name(target->members.front()).c_str(),
+                      target->team, target->members.size(), static_cast<double>(result),
+                      static_cast<double>(attack_sum), static_cast<double>(maxes_sum),
+                      std::sqrt(static_cast<double>(squared_planar_distance(own, target))));
+        }
         const float population = static_cast<float>(target->members.size());
         if (group_value_census.samples < kGroupValueSampleLimit) {
             ++group_value_census.samples;
@@ -5841,6 +6050,36 @@ void GameAiCoordinatorHost::report() {
             "barrel walk this process projects, and a plane attacker into 00A0861F..00A09222, "
             "which it does not)",
             host.census_plane_attacker, host.census_other_attacker);
+        {
+            const AiPlaneWeightCensus& c = ai_plane_weight_census();
+            host.log.notef("summary mission ai plane weight gates=%d plane_arm=%d "
+                "stub_divergences=%llu plane_arm_calls=%llu no_options=%llu loadout_arm=%llu "
+                "kamikaze=%llu/%llu(%.1f) strafe=%llu/%llu(%.1f) dogfight=%llu/%llu(%.1f) "
+                "gate_admits=%llu platform_refusals=%llu (00A08460 vtable[+18h] queries; "
+                "options counted positive/all(sum); packet cc9_plane_attacker_weight)",
+                kAiWeightBarrelGatesBound ? 1 : 0, kAiPlaneAttackerWeightBound ? 1 : 0,
+                c.stub_divergences, c.plane_arm_calls, c.plane_arm_no_options,
+                c.plane_arm_loadout, c.positive_options[0], c.options[0], c.option_value_sum[0],
+                c.positive_options[1], c.options[1], c.option_value_sum[1],
+                c.positive_options[2], c.options[2], c.option_value_sum[2], c.gate_admits,
+                c.platform_refusals);
+            host.log.notef("  ai plane weight platforms seen=%llu pilot=%llu tail=%llu "
+                "zero_reload=%llu no_bullet=%llu | gun option terms factor_nonfinite=%llu "
+                "accuracy_zero=%llu damage_zero=%llu", c.plane_platforms,
+                c.plane_platforms_pilot, c.plane_platforms_tail, c.plane_platforms_zero_reload,
+                c.plane_platforms_no_bullet, c.term_factor_nonfinite, c.term_accuracy_zero,
+                c.term_damage_zero);
+            for (int code = 0; code < 0x30; ++code) {
+                if (c.queries[code] == 0) continue;
+                host.log.notef("  ai plane weight type query code=%02Xh queries=%llu "
+                    "kind_true=%llu", code, c.queries[code], c.true_answers[code]);
+            }
+            for (int sub = 0; sub < 0x14; ++sub) {
+                if (c.gate_refusals[sub] == 0) continue;
+                host.log.notef("  ai plane weight gate refusals subtype=%02Xh count=%llu",
+                    sub, c.gate_refusals[sub]);
+            }
+        }
         for (const std::pair<const int, unsigned long long>& entry :
              host.unresolved_by_attacker_class) {
             host.log.notef("  ai target weight unresolved_bullet_class attacker=%02Xh(%s) "

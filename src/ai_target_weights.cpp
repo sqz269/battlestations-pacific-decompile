@@ -283,6 +283,159 @@ float ai_expected_hit_damage_009fe200(float low, float high, float armour,
     return result > hit_points ? hit_points : result;
 }
 
+AiBarrelTargetGates ai_barrel_target_gates(bool neutral, bool plane, bool torpedo_boat,
+                                           bool landing_ship, bool ship,
+                                           bool submarine) noexcept {
+    AiBarrelTargetGates g;
+    if (neutral) {
+        return g; // 00A0924C / 00A09287 / ...: every flag cleared
+    }
+    g.soft = plane || torpedo_boat || landing_ship;  // 00A09253..00A09280
+    g.flak = plane;                                  // 00A09293..00A092A2
+    g.artillery = !plane || submarine;               // 00A092B5..00A092D3
+    g.torpedo = ship && !submarine;                  // 00A092E6..00A09304
+    g.depth = submarine;                             // 00A09317..00A09324
+    return g;
+}
+
+bool ai_barrel_gate_admits(const AiBarrelTargetGates& g, int sub_type) noexcept {
+    switch (sub_type) {
+        case 0x0A: return g.torpedo;                 // 00A093E1
+        case 0x04: case 0x05: case 0x06: case 0x07:
+        case 0x12: return g.artillery;               // 00A093ED..00A09404 -> 00A09438
+        case 0x01: case 0x02: case 0x03: return g.soft;  // 00A09406..00A09415
+        case 0x0B: return g.depth;                   // 00A0941C
+        case 0x10: return g.flak;                    // 00A09428
+        default: return false;                       // 00A0942B JNZ 00A095B7
+    }
+}
+
+namespace {
+
+// tuning+10h / p1 * p2, stored to a float (00A08C4C), then / the entry's +2Ch
+// (00A08C54), stored again.
+float ai_plane_option_factor(float damage_calc_time, float p1, float p2, float reload) {
+    const float scaled = static_cast<float>(static_cast<double>(damage_calc_time) / p1 * p2);
+    return static_cast<float>(static_cast<double>(scaled) / reload);
+}
+
+} // namespace
+
+std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host,
+                                                   const AiTargetWeightKey& key,
+                                                   const AiModeTuning& tuning) {
+    std::vector<AiPlaneOption> options;
+    const bool target_plane = host.entity_is_type(key.target, kAiTypeQueryAttackerModel); // 00A08628
+    const bool target_sub = host.entity_is_type(key.target, kAiTypeSubmarine);            // 00A08637
+    if (key.attacker_class > 0) {
+        // 00A08655..00A08A8E, the loadout arm (torpedo, bomb, depth charge,
+        // paratrooper, rocket and dive options from 009552E0's list). Not
+        // projected: the 00A04560 record path passes +10h = 0 and never gets here.
+        host.note_plane_arm(true, true);
+        return options;
+    }
+    bool gun_walk = key.target_is_neutral != 1; // [ESP+11h], 00A08641
+    if (target_sub) {
+        gun_walk = false; // 00A08A9A
+    } else if (host.entity_is_type(key.attacker, kAiTypeKamikazePlane) && !target_plane) {
+        // 00A08ABB..00A08B13: one kamikaze option, factor 1.0 [00D7A24C].
+        AiPlaneOption o;
+        o.descriptor = kAiPlaneOptionKamikaze;
+        o.factor = 1.0f;
+        options.push_back(o);
+        gun_walk = false;
+    }
+    if (gun_walk) {
+        // 00A08B36..00A08D40, the attacker class's platforms in slot order.
+        bool pilot_option = false;  // [ESP+12h], cleared at 00A08B26
+        bool tail_seen = false;     // [ESP+1Fh], cleared at 00A08B2B
+        std::size_t count = 0;      // EBX
+        const int platforms = host.plane_platform_count(key.attacker);
+        for (int i = 0; i < platforms; ++i) {
+            AiPlanePlatformFacts p;
+            if (!host.plane_platform(key.attacker, i, p) || !p.present) continue;
+            if (!p.has_default_gun || p.gun_count != 1 || !p.device_is_gun) continue;
+            if (!p.bullet.present) continue;
+            if (p.pilot_fires) {
+                // 00A08BF3 CMOVNZ EBX,[ESP+14h]: once a tail gun was seen the
+                // pilot option overwrites from slot 0 ([ESP+14h] holds 0).
+                if (tail_seen) count = 0;
+                options.resize(count + 1); // 00A08C01 -> 00A07A60
+                pilot_option = true;
+                AiPlaneOption& o = options[count];
+                o.bullet = p.bullet;
+                if (target_plane) {
+                    o.descriptor = kAiPlaneOptionDogfight; // 00A08C38, +28h/+2Ch
+                    o.factor = ai_plane_option_factor(tuning.damage_calc_time,
+                                                      tuning.dogfight_params_1,
+                                                      tuning.dogfight_params_2, p.reload);
+                } else {
+                    o.descriptor = kAiPlaneOptionStrafe; // 00A08C6C, +34h/+38h
+                    o.factor = ai_plane_option_factor(tuning.damage_calc_time,
+                                                      tuning.strafe_params_1,
+                                                      tuning.strafe_params_2, p.reload);
+                }
+                ++count;
+            } else if (p.device_function == kAiPlaneTailGunFunction) {
+                tail_seen = true; // 00A08CAE, set before the two tests
+                if (target_plane && !pilot_option) {
+                    options.resize(count + 1);
+                    AiPlaneOption& o = options[count];
+                    o.bullet = p.bullet;
+                    o.descriptor = kAiPlaneOptionDogfight; // 00A08D1C, +40h/+44h
+                    o.factor = ai_plane_option_factor(tuning.damage_calc_time,
+                                                      tuning.tail_gun_params_1,
+                                                      tuning.tail_gun_params_2, p.reload);
+                    ++count;
+                }
+            }
+        }
+        options.resize(count);
+    }
+    // 00A08D4F: a 14h class (recon) keeps no option.
+    if (host.entity_is_type(key.attacker, kAiTypeQueryAttackerNoBonus)) options.clear();
+    host.note_plane_arm(false, options.empty());
+    return options;
+}
+
+float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightKey& key,
+                            const AiModeTuning& tuning, float target_hit_points,
+                            float target_armour) {
+    const std::vector<AiPlaneOption> options = ai_plane_attack_options(host, key, tuning);
+    const bool loadout = key.attacker_class > 0; // [ESP+2Bh]
+    float total = 0.0f;                          // [ESP+24h]
+    for (const AiPlaneOption& o : options) {
+        float value = 0.0f;
+        if (o.descriptor == kAiPlaneOptionKamikaze) {
+            // 00A08DC8..00A08E74: class+210h's blast pair, 009FE270, x +10h.
+            AiPlaneBulletFacts b;
+            if (host.kamikaze_bullet(key.attacker, b) && b.present) {
+                const float damage = ai_expected_hit_damage_009fe200(
+                    b.blast_min, b.blast_max, target_armour, target_hit_points);
+                const double accuracy = host.bullet_accuracy(key.attacker, b.sub_type, key.target);
+                value = static_cast<float>(accuracy * o.factor * damage);
+            }
+        } else if (o.descriptor == kAiPlaneOptionStrafe ||
+                   o.descriptor == kAiPlaneOptionDogfight) {
+            // 00A08F20..00A08FA8 / 00A08FBD..00A09045.
+            const double accuracy =
+                host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
+            const float damage = ai_expected_hit_damage_009fe200(
+                o.bullet.damage_min, o.bullet.damage_max, target_armour, target_hit_points);
+            value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
+            host.note_plane_option_terms(o.factor, accuracy, damage);
+            if (loadout) {
+                // 00A08F97 x tuning+8h, DogfightEquipmentPenalty.
+                value = static_cast<float>(static_cast<double>(value) *
+                                           tuning.dogfight_equipment_penalty);
+            }
+        }
+        host.note_plane_option(o.descriptor, value);
+        total = static_cast<float>(static_cast<double>(total) + value); // 00A09209
+    }
+    return total;
+}
+
 void ai_load_globals_00a335d0(AiGlobalsLoaderHost& host) {
     host.run_script(kAiGlobalsInitScript); // 00A33600
     host.run_script(kAiGlobalsDataScript); // 00A3365C
@@ -362,8 +515,11 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
 
     const AiModeTuning& tuning = host.mode_tuning(); // 00A08574
     const float target_hit_points = host.target_hit_points(key.target); // 00A08593
-    const bool attacker_model_type =
-        host.entity_is_type(key.attacker, kAiTypeQueryAttackerModel); // 00A085AD
+    // 00A085AD. Packet cc9_plane_attacker_weight: the branch at 00A08619 is
+    // taken only while the plane arm is bound; unbound, a plane attacker keeps
+    // the earlier substitution and walks its barrels like a ship.
+    const bool attacker_is_plane = host.entity_is_type(key.attacker, kAiTypeQueryAttackerModel);
+    const bool attacker_model_type = host.plane_arm_bound() && attacker_is_plane;
 
     // 00A085A8 +4Ch into two frame slots; 00A085F8 overwrites one of them with
     // vtable[+24h] when the target class answers vtable[+18h](6).
@@ -374,6 +530,18 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
     float total = 0.0f;
     if (!attacker_model_type) {
         // 00A09228..00A09733. The barrel loop and the water terms.
+        // 00A0924C..00A0932B, the per-target gates, bound with the type queries.
+        // The queries are asked in both states (the image asks them), so an
+        // unbound host's census still sees each one; only the bound host uses
+        // the answers.
+        const bool gated = host.barrel_target_gates_bound();
+        const AiBarrelTargetGates gates = ai_barrel_target_gates(
+            key.target_is_neutral == 1,
+            host.entity_is_type(key.target, kAiTypeQueryAttackerModel),
+            host.entity_is_type(key.target, kAiTypeTorpedoBoat),
+            host.entity_is_type(key.target, kAiTypeLandingShip),
+            host.entity_is_type(key.target, kAiTypeShip),
+            host.entity_is_type(key.target, kAiTypeSubmarine));
         float capture_accumulator = 0.0f;
         const int subsystems = host.subsystem_count(key.attacker);
         for (int index = 0; index < subsystems; ++index) {
@@ -392,6 +560,15 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
             float best = 0.0f;
             const int barrels = host.barrel_count(subsystem);
             for (int barrel = 0; barrel < barrels; ++barrel) {
+                if (gated) {
+                    // 00A09362..00A093A8 per platform, then 00A093E1..00A0943D
+                    // per bullet sub-type.
+                    if (!host.barrel_platform_admitted(subsystem, barrel)) continue;
+                    const int sub_type = host.barrel_sub_type(subsystem, barrel);
+                    const bool admitted = ai_barrel_gate_admits(gates, sub_type);
+                    host.note_barrel_gate(sub_type, admitted);
+                    if (!admitted) continue;
+                }
                 float low = 0.0f;
                 float high = 0.0f;
                 float armour = 0.0f;
@@ -438,7 +615,11 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
         total += (terms ? host.water_damage_scale() : 1.0f) * capture_accumulator; // 00A09629
         total = ai_clamp_total_damage(total, target_hit_points, tuning.max_target_kill_ratio);
     }
-    // The attacker-is-type-0Fh branch at 00A0861F..00A09222 is not projected.
+    else {
+        // 00A0861F..00A09222, projected for the no-loadout arm only.
+        total = ai_plane_attack_total(host, key, tuning, target_hit_points,
+                                      host.target_armour(key.target));
+    }
 
     const bool bonus = attacker_model_type &&
                        !host.entity_is_type(key.attacker, kAiTypeQueryAttackerNoBonus);

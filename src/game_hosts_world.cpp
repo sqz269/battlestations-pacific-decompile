@@ -27,6 +27,8 @@
 #include <string>
 #include <vector>
 
+#include "bsp/game_hosts_ai.hpp"
+
 namespace bsp::game {
 
 namespace {
@@ -46,7 +48,7 @@ bool game_local_recon_triple(const GameUnitsHost& units, int triple,
     if constexpr (kLocalPlayerUnitListRuleBound) {
         // [game+18CCh + game+18ECh*4], the local player's slot, whose +28h
         // (the recon slot's team) is the local party.
-        return gunnery->recon_triple_units(kLocalPlayerParty, triple, out);
+        return gunnery->recon_triple_units(local_player_party(), triple, out);
     }
     if (!units.controlled_bound()) return false;
     const int side = units.unit_side_0054(units.controlled_index());
@@ -374,7 +376,7 @@ void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
             const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
             if (pass.passes != host.seen_recon_passes) {
                 host.seen_recon_passes = pass.passes;
-                if (pass.side_covered(kLocalPlayerParty) && host.gate.already_built) {
+                if (pass.side_covered(local_player_party()) && host.gate.already_built) {
                     host.gate.already_built = false;
                     ++host.summary.list_clears_recon;
                     host.done("UnitLists::latch_clear_recon_rebuild", 0x00807995u);

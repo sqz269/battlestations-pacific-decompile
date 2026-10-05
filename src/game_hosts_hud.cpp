@@ -1497,7 +1497,8 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     // 006450B9..006450BF: [unit+54h] == [[game+18CCh]+28h]. SUBSTITUTION
     // (labelled, as game_hosts_ai.cpp does for the same read): the local
     // player's side record is party 0, and unit+54h is the authored party.
-    in.team_matches_owner = units->unit_side_0054(unit) == 0;
+    in.team_matches_owner =
+        units->unit_side_0054(unit) == bsp::game::local_player_party();  // section 125
     // Packet cc9_squadron_slot_class: the unit's own class test, which for a
     // squadron's fused slot is PlaneSquadronGen's (18h) when bound.
     in.is_kind_2 = selection_is_kind_of(unit, bsp::kUnitTraitSelectableBase);

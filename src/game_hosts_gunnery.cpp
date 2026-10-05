@@ -1091,6 +1091,7 @@ struct GameGunneryHost::Impl {
         float hull_height{0.0f};
         float armour{0.0f};
         float underwater_armour{0.0f};   // class vtable[24h] 009635D0, +6B4h
+        int kamikaze_bullet_class{-1};   // class+210h KamikazeBulletClass
         // Packet cc9_torpedo_stock: class+7A0h MaxTorpedoStock (0 when absent,
         // IntegerOrZero), and the spare unit+104Ch: -1 from pass B (00823517),
         // set by 0081F8B0 at pass C.
@@ -3442,6 +3443,9 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.nfail = nf\n"
         "    f.hp = num(row.HP, 1000) or 0\n"
         "    f.armour = num(row.Armour, 1000) or 0\n"
+        // Packet cc9_plane_attacker_weight: class+210h, KamikazeBulletClass,
+        // which 00A08DEE reads for the plane arm's kamikaze option.
+        "    f.kbc = num(row.KamikazeBulletClass, 1) or -1\n"
         "    f.uwarmour = num(row.UnderwaterArmour, 1000) or -1\n"
         "    f.length = num(row.Length, 1000) or 0\n"
         "    f.width = num(row.Width, 1000) or 0\n"
@@ -3460,6 +3464,14 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "            f[q .. 'key'] = k\n"
         "            f[q .. 'dev'] = p.Gun[1]\n"
         "            f[q .. 'cat'] = cat(dev.Function)\n"
+        // Packet cc9_plane_attacker_weight: platform +0Ch PilotFires, +18h the
+        // Gun list's size, and the device's 25h answer (MBombPlatform and its
+        // MMultipleBombPlatform child), which 00A08460's two walks test.
+        "            f[q .. 'pf'] = (p.PilotFires == true) and 1 or 0\n"
+        "            local ng = 0\n"
+        "            for gi = 1, 16 do if type(p.Gun[gi]) == 'number' then ng = ng + 1 end end\n"
+        "            f[q .. 'ng'] = ng\n"
+        "            f[q .. 'bp'] = (dev.Type == 'BombPlatform' or dev.Type == 'MultiBombPlatform') and 1 or 0\n"
         "            f[q .. 'gcls'] = (dev.Type == 'Rapid_Turning_Gun' and 36)\n"
         "              or (dev.Type == 'Single_Turning_Gun' and 39) or 0\n"
         "            f[q .. 'hrs'] = num(dev.HorzRotSpeed, 1000) or 0\n"
@@ -3673,6 +3685,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         state.health = state.max_health;
         state.max_torpedo_stock = flat(type_id, "torpstock", 0);  // packet cc9_torpedo_stock
         state.armour = flat_scaled(type_id, "armour", kMilliScale, 0.0f);
+        state.kamikaze_bullet_class = flat(type_id, "kbc", -1);
         // Ship class vtable[24h] = 009635D0 (+6B4h UnderwaterArmour); every other
         // family's slot is 004407A0 (Armour). Labelled: an absent key keeps Armour.
         {
@@ -3787,6 +3800,9 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             char label[32];
             std::snprintf(label, sizeof(label), "Platform %d", gun.platform_key);
             gun.platform_name = label;
+            gun.platform_pilot_fires = flat(type_id, make("pf"), 0) != 0;
+            gun.platform_gun_count = flat(type_id, make("ng"), 1);
+            gun.device_bomb_platform = flat(type_id, make("bp"), 0) != 0;
             gun.speeds.horz = flat_scaled(type_id, make("hrs"), kMilliScale, 0.0f);
             gun.speeds.vert = flat_scaled(type_id, make("vrs"), kMilliScale, 0.0f);
             gun.barrel_num = std::max(1, flat(type_id, make("barrels"), 1));
@@ -10336,6 +10352,19 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
         // already carries Armour for every other family.
         row.armour = state.armour;
         row.underwater_armour = state.underwater_armour;
+        // Packet cc9_plane_attacker_weight: class+210h, the kamikaze option's
+        // bullet (00A08DEE). LABELLED: the sub-type is the Type string's
+        // mapping before 006E9968's rewrite.
+        if (state.kamikaze_bullet_class >= 0) {
+            if (const GameBulletClassRow* b = bullet(state.kamikaze_bullet_class)) {
+                row.kamikaze.present = true;
+                row.kamikaze.sub_type = bsp::weapon_class_sub_type_for_lua_type(b->type);
+                row.kamikaze.damage_min = b->damage_min;
+                row.kamikaze.damage_max = b->damage_max;
+                row.kamikaze.blast_min = b->blast_damage_min;
+                row.kamikaze.blast_max = b->blast_damage_max;
+            }
+        }
     }
     // 00424C40 +3B0h, WaterTickDamage (ShipGlobals, one value for every class).
     facts.water_damage_scale = damage_control.empty() ? 0.0f : damage_control.front().water_tick;
@@ -10381,7 +10410,15 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
             barrel.damage_low = std::max(b->damage_min, b->blast_damage_min);
             barrel.damage_high = std::max(b->damage_max, b->blast_damage_max);
             barrel.water_damage = b->water_damage;
+            // Packet cc9_plane_attacker_weight: the plane arm reads +ACh/+B0h
+            // unmaxed (00A08F35 / 00A08F20).
+            barrel.damage_min = b->damage_min;
+            barrel.damage_max = b->damage_max;
         }
+        barrel.category = gun.category;
+        barrel.platform_pilot_fires = gun.platform_pilot_fires;
+        barrel.platform_gun_count = gun.platform_gun_count;
+        barrel.device_bomb_platform = gun.device_bomb_platform;
         {
             // Resolvable is a property of the sub-type alone: every group of a
             // resolvable sub-type answers either an offset or a legitimate

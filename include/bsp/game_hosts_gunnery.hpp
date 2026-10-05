@@ -155,6 +155,11 @@ struct GameGunRow {
     std::string unit_name;
     int platform_key{0};              // the Lua `Platforms` key
     std::string platform_name;        // "Name"
+    // Packet cc9_plane_attacker_weight: platform +0Ch PilotFires, +18h the Gun
+    // list's size, and whether the device answers 25h (a bomb platform).
+    bool platform_pilot_fires{false};
+    int platform_gun_count{1};
+    bool device_bomb_platform{false};
     int device_class{-1};
     std::string device_name;
     std::string function;
