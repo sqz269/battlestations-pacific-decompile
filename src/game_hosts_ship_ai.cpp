@@ -147,6 +147,19 @@ inline constexpr bool kShipAiApproachLandingSweepBound = true;
 // its attackmove back to the director (009E88C1) only when every other member
 // is kind 9 too (009E8867..009E889C). False: no group, always hand back.
 inline constexpr bool kShipAiAttackMoveGroupHandBackBound = true;
+// Packet cc9_approach_leader_answers, SHIP_AI_OPEN_ITEMS section 135. True: the
+// approach's two other 00778890 reads (the standoff choice 009E6FA0 / 009E70A7
+// and the mode-4 speed limit 009E6C45) answer the host's formation leader.
+// False: not a leader.
+inline constexpr bool kShipAiApproachLeaderAnswersBound = true;
+// Packet cc9_path_limit_default, SHIP_AI_OPEN_ITEMS section 136. True: 009DA4FB's
+// [00CF58EC] is the image's .rdata 1.0e7f. False: 0 (the old no-producer label).
+inline constexpr bool kShipAiPathLimitDefaultBound = true;
+// Packet cc9_state_enter_bytes, SHIP_AI_OPEN_ITEMS section 137. True: entering
+// `stop` sets its state+8h making-way byte (009DAC70) and entering `moveonpath`
+// clears its announce byte (009DB040), as the leaf vtables' slot 4 do. False:
+// neither enter runs (the byte starts false and is only cleared by the steps).
+inline constexpr bool kShipAiStateEnterBytesBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -2152,8 +2165,12 @@ struct GameShipAiHost::Impl {
             }
             return;
         }
-        // 009F4F1D..009F50B5, 007788B0's arm. 00863780(1) on unit+6DCh is the
-        // weapon side effect the gunnery host owns (recorded by the caller).
+        // 009F4F1D..009F50B5, 007788B0's arm. 00863780(1) on [unit+6DCh] at
+        // 009F4F2B (no null test on the pass here; the gunnery host checks it).
+        // Packet cc9_gunnery_pass_byte_7d.
+        if (gunnery_draws != nullptr) {
+            gunnery_draws->set_pass_byte_7d_00863780(index, true, 0x009f4f2bu);
+        }
         // 009F4F30..009F4F88: s = clamp((ceiling + 6.70421028) / reference, 1, 1.25)
         // (00D21B38; 00415620 with 1.0f and 1.25f).
         const float s_raw = static_cast<float>(
@@ -2428,6 +2445,33 @@ public:
             owner_.record("ShipAiLand::enter_tail_0080e490", 0x0080e490u);
             ++owner_.summary.land_enters;
             owner_.done("ShipAiState::land_enter_009e18d0", 0x009e18d0u);
+        } else if (ai_offset == 0x0BD8u || ai_offset == 0x0C64u) {
+            // Packet cc9_state_enter_bytes (section 137). The two leaf enters
+            // with a body: `stop` 00D215CC -> 009DAC70 `MOV BYTE [ECX+8],1` and
+            // `moveonpath` 00D2168C -> 009DB040 `MOV BYTE [ECX+8],0`. The other
+            // leaves' vtable[4] is 007B3DB0 / 009E50C0, a bare RET.
+            const bool stop = ai_offset == 0x0BD8u;
+            if (stop) {
+                ++owner_.summary.stop_enters;
+                const double v = owner_.units.unit_forward_speed_0092d730(index_);
+                if ((v > 0.0 ? v : -v) >= bsp::kShipAiStopSpeedThreshold) {
+                    ++owner_.summary.stop_enters_moving;
+                }
+            } else {
+                ++owner_.summary.moveonpath_enters;
+                if (ctl_.moveonpath_announced) ++owner_.summary.moveonpath_enters_latched;
+            }
+            if (kShipAiStateEnterBytesBound) {
+                if (stop) {
+                    ctl_.stop_state.making_way_08 = true;
+                    owner_.done("ShipAiState::stop_enter_009dac70", 0x009dac70u);
+                } else {
+                    ctl_.moveonpath_announced = false;
+                    owner_.done("ShipAiState::moveonpath_enter_009db040", 0x009db040u);
+                }
+            } else {
+                owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
+            }
         } else {
             owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
         }
@@ -2482,9 +2526,14 @@ public:
         owner_.record_slot("ShipAiPath::release_object", "path+0000+vtable00");
     }
     std::uint32_t path_limit_default_00cf58ec() override {
-        // [00CF58EC], read once at 009DA4FB. No producer in this process.
-        owner_.record("ShipAiPath::limit_default", 0x00cf58ecu);
-        return 0u;
+        // [00CF58EC], read once at 009DA4FB: an .rdata constant, 4B189680h =
+        // 1.0e7f (section 136), stored as float bits into blk+254h and +2BCh.
+        if (!kShipAiPathLimitDefaultBound) {
+            owner_.record("ShipAiPath::limit_default", 0x00cf58ecu);
+            return 0u;
+        }
+        owner_.done("ShipAiPath::limit_default", 0x00cf58ecu);
+        return 0x4B189680u;
     }
 
 private:
@@ -3675,10 +3724,12 @@ private:
     void member_exit(std::uint32_t member) {
         const std::uint32_t offset = member - kSubTargetMachineBase;
         if (offset == 0x0008u) {
-            // 009E6480: 00863780(1) on [unit+6DCh], which stores 1 in the gunnery
-            // pass byte +7Dh and returns (its gun walk runs only for 0). The
-            // gunnery host answers that byte as its constructor's constant 1
-            // (torpedo_may_take_fire_target), so the exit changes nothing here.
+            // 009E6480: 00863780(1) on [unit+6DCh] (009E6491), which stores 1 in
+            // the gunnery pass byte +7Dh and returns (its gun walk runs only for
+            // 0). Packet cc9_gunnery_pass_byte_7d.
+            if (owner_.gunnery_draws != nullptr) {
+                owner_.gunnery_draws->set_pass_byte_7d_00863780(index_, true, 0x009e6491u);
+            }
             owner_.done("ShipAiAttack::approach_exit_009e6480", 0x009e6480u);
         } else if (offset == 0x14E0u) {
             bsp::ship_ai_attackmove_tangent_exit_009db7d0(ctl_.tangent);
@@ -4660,9 +4711,17 @@ public:
         return static_cast<std::int32_t>(owner_.units.command_building_capture_range_07a0(
             static_cast<std::size_t>(t - 1u)));
     }
+    // Packet cc9_approach_leader_answers (section 135): 00778890 on the host's
+    // entity+284h formation group, as the arm-final binding answers it.
     bool unit_is_group_leader_00778890() override {
-        owner_.record("ShipAiApproach::unit_is_group_leader_00778890", 0x00778890u);
-        return false;
+        ++owner_.summary.approach_leader_asks;
+        if (!kShipAiApproachLeaderAnswersBound) {
+            owner_.record("ShipAiApproach::unit_is_group_leader_00778890", 0x00778890u);
+            return false;
+        }
+        owner_.done("ShipAiApproach::unit_is_group_leader_00778890", 0x00778890u);
+        const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
+        return g >= 0 && owner_.units.formation_leader_0014(g) == index_;
     }
     float unit_gun_reference_09c8() override {
         return owner_.units.unit_hull_length_09c8(index_);
@@ -5027,9 +5086,16 @@ public:
         owner_.record("ShipAiApproach::limit_target_radius_07c4", 0x009e6b90u);
         return 0;
     }
+    // Packet cc9_approach_leader_answers (section 135): 009E6C45's 00778890.
     bool unit_is_group_leader_00778890() override {
-        owner_.record("ShipAiApproach::limit_group_leader_00778890", 0x00778890u);
-        return false;
+        ++owner_.summary.approach_leader_asks;
+        if (!kShipAiApproachLeaderAnswersBound) {
+            owner_.record("ShipAiApproach::limit_group_leader_00778890", 0x00778890u);
+            return false;
+        }
+        owner_.done("ShipAiApproach::limit_group_leader_00778890", 0x00778890u);
+        const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
+        return g >= 0 && owner_.units.formation_leader_0014(g) == index_;
     }
     bool target_accepted_vtable_0234(std::uint32_t) override {
         owner_.record("ShipAiApproach::limit_target_accepted_0234", 0x009e6c86u);
@@ -5676,6 +5742,19 @@ public:
         // projection does not cover, and the countdowns they re-arm are the
         // ones 009F1C07 and 009F1C13 have just decremented.
         refresh_approach_curves(has_target);
+        // Packet cc9_gunnery_pass_byte_7d, 009F2FDB..009F3016: with [unit+6DCh] set,
+        // 00863780(+12BAh && +12B4h + 50.0 > +127Ch) on it (x87: FLD +127Ch, FLD
+        // +12B4h, FADD qword 50.0 at 00CE3938, FCOMIP, JBE). +127Ch is +11E0h, copied
+        // at 009F2A0A; +11E0h's only ship-AI writer is 009F1CDE, earlier in this body.
+        // The gunnery host checks the pass and decides whether its pass reads the byte
+        // (bsp::kGunneryPassByte7dBound).
+        if (owner_.gunnery_draws != nullptr) {
+            const bool torpedo_in_reach = ctl_.approach.clearance_valid_12ba
+                && static_cast<double>(ctl_.approach.clearance_12b4) + 50.0
+                    > static_cast<double>(ctl_.approach.goal_range_11e0);
+            owner_.gunnery_draws->set_pass_byte_7d_00863780(index_, torpedo_in_reach,
+                                                            0x009f3016u);
+        }
         owner_.done("ShipAiApproach::frame_state", 0x009f1bc0u);
         owner_.record("ShipAiApproach::frame_state_unread_spans", 0x009f1dbfu);
         ++row_.approach_frames;
@@ -6477,8 +6556,8 @@ public:
     bool entity_is_kind_vtable_005c(std::uint32_t entity, int kind) override {
         // 009E883F and 009E888C, entity->vtable[5Ch](9), answered through the
         // recovered class chain 006FE530 this process already uses for the
-        // automatic target scan. Only the owner's own handle can be resolved
-        // here; a group member cannot, and no group exists.
+        // automatic target scan. Group members come one-based from the
+        // formation group (section 134).
         owner_.done("ShipAiAttack::entity_is_kind", 0x009e883fu);
         if (entity == 0u) return false;
         return owner_.units.unit_is_kind_of(static_cast<std::size_t>(entity - 1u), kind);
@@ -12661,6 +12740,14 @@ void GameShipAiHost::report() {
             host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
             host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
             kShipAiTargetCurveRefillBound ? 1 : 0);
+        host.log.notef("summary mission ship ai state enter bytes stop_enters=%llu moving=%llu "
+            "moveonpath_enters=%llu latched=%llu bound=%d (009dac70 / 009db040, packet "
+            "cc9_state_enter_bytes)", host.summary.stop_enters, host.summary.stop_enters_moving,
+            host.summary.moveonpath_enters, host.summary.moveonpath_enters_latched,
+            kShipAiStateEnterBytesBound ? 1 : 0);
+        host.log.notef("summary mission ship ai approach leader answers asks=%llu bound=%d "
+            "(009e6c45 / 009e6fa0 / 009e70a7 00778890, packet cc9_approach_leader_answers)",
+            host.summary.approach_leader_asks, kShipAiApproachLeaderAnswersBound ? 1 : 0);
         host.log.notef("summary mission ship ai attackmove group hand back asks=%llu "
             "grouped=%llu mixed=%llu bound=%d (009e8852..009e889c, packet "
             "cc9_attackmove_group_hand_back)", host.summary.attack_hand_back_asks,

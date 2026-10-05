@@ -1072,6 +1072,10 @@ struct GameGunneryHost::Impl {
         bool enabled{false};             // pass+58h
         float throttle{0.0f};            // pass+6Ch
         bool sweep_suppressed{false};    // pass+59h
+        // pass+7Dh, 1 from the constructor (008645D6); 00863780 stores it.
+        bool torpedo_takes_fire_target_7d{true};
+        unsigned long long byte_7d_zero_frames{0};
+        unsigned long long byte_7d_fire_target_assigns_at_0{0};
         bsp::UnitGunneryCategoryState category{};
         int bridge_countdown{0};         // adapter+8h
         bool allow_fire_cache{false};    // adapter+0Ch
@@ -2660,6 +2664,17 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_stock_lua_sets{0};
     // Packet cc9_navigator_force_torpedo.
     unsigned long long forced_torpedo_marks{0};
+    // Packet cc9_gunnery_pass_byte_7d: 00863780 per call site (009F3016,
+    // 009E6491, 009F4F2B, other), the stores of 0 and 1, the changes to 0, the
+    // guns 00728000 cleared (or would clear), and torpedo fire-target assigns
+    // made while the byte was 0 (only possible with the switch off).
+    unsigned long long byte_7d_calls[4]{};
+    unsigned long long byte_7d_zero_stores{0};
+    unsigned long long byte_7d_one_stores{0};
+    unsigned long long byte_7d_drops{0};
+    unsigned long long byte_7d_raises{0};
+    unsigned long long byte_7d_gun_clears{0};
+    unsigned long long byte_7d_fire_target_assigns_at_0{0};
     unsigned long long untouchable_reads{0};          // 00862440, packet cc9_untouchable_gate
     unsigned long long untouchable_marked_reads{0};
     unsigned long long immediate_function_calls{0};   // 009E2B60
@@ -4480,7 +4495,14 @@ public:
         return state_.category.enabled[slot] && state_.category.mask[slot] != 0;
     }
     bool torpedo_category_enabled() override { return state_.category.torpedo_enable; }
-    bool torpedo_may_take_fire_target() override { return true; }  // pass+7Dh, ctor 1
+    bool torpedo_may_take_fire_target() override {
+        // pass+7Dh (0086581C), 1 from the constructor; 00863780 stores it.
+        if constexpr (bsp::kGunneryPassByte7dBound) {
+            return state_.torpedo_takes_fire_target_7d;
+        } else {
+            return true;
+        }
+    }
     bool category_gate_slot4(int) override {
         // 008636A0 installs the default gate 00D0D31C on a unit that is not
         // class 8; its vtable[4h] is 00861BE0, `mov al,1`.
@@ -5070,6 +5092,11 @@ public:
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
         row.target_is_fire_target = is_fire_target;
+        if (is_fire_target && row.category == bsp::kUnitGunneryTorpedoCategory
+            && !state_.torpedo_takes_fire_target_7d) {
+            ++state_.byte_7d_fire_target_assigns_at_0;
+            ++owner_.byte_7d_fire_target_assigns_at_0;
+        }
         ++row.assigns;
         ++state_.row.assigns;
         ++owner_.summary.assigns;
@@ -9835,7 +9862,9 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         explicit KillBinding(Impl& owner_in) : owner(owner_in) {}
         int session_mode() override { return 0; }
         bool skip_friendly_losses() override { return false; }
-        int local_player_side() override { return -1; }
+        // 0091BDE6..0091BDF3: [[game+18CCh+[game+18ECh]*4]+28h], the local
+        // player's party (SHIP_AI 125). It is compared only when manager+1484h is set.
+        int local_player_side() override { return bsp::game::local_player_party(); }
         bool root_entity_already_scored() override { return false; }
         void add_loss(int, bool, const std::string&) override { ++losses; }
         void add_type_kill(int, std::size_t, int) override { ++type_kills; }
@@ -11182,6 +11211,21 @@ void GameGunneryHost::report() {
             host.log.notef("summary mission gunnery forced torpedo marks=%llu fires=%llu "
                 "(008A7200 -> 00730160, packet cc9_navigator_force_torpedo)",
                 host.forced_torpedo_marks, host.forced_torpedo_fires);
+            host.log.notef("summary mission gunnery pass byte 7d bound=%d tail=%llu exit=%llu "
+                "follower=%llu other=%llu zero=%llu one=%llu drops=%llu raises=%llu "
+                "gun_clears=%llu fire_target_assigns_at_0=%llu (00863780, packet "
+                "cc9_gunnery_pass_byte_7d)", bsp::kGunneryPassByte7dBound ? 1 : 0,
+                host.byte_7d_calls[0], host.byte_7d_calls[1], host.byte_7d_calls[2],
+                host.byte_7d_calls[3], host.byte_7d_zero_stores, host.byte_7d_one_stores,
+                host.byte_7d_drops, host.byte_7d_raises, host.byte_7d_gun_clears,
+                host.byte_7d_fire_target_assigns_at_0);
+            for (const Impl::UnitState& u : host.unit_state) {
+                if (u.byte_7d_zero_frames == 0 && u.byte_7d_fire_target_assigns_at_0 == 0) continue;
+                host.log.notef("summary unit gunnery pass byte 7d %s zero_frames=%llu "
+                    "fire_target_assigns_at_0=%llu final=%d", u.row.name.c_str(),
+                    u.byte_7d_zero_frames, u.byte_7d_fire_target_assigns_at_0,
+                    u.torpedo_takes_fire_target_7d ? 1 : 0);
+            }
             host.log.notef("summary mission gunnery ship set torpedo stock bound=%d calls=%llu "
                 "(0089EEE0 -> 0081F8B0, packet cc9_ship_set_torpedo_stock)",
                 kShipSetTorpedoStockBound ? 1 : 0, host.torpedo_stock_lua_sets);
@@ -11960,6 +12004,58 @@ int GameGunneryHost::force_torpedo_fire_008a7200(std::size_t unit_index, bool fi
     d.log.notef("  NavigatorForceTorpedo: unit=%zu first_only=%d marked=%d (008A7200 -> "
         "vtable[1D8h] 00730160)", unit_index, first_only ? 1 : 0, marked);
     return marked;
+}
+
+void GameGunneryHost::set_pass_byte_7d_00863780(std::size_t unit_index, bool value,
+                                                std::uint32_t site) {
+    Impl& d = *impl_;
+    const int k = site == 0x009f3016u ? 0 : site == 0x009e6491u ? 1 : site == 0x009f4f2bu ? 2 : 3;
+    ++d.byte_7d_calls[k];
+    if (value) ++d.byte_7d_one_stores; else ++d.byte_7d_zero_stores;
+    if (unit_index >= d.unit_state.size() || !d.unit_state[unit_index].attached) {
+        d.record("GunneryPass::set_byte_7d_00863780", 0x00863780u);
+        return;
+    }
+    Impl::UnitState& s = d.unit_state[unit_index];
+    auto mark = [&d] {
+        if constexpr (bsp::kGunneryPassByte7dBound) {
+            d.done("GunneryPass::set_byte_7d_00863780", 0x00863780u);
+        } else {
+            d.record("GunneryPass::set_byte_7d_00863780", 0x00863780u);
+        }
+    };
+    if (!value) ++s.byte_7d_zero_frames;
+    // 00863784: nothing when the byte already holds the value.
+    if (s.torpedo_takes_fire_target_7d == value) {
+        mark();
+        return;
+    }
+    s.torpedo_takes_fire_target_7d = value;   // 0086378B
+    if (value) {
+        ++d.byte_7d_raises;
+        mark();
+        return;
+    }
+    ++d.byte_7d_drops;
+    // 00863791..008637BE: owner [pass+50h] answering vtable[5Ch](5), then
+    // 00728000 on [node+8] for each node of [owner+3ECh] (next at +4h), the
+    // category-7 list.
+    if (d.units.unit_is_kind_of(unit_index, 5)) {
+        for (const std::size_t slot : s.category_guns[bsp::kUnitGunneryTorpedoCategory]) {
+            if (slot >= d.guns.size()) continue;
+            ++d.byte_7d_gun_clears;
+            if constexpr (bsp::kGunneryPassByte7dBound) {
+                GameGunRow& row = d.guns[slot];
+                ++row.clears;
+                ++s.row.clears;
+                ++d.summary.clears;
+                row.target_unit = 0;
+                row.target_name.clear();
+                row.target_is_fire_target = false;
+            }
+        }
+    }
+    mark();
 }
 
 std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() const {

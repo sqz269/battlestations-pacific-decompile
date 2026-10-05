@@ -10824,3 +10824,148 @@ The OFF runs are this tree's build (`local\s29_h0_<row>.log`):
   on Enterprise's new track.
 - **Verdict:** the mechanism matches and every moved row is Enterprise's group or its attackers,
   so the switch is **flipped ON**. IJN01's baseline moves with it (reference X).
+
+## 135. The approach's other two leader reads (packet `cc9_approach_leader_answers`, `kShipAiApproachLeaderAnswersBound`, cc9-ships29, 2026-10-05)
+
+Sections 133 and 134 replaced two stale "no group" answers. Two more `00778890` reads in the
+approach still answered "not a leader", by record:
+- the mode-4 speed limit `009E6B90` at `009E6C45` / `009E6C4F` (the stop radius);
+- the standoff choice `009E6E80` at `009E6FA0` (mode 4) and `009E70A7` (mode 2), for a
+  building target.
+
+`kShipAiApproachLeaderAnswersBound` (committed OFF) answers both from the host's formation group,
+as the arm-final binding (`ShipAiArmFinal::unit_leads_controller_00778890`) does. The census line
+is `summary mission ship ai approach leader answers asks=`.
+
+**Predictions (written before any run).** Section 132's fifth census of all 20 reference rows
+shows neither record with a call: no row has a mode-4 or mode-2 approach pass against a building.
+Expect `asks=0` and `pair_diff` 0 or 1 on smoke, LOMP10 and USN13. Flip when identical. The
+switch has no reach on the reference rows; it is a correctness fix.
+
+**Pairs.** OFF is `72f533d68` (`local\s29_a0_<row>.log`). ON is `pair_export --flip kShipAiApproachLeaderAnswersBound=true` (`local\s29_a135on`, SHA-256 prefix `55BE5E2878F4`, `local\s29_a1_<row>.log`). Smoke, LOMP10 and USN13 are all `pair_diff` 1, with `asks=0` and no native counts moved. **Flipped ON** as predicted.
+
+## 136. `009DA4E0`'s path limit default is an image constant (packet `cc9_path_limit_default`, `kShipAiPathLimitDefaultBound`, cc9-ships29, 2026-10-05)
+
+`ShipAiPath::limit_default` (28672 calls on the fifth census; JM08 long has 24679) was labelled
+"no producer in this process". In fact `009DA4F8 MOVSS XMM0,[00CF58EC]` reads `.rdata`, whose
+bytes on disk are `4B189680h`, which is 1.0e7f. `009DA518` stores it into `blk+254h` and
+`009DA538..` into `+2BCh`. The host stored 0.
+
+`kShipAiPathLimitDefaultBound` (committed OFF) answers the constant's bits. No reader of
+`ShipAiPathPlan::limit_254` / `limit_2bc` exists in `src/` or `include/` (`rg limit_254|limit_2bc`),
+so **the prediction is `pair_diff` 0 or 1 on every row**. The pairs are smoke, JM08 and USN13.
+Flip when they are identical. The constant matters once a reader of `+254h` / `+2BCh` is
+reconstructed.
+
+**Pairs.** OFF is `a2046f5a2` (`local\s29_p0_<row>.log`). ON is `pair_export --flip kShipAiPathLimitDefaultBound=true` (`local\s29_p136on`, SHA-256 prefix `81B7B7D8E6EA`, `local\s29_p1_<row>.log`). Smoke, JM08 and USN13 are all `pair_diff` 1: only the row's status moved, plus the `ship ai free` noise. **Flipped ON** as predicted.
+
+## 137. The `stop` and `moveonpath` leaf enters (packet `cc9_state_enter_bytes`, `kShipAiStateEnterBytesBound`, cc9-ships29, 2026-10-05)
+
+This was found from the fifth census's `ShipAiState::enter_vtable04` record (7832 calls). The
+host runs each state's `vtable[4]` (enter) only for attackmove, kamikaze and land. I read the
+other leaves' slot 4 from the vtables (`s29_dwords`):
+
+| leaf | vtable | slot 4 | body |
+| --- | --- | --- | --- |
+| cruise, follow, movetopos | `00D21598`, `00D215F8`, `00D21628` | `007B3DB0` | `RET` |
+| sub_attack | `00D2195C` | `009E50C0` | `RET` |
+| **stop** | `00D215C8` | **`009DAC70`** | **`MOV BYTE [ECX+8],1`** / `RET` |
+| **moveonpath** | `00D21688` | **`009DB040`** | **`MOV BYTE [ECX+8],0`** / `RET` |
+
+Every slot 8 (exit) is `007B3DC0` `RET`, except land's `009DB000`, also `RET`.
+
+**The gap:**
+- **`stop`.** The host's `ShipAiStopStepState::making_way_08` starts false. Only the step
+  (`009E15B1`) ever clears it, and nothing sets it, so the step always takes the "stopped" arm:
+  `+3FCh` = 0, side filter -1. In the image every entry into `stop` sets it. While the hull still
+  makes way (|body speed| >= 0.4, `009E15A5`), the step takes the other arm (`009E15E4..009E15FB`:
+  `+3FCh` = 1, side filter 3, enable).
+- **`moveonpath`.** The host's announce latch is never cleared on entry. The image clears it.
+
+The switch `kShipAiStateEnterBytesBound` is committed OFF. Its census line is
+`summary mission ship ai state enter bytes stop_enters= moving= moveonpath_enters= latched=`.
+
+**The OFF census** (this tree, `local\s29_s0_<row>.log`):
+
+| row | stop enters | moving (|v| >= 0.4) | moveonpath enters | latched |
+| --- | --- | --- | --- | --- |
+| smoke | 2 | 0 | 3 | 0 |
+| USN04 | 0 | 0 | 2 | 0 |
+| USN13 | 107 | 10 | 29 | 0 |
+| USNOS | 75 | 13 | 10 | 0 |
+| JM08 | 1 | 0 | 3 | 0 |
+| LOMP10 | 2 | 0 | 0 | 0 |
+| USN02 | 1 | 1 | 0 | 0 |
+
+**Predictions (written before any ON run):**
+- The `moveonpath` half has no reach: `latched=0` everywhere.
+- On the rows where moving stop enters is 0 (smoke, USN04, JM08, LOMP10), the stop half sets a
+  byte that the first step clears. **Exit 0 or 1.**
+- **USN13 (10), USNOS (13) and USN02 (1):** after each moving stop entry, the next steps request
+  the coasting avoidance (`+3FCh` = 1, side filter 3) until the hull slows below 0.4. **Exit 1 or
+  3.** If they move, the moves are path and heading moves of those coasting ships and their
+  neighbours.
+- **Verdict rule:** flip ON when the controls are identical and every moved row traces to a
+  stopping ship. A control that moves is a mechanism failure.
+
+**Pairs.**
+- OFF is `0ff8212e5` (`local\s29_s0_<row>.log`). ON is `pair_export --flip kShipAiStateEnterBytesBound=true` (`local\s29_s137on`, SHA-256 prefix `D4B8F954DE78`, `local\s29_s1_<row>.log`).
+- Smoke, USN04, USN13, USNOS and USN02 are all `pair_diff` 1.
+- The mechanism shows in the native table. On USN13 and USNOS the coasting arm's avoidance requests add searches: `ShipAiAvoidSearch::query_refresh` +432 and +981, and `director_land` rises. On USN02 one avoid-search `clear` (`004158A0`, 3 calls) goes away.
+- No position, death or unit row moves. The coasting ships' avoidance does not change their deceleration on these rows.
+- **Flipped ON** by the verdict rule.
+
+## 138. Handoff (cc9-ships29, 2026-10-05, at about 68% context)
+
+### Landed on this branch
+
+| section | what | switch | reach |
+| --- | --- | --- | --- |
+| 129 | `game+1FE4h` is the embedded session's mode (`session+F4h`). It is 0 in single player, so `004BC890` rewrites no slot party and USN13's slot 4 is Allied as authored | none | - |
+| 130 | the target-curve refill `009F2F26..009F2FD3`: the kind probe, the mode-0 gate, empty on loss, `< 0` | `kShipAiTargetCurveRefillBound` ON | the timer only: the refill falls on the 9th pass, not the 8th |
+| 131 | the own curve refill's gates `009F2EC1..009F2EEB` | `kShipAiOwnCurveRefillGateBound` ON | the timer only: the 7th pass, not the 6th |
+| 132 | the approach point's target-layer push `009F1E36..009F1F07`: the bot's `blk+164h` against `+570h`, then `00417B10` on the goal (the reconstruction's compare and input fixed) | `kShipAiApproachTargetLayerPushBound` ON | none (`+570h` = 0, layers >= 86) |
+| 133 | the approach warn sweep is the second StartLanding (94h) producer | `kShipAiApproachLandingSweepBound` ON | none (no troop-landing candidate) |
+| 134 | a carrier hands its attackmove back only when all group members are carriers | `kShipAiAttackMoveGroupHandBackBound` ON | **IJN01 moves**: Enterprise keeps its attackmove |
+| 135 | the approach's other two `00778890` leader reads | `kShipAiApproachLeaderAnswersBound` ON | none |
+| 136 | `[00CF58EC]` = 1.0e7f into `blk+254h` / `+2BCh` | `kShipAiPathLimitDefaultBound` ON | none (no reader) |
+| 137 | the `stop` (`009DAC70`) and `moveonpath` (`009DB040`) leaf enters | `kShipAiStateEnterBytesBound` ON | native counts only (coasting avoidance searches) |
+
+The gunnery lane got a prepared edit for `KillBinding::local_player_side` (sent to the lead).
+
+### The fifth census
+
+`local\s29_census_r5.txt` is the lane's non-concrete rows over all 20 reference rows (tree build at
+`ba490bbc5`, logs `local\s29_r5_<row>.log`). What is left after 132-137:
+- **Structure and stand-ins** (not ranked): `ShipAi::unit_weapon_director` and
+  `drive_heading_vtable50`, `ShipAiOrder::slot_to_order_ring`, `ShipAiObstacle::backoff_countdown`
+  (OFF, no row arms it), `ShipMotion::rigid_body_substep_schedule`, the pose refreshes
+  `00414DB0`, the RNG stand-ins `00BD2F10` (the RNG-stream rule), and the node releases.
+- **No reach, recorded** (JM08 long):
+  - `0080E490` / `0092BD70`: the landing enter's collision group 0 on the parts controller. The
+    host has no hull contacts.
+  - `0074B0A0`: the ramp's 0A6h, a class-4 session sync.
+  - `006AC370`: the pad troop paths. Soldiers do not capture (section 78).
+- **Open, not read:**
+  - the submarine sub-state rows (`ShipAiApproach::sub_*`, 63484 calls, with USN02 25088);
+  - `ShipAiApproach::frame_state_unread_spans` (section 124's list);
+  - `ShipAiGoal::observer_register` / `unregister` (11712 / 11107);
+  - `ShipAiMoveOnPath::brain_leg_scale_0308` and `ShipAiLand::brain_field_308`: stores to
+    `brain+308h` with no host reader. Find the reader first.
+- **Two stale-label patterns paid off.** "no AI group object exists (milestone 2m)" gave 133-135.
+  "No producer in this process" next to an `.rdata` address gave 136. Grep for more of both.
+
+### Notes
+
+- **Noise.** On USN13 and JM08, a never-moving unit's `clear_37c` column in the ring-scan table
+  reads 9999.0 in some builds and FLT_MAX in others. Builds that share all gameplay switches
+  split the same way (`s29_o1` against `s29_l0`), so it is diagnostic noise.
+- **Tools** (`local\`, `s29_` prefix):
+  - `s29_runs.ps1 -V <tag> -Exe <exe> -Only <rows>`: the reference rows;
+  - `s29_preceding.py <back> <sites>`: the instructions before each call site;
+  - `s29_dispwrites.py <lo> <hi> <disp>`: stores with a given displacement, by capstone sweep;
+  - `s29_dwords.py <va> <n>`: dwords from the PE;
+  - `s29_ifnames.py <table> <ids>`: names from a pointer table;
+  - `s29_fnstart.py <site>`: the INT3-padded bounds around a site.
+- **A hook blocks `Remove-Item` with a wildcard path.** Delete files by explicit name.
+- No lease is held after this commit.
