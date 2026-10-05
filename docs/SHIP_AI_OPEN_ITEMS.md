@@ -10016,3 +10016,22 @@ change. The caller is the submarine attack machine's `call_009e85b0`.
 - **Expected `closes` = 0 on USNOS, so exit 0 or 1.** If `closes` > 0, the submarine stays out of
   its engage member that tick: exit 3. Explain that from the per-entity table before flipping.
 - **Pairs:** smoke, USNOS, USNOS long.
+
+### 123.4 The pairs, and the flip
+
+OFF is this tree at `5a32918d8` (`local\s28_e0_<row>.log`). ON is `pair_export --flip
+kShipAiEngageGateAvoidZoneBound=true` (`local\s28_e123on`, SHA-256 prefix `B3C534BAF5D9`,
+`local\s28_e5_<row>.log`). Both use the reference launch form.
+
+| row | asks | hits | closes | `pair_diff` |
+| --- | --- | --- | --- | --- |
+| smoke | 0 | 0 | 0 | 1 |
+| USNOS | 110 (v: 133) | 0 | 0 | 1 |
+| USNOS long | 110 | 0 | 0 | 1 |
+
+- **What moved:** only the census, the host-table status (`UNIMPLEMENTED -> concrete`, calls
+  110 -> 110), and the known `ship ai free` search noise.
+- **Why nothing else moved:** no submarine's brain destination lies in an avoid zone of its
+  class's group on these rows.
+- **Verdict:** every prediction held, so the switch is **flipped ON**. Section 114's rank 4 is
+  closed.

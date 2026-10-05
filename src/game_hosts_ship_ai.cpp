@@ -243,7 +243,8 @@ inline constexpr bool kShipAiSurfaceSetBranchBound = true;
 // True: 009E85B0's avoid-zone test (009E864C 0082ADC0, 009E8658 004178F0) asks
 // the built avoid-zone table for the brain destination, and a zone closes the
 // gate. False: no zone, the label from before GameAvoidZoneRuntime existed.
-inline constexpr bool kShipAiEngageGateAvoidZoneBound = false;
+// ON: USNOS and USNOS long gameplay-identical, hits 0 (section 123.4).
+inline constexpr bool kShipAiEngageGateAvoidZoneBound = true;
 // Packet cc9_ship_ai_neighbour_count, docs/SHIP_AI_TAILS.md section 13. True:
 // the traffic setback walk of 009EEAAB reads world list 6 ([[00E188A8]+19CCh]
 // +60h, 009EEB8B) through 009DBBC0, tests vtable+5Ch(6) (009EEBC8), skips the
