@@ -11653,3 +11653,59 @@ Optionally also select Zao and `attack Zao CB1`.
 
 **Cost:** the build and smoke; then two tuning runs and one row run at 36000 frames (about 5-10
 min each when the slots are free).
+## 148. Handoff (cc9-ships31, 2026-10-05, at about 72% context)
+
+### Landed on this branch
+
+| section | what | switch | evidence |
+| --- | --- | --- | --- |
+| 144 | design of the scripted player-input row | none | - |
+| 145 | `unit+494h` is the max weapon range (renamed, answered); three stale comments | none | USN02 smoke |
+| SCRIPTED_HELM 10 | `select` and `takehelm ... stop` (commit `c96adbecd`) | harness only | smoke; base against build gameplay-identical |
+| SCRIPTED_HELM 10.3, 10.4 | the USN01 capture row is closed: Katori and Coastal Gun 01 sink every ship that reaches CB2's corridor | - | 5 runs |
+| SCRIPTED_HELM 10.5 | the McCall credit on SaltLakeCity is a physical hit, the image's rule | - | trajectory CSV |
+| 146 | section 143's three census items, read | - | - |
+| 147, SCRIPTED_HELM 11 | `attack <unit> <target> [repeat <s>]` (commit `5818eb685`) | harness only | smoke; base `9d82c2240` against build exit 0 |
+| SCRIPTED_HELM 11.1 | the IJN05 runs: the attack neutralizes HQ2 at 1221.85 s, but no hull reaches 100 m, and there are no landers | - | 3 runs |
+
+**No capture row exists yet.** The capture-chain flip, slot pick and retake exemption are still
+unreached.
+
+### Open, in order
+
+1. **`src/game_hosts_ai.cpp` packet**, once the lead frees the file (it was with cc9-lua37). Two
+   items:
+   - **(a) The census fix, as its own commit.** At line 2556, use `done()` when
+     `kAiSquadronRtbExclusionBound` is on and `record()` otherwise, then delete the `done()` at
+     line 2578 (section 146).
+   - **(b) The `tick_000c` auto-merge LEAVE binding (`00A10EC0`).**
+     1. Read `00A2D9D0`'s tail and `00A11070`.
+     2. Add an OFF switch, and a census of followers beyond `AutoMerge_LeaveDist` (1200) in
+        NONCONTROL/IDLE groups with `+5648h` set.
+     3. Pair and flip by verdict (section 146).
+2. **A capture row with the attack line: USN01 phase 3** (CB2 at world (3973.4, -3182.2);
+   corridor and pads in SCRIPTED_HELM 10.3/10.4). Clear the defenders first:
+   - `13200 select Northampton` / `13201 attack Northampton Katori`;
+   - `13202 select SaltLakeCity` / `13203 attack SaltLakeCity Katori`;
+   - after Katori dies, `attack <ship> Coastal Gun 01`;
+   - then `select` + `takehelm` along the corridor: the two legs of `local\s31_cap_orders2.txt`,
+     with a slower last leg (`takehelm ... 0.25`).
+
+   Two cruisers give 100 a second, so about 100 s inside 100 m. The ship AI moves under
+   `attack`; the helm is given back by `0077C470(unit, 2, 0)`. Unknown: whether the cruisers beat
+   Katori. If USN01 still fails, look for a mission with a building inside 100 m of open water
+   and a player force that outguns its defence.
+3. **The player's target pick** (`director+238h`; `00835860` has no HUD caller): unread. The
+   `attack` line names its target instead (labelled).
+
+### Tools (`local\`, `s31_` prefix)
+
+- `s31_scn.py <scn> <class regex> [x z]`: scene entities with party, position and template.
+  Positions of land entities are landscape-relative: CB2 and CB1 are off by thousands of metres.
+  Take world positions from `--trajectory-csv`.
+- `s31_traj.py`, `s31_traj2.py`, `s31_t05*.py`: CSV readers (units near a building, tracks by
+  step).
+- `s31_lof.py`: line-of-fire geometry (McCall).
+- The orders files are `s31_cap_orders*.txt` (USN01) and `s31_ijn05_orders*.txt`.
+
+All leases are released after this commit.
