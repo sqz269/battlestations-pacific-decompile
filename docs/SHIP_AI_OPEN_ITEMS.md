@@ -10254,3 +10254,88 @@ emptying behind one switch in `src/game_hosts_ship_ai.cpp`, near line 5898.
 
 The `+11DCh` building heading (mode 2) and the `+11FCh` arm (modes 2/4) remain records with no
 reach.
+
+### 125.6 The pairs, and the flip
+
+- **OFF:** this tree at `de6bd3e49`, main `4aa2f6d1f` plus the seven parts applied unchanged
+  (`local\s28_p0_<row>.log`).
+- **ON:** `pair_export --commit de6bd3e49 --flip kLocalPartyFromSceneBound=true`
+  (`local\s28_p125on`, SHA-256 prefix `E9B53DA3E46D`, `local\s28_p5_<row>.log`).
+- Reference launch form.
+
+| row | `pair_diff` | controlled unit OFF | controlled unit ON |
+| --- | --- | --- | --- |
+| smoke (USN01) | 0 | Dunlap (Mahan, party 0) | Dunlap (party 0) |
+| USN13 (control) | 1 | DD_1 (Fletcher, party 0) | DD_1 (party 0) |
+| USN04 (control) | 1 | Fletcher-class01 (Sims, party 0) | Fletcher-class01 (party 0) |
+| JM05 | 3 | USS Phelps (Benham, party 0) | **Fubuki-class 01** (Mutsuki, party 1); the script later selects Mogami-class 01 |
+| JM06 | 3 | Fletcher-class 08 (Farragut, party 0) | **PlayerSub 01** (TypeB_Jake submarine, party 1) |
+| JM08 | 3 | Auilick (Fletcher, party 0) | **Japanese Patrolboat 01** (JapPT, party 1); the script later selects Headquarter 01, which OFF rejected (`SetSelectedUnit ... rejected by 00645060`) |
+| IJN01 | 3 | Downes (Mahan, party 0) | **A7M_1** (Zero squadron, party 1) |
+| IJN11 | 3 | Fletch1 (Fletcher, party 0) | **Kita1** (Kitakaze, party 1); later Zao |
+
+- **Mechanism.** Every IJN row's controlled unit is now a party-1 unit, and the US controls are
+  gameplay-identical: only the `ship ai free` search noise moved. The script's own selections now
+  land on Japanese units, because the HUD's selectable test (b) accepts them; on JM08 the OFF log
+  showed them rejected.
+- **The death moves follow the swap:**
+  - **JM05** (11 -> 15 rows): Mogami-class 01, the script's controlled cruiser ON, no longer
+    dies. The base assault is retimed: four more base objects die, and several die earlier.
+  - **JM06** (1 -> 2): the idle player's submarine PlayerSub 01 sinks USTroopTransport 02 at
+    93.85 s. Fletcher-class 08, no longer the player's, deals 0.
+  - **JM08** (22 = 22 deaths, 6 rows flip each way): 36 more unit-table rows ON, which come from
+    the scripted selection of Japanese units.
+  - **IJN01** (5 -> 3): the controlled Zero squadron A7M; two of its members survive, and the AA
+    retargets.
+  - **IJN11** (2 = 2): retimed.
+
+  Not every row was traced to a single cause. Each moved row involves the swapped controlled
+  units or the units they fight. None moves on a US row.
+- **Verdict:** the mechanism matches every prediction of 125.4, so the switch is **flipped ON**.
+  Every IJN row's baseline moves with it; the next reference build should re-baseline JM05,
+  JM05 long, JM06, JM08, JM08 long, IJN01 and IJN11.
+
+## 128. Handoff (cc9-ships28, 2026-10-05, at about 75% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 118 | `008DDF90` in `00922C80` (the surface-target set branch); no reach | `kShipAiSurfaceSetBranchBound` ON |
+| 119 | the close-attack fallback through `00A02020` (section 112's edit) | `kCloseFallbackOrderBridgeBound` ON |
+| 120 | `Objectives_Add`'s target walk (starts at argument 5, walks list tables) | `kObjectiveAddTargetWalkBound` ON |
+| 121 | IJN11's stock scene: the capture spawn arm is due 7 times, nothing spawns | none |
+| 122 | `00A0F87E`'s local party (superseded by 125) | none |
+| 123 | the engage gate's avoid-zone test | `kShipAiEngageGateAvoidZoneBound` ON |
+| 124, 126, 127 | `009F1BC0`'s remaining spans, the `+1204h` side byte (no reach), the bookkeeping sites | none |
+| 125 | **the local player's party from the scene**: the world host's triple and the initial controlled unit, the HUD's selectable test, `slot_party`, `00A0F87E`, the objective mask's party arm, the capture slot | `kLocalPartyFromSceneBound` ON |
+
+### The next packets, in order
+
+1. **Re-baseline the IJN rows.** 125 moves JM05, JM05 long, JM06, JM08, JM08 long, IJN01 and
+   IJN11: every IJN row now controls a Japanese unit. Reference W predates it. Take IJN OFF bases
+   only from a tree with `070e01150`.
+2. **Section 127's target-curve refill** (`009F2F16..009F2FD3`, `src/game_hosts_ship_ai.cpp` near
+   `curve_target_kind_005c`, line ~5898).
+   - The image: an `IsKindOf(5)` probe; refill only in mode 0 with `+1224h` < 0; no target empties
+     the curve and sets `+1224h` = -1; a non-vehicle target skips without writing `+1224h`.
+   - Bind it OFF behind one switch, with census both ways (the `other` targets' kinds, skipped
+     refills).
+   - Pair USNOS, USNOS long and USN13: 553, 566 and 1114 `other` approach frames.
+3. **Open questions from 125** (read-first):
+   - The writer of `game+1FE4h` is unidentified: 124 displacement hits, all `CMP`. "0 in single
+     player" rests on earlier docs. If single player sets it, `004BC890` rewrites slots 0-3 to
+     party 0 and 4-7 to 1, which would answer cc9-lua34's USN13 slot-4 question differently.
+   - `KillBinding::local_player_side` (-1, `game_hosts_gunnery.cpp`, scoring) is still a
+     stand-in. Gunnery lane.
+4. Routed elsewhere: the frame state's tail `00863780` / `+7Dh` byte (to cc9-gunnery23).
+
+### Notes
+
+- **Tools** (`local\`, `s28_` prefix):
+  - `s28_runs.ps1 -V <tag> -Exe <exe> -Only <rows>`: the reference rows plus `ijn11`;
+  - `s28_callcover.py <disasm dump> [lo] [hi]`: call sites cited or not in src/include;
+  - `s28_scn_strings.py <scn> <pattern>`: strings around scene hits;
+  - `s28_cc.ps1` / `s28_cc2.ps1` / `s28_cc3.ps1`: compile one TU against copied headers.
+- `pair_export --flip` finds a switch in a header (`include/bsp/...`) too.
+- No lease is held after this commit.

@@ -11448,7 +11448,19 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         // the side are eligible. LABELLED: both parties are taken to have a slot
         // record (Player1 and the mission's AI players), so a side 0 or 1 wins
         // and a tie (side 2) finds none: slot 8, the building stays neutral.
-        const std::int32_t slot = tick.side < 2 ? tick.side : 8;
+        std::int32_t slot = tick.side < 2 ? tick.side : 8;
+        if (bsp::game::kLocalPartyFromSceneBound) {
+            // Section 125: the first slot record whose published Party is the
+            // side (006F7100..006F711C); slot[i] + landed[i] (the later strictly
+            // larger pick) is not modelled. None: 8, the building stays neutral.
+            slot = 8;
+            for (int i = 0; i < 8; ++i) {
+                if (bsp::game::scene_slot_party(i, -1) == tick.side) {
+                    slot = i;
+                    break;
+                }
+            }
+        }
         // +2D8h has no producer here, so the old owner's retake exemption never
         // applies (prior slot -1, 006F4FC2 JA).
         const bsp::CommandBuildingFlipOutcome flip = bsp::command_building_flip_006f4d10(

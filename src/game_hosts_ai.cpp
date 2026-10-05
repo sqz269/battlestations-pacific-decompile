@@ -840,6 +840,12 @@ void ai_publish_scene_slot_parties(const std::array<int, 8>& parties) {
     g_scene_slot_parties_published = true;
 }
 
+int scene_slot_party(int slot, int fallback) noexcept {
+    if (!g_scene_slot_parties_published || slot < 0 || slot >= 8) return fallback;
+    const int party = g_scene_slot_parties[static_cast<std::size_t>(slot)];
+    return party >= 0 ? party : fallback;
+}
+
 void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int>>& owners) {
     g_scene_owner_players.clear();
     g_scene_owner_player_conflicts.clear();
@@ -2096,7 +2102,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // docs/MISSION_OBJECTIVES.md for why they hold no unit on these
         // missions, which makes this false throughout.
         const int attacker_side = units.unit_side_0054(attacker_unit);
-        const int local_party = 0;   // [00E188A8]+18CCh, slot 0's +28h
+        // [00E188A8]+18CCh, slot 0's +28h (00A0F875 / 00A0F87B; section 125).
+        const int local_party = local_player_party();
         const int objective_set = attacker_side == local_party ? 0 : 4;
         const std::vector<std::size_t> set =
             game_objective_sets().units_in_slot(objective_set);
