@@ -11055,3 +11055,48 @@ against a LandFort group is non-zero.
   - `r15` = TorpedoBomber vs Ship 4.5, with record `+1Ch` clear.
   No rule rates a torpedo bomber against CB2's members. So the `bruh` groups' CB2 order does not come
   from a forced rule, and which planner assigns it is the open link.
+
+## 5di. Handoff (cc9-lua37, 2026-10-05)
+
+Branch `agent/cc9-lua37`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua37`. No lease is held.
+
+| item | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| loadout arm + record+10h | `b6b6c52f1`, `5adb64812`, `c888019ba`, `876b192cf`, `2086291cc` | `kAiPlaneLoadoutArmBound`, `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound` | **ON** (reference Z) | 5df, 5df.1 |
+| water-surface compares | - | - | the image does not ditch a slow plane | 5dg |
+| 5ch re-pair | `1940b7779`, `8f145fde1`, `d0ec54a88` | `kAiTickMovetoRetasksPlaneBound` | **OFF** | 5dh, 5dh.1 |
+
+Code:
+- `src/ai_target_weights.cpp` (`ai_plane_loadout_arm`, the new scoring arms);
+- `src/game_hosts_lua.cpp` (`game_ai_plane_loadout`, `game_ai_plane_equipment_count`);
+- `src/game_hosts_ai.cpp` (`record_loadout_00a04560`, the loadout Params in `mode_tuning_record`,
+  the census);
+- `src/game_hosts_units.cpp` (`plane_holds_rack_round_007b9140`, `PlaneOrdnanceRack::generator_ammo`).
+
+Census line: `summary mission ai loadout arm`.
+
+Scripts in `local\`:
+- `l37_queue.ps1 -Jobs 'side:row',... -Tag t`: all 22 X rows plus `esmp08x` (ESMP08 14200);
+- `l37_diffall.ps1 -A a -B b -Rows ...`;
+- `l37_deaths.py <a.log> <b.log>`: death-row victims only in one log, by killer;
+- `l37_firstdiff.py`;
+- `l37_equip.py <regex>`: VehicleClass Equipments;
+- `l37_scnequip.py <scn> [regex]`: scene squadron Equipment census.
+
+### Next, in order
+
+1. **5co (3) / 5dh.1:** which planner gives USN13's `bruh` Kate groups MOVETOATTACK on the LandFort
+   CB2. No forced rule rates a torpedo bomber against CB2, and no `ai diag order_attack` or
+   `ai group target value` line is printed for those groups, so a diagnostic is needed at the
+   planner that installs their command. If the image would not give a torpedo wave a LandFort, 5ch
+   can be re-paired and flipped.
+2. **Labelled substitutions left in the loadout arm** (each scores 0 today, counted in the census):
+   - rocket accuracy (`009FE270` sub-type 12h; `006E3260`, `007B80A0` and `007B80C0` are now read,
+     5df);
+   - the MParatrooper fields (`007AC780`);
+   - the carried kamikaze's class (`006FF170`);
+   - a carrier-launched Zero's equipment (class `+134h`), which the generator default treats as 1.
+3. The units host's release path still reads `Equipments[DefaultEquipment or 1]` for a scene
+   squadron's rack ammo (5df.1). The image's scene squadrons fly the generator's Equipment
+   (`0094BD34`). This is a planes-lane packet, with release counts on every Zero row.
+4. 5cx's manoeuvre-survives-command item still has no reach.
