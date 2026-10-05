@@ -10462,3 +10462,45 @@ never splits.
   2-second expiries. This binding has no reach on the reference rows.
 - **Verdict rule:** flip ON if every row is gameplay-identical and the ON census matches. A moved
   row is a mechanism failure unless the census explains it.
+
+### 130.5 The pairs, and the flip
+
+- **OFF:** this tree at `bf3c7828a`, `build\win32\Release` (`local\s29_t0_<row>.log`).
+- **ON:** `pair_export --commit bf3c7828a --flip kShipAiTargetCurveRefillBound=true`
+  (`local\s29_r130on`, SHA-256 prefix `AB634712403D`, `local\s29_t1_<row>.log`).
+- Reference launch form.
+
+| row | `pair_diff` | ON census | `curve_target_block_1238` calls OFF -> ON |
+| --- | --- | --- | --- |
+| smoke (USN01) | 1 | no approach frames | 0 -> 0 |
+| USN04 (control) | 1 | no approach frames | 0 -> 0 |
+| USN13 | 1 | vehicle 1143, emptied/kind/mode skips 0, refills 122 | 135 -> 122 |
+| USNOS | 1 | vehicle 1193, skips 0, refills 118 | 128 -> 118 |
+| USNOS long | 1 | vehicle 2674, skips 0, refills 118 | 141 -> 118 |
+
+Every row is gameplay-identical, with identical death rows and unit tables. Besides the bound
+counters, only the `ship ai free` search noise moved, plus on USNOS the `ShipAiFirepower`
+callee counts that follow the fewer refills.
+
+- **The prediction about the timer was wrong in its premise.** It assumed one 0.05 s step per
+  approach frame. The refill cadence shows otherwise: OFF refills about every 8.5 approach passes
+  (USN13: 135 refills over 1143 passes), so each pass is about 0.25 s. From 2.0f, 0.25 s steps
+  land exactly on 0.0f after 8 passes. The host's `<= 0` refilled on that 8th pass; the image's
+  `< 0` waits for the 9th (2.25 s). 1143 / 9 ≈ 127, close to the 122 refills ON. So `refills` is
+  every ninth pass, not one per 2-second expiry.
+  - The step length is inferred from the cadence. The `seconds` source at
+    `ship_ai_attackmove_approach_step_009f3240` was not traced.
+- **The mechanism matches:** no empties, no kind skips and no mode skips on any row, as the OFF
+  census predicted, and the cadence change is the image's comparison.
+- **Verdict:** a spread miss with the mechanism matching, so the switch is **flipped ON**.
+  - The non-vehicle and no-target arms have no reach on the reference rows: every approach target
+    is `IsKindOf(5)`. This includes section 127's `other` latch targets.
+  - The mode-0 gate has no reach either: every approach pass is mode 0.
+
+### 130.6 Left open
+
+The own refill's gates (`009F2EC1..009F2EEB`) are not bound. The host is missing three of them:
+`+1220h` < 0 (the host tests `<= 0`, so the same 8-or-9-pass split applies to the 1.5f re-arm:
+1.5 / 0.25 = 6 passes exactly), mode 0, and `+1208h` clear. The `+1208h` byte is
+`unit->vtable[22Ch]()` at the approach enter (`009F31F3`), `006DFDB0` `XOR AL,AL` for the
+classes read so far. One switch would cover all three.

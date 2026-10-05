@@ -125,7 +125,7 @@ inline constexpr bool kShipAiTargetCurveBound = true;
 // IsKindOf(5)) leaves it alone, a vehicle refills it only in mode 0 while
 // +1224h < 0. False: any present target refills it when +1224h <= 0, in every
 // mode, and the timer re-arms to 2.0f even without a target.
-inline constexpr bool kShipAiTargetCurveRefillBound = false;
+inline constexpr bool kShipAiTargetCurveRefillBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
