@@ -1797,6 +1797,9 @@ struct GameUnitSlot {
     // [EDI+518h], EDI = unit+310h, at 008263CE..008263DC) and the census of a
     // wreck's hull ends against KillDepth (008265EC..00826622).
     float sink_time_828{0.0f};
+    // Packet cc9_sunk_hull_shape_flag8: 00826410..0082643B cleared mask bit 8 (the terrain
+    // group) on every hull shape once sinkTime passed 60 s (00C47F60).
+    bool sunk_terrain_mask_cleared{false};
     // Packet cc9_ship_terrain_contact: +1010h / +1011h, the one-frame contact
     // latch 008255B0 rotates (00825824..0082583E); 009377E0 sets +1010h on a
     // kind-8 contact (the HUD's `ingame.warning_shallowwater`, 006830A5).
@@ -2938,6 +2941,7 @@ struct GameUnitsHost::Impl {
         bsp::dyn_body_set_linear_damping_00c37e00(s.body, 0.5f);
         // 0082507E / 00825086.
         s.sink_time_828 = 0.0f;
+        s.sunk_terrain_mask_cleared = false;
         ++leak_redistributions;
         done("UnitInstance::wreck_sink_block_00824fe5", 0x00824fe5u);
     }
@@ -5594,6 +5598,10 @@ struct GameUnitsHost::Impl {
     unsigned long long leak_redistributions = 0;
     unsigned long long kill_depth_tests = 0;
     std::size_t kill_depth_kills = 0;
+    // Packet cc9_sunk_hull_shape_flag8: hulls whose terrain mask bit was cleared, and the
+    // hull-terrain contact steps such a wreck still had (only possible with the switch OFF).
+    std::size_t sunk_mask_cleared_units = 0;
+    unsigned long long sunk_wreck_terrain_steps = 0;
     void ship_terrain_contact(GameUnitSlot& slot, const float before[3]);
     unsigned long long terrain_contact_steps = 0;
     unsigned long long terrain_contact_stops = 0;
@@ -14819,7 +14827,8 @@ void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
         const ClassHullBox& hb = class_hull_box(slot);
         if (!hb.ok || hb.box.shape_points.empty()) continue;
         hulls.push_back(bsp::HullWorldEntry{pending.index, &slot.body, &hb.box.shape_points,
-            bsp::ship_physics_material_shipped(slot.hull_material).friction, {}});
+            bsp::ship_physics_material_shipped(slot.hull_material).friction, {},
+            bsp::kSunkHullTerrainMaskBound && slot.sunk_terrain_mask_cleared});
     }
     // Packet cc9_hull_fort_contact: every MLandFort and MCommandBuilding (kind 1Bh) with a
     // placed world matrix and a shape has one static body (bsp::kHullFortContactBound; OFF
@@ -14849,6 +14858,7 @@ void GameUnitsHost::Impl::run_world_contact_phase(float step_seconds) {
     hull_terrain.world_step(hulls, forts, step_seconds, bsp::kHullHullContactBound,
         bsp::kHullFortContactBound);
     for (const bsp::HullWorldEntry& e : hulls) {
+        if (slots[e.unit]->sunk_terrain_mask_cleared && e.result.contact) ++sunk_wreck_terrain_steps;
         record_hull_terrain_result(*slots[e.unit], e.unit, e.result);
     }
     for (const WorldContactPending& pending : world_contact_pending) {
@@ -28825,11 +28835,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
             if constexpr (Impl::kSunkShipKillDepthBound) {
                 // 008263CE..008263DC: sinkTime += dt.
                 slot.sink_time_828 += step_seconds;
-                // 008263E2..0082645A: past 60.0 s (00CE3D68), or 20.0 s for
-                // kind 0Eh, the hull shapes lose flag 8 (00C47F60). No host
-                // collision shape carries that flag.
-                if (slot.sink_time_828 > 60.0f)
-                    host.record("ShipMotion::sunk_hull_shape_flag8", 0x00826410u);
+                // 008263E2..0082645A: past 60.0 s (00CE3D68), or 20.0 s (00CE3930)
+                // when the unit answers IsKindOf(0Eh), every hull shape whose mask
+                // shape+30h carries bit 8 loses it (00C47F60: shape+30h &= ~8, then the
+                // filter-change notify). Bit 8 is the terrain's group, so the wreck stops
+                // colliding with the seabed and sinks on to KillDepth.
+                // SUBSTITUTION, labelled: the 20 s arm is not taken; this host's
+                // IsKindOf(0Eh) answers false (unit_trait_0e).
+                if (slot.sink_time_828 > 60.0f) {
+                    if (!slot.sunk_terrain_mask_cleared) {
+                        slot.sunk_terrain_mask_cleared = true;
+                        ++host.sunk_mask_cleared_units;
+                    }
+                    if constexpr (bsp::kSunkHullTerrainMaskBound) {
+                        host.done("ShipMotion::sunk_hull_shape_flag8", 0x00826410u);
+                    } else {
+                        host.record("ShipMotion::sunk_hull_shape_flag8", 0x00826410u);
+                    }
+                }
                 ++host.kill_depth_tests;
                 // 008265FA / 0082660F: 00424C40()+3F4h, compared with FCOMIP
                 // and JBE, so both ends must lie strictly below it.
@@ -31703,6 +31726,10 @@ void GameUnitsHost::report() {
             wrecks, below_min, host.kill_depth_tests, host.kill_depth_kills,
             host.world_nodes_unlinked, host.world_lists.entries[6].count,
             static_cast<double>(Impl::kKillDepthSubstitute));
+        host.log.notef("summary sunk hull terrain mask bound=%d cleared_units=%zu "
+            "wreck_terrain_steps=%llu (00826410..0082643B / 00C47F60, packet "
+            "cc9_sunk_hull_shape_flag8)", bsp::kSunkHullTerrainMaskBound ? 1 : 0,
+            host.sunk_mask_cleared_units, host.sunk_wreck_terrain_steps);
     }
     host.log.notef("summary mission hydrodynamics calls=%llu element_steps=%llu "
         "submerged_steps=%llu add_force=%llu add_torque=%llu gravity_y=%.1f "
