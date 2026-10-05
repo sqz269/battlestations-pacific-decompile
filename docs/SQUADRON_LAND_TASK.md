@@ -9897,3 +9897,80 @@ Census:
   `KillDialog` finds less. Gameplay identical or moved only through any callback it carries.
 - **USN02, USN12 (controls):** gameplay-identical unless their dialogs carry callbacks. The census
   names any that fire.
+
+### 5cs.1 Measured (OFF `local\l34_doff`, ON `local\l34_don`, both from the OFF commit), and the verdict: **flip ON**
+
+Reference V's launch form with `BSP_LUA_CALLBACK_TRACE=1`. A USN01 500/300 smoke on the ON build
+finished cleanly.
+
+| row | pair_diff | deaths | shots | sequencer (ON) |
+| --- | --- | --- | --- | --- |
+| BSM04 3200/3000 | moved | 5 -> 5 (re-dealt) | 3792 -> 9396 | messages 7, callbacks 4, finished 4 |
+| USN04 4700/4500 | identical | 45 | 17447 | messages 5, callbacks 0, finished 1 |
+| USN02 3200/3000 | identical | 1 | 1055 | messages 6, pauses 2, finished 1 |
+| USN12 3200/3000 | identical | 5 | 144 | messages 2, pauses 1, finished 1 |
+
+**BSM04's opening, from the ON log (`l34_don_bsm04`).**
+
+| t (s) | event | clip |
+| --- | --- | --- |
+| 5.10 | INTRO1 | 4.729 |
+| 10.80 | `luaIntroMovieB`, then INTRO2 | 4.717 |
+| 16.50 | `luaIntroMovieC`, then INTRO3 | 6.092 |
+| 23.55 | `luaZekesDia` starts ZEKES | |
+| 23.60 | INTRO finishes; ZEKES1 | 6.092 |
+| 30.65 | `luaIntroMovieD`, then ZEKES2 | |
+| 37.45 | ZEKES finishes | |
+
+- Each step lands at clip + 1.0 s plus one think step, as predicted.
+- `luaIntroMovieD` spawns the two Zero flights (`luaSpawnFirstZeros`, SpawnNew serials 1 and 2).
+  That is the death and shot movement: Jap #1.1 and #2.1 die, the B-17s are re-dealt, and
+  `AirField_sqn01` is no longer killed.
+- RESPOND and UNDERATTACK also play and finish.
+
+**Open: `luaIntroMovieEnd` never runs.**
+- `luaIntroMovieD` ends with `luaDelay(luaIntroMovieEnd, 8)` (`bsm_04:1896`). The callback
+  "ran" without an error.
+- Yet the run counts no further `luaDelay` call (`calls=3`, all before) and no fourth timer
+  entity (`CreateScript calls=4`).
+- So the 1909 dogfight is still not reached. Next read: why a `luaDelay` inside a callback that
+  the sequencer fires from the script think pass creates no timer entity. Suspects are the think
+  pass's re-entrancy and the hook's count.
+
+**Controls.** USN02 and USN12 are identical; USN04 is identical too. Their dialogs carry no
+callbacks, and finishing them only empties the active set earlier.
+
+**Verdict: ON.** The mechanism matches the prediction step by step, the controls are identical,
+and the moved row is the predicted one. The `luaIntroMovieEnd` miss is a separate host question,
+recorded above.
+
+## 5ct. Handoff (cc9-lua34, 2026-10-05)
+
+Branch `agent/cc9-lua34`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua34`. Lease
+`cc9_dialog_sequencer` is released at this commit.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_plane_attacker_weight` | `50bc6765e`, `97587c288`, `4bc3073bc`, `73838cc6b`, `5124a2894` | `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound` | OFF (held: slot-4 team, static evidence pending) | 5cq |
+| USNRM01 script target | `b9e603db4` | (the gates switch) | answered | 5cr |
+| `cc9_dialog_sequencer` | this branch | `kDialogSequencerBound` | **ON** | 5cs |
+
+Traces:
+- `BSP_AI_GROUP_VALUE_TRACE=1` (`src/game_hosts_ai.cpp`): every `00A0F970` call of a plane-led
+  group.
+- The census line `summary mission ai plane weight ...`.
+- `summary mission dialog sequencer ...`.
+
+Scripts in `local\`:
+- `l34_runs.ps1 -Sides <s> -Only <rows> [-Exe] [-Trace]`;
+- `l34_pairs.ps1 -SideA -SideB -Rows`;
+- `l34_gv.py`, `l34_killers.py`, `l34_dsum.py`, `l34_deaths.py`.
+
+Next, in order:
+1. **BSM04: why `luaIntroMovieEnd`'s `luaDelay` makes no timer** (5cs.1).
+2. **USNRM01 (c): the Kates' torpedo run-in and release gates at Pearl Harbor.**
+   - The `009D3420` sector scan and the release conditions.
+   - With the gates ON the Kates keep West Virginia and Oklahoma (5cr), yet neither dies.
+3. **5ch, the weight switches and the slot-4 team:** wait for cc9-ships28's static evidence
+   (`game+1FE4h` writers, SetGameMode callers).
+4. The 5cm break-off follow-ups and 5cj's remaining items (5cp).

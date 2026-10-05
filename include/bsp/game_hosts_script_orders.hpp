@@ -136,7 +136,8 @@ inline constexpr bool kMissionEndBound = true;
 // for its streamed voice clip, then the entry's defaultPause (+88); a callback
 // runs through 00887E50; an exhausted entry is erased (it leaves
 // GetActDialogIDs). False: StartDialog only registers the id.
-inline constexpr bool kDialogSequencerBound = false;
+// ON (2026-10-05): controls identical; BSM04 plays INTRO and ZEKES (5cs.1).
+inline constexpr bool kDialogSequencerBound = true;
 
 // Packet cc9_kamikaze_ship_blocked (docs/SHIP_AI_OPEN_ITEMS.md section 42). In
 // 007EE8F0's kamikaze arm, a ship target (007EEB64) whose class 00827F70 calls
