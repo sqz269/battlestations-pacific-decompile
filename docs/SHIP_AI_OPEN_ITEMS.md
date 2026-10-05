@@ -10204,3 +10204,33 @@ reference rows. It becomes relevant with a mode 2 or mode 4 frame, which would a
 - the tail's `00863780` call, the gunnery byte `+7Dh` (gunnery lane, routed);
 - the three bookkeeping call sites;
 - the `+11FCh` arm and reset, which has no reach for the same reason: modes 2 and 4 only.
+
+### 125.5 Two more parts: the objective mask (d) and the capture slot (g)
+
+**`slot+9h` in single player.** SHIP_AI 60.6's table and docs/UNIT_GUNNERY_PASS.md give it:
+- `004BB220` inside `004BB160` is the only writer;
+- `+9h` is 1 for an AI- or mission-held slot and 0 for a human one;
+- in single player slot 0 has `+9h` clear, and slots 1..7 have `+9h` and `+0Ah` set.
+
+So `008CDF58`'s gate (`+8h` set and `+9h` clear) leaves **only slot 0 active**, and `008CDEF2`'s
+party arm gives bit 0 exactly when slot 0's `+28h` equals the party argument, and no bit
+otherwise. The host gives bit 0 for any party.
+
+Both parts are in the same script and under the same switch; with it OFF they change nothing:
+
+| part | file | change |
+| --- | --- | --- |
+| `lua` | `src/game_hosts_lua.cpp` | (d): the party arm is `party == scene_slot_party(0, 0) ? 1 : 0`. Under OFF it must stay "always slot 0", because the OFF local party 0 would drop every IJN objective |
+| `shipai` | `src/game_hosts_ship_ai.cpp` | (g): the capture flip's slot is the first slot whose published Party is the winning side, else 8 (neutral). `slot[i] + landed[i]` is not modelled |
+
+Both were applied to copies and compiled for both values of the switch (exit 0).
+
+**More predictions for the ON pairs:**
+- **An objective added for the other party now lands in no set.** On the reference rows the
+  scripts use `Mission.Party` or `obj.Party`, so check the `objective binding ... slots=` lines:
+  a `slots=0x00` line ON is such an add.
+- **The capture slot.** On a scene whose eight players all share one party (USN13; and the US
+  rows generally, where `slot_teams` is all 0), a Japanese capture finds no eligible slot, and the
+  building stays neutral (slot 8). Watch the `command building capture: ... flipped to` lines:
+  IJN11's Allied retakes go to the first Allied slot, not slot 0. JM06's side-0 flip, if any, would
+  be slot 2.
