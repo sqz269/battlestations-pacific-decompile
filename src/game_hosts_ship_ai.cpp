@@ -135,7 +135,7 @@ inline constexpr bool kShipAiOwnCurveRefillGateBound = true;
 // read through vtable 2Ch) is below this class's +570h, the approach point is
 // the brain goal pushed out of the +570h zone group by 25.0 (00417B10). False:
 // the goal is always copied verbatim.
-inline constexpr bool kShipAiApproachTargetLayerPushBound = false;
+inline constexpr bool kShipAiApproachTargetLayerPushBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target

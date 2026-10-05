@@ -10636,3 +10636,29 @@ position layer is at least 86. **So the push never fires here.**
 - **Verdict rule:** flip ON when every row is identical. Any moved row is a mechanism failure.
 - **Uncertainty:** the brain-at-`bot+58h` / `blk` = brain+8h chain (132.1). The host's
   `blk+164h` is filled only while `kShipAvoidZoneEscapeBound` runs `009ECA20`.
+
+### 132.5 The pairs, and the flip
+
+- **OFF:** this tree's build of the 132 sources with the switch OFF (`local\s29_l0_<row>.log`).
+  The smoke, USN13 and USNOS logs come from `8673d4148`'s sources. The USNOS long and USN04 logs
+  come from the build before the `min_target_layer` / `max_own_0570` fields were added; nothing
+  else differs.
+- **ON:** `pair_export --commit 8673d4148 --flip kShipAiApproachTargetLayerPushBound=true`
+  (`local\s29_p132on`, SHA-256 prefix `4D8C7BFE1BEC`, `local\s29_l1_<row>.log`).
+
+| row | `pair_diff` | ship passes / below / moved ON |
+| --- | --- | --- |
+| smoke (USN01) | 1 | 0 / 0 / 0 |
+| USN04 | 1 | 0 / 0 / 0 |
+| USN13 | 1 | 49 / 0 / 0 |
+| USNOS | 1 | 640 / 0 / 0 |
+| USNOS long | 1 | 2108 / 0 / 0 |
+
+- **Every row is gameplay-identical.** In the native table, `target_zone_object_0740` gives way to
+  the two concrete reads. The other moves are the `ship ai free` noise. On USN13, three
+  never-moving Marus' `clear_37c` diagnostic reads 9999.0 in one build and FLT_MAX in another.
+  Section 131's ON build (`s29_o1`) shows the same split, so this is USN13's known clearance noise
+  and not this switch.
+- **Verdict:** the prediction held (no push on any row), so the switch is **flipped ON**. The arm
+  has no reach on the reference rows: every approaching ship's `+570h` is 0, and every target layer
+  is at least 86. A row whose approaching class has a non-zero `+570h` would exercise it.
