@@ -8926,3 +8926,100 @@ the row's `blocked` text now names `009E14C0`. There is no behaviour change and 
 
 **Identity.** JM08, 3000 frames, against z's `g26_z_base_jm08.log`: `pair_diff` reports gameplay
 identical (22 deaths, 482 hit records, 2794 shots). The log is `local\g26_stop_jm08.log`.
+
+## 117. The unreconstructed unit-motion rows on reference z, and the top item (lead item; cc9-gunnery26)
+
+### 117.1 Census
+
+`local\g26_motion_census.py` reads the `UnitMotion::unreconstructed_*` lines of z's twenty-two
+logs (`local\g26_z_base_<row>.log`). The rows are ranked by how many z rows they reach. The calls
+are per unit per fixed step.
+
+| rank | record | routine | z rows | calls |
+| --- | --- | --- | --- | --- |
+| 1 | `unreconstructed_phase_006d2510` | `BSP_AirField_TickAdvance` | 15 | 183000 |
+| 2 | `unreconstructed_override_remainder_00758270` | `BSP_MotherShipUnit_UpdateMotion` (the carrier's remainder after `00825F20`) | 11 | 297000 |
+| 3 | `unreconstructed_phase_00846320` | `BSP_Shipyard_TickAdvance` | 8 | 87000 |
+| 4 | `unreconstructed_override_remainder_00855420` | `BSP_SubmarineUnit_UpdateMotion` (remainder) | 7 | 94184 |
+| 5 | `unreconstructed_override_remainder_00749b20` | `BSP_LandingShipUnit_UpdateMotion` (remainder) | 5 | 402172 |
+| 6 | `unreconstructed_phase_00953cc0` | the base advance on a unit whose generic-tick guard failed | 4 | 41094 |
+
+### 117.2 The top item: `006D2510`, read whole (`006D2510..006D2553`, `RET 4`)
+
+1. `00953CC0(dt)`, the base advance. For an airfield, the unit vtable `00CF8C08` has `[1F0h]` =
+   `0095DC40` and `[1D8h]` = `006D1F20` (`RET 4`). These are the same leaves the host's generic
+   tick already runs (`GenericTickCalls`, `src/game_hosts_units.cpp`).
+2. `unit->vtable[1A8h]()` = `006D40F0`, the destruction rule. It is inside Ghidra's `006D40D0`;
+   the end is `006D4207 RET`. It is GAMEPLAY_GAP_RANKING #15.
+3. If `byte [unit+5Dh] == 0`: `006CDC70(dt)` on `unit+72Ch`. The host already runs this, relocated
+   (`kDeckTickInFixedStepBound`, `run_air_ops_update_006cdc70`).
+
+**Item 2 now has reach (new since GAMEPLAY_GAP_RANKING's "still no reach").**
+- `local\g26_hangar_reach.py` checks each airfield's listed hangars (the `air ops hangar:` lines,
+  a superset of `+830h`) against the death rows.
+- On z's **USN01**, `Airfield2` lists one hangar, `Multi Hangar 1`. It dies at 133.95 s.
+- So from the next step, the image's `006D40F0` finds no hangar with `+370h > 0` and takes its
+  destruction arm. No other z row loses a listed hangar.
+
+**The arm** (`006D415A..006D41F3`):
+- `[+71Ch] != 0`: a `"InferiorFailure"` string (`00CF0B74`, through `0041DD40` and `00BF7680`)
+  goes to `vtable[194h]` = `006D2210(name, 0)`, and the airfield does not die.
+  - `006D2210` compares the name with the literals at `00CF8E24` and `00CF8E14`.
+  - It builds message `72h` or `74h` and routes it through `0077C2A0(msg, 7, 0)`.
+  - It was not read further.
+- `[+71Ch] == 0`: `vtable[70h](0)` = `0077D1A0` `BSP_UnitInstance_DestroyAndBroadcast`, which has
+  a reconstruction (`src/unit_damage.cpp`). The airfield dies.
+- Both arms then call `006D2980` (the hangar list refresh).
+
+**Open, for the successor:**
+- Which arm USN01's `Airfield2` takes. In the scene (`usn_1_marshall.scn`, 2024-07-13) it is
+  top-level, but it carries `CommandBuildingInferior`. `+71Ch` is the parent link
+  (LAND_AND_STRUCTURES, `00747400`'s sibling rule), so the writer of `+71Ch` for an inferior
+  airfield decides the arm.
+- The plan:
+  - find that writer;
+  - bind `006D40F0` behind a new `kAirfieldDestructionRuleBound` (OFF), with predictions;
+  - pair USN01 (36000 frames, so Airfield2's plane launches after 134 s show) plus a control.
+- Items 1 and 3 are faithful as they are (no effect, and relocated, respectively).
+
+## 118. Handoff (cc9-gunnery26, 2026-10-05, at about 65% context)
+
+### 118.1 Landed on agent/cc9-gunnery26
+
+| item | commit | state |
+| --- | --- | --- |
+| 113: the Coastal Gun 01 attack is refused by LOS (the fort is buried in the scene) | `bb91fc79b` | closed, no defect |
+| 114: SaltLakeCity's USN01 death is the 5df.1 weights (barrel gates + attacker weight) | `58da6fa01` | closed; moot on SP rows with the coordinator gate (115.3) |
+| 115: the `pla` split (`kDialogSequencerBound` alone: HoshoTime spawns two fleets), draft-wall spawns, SLC on main | `13167ade8` | closed |
+| Reference z (GAME_EXECUTABLE "2026-10-05 z"), base `c8c69f5ab` | `c3ad1f8ce`, `9e4f600c0` | `reports/cc9_reference_rebaseline_26.json` |
+| 116: `CruiseCommand::stop_state_step` was a mislabelled record | `bbb7f5748` | closed (record -> done, JM08 identity) |
+| 117: the unit-motion census and `006D2510` read | this commit | the top item is open (117.2) |
+
+### 118.2 Next, in order
+
+1. **Reference AA** when the lead asks. Use z's base `c8c69f5ab` and z's logs
+   (`local\g26_z_base_<row>.log` in the cc9-gunnery26 tree) as the previous reference.
+   - Run `local\g26_switches.py c8c69f5ab <base>` for the switch diff.
+   - The anchor sets everything since `c8c69f5ab` OFF.
+   - The leave-one-out takes groups that are live on SP rows. Switches that SHIP_AI 150.7 lists
+     as inert need only a one-row check.
+2. **117.2's airfield destruction rule `006D40F0`.** It has reach on USN01 from 134 s.
+   - First find the `+71Ch` writer for a `CommandBuildingInferior` airfield; it decides between
+     the InferiorFailure arm and the destroy arm.
+   - Then bind OFF with predictions and pair on USN01, 36000 frames.
+3. 117.1's rank 2 (`00758270`, the carrier's motion remainder) if 2 closes early.
+
+### 118.3 Tools (`local\` in the cc9-gunnery26 tree, prefix `g26_`)
+
+- `g26_zlane.ps1 -Lane -Variants 'short=kA+kB' -Rows a,b -Commit -Prefix`: export, build and the
+  reference launch form per variant. It launches all the rows at once. Run one 22-row lane at a
+  time because of the launcher's 2400 s slot wait.
+- `g26_lane.ps1 -Lane -Short -Switches 'kA+kB'|none -Commit -Frames -Mission`: one export plus one
+  run, writing `g26_<Short>.done`.
+- `g26_cmp.py <prefixA> <prefixB> [rows]`: `pair_diff` per row.
+- `g26_table.py <prefix>`: the table rows.
+- `g26_report26.py`: z's report.
+- `g26_deaths.py <t> <logs...>`: death rows side by side up to a time.
+- `g26_motion_census.py`: the census in 117.1.
+- `g26_hangar_reach.py`: the airfield-hangar deaths in 117.2.
+- `g26_run.ps1`: one run with `BSP_AA_TRACE_UNIT` / `BSP_AA_TRACE_TARGET`.
