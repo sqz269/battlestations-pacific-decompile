@@ -12069,3 +12069,75 @@ Their coordinator arms are inert; their other arms are not.
 **They stay correct, and reachable, for the launches that build a coordinator:** a hosted session
 (`game+1FE4h == 1`) or a developer command-line mode (`game+61Ch` = 1). This harness has neither.
 Should one be added, `kAiCoordinatorCreatedAtLoad` becomes a per-run value.
+
+## 151. Handoff (cc9-ships32, 2026-10-05, at about 65% context)
+
+### Landed on this branch (all merged by the lead)
+
+| section | what | switch | evidence |
+| --- | --- | --- | --- |
+| SCRIPTED_HELM 11.2 | USN01 phase 3 with the attack line, three runs. No side-0 capture. Katori is `SetInvincible(0.1)`. SaltLakeCity dies at 644.17 s on current main. The attack line lands 0 hits on Coastal Gun 01 | harness only | `local\s32_r1..r3.log` |
+| GAME_EXECUTABLE, last section | the first scripted player-input row: USN01, side-1 capture to no slot (party 2, neutral) at 1558.90 s | - | `local\s32_r3.log`, `s32_orders3.txt` |
+| 149.1 | the `squadron_excluded_009ffeb0` census fix | census only | - |
+| 149 | the auto-merge leave pass `00A10EC0` | `kAiAutoMergeLeaveBound` ON | 10 pairs |
+| 150 | **the image builds no AI coordinator on a mission-tree launch** (`004E17FD..004E1838`: session word 1 or `game+61Ch`) | `kAiCoordinatorLoadGateBound` ON (`a8404d451`) | 10 pairs (150.5), launch classification (150.6), inert list (150.7) |
+
+**The state the successor starts from.**
+- On every reference row the coordinator never ticks: no AI group, no brain, no planner, no group
+  command tick.
+- Section 150.7 lists the 42 switches this makes inert and the 8 whose other arms stay live.
+- The next reference (z or later) is rebased on this. Expect large moves against y: USN04 and E2
+  hull hits fall about 80%, USNRM01's strike tasks drop from 82 to 15, and JM08 long's deaths go
+  from 83 to 207 (150.5).
+
+### Open, in order (the lead's queue)
+
+1. **What still drives ships on single-player rows.** With no coordinator, what remains is:
+   - the per-unit ship AI (brain, approach, navigator, `src/game_hosts_ship_ai.cpp`);
+   - the script orders (`game_hosts_script_orders.cpp`, cc9-lua's lane);
+   - the controlled unit's AI.
+
+   Steps:
+   - On the reference rows with the gate ON, census which ship-AI host paths still run (the
+     unimplemented and concrete call counts in each log's host-method table, and the ship-AI
+     summary lines).
+   - Rank the remaining non-concrete rows by reach on the new state. Rows whose reach came through
+     planner orders are expected to drop.
+   - Tools: `tools/pair_diff.py`, and the `host methods` table at the end of each log.
+2. **JM08's troop landing.** The planner's StartLanding (`kLandingShipStartLandingBound`) is now
+   inert, but `kLandingCraftLaunchBound`, `kShipAiBigLandingShipBound` and
+   `kTroopLandingTraitBound` stay live in `game_hosts_ship_ai.cpp`.
+   - JM08's scene is `universe/Scenes/missions/COTP-IJN/PRCPIJN/prcpijn_08_defend_guadalcanal.scn`.
+     Find its Lua (the lead calls it `prcpjm08.lua`; search `scripts\` for the scene's mission
+     script).
+   - Read whether the script orders its landers itself: `NavigatorMoveTo`, `StartLanding` /
+     `LandingCraft*` bindings, `PilotSetTarget` on the LSTs.
+   - Run JM08 long (36000 frames) on main and read the ramp lines. Section 86 had ramps lowering at
+     836.50 s and 898.35 s under the coordinator.
+   - If the landing chain no longer runs, decide whether that is the image's behaviour (no
+     script order) or a missing script-order binding.
+3. **A scripted capture row against Coastal Guns 02 and 03** (SCRIPTED_HELM 11.2, leads 1-2).
+   - Coastal Guns 01-03 sit at (3265-3372, -3740..-3776), 830-900 m south-west of CB2.
+   - The attack line landed 0 hits on Gun 01 (`current=0 latched=0`). First compare that command
+     row with IJN05's HQ2 attack, which did neutralize its target.
+   - Then try `attack` on Guns 02 and 03.
+   - SaltLakeCity's 644.17 s sinking: the three candidates are 5df.1's plane-weight switches. Those
+     are now inert (150.7), so re-check the death on current main first; it may already have moved.
+   - With no coordinator, Katori's behaviour may also differ, so re-run r1's prefix
+     (`local\s32_gen_orders.py`, `s32_orders3.txt`) before tuning.
+
+### Tools (`local\`, `s32_` prefix, this worktree)
+
+- `s32_run.ps1` runs one mission. Arguments: `-Name -Mission -Frames [-Orders] [-Traj]
+  [-Exe]`.
+- `s32_rows.ps1` launches reference rows detached: `-Prefix -Only <row keys> [-Exe]`.
+- Order-file and trajectory tools:
+  - `s32_gen_orders.py` writes USN01 order files;
+  - `s32_pos.py` and `s32_track.py` are trajectory CSV readers, with distances to CB2;
+  - `s32_deaths.py` lists the ship-like death-row changes between two logs.
+- `s32_refs.py <hex...>` is the rel32 + abs32 reference census of the PE on disk. It found every
+  caller that Ghidra's xrefs missed for `00A32350`.
+- `s32_sgm.py` prints the arguments pushed at a call site.
+- `s32_inert.py` is the switch census for 150.7.
+
+All leases are released after this commit.
