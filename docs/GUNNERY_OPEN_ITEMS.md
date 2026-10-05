@@ -8607,3 +8607,27 @@ mechanism failure.
 - **Verdict:** the mechanism matches the predictions on every row: no reach where the census
   had no pair, and the moved rows are exactly the four with a pair. **Flip ON**, with the
   wiring commit.
+
+## 110. 97.2's two-tick trail is the stepper's soft approach (108 item 3, cc9-gunnery25)
+
+- **The stepper** `0085AD80`, horizontal axis (the vertical is the same code at `0085AFD6..`):
+  - `0085AE42..0085AE62`: `[esp+18h]`/`[esp+1Ch]` = |wrapped(target - angle)| per axis
+    (`00438B10`, `AND 7FFFFFFFh`), tested against the dead band `[00CFAA48]` (0.01 degree).
+  - `0085AEDA`: `007F6530` gives the routed delta; `0085AEEB..0085AF5D` clamps it to
+    `HorzRotSpeed (+88h) * dt` with the delta's sign.
+  - `0085AF63..0085AF7A`: unless the gun IsKindOf(23h), `0085AFA6` calls `00419010(0, 0.5
+    [00CE3800], 10 degrees [00CE3990], 1.0, remaining)` and `0085AFAB` multiplies the step by it.
+  - `src/gun_aiming.cpp` (`gun_step_aim_0085ad80`) matches every operand: the same remaining
+    magnitude, the same clamp, the same scale.
+- **What that does in a turn.** Inside the last ten degrees the step is the remaining gap times
+  a scale that tends to 0.5 as the gap shrinks: the gun closes half its gap per tick. With the
+  hull turning at w, each new command (`0085ABA0` in wave 2, from the pose wave 1 committed)
+  opens the gap by w * dt, so the gap the settle test (`006DEE40`, 0.1 degree) sees settles at
+  e = e/2 + w*dt, **e = 2 * w * dt**.
+  - At 1.4 deg/s and dt = 0.05 s that is 0.14 degree, the 0.13..0.15 of 97.2.
+  - The test passes only below w = 0.1 / (2 * 0.05) = **1.0 deg/s**; Shimotsuke fired once the
+    turn fell to about 0.5 deg/s (97.2).
+- **Verdict: no defect.** With the order the image's (104) and the stepper's arithmetic the
+  image's, a turning hull's guns hold fire above 1 deg/s of turn in the image too. 97.2 is
+  closed. `0085ABA0` stores the wrapped pair after the arc and speed tests and has no
+  arithmetic of its own on this path.
