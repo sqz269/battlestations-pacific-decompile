@@ -400,6 +400,17 @@ std::size_t script_orders_drain_loopback_0076c600();
 // (0099A4C0 -> 0099A170). False: the host fans the order itself out to the
 // member planes, whose 0099A170 has no `settarget` arm.
 inline constexpr bool kAiSquadronSetTargetIntakeBound = true;
+
+// Packet cc9_get_squadron_planes (docs/SQUADRON_LAND_TASK.md 5cn). True: the
+// native GetSquadronPlanes 0089CC50 returns a new table whose entries 1..n are
+// the squadron's member planes' entity ids as strings (0089CD75-0089CE00: the
+// +3D0h array up to +3CCh, each u16 +174h through 004260B0, stored by
+// 00B672F0 at index i), the `thisTable` keys. Past five entries the image
+// reads +174h through a null pointer (0089CD98 JA -> XOR EAX,EAX); the host
+// stops at five, labelled. False: an unimplemented record that returns nothing, so
+// bsm_04_vengance_at_luzon.lua:1718 indexes nil and luaStartMission fails on
+// every think.
+inline constexpr bool kGetSquadronPlanesBound = false;
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
@@ -784,6 +795,10 @@ private:
     unsigned long long squadron_intake_declined_{0};
     unsigned long long squadron_intake_member_orders_{0};
     unsigned long long squadron_intake_tasks_{0};
+    // Packet cc9_get_squadron_planes census.
+    unsigned long long squadron_planes_calls_{0};
+    unsigned long long squadron_planes_entries_{0};
+    unsigned long long squadron_planes_unresolved_{0};
     std::vector<SceneMarker> markers_;
     lua_State* state_{nullptr};
     // The mission machine, kept past a dispatch so the per-frame timer pass can
