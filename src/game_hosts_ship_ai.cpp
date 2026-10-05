@@ -119,6 +119,13 @@ inline constexpr bool kWeaponHitAccuracyBound = true;
 // fills at nested+1238h from this ship's own fields. False: the old curve,
 // this ship's own rating without the long-range bias.
 inline constexpr bool kShipAiTargetCurveBound = true;
+// Packet cc9_target_curve_refill, SHIP_AI_OPEN_ITEMS section 130. True:
+// 009F2F26..009F2FD3 as the image runs it every pass: no target empties the
+// target curve and arms the refill (-1.0f), a non-vehicle target (fails
+// IsKindOf(5)) leaves it alone, a vehicle refills it only in mode 0 while
+// +1224h < 0. False: any present target refills it when +1224h <= 0, in every
+// mode, and the timer re-arms to 2.0f even without a target.
+inline constexpr bool kShipAiTargetCurveRefillBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -5775,6 +5782,82 @@ private:
         return owner_.target_block_1238h(index_);
     }
 
+    // 009F2F95..009F2FB6 (bound) or the pre-binding refill: the target curve at
+    // nested+13B0h from the target's rating of this ship.
+    void refill_target_curve(const bsp::ShipAiFirepowerQuery& query,
+                             FirepowerBinding& firepower) {
+        const std::uint32_t target_handle = ctl_.goal_vector.raw_target_0b20;
+        if (kShipAiTargetCurveBound && target_handle != 0u
+            && target_handle - 1u < owner_.units.count()) {
+            // 009F29E0..009F29FE: the target is [owner+0B20h] when it answers
+            // vtable[5Ch](5); the one-based handle names the unit. Its rating
+            // of THIS ship, over the nested+1238h block.
+            const std::size_t target = static_cast<std::size_t>(target_handle - 1u);
+            bsp::ShipAiFirepowerQuery them = target_query_1238h();
+            FirepowerBinding target_firepower(owner_, target);
+            bsp::ship_ai_firepower_range_profile_0095f080(them,
+                ctl_.approach_curve_target.samples, false, target_firepower);
+            owner_.done("ShipAiApproach::curve_target_block_1238", 0x009f28fau);
+        } else {
+            bsp::ship_ai_firepower_range_profile_0095f080(query,
+                ctl_.approach_curve_target.samples, false, firepower);
+            owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
+            ++owner_.summary.approach_curve_refreshes;
+        }
+    }
+
+    // Packet cc9_target_curve_refill: the kind of [owner+0B20h] on every
+    // approach frame, both ways (vehicle 5, plane 0Fh, squadron 18h, structure
+    // 1Ch, anything else, no target).
+    void census_target_curve_kind() {
+        auto& c = owner_.summary.target_curve_kinds;
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        if (handle == 0u) { ++c[5]; return; }
+        if (handle - 1u >= owner_.units.count()) { ++c[4]; return; }
+        const std::size_t t = static_cast<std::size_t>(handle - 1u);
+        if (owner_.units.unit_is_kind_of(t, 5)) ++c[0];
+        else if (owner_.units.unit_is_kind_of(t, 0x0f)) ++c[1];
+        else if (owner_.units.unit_is_kind_of(t, 0x18)) ++c[2];
+        else if (owner_.units.unit_is_kind_of(t, 0x1c)) ++c[3];
+        else ++c[4];
+    }
+
+    // Packet cc9_target_curve_refill, 009F2F26..009F2FD3, every frame-state pass:
+    // - no target (009F2F31): 009523B0 zeroes nested+13B0h (3Ch dwords, the same
+    //   fill as 00954940) and nested+1224h = -1.0f ([00D7A260]), so the refill
+    //   is due again as soon as a target appears;
+    // - a target failing vtable[5Ch](5) (009F2F44): nothing, +1224h untouched;
+    // - a vehicle (009F2F4A..009F2F7F stores block words +1250h/+125Ch and the
+    //   +1278h/+1279h bytes, which target_block_1238h already builds): refill
+    //   only in mode 0 (009F2F7F) while +1224h < 0 (009F2F84 COMISS 0 > t),
+    //   then +1224h = 2.0f ([00CE3958], 009F2FB6).
+    void run_target_curve_refill_009f2f26(const bsp::ShipAiFirepowerQuery& query,
+                                          FirepowerBinding& firepower) {
+        auto& s = owner_.summary;
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        if (handle == 0u) {
+            bsp::ship_ai_approach_curve_clear_00954940(ctl_.approach_curve_target);
+            ctl_.approach.timer_1224 = -1.0f;
+            owner_.done("ShipAiApproach::curve_target_empty_009523b0", 0x009f2fc6u);
+            ++s.target_curve_emptied;
+            return;
+        }
+        if (handle - 1u >= owner_.units.count()
+            || !owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 5)) {
+            owner_.done("ShipAiApproach::curve_target_kind_005c", 0x009f2f3cu);
+            ++s.target_curve_kind_skips;
+            return;
+        }
+        if (ctl_.approach.mode_1234 != bsp::ShipAiApproachMode::free_0) {
+            ++s.target_curve_mode_skips;
+            return;
+        }
+        if (!(ctl_.approach.timer_1224 < 0.0f)) return;
+        refill_target_curve(query, firepower);
+        ctl_.approach.timer_1224 = 2.0f;
+        ++s.target_curve_refills;
+    }
+
     void run_query_gate_bytes() {
         // Packet cc9_torpedo_gate_bytes: 009F2AD1..009F2B8A / 009F2DF7..009F2E43.
         const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
@@ -5895,28 +5978,14 @@ private:
             owner_.done("ShipAiApproach::curve_refresh_own_0095f080", 0x009f2f11u);
             ++owner_.summary.approach_curve_refreshes;
         }
-        if (ctl_.approach.timer_1224 <= 0.0f) {
-            // 009F2F3C, target->vtable[5Ch](5): no such probe in this process,
-            // so the presence of a target stands in for it.
+        census_target_curve_kind();
+        if (kShipAiTargetCurveRefillBound) {
+            run_target_curve_refill_009f2f26(query, firepower);
+        } else if (ctl_.approach.timer_1224 <= 0.0f) {
+            // 009F2F3C, target->vtable[5Ch](5): not probed on this arm, so the
+            // presence of a target stands in for it.
             owner_.record("ShipAiApproach::curve_target_kind_005c", 0x009f2f3cu);
-            const std::uint32_t target_handle = ctl_.goal_vector.raw_target_0b20;
-            if (has_target && kShipAiTargetCurveBound && target_handle != 0u
-                && target_handle - 1u < owner_.units.count()) {
-                // 009F29E0..009F29FE: the target is [owner+0B20h] when it answers
-                // vtable[5Ch](5); the one-based handle names the unit. Its rating
-                // of THIS ship, over the nested+1238h block.
-                const std::size_t target = static_cast<std::size_t>(target_handle - 1u);
-                bsp::ShipAiFirepowerQuery them = target_query_1238h();
-                FirepowerBinding target_firepower(owner_, target);
-                bsp::ship_ai_firepower_range_profile_0095f080(them,
-                    ctl_.approach_curve_target.samples, false, target_firepower);
-                owner_.done("ShipAiApproach::curve_target_block_1238", 0x009f28fau);
-            } else if (has_target) {
-                bsp::ship_ai_firepower_range_profile_0095f080(query,
-                    ctl_.approach_curve_target.samples, false, firepower);
-                owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
-                ++owner_.summary.approach_curve_refreshes;
-            }
+            if (has_target) refill_target_curve(query, firepower);
             ctl_.approach.timer_1224 = 2.0f;
         }
 
@@ -12382,6 +12451,16 @@ void GameShipAiHost::report() {
     host.log.notef("summary mission ship ai standoff choices=%llu curve_refreshes=%llu "
         "(009e6e80 writes nested+11e4h; 0095f080 fills nested+12c0h and nested+13b0h)",
         host.summary.standoff_choices, host.summary.approach_curve_refreshes);
+    {
+        const unsigned long long* k = host.summary.target_curve_kinds;
+        host.log.notef("summary mission ship ai target curve refill kinds vehicle=%llu "
+            "plane=%llu squadron=%llu structure=%llu other=%llu none=%llu emptied=%llu "
+            "kind_skips=%llu mode_skips=%llu refills=%llu bound=%d (009f2f26..009f2fd3, "
+            "packet cc9_target_curve_refill)", k[0], k[1], k[2], k[3], k[4], k[5],
+            host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
+            host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
+            kShipAiTargetCurveRefillBound ? 1 : 0);
+    }
     // Packet cc9_torpedo_standoff: 009F2AC9..009F2E9B's exits in the order of
     // bsp::ShipAiTorpedoStandoffExit, and 009E72F3's gate.
     {
