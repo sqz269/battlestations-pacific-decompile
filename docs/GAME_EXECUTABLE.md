@@ -14272,3 +14272,89 @@ for `lps` only. Deaths are x -> variant.
   - **JM08 long 46**: no number was predicted; it moves the most.
 - **Flipped on main during these runs (for y, main `0d4b298d7`):** `kDialogSequencerBound`,
   `kShipAiOwnCurveRefillGateBound` and `kShipAiTargetCurveRefillBound` newly ON.
+
+## Mission reference baselines, 2026-10-05 y (main 409ad51a6)
+
+Packet `cc9_reference_rebaseline_25`, worker cc9-gunnery25. The base is main `409ad51a6`
+(2026-10-05 15:10 UTC). Anything flipped on main during these runs belongs to z (cc9-lua37's gates
+and loadout arm among them).
+
+### The switch diff and the plan
+
+`local\g25_switches.py 1590ec097 409ad51a6`: eighteen switches newly ON, all of them new since x;
+none re-flipped, none newly OFF.
+
+| short (leave-one-out group) | switches | record | rows its own pair moved |
+| --- | --- | --- | --- |
+| `p7d` | `kGunneryPassByte7dBound` | GUNNERY 103 | USN02 (Houston 22.8 -> 66.1 s) |
+| `hsc` | `kHullShapeChainOrderBound` | GUNNERY 106 | USNOS, JM05 long, USNRM01, JM08 long, USN13 long |
+| `wrk` | `kShipTorpedoBoatKindBound`, `kSunkHullTerrainMaskBound` | GUNNERY 105, 101 | JM08 long (the sunk PT, wrecks below the seabed) |
+| `azd` | `kAvoidZoneDraftBodiesBound` | GUNNERY 109 | USNRM01, IJN01, JM05, JM05 long (BSM01 gameplay-identical) |
+| `aiw` | `kAiTargetWeightHealthBound`, `kAiForcedTargetWeightRulesBound` | SHIP_AI / 5cu | USN04, E2, USN13 long, USNRM01 |
+| `pla` | `kOrderAttackNoMemberIssueBound`, `kTerrainAvoidForwardSpeedBound`, `kDialogSequencerBound` | 5db, 5da, 5cs | plane rows |
+| `sai` | `kShipAiApproachLandingSweepBound`, `...LeaderAnswersBound`, `...TargetLayerPushBound`, `kShipAiAttackMoveGroupHandBackBound`, `kShipAiOwnCurveRefillGateBound`, `kShipAiPathLimitDefaultBound`, `kShipAiStateEnterBytesBound`, `kShipAiTargetCurveRefillBound` | SHIP_AI 130-137 | IJN01 (group hand-back); the rest gameplay-identical in their pairs |
+
+**Rows:** x's twenty-two in x's launch form (`local\g25_lane.ps1`, copied from g23's;
+`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player).
+
+- **Binaries:** y `local\g25_lane_ya\build\win32\Release\bsp_game.exe` (SHA-256 prefix
+  `D6C9B091B758`); the all-OFF anchor `local\g25_lane_yb` (`94A218DD69DC`).
+- **Environment:** the console session was Active; no run reports a lost poll. The 300-frame USN01
+  smoke on the merged tip was clean (GUNNERY 109).
+
+### The anchor: the eighteen OFF
+
+`g25_y_anc_<row>` is **gameplay-identical to x on all twenty-two rows** (exit 1 against
+cc9-gunnery23's `g23_rx_<row>`; deaths, hull hits and shots equal on every row). Nothing else that
+landed since x moves a row.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11924.2 | 44 | 1080 (801) | 12108 | 91.50 s | 2 of 16 / 0 of 19 | 18 | Lexington-class01 3363.18 | none (Mission.EndMission never true) | 493 | `local\g25_y_base_usn04.log` |
+| USN01 | 3000 | 33189.2 | 28 | 1289 (273) | 3421 | 12.90 s | 0 of 17 / 6 of 19 | 3 | ConTBD1 2525.00 | none (Mission.EndMission never true) | 517 | `local\g25_y_base_usn01.log` |
+| USN04 (E2) | 9000 | 19261.4 | 74 | 1770 (1147) | 22897 | 91.50 s | 2 of 16 / 0 of 19 | 31 | Lexington-class01 5789.89 | none (Mission.EndMission never true) | 507 | `local\g25_y_base_e2.log` |
+| USN02 | 9000 | 66185.9 | 3 | 6080 (356) | 4493 | 36.75 s | - | - | (none) 845.99 | failed at 69.35 s (Mission.EndMission) text="Game Over" entity="Alden" objectives=5; EndScene 008B01B0 not reached (the narrative callback is render-side) | 500 | `local\g25_y_base_usn02.log` |
+| JM06 (smoke) | 3000 | 5994.7 | 2 | 311 (240) | 409 | 9.85 s | - | - | PlayerSub 01 0.00 | none (Mission.EndMission never true) | 472 | `local\g25_y_base_jm06.log` |
+| JM08 (smoke) | 3000 | 12664.0 | 22 | 761 (432) | 4010 | 5.25 s | - | 1 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 473 | `local\g25_y_base_jm08.log` |
+| USN13 (smoke) | 3000 | 7446.0 | 22 | 444 (129) | 4189 | 98.90 s | 0 of 60 / - | 6 | Enterprise 925.78 | none (Mission.EndMission never true) | 510 | `local\g25_y_base_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | -1.00 s | - | - | HenryPT 0.00 | none (Mission.EndMission never true) | 453 | `local\g25_y_base_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | -1.00 s | - | - | Narwhal 770.74 | none (Mission.EndMission never true) | 456 | `local\g25_y_base_lomp06.log` |
+| LOMP10 | 3000 | 2156.6 | 2 | 182 (103) | 3423 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none (Mission.EndMission never true) | 478 | `local\g25_y_base_lomp10.log` |
+| JM05 | 3000 | 17671.0 | 15 | 498 (64) | 341 | 5.85 s | - | - | Mogami-class 01 1522.75 | none (Mission.EndMission never true) | 528 | `local\g25_y_base_jm05.log` |
+| USN12 | 3000 | 4759.8 | 5 | 219 (12) | 144 | 7.55 s | - | - | Montpelier 1499.41 | none (Mission.EndMission never true) | 471 | `local\g25_y_base_usn12.log` |
+| LOMP10 (long) | 9000 | 2764.2 | 5 | 193 (107) | 3623 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none (Mission.EndMission never true) | 490 | `local\g25_y_base_lomp10l.log` |
+| USNOS | 3000 | 46847.5 | 97 | 1372 (192) | 5930 | 5.00 s | - | 11 | NH 1497.26 | none (Mission.EndMission never true) | 510 | `local\g25_y_base_usnos.log` |
+| USNOS (long) | 9000 | 52714.1 | 114 | 2844 (301) | 17861 | 5.00 s | - | 13 | NH 4492.07 | none (Mission.EndMission never true) | 513 | `local\g25_y_base_usnosl.log` |
+| IJN01 | 3000 | 1237.3 | 2 | 116 (101) | 2840 | 93.60 s | - | - | A7M_1 8712.78 | none (Mission.EndMission never true) | 469 | `local\g25_y_base_ijn01.log` |
+| JM05 (long) | 9000 | 19746.1 | 17 | 539 (72) | 415 | 5.85 s | - | 3 | Mogami-class 01 4566.94 | none (Mission.EndMission never true) | 534 | `local\g25_y_base_jm05l.log` |
+| JM08 (long) | 36000 | 92713.2 | 148 | 4166 (735) | 5737 | 5.25 s | - | 2 | Headquarter 01 0.00 | none (Mission.EndMission never true) | 498 | `local\g25_y_base_jm08l.log` |
+| USN13 (long) | 9000 | 47778.7 | 117 | 3984 (2698) | 41960 | 98.90 s | 3 of 80 / 0 of 50 | 44 | Enterprise 2777.59 | none (Mission.EndMission never true) | 544 | `local\g25_y_base_usn13l.log` |
+| ESMP08 (long) | 9000 | 2729.0 | 7 | 151 (65) | 3005 | 420.32 s | 0 of 18 / 0 of 18 | 2 | Zuikaku 4599.38 | none (Mission.EndMission never true) | 490 | `local\g25_y_base_esmp08l.log` |
+| USNRM01 | 9000 | 48648.2 | 192 | 3119 (1742) | 76767 | 99.90 s | 52 of 82 / 118 of 174 | 95093 | PT 2287.35 | none (Mission.EndMission never true) | 537 | `local\g25_y_base_usnrm01.log` |
+| IJN11 | 3000 | 560.0 | 2 | 81 (2) | 809 | 77.50 s | - | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 502 | `local\g25_y_base_ijn11.log` |
+
+**Against the anchor (= x): sixteen rows move** (exit 3): USN04, E2, USN01, USN02, JM08, USN13,
+LOMP06, JM05, USNOS, USNOS long, IJN01, JM05 long, JM08 long, USN13 long, USNRM01 (and nothing
+else). **JM06, BSM01, LOMP10, USN12, LOMP10 long, ESMP08 long and IJN11 are gameplay-identical.**
+
+Headline moves (x -> y):
+- **JM08 long:** 46 -> 148 deaths, its knife edge again.
+- **USNRM01:** 156 -> 192; hull hits 923 -> 1742, shots 49013 -> 76767; the controlled unit
+  West Virginia -> PT (the player's ship dies and control moves on).
+- **E2:** 85 -> 74 (hull hits 1743 -> 1147). **USN04:** 45 -> 44 (hull hits 1144 -> 801).
+- **USN02:** 1 -> 3 deaths; the mission fails at 69.35 s instead of 29.75 s (first hit 19.25 ->
+  36.75 s); Kortenaer is no longer the controlled unit at the end.
+- **IJN01:** 3 -> 2. **USNOS:** 98 -> 97. **USNOS long:** 115 -> 114. **USN13 long:** 116 -> 117
+  (hull hits 2020 -> 2698).
+- USN01, JM08, USN13, LOMP06, JM05 and JM05 long keep their deaths.
+
+### Leave-one-out predictions (written before the leave-one-out runs finished)
+
+Each group back OFF alone, against y, on the fifteen moved rows; three lanes, two rounds
+(`local\g25_lane_l{a,b,c}`, logs `local\g25_y{1,2}_<v>_<row>.log`).
+- `p7d` carries USN02's late failure.
+- `aiw` carries most of USN04, E2, USN13 long and USNRM01's hull-hit and shot moves.
+- `hsc` and `wrk` move JM08 long; `azd` moves IJN01, JM05, JM05 long and part of USNRM01.
+- `sai` and `pla` move little; whatever they move comes through the shared RNG stream.
