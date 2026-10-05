@@ -9753,3 +9753,61 @@ E2 is USN04 9200/9000. A USN01 500/300 smoke on `l34_on5` finished cleanly.
 - The Japanese plane groups target themselves (`target=B5N Kate #2.1 dist=0.0`). Each tick
   `moveto` to their own leader point retires their scripted attack heads (`replaced_other=22`),
   and the flights loiter under the US fleet's AA instead of completing their passes.
+
+## 5cr. USNRM01: the close pass and a script-ordered squadron's target (cc9-lua34, 2026-10-05)
+
+The lead's question, from GUNNERY 98: with `kAiSquadronSetTargetIntakeBound` ON, KateSpawn1-5 drop
+the script's `PilotSetTarget` (West Virginia, Oklahoma; `usn_1_pearl.lua:2336-2348`, this
+installation, mtime 2024-10-29) once their group promotes. They switch to Downes, Cassin, Curtiss,
+Helm and Mona. Does the image exempt a script-ordered squadron?
+
+### The image has no exemption on the path
+
+- **The close pass's member gate** (`00A143A0`-`00A14444`, AI_BRAIN_PLAYER_EXEMPTION section 1)
+  serves a squadron unless its leader is an uncommitted kamikaze (`17h`, `+C24h` clear). It tests
+  no order source.
+- **Both orders enter at `0077D600` with flags 1.**
+  - `PilotSetTarget` `008A4C90` chooses the class itself (`007EEC50` at `008A4E99`), then
+    `PUSH 1` at `008A4EA2`.
+  - The close pass pushes 1 at `00A14A4A` and calls `0077D600` at `00A14A6E`.
+
+  Neither order outranks the other; the later one wins.
+- **The AI-group forward is inert.** `0077D600` and `0071ECF0` forward every order to the
+  group's command object at `vtable[+24h]` (`00A2BD90`). That slot is `00A0FC90`, `RET 8`, in all
+  sixteen classes (AI_COMMAND_OBJECT).
+- **The squadron intake** `007F1940` takes the AI `settarget` through `007EEC50` (5ck), as it takes
+  any order.
+
+So, as read, the image's close pass would override the script's target whenever it chooses one.
+
+### What the host gets wrong: the choice, not the override
+
+- **It is the close weight.** In the image a Kate squadron's close weight `00A0F810` against a
+  ship is 0, so `00A13B60` chooses nothing (5co's `best = 0` rule) and the script's target
+  stands.
+  - The record path weighs the plane CLASS through the plane arm (5cq). Its only options are its
+    .30 cal guns, whose DamageMax 16 is below a ship's Armour, and its accuracy against a ship
+    group is 0.
+  - The torpedo platform (`Platforms[50]`, guns 85 and 92) fails `+18h == 1` and is a bomb
+    platform.
+- **The host weighed the Kate through the ungated barrel walk.** Its row for that platform scores
+  the torpedo against every ship, so Downes, at the yard, won.
+- **Measured.** USNRM01 9200/9000, builds from `4bc3073bc` (5cq.2), Kate command-target tokens
+  over the run:
+
+| build | KateSpawn1, 2 | KateSpawn4 | KateSpawn3, 5 | torpedo drops |
+| --- | --- | --- | --- | --- |
+| OFF | Downes 1637, West Virginia 10 | Downes 1637, Oklahoma 10 | Downes, Curtiss, Cassin, Helm, Mona; Oklahoma 10 | 49 |
+| gates only | West Virginia 1229 | Oklahoma 1229 | Oklahoma 740, PT 489 | 30 |
+| gates + plane arm | identical to gates only | | | 30 |
+
+  - With the image's gates, the script targets stand.
+  - The only AI choice left is a PT boat for KateSpawn3 and 5. A torpedo boat (`0Eh`) passes the
+    machine-gun gate, and its armour is below 16.
+- **Neither battleship dies on any of the three.** That is item (c): the release gates.
+
+**Answer.** Nothing in the image exempts a script-ordered squadron. The override is real only
+when the close weight is positive, and for a torpedo bomber against a ship it is not. The host
+artefact is the ungated barrel walk that `kAiWeightBarrelGatesBound` replaces (5cq). USNRM01 is
+the row where that switch matches the script's intent. The switch stays OFF for the reason in
+5cq.2: the slot-4 brain-team question is still pending static evidence.
