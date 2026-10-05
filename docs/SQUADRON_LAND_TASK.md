@@ -10476,3 +10476,111 @@ Scripts in `local\`:
 2. **The gates and plane arm:** image as read, held OFF (5cy). Revisit with reference Y.
 3. **Unbound but read:** a running tightturn or flikflak survives a command change in the image
    (5cx). Bind it only once goaway is reached again.
+## 5da. USNRM01's Kates: the depth kill and the stall law are the image's; AvoidTerrain's throttle cap read the wrong speed (packet `cc9_terrain_avoid_forward_speed`, cc9-lua36, 2026-10-05)
+
+5cz item 1, in the brief's order. Read statically, then measured with a diagnostic build (never
+committed) that logged `KateSpawn1|.-2` every 0.25 s of free flight and every throttle plan
+(`local\l36_diag_usnrm01.log`, main `05a19fc84`, forced weights ON, gates OFF).
+
+**(a) The depth kill against `SetInvincible`: no divergence.**
+- `007CE313`-`007CE3AC` (in `BSP_PlaneTickElement_FixedStep` `007CE040`, ESI = unit+310h): gated on
+  the byte unit+61h (`007CE313 CMP [ESI-2AFh],0`) only. Below `-limit` (30.0f `00CE38C8`, or the
+  map chain) it calls `BSP_MissionEntity_Kill(unit, 1)` at `007CE3A7`.
+- `00926D90` itself reads only `+5Fh` (already dead) and `+60h`; it never reads unit+150h.
+- `SetInvincible` (`00897A50` -> `0042ED80`) writes only unit+150h and recurses over the children
+  (`vtable[F4h]`). unit+150h acts only in the damage path (`00879070`, `008110F0`).
+- So in the image an invincible aircraft that reaches 30 m below the surface dies. The host's
+  depth kill (`src/game_hosts_units.cpp`, packet `cc9_water_surface_law`) is the image's.
+
+**(b) The free-flight law at negative forward speed: no divergence.**
+- `007D99C0` returns ctl+44h (body forward) plus the carrier term, unsigned nowhere.
+- Lift, `007DB875`-`007DB98D` (listing read): `aoa = -ctl+40h / ctl+44h` with the SIGNED divisor
+  (`007DB8B6 FDIV [ESI+44h]`) once `|vz| >= 0.1`; `q = forward / StallSpd / LevelFlight * ctl+9Ch`;
+  `007DB8DD`-`007DB8EF` takes `q*q` when `1.0 > q` and 1.0 otherwise, so a NEGATIVE q is squared
+  with no cap. The coefficient is then clamped to +-2. `lift_accel_007db875` is that.
+- `007DBB6A`'s x5 drag when flying backwards and `007D92B0`'s 0 below DragRangeMin are in the host.
+- Measured: at spawn `bv = (-38.4, 0, -47.5)`, `q = -1.36`, lift 27.2 m/s^2 against gravity 14.7, so
+  the Kate first CLIMBS (180.0 -> 181.3 m by t+0.9 s). The x5 drag stops the backwards motion in
+  about 2.7 s; through `q = 0` lift is zero and the Kate drops. Nothing in (b) loses the aircraft.
+
+**(c) What does lose it: the throttle.**
+- From t = 122.40 (forward speed back to +9.2 m/s, `|v|` 35 m/s) the throttle falls 1.0 -> 0.63 in
+  one think and then to 0.21 at the water, although the speed plan wants 97.8 m/s and raises its
+  demand by +0.12 every think (`L36T ... out = slot + 0.12`).
+- The cut is `0099BF30`'s `pilot+25Ch` arm (`gunfire_repair_0099bf30`), fed by AvoidTerrain's pass-1
+  band `0099CAB0` (`0099CC11`-`0099CCAE`): `tgt = interp(0.3 -> MaxSpd x 1.8, 0.7 -> 007C47F0 + 20; m)`,
+  `diff = tgt - speed`, and below 30 the cap `interp(-20 -> -1, 30 -> 1; diff)`. The log fits
+  `tgt` = 34.9 + 20 = 54.9 and `speed = |v|`: (35.1 -> 0.63, 44.1 -> 0.24).
+- **The image's `speed` there is not `|v|`.** `0099CC8E`-`0099CC9A` calls the unit's `vtable[204h]`,
+  as does the caller at `0099F278`-`0099F280` (which then takes `max(speed, StallRangeMax x StallSpd)`
+  for the look-ahead, `0099F284`-`0099F2B4`). For every plane vtable that slot is `007B8E70`,
+  `FLD [ECX+0B2Ch]; RET`, the flight controller's ctl+7Ch (controller at unit+AB0h).
+- **Its writer:** `007D80C0` (`__thiscall(ctl, float step)`, RET 4) does `ctl+7Ch = ctl+44h` and
+  `ctl+78h = (new - old) / step` (`007D80D5`-`007D80F6`; the zero-step arm `007D80FF`-`007D8107` stores
+  ctl+44h too). The core law calls it at `007DC81D` with ECX = ctl, after the integration. The other
+  callers are `007D9F52` (set world velocity), `007D9CD8`, `007D9C71`, `007DB26A`. The reset
+  `007DB2C0` zeroes it (`007DB37D`). No other store to `+7Ch` in `007D7000`-`007DD000`.
+- By contrast `vtable[38h]` (`007B8E60`, unit+B1Ch = ctl+6Ch) is `|ctl+18h|`, the world speed
+  (`007D8020`-`007D807C`). The host's labelled stand-in "vtable[38h] and [204h] are |velocity|"
+  (docs/ATTACKER_EVASION.md) is right for 38h and wrong for 204h.
+- With the forward speed the cap does not engage while the Kate is slipping: at t = 122.40,
+  `diff = 54.9 - 9.2 = 45.7 > 30`.
+
+**The binding,** `kTerrainAvoidForwardSpeedBound` (OFF), in `terrain_avoidance_0099f1c0`: `speed`
+becomes `dot(body z row, world velocity)`, the host's ctl+44h. It feeds the look-ahead
+`max(speed, v_stall)` and the band's cap, as the one image value does. The `speed > 1` guard on the
+velocity-elevation stand-in (`unit+C7Ch`) keeps `|v|`, being the host's own guard on `|v|`.
+SUBSTITUTION, labelled: the image reads the value the previous core step stored; the host forms it
+from the current pose and velocity at the think.
+
+**Predictions, written before the pairs:**
+- USNRM01: the Kates keep throttle 1.0 through the stall. The cap engages only once the forward
+  speed is above about 25 m/s. They reach the sea later or not at all. A rescue is not certain:
+  at t = 122.4 they are at 139 m sinking at 30 m/s and need about 35 m/s forward for 1 g of lift.
+  If they survive, torpedo releases at Battleship Row should appear (Pennsylvania or West Virginia
+  under the forced weights).
+- Controls (USN04, USN02): in coordinated flight forward speed is within a few m/s of `|v|`, so the
+  cap and the look-ahead barely move. Expect small terrain-avoidance counter moves (the `avoid ...
+  terrain` census) and RNG-coupled downstream moves; no systematic change in releases or deaths.
+
+### 5da.1 Measured: **ON** (cc9-lua36, 2026-10-05)
+
+Same-tree pairs from `d97ad79fd` (`local\l36_off`, `local\l36_on`; launch form of reference V,
+`local\l36_runs.ps1`). USN01 300-frame smoke ON: clean.
+
+| row | verdict | what moved |
+| --- | --- | --- |
+| USNRM01 9000 | 3 moved | deaths 180 -> 191; torpedo drops 54 -> 55; plane water contacts 104952 -> 95062 |
+| USN04 4500 | 3 moved | deaths 46 -> 38; torpedo drops 1 -> 2 |
+| USN02 3000 | 0 identical | - |
+
+**USNRM01, the Kates (the prediction held for 9 of 15 aircraft):**
+- OFF: all 15 Kates die by the depth kill at t = 126.7-127.1 s, 8 s after spawning.
+- ON, KateSpawn1 and KateSpawn5 (all three each), KateSpawn2's leader, KateSpawn3|.-2 and KateSpawn4|.-2 fly the run-in at full throttle. KateSpawn1,
+  KateSpawn5|.-2, KateSpawn3|.-2 and KateSpawn5 drop torpedoes at Pennsylvania (11 m, 69-71 m/s;
+  `torpedo drop 1`-`4`). The forced weights send them there, as 5cu.1 predicted.
+- At t = 186.91 s the script's own `Kill` (`008AC5C0`, `cc9_lua_kill`) removes KateSpawn1, 2 and 5
+  (7 aircraft, alt 67-349 m, no damage). That is the end of the scripted strike, about 68 s after
+  the spawn, which fits the 45 s of camera time 5cw.1 counted.
+- KateSpawn2's wingmen, KateSpawn3's leader and .-3, and KateSpawn4 and .-3 still reach the sea at
+  t = 146.4-148.2 s. That is a second, different fall:
+  - full throttle, nose 42-71 degrees up (`pitch_c64` 0.73-1.25), 27-48 m/s;
+  - the stall regime of docs/FREEFLIGHT_STALL_LAW.md, with the pilot holding full nose-up
+    (`live_pitch` 1.0);
+  - not bound here.
+- The other moved rows (Japanese aircraft, cranes, Neosho) follow from the changed air picture
+  and the shared RNG stream.
+
+**USN04, the control:**
+- The first gameplay line that differs is Yorktown-class01_sqn02's climb-out at 42.1 s (`min member
+  106.54 m` -> `115.88 m`). Its three aircraft cap the throttle 18/18/19 -> 16/16/17 times
+  (`vehicle/terrain avoid ... thr=`). A climbing aircraft's forward speed is below `|v|`, so the cap
+  engages less.
+- From there the dogfight diverges. The late fighter losses swap squadrons (OFF: Lexington sqn05,
+  Yorktown sqn06/08; ON: Yorktown sqn05/07, Lexington sqn06; all killed by Zeros at 187-221 s),
+  and the earlier rows move by fractions of a second.
+- This is a mechanism move at the first divergence, then an RNG-coupled cascade. No death in the
+  table is attributable one by one.
+
+**Verdict: the mechanism is the image's (`0099CC98` / `0099F27E` -> `007B8E70` -> ctl+7Ch ->
+`007D80C0`), and the predicted USNRM01 outcome followed. Flipped ON.**
