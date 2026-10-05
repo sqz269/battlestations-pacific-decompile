@@ -108,6 +108,14 @@ NOISE = [
         "pattern": re.compile(r"^(\s*ship avoidance search:.*\brefills=)\d+"),
     },
     {
+        "id": "ring-scan-clear-37c",
+        "why": "the ring-scan table's clear_37c column reads the 9999.0 sentinel or FLT_MAX by heap state (the uninitialised searcher bounds; docs/SHIP_AI_OPEN_ITEMS.md section 140); only those two values are masked",
+        "kind": "mask",
+        "pattern": re.compile(
+            r"^(\s+\S.*\s-?\d+\.\d{4}\s+-?\d+\.\d{4})\s+"
+            r"(?:9999\.0|340282346638528859811704183484516925440\.0)(?=\s+\d+\s+[0-9a-f]+$)"),
+    },
+    {
         "id": "sector-scan-clip-arc-zones",
         "why": "ShipAiSectorScan::clip_arc_zones_00415970 varies between identical JM08 runs of one binary (12000, then absent; cc9-init2 LSH_OFF/LSH_OFF2_JM08); its count and its presence are ignored",
         "kind": "native-calls",
