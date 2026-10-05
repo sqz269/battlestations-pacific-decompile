@@ -11002,3 +11002,22 @@ Read from the listing, nothing bound.
 - A live AI aircraft with non-zero MinWaterSpd (every Kate, Val and Zero in this installation) never
   reaches state 6, so neither compare applies to it. It stays in free flight into the depth kill
   (`007CE040`), as the host does. **The image does not ditch a slow aircraft.**
+
+## 5dh. Item 2: 5ch (`kAiTickMovetoRetasksPlaneBound`) re-paired under 5df.1 (cc9-lua37, 2026-10-05)
+
+Pairs from `2086291cc` (the gates and the loadout arm ON): `l37_j0` (5ch OFF) against `l37_j1` (5ch ON).
+Rows: USN13, USN13 long, USN04, E2, USNOS, ESMP08 14200/14000, and the controls USN02 and BSM01.
+
+**Predictions, written before any ON run:**
+- **Controls.** USN02 and BSM01 stay identical.
+- **USN13 and USN13 long.** 5co's stall was the close attack finding no candidate with weight > 0
+  against the LandFort CB2. With the loadout arm, a loaded dive or level bomber now scores against
+  a non-ship, non-plane target (dive and level options admit anything but planes and subs). The
+  `bruh` Kates carry torpedoes, though, and a torpedo option needs target 6, so they still have
+  nothing against CB2's members.
+  - Expect USN13 to stay stranded or nearly so (deaths far below OFF), unless the planner now
+    picks ships for the torpedo wave. The planner's group values for a torpedo wave against a
+    LandFort now read 0 from the members' weights.
+- **ESMP08 14200.** 5ch's original case: the leader stops circling the script's random fleet ship
+  and flies the tick's moveto. Expect the strike to close Zuikaku.
+- **USN04, E2 and USNOS.** They move with the re-tasking, direction unpredicted.
