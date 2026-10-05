@@ -1,4 +1,5 @@
 #include "bsp/ai_target_weights.hpp"
+#include "bsp/ai_tuning_globals.hpp"
 
 // Evidence: docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md.
 // Target MSVC Win32. Nothing here is a binary-compatible replacement: the native
@@ -736,7 +737,9 @@ float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightK
             const float damage =
                 ai_expected_hit_damage_009fe200(low, high, target_armour, target_hit_points);
             const double accuracy =
-                host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
+                kAiRocketAccuracyBound && o.bullet.sub_type == 0x12
+                    ? host.rocket_accuracy(key.attacker, o.bullet, key.target)
+                    : host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
             value = static_cast<float>(accuracy * o.factor * damage);
         } else if (o.descriptor == kAiPlaneOptionTorpedo ||
                    o.descriptor == kAiPlaneOptionDepthCharge) {
@@ -962,6 +965,31 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
                                                  tuning.max_target_kill_ratio, bonus);
     host.memo_store(key, result); // 00A097CC
     return result;
+}
+
+std::uint32_t ai_rocket_accuracy_offset_009fe4f1(bool attacker_plane, bool small_rocket,
+                                                 bool air_ok, bool ground_ok,
+                                                 int group) noexcept {
+    // A four-entry row: plane, small ship, big ship (a submarine is ship-based
+    // and not small surface, 009FE57E / 00827F70), other.
+    const auto four = [group](std::uint32_t base) -> std::uint32_t {
+        switch (static_cast<AiAccuracyTargetGroup>(group)) {
+        case AiAccuracyTargetGroup::Plane:     return base + 0x0u;
+        case AiAccuracyTargetGroup::SmallShip: return base + 0x4u;
+        case AiAccuracyTargetGroup::Submarine:
+        case AiAccuracyTargetGroup::BigShip:   return base + 0x8u;
+        case AiAccuracyTargetGroup::Other:     return base + 0xCu;
+        }
+        return 0u;
+    };
+    if (!attacker_plane) return four(0x120u);   // 009FE632 -> 009FE322 / 009FE334
+    if (!small_rocket) return four(0x170u);     // 009FE5C1..009FE62F
+    if (static_cast<AiAccuracyTargetGroup>(group) == AiAccuracyTargetGroup::Plane) {
+        // 009FE51D/009FE52C: 007B80A0 with a plane target reads 160h; with it
+        // false, 009FE537 007B80C0 then 009FE54A rejects the plane target.
+        return air_ok ? 0x160u : 0u;
+    }
+    return ground_ok ? four(0x160u) : 0u;       // 009FE530..009FE5BE
 }
 
 } // namespace bsp

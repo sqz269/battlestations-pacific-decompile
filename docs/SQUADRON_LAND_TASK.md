@@ -11351,3 +11351,47 @@ resolved carried bullet gets `carried_kamikaze_known`. This installation's
 - USN13 long returns to near a0. The airfield Kates and Bettys are armed again (`squadron ordnance`
   type 2). The residual move comes from the Zeros' and Hellcats' lost fallback option (AI side
   only). Expect deaths within about 10 of 133.
+
+## 5dm. Item 3: rocket accuracy, `009FE4F1` read whole (packet `cc9_ai_rocket_accuracy`, cc9-lua38, 2026-10-05)
+
+The last open arm of `009FE270`: the sub-type 12h test that splits SmallRocket from BigRocket. A
+prior note called it "target-state predicates". It is actually attacker and bullet tests.
+
+### The image (`009FE4F1`-`009FE645`, disk bytes)
+
+Registers at the arm (prologue `009FE270`-`009FE29B`):
+- `EBP` = ECX, the attacker (`009FE282`);
+- `EDI` = EDX, the bullet class (`009FE27A`);
+- `ESI` = the stack argument, the target (`009FE273`).
+
+So `009FE270` does dereference its first argument, in this arm only.
+
+| test | site | then | else |
+| --- | --- | --- | --- |
+| attacker `vtable[18h](0Fh)` (plane base) | `009FE4F7`-`009FE4FF` | next row | `009FE632`: target plane -> `009FE322` (`+120h`), else `009FE334` (`+124h`/`+128h`/`+12Ch`), the **Artillery** row |
+| `006E3260(bullet)`, IgnitionDelay <= 0 (small) | `009FE505`-`009FE50E` | next row | `009FE5C1`: **BigRocket** `+170h`, `+174h`/`+178h` by `00827F70`, `+17Ch` |
+| `007B80A0(bullet)` and target plane | `009FE514`-`009FE52C` | `009FE550`: `+160h` | the next row |
+| `007B80C0(bullet)` and target not plane | `009FE52E`-`009FE54A` | `009FE550`: `+164h`/`+168h`/`+16Ch` | `009FE6BB`, 0 |
+
+`007B80A0` answers AntiAir or `[00F874FD]`, and `007B80C0` answers !AntiAir or `[00F874FD]` (5df).
+A submarine is ship-based and not small surface, so it reads the big-ship column, as in every
+four-entry arm.
+
+### The binding (`kAiRocketAccuracyBound`, `include/bsp/ai_target_weights.hpp`), committed OFF
+
+- `bsp::ai_rocket_accuracy_offset_009fe4f1` (`src/ai_target_weights.cpp`) is the table above as a
+  pure function.
+- The loadout arm's rocket option asks a new host virtual, `rocket_accuracy(attacker, bullet, target)`.
+  Its default keeps `bullet_accuracy` (0 for 12h).
+- **Not landed:** the AI host's override, which needs `src/game_hosts_ai.cpp` (cc9-ships32's lease).
+  The prepared edit is `local\l38_ai_patch.py` in the cc9-lua38 tree.
+- **Not covered:** the barrel path. `barrel_accuracy` (`game_hosts_ai.cpp`) still answers 0 for
+  sub-type 12h, because `GameAiWeaponFacts::Barrel` (gunnery lane) carries no IgnitionDelay or
+  AntiAir. A non-plane attacker needs neither: its rocket barrel reads the Artillery row.
+
+### Predictions
+
+The a-pair census reads `rocket=0/0` on every row that runs the loadout arm (USN13, USN13 long,
+E2, USNOS, ESMP08 14200, IJN01). So **every reference row stays identical** when the switch is
+flipped with the override in place. The arm is verified by reading only. A row with a rocket
+loadout (a Corsair or Avenger with HVARs) is needed to measure it.

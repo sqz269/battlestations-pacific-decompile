@@ -394,6 +394,26 @@ inline constexpr double kAiLoadoutParamsHalf = 0.5;
 // both options score 0, as before.
 inline constexpr bool kAiLoadoutCarriedTermsBound = false;
 
+// Packet cc9_ai_rocket_accuracy (docs/SQUADRON_LAND_TASK.md 5dm): the loadout
+// arm's rocket option asks the host's rocket_accuracy (009FE4F1 read whole)
+// instead of bullet_accuracy, which answers 0 for sub-type 12h.
+inline constexpr bool kAiRocketAccuracyBound = false;
+
+// 009FE4F1, 009FE270's arm for sub-type 12h, as a pure function to the tuning
+// record offset (0 = the reject arm 009FE6BB).
+// - An attacker that is not plane-based (EBP->vtable[18h](0Fh) false at
+//   009FE4FF) jumps into the Artillery arm (009FE632 -> 009FE322 / 009FE334):
+//   120h, 124h, 128h, 12Ch by target group.
+// - A plane with a small rocket (006E3260: IgnitionDelay <= 0, 009FE507):
+//   a plane target needs `air_ok` (007B80A0, 009FE516) and reads 160h; any
+//   other target needs `ground_ok` (007B80C0, 009FE530) and reads 164h, 168h
+//   or 16Ch; otherwise 0.
+// - A plane with a big rocket: 170h, 174h, 178h, 17Ch (009FE5C1..009FE62F).
+// `group` is AiAccuracyTargetGroup (ai_tuning_globals.hpp) cast to int.
+std::uint32_t ai_rocket_accuracy_offset_009fe4f1(bool attacker_plane, bool small_rocket,
+                                                 bool air_ok, bool ground_ok,
+                                                 int group) noexcept;
+
 // A bullet class record as the plane arm reads it.
 struct AiPlaneBulletFacts {
     bool present{false};
@@ -623,6 +643,13 @@ struct AiTargetWeightModelHost {
         (void)sub_type;
         (void)target;
         return 0.0f;
+    }
+    // Packet cc9_ai_rocket_accuracy: 009FE270 for a sub-type 12h bullet, whose
+    // arm 009FE4F1 also reads the bullet (006E3260, 007B80A0, 007B80C0) and the
+    // attacker's plane base. A host without that answer keeps bullet_accuracy.
+    virtual float rocket_accuracy(const void* attacker, const AiPlaneBulletFacts& bullet,
+                                  const void* target) {
+        return bullet_accuracy(attacker, bullet.sub_type, target);
     }
     // Census hooks, no native counterpart.
     virtual void note_plane_option(std::uint32_t descriptor, float value) {
