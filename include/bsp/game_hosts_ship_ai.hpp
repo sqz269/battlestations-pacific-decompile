@@ -147,6 +147,7 @@ class GameUnitsHost;
 class GameSceneContentsHost;
 class GameMissionLuaHost;
 class GameGunneryHost;
+class GameAvoidZoneRuntime;
 
 // 009F3D00's own dispatch, read from the image at 009F3D04..009F3DA0. Each row
 // is one `CMP EAX,<command>` and the `LEA EDI,[ESI+<ai offset>]` it takes; the
@@ -845,6 +846,9 @@ public:
     // VehicleClass row at load (the depth reader's tuning-pair choice). False
     // for a unit that is not a loaded LandingShip. Read-only.
     bool unit_big_landing_ship_0808(std::size_t unit_index) const;
+    // Packet cc9_avoid_zone_draft_bodies: the avoid-zone manager's geometry (004218E0),
+    // for 00424DDF..00425487's draft bodies; null before load_avoid_zone_geometry.
+    const GameAvoidZoneRuntime* avoid_zone_runtime() const noexcept;
 
     // Packet cc9_scripted_order_natives: 008A7060 NavigatorEnable stores its
     // boolean at [unit+740h]+11h, the enabled byte of the ship AI controller's

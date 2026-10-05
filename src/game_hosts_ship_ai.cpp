@@ -2442,6 +2442,9 @@ public:
                                                                   : 0.0f;
             }
             ctl_.land_state.final_10 = false;
+            // 009E193C..009E1945: 0092BD70(0) on the controller 0080E490 returns, which
+            // clears the class bit in the hull shapes' mask (GUNNERY 107 / 109).
+            owner_.units.set_hull_class_bit_0092bd70(index_, false);
             owner_.record("ShipAiLand::enter_tail_0080e490", 0x0080e490u);
             ++owner_.summary.land_enters;
             owner_.done("ShipAiState::land_enter_009e18d0", 0x009e18d0u);
@@ -11513,6 +11516,10 @@ void GameShipAiHost::set_navigator_enabled_0011(std::size_t unit_index, bool ena
 
 bool GameShipAiHost::unit_big_landing_ship_0808(std::size_t unit_index) const {
     return impl_->big_landing_ship_of(unit_index);
+}
+
+const GameAvoidZoneRuntime* GameShipAiHost::avoid_zone_runtime() const noexcept {
+    return impl_->zones.ready() ? &impl_->zones : nullptr;
 }
 
 bool GameShipAiHost::promote_order_00825f2c(std::size_t unit_index) {

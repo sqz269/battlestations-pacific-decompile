@@ -8530,3 +8530,130 @@ spread miss recorded. JM08 long's 140 -> 148 is its knife edge.
 - Pairs were run as `pair_export --no-build` into `local\g24_d0` / `local\g24_d1`, then each
   tree's `scripts/build.ps1`. An export can carry a lane edit applied by script for a
   diagnostic pair without touching the leased file.
+## 109. The avoid-zone draft bodies: the glass walls (108 item 2; packet `cc9_avoid_zone_draft_bodies`, cc9-gunnery25)
+
+### 109.1 The read
+
+- **What they are.** This installation's `scripts/datatables/shipglobals.lua` (mtime 2024-07-13)
+  says it in its own comment on `AvoidZoneDepthsSingle/Multi`: the first value of each class is
+  the depth of the "uvegfal" (glass wall) zone the ship **physically collides with**; the second
+  is the zone the path search avoids. Single gives every class 0, so the tail of `00424D00`
+  reduces to one pair `{layer 0, mask 3EF0h}` (docs/AVOID_ZONE_DRAFT_LAYERS.md).
+- **The build** (`00424DDF..00425487`, then `00423C50(layer, mask)` per pair): the exact layer
+  group (a fallback group is refused at `00423C81`), each zone with three or more corners,
+  `004F6F20`'s pieces in order, each piece extruded to y = -500..+500 and centred on its mean,
+  the `00C5DEB0` hull, refused when `00C32D20` < 4 (`0042415F..0042416B`), and one static body
+  per piece (`00424472`) at (meanX, 0, meanZ) with one kind-4 shape. Its descriptor
+  (`00424204..004243DB`, at ESP+F8h): +00h 0, +04h 0, +08h the class mask, +0Ch 0, +10h 4,
+  +14h the retained hull. The fort descriptor has its friction 1.0 at the same +04h
+  (`007486DD`), so a draft shape has **friction 0, restitution 0, group = the class mask,
+  mask 0**.
+- **The hull side.** `00937C90` stores each hull descriptor's group 1 (`009394DD`) and mask
+  0Dh (`009394A9`), then ORs the class bit into the mask (`009395E2`). The bit comes from the
+  class kind through the jump table `00939C90` (`009394FB`): 7 `40h`, 8 `2000h`, 9 `20h`, 0Ah
+  `800h` or `1000h` with class `+808h`, 0Bh `400h`, 0Ch `100h` or `200h` with `+808h`, 0Dh
+  `10h`, 0Eh `80h`, anything else 0. `00C44104` admits a (draft, hull) pair when the draft
+  group holds that bit; only a small landing ship (`100h`) is outside `3EF0h`.
+- **`0092BD70(0)`** (section 107) at the landing ship's land enter clears the bit on every hull
+  shape, so a landing ship passes its wall onto the beach.
+
+### 109.2 The host (committed OFF: `kAvoidZoneDraftBodiesBound`)
+
+- `src/avoid_zone_draft_bodies.cpp`: the build over the reconstructed reduction, partition,
+  extrusion and hull (`avoid_zone_draft_bodies_00424ddf`), and the class bit
+  (`hull_class_bit_009394fb`).
+- `src/hull_terrain_contact.cpp`: the draft bodies as static kind-4 records; each (draft, hull)
+  pair through `00C44104` with the hull mask 0Dh | class bit, then `00C535E0` as the fort pairs
+  (LABELLED as there: a 0.1 m widened world-box test for the SAP list, the static body as A);
+  one manifold per body pair, friction combine(0, hull), restitution 0, in the hull's group and
+  solve. A hull whose bit is cleared retires its draft manifolds. No contact report: the draft
+  body has no listener and no owner. OFF runs the narrow phase as a census.
+- Host wiring (units, the Lua host's nine depth reads, the ship AI's accessor and the land
+  enter's `0092BD70(0)`): **LABELLED** substitutions: the bodies are built at the first world
+  contact phase after the zones load, not inside `00424D00` (they are static); a cruiser's
+  `+808h` (HeavyCruiser) is read as 0 (both cruiser bits are in `3EF0h`).
+
+### 109.3 Predictions (from the OFF census, `local\g25_d0_*`, base `0ccf286f1`)
+
+| row | draft bodies | (draft, hull) pairs with a hit on the OFF track | prediction |
+| --- | --- | --- | --- |
+| usn01, usn02, usn04, e2, esmp08l | 0 (no layer-0 zone) | none | identical |
+| ijn11, jm06, lomp06, lomp10, lomp10l, usn12, usn13, usn13l, usnos, usnosl, jm08 | 2..125 | none | identical |
+| jm08l | 187 | none admitted; 712221 near pairs refused by the filter (19 land enters cleared the landing ships' bits) | identical |
+| bsm01 | 148 | Raleigh 16.2 m, Cassin 8.4 m, Medusa 2.9 m, all from step 1 for all 3000 steps (moored) | moved: the three are pushed off the walls at start |
+| usnrm01 | 146 | Pennsylvania 4.0 m and Cassin 8.5 m from step 1, Medusa from step 544 | moved: as bsm01 |
+| ijn01 | 146 | 15 pairs: moored Pennsylvania and Cassin from step 1; Oglala, Sacramento, Solace, Tennessee, Lexington, Tautog, LST9, Downes, Curtiss later (up to 33.7 m) | moved: moored hulls pushed at start, later contacts stop drifting and sinking hulls at the walls |
+| jm05, jm05l | 233 | PT Boat 80' Elco 01 and 02 inside draft 130 from step 1 (110.8 m and 85.5 m), already aground (hull terrain contact at t = 0.05, 7.4 m) | moved: the two PT boats are forced out through the nearest wall face; a mechanism check, since 110 m is far beyond one step's correction |
+
+The rows without an admitted pair must come back pair_diff 0 or 1; any other movement there is a
+mechanism failure.
+
+### 109.4 The pairs (`local\g25_d0` OFF / `local\g25_d1` ON, base `0ccf286f1` with the wiring applied by script)
+
+- **The 18 rows predicted identical** came back pair_diff 1 with gameplay identical: only the
+  bound line and the known ship-avoidance refill noise moved. No admitted pair on any of them,
+  jm08l included (its landing ships' near pairs are all refused after the land-enter clears).
+- **bsm01** (pair_diff 1, no combat on the row): Raleigh leaves its wall after 262 steps and
+  Cassin after 207 (OFF: in contact all 3000); Medusa stays at 2.9 m against hers.
+- **usnrm01** (3): Pennsylvania (3.4 m) and Cassin (8.5 m) stay pressed to their walls for all
+  9000 steps; the deaths 202 -> 198 and the plane rows move through the shared RNG stream (one
+  ship's fire stagger shifts every later draw), not per kill.
+- **ijn01** (3): 16 pairs ON against 15 OFF, the deepest 33.7 m OFF -> 8.5 m ON (the moored
+  Cassin at start): the drifting and sinking hulls (Oglala, Sacramento, Solace, Tennessee...)
+  now stop at the walls (ON depths under 0.3 m). Two A7M deaths only ON, RNG-coupled as above.
+- **jm05 / jm05l** (3): the two PT boats spawned aground inside draft 130 stay in contact on
+  every step (still aground on the terrain as well); three death rows' nearest distances move
+  by 6..25 m.
+- **Verdict:** the mechanism matches the predictions on every row: no reach where the census
+  had no pair, and the moved rows are exactly the four with a pair. **Flip ON**, with the
+  wiring commit.
+
+## 110. 97.2's two-tick trail is the stepper's soft approach (108 item 3, cc9-gunnery25)
+
+- **The stepper** `0085AD80`, horizontal axis (the vertical is the same code at `0085AFD6..`):
+  - `0085AE42..0085AE62`: `[esp+18h]`/`[esp+1Ch]` = |wrapped(target - angle)| per axis
+    (`00438B10`, `AND 7FFFFFFFh`), tested against the dead band `[00CFAA48]` (0.01 degree).
+  - `0085AEDA`: `007F6530` gives the routed delta; `0085AEEB..0085AF5D` clamps it to
+    `HorzRotSpeed (+88h) * dt` with the delta's sign.
+  - `0085AF63..0085AF7A`: unless the gun IsKindOf(23h), `0085AFA6` calls `00419010(0, 0.5
+    [00CE3800], 10 degrees [00CE3990], 1.0, remaining)` and `0085AFAB` multiplies the step by it.
+  - `src/gun_aiming.cpp` (`gun_step_aim_0085ad80`) matches every operand: the same remaining
+    magnitude, the same clamp, the same scale.
+- **What that does in a turn.** Inside the last ten degrees the step is the remaining gap times
+  a scale that tends to 0.5 as the gap shrinks: the gun closes half its gap per tick. With the
+  hull turning at w, each new command (`0085ABA0` in wave 2, from the pose wave 1 committed)
+  opens the gap by w * dt, so the gap the settle test (`006DEE40`, 0.1 degree) sees settles at
+  e = e/2 + w*dt, **e = 2 * w * dt**.
+  - At 1.4 deg/s and dt = 0.05 s that is 0.14 degree, the 0.13..0.15 of 97.2.
+  - The test passes only below w = 0.1 / (2 * 0.05) = **1.0 deg/s**; Shimotsuke fired once the
+    turn fell to about 0.5 deg/s (97.2).
+- **Verdict: no defect.** With the order the image's (104) and the stepper's arithmetic the
+  image's, a turning hull's guns hold fire above 1 deg/s of turn in the image too. 97.2 is
+  closed. `0085ABA0` stores the wrapped pair after the arc and speed tests and has no
+  arithmetic of its own on this path.
+
+## 111. 100.4's trim is the hull's static waterline, not the stopped-on-rudder state (108 item 4, cc9-gunnery25)
+
+- **The measurement.** A diagnostic export of `3ef3d9e99` (`local\g25_d2`, never committed: a
+  line in the units world phase logging each USTroopTransport's pitch every 100 motion ticks)
+  on JM08 3200: 180 samples of the six transports, at speeds from 1 to 15 m/s, turning and
+  straight. The pitch (asin of the forward axis's y) is **+0.86 .. +0.97 deg, bow up / stern
+  down, at every speed**; the one sample under 5 m/s reads 0.862.
+- **So the 0.92 deg of 100.2 is the class's trim at rest**, not a product of `dir=stopped
+  throttle=0 rudder=-1`: a turn or a stop does not move it by more than 0.1 deg.
+- **Where it comes from** (by construction, not separately measured): `0082D040` builds two
+  elements per `Hull.Segments` station from the model's own Aux `deckline`/`bottomline`, each
+  with the waterline `deck * (1 - ratio) + bottom * ratio` and a coefficient that makes every
+  station carry an equal share of `10 * Mass` when the water stands at its waterline
+  (docs/SHIP_BUOYANCY_ELEMENTS.md, "Why the hull floats"). The hull therefore floats where its
+  station waterlines meet the water. On `US_Troop_Transporter.mmod` the bottom line rises to
+  y = -1.87 at the stern against -6.74 at the bow (100.3), so the stern stations' waterlines sit
+  higher and the hull settles stern down until they reach the water.
+- **Verdict: no host divergence found.** Every input of the trim is the image's: the element
+  list from `0082D040` on the class's own model lines, the force law `009329C0`
+  (`src/ship_hydro_forces.cpp`, listing-cited at each step), the body at the model origin with
+  no centre-of-mass offset (`00937C90`), and the ocean height `0078CF20`. 100.4 is closed; the
+  stern keel touching at UST 04's grounding point (100.1) follows from the class's static trim.
+- **Uncertainty.** No image run measures the trim; the claim is that the host's pieces are
+  the image's, each already checked against its listing. A defect inside `009329C0`'s
+  buoyancy term would move every ship's trim on every row alike.

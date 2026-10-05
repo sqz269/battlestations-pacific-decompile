@@ -622,6 +622,10 @@ public:
     void set_ship_ai(GameShipAiHost* ai) noexcept;
     // Packet cc9_usn02_deruyter_fire: the ship AI the script orders reach.
     GameShipAiHost* ship_ai() noexcept;
+    // Packet cc9_avoid_zone_draft_bodies (docs/GUNNERY_OPEN_ITEMS.md 109): 0092BD70(on) on the
+    // unit's controller: 00C47F60 clears (on false) or 00C47F90 ORs (on true) the class bit
+    // in every hull shape's mask. The ship AI's land enter (009E193C) passes false.
+    void set_hull_class_bit_0092bd70(std::size_t unit_index, bool on);
     // Milestone 2t: the gun chain this host owns, or null before create_units.
     GameGunneryHost* gunnery() noexcept;
     const GameGunneryHost* gunnery() const noexcept;

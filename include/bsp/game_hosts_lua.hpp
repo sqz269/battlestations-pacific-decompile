@@ -976,6 +976,13 @@ public:
     bool read_ship_navigation_input(int type_id, std::int32_t session_mode,
         GameShipNavigationInput& out, std::string& error);
     bool read_ship_layer_timing_input(std::array<float, 6>& out, std::string& error);
+    // Packet cc9_avoid_zone_draft_bodies (docs/GUNNERY_OPEN_ITEMS.md 109): the nine depths
+    // 00424DDF..004253FF reads, ShipGlobals.AvoidZoneDepthsSingle/Multi[class][1] (00837DE0
+    // selects) for BattleShip, MotherShip, Destroyer, TBoat, LargeLandingShip, CargoShip,
+    // LightCruiser, HeavyCruiser, Submarine in that order, converted as 0083B5E0 stores
+    // them (00B67720 index 1, then 00B66290). Leaves output unchanged on failure.
+    bool read_avoid_zone_draft_depths(std::int32_t session_mode,
+        std::array<std::int32_t, 9>& out, std::string& error);
 
     // Milestone 2k. The two reads 0087d7b0 makes into the global config object
     // 00432650 hands out: `Globals["Minimap"]["MinimapRange"]` into +6Ch and

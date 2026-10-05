@@ -2198,6 +2198,49 @@ int read_ship_layer_timing_protected(lua_State* state) {
     destroy_native_lua_object_00b67700(globals);
     return 0;
 }
+
+// Packet cc9_avoid_zone_draft_bodies.
+struct DraftDepthReadContext {
+    std::int32_t session_mode;
+    const bool* crt_sse2_conversion;
+    std::array<std::int32_t, 9> result;
+};
+static_assert(std::is_trivially_destructible_v<DraftDepthReadContext>);
+
+int read_draft_depths_protected(lua_State* state) {
+    auto& context = *static_cast<DraftDepthReadContext*>(
+        lua_touserdata(state, lua_upvalueindex(1)));
+    // Only trivial automatic objects cross a possible Lua longjmp.
+    NativeLuaStateStorage owner;
+    construct_native_lua_state_00b66bd0(&owner);
+    owner.state_04 = state;
+    NativeLuaObjectStorage globals, ship_globals, depths;
+    native_lua_globals_00b67980(owner, &globals);
+    native_lua_get_by_name_00b67800(globals, &ship_globals, "ShipGlobals");
+    native_lua_get_by_name_00b67800(ship_globals, &depths,
+        ship_tuning_block_offset(context.session_mode) == kAvoidZoneDepthsSingleOffset
+            ? "AvoidZoneDepthsSingle" : "AvoidZoneDepthsMulti");
+    // 00424DDF..004253FF's order (docs/AVOID_ZONE_DRAFT_LAYERS.md).
+    constexpr AvoidZoneDepthSlot slots[9] = {AvoidZoneDepthSlot::kBattleShip,
+        AvoidZoneDepthSlot::kMotherShip, AvoidZoneDepthSlot::kDestroyer,
+        AvoidZoneDepthSlot::kTBoat, AvoidZoneDepthSlot::kLargeLandingShip,
+        AvoidZoneDepthSlot::kCargoShip, AvoidZoneDepthSlot::kLightCruiser,
+        AvoidZoneDepthSlot::kHeavyCruiser, AvoidZoneDepthSlot::kSubmarine};
+    for (std::size_t i = 0; i < 9; ++i) {
+        NativeLuaObjectStorage values, first;
+        native_lua_get_by_name_00b67800(depths, &values,
+            depth_key(static_cast<std::uint32_t>(slots[i])));
+        native_lua_get_by_index_00b67720(values, &first, 1);
+        context.result[i] = static_cast<std::int32_t>(
+            native_lua_integer_00b66290(first, *context.crt_sse2_conversion));
+        destroy_native_lua_object_00b67700(first);
+        destroy_native_lua_object_00b67700(values);
+    }
+    destroy_native_lua_object_00b67700(depths);
+    destroy_native_lua_object_00b67700(ship_globals);
+    destroy_native_lua_object_00b67700(globals);
+    return 0;
+}
 } // namespace
 
 bool read_ship_depth_input_lua(lua_State& state, int type_id, std::int32_t session_mode,
@@ -2247,6 +2290,31 @@ bool GameMissionLuaHost::read_ship_depth_input(int type_id, std::int32_t session
         IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
     return read_ship_depth_input_lua(*state_, type_id, session_mode,
         sse2_conversion, output, error);
+}
+
+bool GameMissionLuaHost::read_avoid_zone_draft_depths(std::int32_t session_mode,
+    std::array<std::int32_t, 9>& output, std::string& error) {
+    if (state_ == nullptr) {
+        error = "avoid-zone draft depths require the live mission Lua state";
+        return false;
+    }
+    const bool sse2_conversion =
+        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    DraftDepthReadContext context{session_mode, &sse2_conversion, {}};
+    const int top = ::lua_gettop(state_);
+    ::lua_pushlightuserdata(state_, &context);
+    ::lua_pushcclosure(state_, &read_draft_depths_protected, 1);
+    const int status = ::lua_pcall(state_, 0, 0, 0);
+    if (status != 0) {
+        const char* message = ::lua_tolstring(state_, -1, nullptr);
+        error = message != nullptr ? message : "draft depth lookup raised a non-string Lua error";
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_settop(state_, top);
+    output = context.result;
+    error.clear();
+    return true;
 }
 
 bool GameMissionLuaHost::read_ship_navigation_input(int type_id, std::int32_t session_mode,
