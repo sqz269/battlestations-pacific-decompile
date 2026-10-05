@@ -12569,3 +12569,73 @@ command is open. That host is the commands lane's.
 - One units-host call would set all three host copies of `ctl+370h` (`st_` / `db_` /
   `torpedo_attack_mode_370`) to 2, as `007F0068` does for message `BCh` with `+20h` = 1.
 - The WarningManager report would be recorded, not modelled.
+## 157. Handoff (cc9-ships33, 2026-10-05, at about 70% context)
+
+### Landed on this branch
+
+| section | what | switch |
+| --- | --- | --- |
+| 152 | the gate-ON census; the approach's mode 2/3/4 lander terms (`+1204h`, mode-2 `+11DCh`, `+11FCh`, `unit+1128h`, LandingRange, `008128E0`) | `kShipAiApproachLanderTermsBound` ON |
+| 153 | JM08's landing chain is script orders plus the per-unit warn sweep. The planner arms are inert | doc |
+| 154 | the steering setters reset the live plan blocks on every pass | `kShipAiSetterPathResetBound` ON |
+| 155 | a controller starts in `cruise` | `kShipAiInitialCruiseStateBound` ON |
+| 156 | USN01's phase gates; the convoy steering with the gate on and off; `005FAAE0`'s plane arm as the producer of message `BCh` (the plane line was not built) | doc |
+| 156.1 / 156.2 | JM08 3000 for 152; the dead `009DA4E0` callers; USN01 after the bomb fix: Convoy4 survives | doc |
+
+### First item: the USN01 scripted capture retry
+
+**When to start:** when cc9-lua39's fix for ConSBD2's bomb miss lands. The lead routed the miss
+there as a priority.
+
+**Budget:** run 1 is spent (156.2). Two runs are left.
+
+**How to tell phase 2 has ended:**
+- `entity dead` for Convoy4;
+- `blackout callback luaMoveToPh3 ran`, or the first accepted `select Northampton`.
+
+**Phase 3:**
+- it makes CVGroup `PLAYER_ANY`;
+- it kills the remaining MainAttack;
+- it selects Enterprise.
+
+**Steps.**
+1. Merge main, build, and re-run with `local\s33_orders_r3.txt` and `-Traj`
+   (`local\s33_run.ps1 -Name c2 -Mission USN01 -Frames 36000 -Orders s33_orders_r3.txt -Traj`).
+   Read the phase-3 time.
+2. The r3 orders start at frame 13200 and their helm legs at 19203.
+   - If phase 3 now begins later, shift the order file with `local\s33_gen_orders.py` (r1's
+     prefix generator). r3's helm legs are the last four lines of `s33_orders_r3.txt`.
+   - Re-time them to after phase 3.
+3. The target: Northampton and SaltLakeCity both inside CB2's 100 m (CB2 at (3973.4, -3182.2)) for
+   about 100 s.
+   - CapturePower is 50 each, and CB2 needs 10000 points.
+   - Coastal Guns 02 and 03 are already dead by about 620 s (SaltLakeCity's AI fire). Gun 01 is
+     buried (GUNNERY 113).
+   - Katori is invincible (`SetInvincible(0.1)`). It parks at about (3911.5, -3103.5) from about
+     1300 s in r3.
+   - The only water into range is the corridor from the south-southwest. The hull meets the west
+     wall at x of about 3842-3845, z of about -3231..-3247 (SCRIPTED_HELM 11.2).
+   - SaltLakeCity cannot take the helm while Northampton is controlled. Use `moveto SaltLakeCity
+     3910 -3225 repeat 5` as r3 does.
+4. **If CB2 flips to side 0:**
+   - update the GAME_EXECUTABLE scripted row;
+   - pair the capture-chain switches on it.
+
+**Tools (`local\`, `s33_` prefix):**
+- `s33_run.ps1` runs one mission. `s33_rows.ps1` runs reference rows detached:
+  `-Prefix -Only <keys> [-Exe]`, called with `&`, not `-File`, so the list binds.
+- `s33_near.py <csv> A B [every_s]` prints the distance between two units over time.
+- `s33_hosttab.py [--filter] [--nonconcrete] logs...` merges host-method tables.
+- `s33_recctx.py names...` prints a record's source context.
+- ships32's `s32_refs.py` is the rel32 + abs32 census and `s32_deaths.py` the death-row diff
+  (both in the cc9-ships32 tree).
+
+### Other open items
+- **The commands lane (routed):** `cruise_step` declines a unit with no command (`holds_cruise`).
+  This may diverge from `009E1170` (155.1).
+- **`+250h` / `+2B8h`:** these are plan-block `+2Ch`, yet the approach writes them as "brain+258h /
+  +2C0h" (section 139). The meaning is open (154.1).
+- **The plane `attack` line:** recorded in 156.2. It is not useful for USN01's phase 2, because
+  the controlled Devastator squadron is not `IsKindOf(18h)`.
+
+All leases are released after this commit.
