@@ -786,3 +786,40 @@ In run B, SaltLakeCity's death at 1120.22 s is credited to McCall's gun 6 (categ
 **Verdict:** no host bug; the attribution is the image's rule. **Not done:** a per-shell trace
 (`BSP_AA_TRACE_UNIT=McCall`) could not run, because all three run slots stayed busy for the
 launcher's 2400 s wait.
+
+## 11. `attack` (packet `cc9_player_attack_row`)
+
+Worker cc9-ships31, 2026-10-05, commit `5818eb685`. Harness code only; no image switch. The
+design is docs/SHIP_AI_OPEN_ITEMS.md section 147.
+
+```
+<frame> attack <unit> <target...> [repeat <seconds>]
+```
+
+It mirrors the order screen's page-1 attack, `005FAAE0`'s ship arm (`005FAAF5-005FABA6`).
+1. The unit must be the controlled unit (`[00E188D8]`) and a ship (`005FAB05`); otherwise the line
+   is refused, with the reason printed.
+2. `0077C470(unit, 2, 0)` gives back role 1 (`005FAB38`), through
+   `GameUnitsHost::role_request_0077c470`.
+3. `attackmove` (`00E08F78`) on the named target goes into `0077D600` with flags 1 (`005FABA1`),
+   through `issue_player_command`. Its entity form resolves through `0046AAB0`, which uses the
+   same `00465080` descriptor helper.
+4. `repeat` re-issues the line while the unit is alive and accepted. A refused issue ends the
+   repeat.
+
+**LABELLED differences from the image:**
+- The image attacks the director's fire target (`director->vtable[2Ch]`, `+238h`). The path by
+  which the player picks it is unread, so the file names the target.
+- Message 57h, the session echo, is not reproduced.
+
+**Smoke** (`local\s31_smoke_attack.log`, IJN05 600 frames, orders `local\s31_smoke_attack.txt`):
+- These lines were refused, each with its reason:
+  - a non-controlled unit (Zao);
+  - an unknown unit;
+  - a negative repeat.
+- `attack Yugu1 HQ2 repeat 10` was applied at frames 50 and 250. At frame 450 it was refused,
+  because the script had selected Yamato in the meantime.
+**Identity** (USN04 4700/4500):
+- No file against an empty file gives `pair_diff` exit 1. The only moved line is the refill-noise
+  counter, 445 against 441.
+- The base build `9d82c2240` (no option) against this build (no option) gives **exit 0**.
