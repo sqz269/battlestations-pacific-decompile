@@ -10729,3 +10729,126 @@ and speed.
   Neither compare is in the host's water law. Whether the image ditches a slow aircraft on the
   water instead of letting it sink to the depth kill is unread.
 - `009AF15A` (`009AF0A0`, the kamikaze cruise profile) also reads it. It is unmodelled.
+
+## 5dd. The weight gates, re-paired under 5db (packet `cc9_ai_weight_gates_flip`, cc9-lua36, 2026-10-05)
+
+`kAiWeightBarrelGatesBound` + `kAiPlaneAttackerWeightBound`, as one packet. They were held OFF on
+a plausibility prior: Japanese air groups targeting themselves (5cy). 5db removed the only path by
+which such a pick reached a member as a friendly scene command. The planner's pick itself is the
+image's rule as read (5cu (1)). Same-tree exports of `57d313922` (`local\l36_gx0`, `local\l36_gx1`),
+all 22 reference X rows.
+
+**Predictions, before the pairs:**
+- Rows without AI attack orders (BSM01, LOMP10/long, JM05/long, IJN11) stay identical.
+- With the gates ON, groups whose best value is their own group (range factor 1.0 at distance 0)
+  hold MOVETOATTACK/CLOSEATTACK on themselves. Their members then `moveto` their own leader, and
+  CLOSEATTACK collects only the other party's units within 4500 m of the own leader point.
+  - So such groups fight whatever comes near them instead of striking far targets.
+  - Expect fewer deaths on strike rows (USNOS, USN13 long) and fewer long-range dive releases
+    (USNRM01).
+  - Expect no friendly refusals (0 `target not hostile`).
+
+### 5dd.1 Measured: a mechanism failure; **both gates stay OFF** (cc9-lua36, 2026-10-05)
+
+Exports of `57d313922`: `l36_gx0` (control), `l36_gx1` (both gates), `l36_gx2` (barrel gates only).
+USN01 smoke on `gx1`: clean.
+
+**All 22 rows, gx0 -> gx1:**
+- 11 rows identical: E2, ESMP08 long, LOMP10/long, JM05/long, USN02, USN04, JM08, BSM01, LOMP06,
+  IJN11.
+- 11 rows moved:
+
+| row | deaths | other |
+| --- | --- | --- |
+| USN13 long | 119 -> 152 | damage 47.4k -> 57.7k |
+| USNOS | 97 -> 67 | |
+| USNOS long | 114 -> 88 | |
+| USNRM01 | 201 -> 185 | dive releases 115 -> 75 |
+| JM08 long | 140 -> 153 | |
+| USN01 | 28 -> 29 | dive releases 6 -> 2 |
+| USN12 | 5 -> 3 | |
+| JM06 | 2 -> 3 | |
+| IJN01 | - | hits 114 -> 79 |
+| USN13 | - | non-gameplay lines only |
+
+- **gx2 (barrel gates alone) reproduces gx1 exactly on all 12 rows run.** `kAiPlaneAttackerWeightBound`
+  adds nothing on its own, and every move comes through the type queries the barrel switch makes
+  real (`game_hosts_ai.cpp` line 640).
+
+**What the planners pick, and why it is not the image's:**
+- **USNRM01.** The bombing squadrons that stop releasing are the eight `A6M_n` flights (6 each,
+  48 -> 0), Jap #1.1, #14.1, #44.1 and #45.1. In gx0 the A6Ms' close pass takes Downes (1424
+  command-target lines for A6M_1). In gx1 they have no target line at all.
+  - The script's `PilotSetTarget` to the NavPoint `Attackpoint2` (50025) is declined by `007EEC50`
+    in both builds, so only the close pass could give them a target.
+  - With West Virginia unsunk, Oklahoma_Killers never spawns.
+- **USN01.** KatSBD's 4 releases go to 0, the same pattern.
+- **Why the loaded aircraft score 0.**
+  - With the type queries real, a plane attacker takes `00A08460`'s plane arm.
+  - With `attacker_class > 0` (barrel gates alone) it goes to the loadout arm `00A08655`-`00A08A8E`,
+    which the host does not project. `ai_plane_attack_options` returns no option.
+  - With `attacker_class = 0` (plane switch) it takes the no-loadout gun arm, whose only option
+    against a ship is strafe.
+  - Either way a bomb- or torpedo-carrying fighter or dive bomber has no ship weight unless a forced
+    rule names its class. TORPEDOBOMBER and DIVEBOMBER do; a Zero does not.
+- **The premise is wrong.** The host's "00A04560 always leaves record+10h = 0" is not what
+  `00A04560` does.
+  - Its second argument to the record constructor `00A00020` (stored at `+10h`, `00A0005E`) is EDI:
+    - `[unit+3D0h]` when the unit answers kind 18h (`00A0460D`-`00A0461B`);
+    - else `[unit+C54h]` when it answers kind 0Fh and `007B9140(1)` is true (`00A04628`-`00A04648`);
+    - else 0.
+  - `007B9140` is true for a kamikaze (kind 17h). Otherwise it asks each part on `unit+974h`
+    (count `+994h`) `vtable[210h](2Ah, 1)`.
+  - So in the image a plane whose parts answer that query reaches the loadout arm with its loadout
+    record. The host's planes carry no `unit+974h` parts, and the record is never formed.
+- **USNOS / USNOS long.** 31 neutral or ground objects (containers, crates, barrels, mostly killed by
+  the cruisers Ada2/Ada3/Zao1/Zao3 in gx0) are no longer shot. That is the barrel walk's per-target
+  gates for side >= 2 targets, and it may well be the image's rule. It cannot be judged apart from
+  the loadout gap while one switch carries both.
+
+**Verdict:** attacks vanish because a weight path is unprojected, so this is a mechanism failure.
+`kAiWeightBarrelGatesBound` and `kAiPlaneAttackerWeightBound` stay OFF.
+
+**Next, for whoever takes the AI weights:**
+1. Read `007B9140`'s part query (`vtable[210h](2Ah, 1)` on the `unit+974h` parts) and what `unit+C54h`
+   and `unit+3D0h` hold.
+2. Project the loadout arm `00A08655`-`00A08A8E` (torpedo, bomb, depth charge, paratrooper, rocket
+   and dive options from `009552E0`'s list).
+3. Feed record+10h as the image forms it.
+4. Re-pair the gates after that; the USNOS neutral-target effect can then be judged on its own.
+
+## 5de. Handoff (cc9-lua36, 2026-10-05)
+
+Branch `agent/cc9-lua36`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua36`. No lease
+is held; the `src/game_hosts_ai.cpp` loan was released after 5db.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_terrain_avoid_forward_speed` | `d97ad79fd`, `cecbbb42d` | `kTerrainAvoidForwardSpeedBound` | **ON** | 5da, 5da.1 |
+| `cc9_order_attack_member_issue` | `f8860bd1f`, `45004bc4d` | `kOrderAttackNoMemberIssueBound` | **ON** | 5db, 5db.1 |
+| Kate nose-up stall | `7a3f912ab` | - | image as read | 5dc |
+| `cc9_ai_weight_gates_flip` | `ed61e0ca8` | the two gates | **OFF**, mechanism failure | 5dd, 5dd.1 |
+
+Censuses:
+- `summary mission ai order attack member issue bound= skips=`;
+- the `vehicle/terrain avoid ... thr=` lines for the throttle cap.
+
+Scripts in `local\`:
+- `l36_queue.ps1 -Jobs 'side:row',... -Tag t` (3-slot queue over `local\l36_<side>` exports, all 22
+  X rows defined);
+- `l36_diffall.ps1 -A a -B b -Rows ...` (one line per pair);
+- `l36_picks.py` (squadtick pick census);
+- `l36_relunits.py` / `l36_reltargets.py` (release census by squadron or target);
+- `l36_firstdiff.py` (first differing line, with a filter);
+- `l36_rel32.py <addr...>` (rel32 call census from the disk image);
+- `l36_diag2.py` (the uncommitted pitch diagnostic, applied to an export copy).
+
+### Next, in order
+
+1. **The AI loadout arm (5dd.1).** Project `00A08655`-`00A08A8E` and record+10h (`00A04560`:
+   `unit+C54h` via `007B9140(1)`, `unit+3D0h` for kind 18h). Then re-pair the gates.
+2. **5ch (`kAiTickMovetoRetasksPlaneBound`).** Re-pair it with the gates OFF, now that 5da and 5db
+   are in. Not started.
+3. **The water-surface `vtable[204h]` compares (5dc).** `007CBAEF` against `desc+19Ch`, and
+   `007CB858` against 8.0: does the image ditch a slow aircraft?
+4. 5cx's manoeuvre-survives-command item still has no reach.
