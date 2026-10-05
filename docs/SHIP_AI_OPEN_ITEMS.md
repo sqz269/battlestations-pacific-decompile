@@ -12141,3 +12141,190 @@ Should one be added, `kAiCoordinatorCreatedAtLoad` becomes a per-run value.
 - `s32_inert.py` is the switch census for 150.7.
 
 All leases are released after this commit.
+
+
+## 152. What still runs with the coordinator gate ON, and the approach's lander terms (lead item 1, packet `cc9_approach_lander_terms`, `kShipAiApproachLanderTermsBound`, cc9-ships33, 2026-10-05)
+
+### 152.1 The census (read-only, the ten gate-ON logs of 150.5, `local\s32_on2_*.log`)
+
+`local\s33_hosttab.py` merges the `host methods` tables; `local\s33_recctx.py` prints the source
+context of each recorded name.
+
+- **Every row** still runs the per-unit brain pre-pass, the nav block, the cruise and stop steps,
+  the autotarget and the controls. The UNIMPLEMENTED ship-AI rows that reach all ten rows are the
+  labels sections 28 and 114 already classed as structure or as RNG stand-ins:
+  `unit_weapon_director`, `drive_heading_vtable50`, `slot_to_order_ring`,
+  `backoff_countdown` (OFF, `held_steps=0` on every row), `after_heading_stored`, the AutoTarget slot
+  labels, the observer registrations and `seed_steering_unprojected`.
+- `state_steps{... records=N}` is one null-state step per unit (`ShipAiState::step_vtable0c`, 28 to
+  54 per row): bookkeeping.
+- **The approach (`attackmove`) runs on two rows only:**
+
+  | row | approach frames | targets | modes 0/1/2/3/4 |
+  | --- | --- | --- | --- |
+  | JM08 long 36000 | 63460 | building 63460 (lander 22864) | 19334 / 0 / 21262 / 2316 / 20548 |
+  | USNOS 3000 | 3960 | ship 3960 | 3960 / 0 / 0 / 0 / 0 |
+
+  Sections 124 and 126 closed `009F1BC0`'s mode-2/4 spans as having no reach, because no
+  reference row then had a mode 2 or 4 frame. **JM08 long now has 41810 of them.** Its transports
+  run `script:NavigatorAttackMove` and `script:NavigatorMoveToPos` rows, and the landing chain still
+  runs with the gate ON (sweep `messages=419`, `launched=4`, ramp `lowers=11`, land `enters=11`).
+- **Small, all rows:** `SetterBinding::on_steering_mode_change_009da4e0` records `009DA4E0` and
+  returns, while `HeadingHoldBinding` runs the same routine (`ship_ai_clear_path_plan_009da4e0`).
+  There are 257 calls across the ten rows. It is the candidate after this packet.
+- **Other lanes (routed):** `CruiseCommand::stop_state_step` (commands),
+  `UnitMotion::unreconstructed_*` (physics), and `Unit::can_release_007bb110` /
+  `device_requests_release` (units / gunnery).
+
+### 152.2 The image: what modes 2, 3 and 4 do that the host does not
+
+| site | what | host before |
+| --- | --- | --- |
+| `009F272D..009F2795` | `+1204h` = 1 in modes 2 and 4, 0 in modes 1 and 3; mode 0 as section 126 | the ring scan's last mode-0 value |
+| `009F282D..009F28AE` | mode 2 with `+11D4h` and `+11D5h` clear: `+11DCh` = `007B4E90(target pos - unit pos)`. The target comes from `[brain+0B20h]` if it passes `IsKindOf(1Ch)`, else null, and `009F286B` dereferences the null. `[ESP+58h..60h]` is the unit position (`009F1C45..009F1C66`) | `009E46F0`'s arc-centre bearing |
+| `009F301B..009F3049` | modes 2 and 4: `+11FCh` = 1.0 when it is negative (`COMISS`, `JBE`); every other mode: -1.0 | never written; default 0.0 (the constructor `009E5647` stores -1.0, loaded at `009E55E9`) |
+| `009E6B46` (mode 4) | `[unit+1128h] > 0` -> throttle limit 0 | 0 |
+| `009E7520` | while `+11FCh > 0`: `+11FCh += seconds` only when `[unit+1128h] > 0`; past 40 s the evade gain is 5 | 0 |
+| `009E6B90` (mode 4) | the reference is `(int)[target+7C4h] - 300.0`, the building's LandingRange, with no kind test | 0 - 300 |
+| `009E6C86` (mode 4) | `unit->vtable[234h](target)`. It is `008128E0` in all nine vtables that hold it (abs32 at `00CF92E4` .. `00D0C87C`): the troop trait, `+1124h` not above 0, and a free pad of the target | false |
+
+**`unit+1128h`.** A scan of every `28 11 00 00` displacement in `.text` finds six sites:
+- `0081F17E`, the constructor, stores -1.0 (`[00D7A260]`);
+- `00821BD8`, in `008206F0`, stores 15.0 (`[00CE5380]`) after each craft;
+- `009E6B46` and `009E7523` read it;
+- `009E5D00` is a getter (`> 0.0`) with no rel32 or absolute reference;
+- `007E567D` belongs to the plane tuning loader, which is another struct.
+
+**Nothing counts it down.** A transport that has launched craft therefore keeps a positive
+`+1128h`. In mode 4 its throttle limit is then 0, and 40 s after the frame state arms `+11FCh` its
+ring weighs the evade bearing (selected + 30 slots) five times.
+
+**JM08's LandingRange** is `I 4000` in this installation's `prcpijn_08_defend_guadalcanal.scn`
+(mtime 2024-08-09). So the image's mode-4 reference is 3700 m, and the host's has been -300 m.
+
+### 152.3 The binding (committed OFF)
+
+`kShipAiApproachLanderTermsBound` in `src/game_hosts_ship_ai.cpp`:
+- `run_lander_side_and_bearing` runs after the mode latch and the retarget arm;
+- `run_lander_evade_arm` runs after the gunnery byte;
+- the three `ThrottleLimitBinding` reads;
+- `EvadeBinding::unit_evade_flag_1128`.
+
+`launch_hold_1128` is stored at `00821BD8` both ways. Under OFF nothing reads it.
+`evade_timer_11fc` now starts at -1.0. Every reader tests `> 0`, so OFF is unchanged.
+
+Mode 3's `brain+308h` store stays a record (section 138: no reader).
+
+Census line: `summary mission ship ai approach lander terms ...`.
+
+### 152.4 Predictions (written before any ON run)
+
+- **Mechanism, JM08 long:**
+  - `side_writes` equals the mode 1-4 frames (about 44000);
+  - `mode2_bearings` is about mode 2's 21262, and `mode2_no_target=0`;
+  - `range_reads > 0`;
+  - `hold_positive > 0` only after the first launch (OFF launches at 1156.95 s, 1282.50 s,
+    1299.65 s and 1365.55 s, by transports 355, 354, 353 and 358);
+  - `evade_gain_frames > 0` for a launched transport that stays in mode 2 or 4 for 40 s or more.
+- **JM08 long spread:**
+  - Mode-4 transports stop when within about 3750 m (`LandingRange - 300 + 50`) of their
+    approach point, where they now drive in. From there they take the accepted throttle
+    (`[00D7A2F0]`) while a pad is free, and 0 once they have launched.
+  - So expect the transports to hold further offshore, the craft-launch positions to move out
+    (fewer `depth_rejects`) and the landings and ramp times to shift. Transport deaths may fall.
+  - Mode-2 units turn on the bearing to their own building. Their limit drops to 0 inside
+    `standoff + kApproachGateRange`.
+  - `pair_diff` 3.
+- **Controls:**
+  - USNOS (mode 0 only): the only new act is `+11FCh = -1.0` on a value that is already -1.0.
+    Expect gameplay identical (0 or 1).
+  - USN13 (no approach frames): identical.
+
+### 152.5 Smoke and pairs; verdict ON
+
+- **Runs:** OFF is this tree at `3c01cf701`. ON is `pair_export.py --flip
+  kShipAiApproachLanderTermsBound=true --out local\s33_lt_on`. Both use reference y's launch form
+  (`local\s33_rows.ps1`).
+- **Smoke:** `local\s33_smoke1.log`, JM08 300 frames, OFF. Clean.
+
+| row | `pair_diff` | notes |
+| --- | --- | --- |
+| USNOS 3000 | 1 | the census line only (`bound=1`, all counters 0) |
+| USN13 3000 | 1 | the census line only |
+| JM08 long 36000 | 3 | below |
+
+**JM08 long, the mechanism (ON census):**
+- `side_writes` is 52848, which equals the mode 1-4 frames (19598 + 564 + 32686);
+- `mode2_bearings` is 19598, equal to the mode 2 frames, and `mode2_no_target=0`;
+- `hold_positive=14761` over `held_transports=6`, and `evade_gain_frames=13825`;
+- `range_reads=17916`, `accept_asks=10590`, `accept_true=40`.
+
+**JM08 long, the spread (OFF -> ON):**
+
+| | OFF | ON |
+| --- | --- | --- |
+| craft launches (transports) | 4 (355, 354, 353, 358), first at 1156.95 s | 6 (all), first at 774.65 s (353, 8 crafts) |
+| crafts | 8 | 13 |
+| launch `depth_rejects` / `refused` | 4971 / 413 | 0 / 0 |
+| launch positions | z -2507 .. -3848, 2.2 to 3.5 km past the landing navpoints (z = -300) | z -688 .. -1334, 0.4 to 1.0 km past them |
+| ramp lowers / unloads | 11 / 11 | 14 / 14 |
+| troop transports sunk | 4 (1312.00 to 1499.89 s) | 0 |
+| HQ neutralized | 1047.85 s | 1052.00 s; no flip either way |
+| death rows | 207 | 179 |
+
+**Reading.**
+- Under OFF, a mode-4 transport crept in on the host's reference of -300 m. It drove 2-3.5 km past
+  its navpoint toward Headquarter 01, where most pad candidates failed the ground probe and four
+  transports were sunk.
+- Under the image's terms it stops once it is within LandingRange - 250 (about 3750 m) of its
+  approach point. It takes the accepted throttle while a pad is free, launches from there, and
+  holds at 0 once `+1128h` is 15.0.
+- **Every prediction in 152.4 held in direction:** further offshore, fewer depth rejects, shifted
+  landings, fewer transport deaths, and both controls gameplay-identical.
+
+**Verdict: ON.**
+- **Not game-validated:** the parked distance is the image's rule as read, not an observation of
+  the original game.
+- **The 40 s evade swing** (bearing + 30 slots at gain 5) runs on the six held transports. With a
+  throttle limit of 0 they only turn in place.
+
+
+## 153. JM08's troop landing without the planner (lead item 2, cc9-ships33, 2026-10-05, read and runs only)
+
+**The script orders its landers itself.** JM08 loads this installation's
+`scripts\missions\COTP-IJN\PRCPIJN\prcpjm08.lua` (mtime 2024-08-26):
+- `StartInvasion` (lines 766-787):
+  - `NavigatorAttackMove(unit, Mission.HQ, {})` for each of `Mission.InvasionForce`;
+  - `NavigatorMoveToPos(Mission.APs[i], Mission.LandPoints[i])` for `USTroopTransport 01..06` to
+    `USNLandingNavpoint 01..06`. The navpoints are at x = ±500, ±1000, ±1500 and z = -300.
+- `CheckAP1..6` (from line 822): once `luaGetDistance(AP, LandPoint) < 200`, each one issues
+  `NavigatorAttackMove(Mission.APs[i], Mission.HQ, {})`.
+- The script has no `StartLanding`, `LandingCraft*` or `PilotSetTarget` call on the transports.
+  Line 1077's `PilotSetTarget` is a plane's.
+
+**The chain from there is per-unit ship AI.** No coordinator is involved:
+1. The attackmove runs the approach.
+2. With a troop lander on an enemy 1Ch building, the mode latch gives mode 4 (section 26).
+3. The warn sweep `009F33E2..009F35F5` sends 94h to the transport's `vt+238h`, `008206F0`, or to a
+   landing ship's `0074A4C0` (section 133).
+4. The crafts land themselves (`0074BEC0`'s tail -> `0074A990`).
+
+**So the landing chain running with the gate ON is the image's behaviour.** The planner's
+StartLanding was a second producer, and single player never builds it (section 150).
+
+**Which landing switches are live** (JM08 long, `local\s33_on1_jm08l.log`, main + section 152 ON):
+
+| switch | where it acts | gate-ON reach |
+| --- | --- | --- |
+| `kLandingShipStartLandingBound`, `kLandingCraftLaunchBound` (`game_hosts_ai.cpp`) | only the coordinator's transport move `00A11B80` | **inert**: `ai group transport moves calls=0`, `ai startlanding 94h landing_ships=0 transports=0` |
+| `kShipAiApproachLandingSweepBound` | the sweep's 94h, delivered straight to `0074A4C0` / `008206F0` | live: `messages=9 begun=3 launched=6` |
+| `kShipAiApproachLandingModesBound` | modes 3 and 4 points, `0074A990` | live: `mode3_points=564 mode4_points=32686 begins=16` |
+| `kShipAiLandStepBound` | `009E18D0` / `009E1950` | live: `enters=16 steps=32806` |
+| `kLandingShipRampBound`, `kLandingShipRampHullContactBound`, `kLandingShipUnloadBound` | the ramp and the unload | live: `lowers=14 unloads=14` |
+| `kShipAiApproachLanderTermsBound` (section 152) | mode 2/3/4 terms | live |
+| `kTroopLandingTraitBound` | the AI sites (`00A1443D`, `00A03510`) are inert (`close_landers=0 cargo_landers=0`); the sweep's `009F347E` / `009F35E3` reads are live | partly live |
+| `kShipAiBigLandingShipBound` | the AI sites are inert (`reads=0`); the neighbour admission `009F0D82` and the mode latch `009F1F76` are live | partly live |
+| `kCaptureGeneratedUnitClassFieldsBound` | the crafts' capture power | live (`landed_capture_adds=4321`) |
+
+**The HQ still does not flip in 36000 frames**: it is neutralized at 1052.00 s, and `flips=0`.
+Section 109.6 needed a 76000-frame run for the HQ to flip to party 0.

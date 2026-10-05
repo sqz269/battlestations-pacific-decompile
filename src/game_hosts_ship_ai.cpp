@@ -619,6 +619,23 @@ inline constexpr bool kLandingShipUnloadBound = true;
 // arm 2, as before. ON by section 109.6: JM08 36000 gameplay identical, and a
 // 76000-frame JM08 run flips the HQ to party 0 at t=3496.95.
 inline constexpr bool kCaptureGeneratedUnitClassFieldsBound = true;
+// Packet cc9_approach_lander_terms (section 152). The approach's mode 2 / 3 / 4
+// terms, which sections 124 and 126 closed for lack of reach and which JM08 long
+// reaches with the coordinator gate ON. True:
+//   - 009F272D..009F2795: nested+1204h = 1 in modes 2 and 4, 0 in modes 1 and 3
+//     (mode 0's value is overwritten by 009E6E80 before 009E6CFD reads it);
+//   - 009F282D..009F28AE: in mode 2 with +11D4h and +11D5h clear, nested+11DCh is
+//     the compass heading 007B4E90 from the unit to its kind-1Ch target;
+//   - 009F301B..009F3049: modes 2 and 4 arm nested+11FCh to 1.0f while it is
+//     negative, every other mode resets it to -1.0f;
+//   - 009E6B46 / 009E7520: unit+1128h, -1.0f from 0081F17E and 15.0f at each
+//     craft 008206F0 launches (00821BD8), never counted down;
+//   - 009E6B90: (int)[target+7C4h], the building's LandingRange;
+//   - 009E6C86: unit->vtable[234h](target), 008128E0.
+// False: +1204h keeps the ring scan's last value, +11DCh the arc centre,
+// +11FCh its -1.0f, and the three 009E6A90 reads answer 0, 0 and false.
+// ON by section 152.5: the mechanism and every predicted direction held.
+inline constexpr bool kShipAiApproachLanderTermsBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1375,6 +1392,26 @@ struct GameShipAiHost::Impl {
     // Packet cc9_landing_craft_launch: ship+1124h per transport, and the class
     // keys 008206F0 reads, cached by VehicleClass id.
     std::map<std::size_t, float> transport_cooldown_1124;
+    // Packet cc9_approach_lander_terms: unit+1128h per transport. 0081F17E stores
+    // -1.0f ([00D7A260]); 00821BD8 stores 15.0f ([00CE5380]) after each craft. A
+    // census of every 28 11 00 00 displacement in .text finds no other writer.
+    std::map<std::size_t, float> launch_hold_1128;
+    float launch_hold_1128_of(std::size_t unit) const {
+        const auto found = launch_hold_1128.find(unit);
+        return found != launch_hold_1128.end() ? found->second : -1.0f;
+    }
+    unsigned long long lander_side_byte_writes{0};
+    unsigned long long lander_side_byte_changes{0};
+    unsigned long long lander_mode2_bearings{0};
+    unsigned long long lander_mode2_no_target{0};
+    unsigned long long lander_evade_arms{0};
+    unsigned long long lander_evade_resets{0};
+    unsigned long long lander_hold_reads{0};
+    unsigned long long lander_hold_positive{0};
+    unsigned long long lander_range_reads{0};
+    unsigned long long lander_accept_asks{0};
+    unsigned long long lander_accept_true{0};
+    unsigned long long lander_evade_gain_frames{0};
     std::map<int, GameUnitsHost::VehicleClassLaunchKeys> launch_keys;
     const GameUnitsHost::VehicleClassLaunchKeys& class_launch_keys(int type_id) {
         auto found = launch_keys.find(type_id);
@@ -4622,8 +4659,13 @@ public:
     EvadeBinding(GameShipAiHost::Impl& owner, std::size_t index)
         : owner_(owner), index_(index) {}
     float unit_evade_flag_1128() override {
-        owner_.record("ShipAiApproach::unit_evade_flag_1128", 0x009e751fu);
-        return 0.0f;
+        // 009E7520, [unit+1128h] (packet cc9_approach_lander_terms).
+        if (!kShipAiApproachLanderTermsBound) {
+            owner_.record("ShipAiApproach::unit_evade_flag_1128", 0x009e751fu);
+            return 0.0f;
+        }
+        owner_.done("ShipAiApproach::unit_launch_hold_1128", 0x009e7520u);
+        return owner_.launch_hold_1128_of(index_);
     }
     float tune_bearing_10() override {
         return owner_.tune.evade_bearing; // 009E75F2, tune+10h
@@ -5078,16 +5120,33 @@ public:
         return owner_.units.unit_heading_radians(index_);
     }
     float unit_evade_flag_1128() override {
-        owner_.record("ShipAiApproach::limit_evade_flag_1128", 0x009e6b46u);
-        return 0.0f;
+        // 009E6B46, [[nested]+0AA8h]+1128h: the unit's own launch hold (packet
+        // cc9_approach_lander_terms). Mode 4 only; above 0.0 the limit is 0.
+        if (!kShipAiApproachLanderTermsBound) {
+            owner_.record("ShipAiApproach::limit_evade_flag_1128", 0x009e6b46u);
+            return 0.0f;
+        }
+        owner_.done("ShipAiApproach::limit_launch_hold_1128", 0x009e6b46u);
+        const float hold = owner_.launch_hold_1128_of(index_);
+        ++owner_.lander_hold_reads;
+        if (hold > 0.0f) ++owner_.lander_hold_positive;
+        return hold;
     }
     std::uint32_t engagement_target_009e5e00() override {
         owner_.done("ShipAiApproach::engagement_target_009e5e00", 0x009e5e00u);
         return ctl_.goal_vector.raw_target_0b20;
     }
-    std::int32_t target_radius_07c4(std::uint32_t) override {
-        owner_.record("ShipAiApproach::limit_target_radius_07c4", 0x009e6b90u);
-        return 0;
+    std::int32_t target_radius_07c4(std::uint32_t target) override {
+        // 009E6B90, FILD [target+7C4h] with no kind test: mode 4 is latched only
+        // for a kind-1Ch target (009F1FF6..), whose +7C4h is LandingRange.
+        if (!kShipAiApproachLanderTermsBound || target == 0u) {
+            owner_.record("ShipAiApproach::limit_target_radius_07c4", 0x009e6b90u);
+            return 0;
+        }
+        owner_.done("ShipAiApproach::limit_landing_range_07c4", 0x009e6b90u);
+        ++owner_.lander_range_reads;
+        return static_cast<std::int32_t>(owner_.units.command_building_landing_range_07c4(
+            static_cast<std::size_t>(target - 1u)));
     }
     // Packet cc9_approach_leader_answers (section 135): 009E6C45's 00778890.
     bool unit_is_group_leader_00778890() override {
@@ -5100,8 +5159,29 @@ public:
         const std::int32_t g = owner_.units.unit_formation_group_0284(index_);
         return g >= 0 && owner_.units.formation_leader_0014(g) == index_;
     }
-    bool target_accepted_vtable_0234(std::uint32_t) override {
-        owner_.record("ShipAiApproach::limit_target_accepted_0234", 0x009e6c86u);
+    bool target_accepted_vtable_0234(std::uint32_t target) override {
+        // 009E6C77..009E6C86: [[nested]+0AA8h]->vtable[234h](target), the unit's
+        // own vtable. 008128E0 sits at +234h of the nine vtables that hold it
+        // (00CF92E4 .. 00D0C87C); it is the same test the warn sweep binds:
+        // the class trait [unit+538h]->vtable[2Ch], +1124h not above 0.0, and
+        // with a target a pad of it with no occupant (006F2A50).
+        if (!kShipAiApproachLanderTermsBound || target == 0u) {
+            owner_.record("ShipAiApproach::limit_target_accepted_0234", 0x009e6c86u);
+            return false;
+        }
+        owner_.done("ShipAiApproach::limit_target_accepted_008128e0", 0x008128e0u);
+        ++owner_.lander_accept_asks;
+        if (!owner_.units.unit_class_lands_troops_vtable_2c(index_)) return false;
+        const auto it = owner_.transport_cooldown_1124.find(index_);
+        if (it != owner_.transport_cooldown_1124.end() && it->second > 0.0f) return false;
+        const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+        for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
+            const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+            if (p != nullptr && p->occupant < 0) {
+                ++owner_.lander_accept_true;
+                return true;
+            }
+        }
         return false;
     }
 
@@ -5727,6 +5807,7 @@ public:
         bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, has_zone,
                                                    seconds, point);
         run_retarget_arm(run_mode_latch(), point_before);
+        if (kShipAiApproachLanderTermsBound) run_lander_side_and_bearing();
         // Packet cc8_ship_ai_committed_slot: 009F28F1, the one per-frame writer
         // of nested+11E8h. Counted here because the store is the last act of
         // the projection.
@@ -5758,6 +5839,7 @@ public:
             owner_.gunnery_draws->set_pass_byte_7d_00863780(index_, torpedo_in_reach,
                                                             0x009f3016u);
         }
+        if (kShipAiApproachLanderTermsBound) run_lander_evade_arm();
         owner_.done("ShipAiApproach::frame_state", 0x009f1bc0u);
         owner_.record("ShipAiApproach::frame_state_unread_spans", 0x009f1dbfu);
         ++row_.approach_frames;
@@ -5811,6 +5893,9 @@ public:
         bsp::ship_ai_approach_score_evade_009e74d0(ctl_.approach, ctl_.approach_ring,
             ctl_.approach_scores, seconds, evade);
         owner_.done("ShipAiApproach::score_evade", 0x009e74d0u);
+        if (ctl_.approach.evade_timer_11fc > bsp::kApproachEvadeArmRange) {
+            ++owner_.lander_evade_gain_frames;
+        }
     }
     void select_slot_009e76d0(float seconds) override {
         SelectBinding select(owner_, ctl_, row_, index_);
@@ -5871,6 +5956,70 @@ public:
     }
 
 private:
+    // Packet cc9_approach_lander_terms. 009F272D..009F2795, then 009F282D..009F28AE,
+    // both after the mode latch (009F1F47..009F2124) and the retarget arm, so on
+    // this frame's mode. The image stores 009E46F0's bearing at 009F27CB first;
+    // the projection already did, and the mode-2 arm overwrites it.
+    void run_lander_side_and_bearing() {
+        using Mode = bsp::ShipAiApproachMode;
+        auto& a = ctl_.approach;
+        const Mode mode = a.mode_1234;
+        if (mode != Mode::free_0) {
+            // 009F2733..009F2759 and 009F278B: 1 for modes 2 and 4, 0 for 1 and 3.
+            // Mode 0 (009F275B..009F2783) is not written here: 009E6E80's side
+            // choice (009E73E8 / 009E73F4) rewrites it before 009E6CFD reads it,
+            // because +1208h is always clear (section 126).
+            const int side = (mode == Mode::unassigned_2 || mode == Mode::standoff_4) ? 1 : 0;
+            if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
+            a.speed_gate_1204 = side;
+            ++owner_.lander_side_byte_writes;
+            owner_.done("ShipAiApproach::frame_side_byte_1204", 0x009f272du);
+        }
+        // 009F282D CMP [+1234h],2; 009F283A / 009F283F the two bytes 009E46F0 wrote.
+        if (mode != Mode::unassigned_2 || a.override_11d4 || a.override_11d5) return;
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        // 009F2844..009F2869: the target if it answers IsKindOf(1Ch), else null,
+        // which 009F286B then dereferences. Mode 2 is latched only for a kind-1Ch
+        // target, so the null arm is unreachable; it is counted, not modelled.
+        if (handle == 0u || handle - 1u >= owner_.units.count()
+            || !owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 0x1c)) {
+            ++owner_.lander_mode2_no_target;
+            owner_.record("ShipAiApproach::mode2_bearing_null_target", 0x009f2869u);
+            return;
+        }
+        float tx = 0.0f, ty = 0.0f, tz = 0.0f, ux = 0.0f, uy = 0.0f, uz = 0.0f;
+        owner_.units.unit_position_00fc(static_cast<std::size_t>(handle - 1u), tx, ty, tz);
+        // [ESP+58h..60h] is the unit position 009F1C45..009F1C66 spilled.
+        owner_.units.unit_position_00fc(index_, ux, uy, uz);
+        // 009F287B..009F28A5: three float differences, then 007B4E90 on the vector.
+        const float dx = static_cast<float>(static_cast<double>(tx) - ux);
+        const float dz = static_cast<float>(static_cast<double>(tz) - uz);
+        a.slot_scale_11dc = bsp::ship_ai_compass_heading_007b4e90(dx, dz); // 009F28AE
+        ++owner_.lander_mode2_bearings;
+        owner_.done("ShipAiApproach::mode2_target_bearing_007b4e90", 0x009f28a9u);
+    }
+    // 009F301B..009F3049, the tail after the gunnery byte. Mode 3's brain+308h
+    // store (009F3056..009F3061) has no reader (section 138) and stays a record.
+    void run_lander_evade_arm() {
+        using Mode = bsp::ShipAiApproachMode;
+        auto& a = ctl_.approach;
+        const Mode mode = a.mode_1234;
+        if (mode == Mode::unassigned_2 || mode == Mode::standoff_4) {
+            // 009F3035 XORPS / COMISS 0 against +11FCh / JBE: armed only while
+            // negative; an unordered value is left alone.
+            if (0.0f > a.evade_timer_11fc) {
+                a.evade_timer_11fc = 1.0f; // 009F3041, [00D7A24C]
+                ++owner_.lander_evade_arms;
+            }
+        } else {
+            if (a.evade_timer_11fc != -1.0f) ++owner_.lander_evade_resets;
+            a.evade_timer_11fc = -1.0f; // 009F302B, [00D7A260]
+        }
+        if (mode == Mode::inside_3) {
+            owner_.record("ShipAiApproach::mode3_brain_field_308", 0x009f3061u);
+        }
+        owner_.done("ShipAiApproach::frame_evade_arm_11fc", 0x009f301bu);
+    }
     // 009F2F11 and 009F2FB1, the two 0095F080 refills inside 009F1BC0. The own
     // curve takes prefer_long_range = 1 and re-arms nested+1220h with 1.5f
     // (009F2F16); the target's takes 0 and re-arms nested+1224h with 2.0f
@@ -12403,6 +12552,9 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
         if (made) {
             pad = first_free_pad();                                      // 00821BBB
             --ring;                                                      // 00821BC8
+            // 00821BD8, MOVSS [EBX+1128h] of [00CE5380] = 15.0f. Stored both ways;
+            // read only under kShipAiApproachLanderTermsBound.
+            host.launch_hold_1128[unit] = 15.0f;
         }
     }
     if (!launched.empty()) {
@@ -13020,6 +13172,22 @@ void GameShipAiHost::report() {
         for (const auto& c : host.controllers) {
             if (c.backoff_held_steps != 0u) ++held_units;
         }
+        std::size_t held_transports = 0;
+        for (const auto& h : host.launch_hold_1128) {
+            if (h.second > 0.0f) ++held_transports;
+        }
+        host.log.notef("summary mission ship ai approach lander terms side_writes=%llu "
+            "side_changes=%llu mode2_bearings=%llu mode2_no_target=%llu evade_arms=%llu "
+            "evade_resets=%llu evade_gain_frames=%llu hold_reads=%llu hold_positive=%llu "
+            "held_transports=%zu range_reads=%llu accept_asks=%llu accept_true=%llu bound=%d "
+            "(009F272D / 009F282D / 009F301B / 009E6B46 / 009E6B90 / 009E6C86, packet "
+            "cc9_approach_lander_terms)",
+            host.lander_side_byte_writes, host.lander_side_byte_changes,
+            host.lander_mode2_bearings, host.lander_mode2_no_target, host.lander_evade_arms,
+            host.lander_evade_resets, host.lander_evade_gain_frames, host.lander_hold_reads,
+            host.lander_hold_positive, held_transports, host.lander_range_reads,
+            host.lander_accept_asks, host.lander_accept_true,
+            kShipAiApproachLanderTermsBound ? 1 : 0);
         host.log.notef("summary mission ship ai backoff countdown held_steps=%llu units=%zu "
             "expiries=%llu bound=%d (009F3F89..009F3FE3, packet cc9_ship_ai_backoff_countdown)",
             host.summary.backoff_held_steps, held_units, host.summary.backoff_expiries,
