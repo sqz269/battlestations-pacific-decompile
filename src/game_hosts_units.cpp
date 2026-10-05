@@ -19277,11 +19277,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.hull_aim_seed = ++g_hull_aim_pick_counter;
                     }
                     // 009CB8B0 goaway enter (vtable 00D2103C +4h).
+                    // DIAGNOSTIC, env-gated (BSP_STRAFE_GOAWAY_TRACE=1, cc9-lua33, docs/
+                    // SQUADRON_LAND_TASK.md 5cl): the goaway state's enter, re-plans, done
+                    // tests and evasive gates, one line each. Prints nothing when unset.
+                    static bool st_goaway_trace() {
+                        static const bool on = [] {
+                            char* v = nullptr;
+                            std::size_t n = 0;
+                            const bool set = _dupenv_s(&v, &n, "BSP_STRAFE_GOAWAY_TRACE") == 0
+                                && v != nullptr;
+                            std::free(v);
+                            return set;
+                        }();
+                        return on;
+                    }
+                    void st_goaway_note(const char* what, double a, double b) {
+                        owner_.log.notef("  strafe goaway trace %s %s t=%.2f a=%.3f b=%.3f "
+                            "h=%.1f alt=%.1f since_hit=%.2f", unit_.row.name.c_str(), what,
+                            static_cast<double>(owner_.summary.simulated_seconds), a, b,
+                            static_cast<double>(st_horizontal_009cad00()),
+                            static_cast<double>(unit_.motion.position[1]),
+                            static_cast<double>(unit_.st_ap.elapsed_44));
+                    }
                     void st_goaway_enter_009cb8b0() {
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);   // 009CB8DF
                         st_goaway_heading_009cb780();                          // 009CB8E6
                         st_goaway_pitch_009cb650();                            // 009CB8ED
                         unit_.st_ga_done_24 = false;                           // 009CB8F5
+                        if (st_goaway_trace()) {
+                            st_goaway_note("enter", unit_.st_goaway_dist_34,
+                                (!st_bomber_kind() && unit_.st_ap.elapsed_44 < 16.0f) ? 1.0 : 0.0);
+                        }
                         // 009CB8FC-009CBB1E: for a plane of neither kind 10h nor 16h
                         // hit within U(10, 16) s (approach+44h), a front-pushed evasive
                         // task (009BC030 with 007B5C70, or 009BC0A0 with 007B5E20).
@@ -19586,11 +19612,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.st_ga_hdg_timer_30 < 0.0f) {                  // 009CBB5C
                             unit_.st_ga_hdg_timer_30 += st_draw("ga30", 2.0f, 5.0f);
                             st_goaway_heading_009cb780();
+                            if (st_goaway_trace()) {
+                                st_goaway_note("replan_bank", unit_.st_ga_bank_1c,
+                                               unit_.st_ga_hdg_timer_30);
+                            }
                         }
                         unit_.st_ga_pitch_timer_3c -= dt;
                         if (unit_.st_ga_pitch_timer_3c < 0.0f) {                // 009CBB9A
                             unit_.st_ga_pitch_timer_3c += st_draw("ga3c", 2.0f, 5.0f);
                             st_goaway_pitch_009cb650();
+                            if (st_goaway_trace()) {
+                                st_goaway_note("replan_pitch", unit_.st_ga_pitch_20,
+                                               unit_.st_ga_pitch_timer_3c);
+                            }
                         }
                         unit_.plan_state.bank_target_2c4 = unit_.st_ga_bank_1c;   // plan+2C4h
                         unit_.plan_heading_mode_2cc = 1;
@@ -19610,11 +19644,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else {
                             unit_.st_ga_countdown_44 = (1.0f - dt) + unit_.st_ga_countdown_44;
                             unit_.st_ga_done_24 = unit_.st_goaway_dist_34 < st_horizontal_009cad00();
+                            if (st_goaway_trace()) {
+                                st_goaway_note("done_test", unit_.st_goaway_dist_34,
+                                               unit_.st_ga_done_24 ? 1.0 : 0.0);
+                            }
                         }
                         // 009CBC96-009CBE27: the evasive push within 1 s of a hit.
                         // GAP, counted on the rising edge (see the enter).
                         const bool evade = !st_bomber_kind() && unit_.st_ap.elapsed_44 < 1.0f;
-                        if (evade && !unit_.st_evading) ++unit_.st_evasive_gaps;
+                        if (evade && !unit_.st_evading) {
+                            ++unit_.st_evasive_gaps;
+                            if (st_goaway_trace()) st_goaway_note("evasive_gate", 0.0, 0.0);
+                        }
                         unit_.st_evading = evade;
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);   // 009CBE3F
                     }

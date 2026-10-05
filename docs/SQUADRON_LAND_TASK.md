@@ -8979,3 +8979,146 @@ The work paused before the bind landed (lead's pause, 2026-10-01). The plan for
 - **JM06 3200/3000:** moved, with one PBY.
 - **USN02 and USN12 (controls):** pair_diff 0 or 1, with no `settarget` to a squadron.
 - **USNOS:** identical apart from the census, since it has no AI `settarget`.
+
+### 5ck.1 The binding, committed OFF (cc9-lua33, 2026-10-04)
+
+cc9-lua33 applied cc9-lua32's prepared patch and `close_issue_order` hook unchanged (reviewed:
+the hook takes the squadron path only for `settarget`/`attackmove` from `close_issue_order`, keeps
+`issue_order`'s repeat test, and uses the same `GameUnitsHost` index space as the script-orders
+host). `kAiSquadronSetTargetIntakeBound = false` is in `include/bsp/game_hosts_script_orders.hpp`;
+the census line is `summary mission script squadron intake`. The predictions above stand as
+written; the pairs follow in 5ck.2.
+
+### 5ck.2 Measured (OFF `local\l33_off`, SHA-256 `4E66E4013D71`; ON `local\l33_on`, `990F4FEB4A5A`; both from `aaf170730`), and the verdict: **flip ON**
+
+Launch form of reference v (`local\l33_runs.ps1`, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`).
+The 300-frame USN01 smoke (ON) finished cleanly: 20 intake calls, all torpedo (`F18`).
+
+| row | pair_diff | intake calls / declined / member orders / tasks | what moved |
+| --- | --- | --- | --- |
+| ESMP08 14200/14000 | 3 | 602 / 0 / 1806 / 1806 | deaths 44 -> 46 (Zuiho sunk, one more Corsair); hits 1619 -> 6462; torpedo releases 2/21 -> 4/33 |
+| ESMP08 9200/9000 | 3 | 33 / 0 / 99 / 99 | no combat yet; plane paths and `nearest` distances only |
+| USNRM01 9200/9000 | 3 | 1903 / 54 / 5900 / 5900 | torpedo releases 2/15 -> 40/79, dive releases 30/54 -> 123/166, damage 29918 -> 39332 |
+| JM06 3200/3000 | 3 | 25 / 12 / 13 / 13 | the PBY flies a torpedo run on the submarines (1 of 1 released) and takes their AA |
+| USNOS 3200/3000 | 1 | 0 | census only |
+| USN02 3200/3000 | 1 | 0 | census only |
+| USN12 3200/3000 | 1 | 0 | census only |
+
+Against the predictions:
+- **ESMP08 long, all held.** `declined` is 0 and `tasks` equals `member_orders`. The classes split
+  as predicted: 306 strafe (`F40`, Corsairs), 177 dive (`F20`, Helldivers) and 119 torpedo (`F18`,
+  Avengers). Every one of the 44 plane deaths whose killer moved now falls to the carrier group:
+  Zuikaku 0 -> 34 and Zuiho 1 -> 8. On OFF the killers were Oyodo 11, Isuzu 8, Ise 7, Akitsuki 5,
+  Chitose 4, Hyuga 3, Chiyoda 2 and Sugi 1. In the unit table, every other ship's `nearest` rises
+  to 2800-5700 and its shots fall to 0. Zuikaku fires 249 -> 3947 shots and Zuiho 306 -> 1987.
+  The squadrons fly to 00A13B60's pick, the Zuikaku group, and no longer to the script's random
+  `IJNFleet` ship. The added hit records are that AA fire.
+- **The weakest call is reached: strafes now reach goaway.** Summed over the per-plane strafe
+  summaries (`local\l33_strafe_sum.py`), OFF has 60 planes with `aim=433 goaway=0 aims=8`. ON has
+  42 planes with `aim=3064 goaway=1639 aims=35`. That opens the goaway row (queue item 2).
+- **The wave-3 composition differs** (TBF and SB2C on ON where OFF had F4U). That comes from the
+  script, not the switch: `08_engano.lua:513-517` fills the wave with `luaPickRnd(planetbl)`, and
+  the Lua random stream advances differently once the fight differs (this installation's file is
+  dated 2024-07-13).
+- **USNRM01, moved strongly, as predicted.** The Japanese waves now strike 00A13B60's targets.
+  Only on ON do Downes, Neosho, Rescue, Tautog, Medusa and five cranes die; only on OFF does
+  Airfield1Hangar die. Japanese plane deaths are 32 only OFF against 26 only ON. The 54 declined
+  calls are all `sides 1/2`: 007EEC50 refuses a target that is not an enemy.
+- **JM06, moved with the one PBY, as predicted.** The 12 declined calls come after its torpedo is
+  gone (`torp=0 gb=1`), when the chooser offers no class for the submarine target.
+- **The controls held.** USNOS, USN02 and USN12 have no AI `settarget` to a squadron, and each
+  shows exit 1.
+
+The mechanism matches on every row, so the switch flips ON (`kAiSquadronSetTargetIntakeBound =
+true`). The OFF base predates reference w (not yet published when these pairs ran), and w's
+base must carry this flip.
+
+## 5cl. The goaway row: ESMP08 long's goaway follows the image's rules; the break-off is two manoeuvres the host does not fly (packet `cc9_strafe_goaway_row`, cc9-lua33, 2026-10-04)
+
+The run is ESMP08 14200/14000 on main `ee5672bf2` plus the trace commit `ab54ae37b`, with
+`BSP_STRAFE_GOAWAY_TRACE=1` (`local\l33_ga_esmp08x.log`). Analysis is `local\l33_ga_analyze.py`.
+The trace moves no gameplay: pair_diff against 5ck.2's ON log exits 1.
+
+### The goaway ticks against `009CBB30` (listing `009CBB30`-`009CBE74`, read whole)
+
+| rule (image) | measured (host) | holds |
+| --- | --- | --- |
+| bank re-plan `009CB780` when `+30h` < 0, re-armed `U(2, 5)` (`009CBB4C`-`009CBB93`) | 46 re-plans; the interval between two in one episode is 2.10-4.90 s (n = 27) | yes |
+| pitch re-plan `009CB650` when `+3Ch` < 0, re-armed `U(2, 5)` (`009CBB9C`-`009CBBD5`) | 43 re-plans; 2.00-4.90 s (n = 24) | yes |
+| done `+24h` = horizontal > approach `+34h`, tested once per `+40h` = 1 s (`009CBC47`-`009CBC88`) | 183 tests in 21 episodes; 4 come true, and each is followed by `goaway -> gotowards` (Corsairs #1.3, #1.6\|.-2, #1.8 and #2.3, at h = 1124-1230 m) | yes |
+| evasive gate: not kind 10h/16h and approach `+44h` < 1.0 (`009CBC96`-`009CBCCA`) | 36 gate openings in the tick; time since hit at the gate is at most 0.30 s | yes |
+| the enter's gate `009CB8B0`: `U(10, 16)` > `+44h` (`009CB93C`-`009CB95E`) | 7 of 21 entries open the gate (the census tests `< 16`, without the draw) | census only |
+
+The episodes: 20 planes enter goaway 21 times. **17 episodes end in a death inside goaway**,
+0.05-9.1 s after entry, under the carrier group's AA. The other 4 finish and turn back to
+gotowards. Those planes die later too, Corsair #1.8 in its second goaway.
+The strafe summary's `evasive_gaps=43` is these 36 + 7 openings. At every one of them the image
+front-pushes a manoeuvre that the host does not fly. Instead the host plane keeps the goaway
+state's bank and pitch, so it holds a steady escape line under fire.
+
+### What the image does at each opening (listing `009CBCD0`-`009CBE27` and the callees)
+
+`r = U(0, 1)` is compared with the goaway state's `+18h` (drawn `U(0.3, 0.9)` by the constructor
+`009CB500`):
+
+- **`r >= +18h`: "tightturn"** (the name string at `00D2064C`; factory `009BC030`, `40Ch` bytes,
+  vtable `00D205E0`, tick `009BA020` at `vt+64h`).
+  - Side byte `+408h` = `U(0, 1) < 0.5` (`[00CE3800]`), so left or right with even odds.
+  - The end condition is `007B5D30` (vtable `00D05870`, test `00996510`). It holds the approach's
+    point `+74h..+7Ch` at the moment of the hit, read through approach `vt[0]` = `009CA680`. It
+    answers when that point, in the plane's own frame, has `|x| > z`, i.e. it lies more than 45
+    degrees off the nose or behind.
+  - The tick first waits for `009B9680` to answer (latched in `+404h`; not read). It then writes:
+    - a bank of +-pi/2 (`[00CE3830]`, plan `+2C8h`, mode 1);
+    - `+2A0h` = `clamp(2.0 - e / 10 deg, 0, 1)`, where `e` is the wrapped error between unit
+      `+C68h` (the roll, provisional) and that bank (`[00D7A308]` 2.0, `[00D05850]` 0.17453);
+    - `+288h` = `00419010`-interpolated from `+3FCh - unit+C64h` (the pitch held since
+      `009BAFC0`), times the side.
+  - **Reading:** a hard 90-degree bank turn away until the target is off the nose.
+- **`r < +18h`: "flikflak"** (`00D207B0`; factory `009BC0A0`, `404h` bytes, constructor
+  `009BB910`, vtable `00D20748`, tick `009B99E0` at `vt+64h`).
+  - The constructor sets side `+400h` = `U(0, 1) > 0.5` and the timer `+3FCh` = `U(0, 1) + 2.0`.
+  - The tick: when the timer runs out, it flips the side and re-arms `U(0, 1) + 2.0`. It writes:
+    - bank `+2C8h` = `[+2F8h]+25Ch` (the class, provisional) times +-1, mode 1;
+    - pitch target `+2C0h` = `[+2F8h]+1ECh` (the climb angle), mode 2;
+    - `+27Ch` = 1.0 (`[00D7A24C]`), as the tightturn tick also writes.
+  - The end condition is `007B5E20` (vtable `00D05880`, test `00996300`, read from the disk
+    bytes `00996300`-`00996385`). It answers when the horizontal distance from the plane to the
+    point captured at the hit reaches `U(0.5, 0.7) * approach+34h` (`[00CE3800]`, `[00CE3E18]`):
+    about 0.55-0.85 km on this row.
+  - **Reading:** a climbing jink, banking left and right every 2-3 s.
+- **Either push** sets approach `+44h` = 25.0 (`[00CE89CC]`) and front-pushes through
+  `00999F50`. The strafe task stays underneath, and goaway resumes after `0099B690` retires the
+  manoeuvre. The push draws the RNG once or twice more than the host does today (`r`, then the
+  side or the flikflak constructor's two draws).
+
+So on ESMP08 long, a Corsair that is hit while leaving the carrier group does one of two things in
+the image. With probability `1 - +18h` (0.1-0.7) it turns hard 90 degrees away; otherwise it
+jinks while climbing. It goes back to the goaway line only after the target is off the nose or it
+is about 0.7 km on. The host flies the straight line. That is the likeliest cause of 17 of
+21 episodes ending in a death, a hypothesis that the bind's pair will test.
+
+### Open (for the bind packet)
+
+- **Who receives a hit during the manoeuvre.** The strafe task's notice `009CC400` zeroes
+  `+44h`, but while a manoeuvre is head, its own notice slot may take the hit instead. Read the
+  image's hit dispatch to the task vector (the caller of the task's `vt+2Ch`; the host's is
+  `hit_task_notify` in `src/game_hosts_units.cpp`) before binding the re-push.
+- **`009B9680`** (tightturn's heading and its start flag `+404h`) is not read.
+- **Host labels.** The host has no front-push of a manoeuvre over the strafe arm. The bind can
+  model the two ticks inside the strafe arm as a sub-state, with the goaway tick suspended while
+  a manoeuvre runs. That is a labelled substitution for `00999F50`'s task vector.
+- **Ghidra (for the lead).** All of these are Ghidra functions now (`FUN_`), with Ghidra body
+  ends exclusive:
+  - `009BC030`-`009BC0A0` `BSP_BotTask_MakeTightTurn`
+  - `009BC0A0`-`009BC106` `BSP_BotTask_MakeFlikFlak`
+  - `009BB910`-`009BB9CF` `BSP_BotTaskFlikFlak_Construct`
+  - `009B99E0`-`009B9AE8` `BSP_BotTaskFlikFlak_Tick`
+  - `009BA020`-`009BA1DC` `BSP_BotTaskTightTurn_Tick`
+  - `007B5D30`-`007B5D6A` `BSP_BotCondition_PointOffNose_Construct`
+  - `007B5E20`-`007B5E57` `BSP_BotCondition_PointDistance_Construct`
+  - `00996510`-`009965C6` `BSP_BotCondition_PointOffNose_Test`
+
+  One is not a function yet: `00996300`-`00996385`, `BSP_BotCondition_PointDistance_Test`
+  (`__fastcall(cond)`, ends `RET` at `00996384`, INT3 at `00996385`). The names are hypotheses
+  from the name strings and the bodies.
