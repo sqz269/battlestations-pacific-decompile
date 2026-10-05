@@ -78,6 +78,17 @@
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp {
+// Packet cc9_gunnery_pass_byte_7d, docs/GUNNERY_OPEN_ITEMS.md section 103. The
+// gunnery pass byte +7Dh (ctor 1 at 008645D6) that 00865809..00865820 reads: the
+// torpedo category takes the director's own fire target only while it is set.
+// 00863780 (__thiscall(pass)(char), RET 4) stores it; a change to 0 calls
+// 00728000 on every gun of [[pass+50h]+3ECh] when the owner answers
+// vtable[5Ch](5). Its callers are the ship AI's 009F3016 (every approach frame:
+// +12BAh && +12B4h + 50.0 > +127Ch), 009E6491 (approach exit, 1) and 009F4F2B
+// (the formation-follower arm of 009F4DA0, 1). True: the pass reads the stored
+// byte and a change to 0 clears the torpedo guns. False: the pass answers the
+// constructor's 1; the byte is tracked and the clears counted, nothing else.
+inline constexpr bool kGunneryPassByte7dBound = false;
 class ReconSensorPassState;
 }
 
@@ -1091,6 +1102,13 @@ public:
     // the bot, the fire request 0072D2C0/0072D130 or CanFire 0085A830.
     // Answers the number of guns marked.
     int force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only);
+    // Packet cc9_gunnery_pass_byte_7d. 00863780 on the unit's pass ([unit+6DCh]):
+    // store `value` at pass+7Dh; when it changed to 0 and the owner is a unit
+    // (vtable[5Ch](5)), 00728000 on each gun of the category-7 list unit+3ECh.
+    // `site` is the caller's call address, for the census. The byte is tracked both
+    // ways; with kGunneryPassByte7dBound false the pass still answers 1 and the
+    // clears are only counted.
+    void set_pass_byte_7d_00863780(std::size_t unit_index, bool value, std::uint32_t site);
     // Packet cc9_fire_function_guns_now. 009E2B60 (__thiscall on the ship-AI state,
     // body 009E2B60-009E2BA4, RET 0): for each direct child of the unit
     // ([[state+4]+AA8h]+48h, siblings at +44h) that answers IsKindOf(24h)
