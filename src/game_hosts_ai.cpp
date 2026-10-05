@@ -967,8 +967,10 @@ constexpr bool kAiAutoMergeLeaveBound = true;
 // calls AICreate (nor does any native string: the name occurs only in the
 // binding table). So the image runs no coordinator on these rows: no AI group,
 // no party brain, no planner. True: the host's coordinator never ticks.
-// False: it ticks every fixed step, as before.
-constexpr bool kAiCoordinatorLoadGateBound = false;
+// False: it ticks every fixed step, as before. ON (2026-10-05): every reference
+// row is a mission-tree launch (session word 0, 61Ch 0), so none has a
+// coordinator; all rows but BSM01 moved (sections 150.5, 150.6).
+constexpr bool kAiCoordinatorLoadGateBound = true;
 // The 004E17FD gate's answer in this process: session word 0, forced byte 0.
 constexpr bool kAiCoordinatorCreatedAtLoad = false;
 
