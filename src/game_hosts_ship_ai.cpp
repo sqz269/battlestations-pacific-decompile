@@ -155,6 +155,11 @@ inline constexpr bool kShipAiApproachLeaderAnswersBound = true;
 // Packet cc9_path_limit_default, SHIP_AI_OPEN_ITEMS section 136. True: 009DA4FB's
 // [00CF58EC] is the image's .rdata 1.0e7f. False: 0 (the old no-producer label).
 inline constexpr bool kShipAiPathLimitDefaultBound = true;
+// Packet cc9_state_enter_bytes, SHIP_AI_OPEN_ITEMS section 137. True: entering
+// `stop` sets its state+8h making-way byte (009DAC70) and entering `moveonpath`
+// clears its announce byte (009DB040), as the leaf vtables' slot 4 do. False:
+// neither enter runs (the byte starts false and is only cleared by the steps).
+inline constexpr bool kShipAiStateEnterBytesBound = false;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -2436,6 +2441,33 @@ public:
             owner_.record("ShipAiLand::enter_tail_0080e490", 0x0080e490u);
             ++owner_.summary.land_enters;
             owner_.done("ShipAiState::land_enter_009e18d0", 0x009e18d0u);
+        } else if (ai_offset == 0x0BD8u || ai_offset == 0x0C64u) {
+            // Packet cc9_state_enter_bytes (section 137). The two leaf enters
+            // with a body: `stop` 00D215CC -> 009DAC70 `MOV BYTE [ECX+8],1` and
+            // `moveonpath` 00D2168C -> 009DB040 `MOV BYTE [ECX+8],0`. The other
+            // leaves' vtable[4] is 007B3DB0 / 009E50C0, a bare RET.
+            const bool stop = ai_offset == 0x0BD8u;
+            if (stop) {
+                ++owner_.summary.stop_enters;
+                const double v = owner_.units.unit_forward_speed_0092d730(index_);
+                if ((v > 0.0 ? v : -v) >= bsp::kShipAiStopSpeedThreshold) {
+                    ++owner_.summary.stop_enters_moving;
+                }
+            } else {
+                ++owner_.summary.moveonpath_enters;
+                if (ctl_.moveonpath_announced) ++owner_.summary.moveonpath_enters_latched;
+            }
+            if (kShipAiStateEnterBytesBound) {
+                if (stop) {
+                    ctl_.stop_state.making_way_08 = true;
+                    owner_.done("ShipAiState::stop_enter_009dac70", 0x009dac70u);
+                } else {
+                    ctl_.moveonpath_announced = false;
+                    owner_.done("ShipAiState::moveonpath_enter_009db040", 0x009db040u);
+                }
+            } else {
+                owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
+            }
         } else {
             owner_.record_slot("ShipAiState::enter_vtable04", "00d21598+vtable04");
         }
@@ -12689,6 +12721,11 @@ void GameShipAiHost::report() {
             host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
             host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
             kShipAiTargetCurveRefillBound ? 1 : 0);
+        host.log.notef("summary mission ship ai state enter bytes stop_enters=%llu moving=%llu "
+            "moveonpath_enters=%llu latched=%llu bound=%d (009dac70 / 009db040, packet "
+            "cc9_state_enter_bytes)", host.summary.stop_enters, host.summary.stop_enters_moving,
+            host.summary.moveonpath_enters, host.summary.moveonpath_enters_latched,
+            kShipAiStateEnterBytesBound ? 1 : 0);
         host.log.notef("summary mission ship ai approach leader answers asks=%llu bound=%d "
             "(009e6c45 / 009e6fa0 / 009e70a7 00778890, packet cc9_approach_leader_answers)",
             host.summary.approach_leader_asks, kShipAiApproachLeaderAnswersBound ? 1 : 0);

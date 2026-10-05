@@ -10858,3 +10858,52 @@ Flip when they are identical. The constant matters once a reader of `+254h` / `+
 reconstructed.
 
 **Pairs.** OFF is `a2046f5a2` (`local\s29_p0_<row>.log`). ON is `pair_export --flip kShipAiPathLimitDefaultBound=true` (`local\s29_p136on`, SHA-256 prefix `81B7B7D8E6EA`, `local\s29_p1_<row>.log`). Smoke, JM08 and USN13 are all `pair_diff` 1: only the row's status moved, plus the `ship ai free` noise. **Flipped ON** as predicted.
+
+## 137. The `stop` and `moveonpath` leaf enters (packet `cc9_state_enter_bytes`, `kShipAiStateEnterBytesBound`, cc9-ships29, 2026-10-05)
+
+This was found from the fifth census's `ShipAiState::enter_vtable04` record (7832 calls). The
+host runs each state's `vtable[4]` (enter) only for attackmove, kamikaze and land. I read the
+other leaves' slot 4 from the vtables (`s29_dwords`):
+
+| leaf | vtable | slot 4 | body |
+| --- | --- | --- | --- |
+| cruise, follow, movetopos | `00D21598`, `00D215F8`, `00D21628` | `007B3DB0` | `RET` |
+| sub_attack | `00D2195C` | `009E50C0` | `RET` |
+| **stop** | `00D215C8` | **`009DAC70`** | **`MOV BYTE [ECX+8],1`** / `RET` |
+| **moveonpath** | `00D21688` | **`009DB040`** | **`MOV BYTE [ECX+8],0`** / `RET` |
+
+Every slot 8 (exit) is `007B3DC0` `RET`, except land's `009DB000`, also `RET`.
+
+**The gap:**
+- **`stop`.** The host's `ShipAiStopStepState::making_way_08` starts false. Only the step
+  (`009E15B1`) ever clears it, and nothing sets it, so the step always takes the "stopped" arm:
+  `+3FCh` = 0, side filter -1. In the image every entry into `stop` sets it. While the hull still
+  makes way (|body speed| >= 0.4, `009E15A5`), the step takes the other arm (`009E15E4..009E15FB`:
+  `+3FCh` = 1, side filter 3, enable).
+- **`moveonpath`.** The host's announce latch is never cleared on entry. The image clears it.
+
+The switch `kShipAiStateEnterBytesBound` is committed OFF. Its census line is
+`summary mission ship ai state enter bytes stop_enters= moving= moveonpath_enters= latched=`.
+
+**The OFF census** (this tree, `local\s29_s0_<row>.log`):
+
+| row | stop enters | moving (|v| >= 0.4) | moveonpath enters | latched |
+| --- | --- | --- | --- | --- |
+| smoke | 2 | 0 | 3 | 0 |
+| USN04 | 0 | 0 | 2 | 0 |
+| USN13 | 107 | 10 | 29 | 0 |
+| USNOS | 75 | 13 | 10 | 0 |
+| JM08 | 1 | 0 | 3 | 0 |
+| LOMP10 | 2 | 0 | 0 | 0 |
+| USN02 | 1 | 1 | 0 | 0 |
+
+**Predictions (written before any ON run):**
+- The `moveonpath` half has no reach: `latched=0` everywhere.
+- On the rows where moving stop enters is 0 (smoke, USN04, JM08, LOMP10), the stop half sets a
+  byte that the first step clears. **Exit 0 or 1.**
+- **USN13 (10), USNOS (13) and USN02 (1):** after each moving stop entry, the next steps request
+  the coasting avoidance (`+3FCh` = 1, side filter 3) until the hull slows below 0.4. **Exit 1 or
+  3.** If they move, the moves are path and heading moves of those coasting ships and their
+  neighbours.
+- **Verdict rule:** flip ON when the controls are identical and every moved row traces to a
+  stopping ship. A control that moves is a mechanism failure.
