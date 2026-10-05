@@ -955,6 +955,23 @@ constexpr bool kAiOwnerPlayerSlotBound = true;
 // identical (section 149.5).
 constexpr bool kAiAutoMergeLeaveBound = true;
 
+// Packet cc9_ai_coordinator_load_gate, docs/SHIP_AI_OPEN_ITEMS.md section 150.
+// The coordinator (00A31730, whose tick element 00A32D50 runs the compose pass
+// 00A2E720 and the party think 00A182C0) is constructed only by 00A32350, and
+// 00A32350 has two callers (rel32 and abs32 census of the PE on disk):
+// BSP_Game_LoadMissionScene at 004E1838 and the AICreate binding at 00A373AF.
+// The load arm (004E17FD..004E1838) runs only when the session word game+1FE4h
+// is 1 (a hosted session) or the forced-mode byte game+61Ch is set, and then
+// only if some slot record has +8h, +9h and +0Ah all set. In a single-player
+// campaign both are 0, and none of the 621 .lua files of this installation
+// calls AICreate (nor does any native string: the name occurs only in the
+// binding table). So the image runs no coordinator on these rows: no AI group,
+// no party brain, no planner. True: the host's coordinator never ticks.
+// False: it ticks every fixed step, as before.
+constexpr bool kAiCoordinatorLoadGateBound = false;
+// The 004E17FD gate's answer in this process: session word 0, forced byte 0.
+constexpr bool kAiCoordinatorCreatedAtLoad = false;
+
 // Packet cc9_group_score_list_release, docs/SHIP_AI_OPEN_ITEMS.md section 61.
 // 00A2B8F0 (00A2B8F0-00A2B94D, RET 4, ECX = group+24h) removes the emptied
 // group's record from a group's candidate score list (up to 128 records of
@@ -1098,6 +1115,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long leave_followers_beyond{0}; // followers past it, summed per pass
     unsigned long long leave_removals{0};         // 00A2D9D0 calls (bound only)
     unsigned long long leave_logged{0};
+    // Packet cc9_ai_coordinator_load_gate: fixed steps with no coordinator (ON only).
+    unsigned long long coordinator_steps_absent{0};
     std::array<std::unique_ptr<Brain>, bsp::kAiGroupPartySlotCount> brains{};
     std::array<float, bsp::kAiGroupPartySlotCount> next_think{};
     std::array<bool, bsp::kAiGroupPartySlotCount> party_record{};
@@ -6058,13 +6077,20 @@ void GameAiCoordinatorHost::Impl::admit_generated_squadrons() {
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if (!host.created) return;
-    if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
-    host.clock_seconds += step_seconds;
-    ++host.summary.compose_passes;
-    ++host.summary.party_think_calls;
-    // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
-    bsp::ai_coordinator_fixed_step_00a32d50(host);
-    host.done("AiController::fixed_step", 0x00a32d50u);
+    if constexpr (kAiCoordinatorLoadGateBound && !kAiCoordinatorCreatedAtLoad) {
+        // 004E17FD..004E1838: the mission load creates the coordinator only for a
+        // hosted session or a forced mode; AICreate is the only other caller.
+        ++host.coordinator_steps_absent;
+        (void)step_seconds;
+    } else {
+        if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
+        host.clock_seconds += step_seconds;
+        ++host.summary.compose_passes;
+        ++host.summary.party_think_calls;
+        // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
+        bsp::ai_coordinator_fixed_step_00a32d50(host);
+        host.done("AiController::fixed_step", 0x00a32d50u);
+    }
 }
 
 const GameAiSummary& GameAiCoordinatorHost::summary() const noexcept {
@@ -6114,6 +6140,11 @@ void GameAiCoordinatorHost::report() {
         s.close_fallback_movetos, s.close_candidates_scored,
         s.ship_members_not_ordered, s.target_group_releases,
         s.target_group_releases_non_idle_birth, kAiTargetGroupDestroyedIdleBound ? 1 : 0);
+    host.log.notef("summary mission ai coordinator load gate bound=%d created_at_load=%d "
+        "steps_absent=%llu groups_created=%llu tick_orders=%llu (004E17FD..004E1838, packet "
+        "cc9_ai_coordinator_load_gate)", kAiCoordinatorLoadGateBound ? 1 : 0,
+        kAiCoordinatorCreatedAtLoad ? 1 : 0, host.coordinator_steps_absent,
+        s.groups_created, s.tick_orders);
     host.log.notef("summary mission ai auto-merge leave passes=%llu passes_beyond=%llu "
         "followers_beyond=%llu removals=%llu leave_dist=%.1f bound=%d (00A10EC0, packet "
         "cc9_ai_auto_merge_leave)", host.leave_passes, host.leave_passes_beyond,
