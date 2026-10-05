@@ -738,6 +738,14 @@ struct GameShipAiSummary {
     unsigned long long firepower_ratings{0};    // 0095EB40
     unsigned long long standoff_choices{0};     // 009E6E80
     unsigned long long approach_curve_refreshes{0}; // 0095F080 at 009F2F11 / 009F2FB1
+    // Packet cc9_target_curve_refill: [owner+0B20h]'s kind per approach frame
+    // (vehicle 5, plane 0Fh, squadron 18h, structure 1Ch, other, none), and the
+    // bound arm's outcomes at 009F2F26..009F2FD3.
+    unsigned long long target_curve_kinds[6]{};
+    unsigned long long target_curve_emptied{0};    // 009F2FC6
+    unsigned long long target_curve_kind_skips{0}; // 009F2F44
+    unsigned long long target_curve_mode_skips{0}; // 009F2F7F
+    unsigned long long target_curve_refills{0};    // 009F2FB1
     // Packet cc9_torpedo_standoff: the exits of 009F2AC9..009F2E9B in the order
     // of bsp::ShipAiTorpedoStandoffExit, and 009E72F3's gate.
     unsigned long long torpedo_standoff_frames{0};

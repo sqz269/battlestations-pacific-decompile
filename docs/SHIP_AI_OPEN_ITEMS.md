@@ -10406,3 +10406,59 @@ Nineteen pass 0 (`004B621E`, `004CCCD5`, `004E4403`, `00568CCE`, `0057ABAC`, `00
   next bytes are `8D 49 00` alignment and its switch table at `005ECA6C`, not INT3), and `00770E40`
   `BSP_Session_SetModeHost` (`PUSH 1` / `CALL 0076FAD0` / `00770E47 RET`, end exclusive `00770E48`,
   INT3 after).
+
+## 130. Section 127's target-curve refill, bound (packet `cc9_target_curve_refill`, `kShipAiTargetCurveRefillBound`, cc9-ships29, 2026-10-05)
+
+### 130.1 The image (`009F2F26..009F2FD3`, read from `disasm-raw 009F2EF0`)
+
+It runs on every `009F1BC0` pass, after the own refill, with no timer test in front:
+
+- `009F2F29 MOV EBX,[ECX+0B20h]` and `009F2F31 JE 009F2FC0`. **No target:** `009F2FC6 CALL 009523B0`
+  zeroes `nested+13B0h` (`MOV ECX,3Ch` / `REP STOSD`, the same fill as `00954940`), and
+  `009F2FD3` stores `[00D7A260]` = -1.0f in `+1224h`.
+- `009F2F3C PUSH 5` / `CALL [vtable+5Ch]`, then `009F2F44 JE 009F2FDB`. **A non-vehicle target:**
+  nothing is written, not even the timer.
+- **A vehicle:** `+1250h` = 20.0f (`[00CE3930]`), `+125Ch` = 5.0f (`[00CE3850]`), and `+1278h` /
+  `+1279h` = 0. These are the words of the `nested+1238h` block, which `target_block_1238h` already
+  builds. Then `009F2F7F JNE` leaves unless mode `+1234h` is 0, and `009F2F84 COMISS 0,[+1224h]` /
+  `JBE` leaves unless `+1224h` < 0. The refill is `009523B0`, then `0095F080` over the block with
+  `ECX` = the target, and `+1224h` = 2.0f (`[00CE3958]`).
+
+The own refill in front of it (`009F2EC1..009F2F16`) has the same shape: `+1220h` < 0, mode 0,
+and the byte `+1208h` clear (`009F2EE4`). The host tests only `timer_1220 <= 0`. This is recorded
+here and not bound in this packet.
+
+### 130.2 The host before the binding
+
+`frame_state_009f1bc0` (`GameShipAiHost`) refills on `timer_1224 <= 0` for any present target. It has no kind probe and
+no mode test. With no target it does not empty the curve, and it re-arms the timer to 2.0f anyway.
+
+### 130.3 The binding
+
+The switch is `kShipAiTargetCurveRefillBound` (`src/game_hosts_ship_ai.cpp`), committed OFF.
+`run_target_curve_refill_009f2f26` holds the three arms. The census is the new log line
+`summary mission ship ai target curve refill`, counted both ways: the target's kind on every
+approach frame, then the bound arm's `emptied` / `kind_skips` / `mode_skips` / `refills`.
+
+### 130.4 The OFF census, and the predictions (written before any ON run)
+
+The OFF runs are from this tree (`build\win32\Release`, local `s29_t0_<row>.log`):
+
+| row | approach frames | kinds (vehicle / plane / squadron / structure / other / none) | latch modes |
+| --- | --- | --- | --- |
+| USN13 | 1143 | 1143 / 0 / 0 / 0 / 0 / 0 | all mode 0 |
+| USNOS | 1193 | 1193 / 0 / 0 / 0 / 0 / 0 | all mode 0 |
+| USN04, smoke | 0 | | |
+
+Section 127 called the approach latch's `other` targets (USN13 1094, USNOS 553) possibly
+non-vehicles. They are not: every one answers `IsKindOf(5)`. No row has a null target or a
+mode other than 0 on an approach frame. So the binding differs from the host in one place only:
+the timer test, `< 0` against `<= 0`. In lockstep (0.05 s, decremented through a double at
+`009F1C13`), 2.0f reaches -0.0499992f after 41 frames and is never exactly 0, so even that test
+never splits.
+
+- **Prediction:** `pair_diff` exit 0 or 1 on every row (smoke, USN13, USNOS, USNOS long, USN04).
+  The ON census shows `emptied=0 kind_skips=0 mode_skips=0`, and `refills` equals the number of
+  2-second expiries. This binding has no reach on the reference rows.
+- **Verdict rule:** flip ON if every row is gameplay-identical and the ON census matches. A moved
+  row is a mechanism failure unless the census explains it.
