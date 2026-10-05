@@ -13960,20 +13960,20 @@ logs `local\g23_w_<v>_<row>.log`). Predicted:
 
 | mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| USN04 | 4500 | 8380.9 | 34 | 526 (134) | 8687 | 110.90 s | 3 of 16 / 0 of 19 | 11 | Lexington-class01 3296.45 | none | 491 | `local\g23_rw_usn04.log` |
+| USN04 (5ch reverted after w; see SQUADRON_LAND_TASK 5co) | 4500 | 8380.9 | 34 | 526 (134) | 8687 | 110.90 s | 3 of 16 / 0 of 19 | 11 | Lexington-class01 3296.45 | none | 491 | `local\g23_rw_usn04.log` |
 | USN01 | 3000 | 34523.9 | 29 | 1301 (239) | 2131 | 12.90 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 1178.36 | none | 507 | `local\g23_rw_usn01.log` |
-| USN04 (E2) | 9000 | 10332.2 | 42 | 696 (135) | 10471 | 110.90 s | 3 of 16 / 0 of 19 | 14 | Lexington-class01 5740.54 | none | 523 | `local\g23_rw_e2.log` |
+| USN04 (E2) (5ch reverted after w; see SQUADRON_LAND_TASK 5co) | 9000 | 10332.2 | 42 | 696 (135) | 10471 | 110.90 s | 3 of 16 / 0 of 19 | 14 | Lexington-class01 5740.54 | none | 523 | `local\g23_rw_e2.log` |
 | USN02 | 9000 | 67220.2 | 1 | 5368 (343) | 4535 | 19.25 s | - | - | Kortenaer 6764.92 | **failed at 29.75 s** (as v)| 486 | `local\g23_rw_usn02.log` |
 | JM06 (smoke) | 3000 | 3490.3 | 1 | 269 (266) | 347 | 9.85 s | - | - | Fletcher-class 08 567.94 | none | 480 | `local\g23_rw_jm06.log` |
 | JM08 (smoke) | 3000 | 9675.6 | 22 | 470 (224) | 3184 | 5.25 s | - | 2 | Auilick 2969.16 | none | 482 | `local\g23_rw_jm08.log` |
-| USN13 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | 0 of 60 / - | - | Enterprise 925.78 | none | 510 | `local\g23_rw_usn13.log` |
+| USN13 (smoke) (5ch reverted after w; see SQUADRON_LAND_TASK 5co) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | 0 of 60 / - | - | Enterprise 925.78 | none | 510 | `local\g23_rw_usn13.log` |
 | BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 453 | `local\g23_rw_bsm01.log` |
 | LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 456 | `local\g23_rw_lomp06.log` |
 | LOMP10 | 3000 | 2156.6 | 2 | 182 (103) | 3423 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none | 482 | `local\g23_rw_lomp10.log` |
 | JM05 | 3000 | 11493.1 | 11 | 412 (58) | 312 | 5.85 s | - | - | USS Phelps 2623.19 | none | 543 | `local\g23_rw_jm05.log` |
 | USN12 | 3000 | 4759.8 | 5 | 219 (12) | 144 | 7.55 s | - | - | Montpelier 1499.41 | none | 474 | `local\g23_rw_usn12.log` |
 | LOMP10 (long) | 9000 | 2764.2 | 5 | 193 (107) | 3623 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none | 495 | `local\g23_rw_lomp10l.log` |
-| USNOS | 3000 | 42002.2 | 86 | 1094 (126) | 815 | 5.00 s | - | 1 | NH 1497.26 | none | 510 | `local\g23_rw_usnos.log` |
+| USNOS (5ch reverted after w; see SQUADRON_LAND_TASK 5co) | 3000 | 42002.2 | 86 | 1094 (126) | 815 | 5.00 s | - | 1 | NH 1497.26 | none | 510 | `local\g23_rw_usnos.log` |
 | USNOS (long) | 9000 | 44799.1 | 100 | 1255 (126) | 967 | 5.00 s | - | 1 | NH 4492.07 | none | 521 | `local\g23_rw_usnosl.log` |
 | IJN01 | 3000 | 1862.0 | 5 | 104 (95) | 3639 | 88.45 s | - | - | Downes 602.56 | none | 502 | `local\g23_rw_ijn01.log` |
 | JM05 (long) | 9000 | 24609.8 | 16 | 879 (140) | 743 | 5.85 s | - | 3 | USS Phelps 7523.63 | none | 555 | `local\g23_rw_jm05l.log` |
@@ -13981,6 +13981,11 @@ logs `local\g23_w_<v>_<row>.log`). Predicted:
 | USN13 (long) | 9000 | 8660.6 | 14 | 509 (63) | 141 | 204.46 s | 0 of 60 / - | - | Enterprise 2777.59 | none | 517 | `local\g23_rw_usn13l.log` |
 | ESMP08 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | 0 of 18 / 0 of 18 | - | Cummings 8554.49 | none | 490 | `local\g23_rw_esmp08l.log` |
 | USNRM01 | 9000 | 29917.5 | 156 | 2207 (1498) | 54291 | 166.76 s | 2 of 15 / 30 of 54 | 105088 | West Virginia 0.00 | none | 516 | `local\g23_rw_usnrm01.log` |
+
+**`kAiTickMovetoRetasksPlaneBound` is ON in w as built** (one of the twenty). It was taken back
+OFF on main after w (`a6c3ad3b9`, SQUADRON_LAND_TASK 5co: the USN13 stall traces to an unverified
+input, the group target value against LandFort and the adoption of generated squadrons). The
+four flagged rows carry its effect; w is not rebuilt. It enters x as a newly-OFF switch.
 
 **Against v** (`pair_diff` against `g20_rv_<row>` in the cc9-gunnery20 tree): **seventeen of v's
 eighteen rows move** (exit 3). **BSM01 is gameplay-identical** (exit 1). The three new rows move
