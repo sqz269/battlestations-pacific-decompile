@@ -757,3 +757,32 @@ A capture row needs a mission where:
 - the player's capture force is not outgunned at the building; or
 - a building has a small CaptureValue; or
 - landing craft with LandedCapturePower (LST 150, Higgins 100) can reach a pad (JM08's ramps lowered at 836.50 s and 898.35 s, section 86).
+### 10.5 The McCall credit on SaltLakeCity (a read, lead item)
+
+In run B, SaltLakeCity's death at 1120.22 s is credited to McCall's gun 6 (category 2, artillery;
+`killer_blast=0`, 729 m). **This is a physical hit, not a bookkeeping error.**
+
+- **What the death and the credit are.**
+  - SaltLakeCity dies by damage control (`water_total=2780 fire_total=1222`), not by a shell.
+  - The death row's `killer` is the victim's `last_attacker`. That field is set only at the hit
+    funnel's attribution step (`game_hosts_gunnery.cpp`, 0077CE60), for the shooter of a hit whose
+    damage base is above 0 (`0077CEB7`).
+  - So McCall's shell did reach SaltLakeCity and was the last hit to carry damage.
+- **What McCall was firing at.** McCall's director target was Katori. The trajectory CSV of the
+  same run (`local\s31_trajB.csv`, deterministic: the same death row) puts SaltLakeCity on the
+  McCall-to-Katori line:
+  - at 1101-1107 s, 7.6-8.1 m off the line, 91% of the way, McCall-SaltLakeCity 685 m;
+  - at 948-951 s, 0.3-7.4 m off the line.
+
+  A cruiser's beam is 16 m, so rounds aimed at Katori through those seconds pass through
+  SaltLakeCity.
+- **Why the shell can hit a friendly ship.**
+  - The projectile sweep excludes only its owner: `args.exclude_entity = shot.owner_unit`, the
+    `0098ADD0` query.
+  - The artillery path has no friendly line-of-fire refusal: the line of fire `0072F6E0`/`0072CDD0`
+    is AA-only (docs/AABB_0085CDB0.md).
+  - The credit rule 0077CE60 has no side filter (docs/AI_RETASK.md section 5).
+
+**Verdict:** no host bug; the attribution is the image's rule. **Not done:** a per-shell trace
+(`BSP_AA_TRACE_UNIT=McCall`) could not run, because all three run slots stayed busy for the
+launcher's 2400 s wait.
