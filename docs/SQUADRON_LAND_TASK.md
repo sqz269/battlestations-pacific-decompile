@@ -9967,6 +9967,10 @@ Scripts in `local\`:
 - `l34_gv.py`, `l34_killers.py`, `l34_dsum.py`, `l34_deaths.py`.
 
 Next, in order:
+0. **Why the Japanese air groups target themselves under `kAiWeightBarrelGatesBound`** (the last blocker for that switch; SHIP_AI 129 settles slot 4 = Allied as the image's).
+   - Read `00A1CB80`'s candidate list and look for an own-group, party or side filter not read yet: `00A0F970`, `00A0C650` (`a1` = 0 zeroes the penalties on this path), `00A0F810` and the candidate builder. SHIP_AI 60.6 says the loop head `00A1CC3B`-`00A1CC65` has none.
+   - Check how the gates take `target_is_neutral`: the image uses record `+1Ch` = side `+54h` >= 2; the host uses `units.unit_side_0054` (close weight) and `t.third_party` (group value). Compare team against party `+54h` in both.
+   - A Kate's MG against an own-side Kate (Armour unauthored, 0) scores above 0 in both the image and the host, so the self-pick holds unless a filter is found.
 1. **BSM04: why `luaIntroMovieEnd`'s `luaDelay` makes no timer** (5cs.1).
 2. **USNRM01 (c): the Kates' torpedo run-in and release gates at Pearl Harbor.**
    - The `009D3420` sector scan and the release conditions.
