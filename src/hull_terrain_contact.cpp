@@ -1116,10 +1116,12 @@ void HullTerrainContactSolver::hull_fort_narrow_phase(std::vector<HullWorldEntry
 // (desc +08h), +30h mask 0 (desc +0Ch), +34h an identity frame with a zero translation, +210h
 // the retained hull (desc +14h). +4 is the static body's 3x4.
 struct HullTerrainContactSolver::DraftShape {
-    DraftWorldEntry entry;
     alignas(16) std::uint8_t convex[0x240]{};
     std::uint8_t body[0x40]{};
     float lo[3]{}, hi[3]{};
+    DraftWorldEntry entry;
+    // Win32: 280h + 18h + 44h = 2DCh; filled to a 16-byte multiple so C4324 has no padding.
+    std::uint8_t fill[4]{};
 };
 
 void HullTerrainContactSolver::set_draft_bodies(std::vector<DraftWorldEntry> drafts, bool apply) {
