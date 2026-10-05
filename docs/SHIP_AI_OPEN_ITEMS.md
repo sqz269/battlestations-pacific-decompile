@@ -12287,3 +12287,44 @@ Census line: `summary mission ship ai approach lander terms ...`.
   the original game.
 - **The 40 s evade swing** (bearing + 30 slots at gain 5) runs on the six held transports. With a
   throttle limit of 0 they only turn in place.
+
+
+## 153. JM08's troop landing without the planner (lead item 2, cc9-ships33, 2026-10-05, read and runs only)
+
+**The script orders its landers itself.** JM08 loads this installation's
+`scripts\missions\COTP-IJN\PRCPIJN\prcpjm08.lua` (mtime 2024-08-26):
+- `StartInvasion` (lines 766-787):
+  - `NavigatorAttackMove(unit, Mission.HQ, {})` for each of `Mission.InvasionForce`;
+  - `NavigatorMoveToPos(Mission.APs[i], Mission.LandPoints[i])` for `USTroopTransport 01..06` to
+    `USNLandingNavpoint 01..06`. The navpoints are at x = ±500, ±1000, ±1500 and z = -300.
+- `CheckAP1..6` (from line 822): once `luaGetDistance(AP, LandPoint) < 200`, each one issues
+  `NavigatorAttackMove(Mission.APs[i], Mission.HQ, {})`.
+- The script has no `StartLanding`, `LandingCraft*` or `PilotSetTarget` call on the transports.
+  Line 1077's `PilotSetTarget` is a plane's.
+
+**The chain from there is per-unit ship AI.** No coordinator is involved:
+1. The attackmove runs the approach.
+2. With a troop lander on an enemy 1Ch building, the mode latch gives mode 4 (section 26).
+3. The warn sweep `009F33E2..009F35F5` sends 94h to the transport's `vt+238h`, `008206F0`, or to a
+   landing ship's `0074A4C0` (section 133).
+4. The crafts land themselves (`0074BEC0`'s tail -> `0074A990`).
+
+**So the landing chain running with the gate ON is the image's behaviour.** The planner's
+StartLanding was a second producer, and single player never builds it (section 150).
+
+**Which landing switches are live** (JM08 long, `local\s33_on1_jm08l.log`, main + section 152 ON):
+
+| switch | where it acts | gate-ON reach |
+| --- | --- | --- |
+| `kLandingShipStartLandingBound`, `kLandingCraftLaunchBound` (`game_hosts_ai.cpp`) | only the coordinator's transport move `00A11B80` | **inert**: `ai group transport moves calls=0`, `ai startlanding 94h landing_ships=0 transports=0` |
+| `kShipAiApproachLandingSweepBound` | the sweep's 94h, delivered straight to `0074A4C0` / `008206F0` | live: `messages=9 begun=3 launched=6` |
+| `kShipAiApproachLandingModesBound` | modes 3 and 4 points, `0074A990` | live: `mode3_points=564 mode4_points=32686 begins=16` |
+| `kShipAiLandStepBound` | `009E18D0` / `009E1950` | live: `enters=16 steps=32806` |
+| `kLandingShipRampBound`, `kLandingShipRampHullContactBound`, `kLandingShipUnloadBound` | the ramp and the unload | live: `lowers=14 unloads=14` |
+| `kShipAiApproachLanderTermsBound` (section 152) | mode 2/3/4 terms | live |
+| `kTroopLandingTraitBound` | the AI sites (`00A1443D`, `00A03510`) are inert (`close_landers=0 cargo_landers=0`); the sweep's `009F347E` / `009F35E3` reads are live | partly live |
+| `kShipAiBigLandingShipBound` | the AI sites are inert (`reads=0`); the neighbour admission `009F0D82` and the mode latch `009F1F76` are live | partly live |
+| `kCaptureGeneratedUnitClassFieldsBound` | the crafts' capture power | live (`landed_capture_adds=4321`) |
+
+**The HQ still does not flip in 36000 frames**: it is neutralized at 1052.00 s, and `flips=0`.
+Section 109.6 needed a 76000-frame run for the HQ to flip to party 0.
