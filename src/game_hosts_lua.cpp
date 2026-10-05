@@ -2689,9 +2689,16 @@ int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argum
     // replaces the arm, which otherwise defaults to class+134h.
     bool arm_present = false;
     const std::int32_t arm = air_ops_integer_argument(state, 3, arm_present);
-    // class+134h is not authored under any key in this installation's
-    // vehicleclasses.lua, so the default is zero here. contract.
-    request.class_default_arm = 0;
+    // class+134h is `DefaultEquipment`: 00961F0A pushes the key (00D1AB10) and
+    // 00961F45 stores its integer at +134h, 0 when nil (00961F30). The old
+    // reading here ("not authored under any key") kept 0, which the release
+    // path's own DefaultEquipment read masked. Packet cc9_plane_scene_equipment
+    // (SQUADRON_LAND_TASK 5dk.1) reads it with kPlaneSceneEquipmentBound, where
+    // the launched squadron's bag `Equipment` decides its loadout.
+    request.class_default_arm = bsp::kPlaneSceneEquipmentBound
+        ? read_vehicle_class_integer(static_cast<int>(request.vehicle_class),
+                                     "DefaultEquipment", nullptr, 0)
+        : 0;
     request.arm_given = arm_present && argument_count >= 4;
     request.arm = request.arm_given ? arm : request.class_default_arm;
 

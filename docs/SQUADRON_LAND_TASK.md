@@ -11317,3 +11317,37 @@ resolved carried bullet gets `carried_kamikaze_known`. This installation's
   option against surface targets: the class 156 blast pair x Kamikaze accuracy x the factor. Expect
   the census `kamikaze=` count to rise above 0. The Bettys' target pick may move, and with it the US
   AA engagement. Exit 1 or 3.
+
+### 5dk.1 Measured (`l38_a0` against `l38_a1`, commit `7e43d04d4`), and the LaunchSquadron default arm (cc9-lua38, 2026-10-05)
+
+| row | a0 -> a1 | |
+| --- | --- | --- |
+| USN02, BSM01, IJN01, USN04, E2, USNOS, USN13, ESMP08 14200 | gameplay identical | |
+| USN13 long | deaths 133 -> **159**, shots 43333 -> 49139, dive-bomb releases 1 -> 0 | moved |
+
+- **The census matches the prediction where the data reaches it.**
+  - USN04: `squadrons=26 reads=216 none=172`.
+  - The AI side's `records_loadout` falls 10516 -> 4142, and its `dive` options 1631 -> 0. The Zeros
+    lose the `Equipments[1]` fallback.
+  - ESMP08: the Avengers carry bag 2 and read it (`reads=196`).
+- **USN13 long moved for a reason the prediction missed: air-ops launches got Equipment 0.** The
+  airfield squadrons log `air ops squadron: Airfield5_sqn13 class=162 ... equipment=0` (and JapAF
+  Bettys, class 167). `squadron ordnance` turns from type 2 (torpedo) to 0 for Airfield5_sqn13,
+  JapAF_sqn14 and Airfield5_sqn15. With a 0 bag they carry nothing, so they fly as gun planes. The
+  only-ON deaths are those Kates and Bettys in dogfights; under the slot-4 team reading (5cq, 5dj)
+  that includes the `bruh` groups.
+- **The cause is a host misreading, not the binding.** `run_launch_squadron_0089e3c0` takes the
+  default arm (class+134h) as 0: "class+134h is not authored under any key". It is `DefaultEquipment`.
+  - `00961F0A` pushes `"DefaultEquipment"` (`00D1AB10`), and `00961F45` stores its integer at `+134h`
+    (0 when nil, `00961F30`). `include/bsp/vehicle_class_fields.hpp` already names it.
+  - So `LaunchSquadron(unit, class, count)` with no fourth argument arms the slot with the class's
+    `DefaultEquipment`: 1 for Kate and Betty, 0 for Zero and Hellcat.
+  - The legacy release path read `DefaultEquipment` itself, which masked the 0.
+  - Fixed behind the same switch (`src/game_hosts_lua.cpp`). With it, the airfield Kates and Bettys
+    keep their torpedoes, the Zeros and Hellcats stay at 0, and nothing changes OFF.
+
+**Predictions for the re-pair (`l38_c0`/`l38_c1`):**
+- The rows identical in a1 stay identical.
+- USN13 long returns to near a0. The airfield Kates and Bettys are armed again (`squadron ordnance`
+  type 2). The residual move comes from the Zeros' and Hellcats' lost fallback option (AI side
+  only). Expect deaths within about 10 of 133.
