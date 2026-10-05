@@ -13947,3 +13947,158 @@ logs `local\g23_w_<v>_<row>.log`). Predicted:
   `local\g23_rw0` (the twenty `=false`).
 - `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player.
 - A 300-frame USN01 smoke first.
+
+- **Binaries:** `local\g23_rw\build\win32\Release\bsp_game.exe` (SHA-256 prefix `BFCD7AC4EEA8`) and
+  the anchor `local\g23_rw0` (`B22C0E3A38A8`); the full hashes are in the report.
+- **Environment:** `query session` showed the console session Active throughout. The first
+  300-frame USN01 smoke (03:50 UTC) died at renderer init (`harness renderer init failed: the
+  device is null after 00b2aeb0's CreateDevice`, exit 4); the retry ten minutes later passed with
+  `lost_polls=0`. The w and anchor rows ran 04:02-04:35 UTC; the leave-one-out lanes 04:24-06:52 UTC.
+  Every run used below finished with `lost_polls=0`.
+
+### The runs
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 8380.9 | 34 | 526 (134) | 8687 | 110.90 s | 3 of 16 / 0 of 19 | 11 | Lexington-class01 3296.45 | none | 491 | `local\g23_rw_usn04.log` |
+| USN01 | 3000 | 34523.9 | 29 | 1301 (239) | 2131 | 12.90 s | 0 of 17 / 2 of 19 | 3 | ConTBD1 1178.36 | none | 507 | `local\g23_rw_usn01.log` |
+| USN04 (E2) | 9000 | 10332.2 | 42 | 696 (135) | 10471 | 110.90 s | 3 of 16 / 0 of 19 | 14 | Lexington-class01 5740.54 | none | 523 | `local\g23_rw_e2.log` |
+| USN02 | 9000 | 67220.2 | 1 | 5368 (343) | 4535 | 19.25 s | - | - | Kortenaer 6764.92 | **failed at 29.75 s** (as v)| 486 | `local\g23_rw_usn02.log` |
+| JM06 (smoke) | 3000 | 3490.3 | 1 | 269 (266) | 347 | 9.85 s | - | - | Fletcher-class 08 567.94 | none | 480 | `local\g23_rw_jm06.log` |
+| JM08 (smoke) | 3000 | 9675.6 | 22 | 470 (224) | 3184 | 5.25 s | - | 2 | Auilick 2969.16 | none | 482 | `local\g23_rw_jm08.log` |
+| USN13 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | 0 of 60 / - | - | Enterprise 925.78 | none | 510 | `local\g23_rw_usn13.log` |
+| BSM01 (smoke) | 3000 | 0.0 | 0 | 0 (0) | 0 | - | - | - | HenryPT 0.00 | none | 453 | `local\g23_rw_bsm01.log` |
+| LOMP06 (smoke) | 1000 | 0.0 | 0 | 0 (0) | 6 | - | - | - | Narwhal 770.74 | none | 456 | `local\g23_rw_lomp06.log` |
+| LOMP10 | 3000 | 2156.6 | 2 | 182 (103) | 3423 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none | 482 | `local\g23_rw_lomp10.log` |
+| JM05 | 3000 | 11493.1 | 11 | 412 (58) | 312 | 5.85 s | - | - | USS Phelps 2623.19 | none | 543 | `local\g23_rw_jm05.log` |
+| USN12 | 3000 | 4759.8 | 5 | 219 (12) | 144 | 7.55 s | - | - | Montpelier 1499.41 | none | 474 | `local\g23_rw_usn12.log` |
+| LOMP10 (long) | 9000 | 2764.2 | 5 | 193 (107) | 3623 | 93.95 s | - / 9 of 8 | - | (none) 7569.27 | none | 495 | `local\g23_rw_lomp10l.log` |
+| USNOS | 3000 | 42002.2 | 86 | 1094 (126) | 815 | 5.00 s | - | 1 | NH 1497.26 | none | 510 | `local\g23_rw_usnos.log` |
+| USNOS (long) | 9000 | 44799.1 | 100 | 1255 (126) | 967 | 5.00 s | - | 1 | NH 4492.07 | none | 521 | `local\g23_rw_usnosl.log` |
+| IJN01 | 3000 | 1862.0 | 5 | 104 (95) | 3639 | 88.45 s | - | - | Downes 602.56 | none | 502 | `local\g23_rw_ijn01.log` |
+| JM05 (long) | 9000 | 24609.8 | 16 | 879 (140) | 743 | 5.85 s | - | 3 | USS Phelps 7523.63 | none | 555 | `local\g23_rw_jm05l.log` |
+| JM08 (long) | 36000 | 110137.0 | 183 | 4332 (780) | 6969 | 5.25 s | - | 3 | Auilick 8614.72 | none | 522 | `local\g23_rw_jm08l.log` |
+| USN13 (long) | 9000 | 8660.6 | 14 | 509 (63) | 141 | 204.46 s | 0 of 60 / - | - | Enterprise 2777.59 | none | 517 | `local\g23_rw_usn13l.log` |
+| ESMP08 (long) | 9000 | 0.0 | 0 | 0 (0) | 0 | - | 0 of 18 / 0 of 18 | - | Cummings 8554.49 | none | 490 | `local\g23_rw_esmp08l.log` |
+| USNRM01 | 9000 | 29917.5 | 156 | 2207 (1498) | 54291 | 166.76 s | 2 of 15 / 30 of 54 | 105088 | West Virginia 0.00 | none | 516 | `local\g23_rw_usnrm01.log` |
+
+**Against v** (`pair_diff` against `g20_rv_<row>` in the cc9-gunnery20 tree): **seventeen of v's
+eighteen rows move** (exit 3). **BSM01 is gameplay-identical** (exit 1). The three new rows move
+against the anchor (exit 3); ESMP08 long only in the controlled unit's distance.
+
+Headline moves:
+- **USN13: 23 -> 0. No unit fires a shot all row** (shots 4142 -> 0; gunnery assigns 2457 -> 72,
+  `recon_beyond_half` 2363 -> 0).
+  - `kAiTickMovetoRetasksPlaneBound` (5ch) alone carries it: `ai tick plane retask installed=1248
+    kept=1268 replaced_other=60`. The tick's `moveto` replaces the attack heads of the 60
+    torpedo-task aircraft (`0 of 60` releases on both sides), so the strike never reaches the
+    Japanese AA. v's hits were nearly all on those aircraft.
+  - The re-tasked path reaches `BotApproach::refresh_path_leg_009fd050`, unimplemented
+    (`calls=14923`).
+  - W with only that switch OFF (`local\g23_xrtk`, `5F3ADCBFA9CA`) gives USN13 22, USN04 47, E2 50
+    and USNOS 98.
+- **USN13 long** (against the anchor): 97 -> 14; `rtk` OFF returns 124.
+- **USN04 and E2:** 50 -> 34 and 52 -> 42; hit records 1061 -> 526 and 1065 -> 696. `rtk` carries
+  -13 and -8.
+- **USNOS:** 106 -> 86 (32 only on v, 12 only on w). **USNOS long:** 147 -> 100.
+- **USN01:** 17 -> 29, hit records 522 -> 1301 (`goa`). The controlled unit is `ConTBD1` again
+  (1178 m), as under 91.4's W1.
+- **JM08:** 7 -> 22 (`goa`: the Allied watchtowers and bunkers die).
+- **JM08 long:** 160 -> 183.
+  - Landing: one launch of 8 crafts, `begins=8`, `lowers=8`, `unloads=8`, `landed_capture_adds=7301`;
+    `Headquarter 01` is neutralized once and never flips (`flips=0`).
+  - Every variant moves it hard (34 to 204, below): it is the knife-edge row.
+- **IJN01:** 3 -> 5. **JM05:** 12 -> 11. **JM05 long:** 14 -> 16. **USN12:** 7 -> 5.
+  **LOMP10 / LOMP10 long:** 3 -> 2 and 6 -> 5.
+- **USN02, JM06, LOMP06:** death tables identical; USN02 still fails at 29.75 s.
+- **ESMP08 long:** 0 deaths on both w and the anchor. With `rtk` OFF it has 6 (the 5ch pair
+  already recorded 6 -> 0 for this row).
+- **USNRM01** (against the anchor): 128 -> 156.
+
+### The anchor: twenty switches
+
+With all twenty OFF (`g23_rw0`), `85f60f0a5` is **gameplay-identical to v on all eighteen rows**
+(exit 1 against `g20_rv_<row>`, death tables identical). Nothing else that landed since v moves
+a row.
+
+### What moved each row
+
+Each variant was turned OFF alone and read with `pair_diff` against w on the twenty moved rows
+(`local\g23_lanes.ps1`, then `local\g23_lanesj.ps1` for JM08 long on six variants; logs
+`local\g23_w_<v>_<row>.log`). Deaths are w -> variant OFF.
+
+| variant (OFF) | rows that move against w (exit 3) |
+| --- | --- |
+| `rtk` | USN04 (34 -> 47), E2 (42 -> 50), USN01, JM06, JM08, USN13 (0 -> 22), JM05, USNOS (86 -> 98), USNOS long (100 -> 115), IJN01, JM05 long, USN13 long (14 -> 124), ESMP08 long (0 -> 6), USNRM01 (156 -> 130), JM08 long (183 -> 124) |
+| `slp` | USN04 (34 -> 3), E2 (42 -> 3), USN01 (29 -> 24), JM08 (22 -> 16), USN13, JM05, USNOS (86 -> 77), USNOS long (100 -> 111), IJN01 (5 -> 2), JM05 long, USN13 long (14 -> 12), ESMP08 long, USNRM01 (156 -> 133) |
+| `goa` | USN01 (29 -> 17), JM06, JM08 (22 -> 11), USN13 (0 -> 1), JM05 (11 -> 10), USN12, USNOS (86 -> 101), USNOS long (100 -> 118), JM05 long (16 -> 15), USN13 long (14 -> 5), JM08 long (183 -> 34) |
+| `neo` | USN01, JM06, JM08 (22 -> 25), JM05 (11 -> 10), USN12 (5 -> 8), USNOS (86 -> 95), USNOS long (100 -> 110), IJN01, JM05 long (16 -> 15), USN13 long (14 -> 17), JM08 long (183 -> 81) |
+| `hh` | USN04, E2, USN02, JM06, JM08 (22 -> 21), USN13, LOMP06, LOMP10, JM05, USN12, LOMP10 long, USNOS, USNOS long, IJN01 (5 -> 2), JM05 long, USN13 long (14 -> 7), ESMP08 long, USNRM01 (156 -> 162), JM08 long (183 -> 110) |
+| `dwc` | USN04 (34 -> 35), E2 (42 -> 38), USN01, USN02, JM06, JM08 (22 -> 21), USN13, LOMP06, LOMP10 (2 -> 3), JM05, USN12, LOMP10 long (5 -> 6), USNOS, USNOS long, IJN01 (5 -> 2), JM05 long, USN13 long (14 -> 11), ESMP08 long, USNRM01 (156 -> 164) |
+| `land` | JM08 long (183 -> 104) |
+| `tmb` | JM08 long (183 -> 204) |
+| `strf` | USNOS, USNOS long, ESMP08 long, USNRM01 (156 -> 158) |
+| `tdb` | USN04 (34 -> 35), E2, USN01, JM08, USN13, LOMP10, JM05, LOMP10 long, USNOS, USNOS long, JM05 long, USN13 long (14 -> 12), ESMP08 long, USNRM01 (156 -> 160) |
+| `amt` | USNRM01 (156 -> 158) |
+| `afs` | USN01 |
+| `hf` | none |
+| `kam` | none |
+| `grt` | none |
+
+JM08 long ran only for `land`, `goa`, `hh`, `neo`, `tmb` and `rtk`.
+
+**Attribution:**
+- Every moved row is attributed. `hh` and `dwc` alone attribute USN02 and LOMP06; `amt`, `strf`,
+  `tdb`, `rtk`, `slp`, `hh` and `dwc` all move USNRM01.
+- **`dwc` OFF also removes `hh`.** The hull-pair solve (`world_step(..., kHullHullContactBound, ...)`)
+  runs only inside the world phase, so `dwc` OFF reproduces `hh` OFF on every row `dwc` does not
+  touch by itself (USN02, JM06, JM08, USNOS, IJN01 are equal between the two).
+- **`rtk` is the largest mover** (w -> `rtk` OFF): USN13 0 -> 22, USN13 long 14 -> 124, USN04 34 -> 47,
+  E2 42 -> 50, USNOS 86 -> 98, USNOS long 100 -> 115, ESMP08 long 0 -> 6, USNRM01 156 -> 130.
+- **`slp` with `rtk`:** `slp` OFF takes USN04 and E2 to 3 deaths with no hit at all. With the
+  leader point at the origin, the tick's `moveto` now sends the attack groups there. The two
+  switches are only consistent together.
+- **`goa`** (w -> OFF): USN01 29 -> 17, JM08 22 -> 11, USNOS 86 -> 101, USNOS long 100 -> 118.
+- **JM08 long is a six-way knife edge:**
+  - `land` OFF gives 104;
+  - `goa` OFF 34;
+  - `hh` OFF 110;
+  - `neo` OFF 81;
+  - `rtk` OFF 124;
+  - `tmb` OFF 204.
+- `kam` and `grt` are inert on every row, as their pairs found.
+
+**Prediction check:**
+- **Rows held:**
+  - seventeen of v's eighteen moved and BSM01 held identical;
+  - the anchor held on all eighteen.
+- **Headlines held:**
+  - USN01 29;
+  - JM08 22;
+  - IJN01 5;
+  - JM05 11, JM05 long 16, USN12 5;
+  - LOMP10 2, LOMP10 long 5;
+  - USN02's 29.75 s failure;
+  - the JM08 long landing chain (launch, ramps, capture adds, no flip).
+- **Misses:**
+  - **USN13 0** (predicted about 22), **USN04 34 and E2 42** (predicted within two of 50 and 52),
+    **USNOS 86** (about 100) and **USNOS long 100** (120-130). All of them come from `rtk`. Its
+    pair (5ch) ran only USN02, USN12, USNOS and ESMP08, so the stranded USN13 and USN04 strikes
+    were not seen.
+  - **ESMP08 long 0** (predicted 6-7). The prediction misread 5ch, which records 0 on this row
+    under `rtk`.
+  - **JM08 long 183**, just over the predicted 140-180.
+  - **`hf`** moves nothing: IJN01 is exit 1, predicted exit 3. Its mechanism is active on w
+    (`hull fort contact` 66 hits, `max_depth=0.012` against 157 and 7.835 m OFF), but no
+    gameplay line changes.
+  - **`amt`** is not the only mover of USNRM01.
+- **Open, for the lua lane:** whether the image also strands USN13's and USN04's strikes under the
+  AI tick's `moveto` (`009CC850` / 5ch). If the image does not, `rtk` is a mechanism failure on
+  these rows. `BotApproach::refresh_path_leg_009fd050`, unimplemented on that path, is the first
+  thing to read.
+- **Changed on main since w's base (for x, main `50571b964`):**
+  - `kAiTickMovetoRetasksPlaneBound` taken back OFF (`a6c3ad3b9`, 5co, cc9-lua33), after this
+    section's interim report;
+  - newly ON: `kAiSquadronSetTargetIntakeBound`, `kCloseFallbackOrderBridgeBound`,
+    `kGetSquadronPlanesBound`, `kObjectiveAddTargetWalkBound`, `kShipAiEngageGateAvoidZoneBound`,
+    `kShipAiSurfaceSetBranchBound`, `kStrafeBreakoffBound`.
