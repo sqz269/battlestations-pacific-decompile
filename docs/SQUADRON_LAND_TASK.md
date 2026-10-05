@@ -10584,3 +10584,103 @@ Same-tree pairs from `d97ad79fd` (`local\l36_off`, `local\l36_on`; launch form o
 
 **Verdict: the mechanism is the image's (`0099CC98` / `0099F27E` -> `007B8E70` -> ctl+7Ch ->
 `007D80C0`), and the predicted USNRM01 outcome followed. Flipped ON.**
+
+## 5db. USN13's "attackmove target not hostile" refusals: a host stand-in orders every member at the target group's leader (packet `cc9_order_attack_member_issue`, cc9-lua36, 2026-10-05)
+
+5cz item 2. Read from `l35_g_usn13.log` (gates ON) and `l35_off_usn13.log` (OFF), then statically.
+
+**The two populations are different.**
+- Gates ON: all 60 refusals are in one frame, 25.75 s. Every member of the 15 `bruh` squadrons
+  (units 313-372) has slot-0 target 314, `bruh #1.2`, its own group's leader. They come straight
+  after `player command issued to "bruh #1.x": token="artillery"` and the host's
+  `AiPlanners::issue_member_order [0077d600]`.
+- OFF: 50 refusals by Agano, every ~3 s, of a scripted `attackmove` at unit 10. The image's arm
+  refuses that the same way. Nothing to bind.
+
+**Which check refuses.** `00836B45`'s attack-move arm, `00836BCB`-`00836BDC`:
+`005457C0(ECX = [director+24Ch], target+54h)`, which is `unit+54h != side && side != 2`
+(`005457C4`-`005457D8`); false raises stage 2. A rel32 census finds three callers of `005457C0`
+(`00547731`, `00835FDC`, `00836BD5`), none of them in the AI.
+
+**The image's own-side filter is in the member pass, earlier.**
+- `00A13B60`'s collection walk (CLOSEATTACK and DEFENDPOSITION) sets `EBP = (group+5638h == 0)`
+  (`00A13B97`-`00A13BC9`). `group+5638h` is the group's party (SHIP_AI_OPEN_ITEMS 63.1).
+- It admits a world-list entity only when `+5Ch` is set, `+5Dh`/`+5Eh`/`+60h` are clear and
+  `+54h == EBP` (`00A13C03`-`00A13C32`, and again at `00A13D17` for the next list). So only the
+  OTHER party's units are ever candidates. The target-group bonus (`00A2C720`, x10) applies only
+  to collected candidates.
+- So in the image a group whose planner picked its own group gets no member order at that group.
+  `ai_close_attack_tick_00a13b60` already models this (`close_candidate_team(candidate) == own_team`
+  skips).
+
+**What the host adds.**
+- `GameAiCoordinatorHost::Impl::order_attack` (`src/game_hosts_ai.cpp`) installs the
+  MOVETOATTACK/CAUTIOUSATTACK command, as `00A2CBD0` does.
+- It then calls `issue_to_member` for every non-ship member, with `artillery`, `attackmove` or
+  `dogfight` aimed at the target group's FIRST MEMBER.
+- `00A2CBD0` (body `00A2CBD0`-`00A2CCE8`) calls only `00A109B0`, `00A10890`, `00A10C20`,
+  `00BD2F40`, `00A2C9F0`, `operator new` and the CRT. `00A2C9F0` calls `00A10C20`, `00A371A0`,
+  `00414DB0` and `00A01230`. The rel32 census shows no `0077D600` or `00A02020` site in `00A2C000`-
+  `00A2D000`.
+- The host's own comment there already says the attack order reaches no member and calls the
+  plane tokens a labelled stand-in. With the gates ON that stand-in hands the own-group target to
+  60 aircraft at once.
+
+**The binding,** `kOrderAttackNoMemberIssueBound` (OFF): ON, `order_attack` issues no member
+command. Members are then ordered only by the command's tick (`moveto` through `00A02020`, and
+CLOSEATTACK's `settarget`/`attackmove` through `00A13B60`), as in the image.
+
+**Predictions, before the pairs:**
+- USN13, gates ON: the 60 refusals go to 0. The `bruh` squadrons keep their scripted
+  `PilotSetTarget` carriers until the command tick reaches them. Expect more of the Japanese
+  strike to reach the US carriers than with the gates ON today.
+- USN13, gates OFF: fewer `commands_issued`. Plane groups whose only attack order was the stand-in
+  may attack later or not at all; a CLOSEATTACK `settarget` should replace most of it once in range.
+- USN04 and USNRM01: AI-controlled plane groups lose the direct `dogfight`/`attackmove` at
+  order time. Expect moved dogfight timing; a mechanism failure would be groups that never engage.
+
+### 5db.1 Measured: **ON** (cc9-lua36, 2026-10-05)
+
+Four same-tree builds from `f8860bd1f`: `local\l36_aoff`/`l36_aon` (this switch, gates OFF) and
+`l36_goff`/`l36_gon` (the same with `kAiWeightBarrelGatesBound` and `kAiPlaneAttackerWeightBound`
+ON). Launch form of reference X (`local\l36_queue.ps1`, 3 slots, `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`). USN01 300-frame smoke ON: clean. Census:
+`summary mission ai order attack member issue bound= skips=`.
+
+**Gates OFF, all 22 reference X rows:**
+- 21 rows are **gameplay identical** (pair_diff exit 1), although the stand-in is skipped 2-73 times
+  on most of them (USN13 59, USN13 long 73, USNOS/USNOS long 42, IJN01 13, USN01 10, E2 10, USN04 9).
+  The rows without AI attack orders (BSM01, LOMP10/long, JM05/long, IJN11) have 0 skips.
+- **USNRM01 moved:**
+  - deaths 191 -> 201; torpedo-task releases 55 of 79 -> 61 of 86; dive-bomb-task releases
+    112 -> 115.
+  - The director refusals go 48 -> 0. The Kates lose 15 stand-in commands, so KateSpawn1's flight
+    dies at the script's 186.91 s Kill at 17-49 m on a run-in (was 305-349 m).
+  - West Virginia is sunk at 356.94 s by Jap #30.1|.-3's bomb, and the script then spawns
+    Oklahoma_Killers (units 523 -> 529).
+  - More of the strike reaches Battleship Row, not less.
+
+**Gates ON (USN13, USN13 long, USN04, E2, USNOS, USNRM01):**
+- USN13, USN04, E2, USNOS: gameplay identical.
+- USN13 long: deaths 149 -> 152. The director refusals go 124 -> 0. The death swaps (bruh #2.x,
+  JapAF/Airfield squadrons, storage) are a cascade from Maru4's close-attack ordering at the first
+  divergence; no row stops attacking.
+- USNRM01: torpedo releases 56 -> 64, dive-bomb releases 84 -> 75, deaths 173 -> 185.
+
+**No row shows attacks vanishing.** Where the stand-in was the only path to a member, the command
+tick's `moveto` and CLOSEATTACK's `settarget`/`attackmove` take over, and releases rise on the one
+row that moves. Mechanism match: **flipped ON.**
+
+**The gates, re-tested under this switch** (`aon` against `gon`, so only the gates differ):
+
+| row | gates OFF | gates ON |
+| --- | --- | --- |
+| USN13 long | deaths 118, damage 47452 | deaths 152, damage 57478 |
+| USNOS | deaths 97, damage 46848 | deaths 67, damage 36261 |
+| USNRM01 | deaths 201; releases 61 / 115 | deaths 185; releases 64 / 75 |
+| USN13, USN04, E2 | - | identical |
+
+With the own-group attack-move gone, the gates no longer produce any friendly scene command (0
+refusals). What they still change is the planner's choice, which 5cu read as the image's. A fresh
+plausibility read of the gates (and of 5ch) is now meaningful. These numbers are its starting point,
+not a verdict.
