@@ -11260,3 +11260,52 @@ of 10000 at 1448.9 s, then decays.
 
 A flip needs player input (a scripted helm or orders), and that is outside the idle-reference
 contract.
+
+## 143. Handoff (cc9-ships30, 2026-10-05, at about 70% context)
+
+### Landed on this branch
+
+| section | what | switch | reach |
+| --- | --- | --- | --- |
+| 139 | the stale-label sweep; 00A0F810's slot D takes the live health fraction (`00923BE0` -> `00876260`) | `kAiTargetWeightHealthBound` ON | USN02, USN04, E2, USN13 long, IJN01, USNRM01 move; 22 rows paired |
+| 140 | `clear_37c` 9999.0 / FLT_MAX is the static list head `+0A3Ch`, which the image's uninitialised searcher bounds make heap-dependent | none; `pair_diff` rule `ring-scan-clear-37c` (sentinel values only) | - |
+| 141 | the landing and capture sweep | none | none |
+| 142, 142.1 | no idle single-player row flips a building in 1800 s; the capture spawn arm buys nothing on reachable rows, in the image either (52.2, 115, 121 hold) | none | - |
+
+Also answered, routed to the lead: `0092BD70(0)` at the land enter clears only the class bit
+from the hull masks (hull mask stays `0Dh`). cc9-gunnery25 hosts the class-bit group, the draft
+bodies `00423C50` (GUNNERY 109).
+
+### Open, with where to start
+
+**Next, in order** (from section 138's census, `local\s29_census_r5.txt`; none read by this branch):
+1. `AiCommand::squadron_excluded_009ffeb0` (113796 calls; USNOS long 37542, USNRM01-class rows). Read `009FFEB0` and check whether the host answers a constant where the image reads a live squadron field.
+2. `AiCommand::tick_000c` (`00A10EC0`, 55959 calls). Read the slot it stands in for.
+3. `ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530` (29922 calls): the robots.lua values stand in for the TorpedoBot level row. Check whether the units host now keeps that descriptor.
+4. The cosmetic items below.
+
+- **The capture chain has no reference row** (sections 142 and 142.1). No reachable row can flip a building with an idle player, in the image either. Pairing the chain needs a player-input row, which is outside the idle-reference contract. The retake exemption (`006F4FBA..006F5017`, the
+  host passes -1), the flip slot pick and the `+7C0h` stagger cannot be paired with an idle
+  player. Section 142's runs (`local\s30_cap_<row>.log`) give the closest case: USN01 at 36000
+  frames, Japanese ships in CB2's 100 m for 18 s. A scripted-helm row could make it flip, if
+  the lead accepts a non-idle reference.
+- **`ShipAiApproach::unit_depth_reference` (`009F32A0`)** is misnamed. `[unit+494h]` is the max
+  weapon range (FirepowerBinding already has it), and its only consumer `blk+250h`/`+2B8h` has
+  no reader. A rename and a `done()` would clear a census row; no gameplay.
+- **Stale comments** listed in 139 (landing ground contact, squadron arm, target curve fields,
+  the 9999 throttle guard) can be corrected when someone next holds `src/game_hosts_ship_ai.cpp`
+  or `src/game_hosts_ai.cpp`.
+
+### Tools (`local\`, `s30_` prefix)
+
+- `s30_runs.ps1 -V <tag> -Exe <exe> -Only <rows>`: s29's rows plus USNRM01, ESMP08 long and the
+  capture candidates (`usn01x`, `jm05x`, `usn13x` at 36000 frames);
+- `s30_disp.py lo hi disp...`: every memory operand with a given displacement (reads and writes);
+- `s30_cooccur.py window disp...`: windows where all given displacements occur;
+- `s30_firstdiff.py off on pattern`: the first differing line among matches;
+- `s30_capscan.py [filter]`: every CommandBuilding in this installation's scenes with Party,
+  CaptureRange, CaptureValue and the missiontree ids (`s30_capscan.txt`);
+- `s30_mtree.py filter`: missiontree ids by scene path.
+- `local\s30_diag` is an uncommitted diagnostic export (clearance per refresh for Maru2/Maru10).
+
+No lease is held after this commit.
