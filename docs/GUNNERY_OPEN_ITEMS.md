@@ -8478,3 +8478,55 @@ spread miss recorded. JM08 long's 140 -> 148 is its knife edge.
   the class bits in the hull mask and this clear.
 - **Uncertainty:** whether other bodies carry class-bit groups. `008509F0`'s group and the plane
   body `007D5D20` are unread (89.1).
+
+## 108. Handoff (cc9-gunnery24, 2026-10-05, at about 65% context)
+
+### 108.1 Landed on agent/cc9-gunnery24
+
+| item | commits | state |
+| --- | --- | --- |
+| GUNNERY 103: the pass byte `+7Dh` (`00863780`) | `68b2a5285`, `ec896b7f0`, `9d15cdd37`, `abdc6c13e`; ship-AI calls on main as the lead's `f6f996abd` | `kGunneryPassByte7dBound` ON; USN02 Houston 22.80 -> 66.10 s |
+| GUNNERY 104: frame order (97.2, 100.4) | `7be72fc28` | reading; the order is the image's |
+| GUNNERY 105: IsKindOf(0Eh) at the motion tick | `9c2320ede`, `1c841b1c3`, `0246b0946`, `1b95f297e` | `kShipTorpedoBoatKindBound` ON; reach only JM08's sunk PT |
+| KillBinding `local_player_side` (cc9-ships29's edit) | `d5b3b7792` | landed; pair_diff 0 |
+| GUNNERY 106: the hull shape chain order | `8c23c32f9`, `26052ab23`, `aaa9fef64` | `kHullShapeChainOrderBound` ON |
+| GUNNERY 107: `0092BD70(0)` | `f4133a7d6` | no switch; needs the draft bodies |
+
+### 108.2 The queue, in order
+
+1. **Reference y, first, but only when the lead says so.** It waits for cc9-ships30's health term
+   and cc9-lua36's gates flip.
+   - Flips since x's base (`1590ec097`): `kDialogSequencerBound`, `kShipAiOwnCurveRefillGateBound`,
+     `kShipAiTargetCurveRefillBound`, `kShipAiApproachTargetLayerPushBound`,
+     `kShipAiApproachLandingSweepBound`, `kAiForcedTargetWeightRulesBound`,
+     `kSunkHullTerrainMaskBound`, `kGunneryPassByte7dBound`, `kShipTorpedoBoatKindBound`,
+     `kHullShapeChainOrderBound`.
+   - `rg` the docs for any later ones.
+   - cc9-gunnery23's `g23_lane*.ps1` and `g23_report24.py` are the templates.
+2. **The draft-zone bodies (107.3).**
+   - Host `00424DDF..00425487` and `00423C50`'s static extruded bodies (AVOID_ZONE_DRAFT_LAYERS;
+     `src/avoid_zone_draft_layers.cpp` has the pieces).
+   - Give the hull mask its class bit (`009394A9`, `009395E2`).
+   - Add hull-vs-draft-zone pairs to `world_step`, then the `0092BD70` clear/set.
+   - This has reach on every row with deep-draft ships near shallows.
+3. **97.2's trail arithmetic.** Frame order is ruled out (104); `0085AD80`'s speeds and
+   `0085ABA0`'s routing against the image are what is left.
+4. **100.4's trim.** A hydrostatics audit of a stopped transport's buoyancy elements against its
+   mass properties.
+5. **91.2's last order substitution.** The SAP pairs begin at box overlap (0.02-widened shape
+   boxes), while the host's begin at the first hit in hull-index order. Emulating it means a SAP
+   over hull boxes (`src/native_dyn_sap_*.cpp` has the reconstruction).
+6. **99.4** (debris in the shell sweep) needs hosted debris producers; low value.
+
+### 108.3 Tools (`local\` in the cc9-gunnery24 tree, prefix `g24_`)
+
+- `g24_runs.ps1 -V <prefix> -Only <rows> [-Exe]`: the reference launch form, copied from g23.
+- `g24_exp.ps1 -Commit -Out [-Flip]`: a detached pair export.
+- `g24_byte7d.py`: the byte-access census of `[reg+7Dh]`; edit the offset for another field.
+- `g24_shipai_7d.py`: the anchor-checked 103 ship-AI edit; it is on main and must not be re-applied.
+- `g24_tb_units.py`: the anchor-checked 105 units edit; on main.
+- `g24_multishape.py <logs>`: contacts that involve multi-shape hulls.
+- `g24_chaincheck.py <off> <on>`: per-pair first-step check for an order switch.
+- Pairs were run as `pair_export --no-build` into `local\g24_d0` / `local\g24_d1`, then each
+  tree's `scripts/build.ps1`. An export can carry a lane edit applied by script for a
+  diagnostic pair without touching the leased file.
