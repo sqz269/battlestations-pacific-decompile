@@ -380,6 +380,17 @@ struct GameAiSummary {
 // block authors no Party). The mission host publishes them after its header
 // pass; the coordinator reads them when kAiPartyGateUnforcedBound is set.
 void ai_publish_scene_slot_parties(const std::array<int, 8>& parties);
+// Packet cc9_local_party_source (docs/SHIP_AI_OPEN_ITEMS.md section 125): player
+// slot `slot`'s published party, or `fallback` before publication, outside 0..7 or
+// for a block that authors no Party.
+int scene_slot_party(int slot, int fallback) noexcept;
+// True: every host reader of the local player's party, [[game+18CCh]+28h] (slot 0
+// in single player; 004BB440 copies it from side block 0, docs/MISSION_LOAD_PATH.md),
+// takes the scene's published Player1 Party. False: the constant 0 each used.
+inline constexpr bool kLocalPartyFromSceneBound = false;
+inline int local_player_party() noexcept {
+    return kLocalPartyFromSceneBound ? scene_slot_party(0, 0) : 0;
+}
 
 // Packet cc9_ai_owner_player_slot (docs/SHIP_AI_OPEN_ITEMS.md section 71). The
 // scene's authored `OwnerPlayer` ordinals other than 9, by entity name: unit+180h

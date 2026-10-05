@@ -5,6 +5,7 @@
 // pass can show in this process.
 
 #include "bsp/game_hosts_ready.hpp"
+#include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/entity_event_queues.hpp"
 #include "bsp/game_hosts.hpp"
@@ -401,7 +402,11 @@ public:
         log_.unimplemented("MissionLoad::write_slot_header", "004dfc91");
     }
     int local_slot_index() override { return 0; }
-    int slot_party(int slot) override { static_cast<void>(slot); return 0; }
+    int slot_party(int slot) override {
+        // [game+18CCh + slot*4]+28h; section 125.
+        return bsp::game::kLocalPartyFromSceneBound
+            ? bsp::game::scene_slot_party(slot, 0) : 0;
+    }
     int select_menu_record_005d7070() override {
         log_.unimplemented("MissionLoad::select_menu_record", "005d7070");
         return -1;
