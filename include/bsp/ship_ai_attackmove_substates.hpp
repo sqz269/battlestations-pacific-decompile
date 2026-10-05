@@ -167,15 +167,16 @@ ShipAiAttackMoveRingSlot ship_ai_attackmove_ring_slot_009e5530(int index,
 // complete. vtable 00D21994 slot +0Ch.
 //
 // The throttle the step pushes into brain+258h and brain+2C0h, from
-// 009F3294..009F32EB. `depth_ref` is [unit+494h] and `bias` is sub+11E8h,
+// 009F3294..009F32EB. `max_weapon_range` is [unit+494h] (00956C20, the unit's
+// maximum weapon range; not a depth) and `bias` is sub+11E8h,
 // which 009E5530 seeds to 0 at nested+11E0h (009E561F writes nested+11E8h;
 // sub+11E8h is nested+11E0h, so the seed is the zero store at 009E55F7 region).
 // The producer of sub+11E8h during play was not established: treat it as an
 // input, not as a constant.
-inline constexpr double kAttackMoveApproachDepthOffset = 500.0;  // 00CE3840
+inline constexpr double kAttackMoveApproachRangeOffset = 500.0;  // 00CE3840
 inline constexpr double kAttackMoveApproachThrottleKnee = 1000.0; // 00CE47A0
 inline constexpr float kAttackMoveApproachThrottleCap = 1000.0f;  // 00CE3804
-float ship_ai_attackmove_approach_throttle_009f3240(float depth_ref, float bias);
+float ship_ai_attackmove_approach_throttle_009f3240(float max_weapon_range, float bias);
 
 // 009F3603..009F3635, the value written to brain+1D8h on every arm: sub+1218h
 // clamped to [-1, 1]. The comparison order is `COMISS -1.0f, v` (009F3618) then
@@ -220,8 +221,9 @@ struct ShipAiAttackMoveApproachHost {
     // bodies was read in this packet, so the nested update is one opaque step
     // here; it is the follow-up packet ship_ai_attackmove_ring_update.
     virtual void nested_update_009f3090(float seconds) = 0;
-    // 009F32A0 and 009F32A6, [brain+0AA8h] then [unit+494h].
-    virtual float unit_depth_reference_0494() = 0;
+    // 009F32A0 and 009F32A6, [brain+0AA8h] then [unit+494h], the maximum weapon
+    // range.
+    virtual float unit_max_weapon_range_0494() = 0;
     // 009F3294, sub+11E8h.
     virtual float sub_throttle_bias_11e8() = 0;
     // 009F32EB, 009F3300, 009F3314, 009F339A: sub+1238h, sub+1230h, sub+1214h
