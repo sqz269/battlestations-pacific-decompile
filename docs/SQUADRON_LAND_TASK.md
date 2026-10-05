@@ -8979,3 +8979,56 @@ The work paused before the bind landed (lead's pause, 2026-10-01). The plan for
 - **JM06 3200/3000:** moved, with one PBY.
 - **USN02 and USN12 (controls):** pair_diff 0 or 1, with no `settarget` to a squadron.
 - **USNOS:** identical apart from the census, since it has no AI `settarget`.
+
+### 5ck.1 The binding, committed OFF (cc9-lua33, 2026-10-04)
+
+cc9-lua33 applied cc9-lua32's prepared patch and `close_issue_order` hook unchanged (reviewed:
+the hook takes the squadron path only for `settarget`/`attackmove` from `close_issue_order`, keeps
+`issue_order`'s repeat test, and uses the same `GameUnitsHost` index space as the script-orders
+host). `kAiSquadronSetTargetIntakeBound = false` is in `include/bsp/game_hosts_script_orders.hpp`;
+the census line is `summary mission script squadron intake`. The predictions above stand as
+written; the pairs follow in 5ck.2.
+
+### 5ck.2 Measured (OFF `local\l33_off`, SHA-256 `4E66E4013D71`; ON `local\l33_on`, `990F4FEB4A5A`; both from `aaf170730`), and the verdict: **flip ON**
+
+Launch form of reference v (`local\l33_runs.ps1`, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`).
+The 300-frame USN01 smoke (ON) finished cleanly: 20 intake calls, all torpedo (`F18`).
+
+| row | pair_diff | intake calls / declined / member orders / tasks | what moved |
+| --- | --- | --- | --- |
+| ESMP08 14200/14000 | 3 | 602 / 0 / 1806 / 1806 | deaths 44 -> 46 (Zuiho sunk, one more Corsair); hits 1619 -> 6462; torpedo releases 2/21 -> 4/33 |
+| ESMP08 9200/9000 | 3 | 33 / 0 / 99 / 99 | no combat yet; plane paths and `nearest` distances only |
+| USNRM01 9200/9000 | 3 | 1903 / 54 / 5900 / 5900 | torpedo releases 2/15 -> 40/79, dive releases 30/54 -> 123/166, damage 29918 -> 39332 |
+| JM06 3200/3000 | 3 | 25 / 12 / 13 / 13 | the PBY flies a torpedo run on the submarines (1 of 1 released) and takes their AA |
+| USNOS 3200/3000 | 1 | 0 | census only |
+| USN02 3200/3000 | 1 | 0 | census only |
+| USN12 3200/3000 | 1 | 0 | census only |
+
+Against the predictions:
+- **ESMP08 long, all held.** `declined` is 0 and `tasks` equals `member_orders`. The classes split
+  as predicted: 306 strafe (`F40`, Corsairs), 177 dive (`F20`, Helldivers) and 119 torpedo (`F18`,
+  Avengers). Every one of the 44 plane deaths whose killer moved now falls to the carrier group:
+  Zuikaku 0 -> 34 and Zuiho 1 -> 8. On OFF the killers were Oyodo 11, Isuzu 8, Ise 7, Akitsuki 5,
+  Chitose 4, Hyuga 3, Chiyoda 2 and Sugi 1. In the unit table, every other ship's `nearest` rises
+  to 2800-5700 and its shots fall to 0. Zuikaku fires 249 -> 3947 shots and Zuiho 306 -> 1987.
+  The squadrons fly to 00A13B60's pick, the Zuikaku group, and no longer to the script's random
+  `IJNFleet` ship. The added hit records are that AA fire.
+- **The weakest call is reached: strafes now reach goaway.** Summed over the per-plane strafe
+  summaries (`local\l33_strafe_sum.py`), OFF has 60 planes with `aim=433 goaway=0 aims=8`. ON has
+  42 planes with `aim=3064 goaway=1639 aims=35`. That opens the goaway row (queue item 2).
+- **The wave-3 composition differs** (TBF and SB2C on ON where OFF had F4U). That comes from the
+  script, not the switch: `08_engano.lua:513-517` fills the wave with `luaPickRnd(planetbl)`, and
+  the Lua random stream advances differently once the fight differs (this installation's file is
+  dated 2024-07-13).
+- **USNRM01, moved strongly, as predicted.** The Japanese waves now strike 00A13B60's targets.
+  Only on ON do Downes, Neosho, Rescue, Tautog, Medusa and five cranes die; only on OFF does
+  Airfield1Hangar die. Japanese plane deaths are 32 only OFF against 26 only ON. The 54 declined
+  calls are all `sides 1/2`: 007EEC50 refuses a target that is not an enemy.
+- **JM06, moved with the one PBY, as predicted.** The 12 declined calls come after its torpedo is
+  gone (`torp=0 gb=1`), when the chooser offers no class for the submarine target.
+- **The controls held.** USNOS, USN02 and USN12 have no AI `settarget` to a squadron, and each
+  shows exit 1.
+
+The mechanism matches on every row, so the switch flips ON (`kAiSquadronSetTargetIntakeBound =
+true`). The OFF base predates reference w (not yet published when these pairs ran), and w's
+base must carry this flip.

@@ -35,6 +35,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/ordnance_kinds.hpp"
@@ -1978,6 +1979,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::string token =
             command_class == bsp::kAiSceneCommandAttackMove ? "attackmove" : "settarget";
         const std::string target_name = unit_name(unit_index_of(target));
+        if constexpr (kAiSquadronSetTargetIntakeBound) {
+            // Packet cc9_ai_squadron_settarget_intake (docs/SQUADRON_LAND_TASK.md
+            // 5ck): the order goes to the squadron, whose intake 007F1940 issues
+            // 007EEC50's class in its place (007F1AD6-007F1B24) or nothing.
+            const std::vector<std::size_t>* members = squadron_member_units(unit);
+            if (is_squadron(unit) && members != nullptr && !target_name.empty()) {
+                if (order_is_repeat(unit, token, target_name, nullptr)) return true;
+                ++summary.squadron_commands;
+                script_orders_squadron_intake_007f1940(members->front(), *members,
+                                                       unit_index_of(target));
+                ++summary.commands_issued;
+                if (current_party >= 0) ++party_row(current_party).commands_issued;
+                if (summary.first_command_seconds < 0.0f)
+                    summary.first_command_seconds = clock_seconds;
+                observe_target_choice(member, target);
+                done("AiCommand::close_issue_order", 0x0077d600u);
+                return true;
+            }
+        }
         if (target_name.empty() || !issue_order(unit, token, target_name)) {
             ++summary.commands_refused;
             return false;

@@ -391,6 +391,22 @@ inline constexpr bool kAfterRow9OrderQueueBound = true;
 // Returns the number applied.
 std::size_t script_orders_drain_loopback_0076c600();
 
+// Packet cc9_ai_squadron_settarget_intake (docs/SQUADRON_LAND_TASK.md 5ck). True:
+// an AI `settarget` or `attackmove` for a squadron (00A13B60's order, 00A14A6E)
+// is served as the squadron's intake 007F1940 serves it: 007F1AD6-007F1B24 run
+// 007EEC50(target, 1, 1) with ECX = the squadron, and a non-null class is issued
+// in place of the order (007F1B2F-, flags 1, so 0071D880 clears first); a null
+// class issues nothing. Each member's bot then installs that class's task
+// (0099A4C0 -> 0099A170). False: the host fans the order itself out to the
+// member planes, whose 0099A170 has no `settarget` arm.
+inline constexpr bool kAiSquadronSetTargetIntakeBound = true;
+// The intake above for the one live host. `members` are the squadron's member
+// planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
+// chooser's self queries run. Returns the class issued, 0 when 007EEC50
+// declined (nothing issued) or no host is live.
+std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
+    const std::vector<std::size_t>& members, std::size_t target_index);
+
 // The host the reconstructed binding bodies run over. Owned for the whole run
 // because the rows are per run and the units it addresses are the created scene
 // instances.
@@ -406,6 +422,10 @@ public:
     ~GameScriptOrdersHost();
     // Packet cc9_after_row9_order_queue: apply the deferred orders.
     std::size_t drain_deferred_orders_0076c600();
+    // Packet cc9_ai_squadron_settarget_intake: see
+    // script_orders_squadron_intake_007f1940.
+    std::uint32_t squadron_intake_007f1940(std::size_t leader,
+        const std::vector<std::size_t>& members, std::size_t target_index);
 
     // Packet cc8_ship_moveonpath: `GetSelectedUnit` 008AB070 reads the global
     // 00E188D8, which 004C0893 stores in BSP_Game_SetControlledUnit 004C0890.
@@ -754,6 +774,16 @@ private:
     unsigned long long pilot_set_target_tasks_{0};
     unsigned long long kamikaze_small_targets_{0};   // packet cc9_kamikaze_ship_blocked
     unsigned long long kamikaze_blocked_{0};
+    // 007EEC50's eleven feasibility inputs assembled for `unit_index` against
+    // `target_index`, then the choice; `label` prefixes the census lines.
+    std::uint32_t choose_attack_class_007eec50(std::size_t unit_index,
+        std::size_t target_index, bool prefer_ordnance, bool allow_guns,
+        const char* label);
+    // Packet cc9_ai_squadron_settarget_intake census.
+    unsigned long long squadron_intake_calls_{0};
+    unsigned long long squadron_intake_declined_{0};
+    unsigned long long squadron_intake_member_orders_{0};
+    unsigned long long squadron_intake_tasks_{0};
     std::vector<SceneMarker> markers_;
     lua_State* state_{nullptr};
     // The mission machine, kept past a dispatch so the per-frame timer pass can
