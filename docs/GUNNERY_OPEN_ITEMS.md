@@ -8377,3 +8377,42 @@ Contacts that involve a hull with two or more shapes (`local\g24_multishape.py` 
   sequential solver's order. Expected exit 3 on every row with multi-shape contacts (all but E2);
   direction not predicted. JM08 long, the knife edge, is expected to move most.
 - **E2:** exit 0 or 1.
+
+### 106.4 The pairs, and the flip
+
+**Setup.** `local\g24_d1` (the flip) against `local\g24_d0` (OFF), both exports of `8c23c32f9`
+(SHA-256 prefixes `9C97C59FAACD` / `456D851DC9CA`), x's launch form. The 300-frame smoke ON is
+clean.
+
+| row | exit | deaths OFF -> ON | moved pair census lines |
+| --- | --- | --- | --- |
+| USNOS | 3 | 97 / 97 (identical rows) | 9; the first is Convoy1/Convoy2 (multi-shape), from step 211 |
+| JM05 long | 3 | 17 / 17 (1 row re-timed) | 6 |
+| USNRM01 | 3 | 191 -> 190 (14 only OFF, 13 only ON) | 2; Medusa (5 shapes) / Cachalot stays in contact for 9000 steps instead of 310 |
+| JM08 long | 3 | 140 -> 148 (7 only OFF, 15 only ON) | 37; the first four are all multi-shape (USTroopTransport / LSM / LST) |
+| USN13 long | 3 | 119 -> 116 | 11 |
+| JM08, IJN01 | 1 | identical | 0 |
+| E2 | 1 | identical | 0 |
+
+**Mechanism: matches.**
+- `local\g24_chaincheck.py` finds no pair whose `first_step` moved before the row's first
+  multi-shape contact.
+- Where the first moved pair line is a hull pair, it involves a multi-shape hull (USNOS, USNRM01,
+  JM08 long).
+- On JM05 long and USN13 long, two single-shape pairs that began earlier change only their later
+  totals (`steps`). Their first steps are identical, and the rows' multi-shape terrain contacts
+  can move them afterwards.
+
+**Spread.**
+- Five of the seven predicted rows moved.
+- JM08 and IJN01 are exit 1: their multi-shape contacts reached at most one shape at a time, so
+  the order made no difference. That is a spread miss.
+
+**USNRM01's Medusa/Cachalot.**
+- The pair overlaps 14 m from step 1 (a moored spawn).
+- OFF it separated after 310 steps. ON it never separates (depth 10.4 m at most).
+- With the image's walk the solver does not push the two apart. This is recorded as the image's
+  order; whether the image's spawn overlaps the same way is not known.
+
+**Flipped ON** (`kHullShapeChainOrderBound = true`), as a mechanism match with the JM08/IJN01
+spread miss recorded. JM08 long's 140 -> 148 is its knife edge.

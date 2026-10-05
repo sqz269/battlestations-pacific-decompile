@@ -128,7 +128,8 @@ inline constexpr bool kHullFortContactBound = true;
 // attaches the descriptors in vector order. So the chain runs from the last hull shape to
 // the first. True: the terrain, hull-pair and fort narrow phases walk a hull's shapes last to
 // first. False: first to last (the host's list order, a labelled substitution).
-inline constexpr bool kHullShapeChainOrderBound = false;
+// ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 106.4).
+inline constexpr bool kHullShapeChainOrderBound = true;
 // Packet cc9_sunk_hull_shape_flag8 (docs/GUNNERY_OPEN_ITEMS.md section 101). 00825F20 at
 // 00826410..0082643B: once a wreck's sinkTime (+828h) passes 60 s, each hull shape loses mask
 // bit 8 (00C47F60), the terrain's group, so 00C44104's filter refuses every hull-terrain pair
