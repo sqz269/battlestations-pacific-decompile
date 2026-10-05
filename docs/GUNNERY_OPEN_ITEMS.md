@@ -8281,3 +8281,35 @@ OFF, an export of `9c2320ede` (`local\g24_d0`), x's launch form:
 - **Deaths:** they move on the rows where torpedo boats fight (USNOS, IJN01); direction not
   predicted.
 - **E2** (no torpedo boat): exit 0 or 1.
+
+### 105.4 The pairs, and the flip
+
+**Setup.** `local\g24_d1` (the flip) against `local\g24_d0` (OFF), both exports of `9c2320ede`,
+x's launch form. Every run has `lost_polls=0`; the 300-frame smoke ON is clean. A re-run of the ON
+side on `0246b0946`, which adds only the arm census, gives the census below.
+
+| row | exit | deaths | note |
+| --- | --- | --- | --- |
+| IJN01, JM05 long, USNRM01, USNOS | 1 | identical | the torpedo boats' `hull tilt` summaries are identical to two decimals |
+| JM08 | 1 | 22 / 22, identical | its sunk torpedo boat clears the mask at 20 s: `sunk_hull_shape_flag8` 584 -> 1384 steps, lowest end -78.55 -> -75.91, tilt 74.20 -> 71.38 deg; no kill at -200 within the window |
+| E2 | 1 | identical | no torpedo boat |
+
+**Arm census ON** (`summary torpedo boat arms`):
+- IJN01: `boost_steps=12000 boost_ordered_steps=0 righting_steps=12000 righting_abs=0.0000`.
+- USNOS: 19755 / 0 / 19755 / 0.0000.
+
+**Reading.**
+- **The boost block runs on every torpedo-boat step but only refills**, because no order kind
+  (`unit+988h`) is ever set on these rows.
+- **The righting term runs but changes nothing.** `0092E9E1` acts only when the pitch angle is
+  past the 15-degree threshold (`kShipMotionRightingThreshold`), and the live torpedo boats stay
+  under 3.7 degrees.
+- **So the reach on the reference rows is JM08's wreck alone**, which drops through 40 s earlier.
+
+**Verdict.**
+- **Mechanism: matches.** Every torpedo boat answers 0Eh ON, the three arms run, and the 20 s
+  arm clears the JM08 wreck's mask at 20 s.
+- **Spread missed:** I predicted exit 3 on five rows and every row is exit 1. I had not checked
+  the righting threshold, and I assumed some ordered boost would occur.
+- **Flipped ON** (`kShipTorpedoBoatKindBound = true`), as a mechanism match with the spread miss
+  recorded. Section 101.2's labelled substitution is closed.

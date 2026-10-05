@@ -51,7 +51,8 @@ namespace bsp {
 // 0092E9D1 (the righting term) and 008263F5 (the 20 s sink arm before the 60 s
 // one). True: the units host answers the class kinds, so a TorpedoBoat leaf takes
 // all three. False: every unit answers false, as the host did before.
-inline constexpr bool kShipTorpedoBoatKindBound = false;
+// ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 105.4).
+inline constexpr bool kShipTorpedoBoatKindBound = true;
 
 // ---------------------------------------------------------------------------
 // Class-descriptor fields the motion path reads
