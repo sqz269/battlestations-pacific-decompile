@@ -11595,3 +11595,68 @@ script.
 `006E0A70`), it matches the fall time `007BCC80` predicts with, and it fixes USN01's stuck phase.
 The flip belongs in `src/game_hosts_gunnery.cpp` (gunnery lane). The edit, with the switch, is
 `local\l38_bombvel_patch.py <tree> true` in the cc9-lua38 tree, routed to the lead.
+## 5dp. The kamikaze cruise profile's forward-speed read has no reach (cc9-lua38, 2026-10-05)
+
+- **The site.** `009AF15A` (`MOV EDX,[EAX+204h] / CALL EDX`) is in `009AF0A0`-`009AF22A`, an
+  unnamed approach update. It is called only from `009AF480`
+  (`BSP_BotTaskKamikaze_UpdateCruiseProfile`, the kamikaze task's vtable `+54h`, which has no
+  direct caller).
+- **What it computes.** The range to the aim point (`+54h`), divided by the unit's `vtable[204h]`
+  forward speed, floored to 10.0 (`00CE38B8`) below a threshold (`00CE3DC0`). That gives a time to
+  target at `+60h`, which is clamped into `+ACh`. The `+5Ch` latch is set while that range is under
+  `+48h`.
+- **This host has no kamikaze bot task.** No source file names `009AF480`, `009AF0A0` or a kamikaze
+  task body.
+- **Reach on the reference rows: none.**
+  - This installation's `vehicleclasses.lua` has six `Type = "Kamikaze"` classes: 45, 46, 100, 103,
+    156 (MXY7 Ohka) and 370 (Funryu).
+  - None of them spawns in any of the 23 `l38_d1` logs (`local\l38_kami.py` over the
+    `unit hull input ... type_id=` lines).
+  - USNOS's `BettyOhka` (class 32) carries the Ohka only as a `DummyKamikazePlane` bullet (5dl).
+    Within the frame windows no Ohka is released, so class 156 is never created.
+- **Verdict.** Nothing is bound. Binding needs the kamikaze task itself first: `009AF480` and its
+  vtable, a planes-lane packet. A row that spawns a kamikaze class (a late USNOS or an IJN mission
+  with Ohka releases) is needed to measure anything.
+
+## 5dq. Handoff (cc9-lua38, 2026-10-05)
+
+Branch `agent/cc9-lua38`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua38`. No lease
+is held.
+
+| item | commits | switch | state | single-player rows with the coordinator gate ON | section |
+| --- | --- | --- | --- | --- | --- |
+| Capture think, plane groups | `4e1ae0830` | - | no filter in the image | moot (no brain) | 5dj |
+| bag `Equipment` drives the racks | `7e43d04d4`, `6a6ec6ade`, `c68f1da49`, `ce0f24d39`, `b2d8bbe40` | `kPlaneSceneEquipmentBound` | **ON** | **live**: LOMP10 and LOMP10 long move (Lightning/Warhawk `Equipment` 1) | 5dk-5dk.4 |
+| LaunchSquadron default arm = `DefaultEquipment` | `6a6ec6ade` | under `kPlaneSceneEquipmentBound` | **ON** | **live** wherever a script launches without an arm (USN13 long airfield Kates/Bettys) | 5dk.1 |
+| paratrooper fields, carried kamikaze class | `27f74feb3`, `c68f1da49` | `kAiLoadoutCarriedTermsBound` | **ON** | inert (AI side; no Ohka released) | 5dl |
+| rocket accuracy `009FE4F1` | `4672e2fa3`, `5a8bb5d92` | `kAiRocketAccuracyBound` | OFF | inert (AI side; `rocket=0/0` everywhere) | 5dm, 5dn |
+| AI record+10h from bag `Equipment` | `5a8bb5d92` | `kAiPlaneBagEquipmentBound` | OFF | inert (AI side) | 5dn |
+| bomb drop velocity `006E0A70` | `a6f242237`, `c83b90eae`; the lead applied it as `3b466d2aa` | `kBombDropVelocityBound` (gunnery file) | **ON** | **live**: USN01's scout bomb hits Convoy1 and the phase advances; USNRM01 and LOMP10 move | 5do, 5do.1 |
+| kamikaze cruise profile `009AF15A` | this section | - | no reach, no task model | - | 5dp |
+
+Also inert on single-player rows, from 5df.1: `kAiPlaneLoadoutArmBound`, `kAiWeightBarrelGatesBound`
+and `kAiPlaneAttackerWeightBound` (ON, AI target weights); `kAiTickMovetoRetasksPlaneBound` (OFF).
+
+Scripts in `local\` (prefix `l38_`):
+- `l38_queue.ps1 -Tag t -Jobs 'side:row,...'` (one comma string is fine);
+- `l38_rowequip.py <log>`: scene squadrons whose bag `Equipment` differs from `DefaultEquipment`;
+- `l38_luaequip.py <lua>`: `SpawnNew` member Type and Equipment;
+- `l38_defgun.py`: the authored `DefaultGun` of every bomb platform;
+- `l38_de.py <id>...`: `DefaultEquipment` per class;
+- `l38_kami.py <log>...`: kamikaze-class spawns;
+- `l38_str.py`, `l38_dwords.py`: image strings and dwords from the PE on disk;
+- `l38_grep.py <log> <re> [n] [width]`;
+- `l38_bombvel_patch.py <tree> <bool>`, `l38_ai_patch.py`: the applied patches.
+
+### Next, in order
+
+1. **The kamikaze bot task** (`009AF480`, vtable `+54h`, and the rest of its slots). It is only
+   worth doing with a row that spawns a kamikaze class; find one first.
+2. **The barrel path's rocket accuracy.** `GameAiWeaponFacts::Barrel` (gunnery lane) needs
+   IgnitionDelay and AntiAir before `barrel_accuracy` can use `009FE4F1`. It is inert on
+   single-player rows today.
+3. **The kind-2 plane creation path** (`007CDF40`: `[plane+C54h]` from the creating record's
+   `+124h`, used by catapult and shipyard launches) does not carry `bag_equipment`. Those planes
+   keep the legacy `DefaultEquipment` read.
+4. **The air-ops scene `Arm` per slot** (`006CB277`) is taken as authored. A slot authored `none`
+   launches unarmed, which matches the image as read; not measured.
