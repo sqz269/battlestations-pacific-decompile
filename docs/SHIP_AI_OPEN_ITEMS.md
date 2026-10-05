@@ -11496,3 +11496,51 @@ These are label changes only. No switch was added, and the build and tests pass.
   - the `sub_throttle_command` 9999 guard: `009E6A90` runs on every pass, at `009F30DD`.
 - **Not done.** Section 139's `game_hosts_ai.cpp:5273` "nothing creates a PlaneSquadronGen"
   comment is still stale. The file is on loan to cc9-lua37.
+## 146. Section 143's three census items, read (cc9-ships31, 2026-10-05)
+
+These are reads only. `src/game_hosts_ai.cpp` is on loan to cc9-lua37, and both edits wait for it.
+
+| item | calls | verdict |
+| --- | --- | --- |
+| `AiCommand::squadron_excluded_009ffeb0` | 113796 | **Not a constant.** The census row is an artefact; see below. |
+| `AiCommand::tick_000c` (`00A10EC0`) | 55959 | **A real unbound behaviour,** the auto-merge leave pass; see below. |
+| `ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530` | 29922 | **A correct labelled substitution.** The record stays. |
+
+**`squadron_excluded_009ffeb0`.**
+- The image (`009FFEB0-009FFF1B`, listing read whole):
+  - `[00E17BF2]` set returns 0;
+  - otherwise it takes `[ECX+3D0h]+0C4h` (the class) and `007EDAD0` (the ammo type);
+  - for class 10h, 11h or 12h it calls `007F16D0(&desc)`;
+  - a non-null descriptor gives `0077D600(desc, &target, 1)` and returns 1.
+- `rtb_exclusion_arm` (`kAiSquadronRtbExclusionBound` ON) does the same from live squadron data.
+- The row counts because `game_hosts_ai.cpp:2556` calls `record()` on every entry, while `done()`
+  (line 2578) marks only the issuing arm.
+- **Fix:** `done()` at entry when bound, `record()` otherwise, and drop the second `done()`. Census
+  only.
+
+**`tick_000c`.** `NONCONTROL`'s `vt+0Ch` is `JMP 00A10EC0`, and `IDLE` runs `00A10EC0`, then
+`00A10DC0` (bound), then `00A11070`. `00A10EC0` is the auto-merge **leave** pass:
+- It acts only when the group's byte `+5648h` is set, the grouping-enabled byte
+  (docs/AI_GROUP_THINK.md).
+- While the population `+5644h` is above 1, it walks the followers after the leader.
+- For the first follower whose planar distance to the leader exceeds `AiTuning+20Ch`,
+  `AutoMerge_LeaveDist` (1200, `00CFD714`), it calls `BSP_AiGroup_RemoveEntity 00A2D9D0(entity,
+  1)` and restarts the walk.
+- It returns once every follower is inside.
+
+The host loads `auto_merge_leave_dist` and never reads it. Reach is not measured.
+
+**Next packet** (when the file is free):
+1. read `00A2D9D0`'s tail and `00A11070`;
+2. bind it behind an OFF switch, with a census of followers beyond the distance;
+3. run the pairs.
+
+**Torpedo-bot accuracy.** The process still holds no TorpedoBot descriptor
+(`load_robot_config_00901610` has no host caller). The host's six values {Stun 0.03, SPNormal
+0.35, SPVeteran 0.055, MPNormal 0.04, MPVeteran 0.045, Elite 0.055} equal this installation's
+`robots.lua` TorpedoBot `FireTargetAccuracy` (lines 392-432, mtime 2025-06-01). SPNormal's 0.35
+is authored.
+
+**The USN01 capture row** is closed without a flip (docs/SCRIPTED_HELM.md sections 10.3 and
+10.4). In phase 3, Katori and Coastal Gun 01 sink the player's ships before they can hold CB2's
+100 m for the 200 s that 10000 points needs.
