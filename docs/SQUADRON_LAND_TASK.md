@@ -9370,3 +9370,108 @@ frames) finished cleanly.
 The mechanism matches, so the switch flips ON (`kGetSquadronPlanesBound = true`). BSM04's
 script dogfight (1909) now waits on the dialog sequencer: the INTRO and ZEKES `callback`
 entries.
+
+## 5co. 5ch strands USN13's strike: the close attack has no candidate against a land-fort group (cc9-lua33, 2026-10-04)
+
+The lead's priority check, from reference W's leave-one-out: `kAiTickMovetoRetasksPlaneBound`
+(5ch) alone takes USN13 to zero shots. The pairs ran on `47d5ec5b4`, which is main with 5ck and
+5cm ON. OFF is `local\l33_off`, SHA-256 `492CB08B785C`, with the switch flipped false; ON is
+`local\l33_on`, `D41C2550EBEB`. Both runs had `BSP_AI_SQUAD_TICK_TRACE=1`, in reference v's
+launch form.
+
+| row | pair_diff | deaths OFF -> ON | shots OFF -> ON | releases OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | 3 | 22 -> **0** | 4189 -> **0** | torpedo 0/60 -> 0/60 |
+| USN13 9200/9000 | 3 | 116 -> **6** | 40517 -> 136 | torpedo 3/79 -> 0/60, dive 2/50 -> none |
+| USN04 4700/4500 | 3 | 45 -> 71 | 17447 -> 22401 | torpedo 0/16 -> 2/16 |
+
+### (1) Yes, current main still strands the strike
+
+5ck and 5cm do not change this.
+
+### (2) Where the groups go, and why nothing attacks
+
+The attackers are the script's Japanese wave "bruh" (type 162, WingCount 4, party 1). The
+script `PilotSetTarget`s each squadron at a ship (objects 263, 279, ...).
+- **OFF:** the squadrons keep that order and die to the destroyers' AA (DD_4, DD_6).
+- **ON:** the planner gives the AI groups that hold these squadrons `MOVETOATTACK` against
+  `CB2`, a **LandFort** group whose leader point is at (2973, 3, -2182). The tick's moveto
+  retires each script attack head, which is the image's rule in 5ch (`replaced_other=60`).
+- Every group closes in and promotes. The squad trace shows each leader's distance falling from
+  6.6-9.5 km to 0.4-1.4 km, inside `CollectDist` 3000. There are 8 promotions and 88
+  `CLOSEATTACK` ticks.
+- **But no squadron's close attack ever chooses a target.**
+  - The intake census reads `calls=0`, so no `settarget` ever reaches a squadron.
+  - `close fallback bridge calls=413`: 225 of them are ships, and the other 188 are squadron
+    fallbacks to the offset point.
+  - So the squadrons orbit 0.5-1.4 km from CB2 at 800-1400 m and never attack anything.
+- **Why, by `00A13B60`'s own rule** (docs/AI_CLOSE_ATTACK_TICK.md): a candidate with weight
+  `<= 0` is admitted only as a target-group member, and its score is `range * weight * 10`.
+  With weight 0 that score cannot beat the seed `best = 0` (`00A149A8`, `JBE`). A torpedo or
+  bomb squadron's `00A0F810` weight against the LandFort members is evidently 0. The three
+  `ai target choice` LandFort lines never reach a squadron (intake `calls=0`); which member made
+  them is not traced.
+- **Not the path leg.** `009FD050` (`BotApproach::refresh_path_leg`, unimplemented) shapes the
+  moveto's `+28h` leg factor between two distances. The groups do reach their points, so it is
+  not the cause.
+
+### (3) Would the image strand them?
+
+The stall rule itself, a zero-weight target that cannot win, is the image's. What is
+**unverified** is the assignment that feeds it. Two host substitutions make it:
+- the planner's choice of a LandFort group for a torpedo/bomb wave, at group weight 1.000 (the
+  `ai group ... weight=1.000` lines), while the per-member weight against that group's members
+  is 0;
+- the admission of script-generated squadrons into AI groups at all (`ai squadron generated
+  after load`, packet `cc9_generated_squadron_brain_membership`). If the image's brain never adopts
+  a `GenerateObject` squadron, its AI tick never re-tasks them.
+
+The planner value and the close weight disagree for the same pairs, so one of these is a host
+artefact. Until the planner's group value for a squadron against a LandFort group, or the
+generated-squadron membership, is checked against the image, 5ch strands the strike for a host
+reason. **Recommendation: take `kAiTickMovetoRetasksPlaneBound` back OFF** (`src/game_hosts_ai.cpp`,
+cc9-ships27's lane; routed to the lead). Next reads: `00A0F970` (the group target value for a
+plane group against LandFort) and the image's adoption of generated squadrons into a brain.
+USN04's opposite move (45 -> 71 deaths) belongs to the same switch and should be re-read after the
+fix.
+
+## 5cp. Handoff (cc9-lua33, 2026-10-04)
+
+Branch `agent/cc9-lua33`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua33`. No lease
+is held. `src/game_hosts_ai.cpp` was on loan for packet 1 and has been handed back.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_ai_squadron_settarget_intake` | `aaf170730`, `deeabf8a5` | `kAiSquadronSetTargetIntakeBound` | **ON** | 5ck.1, 5ck.2 |
+| `cc9_strafe_goaway_row` | `ab54ae37b` (trace), `1700efc38` | - | read | 5cl |
+| `cc9_strafe_breakoff` | `a14bb33f1`, `cd062f4ff` | `kStrafeBreakoffBound` | **ON** | 5cm, 5cm.1 |
+| `cc9_script_dogfight_rows` | `8d319feb2`, `01ec9eb13` | `kGetSquadronPlanesBound` | **ON** | 5cn, 5cn.1 |
+| 5ch USN13 check | `5532e517c` | `kAiTickMovetoRetasksPlaneBound` | recommend **OFF** (routed) | 5co |
+
+Env-gated traces added:
+- `BSP_STRAFE_GOAWAY_TRACE=1` (`src/game_hosts_units.cpp`): goaway enter, re-plans, done tests,
+  gates, pushes and manoeuvre ends.
+- `BSP_LUA_CALLBACK_TRACE=1` (`src/game_hosts_script_orders.cpp`): the first time and call count
+  of every `lua*` function and every host-fired Lua callback.
+
+Scripts are in `local\`: `l33_runs.ps1 -Tag <t>` (pairs), `l33_trace_runs.ps1` (one traced run),
+and `l33_ga_analyze.py` / `l33_mv_analyze.py` (goaway and manoeuvre episodes).
+
+### Next, in order
+
+1. **5ch (5co).** Settle what feeds the USN13 stall:
+   - `00A0F970`'s group value for a squadron group against a LandFort group;
+   - whether the image adopts a `GenerateObject` squadron into an AI brain at all.
+
+   Then re-pair USN13, USN13 long and USN04 with 5ch.
+2. **BSM04's dialog sequencer.** `StartDialog` `008B0540` -> the panel `00451A90` plays a
+   `Mission.Dialogues` sequence, including its `["type"] = "callback"` entries. This host only
+   registers the id. The INTRO and ZEKES callbacks (`bsm_04:164-190`) lead to the 1909 script
+   dogfight. Read how the panel advances (the per-message duration source) before binding.
+3. **USNRM01** is blocked on the West Virginia never taking damage. That is routed to
+   cc9-gunnery23 (5cn).
+4. **Break-off follow-ups (5cm):**
+   - the stacked second push when the enter and the tick push in one think;
+   - the manoeuvre head's `vt[40h]` `0099C2C0` on a command change;
+   - tightturn's `+2E4h &= ~4`.
+5. 5cj's remaining items.
