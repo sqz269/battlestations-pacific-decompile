@@ -11260,3 +11260,60 @@ Pairs from the commit that lands this OFF: `l38_a0` (OFF) against `l38_a1` (ON).
 - **USNOS:** AD-2 and F2G drop nothing (F2G's bombs or rockets). Expect fewer US releases.
 - **ESMP08 14200:** the Avenger releases `Equipments[2]`'s ordnance. Its count and kind are as
   authored; the release census names them.
+
+## 5dl. Item 3: the paratrooper fields and the carried kamikaze's class (packet `cc9_ai_loadout_carried_terms`, cc9-lua38, 2026-10-05)
+
+5df left two loadout-arm options scoring 0 because their bullet fields had no reader. Both
+readers are now read.
+
+### The image
+
+- **`007AC780`** (`__thiscall(bullet class, LuaObject)`, `RET 4`; no direct caller, so it is a
+  class's field reader in a vtable). It first runs `006E1BE0` (`BSP_BombClass_ReadLuaFields`), then
+  reads each key below through a `(ECX = key, EDX = field)` helper. Each helper
+  (`007AAE50`, `007AAED0`, `007AAF50`, `007AAFD0`) is `GetByName` + `GetNumber` -> `(float)`.
+
+| field | key (string) | site |
+| --- | --- | --- |
+| `+D8h` | `CapturePower` (`00D05220`) | `007AC917`-`007AC92B` |
+| `+DCh` | `SlowFactorClosed` (`00D05280`) | `007AC7B2` |
+| `+E0h` | `SlowFactorOpened` (`00D0526C`) | `007AC7D5` |
+| `+E4h` | `OpenDuration` (`00D0525C`) | `007AC7F8` |
+| `+E8h` | `CloseDuration` (`00D0524C`) | `007AC81B` |
+| `+ECh` | `SoldierClass` (`00CE7164`) -> `004B1400` | `007AC857`-`007AC88D` |
+| `+F0h` | `SoldierAnim` (`00D05230`) | `007AC8D1` |
+| `+F8h` | `CaptureDuration` (`00D0523C`) | `007AC83E` |
+| `+FCh` | `Damage` (`00CE66C8`) | `007AC8F4` |
+
+  - The 0Fh scoring (`00A08EBA`-`00A08ED9`, all `FLD`/`FMUL float`) reads `+D8h` (CapturePower)
+    when record `+1Ch` is set, else `+FCh` (Damage), times `+F8h` (CaptureDuration).
+- **`006FF170`**, the `MDummyKamikazePlane` reader:
+  - `+D8h` is `OpenAfterTime` (`00CFC878`, `006FF1A8`).
+  - `+DCh` = `00964790` (`VehicleClass_GetOrCreate`, `DL` = 1) of the integer `KamikazePlaneClass`
+    (`00CFC864`; `006FF1C1`-`006FF1EE`).
+  - The 0Dh option then reads that class's `+210h` (`00A08DEE`), the `KamikazeBulletClass` the plane
+    class reader stores (`src/plane_class_fields.cpp`, `007D2BCA`), and takes its `+B4h`/`+B8h` blast
+    pair (`00A08E06`/`00A08E10`).
+
+### The binding (`kAiLoadoutCarriedTermsBound`, `include/bsp/ai_target_weights.hpp`), committed OFF
+
+`read_loadout_text` (`src/game_hosts_lua.cpp`) now also returns these, per loadout entry:
+- the bullet's `CapturePower`, `CaptureDuration` and `Damage` (`tonumber(...) or 0`; LABELLED: a nil
+  read as 0, which is `GetNumber`'s assumed answer on nil);
+- for a bullet with `KamikazePlaneClass`, that class's `KamikazeBulletClass` bullet: its `Type` and
+  its `Blast` pair.
+
+With the switch ON, an entry with sub-type 0Fh gets `paratrooper_terms_known`, and an entry with a
+resolved carried bullet gets `carried_kamikaze_known`. This installation's
+`classtables/arcade/bulletclasses.lua` (mtime 2026-05-09, modded) has a Paratrooper row with
+`CapturePower` 12, `Damage` 42 and `CaptureDuration` 30. `classtables/realistic` also authors
+`CaptureDuration` 30. The Ohka bullet names `KamikazePlaneClass` 156.
+
+### Predictions, written before any ON run
+
+- Rows with no Ohka or paratrooper loadout are identical. That covers every reference row except
+  USNOS.
+- **USNOS:** the 9 `BettyOhka` squadrons (class 32, Equipment 1) now score the carried-kamikaze
+  option against surface targets: the class 156 blast pair x Kamikaze accuracy x the factor. Expect
+  the census `kamikaze=` count to rise above 0. The Bettys' target pick may move, and with it the US
+  AA engagement. Exit 1 or 3.

@@ -388,6 +388,12 @@ inline constexpr std::uint32_t kAiPlaneOptionRocket = 0x00E08F48u;      // 00A08
 inline constexpr float kAiLoadoutReloadSeed = 9999.0f;
 inline constexpr double kAiLoadoutParamsHalf = 0.5;
 
+// Packet cc9_ai_loadout_carried_terms (docs/SQUADRON_LAND_TASK.md 5dl): a host
+// fills the paratrooper fields (007AC780) and the carried kamikaze's class
+// (006FF170) of AiPlaneBulletFacts only with this ON; OFF they stay unknown and
+// both options score 0, as before.
+inline constexpr bool kAiLoadoutCarriedTermsBound = false;
+
 // A bullet class record as the plane arm reads it.
 struct AiPlaneBulletFacts {
     bool present{false};
@@ -401,14 +407,18 @@ struct AiPlaneBulletFacts {
     float ignition_delay{0.0f};
     bool anti_air{false};
     // MParatrooper +D8h, +F8h and +FCh, read by the 0Fh scoring at 00A08EBA..
-    // 00A08ED9. Their reader 007AC780 is contract: unread, so a host that has
-    // not read them leaves this false and the option scores 0.
+    // 00A08ED9. Their reader 007AC780 (cc9-lua38, SQUADRON_LAND_TASK 5dl) reads
+    // plain Lua numbers: +D8h `CapturePower` (007AC91D), +F8h `CaptureDuration`
+    // (007AC844), +FCh `Damage` (007AC8FA). A host leaves the flag false until
+    // it has them (kAiLoadoutCarriedTermsBound), and the option then scores 0.
     bool paratrooper_terms_known{false};
     float paratrooper_d8{0.0f};
     float paratrooper_f8{0.0f};
     float paratrooper_fc{0.0f};
     // MDummyKamikazePlane: the 0Dh option scores the blast pair of [bullet+DCh]'s
-    // class +210h (00A08DE4). The +DCh reader 006FF170 is contract: unread.
+    // class +210h (00A08DE4). The +DCh reader 006FF170 stores
+    // VehicleClass_GetOrCreate(`KamikazePlaneClass`) (006FF1C1..006FF1EE), whose
+    // +210h is that class's `KamikazeBulletClass`.
     bool carried_kamikaze_known{false};
     float carried_blast_min{0.0f};
     float carried_blast_max{0.0f};

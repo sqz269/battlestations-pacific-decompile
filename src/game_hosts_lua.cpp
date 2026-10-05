@@ -6245,12 +6245,17 @@ bool type_equals(const std::string& a, const char* b) {
 }
 
 // One Lua chunk per (class, equipment): each entry as
-// "ammo;reload;deviceType;hasBullet;bulletType;dmin;dmax;bmin;bmax;ignition;antiair",
+// "ammo;reload;deviceType;hasBullet;bulletType;dmin;dmax;bmin;bmax;ignition;antiair;
+// capturePower;captureDuration;damage;carriedFound;carriedType;carriedBmin;carriedBmax",
 // '|' between entries, in pairs() order (00961F57 walks the table with the same
 // next()). DamageMax and BlastDamageMax default to their minimum
 // (docs/WEAPON_CLASS_DESCRIPTOR.md); `Bullets`, else `BulletClass`, is the table.
+// The last seven fields are packet cc9_ai_loadout_carried_terms: MParatrooper's
+// CapturePower / CaptureDuration / Damage (007AC780, plain numbers, nil as 0)
+// and a DummyKamikazePlane's VehicleClass[KamikazePlaneClass].KamikazeBulletClass
+// blast pair and Type (006FF170 +DCh, then the class's +210h).
 std::string read_loadout_text(lua_State* state, int class_id, int equipment) {
-    char chunk[2048];
+    char chunk[4096];
     std::snprintf(chunk, sizeof(chunk),
         "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
         "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return nil end\n"
@@ -6264,6 +6269,7 @@ std::string read_loadout_text(lua_State* state, int class_id, int equipment) {
         "    local d = type(DeviceClass) == 'table' and DeviceClass[tonumber(v.Platform) or -1] or nil\n"
         "    local dt = (type(d) == 'table' and type(d.Type) == 'string') and d.Type or ''\n"
         "    local hb, bt, dmin, dmax, bmin, bmax, ign, aa = 0, '', 0, 0, 0, 0, 0, 0\n"
+        "    local cp, cd, dg, kf, kt, kmin, kmax = 0, 0, 0, 0, '', 0, 0\n"
         "    if type(d) == 'table' and type(d.Bullet) == 'table' and type(d.Bullet[1]) == 'table' then\n"
         "      local b = BT and BT[d.Bullet[1].Bullet] or nil\n"
         "      if type(b) == 'table' then\n"
@@ -6277,10 +6283,24 @@ std::string read_loadout_text(lua_State* state, int class_id, int equipment) {
         "        end\n"
         "        ign = tonumber(b.IgnitionDelay) or 0\n"
         "        aa = (b.AntiAir == true) and 1 or 0\n"
+        "        cp = tonumber(b.CapturePower) or 0\n"
+        "        cd = tonumber(b.CaptureDuration) or 0\n"
+        "        dg = tonumber(b.Damage) or 0\n"
+        "        local kc = type(VehicleClass) == 'table' and VehicleClass[tonumber(b.KamikazePlaneClass) or -1] or nil\n"
+        "        local kb = (type(kc) == 'table' and BT) and BT[tonumber(kc.KamikazeBulletClass) or -1] or nil\n"
+        "        if type(kb) == 'table' then\n"
+        "          kf = 1\n"
+        "          kt = type(kb.Type) == 'string' and kb.Type or ''\n"
+        "          if type(kb.Blast) == 'table' then\n"
+        "            kmin = tonumber(kb.Blast.BlastDamageMin) or 0\n"
+        "            kmax = tonumber(kb.Blast.BlastDamageMax) or kmin\n"
+        "          end\n"
+        "        end\n"
         "      end\n"
         "    end\n"
         "    out[#out + 1] = table.concat({math.floor(tonumber(v.Ammo) or 0),\n"
-        "      tonumber(v.ReloadTime) or 0, dt, hb, bt, dmin, dmax, bmin, bmax, ign, aa}, ';')\n"
+        "      tonumber(v.ReloadTime) or 0, dt, hb, bt, dmin, dmax, bmin, bmax, ign, aa,\n"
+        "      cp, cd, dg, kf, kt, kmin, kmax}, ';')\n"
         "  end\n"
         "end\n"
         "return table.concat(out, '|')\n",
@@ -6331,7 +6351,7 @@ bool game_ai_plane_loadout(int class_id, int equipment,
     if (present && !text.empty()) {
         for (const std::string& row : split_text(text, '|')) {
             const std::vector<std::string> f = split_text(row, ';');
-            if (f.size() != 11) continue;
+            if (f.size() != 18) continue;
             bsp::AiPlaneLoadoutEntryFacts e;
             e.ammo = std::atoi(f[0].c_str());
             e.reload = static_cast<float>(std::atof(f[1].c_str()));
@@ -6349,6 +6369,21 @@ bool game_ai_plane_loadout(int class_id, int equipment,
                 e.bullet.blast_max = static_cast<float>(std::atof(f[8].c_str()));
                 e.bullet.ignition_delay = static_cast<float>(std::atof(f[9].c_str()));
                 e.bullet.anti_air = f[10] == "1";
+                if constexpr (bsp::kAiLoadoutCarriedTermsBound) {
+                    // 00A08E81: the 0Fh scoring reads these only for sub-type 0Fh.
+                    if (e.bullet.sub_type == 0x0F) {
+                        e.bullet.paratrooper_terms_known = true;
+                        e.bullet.paratrooper_d8 = static_cast<float>(std::atof(f[11].c_str()));
+                        e.bullet.paratrooper_f8 = static_cast<float>(std::atof(f[12].c_str()));
+                        e.bullet.paratrooper_fc = static_cast<float>(std::atof(f[13].c_str()));
+                    }
+                    if (f[14] == "1") {
+                        e.bullet.carried_kamikaze_known = true;
+                        e.bullet.carried_sub_type = bsp::weapon_class_sub_type_for_lua_type(f[15]);
+                        e.bullet.carried_blast_min = static_cast<float>(std::atof(f[16].c_str()));
+                        e.bullet.carried_blast_max = static_cast<float>(std::atof(f[17].c_str()));
+                    }
+                }
             }
             out.push_back(e);
         }
