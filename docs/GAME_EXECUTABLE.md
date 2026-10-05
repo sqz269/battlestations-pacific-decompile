@@ -13870,3 +13870,80 @@ Each variant was turned OFF alone and read with `pair_diff` against v on the six
   - JM05 12;
   - USN02's 29.75 s failure.
 - **Flipped on main during these runs (for w):** `kLandingShipStartLandingBound` ON (cc9-ships24, `00b972337`). `kGroundRetakeoffBound` is new and OFF (cc9-lua28).
+
+## Mission reference baselines, 2026-10-05 w (main 85f60f0a5)
+
+Packet `cc9_reference_rebaseline_23`, worker cc9-gunnery23. The base is main `85f60f0a5`
+(2026-10-01 01:26 UTC, `Merge agent/cc9-gunnery22`). The report will be
+`reports/cc9_reference_rebaseline_23.json`. Anything flipped on main during these runs belongs to x.
+
+### Predictions (written before any run)
+
+**The switch diff.** Two checks over `16d01094e..85f60f0a5`:
+- `local\g23_switches.py` (v's `g20_switches.py`);
+- the loose `git diff` over added and removed `constexpr bool k... = true|false` lines in `src`
+  and `include`.
+
+They agree: **twenty switches are newly ON**, none is newly OFF, and every one is a new name
+(none existed at v's base). They are grouped into fifteen leave-one-out variants:
+
+| short | switch(es) | record | rows the pair moved (on its own base) |
+| --- | --- | --- | --- |
+| `dwc` | `kDynWorldContactPhaseBound` | GUNNERY 91.4 pair 1 | USN04, E2, USN01, USN13, JM05, LOMP10, LOMP10 long, USNOS long, JM05 long, JM08 long |
+| `hh` | `kHullHullContactBound` | GUNNERY 91.4 pair 2 | every row with hull contacts: all of v's eighteen but USN01 and BSM01 |
+| `hf` | `kHullFortContactBound` | GUNNERY 96.4 | IJN01 only (deaths identical) |
+| `kam` | `kKamikazeDynContactBound` | GUNNERY 92.4 | none |
+| `goa` | `kArtilleryGroundOriginAimBound` | GUNNERY 93.4 | USN01, JM08, USN13, JM05, USN12, USNOS, USNOS long, JM05 long, JM08 long |
+| `neo` | `kArtilleryNonShipErrorOffsetBound` | GUNNERY 97.5 pair 1 | the non-ship-aim rows: USNOS, USNOS long, JM08, JM08 long, JM05, JM05 long, USN12, USN01, JM06, IJN01, USN13 long |
+| `afs` | `kArtilleryAirfieldAimSlotBound` | GUNNERY 97.5 pair 2 | USN01 only |
+| `land` | `kLandingShipStartLandingBound` + `kLandingCraftLaunchBound` + `kLandingCraftOwnerPlayerBound` + `kLandingShipUnloadBound` + `kCaptureGeneratedUnitClassFieldsBound` | SHIP_AI 97.4, 100.4, 101.4, 106.5, 109.6 | JM08 long only (USNOS controls identical) |
+| `tmb` | `kAiTransportMovesOrderBridgeBound` | SHIP_AI 107.5 | JM08 long (USNOS exit 1) |
+| `strf` | `kStrafeTaskBound` + `kAttackChoiceGunsFedBound` | SQUADRON_LAND_TASK 5cb | USNOS, USNOS long, ESMP08 long |
+| `slp` | `kAiSquadronLeaderPointBound` | 5cg | USNOS (90 -> 107), ESMP08 long |
+| `rtk` | `kAiTickMovetoRetasksPlaneBound` | 5ch | ESMP08 long |
+| `amt` | `kGetPropertySquadronAmmoTypeBound` | 5ci | USNRM01 |
+| `grt` | `kGroundRetakeoffBound` | 5bs | none at exit 3 (JM05 long exit 1) |
+| `tdb` | `kThrottleDeadBandBound` | 5bt | the plane rows (USN04, E2, USN13, JM05, JM05 long, ...) re-timed |
+
+**Rows:** v's eighteen in v's launch form (`local\g23_runs.ps1`, a copy of `g20_runs.ps1`),
+1600x900, plus three the recent flips named: **USN13 long** (9200/9000, GUNNERY 96-97),
+**ESMP08 long** (9200/9000, 5cb-5ch) and **USNRM01** (9200/9000, 5ci). The three new rows have no
+v run; they are compared against the anchor only.
+
+**Predicted moved against v (seventeen of eighteen):** every row but BSM01. `hh` alone moves
+sixteen of them (every row with hull contacts) and `goa`/`neo`/`dwc` move USN01.
+**Predicted gameplay-identical (exit 0 or 1): BSM01** (no contacts, no shots, no aircraft).
+
+**Headline predictions** (the pairs ran on bases between v and w, so these compose the last pair
+value on each row):
+- **JM08 long:** the landing chain runs. Crafts launch (one launch, about 8 crafts), ramps lower
+  and capture arm 2 adds ticks after the HQ turns neutral; the HQ does not flip (CaptureValue
+  2,000,000). Deaths 160 -> 140-180.
+- **USNOS:** 106 -> about 100 (`goa` -23, `hh` +4, `neo` -9, `slp` +17, `strf` +3).
+  **USNOS long:** 147 -> about 120-130.
+- **USN01:** 17 -> about 29 (`goa` +12); hit records about 1280.
+- **JM08:** 7 -> about 20 (the watchtowers and bunkers die under `goa`).
+- **IJN01:** about 5 deaths; Whitney held by Pier 03 (`hf`).
+- **USN04 and E2:** within two deaths of 50 and 52 (`dwc`, `hh`, `tdb`, RNG-coupled).
+- **JM05 about 11, JM05 long about 16, USN12 about 5, USN13 about 22, LOMP10 about 2, LOMP10 long
+  about 5.** USN02 still fails at 29.75 s.
+- **ESMP08 long:** the US strike group closes on Zuikaku; about 6-7 deaths.
+
+**All-OFF anchor:** with the twenty OFF (`local\g23_rw0`), `85f60f0a5` is gameplay-identical to v
+(exit 0 or 1 against `g20_rv_<row>` in the cc9-gunnery20 tree) on all eighteen rows. A miss
+names a change that landed since v without a switch.
+
+**Leave-one-out.** Each variant above OFF alone against w on the rows w moves (`local\g23_lane.ps1`,
+logs `local\g23_w_<v>_<row>.log`). Predicted:
+- `hh` attributes JM06, LOMP06 and USN02 alone;
+- `goa` attributes USN01 and JM08 (with `neo`);
+- `land` and `tmb` move JM08 long only;
+- `amt` attributes USNRM01; `rtk` and `slp` ESMP08 long;
+- `kam` and `grt` move nothing at exit 3;
+- `hf` moves IJN01 at exit 3 with its death table identical.
+
+**Run parameters:**
+- Clean `tools/pair_export.py --commit 85f60f0a5` exports: `local\g23_rw` (no flip) and
+  `local\g23_rw0` (the twenty `=false`).
+- `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player.
+- A 300-frame USN01 smoke first.
