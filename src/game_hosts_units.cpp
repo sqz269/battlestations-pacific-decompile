@@ -5272,7 +5272,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_terrain_avoid_forward_speed (docs/SQUADRON_LAND_TASK.md 5da):
     // AvoidTerrain's unit vtable[204h] (0099F27E, 0099CC98) is ctl+7Ch, the body
     // forward speed 007D80C0 stores, where the host passed |v|. OFF: |v|.
-    static constexpr bool kTerrainAvoidForwardSpeedBound = false;
+    // ON since the 5da.1 pairs: USNRM01's Kates keep full throttle through the
+    // slip and drop at Pennsylvania; USN02 identical; USN04 an RNG cascade.
+    static constexpr bool kTerrainAvoidForwardSpeedBound = true;
     // Packet cc9_units_contracts, docs/AVOID_ZONE_REGISTRY.md section "Units
     // contracts": (1) unit+9B8h, the fixed step's second 0041BC20 sample
     // (007CE92A), stored per plane; no host path reads it (its readers are the

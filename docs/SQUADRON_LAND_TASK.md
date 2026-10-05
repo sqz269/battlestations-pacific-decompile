@@ -10540,3 +10540,45 @@ from the current pose and velocity at the think.
 - Controls (USN04, USN02): in coordinated flight forward speed is within a few m/s of `|v|`, so the
   cap and the look-ahead barely move. Expect small terrain-avoidance counter moves (the `avoid ...
   terrain` census) and RNG-coupled downstream moves; no systematic change in releases or deaths.
+
+### 5da.1 Measured: **ON** (cc9-lua36, 2026-10-05)
+
+Same-tree pairs from `d97ad79fd` (`local\l36_off`, `local\l36_on`; launch form of reference V,
+`local\l36_runs.ps1`). USN01 300-frame smoke ON: clean.
+
+| row | verdict | what moved |
+| --- | --- | --- |
+| USNRM01 9000 | 3 moved | deaths 180 -> 191; torpedo drops 54 -> 55; plane water contacts 104952 -> 95062 |
+| USN04 4500 | 3 moved | deaths 46 -> 38; torpedo drops 1 -> 2 |
+| USN02 3000 | 0 identical | - |
+
+**USNRM01, the Kates (the prediction held for 9 of 15 aircraft):**
+- OFF: all 15 Kates die by the depth kill at t = 126.7-127.1 s, 8 s after spawning.
+- ON, KateSpawn1 and KateSpawn5 (all three each), KateSpawn2's leader, KateSpawn3|.-2 and KateSpawn4|.-2 fly the run-in at full throttle. KateSpawn1,
+  KateSpawn5|.-2, KateSpawn3|.-2 and KateSpawn5 drop torpedoes at Pennsylvania (11 m, 69-71 m/s;
+  `torpedo drop 1`-`4`). The forced weights send them there, as 5cu.1 predicted.
+- At t = 186.91 s the script's own `Kill` (`008AC5C0`, `cc9_lua_kill`) removes KateSpawn1, 2 and 5
+  (7 aircraft, alt 67-349 m, no damage). That is the end of the scripted strike, about 68 s after
+  the spawn, which fits the 45 s of camera time 5cw.1 counted.
+- KateSpawn2's wingmen, KateSpawn3's leader and .-3, and KateSpawn4 and .-3 still reach the sea at
+  t = 146.4-148.2 s. That is a second, different fall:
+  - full throttle, nose 42-71 degrees up (`pitch_c64` 0.73-1.25), 27-48 m/s;
+  - the stall regime of docs/FREEFLIGHT_STALL_LAW.md, with the pilot holding full nose-up
+    (`live_pitch` 1.0);
+  - not bound here.
+- The other moved rows (Japanese aircraft, cranes, Neosho) follow from the changed air picture
+  and the shared RNG stream.
+
+**USN04, the control:**
+- The first gameplay line that differs is Yorktown-class01_sqn02's climb-out at 42.1 s (`min member
+  106.54 m` -> `115.88 m`). Its three aircraft cap the throttle 18/18/19 -> 16/16/17 times
+  (`vehicle/terrain avoid ... thr=`). A climbing aircraft's forward speed is below `|v|`, so the cap
+  engages less.
+- From there the dogfight diverges. The late fighter losses swap squadrons (OFF: Lexington sqn05,
+  Yorktown sqn06/08; ON: Yorktown sqn05/07, Lexington sqn06; all killed by Zeros at 187-221 s),
+  and the earlier rows move by fractions of a second.
+- This is a mechanism move at the first divergence, then an RNG-coupled cascade. No death in the
+  table is attributable one by one.
+
+**Verdict: the mechanism is the image's (`0099CC98` / `0099F27E` -> `007B8E70` -> ctl+7Ch ->
+`007D80C0`), and the predicted USNRM01 outcome followed. Flipped ON.**
