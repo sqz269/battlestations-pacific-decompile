@@ -129,6 +129,15 @@ inline constexpr bool kEntityDeadBound = true;
 // [game+21E4h]+1Ch), and the census row for the script's mission end. False:
 // the three bindings stay host records and no row is written.
 inline constexpr bool kMissionEndBound = true;
+// Packet cc9_dialog_sequencer (docs/SQUADRON_LAND_TASK.md 5cs). True: StartDialog's
+// table is parsed into the panel sequence entry 004507D0 builds (commands from
+// 0044BE50: msg, setpanel, hidepanel, pause, callback), and the entry is played
+// by 004527F0 / 00452740 / 00452360 on 005BBF10's tail timers: a message holds
+// for its streamed voice clip, then the entry's defaultPause (+88); a callback
+// runs through 00887E50; an exhausted entry is erased (it leaves
+// GetActDialogIDs). False: StartDialog only registers the id.
+// ON (2026-10-05): controls identical; BSM04 plays INTRO and ZEKES (5cs.1).
+inline constexpr bool kDialogSequencerBound = true;
 
 // Packet cc9_kamikaze_ship_blocked (docs/SHIP_AI_OPEN_ITEMS.md section 42). In
 // 007EE8F0's kamikaze arm, a ship target (007EEB64) whose class 00827F70 calls
@@ -750,6 +759,38 @@ private:
     unsigned long long dialog_starts_{0};
     unsigned long long dialog_kills_{0};
     unsigned long long dialog_queries_{0};
+    // Packet cc9_dialog_sequencer.
+    struct DialogCommand {
+        int kind{0};          // 0 msg, 1 setpanel, 2 hidepanel, 3 pause, 4 callback
+        std::string text;     // msg: message; callback: function name
+        float value{0.0f};    // pause: time (+8h)
+    };
+    struct DialogEntry {
+        float priority{0.0f};       // +4h
+        float request_time{0.0f};   // +8h, default the mission clock 00F876A4
+        float default_pause{1.0f};  // +Ch, default owner+30h (DialogDefaultPauseTime)
+        std::vector<DialogCommand> commands;   // +14h..+1Ch
+        std::size_t cursor{0};
+    };
+    std::map<std::string, DialogEntry, DialogKeyLess> dialog_entries_;
+    std::string dialog_current_;          // owner+28h
+    bool dialog_row_selected_{false};     // voice manager +84h != -1
+    float dialog_voice_left_{0.0f};       // the playing clip, polled at step 3
+    float dialog_hold_8c_{0.0f};
+    float dialog_delay_88_{0.0f};
+    std::string message_map_name_;        // LoadMessageMap(name, index)
+    int message_map_index_{0};
+    std::map<std::string, std::pair<float, float>> dialog_message_cache_;
+    unsigned long long dialog_messages_{0};
+    unsigned long long dialog_callbacks_{0};
+    unsigned long long dialog_pauses_{0};
+    unsigned long long dialog_finished_{0};
+    unsigned long long dialog_missing_voice_{0};
+    void dialog_parse_entry(int table_slot, DialogEntry& entry);
+    void dialog_tick(float step);
+    void dialog_advance_004527f0();
+    void dialog_step_00452740(const std::string& name);
+    std::pair<float, float> dialog_message_timing(const std::string& message);
     // Packet cc9_fill_path_points.
     unsigned long long fill_path_points_calls_{0};
     unsigned long long fill_path_points_empty_{0};

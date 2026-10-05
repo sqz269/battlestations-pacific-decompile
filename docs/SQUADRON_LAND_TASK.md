@@ -9811,3 +9811,166 @@ when the close weight is positive, and for a torpedo bomber against a ship it is
 artefact is the ungated barrel walk that `kAiWeightBarrelGatesBound` replaces (5cq). USNRM01 is
 the row where that switch matches the script's intent. The switch stays OFF for the reason in
 5cq.2: the slot-4 brain-team question is still pending static evidence.
+
+## 5cs. BSM04's dialog sequencer bound OFF (packet `cc9_dialog_sequencer`, cc9-lua34, 2026-10-05)
+
+5cn found that BSM04's opening never reaches its script dogfight (`bsm_04:1909`):
+- the `INTRO` sequence's callbacks (`luaIntroMovieB`, `luaIntroMovieC`, `luaZekesDia`) never fire;
+- nor does `ZEKES`'s (`luaIntroMovieD`).
+
+`StartDialog` `008B0540` only registered the id in this host.
+
+### The image's sequencer, from the reconstructed pieces and the listing
+
+- **Building the entry.** `00451A90` looks the id up or inserts it (`00451920`), and `004507D0`
+  builds the entry from the table:
+  - `priority` `+4h`;
+  - `requestTime` `+8h`, default the mission clock `[00F876A4]`;
+  - `defaultPause` `+Ch`, default owner `+30h`. That is `DialogDefaultPauseTime`, 1.0 in this
+    installation's `scripts/datatables/dialogglobals.lua` (mtime 2024-07-13; DIALOG_CONFIG);
+  - `sequence`: one command per element from `0044BE50`, typed by `type` (default `"msg"`, compared
+    without case at `0044BE79`-`0044BF99`).
+
+  | type | kind | vtable | field read |
+  | --- | --- | --- | --- |
+  | msg | 0 | `00CE49CC` | `message` (`0044A440`) |
+  | setpanel | 1 | `00CE49DC` | panel fields, no timing |
+  | hidepanel | 2 | `00CE4950` | none |
+  | pause | 3 | `00CE4960` | `time` (`0044A570`, string `00CE37A8`) |
+  | callback | 4 | `00CE49EC` | `callback` (`0044A5B0`) |
+
+- **Playing it.** Each frame `005BBF10` (VOICE_UPDATE_INTEGRATION step 7) waits for the selected
+  row:
+  - A row with key end 0 holds until its clip's slot reports completion (step 3); otherwise it holds
+    until the last key's end.
+  - Then it clears the selection, counts down `+88h` and calls `004527F0` once `+88h` is not
+    positive.
+  - `004527F0` erases an exhausted current entry, selects by priority (`0044C390`) and steps
+    (`00452740`).
+  - The step first runs `00452360`: setpanel, hidepanel and callback commands in order. A callback
+    is `00887E50` with no argument, inside `00E17BFA` = 1.
+  - It then handles the command at the cursor. A message selects its row through `005B94D0` and
+    stores the entry's `+Ch` as the `+88h` delay. A pause stores `time - entry +Ch` in `+88h`.
+    (PANEL_SEQUENCE.)
+- **BSM04's message timing.** `LoadMessageMap("bsmdlg", 4)` (`bsm_04:41`) selects map 4 of
+  `scripts/datatables/messagemaps/bsmdlg.lua` (mtime 2024-07-13).
+  - Its `INTRO1` record has one subtitle key ending at 0.0 and the voice
+    `CAMPAIGN/BSM04/INTRO1`.
+  - So each message lasts its clip plus the 1.0 s default pause, and each callback fires at the
+    start of the following step.
+
+### The binding, committed OFF
+
+`kDialogSequencerBound`, `include/bsp/game_hosts_script_orders.hpp`, with the code in
+`src/game_hosts_script_orders.cpp` (`dialog_*`):
+- `StartDialog` parses the table into the entry above, and `KillDialog` erases it.
+- `LoadMessageMap` records the map name and index.
+- The script think pass runs the tail timers and the advance.
+- A finished entry leaves `GetActDialogIDs`.
+
+LABELLED:
+- The clip length is the streamed file's FSB4 header: sample count over default frequency, from
+  `sound/messages/authentic/streamed_dialogs/<voice>.fsb` (`voice_dir authentic`,
+  APP_INIT_LOCALE). For `INTRO1` that is 194368 / 41100 = 4.73 s. This process plays no voice, so
+  it takes no stream latency.
+- The message record is read by running the map file in a private environment.
+- The timers run once per script think step rather than per frame.
+- State 2's row reset is folded into the advance.
+- A callback's own `StartDialog` or `KillDialog` is seen by looking the entry up again.
+
+Census:
+- `summary mission dialog sequencer ...`;
+- `dialog callback <name> t=...`, `dialog message ... starts`, `dialog "<id>" finished`.
+
+### Predictions, written before any ON run
+
+- **BSM04 3200/3000:**
+  - `INTRO` plays INTRO1, INTRO2 and INTRO3, firing `luaIntroMovieB`, `luaIntroMovieC` and
+    `luaZekesDia` at about +5.7 s each after its start (clip about 4.7 s plus 1.0 s);
+  - `ZEKES` then plays and fires `luaIntroMovieD`;
+  - `luaIntroMovieEnd` follows 8 s later (`bsm_04:1896`), reaching the 1909 dogfight;
+  - `pair_diff` moved.
+
+  **Weakest call:** whether `luaIntroMovieB`/`C`/`D` (movie callbacks) need a movie end the host
+  never sends.
+- **USN04 4700/4500:** its `INTRO` now finishes and leaves the active set, so the failure path's
+  `KillDialog` finds less. Gameplay identical or moved only through any callback it carries.
+- **USN02, USN12 (controls):** gameplay-identical unless their dialogs carry callbacks. The census
+  names any that fire.
+
+### 5cs.1 Measured (OFF `local\l34_doff`, ON `local\l34_don`, both from the OFF commit), and the verdict: **flip ON**
+
+Reference V's launch form with `BSP_LUA_CALLBACK_TRACE=1`. A USN01 500/300 smoke on the ON build
+finished cleanly.
+
+| row | pair_diff | deaths | shots | sequencer (ON) |
+| --- | --- | --- | --- | --- |
+| BSM04 3200/3000 | moved | 5 -> 5 (re-dealt) | 3792 -> 9396 | messages 7, callbacks 4, finished 4 |
+| USN04 4700/4500 | identical | 45 | 17447 | messages 5, callbacks 0, finished 1 |
+| USN02 3200/3000 | identical | 1 | 1055 | messages 6, pauses 2, finished 1 |
+| USN12 3200/3000 | identical | 5 | 144 | messages 2, pauses 1, finished 1 |
+
+**BSM04's opening, from the ON log (`l34_don_bsm04`).**
+
+| t (s) | event | clip |
+| --- | --- | --- |
+| 5.10 | INTRO1 | 4.729 |
+| 10.80 | `luaIntroMovieB`, then INTRO2 | 4.717 |
+| 16.50 | `luaIntroMovieC`, then INTRO3 | 6.092 |
+| 23.55 | `luaZekesDia` starts ZEKES | |
+| 23.60 | INTRO finishes; ZEKES1 | 6.092 |
+| 30.65 | `luaIntroMovieD`, then ZEKES2 | |
+| 37.45 | ZEKES finishes | |
+
+- Each step lands at clip + 1.0 s plus one think step, as predicted.
+- `luaIntroMovieD` spawns the two Zero flights (`luaSpawnFirstZeros`, SpawnNew serials 1 and 2).
+  That is the death and shot movement: Jap #1.1 and #2.1 die, the B-17s are re-dealt, and
+  `AirField_sqn01` is no longer killed.
+- RESPOND and UNDERATTACK also play and finish.
+
+**Open: `luaIntroMovieEnd` never runs.**
+- `luaIntroMovieD` ends with `luaDelay(luaIntroMovieEnd, 8)` (`bsm_04:1896`). The callback
+  "ran" without an error.
+- Yet the run counts no further `luaDelay` call (`calls=3`, all before) and no fourth timer
+  entity (`CreateScript calls=4`).
+- So the 1909 dogfight is still not reached. Next read: why a `luaDelay` inside a callback that
+  the sequencer fires from the script think pass creates no timer entity. Suspects are the think
+  pass's re-entrancy and the hook's count.
+
+**Controls.** USN02 and USN12 are identical; USN04 is identical too. Their dialogs carry no
+callbacks, and finishing them only empties the active set earlier.
+
+**Verdict: ON.** The mechanism matches the prediction step by step, the controls are identical,
+and the moved row is the predicted one. The `luaIntroMovieEnd` miss is a separate host question,
+recorded above.
+
+## 5ct. Handoff (cc9-lua34, 2026-10-05)
+
+Branch `agent/cc9-lua34`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua34`. Lease
+`cc9_dialog_sequencer` is released at this commit.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_plane_attacker_weight` | `50bc6765e`, `97587c288`, `4bc3073bc`, `73838cc6b`, `5124a2894` | `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound` | OFF (held: slot-4 team, static evidence pending) | 5cq |
+| USNRM01 script target | `b9e603db4` | (the gates switch) | answered | 5cr |
+| `cc9_dialog_sequencer` | this branch | `kDialogSequencerBound` | **ON** | 5cs |
+
+Traces:
+- `BSP_AI_GROUP_VALUE_TRACE=1` (`src/game_hosts_ai.cpp`): every `00A0F970` call of a plane-led
+  group.
+- The census line `summary mission ai plane weight ...`.
+- `summary mission dialog sequencer ...`.
+
+Scripts in `local\`:
+- `l34_runs.ps1 -Sides <s> -Only <rows> [-Exe] [-Trace]`;
+- `l34_pairs.ps1 -SideA -SideB -Rows`;
+- `l34_gv.py`, `l34_killers.py`, `l34_dsum.py`, `l34_deaths.py`.
+
+Next, in order:
+1. **BSM04: why `luaIntroMovieEnd`'s `luaDelay` makes no timer** (5cs.1).
+2. **USNRM01 (c): the Kates' torpedo run-in and release gates at Pearl Harbor.**
+   - The `009D3420` sector scan and the release conditions.
+   - With the gates ON the Kates keep West Virginia and Oklahoma (5cr), yet neither dies.
+3. **5ch, the weight switches and the slot-4 team:** wait for cc9-ships28's static evidence
+   (`game+1FE4h` writers, SetGameMode callers).
+4. The 5cm break-off follow-ups and 5cj's remaining items (5cp).
