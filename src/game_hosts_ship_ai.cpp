@@ -636,6 +636,11 @@ inline constexpr bool kCaptureGeneratedUnitClassFieldsBound = true;
 // +11FCh its -1.0f, and the three 009E6A90 reads answer 0, 0 and false.
 // ON by section 152.5: the mechanism and every predicted direction held.
 inline constexpr bool kShipAiApproachLanderTermsBound = true;
+// Packet cc9_initial_cruise_state (section 155). True: a controller starts in the
+// `cruise` state (ai+0BC8h, command 00E08F70), as 009F3BA0 builds it, so a unit
+// whose director holds no command steps cruise (009E1170) until 009F3DD0 selects
+// another state. False: it starts with no state and its first steps are records.
+inline constexpr bool kShipAiInitialCruiseStateBound = false;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -1083,8 +1088,11 @@ struct GameShipAiHost::Impl {
             }
         } order{};
         bsp::AutoTargetState target{};          // director+38h
-        std::uint32_t active_state_ai_offset{0};  // ai+2264h
-        std::uint32_t active_state_command{0};
+        // ai+2264h. 009F3C0D..009F3C27 (the controller constructor 009F3BA0):
+        // the current state starts as ai+0BC8h, brain+0B70h, the `cruise` leaf,
+        // and its vtable[4] (a bare RET) is called. Packet cc9_initial_cruise_state.
+        std::uint32_t active_state_ai_offset{kShipAiInitialCruiseStateBound ? 0x0BC8u : 0u};
+        std::uint32_t active_state_command{kShipAiInitialCruiseStateBound ? 0x00E08F70u : 0u};
         bsp::NativeHandle fire_target{0};       // director+238h as this process holds it
         bool fire_target_locked{false};         // director+23Ch (packet cc9_usn02_deruyter_fire)
         std::string sample;                     // the last line log_sample emitted

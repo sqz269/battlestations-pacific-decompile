@@ -12413,3 +12413,35 @@ Census line: `summary mission ship ai setter path reset resets= live= from_sette
 **Verdict: ON**, recorded as a spread miss with the mechanism matching. It is the image's rule,
 read from the listing. The kamikaze caller (`009E2365`) and the unread `009DE1D9` / `009DE253` /
 `009DFF0C` callers stay unbound.
+
+
+## 155. A controller starts in `cruise` (packet `cc9_initial_cruise_state`, `kShipAiInitialCruiseStateBound`, cc9-ships33, 2026-10-05)
+
+**The census row.** `ShipAiState::step_vtable0c` is the null-state step, recorded once per unit
+on 8 of the 10 gate-ON rows: BSM01 28, IJN01 41, USN13 54, USN13 long 54, USNOS 19, USNRM01 43,
+LOMP06 1, JM08 long 1. These are the units whose director holds no command at their first
+replan. `009F3DD0` returns at `009F3E05` without selecting, and `009F5186` then calls the
+current state's `vtable[0Ch]` with no null test.
+
+**The image.** The controller constructor `009F3BA0` (one caller, `009F3F59`):
+- `009F3C07 LEA ECX,[ESI+0BC8h]` / `009F3C17 MOV [ESI+2264h],ECX`;
+- `009F3C1D..009F3C27`: the state's `vtable[4]`.
+
+`ai+0BC8h` is `brain+0B70h`, the `cruise` leaf (vtable `00D21598`, command `00E08F70`). Its enter
+is a bare RET (section 137). So **every controller starts in `cruise`**, and a unit with no
+command runs `009E1170` until a command selects another state. The host started with no state
+(`active_state_ai_offset` 0) and recorded those steps.
+
+**The binding (committed OFF).** Under `kShipAiInitialCruiseStateBound` the controller's initial
+`active_state_ai_offset` / `active_state_command` are `0BC8h` / `00E08F70`. Nothing else changes:
+- a later command selects as before;
+- the exit of `cruise` is the existing `vtable[8]` record.
+
+**Predictions (written before any ON run).**
+- **Mechanism:** `state_steps{... records=}` falls by the null-state count on each row, and
+  concrete cruise steps rise by the same count, unless the commands host's `cruise_step` declines
+  a unit with no command, in which case those steps stay records.
+- **Spread:** one cruise replan per such unit, from the commanded speed setting. Most of these
+  units are stopped at mission start.
+  - `pair_diff` 1 on BSM01, USN13 and USNOS.
+  - It could be 3 where a commanded speed is non-zero at frame 1.
