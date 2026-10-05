@@ -11571,3 +11571,27 @@ script.
   with no direction predicted. Each bomb's along-track overshoot shrinks by about 0.15 s x the
   aircraft's speed.
 - **Rows with no bomb drop:** identical.
+
+### 5do.1 Measured (`l38_e0` against `l38_e1`): **the scout's bomb now hits, and USN01 leaves phase 1-2** (cc9-lua38, 2026-10-05)
+
+| row | e0 -> e1 | |
+| --- | --- | --- |
+| USN02 | identical (exit 0) | control |
+| USN13 long, JM05 long | gameplay identical (exit 1) | their few bombs change nothing |
+| **USN01** | the leader's bomb: fate 4 at (-3418.4, -1.2, -1473.6) after 4.00 s -> **fate 2 at (-3397.6, 1.3, -1456.0) after 3.70 s**, 13.5 m from Convoy1's centre (-3384.1, -1454.4). Units 64 -> 93, torpedo tasks 0/5 -> 0/17, dive tasks 2/2 -> 2/19, controlled unit ScoutDauntless -> ConTBD1, damage 33939 -> 35061 | the convoy's hit listener fires and the script spawns the next phase |
+| USNRM01 | deaths 129 -> 132, dive releases 36 -> 34, hits taken: Maryland 8 -> 20, California 2 -> 13, Oklahoma 9 -> 11, Tennessee 21 -> 22 | more bombs land on the battleships |
+| LOMP10, LOMP10 long | damage 2194 -> 1987 / 2832 -> 2620, hit records +2, hull hits -1 | the 14 Lightning/Warhawk/B-25 bombs land elsewhere |
+
+- **USN01.** The bomb now falls in 3.70 s, against the 3.83 + 0.1 s prediction; the 0.05 s steps
+  quantise it. It lands 20.7 m from the e0 point and on the hull.
+- **The prediction's "22 m behind the oiler, no hit" was wrong.** It measured to the oiler's
+  centre, not to its hull. The lead law is the image's and unchanged. What decided the hit was the
+  bomb's own overshoot.
+- **USNRM01.** The only-ON deaths are Japanese planes shot down by AA (Ralph Talbot, Phoenix,
+  Neosho, Arizona): the timing of the strike moved, and the AA draws with it (RNG-coupled, as
+  memory notes for gunnery pairs).
+
+**Verdict: ON is recommended.** The mechanism is the image's as read (`006E1F00` -> `vtable[190h]` =
+`006E0A70`), it matches the fall time `007BCC80` predicts with, and it fixes USN01's stuck phase.
+The flip belongs in `src/game_hosts_gunnery.cpp` (gunnery lane). The edit, with the switch, is
+`local\l38_bombvel_patch.py <tree> true` in the cc9-lua38 tree, routed to the lead.
