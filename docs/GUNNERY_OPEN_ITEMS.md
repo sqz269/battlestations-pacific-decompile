@@ -8772,3 +8772,254 @@ about 67 m inside a hill. No host divergence was found, so nothing is bound and 
   01. Coastal Guns 02 and 03, on the same hill at 34-36 m, are on the ground and are the
   attackable forts. A player's manual aim has no `00864680` gate; the harness does not drive it.
 - **No code change.** `src/game_hosts_gunnery.cpp` is unchanged; the diagnostic was local only.
+
+## 114. Why SaltLakeCity now dies at 644.17 s on USN01 (cc9-gunnery26, 2026-10-05, lead queue item 2)
+
+The question: cc9-ships32's USN01 runs at main `4950ab838` (docs/SCRIPTED_HELM.md 11.2) lose
+SaltLakeCity at 644.17 s to a Katori torpedo at 113 m. cc9-ships31's runs had it alive until 932.6 s
+(run A) and 1120.2 s (run B). Which switch moved it?
+
+**Answer:**
+- The cause is two of reference z's switches acting together: `kAiWeightBarrelGatesBound` and
+  `kAiPlaneAttackerWeightBound` (SQUADRON_LAND_TASK 5df.1, `2086291cc`).
+- It is neither a regression nor a fidelity gain of its own. It is a downstream, chaotic consequence
+  of a fidelity flip whose verdict was already made.
+
+### 114.1 The baseline and the switch diff
+
+- Every order in those runs starts at frame 13200 (660 s), so up to 644 s each run is an idle USN01.
+- ships31's runs were built at `94c5c61c3`.
+  - `local\g26_slc_base94.log` is a control export of `94c5c61c3`, run in the reference launch form.
+  - Its death rows equal ships31's `s31_capA_usn01.log` through 700 s, row for row (`local\g26_deaths.py`).
+- This tree's tip `82fa35ace` (`local\g26_diag1.log`) equals ships32's `s32_r1.log` through 700 s.
+- `local\g26_switches.py 94c5c61c3 4950ab838` (from g25) lists three switches:
+  - `kAiWeightBarrelGatesBound` (flipped ON);
+  - `kAiPlaneAttackerWeightBound` (flipped ON);
+  - `kAiPlaneLoadoutArmBound` (new, ON).
+
+  The non-switch code between the two commits is the loadout record wiring and the `attack`
+  harness line.
+- **Expectation before the runs** (not committed first, because nothing was bound): all three OFF restores the `94c5c61c3` rows; the attacker
+  weight alone carries the move.
+
+### 114.2 Leave-one-out at the tip (USN01, 13500 frames, `local\g26_lane.ps1`)
+
+| switches set OFF at `82fa35ace` | death rows through 700 s | SaltLakeCity |
+| --- | --- | --- |
+| none (tip, `g26_diag1`) | = s32_r1 | dies 644.17 s (Katori torpedo) |
+| all three (`g26_slc_off3`) | **= `94c5c61c3` = s31 capA** | alive at 675 s |
+| `kAiPlaneAttackerWeightBound` (`slc_att`) | = tip | 644.17 s |
+| `kAiPlaneLoadoutArmBound` (`slc_load`) | = tip | 644.17 s |
+| `kAiWeightBarrelGatesBound` (`slc_bar`) | a third history | dies 599.28 s (Katori torpedo) |
+| barrel gates + loadout (`slc_barload`) | = `slc_bar` | 599.28 s |
+| attacker + loadout (`slc_attload`) | = tip | 644.17 s |
+| **barrel gates + attacker (`slc_baratt`)** | **= `94c5c61c3`** | alive |
+
+- **Loadout arm.** Inert on USN01 up to 700 s.
+- **Attacker weight alone.** Inert while the barrel gates are ON.
+- **Barrel gates.** These carry the move. With the gates OFF, the attacker weight still moves the
+  rows (`slc_bar` differs from base). With both OFF, the base comes back.
+- **Expectation:** right on "all three"; wrong on "the attacker weight alone".
+
+### 114.3 Where the histories part, and the verdict
+
+- The first difference is at death row 11. In the base, Mav4 is shot down at 43.85 s; at the tip,
+  Mav1-Mav5 die 13-22 s later.
+- The Mavs are the Japanese flying boats. 00A08460's plane-attacker weights change their target
+  picks, so they fly different paths through the US AA.
+- Everything after that is the shared-stream chain (memory: the shared RNG stream couples pairs).
+- At about 640 s Katori torpedoes whichever US hull is closest. That hull is:
+  - in the base, Dunlap, at 636.52 s;
+  - at the tip, SaltLakeCity, at 644.17 s;
+  - with the gates OFF alone, SaltLakeCity again, at 599.28 s.
+- SaltLakeCity's survival to 932 s is a property of one trajectory, not of the image. Two of the
+  three histories here lose it before phase 3.
+- **Verdict.** The two switches stay ON, on their own 5df.1 verdicts. Nothing in this chain is a
+  host defect. SaltLakeCity's death time is not a fidelity measure. A USN01 capture plan should not
+  rely on SaltLakeCity reaching phase 3.
+
+## 115. Three lead items: the `pla` split, the draft-wall spawns, and SaltLakeCity on main (cc9-gunnery26, 2026-10-05)
+
+### 115.1 JM08 long's 46 -> 148 is `kDialogSequencerBound` alone
+
+Each of `pla`'s three switches was set OFF alone at reference y's base `409ad51a6`. JM08 long,
+36000 frames, in the reference launch form (`local\g26_lane.ps1`). `pair_diff` against
+`g25_y_base_jm08l.log`:
+
+| switch OFF alone | log | against y |
+| --- | --- | --- |
+| `kOrderAttackNoMemberIssueBound` | `local\g26_pla_oan_jm08l.log` | gameplay identical (148) |
+| `kTerrainAvoidForwardSpeedBound` | `local\g26_pla_tav_jm08l.log` | gameplay identical (148) |
+| `kDialogSequencerBound` | `local\g26_pla_dlg_jm08l.log` | **148 -> 66** |
+
+The `kDialogSequencerBound` run is gameplay identical to cc9-gunnery25's all-three-OFF run
+`g25_y1_pla_jm08l.log`: 66 deaths, 2709 hit records, 950 hull hits, 5802 shots.
+
+**The mechanism.**
+- With the sequencer ON, y's summary reads `dialog sequencer bound=1 messages=22 callbacks=1`,
+  and the log has `dialog callback HoshoTime t=111.15`.
+- This installation's `scripts\missions\COTP-IJN\PRCPIJN\jm08.lua` (mtime 2024-07-13) defines
+  `HoshoTime` at line 889. It starts a 180 s countdown to `SpawnHoshoFleet`, which generates Hosho
+  and two escorts and stocks 51 aircraft. It also delays `SpawnNevadaFleet` by 20 s.
+- Without the sequencer the dialog's callback never runs, so neither fleet ever enters.
+
+**Verdict:** a fidelity gain. The extra deaths are the scripted reinforcements the image brings in.
+
+### 115.2 The draft-wall spawns are the authored poses (109's open question)
+
+- **The host spawns these hulls at the scene's frames exactly.** Two short runs on this tree's tip
+  (60 mission frames, `--trajectory-csv`, `local\g26_spawn_<mission>.<unit>.csv`) give these step-0
+  poses:
+
+  | hull | step-0 pose | scene file | the frame's other rows |
+  | --- | --- | --- | --- |
+  | JM05 PT Boat 80' Elco 01 | (1149.44, -0.555, 7122.90) | `ijn\JM\ijn_05_invasion_of_port_moresby.scn` | pitched about 2.3 degrees |
+  | JM05 Elco 02 | (1132.03, -0.446, 7088.65) | the same | |
+  | BSM01 Raleigh | (1500, 0, -3350) | `bsm\bsm_01_stationed_at_pearl.scn` | |
+  | BSM01 Cassin | (442.38, -0.760, -3637.93) | the same | |
+  | BSM01 Medusa | (2541.39, -0.843, -2854.76) | the same | |
+
+  Each pose is that file's top-level `localframe` translation. The entities have no parent frame.
+  The scene files are dated 2024-07-13.
+- **What the authoring says.**
+  - The JM05 boats are set dressing. Each is Party Neutral with `FireStance HoldFire`,
+    `Navigator false`, `LandCollAvoid false` and `ShipCollAvoid false`.
+  - Cassin and Medusa also have `Navigator false`, with tilted frames.
+- **The image applies the same frames.**
+  - The only placement-legality routine found, `BSP_SpawnRequest_MemberPlacementLegal`
+    `00941D30`, is on the `SpawnNew` queue. Its callers are `00949300` and `00942CB0`.
+  - None of the 19 callers of `00903860` is a scene-placement routine (section 113).
+  - The walls come from the same scene's avoid zones.
+- **Answer:** yes. The image builds the same hulls at the same poses, inside or across the same
+  draft walls.
+- **Uncertainty:** the scene record loader of the ship creators was not read end to end for a pose
+  correction.
+
+### 115.3 SaltLakeCity on main after `kAiCoordinatorLoadGateBound` ON (section 114 recheck)
+
+Main `720f37936` (with `a8404d451`, the coordinator gate ON), control export, USN01 13500 frames:
+`local\g26_slc_main720.log`.
+- **SaltLakeCity does not die by 675 s.** No death row names it or Dunlap.
+- The history differs from both earlier builds from death row 11 on. It has 35 death rows by
+  700 s, against 59 for `94c5c61c3` and 65 for `82fa35ace`.
+- The coordinator gate turns off the weight paths of section 114 on single-player rows, so the
+  early death has gone. It goes the same way section 114's chain did.
+
+## 116. `CruiseCommand::stop_state_step` was a mislabelled record (cc9-ships33's census, lead item; cc9-gunnery26)
+
+**The record.** `finish_issue_tail` (`src/game_hosts_commands.cpp`) recorded
+`CruiseCommand::stop_state_step [009e1170] UNIMPLEMENTED` whenever a `stop` became current. On the
+z rows that is 1-355 calls per row, BSM01 272 and JM08 355.
+
+**The image site.** `BSP_WeaponDirector_BeginCurrentCommand` `00835C70`. For
+`ppuVar1 == 00E08F70 || 00E08F88` it calls `BSP_WeaponDirector_RaiseCommandStage(1)`. Only for
+`00E08F70` (`cruise`) does it go on to `BSP_WeaponDirector_LatchCruiseFields`. **So for `stop`, the
+whole arm is the stage raise**, and the host already ran it: `begin.raise_command_stage(1)`.
+
+**What the record claimed was missing does exist.** The per-step `stop` state is the ship AI leaf
+`00D215C8`, step `009E14C0` (`ship_ai_stop_step_009e14c0`, `src/ship_ai_state_steps.cpp`,
+complete). The ship AI host runs it: z's JM08 log reads `ShipAiState::stop_step [009e14c0]
+concrete calls=243`, and BSM01's 17028. The record carried the *cruise* step's address `009E1170`.
+
+**Change.** The record became `done("WeaponDirector::begin_command_stop_arm", 0x00835e0e)`, and
+the row's `blocked` text now names `009E14C0`. There is no behaviour change and no switch.
+
+**Identity.** JM08, 3000 frames, against z's `g26_z_base_jm08.log`: `pair_diff` reports gameplay
+identical (22 deaths, 482 hit records, 2794 shots). The log is `local\g26_stop_jm08.log`.
+
+## 117. The unreconstructed unit-motion rows on reference z, and the top item (lead item; cc9-gunnery26)
+
+### 117.1 Census
+
+`local\g26_motion_census.py` reads the `UnitMotion::unreconstructed_*` lines of z's twenty-two
+logs (`local\g26_z_base_<row>.log`). The rows are ranked by how many z rows they reach. The calls
+are per unit per fixed step.
+
+| rank | record | routine | z rows | calls |
+| --- | --- | --- | --- | --- |
+| 1 | `unreconstructed_phase_006d2510` | `BSP_AirField_TickAdvance` | 15 | 183000 |
+| 2 | `unreconstructed_override_remainder_00758270` | `BSP_MotherShipUnit_UpdateMotion` (the carrier's remainder after `00825F20`) | 11 | 297000 |
+| 3 | `unreconstructed_phase_00846320` | `BSP_Shipyard_TickAdvance` | 8 | 87000 |
+| 4 | `unreconstructed_override_remainder_00855420` | `BSP_SubmarineUnit_UpdateMotion` (remainder) | 7 | 94184 |
+| 5 | `unreconstructed_override_remainder_00749b20` | `BSP_LandingShipUnit_UpdateMotion` (remainder) | 5 | 402172 |
+| 6 | `unreconstructed_phase_00953cc0` | the base advance on a unit whose generic-tick guard failed | 4 | 41094 |
+
+### 117.2 The top item: `006D2510`, read whole (`006D2510..006D2553`, `RET 4`)
+
+1. `00953CC0(dt)`, the base advance. For an airfield, the unit vtable `00CF8C08` has `[1F0h]` =
+   `0095DC40` and `[1D8h]` = `006D1F20` (`RET 4`). These are the same leaves the host's generic
+   tick already runs (`GenericTickCalls`, `src/game_hosts_units.cpp`).
+2. `unit->vtable[1A8h]()` = `006D40F0`, the destruction rule. It is inside Ghidra's `006D40D0`;
+   the end is `006D4207 RET`. It is GAMEPLAY_GAP_RANKING #15.
+3. If `byte [unit+5Dh] == 0`: `006CDC70(dt)` on `unit+72Ch`. The host already runs this, relocated
+   (`kDeckTickInFixedStepBound`, `run_air_ops_update_006cdc70`).
+
+**Item 2 now has reach (new since GAMEPLAY_GAP_RANKING's "still no reach").**
+- `local\g26_hangar_reach.py` checks each airfield's listed hangars (the `air ops hangar:` lines,
+  a superset of `+830h`) against the death rows.
+- On z's **USN01**, `Airfield2` lists one hangar, `Multi Hangar 1`. It dies at 133.95 s.
+- So from the next step, the image's `006D40F0` finds no hangar with `+370h > 0` and takes its
+  destruction arm. No other z row loses a listed hangar.
+
+**The arm** (`006D415A..006D41F3`):
+- `[+71Ch] != 0`: a `"InferiorFailure"` string (`00CF0B74`, through `0041DD40` and `00BF7680`)
+  goes to `vtable[194h]` = `006D2210(name, 0)`, and the airfield does not die.
+  - `006D2210` compares the name with the literals at `00CF8E24` and `00CF8E14`.
+  - It builds message `72h` or `74h` and routes it through `0077C2A0(msg, 7, 0)`.
+  - It was not read further.
+- `[+71Ch] == 0`: `vtable[70h](0)` = `0077D1A0` `BSP_UnitInstance_DestroyAndBroadcast`, which has
+  a reconstruction (`src/unit_damage.cpp`). The airfield dies.
+- Both arms then call `006D2980` (the hangar list refresh).
+
+**Open, for the successor:**
+- Which arm USN01's `Airfield2` takes. In the scene (`usn_1_marshall.scn`, 2024-07-13) it is
+  top-level, but it carries `CommandBuildingInferior`. `+71Ch` is the parent link
+  (LAND_AND_STRUCTURES, `00747400`'s sibling rule), so the writer of `+71Ch` for an inferior
+  airfield decides the arm.
+- The plan:
+  - find that writer;
+  - bind `006D40F0` behind a new `kAirfieldDestructionRuleBound` (OFF), with predictions;
+  - pair USN01 (36000 frames, so Airfield2's plane launches after 134 s show) plus a control.
+- Items 1 and 3 are faithful as they are (no effect, and relocated, respectively).
+
+## 118. Handoff (cc9-gunnery26, 2026-10-05, at about 65% context)
+
+### 118.1 Landed on agent/cc9-gunnery26
+
+| item | commit | state |
+| --- | --- | --- |
+| 113: the Coastal Gun 01 attack is refused by LOS (the fort is buried in the scene) | `bb91fc79b` | closed, no defect |
+| 114: SaltLakeCity's USN01 death is the 5df.1 weights (barrel gates + attacker weight) | `58da6fa01` | closed; moot on SP rows with the coordinator gate (115.3) |
+| 115: the `pla` split (`kDialogSequencerBound` alone: HoshoTime spawns two fleets), draft-wall spawns, SLC on main | `13167ade8` | closed |
+| Reference z (GAME_EXECUTABLE "2026-10-05 z"), base `c8c69f5ab` | `c3ad1f8ce`, `9e4f600c0` | `reports/cc9_reference_rebaseline_26.json` |
+| 116: `CruiseCommand::stop_state_step` was a mislabelled record | `bbb7f5748` | closed (record -> done, JM08 identity) |
+| 117: the unit-motion census and `006D2510` read | this commit | the top item is open (117.2) |
+
+### 118.2 Next, in order
+
+1. **Reference AA** when the lead asks. Use z's base `c8c69f5ab` and z's logs
+   (`local\g26_z_base_<row>.log` in the cc9-gunnery26 tree) as the previous reference.
+   - Run `local\g26_switches.py c8c69f5ab <base>` for the switch diff.
+   - The anchor sets everything since `c8c69f5ab` OFF.
+   - The leave-one-out takes groups that are live on SP rows. Switches that SHIP_AI 150.7 lists
+     as inert need only a one-row check.
+2. **117.2's airfield destruction rule `006D40F0`.** It has reach on USN01 from 134 s.
+   - First find the `+71Ch` writer for a `CommandBuildingInferior` airfield; it decides between
+     the InferiorFailure arm and the destroy arm.
+   - Then bind OFF with predictions and pair on USN01, 36000 frames.
+3. 117.1's rank 2 (`00758270`, the carrier's motion remainder) if 2 closes early.
+
+### 118.3 Tools (`local\` in the cc9-gunnery26 tree, prefix `g26_`)
+
+- `g26_zlane.ps1 -Lane -Variants 'short=kA+kB' -Rows a,b -Commit -Prefix`: export, build and the
+  reference launch form per variant. It launches all the rows at once. Run one 22-row lane at a
+  time because of the launcher's 2400 s slot wait.
+- `g26_lane.ps1 -Lane -Short -Switches 'kA+kB'|none -Commit -Frames -Mission`: one export plus one
+  run, writing `g26_<Short>.done`.
+- `g26_cmp.py <prefixA> <prefixB> [rows]`: `pair_diff` per row.
+- `g26_table.py <prefix>`: the table rows.
+- `g26_report26.py`: z's report.
+- `g26_deaths.py <t> <logs...>`: death rows side by side up to a time.
+- `g26_motion_census.py`: the census in 117.1.
+- `g26_hangar_reach.py`: the airfield-hangar deaths in 117.2.
+- `g26_run.ps1`: one run with `BSP_AA_TRACE_UNIT` / `BSP_AA_TRACE_TARGET`.

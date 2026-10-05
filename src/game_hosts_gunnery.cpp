@@ -94,6 +94,7 @@ namespace {
 // END of each gunnery step, after that think, so the first think saw no rows and
 // fell back to the class stand-in. ON: publish once more when the guns are built
 // (attach_00864bd0 / register_new_units_00864bd0).
+constexpr bool kBombDropVelocityBound = true;   // SQUADRON_LAND_TASK 5do
 constexpr bool kAiWeaponFactsAtAttachBound = true;  // ON: WEAPON_FACTS_ORDER 6
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
@@ -10944,8 +10945,25 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     // is not given a muzzle speed - which is exactly the assumption 007BCC80's
     // fall time makes when it advances the aircraft by its own velocity.
     const float speed = h.units.unit_forward_speed_0092d730(unit_index);
-    const float velocity[3] = {forward[0] * speed, forward[1] * speed,
+    float velocity[3] = {forward[0] * speed, forward[1] * speed,
         forward[2] * speed};
+    // Packet cc9_bomb_drop_velocity (docs/SQUADRON_LAND_TASK.md 5do). The bomb
+    // class's launch hook 006E0A70 (__thiscall(bomb)(owner, flight), RET 8):
+    // for an owner answering vtable[5Ch](0Fh) (a plane) whose vtable[38h]
+    // speed exceeds the float at 00CF8AAC (1.3888889, 5 km/h), the bomb takes
+    // the owner's vtable[34h] world velocity with 3.0 (00E08E54, the same
+    // float 007BCC80's fall time subtracts) taken off y (006E0AB3); otherwise
+    // the velocity unchanged (006E0B01..006E0B24). LABELLED: vtable[38h] is
+    // taken as 0092D730's forward speed.
+    if constexpr (kBombDropVelocityBound) {
+        float world[3] = {0.0f, 0.0f, 0.0f};
+        if (h.units.unit_linear_velocity(unit_index, world)) {
+            velocity[0] = world[0];
+            velocity[1] = world[1];
+            velocity[2] = world[2];
+            if (speed > 1.3888888f) velocity[1] -= 3.0f;   // 006E0A93..006E0AB3
+        }
+    }
 
     GameProjectileRow shot;
     shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
