@@ -9974,3 +9974,169 @@ Next, in order:
 3. **5ch, the weight switches and the slot-4 team:** wait for cc9-ships28's static evidence
    (`game+1FE4h` writers, SetGameMode callers).
 4. The 5cm break-off follow-ups and 5cj's remaining items (5cp).
+
+## 5cu. Item 1: no own-side filter on the Attack path; the forced target weights bound OFF (packet `cc9_forced_target_weights`, cc9-lua35, 2026-10-05)
+
+The question (cc9-lua35 brief, item 1): SHIP_AI 129 settled that USN13's slot-4 brain is
+Allied-team in the image. Why then do the gates make USN13's Japanese air groups target
+themselves? Is there an own-group or own-side exclusion that the host lacks?
+
+### (1) The Attack path has no own-side or own-group filter (read from the disk bytes)
+
+- **Candidate list.** `00A1CB80` walks `g_aiGroupsByTeam[planner+34h]`
+  (`00A1CBF5 MOV EAX,[ESI+34h]`, list `00F8AA48 + t*0Ch`).
+  - `planner+34h` is `brain+24h == 0` (`00A1EEB2 CMP [EAX+24h],EBX / 00A1EEB8 SETE DL /
+    00A1EEC1 MOV [ESI+34h],EDX`).
+  - `brain+24h` is `009FFD60(slot)` = `[[game+18CCh+slot*4]]+28h` (`00A15A90`/`00A15A97`).
+  - The slot record's `+28h` is the scene's `PlayerN.Party`. `004C6890` copies it
+    unconditionally (`004C6A44`-`004C6AA8`, scene block `+4h` -> record `+28h`). Its only
+    rewrite, `004BC890`, is skipped at `004BC8B3` while `game+1FE4h` = 0 (SHIP_AI 129).
+- **The loop body** (`00A1CC3B`-`00A1CEC4`):
+  - It tests only the candidate's `+5644h` member count.
+  - It calls `00A0F970` with `ECX` = own group (`00A1CC63`) and `EDX` = candidate (`00A1CC51`).
+  - It never compares the candidate with the own group. The own group is in the list, and its
+    range factor is the largest because the distance is 0.
+- **The value chain carries no side either.**
+  - `00A0F970` gates only on the two member counts.
+  - `00A0C650` composes the pair values.
+  - `00A0C3C0` applies the distance multipliers.
+  - `00A0C330` calls `00A08460(attacker class, record+10h, target class, target record+1Ch)` and
+    applies the `1Ch` paratrooper zero.
+  - The record's `+1Ch` is the target's side >= 2 (neutral), not a comparison of two sides.
+- **Unit filing.** `009FFD20` (`009FFD26`-`009FFD2E`) keeps a unit's own `+180h` slot when it is
+  0..7. The side test applies only otherwise. Both arms give the same answer on USN13, because
+  `usn_13_truk.scn` authors all eight `PlayerN.Party = Allied` (lines 402-433, this installation,
+  mtime 2024-10-29).
+
+So the image's Attack planner on a US row scores the slot-4 brain's own Japanese groups,
+including the own group, exactly as the host does. **No host divergence on the side, party or
+team chain.** The friendly targeting itself is the image's rule as read. USN13's OFF table
+already shows it for the Japanese ships: the Maru groups hold `CAUTIOUSATTACK`/`MOVETOATTACK`
+orders with `target=1` (`l34_gates_usn13.log`).
+
+### (2) The divergence that does exist: `00A31DB0`'s forced weights are stubbed
+
+What the image does:
+- `00A08460` asks `00A31DB0` at `00A08540`, straight after the memo miss.
+- A match is stored in the memo and returned raw (`00A08549`-`00A0856F`). It skips the barrel
+  walk, the plane arm, the gates and the epilogue.
+- The rules come from each mode table's `ForcedTargetWeightValues`, inserted by the loader tail:
+  - `00A36FD5 CALL 00A32500` with `DL` = 0 and the loop's mode pushed. The insert's mode arm
+    (`00A3265F`) appends to `00F8AB08 + mode*0Ch` and replaces only an identical rule.
+  - A **string** selector is its index in the 97-entry name table `00E0CD80` (`00A36BE4`-
+    `00A36C23`). That is the entity type-query id space (`SHIP` 6, `TORPEDOBOMBER` 11h,
+    `COMMANDBUILDING` 1Ch, ...), with `+1Dh`/`+1Eh` clear.
+  - A **number** is an exact class id with the byte set (`00A36C7A`, `00A36E34`).
+- **The match** (`00A31E14`-`00A31EE5`; the per-mode copy is `00A31F34`-`00A32013`):
+  - the rule's neutral byte must agree with the query flag;
+  - an exact selector scores 2 on `selector == class+70h`;
+  - a group selector scores 1 on `class->vtable[+18h](selector)`;
+  - a zero on either side skips the rule;
+  - a strictly higher sum takes the rule's weight (ties keep the first rule), and 4 stops the
+    scan.
+
+The global table `00F8AB5C` is scanned first, and only `AISetTargetWeight` fills it. No campaign
+script calls that; `competitive05.lua` does.
+
+What the host does: `AiWeightModelBinding::forced_rule_weight` answered "no match" because "this
+process does not run" the loader tail (`src/game_hosts_ai.cpp`).
+
+The shipped tables (`highlvlaiglobals.lua`, this installation, mtime 2024-07-13):
+
+| mode | rows |
+| --- | --- |
+| 0 IslandCapture Rookie (the mode every reference row runs: `summary mission ai tuning mode=0`) | `BATTLESHIP` vs class 88 (Command Post) 0; `TORPEDOBOAT` vs `COMMANDBUILDING` 0; `SUBMARINE` vs `COMMANDBUILDING` 0; `LANDINGSHIP` vs `COMMANDBUILDING` 0.18; `CARGO` vs `COMMANDBUILDING` 1; `TORPEDOBOAT` vs `PLANE` 0; `TORPEDOBOAT` vs `SHIP` 0; **`TORPEDOBOMBER` vs `SHIP` 4.5; `DIVEBOMBER` vs `SHIP` 5.0** (each row twice, neutral true and false) |
+| 1, 2 Regular, Veteran | the same without `CARGO`, and `LANDINGSHIP` 0.12 |
+| 4 Escort | `FIGHTER` vs `SHIP` 0, vs `TORPEDOBOAT` 5, vs `LANDFORT` 0; `TORPEDOBOMBER` vs `FIGHTER` 0 and vs `TORPEDOBOMBER` 0; `DIVEBOMBER` vs `FIGHTER` 0 and vs `DIVEBOMBER` 0 |
+| 3, 5, 6 | empty |
+
+Why the effective mode is 0 in single player: `004BCA50` answers `game+614h` forced to 8
+(`004C6962`). `009FFC80` sends any value above 7 to `009FFCF4`, which answers 0.
+
+**What this changes:**
+- A torpedo bomber's weight against any ship is 4.5 in the image, and a dive bomber's is 5.0,
+  whatever its guns are.
+- With the gates ON and no forced rules, the host scored a Kate against a ship at 0 (5cq).
+- 5cr's argument ("a Kate's close weight against a ship is 0, so the script's target stands")
+  therefore does not hold for the image.
+- No Rookie rule covers a plane against a plane, so the self-scoring of 5cq.2 keeps its computed
+  value.
+
+### The binding, committed OFF
+
+The pieces:
+- **`kAiForcedTargetWeightRulesBound`** (`src/game_hosts_ai.cpp`).
+- **The tables and the scan** (`src/ai_target_weights.cpp`): `ai_shipped_forced_rules(mode)`
+  (LABELLED: transcribed from the script) and `ai_forced_rule_scan_00a31db0`.
+- **How the binding answers.** It asks the unit's own kind test and its `+C4h` class id.
+  LABELLED: the image asks the class descriptor's `vtable[+18h]` and `+70h`. 5cq.1 verified the
+  id space; the class id equivalence is unverified.
+- **What is not projected:** the global table, and relative rules (none shipped).
+- **Where the lookup sits.** It runs inside the weight model only where the host runs the model.
+  The 1.0 stand-in for incomplete rows is unchanged.
+- **The census, in both states:** `summary mission ai forced target weight bound= mode=
+  queries= matches= rules: r<i>=<hits>`.
+
+### Predictions, written before any ON run
+
+Pairs, all from one commit:
+- **Pair F:** forced ON against OFF, every other switch as committed (gates OFF).
+- **Pair G:** gates ON against gates + forced ON.
+
+Rows: USN13 3200, USN13 9200, USN04 4700, E2, USNOS 3200, USNRM01 9200, ESMP08 14200. Controls:
+USN02, USN12.
+
+- **Census.** `mode=0` on every row. Matches are counted on every row with torpedo or dive
+  bombers, and on rows with Japanese cargo ships against a CommandBuilding (USN13: r8/r9). USN02
+  and USN12 have few or no bombers, so few or no matches.
+- **Pair F:**
+  - Moved (exit 3) on every bomber row.
+  - USNRM01: the Kates' close weight becomes 4.5 against every ship, so the close pass's choice
+    rides on `00A0F810`'s other factors and the Kates change targets. No direction is predicted
+    for battleship deaths.
+  - Controls: exit 0 or 1, if no bomber group is scored.
+- **Pair G, USN13:**
+  - The bruh Kate groups still leave the Capture think, because no rule covers a torpedo bomber
+    against a CommandBuilding.
+  - In the Attack planner they now pick a Japanese Maru (ship) group at 4.5 per pair over
+    themselves. The trace's `target=` names a Maru rather than `bruh`.
+  - **That is still friendly targeting, so the gates stay OFF and 5ch is not re-tested**
+    (the brief's condition, "USN13 behaves sanely", cannot be met by this binding).
+- **Pair G, USNRM01:** the Kates no longer keep West Virginia and Oklahoma throughout (5cr's gates
+  result), unless those battleships win the close pass's other factors (the objective x10 of
+  `00A0F8C6` is the likely one).
+
+## 5cv. Item 2: `luaIntroMovieEnd` does run; 5cs.1's open item was a trace misreading (cc9-lua35, 2026-10-05)
+
+5cs.1 left this open: `luaIntroMovieD`'s `luaDelay(luaIntroMovieEnd, 8)` (`bsm_04:1896`) seemed to
+create no timer. Its evidence was `luaDelay calls=3` and no `luaIntroMovieEnd` line in the
+callback trace.
+
+**The same log (`cc9-lua34\local\l34_don_bsm04.log`) shows the body running at mission frame
+771, t = 38.60 s.** That is the callback's 30.65 s plus 8 s, within one think step.
+- The trace's firsts at t=38.60 are `luaSetScriptTarget`, `luaAddFirstObjs` and
+  `luaAddSecondZeroListener`. All three are called only from `luaIntroMovieEnd`
+  (`bsm_04:1908`, `1912`, `1914`; `luaAddFirstObjs` has no other caller in the script, which is
+  `bsm_04_vengance_at_luzon.lua`, this installation, mtime 2024-07-13).
+- The bindings run in order at the same frame:
+  - `SetInvincible "B-17" value=0.000`;
+  - `SetSelectedUnit` moves control from the B-17 to Donald;
+  - `UnitSetFireStance: squadron Donald stance=1`;
+  - `PilotSetTarget: unit=Wildcat target_object_id=43 ... ISSUED`, which is the `bsm_04:1909`
+    dogfight order;
+  - `Objectives_Add` for B17, Donald and DD.
+
+So the 1909 dogfight **is** reached on the ON build, and nothing about the sequencer or the
+think pass needs fixing.
+
+Why the trace misled:
+- `lua_callback_trace_hook` keys a call by `ar->name` when Lua can name it, and otherwise by
+  `?<src>:<linedefined>`.
+- A function reached through a table slot (the timer's `luaDoTimeTable` calling `timer[2][1]`)
+  has no name, so `luaIntroMovieEnd` would be listed as `?...:1900`, if at all.
+- Why the fourth `luaDelay` call is not counted (`calls=3`) is not established. The hook is set
+  on the first state that dispatches a binding, and Lua 5.0 hooks are per thread. LABELLED as a
+  diagnostic-hook limitation, not run-time behaviour.
+
+**Rule for later readers:** judge a callback by its callees' bindings in the log, not by its name
+in the trace.
