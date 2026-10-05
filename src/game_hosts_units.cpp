@@ -555,6 +555,17 @@ struct GameUnitSlot {
     float st_ga_pitch_timer_3c{0.0f};      // goaway +3Ch, re-armed U(+34h 2, +38h 5)
     float st_ga_countdown_44{0.0f};        // goaway +44h against +40h 1.0
     bool st_evading{false};                // census edge of goaway's evasive gate
+    // Packet cc9_strafe_breakoff (bsp::kStrafeBreakoffBound): the manoeuvre
+    // goaway front-pushes; 0 none, 1 tightturn 009BC030, 2 flikflak 009BC0A0.
+    int st_mv_kind{0};
+    bool st_mv_side{false};                // tightturn +408h, flikflak +400h
+    float st_mv_point[3]{0.0f, 0.0f, 0.0f};// the end condition's point +1Ch..+24h
+    float st_mv_dist2{0.0f};               // flikflak's condition +28h
+    float st_mv_ref_3fc{0.0f};             // tightturn +3FCh (009BAFC0)
+    float st_mv_timer_3fc{0.0f};           // flikflak +3FCh
+    int st_mv_tightturns{0};
+    int st_mv_flikflaks{0};
+    int st_mv_ticks{0};
     float st_ar_period_18{0.4f};           // attackrun +18h
     float st_ar_countdown_1c{0.0f};        // attackrun +1Ch
     float st_ar_offset_20{0.0f};           // attackrun +20h
@@ -19215,6 +19226,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.st_ga_pitch_timer_3c = st_draw("ga3c", 0.0f, 5.0f);    // 009CB5A7
                         unit_.st_ga_countdown_44 = -st_draw("ga44", 0.0f, 1.0f);    // 009CB5CF
                         unit_.st_ga_prob_18 = st_draw("ga18", 0.3f, 0.9f);           // 009CB5F4
+                        // LABELLED: a re-install drops a running manoeuvre (0099A4C0
+                        // asks the head's vt[40h] 0099C2C0, not read).
+                        unit_.st_mv_kind = 0;
                         unit_.st_ar_period_18 = 0.4f;
                         unit_.st_ar_countdown_1c = 0.0f;
                         unit_.st_ar_offset_20 = 0.0f;
@@ -19277,16 +19291,158 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.hull_aim_seed = ++g_hull_aim_pick_counter;
                     }
                     // 009CB8B0 goaway enter (vtable 00D2103C +4h).
+                    // Packet cc9_strafe_breakoff (docs/SQUADRON_LAND_TASK.md 5cm).
+                    // SUBSTITUTION, labelled: 00999F50 front-pushes the manoeuvre
+                    // over the strafe task and 0099ACD0 ticks only the head, so the
+                    // strafe arm is suspended (no 009CCED0, rule or state tick) while
+                    // st_mv_kind is set, and resumes when 0099B690 retires it.
+                    float st_speed_vt38() const {
+                        // unit vtable[38h], the live linear velocity's length.
+                        const double vx = unit_.motion.linear_velocity.x;
+                        const double vy = unit_.motion.linear_velocity.y;
+                        const double vz = unit_.motion.linear_velocity.z;
+                        return static_cast<float>(std::sqrt(vx * vx + vy * vy + vz * vz));
+                    }
+                    void st_mv_capture_point() {
+                        // approach vt[0] 009CA680: approach+74h..+7Ch, the aim point.
+                        for (int i = 0; i < 3; ++i) unit_.st_mv_point[i] = unit_.st_aim_point[i];
+                    }
+                    // 009CBD8D-009CBE07 (tick) / 009CBA63-009CBB09 (enter):
+                    // side = 0.5 > U(0, 1), the condition 007B5D30, then 009BC030
+                    // (009BAFC0's pitch reference; +404h = 1).
+                    void st_push_tightturn() {
+                        unit_.st_mv_side = 0.5f > st_draw("mv_side", 0.0f, 1.0f);
+                        st_mv_capture_point();
+                        unit_.st_mv_ref_3fc = bsp::tight_turn_pitch_ref_009bafc0(
+                            unit_.motion.position[1], st_speed_vt38(),
+                            unit_.plane_pitch_angle_c64, unit_.plane_climb_angle_1ec);
+                        unit_.st_mv_kind = 1;
+                        ++unit_.st_mv_tightturns;
+                    }
+                    // 009CBD0A-009CBD86 (tick) / 009CB9DE-009CBA59 (enter):
+                    // dist = U(0.5, 0.7) * approach+34h, the condition 007B5E20
+                    // (+28h = dist squared), then 009BC0A0 -> 009BB910 (side
+                    // +400h = U > 0.5, +3FCh = U + 2.0).
+                    void st_push_flikflak() {
+                        const float dist = st_draw("mv_dist", 0.5f, 0.7f) * unit_.st_goaway_dist_34;
+                        st_mv_capture_point();
+                        unit_.st_mv_dist2 = dist * dist;
+                        unit_.st_mv_side = st_draw("ff_side", 0.0f, 1.0f) > 0.5f;
+                        unit_.st_mv_timer_3fc = st_draw("ff_timer", 0.0f, 1.0f) + 2.0f;
+                        unit_.st_mv_kind = 2;
+                        ++unit_.st_mv_flikflaks;
+                    }
+                    // r = U(0, 1) against the goaway state's +18h (JBE to tightturn
+                    // when +18h <= r). The enter adds 009CB9B2-009CB9D8: flikflak
+                    // only below approach+40h - 50 ([00CE3938]). Only the tick sets
+                    // approach+44h = 25.0 (009CBE13, [00CE89CC]).
+                    void st_evasive_push(bool from_enter) {
+                        const float r = st_draw("mv_r", 0.0f, 1.0f);
+                        bool flik = unit_.st_ga_prob_18 > r;
+                        if (flik && from_enter) {
+                            flik = static_cast<float>(static_cast<double>(unit_.st_glide_dist_40) - 50.0)
+                                > unit_.motion.position[1];
+                        }
+                        if (flik) st_push_flikflak(); else st_push_tightturn();
+                        if (!from_enter) unit_.st_ap.elapsed_44 = 25.0f;
+                    }
+                    // The manoeuvre's tick (009BA020 / 009B99E0), its end condition,
+                    // and the retire 0099B690. Plan offsets are the task's minus 4.
+                    void st_manoeuvre_tick(float dt) {
+                        ++unit_.st_mv_ticks;
+                        bool done = false;
+                        if (unit_.st_mv_kind == 1) {
+                            const bsp::TightTurnCommand c = bsp::tight_turn_tick_009ba020(
+                                unit_.st_mv_side, unit_.plane_bank_angle_c68,
+                                unit_.plane_pitch_angle_c64, unit_.st_mv_ref_3fc);
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 1.0f;   // +27Ch
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;   // +2ACh
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            unit_.plane_air_brake_mode_2d8 = 0;                         // +2DCh
+                            unit_.plan_state.bank_target_2c4 = c.bank_target;           // +2C8h
+                            unit_.plan_heading_mode_2cc = 1;                            // +2D0h
+                            unit_.plan_slots[bsp::kPilotSlotPitch].desired = c.pitch_desired;  // +2A0h
+                            unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                            unit_.plan_state.pitch_mode_2d0 = 0;                        // +2D4h
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired = c.yaw_desired;      // +288h
+                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            unit_.gl_yaw_mode_2d4_zero = true;                          // +2D8h
+                            // LABELLED: 009BA1C8's +2E4h &= ~4 is not modelled.
+                            float l[3];
+                            df_local(unit_.st_mv_point, l);
+                            done = bsp::point_off_nose_00996510(l);
+                        } else {
+                            unit_.st_mv_timer_3fc -= dt;                                // 009B99E9
+                            if (unit_.st_mv_timer_3fc <= 0.0f) {
+                                const float u = st_draw("ff_timer", 0.0f, 1.0f);
+                                unit_.st_mv_side = !unit_.st_mv_side;
+                                unit_.st_mv_timer_3fc = u + 2.0f + unit_.st_mv_timer_3fc;
+                            }
+                            const float side = unit_.st_mv_side ? 1.0f : -1.0f;
+                            unit_.plan_heading_mode_2cc = 1;                            // +2D0h
+                            unit_.plan_state.bank_target_2c4 = unit_.plane_class_turn_roll * side;   // +2C8h
+                            unit_.plan_state.pitch_mode_2d0 = 2;                        // +2D4h
+                            unit_.plane_commanded_pitch = unit_.plane_climb_angle_1ec;
+                            unit_.plan_state.pitch_target_2bc = unit_.plane_climb_angle_1ec;   // +2C0h
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 1.0f;   // +27Ch
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;   // +2ACh
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            unit_.plane_air_brake_mode_2d8 = 0;                         // +2DCh
+                            done = bsp::point_distance_reached_00996300(
+                                unit_.motion.position[0], unit_.motion.position[2],
+                                unit_.st_mv_point[0], unit_.st_mv_point[2], unit_.st_mv_dist2);
+                        }
+                        if (done) {
+                            unit_.st_mv_kind = 0;                                       // 0099B690
+                            if (st_goaway_trace()) st_goaway_note("manoeuvre_done", 0.0, 0.0);
+                        }
+                    }
+                    // DIAGNOSTIC, env-gated (BSP_STRAFE_GOAWAY_TRACE=1, cc9-lua33, docs/
+                    // SQUADRON_LAND_TASK.md 5cl): the goaway state's enter, re-plans, done
+                    // tests and evasive gates, one line each. Prints nothing when unset.
+                    static bool st_goaway_trace() {
+                        static const bool on = [] {
+                            char* v = nullptr;
+                            std::size_t n = 0;
+                            const bool set = _dupenv_s(&v, &n, "BSP_STRAFE_GOAWAY_TRACE") == 0
+                                && v != nullptr;
+                            std::free(v);
+                            return set;
+                        }();
+                        return on;
+                    }
+                    void st_goaway_note(const char* what, double a, double b) {
+                        owner_.log.notef("  strafe goaway trace %s %s t=%.2f a=%.3f b=%.3f "
+                            "h=%.1f alt=%.1f since_hit=%.2f", unit_.row.name.c_str(), what,
+                            static_cast<double>(owner_.summary.simulated_seconds), a, b,
+                            static_cast<double>(st_horizontal_009cad00()),
+                            static_cast<double>(unit_.motion.position[1]),
+                            static_cast<double>(unit_.st_ap.elapsed_44));
+                    }
                     void st_goaway_enter_009cb8b0() {
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);   // 009CB8DF
                         st_goaway_heading_009cb780();                          // 009CB8E6
                         st_goaway_pitch_009cb650();                            // 009CB8ED
                         unit_.st_ga_done_24 = false;                           // 009CB8F5
+                        if (st_goaway_trace()) {
+                            st_goaway_note("enter", unit_.st_goaway_dist_34,
+                                (!st_bomber_kind() && unit_.st_ap.elapsed_44 < 16.0f) ? 1.0 : 0.0);
+                        }
                         // 009CB8FC-009CBB1E: for a plane of neither kind 10h nor 16h
                         // hit within U(10, 16) s (approach+44h), a front-pushed evasive
                         // task (009BC030 with 007B5C70, or 009BC0A0 with 007B5E20).
                         // GAP, counted: the manoeuvre tasks are not modelled.
-                        if (!st_bomber_kind() && unit_.st_ap.elapsed_44 < 16.0f) {
+                        if constexpr (bsp::kStrafeBreakoffBound) {
+                            // 009CB922-009CB95E: U(10, 16) > approach+44h.
+                            if (!st_bomber_kind() &&
+                                st_draw("ga_win", 10.0f, 16.0f) > unit_.st_ap.elapsed_44) {
+                                ++unit_.st_evasive_gaps;
+                                st_evasive_push(true);
+                                if (st_goaway_trace()) st_goaway_note("push_enter", unit_.st_mv_kind, 0.0);
+                            }
+                        } else if (!st_bomber_kind() && unit_.st_ap.elapsed_44 < 16.0f) {
                             ++unit_.st_evasive_gaps;
                         }
                     }
@@ -19586,11 +19742,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.st_ga_hdg_timer_30 < 0.0f) {                  // 009CBB5C
                             unit_.st_ga_hdg_timer_30 += st_draw("ga30", 2.0f, 5.0f);
                             st_goaway_heading_009cb780();
+                            if (st_goaway_trace()) {
+                                st_goaway_note("replan_bank", unit_.st_ga_bank_1c,
+                                               unit_.st_ga_hdg_timer_30);
+                            }
                         }
                         unit_.st_ga_pitch_timer_3c -= dt;
                         if (unit_.st_ga_pitch_timer_3c < 0.0f) {                // 009CBB9A
                             unit_.st_ga_pitch_timer_3c += st_draw("ga3c", 2.0f, 5.0f);
                             st_goaway_pitch_009cb650();
+                            if (st_goaway_trace()) {
+                                st_goaway_note("replan_pitch", unit_.st_ga_pitch_20,
+                                               unit_.st_ga_pitch_timer_3c);
+                            }
                         }
                         unit_.plan_state.bank_target_2c4 = unit_.st_ga_bank_1c;   // plan+2C4h
                         unit_.plan_heading_mode_2cc = 1;
@@ -19610,12 +19774,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else {
                             unit_.st_ga_countdown_44 = (1.0f - dt) + unit_.st_ga_countdown_44;
                             unit_.st_ga_done_24 = unit_.st_goaway_dist_34 < st_horizontal_009cad00();
+                            if (st_goaway_trace()) {
+                                st_goaway_note("done_test", unit_.st_goaway_dist_34,
+                                               unit_.st_ga_done_24 ? 1.0 : 0.0);
+                            }
                         }
                         // 009CBC96-009CBE27: the evasive push within 1 s of a hit.
                         // GAP, counted on the rising edge (see the enter).
                         const bool evade = !st_bomber_kind() && unit_.st_ap.elapsed_44 < 1.0f;
-                        if (evade && !unit_.st_evading) ++unit_.st_evasive_gaps;
+                        if (evade && !unit_.st_evading) {
+                            ++unit_.st_evasive_gaps;
+                            if (st_goaway_trace()) st_goaway_note("evasive_gate", 0.0, 0.0);
+                        }
                         unit_.st_evading = evade;
+                        if constexpr (bsp::kStrafeBreakoffBound) {
+                            if (evade) {
+                                st_evasive_push(false);
+                                if (st_goaway_trace()) st_goaway_note("push_tick", unit_.st_mv_kind, 0.0);
+                            }
+                        }
                         unit_.gun_cone_40 = owner_.strafe_cone_tuning(0x674);   // 009CBE3F
                     }
                     // 009CADB0 (009CADB0-009CB091), the attackrun tick.
@@ -19666,6 +19843,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.attack_command_class != bsp::kAttackCmdStrafe) {
                             unit_.strafe_task_installed = false;
                             unit_.strafe_state = bsp::StrafeState::kNone;
+                            unit_.st_mv_kind = 0;   // LABELLED: the manoeuvre goes with the task
                             return;
                         }
                         if (unit_.command_target_plus_one == 0) return;
@@ -19698,6 +19876,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         owner_.slots[m]->st_attack_mode_370 = unit_.st_attack_mode_370;
                                     }
                                 }
+                            }
+                        }
+                        if constexpr (bsp::kStrafeBreakoffBound) {
+                            if (unit_.st_mv_kind != 0) {
+                                st_manoeuvre_tick(dt);
+                                return;
                             }
                         }
                         // 009CD182: 009CCED0 on the approach; its first call 009FADA0
@@ -32196,6 +32380,17 @@ void GameUnitsHost::report() {
                     "hit_resets=%d (009CD170, packet cc9_strafe_arm)",
                     planes, k[0], k[1], k[2], k[3], k[4], k[5], k[6], trans, aims, gpt, gpf,
                     gaps, hits);
+                {
+                    int tt = 0, ff = 0, mt = 0;
+                    for (const auto& slot : host.slots) {
+                        tt += slot->st_mv_tightturns;
+                        ff += slot->st_mv_flikflaks;
+                        mt += slot->st_mv_ticks;
+                    }
+                    host.log.notef("summary mission strafe breakoff bound=%d tightturns=%d "
+                        "flikflaks=%d manoeuvre_ticks=%d (009BC030 / 009BC0A0, packet "
+                        "cc9_strafe_breakoff)", bsp::kStrafeBreakoffBound ? 1 : 0, tt, ff, mt);
+                }
             }
             {
                 // Packet cc9_dogfight_task.

@@ -9115,6 +9115,8 @@ launches (10 crafts) -> four launches (11).
   Bristol, 165 m), UST 02 (by UST 03, 180 m) and UST 01 (by Bristol, 62 m). These are friendly
   hull contacts among ships converging on the same area, outside `00A11B80`'s point choice.
   Recorded as the next item.
+  **Correction (section 110):** they are not contacts. Every one is friendly gunfire (shell hits
+  and blast), and the host's friendly-fire rules match the image as read.
 - **UST 04 still grounds by t=1500** (ground -13.4 m, `contact=1`), on an order not traced here.
 - **USNOS stayed gameplay identical.** 191 convoy points moved, but no convoy reached its `CB2`
   point within the window. The prediction was "exit 3 likely".
@@ -9124,3 +9126,1131 @@ launches (10 crafts) -> four launches (11).
 **Verdict: `kAiTransportMovesOrderBridgeBound` ON.** The mechanism matches (the bridge and the
 offset points; the transports hold in deep water where OFF grounds them). The rams and UST 04's
 late grounding are recorded misses with their own causes.
+
+## 110. JM08's "friendly rams" are friendly gunfire, and the host's rules for it match the image (packet `cc9_friendly_transport_deaths`, cc9-ships27, 2026-10-04)
+
+Section 107.5 recorded seven transport deaths on JM08 36000 (OFF 4, ON 3) as hull contacts. **None of
+them is a contact.** Every death row names a gun, and the hits are shell hits:
+
+| run | victim | t | killer | gun | category | blast | range (m) | hits c6 | dmg c6 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `s26_e0` | UST 05 | 941.39 | LST 01 | 197 | 2 | 1 | 83 | 32 | 1750 |
+| `s26_e0` | UST 02 | 1394.59 | LST 03 | 205 | 2 | 1 | 63 | 38 | 1960 |
+| `s26_e0` | UST 04 | 1404.80 | Macomb | 258 | 6 | 0 | 188 | 55 | 2810 |
+| `s26_e0` | UST 06 | 1492.88 | LST 01 | 197 | 2 | 1 | 117 | 29 | 1384 |
+| `s26_e1` | UST 05 | 1052.35 | Bristol | 243 | 6 | 1 | 165 | 50 | 2643 |
+| `s26_e1` | UST 02 | 1362.05 | UST 03 | 121 | 6 | 1 | 180 | 60 | 3091 |
+| `s26_e1` | UST 01 | 1572.36 | Bristol | 240 | 6 | 1 | 62 | 42 | 2150 |
+
+(`death row:` lines of `s26_e0_jm08x.log` / `s26_e1_jm08x.log` in the cc9-ships26 tree; "range" is
+the killer-victim distance at death, `src/game_hosts_gunnery.cpp`'s death-row emitter.) In `s26_e1`,
+UST 05 takes 25 `impact blast` lines with `nearest=0.0`, each about 130 health (a direct hit plus
+30.5 of blast), from t=867 while Bristol is on `attackmove` at `Japanese AA truck 01`. The shells
+strike the transport that lies between the shooter and its shore target. Its 3 `hull pair contact
+census` lines with other transports and 4 with landing craft cost it nothing.
+
+### 110.1 The image's friendly-fire rules, and the host's
+
+- **A shell or blast has no side exemption.** GUNNERY_OPEN_ITEMS 63 (heavy artillery on USNOS) and 78
+  (`0084BAD0`, `00904470`, `009239A0`, `008777D0`): only the shooter itself is excluded. The host
+  matches.
+- **The only friendly test is the line-of-fire memo, and only for weapon kinds 1, 5 and 6.**
+  `00729560` installs the predicate at `gun+42Ch` for kinds 1, 5, 6 (`00729588..00729595`); kinds 2,
+  3, 4 have none, so `0072F6E0` answers 1 for them (`0072F6E6..0072F6F2`). **The LST kills (category
+  2) are therefore outside any image test.**
+- **Kind 6 reaches the test against a surface target, too.** `00729BC0` (sole caller `008657F7` in
+  `BSP_UnitGunneryAi_Tick`, by a rel32 scan of `.text`) sends a first-ammunition sub-type 4..7 to the
+  `ArtilleryGunnerBot` at `gun+398h` (`00729C8C..00729CA3`). That bot's slot `1Ch` is `006DEF30`
+  (vtable `00CFE000+1Ch` = `006DEF30`, no Ghidra function; `RET 4` at `006DEFEA`), which ends with
+  `gun->vtable[1D4h](target)` (`006DEFD1..006DEFDC`), the memo. The host's `bind_aa_acceptance` runs
+  `line_of_fire_refuses()` for category 6 against any target, so it matches. The other `1D4h`
+  callers are `008FBE00` (AAGunnerBot), `008FBFC0` (AAFlakBot), `008FBF70` (TailGunnerBot, vtable
+  `00D18140+1Ch`) and `008FC010` (TorpedoBot), found by scanning `8B ?? D4 01 00 00`.
+- **The memo never expires: corrected field name, same conclusion.** The record's third field is
+  `U(0.8, 1.2) x GlobalConfig+8Ch` (`0072F743..0072F77E`). `+8Ch` is `SafeToFireCacheTimeOut`
+  (`kGlobalConfigOffSafeToFireCacheTimeOut`, `include/bsp/gunnery_tables.hpp:184`), so the field was
+  meant as a lifetime. But nothing reads it:
+  - `0072F6E0` returns a cached byte without testing it (`0072F821`);
+  - the record vector `gun+430h/+434h/+438h` has no other access in `.text`: `?? ?? 30|34|38 04 00 00`
+    finds only `BSP_Gun_Construct` (`0072E5B6`, `0072E5C2`) in gun code;
+  - the decision object `gun+424h` is reached only by `0072E702` (setup), `0072DB62` (destructor
+    `0072D950` -> `00729600`) and the thunk `00730A20`: scans of `8D ?? 24 04 00 00`,
+    `81 C? 24 04 00 00` and `05 24 04 00 00`;
+  - of the 77 rel32 calls to `BSP_GlobalConfig_GetSingleton 00432650`, only `0072F743` reads `+8Ch`
+    within 64 bytes (`local\s27_callscan.py`).
+  - **Uncertainty:** a reader that holds the singleton pointer longer, or reaches the vector through
+    a pointer stored elsewhere, would escape these scans.
+  So a (gun, target) answer is kept for the gun's life in the image, and `line_of_fire_cache` does the
+  same. A transport that moves into the line after the first ask is shot through in both.
+- **The run agrees that the memo is asked rarely:** `s26_e1` has `aa line of fire queries=394 blocked=50
+  refusals=395` over 36000 frames.
+
+**Verdict: no host divergence in the friendly-fire rules.** Nothing is bound. Hull-hull contact
+(cc9-gunnery23's lane) kills nothing on this row, so whether the image's contact damages friendlies at
+that closing speed does not decide these deaths.
+
+### 110.2 What is left: the geometry, not a rule
+
+The deaths need a friendly to sit within 62-188 m of a ship firing at the shore, on the line to its
+target. Both runs have it; they differ in which transport and which shooter. The open question is
+whether the image's escorts and LSTs close to that range while the transports hold off the beach:
+Bristol's `attackmove` on shore targets (`mode=navigate_astern`, `d32c` about 1000 m at t=900), and the
+LSTs firing over the transports they lead in. That is a positioning question, for item (2)'s order
+trace and section 105's queue, not a gunnery rule.
+
+## 111. UST 04's grounding and the friendly-fire geometry on JM08 36000 (packet `cc9_ust04_grounding_order`, cc9-ships27, 2026-10-04)
+
+Section 107.5's second miss and section 110.2's open question, read from the ON diag run
+`s26_e1d_jm08x` (cc9-ships26 tree, `BSP_LANDER_DIAG=1`) and the pair logs `s26_e0/e1_jm08x`.
+Scripts: `local\s27_timeline.py <log> <unit>` (state changes, orders, fleet diag) and
+`local\s27_follows.py <log>` (`follow issued` pairs), in the cc9-ships27 tree.
+
+### 111.1 The two orders UST 04 is under
+
+- **The planner's `follow` to Bristol, re-issued all run.** 115 `follow issued (00720CD0, source
+  join 0077F940)` lines, the first at log line 6604 and the last at 324653. Section 94: the image's
+  follower pass `00A10DC0 -> 0077C8D0 -> 0077F940` re-joins every member after the head, whatever its
+  current command.
+- **A bridged `moveto` (the `ai_command_tick` source, `kAiTransportMovesOrderBridgeBound` ON),
+  re-issued whenever the 80 m gate opens.** From t=817 (step 16330) the unit swaps between
+  `state=movetopos` (`d32c` 26-187 m) and `state=follow` every 0.5-5 s. Between t of about 1375 and 1490 there are
+  11 `follow issued` lines (log lines 258125..277454), each followed by a `movetopos` within a
+  few steps.
+- **Both are the image's rules as read.** Section 94 covers the re-join, and section 107.1 covers
+  the bridge and its 80 m gate. Neither has a gate that spares the other's member.
+
+### 111.2 Where it grounds, and why nothing turns it away
+
+| t | UST 04 | ground | contact | Bristol |
+| --- | --- | --- | --- | --- |
+| 1370 | (1888.8, -3729.3) | -21.8 | 0 | (2031.2, -3837.1), -21.7 |
+| 1430 | (1982.2, -3877.2) | -17.0 | 0 | (2066.9, -3871.4), -20.7 |
+| 1490 | (1960.2, -3926.0) | -13.0 | 1 | - |
+
+- **The first terrain contact** is at t=1427.37, pos (1984.3, -3874.9), penetration 0.01
+  (`ship terrain contact` line). The census max is 2.18 m over 7458 steps. The hull is 180 m long
+  (`unit hull input ... length=180`), so its ends lie about 90 m from the centre whose ground the
+  diag prints.
+- **Bristol is the anchor.** It holds its `attackmove` standoff on `Japanese AA truck 01` at the
+  21-22 m contour, nearly stationary from t=1310 to 1400 at (2031..2043, -3831..-3849). Its
+  followers keep station within about 100-200 m of it.
+- **The navigation layer is 11 for this class**, as for every surface class this installation loads
+  (`docs/SHIP_AI_LAYER_SELECTION.md`, `[class+560h]` through `006DFD80`). JM08's groups are layers
+  0, 5, 10, 11, 26, 46 and 86 (`avoid-zone geometry name=AvoidZoneG all <n>`). Both pushes only
+  keep a point outside the 11 group's zones: the follower's station point by 20 m (`009DF432` /
+  `009DF4C5`, `moved=9301` of 146330 pushes on this run) and the bridged move point by 30 m
+  (`00A02020`). Neither keeps the ends of a 180 m hull out of water shallower than its draft.
+- **The avoid-zone escape cannot act on a station-keeping follower.** The `zone` summary has
+  UST 04 `inside=7908` steps with `escape_turns=0`. LST 01, 03 and LSM 01 have escape turns.
+  - The escape turn in `009DE5B0` (section 4, `009DE6DB..009DE8ED`) multiplies by
+    Interp(3, 0, 5, 1) of `blk+330h / max(100, length)` (`docs/AVOID_ZONE_ESCAPE.md` section 2).
+  - The follow step's station-keeping arm leaves `blk+330h` at 0: it is reset at `009ED780`, and the
+    arm writes `blk+32Ch = 1500` at `009EE08F..009EE0AD`, never `+330h`. The log shows
+    `d32c=1500.00 d330=0.00` on every `follow navigate` step.
+  - So the ramp is 0 and no turn is applied. That is the image's arithmetic as read, not a host
+    gap.
+
+**Verdict on the grounding: no divergence found; nothing is bound.** UST 04 grounds between two
+image orders that each re-assert themselves, next to a leader standing at the 21 m line. The layer
+key 11, the 20 m and 30 m margins and the escape's zero ramp are image or installation values.
+**Uncertain:** whether the image's hull-terrain solver touches at this depth under a 180 m hull.
+That is cc9-gunnery23's contact code, and the depth profile under the bow is not logged.
+
+### 111.3 The friendly-fire geometry (section 110.2)
+
+`s27_follows.py` on `s26_e1_jm08x`:
+- Bristol's group: UST 01, 02, 04, LST 01, 03 and LSM 02.
+- Macomb's group: UST 03, 06 and LST 02.
+- LSM 01 follows UST 05.
+
+Section 110's killers and victims fall inside these clusters:
+- ON: Bristol kills UST 01, its own follower. UST 03 (Macomb's group) kills UST 02 (Bristol's).
+  Bristol kills UST 05, which lies in the same cluster.
+- OFF: LST 01 kills UST 05 and UST 06; LST 03 kills UST 02, a member of its own group. Macomb
+  kills UST 04.
+
+**The answer to 110.2:** it is the station and move-point choice around an attackmove standoff,
+and the image does the same as far as read.
+- The planner group keeps its members on station within about 200 m of a leader that stands about
+  1000 m off its shore target.
+- The bridged transport moves pull members toward their anchors, which lie shoreward of the leader.
+- So a member regularly lies on the line from the leader or another member to the shore.
+- The image refuses such a shot only for kinds 1, 5 and 6, and only if the friendly was in the way
+  at the gun's first ask (110.1).
+
+**Friendly fire on this row is recorded as the image's behaviour.** Which transport dies, and to
+whom, is a spread between runs: UST 05 and UST 02 die in both `s26_e0` and `s26_e1`, but to different killers, and the other
+  victims differ.
+
+## 112. The close-attack fallback skips the order bridge (packet `cc9_close_fallback_order_bridge`, `kCloseFallbackOrderBridgeBound`, cc9-ships27, 2026-10-04)
+
+Section 107.2's recorded twin, queue item 3.
+
+### 112.1 The image
+
+`00A13B60`'s no-candidate arm, read in `disasm-raw`:
+- **The point (`00A14CC1..00A14D41`).**
+  - `EAX = [ESP+190h]`, the group centre pointer (`00A14CC7`).
+  - The member's pose `ESI+FCh..104h` is scaled by `[00CE65D0]` = 0.4 into `[ESP+34h..3Ch]`
+    (`00A14CCE..00A14CF1`).
+  - The centre `[EAX]..[EAX+8]` is scaled by `[00CEFF98]` = 0.6 into `[ESP+68h..70h]`
+    (`00A14CFB..00A14D17`).
+  - The sum goes to `[ESP+A4h..ACh]` (`00A14D1B..00A14D41`).
+- **The call.** `EDX = &[ESP+A4h]` (`00A14CD4`), `ECX = ESI` the member (`00A14CDD`), then
+  **`00A14D48 CALL 00A02020`**, the same `BSP_AiCommand_IssueMoveToMember` that `00A11F23` calls.
+  `00A02020` overwrites `EAX` at `00A02027` (`MOV EAX,[ESI]`) before reading it, so `EAX` is not
+  an input. The ABI is `ECX` member, `EDX` point, no stack arguments.
+- **So the fallback takes 00A02020's three gates** (section 107.1):
+  - the class gate: a squadron unless `007EDA90`, otherwise `IsKindOf(6)` (`00A0202F..00A02052`);
+  - the 80 m gate (`00A0206E`);
+  - for a ship, the `00417B10` avoid-zone point with a 30 m margin and y = 0.
+- **The 80 m gate cannot refuse here.** The arm runs only when the member is farther than
+  r = max(400, 160 x members) from the centre (`00A14BE3`). The point is 0.6 of that distance away,
+  so at least 240 m.
+
+### 112.2 The host
+
+`close_issue_moveto` (`src/game_hosts_ai.cpp`) calls `tick_issue_moveto`, which is only the tail.
+`ai_close_attack_tick` reaches it from the `kCloseAttackFallbackOffsetBound` arm with the same
+0.4/0.6 point. So the host differs from the image in two ways:
+- non-ship, non-squadron members (a land vehicle in a close-attack group) are still ordered;
+- a ship's point is not pushed out of its avoid zones.
+
+### 112.3 The binding (prepared; `src/game_hosts_ai.cpp` is on loan to cc9-lua33)
+
+- The edit is `local\s27_edit_ai_112.py` in the cc9-ships27 tree, run as
+  `python s27_edit_ai_112.py <root>`. It anchors on exact text and refuses a missing or duplicate
+  anchor.
+- It touches `src/game_hosts_ai.cpp` and `include/bsp/game_hosts_ai.hpp`.
+- Both values of the switch were compile-checked with MSVC Win32 on copies (`local\s27_ai\`).
+  They show only the two pre-existing C4702 warnings near `capture_target_path_00a2a130`.
+- **What it does:**
+  - `kCloseFallbackOrderBridgeBound`, committed OFF.
+  - ON: `close_issue_moveto` goes through `issue_moveto_bridge_00a02020`, section 107's helper. The
+    helper gains an optional out-parameter so the issued point can be compared.
+- **Census, counted both ways, without the gates' own counters, so OFF moves no other line:**
+  `summary mission ai close fallback bridge calls= class_refused= near_refused= ships=
+  zone_moved= bound=`.
+
+### 112.4 Predictions (written before any run)
+
+The fallback's reach on reference v (`fallback=` in the coordinator summary, cc9-gunnery20
+`local\g20_rv_<row>.log`):
+
+| row | fallback | who `moveto ai_command_tick` reaches there (command-table rows) |
+| --- | --- | --- |
+| E2, USN04 | 576 each | Val, Kate and Zero squadrons |
+| USNOS long | 693 | planes, `unit #` boats, Cargo and Convoy ships |
+| JM06 | 256 | tankers, cargo transports, a PBY, the hospital ship |
+| USN13 | 171 | `bruh` squadrons, Marus, Katori, Naka |
+| LOMP06 | 143 | Marus, Mikuma, Yugiri |
+| USNOS | 51 | as USNOS long |
+| IJN01 | 27 | Downes, Dauntless and Warhawk squadrons |
+| USN01 | 2 | Mav planes, Convoy ships |
+| JM08, JM08 long, JM05, JM05 long, USN02, USN12, BSM01, LOMP10, LOMP10 long | 0 | - |
+
+- **Mechanism:**
+  - `calls` equals the OFF `fallback` count on every row.
+  - `near_refused` = 0 everywhere (112.1).
+  - ON, `fallback` falls by exactly `class_refused`.
+  - ON, `zone point asks` rises by `ships`; `zone_moved` <= `ships`.
+- **Rows with fallback 0:** exit 0 or 1.
+- **E2, USN04:** squadrons only. No Kamikaze leader, so `class_refused` = 0, `ships` = 0: exit 1.
+- **JM06:** an open-sea convoy far from the AvoidZoneG outlines. `ships` > 0 but `zone_moved` near 0:
+  exit 1. If the PBY is not a squadron, `class_refused` > 0 and exit 3.
+- **LOMP06 (harbour) and USNOS / USNOS long (Ada near the island):** `zone_moved` > 0, exit 3.
+  Ship paths near the coast move; no death row flips for a mechanism reason.
+- **USN13, IJN01, USN01:** exit 1 or 3, decided by the census.
+- **Verdict rule:** flip ON when `calls` matches, the refusals are the class gate's, and every
+  moved point belongs to a ship. A mechanism failure stays OFF, recorded.
+
+## 113. Section 105's queue, closed (cc9-ships27, 2026-10-04)
+
+| 105 item | closed by | state |
+| --- | --- | --- |
+| 1, the unload latch | 106 | `kLandingShipUnloadBound` ON; BSM02 and CHG05 are the first rows the fields could reach |
+| 2, the crafts' spread and the transports' "rams" | 107 (the order bridge), 110, 111 | `kAiTransportMovesOrderBridgeBound` ON; the deaths are friendly gunfire, as the image does it |
+| 3, section 98's open note | 108 | the image clears an occupant only on a pad switch or a death |
+
+**The ram 105 item 2 cites was also gunfire.** In `s25_b0_jm08x` (cc9-ships25 tree), UST 01's death
+row is `killer=USTroopTransport 04 killer_gun=126 killer_cat=6 killer_blast=0 killer_range=76`. It
+took 48 category-6 hits for 2569 damage: a dual-purpose gun at 76 m, the same pattern as section
+110's seven. `s25_b1` and `s25_e1` have UST 05 killed the same way, by UST 06's gun 136 at 123 m.
+Nothing in section 105 remains open.
+
+## 114. The fourth ranking (packet `cc9_ship_ai_open_ranking_4`, cc9-ships27, 2026-10-04)
+
+**It replaces section 28's table.**
+
+**Source.** Reference v's nineteen logs (cc9-gunnery20 tree, `local\g20_rv_<row>.log`, base main
+`16d01094e`). Reference W's runs were not yet in the cc9-gunnery23 tree. Since v, the lane's flips
+are sections 96-111. None of them removes a host row ranked below. Section 112's switch is still
+OFF and waiting for its pairs.
+- `local\s27_census.py g20_rv rows <regex>` (with `S27_ROOT` set to the log directory; the
+  cc9-ships10 census script, re-rooted) sums the non-concrete host rows.
+- **Lane switches:** only `kShipAiObstacleBackoffCountdownBound` is OFF (section 104.1: no row arms
+  it). `kNavigatorForceTorpedoBound` belongs to the script-orders lane.
+
+### Closed since section 28
+
+Sections 29-113 closed the old ranks:
+- **Rank 1:** the retarget ring, `kShipAiApproachRetargetRingBound` ON.
+- **Rank 5:** the kamikaze fields, section 29.
+- **Rank 6:** BigLandingShip.
+- **Also closed:** the landing, capture, formation and transport-move items of sections 91-111.
+
+What follows is what is left.
+
+### The ranking
+
+| rank | item | image | host label | calls on v | reach, in one line |
+| --- | --- | --- | --- | --- | --- |
+| 1 | **the planners' quick-spawn arms** | Capture `00A2B400-00A2B7EB` and Defend `00A29B8E-00A29E2A`, both into `00A25B90` | `AiPlanners::capture_spawn_arm_00a2b400`, `defend_spawn_tail_00a29b8e`: records | due: capture 633 (JM08 long 436, USNOSl 102, USNOS 25, JM08 24, USN01 23, USN13 23); defend 364 (USNOSl 119, JM05l 115, JM05 42, USNOS 42, USN13 40, USN01 6) | **units created** on 7 rows if the budget opens: deaths, captures and objectives can all move. The gate after "due" is unread (below) |
+| 2 | the close-attack fallback's order bridge | `00A14D48 CALL 00A02020` | `close_issue_moveto` issues the tail | fallback 2,495 on 9 rows | section 112; the edit is with cc9-lua33, and the pairs wait for its sha |
+| 3 | the SELLING tick's per-member message 51h | `00A123A0..00A123F8`: `005F98F0`, then `0077C2A0` | `AiCommand::selling_sell_message_00a123f8` | 1584 (JM05l 1191, JM05 393) | contract unread. If 51h releases or "sells" units, JM05's populations move |
+| 4 | the engage gate's avoid-zone test | `009E864C 0082ADC0`, then `009E8658 004178F0` | `ShipAiEngageGate::avoid_zone_list` answers "no zone" | 266 (USNOS 133, USNOS long 133) | **its label is stale**: "the singleton is not built", but `GameAvoidZoneRuntime` now is. A brain destination inside a zone would close the gate: USNOS's attack runs near Ada |
+| 5 | the surface-target set branch | `008DDF90` in `00922C80` | `ShipAiGoal::target_is_surface_set_branch` takes the tail | 916 (JM08 long 804, USNOS long 95, USNOS 17) | 3 only if the set holds one of those targets; the set's producer is unread |
+| 6 | the sunk hull's shape flag | `00826410` | `ShipMotion::sunk_hull_shape_flag8` | 130250 on 8 rows | units host (shared lane); a wreck's collision shape. Routed to the lead, not ranked for this lane's packets |
+| 7 | the back-off countdown | `009F47A7` | `kShipAiObstacleBackoffCountdownBound` OFF | - | 0: no row arms it (104.1) |
+
+**Rank 1's gate, as far as read here** (`disasm-raw 00A2B3F0..00A2B507`):
+- **First gate:** `00A2B488 CALL 00946970` with `ECX = [00F89B3C]` and the party (`brain+1Ch -> +20h`).
+  It must answer <= 0 (`00A2B495 JA 00A2B7A6`). `[00F89B3C]` is the records manager the host
+  labels at `kCaptureAvailableResources` (`src/game_hosts_ai.cpp`, "never creates").
+- **Second gate:** the due byte `[ESP+4Fh]`.
+- **The budget:**
+  - `00942130(party)` (a walk of `[00E188A8]+18CCh`'s per-party list) is multiplied by
+    `1 - [00F8A8BC + 4 x 009FFC80()]` (the game-mode index);
+  - `00A1C900(planner)` is subtracted;
+  - below 1.0 the arm goes to `00A2B4F4`, otherwise to `00A2B5AB`.
+- **Unread:** what `00942130` counts on a single-player row, and whether `00A25B90` finds a unit
+  pool to spawn from there. The AI party's available resources are 1200 on a campaign row (the
+  host's own reading of `00946FC0`), so the budget is not obviously zero. That is the rank-1 packet.
+
+**Not ranked, and why:**
+- **Structure:**
+  - `ShipAi::unit_weapon_director`, `drive_heading_vtable50`, `ShipAiOrder::slot_to_order_ring`
+    and `ShipAiObstacle::backoff_countdown` (3.6 M each);
+  - `ShipMotion::rigid_body_substep_schedule`;
+  - `AiGroups::seed_collection` and `AiCommand::tick_000c`, as in section 28.
+- **The AutoTarget slot labels** (`command_slot_kind`, `director_command_state`,
+  `candidate_owner_vtable140`, 1.4 M each) name structure the recon-candidate binding already
+  replaces (`kAutoTargetReconCandidatesBound`).
+- **The submarine sub-state rows** (`ShipAiApproach::sub_*`, `unit_depth_reference`,
+  `target_kind_probe_005c`, 45285 each), as in section 28.
+- `brain_leg_scale_0308` is a store with no reader. `torpedo_bot_accuracy_008fb530` is labelled
+  with this installation's values. The random stand-ins stay unbound (the RNG-stream rule).
+- `ShipAiApproach::frame_state_unread_spans` (47039) is the label kept on `009F1BC0` after section 28's
+  rank 1 landed. Its remaining spans are not itemised here; a later ranking should list them.
+- `AiCommand::squadron_excluded_009ffeb0` (107846) is the carrier arm sections 36 and 40 bound
+  as `rtb_exclusion_arm`.
+
+**Top item.** Rank 1 is the next packet: read `00942130`, `00946970` and `00A25B90`'s pool far
+enough to say whether any reference row spawns. If none does, it closes as a record with no
+reach. If one does, bind it OFF with predictions. Rank 4 is a small free packet after it.
+
+## 115. Rank 1 of section 114, the quick-spawn arms: closed, no reference row spawns (packet `cc9_quick_spawn_reach`, cc9-ships27, 2026-10-04)
+
+**Correction to section 114.** Its rank 1 was already settled for the Capture arm by sections
+51-52 (cc9-ships15), which the ranking missed:
+- the single-player gates pass;
+- but the spawn buys only from a site's authored stock list (`JapanList` / `AlliedList`,
+  `"Stock %d"`), and no reference row's scene has one.
+
+This section re-checks that against the bodies, and closes the Defend arm, which 52 left unread.
+
+### 115.1 The Capture arm (`00A2B477..00A2B7A6`)
+
+- **Gate 1:** `00A2B488 CALL 00946970` (ECX = `[00F89B3C]`, the team) must answer <= 0
+  (`00A2B495 JA 00A2B7A6`).
+  - `00946970` (body `00946970..009469E1`, `RET 4`) is a float sum of `00946870(record, team)`
+    over the `std::list` at `[00F89B3C]+4`.
+  - No record exists until a spawn request does, so it answers 0.
+- **Gate 2:** the due byte `[ESP+4Fh]`.
+- **The budget:**
+  - `00942130(team)` (body `00942130..00942205`) counts the bound player slots (`+8h` set, and
+    `+9h` clear or `+0Ah` set) of `slot[team]`'s party over the eight slots at `[00E188A8]+18CCh`.
+    It answers `[00E0CFB4] x 0.5 / count`, or 0 with no bound slot.
+  - That is multiplied by `1 - [00F8A8BC + 4 x 009FFC80()]` and reduced by `00A1C900(planner)`.
+    `00A1C900` is the sum of `00A2C530` over the owned groups, the `ResourceUsage` sum, which is 0
+    here.
+  - With the mode-0 percent at 0.0 (below), the budget is `1200 / count`, so >= 1. That agrees
+    with 51.
+- **The spawn:** `00A25A30(planner)(target+FCh, budget, &records, "[capture]"+id, 0)` at `00A2B758`.
+  - `00A25A30` refuses a weight below `[00CE3800]` = 0.5 or an empty record vector.
+  - It then takes `0066E590` -> `0066E510` -> `0066DD00`: world list 28
+    (`[[00E188A8]+19CCh]+16Ch`), the CommandBuildings with `+78Ch` != 0. `0066E2B0` keeps the
+    team's, and `0066E590` drops `+14h == 0`.
+  - With an empty list it returns false (`00A25AB7 JE 00A25B5C`). Section 52.2: every site's
+    class list comes from its authored stock, and no reference scene authors one.
+  - **So no capture spawn on any reference row.**
+
+### 115.2 The Defend arm (`00A29BE7..00A29C79`)
+
+- **Gate 1:** the same `00946970` test (`00A29BF8`; `00A29C05 JBE 00A29C33` when <= 0).
+- **The budget** (`00A29C33..00A29C77`):
+
+  `[00F8A8BC + 4 x 009FFC80()] x 00942130(team) - 00A1C900(planner)`
+
+  `00A29C71 FLD1; FCOMIP; JBE 00A29CA5` takes the spawn path only when the budget is >= 1.0;
+  below it falls to `00A29C79`, the exit.
+- **The percent is 0.0 on every reference row.**
+  - Every row runs mode 0: the host's `summary mission ai tuning mode=0
+    (IslandCaptureParams_Rookie)` on all nineteen reference-v logs.
+  - This installation's `scripts/datatables/highlvlaiglobals.lua` (2024-07-13) authors
+    `["Defend_ResourcePercent"] = 0.0` in `IslandCaptureParams_Rookie` (line 110), `_Regular`
+    (298) and `_Veteran` (484).
+  - `00A360FA..00A36126` stores it for modes 0-2 (AI_GLOBALS_AND_TARGET_WEIGHTS section 2).
+  - So the budget is `0 x 1200 / count - 0` = 0 < 1, and **the Defend arm never reaches
+    `00A25A30` on these rows.**
+- **Correction to section 51 item 3:** it took the percent "at its 0.35 default" and so had the
+  defend budget pass (w >= 97.5). The authored value is 0.0. 0.35 is only `GetFloatOrDefault`'s
+  fallback (`00CF6560`).
+
+### 115.3 Verdict
+
+**Both arms stay records, correctly.**
+- Capture: no stock list on any reference scene (52.2).
+- Defend: an authored resource percent of 0.0 on the mode-0 tables.
+- The host's `spawn_due` / `defend_spawn_arms` counts are planner-side "due" counts, not spawns.
+- **Rows that could reach the spawn:**
+  - a scene with a stock list (IJN11 `ijn_11_operation_to`, or the `ijn_02_force_z` copies; 52.2);
+  - a script calling `AISetDefendResourcePercent` with a non-zero value (only
+    `islandcapture01.lua:1744`, multiplayer);
+  - a mode 3+ session.
+- **Section 114's ranking moves up:** the close-attack fallback bridge (section 112, pending) is
+  now first, and the SELLING message 51h (rank 3) is the next free read.
+
+## 116. The SELLING tick's message 51h: a timed removal, and no reach on the reference rows (packet `cc9_selling_message_51h`, cc9-ships27, 2026-10-04)
+
+Rank 3 of section 114. **What 51h does, read:**
+
+### 116.1 The sender (`00A11FF0`'s no-air arm, `00A12355..00A1241B`)
+
+- After `00A02020` / `00A10DC0` / `00A11070`, the tick walks the group's members (`group+563Ch`).
+- A member is sent message 51h when both hold:
+  - `[member+308h] == 0.0` (`00A123A0..00A123B3`, `UCOMISS` / `LAHF` / `TEST AH,44h` / `JP`
+    skips a non-equal);
+  - `005F98F0(member)` (`00A123B7`).
+- The message is built at `00A123C0` (`PUSH 51h`, `0075B430`, vtable `00CF3BA4`) and routed at
+  `00A123F8` (`0077C2A0`, flags 7, ECX = the member).
+
+### 116.2 The gate `005F98F0` (`__thiscall(unit) -> bool`, read `005F98F0..005F99EF`)
+
+- **Refused:** a unit that is not `IsKindOf(6)` (a ship) or that is `IsKindOf(9)`.
+- **Otherwise** it walks world list 28 (`[[00E188A8]+19CCh]+16Ch`, the CommandBuildings) and
+  answers true at the first one of the unit's side (`+54h`) with `dx^2 + dz^2 <= R^2`:
+  - `R = (float)(int)[cb+7A0h]`, the CaptureRange (`005F998C FILD`);
+  - `dx`, `dz` are between the two `+FCh` poses (`005F996C..005F9988`);
+  - the compare is `005F99C8 FCOMIP` / `JBE 005F99E3`.
+
+### 116.3 The receiver (`0077F7B0`, row 7 of docs/SESSION_MESSAGE_DISPATCH.md, `RET 4`)
+
+- **`unit+308h` = now + the sell time + the message latency** (`0077F7B3..0077F81A`):
+  - now is `[00F876A4]`;
+  - the sell time is GlobalConfig `+104h` when `004BCA50() == 8`, else `+100h`;
+  - the latency is `(msg+0Ch - [00F876B0]) x [00D0DE84]`.
+- **The sell times are Globals.lua keys.** The loader `0087D7B0` stores `UnitSellTime` at `+100h`
+  (`0087ECAF`, key `00D0E2B8`) and `UnitSellTimeSingle` at `+104h` (`0087ECED`, key `00D0E2A4`).
+  This installation's `scripts/datatables/globals.lua` (2024-07-13) authors 30 and 5 (lines
+  152-153).
+- **The handler then:**
+  - `0077C470(unit, 1FFh, 0)`, the role transfer (SCRIPTED_HELM section 2);
+  - `vtable[148h](1FFh, 8)`, the owner-slot hand-off `004C3840` also uses;
+  - when the unit is the controlled one (`[00E188D8]`), a GUI update;
+  - outside session mode 2, `0077D600(clearorders 00E08F08)` and `0077D600(stop 00E08F88)`.
+- **The removal:** the unit's tick then calls `0077A650` once `unit+308h` is reached (ship
+  motion tail `00826D5A`; the squadron tick `007F3D1C`). That is `0090EBF0(game+21A0h, unit)` and
+  `00926D90(unit, 3)`, the entity kill with reason 3 (SHIP_POST_MOTION section 6).
+- **So SELLING removes a ship** that stands within CaptureRange of an own CommandBuilding: it
+  stops and is deleted `UnitSellTimeSingle` = 5 s later in single player.
+
+### 116.4 Reach: none on the reference rows
+
+- **Only JM05 and JM05 long run the selling tick** on reference v: `summary mission ai selling
+  ticks=442 / 1339`, every one an approach, `holds=0`.
+- **JM05's own CommandBuildings author tiny ranges.** A diagnostic run (`local\s27_d_jm05l.log`,
+  W's build `g23_rw`, `BSP_LANDER_DIAG=1`) logs:
+  - MainCommandBuilding 01, capture_range 0;
+  - SecondaryCommandBuilding 01, 20;
+  - RadarStation 01, 10.
+- **No ship comes close.** The nearest side-0 ship to the secondary building's traffic path
+  (-996, -575) is TargetPT at 585 m (t=380), then USS Walke at 739 m and HMAS Hobart at 782 m
+  (`local\s27_mindist.py`). The Main building's range of 0 admits only a ship at its exact pose.
+- **So `005F98F0` is false for every member on JM05,** and the image sends no 51h there. The
+  host's record (`AiCommand::selling_sell_message_00a123f8`) and the units host's record
+  (`UnitInstance::expire_at_scheduled_time_0077a650`) are the right model for these rows.
+- **Which rows could reach it:** a ship group selling at an own coastal CommandBuilding with a
+  CaptureRange large enough to reach water. USN01's CB2 and USN13's CB2 / CB4 / CBT author 100
+  (section 51's capture notes), but no selling tick runs on those rows in v.
+
+**Verdict: closed with no binding.** If a row ever reaches it, the binding is:
+- the AI host sends 51h through the existing message loopback;
+- the units host writes `+308h` from GlobalConfig `+104h` (or `+100h`), takes the role transfer,
+  the owner hand-off and the two commands, then kills with reason 3 at expiry.
+- Both halves would need their own pair.
+
+## 117. Handoff (cc9-ships27, 2026-10-04, at about 72% context)
+
+### Landed on this branch (all docs; nothing bound)
+
+| section | what |
+| --- | --- |
+| 110 | JM08's transport "rams" are friendly gunfire; the image's friendly-fire rules match the host (the line-of-fire memo is for kinds 1/5/6 only, and its `SafeToFireCacheTimeOut` field has no reader) |
+| 111 | UST 04's grounding: the follower-pass `follow` and the bridged move alternate. A station-keeping follower gets no escape turn (`blk+330h` = 0). The friendly fire happens inside the planner groups, and is recorded as the image's behaviour |
+| 112 | the close-attack fallback skips `00A02020`'s gates: read, predictions, and the prepared edit `local\s27_edit_ai_112.py` (routed to cc9-lua33, not yet applied) |
+| 113 | section 105's queue closed |
+| 114 | the fourth ranking |
+| 115 | the quick-spawn arms: no reference row spawns (no stock lists; the Defend percent is authored 0.0) |
+| 116 | the SELLING message 51h: removal 5 s after it; no reach on JM05 (CaptureRange 0/20/10 m) |
+
+### The next packets, in order
+
+1. **Section 112's pairs**, once cc9-lua33 lands `kCloseFallbackOrderBridgeBound` OFF (the lead
+   sends the sha).
+   - Merge main; do not re-apply the edit.
+   - Run the 300-frame smoke, then same-tree pairs
+     (`python tools/pair_export.py --commit <sha> --flip kCloseFallbackOrderBridgeBound=true --out local\<prefix>_on`)
+     on LOMP06, USNOS long, JM06 and USN13, with E2 as the control.
+   - Check the census line `summary mission ai close fallback bridge` against 112.4:
+     - `calls` = the OFF `fallback`, and `near_refused` = 0;
+     - `fallback` falls by `class_refused`;
+     - `zone point asks` rises by `ships`.
+   - Flip by verdict.
+2. **Rank 5 of section 114: `008DDF90`**, the surface-target set branch in `00922C80`
+   (`ShipAiGoal::target_is_surface_set_branch`). Calls on reference v: JM08 long 804, USNOS long
+   95, USNOS 17. Read the set's producer and whether it holds any of those targets.
+3. **The IJN11 stock scene** (`ijn\ijn_11_operation_to.scn`, 136 `Stock N` bags) is the one
+   candidate row for the planner spawn (sections 52, 115).
+   - Section 52 found `spawn_due=0` there in 3000 frames.
+   - A longer run decides whether the image would buy units there. If it does, the route is
+     `00A25A30 -> 00A23980 -> 0094C830 -> 00949530`, the SpawnNew queue the host drains.
+   - Still unread on that route: `00A0D1D0`, `00A236F0`, `00A21D90`, `00947BC0`, `0094B600`.
+4. **The rest of section 114's ranking:**
+   - the engage gate's avoid-zone test (rank 4; its label is stale now that
+     `GameAvoidZoneRuntime` is built; USNOS and USNOS long);
+   - `frame_state_unread_spans` (list its remaining spans);
+   - the back-off countdown, which waits for a row that arms it.
+   - Rank 6, the sunk-hull shape flag, went to the gunnery/physics lane through the lead.
+
+### Notes
+
+- **Reference W** is base `85f60f0a5`. A W build is in cc9-gunnery23's tree
+  (`local\g23_rw\build\win32\Release\bsp_game.exe`); `local\s27_run.ps1` launches one
+  reference-form run with any exe.
+- **`BSP_LANDER_DIAG=1`** prints every side-0 ship's pose every 10 s (`fleet diag`).
+  `local\s27_mindist.py` turns that into each unit's closest approach to given points.
+- **Tools** (in `J:\PROG\battlestations-pacific-decompile-cc9-ships27\local\`, `s27_` prefix):
+  - `s27_grep.py` (capped grep), `s27_kinds.py` (line kinds), `s27_timeline.py` (one unit's
+    states and orders);
+  - `s27_follows.py` (follow pairs), `s27_callscan.py <target> [pattern]` (rel32 callers from the
+    PE on disk);
+  - `s27_census.py` (`S27_ROOT=<log dir>`, the non-concrete host rows);
+  - `s27_cc.ps1` (compile-check one TU against copied headers).
+- No lease is held after this commit.
+
+## 118. Rank 5 of section 114, the surface-target set branch (packet `cc9_surface_set_branch`, `kShipAiSurfaceSetBranchBound`, cc9-ships28, 2026-10-05)
+
+### 118.1 The image
+
+`00922C80 BSP_Entity_IsSurfaceTarget` (`__fastcall`, ECX entity, DL allow_far, `RET 0`) reaches the
+set test only after the ship family (`IsKindOf(6)`), `45h`, `46h` and `1Ch` arms have all failed:
+```
+00922D3F  MOV EAX,[00E188A8]
+00922D44  MOV ECX,[EAX+18ECh]            ; the local player's slot
+00922D4A  MOV EAX,[EAX+ECX*4+21A4h]      ; that slot's SzurkeNyil set
+00922D51  PUSH ESI                        ; the entity
+00922D54  CALL 008DDF90                   ; __thiscall, RET 4
+00922D59  TEST AL,AL / JNZ 00922D0E       ; in the set: true
+00922D5D  TEST BL,BL / JE 00922DB1        ; then the allow_far tail
+```
+`008DDF90..008DDFD5` (`disasm-raw`): `[this+20h]` = 0 answers 0 (`008DDF93`); otherwise an
+`IsKindOf(5)` entity is looked up as itself, an `IsKindOf(18h)` one as `[entity+3D0h]`, anything
+else answers 0 (`008DDFC0`); the lookup is `008DDF00` over the tree at `+18h`. The squadron arm
+cannot run from `00922C80`, which rejected `IsKindOf(18h)` at its start. So the branch turns the
+answer from the tail's to `true` only for a **non-ship vehicle that is a unit of one of the local
+slot's objectives**: a fort, a gun, a building of a kind other than `45h/46h/1Ch`, a land vehicle.
+
+### 118.2 The producer, and what it holds on the three rows
+
+The sets are filled only by the mission Lua (`008CD440 Objectives_Add`, `008CDD60
+Objectives_AddUnit`, `008CE510 Objectives_RemoveUnit`; docs/MISSION_OBJECTIVES.md). This
+installation's `scripts/global/commandhelpers.lua` (mtime 2024-10-29) wraps them as `luaObj_Add`
+(`Objectives_Add(party, nil, ID, Text, level[, true], trg)`, 5763-5798) and `luaObj_AddUnit`.
+
+| row | calls on v | objectives the run adds (`objective binding` lines, v and W logs) | their targets in the script | non-ship vehicles |
+| --- | --- | --- | --- | --- |
+| JM08 long | 804 | `Missouri`, `landingships`; no `Objectives_AddUnit` call at all | **corrected in section 120.4:** the row runs `COTP-IJN/PRCPIJN/jm08.lua` (mtime 2024-07-13), not `ijn/JM/jm08.lua`. Its 630-631 add `Mission.Flagship` (Missouri) and `Mission.LandShips` (11 US troop transports), all ships | none |
+| USNOS long, USNOS | 95, 17 | `Troop` only | `COTP-USN/us_osumi.lua` 1320: `Mission.Trgs` = Enterprise and TroopTrans1-6 (524-531), all ships | none |
+
+USNOS's later objectives (1650-1654: `JapHQs`, `Forts`, `RadioTowers`; 1760 `FinalTrgs`) would
+put land units in the set, but no reference run adds them. **So on every reference row the image's
+set holds no unit that `00922C80` can ask about, and the branch answers false: no reach.**
+
+### 118.3 A host gap found on the way (lua lane, routed to the lead)
+
+`008CD440` starts its target walk at **index 5**, and at 6 only when argument 5 is a boolean:
+`008CD753 MOV ESI,5` (straight line); `008CD7C6 CMP EAX,5 / JLE 008CD7FB` (no argument 5);
+`008CD7ED` `IsBoolean`; `008CD841 MOV ESI,6` only on the boolean arm; the walk is
+`008CD87D CMP ESI,EAX / JGE` then `008CD890 PUSH ESI`. Each target is an entity handle
+(`008889C0`) or a vector3 table (`0088B840`) pushed whole (`008CD942`), or otherwise a table whose
+elements are walked (`008CD96F..`, `IterateFirst`/`IterateNext`). The host
+(`src/game_hosts_lua.cpp`, `first_target = is_add ? 6 : ...`; `objective_argument_unit` accepts
+only a table with an `ID`) reads from 6 always and does not walk a list. A non-quiet
+`luaObj_Add(level, n, trg)` therefore adds no unit: `Troop` logs `units=0` where the image holds
+seven ships. Its consumers are `00A2C450` (world sets), `00A0F810`'s objective multiplier and the
+HUD, not `00922C80` on these rows.
+
+### 118.4 The binding
+
+`kShipAiSurfaceSetBranchBound` (`src/game_hosts_ship_ai.cpp`), committed OFF. Both ways the branch
+asks the slot-0 objective table (`game+18ECh` is 0 in this process, as the HUD's binding of the
+same call says) the way `008DDF90` does, and counts; ON, a hit answers true instead of the tail.
+Census: `summary mission ship ai surface set branch queries= nonempty= vehicles= hits= bound=`.
+
+### 118.5 Predictions (written before any run)
+
+- `queries` equals the old `target_is_surface_set_branch` count (on v: JM08 long 804, USNOS long
+  95, USNOS 17).
+- `hits` = 0 on every row; `nonempty` = 0 on the three rows while 118.3 stands.
+- **Pairs: exit 0 or 1 on every row.** The ON pair runs on USNOS (with the smoke); `hits` > 0
+  anywhere is a prediction failure to explain before flipping.
+
+### 118.6 The pairs, and the flip
+
+OFF is this tree at `6dbb63f27` (`local\s28_off_<row>.log`); ON is `pair_export --commit 6dbb63f27
+--flip kShipAiSurfaceSetBranchBound=true` (`local\s28_on`, SHA-256 prefix `428EFD44A61E`), both in
+the reference launch form.
+
+| row | queries | nonempty | vehicles | hits | `pair_diff` |
+| --- | --- | --- | --- | --- | --- |
+| smoke (USN01, 300 frames) | 0 | 0 | 0 | 0 | exit 1 |
+| USNOS | 13 (v: 17) | 0 | 0 | 0 | exit 1 |
+
+The only moved lines are the census's own `bound=` and the `ship ai free` search counters
+(`empty`, `refills`), the known noise of a same-binary pair. Every prediction of 118.5 held:
+`queries` equals the old record count, the set is empty whenever the branch is asked, and the
+pair is gameplay-identical. **Verdict: mechanism matches, no reach; flipped ON.** JM08 long and
+USNOS long were not paired: the census shows the branch asks an empty set, and the scripts'
+objective adds on those rows (118.2) are the same as USNOS's or have no targets.
+
+Reach returns only with 118.3's fix and a row whose objectives name land units (USNOS past
+`us_osumi.lua` 1650). Then `hits` counts the forts, HQs and radio towers the ship AI's goal
+vector starts treating as surface targets, as the image does.
+
+## 119. Section 112's pairs, and the flip (packet `cc9_close_fallback_order_bridge`, cc9-ships28, 2026-10-05)
+
+cc9-lua33 released `src/game_hosts_ai.cpp` without applying 112.3's edit, so this lane applied
+it. After merging main `ee5672bf2` (which carries `kAiSquadronSetTargetIntakeBound` ON in
+`close_issue_order`), `local\s27_edit_ai_112.py` matched every anchor and was applied unchanged:
+`d0558a62c`, OFF.
+
+OFF is this tree at `d0558a62c` (`local\s28_c0_<row>.log`). ON is `pair_export --commit d0558a62c
+--flip kCloseFallbackOrderBridgeBound=true` (`local\s28_c112on`, SHA-256 prefix `6347B6065C2C`,
+`local\s28_c5_<row>.log`). Both use the reference launch form.
+
+| row | calls OFF/ON | class_refused | near_refused | ships | zone_moved ON | zone point asks OFF -> ON | `pair_diff` | 112.4 said |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| smoke | 0/0 | 0 | 0 | 0 | 0 | 1 -> 1 | 1 | - |
+| E2 (control) | 36/36 | 0 | 0 | 0 | 0 | 0 -> 0 | 1 | 1 |
+| JM06 | 256/256 | 0 | 0 | 256 | 0 | 20 -> 276 | 1 | 1 |
+| LOMP06 | 143/143 | 0 | 0 | 143 | 0 | 16 -> 159 | 1 | 3 |
+| USNOS long | 737/737 | 0 | 0 | 707 | 0 | 3130 -> 3837 | 1 | 3 |
+| USN13 | 429/413 | 0 | 0 | 226/225 | 128 | 1081 -> 1316 | 3 | 1 or 3 |
+
+- **Mechanism, every row:**
+  - `near_refused` = 0 (112.1's 240 m floor);
+  - `class_refused` = 0 (no non-ship, non-squadron member reaches the fallback on these rows);
+  - ON, the zone point asks rise by exactly `ships` wherever the run did not diverge
+    (JM06 +256, LOMP06 +143, USNOS long +707). USN13 rises by 235 against `ships` 225, because the
+    run diverges after the first moved point.
+- **USN13** is the only row where a fallback point lands in an avoid zone (`zone_moved` 128).
+  The gameplay move is paths only: no deaths on either side, three `nearest` distances move by
+  2-15 m, and about 30 fewer orders are issued (`issue_command` 4125 -> 4094).
+- **Spread miss:** LOMP06 and USNOS long were predicted to move zone points (exit 3). No fallback
+  point there lies in a zone (`zone_moved` 0), so both are gameplay-identical.
+- **Verdict:** the mechanism matches and the miss is in spread only, so **flipped ON**.
+
+## 120. Objectives_Add's target walk (packet `cc9_objective_add_targets`, `kObjectiveAddTargetWalkBound`, cc9-ships28, 2026-10-05)
+
+The fix for section 118.3. The lead lent `src/game_hosts_lua.cpp` to this lane for the packet.
+`local\s28_edit_lua_118.py` was applied unchanged after merging main `7e7d805c4`.
+- **The switch.** `kObjectiveAddTargetWalkBound`, committed OFF.
+- **ON, the start index.** `008CD440`'s walk starts at argument 5, or at 6 after a boolean argument 5.
+- **ON, list arguments.** A table argument without an `ID` is walked element by element, for Add,
+  AddUnit and RemoveUnit (`008CD96F..`; `0088B840` lists all three as callers). A position
+  (vector3) table still adds no unit, as before.
+- **Census.** The `objective binding ... units=` lines and the world-set summary's
+  `objective_units=` count the change; no new line.
+
+### 120.1 Which reference rows carry a target into an Add
+
+This installation's scripts, against the `objective binding` lines of the OFF logs:
+
+| row | objective the run adds | the call | targets |
+| --- | --- | --- | --- |
+| USNOS, USNOS long | `Troop` | `us_osumi.lua` 1320 `luaObj_Add("primary", 1, Mission.Trgs)` | Enterprise, TroopTrans1-6 (the player's own ships) |
+| USN13 | `Prot` | `usn_13_truk.lua` 1026 `luaObj_Add("primary", 1, Mission.USCV)` | the player's carrier(s) |
+| JM06 | `Ambush` | `jm06.lua` 847 `luaObj_Add("primary",1,Mission.CargoTargets)` | the enemy cargo ships |
+| E2 | `Bombers` | most likely `usn_19_coralus.lua` (not confirmed) | - |
+| LOMP06 | `us_pri_obj_1` | `06_crucial_cargo.lua` 671 `luaObj_Add("primary",1)` | none: control |
+| JM08 | `Missouri`, `landingships` | `jm08.lua` 464-516, no target | none: control |
+
+### 120.2 What reads the sets
+
+- **`00A0F810`'s objective multiplier (x10).** It asks set 0 when the attacker's `+54h` equals
+  the local party (the host's constant 0) and set 4 otherwise. A hit needs an attacker on side 0
+  weighing a slot-0 objective unit.
+- **`00A2C450`'s world-set test.** It asks the set of the brain's player slot.
+- **`00922C80`'s set branch** (section 118). It is reached only for non-ship vehicles, so ships in
+  the set do not change it.
+- **The HUD's grey arrow and objective markers.** Presentation only.
+
+### 120.3 Predictions (written before any run)
+
+- **USNOS, USNOS long.**
+  - `Troop` logs `units=7` ON (0 OFF).
+  - The targets are the player's own ships, which no side-0 attacker weighs, so the
+    target-weight `objective_hits` stays 0.
+  - `00922C80`'s `nonempty` rises while `hits` stays 0.
+  - Expected exit 0 or 1. A move would come from `00A2C450` if a brain's slot is 0, or from the
+    status path's unit drops (`unit_drops=` in `summary mission objective status`).
+- **LOMP06, JM08 (controls).** `units=0` both ways; exit 0 or 1.
+- **JM06** (run as an extra row). `Ambush` gains the enemy cargo ships. If the IJN attackers are
+  side 0, `objective_hits` > 0 and targeting moves: exit 3.
+- **Verdict rule.** Flip ON when the `units=` counts match the scripts' target lists and the
+  controls hold. A move is accepted when it is traceable to one of 120.2's readers.
+
+### 120.4 The pairs, and the flip
+
+OFF is this tree at `5d2e16934` (`local\s28_o0_<row>.log`). ON is `pair_export --commit 5d2e16934
+--flip kObjectiveAddTargetWalkBound=true` (`local\s28_o120on`, SHA-256 prefix `6BB9C4D60430`,
+`local\s28_o5_<row>.log`). Both use the reference launch form.
+
+| row | `units=` OFF -> ON | world-set `objective_units` | target-weight `objective_hits` | 118's set branch ON (queries / nonempty / hits) | `pair_diff` |
+| --- | --- | --- | --- | --- | --- |
+| smoke | - | 0 -> 0 | 0 | 0 / 0 / 0 | 0 |
+| LOMP06 (control) | `us_pri_obj_1` 0 -> 0 | 0 -> 0 | 0 | 0 / 0 / 0 | 0 |
+| USNOS | `Troop` 0 -> 7 | 0 -> 7 | 0 | 13 / 13 / 0 | 1 |
+| USNOS long | `Troop` 0 -> 7 | 0 -> 7 | 0 | 132 / 132 / 0 | 1 |
+| JM06 | `Ambush` 0 -> 3 | 0 -> 3 | 0 | 0 / 0 / 0 | 1 |
+| JM08 | `Missouri` 0 -> 1, `landingships` 0 -> 11 | 0 -> 12 | 0 (no queries) | 0 / 0 / 0 | 1 |
+
+- **The units.** Every `units=` count matches the script's target list. `Troop` is Enterprise
+  and TroopTrans1-6. `landingships` is `Mission.LandShips`.
+- **A correction to 120.1 and 118.2.** JM08 was meant to be a control. It is not: the JM08 row
+  runs `COTP-IJN/PRCPIJN/jm08.lua`, whose `luaObj_Add("primary",2,Mission.Flagship)` and
+  `luaObj_Add("primary",1,Mission.LandShips)` (630-631) carry targets. Its targets are ships, so
+  118's no-reach verdict stands.
+- **JM06.** I predicted exit 3 if the IJN attackers are side 0. `objective_hits` stays 0, so they
+  are not: the target-weight test asks set 4 for them (`local_party` is the host's constant 0).
+  Whether that constant is right on an IJN row is a separate question for the AI lane, recorded
+  here and not chased.
+- **No reader moved gameplay on these rows.** `00A2C450` hits stay 0. 118's branch now finds a
+  non-empty set on USNOS but no member, because only ships are in it.
+- **Verdict.** Every count matches and every pair is exit 0 or 1, so the switch is **flipped ON**.
+  JM08 long, USN13 and E2, which also add targets, were not paired; their reach goes through the
+  same readers.
+
+## 121. The IJN11 stock scene as the spawn row (section 117 item 3): reached, but nothing spawns (cc9-ships28, 2026-10-05)
+
+**The run.** IJN11 for 36000 mission frames (36200 total) in the reference launch form, with this
+tree at `d68f656d1` (`local\s28_i_ijn11l.log`). Section 52's 3000-frame run had
+`spawn_due=0`. This run reaches the arm:
+```
+summary mission ai capture thinks=431 ... attack_thinks=446
+summary mission ai capture path thinks=15 assignments=0 ... spawn_due=7
+AiPlanners::capture_spawn_arm_00a2b400   00a2b400   UNIMPLEMENTED calls=7
+summary mission ai defend records thinks=0 records=0 ... spawn_arms=0
+```
+
+**Why the target path runs only late.** The scene (`universe\scenes\missions\ijn\
+ijn_11_operation_to.scn`, mtime 2024-07-13) has exactly one list-28 entity:
+- `"Siege - Headquarter"` (CommandBuilding, `OwnerPlayer = "AI control"`, `Race = USA`, loaded
+  as `party=Allied(0)`).
+- The stock lists (`AlliedList` / `JapanList`, `Stock 1..40`) belong to three SpawnPoint children
+  of `"Multi AirField1"`. That is an AirField with `CommandBuildingInferior`, not a list-28 entity.
+
+The capture think's target path needs a list-28 entity not on the planner's side (`00A2A13B`).
+The thinking planner is the HQ's own side, since a planner on the other side would have had the
+HQ as a target from t = 0. So the path runs only while the HQ is **neutral**:
+- `command building capture: ... neutralized (prior party=0) at t=1501.60`, then
+  `flipped to party=0 ... at t=1532.60`;
+- `neutralized ... at t=1661.65`, then `flipped to party=0 ... at t=1693.65`.
+
+About 62 s neutral in all, and 15 path thinks, 7 of them due.
+
+**Why the image would spawn nothing there.** It follows section 115.1's route:
+- Gate 1 (`00946970` <= 0) and the budget (>= 1 in mode 0) pass.
+- `00A25A30` then builds its sites from `0066E590 -> 0066E510 -> 0066DD00`: list 28, kept to the
+  planner's team by `0066E2B0`, with `+78Ch` != 0.
+- While the arm is due, the only list-28 entity is neutral, so the planner's team owns none.
+  The vector is empty and `00A25A30` returns false (`00A25AB7 JE 00A25B5C`) before
+  `00A23980` reads any stock.
+- The Defend arm stays at budget 0 (115.2: `Defend_ResourcePercent` 0.0, mode 0).
+
+**Verdict: no spawn on IJN11 in 36000 frames; the host's record is the right model there.**
+- The spawn needs a team that owns a list-28 entity while an enemy one exists. No reference row
+  and no IJN11 timeline seen here has that.
+- `00A0D1D0`, `00A236F0`, `00A21D90`, `00947BC0` and `0094B600` stay unread: nothing reaches them.
+- **Uncertain:**
+  - Which side the thinking planner is on is inferred from the counts (15 path thinks, only in
+    the neutral windows), not from a per-think diagnostic. `BSP_CAPTURE_DIAG=1` would print it.
+  - The two neutral windows come from the host's capture binding (`cc9_command_building_capture_bind`).
+  - That the HQ's `+78Ch` points at a SpawnPoint is not read; the verdict does not need it.
+
+## 122. The local party on IJN rows: `00A0F87E` and the host's constant 0 (packet `cc9_target_weight_local_party`, `kAiTargetWeightLocalPartyBound`, cc9-ships28, 2026-10-05)
+
+### 122.1 The image
+
+`00A0F810` (the close target weight), `disasm-raw 00A0F860..00A0F8C0`:
+```
+00A0F86D  MOV EAX,[00E188A8]
+00A0F875  MOV ECX,[EAX+18CCh]        ; player slot 0's record (not indexed by +18ECh)
+00A0F87B  MOV EDX,[ECX+28h]          ; its party
+00A0F87E  CMP EDX,[EBP+54h]          ; the attacker's party
+00A0F8A2  JNE 00A0F8AC
+00A0F8A4  MOV EAX,[EAX+21A4h]        ; equal: slot 0's objective set
+00A0F8AC  MOV EAX,[EAX+21B4h]        ; otherwise: slot 4's
+00A0F8B5  CALL 008DDF90              ; then x10 at 00A0F8C6 on a hit
+```
+So the compared value is **player slot 0's party**, the party of the human player in single
+player. It is not a constant.
+
+### 122.2 What the host has, and what it uses
+
+The host already knows that party. `ai_publish_scene_slot_parties` fills `g_scene_slot_parties`
+from the scene, and `slot_team(0)` answers it. The `ai party gate` line prints it on every run.
+Reference W (cc9-gunnery23 `local\g23_rw_<row>.log`):
+
+| row | `local_team` | `slot_teams` |
+| --- | --- | --- |
+| JM05, JM05 long, JM06, JM08 | 1 | 1,1,0,1,0,1,0,1 |
+| IJN01 | 1 | 1,0,0,0,0,0,0,0 |
+| USN13, USNOS long (and the US rows) | 0 | all 0 |
+
+But **`src/game_hosts_ai.cpp`'s target weight uses `const int local_party = 0`**. On the IJN rows
+it therefore asks the wrong set for both sides. US attackers (+54h 0) ask slot 0's set, where
+the image asks slot 4's. Japanese attackers (+54h 1) ask slot 4's, where the image asks slot 0's.
+
+**Other host constants standing in for the same party** (in other lanes; recorded, not touched):
+
+| site | host | image read (as the host's comment cites it) | lane |
+| --- | --- | --- | --- |
+| `include/bsp/game_hosts_world.hpp` `kLocalPlayerParty = 0` | the local recon triple / unit lists (`004C3CB0`), the sensor-pass coverage test | `[game+18CCh + [game+18ECh]*4]+28h` | world / gunnery |
+| `src/game_hosts_hud.cpp` `selectable_inputs_00645060` | `team_matches_owner = side == 0` | `006450B9: [unit+54h] == [[game+18CCh]+28h]` | HUD |
+| `src/game_hosts_ready.cpp` `slot_party()` returns 0 | `mission_load_hosts.cpp` `004C38B4` (party indexes a frame) | `[slot record]+28h` | mission load |
+| `src/game_hosts_lua.cpp` `objective_slot_mask` | the party arm always answers slot 0 | `008CDEF2`: every active slot whose `+28h` matches | lua |
+
+The objective sets themselves are keyed by slot, not party. Slot 0 is the local player on every
+row, so 118's `008DDF90` branch (indexed by `[game+18ECh]` = 0) is right. Only the
+party-to-slot comparisons are wrong on the IJN rows.
+
+**A related known item, not this packet:** on every IJN reference row the host's controlled unit
+is a US ship (`controlled unit: ... party 0`: JM05 USS Phelps, IJN01 Downes, JM08 Auilick,
+JM06 Fletcher-class 08). docs/CONTROLLED_UNIT.md leaves this open as "the JM05 USS Phelps
+question".
+
+### 122.3 The binding (prepared; `src/game_hosts_ai.cpp` is on loan to cc9-lua34)
+
+- The edit is `local\s28_edit_ai_122.py`; run it as `python s28_edit_ai_122.py <root>`. It
+  anchors on exact text and refuses a missing or duplicate anchor.
+- It adds `kAiTargetWeightLocalPartyBound`, committed OFF. ON, `local_party = slot_team(0)`.
+- It adds a census line, counted both ways:
+  `summary mission ai target weight local party value= same_party_attackers= bound=`.
+- Both switch values compiled with MSVC Win32 on copies (`local\s28_ai\`). The only warnings
+  are the existing C4702 lines in the capture think.
+
+### 122.4 Predictions (written before any run)
+
+- **US rows** (`local_team` 0): the value is 0 both ways, so exit 0 (USN13 as the control).
+- **IJN rows.** The fix swaps which set each side asks.
+  - Slot 4's set is empty in this process: the host's objective mask only fills slot 0.
+  - So US attackers' `objective_hits` can only fall. They are 0 on every reference W row today.
+  - Japanese attackers start asking slot 0's set, which holds the IJN player's objective units.
+    Those are mostly US targets: JM06 `Ambush` = 3 US cargo ships, JM08 `Missouri` +
+    `landingships` = 12 US ships.
+  - A hit needs a Japanese attacker under a brain. The party gate gives the local side's groups
+    no brain (NONCONTROL), so **`same_party_attackers` is expected to be 0 and the IJN pairs
+    gameplay-identical (exit 0 or 1)**.
+  - If `same_party_attackers` > 0 on JM06, `objective_hits` > 0 there and the Japanese AI retargets
+    onto the cargo ships (exit 3). Explain any death move from the per-entity table.
+- **Rows to pair:** JM06, JM08, JM05, IJN01, with USN13 as the US control.
+- **Verdict rule:** flip ON when the value equals `local_team` on every row and every hit is a
+  same-party attacker on a slot-0 objective unit.
+
+## 123. Rank 4 of section 114, the engage gate's avoid-zone test (packet `cc9_engage_gate_avoid_zone`, `kShipAiEngageGateAvoidZoneBound`, cc9-ships28, 2026-10-05)
+
+### 123.1 The image
+
+`009E85B0 BSP_ShipAi_AttackMoveEngageGate` (body `009E85B0..009E86B5`, `RET 0`; reconstructed as
+`ship_ai_attackmove_engage_gate_009e85b0`). The zone test, from `disasm-raw`:
+```
+009E8610/009E862C  the brain destination +B2Ch/+B34h  -> [ESP+8], [ESP+0Ch]
+009E8640  MOV EAX,[EAX+0AA8h]      ; the brain's unit
+009E8646  MOV ECX,[EAX+538h]       ; its class
+009E864C  CALL 0082ADC0            ; 004218E0, then 004120D0([class+570h]): the zone group
+009E8655  PUSH &destination
+009E8658  CALL 004178F0            ; the first zone of that group containing the point
+009E865D  TEST EAX,EAX / JNE 009E86AF  ; a zone: AL = 0, the gate is closed
+```
+Without a zone, the range test follows: (unit - destination)^2 < `00D09FE8` = 4,000,000.
+`0082ADC0` was read whole (`0082ADC0..0082ADD7`).
+
+### 123.2 The host
+
+Section 114's label was stale. `GameAvoidZoneRuntime` is built, and the retarget probe
+(`goal_zone_004178f0`) already asks it through the same `0082ADC0`/`004178F0` pair with
+`ctl.class_reference_0570`. The engage gate still answered "no zone". The binding asks the same
+table for the brain destination. Census, counted both ways:
+`summary mission ship ai engage gate avoid zone asks= hits= closes= bound=`. Here `closes` counts
+the hits where the range test would have opened the gate, which are the only answers ON can
+change. The caller is the submarine attack machine's `call_009e85b0`.
+
+### 123.3 Predictions (written before any run)
+
+- `asks` equals the old `ShipAiEngageGate::avoid_zone_list` count (on v: USNOS 133, USNOS long
+  133; 0 elsewhere).
+- `hits` <= `asks`, and `closes` <= `hits`. A submarine's destination is its target's position or
+  an approach point, and those lie in open water.
+- **Expected `closes` = 0 on USNOS, so exit 0 or 1.** If `closes` > 0, the submarine stays out of
+  its engage member that tick: exit 3. Explain that from the per-entity table before flipping.
+- **Pairs:** smoke, USNOS, USNOS long.
+
+### 123.4 The pairs, and the flip
+
+OFF is this tree at `5a32918d8` (`local\s28_e0_<row>.log`). ON is `pair_export --flip
+kShipAiEngageGateAvoidZoneBound=true` (`local\s28_e123on`, SHA-256 prefix `B3C534BAF5D9`,
+`local\s28_e5_<row>.log`). Both use the reference launch form.
+
+| row | asks | hits | closes | `pair_diff` |
+| --- | --- | --- | --- | --- |
+| smoke | 0 | 0 | 0 | 1 |
+| USNOS | 110 (v: 133) | 0 | 0 | 1 |
+| USNOS long | 110 | 0 | 0 | 1 |
+
+- **What moved:** only the census, the host-table status (`UNIMPLEMENTED -> concrete`, calls
+  110 -> 110), and the known `ship ai free` search noise.
+- **Why nothing else moved:** no submarine's brain destination lies in an avoid zone of its
+  class's group on these rows.
+- **Verdict:** every prediction held, so the switch is **flipped ON**. Section 114's rank 4 is
+  closed.
+
+## 124. `009F1BC0`'s remaining unread spans, listed (section 114's `frame_state_unread_spans`, cc9-ships28, 2026-10-05)
+
+**Method.** `disasm-raw 009F1BC0 --length 0x14C3` (body `009F1BC0..009F3083`, `ghidra proto`).
+Every `CALL` in the body was checked for a citation of its site or callee in `src/` and
+`include/` (`local\s28_callcover.py`), and every address of the body for a citation in `docs/`.
+Covered by earlier packets, and not listed again:
+- `009F1BC0-009F2124`: the head and the mode latch (section 26ff.);
+- `009F2124-009F272D`: the retarget arm (sections 27-29);
+- `009F2795-009F28F1`: the ring winner and the committed slot;
+- `009F28F1-009F2AC9`: the target curve, own curve and ring query;
+- `009F2AC9-009F2E9B`: the torpedo standoff and the two cache blocks;
+- `009F2F11` and `009F2FB1`: the curve refills.
+
+**What is left:**
+
+| span | what it does | host | reach on the reference rows |
+| --- | --- | --- | --- |
+| `009F272D-009F2795` | writes `nested+1204h` from the mode `+1234h`. Modes 1 and 3: 0. Modes 2 and 4: 1. Mode 0: 2 when `+1208h` is set, else 0 when `009E5E30(nested)` is true or the byte `[00E0E2FC]` is set, else **1** | not modelled. `speed_gate_1204` is written only by the ring scan's side choice (`009E73E8` 0 / `009E73F4` 2), so it never holds 1 | **every approach frame**: modes are 0 on all rows (USNOS long 2655 frames, USN13 1159, USNOS 1197). Between ring-scan refreshes the image holds this span's value, and the host holds the last scan's. Value 1 arms `009E6D24`'s range gate: the limit drops to 0 when the standoff is past (range - `kApproachGateRange`) |
+| `009F2858-009F28B4` | inside the committed-slot block. `CALL EAX` at `009F2858`, then a pose refresh (`00414DB0` at `009F2876`) and `007B4E90` at `009F28A9` | sites not cited (SHIP_AI_COMMITTED_SLOT.md cites the neighbours `009F2842` and `009F28B4`) | to check: probably the ring winner's pose read |
+| `009F2DB7` | `00415550` inside the torpedo standoff | site not cited; the standoff is bound (`kTorpedoStandoffBound`) | to check against the standoff's reconstruction |
+| `009F2F40`, `009F2F95`, `009F2FC6` | `CALL EAX` and two `009523B0` calls between the curve refills | SHIP_AI_BEARING_RATING.md cites `009F2F9A` only | to check: likely the curve objects' own reset |
+| `009F2FCB-009F3069` (the tail) | `+1224h` = -1.0 (`00D7A260`). If `[unit+6DCh]` is set: `00863780([unit+6DCh])(+12BAh && +12B4h + 50.0 > +127Ch)`, the gunnery pass byte `+7Dh`. `+11FCh`: modes 2 and 4 arm it to `[00D7A24C]` when it is negative; every other mode resets it to -1.0. Mode 3: `brain+308h` = `[00D7A24C]` | `+11FCh`, the evade timer, is read by `009E7502` but this reset/arm is not modelled. The `+7Dh` byte is the gunnery host's constant 1 (`torpedo_may_take_fire_target`). `brain+308h` is section 114's "store with no reader" | modes 2 and 4 never occur on the reference rows, so `+11FCh` stays at -1.0 both ways. The `00863780` call writes a gunnery byte every approach frame: 0 (the gun walk runs) unless the clearance condition holds. That belongs to the gunnery lane |
+
+**The next packet from this list:**
+1. **`009F272D-009F2795`, the `+1204h` side byte.** It is the only span with reach on every
+   approach frame. Read `009E5E30` and `[00E0E2FC]`, and check the order: does the ring scan's
+   side choice run after `009F2733` on every frame, or only on refresh frames? Then bind it OFF
+   with predictions (USNOS, USNOS long, USN13).
+2. **The tail's `00863780` call:** route it to the gunnery lane. It turns the host's constant `+7Dh`
+   into a per-frame value.
+3. The three "to check" rows are bookkeeping. Check each site against the existing
+   reconstruction before ranking it.
+
+## 125. The local player's party and the slot parties: one source (packet `cc9_local_party_source`, `kLocalPartyFromSceneBound`, cc9-ships28, 2026-10-05)
+
+The lead's sweep, after section 122. It is read-only so far; the edits are prepared per file.
+
+### 125.1 Where the image gets the parties
+
+- **The slot records.** `004C6890 BSP_Game_SelectSceneRecord` copies the scene's
+  `Multiplay.PlayerN` side blocks into the eight `0x118` records at `game+1008h`. `game+18CCh..18E8h`
+  point at them (`004BB160`). Record `+28h` is the block's `Party` and `+24h` its `Race`
+  (docs/SCENE_RECORD_SIDE_BLOCKS.md, docs/MISSION_LOAD_PATH.md). `004BB440` copies slot 0's party
+  (`game+1030h`) into the live participant. So the local player's party is **side block 0's
+  Party, the scene's `Player1`**. The local slot is 0 in single player (section 52's
+  `004DFD77` read, and `[game+18ECh]` = 0).
+- **The only rewrite is session-only.** `004BC890 BSP_Game_SetGameMode` rewrites every slot's
+  `+28h` and the record's side blocks: mode 7 gives all of them `record+98Ch`; any other mode
+  gives slots 0-3 party 0 and slots 4-7 party 1 (`004BC8D9..004BC99F`, `004BC9A9..`). But
+  `004BC8A1 CMP [ECX+1FE4h],EAX / JE 004BCA4C` skips all of it when `game+1FE4h` = 0, the
+  single-player value. A displacement scan of `.text` for `1FE4h` finds 124 sites, and every
+  one checked is a `CMP`. No literal store was found: the writer of `game+1FE4h` is unidentified,
+  and "0 in single player" rests on the earlier packets' reading.
+- **The readers.**
+  - `009FFD60` (`009FFD60..009FFD6F`): `[[00E188A8]+18CCh + slot*4]+28h`, a brain's team.
+  - `009FFD20` (`009FFD20..009FFD5C`): a unit whose `+180h` <= 7 keeps it. Otherwise, in single
+    player, it gets slot 0 when `unit+54h == [[game+18CCh + [game+18ECh]*4]+28h]` and slot 4
+    when not.
+  - `00A0F87E`: section 122.
+  - `006450B9`: the selectable test.
+  - `004C3CB0` / `008073C0`: the local triple, and through it the initial controlled unit
+    (docs/CONTROLLED_UNIT.md, "The own triple's order").
+
+**So the host's publication is already the image's rule.** `game_hosts_mission.cpp` publishes the
+eight Party ordinals from the scene's `Multiplay` block (`ai_publish_scene_slot_parties`). The
+party gate prints them: JM05, JM06 and JM08 `1,1,0,1,0,1,0,1`, IJN01 `1,0,0,0,0,0,0,0`, the US rows
+all 0. **On USN13 slot 4's team is Allied in the image too.** `usn_13_truk.scn` authors all
+eight `Player1..8` as `Party = Allied`, and in single player nothing rewrites them. cc9-lua34's
+"slot-4 brain plans the Japanese groups with team 0" is therefore the image's rule as read, not a
+host error. It is not play-validated, and it depends on the unidentified `1FE4h` writer above.
+
+### 125.2 The host constants standing in for the local party
+
+| # | site | host value | image read | lane | effect on the IJN rows |
+| --- | --- | --- | --- | --- | --- |
+| a | `game_hosts_world.cpp` `kLocalPlayerParty` (`004C3CB0` local triple; `00807995` latch clear) | 0 | `[[game+18CCh+[18ECh]*4]+28h]` | world | **the local unit lists and the initial controlled unit come from the Allied side**: JM05 USS Phelps, IJN01 Downes, JM08 Auilick, JM06 Fletcher-class 08 (the "USS Phelps question") |
+| b | `game_hosts_hud.cpp` `selectable_inputs_00645060` `side == 0` | 0 | `006450B9` | HUD | US units are the selectable ones |
+| c | `game_hosts_ready.cpp` `slot_party()` | 0 | `[slot]+28h` (`004DFCF5`'s menu record) | mission load | none today: `select_menu_record` answers -1 |
+| d | `game_hosts_lua.cpp` `objective_slot_mask` party arm | slot 0 always | `008CDEF2`: every active slot whose `+28h` matches | lua | open. In single player every copied block has `+8h` = 1, and whether `+9h` is clear is unread, so the mask could select slots 0,1,3,5,7 on an IJN row. Read `slot+9h` before editing |
+| e | `game_hosts_ai.cpp` target weight `local_party` (section 122) | 0 | `00A0F87E` | AI | the two sides ask each other's objective sets |
+| f | `game_hosts_gunnery.cpp` `KillBinding::local_player_side` | -1 | `0091BDD8` (kill credit's local side) | gunnery / scoring | friendly-loss scoring only. Listed, not edited |
+| g | `game_hosts_ship_ai.cpp` capture flip `slot = side` (`006F70E6..006F71F5`) | slot 0 for side 0, slot 1 for side 1 | in single player, a slot record whose Party equals the side | ships | the flip's slot (`+528h` first slot, the retake test) only, not the party. JM06's side 0 would be slot 2. Listed for this lane |
+
+The AI party gate (`kAiPartyGateUnforcedBound`, `slot_team()`) already reads the published table,
+so it needs nothing.
+
+### 125.3 The single switch (prepared, `local\s28_edit_localparty_125.py`)
+
+`kLocalPartyFromSceneBound` lives in `include/bsp/game_hosts_ai.hpp`, committed OFF, with two
+helpers:
+- `scene_slot_party(slot, fallback)`: the published ordinal, or `fallback` when unpublished,
+  unauthored or out of range;
+- `local_player_party()`: `scene_slot_party(0, 0)` while the switch is ON, else 0.
+
+The readers follow. Each part is one file, so each can go in under its own loan:
+
+| part | file | change |
+| --- | --- | --- |
+| `ai_hpp` | `include/bsp/game_hosts_ai.hpp` | the switch and the two helpers (must land first) |
+| `ai_cpp` | `src/game_hosts_ai.cpp` | `scene_slot_party`'s body; (e) reads `local_player_party()`. This supersedes section 122's `s28_edit_ai_122.py`, which is not to be applied |
+| `world` | `src/game_hosts_world.cpp` | (a), both uses |
+| `hud` | `src/game_hosts_hud.cpp` | (b) |
+| `ready` | `src/game_hosts_ready.cpp` | (c) |
+
+All five parts were applied to copies (`local\s28_lp\`) and compiled with MSVC Win32 for both
+values of the switch: four translation units, exit 0. (d) waits for its read. (f) and (g) are
+recorded, not edited.
+
+### 125.4 Predictions (written before any run)
+
+- **US rows** (Player1 Allied: USN01, USN02, USN04, E2, USN12, USN13, USNOS, BSM01, LOMP06,
+  LOMP10): `local_player_party()` = 0 both ways, so exit 0. **Controls: USN13 and USN04.**
+- **IJN rows** (JM05, JM06, JM08, IJN01; IJN11 too): `local_player_party()` = 1. **Exit 3 on every
+  one**:
+  - The initial controlled unit becomes the first Japanese unit of the lowest own class bucket
+    present. The OFF picks are JM05 USS Phelps, IJN01 Downes, JM08 Auilick and JM06
+    Fletcher-class 08. The ON names are not predicted.
+  - The previously controlled US ship is no longer the idle player's, so its AI runs. The
+    Japanese pick goes idle.
+  - The local unit lists, the HUD's selectable set and markers switch sides.
+  - (e) swaps the objective sets as section 122 says. `objective_hits` stays 0 unless a
+    Japanese attacker is planned.
+- **Per-row checks:**
+  - the `controlled unit:` line names a `party 1` unit;
+  - the party gate line is unchanged;
+  - deaths move only through the swapped controlled pair. Explain each moved death row from the
+    per-entity table, with the clock offset subtracted.
+- **Verdict rule:** flip when every IJN row's controlled unit is Japanese, the US controls hold,
+  and every moved death traces to the controlled-unit swap or (e). **A US unit staying
+  controlled on an IJN row is a mechanism failure.**
+
+## 126. The `+1204h` side byte (`009F272D-009F2795`): no reach; a correction to section 124 (cc9-ships28, 2026-10-05)
+
+**`009E5E30`** (`009E5E30..009E5E4E`, `RET 0`, read whole) answers whether the brain's target
+`[[nested]+0B20h]` is non-null and `IsKindOf(6)`, a ship. So in mode 0 the span writes:
+- 2 when `+1208h` is set;
+- 0 for a ship target, or when `[00E0E2FC]` is set;
+- 1 otherwise.
+
+**The order inside `009F3090`** (`disasm-raw 009F3090..009F30E3`):
+```
+009F309B  CALL 009F1BC0      ; the frame state: 009F2746/2753/2764/2783/278B write +1204h
+009F30A2  CALL 009E7FC0      ; does not touch +1204h
+009F30A9  CALL 009E6E80      ; the standoff choice: 009E73E8 (0) / 009E73F4 (2)
+...
+009F30DD  CALL 009E6A90      ; 009E6CFD, the only read of +1204h among the three
+```
+- `009E6E80` has no early return. Its common tail reaches the side choice on every call, and it
+  rewrites `+1204h` whenever `+1208h` is clear and the mode is 0 (`ship_ai_approach_choose_standoff_009e6e80`
+  as reconstructed).
+- `+1208h` is always clear: `009F31F3..009F3207` stores `unit->vtable[22Ch]()`, and that slot is
+  `006DFDB0` (`XOR AL,AL; RET`) in both ship vtables.
+- So **in mode 0 the frame state's value is overwritten before its only reader runs**. The span
+  matters only in modes 2 and 4, where `009E6E80` does not write. Those modes need a same-side
+  building or a troop lander on a building, and they occur on no reference row (the approach latch
+  census: modes `N/0/0/0/0` on USNOS, USNOS long and USN13).
+- `disasm-raw` scans of `009E7FC0`, `009E6E80` and `009E6A90` for `0x1204]` find only the two
+  writes and the one read above. Readers outside those three routines were not scanned.
+
+**Correction to section 124, row 1 and "the next packet" item 1.** Its claim that the span "has
+reach on every approach frame" is wrong for mode 0. The span is a record with no reach on the
+reference rows. It becomes relevant with a mode 2 or mode 4 frame, which would also need
+`006F2D90` and `[target+7C4h]` (section 26's labelled lander inputs). **Closed, no binding.**
+
+**What is left from section 124:**
+- the tail's `00863780` call, the gunnery byte `+7Dh` (gunnery lane, routed);
+- the three bookkeeping call sites;
+- the `+11FCh` arm and reset, which has no reach for the same reason: modes 2 and 4 only.
+
+### 125.5 Two more parts: the objective mask (d) and the capture slot (g)
+
+**`slot+9h` in single player.** SHIP_AI 60.6's table and docs/UNIT_GUNNERY_PASS.md give it:
+- `004BB220` inside `004BB160` is the only writer;
+- `+9h` is 1 for an AI- or mission-held slot and 0 for a human one;
+- in single player slot 0 has `+9h` clear, and slots 1..7 have `+9h` and `+0Ah` set.
+
+So `008CDF58`'s gate (`+8h` set and `+9h` clear) leaves **only slot 0 active**, and `008CDEF2`'s
+party arm gives bit 0 exactly when slot 0's `+28h` equals the party argument, and no bit
+otherwise. The host gives bit 0 for any party.
+
+Both parts are in the same script and under the same switch; with it OFF they change nothing:
+
+| part | file | change |
+| --- | --- | --- |
+| `lua` | `src/game_hosts_lua.cpp` | (d): the party arm is `party == scene_slot_party(0, 0) ? 1 : 0`. Under OFF it must stay "always slot 0", because the OFF local party 0 would drop every IJN objective |
+| `shipai` | `src/game_hosts_ship_ai.cpp` | (g): the capture flip's slot is the first slot whose published Party is the winning side, else 8 (neutral). `slot[i] + landed[i]` is not modelled |
+
+Both were applied to copies and compiled for both values of the switch (exit 0).
+
+**More predictions for the ON pairs:**
+- **An objective added for the other party now lands in no set.** On the reference rows the
+  scripts use `Mission.Party` or `obj.Party`, so check the `objective binding ... slots=` lines:
+  a `slots=0x00` line ON is such an add.
+- **The capture slot.** On a scene whose eight players all share one party (USN13; and the US
+  rows generally, where `slot_teams` is all 0), a Japanese capture finds no eligible slot, and the
+  building stays neutral (slot 8). Watch the `command building capture: ... flipped to` lines:
+  IJN11's Allied retakes go to the first Allied slot, not slot 0. JM06's side-0 flip, if any, would
+  be slot 2.
+
+## 127. Section 124's three bookkeeping call sites, read (cc9-ships28, 2026-10-05)
+
+Read-only, from the `disasm-raw 009F1BC0` dump.
+
+| site | read | host | reach |
+| --- | --- | --- | --- |
+| `009F2844-009F28B4` (`CALL EAX` `009F2858`, `00414DB0` `009F2876`, `007B4E90` `009F28A9`) | runs only when mode `+1234h` == 2 and two flag bytes are clear (`009F282D..009F2842`). With the target `+0B20h` (kept only if `IsKindOf(1Ch)`, else ESI = 0), it refreshes the pose, takes the compass heading (`007B4E90`, reconstructed as `ship_ai_compass_heading_007b4e90`) from the unit to the building, and stores it in `nested+11DCh` (`009F28AE`) | not modelled | none: mode 2 never occurs on the reference rows (section 126) |
+| `009F2DB7` `00415550` | `max(300.0 [00CE3AE8], curve sample)` inside the torpedo standoff, multiplied by `[ESP+20h]`, then compared with `+12B4h` (`009F2DC8`) | inside `run_torpedo_standoff` (`kTorpedoStandoffBound`); the site is simply not cited by address | as the standoff |
+| `009F2F16-009F2FD3` (`CALL EAX` `009F2F40`, `009523B0` `009F2F95`/`009F2FC6`) | the target-curve refill. **No target:** `009523B0` empties the curve at `+13B0h` and `+1224h` = -1.0, so it is retried next frame. **A target failing `IsKindOf(5)`:** jumps to `009F2FDB`; no refill, and `+1224h` is not written. **An `IsKindOf(5)` target:** stores `+1250h`, `+125Ch`, `+1278h`/`+1279h` = 0, then refills only in mode 0 with `+1224h` < 0 (`009F2F84`): `009523B0`, `0095F080` over the `+1238h` block, `+1224h` = `[00CE3958]` | `GameShipAiHost` refills on `timer_1224 <= 0` for any present target, stands in "a target is present" for the `IsKindOf(5)` probe (`ShipAiApproach::curve_target_kind_005c`, a record), never empties the curve on target loss, and re-arms the timer to 2.0 even without a target | **possible.** The approach latch census counts `other` targets (neither ship nor building): USNOS long 566 frames, USNOS 553, USN13 1114. If those fail `IsKindOf(5)` (a squadron, `18h`, is not a vehicle root), the image keeps the last target curve or an emptied one, while the host refills it from the new target. On null targets (`no_target` = 0 on every row) there is no reach |
+
+**The next packet from this list:** bind `009F2F3C`'s `IsKindOf(5)` probe and the no-target
+emptying behind one switch in `src/game_hosts_ship_ai.cpp`, near line 5898.
+- The units host already answers `unit_is_kind_of`.
+- Census both ways: the kinds of the `other` targets, and the refills skipped.
+- Predictions: USNOS, USNOS long and USN13 move only where an `other` target is not a vehicle.
+  The standoff choice reads the target curve (`009E71A5`), so ranges and positions can move.
+
+The `+11DCh` building heading (mode 2) and the `+11FCh` arm (modes 2/4) remain records with no
+reach.

@@ -35,6 +35,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/ordnance_kinds.hpp"
@@ -76,6 +77,15 @@ inline constexpr bool kAiGroupTransportMovesBound = true;
 // the 0.75 x CaptureRange circle is issued directly, as before. ON by section 107.5:
 // JM08 36000's transports hold in deep water; JM08 long and USNOS (long) identical.
 inline constexpr bool kAiTransportMovesOrderBridgeBound = true;
+
+// Packet cc9_close_fallback_order_bridge (docs/SHIP_AI_OPEN_ITEMS.md 112). True:
+// 00A13B60's no-candidate fallback (00A14D48 CALL 00A02020, ECX = member,
+// EDX = the 0.4/0.6 point) passes the order bridge as 00A11B80's move does: the
+// class gate (a squadron unless 007EDA90, else IsKindOf(6)), the 80 m gate and
+// a ship's 00417B10 avoid-zone point (30 m margin, y = 0). False: the point is
+// issued directly, as before. Counted both ways. ON: section 119 (USN13 moves
+// paths only; the other pairs are gameplay-identical).
+inline constexpr bool kCloseFallbackOrderBridgeBound = true;
 
 // Packet cc9_startlanding_94h (docs/SHIP_AI_OPEN_ITEMS.md section 97). The 94h
 // that 00A11B80 routes for a ready member reaches 00821F61 -> vt+238h: on an
@@ -278,7 +288,7 @@ constexpr bool kAiSquadronLeaderPointBound = true;
 // 3.2-4 km off Zuikaku. The install runs at the delivery, one bot tick early,
 // as PilotMoveTo's does (SENTITY_INIT_ATTACH_ORDER 22.7). docs/SQUADRON_LAND_TASK.md 5ch.
 // ON (2026-09-30): controls identical; ESMP08 now promotes to CLOSEATTACK (5ch).
-constexpr bool kAiTickMovetoRetasksPlaneBound = true;
+constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_LAND_TASK 5co
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
@@ -1978,6 +1988,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::string token =
             command_class == bsp::kAiSceneCommandAttackMove ? "attackmove" : "settarget";
         const std::string target_name = unit_name(unit_index_of(target));
+        if constexpr (kAiSquadronSetTargetIntakeBound) {
+            // Packet cc9_ai_squadron_settarget_intake (docs/SQUADRON_LAND_TASK.md
+            // 5ck): the order goes to the squadron, whose intake 007F1940 issues
+            // 007EEC50's class in its place (007F1AD6-007F1B24) or nothing.
+            const std::vector<std::size_t>* members = squadron_member_units(unit);
+            if (is_squadron(unit) && members != nullptr && !target_name.empty()) {
+                if (order_is_repeat(unit, token, target_name, nullptr)) return true;
+                ++summary.squadron_commands;
+                script_orders_squadron_intake_007f1940(members->front(), *members,
+                                                       unit_index_of(target));
+                ++summary.commands_issued;
+                if (current_party >= 0) ++party_row(current_party).commands_issued;
+                if (summary.first_command_seconds < 0.0f)
+                    summary.first_command_seconds = clock_seconds;
+                observe_target_choice(member, target);
+                done("AiCommand::close_issue_order", 0x0077d600u);
+                return true;
+            }
+        }
         if (target_name.empty() || !issue_order(unit, token, target_name)) {
             ++summary.commands_refused;
             return false;
@@ -2109,12 +2138,42 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
     }
     bool close_issue_moveto(void* member, const float point[3]) override {
-        return tick_issue_moveto(member, point);
+        // 00A14D48 CALL 00A02020 (SHIP_AI 112). The census reads the gates
+        // without their counters, so OFF moves no other summary line.
+        ++summary.close_bridge_calls;
+        float position[3] = {0.0f, 0.0f, 0.0f};
+        const bool have_position = tick_member_position(member, position);
+        const bool squadron = tick_member_is_plane_squadron(member);
+        const bool excluded = squadron
+            && bsp::ai_squadron_excluded_007eda90(combatant_facts(unit_index_of(member)));
+        const bool ship = tick_member_is_ship_base(member);
+        if (!bsp::ai_order_bridge_accepts_00a02020(squadron, excluded, ship)) {
+            ++summary.close_bridge_class_refused;
+        } else if (have_position) {
+            const float dx = position[0] - point[0];
+            const float dz = position[2] - point[2];
+            if (dx * dx + dz * dz < bsp::kAiOrderIssueDistanceSquared) {
+                ++summary.close_bridge_near_refused;
+            } else if (ship) {
+                ++summary.close_bridge_ships;
+            }
+        }
+        if constexpr (kCloseFallbackOrderBridgeBound) {
+            float issued_at[3] = {point[0], point[1], point[2]};
+            const bool issued = issue_moveto_bridge_00a02020(member, point, issued_at);
+            if (issued && ship && (issued_at[0] != point[0] || issued_at[2] != point[2])) {
+                ++summary.close_bridge_zone_moved;
+            }
+            return issued;
+        } else {
+            return tick_issue_moveto(member, point);
+        }
     }
 
     // 00A02020 whole for one member (ai_command_tick.cpp's order_leader sequence):
     // the class gate, the 80 m gate, a ship's 00417B10 point, then the tail.
-    bool issue_moveto_bridge_00a02020(void* member, const float point[3]) {
+    bool issue_moveto_bridge_00a02020(void* member, const float point[3],
+                                      float* issued_at = nullptr) {
         float position[3] = {0.0f, 0.0f, 0.0f};
         if (!tick_member_position(member, position)) return false;
         float avoid[2] = {point[0], point[2]};
@@ -2128,6 +2187,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const bsp::AiOrderBridgeResult bridge = bsp::ai_order_bridge_00a02020(
             squadron, excluded, ship, position, point, avoid);
         if (!bridge.issued) return false;
+        if (issued_at != nullptr) {
+            for (int k = 0; k < 3; ++k) issued_at[k] = bridge.position[k];
+        }
         return tick_issue_moveto(member, bridge.position);
     }
     float close_tuning_field(std::uint32_t offset) override { return tuning.at(offset); }
@@ -5562,6 +5624,11 @@ void GameAiCoordinatorHost::report() {
         host.transport_moves.transports, kLandingCraftLaunchBound ? 1 : 0,
         host.transport_moves.launches, host.transport_moves.crafts,
         host.transport_moves.launch_refused);
+    host.log.notef("summary mission ai close fallback bridge calls=%llu class_refused=%llu "
+        "near_refused=%llu ships=%llu zone_moved=%llu bound=%d (00A14D48 -> 00A02020, "
+        "packet cc9_close_fallback_order_bridge)", s.close_bridge_calls,
+        s.close_bridge_class_refused, s.close_bridge_near_refused, s.close_bridge_ships,
+        s.close_bridge_zone_moved, kCloseFallbackOrderBridgeBound ? 1 : 0);
     host.log.notef("summary mission ai command zone point asks=%llu answers=%llu moved=%llu "
         "bound=%d (00A020BE / 00A020F0, margin 30.0, packet cc9_ai_command_avoid_zone_point)",
         host.avoid_zone_asks, host.avoid_zone_answers, host.avoid_zone_moved,

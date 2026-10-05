@@ -34,6 +34,10 @@
 #include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/recon_sensor_pass.hpp"  // packet cc9_recon_level_table
 #include <algorithm>
+#include <cstdlib>
+#include <cstring>
+#include <map>
+#include <string>
 
 extern "C" {
 #include "lua.h"
@@ -196,6 +200,9 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the PT boats and rescue craft onto their path points. Handled only with
     // kPutToBound.
     {"PutTo", 0x008a9f90u},
+    // Packet cc9_get_squadron_planes: bsm_04_vengance_at_luzon.lua:1717 and
+    // 1720 (luaIntroMovieA). Handled only with kGetSquadronPlanesBound.
+    {"GetSquadronPlanes", 0x0089cc50u},
     // Packet cc9_navigator_force_torpedo: jm06.lua:2582 (the two submarine
     // shots after the convoy movie) and competitive12/14. Handled only with
     // kNavigatorForceTorpedoBound.
@@ -375,6 +382,49 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept {
 
 namespace {
 GameScriptOrdersHost* g_live_script_orders = nullptr;
+
+// DIAGNOSTIC, env-gated (BSP_LUA_CALLBACK_TRACE=1, cc9-lua33, docs/
+// SQUADRON_LAND_TASK.md 5cn): a Lua call hook on the mission state that
+// records the first mission-clock time of every Lua function named lua* by its
+// caller, and of every unnamed Lua function (a callback the host or a C
+// binding calls, keyed by source:line), with a call count. Reported once by
+// report(). Prints nothing when unset; no Lua behaviour changes.
+struct LuaCallbackTrace {
+    std::vector<std::pair<std::string, float>> firsts;
+    std::map<std::string, unsigned long long> counts;
+    const float* clock = nullptr;
+    bool installed = false;
+};
+LuaCallbackTrace g_lua_callback_trace;
+
+bool lua_callback_trace_enabled() {
+    static const bool on = [] {
+        char* v = nullptr;
+        std::size_t n = 0;
+        const bool set = _dupenv_s(&v, &n, "BSP_LUA_CALLBACK_TRACE") == 0 && v != nullptr;
+        std::free(v);
+        return set;
+    }();
+    return on;
+}
+
+void lua_callback_trace_hook(lua_State* state, lua_Debug* ar) {
+    if (ar->event != LUA_HOOKCALL) return;
+    if (lua_getinfo(state, "nS", ar) == 0) return;
+    if (ar->what == nullptr || std::strcmp(ar->what, "Lua") != 0) return;
+    std::string key;
+    if (ar->name != nullptr) {
+        if (std::strncmp(ar->name, "lua", 3) != 0) return;
+        key = ar->name;
+    } else {
+        key = std::string("?") + ar->short_src + ":" + std::to_string(ar->linedefined);
+    }
+    unsigned long long& count = g_lua_callback_trace.counts[key];
+    if (count++ == 0) {
+        g_lua_callback_trace.firsts.emplace_back(
+            key, g_lua_callback_trace.clock != nullptr ? *g_lua_callback_trace.clock : -1.0f);
+    }
+}
 }  // namespace
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
@@ -466,6 +516,7 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) return kGetSquadronPlanesBound;
     if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
         return kSubmarineDepthLevelBound;
     }
@@ -1227,29 +1278,14 @@ std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
     return resolved;
 }
 
-int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
-    resolve_plane_squadron_members();
-    void* unit = argument_ptr_field(0);
-    if (unit == nullptr) unit = entity_from_argument(0);
-    row.unit_index = index_of(unit);
-    row.unit = name_of(unit);
-
-    const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
-    const int attack_type = bsp::pilot_set_target_attack_type_008a4e0b(
-        argument_count_, argument_integer(2));
-    const bsp::PilotAttackSelectorFlags flags =
-        bsp::pilot_attack_selector_flags_008a4e54(attack_type);
-
+std::uint32_t GameScriptOrdersHost::choose_attack_class_007eec50(std::size_t unit_index,
+    std::size_t target_index, bool prefer_ordnance, bool allow_guns, const char* label) {
     // docs/ATTACK_CAPABILITY_INPUTS.md: eight of 007EEC50's eleven feasibility
     // inputs are answerable from an authored class id alone, and this host
     // already holds the machinery - unit_is_kind_of walks the 88 compiled
     // vt[5Ch] bodies, which is the same question the native asks. Report them so
     // the remaining gap is a measured list rather than an assertion.
-    const std::size_t target_index = target.object != nullptr
-        ? index_of(target.object)
-        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
-                                : ~static_cast<std::size_t>(0));
-    const int self_class = units_.unit_class_id(row.unit_index);
+    const int self_class = units_.unit_class_id(unit_index);
     const int target_class = units_.unit_class_id(target_index);
     // docs/ATTACK_CAPABILITY_INPUTS.md Part 2: the two classifiers behind
     // target_is_air and target_is_surface. Both need the target's live +5Dh
@@ -1277,19 +1313,19 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     const bool target_air = bsp::entity_is_airborne_00922b10(tf);
     const bsp::SurfaceTargetAnswer target_surface =
         bsp::entity_is_surface_target_00922c80(tf);
-    log_.notef("  PilotSetTarget classify: target_is_air=%d target_is_surface=%s "
-        "(+5Dh=%d y=%.1f)", target_air ? 1 : 0,
+    log_.notef("  %s classify: target_is_air=%d target_is_surface=%s "
+        "(+5Dh=%d y=%.1f)", label, target_air ? 1 : 0,
         target_surface == bsp::SurfaceTargetAnswer::kYes ? "yes"
             : (target_surface == bsp::SurfaceTargetAnswer::kNo ? "no" : "UNREAD-SET-BRANCH"),
         tf.not_engageable ? 1 : 0, static_cast<double>(tf.world_y));
-    log_.notef("  PilotSetTarget caps: self_class=%d level_bomber=%d kamikaze_capable=%d "
+    log_.notef("  %s caps: self_class=%d level_bomber=%d kamikaze_capable=%d "
         "dogfight_excluded=%d | target_class=%d structure=%d bomb_excluded=%d "
         "submarine=%d ship_family=%d | REFUSED: weapon_controller, target_is_air, "
         "target_is_surface (need live +5Dh); gates 0047B850/00604A50/00828EC0 unread",
-        self_class,
-        units_.unit_is_kind_of(row.unit_index, 0x10) ? 1 : 0,
-        units_.unit_is_kind_of(row.unit_index, 0x17) ? 1 : 0,
-        units_.unit_is_kind_of(row.unit_index, 0x16) ? 1 : 0,
+        label, self_class,
+        units_.unit_is_kind_of(unit_index, 0x10) ? 1 : 0,
+        units_.unit_is_kind_of(unit_index, 0x17) ? 1 : 0,
+        units_.unit_is_kind_of(unit_index, 0x16) ? 1 : 0,
         target_class,
         units_.unit_is_kind_of(target_index, 0x1c) ? 1 : 0,
         units_.unit_is_kind_of(target_index, 0x0e) ? 1 : 0,
@@ -1300,16 +1336,16 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     // carry the evidence for each; nothing here is guessed.
     bsp::AttackFeasibilityInputs in;
     in.target_present = tf.present && !tf.not_engageable;
-    in.unit_side = units_.unit_side_0054(row.unit_index);
+    in.unit_side = units_.unit_side_0054(unit_index);
     in.target_side = tf.present ? units_.unit_side_0054(target_index) : 0;
     in.target_is_structure = units_.unit_is_kind_of(target_index, 0x1c);
     in.target_is_bomb_excluded = units_.unit_is_kind_of(target_index, 0x0e);
     in.target_is_submarine = units_.unit_is_kind_of(target_index, 0x08);
     in.target_is_kamikaze_ship = units_.unit_is_kind_of(target_index, 0x06);
     in.target_is_strafe_fallback = units_.unit_is_kind_of(target_index, 0x41);
-    in.self_is_level_bomber = units_.unit_is_kind_of(row.unit_index, 0x10);
-    in.self_is_kamikaze_capable = units_.unit_is_kind_of(row.unit_index, 0x17);
-    in.self_is_dogfight_excluded = units_.unit_is_kind_of(row.unit_index, 0x16);
+    in.self_is_level_bomber = units_.unit_is_kind_of(unit_index, 0x10);
+    in.self_is_kamikaze_capable = units_.unit_is_kind_of(unit_index, 0x17);
+    in.self_is_dogfight_excluded = units_.unit_is_kind_of(unit_index, 0x16);
     in.target_is_air = target_air;
     in.target_is_surface = target_surface == bsp::SurfaceTargetAnswer::kYes;
     // [unit+3D0h] != 0, the squadron's slot-0 plane. This host models a single
@@ -1319,8 +1355,8 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     // query runs on element 0. So the occupancy question reduces to whether the
     // ordered unit is a plane. That follows from the identification the self
     // queries already make; it is not a further assumption.
-    in.unit_has_weapon_controller = units_.unit_is_kind_of(row.unit_index, 0x0f);
-    const std::uint64_t ordnance = units_.unit_ordnance(row.unit_index);
+    in.unit_has_weapon_controller = units_.unit_is_kind_of(unit_index, 0x0f);
+    const std::uint64_t ordnance = units_.unit_ordnance(unit_index);
     const bsp::OrdnanceKindSet set{ordnance};
     in.has_level_bomb_ordnance = bsp::ordnance_has_paratrooper_31h(set);
     in.has_general_bomb_ordnance = bsp::ordnance_has_general_bomb_2ah(set);
@@ -1339,12 +1375,12 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
             ++kamikaze_small_targets_;
             // 00604A58 (17h, held above), 00604A60 [plane+C24h] == 0.
             const bool uncommitted_kamikaze =
-                !units_.plane_pilot_fires_0c24(row.unit_index);
+                !units_.plane_pilot_fires_0c24(unit_index);
             const bool blocked = !uncommitted_kamikaze;
             if (blocked) ++kamikaze_blocked_;
-            log_.notef("  PilotSetTarget kamikaze small-ship test: target class %d small, "
+            log_.notef("  %s kamikaze small-ship test: target class %d small, "
                 "00604A50=%d, blocked=%d bound=%d (007EEB74, packet cc9_kamikaze_ship_blocked)",
-                target_class, uncommitted_kamikaze ? 1 : 0, blocked ? 1 : 0,
+                label, target_class, uncommitted_kamikaze ? 1 : 0, blocked ? 1 : 0,
                 kKamikazeShipBlockedBound ? 1 : 0);
             if (kKamikazeShipBlockedBound) in.kamikaze_ship_blocked = blocked;
         }
@@ -1355,21 +1391,104 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     // answers vt[5Ch](10h) || vt[5Ch](16h). OFF: both stay false and 007EEC50's
     // guns answer is always 0 (docs/SQUADRON_LAND_TASK.md 5bw.1).
     if constexpr (bsp::kAttackChoiceGunsFedBound) {
-        in.guns_available = units_.plane_pilot_fires_0c24(row.unit_index);
+        in.guns_available = units_.plane_pilot_fires_0c24(unit_index);
         in.guns_suppressed = in.self_is_level_bomber || in.self_is_dogfight_excluded;
-        log_.notef("  PilotSetTarget guns feed: pilot_fires=%d suppressed=%d "
+        log_.notef("  %s guns feed: pilot_fires=%d suppressed=%d "
             "(007EEB08/007EEB2C, packet cc9_strafe_arm)",
-            in.guns_available ? 1 : 0, in.guns_suppressed ? 1 : 0);
+            label, in.guns_available ? 1 : 0, in.guns_suppressed ? 1 : 0);
     }
     const std::uint32_t chosen =
-        bsp::attack_command_choose(in, flags.prefer_ordnance, flags.allow_guns);
-    log_.notef("  PilotSetTarget choose: 007EEC50 -> %08lx  (weapon_controller=%d "
+        bsp::attack_command_choose(in, prefer_ordnance, allow_guns);
+    log_.notef("  %s choose: 007EEC50 -> %08lx  (weapon_controller=%d "
         "ordnance lb=%d gb=%d dk=%d torp=%d, sides %d/%d)",
-        static_cast<unsigned long>(chosen),
+        label, static_cast<unsigned long>(chosen),
         in.unit_has_weapon_controller ? 1 : 0,
         in.has_level_bomb_ordnance ? 1 : 0, in.has_general_bomb_ordnance ? 1 : 0,
         in.has_drop_kamikaze_ordnance ? 1 : 0, in.has_torpedo_ordnance ? 1 : 0,
         in.unit_side, in.target_side);
+    return chosen;
+}
+
+// Packet cc9_ai_squadron_settarget_intake (docs/SQUADRON_LAND_TASK.md 5ck). The
+// squadron's vtable[160h] 007F1940 (slot 00D08920 of 00D087C0), reached from
+// the MT_COMMAND delivery as every entity's intake is. Its arm for `settarget`
+// (00E08EF8) and `attackmove` (00E08F78), 007F1AD6-007F1B24, read from the disk
+// bytes: 00521EA0 resolves the message descriptor's object, then 007EEC50
+// (ECX = the squadron, target, 1, 1). This arm skips the +3D0h test the other
+// arms make (007F1AE4). With a non-null class and +21h = 1 (00A13B60 pushes 1
+// at 00A14A4A) it clears (0071D880) and issues the class with the same
+// descriptor (0071ECF0); a null class issues nothing and leaves the squadron's
+// command as it was. The +5Dh player-control early-out (007F194A) is not
+// modelled: an AI group's squadron is not player-controlled.
+// SUBSTITUTIONS, labelled: the chooser's self queries run on the slot-0 plane
+// (as PilotSetTarget's do); the squadron's director is stood in for by each
+// member plane's, so the class is issued to every member and each member's
+// 0099A170 install runs at that delivery, one bot tick early (22.7), as the
+// PilotSetTarget fan-out does.
+std::uint32_t GameScriptOrdersHost::squadron_intake_007f1940(std::size_t leader,
+    const std::vector<std::size_t>& members, std::size_t target_index) {
+    ++squadron_intake_calls_;
+    // 007F1B14-007F1B24 PUSH 1 / PUSH 1 / 00521EA0 / PUSH EAX / 007EEC50.
+    const std::uint32_t chosen = choose_attack_class_007eec50(leader, target_index,
+        true, true, "SquadronIntake 007F1940");
+    if (chosen == 0u || target_index >= units_.count()) {
+        ++squadron_intake_declined_;   // 007F1B2D JE 007F1B5D: nothing issued
+        return 0u;
+    }
+    // 00A14A08-00A14A5D: the kind-1 descriptor naming the target, its +174h id.
+    bsp::SceneCommandTarget target{};
+    target.kind = 1;
+    target.object_id = static_cast<std::uint16_t>(target_index + 1u);
+    target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(target_index + 1u));
+    const std::uint32_t target_token = static_cast<std::uint32_t>(target_index + 1u);
+    const std::string saved_source = delivery_source_;
+    delivery_source_ = "ai:close_attack 007F1940";
+    for (const std::size_t member : members) {
+        if (member >= units_.count()) continue;
+        void* const handle = reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
+        entity_issue_command(handle, chosen, target, 1);
+        ++squadron_intake_member_orders_;
+        std::function<void()> install = [this, member, chosen, target_token]() {
+            ScriptOrderAttackCommandHost bots(units_, log_, chosen, target_token);
+            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                static_cast<std::uint32_t>(member + 1u), bots);
+            if (task != 0u) {
+                units_.store_unit_attack_command_class(member, chosen);
+                ++squadron_intake_tasks_;
+            }
+        };
+        if (!commands_after_last_issue_delivery(install)) install();
+    }
+    delivery_source_ = saved_source;
+    return chosen;
+}
+
+std::uint32_t script_orders_squadron_intake_007f1940(std::size_t leader,
+    const std::vector<std::size_t>& members, std::size_t target_index) {
+    return g_live_script_orders != nullptr
+        ? g_live_script_orders->squadron_intake_007f1940(leader, members, target_index)
+        : 0u;
+}
+
+int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+
+    const bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
+    const int attack_type = bsp::pilot_set_target_attack_type_008a4e0b(
+        argument_count_, argument_integer(2));
+    const bsp::PilotAttackSelectorFlags flags =
+        bsp::pilot_attack_selector_flags_008a4e54(attack_type);
+
+    const std::size_t target_index = target.object != nullptr
+        ? index_of(target.object)
+        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                : ~static_cast<std::size_t>(0));
+    const std::uint32_t chosen = choose_attack_class_007eec50(row.unit_index, target_index,
+        flags.prefer_ordnance, flags.allow_guns, "PilotSetTarget");
 
     // 008A4EAC: PilotSetTarget hands 0077D600 the command class 007EEC50 chose,
     // the descriptor built from argument 1, and flags = 1. Issued only when a
@@ -2422,6 +2541,11 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     state_ = state;
     machine_state_ = state;
     argument_count_ = argument_count;
+    if (!g_lua_callback_trace.installed && lua_callback_trace_enabled()) {
+        g_lua_callback_trace.installed = true;
+        g_lua_callback_trace.clock = &mission_clock_;
+        lua_sethook(state, lua_callback_trace_hook, LUA_MASKCALL, 0);
+    }
     // Packet cc9_recon_level_table: bring the unit tables' `reconlevel` up to
     // the last recon pass before the native reads anything.
     if (kReconLevelTableBound) sync_recon_level_tables_0077b0c0();
@@ -2646,6 +2770,39 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         }
         depth_level_last_ = static_cast<int>(level);
         push_number(static_cast<int>(level));
+        results = 1;
+    } else if (std::strcmp(binding->name, "GetSquadronPlanes") == 0) {
+        // 0089CC50: argument 0 through BSP_ObjectHandle_FromLuaTable (no kind
+        // check), a new table (00B67930), then for i = 1..[sq+3CCh] the member
+        // [sq+3D0h + 4(i-1)]'s u16 +174h as a string at index i (0089CD75-
+        // 0089CE00); one result. SUBSTITUTION, labelled: the squadron is the
+        // registry record holding the argument's unit, and a plane's +174h is
+        // its unit index plus one, the `thisTable` key (kMissionLuaEntityKeyFormat).
+        resolve_plane_squadron_members();
+        void* entity = argument_ptr_field(0);
+        if (entity == nullptr) entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        ++squadron_planes_calls_;
+        lua_createtable(state_, 0, 0);
+        const bsp::PlaneSquadronHostRecord* record =
+            index < units_.count() ? bsp::plane_squadron_registry().find_by_member_unit(index)
+                                   : nullptr;
+        int slot = 0;
+        if (record != nullptr) {
+            for (const std::size_t member : record->member_units) {
+                if (member == bsp::kPlaneSquadronNoUnit || member >= units_.count()) continue;
+                if (slot >= 5) break;   // 0089CD98: past five the image faults
+                ++slot;
+                char key[16];
+                std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+                              static_cast<int>(member + 1));
+                lua_pushstring(state_, key);
+                lua_rawseti(state_, -2, slot);
+            }
+        } else {
+            ++squadron_planes_unresolved_;
+        }
+        squadron_planes_entries_ += static_cast<unsigned long long>(slot);
         results = 1;
     } else if (std::strcmp(binding->name, "PutTo") == 0) {
         // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
@@ -4004,6 +4161,14 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    if (g_lua_callback_trace.installed) {
+        for (const auto& first : g_lua_callback_trace.firsts) {
+            log_.notef("lua callback trace first t=%.2f %s calls=%llu",
+                static_cast<double>(first.second), first.first.c_str(),
+                g_lua_callback_trace.counts[first.first]);
+        }
+        g_lua_callback_trace.clock = nullptr;
+    }
     {
         std::string per;
         for (const auto& entry : deferred_by_poster_) {
@@ -4040,6 +4205,15 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script squadron planes bound=%d calls=%llu entries=%llu "
+        "unresolved=%llu (0089CC50, packet cc9_get_squadron_planes)",
+        kGetSquadronPlanesBound ? 1 : 0, squadron_planes_calls_, squadron_planes_entries_,
+        squadron_planes_unresolved_);
+    log_.notef("summary mission script squadron intake bound=%d calls=%llu declined=%llu "
+        "member_orders=%llu tasks=%llu (007F1940 settarget arm, packet "
+        "cc9_ai_squadron_settarget_intake)", kAiSquadronSetTargetIntakeBound ? 1 : 0,
+        squadron_intake_calls_, squadron_intake_declined_, squadron_intake_member_orders_,
+        squadron_intake_tasks_);
     log_.notef("summary mission script kamikaze small-ship test bound=%d small_targets=%llu "
         "blocked=%llu (007EEB74, packet cc9_kamikaze_ship_blocked)",
         kKamikazeShipBlockedBound ? 1 : 0, kamikaze_small_targets_, kamikaze_blocked_);

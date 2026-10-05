@@ -12,9 +12,9 @@
 // the arm 009CD170, the approach 009CA4A0 with its glide seed 009CA3B0, the
 // state ticks (gotowards 009CA870, aim 009CB1B0, goaway 009CBB30, attackrun
 // 009CADB0) and enters, the hit notice 009CC400 and the gun controller's read
-// of the aim point. Not bound: the cruise profile 009CD020 (cadence unread),
-// goaway's evasive task pushes (009BC030 / 009BC0A0, counted gaps) and
-// 009CA780's tail call 007B7870.
+// of the aim point. Behind kStrafeBreakoffBound (5cm): goaway's evasive task
+// pushes (009BC030 / 009BC0A0). Not bound: the cruise profile 009CD020
+// (cadence unread) and 009CA780's tail call 007B7870.
 
 namespace bsp {
 
@@ -92,5 +92,43 @@ struct StrafeRangeInputs {
 // caller runs). Adds dt to +44h; runs the range test once per +CCh seconds.
 void strafe_approach_update_009cced0(StrafeApproachUpdate& ap, float dt,
                                      const StrafeRangeInputs& in) noexcept;
+
+// Packet cc9_strafe_breakoff (docs/SQUADRON_LAND_TASK.md 5cl, 5cm). True: at
+// each opening of goaway's evasive gate (the tick 009CBC96-009CBE27 and the
+// enter 009CB8FC-009CBB1E) the units host flies the manoeuvre the image
+// front-pushes: "tightturn" (009BC030, tick 009BA020, ends at 00996510) when
+// U(0, 1) >= the goaway state's +18h, else "flikflak" (009BC0A0 -> 009BB910,
+// tick 009B99E0, ends at 00996300). The strafe arm is suspended while one
+// runs and resumes when it ends. False: the gate is only counted.
+inline constexpr bool kStrafeBreakoffBound = true;   // ON: SQUADRON_LAND_TASK 5cm.1
+
+// 009BAFC0's pitch reference for tightturn (009BB018-009BB12B, read from the
+// listing). altitude = unit+100h, speed = unit vtable[38h], pitch = unit+C64h,
+// climb_angle = desc+1ECh. Below 250 m the floor +400h is the climb angle;
+// above it, -acos(r) with r = ((altitude - 250) / 10) / speed, 0 when r > 1
+// (00BF9940 is taken as acos: math_acos 00A617C0 calls it; provisional).
+// Returns +3FCh = max(+400h, pitch).
+float tight_turn_pitch_ref_009bafc0(float altitude, float speed, float pitch,
+                                    float climb_angle) noexcept;
+
+// 009BA020's plan writes once started (009BC030 stores +404h = 1, so the start
+// gate 009B9680 is never asked on this path). Plan offsets are the task's
+// minus 4.
+struct TightTurnCommand {
+    float bank_target = 0.0f;    // +2C8h = side * pi/2, mode +2D0h = 1
+    float pitch_desired = 0.0f;  // +2A0h = clamp(2 - |wrap(roll - bank)| / 10 deg, 0, 1), mode +2D4h = 0
+    float yaw_desired = 0.0f;    // +288h = 00419010(-2 deg, 0, 2 deg, 1, ref - pitch) * side, mode +2D8h = 0
+};
+TightTurnCommand tight_turn_tick_009ba020(bool side_408, float roll_c68, float pitch_c64,
+                                          float ref_3fc) noexcept;
+
+// 00996510: the point in the plane's frame (x right, z forward, from the
+// world inverse) lies more than 45 degrees off the nose: z < |x|.
+bool point_off_nose_00996510(const float local[3]) noexcept;
+
+// 00996300 (00996300-00996385): the horizontal distance squared from the
+// plane to the point is no longer below dist2 (+28h).
+bool point_distance_reached_00996300(float plane_x, float plane_z, float point_x,
+                                     float point_z, float dist2) noexcept;
 
 }  // namespace bsp

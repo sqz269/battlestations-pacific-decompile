@@ -8979,3 +8979,501 @@ The work paused before the bind landed (lead's pause, 2026-10-01). The plan for
 - **JM06 3200/3000:** moved, with one PBY.
 - **USN02 and USN12 (controls):** pair_diff 0 or 1, with no `settarget` to a squadron.
 - **USNOS:** identical apart from the census, since it has no AI `settarget`.
+
+### 5ck.1 The binding, committed OFF (cc9-lua33, 2026-10-04)
+
+cc9-lua33 applied cc9-lua32's prepared patch and `close_issue_order` hook unchanged (reviewed:
+the hook takes the squadron path only for `settarget`/`attackmove` from `close_issue_order`, keeps
+`issue_order`'s repeat test, and uses the same `GameUnitsHost` index space as the script-orders
+host). `kAiSquadronSetTargetIntakeBound = false` is in `include/bsp/game_hosts_script_orders.hpp`;
+the census line is `summary mission script squadron intake`. The predictions above stand as
+written; the pairs follow in 5ck.2.
+
+### 5ck.2 Measured (OFF `local\l33_off`, SHA-256 `4E66E4013D71`; ON `local\l33_on`, `990F4FEB4A5A`; both from `aaf170730`), and the verdict: **flip ON**
+
+Launch form of reference v (`local\l33_runs.ps1`, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`).
+The 300-frame USN01 smoke (ON) finished cleanly: 20 intake calls, all torpedo (`F18`).
+
+| row | pair_diff | intake calls / declined / member orders / tasks | what moved |
+| --- | --- | --- | --- |
+| ESMP08 14200/14000 | 3 | 602 / 0 / 1806 / 1806 | deaths 44 -> 46 (Zuiho sunk, one more Corsair); hits 1619 -> 6462; torpedo releases 2/21 -> 4/33 |
+| ESMP08 9200/9000 | 3 | 33 / 0 / 99 / 99 | no combat yet; plane paths and `nearest` distances only |
+| USNRM01 9200/9000 | 3 | 1903 / 54 / 5900 / 5900 | torpedo releases 2/15 -> 40/79, dive releases 30/54 -> 123/166, damage 29918 -> 39332 |
+| JM06 3200/3000 | 3 | 25 / 12 / 13 / 13 | the PBY flies a torpedo run on the submarines (1 of 1 released) and takes their AA |
+| USNOS 3200/3000 | 1 | 0 | census only |
+| USN02 3200/3000 | 1 | 0 | census only |
+| USN12 3200/3000 | 1 | 0 | census only |
+
+Against the predictions:
+- **ESMP08 long, all held.** `declined` is 0 and `tasks` equals `member_orders`. The classes split
+  as predicted: 306 strafe (`F40`, Corsairs), 177 dive (`F20`, Helldivers) and 119 torpedo (`F18`,
+  Avengers). Every one of the 44 plane deaths whose killer moved now falls to the carrier group:
+  Zuikaku 0 -> 34 and Zuiho 1 -> 8. On OFF the killers were Oyodo 11, Isuzu 8, Ise 7, Akitsuki 5,
+  Chitose 4, Hyuga 3, Chiyoda 2 and Sugi 1. In the unit table, every other ship's `nearest` rises
+  to 2800-5700 and its shots fall to 0. Zuikaku fires 249 -> 3947 shots and Zuiho 306 -> 1987.
+  The squadrons fly to 00A13B60's pick, the Zuikaku group, and no longer to the script's random
+  `IJNFleet` ship. The added hit records are that AA fire.
+- **The weakest call is reached: strafes now reach goaway.** Summed over the per-plane strafe
+  summaries (`local\l33_strafe_sum.py`), OFF has 60 planes with `aim=433 goaway=0 aims=8`. ON has
+  42 planes with `aim=3064 goaway=1639 aims=35`. That opens the goaway row (queue item 2).
+- **The wave-3 composition differs** (TBF and SB2C on ON where OFF had F4U). That comes from the
+  script, not the switch: `08_engano.lua:513-517` fills the wave with `luaPickRnd(planetbl)`, and
+  the Lua random stream advances differently once the fight differs (this installation's file is
+  dated 2024-07-13).
+- **USNRM01, moved strongly, as predicted.** The Japanese waves now strike 00A13B60's targets.
+  Only on ON do Downes, Neosho, Rescue, Tautog, Medusa and five cranes die; only on OFF does
+  Airfield1Hangar die. Japanese plane deaths are 32 only OFF against 26 only ON. The 54 declined
+  calls are all `sides 1/2`: 007EEC50 refuses a target that is not an enemy.
+- **JM06, moved with the one PBY, as predicted.** The 12 declined calls come after its torpedo is
+  gone (`torp=0 gb=1`), when the chooser offers no class for the submarine target.
+- **The controls held.** USNOS, USN02 and USN12 have no AI `settarget` to a squadron, and each
+  shows exit 1.
+
+The mechanism matches on every row, so the switch flips ON (`kAiSquadronSetTargetIntakeBound =
+true`). The OFF base predates reference w (not yet published when these pairs ran), and w's
+base must carry this flip.
+
+## 5cl. The goaway row: ESMP08 long's goaway follows the image's rules; the break-off is two manoeuvres the host does not fly (packet `cc9_strafe_goaway_row`, cc9-lua33, 2026-10-04)
+
+The run is ESMP08 14200/14000 on main `ee5672bf2` plus the trace commit `ab54ae37b`, with
+`BSP_STRAFE_GOAWAY_TRACE=1` (`local\l33_ga_esmp08x.log`). Analysis is `local\l33_ga_analyze.py`.
+The trace moves no gameplay: pair_diff against 5ck.2's ON log exits 1.
+
+### The goaway ticks against `009CBB30` (listing `009CBB30`-`009CBE74`, read whole)
+
+| rule (image) | measured (host) | holds |
+| --- | --- | --- |
+| bank re-plan `009CB780` when `+30h` < 0, re-armed `U(2, 5)` (`009CBB4C`-`009CBB93`) | 46 re-plans; the interval between two in one episode is 2.10-4.90 s (n = 27) | yes |
+| pitch re-plan `009CB650` when `+3Ch` < 0, re-armed `U(2, 5)` (`009CBB9C`-`009CBBD5`) | 43 re-plans; 2.00-4.90 s (n = 24) | yes |
+| done `+24h` = horizontal > approach `+34h`, tested once per `+40h` = 1 s (`009CBC47`-`009CBC88`) | 183 tests in 21 episodes; 4 come true, and each is followed by `goaway -> gotowards` (Corsairs #1.3, #1.6\|.-2, #1.8 and #2.3, at h = 1124-1230 m) | yes |
+| evasive gate: not kind 10h/16h and approach `+44h` < 1.0 (`009CBC96`-`009CBCCA`) | 36 gate openings in the tick; time since hit at the gate is at most 0.30 s | yes |
+| the enter's gate `009CB8B0`: `U(10, 16)` > `+44h` (`009CB93C`-`009CB95E`) | 7 of 21 entries open the gate (the census tests `< 16`, without the draw) | census only |
+
+The episodes: 20 planes enter goaway 21 times. **17 episodes end in a death inside goaway**,
+0.05-9.1 s after entry, under the carrier group's AA. The other 4 finish and turn back to
+gotowards. Those planes die later too, Corsair #1.8 in its second goaway.
+The strafe summary's `evasive_gaps=43` is these 36 + 7 openings. At every one of them the image
+front-pushes a manoeuvre that the host does not fly. Instead the host plane keeps the goaway
+state's bank and pitch, so it holds a steady escape line under fire.
+
+### What the image does at each opening (listing `009CBCD0`-`009CBE27` and the callees)
+
+`r = U(0, 1)` is compared with the goaway state's `+18h` (drawn `U(0.3, 0.9)` by the constructor
+`009CB500`):
+
+- **`r >= +18h`: "tightturn"** (the name string at `00D2064C`; factory `009BC030`, `40Ch` bytes,
+  vtable `00D205E0`, tick `009BA020` at `vt+64h`).
+  - Side byte `+408h` = `U(0, 1) < 0.5` (`[00CE3800]`), so left or right with even odds.
+  - The end condition is `007B5D30` (vtable `00D05870`, test `00996510`). It holds the approach's
+    point `+74h..+7Ch` at the moment of the hit, read through approach `vt[0]` = `009CA680`. It
+    answers when that point, in the plane's own frame, has `|x| > z`, i.e. it lies more than 45
+    degrees off the nose or behind.
+  - The tick first waits for `009B9680` to answer (latched in `+404h`; not read). It then writes:
+    - a bank of +-pi/2 (`[00CE3830]`, plan `+2C8h`, mode 1);
+    - `+2A0h` = `clamp(2.0 - e / 10 deg, 0, 1)`, where `e` is the wrapped error between unit
+      `+C68h` (the roll, provisional) and that bank (`[00D7A308]` 2.0, `[00D05850]` 0.17453);
+    - `+288h` = `00419010`-interpolated from `+3FCh - unit+C64h` (the pitch held since
+      `009BAFC0`), times the side.
+  - **Reading:** a hard 90-degree bank turn away until the target is off the nose.
+- **`r < +18h`: "flikflak"** (`00D207B0`; factory `009BC0A0`, `404h` bytes, constructor
+  `009BB910`, vtable `00D20748`, tick `009B99E0` at `vt+64h`).
+  - The constructor sets side `+400h` = `U(0, 1) > 0.5` and the timer `+3FCh` = `U(0, 1) + 2.0`.
+  - The tick: when the timer runs out, it flips the side and re-arms `U(0, 1) + 2.0`. It writes:
+    - bank `+2C8h` = `[+2F8h]+25Ch` (the class, provisional) times +-1, mode 1;
+    - pitch target `+2C0h` = `[+2F8h]+1ECh` (the climb angle), mode 2;
+    - `+27Ch` = 1.0 (`[00D7A24C]`), as the tightturn tick also writes.
+  - The end condition is `007B5E20` (vtable `00D05880`, test `00996300`, read from the disk
+    bytes `00996300`-`00996385`). It answers when the horizontal distance from the plane to the
+    point captured at the hit reaches `U(0.5, 0.7) * approach+34h` (`[00CE3800]`, `[00CE3E18]`):
+    about 0.55-0.85 km on this row.
+  - **Reading:** a climbing jink, banking left and right every 2-3 s.
+- **Either push** sets approach `+44h` = 25.0 (`[00CE89CC]`) and front-pushes through
+  `00999F50`. The strafe task stays underneath, and goaway resumes after `0099B690` retires the
+  manoeuvre. The push draws the RNG once or twice more than the host does today (`r`, then the
+  side or the flikflak constructor's two draws).
+
+So on ESMP08 long, a Corsair that is hit while leaving the carrier group does one of two things in
+the image. With probability `1 - +18h` (0.1-0.7) it turns hard 90 degrees away; otherwise it
+jinks while climbing. It goes back to the goaway line only after the target is off the nose or it
+is about 0.7 km on. The host flies the straight line. That is the likeliest cause of 17 of
+21 episodes ending in a death, a hypothesis that the bind's pair will test.
+
+### Open (for the bind packet)
+
+- **Who receives a hit during the manoeuvre.** The strafe task's notice `009CC400` zeroes
+  `+44h`, but while a manoeuvre is head, its own notice slot may take the hit instead. Read the
+  image's hit dispatch to the task vector (the caller of the task's `vt+2Ch`; the host's is
+  `hit_task_notify` in `src/game_hosts_units.cpp`) before binding the re-push.
+- **`009B9680`** (tightturn's heading and its start flag `+404h`) is not read.
+- **Host labels.** The host has no front-push of a manoeuvre over the strafe arm. The bind can
+  model the two ticks inside the strafe arm as a sub-state, with the goaway tick suspended while
+  a manoeuvre runs. That is a labelled substitution for `00999F50`'s task vector.
+- **Ghidra (for the lead).** All of these are Ghidra functions now (`FUN_`), with Ghidra body
+  ends exclusive:
+  - `009BC030`-`009BC0A0` `BSP_BotTask_MakeTightTurn`
+  - `009BC0A0`-`009BC106` `BSP_BotTask_MakeFlikFlak`
+  - `009BB910`-`009BB9CF` `BSP_BotTaskFlikFlak_Construct`
+  - `009B99E0`-`009B9AE8` `BSP_BotTaskFlikFlak_Tick`
+  - `009BA020`-`009BA1DC` `BSP_BotTaskTightTurn_Tick`
+  - `007B5D30`-`007B5D6A` `BSP_BotCondition_PointOffNose_Construct`
+  - `007B5E20`-`007B5E57` `BSP_BotCondition_PointDistance_Construct`
+  - `00996510`-`009965C6` `BSP_BotCondition_PointOffNose_Test`
+
+  One is not a function yet: `00996300`-`00996385`, `BSP_BotCondition_PointDistance_Test`
+  (`__fastcall(cond)`, ends `RET` at `00996384`, INT3 at `00996385`). The names are hypotheses
+  from the name strings and the bodies.
+
+## 5cm. The break-off manoeuvres bound OFF (packet `cc9_strafe_breakoff`, cc9-lua33, 2026-10-04)
+
+### The two reads 5cl left open
+
+- **The start gate `009B9680` is never asked on this path.** Its body:
+  - it answers 1 when `+400h - unit+C64h < 0` and `|unit+C68h| < 20 deg` (`[00CE398C]`);
+  - otherwise it levels the wings (`+2C8h` = 0, mode 1) and pulls `+2A0h` =
+    `-(|roll| - 60 deg) / 50 deg` (`[00D03DD0]`, `[00D20330]`), and answers 0.
+
+  But `009BC030` stores `+404h` = 1 after the base constructor, and `009BA020` asks the gate only
+  while `+404h` is 0. So a tightturn from goaway starts at once. The gate serves the other users
+  of the base `009BAFC0` (`009BB380`, unread).
+- **The base constructor `009BAFC0`** (listing `009BB018`-`009BB12B`) sets tightturn's pitch
+  reference.
+  - With `f` = altitude (`unit+100h`) - 250 (`[00CF8850]`):
+    - when `f <= 0`, `+400h` = desc `+1ECh`;
+    - otherwise `r = (f / 10) / speed` (unit `vtable[38h]`), and `+400h` = `-acos(r)`. It is 0
+      for `r > 1` and -pi for `r < -1`.
+  - `00BF9940` is taken as `acos`, because `math_acos` `00A617C0` calls it and the clamps match
+    acos's ends (provisional).
+  - Then `+3FCh` = `max(+400h, pitch)` and `+404h` = pitch > `+400h`. The tick's yaw input reads
+    `+3FCh`.
+- **A hit during a manoeuvre still reaches the strafe task.** The walker `00999AA0` calls each
+  task's `vt[2Ch]` from the head down until one answers true. Both manoeuvres' slot is
+  `007B4110`, `XOR AL,AL / RET 4`, so the strafe task's `009CC400` zeroes `+44h` underneath.
+  `+44h` does not advance during the manoeuvre, because `009CCED0` runs only while the strafe task
+  is the head. So a plane hit during its manoeuvre opens goaway's gate again at its first goaway
+  tick after the retire.
+- **The enter's push differs from the tick's** (listing `009CB964`-`009CBB19`):
+  - flikflak is chosen only when also `altitude < approach+40h - 50` (`[00CE3938]`);
+  - the tightturn condition is built inline (`007B5C70`, then vtable `00D05870` and the point);
+  - **it does not set `+44h` = 25**.
+
+### What is bound, behind `kStrafeBreakoffBound` (`include/bsp/strafe_task.hpp`, committed OFF)
+
+- Pure functions in `src/strafe_task.cpp`:
+  - `tight_turn_pitch_ref_009bafc0`;
+  - `tight_turn_tick_009ba020`: bank `+-pi/2`; pitch `clamp(2 - |wrap(roll - bank)| / 10 deg, 0, 1)`
+    direct; yaw `00419010(-2 deg, 0, 2 deg, 1, ref - pitch) * side` direct;
+  - `point_off_nose_00996510`;
+  - `point_distance_reached_00996300`.
+- In the units host's strafe arm (`src/game_hosts_units.cpp`):
+  - the push from goaway's enter (the `U(10, 16)` window, drawn only ON) and from its tick;
+  - the draws `r`, side, distance, flikflak side and timer, all on the keyed stream;
+  - the two manoeuvre ticks with their plan writes (task offsets minus 4), the end conditions and
+    the retire.
+- Census line: `summary mission strafe breakoff bound tightturns flikflaks manoeuvre_ticks`.
+  The goaway trace adds `push_enter`, `push_tick` and `manoeuvre_done`.
+- **SUBSTITUTIONS, labelled:**
+  - `00999F50`'s front push is one manoeuvre slot per plane. The strafe arm (`009CCED0`, the rule
+    and the state tick) is suspended while it runs, as `0099ACD0` ticks only the head.
+  - A strafe re-install, or a class change, drops a running manoeuvre. `0099A4C0` would ask the
+    head's `vt[40h]` `0099C2C0`, which is not read.
+  - `009BA1C8`'s `+2E4h &= ~4` is not modelled.
+- OFF is byte-identical in behaviour: every new draw and write is under the switch. The census
+  line reads `bound=0` with zeros.
+
+### Predictions, written before any ON run (pairs on the OFF commit)
+
+- **ESMP08 14200/14000: moved.** OFF has 43 gate openings, so ON has at least that many pushes.
+  - **Mechanism:**
+    - `tightturns + flikflaks` is at least 36 tick pushes plus the enter pushes. It rises if planes
+      live longer and are hit again;
+    - on the tick pushes, tightturns are about 40% (`1 - E[+18h]`, with `+18h` = `U(0.3, 0.9)` per
+      plane);
+    - every push is followed by `manoeuvre_done` or by the plane's death;
+    - a flikflak ends after 0.55-0.85 km of horizontal travel, about 4-7 s;
+    - a tightturn ends when the target is 45 degrees off the nose, about 1-3 s at the TurnRoll
+      rates.
+  - **Hypothesis to test, not a prediction to hit:** fewer of the 21 goaway episodes end in a
+    death than OFF's 17. The plane spends the seconds after a hit turning or jinking instead of
+    flying a straight line under the carrier group's AA. If the deaths do not fall, the AA is
+    simply too dense for the break-off to matter, and the switch flips on the mechanism alone.
+- **ESMP08 9200/9000, USNOS 3200/3000, USN02 3200/3000 (controls):** pair_diff 0 or 1. ESMP08
+  short and USNOS never enter goaway (`goaway=0` in 5ck.2's ON logs), and USN02 has no strafe.
+
+### 5cm.1 Measured (OFF `local\l33_off`, SHA-256 `68CB1B2C2040`; ON `local\l33_on`, `38CCABFD6904`; both from `a14bb33f1`), and the verdict: **flip ON**
+
+Run in the launch form of reference v, with `BSP_STRAFE_GOAWAY_TRACE=1` on both sides
+(`local\l33_runs.ps1 -Tag b`). The trace leaves gameplay unchanged: the OFF log against 5cl's
+trace run exits 1. The ON smoke (USN01, 300 frames) finished cleanly.
+
+| row | pair_diff | notes |
+| --- | --- | --- |
+| ESMP08 14200/14000 | 3 | 23 tightturns, 34 flikflaks, 1477 manoeuvre ticks |
+| ESMP08 9200/9000 | 1 | no goaway |
+| USNOS 3200/3000 | 1 | strafes, no goaway |
+| USN02 3200/3000 | 1 | no strafe |
+
+**The mechanism, measured against the reading** (`local\l33_mv_analyze.py`):
+- **Pushes.** There are 57: 52 from the tick and 5 from the enter. 23 of 57 are tightturns,
+  which is 40%, the predicted `1 - E[+18h]`.
+- **The end conditions.**
+  - All 23 tightturns end at their condition after **0.09-1.40 s (median 0.10 s, two
+    ticks)**. This is the image's own condition, not a host artefact. A plane in goaway flies away
+    from the target, so the aim point is already behind it (`z < 0`). `00996510` answers at once,
+    and the tightturn holds the knife-edge bank for a tick or two. The prediction of 1-3 s
+    assumed the target ahead and was wrong.
+  - 21 flikflaks end at their distance after 0.10-15.09 s (median 1.90 s), and 10 end with the
+    plane's death.
+  - 3 pushes were overwritten. Where the enter pushes, the state tick of the same think
+    (`009CD1C7`) sees `+44h` still below 1 and pushes again: in the image a second task lands on
+    top of the first. **SUBSTITUTION, labelled:** the host keeps the second only.
+- **Census artefact.** `evasive_gaps` falls from 43 to 32. That counter takes rising edges, and
+  the edge state is held across the suspension. It is not a change in the gate.
+
+**The hypothesis, tested.** The goaway episodes that end in a death fall from 17 of 21 to 12 of
+20. The total does not move (46 deaths on both sides), but the strafers live longer:
+- across the 21 Corsair death rows, the median death is 5.6 s later (all 43 changed rows: median
+  +0.5 s; 18 later and 16 earlier by more than 1 s);
+- Zuikaku takes 89 -> 1269 damage, and Zuiho sinks 8.7 s earlier (548.7 -> 540.0 s);
+- hits rise 6462 -> 7374, damage 14996 -> 17044, torpedo releases 4/33 -> 5/27 and dive
+  releases 0/37 -> 3/36.
+
+So the break-off protects the strafers in the image's sense: the flikflak's climbing jink keeps
+them alive after a hit. It does not change how many die by the end of the row, because the
+carrier group's AA still gets them on their next pass.
+
+The mechanism matches, and the controls are exit 1, so the switch flips ON
+(`kStrafeBreakoffBound = true`). Corrected prediction: a tightturn from goaway lasts one or two
+ticks.
+
+## 5cn. Where the two script-dogfight chains stop; `GetSquadronPlanes` bound OFF (packet `cc9_script_dogfight_rows`, cc9-lua33, 2026-10-04)
+
+A new env-gated trace, `BSP_LUA_CALLBACK_TRACE=1` (`src/game_hosts_script_orders.cpp`), puts a
+Lua call hook on the mission state. It records the first mission-clock time and the call count of
+two kinds of function:
+- every Lua function its caller names `lua*`;
+- every unnamed Lua function, keyed `source:line`. These are callbacks the host or a C binding
+  calls.
+
+The trace changes no Lua behaviour; `report()` prints it. Runs, on main `eb373327c` plus this
+packet: USNRM01 9200/9000 (`local\l33_tr_usnrm01.log`) and BSM04 3200/3000
+(`local\l33_tr_bsm04.log`). Script files in this installation: `usn_1_pearl.lua` is dated
+2024-10-29 (locally modified, not the bulk 2024-07-13), and `bsm_04_vengance_at_luzon.lua`
+2024-07-13.
+
+### USNRM01: phase 1 never ends, because the West Virginia never takes damage
+
+The chain to the Welch squadron (`luaPh3Start`, line 1327) runs through phase 1's end.
+1. `luaIn` (1006) registers `Listener_WVDead` (1048-1054).
+2. When the West Virginia dies, that listener calls `luaWVSunk` (1456).
+3. `luaWVSunk` runs the WV movie, then `luaWV_MovieEnd` (1090), then `luaBombingMovie` (1111).
+4. Phase 2 follows.
+
+The trace shows how far the run gets:
+- `luaIn` runs at t = 186.9 s (as `?usn_1_pearl.lua:1006`), then `luaAddFirstObjs`,
+  `luaGenerateJapTraffic`, the targeting loop (`luaGetJapTrg` 389 calls), and at 276.9 s
+  `luaInitFirstRunners` / `luaInitSecondRunners`;
+- `luaWVSunk`, `luaWV_MovieEnd` and everything after them never run.
+
+**The West Virginia ends the 450 s mission at 10000 of 10000 health, with `taken` 0.**
+- The impact census shows bomb blasts on it doing `took=0.0` (base 35 against armour 130).
+- No battleship of `Mission.BBRowGang` takes damage except Pennsylvania (22). The script's bombers
+  and torpedo planes are aimed at that gang (`luaGetJapTrg(2)`, 2228, and 177 `command target`
+  lines name the West Virginia).
+- What the attacks do sink is destroyers and auxiliaries: Downes 290 s, Neosho 363 s, Rescue 386
+  s, Tautog 400 s, Medusa 444 s.
+- The gunnery summary has `swims_started=13` against the 40 aircraft torpedo drops of 5ck.2.
+
+This is the gunnery and damage lane (how an aircraft torpedo or AP bomb damages a moored
+battleship). It is routed to the lead, not chased here. Until the West Virginia can die, phases
+2 and 3, and with them the Welch dogfight, cannot be reached on any run length.
+
+### BSM04: `luaStartMission` fails on every think at `GetSquadronPlanes`
+
+- The trace has `luaStartMission` ×49, `luaIntroMovieA` ×49 and no `luaDelay`.
+- The log has 49 `script call lua_Think failed: ...:1718: attempt to index local 'camTrg'
+  (a nil value)`.
+- `luaIntroMovieA` (1715) calls `GetSquadronPlanes(Mission.Cat)`. This host left that native
+  unimplemented, so it returned nothing.
+- So `luaStartMission` (1403) dies at line 1447 before `luaDelay(luaIntroDia, 2)` (1449), and
+  `Mission.Started` is never set (`lua_Think`, 592-596). The mission restarts its opening every
+  think.
+
+**`0089CC50` `GetSquadronPlanes`** (`__fastcall(lua_State)`, one result; listing `0089CD75`-`0089CE00`):
+- argument 0 goes through `BSP_ObjectHandle_FromLuaTable` with no kind check;
+- a new table (`00B67930`);
+- for `i` = 1..`[sq+3CCh]`, the member `[sq+3D0h + 4(i-1)]`'s u16 `+174h` as a string
+  (`004260B0`), stored at index `i` (`00B672F0`);
+- past five members `0089CD98` substitutes a null pointer, so the image would fault.
+
+The strings are the `thisTable` keys, which is how the script reads them back:
+`thisTable[tostring(camTrg[1])]`.
+
+**The next blocker, from reading the host:** after the opening, `luaIntroDia` calls
+`luaStartDialog("INTRO")` -> `StartDialog` `008B0540`. This host only registers the id: "nothing
+here plays a dialog to its end". The INTRO sequence's `callback` entries (`luaIntroMovieB`,
+`luaIntroMovieC`, `luaZekesDia`, lines 164-180) are played by the image's dialog panel
+`00451A90`, so they never fire, and `luaIntroMovieEnd`'s `PilotSetTarget` (1909) stays out of
+reach. Binding the dialog sequencer's callback entries is a packet of its own.
+
+### The binding, behind `kGetSquadronPlanesBound` (`include/bsp/game_hosts_script_orders.hpp`, committed OFF)
+
+- In `GameScriptOrdersHost::dispatch`, the new table holds the member planes of the registry
+  record that contains the argument's unit. Each entry is the unit index plus one as a string
+  (`kMissionLuaEntityKeyFormat`, the `thisTable` key, as `+174h` is in this host). It stops at
+  five entries.
+- Census line: `summary mission script squadron planes bound calls entries unresolved`.
+- **SUBSTITUTION, labelled:** the squadron is the registry record, as in `PilotSetTarget`.
+- No reference row calls this native: there are no `GetSquadronPlanes` rows in the 37 reference
+  logs in the cc9-gunnery20 tree.
+
+### Predictions, written before any ON run
+
+- **BSM04 3200/3000: moved.**
+  - `luaStartMission` runs once and `luaIntroMovieA` once. The 49 `lua_Think failed` lines go to 0.
+  - `luaDelay`, `luaIntroDia` (about t = 5 s) and `StartDialog("INTRO")` appear.
+  - The census shows `calls=2`, with entries of 2-3 per call (Mission.Cat and FortressRed).
+  - The chain then stops at the INTRO dialog: `luaIntroMovieB` never runs.
+  - The opening's orders (`PilotSetTarget` FortressRed -> Airfield, `PilotMoveToRange`,
+    `NavigatorMoveOnPath`) are issued once instead of re-issued every think. So the B-17 and
+    Catalina tasks are no longer rebuilt every 3 s, and the bomb run timing moves.
+  - **Weakest call:** whether a single issue changes the bombing outcome or only its timing.
+- **USN02 3200/3000 and BSM01 3200/3000 (controls):** pair_diff 0 or 1, since neither calls the
+  native.
+
+### 5cn.1 Measured (OFF `local\l33_off`, SHA-256 `E47DDC22ECFD`; ON `local\l33_on`, `A94D5BA28C7C`; both from `8d319feb2`), and the verdict: **flip ON**
+
+The launch form is reference v's (`local\l33_runs.ps1 -Tag c`), and the ON smoke (USN01, 300
+frames) finished cleanly.
+
+| row | pair_diff | census (ON) |
+| --- | --- | --- |
+| BSM04 3200/3000 | 3 | `calls=2 entries=8 unresolved=0` |
+| USN02 3200/3000 | 1 | `calls=0` |
+| BSM01 3200/3000 | 1 | `calls=0` |
+
+**BSM04, against the predictions:**
+- **The mechanism holds.** The 49 `lua_Think failed ... :1718` lines drop to 0. There are two calls,
+  `Mission.Cat` and `FortressRed`, with 8 entries in all. `StartDialog("INTRO")` appears once.
+  The chain then stops at the INTRO dialog as predicted, because this host does not play a
+  sequence's callback entries.
+- **Larger than predicted.** I expected only re-timings. The move is bigger because OFF never ran
+  any of `lua_Think` past line 596: `Mission.Started = true` (598) and everything after it in
+  every think were unreachable. With the switch ON the script's opening phase runs.
+  - The airfield launches its interceptors: `IsReadyToSendPlanes` -> `LaunchSquadron` spawns
+    `AirField_sqn01` and `AirField_sqn02`, 6 new units (39 -> 45).
+  - They fight the B-17s, Donald and the Wildcat. Deaths go 0 -> 5: B-17|.-2, B-17|.-5 and three
+    of AirField_sqn01. Shots go 299 -> 3792 and damage 140 -> 1270.
+  - The first hit comes 46 s earlier (123.7 -> 77.5 s).
+  - The controlled B-17 flies 7238 -> 9300 m.
+- **The controls held:** USN02 and BSM01 do not call the native, and both exit 1.
+
+The mechanism matches, so the switch flips ON (`kGetSquadronPlanesBound = true`). BSM04's
+script dogfight (1909) now waits on the dialog sequencer: the INTRO and ZEKES `callback`
+entries.
+
+## 5co. 5ch strands USN13's strike: the close attack has no candidate against a land-fort group (cc9-lua33, 2026-10-04)
+
+The lead's priority check, from reference W's leave-one-out: `kAiTickMovetoRetasksPlaneBound`
+(5ch) alone takes USN13 to zero shots. The pairs ran on `47d5ec5b4`, which is main with 5ck and
+5cm ON. OFF is `local\l33_off`, SHA-256 `492CB08B785C`, with the switch flipped false; ON is
+`local\l33_on`, `D41C2550EBEB`. Both runs had `BSP_AI_SQUAD_TICK_TRACE=1`, in reference v's
+launch form.
+
+| row | pair_diff | deaths OFF -> ON | shots OFF -> ON | releases OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USN13 3200/3000 | 3 | 22 -> **0** | 4189 -> **0** | torpedo 0/60 -> 0/60 |
+| USN13 9200/9000 | 3 | 116 -> **6** | 40517 -> 136 | torpedo 3/79 -> 0/60, dive 2/50 -> none |
+| USN04 4700/4500 | 3 | 45 -> 71 | 17447 -> 22401 | torpedo 0/16 -> 2/16 |
+
+### (1) Yes, current main still strands the strike
+
+5ck and 5cm do not change this.
+
+### (2) Where the groups go, and why nothing attacks
+
+The attackers are the script's Japanese wave "bruh" (type 162, WingCount 4, party 1). The
+script `PilotSetTarget`s each squadron at a ship (objects 263, 279, ...).
+- **OFF:** the squadrons keep that order and die to the destroyers' AA (DD_4, DD_6).
+- **ON:** the planner gives the AI groups that hold these squadrons `MOVETOATTACK` against
+  `CB2`, a **LandFort** group whose leader point is at (2973, 3, -2182). The tick's moveto
+  retires each script attack head, which is the image's rule in 5ch (`replaced_other=60`).
+- Every group closes in and promotes. The squad trace shows each leader's distance falling from
+  6.6-9.5 km to 0.4-1.4 km, inside `CollectDist` 3000. There are 8 promotions and 88
+  `CLOSEATTACK` ticks.
+- **But no squadron's close attack ever chooses a target.**
+  - The intake census reads `calls=0`, so no `settarget` ever reaches a squadron.
+  - `close fallback bridge calls=413`: 225 of them are ships, and the other 188 are squadron
+    fallbacks to the offset point.
+  - So the squadrons orbit 0.5-1.4 km from CB2 at 800-1400 m and never attack anything.
+- **Why, by `00A13B60`'s own rule** (docs/AI_CLOSE_ATTACK_TICK.md): a candidate with weight
+  `<= 0` is admitted only as a target-group member, and its score is `range * weight * 10`.
+  With weight 0 that score cannot beat the seed `best = 0` (`00A149A8`, `JBE`). A torpedo or
+  bomb squadron's `00A0F810` weight against the LandFort members is evidently 0. The three
+  `ai target choice` LandFort lines never reach a squadron (intake `calls=0`); which member made
+  them is not traced.
+- **Not the path leg.** `009FD050` (`BotApproach::refresh_path_leg`, unimplemented) shapes the
+  moveto's `+28h` leg factor between two distances. The groups do reach their points, so it is
+  not the cause.
+
+### (3) Would the image strand them?
+
+The stall rule itself, a zero-weight target that cannot win, is the image's. What is
+**unverified** is the assignment that feeds it. Two host substitutions make it:
+- the planner's choice of a LandFort group for a torpedo/bomb wave, at group weight 1.000 (the
+  `ai group ... weight=1.000` lines), while the per-member weight against that group's members
+  is 0;
+- the admission of script-generated squadrons into AI groups at all (`ai squadron generated
+  after load`, packet `cc9_generated_squadron_brain_membership`). If the image's brain never adopts
+  a `GenerateObject` squadron, its AI tick never re-tasks them.
+
+The planner value and the close weight disagree for the same pairs, so one of these is a host
+artefact. Until the planner's group value for a squadron against a LandFort group, or the
+generated-squadron membership, is checked against the image, 5ch strands the strike for a host
+reason. **Recommendation: take `kAiTickMovetoRetasksPlaneBound` back OFF** (`src/game_hosts_ai.cpp`,
+cc9-ships27's lane; routed to the lead). Next reads: `00A0F970` (the group target value for a
+plane group against LandFort) and the image's adoption of generated squadrons into a brain.
+USN04's opposite move (45 -> 71 deaths) belongs to the same switch and should be re-read after the
+fix.
+
+## 5cp. Handoff (cc9-lua33, 2026-10-04)
+
+Branch `agent/cc9-lua33`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua33`. No lease
+is held. `src/game_hosts_ai.cpp` was on loan for packet 1 and has been handed back.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_ai_squadron_settarget_intake` | `aaf170730`, `deeabf8a5` | `kAiSquadronSetTargetIntakeBound` | **ON** | 5ck.1, 5ck.2 |
+| `cc9_strafe_goaway_row` | `ab54ae37b` (trace), `1700efc38` | - | read | 5cl |
+| `cc9_strafe_breakoff` | `a14bb33f1`, `cd062f4ff` | `kStrafeBreakoffBound` | **ON** | 5cm, 5cm.1 |
+| `cc9_script_dogfight_rows` | `8d319feb2`, `01ec9eb13` | `kGetSquadronPlanesBound` | **ON** | 5cn, 5cn.1 |
+| 5ch USN13 check | `5532e517c` | `kAiTickMovetoRetasksPlaneBound` | recommend **OFF** (routed) | 5co |
+
+Env-gated traces added:
+- `BSP_STRAFE_GOAWAY_TRACE=1` (`src/game_hosts_units.cpp`): goaway enter, re-plans, done tests,
+  gates, pushes and manoeuvre ends.
+- `BSP_LUA_CALLBACK_TRACE=1` (`src/game_hosts_script_orders.cpp`): the first time and call count
+  of every `lua*` function and every host-fired Lua callback.
+
+Scripts are in `local\`: `l33_runs.ps1 -Tag <t>` (pairs), `l33_trace_runs.ps1` (one traced run),
+and `l33_ga_analyze.py` / `l33_mv_analyze.py` (goaway and manoeuvre episodes).
+
+### Next, in order
+
+1. **5ch (5co).** Settle what feeds the USN13 stall:
+   - `00A0F970`'s group value for a squadron group against a LandFort group;
+   - whether the image adopts a `GenerateObject` squadron into an AI brain at all.
+
+   Then re-pair USN13, USN13 long and USN04 with 5ch.
+2. **BSM04's dialog sequencer.** `StartDialog` `008B0540` -> the panel `00451A90` plays a
+   `Mission.Dialogues` sequence, including its `["type"] = "callback"` entries. This host only
+   registers the id. The INTRO and ZEKES callbacks (`bsm_04:164-190`) lead to the 1909 script
+   dogfight. Read how the panel advances (the per-message duration source) before binding.
+3. **USNRM01** is blocked on the West Virginia never taking damage. That is routed to
+   cc9-gunnery23 (5cn).
+4. **Break-off follow-ups (5cm):**
+   - the stacked second push when the enter and the tick push in one think;
+   - the manoeuvre head's `vt[40h]` `0099C2C0` on a command change;
+   - tightturn's `+2E4h &= ~4`.
+5. 5cj's remaining items.
+
+**5ch is now OFF** (`kAiTickMovetoRetasksPlaneBound = false`, 5co). ESMP08's promotion to `CLOSEATTACK`, through which 5ck and 5cm reached their row, may no longer happen; the successor re-pairs ESMP08 14200 for 5ck and 5cm.
