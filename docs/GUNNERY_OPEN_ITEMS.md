@@ -7844,3 +7844,75 @@ hull-debris contact needs a host body. Ghidra was read-only.
 
 **Verdict:** no switch. Hull-debris contact is inert by the mass rule, and the RNG coupling is
 masked in the reference form.
+
+## 100. UST 04's hull-terrain contact on JM08 36000 (SHIP_AI 111's open question, packet `cc9_ust04_hull_depth`, cc9-gunnery23)
+
+SHIP_AI 111.2 asked whether the image's hull-terrain solver touches at UST 04's grounding point
+(17 m of water under the centre, "penetrating up to 2.18 m"), whether the bow or stern sits over
+shallower ground, and whether the host's hull extent is right for the class.
+
+**The run.** I re-ran section 107.5's ON case: an export of `0b88fa011` with
+`kAiTransportMovesOrderBridgeBound=true` (`local\g23_s26`), `BSP_LANDER_DIAG=1`, the reference
+launch form, JM08 29600/29400.
+- It reproduces `s26_e1d_jm08x` exactly. `ship terrain contact` first at t=1427.37 (1984.3 0.3
+  -3874.9); `hull terrain contact` first at t=1437.53 (1981.2 0.2 -3892.8), depth 0.01.
+- A temporary diagnostic (`BSP_HULL_GROUND_PROFILE`, not committed; `local\g23_diag.patch`) logged
+  three things at each unit's first solver candidate: the hull vertices, the candidate points, and
+  the ground along the keel. Its output is `local\g23_gp4_jm08.txt`.
+- Current main (`local\g23_gp_jm08.log`) no longer grounds UST 04 by t=1450. Its path changed
+  after 107.5.
+
+### 100.1 The solver does touch, at the stern keel
+
+At t=1437.53 (unit 356 is UST 04):
+- **The pose.** `fwd=(-0.1129 0.0160 0.9935)`: the bow points north.
+- **The touching vertex.** It is the aft convex shape's keel vertex, hull-local
+  (0, -10.19, -69.19), 69 m aft of the centre, at world (1989.05, -11.07, -3961.41).
+- **The tile point** is (1989.05, -11.06, -3961.41), with normal (0.025, 0.996, 0.090) and
+  depth 0.006 m.
+- **It is the only vertex in contact.** It keeps that role on every logged step while the hull
+  slides about 0.17 m per step and the depth falls to 0.003 m.
+- **Census:** `hull terrain contact census ... steps=643 max_depth=0.02`. The native narrow phase
+  (`00C53630` on the terrain tiles of `00882AC0`) holds a resting contact at about 2 cm.
+
+### 100.2 Why it touches with 17 m under the centre
+
+- **The ground rises to the south**, which is astern. `BSP_GROUND_SAMPLE` along the hull at the
+  first host contact (1984.3, -3874.9) gives about -21 m under the bow (z = +91), -17.2 m under the
+  centre and -10.7 to -11.8 m under the stern end (z = -90): about 0.065 m per metre.
+- **The hull is trimmed 0.92 deg stern-down.** `fwd.y = 0.016` lowers the vertex 69 m aft by
+  1.1 m. Level, the keel would be at 0.23 - 10.19 = -9.96 m; trimmed it is at -11.07 m, which is
+  where the ground is.
+- **So the stern sits over the shallow slope**, and the trim brings the stern keel down onto it.
+
+### 100.3 The hull extent, and what "2.18 m" measures
+
+- **The solver's hull is the model's own ConvexObjects.** `models/ships/us/US_Troop_Transporter.mmod`
+  gives 2 shapes from 256 raw points, reduced to 16 + 30 hull vertices:
+  - fore shape z 35.07..91.37, aft shape z -90.14..33.26;
+  - the keel at -10.17..-10.20 from z = -69.19 to +69.19;
+  - the ends rise to y = -1.87 at the stern (z = -90.14) and -6.74 at the bow (z = 91.37).
+  These are the image's shapes for the class (section 86). The class `length=180` agrees with the
+  181.5 m mesh.
+- **The 2.18 m is not the solver's.**
+  - It is `ship terrain contact census ... max_penetration=2.18`: the stand-in of packet
+    `cc9_ship_terrain_contact` (`ship_terrain_contact`, `src/game_hosts_units.cpp`).
+  - That stand-in tests three points of the class box (`max.z`, the middle, `min.z`), all at the
+    box's keel depth (`min.y` = -10.215).
+  - The box puts the keel at the stern end (z = -90.155), where the real hull is 8.3 m higher, and
+    the ground there is shallowest.
+  - Under `kHullTerrainContactSolverBound` the stand-in no longer moves anything; it only counts.
+    Read 2.18 m as the box's overstatement, not as a penetration.
+- **Class draught against mesh keel.** The buoyancy elements give `max_draught=8.298` (ratio 0.6).
+  The mesh keel is 10.19 m below the hull origin, and the origin floats at y = 0.2-0.3.
+
+### 100.4 Verdict
+
+- **No divergence in the contact.** It is the image's narrow phase on the image's hull shapes and
+  terrain samples. The contact point, the stern keel over the rising slope, follows from the pose.
+- **Correction to SHIP_AI 111.2:** "penetrating up to 2.18 m" is the class-box stand-in census.
+  The solver's depth never exceeds 0.02 m.
+- **Uncertain:** whether the image's hull trims 0.9 deg stern-down here. The trim comes from the
+  host's buoyancy elements and hydro forces with the ship stopped on full rudder
+  (`dir=stopped throttle=0 rudder=-1`). Level, the stern keel would be at -9.96 m, 1.1 m above the
+  ground at -11.06 m, so it would not touch at this point. No image run settles the trim.
