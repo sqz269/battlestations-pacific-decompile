@@ -9513,8 +9513,9 @@ is the artefact.
   So, as far as the listings go, the slot-4 brain is Allied-team while commanding the Japanese
   side. Its Attack planner walks team 1 and its Capture planner targets the Japanese CBs.
 - **SHIP_AI 60.6 confirmed this exact chain.** It covered the writer census of `+28h` and the
-  local slot, and `00A1CB80`'s list without an enemy filter. It did not play-validate it. It
-  names an original-exe observation as the remaining cross-check, and that is still the open item.
+  local slot, and `00A1CB80`'s list without an enemy filter. This process never runs the original
+  executable, so the open item is static evidence still pending: a writer of `game+1FE4h` or a
+  SetGameMode caller on the single-player path (SHIP_AI 125, routed to cc9-ships28's lane).
 - **5ch's other two inputs are the image's:**
   - The torpedo head's `vtable[40h]` is `009D3EF0` (vtable `00D213C8`, `009D3EF0`-`009D3F5A`,
     plain `RET`). It keeps the head only for `00E08F18` or `00E08F78` on the head's own target
@@ -9523,8 +9524,8 @@ is the artefact.
 
 **Answer to 5co.** 5ch strands USN13's strike because the slot-4 brain's Capture think sends the
 Japanese strike at the Japanese CB2, and the close attack then has no hostile candidate. That is
-the image's rule as read. Whether the image really plans the Japanese side under an Allied team is
-an in-play question this lane cannot settle.
+the image's rule as read (SHIP_AI 125 agrees). Whether the image really plans the Japanese side under
+an Allied team is a question of static evidence still pending, not of observation.
 
 ### (2) The host stub in `00A08460`: the type queries
 
@@ -9741,7 +9742,7 @@ E2 is USN04 9200/9000. A USN01 500/300 smoke on `l34_on5` finished cleanly.
 - The outcome rides on the Allied-team slot-4 brain (5cq (1)): with the image's gates, the
   Japanese air groups target themselves.
 - USN13 3200 and the USN12 control are prediction misses.
-- So the binding is recorded and held OFF until the brain-team chain is settled in play. Flipping
+- So the binding is recorded and held OFF until the brain-team chain is settled by static evidence (pending). Flipping
   it now would move every reference row for a reason that one open question decides.
 
 **5ch stays OFF.** With the weight ON, USN13's strike still never attacks under 5ch.
