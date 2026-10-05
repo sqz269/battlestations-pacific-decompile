@@ -5269,6 +5269,10 @@ struct GameUnitsHost::Impl {
     // now fly terrain avoidance over the eastern block; no death, hit or release
     // moved, and USN02's ship rows are identical.
     static constexpr bool kAvoidZoneLayerSampleBound = true;
+    // Packet cc9_terrain_avoid_forward_speed (docs/SQUADRON_LAND_TASK.md 5da):
+    // AvoidTerrain's unit vtable[204h] (0099F27E, 0099CC98) is ctl+7Ch, the body
+    // forward speed 007D80C0 stores, where the host passed |v|. OFF: |v|.
+    static constexpr bool kTerrainAvoidForwardSpeedBound = false;
     // Packet cc9_units_contracts, docs/AVOID_ZONE_REGISTRY.md section "Units
     // contracts": (1) unit+9B8h, the fixed step's second 0041BC20 sample
     // (007CE92A), stored per plane; no host path reads it (its readers are the
@@ -9186,7 +9190,18 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     bool inverted = false;
     float v_world[3];
     avoid_velocity(u, v_world);
-    const float speed = avoid_len(v_world);                          // vtable[204h] stand-in, labelled
+    // Packet cc9_terrain_avoid_forward_speed (docs/SQUADRON_LAND_TASK.md 5da).
+    // 0099F27E and 0099CC98 (inside 0099CAB0) both call unit vtable[204h], which
+    // is 007B8E70 FLD [unit+B2Ch], the flight controller's ctl+7Ch. Its writer
+    // 007D80C0 (called from the core law at 007DC81D after each step) stores
+    // ctl+44h there, the BODY FORWARD speed, not |v| (that is ctl+6Ch, 007D807C,
+    // vtable[38h]). Bound: dot(body z row, world velocity), the value the host's
+    // free-flight step forms as ctl+44h. OFF keeps the |v| stand-in.
+    float speed = avoid_len(v_world);                                // vtable[204h] stand-in, labelled
+    if constexpr (kTerrainAvoidForwardSpeedBound) {
+        const float* const fz = u.motion.pose_row2;
+        speed = fz[0] * v_world[0] + fz[1] * v_world[1] + fz[2] * v_world[2];   // ctl+7Ch
+    }
     float stall_range = 1.6f;                                        // tuning+230h StallRangeMax
     if (lua.plane_globals_loaded()) {
         stall_range = lua.plane_globals().dynamics_spd_multipliers_stall_range_max;
@@ -9199,7 +9214,7 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     // (docs/FIGHTER_GUN_LEAD.md). So the velocity's elevation is the term.
     const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
                                    static_cast<double>(v_world[2]) * v_world[2]);
-    const float pitch = speed > 1.0f
+    const float pitch = avoid_len(v_world) > 1.0f
         ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
         : u.plane_pitch_angle_c64;
     const float bank = u.plane_bank_angle_c68;
