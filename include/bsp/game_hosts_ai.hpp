@@ -262,6 +262,13 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept;
 // ON: section 80.5 (controls identical; USN02, JM06, USNOS rows move).
 inline constexpr bool kAiTargetWeightDamageTermsBound = true;
 
+// Packet cc9_ai_target_weight_health (docs/SHIP_AI_OPEN_ITEMS.md section 139). True:
+// 00A0F810's slot D (00A0F8CC MOV ECX,EBX; CALL 00923BE0; FSUBR [00D7A308] 2.0) takes
+// the candidate's live health: 00923BE0 calls vtable[110h] = 00876260 (FLD [+370h],
+// FDIV [+36Ch]) and clamps it into [0, 1], so a damaged target weighs up to 2.0. The
+// gunnery host keeps both halves per unit. False: a live candidate answers 1.0.
+inline constexpr bool kAiTargetWeightHealthBound = false;
+
 class GameHostLog;
 class GameUnitsHost;
 
@@ -360,6 +367,7 @@ struct GameAiSummary {
     unsigned long long weight_fort_targets{0};      // the 009FE0B0 trio
     unsigned long long weight_non_command_targets{0}; // trio, not 1Ch
     unsigned long long weight_torn_down_targets{0};   // 00923BE4's arm
+    unsigned long long weight_damaged_targets{0};     // 00923BE0 below 1.0 (health bound)
     unsigned long long weight_model_runs{0};       // 00A08460 ran for real
     unsigned long long weight_class_stand_ins{0};  // the 009FDF30 fallback
     float first_command_seconds{-1.0f};

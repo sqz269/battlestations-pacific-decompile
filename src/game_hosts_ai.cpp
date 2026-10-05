@@ -2197,8 +2197,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // and the torn-down arm are the native's, the fraction is not.
         bsp::SceneNodeFlags target_node;
         const bool have_node = units.unit_scene_node_flags(target, target_node);
+        // Packet cc9_ai_target_weight_health (SHIP_AI_OPEN_ITEMS section 139): with
+        // kAiTargetWeightHealthBound the fraction is the gunnery host's health over
+        // max_health, which is what 00876260 divides (FLD [+370h] / FDIV [+36Ch]).
+        // LABELLED: a row with no max_health keeps the full-health 1.0.
+        float fraction = 0.0f;
+        bool fraction_available = false;
+        if (kAiTargetWeightHealthBound) {
+            const GameGunneryHost* gunnery = units.gunnery();
+            if (gunnery != nullptr && target < gunnery->unit_rows().size()) {
+                const GameGunneryUnitRow& hp = gunnery->unit_rows()[target];
+                if (hp.max_health > 0.0f) {
+                    fraction = hp.health / hp.max_health;
+                    fraction_available = true;
+                }
+            }
+        }
         in.target_term = bsp::ai_unit_health_00923be0(
-            have_node && target_node.torn_down, 0.0f, false);
+            have_node && target_node.torn_down, fraction, fraction_available);
+        if (in.target_term > 0.0f && in.target_term < 1.0f) ++summary.weight_damaged_targets;
         // The torn-down arm cannot actually be reached from here: 00A13B60's
         // candidate loop already drops a candidate that fails
         // close_candidate_alive, so every candidate scored is live. The arm is
@@ -6050,9 +6067,10 @@ void GameAiCoordinatorHost::report() {
         host.summary.weight_queries, host.summary.weight_objective_hits,
         host.summary.weight_fort_targets, host.summary.weight_non_command_targets);
     host.log.notef("summary mission ai target weight health torn_down_targets=%llu "
-        "(00923BE0's +5Dh arm; the fraction unit+370h/unit+36Ch has no producer here, so a live "
-        "candidate takes the full-health 1.0 and slot D is 1.0)",
-        host.summary.weight_torn_down_targets);
+        "damaged_targets=%llu bound=%d (00923BE0: the +5Dh arm, else unit+370h/unit+36Ch "
+        "clamped into [0, 1] from the gunnery host; unbound, a live candidate takes 1.0)",
+        host.summary.weight_torn_down_targets, host.summary.weight_damaged_targets,
+        kAiTargetWeightHealthBound ? 1 : 0);
     {
         // A row is incomplete only when it carries a Rocket barrel, whose
         // small/big split 009FE4F1 makes through unread target-state
