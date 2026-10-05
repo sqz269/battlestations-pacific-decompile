@@ -10939,3 +10939,66 @@ Pairs from `5adb64812`: `l37_g0` (all OFF) against `l37_g1` (both gates + `kAiPl
   bombers therefore lose ship value earlier than in gx0, which may move squadron retargeting.
 - **USNOS neutral objects.** The ~31 container and crate deaths stay gone. They come from the barrel
   gates (side >= 2 targets), not from planes.
+
+### 5df.1 Measured: **the gates and the loadout arm ON** (cc9-lua37, 2026-10-05)
+
+**Two host faults the first pairs exposed, fixed before the verdict:**
+- **`c888019ba`.** `mode_tuning_record` left the loadout Params at 0, so every dive option scored
+  NaN (Params [1] = 0 makes the cap 0/0). It now carries this installation's highlvlaiglobals.lua
+  (2024-07-13):
+  - the three IslandCapture tables: Torpedo {80, 3}, Divebomb {60, 3}, Levelbomb {200, 4},
+    DC {60, 4}, BigRocket {120, 2};
+  - Duel, Escort, Siege and Competitive: {25, 3}, {25, 3}, {30, 12}, {25, 4}, {20, 2};
+  - the Paratroopers accuracy `+14Ch` from the tuning block.
+- **`876b192cf`.** The host's unseeded rack test reads `Equipments[DefaultEquipment or 1]`. A Zero's
+  class authors DefaultEquipment 0, so USNRM01's eight A6M flights never held a round and never formed
+  a loadout record: dive releases stayed at 89, as in 5dd.1. The AI's `007B9140` test now falls back to
+  `Equipments[1]`, the generator default (`0094BD34`). The release path keeps its own default.
+  - **LABELLED:** a carrier-launched Zero (equipment from class `+134h` = 0) would also count as loaded.
+
+**Pairs from `876b192cf`:** `l37_i0` (all OFF) against `l37_i1` (both gates + the loadout arm), all 22
+reference X rows. USN01 smoke: clean.
+
+- **13 rows identical:** JM08 long, ESMP08 long, LOMP10/long, JM05/long, E2, USN02, USN04, JM08,
+  BSM01, LOMP06, IJN11. USN13 moved in non-gameplay lines only.
+- **8 rows moved:**
+
+| row | OFF -> ON | whose numbers moved, and why |
+| --- | --- | --- |
+| USNRM01 | deaths 192 = 192; dive releases 118 -> 116; damage 48.6k -> 48.4k | The prediction holds; 5dd.1's collapse (-> 75) is gone. The A6Ms' records carry loadout 1 (240143 of 342879 records); dive options 33163/38259 positive. |
+| USNOS | deaths 97 -> 67 | 26 of the 27 lost deaths are side >= 2 objects (containers, houses, static aircraft, `lada_nagy`) that Ada/Zao shelled in OFF. Two "Coastal Gun 01/03" died at 13.55 s to Zao1's blast, a splash from those shots. That is `00A0924C`'s neutral rule (record `+1Ch`: every gate cleared). |
+| USNOS long | 114 -> 84 | The same 26 objects. |
+| USN13 long | 117 -> 133; damage 47.8k -> 54.2k | Agano now kills Storage/Barracks/containers. The `bruh #2` planes die to Maru's AA in different numbers (-5 / +9). Loadout records: dive 12349 and level 14829 options, all positive. |
+| USN12 | 5 -> 3 | A barrel and a watchhouse that Shiratsuyu/Shigure killed in OFF: the neutral rule again. |
+| USN01 | 28 -> 29; KatSBD dive releases 6 -> 2 | Not the loadout arm. Mav1 is `MLargeReconPlane` (16h, creator `0074E540`), and the 14h rule (`00A08D4F`) leaves it no option, so it values every target 0 (OFF: 5.2-8.1). The script's KatSBD spawn moves from frame 2362 to 2736, leaving fewer frames for releases. |
+| JM06 | 2 -> 3 | One extra static Mavis wreck killed by the Narwhal. |
+| IJN01 | 2 -> 1; hits 116 -> 90 | One A7M not shot down by Oglala. |
+
+**Verdict:** the mechanism now matches. Loaded bombers score their ordnance against ships, and the one
+row that collapsed in 5dd.1 is back on the control. The other moves trace to two image rules as read:
+the side >= 2 neutral gate and the recon 14h class. **`kAiWeightBarrelGatesBound`,
+`kAiPlaneAttackerWeightBound` and `kAiPlaneLoadoutArmBound` flip ON** (reference Z).
+
+Census line: `summary mission ai loadout arm bound= records= records_loadout= visits= ...`.
+
+## 5dg. Item 3: the water-surface `vtable[204h]` compares do not ditch a slow aircraft (cc9-lua37, 2026-10-05)
+
+Read from the listing, nothing bound.
+- **`007CB858`** (in `007CB7F0`) is reached only past the contact gate, when `007BC5B0` is true or
+  MinWaterSpd (`desc+198h`) is 0 (docs/WATER_SURFACE_LAW.md 2.1). It fires `0090F6C0(unit, 3)` only when
+  all of these hold:
+  - unit `+1B0h` < 8;
+  - the unit is kind 14h (recon);
+  - forward speed < 8.0 (`00CE3918`);
+  - `+9F0h` < 0.1 (`00D05E28`, double);
+  - `0043F080` and `+C34h`.
+  `0090F6C0` is the same event the touchdown (`007CB5F0`) and the flight-state 4 -> 5 (`007C16F0`) raise:
+  a recon floatplane alighting, not a ditch.
+- **`007CBAEF`** is in `007CBA50`, the state-6 arm. With `+5Dh` set, not multiplayer, `+911h` clear and
+  `+100h` below `[00CE3854]`, it raises `"splash"` (`00D05A10`) and sets `+911h` in either case:
+  - forward speed > `desc+19Ch`;
+  - an attitude term past the descriptor limits (`+A4h`..`+B0h`, `007CBB0B`-`007CBB8E`).
+  That is a crash on a fast or bad touchdown.
+- A live AI aircraft with non-zero MinWaterSpd (every Kate, Val and Zero in this installation) never
+  reaches state 6, so neither compare applies to it. It stays in free flight into the depth kill
+  (`007CE040`), as the host does. **The image does not ditch a slow aircraft.**

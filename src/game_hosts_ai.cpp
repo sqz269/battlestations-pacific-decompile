@@ -301,8 +301,8 @@ constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_
 // kAiPlaneAttackerWeightBound true: a 0Fh attacker takes the plane arm
 // 00A0861F..00A09222 (no-loadout arm: kamikaze, strafe, dogfight and tail-gun
 // options) and the 00A09771 x3 bonus. Both false: the earlier substitution.
-constexpr bool kAiWeightBarrelGatesBound = false;
-constexpr bool kAiPlaneAttackerWeightBound = false;
+constexpr bool kAiWeightBarrelGatesBound = true;    // ON: SQUADRON_LAND_TASK 5df.1
+constexpr bool kAiPlaneAttackerWeightBound = true;  // ON: SQUADRON_LAND_TASK 5df.1
 
 // Packet cc9_ai_plane_loadout_arm, docs/SQUADRON_LAND_TASK.md 5df. True: the
 // key's +4h is 00A04560's record+10h as the image forms it (00A04608..00A0464E):
@@ -313,7 +313,7 @@ constexpr bool kAiPlaneAttackerWeightBound = false;
 // (0094BD34: 1 when the class authors any Equipments, else 0). And 00A08460's
 // loadout arm 00A08655..00A08A8E builds its option from that loadout. This
 // supersedes kAiPlaneAttackerWeightBound's record+10h = 0. False: as before.
-constexpr bool kAiPlaneLoadoutArmBound = false;
+constexpr bool kAiPlaneLoadoutArmBound = true;   // ON: SQUADRON_LAND_TASK 5df.1
 
 // One census line for the loadout arm (no native counterpart).
 struct AiLoadoutArmCensus {
