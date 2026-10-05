@@ -10843,3 +10843,16 @@ Expect `asks=0` and `pair_diff` 0 or 1 on smoke, LOMP10 and USN13. Flip when ide
 switch has no reach on the reference rows; it is a correctness fix.
 
 **Pairs.** OFF is `72f533d68` (`local\s29_a0_<row>.log`). ON is `pair_export --flip kShipAiApproachLeaderAnswersBound=true` (`local\s29_a135on`, SHA-256 prefix `55BE5E2878F4`, `local\s29_a1_<row>.log`). Smoke, LOMP10 and USN13 are all `pair_diff` 1, with `asks=0` and no native counts moved. **Flipped ON** as predicted.
+
+## 136. `009DA4E0`'s path limit default is an image constant (packet `cc9_path_limit_default`, `kShipAiPathLimitDefaultBound`, cc9-ships29, 2026-10-05)
+
+`ShipAiPath::limit_default` (28672 calls on the fifth census; JM08 long has 24679) was labelled
+"no producer in this process". In fact `009DA4F8 MOVSS XMM0,[00CF58EC]` reads `.rdata`, whose
+bytes on disk are `4B189680h`, which is 1.0e7f. `009DA518` stores it into `blk+254h` and
+`009DA538..` into `+2BCh`. The host stored 0.
+
+`kShipAiPathLimitDefaultBound` (committed OFF) answers the constant's bits. No reader of
+`ShipAiPathPlan::limit_254` / `limit_2bc` exists in `src/` or `include/` (`rg limit_254|limit_2bc`),
+so **the prediction is `pair_diff` 0 or 1 on every row**. The pairs are smoke, JM08 and USN13.
+Flip when they are identical. The constant matters once a reader of `+254h` / `+2BCh` is
+reconstructed.

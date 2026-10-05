@@ -152,6 +152,9 @@ inline constexpr bool kShipAiAttackMoveGroupHandBackBound = true;
 // and the mode-4 speed limit 009E6C45) answer the host's formation leader.
 // False: not a leader.
 inline constexpr bool kShipAiApproachLeaderAnswersBound = true;
+// Packet cc9_path_limit_default, SHIP_AI_OPEN_ITEMS section 136. True: 009DA4FB's
+// [00CF58EC] is the image's .rdata 1.0e7f. False: 0 (the old no-producer label).
+inline constexpr bool kShipAiPathLimitDefaultBound = false;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -2487,9 +2490,14 @@ public:
         owner_.record_slot("ShipAiPath::release_object", "path+0000+vtable00");
     }
     std::uint32_t path_limit_default_00cf58ec() override {
-        // [00CF58EC], read once at 009DA4FB. No producer in this process.
-        owner_.record("ShipAiPath::limit_default", 0x00cf58ecu);
-        return 0u;
+        // [00CF58EC], read once at 009DA4FB: an .rdata constant, 4B189680h =
+        // 1.0e7f (section 136), stored as float bits into blk+254h and +2BCh.
+        if (!kShipAiPathLimitDefaultBound) {
+            owner_.record("ShipAiPath::limit_default", 0x00cf58ecu);
+            return 0u;
+        }
+        owner_.done("ShipAiPath::limit_default", 0x00cf58ecu);
+        return 0x4B189680u;
     }
 
 private:
