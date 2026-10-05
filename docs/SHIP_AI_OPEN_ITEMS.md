@@ -9363,3 +9363,17 @@ The fallback's reach on reference v (`fallback=` in the coordinator summary, cc9
 - **USN13, IJN01, USN01:** exit 1 or 3, decided by the census.
 - **Verdict rule:** flip ON when `calls` matches, the refusals are the class gate's, and every
   moved point belongs to a ship. A mechanism failure stays OFF, recorded.
+
+## 113. Section 105's queue, closed (cc9-ships27, 2026-10-04)
+
+| 105 item | closed by | state |
+| --- | --- | --- |
+| 1, the unload latch | 106 | `kLandingShipUnloadBound` ON; BSM02 and CHG05 are the first rows the fields could reach |
+| 2, the crafts' spread and the transports' "rams" | 107 (the order bridge), 110, 111 | `kAiTransportMovesOrderBridgeBound` ON; the deaths are friendly gunfire, as the image does it |
+| 3, section 98's open note | 108 | the image clears an occupant only on a pad switch or a death |
+
+**The ram 105 item 2 cites was also gunfire.** In `s25_b0_jm08x` (cc9-ships25 tree), UST 01's death
+row is `killer=USTroopTransport 04 killer_gun=126 killer_cat=6 killer_blast=0 killer_range=76`. It
+took 48 category-6 hits for 2569 damage: a dual-purpose gun at 76 m, the same pattern as section
+110's seven. `s25_b1` and `s25_e1` have UST 05 killed the same way, by UST 06's gun 136 at 123 m.
+Nothing in section 105 remains open.
