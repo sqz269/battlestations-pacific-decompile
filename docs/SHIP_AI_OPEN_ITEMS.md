@@ -12445,3 +12445,22 @@ command runs `009E1170` until a command selects another state. The host started 
   units are stopped at mission start.
   - `pair_diff` 1 on BSM01, USN13 and USNOS.
   - It could be 3 where a commanded speed is non-zero at frame 1.
+
+### 155.1 Pairs; verdict ON
+
+- **Runs:** OFF is `4820c49ae` (`local\s33_off3_<row>.log`). ON is `pair_export --flip
+  kShipAiInitialCruiseStateBound=true` (`local\s33_on3_<row>.log`).
+- **Smoke:** BSM01 300 frames. Clean.
+- **Results:** BSM01, USN13 and USNOS are all `pair_diff` 1.
+
+**Mechanism (BSM01 native table).** The diff is only:
+- `ShipAiState::step_vtable0c` goes from 28 to 0;
+- the replan interval getter moves from `009DAA90` to `cruise`'s `009DAC30` (19230 calls);
+- the state `exit_vtable08` record goes from 3 to 35, the cruise exits when a command arrives.
+
+`state_steps{... records=28}` is unchanged. **The 28 steps now reach `009E1170`, and the commands
+host's `cruise_step` declines a unit whose director holds no command**, so they are counted on
+the cruise not-driven arm. That is the prediction's caveat, and gameplay is identical.
+
+**Verdict: ON.** Whether the commands host's decline is the image's `009E1170` for a null
+command is open. That host is the commands lane's.

@@ -640,7 +640,8 @@ inline constexpr bool kShipAiApproachLanderTermsBound = true;
 // `cruise` state (ai+0BC8h, command 00E08F70), as 009F3BA0 builds it, so a unit
 // whose director holds no command steps cruise (009E1170) until 009F3DD0 selects
 // another state. False: it starts with no state and its first steps are records.
-inline constexpr bool kShipAiInitialCruiseStateBound = false;
+// ON by section 155.1: BSM01, USN13 and USNOS gameplay identical.
+inline constexpr bool kShipAiInitialCruiseStateBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
