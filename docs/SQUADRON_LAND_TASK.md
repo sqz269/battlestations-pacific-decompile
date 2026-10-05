@@ -10582,3 +10582,57 @@ Same-tree pairs from `d97ad79fd` (`local\l36_off`, `local\l36_on`; launch form o
 
 **Verdict: the mechanism is the image's (`0099CC98` / `0099F27E` -> `007B8E70` -> ctl+7Ch ->
 `007D80C0`), and the predicted USNRM01 outcome followed. Flipped ON.**
+
+## 5db. USN13's "attackmove target not hostile" refusals: a host stand-in orders every member at the target group's leader (packet `cc9_order_attack_member_issue`, cc9-lua36, 2026-10-05)
+
+5cz item 2. Read from `l35_g_usn13.log` (gates ON) and `l35_off_usn13.log` (OFF), then statically.
+
+**The two populations are different.**
+- Gates ON: all 60 refusals are in one frame, 25.75 s. Every member of the 15 `bruh` squadrons
+  (units 313-372) has slot-0 target 314, `bruh #1.2`, its own group's leader. They come straight
+  after `player command issued to "bruh #1.x": token="artillery"` and the host's
+  `AiPlanners::issue_member_order [0077d600]`.
+- OFF: 50 refusals by Agano, every ~3 s, of a scripted `attackmove` at unit 10. The image's arm
+  refuses that the same way. Nothing to bind.
+
+**Which check refuses.** `00836B45`'s attack-move arm, `00836BCB`-`00836BDC`:
+`005457C0(ECX = [director+24Ch], target+54h)`, which is `unit+54h != side && side != 2`
+(`005457C4`-`005457D8`); false raises stage 2. A rel32 census finds three callers of `005457C0`
+(`00547731`, `00835FDC`, `00836BD5`), none of them in the AI.
+
+**The image's own-side filter is in the member pass, earlier.**
+- `00A13B60`'s collection walk (CLOSEATTACK and DEFENDPOSITION) sets `EBP = (group+5638h == 0)`
+  (`00A13B97`-`00A13BC9`). `group+5638h` is the group's party (SHIP_AI_OPEN_ITEMS 63.1).
+- It admits a world-list entity only when `+5Ch` is set, `+5Dh`/`+5Eh`/`+60h` are clear and
+  `+54h == EBP` (`00A13C03`-`00A13C32`, and again at `00A13D17` for the next list). So only the
+  OTHER party's units are ever candidates. The target-group bonus (`00A2C720`, x10) applies only
+  to collected candidates.
+- So in the image a group whose planner picked its own group gets no member order at that group.
+  `ai_close_attack_tick_00a13b60` already models this (`close_candidate_team(candidate) == own_team`
+  skips).
+
+**What the host adds.**
+- `GameAiCoordinatorHost::Impl::order_attack` (`src/game_hosts_ai.cpp`) installs the
+  MOVETOATTACK/CAUTIOUSATTACK command, as `00A2CBD0` does.
+- It then calls `issue_to_member` for every non-ship member, with `artillery`, `attackmove` or
+  `dogfight` aimed at the target group's FIRST MEMBER.
+- `00A2CBD0` (body `00A2CBD0`-`00A2CCE8`) calls only `00A109B0`, `00A10890`, `00A10C20`,
+  `00BD2F40`, `00A2C9F0`, `operator new` and the CRT. `00A2C9F0` calls `00A10C20`, `00A371A0`,
+  `00414DB0` and `00A01230`. The rel32 census shows no `0077D600` or `00A02020` site in `00A2C000`-
+  `00A2D000`.
+- The host's own comment there already says the attack order reaches no member and calls the
+  plane tokens a labelled stand-in. With the gates ON that stand-in hands the own-group target to
+  60 aircraft at once.
+
+**The binding,** `kOrderAttackNoMemberIssueBound` (OFF): ON, `order_attack` issues no member
+command. Members are then ordered only by the command's tick (`moveto` through `00A02020`, and
+CLOSEATTACK's `settarget`/`attackmove` through `00A13B60`), as in the image.
+
+**Predictions, before the pairs:**
+- USN13, gates ON: the 60 refusals go to 0. The `bruh` squadrons keep their scripted
+  `PilotSetTarget` carriers until the command tick reaches them. Expect more of the Japanese
+  strike to reach the US carriers than with the gates ON today.
+- USN13, gates OFF: fewer `commands_issued`. Plane groups whose only attack order was the stand-in
+  may attack later or not at all; a CLOSEATTACK `settarget` should replace most of it once in range.
+- USN04 and USNRM01: AI-controlled plane groups lose the direct `dogfight`/`attackmove` at
+  order time. Expect moved dogfight timing; a mechanism failure would be groups that never engage.
