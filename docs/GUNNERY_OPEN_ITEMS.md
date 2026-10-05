@@ -7773,3 +7773,74 @@ exit), `local\g23_targets.py` (command-target tally per unit), `local\g23_bombs.
   - Whether the image's intake also overrides a script `PilotSetTarget` (not read).
   - Whether the image's run-in would find a water lane to Battleship Row (`009D3420` scans the
     terrain, which the host models; its output was not traced here).
+
+## 99. Debris, `00447510`: hull-debris contact has no gameplay reach (packet `cc9_debris_bodies`, cc9-gunnery23)
+
+89.1 listed `00447510` (`BSP_GameDynamicsList_Add`) as the group-4 body family that can touch a
+hull (mask `0Dh`). This section reads the producer and its sinking-ship caller, and decides whether
+hull-debris contact needs a host body. Ghidra was read-only.
+
+### 99.1 The body `00447510` makes (listing `00447510..00447B73`, live decompile)
+
+- **Shape filter.** When `spec+20h` (a shape) is set, its group is `4` and its mask `0Dh`
+  (`*(shape+8) = 4`, `*(shape+0Ch) = 0Dh`).
+- **Box fallback.** When `00C31DC0` reports no shape, the node's two `vtable[4Ch]` points minus the
+  anchor become a box (`00C31F60`).
+- **Mass.** From the body box `00C31F90`: `mass = (dx * dy * dz) / 10.0` (the double at `00CE3DC0`).
+- **Inertia:** `mass / 5.0 * (dy^2 + dz^2, dx^2 + dz^2, dx^2 + dy^2)` (the double at `00D7A370`).
+- **Velocity.** `spec+08h..+10h`. With the bool argument set it is divided by
+  `(mass + C - 1) / C` (`00CE3DF0`, `00D7A210`), so heavy pieces leave slower.
+- **The record** follows, as GAME_DYNAMICS_LIST describes.
+
+### 99.2 The sinking-ship caller, `00935540` (`00935540..00935C69`, `RET 10h`)
+
+- **ABI and gates.**
+  - The listing starts `CMP ECX,0Eh` / `CMP ECX,8`: ECX is a unit kind, and kinds `0Eh` and `8`
+    spawn nothing.
+  - EDX and four stack dwords follow (`RET 10h`).
+  - It is reached only from `BSP_UnitInstance_Update` step 8 (UNIT_INSTANCE_UPDATE): once per
+    unit, when `DebrisStruct.DebrisEnabled` (`settings+680h`) is set and both hull ends are below
+    -5 m. It is the wreck of a sinking ship.
+- **Count.** `00935583..00935595`: `(int)(DebrisNumPerMeter x (int)arg4)`, where
+  `settings+684h` = 0.3 in this installation. Step 8 passes the hull body's box extent (max - min),
+  so arg4 is its z extent, the length: 194.85 m for West Virginia (the `hull shapes` log line)
+  gives 58 pieces, and a 100 m hull 30.
+- **Each piece:**
+  - one `00BD2F10` draw picks a model from the cumulative table `settings+674h` (the list at `+664h`);
+  - three draws for the orientation (`00467050`) and three for the position along the hull;
+  - one draw for the lifetime;
+  - named `"wreck_%d"` and added with the bool set.
+- **So each piece costs eight stream-1 draws, about 240-460 per sinking.**
+
+### 99.3 Why nothing is bound
+
+- **Contact.** A piece's mass is its box volume / 10. A 4 x 1 x 1 m plank is 0.4; a hull's
+  descriptor `Mass` is in the tens of thousands (West Virginia: `10*Mass = 287000`). In a two-body
+  contact the hull's velocity change is about `m_debris / m_hull x v_rel`, of order 1e-4 m/s.
+  The hull-debris pair cannot move a hull measurably, so it cannot move a row.
+- **The RNG.** The wreck draws are on the shared stream 1.
+  - Under the reference form (`BSP_GUNNERY_RNG_STREAMS=1`) every host draw is key-local, so the
+    missing draws change nothing that pairs measure.
+  - On the default path the host's stream-1 generator is already a labelled stand-in (an LCG for
+    the image's MT19937, `reseed_shared_stream_00bd2fd0`), so call-order parity with the image
+    does not exist to protect.
+  - This is recorded, not bound: if the shared stream ever becomes MT19937 in call order, every
+    sinking needs these draws.
+- **Presentation.** The record's frame pass (`00447B80`) and buoyancy (`004462D0`) are already
+  reconstructed in `src/game_dynamics_list.cpp`. The host's list stays empty because no producer
+  is hosted: `add_game_dynamics_body` in `src/unit_parts.cpp` has no game host, and `00935540` /
+  `007CAAD0` have none either.
+
+### 99.4 Not read, with uncertainty
+
+- **Shell sweeps.** Whether a wreck node is in the spatial structure `0098ADD0` sweeps. If it is, a
+  round could stop on floating wreckage. The pieces are scene nodes made from a resource instance,
+  not units (`BSP_Node_PropagateRootRegistration` on `[00E188A8]+19ECh`). Not traced.
+- **The other two callers:**
+  - `007CAAD0`, from `BSP_Plane_HandleStateMessageKinds`, the plane's pieces;
+  - `00934150` `BSP_UnitParts_DetachPart`, a ship's detached parts, which may be larger than
+    wreck planks (a turret).
+  The mass rule above bounds them the same way unless a piece is hull-sized.
+
+**Verdict:** no switch. Hull-debris contact is inert by the mass rule, and the RNG coupling is
+masked in the reference form.
