@@ -10856,3 +10856,5 @@ bytes on disk are `4B189680h`, which is 1.0e7f. `009DA518` stores it into `blk+2
 so **the prediction is `pair_diff` 0 or 1 on every row**. The pairs are smoke, JM08 and USN13.
 Flip when they are identical. The constant matters once a reader of `+254h` / `+2BCh` is
 reconstructed.
+
+**Pairs.** OFF is `a2046f5a2` (`local\s29_p0_<row>.log`). ON is `pair_export --flip kShipAiPathLimitDefaultBound=true` (`local\s29_p136on`, SHA-256 prefix `81B7B7D8E6EA`, `local\s29_p1_<row>.log`). Smoke, JM08 and USN13 are all `pair_diff` 1: only the row's status moved, plus the `ship ai free` noise. **Flipped ON** as predicted.

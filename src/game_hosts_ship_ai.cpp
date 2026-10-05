@@ -154,7 +154,7 @@ inline constexpr bool kShipAiAttackMoveGroupHandBackBound = true;
 inline constexpr bool kShipAiApproachLeaderAnswersBound = true;
 // Packet cc9_path_limit_default, SHIP_AI_OPEN_ITEMS section 136. True: 009DA4FB's
 // [00CF58EC] is the image's .rdata 1.0e7f. False: 0 (the old no-producer label).
-inline constexpr bool kShipAiPathLimitDefaultBound = false;
+inline constexpr bool kShipAiPathLimitDefaultBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
