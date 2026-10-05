@@ -399,7 +399,7 @@ std::size_t script_orders_drain_loopback_0076c600();
 // class issues nothing. Each member's bot then installs that class's task
 // (0099A4C0 -> 0099A170). False: the host fans the order itself out to the
 // member planes, whose 0099A170 has no `settarget` arm.
-inline constexpr bool kAiSquadronSetTargetIntakeBound = false;
+inline constexpr bool kAiSquadronSetTargetIntakeBound = true;
 // The intake above for the one live host. `members` are the squadron's member
 // planes, slot 0 first; `leader` is the squadron's slot-0 plane, on which the
 // chooser's self queries run. Returns the class issued, 0 when 007EEC50
