@@ -746,6 +746,9 @@ struct GameShipAiSummary {
     unsigned long long target_curve_kind_skips{0}; // 009F2F44
     unsigned long long target_curve_mode_skips{0}; // 009F2F7F
     unsigned long long target_curve_refills{0};    // 009F2FB1
+    // Packet cc9_own_curve_refill_gate: due own refills the bound gates refuse.
+    unsigned long long own_curve_mode_skips{0};    // 009F2EE2
+    unsigned long long own_curve_flag_skips{0};    // 009F2EEB
     // Packet cc9_torpedo_standoff: the exits of 009F2AC9..009F2E9B in the order
     // of bsp::ShipAiTorpedoStandoffExit, and 009E72F3's gate.
     unsigned long long torpedo_standoff_frames{0};
