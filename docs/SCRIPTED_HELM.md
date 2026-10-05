@@ -626,3 +626,94 @@ USN04 4700/4500, no file against an empty file: `pair_diff` exit 0. The smoke
   and Exeter;
 - a malformed throttle, refused;
 - a `repeat` moveto.
+
+
+## 10. `select` and `takehelm ... stop` (packet `cc9_player_order_capture_row`)
+
+Worker cc9-ships31, 2026-10-05, on `agent/cc9-ships31` (commit `c96adbecd`). Harness code only;
+no image switch. The design is docs/SHIP_AI_OPEN_ITEMS.md section 144.
+
+### 10.1 The two line forms
+
+```
+<frame> select <unit>
+<frame> takehelm <unit> <throttle> <x> <z>|<navpoint> stop <metres>
+```
+
+**`select`** is the player's click on a unit, as the HUD root update commits it.
+- In the image, `00649860` handles it at `0064A00E..0064A101`: the four byte filters (`+5Ch` set,
+  `+5Dh`/`+60h`/`+5Eh` clear), then `00645060`, `00645600` and interface request 20h.
+- The harness checks the same four cells (`unit_alive_and_visible`, `0043F080`). It then calls
+  `hud_set_selected_unit_00647300`, whose body is the same three steps.
+- It prints `helm order applied|refused: ... select <unit> (<reason>)`.
+
+**`stop R`** stands for the player pulling the lever back.
+- On the first step on which the unit of the last applied `takehelm` is within R metres (x/z) of
+  its point, the harness re-takes the route at throttle 0.
+- It prints `helm route stop applied: ...`.
+- The rudder law keeps the bow on the point while the hull coasts.
+- A later `takehelm` replaces a pending stop.
+
+**LABELLED differences from a real player:**
+1. No click writes `HUD root+78h`. The commit runs in the frame host before the fixed step, not
+   from the HUD pump.
+2. The stop radius is the harness's, where a player would have a hand on the lever.
+
+Section 9.2's labels still apply.
+
+### 10.2 Smoke and identity
+
+**The smoke** (`local\s31_smoke_usn01.log`, USN01 600 frames, orders `local\s31_smoke_orders.txt`):
+- These lines were refused:
+  - a negative stop;
+  - a stop without a number;
+  - a `select` with an extra word;
+  - an unknown unit.
+- Both selects of real ships were accepted.
+- `takehelm Northampton ... stop 250` cut the throttle at 249.9 m.
+
+**Identity, USN04 4700/4500, all runs this tree's or its base's builds:**
+- No file against an empty file gives `pair_diff` exit 1. The only moved line is
+  `mission ship ai free: refills` (446 against 443).
+- The base build `f66eefec4` (no option) against this build (no option) gives exit 1. The only
+  moved line is the same counter (472 against 446).
+- That counter differs between same-binary runs (the known refill noise), so gameplay is
+  identical both ways.
+
+### 10.3 The USN01 phase-3 capture runs (36000 frames, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`)
+
+**CB2 is not where the scene file says.** Its `.scn` localframe (973, 818) is relative to the
+landscape. In the world, as both the capture tick and the trajectory CSV read it, CB2 is at
+(3973.4, -3182.2). The first run aimed at the scene value. Northampton sailed to 312 m from that
+empty point, 4.9 km from CB2.
+
+**Where ships can reach.** A diagnostic run with `--trajectory-csv` (`local\s31_traj.csv`, not
+committed) shows Katori's idle arc around the island's south side, ending 67.9 m from CB2 at
+(3905, -3191).
+
+| run | orders | outcome |
+| --- | --- | --- |
+| tune 1 `local\s31_cap1_usn01.log` | `local\s31_cap_orders1.txt` (aim at the .scn point) | wrong point; no tick from side 0 |
+| tune 2 `local\s31_cap2_usn01.log` | `local\s31_cap_orders2.txt` (two legs, stop 40) | inside 100 m for 14 ticks, 910.9-923.9 s, s0=50, progress to 700; coasts on 500 m and grounds north of CB2 |
+| row `local\s31_caprow_usn01.log` | `local\s31_cap_orders_row.txt` (stop 180) | the same 14 ticks; progress decays from 924.9 s; no flip |
+
+**What the runs show.**
+- The selection and the helm transfer work in phase 3: `select` is accepted, and so is the
+  role-1 take.
+- The stop cut the throttle where asked.
+- A cruiser at 12-13 m/s with the throttle at 0 coasts more than 500 m.
+- Northampton is sunk at 1046.40 s by Katori's gunfire, at 314 m. Even parked in range from
+  910 s, it alone (CapturePower 50, 200 s) would die before the flip.
+
+**Capture chain counters on the row:**
+- neutralized 1, CB2 at 32.90 s;
+- countdown fires 1768;
+- progress messages 413;
+- flips 0.
+
+The flip, the slot pick and the retake exemption were not reached.
+
+**Next** (not run):
+- approach the last leg at a low throttle so that the coast ends inside the range;
+- bring a second ship, SaltLakeCity (Pensacola, CapturePower 50), so that the flip completes in
+  about 100 s, before Katori arrives.

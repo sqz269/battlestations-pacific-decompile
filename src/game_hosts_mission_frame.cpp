@@ -349,6 +349,8 @@ struct GameMissionFrameHost::Impl {
         bool takehelm{false};      // packet cc9_helm_orders_helm_route
         float throttle{0.0f};      // takehelm
         float repeat_seconds{0.0f};  // moveto ... repeat N
+        bool select{false};        // packet cc9_player_order_capture_row
+        float stop_radius{-1.0f};  // takehelm ... stop R; negative: none
         unsigned applications{0};
         std::string unit;
         std::string point_name;   // empty for an x/z point
@@ -365,6 +367,14 @@ struct GameMissionFrameHost::Impl {
     std::vector<HelmMarker> helm_markers;   // the scene's markers, by name
     unsigned long long helm_orders_applied{0};
     unsigned long long helm_orders_refused{0};
+    // Packet cc9_player_order_capture_row: the pending `stop R` of the last
+    // applied takehelm, checked every step until it fires once.
+    bool helm_stop_armed{false};
+    std::size_t helm_stop_unit{0};
+    float helm_stop_radius{0.0f};
+    float helm_stop_x{0.0f};
+    float helm_stop_z{0.0f};
+    int helm_stop_line{0};
     float mission_frame_seconds{0.0f};  // --mission-frame-seconds S
     // Milestone 2j, --trajectory-csv <path>: one row per unit per fixed step.
     std::string trajectory_csv_path;
@@ -2499,6 +2509,8 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
     // Packet cc9_scripted_helm_orders. One order per line:
     //   <mission frame> moveto <unit> <x> <z>
     //   <mission frame> moveto <unit> <navpoint name>
+    // plus `... repeat <s>`, `<frame> takehelm <unit> <throttle> <point> [stop
+    // <m>]` and `<frame> select <unit>` (docs/SCRIPTED_HELM.md sections 9, 10).
     // Blank lines and lines starting with '#' are skipped. A malformed line is
     // refused here, with its number, and the rest are kept.
     Impl& host = *impl_;
@@ -2523,14 +2535,22 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         order.frame = std::strtol(words[0].c_str(), &end, 10);
         const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
         const bool verb_ok = words.size() >= 2
-            && (words[1] == "moveto" || words[1] == "takehelm");
-        if (!frame_ok || words.size() < 4 || !verb_ok) {
+            && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select");
+        // Packet cc9_player_order_capture_row: `<frame> select <unit>`.
+        const bool select_ok = verb_ok && words[1] == "select" && words.size() == 3;
+        if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
-                "<unit> <x> <z>|<navpoint> [repeat <s>]` or `<frame> takehelm <unit> "
-                "<throttle> <x> <z>|<navpoint>`", line, path.c_str());
+                "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
+                "<throttle> <x> <z>|<navpoint> [stop <m>]` or `<frame> select <unit>`", line,
+                path.c_str());
             continue;
         }
         order.unit = words[2];
+        if (select_ok) {
+            order.select = true;
+            host.helm_orders.push_back(order);
+            continue;
+        }
         // Packet cc9_helm_orders_helm_route: `takehelm` carries a throttle
         // before the point, and `moveto` may end in `repeat <seconds>`.
         if (words[1] == "takehelm") {
@@ -2543,6 +2563,17 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
                 continue;
             }
             words.erase(words.begin() + 3);
+            // Packet cc9_player_order_capture_row: `... stop <metres>`.
+            if (words.size() >= 6 && words[words.size() - 2] == "stop") {
+                char* se = nullptr;
+                order.stop_radius = std::strtof(words.back().c_str(), &se);
+                if (se == nullptr || *se != '\0' || !(order.stop_radius > 0.0f)) {
+                    host.log.notef("helm order refused: line %d of \"%s\": stop needs a "
+                        "positive number of metres", line, path.c_str());
+                    continue;
+                }
+                words.resize(words.size() - 2);
+            }
         } else if (words.size() >= 6 && words[words.size() - 2] == "repeat") {
             char* re = nullptr;
             order.repeat_seconds = std::strtof(words.back().c_str(), &re);
@@ -2690,6 +2721,37 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
             if (order.applied || static_cast<unsigned long long>(order.frame) > now) continue;
             order.applied = true;
             const long due = order.frame;
+            if (order.select) {
+                // Packet cc9_player_order_capture_row: the player's unit click as
+                // the HUD root update commits it (00649860, 0064A00E..0064A101):
+                // the four byte filters (+5Ch set, +5Dh/+60h/+5Eh clear, the
+                // 0043F080 cells), then 00645060, 00645600 and the 20h push, which
+                // is 00647300's body (docs/HUD_CENTRAL_UPDATES.md). LABELLED: no
+                // click writes HUD root+78h; the commit runs here, before the
+                // fixed step, not from the HUD pump.
+                std::size_t pick = host.units->count();
+                for (std::size_t k = 0; k < host.units->count(); ++k) {
+                    const GameUnitRow* row = host.units->unit_row(k);
+                    if (row != nullptr && row->name == order.unit) { pick = k; break; }
+                }
+                bool reached = false;
+                bool accepted = false;
+                const char* why = "";
+                if (pick >= host.units->count()) {
+                    why = " (no created unit has that name)";
+                } else if (!host.units->unit_alive_and_visible(pick)) {
+                    why = " (0064A057..0064A079: the four byte filters fail)";
+                } else {
+                    accepted = bsp::game::hud_set_selected_unit_00647300(pick, reached);
+                    if (!reached) why = " (no HUD is attached)";
+                    else if (!accepted) why = " (00645060 rejects it)";
+                }
+                if (accepted) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) select "
+                    "%s%s through 0064A00E -> 00645060 -> 00645600 -> 20h", accepted
+                    ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
+                continue;
+            }
             float x = order.x;
             float z = order.z;
             if (!order.point_name.empty()) {
@@ -2718,11 +2780,22 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                     && host.units->helm_route_take(unit_index, order.throttle, x, z);
                 if (taken) ++host.helm_orders_applied; else ++host.helm_orders_refused;
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) "
-                    "takehelm %s throttle %.3f %s(%.1f, %.1f)", taken ? "applied" : "refused",
-                    order.line, order.frame, now, order.unit.c_str(),
+                    "takehelm %s throttle %.3f %s(%.1f, %.1f) stop %.1f", taken ? "applied"
+                    : "refused", order.line, order.frame, now, order.unit.c_str(),
                     static_cast<double>(order.throttle),
                     order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
-                    static_cast<double>(x), static_cast<double>(z));
+                    static_cast<double>(x), static_cast<double>(z),
+                    static_cast<double>(order.stop_radius));
+                // Packet cc9_player_order_capture_row: a later takehelm replaces
+                // the pending stop, as a new helm order replaces the route.
+                if (taken) {
+                    host.helm_stop_armed = order.stop_radius > 0.0f;
+                    host.helm_stop_unit = unit_index;
+                    host.helm_stop_radius = order.stop_radius;
+                    host.helm_stop_x = x;
+                    host.helm_stop_z = z;
+                    host.helm_stop_line = order.line;
+                }
                 continue;
             }
             if (order.applications > 0 && (unit_index >= host.units->count()
@@ -2750,6 +2823,30 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 due, now, order.unit.c_str(),
                 order.point_name.empty() ? "" : (order.point_name + " ").c_str(),
                 static_cast<double>(x), static_cast<double>(z));
+        }
+        // Packet cc9_player_order_capture_row: `stop R`, the player pulling the
+        // throttle lever back once the helm unit is within R metres (x/z) of its
+        // point. The route keeps role 1 and the rudder law keeps the bow on the
+        // point while the hull coasts down. LABELLED: a hand on the lever in
+        // the image; the radius is the harness's.
+        if (host.helm_stop_armed && host.helm_stop_unit < host.units->count()) {
+            float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+            host.units->unit_position_00fc(host.helm_stop_unit, ux, uy, uz);
+            const double dx = static_cast<double>(host.helm_stop_x) - ux;
+            const double dz = static_cast<double>(host.helm_stop_z) - uz;
+            const double distance = std::sqrt(dx * dx + dz * dz);
+            if (distance <= static_cast<double>(host.helm_stop_radius)) {
+                host.helm_stop_armed = false;
+                const bool stopped = host.units->helm_route_take(host.helm_stop_unit, 0.0f,
+                    host.helm_stop_x, host.helm_stop_z);
+                const GameUnitRow* row = host.units->unit_row(host.helm_stop_unit);
+                host.log.notef("helm route stop %s: line %d \"%s\" at (%.1f, %.1f), %.1f m from "
+                    "(%.1f, %.1f) at mission frame %llu: throttle 0", stopped ? "applied"
+                    : "refused", host.helm_stop_line, row != nullptr ? row->name.c_str() : "?",
+                    static_cast<double>(ux), static_cast<double>(uz), distance,
+                    static_cast<double>(host.helm_stop_x), static_cast<double>(host.helm_stop_z),
+                    now);
+            }
         }
     }
 
