@@ -9520,3 +9520,72 @@ This section re-checks that against the bodies, and closes the Defend arm, which
   - a mode 3+ session.
 - **Section 114's ranking moves up:** the close-attack fallback bridge (section 112, pending) is
   now first, and the SELLING message 51h (rank 3) is the next free read.
+
+## 116. The SELLING tick's message 51h: a timed removal, and no reach on the reference rows (packet `cc9_selling_message_51h`, cc9-ships27, 2026-10-04)
+
+Rank 3 of section 114. **What 51h does, read:**
+
+### 116.1 The sender (`00A11FF0`'s no-air arm, `00A12355..00A1241B`)
+
+- After `00A02020` / `00A10DC0` / `00A11070`, the tick walks the group's members (`group+563Ch`).
+- A member is sent message 51h when both hold:
+  - `[member+308h] == 0.0` (`00A123A0..00A123B3`, `UCOMISS` / `LAHF` / `TEST AH,44h` / `JP`
+    skips a non-equal);
+  - `005F98F0(member)` (`00A123B7`).
+- The message is built at `00A123C0` (`PUSH 51h`, `0075B430`, vtable `00CF3BA4`) and routed at
+  `00A123F8` (`0077C2A0`, flags 7, ECX = the member).
+
+### 116.2 The gate `005F98F0` (`__thiscall(unit) -> bool`, read `005F98F0..005F99EF`)
+
+- **Refused:** a unit that is not `IsKindOf(6)` (a ship) or that is `IsKindOf(9)`.
+- **Otherwise** it walks world list 28 (`[[00E188A8]+19CCh]+16Ch`, the CommandBuildings) and
+  answers true at the first one of the unit's side (`+54h`) with `dx^2 + dz^2 <= R^2`:
+  - `R = (float)(int)[cb+7A0h]`, the CaptureRange (`005F998C FILD`);
+  - `dx`, `dz` are between the two `+FCh` poses (`005F996C..005F9988`);
+  - the compare is `005F99C8 FCOMIP` / `JBE 005F99E3`.
+
+### 116.3 The receiver (`0077F7B0`, row 7 of docs/SESSION_MESSAGE_DISPATCH.md, `RET 4`)
+
+- **`unit+308h` = now + the sell time + the message latency** (`0077F7B3..0077F81A`):
+  - now is `[00F876A4]`;
+  - the sell time is GlobalConfig `+104h` when `004BCA50() == 8`, else `+100h`;
+  - the latency is `(msg+0Ch - [00F876B0]) x [00D0DE84]`.
+- **The sell times are Globals.lua keys.** The loader `0087D7B0` stores `UnitSellTime` at `+100h`
+  (`0087ECAF`, key `00D0E2B8`) and `UnitSellTimeSingle` at `+104h` (`0087ECED`, key `00D0E2A4`).
+  This installation's `scripts/datatables/globals.lua` (2024-07-13) authors 30 and 5 (lines
+  152-153).
+- **The handler then:**
+  - `0077C470(unit, 1FFh, 0)`, the role transfer (SCRIPTED_HELM section 2);
+  - `vtable[148h](1FFh, 8)`, the owner-slot hand-off `004C3840` also uses;
+  - when the unit is the controlled one (`[00E188D8]`), a GUI update;
+  - outside session mode 2, `0077D600(clearorders 00E08F08)` and `0077D600(stop 00E08F88)`.
+- **The removal:** the unit's tick then calls `0077A650` once `unit+308h` is reached (ship
+  motion tail `00826D5A`; the squadron tick `007F3D1C`). That is `0090EBF0(game+21A0h, unit)` and
+  `00926D90(unit, 3)`, the entity kill with reason 3 (SHIP_POST_MOTION section 6).
+- **So SELLING removes a ship** that stands within CaptureRange of an own CommandBuilding: it
+  stops and is deleted `UnitSellTimeSingle` = 5 s later in single player.
+
+### 116.4 Reach: none on the reference rows
+
+- **Only JM05 and JM05 long run the selling tick** on reference v: `summary mission ai selling
+  ticks=442 / 1339`, every one an approach, `holds=0`.
+- **JM05's own CommandBuildings author tiny ranges.** A diagnostic run (`local\s27_d_jm05l.log`,
+  W's build `g23_rw`, `BSP_LANDER_DIAG=1`) logs:
+  - MainCommandBuilding 01, capture_range 0;
+  - SecondaryCommandBuilding 01, 20;
+  - RadarStation 01, 10.
+- **No ship comes close.** The nearest side-0 ship to the secondary building's traffic path
+  (-996, -575) is TargetPT at 585 m (t=380), then USS Walke at 739 m and HMAS Hobart at 782 m
+  (`local\s27_mindist.py`). The Main building's range of 0 admits only a ship at its exact pose.
+- **So `005F98F0` is false for every member on JM05,** and the image sends no 51h there. The
+  host's record (`AiCommand::selling_sell_message_00a123f8`) and the units host's record
+  (`UnitInstance::expire_at_scheduled_time_0077a650`) are the right model for these rows.
+- **Which rows could reach it:** a ship group selling at an own coastal CommandBuilding with a
+  CaptureRange large enough to reach water. USN01's CB2 and USN13's CB2 / CB4 / CBT author 100
+  (section 51's capture notes), but no selling tick runs on those rows in v.
+
+**Verdict: closed with no binding.** If a row ever reaches it, the binding is:
+- the AI host sends 51h through the existing message loopback;
+- the units host writes `+308h` from GlobalConfig `+104h` (or `+100h`), takes the role transfer,
+  the owner hand-off and the two commands, then kills with reason 3 at expiry.
+- Both halves would need their own pair.
