@@ -11431,3 +11431,54 @@ USNOS, USNOS long, IJN11, USN13 and USN02 are gameplay-identical (exit 1, noise 
 exit 0. No Ohka Betty spawns inside USNOS long's 9000 frames, and every row's census reads
 `kamikaze=0`, so the binding is unexercised on the reference rows. The readers are the image's as
 read, and nothing moves, so the switch is ON.
+
+## 5dn. The AI-side lines, landed OFF (cc9-lua38, 2026-10-05)
+
+`src/game_hosts_ai.cpp` (a short window after cc9-ships32 released it):
+- `rocket_accuracy` overrides the host virtual from 5dm. It calls `bsp::ai_rocket_accuracy_offset_009fe4f1`
+  with the attacker's plane base, IgnitionDelay <= 0, and AntiAir or `[00F874FD]` for each of the two
+  rocket tests. It is reached only with `kAiRocketAccuracyBound` (OFF).
+- `record_loadout_00a04560` reads `units.plane_bag_equipment(x)` (new, `GameUnitsHost`) for
+  `[X+C54h]` behind the new `kAiPlaneBagEquipmentBound` (OFF, `include/bsp/plane_squadron_host.hpp`).
+  Otherwise it keeps the generator default.
+
+Both are inert on every single-player reference row now that `kAiCoordinatorLoadGateBound` is ON
+(SHIP_AI 150.6: no AI coordinator on a mission-tree launch). They stay committed OFF, for the
+developer and session paths; no pairs were run.
+### 5dk.3 Why a missing `Equipment` leaves the racks empty, and not at a default (cc9-lua38, 2026-10-05)
+
+Asked by the lead before the 22-row pairing. The chain, all from disk bytes or listings:
+
+1. **No `Equipment` key, or a value <= 0, hands `0095A880` a null entry.**
+   - `007CDF98 JZ 007CDFF0` covers the missing key; `007CDFD9 JLE 007CDFF0` covers n <= 0; and
+     `007CDFE3 TEST EAX,EAX / JZ 007CDFF6` covers a missing `Equipments[n]`.
+   - Each of these pushes 0 as the entry and 1 as the second argument (`007CDFF0`-`007CDFF6`).
+2. **`0095A880` with a null entry skips the loadout loop.** That loop is the only place a rack is
+   given ammo: `vtable[1BCh]`, the single rack's `006E3530`, which writes `+484h` ammo and `+488h`
+   orgAmmo.
+3. **Its second loop builds a platform's `DefaultGun` only when that is >= 0.**
+   - `0095AAD3 MOV ECX,[EAX+38h] / 0095AAD6 TEST / 0095AAD8 JL 0095ABA1` skips the platform.
+   - Platform `+38h` is read at `00961456`-`009614B7`: the authored `DefaultGun` (`00D1AB64`)
+     when present (`009614AB`-`009614B7`), else `Gun[1]` (`0096149E`), else -1.
+4. **Every bomb platform an `Equipments` entry names authors `DefaultGun = -1`.**
+   - Checked in this installation's `vehicleclasses.lua`: 118 of 118 platforms across every class
+     with an Equipments table (`local\l38_defgun.py`). Kate's `[50]` is
+     `{ ["DefaultGun"] = -1, ["Gun"] = { 85, 92 } }`, for example.
+   - So without an entry, no rack device is built at all, and the plane has no class-25h part.
+5. **This is why it is not a default load.** Had step 4 built the rack, its constructor `006E3C00`
+   would have left ammo `+484h` = 1 and orgAmmo `+488h` = 1 (`param_1[0x121]`/`[0x122]`). The
+   `DefaultGun = -1` authoring is what prevents that.
+
+So an unarmed plane has no rack, and `007B9140` (the holds test) finds no part to ask.
+
+**Correction to 5df.1.** A note there says a platform with a `Gun[1]` takes it as its `DefaultGun`.
+That holds only when `DefaultGun` is not authored. For bomb platforms in this installation it is
+always authored, and always -1.
+
+**Correction to the lead's IJN01 example.** IJN01 loads `ijn_1_pearl.scn`, not the `ijn_01_*`
+scenes the first census matched by name. Its PlaneSquadronGen rows are:
+- 6 Kate and 15 PHKate, all with `Equipment` 1;
+- 8 Zero, 2 Wildcat (the default Type) and 1 Warhawk, all without, and all `DefaultEquipment` 0, so
+  no change;
+- 1 Dauntless without `Equipment`. That squadron, Dauntless1, is the only row whose loadout changes:
+  it loses its bombs.

@@ -513,6 +513,9 @@ public:
     // answers 2Ah, and the flag-1 arm needs [00E17BF2], 0 in single player, so
     // this is squadron_ammo_type's per-plane rack test. False for a non-plane.
     bool plane_holds_rack_round_007b9140(std::size_t unit_index);
+    // Packet cc9_plane_scene_equipment: the slot's bag `Equipment` ([unit+C54h]
+    // as 007CDF20 stores it), -1 when the unit's creator carried none.
+    int plane_bag_equipment(std::size_t unit_index) const;
     // `returntobase` (00E08F98) for the squadron of unit_index through the same
     // path a Lua returntobase takes: each member plane through
     // issue_script_command, which runs 007F16D0's resolution and 0077D600's
