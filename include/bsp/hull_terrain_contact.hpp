@@ -127,7 +127,8 @@ inline constexpr bool kHullFortContactBound = true;
 // bit 8 (00C47F60), the terrain's group, so 00C44104's filter refuses every hull-terrain pair
 // (the terrain's own mask is 0). True: such a hull gets no terrain narrow phase and its
 // terrain manifolds are retired; it sinks through the seabed. False: wrecks keep resting on it.
-inline constexpr bool kSunkHullTerrainMaskBound = false;
+// ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 101.4).
+inline constexpr bool kSunkHullTerrainMaskBound = true;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step

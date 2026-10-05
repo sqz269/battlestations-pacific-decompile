@@ -7979,3 +7979,35 @@ OFF census on this tree (`local\g23_sc_<row>.log`):
   where a wreck had blocked a live hull or a round. E2, IJN01, JM05 long and USN13 long are
   exit 0 or 1.
 - **JM08 long** (shallow, many sinkings) is expected to move.
+
+### 101.4 The pair, and the flip
+
+**Setup.** `local\g23_f1` (the flip) against `local\g23_f0` (OFF), both exports of `ca07508a6`
+(SHA-256 prefixes `95B29211355D` / `AF1B48A01969`). x's launch form; every run has
+`lost_polls=0`.
+
+| row | exit | deaths | wreck terrain steps OFF -> ON | kills at -200 OFF -> ON |
+| --- | --- | --- | --- | --- |
+| USNOS | 1 | 98 / 98 | 1202 -> 0 | 0 -> 1 |
+| USNOS long | 1 | 115 / 115 | 7175 -> 0 | 6 -> 7 |
+| JM08 | 1 | 22 / 22 | 462 -> 0 | 0 -> 0 |
+| USNRM01 | 3 | 156 / 156 (identical) | 1643 -> 0 | 0 -> 1 |
+| JM08 long | 3 | **46 -> 68** (26 only ON, 4 only OFF) | 242144 -> 0 | 0 -> 18 |
+| E2, IJN01, JM05 long, USN13 long | 1 | identical | 0 | 0 |
+
+- **Mechanism: matches.** `wreck_terrain_steps` is 0 on every ON row, and every resting wreck
+  that has time to fall is killed at KillDepth.
+- **JM08 long's landing is a cascade.**
+  - The 15-18 wrecks along the approach and beach no longer rest on the seabed, where they had
+    been in the way of live hulls (hull-hull pairs) and of the landing crafts.
+  - The crafts now launch 6 times against 4 and lower 15 ramps against 12.
+  - The three `LandingShip` deaths move 50-70 s later.
+  - Bristol and LSM 02 survive; containers, a barracks and tents die.
+  - It is the row's known knife edge (x's leave-one-out: 34-204 across single switches).
+- **USNRM01 exit 3** is damage 36563.8 -> 36559.4 and shots -4, with identical death rows.
+- **Prediction: spread misses.**
+  - USNOS, USNOS long and JM08 are exit 1, not 3: the kill and destroy lines are not gameplay
+    lines, and no round or hull met the resting wreck.
+  - JM08's one wreck does not reach -200 within 3000 frames.
+- **Flipped ON** (`kSunkHullTerrainMaskBound = true`). It is a mechanism match with recorded spread
+  misses; JM08 long's death count is the knife edge's.
