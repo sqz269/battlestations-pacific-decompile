@@ -9197,3 +9197,87 @@ whether the image's escorts and LSTs close to that range while the transports ho
 Bristol's `attackmove` on shore targets (`mode=navigate_astern`, `d32c` about 1000 m at t=900), and the
 LSTs firing over the transports they lead in. That is a positioning question, for item (2)'s order
 trace and section 105's queue, not a gunnery rule.
+
+## 111. UST 04's grounding and the friendly-fire geometry on JM08 36000 (packet `cc9_ust04_grounding_order`, cc9-ships27, 2026-10-04)
+
+Section 107.5's second miss and section 110.2's open question, read from the ON diag run
+`s26_e1d_jm08x` (cc9-ships26 tree, `BSP_LANDER_DIAG=1`) and the pair logs `s26_e0/e1_jm08x`.
+Scripts: `local\s27_timeline.py <log> <unit>` (state changes, orders, fleet diag) and
+`local\s27_follows.py <log>` (`follow issued` pairs), in the cc9-ships27 tree.
+
+### 111.1 The two orders UST 04 is under
+
+- **The planner's `follow` to Bristol, re-issued all run.** 115 `follow issued (00720CD0, source
+  join 0077F940)` lines, the first at log line 6604 and the last at 324653. Section 94: the image's
+  follower pass `00A10DC0 -> 0077C8D0 -> 0077F940` re-joins every member after the head, whatever its
+  current command.
+- **A bridged `moveto` (the `ai_command_tick` source, `kAiTransportMovesOrderBridgeBound` ON),
+  re-issued whenever the 80 m gate opens.** From t=817 (step 16330) the unit swaps between
+  `state=movetopos` (`d32c` 26-187 m) and `state=follow` every 0.5-5 s. Between t of about 1375 and 1490 there are
+  11 `follow issued` lines (log lines 258125..277454), each followed by a `movetopos` within a
+  few steps.
+- **Both are the image's rules as read.** Section 94 covers the re-join, and section 107.1 covers
+  the bridge and its 80 m gate. Neither has a gate that spares the other's member.
+
+### 111.2 Where it grounds, and why nothing turns it away
+
+| t | UST 04 | ground | contact | Bristol |
+| --- | --- | --- | --- | --- |
+| 1370 | (1888.8, -3729.3) | -21.8 | 0 | (2031.2, -3837.1), -21.7 |
+| 1430 | (1982.2, -3877.2) | -17.0 | 0 | (2066.9, -3871.4), -20.7 |
+| 1490 | (1960.2, -3926.0) | -13.0 | 1 | - |
+
+- **The first terrain contact** is at t=1427.37, pos (1984.3, -3874.9), penetration 0.01
+  (`ship terrain contact` line). The census max is 2.18 m over 7458 steps. The hull is 180 m long
+  (`unit hull input ... length=180`), so its ends lie about 90 m from the centre whose ground the
+  diag prints.
+- **Bristol is the anchor.** It holds its `attackmove` standoff on `Japanese AA truck 01` at the
+  21-22 m contour, nearly stationary from t=1310 to 1400 at (2031..2043, -3831..-3849). Its
+  followers keep station within about 100-200 m of it.
+- **The navigation layer is 11 for this class**, as for every surface class this installation loads
+  (`docs/SHIP_AI_LAYER_SELECTION.md`, `[class+560h]` through `006DFD80`). JM08's groups are layers
+  0, 5, 10, 11, 26, 46 and 86 (`avoid-zone geometry name=AvoidZoneG all <n>`). Both pushes only
+  keep a point outside the 11 group's zones: the follower's station point by 20 m (`009DF432` /
+  `009DF4C5`, `moved=9301` of 146330 pushes on this run) and the bridged move point by 30 m
+  (`00A02020`). Neither keeps the ends of a 180 m hull out of water shallower than its draft.
+- **The avoid-zone escape cannot act on a station-keeping follower.** The `zone` summary has
+  UST 04 `inside=7908` steps with `escape_turns=0`. LST 01, 03 and LSM 01 have escape turns.
+  - The escape turn in `009DE5B0` (section 4, `009DE6DB..009DE8ED`) multiplies by
+    Interp(3, 0, 5, 1) of `blk+330h / max(100, length)` (`docs/AVOID_ZONE_ESCAPE.md` section 2).
+  - The follow step's station-keeping arm leaves `blk+330h` at 0: it is reset at `009ED780`, and the
+    arm writes `blk+32Ch = 1500` at `009EE08F..009EE0AD`, never `+330h`. The log shows
+    `d32c=1500.00 d330=0.00` on every `follow navigate` step.
+  - So the ramp is 0 and no turn is applied. That is the image's arithmetic as read, not a host
+    gap.
+
+**Verdict on the grounding: no divergence found; nothing is bound.** UST 04 grounds between two
+image orders that each re-assert themselves, next to a leader standing at the 21 m line. The layer
+key 11, the 20 m and 30 m margins and the escape's zero ramp are image or installation values.
+**Uncertain:** whether the image's hull-terrain solver touches at this depth under a 180 m hull.
+That is cc9-gunnery23's contact code, and the depth profile under the bow is not logged.
+
+### 111.3 The friendly-fire geometry (section 110.2)
+
+`s27_follows.py` on `s26_e1_jm08x`:
+- Bristol's group: UST 01, 02, 04, LST 01, 03 and LSM 02.
+- Macomb's group: UST 03, 06 and LST 02.
+- LSM 01 follows UST 05.
+
+Section 110's killers and victims fall inside these clusters:
+- ON: Bristol kills UST 01, its own follower. UST 03 (Macomb's group) kills UST 02 (Bristol's).
+  Bristol kills UST 05, which lies in the same cluster.
+- OFF: LST 01 kills UST 05 and UST 06; LST 03 kills UST 02, a member of its own group. Macomb
+  kills UST 04.
+
+**The answer to 110.2:** it is the station and move-point choice around an attackmove standoff,
+and the image does the same as far as read.
+- The planner group keeps its members on station within about 200 m of a leader that stands about
+  1000 m off its shore target.
+- The bridged transport moves pull members toward their anchors, which lie shoreward of the leader.
+- So a member regularly lies on the line from the leader or another member to the shore.
+- The image refuses such a shot only for kinds 1, 5 and 6, and only if the friendly was in the way
+  at the gun's first ask (110.1).
+
+**Friendly fire on this row is recorded as the image's behaviour.** Which transport dies, and to
+whom, is a spread between runs: UST 05 and UST 02 die in both `s26_e0` and `s26_e1`, but to different killers, and the other
+  victims differ.
