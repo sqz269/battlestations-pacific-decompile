@@ -7685,3 +7685,91 @@ this tree's build of `81065beed`:
 
 **Not changed:** MShipyard's `00844A10`. No reference row aims at a shipyard, and the host
 does not read a shipyard's `"Hangar %d"` list (`00849F70`).
+
+## 98. USNRM01: why the battleship row takes no damage (packet `cc9_usnrm01_battleship_damage`, cc9-gunnery23)
+
+The lead's question (from cc9-lua33's `l33_tr_usnrm01.log`): West Virginia ends 9200/9000 at
+10000/10000, bomb blasts on it log `took=0.0`, and `swims_started=13` against about 40 drops.
+Runs, all in the reference launch form, `lost_polls=0`:
+- `local\g23_cm_usnrm01.log`, this tree at `1973202a0` (main `50571b964` merged);
+- `local\g23_rw_usnrm01.log`, reference w;
+- two same-commit exports of `1973202a0`, one switch OFF each: `local\g23_xsti` (`kAiSquadronSetTargetIntakeBound`,
+  SHA-256 `2823D8D62687`) and `local\g23_xcfb` (`kCloseFallbackOrderBridgeBound`, `88126BF9D581`).
+
+Tools: `local\g23_tdrops.py` (per-torpedo drop point, heading, bearing to West Virginia, swim and
+exit), `local\g23_targets.py` (command-target tally per unit), `local\g23_bombs.py`.
+
+### 98.1 The torpedoes: no refusal and no breakup; they hit the ground
+
+- **Current tree:** `torpedo_drop drops=49 refusals=0 water_entry_breakups=0`, `swims_started=3`.
+  - 46 of the 49 end `exit=land_impact` at y = 5.96, 1.00-2.55 s after the drop. They are dropped at
+    10.8-38 m altitude, mostly around (810..910, -3860..-3680), and fly about 60-180 m before
+    reaching that ground.
+  - The other 3 swim and then also hit land (y = 0, the shore).
+  - USNRM01 has one landscape (`Landscape 01`, TRNV2), so the 5.96 m surface is terrain: the
+    Navy Yard.
+- **The aim is right; the target is wrong.** Every drop heads at its ordered target, and every
+  ordered target is a ship in the Navy Yard: Downes and Cassin (dry dock, about (444..673,
+  -3640)), Curtiss, Helm, Mona. For example, KateSpawn3's drop at (893, -3749) heads -61 deg, and
+  the bearing to Downes is -60 deg. The bearing to West Virginia (1835, -2319) is +33 deg,
+  1.6-1.9 km away.
+- cc9-lua33's 40 drops are the same picture: 34 land, 6 entity (Cassin, Downes, Neosho x2,
+  Rescue x2). The 13 swims are the drops toward Neosho, Rescue and Cassin.
+
+### 98.2 Who retargets the scripted torpedo squadrons
+
+`usn_1_pearl.lua` `luaSpawnKates` (this installation, lines 2313-2353) spawns KateSpawn1-5 at about
+(4000, 180, -5000) and orders `PilotSetTarget` West Virginia (1, 2) and Oklahoma (3-5).
+
+| build | KateSpawn1 / KateSpawn4 targets (command-target lines) | drops | swims |
+| --- | --- | --- | --- |
+| current tree (`g23_cm`) | West Virginia / Oklahoma x30, then Downes x4911 | 49 | 3 |
+| `kCloseFallbackOrderBridgeBound` OFF (`g23_xcfb`) | same as current | 49 | 3 |
+| `kAiSquadronSetTargetIntakeBound` OFF (`g23_xsti`) | West Virginia x3897 / Oklahoma x3897 | 2 | 1 |
+| reference w (`85f60f0a5`) | West Virginia / Oklahoma throughout | 2 | 1 |
+
+- **`kAiSquadronSetTargetIntakeBound` (lua lane) carries the retarget.** The switch over is at the
+  squadron group's `ai command promote` (`movetoattack leader=KateSpawn1 ... members=5`, lua33's
+  log line 22345): the next `command target` lines name Downes for all five KateSpawn squadrons.
+- **With the script's target kept, the squadrons hardly release.** `torpedo KateSpawn1 aim gates:
+  ticks=83 lead=0 alt=15 ... all=0 min_f14=3419.4`. The lead gate never passes, the closest
+  `+F14h` is 3.4 km, and the row's 15 torpedo aircraft release twice. Both releases (w and
+  `g23_xsti`) are about 920-956 m from West Virginia, over land at 5.96 m, and hit it within
+  about 70 m.
+- Neither question is in the gunnery lane: the target intake is cc9-lua33's, and the torpedo
+  run-in and release gates are the plane task's.
+
+### 98.3 The bombs and the `took=0.0` lines
+
+- **The `took=0.0` blasts on the battleships are not bombs.** They are bullet class 44
+  (`Type=Flak`, category 5) and class 15 (`Type=Artillery`, category 6), the defenders' own AA and
+  secondary splashes. Each has blast base 35 against armour 130 (West Virginia, California, Tennessee) or 120 (Arizona, Nevada).
+- **No dive bomber targets a battleship in 9000 frames.** `g23_bombs.py` on lua33's log: every
+  `bomb from` row's ordered target is Curtiss, Dale, Downes, Farragut, Helm, a PT, Phoenix, Tautog
+  or USS Leonard Wood.
+  - The script's `ArizonaKillers` / `Oklahoma_Killers` are phase-gated and are not generated in
+    this window.
+- **The law is the image's, already reconstructed:**
+  - direct hull damage `00470510` = (DamageMin..DamageMax draw x owner modifier - armour) x
+    weapon scale, not floored; `008777D0` skips AddDamage at or below zero;
+  - blast part damage `004705C0` = max(0, falloff x base - armour) x weapon scale;
+  - both are in `src/unit_hit_path.cpp`, and `00826F10` is complete (`src/ship_hit_record.cpp`).
+  So `took=0.0` for base 35 against 130 is the image's law, not a host gap.
+- **No separate below-waterline multiplier on this path.** `00826F10` takes the hull segment and
+  flooding (`0093BED0`) from the hit, and neither changes the armour subtraction.
+- **A torpedo does damage a battleship.** Class 69 bursts with base 1200, range 50: Pennsylvania
+  took 21.9 at 44 m (lua33's log). The torpedoes just do not reach the row.
+
+### 98.4 Verdict
+
+- **Nothing to bind in gunnery.** The drop, the water entry, the land sweep and the armour law
+  behave as read.
+- USNRM01's phase 1 is held by two things upstream of gunnery:
+  1. the set-target intake retargets the scripted Kates to the dry dock (lua lane);
+  2. with the script's target, the torpedo task's lead gate does not pass at Pearl Harbor's
+     ranges, and its two releases are over land (plane task: the run-in sector scan `009D3420`
+     and the release gates).
+- **Uncertainty:**
+  - Whether the image's intake also overrides a script `PilotSetTarget` (not read).
+  - Whether the image's run-in would find a water lane to Battleship Row (`009D3420` scans the
+    terrain, which the host models; its output was not traced here).
