@@ -425,23 +425,197 @@ float ai_plane_option_factor(float damage_calc_time, float p1, float p2, float r
     return static_cast<float>(static_cast<double>(scaled) / reload);
 }
 
+// 00415510 BSP_Math_MinFloatByRef(ECX = a, EDX = b): a when b > a, else b.
+float min_by_ref_00415510(float a, float b) {
+    return b > a ? a : b;
+}
+
+// 00415550 BSP_Math_MaxFloatByRef(ECX = a, EDX = b): a when a > b, else b.
+float max_by_ref_00415550(float a, float b) {
+    return a > b ? a : b;
+}
+
+// The shared body of the torpedo, depth-charge, big-rocket and dive-bomb arms
+// (00A0873C..00A0876B and its three copies): the rate ammo / (Params [1] x 0.5
+// + the reload minimum) through x87 (FILD, FMUL [00D7A280], FADD, FDIVP ST2 =
+// DE FA) stored to [ESP+20h], and the cap Params [2] / Params [1] (FDIVR)
+// stored to [ESP+18h] at 00A08A0A.
+void loadout_rate_and_cap(int ammo, float p1, float p2, float min_reload, float& rate,
+                          float& cap) {
+    rate = static_cast<float>(static_cast<double>(ammo) /
+                              (kAiLoadoutParamsHalf * static_cast<double>(p1) +
+                               static_cast<double>(min_reload)));
+    cap = static_cast<float>(static_cast<double>(p2) / static_cast<double>(p1));
+}
+
+// 00A08655..00A08A8E with the arm bound. Builds at most one option; `gun_walk`
+// and `penalty` carry [ESP+11h] and [ESP+2Bh] out as the arm leaves them.
+void ai_plane_loadout_arm(AiTargetWeightModelHost& host, const AiTargetWeightKey& key,
+                          const AiModeTuning& tuning, bool target_plane, bool target_sub,
+                          std::vector<AiPlaneOption>& options, bool& gun_walk, bool& penalty) {
+    // 00A0865A 009552E0(attacker class, +4h); 00A08680 JZ: no list, no option.
+    std::vector<AiPlaneLoadoutEntryFacts> entries;
+    host.plane_loadout(key.attacker, key.attacker_class, entries);
+    // 00A08686..00A086F3: over the entries whose device class answers 25h, the
+    // reload minimum (seed 9999.0, 00A086D5 FCOMIP / JBE) and the ammo sum; the
+    // first such entry whose 00731040 answers a bullet keeps its device and
+    // bullet ([ESP+2Ch], [ESP+44h], 00A086B3 CMP / JNZ).
+    float min_reload = kAiLoadoutReloadSeed;
+    int ammo = 0;
+    const AiPlaneLoadoutEntryFacts* rack = nullptr;
+    for (const AiPlaneLoadoutEntryFacts& e : entries) {
+        if (!e.device_is_rack) continue;
+        if (rack == nullptr && e.bullet.present) rack = &e;
+        if (min_reload > e.reload) min_reload = e.reload;
+        ammo += e.ammo;
+    }
+    if (rack == nullptr) {
+        host.note_loadout_arm(0, 0u); // 00A086FB JZ 00A08B21
+        return;
+    }
+    const AiPlaneBulletFacts& bullet = rack->bullet;
+    const double dct = tuning.damage_calc_time; // tuning +10h
+    float rate = 0.0f;      // [ESP+20h]
+    float cap = 0.0f;       // [ESP+18h]
+    float factor = 0.0f;    // [ESP+18h] after 00A08A28
+    bool use_min = true;    // 00A08A13's min, skipped by the 0Fh and level-bomb arms
+    std::uint32_t descriptor = 0u;
+    switch (bullet.sub_type) {
+    case 0x0A: // 00A08701, torpedo
+        if (!host.entity_is_type(key.target, kAiTypeShip)) break; // 00A08712
+        // 00A08720 COMISS [device+F4h], 0.0 / JA: only above it may a torpedo
+        // score against a submarine.
+        if (!(rack->device_f4 > 0.0f) && target_sub) break;
+        loadout_rate_and_cap(ammo, tuning.torpedo_params_1, tuning.torpedo_params_2,
+                             min_reload, rate, cap);
+        descriptor = kAiPlaneOptionTorpedo;
+        gun_walk = false; // 00A08A0E
+        break;
+    case 0x0B: // 00A08770, depth charge
+        if (!target_sub) break;
+        loadout_rate_and_cap(ammo, tuning.d_c_params_1, tuning.d_c_params_2, min_reload, rate,
+                             cap);
+        descriptor = kAiPlaneOptionDepthCharge;
+        gun_walk = false;
+        break;
+    case 0x0D: // 00A087B4, a carried kamikaze plane
+        if (target_plane || target_sub) break;
+        // 00A087D3..00A087EB: 1 / LevelbombParams [1] (FDIVRP ST2 = DE F2) to
+        // [ESP+18h], 1 / the reload minimum to [ESP+20h].
+        cap = static_cast<float>(1.0 / static_cast<double>(tuning.levelbomb_params_1));
+        rate = static_cast<float>(1.0 / static_cast<double>(min_reload));
+        descriptor = kAiPlaneOptionKamikaze;
+        gun_walk = false;
+        break;
+    case 0x0F: { // 00A087F4, paratroopers
+        if (!host.entity_is_type(key.target, kAiTypeCommandBuildingTarget)) break; // 00A08802
+        const float fammo = static_cast<float>(ammo);  // [ESP+3Ch]
+        const double half = static_cast<double>(tuning.levelbomb_params_1) * kAiLoadoutParamsHalf;
+        gun_walk = false;                              // 00A08831
+        // 00A08840 FADD ST0,ST2 / 00A08846 FDIVP (DE F9): ammo / (min + half).
+        rate = static_cast<float>(static_cast<double>(fammo) /
+                                  (static_cast<double>(min_reload) + half));
+        const float slack = static_cast<float>(dct - half); // 00A0884C FSUBR [+10h]
+        // 00A08853 00415550(0.0, slack), x rate, + ammo.
+        factor = static_cast<float>(
+            static_cast<double>(max_by_ref_00415550(0.0f, slack)) * static_cast<double>(rate) +
+            static_cast<double>(fammo));
+        use_min = false;
+        descriptor = kAiPlaneOptionLevelBomb;
+        break;
+    }
+    case 0x12: // 00A08865, rocket
+        if (bullet.ignition_delay <= 0.0f) {
+            // 006E3260 true (IgnitionDelay <= 0): the small rocket. 00A08882
+            // clears [ESP+2Bh] before either test can fail.
+            penalty = false;
+            const bool same = host.rocket_air_ground_same();
+            const bool air = target_plane && (bullet.anti_air || same);          // 007B80A0
+            const bool ground = (!bullet.anti_air || same) && !target_plane && !target_sub; // 007B80C0
+            if (!air && !ground) break; // 00A088C4
+            rate = static_cast<float>(static_cast<double>(ammo) / static_cast<double>(min_reload));
+            gun_walk = true; // 00A088E0: the gun walk still runs
+            cap = target_plane
+                      ? static_cast<float>(static_cast<double>(tuning.dogfight_params_3) /
+                                           tuning.dogfight_params_1) // 00A088EB
+                      : static_cast<float>(static_cast<double>(tuning.strafe_params_3) /
+                                           tuning.strafe_params_1);  // 00A088FA
+        } else {
+            if (target_plane || target_sub) break; // 00A08909..00A08919
+            loadout_rate_and_cap(ammo, tuning.big_rocket_params_1, tuning.big_rocket_params_2,
+                                 min_reload, rate, cap);
+            gun_walk = false;
+        }
+        descriptor = kAiPlaneOptionRocket;
+        break;
+    case 0x09: // 00A08956, bomb
+        if (target_plane || target_sub) break;
+        if (host.entity_is_type(key.attacker, kAiTypeLevelBomber)) { // 00A08980
+            if (!host.entity_is_type(key.target, kAiTypeShip)) break; // 00A0898F
+            // 009FF3A0(ECX = ammo, LevelbombParams [2]): (int) min, ties to the
+            // parameter (FCOMIP / JBE, CVTTSS2SI).
+            const float fa = static_cast<float>(ammo);
+            const float p2 = tuning.levelbomb_params_2;
+            const int drops = static_cast<int>(p2 > fa ? fa : p2);
+            gun_walk = false; // 00A089AD
+            rate = static_cast<float>(static_cast<double>(drops) /
+                                      (static_cast<double>(tuning.levelbomb_params_1) *
+                                           kAiLoadoutParamsHalf +
+                                       static_cast<double>(min_reload)));
+            factor = static_cast<float>(dct * static_cast<double>(rate)); // 00A089D2
+            use_min = false;
+            descriptor = kAiPlaneOptionLevelBomb;
+        } else {
+            loadout_rate_and_cap(ammo, tuning.divebomb_params_1, tuning.divebomb_params_2,
+                                 min_reload, rate, cap);
+            gun_walk = false;
+            descriptor = kAiPlaneOptionDiveBomb;
+        }
+        break;
+    default: // 00A08959 JNZ 00A08B21
+        break;
+    }
+    if (descriptor != 0u && use_min) {
+        // 00A08A1B 00415510(&[ESP+20h], &[ESP+18h]) x DamageCalcTime (00A08A20).
+        factor = static_cast<float>(static_cast<double>(min_by_ref_00415510(rate, cap)) * dct);
+    }
+    // 00A08A23: a target with +1Ch = 1 admits only a paratrooper option.
+    if (descriptor != 0u && key.target_is_neutral == 1 && bullet.sub_type != 0x0F) {
+        descriptor = 0u;
+    }
+    host.note_loadout_arm(bullet.sub_type, descriptor);
+    if (descriptor == 0u) return;
+    // 00A08A3C..00A08A8B: one 14h record, +0h device, +4h bullet, +10h factor,
+    // +0Ch descriptor; 00A08B18 EBX = 1.
+    AiPlaneOption o;
+    o.descriptor = descriptor;
+    o.bullet = bullet;
+    o.factor = factor;
+    options.push_back(o);
+}
+
 } // namespace
 
 std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host,
                                                    const AiTargetWeightKey& key,
-                                                   const AiModeTuning& tuning) {
+                                                   const AiModeTuning& tuning,
+                                                   bool* equipment_penalty) {
     std::vector<AiPlaneOption> options;
     const bool target_plane = host.entity_is_type(key.target, kAiTypeQueryAttackerModel); // 00A08628
     const bool target_sub = host.entity_is_type(key.target, kAiTypeSubmarine);            // 00A08637
-    if (key.attacker_class > 0) {
-        // 00A08655..00A08A8E, the loadout arm (torpedo, bomb, depth charge,
-        // paratrooper, rocket and dive options from 009552E0's list). Not
-        // projected: the 00A04560 record path passes +10h = 0 and never gets here.
-        host.note_plane_arm(true, true);
-        return options;
-    }
     bool gun_walk = key.target_is_neutral != 1; // [ESP+11h], 00A08641
-    if (target_sub) {
+    bool penalty = key.attacker_class > 0;      // [ESP+2Bh], 00A08648 SETG
+    if (equipment_penalty != nullptr) *equipment_penalty = penalty;
+    if (key.attacker_class > 0) {
+        if (!host.plane_loadout_arm_bound()) {
+            // The loadout arm unbound: no option, the earlier behaviour.
+            host.note_plane_arm(true, true);
+            return options;
+        }
+        ai_plane_loadout_arm(host, key, tuning, target_plane, target_sub, options, gun_walk,
+                             penalty);
+        if (equipment_penalty != nullptr) *equipment_penalty = penalty;
+    } else if (target_sub) {
         gun_walk = false; // 00A08A9A
     } else if (host.entity_is_type(key.attacker, kAiTypeKamikazePlane) && !target_plane) {
         // 00A08ABB..00A08B13: one kamikaze option, factor 1.0 [00D7A24C].
@@ -455,7 +629,10 @@ std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host
         // 00A08B36..00A08D40, the attacker class's platforms in slot order.
         bool pilot_option = false;  // [ESP+12h], cleared at 00A08B26
         bool tail_seen = false;     // [ESP+1Fh], cleared at 00A08B2B
-        std::size_t count = 0;      // EBX
+        // EBX, also kept in [ESP+14h] at 00A08B41: 1 after a loadout option
+        // (00A08B18, the small rocket's), else 0.
+        const std::size_t base = options.size();
+        std::size_t count = base;
         const int platforms = host.plane_platform_count(key.attacker);
         for (int i = 0; i < platforms; ++i) {
             AiPlanePlatformFacts p;
@@ -464,8 +641,8 @@ std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host
             if (!p.bullet.present) continue;
             if (p.pilot_fires) {
                 // 00A08BF3 CMOVNZ EBX,[ESP+14h]: once a tail gun was seen the
-                // pilot option overwrites from slot 0 ([ESP+14h] holds 0).
-                if (tail_seen) count = 0;
+                // pilot option overwrites from the walk's first slot.
+                if (tail_seen) count = base;
                 options.resize(count + 1); // 00A08C01 -> 00A07A60
                 pilot_option = true;
                 AiPlaneOption& o = options[count];
@@ -506,21 +683,72 @@ std::vector<AiPlaneOption> ai_plane_attack_options(AiTargetWeightModelHost& host
 
 float ai_plane_attack_total(AiTargetWeightModelHost& host, const AiTargetWeightKey& key,
                             const AiModeTuning& tuning, float target_hit_points,
-                            float target_armour) {
-    const std::vector<AiPlaneOption> options = ai_plane_attack_options(host, key, tuning);
-    const bool loadout = key.attacker_class > 0; // [ESP+2Bh]
-    float total = 0.0f;                          // [ESP+24h]
+                            float target_armour, float target_underwater_armour) {
+    bool loadout = false; // [ESP+2Bh]
+    const std::vector<AiPlaneOption> options =
+        ai_plane_attack_options(host, key, tuning, &loadout);
+    float total = 0.0f;   // [ESP+24h]
     for (const AiPlaneOption& o : options) {
         float value = 0.0f;
         if (o.descriptor == kAiPlaneOptionKamikaze) {
             // 00A08DC8..00A08E74: class+210h's blast pair, 009FE270, x +10h.
+            // 00A08DE4: with a bullet in +4h (the loadout arm's carried
+            // kamikaze plane, 0Dh) the class is [bullet+DCh], not the attacker.
             AiPlaneBulletFacts b;
-            if (host.kamikaze_bullet(key.attacker, b) && b.present) {
+            bool known = false;
+            if (o.bullet.present) {
+                known = o.bullet.carried_kamikaze_known;
+                b.present = known;
+                b.sub_type = o.bullet.carried_sub_type;
+                b.blast_min = o.bullet.carried_blast_min;
+                b.blast_max = o.bullet.carried_blast_max;
+            } else {
+                known = host.kamikaze_bullet(key.attacker, b) && b.present;
+            }
+            if (known) {
                 const float damage = ai_expected_hit_damage_009fe200(
                     b.blast_min, b.blast_max, target_armour, target_hit_points);
                 const double accuracy = host.bullet_accuracy(key.attacker, b.sub_type, key.target);
                 value = static_cast<float>(accuracy * o.factor * damage);
             }
+        } else if (o.descriptor == kAiPlaneOptionLevelBomb && o.bullet.sub_type == 0x0F) {
+            // 00A08E81..00A08EDF, paratroopers: Paratroopers accuracy (00A371A0
+            // +14Ch) x +10h, then x (+1Ch = 1 ? +D8h : +FCh) x +F8h, added
+            // unrounded at 00A09209.
+            const float scaled = static_cast<float>(static_cast<double>(o.factor) *
+                                                    static_cast<double>(tuning.paratroopers));
+            double v = 0.0;
+            if (o.bullet.paratrooper_terms_known) {
+                const float first = key.target_is_neutral == 1 ? o.bullet.paratrooper_d8
+                                                               : o.bullet.paratrooper_fc;
+                v = static_cast<double>(first) * scaled * o.bullet.paratrooper_f8;
+            }
+            host.note_plane_option(o.descriptor, static_cast<float>(v));
+            total = static_cast<float>(static_cast<double>(total) + v);
+            continue;
+        } else if (o.descriptor == kAiPlaneOptionDiveBomb ||
+                   o.descriptor == kAiPlaneOptionRocket ||
+                   o.descriptor == kAiPlaneOptionLevelBomb) {
+            // 00A0910B..00A09201: 009FE200(max(DamageMin, BlastMin), max(DamageMax,
+            // BlastMax), Armour, HP) x 009FE270 x +10h.
+            const float low = max_by_ref_00415550(o.bullet.damage_min, o.bullet.blast_min);
+            const float high = max_by_ref_00415550(o.bullet.damage_max, o.bullet.blast_max);
+            const float damage =
+                ai_expected_hit_damage_009fe200(low, high, target_armour, target_hit_points);
+            const double accuracy =
+                host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
+            value = static_cast<float>(accuracy * o.factor * damage);
+        } else if (o.descriptor == kAiPlaneOptionTorpedo ||
+                   o.descriptor == kAiPlaneOptionDepthCharge) {
+            // 00A0904E..00A09106: the same pair through 00415550, against the
+            // underwater armour [ESP+48h]; +10h x 009FE270 x the damage.
+            const float high = max_by_ref_00415550(o.bullet.damage_max, o.bullet.blast_max);
+            const float low = max_by_ref_00415550(o.bullet.damage_min, o.bullet.blast_min);
+            const float damage = ai_expected_hit_damage_009fe200(
+                low, high, target_underwater_armour, target_hit_points);
+            const double accuracy =
+                host.bullet_accuracy(key.attacker, o.bullet.sub_type, key.target);
+            value = static_cast<float>(static_cast<double>(o.factor) * accuracy * damage);
         } else if (o.descriptor == kAiPlaneOptionStrafe ||
                    o.descriptor == kAiPlaneOptionDogfight) {
             // 00A08F20..00A08FA8 / 00A08FBD..00A09045.
@@ -722,9 +950,10 @@ float ai_target_weight_00a08460(AiTargetWeightModelHost& host,
         total = ai_clamp_total_damage(total, target_hit_points, tuning.max_target_kill_ratio);
     }
     else {
-        // 00A0861F..00A09222, projected for the no-loadout arm only.
+        // 00A0861F..00A09222; the loadout arm behind plane_loadout_arm_bound.
         total = ai_plane_attack_total(host, key, tuning, target_hit_points,
-                                      host.target_armour(key.target));
+                                      host.target_armour(key.target),
+                                      host.target_underwater_armour(key.target));
     }
 
     const bool bonus = attacker_model_type &&

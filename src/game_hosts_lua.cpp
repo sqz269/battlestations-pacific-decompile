@@ -15,6 +15,7 @@
 
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/bullet_engagement_range.hpp"  // packet cc9_ai_plane_loadout_arm
 #include "bsp/objective_units.hpp"
 #include "bsp/plane_squadron_host.hpp"
 
@@ -67,6 +68,7 @@ extern "C" {
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <functional>
 #include <optional>
@@ -827,6 +829,12 @@ int panic_trampoline(lua_State* state) {
 
 }  // namespace
 
+namespace {
+// Packet cc9_ai_plane_loadout_arm: the mission interpreter the process-wide
+// loadout reads go through, published by create_state, withdrawn on close.
+lua_State* g_loadout_lua_state = nullptr;
+}  // namespace
+
 GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
     : log_(log), vfs_(vfs) {
     // The content-suffix list at manager +48h/+4Ch is empty in this process, as
@@ -843,6 +851,7 @@ GameMissionLuaHost::~GameMissionLuaHost() {
     // The world walk holds a bare pointer to this host for the spawn drain.
     bsp::set_spawn_queue_drain(nullptr);
     if (state_ != nullptr) {
+        if (g_loadout_lua_state == state_) g_loadout_lua_state = nullptr;
         lua_close(state_);
         state_ = nullptr;
     }
@@ -6130,6 +6139,179 @@ std::string GameMissionLuaHost::read_bullet_class_string(int index, const char* 
     return value;
 }
 
+namespace {
+
+struct LoadoutCacheKey {
+    int class_id;
+    int equipment;
+    bool operator<(const LoadoutCacheKey& o) const {
+        return class_id != o.class_id ? class_id < o.class_id : equipment < o.equipment;
+    }
+};
+std::map<LoadoutCacheKey, std::pair<bool, std::vector<bsp::AiPlaneLoadoutEntryFacts>>>&
+loadout_cache() {
+    static std::map<LoadoutCacheKey, std::pair<bool, std::vector<bsp::AiPlaneLoadoutEntryFacts>>>
+        cache;
+    return cache;
+}
+std::map<int, int>& equipment_count_cache() {
+    static std::map<int, int> cache;
+    return cache;
+}
+
+// 00425850's case-insensitive compare, which 004431xx's Type chain uses.
+bool type_equals(const std::string& a, const char* b) {
+    if (a.size() != std::strlen(b)) return false;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        char x = a[i];
+        char y = b[i];
+        if (x >= 'A' && x <= 'Z') x = static_cast<char>(x - 'A' + 'a');
+        if (y >= 'A' && y <= 'Z') y = static_cast<char>(y - 'A' + 'a');
+        if (x != y) return false;
+    }
+    return true;
+}
+
+// One Lua chunk per (class, equipment): each entry as
+// "ammo;reload;deviceType;hasBullet;bulletType;dmin;dmax;bmin;bmax;ignition;antiair",
+// '|' between entries, in pairs() order (00961F57 walks the table with the same
+// next()). DamageMax and BlastDamageMax default to their minimum
+// (docs/WEAPON_CLASS_DESCRIPTOR.md); `Bullets`, else `BulletClass`, is the table.
+std::string read_loadout_text(lua_State* state, int class_id, int equipment) {
+    char chunk[2048];
+    std::snprintf(chunk, sizeof(chunk),
+        "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+        "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return nil end\n"
+        "local e = c.Equipments[%d]\n"
+        "if type(e) ~= 'table' then return nil end\n"
+        "local BT = type(Bullets) == 'table' and Bullets\n"
+        "   or (type(BulletClass) == 'table' and BulletClass or nil)\n"
+        "local out = {}\n"
+        "for k, v in pairs(e) do\n"
+        "  if type(v) == 'table' then\n"
+        "    local d = type(DeviceClass) == 'table' and DeviceClass[tonumber(v.Platform) or -1] or nil\n"
+        "    local dt = (type(d) == 'table' and type(d.Type) == 'string') and d.Type or ''\n"
+        "    local hb, bt, dmin, dmax, bmin, bmax, ign, aa = 0, '', 0, 0, 0, 0, 0, 0\n"
+        "    if type(d) == 'table' and type(d.Bullet) == 'table' and type(d.Bullet[1]) == 'table' then\n"
+        "      local b = BT and BT[d.Bullet[1].Bullet] or nil\n"
+        "      if type(b) == 'table' then\n"
+        "        hb = 1\n"
+        "        bt = type(b.Type) == 'string' and b.Type or ''\n"
+        "        dmin = tonumber(b.DamageMin) or 0\n"
+        "        dmax = tonumber(b.DamageMax) or dmin\n"
+        "        if type(b.Blast) == 'table' then\n"
+        "          bmin = tonumber(b.Blast.BlastDamageMin) or 0\n"
+        "          bmax = tonumber(b.Blast.BlastDamageMax) or bmin\n"
+        "        end\n"
+        "        ign = tonumber(b.IgnitionDelay) or 0\n"
+        "        aa = (b.AntiAir == true) and 1 or 0\n"
+        "      end\n"
+        "    end\n"
+        "    out[#out + 1] = table.concat({math.floor(tonumber(v.Ammo) or 0),\n"
+        "      tonumber(v.ReloadTime) or 0, dt, hb, bt, dmin, dmax, bmin, bmax, ign, aa}, ';')\n"
+        "  end\n"
+        "end\n"
+        "return table.concat(out, '|')\n",
+        class_id, equipment);
+    const int top = ::lua_gettop(state);
+    std::string text;
+    bool ok = false;
+    if (::luaL_loadbuffer(state, chunk, std::strlen(chunk), "bsp_ai_plane_loadout") == 0 &&
+        ::lua_pcall(state, 0, 1, 0) == 0 && ::lua_type(state, -1) == LUA_TSTRING) {
+        const char* s = lua_tolstring(state, -1, nullptr);
+        if (s != nullptr) text = s;
+        ok = true;
+    }
+    ::lua_settop(state, top);
+    return ok ? text : std::string("\x01");
+}
+
+std::vector<std::string> split_text(const std::string& text, char sep) {
+    std::vector<std::string> parts;
+    std::size_t start = 0;
+    for (;;) {
+        const std::size_t at = text.find(sep, start);
+        parts.push_back(text.substr(start, at == std::string::npos ? std::string::npos
+                                                                     : at - start));
+        if (at == std::string::npos) break;
+        start = at + 1;
+    }
+    return parts;
+}
+
+}  // namespace
+
+bool game_ai_plane_loadout(int class_id, int equipment,
+                           std::vector<bsp::AiPlaneLoadoutEntryFacts>& out) {
+    out.clear();
+    // 009552E0: a loadout at or below 0 answers null here (the negative arm
+    // reads class +134h, which 00A08460 never reaches: 00A0864F JLE).
+    if (g_loadout_lua_state == nullptr || class_id < 0 || equipment <= 0) return false;
+    const LoadoutCacheKey key{class_id, equipment};
+    auto& cache = loadout_cache();
+    const auto hit = cache.find(key);
+    if (hit != cache.end()) {
+        out = hit->second.second;
+        return hit->second.first;
+    }
+    const std::string text = read_loadout_text(g_loadout_lua_state, class_id, equipment);
+    const bool present = text != "\x01";
+    if (present && !text.empty()) {
+        for (const std::string& row : split_text(text, '|')) {
+            const std::vector<std::string> f = split_text(row, ';');
+            if (f.size() != 11) continue;
+            bsp::AiPlaneLoadoutEntryFacts e;
+            e.ammo = std::atoi(f[0].c_str());
+            e.reload = static_cast<float>(std::atof(f[1].c_str()));
+            e.device_is_rack = type_equals(f[2], "BombPlatform") ||
+                               type_equals(f[2], "MultiBombPlatform");
+            // Device class +F4h lies past a BombPlatform class's E8h allocation;
+            // no producer is known, so it reads as 0.0 here (LABELLED).
+            e.device_f4 = 0.0f;
+            if (f[3] == "1") {
+                e.bullet.present = true;
+                e.bullet.sub_type = bsp::weapon_class_sub_type_for_lua_type(f[4]);
+                e.bullet.damage_min = static_cast<float>(std::atof(f[5].c_str()));
+                e.bullet.damage_max = static_cast<float>(std::atof(f[6].c_str()));
+                e.bullet.blast_min = static_cast<float>(std::atof(f[7].c_str()));
+                e.bullet.blast_max = static_cast<float>(std::atof(f[8].c_str()));
+                e.bullet.ignition_delay = static_cast<float>(std::atof(f[9].c_str()));
+                e.bullet.anti_air = f[10] == "1";
+            }
+            out.push_back(e);
+        }
+    }
+    cache[key] = {present, out};
+    return present;
+}
+
+int game_ai_plane_equipment_count(int class_id) {
+    if (g_loadout_lua_state == nullptr || class_id < 0) return 0;
+    auto& cache = equipment_count_cache();
+    const auto hit = cache.find(class_id);
+    if (hit != cache.end()) return hit->second;
+    // 00961F57 appends one loadout per Equipments entry, so +128h is the
+    // table's entry count, not its length operator.
+    char chunk[512];
+    std::snprintf(chunk, sizeof(chunk),
+        "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+        "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return '0' end\n"
+        "local n = 0\n"
+        "for _ in pairs(c.Equipments) do n = n + 1 end\n"
+        "return tostring(n)\n", class_id);
+    lua_State* state = g_loadout_lua_state;
+    const int top = ::lua_gettop(state);
+    int count = 0;
+    if (::luaL_loadbuffer(state, chunk, std::strlen(chunk), "bsp_ai_equipment_count") == 0 &&
+        ::lua_pcall(state, 0, 1, 0) == 0 && ::lua_type(state, -1) == LUA_TSTRING) {
+        const char* s = lua_tolstring(state, -1, nullptr);
+        if (s != nullptr) count = std::atoi(s);
+    }
+    ::lua_settop(state, top);
+    cache[class_id] = count;
+    return count;
+}
+
 std::string GameMissionLuaHost::read_vehicle_class_string(int index, const char* key) {
     // The VehicleClass companion of read_device_class_string.
     std::string value;
@@ -7116,6 +7298,7 @@ void GameMissionLuaHost::report_natives(std::size_t limit) {
 
 void GameMissionLuaHost::create_state() {
     state_ = luaL_newstate();
+    g_loadout_lua_state = state_;
     log_.implemented("MissionLua::create_state", "006b8740");
 }
 
