@@ -2165,8 +2165,12 @@ struct GameShipAiHost::Impl {
             }
             return;
         }
-        // 009F4F1D..009F50B5, 007788B0's arm. 00863780(1) on unit+6DCh is the
-        // weapon side effect the gunnery host owns (recorded by the caller).
+        // 009F4F1D..009F50B5, 007788B0's arm. 00863780(1) on [unit+6DCh] at
+        // 009F4F2B (no null test on the pass here; the gunnery host checks it).
+        // Packet cc9_gunnery_pass_byte_7d.
+        if (gunnery_draws != nullptr) {
+            gunnery_draws->set_pass_byte_7d_00863780(index, true, 0x009f4f2bu);
+        }
         // 009F4F30..009F4F88: s = clamp((ceiling + 6.70421028) / reference, 1, 1.25)
         // (00D21B38; 00415620 with 1.0f and 1.25f).
         const float s_raw = static_cast<float>(
@@ -3720,10 +3724,12 @@ private:
     void member_exit(std::uint32_t member) {
         const std::uint32_t offset = member - kSubTargetMachineBase;
         if (offset == 0x0008u) {
-            // 009E6480: 00863780(1) on [unit+6DCh], which stores 1 in the gunnery
-            // pass byte +7Dh and returns (its gun walk runs only for 0). The
-            // gunnery host answers that byte as its constructor's constant 1
-            // (torpedo_may_take_fire_target), so the exit changes nothing here.
+            // 009E6480: 00863780(1) on [unit+6DCh] (009E6491), which stores 1 in
+            // the gunnery pass byte +7Dh and returns (its gun walk runs only for
+            // 0). Packet cc9_gunnery_pass_byte_7d.
+            if (owner_.gunnery_draws != nullptr) {
+                owner_.gunnery_draws->set_pass_byte_7d_00863780(index_, true, 0x009e6491u);
+            }
             owner_.done("ShipAiAttack::approach_exit_009e6480", 0x009e6480u);
         } else if (offset == 0x14E0u) {
             bsp::ship_ai_attackmove_tangent_exit_009db7d0(ctl_.tangent);
@@ -5736,6 +5742,19 @@ public:
         // projection does not cover, and the countdowns they re-arm are the
         // ones 009F1C07 and 009F1C13 have just decremented.
         refresh_approach_curves(has_target);
+        // Packet cc9_gunnery_pass_byte_7d, 009F2FDB..009F3016: with [unit+6DCh] set,
+        // 00863780(+12BAh && +12B4h + 50.0 > +127Ch) on it (x87: FLD +127Ch, FLD
+        // +12B4h, FADD qword 50.0 at 00CE3938, FCOMIP, JBE). +127Ch is +11E0h, copied
+        // at 009F2A0A; +11E0h's only ship-AI writer is 009F1CDE, earlier in this body.
+        // The gunnery host checks the pass and decides whether its pass reads the byte
+        // (bsp::kGunneryPassByte7dBound).
+        if (owner_.gunnery_draws != nullptr) {
+            const bool torpedo_in_reach = ctl_.approach.clearance_valid_12ba
+                && static_cast<double>(ctl_.approach.clearance_12b4) + 50.0
+                    > static_cast<double>(ctl_.approach.goal_range_11e0);
+            owner_.gunnery_draws->set_pass_byte_7d_00863780(index_, torpedo_in_reach,
+                                                            0x009f3016u);
+        }
         owner_.done("ShipAiApproach::frame_state", 0x009f1bc0u);
         owner_.record("ShipAiApproach::frame_state_unread_spans", 0x009f1dbfu);
         ++row_.approach_frames;
