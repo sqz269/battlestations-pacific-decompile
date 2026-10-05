@@ -10969,3 +10969,113 @@ The gunnery lane got a prepared edit for `KillBinding::local_player_side` (sent 
   - `s29_fnstart.py <site>`: the INT3-padded bounds around a site.
 - **A hook blocks `Remove-Item` with a wildcard path.** Delete files by explicit name.
 - No lease is held after this commit.
+
+## 139. The stale-label sweep, and the target weight's health term (packet `cc9_ai_target_weight_health`, `kAiTargetWeightHealthBound`, cc9-ships30, 2026-10-05)
+
+### The sweep
+
+The lane was searched for the stale labels "no producer", "not built", "no AI group",
+"no hull contacts" and "does not run". `src/game_hosts_ship_ai.cpp`,
+`src/game_hosts_ai.cpp` and the landing and capture sources were searched. Each hit was checked
+against the current host. Reach was taken from reference x's logs (`cc9-gunnery23\local\g23_rx_<row>.log`)
+and section 138's census (`s29_census_r5.txt`).
+
+| label | site | now | reach |
+| --- | --- | --- | --- |
+| "the fraction unit+370h/36Ch has no producer here" | `game_hosts_ai.cpp` `close_target_weight`, `00A0F8CE` | **stale**: the gunnery host keeps health and max_health per unit, and two bindings already read them (`ShipAiTorpedoStandoff::own_health_00923be0`, the Lua host's `unit_health_vtable_110`) | **every target weight query**: 317k on USNRM01, 275k on JM08 long and 261k on USN13 long; every row has some except BSM01, IJN11, JM05, JM08, LOMP10, LOMP10 long and ESMP08 long. Bound below |
+| `[unit+494h]` "no producer" (`ShipAiApproach::unit_depth_reference`, `009F32A0`) | `game_hosts_ship_ai.cpp` | stale **and misnamed**. `unit+494h` is the unit's maximum weapon range (GUNNERY_TABLES.md; `FirepowerBinding::unit_max_weapon_range` already answers it). It is not a depth. The "sub" rows are the attackmove **approach sub-state** (`009F3240`); there is no submarine in them | **none**. The term goes only to `blk+250h`/`+2B8h` (`009F337B`/`009F3383`; ESI = blk, the census's "brain+258h"). A displacement scan of `009D8000-009F6060` (`local\s30_disp.py`) finds only three writer pairs: `009DA57B`, `009DE2DC` and `009F337B`. A whole-`.text` co-occurrence scan for the pair (`local\s30_cooccur.py 200 2b8 250`) finds the same three. A one-field reader through another base outside the segment is not excluded |
+| "this process has no hull contacts" (landing ground contact) | `landing_ship_ground_contact` | stale comment only. `kLandingShipRampHullContactBound` already reads the units host's `+1011h` latch | - |
+| "nothing creates a PlaneSquadronGen" | `game_hosts_ai.cpp:5273` | stale comment only: `combatant_facts` takes the squadron arm when `squadron_of` finds one | - |
+| `[target+370h]`, `[[target+538h]+4Ch]` "no producer" | `refresh_approach_curves` | stale comment only: `kShipAiOwnCurveTargetBound` fills the target block | - |
+| `sub_throttle_command` "009E6A90 is recorded here" | `009F339A` | stale. `009F3090` calls `009E6A90` at `009F30DD` on every pass, after the `009F1BF7` sentinel store, so the 9999 guard can never fire. The value is identical | - |
+| `0080E490` / `0092BD70` "the host has no hull contacts" | `009E193E` (land enter) | open. `0092BD70(0)` clears the class's collision-category bit (`10h`..`2000h` by class kind, `0092BD8E..0092BE02`) on every shape through `00C47F60`. The shape walk is `+208h`, from `00C31DC0` on `controller+2Ch`. This is the hull-hull and terrain contact solver's filter, which is the physics lane's | JM08 long only (2 land enters); routed |
+
+### Section 138's other items
+
+- **`brain+308h`** (`009E5ACA` moveonpath, `009E1AC2` land, `009F3061` frame-state mode 3, `009DAEB0`
+  setter). It is `blk+300h` (blk = ai+60h at `009F5150`; brain = blk-8h). Its only reader is
+  `009ED6B0`'s own countdown: `009ED6E6` load, then `009ED72A` stores `x - seconds` while `x >= 0`.
+  The pseudocode's local (`local_b0`) is reassigned before any further use. The scan of
+  `009D8000-009F6060` for `+300h` finds nothing else. So it is a timer that nothing consumes.
+  **No reach.** A reader outside the ship AI segment, through another base, is not excluded.
+- **`ShipAiGoal::observer_register` / `unregister`** (`009E2FFD` / `009E300D` in `009E2FB0`).
+  The goal record registers itself (EDX = record) as an observer of the latched target at
+  `+14h`. This is a weak reference that the target's teardown nulls. `009E2FB0` re-resolves the
+  target from the descriptor through `00521EA0` on every brain pre-pass, and the host does the
+  same, so the observer's nulling is overtaken at the next latch. **No reach** beyond the
+  frames between a teardown and that latch.
+- **`frame_state_unread_spans`.** `009F2834..009F28AE` overwrites `+11DCh` with the bearing to
+  a kind-1Ch target only in mode 2 (`009F282D CMP [+1234h],2`). Mode 2 never occurs on the
+  reference rows (section 124). The `009F2F40`/`009F2F95`/`009F2FC6` calls are section 130's
+  refill, which is bound. **No reach.**
+- **The `sub_*` rows are not submarine rows** (see above), and JM06 has none in the census.
+
+### `kAiTargetWeightHealthBound`
+
+The image is `00A0F8CC MOV ECX,EBX` (the candidate), `CALL 00923BE0`, then `FSUBR [00D7A308]`
+(2.0), which is slot D. `00923BE0` reads:
+- `[+5Dh]` set: `FLDZ`;
+- otherwise vtable `[+110h]`, which is `00876260` on every unit vtable (`FLD [+370h]` /
+  `FDIV [+36Ch]`), clamped into [0, 1] (`00923C01..00923C34`) and cached at `+164h`.
+
+The host passed `fraction_available = false`, so every live candidate scored 1.0. Bound, a
+target at half health scores 1.5 against 1.0 for an untouched one, so the AI prefers to finish
+damaged targets.
+
+LABELLED: a gunnery row with `max_health <= 0` keeps 1.0. The image would divide by zero and
+carry the NaN through both clamps. The torn-down arm stays the scene node's `+5Dh`.
+
+**Predictions** (written before any run):
+- The rows with weight queries move once a candidate is damaged before a choice: USN01, USN02,
+  USN04, E2, USN12, USN13, USN13 long, USNOS, USNOS long, IJN01, JM05 long, JM06, JM08 long and
+  USNRM01.
+- The rows with 0 queries are identical: BSM01, IJN11, JM05, JM08, LOMP10, LOMP10 long and
+  ESMP08 long. LOMP06 (64 queries) is likely identical.
+- The new `damaged_targets` count is nonzero on every moving row.
+- Fort targets carry the 0.01 multiplier, so the rows dominated by fort candidates (JM08 long,
+  USN12) move the least among the moving rows.
+
+**The pairs.** Both binaries were built from `c2f347ba0`, which is main `4bc2309ac` merged:
+- OFF: this tree's build, `5989A27ABDC9`;
+- ON: `local\s30_on`, built by `pair_export --flip kAiTargetWeightHealthBound=true`, `CE46A1F3D96B`.
+
+The runs used reference v's launch form (`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`,
+lockstep 0.05) through `local\s30_runs.ps1`. The console session was Active and the 300-frame
+USN01 smoke was clean. Logs are `local\s30_<off|on>_<row>.log` and the diffs are
+`local\s30_pd_<row>.txt`.
+
+| row | pair_diff | `damaged_targets` (ON) | moved |
+| --- | --- | --- | --- |
+| BSM01, IJN11, JM05, LOMP06, LOMP10, USN13, JM05 long | 1 | 0 | - |
+| JM08 | 1 | 18 | - |
+| USN01 | 1 | 180 | - |
+| JM06 | 1 | 336 | - |
+| USNOS | 1 | 2163 | - |
+| USN12 | 1 | 7028 | - |
+| USNOS long | 1 | 9369 | - |
+| JM08 long | 1 | 389467 | - (the fort candidates carry the 0.01 multiplier) |
+| USN02 | 3 | 9867 | hit records 6017 -> 6080, shots 4724 -> 4493; Destroyer chosen 1020 -> 1209 |
+| USN04 | 3 | 440 | deaths 38 -> 44, damage 9832 -> 11924, plane water contacts 14 -> 18 |
+| E2 | 3 | 1118 | deaths 69 -> 74, shots 16871 -> 22897 |
+| USN13 long | 3 | 43545 | deaths 119 -> 117, hull hits 2661 -> 2604 |
+| IJN01 | 3 | 4909 | damage 1246.7 -> 1246.6, shots 2912 -> 2909 |
+| USNRM01 | 3 | 13042 | hull hits 1896 -> 1539, shots 71137 -> 65552; deaths 201 both ways |
+
+**Mechanism.** The ON logs' `ai target choice` rows carry weights above the class base when the
+candidate is damaged. On USN04 the Cruiser runner-up weighs 60.0 against the 54.0 base, which is
+a term of 1.111, i.e. health 0.889. On USNRM01 the first divergent choice is a damaged Cargo
+(weight 1.155) where OFF chose a Cruiser. `local\s30_firstdiff.py` finds the first differing choice
+row on each moved row. Every row with no weight query is identical. Every row that moved has
+damaged candidates.
+
+**Against the predictions.** These held:
+- the zero-query rows are identical;
+- `damaged_targets` is nonzero wherever a damaged candidate was scored;
+- the fort-dominated rows (JM08 long, USN12) move least, and in fact do not move.
+
+The prediction that "every row with queries moves" missed six rows: USN01, USN12, USN13 (0
+damaged), USNOS, USNOS long and JM06. Those rows score damaged candidates but the choice does not
+change: the term only reorders candidates whose weights are already close. This is a spread miss,
+and the mechanism matches.
+
+**Verdict: ON.** `kAiTargetWeightHealthBound = true`.
