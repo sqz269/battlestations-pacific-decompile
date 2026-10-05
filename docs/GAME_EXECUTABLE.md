@@ -14389,3 +14389,37 @@ Deaths are y -> variant.
 **Predictions:** right on `p7d` (USN02 only), `aiw` (USN04, E2, USN13 long, USNRM01) and `azd`
 (IJN01, JM05, JM05 long, USNRM01). **Missed:** JM08 long's mover is `pla`, not `hsc` / `wrk`;
 `pla` moves several plane rows (USN04, E2) where "little" was predicted.
+
+## Mission reference baselines, 2026-10-05 z (main c8c69f5ab)
+
+Packet `cc9_reference_rebaseline_26`, worker cc9-gunnery26, report `reports/cc9_reference_rebaseline_26.json`. The base is main `c8c69f5ab`
+(2026-10-05 21:30 UTC). Anything flipped on main during these runs belongs to the next reference.
+
+### The switch diff and the plan
+
+`local\g26_switches.py 409ad51a6 c8c69f5ab` lists five switches newly ON and three new OFF ones
+(`kAiCoordinatorCreatedAtLoad`, `kAiLoadoutCarriedTermsBound`, `kPlaneSceneEquipmentBound`):
+
+| short | switches | record |
+| --- | --- | --- |
+| `gate` | `kAiCoordinatorLoadGateBound` | SHIP_AI 150 (no AI coordinator on a mission-tree launch) |
+| `aml` | `kAiAutoMergeLeaveBound` | SHIP_AI 149 |
+| `wts` | `kAiWeightBarrelGatesBound`, `kAiPlaneAttackerWeightBound`, `kAiPlaneLoadoutArmBound` | SQUADRON_LAND_TASK 5df.1 |
+
+SHIP_AI 150.7 lists `aml` and `wts` as inert on single-player rows with `gate` ON. So the
+leave-one-out sets `gate` alone OFF, in two rounds. One row (USN04) sets `aml` + `wts` OFF to
+confirm that they are inert.
+
+**Rows:** y's twenty-two (USNRM01 among them), in y's launch form (`local\g26_zlane.ps1`, copied
+from g25's; `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player).
+
+### Predictions (written before the runs)
+
+- **Anchor** (all five OFF at `c8c69f5ab`): gameplay-identical to y on all twenty-two rows.
+- **Z against y.** Without a coordinator, no AI group is created and no coordinator order is issued.
+  - Every row whose y log shows coordinator tick orders moves (exit 3). That is every row but five.
+  - BSM01, LOMP10, LOMP10 long, USN02 and USN12 show `tick_orders=0` in y. They come back
+    gameplay-identical, unless the group creation alone reaches gameplay.
+- **`gate` OFF alone** is gameplay-identical to y's history with `aml` and `wts` live. It carries
+  every move of Z against y.
+- **USN04 with `aml` + `wts` OFF** is gameplay-identical to Z.
