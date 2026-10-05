@@ -9680,7 +9680,7 @@ installation's `scripts/global/commandhelpers.lua` (mtime 2024-10-29) wraps them
 
 | row | calls on v | objectives the run adds (`objective binding` lines, v and W logs) | their targets in the script | non-ship vehicles |
 | --- | --- | --- | --- | --- |
-| JM08 long | 804 | `Missouri`, `landingships`; no `Objectives_AddUnit` call at all | `ijn/JM/jm08.lua` (mtime 2024-07-13) 464-516: no `luaObj_Add` has a target; primary 2's `luaObj_AddUnit` takes `Mission.USNLsts` / `USNCargos`, ships | none |
+| JM08 long | 804 | `Missouri`, `landingships`; no `Objectives_AddUnit` call at all | **corrected in section 120.4:** the row runs `COTP-IJN/PRCPIJN/jm08.lua` (mtime 2024-07-13), not `ijn/JM/jm08.lua`. Its 630-631 add `Mission.Flagship` (Missouri) and `Mission.LandShips` (11 US troop transports), all ships | none |
 | USNOS long, USNOS | 95, 17 | `Troop` only | `COTP-USN/us_osumi.lua` 1320: `Mission.Trgs` = Enterprise and TroopTrans1-6 (524-531), all ships | none |
 
 USNOS's later objectives (1650-1654: `JapHQs`, `Forts`, `RadioTowers`; 1760 `FinalTrgs`) would
@@ -9770,3 +9770,84 @@ OFF is this tree at `d0558a62c` (`local\s28_c0_<row>.log`). ON is `pair_export -
 - **Spread miss:** LOMP06 and USNOS long were predicted to move zone points (exit 3). No fallback
   point there lies in a zone (`zone_moved` 0), so both are gameplay-identical.
 - **Verdict:** the mechanism matches and the miss is in spread only, so **flipped ON**.
+
+## 120. Objectives_Add's target walk (packet `cc9_objective_add_targets`, `kObjectiveAddTargetWalkBound`, cc9-ships28, 2026-10-05)
+
+The fix for section 118.3. The lead lent `src/game_hosts_lua.cpp` to this lane for the packet.
+`local\s28_edit_lua_118.py` was applied unchanged after merging main `7e7d805c4`.
+- **The switch.** `kObjectiveAddTargetWalkBound`, committed OFF.
+- **ON, the start index.** `008CD440`'s walk starts at argument 5, or at 6 after a boolean argument 5.
+- **ON, list arguments.** A table argument without an `ID` is walked element by element, for Add,
+  AddUnit and RemoveUnit (`008CD96F..`; `0088B840` lists all three as callers). A position
+  (vector3) table still adds no unit, as before.
+- **Census.** The `objective binding ... units=` lines and the world-set summary's
+  `objective_units=` count the change; no new line.
+
+### 120.1 Which reference rows carry a target into an Add
+
+This installation's scripts, against the `objective binding` lines of the OFF logs:
+
+| row | objective the run adds | the call | targets |
+| --- | --- | --- | --- |
+| USNOS, USNOS long | `Troop` | `us_osumi.lua` 1320 `luaObj_Add("primary", 1, Mission.Trgs)` | Enterprise, TroopTrans1-6 (the player's own ships) |
+| USN13 | `Prot` | `usn_13_truk.lua` 1026 `luaObj_Add("primary", 1, Mission.USCV)` | the player's carrier(s) |
+| JM06 | `Ambush` | `jm06.lua` 847 `luaObj_Add("primary",1,Mission.CargoTargets)` | the enemy cargo ships |
+| E2 | `Bombers` | most likely `usn_19_coralus.lua` (not confirmed) | - |
+| LOMP06 | `us_pri_obj_1` | `06_crucial_cargo.lua` 671 `luaObj_Add("primary",1)` | none: control |
+| JM08 | `Missouri`, `landingships` | `jm08.lua` 464-516, no target | none: control |
+
+### 120.2 What reads the sets
+
+- **`00A0F810`'s objective multiplier (x10).** It asks set 0 when the attacker's `+54h` equals
+  the local party (the host's constant 0) and set 4 otherwise. A hit needs an attacker on side 0
+  weighing a slot-0 objective unit.
+- **`00A2C450`'s world-set test.** It asks the set of the brain's player slot.
+- **`00922C80`'s set branch** (section 118). It is reached only for non-ship vehicles, so ships in
+  the set do not change it.
+- **The HUD's grey arrow and objective markers.** Presentation only.
+
+### 120.3 Predictions (written before any run)
+
+- **USNOS, USNOS long.**
+  - `Troop` logs `units=7` ON (0 OFF).
+  - The targets are the player's own ships, which no side-0 attacker weighs, so the
+    target-weight `objective_hits` stays 0.
+  - `00922C80`'s `nonempty` rises while `hits` stays 0.
+  - Expected exit 0 or 1. A move would come from `00A2C450` if a brain's slot is 0, or from the
+    status path's unit drops (`unit_drops=` in `summary mission objective status`).
+- **LOMP06, JM08 (controls).** `units=0` both ways; exit 0 or 1.
+- **JM06** (run as an extra row). `Ambush` gains the enemy cargo ships. If the IJN attackers are
+  side 0, `objective_hits` > 0 and targeting moves: exit 3.
+- **Verdict rule.** Flip ON when the `units=` counts match the scripts' target lists and the
+  controls hold. A move is accepted when it is traceable to one of 120.2's readers.
+
+### 120.4 The pairs, and the flip
+
+OFF is this tree at `5d2e16934` (`local\s28_o0_<row>.log`). ON is `pair_export --commit 5d2e16934
+--flip kObjectiveAddTargetWalkBound=true` (`local\s28_o120on`, SHA-256 prefix `6BB9C4D60430`,
+`local\s28_o5_<row>.log`). Both use the reference launch form.
+
+| row | `units=` OFF -> ON | world-set `objective_units` | target-weight `objective_hits` | 118's set branch ON (queries / nonempty / hits) | `pair_diff` |
+| --- | --- | --- | --- | --- | --- |
+| smoke | - | 0 -> 0 | 0 | 0 / 0 / 0 | 0 |
+| LOMP06 (control) | `us_pri_obj_1` 0 -> 0 | 0 -> 0 | 0 | 0 / 0 / 0 | 0 |
+| USNOS | `Troop` 0 -> 7 | 0 -> 7 | 0 | 13 / 13 / 0 | 1 |
+| USNOS long | `Troop` 0 -> 7 | 0 -> 7 | 0 | 132 / 132 / 0 | 1 |
+| JM06 | `Ambush` 0 -> 3 | 0 -> 3 | 0 | 0 / 0 / 0 | 1 |
+| JM08 | `Missouri` 0 -> 1, `landingships` 0 -> 11 | 0 -> 12 | 0 (no queries) | 0 / 0 / 0 | 1 |
+
+- **The units.** Every `units=` count matches the script's target list. `Troop` is Enterprise
+  and TroopTrans1-6. `landingships` is `Mission.LandShips`.
+- **A correction to 120.1 and 118.2.** JM08 was meant to be a control. It is not: the JM08 row
+  runs `COTP-IJN/PRCPIJN/jm08.lua`, whose `luaObj_Add("primary",2,Mission.Flagship)` and
+  `luaObj_Add("primary",1,Mission.LandShips)` (630-631) carry targets. Its targets are ships, so
+  118's no-reach verdict stands.
+- **JM06.** I predicted exit 3 if the IJN attackers are side 0. `objective_hits` stays 0, so they
+  are not: the target-weight test asks set 4 for them (`local_party` is the host's constant 0).
+  Whether that constant is right on an IJN row is a separate question for the AI lane, recorded
+  here and not chased.
+- **No reader moved gameplay on these rows.** `00A2C450` hits stay 0. 118's branch now finds a
+  non-empty set on USNOS but no member, because only ships are in it.
+- **Verdict.** Every count matches and every pair is exit 0 or 1, so the switch is **flipped ON**.
+  JM08 long, USN13 and E2, which also add targets, were not paired; their reach goes through the
+  same readers.

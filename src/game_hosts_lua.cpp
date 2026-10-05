@@ -110,7 +110,8 @@ const lua_CFunction kLibraryOpeners[bsp::kMissionLuaStandardLibraryCount] = {
 //             arg3 string       (008CD6D3/008CD6E2 GetString)
 //             arg4 string       (008CD744/008CD758 GetString)
 //             arg5 optional bool(008CD7D6 IsBoolean, 008CD832/008CD846 GetBoolean)
-//             arg6.. the targets, walked without an immediate index
+//             arg5.. the targets (arg6.. when arg5 is a boolean), walked
+//             without an immediate index; see kObjectiveAddTargetWalkBound
 //   008CDD60  arg0 party, arg1 slot, arg2 name (kObjectiveNameArgument),
 //             arg3.. the targets (kObjectiveFirstTargetArgument)
 //
@@ -162,6 +163,46 @@ bool objective_argument_unit(lua_State* state, int index, std::size_t& unit) {
     if (!number || id <= 0) return false;
     unit = static_cast<std::size_t>(id - 1);
     return true;
+}
+
+// Packet cc9_objective_add_targets, docs/SHIP_AI_OPEN_ITEMS.md section 118.3.
+// True: 008CD440's target walk starts at argument 5 (008CD753 MOV ESI,5) and
+// at 6 only when argument 5 is a boolean (008CD7C6 CMP EAX,5 / JLE, 008CD7ED
+// IsBoolean, 008CD841 MOV ESI,6); a target that is neither an entity handle
+// (008889C0) nor a vector3 table (0088B840) is a table whose elements are
+// walked (008CD96F.., IterateFirst/IterateNext), as in 008CDD60 and 008CE510.
+// False: Add's walk starts at 6 and a list table adds nothing. ON: section 120.4
+// (USNOS, USNOS long, JM06, JM08 gameplay-identical; LOMP06 control).
+inline constexpr bool kObjectiveAddTargetWalkBound = true;
+
+// The units argument `index` names: an entity table itself, or, while
+// kObjectiveAddTargetWalkBound, every entity-table element of a list table.
+// Positions (vector3 tables) carry no ID and add no unit, as before.
+void objective_argument_units(lua_State* state, int index,
+                              std::vector<std::size_t>& out) {
+    std::size_t unit = 0;
+    if (objective_argument_unit(state, index, unit)) {
+        out.push_back(unit);
+        return;
+    }
+    if (!kObjectiveAddTargetWalkBound) return;
+    const int slot = index + 1;
+    const int top = lua_gettop(state);
+    if (slot > top || lua_type(state, slot) != LUA_TTABLE) return;
+    lua_pushnil(state);
+    while (lua_next(state, slot) != 0) {
+        if (lua_type(state, -1) == LUA_TTABLE) {
+            lua_getfield(state, -1, "ID");
+            const int type = lua_type(state, -1);
+            if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+                const int id = static_cast<int>(lua_tonumber(state, -1));
+                if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
+            }
+            lua_pop(state, 1);
+        }
+        lua_pop(state, 1);
+    }
+    lua_settop(state, top);
 }
 
 // 008CDEF2's loop and 008CDFE0's explicit slot. This process has one player
@@ -507,7 +548,11 @@ int binding_trampoline(lua_State* state) {
         const std::string name = objective_argument_string(state, 2);
         // 008CD440's targets begin after its three strings and its boolean;
         // 008CDD60's at kObjectiveFirstTargetArgument.
-        const int first_target = is_add ? 6 : bsp::kObjectiveFirstTargetArgument;
+        int first_target = is_add ? 6 : bsp::kObjectiveFirstTargetArgument;
+        if (kObjectiveAddTargetWalkBound && is_add) {
+            // 008CD753 / 008CD841: 5, or 6 after a boolean argument 5.
+            first_target = argc > 5 && lua_type(state, 6) == LUA_TBOOLEAN ? 6 : 5;
+        }
         int units_touched = 0;
         for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
             if ((mask & (1u << k)) == 0u) continue;
@@ -520,11 +565,13 @@ int binding_trampoline(lua_State* state) {
                 }
             }
             for (int arg = first_target; arg < argc; ++arg) {
-                std::size_t unit = 0;
-                if (!objective_argument_unit(state, arg, unit)) continue;
-                const bool moved = is_remove ? sets.remove_unit(k, name, unit)
-                                             : sets.add_unit(k, name, unit);
-                if (moved) ++units_touched;
+                std::vector<std::size_t> units;
+                objective_argument_units(state, arg, units);
+                for (const std::size_t unit : units) {
+                    const bool moved = is_remove ? sets.remove_unit(k, name, unit)
+                                                 : sets.add_unit(k, name, unit);
+                    if (moved) ++units_touched;
+                }
             }
         }
         host->note_objective_binding(dispatch_row.name, name, mask, units_touched);
