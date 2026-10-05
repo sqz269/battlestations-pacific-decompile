@@ -9715,3 +9715,25 @@ Census: `summary mission ship ai surface set branch queries= nonempty= vehicles=
 - `hits` = 0 on every row; `nonempty` = 0 on the three rows while 118.3 stands.
 - **Pairs: exit 0 or 1 on every row.** The ON pair runs on USNOS (with the smoke); `hits` > 0
   anywhere is a prediction failure to explain before flipping.
+
+### 118.6 The pairs, and the flip
+
+OFF is this tree at `6dbb63f27` (`local\s28_off_<row>.log`); ON is `pair_export --commit 6dbb63f27
+--flip kShipAiSurfaceSetBranchBound=true` (`local\s28_on`, SHA-256 prefix `428EFD44A61E`), both in
+the reference launch form.
+
+| row | queries | nonempty | vehicles | hits | `pair_diff` |
+| --- | --- | --- | --- | --- | --- |
+| smoke (USN01, 300 frames) | 0 | 0 | 0 | 0 | exit 1 |
+| USNOS | 13 (v: 17) | 0 | 0 | 0 | exit 1 |
+
+The only moved lines are the census's own `bound=` and the `ship ai free` search counters
+(`empty`, `refills`), the known noise of a same-binary pair. Every prediction of 118.5 held:
+`queries` equals the old record count, the set is empty whenever the branch is asked, and the
+pair is gameplay-identical. **Verdict: mechanism matches, no reach; flipped ON.** JM08 long and
+USNOS long were not paired: the census shows the branch asks an empty set, and the scripts'
+objective adds on those rows (118.2) are the same as USNOS's or have no targets.
+
+Reach returns only with 118.3's fix and a row whose objectives name land units (USNOS past
+`us_osumi.lua` 1650). Then `hits` counts the forts, HQs and radio towers the ship AI's goal
+vector starts treating as surface targets, as the image does.

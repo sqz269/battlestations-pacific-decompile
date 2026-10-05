@@ -237,7 +237,8 @@ inline constexpr bool kShipAiSnapshotBound = true;
 // 00922C80's set test (00922D3F..00922D5B) answers through 008DDF90 on the local
 // slot's objective set, and a member is a surface target. False: the branch is a
 // record and the allow_far tail always answers. The lookup is counted both ways.
-inline constexpr bool kShipAiSurfaceSetBranchBound = false;
+// ON: the USNOS and smoke pairs were gameplay-identical (section 118.6).
+inline constexpr bool kShipAiSurfaceSetBranchBound = true;
 // Packet cc9_ship_ai_neighbour_count, docs/SHIP_AI_TAILS.md section 13. True:
 // the traffic setback walk of 009EEAAB reads world list 6 ([[00E188A8]+19CCh]
 // +60h, 009EEB8B) through 009DBBC0, tests vtable+5Ch(6) (009EEBC8), skips the
