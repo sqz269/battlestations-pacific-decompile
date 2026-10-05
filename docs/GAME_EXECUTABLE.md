@@ -14335,7 +14335,7 @@ landed since x moves a row.
 | USNRM01 | 9000 | 48648.2 | 192 | 3119 (1742) | 76767 | 99.90 s | 52 of 82 / 118 of 174 | 95093 | PT 2287.35 | none (Mission.EndMission never true) | 537 | `local\g25_y_base_usnrm01.log` |
 | IJN11 | 3000 | 560.0 | 2 | 81 (2) | 809 | 77.50 s | - | 2 | Zao 1497.27 | none (Mission.EndMission never true) | 502 | `local\g25_y_base_ijn11.log` |
 
-**Against the anchor (= x): sixteen rows move** (exit 3): USN04, E2, USN01, USN02, JM08, USN13,
+**Against the anchor (= x): fifteen rows move** (exit 3): USN04, E2, USN01, USN02, JM08, USN13,
 LOMP06, JM05, USNOS, USNOS long, IJN01, JM05 long, JM08 long, USN13 long, USNRM01 (and nothing
 else). **JM06, BSM01, LOMP10, USN12, LOMP10 long, ESMP08 long and IJN11 are gameplay-identical.**
 
