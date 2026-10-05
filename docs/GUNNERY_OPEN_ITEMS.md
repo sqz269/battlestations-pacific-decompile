@@ -8904,3 +8904,25 @@ Main `720f37936` (with `a8404d451`, the coordinator gate ON), control export, US
   700 s, against 59 for `94c5c61c3` and 65 for `82fa35ace`.
 - The coordinator gate turns off the weight paths of section 114 on single-player rows, so the
   early death has gone. It goes the same way section 114's chain did.
+
+## 116. `CruiseCommand::stop_state_step` was a mislabelled record (cc9-ships33's census, lead item; cc9-gunnery26)
+
+**The record.** `finish_issue_tail` (`src/game_hosts_commands.cpp`) recorded
+`CruiseCommand::stop_state_step [009e1170] UNIMPLEMENTED` whenever a `stop` became current. On the
+z rows that is 1-355 calls per row, BSM01 272 and JM08 355.
+
+**The image site.** `BSP_WeaponDirector_BeginCurrentCommand` `00835C70`. For
+`ppuVar1 == 00E08F70 || 00E08F88` it calls `BSP_WeaponDirector_RaiseCommandStage(1)`. Only for
+`00E08F70` (`cruise`) does it go on to `BSP_WeaponDirector_LatchCruiseFields`. **So for `stop`, the
+whole arm is the stage raise**, and the host already ran it: `begin.raise_command_stage(1)`.
+
+**What the record claimed was missing does exist.** The per-step `stop` state is the ship AI leaf
+`00D215C8`, step `009E14C0` (`ship_ai_stop_step_009e14c0`, `src/ship_ai_state_steps.cpp`,
+complete). The ship AI host runs it: z's JM08 log reads `ShipAiState::stop_step [009e14c0]
+concrete calls=243`, and BSM01's 17028. The record carried the *cruise* step's address `009E1170`.
+
+**Change.** The record became `done("WeaponDirector::begin_command_stop_arm", 0x00835e0e)`, and
+the row's `blocked` text now names `009E14C0`. There is no behaviour change and no switch.
+
+**Identity.** JM08, 3000 frames, against z's `g26_z_base_jm08.log`: `pair_diff` reports gameplay
+identical (22 deaths, 482 hit records, 2794 shots). The log is `local\g26_stop_jm08.log`.

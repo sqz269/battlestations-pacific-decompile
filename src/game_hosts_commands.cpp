@@ -1771,14 +1771,17 @@ void finish_issue_tail(GameCommandsHost::Impl& host, ChainState& chain,
     } else if (row.current && current == 0x00e08f88u) {
         // `stop` reaches the same arm and raises the stage, but 00835e17 tests
         // the command against 00e08f70 before the latch, so only `cruise`
-        // latches. What a `stop` then asks of the ship belongs to another state
-        // of the 00d21598 class family, which has no reconstruction.
+        // latches: RaiseCommandStage(1) is the arm's whole body for `stop`
+        // (GUNNERY 116). The per-step state is the ship AI's `stop` leaf
+        // 00D215C8, step 009E14C0, reconstructed in ship_ai_state_steps.cpp and
+        // run by the ship AI host; it was recorded here under the cruise step's
+        // address 009E1170 by mistake.
         DirectorBinding begin(chain);
         begin.raise_command_stage(1);
-        host.record("CruiseCommand::stop_state_step", 0x009e1170u);
+        host.done("WeaponDirector::begin_command_stop_arm", 0x00835e0eu);
         row.blocked = "`stop` raises the command stage and latches nothing (00835e17 "
-            "compares the command against 00e08f70); its per-step state is another class "
-            "of the 00d21598 family and has no reconstruction";
+            "compares the command against 00e08f70); its per-step state is the ship AI's "
+            "009e14c0";
     }
 
     if (host.life_traced(unit_index)) {
