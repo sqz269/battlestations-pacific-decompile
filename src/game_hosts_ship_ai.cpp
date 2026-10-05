@@ -130,6 +130,12 @@ inline constexpr bool kShipAiTargetCurveRefillBound = true;
 // curve refill (009F2EC1..009F2F16) runs only while +1220h < 0, in mode 0 and
 // with the byte +1208h clear. False: whenever +1220h <= 0.
 inline constexpr bool kShipAiOwnCurveRefillGateBound = true;
+// Packet cc9_approach_target_layer_push, SHIP_AI_OPEN_ITEMS section 132. True:
+// 009F1E36..009F1F07 for a ship target. When its bot's position layer (blk+164h,
+// read through vtable 2Ch) is below this class's +570h, the approach point is
+// the brain goal pushed out of the +570h zone group by 25.0 (00417B10). False:
+// the goal is always copied verbatim.
+inline constexpr bool kShipAiApproachTargetLayerPushBound = true;
 // Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
 // block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
@@ -3843,22 +3849,48 @@ public:
         owner_.record("ShipAiApproachPoint::random_stream1", 0x00bd2f10u);
         return low;
     }
+    // Packet cc9_approach_target_layer_push. [target+740h] is the target ship's
+    // bot (00810DF7); its vtable 00D21AE8 slot 2Ch is 009F3C80 `MOV EAX,[ECX+1C4h]`,
+    // brain (bot+58h) +16Ch = blk+164h, the position layer 009ECA20 keeps.
     int target_zone_group_vtable_002c() override {
-        owner_.record_slot("ShipAiApproachPoint::target_zone_group", "00cfc3d0+vtable2c");
-        return 0;
+        const std::size_t t = target_index();
+        if (t >= owner_.controllers.size()) return 0;
+        owner_.done("ShipAiApproachPoint::target_position_layer", 0x009f3c80u);
+        return static_cast<int>(owner_.controllers[t].nav_block.value_164);
     }
+    // 009F1E4D..009F1E55: [[unit+538h]+570h].
     int unit_zone_group_0570() override {
-        owner_.record("ShipAiApproachPoint::unit_zone_group", 0x009f1e55u);
-        return 0;
+        owner_.done("ShipAiApproachPoint::unit_zone_group", 0x009f1e55u);
+        return static_cast<int>(ctl_.class_reference_0570);
     }
+    // 009F1E77: 0082ADC0 on the class answers the zone group of [class+570h]
+    // in EAX, which becomes 00417B10's ECX. The float return is the label of an
+    // older reading; the group is taken in zone_exit_point_00417b10.
     float unit_avoid_radius_0082adc0() override {
-        owner_.record("ShipAiApproachPoint::unit_avoid_radius", 0x0082adc0u);
+        owner_.done("ShipAiApproachPoint::unit_zone_group_0082adc0", 0x0082adc0u);
         return 0.0f;
     }
+    // 009F1E94: 00417B10(group, &out, &goal {x, z}, 25.0f, 1).
     bsp::ShipAiAttackMoveXZ zone_exit_point_00417b10(const bsp::ShipAiApproachPoint& from,
-                                                     float) override {
-        owner_.record("ShipAiApproachPoint::zone_exit_point", 0x00417b10u);
-        return bsp::ShipAiAttackMoveXZ{from.x, from.z};
+                                                     float push) override {
+        if (!owner_.zones.ready()) return bsp::ShipAiAttackMoveXZ{from.x, from.z};
+        const std::uint32_t group = owner_.zones.group_for_layer(ctl_.class_reference_0570);
+        if (group == 0u) return bsp::ShipAiAttackMoveXZ{from.x, from.z};
+        owner_.done("ShipAiApproachPoint::zone_exit_point", 0x00417b10u);
+        const std::array<float, 2> out = owner_.zones.offset(group, {from.x, from.z}, push, true);
+        return bsp::ShipAiAttackMoveXZ{out[0], out[1]};
+    }
+    // 009F1DCE..009F1DDB and 009F1E36..009F1E3E: a ship target (IsKindOf(6))
+    // whose +740h bot exists. Every ship here has a controller standing in for it.
+    bool target_ship_with_bot() const {
+        const std::size_t t = target_index();
+        return t < owner_.controllers.size() && t < owner_.units.count()
+            && owner_.units.unit_is_kind_of(t, 6);
+    }
+    std::size_t target_index() const {
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        return handle == 0u ? static_cast<std::size_t>(-1)
+                            : static_cast<std::size_t>(handle - 1u);
     }
 
 private:
@@ -5275,6 +5307,9 @@ public:
             in.target_is_building_1c = owner_.units.unit_is_kind_of(target, 0x1c);
             in.target_is_kind_08 = owner_.units.unit_is_kind_of(target, 8);
             in.target_side_0054 = owner_.units.unit_side_0054(target);
+            // 009F1F65 TEST BL: this pass's displacement (packet
+            // cc9_approach_target_layer_push; always false while it is unbound).
+            in.point_displaced = ctl_.approach.point_displaced;
             if (bsp::kShipAiApproachLandingModesBound && in.target_is_building_1c) {
                 // 009F2095, 006F2D90 (ECX = the building, body 006F2D90-006F2DDB,
                 // RET): true at the first pad of +794h whose occupant (006AC220) is
@@ -5597,12 +5632,19 @@ public:
         // unless the target carries a zone object.
         ApproachPointBinding point(owner_, ctl_, index_);
         const bool has_target = ctl_.goal_vector.raw_target_0b20 != 0u;
-        // 009F1E36, [target+740h]: the target's own zone object. No producer in
-        // this process, so the displacement arm at 009F1E94 is never taken.
-        owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
+        // 009F1E36, [target+740h]: the target ship's bot (packet
+        // cc9_approach_target_layer_push). Census both ways, then the arm.
+        const bool ship_bot = point.target_ship_with_bot();
+        census_target_layer_push(point, ship_bot);
+        bool has_zone = false;
+        if (kShipAiApproachTargetLayerPushBound) {
+            has_zone = ship_bot;
+        } else {
+            owner_.record("ShipAiApproach::target_zone_object_0740", 0x009f1e36u);
+        }
         const int committed_before = ctl_.approach.committed_slot_11e8;
         const bsp::ShipAiApproachPoint point_before = ctl_.approach.point_1228;
-        bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, false,
+        bsp::ship_ai_approach_frame_state_009f1bc0(ctl_.approach, has_target, has_zone,
                                                    seconds, point);
         run_retarget_arm(run_mode_latch(), point_before);
         // Packet cc8_ship_ai_committed_slot: 009F28F1, the one per-frame writer
@@ -5808,6 +5850,33 @@ private:
             owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
             ++owner_.summary.approach_curve_refreshes;
         }
+    }
+
+    // Packet cc9_approach_target_layer_push, both ways: approach passes with a
+    // ship target, those whose position layer is below this class's +570h
+    // (009F1E60 CMP / JGE), and those where 00417B10 moves the goal by more
+    // than 1 (009F1F03). Pure reads; no native-table rows.
+    void census_target_layer_push(const ApproachPointBinding& point, bool ship_bot) {
+        auto& s = owner_.summary;
+        if (!ship_bot) return;
+        ++s.target_layer_ship_passes;
+        const std::size_t t = static_cast<std::size_t>(ctl_.goal_vector.raw_target_0b20 - 1u);
+        const int target_layer = static_cast<int>(owner_.controllers[t].nav_block.value_164);
+        const int own = static_cast<int>(ctl_.class_reference_0570);
+        s.target_layer_min = std::min(s.target_layer_min, target_layer);
+        s.target_layer_own_max = std::max(s.target_layer_own_max, own);
+        if (!(target_layer < own)) return;
+        ++s.target_layer_below;
+        if (!owner_.zones.ready()) return;
+        const std::uint32_t group = owner_.zones.group_for_layer(ctl_.class_reference_0570);
+        if (group == 0u) return;
+        const float gx = ctl_.goal_vector.goal_x_0b2c;
+        const float gz = ctl_.goal_vector.goal_z_0b34;
+        const std::array<float, 2> out = owner_.zones.offset(group, {gx, gz}, 25.0f, true);
+        const double dx = static_cast<double>(out[0]) - gx;
+        const double dz = static_cast<double>(out[1]) - gz;
+        if (static_cast<float>(dx * dx + dz * dz) > 1.0f) ++s.target_layer_moved;
+        (void)point;
     }
 
     // Packet cc9_target_curve_refill: the kind of [owner+0B20h] on every
@@ -12478,6 +12547,12 @@ void GameShipAiHost::report() {
             host.summary.target_curve_emptied, host.summary.target_curve_kind_skips,
             host.summary.target_curve_mode_skips, host.summary.target_curve_refills,
             kShipAiTargetCurveRefillBound ? 1 : 0);
+        host.log.notef("summary mission ship ai approach target layer push ship_passes=%llu "
+            "below=%llu moved=%llu min_target_layer=%d max_own_0570=%d bound=%d (009f1e36..009f1f07, 00417b10; packet "
+            "cc9_approach_target_layer_push)", host.summary.target_layer_ship_passes,
+            host.summary.target_layer_below, host.summary.target_layer_moved,
+            host.summary.target_layer_min, host.summary.target_layer_own_max,
+            kShipAiApproachTargetLayerPushBound ? 1 : 0);
         host.log.notef("summary mission ship ai own curve refill gate mode_skips=%llu "
             "flag_skips=%llu bound=%d (009f2ec1..009f2eeb, packet cc9_own_curve_refill_gate)",
             host.summary.own_curve_mode_skips, host.summary.own_curve_flag_skips,
