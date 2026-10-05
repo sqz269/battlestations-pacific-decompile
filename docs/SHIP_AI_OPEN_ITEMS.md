@@ -11928,3 +11928,46 @@ packet's pair since (sections 60-149).
     - BSM01 and LOMP06 may stay gameplay-identical, since few or no AI groups order anything there.
     - Mission scripts that issue `PilotSetTarget` / `NavigatorAttack` keep driving their units in
       both builds.
+
+### 150.5 Smoke and pairs (flip held for the lead)
+
+- **Runs:** OFF is this tree at `8221f5ca9` (the ON-arm fix 56a20c62f, which compiles OFF to the same
+  code). ON is `pair_export.py --flip kAiCoordinatorLoadGateBound=true --out local\s32_cg_on`.
+  Rows are in reference y's launch form (`local\s32_rows.ps1`).
+- **Smoke** (`local\s32_cgsmoke.log`, USN13 300 frames, ON): clean exit, `steps_absent=300
+  groups_created=0 tick_orders=0`.
+- **Mechanism:** on every ON row, `steps_absent` equals the mission frames, and
+  `groups_created=0 tick_orders=0`.
+
+| row | OFF groups / tick orders | `pair_diff` | deaths OFF -> ON | hull hits | other |
+| --- | --- | --- | --- | --- | --- |
+| USN13 3000 | 167 / 1161 | 3 | 22 -> 22 | 129 -> 129 | shots identical; RNG-coupled retimes |
+| USN13 long 9000 | 209 / 2488 | 3 | 121 -> 102 | 2545 -> 1766 | dive-bomb tasks 1 -> 3 of 50 |
+| USN04 4500 | 47 / 14 | 3 | 43 -> 48 | 791 -> 153 | torpedo tasks 2 -> 3 of 16 |
+| E2 (USN04 9000) | 57 / 14 | 3 | 73 -> 52 | 1130 -> 153 | |
+| USNOS 3000 | 391 / 1023 | 3 | 67 -> 87 | 186 -> 177 | |
+| IJN01 3000 | 90 / 152 | 3 | 1 -> 1 | 82 -> 151 | shots 3011 -> 4846 |
+| JM08 long 36000 | 201 / 2081 | 3 | 83 -> 207 | 837 -> 754 | |
+| USNRM01 9000 | 154 / 464 | 3 | 192 -> 129 | 1694 -> 1351 | torpedo tasks 52 of 82 -> 6 of 15, dive-bomb tasks 116 of 174 -> 36 of 51; the controlled unit is West Virginia (0 m), not PT |
+| LOMP06 1000 (control) | 72 / 16 | 3 | 0 -> 0 | 0 -> 0 | shots 6 -> 9 |
+| BSM01 3000 (control) | 65 / 0 | **1** | 0 -> 0 | 0 -> 0 | |
+
+**Reading.**
+- **The mechanism matches the read:** no coordinator, no group, no planner, no group tick.
+- Every row with coordinator orders moves, as predicted. BSM01, whose groups issue no tick order,
+  is gameplay-identical. LOMP06's 16 orders move its shots only.
+- The spread is the largest of any switch so far:
+  - On USN04 and E2, hull hits fall about 80% (791 -> 153).
+  - On USNRM01, far fewer strike tasks are created (82 -> 15 torpedo tasks): the host's carrier
+    strikes there were planner launches.
+  - JM08 long's deaths go from 83 to 207.
+
+**Verdict:**
+- The mechanism matches, and the predictions held on direction and reach.
+- **The flip is held for the lead.** It removes every coordinator behaviour bound in sections
+  60-149 from all single-player rows, and the next reference would be re-based on it.
+- **Open before a flip:**
+  - USNRM01's controlled-unit change (West Virginia) is a mission-script consequence that was not
+    read.
+  - USNRM01's 82 -> 15 tasks should be checked against the script's own strike orders, to confirm
+    that the remaining launches are the script's.
