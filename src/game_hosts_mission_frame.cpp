@@ -350,6 +350,8 @@ struct GameMissionFrameHost::Impl {
         float throttle{0.0f};      // takehelm
         float repeat_seconds{0.0f};  // moveto ... repeat N
         bool select{false};        // packet cc9_player_order_capture_row
+        bool attack{false};        // packet cc9_player_attack_row
+        std::string target;        // attack: the target entity's name
         float stop_radius{-1.0f};  // takehelm ... stop R; negative: none
         unsigned applications{0};
         std::string unit;
@@ -2535,19 +2537,43 @@ void GameMissionFrameHost::set_helm_orders(const std::string& path) {
         order.frame = std::strtol(words[0].c_str(), &end, 10);
         const bool frame_ok = end != nullptr && *end == '\0' && order.frame >= 0;
         const bool verb_ok = words.size() >= 2
-            && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select");
+            && (words[1] == "moveto" || words[1] == "takehelm" || words[1] == "select"
+                || words[1] == "attack");
         // Packet cc9_player_order_capture_row: `<frame> select <unit>`.
         const bool select_ok = verb_ok && words[1] == "select" && words.size() == 3;
         if (!frame_ok || !verb_ok || (words[1] == "select" ? !select_ok : words.size() < 4)) {
             host.log.notef("helm order refused: line %d of \"%s\" is not `<frame> moveto "
                 "<unit> <x> <z>|<navpoint> [repeat <s>]`, `<frame> takehelm <unit> "
-                "<throttle> <x> <z>|<navpoint> [stop <m>]` or `<frame> select <unit>`", line,
+                "<throttle> <x> <z>|<navpoint> [stop <m>]`, `<frame> select <unit>` or `<frame> attack "
+                "<unit> <target> [repeat <s>]`", line,
                 path.c_str());
             continue;
         }
         order.unit = words[2];
         if (select_ok) {
             order.select = true;
+            host.helm_orders.push_back(order);
+            continue;
+        }
+        // Packet cc9_player_attack_row: `<frame> attack <unit> <target...>
+        // [repeat <s>]`; the target is the rest of the line (names such as
+        // "Coastal Gun 01" carry spaces).
+        if (words[1] == "attack") {
+            if (words.size() >= 6 && words[words.size() - 2] == "repeat") {
+                char* re = nullptr;
+                order.repeat_seconds = std::strtof(words.back().c_str(), &re);
+                if (re == nullptr || *re != '\0' || !(order.repeat_seconds > 0.0f)) {
+                    host.log.notef("helm order refused: line %d of \"%s\": repeat needs a "
+                        "positive number of seconds", line, path.c_str());
+                    continue;
+                }
+                words.resize(words.size() - 2);
+            }
+            order.attack = true;
+            for (std::size_t w = 3; w < words.size(); ++w) {
+                if (!order.target.empty()) order.target += ' ';
+                order.target += words[w];
+            }
             host.helm_orders.push_back(order);
             continue;
         }
@@ -2750,6 +2776,53 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
                 host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) select "
                     "%s%s through 0064A00E -> 00645060 -> 00645600 -> 20h", accepted
                     ? "applied" : "refused", order.line, due, now, order.unit.c_str(), why);
+                continue;
+            }
+            if (order.attack) {
+                // Packet cc9_player_attack_row: the order screen's page-1 attack,
+                // 005FAAE0's ship arm (005FAAF5..005FABA6): [00E188D8] must be a
+                // ship; 0077C470(unit, 2, 0) gives back role 1 (the helm); then
+                // 0077D600(00E08F78 attackmove, 00465080(target, 0.0), flags 1).
+                // LABELLED: the image attacks the director's fire target
+                // (+238h, 008364E0) and the player's pick path is unread, so
+                // the target is named here; message 57h is not reproduced.
+                std::size_t idx = host.units->count();
+                for (std::size_t k = 0; k < host.units->count(); ++k) {
+                    const GameUnitRow* row = host.units->unit_row(k);
+                    if (row != nullptr && row->name == order.unit) { idx = k; break; }
+                }
+                const char* why = "";
+                if (idx >= host.units->count()) {
+                    why = " (no created unit has that name)";
+                } else if (order.applications > 0 && !host.units->unit_alive_and_visible(idx)) {
+                    continue;   // a repeat stops when the unit is gone
+                } else if (!host.units->controlled_bound()
+                           || host.units->controlled_index() != idx) {
+                    why = " (not the controlled unit [00E188D8])";
+                } else if (!host.units->unit_is_kind_of(idx, 0x06)) {
+                    why = " (005FAB05: not a ship)";
+                }
+                bool issued = false;
+                if (*why == '\0') {
+                    host.units->role_request_0077c470(idx, 2u, false);   // 005FAB38
+                    issued = host.units->issue_player_command("attackmove", order.target,
+                        order.unit);                                       // 005FABA1
+                    if (!issued) why = " (the command path refused it)";
+                }
+                ++order.applications;
+                if (issued && order.repeat_seconds > 0.0f) {
+                    const float frame_seconds = host.mission_frame_seconds > 0.0f
+                        ? host.mission_frame_seconds : 0.05f;
+                    long step = static_cast<long>(order.repeat_seconds / frame_seconds + 0.5f);
+                    if (step < 1) step = 1;
+                    order.frame = static_cast<long>(now) + step;
+                    order.applied = false;
+                }
+                if (issued) ++host.helm_orders_applied; else ++host.helm_orders_refused;
+                host.log.notef("helm order %s: line %d frame %ld (at mission frame %llu) attack "
+                    "%s -> %s%s through 005FAAE0: 0077C470(unit, 2, 0), 0077D600(00E08F78, "
+                    "00465080(target), 1)", issued ? "applied" : "refused", order.line, due, now,
+                    order.unit.c_str(), order.target.c_str(), why);
                 continue;
             }
             float x = order.x;
