@@ -11278,7 +11278,13 @@ bodies `00423C50` (GUNNERY 109).
 
 ### Open, with where to start
 
-- **The capture chain has no reference row.** The retake exemption (`006F4FBA..006F5017`, the
+**Next, in order** (from section 138's census, `local\s29_census_r5.txt`; none read by this branch):
+1. `AiCommand::squadron_excluded_009ffeb0` (113796 calls; USNOS long 37542, USNRM01-class rows). Read `009FFEB0` and check whether the host answers a constant where the image reads a live squadron field.
+2. `AiCommand::tick_000c` (`00A10EC0`, 55959 calls). Read the slot it stands in for.
+3. `ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530` (29922 calls): the robots.lua values stand in for the TorpedoBot level row. Check whether the units host now keeps that descriptor.
+4. The cosmetic items below.
+
+- **The capture chain has no reference row** (sections 142 and 142.1). No reachable row can flip a building with an idle player, in the image either. Pairing the chain needs a player-input row, which is outside the idle-reference contract. The retake exemption (`006F4FBA..006F5017`, the
   host passes -1), the flip slot pick and the `+7C0h` stagger cannot be paired with an idle
   player. Section 142's runs (`local\s30_cap_<row>.log`) give the closest case: USN01 at 36000
   frames, Japanese ships in CB2's 100 m for 18 s. A scripted-helm row could make it flip, if
