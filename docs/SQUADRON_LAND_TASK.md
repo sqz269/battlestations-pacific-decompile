@@ -9434,3 +9434,44 @@ cc9-ships27's lane; routed to the lead). Next reads: `00A0F970` (the group targe
 plane group against LandFort) and the image's adoption of generated squadrons into a brain.
 USN04's opposite move (45 -> 71 deaths) belongs to the same switch and should be re-read after the
 fix.
+
+## 5cp. Handoff (cc9-lua33, 2026-10-04)
+
+Branch `agent/cc9-lua33`, worktree `J:\PROG\battlestations-pacific-decompile-cc9-lua33`. No lease
+is held. `src/game_hosts_ai.cpp` was on loan for packet 1 and has been handed back.
+
+| packet | commits | switch | state | section |
+| --- | --- | --- | --- | --- |
+| `cc9_ai_squadron_settarget_intake` | `aaf170730`, `deeabf8a5` | `kAiSquadronSetTargetIntakeBound` | **ON** | 5ck.1, 5ck.2 |
+| `cc9_strafe_goaway_row` | `ab54ae37b` (trace), `1700efc38` | - | read | 5cl |
+| `cc9_strafe_breakoff` | `a14bb33f1`, `cd062f4ff` | `kStrafeBreakoffBound` | **ON** | 5cm, 5cm.1 |
+| `cc9_script_dogfight_rows` | `8d319feb2`, `01ec9eb13` | `kGetSquadronPlanesBound` | **ON** | 5cn, 5cn.1 |
+| 5ch USN13 check | `5532e517c` | `kAiTickMovetoRetasksPlaneBound` | recommend **OFF** (routed) | 5co |
+
+Env-gated traces added:
+- `BSP_STRAFE_GOAWAY_TRACE=1` (`src/game_hosts_units.cpp`): goaway enter, re-plans, done tests,
+  gates, pushes and manoeuvre ends.
+- `BSP_LUA_CALLBACK_TRACE=1` (`src/game_hosts_script_orders.cpp`): the first time and call count
+  of every `lua*` function and every host-fired Lua callback.
+
+Scripts are in `local\`: `l33_runs.ps1 -Tag <t>` (pairs), `l33_trace_runs.ps1` (one traced run),
+and `l33_ga_analyze.py` / `l33_mv_analyze.py` (goaway and manoeuvre episodes).
+
+### Next, in order
+
+1. **5ch (5co).** Settle what feeds the USN13 stall:
+   - `00A0F970`'s group value for a squadron group against a LandFort group;
+   - whether the image adopts a `GenerateObject` squadron into an AI brain at all.
+
+   Then re-pair USN13, USN13 long and USN04 with 5ch.
+2. **BSM04's dialog sequencer.** `StartDialog` `008B0540` -> the panel `00451A90` plays a
+   `Mission.Dialogues` sequence, including its `["type"] = "callback"` entries. This host only
+   registers the id. The INTRO and ZEKES callbacks (`bsm_04:164-190`) lead to the 1909 script
+   dogfight. Read how the panel advances (the per-message duration source) before binding.
+3. **USNRM01** is blocked on the West Virginia never taking damage. That is routed to
+   cc9-gunnery23 (5cn).
+4. **Break-off follow-ups (5cm):**
+   - the stacked second push when the enter and the tick push in one think;
+   - the manoeuvre head's `vt[40h]` `0099C2C0` on a command change;
+   - tightturn's `+2E4h &= ~4`.
+5. 5cj's remaining items.
