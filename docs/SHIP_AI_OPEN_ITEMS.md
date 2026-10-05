@@ -9589,3 +9589,62 @@ Rank 3 of section 114. **What 51h does, read:**
 - the units host writes `+308h` from GlobalConfig `+104h` (or `+100h`), takes the role transfer,
   the owner hand-off and the two commands, then kills with reason 3 at expiry.
 - Both halves would need their own pair.
+
+## 117. Handoff (cc9-ships27, 2026-10-04, at about 72% context)
+
+### Landed on this branch (all docs; nothing bound)
+
+| section | what |
+| --- | --- |
+| 110 | JM08's transport "rams" are friendly gunfire; the image's friendly-fire rules match the host (the line-of-fire memo is for kinds 1/5/6 only, and its `SafeToFireCacheTimeOut` field has no reader) |
+| 111 | UST 04's grounding: the follower-pass `follow` and the bridged move alternate. A station-keeping follower gets no escape turn (`blk+330h` = 0). The friendly fire happens inside the planner groups, and is recorded as the image's behaviour |
+| 112 | the close-attack fallback skips `00A02020`'s gates: read, predictions, and the prepared edit `local\s27_edit_ai_112.py` (routed to cc9-lua33, not yet applied) |
+| 113 | section 105's queue closed |
+| 114 | the fourth ranking |
+| 115 | the quick-spawn arms: no reference row spawns (no stock lists; the Defend percent is authored 0.0) |
+| 116 | the SELLING message 51h: removal 5 s after it; no reach on JM05 (CaptureRange 0/20/10 m) |
+
+### The next packets, in order
+
+1. **Section 112's pairs**, once cc9-lua33 lands `kCloseFallbackOrderBridgeBound` OFF (the lead
+   sends the sha).
+   - Merge main; do not re-apply the edit.
+   - Run the 300-frame smoke, then same-tree pairs
+     (`python tools/pair_export.py --commit <sha> --flip kCloseFallbackOrderBridgeBound=true --out local\<prefix>_on`)
+     on LOMP06, USNOS long, JM06 and USN13, with E2 as the control.
+   - Check the census line `summary mission ai close fallback bridge` against 112.4:
+     - `calls` = the OFF `fallback`, and `near_refused` = 0;
+     - `fallback` falls by `class_refused`;
+     - `zone point asks` rises by `ships`.
+   - Flip by verdict.
+2. **Rank 5 of section 114: `008DDF90`**, the surface-target set branch in `00922C80`
+   (`ShipAiGoal::target_is_surface_set_branch`). Calls on reference v: JM08 long 804, USNOS long
+   95, USNOS 17. Read the set's producer and whether it holds any of those targets.
+3. **The IJN11 stock scene** (`ijn\ijn_11_operation_to.scn`, 136 `Stock N` bags) is the one
+   candidate row for the planner spawn (sections 52, 115).
+   - Section 52 found `spawn_due=0` there in 3000 frames.
+   - A longer run decides whether the image would buy units there. If it does, the route is
+     `00A25A30 -> 00A23980 -> 0094C830 -> 00949530`, the SpawnNew queue the host drains.
+   - Still unread on that route: `00A0D1D0`, `00A236F0`, `00A21D90`, `00947BC0`, `0094B600`.
+4. **The rest of section 114's ranking:**
+   - the engage gate's avoid-zone test (rank 4; its label is stale now that
+     `GameAvoidZoneRuntime` is built; USNOS and USNOS long);
+   - `frame_state_unread_spans` (list its remaining spans);
+   - the back-off countdown, which waits for a row that arms it.
+   - Rank 6, the sunk-hull shape flag, went to the gunnery/physics lane through the lead.
+
+### Notes
+
+- **Reference W** is base `85f60f0a5`. A W build is in cc9-gunnery23's tree
+  (`local\g23_rw\build\win32\Release\bsp_game.exe`); `local\s27_run.ps1` launches one
+  reference-form run with any exe.
+- **`BSP_LANDER_DIAG=1`** prints every side-0 ship's pose every 10 s (`fleet diag`).
+  `local\s27_mindist.py` turns that into each unit's closest approach to given points.
+- **Tools** (in `J:\PROG\battlestations-pacific-decompile-cc9-ships27\local\`, `s27_` prefix):
+  - `s27_grep.py` (capped grep), `s27_kinds.py` (line kinds), `s27_timeline.py` (one unit's
+    states and orders);
+  - `s27_follows.py` (follow pairs), `s27_callscan.py <target> [pattern]` (rel32 callers from the
+    PE on disk);
+  - `s27_census.py` (`S27_ROOT=<log dir>`, the non-concrete host rows);
+  - `s27_cc.ps1` (compile-check one TU against copied headers).
+- No lease is held after this commit.
