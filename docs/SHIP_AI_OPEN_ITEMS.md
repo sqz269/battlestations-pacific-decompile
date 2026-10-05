@@ -10339,3 +10339,70 @@ reach.
   - `s28_cc.ps1` / `s28_cc2.ps1` / `s28_cc3.ps1`: compile one TU against copied headers.
 - `pair_export --flip` finds a switch in a header (`include/bsp/...`) too.
 - No lease is held after this commit.
+
+## 129. `game+1FE4h` is the embedded session's mode, and single player never sets it (packet `cc9_session_mode_1fe4`, cc9-ships28 then cc9-ships29, 2026-10-05)
+
+Section 125's open question: who writes `game+1FE4h`, the gate of `004BC890 BSP_Game_SetGameMode`'s
+slot-party rewrite. Static reading only; the original executable is never run. **Verdict: 0 on
+every single-player launch, so `004BC890` rewrites nothing and USN13's slot 4 stays `Allied` as the
+scene authors it. The host's constant 0 is the image's value: no divergence, no switch.**
+
+### 129.1 The field
+
+- **`game+1EF0h` is a session object embedded in the game.** `BSP_Game_ConstructActualStorage`
+  constructs it at `004DDEA0 LEA ECX,[ESI+1EF0h]` / `004DDEAB CALL 0076EDE0`, and
+  `004D7A72 LEA ECX,[ESI+1EF0h]` / `CALL 007727A0` in `BSP_Game_EndScene` passes it as `this`.
+  So `game+1FE4h` = `session+F4h` and `game+1FE8h` = `session+F8h`. That is why a `.text` scan finds
+  no store with displacement `1FE4h` (cc9-ships28's 124 hits are all reads; a capstone sweep of
+  the whole `.text` for a store or read-modify-write with that displacement finds none, nor for
+  `1FE8h`).
+- **Two writers of `session+F4h`** (capstone sweep of the session segment `0076AA00..00787040` for
+  stores with displacement `F4h`; the same sweep for `F8h` gives the pair below):
+  - the constructor `0076EDE0`: `0076EE17 XOR EBX,EBX`, then `0076EE7F MOV [ESI+0F4h],EBX` and
+    `0076EE85 MOV [ESI+0F8h],EBX`. No call or other EBX write lies between `0076EE17` and
+    `0076EE85` (the function's EBX writes are the `0076EDF6` push, `0076EE17` and the
+    `0076EFE5` pop). **Initial mode 0.**
+  - `0076FAD0 BSP_Session_SetMode(mode)` (`__thiscall`, `RET 4`): `0076FB30` saves the old mode at
+    `+F8h`, `0076FE85 MOV [ESI+0F4h],EDI` stores the argument. A mode-0 call while `[00E198C4]` is
+    non-zero only sets `session+27Dh` (`0076FAF1..0076FB17`). Mode 1 builds the scene records and
+    ends in `004BC890` (the host); mode 2 is the client arm (route flag `00E0AF1C` = 2); mode 0 is
+    the teardown.
+
+### 129.2 Every call of `0076FAD0` (byte census, `tools/callsite_census.py 0076fad0`: 25 sites)
+
+Nineteen pass 0 (`004B621E`, `004CCCD5`, `004E4403`, `00568CCE`, `0057ABAC`, `0057AC47`,
+`00598821` `BSP_MainMenuScreen_Enter`, `005D2233`, `005D2269`, `005D22C7`, the tail jumps
+`005D2397` and `005D23CE` with `[ESP+4]` = 0, `005D2437`, `005D2521`, `005D2545`, `005D2569`,
+`005E978F`, `005ED329`, `00688C59`). The six non-zero sites are all multiplayer front end:
+
+| site | in | mode | how it is reached |
+| --- | --- | --- | --- |
+| `005EC9FC` | raw `005EC990..005ECA69` (no Ghidra function; vtable slot `00CF2B34`) | 2 | the listbox listener of a screen whose vtable `00CF2B10..00CF2B68` follows the `globals.gamemode_*` strings; it runs only when `[[00E198B4]+20h]` = `10h`, `INTF_MULTIMODESELECTOR` (interface table `00E08CD8`), stores the selection in `00E19614`, and for index 2 calls `SetMode(2)` and pushes `1Ah` `INTF_MULTISESSIONBROWSER` |
+| `00770E42` | `00770E40` (`PUSH 1` / `CALL`) | 1 | only from `005EC9D1`, the same listener's index 0, which then pushes `14h` `INTF_MULTIGAMELOBBY` |
+| `005EAC75` | `005EAC60` | 1 | only from `005ECD80` (vtable slot `00CF2B64`, the same class): host, then the XLive session create through `[00F8A2FC]` vtable `+16Ch` |
+| `005E6F2A` | `005E6F00` | 2 | sets `00E08700` = 1 and pushes `1Ah` `INTF_MULTISESSIONBROWSER` |
+| `0057AAA6` | `0057A9C0` | 2 (`EDI`, `0057AA92 MOV EDI,2`) | the session join: `BSP_LobbySettings_CopyStoredOptions`, from the session-browser rows `0057AC10` / `0057AE50` / `0057B530` |
+| `0062B289` | `0062B110` | 2 | only when XLive reports a sign-in, `[00F8A2FC]+4Dh` is set and `game+1FE8h` (the previous mode) is 2; it pushes `1Ah`. `session+F8h` is written only by the constructor (0) and `0076FB30` (a copy of `+F4h`), so it is never 2 unless an earlier call set mode 2 |
+
+`004BC890`'s other callers (`004D4DF0`, `004C6890`, `0046B730`, `004E27E0`, `005D5660`,
+`005D62B0`, `005E50D0`, `005E5B30`) run the `1FE4h` gate themselves and do not write it.
+
+### 129.3 What follows
+
+- In single player `session+F4h` stays 0 from the constructor on, so `004BC8A1 CMP [ECX+1FE4h],EAX`
+  / `JE 004BCA4C` skips the rewrite and the slot parties are the scene's `Multiplay.PlayerN` blocks
+  (section 125.1). **USN13's slot 4 is `Allied` in the image**, as `usn_13_truk.scn` authors it,
+  and every `session_mode()` / `game+1FE4h` constant 0 in the host (`game_hosts_commands.cpp`,
+  `game_hosts_gunnery.cpp`, `game_hosts_hud.cpp`, `game_hosts_fixed_step.cpp`) is the image's value.
+- So cc9-lua34's `kAiWeightBarrelGatesBound` (SQUADRON_LAND_TASK 5cr) cannot be explained by a wrong
+  slot-4 team: if the gates make Japanese air groups target themselves on USN13, the cause is
+  elsewhere (what the slot-4 brain plans, or how the gates read the target's side), not the team.
+- **Uncertainty.** The reach claims are static: the six non-zero sites sit behind multiplayer
+  interfaces (`10h`, `14h`, `1Ah`) and the XLive session object; no single-player path to them was
+  found, but the front-end state machine was not walked exhaustively. A playable single-player
+  mission launched from a multiplayer lobby would be a session game and is out of scope.
+- **Names for the lead** (provisional): `005EC990..005ECA69`
+  `BSP_MultiModeSelector_OnListSelect` (raw, end exclusive `005ECA69` after `005ECA66 RET 8`; the
+  next bytes are `8D 49 00` alignment and its switch table at `005ECA6C`, not INT3), and `00770E40`
+  `BSP_Session_SetModeHost` (`PUSH 1` / `CALL 0076FAD0` / `00770E47 RET`, end exclusive `00770E48`,
+  INT3 after).
