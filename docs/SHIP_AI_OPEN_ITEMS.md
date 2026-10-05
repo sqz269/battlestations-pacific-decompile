@@ -11169,3 +11169,57 @@ from this tree's 21 ON logs (`local\s30_on_<row>.log`).
 **Verdict.** No binding. The capture path's next reach would be a row where a building actually
 flips. That needs either an authored CaptureValue small enough for a landing to complete, or the
 `BSP_CB_FORCE_ZERO` diagnostic.
+
+## 142. No idle single-player row flips a building within 1800 s (lead item, cc9-ships30, 2026-10-05)
+
+The goal was a reachable mission where a CommandBuilding changes hands inside a reference-length
+window with an idle player, to serve as a capture reference row. None was found. The capture chain
+switches therefore still have no reach; the reason is the AI's capture spawn (below).
+
+**The scene census.** `local\s30_capscan.py` lists every `entity "..." (CommandBuilding)` of this
+installation's `.scn` files with Party, CaptureRange and CaptureValue, and maps each scene to its
+missiontree ids. The output (649 rows) is `local\s30_capscan.txt`.
+- Almost every single-player building has CaptureRange 0-100 and CaptureValue 10000-100000.
+- The large-range ones are:
+  - LOMP07 (1300/5000 and 900/7000), both Allied;
+  - IJN11 (1300/10000), Allied;
+  - LOMP10/ESMP10 (1100/7000), Allied;
+  - USNC2 (1100/7000), Allied.
+- USN11's `Test_Command Station 01..03` (2000/0) are not instantiated: the host's capture list on
+  USN11 holds only `Command Center 01` (500/1000, party 1).
+- JM08's and USN06's HQs are 2000000.
+
+**Runs** (this tree's `build\` at `08110cac6`; logs `local\s30_cap_<row>.log`):
+
+| row | frames | buildings | outcome |
+| --- | --- | --- | --- |
+| USN06 | 3000 | Headquarter 01, party 1, 500/2000000 | nothing |
+| USN11 | 3000 | Command Center 01, party 1, 500/1000 | nothing |
+| USN18 | 3000 | Command Station 01, party 1, 1/50 | nothing |
+| LOMP07 | 3000 | two, party 0 | nothing |
+| USNSY | 3000 | RadarStation, party 0, 100/1000 | nothing |
+| USN01 | 36000 | CB2, party 1, 100/10000 | **neutralized at 32.90 s.** Four side-1 ships pass within 100 m at 1430.9..1448.9 s: s1=40 per tick, progress to -760. They leave, and progress decays to 0 by 1486.9 s. No flip |
+| JM05 | 36000 | three, party 0 | RadarStation 01 neutralized at 70.65 s; no tick ever has strength; no flip |
+| USN13 | 36000 | three, party 1, 100/10000 | CB4 neutralized at 1610.80 s; no flip |
+
+TRN4/TRN6 (sea training, 2500/20) never enter the mission through `--menu-select`. JM10 resolves
+to TRN1.
+
+**Why nothing flips: the capture force is never bought.** In the image, the capture planner's
+spawn arm `00A2B477-00A2B7A6` (sections 51.2 and 51.3) buys a `"[capture]"<id>` force for the
+best target:
+- the call chain is `00A25A30` -> `00A23980` -> `0094C830` -> `00949530`
+  `BSP_SpawnManager_EnqueueRequest`;
+- the force is sourced from the team's CommandBuildings with an adopted garrison;
+- the budget passes in single player (section 51.2 item 3).
+
+That force is what sails into CaptureRange. The host records the arm
+(`AiPlanners::capture_spawn_arm_00a2b400`, `src/game_hosts_ai.cpp`). It falls due on JM05 (6/83),
+JM08 (25/433), USN01 (24), USN13 (24/102) and USNOS (26/101), per section 138's census.
+Without it, only ships already on the map can capture, and on USN01 they pass through for 18 s.
+
+**Proposal.** Bind the capture spawn arm as its own packet in the AI lane. Its unread parts are
+section 51.3's list: `00A23980` with the tail Ghidra drops, `00A236F0`, `00A21D90`,
+`00A24870`/`00A07D40`, and `0094C830`/`0094B600`. Then re-run USN01, JM05, USN13 and JM08 at
+36000 frames: these are the rows where the arm falls due and a building is neutralized. The
+first one that flips becomes the capture reference row.
