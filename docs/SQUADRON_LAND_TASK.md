@@ -11100,3 +11100,64 @@ Scripts in `local\`:
    squadron's rack ammo (5df.1). The image's scene squadrons fly the generator's Equipment
    (`0094BD34`). This is a planes-lane packet, with release counts on every Zero row.
 4. 5cx's manoeuvre-survives-command item still has no reach.
+
+## 5dj. Item 1: the Capture think does not filter plane groups (packet `cc9_capture_plane_filter`, cc9-lua38, 2026-10-05)
+
+Question (cc9-lua38 brief, item 1): does `00A29FD0` assign plane groups to a capture target, or does it
+filter by group kind, class or CapturePower first? **It does not filter.** Nothing is bound, and 5ch
+is not re-paired by this item.
+
+### The image
+
+- **Group records, `00A2A263`-`00A2AA90`** (decompiled lines 158-405). Every group on the planner's
+  `+24h` list gets a record (`00A287C0`): `[0]` group, `[1]` `00A2C530` (resource), `[2]` `00A1A7A0`
+  (current target). The only test on the group is at `00A2A279`, `00A2C5A0`
+  (`BSP_AiGroup_HasGroupableCombatant`) AND `group+5658h == [00F8A9E4]`. It runs only when
+  `[00F8A9E0] == 1` (`local_195`), and it sets `local_162`, which only selects the debug draw
+  `00A2B950` (lines 393-399). In this process it decides nothing.
+- **The per-target weight, `00A2A380`**: `00A250A0(group, entity)`, that is
+  `00A0C650(00A07E40(group), 00A24870(entity), ...)`.
+  - `00A07E40` (`BSP_AiGroup_BuildEntityRecords`, `00A07E40`-`00A07EA2`) pushes one `00A04560`
+    record per member, with no kind test.
+  - `00A24870` collects through `00A07D40`. That walk (list `world+19CCh -> +34h`) keeps entities
+    with `+5Dh` clear (`00A07D73`) and `+54h` equal to the requested side (`00A07D81`) that answer
+    `vtable[5Ch]` 6, 18h or 1Bh (`00A07DB7`, `00A07DC6`, `00A07DD5`). With none, it uses the target's own record (`00A248FD`).
+- **The assignment loop, `00A2AAA0`-`00A2AF40`** (lines 426-500). It keeps the best
+  `(1 - k) * w + k * s` over the live target/group pairs. The only gate is `w > [00D7A218]` (0.0).
+  The winner is ordered through `00A1A720` (`00A2AD77`).
+- **No CapturePower read.** The Capture think's listing has no class read: no `+3D0h`, `+804h` or
+  `+810h` operand, and every `+5Ch` operand is a stack slot (`[ESP+5Ch]`), not a `vtable[5Ch]`
+  kind query. Among its own calls, the only one that tests a kind is `00A2C5A0`, above. CapturePower (`class+804h`) and LandedCapturePower (`+810h`) are
+  read by the CommandBuilding capture (`src/game_hosts_ship_ai.cpp`), not by the planner.
+- **Plane groups reach the Capture planner.** A squadron group is a groupable combatant, so the
+  claim rule gives it slot 3, which is Capture (docs/PLANNER_TASK_CHOICE.md section 1).
+
+So the image assigns any group whose members score above zero against what stands around the
+target. A torpedo-bomber group qualifies whenever ships of the planner's enemy side stand near the
+target.
+
+### What this process does on USN13 (diagnostic run, this tree at `1219b301c`)
+
+`BSP_CAPTURE_DIAG=1`, USN13 3200 frames, `local\l38_diag_usn13.log`. Its headline matches `l37_j0`:
+`capture path thinks=41 assignments=1723`, `capture group value bound=1 calls=5169 zero=0`.
+- The block at t=25.20 s lists 15 `bruh` groups (one squadron each) and three targets:
+  - CB2, with 20 collected units;
+  - CB4, with 14;
+  - CBT, with 11.
+- Every `bruh` group is assigned CB2: `bruh #1.1`-`#1.6` at score 3.860, and `#1.7`-`#1.15` at 0.551.
+- CB2's 20 units are the Japanese side's (`planner+34h` = 1) ships and guns near it, the Marus among
+  them. A Kate's torpedo option rates a ship (target kind 6). That is why `w > 0`, even though no
+  torpedo option rates CB2 itself.
+
+### Verdict
+
+The `bruh` CB2 orders come from the image's rule as read. The only questionable input is the one 5cq
+named: the slot-4 brain's team (`brain+24h` = 0, Allied, while it commands the Japanese side;
+SHIP_AI 125, cc9-ships28's lane). With a Japanese-team brain:
+- Capture would target the Allied CommandBuildings;
+- its defender walk would collect Allied ships;
+- a Kate wave would be sent at the US side.
+
+Nothing in the Capture think is a host artefact that a switch could correct.
+`kAiTickMovetoRetasksPlaneBound` therefore stays OFF. Its USN13 stall follows from the team
+reading, not from a missing plane filter. No pairs were run for this item, because nothing was bound.
