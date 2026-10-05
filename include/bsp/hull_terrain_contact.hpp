@@ -122,6 +122,12 @@ inline constexpr bool kHullHullContactBound = true;
 // the narrow phase runs as a census only; hulls pass through forts.
 // ON by the pairs of 2026-09-30 (docs/GUNNERY_OPEN_ITEMS.md section 96.4).
 inline constexpr bool kHullFortContactBound = true;
+// Packet cc9_sunk_hull_shape_flag8 (docs/GUNNERY_OPEN_ITEMS.md section 101). 00825F20 at
+// 00826410..0082643B: once a wreck's sinkTime (+828h) passes 60 s, each hull shape loses mask
+// bit 8 (00C47F60), the terrain's group, so 00C44104's filter refuses every hull-terrain pair
+// (the terrain's own mask is 0). True: such a hull gets no terrain narrow phase and its
+// terrain manifolds are retired; it sinks through the seabed. False: wrecks keep resting on it.
+inline constexpr bool kSunkHullTerrainMaskBound = false;
 
 struct HullTerrainContactStepResult {
     int candidates{0};        // 00C53630 outputs over all pairs this step
@@ -156,6 +162,8 @@ struct HullWorldEntry {
     const std::vector<std::vector<OceanVec3>>* shapes{nullptr};
     float friction{0.0f};
     HullTerrainContactStepResult result{};
+    // kSunkHullTerrainMaskBound: the hull's shapes lost mask bit 8 (00826410..0082643B).
+    bool terrain_mask_cleared{false};
 };
 
 // Packet cc9_hull_fort_contact. One fort's static body: the world frame at creation (rows,

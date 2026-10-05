@@ -7916,3 +7916,66 @@ At t=1437.53 (unit 356 is UST 04):
   host's buoyancy elements and hydro forces with the ship stopped on full rudder
   (`dir=stopped throttle=0 rudder=-1`). Level, the stern keel would be at -9.96 m, 1.1 m above the
   ground at -11.06 m, so it would not touch at this point. No image run settles the trim.
+
+## 101. A wreck stops colliding with the seabed after 60 s: `00826410` (packet `cc9_sunk_hull_shape_flag8`, cc9-gunnery23)
+
+SHIP_AI 114 ranked `ShipMotion::sunk_hull_shape_flag8` sixth among the host substitutions
+(130250 hits on 8 rows).
+
+### 101.1 The read (`008263CE..0082645A`, `00C47F60`, listing)
+
+- `008263CE..008263DC`: `sinkTime` (`[EDI+518h]`, unit+828h) += dt while `+5Dh` is set.
+- **The trigger.**
+  - `008263E2..008263EE`: when `sinkTime > 60.0` (double `00CE3D68`), jump to `00826410`.
+  - Otherwise `008263F0..0082640E`: when `IsKindOf(0Eh)` (`vtable[5Ch]`, push 0Eh) and
+    `sinkTime > 20.0` (`00CE3930`), also go there.
+- **`00826410..0082643B`.** Take the hull body (`[[EDI+D08h]+2Ch]`) and its first shape
+  (`00C31DC0`), then walk `shape+208h`. Each shape with `shape+30h & 8` gets `00C47F60(shape, 8)`.
+- **`00C47F60`** (`00C47F60..00C47F8F`) is `shape+30h &= ~bits`, then the filter-change notify
+  (`[00CE2218]` with `0109ECD8`) and `00C43AA0(shape+4)`.
+- **What bit 8 means.** `shape+30h` is the shape's collision mask. `00C44104..00C44110` passes a
+  pair when either shape's mask holds the other's group. A hull's mask is `0Dh` | class bit
+  (GUNNERY 89, 96); the terrain's group is 8 and its mask is 0 (`00882AC0`).
+- **So after 60 s the wreck's hull-terrain pairs fail the filter.** The wreck sinks through the
+  seabed toward KillDepth (-200, section 4 of CONSTRUCT_WORLD's sink table), where `00826628`
+  kills it. Hull-hull and hull-fort pairs are unaffected: the other shape's mask still selects
+  group 1.
+- This corrects PROJECTILE_IMPACT's reading that flag 8 is the broadphase registration
+  (`00C50470`'s flag is a body flag, not the shape mask).
+
+### 101.2 The binding (`kSunkHullTerrainMaskBound`, committed OFF)
+
+- **`src/game_hosts_units.cpp`.** The sink block sets `slot.sunk_terrain_mask_cleared` once
+  `sink_time_828 > 60`. The world entry carries it (`HullWorldEntry::terrain_mask_cleared`) when
+  the switch is ON.
+- **`src/hull_terrain_contact.cpp` `world_step`.** Such a hull gets no terrain narrow phase (the
+  filter `dyn_shapes_overlap_filter(1, 0Dh & ~8, 8, 0)` fails), and its terrain manifolds are
+  retired.
+- **SUBSTITUTION, labelled:** the 20 s arm for IsKindOf(0Eh) is not taken. The host's
+  `unit_trait_0e` answers false.
+- **Census:** `summary sunk hull terrain mask bound=%d cleared_units=%zu wreck_terrain_steps=%llu`.
+  `wreck_terrain_steps` counts the hull-terrain contact steps of cleared wrecks, which can only
+  occur OFF.
+
+### 101.3 OFF census and predictions (written before any ON run)
+
+OFF census on this tree (`local\g23_sc_<row>.log`):
+
+| row | wrecks | cleared | wreck terrain steps after 60 s | kills at -200 |
+| --- | --- | --- | --- | --- |
+| USNOS | 1 | 1 | 1202 | 0 |
+| USNOS long | 7 | 7 | 7175 | 6 |
+| JM08 | 1 | 1 | 462 | 0 |
+| USNRM01 | 4 | 1 | 1643 | 0 |
+| E2, IJN01, JM05 long, USN13 long | 0 | 0 | 0 | 0 |
+
+**Predictions for the pair:**
+- **Mechanism:** ON, `wreck_terrain_steps` = 0 on every row.
+- **Kills:** on USNOS, USNOS long, JM08 and USNRM01, every wreck that rested on the seabed past
+  60 s falls through and is killed at -200. Kills rise by the resting wrecks: USNOS 0 -> 1,
+  USNOS long 6 -> 7, JM08 0 -> 1, USNRM01 0 -> 1, if the window leaves time for the fall.
+- **Exits:** those four rows exit 3, through the kill and destroy lines and any hit on a wreck.
+  Death tables are identical, since the victims are already dead; a re-timed row is possible
+  where a wreck had blocked a live hull or a round. E2, IJN01, JM05 long and USN13 long are
+  exit 0 or 1.
+- **JM08 long** (shallow, many sinkings) is expected to move.

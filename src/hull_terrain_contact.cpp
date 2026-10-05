@@ -1119,7 +1119,10 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
             m.hull.set_pose(body.row0, body.row1, body.row2, body.position);
             refresh_native_dyn_manifold_00c4b9b0(m.bytes);
         }
-        if (found == by_unit.end() || m.count() <= 0) {
+        // kSunkHullTerrainMaskBound: a hull whose shapes lost mask bit 8 fails 00C44104's
+        // filter against the terrain, so its terrain manifolds go with the pair.
+        const bool filtered = found != by_unit.end() && found->second->terrain_mask_cleared;
+        if (found == by_unit.end() || filtered || m.count() <= 0) {
             ++census_.retired;
             it = manifolds_.erase(it);
         } else {
@@ -1167,6 +1170,12 @@ void HullTerrainContactSolver::world_step(std::vector<HullWorldEntry>& hulls,
     // The narrow phase: terrain per hull (section 87), then the hull pairs.
     for (HullWorldEntry& e : hulls) {
         ++census_.steps;
+        // 00C44104..00C44110 with the hull mask 0Dh & ~8 (00826410..0082643B) and the terrain's
+        // group 8, mask 0: neither direction selects the other.
+        if (e.terrain_mask_cleared &&
+            !dyn_shapes_overlap_filter(1u, 0x0Du & ~8u, 8u, 0u)) {
+            continue;
+        }
         e.result = native_narrow_phase(e.unit, *e.body, *e.shapes, true);
         if (e.result.contact) {
             ++census_.contact_steps;
