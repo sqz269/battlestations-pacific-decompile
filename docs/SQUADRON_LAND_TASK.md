@@ -9652,3 +9652,103 @@ against OFF.
   `moveto` to their own leader point (`dist=0.0`) retires 22 attack heads; the planes loiter and
   die to US AA machine guns. In `l33_don_usn04` the Japanese plane deaths by AAMACHINEGUN (cat 1)
   rise from 10 to 26 and Japanese deaths overall by 19; US deaths rise by 7.
+
+### 5cq.1 Two corrections made before the pairs
+
+- **The plane arm's params.** `mode_tuning_record` carried only DamageCalcTime and
+  MaxTargetKillRatio. The plane arm's Dogfight, Strafe and TailGun params were therefore 0 and
+  every gun option's factor was infinite (census `factor_nonfinite` = every option, on a debug
+  build). `4bc3073bc` fills them from this installation's authored values, which are identical in
+  all seven tables (`highlvlaiglobals.lua`, mtime 2024-07-13). The first build `50bc6765e` was not
+  paired.
+- **The type id space is verified, no longer only labelled.** A class descriptor's `vtable[+18h]`
+  uses the entity id space:
+  - the MDestroyer descriptor (vtable `00D1ACF8`, slot `00D1AD10` -> `00963B70`) accepts 7, 6,
+    5, 4;
+  - the MPlaneFighter descriptor (`00D19C30` + 18h -> `00953650`) accepts 13h, 0Fh, 5, 4.
+
+  Every code `00A08460` asks (6 to 1Ch) is above the chain's root 4, so the unit's own `5Ch` test
+  answers the same.
+
+### 5cq.2 Measured, and the verdict: **both stay OFF**
+
+All builds are from `4bc3073bc`, in reference V's launch form, with `BSP_GUNNERY_RNG_STREAMS`,
+`BSP_DEATH_TABLE` and `BSP_AI_SQUAD_TICK_TRACE` set:
+- `local\l34_off`: both switches OFF;
+- `local\l34_gates`: `kAiWeightBarrelGatesBound` only;
+- `local\l34_on`: both switches;
+- `local\l34_on5`: both switches plus 5ch.
+
+E2 is USN04 9200/9000. A USN01 500/300 smoke on `l34_on5` finished cleanly.
+
+**Pair A: OFF against ON (5ch OFF). Deaths, shots and torpedo drops.**
+
+| row | pair_diff | deaths | shots | torpedo drops | gates only |
+| --- | --- | --- | --- | --- | --- |
+| USN13 3200 | moved | 22 -> 8 | 4189 -> 914 | 0 -> 0 | 8, 914 |
+| USN13 9200 | moved | 116 -> 55 | 40517 -> 10579 | 3 -> 0 | 55, 10709 |
+| USN04 4700 | moved | 45 -> 55 | 17447 -> 17469 | 0 -> 0 | 55, 17469 |
+| E2 (USN04 9200) | moved | 85 -> 83 | 31532 -> 24619 | 0 -> 0 | 83, 24619 |
+| USNOS 3200 | moved | 98 -> 56 | 6179 -> 2399 | 0 -> 0 | 56, 2399 |
+| ESMP08 14200 | moved | 47 -> 47 | 16091 -> 16916 | 4 -> 0 | 47, 16916 |
+| USN02 (control) | identical | 1 -> 1 | 1055 | 0 | - |
+| USN12 (control) | moved | 5 -> 3 | 144 -> 112 | 0 | 3, 112 |
+
+- **The gates carry the whole move.** The gates-only build gives the same headline as ON on
+  every row except USN13 long, where shots differ by 130. So the plane arm, as projected, changes
+  nothing visible on these rows. Its options do run: USN13 3200 counts `dogfight=47359/47359`
+  positive, and every strafe option scores 0 because MG accuracy against a ship group is 0.
+- **USN13 (the prediction missed).**
+  - The bruh groups do NOT stay on CB2. With the gates, the Capture think stops assigning them;
+    they are released to the Attack planner, which scores a Kate group's MG against its own Kates
+    above 0 (Armour unauthored, 0) and picks the group itself.
+  - The trace reads `cmd=CLOSEATTACK leader=bruh #1.1 ... target=bruh #1.1 dist=0.0`: 502
+    CLOSEATTACK and 29 MOVETOATTACK squad ticks, against 222 MOVETOATTACK and none OFF.
+  - The close pass then serves the bruh squadrons: the fallback bridge counts 294 calls, 162 of
+    them squadrons, against 116 calls and none for squadrons OFF.
+  - The strike leaves its torpedo runs. Every death the ON side does not have is a Kate (17 at
+    3200, 69 at 9200, `bruh` only). Torpedo drops fall 3 -> 0 on the long row, and the US AA shots
+    fall with them.
+- **USNOS.** Twelve `plane` deaths and nine ground objects (containers, a static Jill) are
+  OFF-only.
+- **ESMP08 14200.** The four TBF drops are lost, and the deaths are three Avengers either way.
+- **USN04 / E2.** Both sides' plane deaths are re-dealt (Zero, Val, Kate, Lexington and Yorktown
+  squadrons), and US squadron deaths fall on E2 (16 OFF-only against 9 ON-only).
+- **USN12 moved.** Only two ground objects (a barrel, a watchhouse) are lost OFF. Its Japanese
+  ship groups' MG barrels no longer score against ships. The control call was the weakest one,
+  and it missed.
+
+**Pair B: ON against ON + 5ch.**
+
+| row | deaths | shots | torpedo drops |
+| --- | --- | --- | --- |
+| USN13 3200 | 8 -> 0 | 914 -> 0 | 0 -> 0 |
+| USN13 9200 | 55 -> 11 | 10579 -> 509 | 0 -> 0 |
+| USN04 4700 | 55 -> 65 | 17469 -> 25686 | 0 -> 0 |
+| E2 | 83 -> 85 | 24619 -> 34447 | 0 -> 0 |
+| USNOS | 56 -> 56 | 2399 -> 1995 | 0 -> 0 |
+| ESMP08 14200 | 47 -> 30 | 16916 -> 12941 | 0 -> 0 |
+| USN02, USN12 | identical | | |
+
+- 5ch still strands USN13's strike: no torpedo release, and every Kate death goes away (36 on the
+  long row).
+- On ESMP08, 20 US strike deaths (TBF, SB2C, TBM) go away. Those planes fly their group's
+  points instead of attacking.
+
+**Verdict: both switches stay OFF.**
+- The mechanism matches the listing: the gates, the platform filters and the plane arm, with the
+  id space verified above.
+- The outcome rides on the Allied-team slot-4 brain (5cq (1)): with the image's gates, the
+  Japanese air groups target themselves.
+- USN13 3200 and the USN12 control are prediction misses.
+- So the binding is recorded and held OFF until the brain-team chain is settled in play. Flipping
+  it now would move every reference row for a reason that one open question decides.
+
+**5ch stays OFF.** With the weight ON, USN13's strike still never attacks under 5ch.
+
+**USN04 45 -> 71 under 5ch** (5co's pair, `l33_doff_usn04` / `l33_don_usn04`):
+- Japanese deaths +19 and US deaths +7.
+- Japanese planes killed by US AAMACHINEGUN fire (cat 1) rise 10 -> 26.
+- The Japanese plane groups target themselves (`target=B5N Kate #2.1 dist=0.0`). Each tick
+  `moveto` to their own leader point retires their scripted attack heads (`replaced_other=22`),
+  and the flights loiter under the US fleet's AA instead of completing their passes.
