@@ -10347,3 +10347,64 @@ head's `vt[40h]` `0099C2C0`"):
 
 Both are behind the same goaway reach. 5cj's remaining items (the `settarget` delivery and the
 script-dogfight rows) were superseded by 5ck, 5cn and 5cr-5cw.
+### 5cw.1 The lead's census: nothing rotates the velocity on the turn, yet the script expects the Kates to fly (cc9-lua35, 2026-10-05)
+
+**(a) Writers of the controller velocity.**
+- **The controller pointer.** Every site that forms it (`lea r,[unit+0AB0h]` or `add r,0AB0h`;
+  `local\l35_nextcall.py` over `local\l35_ab0.txt`) leads to these methods:
+  - `007D99C0`, `007D7A80`, `007DB2C0` (the reset; three sites inside spawn and launch-spot code);
+  - `007D9CE0` (re-parent, touchdown / launch only);
+  - `007D9E80` (set forward speed);
+  - `007D9C80` (`007CA58A`, touchdown / crash);
+  - `007D9EE0` and `007DB430` (the property bag, `007D5D20`);
+  - `007DB1F0`, the network state apply `007D1360`, plane `vtable+18Ch`. A message with byte `+26h`
+    set does carry a body-frame velocity through the current matrix. It is the multiplayer
+    send/apply pair (`007C2880` / `007D1360`), gated on states 4-7, and no single-player
+    loopback is established;
+  - the rest are pilot and timer methods.
+- **A disp32 census of `unit+AC8h..AD0h` and `+AECh..AF4h`** (`local\l35_dispscan.py`) finds no
+  plane-side store outside those methods.
+- **The core law** `007DB680` calls `007D81B0`, then `007D9C10` (body = world through the new
+  matrix), then `007DA710`, then `007D7C00`. The world velocity is the state.
+- **`vtable[3Ch]` (set forward speed along the current nose).** The `mov r,[r+3Ch] / call r` sites
+  with a float argument in `007B0000`-`007F8400`, `00880000`-`008C0000` and `00996000`-
+  `009F6000` (`local\l35_vcall.py`) are:
+  - `007C63AB`, `007C6467`, `007C64BB` (spawn);
+  - `007F29B6`, `007F2B3C` (squadron pass C);
+  - `0089F8F1`, `SquadronSetSpeed` `0089F780`. It would re-seed along the turned nose, but
+    `usn_1_pearl.lua` never calls it.
+
+**(b) `007F2920`, read past its call list** (decompiled):
+- It saves the leader's speed (`vt[38h]`), runs `007C6340`, and re-applies that speed with
+  `vt[3Ch]`.
+- It then places each wingman at its formation station from the leader's `+74h` matrix and gives
+  it the same speed (`007F2B3C`).
+- It runs in squadron pass C, which `GenerateObject` reaches synchronously (`0046DBE8 CALL
+  00925F20`, `CL` = 0). So the seed is along the authored heading, before the script's turn.
+
+**(c) `EntityTurnToEntity` `008A0A10` for a squadron:**
+- The arm is `008A0D5D` (`vtable[5Ch](18h)`) through `008A0DE4`. Per member it does
+  `00414DB0`, then `vtable[88h]` (`008A0DC7`/`008A0DD4`), and nothing else. The other `1FE4h`
+  arm (`007EDEB0`) is session-only.
+- All nine plane vtables (`00D00070`, `00D00308`, `00D05F20`, `00D06638`, `00D06920`,
+  `00D0BA80`, `00D19D28`, `00D1A000`, which is the Kate's primary, and `00D1A2D8`; found through
+  `007D1360` at `+18Ch`) have `+88h` = `007C9540` and `+3Ch` = `0074E1E0`.
+
+**So no static path rotates the velocity, and nothing is bound. But the script disagrees with
+the outcome.**
+- `luaIntroMovie...` (`usn_1_pearl.lua` around 948-966) keeps the camera on `TorpTable[1]` for
+  about 45 s of moves (8 + 25 s, then 12 + 8 s) before cutting to West Virginia.
+- In the host the Kates hit the sea about 8 s after spawning.
+- The authors expected a long run-in, which supports the lead's prior.
+
+The remaining candidates, none read here:
+1. **The free-flight law at negative forward speed.**
+   - `q = forward / StallSpd / LevelFlight` enters lift squared.
+   - Damping takes `007D92B0(forward / StallSpd)`.
+   - How the image's sign conventions treat `forward < 0` was never checked: the stall-law
+     packet studied small positive forward speeds.
+2. **The water kill against `SetInvincible(unit, true)`.** The script makes all five squadrons
+   invincible. The host's `plane depth kill` calls `BSP_MissionEntity_Kill` regardless.
+3. **The aim tick's throttle and pitch** at a 140-degree velocity error.
+
+All three are plane-lane reads (planes or gunnery owners), not Lua-host ones.
