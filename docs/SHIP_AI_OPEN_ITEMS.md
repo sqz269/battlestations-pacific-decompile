@@ -9978,3 +9978,60 @@ question".
 - **Rows to pair:** JM06, JM08, JM05, IJN01, with USN13 as the US control.
 - **Verdict rule:** flip ON when the value equals `local_team` on every row and every hit is a
   same-party attacker on a slot-0 objective unit.
+
+## 123. Rank 4 of section 114, the engage gate's avoid-zone test (packet `cc9_engage_gate_avoid_zone`, `kShipAiEngageGateAvoidZoneBound`, cc9-ships28, 2026-10-05)
+
+### 123.1 The image
+
+`009E85B0 BSP_ShipAi_AttackMoveEngageGate` (body `009E85B0..009E86B5`, `RET 0`; reconstructed as
+`ship_ai_attackmove_engage_gate_009e85b0`). The zone test, from `disasm-raw`:
+```
+009E8610/009E862C  the brain destination +B2Ch/+B34h  -> [ESP+8], [ESP+0Ch]
+009E8640  MOV EAX,[EAX+0AA8h]      ; the brain's unit
+009E8646  MOV ECX,[EAX+538h]       ; its class
+009E864C  CALL 0082ADC0            ; 004218E0, then 004120D0([class+570h]): the zone group
+009E8655  PUSH &destination
+009E8658  CALL 004178F0            ; the first zone of that group containing the point
+009E865D  TEST EAX,EAX / JNE 009E86AF  ; a zone: AL = 0, the gate is closed
+```
+Without a zone, the range test follows: (unit - destination)^2 < `00D09FE8` = 4,000,000.
+`0082ADC0` was read whole (`0082ADC0..0082ADD7`).
+
+### 123.2 The host
+
+Section 114's label was stale. `GameAvoidZoneRuntime` is built, and the retarget probe
+(`goal_zone_004178f0`) already asks it through the same `0082ADC0`/`004178F0` pair with
+`ctl.class_reference_0570`. The engage gate still answered "no zone". The binding asks the same
+table for the brain destination. Census, counted both ways:
+`summary mission ship ai engage gate avoid zone asks= hits= closes= bound=`. Here `closes` counts
+the hits where the range test would have opened the gate, which are the only answers ON can
+change. The caller is the submarine attack machine's `call_009e85b0`.
+
+### 123.3 Predictions (written before any run)
+
+- `asks` equals the old `ShipAiEngageGate::avoid_zone_list` count (on v: USNOS 133, USNOS long
+  133; 0 elsewhere).
+- `hits` <= `asks`, and `closes` <= `hits`. A submarine's destination is its target's position or
+  an approach point, and those lie in open water.
+- **Expected `closes` = 0 on USNOS, so exit 0 or 1.** If `closes` > 0, the submarine stays out of
+  its engage member that tick: exit 3. Explain that from the per-entity table before flipping.
+- **Pairs:** smoke, USNOS, USNOS long.
+
+### 123.4 The pairs, and the flip
+
+OFF is this tree at `5a32918d8` (`local\s28_e0_<row>.log`). ON is `pair_export --flip
+kShipAiEngageGateAvoidZoneBound=true` (`local\s28_e123on`, SHA-256 prefix `B3C534BAF5D9`,
+`local\s28_e5_<row>.log`). Both use the reference launch form.
+
+| row | asks | hits | closes | `pair_diff` |
+| --- | --- | --- | --- | --- |
+| smoke | 0 | 0 | 0 | 1 |
+| USNOS | 110 (v: 133) | 0 | 0 | 1 |
+| USNOS long | 110 | 0 | 0 | 1 |
+
+- **What moved:** only the census, the host-table status (`UNIMPLEMENTED -> concrete`, calls
+  110 -> 110), and the known `ship ai free` search noise.
+- **Why nothing else moved:** no submarine's brain destination lies in an avoid zone of its
+  class's group on these rows.
+- **Verdict:** every prediction held, so the switch is **flipped ON**. Section 114's rank 4 is
+  closed.

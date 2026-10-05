@@ -239,6 +239,12 @@ inline constexpr bool kShipAiSnapshotBound = true;
 // record and the allow_far tail always answers. The lookup is counted both ways.
 // ON: the USNOS and smoke pairs were gameplay-identical (section 118.6).
 inline constexpr bool kShipAiSurfaceSetBranchBound = true;
+// Packet cc9_engage_gate_avoid_zone, docs/SHIP_AI_OPEN_ITEMS.md section 123.
+// True: 009E85B0's avoid-zone test (009E864C 0082ADC0, 009E8658 004178F0) asks
+// the built avoid-zone table for the brain destination, and a zone closes the
+// gate. False: no zone, the label from before GameAvoidZoneRuntime existed.
+// ON: USNOS and USNOS long gameplay-identical, hits 0 (section 123.4).
+inline constexpr bool kShipAiEngageGateAvoidZoneBound = true;
 // Packet cc9_ship_ai_neighbour_count, docs/SHIP_AI_TAILS.md section 13. True:
 // the traffic setback walk of 009EEAAB reads world list 6 ([[00E188A8]+19CCh]
 // +60h, 009EEB8B) through 009DBBC0, tests vtable+5Ch(6) (009EEBC8), skips the
@@ -3107,10 +3113,38 @@ public:
         x = ctl_.goal_vector.goal_x_0b2c;
         z = ctl_.goal_vector.goal_z_0b34;
     }
-    std::uint32_t avoid_zone_containing_004178f0(float, float) override {
-        // 009E864C 0082ADC0 then 009E8658 004178F0. The avoid-zone singleton
-        // 004218E0 hands out is not built in this process, so the list is empty
-        // and the walk finds nothing, which is the arm that passes the gate.
+    std::uint32_t avoid_zone_containing_004178f0(float x, float z) override {
+        // 009E8640..009E8658: ECX = [unit+538h], the class; 0082ADC0 is 004218E0
+        // then 004120D0([class+570h]); 004178F0 walks that group for the brain
+        // destination (x, z). A zone closes the gate (009E8660 JNE 009E86AF).
+        // Counted both ways; the answer is used only while
+        // kShipAiEngageGateAvoidZoneBound. An empty table answers no zone, as
+        // the retarget probe's goal_zone_004178f0 does.
+        ++owner_.summary.engage_zone_asks;
+        bool inside = false;
+        if (owner_.zones.ready()) {
+            const bsp::AvoidZoneTable& table = owner_.zones.table();
+            const std::int32_t group = bsp::avoid_zone_group_for_layer_004120d0(
+                table, static_cast<std::int32_t>(ctl_.class_reference_0570));
+            if (group >= 0) {
+                const bsp::AvoidZoneLayerGroup& g = table.groups[static_cast<std::size_t>(group)];
+                inside = bsp::avoid_zone_first_containing_004178f0(g, {x, z}) >= 0;
+            }
+        }
+        if (inside) {
+            ++owner_.summary.engage_zone_hits;
+            float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+            owner_.units.unit_position_00fc(index_, ux, uy, uz);
+            const float dx = ux - x;
+            const float dz = uz - z;
+            if (bsp::kAttackMoveEngageGateRangeSq > static_cast<double>(dx * dx + dz * dz)) {
+                ++owner_.summary.engage_zone_closes;
+            }
+        }
+        if constexpr (kShipAiEngageGateAvoidZoneBound) {
+            owner_.done("ShipAiEngageGate::avoid_zone_list", 0x0082adc0u);
+            return inside ? 1u : 0u;
+        }
         owner_.record("ShipAiEngageGate::avoid_zone_list", 0x0082adc0u);
         return 0u;
     }
@@ -12676,6 +12710,11 @@ void GameShipAiHost::report() {
             row.unit.c_str(), row.traffic_scans, row.traffic_steps,
             static_cast<double>(row.traffic_setback_max));
     }
+    host.log.notef("summary mission ship ai engage gate avoid zone asks=%llu hits=%llu "
+        "closes=%llu bound=%d (009E8658 004178F0 on the brain destination, packet "
+        "cc9_engage_gate_avoid_zone)", host.summary.engage_zone_asks,
+        host.summary.engage_zone_hits, host.summary.engage_zone_closes,
+        kShipAiEngageGateAvoidZoneBound ? 1 : 0);
     host.log.notef("summary mission ship ai surface set branch queries=%llu nonempty=%llu "
         "vehicles=%llu hits=%llu bound=%d (00922D54 -> 008DDF90 on the local slot's "
         "objective set, packet cc9_surface_set_branch)",

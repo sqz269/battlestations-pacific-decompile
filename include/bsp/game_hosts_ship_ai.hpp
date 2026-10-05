@@ -697,6 +697,11 @@ struct GameShipAiSummary {
     unsigned long long surface_set_nonempty{0};
     unsigned long long surface_set_vehicles{0};
     unsigned long long surface_set_hits{0};
+    // Packet cc9_engage_gate_avoid_zone: 009E8658's asks, the destinations in a
+    // zone, and those the range test would have passed (counted both ways).
+    unsigned long long engage_zone_asks{0};
+    unsigned long long engage_zone_hits{0};
+    unsigned long long engage_zone_closes{0};
     unsigned long long autotarget_follower_leaves{0};
     // Packet cc9_free_bearing_query: 009DC2E0 calls by site (both sides) and
     // what the bound query did (ON only).
