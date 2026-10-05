@@ -846,3 +846,69 @@ It mirrors the order screen's page-1 attack, `005FAAE0`'s ship arm (`005FAAF5-00
 
 The final run was not spent. The handoff in docs/SHIP_AI_OPEN_ITEMS.md section 148 names the next
 candidate: USN01 phase 3 with the new attack line.
+
+### 11.2 USN01 phase 3 with the attack line (cc9-ships32, 2026-10-05, SHIP_AI 148 item 2)
+
+Three runs on `agent/cc9-ships32` at main `4950ab838`, USN01 36000 frames, the 10.3 launch form
+(`BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, `--trajectory-csv`). The orders are scripted
+player input. `local\s32_gen_orders.py` writes the shared prefix: from frame 13200, every 600
+frames, `select` + `attack` Northampton, then `select` + `attack` SaltLakeCity, on Katori until
+15600 and on Coastal Gun 01 until 19200. At 19200 it adds `moveto SaltLakeCity 3910 -3225
+repeat 5` and `select Northampton`. The three runs differ only in the helm legs from 19203.
+
+**CB2 did not flip to side 0.** No ship of side 0 came within 100 m of CB2 in any run, so there
+was no side-0 tick.
+
+**Two facts change the plan in section 148.**
+- **Katori cannot be sunk.** `luaKatoriSpotted` calls `SetInvincible(Mission.Katori, 0.1)`
+  (this installation's `usn_1_marshall.lua` line 952, mtime 2024-07-13), and nothing clears it.
+  Katori's health floors at 0.1. In r1 it ends at 0.37, after 228 impacts. "Attack Katori, then
+  Coastal Gun 01" can only suppress Katori; it cannot remove it.
+- **SaltLakeCity dies before phase 3** in this build. It is sunk at 644.17 s by a Katori torpedo at
+  113 m; phase 3 begins at about 649.5 s. Every `select SaltLakeCity` is refused (the four byte
+  filters), and so is every `attack` that follows it. Under cc9-ships31's build it lived until 932.6
+  s (run A) and 1120.2 s (run B), so main moved between the two builds. The bisect was not done.
+  The four destroyers (Dunlap, Blue, Ralph, McCall) sail south-west, away from the island. So
+  **Northampton is the only capturer, and it needs 200 s inside 100 m** (CapturePower 50).
+
+| run | helm legs from 19203 (`local\s32_orders<N>.txt`) | Northampton | CB2 |
+| --- | --- | --- | --- |
+| r1 `local\s32_r1.log` | `1.0 3845 -3368 stop 150`; at 22600 `0.3 3936 -3120 stop 25` | The stop is applied at (3770.7, -3498.3), at 16 m/s (frame 20112). The hull then slides north along the west shore at about 11 m/s with rudder -1 and its heading fixed at about 23 degrees. Its closest approach is 146 m, at 1032 s. It grounds at (3965, -2780) at 1072 s, and **survives to 1800 s** | no tick |
+| r2 `local\s32_r2.log` | `0.25` legs: (3734, -3576) stop 40; at 22800 (3845, -3368); 24400 (3896, -3276); 25200 (3923, -3169) | At 4.1 m/s the stop coasts 3 m. **Sunk at 1198.39 s by Katori's gunfire, at 509 m**, while 259 m from CB2 | no tick |
+| r3 `local\s32_r3.log` | `0.5` to (3734, -3576) stop 60; at 21000 `0.5` (3845, -3368) stop 50; at 21800 `0.25` (3896, -3276) stop 20; at 22500 `0.25` (3905, -3191) stop 15 | At 1130 s it is held at (3845.4, -3231.6), 135 m from CB2. This is the same wall that held run A at (3841.7, -3247.1). **Sunk at 1256.95 s by Coastal Gun 01, at 749 m** | **side-1 completion** (below) |
+
+**The attack line on Coastal Gun 01 lands no hit.** All three runs log 0 impacts on Coastal Gun 01.
+Every `attackmove` issue prints `current=0 latched=0`. Northampton came within about 880 m of the
+gun during 780-960 s. Why its director does not fire there was not read. It could be the
+director's target policy, the fort's kind (27), or the line of sight.
+
+**What r3 reached: a side-1 capture with no eligible slot.** In r3, Katori parks 95-103 m from CB2,
+at (3911.5, -3103.5), from 1300 s.
+- Side-1 ticks run from 1309.90 s with `s1=40`. The tick completes at 1558.90 s:
+  `flipped to party=2 side=1 slot=8 repair=0 (006F6760 -> D3h 006F4D10)`.
+- Progress then restarts from 0, and the next completion would fall after the run's end.
+- This is section 125.5's prediction for the US rows. Every `Player1..8` record of USN01 has
+  Party 0, so the first-slot rule (`kLocalPartyFromSceneBound`, `006F7100..006F711C`) finds no
+  slot for side 1. The building stays neutral, with slot 8 and party 2.
+- **This is the first run to reach the no-slot arm of the capture flip.**
+- The retake exemption is not exercised: the host passes prior slot -1, and the owner is neutral
+  anyway.
+
+**Counters (r3):**
+- neutralized 1 (CB2 at 32.90 s);
+- countdown fires 1768;
+- progress messages 491;
+- flips 1 (the side-1 no-slot completion);
+- player flips 0.
+
+**Why USN01 cannot give a side-0 capture row with these forms:**
+- There is one capturer, and it needs 200 s in range.
+- Katori cannot be sunk, and Coastal Gun 01 takes no hit from the attack line.
+- The water into range, Katori's own parking strip at x of about 3905-3912, is entered only from
+  the south-southwest. Twice the hull met the west wall at x of about 3842-3845, z of about -3231
+  to -3247, short of the range.
+- Three runs were the budget; the next tuning (a leg through (3896, -3276) entered from (3845,
+  -3368) at 0.5, then north along x = 3905) was not run.
+
+Any further side-0 attempt here also has to survive Katori and the coastal battery for those
+200 s, which none of the five earlier runs (10.3, 10.4) or these three did.
