@@ -9281,3 +9281,85 @@ and the image does the same as far as read.
 **Friendly fire on this row is recorded as the image's behaviour.** Which transport dies, and to
 whom, is a spread between runs: UST 05 and UST 02 die in both `s26_e0` and `s26_e1`, but to different killers, and the other
   victims differ.
+
+## 112. The close-attack fallback skips the order bridge (packet `cc9_close_fallback_order_bridge`, `kCloseFallbackOrderBridgeBound`, cc9-ships27, 2026-10-04)
+
+Section 107.2's recorded twin, queue item 3.
+
+### 112.1 The image
+
+`00A13B60`'s no-candidate arm, read in `disasm-raw`:
+- **The point (`00A14CC1..00A14D41`).**
+  - `EAX = [ESP+190h]`, the group centre pointer (`00A14CC7`).
+  - The member's pose `ESI+FCh..104h` is scaled by `[00CE65D0]` = 0.4 into `[ESP+34h..3Ch]`
+    (`00A14CCE..00A14CF1`).
+  - The centre `[EAX]..[EAX+8]` is scaled by `[00CEFF98]` = 0.6 into `[ESP+68h..70h]`
+    (`00A14CFB..00A14D17`).
+  - The sum goes to `[ESP+A4h..ACh]` (`00A14D1B..00A14D41`).
+- **The call.** `EDX = &[ESP+A4h]` (`00A14CD4`), `ECX = ESI` the member (`00A14CDD`), then
+  **`00A14D48 CALL 00A02020`**, the same `BSP_AiCommand_IssueMoveToMember` that `00A11F23` calls.
+  `00A02020` overwrites `EAX` at `00A02027` (`MOV EAX,[ESI]`) before reading it, so `EAX` is not
+  an input. The ABI is `ECX` member, `EDX` point, no stack arguments.
+- **So the fallback takes 00A02020's three gates** (section 107.1):
+  - the class gate: a squadron unless `007EDA90`, otherwise `IsKindOf(6)` (`00A0202F..00A02052`);
+  - the 80 m gate (`00A0206E`);
+  - for a ship, the `00417B10` avoid-zone point with a 30 m margin and y = 0.
+- **The 80 m gate cannot refuse here.** The arm runs only when the member is farther than
+  r = max(400, 160 x members) from the centre (`00A14BE3`). The point is 0.6 of that distance away,
+  so at least 240 m.
+
+### 112.2 The host
+
+`close_issue_moveto` (`src/game_hosts_ai.cpp`) calls `tick_issue_moveto`, which is only the tail.
+`ai_close_attack_tick` reaches it from the `kCloseAttackFallbackOffsetBound` arm with the same
+0.4/0.6 point. So the host differs from the image in two ways:
+- non-ship, non-squadron members (a land vehicle in a close-attack group) are still ordered;
+- a ship's point is not pushed out of its avoid zones.
+
+### 112.3 The binding (prepared; `src/game_hosts_ai.cpp` is on loan to cc9-lua33)
+
+- The edit is `local\s27_edit_ai_112.py` in the cc9-ships27 tree, run as
+  `python s27_edit_ai_112.py <root>`. It anchors on exact text and refuses a missing or duplicate
+  anchor.
+- It touches `src/game_hosts_ai.cpp` and `include/bsp/game_hosts_ai.hpp`.
+- Both values of the switch were compile-checked with MSVC Win32 on copies (`local\s27_ai\`).
+  They show only the two pre-existing C4702 warnings near `capture_target_path_00a2a130`.
+- **What it does:**
+  - `kCloseFallbackOrderBridgeBound`, committed OFF.
+  - ON: `close_issue_moveto` goes through `issue_moveto_bridge_00a02020`, section 107's helper. The
+    helper gains an optional out-parameter so the issued point can be compared.
+- **Census, counted both ways, without the gates' own counters, so OFF moves no other line:**
+  `summary mission ai close fallback bridge calls= class_refused= near_refused= ships=
+  zone_moved= bound=`.
+
+### 112.4 Predictions (written before any run)
+
+The fallback's reach on reference v (`fallback=` in the coordinator summary, cc9-gunnery20
+`local\g20_rv_<row>.log`):
+
+| row | fallback | who `moveto ai_command_tick` reaches there (command-table rows) |
+| --- | --- | --- |
+| E2, USN04 | 576 each | Val, Kate and Zero squadrons |
+| USNOS long | 693 | planes, `unit #` boats, Cargo and Convoy ships |
+| JM06 | 256 | tankers, cargo transports, a PBY, the hospital ship |
+| USN13 | 171 | `bruh` squadrons, Marus, Katori, Naka |
+| LOMP06 | 143 | Marus, Mikuma, Yugiri |
+| USNOS | 51 | as USNOS long |
+| IJN01 | 27 | Downes, Dauntless and Warhawk squadrons |
+| USN01 | 2 | Mav planes, Convoy ships |
+| JM08, JM08 long, JM05, JM05 long, USN02, USN12, BSM01, LOMP10, LOMP10 long | 0 | - |
+
+- **Mechanism:**
+  - `calls` equals the OFF `fallback` count on every row.
+  - `near_refused` = 0 everywhere (112.1).
+  - ON, `fallback` falls by exactly `class_refused`.
+  - ON, `zone point asks` rises by `ships`; `zone_moved` <= `ships`.
+- **Rows with fallback 0:** exit 0 or 1.
+- **E2, USN04:** squadrons only. No Kamikaze leader, so `class_refused` = 0, `ships` = 0: exit 1.
+- **JM06:** an open-sea convoy far from the AvoidZoneG outlines. `ships` > 0 but `zone_moved` near 0:
+  exit 1. If the PBY is not a squadron, `class_refused` > 0 and exit 3.
+- **LOMP06 (harbour) and USNOS / USNOS long (Ada near the island):** `zone_moved` > 0, exit 3.
+  Ship paths near the coast move; no death row flips for a mechanism reason.
+- **USN13, IJN01, USN01:** exit 1 or 3, decided by the census.
+- **Verdict rule:** flip ON when `calls` matches, the refusals are the class gate's, and every
+  moved point belongs to a ship. A mechanism failure stays OFF, recorded.
