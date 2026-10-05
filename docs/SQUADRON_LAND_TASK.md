@@ -11482,3 +11482,29 @@ scenes the first census matched by name. Its PlaneSquadronGen rows are:
   no change;
 - 1 Dauntless without `Equipment`. That squadron, Dauntless1, is the only row whose loadout changes:
   it loses its bombs.
+
+### 5dk.4 The 23-row pairing on main with the coordinator gate ON (`l38_d0`, switch false, against `l38_d1`, ON; commit `5a8bb5d92`) (cc9-lua38, 2026-10-05)
+
+21 of 23 rows are gameplay-identical (exit 1: census lines and the known refill noise):
+USN01, USN02, USN04, E2, USN12, USN13, USN13 long, BSM01, IJN01, IJN11, JM05, JM05 long, JM06,
+JM08, JM08 long, LOMP06, USNOS, USNOS long, USNRM01, ESMP08 long and ESMP08 14200. The two that
+move are LOMP10 and LOMP10 long. With no AI coordinator, the USN13 long move of 5dk.2 is gone; its
+deaths are 102 in both.
+
+| row | d0 -> d1 |
+| --- | --- |
+| LOMP10 | dive-bomb releases 9 -> 14 (8 tasks), hull hits 103 -> 105, damage 2156.6 -> 2194.3, deaths 2 = 2 |
+| LOMP10 long | releases 9 -> 14, hull hits 107 -> 109, damage 2764.2 -> 2832.2, deaths 5 = 5; Warhawk 01|.-4 dies 1.6 s later, to Kasumi instead of Ashigara |
+
+**Per entity.** `10_san_jose.scn` authors `Equipment` 1 on all three squadrons. For two of them the
+loadout changes:
+- Lightning 01 (class 104) and Warhawk 01 (class 135) both have `DefaultEquipment` 0.
+  - d0 starts them unarmed: `squadron ordnance ... -> 0` at 0.05 s, armed only later at 102.6 s
+    and 106.8 s.
+  - d1 arms them at 0.05 s: `-> 1`.
+  - They drop five more bombs, and the Japanese hulls take the small damage rise.
+- B-25 01 (class 118) has `DefaultEquipment` 1 and the same loadout in both.
+
+This is the direction 5dk predicts for an authored `Equipment` on a fighter class.
+
+**Verdict:** `kPlaneSceneEquipmentBound` stays **ON**.
