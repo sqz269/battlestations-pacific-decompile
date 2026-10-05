@@ -6077,21 +6077,20 @@ void GameAiCoordinatorHost::Impl::admit_generated_squadrons() {
 void GameAiCoordinatorHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if (!host.created) return;
-    if constexpr (kAiCoordinatorLoadGateBound) {
+    if constexpr (kAiCoordinatorLoadGateBound && !kAiCoordinatorCreatedAtLoad) {
         // 004E17FD..004E1838: the mission load creates the coordinator only for a
         // hosted session or a forced mode; AICreate is the only other caller.
-        if constexpr (!kAiCoordinatorCreatedAtLoad) {
-            ++host.coordinator_steps_absent;
-            return;
-        }
+        ++host.coordinator_steps_absent;
+        (void)step_seconds;
+    } else {
+        if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
+        host.clock_seconds += step_seconds;
+        ++host.summary.compose_passes;
+        ++host.summary.party_think_calls;
+        // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
+        bsp::ai_coordinator_fixed_step_00a32d50(host);
+        host.done("AiController::fixed_step", 0x00a32d50u);
     }
-    if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
-    host.clock_seconds += step_seconds;
-    ++host.summary.compose_passes;
-    ++host.summary.party_think_calls;
-    // 00A32D50: the gate, then 00A2E720, then 00A182C0. The float is discarded.
-    bsp::ai_coordinator_fixed_step_00a32d50(host);
-    host.done("AiController::fixed_step", 0x00a32d50u);
 }
 
 const GameAiSummary& GameAiCoordinatorHost::summary() const noexcept {
